@@ -560,3 +560,22 @@
     20020910 mortene.
 
 =====================================================================
+
+025 Import hangs on invalid scenegraph. This reproduces the problem:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #VRML V2.0 utf8
+    
+    Group {
+       children [
+          *
+       ]
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    The '*' character can be replaced by any character not valid in
+    identifier names, and the bug will still be present.
+
+    20020911 mortene.
+
+=====================================================================
