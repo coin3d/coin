@@ -596,6 +596,19 @@ coin_next_power_of_two(uint32_t x)
 }
 
 /*
+  Returns nearest upward number for x that is a power of two, or x
+  itself if it is already a power of two.
+
+  ("geq" is short for "Greater or EQual".)
+ */
+uint32_t
+coin_geq_power_of_two(uint32_t x)
+{
+  if (coin_is_power_of_two(x)) return x;
+  return coin_next_power_of_two(x);
+}
+
+/*
   Calculate the view volume jitter vector when doing multipass
   antialiasing rendering.
 */
