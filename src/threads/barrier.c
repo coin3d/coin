@@ -51,9 +51,6 @@ cc_barrier_struct_init(cc_barrier * barrier_struct, unsigned int count)
 
   barrier_struct->type = CC_BARRIER_TYPE;
   return;
-
-error:
-  barrier_struct->type = CC_INVALID_TYPE;
 } /* cc_barrier_struct_init() */
 
 /*
@@ -66,10 +63,6 @@ cc_barrier_struct_clean(cc_barrier * barrier_struct)
   assert(barrier_struct != NULL && barrier_struct->type == CC_BARRIER_TYPE);
   cc_mutex_struct_clean(&barrier_struct->mutex);
   cc_condvar_struct_clean(&barrier_struct->condvar);
-  barrier_struct->type = CC_INVALID_TYPE;
-  return;
-
-error:
   barrier_struct->type = CC_INVALID_TYPE;
 } /* cc_barrier_struct_clean() */
 
@@ -85,12 +78,12 @@ cc_barrier_construct(unsigned int count)
   barrier = (cc_barrier *) malloc(sizeof(cc_barrier));
   barrier->type = CC_INVALID_TYPE;
   cc_barrier_struct_init(barrier, count);
-  if ( barrier->type != CC_BARRIER_TYPE ) goto error;
-  return barrier;
 
-error:
-  free(barrier);
-  return NULL;
+  if (barrier->type != CC_BARRIER_TYPE) {
+    free(barrier);
+    barrier = NULL;
+  }
+  return barrier;
 } /* cc_barrier_construct() */
 
 /*
@@ -101,11 +94,6 @@ cc_barrier_destruct(cc_barrier * barrier)
 {
   assert((barrier != NULL) && (barrier->type == CC_BARRIER_TYPE));
   cc_barrier_struct_clean(barrier);
-  if ( barrier->type != CC_INVALID_TYPE ) goto error;
-  free(barrier);
-  return;
-
-error:
   free(barrier);
 } /* cc_barrier_destruct() */
 
@@ -118,14 +106,14 @@ cc_barrier_enter(cc_barrier * barrier)
   int status, cycle, cancel, tmp;
   assert((barrier != NULL) && (barrier->type == CC_BARRIER_TYPE));
 
-  cc_mutex_lock(&barrier->mutex);
+  status = cc_mutex_lock(&barrier->mutex);
 /*
-  if ( status != 0 )
+  if ( status != CC_OK )
     return FALSE;
 */
 
   cycle = barrier->cycle;
-  if ( (--barrier->counter) == 0 ) {
+  if (--barrier->counter == 0) {
     barrier->cycle++;
     barrier->counter = barrier->threshold;
     cc_condvar_wake_all(&barrier->condvar);
@@ -134,7 +122,7 @@ cc_barrier_enter(cc_barrier * barrier)
     status = pthread_cond_broadcast(&(barrier->pthread.condvar));
     pthread_mutex_unlock(&(barrier->pthread.mutex));
     if ( status != 0 )
-      return FALSE;
+      return CC_ERROR;
 */
   } else {
 #ifdef USE_PTHREAD
@@ -152,10 +140,10 @@ cc_barrier_enter(cc_barrier * barrier)
     pthread_setcancelstate(cancel, &tmp);
 #endif /* USE_PTHREAD */
     cc__mutex_unlock(&barrier->mutex);
-    if ( status != 0 ) return FALSE;
+    if ( status != 0 ) return CC_ERROR;
   }
 
-  return TRUE;
+  return CC_OK;
 } /* cc_barrier_enter() */
 
 /* ********************************************************************** */
