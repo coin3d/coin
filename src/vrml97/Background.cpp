@@ -442,52 +442,6 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
 }
 
 
-// FIXME: This method is disabled as there is no virtual 'readInstance'
-// method in Coin-2 yet (there is one in Coin-1). (11Aug2003 handegar)
-/*
-// Documented in superclass. Overridden to check if texture file (if
-// any) can be found and loaded.
-SbBool
-SoVRMLBackground::readInstance(SoInput * in, unsigned short flags)
-{
-
-  PRIVATE(this)->groundanglesensor->detach();
-  PRIVATE(this)->groundcolorsensor->detach();
-  PRIVATE(this)->skyanglesensor->detach();
-  PRIVATE(this)->skycolorsensor->detach();
-  
-  PRIVATE(this)->backurlsensor->detach();
-  PRIVATE(this)->fronturlsensor->detach();
-  PRIVATE(this)->lefturlsensor->detach();
-  PRIVATE(this)->righturlsensor->detach();
-  PRIVATE(this)->bottomurlsensor->detach();
-  PRIVATE(this)->topurlsensor->detach();
-
-  PRIVATE(this)->setbindsensor->detach();
-  PRIVATE(this)->isboundsensor->detach();
-
-  SbBool readok = inherited::readInstance(in, flags);
-  PRIVATE(this)->buildGeometry(); 
-
-  PRIVATE(this)->groundanglesensor->attach(&this->groundAngle);
-  PRIVATE(this)->groundcolorsensor->attach(&this->groundColor);
-  PRIVATE(this)->skyanglesensor->attach(&this->skyAngle);
-  PRIVATE(this)->skycolorsensor->attach(&this->skyColor);
- 
-  PRIVATE(this)->backurlsensor->attach(&this->backUrl);
-  PRIVATE(this)->fronturlsensor->attach(&this->frontUrl);
-  PRIVATE(this)->lefturlsensor->attach(&this->leftUrl);
-  PRIVATE(this)->righturlsensor->attach(&this->rightUrl);
-  PRIVATE(this)->bottomurlsensor->attach(&this->bottomUrl);
-  PRIVATE(this)->topurlsensor->attach(&this->topUrl);
-
-  PRIVATE(this)->setbindsensor->attach(&this->set_bind);
-  PRIVATE(this)->isboundsensor->attach(&this->isBound);
-
-  return readok;
-}
-*/
-
 void
 SoVRMLBackgroundP::buildGeometry()
 {
