@@ -27,6 +27,10 @@
 
 #include <GL/glx.h>
 
+// FIXME: on SGI boxes with p-buffer support, that should be used
+// instead of a standard offscreen GLX context, as it would render
+// much faster (due to hardware acceleration). 20020503 mortene.
+
 class SoOffscreenGLXData : public SoOffscreenInternalData {
 public:
   SoOffscreenGLXData(void);
