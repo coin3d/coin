@@ -161,6 +161,8 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 PublicHeaders = 
 
 
+# Automake wasn't too supportive of having variables starting with numbers,
+# so "format" was prefixed here.  20030217 larsa
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -177,9 +179,9 @@ PublicHeaders =
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
-@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = 3ds.lst
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = lib3ds@SUFFIX@LINKHACK.la
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = lib3ds.la
+@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = format3ds.lst
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libformat3ds@SUFFIX@LINKHACK.la
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libformat3ds.la
 
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
@@ -187,21 +189,21 @@ LIBS =
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/src/extensions
 
-lib3ds_la_SOURCES = $(BuildSources)
-EXTRA_lib3ds_la_SOURCES = \
+libformat3ds_la_SOURCES = $(BuildSources)
+EXTRA_libformat3ds_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
-lib3ds@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
-EXTRA_lib3ds@SUFFIX@LINKHACK_la_SOURCES = \
+libformat3ds@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
+EXTRA_libformat3ds@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
-lib3dsincdir = $(includedir)/Inventor/3ds
-lib3dsinc_HEADERS = $(PublicHeaders)
+libformat3dsincdir = $(includedir)/Inventor/format3ds
+libformat3dsinc_HEADERS = $(PublicHeaders)
 
-3ds_lst_SOURCES = $(BuildSources)
-EXTRA_3ds_lst_SOURCES = \
+format3ds_lst_SOURCES = $(BuildSources)
+EXTRA_format3ds_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 subdir = src/3ds
@@ -210,48 +212,48 @@ CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
 
-3ds_lst_AR = $(AR) cru
-3ds_lst_LIBADD =
-@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_TRUE@am_3ds_lst_OBJECTS = \
+format3ds_lst_AR = $(AR) cru
+format3ds_lst_LIBADD =
+@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_TRUE@am_format3ds_lst_OBJECTS = \
 @BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_TRUE@	dummy.$(OBJEXT)
-@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_FALSE@am_3ds_lst_OBJECTS = \
+@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_FALSE@am_format3ds_lst_OBJECTS = \
 @BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_FALSE@	dummy.$(OBJEXT)
-@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@am_3ds_lst_OBJECTS = \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@am_format3ds_lst_OBJECTS = \
 @BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@	3dsLoader.$(OBJEXT) \
 @BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@	SoStream.$(OBJEXT)
-@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@am_3ds_lst_OBJECTS = \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@am_format3ds_lst_OBJECTS = \
 @BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@	3dsLoader.$(OBJEXT) \
 @BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@	SoStream.$(OBJEXT)
-3ds_lst_OBJECTS = $(am_3ds_lst_OBJECTS)
+format3ds_lst_OBJECTS = $(am_format3ds_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
-lib3ds_la_LDFLAGS =
-lib3ds_la_LIBADD =
-@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_TRUE@am_lib3ds_la_OBJECTS = \
+libformat3ds_la_LDFLAGS =
+libformat3ds_la_LIBADD =
+@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_TRUE@am_libformat3ds_la_OBJECTS = \
 @BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_TRUE@	dummy.lo
-@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_FALSE@am_lib3ds_la_OBJECTS = \
+@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_FALSE@am_libformat3ds_la_OBJECTS = \
 @BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_FALSE@	dummy.lo
-@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@am_lib3ds_la_OBJECTS = \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@am_libformat3ds_la_OBJECTS = \
 @BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@	3dsLoader.lo \
 @BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@	SoStream.lo
-@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@am_lib3ds_la_OBJECTS = \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@am_libformat3ds_la_OBJECTS = \
 @BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@	3dsLoader.lo \
 @BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@	SoStream.lo
-lib3ds_la_OBJECTS = $(am_lib3ds_la_OBJECTS)
-lib3ds@SUFFIX@LINKHACK_la_LDFLAGS =
-lib3ds@SUFFIX@LINKHACK_la_LIBADD =
-@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_TRUE@am_lib3ds@SUFFIX@LINKHACK_la_OBJECTS = \
+libformat3ds_la_OBJECTS = $(am_libformat3ds_la_OBJECTS)
+libformat3ds@SUFFIX@LINKHACK_la_LDFLAGS =
+libformat3ds@SUFFIX@LINKHACK_la_LIBADD =
+@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_TRUE@am_libformat3ds@SUFFIX@LINKHACK_la_OBJECTS = \
 @BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_TRUE@	dummy.lo
-@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_FALSE@am_lib3ds@SUFFIX@LINKHACK_la_OBJECTS = \
+@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_FALSE@am_libformat3ds@SUFFIX@LINKHACK_la_OBJECTS = \
 @BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_FALSE@	dummy.lo
-@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@am_lib3ds@SUFFIX@LINKHACK_la_OBJECTS = \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@am_libformat3ds@SUFFIX@LINKHACK_la_OBJECTS = \
 @BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@	3dsLoader.lo \
 @BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@	SoStream.lo
-@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@am_lib3ds@SUFFIX@LINKHACK_la_OBJECTS = \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@am_libformat3ds@SUFFIX@LINKHACK_la_OBJECTS = \
 @BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@	3dsLoader.lo \
 @BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@	SoStream.lo
-lib3ds@SUFFIX@LINKHACK_la_OBJECTS = \
-	$(am_lib3ds@SUFFIX@LINKHACK_la_OBJECTS)
+libformat3ds@SUFFIX@LINKHACK_la_OBJECTS = \
+	$(am_libformat3ds@SUFFIX@LINKHACK_la_OBJECTS)
 
 DEFS = @DEFS@
 DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)/include
@@ -278,14 +280,14 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(3ds_lst_SOURCES) $(EXTRA_3ds_lst_SOURCES) \
-	$(lib3ds_la_SOURCES) $(EXTRA_lib3ds_la_SOURCES) \
-	$(lib3ds@SUFFIX@LINKHACK_la_SOURCES) \
-	$(EXTRA_lib3ds@SUFFIX@LINKHACK_la_SOURCES)
-HEADERS = $(lib3dsinc_HEADERS)
+DIST_SOURCES = $(format3ds_lst_SOURCES) $(EXTRA_format3ds_lst_SOURCES) \
+	$(libformat3ds_la_SOURCES) $(EXTRA_libformat3ds_la_SOURCES) \
+	$(libformat3ds@SUFFIX@LINKHACK_la_SOURCES) \
+	$(EXTRA_libformat3ds@SUFFIX@LINKHACK_la_SOURCES)
+HEADERS = $(libformat3dsinc_HEADERS)
 
-DIST_COMMON = $(lib3dsinc_HEADERS) Makefile.am Makefile.in
-SOURCES = $(3ds_lst_SOURCES) $(EXTRA_3ds_lst_SOURCES) $(lib3ds_la_SOURCES) $(EXTRA_lib3ds_la_SOURCES) $(lib3ds@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_lib3ds@SUFFIX@LINKHACK_la_SOURCES)
+DIST_COMMON = $(libformat3dsinc_HEADERS) Makefile.am Makefile.in
+SOURCES = $(format3ds_lst_SOURCES) $(EXTRA_format3ds_lst_SOURCES) $(libformat3ds_la_SOURCES) $(EXTRA_libformat3ds_la_SOURCES) $(libformat3ds@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libformat3ds@SUFFIX@LINKHACK_la_SOURCES)
 
 all: all-am
 
@@ -312,10 +314,6 @@ AR = ar
 
 clean-noinstLIBRARIES:
 	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
-3ds.lst: $(3ds_lst_OBJECTS) $(3ds_lst_DEPENDENCIES) 
-	-rm -f 3ds.lst
-	$(3ds_lst_AR) 3ds.lst $(3ds_lst_OBJECTS) $(3ds_lst_LIBADD)
-	$(RANLIB) 3ds.lst
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
@@ -338,10 +336,10 @@ clean-libLTLIBRARIES:
 
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
-lib3ds.la: $(lib3ds_la_OBJECTS) $(lib3ds_la_DEPENDENCIES) 
-	$(CXXLINK)  $(lib3ds_la_LDFLAGS) $(lib3ds_la_OBJECTS) $(lib3ds_la_LIBADD) $(LIBS)
-lib3ds@SUFFIX@LINKHACK.la: $(lib3ds@SUFFIX@LINKHACK_la_OBJECTS) $(lib3ds@SUFFIX@LINKHACK_la_DEPENDENCIES) 
-	$(CXXLINK) -rpath $(libdir) $(lib3ds@SUFFIX@LINKHACK_la_LDFLAGS) $(lib3ds@SUFFIX@LINKHACK_la_OBJECTS) $(lib3ds@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
+libformat3ds.la: $(libformat3ds_la_OBJECTS) $(libformat3ds_la_DEPENDENCIES) 
+	$(CXXLINK)  $(libformat3ds_la_LDFLAGS) $(libformat3ds_la_OBJECTS) $(libformat3ds_la_LIBADD) $(LIBS)
+libformat3ds@SUFFIX@LINKHACK.la: $(libformat3ds@SUFFIX@LINKHACK_la_OBJECTS) $(libformat3ds@SUFFIX@LINKHACK_la_DEPENDENCIES) 
+	$(CXXLINK) -rpath $(libdir) $(libformat3ds@SUFFIX@LINKHACK_la_LDFLAGS) $(libformat3ds@SUFFIX@LINKHACK_la_OBJECTS) $(libformat3ds@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT) core *.core
@@ -379,12 +377,12 @@ distclean-depend:
 CXXDEPMODE = @CXXDEPMODE@
 uninstall-info-am:
 
-uninstall-lib3dsincHEADERS:
+uninstall-libformat3dsincHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(lib3dsinc_HEADERS)'; for p in $$list; do \
+	@list='$(libformat3dsinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(lib3dsincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(lib3dsincdir)/$$f; \
+	  echo " rm -f $(DESTDIR)$(libformat3dsincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libformat3dsincdir)/$$f; \
 	done
 
 tags: TAGS
@@ -445,7 +443,7 @@ check: check-am
 all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(lib3dsincdir)
+	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libformat3dsincdir)
 
 install: install-am
 install-exec: install-exec-am
@@ -488,7 +486,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-lib3dsincHEADERS
+install-data-am: install-libformat3dsincHEADERS
 
 install-exec-am: install-libLTLIBRARIES
 
@@ -507,8 +505,8 @@ mostlyclean: mostlyclean-am
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
-uninstall-am: uninstall-info-am uninstall-lib3dsincHEADERS \
-	uninstall-libLTLIBRARIES
+uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
+	uninstall-libformat3dsincHEADERS
 
 .PHONY: GTAGS all all-am check check-am clean clean-generic \
 	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
@@ -517,34 +515,35 @@ uninstall-am: uninstall-info-am uninstall-lib3dsincHEADERS \
 	distclean-tags distdir dvi dvi-am info info-am install \
 	install-am install-data install-data-am install-exec \
 	install-exec-am install-info install-info-am \
-	install-lib3dsincHEADERS install-libLTLIBRARIES install-man \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	tags uninstall uninstall-am uninstall-info-am \
-	uninstall-lib3dsincHEADERS uninstall-libLTLIBRARIES
+	install-libLTLIBRARIES install-libformat3dsincHEADERS \
+	install-man install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool tags uninstall uninstall-am \
+	uninstall-info-am uninstall-libLTLIBRARIES \
+	uninstall-libformat3dsincHEADERS
 
 
 # this rule causes a make warning, so we remove it when it is not in use
-3ds.lst: Makefile $(3ds_lst_OBJECTS)
-	@echo "Linking 3ds.lst..."; \
+format3ds.lst: Makefile $(format3ds_lst_OBJECTS)
+	@echo "Linking format3ds.lst..."; \
 	rm -f $@; touch $@; \
-	for i in $(3ds_lst_OBJECTS); do echo $$i >>$@; done
+	for i in $(format3ds_lst_OBJECTS); do echo $$i >>$@; done
 
-install-lib3dsincHEADERS: $(lib3dsinc_HEADERS)
+install-libformat3dsincHEADERS: $(libformat3dsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(lib3dsincdir)
-	@list='$(lib3dsinc_HEADERS)'; for p in $$list; do \
+	$(mkinstalldirs) $(DESTDIR)$(libformat3dsincdir)
+	@list='$(libformat3dsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(lib3dsincdir)/$$f"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libformat3dsincdir)/$$f"; \
 	  if cmp -s "$$src" "$$dst"; then :; else \
 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
 	    $(INSTALL_HEADER) "$$src" "$$dst"; \
 	  fi \
 	done
 	@list='$(ObsoletedHeaders)'; for f in $$list; do \
-	  file="$(DESTDIR)$(lib3dsincdir)/$$f"; \
+	  file="$(DESTDIR)$(libformat3dsincdir)/$$f"; \
 	  if test -x "$$file"; then \
 	    echo " rm -f $$file"; \
 	    rm -f "$$file"; \

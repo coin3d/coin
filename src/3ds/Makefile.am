@@ -18,7 +18,9 @@ endif
 
 PublicHeaders = 
 
-##$ BEGIN TEMPLATE Make-Common(3ds)
+# Automake wasn't too supportive of having variables starting with numbers,
+# so "format" was prefixed here.  20030217 larsa
+##$ BEGIN TEMPLATE Make-Common(format3ds)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -40,12 +42,12 @@ BuildSources = $(RegularSources)
 endif
 
 if BUILD_WITH_MSVC
-noinst_LIBRARIES = 3ds.lst
+noinst_LIBRARIES = format3ds.lst
 else
 if HACKING_DYNAMIC_MODULES
-lib_LTLIBRARIES = lib3ds@SUFFIX@LINKHACK.la
+lib_LTLIBRARIES = libformat3ds@SUFFIX@LINKHACK.la
 else
-noinst_LTLIBRARIES = lib3ds.la
+noinst_LTLIBRARIES = libformat3ds.la
 endif
 endif
 
@@ -55,41 +57,41 @@ LIBS =
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/src/extensions
 
-lib3ds_la_SOURCES = $(BuildSources)
-EXTRA_lib3ds_la_SOURCES = \
+libformat3ds_la_SOURCES = $(BuildSources)
+EXTRA_libformat3ds_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-lib3ds@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
-EXTRA_lib3ds@SUFFIX@LINKHACK_la_SOURCES = \
+libformat3ds@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
+EXTRA_libformat3ds@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-lib3dsincdir = $(includedir)/Inventor/3ds
-lib3dsinc_HEADERS = $(PublicHeaders)
+libformat3dsincdir = $(includedir)/Inventor/format3ds
+libformat3dsinc_HEADERS = $(PublicHeaders)
 
-3ds_lst_SOURCES = $(BuildSources)
-EXTRA_3ds_lst_SOURCES = \
+format3ds_lst_SOURCES = $(BuildSources)
+EXTRA_format3ds_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 # this rule causes a make warning, so we remove it when it is not in use
-3ds.lst: Makefile $(3ds_lst_OBJECTS)
-	@echo "Linking 3ds.lst..."; \
+format3ds.lst: Makefile $(format3ds_lst_OBJECTS)
+	@echo "Linking format3ds.lst..."; \
 	rm -f $@; touch $@; \
-	for i in $(3ds_lst_OBJECTS); do echo $$i >>$@; done
+	for i in $(format3ds_lst_OBJECTS); do echo $$i >>$@; done
 
-install-lib3dsincHEADERS: $(lib3dsinc_HEADERS)
+install-libformat3dsincHEADERS: $(libformat3dsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(lib3dsincdir)
-	@list='$(lib3dsinc_HEADERS)'; for p in $$list; do \
+	$(mkinstalldirs) $(DESTDIR)$(libformat3dsincdir)
+	@list='$(libformat3dsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(lib3dsincdir)/$$f"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libformat3dsincdir)/$$f"; \
 	  if cmp -s "$$src" "$$dst"; then :; else \
 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
 	    $(INSTALL_HEADER) "$$src" "$$dst"; \
 	  fi \
 	done
 	@list='$(ObsoletedHeaders)'; for f in $$list; do \
-	  file="$(DESTDIR)$(lib3dsincdir)/$$f"; \
+	  file="$(DESTDIR)$(libformat3dsincdir)/$$f"; \
 	  if test -x "$$file"; then \
 	    echo " rm -f $$file"; \
 	    rm -f "$$file"; \
