@@ -392,7 +392,6 @@ SoVRMLScript::readInstance(SoInput * in, unsigned short flags)
   // avoid triggering the eval cb while reading the file.
   PRIVATE(this)->isreading = TRUE;
 
-  // FIXME: error messages
   SbName name("");
   SbBool ok;
 
@@ -435,15 +434,27 @@ SoVRMLScript::readInstance(SoInput * in, unsigned short flags)
           this->fielddata->addField(this, fname, f);
           if (name == FIELD || name == EXPOSEDFIELD) { // only read field values for fields
             err = ! f->read(in, fname);
+            if (err) {
+              SoReadError::post(in, "Unable to read default value for '%s'.", 
+                                fname.getString());
+            }
           }
           else {
             (void) in->checkISReference(this, fname, err);
             err = !err;
+            if (err) {
+              SoReadError::post(in, "Error while parsing IS reference for '%s'.", 
+                                fname.getString());
+            }
           }
         }
         else {
           err = TRUE;
+          SoReadError::post(in, "Unknown field type.");
         }
+      }
+      else {
+        SoReadError::post(in, "Unable to read field name.");
       }
       if (!err) {
         name = "";
@@ -455,6 +466,10 @@ SoVRMLScript::readInstance(SoInput * in, unsigned short flags)
       if (!err) {
         name = "";
         ok = in->read(name, TRUE);
+      }
+      else {
+        SoReadError::post(in, "Error while reading field '%s'.", 
+                          name.getString());
       }
     }
     else ok = FALSE;
