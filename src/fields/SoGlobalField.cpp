@@ -131,7 +131,8 @@ void
 SoGlobalField::removeGlobalFieldContainer(SoGlobalField * fieldcontainer)
 {
   int idx = SoGlobalField::getGlobalFieldIndex(fieldcontainer->getName());
-  return SoGlobalField::allcontainers->remove(idx);
+  SoGlobalField::allcontainers->remove(idx);
+  return;
 }
 
 // Returns SoGlobalField instance with the given name.
