@@ -135,49 +135,6 @@ Until this has been fixed, I suggest the obvious workaround of not
 having any spaces in the path leading to Coin.
 
 
-o "Undefined symbol: __Znwm"
-  --------------------------
-
-If you build a project using Coin in Project Builder, you might get a 
-run time error message about __Znwm being undefined. Mac OS 10.2 comes 
-with two version of libstdc++, so you must tell it which ones to use - 
-namely the same one used for building Coin. Adding the following to the
-linker commandline solves the problem: 
-
-    "-L/usr/lib/gcc/darwin/default/private/"
-
-If you do not have a /usr/lib/gcc/darwin/default/private/ directory on 
-your machine, then you probably have a buggy version of the Apple
-developer tools. The suite shipped with Mac OS 10.2 contained several
-bugs, so please update by installing the "August2002DevToolsUpdate" from 
-the ADC website.
-
-Note that it does not suffice to install any later version of the 
-developer tools. You have to install the developer tools in the
-following order:                                     
-                                                                                
-1. Install July Dev tools
-2. Install August Dev Tools update 
-3. Install any later version that you want
-
-For those who are unfamiliar with Project Builder's settings, a short
-instruction follows:
-
-  - Open the project in ProjectBuilder.
-  - Click on the "Targets" tab.
-  - Choose target "Coin-in-a-Cocoa-Nutshell". This brings up the
-    settings window in the project builder main window. 
-  - Click on "Settings" (in the menu in the main window), "simple view",
-    "Linker settings".
-  - There, in "Other Mach-O Linker Flags", enter 
-    "-L/usr/lib/gcc/darwin/default/private/" .
-  - Press Shift-Command-k, or choose "Build -> clean" from the project 
-    builder menubar.
-  - Rebuild.
-
-That should be it.
-
-
 o "I installed qt from fink, but SoQt configure doesn't find it"
    -------------------------------------------------------------
 
@@ -185,8 +142,25 @@ That's because SoQt is looking for Qt/Mac -- the Mac OS X native
 version of the Qt toolkit. What you install using fink is *not*
 Qt/Mac but Qt/X11, i.e. the version of Qt that was created for X11.
 We do not yet support the X11 version of Qt, but we are planning to do
-so in the near future.
-                                 
+so in the near future.                                 
+
+
+o "When I try to load a texture, my application crashes"
+  ------------------------------------------------------
+
+If this happens, you are probably affected by a fairly common problem
+with a broken QuickTime component component installed by Toast. In
+that case, you should get the following warning:
+
+  ## Component Manager: attempting to find symbols in a component alias
+  of type (regR/carP/x!bt)
+  space-test has exited due to signal 10 (SIGBUS).
+
+If you get the above error message, see if you have a file called
+Toast Video CD Support.qtx in /Library/QuickTime/. If so, move it
+away, and you should get rid of the error message and the crash.
+
+
 
 If you have any further problems when trying to configure and build Coin 
 on Mac OS X, please let us know. 
