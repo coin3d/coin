@@ -478,7 +478,7 @@ SbBool intersect_box_edges(const SbVec3f &min,
     SbVec3f dir = l2 - l1;
     // if the direction is a nil-vector, this means that the bounding
     // box is flat (2D or 1D) or empty and we can just skip this vector.
-    if (dir == SbVec3f(0.0f, 0.0f, 0.0f)) continue;
+    if (dir.length() == 0.0f) continue;
     dir.normalize();
     SbVec3f lmin(SbMin(l1[0], l2[0]),
                  SbMin(l1[1], l2[1]),
@@ -577,6 +577,15 @@ intersect_box_box(const SbVec3f &min,
 SbBool
 SbXfBox3f::intersect(const SbBox3f &bb) const
 {
+  if (this->isEmpty() || bb.isEmpty()) {
+#ifdef COIN_DEBUG
+    SoDebugError::postWarning("SbXfBox3f::intersect",
+                              "%s is an empty / uninitialized box",
+                              this->isEmpty() ? "this" : "input argument");
+#endif // COIN_DEBUG
+    return FALSE;
+  }
+
   if (this->matrix == SbMatrix::identity()) return SbBox3f::intersect(bb);
 
   //
