@@ -373,21 +373,33 @@ getMaxCB(void * ptr, SoAction * action)
   const char * vendor = (const char *)glGetString(GL_VENDOR);
   if (strcmp(vendor, "NVIDIA Corporation") == 0) {
 
-    // FIXME: Here we need to add a version check if NVIDIA fixes this
-    // bug in the future (20021023 handegar)
-
-    // FIXME: Due to a possible NVIDIA bug, max render size is limited
-    // by desktop resolution, not the texturesize returned by
-    // OpenGL. This is fixed temporarily by limiting max size to the
-    // lowend resolution for desktop monitors. (20021023 handegar)
-
-    // Note: according to pederb, there are versions of the NVidia
-    // drivers where the offscreen buffer has to have dimensions that
-    // are 2^x, so we do this to be sure.
+    // NVIDIA seems to have a bug where max render size is limited by
+    // desktop resolution (at least for their Linux X11 drivers), not
+    // the texture maxsize returned by OpenGL. So we use a workaround
+    // by limiting max size to the lowend resolution for desktop
+    // monitors.
+    //
+    // According to pederb, there are versions of the NVidia drivers
+    // where the offscreen buffer also has to have dimensions that are
+    // 2^x, so we limit further down to these dimension settings to be
+    // sure.
 
     size[0] = 512;
     size[1] = 512;
   }
+
+  // Makes it possible to override the default tilesizes. Should prove
+  // useful for debugging problems on remote sites.
+  static int forcedtilewidth = -1;
+  static int forcedtileheight = -1;
+  if (forcedtilewidth == -1) {
+    const char * env = coin_getenv("COIN_OFFSCREENRENDERER_TILEWIDTH");
+    forcedtilewidth = env ? atoi(env) : 0;
+    env = coin_getenv("COIN_OFFSCREENRENDERER_TILEHEIGHT");
+    forcedtileheight = env ? atoi(env) : 0;
+  }
+  if (forcedtilewidth != 0) { size[0] = forcedtilewidth; }
+  if (forcedtileheight != 0) { size[1] = forcedtileheight; }
 }
 
 /*!
@@ -720,54 +732,12 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 // format.
 //
 // FIXME: should do some refactoring here. This method should really
-// be part of an "SbImageBlock" class. 20030516 mortene.
+// be part of an (internal) "SbImageBlock" class, consisting of a
+// uint8_t buffer and <width, height, components> settings. 20030516 mortene.
 void
 SoOffscreenRendererP::convertBuffer(const uint8_t * src, unsigned int srcwidth, unsigned int srcheight,
                                     uint8_t * dst, unsigned int dstwidth, unsigned int dstheight)
 {
-#if 0
-  const unsigned int NRPIXELS = srcwidth * srcheight;
-
-  switch (PUBLIC(this)->getComponents()) {
-  case SoOffscreenRenderer::RGB_TRANSPARENCY:
-    (void)memcpy(dst, src, NRPIXELS * 4);
-    break;
-
-  case SoOffscreenRenderer::RGB:
-    {
-      for (unsigned int i=0; i < NRPIXELS; i++) {
-        *dst++ = *src++;
-        *dst++ = *src++;
-        *dst++ = *src++;
-        src++;
-      }
-    }
-    break;
-
-  case SoOffscreenRenderer::LUMINANCE_TRANSPARENCY:
-    {
-      for (unsigned int i=0; i < NRPIXELS; i++) {
-        int val = (int(*src++) + int(*src++) + int(*src++)) / 3;
-        *dst++ = (unsigned char)val;
-        *dst++ = *src++;
-      }
-    }
-    break;
-
-  case SoOffscreenRenderer::LUMINANCE:
-    {
-      for (unsigned int i=0; i < NRPIXELS; i++) {
-        uint32_t val = 76*src[0]+155*src[1]+26*src[2];
-        *dst++ = (unsigned char)(val>>8);
-        src += 4;
-      }
-    }
-    break;
-
-  default:
-    assert(FALSE && "unknown buffer format"); break;
-  }
-#else
   assert(dstwidth <= srcwidth);
   assert(dstheight <= srcheight);
 
@@ -814,7 +784,6 @@ SoOffscreenRendererP::convertBuffer(const uint8_t * src, unsigned int srcwidth, 
     }
     src += (srcwidth - dstwidth) * 4;
   }
-#endif
 }
 
 /*!
@@ -1164,7 +1133,7 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp,
   fprintf(fp, "[image_wd 0 0 image_ht 0 0]\n");
   fprintf(fp, "currentfile\n");
   fprintf(fp, "/ASCII85Decode filter\n");
-  // fprintf(fp, "/RunLengthDecode filter\n"); // FIXME: add later
+  // fprintf(fp, "/RunLengthDecode filter\n"); // FIXME: add later. 2003???? pederb.
   if (chan == 3) fprintf(fp, "false 3\ncolorimage\n");
   else fprintf(fp,"image\n");
 
@@ -1470,42 +1439,6 @@ SoOffscreenRendererP::setCameraViewvolForTile(SoCamera * cam)
     assert(0 && "unknown viewport mapping");
     break;
   }
-
-  // FIXME: the camera viewvolume narrowing below doesn't work as
-  // expected. Try for instance to render the following scene in
-  // 800x480 and then 801x480, with a maxtilesize set to 800x600:
-  //
-  // ------8<------ [snip] ------------8<------ [snip] ------
-  // #Inventor V2.1 ascii
-  //
-  // Separator {
-  //    DirectionalLight { direction 1 -1 -10 }
-  //    PerspectiveCamera {
-  //       position 0 -39.51004 117.71685
-  //       nearDistance 117.59914
-  //       farDistance 121.77625
-  //       focalDistance 119.68572
-  //    }
-  //    Scale {
-  //       scaleFactor 4.3486538 4.4393315 3.9377418
-  //    }
-  //    Text3 {
-  //       string [ "www", "Coin3D", "org" ]
-  //       justification CENTER
-  //       parts (FRONT | SIDES | BACK)
-  //    }
-  // }
-  // ------8<------ [snip] ------------8<------ [snip] ------
-  //
-  // The latter snapshot (taken in multiple tiles) comes out
-  // vertically "stretched" versus the former (done in a single
-  // operation).
-  //
-  // 20030320 mortene.
-
-  // FIXME: could check our technique versus what is used for Brian
-  // Paul's Tile Rendering Library:
-  // <URL:http://www.mesa3d.org/brianp/TR.html>. 20030515 mortene.
 
   const int LEFTINTPOS = this->currenttile[0] * this->subtilesize[0];
   const int RIGHTINTPOS = LEFTINTPOS + this->subsize[0];
