@@ -300,3 +300,11 @@ STUFF TO FIX IN COIN
   branch.
 
 
+* Make Coin Usable from ROM
+  2001-12-19  Lars J. Aas  <larsa@sim.no>
+
+  Investigate if all static writable data can be avoided so Coin can be run
+  from ROM (important for embedded systems).  This is just an idea - didn't
+  find a more appropriate place to put it.
+
+
