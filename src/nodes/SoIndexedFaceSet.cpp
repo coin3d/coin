@@ -615,7 +615,6 @@ SoIndexedFaceSet::useConvexCache(SoAction * action)
   const int32_t * nindices;
   const int32_t * tindices;
   const int32_t * mindices;
-  SbBool doTextures;
   SbBool normalCacheUsed;
   SbBool sendNormals = TRUE;
 
