@@ -155,7 +155,7 @@ public:
   static SoCallbackAction::Response myCallback(void *data,
                                                SoCallbackAction *action,
                                                const SoNode *node);
-  
+
   SoCallbackAction::Response testShape(SoCallbackAction * action, const SoShape * shape);
 
   SoCallbackAction::Response testBBox(SoCallbackAction * action,
@@ -169,7 +169,7 @@ public:
                                             const SoShape * shape,
                                             const SbBox2s & lassorect,
                                             const SbBool full);
-  
+
 };
 
 void
@@ -206,14 +206,23 @@ SoExtSelectionP::timercallback(void *data, SoSensor *sensor)
       }
     */
 
-static int
-pointinpoly(const SbList <SbVec2s> & coords, float x, float y)
+static SbBool
+pointinpoly(const SbList <SbVec2s> & coords, const SbVec2s & point)
 {
-  int i, j, c = 0;
+  int i, j;
+  SbBool c = FALSE;
   int npol = coords.getLength();
+  float x = (float) point[0];
+  float y = (float) point[1];
+  SbVec2f pi, pj;
+
   for (i = 0, j = npol-1; i < npol; j = i++) {
-    SbVec2s pi = coords[i];
-    SbVec2s pj = coords[j];
+
+    pi[0] = (float) coords[i][0];
+    pi[1] = (float) coords[i][1];
+    pj[0] = (float) coords[j][0];
+    pj[1] = (float) coords[j][1];
+    
     if ((((pi[1] <= y) && (y < pj[1])) ||
 	 ((pj[1] <= y) && (y < pi[1]))) &&
 	(x < (pj[0] - pi[0]) * (y - pi[1]) / (pj[1] - pi[1]) + pi[0]))
@@ -229,7 +238,7 @@ SoExtSelectionP::myCallback(void *data, SoCallbackAction *action, const SoNode *
 {
   SoExtSelection * ext = (SoExtSelection*)data;
   assert(node->isOfType(SoShape::getClassTypeId()));
-  return ext->pimpl->testShape(action, (const SoShape*) node); 
+  return ext->pimpl->testShape(action, (const SoShape*) node);
 }
 
 #undef THIS
@@ -637,7 +646,7 @@ SoExtSelectionP::testShape(SoCallbackAction * action, const SoShape * shape)
   SbBox2s rectbbox;
   for (i = 0; i < this->coords.getLength(); i++) {
     rectbbox.extendBy(this->coords[i]);
-  } 
+  }
 
   SbMatrix projmatrix;
   projmatrix = (SoModelMatrixElement::get(state) *
@@ -652,6 +661,7 @@ SoExtSelectionP::testShape(SoCallbackAction * action, const SoShape * shape)
     return testBBox(action, projmatrix, shape, rectbbox, full);
   case SoExtSelection::FULL:
   case SoExtSelection::PART:
+    return testPrimitives(action, projmatrix, shape, rectbbox, full);
   default:
     assert(0 && "unknown lasso policy");
     break;
@@ -660,7 +670,7 @@ SoExtSelectionP::testShape(SoCallbackAction * action, const SoShape * shape)
 }
 
 
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoExtSelectionP::testBBox(SoCallbackAction * action,
                           const SbMatrix & projmatrix,
                           const SoShape * shape,
@@ -670,7 +680,7 @@ SoExtSelectionP::testBBox(SoCallbackAction * action,
   SbBox3f bbox;
   SbVec3f center;
   ((SoShape*)shape)->computeBBox(action, bbox, center);
-  
+
   SbVec3f mincorner = bbox.getMin();
   SbVec3f maxcorner = bbox.getMax();
 
@@ -681,6 +691,9 @@ SoExtSelectionP::testBBox(SoCallbackAction * action,
   SbVec2s vpo = this->curvp.getViewportOriginPixels();
   SbVec2s vps = this->curvp.getViewportSizePixels();
 
+  SbVec2s projpts[8];
+
+
   for (int i = 0; i < 8; i++) {
     SbVec3f corner(i & 1 ? mincorner[0] : maxcorner[0],
                    i & 2 ? mincorner[1] : maxcorner[1],
@@ -690,22 +703,58 @@ SoExtSelectionP::testBBox(SoCallbackAction * action,
     normpt[1] += 1.0f;
     normpt[0] *= 0.5f;
     normpt[1] *= 0.5f;
-    
+
     normpt[0] *= (float) vps[0];
     normpt[1] *= (float) vps[1];
     normpt[0] += (float)vpo[0];
     normpt[1] += (float)vpo[1];
-    
+
     vppt[0] = (short) SbClamp(normpt[0], -32768.0f, 32767.0f);
     vppt[1] = (short) SbClamp(normpt[1], -32768.0f, 32767.0f);
+    projpts[i] = vppt;
     shapebbox.extendBy(vppt);
   }
-  if (lassorect.intersect(shapebbox)) {
-    if (!full ||
-        (shapebbox.getMin()[0] >= lassorect.getMin()[0] &&
-         shapebbox.getMin()[1] >= lassorect.getMin()[1] &&
-         shapebbox.getMax()[0] <= lassorect.getMax()[0] &&
-         shapebbox.getMax()[1] <= lassorect.getMax()[1])) {
+  if (lassorect.intersect(shapebbox)) { // quick reject
+    int i;
+    int hit = 0;
+    switch (this->master->lassoType.getValue()) {
+    case SoExtSelection::LASSO:
+      if (full) {
+        for (i = 0; i < 8; i++) {
+          if (!pointinpoly(this->coords, projpts[i])) break;
+        }
+        if (i == 8) hit = TRUE;
+      }
+      else {
+        // not 100% correct since we're testing against the 
+        // projected shape bbox, but should be good enough
+        for (i = 0; i < this->coords.getLength(); i++) {
+          if (shapebbox.intersect(this->coords[i])) { hit = TRUE; break; }
+        }
+        if (!hit) {
+          for (i = 0; i < 8; i++) {
+            if (pointinpoly(this->coords, projpts[i])) { hit = TRUE; break; }
+          }
+        }
+      }
+      break;
+    case SoExtSelection::RECTANGLE:
+      if (full) {
+        for (i = 0; i < 8; i++) {
+          if (!lassorect.intersect(projpts[i])) break;
+        }
+        if (i == 8) hit = TRUE;
+      }
+      else {
+        for (i = 0; i < 8; i++) {
+          if (lassorect.intersect(projpts[i])) { hit = TRUE; break; }
+        }
+      }
+      break;
+    default:
+      break;
+    }
+    if (hit) {
       this->master->startCBList->invokeCallbacks(this->master);
       this->master->invokeSelectionPolicy((SoPath*) action->getCurPath(), TRUE);
       this->master->finishCBList->invokeCallbacks(this->master);
@@ -714,7 +763,7 @@ SoExtSelectionP::testBBox(SoCallbackAction * action,
   return SoCallbackAction::CONTINUE;
 }
 
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoExtSelectionP::testPrimitives(SoCallbackAction * action,
                                 const SbMatrix & projmatrix,
                                 const SoShape * shape,
