@@ -195,10 +195,12 @@ _class_::createInstance(void) \
 #define SO_ENGINE_OUTPUT(_outmember_,_outtype_,_outval_) \
   do { \
     if (_outmember_.isEnabled()) \
-      for (int i = 0; i < _outmember_.getNumConnections(); i++) { \
-        _outtype_ * field = (_outtype_*) _outmember_[i]; \
+      for (int SO_ENGINE_OUTPUT_i = 0; \
+           SO_ENGINE_OUTPUT_i < _outmember_.getNumConnections(); \
+           SO_ENGINE_OUTPUT_i++) { \
+        _outtype_ * field = (_outtype_*) _outmember_[SO_ENGINE_OUTPUT_i]; \
         if (!field->isReadOnly()) \
-           ((_outtype_ *)_outmember_[i])->_outval_; \
+           ((_outtype_ *)_outmember_[SO_ENGINE_OUTPUT_i])->_outval_; \
       } \
   } while (0)
 
