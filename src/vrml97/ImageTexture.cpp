@@ -146,6 +146,22 @@ public:
 #ifdef COIN_THREADSAFE
   SbMutex glimagemutex;
 #endif // COIN_THREADSAFE
+  SbStringList searchdirs;
+
+  void clearSearchDirs(void) {
+    int n = this->searchdirs.getLength();
+    for (int i = 0; i < n; i++) {
+      delete this->searchdirs[i];
+    }
+    this->searchdirs.truncate(0);
+  }
+  void setSearchDirs(const SbStringList & sl) {
+    this->clearSearchDirs();
+    int n = sl.getLength();
+    for (int i = 0; i < n; i++) {
+      this->searchdirs.append(new SbString(*sl[i]));
+    }
+  }
 };
 
 #ifdef COIN_THREADSAFE
@@ -225,6 +241,7 @@ SoVRMLImageTexture::~SoVRMLImageTexture()
 #endif // COIN_THREADSAFE  
 
   if (PRIVATE(this)->glimage) PRIVATE(this)->glimage->unref(NULL);
+  PRIVATE(this)->clearSearchDirs();
   delete PRIVATE(this)->urlsensor;
   delete PRIVATE(this);
 }
@@ -395,6 +412,10 @@ SoVRMLImageTexture::readInstance(SoInput * in,
   SbBool ret = inherited::readInstance(in, flags);
   this->setReadStatus((int) ret);
   if (ret) {
+    // need to copy the SoInput directories, so that the texture is
+    // found again if it's thrown out of memory (can happen when it's
+    // a long time since it has been used)
+    PRIVATE(this)->setSearchDirs(SoInput::getDirectories());
     if (!this->loadUrl()) {
       SoReadError::post(in, "Could not read texture file: %s",
                         url[0].getString());
@@ -434,8 +455,10 @@ SoVRMLImageTexture::loadUrl(void)
 
   SbBool retval = TRUE;
   if (this->url.getNum() && this->url[0].getLength()) {
-    const SbStringList & sl = SoInput::getDirectories();
-
+    const SbStringList & sl = PRIVATE(this)->searchdirs;
+    if (sl.getLength() == 0) { // will be empty if the node isn't read but created in C++
+      PRIVATE(this)->setSearchDirs(SoInput::getDirectories());
+    }
     if (imagetexture_delay_fetch) {
       // instruct SbImage to call image_read_cb the first time the image
       // data is requested (typically when some shape using the texture
