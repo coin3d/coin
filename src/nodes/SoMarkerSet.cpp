@@ -1449,15 +1449,12 @@ static char marker_char_bitmaps[] =
 static void
 convert_bitmaps(void)
 {
-  int img, l, x;
-  int rpos,wpos;
-  unsigned char v1,v2;
-	
-  rpos = 0;
-  wpos = 0;
-  for (img=0;img<90;img++) {
-    for (l=8;l>=0;l--) {
-      v1 = v2 = 0;
+  int rpos = 0;
+  int wpos = 0;
+  for (int img=0;img<90;img++) {
+    for (int l=8;l>=0;l--) {
+      unsigned char v1 = 0;
+      unsigned char v2 = 0;
       if (marker_char_bitmaps[(l*9)+rpos  ] == 'x') v1 += 0x80;
       if (marker_char_bitmaps[(l*9)+rpos+1] == 'x') v1 += 0x40;
       if (marker_char_bitmaps[(l*9)+rpos+2] == 'x') v1 += 0x20;
