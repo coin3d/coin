@@ -1026,9 +1026,10 @@ Optional Features:
   --enable-optimization   allow compilers to make optimized code
                           [default=yes]
   --enable-vrml97         enable VRML97 support
-  --disable-threads       disable multithreading support
-  --disable-w32threads    disable Win32 threads, even when available
-  --enable-threadsafe     enable thread safe library
+  --enable-threads        enable platform-independent multithreading
+                          abstraction classes
+  --disable-w32threads    never use Win32 threads, even when available
+  --enable-threadsafe     enable thread safe traversals
   --disable-build         disable configuration for library build
   --enable-html           build and install Coin HTML documentation
   --enable-man            build and install Coin man pages
@@ -5018,7 +5019,7 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5021 "configure"' > conftest.$ac_ext
+  echo '#line 5022 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5554,7 +5555,7 @@ chmod -w .
 save_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:5557: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+if { (eval echo configure:5558: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -7347,7 +7348,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7350 "configure"
+#line 7351 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -7445,7 +7446,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7448 "configure"
+#line 7449 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -8845,12 +8846,14 @@ echo "$as_me: error: invalid arg \"$enableval\" for --enable-threads option" >&2
    { (exit 1); exit 1; }; } ;;
   esac
 else
-  sim_ac_enable_threads=false
+  sim_ac_enable_threads=true
 fi;
 
-sim_ac_threads_api="none"
+HAVE_THREADS=0
 
 if $sim_ac_enable_threads; then
+
+  sim_ac_threads_api="none"
 
   # Make it possible to explicitly turn off Win32 threads, to for instance
   # use POSIX threads instead under Win32.
@@ -8860,15 +8863,15 @@ if test "${enable_w32threads+set}" = set; then
   case $enableval in
     yes | true ) sim_ac_w32_enable_threads=true ;;
     no | false ) sim_ac_w32_enable_threads=false ;;
-    *) { { echo "$as_me:$LINENO: error: invalid arg \"$enableval\" for --enable-threads option" >&5
-echo "$as_me: error: invalid arg \"$enableval\" for --enable-threads option" >&2;}
+    *) { { echo "$as_me:$LINENO: error: invalid arg \"$enableval\" for --disable-w32threads option" >&5
+echo "$as_me: error: invalid arg \"$enableval\" for --disable-w32threads option" >&2;}
    { (exit 1); exit 1; }; } ;;
     esac
 else
   sim_ac_w32_enable_threads=true
 fi;
 
-  sim_ac_w32thread=false
+  sim_ac_win32_threads_available=false
 
   # Check for platform-native Win32 thread API first.
   if $sim_ac_w32_enable_threads; then
@@ -8906,8 +8909,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  sim_ac_w32thread=true
-      sim_ac_threads_api="Win32"
+  sim_ac_win32_threads_available=true
+      sim_ac_threads_api="native Win32"
 
 cat >>confdefs.h <<\_ACEOF
 #define USE_W32THREAD
@@ -8923,11 +8926,12 @@ else
 cat conftest.$ac_ext >&5
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
-    echo "$as_me:$LINENO: result: $sim_ac_w32thread" >&5
-echo "${ECHO_T}$sim_ac_w32thread" >&6
+      # (we just ignore failure, as we fall through to POSIX threads)
+    echo "$as_me:$LINENO: result: $sim_ac_win32_threads_available" >&5
+echo "${ECHO_T}$sim_ac_win32_threads_available" >&6
   fi
 
-  if ! $sim_ac_w32thread; then
+  if ! $sim_ac_win32_threads_available; then
 
 
 
@@ -9030,18 +9034,21 @@ _ACEOF
 fi
 
   fi
-fi
 
-HAVE_THREADS=1
-if test "$sim_ac_threads_api" = "none"; then
-  HAVE_THREADS=0
-  sim_ac_threads_api="none  (enable with --enable-threads)"
-else
+  if test "$sim_ac_threads_api" = "none"; then
+    { { echo "$as_me:$LINENO: error: Could not find any usable native thread-handling API/library/devkit!  (If you do not want to enable the platform-independent thread-handling classes in Coin, specify the \"--disable-threads\" option to the configure script.)" >&5
+echo "$as_me: error: Could not find any usable native thread-handling API/library/devkit!  (If you do not want to enable the platform-independent thread-handling classes in Coin, specify the \"--disable-threads\" option to the configure script.)" >&2;}
+   { (exit 1); exit 1; }; }
+  fi
+
+  HAVE_THREADS=1
 
 cat >>confdefs.h <<\_ACEOF
 #define HAVE_THREADS
 _ACEOF
 
+else
+  sim_ac_threads_api="Disabled  (enable with --enable-threads)"
 fi
 
 
@@ -9066,38 +9073,37 @@ fi
 # Thread safe library
 
 sim_ac_enable_threadsafe=false
-
-if test "$sim_ac_threads_api" != "none"; then
-  # Check whether --enable-threadsafe or --disable-threadsafe was given.
+# Check whether --enable-threadsafe or --disable-threadsafe was given.
 if test "${enable_threadsafe+set}" = set; then
   enableval="$enable_threadsafe"
-
-    case $enableval in
-      yes) sim_ac_enable_threadsafe=true ;;
-      *) ;;
-    esac
+  case $enableval in
+     yes | true ) sim_ac_enable_threadsafe=true ;;
+     *) ;;
+   esac
 fi;
-fi
 
-sim_ac_coin_threadsafe=false
 if $sim_ac_enable_threadsafe; then
-  sim_ac_coin_threadsafe=true
+  if test "$HAVE_THREADS" = "0"; then
+    { { echo "$as_me:$LINENO: error: You can not enable thread safe action traversals while at the same time disabling the portable thread-handling abstractions. You must use \"--enable-threadsafe\" with \"--enable-threads\"." >&5
+echo "$as_me: error: You can not enable thread safe action traversals while at the same time disabling the portable thread-handling abstractions. You must use \"--enable-threadsafe\" with \"--enable-threads\"." >&2;}
+   { (exit 1); exit 1; }; }
+  fi
 
 cat >>confdefs.h <<\_ACEOF
 #define COIN_THREADSAFE 1
 _ACEOF
 
   if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="Thread safe:Yes  (in development)"
+  sim_ac_configuration_settings="Thread safe traversals:Yes  (in development)"
 else
-  sim_ac_configuration_settings="$sim_ac_configuration_settings|Thread safe:Yes  (in development)"
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|Thread safe traversals:Yes  (in development)"
 fi
 
 else
   if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="Thread safe:No  (enable with --enable-threadsafe)"
+  sim_ac_configuration_settings="Thread safe traversals:No  (enable with --enable-threadsafe)"
 else
-  sim_ac_configuration_settings="$sim_ac_configuration_settings|Thread safe:No  (enable with --enable-threadsafe)"
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|Thread safe traversals:No  (enable with --enable-threadsafe)"
 fi
 
 fi
@@ -18256,113 +18262,30 @@ echo "${ECHO_T}#include <$sim_ac_gl_header>" >&6
       echo "$as_me:$LINENO: result: $sim_ac_gl_cppflags, #include <$sim_ac_gl_header>" >&5
 echo "${ECHO_T}$sim_ac_gl_cppflags, #include <$sim_ac_gl_header>" >&6
     fi
-
     CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
-
   else
     echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
-
     { echo "$as_me:$LINENO: WARNING: could not find gl.h" >&5
 echo "$as_me: WARNING: could not find gl.h" >&2;}
-
   fi
 else
   echo "$as_me:$LINENO: result: disabled" >&5
 echo "${ECHO_T}disabled" >&6
-
-    { echo "$as_me:$LINENO: WARNING: could not find gl.h" >&5
+  { echo "$as_me:$LINENO: WARNING: could not find gl.h" >&5
 echo "$as_me: WARNING: could not find gl.h" >&2;}
-
 fi
 
 
-  echo "$as_me:$LINENO: checking whether OpenGL library is available" >&5
-echo $ECHO_N "checking whether OpenGL library is available... $ECHO_C" >&6
-if test "${sim_cv_lib_gl+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  sim_cv_lib_gl=UNRESOLVED
+  sim_ac_glchk_hit=false
+  for sim_ac_tmp_outerloop in barebones withpthreads; do
+    if ! $sim_ac_glchk_hit; then
 
-    # Mac OS X uses nada, which is why "" was set first
-    for sim_ac_ogl_libcheck in "" $sim_ac_ogl_first $sim_ac_ogl_second; do
-      if test "x$sim_cv_lib_gl" = "xUNRESOLVED"; then
-        LIBS="$sim_ac_ogl_libcheck $sim_ac_save_libs"
-        cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-
-#ifdef HAVE_WINDOWS_H
-#include <windows.h>
-#endif /* HAVE_WINDOWS_H */
-#ifdef HAVE_GL_GL_H
-#include <GL/gl.h>
-#else
-#ifdef HAVE_OPENGL_GL_H
-/* Mac OS X */
-#include <OpenGL/gl.h>
-#endif
-#endif
-
-#ifdef F77_DUMMY_MAIN
-#  ifdef __cplusplus
-     extern "C"
-#  endif
-   int F77_DUMMY_MAIN() { return 1; }
-#endif
-int
-main ()
-{
-
-glPointSize(1.0f);
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-
-          if test x"$sim_ac_ogl_libcheck" = x""; then
-            sim_cv_lib_gl="$sim_ac_ogl_ldflags"
-          else
-            sim_cv_lib_gl="$sim_ac_ogl_libcheck"
-          fi
-else
-  echo "$as_me: failed program was:" >&5
-cat conftest.$ac_ext >&5
-fi
-rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
-      fi
-    done
-
-fi
-echo "$as_me:$LINENO: result: $sim_cv_lib_gl" >&5
-echo "${ECHO_T}$sim_cv_lib_gl" >&6
-
-  case $sim_cv_lib_gl in
-  -Wl,-framework,OpenGL)
-    sim_ac_ogl_libs=
-    sim_ac_ogl_ldflags="$sim_cv_lib_gl"
-    ;;
-  -l*)
-    sim_ac_ogl_libs="$sim_cv_lib_gl"
-    ;;
-  *)
-    { echo "$as_me:$LINENO: WARNING: couldn't compile or link with OpenGL library -- trying with pthread library in place..." >&5
+      sim_ac_oglchk_pthreadslib=""
+      if test "$sim_ac_tmp_outerloop" = "withpthreads"; then
+        { echo "$as_me:$LINENO: WARNING: couldn't compile or link with OpenGL library -- trying with pthread library in place..." >&5
 echo "$as_me: WARNING: couldn't compile or link with OpenGL library -- trying with pthread library in place..." >&2;}
-    LIBS="$sim_ac_save_libs"
-
+        LIBS="$sim_ac_save_libs"
 
 
 
@@ -18441,40 +18364,41 @@ echo "${ECHO_T}$sim_cv_lib_pthread_avail" >&6
   if $sim_cv_lib_pthread_avail; then
     sim_ac_pthread_avail=yes
 
-      sim_ac_ogl_cppflags="$sim_ac_ogl_cppflags $sim_ac_pthread_cppflags"
-      sim_ac_ogl_ldflags="$sim_ac_ogl_ldflags $sim_ac_pthread_ldflags"
+          sim_ac_ogl_cppflags="$sim_ac_ogl_cppflags $sim_ac_pthread_cppflags"
+          sim_ac_ogl_ldflags="$sim_ac_ogl_ldflags $sim_ac_pthread_ldflags"
+          sim_ac_oglchk_pthreadslib="$sim_ac_pthread_libs"
+
   else
     CPPFLAGS=$sim_ac_save_cppflags
     LDFLAGS=$sim_ac_save_ldflags
     LIBS=$sim_ac_save_libs
     { echo "$as_me:$LINENO: WARNING: couldn't compile or link with pthread library" >&5
 echo "$as_me: WARNING: couldn't compile or link with pthread library" >&2;}
+
   fi
 fi
 
+      fi
 
-    if test "x$sim_ac_pthread_avail" = "xyes"; then
-      echo "$as_me:$LINENO: checking whether OpenGL library can be linked with pthread library" >&5
-echo $ECHO_N "checking whether OpenGL library can be linked with pthread library... $ECHO_C" >&6
-if test "${sim_cv_lib_gl_pthread+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  sim_cv_lib_gl_pthread=UNRESOLVED
-
-        for sim_ac_ogl_libcheck in $sim_ac_ogl_first $sim_ac_ogl_second; do
-          if test "x$sim_cv_lib_gl_pthread" = "xUNRESOLVED"; then
-            LIBS="$sim_ac_ogl_libcheck $sim_ac_pthread_libs $sim_ac_save_libs"
-            cat >conftest.$ac_ext <<_ACEOF
+      echo "$as_me:$LINENO: checking for OpenGL library dev-kit" >&5
+echo $ECHO_N "checking for OpenGL library dev-kit... $ECHO_C" >&6
+      # Mac OS X uses nada (only LDFLAGS), which is why "" was set first
+      for sim_ac_ogl_libcheck in "" $sim_ac_ogl_first $sim_ac_ogl_second; do
+        if ! $sim_ac_glchk_hit; then
+          LIBS="$sim_ac_ogl_libcheck $sim_ac_oglchk_pthreadslib $sim_ac_save_libs"
+          cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 #include "confdefs.h"
-
-#ifdef HAVE_GL_GL_H
-#include <GL/gl.h>
-#else
-#ifdef HAVE_OPENGL_GL_H
-#include <OpenGL/gl.h>
-#endif
-#endif
+#ifdef HAVE_WINDOWS_H
+             #include <windows.h>
+             #endif
+             #ifdef HAVE_GL_GL_H
+             #include <GL/gl.h>
+             #endif
+             #ifdef HAVE_OPENGL_GL_H
+             /* Mac OS X */
+             #include <OpenGL/gl.h>
+             #endif
 
 #ifdef F77_DUMMY_MAIN
 #  ifdef __cplusplus
@@ -18485,9 +18409,7 @@ else
 int
 main ()
 {
-
 glPointSize(1.0f);
-
   ;
   return 0;
 }
@@ -18504,31 +18426,30 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  sim_cv_lib_gl_pthread="$sim_ac_ogl_libcheck"
+
+             sim_ac_glchk_hit=true
+             sim_ac_ogl_libs="$sim_ac_ogl_libcheck $sim_ac_oglchk_pthreadslib"
+
+
 else
   echo "$as_me: failed program was:" >&5
 cat conftest.$ac_ext >&5
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
-          fi
-        done
-
-fi
-echo "$as_me:$LINENO: result: $sim_cv_lib_gl_pthread" >&5
-echo "${ECHO_T}$sim_cv_lib_gl_pthread" >&6
-
-      if test "x$sim_cv_lib_gl_pthread" != "xUNRESOLVED"; then
-        sim_ac_ogl_libs="$sim_cv_lib_gl_pthread $sim_ac_pthread_libs"
+        fi
+      done
+      if $sim_ac_glchk_hit; then
+        echo "$as_me:$LINENO: result: $sim_ac_ogl_cppflags $sim_ac_ogl_ldflags $sim_ac_ogl_libs" >&5
+echo "${ECHO_T}$sim_ac_ogl_cppflags $sim_ac_ogl_ldflags $sim_ac_ogl_libs" >&6
+      else
+        echo "$as_me:$LINENO: result: unresolved" >&5
+echo "${ECHO_T}unresolved" >&6
       fi
     fi
-    ;;
-  esac
+  done
 
-
-  # MacOS will have empty sim_ac_ogl_libs, so don't check if it is empty...
-  if test x"$sim_cv_gl_libs" != x"UNRESOLVED"; then
+  if $sim_ac_glchk_hit; then
     LIBS="$sim_ac_ogl_libs $sim_ac_save_libs"
-
 
 
 cat >>confdefs.h <<\_ACEOF
@@ -18880,25 +18801,17 @@ _ACEOF
 else
 
         if test x${sim_ac_configuration_warnings+set} != xset; then
-  sim_ac_configuration_warnings="
-Could not find or compile or link against any usable window-system
-OpenGL binding, neither GLX (OpenGL on X11), nor WGL (OpenGL on Win32)
-nor AGL (OpenGL on Mac OS). The SoOffscreenRenderer functionality
-will be disabled. Note: this might be a configure bug. Check the file
-config.log."
+  sim_ac_configuration_warnings="Could not find or compile or link against any usable window-system OpenGL binding, neither GLX (OpenGL on X11), nor WGL (OpenGL on Win32) nor AGL (OpenGL on Mac OS). The SoOffscreenRenderer functionality will be disabled. Note: this might be a configure bug. Check the file config.log."
 else
-  sim_ac_configuration_warnings="$sim_ac_configuration_warnings|
-Could not find or compile or link against any usable window-system
-OpenGL binding, neither GLX (OpenGL on X11), nor WGL (OpenGL on Win32)
-nor AGL (OpenGL on Mac OS). The SoOffscreenRenderer functionality
-will be disabled. Note: this might be a configure bug. Check the file
-config.log."
+  sim_ac_configuration_warnings="$sim_ac_configuration_warnings|Could not find or compile or link against any usable window-system OpenGL binding, neither GLX (OpenGL on X11), nor WGL (OpenGL on Win32) nor AGL (OpenGL on Mac OS). The SoOffscreenRenderer functionality will be disabled. Note: this might be a configure bug. Check the file config.log."
 fi
 
 
 fi
 
+
 fi
+
 
 fi
 
@@ -19557,13 +19470,6 @@ fi
     LIBS="$sim_ac_save_libs"
     # OpenGL-linkage ok, end of block
    # Couldn't link with OpenGL:
-  # Don't stop the configure process if we seem to be configuring to build
-  # the documentation (I don't care to install an OpenGL development system
-  # on our webserver). 20000703 mortene.
-  if test x"$want_html" = xno -a x"$want_man" = xno; then
-    # FIXME: should be able to handle systems where OpenGL is not available,
-    # as it would be handy for making e.g. import/export-only versions of the
-    # library. 20000123 mortene.
 
 echo >&2 ""
 
@@ -19591,35 +19497,10 @@ echo >&2 ""
 echo "$as_me: error: aborting" >&2;}
    { (exit 1); exit 1; }; }
 
-  else
+    # FIXME: should perhaps be able to handle systems where OpenGL is not
+    # available,  as it would be handy for making e.g. import/export-only
+    # versions of the library. 20000123 mortene.
 
-echo >&2 ""
-
-
-: ${sim_ac_message_file=$ac_aux_dir/m4/errors.txt}
-if test -f $sim_ac_message_file; then
-  sim_ac_message="`sed -n -e '/^!no-opengl$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
-  if test x"$sim_ac_message" = x""; then
-    { { echo "$as_me:$LINENO: error: no message named 'no-opengl' in '$sim_ac_message_file' - notify the $PACKAGE_NAME maintainer(s)" >&5
-echo "$as_me: error: no message named 'no-opengl' in '$sim_ac_message_file' - notify the $PACKAGE_NAME maintainer(s)" >&2;}
-   { (exit 1); exit 1; }; }
-  else
-    eval "echo >&2 \"$sim_ac_message\""
-  fi
-else
-  { { echo "$as_me:$LINENO: error: file '$sim_ac_message_file' not found - notify the $PACKAGE_NAME maintainer(s)" >&5
-echo "$as_me: error: file '$sim_ac_message_file' not found - notify the $PACKAGE_NAME maintainer(s)" >&2;}
-   { (exit 1); exit 1; }; }
-fi
-
-
-
-echo >&2 ""
-{ { echo "$as_me:$LINENO: error: aborting" >&5
-echo "$as_me: error: aborting" >&2;}
-   { (exit 1); exit 1; }; }
-
-  fi
 
   fi
 fi

@@ -34,10 +34,10 @@
 /* define this to the libCoin minor version number */
 #undef COIN_MINOR_VERSION
 
-/* System dependant thread ID type */
+/* System dependent thread ID type */
 #undef COIN_THREADID_TYPE
 
-/* define to compile thread safe library */
+/* define to compile with thread safe action traversal for the library */
 #undef COIN_THREADSAFE
 
 /* define this to a type of the indicated bitwidth */
@@ -190,7 +190,7 @@
 /* Define to 1 if you have the <sys/unistd.h> header file. */
 #undef HAVE_SYS_UNISTD_H
 
-/* *EXPERIMENTAL* to use the threads extension */
+/* to use the platform-independent thread-handling abstractions */
 #undef HAVE_THREADS
 
 /* Define to use timeGetTime() */
