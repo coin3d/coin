@@ -446,10 +446,12 @@ SoText3::GLRender(SoGLRenderAction * action)
     const SoElement * outline = state->getConstElement(stackidx);
 
     if (outline && SoTextOutlineEnabledElement::get(state)) {
+#if COIN_DEBUG
       SoDebugError::postWarning("SoText3::GLRender",
                                 "Support for rendering SoText3 nodes in outline "
                                 "(i.e. heeding the SoTextOutlineEnabledElement) "
                                 "not yet implemented.");
+#endif // COIN_DEBUG
       warned = TRUE;
     }
   }
