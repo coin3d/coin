@@ -37,7 +37,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoGLModelMatrixElement.h>
 
 
 /*!
@@ -101,9 +101,9 @@ SoResetTransform::initClass(void)
 void
 SoResetTransform::GLRender(SoGLRenderAction * action)
 {
-  if (this->whatToReset.getValue() & SoResetTransform::TRANSFORM) {
-    SoModelMatrixElement::set(action->getState(), this,
-                              SbMatrix::identity());
+  if (!this->whatToReset.isIgnored() &&
+      (this->whatToReset.getValue() & SoResetTransform::TRANSFORM)) {
+    SoGLModelMatrixElement::makeIdentity(action->getState(), this);
   }
 }
 
@@ -111,23 +111,23 @@ SoResetTransform::GLRender(SoGLRenderAction * action)
 void
 SoResetTransform::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  if (this->whatToReset.getValue() & SoResetTransform::BBOX) {
+  SoResetTransform::doAction(action);
+  
+  if (!this->whatToReset.isIgnored() &&
+      (this->whatToReset.getValue() & SoResetTransform::BBOX)) {
     action->getXfBoundingBox().makeEmpty();
     action->resetCenter();
   }
-
-  if (this->whatToReset.getValue() & SoResetTransform::TRANSFORM)
-    SoModelMatrixElement::set(action->getState(), this,
-                              SbMatrix::identity());
 }
 
 // Doc from superclass.
 void
 SoResetTransform::doAction(SoAction *action)
 {
-  if (this->whatToReset.getValue() & SoResetTransform::TRANSFORM)
-    SoModelMatrixElement::set(action->getState(), this,
-                              SbMatrix::identity());
+  if (!this->whatToReset.isIgnored() &&
+      (this->whatToReset.getValue() & SoResetTransform::TRANSFORM)) {
+    SoModelMatrixElement::makeIdentity(action->getState(), this);
+  }
 }
 
 // Doc from superclass.
@@ -141,7 +141,8 @@ SoResetTransform::callback(SoCallbackAction *action)
 void
 SoResetTransform::getMatrix(SoGetMatrixAction *action)
 {
-  if (this->whatToReset.getValue() & SoResetTransform::TRANSFORM) {
+  if (!this->whatToReset.isIgnored() &&
+      (this->whatToReset.getValue() & SoResetTransform::TRANSFORM)) {
     action->getMatrix().makeIdentity();
     action->getInverse().makeIdentity();
   }
