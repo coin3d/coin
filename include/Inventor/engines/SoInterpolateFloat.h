@@ -20,7 +20,7 @@
 #ifndef COIN_SOINTERPOLATEFLOAT_H
 #define COIN_SOINTERPOLATEFLOAT_H
 
-#include <Inventor/engines/SoInterpolateAbs.h>
+#include <Inventor/engines/SoInterpolate.h>
 #include <Inventor/fields/SoMFFloat.h>
 
 class SoInterpolateFloat : public SoInterpolate {

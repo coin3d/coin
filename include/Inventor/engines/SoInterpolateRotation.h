@@ -20,7 +20,7 @@
 #ifndef COIN_SOINTERPOLATEROTATION_H
 #define COIN_SOINTERPOLATEROTATION_H
 
-#include <Inventor/engines/SoInterpolateAbs.h>
+#include <Inventor/engines/SoInterpolate.h>
 #include <Inventor/fields/SoMFRotation.h>
 
 class SoInterpolateRotation : public SoInterpolate {

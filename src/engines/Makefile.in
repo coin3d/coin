@@ -120,7 +120,7 @@ ALLSOURCES = \
 	SoEngineOutput.cpp SoEngineOutput.h \
 	SoFieldConverter.cpp SoFieldConverter.h \
 	SoGate.cpp SoGate.h \
-	SoInterpolateAbs.cpp SoInterpolateAbs.h \
+	SoInterpolate.cpp SoInterpolate.h \
 	SoInterpolateFloat.cpp SoInterpolateFloat.h \
 	SoInterpolateRotation.cpp SoInterpolateRotation.h \
 	SoInterpolateVec2f.cpp SoInterpolateVec2f.h \
@@ -163,7 +163,6 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoFieldConverter.h \
 	$(top_srcdir)/include/Inventor/engines/SoGate.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolate.h \
-	$(top_srcdir)/include/Inventor/engines/SoInterpolateAbs.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolateFloat.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolateRotation.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolateVec2f.h \
@@ -218,7 +217,7 @@ SoComposeVec2f.lo SoComposeVec3f.lo SoComposeVec4f.lo \
 SoComputeBoundingBox.lo SoConcatenate.lo SoConvertAll.lo SoCounter.lo \
 SoDecomposeMatrix.lo SoDecomposeRotation.lo SoDecomposeVec2f.lo \
 SoDecomposeVec3f.lo SoDecomposeVec4f.lo SoElapsedTime.lo SoEngine.lo \
-SoEngineOutput.lo SoFieldConverter.lo SoGate.lo SoInterpolateAbs.lo \
+SoEngineOutput.lo SoFieldConverter.lo SoGate.lo SoInterpolate.lo \
 SoInterpolateFloat.lo SoInterpolateRotation.lo SoInterpolateVec2f.lo \
 SoInterpolateVec3f.lo SoInterpolateVec4f.lo SoOnOff.lo SoOneShot.lo \
 SoOutputData.lo SoSelectOne.lo SoTimeCounter.lo SoTransformVec3f.lo \
@@ -232,7 +231,7 @@ SoComposeVec2f.lo SoComposeVec3f.lo SoComposeVec4f.lo \
 SoComputeBoundingBox.lo SoConcatenate.lo SoConvertAll.lo SoCounter.lo \
 SoDecomposeMatrix.lo SoDecomposeRotation.lo SoDecomposeVec2f.lo \
 SoDecomposeVec3f.lo SoDecomposeVec4f.lo SoElapsedTime.lo SoEngine.lo \
-SoEngineOutput.lo SoFieldConverter.lo SoGate.lo SoInterpolateAbs.lo \
+SoEngineOutput.lo SoFieldConverter.lo SoGate.lo SoInterpolate.lo \
 SoInterpolateFloat.lo SoInterpolateRotation.lo SoInterpolateVec2f.lo \
 SoInterpolateVec3f.lo SoInterpolateVec4f.lo SoOnOff.lo SoOneShot.lo \
 SoOutputData.lo SoSelectOne.lo SoTimeCounter.lo SoTransformVec3f.lo \
@@ -270,7 +269,7 @@ $(DEPDIR)/SoDecomposeRotation.Plo $(DEPDIR)/SoDecomposeVec2f.Plo \
 $(DEPDIR)/SoDecomposeVec3f.Plo $(DEPDIR)/SoDecomposeVec4f.Plo \
 $(DEPDIR)/SoElapsedTime.Plo $(DEPDIR)/SoEngine.Plo \
 $(DEPDIR)/SoEngineOutput.Plo $(DEPDIR)/SoFieldConverter.Plo \
-$(DEPDIR)/SoGate.Plo $(DEPDIR)/SoInterpolateAbs.Plo \
+$(DEPDIR)/SoGate.Plo $(DEPDIR)/SoInterpolate.Plo \
 $(DEPDIR)/SoInterpolateFloat.Plo $(DEPDIR)/SoInterpolateRotation.Plo \
 $(DEPDIR)/SoInterpolateVec2f.Plo $(DEPDIR)/SoInterpolateVec3f.Plo \
 $(DEPDIR)/SoInterpolateVec4f.Plo $(DEPDIR)/SoOnOff.Plo \
@@ -431,7 +430,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoEngineOutput.Plo
 @AMDEP@include $(DEPDIR)/SoFieldConverter.Plo
 @AMDEP@include $(DEPDIR)/SoGate.Plo
-@AMDEP@include $(DEPDIR)/SoInterpolateAbs.Plo
+@AMDEP@include $(DEPDIR)/SoInterpolate.Plo
 @AMDEP@include $(DEPDIR)/SoInterpolateFloat.Plo
 @AMDEP@include $(DEPDIR)/SoInterpolateRotation.Plo
 @AMDEP@include $(DEPDIR)/SoInterpolateVec2f.Plo

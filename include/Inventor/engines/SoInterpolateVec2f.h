@@ -20,7 +20,7 @@
 #ifndef COIN_SOINTERPOLATEVEC2F_H
 #define COIN_SOINTERPOLATEVEC2F_H
 
-#include <Inventor/engines/SoInterpolateAbs.h>
+#include <Inventor/engines/SoInterpolate.h>
 #include <Inventor/fields/SoMFVec2f.h>
 
 class SoInterpolateVec2f : public SoInterpolate {

@@ -39,7 +39,7 @@
 #include <Inventor/engines/SoElapsedTime.h>
 #include <Inventor/engines/SoFieldConverter.h>
 #include <Inventor/engines/SoGate.h>
-#include <Inventor/engines/SoInterpolateAbs.h>
+#include <Inventor/engines/SoInterpolate.h>
 #include <Inventor/engines/SoInterpolateFloat.h>
 #include <Inventor/engines/SoInterpolateRotation.h>
 #include <Inventor/engines/SoInterpolateVec2f.h>

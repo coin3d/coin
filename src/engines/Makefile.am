@@ -24,7 +24,7 @@ ALLSOURCES = \
 	SoEngineOutput.cpp SoEngineOutput.h \
 	SoFieldConverter.cpp SoFieldConverter.h \
 	SoGate.cpp SoGate.h \
-	SoInterpolateAbs.cpp SoInterpolateAbs.h \
+	SoInterpolate.cpp SoInterpolate.h \
 	SoInterpolateFloat.cpp SoInterpolateFloat.h \
 	SoInterpolateRotation.cpp SoInterpolateRotation.h \
 	SoInterpolateVec2f.cpp SoInterpolateVec2f.h \
@@ -67,7 +67,6 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoFieldConverter.h \
 	$(top_srcdir)/include/Inventor/engines/SoGate.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolate.h \
-	$(top_srcdir)/include/Inventor/engines/SoInterpolateAbs.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolateFloat.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolateRotation.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolateVec2f.h \
