@@ -1,0 +1,30 @@
+Here is some information about common problems when building on Mac OS X /
+Darwin platforms:
+
+
+ 1 config.status reports errors in sed expressions towards the end of the
+   configure script run.
+
+   | config.status: creating Makefile
+   | sed: 23: /tmp/cs21660-29327/subs-2.sed: unescaped newline inside substitute pattern
+
+   This problem comes with sourcedir builds, but not when building in a
+   separate builddir.  Follow the cookbook procedure outlined in INSTALL
+   to work around this problem.  The problem is an Autoconf bug, and is
+   believed to be fixed now.
+
+
+The above is a complete list of the problems we are aware of on Mac OS X
+platforms when trying to configure and build Coin. If you bump into any
+other problems, please let us know.
+
+Please also be aware that there has so far not been done any work
+towards implementing a "SoMac" library with bindings between the
+native Mac GUI API and the Coin library.  For using the Coin library
+on Mac platforms, your best option so far is to control your own
+OpenGL-canvas, like done in the glutiv.cpp example found on the
+<URL:http://www.coin3d.org> websites.
+
+--
+larsa@sim.no
+mortene@sim.no
