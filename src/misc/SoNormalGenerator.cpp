@@ -178,8 +178,13 @@ calc_normal_vec(const SbVec3f *facenormals, const int facenum,
   \a creaseAngle to find which edges should be flat-shaded
   and which should be smooth-shaded.
 
-  If normals are generated for triangle strips, the
-  \a striplens and \a numstrips must be supplied.
+  If normals are generated for triangle strips, the \a striplens and
+  \a numstrips must be supplied. See src/nodes/SoTriangleStripSet.cpp
+  (generateDefaultNormals()) for an example on how you send triangle
+  strip information to this generator. It's not trivial, since you
+  have to know how OpenGL/Coin generate triangles from triangle
+  strips.
+
 */
 void
 SoNormalGenerator::generate(const float creaseAngle,
