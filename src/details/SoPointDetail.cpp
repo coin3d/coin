@@ -20,6 +20,7 @@
 /*!
   \class SoPointDetail SoPointDetail.h Inventor/details/SoPointDetail.h
   \brief The SoPointDetail class is yet to be documented.
+  \ingroup details
 
   FIXME: write doc.
 */
@@ -27,25 +28,24 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/SbName.h>
 
-//$ BEGIN TEMPLATE DetailSource( SoPointDetail )
+//$ BEGIN TEMPLATE DetailSource(SoPointDetail)
 
 SoType SoPointDetail::classTypeId;
 
-
 SoType 
-SoPointDetail::getTypeId() const
+SoPointDetail::getTypeId(void) const
 {
   return SoPointDetail::classTypeId;
 }
 
 SoType 
-SoPointDetail::getClassTypeId()
+SoPointDetail::getClassTypeId(void)
 {
   return SoPointDetail::classTypeId;
 }
 
 void 
-SoPointDetail::initClass()
+SoPointDetail::initClass(void)
 {
   SoPointDetail::classTypeId = 
     SoType::createType(inherited::getClassTypeId(),

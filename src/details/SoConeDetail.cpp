@@ -20,6 +20,7 @@
 /*!
   \class SoConeDetail SoConeDetail.h Inventor/details/SoConeDetail.h
   \brief The SoConeDetail class is yet to be documented.
+  \ingroup details
 
   FIXME: write doc.
 */
@@ -27,25 +28,24 @@
 #include <Inventor/details/SoConeDetail.h>
 #include <Inventor/SbName.h>
 
-//$ BEGIN TEMPLATE DetailSource( SoConeDetail )
+//$ BEGIN TEMPLATE DetailSource(SoConeDetail)
 
 SoType SoConeDetail::classTypeId;
 
-
 SoType 
-SoConeDetail::getTypeId() const
+SoConeDetail::getTypeId(void) const
 {
   return SoConeDetail::classTypeId;
 }
 
 SoType 
-SoConeDetail::getClassTypeId()
+SoConeDetail::getClassTypeId(void)
 {
   return SoConeDetail::classTypeId;
 }
 
 void 
-SoConeDetail::initClass()
+SoConeDetail::initClass(void)
 {
   SoConeDetail::classTypeId = 
     SoType::createType(inherited::getClassTypeId(),

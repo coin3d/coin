@@ -29,6 +29,8 @@ ALLSOURCES = \
 	SoFaceDetail.h \
 	SoLineDetail.cpp \
 	SoLineDetail.h \
+	SoNodeKitDetail.cpp \
+	SoNodeKitDetail.h \
 	SoPointDetail.cpp \
 	SoPointDetail.h \
 	SoTextDetail.cpp \
@@ -50,6 +52,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/details/SoCylinderDetail.h \
 	$(top_srcdir)/include/Inventor/details/SoFaceDetail.h \
 	$(top_srcdir)/include/Inventor/details/SoLineDetail.h \
+	$(top_srcdir)/include/Inventor/details/SoNodeKitDetail.h \
 	$(top_srcdir)/include/Inventor/details/SoPointDetail.h \
 	$(top_srcdir)/include/Inventor/details/SoTextDetail.h
 

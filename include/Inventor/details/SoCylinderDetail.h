@@ -24,11 +24,11 @@
 
 class SoCylinderDetail : public SoDetail {
   typedef SoDetail inherited;
-//$ BEGIN TEMPLATE DetailHeader( SoCylinderDetail )
+//$ BEGIN TEMPLATE DetailHeader(SoCylinderDetail)
 public:
-  virtual SoType getTypeId() const;
-  static SoType getClassTypeId();
-  static void initClass();
+  virtual SoType getTypeId(void) const;
+  static SoType getClassTypeId(void);
+  static void initClass(void);
 private:
   static SoType classTypeId;
 //$ END TEMPLATE DetailHeader

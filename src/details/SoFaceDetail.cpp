@@ -20,6 +20,7 @@
 /*!
   \class SoFaceDetail SoFaceDetail.h Inventor/details/SoFaceDetail.h
   \brief The SoFaceDetail class is yet to be documented.
+  \ingroup details
 
   FIXME: write doc.
 */
@@ -29,25 +30,24 @@
 #include <assert.h>
 #include <stddef.h>
 
-//$ BEGIN TEMPLATE DetailSource( SoFaceDetail )
+//$ BEGIN TEMPLATE DetailSource(SoFaceDetail)
 
 SoType SoFaceDetail::classTypeId;
 
-
 SoType 
-SoFaceDetail::getTypeId() const
+SoFaceDetail::getTypeId(void) const
 {
   return SoFaceDetail::classTypeId;
 }
 
 SoType 
-SoFaceDetail::getClassTypeId()
+SoFaceDetail::getClassTypeId(void)
 {
   return SoFaceDetail::classTypeId;
 }
 
 void 
-SoFaceDetail::initClass()
+SoFaceDetail::initClass(void)
 {
   SoFaceDetail::classTypeId = 
     SoType::createType(inherited::getClassTypeId(),

@@ -20,6 +20,7 @@
 /*!
   \class SoCubeDetail SoCubeDetail.h Inventor/details/SoCubeDetail.h
   \brief The SoCubeDetail class is yet to be documented.
+  \ingroup details
 
   FIXME: write doc.
 */
@@ -27,25 +28,24 @@
 #include <Inventor/details/SoCubeDetail.h>
 #include <Inventor/SbName.h>
 
-//$ BEGIN TEMPLATE DetailSource( SoCubeDetail )
+//$ BEGIN TEMPLATE DetailSource(SoCubeDetail)
 
 SoType SoCubeDetail::classTypeId;
 
-
 SoType 
-SoCubeDetail::getTypeId() const
+SoCubeDetail::getTypeId(void) const
 {
   return SoCubeDetail::classTypeId;
 }
 
 SoType 
-SoCubeDetail::getClassTypeId()
+SoCubeDetail::getClassTypeId(void)
 {
   return SoCubeDetail::classTypeId;
 }
 
 void 
-SoCubeDetail::initClass()
+SoCubeDetail::initClass(void)
 {
   SoCubeDetail::classTypeId = 
     SoType::createType(inherited::getClassTypeId(),

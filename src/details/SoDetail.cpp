@@ -20,6 +20,7 @@
 /*!
   \class SoDetail SoDetail.h Inventor/classes/SoDetail.h
   \brief The SoDetail class is yet to be documented.
+  \ingroup details
 
   FIXME: write doc.
 */
@@ -67,7 +68,7 @@ SoDetail::initClass()
 {
   SoDetail::classTypeId = SoType::createType(SoType::badType(),
 					     SbName("SoDetail"));
-  initClasses();
+  SoDetail::initClasses();
 }
 
 void 
@@ -78,6 +79,7 @@ SoDetail::initClasses()
   SoCylinderDetail::initClass();
   SoFaceDetail::initClass();
   SoLineDetail::initClass();
+  SoNodeKitDetail::initClass();
   SoPointDetail::initClass();
   SoTextDetail::initClass();
 }  

@@ -20,6 +20,7 @@
 /*!
   \class SoLineDetail SoLineDetail.h Inventor/details/SoLineDetail.h
   \brief The SoLineDetail class is yet to be documented.
+  \ingroup details
 
   FIXME: write doc.
 */
@@ -27,25 +28,24 @@
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/SbName.h>
 
-//$ BEGIN TEMPLATE DetailSource( SoLineDetail )
+//$ BEGIN TEMPLATE DetailSource(SoLineDetail)
 
 SoType SoLineDetail::classTypeId;
 
-
 SoType 
-SoLineDetail::getTypeId() const
+SoLineDetail::getTypeId(void) const
 {
   return SoLineDetail::classTypeId;
 }
 
 SoType 
-SoLineDetail::getClassTypeId()
+SoLineDetail::getClassTypeId(void)
 {
   return SoLineDetail::classTypeId;
 }
 
 void 
-SoLineDetail::initClass()
+SoLineDetail::initClass(void)
 {
   SoLineDetail::classTypeId = 
     SoType::createType(inherited::getClassTypeId(),

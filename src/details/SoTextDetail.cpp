@@ -20,6 +20,7 @@
 /*!
   \class SoTextDetail SoTextDetail.h Inventor/details/SoTextDetail.h
   \brief The SoTextDetail class is yet to be documented.
+  \ingroup details
 
   FIXME: write doc.
 */
@@ -27,25 +28,24 @@
 #include <Inventor/details/SoTextDetail.h>
 #include <Inventor/SbName.h>
 
-//$ BEGIN TEMPLATE DetailSource( SoTextDetail )
+//$ BEGIN TEMPLATE DetailSource(SoTextDetail)
 
 SoType SoTextDetail::classTypeId;
 
-
 SoType 
-SoTextDetail::getTypeId() const
+SoTextDetail::getTypeId(void) const
 {
   return SoTextDetail::classTypeId;
 }
 
 SoType 
-SoTextDetail::getClassTypeId()
+SoTextDetail::getClassTypeId(void)
 {
   return SoTextDetail::classTypeId;
 }
 
 void 
-SoTextDetail::initClass()
+SoTextDetail::initClass(void)
 {
   SoTextDetail::classTypeId = 
     SoType::createType(inherited::getClassTypeId(),

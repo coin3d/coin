@@ -24,11 +24,11 @@
 
 class SoPointDetail : public SoDetail {
   typedef SoDetail inherited;
-//$ BEGIN TEMPLATE DetailHeader( SoPointDetail )
+//$ BEGIN TEMPLATE DetailHeader(SoPointDetail)
 public:
-  virtual SoType getTypeId() const;
-  static SoType getClassTypeId();
-  static void initClass();
+  virtual SoType getTypeId(void) const;
+  static SoType getClassTypeId(void);
+  static void initClass(void);
 private:
   static SoType classTypeId;
 //$ END TEMPLATE DetailHeader

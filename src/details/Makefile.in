@@ -92,7 +92,7 @@ LIBS =
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-ALLSOURCES =  	SoDetail.cpp 	SoDetail.h 	SoDetails.h 	SoConeDetail.cpp 	SoConeDetail.h 	SoCubeDetail.cpp 	SoCubeDetail.h 	SoCylinderDetail.cpp 	SoCylinderDetail.h 	SoFaceDetail.cpp 	SoFaceDetail.h 	SoLineDetail.cpp 	SoLineDetail.h 	SoPointDetail.cpp 	SoPointDetail.h 	SoTextDetail.cpp 	SoTextDetail.h
+ALLSOURCES =  	SoDetail.cpp 	SoDetail.h 	SoDetails.h 	SoConeDetail.cpp 	SoConeDetail.h 	SoCubeDetail.cpp 	SoCubeDetail.h 	SoCylinderDetail.cpp 	SoCylinderDetail.h 	SoFaceDetail.cpp 	SoFaceDetail.h 	SoLineDetail.cpp 	SoLineDetail.h 	SoNodeKitDetail.cpp 	SoNodeKitDetail.h 	SoPointDetail.cpp 	SoPointDetail.h 	SoTextDetail.cpp 	SoTextDetail.h
 
 
 libdetails_la_SOURCES = $(ALLSOURCES)
@@ -101,7 +101,7 @@ libdetailsLINKHACK_la_SOURCES = $(ALLSOURCES)
 libdetailsincdir = $(includedir)/Inventor/details
 libdetailsLINKHACKincdir = $(includedir)/Inventor/details
 
-ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/details/SoDetail.h 	$(top_srcdir)/include/Inventor/details/SoDetails.h 	$(top_srcdir)/include/Inventor/details/SoConeDetail.h 	$(top_srcdir)/include/Inventor/details/SoCubeDetail.h 	$(top_srcdir)/include/Inventor/details/SoCylinderDetail.h 	$(top_srcdir)/include/Inventor/details/SoFaceDetail.h 	$(top_srcdir)/include/Inventor/details/SoLineDetail.h 	$(top_srcdir)/include/Inventor/details/SoPointDetail.h 	$(top_srcdir)/include/Inventor/details/SoTextDetail.h
+ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/details/SoDetail.h 	$(top_srcdir)/include/Inventor/details/SoDetails.h 	$(top_srcdir)/include/Inventor/details/SoConeDetail.h 	$(top_srcdir)/include/Inventor/details/SoCubeDetail.h 	$(top_srcdir)/include/Inventor/details/SoCylinderDetail.h 	$(top_srcdir)/include/Inventor/details/SoFaceDetail.h 	$(top_srcdir)/include/Inventor/details/SoLineDetail.h 	$(top_srcdir)/include/Inventor/details/SoNodeKitDetail.h 	$(top_srcdir)/include/Inventor/details/SoPointDetail.h 	$(top_srcdir)/include/Inventor/details/SoTextDetail.h
 
 
 libdetailsinc_HEADERS = $(ALLINSTHEADERS)
@@ -123,12 +123,12 @@ libdetailsLINKHACK_la_LDFLAGS =
 libdetailsLINKHACK_la_LIBADD = 
 libdetailsLINKHACK_la_OBJECTS =  SoDetail.lo SoConeDetail.lo \
 SoCubeDetail.lo SoCylinderDetail.lo SoFaceDetail.lo SoLineDetail.lo \
-SoPointDetail.lo SoTextDetail.lo
+SoNodeKitDetail.lo SoPointDetail.lo SoTextDetail.lo
 libdetails_la_LDFLAGS = 
 libdetails_la_LIBADD = 
 libdetails_la_OBJECTS =  SoDetail.lo SoConeDetail.lo SoCubeDetail.lo \
-SoCylinderDetail.lo SoFaceDetail.lo SoLineDetail.lo SoPointDetail.lo \
-SoTextDetail.lo
+SoCylinderDetail.lo SoFaceDetail.lo SoLineDetail.lo SoNodeKitDetail.lo \
+SoPointDetail.lo SoTextDetail.lo
 CXXFLAGS = @CXXFLAGS@
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -150,7 +150,8 @@ TAR = gtar
 GZIP_ENV = --best
 DEP_FILES =  .deps/SoConeDetail.P .deps/SoCubeDetail.P \
 .deps/SoCylinderDetail.P .deps/SoDetail.P .deps/SoFaceDetail.P \
-.deps/SoLineDetail.P .deps/SoPointDetail.P .deps/SoTextDetail.P
+.deps/SoLineDetail.P .deps/SoNodeKitDetail.P .deps/SoPointDetail.P \
+.deps/SoTextDetail.P
 SOURCES = $(libdetailsLINKHACK_la_SOURCES) $(libdetails_la_SOURCES)
 OBJECTS = $(libdetailsLINKHACK_la_OBJECTS) $(libdetails_la_OBJECTS)
 

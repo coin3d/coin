@@ -17,14 +17,20 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCONEDETAIL_H__
-#define __SOCONEDETAIL_H__
+#ifndef __SONODEKITDETAIL_H__
+#define __SONODEKITDETAIL_H__
 
 #include <Inventor/details/SoDetail.h>
+#include <Inventor/SbName.h>
 
-class SoConeDetail : public SoDetail {
+class SoBaseKit;
+class SoNode;
+
+
+class SoNodeKitDetail : public SoDetail {
   typedef SoDetail inherited;
-//$ BEGIN TEMPLATE DetailHeader(SoConeDetail)
+
+//$ BEGIN TEMPLATE DetailHeader(SoNodeKitDetail)
 public:
   virtual SoType getTypeId(void) const;
   static SoType getClassTypeId(void);
@@ -32,16 +38,26 @@ public:
 private:
   static SoType classTypeId;
 //$ END TEMPLATE DetailHeader
-public:
-  SoConeDetail();
-  virtual ~SoConeDetail();
-  virtual SoDetail *copy() const;
 
-  void setPart(const int part);
-  int getPart() const;
-  
+public:
+  SoNodeKitDetail(void);
+  virtual ~SoNodeKitDetail();
+
+  virtual SoDetail * copy(void) const;
+
+  void setNodeKit(SoBaseKit * kit);
+  SoBaseKit * getNodeKit(void) const;
+
+  void setPart(SoNode * part);
+  SoNode * getPart(void) const;
+
+  void setPartName(const SbName & name);
+  const SbName & getPartName(void) const;
+
 protected:
-  int part;
+  SoBaseKit * myNodeKit;
+  SoNode * myPart;
+  SbName myPartName;
 };
 
-#endif // __SOCONEDETAIL_H__
+#endif // __SONODEKITDETAIL_H__

@@ -20,6 +20,7 @@
 /*!
   \class SoCylinderDetail SoCylinderDetail.h Inventor/details/SoCylinderDetail.h
   \brief The SoCylinderDetail class is yet to be documented.
+  \ingroup details
 
   FIXME: write doc.
 */
@@ -27,25 +28,24 @@
 #include <Inventor/details/SoCylinderDetail.h>
 #include <Inventor/SbName.h>
 
-//$ BEGIN TEMPLATE DetailSource( SoCylinderDetail )
+//$ BEGIN TEMPLATE DetailSource(SoCylinderDetail)
 
 SoType SoCylinderDetail::classTypeId;
 
-
 SoType 
-SoCylinderDetail::getTypeId() const
+SoCylinderDetail::getTypeId(void) const
 {
   return SoCylinderDetail::classTypeId;
 }
 
 SoType 
-SoCylinderDetail::getClassTypeId()
+SoCylinderDetail::getClassTypeId(void)
 {
   return SoCylinderDetail::classTypeId;
 }
 
 void 
-SoCylinderDetail::initClass()
+SoCylinderDetail::initClass(void)
 {
   SoCylinderDetail::classTypeId = 
     SoType::createType(inherited::getClassTypeId(),
