@@ -865,7 +865,6 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
       //const SoGlyph * glyph = SoGlyph::getGlyph(ptr[j], SbName("default"));
       const SoGlyph * glyph = SoGlyph::getGlyph(state, (unsigned char) ptr[j], SbVec2s(this->textsize,this->textsize), 0);      
       assert(glyph);
-      glyph->setFontType(SoGlyph::FONT3D);
       this->glyphs.append(glyph);
 
       glyphwidth = glyph->getWidth();

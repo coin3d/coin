@@ -920,8 +920,6 @@ SoText3P::setUpGlyphs(SoState * state, SoText3 * textnode)
     float width = 0.0f;
     for (int j = 0; j < strlen; j++) {
       const SoGlyph * glyph = SoGlyph::getGlyph(state, ptr[j], SbVec2s(0,0), 0);
-      glyph->setFontType(SoGlyph::FONT3D);
-
       this->glyphs.append(glyph);
       width += glyph->getWidth();
     }
