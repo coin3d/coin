@@ -1,0 +1,6 @@
+version="@COIN_VERSION@"
+cppflags="@COIN_EXTRA_CPPFLAGS@"
+ldflags="@COIN_EXTRA_LDFLAGS@"
+libs="@COIN_EXTRA_LIBS@"
+datadir="@datadir@"
+compiler="@CXX@"

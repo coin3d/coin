@@ -1,0 +1,87 @@
+#! /bin/sh
+# **************************************************************************
+# This is a script for retrieving configuration information about the
+# installed Coin libraries on the system.
+#
+# Authors:
+#   Morten Eriksen <mortene@coin3d.org>
+#   Lars J. Aas <larsa@coin3d.org>
+#
+
+me=`echo "$0" | sed 's,^.*[/\\],,g'`
+wd=`echo "$0" | sed 's,/[^/]*$,,'`
+# wd=`cd "$wd"; pwd`
+prefix=`cd "$wd/.."; pwd`
+
+debug=false
+for arg
+do
+  case $arg in
+  --debug) debug=true ;;
+  esac
+done
+
+case $debug in
+true)
+  if test -f $prefix/share/Coin/conf/coin-debug.cfg; then
+    . $prefix/share/Coin/conf/coin-debug.cfg
+  elif test -f $prefix/share/Coin/conf/coin.cfg; then
+    . $prefix/share/Coin/conf/coin.cfg
+  else
+    echo >&2 "$me: no Coin config available"
+    exit 1
+  fi
+  ;;
+false)
+  if test -f $prefix/share/Coin/conf/coin.cfg; then
+    . $prefix/share/Coin/conf/coin.cfg
+  elif test -f $prefix/share/Coin/conf/coin-debug.cfg; then
+    . $prefix/share/Coin/conf/coin-debug.cfg
+  else
+    echo >&2 "$me: no Coin config available"
+    exit 1
+  fi
+  ;;
+esac
+
+usage="\
+Usage: $me [OPTIONS]
+Options:
+  --cppflags
+  --ldflags
+  --libs
+  --build <program> <sourcefile> [<sourcefile>]...
+  --version
+  --usage | --help"
+
+while test $# -gt 0
+do
+  case $1 in
+  --help | --usage) echo "$usage" ;;
+  --version)        echo "$version" ;;
+  --cppflags)       echo "$cppflags" ;;
+  --ldflags)        echo "$ldflags" ;;
+  --libs)           echo "$libs" ;;
+  --build)
+    shift
+    program=$1
+    shift
+    exec $compiler \
+      $CPPFLAGS $cppflags \
+      $LDFLAGS $ldflags \
+      -o $program $@ \
+      $LIBS $libs
+    ;;
+  # ignore some options
+  --debug) ;;
+  *)
+    echo >&2 "$me: Invalid option: \"$1\""
+    echo >&2 "$usage"
+    exit 1
+    ;;
+  esac
+  shift
+done
+
+exit 0
+

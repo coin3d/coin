@@ -13,7 +13,15 @@ SIM_AC_CVS_CHANGES([
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
 # compiling with it and to generate an MSWindows .dll file.
 
-SIM_AC_MSVC_SUPPORT
+AC_CANONICAL_SYSTEM
+
+SIM_AC_SETUP_MSVC_IFELSE([], [
+  case $host in
+  *-cygwin)
+    AC_MSG_ERROR([You need Microsoft Visual C++ to build Coin on Cygwin])
+    ;;
+  esac
+])
 
 # **************************************************************************
 # *******  MAKING RELEASES  ************************************************
@@ -195,7 +203,6 @@ AC_DEFINE_UNQUOTED([COIN_VERSION], ["$COIN_VERSION"],
 
 coin_build_dir=`pwd`
 
-AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE(libCoin, $VERSION)
 
 #  Files to cram results from the configure tests into.
@@ -330,15 +337,24 @@ fi
 # * Check compiler features, bugs, etc.
 # *******************************************************************
 
-SIM_AC_COMPILE_DEBUG(
-  [CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=1"],
-  [CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=0"])
+SIM_AC_COMPILE_DEBUG([
+  CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=1"
+], [
+  CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=0"
+])
 
 SIM_AC_DEBUGSYMBOLS
 SIM_AC_RTTI_SUPPORT
 SIM_EXCEPTION_HANDLING
 SIM_PROFILING_SUPPORT
 SIM_COMPILER_WARNINGS
+
+COIN_DEBUG_BUILD=false
+echo "$CPPFLAGS $CFLAGS $CXXFLAGS" | egrep -q -- "-g\\>" &&
+  COIN_DEBUG_BUILD=true
+
+AC_SUBST(COIN_DEBUG_BUILD)
+AM_CONDITIONAL(COIN_DEBUG_BUILD, $COIN_DEBUG_BUILD)
 
 #  Yep, this is important in case we want to add code to make
 #  the API interface "Open Inventor strict", meaning the user must
@@ -348,8 +364,8 @@ SIM_COMPILER_WARNINGS
 #
 #  The COIN_INTERNAL define is also in use to detect
 # "inefficient including"  internally.
-CPPFLAGS="$CPPFLAGS -DCOIN_INTERNAL"
 
+CPPFLAGS="$CPPFLAGS -DCOIN_INTERNAL"
 
 # Try to find snprintf() and vsnprintf() on the system.
 SIM_CHECK_NPRINTF
@@ -566,11 +582,14 @@ AM_CONDITIONAL(HACKING_DYNAMIC_MODULES, test x"$enable_hacking" = x"yes")
 COIN_HACKING_LIBDIRS=
 if test x"$enable_hacking" = x"yes"; then
   COIN_HACKING_LIBDIRS="-L${coin_build_dir}/src/base/.libs -L${coin_build_dir}/src/VRMLnodes/.libs -L${coin_build_dir}/src/actions/.libs -L${coin_build_dir}/src/bundles/.libs -L${coin_build_dir}/src/caches/.libs -L${coin_build_dir}/src/details/.libs -L${coin_build_dir}/src/draggers/.libs -L${coin_build_dir}/src/elements/.libs -L${coin_build_dir}/src/engines/.libs -L${coin_build_dir}/src/errors/.libs -L${coin_build_dir}/src/events/.libs -L${coin_build_dir}/src/fields/.libs -L${coin_build_dir}/src/manips/.libs -L${coin_build_dir}/src/misc/.libs -L${coin_build_dir}/src/lists/.libs -L${coin_build_dir}/src/nodekits/.libs -L${coin_build_dir}/src/nodes/.libs -L${coin_build_dir}/src/projectors/.libs -L${coin_build_dir}/src/sensors/.libs"
-  COIN_EXTRA_LIBS="-lbaseLINKHACK -lVRMLnodesLINKHACK -lactionsLINKHACK -lbundlesLINKHACK -lcachesLINKHACK -ldetailsLINKHACK -ldraggersLINKHACK -lelementsLINKHACK -lenginesLINKHACK -lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -lmanipsLINKHACK -lmiscLINKHACK -llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK -lprojectorsLINKHACK -lsensorsLINKHACK $COIN_EXTRA_LIBS"
+  if $COIN_DEBUG_BUILD; then
+    COIN_EXTRA_LIBS="-lbase_gLINKHACK -lVRMLnodes_gLINKHACK -lactions_gLINKHACK -lbundles_gLINKHACK -lcaches_gLINKHACK -ldetails_gLINKHACK -ldraggers_gLINKHACK -lelements_gLINKHACK -lengines_gLINKHACK -lerrors_gLINKHACK -levents_gLINKHACK -lfields_gLINKHACK -lmanips_gLINKHACK -lmisc_gLINKHACK -llists_gLINKHACK -lnodekits_gLINKHACK -lnodes_gLINKHACK -lprojectors_gLINKHACK -lsensors_gLINKHACK $COIN_EXTRA_LIBS"
+  else
+    COIN_EXTRA_LIBS="-lbaseLINKHACK -lVRMLnodesLINKHACK -lactionsLINKHACK -lbundlesLINKHACK -lcachesLINKHACK -ldetailsLINKHACK -ldraggersLINKHACK -lelementsLINKHACK -lenginesLINKHACK -lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -lmanipsLINKHACK -lmiscLINKHACK -llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK -lprojectorsLINKHACK -lsensorsLINKHACK $COIN_EXTRA_LIBS"
+  fi
 fi
 
 AC_SUBST(COIN_HACKING_LIBDIRS)
-
 
 # *******************************************************************
 # * For exposing various build, src and installation paths to
@@ -583,7 +602,6 @@ coin_src_dir=`cd $srcdir; pwd`
 
 AC_SUBST(coin_build_dir)
 AC_SUBST(coin_src_dir)
-
 
 # **************************************************************************
 # Remove redundant options from certain option lists.
@@ -601,7 +619,11 @@ SIM_AC_UNIQIFY_LIST(LIBS, $LIBS)
 if $BUILD_WITH_MSVC; then
   CPPFLAGS="-DCOIN_MAKE_DLL $CPPFLAGS"
   DLLFLAGS="/dll"
-  debugfile="`pwd`/src/coin$COIN_MAJOR_VERSION$DSUFFIX.pdb"
+  if $COIN_DEBUG_BUILD; then
+    debugfile="`pwd`/src/coin${COIN_MAJOR_VERSION}d.pdb"
+  else
+    debugfile="`pwd`/src/coin$COIN_MAJOR_VERSION.pdb"
+  fi
   debugfile=`cygpath -w "$debugfile" | sed 's,\\\\,\\\\\\\\,g'`
   CPPFLAGS="/Fd$debugfile $CPPFLAGS"
   DLLFLAGS="$DLLFLAGS /PDB:$debugfile"
@@ -616,14 +638,22 @@ if $BUILD_WITH_MSVC; then
   # also use them from "parent" code (remember that their interfaces
   # is not exposed from the DLL) without any fuss.
   COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_DLL"
-  COIN_EXTRA_LIBS="-lcoin$COIN_MAJOR_VERSION\$dsuffix $COIN_EXTRA_LIBS"
+  if $COIN_DEBUG_BUILD; then
+    COIN_EXTRA_LIBS="-lcoin${COIN_MAJOR_VERSION}d $COIN_EXTRA_LIBS"
+  else
+    COIN_EXTRA_LIBS="-lcoin$COIN_MAJOR_VERSION $COIN_EXTRA_LIBS"
+  fi
 
   # For the SuperPIMP file build/coin.nsi.
   win_srcdir=`cygpath -w "$srcdir"`
   AC_SUBST(win_srcdir)
 
 else
-  COIN_EXTRA_LIBS="-lCoin $COIN_EXTRA_LIBS"
+  if $COIN_DEBUG_BUILD; then
+    COIN_EXTRA_LIBS="-lCoin_g $COIN_EXTRA_LIBS"
+  else
+    COIN_EXTRA_LIBS="-lCoin $COIN_EXTRA_LIBS"
+  fi
 
   # For the build/coin.spec RPM specification file.
   SIM_AC_ISO8601_DATE(coin_configure_date)
@@ -633,7 +663,6 @@ fi
 # **************************************************************************
 
 AC_OUTPUT([
-        coin-config
         Makefile
         include/Makefile
         include/Inventor/Makefile
@@ -665,10 +694,8 @@ AC_OUTPUT([
         build/coin.spec
         build/coin.nsi
         docs/coin.doxygen
-], [
-	chmod a+x coin-config
+        coin.cfg
 ])
-
 
 # *******************************************************************
 # * Platform-specific stuff.
