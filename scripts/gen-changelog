@@ -1,0 +1,19 @@
+#!/bin/sh
+############################################################################
+# 
+# crontab entry:
+#  0 4 * * * $HOME/code/Coin/scripts/gen-changelog &>/dev/null
+#
+
+cvs2cl=/home/sigma/larsa/code/cvs/cvs2cl/cvs2cl.pl
+dir=$HOME/code/Coin
+
+cd $dir
+
+$cvs2cl --header ChangeLog.header --separate-header --prune \
+  --ignore 'ChangeLog$' \
+  --ignore '(Makefile\.in|configure|aclocal\.m4|config\.sub|config\.guess)$' \
+  --ignore '(ltconfig|ltmain\.sh|missing|mkinstalldirs|stamp-h.*|install-sh)$' \
+  --ignore 'config\.h\.in$'
+
+cvs commit -m "Automatic ChangeLog generation" ChangeLog
