@@ -215,14 +215,18 @@ SoMFNode::operator==(const SoMFNode & field) const
 void
 SoMFNode::deleteAllValues(void)
 {
-  if (this->getNum()) this->deleteValues(0);
+  // Don't use getNum(), but use this->num directly, since getNum() 
+  // might trigger a recursive evaluation call if the field 
+  // is connected.
+
+  if (this->num) this->deleteValues(0);
 }
 
 // Overloaded to handle unref() and removeAuditor().
 void
 SoMFNode::deleteValues(int start, int num)
 {
-  if (num == -1) num = this->getNum() - 1 - start;
+  if (num == -1) num = this->num - 1 - start;
   for (int i=start; i < start+num; i++) {
     SoNode * n = this->values[i];
     if (n) {
