@@ -734,3 +734,11 @@ THE WISH LIST
   [upwards compatible extension]
 
   A node that will render the commonly used tea pot shape.
+
+
+* SoSearchPathAction (which is part of the TGS Inventor API)
+  2002-04-19  Morten Eriksen  <mortene@sim.no>
+
+  Requested by Matt Verona on comp.graphics.api.inventor. Matt
+  suggests using the tokenizer classes from the Boost freeware class
+  library (see the Coin/docs/misc-resources.txt file).
