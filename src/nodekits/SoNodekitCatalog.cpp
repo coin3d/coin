@@ -446,11 +446,11 @@ SoNodekitCatalog::clone(SoType type) const
   return newcat;
 }
 
-static void SoNodekitCatalog__propagateDefaultInit( SoNodekitCatalog * pthis )
+static void SoNodekitCatalogPropagateDefaultInit( SoNodekitCatalog * pthis )
 {
 
 #if COIN_DEBUG && 0
-  SoDebugError::postInfo("SoNodekitCatalog__propagateDefaultInit",
+  SoDebugError::postInfo("SoNodekitCatalogPropagateDefaultInit",
                          "sanitizing catalog" );
 #endif
 
@@ -563,7 +563,7 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
     }
 
   if( this->delayeditems.getLength() == 0 )
-    SoNodekitCatalog__propagateDefaultInit( this );
+    SoNodekitCatalogPropagateDefaultInit( this );
 
   return TRUE;
 }
