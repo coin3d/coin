@@ -25,7 +25,7 @@
 */
 
 #include <Inventor/elements/SoGLPolygonOffsetElement.h>
-
+#include <Inventor/elements/SoGLCacheContextElement.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -68,11 +68,12 @@ SoGLPolygonOffsetElement::init(SoState * state)
   this->currentStyle = FILLED;
   this->currentOffsetfactor = 1.0f;
   this->currentOffsetunits = 1.0f;
+  this->state = state;
   this->updategl();
 }
 
 //! FIXME: write doc.
-
+ 
 void
 SoGLPolygonOffsetElement::push(SoState * state)
 {
@@ -83,6 +84,7 @@ SoGLPolygonOffsetElement::push(SoState * state)
   top->currentStyle = this->currentStyle;
   top->currentOffsetfactor = this->currentOffsetfactor;
   top->currentOffsetunits = this->currentOffsetunits;
+  top->state = this->state;
 }
 
 //! FIXME: write doc.
@@ -141,6 +143,14 @@ SoGLPolygonOffsetElement::updategl()
   // FIXME: is it possible to enable more than one Style at
   // a time?
 
+#if GL_EXT_polygon_offset && ! GL_VERSION_1_1
+  static int polygon_offset_ext_id = -1;
+  if (polygon_offset_ext_id == -1) {
+    polygon_offset_ext_id = 
+      SoGLCacheContextElement::getExtID("GL_EXT_polygon_offset");
+  }
+#endif // GL_EXT_polygon_offset && ! GL_VERSION_1_1
+
   if (this->currentActive) {
 #if GL_VERSION_1_1
     if (currentStyle & FILLED)
@@ -152,7 +162,7 @@ SoGLPolygonOffsetElement::updategl()
 
     glPolygonOffset(this->currentOffsetunits, this->currentOffsetfactor);
 #elif GL_EXT_polygon_offset
-    if (sogl_polygon_offset_ext()) {
+    if (SoGLCacheContextElement::extSupported(this->state, polygon_offset_ext_id)) {
       // FIXME: this value (0.0000001) a hack to make it look
       // ok on old SGI HW
       if (currentStyle & FILLED) {
@@ -168,7 +178,7 @@ SoGLPolygonOffsetElement::updategl()
     glDisable(GL_POLYGON_OFFSET_LINE);
     glDisable(GL_POLYGON_OFFSET_POINT);
 #elif GL_EXT_polygon_offset
-    if (sogl_polygon_offset_ext()) {
+    if (SoGLCacheContextElement::extSupported(this->state, polygon_offset_ext_id)) {
       glDisable(GL_POLYGON_OFFSET_EXT);
     }
 #endif

@@ -46,6 +46,7 @@ private:
 
   Style currentStyle;
   SbBool currentActive;
+  SoState * state; // needed to test for OpenGL extension
   float currentOffsetfactor;
   float currentOffsetunits;
 
