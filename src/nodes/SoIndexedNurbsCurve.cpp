@@ -32,6 +32,7 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/elements/SoCoordinateElement.h>
@@ -233,7 +234,7 @@ SoIndexedNurbsCurve::generatePrimitives(SoAction * action)
 /*!
   Overloaded to return NULL.
 */
-SoDetail * 
+SoDetail *
 SoIndexedNurbsCurve::createLineSegmentDetail(SoRayPickAction * /* action */,
                                              const SoPrimitiveVertex * /* v1 */,
                                              const SoPrimitiveVertex * /* v2 */,
