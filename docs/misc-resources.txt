@@ -135,7 +135,16 @@ THE LINKS
 
 * Distributed Open Inventor:
 
-        <URL:http://www.cg.tuwien.ac.at/research/vr/div/>
+    <URL:http://www.cg.tuwien.ac.at/research/vr/div/>
 
   Also in the proceedings of the ACM Symposium on Virtual Reality
   Software and Technology (VRST'99), pp. 74-81, 1999.
+
+* Coin Debian Builds
+  2001-12-17  Lars J. Aas  <larsa@sim.no>
+
+  http://buildd.debian.org/build.php?arch=&pkg=coin
+
+  Contains configure/make logs from building Coin on a number of different
+  Debian Linux architectures.
+
