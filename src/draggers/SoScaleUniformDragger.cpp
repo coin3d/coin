@@ -23,10 +23,17 @@
 
 /*!
   \class SoScaleUniformDragger SoScaleUniformDragger.h Inventor/draggers/SoScaleUniformDragger.h
-  \brief The SoScaleUniformDragger class is (FIXME: doc)
+  \brief The SoScaleUniformDragger class provides a mechanism for the end-user to scale in three dimensions.
   \ingroup draggers
 
-  FIXME: document class
+  Use this dragger to allow the end-user of your application to scale
+  simultaneously along all the axes.
+
+  Scaling with this dragger can only be done in a uniform manner, ie
+  the X, Y and Z components of the SoScaleUniformDragger::scaleFactor
+  will always be exactly equal.
+
+  \sa SoScale2UniformDragger
 */
 
 #include <Inventor/draggers/SoScaleUniformDragger.h>
@@ -39,6 +46,23 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include <data/draggerDefaults/scaleUniformDragger.h>
+
+/*!
+  \var SoSFVec3f SoScaleUniformDragger::scaleFactor
+
+  Continuously updated to contain the current vector of scaling along
+  the X, Y and Z axes.
+*/
+
+/*!
+  \var SoFieldSensor * SoScaleUniformDragger::fieldSensor
+  \internal
+*/
+/*!
+  \var SbLineProjector * SoScaleUniformDragger::lineProj
+  \internal
+*/
+
 
 SO_KIT_SOURCE(SoScaleUniformDragger);
 

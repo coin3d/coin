@@ -23,10 +23,22 @@
 
 /*!
   \class SoScale2UniformDragger SoScale2UniformDragger.h Inventor/draggers/SoScale2UniformDragger.h
-  \brief The SoScale2UniformDragger class is (FIXME: doc)
+  \brief The SoScale2UniformDragger class provides a mechanism for the end-user to scale in two dimensions.
   \ingroup draggers
 
-  FIXME: document class
+  Use this dragger to allow the end-user of your application to scale
+  along the X-axis and the Y-axis. (Use a transformation node in front
+  of the dragger to position it and re-orient it to scale in any
+  plane.)
+
+  Scaling with this dragger can only be done in a uniform manner, ie
+  the X component of the SoScale2UniformDragger::scaleFactor will
+  always equal the Y component.
+
+  For non-uniform scaling operations in 2 dimensions, use the
+  SoScale2Dragger.
+
+  \sa SoScaleUniformDragger
 */
 
 #include <Inventor/draggers/SoScale2UniformDragger.h>
@@ -39,6 +51,26 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include <data/draggerDefaults/scale2UniformDragger.h>
+
+/*!
+  \var SoSFVec3f SoScale2UniformDragger::scaleFactor
+
+  Continuously updated to contain the current vector of scaling along
+  the X, Y and Z axes.
+
+  For the SoScale2UniformDragger, only the X and Y components are
+  used, the Z component will always be equal to 1 (ie no scaling).
+*/
+
+/*!
+  \var SoFieldSensor * SoScale2UniformDragger::fieldSensor
+  \internal
+*/
+/*!
+  \var SbLineProjector * SoScale2UniformDragger::lineProj
+  \internal
+*/
+
 
 SO_KIT_SOURCE(SoScale2UniformDragger);
 
