@@ -790,10 +790,10 @@ cc_libhandle
 cc_dl_coin_handle(void)
 {
 #ifndef COIN_SYSTEM_LIBRARY_NAME /* should usually be available in config.h */
-#define COIN_SYSTEM_LIBRARY_NAME "libCoin.so"
+#define COIN_SYSTEM_LIBRARY_NAME libCoin.so
 #endif
 
-  cc_libhandle hnd = cc_dl_open(COIN_SYSTEM_LIBRARY_NAME);
+  cc_libhandle hnd = cc_dl_open(SO__QUOTE(COIN_SYSTEM_LIBRARY_NAME));
   if (hnd) {
     /* for comparing with the known value, to make sure we e.g. don't
        get a different Coin DLL loaded from disk: */
@@ -826,7 +826,7 @@ cc_dl_coin_handle(void)
   else if (cc_dl_debugging()) {
     cc_debugerror_post("cc_dl_coin_handle",
                        "was not able to open Coin image as '%s'",
-                       COIN_SYSTEM_LIBRARY_NAME);
+                       SO__QUOTE(COIN_SYSTEM_LIBRARY_NAME));
   }
 
   /* In case of errors when checking if we got a valid image, make
@@ -843,10 +843,10 @@ cc_libhandle
 cc_dl_opengl_handle(void)
 {
 #ifndef OPENGL_SYSTEM_LIBRARY_NAME /* should usually be available in config.h */
-#define OPENGL_SYSTEM_LIBRARY_NAME "libGL.so"
+#define OPENGL_SYSTEM_LIBRARY_NAME libGL.so
 #endif
 
-  cc_libhandle hnd = cc_dl_open(OPENGL_SYSTEM_LIBRARY_NAME);
+  cc_libhandle hnd = cc_dl_open(SO__QUOTE(OPENGL_SYSTEM_LIBRARY_NAME));
   if (hnd) {
     /* for comparing with the known value, to make sure we e.g. don't
        get a different OpenGL DLL loaded from disk: */
@@ -870,7 +870,7 @@ cc_dl_opengl_handle(void)
   else if (cc_dl_debugging()) {
     cc_debugerror_post("cc_dl_opengl_handle",
                        "was not able to open OpenGL image as '%s'",
-                       OPENGL_SYSTEM_LIBRARY_NAME);
+                       SO__QUOTE(OPENGL_SYSTEM_LIBRARY_NAME));
   }
 
   /* In case of errors when checking if we got a valid image, make

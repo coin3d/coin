@@ -1586,6 +1586,23 @@ SIM_AC_CHECK_OPENGL(
   ]
 )
 
+# **************************************************************************
+# Make name of dynamic GL library available to Coin source code (used in
+# src/glue/dl.c, at least).
+
+# Will set $sim_ac_shlibext. Note: there's a dependency on this later in
+# the configure script aswell.
+SIM_AC_DYNLIB_EXT
+
+sim_ac_opengl_dll_name=$sim_ac_ogl_lib
+if test "$sim_ac_ogl_lib" = "opengl32"; then :; else
+  sim_ac_opengl_dll_name="lib${sim_ac_opengl_dll_name}"
+fi
+sim_ac_opengl_dll_name="${sim_ac_opengl_dll_name}${sim_ac_shlibext}"
+
+AC_DEFINE_UNQUOTED([OPENGL_SYSTEM_LIBRARY_NAME], [$sim_ac_opengl_dll_name],
+                   [define this to the dynamic library name of OpenGL])
+
 # *******************************************************************
 # * Provide this nasty hack to help building Coin on platforms
 # * where one can bump into the "Arg list too long" problem
@@ -1809,13 +1826,18 @@ COIN_COMPILER="$CXX"
     # list all libs used upon `coin-config --libs`, as we can then
     # also use them from "parent" code (remember that their interfaces
     # is not exposed from the DLL) without any fuss.
+    sim_ac_coin_noextname="coin${COIN_MAJOR_VERSION}${SUFFIX}"
     if test -n "$COIN_EXTRA_LIBS"; then
-      COIN_EXTRA_LIBS="-lcoin${COIN_MAJOR_VERSION}${SUFFIX} $COIN_EXTRA_LIBS"
+      COIN_EXTRA_LIBS="-l${sim_ac_coin_noextname} $COIN_EXTRA_LIBS"
     else
-      COIN_EXTRA_LIBS="-lcoin${COIN_MAJOR_VERSION}${SUFFIX}"
+      COIN_EXTRA_LIBS="-l${sim_ac_coin_noextname}"
     fi
+
+    sim_ac_coin_dll_name="${sim_ac_coin_noextname}${sim_ac_shlibext}"
+
   else
     COIN_EXTRA_LIBS="-lCoin${SUFFIX} $COIN_EXTRA_LIBS"
+    sim_ac_coin_dll_name="libCoin${SUFFIX}${sim_ac_shlibext}"
   fi
 
   if $BUILD_WITH_MSVC; then
@@ -1823,6 +1845,9 @@ COIN_COMPILER="$CXX"
     # so we can remove the source code hierarchy
     COIN_COMPILER="wrapmsvc"
   fi
+
+  AC_DEFINE_UNQUOTED([COIN_SYSTEM_LIBRARY_NAME], [$sim_ac_coin_dll_name],
+                     [define this to the dynamic library name of Coin])
 
   sim_ac_path_problem=true # until proven otherwise
   eval "prefix=${prefix}"
