@@ -544,29 +544,21 @@ AC_SUBST(COIN_HACKING_LIBDIRS)
 
 
 # *******************************************************************
-# * List all files configure shall generate.
+# * For exposing various build, src and installation paths to
+# * misc configuration files under the $top_src_dir/build/ directory.
 # *******************************************************************
 
 SIM_EXPAND_DIR_VARS
 
-# FIXME: not in use anymore. 20001024 mortene.
-#coin_src_dir=$srcdir
-#coin_include_dir=$includedir
-#coin_lib_dir=$libdir
-#
-#if test x"$sim_ac_linking_style" = xmswin; then
-#  # Slashes need to be '\' in project files and makefiles to humour
-#  # the Microsoft VisualC++ environment.
-#  SIM_AC_DOBACKSLASH(coin_build_dir, $coin_build_dir)
-#  SIM_AC_DOBACKSLASH(coin_src_dir, $srcdir)
-#  SIM_AC_DOBACKSLASH(coin_include_dir, $includedir)
-#  SIM_AC_DOBACKSLASH(coin_lib_dir, $libdir)
-#fi
-#
-#AC_SUBST(coin_build_dir)
-#AC_SUBST(coin_src_dir)
-#AC_SUBST(coin_include_dir)
-#AC_SUBST(coin_lib_dir)
+coin_src_dir=$srcdir
+coin_include_dir=$includedir
+coin_lib_dir=$libdir
+
+AC_SUBST(coin_build_dir)
+AC_SUBST(coin_src_dir)
+AC_SUBST(coin_include_dir)
+AC_SUBST(coin_lib_dir)
+
 
 # **************************************************************************
 # Remove redundant options from certain option lists.
