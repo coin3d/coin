@@ -1213,6 +1213,12 @@ SoInput::read(SbString & s)
   been read -- if \a validIdent is also \c FALSE. If \a validIdent is
   passed as \c TRUE, the return value will be \c FALSE if no valid name
   was found, but \e not necessarily on end of file.
+  
+  Note: this method should not be used to read all names. It is
+  specifically designed to handle cases where node names, node types
+  and field names are to be read. If your goal is to read the value of
+  a SbName field that is not any of the above, or if the name might be
+  quoted, then you should use SoInput::read(SbString &) instead.
 
 */
 SbBool

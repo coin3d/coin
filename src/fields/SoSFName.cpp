@@ -68,7 +68,15 @@ SoSFName::initClass(void)
 SbBool
 SoSFName::readValue(SoInput * in)
 {
-  return in->read(this->value);
+  // Reading a string instead of a name, because the name field value
+  // is not necessarily a node name, node type or field name, and the
+  // name might be quoted. The read value is just the value of a name
+  // field.
+  SbString s;
+  SbBool ok = in->read(s);
+  if (!ok) return FALSE;
+  this->value = s;
+  return TRUE;
 }
 
 // Write SbName value to output stream. Also used from SoMFName class.

@@ -67,7 +67,16 @@ SbBool
 SoMFName::read1Value(SoInput * in, int idx)
 {
   assert(idx < this->maxNum);
-  return in->read(this->values[idx]);
+
+  // Reading a string instead of a name, because the name field value
+  // is not necessarily a node name, node type or field name, and the
+  // name might be quoted. The read value is just the value of a name
+  // field.
+  SbString s;
+  SbBool ok = in->read(s);
+  if (!ok) return FALSE;
+  this->values[idx] = s;
+  return TRUE;
 }
 
 void
