@@ -83,6 +83,12 @@
 
   \endcode
 
+  The reason this is more effective is because we avoid the stream of
+  notification messages which would otherwise be sent for each and
+  every modification done. Instead there will just be a single
+  notification about the changes, triggered by the finishEditing()
+  call.
+
 
   When nodes, engines or other types of field containers are written
   to file, their multiple-value fields are written to file in this
