@@ -58,7 +58,7 @@
 #include <Inventor/errors/SoDebugError.h>
 
 #include <../tidbits.h> // coin_getenv()
-#include <stdlib.h> // strtol()
+#include <stdlib.h> // strtol(), rand()
 #include <limits.h> // LONG_MIN, LONG_MAX
 
 #ifdef HAVE_CONFIG_H
@@ -238,9 +238,7 @@ SoSeparator::commonConstructor(void)
     else COIN_RANDOMIZE_RENDER_CACHING = 0;
   }
   if (COIN_RANDOMIZE_RENDER_CACHING > 0) {
-    static SbBool nexton = FALSE;
-    if (nexton) { this->renderCaching = SoSeparator::ON; }
-    nexton = !nexton;
+    if (rand() > (RAND_MAX/2)) { this->renderCaching = SoSeparator::ON; }
   }
 }
 
@@ -421,7 +419,8 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
   SbBool didlazyeval = FALSE;
   SoState * state = action->getState();
   SoGLCacheList * createcache = NULL;
-  if (this->renderCaching.getValue() == ON) {
+  if ((this->renderCaching.getValue() == ON) &&
+      (SoSeparator::getNumRenderCaches() > 0)) {
     // test if bbox is outside view-volume
     if (this->cullTestNoPush(state)) {
       return;
