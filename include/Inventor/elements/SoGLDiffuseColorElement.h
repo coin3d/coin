@@ -45,10 +45,8 @@ public:
 protected:
 
 private:
-  void updategl();
-  SbVec4f current;
-  uint32_t currentPacked; // for fast comparing
-
+  void updategl(const SbVec4f & color);
+  float alpha;
 };
 
 #endif // !COIN_SOGLDIFFUSECOLORELEMENT_H
