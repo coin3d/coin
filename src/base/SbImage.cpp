@@ -118,7 +118,7 @@ public:
 */
 SbImage::SbImage(void)
 {
-  THIS = new SbImageP;
+  this->bytes_obsoleted = (unsigned char*) new SbImageP;
 }
 
 /*!
@@ -128,7 +128,7 @@ SbImage::SbImage(void)
 SbImage::SbImage(const unsigned char * bytes,
                  const SbVec2s & size, const int bytesperpixel)
 {
-  THIS = new SbImageP;
+  this->bytes_obsoleted = (unsigned char*) new SbImageP;
   this->setValue(size, bytesperpixel, bytes);
 }
 
