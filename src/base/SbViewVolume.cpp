@@ -271,10 +271,7 @@ SbViewVolume::projectPointToLine(const SbVec2f& pt,
 #if COIN_DEBUG
   if (dx.sqrLength() == 0.0f || dy.sqrLength() == 0.0f) {
     SoDebugError::postWarning("SbViewVolume::projectPointToLine",
-                              "invalid frustum: <%f, %f, %f>",
-                              this->lrf,
-                              this->llf,
-                              this->ulf);
+                              "invalid frustum");
     return;
   }
 #endif // COIN_DEBUG
