@@ -219,6 +219,13 @@
   Render points as squares.
 */
 
+/*!
+  \fn void SoVectorizeAction::printHeader(void) const
+  \COININTERNAL
+*/
+
+// *************************************************************************
+
 #include <HardCopy/SoVectorizeAction.h>
 #include "VectorizeActionP.h"
 
@@ -510,7 +517,9 @@ SoVectorizeAction::getPointStyle(void) const
 
 
 /*!
-  Should be overloaded by subclasses to print file footer data.
+  \COININTERNAL
+
+  Should be overridden by subclasses to print file footer data.
  */
 void
 SoVectorizeAction::printFooter(void) const
@@ -518,7 +527,9 @@ SoVectorizeAction::printFooter(void) const
 }
 
 /*!
-  Should be overloaded by subclasses to print background data.
+  \COININTERNAL
+
+  Should be overridden by subclasses to print background data.
 */
 void
 SoVectorizeAction::printBackground(void) const
@@ -526,7 +537,9 @@ SoVectorizeAction::printBackground(void) const
 }
 
 /*!
-  Should be overloaded by subclasses to set up the current page viewport.
+  \COININTERNAL
+
+  Should be overridden by subclasses to set up the current page viewport.
 */
 void 
 SoVectorizeAction::printViewport(void) const
@@ -535,7 +548,9 @@ SoVectorizeAction::printViewport(void) const
 }
 
 /*!
-  Should be overloaded by subclasses to print an item.
+  \COININTERNAL
+
+  Should be overridden by subclasses to print an item.
 */
 void
 SoVectorizeAction::printItem(const SoVectorizeItem * item) const

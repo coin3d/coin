@@ -52,7 +52,6 @@ public:
   SoPSVectorOutput * getPSOutput(void) const;
 
 protected:
-
   virtual void printHeader(void) const;
   virtual void printFooter(void) const;
   virtual void printBackground(void) const;
@@ -60,23 +59,6 @@ protected:
   virtual void printViewport(void) const;
 
 private:
-
-  SbVec2f convertToPS(const SbVec2f & mm) const;
-  float convertToPS(const float mm) const;
-
-  void updateLineAttribs(const SoVectorizeLine * line) const;
-  void updateFont(const SbString & fontname, const float fontsize) const;
-  void printSetdash(uint16_t pattern) const;
-
-  void printCircle(const SbVec3f & v, const SbColor & c, const float radius) const;
-  void printSquare(const SbVec3f & v, const SbColor & c, const float size) const;
-  void printTriangle(const SbVec3f * v, const SbColor * c) const;
-  void printTriangle(const SoVectorizeTriangle * item) const;
-  void printLine(const SoVectorizeLine * item) const;
-  void printPoint(const SoVectorizePoint * item) const;
-  void printText(const SoVectorizeText * item) const;
-  void printImage(const SoVectorizeImage * item) const;
-
   SoVectorizePSActionP * pimpl;
   friend class SoVectorizePSActionP;
 };

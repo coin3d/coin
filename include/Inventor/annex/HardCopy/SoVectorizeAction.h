@@ -32,11 +32,6 @@
 class SoVectorOutput;
 class SbViewportRegion;
 class SoVectorizeItem;
-class SoVectorizeTriangle;
-class SoVectorizeLine;
-class SoVectorizeText;
-class SoVectorizeImage;
-class SoVectorizePoint;
 class SoVectorizeActionP;
 class SbBSPTree;
 
@@ -163,7 +158,6 @@ public:
   SbBool isLightingEnabled(void) const;
 
 protected:
-
   void setOutput(SoVectorOutput * output);
 
   virtual float pixelsToUnits(const int pixels);

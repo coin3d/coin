@@ -36,7 +36,7 @@
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbImage.h>
-#include <HardCopy/SoVectorizeItems.h>
+#include "VectorizeItems.h"
 
 class SbClip;
 class SoPointDetail;

@@ -26,6 +26,8 @@
   \brief The SoVectorizePSAction class is used for rendering to Postscript.
   \ingroup hardcopy
 
+  FIXME: does this class need more doc? That's for pederb to decide.
+  20030704 mortene.
 */
 
 #include <HardCopy/SoVectorizePSAction.h>
@@ -46,6 +48,22 @@ public:
     this->fontsize = -1.0f;
     this->dummycnt = 0;
   }
+
+  SbVec2f convertToPS(const SbVec2f & mm) const;
+  float convertToPS(const float mm) const;
+
+  void updateLineAttribs(const SoVectorizeLine * line);
+  void updateFont(const SbString & fontname, const float fontsize);
+  void printSetdash(uint16_t pattern) const;
+
+  void printCircle(const SbVec3f & v, const SbColor & c, const float radius) const;
+  void printSquare(const SbVec3f & v, const SbColor & c, const float size) const;
+  void printTriangle(const SbVec3f * v, const SbColor * c);
+  void printTriangle(const SoVectorizeTriangle * item);
+  void printLine(const SoVectorizeLine * item);
+  void printPoint(const SoVectorizePoint * item) const;
+  void printText(const SoVectorizeText * item);
+  void printImage(const SoVectorizeImage * item) const;
 
   double gouraudeps;
   SbString default2dfont;
@@ -240,10 +258,10 @@ SoVectorizePSAction::printHeader(void) const
 
   float viewport[4];
 
-  viewport[0] = this->convertToPS(this->getPageStartpos())[0];
-  viewport[1] = this->convertToPS(this->getPageStartpos())[1];
-  viewport[2] = this->convertToPS(this->getPageSize())[0];
-  viewport[3] = this->convertToPS(this->getPageSize())[1];
+  viewport[0] = PRIVATE(this)->convertToPS(this->getPageStartpos())[0];
+  viewport[1] = PRIVATE(this)->convertToPS(this->getPageStartpos())[1];
+  viewport[2] = PRIVATE(this)->convertToPS(this->getPageSize())[0];
+  viewport[3] = PRIVATE(this)->convertToPS(this->getPageSize())[1];
 
   fputs("%!PS-Adobe-2.0 EPSF-2.0\n", file);
   fprintf(file, "%%%%Creator: Coin 2.0\n");
@@ -262,8 +280,8 @@ SoVectorizePSAction::printHeader(void) const
   print_array(file, centershow);
 
   if (this->getOrientation() == LANDSCAPE) {
-    SbVec2f psize = this->convertToPS(this->getPageSize());
-    SbVec2f porg = this->convertToPS(this->getPageStartpos());
+    SbVec2f psize = PRIVATE(this)->convertToPS(this->getPageSize());
+    SbVec2f porg = PRIVATE(this)->convertToPS(this->getPageStartpos());
     psize *= 0.5f;
     fputs("% rotate to LANDSCAPE orientation\n", file);
     fprintf(file, "%g %g translate\n", porg[0] + psize[0], porg[1] + psize[1]);
@@ -292,10 +310,10 @@ SoVectorizePSAction::printViewport(void) const
   FILE * file = this->getOutput()->getFilePointer();
 
   float viewport[4];
-  viewport[0] = this->convertToPS(this->getRotatedViewportStartpos())[0];
-  viewport[1] = this->convertToPS(this->getRotatedViewportStartpos())[1];
-  viewport[2] = this->convertToPS(this->getRotatedViewportSize())[0] + viewport[0];
-  viewport[3] = this->convertToPS(this->getRotatedViewportSize())[1] + viewport[1];
+  viewport[0] = PRIVATE(this)->convertToPS(this->getRotatedViewportStartpos())[0];
+  viewport[1] = PRIVATE(this)->convertToPS(this->getRotatedViewportStartpos())[1];
+  viewport[2] = PRIVATE(this)->convertToPS(this->getRotatedViewportSize())[0] + viewport[0];
+  viewport[3] = PRIVATE(this)->convertToPS(this->getRotatedViewportSize())[1] + viewport[1];
 
   fputs("% set up clipping for viewport\n", file);
   fprintf(file, "newpath\n");
@@ -315,10 +333,10 @@ SoVectorizePSAction::printBackground(void) const
   float viewport[4];
   SbColor bgcol;
 
-  viewport[0] = this->convertToPS(this->getRotatedViewportStartpos())[0];
-  viewport[1] = this->convertToPS(this->getRotatedViewportStartpos())[1];
-  viewport[2] = this->convertToPS(this->getRotatedViewportSize())[0];
-  viewport[3] = this->convertToPS(this->getRotatedViewportSize())[1];
+  viewport[0] = PRIVATE(this)->convertToPS(this->getRotatedViewportStartpos())[0];
+  viewport[1] = PRIVATE(this)->convertToPS(this->getRotatedViewportStartpos())[1];
+  viewport[2] = PRIVATE(this)->convertToPS(this->getRotatedViewportSize())[0];
+  viewport[3] = PRIVATE(this)->convertToPS(this->getRotatedViewportSize())[1];
 
   (void) this->getBackgroundColor(bgcol);
 
@@ -340,19 +358,19 @@ SoVectorizePSAction::printItem(const SoVectorizeItem * item) const
 {
   switch (item->type) {
   case SoVectorizeItem::TRIANGLE:
-    this->printTriangle((SoVectorizeTriangle*)item);
+    PRIVATE(this)->printTriangle((SoVectorizeTriangle*)item);
     break;
   case SoVectorizeItem::LINE:
-    this->printLine((SoVectorizeLine*)item);
+    PRIVATE(this)->printLine((SoVectorizeLine*)item);
     break;
   case SoVectorizeItem::POINT:
-    this->printPoint((SoVectorizePoint*)item);
+    PRIVATE(this)->printPoint((SoVectorizePoint*)item);
     break;
   case SoVectorizeItem::TEXT:
-    this->printText((SoVectorizeText*)item);
+    PRIVATE(this)->printText((SoVectorizeText*)item);
     break;
   case SoVectorizeItem::IMAGE:
-    this->printImage((SoVectorizeImage*)item);
+    PRIVATE(this)->printImage((SoVectorizeImage*)item);
     break;
   default:
     assert(0 && "unsupported item");
@@ -379,9 +397,9 @@ static int count_bits(uint16_t mask, int & pos, SbBool onoff)
 // Set up line stipple.
 //
 void
-SoVectorizePSAction::printSetdash(uint16_t pattern) const
+SoVectorizePSActionP::printSetdash(uint16_t pattern) const
 {
-  FILE * file = this->getOutput()->getFilePointer();
+  FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
   fputs("[", file);
 
   int pos = 15;
@@ -403,18 +421,18 @@ SoVectorizePSAction::printSetdash(uint16_t pattern) const
 // make sure we have the correct font
 //
 void
-SoVectorizePSAction::updateFont(const SbString & fontname, const float fontsize) const
+SoVectorizePSActionP::updateFont(const SbString & fontname, const float fontsize)
 {
-  FILE * file = this->getOutput()->getFilePointer();
+  FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
 
-  if (fontname != PRIVATE(this)->fontname ||
-      fontsize != PRIVATE(this)->fontsize) {
+  if (fontname != this->fontname ||
+      fontsize != this->fontsize) {
     fprintf(file, "/%s findfont\n", fontname.getString());
     fprintf(file, "%g scalefont\n", fontsize);
     fprintf(file, "setfont\n");
 
-    PRIVATE(this)->fontname = fontname;
-    PRIVATE(this)->fontsize = fontsize;
+    this->fontname = fontname;
+    this->fontsize = fontsize;
   }
 }
 
@@ -422,20 +440,20 @@ SoVectorizePSAction::updateFont(const SbString & fontname, const float fontsize)
 // Make sure line width and line stipple is correct.
 //
 void
-SoVectorizePSAction::updateLineAttribs(const SoVectorizeLine * line) const
+SoVectorizePSActionP::updateLineAttribs(const SoVectorizeLine * line)
 {
-  FILE * file = this->getOutput()->getFilePointer();
+  FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
 
   float lw = line->width;
   uint16_t lp = line->pattern;
 
-  if (lw != PRIVATE(this)->linewidth) {
-    PRIVATE(this)->linewidth = lw;
-    fprintf(file, "%g setlinewidth\n", this->convertToPS(lw * this->getNominalWidth()));
+  if (lw != this->linewidth) {
+    this->linewidth = lw;
+    fprintf(file, "%g setlinewidth\n", this->convertToPS(lw * PUBLIC(this)->getNominalWidth()));
   }
 
-  if (lp != PRIVATE(this)->linepattern) {
-    PRIVATE(this)->linepattern = lp;
+  if (lp != this->linepattern) {
+    this->linepattern = lp;
     if (lp == 0xffff) {
       fprintf(file, "[] 0 setdash\n");
     }
@@ -449,15 +467,15 @@ SoVectorizePSAction::updateLineAttribs(const SoVectorizeLine * line) const
 // will output a line in postscript format
 //
 void
-SoVectorizePSAction::printLine(const SoVectorizeLine * item) const
+SoVectorizePSActionP::printLine(const SoVectorizeLine * item)
 {
-  FILE * file = this->getOutput()->getFilePointer();
+  FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
 
-  SbVec2f mul = this->convertToPS(this->getRotatedViewportSize());
-  SbVec2f add = this->convertToPS(this->getRotatedViewportStartpos());
+  SbVec2f mul = this->convertToPS(PUBLIC(this)->getRotatedViewportSize());
+  SbVec2f add = this->convertToPS(PUBLIC(this)->getRotatedViewportStartpos());
 
   int i;
-  const SbBSPTree & bsp = this->getBSPTree();
+  const SbBSPTree & bsp = PUBLIC(this)->getBSPTree();
 
   SbVec3f v[2];
   SbColor c[2];
@@ -482,9 +500,9 @@ SoVectorizePSAction::printLine(const SoVectorizeLine * item) const
 // will print a postscript circle
 //
 void
-SoVectorizePSAction::printCircle(const SbVec3f & v, const SbColor & c, const float radius) const
+SoVectorizePSActionP::printCircle(const SbVec3f & v, const SbColor & c, const float radius) const
 {
-  FILE * file = this->getOutput()->getFilePointer();
+  FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
 
   fprintf(file, "newpath %g %g %g 0 360 arc closepath\n", v[0], v[1], radius);
   fprintf(file, "%g %g %g setrgbcolor\n", c[0], c[1], c[2]);
@@ -495,9 +513,9 @@ SoVectorizePSAction::printCircle(const SbVec3f & v, const SbColor & c, const flo
 // will print a postscript square centered in 'v'
 //
 void 
-SoVectorizePSAction::printSquare(const SbVec3f & v, const SbColor & c, const float size) const
+SoVectorizePSActionP::printSquare(const SbVec3f & v, const SbColor & c, const float size) const
 {
-  FILE * file = this->getOutput()->getFilePointer();
+  FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
 
   float s2 = size * 0.5f;
 
@@ -517,14 +535,14 @@ SoVectorizePSAction::printSquare(const SbVec3f & v, const SbColor & c, const flo
 // will output a point in postscript format
 //
 void
-SoVectorizePSAction::printPoint(const SoVectorizePoint * item) const
+SoVectorizePSActionP::printPoint(const SoVectorizePoint * item) const
 {
-  FILE * file = this->getOutput()->getFilePointer();
+  FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
 
-  SbVec2f mul = this->convertToPS(this->getRotatedViewportSize());
-  SbVec2f add = this->convertToPS(this->getRotatedViewportStartpos());
+  SbVec2f mul = this->convertToPS(PUBLIC(this)->getRotatedViewportSize());
+  SbVec2f add = this->convertToPS(PUBLIC(this)->getRotatedViewportStartpos());
 
-  const SbBSPTree & bsp = this->getBSPTree();
+  const SbBSPTree & bsp = PUBLIC(this)->getBSPTree();
 
   SbVec3f v;
   SbColor c;
@@ -535,31 +553,31 @@ SoVectorizePSAction::printPoint(const SoVectorizePoint * item) const
   v[1] = (v[1] * mul[1]) + add[1];
   c.setPackedValue(item->col, t);
 
-  switch (this->getPointStyle()) {
+  switch (PUBLIC(this)->getPointStyle()) {
   default:
     assert(0 && "unknown point style");
-  case CIRCLE:
-    this->printCircle(v, c, this->convertToPS(item->size * this->getNominalWidth() * 0.5f));
+  case SoVectorizeAction::CIRCLE:
+    this->printCircle(v, c, this->convertToPS(item->size * PUBLIC(this)->getNominalWidth() * 0.5f));
     break;
-  case SQUARE:
-    this->printSquare(v, c, this->convertToPS(item->size * this->getNominalWidth()));
+  case SoVectorizeAction::SQUARE:
+    this->printSquare(v, c, this->convertToPS(item->size * PUBLIC(this)->getNominalWidth()));
     break;
   }
 }
 
 void
-SoVectorizePSAction::printTriangle(const SbVec3f * v, const SbColor * c) const
+SoVectorizePSActionP::printTriangle(const SbVec3f * v, const SbColor * c)
 {
   if (v[0] == v[1] || v[1] == v[2] || v[0] == v[2]) return;
   int i;
 
-  FILE * file = this->getOutput()->getFilePointer();
+  FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
 
   SbBool flatshade = 
-    (PRIVATE(this)->gouraudeps == 0.0f) ||
+    (this->gouraudeps == 0.0f) ||
     ((c[0] == c[1]) && (c[1] == c[2]));
   
-  if (flatshade || PRIVATE(this)->dummycnt == 0) {
+  if (flatshade || this->dummycnt == 0) {
     SbColor a = (c[0] + c[1] + c[2]) / 3.0f;
     
     // flatshaded
@@ -579,14 +597,14 @@ SoVectorizePSAction::printTriangle(const SbVec3f * v, const SbColor * c) const
             c[1][0], c[1][1], c[1][2],
             c[2][0], c[2][1], c[2][2]);
   }
-  PRIVATE(this)->dummycnt++;
+  this->dummycnt++;
 
   // FIXME: For some reason the gouraud-triangle macro fails if it's
   // the first triangle that is drawn. We work around this by always
   // rendering the first triangle as a flatshaded triangle, and then
   // overwriting it again with the gouraud version... Really strange,
   // pederb, 2003-06-30
-  if (PRIVATE(this)->dummycnt == 1 && !flatshade) {
+  if (this->dummycnt == 1 && !flatshade) {
     this->printTriangle(v, c);
   }
 }
@@ -595,15 +613,15 @@ SoVectorizePSAction::printTriangle(const SbVec3f * v, const SbColor * c) const
 // will output a triangle in postscript format
 //
 void
-SoVectorizePSAction::printTriangle(const SoVectorizeTriangle * item) const
+SoVectorizePSActionP::printTriangle(const SoVectorizeTriangle * item)
 {
-  FILE * file = this->getOutput()->getFilePointer();
+  FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
 
-  SbVec2f mul = this->convertToPS(this->getRotatedViewportSize());
-  SbVec2f add = this->convertToPS(this->getRotatedViewportStartpos());
+  SbVec2f mul = this->convertToPS(PUBLIC(this)->getRotatedViewportSize());
+  SbVec2f add = this->convertToPS(PUBLIC(this)->getRotatedViewportStartpos());
 
   int i;
-  const SbBSPTree & bsp = this->getBSPTree();
+  const SbBSPTree & bsp = PUBLIC(this)->getBSPTree();
 
   SbVec3f v[3];
   SbColor c[3];
@@ -623,11 +641,11 @@ SoVectorizePSAction::printTriangle(const SoVectorizeTriangle * item) const
 // will output an image in postscript format
 //
 void
-SoVectorizePSAction::printImage(const SoVectorizeImage * item) const
+SoVectorizePSActionP::printImage(const SoVectorizeImage * item) const
 {
-  FILE * fp = this->getOutput()->getFilePointer();
-  SbVec2f mul = this->convertToPS(this->getRotatedViewportSize());
-  SbVec2f add = this->convertToPS(this->getRotatedViewportStartpos());
+  FILE * fp = PUBLIC(this)->getOutput()->getFilePointer();
+  SbVec2f mul = this->convertToPS(PUBLIC(this)->getRotatedViewportSize());
+  SbVec2f add = this->convertToPS(PUBLIC(this)->getRotatedViewportStartpos());
 
   fprintf(fp, "gsave\n");
   fprintf(fp, "%% workaround for bug in some PS interpreters\n");
@@ -699,16 +717,16 @@ SoVectorizePSAction::printImage(const SoVectorizeImage * item) const
 // will output text in postscript format
 //
 void
-SoVectorizePSAction::printText(const SoVectorizeText * item) const
+SoVectorizePSActionP::printText(const SoVectorizeText * item)
 {
-  FILE * file = this->getOutput()->getFilePointer();
+  FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
 
-  SbVec2f mul = this->convertToPS(this->getRotatedViewportSize());
-  SbVec2f add = this->convertToPS(this->getRotatedViewportStartpos());
+  SbVec2f mul = this->convertToPS(PUBLIC(this)->getRotatedViewportSize());
+  SbVec2f add = this->convertToPS(PUBLIC(this)->getRotatedViewportStartpos());
 
   SbString fontname = item->fontname.getString();
   if (fontname == "defaultFont") {
-    fontname = PRIVATE(this)->default2dfont;
+    fontname = this->default2dfont;
   }
 
   SbColor c;
@@ -742,16 +760,16 @@ SoVectorizePSAction::printText(const SoVectorizeText * item) const
 
 // a standard PS unit is 1/72 inch
 SbVec2f
-SoVectorizePSAction::convertToPS(const SbVec2f & mm) const
+SoVectorizePSActionP::convertToPS(const SbVec2f & mm) const
 {
-  return from_mm(mm, INCH) * 72.0f;
+  return from_mm(mm, SoVectorizeAction::INCH) * 72.0f;
 }
 
 // a standard PS unit is 1/72 inch
 float
-SoVectorizePSAction::convertToPS(const float mm) const
+SoVectorizePSActionP::convertToPS(const float mm) const
 {
-  return from_mm(mm, INCH) * 72.0f;
+  return from_mm(mm, SoVectorizeAction::INCH) * 72.0f;
 }
 
 // *************************************************************************

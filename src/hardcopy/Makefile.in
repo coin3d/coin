@@ -239,7 +239,6 @@ target_alias = @target_alias@
 target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
-
 ExtraIncludeDirs = -I$(top_srcdir)/include/Inventor/annex
 RegularSources = \
 	HardCopy.cpp \
@@ -258,11 +257,10 @@ PublicHeaders = \
 	../../include/Inventor/annex/HardCopy/SoPSVectorOutput.h \
 	../../include/Inventor/annex/HardCopy/SoVectorOutput.h \
 	../../include/Inventor/annex/HardCopy/SoVectorizeAction.h \
-	../../include/Inventor/annex/HardCopy/SoVectorizeItems.h \
 	../../include/Inventor/annex/HardCopy/SoVectorizePSAction.h
 
 
-PrivateHeaders = VectorizeActionP.h
+PrivateHeaders = VectorizeActionP.h VectorizeItems.h
 
 
 # **************************************************************************
@@ -338,11 +336,10 @@ am__EXTRA_hardcopy_lst_SOURCES_DIST = \
 	../../include/Inventor/annex/HardCopy/SoPSVectorOutput.h \
 	../../include/Inventor/annex/HardCopy/SoVectorOutput.h \
 	../../include/Inventor/annex/HardCopy/SoVectorizeAction.h \
-	../../include/Inventor/annex/HardCopy/SoVectorizeItems.h \
 	../../include/Inventor/annex/HardCopy/SoVectorizePSAction.h \
-	VectorizeActionP.h all.cpp HardCopy.cpp PSVectorOutput.cpp \
-	VectorOutput.cpp VectorizeAction.cpp VectorizeActionP.cpp \
-	VectorizePSAction.cpp
+	VectorizeActionP.h VectorizeItems.h all.cpp HardCopy.cpp \
+	PSVectorOutput.cpp VectorOutput.cpp VectorizeAction.cpp \
+	VectorizeActionP.cpp VectorizePSAction.cpp
 hardcopy_lst_OBJECTS = $(am_hardcopy_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -362,11 +359,10 @@ am__EXTRA_libhardcopy_la_SOURCES_DIST = \
 	../../include/Inventor/annex/HardCopy/SoPSVectorOutput.h \
 	../../include/Inventor/annex/HardCopy/SoVectorOutput.h \
 	../../include/Inventor/annex/HardCopy/SoVectorizeAction.h \
-	../../include/Inventor/annex/HardCopy/SoVectorizeItems.h \
 	../../include/Inventor/annex/HardCopy/SoVectorizePSAction.h \
-	VectorizeActionP.h all.cpp HardCopy.cpp PSVectorOutput.cpp \
-	VectorOutput.cpp VectorizeAction.cpp VectorizeActionP.cpp \
-	VectorizePSAction.cpp
+	VectorizeActionP.h VectorizeItems.h all.cpp HardCopy.cpp \
+	PSVectorOutput.cpp VectorOutput.cpp VectorizeAction.cpp \
+	VectorizeActionP.cpp VectorizePSAction.cpp
 libhardcopy_la_OBJECTS = $(am_libhardcopy_la_OBJECTS)
 libhardcopy@SUFFIX@LINKHACK_la_LDFLAGS =
 libhardcopy@SUFFIX@LINKHACK_la_LIBADD =
@@ -379,11 +375,10 @@ am__EXTRA_libhardcopy@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/annex/HardCopy/SoPSVectorOutput.h \
 	../../include/Inventor/annex/HardCopy/SoVectorOutput.h \
 	../../include/Inventor/annex/HardCopy/SoVectorizeAction.h \
-	../../include/Inventor/annex/HardCopy/SoVectorizeItems.h \
 	../../include/Inventor/annex/HardCopy/SoVectorizePSAction.h \
-	VectorizeActionP.h all.cpp HardCopy.cpp PSVectorOutput.cpp \
-	VectorOutput.cpp VectorizeAction.cpp VectorizeActionP.cpp \
-	VectorizePSAction.cpp
+	VectorizeActionP.h VectorizeItems.h all.cpp HardCopy.cpp \
+	PSVectorOutput.cpp VectorOutput.cpp VectorizeAction.cpp \
+	VectorizeActionP.cpp VectorizePSAction.cpp
 libhardcopy@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libhardcopy@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp

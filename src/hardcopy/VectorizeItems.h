@@ -29,7 +29,7 @@
 
 #include <Inventor/SbBasic.h>
 
-class COIN_DLL_API SoVectorizeItem {
+class SoVectorizeItem {
 public:
   SoVectorizeItem() {
     this->type = UNDEFINED;
@@ -48,7 +48,7 @@ public:
   float depth; // for depth sorting
 };
 
-class COIN_DLL_API SoVectorizePoint : public SoVectorizeItem {
+class SoVectorizePoint : public SoVectorizeItem {
 public:
   SoVectorizePoint(void) {
     this->type = POINT;
@@ -59,7 +59,7 @@ public:
   uint32_t col;
 };
 
-class COIN_DLL_API SoVectorizeTriangle : public SoVectorizeItem {
+class SoVectorizeTriangle : public SoVectorizeItem {
 public:
   SoVectorizeTriangle(void) {
     this->type = TRIANGLE;
@@ -68,7 +68,7 @@ public:
   uint32_t col[3];
 };
 
-class COIN_DLL_API SoVectorizeLine : public SoVectorizeItem {
+class SoVectorizeLine : public SoVectorizeItem {
 public:
   SoVectorizeLine(void) {
     this->type = LINE;
@@ -81,7 +81,7 @@ public:
   float width;       // Coin line width (pixels)
 };
 
-class COIN_DLL_API SoVectorizeText : public SoVectorizeItem {
+class SoVectorizeText : public SoVectorizeItem {
 public:
   SoVectorizeText(void) {
     this->type = TEXT;
@@ -101,7 +101,7 @@ public:
   Justification justification;
 };
 
-class COIN_DLL_API SoVectorizeImage : public SoVectorizeItem {
+class SoVectorizeImage : public SoVectorizeItem {
 public:
   SoVectorizeImage(void) {
     this->type = IMAGE;

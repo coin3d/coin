@@ -1,6 +1,3 @@
-## Process this file with automake to generate Makefile.in.
-## 19990904 mortene.
-
 ExtraIncludeDirs = -I$(top_srcdir)/include/Inventor/annex
 RegularSources = \
 	HardCopy.cpp \
@@ -9,7 +6,7 @@ RegularSources = \
 	VectorizeAction.cpp \
 	VectorizeActionP.cpp \
 	VectorizePSAction.cpp
-	
+
 LinkHackSources = \
 	all.cpp
 PublicHeaders = \
@@ -17,10 +14,9 @@ PublicHeaders = \
 	../../include/Inventor/annex/HardCopy/SoPSVectorOutput.h \
 	../../include/Inventor/annex/HardCopy/SoVectorOutput.h \
 	../../include/Inventor/annex/HardCopy/SoVectorizeAction.h \
-	../../include/Inventor/annex/HardCopy/SoVectorizeItems.h \
 	../../include/Inventor/annex/HardCopy/SoVectorizePSAction.h
 
-PrivateHeaders = VectorizeActionP.h
+PrivateHeaders = VectorizeActionP.h VectorizeItems.h
 
 ##$ BEGIN TEMPLATE Make-Common(hardcopy, annex/HardCopy)
 # **************************************************************************
