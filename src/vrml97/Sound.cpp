@@ -332,10 +332,9 @@ SoVRMLSound::SoVRMLSound(void)
 
   alGenSources(1, &(THIS->sourceId));
   if ((error = alGetError()) != AL_NO_ERROR) {
-    char errstr[256];
     SoDebugError::post("SoVRMLSound::SoVRMLSound",
                        "alGenSources failed. %s",
-                       GetALErrorString(errstr, error));
+                       coin_get_openal_error(error));
     return;
   }
   THIS->alBuffers = NULL;
@@ -374,10 +373,9 @@ SoVRMLSound::~SoVRMLSound(void)
   ALint  error;
   alDeleteSources(1, &(THIS->sourceId));
   if ((error = alGetError()) != AL_NO_ERROR) {
-    char errstr[256];
     SoDebugError::postWarning("SoVRMLSound::~SoVRMLSound",
                               "alDeleteSources() failed. %s",
-                              GetALErrorString(errstr, error));
+                              coin_get_openal_error(error));
   }
   THIS->deleteAlBuffers();
 #endif
@@ -467,10 +465,9 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   // Position ...
   alSourcefv(THIS->sourceId, AL_POSITION, alfloat3);
   if ((error = alGetError()) != AL_NO_ERROR) {
-    char errstr[256];
     SoDebugError::postWarning("SoVRMLSound::audioRender",
                               "alSourcefv(,AL_POSITION,) failed. %s",
-                              GetALErrorString(errstr, error));
+                              coin_get_openal_error(error));
     return;
   }
 
@@ -482,10 +479,9 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 
   alSourcefv(this->sourceId, AL_VELOCITY, alfloat3);
   if ((error = alGetError()) != AL_NO_ERROR) {
-    char errstr[256];
     SoDebugError::postWarning("SoVRMLSound::GLRender",
                               "alSourcefv(,AL_VELOCITY,) failed. %s",
-                              GetALErrorString(errstr, error));
+                              coin_get_openal_error(error));
     return;
   }
 #endif
@@ -493,10 +489,9 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   // Gain / intensity
   alSourcef(THIS->sourceId,AL_GAIN, this->intensity.getValue());
   if ((error = alGetError()) != AL_NO_ERROR) {
-    char errstr[256];
     SoDebugError::postWarning("SoVRMLSound::audioRender",
                               "alSourcef(,AL_GAIN,) failed. %s",
-                              GetALErrorString(errstr, error));
+                              coin_get_openal_error(error));
     return;
   }
 
@@ -666,10 +661,9 @@ SbBool SoVRMLSoundP::stopPlaying()
 
   alSourceStop(this->sourceId);
   if ((error = alGetError()) != AL_NO_ERROR) {
-    char errstr[256];
     SoDebugError::postWarning("SoVRMLSound::stopPlaying",
                               "alSourceStop failed. %s",
-                              GetALErrorString(errstr, error));
+                              coin_get_openal_error(error));
     retval= FALSE;
   }
 
@@ -682,10 +676,9 @@ SbBool SoVRMLSoundP::stopPlaying()
   // alSourceUnqueueBuffers(this->sourceId, this->numBuffers, this->alBuffers);
   alSourceUnqueueBuffers(this->sourceId, processed, this->alBuffers);
   if ((error = alGetError()) != AL_NO_ERROR) {
-    char errstr[256];
     SoDebugError::postWarning("SoVRMLSoundP::stopPlaying",
                               "alSourceUnqueueBuffers failed. %s",
-                              GetALErrorString(errstr, error));
+                              coin_get_openal_error(error));
     retval = FALSE;
   }
 
@@ -724,10 +717,9 @@ SbBool SoVRMLSoundP::startPlaying()
   this->alBuffers = new ALuint[this->numBuffers];
   alGenBuffers(this->numBuffers, this->alBuffers);
   if ((error = alGetError()) != AL_NO_ERROR) {
-    char errstr[256];
     SoDebugError::postWarning("SoVRMLSoundP::startPlaying",
                               "alGenBuffers failed. %s",
-                              GetALErrorString(errstr, error));
+                              coin_get_openal_error(error));
     return FALSE;
   }
 
@@ -762,10 +754,9 @@ SbBool SoVRMLSoundP::startPlaying()
       this->bufferLength * sizeof(int16_t) * this->channels, 
       this->currentAudioClip->getSampleRate());
     if ((error = alGetError()) != AL_NO_ERROR) {
-      char errstr[256];
       SoDebugError::postWarning("SoVRMLSoundP::startPlaying",
                                 "alBufferData failed. %s",
-                                GetALErrorString(errstr, error));
+                                coin_get_openal_error(error));
       return FALSE;
     }
   }
@@ -776,19 +767,17 @@ SbBool SoVRMLSoundP::startPlaying()
   //alSourceQueueBuffers(this->sourceId, this->numBuffers, this->alBuffers);
   alSourceQueueBuffers(this->sourceId, bufferno, this->alBuffers);
   if ((error = alGetError()) != AL_NO_ERROR) {
-    char errstr[256];
     SoDebugError::postWarning("SoVRMLSoundP::startPlaying",
                               "alSourceQueueBuffers failed. %s",
-                              GetALErrorString(errstr, error));
+                              coin_get_openal_error(error));
     return FALSE;
   }
 
   alSourcei(this->sourceId,AL_LOOPING, FALSE);
   if ((error = alGetError()) != AL_NO_ERROR) {
-    char errstr[256];
     SoDebugError::postWarning("SoVRMLSoundP::startPlaying",
                               "alSourcei(,AL_LOOPING,) failed. %s",
-                              GetALErrorString(errstr, error));
+                              coin_get_openal_error(error));
     return FALSE;
   }
 
@@ -824,10 +813,9 @@ SbBool SoVRMLSoundP::startPlaying()
 
   alSourcePlay(this->sourceId);
   if ((error = alGetError()) != AL_NO_ERROR) {
-    char errstr[256];
     SoDebugError::postWarning("SoVRMLSoundP::StartPlaying",
                               "alSourcePlay failed. %s",
-                              GetALErrorString(errstr, error));
+                              coin_get_openal_error(error));
     return FALSE;
   }
 
@@ -893,10 +881,9 @@ void SoVRMLSoundP::fillBuffers()
 
     alSourceUnqueueBuffers(this->sourceId, 1, &BufferID);
     if ((error = alGetError()) != AL_NO_ERROR) {
-      char errstr[256];
       SoDebugError::post("SoVRMLSound::fillBuffers",
                          "alSourceUnqueueBuffers failed. %s",
-                         GetALErrorString(errstr, error));
+                         coin_get_openal_error(error));
       this->errorInThread = TRUE;
       return;
     }
@@ -925,10 +912,9 @@ void SoVRMLSoundP::fillBuffers()
       this->bufferLength * sizeof(int16_t) * this->channels, 
       this->currentAudioClip->getSampleRate());
     if ((error = alGetError()) != AL_NO_ERROR) {
-      char errstr[256];
       SoDebugError::post("SoVRMLSound::fillBuffers",
                          "alBufferData failed. %s",
-                         GetALErrorString(errstr, error));
+                         coin_get_openal_error(error));
       this->errorInThread = TRUE;
       return;
     }
@@ -936,10 +922,9 @@ void SoVRMLSoundP::fillBuffers()
     // Queue buffer
     alSourceQueueBuffers(this->sourceId, 1, &BufferID);
     if ((error = alGetError()) != AL_NO_ERROR) {
-      char errstr[256];
       SoDebugError::post("SoVRMLSound::fillBuffers",
                          "alSourceQueueBuffers failed. %s",
-                         GetALErrorString(errstr, error));
+                         coin_get_openal_error(error));
       this->errorInThread = TRUE;
       return;
     }
@@ -963,10 +948,9 @@ void SoVRMLSoundP::fillBuffers()
     if (state == AL_STOPPED) {
       alSourcePlay(this->sourceId);
       if ((error = alGetError()) != AL_NO_ERROR) {
-        char errstr[256];
         SoDebugError::post("SoVRMLSoundP::fillBuffers",
                            "alSourcePlay failed. %s",
-                           GetALErrorString(errstr, error));
+                           coin_get_openal_error(error));
         this->errorInThread = TRUE;
         return;
       }
@@ -1053,10 +1037,9 @@ SoVRMLSoundP::sourceSensorCB(SoSensor *)
   alSourcef(this->sourceId, AL_PITCH, this->currentAudioClip->pitch.getValue());
   if ((error = alGetError()) != AL_NO_ERROR)
   {
-    char errstr[256];
     SoDebugError::postWarning("SoVRMLSoundP::sourceSensorCB",
                               "alSourcef(,AL_PITCH,) failed. %s",
-                              GetALErrorString(errstr, error));
+                              coin_get_openal_error(error));
     return;
   }
 #endif // pitch support

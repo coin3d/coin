@@ -24,16 +24,8 @@
  *
 \**************************************************************************/
 
-#if HAVE_CONFIG_H
-#include <config.h>
-#endif
+class SbString;
 
-#ifdef HAVE_SOUND
-
-#include <AL/altypes.h>
-
-char *GetALErrorString(char *text, ALint errorcode);
-
-#endif // HAVE_SOUND
+const char * coin_get_openal_error(int errcode);
 
 #endif // COIN_AUDIOTOOLS_H

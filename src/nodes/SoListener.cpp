@@ -60,12 +60,11 @@ SoListener::~SoListener()
 }
 
 #ifdef HAVE_SOUND
-#ifndef DOXYGEN_SKIP_THIS
-inline void SbVec3f2ALfloat3(ALfloat *dest, const SbVec3f &source)
+inline void
+SbVec3f2ALfloat3(ALfloat *dest, const SbVec3f &source)
 {
   source.getValue(dest[0], dest[1], dest[2]);
 }
-#endif // DOXYGEN_SKIP_THIS
 #endif // HAVE_SOUND
 
 void SoListener::audioRender(SoAudioRenderAction *action)
@@ -93,10 +92,9 @@ void SoListener::audioRender(SoAudioRenderAction *action)
   // Position ...
   alListenerfv(AL_POSITION, alfloat3);
   if ((error = alGetError()) != AL_NO_ERROR) {
-    char errstr[256];
     SoDebugError::postWarning("SoListener::audioRender",
                               "alListenerfv(AL_POSITION,) failed. %s",
-                              GetALErrorString(errstr, error));
+                              coin_get_openal_error(error));
     return;
   }
 
@@ -105,10 +103,9 @@ void SoListener::audioRender(SoAudioRenderAction *action)
 
   alListenerfv(AL_VELOCITY, alfloat3);
   if ((error = alGetError()) != AL_NO_ERROR) {
-    char errstr[256];
     SoDebugError::postWarning("SoListener::audioRender",
                               "alListenerfv(AL_VELOCITY,) failed. %s",
-                              GetALErrorString(errstr, error));
+                              coin_get_openal_error(error));
     return;
   }
 
@@ -121,10 +118,9 @@ void SoListener::audioRender(SoAudioRenderAction *action)
 
   alListenerfv(AL_ORIENTATION,alfloat6);
   if ((error = alGetError()) != AL_NO_ERROR) {
-    char errstr[256];
     SoDebugError::postWarning("SoListener::audioRender",
                               "alListenerfv(AL_ORIENTATION,) failed. %s",
-                              GetALErrorString(errstr, error));
+                              coin_get_openal_error(error));
     return;
   }
 
@@ -133,10 +129,9 @@ void SoListener::audioRender(SoAudioRenderAction *action)
   gain = gain<0.0f ? 0.0f : ( gain>1.0f ? 1.0f : gain );  // clamp to [0.0f, 1.0f];
   alListenerf(AL_GAIN, gain);
   if ((error = alGetError()) != AL_NO_ERROR) {
-    char errstr[256];
     SoDebugError::postWarning("SoListener::audioRender",
                               "alListenerf(AL_GAIN,) failed. %s",
-                              GetALErrorString(errstr, error));
+                              coin_get_openal_error(error));
     return;
   }
 #endif // HAVE_SOUND

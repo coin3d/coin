@@ -23,41 +23,54 @@
 
 #include "AudioTools.h"
 #include <stdio.h>
+#include <assert.h>
+#include <AL/altypes.h>
+#include <Inventor/SbString.h>
 
-#ifdef HAVE_SOUND
+// There are some differences in error defines between different
+// versions of OpenAL, and we try to fix them up below.
+//
+// (It even looks like some of these defines have been set up
+// exclusively for MSWindows usage, while others are for other
+// platforms. Really great interface design there from the OpenAL
+// developers...)
+#ifndef AL_ILLEGAL_ENUM
+#define AL_ILLEGAL_ENUM AL_INVALID_ENUM
+#endif // !AL_ILLEGAL_ENUM
+#ifndef AL_ILLEGAL_COMMAND
+#define AL_ILLEGAL_COMMAND AL_INVALID_OPERATION
+#endif // !AL_ILLEGAL_COMMAND
 
-char *GetALErrorString(char *text, ALint errorcode)
+
+const char *
+coin_get_openal_error(int errcode)
 {
-  // text should be at least char[255]
-  switch (errorcode) {
+#ifndef HAVE_SOUND
+
+  assert(FALSE && "coin_get_openal_error() invoked without sound support");
+  return NULL;
+
+#else // HAVE_SOUND
+
+  switch ((ALint)errcode) {
     case AL_INVALID_NAME:
-      sprintf(text, "AL_INVALID_NAME - Illegal name passed as an argument to an AL call");
-      break;
-#ifdef _WIN32
-    case AL_INVALID_ENUM:
-#else
+      return "AL_INVALID_NAME - Illegal name passed as an argument to an AL call";
+
     case AL_ILLEGAL_ENUM:
-#endif
-      sprintf(text, "AL_INVALID_ENUM - Illegal enum passed as an argument to an AL call");
-      break;
+      return "AL_INVALID_ENUM - Illegal enum passed as an argument to an AL call";
+
     case AL_INVALID_VALUE:
-      sprintf(text, "AL_INVALID_VALUE - Illegal value passed as an argument to an AL call");
-      break;
-#ifdef _WIN32
-    case AL_INVALID_OPERATION:
-#else
+      return "AL_INVALID_VALUE - Illegal value passed as an argument to an AL call";
+
     case AL_ILLEGAL_COMMAND:
-#endif
-      sprintf(text, "AL_INVALID_OPERATION - A function was called at an inappropriate time or in an inappropriate way, causing an illegal state. This can be an incompatible ALenum, object ID, and/or function");
-      break;
+      return "AL_INVALID_OPERATION - A function was called at an inappropriate time or in an inappropriate way, causing an illegal state. This can be an incompatible ALenum, object ID, and/or function";
+
     case AL_OUT_OF_MEMORY:
-      sprintf(text, "AL_OUT_OF_MEMORY - A function could not be completed, because there is not enough memory available.");
-      break;
+      return "AL_OUT_OF_MEMORY - A function could not be completed, because there is not enough memory available.";
+
     default:
-      sprintf(text, "UNDEFINED ERROR");
-      break;
+      return "UNDEFINED ERROR";
   }
-  return text;
-}
 
 #endif // HAVE_SOUND
+}
