@@ -9,7 +9,10 @@ EXTRA_DIST = \
              data/draggerDefaults/tabBoxDragger.iv \
              data/draggerDefaults/dragPointDragger.iv \
              data/draggerDefaults/pointLightDragger.iv \
+             data/draggerDefaults/directionalLightDragger.iv \
+             data/draggerDefaults/spotLightDragger.iv \
              data/draggerDefaults/handleBoxDragger.iv \
+             data/draggerDefaults/jackDragger.iv \
              data/draggerDefaults/trackballDragger.iv \
              data/draggerDefaults/scaleUniformDragger.iv \
              data/draggerDefaults/scale2UniformDragger.iv \
@@ -29,7 +32,10 @@ draggerdefdata_DATA =	translate1Dragger.iv \
 			tabBoxDragger.iv \
 			dragPointDragger.iv \
 			pointLightDragger.iv \
+			directionalLightDragger.iv \
+			spotLightDragger.iv \
 			handleBoxDragger.iv \
+			jackDragger.iv \
 			trackballDragger.iv \
 			scaleUniformDragger.iv \
 			scale2UniformDragger.iv \
@@ -52,7 +58,10 @@ BUILT_SOURCES = \
 	tabBoxDragger.h \
 	dragPointDragger.h \
 	pointLightDragger.h \
+	directionalLightDragger.h \
+	spotLightDragger.h \
 	handleBoxDragger.h \
+	jackDragger.h \
 	trackballDragger.h \
 	scaleUniformDragger.h \
 	scale2UniformDragger.h \
@@ -84,8 +93,17 @@ dragPointDragger.h: $(top_srcdir)/data/draggerDefaults/dragPointDragger.iv $(top
 pointLightDragger.h: $(top_srcdir)/data/draggerDefaults/pointLightDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/pointLightDragger.iv > pointLightDragger.h
 
+directionalLightDragger.h: $(top_srcdir)/data/draggerDefaults/directionalLightDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
+	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/directionalLightDragger.iv > directionalLightDragger.h
+
+spotLightDragger.h: $(top_srcdir)/data/draggerDefaults/spotLightDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
+	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/spotLightDragger.iv > spotLightDragger.h
+
 handleBoxDragger.h: $(top_srcdir)/data/draggerDefaults/handleBoxDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/handleBoxDragger.iv > handleBoxDragger.h
+
+jackDragger.h: $(top_srcdir)/data/draggerDefaults/jackDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
+	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/jackDragger.iv > jackDragger.h
 
 trackballDragger.h: $(top_srcdir)/data/draggerDefaults/trackballDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/trackballDragger.iv > trackballDragger.h

@@ -32,6 +32,8 @@
 #include <coindefs.h> // COIN_STUB()
 #include <math.h>
 
+#include <data/draggerDefaults/spotLightDragger.h>
+
 SO_KIT_SOURCE(SoSpotLightDragger);
 
 void
@@ -57,7 +59,9 @@ SoSpotLightDragger::SoSpotLightDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(beamActive, SoSeparator, TRUE, beamSwitch, "", TRUE);
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("spotLightDragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("spotLightDragger.iv",
+                                       SPOTLIGHTDRAGGER_draggergeometry,
+                                       sizeof(SPOTLIGHTDRAGGER_draggergeometry));
   }
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));

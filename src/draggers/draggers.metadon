@@ -14,10 +14,10 @@
 # HIERARCHY
 # i -  SoDragger
 # I G      SoCenterballDragger
-# I        SoDirectionalLightDragger
+# I G      SoDirectionalLightDragger
 # I G      SoDragPointDragger
 # I G      SoHandleBoxDragger
-# I        SoJackDragger
+# I G      SoJackDragger
 # I G      SoPointLightDragger
 # I G      SoRotateCylindricalDragger
 # I G      SoRotateDiscDragger
@@ -26,9 +26,9 @@
 # I G      SoScale2Dragger
 # I G      SoScale2UniformDragger
 # I G      SoScaleUniformDragger
-# I        SoSpotLightDragger
-# I        SoTabBoxDragger
-# I        SoTabPlaneDragger
+# I G      SoSpotLightDragger
+# I G      SoTabBoxDragger
+# I G      SoTabPlaneDragger
 # I G      SoTrackballDragger
 # I G      SoTransformBoxDragger
 # i        SoTransformerDragger

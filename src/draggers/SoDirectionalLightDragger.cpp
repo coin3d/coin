@@ -27,6 +27,8 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <coindefs.h> // COIN_STUB()
 
+#include <data/draggerDefaults/directionalLightDragger.h>
+
 
 SO_KIT_SOURCE(SoDirectionalLightDragger);
 
@@ -48,7 +50,9 @@ SoDirectionalLightDragger::SoDirectionalLightDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(translatorSep, SoSeparator, TRUE, topSeparator, rotator, FALSE);
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("directionalLightDragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("directionalLightDragger.iv",
+                                       DIRECTIONALLIGHTDRAGGER_draggergeometry,
+                                       sizeof(DIRECTIONALLIGHTDRAGGER_draggergeometry));
   }
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));

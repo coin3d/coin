@@ -35,6 +35,7 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <coindefs.h> // COIN_STUB()
 
+#include <data/draggerDefaults/jackDragger.h>
 
 SO_KIT_SOURCE(SoJackDragger);
 
@@ -60,7 +61,9 @@ SoJackDragger::SoJackDragger(void)
 
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("jackDragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("jackDragger.iv",
+                                       JACKDRAGGER_draggergeometry,
+                                       sizeof(JACKDRAGGER_draggergeometry));
   }
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
