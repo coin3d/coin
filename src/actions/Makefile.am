@@ -12,7 +12,6 @@ PublicHeaders = \
 	../../include/Inventor/actions/SoGetMatrixAction.h \
 	../../include/Inventor/actions/SoGetPrimitiveCountAction.h \
 	../../include/Inventor/actions/SoHandleEventAction.h \
-	../../include/Inventor/collision/SoIntersectionDetectionAction.h \
 	../../include/Inventor/actions/SoLineHighlightRenderAction.h \
 	../../include/Inventor/actions/SoPickAction.h \
 	../../include/Inventor/actions/SoRayPickAction.h \
@@ -22,10 +21,7 @@ PublicHeaders = \
 	../../include/Inventor/actions/SoWriteAction.h \
 	../../include/Inventor/actions/SoAudioRenderAction.h
 PrivateHeaders = \
-	../../include/Inventor/actions/SoSubActionP.h \
-	SbTri3f.icc SbTri3f.ih
-LinkHackSources = \
-	all.cpp
+	../../include/Inventor/actions/SoSubActionP.h
 RegularSources = \
 	SoAction.cpp \
 	SoBoxHighlightRenderAction.cpp \
@@ -35,7 +31,6 @@ RegularSources = \
 	SoGetMatrixAction.cpp \
 	SoGetPrimitiveCountAction.cpp \
 	SoHandleEventAction.cpp \
-	SoIntersectionDetectionAction.cpp \
 	SoLineHighlightRenderAction.cpp \
 	SoPickAction.cpp \
 	SoRayPickAction.cpp \
@@ -44,35 +39,8 @@ RegularSources = \
 	SoToVRML2Action.cpp \
 	SoWriteAction.cpp \
 	SoAudioRenderAction.cpp
-
-# The SoIntersectionDetectionAction header needs to be under
-# Inventor/collision/ for TGS compatibility.
-#
-# FIXME: it'd be easier to place a Makefile.am under include/Inventor/collision
-# and let that install the file. 20030324 mortene.
-
-if BUILD_LIBRARY
-if MAC_FRAMEWORK
-libcollisionincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/collision
-else
-libcollisionincdir = $(includedir)/Inventor/collision
-endif
-libcollisioninc_HEADERS = \
-	../../include/Inventor/collision/SoIntersectionDetectionAction.h
-
-install-libcollisionincHEADERS: $(libcollisioninc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libcollisionincdir)
-	@list='$(libcollisioninc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(libcollisionincdir)/$$f"; \
-	  if cmp -s "$$src" "$$dst"; then :; else \
-	    echo " $(INSTALL_HEADER) $$src $$dst"; \
-	    $(INSTALL_HEADER) "$$src" "$$dst"; \
-	  fi \
-	done
-endif
+LinkHackSources = \
+	all.cpp
 
 ##$ BEGIN TEMPLATE Make-Common(actions, actions)
 # **************************************************************************

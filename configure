@@ -26060,7 +26060,8 @@ else
 fi;
 
 sim_ac_have_freetype=false
-if $enable_dl_freetype && $coin_can_do_runtime_linking; then
+if test x"$sim_ac_have_win32_api" = x"false"; then
+  if $enable_dl_freetype && $coin_can_do_runtime_linking; then
 
 cat >>confdefs.h <<_ACEOF
 #define FREETYPE_RUNTIME_LINKING 1
@@ -26073,8 +26074,8 @@ else
   sim_ac_configuration_settings="FreeType support:Yes, run-time binding"
 fi
 
-else
-  : ${sim_ac_have_freetype=false}
+  else
+    : ${sim_ac_have_freetype=false}
 
 # Check whether --with-freetype or --without-freetype was given.
 if test "${with_freetype+set}" = set; then
@@ -26277,12 +26278,12 @@ cat >>confdefs.h <<\_ACEOF
 #define HAVE_FREETYPE 1
 _ACEOF
 
-    CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"
-    LDFLAGS="$LDFLAGS $sim_ac_freetype_ldflags"
-    LIBS="$sim_ac_freetype_libs $LIBS"
-    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_freetype_cppflags"
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_freetype_ldflags"
-    COIN_EXTRA_LIBS="$sim_ac_freetype_libs $COIN_EXTRA_LIBS"
+      CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"
+      LDFLAGS="$LDFLAGS $sim_ac_freetype_ldflags"
+      LIBS="$sim_ac_freetype_libs $LIBS"
+      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_freetype_cppflags"
+      COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_freetype_ldflags"
+      COIN_EXTRA_LIBS="$sim_ac_freetype_libs $COIN_EXTRA_LIBS"
 
 if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType support:Yes, link-time binding"
@@ -26295,7 +26296,7 @@ fi
     echo "$as_me:$LINENO: result: failure" >&5
 echo "${ECHO_T}failure" >&6
 
-    if $sim_ac_freetype_desired; then
+      if $sim_ac_freetype_desired; then
 
 if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType support:No"
@@ -26303,14 +26304,14 @@ else
   sim_ac_configuration_settings="FreeType support:No"
 fi
 
-    fi
+      fi
 
   fi
 else
   echo "$as_me:$LINENO: result: disabled" >&5
 echo "${ECHO_T}disabled" >&6
 
-    if $sim_ac_freetype_desired; then
+      if $sim_ac_freetype_desired; then
 
 if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType support:No"
@@ -26318,12 +26319,24 @@ else
   sim_ac_configuration_settings="FreeType support:No"
 fi
 
-    fi
+      fi
 
 fi
 # unset sim_ac_want_freetype
 
+  fi
+else
+  # It should be made possible to enable freetype on cygwin/mks too if
+  # needed, but for now we override use of freetype with the win32 api.
+
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType support:No, using Win32 API instead"
+else
+  sim_ac_configuration_settings="FreeType support:No, using Win32 API instead"
 fi
+
+fi
+
 
 
 if $sim_ac_have_freetype; then
@@ -30886,7 +30899,7 @@ fi
 
 # **************************************************************************
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/glue/Makefile include/Inventor/C/threads/Makefile include/Inventor/lock/Makefile include/Inventor/system/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/elements/GL/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/glue/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/3ds/Makefile src/sensors/Makefile src/upgraders/Makefile src/shapenodes/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile src/hardcopy/Makefile"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/glue/Makefile include/Inventor/C/threads/Makefile include/Inventor/lock/Makefile include/Inventor/system/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/collision/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/elements/GL/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/glue/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/3ds/Makefile src/sensors/Makefile src/upgraders/Makefile src/shapenodes/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile src/hardcopy/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -31592,6 +31605,7 @@ do
   "src/actions/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/actions/Makefile" ;;
   "src/bundles/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/bundles/Makefile" ;;
   "src/caches/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/caches/Makefile" ;;
+  "src/collision/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/collision/Makefile" ;;
   "src/details/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/details/Makefile" ;;
   "src/draggers/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/draggers/Makefile" ;;
   "src/elements/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/elements/Makefile" ;;

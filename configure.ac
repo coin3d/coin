@@ -1638,6 +1638,7 @@ AC_CONFIG_FILES([
         src/actions/Makefile
         src/bundles/Makefile
         src/caches/Makefile
+        src/collision/Makefile
         src/details/Makefile
         src/draggers/Makefile
         src/elements/Makefile
@@ -1660,7 +1661,7 @@ AC_CONFIG_FILES([
         src/threads/Makefile
         src/extensions/Makefile
         src/vrml97/Makefile
-	src/hardcopy/Makefile
+        src/hardcopy/Makefile
 ])
 
 AC_OUTPUT
