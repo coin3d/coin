@@ -226,8 +226,8 @@ is_vrml2_field(const SoField * f)
 {
   assert(f);
   SoFieldContainer * fc = f->getContainer();
-  assert(fc);
-  if (fc->isOfType(SoNode::getClassTypeId())) {
+  // test fc to support fields with no container
+  if (fc && fc->isOfType(SoNode::getClassTypeId())) {
     if (((SoNode*)fc)->getNodeType() & SoNode::VRML2) return TRUE;
   }
   return FALSE;
@@ -1674,6 +1674,7 @@ SoField::write(SoOutput * out, const SbName & name) const
   // master fields/engines, the field can still be default even though
   // it is connected, and we should _not_ write the field. The ROUTEs
   // should be added though. pederb, 2002-06-13
+
   if (is_vrml2_field(this)) {
     if (writeconnection) {
       writeconnection = FALSE;
@@ -1740,13 +1741,18 @@ SoField::countWriteRefs(SoOutput * out) const
       SoField * master = this->storage->masterfields[i];
       SoFieldContainer * fc = master->getContainer();
       assert(fc);
+      // TRUE = reference is from field connection. This is needed
+      // so that the fields inside 'fc' is counted only once
       fc->addWriteReference(out, TRUE);
     }
     for (i = 0; i < this->storage->masterengineouts.getLength(); i++) {
       SoEngineOutput * engineout = this->storage->masterengineouts[i];
       SoFieldContainer * fc = engineout->getFieldContainer();
       assert(fc);
-      fc->addWriteReference(out, TRUE);
+      // since engines are always connected directly to the field
+      // (they're not nodes), engines are always counted with
+      // isfromfield = FALSE
+      fc->addWriteReference(out, FALSE);
     }
   }
 }
