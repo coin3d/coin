@@ -255,3 +255,6 @@ THE LINKS
   <URL:http://www.uni-karlsruhe.de/~uli2/>. Available under a
   BSD-style license. Check it out to see if it's better designed than
   GLWrapper.
+
+* Binary native Win32 packages for misc image libraries used by simage:
+  <URL:http://gnuwin32.sourceforge.net>

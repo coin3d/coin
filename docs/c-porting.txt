@@ -35,6 +35,10 @@ C RESOURCES
   <URL:http://ldeniau.home.cern.ch/ldeniau/html/oopc/oopc.html>
   ("Object Oriented Programming In C" by Laurent Deniau).
 
+* Dr. Dobb's Journal article of november 2000, "Exception Handling in
+  C without C++": see <URL:http://www.ddj.com/ftp/2000/2000_11/>.
+
+
 
 TODOs
 =====
