@@ -33,8 +33,10 @@
 #include <Inventor/elements/SoProfileElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoProfile.h>
+#include <Inventor/lists/SbList.h>
 
 #include <assert.h>
 #include <stdio.h>
@@ -1012,17 +1014,31 @@ sogl_render_lineset(const SoGLCoordinateElement * const coords,
 #endif // !NO_LINESET_RENDER
 
 
+static SbList <float> * tmpcoordlist = NULL;
+static SbList <float> * tmptexcoordlist = NULL;
+
+static void nurbs_coord_cleanup(void)
+{
+  delete tmpcoordlist;
+}
+
+static void nurbs_texcoord_cleanup(void)
+{
+  delete tmptexcoordlist;
+}
+
 void
 sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
-                          void * nurbsrenderer, 
+                          void * nurbsrenderer,
                           const int numuctrlpts, const int numvctrlpts,
                           const float * uknotvec, const float * vknotvec,
                           const int numuknot, const int numvknot,
                           const int numsctrlpts, const int numtctrlpts,
                           const float * sknotvec, const float * tknotvec,
                           const int numsknot, const int numtknot,
-                          const int32_t * coordindex, const int32_t * texcoordindex,
-                          const SbBool glrender)
+                          const SbBool glrender,
+                          const int numcoordindex, const int32_t * coordindex, 
+                          const int numtexcoordindex, const int32_t * texcoordindex)
 {
 #if !GLU_VERSION_1_3
   if (!glrender) {
@@ -1106,9 +1122,26 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   const SoCoordinateElement * coordelem =
     SoCoordinateElement::getInstance(state);
 
+  if (!coords->getNum()) return;
+
   GLfloat * ptr = coords->is3D() ?
     (GLfloat *)coordelem->getArrayPtr3() :
     (GLfloat *)coordelem->getArrayPtr4();
+
+  // just copy indexed control points into a linear array
+  if (numcoordindex && coordindex) {
+    if (tmpcoordlist == NULL) {
+      tmpcoordlist = new SbList <float>;
+      atexit(nurbs_coord_cleanup);
+    }
+    tmpcoordlist->truncate(0);
+    for (int i = 0; i < numcoordindex; i++) {
+      for (int j = 0; j < dim; j++) {
+        tmpcoordlist->append(ptr[coordindex[i]*dim+j]);
+      }
+    }
+    ptr = (float*) tmpcoordlist->getArrayPtr();
+  }
 
   gluBeginSurface(nurbsobj);
   gluNurbsSurface(nurbsobj,
@@ -1118,34 +1151,52 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                   ptr, numuknot - numuctrlpts, numvknot - numvctrlpts,
                   (dim == 3) ? GL_MAP2_VERTEX_3 : GL_MAP2_VERTEX_4);
 
-  const SoTextureCoordinateElement * tc =
-    SoTextureCoordinateElement::getInstance(state);
-  if ((tc->getType() == SoTextureCoordinateElement::EXPLICIT) &&
-      tc->getNum()) {
-    int texdim = tc->is2D() ? 2 : 4;
-    GLfloat * texptr = tc->is2D() ?
-      (GLfloat*) tc->getArrayPtr2() :
-      (GLfloat*) tc->getArrayPtr4();
-    gluNurbsSurface(nurbsobj,
-                    numsknot, (GLfloat*) sknotvec,
-                    numtknot, (GLfloat*) tknotvec,
-                    texdim, texdim * numsctrlpts,
-                    texptr, numsknot - numsctrlpts, numtknot - numtctrlpts,
-                    (texdim == 2) ? GL_MAP2_TEXTURE_COORD_2 : GL_MAP2_TEXTURE_COORD_4);
-
-  }
-  else if ((tc->getType() == SoTextureCoordinateElement::DEFAULT) ||
-           (tc->getType() == SoTextureCoordinateElement::EXPLICIT)) {
-    static float defaulttex[] = {
-      0.0f, 0.0f,
-      1.0f, 0.0f,
-      0.0f, 1.0f,
-      1.0f, 1.0f
-    };
-    static GLfloat defaulttexknot[] = {0.0f, 0.0f, 1.0f, 1.0f};
-    gluNurbsSurface(nurbsobj, 4, defaulttexknot, 4, defaulttexknot,
-                    2, 2*2, defaulttex, 4-2, 4-2,
-                    GL_MAP2_TEXTURE_COORD_2);
+  if (!glrender || SoGLTextureEnabledElement::get(state)) {
+    const SoTextureCoordinateElement * tc =
+      SoTextureCoordinateElement::getInstance(state);
+    if (numsctrlpts && numtctrlpts && numsknot && numtknot &&
+        (tc->getType() == SoTextureCoordinateElement::EXPLICIT) && tc->getNum()) {
+      int texdim = tc->is2D() ? 2 : 4;
+      GLfloat * texptr = tc->is2D() ?
+        (GLfloat*) tc->getArrayPtr2() :
+        (GLfloat*) tc->getArrayPtr4();
+      
+      // copy indexed texcoords into temporary array
+      if (numtexcoordindex && texcoordindex) {
+        if (tmptexcoordlist == NULL) {
+          tmptexcoordlist = new SbList <float>;
+          atexit(nurbs_texcoord_cleanup);
+        }
+        tmptexcoordlist->truncate(0);
+        for (int i = 0; i < numtexcoordindex; i++) {
+          for (int j = 0; j < texdim; j++) {
+            tmptexcoordlist->append(texptr[texcoordindex[i]*texdim+j]);
+          }
+        }
+        texptr = (float*) tmptexcoordlist->getArrayPtr();    
+      }
+      
+      gluNurbsSurface(nurbsobj,
+                      numsknot, (GLfloat*) sknotvec,
+                      numtknot, (GLfloat*) tknotvec,
+                      texdim, texdim * numsctrlpts,
+                      texptr, numsknot - numsctrlpts, numtknot - numtctrlpts,
+                      (texdim == 2) ? GL_MAP2_TEXTURE_COORD_2 : GL_MAP2_TEXTURE_COORD_4);
+      
+    }
+    else if ((tc->getType() == SoTextureCoordinateElement::DEFAULT) ||
+             (tc->getType() == SoTextureCoordinateElement::EXPLICIT)) {
+      static float defaulttex[] = {
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 1.0f
+      };
+      static GLfloat defaulttexknot[] = {0.0f, 0.0f, 1.0f, 1.0f};
+      gluNurbsSurface(nurbsobj, 4, defaulttexknot, 4, defaulttexknot,
+                      2, 2*2, defaulttex, 4-2, 4-2,
+                      GL_MAP2_TEXTURE_COORD_2);
+    }
   }
   const SoNodeList & profilelist = SoProfileElement::get(state);
   int i, n = profilelist.getLength();
@@ -1173,13 +1224,22 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                             points, floatspervec,
                             numknots, knotvector);
 
+      // FIXME: for some reason, when trimming is done, our sampling 
+      // method provides far too many triangles. I do this to avoid
+      // the problem, but we should figure out why this happens,
+      // and fix it properly.                      pederb, 20000630
+      float complexity = SoComplexityElement::get(state);
+      gluNurbsProperty(nurbsobj, (GLenum) GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
+      gluNurbsProperty(nurbsobj, (GLenum) GLU_U_STEP, 20.0f * complexity);
+      gluNurbsProperty(nurbsobj, (GLenum) GLU_V_STEP, 20.0f * complexity);
+
       if (numknots) {
         gluNurbsCurve(nurbsobj, numknots, knotvector, floatspervec,
                       points, numknots-numpoints, floatspervec == 2 ?
                       (GLenum) GLU_MAP1_TRIM_2 : (GLenum) GLU_MAP1_TRIM_3);
-        
+
       }
-      
+
       else {
         gluPwlCurve(nurbsobj, numpoints, points, floatspervec,
                     floatspervec == 2 ?

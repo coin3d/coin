@@ -99,15 +99,16 @@ void sogl_free_texture(unsigned int handle);
 
 // nurbs rendering and tesselation
 void sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
-                               void * nurbsrenderer, 
+                               void * nurbsrenderer,
                                const int numuctrlpts, const int numvctrlpts,
                                const float * uknotvec, const float * vknotvec,
                                const int numuknot, const int numvknot,
                                const int numsctrlpts, const int numtctrlpts,
                                const float * sknotvec, const float * tknotvec,
                                const int numsknot, const int numtknot,
-                               const int32_t * coordindex, const int32_t * texcoordindex,
-                               const SbBool glrender);
+                               const SbBool glrender,
+                               const int numcoordindex = 0, const int32_t * coordindex = NULL, 
+                               const int numtexcoordindex = 0, const int32_t * texcoordindex = NULL);
 
 //
 // optimized faceset rendering functions.
