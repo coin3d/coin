@@ -49,7 +49,7 @@ typedef const char * (*cc_bzglue_BZ2_bzlibVersion_t)(void);
 typedef void * (*cc_bzglue_BZ2_bzReadOpen_t)(int * bzerror,
                                              FILE * f,
                                              int verbosity,
-                                             int small,
+                                             int bzsmall,
                                              void * unused,
                                              int nunused);
 typedef void (*cc_bzglue_BZ2_bzReadClose_t)(int * bzerror, 
@@ -207,7 +207,7 @@ void *
 cc_bzglue_BZ2_bzReadOpen(int * bzerror,
                          FILE * f,
                          int verbosity,
-                         int small,
+                         int bzsmall,
                          void * unused,
                          int nunused)
 {
@@ -215,7 +215,7 @@ cc_bzglue_BZ2_bzReadOpen(int * bzerror,
   return bzlib_instance->BZ2_bzReadOpen(bzerror,
                                         f,
                                         verbosity,
-                                        small,
+                                        bzsmall,
                                         unused,
                                         nunused);
 }

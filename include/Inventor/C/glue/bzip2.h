@@ -45,7 +45,7 @@ const char * cc_bzglue_BZ2_bzlibVersion(void);
 void * cc_bzglue_BZ2_bzReadOpen(int * bzerror,
                                 FILE * f,
                                 int verbosity,
-                                int small,
+                                int bzsmall,
                                 void * unused,
                                 int nunused);
 void cc_bzglue_BZ2_bzReadClose(int * bzerror, 
