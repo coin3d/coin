@@ -182,6 +182,8 @@ void
 SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   this->setUpGlyphs(action->getState());
+  int numglyphs = this->glyphs.getLength();
+  if (numglyphs == 0) return;
 
   // FIXME: consider profile. pederb, 20000223
   float size = SoFontSizeElement::get(action->getState());
@@ -198,7 +200,6 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   }
 
   SbBox2f maxbox;
-  int numglyphs = this->glyphs.getLength();
   for (i = 0; i < numglyphs; i++) {
     maxbox.extendBy(this->glyphs[i]->getBoundingBox());
   }
