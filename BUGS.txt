@@ -622,6 +622,26 @@
 
     20020910 mortene.
 
+    UPDATE 18122002 rolvs: This bug outweirds even the weather in
+    Trondheim: The two Translation nodes in the TransformSeaparator
+    can be removed, like this:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    Translation { translation t_x t_y t_z }
+    Separator{
+       TransformSeparator{
+       }
+       Sphere{ }
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    
+    This causes the BBox to be displaced the translation-distance. If
+    we add another 'empty' TransformSeparator in the scenegraph, the
+    BBox is displaced two times the translation. And it generalizes to
+    n*[translation]. It might seem that TransformSeparator does more
+    than it should do when preserving the current state. Tests in
+    Flip/src/Inventor/nodes is added, that fails on this bug. 
+
 =====================================================================
 
 025 Import hangs on invalid scenegraph. This reproduces the problem:
@@ -868,34 +888,6 @@
           one when removing the spheres
 
     20021007 mortene.
-
-=====================================================================
-
-035 Possible SoJackManip misbehavior.
-
-    We have a report from an external Coin user (Julien de Siebenthal)
-    that the translation components of the transformation matrix of an
-    SoJackManip will be modified even when we only *rotate* the
-    jack-manipulator.
-
-    Investigate if this is indeed the case by writing a minimal
-    test-case.
-
-    20021008 mortene.
-
-    UPDATE: Performing a rotation changes only the 3x3 rotation matrix
-    (i in [0,3], j in [0,3]). Are there any descriptions of how Julien
-    produced this error in the first place? I have not reproduced the
-    full interaction loop, only a simple
-    'rotate-translate-rotate-translate' directly on the manip and
-    verified that the results are healthy. 20021111 rolvs
-
-    UPDATE: Interacting with the JackManip seems to be performing as
-    expected from the documentation (e.g. no translation while
-    rotating when dragging on the thin lines connecting the scaling
-    cubes.) I experienced some 'jerky' or 'popping' behavior when
-    dragging though, but this is likely to be due to my old timer
-    mouse. If your mouse is fresh, please check. 20021209 rolvs
 
 =====================================================================
 
