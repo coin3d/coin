@@ -23,10 +23,39 @@
 
 /*!
   \class SoLightKit SoLightKit.h Inventor/nodekits/SoLightKit.h
-  \brief The SoLightKit class ...
+  \brief The SoLightKit class provides a kit with a transform, a light and a shape or subgraph.
   \ingroup nodekits
 
-  FIXME: write class doc
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoLightKit
+  -->"this"
+        "callbackList"
+  -->   "transformGroup"
+  -->      "transform"
+  -->      "light"
+  -->      "iconSeparator"
+  -->         "icon"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoLightKit
+  PVT   "this",  SoLightKit  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "transformGroup",  SoTransformSeparator  --- 
+        "transform",  SoTransform  --- 
+        "light",  SoLight  --- , (default type = SoDirectionalLight)
+  PVT   "iconSeparator",  SoSeparator  --- 
+        "icon",  SoNode  --- , (default type = SoCube)
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
 */
 
 #include <Inventor/nodekits/SoLightKit.h>
@@ -66,11 +95,7 @@ SoLightKit::~SoLightKit()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoLightKit class. This includes setting up the
-  type system, among other things.
-*/
+// Documented in superclass.
 void
 SoLightKit::initClass(void)
 {

@@ -23,10 +23,35 @@
 
 /*!
   \class SoCameraKit SoCameraKit.h Inventor/nodekits/SoCameraKit.h
-  \brief The SoCameraKit class ...
+  \brief The SoCameraKit class is a node kit with a transform and a camera.
   \ingroup nodekits
 
-  FIXME: write class doc
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoCameraKit
+  -->"this"
+        "callbackList"
+  -->   "transformGroup"
+  -->      "transform"
+  -->      "camera"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoCameraKit
+  PVT   "this",  SoCameraKit  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "transformGroup",  SoTransformSeparator  --- 
+        "transform",  SoTransform  --- 
+        "camera",  SoCamera  --- , (default type = SoPerspectiveCamera)
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
 */
 
 #include <Inventor/nodekits/SoCameraKit.h>
@@ -62,11 +87,7 @@ SoCameraKit::~SoCameraKit()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoCameraKit class. This includes setting up the
-  type system, among other things.
-*/
+// Documented in superclass.
 void
 SoCameraKit::initClass(void)
 {

@@ -119,9 +119,57 @@ SoSpotLightDragger::initClass(void)
 // FIXME: document which parts need to be present in the geometry
 // scenegraph, and what role they play in the dragger. 20010913 mortene.
 /*!
-  Default constructor, sets up the dragger nodekit catalog with the
-  interaction and feedback geometry.
- */
+  \DRAGGER_CONSTRUCTOR
+
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoSpotLightDragger
+  -->"this"
+        "callbackList"
+        "topSeparator"
+           "motionMatrix"
+  -->      "material"
+  -->      "translatorSep"
+  -->         "translatorRotInv"
+  -->         "translator"
+  -->      "rotator"
+  -->      "beamSep"
+  -->         "beamPlacement"
+  -->         "beamScale"
+  -->         "beamSwitch"
+  -->            "beam"
+  -->            "beamActive"
+           "geomSeparator"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoSpotLightDragger
+  PVT   "this",  SoSpotLightDragger  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+  PVT   "motionMatrix",  SoMatrixTransform  --- 
+        "material",  SoMaterial  --- 
+  PVT   "translatorSep",  SoSeparator  --- 
+  PVT   "translatorRotInv",  SoRotation  --- 
+        "translator",  SoDragPointDragger  --- 
+        "rotator",  SoRotateSphericalDragger  --- 
+  PVT   "beamSep",  SoSeparator  --- 
+        "beamPlacement",  SoTranslation  --- 
+        "beamScale",  SoScale  --- 
+  PVT   "beamSwitch",  SoSwitch  --- 
+        "beam",  SoSeparator  --- 
+        "beamActive",  SoSeparator  --- 
+  PVT   "geomSeparator",  SoSeparator  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
+*/
 SoSpotLightDragger::SoSpotLightDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoSpotLightDragger);

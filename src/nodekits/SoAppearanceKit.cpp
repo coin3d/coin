@@ -23,10 +23,43 @@
 
 /*!
   \class SoAppearanceKit SoAppearanceKit.h Inventor/nodekits/SoAppearanceKit.h
-  \brief The SoAppearanceKit class ...
+  \brief The SoAppearanceKit class is a node kit catalog that collects miscellaneous appearance node types.
   \ingroup nodekits
 
-  FIXME: write class doc
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoAppearanceKit
+  -->"this"
+        "callbackList"
+  -->   "lightModel"
+  -->   "environment"
+  -->   "drawStyle"
+  -->   "material"
+  -->   "complexity"
+  -->   "texture2"
+  -->   "font"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoAppearanceKit
+  PVT   "this",  SoAppearanceKit  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+        "lightModel",  SoLightModel  --- 
+        "environment",  SoEnvironment  --- 
+        "drawStyle",  SoDrawStyle  --- 
+        "material",  SoMaterial  --- 
+        "complexity",  SoComplexity  --- 
+        "texture2",  SoTexture2  --- 
+        "font",  SoFont  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
 */
 
 
@@ -72,11 +105,7 @@ SoAppearanceKit::~SoAppearanceKit()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoAppearanceKit class. This includes setting up the
-  type system, among other things.
-*/
+// Documented in superclass.
 void
 SoAppearanceKit::initClass(void)
 {

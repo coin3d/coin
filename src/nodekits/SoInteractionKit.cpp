@@ -35,6 +35,31 @@
   superclass for the dragger classes, and it is unlikely that it
   should be of interest to application programmers, unless you have
   very special needs in your application.
+
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoInteractionKit
+  -->"this"
+        "callbackList"
+  -->   "topSeparator"
+  -->      "geomSeparator"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoInteractionKit
+  PVT   "this",  SoInteractionKit  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+  PVT   "geomSeparator",  SoSeparator  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
 */
 
 #include <Inventor/SoDB.h>

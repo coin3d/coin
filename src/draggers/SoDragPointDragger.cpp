@@ -91,9 +91,109 @@ SoDragPointDragger::initClass(void)
 // FIXME: document which parts need to be present in the geometry
 // scenegraph, and what role they play in the dragger. 20010913 mortene.
 /*!
-  Default constructor, sets up the dragger nodekit catalog with the
-  interaction and feedback geometry.
- */
+  \DRAGGER_CONSTRUCTOR
+
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoDragPointDragger
+  -->"this"
+        "callbackList"
+        "topSeparator"
+           "motionMatrix"
+  -->      "noRotSep"
+  -->         "xTranslatorSwitch"
+  -->            "xTranslator"
+  -->         "xyTranslatorSwitch"
+  -->            "xyTranslator"
+  -->      "rotXSep"
+  -->         "rotX"
+  -->         "xzTranslatorSwitch"
+  -->            "xzTranslator"
+  -->      "rotYSep"
+  -->         "rotY"
+  -->         "zTranslatorSwitch"
+  -->            "zTranslator"
+  -->         "yzTranslatorSwitch"
+  -->            "yzTranslator"
+  -->      "rotZSep"
+  -->         "rotZ"
+  -->         "yTranslatorSwitch"
+  -->            "yTranslator"
+  -->      "xFeedbackSwitch"
+  -->         "xFeedbackSep"
+  -->            "xFeedbackTranslation"
+  -->            "xFeedback"
+  -->      "yFeedbackSwitch"
+  -->         "yFeedbackSep"
+  -->            "yFeedbackTranslation"
+  -->            "yFeedback"
+  -->      "zFeedbackSwitch"
+  -->         "zFeedbackSep"
+  -->            "zFeedbackTranslation"
+  -->            "zFeedback"
+  -->      "planeFeedbackSep"
+  -->         "planeFeedbackTranslation"
+  -->         "planeFeedbackSwitch"
+  -->            "yzFeedback"
+  -->            "xzFeedback"
+  -->            "xyFeedback"
+           "geomSeparator"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoDragPointDragger
+  PVT   "this",  SoDragPointDragger  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+  PVT   "motionMatrix",  SoMatrixTransform  --- 
+  PVT   "noRotSep",  SoSeparator  --- 
+  PVT   "xTranslatorSwitch",  SoSwitch  --- 
+        "xTranslator",  SoTranslate1Dragger  --- 
+  PVT   "xyTranslatorSwitch",  SoSwitch  --- 
+        "xyTranslator",  SoTranslate2Dragger  --- 
+  PVT   "rotXSep",  SoSeparator  --- 
+  PVT   "rotX",  SoRotation  --- 
+  PVT   "xzTranslatorSwitch",  SoSwitch  --- 
+        "xzTranslator",  SoTranslate2Dragger  --- 
+  PVT   "rotYSep",  SoSeparator  --- 
+  PVT   "rotY",  SoRotation  --- 
+  PVT   "zTranslatorSwitch",  SoSwitch  --- 
+        "zTranslator",  SoTranslate1Dragger  --- 
+  PVT   "yzTranslatorSwitch",  SoSwitch  --- 
+        "yzTranslator",  SoTranslate2Dragger  --- 
+  PVT   "rotZSep",  SoSeparator  --- 
+  PVT   "rotZ",  SoRotation  --- 
+  PVT   "yTranslatorSwitch",  SoSwitch  --- 
+        "yTranslator",  SoTranslate1Dragger  --- 
+  PVT   "xFeedbackSwitch",  SoSwitch  --- 
+  PVT   "xFeedbackSep",  SoSeparator  --- 
+  PVT   "xFeedbackTranslation",  SoTranslation  --- 
+        "xFeedback",  SoSeparator  --- 
+  PVT   "yFeedbackSwitch",  SoSwitch  --- 
+  PVT   "yFeedbackSep",  SoSeparator  --- 
+  PVT   "yFeedbackTranslation",  SoTranslation  --- 
+        "yFeedback",  SoSeparator  --- 
+  PVT   "zFeedbackSwitch",  SoSwitch  --- 
+  PVT   "zFeedbackSep",  SoSeparator  --- 
+  PVT   "zFeedbackTranslation",  SoTranslation  --- 
+        "zFeedback",  SoSeparator  --- 
+  PVT   "planeFeedbackSep",  SoSeparator  --- 
+  PVT   "planeFeedbackTranslation",  SoTranslation  --- 
+  PVT   "planeFeedbackSwitch",  SoSwitch  --- 
+        "yzFeedback",  SoSeparator  --- 
+        "xzFeedback",  SoSeparator  --- 
+        "xyFeedback",  SoSeparator  --- 
+  PVT   "geomSeparator",  SoSeparator  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
+*/
 SoDragPointDragger::SoDragPointDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoDragPointDragger);

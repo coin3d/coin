@@ -89,8 +89,74 @@ SoCenterballDragger::initClass(void)
 // FIXME: document which parts need to be present in the geometry
 // scenegraph, and what role they play in the dragger. 20010913 mortene.
 /*!
-  Default constructor, sets up the dragger nodekit catalog with the
-  interaction and feedback geometry.
+  \DRAGGER_CONSTRUCTOR
+
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoCenterballDragger
+  -->"this"
+        "callbackList"
+        "topSeparator"
+           "motionMatrix"
+  -->      "translateToCenter"
+  -->      "surroundScale"
+  -->      "antiSquish"
+  -->      "lightModel"
+           "geomSeparator"
+  -->         "XAxisSwitch"
+  -->            "XAxis"
+  -->         "YAxisSwitch"
+  -->            "YAxis"
+  -->         "ZAxisSwitch"
+  -->            "ZAxis"
+  -->      "rotator"
+  -->      "YRotator"
+  -->      "ZCenterChanger"
+  -->      "rotX90"
+  -->      "ZRotator"
+  -->      "YCenterChanger"
+  -->      "rotY90"
+  -->      "XCenterChanger"
+  -->      "rot2X90"
+  -->      "XRotator"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoCenterballDragger
+  PVT   "this",  SoCenterballDragger  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+  PVT   "motionMatrix",  SoMatrixTransform  --- 
+        "translateToCenter",  SoMatrixTransform  --- 
+        "surroundScale",  SoSurroundScale  --- 
+        "antiSquish",  SoAntiSquish  --- 
+        "lightModel",  SoLightModel  --- 
+  PVT   "geomSeparator",  SoSeparator  --- 
+        "rotator",  SoRotateSphericalDragger  --- 
+        "YRotator",  SoRotateCylindricalDragger  --- 
+        "ZCenterChanger",  SoTranslate2Dragger  --- 
+  PVT   "rotX90",  SoRotation  --- 
+        "ZRotator",  SoRotateCylindricalDragger  --- 
+        "YCenterChanger",  SoTranslate2Dragger  --- 
+  PVT   "rotY90",  SoRotation  --- 
+        "XCenterChanger",  SoTranslate2Dragger  --- 
+  PVT   "rot2X90",  SoRotation  --- 
+  PVT   "XAxisSwitch",  SoSwitch  --- 
+        "XAxis",  SoSeparator  --- 
+  PVT   "YAxisSwitch",  SoSwitch  --- 
+        "YAxis",  SoSeparator  --- 
+  PVT   "ZAxisSwitch",  SoSwitch  --- 
+        "ZAxis",  SoSeparator  --- 
+        "XRotator",  SoRotateCylindricalDragger  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
  */
 SoCenterballDragger::SoCenterballDragger(void)
 {

@@ -105,9 +105,54 @@ SoTranslate2Dragger::initClass(void)
 // FIXME: document which parts need to be present in the geometry
 // scenegraph, and what role they play in the dragger. 20010913 mortene.
 /*!
-  Default constructor, sets up the dragger nodekit catalog with the
-  interaction and feedback geometry.
- */
+  \DRAGGER_CONSTRUCTOR
+
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoTranslate2Dragger
+  -->"this"
+        "callbackList"
+        "topSeparator"
+           "motionMatrix"
+           "geomSeparator"
+  -->         "translatorSwitch"
+  -->            "translator"
+  -->            "translatorActive"
+  -->         "feedbackSwitch"
+  -->            "feedback"
+  -->            "feedbackActive"
+  -->         "axisFeedbackSwitch"
+  -->            "xAxisFeedback"
+  -->            "yAxisFeedback"
+  
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoTranslate2Dragger
+  PVT   "this",  SoTranslate2Dragger  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+  PVT   "motionMatrix",  SoMatrixTransform  --- 
+  PVT   "geomSeparator",  SoSeparator  --- 
+  PVT   "translatorSwitch",  SoSwitch  --- 
+        "translator",  SoSeparator  --- 
+        "translatorActive",  SoSeparator  --- 
+  PVT   "feedbackSwitch",  SoSwitch  --- 
+        "feedback",  SoSeparator  --- 
+        "feedbackActive",  SoSeparator  --- 
+  PVT   "axisFeedbackSwitch",  SoSwitch  --- 
+        "xAxisFeedback",  SoSeparator  --- 
+        "yAxisFeedback",  SoSeparator  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
+*/
 SoTranslate2Dragger::SoTranslate2Dragger(void)
   : pimpl(new SoTranslate2DraggerP)
 {

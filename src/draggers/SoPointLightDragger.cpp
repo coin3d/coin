@@ -72,9 +72,39 @@ SoPointLightDragger::initClass(void)
 // FIXME: document which parts need to be present in the geometry
 // scenegraph, and what role they play in the dragger. 20010913 mortene.
 /*!
-  Default constructor, sets up the dragger nodekit catalog with the
-  interaction and feedback geometry.
- */
+  \DRAGGER_CONSTRUCTOR
+
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoPointLightDragger
+  -->"this"
+        "callbackList"
+        "topSeparator"
+           "motionMatrix"
+  -->      "material"
+  -->      "translator"
+           "geomSeparator"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoPointLightDragger
+  PVT   "this",  SoPointLightDragger  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+  PVT   "motionMatrix",  SoMatrixTransform  --- 
+        "material",  SoMaterial  --- 
+        "translator",  SoDragPointDragger  --- 
+  PVT   "geomSeparator",  SoSeparator  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
+*/
 SoPointLightDragger::SoPointLightDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoPointLightDragger);

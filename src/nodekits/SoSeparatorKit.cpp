@@ -23,10 +23,43 @@
 
 /*!
   \class SoSeparatorKit SoSeparatorKit.h Inventor/nodekits/SoSeparatorKit.h
-  \brief The SoSeparatorKit class ...
+  \brief The SoSeparatorKit class provides a typical set of nodes to influence a shape subgraph.
   \ingroup nodekits
 
-  FIXME: write class doc
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoSeparatorKit
+  -->"this"
+        "callbackList"
+  -->   "topSeparator"
+  -->      "pickStyle"
+  -->      "appearance"
+  -->      "units"
+  -->      "transform"
+  -->      "texture2Transform"
+  -->      "childList"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoSeparatorKit
+  PVT   "this",  SoSeparatorKit  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+        "pickStyle",  SoPickStyle  --- 
+        "appearance",  SoAppearanceKit  --- 
+        "units",  SoUnits  --- 
+        "transform",  SoTransform  --- 
+        "texture2Transform",  SoTexture2Transform  --- 
+        "childList",  SoNodeKitListPart [ SoShapeKit, SoSeparatorKit ] 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
 */
 
 #include <Inventor/nodekits/SoShapeKit.h>

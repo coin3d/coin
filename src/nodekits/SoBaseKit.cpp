@@ -168,7 +168,8 @@
   </center>
 
   Notice that the code needed for creating this simple shape using
-  a shape kit, amounts to this code;
+  a shape kit, amounts to this:
+
   \code
    SoShapeKit * shapekit = new SoShapeKit;
    
@@ -176,7 +177,8 @@
    shapekit->set("material", "diffuseColor 1 0 0");
   \endcode
   
-  while doing it without shape kits amounts to this:
+  ..while doing it without shape kits amounts to this:
+
   \code
   SoSeparator * root = new SoSeparator;
   SoMaterial * material = new SoMaterial;
@@ -185,21 +187,23 @@
   root->addChild(new SoCube);
   \endcode
 
-  So even for this miniscule mock-up example, you save on code
+  ..so even for this miniscule mock-up example, you save on code
   verbosity and complexity.
 
 
   \TOOLMAKER_REF
 
-  Following is a complete example of a node kit extension.
+
+  Following is a complete example of a node kit extension. The node
+  kit is a kit which automatically scales a shape so it will be the
+  same size in screen-pixels, no matter which distance it is from the
+  camera. This is useful for marker graphics. The shape defaults to a
+  cube, but can be set by the programmer to any shape or scene
+  sub-graph.
 
   The header file:
   \code
-  **************************************************************************
-  *
-  *  Copyright (C) 1998-2000 by Systems in Motion. All rights reserved.
-  *
-  **************************************************************************
+  // Copyright (C) 1998-2002 by Systems in Motion. All rights reserved.
 
   #ifndef COIN_SHAPESCALE_H
   #define COIN_SHAPESCALE_H
@@ -242,23 +246,18 @@
 
   The source code for the example:
   \code
-
-  **************************************************************************
-  *
-  *  Copyright (C) 2000-2002 by Systems in Motion. All rights reserved.
-  *
-  **************************************************************************
-
+  // Copyright (C) 1998-2002 by Systems in Motion. All rights reserved.
   
-  //  The ShapeScale class is used for scaling a shape based on projected size.
-
-  //  This nodekit can be inserted in your scene graph to add for instance
-  //  3D markers that will be of a constant projected size.
-  
+  //  The ShapeScale class is used for scaling a shape based on
+  //  projected size.
+  //
+  //  This nodekit can be inserted in your scene graph to add for
+  //  instance 3D markers that will be of a constant projected size.
+  //
   //  The marker shape is stored in the "shape" part. Any kind of node
-  //  can be used, even group nodes with several shapes, but the marker
-  //  shape should be approximately of unit size, and with a center 
-  //  position in (0, 0, 0).
+  //  can be used, even group nodes with several shapes, but the
+  //  marker shape should be approximately of unit size, and with a
+  //  center position in (0, 0, 0).
   
   
   //  SoSFFloat ShapeScale::active
@@ -345,11 +344,7 @@
 
   And a complete example showing how one can use this node kit:
   \code
-  **************************************************************************
-  *
-  *  Copyright (C) 2000-2002 by Systems in Motion. All rights reserved.
-  *
-  **************************************************************************
+  // Copyright (C) 1998-2002 by Systems in Motion. All rights reserved.
 
   #include <Inventor/Qt/SoQt.h>
   #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
@@ -1345,7 +1340,32 @@ SoBaseKit::getChildren(void) const
 }
 
 /*!
-  Print out the full nodekit catalog structure. Useful for debugging.
+  Print out the full nodekit catalog structure.  Just invokes
+  SoBaseKit::printSubDiagram() on the catalog root. Useful for
+  debugging.
+
+  Example output:
+
+  \verbatim
+  CLASS SoWrapperKit
+  -->"this"
+        "callbackList"
+        "topSeparator"
+           "pickStyle"
+           "appearance"
+           "units"
+           "transform"
+           "texture2Transform"
+           "childList"
+  -->      "localTransform"
+  -->      "contents"
+  \endverbatim
+
+  The arrows denote new entries in the catalog for the particular
+  class versus it's superclass. (Apart from the root entry, of
+  course.)
+
+  For a more detailed catalog dump, see SoBaseKit::printTable().
 */
 void
 SoBaseKit::printDiagram(void)
@@ -1355,8 +1375,11 @@ SoBaseKit::printDiagram(void)
 }
 
 /*!
-  Print out the nodekit catalog structure from \a rootname and downwards
-  in the catalog tree, with indentation starting at \a level.
+  Print out the nodekit catalog structure from \a rootname and
+  downwards in the catalog tree, with indentation starting at \a
+  level.
+
+  \sa printDiagram()
 */
 void
 SoBaseKit::printSubDiagram(const SbName & rootname, int level)
@@ -1391,6 +1414,30 @@ SoBaseKit::printSubDiagram(const SbName & rootname, int level)
 
 /*!
   Write the complete nodekit catalog in table form.
+
+  Example output:
+
+  \verbatim
+  CLASS SoWrapperKit
+  PVT   "this",  SoWrapperKit  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+        "pickStyle",  SoPickStyle  --- 
+        "appearance",  SoAppearanceKit  --- 
+        "units",  SoUnits  --- 
+        "transform",  SoTransform  --- 
+        "texture2Transform",  SoTexture2Transform  --- 
+        "childList",  SoNodeKitListPart [ SoShapeKit, SoSeparatorKit ] 
+        "localTransform",  SoTransform  --- 
+        "contents",  SoSeparator  --- 
+  \endverbatim
+
+  \c PVT denotes that it's a private entry in the catalog, then
+  follows the part name and the part type. If the part is a list, the
+  allowed node types for the list is given in square brackets, and if
+  not there's a triple hyphen. If the part type is abstract, the
+  default part type will be listed last (not shown in the example
+  output above).
 */
 void
 SoBaseKit::printTable(void)

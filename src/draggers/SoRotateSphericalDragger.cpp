@@ -89,9 +89,47 @@ SoRotateSphericalDragger::initClass(void)
 // FIXME: document which parts need to be present in the geometry
 // scenegraph, and what role they play in the dragger. 20010913 mortene.
 /*!
-  Default constructor, sets up the dragger nodekit catalog with the
-  interaction and feedback geometry.
- */
+  \DRAGGER_CONSTRUCTOR
+
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoRotateSphericalDragger
+  -->"this"
+        "callbackList"
+        "topSeparator"
+           "motionMatrix"
+           "geomSeparator"
+  -->         "rotatorSwitch"
+  -->            "rotator"
+  -->            "rotatorActive"
+  -->         "feedbackSwitch"
+  -->            "feedback"
+  -->            "feedbackActive"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoRotateSphericalDragger
+  PVT   "this",  SoRotateSphericalDragger  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+  PVT   "motionMatrix",  SoMatrixTransform  --- 
+  PVT   "geomSeparator",  SoSeparator  --- 
+  PVT   "rotatorSwitch",  SoSwitch  --- 
+        "rotator",  SoSeparator  --- 
+        "rotatorActive",  SoSeparator  --- 
+  PVT   "feedbackSwitch",  SoSwitch  --- 
+        "feedback",  SoSeparator  --- 
+        "feedbackActive",  SoSeparator  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
+*/
 SoRotateSphericalDragger::SoRotateSphericalDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoRotateSphericalDragger);

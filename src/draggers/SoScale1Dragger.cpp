@@ -75,9 +75,47 @@ SoScale1Dragger::initClass(void)
 // FIXME: document which parts need to be present in the geometry
 // scenegraph, and what role they play in the dragger. 20010913 mortene.
 /*!
-  Default constructor, sets up the dragger nodekit catalog with the
-  interaction and feedback geometry.
- */
+  \DRAGGER_CONSTRUCTOR
+
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoScale1Dragger
+  -->"this"
+        "callbackList"
+        "topSeparator"
+           "motionMatrix"
+           "geomSeparator"
+  -->         "scalerSwitch"
+  -->            "scaler"
+  -->            "scalerActive"
+  -->         "feedbackSwitch"
+  -->            "feedback"
+  -->            "feedbackActive"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoScale1Dragger
+  PVT   "this",  SoScale1Dragger  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+  PVT   "motionMatrix",  SoMatrixTransform  --- 
+  PVT   "geomSeparator",  SoSeparator  --- 
+  PVT   "scalerSwitch",  SoSwitch  --- 
+        "scaler",  SoSeparator  --- 
+        "scalerActive",  SoSeparator  --- 
+  PVT   "feedbackSwitch",  SoSwitch  --- 
+        "feedback",  SoSeparator  --- 
+        "feedbackActive",  SoSeparator  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
+*/
 SoScale1Dragger::SoScale1Dragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoScale1Dragger);

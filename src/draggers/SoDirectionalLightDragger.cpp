@@ -102,9 +102,45 @@ SoDirectionalLightDragger::initClass(void)
 // FIXME: document which parts need to be present in the geometry
 // scenegraph, and what role they play in the dragger. 20010913 mortene.
 /*!
-  Default constructor, sets up the dragger nodekit catalog with the
-  interaction and feedback geometry.
- */
+  \DRAGGER_CONSTRUCTOR
+
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoDirectionalLightDragger
+  -->"this"
+        "callbackList"
+        "topSeparator"
+           "motionMatrix"
+  -->      "material"
+  -->      "translatorSep"
+  -->         "translatorRotInv"
+  -->         "translator"
+  -->      "rotator"
+           "geomSeparator"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoDirectionalLightDragger
+  PVT   "this",  SoDirectionalLightDragger  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+  PVT   "motionMatrix",  SoMatrixTransform  --- 
+        "material",  SoMaterial  --- 
+  PVT   "translatorSep",  SoSeparator  --- 
+        "translatorRotInv",  SoRotation  --- 
+        "translator",  SoDragPointDragger  --- 
+        "rotator",  SoRotateSphericalDragger  --- 
+  PVT   "geomSeparator",  SoSeparator  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
+*/
 SoDirectionalLightDragger::SoDirectionalLightDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoDirectionalLightDragger);

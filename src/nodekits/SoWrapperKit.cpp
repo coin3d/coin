@@ -23,10 +23,48 @@
 
 /*!
   \class SoWrapperKit SoWrapperKit.h Inventor/nodekits/SoWrapperKit.h
-  \brief The SoWrapperKit class ...
+  \brief The SoWrapperKit class is a simple kit for wrapping a transform and a sub-graph.
   \ingroup nodekits
 
-  FIXME: write class doc
+  
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoWrapperKit
+  -->"this"
+        "callbackList"
+        "topSeparator"
+           "pickStyle"
+           "appearance"
+           "units"
+           "transform"
+           "texture2Transform"
+           "childList"
+  -->      "localTransform"
+  -->      "contents"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoWrapperKit
+  PVT   "this",  SoWrapperKit  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+        "pickStyle",  SoPickStyle  --- 
+        "appearance",  SoAppearanceKit  --- 
+        "units",  SoUnits  --- 
+        "transform",  SoTransform  --- 
+        "texture2Transform",  SoTexture2Transform  --- 
+        "childList",  SoNodeKitListPart [ SoShapeKit, SoSeparatorKit ] 
+        "localTransform",  SoTransform  --- 
+        "contents",  SoSeparator  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
 */
 
 #include <Inventor/nodekits/SoWrapperKit.h>
@@ -60,11 +98,7 @@ SoWrapperKit::~SoWrapperKit()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoWrapperKit class. This includes setting up the
-  type system, among other things.
-*/
+// Documented in superclass.
 void
 SoWrapperKit::initClass(void)
 {

@@ -84,9 +84,75 @@ SoTabBoxDragger::initClass(void)
 // FIXME: document which parts need to be present in the geometry
 // scenegraph, and what role they play in the dragger. 20010913 mortene.
 /*!
-  Default constructor, sets up the dragger nodekit catalog with the
-  interaction and feedback geometry.
- */
+  \DRAGGER_CONSTRUCTOR
+
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoTabBoxDragger
+  -->"this"
+        "callbackList"
+        "topSeparator"
+           "motionMatrix"
+  -->      "surroundScale"
+  -->      "tabPlane1Sep"
+  -->         "tabPlane1Xf"
+  -->         "tabPlane1"
+  -->      "tabPlane2Sep"
+  -->         "tabPlane2Xf"
+  -->         "tabPlane2"
+  -->      "tabPlane3Sep"
+  -->         "tabPlane3Xf"
+  -->         "tabPlane3"
+  -->      "tabPlane4Sep"
+  -->         "tabPlane4Xf"
+  -->         "tabPlane4"
+  -->      "tabPlane5Sep"
+  -->         "tabPlane5Xf"
+  -->         "tabPlane5"
+  -->      "tabPlane6Sep"
+  -->         "tabPlane6Xf"
+  -->         "tabPlane6"
+           "geomSeparator"
+  -->         "boxGeom"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoTabBoxDragger
+  PVT   "this",  SoTabBoxDragger  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+  PVT   "motionMatrix",  SoMatrixTransform  --- 
+        "surroundScale",  SoSurroundScale  --- 
+  PVT   "tabPlane1Sep",  SoSeparator  --- 
+  PVT   "tabPlane1Xf",  SoTransform  --- 
+        "tabPlane1",  SoTabPlaneDragger  --- 
+  PVT   "tabPlane2Sep",  SoSeparator  --- 
+  PVT   "tabPlane2Xf",  SoTransform  --- 
+        "tabPlane2",  SoTabPlaneDragger  --- 
+  PVT   "tabPlane3Sep",  SoSeparator  --- 
+  PVT   "tabPlane3Xf",  SoTransform  --- 
+        "tabPlane3",  SoTabPlaneDragger  --- 
+  PVT   "tabPlane4Sep",  SoSeparator  --- 
+  PVT   "tabPlane4Xf",  SoTransform  --- 
+        "tabPlane4",  SoTabPlaneDragger  --- 
+  PVT   "tabPlane5Sep",  SoSeparator  --- 
+  PVT   "tabPlane5Xf",  SoTransform  --- 
+        "tabPlane5",  SoTabPlaneDragger  --- 
+  PVT   "tabPlane6Sep",  SoSeparator  --- 
+  PVT   "tabPlane6Xf",  SoTransform  --- 
+        "tabPlane6",  SoTabPlaneDragger  --- 
+  PVT   "geomSeparator",  SoSeparator  --- 
+        "boxGeom",  SoSeparator  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
+*/
 SoTabBoxDragger::SoTabBoxDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoTabBoxDragger);

@@ -23,10 +23,37 @@
 
 /*!
   \class SoSceneKit SoSceneKit.h Inventor/nodekits/SoSceneKit.h
-  \brief The SoSceneKit class ...
+  \brief The SoSceneKit class collects node kits needed to set up a scene: camera, light and shapes.
   \ingroup nodekits
 
-  FIXME: write class doc
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoSceneKit
+  -->"this"
+        "callbackList"
+  -->   "topSeparator"
+  -->      "cameraList"
+  -->      "lightList"
+  -->      "childList"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoSceneKit
+  PVT   "this",  SoSceneKit  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+        "cameraList",  SoNodeKitListPart [ SoCameraKit ] 
+        "lightList",  SoNodeKitListPart [ SoLightKit ] 
+        "childList",  SoNodeKitListPart [ SoShapeKit, SoSeparatorKit ] 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
 */
 
 #include <Inventor/nodekits/SoSceneKit.h>
@@ -70,7 +97,7 @@ SoSceneKit::~SoSceneKit()
 {
 }
 
-// doc from parent
+// doc from superclass
 void
 SoSceneKit::initClass(void)
 {

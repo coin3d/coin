@@ -104,9 +104,95 @@ SoTransformBoxDragger::initClass(void)
 // FIXME: document which parts need to be present in the geometry
 // scenegraph, and what role they play in the dragger. 20010913 mortene.
 /*!
-  Default constructor, sets up the dragger nodekit catalog with the
-  interaction and feedback geometry.
- */
+  \DRAGGER_CONSTRUCTOR
+
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoTransformBoxDragger
+  -->"this"
+        "callbackList"
+        "topSeparator"
+           "motionMatrix"
+  -->      "surroundScale"
+  -->      "antiSquish"
+  -->      "scaler"
+  -->      "rotator1Sep"
+  -->         "rotator1Rot"
+  -->         "rotator1"
+  -->      "rotator2Sep"
+  -->         "rotator2Rot"
+  -->         "rotator2"
+  -->      "rotator3Sep"
+  -->         "rotator3Rot"
+  -->         "rotator3"
+  -->      "translator1Sep"
+  -->         "translator1Rot"
+  -->         "translator1"
+  -->      "translator2Sep"
+  -->         "translator2Rot"
+  -->         "translator2"
+  -->      "translator3Sep"
+  -->         "translator3Rot"
+  -->         "translator3"
+  -->      "translator4Sep"
+  -->         "translator4Rot"
+  -->         "translator4"
+  -->      "translator5Sep"
+  -->         "translator5Rot"
+  -->         "translator5"
+  -->      "translator6Sep"
+  -->         "translator6Rot"
+  -->         "translator6"
+           "geomSeparator"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoTransformBoxDragger
+  PVT   "this",  SoTransformBoxDragger  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+  PVT   "motionMatrix",  SoMatrixTransform  --- 
+        "surroundScale",  SoSurroundScale  --- 
+        "antiSquish",  SoAntiSquish  --- 
+        "scaler",  SoScaleUniformDragger  --- 
+  PVT   "rotator1Sep",  SoSeparator  --- 
+  PVT   "rotator1Rot",  SoRotation  --- 
+        "rotator1",  SoRotateCylindricalDragger  --- 
+  PVT   "rotator2Sep",  SoSeparator  --- 
+  PVT   "rotator2Rot",  SoRotation  --- 
+        "rotator2",  SoRotateCylindricalDragger  --- 
+  PVT   "rotator3Sep",  SoSeparator  --- 
+  PVT   "rotator3Rot",  SoRotation  --- 
+        "rotator3",  SoRotateCylindricalDragger  --- 
+  PVT   "translator1Sep",  SoSeparator  --- 
+  PVT   "translator1Rot",  SoRotation  --- 
+        "translator1",  SoTranslate2Dragger  --- 
+  PVT   "translator2Sep",  SoSeparator  --- 
+  PVT   "translator2Rot",  SoRotation  --- 
+        "translator2",  SoTranslate2Dragger  --- 
+  PVT   "translator3Sep",  SoSeparator  --- 
+  PVT   "translator3Rot",  SoRotation  --- 
+        "translator3",  SoTranslate2Dragger  --- 
+  PVT   "translator4Sep",  SoSeparator  --- 
+  PVT   "translator4Rot",  SoRotation  --- 
+        "translator4",  SoTranslate2Dragger  --- 
+  PVT   "translator5Sep",  SoSeparator  --- 
+  PVT   "translator5Rot",  SoRotation  --- 
+        "translator5",  SoTranslate2Dragger  --- 
+  PVT   "translator6Sep",  SoSeparator  --- 
+  PVT   "translator6Rot",  SoRotation  --- 
+        "translator6",  SoTranslate2Dragger  --- 
+  PVT   "geomSeparator",  SoSeparator  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
+*/
 SoTransformBoxDragger::SoTransformBoxDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoTransformBoxDragger);

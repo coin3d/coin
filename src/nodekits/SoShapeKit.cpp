@@ -23,10 +23,73 @@
 
 /*!
   \class SoShapeKit SoShapeKit.h Inventor/nodekits/SoShapeKit.h
-  \brief The SoShapeKit class ...
+  \brief The SoShapeKit class provides templates to insert what is usually needed for shape nodes.
   \ingroup nodekits
 
-  FIXME: write class doc
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoShapeKit
+  -->"this"
+        "callbackList"
+        "topSeparator"
+           "pickStyle"
+           "appearance"
+           "units"
+           "transform"
+           "texture2Transform"
+  -->      "materialBinding"
+  -->      "normalBinding"
+  -->      "textureCoordinateBinding"
+  -->      "shapeHints"
+  -->      "coordinate3"
+  -->      "coordinate4"
+  -->      "normal"
+  -->      "textureCoordinate2"
+  -->      "profileCoordinate2"
+  -->      "profileCoordinate3"
+  -->      "profileList"
+           "childList"
+  -->      "textureCoordinateFunction"
+  -->      "localTransform"
+  -->      "shapeSeparator"
+  -->         "shape"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoShapeKit
+  PVT   "this",  SoShapeKit  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+        "pickStyle",  SoPickStyle  --- 
+        "appearance",  SoAppearanceKit  --- 
+        "units",  SoUnits  --- 
+        "transform",  SoTransform  --- 
+        "texture2Transform",  SoTexture2Transform  --- 
+        "materialBinding",  SoMaterialBinding  --- 
+        "normalBinding",  SoNormalBinding  --- 
+        "textureCoordinateBinding",  SoTextureCoordinateBinding  --- 
+        "shapeHints",  SoShapeHints  --- 
+        "coordinate3",  SoCoordinate3  --- 
+        "coordinate4",  SoCoordinate4  --- 
+        "normal",  SoNormal  --- 
+        "textureCoordinate2",  SoTextureCoordinate2  --- 
+        "profileCoordinate2",  SoProfileCoordinate2  --- 
+        "profileCoordinate3",  SoProfileCoordinate3  --- 
+        "profileList",  SoNodeKitListPart [ SoProfile ] 
+        "childList",  SoNodeKitListPart [ SoShapeKit, SoSeparatorKit ] 
+        "textureCoordinateFunction",  SoTextureCoordinateFunction  --- , (default type = SoTextureCoordinateDefault)
+        "localTransform",  SoTransform  --- 
+  PVT   "shapeSeparator",  SoSeparator  --- 
+        "shape",  SoShape  --- , (default type = SoCube)
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
 */
 
 #include <Inventor/nodekits/SoShapeKit.h>
@@ -87,20 +150,14 @@ SoShapeKit::~SoShapeKit()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoShapeKit class. This includes setting up the
-  type system, among other things.
-*/
+// Documented in superclass.
 void
 SoShapeKit::initClass(void)
 {
   SO_KIT_INTERNAL_INIT_CLASS(SoShapeKit, SO_FROM_INVENTOR_1);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Documented in superclass.
 void
 SoShapeKit::setDefaultOnNonWritingFields(void)
 {

@@ -120,9 +120,71 @@ SoTabPlaneDragger::initClass(void)
 // FIXME: document which parts need to be present in the geometry
 // scenegraph, and what role they play in the dragger. 20010913 mortene.
 /*!
-  Default constructor, sets up the dragger nodekit catalog with the
-  interaction and feedback geometry.
- */
+  \DRAGGER_CONSTRUCTOR
+
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoTabPlaneDragger
+  -->"this"
+        "callbackList"
+        "topSeparator"
+           "motionMatrix"
+           "geomSeparator"
+  -->         "planeSwitch"
+  -->            "translator"
+  -->            "scaleTabs"
+  -->               "scaleTabMaterial"
+  -->               "scaleTabHints"
+  -->               "scaleTabMaterialBinding"
+  -->               "scaleTabNormalBinding"
+  -->               "scaleTabNormal"
+  -->               "edgeScaleCoords"
+  -->               "edgeScaleTab0"
+  -->               "edgeScaleTab1"
+  -->               "edgeScaleTab2"
+  -->               "edgeScaleTab3"
+  -->               "cornerScaleCoords"
+  -->               "cornerScaleTab0"
+  -->               "cornerScaleTab1"
+  -->               "cornerScaleTab2"
+  -->               "cornerScaleTab3"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoTabPlaneDragger
+  PVT   "this",  SoTabPlaneDragger  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+  PVT   "motionMatrix",  SoMatrixTransform  --- 
+  PVT   "geomSeparator",  SoSeparator  --- 
+  PVT   "planeSwitch",  SoSwitch  --- 
+        "translator",  SoSeparator  --- 
+  PVT   "scaleTabs",  SoSeparator  --- 
+        "scaleTabMaterial",  SoMaterial  --- 
+        "scaleTabHints",  SoShapeHints  --- 
+  PVT   "scaleTabMaterialBinding",  SoMaterialBinding  --- 
+  PVT   "scaleTabNormalBinding",  SoNormalBinding  --- 
+  PVT   "scaleTabNormal",  SoNormal  --- 
+  PVT   "edgeScaleCoords",  SoCoordinate3  --- 
+  PVT   "edgeScaleTab0",  SoIndexedFaceSet  --- 
+  PVT   "edgeScaleTab1",  SoIndexedFaceSet  --- 
+  PVT   "edgeScaleTab2",  SoIndexedFaceSet  --- 
+  PVT   "edgeScaleTab3",  SoIndexedFaceSet  --- 
+  PVT   "cornerScaleCoords",  SoCoordinate3  --- 
+  PVT   "cornerScaleTab0",  SoIndexedFaceSet  --- 
+  PVT   "cornerScaleTab1",  SoIndexedFaceSet  --- 
+  PVT   "cornerScaleTab2",  SoIndexedFaceSet  --- 
+  PVT   "cornerScaleTab3",  SoIndexedFaceSet  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
+*/
 SoTabPlaneDragger::SoTabPlaneDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoTabPlaneDragger);

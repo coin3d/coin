@@ -174,9 +174,77 @@ SoTrackballDragger::initClass(void)
 // FIXME: document which parts need to be present in the geometry
 // scenegraph, and what role they play in the dragger. 20010913 mortene.
 /*!
-  Default constructor, sets up the dragger nodekit catalog with the
-  interaction and feedback geometry.
- */
+  \DRAGGER_CONSTRUCTOR
+
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoTrackballDragger
+  -->"this"
+        "callbackList"
+        "topSeparator"
+           "motionMatrix"
+  -->      "surroundScale"
+  -->      "antiSquish"
+           "geomSeparator"
+  -->         "rotatorSwitch"
+  -->            "rotator"
+  -->            "rotatorActive"
+  -->         "XRotatorSwitch"
+  -->            "XRotator"
+  -->            "XRotatorActive"
+  -->         "YRotatorSwitch"
+  -->            "YRotator"
+  -->            "YRotatorActive"
+  -->         "ZRotatorSwitch"
+  -->            "ZRotator"
+  -->            "ZRotatorActive"
+  -->         "userAxisRotation"
+  -->         "userAxisSwitch"
+  -->            "userAxis"
+  -->            "userAxisActive"
+  -->         "userRotatorSwitch"
+  -->            "userRotator"
+  -->            "userRotatorActive"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoTrackballDragger
+  PVT   "this",  SoTrackballDragger  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+  PVT   "motionMatrix",  SoMatrixTransform  --- 
+        "surroundScale",  SoSurroundScale  --- 
+        "antiSquish",  SoAntiSquish  --- 
+  PVT   "geomSeparator",  SoSeparator  --- 
+  PVT   "rotatorSwitch",  SoSwitch  --- 
+        "rotator",  SoSeparator  --- 
+        "rotatorActive",  SoSeparator  --- 
+  PVT   "XRotatorSwitch",  SoSwitch  --- 
+        "XRotator",  SoSeparator  --- 
+        "XRotatorActive",  SoSeparator  --- 
+  PVT   "YRotatorSwitch",  SoSwitch  --- 
+        "YRotator",  SoSeparator  --- 
+        "YRotatorActive",  SoSeparator  --- 
+  PVT   "ZRotatorSwitch",  SoSwitch  --- 
+        "ZRotator",  SoSeparator  --- 
+        "ZRotatorActive",  SoSeparator  --- 
+  PVT   "userAxisRotation",  SoRotation  --- 
+  PVT   "userAxisSwitch",  SoSwitch  --- 
+        "userAxis",  SoSeparator  --- 
+        "userAxisActive",  SoSeparator  --- 
+  PVT   "userRotatorSwitch",  SoSwitch  --- 
+        "userRotator",  SoSeparator  --- 
+        "userRotatorActive",  SoSeparator  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
+*/
 SoTrackballDragger::SoTrackballDragger(void)
 {
   THIS = new SoTrackballDraggerP(this);

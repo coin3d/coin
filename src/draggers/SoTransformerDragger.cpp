@@ -378,9 +378,305 @@ SoTransformerDragger::build_catalog6(void)
 // FIXME: document which parts need to be present in the geometry
 // scenegraph, and what role they play in the dragger. 20010913 mortene.
 /*!
-  Default constructor, sets up the dragger nodekit catalog with the
-  interaction and feedback geometry.
- */
+  \DRAGGER_CONSTRUCTOR
+
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoTransformerDragger
+  -->"this"
+        "callbackList"
+        "topSeparator"
+           "motionMatrix"
+  -->      "surroundScale"
+  -->      "overallStyle"
+           "geomSeparator"
+  -->         "axisFeedbackSep"
+  -->            "axisFeedbackLocation"
+  -->            "xAxisFeedbackSwitch"
+  -->               "xAxisFeedbackActive"
+  -->               "xAxisFeedbackSelect"
+  -->               "xCrosshairFeedback"
+  -->            "yAxisFeedbackSwitch"
+  -->               "yAxisFeedbackActive"
+  -->               "yAxisFeedbackSelect"
+  -->               "yCrosshairFeedback"
+  -->            "zAxisFeedbackSwitch"
+  -->               "zAxisFeedbackActive"
+  -->               "zAxisFeedbackSelect"
+  -->               "zCrosshairFeedback"
+  -->         "translateBoxFeedbackSep"
+  -->            "translateBoxFeedbackSwitch"
+  -->               "translateBoxFeedbackRotation"
+  -->               "translateBoxFeedback"
+  -->         "scaleBoxFeedbackSwitch"
+  -->            "scaleBoxFeedback"
+  -->         "posXWallFeedbackSwitch"
+  -->            "posXWallFeedback"
+  -->            "posXRoundWallFeedback"
+  -->         "posYWallFeedbackSwitch"
+  -->            "posYWallFeedback"
+  -->            "posYRoundWallFeedback"
+  -->         "posZWallFeedbackSwitch"
+  -->            "posZWallFeedback"
+  -->            "posZRoundWallFeedback"
+  -->         "negXWallFeedbackSwitch"
+  -->            "negXWallFeedback"
+  -->            "negXRoundWallFeedback"
+  -->         "negYWallFeedbackSwitch"
+  -->            "negYWallFeedback"
+  -->            "negYRoundWallFeedback"
+  -->         "negZWallFeedbackSwitch"
+  -->            "negZWallFeedback"
+  -->            "negZRoundWallFeedback"
+  -->         "radialFeedbackSwitch"
+  -->            "radialFeedback"
+  -->      "translatorSep"
+  -->         "translator1Switch"
+  -->            "translator1LocateGroup"
+  -->               "translator1"
+  -->            "translator1Active"
+  -->         "translator2Switch"
+  -->            "translator2LocateGroup"
+  -->               "translator2"
+  -->            "translator2Active"
+  -->         "translator3Switch"
+  -->            "translator3LocateGroup"
+  -->               "translator3"
+  -->            "translator3Active"
+  -->         "translator4Switch"
+  -->            "translator4LocateGroup"
+  -->               "translator4"
+  -->            "translator4Active"
+  -->         "translator5Switch"
+  -->            "translator5LocateGroup"
+  -->               "translator5"
+  -->            "translator5Active"
+  -->         "translator6Switch"
+  -->            "translator6LocateGroup"
+  -->               "translator6"
+  -->            "translator6Active"
+  -->      "rotatorSep"
+  -->         "rotator1Switch"
+  -->            "rotator1LocateGroup"
+  -->               "rotator1"
+  -->            "rotator1Active"
+  -->         "rotator2Switch"
+  -->            "rotator2LocateGroup"
+  -->               "rotator2"
+  -->            "rotator2Active"
+  -->         "rotator3Switch"
+  -->            "rotator3LocateGroup"
+  -->               "rotator3"
+  -->            "rotator3Active"
+  -->         "rotator4Switch"
+  -->            "rotator4LocateGroup"
+  -->               "rotator4"
+  -->            "rotator4Active"
+  -->         "rotator5Switch"
+  -->            "rotator5LocateGroup"
+  -->               "rotator5"
+  -->            "rotator5Active"
+  -->         "rotator6Switch"
+  -->            "rotator6LocateGroup"
+  -->               "rotator6"
+  -->            "rotator6Active"
+  -->      "scaleSep"
+  -->         "scale1Switch"
+  -->            "scale1LocateGroup"
+  -->               "scale1"
+  -->            "scale1Active"
+  -->         "scale2Switch"
+  -->            "scale2LocateGroup"
+  -->               "scale2"
+  -->            "scale2Active"
+  -->         "scale3Switch"
+  -->            "scale3LocateGroup"
+  -->               "scale3"
+  -->            "scale3Active"
+  -->         "scale4Switch"
+  -->            "scale4LocateGroup"
+  -->               "scale4"
+  -->            "scale4Active"
+  -->         "scale5Switch"
+  -->            "scale5LocateGroup"
+  -->               "scale5"
+  -->            "scale5Active"
+  -->         "scale6Switch"
+  -->            "scale6LocateGroup"
+  -->               "scale6"
+  -->            "scale6Active"
+  -->         "scale7Switch"
+  -->            "scale7LocateGroup"
+  -->               "scale7"
+  -->            "scale7Active"
+  -->         "scale8Switch"
+  -->            "scale8LocateGroup"
+  -->               "scale8"
+  -->            "scale8Active"
+  -->      "circleFeedbackSep"
+  -->         "circleFeedbackTransformSwitch"
+  -->            "circleFeedbackAntiSquish"
+  -->            "circleFeedbackTransform"
+  -->         "xCircleFeedbackSwitch"
+  -->            "xCircleFeedback"
+  -->         "yCircleFeedbackSwitch"
+  -->            "yCircleFeedback"
+  -->         "zCircleFeedbackSwitch"
+  -->            "zCircleFeedback"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoTransformerDragger
+  PVT   "this",  SoTransformerDragger  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+  PVT   "motionMatrix",  SoMatrixTransform  --- 
+        "surroundScale",  SoSurroundScale  --- 
+  PVT   "overallStyle",  SoGroup  --- 
+  PVT   "geomSeparator",  SoSeparator  --- 
+  PVT   "translatorSep",  SoSeparator  --- 
+  PVT   "translator1Switch",  SoSwitch  --- 
+  PVT   "translator1LocateGroup",  SoLocateHighlight  --- 
+        "translator1",  SoSeparator  --- 
+        "translator1Active",  SoSeparator  --- 
+  PVT   "translator2Switch",  SoSwitch  --- 
+  PVT   "translator2LocateGroup",  SoLocateHighlight  --- 
+        "translator2",  SoSeparator  --- 
+        "translator2Active",  SoSeparator  --- 
+  PVT   "translator3Switch",  SoSwitch  --- 
+  PVT   "translator3LocateGroup",  SoLocateHighlight  --- 
+        "translator3",  SoSeparator  --- 
+        "translator3Active",  SoSeparator  --- 
+  PVT   "translator4Switch",  SoSwitch  --- 
+  PVT   "translator4LocateGroup",  SoLocateHighlight  --- 
+        "translator4",  SoSeparator  --- 
+        "translator4Active",  SoSeparator  --- 
+  PVT   "translator5Switch",  SoSwitch  --- 
+  PVT   "translator5LocateGroup",  SoLocateHighlight  --- 
+        "translator5",  SoSeparator  --- 
+        "translator5Active",  SoSeparator  --- 
+  PVT   "translator6Switch",  SoSwitch  --- 
+  PVT   "translator6LocateGroup",  SoLocateHighlight  --- 
+        "translator6",  SoSeparator  --- 
+        "translator6Active",  SoSeparator  --- 
+  PVT   "rotatorSep",  SoSeparator  --- 
+  PVT   "rotator1Switch",  SoSwitch  --- 
+  PVT   "rotator1LocateGroup",  SoLocateHighlight  --- 
+        "rotator1",  SoSeparator  --- 
+        "rotator1Active",  SoSeparator  --- 
+  PVT   "rotator2Switch",  SoSwitch  --- 
+  PVT   "rotator2LocateGroup",  SoLocateHighlight  --- 
+        "rotator2",  SoSeparator  --- 
+        "rotator2Active",  SoSeparator  --- 
+  PVT   "rotator3Switch",  SoSwitch  --- 
+  PVT   "rotator3LocateGroup",  SoLocateHighlight  --- 
+        "rotator3",  SoSeparator  --- 
+        "rotator3Active",  SoSeparator  --- 
+  PVT   "rotator4Switch",  SoSwitch  --- 
+  PVT   "rotator4LocateGroup",  SoLocateHighlight  --- 
+        "rotator4",  SoSeparator  --- 
+        "rotator4Active",  SoSeparator  --- 
+  PVT   "rotator5Switch",  SoSwitch  --- 
+  PVT   "rotator5LocateGroup",  SoLocateHighlight  --- 
+        "rotator5",  SoSeparator  --- 
+        "rotator5Active",  SoSeparator  --- 
+  PVT   "rotator6Switch",  SoSwitch  --- 
+  PVT   "rotator6LocateGroup",  SoLocateHighlight  --- 
+        "rotator6",  SoSeparator  --- 
+        "rotator6Active",  SoSeparator  --- 
+  PVT   "scaleSep",  SoSeparator  --- 
+  PVT   "scale1Switch",  SoSwitch  --- 
+  PVT   "scale1LocateGroup",  SoLocateHighlight  --- 
+        "scale1",  SoSeparator  --- 
+        "scale1Active",  SoSeparator  --- 
+  PVT   "scale2Switch",  SoSwitch  --- 
+  PVT   "scale2LocateGroup",  SoLocateHighlight  --- 
+        "scale2",  SoSeparator  --- 
+        "scale2Active",  SoSeparator  --- 
+  PVT   "scale3Switch",  SoSwitch  --- 
+  PVT   "scale3LocateGroup",  SoLocateHighlight  --- 
+        "scale3",  SoSeparator  --- 
+        "scale3Active",  SoSeparator  --- 
+  PVT   "scale4Switch",  SoSwitch  --- 
+  PVT   "scale4LocateGroup",  SoLocateHighlight  --- 
+        "scale4",  SoSeparator  --- 
+        "scale4Active",  SoSeparator  --- 
+  PVT   "scale5Switch",  SoSwitch  --- 
+  PVT   "scale5LocateGroup",  SoLocateHighlight  --- 
+        "scale5",  SoSeparator  --- 
+        "scale5Active",  SoSeparator  --- 
+  PVT   "scale6Switch",  SoSwitch  --- 
+  PVT   "scale6LocateGroup",  SoLocateHighlight  --- 
+        "scale6",  SoSeparator  --- 
+        "scale6Active",  SoSeparator  --- 
+  PVT   "scale7Switch",  SoSwitch  --- 
+  PVT   "scale7LocateGroup",  SoLocateHighlight  --- 
+        "scale7",  SoSeparator  --- 
+        "scale7Active",  SoSeparator  --- 
+  PVT   "scale8Switch",  SoSwitch  --- 
+  PVT   "scale8LocateGroup",  SoLocateHighlight  --- 
+        "scale8",  SoSeparator  --- 
+        "scale8Active",  SoSeparator  --- 
+  PVT   "circleFeedbackSep",  SoSeparator  --- 
+  PVT   "circleFeedbackTransformSwitch",  SoSwitch  --- 
+  PVT   "circleFeedbackAntiSquish",  SoAntiSquish  --- 
+  PVT   "circleFeedbackTransform",  SoTransform  --- 
+  PVT   "xCircleFeedbackSwitch",  SoSwitch  --- 
+        "xCircleFeedback",  SoSeparator  --- 
+  PVT   "yCircleFeedbackSwitch",  SoSwitch  --- 
+        "yCircleFeedback",  SoSeparator  --- 
+  PVT   "zCircleFeedbackSwitch",  SoSwitch  --- 
+        "zCircleFeedback",  SoSeparator  --- 
+  PVT   "axisFeedbackSep",  SoSeparator  --- 
+  PVT   "axisFeedbackLocation",  SoTranslation  --- 
+  PVT   "xAxisFeedbackSwitch",  SoSwitch  --- 
+        "xAxisFeedbackActive",  SoSeparator  --- 
+        "xAxisFeedbackSelect",  SoSeparator  --- 
+        "xCrosshairFeedback",  SoSeparator  --- 
+  PVT   "yAxisFeedbackSwitch",  SoSwitch  --- 
+        "yAxisFeedbackActive",  SoSeparator  --- 
+        "yAxisFeedbackSelect",  SoSeparator  --- 
+        "yCrosshairFeedback",  SoSeparator  --- 
+  PVT   "zAxisFeedbackSwitch",  SoSwitch  --- 
+        "zAxisFeedbackActive",  SoSeparator  --- 
+        "zAxisFeedbackSelect",  SoSeparator  --- 
+        "zCrosshairFeedback",  SoSeparator  --- 
+  PVT   "translateBoxFeedbackSep",  SoSeparator  --- 
+  PVT   "translateBoxFeedbackSwitch",  SoSwitch  --- 
+  PVT   "translateBoxFeedbackRotation",  SoRotation  --- 
+        "translateBoxFeedback",  SoSeparator  --- 
+  PVT   "scaleBoxFeedbackSwitch",  SoSwitch  --- 
+        "scaleBoxFeedback",  SoSeparator  --- 
+  PVT   "posXWallFeedbackSwitch",  SoSwitch  --- 
+        "posXWallFeedback",  SoSeparator  --- 
+        "posXRoundWallFeedback",  SoSeparator  --- 
+  PVT   "posYWallFeedbackSwitch",  SoSwitch  --- 
+        "posYWallFeedback",  SoSeparator  --- 
+        "posYRoundWallFeedback",  SoSeparator  --- 
+  PVT   "posZWallFeedbackSwitch",  SoSwitch  --- 
+        "posZWallFeedback",  SoSeparator  --- 
+        "posZRoundWallFeedback",  SoSeparator  --- 
+  PVT   "negXWallFeedbackSwitch",  SoSwitch  --- 
+        "negXWallFeedback",  SoSeparator  --- 
+        "negXRoundWallFeedback",  SoSeparator  --- 
+  PVT   "negYWallFeedbackSwitch",  SoSwitch  --- 
+        "negYWallFeedback",  SoSeparator  --- 
+        "negYRoundWallFeedback",  SoSeparator  --- 
+  PVT   "negZWallFeedbackSwitch",  SoSwitch  --- 
+        "negZWallFeedback",  SoSeparator  --- 
+        "negZRoundWallFeedback",  SoSeparator  --- 
+  PVT   "radialFeedbackSwitch",  SoSwitch  --- 
+        "radialFeedback",  SoSeparator  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
+*/
 SoTransformerDragger::SoTransformerDragger(void)
 {
   THIS = new SoTransformerDraggerP;

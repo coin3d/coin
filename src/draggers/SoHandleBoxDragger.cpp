@@ -118,9 +118,185 @@ SoHandleBoxDragger::initClass(void)
 // FIXME: document which parts need to be present in the geometry
 // scenegraph, and what role they play in the dragger. 20010913 mortene.
 /*!
-  Default constructor, sets up the dragger nodekit catalog with the
-  interaction and feedback geometry.
- */
+  \DRAGGER_CONSTRUCTOR
+
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoHandleBoxDragger
+  -->"this"
+        "callbackList"
+        "topSeparator"
+           "motionMatrix"
+  -->      "surroundScale"
+           "geomSeparator"
+  -->         "drawStyle"
+  -->         "translator1Switch"
+  -->            "translator1"
+  -->            "translator1Active"
+  -->         "translator2Switch"
+  -->            "translator2"
+  -->            "translator2Active"
+  -->         "translator3Switch"
+  -->            "translator3"
+  -->            "translator3Active"
+  -->         "translator4Switch"
+  -->            "translator4"
+  -->            "translator4Active"
+  -->         "translator5Switch"
+  -->            "translator5"
+  -->            "translator5Active"
+  -->         "translator6Switch"
+  -->            "translator6"
+  -->            "translator6Active"
+  -->         "extruder1Switch"
+  -->            "extruder1"
+  -->            "extruder1Active"
+  -->         "extruder2Switch"
+  -->            "extruder2"
+  -->            "extruder2Active"
+  -->         "extruder3Switch"
+  -->            "extruder3"
+  -->            "extruder3Active"
+  -->         "extruder4Switch"
+  -->            "extruder4"
+  -->            "extruder4Active"
+  -->         "extruder5Switch"
+  -->            "extruder5"
+  -->            "extruder5Active"
+  -->         "extruder6Switch"
+  -->            "extruder6"
+  -->            "extruder6Active"
+  -->         "uniform1Switch"
+  -->            "uniform1"
+  -->            "uniform1Active"
+  -->         "uniform2Switch"
+  -->            "uniform2"
+  -->            "uniform2Active"
+  -->         "uniform3Switch"
+  -->            "uniform3"
+  -->            "uniform3Active"
+  -->         "uniform4Switch"
+  -->            "uniform4"
+  -->            "uniform4Active"
+  -->         "uniform5Switch"
+  -->            "uniform5"
+  -->            "uniform5Active"
+  -->         "uniform6Switch"
+  -->            "uniform6"
+  -->            "uniform6Active"
+  -->         "uniform7Switch"
+  -->            "uniform7"
+  -->            "uniform7Active"
+  -->         "uniform8Switch"
+  -->            "uniform8"
+  -->            "uniform8Active"
+  -->         "arrowTranslation"
+  -->         "arrow1Switch"
+  -->            "arrow1"
+  -->         "arrow2Switch"
+  -->            "arrow2"
+  -->         "arrow3Switch"
+  -->            "arrow3"
+  -->         "arrow4Switch"
+  -->            "arrow4"
+  -->         "arrow5Switch"
+  -->            "arrow5"
+  -->         "arrow6Switch"
+  -->            "arrow6"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoHandleBoxDragger
+  PVT   "this",  SoHandleBoxDragger  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+  PVT   "motionMatrix",  SoMatrixTransform  --- 
+        "surroundScale",  SoSurroundScale  --- 
+  PVT   "geomSeparator",  SoSeparator  --- 
+  PVT   "drawStyle",  SoDrawStyle  --- 
+  PVT   "translator1Switch",  SoSwitch  --- 
+        "translator1",  SoSeparator  --- 
+        "translator1Active",  SoSeparator  --- 
+  PVT   "translator2Switch",  SoSwitch  --- 
+        "translator2",  SoSeparator  --- 
+        "translator2Active",  SoSeparator  --- 
+  PVT   "translator3Switch",  SoSwitch  --- 
+        "translator3",  SoSeparator  --- 
+        "translator3Active",  SoSeparator  --- 
+  PVT   "translator4Switch",  SoSwitch  --- 
+        "translator4",  SoSeparator  --- 
+        "translator4Active",  SoSeparator  --- 
+  PVT   "translator5Switch",  SoSwitch  --- 
+        "translator5",  SoSeparator  --- 
+        "translator5Active",  SoSeparator  --- 
+  PVT   "translator6Switch",  SoSwitch  --- 
+        "translator6",  SoSeparator  --- 
+        "translator6Active",  SoSeparator  --- 
+  PVT   "extruder1Switch",  SoSwitch  --- 
+        "extruder1",  SoSeparator  --- 
+        "extruder1Active",  SoSeparator  --- 
+  PVT   "extruder2Switch",  SoSwitch  --- 
+        "extruder2",  SoSeparator  --- 
+        "extruder2Active",  SoSeparator  --- 
+  PVT   "extruder3Switch",  SoSwitch  --- 
+        "extruder3",  SoSeparator  --- 
+        "extruder3Active",  SoSeparator  --- 
+  PVT   "extruder4Switch",  SoSwitch  --- 
+        "extruder4",  SoSeparator  --- 
+        "extruder4Active",  SoSeparator  --- 
+  PVT   "extruder5Switch",  SoSwitch  --- 
+        "extruder5",  SoSeparator  --- 
+        "extruder5Active",  SoSeparator  --- 
+  PVT   "extruder6Switch",  SoSwitch  --- 
+        "extruder6",  SoSeparator  --- 
+        "extruder6Active",  SoSeparator  --- 
+  PVT   "uniform1Switch",  SoSwitch  --- 
+        "uniform1",  SoSeparator  --- 
+        "uniform1Active",  SoSeparator  --- 
+  PVT   "uniform2Switch",  SoSwitch  --- 
+        "uniform2",  SoSeparator  --- 
+        "uniform2Active",  SoSeparator  --- 
+  PVT   "uniform3Switch",  SoSwitch  --- 
+        "uniform3",  SoSeparator  --- 
+        "uniform3Active",  SoSeparator  --- 
+  PVT   "uniform4Switch",  SoSwitch  --- 
+        "uniform4",  SoSeparator  --- 
+        "uniform4Active",  SoSeparator  --- 
+  PVT   "uniform5Switch",  SoSwitch  --- 
+        "uniform5",  SoSeparator  --- 
+        "uniform5Active",  SoSeparator  --- 
+  PVT   "uniform6Switch",  SoSwitch  --- 
+        "uniform6",  SoSeparator  --- 
+        "uniform6Active",  SoSeparator  --- 
+  PVT   "uniform7Switch",  SoSwitch  --- 
+        "uniform7",  SoSeparator  --- 
+        "uniform7Active",  SoSeparator  --- 
+  PVT   "uniform8Switch",  SoSwitch  --- 
+        "uniform8",  SoSeparator  --- 
+        "uniform8Active",  SoSeparator  --- 
+  PVT   "arrowTranslation",  SoTranslation  --- 
+  PVT   "arrow1Switch",  SoSwitch  --- 
+        "arrow1",  SoSeparator  --- 
+  PVT   "arrow2Switch",  SoSwitch  --- 
+        "arrow2",  SoSeparator  --- 
+  PVT   "arrow3Switch",  SoSwitch  --- 
+        "arrow3",  SoSeparator  --- 
+  PVT   "arrow4Switch",  SoSwitch  --- 
+        "arrow4",  SoSeparator  --- 
+  PVT   "arrow5Switch",  SoSwitch  --- 
+        "arrow5",  SoSeparator  --- 
+  PVT   "arrow6Switch",  SoSwitch  --- 
+        "arrow6",  SoSeparator  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
+*/
 SoHandleBoxDragger::SoHandleBoxDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoHandleBoxDragger);

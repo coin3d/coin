@@ -99,9 +99,38 @@
     return 0;
   }
   \endcode
-}
 
+  Draggers are also node kits, and below is the catalog structure for
+  this top-level dragger class.
+
+  \NODEKIT_PRE_DIAGRAM
+
+  \verbatim
+  CLASS SoDragger
+  -->"this"
+        "callbackList"
+        "topSeparator"
+  -->      "motionMatrix"
+           "geomSeparator"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoDragger
+  PVT   "this",  SoDragger  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "topSeparator",  SoSeparator  --- 
+  PVT   "motionMatrix",  SoMatrixTransform  --- 
+  PVT   "geomSeparator",  SoSeparator  --- 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
 */
+
 //   FIXME: more class doc! The general concept of draggers should be
 //   explained in more detail here -- just refering to the Inventor
 //   Mentor is a cop-out. And include at least one general usage example
