@@ -328,8 +328,13 @@ SoOffscreenRenderer::getMaximumResolution(void)
 }
 
 /*!
-  Sets the component format of the offscreen buffer. Currently only
-  the RGB_TRANSPARENCY format is supported.
+  Sets the component format of the offscreen buffer.
+
+  If set to \c LUMINANCE, a grayscale image is rendered, \c
+  LUMINANCE_TRANSPARENCY gives us a grayscale image with transparency,
+  \c RGB will give us a 24-bit image with 8 bits each for the red,
+  green and blue component, and \c RGB_TRANSPARENCY yields a 32-bit
+  image (\c RGB plus transparency).
 */
 void
 SoOffscreenRenderer::setComponents(const Components components)
