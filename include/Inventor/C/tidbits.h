@@ -39,30 +39,30 @@ enum CoinEndiannessValues {
   COIN_HOST_IS_BIGENDIAN = 1
 };
 
-int coin_host_get_endianness(void);
+COIN_DLL_API int coin_host_get_endianness(void);
 
-int coin_snprintf(char * dst, unsigned int n, const char * fmtstr, ...);
-int coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args);
+COIN_DLL_API int coin_snprintf(char * dst, unsigned int n, const char * fmtstr, ...);
+COIN_DLL_API int coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args);
 
-const char * coin_getenv(const char *);
-int coin_strncasecmp(const char *, const char *, int);
+COIN_DLL_API const char * coin_getenv(const char *);
+COIN_DLL_API int coin_strncasecmp(const char *, const char *, int);
 
 /* int coin_host_get_endianness(void); - internal, declared static */
 
-uint16_t coin_hton_uint16(uint16_t value);
-uint16_t coin_ntoh_uint16(uint16_t value);
-uint32_t coin_hton_uint32(uint32_t value);
-uint32_t coin_ntoh_uint32(uint32_t value);
-float coin_hton_float(float value);
-float coin_ntoh_float(float value);
+COIN_DLL_API uint16_t coin_hton_uint16(uint16_t value);
+COIN_DLL_API uint16_t coin_ntoh_uint16(uint16_t value);
+COIN_DLL_API uint32_t coin_hton_uint32(uint32_t value);
+COIN_DLL_API uint32_t coin_ntoh_uint32(uint32_t value);
+COIN_DLL_API float coin_hton_float(float value);
+COIN_DLL_API float coin_ntoh_float(float value);
 
-SbBool coin_isascii(const int c);
-SbBool coin_isspace(const char c);
+COIN_DLL_API SbBool coin_isascii(const int c);
+COIN_DLL_API SbBool coin_isspace(const char c);
 
-SbBool coin_is_power_of_two(unsigned int x);
+COIN_DLL_API SbBool coin_is_power_of_two(unsigned int x);
 
 typedef void coin_atexit_f(void);
-void coin_atexit(coin_atexit_f *);
+COIN_DLL_API void coin_atexit(coin_atexit_f *);
 
 /* ********************************************************************** */
 
@@ -70,4 +70,4 @@ void coin_atexit(coin_atexit_f *);
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif /* COIN_TIDBITS_H */
+#endif /* !COIN_TIDBITS_H */
