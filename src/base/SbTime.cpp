@@ -30,7 +30,9 @@
   representation and calculations on time values of high resolution.
 */
 
-#include <Inventor/SbTime.h>
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 #include <assert.h>
 #include <stdlib.h>
@@ -39,13 +41,11 @@
 #include <errno.h>
 #include <math.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
 #ifdef HAVE_WINDOWS_H
 #include <windows.h>
 #endif // HAVE_WINDOWS_H
+
+#include <Inventor/SbTime.h>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/base/time.h>
@@ -141,10 +141,13 @@ SbTime::maxTime(void)
   return SbTime(((double)INT_MAX) + 0.999999);
 }
 
+// This is needed because of the hackery in SbTime.h to avoid problems
+// with the Microsoft Visual C++ header files, see comment in
+// SbTime.h for additional information.
+#ifdef max
+#undef max
+#endif // max
 
-// FIXME: get rid of this ugly (not-really-)platform-check #if.
-// 20020307 mortene.
-#ifndef _WIN32
 /*!
   Returns an SbTime instance representing the maximum representable
   time/date.
@@ -159,8 +162,6 @@ SbTime::max(void)
 {
   return SbTime::maxTime();
 }
-#endif // !_WIN32
-
 
 /*!
   Reset an SbTime instance to \a sec number of seconds.
@@ -445,8 +446,11 @@ SbTime::format(const char * const fmt) const
   your reference documentation for strftime() for information on the
   format modifiers available.
 
-  Note that the formatting characters for strftime() is different on
-  UNIX systems and Microsoft Windows.
+  Default formatting is used if \a fmt is \c NULL. Note that the
+  default formatting is different on Microsoft Windows systems versus
+  all other systems. For Windows, it is \c "%#c", for other systems it
+  is \c "%A, %D %r" (again, see system documentation on strftime() for
+  more information).
 
   The value of SbTime will be interpreted as seconds since 00:00:00
   1970-01-01.
@@ -456,15 +460,16 @@ SbTime::format(const char * const fmt) const
 SbString
 SbTime::formatDate(const char * const fmt) const
 {
-#if COIN_DEBUG
-  if (fmt==NULL) {
-    SoDebugError::postWarning("SbTime::formatDate",
-                              "Format string is NULL.");
-    return SbString("");
+  const char * format = fmt;
+  if (format == NULL) {
+#ifdef HAVE_WIN32_API
+    format = "%#c";
+#else // ! HAVE_WIN32_API
+    format = "%A, %D %r";
+#endif // ! HAVE_WIN32_API
   }
-#endif // COIN_DEBUG
 
-  if (strlen(fmt) == 0) return SbString("");
+  if (strlen(format) == 0) return SbString("");
 
   const int buffersize = 256;
   char buffer[buffersize];
@@ -474,7 +479,7 @@ SbTime::formatDate(const char * const fmt) const
 
   struct tm * ts = localtime(&secs);
 
-  int ret = strftime(bufferpt, currentsize, fmt, ts);
+  int ret = strftime(bufferpt, currentsize, format, ts);
   if ((ret == 0) || (ret == currentsize)) {
     bufferpt = NULL;
     // The resulting string was too large, so we will allocate
@@ -483,7 +488,7 @@ SbTime::formatDate(const char * const fmt) const
       delete[] bufferpt;
       currentsize *= 2;
       bufferpt = new char[currentsize];
-      ret = strftime(bufferpt, currentsize, fmt, ts);
+      ret = strftime(bufferpt, currentsize, format, ts);
     } while ((ret == 0) || (ret == currentsize));
   }
 

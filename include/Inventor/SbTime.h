@@ -24,26 +24,30 @@
  *
 \**************************************************************************/
 
-// FIXME: the following system testing and conditional header file
-// inclusion is a mess. Sort it out properly (with configure checks,
-// probably). 20011019 mortene.
-
 // Usually you get all you need from time.h
 #include <time.h>
-#ifdef _WIN32
-#include <sys/timeb.h>
 
-struct timeval;
-#else
+// FIXME: the following system testing and conditional header file
+// inclusion should be cleaned up. Sort it out properly (with a
+// configure check, if necessary -- investigate if sys/time.h is
+// really needed, and if so; exactly where and when). 20011019 mortene.
+#ifndef _WIN32
 // Sometimes (linux) sys/time.h is also needed
 #include <sys/time.h>
-#endif // ! WIN32
+#endif // !_WIN32
 
 #include <stdio.h>
 
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbString.h>
+
+// Avoid problem with Microsoft Visual C++ Win32 API headers (they
+// #define "max" (in 3 different header files, no less)).
+#ifdef max
+#define SBTIME_UNDEF_MAX
+#undef max
+#endif // max
 
 
 class COIN_DLL_API SbTime {
@@ -56,12 +60,7 @@ public:
   void setToTimeOfDay(void);
   static SbTime zero(void);
 
-  // "max" is a #define somewhere in the Win32 include hierarchy mess.
-  // Believe it or not. Is there no end to the stupidity?
-#ifndef _WIN32 // FIXME: #ifdef'ing on system is bad design. 20011019 mortene.
   static SbTime max(void);
-#endif // _WIN32
-
   static SbTime maxTime(void);
   void setValue(const double sec);
   void setValue(const int32_t sec, const long usec);
@@ -72,11 +71,7 @@ public:
   void getValue(struct timeval * tv) const;
   unsigned long getMsecValue(void) const;
   SbString format(const char * const fmt = "%S.%i") const;
-#ifndef _WIN32 // FIXME: #ifdef'ing on system is bad design. 20011019 mortene.
-  SbString formatDate(const char * const fmt = "%A, %D %r") const;
-#else // _WIN32
-  SbString formatDate(const char * const fmt = "%#c") const;
-#endif // _WIN32
+  SbString formatDate(const char * const fmt = NULL) const;
   SbBool parsedate(const char * const date);
   friend COIN_DLL_API SbTime operator +(const SbTime & t0, const SbTime & t1);
   friend COIN_DLL_API SbTime operator -(const SbTime & t0, const SbTime & t1);
@@ -109,5 +104,13 @@ COIN_DLL_API SbTime operator -(const SbTime & t0, const SbTime & t1);
 COIN_DLL_API SbTime operator *(const double s, const SbTime & tm);
 COIN_DLL_API SbTime operator *(const SbTime & tm, const double s);
 COIN_DLL_API SbTime operator /(const SbTime & tm, const double s);
+
+// Avoid problem with Microsoft Win32 API headers (see
+// above). Redefine macro max() back to a definition compatible with
+// what it is in the MSVC header files.
+#ifdef SBTIME_UNDEF_MAX
+#define max(a,b) (((a) > (b)) ? (a) : (b))
+#undef SBTIME_UNDEF_MAX
+#endif // SBTIME_UNDEF_MAX
 
 #endif // !COIN_SBTIME_H
