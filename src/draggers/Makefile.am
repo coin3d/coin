@@ -86,18 +86,21 @@ libdraggers@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libdraggers@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+libdraggersincdir = $(includedir)/Inventor/draggers
+libdraggersinc_HEADERS = $(PublicHeaders)
+
+if BUILD_WITH_MSVC
 draggers_lst_SOURCES = $(BuildSources)
 EXTRA_draggers_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libdraggersincdir = $(includedir)/Inventor/draggers
-libdraggersinc_HEADERS = $(PublicHeaders)
-
+# this rule causes a make warning, so we remove it when it is not in use
 draggers.lst: Makefile $(draggers_lst_OBJECTS)
 	@echo "Linking draggers.lst..."; \
 	echo $(CC) /LST:draggers.lst \
 	  $(draggers_lst_OBJECTS); \
 	$(CC) /LST:draggers.lst \
 	  $(draggers_lst_OBJECTS);
+endif
 
 ##$ END TEMPLATE Make-Common

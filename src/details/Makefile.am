@@ -62,18 +62,21 @@ libdetails@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libdetails@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+libdetailsincdir = $(includedir)/Inventor/details
+libdetailsinc_HEADERS = $(PublicHeaders)
+
+if BUILD_WITH_MSVC
 details_lst_SOURCES = $(BuildSources)
 EXTRA_details_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libdetailsincdir = $(includedir)/Inventor/details
-libdetailsinc_HEADERS = $(PublicHeaders)
-
+# this rule causes a make warning, so we remove it when it is not in use
 details.lst: Makefile $(details_lst_OBJECTS)
 	@echo "Linking details.lst..."; \
 	echo $(CC) /LST:details.lst \
 	  $(details_lst_OBJECTS); \
 	$(CC) /LST:details.lst \
 	  $(details_lst_OBJECTS);
+endif
 
 ##$ END TEMPLATE Make-Common

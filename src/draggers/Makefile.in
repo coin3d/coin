@@ -193,13 +193,13 @@ EXTRA_libdraggers@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
-draggers_lst_SOURCES = $(BuildSources)
-EXTRA_draggers_lst_SOURCES = \
-	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
-
-
 libdraggersincdir = $(includedir)/Inventor/draggers
 libdraggersinc_HEADERS = $(PublicHeaders)
+
+@BUILD_WITH_MSVC_TRUE@draggers_lst_SOURCES = $(BuildSources)
+@BUILD_WITH_MSVC_TRUE@EXTRA_draggers_lst_SOURCES = \
+@BUILD_WITH_MSVC_TRUE@	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 subdir = src/draggers
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
@@ -216,30 +216,8 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 draggers_lst_AR = $(AR) cru
 draggers_lst_LIBADD = 
-@HACKING_COMPACT_BUILD_TRUE@am_draggers_lst_OBJECTS = all.$(OBJEXT)
-@HACKING_COMPACT_BUILD_FALSE@am_draggers_lst_OBJECTS = \
-@HACKING_COMPACT_BUILD_FALSE@ SoDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoCenterballDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoDirectionalLightDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoDragPointDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoHandleBoxDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoJackDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoPointLightDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoRotateCylindricalDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoRotateDiscDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoRotateSphericalDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoScale1Dragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoScale2Dragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoScale2UniformDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoScaleUniformDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSpotLightDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTabBoxDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTabPlaneDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTrackballDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTransformBoxDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTransformerDragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTranslate1Dragger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTranslate2Dragger.$(OBJEXT)
+@HACKING_COMPACT_BUILD_TRUE@am_draggers_lst_OBJECTS =
+@HACKING_COMPACT_BUILD_FALSE@am_draggers_lst_OBJECTS =
 draggers_lst_OBJECTS = $(am_draggers_lst_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -632,12 +610,13 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-libdraggersincHEADERS
 	uninstall-libdraggersincHEADERS
 
 
-draggers.lst: Makefile $(draggers_lst_OBJECTS)
-	@echo "Linking draggers.lst..."; \
-	echo $(CC) /LST:draggers.lst \
-	  $(draggers_lst_OBJECTS); \
-	$(CC) /LST:draggers.lst \
-	  $(draggers_lst_OBJECTS);
+# this rule causes a make warning, so we remove it when it is not in use
+@BUILD_WITH_MSVC_TRUE@draggers.lst: Makefile $(draggers_lst_OBJECTS)
+@BUILD_WITH_MSVC_TRUE@	@echo "Linking draggers.lst..."; \
+@BUILD_WITH_MSVC_TRUE@	echo $(CC) /LST:draggers.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(draggers_lst_OBJECTS); \
+@BUILD_WITH_MSVC_TRUE@	$(CC) /LST:draggers.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(draggers_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

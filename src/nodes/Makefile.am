@@ -249,18 +249,21 @@ libnodes@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+libnodesincdir = $(includedir)/Inventor/nodes
+libnodesinc_HEADERS = $(PublicHeaders)
+
+if BUILD_WITH_MSVC
 nodes_lst_SOURCES = $(BuildSources)
 EXTRA_nodes_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libnodesincdir = $(includedir)/Inventor/nodes
-libnodesinc_HEADERS = $(PublicHeaders)
-
+# this rule causes a make warning, so we remove it when it is not in use
 nodes.lst: Makefile $(nodes_lst_OBJECTS)
 	@echo "Linking nodes.lst..."; \
 	echo $(CC) /LST:nodes.lst \
 	  $(nodes_lst_OBJECTS); \
 	$(CC) /LST:nodes.lst \
 	  $(nodes_lst_OBJECTS);
+endif
 
 ##$ END TEMPLATE Make-Common

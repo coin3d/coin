@@ -65,18 +65,21 @@ libprojectors@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libprojectors@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+libprojectorsincdir = $(includedir)/Inventor/projectors
+libprojectorsinc_HEADERS = $(PublicHeaders)
+
+if BUILD_WITH_MSVC
 projectors_lst_SOURCES = $(BuildSources)
 EXTRA_projectors_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libprojectorsincdir = $(includedir)/Inventor/projectors
-libprojectorsinc_HEADERS = $(PublicHeaders)
-
+# this rule causes a make warning, so we remove it when it is not in use
 projectors.lst: Makefile $(projectors_lst_OBJECTS)
 	@echo "Linking projectors.lst..."; \
 	echo $(CC) /LST:projectors.lst \
 	  $(projectors_lst_OBJECTS); \
 	$(CC) /LST:projectors.lst \
 	  $(projectors_lst_OBJECTS);
+endif
 
 ##$ END TEMPLATE Make-Common

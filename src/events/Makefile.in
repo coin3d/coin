@@ -165,13 +165,13 @@ EXTRA_libevents@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
-events_lst_SOURCES = $(BuildSources)
-EXTRA_events_lst_SOURCES = \
-	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
-
-
 libeventsincdir = $(includedir)/Inventor/events
 libeventsinc_HEADERS = $(PublicHeaders)
+
+@BUILD_WITH_MSVC_TRUE@events_lst_SOURCES = $(BuildSources)
+@BUILD_WITH_MSVC_TRUE@EXTRA_events_lst_SOURCES = \
+@BUILD_WITH_MSVC_TRUE@	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 subdir = src/events
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
@@ -188,14 +188,8 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 events_lst_AR = $(AR) cru
 events_lst_LIBADD = 
-@HACKING_COMPACT_BUILD_TRUE@am_events_lst_OBJECTS = all.$(OBJEXT)
-@HACKING_COMPACT_BUILD_FALSE@am_events_lst_OBJECTS = \
-@HACKING_COMPACT_BUILD_FALSE@ SoButtonEvent.$(OBJEXT) SoEvent.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoKeyboardEvent.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoLocation2Event.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoMotion3Event.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoMouseButtonEvent.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSpaceballButtonEvent.$(OBJEXT)
+@HACKING_COMPACT_BUILD_TRUE@am_events_lst_OBJECTS =
+@HACKING_COMPACT_BUILD_FALSE@am_events_lst_OBJECTS =
 events_lst_OBJECTS = $(am_events_lst_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -507,12 +501,13 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-libeventsincHEADERS
 	uninstall-libeventsincHEADERS
 
 
-events.lst: Makefile $(events_lst_OBJECTS)
-	@echo "Linking events.lst..."; \
-	echo $(CC) /LST:events.lst \
-	  $(events_lst_OBJECTS); \
-	$(CC) /LST:events.lst \
-	  $(events_lst_OBJECTS);
+# this rule causes a make warning, so we remove it when it is not in use
+@BUILD_WITH_MSVC_TRUE@events.lst: Makefile $(events_lst_OBJECTS)
+@BUILD_WITH_MSVC_TRUE@	@echo "Linking events.lst..."; \
+@BUILD_WITH_MSVC_TRUE@	echo $(CC) /LST:events.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(events_lst_OBJECTS); \
+@BUILD_WITH_MSVC_TRUE@	$(CC) /LST:events.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(events_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -67,18 +67,21 @@ libsensors@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libsensors@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+libsensorsincdir = $(includedir)/Inventor/sensors
+libsensorsinc_HEADERS = $(PublicHeaders)
+
+if BUILD_WITH_MSVC
 sensors_lst_SOURCES = $(BuildSources)
 EXTRA_sensors_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libsensorsincdir = $(includedir)/Inventor/sensors
-libsensorsinc_HEADERS = $(PublicHeaders)
-
+# this rule causes a make warning, so we remove it when it is not in use
 sensors.lst: Makefile $(sensors_lst_OBJECTS)
 	@echo "Linking sensors.lst..."; \
 	echo $(CC) /LST:sensors.lst \
 	  $(sensors_lst_OBJECTS); \
 	$(CC) /LST:sensors.lst \
 	  $(sensors_lst_OBJECTS);
+endif
 
 ##$ END TEMPLATE Make-Common

@@ -131,18 +131,21 @@ libengines@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libengines@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+libenginesincdir = $(includedir)/Inventor/engines
+libenginesinc_HEADERS = $(PublicHeaders)
+
+if BUILD_WITH_MSVC
 engines_lst_SOURCES = $(BuildSources)
 EXTRA_engines_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libenginesincdir = $(includedir)/Inventor/engines
-libenginesinc_HEADERS = $(PublicHeaders)
-
+# this rule causes a make warning, so we remove it when it is not in use
 engines.lst: Makefile $(engines_lst_OBJECTS)
 	@echo "Linking engines.lst..."; \
 	echo $(CC) /LST:engines.lst \
 	  $(engines_lst_OBJECTS); \
 	$(CC) /LST:engines.lst \
 	  $(engines_lst_OBJECTS);
+endif
 
 ##$ END TEMPLATE Make-Common

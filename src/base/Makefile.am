@@ -96,18 +96,21 @@ libbase@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+libbaseincdir = $(includedir)/Inventor/base
+libbaseinc_HEADERS = $(PublicHeaders)
+
+if BUILD_WITH_MSVC
 base_lst_SOURCES = $(BuildSources)
 EXTRA_base_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libbaseincdir = $(includedir)/Inventor/base
-libbaseinc_HEADERS = $(PublicHeaders)
-
+# this rule causes a make warning, so we remove it when it is not in use
 base.lst: Makefile $(base_lst_OBJECTS)
 	@echo "Linking base.lst..."; \
 	echo $(CC) /LST:base.lst \
 	  $(base_lst_OBJECTS); \
 	$(CC) /LST:base.lst \
 	  $(base_lst_OBJECTS);
+endif
 
 ##$ END TEMPLATE Make-Common

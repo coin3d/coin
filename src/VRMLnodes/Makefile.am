@@ -48,18 +48,21 @@ libVRMLnodes@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libVRMLnodes@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+libVRMLnodesincdir = $(includedir)/Inventor/VRMLnodes
+libVRMLnodesinc_HEADERS = $(PublicHeaders)
+
+if BUILD_WITH_MSVC
 VRMLnodes_lst_SOURCES = $(BuildSources)
 EXTRA_VRMLnodes_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libVRMLnodesincdir = $(includedir)/Inventor/VRMLnodes
-libVRMLnodesinc_HEADERS = $(PublicHeaders)
-
+# this rule causes a make warning, so we remove it when it is not in use
 VRMLnodes.lst: Makefile $(VRMLnodes_lst_OBJECTS)
 	@echo "Linking VRMLnodes.lst..."; \
 	echo $(CC) /LST:VRMLnodes.lst \
 	  $(VRMLnodes_lst_OBJECTS); \
 	$(CC) /LST:VRMLnodes.lst \
 	  $(VRMLnodes_lst_OBJECTS);
+endif
 
 ##$ END TEMPLATE Make-Common

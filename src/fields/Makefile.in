@@ -257,13 +257,13 @@ EXTRA_libfields@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
-fields_lst_SOURCES = $(BuildSources)
-EXTRA_fields_lst_SOURCES = \
-	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
-
-
 libfieldsincdir = $(includedir)/Inventor/fields
 libfieldsinc_HEADERS = $(PublicHeaders)
+
+@BUILD_WITH_MSVC_TRUE@fields_lst_SOURCES = $(BuildSources)
+@BUILD_WITH_MSVC_TRUE@EXTRA_fields_lst_SOURCES = \
+@BUILD_WITH_MSVC_TRUE@	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 subdir = src/fields
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
@@ -280,34 +280,8 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 fields_lst_AR = $(AR) cru
 fields_lst_LIBADD = 
-@HACKING_COMPACT_BUILD_TRUE@am_fields_lst_OBJECTS = all.$(OBJEXT)
-@HACKING_COMPACT_BUILD_FALSE@am_fields_lst_OBJECTS = SoField.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoFieldContainer.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoFieldData.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoMFBitMask.$(OBJEXT) SoMFBool.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoMFColor.$(OBJEXT) SoMFEngine.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoMFEnum.$(OBJEXT) SoMFFloat.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoMFInt32.$(OBJEXT) SoMFMatrix.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoMFName.$(OBJEXT) SoMFNode.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoMFPath.$(OBJEXT) SoMFPlane.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoMFRotation.$(OBJEXT) SoMFShort.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoMFString.$(OBJEXT) SoMFTime.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoMFUInt32.$(OBJEXT) SoMFUShort.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoMFVec2f.$(OBJEXT) SoMFVec3f.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoMFVec4f.$(OBJEXT) SoMField.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSFBitMask.$(OBJEXT) SoSFBool.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSFColor.$(OBJEXT) SoSFEngine.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSFEnum.$(OBJEXT) SoSFFloat.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSFImage.$(OBJEXT) SoSFInt32.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSFMatrix.$(OBJEXT) SoSFName.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSFNode.$(OBJEXT) SoSFPath.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSFPlane.$(OBJEXT) SoSFRotation.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSFShort.$(OBJEXT) SoSFString.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSFTime.$(OBJEXT) SoSFTrigger.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSFUInt32.$(OBJEXT) SoSFUShort.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSFVec2f.$(OBJEXT) SoSFVec3f.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSFVec4f.$(OBJEXT) SoSField.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoGlobalField.$(OBJEXT)
+@HACKING_COMPACT_BUILD_TRUE@am_fields_lst_OBJECTS =
+@HACKING_COMPACT_BUILD_FALSE@am_fields_lst_OBJECTS =
 fields_lst_OBJECTS = $(am_fields_lst_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -772,12 +746,13 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-libfieldsincHEADERS
 	uninstall-libfieldsincHEADERS
 
 
-fields.lst: Makefile $(fields_lst_OBJECTS)
-	@echo "Linking fields.lst..."; \
-	echo $(CC) /LST:fields.lst \
-	  $(fields_lst_OBJECTS); \
-	$(CC) /LST:fields.lst \
-	  $(fields_lst_OBJECTS);
+# this rule causes a make warning, so we remove it when it is not in use
+@BUILD_WITH_MSVC_TRUE@fields.lst: Makefile $(fields_lst_OBJECTS)
+@BUILD_WITH_MSVC_TRUE@	@echo "Linking fields.lst..."; \
+@BUILD_WITH_MSVC_TRUE@	echo $(CC) /LST:fields.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(fields_lst_OBJECTS); \
+@BUILD_WITH_MSVC_TRUE@	$(CC) /LST:fields.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(fields_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

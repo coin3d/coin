@@ -238,18 +238,21 @@ libelements@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+libelementsincdir = $(includedir)/Inventor/elements
+libelementsinc_HEADERS = $(PublicHeaders)
+
+if BUILD_WITH_MSVC
 elements_lst_SOURCES = $(BuildSources)
 EXTRA_elements_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libelementsincdir = $(includedir)/Inventor/elements
-libelementsinc_HEADERS = $(PublicHeaders)
-
+# this rule causes a make warning, so we remove it when it is not in use
 elements.lst: Makefile $(elements_lst_OBJECTS)
 	@echo "Linking elements.lst..."; \
 	echo $(CC) /LST:elements.lst \
 	  $(elements_lst_OBJECTS); \
 	$(CC) /LST:elements.lst \
 	  $(elements_lst_OBJECTS);
+endif
 
 ##$ END TEMPLATE Make-Common

@@ -179,13 +179,13 @@ EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
-actions_lst_SOURCES = $(BuildSources)
-EXTRA_actions_lst_SOURCES = \
-	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
-
-
 libactionsincdir = $(includedir)/Inventor/actions
 libactionsinc_HEADERS = $(PublicHeaders)
+
+@BUILD_WITH_MSVC_TRUE@actions_lst_SOURCES = $(BuildSources)
+@BUILD_WITH_MSVC_TRUE@EXTRA_actions_lst_SOURCES = \
+@BUILD_WITH_MSVC_TRUE@	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 subdir = src/actions
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
@@ -202,20 +202,8 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 actions_lst_AR = $(AR) cru
 actions_lst_LIBADD = 
-@HACKING_COMPACT_BUILD_TRUE@am_actions_lst_OBJECTS = all.$(OBJEXT)
-@HACKING_COMPACT_BUILD_FALSE@am_actions_lst_OBJECTS = SoAction.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoBoxHighlightRenderAction.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoCallbackAction.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoGLRenderAction.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoGetBoundingBoxAction.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoGetMatrixAction.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoGetPrimitiveCountAction.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoHandleEventAction.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoLineHighlightRenderAction.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoPickAction.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoRayPickAction.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSearchAction.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoWriteAction.$(OBJEXT)
+@HACKING_COMPACT_BUILD_TRUE@am_actions_lst_OBJECTS =
+@HACKING_COMPACT_BUILD_FALSE@am_actions_lst_OBJECTS =
 actions_lst_OBJECTS = $(am_actions_lst_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -558,12 +546,13 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-libactionsincHEADERS
 	uninstall-libactionsincHEADERS
 
 
-actions.lst: Makefile $(actions_lst_OBJECTS)
-	@echo "Linking actions.lst..."; \
-	echo $(CC) /LST:actions.lst \
-	  $(actions_lst_OBJECTS); \
-	$(CC) /LST:actions.lst \
-	  $(actions_lst_OBJECTS);
+# this rule causes a make warning, so we remove it when it is not in use
+@BUILD_WITH_MSVC_TRUE@actions.lst: Makefile $(actions_lst_OBJECTS)
+@BUILD_WITH_MSVC_TRUE@	@echo "Linking actions.lst..."; \
+@BUILD_WITH_MSVC_TRUE@	echo $(CC) /LST:actions.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(actions_lst_OBJECTS); \
+@BUILD_WITH_MSVC_TRUE@	$(CC) /LST:actions.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(actions_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

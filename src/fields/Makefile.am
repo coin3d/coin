@@ -149,18 +149,21 @@ libfields@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libfields@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+libfieldsincdir = $(includedir)/Inventor/fields
+libfieldsinc_HEADERS = $(PublicHeaders)
+
+if BUILD_WITH_MSVC
 fields_lst_SOURCES = $(BuildSources)
 EXTRA_fields_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libfieldsincdir = $(includedir)/Inventor/fields
-libfieldsinc_HEADERS = $(PublicHeaders)
-
+# this rule causes a make warning, so we remove it when it is not in use
 fields.lst: Makefile $(fields_lst_OBJECTS)
 	@echo "Linking fields.lst..."; \
 	echo $(CC) /LST:fields.lst \
 	  $(fields_lst_OBJECTS); \
 	$(CC) /LST:fields.lst \
 	  $(fields_lst_OBJECTS);
+endif
 
 ##$ END TEMPLATE Make-Common

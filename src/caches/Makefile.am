@@ -56,18 +56,21 @@ libcaches@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+libcachesincdir = $(includedir)/Inventor/caches
+libcachesinc_HEADERS = $(PublicHeaders)
+
+if BUILD_WITH_MSVC
 caches_lst_SOURCES = $(BuildSources)
 EXTRA_caches_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libcachesincdir = $(includedir)/Inventor/caches
-libcachesinc_HEADERS = $(PublicHeaders)
-
+# this rule causes a make warning, so we remove it when it is not in use
 caches.lst: Makefile $(caches_lst_OBJECTS)
 	@echo "Linking caches.lst..."; \
 	echo $(CC) /LST:caches.lst \
 	  $(caches_lst_OBJECTS); \
 	$(CC) /LST:caches.lst \
 	  $(caches_lst_OBJECTS);
+endif
 
 ##$ END TEMPLATE Make-Common

@@ -207,13 +207,13 @@ EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
-misc_lst_SOURCES = $(BuildSources)
-EXTRA_misc_lst_SOURCES = \
-	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
-
-
 libmiscincdir = $(includedir)/Inventor/misc
 libmiscinc_HEADERS = $(PublicHeaders)
+
+@BUILD_WITH_MSVC_TRUE@misc_lst_SOURCES = $(BuildSources)
+@BUILD_WITH_MSVC_TRUE@EXTRA_misc_lst_SOURCES = \
+@BUILD_WITH_MSVC_TRUE@	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 subdir = src/misc
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
@@ -230,29 +230,8 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 misc_lst_AR = $(AR) cru
 misc_lst_LIBADD = 
-@HACKING_COMPACT_BUILD_TRUE@am_misc_lst_OBJECTS = all.$(OBJEXT)
-@HACKING_COMPACT_BUILD_FALSE@am_misc_lst_OBJECTS = SoBase.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoChildList.$(OBJEXT) SoGL.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoGLImage.$(OBJEXT) SoGlyph.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoNormalGenerator.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoNotification.$(OBJEXT) SoState.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoDB.$(OBJEXT) SoFullPath.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTempPath.$(OBJEXT) SoLightPath.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoInput.$(OBJEXT) SoInteraction.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoOutput.$(OBJEXT) SoPath.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoPickedPoint.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoPrimitiveVertex.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSceneManager.$(OBJEXT) SoType.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoOffscreenRenderer.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoGenerate.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoLockManager.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoByteStream.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTranSender.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTranReceiver.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ default3dfont.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ default2dfont.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ GLUWrapper.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ simage_wrapper.$(OBJEXT)
+@HACKING_COMPACT_BUILD_TRUE@am_misc_lst_OBJECTS =
+@HACKING_COMPACT_BUILD_FALSE@am_misc_lst_OBJECTS =
 misc_lst_OBJECTS = $(am_misc_lst_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -694,12 +673,13 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-libmiscincHEADERS
 	uninstall-libmiscincHEADERS
 
 
-misc.lst: Makefile $(misc_lst_OBJECTS)
-	@echo "Linking misc.lst..."; \
-	echo $(CC) /LST:misc.lst \
-	  $(misc_lst_OBJECTS); \
-	$(CC) /LST:misc.lst \
-	  $(misc_lst_OBJECTS);
+# this rule causes a make warning, so we remove it when it is not in use
+@BUILD_WITH_MSVC_TRUE@misc.lst: Makefile $(misc_lst_OBJECTS)
+@BUILD_WITH_MSVC_TRUE@	@echo "Linking misc.lst..."; \
+@BUILD_WITH_MSVC_TRUE@	echo $(CC) /LST:misc.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(misc_lst_OBJECTS); \
+@BUILD_WITH_MSVC_TRUE@	$(CC) /LST:misc.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(misc_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -33,17 +33,20 @@ lib-xxx-@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_lib-xxx-@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+lib-xxx-incdir = $(includedir)/Inventor/-xxx-
+lib-xxx-inc_HEADERS = $(PublicHeaders)
+
+if BUILD_WITH_MSVC
 -xxx-_lst_SOURCES = $(BuildSources)
 EXTRA_-xxx-_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-lib-xxx-incdir = $(includedir)/Inventor/-xxx-
-lib-xxx-inc_HEADERS = $(PublicHeaders)
-
+# this rule causes a make warning, so we remove it when it is not in use
 -xxx-.lst: Makefile $(-xxx-_lst_OBJECTS)
 	@echo "Linking -xxx-.lst..."; \
 	echo $(CC) /LST:-xxx-.lst \
 	  $(-xxx-_lst_OBJECTS); \
 	$(CC) /LST:-xxx-.lst \
 	  $(-xxx-_lst_OBJECTS);
+endif
 

@@ -187,13 +187,13 @@ EXTRA_liblists@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
-lists_lst_SOURCES = $(BuildSources)
-EXTRA_lists_lst_SOURCES = \
-	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
-
-
 liblistsincdir = $(includedir)/Inventor/lists
 liblistsinc_HEADERS = $(PublicHeaders)
+
+@BUILD_WITH_MSVC_TRUE@lists_lst_SOURCES = $(BuildSources)
+@BUILD_WITH_MSVC_TRUE@EXTRA_lists_lst_SOURCES = \
+@BUILD_WITH_MSVC_TRUE@	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 subdir = src/lists
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
@@ -210,24 +210,8 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 lists_lst_AR = $(AR) cru
 lists_lst_LIBADD = 
-@HACKING_COMPACT_BUILD_TRUE@am_lists_lst_OBJECTS = all.$(OBJEXT)
-@HACKING_COMPACT_BUILD_FALSE@am_lists_lst_OBJECTS = SbList.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SbPList.$(OBJEXT) SbIntList.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SbVec3fList.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SbStringList.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoActionMethodList.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoAuditorList.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoBaseList.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoCallbackList.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoDetailList.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoEnabledElementsList.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoEngineList.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoEngineOutputList.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoFieldList.$(OBJEXT) SoNodeList.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoPathList.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoPickedPointList.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTypeList.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoVRMLInterpOutputList.$(OBJEXT)
+@HACKING_COMPACT_BUILD_TRUE@am_lists_lst_OBJECTS =
+@HACKING_COMPACT_BUILD_FALSE@am_lists_lst_OBJECTS =
 lists_lst_OBJECTS = $(am_lists_lst_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -583,12 +567,13 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-liblistsincHEADERS
 	uninstall-liblistsincHEADERS
 
 
-lists.lst: Makefile $(lists_lst_OBJECTS)
-	@echo "Linking lists.lst..."; \
-	echo $(CC) /LST:lists.lst \
-	  $(lists_lst_OBJECTS); \
-	$(CC) /LST:lists.lst \
-	  $(lists_lst_OBJECTS);
+# this rule causes a make warning, so we remove it when it is not in use
+@BUILD_WITH_MSVC_TRUE@lists.lst: Makefile $(lists_lst_OBJECTS)
+@BUILD_WITH_MSVC_TRUE@	@echo "Linking lists.lst..."; \
+@BUILD_WITH_MSVC_TRUE@	echo $(CC) /LST:lists.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(lists_lst_OBJECTS); \
+@BUILD_WITH_MSVC_TRUE@	$(CC) /LST:lists.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(lists_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

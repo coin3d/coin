@@ -99,18 +99,21 @@ libmisc@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+libmiscincdir = $(includedir)/Inventor/misc
+libmiscinc_HEADERS = $(PublicHeaders)
+
+if BUILD_WITH_MSVC
 misc_lst_SOURCES = $(BuildSources)
 EXTRA_misc_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libmiscincdir = $(includedir)/Inventor/misc
-libmiscinc_HEADERS = $(PublicHeaders)
-
+# this rule causes a make warning, so we remove it when it is not in use
 misc.lst: Makefile $(misc_lst_OBJECTS)
 	@echo "Linking misc.lst..."; \
 	echo $(CC) /LST:misc.lst \
 	  $(misc_lst_OBJECTS); \
 	$(CC) /LST:misc.lst \
 	  $(misc_lst_OBJECTS);
+endif
 
 ##$ END TEMPLATE Make-Common

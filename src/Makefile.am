@@ -10,14 +10,7 @@ if HACKING_DYNAMIC_MODULES
 libCoin@SUFFIX@_la_LIBADD = 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = 
 else
-libCoin@SUFFIX@_la_LIBADD = \
-	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libbase.la \
-	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
-	engines/libengines.la errors/liberrors.la events/libevents.la \
-	fields/libfields.la misc/libmisc.la lists/liblists.la \
-	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la \
-	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
-	manips/libmanips.la
+if BUILD_WITH_MSVC
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	VRMLnodes/VRMLnodes.lst actions/actions.lst base/base.lst \
 	bundles/bundles.lst caches/caches.lst elements/elements.lst \
@@ -26,6 +19,16 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	nodekits/nodekits.lst nodes/nodes.lst projectors/projectors.lst \
 	sensors/sensors.lst details/details.lst draggers/draggers.lst \
 	manips/manips.lst
+else
+libCoin@SUFFIX@_la_LIBADD = \
+	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libbase.la \
+	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
+	engines/libengines.la errors/liberrors.la events/libevents.la \
+	fields/libfields.la misc/libmisc.la lists/liblists.la \
+	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la \
+	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
+	manips/libmanips.la
+endif
 endif
 
 SUBDIRS = \
@@ -35,11 +38,13 @@ SUBDIRS = \
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-libCoin@SUFFIX@_la_SOURCES = \
-	snprintf.c snprintf.h
-
+if BUILD_WITH_MSVC
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
 	snprintf.c snprintf.h
+else
+libCoin@SUFFIX@_la_SOURCES = \
+	snprintf.c snprintf.h
+endif
 
 ## Installation information.
 
@@ -102,6 +107,9 @@ libCoin@SUFFIX@inc_HEADERS = \
 
 ## Rule for creating a Windows library.
 
+if BUILD_WITH_MSVC
+# this rule causes an "override" warning, so we remove the rule when it is
+# not needed
 coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile \
   $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
   $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES)
@@ -114,6 +122,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile \
 	$(CC) $(LDFLAGS) $(LIBFLAGS) \
 	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
 	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS);
+endif
 
 # **************************************************************************
 

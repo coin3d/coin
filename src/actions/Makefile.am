@@ -71,18 +71,21 @@ libactions@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+libactionsincdir = $(includedir)/Inventor/actions
+libactionsinc_HEADERS = $(PublicHeaders)
+
+if BUILD_WITH_MSVC
 actions_lst_SOURCES = $(BuildSources)
 EXTRA_actions_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libactionsincdir = $(includedir)/Inventor/actions
-libactionsinc_HEADERS = $(PublicHeaders)
-
+# this rule causes a make warning, so we remove it when it is not in use
 actions.lst: Makefile $(actions_lst_OBJECTS)
 	@echo "Linking actions.lst..."; \
 	echo $(CC) /LST:actions.lst \
 	  $(actions_lst_OBJECTS); \
 	$(CC) /LST:actions.lst \
 	  $(actions_lst_OBJECTS);
+endif
 
 ##$ END TEMPLATE Make-Common

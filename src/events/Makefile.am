@@ -58,18 +58,21 @@ libevents@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libevents@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+libeventsincdir = $(includedir)/Inventor/events
+libeventsinc_HEADERS = $(PublicHeaders)
+
+if BUILD_WITH_MSVC
 events_lst_SOURCES = $(BuildSources)
 EXTRA_events_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libeventsincdir = $(includedir)/Inventor/events
-libeventsinc_HEADERS = $(PublicHeaders)
-
+# this rule causes a make warning, so we remove it when it is not in use
 events.lst: Makefile $(events_lst_OBJECTS)
 	@echo "Linking events.lst..."; \
 	echo $(CC) /LST:events.lst \
 	  $(events_lst_OBJECTS); \
 	$(CC) /LST:events.lst \
 	  $(events_lst_OBJECTS);
+endif
 
 ##$ END TEMPLATE Make-Common

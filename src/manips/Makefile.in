@@ -174,13 +174,13 @@ EXTRA_libmanips@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
-manips_lst_SOURCES = $(BuildSources)
-EXTRA_manips_lst_SOURCES = \
-	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
-
-
 libmanipsincdir = $(includedir)/Inventor/manips
 libmanipsinc_HEADERS = $(PublicHeaders)
+
+@BUILD_WITH_MSVC_TRUE@manips_lst_SOURCES = $(BuildSources)
+@BUILD_WITH_MSVC_TRUE@EXTRA_manips_lst_SOURCES = \
+@BUILD_WITH_MSVC_TRUE@	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 subdir = src/manips
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
@@ -197,21 +197,8 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 manips_lst_AR = $(AR) cru
 manips_lst_LIBADD = 
-@HACKING_COMPACT_BUILD_TRUE@am_manips_lst_OBJECTS = all.$(OBJEXT)
-@HACKING_COMPACT_BUILD_FALSE@am_manips_lst_OBJECTS = \
-@HACKING_COMPACT_BUILD_FALSE@ SoClipPlaneManip.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoDirectionalLightManip.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoPointLightManip.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSpotLightManip.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTransformManip.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoCenterballManip.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoHandleBoxManip.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoJackManip.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTabBoxManip.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTrackballManip.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTransformBoxManip.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTransformerManip.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ commoncode.$(OBJEXT)
+@HACKING_COMPACT_BUILD_TRUE@am_manips_lst_OBJECTS =
+@HACKING_COMPACT_BUILD_FALSE@am_manips_lst_OBJECTS =
 manips_lst_OBJECTS = $(am_manips_lst_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -550,12 +537,13 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-libmanipsincHEADERS
 	uninstall-libmanipsincHEADERS
 
 
-manips.lst: Makefile $(manips_lst_OBJECTS)
-	@echo "Linking manips.lst..."; \
-	echo $(CC) /LST:manips.lst \
-	  $(manips_lst_OBJECTS); \
-	$(CC) /LST:manips.lst \
-	  $(manips_lst_OBJECTS);
+# this rule causes a make warning, so we remove it when it is not in use
+@BUILD_WITH_MSVC_TRUE@manips.lst: Makefile $(manips_lst_OBJECTS)
+@BUILD_WITH_MSVC_TRUE@	@echo "Linking manips.lst..."; \
+@BUILD_WITH_MSVC_TRUE@	echo $(CC) /LST:manips.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(manips_lst_OBJECTS); \
+@BUILD_WITH_MSVC_TRUE@	$(CC) /LST:manips.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(manips_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

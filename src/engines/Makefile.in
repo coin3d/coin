@@ -228,13 +228,13 @@ EXTRA_libengines@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
-engines_lst_SOURCES = $(BuildSources)
-EXTRA_engines_lst_SOURCES = \
-	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
-
-
 libenginesincdir = $(includedir)/Inventor/engines
 libenginesinc_HEADERS = $(PublicHeaders)
+
+@BUILD_WITH_MSVC_TRUE@engines_lst_SOURCES = $(BuildSources)
+@BUILD_WITH_MSVC_TRUE@EXTRA_engines_lst_SOURCES = \
+@BUILD_WITH_MSVC_TRUE@	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 subdir = src/engines
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
@@ -251,40 +251,8 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 engines_lst_AR = $(AR) cru
 engines_lst_LIBADD = 
-@HACKING_COMPACT_BUILD_TRUE@am_engines_lst_OBJECTS = all.$(OBJEXT)
-@HACKING_COMPACT_BUILD_FALSE@am_engines_lst_OBJECTS = \
-@HACKING_COMPACT_BUILD_FALSE@ SoBoolOperation.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoCalculator.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoComposeMatrix.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoComposeRotation.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoComposeRotationFromTo.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoComposeVec2f.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoComposeVec3f.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoComposeVec4f.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoComputeBoundingBox.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoConcatenate.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoConvertAll.$(OBJEXT) SoCounter.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoDecomposeMatrix.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoDecomposeRotation.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoDecomposeVec2f.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoDecomposeVec3f.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoDecomposeVec4f.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoElapsedTime.$(OBJEXT) SoEngine.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoEngineOutput.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoFieldConverter.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoGate.$(OBJEXT) SoInterpolate.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoInterpolateFloat.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoInterpolateRotation.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoInterpolateVec2f.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoInterpolateVec3f.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoInterpolateVec4f.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoOnOff.$(OBJEXT) SoOneShot.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoOutputData.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoSelectOne.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTimeCounter.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTransformVec3f.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTriggerAny.$(OBJEXT) evaluator.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ evaluator_tab.$(OBJEXT)
+@HACKING_COMPACT_BUILD_TRUE@am_engines_lst_OBJECTS =
+@HACKING_COMPACT_BUILD_FALSE@am_engines_lst_OBJECTS =
 engines_lst_OBJECTS = $(am_engines_lst_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -746,12 +714,13 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-libenginesincHEADERS
 	uninstall-libenginesincHEADERS
 
 
-engines.lst: Makefile $(engines_lst_OBJECTS)
-	@echo "Linking engines.lst..."; \
-	echo $(CC) /LST:engines.lst \
-	  $(engines_lst_OBJECTS); \
-	$(CC) /LST:engines.lst \
-	  $(engines_lst_OBJECTS);
+# this rule causes a make warning, so we remove it when it is not in use
+@BUILD_WITH_MSVC_TRUE@engines.lst: Makefile $(engines_lst_OBJECTS)
+@BUILD_WITH_MSVC_TRUE@	@echo "Linking engines.lst..."; \
+@BUILD_WITH_MSVC_TRUE@	echo $(CC) /LST:engines.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(engines_lst_OBJECTS); \
+@BUILD_WITH_MSVC_TRUE@	$(CC) /LST:engines.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(engines_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

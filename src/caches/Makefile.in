@@ -163,13 +163,13 @@ EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
-caches_lst_SOURCES = $(BuildSources)
-EXTRA_caches_lst_SOURCES = \
-	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
-
-
 libcachesincdir = $(includedir)/Inventor/caches
 libcachesinc_HEADERS = $(PublicHeaders)
+
+@BUILD_WITH_MSVC_TRUE@caches_lst_SOURCES = $(BuildSources)
+@BUILD_WITH_MSVC_TRUE@EXTRA_caches_lst_SOURCES = \
+@BUILD_WITH_MSVC_TRUE@	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 subdir = src/caches
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
@@ -186,15 +186,8 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 caches_lst_AR = $(AR) cru
 caches_lst_LIBADD = 
-@HACKING_COMPACT_BUILD_TRUE@am_caches_lst_OBJECTS = all.$(OBJEXT)
-@HACKING_COMPACT_BUILD_FALSE@am_caches_lst_OBJECTS = \
-@HACKING_COMPACT_BUILD_FALSE@ SoBoundingBoxCache.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoCache.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoConvexDataCache.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoGLCacheList.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoGLRenderCache.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoNormalCache.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateCache.$(OBJEXT)
+@HACKING_COMPACT_BUILD_TRUE@am_caches_lst_OBJECTS =
+@HACKING_COMPACT_BUILD_FALSE@am_caches_lst_OBJECTS =
 caches_lst_OBJECTS = $(am_caches_lst_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -506,12 +499,13 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-libcachesincHEADERS
 	uninstall-libcachesincHEADERS
 
 
-caches.lst: Makefile $(caches_lst_OBJECTS)
-	@echo "Linking caches.lst..."; \
-	echo $(CC) /LST:caches.lst \
-	  $(caches_lst_OBJECTS); \
-	$(CC) /LST:caches.lst \
-	  $(caches_lst_OBJECTS);
+# this rule causes a make warning, so we remove it when it is not in use
+@BUILD_WITH_MSVC_TRUE@caches.lst: Makefile $(caches_lst_OBJECTS)
+@BUILD_WITH_MSVC_TRUE@	@echo "Linking caches.lst..."; \
+@BUILD_WITH_MSVC_TRUE@	echo $(CC) /LST:caches.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(caches_lst_OBJECTS); \
+@BUILD_WITH_MSVC_TRUE@	$(CC) /LST:caches.lst \
+@BUILD_WITH_MSVC_TRUE@	  $(caches_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -48,18 +48,21 @@ libbundles@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libbundles@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+libbundlesincdir = $(includedir)/Inventor/bundles
+libbundlesinc_HEADERS = $(PublicHeaders)
+
+if BUILD_WITH_MSVC
 bundles_lst_SOURCES = $(BuildSources)
 EXTRA_bundles_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libbundlesincdir = $(includedir)/Inventor/bundles
-libbundlesinc_HEADERS = $(PublicHeaders)
-
+# this rule causes a make warning, so we remove it when it is not in use
 bundles.lst: Makefile $(bundles_lst_OBJECTS)
 	@echo "Linking bundles.lst..."; \
 	echo $(CC) /LST:bundles.lst \
 	  $(bundles_lst_OBJECTS); \
 	$(CC) /LST:bundles.lst \
 	  $(bundles_lst_OBJECTS);
+endif
 
 ##$ END TEMPLATE Make-Common

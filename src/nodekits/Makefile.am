@@ -69,18 +69,21 @@ libnodekits@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libnodekits@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+libnodekitsincdir = $(includedir)/Inventor/nodekits
+libnodekitsinc_HEADERS = $(PublicHeaders)
+
+if BUILD_WITH_MSVC
 nodekits_lst_SOURCES = $(BuildSources)
 EXTRA_nodekits_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libnodekitsincdir = $(includedir)/Inventor/nodekits
-libnodekitsinc_HEADERS = $(PublicHeaders)
-
+# this rule causes a make warning, so we remove it when it is not in use
 nodekits.lst: Makefile $(nodekits_lst_OBJECTS)
 	@echo "Linking nodekits.lst..."; \
 	echo $(CC) /LST:nodekits.lst \
 	  $(nodekits_lst_OBJECTS); \
 	$(CC) /LST:nodekits.lst \
 	  $(nodekits_lst_OBJECTS);
+endif
 
 ##$ END TEMPLATE Make-Common
