@@ -723,8 +723,13 @@ SoBase::getName(void) const
 /*!
   Set the name of this object.
 
-  Characters that are invalid to use as parts of names for SoBase
-  derived objects will be automatically replaced by underscore
+  Some characters are invalid to use as parts of names for SoBase
+  derived objects, as object names needs to be consistent with the
+  syntax of Inventor and VRML files upon file export / import
+  operations (so one must for instance avoid using special token
+  characters).
+
+  Invalid characters will be automatically replaced by underscore
   characters. If the name \e starts with an invalid character, the new
   name will be \e preceded by an underscore character.
 
