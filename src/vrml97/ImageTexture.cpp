@@ -20,6 +20,60 @@
 /*!
   \class SoVRMLImageTexture SoVRMLImageTexture.h Inventor/VRMLnodes/SoVRMLImageTexture.h
   \brief The SoVRMLImageTexture class is used for mapping a texture file onto geometry.
+  \ingroup VRMLnodes
+
+  WEB3DCOPYRIGHT
+
+  \verbatim
+  ImageTexture {
+    exposedField MFString url     []
+    field        SFBool   repeatS TRUE
+    field        SFBool   repeatT TRUE 
+  }
+  \endverbatim
+  
+  The ImageTexture node defines a texture map by specifying an image
+  file and general parameters for mapping to geometry. Texture maps
+  are defined in a 2D coordinate system (s, t) that ranges from [0.0,
+  1.0] in both directions. The bottom edge of the image corresponds to
+  the S-axis of the texture map, and left edge of the image
+  corresponds to the T-axis of the texture map. The lower-left pixel
+  of the image corresponds to s=0, t=0, and the top-right pixel of the
+  image corresponds to s=1, t=1. These relationships are depicted in
+  Figure 6.9.
+
+  <center>
+  <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/ImageTexture.gif">
+  Figure 6.9
+  </center>
+
+  The texture is read from the URL specified by the url field. When
+  the url field contains no values ([]), texturing is
+  disabled. Browsers shall support the JPEG and PNG image file
+  formats. In addition, browsers may support other image formats
+  (e.g. CGM) which can be rendered into a 2D image. Support for the
+  GIF format is also recommended (including transparency). 
+
+  Details on the url field can be found in 4.5, VRML and the World
+  Wide Web.  
+
+  See 4.6.11, Texture maps
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.11),
+  for a general description of texture maps.
+
+  See 4.14, Lighting model
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14),
+  for a description of lighting equations and the interaction between
+  textures, materials, and geometry appearance.
+
+  The repeatS and repeatT fields specify how the texture wraps in the
+  S and T directions. If repeatS is TRUE (the default), the texture
+  map is repeated outside the [0.0, 1.0] texture coordinate range in
+  the S direction so that it fills the shape. If repeatS is FALSE, the
+  texture coordinates are clamped in the S direction to lie within the
+  [0.0, 1.0] range. The repeatT field is analogous to the repeatS
+  field.
+
 */
 
 /*!
@@ -412,7 +466,7 @@ SoVRMLImageTexture::setImageDataMaxAge(const uint32_t maxage)
   imagedata_maxage = maxage;
 }
 
-void 
+void
 SoVRMLImageTexture::cleanupFinished(const SbBool needlock)
 {
 #ifdef HAVE_THREADS
@@ -426,4 +480,3 @@ SoVRMLImageTexture::cleanupFinished(const SbBool needlock)
   if (needlock) THIS->readimagemutex.unlock();
 #endif // HAVE_THREADS
 }
-

@@ -20,7 +20,169 @@
 /*!
   \class SoVRMLElevationGrid SoVRMLElevationGrid.h Inventor/VRMLnodes/SoVRMLElevationGrid.h
   \brief The SoVRMLElevationGrid class is used to represent elevation grids.
+  \ingroup VRMLnodes
+
+  WEB3DCOPYRIGHT
+
+  \verbatim
+  ElevationGrid {
+    eventIn      MFFloat  set_height
+    exposedField SFNode   color             NULL
+    exposedField SFNode   normal            NULL
+    exposedField SFNode   texCoord          NULL
+    field        MFFloat  height            []      # (-inf,inf)
+    field        SFBool   ccw               TRUE
+    field        SFBool   colorPerVertex    TRUE
+    field        SFFloat  creaseAngle       0       # [0,inf]
+    field        SFBool   normalPerVertex   TRUE
+    field        SFBool   solid             TRUE
+    field        SFInt32  xDimension        0       # [0,inf)
+    field        SFFloat  xSpacing          1.0     # (0,inf)
+    field        SFInt32  zDimension        0       # [0,inf)
+    field        SFFloat  zSpacing          1.0     # (0,inf)
+  }
+  \endverbatim
+
+  The ElevationGrid node specifies a uniform rectangular grid of
+  varying height in the Y=0 plane of the local coordinate system. The
+  geometry is described by a scalar array of height values that
+  specify the height of a surface above each point of the grid.
+
+  The xDimension and zDimension fields indicate the number of elements
+  of the grid height array in the X and Z directions. Both xDimension
+  and zDimension shall be greater than or equal to zero. If either the
+  xDimension or the zDimension is less than two, the ElevationGrid
+  contains no quadrilaterals. The vertex locations for the rectangles
+  are defined by the height field and the xSpacing and zSpacing
+  fields:
+
+  \li The height field is an xDimension by zDimension array of scalar 
+  values representing the height above the grid for each vertex.
+ 
+  \li The xSpacing and zSpacing fields indicate the distance
+  between vertices in the X and Z directions respectively, and shall be greater
+  than zero.
+
+  Thus, the vertex corresponding to the point P[i, j] on the grid is
+  placed at:
+
+  \verbatim
+    P[i,j].x = xSpacing × i
+    P[i,j].y = height[ i + j × xDimension]
+    P[i,j].z = zSpacing × j     
+
+    where 0 <= i < xDimension and 0 <= j < zDimension, and 
+    P[0,0] is height[0] units above/below the origin of the local
+    coordinate system
+  \endverbatim
+
+  The set_height eventIn allows the height MFFloat field to be changed
+  to support animated ElevationGrid nodes.  
+
+  The color field specifies per-vertex or per-quadrilateral colours
+  for the ElevationGrid node depending on the value of colorPerVertex.
+  If the color field is NULL, the ElevationGrid node is rendered with
+  the overall attributes of the Shape node enclosing the ElevationGrid
+  node (see 4.14, Lighting model).  
+  
+  The colorPerVertex field
+  determines whether colours specified in the color field are applied
+  to each vertex or each quadrilateral of the ElevationGrid node. If
+  colorPerVertex is FALSE and the color field is not NULL, the color
+  field shall specify a Color node containing at least
+  (xDimension-1)×(zDimension-1) colours; one for each quadrilateral,
+  ordered as follows: 
+
+  \verbatim
+    QuadColor[i,j] = Color[ i + j × (xDimension-1)]
+
+    where 0 <= i < xDimension-1 and 0 <= j < zDimension-1, and
+    QuadColor[i,j] is the colour for the quadrilateral defined by
+    height[i+j×xDimension], height[(i+1)+j×xDimension],
+    height[(i+1)+(j+1)×xDimension] and height[i+(j+1)×xDimension] 
+  \endverbatim
+  
+  If
+  colorPerVertex is TRUE and the color field is not NULL, the color
+  field shall specify a Color node containing at least xDimension ×
+  zDimension colours, one for each vertex, ordered as follows:
+
+  \verbatim
+    VertexColor[i,j] = Color[ i + j × xDimension] 
+
+    where 0 <= i < xDimension and 0 <= j < zDimension, and 
+    VertexColor[i,j] is the colour for the vertex defined by 
+    height[i+j×xDimension] 
+  \endverbatim
+
+  The normal field specifies per-vertex or per-quadrilateral normals
+  for the ElevationGrid node. If the normal field is NULL, the browser
+  shall automatically generate normals, using the creaseAngle field to
+  determine if and how normals are smoothed across the surface (see
+  4.6.3.5, Crease angle field). 
+
+  The normalPerVertex field determines whether normals are applied to
+  each vertex or each quadrilateral of the ElevationGrid node
+  depending on the value of normalPerVertex. If normalPerVertex is
+  FALSE and the normal node is not NULL, the normal field shall
+  specify a Normal node containing at least
+  (xDimension-1)×(zDimension-1) normals; one for each quadrilateral,
+  ordered as follows: 
+
+  \verbatim
+    QuadNormal[i,j] = Normal[ i + j × (xDimension-1)] 
+
+    where 0 <= i < xDimension-1 and 0 <= j < zDimension-1, and 
+    QuadNormal[i,j] is the normal for the quadrilateral 
+    defined by height[i+j×xDimension], height[(i+1)+j×xDimension], 
+    height[(i+1)+(j+1)×xDimension] and height[i+(j+1)×xDimension] 
+  \endverbatim
+
+  If normalPerVertex is TRUE and the normal field is not NULL, the
+  normal field shall specify a Normal node containing at least
+  xDimension × zDimension normals; one for each vertex, ordered as
+  follows:
+
+  \verbatim
+    VertexNormal[i,j] = Normal[ i + j × xDimension] 
+    
+    where 0 <= i < xDimension and 0 <= j < zDimension, and
+    VertexNormal[i,j] is the normal for the vertex defined by
+    height[i+j×xDimension] 
+  \endverbatim
+
+  The texCoord field specifies per-vertex texture coordinates for the
+  ElevationGrid node. If texCoord is NULL, default texture coordinates
+  are applied to the geometry. The default texture coordinates range
+  from (0,0) at the first vertex to (1,1) at the last vertex. The S
+  texture coordinate is aligned with the positive X-axis, and the T
+  texture coordinate with positive Z-axis. If texCoord is not NULL, it
+  shall specify a TextureCoordinate node containing at least
+  (xDimension)×(zDimension) texture coordinates; one for each vertex,
+  ordered as follows:
+
+  \verbatim
+    VertexTexCoord[i,j] = TextureCoordinate[ i + j × xDimension] 
+
+    where 0 <= i < xDimension and 0 <= j < zDimension, and 
+    VertexTexCoord[i,j] is the texture coordinate for the vertex 
+    defined by height[i+j×xDimension] 
+  \endverbatim
+
+  The ccw, solid, and creaseAngle fields are described in 4.6.3,
+  Shapes and geometry.  By default, the quadrilaterals are defined
+  with a counterclockwise ordering.  Hence, the Y-component of the
+  normal is positive. Setting the ccw field to FALSE reverses the
+  normal direction. Backface culling is enabled when the solid field
+  is TRUE.  See Figure 6.5 for a depiction of the ElevationGrid node.
+
+  <center>
+  <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/ElevationGrid.gif">
+  Figure 6.5
+  </center>
+
 */
+
 
 /*!
   \var SoSFBool SoVRMLElevationGrid::ccw

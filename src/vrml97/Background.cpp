@@ -40,7 +40,7 @@
     eventOut     SFBool   isBound
   }
   \endverbatim
-  
+
   The Background node is used to specify a colour backdrop that
   simulates ground and sky, as well as a background texture, or
   panorama, that is placed behind all geometry in the scene and in
@@ -55,7 +55,7 @@
   eventIn.  Once active, the Background is then bound to the browsers
   view. A FALSE value sent to set_bind removes the Background from the
   stack and unbinds it from the browser's view. More detail on the
-  bind stack is described in 4.6.10, Bindable children nodes 
+  bind stack is described in 4.6.10, Bindable children nodes
   (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.10).
 
   The backdrop is conceptually a partial sphere (the ground) enclosed
@@ -118,7 +118,7 @@
   the bottom face of the box, when viewed from the origin along the
   negative Y-axis with the negative Z-axis as the view up direction,
   the bottomUrl image is mapped onto the face with the same
-  orientation as if the image were displayed normally in 2D.  
+  orientation as if the image were displayed normally in 2D.
 
   <center>
   <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/background.gif">
@@ -138,76 +138,78 @@
   (e.g., CGM) that can be rendered into a 2D image. Support for the
   GIF (see E.[GIF]) format is recommended (including transparency).
   More detail on the url fields can be found in 4.5, VRML and the
-  World Wide Web.
-  
+  World Wide Web
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.5).
+
+
 */
 
-/*!  
+/*!
   SoMFFloat SoVRMLBackground::groundAngle
 
   The ground angles where different colors should be used.
 */
 
-/*!  
+/*!
   SoMFColor SoVRMLBackground::groundColor
-  
+
   The color for each groundAngle.
 */
 
-/*!  
+/*!
   SoMFFloat SoVRMLBackground::skyAngle
 
   The sky angles where different colors should be used.
 */
 
-/*!  
+/*!
   SoMFColor SoVRMLBackground::skyColor
 
   The color for each skyAngle.
 */
 
-/*!  
+/*!
   SoMFString SoVRMLBackground::backUrl
 
   URL for the background image.
 */
 
-/*!  
+/*!
   SoMFString SoVRMLBackground::bottomUrl
 
   URL for the bottom image.
 */
 
-/*!  
+/*!
   SoMFString SoVRMLBackground::frontUrl
 
   URL for the front image.
 */
 
-/*!  
+/*!
   SoMFString SoVRMLBackground::leftUrl
 
   URL for the left image.
 */
 
-/*!  
+/*!
   SoMFString SoVRMLBackground::rightUrl
 
   URL for the right image.
 */
 
-/*!  
+/*!
   SoMFString SoVRMLBackground::topUrl
 
   URL for the top image.
 */
 
-/*!  
+/*!
   SoSFBool SoVRMLBackground::set_bind
   An eventIn which is triggered when the node is bound.
 */
 
-/*!  
+/*!
   SoSFBool SoVRMLBackground::isBound
   An eventOut that is sent after the node has been bound/unbound.
 */
@@ -260,4 +262,3 @@ void
 SoVRMLBackground::GLRender(SoGLRenderAction * action)
 {
 }
-

@@ -20,6 +20,58 @@
 /*!
   \class SoVRMLFog SoVRMLFog.h Inventor/VRMLnodes/SoVRMLFog.h
   \brief The SoVRMLFog class is used to specify a global scene fog.
+  \ingroup VRMLnodes
+
+  WEB3DCOPYRIGHT
+
+  \verbatim
+  Fog {
+    exposedField SFColor  color            1 1 1      # [0,1]
+    exposedField SFString fogType          "LINEAR"
+    exposedField SFFloat  visibilityRange  0          # [0,inf)
+    eventIn      SFBool   set_bind
+    eventOut     SFBool   isBound
+  }
+  \endverbatim
+
+  The Fog node provides a way to simulate atmospheric effects by
+  blending objects with the colour specified by the color field based
+  on the distances of the various objects from the viewer. The
+  distances are calculated in the coordinate space of the Fog
+  node. The visibilityRange specifies the distance in metres (in the
+  local coordinate system) at which objects are totally obscured by
+  the fog. Objects located outside the visibilityRange from the viewer
+  are drawn with a constant colour of color. Objects very close to the
+  viewer are blended very little with the fog color.  
+
+  A visibilityRange of 0.0 disables the Fog node. The visibilityRange
+  is affected by the scaling transformations of the Fog node's
+  parents; translations and rotations have no affect on
+  visibilityRange. Values of the visibilityRange field shall be in the
+  range [0, ).  
+
+  Since Fog nodes are bindable children nodes (see 4.6.10, Bindable
+  children nodes
+  http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.10),
+  a Fog node stack exists, in which the top- most Fog node on the
+  stack is currently active. To push a Fog node onto the top of the
+  stack, a TRUE value is sent to the set_bind eventIn. Once active,
+  the Fog node is bound to the browser view. A FALSE value sent to
+  set_bind, pops the Fog node from the stack and unbinds it from the
+  browser viewer.  More details on the Fog node stack can be found in
+  4.6.10, Bindable children nodes
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.10).
+
+  The fogType field controls how much of the fog colour is blended
+  with the object as a function of distance. If fogType is "LINEAR",
+  the amount of blending is a linear function of the distance,
+  resulting in a depth cueing effect. If fogType is "EXPONENTIAL," an
+  exponential increase in blending is used, resulting in a more
+  natural fog appearance.  The effect of fog on lighting calculations
+  is described in 4.14, Lighting model
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.14).
+  
+
 */
 
 /*!
@@ -89,5 +141,3 @@ SoVRMLFog::GLRender(SoGLRenderAction * action)
 {
   // FIXME: implement.
 }
-
-

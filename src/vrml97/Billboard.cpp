@@ -20,22 +20,92 @@
 /*!
   \class SoVRMLBillboard SoVRMLBillboard.h Inventor/VRMLnodes/SoVRMLBillboard.h
   \brief The SoVRMLBillboard class is used for rotating geometry towards the viewpoint.
+  \ingroup VRMLnodes
+
+  WEB3DCOPYRIGHT
+
+  \verbatim
+
+  Billboard {
+    eventIn      MFNode   addChildren
+    eventIn      MFNode   removeChildren
+    exposedField SFVec3f  axisOfRotation 0 1 0     # (-inf, inf)
+    exposedField MFNode   children       []
+    field        SFVec3f  bboxCenter     0 0 0     # (-inf, inf)
+    field        SFVec3f  bboxSize       -1 -1 -1  # (0, inf) or -1,-1,-1
+  }
+  
+  The Billboard node is a grouping node which modifies its coordinate
+  system so that the Billboard node's local Z-axis turns to point at
+  the viewer.  The Billboard node has children which may be other
+  children nodes.  The axisOfRotation field specifies which axis to
+  use to perform the rotation. This axis is defined in the local
+  coordinate system.  When the axisOfRotation field is not (0, 0, 0),
+  the following steps describe how to rotate the billboard to face the
+  viewer: 
+
+  \li a. Compute the vector from the Billboard node's origin to the
+  viewer's position. This vector is called the billboard-to-viewer
+  vector.
+ 
+  \li b. Compute the plane defined by the axisOfRotation and the 
+  billboard-to-viewer vector.
+  
+  \li c. Rotate the local Z-axis of the billboard into the plane from b., pivoting
+  around the axisOfRotation.
+
+  When the axisOfRotation field is set to (0, 0, 0), the special case
+  of viewer-alignment is indicated. In this case, the object rotates
+  to keep the billboard's local Y-axis parallel with the Y-axis of the
+  viewer.  This special case is distinguished by setting the
+  axisOfRotation to (0, 0, 0). The following steps describe how to
+  align the billboard's Y-axis to the Y-axis of the viewer:
+
+  \li d. Compute the billboard-to-viewer vector.
+ 
+  \li e. Rotate the Z-axis of the billboard to be collinear with the
+  billboard-to-viewer vector and pointing towards the viewer's
+  position.
+ 
+  \li f. Rotate the Y-axis of the billboard to be parallel and
+  oriented in the same direction as the Y-axis of the viewer.
+
+  If the axisOfRotation and the billboard-to-viewer line are
+  coincident, the plane cannot be established and the resulting
+  rotation of the billboard is undefined. For example, if the
+  axisOfRotation is set to (0,1,0) (Y-axis) and the viewer flies over
+  the billboard and peers directly down the Y-axis, the results are
+  undefined.  Multiple instances of Billboard nodes (DEF/USE) operate
+  as expected: each instance rotates in its unique coordinate system
+  to face the viewer.  Subclause 4.6.5, Grouping and children nodes
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5),
+  provides a description of the children, addChildren, and
+  removeChildren fields and eventIns.  The bboxCenter and bboxSize
+  fields specify a bounding box that encloses the Billboard node's
+  children. This is a hint that may be used for optimization
+  purposes. The results are undefined if the specified bounding box is
+  smaller than the actual bounding box of the children at any time. A
+  default bboxSize value, (-1, -1, -1), implies that the bounding box
+  is not specified and if needed shall be calculated by the browser. A
+  description of the bboxCenter and bboxSize fields is contained in
+  4.6.4, Bounding boxes
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.4),
 */
 
-/*!  
+/*!
   \var SoSFVec3f SoVRMLBillboard::axisOfRotation
 
   The axis of rotation for the geometry.
 */
 
-/*!  
+/*!
   \var SoSFVec3f SoVRMLBillboard::bboxCenter
-  The bounding box center hint.
+  The bounding box center hint. Default value is (0, 0, 0).
 */
 
-/*!  
+/*!
   \var SoSFVec3f SoVRMLBillboard::bboxSize
-  The bounding box size hint.
+  The bounding box size hint. Default value is (-1, -1, -1).
 */
 
 #include <Inventor/VRMLnodes/SoVRMLBillboard.h>

@@ -20,6 +20,55 @@
 /*!
   \class SoVRMLCylinder SoVRMLCylinder.h Inventor/VRMLnodes/SoVRMLCylinder.h
   \brief The SoVRMLCylinder class is used to represent a cylinder object.
+  \ingroup VRMLnodes
+  
+  WEB3DCOPYRIGHT
+
+  \verbatim
+  Cylinder {
+    field    SFBool    bottom  TRUE
+    field    SFFloat   height  2         # (0,)
+    field    SFFloat   radius  1         # (0,)
+    field    SFBool    side    TRUE
+    field    SFBool    top     TRUE
+  }
+  \endverbatim
+  
+  The Cylinder node specifies a capped cylinder centred at (0,0,0) in
+  the local coordinate system and with a central axis oriented along
+  the local Y-axis. By default, the cylinder is sized at "-1" to "+1"
+  in all three dimensions. The radius field specifies the radius of
+  the cylinder and the height field specifies the height of the
+  cylinder along the central axis. Both radius and height shall be
+  greater than zero. Figure 6.4 illustrates the Cylinder node.
+
+  The cylinder has three parts: the side, the top (Y = +height/2) and
+  the bottom (Y = -height/2).  Each part has an associated SFBool
+  field that indicates whether the part exists (TRUE) or does not
+  exist (FALSE). Parts which do not exist are not rendered and not
+  eligible for intersection tests (e.g., collision detection or sensor
+  activation).
+
+  <center>
+  <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/cylinder.gif">
+  Figure 6.4
+  </center>
+
+
+  When a texture is applied to a cylinder, it is applied differently
+  to the sides, top, and bottom. On the sides, the texture wraps
+  counterclockwise (from above) starting at the back of the
+  cylinder. The texture has a vertical seam at the back, intersecting
+  the X=0 plane. For the top and bottom caps, a circle is cut out of
+  the unit texture squares centred at (0, +/- height/2, 0) with
+  dimensions 2 × radius by 2 × radius.  The top texture appears right
+  side up when the top of the cylinder is tilted toward the +Z-axis,
+  and the bottom texture appears right side up when the top of the
+  cylinder is tilted toward the -Z-axis. SoVRMLTextureTransform
+  affects the texture coordinates of the Cylinder node.  The Cylinder
+  node's geometry requires outside faces only. When viewed from the
+  inside the results are undefined.
+
 */
 
 /*!

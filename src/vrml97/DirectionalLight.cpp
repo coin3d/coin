@@ -20,8 +20,38 @@
 /*!
   \class SoVRMLDirectionalLight SoVRMLDirectionalLight.h Inventor/VRMLnodes/SoVRMLDirectionalLight.h
   \brief The SoVRMLDirectionalLight class is a node type for specifying directional light sources
+  \ingroup VRMLnodes
+
+  WEB3DCOPYRIGHT
+
+  \verbatim
+  DirectionalLight {
+    exposedField SFFloat ambientIntensity  0        # [0,1]
+    exposedField SFColor color             1 1 1    # [0,1]
+    exposedField SFVec3f direction         0 0 -1   # (-inf,inf)
+    exposedField SFFloat intensity         1        # [0,1]
+    exposedField SFBool  on                TRUE
+  }
+  \endverbatim
+
+  The DirectionalLight node defines a directional light source that
+  illuminates along rays parallel to a given 3-dimensional vector. A
+  description of the ambientIntensity, color, intensity, and on fields
+  is in 4.6.6, Light sources
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.6).
+
+  The direction field specifies the direction vector of the
+  illumination emanating from the light source in the local coordinate
+  system. Light is emitted along parallel rays from an infinite
+  distance away. A directional light source illuminates only the
+  objects in its enclosing parent group.  The light may illuminate
+  everything within this coordinate system, including all children and
+  descendants of its parent group. The accumulated transformations of
+  the parent nodes affect the light.  DirectionalLight nodes do not
+  attenuate with distance. A precise description of VRML's lighting
+  equations is contained in 4.14, Lighting model
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.14).
   
-  \sa SoDirectionalLight
 */
 
 /*!

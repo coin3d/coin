@@ -20,6 +20,53 @@
 /*!
   \class SoVRMLCone SoVRMLCone.h Inventor/VRMLnodes/SoVRMLCone.h
   \brief The SoVRMLCone class is used to represent a Cone object.
+  \ingroup VRMLnodes
+
+  WEB3DCOPYRIGHT
+  
+  \verbatim
+  Cone {
+    field     SFFloat   bottomRadius 1        # (0, inf)
+    field     SFFloat   height       2        # (0, inf)
+    field     SFBool    side         TRUE
+    field     SFBool    bottom       TRUE
+  }
+  \endverbatim
+
+  The Cone node specifies a cone which is centred in the local
+  coordinate system and whose central axis is aligned with the local
+  Y-axis. The bottomRadius field specifies the radius of the cone's
+  base, and the height field specifies the height of the cone from the
+  centre of the base to the apex.  By default, the cone has a radius
+  of 1.0 at the bottom and a height of 2.0, with its apex at y =
+  height/2 and its bottom at y = -height/2.  Both bottomRadius and
+  height shall be greater than zero. Figure 6.3 illustrates the Cone
+  node.
+  
+  <center>
+  <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/cone.gif">
+  Figure 6.3
+  </center>
+
+  The side field specifies whether sides of the cone are created and
+  the bottom field specifies whether the bottom cap of the cone is
+  created. A value of TRUE specifies that this part of the cone
+  exists, while a value of FALSE specifies that this part does not
+  exist (not rendered or eligible for collision or sensor intersection
+  tests).  When a texture is applied to the sides of the cone, the
+  texture wraps counterclockwise (from above) starting at the back of
+  the cone. The texture has a vertical seam at the back in the X=0
+  plane, from the apex (0, height/2, 0) to the point (0, -height/2, -
+  bottomRadius). For the bottom cap, a circle is cut out of the
+  texture square centred at (0, -height/2, 0) with dimensions (2 ×
+  bottomRadius) by (2 × bottomRadius).  The bottom cap texture appears
+  right side up when the top of the cone is rotated towards the
+  -Z-axis. SoVRMLTextureTransform affects the texture coordinates of
+  the Cone.  
+
+  The Cone geometry requires outside faces only. When viewed from the
+  inside the results are undefined.
+
 */
 
 /*!
@@ -34,7 +81,7 @@
 
 /*!
   \var SoSFBool SoVRMLCone::side
-  Enable/disable the cone side wall. Default value is TRUE. 
+  Enable/disable the cone side wall. Default value is TRUE.
 */
 
 /*!

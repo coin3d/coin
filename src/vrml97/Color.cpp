@@ -20,6 +20,31 @@
 /*!
   \class SoVRMLColor SoVRMLColor.h Inventor/VRMLnodes/SoVRMLColor.h
   \brief The SoVRMLColor class is used to specify multiple colors for a single shape.
+  \ingroup VRMLnodes
+
+  WEB3DCOPYRIGHT
+  
+  \verbatim
+  Color {
+    exposedField MFColor color  []         # [0,1]
+  }
+  \endverbatim
+
+  This node defines a set of RGB colours to be used in the fields of
+  another node.  
+  
+  Color nodes are only used to specify multiple colours for a single
+  geometric shape, such as colours for the faces or vertices of an
+  IndexedFaceSet. A Material node is used to specify the overall
+  material parameters of lit geometry. If both a Material node and a
+  Color node are specified for a geometric shape, the colours shall
+  replace the diffuse component of the material.  RGB or RGBA textures
+  take precedence over colours; specifying both an RGB or RGBA texture
+  and a Color node for geometric shape will result in the Color node
+  being ignored. Details on lighting equations can be found in 4.14,
+  Lighting model
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14).
+
 */
 
 /*!

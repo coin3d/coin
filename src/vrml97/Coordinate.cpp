@@ -20,10 +20,24 @@
 /*!
   \class SoVRMLCoordinate SoVRMLCoordinate.h Inventor/VRMLnodes/SoVRMLCoorinate.h
   \brief The SoVRMLCoordinate class is used define 3D coordinate for shapes.
+  \ingroup VRMLnodes
+  
+  WEB3DCOPYRIGHT
+
+  \verbatim
+  Coordinate { 
+    exposedField MFVec3f point  []      # (-inf, inf) 
+  }
+  \verbatim
+ 
+  This node defines a set of 3D coordinates to be used in the coord
+  field of vertex-based geometry nodes including SoVRMLIndexedFaceSet,
+  SoVRMLIndexedLineSet, and SoVRMLPointSet.
+
 */
 
 /*!
-  \var SoMFVec3f SoVRMLCoordinate:: point
+  \var SoMFVec3f SoVRMLCoordinate::point
   The coordinates. Empty by default.
 */
 

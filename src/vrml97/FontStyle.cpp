@@ -21,6 +21,12 @@
 /*!
   \class SoVRMLFontStyle SoVRMLFontStyle.h Inventor/VRMLnodes/SoVRMLFontStyle.h
   \brief The SoVRMLFontStyle class is used to define the current font.
+  \ingroup VRMLnodes
+  
+  WEB3DCOPYRIGHT
+
+  FIXME: document
+
 */
 
 /*!
@@ -50,7 +56,7 @@
 
 /*!
   SoSFBool SoVRMLFontStyle::topToBottom
-  True if strings should be rendered top to bottom. Default value is TRUE. 
+  True if strings should be rendered top to bottom. Default value is TRUE.
 */
 
 /*!

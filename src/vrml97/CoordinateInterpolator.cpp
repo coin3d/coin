@@ -17,6 +17,31 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoVRMLCoordinateInterpolator SoVRMLCoordinateInterpolator.h Inventor/VRMLnodes/SoVRMLCoorinateInterpolator.h
+  \brief The SoVRMLCoordinateInterpolator class is used to interpolate 3D coordinates.
+  \ingroup VRMLnodes
+  
+  WEB3DCOPYRIGHT
+
+  \verbatim
+  CoordinateInterpolator {
+    eventIn      SFFloat set_fraction        # (-inf, inf)
+    exposedField MFFloat key           []    # (-inf, inf)
+    exposedField MFVec3f keyValue      []    # (-inf, inf)
+    eventOut     MFVec3f value_changed
+  }
+  \endverbatim
+
+  This node linearly interpolates among a list of MFVec3f values. The
+  number of coordinates in the keyValue field shall be an integer
+  multiple of the number of keyframes in the key field. That integer
+  multiple defines how many coordinates will be contained in the
+  value_changed events.  4.6.8, Interpolator nodes
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.8),
+  contains a more detailed discussion of interpolators.
+
+*/
 #include <Inventor/VRMLnodes/SoVRMLCoordinateInterpolator.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/engines/SoSubNodeEngineP.h>
@@ -74,7 +99,7 @@ SoVRMLCoordinateInterpolator::evaluate(void)
   const SbVec3f * c0 = this->keyValue.getValues(idx*numcoords);
   const SbVec3f * c1 = c0;
   if (interp > 0.0f) c1 = this->keyValue.getValues((idx+1)*numcoords);
-  
+
   for (i = 0; i < numcoords; i++) {
     THIS->tmplist.append(c0[i] + (c1[i]-c0[i]) * interp);
   }
@@ -82,5 +107,5 @@ SoVRMLCoordinateInterpolator::evaluate(void)
   const SbVec3f * coords = THIS->tmplist.getArrayPtr();
 
   SO_ENGINE_OUTPUT(value_changed, SoMFVec3f, setNum(numcoords));
-  SO_ENGINE_OUTPUT(value_changed, SoMFVec3f, setValues(0, numcoords, coords)); 
+  SO_ENGINE_OUTPUT(value_changed, SoMFVec3f, setValues(0, numcoords, coords));
 }

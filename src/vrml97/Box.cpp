@@ -20,11 +20,49 @@
 /*!
   \class SoVRMLBox SoVRMLBox.h Inventor/VRMLnodes/SoVRMLBox.h
   \brief The SoVRMLBox class is used for representing a 3D box.
+  \ingroup VRMLnodes
+
+  WEB3DCOPYRIGHT
+  
+  \verbatim
+  Box {
+    field    SFVec3f size  2 2 2        # (0, inf)
+  }
+  \endverbatim
+  
+  The Box node specifies a rectangular parallelepiped box centred at (0, 0, 0)
+  in the local coordinate system and aligned with the local coordinate axes.
+  By default, the box measures 2 units in each dimension, from -1 to +1. The
+  size field specifies the extents of the box along the X-, Y-, and
+  Z-axes respectively and each component value shall be greater than zero.
+  Figure 6.2 illustrates the Box node.
+
+  <center>
+  <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/box.gif">
+  Figure 6.2
+  </center>
+
+  Textures are applied individually to each face of the box. On the
+  front (+Z), back (-Z), right (+X), and left (-X) faces of the box,
+  when viewed from the outside with the +Y-axis up, the texture is
+  mapped onto each face with the same orientation as if the image were
+  displayed normally in 2D.  On the top face of the box (+Y), when
+  viewed from above and looking down the Y-axis toward the origin with
+  the -Z-axis as the view up direction, the texture is mapped onto the
+  face with the same orientation as if the image were displayed
+  normally in 2D. On the bottom face of the box (-Y), when viewed from
+  below looking up the Y-axis toward the origin with the +Z-axis as
+  the view up direction, the texture is mapped onto the face with the
+  same orientation as if the image were displayed normally in
+  2D. SoVRMLTextureTransform affects the texture coordinates of the
+  Box.  The Box node's geometry requires outside faces only. When
+  viewed from the inside the results are undefined.
+
 */
 
 /*!
   \var SoSFVec3f size
-  
+
   Box size vector. Default value is (2,2,2).
 */
 
