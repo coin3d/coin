@@ -42,6 +42,7 @@ public:
   void append(const Type item);
   int find(const Type item) const;
   void insert(const Type item, const int insertbefore);
+  void remove(const Type item);
   void remove(const int index);
   void removeFast(const int index);
   int getLength(void) const;
@@ -189,6 +190,14 @@ SbList<Type>::insert(const Type item, const int insertbefore)
     this->itembuffer[i] = this->itembuffer[i-1];
   this->itembuffer[insertbefore] = item;
   this->numitems++;
+}
+
+template <class Type> inline void
+SbList<Type>::remove(const Type item)
+{
+  int idx = this->find(item);
+  assert(idx != -1);
+  this->remove(idx);
 }
 
 template <class Type> inline void

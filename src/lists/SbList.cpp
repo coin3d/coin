@@ -148,6 +148,14 @@
   items in the list.
  */
 
+
+/*!
+  \fn void SbList<Type>::remove(const Type item)
+
+  Removes an \a item from the list. If there are several items with
+  the same value, removes the \a item with the lowest index.
+*/
+
 /*!
   \fn void SbList<Type>::remove(const int index)
 
@@ -196,7 +204,7 @@
 /*!
   \fn const Type * SbList<Type>::getArrayPtr(const int start = 0) const
 
-  Returns pointer to a non-modifiable array of the lists elements. 
+  Returns pointer to a non-modifiable array of the lists elements.
   \a start specifies an index into the array.
 */
 
