@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -22,7 +22,12 @@
   \brief The SoBaseKit class is the toplevel superclass for nodekits.
   \ingroup nodekits
 
-  FIXME: write class doc
+  FIXME, write class doc:
+
+  * what are nodekits?
+  * why nodekits?
+  * ...
+
 */
 
 #include <Inventor/nodekits/SoBaseKit.h>
@@ -34,12 +39,25 @@
 #include <Inventor/SbString.h>
 
 
-// FIXME: switch with SO_KIT_SOURCE(). 19991120 mortene.
-SO_NODE_SOURCE(SoBaseKit);
+SO_KIT_SOURCE(SoBaseKit);
 
+/*!
+  \fn const SoNodekitCatalog * SoBaseKit::getClassNodekitCatalog(void)
+  Returns the nodekit catalog which defines the layout of this
+  class' kit.
+*/
 
-SoNodekitCatalog * SoBaseKit::classcatalog = NULL;
-const SoNodekitCatalog ** SoBaseKit::parentcatalogptr = NULL;
+/*!
+  \fn const SoNodekitCatalog * SoBaseKit::getNodekitCatalog(void) const
+  Returns the nodekit catalog which defines the layout of this
+  class' kit.
+*/
+
+/*!
+  \fn const SoNodekitCatalog ** SoBaseKit::getClassNodekitCatalogPtr(void)
+  Returns the pointer to the pointer of the nodekit catalog
+  for this class.
+*/
 
 
 /*!
@@ -74,43 +92,23 @@ SoBaseKit::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoBaseKit);
 }
 
-
-/*!
-  Returns the nodekit catalog which defines the layout of this
-  class' kit.
-*/
-const SoNodekitCatalog *
-SoBaseKit::getClassNodekitCatalog(void)
-{
-  return SoBaseKit::classcatalog;
-}
-
-/*!
-  Returns the nodekit catalog which defines the layout of this
-  class' kit.
-*/
-const SoNodekitCatalog *
-SoBaseKit::getNodekitCatalog(void) const
-{
-  return SoBaseKit::classcatalog;
-}
-
-/*!
-  Returns the pointer to the pointer of the nodekit catalog
-  for this class.
-*/
-const SoNodekitCatalog **
-SoBaseKit::getClassNodekitCatalogPtr(void)
-{
-  return (const class SoNodekitCatalog **)&SoBaseKit::classcatalog;
-}
-
 /*!
   FIXME: write function documentation
 */
 SoNode *
 SoBaseKit::getPart(const SbName & /*partname*/, SbBool /*makeifneeded*/)
 {
+  // BNF:
+  //
+  // partname = singlename | compoundname
+  // compoundname = singlename | compoundname.singlename
+  // singlename = singlepartname | singlelistelementname
+  // singlelistelementname = singlelistname[idx]
+  //
+  // singlepartname is name of a part ("ordinary", nodekit or list)
+  // singlelistname is name of a part which is a list
+  // idx is an integer value
+
   assert(0 && "FIXME: not implemented yet");
   return NULL;
 }
@@ -322,15 +320,15 @@ SoBaseKit::printTable(void)
   for (int i=0; i < thiscat->getNumEntries(); i++) {
     const SoType t = thiscat->getType(i);
     fprintf(stdout, "%s   \"%s\",  So%s ",
-	    thiscat->isPublic(i) ? "   " : "PVT",
-	    thiscat->getName(i).getString(),
-	    t.getName().getString());
+            thiscat->isPublic(i) ? "   " : "PVT",
+            thiscat->getName(i).getString(),
+            t.getName().getString());
     if (thiscat->isList(i)) {
       SoTypeList tlist = thiscat->getListItemTypes(i);
       fprintf(stdout, "[ ");
       for (int j=0; j < tlist.getLength(); j++) {
-	if (j) fprintf(stdout, ", ");
-	fprintf(stdout, "So%s", tlist[j].getName().getString());
+        if (j) fprintf(stdout, ", ");
+        fprintf(stdout, "So%s", tlist[j].getName().getString());
       }
       fprintf(stdout, " ] ");
     }
@@ -340,10 +338,10 @@ SoBaseKit::printTable(void)
 
     if (t != thiscat->getDefaultType(i)) {
       fprintf(stdout, ", (default type = So%s)",
-	      thiscat->getDefaultType(i).getName().getString());
+              thiscat->getDefaultType(i).getName().getString());
     }
     fprintf(stdout, "\n");
-  }  
+  }
 }
 
 /*!
