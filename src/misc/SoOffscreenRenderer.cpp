@@ -1201,17 +1201,11 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp,
                                        const SbVec2f & printsize) const
 {
   if (PRIVATE(this)->internaldata) {
-#if 1 // old code
-    const SbVec2s size = PRIVATE(this)->requestedsize;
-#else
     SbVec2s size = PRIVATE(this)->internaldata->getSize();
     if(PRIVATE(this)->mustusesubscreens){
       size[0] = PRIVATE(this)->requestedsize[0];
       size[1] = PRIVATE(this)->requestedsize[1];
     }
-#endif
-
-
     const int nc = this->getComponents();
     const float defaultdpi = 72.0f; // we scale against this value
     const float dpi = this->getScreenPixelsPerInch();
