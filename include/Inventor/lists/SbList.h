@@ -35,6 +35,9 @@ class SbList {
 public:
   SbList(const int sizehint = DEFAULTSIZE);
   SbList(const SbList<Type> & l);
+
+  // No need to define the destructor virtual, as Coin code should
+  // always know the class type of the list objects it is handling.
   ~SbList();
 
   void copy(const SbList<Type> & l);
