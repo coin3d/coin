@@ -128,6 +128,7 @@ SoLineSet::findMaterialBinding(SoState * const state) const
   case SoMaterialBindingElement::PER_PART:
   case SoMaterialBindingElement::PER_PART_INDEXED:
     binding = PER_SEGMENT;
+    break;
   case SoMaterialBindingElement::PER_FACE:
   case SoMaterialBindingElement::PER_FACE_INDEXED:
     binding = PER_LINE;
@@ -186,8 +187,6 @@ SoLineSet::findNormalBinding(SoState * const state) const
 void
 SoLineSet::GLRender(SoGLRenderAction * action)
 {
-  // FIXME: optimize rendering, pederb 20000809
-
   SoState * state = action->getState();
 
   if (this->vertexProperty.getValue()) {
@@ -250,12 +249,47 @@ SoLineSet::GLRender(SoGLRenderAction * action)
   SbBool drawPoints =
     SoDrawStyleElement::get(state) == SoDrawStyleElement::POINTS;
 
-  if (drawPoints) glBegin(GL_POINTS);
-
   if (nbind == PER_SEGMENT || mbind == PER_SEGMENT) {
-    assert(0);
+    if (drawPoints) glBegin(GL_POINTS);
+    else glBegin(GL_LINES);
+
+    while (ptr < end) {
+      int n = *ptr++;
+      if (n < 2) {
+        idx += n;
+        continue;
+      }
+      if (mbind == PER_LINE) {
+        mb.send(matnr++, TRUE);
+      }
+      if (nbind == PER_LINE) {
+        currnormal = normals++;
+      }
+      while (--n) {
+        if (mbind == PER_SEGMENT || mbind == PER_VERTEX) {
+          mb.send(matnr++, TRUE);
+        }
+        if (nbind == PER_SEGMENT || nbind == PER_VERTEX) {
+          currnormal = normals++;
+        }
+        glNormal3fv((const GLfloat*)currnormal);
+        if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
+        coords->send(idx++);
+
+        if (nbind == PER_VERTEX) {
+          currnormal = normals++;
+          glNormal3fv((const GLfloat *)currnormal);
+        }
+        if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
+        if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
+        coords->send(idx);
+      }
+      idx++;
+    }
+    glEnd();
   }
   else {
+    if (drawPoints) glBegin(GL_POINTS);
     while (ptr < end) {
       int n = *ptr++;
       if (n < 2) {
@@ -282,8 +316,8 @@ SoLineSet::GLRender(SoGLRenderAction * action)
       } while (n--);
       if (!drawPoints) glEnd();
     }
+    if (drawPoints) glEnd();
   }
-  if (drawPoints) glEnd();
   if (this->vertexProperty.getValue())
     state->pop();
 }
