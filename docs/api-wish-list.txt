@@ -361,6 +361,12 @@ THE WISH LIST
   Update 2001-06-28 larsa:  Are there any alternatives better than
   Unicode UTF-8 for this?
 
+  Update 2003-01-22 mortene: kintel suggests auditing of the following;
+
+        o node names (SbString/SbName storage+I/O)
+        o file I/O (unicode file names)
+        o font handling
+
 
 * SbBool SbMatrix::inversePossible(void) const
   2001-07-02  Peder Blekken <pederb@sim.no>
