@@ -116,6 +116,14 @@ SbMatrix::SbMatrix(const SbMat & matrix)
 }
 
 /*!
+  This constructor is courtesy of the Microsoft Visual C++ compiler.
+*/
+SbMatrix::SbMatrix(const SbMat * matrix)
+{
+  this->setValue(*matrix);
+}
+
+/*!
   Default destructor does nothing.
  */
 SbMatrix::~SbMatrix(void)
@@ -1460,12 +1468,12 @@ decomp_affine(HMatrix A, AffineParts * parts)
 
   // Transpose for our code (we use OpenGL's convention for numbering
   // rows and columns).
-  SbMatrix TQ(Q);
+  SbMatrix TQ((const SbMat *) &Q);
   parts->q = SbRotation(TQ.transpose());
   parts->k = spect_decomp(S, U);
   // Transpose for our code (we use OpenGL's convention for numbering
   // rows and columns).
-  SbMatrix TU(U);
+  SbMatrix TU((const SbMat *) &U);
   parts->u = SbRotation(TU.transpose());
   p = snuggle(parts->u, parts->k);
   parts->u = p * parts->u;
