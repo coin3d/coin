@@ -883,16 +883,28 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/src/draggers/SoTranslate2Dragger.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTranslate2Dragger.h \
                          @path_tag@@coin_src_dir@/src/manips/commoncode.cpp \
+                         @path_tag@@coin_src_dir@/src/manips/SoCenterballManip.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoCenterballManip.h \
                          @path_tag@@coin_src_dir@/src/manips/SoDirectionalLightManip.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/manips/SoDirectionalLightManip.h \
+                         @path_tag@@coin_src_dir@/src/manips/SoHandleBoxManip.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoHandleBoxManip.h \
+                         @path_tag@@coin_src_dir@/src/manips/SoJackManip.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoJackManip.h \
                          @path_tag@@coin_src_dir@/src/manips/SoPointLightManip.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/manips/SoPointLightManip.h \
                          @path_tag@@coin_src_dir@/src/manips/SoSpotLightManip.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/manips/SoSpotLightManip.h \
+                         @path_tag@@coin_src_dir@/src/manips/SoTabBoxManip.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoTabBoxManip.h \
+                         @path_tag@@coin_src_dir@/src/manips/SoTrackballManip.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoTrackballManip.h \
+                         @path_tag@@coin_src_dir@/src/manips/SoTransformBoxManip.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoTransformBoxManip.h \
                          @path_tag@@coin_src_dir@/src/manips/SoTransformManip.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/manips/SoTransformManip.h \
-                         @path_tag@@coin_src_dir@/src/manips/SoClipPlaneManip.cpp \
-                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoClipPlaneManip.h \
+                         @path_tag@@coin_src_dir@/src/manips/SoTransformerManip.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoTransformerManip.h \
                          @path_tag@@coin_src_dir@/src/details/SoDetail.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/details/SoDetail.h \
                          @path_tag@@coin_src_dir@/src/details/SoConeDetail.cpp \
