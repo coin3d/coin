@@ -585,6 +585,9 @@ AC_SUBST(SUFFIX)
 # *******************************************************************
 
 SIM_AC_COMPILE_DEBUG([
+  if test x"$GCC" = x"yes"; then
+    CPPFLAGS="$CPPFLAGS -fno-builtin";
+  fi
   CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=1"
 ], [
   CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=0"
