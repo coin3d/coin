@@ -34,9 +34,6 @@
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 
-
-#include <coindefs.h> // COIN_STUB()
-
 /*!
   \enum SoSelection::Policy
   FIXME: write documentation for enum
@@ -540,11 +537,32 @@ void
 SoSelection::handleEvent(SoHandleEventAction *action)
 {
   const SoEvent *event = action->getEvent();
-
+  
   SbBool haltaction = FALSE;
   if (SO_MOUSE_PRESS_EVENT(event, BUTTON1)) {
+    if (this->mouseDownPickPath) {
+      this->mouseDownPickPath->unref();
+      this->mouseDownPickPath = NULL;
+    }
+    const SoPickedPoint *pp = action->getPickedPoint();
+    SoPath *selectionpath = NULL;
+    if (pp) {
+      this->mouseDownPickPath = pp->getPath();
+      this->mouseDownPickPath->ref();
+    }
+    inherited::handleEvent(action);
+  }
+  else if (SO_MOUSE_RELEASE_EVENT(event, BUTTON1)) {    
     SbBool ignorepick = FALSE;
     SoPath *selpath = this->getSelectionPath(action, ignorepick, haltaction);
+    
+    if (haltaction) {
+      action->isHandled();
+    }
+    else {
+      inherited::handleEvent(action);
+    }
+
     if (!ignorepick) {
       if (selpath) selpath->ref();
       this->startCBList->invokeCallbacks(this);
@@ -552,9 +570,10 @@ SoSelection::handleEvent(SoHandleEventAction *action)
       this->finishCBList->invokeCallbacks(this);
       if (selpath) selpath->unref();
     }
-  }
-  if (haltaction) {
-    action->isHandled();
+    if (this->mouseDownPickPath) {
+      this->mouseDownPickPath->unref();
+      this->mouseDownPickPath = NULL;
+    }
   }
   else {
     inherited::handleEvent(action);
@@ -586,10 +605,17 @@ SoSelection::getSelectionPath(SoHandleEventAction *action, SbBool &ignorepick,
 
   haltaction = FALSE;
   ignorepick = FALSE;
+  if (!this->mouseDownPickPath) return NULL;
+
   const SoPickedPoint *pp = action->getPickedPoint();
   SoPath *selectionpath = NULL;
   if (pp) {
     selectionpath = pp->getPath();
+    int forkpos = selectionpath->findFork(this->mouseDownPickPath);
+    if (forkpos < selectionpath->getLength()-1) {      
+      ignorepick = TRUE;      
+      return NULL;
+    }
     if (this->pickCBFunc && (!this->callPickCBOnlyIfSelectable ||
                              selectionpath->findNode(this) >= 0)) {
       selectionpath = this->pickCBFunc(this->pickCBData, pp);
@@ -615,8 +641,11 @@ SoSelection::getSelectionPath(SoHandleEventAction *action, SbBool &ignorepick,
       }
     }
     else { // no pickCBFunc or not valid path
-      haltaction = TRUE;
+      haltaction = FALSE;
     }
+  }
+  else if (this->mouseDownPickPath) {
+    ignorepick = TRUE;
   }
   return selectionpath;
 }
