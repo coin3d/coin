@@ -455,8 +455,6 @@ SoInput::setFilePointer(FILE * newFP)
   SoInput_FileInfo * newfile = new SoInput_FileInfo(name, newFP);
 
   if (newfile) this->filestack.insert(newfile, 0);
-  // Just to make the directory search "stack" behave properly.
-  SoInput::addDirectoryFirst(name);
 }
 
 /*!
@@ -535,7 +533,7 @@ SoInput::closeFile(void)
 {
   // Remove all entries, including the default <stdin>.
   while (this->filestack.getLength() > 0) {
-    if (!this->fromBuffer()) {
+    if (!this->fromBuffer() && (this->getCurFile() != stdin)) {
       SbString s = SoInput::getPathname(this->getTopOfStack()->ivFilename());
       if (s.getLength()) SoInput::removeDirectory(s.getString());
     }
