@@ -224,7 +224,7 @@ static void
 fontstruct_dumpfont(struct cc_fontstruct * fs)
 {
   assert (fs);
-  if (cc_fontlib_debug()) {
+  if (cc_flw_debug()) {
     cc_debugerror_postinfo("fontstruct_dumpfont", "  Font %s / %s :\n", cc_string_get_text(fs->fontname), cc_string_get_text(fs->requestname));
     cc_debugerror_postinfo("fontstruct_dumpfont", "    glyphcnt %d\n", fs->glyphcnt);
     cc_debugerror_postinfo("fontstruct_dumpfont", "    %s\n", fs->defaultfont ? "default font" : "regular font");
@@ -237,7 +237,7 @@ fontstruct_dump()
 {
   int i;
   assert (fonts); 
-  if (cc_fontlib_debug()) {
+  if (cc_flw_debug()) {
     cc_debugerror_postinfo("fontstruct_dump", "Fontlib cache: %d fonts.\n", fontcnt);
     for (i=0; i<fontcnt; i++)
       fontstruct_dumpfont(fonts[i]);
@@ -291,7 +291,7 @@ fontstruct_insert_glyph(int font, cc_FLWglyph glyph, int defaultglyph)
 
 
 SbBool
-cc_fontlib_debug(void)
+cc_flw_debug(void)
 {
   const char * env = coin_getenv("COIN_DEBUG_FONTSUPPORT");
   return env && (atoi(env) > 0);
@@ -313,7 +313,7 @@ cc_flw_initialize(void)
     fonts[i] = NULL;
 
 #ifdef HAVE_FREETYPE
-  if (cc_fontlib_debug()) { cc_debugerror_postinfo("cc_flw_initialize", "using FreeType library"); }
+  if (cc_flw_debug()) { cc_debugerror_postinfo("cc_flw_initialize", "using FreeType library"); }
 
   /* FIXME: return value just ignored. Should be handled (by disabling
      all use of FreeType library if init fails). 20030316 mortene. */
@@ -373,7 +373,7 @@ cc_flw_create_font(const char * fontname, const int sizex, const int sizey)
 #endif
     idx = fontstruct_insert(fs);
 
-    if (cc_fontlib_debug()) {
+    if (cc_flw_debug()) {
       cc_debugerror_postinfo("cc_flw_create_font",
                              "'%s', size==<%d, %d> => idx==%d %s",
                              fontname, sizex, sizey, idx,
@@ -414,14 +414,7 @@ cc_flw_get_font(const char * fontname, const int sizex, const int sizey)
   }
 
   if (i == fontcnt) { i = -1; }
-
-  if (cc_fontlib_debug()) {
-    cc_debugerror_postinfo("cc_flw_get_font",
-                           "'%s', size==<%d, %d> => idx==%d %s",
-                           fontname, sizex, sizey, i,
-                           (i == -1) ? "" : (fonts[i]->defaultfont ? "(defaultfont)" : "(not defaultfont)"));
-  }
-
+ 
   return i;
 }
 
@@ -430,7 +423,8 @@ cc_flw_done_font(int font)
 {
   assert (font >= 0 && font < fontcnt && fonts[font]);
 #ifdef HAVE_FREETYPE
-  cc_flwft_done_font(fonts[font]->font);
+  if (!fonts[font]->defaultfont)
+    cc_flwft_done_font(fonts[font]->font);
 #endif
   fontstruct_rmfont(font);
 }
@@ -440,7 +434,10 @@ cc_flw_get_num_charmaps(int font)
 {
   assert (font >= 0 && font < fontcnt && fonts[font]);
 #ifdef HAVE_FREETYPE
-  return cc_flwft_get_num_charmaps(fonts[font]->font);
+  if (!fonts[font]->defaultfont)
+    return cc_flwft_get_num_charmaps(fonts[font]->font);
+  else
+    return 0;
 #else
   return 0;
 #endif
@@ -451,7 +448,10 @@ cc_flw_get_charmap_name(int font, int charmap)
 {
   assert (font >= 0 && font < fontcnt && fonts[font]);
 #ifdef HAVE_FREETYPE
-  return cc_flwft_get_charmap_name(fonts[font]->font, charmap);
+  if (!fonts[font]->defaultfont)
+    return cc_flwft_get_charmap_name(fonts[font]->font, charmap);
+  else
+    return NULL;
 #else
   return NULL;
 #endif
@@ -470,7 +470,10 @@ cc_flw_set_charmap(int font, int charmap)
 {
   assert (font >= 0 && font < fontcnt && fonts[font]);
 #ifdef HAVE_FREETYPE
-  return cc_flwft_set_charmap(fonts[font]->font, charmap);
+  if (!fonts[font]->defaultfont)
+    return cc_flwft_set_charmap(fonts[font]->font, charmap);
+  else
+    return -1;
 #else
   return -1;
 #endif
@@ -483,7 +486,10 @@ cc_flw_set_char_size(int font, int width, int height)
   fonts[font]->sizex = width;
   fonts[font]->sizey = height;
 #ifdef HAVE_FREETYPE
-  return cc_flwft_set_char_size(fonts[font]->font, width, height);
+  if (!fonts[font]->defaultfont)
+    return cc_flwft_set_char_size(fonts[font]->font, width, height);
+  else
+    return -1;
 #else
   return -1;
 #endif
@@ -494,7 +500,10 @@ cc_flw_set_font_rotation(int font, float angle)
 {
   assert (font >= 0 && font < fontcnt && fonts[font]);
 #ifdef HAVE_FREETYPE
-  return cc_flwft_set_font_rotation(fonts[font]->font, angle);
+  if (!fonts[font]->defaultfont)
+    return cc_flwft_set_font_rotation(fonts[font]->font, angle);
+  else
+    return -1;
 #else
   return -1;
 #endif
@@ -528,10 +537,10 @@ cc_flw_get_glyph(int font, int charidx)
          least scale the defaultfont glyph to the correct size.
          20030317 mortene. */
       
-      if (cc_fontlib_debug()) {
+      if (cc_flw_debug()) {
         cc_debugerror_postwarning("cc_flw_get_glyph",
                                   "no character 0x%x was found in font '%s'",
-                                  charidx, fonts[font]->fontname);
+                                  charidx, cc_string_get_text(fonts[font]->fontname));
       }
     }
   }
@@ -583,7 +592,8 @@ cc_flw_done_glyph(int font, int glyph)
   fs = fonts[font];
   if (glyph<fs->glyphcnt && fs->glyphs[glyph].glyph != NOGLYPH) {
 #ifdef HAVE_FREETYPE
-    cc_flwft_done_glyph(fs->font, fs->glyphs[glyph].glyph);
+    if (!fs->defaultfont)
+      cc_flwft_done_glyph(fs->font, fs->glyphs[glyph].glyph);
 #endif
     fontstruct_rmglyph(fs, glyph);
   }
