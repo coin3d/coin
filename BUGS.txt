@@ -4012,6 +4012,12 @@ diff -u -r1.9 selection.cpp.in
 
     20040503 mortene.
 
+    UPDATE 20040615 mortene: the best fix might be to just soup up the
+    world-coordinate bounding boxes on the pass over the list of
+    SoPath-instances. (That is, instead of rendering them highlighted
+    directly with a forced bbox drawstyle.) Then render the bounding
+    boxes directly by OpenGL-commands?
+
 =====================================================================
 
 113 SoBlinker import bug.
