@@ -74,6 +74,7 @@ void cc_flwft_done_glyph(void * font, int glyph) { assert(FALSE); }
 struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, unsigned int glyph) { assert(FALSE); return NULL; }
 struct cc_flw_vector_glyph * cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity) { assert(FALSE); return NULL; }
 
+void cc_flwft_scale_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph, float factor){ assert(FALSE); }
 const float * cc_flwft_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
 const int * cc_flwft_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
 const int * cc_flwft_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
