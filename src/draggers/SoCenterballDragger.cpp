@@ -152,6 +152,7 @@ SoCenterballDragger::SoCenterballDragger(void)
 
   SoAntiSquish *squish = SO_GET_ANY_PART(this, "antiSquish", SoAntiSquish);
   squish->sizing = SoAntiSquish::LONGEST_DIAGONAL;
+  squish->recalcAlways = FALSE;
 
   SoMatrixTransform *mt = SO_GET_ANY_PART(this, "translateToCenter", SoMatrixTransform);
   mt->matrix = SbMatrix::identity();
