@@ -60,6 +60,10 @@
   would advise you to look at the implementation of said mechanisms in
   the So*-libraries which SIM provides.
 
+  Please note that before Coin 2.3.1, sensors with equal priority (or
+  the same trigger time for SoTimerQueue sensors) were processed LIFO.
+  This has now been changed to FIFO to be conformant to SGI Inventor.
+
   \sa SoSensor SoTimerQueueSensor SoDelayQueueSensor
   \sa SoTimerSensor SoAlarmSensor
   \sa SoIdleSensor SoDataSensor SoOneShotSensor
@@ -285,9 +289,12 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
     LOCK_DELAY_QUEUE(this);
     SbList <SoDelayQueueSensor *> & delayqueue = THIS->delayqueue;
 
+    // <= in test since the sensors should be processed FIFO for
+    // sensors with equal priority
+    uint32_t newsensorpriority = newentry->getPriority();
     int pos = 0;
     while((pos < delayqueue.getLength()) &&
-          ((SoSensor*)delayqueue[pos])->isBefore(newentry)) {
+          (delayqueue[pos]->getPriority() <= newsensorpriority)) {
       pos++;
     }
     delayqueue.insert(newentry, pos);
@@ -322,8 +329,12 @@ SoSensorManager::insertTimerSensor(SoTimerQueueSensor * newentry)
 
   LOCK_TIMER_QUEUE(this);
   int i = 0;
-  while (i < timerqueue.getLength() &&
-         ((SoSensor*)timerqueue[i])->isBefore(newentry)) {
+
+  // <= in test since the sensors should be processed FIFO for sensors
+  // with the same trigger time
+  double newtime = newentry->getTriggerTime().getValue();
+  while ((i < timerqueue.getLength()) &&
+         (timerqueue[i]->getTriggerTime().getValue() <= newtime)) {
     i++;
   }
   timerqueue.insert(newentry, i);
