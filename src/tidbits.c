@@ -370,6 +370,16 @@ coin_host_get_endianness(void)
 
 static int coin_endianness = COIN_HOST_IS_UNKNOWNENDIAN;
 
+static void
+coin_swap_16bit_word(uint8_t * block)
+{
+  uint8_t tmp;
+
+  tmp = block[1];
+  block[1] = block[0];
+  block[0] = tmp;
+} 
+  
 uint16_t
 coin_hton_uint16(uint16_t value)
 {
@@ -380,7 +390,7 @@ coin_hton_uint16(uint16_t value)
     /* value = value */
     break;
   case COIN_HOST_IS_LITTLEENDIAN:
-    value = ((value << 8) & 0xff00) | ((value >> 8) & 0x00ff);
+    coin_swap_16bit_word((uint8_t *)&value);
     break;
   default:
     assert(0 && "system has unknown endianness");
@@ -391,20 +401,22 @@ coin_hton_uint16(uint16_t value)
 uint16_t
 coin_ntoh_uint16(uint16_t value)
 {
-  if ( coin_endianness == COIN_HOST_IS_UNKNOWNENDIAN )
-    coin_endianness = coin_host_get_endianness();
-  switch ( coin_endianness ) {
-  case COIN_HOST_IS_BIGENDIAN:
-    /* value = value */
-    break;
-  case COIN_HOST_IS_LITTLEENDIAN:
-    value = ((value << 8) & 0xff00) | ((value >> 8) & 0x00ff);
-    break;
-  default:
-    assert(0 && "system has unknown endianness");
-  }
-  return value;
+  return coin_ntoh_uint16(value);
 }
+  
+static void
+coin_swap_32bit_word(uint8_t * block)
+{
+  uint8_t tmp;
+
+  tmp = block[3];
+  block[3] = block[0];
+  block[0] = tmp;
+
+  tmp = block[2];
+  block[2] = block[1];
+  block[1] = tmp;
+} 
   
 uint32_t  
 coin_hton_uint32(uint32_t value)
@@ -413,11 +425,10 @@ coin_hton_uint32(uint32_t value)
     coin_endianness = coin_host_get_endianness();
   switch ( coin_endianness ) {
   case COIN_HOST_IS_BIGENDIAN:
-    /* value = value */
+    /* big-endian is the same order as network order */
     break;
   case COIN_HOST_IS_LITTLEENDIAN:
-    value = ((value >> 16) & 0x0000ffff) | ((value << 16) & 0xffff0000);
-    value = ((value >>  8) & 0x00ff00ff) | ((value <<  8) & 0xff00ff00);
+    coin_swap_32bit_word((uint8_t *)&value);
     break;
   default:
     assert(0 && "system has unknown endianness");
@@ -428,15 +439,20 @@ coin_hton_uint32(uint32_t value)
 uint32_t  
 coin_ntoh_uint32(uint32_t value)
 {
+  return coin_hton_uint32(value);
+}
+
+float
+coin_hton_float(float value)
+{
   if ( coin_endianness == COIN_HOST_IS_UNKNOWNENDIAN )
     coin_endianness = coin_host_get_endianness();
   switch ( coin_endianness ) {
   case COIN_HOST_IS_BIGENDIAN:
-    /* value = value */
+    /* big-endian is the same order as network order */
     break;
   case COIN_HOST_IS_LITTLEENDIAN:
-    value = ((value >> 16) & 0x0000ffff) | ((value << 16) & 0xffff0000);
-    value = ((value >>  8) & 0x00ff00ff) | ((value <<  8) & 0xff00ff00);
+    coin_swap_32bit_word((uint8_t *)&value);
     break;
   default:
     assert(0 && "system has unknown endianness");
@@ -444,10 +460,11 @@ coin_ntoh_uint32(uint32_t value)
   return value;
 }
 
-/*
-  FIXME: implement 64-bit versions of these, and enable them with an
-  appropriate config.h define.
-*/
+float
+coin_ntoh_float(float value)
+{
+  return coin_hton_float(value);
+}
 
 /**************************************************************************/
 

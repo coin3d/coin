@@ -53,6 +53,8 @@ uint16_t coin_hton_uint16(uint16_t value);
 uint16_t coin_ntoh_uint16(uint16_t value);
 uint32_t coin_hton_uint32(uint32_t value);
 uint32_t coin_ntoh_uint32(uint32_t value);
+float coin_hton_float(float value);
+float coin_ntoh_float(float value);
 
 SbBool coin_isascii(const int c);
 SbBool coin_isspace(const char c);
