@@ -277,7 +277,6 @@ SoTabPlaneDragger::adjustScaleTabSize(void)
 void
 SoTabPlaneDragger::reallyAdjustScaleTabSize(SoGLRenderAction *action)
 {
-  int i;
   SoCoordinate3 *coordnode;
   SbVec3f *coords;
 
