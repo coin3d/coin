@@ -117,10 +117,13 @@ SbBox2s::getMax(void) const
 void
 SbBox2s::extendBy(const SbVec2s& point)
 {
-  this->minpt.setValue(SbMin(point[0], this->minpt[0]),
-                       SbMin(point[1], this->minpt[1]));
-  this->maxpt.setValue(SbMax(point[0], this->maxpt[0]),
-                       SbMax(point[1], this->maxpt[1]));
+  // The explicit casts are done to humour the HPUX aCC compiler,
+  // which will otherwise say ``Template deduction failed to find a
+  // match for the call to 'SbMin'''. mortene.
+  this->minpt.setValue(SbMin((short)point[0], (short)this->minpt[0]),
+                       SbMin((short)point[1], (short)this->minpt[1]));
+  this->maxpt.setValue(SbMax((short)point[0], (short)this->maxpt[0]),
+                       SbMax((short)point[1], (short)this->maxpt[1]));
 }
 
 /*!

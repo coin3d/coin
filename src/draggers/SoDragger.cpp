@@ -68,6 +68,7 @@
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/SoFullPath.h>
 #include <Inventor/misc/SoTempPath.h>
+#include <Inventor/SoNodeKitPath.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -862,9 +863,12 @@ SbMatrix
 SoDragger::appendScale(const SbMatrix & matrix, const SbVec3f & scale, const SbVec3f & scalecenter, const SbMatrix * conversion)
 {
   SbVec3f clampedscale;
-  clampedscale[0] = SbMax(scale[0], SoDragger::minScale);
-  clampedscale[1] = SbMax(scale[1], SoDragger::minScale);
-  clampedscale[2] = SbMax(scale[2], SoDragger::minScale);
+  // The explicit casts are done to humour the HPUX aCC compiler,
+  // which will otherwise say ``Template deduction failed to find a
+  // match for the call to 'SbMax'''. mortene.
+  clampedscale[0] = SbMax((float)scale[0], SoDragger::minScale);
+  clampedscale[1] = SbMax((float)scale[1], SoDragger::minScale);
+  clampedscale[2] = SbMax((float)scale[2], SoDragger::minScale);
 
   SbMatrix transform, tmp;
   transform.setTranslate(-scalecenter);
@@ -954,7 +958,10 @@ SoDragger::isAdequateConstraintMotion(void)
     this->getStartLocaterPosition() -
     this->getLocaterPosition();
 
-  double len = sqrt(delta[0]*delta[0] + delta[1]*delta[1]);
+  // The cast is done to avoid ambigouity error from HPUX aCC, as
+  // sqrt() can be either "long double sqrt(long double)" or "float
+  // sqrt(float)". mortene.
+  double len = sqrt(double(delta[0]*delta[0] + delta[1]*delta[1]));
 
   if (len >= (double) this->minGesture) return TRUE;
   return FALSE;

@@ -130,12 +130,15 @@ SbBox3f::extendBy(const SbVec3f& point)
     this->setBounds(point, point);
   }
   else {
-    this->min.setValue(SbMin(point[0], this->min[0]),
-                       SbMin(point[1], this->min[1]),
-                       SbMin(point[2], this->min[2]));
-    this->max.setValue(SbMax(point[0], this->max[0]),
-                       SbMax(point[1], this->max[1]),
-                       SbMax(point[2], this->max[2]));
+    // The explicit casts are done to humour the HPUX aCC compiler,
+    // which will otherwise say ``Template deduction failed to find a
+    // match for the call to 'SbMin'''. mortene.
+    this->min.setValue(SbMin((float)point[0], (float)this->min[0]),
+                       SbMin((float)point[1], (float)this->min[1]),
+                       SbMin((float)point[2], (float)this->min[2]));
+    this->max.setValue(SbMax((float)point[0], (float)this->max[0]),
+                       SbMax((float)point[1], (float)this->max[1]),
+                       SbMax((float)point[2], (float)this->max[2]));
   }
 }
 

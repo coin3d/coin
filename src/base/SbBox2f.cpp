@@ -148,10 +148,13 @@ SbBox2f::getCenter(void) const
 void
 SbBox2f::extendBy(const SbVec2f& point)
 {
-  this->minpt.setValue(SbMin(point[0], this->minpt[0]),
-                       SbMin(point[1], this->minpt[1]));
-  this->maxpt.setValue(SbMax(point[0], this->maxpt[0]),
-                       SbMax(point[1], this->maxpt[1]));
+  // The explicit cast to float is done to humour the HPUX aCC
+  // compiler, which will otherwise say ``Template deduction failed to
+  // find a match for the call to 'SbMin'''. mortene.
+  this->minpt.setValue(SbMin((float)point[0], (float)this->minpt[0]),
+                       SbMin((float)point[1], (float)this->minpt[1]));
+  this->maxpt.setValue(SbMax((float)point[0], (float)this->maxpt[0]),
+                       SbMax((float)point[1], (float)this->maxpt[1]));
 }
 
 /*!
