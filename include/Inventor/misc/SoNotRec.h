@@ -1,3 +1,6 @@
+#ifndef COIN_SONOTREC_H
+#define COIN_SONOTREC_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,33 +24,34 @@
  *
 \**************************************************************************/
 
-#include "SoBase.cpp"
-#include "SoByteStream.cpp"
-#include "SoChildList.cpp"
-#include "SoDB.cpp"
-#include "SoFullPath.cpp"
-#include "SoGL.cpp"
-#include "SoGLBigImage.cpp"
-#include "SoGLImage.cpp"
-#include "SoGenerate.cpp"
-#include "SoGlyph.cpp"
-#include "SoInput.cpp"
-#include "SoInteraction.cpp"
-#include "SoLightPath.cpp"
-#include "SoLockManager.cpp"
-#include "SoNormalGenerator.cpp"
-#include "SoNotification.cpp"
-#include "SoNotRec.cpp"
-#include "SoOffscreenRenderer.cpp"
-#include "SoOutput.cpp"
-#include "SoPath.cpp"
-#include "SoPickedPoint.cpp"
-#include "SoPrimitiveVertex.cpp"
-#include "SoSceneManager.cpp"
-#include "SoState.cpp"
-#include "SoTempPath.cpp"
-#include "SoTranReceiver.cpp"
-#include "SoTranSender.cpp"
-#include "SoType.cpp"
-#include "default2dfont.cpp"
-#include "default3dfont.cpp"
+#include <Inventor/SbBasic.h>
+#include <stdio.h>
+
+class SoBase;
+
+
+class COIN_DLL_API SoNotRec {
+public:
+  enum Type {
+    CONTAINER,
+    PARENT,
+    SENSOR,
+    FIELD,
+    ENGINE
+  };
+
+  SoNotRec(SoBase * const notifbase);
+  void setType(const SoNotRec::Type type);
+  SoBase * getBase(void) const;
+  SoNotRec::Type getType(void) const;
+  const SoNotRec * getPrevious(void) const;
+  void setPrevious(const SoNotRec * const prev);
+  void print(FILE * const file) const;
+
+private:
+  Type type;
+  SoBase * base;
+  const SoNotRec * prev;
+};
+
+#endif // !COIN_SONOTREC_H

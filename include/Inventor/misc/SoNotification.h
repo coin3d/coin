@@ -24,38 +24,12 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbBasic.h>
-#include <Inventor/system/inttypes.h>
+#include <Inventor/misc/SoNotRec.h>
 #include <stdio.h>
-
-class SoBase;
-
-class COIN_DLL_API SoNotRec {
-public:
-  enum Type {
-    CONTAINER,
-    PARENT,
-    SENSOR,
-    FIELD,
-    ENGINE
-  };
-
-  SoNotRec(SoBase * const notifbase);
-  void setType(const SoNotRec::Type type);
-  SoBase * getBase(void) const;
-  SoNotRec::Type getType(void) const;
-  const SoNotRec * getPrevious(void) const;
-  void setPrevious(const SoNotRec * const prev);
-  void print(FILE * const file) const;
-
-private:
-  Type type;
-  SoBase * base;
-  const SoNotRec * prev;
-};
 
 class SoEngineOutput;
 class SoField;
+
 
 class COIN_DLL_API SoNotList {
 public:
@@ -81,8 +55,6 @@ private:
   SoNotRec * firstnoderec;
   SoField * lastfield;
   SoEngineOutput * lastengine;
-  // kept to be ABI-compatible
-  class SoVRMLInterpOutput * lastinterp;
   uint32_t stamp;
 };
 

@@ -10,6 +10,7 @@ RegularSources = \
 	SoGlyph.cpp \
 	SoNormalGenerator.cpp \
 	SoNotification.cpp \
+	SoNotRec.cpp \
 	SoState.cpp \
 	SoDB.cpp \
 	SoFullPath.cpp \
@@ -51,6 +52,7 @@ PublicHeaders = \
 	../../include/Inventor/misc/SoGLBigImage.h \
 	../../include/Inventor/misc/SoNormalGenerator.h \
 	../../include/Inventor/misc/SoNotification.h \
+	../../include/Inventor/misc/SoNotRec.h \
 	../../include/Inventor/misc/SoProto.h \
 	../../include/Inventor/misc/SoProtoInstance.h \
 	../../include/Inventor/misc/SoTranReceiver.h \

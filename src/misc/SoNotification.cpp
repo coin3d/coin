@@ -21,129 +21,20 @@
  *
 \**************************************************************************/
 
-
-/////// SoNotRec //////////////////////////////////////////////////////////
-
-/*!
-  \class SoNotRec SoNotification.h Inventor/misc/SoNotification.h
-  \brief The SoNotRec class is the basis for records in notification lists.
-  \ingroup general
-*/
-
-/*!
-  \enum SoNotRec::Type
-
-  This enum is used to specify the type of the notification source
-  within the record.
-*/
-
-#include <Inventor/misc/SoNotification.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/SbName.h>
-#include <assert.h>
-#include <time.h>
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoBase.h>
-#endif // COIN_DEBUG
-
-/*!
-  Constructor. Initializes the record with \a notifbase pointer.
-*/
-SoNotRec::SoNotRec(SoBase * const notifbase)
-  : type((SoNotRec::Type)-1), base(notifbase), prev(NULL)
-{
-}
-
-/*!
-  Set the \a type of the notification source of this record.
-*/
-void
-SoNotRec::setType(const SoNotRec::Type type)
-{
-  this->type = type;
-}
-
-/*!
-  Returns the notification source within this record.
-*/
-SoBase *
-SoNotRec::getBase(void) const
-{
-  return this->base;
-}
-
-/*!
-  Returns the type of the notification source within this record.
-*/
-SoNotRec::Type
-SoNotRec::getType(void) const
-{
-  return this->type;
-}
-
-/*!
-  Returns the previous notification source (i.e. the source that the
-  base within this record was auditing).
-*/
-const SoNotRec *
-SoNotRec::getPrevious(void) const
-{
-#if 0 // OBSOLETED: see comment on setPrevious(). 20000304 mortene.
-  assert(this != this->prev);
-#endif // OBSOLETED
-  return this->prev;
-}
-
-/*!
-  Set pointer to the previous notification record.
-*/
-void
-SoNotRec::setPrevious(const SoNotRec * const prev)
-{
-#if 0 // OBSOLETED: looks like this can be allowed (and need to be
-      // allowed under the current circumstances, as it hits under certain
-      // conditions). 20000304 mortene
-  assert(this != prev);
-#endif // OBSOLETED
-  this->prev = prev;
-}
-
-/*!
-  Prints debug information.
-*/
-void
-SoNotRec::print(FILE * const file) const
-{
-#if COIN_DEBUG
-  (void)fprintf(file, "\tSoNotRec %p: type ", this);
-  switch (this->type) {
-  case CONTAINER:  (void)fprintf(file, "CONTAINER"); break;
-  case PARENT:     (void)fprintf(file, "PARENT"); break;
-  case SENSOR:     (void)fprintf(file, "SENSOR"); break;
-  case FIELD:      (void)fprintf(file, "FIELD"); break;
-  case ENGINE:     (void)fprintf(file, "ENGINE"); break;
-  default:         (void)fprintf(file, "UNSET"); break;
-  }
-  if (this->base) {
-    (void)fprintf(file, ", base %p (type %s, \"%s\")\n",
-                  this->base, this->base->getTypeId().getName().getString(),
-                  this->base->getName().getString());
-  }
-  else {
-    (void)fprintf(file," base is NULL\n");
-  }
-#endif // COIN_DEBUG
-}
-
-/////// SoNotList /////////////////////////////////////////////////////////
-
 /*!
   \class SoNotList SoNotification.h Inventor/misc/SoNotification.h
   \brief The SoNotList class is a list of SoNotRec notification records.
   \ingroup general
 */
+
+#include <Inventor/misc/SoNotification.h>
+#include <Inventor/misc/SoNotRec.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/SbName.h>
+#include <assert.h>
+#include <time.h>
+
 
 /*!
   Initialize list.

@@ -140,6 +140,7 @@ RegularSources = \
 	SoGlyph.cpp \
 	SoNormalGenerator.cpp \
 	SoNotification.cpp \
+	SoNotRec.cpp \
 	SoState.cpp \
 	SoDB.cpp \
 	SoFullPath.cpp \
@@ -183,6 +184,7 @@ PublicHeaders = \
 	../../include/Inventor/misc/SoGLBigImage.h \
 	../../include/Inventor/misc/SoNormalGenerator.h \
 	../../include/Inventor/misc/SoNotification.h \
+	../../include/Inventor/misc/SoNotRec.h \
 	../../include/Inventor/misc/SoProto.h \
 	../../include/Inventor/misc/SoProtoInstance.h \
 	../../include/Inventor/misc/SoTranReceiver.h \
@@ -259,6 +261,7 @@ misc_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGlyph.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoNormalGenerator.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoNotification.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoNotRec.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoState.$(OBJEXT) SoDB.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoFullPath.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTempPath.$(OBJEXT) \
@@ -294,8 +297,8 @@ libmisc_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoChildList.lo SoGL.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLImage.lo SoGLBigImage.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGlyph.lo SoNormalGenerator.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoNotification.lo SoState.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoDB.lo SoFullPath.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoNotification.lo SoNotRec.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoState.lo SoDB.lo SoFullPath.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTempPath.lo SoLightPath.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoInput.lo SoInteraction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoOutput.lo SoPath.lo SoPick.lo \
@@ -318,8 +321,8 @@ libmisc@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoBase.lo SoChildList.lo SoGL.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLImage.lo SoGLBigImage.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGlyph.lo SoNormalGenerator.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoNotification.lo SoState.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoDB.lo SoFullPath.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoNotification.lo SoNotRec.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoState.lo SoDB.lo SoFullPath.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTempPath.lo SoLightPath.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoInput.lo SoInteraction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoOutput.lo SoPath.lo SoPick.lo \
@@ -361,6 +364,7 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoLockManager.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoNormalGenerator.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoNormalGenerator.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoNotRec.Plo $(DEPDIR)/SoNotRec.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoNotification.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoNotification.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoOffscreenRenderer.Plo \
@@ -509,6 +513,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLockManager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNormalGenerator.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNormalGenerator.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNotRec.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNotRec.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNotification.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNotification.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOffscreenRenderer.Plo@am__quote@
