@@ -28,7 +28,7 @@
 
 class SoField;
 
-class SoFieldList : public SbList<SoField *> {
+class COIN_DLL_API SoFieldList : public SbList<SoField *> {
 public:
   SoFieldList(void) : SbList<SoField *>() { }
   SoFieldList(const int sizehint) : SbList<SoField *>(sizehint) { }

@@ -28,7 +28,7 @@
 
 class SoDetail;
 
-class SoDetailList : public SbList<SoDetail *> {
+class COIN_DLL_API SoDetailList : public SbList<SoDetail *> {
 public:
   SoDetailList(void) : SbList<SoDetail *>() { }
   SoDetailList(const int sizehint) : SbList<SoDetail *>(sizehint) { }

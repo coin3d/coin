@@ -28,7 +28,7 @@
 
 class SoPickedPoint;
 
-class SoPickedPointList : public SbList<SoPickedPoint *> {
+class COIN_DLL_API SoPickedPointList : public SbList<SoPickedPoint *> {
 public:
   SoPickedPointList(void) : SbList<SoPickedPoint *>() { }
   SoPickedPointList(const int sizehint) : SbList<SoPickedPoint *>(sizehint) { }

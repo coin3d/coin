@@ -27,7 +27,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbVec3f.h>
 
-class SbVec3fList : public SbList<SbVec3f *> {
+class COIN_DLL_API SbVec3fList : public SbList<SbVec3f *> {
 public:
   SbVec3fList(void) : SbList<SbVec3f *>() { }
   SbVec3fList(const int sizehint) : SbList<SbVec3f *>(sizehint) { }

@@ -26,7 +26,7 @@
 
 #include <Inventor/lists/SbList.h>
 
-class SbIntList : public SbList<int> {
+class  COIN_DLL_API SbIntList : public SbList<int> {
 public:
   SbIntList(void) : SbList<int>() { }
   SbIntList(const int sizehint) : SbList<int>(sizehint) { }
