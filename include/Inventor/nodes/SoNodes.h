@@ -131,5 +131,6 @@
 #include <Inventor/nodes/SoTransparencyType.h>
 #include <Inventor/nodes/SoListener.h>
 #include <Inventor/nodes/SoTextureCoordinateCube.h>
+#include <Inventor/nodes/SoTextureCoordinateSphere.h>
 
 #endif // !COIN_SONODES_H
