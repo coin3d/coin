@@ -26,7 +26,6 @@
 
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/misc/SoGLImage.h>
 
 #if HAVE_CONFIG_H
@@ -70,7 +69,6 @@ SoGLTextureImageElement::init(SoState * state)
 
   // set these to illegal values to make sure things are initialized
   // the first time.
-  this->quality = SoTextureQualityElement::getDefault();
   this->glmodel = -1;
   this->glblendcolor.setValue(-1.0f, -1.0f, -1.0f);
   this->glalphatest = FALSE;
@@ -152,21 +150,31 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
                    blendColor);
     elem->image = image;
     elem->didapply = didapply;
-    elem->quality = SoTextureQualityElement::get(state);
     // FIXME: the next line causes a memory leak, according to
     // Purify. 20001102 mortene.
-    elem->dlist = image->getGLDisplayList(state, elem->quality);
+    elem->dlist = image->getGLDisplayList(state);
     if (elem->dlist) elem->dlist->ref(); // ref to make sure dlist is not deleted too soon
-    elem->alphatest = image->needAlphaTest();
+    elem->alphatest = image->useAlphaTest();
   }
   else {
     elem->didapply = FALSE;
     elem->image = NULL;
     elem->dlist = NULL;
-    elem->quality = SoTextureQualityElement::get(state);
     elem->alphatest = FALSE;
     inherited::setDefault(state, node);
   }
+}
+
+SoGLImage * 
+SoGLTextureImageElement::get(SoState * state, Model & model,
+                             SbColor & blendcolor)
+{
+  const SoGLTextureImageElement * elem = (const SoGLTextureImageElement*)
+    SoReplacedElement::getConstElement(state, classStackIndex);
+  
+  model = elem->model;
+  blendcolor = elem->blendColor;
+  return elem->image;
 }
 
 // doc from parent
@@ -192,7 +200,7 @@ SoGLTextureImageElement::evaluate(const SbBool enabled, const SbBool transparenc
 
   if (enabled && elem->dlist) {
     if (!elem->didapply) {
-      SoGLImage::apply(elem->state, elem->dlist, elem->quality);
+      elem->dlist->call(elem->state);
       elem->didapply = TRUE;
     }
     if (int(elem->model) != elem->glmodel ||

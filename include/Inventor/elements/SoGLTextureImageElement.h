@@ -45,6 +45,9 @@ public:
                   const SbColor &blendColor,
                   const SbBool didapply = FALSE);
 
+  static SoGLImage * get(SoState * state, Model & model,
+                         SbColor & blendcolor); 
+
   virtual void evaluate(const SbBool enabled, const SbBool transparency) const;
   static int32_t getMaxGLTextureSize(void);
 
@@ -54,7 +57,7 @@ protected:
 private:
   SoGLImage * image;
   SoGLDisplayList * dlist;
-  float quality;
+  float quality; // not used anymore
   SbBool alphatest;
   SoState * state;
   int glmodel;
