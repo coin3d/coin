@@ -186,8 +186,8 @@ RegularSources = \
 
 # The SoIntersectionDetectionAction header needs to be under
 # Inventor/collision/ for TGS compatibility.
-collisionincdir = $(includedir)/Inventor/collision
-collisioninc_HEADERS = \
+libcollisionincdir = $(includedir)/Inventor/collision
+libcollisioninc_HEADERS = \
 	../../include/Inventor/collision/SoIntersectionDetectionAction.h
 
 
@@ -368,9 +368,9 @@ DIST_SOURCES = $(actions_lst_SOURCES) $(EXTRA_actions_lst_SOURCES) \
 	$(libactions_la_SOURCES) $(EXTRA_libactions_la_SOURCES) \
 	$(libactions@SUFFIX@LINKHACK_la_SOURCES) \
 	$(EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES)
-HEADERS = $(collisioninc_HEADERS) $(libactionsinc_HEADERS)
+HEADERS = $(libactionsinc_HEADERS) $(libcollisioninc_HEADERS)
 
-DIST_COMMON = $(collisioninc_HEADERS) $(libactionsinc_HEADERS) \
+DIST_COMMON = $(libactionsinc_HEADERS) $(libcollisioninc_HEADERS) \
 	Makefile.am Makefile.in
 SOURCES = $(actions_lst_SOURCES) $(EXTRA_actions_lst_SOURCES) $(libactions_la_SOURCES) $(EXTRA_libactions_la_SOURCES) $(libactions@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES)
 
@@ -492,20 +492,20 @@ distclean-depend:
 CXXDEPMODE = @CXXDEPMODE@
 uninstall-info-am:
 
-uninstall-collisionincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(collisioninc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(collisionincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(collisionincdir)/$$f; \
-	done
-
 uninstall-libactionsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libactionsinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(libactionsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libactionsincdir)/$$f; \
+	done
+
+uninstall-libcollisionincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libcollisioninc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libcollisionincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libcollisionincdir)/$$f; \
 	done
 
 tags: TAGS
@@ -567,7 +567,7 @@ check: check-am
 all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(collisionincdir) $(DESTDIR)$(libactionsincdir)
+	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libactionsincdir) $(DESTDIR)$(libcollisionincdir)
 
 install: install-am
 install-exec: install-exec-am
@@ -610,8 +610,8 @@ info: info-am
 
 info-am:
 
-install-data-am: install-collisionincHEADERS \
-	install-libactionsincHEADERS
+install-data-am: install-libactionsincHEADERS \
+	install-libcollisionincHEADERS
 
 install-exec-am: install-libLTLIBRARIES
 
@@ -630,26 +630,26 @@ mostlyclean: mostlyclean-am
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
-uninstall-am: uninstall-collisionincHEADERS uninstall-info-am \
-	uninstall-libLTLIBRARIES uninstall-libactionsincHEADERS
+uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
+	uninstall-libactionsincHEADERS uninstall-libcollisionincHEADERS
 
 .PHONY: GTAGS all all-am check check-am clean clean-generic \
 	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
 	clean-noinstLTLIBRARIES distclean distclean-compile \
 	distclean-depend distclean-generic distclean-libtool \
 	distclean-tags distdir dvi dvi-am info info-am install \
-	install-am install-collisionincHEADERS install-data \
-	install-data-am install-exec install-exec-am install-info \
-	install-info-am install-libLTLIBRARIES \
-	install-libactionsincHEADERS install-man install-strip \
+	install-am install-data install-data-am install-exec \
+	install-exec-am install-info install-info-am \
+	install-libLTLIBRARIES install-libactionsincHEADERS \
+	install-libcollisionincHEADERS install-man install-strip \
 	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool tags uninstall \
-	uninstall-am uninstall-collisionincHEADERS uninstall-info-am \
-	uninstall-libLTLIBRARIES uninstall-libactionsincHEADERS
+	uninstall-am uninstall-info-am uninstall-libLTLIBRARIES \
+	uninstall-libactionsincHEADERS uninstall-libcollisionincHEADERS
 
 
-install-collisionincHEADERS: $(libcollisioninc_HEADERS)
+install-libcollisionincHEADERS: $(libcollisioninc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libcollisionincdir)
 	@list='$(libcollisioninc_HEADERS)'; for p in $$list; do \
