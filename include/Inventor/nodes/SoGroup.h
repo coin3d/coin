@@ -55,7 +55,7 @@ public:
   virtual void search(SoSearchAction * action);
   virtual void write(SoWriteAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-  SoChildList * getChildren(void) const;
+  virtual SoChildList * getChildren(void) const;
 
 protected:
   virtual ~SoGroup();
