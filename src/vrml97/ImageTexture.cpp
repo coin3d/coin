@@ -412,8 +412,6 @@ SoVRMLImageTexture::read_thread(void * closure)
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
   
   if (!imagetexture_is_exiting && !PRIVATE(thisp)->isdestructing) {
-
-    fprintf(stderr,"starting to read image: %s\n", PRIVATE(thisp)->scheduledfilename.getString());
     (void) PRIVATE(thisp)->image.readFile(PRIVATE(thisp)->scheduledfilename);
     
     assert(PRIVATE(thisp)->glimage);
