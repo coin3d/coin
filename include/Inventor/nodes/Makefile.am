@@ -102,7 +102,7 @@ PublicHeaders = \
 	SoTextureCoordinate3.h \
 	SoTextureCoordinateBinding.h \
 	SoTextureCoordinateCube.h \
-	SoTextureCoordinateCone.h \
+	SoTextureCoordinateCylinder.h \
 	SoTextureCoordinateSphere.h \
 	SoTextureCoordinateDefault.h \
 	SoTextureCoordinateEnvironment.h \
