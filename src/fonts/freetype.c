@@ -942,7 +942,10 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   GLUWrapper()->gluTessCallback(flwft_tessellator.tessellator_object, GLU_TESS_COMBINE, (gluTessCallback_cb_t) flwft_combineCallback);
   GLUWrapper()->gluTessCallback(flwft_tessellator.tessellator_object, GLU_TESS_ERROR, (gluTessCallback_cb_t) flwft_errorCallback);
 
-  GLUWrapper()->gluTessBeginPolygon(flwft_tessellator.tessellator_object, NULL);  
+  GLUWrapper()->gluTessBeginPolygon(flwft_tessellator.tessellator_object, NULL);
+  /* According to the SGI doc for GLU, specifying the triangle normal will speed up 
+     the tessellation process. */
+  GLUWrapper()->gluTessNormal(flwft_tessellator.tessellator_object, 0.0f, 0.0f, -1.0f);
   error = cc_ftglue_FT_Outline_Decompose(&outline, &outline_funcs, NULL);
   if (flwft_tessellator.contour_open) {
     GLUWrapper()->gluTessEndContour(flwft_tessellator.tessellator_object);
