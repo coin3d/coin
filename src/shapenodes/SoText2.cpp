@@ -223,11 +223,8 @@ SoText2::SoText2(void)
 SoText2::~SoText2()
 {
   
- if (PRIVATE(this)->fontspec != NULL) {
-    cc_string_destruct(PRIVATE(this)->fontspec->name);
-    if (PRIVATE(this)->fontspec->style != NULL)
-      cc_string_destruct(PRIVATE(this)->fontspec->style);
-    delete PRIVATE(this)->fontspec;
+  if (PRIVATE(this)->fontspec != NULL) {
+    cc_fontspec_clean(PRIVATE(this)->fontspec);
   }
 
   PRIVATE(this)->flushGlyphCache(TRUE);
@@ -668,27 +665,14 @@ SoText2P::buildGlyphCache(SoState * state)
 
   // Build up font-spesification struct
   if (this->fontspec != NULL) {
-    cc_string_destruct(this->fontspec->name);
-    cc_string_destruct(this->fontspec->style);
+    cc_fontspec_clean(this->fontspec);
     delete this->fontspec;
   }
   this->fontspec = new cc_font_specification;
-  this->fontspec->name = cc_string_construct_new();
-  cc_string_set_text(this->fontspec->name, SoFontNameElement::get(state).getString());   
-  this->fontspec->size = SoFontSizeElement::get(state);
-
-  // Check if style is baked into the fontname using the "family:style" syntax.
-  this->fontspec->style = cc_string_construct_new();
-  const char * tmpstr = cc_string_get_text(this->fontspec->name);
-  const char * tmpptr = strchr(tmpstr, ':');
-  if (tmpptr != NULL) {
-    int pos = (int) (tmpptr - tmpstr);
-    cc_string_set_text(this->fontspec->style, cc_string_get_text(this->fontspec->name));
-    cc_string_remove_substring(this->fontspec->style, 0, pos);
-    const int namelen = cc_string_length(this->fontspec->name);
-    cc_string_remove_substring(this->fontspec->name, pos, namelen-1);
-  }
-
+  cc_fontspec_construct(this->fontspec,
+                        SoFontNameElement::get(state).getString(),
+                        SoFontSizeElement::get(state),
+                        this->master->getComplexityValue(state->getAction()));
 
   for (int i=0; i < nrlines; i++) {
 

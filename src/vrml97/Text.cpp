@@ -229,10 +229,7 @@ SoVRMLText::~SoVRMLText()
 {
 
   if (PRIVATE(this)->fontspec != NULL) {
-    cc_string_destruct(PRIVATE(this)->fontspec->name);
-    if (PRIVATE(this)->fontspec->style != NULL)
-      cc_string_destruct(PRIVATE(this)->fontspec->style);
-    delete PRIVATE(this)->fontspec;
+    cc_fontspec_clean(PRIVATE(this)->fontspec);
   }
 
   delete PRIVATE(this)->fontstylesensor;
@@ -862,33 +859,33 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
   this->needsetup = FALSE;
 
   if (this->fontspec != NULL) {
-    cc_string_destruct(this->fontspec->name);
-    cc_string_destruct(this->fontspec->style);
+    cc_fontspec_clean(this->fontspec);
     delete this->fontspec;
   }
 
   // Build up font-spesification struct
   this->fontspec = new cc_font_specification;
-  this->fontspec->name = cc_string_construct_new();
-  
-  if (this->fontfamily == SoVRMLFontStyle::PLAIN)
-    cc_string_set_text(this->fontspec->name, "Times New Roman");
-  else if (this->fontfamily == SoVRMLFontStyle::SANS)
-    cc_string_set_text(this->fontspec->name, "Arial");
-  else if (this->fontfamily == SoVRMLFontStyle::TYPEWRITER)
-    cc_string_set_text(this->fontspec->name, "Courier New");
 
-  this->fontspec->style = cc_string_construct_new();
-  if (this->fontstyle == SoVRMLFontStyle::BOLD)
-    cc_string_set_text(this->fontspec->style, "Bold");
-  else if (this->fontstyle == SoVRMLFontStyle::ITALIC)
-    cc_string_set_text(this->fontspec->style, "Italic");
-  else if (this->fontstyle == SoVRMLFontStyle::BOLDITALIC)
-    cc_string_set_text(this->fontspec->style, "Bold Italic");
-  else cc_string_set_text(this->fontspec->style, "");
+  SbString fontstr;
+  switch (this->fontfamily) {
+  case SoVRMLFontStyle::PLAIN: fontstr = "Times New Roman"; break;
+  case SoVRMLFontStyle::SANS: fontstr = "Arial"; break;
+  case SoVRMLFontStyle::TYPEWRITER: fontstr = "Courier New"; break;
+  default: /* FIXME: warn on faulty input data. 20030921 mortene. */ fontstr = "defaultFont"; break;
+  }
 
-  this->fontspec->size = this->textsize;
-  this->fontspec->complexity = this->master->getComplexityValue(state->getAction());
+  switch (this->fontstyle) {
+  case SoVRMLFontStyle::BOLD: fontstr += ":Bold"; break;
+  case SoVRMLFontStyle::ITALIC: fontstr += ":Italic"; break;
+  case  SoVRMLFontStyle::BOLDITALIC: fontstr += ":Bold Italic"; break;
+  default: /* FIXME: check for and warn on faulty input data. 20030921 mortene. */ break;
+  }
+
+  cc_fontspec_construct(this->fontspec,
+                        fontstr.getString(),
+                        this->textsize,
+                        this->master->getComplexityValue(state->getAction()));
+
 
 
   this->glyphwidths.truncate(0);
