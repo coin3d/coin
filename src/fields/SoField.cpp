@@ -1257,8 +1257,16 @@ SoField::notify(SoNotList * nlist)
     SoDebugError::postInfo("SoField::notify",
                            "field %p, list %p", this, nlist);
 #endif // debug
-    if (this->getContainer()) this->getContainer()->notify(nlist);
-    this->notifyAuditors(nlist);
+
+    if (this->hasExtendedStorage() && this->storage->auditors.getLength()) {
+      // need to copy list first if we're going to notify the auditors
+      SoNotList listcopy(*nlist);
+      if (this->getContainer()) this->getContainer()->notify(nlist);
+      this->notifyAuditors(&listcopy);
+    }
+    else {
+      if (this->getContainer()) this->getContainer()->notify(nlist);
+    }
     this->clearStatusBits(FLAG_ISNOTIFIED);
   }
 
