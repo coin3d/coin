@@ -100,6 +100,7 @@ public:
   virtual void doAction(SoAction * action);
   virtual void callback(SoCallbackAction * action);
   virtual void GLRender(SoGLRenderAction * action);
+  virtual void audioRender(SoAudioRenderAction *action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
   virtual void handleEvent(SoHandleEventAction * action);
   virtual void rayPick(SoRayPickAction * action);

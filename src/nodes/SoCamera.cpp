@@ -111,6 +111,7 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/elements/SoFocalDistanceElement.h>
 #include <Inventor/elements/SoGLProjectionMatrixElement.h>
 #include <Inventor/elements/SoGLViewingMatrixElement.h>
@@ -122,6 +123,10 @@
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoGLRenderPassElement.h>
+#include <Inventor/elements/SoListenerPositionElement.h>
+#include <Inventor/elements/SoListenerOrientationElement.h>
+#include <Inventor/elements/SoListenerVelocityElement.h>
+#include <Inventor/elements/SoListenerGainElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SbColor4f.h>
 #include <Inventor/C/glue/gl.h>
@@ -362,6 +367,11 @@ SoCamera::initClass(void)
   SO_ENABLE(SoGetPrimitiveCountAction, SoProjectionMatrixElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoViewVolumeElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoViewingMatrixElement);
+
+  SO_ENABLE(SoAudioRenderAction, SoListenerPositionElement);
+  SO_ENABLE(SoAudioRenderAction, SoListenerOrientationElement);
+  SO_ENABLE(SoAudioRenderAction, SoListenerVelocityElement);
+  SO_ENABLE(SoAudioRenderAction, SoListenerGainElement);
 }
 
 /*!
@@ -537,6 +547,43 @@ SoCamera::GLRender(SoGLRenderAction * action)
   SoProjectionMatrixElement::set(state, this, proj);
   SoViewingMatrixElement::set(state, this, affine);
   SoFocalDistanceElement::set(state, this, this->focalDistance.getValue());
+}
+
+/*!
+
+ */
+void 
+SoCamera::audioRender(SoAudioRenderAction *action)
+{
+  SoState * state = action->getState();
+
+  SbBool setbylistener;
+  setbylistener = SoListenerPositionElement::isSetByListener(state);
+  if ((! setbylistener) &&  (! this->position.isIgnored())) {
+    SbVec3f pos, worldpos;
+    pos = this->position.getValue();
+    SoModelMatrixElement::get(action->getState()).multVecMatrix(pos, worldpos); 
+    SoListenerPositionElement::set(state, this, worldpos, FALSE);
+#if COIN_DEBUG && 0
+  float x, y, z;
+  worldpos.getValue(x, y, z);
+  fprintf(stderr, "camera::ar() : set listenerpos (%0.2f, %0.2f, %0.2f)\n", x, y, z);
+#endif // debug
+  } else {
+#if COIN_DEBUG && 0
+  fprintf(stderr, "camera::ar() : ignoring listenerpos\n");
+#endif // debug
+  }
+  setbylistener = SoListenerOrientationElement::isSetByListener(state);
+  if ((! setbylistener) && (! this->orientation.isIgnored())) {
+    SbVec3f t;
+    SbRotation r;
+    SbVec3f s;
+    SbRotation so;
+    SoModelMatrixElement::get(state).getTransform(t, r, s, so);
+    r *= this->orientation.getValue();
+    SoListenerOrientationElement::set(state, this, r, FALSE);
+  }
 }
 
 // Doc in superclass.
