@@ -197,7 +197,9 @@ SbBool
 SoGLTextureImageElement::hasTransparency(void) const
 {
   if (this->image) {
-    return this->image->hasTransparency();
+    // only return TRUE if the image has transparency, and if it can't
+    // be rendered using glAlphaTest()
+    return this->image->hasTransparency() && !this->image->useAlphaTest();
   }
   return FALSE;
 }
