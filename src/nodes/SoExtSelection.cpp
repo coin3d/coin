@@ -34,8 +34,16 @@
   v2.1 API. It is based on the API of TGS Inventor's SoExtSelection,
   and we aim to be fully compatible with this node to enable users to
   switch between using Coin and TGS Inventor.  Please contact us if
-  you find discrepancies between Coin SoExtSelection and TGS
-  SoExtSelection.
+  you find discrepancies between Coin's SoExtSelection and TGS's
+  SoExtSelection node.
+
+  The application programmer interface of this class is somewhat
+  complex, due to it's non-trivial functionality. To see an \e
+  extensive usage example of the SoExtSelection node, we advise you to
+  go look at the "extselection" example application in the "nodes/"
+  directory of Systems in Motion's SoGuiExamples CVS module. Further
+  information and links for downloading and building this module
+  should be available at <a href="http://www.coin3d.org">www.coin3d.org</a>.
 
   \since TGS Inventor 2.5
   \since Coin 1.0
