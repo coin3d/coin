@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -27,6 +27,7 @@
 #endif
 
 #include "GLWrapper.h"
+#include <Inventor/SbDict.h>
 
 #include <assert.h>
 #include <stdlib.h>
@@ -82,13 +83,13 @@
 #error Unknown quoting.
 #endif
 
-/* 
+/*
    Define GLWRAPPER_REGISTER_FUNC macro. Casting the type is
-   necessary for this file to be compatible with C++ compilers. 
+   necessary for this file to be compatible with C++ compilers.
 */
 #define GLWRAPPER_REGISTER_FUNC(_wrapname_, _funcname_, _funcsig_) \
   gi->_wrapname_ = (_funcsig_)GETPROCADDRESS(gi, _funcname_)
-    
+
 void *
 GLWrapper_getProcAddress(GLWrapper_t *gi, const char *fname)
 {
@@ -283,7 +284,7 @@ GLWrapper_glxVersionMatchesAtLeast(const GLWrapper_t * w,
 #endif
 }
 
-int 
+int
 GLWrapper_glEXTSupported(GLWrapper_t * wrapper, const char * extension)
 {
   assert(extension);
@@ -291,12 +292,12 @@ GLWrapper_glEXTSupported(GLWrapper_t * wrapper, const char * extension)
   static const GLubyte *extensions = NULL;
   const GLubyte *start;
   GLubyte *where, *terminator;
-  
+
   /* Extension names should not have spaces. */
   where = (GLubyte *) strchr(extension, ' ');
   if (where || *extension == '\0')
     return 0;
-  
+
   if (!extensions)
     extensions = glGetString(GL_EXTENSIONS);
   start = extensions;
@@ -315,7 +316,7 @@ GLWrapper_glEXTSupported(GLWrapper_t * wrapper, const char * extension)
   return 0;
 }
 
-int 
+int
 GLWrapper_glxEXTSupported(GLWrapper_t * wrapper, const char * extension)
 {
 #ifdef HAVE_GLX
@@ -324,12 +325,12 @@ GLWrapper_glxEXTSupported(GLWrapper_t * wrapper, const char * extension)
   static const char *extensions = NULL;
   const char *start;
   char *where, *terminator;
-  
+
   /* Extension names should not have spaces. */
   where = (char *) strchr(extension, ' ');
   if (where || *extension == '\0')
     return 0;
-  
+
   if (!extensions) {
 #ifdef COIN_INTERNAL
     extensions = NULL;
@@ -387,13 +388,13 @@ GLWrapper(int contextid)
 #else
     ptr = gi;
 #endif
-    
+
     gi->libhandle = NULL;
     GLWrapper_set_glVersion(gi);
 #ifdef HAVE_GLX
     GLWrapper_set_glxVersion(gi);
 #endif
-    
+
 #ifdef HAVE_GLX
 #ifdef HAVE_DL_LIB
     void *handle = dlopen(NULL, RTLD_LAZY);
@@ -408,7 +409,7 @@ GLWrapper(int contextid)
 #ifdef COIN_INTERNAL
 #if COIN_DEBUG
     SoDebugError::post("GLWrapper",
-                       "Using %s for dynamic binding.\n", 
+                       "Using %s for dynamic binding.\n",
                        GLWrapper_getProcAddressMethod(gi));
 #endif // COIN_DEBUG
 #else
@@ -433,9 +434,9 @@ GLWrapper(int contextid)
     gi->glDeleteTextures = NULL;
     gi->glGenTextures = NULL;
     gi->glTexSubImage2D = NULL;
-    
+
     gi->COIN_GL_CLAMP_TO_EDGE = 0;
-    
+
 #ifdef HAVE_GLX
     gi->glXGetCurrentDisplay = NULL;
 #endif
@@ -490,28 +491,28 @@ GLWrapper(int contextid)
     // Resolve our functions
 #ifdef COIN_OPENGL_DYNAMIC_BINDING
     if (GLWrapper_glVersionMatchesAtLeast(gi,1,2,0)) {
-      GLWRAPPER_REGISTER_FUNC(glTexImage3D, glTexImage3D, 
+      GLWRAPPER_REGISTER_FUNC(glTexImage3D, glTexImage3D,
                               COIN_PFNGLTEXIMAGE3DPROC);
-      GLWRAPPER_REGISTER_FUNC(glCopyTexSubImage3D, glCopyTexSubImage3D, 
+      GLWRAPPER_REGISTER_FUNC(glCopyTexSubImage3D, glCopyTexSubImage3D,
                               COIN_PFNGLCOPYTEXSUBIMAGE3DPROC);
       GLWRAPPER_REGISTER_FUNC(glTexSubImage3D, glTexSubImage3D,
                               COIN_PFNGLTEXSUBIMAGE3DPROC);
     }
     else if (GLWrapper_glVersionMatchesAtLeast(gi,1,1,0) &&
              GLWrapper_glEXTSupported(gi,"GL_EXT_texture3D")) {
-      GLWRAPPER_REGISTER_FUNC(glTexImage3D, glTexImage3DEXT, 
+      GLWRAPPER_REGISTER_FUNC(glTexImage3D, glTexImage3DEXT,
                               COIN_PFNGLTEXIMAGE3DPROC);
-      if (GLWrapper_glEXTSupported(gi, "GL_EXT_copy_texture")) 
-        GLWRAPPER_REGISTER_FUNC(glCopyTexSubImage3D, glCopyTexSubImage3DEXT, 
+      if (GLWrapper_glEXTSupported(gi, "GL_EXT_copy_texture"))
+        GLWRAPPER_REGISTER_FUNC(glCopyTexSubImage3D, glCopyTexSubImage3DEXT,
                                 COIN_PFNGLCOPYTEXSUBIMAGE3DPROC);
       if (GLWrapper_glEXTSupported(gi, "GL_EXT_subtexture"))
         GLWRAPPER_REGISTER_FUNC(glTexSubImage3D, glTexSubImage3DEXT,
                                 COIN_PFNGLTEXSUBIMAGE3DPROC);
     }
-    
+
     /* Some SGI OpenGL implementations report OpenGL 1.1 without supporting
        glPolygonOffset 100%. The do support glPolygonOffsetEXT though, so we
-       hide the checking here. 
+       hide the checking here.
        FIXME: We may want to check this during configure instead. */
     /* FIXME: Reintroduce the env variable check? */
     if (0) {
@@ -570,17 +571,17 @@ GLWrapper(int contextid)
              GLWrapper_glEXTSupported(gi,"GL_EXT_texture3D")) {
       gi->glTexImage3D = (COIN_PFNGLTEXIMAGE3DPROC)&glTexImage3DEXT;
       //FIXME: #ifdef these extensions as well or is that implicitly given? (kintel 20011123)
-      if (GLWrapper_glEXTSupported(gi, "GL_EXT_copy_texture")) 
+      if (GLWrapper_glEXTSupported(gi, "GL_EXT_copy_texture"))
         gi->glCopyTexSubImage3D = (COIN_PFNGLCOPYTEXSUBIMAGE3DPROC)&glCopyTexSubImage3DEXT;
       if (GLWrapper_glEXTSupported(gi, "GL_EXT_subtexture"))
         gi->glTexSubImage3D = (COIN_PFNGLTEXSUBIMAGE3DPROC)&glTexSubImage3DEXT;
     }
 #endif
 #endif
-    
+
     /* Some SGI OpenGL implementations report OpenGL 1.1 without supporting
        glPolygonOffset 100%. They do support glPolygonOffsetEXT though, so we
-       hide the checking here. 
+       hide the checking here.
        FIXME: We may want to check this during configure instead. */
     /* FIXME: Reintroduce the env variable check? */
     if (0) {
@@ -627,7 +628,7 @@ GLWrapper(int contextid)
   }
   else {
     gi = (GLWrapper_t *)ptr;
-  }  
+  }
 
   return gi;
 }

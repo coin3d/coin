@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -24,6 +24,30 @@
  *
 \**************************************************************************/
 
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
+
+#ifdef COIN_INTERNAL
+#include <Inventor/system/gl.h>
+#else /* COIN_INTERNAL */
+/*
+ * FIXME: Temporary code to test GLWrapper outside Coin.
+ * pederb, 2001-12-05
+ */
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
+#else /* __APPLE__ */
+#ifdef _WIN32
+#include <windows.h>
+#endif /* _WIN32 */
+#include <GL/gl.h>
+#endif /* !__APPLE__ */ 
+#endif /* ! COIN_INTERNAL */
+
+#ifdef HAVE_GLX
+#include <GL/glx.h>
+#endif /* HAVE_GLX */
 
 /* Under Win32, we need to make sure we use the correct calling method
    by using the APIENTRY define for the function signature types (or
@@ -32,25 +56,6 @@
 #ifndef APIENTRY
 #define APIENTRY
 #endif /* !APIENTRY */
-
-#if HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
-#ifdef COIN_INTERNAL
-#include <Inventor/system/gl.h>
-#include <Inventor/SbDict.h>
-#else
-#ifdef __APPLE__
-#include <OpenGL/gl.h>
-#else
-#include <GL/gl.h>
-#endif
-#endif
-
-#ifdef HAVE_GLX
-#include <GL/glx.h>
-#endif /* HAVE_GLX */
 
 #define GLWRAPPER_FROM_STATE(state) \
   GLWrapper(((SoGLRenderAction *)state->getAction())->getCacheContext())
@@ -112,12 +117,12 @@ typedef struct {
      contain a valid function pointer into the OpenGL library. */
   COIN_PFNGLTEXIMAGE3DPROC glTexImage3D;
   COIN_PFNGLCOPYTEXSUBIMAGE3DPROC glCopyTexSubImage3D;
-  COIN_PFNGLTEXSUBIMAGE3DPROC glTexSubImage3D; 
+  COIN_PFNGLTEXSUBIMAGE3DPROC glTexSubImage3D;
   COIN_PFNGLPOLYGONOFFSETPROC glPolygonOffset;
   COIN_PFNGLBINDTEXTUREPROC glBindTexture;
   COIN_PFNGLDELETETEXTURESPROC glDeleteTextures;
   COIN_PFNGLGENTEXTURESPROC glGenTextures;
-  COIN_PFNGLTEXSUBIMAGE2DPROC glTexSubImage2D; 
+  COIN_PFNGLTEXSUBIMAGE2DPROC glTexSubImage2D;
 
 #ifdef HAVE_GLX
   COIN_PFNGLXGETPROCADDRESSARB glXGetProcAddressARB;
