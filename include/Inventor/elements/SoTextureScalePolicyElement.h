@@ -28,7 +28,7 @@
 
 class COIN_DLL_API SoTextureScalePolicyElement : public SoInt32Element {
   typedef SoInt32Element inherited;
-  
+
   SO_ELEMENT_HEADER(SoTextureScalePolicyElement);
 
 public:
@@ -37,15 +37,15 @@ protected:
   virtual ~SoTextureScalePolicyElement();
 
 public:
-  enum Policy {    
+  enum Policy {
     USE_TEXTURE_QUALITY,
     SCALE_DOWN,
     SCALE_UP,
-    DONT_SCALE
+    FRACTURE
   };
 
   virtual void init(SoState * state);
-  
+
   static  void set(SoState * const state, SoNode * const node,
                    const Policy policy);
   static  void set(SoState * const state, const Policy policy);

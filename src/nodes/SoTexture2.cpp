@@ -380,7 +380,7 @@ SoTexture2::GLRender(SoGLRenderAction * action)
       this->image.getValue(size, nc);
     SbBool needbig =
       SoTextureScalePolicyElement::get(state) ==
-      SoTextureScalePolicyElement::DONT_SCALE;
+      SoTextureScalePolicyElement::FRACTURE;
 
     if (needbig &&
         (THIS->glimage == NULL ||

@@ -321,7 +321,7 @@ SoVRMLImageTexture::GLRender(SoGLRenderAction * action)
   if (!PRIVATE(this)->glimagevalid) {
     SbBool needbig =
       SoTextureScalePolicyElement::get(state) ==
-      SoTextureScalePolicyElement::DONT_SCALE;
+      SoTextureScalePolicyElement::FRACTURE;
 
     if (needbig &&
         (PRIVATE(this)->glimage == NULL ||

@@ -26,6 +26,7 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/elements/SoTextureScalePolicyElement.h>
 
 class COIN_DLL_API SoTextureScalePolicy : public SoNode {
@@ -41,10 +42,11 @@ public:
     USE_TEXTURE_QUALITY = SoTextureScalePolicyElement::USE_TEXTURE_QUALITY,
     SCALE_DOWN = SoTextureScalePolicyElement::SCALE_DOWN,
     SCALE_UP = SoTextureScalePolicyElement::SCALE_UP,
-    DONT_SCALE = SoTextureScalePolicyElement::DONT_SCALE
+    FRACTURE = SoTextureScalePolicyElement::FRACTURE
   };
 
   SoSFEnum policy;
+  SoSFFloat quality;
 
   virtual void GLRender(SoGLRenderAction * action);
 
