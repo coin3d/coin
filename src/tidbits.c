@@ -234,7 +234,7 @@ int
 coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
 {
   int len = vfprintf(nullfileptr(), fmtstr, args);
-  if ((len + 1) > n) return -1;
+  if ( ((unsigned int) len + 1) > n) return -1;
   (void)vsprintf(dst, fmtstr, args);
   return len;
 }
