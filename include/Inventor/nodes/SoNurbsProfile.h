@@ -43,6 +43,7 @@ public:
                            SbVec2f *& vertices);
 
 protected:
+  void * nurbsrenderer;
   virtual ~SoNurbsProfile();
 };
 

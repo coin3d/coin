@@ -29,10 +29,21 @@
 #include <Inventor/nodes/SoNurbsProfile.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/elements/SoProfileCoordinateElement.h>
+#include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbViewVolume.h>
 #include <stdlib.h>
-#include <coindefs.h> // COIN_STUB()
 
+#ifdef _WIN32
+#include <windows.h>
+#endif // !_WIN32
+#include <GL/gl.h>
+#include <GL/glu.h>
+
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 /*!
   \var SoMFFloat SoNurbsProfile::knotVector
@@ -40,10 +51,12 @@
 */
 
 static SbList <float> * coordListNurbsProfile = NULL;
+static SbList <float> * nurbsProfileTempList = NULL;
 
 static void cleanupNurbsProfile(void)
 {
   delete coordListNurbsProfile;
+  delete nurbsProfileTempList;
 }
 
 // *************************************************************************
@@ -58,6 +71,7 @@ SoNurbsProfile::SoNurbsProfile(void)
   SO_NODE_INTERNAL_CONSTRUCTOR(SoNurbsProfile);
 
   SO_NODE_ADD_FIELD(knotVector, (0.0f));
+  this->nurbsrenderer = NULL;
 }
 
 /*!
@@ -65,6 +79,11 @@ SoNurbsProfile::SoNurbsProfile(void)
 */
 SoNurbsProfile::~SoNurbsProfile()
 {
+  if (this->nurbsrenderer) {
+#ifdef HAVE_GLU_NURBSOBJECT
+    gluDeleteNurbsRenderer((HAVE_GLU_NURBSOBJECT *)this->nurbsrenderer);
+#endif // HAVE_GLU_NURBSOBJECT
+  }
 }
 
 // Doc from superclass.
@@ -112,12 +131,108 @@ SoNurbsProfile::getTrimCurve(SoState * state, int32_t & numpoints,
   numpoints = n;
 }
 
+
+#if defined(HAVE_GLU_NURBSOBJECT) && GLU_VERSION_1_3
+static void
+nurbsprofile_tess_vertex(float * vertex)
+{
+  coordListNurbsProfile->append(vertex[0]);
+  coordListNurbsProfile->append(vertex[1]);
+}
+#endif // HAVE_GLU_NURBSOBJECT && GLU_VERSION_1_3
+
 // doc from superclass.
 void
 SoNurbsProfile::getVertices(SoState * state, int32_t & numvertices,
-                            SbVec2f *& vertices)
+                            SbVec2f * & vertices)
 {
-  COIN_STUB();
+  // FIXME: optimize by detecting when the previously calculated
+  // vertices can be returned. pederb, 20000922
+#if defined(HAVE_GLU_NURBSOBJECT) && GLU_VERSION_1_3
+  int numpoints;
+  float * points;
+  int floatspervec;
+  int32_t numknots;
+  float * knotvector;
+  this->getTrimCurve(state, numpoints, points, floatspervec, numknots, knotvector);
+  if (numpoints == 0 || numknots == 0) {
+    numvertices = 0;
+    vertices = NULL;
+    return;
+  }
+
+  if (coordListNurbsProfile == NULL) {
+    coordListNurbsProfile = new SbList <float>;
+    atexit(cleanupNurbsProfile);
+  }
+  if (nurbsProfileTempList == NULL) {
+    nurbsProfileTempList = new SbList <float>;
+  }
+
+  nurbsProfileTempList->truncate(0);
+  for (int i = 0; i < numpoints; i++) {
+    nurbsProfileTempList->append(points[i*floatspervec]);
+    nurbsProfileTempList->append(points[i*floatspervec+1]);
+    nurbsProfileTempList->append(0.0f); // gluNurbs needs 3D coordinates
+  }
+  
+  // we will write into this array in the GLU callback
+  coordListNurbsProfile->truncate(0);
+
+  HAVE_GLU_NURBSOBJECT * nurbsobj = (HAVE_GLU_NURBSOBJECT *) this->nurbsrenderer;
+  if (nurbsobj == NULL) {
+    nurbsobj = gluNewNurbsRenderer();
+    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_VERTEX, 
+                     (void (*)())nurbsprofile_tess_vertex);
+    gluNurbsProperty(nurbsobj, (GLenum) GLU_NURBS_MODE, GLU_NURBS_TESSELLATOR);
+    gluNurbsProperty(nurbsobj, (GLenum) GLU_AUTO_LOAD_MATRIX, FALSE);
+    gluNurbsProperty(nurbsobj, (GLenum) GLU_DISPLAY_MODE, GLU_POINT);
+    gluNurbsProperty(nurbsobj, (GLenum) GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
+    this->nurbsrenderer = (void*) nurbsobj;
+  }
+
+  // this looks pretty good
+  float cmplx = SoComplexityElement::get(state);
+  cmplx += 1.0f;
+  cmplx = cmplx * cmplx * cmplx;
+  gluNurbsProperty(nurbsobj, (GLenum) GLU_U_STEP, float(numpoints)*cmplx);
+  
+  // these values are not important as we're not using screen-space 
+  // complexity (yet)
+  SbMatrix modelmatrix = SbMatrix::identity();
+  SbMatrix affine, proj;
+  SbViewVolume vv;
+  vv.ortho(0.0f, 1.0f,
+           0.0f, 1.0f,
+           -1.0f, 1.0f);
+  vv.getMatrices(affine, proj);
+  GLint viewport[4];
+  viewport[0] = 0;
+  viewport[1] = 0;
+  viewport[2] = 256;
+  viewport[3] = 256;
+  gluLoadSamplingMatrices(nurbsobj,
+                          modelmatrix[0],
+                          proj[0],
+                          viewport);
+
+  // generate curve
+  gluBeginCurve(nurbsobj);
+  gluNurbsCurve(nurbsobj,
+                numknots,
+                (float*)knotvector,
+                3,
+                (float*)nurbsProfileTempList->getArrayPtr(),
+                numknots - numpoints,
+                GL_MAP1_VERTEX_3);
+  gluEndCurve(nurbsobj);
+  
+  // when we get here, the GLU callback should have added the 
+  // points to the list
+  numvertices = coordListNurbsProfile->getLength() / 2;
+  vertices = (SbVec2f*) coordListNurbsProfile->getArrayPtr();
+#else // HAVE_GLU_NURBSOBJECT && GLU_VERSION_1_3
   numvertices = 0;
   vertices = NULL;
+#endif // ! HAVE_GLU_NURBSOBJECT && GLU_VERSION_1_3
 }
