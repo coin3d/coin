@@ -4277,3 +4277,57 @@ Text2 { string "test" }
     other styles works (or not works).
 
 =====================================================================
+
+158 Error in SoExtSelection when trying to select a point.
+
+    Using the VISIBLE_SHAPE selection mode in the
+    SoGuiExamples/nodes/extselection example (hit 'v'), then trying to
+    select the point from the following iv-file, will fail with a lot
+    of warnings:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+#Inventor V2.1 ascii
+
+Coordinate3 { point [ 0 0 0 ] }
+PointSet { }
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    The warnings and error is probably due to the bounding box of the
+    scene is a simple point. This is not robust enough, and needs to
+    be fixed.
+
+    When correcting this error, make sure to also make SoExtSelection
+    work properly when the bbox of the scene is empty.
+
+    20041102 mortene.
+
+=====================================================================
+
+159 Error in SoExtSelection when selecting points.
+
+    Using this iv-file with the SoGuiExamples/nodes/extselection
+    example, selecting the points, will cause errors in the rendering
+    of the highlighted points:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+#Inventor V2.1 ascii
+
+Coordinate3 { point [ 0 0 0, 1 1 1 ] }
+PointSet { }
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    Switching to VISIBLE_SHAPE selection (hit 'v'), then selecting the
+    points, I get this GL error on my Linux NVIDIA driver v61.11:
+
+        Coin warning in SoNode::GLRenderS(): GL error:
+        GL_INVALID_VALUE, nodetype: Callback (set envvar
+        COIN_GLERROR_DEBUGGING=1 and re-run to get more information)
+
+    The highlights doesn't look correct (more like lines than points).
+
+    The error is possibly in the extselection example, and not in the
+    SoExtSelection code itself, as I didn't track this down.
+
+    20041102 mortene.
+
+=====================================================================
