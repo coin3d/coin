@@ -250,6 +250,14 @@ SoDB::init(void)
   }
 #endif
 
+  // Sanity check: if the unsigned long type is less than the pointer
+  // size (which could in theory happen on 64-bits machines), SbDict
+  // usage will fail all over the place where we cast pointers to
+  // SbDict keys. FIXME: remove this check when we are no longer
+  // dependent on using native C types where we need to have a
+  // particular bitwidth. 20020225 mortene.
+  assert(sizeof(unsigned long) >= sizeof(void *));
+
   // Sanity check: if this breaks, the binary format import and export
   // routines will not work correctly. FIXME: the code should be fixed
   // to use the int16_t type, then we can remove this stoopid check.
