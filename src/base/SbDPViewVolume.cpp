@@ -117,13 +117,13 @@
 // and double precision classes.
 //
 static SbVec3f 
-to_sbvec3f(const SbVec3d & v)
+dp_to_sbvec3f(const SbVec3d & v)
 {
   return SbVec3f((float)v[0], (float)v[1], (float)v[2]);
 }
 
 static SbVec3d 
-to_sbvec3d(const SbVec3f & v)
+dp_to_sbvec3d(const SbVec3f & v)
 {
   return SbVec3d((double)v[0], (double)v[1], (double)v[2]);
 }
@@ -427,8 +427,8 @@ SbDPViewVolume::projectToScreen(const SbVec3d& src, SbVec3d& dst) const
 SbPlane
 SbDPViewVolume::getPlane(const double distFromEye) const
 {
-  return SbPlane(to_sbvec3f(-this->projDir),
-                 to_sbvec3f(this->projPoint + distFromEye * this->projDir));
+  return SbPlane(dp_to_sbvec3f(-this->projDir),
+                 dp_to_sbvec3f(this->projPoint + distFromEye * this->projDir));
 }
 
 /*!
@@ -541,12 +541,12 @@ SbDPViewVolume::getWorldToScreenScale(const SbVec3d& worldCenter,
     // which is then used to define the sphere tangent line.
     SbVec3d ppp = this->projPoint + 
       this->llf + center_scr[0] * rightvec + center_scr[1] * upvec;
-    SbLine tl(to_sbvec3f(this->getProjectionPoint()), to_sbvec3f(ppp));
+    SbLine tl(dp_to_sbvec3f(this->getProjectionPoint()), dp_to_sbvec3f(ppp));
 
     // Define the plane which is cutting the sphere in half and is normal
     // to the camera direction.
     SbVec3d sphere_camera_vec = worldCenter - this->getProjectionPoint();
-    SbPlane p = SbPlane(to_sbvec3f(sphere_camera_vec), to_sbvec3f(worldCenter));
+    SbPlane p = SbPlane(dp_to_sbvec3f(sphere_camera_vec), dp_to_sbvec3f(worldCenter));
 
     // Find tangent point of sphere.
     SbVec3f tangentpt;
@@ -555,7 +555,7 @@ SbDPViewVolume::getWorldToScreenScale(const SbVec3d& worldCenter,
 
     // Return radius (which is equal to the scale factor, since we're
     // dealing with a unit sphere).
-    return (to_sbvec3d(tangentpt) - worldCenter).length();
+    return (dp_to_sbvec3d(tangentpt) - worldCenter).length();
   }
 }
 
@@ -573,8 +573,8 @@ SbDPViewVolume::projectBox(const SbBox3f& box) const
   }
 #endif // COIN_DEBUG
 
-  SbVec3d mincorner = to_sbvec3d(box.getMin());
-  SbVec3d maxcorner = to_sbvec3d(box.getMax());
+  SbVec3d mincorner = dp_to_sbvec3d(box.getMin());
+  SbVec3d maxcorner = dp_to_sbvec3d(box.getMax());
   SbBox2f span;
 
   for(int i=0; i < 2; i++) {
@@ -689,8 +689,8 @@ SbDPViewVolume::narrow(double left, double bottom,
 SbDPViewVolume
 SbDPViewVolume::narrow(const SbBox3f & box) const
 {
-  SbVec3d bmin = to_sbvec3d(box.getMin());
-  SbVec3d bmax = to_sbvec3d(box.getMax());
+  SbVec3d bmin = dp_to_sbvec3d(box.getMin());
+  SbVec3d bmax = dp_to_sbvec3d(box.getMax());
   return this->narrow(bmin[0], bmin[1], bmax[0], bmax[1]).zNarrow(bmax[2], bmin[2]);
 }
 
@@ -1120,14 +1120,14 @@ SbDPViewVolume::getViewVolumePlanes(SbPlane planes[6]) const
   this->getPlaneRectangle(this->nearToFar, far_ll, far_lr, far_ul, far_ur);
   SbVec3d near_ur = this->ulf + (this->lrf-this->llf);
 
-  SbVec3f f_ulf = to_sbvec3f(this->ulf + this->projPoint);
-  SbVec3f f_llf = to_sbvec3f(this->llf + this->projPoint);
-  SbVec3f f_lrf = to_sbvec3f(this->lrf + this->projPoint);
-  SbVec3f f_near_ur = to_sbvec3f(near_ur + this->projPoint);
-  SbVec3f f_far_ll = to_sbvec3f(far_ll + this->projPoint);
-  SbVec3f f_far_lr = to_sbvec3f(far_lr + this->projPoint);
-  SbVec3f f_far_ul = to_sbvec3f(far_ul + this->projPoint);
-  SbVec3f f_far_ur = to_sbvec3f(far_ur + this->projPoint);
+  SbVec3f f_ulf = dp_to_sbvec3f(this->ulf + this->projPoint);
+  SbVec3f f_llf = dp_to_sbvec3f(this->llf + this->projPoint);
+  SbVec3f f_lrf = dp_to_sbvec3f(this->lrf + this->projPoint);
+  SbVec3f f_near_ur = dp_to_sbvec3f(near_ur + this->projPoint);
+  SbVec3f f_far_ll = dp_to_sbvec3f(far_ll + this->projPoint);
+  SbVec3f f_far_lr = dp_to_sbvec3f(far_lr + this->projPoint);
+  SbVec3f f_far_ul = dp_to_sbvec3f(far_ul + this->projPoint);
+  SbVec3f f_far_ur = dp_to_sbvec3f(far_ur + this->projPoint);
   
   planes[0] = SbPlane(f_ulf, f_llf, f_far_ll);  // left
   planes[1] = SbPlane(f_llf, f_lrf, f_far_lr); // bottom
@@ -1238,11 +1238,11 @@ void
 SbDPViewVolume::copyValues(SbViewVolume & vv)
 {
   vv.type = (SbViewVolume::ProjectionType) this->type;
-  vv.projPoint = to_sbvec3f(this->projPoint);
-  vv.projDir = to_sbvec3f(this->projDir);
+  vv.projPoint = dp_to_sbvec3f(this->projPoint);
+  vv.projDir = dp_to_sbvec3f(this->projDir);
   vv.nearDist = (float) this->nearDist;
   vv.nearToFar = (float) this->nearToFar;
-  vv.llf = to_sbvec3f(this->llf + this->projPoint);
-  vv.lrf = to_sbvec3f(this->llf + this->projPoint);
-  vv.ulf = to_sbvec3f(this->llf + this->projPoint);
+  vv.llf = dp_to_sbvec3f(this->llf + this->projPoint);
+  vv.lrf = dp_to_sbvec3f(this->llf + this->projPoint);
+  vv.ulf = dp_to_sbvec3f(this->llf + this->projPoint);
 }

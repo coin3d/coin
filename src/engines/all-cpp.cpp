@@ -56,3 +56,4 @@
 #include "SoTimeCounter.cpp"
 #include "SoTransformVec3f.cpp"
 #include "SoTriggerAny.cpp"
+#include "SoNodeEngine.cpp"
