@@ -31,6 +31,7 @@
 #include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/nodes/SoShaderObject.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 
 #include "SoGLShaderProgram.h"
@@ -67,17 +68,21 @@ SO_NODE_SOURCE(SoShaderProgram);
 
 // *************************************************************************
 
-void SoShaderProgram::initClass()
+void
+SoShaderProgram::initClass(void)
 {
-  SO_NODE_INIT_CLASS(SoShaderProgram, SoGroup, "Group");
+  SO_NODE_INTERNAL_INIT_CLASS(SoShaderProgram,
+                              SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
+
   SO_ENABLE(SoGLRenderAction, SoGLShaderProgramElement);
 }
 
 SoShaderProgram::SoShaderProgram()
 {
-  SO_NODE_CONSTRUCTOR(SoShaderProgram);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderProgram);
 
-  SO_NODE_ADD_FIELD(shaderObject, (NULL)); shaderObject.deleteValues(0,1);
+  SO_NODE_ADD_FIELD(shaderObject, (NULL));
+  this->shaderObject.deleteValues(0, 1);
 
   SELF = new SoShaderProgramP(this);
 }

@@ -23,6 +23,8 @@
 
 #include <Inventor/nodes/SoVertexShader.h>
 
+#include <Inventor/nodes/SoSubNodeP.h>
+
 // *************************************************************************
 
 SO_NODE_SOURCE(SoVertexShader);
@@ -32,12 +34,13 @@ SO_NODE_SOURCE(SoVertexShader);
 void
 SoVertexShader::initClass(void)
 {
-  SO_NODE_INIT_CLASS(SoVertexShader, SoShaderObject, "SoShaderObject");
+  SO_NODE_INTERNAL_INIT_CLASS(SoVertexShader,
+                              SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
 }
 
 SoVertexShader::SoVertexShader(void)
 {
-  SO_NODE_CONSTRUCTOR(SoVertexShader);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoVertexShader);
 }
 
 SoVertexShader::~SoVertexShader()

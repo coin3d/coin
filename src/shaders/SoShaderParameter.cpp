@@ -25,6 +25,8 @@
 
 #include <assert.h>
 
+#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/C/glue/cg.h>
 #include "SoGLShaderObject.h"
 #include "SoGLShaderParameter.h"
@@ -36,14 +38,16 @@
 
 SO_NODE_ABSTRACT_SOURCE(SoShaderParameter);
 
-void SoShaderParameter::initClass()
+void
+SoShaderParameter::initClass(void)
 {
-  SO_NODE_INIT_ABSTRACT_CLASS(SoShaderParameter, SoNode, "Node");
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoShaderParameter,
+                                       SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
 }
 
 SoShaderParameter::SoShaderParameter()
 {
-  SO_NODE_CONSTRUCTOR(SoShaderParameter);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderParameter);
 
   SO_NODE_ADD_FIELD(name, (""));
   SO_NODE_ADD_FIELD(identifier, (0));
@@ -60,15 +64,16 @@ SoShaderParameter::~SoShaderParameter()
 
 SO_NODE_ABSTRACT_SOURCE(SoUniformShaderParameter);
 
-void SoUniformShaderParameter::initClass()
+void
+SoUniformShaderParameter::initClass(void)
 {
-  SO_NODE_INIT_ABSTRACT_CLASS(SoUniformShaderParameter, 
-                              SoShaderParameter, "SoShaderParameter");
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoUniformShaderParameter,
+                                       SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
 }
 
-SoUniformShaderParameter::SoUniformShaderParameter()
+SoUniformShaderParameter::SoUniformShaderParameter(void)
 {
-  SO_NODE_CONSTRUCTOR(SoUniformShaderParameter);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoUniformShaderParameter);
 
   this->parameter = NULL;
 }
@@ -106,13 +111,13 @@ SO_NODE_SOURCE(SoShaderParameter1f);
 
 void SoShaderParameter1f::initClass()
 {
-  SO_NODE_INIT_CLASS(SoShaderParameter1f, SoUniformShaderParameter,
-                     "SoUniformShaderParameter");
+  SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameter1f,
+                              SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
 }
 
 SoShaderParameter1f::SoShaderParameter1f()
 {
-  SO_NODE_CONSTRUCTOR(SoShaderParameter1f);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderParameter1f);
   SO_NODE_ADD_FIELD(value, (0));
 }
 
@@ -139,13 +144,13 @@ SO_NODE_SOURCE(SoShaderParameter2f);
 
 void SoShaderParameter2f::initClass()
 {
-  SO_NODE_INIT_CLASS(SoShaderParameter2f, SoUniformShaderParameter,
-                     "SoUniformShaderParameter");
+  SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameter2f,
+                              SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
 }
 
 SoShaderParameter2f::SoShaderParameter2f()
 {
-  SO_NODE_CONSTRUCTOR(SoShaderParameter2f);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderParameter2f);
   SO_NODE_ADD_FIELD(value, (0,0));
 }
 
@@ -171,13 +176,13 @@ SO_NODE_SOURCE(SoShaderParameter3f);
 
 void SoShaderParameter3f::initClass()
 {
-  SO_NODE_INIT_CLASS(SoShaderParameter3f, SoUniformShaderParameter,
-                     "SoUniformShaderParameter");
+  SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameter3f,
+                              SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
 }
 
 SoShaderParameter3f::SoShaderParameter3f()
 {
-  SO_NODE_CONSTRUCTOR(SoShaderParameter3f);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderParameter3f);
   SO_NODE_ADD_FIELD(value, (0,0,0));
 }
 
@@ -203,13 +208,13 @@ SO_NODE_SOURCE(SoShaderParameter4f);
 
 void SoShaderParameter4f::initClass()
 {
-  SO_NODE_INIT_CLASS(SoShaderParameter4f, SoUniformShaderParameter,
-                     "SoUniformShaderParameter");
+  SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameter4f,
+                              SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
 }
 
 SoShaderParameter4f::SoShaderParameter4f()
 {
-  SO_NODE_CONSTRUCTOR(SoShaderParameter4f);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderParameter4f);
   SO_NODE_ADD_FIELD(value, (0,0,0,0));
 }
 
@@ -234,13 +239,13 @@ SO_NODE_SOURCE(SoShaderStateMatrixParameter);
 
 void SoShaderStateMatrixParameter::initClass()
 {
-  SO_NODE_INIT_CLASS(SoShaderStateMatrixParameter, SoUniformShaderParameter,
-                     "SoUniformShaderParameter");
+  SO_NODE_INTERNAL_INIT_CLASS(SoShaderStateMatrixParameter,
+                              SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
 }
 
 SoShaderStateMatrixParameter::SoShaderStateMatrixParameter()
 {
-  SO_NODE_CONSTRUCTOR(SoShaderStateMatrixParameter);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderStateMatrixParameter);
 
   SO_NODE_DEFINE_ENUM_VALUE(MatrixType, MODELVIEW);
   SO_NODE_DEFINE_ENUM_VALUE(MatrixType, PROJECTION);
@@ -303,15 +308,16 @@ SoShaderStateMatrixParameter::updateParameter(SoGLShaderObject *shader)
 
 SO_NODE_SOURCE(SoShaderParameterSampler2D);
 
-void SoShaderParameterSampler2D::initClass()
+void
+SoShaderParameterSampler2D::initClass(void)
 {
-  SO_NODE_INIT_CLASS(SoShaderParameterSampler2D, SoUniformShaderParameter,
-                     "SoUniformShaderParameter");
+  SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterSampler2D,
+                              SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
 }
 
 SoShaderParameterSampler2D::SoShaderParameterSampler2D()
 {
-  SO_NODE_CONSTRUCTOR(SoShaderParameterSampler2D);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderParameterSampler2D);
 
   SO_NODE_ADD_FIELD(filename, (""));
   //SO_NODE_ADD_FIELD(image, ());
@@ -321,7 +327,8 @@ SoShaderParameterSampler2D::~SoShaderParameterSampler2D()
 { 
 }
 
-void SoShaderParameterSampler2D::updateParameter(SoGLShaderObject *shader)
+void
+SoShaderParameterSampler2D::updateParameter(SoGLShaderObject *shader)
 {
   if (!ensureParameter(shader, SoGLShader::TEXTURE2D)) return;
   //this->parameter->set4f(this->value.getValue().getValue());

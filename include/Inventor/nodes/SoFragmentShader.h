@@ -29,7 +29,7 @@
 // *************************************************************************
 
 class COIN_DLL_API SoFragmentShader : public SoShaderObject {
-
+  typedef SoShaderObject inherited;
   SO_NODE_HEADER(SoFragmentShader);
 
 public:

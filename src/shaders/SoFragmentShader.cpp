@@ -23,6 +23,8 @@
 
 #include <Inventor/nodes/SoFragmentShader.h>
 
+#include <Inventor/nodes/SoSubNodeP.h>
+
 // *************************************************************************
 
 SO_NODE_SOURCE(SoFragmentShader);
@@ -32,17 +34,20 @@ SO_NODE_SOURCE(SoFragmentShader);
 void
 SoFragmentShader::initClass(void)
 {
-  SO_NODE_INIT_CLASS(SoFragmentShader, SoShaderObject, "SoShaderObject");
+  SO_NODE_INTERNAL_INIT_CLASS(SoFragmentShader,
+                              SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
 }
 
 SoFragmentShader::SoFragmentShader(void)
 {
-  SO_NODE_CONSTRUCTOR(SoFragmentShader);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoFragmentShader);
 }
 
 SoFragmentShader::~SoFragmentShader()
 {  
 }
+
+// *************************************************************************
 
 SbBool
 SoFragmentShader::isVertexShader(void) const

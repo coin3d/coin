@@ -33,6 +33,7 @@
 #include <Inventor/nodes/SoShaderParameter.h>
 #include <Inventor/nodes/SoVertexShader.h>
 #include <Inventor/sensors/SoNodeSensor.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include "SoGLARBShaderObject.h"
 #include "SoGLCgShaderObject.h"
@@ -86,12 +87,13 @@ SO_NODE_ABSTRACT_SOURCE(SoShaderObject);
 
 void SoShaderObject::initClass()
 {
-  SO_NODE_INIT_ABSTRACT_CLASS(SoShaderObject, SoGroup, "Group");
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoShaderObject,
+                                       SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
 }
 
-SoShaderObject::SoShaderObject()
+SoShaderObject::SoShaderObject(void)
 {
-  SO_NODE_CONSTRUCTOR(SoShaderObject);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderObject);
 
   SO_NODE_ADD_FIELD(isActive, (TRUE));
 

@@ -62,16 +62,14 @@ class SoGLShaderObject;
 
 // *************************************************************************
 
-// FIXME: split to one header file for each class. 20050120 mortene.
+// FIXME: split to one header file for each class? 20050120 mortene.
 
 /* **************************************************************************
  * *** SoShaderParameter ***
  * **************************************************************************/
 
-class SoUniformShaderParameter;
-
 class COIN_DLL_API SoShaderParameter : public SoNode {
-
+  typedef SoNode inherited;
   SO_NODE_ABSTRACT_HEADER(SoShaderParameter);
 
 public:
@@ -91,15 +89,16 @@ protected:
  * **************************************************************************/
 
 class COIN_DLL_API SoUniformShaderParameter : public SoShaderParameter {
-
+  typedef SoShaderParameter inherited;
   SO_NODE_ABSTRACT_HEADER(SoUniformShaderParameter);
 
   SoINTERNAL public:
-  static void initClass();
+  static void initClass(void);
   virtual void updateParameter(SoGLShaderObject *shaderObject) = 0;
   SbBool isRegularBehavior() const { return isRegularBehaviorFlag; }
 
-  virtual void reset(); // FIXME: Coin extension vs TGS Inventor? Investigate. 20050120 mortene. 
+  // FIXME: Coin extension vs TGS Inventor? Investigate. 20050120 mortene. 
+  virtual void reset(void);
 
 protected:
   SoUniformShaderParameter();
@@ -117,7 +116,7 @@ protected:
  * **************************************************************************/
 
 class COIN_DLL_API SoShaderParameter1f : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameter1f);
 
 public:
@@ -137,7 +136,7 @@ protected:
  * **************************************************************************/
 
 class COIN_DLL_API SoShaderParameter1i : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameter1i);
 
 public:
@@ -157,7 +156,7 @@ protected:
  * **************************************************************************/
 
 class COIN_DLL_API SoShaderParameter2f : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameter2f);
 
 public:
@@ -178,7 +177,7 @@ protected:
 
 #if VEC_I32_SUPPORT
 class COIN_DLL_API SoShaderParameter2i : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameter2i);
 
 public:
@@ -199,7 +198,7 @@ protected:
  * **************************************************************************/
 
 class COIN_DLL_API SoShaderParameter3f : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameter3f);
 
 public:
@@ -221,7 +220,7 @@ protected:
 
 #if VEC_I32_SUPPORT
 class COIN_DLL_API SoShaderParameter3i : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameter3i);
 
 public:
@@ -243,7 +242,7 @@ protected:
  * **************************************************************************/
 
 class COIN_DLL_API SoShaderParameter4f : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameter4f);
 
 public:
@@ -265,7 +264,7 @@ protected:
 
 #if VEC_I32_SUPPORT
 class COIN_DLL_API SoShaderParameter4i : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameter4i);
 
 public:
@@ -287,7 +286,7 @@ protected:
  * **************************************************************************/
 
 class COIN_DLL_API SoShaderParameterArray1f : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameterArray1f);
 
 public:
@@ -308,7 +307,7 @@ protected:
  * **************************************************************************/
 
 class COIN_DLL_API SoShaderParameterArray1i : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameterArray1i);
 
 public:
@@ -329,7 +328,7 @@ protected:
  * **************************************************************************/
 
 class COIN_DLL_API SoShaderParameterArray2f : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameterArray2f);
 
 public:
@@ -351,7 +350,7 @@ protected:
 
 #if VEC_I32_SUPPORT
 class COIN_DLL_API SoShaderParameterArray2i : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameterArray2i);
 
 public:
@@ -373,7 +372,7 @@ protected:
  * **************************************************************************/
 
 class COIN_DLL_API SoShaderParameterArray3f : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameterArray3f);
 
 public:
@@ -395,7 +394,7 @@ protected:
 
 #if VEC_I32_SUPPORT
 class COIN_DLL_API SoShaderParameterArray3i : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameterArray3i);
 
 public:
@@ -417,7 +416,7 @@ protected:
  * **************************************************************************/
 
 class COIN_DLL_API SoShaderParameterArray4f : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameterArray4f);
 
 public:
@@ -440,7 +439,7 @@ protected:
 
 #if VEC_I32_SUPPORT
 class COIN_DLL_API SoShaderParameterArray4i : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameterArray4i);
 
 public:
@@ -462,7 +461,7 @@ protected:
  * **************************************************************************/
 
 class COIN_DLL_API SoShaderParameterMatrix : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameterMatrix);
 
 public:
@@ -483,7 +482,7 @@ protected:
  * **************************************************************************/
 
 class COIN_DLL_API SoShaderParameterMatrixArray : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameterMatrixArray);
 
 public:
@@ -504,7 +503,7 @@ protected:
  * **************************************************************************/
 
 class COIN_DLL_API SoShaderStateMatrixParameter : public SoUniformShaderParameter {
-
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderStateMatrixParameter);
 
 public:
@@ -537,8 +536,8 @@ public:
  * *** SoShaderParameterSampler2D ***
  * **************************************************************************/
 
-class SoShaderParameterSampler2D : public SoUniformShaderParameter {
-
+class COIN_DLL_API SoShaderParameterSampler2D : public SoUniformShaderParameter {
+  typedef SoUniformShaderParameter inherited;
   SO_NODE_HEADER(SoShaderParameterSampler2D);
 
 public:

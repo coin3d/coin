@@ -27,7 +27,7 @@
 #include <Inventor/nodes/SoShaderObject.h>
 
 class COIN_DLL_API SoVertexShader : public SoShaderObject {
-
+  typedef SoShaderObject inherited;
   SO_NODE_HEADER(SoVertexShader);
 
 public:

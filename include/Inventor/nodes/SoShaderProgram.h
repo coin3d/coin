@@ -24,9 +24,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbBasic.h>
 #include <Inventor/nodes/SoGroup.h>
-#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFNode.h>
 
 class SoState;
@@ -40,16 +38,16 @@ class COIN_DLL_API SoShaderProgram : public SoGroup {
   
 public:
   SoMFNode shaderObject;
-  SoShaderProgram();
+  SoShaderProgram(void);
   
 SoEXTENDER public:
-  virtual void GLRender(SoGLRenderAction *action);
+  virtual void GLRender(SoGLRenderAction * action);
  
 SoINTERNAL public:
   static void initClass();
 
-  void updateStateMatrixParameters(SoState *state);
-  SbBool containStateMatrixParameters() const;
+  void updateStateMatrixParameters(SoState * state);
+  SbBool containStateMatrixParameters(void) const;
 
 protected:  
   virtual ~SoShaderProgram();
