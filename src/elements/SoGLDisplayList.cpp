@@ -45,7 +45,7 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/system/gl.h>
+#include "../misc/GLWrapper.h"
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -65,31 +65,18 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
   if (type == TEXTURE_OBJECT) {
     // it is only possible to create one texture object at a time
     assert(allocnum == 1);
-#if GL_VERSION_1_1
-    // use temporary variable, in case GLuint is typedef'ed to
-    // something other than unsigned int
-    GLuint tmpindex; 
-    glGenTextures(1, &tmpindex);
-    this->firstindex = (unsigned int )tmpindex;
-#elif GL_EXT_texture_object
-    static int sogldl_texobj_ext = -1;
-    if (sogldl_texobj_ext == -1) {
-      sogldl_texobj_ext =
-        SoGLCacheContextElement::getExtID("GL_EXT_texture_object");
+    const GLWrapper_t * glw = GLWrapper(this->context);
+    if (glw->glGenTextures) {
+      // use temporary variable, in case GLuint is typedef'ed to
+      // something other than unsigned int
+      GLuint tmpindex; 
+      glw->glGenTextures(1, &tmpindex);
+      this->firstindex = (unsigned int )tmpindex;
     }
-    if (SoGLCacheContextElement::extSupported(state, sogldl_texobj_ext)) {
-      GLuint tmpindex;
-      glGenTexturesEXT(1, &tmpindex);
-      this->firstindex = (unsigned int) tmpindex;
-    }
-    else {
-      // fall back to display list
+    else { // Fall back to display list
       this->type = DISPLAY_LIST;
       this->firstindex = (unsigned int) glGenLists(allocnum);
     }
-#else // GL_EXT_texture_object
-    this->firstindex = (unsigned int) glGenLists(allocnum);
-#endif // ! GL_EXT_texture_object
   }
   else {
     this->firstindex = (unsigned int) glGenLists(allocnum);
@@ -107,11 +94,9 @@ SoGLDisplayList::~SoGLDisplayList()
     // only possible to create one texture objects at a time, so it's
     // safe just to copy and delete the first index.
     GLuint tmpindex = (GLuint) this->firstindex;
-#if GL_VERSION_1_1
-    glDeleteTextures(1, &tmpindex);
-#elif GL_EXT_texture_object
-    glDeleteTexturesEXT(1, &tmpindex);
-#endif // GL_EXT_texture_object
+    const GLWrapper_t * glw = GLWrapper(this->context);
+    if (glw->glGenTextures)
+      glDeleteTextures(1, &tmpindex);
   }
 }
 
@@ -149,11 +134,9 @@ SoGLDisplayList::open(SoState * state, int index)
   }
   else {
     assert(index == 0);
-#if GL_VERSION_1_1
-    glBindTexture(GL_TEXTURE_2D, (GLuint) this->firstindex);
-#elif GL_EXT_texture_object
-    glBindTextureEXT(GL_TEXTURE_2D, (GLuint) this->firstindex);
-#endif // GL_EXT_texture_object
+    const GLWrapper_t * glw = GLWrapper(this->context);
+    if (glw->glGenTextures)
+      glw->glBindTexture(GL_TEXTURE_2D, (GLuint) this->firstindex);
   }
 }
 
@@ -179,11 +162,9 @@ SoGLDisplayList::call(SoState * state, int index)
   }
   else {
     assert(index == 0);
-#if GL_VERSION_1_1
-    glBindTexture(GL_TEXTURE_2D, (GLuint) this->firstindex);
-#elif GL_EXT_texture_object
-    glBindTextureEXT(GL_TEXTURE_2D, (GLuint) this->firstindex+index);
-#endif // GL_EXT_texture_object
+    const GLWrapper_t * glw = GLWrapper(this->context);
+    if (glw->glGenTextures)
+      glw->glBindTexture(GL_TEXTURE_2D, (GLuint) this->firstindex);
   }
   this->addDependency(state);
 }
