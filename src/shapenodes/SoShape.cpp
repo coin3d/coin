@@ -160,6 +160,7 @@ public:
     this->bboxcache = NULL;
     this->pvcache = NULL;
     this->bumprender = NULL;
+    this->rendercnt = 0;
     this->flags = 0;
   }
   ~SoShapeP() {
@@ -167,6 +168,12 @@ public:
     if (this->pvcache) { this->pvcache->unref(); }
     delete this->bumprender;
   }
+  enum { 
+    RENDERCNT_BITS = 4,     // bits needed to store rendercnt
+    FLAG_BITS = 4,          // bits needed to store flags
+    VERTEXARRAY_WAITCNT = 4 // # frames to wait before trying to create
+                            // a SoPrimitiveVertexCache
+  };
   enum Flags {
     SHOULD_BBOX_CACHE = 0x1,
     NEED_SETUP_SHAPE_HINTS = 0x2,
@@ -178,7 +185,9 @@ public:
   SoBoundingBoxCache * bboxcache;
   SoPrimitiveVertexCache * pvcache;
   soshape_bumprender * bumprender;
-  uint32_t flags;
+  uint32_t flags : FLAG_BITS;
+  // stores the number of frames rendered with no node changes
+  uint32_t rendercnt : RENDERCNT_BITS; 
 #ifdef COIN_THREADSAFE
   SbMutex mutex;
 #endif // COIN_THREADSAFE
@@ -224,6 +233,13 @@ double SoShapeP::bboxcachetimelimit;
 // *************************************************************************
 // code/structures to handle static and/or thread safe data
 
+enum SoShapeRenderMode {
+  NORMAL,
+  BIGTEXTURE,
+  SORTED_TRIANGLES,
+  PVCACHE
+};
+
 typedef struct {
   soshape_primdata * primdata;
   SbList <soshape_bigtexture*> * bigtexturelist;
@@ -234,10 +250,7 @@ typedef struct {
   // used in generatePrimitives() callbacks to set correct material
   SoMaterialBundle * currentbundle;
 
-  // need these in invokeTriangleCallbacks()
-  SbBool is_doing_sorted_rendering;
-  SbBool is_doing_bigtexture_rendering;
-  SbBool is_doing_pvcache_rendering;
+  int rendermode;
 } soshape_staticdata;
 
 static soshape_bigtexture *
@@ -263,9 +276,7 @@ soshape_construct_staticdata(void * closure)
   data->bigtexturecontext = new SbList <uint32_t>;
   data->primdata = new soshape_primdata();
   data->trianglesort = new soshape_trianglesort();
-  data->is_doing_sorted_rendering = FALSE;
-  data->is_doing_bigtexture_rendering = FALSE;
-  data->is_doing_pvcache_rendering = FALSE;
+  data->rendermode = NORMAL;
 }
 
 static void
@@ -545,9 +556,9 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
     // when setting this flag, the triangles will be sent to the
     // trianglesort handler in invokeTriangleCallbacks().
-    shapedata->is_doing_sorted_rendering = TRUE;
+    shapedata->rendermode = SORTED_TRIANGLES;
     this->generatePrimitives(action);
-    shapedata->is_doing_sorted_rendering = FALSE;
+    shapedata->rendermode = NORMAL;
 
     shapedata->trianglesort->endShape(state, mb); // this will render the triangles
     return FALSE; // tell shape _not_ to render
@@ -559,7 +570,14 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   if (glimage &&
       glimage->isOfType(SoGLBigImage::getClassTypeId()) &&
       SoGLTextureEnabledElement::get(state)) {
-
+    
+    // don't attempt to cache bigimage shapes
+    if (state->isCacheOpen()) {
+      SoCacheElement::invalidate(state);
+    }
+    SoGLCacheContextElement::shouldAutoCache(state, 
+                                             SoGLCacheContextElement::DONT_AUTO_CACHE);
+    
     soshape_staticdata * shapedata = soshape_get_staticdata();
 
     // do this before generating triangles to get correct
@@ -570,7 +588,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
     SoGLBigImage * big = (SoGLBigImage*) glimage;
 
-    shapedata->is_doing_bigtexture_rendering = TRUE;
+    shapedata->rendermode = BIGTEXTURE;
 
     soshape_bigtexture * bigtex = soshape_get_bigtexture(shapedata, action->getCacheContext());
     shapedata->currentbigtexture = bigtex;
@@ -581,7 +599,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     if (bigtex->endShape(state, this, mb) == FALSE) {
       action->getCurPath()->getHead()->touch();
     }
-    shapedata->is_doing_bigtexture_rendering = FALSE;
+    shapedata->rendermode = NORMAL;
 
     return FALSE;
   }
@@ -609,9 +627,9 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
         PRIVATE(this)->pvcache = new SoPrimitiveVertexCache(state);
         PRIVATE(this)->pvcache->ref();
         SoCacheElement::set(state, PRIVATE(this)->pvcache);
-        shapedata->is_doing_pvcache_rendering = TRUE;
+        shapedata->rendermode = PVCACHE;
         this->generatePrimitives(action);
-        shapedata->is_doing_pvcache_rendering = FALSE;
+        shapedata->rendermode = NORMAL;
         // this _must_ be called after creating the pvcache
         PRIVATE(this)->bumprender->calcTangentSpace(PRIVATE(this)->pvcache);
         state->pop();
@@ -710,9 +728,14 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   }
 
 
+  // wait some frames before trying to create the vertex array
+  // cache. This will give Coin a chance to create display list caches
+  // for parts of the scene graph.
   if (soshape_use_gl_vertex_arrays && 
       ((PRIVATE(this)->flags & SoShapeP::DISABLE_VERTEX_ARRAY_CACHE) == 0) &&
-      cc_glglue_has_vertex_array(glue)) {
+      cc_glglue_has_vertex_array(glue) &&
+      (PRIVATE(this)->rendercnt >= SoShapeP::VERTEXARRAY_WAITCNT) &&
+      !SoCacheElement::anyOpen(state)) {
     // Only create cache for built in Coin shapes, as it is often
     // tempting for developers writing Coin extension nodes to not
     // bother with implementing a proper generatePrimitives()
@@ -738,15 +761,18 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
         // let shape render
         return TRUE;
       }
+      // for debugging
+      // fprintf(stderr,"creating pvcache: %p\n", this);
+
       SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
       // must push state to make cache dependencies work
       state->push();
       PRIVATE(this)->pvcache = new SoPrimitiveVertexCache(state);
       PRIVATE(this)->pvcache->ref();
       SoCacheElement::set(state, PRIVATE(this)->pvcache);
-      shapedata->is_doing_pvcache_rendering = TRUE;
+      shapedata->rendermode = PVCACHE;
       this->generatePrimitives(action);
-      shapedata->is_doing_pvcache_rendering = FALSE;
+      shapedata->rendermode = NORMAL;
       // this _must_ be called after creating the pvcache
       state->pop();
       SoCacheElement::setInvalid(storedinvalid);
@@ -801,6 +827,9 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   this->generatePrimitives(action);
   return FALSE;
 #else // generatePrimitives() rendering
+  if (PRIVATE(this)->rendercnt < ((1<<SoShapeP::RENDERCNT_BITS)-1)) {
+    PRIVATE(this)->rendercnt++;
+  }
   return TRUE; // let the shape node render the geometry using OpenGL
 #endif // ! generatePrimitives() rendering
 }
@@ -1027,20 +1056,23 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
   else if (action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId())) {
     soshape_staticdata * shapedata = soshape_get_staticdata();
 
-    if (shapedata->is_doing_sorted_rendering) {
+    switch (shapedata->rendermode) {
+    case SORTED_TRIANGLES:
       shapedata->trianglesort->triangle(action->getState(), v1, v2, v3);
-    }
-    else if (shapedata->is_doing_bigtexture_rendering) {
+      break;
+    case BIGTEXTURE:
       shapedata->currentbigtexture->triangle(action->getState(), v1, v2, v3);
-    }
-    else if (shapedata->is_doing_pvcache_rendering) {
-      int pdidx[3];
-      pdidx[0] = shapedata->primdata->getPointDetailIndex(v1);
-      pdidx[1] = shapedata->primdata->getPointDetailIndex(v2);
-      pdidx[2] = shapedata->primdata->getPointDetailIndex(v3);
-      PRIVATE(this)->pvcache->addTriangle(v1, v2, v3, pdidx);
-    }
-    else {
+      break;
+    case PVCACHE:
+      {
+        int pdidx[3];
+        pdidx[0] = shapedata->primdata->getPointDetailIndex(v1);
+        pdidx[1] = shapedata->primdata->getPointDetailIndex(v2);
+        pdidx[2] = shapedata->primdata->getPointDetailIndex(v3);
+        PRIVATE(this)->pvcache->addTriangle(v1, v2, v3, pdidx);
+      }
+      break;
+    default:
       glBegin(GL_TRIANGLES);
       glTexCoord4fv(v1->getTextureCoords().getValue());
       glNormal3fv(v1->getNormal().getValue());
@@ -1057,6 +1089,7 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
       shapedata->currentbundle->send(v3->getMaterialIndex(), TRUE);
       glVertex3fv(v3->getPoint().getValue());
       glEnd();
+      break;
     }
   }
 }
@@ -1115,11 +1148,11 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
   }
   else if (action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId())) {
     soshape_staticdata * shapedata = soshape_get_staticdata();
-
-    if (shapedata->is_doing_pvcache_rendering) {      
+    switch (shapedata->rendermode) {
+    case PVCACHE:
       PRIVATE(this)->pvcache->addLine(v1, v2);
-    }
-    else {
+      break;
+    default:
       glBegin(GL_LINES);
       glTexCoord4fv(v1->getTextureCoords().getValue());
       glNormal3fv(v1->getNormal().getValue());
@@ -1131,6 +1164,7 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
       shapedata->currentbundle->send(v2->getMaterialIndex(), TRUE);
       glVertex3fv(v2->getPoint().getValue());
       glEnd();
+      break;
     }
   }
 }
@@ -1168,17 +1202,19 @@ SoShape::invokePointCallbacks(SoAction * const action,
   }
   else if (action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId())) {
     soshape_staticdata * shapedata = soshape_get_staticdata();
-
-    if (shapedata->is_doing_pvcache_rendering) {      
+    
+    switch (shapedata->rendermode) {
+    case PVCACHE:
       PRIVATE(this)->pvcache->addPoint(v);
-    }
-    else {
+      break;
+    default:
       glBegin(GL_POINTS);
       glTexCoord4fv(v->getTextureCoords().getValue());
       glNormal3fv(v->getNormal().getValue());
       shapedata->currentbundle->send(v->getMaterialIndex(), TRUE);
       glVertex3fv(v->getPoint().getValue());
       glEnd();
+      break;
     }
   }
 }
@@ -1398,6 +1434,7 @@ SoShape::notify(SoNotList * nl)
     PRIVATE(this)->pvcache->invalidate();
   }
   PRIVATE(this)->flags &= ~SoShapeP::SHOULD_BBOX_CACHE;
+  PRIVATE(this)->rendercnt = 0;
   PRIVATE(this)->unlock();
 }
 
