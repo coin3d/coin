@@ -46,6 +46,7 @@ public:
   void extendBy(const SbXfBox3f &bb);
   SbBool intersect(const SbVec3f &pt) const;
   SbBool intersect(const SbBox3f &bb) const;
+  SbBool intersect(const SbXfBox3f &bb) const;
   void getSpan(const SbVec3f &direction, float &dMin, float &dMax) const;
   SbBox3f project() const;
   friend COIN_DLL_API int operator ==(const SbXfBox3f &b1, const SbXfBox3f &b2);

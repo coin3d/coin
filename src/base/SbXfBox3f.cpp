@@ -596,6 +596,22 @@ SbXfBox3f::intersect(const SbBox3f &bb) const
 }
 
 /*!
+  Check if two transformed boxes intersect.
+  \since 20021017
+*/
+
+SbBool
+SbXfBox3f::intersect(const SbXfBox3f &xfbb) const
+{
+  const SbBox3f & bbr = xfbb;
+  SbBox3f bb(bbr);
+  SbXfBox3f me(*this);
+  me.transform(xfbb.getInverse());
+  return me.intersect(bb);
+}
+
+
+/*!
   Find the span of the box in the given direction (i.e. how much room
   in the given direction the box needs). The distance is returned as
   the minimum and maximum distance from origo to the closest and
