@@ -310,7 +310,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       const int n = trans->getNum();
       const float * tarr = trans->getArrayPtr();
       for (int i = 0; i < n; i++) {
-        if (tarr[i] != 0.0f) {
+        if (tarr[i] > 0.0f) {
           transparent = TRUE;
           break;
         }
