@@ -129,7 +129,7 @@ public:
   SoText2 * textnode;
 
 public:
-  void getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1, 
+  void getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
                SbVec3f & v2, SbVec3f & v3);
   SbVec2f getFontSize(SoState * state);
 };
@@ -486,8 +486,7 @@ SoText2::GLRender(SoGLRenderAction * action)
       }
       for (int i2=0;i2<width;i2++) {
         if ( (s[i2] >= 32) /*&& (s[i2] <= 127)*/ ) { // just in case?
-          glRasterPos2i(0,0);
-          glBitmap(0,0,0,0,xpos,ypos,NULL);
+          glRasterPos3f(float(xpos), float(ypos), -nilpoint[2]);
           glBitmap(8,12,0,0,0,0,(const GLubyte *)coin_default2dfont + 12 * (s[i2]-32) );
         }
         xpos += 8;
@@ -545,7 +544,7 @@ SoText2::rayPick(SoRayPickAction * action)
   SbBool front;
   SbBool hit = action->intersect(v0, v1, v2, isect, bary, front);
   if (!hit) hit = action->intersect(v0, v2, v3, isect, bary, front);
-  
+
   if (hit && action->isBetweenPlanes(isect)) {
     // find normalized 2D hitpoint on quad
     float h = (v3-v0).length();
@@ -559,11 +558,11 @@ SoText2::rayPick(SoRayPickAction * action)
     ptonline = vert.getClosestPoint(isect);
     float hdist = (ptonline-isect).length();
     hdist /= w;
-    
+
     // find which string and character was hit
     float fonth =  1.0f / float(this->string.getNum());
     int stringidx = SbClamp(int(vdist/fonth), 0, this->string.getNum()-1);
-    
+
     int maxlen = 0;
     for (int i = 0; i < this->string.getNum(); i++) {
       int len = this->string[i].getLength();
@@ -571,7 +570,7 @@ SoText2::rayPick(SoRayPickAction * action)
     }
     // assumes all characters are equal size...
     float fontw = 1.0f / float(maxlen);
-    
+
     // find the character
     int charidx = -1;
     int strlength = this->string[stringidx].getLength();
@@ -580,7 +579,7 @@ SoText2::rayPick(SoRayPickAction * action)
       charidx = int(hdist / fontw);
       break;
     case RIGHT:
-      charidx = (strlength-1) - int((1.0f-hdist)/fontw); 
+      charidx = (strlength-1) - int((1.0f-hdist)/fontw);
       break;
     case CENTER:
       {
@@ -595,7 +594,7 @@ SoText2::rayPick(SoRayPickAction * action)
     if (charidx >= 0 && charidx < strlength) { // we have a hit!
       SoPickedPoint * pp = action->addIntersection(isect);
       SoTextDetail * detail = new SoTextDetail;
-      
+
       detail->setStringIndex(stringidx);
       detail->setCharacterIndex(charidx);
       pp->setDetail(detail, this);
@@ -654,7 +653,7 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
   // normalize size
   fontsize[0] /= vpsize[0];
   fontsize[1] /= vpsize[1];
-  
+
   float nh = this->textnode->string.getNum() * fontsize[1] * this->textnode->spacing.getValue();
   float nw = 0.0f;
   for (int i = 0; i < this->textnode->string.getNum(); i++) {
@@ -708,10 +707,9 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
   inv.multVecMatrix(v3, v3);
 }
 
-SbVec2f 
+SbVec2f
 SoText2P::getFontSize(SoState * /* state */)
 {
   // FIXME: consider state when we support font loading
   return SbVec2f(8.0f, 12.0f);
 }
-
