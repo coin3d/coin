@@ -667,7 +667,7 @@ cc_flw_get_advance(unsigned int font, unsigned int glyph, float * x, float * y)
 
   FLW_MUTEX_LOCK(flw_global_lock);
   
-  if (font == 0) { // font == 0 -> default hardcoded font
+  if (font == 0) {
     *x = 0;
     *y = 0;
     return;
@@ -748,7 +748,6 @@ cc_flw_get_bitmap(unsigned int font, unsigned int glyph)
   struct cc_flw_glyph * gs;
   struct cc_flw_bitmap * bm = NULL;
   unsigned int i;
-  /*SbBool fromdefaultfont = FALSE;*/
 
   FLW_MUTEX_LOCK(flw_global_lock);
 
@@ -785,7 +784,6 @@ cc_flw_get_bitmap(unsigned int font, unsigned int glyph)
   }
 
   gs->bitmap = bm;
-  /*gs->fromdefaultfont = fromdefaultfont;*/
  done:
   FLW_MUTEX_UNLOCK(flw_global_lock);
   return bm;
@@ -804,7 +802,7 @@ cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph)
   fs = flw_fontidx2fontptr(font);
   
   /* FIXME: Only FreeType is supported for now. Win32 coming up
-     next. (19082003 handegar) */
+     next. (20030905 handegar) */
   if (freetypelib) {      
     vector_glyph = cc_flwft_get_vector_glyph(fs->font, glyph);
   } 
