@@ -593,8 +593,14 @@ SoFieldContainer::copyThroughConnection(void) const
 }
 
 
-static SbDict * copiedinstances = NULL;
-static SbDict * contentscopied = NULL;
+// Use a stack of dictionaries when copying nodes to allow recursive
+// copying.
+//
+// FIXME: this technique won't work properly in a multithreaded
+// environment. 20020104 mortene.
+
+static SbList<SbDict*> * copiedinstancestack = NULL;
+static SbList<SbDict*> * contentscopiedstack = NULL;
 
 
 /*!
@@ -609,10 +615,19 @@ static SbDict * contentscopied = NULL;
 void
 SoFieldContainer::initCopyDict(void)
 {
-  assert(!copiedinstances);
-  copiedinstances = new SbDict;
-  assert(!contentscopied);
-  contentscopied = new SbDict;
+  if (copiedinstancestack == NULL) {
+    // FIXME: memory leaks -- free on exit. 20020104 mortene.
+    copiedinstancestack = new SbList<SbDict *>;
+    contentscopiedstack = new SbList<SbDict *>;
+  }
+   
+  // Create two new dictionaries and _insert_ them in slot 0 in their
+  // corresponding parallel lists, so they are stacked atop of the
+  // already existing copy dictionaries (if any).
+
+  // Push on stack.
+  copiedinstancestack->insert(new SbDict, 0);
+  contentscopiedstack->insert(new SbDict, 0);
 }
 
 
@@ -625,8 +640,15 @@ void
 SoFieldContainer::addCopy(const SoFieldContainer * orig,
                           const SoFieldContainer * copy)
 {
+  assert(copiedinstancestack);
+  assert(contentscopiedstack);
+
+  SbDict * copiedinstances = (*copiedinstancestack)[0];
+  SbDict * contentscopied  = (*contentscopiedstack)[0];
+  
   assert(copiedinstances);
   assert(contentscopied);
+  
   // FIXME: casting pointer to unsigned long is nasty. We badly need a
   // better hash class. 20000115 mortene.
   SbBool s = copiedinstances->enter((unsigned long)orig, (void *)copy);
@@ -643,6 +665,8 @@ SoFieldContainer::addCopy(const SoFieldContainer * orig,
 SoFieldContainer *
 SoFieldContainer::checkCopy(const SoFieldContainer * orig)
 {
+  assert(copiedinstancestack);
+  SbDict * copiedinstances = (*copiedinstancestack)[0];
   assert(copiedinstances);
 
   void * fccopy;
@@ -669,6 +693,12 @@ SoFieldContainer *
 SoFieldContainer::findCopy(const SoFieldContainer * orig,
                            const SbBool copyconnections)
 {
+  assert(copiedinstancestack);
+  assert(contentscopiedstack);
+
+  SbDict * copiedinstances = (*copiedinstancestack)[0];
+  SbDict * contentscopied  = (*contentscopiedstack)[0];
+  
   assert(copiedinstances);
   assert(contentscopied);
 
@@ -687,13 +717,11 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
   if (!copied) {
     cp->copyContents(orig, copyconnections);
     chk = contentscopied->enter((unsigned long)orig, (void *)TRUE);
-    // SbDict::enter() returns FALSE if the key already exists.
-    assert(!chk);
+    assert(!chk && "the key already exists");
   }
 
   return cp;
 }
-
 
 /*!
   \internal
@@ -705,8 +733,21 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
 void
 SoFieldContainer::copyDone(void)
 {
-  assert(copiedinstances); delete copiedinstances; copiedinstances = NULL;
-  assert(contentscopied); delete contentscopied; contentscopied = NULL;
+  assert(copiedinstancestack);
+  assert(contentscopiedstack);
+  
+  SbDict * copiedinstances = (*copiedinstancestack)[0];
+  SbDict * contentscopied  = (*contentscopiedstack)[0];
+  
+  assert(copiedinstances);
+  assert(contentscopied);
+
+  delete copiedinstances;
+  delete contentscopied;
+
+  // Pop off stack.
+  copiedinstancestack->remove(0);
+  contentscopiedstack->remove(0);
 }
 
 // Overloaded from parent.
