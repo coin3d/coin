@@ -97,6 +97,8 @@ public:
 
 protected:
 
+  void incAge(void) const;
+  void resetAge(void) const;
   virtual void unrefOldDL(SoState * state, const uint32_t maxage);
   virtual ~SoGLImage();
 

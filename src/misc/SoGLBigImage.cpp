@@ -184,13 +184,15 @@ SoGLBigImage::initSubImages(SoState * state,
                             const SbVec2s & subimagesize) const
 {
   THIS->changecnt = 0;
-  if (subimagesize == THIS->imagesize) return THIS->dim[0] * THIS->dim[1];
-
+  if (subimagesize == THIS->imagesize &&
+      THIS->dim[0] > 0) return THIS->dim[0] * THIS->dim[1];
+  
   THIS->reset(state);
   THIS->imagesize = subimagesize;
 
-  SbVec2s size;
+  SbVec2s size(0,0);
   int nc;
+
   const unsigned char * bytes = this->getImage() ? 
     this->getImage()->getValue(size, nc) : NULL;
 
@@ -322,6 +324,7 @@ SoGLBigImage::unrefOldDL(SoState * state, const uint32_t maxage)
       else THIS->glimageage[i] += 1;
     }
   }
+  this->incAge();
 }
 
 #undef THIS

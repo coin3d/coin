@@ -687,6 +687,7 @@ void
 SoGLImage::unrefOldDL(SoState * state, const uint32_t maxage)
 {
   THIS->unrefOldDL(state, maxage);
+  this->incAge();
 }
 
 #ifndef DOXYGEN_SKIP_THIS
@@ -1054,7 +1055,18 @@ SoGLImageP::tagDL(SoState * state)
       break;
     }
   }
-  this->imageage = 0;
+}
+
+void 
+SoGLImage::incAge(void) const
+{
+  THIS->imageage++;
+}
+
+void 
+SoGLImage::resetAge(void) const
+{
+  THIS->imageage = 0;
 }
 
 void
@@ -1081,7 +1093,6 @@ SoGLImageP::unrefOldDL(SoState * state, const uint32_t maxage)
       i++;
     }
   }
-  this->imageage++;
 }
 
 SbBool
@@ -1188,6 +1199,7 @@ SoGLImage::tagImage(SoState * state, SoGLImage * image)
 {
   assert(image);
   if (image) {
+    image->resetAge();
     image->pimpl->tagDL(state);
   }
 }
