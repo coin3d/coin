@@ -1304,7 +1304,8 @@ COLS_IN_ALPHA_INDEX    = 5
 # should be ignored while generating the index headers.
 
 IGNORE_PREFIX          = So \
-                         Sb
+                         Sb \
+                         cc_
 
 #---------------------------------------------------------------------------
 # configuration options related to the HTML output
