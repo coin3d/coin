@@ -122,31 +122,31 @@
 #define SHADOW_RANGE 0x1440
 #define SHADOW_FILTER 0x1450
 #define RAY_BIAS 0x1460
-#define O_CONSTS 0x1500 
+#define O_CONSTS 0x1500
 #define AMBIENT_LIGHT 0x2100
 
 // Background Settings Chunks
 #define BIT_MAP 0x1100
 #define SOLID_BGND 0x1200
 #define V_GRADIENT 0x1300
-#define USE_BIT_MAP 0x1101 
-#define USE_SOLID_BGND 0x1201 
+#define USE_BIT_MAP 0x1101
+#define USE_SOLID_BGND 0x1201
 #define USE_V_GRADIENT 0x1301
 
 // Atmosphere Settings Chunks
 #define FOG 0x2200
 #define FOG_BGND 0x2210
 #define LAYER_FOG 0x2302
-#define DISTANCE_CUE 0x2300 
-#define DCUE_BGND 0x2310 
-#define USE_FOG 0x2201 
+#define DISTANCE_CUE 0x2300
+#define DCUE_BGND 0x2310
+#define USE_FOG 0x2201
 #define USE_LAYER_FOG 0x2303
 #define USE_DISTANCE_CUE 0x2301
 
 // Viewport Chunks
 #define DEFAULT_VIEW 0x3000
 #define VIEW_TOP 0x3010
-#define VIEW_BOTTOM 0x3020 
+#define VIEW_BOTTOM 0x3020
 #define VIEW_LEFT 0x3030
 #define VIEW_RIGHT 0x3040
 #define VIEW_FRONT 0x3050
@@ -155,7 +155,7 @@
 #define VIEW_CAMERA 0x3080
 
 // Materials Chunks
-#define MAT_ENTRY 0xAFFF 
+#define MAT_ENTRY 0xAFFF
 #define MAT_NAME 0xA000
 #define MAT_AMBIENT 0xA010
 #define MAT_DIFFUSE 0xA020
@@ -166,18 +166,18 @@
 #define MAT_XPFALL 0xA052
 #define MAT_USE_XPFALL 0xA240
 #define MAT_REFBLUR 0xA053
-#define MAT_SHADING 0xA100 
+#define MAT_SHADING 0xA100
 #define MAT_USE_REFBLUR 0xA250
 #define MAT_SELF_ILLUM 0xA080
 #define MAT_TWO_SIDE 0xA081
-#define MAT_DECAL 0xA082 
-#define MAT_ADDITIVE 0xA083 
+#define MAT_DECAL 0xA082
+#define MAT_ADDITIVE 0xA083
 #define MAT_WIRE 0xA085
 #define MAT_FACEMAP 0xA088
 #define MAT_PHONGSOFT 0xA08C
 #define MAT_WIREABS 0xA08E
 #define MAT_WIRESIZE 0xA087
-#define MAT_TEXMAP 0xA200 
+#define MAT_TEXMAP 0xA200
 #define MAT_SXP_TEXT_DATA 0xA320
 #define MAT_TEXMASK 0xA3EH
 #define MAT_SXP_TEXTMASK_DATA 0xA32A
@@ -225,7 +225,7 @@
 
 // Object Chunks
 #define NAMED_OBJECT 0x4000
-#define N_TRI_OBJECT 0x4100 
+#define N_TRI_OBJECT 0x4100
 #define POINT_ARRAY 0x4110
 #define POINT_FLAG_ARRAY 0x4111
 #define FACE_ARRAY 0x4120
@@ -237,7 +237,7 @@
 #define MESH_COLOR 0x4165
 #define MESH_TEXTURE_INFO 0x4170
 #define PROC_NAME 0x4181
-#define PROC_DATA 0x4182 
+#define PROC_DATA 0x4182
 #define N_DIRECT_LIGHT 0x4600
 #define DL_OFF 0x4620
 #define DL_OUTER_RANGE 0x465A
@@ -291,7 +291,7 @@ typedef struct tagFace {
   tagFaceGroup *faceGroup;
   uint32_t e12,e23,e31;
   // FIXME mortene: don't use "bool"
-  bool isDegenerated;
+  SbBool isDegenerated;
 
   SbVec3f getNormal(tagContext *con) const;
   float getAngle(tagContext *con, uint16_t vertexIndex) const;
@@ -305,9 +305,9 @@ typedef struct tagFaceGroup {
   SbList<Face*> faceList;
   uint16_t numDegFaces;
 
-  bool hasTexture2(tagContext *con);
+  SbBool hasTexture2(tagContext *con);
   SoTexture2* getSoTexture2(tagContext *con);
-  bool hasTexture2Transform(tagContext *con);
+  SbBool hasTexture2Transform(tagContext *con);
   SoTexture2Transform* getSoTexture2Transform(tagContext *con);
   SoMaterial* getSoMaterial(tagContext *con);
   SoNormal* createSoNormal(tagContext *con);
@@ -322,7 +322,7 @@ typedef struct tagFaceGroup {
 // FIXME mortene: don't use "namespace"
 namespace DefaultFaceGroup {
   static tagMaterial* getMaterial(tagContext *con);
-  static bool isEmpty(tagContext *con);
+  static SbBool isEmpty(tagContext *con);
 
   static SoMaterial* getSoMaterial(tagContext *con);
   static SoNormal* createSoNormal(tagContext *con);
@@ -356,9 +356,9 @@ typedef struct tagMaterial {
 
   void updateSoMaterial(int index, SoMaterial *m);
   SoMaterial* getSoMaterial(tagContext *con);
-  bool hasTexture2(tagContext *con);
+  SbBool hasTexture2(tagContext *con);
   SoTexture2* getSoTexture2(tagContext *con);
-  bool hasTexture2Transform(tagContext *con);
+  SbBool hasTexture2Transform(tagContext *con);
   SoTexture2Transform* getSoTexture2Transform(tagContext *con);
 
   tagMaterial() : matCache(NULL), texture2Cache(NULL),
@@ -375,18 +375,18 @@ typedef struct tagMaterial {
 typedef struct tagContext {
   // flags "What to load"
   int appendNormals;
-  bool loadMaterials;
-  bool loadTextures;
-  bool loadObjNames;
-  bool useIndexedTriSet;
-  bool centerModel;
+  SbBool loadMaterials;
+  SbBool loadTextures;
+  SbBool loadObjNames;
+  SbBool useIndexedTriSet;
+  SbBool centerModel;
 
   // basic loading stuff
   SoStream &s;
   size_t stopPos;
   SoSeparator *root;
   SoSeparator *cObj;
-  bool minMaxValid;
+  SbBool minMaxValid;
   float minX,maxX;
   float minY,maxY;
   float minZ,maxZ;
@@ -398,7 +398,7 @@ typedef struct tagContext {
   Material *cMat;
   SbColor cColor;
   int16_t cColorInt;
-  bool textureCoordsFound;
+  SbBool textureCoordsFound;
 
   // geometry stuff
   Vertex *vertexList;
@@ -459,7 +459,7 @@ CHUNK_DECL(LoadMapVOffset);
 
 
 
-bool is3dsFile(SoInput *in)
+SbBool is3dsFile(SoInput *in)
 {
   if (in->getHeader().getLength() > 0)  return false;
 
@@ -477,19 +477,19 @@ bool is3dsFile(SoInput *in)
 
 
 // forward declaration
-bool read3dsFile(SoStream *in, SoSeparator *&root,
+SbBool read3dsFile(SoStream *in, SoSeparator *&root,
                  int appendNormals = 2, float creaseAngle = 25.f/180.f*M_PI,
-                 bool loadMaterials = true, bool loadTextures = true,
-                 bool loadObjNames = false, bool indexedTriSet = false,
-                 bool centerModel = true, float modelSize = 10.f);
+                 SbBool loadMaterials = true, SbBool loadTextures = true,
+                 SbBool loadObjNames = false, SbBool indexedTriSet = false,
+                 SbBool centerModel = true, float modelSize = 10.f);
 
 
 
-bool read3dsFile(SoInput *in, SoSeparator *&root,
+SbBool read3dsFile(SoInput *in, SoSeparator *&root,
                  int appendNormals = 2, float creaseAngle = 25.f/180.f*M_PI,
-                 bool loadMaterials = true, bool loadTextures = true,
-                 bool loadObjNames = false, bool indexedTriSet = false,
-                 bool centerModel = true, float modelSize = 10.f)
+                 SbBool loadMaterials = true, SbBool loadTextures = true,
+                 SbBool loadObjNames = false, SbBool indexedTriSet = false,
+                 SbBool centerModel = true, float modelSize = 10.f)
 {
   SoStream s;
   s.setBinary(true);
@@ -503,11 +503,11 @@ bool read3dsFile(SoInput *in, SoSeparator *&root,
 
 
 
-bool read3dsFile(SoStream *in, SoSeparator *&root,
+SbBool read3dsFile(SoStream *in, SoSeparator *&root,
                  int appendNormals, float creaseAngle,
-                 bool loadMaterials, bool loadTextures,
-                 bool loadObjNames, bool indexedTriSet,
-                 bool centerModel, float modelSize)
+                 SbBool loadMaterials, SbBool loadTextures,
+                 SbBool loadObjNames, SbBool indexedTriSet,
+                 SbBool centerModel, float modelSize)
 {
   // read the stream header
   uint16_t header;
@@ -806,8 +806,8 @@ CHUNK(LoadNTriObject)
   }
 
   // create nodes with different materials
-  bool textureActive = false;
-  bool textureTransformActive = false;
+  SbBool textureActive = false;
+  SbBool textureTransformActive = false;
   for (int i=0; i<con->faceGroupList.getLength(); i++) {
     FaceGroup *fg = con->faceGroupList[i];
 
@@ -1410,13 +1410,13 @@ void Face::init(tagContext *con, uint16_t a, uint16_t b, uint16_t c, uint16_t f)
 
 
 
-bool FaceGroup::hasTexture2(tagContext *con)
+SbBool FaceGroup::hasTexture2(tagContext *con)
 { return mat->hasTexture2(con); }
 
 SoTexture2* FaceGroup::getSoTexture2(tagContext *con)
 { return mat->getSoTexture2(con); }
 
-bool FaceGroup::hasTexture2Transform(tagContext *con)
+SbBool FaceGroup::hasTexture2Transform(tagContext *con)
 { return mat->hasTexture2Transform(con); }
 
 SoTexture2Transform* FaceGroup::getSoTexture2Transform(tagContext *con)
@@ -1580,7 +1580,7 @@ Material* DefaultFaceGroup::getMaterial(tagContext *con)
 
 
 
-bool DefaultFaceGroup::isEmpty(Context *con)
+SbBool DefaultFaceGroup::isEmpty(Context *con)
 {
   int num = con->numFaces;
   for (int i=0; i<num; i++)
@@ -1723,7 +1723,7 @@ SoMaterial* Material::getSoMaterial(Context *con)
 
 
 
-bool Material::hasTexture2(tagContext *con)
+SbBool Material::hasTexture2(tagContext *con)
 { return texture2Cache; }
 
 
@@ -1733,7 +1733,7 @@ SoTexture2* Material::getSoTexture2(tagContext *con)
 
 
 
-bool Material::hasTexture2Transform(tagContext *con)
+SbBool Material::hasTexture2Transform(tagContext *con)
 { return texture2TransformCache; }
 
 

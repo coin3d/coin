@@ -1299,7 +1299,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
       if (!multiref) out->removeDEFNode(SbName(writename));
     }
     else {
-      bool found = out->lookupDEFNode(name);
+      SbBool found = out->lookupDEFNode(name);
       writename = name.getString();
       if (!found && (!multiref || name.getLength() > 0)) {
         // We can use the node without a suffix
