@@ -66,7 +66,6 @@ void cc_flww32_get_kerning(void * font, int glyph1, int glyph2, float *x, float 
 void cc_flww32_done_glyph(void * font, int glyph) { assert(FALSE); }
   
 struct cc_flw_bitmap * cc_flww32_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
-int cc_flww32_get_outline(void * font, int glyph) { assert(FALSE); return 0; }
 
 #else /* HAVE_WIN32_API */
 
@@ -548,14 +547,6 @@ cc_flww32_get_bitmap(void * font, int glyph)
   }
   
   return bm;
-}
-
-/* Extract a vector outline of the glyph. */
-int
-cc_flww32_get_outline(void * font, int glyph)
-{
-  /* FIXME: implement. 2003???? preng. */
-  return 0;
 }
 
 #endif /* HAVE_WIN32_API */

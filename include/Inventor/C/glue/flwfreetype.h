@@ -58,7 +58,6 @@ extern "C" {
   void cc_flwft_done_glyph(void * font, int glyph);
   
   struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, int glyph);
-  int cc_flwft_get_outline(void * font, int glyph);
   
 #ifdef __cplusplus
 }

@@ -65,7 +65,6 @@ void cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *
 void cc_flwft_done_glyph(void * font, int glyph) { assert(FALSE); }
   
 struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
-int cc_flwft_get_outline(void * font, int glyph) { assert(FALSE); return 0; }
 
 #else /* HAVE_FREETYPE ***************************************************** */
 
@@ -698,14 +697,6 @@ cc_flwft_get_bitmap(void * font, int glyph)
   memcpy(bm->buffer, tfbm->buffer, tfbm->rows * tfbm->pitch);
   FT_Done_Glyph(g);
   return bm;
-}
-
-int
-cc_flwft_get_outline(void * font, int glyph)
-{
-  /* FIXME: implement. */
-  if (cc_freetype_debug()) cc_debugerror_postinfo("cc_flwft_get_outline", "Function has not been implemented yet.\n");
-  return 0;
 }
 
 #endif /* HAVE_FREETYPE */
