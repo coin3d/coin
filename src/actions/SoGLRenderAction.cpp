@@ -480,10 +480,11 @@ SoGLRenderAction::initClass(void)
 
 static const char * sortedlayersblendprogram = 
 "!!ARBfp1.0\n"
+"OPTION ARB_precision_hint_fastest;\n"
 "TEMP out;\n"
 "TEX out, fragment.position, texture[0], RECT;\n"
 "MOV result.color, fragment.color;\n"
-"MUL result.color.a, out.a, fragment.color.a;\n"
+"MUL result.color.w, out.w, fragment.color.w;\n"
 "END\n";
 
 #undef THIS
