@@ -101,21 +101,24 @@ EXTRA_DIST = \
              data/draggerDefaults/translate1Dragger.iv \
              data/draggerDefaults/translate2Dragger.iv \
              data/draggerDefaults/dragPointDragger.iv \
-             data/draggerDefaults/pointLightDragger.iv
+             data/draggerDefaults/pointLightDragger.iv \
+             data/draggerDefaults/handleBoxDragger.iv
 
 
 draggerdefdatadir = $(datadir)/Coin/draggerDefaults
 draggerdefdata_DATA = translate1Dragger.iv \
 			translate2Dragger.iv \
 			dragPointDragger.iv \
-			pointLightDragger.iv
+			pointLightDragger.iv \
+			handleBoxDragger.iv
 
 
 BUILT_SOURCES = \
 	translate1Dragger.h \
 	translate2Dragger.h \
 	dragPointDragger.h \
-	pointLightDragger.h
+	pointLightDragger.h \
+	handleBoxDragger.h
 
 subdir = data/draggerDefaults
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -252,6 +255,9 @@ dragPointDragger.h: $(top_srcdir)/data/draggerDefaults/dragPointDragger.iv
 
 pointLightDragger.h: $(top_srcdir)/data/draggerDefaults/pointLightDragger.iv
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/pointLightDragger.iv > pointLightDragger.h
+
+handleBoxDragger.h: $(top_srcdir)/data/draggerDefaults/handleBoxDragger.iv
+	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/handleBoxDragger.iv > handleBoxDragger.h
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
