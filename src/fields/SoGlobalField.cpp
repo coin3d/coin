@@ -55,6 +55,13 @@ SoBaseList * SoGlobalField::allcontainers = NULL;
 // SoGlobalField instance.
 SoGlobalField::SoGlobalField(const SbName & name, SoField * field)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoGlobalField::SoGlobalField",
+                         "name=='%s', field==%p(%s)",
+                         name.getString(), field,
+                         field ? field->getTypeId().getName().getString() : "");
+#endif // debug
+
   if (field) {
     field->setContainer(this);
 
