@@ -34,7 +34,7 @@ public:
 
   SoGLCubeMapImage();
   virtual void unref(SoState * state = NULL);
-  
+
   static SoType getClassTypeId(void);
   virtual SoType getTypeId(void) const ;
 
@@ -48,7 +48,9 @@ public:
   };
 
   void setCubeMapImage(const Target target,
-                       const SbImage * image);
+                       const unsigned char * bytes,
+                       const SbVec2s & size,
+                       const int numcomponents);
   
   virtual void setData(const SbImage * image,
                        const Wrap wraps = REPEAT,
@@ -56,7 +58,7 @@ public:
                        const float quality = 0.5f,
                        const int border = 0,
                        SoState * createinstate = NULL);
-  
+
   virtual void setData(const SbImage * image,
                        const Wrap wraps,
                        const Wrap wrapt,
@@ -67,13 +69,13 @@ public:
 
   virtual SoGLDisplayList * getGLDisplayList(SoState * state);
 
-  
+
  public:
   static void initClass(void);
-  
+
  private:
   virtual ~SoGLCubeMapImage();
-  
+
   class SoGLCubeMapImageP * pimpl;
   friend class SoGLCubeMapImageP;
   static void cleanupClass(void);
