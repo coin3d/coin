@@ -74,4 +74,11 @@ private:
   SbBool checktransparent;
 };
 
+#ifndef COIN_INTERNAL
+// For SGI / TGS Open Inventor compile-time compatibility.
+#include <Inventor/nodes/SoNormalBinding.h>
+#include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoTextureCoordinateBinding.h>
+#endif // COIN_INTERNAL
+
 #endif // !COIN_SOVERTEXPROPERTY_H
