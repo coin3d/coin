@@ -381,22 +381,17 @@ SoCylinder::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
 
-  if (action->isNonVertexShapesCountedAsTriangles()) {
-    float complexity = this->getComplexityValue(action);
-    int numtris = (int)(complexity*CYL_SIDE_NUMTRIS);
+  float complexity = this->getComplexityValue(action);
+  int numtris = (int)(complexity*CYL_SIDE_NUMTRIS);
 
-    if (this->parts.getValue() & SoCylinder::BOTTOM) {
-      action->addNumTriangles(numtris-2);
-    }
-    if (this->parts.getValue() & SoCylinder::TOP) {
-      action->addNumTriangles(numtris-2);
-    }
-    if (this->parts.getValue() & SoCylinder::SIDES) {
-      action->addNumTriangles(numtris*2);
-    }
+  if (this->parts.getValue() & SoCylinder::BOTTOM) {
+    action->addNumTriangles(numtris-2);
   }
-  else {
-    action->incNumCylinders();
+  if (this->parts.getValue() & SoCylinder::TOP) {
+    action->addNumTriangles(numtris-2);
+  }
+  if (this->parts.getValue() & SoCylinder::SIDES) {
+    action->addNumTriangles(numtris*2);
   }
 }
 

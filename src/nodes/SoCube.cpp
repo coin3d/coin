@@ -132,7 +132,7 @@ SoCube::GLRender(SoGLRenderAction * action)
 
   const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
     action->getState()->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
-  sh->forceSend(TRUE, 
+  sh->forceSend(TRUE,
                 SoDrawStyleElement::get(state) == SoDrawStyleElement::FILLED ? TRUE : FALSE);
 
   const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
@@ -286,10 +286,5 @@ SoCube::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
 
-  if (action->isNonVertexShapesCountedAsTriangles()) {
-    action->addNumTriangles(12);
-  }
-  else {
-    action->incNumCubes();
-  }
+  action->addNumTriangles(12);
 }

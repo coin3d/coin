@@ -374,19 +374,14 @@ SoCone::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
 
-  if (action->isNonVertexShapesCountedAsTriangles()) {
-    float complexity = this->getComplexityValue(action);
-    int numtris = (int)(complexity*CONE_SIDE_NUMTRIS);
-
-    if (this->parts.getValue() & SoCone::BOTTOM) {
-      action->addNumTriangles(numtris-2);
-    }
-    if (this->parts.getValue() & SoCone::SIDES) {
-      action->addNumTriangles(numtris);
-    }
+  float complexity = this->getComplexityValue(action);
+  int numtris = (int)(complexity*CONE_SIDE_NUMTRIS);
+  
+  if (this->parts.getValue() & SoCone::BOTTOM) {
+    action->addNumTriangles(numtris-2);
   }
-  else {
-    action->incNumCones();
+  if (this->parts.getValue() & SoCone::SIDES) {
+    action->addNumTriangles(numtris);
   }
 }
 
@@ -416,4 +411,3 @@ SoCone::generatePrimitives(SoAction *action)
                       this,
                       action);
 }
-

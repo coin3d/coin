@@ -18,21 +18,23 @@
 \**************************************************************************/
 
 /*!
-  \class SoGetPrimitiveCountAction Inventor/actions/SoGetPrimitiveCountAction.h
-  \brief The SoGetPrimitiveCountAction class is for getting the number of
-  primitives a subgraph consists of.
+  \class SoGetPrimitiveCountAction SoGetPrimitiveCountAction.h Inventor/actions/SoGetPrimitiveCountAction.h
+  \brief The SoGetPrimitiveCountAction class counts the primitives in a scene.
+  \ingroup actions
 
-  FIXME: code MiA. 19990315 mortene.
+  Apply this action to a scene if you need to know the number of
+  primitives present.
 */
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/actions/SoSubActionP.h>
 #include <Inventor/SbName.h>
-#include <Inventor/nodes/SoNode.h>
+#include <Inventor/actions/SoSubActionP.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
+#include <Inventor/nodes/SoNode.h>
 
 
 SO_ACTION_SOURCE(SoGetPrimitiveCountAction);
+
 
 // Override from parent class.
 void
@@ -43,9 +45,8 @@ SoGetPrimitiveCountAction::initClass(void)
 
 
 /*!
-  A constructor.
+  Constructor.
 */
-
 SoGetPrimitiveCountAction::SoGetPrimitiveCountAction(void)
 {
   SO_ACTION_CONSTRUCTOR(SoGetPrimitiveCountAction);
@@ -54,9 +55,9 @@ SoGetPrimitiveCountAction::SoGetPrimitiveCountAction(void)
 
   SoGetPrimitiveCountAction::methods->setUp();
 
-  this->textAsTris = TRUE;
+  this->textastris = TRUE;
   this->approx = FALSE;
-  this->nonVertexAsTris = TRUE;
+  this->nonvertexastris = TRUE;
 }
 
 /*!
@@ -70,346 +71,268 @@ SoGetPrimitiveCountAction::~SoGetPrimitiveCountAction()
   Returns number of triangles in graph.
 */
 int
-SoGetPrimitiveCountAction::getTriangleCount() const
+SoGetPrimitiveCountAction::getTriangleCount(void) const
 {
-  return this->numTris;
+  return this->numtris;
 }
 
 /*!
   Returns number of lines in graph.
 */
 int
-SoGetPrimitiveCountAction::getLineCount() const
+SoGetPrimitiveCountAction::getLineCount(void) const
 {
-  return this->numLines;
+  return this->numlines;
 }
 
 /*!
   Returns number of points in graph.
 */
 int
-SoGetPrimitiveCountAction::getPointCount() const
+SoGetPrimitiveCountAction::getPointCount(void) const
 {
-  return this->numPoints;
+  return this->numpoints;
 }
 
 /*!
   Returns number of texts in the graph.
 */
 int
-SoGetPrimitiveCountAction::getTextCount() const
+SoGetPrimitiveCountAction::getTextCount(void) const
 {
-  return this->numTexts;
+  return this->numtexts;
 }
 
 /*!
   Returns the number of images in the graph.
 */
 int
-SoGetPrimitiveCountAction::getImageCount() const
+SoGetPrimitiveCountAction::getImageCount(void) const
 {
-  return this->numImages;
+  return this->numimages;
 }
 
 /*!
-  Returns whether there are primitives in graph.
+  Returns whether there are any primitives in graph or not.
 */
 SbBool
-SoGetPrimitiveCountAction::containsNoPrimitives()
+SoGetPrimitiveCountAction::containsNoPrimitives(void)
 {
   return
-    this->numTris == 0 &&
-    this->numLines == 0 &&
-    this->numPoints == 0 &&
-    this->numTexts == 0 &&
-    this->numImages == 0 &&
-    this->numCubes == 0 &&
-    this->numCones == 0 &&
-    this->numCylinders == 0 &&
-    this->numSpheres == 0;
+    this->numtris == 0 &&
+    this->numlines == 0 &&
+    this->numpoints == 0 &&
+    this->numtexts == 0 &&
+    this->numimages == 0;
 }
 
 /*!
   Returns whether there are non-triangular primitives in graph.
 */
 SbBool
-SoGetPrimitiveCountAction::containsNonTriangleShapes()
+SoGetPrimitiveCountAction::containsNonTriangleShapes(void)
 {
   return
-    this->numLines != 0 ||
-    this->numPoints != 0 ||
-    this->numTexts != 0 ||
-    this->numImages != 0 ||
-    this->numCubes != 0 ||
-    this->numCones != 0 ||
-    this->numCylinders != 0 ||
-    this->numSpheres != 0;
+    this->numlines != 0 ||
+    this->numpoints != 0 ||
+    this->numtexts != 0 ||
+    this->numimages != 0;
 }
 
 /*!
-  Returns whether Text3 nodes text is counted as triangles or texts. The
-  default is to count as triangles.
-  \sa SoGetPrimitiveCountAction::is3DTextCountedAsTriangles()
-*/
-SbBool
-SoGetPrimitiveCountAction::is3DTextCountedAsTriangles()
-{
-  return this->textAsTris;
-}
+  Sets whether SoText3 nodes are counted as the triangles of the
+  fonts in the text strings or the text itself. The default is to
+  count as triangles.
 
-/*!
-  Sets whether Text3 nodes text is counted as triangles or texts.
-  \sa SoGetPrimitiveCountAction::is3DTextCountedAsTriangles()
+  \sa is3DTextCountedAsTriangles()
 */
 void
-SoGetPrimitiveCountAction::setCount3DTextAsTriangles(const SbBool onOff)
+SoGetPrimitiveCountAction::setCount3DTextAsTriangles(const SbBool flag)
 {
-  this->textAsTris = onOff;
+  this->textastris = flag;
+}
+
+/*!
+  Returns whether SoText3 nodes is counted as triangles or text.
+
+  \sa is3DTextCountedAsTriangles()
+*/
+SbBool
+SoGetPrimitiveCountAction::is3DTextCountedAsTriangles(void)
+{
+  return this->textastris;
 }
 
 /*!
   Returns whether shapes can use an approximate value when counting
-  primitives. This is much faster than doing an accurate count.
-  The default is not to approximate.
+  primitives. This is faster than doing an accurate count.  The
+  default is to not approximate.
 
-  \sa SoGetPrimitiveCountAction::setCanApproximate()
+  \sa setCanApproximate()
 */
 SbBool
-SoGetPrimitiveCountAction::canApproximateCount()
+SoGetPrimitiveCountAction::canApproximateCount(void)
 {
   return this->approx;
 }
 
 /*!
   Sets whether shapes can do an approximate count.
-  \sa SoGetPrimitiveCountAction::canApproximateCount()
+  \sa canApproximateCount()
 */
 void
-SoGetPrimitiveCountAction::setCanApproximate(const SbBool onOff)
+SoGetPrimitiveCountAction::setCanApproximate(const SbBool flag)
 {
-  this->approx = onOff;
+  this->approx = flag;
 }
 
 /*!
-  Adds number of triangles.
+  Set up the decimation parameters for the traversal.
+
+  On-the-fly decimation is supported in Coin yet, so this call will
+  not have any effect until this feature has been implemented.
+*/
+void
+SoGetPrimitiveCountAction::setDecimationValue(SoDecimationTypeElement::Type type,
+                                              float percentage)
+{
+  this->decimationtype = type;
+  this->decimationpercentage = percentage;
+}
+
+/*!
+  Returns decimation type used during the traversal count.
+ */
+SoDecimationTypeElement::Type
+SoGetPrimitiveCountAction::getDecimationType(void)
+{
+  return this->decimationtype;
+}
+
+/*!
+  Returns decimation percentage used during the traversal count.
+ */
+float
+SoGetPrimitiveCountAction::getDecimationPercentage(void)
+{
+  return this->decimationpercentage;
+}
+
+/*!
+  Adds \a num triangles to total count. Used by node instances in the
+  scene graph during traversal.
 */
 void
 SoGetPrimitiveCountAction::addNumTriangles(const int num)
 {
-  this->numTris += num;
+  this->numtris += num;
 }
 
 /*!
-  Adds number of lines.
+  Adds \a num lines to total count. Used by node instances in the
+  scene graph during traversal.
 */
 void
 SoGetPrimitiveCountAction::addNumLines(const int num)
 {
-  this->numLines += num;
+  this->numlines += num;
 }
 
 /*!
-  Adds number of points.
+  Adds \a num points to total count. Used by node instances in the
+  scene graph during traversal.
 */
 void
 SoGetPrimitiveCountAction::addNumPoints(const int num)
 {
-  this->numPoints = num;
+  this->numpoints = num;
 }
 
 /*!
-  Adds number of texts.
+  Adds \a num texts to total count. Used by node instances in the
+  scene graph during traversal.
 */
 void
 SoGetPrimitiveCountAction::addNumText(const int num)
 {
-  this->numTexts += num;
+  this->numtexts += num;
 }
 
 /*!
-  Adds number of images.
+  Adds \a num texture image maps to total count. Used by node
+  instances in the scene graph during traversal.
 */
 void
 SoGetPrimitiveCountAction::addNumImage(const int num)
 {
-  this->numImages += num;
+  this->numimages += num;
 }
 
 /*!
-  Increments number of triangles.
+  Adds a single triangle to the total count. Used by node instances in
+  the scene graph during traversal.
 */
 void
-SoGetPrimitiveCountAction::incNumTriangles()
+SoGetPrimitiveCountAction::incNumTriangles(void)
 {
-  this->numTris++;
+  this->numtris++;
 }
 
 /*!
-  Increments number of lines.
+  Adds a single line to the total count. Used by node instances in the
+  scene graph during traversal.
 */
 void
-SoGetPrimitiveCountAction::incNumLines()
+SoGetPrimitiveCountAction::incNumLines(void)
 {
-  this->numLines++;
+  this->numlines++;
 }
 
 /*!
-  Increments number of points.
+  Adds a single point to the total count. Used by node instances in
+  the scene graph during traversal.
 */
 void
-SoGetPrimitiveCountAction::incNumPoints()
+SoGetPrimitiveCountAction::incNumPoints(void)
 {
-  this->numPoints++;
+  this->numpoints++;
 }
 
 /*!
-  Increments number of texts.
+  Adds a single text to the total count. Used by node instances in the
+  scene graph during traversal.
 */
 void
-SoGetPrimitiveCountAction::incNumText()
+SoGetPrimitiveCountAction::incNumText(void)
 {
-  this->numTexts++;
+  this->numtexts++;
 }
 
 /*!
-  Increments number of images.
+  Adds a single texture image map to the total count. Used by node
+  instances in the scene graph during traversal.
 */
 void
-SoGetPrimitiveCountAction::incNumImage()
+SoGetPrimitiveCountAction::incNumImage(void)
 {
-  this->numImages++;
+  this->numimages++;
 }
 
-/*!
-  Returns whether non vertex shapes should be counted as triangles.
-
-  This method is not part of the OIV API.
-
-  \sa SoGetPrimitiveCountAction::isNonVertexShapesCountedAsTriangles()
-*/
-SbBool
-SoGetPrimitiveCountAction::isNonVertexShapesCountedAsTriangles() const
-{
-  return this->nonVertexAsTris;
-}
 
 /*!
-  Sets whether non vertex shapes should be counted as triangles.
-  The default is to count non-vertex shapes as triangles.
-
-  This method is not part of the OIV API.
-
-  \sa SoGetPrimitiveCountAction::isNonVertexShapesCountedAsTriangles()
-*/
-void
-SoGetPrimitiveCountAction::setCountNonVertexShapesAsTriangles(const SbBool onOff)
-{
-  this->nonVertexAsTris = onOff;
-}
-
-/*!
-  Returns number of cubes in graph.
-
-  This method is not part of the OIV API.
-*/
-int
-SoGetPrimitiveCountAction::getCubeCount() const
-{
-  return this->numCubes;
-}
-
-/*!
-  Returns number of cylinders in graph.
-
-  This method is not part of the OIV API.
-*/
-int
-SoGetPrimitiveCountAction::getCylinderCount() const
-{
-  return this->numCylinders;
-}
-
-/*!
-  Returns number of cones in graph.
-
-  This method is not part of the OIV API.
-*/
-int
-SoGetPrimitiveCountAction::getConeCount() const
-{
-  return this->numCones;
-}
-
-/*!
-  Returns number of spheres in graph.
-
-  This method is not part of the OIV API.
-*/
-int
-SoGetPrimitiveCountAction::getSphereCount() const
-{
-  return this->numSpheres;
-}
-
-/*!
-  Increments number of cubes.
-
-  This method is not part of the OIV API.
-*/
-void
-SoGetPrimitiveCountAction::incNumCubes()
-{
-  this->numCubes++;
-}
-
-/*!
-  Increments number of cylinders.
-
-  This method is not part of the OIV API.
-*/
-void
-SoGetPrimitiveCountAction::incNumCylinders()
-{
-  this->numCylinders++;
-}
-
-/*!
-  Increments number of cones.
-
-  This method is not part of the OIV API.
-*/
-void
-SoGetPrimitiveCountAction::incNumCones()
-{
-  this->numCones++;
-}
-
-/*!
-  Increments number of spheres.
-
-  This method is not part of the OIV API.
-*/
-void
-SoGetPrimitiveCountAction::incNumSpheres()
-{
-  this->numSpheres++;
-}
-
-/*!
-  This method is called at the beginning of the traversal.
+  Overloaded to reset all counters to zero before traversal starts.
 */
 void
 SoGetPrimitiveCountAction::beginTraversal(SoNode * node)
 {
-  this->numTris = 0;
-  this->numLines = 0;
-  this->numPoints = 0;
-  this->numTexts = 0;
-  this->numImages = 0;
-  this->numCubes = 0;
-  this->numCylinders = 0;
-  this->numCones = 0;
-  this->numSpheres = 0;
+  this->numtris = 0;
+  this->numlines = 0;
+  this->numpoints = 0;
+  this->numtexts = 0;
+  this->numimages = 0;
+
+  // FIXME: set decimationtype and decimationpercentage elements.
+  // 20000306 mortene.
 
   this->traverse(node);
 }

@@ -196,13 +196,8 @@ SoSphere::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
 
-  if (action->isNonVertexShapesCountedAsTriangles()) {
-    float complexity = this->getComplexityValue(action);
-    action->addNumTriangles((int)(complexity*2.0f*SPHERE_NUM_SLICES*(SPHERE_NUM_STACKS-1)));
-  }
-  else {
-    action->incNumSpheres();
-  }
+  float complexity = this->getComplexityValue(action);
+  action->addNumTriangles((int)(complexity*2.0f*SPHERE_NUM_SLICES*(SPHERE_NUM_STACKS-1)));
 }
 
 /*!

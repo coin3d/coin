@@ -22,6 +22,7 @@
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
+#include <Inventor/elements/SoDecimationTypeElement.h>
 
 
 class SoGetPrimitiveCountAction : public SoAction {
@@ -35,70 +36,51 @@ public:
 
   static void initClass(void);
 
-  int getTriangleCount() const;
-  int getLineCount() const;
-  int getPointCount() const;
-  int getTextCount() const;
-  int getImageCount() const;
-  SbBool containsNoPrimitives();
-  SbBool containsNonTriangleShapes();
+  int getTriangleCount(void) const;
+  int getLineCount(void) const;
+  int getPointCount(void) const;
+  int getTextCount(void) const;
+  int getImageCount(void) const;
+  SbBool containsNoPrimitives(void);
+  SbBool containsNonTriangleShapes(void);
 
-  SbBool is3DTextCountedAsTriangles();
-  void setCount3DTextAsTriangles(const SbBool onOff);
+  SbBool is3DTextCountedAsTriangles(void);
+  void setCount3DTextAsTriangles(const SbBool flag);
 
-  SbBool canApproximateCount();
-  void setCanApproximate(const SbBool onOff);
+  SbBool canApproximateCount(void);
+  void setCanApproximate(const SbBool flag);
 
-#if 0 // not supported yet
   void setDecimationValue(SoDecimationTypeElement::Type type,
                           float percentage = 1.0);
-  SoDecimationTypeElement::Type getDecimationType();
-  float getDecimationPercentage();
-#endif // not supported
+  SoDecimationTypeElement::Type getDecimationType(void);
+  float getDecimationPercentage(void);
 
-public:
   void addNumTriangles(const int num);
   void addNumLines(const int num);
   void addNumPoints(const int num);
   void addNumText(const int num);
   void addNumImage(const int num);
-  void incNumTriangles();
-  void incNumLines();
-  void incNumPoints();
-  void incNumText();
-  void incNumImage();
-
-  // not part of OIV
-  SbBool isNonVertexShapesCountedAsTriangles() const;
-  void setCountNonVertexShapesAsTriangles(const SbBool onOff);
-
-  int getCubeCount() const;
-  int getCylinderCount() const;
-  int getConeCount() const;
-  int getSphereCount() const;
-
-  void incNumCubes();
-  void incNumCylinders();
-  void incNumCones();
-  void incNumSpheres();
+  void incNumTriangles(void);
+  void incNumLines(void);
+  void incNumPoints(void);
+  void incNumText(void);
+  void incNumImage(void);
 
 protected:
   virtual void beginTraversal(SoNode * node);
 
 private:
-  int numTris;
-  int numLines;
-  int numPoints;
-  int numTexts;
-  int numImages;
-  int numCubes;
-  int numCylinders;
-  int numCones;
-  int numSpheres;
+  int numtris;
+  int numlines;
+  int numpoints;
+  int numtexts;
+  int numimages;
 
-  SbBool textAsTris;
+  SbBool textastris;
   SbBool approx;
-  SbBool nonVertexAsTris;
+  SbBool nonvertexastris;
+  SoDecimationTypeElement::Type decimationtype;
+  float decimationpercentage;
 };
 
 #endif // !COIN_SOGETPRIMITIVECOUNTACTION_H
