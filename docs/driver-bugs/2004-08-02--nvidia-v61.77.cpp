@@ -35,7 +35,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #include <winbase.h>
-#endif
+#endif // _WIN32
 
 #include <GL/glut.h>
 
