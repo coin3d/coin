@@ -961,6 +961,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
     const SoPickedPoint *pp = action->getPickedPoint();
 
     if (pp && this->isPicked(pp->getPath())) {
+      this->isActive = TRUE;
       this->setCameraInfo(action);
       this->setStartingPoint(pp);
       this->eventHandled(event, action);
@@ -975,6 +976,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
     }
   }
   else if (this->isGrabbing && SO_MOUSE_RELEASE_EVENT(event, BUTTON1)) {
+    this->isActive = FALSE;
     this->eventHandled(event, action);
     this->grabEventsCleanup();
     if (this->pickedPath) {
@@ -987,7 +989,9 @@ SoDragger::handleEvent(SoHandleEventAction * action)
     this->eventHandled(event, action);
     this->motionCB.invokeCallbacks(this);
   }
-  else {
+  else if (this->isActive.getValue()) {
+    this->eventAction = action;
+    this->currentEvent = event;
     this->otherEventCB.invokeCallbacks(this);
   }
 }
