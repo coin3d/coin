@@ -20,6 +20,11 @@
 #ifndef COIN_SNPRINTF_H
 #define COIN_SNPRINTF_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
@@ -41,5 +46,9 @@ extern int snprintf(char * target, size_t n, const char * formatstr, ...);
 extern int vsnprintf(char * target, size_t n, const char * formatstr, va_list args);
 #endif /* !HAVE__VSNPRINTF */
 #endif /* !HAVE_VSNPRINTF */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* COIN_SNPRINTF_H */
