@@ -120,4 +120,11 @@ SoBumpMapCoordinateElement::getNum(void) const
   return this->numcoords;
 }
 
+//! FIXME: write doc.
+
+const SbVec2f * 
+SoBumpMapCoordinateElement::getArrayPtr(void) const
+{
+  return this->coords;
+}
 
