@@ -548,6 +548,25 @@ SoFieldContainer::getFieldData(void) const
   This is the method that should be overridden by subclasses which
   needs to account for internal data that are not handled
   automatically.
+
+  Make sure that when you override the copyContents() method in your
+  extension class that you also make it call upwards to it's parent
+  superclass in the inheritance hierarchy, as copyContents() in for
+  instance SoNode and SoFieldContainer does important work. It should
+  go something like this:
+
+  \code
+  void
+  MyCoinExtensionNode::copyContents(const SoFieldContainer * from,
+                                    SbBool copyconnections)
+  {
+    // let parent superclasses do their thing (copy fields, copy
+    // instance name, etc etc)
+    SoNode::copyContents(from, copyconnections);
+
+    // [..then copy internal data..]
+  }
+  \endcode
 */
 void
 SoFieldContainer::copyContents(const SoFieldContainer * from,
