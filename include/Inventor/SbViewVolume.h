@@ -83,15 +83,23 @@ public:
   void transform(const SbMatrix &matrix);
   SbVec3f getViewUp(void) const;
 
-private:
+public:
+  // Warning! It's extremely bad design to keep these data members
+  // public, but we have no choice since this is how it's done in
+  // the original SGI Open Inventor. We've seen example code that
+  // use these variables directly so we'll have to be compatible
+  // here. Please don't use these variables directly unless you're
+  // very sure about what you're doing.
   ProjectionType type;
-  SbVec3f projectionpt;
-  SbVec3f projectiondir;
-  float nearplanedistance;
-  float nearfardistance;
-  SbVec3f lowerleftfrust;
-  SbVec3f lowerrightfrust;
-  SbVec3f upperleftfrust;
+  SbVec3f projPoint;
+  SbVec3f projDir;
+  float nearDist;
+  float nearToFar;
+  SbVec3f llf;
+  SbVec3f lrf;
+  SbVec3f ulf;
+
+private:
 
   static SbMatrix getOrthoProjection(const float left, const float right,
                                      const float bottom, const float top,
@@ -100,8 +108,9 @@ private:
                                            const float bottom, const float top,
                                            const float nearval, const float farval);
 
-  void getPlaneRectangle(const float depth, SbVec3f & lowerleft, SbVec3f & lowerright, 
-                         SbVec3f & upperleft, SbVec3f & upperright) const;
+  void getPlaneRectangle(const float depth, SbVec3f & lowerleft, 
+                         SbVec3f & lowerright, SbVec3f & upperleft, 
+                         SbVec3f & upperright) const;
 };
 
 #endif // !COIN_SBVIEWVOLUME_H

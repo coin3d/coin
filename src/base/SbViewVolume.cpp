@@ -65,7 +65,57 @@ These methods need better documentation:
   volume or a perspective projection volume.
 
   \sa ortho(), perspective(), getProjectionType().
- */
+*/
+
+/*!
+  \var SbViewVolume::ProjectionType SbViewVolume::ORTHOGRAPHIC
+  Orthographic projection.
+*/
+
+/*!
+  \var SbViewVolume::ProjectionType SbViewVolume::PERSPECTIVE
+  Perspective projection.
+*/
+
+/*!
+  \var SbViewVolume::ProjectionType SbViewVolume::type
+  \internal
+*/
+
+/*!
+  \var SbVec3f SbViewVolume::projPoint
+  \internal
+*/
+
+/*!
+  \var SbVec3f SbViewVolume::projDir
+  \internal
+*/
+
+/*!  
+  \var float SbViewVolume::nearDist
+  \internal
+*/
+
+/*!
+  \var float SbViewVolume::nearToFar
+  \internal
+*/
+
+/*!
+  \var SbVec3f SbViewVolume::llf
+  \internal
+*/
+
+/*!
+  \var SbVec3f SbViewVolume::lrf
+  \internal
+*/
+
+/*! 
+  \var SbVec3f SbViewVolume::ulf
+  \internal
+*/
 
 
 /*!
@@ -93,7 +143,7 @@ SbViewVolume::~SbViewVolume(void)
 void
 SbViewVolume::getMatrices(SbMatrix& affine, SbMatrix& proj) const
 {
-  SbVec3f upvec = this->upperleftfrust - this->lowerleftfrust;
+  SbVec3f upvec = this->ulf - this->llf;
 #if COIN_DEBUG
   if (upvec == SbVec3f(0.0f, 0.0f, 0.0f)) {
     SoDebugError::postWarning("SbViewVolume::getMatrices",
@@ -103,7 +153,7 @@ SbViewVolume::getMatrices(SbMatrix& affine, SbMatrix& proj) const
     return;
   }
 #endif // COIN_DEBUG
-  SbVec3f rightvec = this->lowerrightfrust - this->lowerleftfrust;
+  SbVec3f rightvec = this->lrf - this->llf;
 
   // store width and height (needed to generate projection matrix)
   float height = upvec.normalize();
@@ -121,16 +171,16 @@ SbViewVolume::getMatrices(SbMatrix& affine, SbMatrix& proj) const
   mat[1][2] = upvec[2];
   mat[1][3] = 0.0f;
 
-  mat[2][0] = -this->projectiondir[0];
-  mat[2][1] = -this->projectiondir[1];
-  mat[2][2] = -this->projectiondir[2];
+  mat[2][0] = -this->projDir[0];
+  mat[2][1] = -this->projDir[1];
+  mat[2][2] = -this->projDir[2];
   mat[2][3] = 0.0f;
 
-  mat[3][0] = this->projectionpt[0];
-  mat[3][1] = this->projectionpt[1];
-  mat[3][2] = this->projectionpt[2];
+  mat[3][0] = this->projPoint[0];
+  mat[3][1] = this->projPoint[1];
+  mat[3][2] = this->projPoint[2];
   mat[3][3] = 1.0f;
-  
+
   // the affine matrix is the inverse of the camera coordinate system
   affine = mat.inverse();
 
@@ -175,11 +225,11 @@ SbViewVolume::getCameraSpaceMatrix(void) const
 {
   // Find rotation of projection direction.
   SbRotation pdrot =
-    SbRotation(this->projectiondir, SbVec3f(0.0f, 0.0f, -1.0f));
+    SbRotation(this->projDir, SbVec3f(0.0f, 0.0f, -1.0f));
 
   // Combine transforms.
   SbMatrix mat, tmp;
-  mat.setTranslate(-this->projectionpt);
+  mat.setTranslate(-this->projPoint);
   tmp.setRotate(pdrot);
   mat.multRight(tmp);
 
@@ -230,29 +280,29 @@ SbViewVolume::projectPointToLine(const SbVec2f& pt,
 
 #else // new, faster version
 
-  SbVec3f dx = this->lowerrightfrust - this->lowerleftfrust;
-  SbVec3f dy = this->upperleftfrust - this->lowerleftfrust;
+  SbVec3f dx = this->lrf - this->llf;
+  SbVec3f dy = this->ulf - this->llf;
 
 #if COIN_DEBUG
   if (dx.sqrLength() == 0.0f || dy.sqrLength() == 0.0f) {
     SoDebugError::postWarning("SbViewVolume::projectPointToLine",
                               "invalid frustum: <%f, %f, %f>",
-                              this->lowerrightfrust,
-                              this->lowerleftfrust,
-                              this->upperleftfrust);
+                              this->lrf,
+                              this->llf,
+                              this->ulf);
     return;
   }
 #endif // COIN_DEBUG
 
-  line0 = this->lowerleftfrust + dx*pt[0] + dy*pt[1];
+  line0 = this->llf + dx*pt[0] + dy*pt[1];
   SbVec3f dir;
   if (this->type == PERSPECTIVE) {
-    dir = line0 - this->projectionpt;
+    dir = line0 - this->projPoint;
     dir.normalize();
-    line1 = line0 + dir * this->getDepth() / dir.dot(this->projectiondir);
+    line1 = line0 + dir * this->getDepth() / dir.dot(this->projDir);
   }
   else {
-    dir = this->projectiondir;
+    dir = this->projDir;
     line1 = line0 + dir*this->getDepth();
   }
 #endif // faster version
@@ -293,8 +343,8 @@ SbViewVolume::projectToScreen(const SbVec3f& src, SbVec3f& dst) const
 SbPlane
 SbViewVolume::getPlane(const float distFromEye) const
 {
-  return SbPlane(-this->projectiondir,
-                 this->projectionpt + distFromEye * this->projectiondir);
+  return SbPlane(-this->projDir,
+                 this->projPoint + distFromEye * this->projDir);
 }
 
 /*!
@@ -306,7 +356,7 @@ SbViewVolume::getPlane(const float distFromEye) const
 SbVec3f
 SbViewVolume::getSightPoint(const float distFromEye) const
 {
-  return this->projectionpt + this->projectiondir * distFromEye;
+  return this->projPoint + this->projDir * distFromEye;
 }
 
 /*!
@@ -337,9 +387,9 @@ SbViewVolume::getPlanePoint(const float distFromEye,
     // Find vector pointing in the direction of the normalized 2D
     // point.
     SbVec3f dvec =
-      this->lowerleftfrust +
-      (this->lowerrightfrust - this->lowerleftfrust) * normPoint[0] +
-      (this->upperleftfrust - this->lowerleftfrust) * normPoint[1];
+      this->llf +
+      (this->lrf - this->llf) * normPoint[0] +
+      (this->ulf - this->llf) * normPoint[1];
     dvec -= this->getProjectionPoint();
     dvec.normalize();
 
@@ -387,7 +437,7 @@ SbViewVolume::getWorldToScreenScale(const SbVec3f& worldCenter,
 #endif // COIN_DEBUG
 
   if(this->getProjectionType() == SbViewVolume::ORTHOGRAPHIC) {
-    SbVec3f rightvec = this->lowerrightfrust - this->lowerleftfrust;
+    SbVec3f rightvec = this->lrf - this->llf;
     return (normRadius * rightvec).length();
   }
   else {
@@ -398,13 +448,13 @@ SbViewVolume::getWorldToScreenScale(const SbVec3f& worldCenter,
     center_scr[0] += normRadius;
 
     // Vectors spanning the projection plane.
-    SbVec3f upvec = this->upperleftfrust - this->lowerleftfrust;
-    SbVec3f rightvec = this->lowerrightfrust - this->lowerleftfrust;
+    SbVec3f upvec = this->ulf - this->llf;
+    SbVec3f rightvec = this->lrf - this->llf;
 
     // Find projection plane point for the sphere tangent touch point,
     // which is then used to define the sphere tangent line.
     SbVec3f ppp =
-      this->lowerleftfrust + center_scr[0] * rightvec + center_scr[1] * upvec;
+      this->llf + center_scr[0] * rightvec + center_scr[1] * upvec;
     SbLine tl(this->getProjectionPoint(), ppp);
 
     // Define the plane which is cutting the sphere in half and is normal
@@ -477,7 +527,7 @@ SbViewVolume
 SbViewVolume::narrow(float left, float bottom,
                      float right, float top) const
 {
-#if COIN_DEBUG && 0 // debug test disabled, 2001-02-16, pederb 
+#if COIN_DEBUG && 0 // debug test disabled, 2001-02-16, pederb
   if (left<0.0f) {
     SoDebugError::postWarning("SbViewVolume::narrow",
                               "left coordinate (%f) should be >=0.0f. "
@@ -527,20 +577,20 @@ SbViewVolume::narrow(float left, float bottom,
   float w = nvw.getWidth();
   float h = nvw.getHeight();
 
-  SbVec3f xvec = this->lowerrightfrust - this->lowerleftfrust;
+  SbVec3f xvec = this->lrf - this->llf;
   xvec.normalize();
-  SbVec3f yvec = this->upperleftfrust - this->lowerleftfrust;
+  SbVec3f yvec = this->ulf - this->llf;
   yvec.normalize();
 
-  nvw.upperleftfrust = nvw.lowerleftfrust + (xvec * left * w + yvec * top * h);
-  nvw.lowerrightfrust =
-    nvw.lowerleftfrust + (xvec * right * w + yvec * bottom * h);
-  nvw.lowerleftfrust += xvec * left * w + yvec * bottom * h;
+  nvw.ulf = nvw.llf + (xvec * left * w + yvec * top * h);
+  nvw.lrf =
+    nvw.llf + (xvec * right * w + yvec * bottom * h);
+  nvw.llf += xvec * left * w + yvec * bottom * h;
 
   return nvw;
 }
 
-/*!  
+/*!
 
   Returns a narrowed version of the view volume which is within the
   given [0, 1] normalized coordinates. The box x and y coordinates are
@@ -603,13 +653,13 @@ SbViewVolume::ortho(float left, float right,
 #endif // COIN_DEBUG
 
   this->type = SbViewVolume::ORTHOGRAPHIC;
-  this->projectionpt.setValue(0.0f, 0.0f, 0.0f);
-  this->projectiondir.setValue(0.0f, 0.0f, -1.0f);
-  this->nearplanedistance = nearval;
-  this->nearfardistance = farval - nearval;
-  this->lowerleftfrust.setValue(left, bottom, -nearval);
-  this->lowerrightfrust.setValue(right, bottom, -nearval);
-  this->upperleftfrust.setValue(left, top, -nearval);
+  this->projPoint.setValue(0.0f, 0.0f, 0.0f);
+  this->projDir.setValue(0.0f, 0.0f, -1.0f);
+  this->nearDist = nearval;
+  this->nearToFar = farval - nearval;
+  this->llf.setValue(left, bottom, -nearval);
+  this->lrf.setValue(right, bottom, -nearval);
+  this->ulf.setValue(left, top, -nearval);
 }
 
 /*!
@@ -653,19 +703,19 @@ SbViewVolume::perspective(float fovy, float aspect,
 #endif // COIN_DEBUG
 
   this->type = SbViewVolume::PERSPECTIVE;
-  this->projectionpt.setValue(0.0f, 0.0f, 0.0f);
-  this->projectiondir.setValue(0.0f, 0.0f, -1.0f);
-  this->nearplanedistance = nearval;
-  this->nearfardistance = farval - nearval;
+  this->projPoint.setValue(0.0f, 0.0f, 0.0f);
+  this->projDir.setValue(0.0f, 0.0f, -1.0f);
+  this->nearDist = nearval;
+  this->nearToFar = farval - nearval;
 
   float top = nearval * float(tan(fovy/2.0f));
   float bottom = -top;
   float left = bottom * aspect;
   float right = -left;
 
-  this->lowerleftfrust.setValue(left, bottom, -nearval);
-  this->lowerrightfrust.setValue(right, bottom, -nearval);
-  this->upperleftfrust.setValue(left, top, -nearval);
+  this->llf.setValue(left, bottom, -nearval);
+  this->lrf.setValue(right, bottom, -nearval);
+  this->ulf.setValue(left, top, -nearval);
 }
 
 /*!
@@ -679,24 +729,24 @@ SbViewVolume::rotateCamera(const SbRotation& q)
   SbMatrix mat;
   mat.setRotate(q);
 
-  mat.multDirMatrix(this->projectiondir, this->projectiondir);
+  mat.multDirMatrix(this->projDir, this->projDir);
 
   if(this->type == SbViewVolume::ORTHOGRAPHIC) {
-    mat.multVecMatrix(this->lowerleftfrust, this->lowerleftfrust);
-    mat.multVecMatrix(this->lowerrightfrust, this->lowerrightfrust);
-    mat.multVecMatrix(this->upperleftfrust, this->upperleftfrust);
+    mat.multVecMatrix(this->llf, this->llf);
+    mat.multVecMatrix(this->lrf, this->lrf);
+    mat.multVecMatrix(this->ulf, this->ulf);
   }
   // SbViewVolume::PERSPECTIVE
   else {
-    mat.multVecMatrix(this->lowerleftfrust - this->projectionpt,
-                      this->lowerleftfrust);
-    this->lowerleftfrust += this->projectionpt;
-    mat.multVecMatrix(this->lowerrightfrust - this->projectionpt,
-                      this->lowerrightfrust);
-    this->lowerrightfrust += this->projectionpt;
-    mat.multVecMatrix(this->upperleftfrust - this->projectionpt,
-                      this->upperleftfrust);
-    this->upperleftfrust += this->projectionpt;
+    mat.multVecMatrix(this->llf - this->projPoint,
+                      this->llf);
+    this->llf += this->projPoint;
+    mat.multVecMatrix(this->lrf - this->projPoint,
+                      this->lrf);
+    this->lrf += this->projPoint;
+    mat.multVecMatrix(this->ulf - this->projPoint,
+                      this->ulf);
+    this->ulf += this->projPoint;
   }
 }
 
@@ -708,10 +758,10 @@ SbViewVolume::rotateCamera(const SbRotation& q)
 void
 SbViewVolume::translateCamera(const SbVec3f& v)
 {
-  this->projectionpt += v;
-  this->lowerleftfrust += v;
-  this->lowerrightfrust += v;
-  this->upperleftfrust += v;
+  this->projPoint += v;
+  this->llf += v;
+  this->lrf += v;
+  this->ulf += v;
 }
 
 /*!
@@ -724,12 +774,12 @@ SbViewVolume::translateCamera(const SbVec3f& v)
 SbVec3f
 SbViewVolume::zVector(void) const
 {
-  return -this->projectiondir;
+  return -this->projDir;
 }
 
 /*!
   Return a copy SbViewVolume with narrowed depth by supplying parameters
-  for new near and far clipping planes. 
+  for new near and far clipping planes.
 
   \a nearval and \farval should be relative to the current clipping
   planes. A value of 1.0 is at the current near plane. A value of
@@ -741,15 +791,15 @@ SbViewVolume
 SbViewVolume::zNarrow(float nearval, float farval) const
 {
   SbViewVolume narrowed = *this;
-  
-  narrowed.nearplanedistance = this->nearplanedistance + (1.0f - nearval) * this->nearfardistance;
-  narrowed.nearfardistance = this->nearplanedistance + this->nearfardistance * (1.0f - farval);
+
+  narrowed.nearDist = this->nearDist + (1.0f - nearval) * this->nearToFar;
+  narrowed.nearToFar = this->nearDist + this->nearToFar * (1.0f - farval);
 
   SbVec3f dummy;
-  this->getPlaneRectangle(narrowed.nearplanedistance-this->nearplanedistance, 
-                          narrowed.lowerleftfrust, 
-                          narrowed.lowerrightfrust,
-                          narrowed.upperleftfrust,
+  this->getPlaneRectangle(narrowed.nearDist-this->nearDist,
+                          narrowed.llf,
+                          narrowed.lrf,
+                          narrowed.ulf,
                           dummy);
   return narrowed;
 }
@@ -798,13 +848,13 @@ SbViewVolume::scaleWidth(float ratio)
   float neww = w * ratio;
   float wdiff = (neww - w)/2.0f;
 
-  SbVec3f xvec = this->lowerrightfrust - this->lowerleftfrust;
+  SbVec3f xvec = this->lrf - this->llf;
   xvec.normalize();
   SbVec3f diffvec = xvec * wdiff;
 
-  this->lowerleftfrust -= diffvec;
-  this->upperleftfrust -= diffvec;
-  this->lowerrightfrust += diffvec;
+  this->llf -= diffvec;
+  this->ulf -= diffvec;
+  this->lrf += diffvec;
 }
 
 /*!
@@ -829,13 +879,13 @@ SbViewVolume::scaleHeight(float ratio)
   float newh = h * ratio;
   float hdiff = (newh - h)/2.0f;
 
-  SbVec3f upvec = this->upperleftfrust - this->lowerleftfrust;
+  SbVec3f upvec = this->ulf - this->llf;
   upvec.normalize();
   SbVec3f diffvec = upvec * hdiff;
 
-  this->lowerleftfrust -= diffvec;
-  this->upperleftfrust += diffvec;
-  this->lowerrightfrust -= diffvec;
+  this->llf -= diffvec;
+  this->ulf += diffvec;
+  this->lrf -= diffvec;
 }
 
 /*!
@@ -856,7 +906,7 @@ SbViewVolume::getProjectionType(void) const
 const SbVec3f&
 SbViewVolume::getProjectionPoint(void) const
 {
-  return this->projectionpt;
+  return this->projPoint;
 }
 
 /*!
@@ -868,7 +918,7 @@ SbViewVolume::getProjectionPoint(void) const
 const SbVec3f&
 SbViewVolume::getProjectionDirection(void) const
 {
-  return this->projectiondir;
+  return this->projDir;
 }
 
 /*!
@@ -879,7 +929,7 @@ SbViewVolume::getProjectionDirection(void) const
 float
 SbViewVolume::getNearDist(void) const
 {
-  return this->nearplanedistance;
+  return this->nearDist;
 }
 
 /*!
@@ -890,7 +940,7 @@ SbViewVolume::getNearDist(void) const
 float
 SbViewVolume::getWidth(void) const
 {
-  return (this->lowerrightfrust - this->lowerleftfrust).length();
+  return (this->lrf - this->llf).length();
 }
 
 /*!
@@ -901,7 +951,7 @@ SbViewVolume::getWidth(void) const
 float
 SbViewVolume::getHeight(void) const
 {
-  return (this->upperleftfrust - this->lowerleftfrust).length();
+  return (this->ulf - this->llf).length();
 }
 
 /*!
@@ -913,7 +963,7 @@ SbViewVolume::getHeight(void) const
 float
 SbViewVolume::getDepth(void) const
 {
-  return this->nearfardistance;
+  return this->nearToFar;
 }
 
 /*!
@@ -1021,13 +1071,13 @@ SbViewVolume::print(FILE * fp) const
   fprintf( fp, "  height:   %f\n", this->getHeight() );
   fprintf( fp, "  depth:    %f\n", this->getDepth() );
   fprintf( fp, "    llf:    " );
-  this->lowerleftfrust.print(fp);
+  this->llf.print(fp);
   fprintf( fp, "\n" );
   fprintf( fp, "    lrf:    " );
-  this->lowerrightfrust.print(fp);
+  this->lrf.print(fp);
   fprintf( fp, "\n" );
   fprintf( fp, "    ulf:    " );
-  this->upperleftfrust.print(fp);
+  this->ulf.print(fp);
   fprintf( fp, "\n" );
 #endif // COIN_DEBUG
 }
@@ -1048,14 +1098,14 @@ SbViewVolume::getViewVolumePlanes(SbPlane planes[6]) const
   SbVec3f far_ul;
   SbVec3f far_ur;
 
-  this->getPlaneRectangle(this->nearfardistance, far_ll, far_lr, far_ul, far_ur);
-  SbVec3f near_ur = this->upperleftfrust + (this->lowerrightfrust-this->lowerleftfrust);
+  this->getPlaneRectangle(this->nearToFar, far_ll, far_lr, far_ul, far_ur);
+  SbVec3f near_ur = this->ulf + (this->lrf-this->llf);
 
-  planes[0] = SbPlane(this->upperleftfrust, this->lowerleftfrust, far_ll);  // left
-  planes[1] = SbPlane(this->lowerleftfrust, this->lowerrightfrust, far_lr); // bottom
-  planes[2] = SbPlane(this->lowerrightfrust, near_ur, far_ur); // right
-  planes[3] = SbPlane(near_ur, this->upperleftfrust, far_ul); // top
-  planes[4] = SbPlane(this->upperleftfrust, near_ur, this->lowerrightfrust); // near
+  planes[0] = SbPlane(this->ulf, this->llf, far_ll);  // left
+  planes[1] = SbPlane(this->llf, this->lrf, far_lr); // bottom
+  planes[2] = SbPlane(this->lrf, near_ur, far_ur); // right
+  planes[3] = SbPlane(near_ur, this->ulf, far_ul); // top
+  planes[4] = SbPlane(this->ulf, near_ur, this->lrf); // near
   planes[5] = SbPlane(far_ll, far_lr, far_ur); // far
 }
 
@@ -1065,26 +1115,26 @@ SbViewVolume::getViewVolumePlanes(SbPlane planes[6]) const
 void
 SbViewVolume::transform(const SbMatrix & matrix)
 {
-  matrix.multDirMatrix(this->projectiondir, this->projectiondir);
+  matrix.multDirMatrix(this->projDir, this->projDir);
 
   if(this->type == SbViewVolume::ORTHOGRAPHIC) {
-    matrix.multVecMatrix(this->lowerleftfrust, this->lowerleftfrust);
-    matrix.multVecMatrix(this->lowerrightfrust, this->lowerrightfrust);
-    matrix.multVecMatrix(this->upperleftfrust, this->upperleftfrust);
+    matrix.multVecMatrix(this->llf, this->llf);
+    matrix.multVecMatrix(this->lrf, this->lrf);
+    matrix.multVecMatrix(this->ulf, this->ulf);
   }
   // SbViewVolume::PERSPECTIVE
   else {
-    matrix.multDirMatrix(this->lowerleftfrust - this->projectionpt,
-                         this->lowerleftfrust);
-    matrix.multDirMatrix(this->lowerrightfrust - this->projectionpt,
-                         this->lowerrightfrust);
-    matrix.multDirMatrix(this->upperleftfrust - this->projectionpt,
-                         this->upperleftfrust);
-    matrix.multVecMatrix(this->projectionpt, this->projectionpt);
+    matrix.multDirMatrix(this->llf - this->projPoint,
+                         this->llf);
+    matrix.multDirMatrix(this->lrf - this->projPoint,
+                         this->lrf);
+    matrix.multDirMatrix(this->ulf - this->projPoint,
+                         this->ulf);
+    matrix.multVecMatrix(this->projPoint, this->projPoint);
 
-    this->lowerleftfrust += this->projectionpt;
-    this->lowerrightfrust += this->projectionpt;
-    this->upperleftfrust += this->projectionpt;
+    this->llf += this->projPoint;
+    this->lrf += this->projPoint;
+    this->ulf += this->projPoint;
   }
 }
 
@@ -1097,7 +1147,7 @@ SbViewVolume::transform(const SbMatrix & matrix)
 SbVec3f
 SbViewVolume::getViewUp(void) const
 {
-  SbVec3f v = this->upperleftfrust - this->lowerleftfrust;
+  SbVec3f v = this->ulf - this->llf;
   (void) v.normalize();
   return v;
 }
@@ -1106,37 +1156,37 @@ SbViewVolume::getViewUp(void) const
 // Returns the four points defining the view volume rectangle at the specified distance
 // from the near plane, towards the far plane.
 //
-void 
-SbViewVolume::getPlaneRectangle(const float distance, SbVec3f & lowerleft, 
-                                SbVec3f & lowerright, 
-                                SbVec3f & upperleft, 
+void
+SbViewVolume::getPlaneRectangle(const float distance, SbVec3f & lowerleft,
+                                SbVec3f & lowerright,
+                                SbVec3f & upperleft,
                                 SbVec3f & upperright) const
 {
-  SbVec3f near_ur = this->upperleftfrust + (this->lowerrightfrust-this->lowerleftfrust);
+  SbVec3f near_ur = this->ulf + (this->lrf-this->llf);
 
   if (this->type == PERSPECTIVE) {
-    float depth = this->nearplanedistance + distance;
+    float depth = this->nearDist + distance;
     SbVec3f dir;
-    dir = this->lowerleftfrust - this->projectionpt;
+    dir = this->llf - this->projPoint;
     dir.normalize();
-    lowerleft = this->projectionpt + dir * depth / dir.dot(this->projectiondir);
-    
-    dir = this->lowerrightfrust - this->projectionpt;
+    lowerleft = this->projPoint + dir * depth / dir.dot(this->projDir);
+
+    dir = this->lrf - this->projPoint;
     dir.normalize();
-    lowerright = this->projectionpt + dir * depth / dir.dot(this->projectiondir);
-    
-    dir = this->upperleftfrust - this->projectionpt;
+    lowerright = this->projPoint + dir * depth / dir.dot(this->projDir);
+
+    dir = this->ulf - this->projPoint;
     dir.normalize();
-    upperleft = this->projectionpt + dir * depth / dir.dot(this->projectiondir);
-    
-    dir = near_ur - this->projectionpt;
+    upperleft = this->projPoint + dir * depth / dir.dot(this->projDir);
+
+    dir = near_ur - this->projPoint;
     dir.normalize();
-    upperright = this->projectionpt + dir * depth / dir.dot(this->projectiondir);
+    upperright = this->projPoint + dir * depth / dir.dot(this->projDir);
   }
   else {
-    lowerleft = this->lowerleftfrust + this->projectiondir * distance;
-    lowerright = this->lowerrightfrust + this->projectiondir * distance;
-    upperleft = this->upperleftfrust + this->projectiondir * distance;
-    upperright = near_ur + this->projectiondir * distance;
+    lowerleft = this->llf + this->projDir * distance;
+    lowerright = this->lrf + this->projDir * distance;
+    upperleft = this->ulf + this->projDir * distance;
+    upperright = near_ur + this->projDir * distance;
   }
 }
