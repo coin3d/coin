@@ -285,6 +285,14 @@ SoTrackballDragger::dragStart(void)
       SO_GET_ANY_PART(this, "userAxisRotation", SoRotation)->rotation =
         SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), hitPt);
     }
+    else {
+      this->sphereProj->setViewVolume(this->getViewVolume());
+      this->sphereProj->setWorkingSpace(this->getLocalToWorldMatrix());
+
+      SbVec3f projPt = this->sphereProj->project(this->getNormalizedLocaterPosition());
+      this->getLocalToWorldMatrix().multVecMatrix(projPt, this->prevWorldHitPt);
+      this->prevMotionMatrix = this->getMotionMatrix();
+    }
   }
   else if (this->whatkind == WHATKIND_XROTATOR ||
            this->whatkind == WHATKIND_YROTATOR ||
@@ -325,10 +333,13 @@ SoTrackballDragger::drag(void)
   else if (this->whatkind == WHATKIND_ROTATOR) {
     this->sphereProj->setViewVolume(this->getViewVolume());
     this->sphereProj->setWorkingSpace(this->getLocalToWorldMatrix());
+    this->getWorldToLocalMatrix().multVecMatrix(this->prevWorldHitPt, startPt);
     SbVec3f projPt = this->sphereProj->project(this->getNormalizedLocaterPosition());
+    this->getLocalToWorldMatrix().multVecMatrix(projPt, this->prevWorldHitPt);
     SbRotation rot = this->sphereProj->getRotation(startPt, projPt);
-    this->setMotionMatrix(this->appendRotation(this->getStartMotionMatrix(),
-                                               rot, SbVec3f(0.0f, 0.0f, 0.0f)));
+    this->prevMotionMatrix = this->appendRotation(this->prevMotionMatrix, rot,
+                                                  SbVec3f(0.0f, 0.0f, 0.0f));
+    this->setMotionMatrix(this->prevMotionMatrix);
   }
   else if (this->whatkind == WHATKIND_XROTATOR ||
            this->whatkind == WHATKIND_YROTATOR ||
