@@ -188,7 +188,7 @@ SoAntiSquish::getMatrix(SoGetMatrixAction *action)
     this->inverseValid = TRUE;
     this->unsquishedMatrix =
       this->getUnsquishingMatrix(action->getMatrix(),
-                                 TRUE, action->getInverse());
+                                 TRUE, this->inverseMatrix);
 
   }
 #ifdef SB_MATRIX_WORKAROUND
@@ -220,7 +220,7 @@ SoAntiSquish::getUnsquishingMatrix(const SbMatrix &squishedmatrix,
   SbRotation r, so;
   SbVec3f t, scale;
 
-  float val;
+  float val = 1.0f;
 
   squishedmatrix.getTransform(t, r, scale, so);
   switch (this->sizing.getValue()) {
