@@ -339,10 +339,15 @@ SoVRMLSound::SoVRMLSound(void)
 
   PRIVATE(this)->timersensor = NULL;
 #ifdef HAVE_THREADS
+  /* FIXME: Let the user override use of timer callback with an
+     environment variable. 2003-01-16 thammer.  */
   PRIVATE(this)->useTimerCallback = FALSE;
 #else
   PRIVATE(this)->useTimerCallback = TRUE;
 #endif // HAVE_THREADS
+
+  /* FIXME: if (coin_debug_audio()), post info about which playback
+     mode is used, threaded or timer callback. 2003-01-14 thammer */
 
   PRIVATE(this)->sourcesensor = new SoFieldSensor(PRIVATE(this)->sourceSensorCBWrapper, PRIVATE(this));
   PRIVATE(this)->sourcesensor->setPriority(0);
@@ -404,7 +409,7 @@ SoVRMLSound::~SoVRMLSound(void)
 }
 
 /*
-  Note: Calling setDefaultBufferingProperties or 
+  FIXME: Calling setDefaultBufferingProperties or 
   setBufferingProperties while a sound was playing might mess
   up quite a bit. This should be made more robust, or at the
   very least documented properly.
@@ -420,6 +425,9 @@ void SoVRMLSound::setDefaultBufferingProperties(int bufferLength, int numBuffers
 
 void SoVRMLSound::setBufferingProperties(int bufferLength, int numBuffers, SbTime sleepTime)
 {
+  /* FIXME: if (coin_debug_audio()), post the function
+     parameters. 2003-01-14 thammer */
+
 #ifdef HAVE_THREADS
   SbThreadAutoLock autoLock(&PRIVATE(this)->syncmutex);
 #endif 

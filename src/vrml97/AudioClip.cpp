@@ -573,6 +573,11 @@ SoVRMLAudioClipP::internalFillBuffer(int frameoffset, void *buffer, int numframe
       this->currentPlaylistIndex = 0;
     }
 
+    /* FIXME: Read the VRML spec on the url field in AudioClip more
+       carefully. I think it's only supposed to play one file, and
+       only try the next if the current file fails. 
+       2003-01-16 thammer. /*
+
     if (this->stream==NULL) {
       if ( this->loop && (this->currentPlaylistIndex >= this->playlist.getLength()) ) 
         this->currentPlaylistIndex = 0;
@@ -833,8 +838,7 @@ SoVRMLAudioClipP::openFile(const char *filename)
   if (this->stream == NULL) {
     /*
       FIXME: only one error message, and sound should stop playing.
-      20021101 thammer
-     */
+      20021101 thammer */
     SoDebugError::postWarning("SoVRMLAudioClipP::openFile",
                               "Couldn't open file '%s'",
                               filename);
