@@ -687,7 +687,30 @@ SoTransformerDragger::dragStart(void)
       SbString str;
       str.sprintf("translator%dSwitch", this->whatnum);
       this->setSwitchValue(str.getString(), 1);
-      this->setSwitchValue("translateBoxFeedbackSwitch", 0);
+      this->setSwitchValue("translateBoxFeedbackSwitch", SO_SWITCH_ALL);
+      SoRotation * feedbackrot = (SoRotation*) this->getAnyPart("translateBoxFeedbackRotation", TRUE);
+      assert(feedbackrot);
+      switch (this->whatnum) {
+      default:
+      case 1:
+        feedbackrot->rotation = SbRotation::identity();
+        break;
+      case 2:
+        feedbackrot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), float(M_PI));
+        break;
+      case 3:
+        feedbackrot->rotation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), float(M_PI)*0.5f);
+        break;
+      case 4:
+        feedbackrot->rotation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), -float(M_PI)*0.5f);
+        break;
+      case 5:
+        feedbackrot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), float(M_PI)*0.5f);
+        break;
+      case 6:
+        feedbackrot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), -float(M_PI)*0.5f);
+        break;
+      }
       this->setDynamicTranslatorSwitches(event);
     }
     break;
