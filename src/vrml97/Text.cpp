@@ -82,7 +82,7 @@ SoVRMLText::~SoVRMLText()
 
 // Doc in parent
 void
-SoVRMLText::GLRender(SoAction * action)
+SoVRMLText::GLRender(SoGLRenderAction * action)
 {
 }
 

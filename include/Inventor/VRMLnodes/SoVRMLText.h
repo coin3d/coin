@@ -47,7 +47,7 @@ public:
     MIDDLE  = 0x03
   };
 
-  virtual void GLRender(SoAction * action);
+  virtual void GLRender(SoGLRenderAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
   virtual void notify(SoNotList * list);
