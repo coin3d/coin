@@ -25,7 +25,10 @@
 #include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSurroundScale.h>
-
+#include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/SbMatrix.h>
 
 SO_KIT_SOURCE(SoTransformBoxDragger);
 
@@ -71,46 +74,190 @@ SoTransformBoxDragger::SoTransformBoxDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(translator6Rot, SoRotation, TRUE, translator6Sep, translator6, FALSE);
   SO_KIT_ADD_CATALOG_ENTRY(translator6, SoTranslate2Dragger, TRUE, translator6Sep, "", TRUE);
 
+  if (SO_KIT_IS_FIRST_INSTANCE()) {
+    SoInteractionKit::readDefaultParts("transformBoxDragger.iv", NULL, 0);
+  }
+
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
 
   SO_KIT_INIT_INSTANCE();
+
+  SO_GET_ANY_PART(this, "scaler", SoScaleUniformDragger);
+  SO_GET_ANY_PART(this, "rotator1", SoRotateCylindricalDragger);
+  SO_GET_ANY_PART(this, "rotator2", SoRotateCylindricalDragger);
+  SO_GET_ANY_PART(this, "rotator3", SoRotateCylindricalDragger);
+  SO_GET_ANY_PART(this, "translator1", SoTranslate2Dragger);
+  SO_GET_ANY_PART(this, "translator2", SoTranslate2Dragger);
+  SO_GET_ANY_PART(this, "translator3", SoTranslate2Dragger);
+  SO_GET_ANY_PART(this, "translator4", SoTranslate2Dragger);
+  SO_GET_ANY_PART(this, "translator5", SoTranslate2Dragger);
+  SO_GET_ANY_PART(this, "translator6", SoTranslate2Dragger);
+
+  SoRotation *rot;
+  rot = SO_GET_ANY_PART(this, "rotator1Rot", SoRotation);
+  rot->rotation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), M_PI/2.0f);
+  rot = SO_GET_ANY_PART(this, "rotator2Rot", SoRotation);
+  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), M_PI/2.0f);
+  rot = SO_GET_ANY_PART(this, "rotator3Rot", SoRotation);
+  rot->rotation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
+
+  rot = SO_GET_ANY_PART(this, "translator1Rot", SoRotation);
+  rot->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), M_PI/2.0f);
+  rot = SO_GET_ANY_PART(this, "translator2Rot", SoRotation);
+  rot->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), -M_PI/2.0f);
+
+  rot = SO_GET_ANY_PART(this, "translator3Rot", SoRotation);
+  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), M_PI/2.0f);
+  rot = SO_GET_ANY_PART(this, "translator4Rot", SoRotation);
+  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), -M_PI/2.0f);
+
+  rot = SO_GET_ANY_PART(this, "translator5Rot", SoRotation);
+  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), M_PI);
+  rot = SO_GET_ANY_PART(this, "translator6Rot", SoRotation);
+  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), 0.0f);
+
+  SoAntiSquish *squish = SO_GET_ANY_PART(this, "antiSquish", SoAntiSquish);
+  squish->sizing = SoAntiSquish::BIGGEST_DIMENSION;
+  
+  this->addValueChangedCallback(SoTransformBoxDragger::valueChangedCB);
+  this->rotFieldSensor = new SoFieldSensor(SoTransformBoxDragger::fieldSensorCB, this);
+  this->rotFieldSensor->setPriority(0);
+  this->translFieldSensor = new SoFieldSensor(SoTransformBoxDragger::fieldSensorCB, this);
+  this->translFieldSensor->setPriority(0);
+  this->scaleFieldSensor = new SoFieldSensor(SoTransformBoxDragger::fieldSensorCB, this);
+  this->scaleFieldSensor->setPriority(0);
+  this->setUpConnections(TRUE, TRUE);
 }
 
 
 SoTransformBoxDragger::~SoTransformBoxDragger()
 {
-  COIN_STUB();
+  delete this->rotFieldSensor;
+  delete this->translFieldSensor;
+  delete this->scaleFieldSensor;
 }
 
 SbBool
 SoTransformBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
-  COIN_STUB();
-  return FALSE;
+  if (!doitalways && this->connectionsSetUp == onoff) return onoff;
+  
+  if (onoff) {
+    int i;
+    char buf[512];
+    inherited::setUpConnections(onoff, doitalways);
+    SoDragger *child = (SoDragger*) this->getAnyPart("scaler", FALSE);
+    child->setPartAsDefault("scaler", "transformBoxScalerScaler");
+    child->setPartAsDefault("scalerActive", "transformBoxScalerScalerActive");
+    child->setPartAsDefault("feedback", "transformBoxScalerFeedback");
+    child->setPartAsDefault("feedbackActive", "transformBoxScalerFeedbackActive");
+    this->registerChildDragger(child);
+
+    for (i = 1; i <= 3; i++) {
+      sprintf(buf,"rotator%d", i);
+      child = (SoDragger*)this->getAnyPart(buf, FALSE);
+      child->setPartAsDefault("rotator", "transformBoxRotatorRotator");
+      child->setPartAsDefault("rotatorActive", "transformBoxRotatorRotatorActive");
+      child->setPartAsDefault("feedback", "transformBoxRotatorFeedback");
+      child->setPartAsDefault("feedbackActive", "transformBoxRotatorFeedbackActive");
+      this->registerChildDragger(child);
+    }
+
+    for (i = 1; i <= 6; i++) {
+      sprintf(buf, "translator%d", i);
+      child = (SoDragger*)this->getAnyPart(buf, FALSE);
+      child->setPartAsDefault("translator", "transformBoxTranslatorTranslator");
+      child->setPartAsDefault("translatorActive", "transformBoxTranslatorTranslatorActive");
+      child->setPartAsDefault("xAxisFeedback", "transformBoxTranslatorXAxisFeedback");
+      child->setPartAsDefault("yAxisFeedback", "transformBoxTranslatorYAxisFeedback");
+      this->registerChildDragger(child);
+    }
+    if (this->translFieldSensor->getAttachedField() != &this->translation) {
+      this->translFieldSensor->attach(&this->translation);
+    }
+    if (this->rotFieldSensor->getAttachedField() != &this->rotation) {
+      this->rotFieldSensor->attach(&this->rotation);
+    }
+    if (this->scaleFieldSensor->getAttachedField() != &this->scaleFactor) {
+      this->scaleFieldSensor->attach(&this->scaleFactor);
+    }
+  }
+  else {
+    this->unregisterChildDragger((SoDragger*)this->getAnyPart("scaler", FALSE));
+    this->unregisterChildDragger((SoDragger*)this->getAnyPart("rotator1", FALSE));
+    this->unregisterChildDragger((SoDragger*)this->getAnyPart("rotator2", FALSE));
+    this->unregisterChildDragger((SoDragger*)this->getAnyPart("rotator3", FALSE));
+    this->unregisterChildDragger((SoDragger*)this->getAnyPart("translator1", FALSE));
+    this->unregisterChildDragger((SoDragger*)this->getAnyPart("translator2", FALSE));
+    this->unregisterChildDragger((SoDragger*)this->getAnyPart("translator3", FALSE));
+    this->unregisterChildDragger((SoDragger*)this->getAnyPart("translator4", FALSE));
+    this->unregisterChildDragger((SoDragger*)this->getAnyPart("translator5", FALSE));
+    this->unregisterChildDragger((SoDragger*)this->getAnyPart("translator6", FALSE));
+    
+    if (this->translFieldSensor->getAttachedField() != NULL) {
+      this->translFieldSensor->detach();
+    }
+    if (this->rotFieldSensor->getAttachedField() != NULL) {
+      this->rotFieldSensor->detach();
+    }
+    if (this->scaleFieldSensor->getAttachedField() != NULL) {
+      this->scaleFieldSensor->detach();
+    }
+    inherited::setUpConnections(onoff, doitalways);
+  }
+  return !(this->connectionsSetUp = onoff);
 }
 
 void
 SoTransformBoxDragger::setDefaultOnNonWritingFields(void)
 {
   COIN_STUB();
+  inherited::setDefaultOnNonWritingFields();
 }
 
 void
-SoTransformBoxDragger::fieldSensorCB(void * f, SoSensor * s)
+SoTransformBoxDragger::fieldSensorCB(void * d, SoSensor *)
 {
-  COIN_STUB();
+  SoTransformBoxDragger *thisp = (SoTransformBoxDragger*)d;
+  SbMatrix matrix = thisp->getMotionMatrix();
+  thisp->workFieldsIntoTransform(matrix);
+  thisp->setMotionMatrix(matrix);
 }
 
 void
-SoTransformBoxDragger::valueChangedCB(void * f, SoDragger * d)
+SoTransformBoxDragger::valueChangedCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoTransformBoxDragger *thisp = (SoTransformBoxDragger*)d;
+  SbMatrix matrix = thisp->getMotionMatrix();
+
+  SbVec3f trans, scale;
+  SbRotation rot, scaleOrient;
+  matrix.getTransform(trans, rot, scale, scaleOrient);
+
+  thisp->translFieldSensor->detach();
+  if (thisp->translation.getValue() != trans)
+    thisp->translation = trans;
+  thisp->translFieldSensor->attach(&thisp->translation);
+
+  thisp->rotFieldSensor->detach();
+  if (thisp->rotation.getValue() != rot)
+    thisp->rotation = rot;
+  thisp->rotFieldSensor->attach(&thisp->rotation);
+
+  thisp->scaleFieldSensor->detach();
+  if (thisp->scaleFactor.getValue() != scale)
+    thisp->scaleFactor = scale;
+  thisp->scaleFieldSensor->attach(&thisp->scaleFactor);
 }
 
 void
-SoTransformBoxDragger::invalidateSurroundScaleCB(void * f, SoDragger * d)
+SoTransformBoxDragger::invalidateSurroundScaleCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoTransformBoxDragger *thisp = (SoTransformBoxDragger*) d;
+  SoSurroundScale *surround = SO_GET_ANY_PART(thisp, "surroundScale", SoSurroundScale);
+  surround->invalidate();
 }
+
+
