@@ -41,7 +41,7 @@ public:
   void removeDelaySensor(SoDelayQueueSensor * s);
   void removeTimerSensor(SoTimerQueueSensor * s);
 
-  void setChangedCallback(void (*func)(void *), void * data);
+  void setChangedCallback(void (*sensorQueueChangedCB)(void *), void * data);
 
   void rescheduleTimer(SoTimerSensor * s);
   void removeRescheduledTimer(SoTimerQueueSensor * s);
