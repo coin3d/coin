@@ -1204,6 +1204,15 @@ SoInput::read(SbString & s)
 /*!
   Read a name from the current stream and place it in \a n.
 
+  This method should not be used specifically to read all instances of
+  SbName. The semantics of the interface is such that it is designed
+  to handle identifier tokens from the Inventor / VRML file
+  formats. I.e. cases where node names, node types and field names are
+  to be read. If your goal is to read the value of a SbName field that
+  is not any of the above, and at least when the string might be
+  quoted, then you should most likely use SoInput::read(SbString &)
+  instead.
+
   If \a validIdent is \c TRUE the name needs to be a valid identifier
   (no reserved characters etc), while \a validIdent equal to \c FALSE
   means we'll just read characters for the next word until we hit
@@ -1213,13 +1222,6 @@ SoInput::read(SbString & s)
   been read -- if \a validIdent is also \c FALSE. If \a validIdent is
   passed as \c TRUE, the return value will be \c FALSE if no valid name
   was found, but \e not necessarily on end of file.
-  
-  Note: this method should not be used to read all names. It is
-  specifically designed to handle cases where node names, node types
-  and field names are to be read. If your goal is to read the value of
-  a SbName field that is not any of the above, or if the name might be
-  quoted, then you should use SoInput::read(SbString &) instead.
-
 */
 SbBool
 SoInput::read(SbName & n, SbBool validIdent)
