@@ -61,6 +61,11 @@
   }
   \endverbatim
 
+  Be aware that the triangle throughput is much slower when using the
+  FRACTURE texture mode, since all triangles need to be clipped (using
+  the CPU) against subtextures. It's therefore usually not a good idea
+  to use the FRACTURE mode on large triangle meshes.
+
   \COIN_CLASS_EXTENSION
 
   \since Coin 2.0
