@@ -55,7 +55,7 @@
 */
 
 /*!
-  \fn SoPickedPoint * SoPickedPoint::operator[](const int idx) const
+  \fn SoPickedPoint * SoPickedPointList::operator[](const int idx) const
 
   Returns element at \a idx.
 

@@ -42,13 +42,13 @@
 */
 
 /*!
-  \var SoPathSensor::TriggerFilter PATH
+  \var SoPathSensor::TriggerFilter SoPathSensor::PATH
 
   Trigger on path changes only.
 */
 
 /*!
-  \var SoPathSensor::TriggerFilter NODES
+  \var SoPathSensor::TriggerFilter SoPathSensor::NODES
 
   Trigger on node changes only. This can be nodes in the path, or
   nodes affecting the nodes in the path (nodes that updates the state
@@ -56,7 +56,7 @@
 */
 
 /*!
-  \var SoPathSensor::TriggerFilter PATH_AND_NODES
+  \var SoPathSensor::TriggerFilter SoPathSensor::PATH_AND_NODES
 
   Trigger on both path changes and node changes.
 */
