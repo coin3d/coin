@@ -224,7 +224,8 @@ SoGLTextureImageElement::evaluate(const SbBool enabled, const SbBool transparenc
     // update GL alpha test
     elem->glalphatest = elem->alphatest;
     if (elem->alphatest) {
-      // draw everything with alpha != 0.0
+      // draw everything with alpha > 0.5. This will make the texture
+      // look ok even when linear filtering is used.
       glAlphaFunc(GL_GREATER, 0.5f);
       glEnable(GL_ALPHA_TEST);
     }
