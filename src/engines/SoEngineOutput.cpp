@@ -349,10 +349,19 @@ void
 SoEngineOutput::touchSlaves(SoNotList * nl, SbBool donotify)
 {
   if (this->isEnabled()) {
+    // use a copy of the notification list so that the connections are
+    // not added to the original list
+    SoNotList listcopy;
+    if (nl && donotify) listcopy = *nl;
     int numconnections = this->getNumConnections();
     for (int j = 0; j < numconnections; j++) {
       SoField * field = (*this)[j];
-      if (donotify) field->notify(nl);
+      if (donotify) {
+        field->notify(&listcopy);
+        if (j < numconnections-1) {
+          listcopy = *nl;
+        }
+      }
       else field->setDirty(TRUE);
     }
   }
