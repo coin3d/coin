@@ -28,6 +28,10 @@
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/SbViewportRegion.h>
+#ifndef COIN_INTERNAL
+ // For Open Inventor compatibility.
+ #include <Inventor/nodes/SoScale.h>
+#endif // COIN_INTERNAL
 
 
 class SbRotation;
@@ -40,6 +44,7 @@ class SoEvent;
 class SoPickedPoint;
 
 typedef void SoDraggerCB(void * data, SoDragger * dragger);
+
 
 class COIN_DLL_EXPORT SoDragger : public SoInteractionKit {
   typedef SoInteractionKit inherited;
