@@ -35,6 +35,7 @@
   Note that an SoBumpMapCoordinate node will \e replace the bump map
   coordinates already present in the state (if any).
 
+  \since Coin 2.2
 */
 
 #include <Inventor/nodes/SoBumpMapCoordinate.h>
