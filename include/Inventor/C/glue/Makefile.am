@@ -1,4 +1,3 @@
-
 PublicHeaders = \
 	gl.h \
 	dl.h
@@ -6,6 +5,7 @@ PublicHeaders = \
 PrivateHeaders = \
 	GLUWrapper.h \
 	bzip2.h \
+	cg.h \
 	dlp.h \
 	freetype.h \
 	gl_agl.h \

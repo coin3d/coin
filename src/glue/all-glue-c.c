@@ -26,6 +26,8 @@
 #include "gl_glx.c"
 #include "gl_agl.c"
 
+#include "cg.c"
+
 #include "dl.c"
 
 #include "win32api.c"
