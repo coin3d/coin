@@ -595,6 +595,8 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
   if (!result) return TRUE;
 
 #if COIN_DEBUG && 0 // debug
+  // This debug statement is extremely useful when debugging the
+  // import code, so keep it around.
   SoDebugError::postInfo("SoBase::read", "name: '%s'", name.getString());
 #endif // debug
 
@@ -621,6 +623,10 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
     base->ref();
     base->unref();
   }
+
+#if COIN_DEBUG && 0 // debug
+  if (result) SoDebugError::postInfo("SoBase::read", "baseptr: %p", base);
+#endif // debug
 
   return result;
 }
@@ -796,19 +802,15 @@ SoBase::getCurrentWriteCounter(void)
   return SoBase::writecounter;
 }
 
-/*
-  \internal
-  Used to free the SbPLists in the name<->object dict.
-*/
+// Used to free the SbPLists in the name<->object dict.
 void
 SoBase::freeLists(unsigned long, void * value)
 {
   delete (SbPList *)value;
 }
 
-/*!
-  \internal
- */
+// Reads the name of a reference after a "USE" keyword and finds the
+// ptr to the object which is being referenced.
 SbBool
 SoBase::readReference(SoInput * in, SoBase *& base)
 {
@@ -817,7 +819,27 @@ SoBase::readReference(SoInput * in, SoBase *& base)
     SoReadError::post(in, "Premature end of file after \"%s\"", USE_KEYWORD);
     return FALSE;
   }
-  else if ((base = in->findReference(refname)) == NULL) {
+
+  // This is a pretty ugly hack to handle cases where the USE ref name
+  // is immediately followed by a "." and a fieldname, as can occur
+  // when reading field-to-field connections.
+  //
+  // A proper fix would have to clean up the small mess of how the
+  // SoInput::read(SbName name, SbBool validident) method is
+  // implemented and used.
+  //
+  // 20000129 mortene.
+  if (!in->isBinary()) {
+    const char * refptr = refname.getString();
+    const char * dotptr = strrchr(refptr, '.');
+    if (dotptr && dotptr != refptr) {
+      SbString s = refname.getString();
+      refname = s.getSubString(0, (dotptr - refptr - 1));
+      in->putBack(dotptr);
+    }
+  }
+
+  if ((base = in->findReference(refname)) == NULL) {
     SoReadError::post(in, "Unknown reference \"%s\"", refname.getString());
     return FALSE;
   }
