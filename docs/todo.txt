@@ -18,9 +18,6 @@ with Coin. The items are roughly categorized in these categories:
 
 002. (Modules) [1999????] Implement nodekit support.
 
-003. (Modules) [1999????] Implement SoPickAction and SoRayPickAction
-     to make Coin ready for interaction code.
-
 004. (Modules) [1999????] Complete the implementation of
      projectors. Much of the base code has been made through the
      SbSphereSheetProjector implementation.
