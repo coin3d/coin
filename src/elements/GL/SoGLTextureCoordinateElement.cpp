@@ -30,8 +30,6 @@
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
 #include <Inventor/elements/SoShapeStyleElement.h>
-
-
 #include <assert.h>
 
 #ifdef HAVE_CONFIG_H
@@ -40,8 +38,26 @@
 
 #include <Inventor/system/gl.h>
 
+class SoGLTextureCoordinateElementP {
+public:
+  void * texgenData;
+};
 
-SO_ELEMENT_SOURCE(SoGLTextureCoordinateElement);
+// FIXME: before Coin 3.0, replace texgenData with a pimpl member.
+// This is temporary code for Coin-2, but is also in Coin developement
+// to make it easier to sync the files while developing.  
+// pederb, 2003-10-27
+#define PRIVATE(obj) ((SoGLTextureCoordinateElementP*)(obj->texgenData))
+
+SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoGLTextureCoordinateElement);
+
+SoGLTextureCoordinateElement::SoGLTextureCoordinateElement(void)
+{
+  this->texgenData = (void*) new SoGLTextureCoordinateElementP;
+
+  this->setTypeId(SoGLTextureCoordinateElement::classTypeId);
+  this->setStackIndex(SoGLTextureCoordinateElement::classStackIndex);
+}
 
 /*!
   This static method initializes static data for the
@@ -60,6 +76,7 @@ SoGLTextureCoordinateElement::initClass(void)
 
 SoGLTextureCoordinateElement::~SoGLTextureCoordinateElement()
 {
+  delete PRIVATE(this);
 }
 
 //!  FIXME: write doc.
@@ -69,7 +86,7 @@ SoGLTextureCoordinateElement::init(SoState * state)
 {
   inherited::init(state);
   this->texgenCB = NULL;
-  this->texgenData = NULL;
+  PRIVATE(this)->texgenData = NULL;
 }
 
 //!  FIXME: write doc.
@@ -79,7 +96,7 @@ SoGLTextureCoordinateElement::push(SoState * state)
 {
   SoGLTextureCoordinateElement * prev = (SoGLTextureCoordinateElement*)this->getNextInStack();
   this->texgenCB = prev->texgenCB;
-  this->texgenData = prev->texgenData;
+  PRIVATE(this)->texgenData = PRIVATE(prev)->texgenData;
   // capture previous element since we might or might not change the
   // GL state in set/pop
   prev->capture(state);
@@ -91,7 +108,7 @@ void
 SoGLTextureCoordinateElement::pop(SoState * state,
                                   const SoElement * prevTopElement)
 {
-  SoGLTextureCoordinateElement * prev = (SoGLTextureCoordinateElement*) prevTopElement; 
+  SoGLTextureCoordinateElement * prev = (SoGLTextureCoordinateElement*) prevTopElement;
 
   // only send to GL if something has changed
   if (this->texgenCB && !prev->texgenCB) {
@@ -155,12 +172,20 @@ SoGLTextureCoordinateElement::send(const int index) const
 {
   assert(this->whatKind == EXPLICIT);
   assert(index < this->numCoords);
-  if (this->coordsDimension==2)
+  switch (this->coordsDimension) {
+  case 2:
     glTexCoord2fv(coords2[index].getValue());
-  else if (this->coordsDimension==3)
+    break;
+  case 3:
     glTexCoord3fv(coords3[index].getValue());
-  else // this->coordsDimension==4
+    break;
+  case 4:
     glTexCoord4fv(coords4[index].getValue());
+    break;
+  default:
+    assert(0 && "should not happen");
+    break;
+  }
 }
 
 //!  FIXME: write doc.
@@ -178,18 +203,27 @@ SoGLTextureCoordinateElement::send(const int index,
   else {
     assert(this->whatKind == EXPLICIT);
     //
-    // FIXME: these tests are just here to avoid crashes when illagal
+    // FIXME: these tests are just here to avoid crashes when illegal
     // files are rendered. Will remove later, when we implement a
     // SoVerifyGraphAction or something. pederb, 20000218
     //
     if (index < 0) return;
     if (index >= this->numCoords) return;
-    if (this->coordsDimension==2)
+
+    switch (this->coordsDimension) {
+    case 2:
       glTexCoord2fv(coords2[index].getValue());
-    else if (this->coordsDimension==3)
+      break;
+    case 3:
       glTexCoord3fv(coords3[index].getValue());
-    else // this->coordsDimension==4
+      break;
+    case 4:
       glTexCoord4fv(coords4[index].getValue());
+      break;
+    default:
+      assert(0 && "should not happen");
+      break;
+    }
   }
 }
 
@@ -203,7 +237,7 @@ SoGLTextureCoordinateElement::setElt(SoTexCoordTexgenCB * func,
     glEnable(GL_TEXTURE_GEN_S);
     glEnable(GL_TEXTURE_GEN_T);
     glEnable(GL_TEXTURE_GEN_R);
-    glEnable(GL_TEXTURE_GEN_Q);    
+    glEnable(GL_TEXTURE_GEN_Q);
   }
   else if (!func && this->texgenCB) {
     glDisable(GL_TEXTURE_GEN_S);
@@ -215,7 +249,7 @@ SoGLTextureCoordinateElement::setElt(SoTexCoordTexgenCB * func,
     this->whatKind = FUNCTION;
   }
   this->texgenCB = func;
-  this->texgenData = data;
+  PRIVATE(this)->texgenData = data;
   this->doCallback();
 }
 
@@ -223,6 +257,8 @@ void
 SoGLTextureCoordinateElement::doCallback() const
 {
   if (this->texgenCB) {
-    this->texgenCB(this->texgenData);
+    this->texgenCB(PRIVATE(this)->texgenData);
   }
 }
+
+#undef PRIVATE
