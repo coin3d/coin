@@ -771,6 +771,7 @@ cc_flwft_get_vector_glyph(void * font, int glyph)
   FT_Error error;
   FT_Face face;
   FT_OutlineGlyph g;
+  FT_Glyph tmp;
   FT_Outline outline;
   int glyphindex;
 
@@ -801,9 +802,10 @@ cc_flwft_get_vector_glyph(void * font, int glyph)
   if (error != 0)
     return NULL;
 
-  error = cc_ftglue_FT_Get_Glyph(face->glyph, (FT_Glyph *) &g);
+  error = cc_ftglue_FT_Get_Glyph(face->glyph, &tmp);
   if (error != 0)
     return NULL;
+  g = (FT_OutlineGlyph)tmp;
 
   outline = g->outline;
 
