@@ -170,7 +170,7 @@ SoTexture2::readInstance(SoInput * in, unsigned short flags)
   this->filenamesensor->detach();
   SbBool readOK = inherited::readInstance(in, flags);
   this->setReadStatus((int) readOK);
-  if (readOK && !filename.isDefault()) {
+  if (readOK && !filename.isDefault() && filename.getValue() != "") {
     if (!this->loadFilename()) {
       SoReadError::post(in, "Could not read texture file %s",
                         filename.getValue().getString());
