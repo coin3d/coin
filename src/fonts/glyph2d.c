@@ -217,21 +217,13 @@ glyph2d_specmatch(const cc_font_specification * spec1,
 void 
 cc_glyph2d_getadvance(const cc_glyph2d * g, int * x, int * y)
 {
-  float advancex, advancey;
-  cc_flw_get_advance(g->fontidx, g->glyphidx, &advancex, &advancey);
-
-  *x = (int) advancex;
-  *y = (int) advancey;
+  cc_flw_get_bitmap_advance(g->fontidx, g->glyphidx, x, y);
 }
 
 void 
 cc_glyph2d_getkerning(const cc_glyph2d * left, const cc_glyph2d * right, int * x, int * y)
 {
-  float kx, ky;
-  cc_flw_get_kerning(right->fontidx, left->glyphidx, right->glyphidx, &kx, &ky);
-
-  *x = (int) kx;
-  *y = (int) ky;
+  cc_flw_get_bitmap_kerning(right->fontidx, left->glyphidx, right->glyphidx, x, y);
 }
 
 unsigned int 

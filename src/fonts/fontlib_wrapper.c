@@ -674,8 +674,8 @@ cc_flw_get_glyph(unsigned int font, unsigned int charidx)
   return fsid;
 }
 
-void
-cc_flw_get_advance(unsigned int font, unsigned int glyph, float * x, float * y)
+void 
+cc_flw_get_bitmap_advance(unsigned int font, unsigned int glyph, int * x, int * y)
 {
   struct cc_flw_font * fs;
   struct cc_flw_glyph * gs;
@@ -685,22 +685,76 @@ cc_flw_get_advance(unsigned int font, unsigned int glyph, float * x, float * y)
   fs = flw_fontidx2fontptr(font);
   gs = flw_glyphidx2glyphptr(fs, glyph);
 
+  *x = *y = 0.0f;
+
   if (fs->defaultfont || gs->fromdefaultfont) {
-    /* FIXME: This is not good enough. Temporarily hack. 20030923 handegar */
-    *x = 0.5f;
+    *x = 7;
     *y = 0;
   }
   else {
-    if (win32api) { cc_flww32_get_advance(fs->font, gs->glyph, x, y); }
-    else if (freetypelib) { cc_flwft_get_advance(fs->font, gs->glyph, x, y); }
-    else { *x = *y = 0.0f; }
+    if (win32api) { cc_flww32_get_bitmap_advance(fs->font, gs->glyph, x, y); }
+    else if (freetypelib) { cc_flwft_get_bitmap_advance(fs->font, gs->glyph, x, y); }
   }
 
   FLW_MUTEX_UNLOCK(flw_global_lock);
 }
 
 void
-cc_flw_get_kerning(unsigned int font, unsigned int glyph1, unsigned int glyph2,
+cc_flw_get_vector_advance(unsigned int font, unsigned int glyph, float * x, float * y)
+{
+  struct cc_flw_font * fs;
+  struct cc_flw_glyph * gs;
+
+  FLW_MUTEX_LOCK(flw_global_lock);
+
+  fs = flw_fontidx2fontptr(font);
+  gs = flw_glyphidx2glyphptr(fs, glyph);
+
+  *x = *y = 0.0f;
+
+  if (fs->defaultfont || gs->fromdefaultfont) {
+    /* FIXME: This is not good enough. Temporarily hack. 20030923 handegar */
+    *x = 0.5f;
+    *y = 0;
+  }
+  else {
+    if (win32api) { cc_flww32_get_vector_advance(fs->font, gs->glyph, x, y); }
+    else if (freetypelib) { cc_flwft_get_vector_advance(fs->font, gs->glyph, x, y); }
+  }
+
+  FLW_MUTEX_UNLOCK(flw_global_lock);
+}
+
+void
+cc_flw_get_bitmap_kerning(unsigned int font, unsigned int glyph1, unsigned int glyph2,
+                          int * x, int * y)
+{
+  struct cc_flw_font * fs;
+  struct cc_flw_glyph * gs1, * gs2;
+
+  FLW_MUTEX_LOCK(flw_global_lock);
+
+  fs = flw_fontidx2fontptr(font);
+  gs1 = flw_glyphidx2glyphptr(fs, glyph1);
+  gs2 = flw_glyphidx2glyphptr(fs, glyph2);
+
+  *x = *y = 0.0f;
+
+  if (fs->defaultfont == FALSE) {
+    if (win32api) {
+      cc_flww32_get_bitmap_kerning(fs->font, gs1->glyph, gs2->glyph, x, y);
+    }
+    else if (freetypelib) {
+      cc_flwft_get_bitmap_kerning(fs->font, gs1->glyph, gs2->glyph, x, y);
+    }
+  }
+
+  FLW_MUTEX_UNLOCK(flw_global_lock);
+}
+
+
+void
+cc_flw_get_vector_kerning(unsigned int font, unsigned int glyph1, unsigned int glyph2,
                    float * x, float * y)
 {
   struct cc_flw_font * fs;
@@ -716,10 +770,10 @@ cc_flw_get_kerning(unsigned int font, unsigned int glyph1, unsigned int glyph2,
 
   if (fs->defaultfont == FALSE) {
     if (win32api) {
-      cc_flww32_get_kerning(fs->font, gs1->glyph, gs2->glyph, x, y);
+      cc_flww32_get_vector_kerning(fs->font, gs1->glyph, gs2->glyph, x, y);
     }
     else if (freetypelib) {
-      cc_flwft_get_kerning(fs->font, gs1->glyph, gs2->glyph, x, y);
+      cc_flwft_get_vector_kerning(fs->font, gs1->glyph, gs2->glyph, x, y);
     }
   }
 

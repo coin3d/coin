@@ -331,22 +331,14 @@ cc_glyph3d_getboundingbox(const cc_glyph3d * g)
 void
 cc_glyph3d_getadvance(const cc_glyph3d * g, float * x, float * y)
 {
-  float advancex, advancey;
-  cc_flw_get_advance(g->fontidx, g->glyphidx, &advancex, &advancey);
-
-  *x = advancex;
-  *y = advancey;
+  cc_flw_get_vector_advance(g->fontidx, g->glyphidx, x, y);
 }
 
 void
 cc_glyph3d_getkerning(const cc_glyph3d * left, const cc_glyph3d * right,
                       float * x, float * y)
 {
-  float kx, ky;
-  cc_flw_get_kerning(right->fontidx, left->glyphidx, right->glyphidx, &kx, &ky);
-
-  *x = kx;
-  *y = ky;
+  cc_flw_get_vector_kerning(right->fontidx, left->glyphidx, right->glyphidx, x, y);
 }
 
 static SbBool

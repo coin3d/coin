@@ -70,8 +70,10 @@ void cc_flww32_set_char_size(void * font, int width, int height) { assert(FALSE)
 void cc_flww32_set_font_rotation(void * font, float angle) { assert(FALSE); }
   
 int cc_flww32_get_glyph(void * font, unsigned int charidx) { assert(FALSE); return 0; }
-void cc_flww32_get_advance(void * font, int glyph, float *x, float *y) { assert(FALSE); }
-void cc_flww32_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y) { assert(FALSE); }
+void cc_flww32_get_bitmap_advance(void * font, int glyph, int *x, int *y) { assert(FALSE); }
+void cc_flww32_get_vector_advance(void * font, int glyph, float *x, float *y) { assert(FALSE); }
+void cc_flww32_get_bitmap_kerning(void * font, int glyph1, int glyph2, int *x, int *y) { assert(FALSE); }
+void cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float *x, float *y) { assert(FALSE); }
 void cc_flww32_done_glyph(void * font, int glyph) { assert(FALSE); }
   
 struct cc_flw_bitmap * cc_flww32_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
@@ -440,10 +442,37 @@ cc_flww32_get_glyph(void * font, unsigned int charidx)
   return charidx;
 }
 
+
 /* Returns, in x and y input arguments, how much to advance cursor
    after rendering glyph. */
 void
-cc_flww32_get_advance(void * font, int glyph, float * x, float * y)
+cc_flww32_get_bitmap_advance(void * font, int glyph, int * x, int * y)
+{
+  struct cc_flww32_glyph * glyphstruct = get_glyph_struct(font, glyph);
+#if 0
+  /* FIXME: is this too strict? Could make it on demand. Fix if we
+     ever run into this assert. 20030610 mortene. */
+  assert(glyphstruct && "glyph was not made yet");
+  /* UPDATE: assert hits if glyph does not exist. Re-enable assert
+     after we have set up the code for making an empty rectangle on
+     non-existent glyph. 20030610 mortene. */
+#else /* tmp enabled */
+  if (glyphstruct == NULL) {
+    *x = 10.0f;
+    *y = 0.0f;
+    return;
+  }
+#endif
+
+  *x = glyphstruct->bitmap->advanceX;
+  *y = glyphstruct->bitmap->advanceY;
+}
+
+
+/* Returns, in x and y input arguments, how much to advance cursor
+   after rendering glyph. */
+void
+cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
 {
 
   LOGFONT lfont;

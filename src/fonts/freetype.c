@@ -65,8 +65,10 @@ void cc_flwft_set_char_size(void * font, int width, int height) { assert(FALSE);
 void cc_flwft_set_font_rotation(void * font, float angle) { assert(FALSE); }
   
 int cc_flwft_get_glyph(void * font, unsigned int charidx) { assert(FALSE); return 0; }
-void cc_flwft_get_advance(void * font, int glyph, float *x, float *y) { assert(FALSE); }
-void cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y) { assert(FALSE); }
+void cc_flwft_get_vector_advance(void * font, int glyph, float *x, float *y) { assert(FALSE); }
+void cc_flwft_get_bitmap_advance(void * font, int glyph, int *x, int *y) { assert(FALSE); }
+void cc_flwft_get_vector_kerning(void * font, int glyph1, int glyph2, float *x, float *y) { assert(FALSE); }
+void cc_flwft_get_bitmap_kerning(void * font, int glyph1, int glyph2, int *x, int *y) { assert(FALSE); }
 void cc_flwft_done_glyph(void * font, int glyph) { assert(FALSE); }
 
 struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, unsigned int glyph) { assert(FALSE); return NULL; }
@@ -673,7 +675,26 @@ cc_flwft_get_glyph(void * font, unsigned int charidx)
 }
 
 void
-cc_flwft_get_advance(void * font, int glyph, float *x, float *y)
+cc_flwft_get_bitmap_advance(void * font, int glyph, int *x, int *y)
+{
+  FT_Error error;
+  FT_Face face;
+  float tmp;
+
+  assert(font);
+  face = (FT_Face)font;
+  error = cc_ftglue_FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
+  assert(error == 0 && "FT_Load_Glyph() unexpected failure, investigate");
+
+  tmp = face->glyph->advance.x;
+  x[0] = (int) (tmp / 64.0f);
+  tmp = face->glyph->advance.y;
+  y[0] = (int) (tmp / 64.0f);
+
+}
+
+void
+cc_flwft_get_vector_advance(void * font, int glyph, float *x, float *y)
 {
   FT_Error error;
   FT_Face face;
@@ -689,14 +710,10 @@ cc_flwft_get_advance(void * font, int glyph, float *x, float *y)
   tmp = face->glyph->advance.y * flwft_tessellator.vertex_scale;
   y[0] = (tmp / 64.0f) / flwft_3dfontsize;
 
-  /* FIXME: This will always return 0 when handling bitmap
-     glyphs... Currently, the advancement in SoText2 is based on
-     bitmap-width. Maybe a separate method for getting the advancement
-     in ints should be made for bitmaps (20030911 handegar) */
 }
 
 void
-cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y)
+cc_flwft_get_bitmap_kerning(void * font, int glyph1, int glyph2, int *x, int *y)
 {
   FT_Error error;
   FT_Vector kerning;
@@ -707,7 +724,32 @@ cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y)
   if (FT_HAS_KERNING(face)) {
     error = cc_ftglue_FT_Get_Kerning(face, glyph1, glyph2, ft_kerning_default, &kerning);
     if (error) {
-      cc_debugerror_post("cc_flwft_get_kerning", "FT_Get_Kerning() => %d", error);
+      cc_debugerror_post("cc_flwft_get_bitmap_kerning", "FT_Get_Kerning() => %d", error);
+    }
+    *x = (int) (kerning.x / 64.0f);
+    *y = (int) (kerning.y / 64.0f);
+  }
+  else {
+    *x = 0.0;
+    *y = 0.0;
+  }
+
+}
+
+
+void
+cc_flwft_get_vector_kerning(void * font, int glyph1, int glyph2, float *x, float *y)
+{
+  FT_Error error;
+  FT_Vector kerning;
+  FT_Face face;
+
+  assert(font);
+  face = (FT_Face)font;
+  if (FT_HAS_KERNING(face)) {
+    error = cc_ftglue_FT_Get_Kerning(face, glyph1, glyph2, ft_kerning_default, &kerning);
+    if (error) {
+      cc_debugerror_post("cc_flwft_get_vector_kerning", "FT_Get_Kerning() => %d", error);
     }
     *x = (kerning.x / 64.0f) / flwft_3dfontsize;
     *y = (kerning.y / 64.0f) / flwft_3dfontsize;
@@ -716,11 +758,6 @@ cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y)
     *x = 0.0;
     *y = 0.0;
   }
-
-  /* FIXME: This will always return 0 when handling bitmap
-     glyphs... Currently, the advancement in SoText2 is based on
-     bitmap-width. Maybe a separate method for getting the advancement
-     in ints should be made for bitmaps (20030911 handegar) */
 }
 
 void
