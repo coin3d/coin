@@ -21,6 +21,12 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbVec2f.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/projectors/SbLineProjector.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 
 SO_KIT_SOURCE(SoScale2UniformDragger);
 
@@ -42,68 +48,180 @@ SoScale2UniformDragger::SoScale2UniformDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(feedback, SoSeparator, TRUE, feedbackSwitch, feedbackActive, TRUE);
   SO_KIT_ADD_CATALOG_ENTRY(feedbackActive, SoSeparator, TRUE, feedbackSwitch, "", TRUE);
 
-  SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
+  if (SO_KIT_IS_FIRST_INSTANCE()) {
+    SoInteractionKit::readDefaultParts("scale2UniformDragger.iv", NULL, 0);
+  }
 
+  SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
   SO_KIT_INIT_INSTANCE();
+
+  // initialize default parts
+  this->setPartAsDefault("scaler", "scale2UniformScaler");
+  this->setPartAsDefault("scalerActive", "scale2UniformScalerActive");
+  this->setPartAsDefault("feedback", "scale2UniformFeedback");
+  this->setPartAsDefault("feedbackActive", "scale2UniformFeedbackActive");
+
+  // initialize swich values
+  SoSwitch *sw;
+  sw = SO_GET_ANY_PART(this, "scalerSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 0);
+  sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 0);
+
+  // setup projector
+  this->lineProjX = new SbLineProjector();
+  this->lineProjY = new SbLineProjector();
+
+  this->addStartCallback(SoScale2UniformDragger::startCB);
+  this->addMotionCallback(SoScale2UniformDragger::motionCB);
+  this->addFinishCallback(SoScale2UniformDragger::finishCB);
+
+  this->addValueChangedCallback(SoScale2UniformDragger::valueChangedCB);
+
+  this->fieldSensor = new SoFieldSensor(SoScale2UniformDragger::fieldSensorCB, this);
+  this->fieldSensor->setPriority(0);
+
+  this->setUpConnections(TRUE, TRUE);
 }
 
 
 SoScale2UniformDragger::~SoScale2UniformDragger()
 {
-  COIN_STUB();
+  delete this->lineProjX;
+  delete this->lineProjY;
+  delete this->fieldSensor;
 }
 
 SbBool
 SoScale2UniformDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
-  COIN_STUB();
-  return FALSE;
+  if (!doitalways && this->connectionsSetUp == onoff) return onoff;
+
+  SbBool oldval = this->connectionsSetUp;
+
+  if (onoff) {
+    inherited::setUpConnections(onoff, doitalways);
+
+    SoScale2UniformDragger::fieldSensorCB(this, NULL);
+
+    if (this->fieldSensor->getAttachedField() != &this->scaleFactor) {
+      this->fieldSensor->attach(&this->scaleFactor);
+    }
+  }
+  else {
+    if (this->fieldSensor->getAttachedField() != NULL) {
+      this->fieldSensor->detach();
+    }
+    inherited::setUpConnections(onoff, doitalways);
+  }
+  this->connectionsSetUp = onoff;
+  return oldval;
 }
 
 void
-SoScale2UniformDragger::fieldSensorCB(void * f, SoSensor * s)
+SoScale2UniformDragger::fieldSensorCB(void * d, SoSensor *)
 {
-  COIN_STUB();
+  assert(d);
+  SoScale2UniformDragger *thisp = (SoScale2UniformDragger*)d;
+  SbMatrix matrix = thisp->getMotionMatrix();
+
+  SbVec3f t, s;
+  SbRotation r, so;
+
+  matrix.getTransform(t, r, s, so);
+  s = thisp->scaleFactor.getValue();
+  matrix.setTransform(t, r, s, so);
+  thisp->setMotionMatrix(matrix);
 }
 
 void
-SoScale2UniformDragger::valueChangedCB(void * f, SoDragger * d)
+SoScale2UniformDragger::valueChangedCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoScale2UniformDragger *thisp = (SoScale2UniformDragger*)d;
+  SbMatrix matrix = thisp->getMotionMatrix();
+
+  SbVec3f trans, scale;
+  SbRotation rot, scaleOrient;
+  matrix.getTransform(trans, rot, scale, scaleOrient);
+  thisp->fieldSensor->detach();
+  if (thisp->scaleFactor.getValue() != scale)
+    thisp->scaleFactor = scale;
+  thisp->fieldSensor->attach(&thisp->scaleFactor);
 }
 
 void
-SoScale2UniformDragger::startCB(void * f, SoDragger * d)
+SoScale2UniformDragger::startCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoScale2UniformDragger *thisp = (SoScale2UniformDragger*)d;
+  thisp->dragStart();
 }
 
 void
-SoScale2UniformDragger::motionCB(void * f, SoDragger * d)
+SoScale2UniformDragger::motionCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoScale2UniformDragger *thisp = (SoScale2UniformDragger*)d;
+  thisp->drag();
 }
 
 void
-SoScale2UniformDragger::finishCB(void * f, SoDragger * d)
+SoScale2UniformDragger::finishCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoScale2UniformDragger *thisp = (SoScale2UniformDragger*)d;
+  thisp->dragFinish();
 }
 
 void
 SoScale2UniformDragger::dragStart(void)
 {
-  COIN_STUB();
+  SoSwitch *sw;
+  sw = SO_GET_ANY_PART(this, "scalerSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 1);
+  sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 1);
+
+  SbVec3f hitPt = this->getLocalStartingPoint();
+  this->lineProjX->setLine(SbLine(hitPt, hitPt + SbVec3f(1.0f, 0.0f, 0.0f)));
+  this->lineProjY->setLine(SbLine(hitPt, hitPt + SbVec3f(0.0f, 1.0f, 0.0f)));
 }
 
 void
 SoScale2UniformDragger::drag(void)
 {
-  COIN_STUB();
+  this->lineProjX->setViewVolume(this->getViewVolume());
+  this->lineProjX->setWorkingSpace(this->getLocalToWorldMatrix());
+  this->lineProjY->setViewVolume(this->getViewVolume());
+  this->lineProjY->setWorkingSpace(this->getLocalToWorldMatrix());
+
+
+  SbVec3f projPtX = lineProjX->project(this->getNormalizedLocaterPosition());
+  SbVec3f projPtY = lineProjY->project(this->getNormalizedLocaterPosition());
+  SbVec3f startPt = this->getLocalStartingPoint();
+
+  float motionx = projPtX[0];
+  if (startPt[0] != 0.0f)
+    motionx /= startPt[0];
+  else
+    motionx = 0.0f;
+
+  float motiony = projPtY[1];
+  if (startPt[1] != 0.0f)
+    motiony /= startPt[1];
+  else
+    motiony = 0.0f;
+
+  float motion = SbMax(fabs(motionx), fabs(motiony));
+
+  this->setMotionMatrix(this->appendScale(this->getStartMotionMatrix(),
+                                          SbVec3f(motion, motion, 1.0f),
+                                          SbVec3f(0.0f, 0.0f, 0.0f)));
 }
 
 void
 SoScale2UniformDragger::dragFinish(void)
 {
-  COIN_STUB();
+  SoSwitch *sw;
+  sw = SO_GET_ANY_PART(this, "scalerSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 0);
+  sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 0);
 }

@@ -63,8 +63,8 @@ protected:
   void dragFinish(void);
 
   SoFieldSensor * fieldSensor;
-  SbVec3f closestPtOfZeroScale;
-  SbLineProjector * lineProj;
+  SbLineProjector * lineProjX;
+  SbLineProjector * lineProjY;
 };
 
 #endif // !COIN_SOSCALE2UNIFORMDRAGGER_H
