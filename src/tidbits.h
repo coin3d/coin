@@ -59,6 +59,8 @@ float coin_ntoh_float(float value);
 SbBool coin_isascii(const int c);
 SbBool coin_isspace(const char c);
 
+SbBool coin_is_power_of_two(unsigned int x);
+
 typedef void coin_atexit_f(void);
 void coin_atexit(coin_atexit_f *);
 

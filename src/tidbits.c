@@ -493,6 +493,16 @@ coin_isspace(const char c)
 
 /**************************************************************************/
 
+/* Quick check to see if an integer value is equal to 2^n, for any
+   n=[0, ...]. */
+SbBool
+coin_is_power_of_two(unsigned int x)
+{
+  return (x != 0) && ((x & (x - 1)) == 0);
+}
+
+/**************************************************************************/
+
 /* This little atexit() wrapper is used throughout the sourcecode to
    make the OSF1/cxx compiler accept C++ functions as it's input
    argument. Problem reported by Guy Barrand. */
