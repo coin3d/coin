@@ -24,6 +24,7 @@
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFTrigger.h>
+#include <Inventor/fields/SoSFName.h>
 
 class SoEngineOutput;
 
@@ -34,7 +35,7 @@ class SoGate : public SoEngine {
   SO_ENGINE_HEADER(SoGate);
 
 public:
-  SoGate(SoType input);
+  SoGate(SoType type);
 
   SoSFBool enable;
   SoSFTrigger trigger;
@@ -46,12 +47,22 @@ public:
 
 protected:
   virtual void inputChanged(SoField * which);
+  virtual SbBool readInstance(SoInput *in, unsigned short flags);
+  virtual void writeInstance(SoOutput *out);
 
 private:
+  friend class dummyClassToStopCompilerNagging;
   SoGate(void);
   ~SoGate();
+  void commonConstructor();
+  void initInputOutput(const SoType type);
 
   virtual void evaluate();
+
+  SoFieldData *gateInputData;
+  SoEngineOutputData *gateOutputData;
+
+  SoSFName typeField;
 };
 
 #endif // !COIN_SOGATE_H

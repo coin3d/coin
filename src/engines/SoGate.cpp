@@ -29,60 +29,77 @@
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/SbString.h>
-#include <coindefs.h>
-
-
-SO_ENGINE_SOURCE(SoGate);
-
+#include <assert.h>
 
 /*!
-  Default constructor.
+  Default constructor. Used when reading engine from file.
 */
-SoGate::SoGate(SoType inputtype)
+SoGate::SoGate(void)
 {
-  SO_ENGINE_CONSTRUCTOR(SoGate);
-
-  this->input = (SoMField *)inputtype.createInstance();
-  SO_ENGINE_ADD_INPUT(enable,(FALSE));
-  SO_ENGINE_ADD_INPUT(trigger,());
-
-  //Instead of SO_ENGINE_ADD_OUTPUT()
-  this->output=new SoEngineOutput;
-#if 0 // obsoleted. FIXME: reimplement 20000309 pederb
-  this->output->setType(inputtype);
-#endif // obsolete
-  this->output->setContainer(this);
-#if 0 // FIXME: old kintel code. reimplement. pederb, 20000309
-  this->outputList->append(this->output);
-#endif
+  this->commonConstructor();
 }
 
-// overloaded from parent
+/*!
+  Constructor. The type of the input/output is specified in \a type.
+*/
+SoGate::SoGate(SoType type)
+{
+  this->commonConstructor();
+  this->initInputOutput(type);
+}
+
+
+// doc from parent
 void
 SoGate::initClass()
 {
   SO_ENGINE_INTERNAL_INIT_CLASS(SoGate);
 }
 
-
-//
-// private members
-//
-
-// dummy default constructor
-SoGate::SoGate(void)
+void
+SoGate::commonConstructor(void)
 {
-  assert(FALSE && "default constructor shouldn't be used");
-  // FIXME: ..or used when reading engine from file? 20000324 mortene.
+  this->gateInputData = new SoFieldData;
+  this->gateOutputData = new SoEngineOutputData;
+
+  this->enable.setValue(FALSE);
+  this->enable.setContainer(this);
+  this->trigger.setContainer(this);
+  this->typeField.setValue(SbName("badType"));
+  this->typeField.setContainer(this);
+  this->gateInputData->addField(this, "enable", &this->enable);
+  this->gateInputData->addField(this, "trigger", &this->trigger);
+  this->gateInputData->addField(this, "type", &this->typeField);
 }
 
+// called from constructor or readInstance() to init input/output
+void
+SoGate::initInputOutput(const SoType type)
+{
+  this->input = (SoMField *) type.createInstance();
+  this->input->setNum(0);
+  this->input->setContainer(this);
+
+  this->gateInputData->addField(this, "input", this->input);
+  
+  this->output = new SoEngineOutput;
+  this->output->enable(this->enable.getValue());
+  this->output->setContainer(this);
+  this->gateOutputData->addOutput(this, "output", this->output, type); 
+}
+
+/*!
+  Destructor.
+*/
 SoGate::~SoGate()
 {
+  delete this->gateInputData;
+  delete this->gateOutputData;
   delete this->input;
   delete this->output;
 }
 
-// overloaded from parent
+// doc from parent
 void
 SoGate::evaluate()
 {
@@ -92,15 +109,95 @@ SoGate::evaluate()
   SO_ENGINE_OUTPUT((*output),SoField,set(valueString.getString()));
 }
 
-// overloaded from parent
+// doc from parent
 void
 SoGate::inputChanged(SoField *which)
 {
-  if (which==&this->enable)
+  if (which == &this->enable) {
     this->output->enable(this->enable.getValue());
-  else if (which==&this->trigger) {
+    if (this->enable.getValue()) this->evaluate();
+  }
+  else if (which == &this->trigger) {
     this->output->enable(TRUE);
     this->evaluate();
     this->output->enable(FALSE);
   }
+}
+
+/*!
+  Overloaded to initialize type of gate after reading.
+*/
+SbBool 
+SoGate::readInstance(SoInput *in, unsigned short flags)
+{
+  this->typeField.setValue(SbName("badType"));
+  SbBool ret = inherited::readInstance(in, flags);
+  if (ret) {
+    SoType type = SoType::fromName(this->typeField.getValue());
+    if (type.isDerivedFrom(SoMField::getClassTypeId())) {
+      this->initInputOutput(type);
+    }
+    else ret = FALSE;
+  }
+  return ret;
+}
+
+/*!
+  Overloaded to write type of gate.
+*/
+void
+SoGate::writeInstance(SoOutput *out)
+{
+  this->typeField.setValue(this->input->getClassTypeId().getName());
+  inherited::writeInstance(out);
+}
+
+/*
+ * We cannot use the SO_ENGINE_SOURCE macro, since we need to make
+ * an instance of SoFieldData and SoEngineOutputData for every
+ * SoGate instance, since the input and output is allocated in the 
+ * constructor. This makes it impossible to inherit this class,
+ * but I guess that is the case in OIV too. pederb, 20000331
+ */
+
+SoType SoGate::classTypeId = SoType::badType();
+SoType SoGate::getClassTypeId(void) { return SoGate::classTypeId; }
+SoType SoGate::getTypeId(void) const { return SoGate::classTypeId; }
+
+unsigned int SoGate::classinstances = 0;
+SoFieldData * SoGate::inputdata = NULL;
+const SoFieldData ** SoGate::parentinputdata = NULL;
+SoEngineOutputData * SoGate::outputdata = NULL;
+const SoEngineOutputData ** SoGate::parentoutputdata = NULL;
+
+const SoFieldData **
+SoGate::getInputDataPtr(void)
+{
+  assert(0 && "no static fielddata available for SoGate");
+  return NULL;
+}
+
+const SoFieldData *
+SoGate::getFieldData(void) const
+{
+  return this->gateInputData;
+}
+
+const SoEngineOutputData **
+SoGate::getOutputDataPtr(void)
+{
+  assert(0 && "no static outputdata available for SoGate");
+  return NULL;
+}
+
+const SoEngineOutputData *
+SoGate::getOutputData(void) const
+{
+  return this->gateOutputData;
+}
+
+void *
+SoGate::createInstance(void)
+{
+  return new SoGate;
 }
