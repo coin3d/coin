@@ -184,7 +184,7 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
 
   for (int i = 1; i <= lastenabled; i++) {
     if (enabled[i]) {
-      glClientActiveTexture(GL_TEXTURE0 + i);
+      cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
       cc_glglue_glTexCoordPointer(glue, 4, GL_FLOAT, 0,
                                   (GLvoid*) cache->getMultiTextureCoordinateArray(i));
       cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
@@ -194,15 +194,15 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
   cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT,
                            (const GLvoid*) cache->getIndices());
   
-  for (int i = 1; i <= lastenabled; i++) {
-    if (enabled[i]) {
-      glClientActiveTexture(GL_TEXTURE0 + i);
+  for (int j = 1; j <= lastenabled; j++) {
+    if (enabled[j]) {
+      cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + j);
       cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
     }
   }
   if (lastenabled >= 1) {
     // reset to default
-    glClientActiveTexture(GL_TEXTURE0); 
+    cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0); 
   }
 
   cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
