@@ -942,15 +942,15 @@ void
 SoGLImageP::applyFilter(const SbBool ismipmap)
 {
   if (this->flags & SoGLImage::USE_QUALITY_VALUE) {
-    if (quality < COIN_TEX2_LINEAR_LIMIT) {
+    if (this->quality < COIN_TEX2_LINEAR_LIMIT) {
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     }
-    else if ((quality < COIN_TEX2_MIPMAP_LIMIT) || !ismipmap) {
+    else if ((this->quality < COIN_TEX2_MIPMAP_LIMIT) || !ismipmap) {
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     }
-    else if (quality < COIN_TEX2_LINEAR_MIPMAP_LIMIT) {
+    else if (this->quality < COIN_TEX2_LINEAR_MIPMAP_LIMIT) {
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
     }
