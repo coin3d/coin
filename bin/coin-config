@@ -75,7 +75,8 @@ do
   --msvcrt)          echo "$msvcrt"      ;;
   --have-feature)
     exitcode=1
-    eval "test x\${have_$2} = x1 && exitcode=0"
+    feature="`echo $2 | tr '-' '_'`"
+    eval "test x\${have_$feature} = x1 && exitcode=0"
     exit $exitcode
     ;;
   --compile)
