@@ -646,6 +646,7 @@ glglue_resolve_symbols(cc_glglue * w)
 
   /* Appeared in OpenGL v1.3. */
   w->glActiveTexture = NULL;
+  w->glClientActiveTexture = NULL;
   w->glMultiTexCoord2f = NULL;
   w->glMultiTexCoord2fv = NULL;
   w->glMultiTexCoord3fv = NULL;
@@ -653,6 +654,7 @@ glglue_resolve_symbols(cc_glglue * w)
 #ifdef GL_VERSION_1_3
   if (cc_glglue_glversion_matches_at_least(w, 1, 3, 0)) {
     w->glActiveTexture = (COIN_PFNGLACTIVETEXTUREPROC)PROC(glActiveTexture);
+    w->glClientActiveTexture = (COIN_PFNGLCLIENTACTIVETEXTUREPROC)PROC(glClientActiveTexture);
     w->glMultiTexCoord2f = (COIN_PFNGLMULTITEXCOORD2FPROC)PROC(glMultiTexCoord2f);
     w->glMultiTexCoord2fv = (COIN_PFNGLMULTITEXCOORD2FVPROC)PROC(glMultiTexCoord2fv);
     w->glMultiTexCoord3fv = (COIN_PFNGLMULTITEXCOORD3FVPROC)PROC(glMultiTexCoord3fv);
@@ -662,6 +664,7 @@ glglue_resolve_symbols(cc_glglue * w)
 #ifdef GL_ARB_multitexture
   if (!w->glActiveTexture && cc_glglue_glext_supported(w, "GL_ARB_multitexture")) {
     w->glActiveTexture = (COIN_PFNGLACTIVETEXTUREPROC)PROC(glActiveTextureARB);
+    w->glClientActiveTexture = (COIN_PFNGLACTIVETEXTUREPROC)PROC(glClientActiveTextureARB);
     w->glMultiTexCoord2f = (COIN_PFNGLMULTITEXCOORD2FPROC)PROC(glMultiTexCoord2fARB);
     w->glMultiTexCoord2fv = (COIN_PFNGLMULTITEXCOORD2FVPROC)PROC(glMultiTexCoord2fvARB);
     w->glMultiTexCoord3fv = (COIN_PFNGLMULTITEXCOORD3FVPROC)PROC(glMultiTexCoord3fvARB);
@@ -1694,6 +1697,13 @@ cc_glglue_glActiveTexture(const cc_glglue * w,
   w->glActiveTexture(texture);
 }
 
+void
+cc_glglue_glClientActiveTexture(const cc_glglue * w,
+                                GLenum texture)
+{
+  assert(w->glClientActiveTexture);
+  w->glClientActiveTexture(texture);
+}
 void
 cc_glglue_glMultiTexCoord2f(const cc_glglue * w,
                             GLenum target,
