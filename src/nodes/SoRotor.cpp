@@ -159,7 +159,7 @@ SoRotor::setRotation(void)
   float angle = this->startangle + diffangle;
 
   if (angle > M_PI * 2.0f) {
-    angle = (float) fmod(angle, M_PI * 2.0);
+    angle = (float) fmod((double)angle, M_PI * 2.0);
   }
 
   this->rotfieldsensor->detach();
