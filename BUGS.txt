@@ -3659,3 +3659,52 @@ Cube {
     20031211 mortene, reported by pederb.
 
 =====================================================================
+
+100 Wrong use of glGetError().
+
+    According to the glGetError man pages, this function should always
+    be called in a loop, until it returns GL_NO_ERROR. This is not
+    done everywhere in the Coin source code. Should audit and fix.
+
+    Low priority item, as the consequences of these errors are
+    unlikely to be very serious.
+
+    Should perhaps be fixed by making a "cc_glglue_dump_errors()"
+    function for the internal OpenGL wrapping?
+
+    20040123 mortene.
+
+=====================================================================
+
+101 SoInput stacking of files does not work when reading from stdin.
+
+    So the code below will fail, if run as
+
+        $ testapp < file.iv
+
+    where "file.iv" contains e.g. an SoFile node.
+
+----------8<--------------- [snip] ------------8<--------------- [snip] --
+#include <Inventor/SoDB.h>
+#include <Inventor/nodes/SoSeparator.h>
+
+int
+main(int argc, char ** argv)
+{
+  SoDB::init();
+
+  SoInput in;
+  SoSeparator * sep = SoDB::readAll(&in);
+  assert(sep);
+  return 0;
+}    
+----------8<--------------- [snip] ------------8<--------------- [snip] --
+
+    Fairly obscure and easy to work around, so don't consider this a
+    high priority item. There's a larger issue at play here, however:
+    the internal implementation of a file stack in SoInput is rather
+    messy and hard to debug / modify. Should be cleaned up properly.
+
+    20040130 mortene.
+
+=====================================================================
