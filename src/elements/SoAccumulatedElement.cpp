@@ -22,13 +22,18 @@
 \**************************************************************************/
 
 /*!
-  \class SoAccumulatedElement Inventor/elements/SoAccumulatedElement.h
+  \class SoAccumulatedElement SoAccumulatedElement.h Inventor/elements/SoAccumulatedElement.h
   \brief The SoAccumulatedElement class is an abstract class for storing accumulated state.
   \ingroup elements
 
-  The element store node id values for all nodes accumulated during
+  This is the superclass of elements where new element data \e
+  accumulates with older data.
+
+  The element stores node id values for all nodes accumulated during
   traversal for the current state. These id values are used to
   determine when to invalidate caches.
+
+  \sa SoReplacedElement, SoFloatElement, SoInt32Element
 */
 
 #include <Inventor/elements/SoAccumulatedElement.h>
@@ -49,9 +54,6 @@ SoAccumulatedElement::initClass(void)
   SO_ELEMENT_INIT_ABSTRACT_CLASS(SoAccumulatedElement, inherited);
 }
 
-/*!
-  The destructor.
-*/
 SoAccumulatedElement::~SoAccumulatedElement(void)
 {
 }
@@ -124,7 +126,9 @@ SoAccumulatedElement::copyMatchInfo(void) const
 
 /*!
   Convenience method which copies the node ids from \a copyfrom to
-  this element. This method is not part of the OIV API.
+  this element.
+
+  \COIN_FUNCTION_EXTENSION
 */
 void
 SoAccumulatedElement::copyNodeIds(const SoAccumulatedElement * copyfrom)

@@ -77,14 +77,15 @@
   RGB-image inside an SoTexture2 node, as mapped unto an SoCube:
 
   \code
-  Texture2 {
-     image 2 2 3
+  Complexity { textureQuality 0.1 }   # set low to avoid smoothing
 
-     0xffffff 0x00ff00   # white   green
-     0xff0000 0xffff00   #  red    yellow
+  Texture2 {
+     image 2 2 4
+
+     0xffffffff 0x00ff0088   # white   semi-transparent green  
+     0xff0000ff 0xffff00ff   #  red    yellow
   }
 
-  Complexity { textureQuality 0.1 }   # set low to avoid smoothing
   Cube { }
   \endcode
 

@@ -15,10 +15,6 @@ projects:
 
 * Write a tutorial.
 
-* Implement fontloaders for various platforms and font format types to
-  improve the SoText3 and SoText2 nodes.  FreeType library support would
-  be great.
-
 * Write a NURBS-library covering all the necessary functionality we
   need within the nurbs-based node classes. A good starting point
   would probably be the newly released OpenGL library from SGI (which
@@ -44,8 +40,6 @@ projects:
 
         - SbDict usage (keys are unsigned long (which could be 32 bits
           wide), values are void*)
-
-* Implement heuristics for doing rendercaching.
 
 * Profiling and optimalization of rendering and other action
   traversals.

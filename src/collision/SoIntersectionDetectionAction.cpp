@@ -109,6 +109,10 @@
 */
 
 // FIXME: intersection with lines not implemented yet. 20030507 mortene.
+//
+// UPDATE 20030815 mortene.: just noticed that there's line-line
+// intersection testing code in SoExtSelection. Check if that could be
+// used.
 
 #include <Inventor/collision/SoIntersectionDetectionAction.h>
 

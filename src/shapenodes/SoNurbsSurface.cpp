@@ -47,7 +47,6 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoGL.h>
-#include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/nodes/SoCallback.h>
 
 #include <Inventor/SoPrimitiveVertex.h>

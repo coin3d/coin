@@ -41,6 +41,32 @@
       // ...[snip]...
       int maxplanes = SoGLClipPlaneElement::getMaxGLPlanes();
   \endcode
+
+  Below is a simple, basic scene graph usage example of
+  SoClipPlane. It connects an SoClipPlane to an SoCenterballDragger,
+  for end-user control over the orientation and position of the
+  clipping plane:
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Separator {
+     Separator {
+        Translation { translation -6 0 0 }
+        DEF cbdragger CenterballDragger { }
+     }
+  
+     TransformSeparator {
+        Transform {
+           rotation 0 0 1 0 = USE cbdragger . rotation
+           translation 0 0 0 = USE cbdragger . center
+        }
+        ClipPlane { }
+     }
+  
+     Sphere { }
+  }
+  \endverbatim
 */
 
 #include <Inventor/nodes/SoClipPlane.h>
@@ -54,8 +80,13 @@
 
 /*!
   \var SoSFPlane SoClipPlane::plane
-  Definition of clipping plane.
-  Geometry on the back side of the clipping plane is clipped away.
+
+  Definition of clipping plane.  Geometry on the back side of the
+  clipping plane is clipped away.
+
+  The default clipping plane has it's normal pointing in the <1,0,0>
+  direction, and intersects origo. (I.e., everything along the
+  negative X axis is clipped.)
 */
 /*!
   \var SoSFBool SoClipPlane::on

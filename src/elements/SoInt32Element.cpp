@@ -22,9 +22,21 @@
 \**************************************************************************/
 
 /*!
-  \class SoInt32Element Inventor/elements/SoInt32Element.h
-  \brief The SoInt32Element class is the base class for all elements that only take care of a 32-bit integer.
+  \class SoInt32Element SoInt32Element.h Inventor/elements/SoInt32Element.h
+  \brief The SoInt32Element class is the base class for elements that simply store a 32-bit integer.
   \ingroup elements
+
+  This is the superclass of elements where the new element data \e
+  replaces the old data, and where the data the element stores is a
+  simple 32-bit integer value.
+
+  This element is like a convenient light-weight version of the
+  SoReplacedElement. It differs from the SoReplacedElement in that the
+  set() and get() methods are already implemented, since it is known
+  that subclasses will still contain just a single 32-bit integer
+  value.
+
+  \sa SoReplacedElement, SoFloatElement, SoAccumulatedElement
 */
 
 #include <Inventor/elements/SoInt32Element.h>
@@ -35,31 +47,23 @@
 /*!
   \fn SoInt32Element::data
 
-  FIXME: write doc.
+  The 32-bit integer value of the element.
 */
 
 SO_ELEMENT_ABSTRACT_SOURCE(SoInt32Element);
 
-/*!
-  This static method initializes static data for the SoInt32Element class.
-*/
-
+// documented in superclass
 void
 SoInt32Element::initClass(void)
 {
   SO_ELEMENT_INIT_ABSTRACT_CLASS(SoInt32Element, inherited);
 }
 
-/*!
-  The destructor.
-*/
-
 SoInt32Element::~SoInt32Element(void)
 {
 }
 
-//! FIXME: write doc.
-
+// documented in superclass
 SbBool
 SoInt32Element::matches(const SoElement * element) const
 {
@@ -71,8 +75,7 @@ SoInt32Element::matches(const SoElement * element) const
     return TRUE;
 }
 
-//! FIXME: write doc.
-
+// documented in superclass
 SoElement *
 SoInt32Element::copyMatchInfo(void) const
 {
@@ -81,23 +84,22 @@ SoInt32Element::copyMatchInfo(void) const
         (SoInt32Element *)(getTypeId().createInstance());
     element->data = this->data;
 
-    // DEPRECATED 980807 pederb. copyMatchInfo should only copy
+    // DEPRECATED 19980807 pederb. copyMatchInfo should only copy
     // information needed in matches(). An exact copy is not needed.
+    //
     //    element->dataNode = this->dataNode;
     return (SoElement *)element;
 }
 
-//! FIXME: write doc.
-
+// documented in superclass
 void
 SoInt32Element::print(FILE * file) const
 {
-    fprintf(file, "%s[%p]: data = %d\n",
-        getTypeId().getName().getString(), this, this->data);
+  (void)fprintf(file, "%s[%p]: data = %d\n",
+                getTypeId().getName().getString(), this, this->data);
 }
 
-//! FIXME: write doc.
-
+// documented in superclass
 void
 SoInt32Element::set(const int index,
                     SoState * const state,
@@ -113,7 +115,6 @@ SoInt32Element::set(const int index,
 /*!
   FIXME: write doc.
 */
-
 void
 SoInt32Element::set(const int index, SoState * const state,
                     const int32_t value)

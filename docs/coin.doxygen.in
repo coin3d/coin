@@ -463,7 +463,9 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTranslate1Dragger.h \
                          @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTranslate2Dragger.h \
                          @path_tag@@coin_src_dir@/include/Inventor/elements/SoElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoAccumulatedElement.h \
                          @path_tag@@coin_src_dir@/include/Inventor/elements/SoFloatElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoInt32Element.h \
                          @path_tag@@coin_src_dir@/include/Inventor/elements/SoGLColorIndexElement.h \
                          @path_tag@@coin_src_dir@/include/Inventor/elements/SoGLLineWidthElement.h \
                          @path_tag@@coin_src_dir@/include/Inventor/elements/SoGLPointSizeElement.h \
@@ -913,7 +915,9 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/draggers/SoTranslate1Dragger.cpp \
                          @path_tag@@coin_src_dir@/src/draggers/SoTranslate2Dragger.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/SoAccumulatedElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoFloatElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/SoInt32Element.cpp \
                          @path_tag@@coin_src_dir@/src/elements/GL/SoGLColorIndexElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/GL/SoGLLineWidthElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/GL/SoGLPointSizeElement.cpp \

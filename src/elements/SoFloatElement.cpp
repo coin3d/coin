@@ -25,6 +25,17 @@
   \class SoFloatElement Inventor/elements/SoFloatElement.h
   \brief SoFloatElement is an abstract base class for elements that consists of a single float value.
   \ingroup elements
+
+  This is the superclass of elements where the new element data \e
+  replaces the old data, and where the data the element stores is a
+  simple single precision floating point value.
+
+  This element is like a convenient light-weight version of the
+  SoReplacedElement. It differs from the SoReplacedElement in that the
+  set() and get() methods are already implemented, since it is known
+  that subclasses will still contain just a single float value.
+
+  \sa SoReplacedElement, SoInt32Element, SoAccumulatedElement
 */
 
 #include <Inventor/elements/SoFloatElement.h>

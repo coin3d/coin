@@ -1633,6 +1633,12 @@ SoExtSelectionP::addTriangleToOffscreenBuffer(SoCallbackAction * action,
                                               const SoPrimitiveVertex * v3,
                                               SbBool renderAsBlack)
 {
+  // FIXME: there is a likely major optimization that can be done when
+  // rendering: use the NVidia occlusion culling extension, if
+  // available. That most likely needs to be done on a shape basis (or
+  // if possible: per separator) for it to have a positive effect,
+  // though. 20030824 mortene.
+
   assert(!this->applyonlyonselectedtriangles);
 
   if(primcbdata.allshapes)

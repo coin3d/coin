@@ -46,6 +46,14 @@
   counting". Nodes are deleted (actually, they delete themselves) when
   their unref() method is called and the reference count goes to zero.
 
+  One important side-effect of this is that SoNode-derived classes
+  should \e not be statically allocated, neither in static module
+  memory nor on function's stack-frames. SoNode-derived classes must
+  \e always be allocated dynamically from the memory heap with the \c
+  new operator (or else the scheme with self-destruction upon
+  de-referencing to 0 would not work).
+
+
   Usually application programmers won't manually ref() and unref()
   nodes a lot, because you pass the nodes directly to
   SoGroup::addChild() or So*Viewer::setSceneGraph() or something
@@ -1058,12 +1066,16 @@ SoNode::search(SoSearchAction * action)
   int lookfor = action->getFind();
   SbBool hit = FALSE;
 
-  // Coin v1.0.0 was released with a bug where just one hit out of the
-  // criteria would make the search operation on the node successful.
-  // Since this doesn't match neither the behavior of SGI Inventor nor
-  // the documentation for SoSearchAction, we corrected the behavior
-  // for Coin v1.0.1 even though this is on the borderline of what is
-  // acceptable for fixing in a minor patch-release update.
+  // A little tidbit of history, which could be relevant when
+  // answering support inquiries: Coin v1.0.0 was released with a bug
+  // where just one hit out of the criteria would make the search
+  // operation on the node successful.  Since this doesn't match
+  // neither the behavior of SGI Inventor nor the documentation for
+  // SoSearchAction, we corrected the behavior for Coin v1.0.1 even
+  // though this is on the borderline of what is acceptable for fixing
+  // in a minor patch-release update.
+  //
+  // mortene.
 
   if (lookfor & SoSearchAction::NODE) {
     hit = this == action->getNode();

@@ -30,6 +30,16 @@
   SoBase provides the basic interfaces and methods for doing reference
   counting, type identification and import/export. All classes in Coin
   which uses these mechanisms are descendent from this class.
+
+  One important issue with SoBase-derived classes is that they should
+  \e not be statically allocated, neither in static module memory nor
+  on function's stack-frames. SoBase-derived classes must \e always be
+  allocated dynamically from the memory heap with the \c new operator.
+
+  This is so because SoBase-derived instances are reference counted,
+  and will self-destruct on the approriate time. For this to work,
+  they must be explicitly allocated in heap-memory. See the class
+  documentation of SoNode for more information.
 */
 
 // FIXME: There's a lot of methods in SoBase used to implement VRML
@@ -303,6 +313,17 @@ debug_import(void)
  */
 SoBase::SoBase(void)
 {
+  // It is a common mistake to place e.g. nodes as static member
+  // variables, or on the main()-function's stack-frame. This catches
+  // some (but not all) of those cases.
+  //
+  // FIXME: we could probably add in an MSWin-specific extra check
+  // here for instances placed dynamically on a stack, using Win32 API
+  // functions that can classify a memory pointer as e.g. heap or
+  // stack. 20031018 mortene.
+  assert((SoBase::classTypeId != SoType::badType()) &&
+         "An SoBase-derived class was attempted instantiated *before* Coin initialization. (Have you perhaps placed an SoBase-derived instance (e.g. a scene graph node) in non-heap memory?) See SoBase class documentation for more info.");
+
   cc_rbptree_init(&this->auditortree);
 
   this->objdata.referencecount = 0;

@@ -419,8 +419,8 @@ SoSearchAction::beginTraversal(SoNode * node)
   if (this->path) this->path->unref();
   this->path = NULL;
 
-  // For compatibility with older application code which is using this
-  // flag.
+  // For compatibility with older application code which is using the
+  // now obsoleted 'duringSearchAll' flag.
   SoSearchAction::duringSearchAll = this->isSearchingAll();
 
   this->traverse(node); // begin traversal at root node

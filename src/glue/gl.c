@@ -703,6 +703,9 @@ glglue_resolve_symbols(cc_glglue * w)
 
   w->supportsPalettedTextures =
     cc_glglue_glext_supported(w, "GL_EXT_paletted_texture");
+  /* FIXME: is paletted textures _really_ not supported through any
+     non-extension mechanism for the later OpenGL spec versions?
+     Investigate. 20031027 mortene. */
 
 #ifdef GL_EXT_paletted_texture
   /* Note that EXT_paletted_texture defines glColorTableEXT et al

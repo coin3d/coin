@@ -26,11 +26,11 @@
   \brief The SoReplacedElement class is an abstract element superclass.
   \ingroup elements
 
-  This is the superclass of all elements where the new element value
-  \e replaces the old value. Most elements in the Coin library is in
-  this category.
+  This is the superclass of all elements where the new element data \e
+  replaces the old data, and where the data the element stores is not
+  just a simple float or integer value.
 
-  Apart from this conceptual difference from it's superclass, the
+  Apart from this conceptual difference from its superclass, the
   SoReplacedElement class also overloads the default getElement()
   method to include a node reference. This reference is used to fetch
   the unique node identification number of the node that last changed

@@ -438,9 +438,9 @@ SoDB::init(void)
 
   SbBool initaudio = FALSE;
 
-#ifdef _WIN32
+#ifdef HAVE_WIN32_API
   initaudio = TRUE;
-#endif // _WIN32
+#endif // HAVE_WIN32_API
 
   env = coin_getenv("COIN_SOUND_ENABLE");
   if (env) {
@@ -1487,10 +1487,7 @@ SoDBP::listWin32ProcessModules(void)
 
 /* *********************************************************************** */
 
-// FIXME: there should be a proper check in the configure script for
-// the presence of the Win32 API, so we could replace this
-// non-standardized compiler-dependent define. 20030509 mortene.
-#ifdef _WIN32
+#ifdef HAVE_WIN32_API
 
 class StaticObjectInDLL {
 public:
@@ -1558,6 +1555,6 @@ private:
 
 static StaticObjectInDLL dllobject;
 
-#endif // _WIN32
+#endif // HAVE_WIN32_API
 
 /* *********************************************************************** */

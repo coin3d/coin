@@ -1494,6 +1494,9 @@ SoInput::addEnvDirectoriesIdx(int startidx,
     return;
   }
 
+  // FIXME: the following "tokenizer" code could perhaps be factored
+  // out and moved to e.g. SbStringList? 20030820 mortene.
+
   if (separator == NULL) {
     // use default separators if NULL
     separator = ":\t ";

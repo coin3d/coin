@@ -112,6 +112,9 @@ SoDebugError::initClass(void)
   SoDebugError::classTypeId =
     SoType::createType(SoError::getClassTypeId(), "DebugError");
 
+  // FIXME: the following "tokenizer" code could perhaps be factored
+  // out and moved to e.g. SbStringList? 20030820 mortene.
+
 #if COIN_DEBUG
   // parse breakpoints only the first time we get here.
   if (num_breakpoints < 0) {
