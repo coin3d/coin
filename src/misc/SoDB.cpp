@@ -389,7 +389,7 @@ SoDB::init(void)
 
   const char * env;
 
-#if defined(HAVE_SOUND)
+#if defined(HAVE_SOUND) && 0 // disabled 2002-01-29 pederb. Crashes under Linux
   SoAudioDevice * audioDevice;
   audioDevice = SoAudioDevice::instance();
   env = coin_getenv("COIN_SOUND_DRIVER_NAME");      
