@@ -23,10 +23,15 @@
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/SbVec2f.h>
+#include <Inventor/SbTime.h>
 
 class SoSensor;
 class SoFieldSensor;
-
+class SbSphereProjector;
+class SbCylinderProjector;
+class SbLineProjector;
+class SoTimerSensor;
 
 class SoTrackballDragger : public SoDragger {
   typedef SoDragger inherited;
@@ -85,6 +90,26 @@ protected:
 
   SoFieldSensor * rotFieldSensor;
   SoFieldSensor * scaleFieldSensor;
+
+private:
+  SoNode *getNodeFieldNode(const char *fieldname);
+  void updateUserAxisSwitches(const SbBool setactive = FALSE);
+  
+  SbSphereProjector *sphereProj;
+  SbCylinderProjector *cylProj;
+  SbLineProjector *lineProj;
+
+  int whatkind;
+  SbBool animationEnabled;
+  SbVec2f prevMousePos;
+  SbTime prevTime;
+  SbTime animTime;
+  SbVec3f animAxis;
+  float animAngle;
+  SbBool hasDragged;
+
+  SoTimerSensor *timerSensor;
+  static void timerSensorCB(void *, SoSensor *);
 };
 
 #endif // !COIN_SOTRACKBALLDRAGGER_H
