@@ -51,11 +51,11 @@
 
 class SoFontLibP {
 public:
-  static void * initmutex;
+  static void * apimutex;
   static SbStringList * fontfiles;
 };
 
-void * SoFontLibP::initmutex = NULL;
+void * SoFontLibP::apimutex = NULL;
 SbStringList * SoFontLibP::fontfiles = NULL;
 
 /*************************************************************************/
@@ -77,9 +77,9 @@ SoFontLib::~SoFontLib()
 void
 SoFontLib::initialize(void)
 {
-  if (SoFontLibP::initmutex == NULL)
-    CC_MUTEX_CONSTRUCT(SoFontLibP::initmutex);
-  CC_MUTEX_LOCK(SoFontLibP::initmutex);
+  if (SoFontLibP::apimutex == NULL)
+    CC_MUTEX_CONSTRUCT(SoFontLibP::apimutex);
+  CC_MUTEX_LOCK(SoFontLibP::apimutex);
 
   // Where to look for font files
   if (coin_getenv("COIN_FONT_PATH") != NULL) {
@@ -116,24 +116,24 @@ SoFontLib::initialize(void)
   }
 
   flwInitialize();
-  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
 }
 
 void
 SoFontLib::exit()
 {
-  CC_MUTEX_LOCK(SoFontLibP::initmutex);
+  CC_MUTEX_LOCK(SoFontLibP::apimutex);
   flwExit();
   delete SoFontLibP::fontfiles;
-  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
-  if (SoFontLibP::initmutex != NULL)
-    CC_MUTEX_DESTRUCT(SoFontLibP::initmutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
+  if (SoFontLibP::apimutex != NULL)
+    CC_MUTEX_DESTRUCT(SoFontLibP::apimutex);
 }
 
 const SbString
 SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbVec2s &size)
 {
-  CC_MUTEX_LOCK(SoFontLibP::initmutex);
+  CC_MUTEX_LOCK(SoFontLibP::apimutex);
   SbString path;
   char name[300];
   int fileidx, i, retval;
@@ -154,94 +154,94 @@ SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbV
   int font = flwCreateFont( path.getString(), name, 300, 12, 12 );
   if (font >= 0)
     flwSetCharSize(font, (int)size[0], (int)size[1]);
-  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
   return SbString(name);
 }
 
 int
 SoFontLib::getFont(const SbName &fontname, const SbVec2s &size)
 {
-  CC_MUTEX_LOCK(SoFontLibP::initmutex);
+  CC_MUTEX_LOCK(SoFontLibP::apimutex);
   int font = flwGetFont( fontname.getString(), (int)size[0], (int)size[1]);
   // flwSetFontRotation(font, 45.0);  // DEBUG
-  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
   return font;
 }
 
 void
 SoFontLib::doneFont(const int font)
 {
-  CC_MUTEX_LOCK(SoFontLibP::initmutex);
+  CC_MUTEX_LOCK(SoFontLibP::apimutex);
   if (font >= 0)
     flwDoneFont(font);
-  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
 }
 
 int
 SoFontLib::getNumCharmaps(const int font)
 {
-  CC_MUTEX_LOCK(SoFontLibP::initmutex);
+  CC_MUTEX_LOCK(SoFontLibP::apimutex);
   int retval = 0;
   if (font >= 0)
     retval = flwGetNumCharmaps(font);
-  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
   return retval;
 }
 
 SbName
 SoFontLib::getCharmapName(const int font, const int charmap)
 {
-  CC_MUTEX_LOCK(SoFontLibP::initmutex);
+  CC_MUTEX_LOCK(SoFontLibP::apimutex);
   char namebuf[80];
   sprintf(namebuf,"unknown");
   if (font >= 0)
     flwGetCharmapName(font, charmap, namebuf, 80);
-  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
   return SbName(namebuf);
 }
 
 void
 SoFontLib::setCharmap(const int font, const int charmap)
 {
-  CC_MUTEX_LOCK(SoFontLibP::initmutex);
+  CC_MUTEX_LOCK(SoFontLibP::apimutex);
   if (font >= 0)
     flwSetCharmap(font, charmap);
-  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
 }
 
 void
 SoFontLib::setCharSize(const int font, const SbVec2s &size)
 {
-  CC_MUTEX_LOCK(SoFontLibP::initmutex);
+  CC_MUTEX_LOCK(SoFontLibP::apimutex);
   if (font >= 0)
     flwSetCharSize(font, (int)size[0], (int)size[1]);
-  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
 }
 
 void
 SoFontLib::setFontRotation(const int font, const float angle)
 {
-  CC_MUTEX_LOCK(SoFontLibP::initmutex);
+  CC_MUTEX_LOCK(SoFontLibP::apimutex);
   if (font >= 0)
     flwSetFontRotation(font, angle);
-  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
 }
 
 int
 SoFontLib::getGlyph(const int font, const int charidx)
 {
-  CC_MUTEX_LOCK(SoFontLibP::initmutex);
+  CC_MUTEX_LOCK(SoFontLibP::apimutex);
   int retval = -1;
   if (font >= 0)
     retval = flwGetGlyph(font, charidx);
-  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
   return retval;
 }
 
 SbVec2s
 SoFontLib::getAdvance(const int font, const int glyph)
 {
-  CC_MUTEX_LOCK(SoFontLibP::initmutex);
+  CC_MUTEX_LOCK(SoFontLibP::apimutex);
   SbVec2s retval(0, 0);
   if (font >= 0) {
     float x, y;
@@ -249,14 +249,14 @@ SoFontLib::getAdvance(const int font, const int glyph)
     if (result==0)
       retval = SbVec2s((short)x, (short)y);
   }
-  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
   return retval;
 }
 
 SbVec2s
 SoFontLib::getKerning(const int font, const int leftglyph, const int rightglyph)
 {
-  CC_MUTEX_LOCK(SoFontLibP::initmutex);
+  CC_MUTEX_LOCK(SoFontLibP::apimutex);
   SbVec2s retval(0, 0);
   if (font >= 0) {
     float x, y;
@@ -264,17 +264,17 @@ SoFontLib::getKerning(const int font, const int leftglyph, const int rightglyph)
     if (result==0)
       retval = SbVec2s((short)x, (short)y);
   }
-  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
   return retval;
 }
 
 void
 SoFontLib::doneGlyph(const int font, const int glyph)
 {
-  CC_MUTEX_LOCK(SoFontLibP::initmutex);
+  CC_MUTEX_LOCK(SoFontLibP::apimutex);
   if (font >= 0)
     flwDoneGlyph(font, glyph);
-  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
 }
 
 
@@ -285,7 +285,7 @@ SoFontLib::doneGlyph(const int font, const int glyph)
 unsigned char *
 SoFontLib::getBitmap(const int font, const int glyph, SbVec2s &size, SbVec2s &pos, const SbBool antialiased)
 {
-  CC_MUTEX_LOCK(SoFontLibP::initmutex);
+  CC_MUTEX_LOCK(SoFontLibP::apimutex);
   unsigned char * retval = NULL;
   if (font >= 0 && glyph >= 0) {
     FLWbitmap * bm = flwGetBitmap(font, glyph);
@@ -297,17 +297,17 @@ SoFontLib::getBitmap(const int font, const int glyph, SbVec2s &size, SbVec2s &po
       retval = bm->buffer;
     }
   }
-  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
   return retval;
 }
 
 int
 SoFontLib::getOutline(const int font, const int glyph)
 {
-  CC_MUTEX_LOCK(SoFontLibP::initmutex);
+  CC_MUTEX_LOCK(SoFontLibP::apimutex);
   int retval = -1;
   if (font >= 0)
     retval = flwGetOutline(font, glyph);
-  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
   return retval;
 }
