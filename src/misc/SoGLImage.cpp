@@ -750,15 +750,20 @@ translate_wrap(SoState * state, const SoGLImage::Wrap wrap)
   if (wrap == SoGLImage::REPEAT) return GL_REPEAT;
   if (wrap == SoGLImage::CLAMP_TO_EDGE) {
 #if GL_VERSION_1_2
-    return GL_CLAMP_TO_EDGE;
-#elif GL_EXT_texture_edge_clamp
+    int major, minor;
+    SoGLCacheContextElement::getOpenGLVersion(state, major, minor);
+    if (major > 1 || minor >= 2) return GL_CLAMP_TO_EDGE;
+#endif // GL_VERSION_1_2
+
+#if GL_EXT_texture_edge_clamp
     static int texture_clamp_ext = -1;
     if (texture_clamp_ext == -1) {
       texture_clamp_ext = SoGLCacheContextElement::getExtID("GL_EXT_texture_edge_clamp");
     }
     if (SoGLCacheContextElement::extSupported(state, texture_clamp_ext))
       return GL_CLAMP_TO_EDGE_EXT;
-#elif GL_SGIS_texture_edge_clamp
+#endif // GL_EXT_texture_edge_clamp
+#if GL_SGIS_texture_edge_clamp
     static int texture_clamp_sgis = -1;
     if (texture_clamp_sgis == -1) {
       texture_clamp_sgis = SoGLCacheContextElement::getExtID("SGIS_texture_edge_clamp");
