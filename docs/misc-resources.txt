@@ -134,12 +134,10 @@ THE LINKS
   http://shape.cs.princeton.edu
 
 * Coin Debian Builds
-  2001-12-17  Lars J. Aas  <larsa@sim.no>
-
   http://buildd.debian.org/build.php?arch=&pkg=coin
 
-  Contains configure/make logs from building Coin on a number of different
-  Debian Linux architectures.
+  Contains configure/make logs from building Coin on a number (10) of
+  different Debian Linux architectures.
 
 * Open Dynamics Engine, simulation of articulated rigid body dynamics:
   http://www.q12.org/ode/ode.html (also has links to other similar
