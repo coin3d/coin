@@ -25,5 +25,5 @@ m4datadir = $(datadir)/aclocal
 m4data_DATA = conf-macros/coin.m4
 
 doxygen-doc:
-	@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
+	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
 

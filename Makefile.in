@@ -482,7 +482,7 @@ maintainer-clean
 coin-config: coin-config.in
 
 doxygen-doc:
-	@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
+	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
