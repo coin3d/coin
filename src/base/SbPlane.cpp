@@ -140,9 +140,15 @@ SbBool
 SbPlane::intersect(const SbLine& l, SbVec3f& intersection) const
 {
 #if COIN_DEBUG
-  if(!(normal.length() != 0.0f))
+  if (this->normal.length() == 0.0f) {
+    SoDebugError::postWarning("SbPlane::intersect",
+                              "Normal vector for plane is null vector");
+
+  }
+  if (l.getDirection().length() == 0.0f) {
     SoDebugError::postWarning("SbPlane::intersect",
                               "Intersecting line doesn't have a direction.");
+  }
 #endif // COIN_DEBUG
 
   // Check if the line is parallel to the plane.
