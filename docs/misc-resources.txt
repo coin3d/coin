@@ -43,6 +43,10 @@ THE LINKS
   A library for rendering high quality postscript from any OpenGL
   application. Released under LGPL.
 
+  Update 2002-01-17 mortene: an article explaining how to do
+  resolution independent vector export from OpenGL can also be found
+  here: <URL:http://www.codeproject.com/useritems/glexport.asp>.
+
 * openNURBS
   2001-07-20 Marius Kintel <kintel@sim.no>
 
@@ -144,3 +148,6 @@ THE LINKS
   engines)
 
 * Driver for input device spaceball: http://www.3dconnexion.com/software/sdk/
+
+* OpenGL FAQ and Troubleshooting Guide:
+     <URL:http://www.frii.com/~martz/oglfaq/>
