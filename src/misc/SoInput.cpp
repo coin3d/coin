@@ -614,8 +614,8 @@ SoInput::isValidFile(void)
 }
 
 /*!
-  Returns \c TRUE if the current file is a valid file which can be read by
-  the Coin library.
+  Returns \c TRUE if it looks like the memory buffer contains a valid file
+  which can be read by the Coin library.
  */
 SbBool
 SoInput::isValidBuffer(void)
