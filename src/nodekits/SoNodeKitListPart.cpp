@@ -37,10 +37,6 @@
   \sa SoGroup, SoSeparator, SoSwitch
  */
 
-/*¡
-  Keep SoChildList * children updated.
- */
-
 #include <Inventor/nodekits/SoNodeKitListPart.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
@@ -126,9 +122,9 @@ SoNodeKitListPart::setContainerType(SoType newContainerType)
 
   SoGroup * newroot = (SoGroup *) newContainerType.createInstance();
 
-  SoChildList * children = this->getChildren();
-  for (int i=0; i < children->getLength(); i++) {
-    newroot->addChild((*children)[i]);
+  SoChildList * kids = this->getChildren();
+  for (int i=0; i < kids->getLength(); i++) {
+    newroot->addChild((*kids)[i]);
   }
 
   this->containerNode.setValue(newroot);

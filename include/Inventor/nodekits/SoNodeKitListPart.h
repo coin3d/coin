@@ -78,7 +78,11 @@ protected:
   virtual void copyContents(const SoFieldContainer * fromFC,
                             SbBool copyConnections);
 
-  SoChildList * children;
+  // Open Inventor also provides this protected member, but its hard
+  // to see that it should be useful, given that the getChildren()
+  // method is available for everyone.
+  //
+  // SoChildList * children;
 
 private:
   void syncInternalData(void);
