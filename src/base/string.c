@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
+ *  Copyright (C) 1998-2002 by Systems in Motion.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License version 2 as
@@ -44,7 +44,19 @@
    20020513 mortene.
 */
 
+/*!
+  \struct cc_string string.h Inventor/C/base/string.h
+  \brief The cc_string type is a C ADT for ASCII string management.
+  \ingroup base
+
+  This is a Coin extension.
+*/
+
 /* ********************************************************************** */
+
+/*!
+  \relates cc_string
+*/
 
 void
 cc_string_remove_substring(cc_string * me, int start, int end)
@@ -67,6 +79,10 @@ cc_string_remove_substring(cc_string * me, int start, int end)
   (void) memmove(me->pointer + start, me->pointer + end + 1, len - end);
 } /* cc_string_remove_substring() */
 
+/*!
+  \relates cc_string
+*/
+
 static void
 cc_string_expand_buffer(cc_string * me, int additional)
 {
@@ -86,6 +102,10 @@ cc_string_expand_buffer(cc_string * me, int additional)
 
 /* ********************************************************************** */
 
+/*!
+  \relates cc_string
+*/
+
 void
 cc_string_construct(cc_string * me)
 {
@@ -93,6 +113,10 @@ cc_string_construct(cc_string * me)
   me->bufsize = CC_STRING_MIN_SIZE;
   me->buffer[0] = '\0';
 } /* cc_string_construct() */
+
+/*!
+  \relates cc_string
+*/
 
 cc_string *
 cc_string_construct_new(void)
@@ -104,6 +128,10 @@ cc_string_construct_new(void)
   return me;
 } /* cc_string_construct_new() */
 
+/*!
+  \relates cc_string
+*/
+
 cc_string *
 cc_string_clone(cc_string * string)
 {
@@ -113,12 +141,20 @@ cc_string_clone(cc_string * string)
   return me;
 } /* cc_string_clone() */
 
+/*!
+  \relates cc_string
+*/
+
 void
 cc_string_clean(cc_string * string_struct)
 {
   if ( string_struct->pointer != string_struct->buffer )
     free(string_struct->pointer);
 } /* cc_string_clean() */
+
+/*!
+  \relates cc_string
+*/
 
 void
 cc_string_destruct(cc_string * me)
@@ -129,6 +165,10 @@ cc_string_destruct(cc_string * me)
 } /* cc_string_destruct() */
 
 /* ********************************************************************** */
+
+/*!
+  \relates cc_string
+*/
 
 void
 cc_string_set_text(cc_string * me, const char * text)
@@ -147,6 +187,10 @@ cc_string_set_text(cc_string * me, const char * text)
     cc_string_expand_buffer(me, size - strlen(me->pointer) - 1);
   (void) strcpy(me->pointer, text);
 } /* cc_string_set_text() */
+
+/*!
+  \relates cc_string
+*/
 
 void
 cc_string_set_subtext(cc_string * me, const char * text, int start, int end)
@@ -209,12 +253,20 @@ cc_string_set_subtext(cc_string * me, const char * text, int start, int end)
   me->pointer[size] = '\0';
 } /* cc_string_set_subtext() */
 
+/*!
+  \relates cc_string
+*/
+
 void
 cc_string_set_integer(cc_string * me, int integer)
 {
   me->pointer[0] = '\0';
   cc_string_append_integer(me, integer);
 } /* cc_string_set_integer() */
+
+/*!
+  \relates cc_string
+*/
 
 void
 cc_string_set_string(cc_string * me, const cc_string * string)
@@ -224,11 +276,19 @@ cc_string_set_string(cc_string * me, const cc_string * string)
 
 /* ********************************************************************** */
 
+/*!
+  \relates cc_string
+*/
+
 void
 cc_string_append_string(cc_string * me, const cc_string * string)
 {
   cc_string_append_text(me, string->pointer);
 } /* cc_string_append_string() */
+
+/*!
+  \relates cc_string
+*/
 
 void
 cc_string_append_text(cc_string * me, const char * text)
@@ -239,6 +299,10 @@ cc_string_append_text(cc_string * me, const char * text)
   }
 } /* cc_string_append_text() */
 
+/*!
+  \relates cc_string
+*/
+
 void
 cc_string_append_integer(cc_string * me, const int digits)
 {
@@ -248,6 +312,10 @@ cc_string_append_integer(cc_string * me, const int digits)
   cc_string_append_string(me, &s);
   cc_string_clean(&s);
 } /* cc_string_append_integer() */
+
+/*!
+  \relates cc_string
+*/
 
 void
 cc_string_append_char(cc_string * me, const char c)
@@ -261,12 +329,20 @@ cc_string_append_char(cc_string * me, const char c)
 
 /* ********************************************************************** */
 
+/*!
+  \relates cc_string
+*/
+
 unsigned int
 cc_string_length(const cc_string * me)
 {
   /* FIXME: should cache the length of the string. 20020513 mortene. */
   return strlen(me->pointer);
 } /* cc_string_length() */
+
+/*!
+  \relates cc_string
+*/
 
 void
 cc_string_clear(cc_string * me)
@@ -279,11 +355,19 @@ cc_string_clear(cc_string * me)
   me->pointer[0] = '\0';
 } /* cc_string_clear() */
 
+/*!
+  \relates cc_string
+*/
+
 void
 cc_string_clear_no_free(cc_string * me)
 {
   me->pointer[0] = '\0';
 } /* cc_string_clear_no_free() */
+
+/*!
+  \relates cc_string
+*/
 
 uint32_t
 cc_string_hash_text(const char * text)
@@ -299,17 +383,29 @@ cc_string_hash_text(const char * text)
   return total;
 }
 
+/*!
+  \relates cc_string
+*/
+
 uint32_t
 cc_string_hash(const cc_string * me)
 {
   return cc_string_hash_text(me->pointer);
 } /* cc_string_hash() */
 
+/*!
+  \relates cc_string
+*/
+
 const char *
 cc_string_get_text(const cc_string * me)
 {
   return me->pointer;
 } /* cc_string_get_text() */
+
+/*!
+  \relates cc_string
+*/
 
 void
 cc_string_get_substring(cc_string * me, int start, int end, cc_string * dst)
@@ -319,11 +415,19 @@ cc_string_get_substring(cc_string * me, int start, int end, cc_string * dst)
 
 /* ********************************************************************** */
 
+/*!
+  \relates cc_string
+*/
+
 int
 cc_string_is(const cc_string * me)
 {
   return (me->pointer[0] != '\0');
 } /* cc_string_is() */
+
+/*!
+  \relates cc_string
+*/
 
 int
 cc_string_compare(const cc_string * lhs, const cc_string * rhs)
@@ -331,11 +435,19 @@ cc_string_compare(const cc_string * lhs, const cc_string * rhs)
   return cc_string_compare_text(lhs->pointer, rhs->pointer);
 } /* cc_string_compare() */
 
+/*!
+  \relates cc_string
+*/
+
 int
 cc_string_compare_text(const char * lhs, const char * rhs)
 {
   return lhs && rhs && strcmp(lhs, rhs);
 } /* cc_string_compare_text() */
+
+/*!
+  \relates cc_string
+*/
 
 int
 cc_string_compare_subtext(const cc_string * me, const char * text, int offset)
@@ -345,6 +457,10 @@ cc_string_compare_subtext(const cc_string * me, const char * text, int offset)
 } /* cc_string_compare_prefix() */
 
 /* ********************************************************************** */
+
+/*!
+  \relates cc_string
+*/
 
 void
 cc_string_apply(cc_string * string, char (*function)(char input))
@@ -358,6 +474,10 @@ cc_string_apply(cc_string * string, char (*function)(char input))
 
 /* ********************************************************************** */
 
+/*!
+  \relates cc_string
+*/
+
 void
 cc_string_sprintf(cc_string * me, const char * formatstr, ...)
 {
@@ -366,6 +486,10 @@ cc_string_sprintf(cc_string * me, const char * formatstr, ...)
   cc_string_vsprintf(me, formatstr, args);
   va_end(args);
 } /* cc_string_sprintf() */
+
+/*!
+  \relates cc_string
+*/
 
 void
 cc_string_vsprintf(cc_string * me, const char * formatstr, va_list args)
