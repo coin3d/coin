@@ -491,11 +491,11 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
     const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
     if (lastenabled >= 1) {
       for (int i = 1; i <= lastenabled; i++) {
-        if (enabled[i]) {
+        if (enabled[i] && (SoMultiTextureCoordinateElement::getType(state, i) !=
+                           SoTextureCoordinateElement::FUNCTION)) {
           SoMultiTextureCoordinateElement::set2(state, this, i,
                                                 PRIVATE(this)->tcoord.getLength(),
                                                 PRIVATE(this)->tcoord.getArrayPtr());
-          
         }
       }
     }
@@ -576,14 +576,31 @@ SoVRMLExtrusion::generatePrimitives(SoAction * action)
 
   SoState * state = action->getState();
   state->push();
-
+  
   if (SoTextureCoordinateElement::getType(state) !=
       SoTextureCoordinateElement::FUNCTION) {
     SoTextureCoordinateElement::set2(state, this, PRIVATE(this)->tcoord.getLength(),
                                      PRIVATE(this)->tcoord.getArrayPtr());
   }
 
-  SoTextureCoordinateBundle tb(action, FALSE, FALSE);
+  if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
+    int lastenabled = -1;
+    const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+    if (lastenabled >= 1) {
+      for (int i = 1; i <= lastenabled; i++) {
+        if (enabled[i] && (SoMultiTextureCoordinateElement::getType(state, i) !=
+                           SoTextureCoordinateElement::FUNCTION)) {
+          SoMultiTextureCoordinateElement::set2(state, this, i,
+                                                PRIVATE(this)->tcoord.getLength(),
+                                                PRIVATE(this)->tcoord.getArrayPtr());
+        }
+      }
+    }
+  }
+
+  SoTextureCoordinateBundle tb(action, FALSE, FALSE); 
+  SbBool istexfunc = tb.isFunction();
+  istexfunc = FALSE;
   SoPrimitiveVertex vertex;
 
   int idx;
@@ -593,7 +610,7 @@ SoVRMLExtrusion::generatePrimitives(SoAction * action)
     while (idx >= 0) {
       vertex.setNormal(*normals);
       vertex.setPoint(coords[idx]);
-      if (tb.isFunction()) {
+      if (istexfunc) {
         vertex.setTextureCoords(tb.get(coords[idx], *normals));
       }
       else {
