@@ -945,7 +945,7 @@ static SbBool
 soinput_is_ident_start_char(SoInput * in, char c)
 {
   if (in->isFileVRML2()) {
-    if (c <= 0x20) return FALSE;
+    if (c >= 0 && c <= 0x20) return FALSE;
     if (c >= 0x30 && c <= 0x39) return FALSE;
     switch (c) {
     case 0x22:
@@ -973,7 +973,7 @@ static SbBool
 soinput_is_ident_char(SoInput * in, char c)
 {
   if (in->isFileVRML2()) {
-    if (c <= 0x20) return FALSE;
+    if (c >= 0 && c <= 0x20) return FALSE;
     switch (c) {
     case 0x22:
     case 0x23: 
