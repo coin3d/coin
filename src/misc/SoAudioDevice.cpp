@@ -85,7 +85,7 @@ SoAudioDevice::~SoAudioDevice()
     delete THIS->audioRenderAction;
 
 #ifdef HAVE_SOUND
-  alcDestroyContext((ALCcontext_struct *)THIS->context);
+  alcDestroyContext((ALCcontext *)THIS->context);
 
   //Close device
   alcCloseDevice(THIS->device);
@@ -115,7 +115,7 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
   }
 
   THIS->context=alcCreateContext(THIS->device,NULL);
-  alcMakeContextCurrent((ALCcontext_struct *)THIS->context);
+  alcMakeContextCurrent((ALCcontext *)THIS->context);
 
   // Clear Error Code
   alGetError();
