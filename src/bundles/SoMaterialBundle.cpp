@@ -44,10 +44,6 @@
 
 #include <GL/gl.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-
 /*!
   Constructor with \a action being the action applied to the
   geometry node.
@@ -56,8 +52,6 @@ SoMaterialBundle::SoMaterialBundle(SoAction *action)
   : SoBundle(action)
 {
   this->firstTime = TRUE; // other members will be set in setUpElements
-  // we might modify stipple element
-  this->state->push();
 }
 
 /*!
@@ -65,7 +59,6 @@ SoMaterialBundle::SoMaterialBundle(SoAction *action)
 */
 SoMaterialBundle::~SoMaterialBundle()
 {
-  this->state->pop(); // pop off modified stipple element
 }
 
 /*!
@@ -85,6 +78,7 @@ SoMaterialBundle::sendFirst(void)
 {
   this->setupElements(FALSE);
   this->reallySend(0, FALSE);
+  if (this->stippleElt) this->stippleElt->evaluate();
   
   // a small optimization to avoid unnecessary material
   // testing (it is most common to only have multiple diffuse values)
@@ -141,22 +135,7 @@ SoMaterialBundle::isColorOnly(void) const
 void
 SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
 {  
-  if (this->doStipple && !isBetweenBeginEnd) {
-    float trans;
-    if (this->diffusePacked) {
-      uint32_t rgba = this->diffuseElt->getPackedArrayPtr()[this->multiTrans ? index : 0];
-      trans = (255 - (rgba & 0xff)) / 255.0f;
-    }
-    else {
-      trans = transparencyElt->get(this->multiTrans ? index : 0);
-    }
-    if (trans > 0.0f) {
-      SoGLPolygonStippleElement::set(this->state, TRUE);
-      SoGLPolygonStippleElement::setTransparency(this->state, trans);
-    }
-    else
-      SoGLPolygonStippleElement::set(this->state, FALSE);
-    this->stippleElt->evaluate(); // this is a lazy element. Force send.
+  if (this->doStipple) {
     this->diffuseElt->send(index);
   }
   else if (!this->diffusePacked) {
@@ -203,10 +182,8 @@ SoMaterialBundle::setupElements(const SbBool /* betweenBeginEnd */)
   }
 
   this->doStipple = SoShapeStyleElement::isScreenDoor(this->state);
-  if (this->doStipple) {
-    this->stippleElt = (SoGLPolygonStippleElement*)
-      state->getElement(SoGLPolygonStippleElement::getClassStackIndex());
-  }
+  this->stippleElt = (SoGLPolygonStippleElement*)
+    state->getConstElement(SoGLPolygonStippleElement::getClassStackIndex());
 
   if (!this->colorOnly) {
     this->ambientElt = (SoGLAmbientColorElement*)

@@ -45,6 +45,7 @@
 #include <Inventor/elements/SoGLSpecularColorElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoTransparencyElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 
 /*!
   \var SoMFColor SoMaterial::ambientColor
@@ -147,6 +148,14 @@ SoMaterial::initClass(void)
 void
 SoMaterial::GLRender(SoGLRenderAction * action)
 {
+  SoState * state = action->getState();
+  if (SoShapeStyleElement::isScreenDoor(state) &&
+      ! this->transparency.isIgnored() && 
+      ! SoOverrideElement::getTransparencyOverride(state)) {
+    float t = this->transparency[0];
+    SoGLPolygonStippleElement::setTransparency(state, t);
+    SoGLPolygonStippleElement::set(state, t >= 1.0f/255.0f);
+  }
   SoMaterial::doAction(action);
 }
 

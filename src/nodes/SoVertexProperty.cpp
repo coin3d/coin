@@ -51,6 +51,8 @@
 #include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoGLShadeModelElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoGLPolygonStippleElement.h>
 
 /*!
   \enum SoVertexProperty::Binding
@@ -214,6 +216,14 @@ SoVertexProperty::GLRender(SoGLRenderAction * action)
 {
   SoState *state = action->getState();
   SbBool materialbindoverride = SoOverrideElement::getMaterialBindingOverride(state);
+
+  if (SoShapeStyleElement::isScreenDoor(state) &&
+      ! this->orderedRGBA.isIgnored() && 
+      ! SoOverrideElement::getTransparencyOverride(state)) {
+    float t = (255 - (this->orderedRGBA[0] & 0xff)) / 255.0f;
+    SoGLPolygonStippleElement::setTransparency(state, t);
+    SoGLPolygonStippleElement::set(state, t >= 1.0f/255.0f);
+  }
 
   if (texCoord.getNum() > 0) {
     SoGLTextureCoordinateElement::setTexGen(state,
