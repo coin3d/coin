@@ -1,10 +1,5 @@
 =====================================================================
 
-000 FIXED 2002-02-17: Bounding box combinations came up lousy when the
-    bboxes that were combined had zero volume.
-
-=====================================================================
-
 001 Writing draggers to file dumps the full set of parts. Reproduce
     with this minimal example:
 
@@ -69,6 +64,8 @@
     known. Hard to debug and fix without access to the platform in
     question.
 
+    <mortene@sim.no> 20020205.
+
 =====================================================================
 
 004 The ``buildings/Barcelona.iv'' model from the SGI Inventor archive
@@ -78,5 +75,194 @@
     For a larger task: we should audit our rendering (and related)
     code and fix all cases were we lack robustness for at least the
     most common mistakes. See the docs/todo.txt item on this.
+
+    <mortene@sim.no> 20020521.
+
+=====================================================================
+
+005 Free memory read on connected SoSFEnum fields?
+
+    This is an old problem which might have been fixed now, but we
+    should check it with Valgrind: Purify used to report "Free memory
+    read" when deleting SoSFEnum fields that were connected to other
+    fields.
+
+    <mortene@sim.no> 20020521.
+
+=====================================================================
+
+006 SoText2 won't show with drawstyle == hidden line. Bug reported by
+    Jean Davy. Reproduce with this minimal, stand-alone example:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #include <Inventor/Qt/SoQt.h>
+    #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+    #include <Inventor/nodes/SoCone.h>
+    #include <Inventor/nodes/SoSeparator.h>
+    #include <Inventor/nodes/SoText2.h>
+    
+    int
+    main(int argc, char* argv[])
+    {
+      QWidget * mainwin = SoQt::init(argv[0]);
+      SoSeparator * root = new SoSeparator;
+    
+      root->addChild(new SoCone);
+      SoText2 * text2d = new SoText2;
+      root->addChild(text2d);
+      text2d->string = "tjo-bing";
+    
+      SoQtExaminerViewer * viewer = new SoQtExaminerViewer(mainwin);
+      viewer->setSceneGraph(root);
+      viewer->setDrawStyle(SoQtExaminerViewer::STILL,
+                           SoQtExaminerViewer::VIEW_HIDDEN_LINE);
+    
+      SoQt::show(mainwin);
+      SoQt::mainLoop();
+    
+      return 0;
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    This is the cause of the bug, according to <pederb@sim.no>:
+
+      We use GL polygon offset to do hidden line rendering, and this
+      caused problems since the SoText2 characters are rendered twice
+      (for the first pass we just draw everything black, with an
+      z-buffer offset). SoText2 characters are drawn as bitmaps, which
+      are not affected by polygon offset.
+
+    <mortene@sim.no> 20020521.
+
+=====================================================================
+
+007 For the following stand-alone example, picking on the nurbscurve
+    only partly works:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #include <Inventor/SoDB.h>
+    #include <Inventor/SoInput.h>
+    #include <Inventor/SoPickedPoint.h>
+    #include <Inventor/events/SoLocation2Event.h>
+    #include <Inventor/nodes/SoBaseColor.h>
+    #include <Inventor/nodes/SoCone.h>
+    #include <Inventor/nodes/SoCoordinate3.h>
+    #include <Inventor/nodes/SoEventCallback.h>
+    #include <Inventor/nodes/SoMarkerSet.h>
+    #include <Inventor/nodes/SoSeparator.h>
+    #include <Inventor/Qt/SoQt.h>
+    #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+    
+    SoCoordinate3 *coord;
+    
+    void mouseMoveCB(void *userData, SoEventCallback *eventCB)
+    {
+      const SoPickedPoint *pickP = eventCB->getPickedPoint();
+      if(pickP){
+        const float *xyz = pickP->getPoint().getValue();
+        printf("xyz =%lf %lf %lf\n",xyz[0],xyz[1],xyz[2]);
+        coord->point.setValue(xyz);
+      }
+    }
+    
+    const char * nurbscurve = "#Inventor V2.1 ascii\n\n"
+    "Separator {"
+    "   PickStyle {"
+    "      style SHAPE"
+    "   }"
+    "   LightModel {"
+    "      model BASE_COLOR"
+    "   }"
+    "   Coordinate3 {"
+    "      point [ 1476.11 1460.84 -628.038,"
+    "       1470.86 1447.8 -622.961,"
+    "       1462.15 1424.9 -613.788,"
+    "       1452.31 1396.07 -601.719,"
+    "       1443.57 1368.74 -589.954,"
+    "       1428.74 1318.74 -567.739,"
+    "       1399.1 1199.31 -510.515,"
+    "       1380.47 1084 -445.435,"
+    "       1366.84 973.854 -378.304,"
+    "       1361.86 927.129 -348.91,"
+    "       1356.41 868.655 -311.219,"
+    "       1351.93 814.353 -275.603,"
+    "       1347.16 745.613 -229.666,"
+    "       1342.98 674.034 -181.29,"
+    "       1339.84 614.017 -140.592,"
+    "       1336.44 546.811 -95.1583,"
+    "       1331.26 446.458 -27.7185,"
+    "       1321.74 299.504 68.5609,"
+    "       1306.62 162.637 153.404,"
+    "       1290.91 63.5896 211.906,"
+    "       1276.65 -13.3307 256.203,"
+    "       1255.13 -107.653 308.474,"
+    "       1222.55 -219.064 367.003,"
+    "       1195.21 -292.713 403.659,"
+    "       1180.26 -329.3 421.348 ]"
+    "   }"
+    "   NurbsCurve {"
+    "      numControlPoints 25"
+    "      knotVector [ 0, 0, 0, 0,"
+    "       0.0212654, 0.0372336, 0.0466221, 0.0653992,"
+    "       0.117887, 0.239617, 0.255294, 0.302551,"
+    "       0.318454, 0.354628, 0.395169, 0.43633,"
+    "       0.477697, 0.498482, 0.551868, 0.649936,"
+    "       0.748818, 0.781971, 0.815122, 0.876749,"
+    "       0.938373, 1, 1, 1,"
+    "       1 ]"
+    "   }"
+    "}";
+    
+    
+    int
+    main(int argc, char ** argv)
+    {
+      QWidget *window = SoQt::init(argv[0]);
+    
+      SoSeparator *root = new SoSeparator;
+     
+      //add a green marker to appear under cursor
+      SoSeparator *marksep = new SoSeparator;
+      root->addChild(marksep);
+      SoBaseColor *markColor = new SoBaseColor;
+      markColor->rgb.setValue(0,1,0);
+      marksep->addChild(markColor);
+      coord = new SoCoordinate3;
+      marksep->addChild(coord);
+      SoMarkerSet *mark = new SoMarkerSet;
+      marksep->addChild(mark);
+      mark->markerIndex=SoMarkerSet::PLUS_5_5;
+      
+      SoEventCallback *myEventCB = new SoEventCallback;
+      root->addChild(myEventCB);
+      myEventCB->addEventCallback(SoLocation2Event::getClassTypeId(),mouseMoveCB);
+    
+      SoInput in;
+      in.setBuffer((void *)nurbscurve, strlen(nurbscurve));
+      SoSeparator * nurbsep = SoDB::readAll(&in);
+      assert(nurbsep);
+      root->addChild(nurbsep);
+    
+      SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
+      viewer->setSceneGraph(root);
+      viewer->show();
+      SoQt::show(window);
+      SoQt::mainLoop();
+      return 0;
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    (Original test-code supplied by Nigel Murry.)
+
+    Some other specifications for nurbscurves and nurbssurfaces tested
+    works correctly.
+
+    pederb has tracked this down to be likely to be caused by bugs in
+    libGLU: a rendered curve is different from a tesselated curve (!).
+
+    Hard to solve this *properly* without implementing our own
+    nurbs-library. Are there any quick-fixes we could apply?
+
+    <mortene@sim.no> 20020521.
 
 =====================================================================
