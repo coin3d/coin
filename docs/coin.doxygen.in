@@ -867,9 +867,9 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/draggers/SoTranslate2Dragger.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoFloatElement.cpp \
-                         @path_tag@@coin_src_dir@/src/elements/SoGLColorIndexElement.cpp \
-                         @path_tag@@coin_src_dir@/src/elements/SoGLLineWidthElement.cpp \
-                         @path_tag@@coin_src_dir@/src/elements/SoGLPointSizeElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/GL/SoGLColorIndexElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/GL/SoGLLineWidthElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/GL/SoGLPointSizeElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoLineWidthElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoListenerPositionElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoListenerOrientationElement.cpp \
@@ -1035,7 +1035,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoAnnotation.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoAntiSquish.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoArray.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoAsciiText.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoAsciiText.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoBaseColor.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoBlinker.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoCallback.cpp \
@@ -1043,50 +1043,50 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoClipPlane.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoColorIndex.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoComplexity.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoCone.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoCone.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoCoordinate3.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoCoordinate4.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoCube.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoCylinder.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoCube.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoCylinder.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoDirectionalLight.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoDrawStyle.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoEnvironment.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoEventCallback.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoExtSelection.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoFaceSet.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoFaceSet.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoFile.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoFont.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoFontStyle.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoGroup.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoImage.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoIndexedFaceSet.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoIndexedLineSet.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoIndexedNurbsCurve.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoIndexedNurbsSurface.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoIndexedShape.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoIndexedTriangleStripSet.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoImage.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedFaceSet.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedLineSet.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedNurbsCurve.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedNurbsSurface.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedShape.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoIndexedTriangleStripSet.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoInfo.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoLOD.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoLabel.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoLevelOfDetail.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoLight.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoLightModel.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoLineSet.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoLineSet.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoLinearProfile.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoListener.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoLocateHighlight.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoMarkerSet.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoMarkerSet.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoMaterial.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoMaterialBinding.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoMatrixTransform.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoMultipleCopy.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoNode.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoNonIndexedShape.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoNonIndexedShape.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoNormal.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoNormalBinding.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoNurbsCurve.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoNurbsCurve.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoNurbsProfile.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoNurbsSurface.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoNurbsSurface.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoOrthographicCamera.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoPackedColor.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoPathSwitch.cpp \
@@ -1094,12 +1094,12 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoPerspectiveCamera.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoPickStyle.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoPointLight.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoPointSet.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoPointSet.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoPolygonOffset.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoProfile.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoProfileCoordinate2.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoProfileCoordinate3.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoQuadMesh.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoQuadMesh.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoResetTransform.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoRotation.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoRotationXYZ.cpp \
@@ -1107,15 +1107,15 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoScale.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoSelection.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoSeparator.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoShape.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoShape.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoShapeHints.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoShuttle.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoSphere.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoSphere.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoSpotLight.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoSurroundScale.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoSwitch.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoText2.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoText3.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoText2.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoText3.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTexture2.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTexture2Transform.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTexture3.cpp \
@@ -1132,10 +1132,10 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoTransformation.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTranslation.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTransparencyType.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoTriangleStripSet.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoTriangleStripSet.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoUnits.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoVertexProperty.cpp \
-                         @path_tag@@coin_src_dir@/src/nodes/SoVertexShape.cpp \
+                         @path_tag@@coin_src_dir@/src/shapenodes/SoVertexShape.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoWWWAnchor.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoWWWInline.cpp \
                          @path_tag@@coin_src_dir@/src/projectors/SbCylinderPlaneProjector.cpp \
