@@ -33,8 +33,10 @@
 #include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
 #include "VectorizeActionP.h"
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <stdio.h>
 #include <math.h> // for floor() and ceil()
+
 
 // *************************************************************************
 
@@ -50,6 +52,14 @@ public:
     this->dummycnt = 0;
   }
 
+  enum {
+    // max setdash vector length
+    // FIXME: this seems to be the limit hardcoded into Ghostscript.
+    // The postscript language reference doesn't say anything about
+    // the maximum length of the setdash vector. pederb, 2004-10-21
+    DASH_LIMIT = 10
+  };
+  
   SbVec2f convertToPS(const SbVec2f & mm) const;
   float convertToPS(const float mm) const;
 
@@ -405,10 +415,23 @@ SoVectorizePSActionP::printSetdash(uint16_t pattern) const
 
   int pos = 15;
   SbBool onoff = TRUE;
-  while (pos >= 0) {
+  int dashcnt = 0;
+
+  while (pos >= 0 && dashcnt < DASH_LIMIT) {
     int cnt = count_bits(pattern, pos, onoff);
     fprintf(file," %d", cnt);
     onoff = !onoff;
+    dashcnt++;
+  }
+  if (dashcnt == DASH_LIMIT && pos >= 0) {
+    static int didwarn = 0;
+    if (!didwarn) {
+      SoDebugError::postWarning("SoVectorizeActionP::printSetdash",
+                                "linePattern mask is too complex. "
+                                "Dash is truncated to %d items.",
+                                DASH_LIMIT);
+      didwarn = 1;
+    }
   }
   if (!onoff) { // need pairs of values
     fputs(" 0] 0 setdash\n", file);
