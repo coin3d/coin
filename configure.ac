@@ -159,7 +159,6 @@ case "$prefix:$coin_build_dir" in
 */=inst:*/=build )
   enable_threads=yes
   enable_threadsafe=yes
-  enable_vrml97=yes
   enable_html=yes
   enable_man=yes
   enable_3ds_import=yes
@@ -271,13 +270,14 @@ AM_CONDITIONAL([BUILD_3DS_CAPABILITIES], [$sim_ac_enable_3ds_import])
 # *******************************************************************
 # Search for the vrml97 extension
 
-sim_ac_enable_vrml97=false
+sim_ac_enable_vrml97=true
 
 AC_ARG_ENABLE(
   [vrml97],
-  AC_HELP_STRING([--enable-vrml97], [enable VRML97 support]), [
+  AC_HELP_STRING([--disable-vrml97], [disable VRML97 support]), [
   case $enableval in
     yes | true) sim_ac_enable_vrml97=true ;;
+    no | false) sim_ac_enable_vrml97=false ;;
     *) ;;
   esac])
 

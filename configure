@@ -1027,7 +1027,7 @@ Optional Features:
   --enable-optimization   allow compilers to make optimized code
                           [default=yes]
   --enable-3ds-import     enable 3ds import capabilities
-  --enable-vrml97         enable VRML97 support
+  --disable-vrml97        disable VRML97 support
   --enable-threads        enable platform-independent multithreading
                           abstraction classes
   --disable-w32threads    never use Win32 threads, even when available
@@ -1873,7 +1873,6 @@ case "$prefix:$coin_build_dir" in
 */=inst:*/=build )
   enable_threads=yes
   enable_threadsafe=yes
-  enable_vrml97=yes
   enable_html=yes
   enable_man=yes
   enable_3ds_import=yes
@@ -5062,7 +5061,7 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5065 "configure"' > conftest.$ac_ext
+  echo '#line 5064 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5598,7 +5597,7 @@ chmod -w .
 save_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:5601: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+if { (eval echo configure:5600: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -7391,7 +7390,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7394 "configure"
+#line 7393 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -7489,7 +7488,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7492 "configure"
+#line 7491 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -8828,7 +8827,7 @@ fi
 # *******************************************************************
 # Search for the vrml97 extension
 
-sim_ac_enable_vrml97=false
+sim_ac_enable_vrml97=true
 
 # Check whether --enable-vrml97 or --disable-vrml97 was given.
 if test "${enable_vrml97+set}" = set; then
@@ -8836,6 +8835,7 @@ if test "${enable_vrml97+set}" = set; then
 
   case $enableval in
     yes | true) sim_ac_enable_vrml97=true ;;
+    no | false) sim_ac_enable_vrml97=false ;;
     *) ;;
   esac
 fi;
