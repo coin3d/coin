@@ -57,9 +57,9 @@
 #include <Inventor/elements/SoFocalDistanceElement.h>
 #include <Inventor/elements/SoGLProjectionMatrixElement.h>
 #include <Inventor/elements/SoGLViewingMatrixElement.h>
-#include <Inventor/elements/SoGLViewportRegionElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
 
 // FIXME: should document the enum values. 20000310 mortene.
 /*!
