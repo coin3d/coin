@@ -129,20 +129,18 @@ public:
   // mappings.
 
   void addConverter(const void * item, SoFieldConverter * converter)
-    // XXX, "item" == masterfield
   {
+    // "item" can be SoField* or SoEngineOutput*.
     this->maptoconverter.enter((const unsigned long)item, converter);
   }
 
   void removeConverter(const void * item)
-    // XXX, "item" == masterfield
   {
     SbBool ok = this->maptoconverter.remove((const unsigned long)item);
     assert(ok);
   }
 
   SoFieldConverter * findConverter(const void * item)
-    // XXX, "item" == masterfield
   {
     void * val;
     if (!this->maptoconverter.find((const unsigned long)item, val))
@@ -507,8 +505,8 @@ SoField::connectFrom(SoEngineOutput * master, SbBool notnotify, SbBool append)
     // field.  (Note that the ``this'' slave field can also be an
     // input field of an SoFieldConverter instance.)
 
-    // XXX
-//      master->getContainer()->addAuditor(this, SoNotRec::FIELD);
+    // This is enough, the container SoEngine will automatically pick
+    // up on it.
     master->addConnection(this);
   }
   else { // Needs an SoFieldConverter between this field and the SoEngineOutput
@@ -570,7 +568,9 @@ SbBool
 SoField::connectFrom(SoVRMLInterpOutput * master,
                      SbBool notnotify, SbBool append)
 {
-  COIN_STUB();
+  // I believe the code will be more or less identical with
+  // SoField::disconnect(SoEngineOutput *). 20000411 mortene.
+  COIN_STUB(); // FIXME
   return FALSE;
 }
 
@@ -647,8 +647,6 @@ SoField::disconnect(SoEngineOutput * master)
     this->storage->removeConverter(master);
   }
   else { // No converter, just a direct link.
-    // XXX
-//      master->getContainer()->removeAuditor(this, SoNotRec::FIELD);
     master->removeConnection(this);
   }
 }
@@ -659,7 +657,9 @@ SoField::disconnect(SoEngineOutput * master)
 void
 SoField::disconnect(SoVRMLInterpOutput * master)
 {
-  COIN_STUB();
+  // I believe the code will be more or less identical with
+  // SoField::disconnect(SoEngineOutput *). 20000411 mortene.
+  COIN_STUB(); // FIXME
 }
 
 /*!
@@ -1625,8 +1625,8 @@ SoField::evaluateConnection(void) const
     int idx = this->storage->masterfields.getLength() - 1;
     SoField * master = this->storage->masterfields[idx];
     SoFieldConverter * converter = this->storage->findConverter(master);
-    if (converter) converter->evaluateWrapper(); // FIXME: more here?
-    else ((SoField *)this)->copyFrom(*master); // cast away const
+    if (converter) converter->evaluateWrapper();
+    else ((SoField *)this)->copyFrom(*master); // cast away const and copy
   }
   else if (this->isConnectedFromEngine()) {
     int idx = this->storage->masterengineouts.getLength() - 1;
