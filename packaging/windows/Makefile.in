@@ -84,18 +84,19 @@ sourcelist.nsi: Coin-$(VERSION) Makefile
 	  fi; \
 	done ) >sourcelist.nsi
 
-buildfileslist.nsi: build-files Makefile
+buildfileslist.nsi: buildfiles Makefile
 	( prevdir=; cd build-files; for path in ./coin@COIN_MAJOR_VERSION@.* `find . -name "*.h"`; do \
 	  dir=`echo $$path | sed 's/\/[^\/]*$$//'`; \
 	  if test x"$$dir" != x"$$prevdir"; then \
 	    prevdir=$$dir; \
 	    file=`echo $$path | sed 's/^.*\///g'`; \
-	    dir=`echo $$dir | sed 's/\//\\\\/g'`; \
-	    echo "SetOutPath \$$INSTDIR\\build\\$$dir"; \
-	    echo "File $$dir\\$$file"; \
+	    dir=`echo $$dir | sed 's/\//\\\\/g' | cut -c2-`; \
+	    echo "SetOutPath \$$INSTDIR\\build$$dir"; \
+	    echo "File .\\build-files$$dir\\$$file"; \
 	  else \
+	    dir=`echo $$dir | sed 's/\//\\\\/g' | cut -c2-`; \
 	    file=`echo $$path | sed 's/^.*\///g'`; \
-	    echo "File $$dir\\$$file"; \
+	    echo "File .\\build-files$$dir\\$$file"; \
 	  fi; \
 	done ) >buildfileslist.nsi
 
@@ -220,7 +221,7 @@ build-static-debug/src/coin@COIN_MAJOR_VERSION@d.dll: Coin-$(VERSION)
 
 static-debug: build-static-debug/src/coin@COIN_MAJOR_VERSION@d.dll
 
-build-files: build-files/coin@COIN_MAJOR_VERSION@.dsp
+buildfiles: build-files/coin@COIN_MAJOR_VERSION@.dsp
 
 build-files/coin@COIN_MAJOR_VERSION@.dsp: Coin-$(VERSION)
 	@if test -d build-files; then :; else mkdir build-files; fi
@@ -230,6 +231,6 @@ build-files/coin@COIN_MAJOR_VERSION@.dsp: Coin-$(VERSION)
 	  --enable-msvcdsp; \
 	$(MAKE) clean && $(MAKE)
 
-.PHONY: docs shared-release shared-debug static-release static-debug
+.PHONY: docs shared-release shared-debug static-release static-debug buildfiles
 
 # **************************************************************************
