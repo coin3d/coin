@@ -18,6 +18,14 @@ Options:
 
 version="@COIN_VERSION@"
 
+for arg
+do
+  case $arg in
+  --debug) dsuffix=d ;;
+  *) ;;
+  esac
+done
+
 cppflags="@COIN_EXTRA_CPPFLAGS@"
 ldflags="@COIN_EXTRA_LDFLAGS@"
 libs="@COIN_EXTRA_LIBS@"
@@ -43,6 +51,8 @@ do
       -o $program $@ \
       $LIBS $libs
     ;;
+  # options to ignore
+  --debug) ;;
   *)
     echo "$me: Invalid option: \"$1\""
     echo "$usage" >&2
