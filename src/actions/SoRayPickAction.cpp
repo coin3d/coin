@@ -36,6 +36,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoPickRayElement.h>
+#include <Inventor/elements/SoClipPlaneElement.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/misc/SoState.h>
@@ -233,8 +234,8 @@ void
 SoRayPickAction::setPoint(const SbVec2s &viewportPoint)
 {
   this->vpPoint = viewportPoint;
-  this->clearFlag(FLAG_NORM_POINT|FLAG_WS_RAY_SET|FLAG_WS_RAY_COMPUTED|
-		  FLAG_CLIP_NEAR|FLAG_CLIP_FAR);
+  this->clearFlag(FLAG_NORM_POINT|FLAG_WS_RAY_SET|FLAG_WS_RAY_COMPUTED);
+  this->setFlag(FLAG_CLIP_NEAR|FLAG_CLIP_FAR);
 }
 
 /*!
@@ -246,8 +247,8 @@ void
 SoRayPickAction::setNormalizedPoint(const SbVec2f &normPoint)
 {
   this->normvpPoint = normPoint;
-  this->clearFlag(FLAG_WS_RAY_SET|FLAG_WS_RAY_COMPUTED|FLAG_CLIP_NEAR|FLAG_CLIP_FAR);
-  this->setFlag(FLAG_NORM_POINT);
+  this->clearFlag(FLAG_WS_RAY_SET|FLAG_WS_RAY_COMPUTED);
+  this->setFlag(FLAG_NORM_POINT|FLAG_CLIP_NEAR|FLAG_CLIP_FAR);
 }
 
 /*!
@@ -398,7 +399,7 @@ SoRayPickAction::computeWorldSpaceRay()
     
     // shortest distance from origin to plane
     const float D = this->rayDirection.dot(this->rayStart); 
-    this->nearPlane = SbPlane(rayDirection, D + this->rayNear);
+    this->nearPlane = SbPlane(rayDirection, D);
     
     this->setFlag(FLAG_WS_RAY_COMPUTED);
   }
@@ -565,6 +566,12 @@ SoRayPickAction::isBetweenPlanes(const SbVec3f &intersection) const
   }
   if (this->isFlagSet(FLAG_CLIP_FAR)) {
     if (dist > (this->rayFar - this->rayNear)) return FALSE;
+  }
+  const SoClipPlaneElement *planes = 
+    SoClipPlaneElement::getInstance(this->state);
+  int n =  planes->getNum();
+  for (int i = 0; i < n; i++) {    
+    if (!planes->get(i).isInHalfSpace(worldPt)) return FALSE;
   }
   return TRUE;
 }

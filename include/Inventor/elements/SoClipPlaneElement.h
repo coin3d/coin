@@ -26,9 +26,18 @@
 #endif // COIN_EXCLUDE_SOCLIPPLANEELEMENT
 
 #include <Inventor/elements/SoAccumulatedElement.h>
-#include <Inventor/lists/SbPList.h>
+#include <Inventor/lists/SbList.h>
 #include <Inventor/SbPlane.h>
-#include <Inventor/SbMatrix.h>
+
+class so_plane_data // internal
+{
+public:
+  so_plane_data() {}
+  so_plane_data(const SbPlane &plane, const SbMatrix &matrix);
+public:
+  SbPlane plane;
+  SbPlane wcPlane;
+};
 
 class SoClipPlaneElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
@@ -66,13 +75,9 @@ public:
   virtual void print(FILE * file) const;
 
 protected:
-  //  SbPList planes;
-
-  // FIXME: just testing
-  void *planes[20];
-  int num;
   int startIndex;
-
+  SbList <so_plane_data> planes;
+  
   virtual void addToElt(const SbPlane & plane,
 			const SbMatrix & modelMatrix);
 

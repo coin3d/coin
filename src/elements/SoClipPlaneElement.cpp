@@ -29,17 +29,19 @@
 
 #include <assert.h>
 
-class plane_data
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
+
+//
+// constructor for the internal class
+//
+so_plane_data::so_plane_data(const SbPlane &plane, const SbMatrix &matrix) 
 {
-public:
-  plane_data(const SbPlane &plane, const SbMatrix &matrix) {
-    this->plane = this->wcPlane = plane;
-    this->wcPlane.transform(matrix);
-  }
-public: // yeah, yeah
-  SbPlane plane;
-  SbPlane wcPlane;
-}; // class plane_data
+  this->plane = this->wcPlane = plane;
+  this->wcPlane.transform(matrix);
+}
 
 /*!
   \fn SoClipPlaneElement::planes
@@ -69,6 +71,9 @@ public: // yeah, yeah
 */
 
 SoType SoClipPlaneElement::classTypeId = SoType::badType();
+
+
+
 
 /*!
   This method returns the SoType object for the element class of
@@ -141,9 +146,9 @@ SoClipPlaneElement::initClass(void)
 */
 
 SoClipPlaneElement::SoClipPlaneElement()
-  : startIndex(0)
+  : startIndex(0),
+    planes(1)
 {
-  this->num = 0;
   setTypeId(SoClipPlaneElement::classTypeId);
   setStackIndex(SoClipPlaneElement::classStackIndex);
 }
@@ -184,33 +189,32 @@ SoClipPlaneElement::getInstance(SoState * const state)
 int
 SoClipPlaneElement::getNum() const
 {
-  //  return this->planes.getLength();
-  return this->num;
+  return this->planes.getLength();
 }
 
 //! FIXME: write doc.
 
 const SbPlane &
-SoClipPlaneElement::get(const int /* index */,
-			const SbBool /* inWorldSpace */) const
+SoClipPlaneElement::get(const int index,
+			const SbBool inWorldSpace) const
 {
-  static SbPlane dummy;
+  static SbPlane staticPlane;
 
-//    assert(index >= 0 && index < this->planes.getLength());
-//    plane_data *data = (plane_data*) this->planes[index]; 
-//    if (inWorldSpace) return data->plane;
-//    else return data->wcPlane;
-
-  return dummy;
+  assert(index >= 0 && index < this->planes.getLength());
+  const so_plane_data &data = this->planes[index];
+  if (inWorldSpace) staticPlane = data.wcPlane;
+  else staticPlane = data.plane;
+  
+  return staticPlane;
 }
 
 //! FIXME: write doc.
 
 void
-SoClipPlaneElement::print(FILE * /* file */) const
+SoClipPlaneElement::print(FILE *file) const
 {
-//    fprintf(file, "SoClipPlaneElement[%p]: num = %d, start = %d\n", this,
-//  	  this->planes.getLength(), this->startIndex);
+  fprintf(file, "SoClipPlaneElement[%p]: num = %d, start = %d\n", this,
+	  this->planes.getLength(), this->startIndex);
 }
 
 /*!
@@ -222,9 +226,8 @@ void
 SoClipPlaneElement::addToElt(const SbPlane &plane,
 			     const SbMatrix &modelMatrix)
 {
-  plane_data *data = new plane_data(plane, modelMatrix);
-  //  this->planes.append((void*)data);
-  planes[num++] = data;
+  so_plane_data data(plane, modelMatrix);
+  this->planes.append(data);
 }
 
 //! FIXME: write doc.
@@ -234,7 +237,7 @@ SoClipPlaneElement::init(SoState * state)
 {
   inherited::init(state);
   this->startIndex = 0;
-  this->num = 0;
+  this->planes.truncate(0);
 }
 
 //! FIXME: write doc.
@@ -243,17 +246,15 @@ void
 SoClipPlaneElement::push(SoState * state)
 {
   inherited::push(state);
-
+  
   SoClipPlaneElement * const element =
     (SoClipPlaneElement *)(this->next);
-//    element->planes.copy(this->planes); // copy pointers
-//    element->startIndex = this->planes.getLength();
 
-  for (int i = 0; i < num; i++) {
-    element->planes[i] = planes[i];
-  } 
-  element->num = num;
-  element->startIndex = num;
+  element->planes.truncate(0);
+  for (int i = 0; i < this->planes.getLength(); i++) {
+    element->planes.append(this->planes[i]);
+  }
+  element->startIndex = this->planes.getLength();
 }
 
 //! FIXME: write doc.
@@ -262,15 +263,5 @@ void
 SoClipPlaneElement::pop(SoState * state,
 			const SoElement * prevTopElement)
 {
-//    for (int i = this->planes.getLength()-1; i >= this->startIndex; i--) { 
-//      delete (plane_data*) this->planes[i];
-//      //    this->planes.remove(i);
-//    }
-
-  for (int i = this->num-1; i >= this->startIndex; i--) { 
-    delete (plane_data*) this->planes[i];
-    //    this->planes.remove(i);
-  }
   inherited::pop(state, prevTopElement);
 }
-

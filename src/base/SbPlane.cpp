@@ -189,7 +189,7 @@ SbPlane::transform(const SbMatrix& matrix)
   matrix.multDirMatrix(this->normal, this->normal);
 
   this->normal.normalize();
-  this->distance = ptInPlane.length();
+  this->distance = this->normal.dot(ptInPlane);
 }
 
 /*!
