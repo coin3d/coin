@@ -85,7 +85,7 @@ SbLineProjector::project(const SbVec2f & point)
 
   SbVec2f newpt = point;
   
-  if (pt1 == pt2) newpt = SbVec2f(pt1[0], pt2[0]);
+  if (pt1 == pt2) newpt = SbVec2f(pt1[0], pt1[1]);
   else {
     SbLine scrline(pt1, pt2);
     SbVec3f dummy = scrline.getClosestPoint(SbVec3f(point[0], point[1], 0.0f));
