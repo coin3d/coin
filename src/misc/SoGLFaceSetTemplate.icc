@@ -68,7 +68,7 @@
     v2 = *viptr++;
     v3 = *viptr++;
     if (v1 < 0 || v2 < 0 || v3 < 0) {
-#ifdef COIN_DEBUG
+#if COIN_DEBUG
       SoDebugError::postWarning("[faceset]::GLRender",
                                 "Polygon with less than three vertices detected. "
                                 "(First 3 indices are: <%d, %d, %d, ...>.) "

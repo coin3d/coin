@@ -48,7 +48,7 @@
 #include <assert.h>
 #include <Inventor/errors/SoDebugError.h>
 
-#ifdef COIN_DEBUG
+#if COIN_DEBUG
 // #define GLLAZY_DEBUG(_x_) (SoDebugError::postInfo(COIN_STUB_FUNC, _x_))
 #define GLLAZY_DEBUG(x)
 #else
