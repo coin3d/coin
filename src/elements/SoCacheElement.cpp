@@ -187,10 +187,8 @@ SoCacheElement::invalidate(SoState * const state)
   SoCacheElement * elem = (SoCacheElement*)
     state->getElementNoPush(classStackIndex);
 
-  while (elem) {
-    if (elem->cache) {
-      elem->cache->invalidate();
-    }
+  while (elem && elem->cache) {
+    elem->cache->invalidate();
     elem = (SoCacheElement*) elem->getNextInStack();
   }
 }
@@ -265,8 +263,8 @@ SoCacheElement::addCacheDependency(SoState * const state,
 {
   SoCacheElement * elem = (SoCacheElement*)
     state->getElementNoPush(classStackIndex);
-  while (elem) {
-    if (elem->cache) elem->cache->addCacheDependency(state, cache);
+  while (elem && elem->cache) {
+    elem->cache->addCacheDependency(state, cache);
     elem = (SoCacheElement*) elem->getNextInStack();
   }
 }
