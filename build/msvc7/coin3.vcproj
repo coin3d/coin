@@ -20,7 +20,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\\build\msvc7,..\..\\build\msvc7\include,..\..\\include,..\..\\include\Inventor\annex"
+				AdditionalIncludeDirectories=".,.\include,..\..\include,..\..\include\Inventor\annex"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -86,7 +86,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="1"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\..\\build\msvc7,..\..\\build\msvc7\include,..\..\\include,..\..\\include\Inventor\annex"
+				AdditionalIncludeDirectories=".,.\include,..\..\include,..\..\include\Inventor\annex"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -366,6 +366,30 @@
 			</File>
 			<File
 				RelativePath="..\..\src\glue\bzip2.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\glue/"
+						ProgramDataBaseFileName="Debug\glue/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\glue/"
+						ProgramDataBaseFileName="Release\glue/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\glue\cg.c">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -3773,30 +3797,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\shaders\shaders-dummy.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-						BasicRuntimeChecks="3"
-						ObjectFile=".\Debug\shaders/"
-						ProgramDataBaseFileName="Debug\shaders/"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="1"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-						ObjectFile=".\Release\shaders/"
-						ProgramDataBaseFileName="Release\shaders/"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\src\vrml97\Shape.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -7013,6 +7013,30 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\shaders\SoFragmentShader.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\misc\SoFullPath.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -7181,6 +7205,78 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\shaders\SoGLARBShaderObject.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\shaders\SoGLARBShaderParameter.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\shaders\SoGLARBShaderProgram.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\misc\SoGLBigImage.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -7253,6 +7349,78 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\shaders\SoGLCgShaderObject.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\shaders\SoGLCgShaderParameter.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\shaders\SoGLCgShaderProgram.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\elements\GL\SoGLClipPlaneElement.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -7322,6 +7490,30 @@
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 						ObjectFile=".\Release\GL/"
 						ProgramDataBaseFileName="Release\GL/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\misc\SoGLCubeMapImage.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\misc/"
+						ProgramDataBaseFileName="Debug\misc/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\misc/"
+						ProgramDataBaseFileName="Release\misc/"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -7829,6 +8021,102 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\shaders\SoGLShaderObject.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\shaders\SoGLShaderParameter.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\shaders\SoGLShaderProgram.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\shaders\SoGLShaderProgramElement.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\elements\GL\SoGLShapeHintsElement.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -7850,6 +8138,78 @@
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 						ObjectFile=".\Release\GL/"
 						ProgramDataBaseFileName="Release\GL/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\shaders\SoGLSLShaderObject.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\shaders\SoGLSLShaderParameter.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\shaders\SoGLSLShaderProgram.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -12077,6 +12437,30 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\actions\SoReorganizeAction.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\actions/"
+						ProgramDataBaseFileName="Debug\actions/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\actions/"
+						ProgramDataBaseFileName="Release\actions/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\elements\SoReplacedElement.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -13325,6 +13709,102 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\shaders\SoShader.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\shaders\SoShaderObject.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\shaders\SoShaderParameter.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\shaders\SoShaderProgram.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\shapenodes\SoShape.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -13610,6 +14090,30 @@
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 						ObjectFile=".\Release\nodes/"
 						ProgramDataBaseFileName="Release\nodes/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\actions\SoSimplifyAction.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\actions/"
+						ProgramDataBaseFileName="Debug\actions/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\actions/"
+						ProgramDataBaseFileName="Release\actions/"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -14550,6 +15054,30 @@
 			</File>
 			<File
 				RelativePath="..\..\src\nodes\SoTextureCoordinateSphere.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\nodes/"
+						ProgramDataBaseFileName="Debug\nodes/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\nodes/"
+						ProgramDataBaseFileName="Release\nodes/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\nodes\SoTextureCubeMap.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -15581,6 +16109,30 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\misc\SoVertexArrayIndexer.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\misc/"
+						ProgramDataBaseFileName="Debug\misc/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\misc/"
+						ProgramDataBaseFileName="Release\misc/"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="..\..\src\nodes\SoVertexProperty.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -15602,6 +16154,30 @@
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 						ObjectFile=".\Release\nodes/"
 						ProgramDataBaseFileName="Release\nodes/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\shaders\SoVertexShader.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\shaders/"
+						ProgramDataBaseFileName="Debug\shaders/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\shaders/"
+						ProgramDataBaseFileName="Release\shaders/"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -17181,10 +17757,10 @@
 				RelativePath="..\..\include\Inventor\actions\SoAudioRenderAction.h">
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\lists\SoAuditorList.h">
+				RelativePath="..\..\include\Inventor\misc\SoAuditorList.h">
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\misc\SoAuditorList.h">
+				RelativePath="..\..\include\Inventor\lists\SoAuditorList.h">
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\misc\SoBase.h">
@@ -17553,6 +18129,9 @@
 				RelativePath="..\..\include\Inventor\nodes\SoFontStyle.h">
 			</File>
 			<File
+				RelativePath="..\..\include\Inventor\nodes\SoFragmentShader.h">
+			</File>
+			<File
 				RelativePath="..\..\include\Inventor\SoFullPath.h">
 			</File>
 			<File
@@ -17590,6 +18169,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\elements\SoGLCoordinateElement.h">
+			</File>
+			<File
+				RelativePath="..\..\include\Inventor\misc\SoGLCubeMapImage.h">
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\elements\SoGLDisplayList.h">
@@ -17656,6 +18238,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\elements\SoGLShadeModelElement.h">
+			</File>
+			<File
+				RelativePath="..\..\include\Inventor\elements\SoGLShaderProgramElement.h">
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\elements\SoGLShapeHintsElement.h">
@@ -18216,6 +18801,9 @@
 				RelativePath="..\..\include\Inventor\errors\SoReadError.h">
 			</File>
 			<File
+				RelativePath="..\..\include\Inventor\actions\SoReorganizeAction.h">
+			</File>
+			<File
 				RelativePath="..\..\include\Inventor\elements\SoReplacedElement.h">
 			</File>
 			<File
@@ -18384,6 +18972,15 @@
 				RelativePath="..\..\include\Inventor\fields\SoSFVec4f.h">
 			</File>
 			<File
+				RelativePath="..\..\include\Inventor\nodes\SoShaderObject.h">
+			</File>
+			<File
+				RelativePath="..\..\include\Inventor\nodes\SoShaderParameter.h">
+			</File>
+			<File
+				RelativePath="..\..\include\Inventor\nodes\SoShaderProgram.h">
+			</File>
+			<File
 				RelativePath="..\..\include\Inventor\nodes\SoShape.h">
 			</File>
 			<File
@@ -18403,6 +19000,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\nodes\SoShuttle.h">
+			</File>
+			<File
+				RelativePath="..\..\include\Inventor\actions\SoSimplifyAction.h">
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\elements\SoSoundElement.h">
@@ -18552,6 +19152,9 @@
 				RelativePath="..\..\include\Inventor\nodes\SoTextureCoordinateSphere.h">
 			</File>
 			<File
+				RelativePath="..\..\include\Inventor\nodes\SoTextureCubeMap.h">
+			</File>
+			<File
 				RelativePath="..\..\include\Inventor\elements\SoTextureEnabledElement.h">
 			</File>
 			<File
@@ -18688,6 +19291,9 @@
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\nodes\SoVertexProperty.h">
+			</File>
+			<File
+				RelativePath="..\..\include\Inventor\nodes\SoVertexShader.h">
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\nodes\SoVertexShape.h">
@@ -18961,7 +19567,7 @@
 			Name="Private Headers"
 			Filter="h;ic;icc">
 			<File
-				RelativePath="..\..\src\misc\AudioTools.h">
+				RelativePath="data\draggerDefaults\centerballDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -18976,7 +19582,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\threads\barrierp.h">
+				RelativePath="data\draggerDefaults\centerballDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -18991,7 +19597,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\glue\bzip2.h">
+				RelativePath="include\config-debug.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19006,7 +19612,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\coindefs.h">
+				RelativePath="include\config-debug.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19021,7 +19627,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\threads\condvar_pthread.ic">
+				RelativePath="include\config-release.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19036,7 +19642,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\threads\condvar_win32.ic">
+				RelativePath="include\config-release.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19051,7 +19657,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\threads\condvarp.h">
+				RelativePath="data\draggerDefaults\directionalLightDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19066,7 +19672,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\misc\cppmangle.icc">
+				RelativePath="data\draggerDefaults\directionalLightDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19081,7 +19687,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\fonts\defaultfonts.h">
+				RelativePath="data\draggerDefaults\dragPointDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19096,7 +19702,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\glue\dlp.h">
+				RelativePath="data\draggerDefaults\dragPointDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19111,7 +19717,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\engines\evaluator.h">
+				RelativePath="data\draggerDefaults\handleBoxDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19126,7 +19732,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\threads\fifop.h">
+				RelativePath="data\draggerDefaults\handleBoxDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19141,7 +19747,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\glue\freetype.h">
+				RelativePath="data\draggerDefaults\jackDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19156,7 +19762,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\glue\gl_agl.h">
+				RelativePath="data\draggerDefaults\jackDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19171,7 +19777,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\glue\gl_glx.h">
+				RelativePath="data\draggerDefaults\pointLightDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19186,7 +19792,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\glue\gl_wgl.h">
+				RelativePath="data\draggerDefaults\pointLightDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19201,7 +19807,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\glue\glp.h">
+				RelativePath="data\draggerDefaults\rotateCylindricalDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19216,7 +19822,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\glue\GLUWrapper.h">
+				RelativePath="data\draggerDefaults\rotateCylindricalDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19231,7 +19837,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\base\hashp.h">
+				RelativePath="data\draggerDefaults\rotateDiscDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19246,7 +19852,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\base\heapp.h">
+				RelativePath="data\draggerDefaults\rotateDiscDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19261,7 +19867,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\threads\mutex_pthread.ic">
+				RelativePath="data\draggerDefaults\rotateSphericalDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19276,7 +19882,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\threads\mutex_win32cs.ic">
+				RelativePath="data\draggerDefaults\rotateSphericalDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19291,7 +19897,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\threads\mutex_win32mutex.ic">
+				RelativePath="data\draggerDefaults\scale1Dragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19306,7 +19912,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\threads\mutexp.h">
+				RelativePath="data\draggerDefaults\scale1Dragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19321,7 +19927,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\glue\openal_wrapper.h">
+				RelativePath="data\draggerDefaults\scale2Dragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19336,7 +19942,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\threads\recmutexp.h">
+				RelativePath="data\draggerDefaults\scale2Dragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19351,7 +19957,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\threads\rwmutexp.h">
+				RelativePath="data\draggerDefaults\scale2UniformDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19366,7 +19972,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\threads\schedp.h">
+				RelativePath="data\draggerDefaults\scale2UniformDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19381,7 +19987,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\glue\simage_wrapper.h">
+				RelativePath="data\draggerDefaults\scaleUniformDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19396,7 +20002,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\engines\so_eval.ic">
+				RelativePath="data\draggerDefaults\scaleUniformDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19411,7 +20017,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\engines\SoConvertAll.h">
+				RelativePath="data\draggerDefaults\spotLightDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19426,7 +20032,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\misc\SoGenerate.h">
+				RelativePath="data\draggerDefaults\spotLightDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19441,7 +20047,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\misc\SoGL.h">
+				RelativePath="data\draggerDefaults\tabBoxDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19456,7 +20062,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\misc\SoGLFaceSetTemplate.icc">
+				RelativePath="data\draggerDefaults\tabBoxDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19471,7 +20077,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\misc\SoGLindexedLineSetTemplate.icc">
+				RelativePath="data\draggerDefaults\tabPlaneDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19486,7 +20092,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\misc\SoGLLineSetTemplate.icc">
+				RelativePath="data\draggerDefaults\tabPlaneDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19501,7 +20107,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\misc\SoGLnonindexedFaceSetTemplate.icc">
+				RelativePath="data\draggerDefaults\trackballDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19516,7 +20122,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\misc\SoGLnonindexedTristripSetTemplate.icc">
+				RelativePath="data\draggerDefaults\trackballDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19531,7 +20137,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\fields\SoGlobalField.h">
+				RelativePath="data\draggerDefaults\transformBoxDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19546,7 +20152,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\misc\SoGLqmeshpreciselightingTemplate.icc">
+				RelativePath="data\draggerDefaults\transformBoxDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19561,7 +20167,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\misc\SoGLqmeshTemplate.icc">
+				RelativePath="data\draggerDefaults\transformerDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19576,7 +20182,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\misc\SoGLTristripTemplate.icc">
+				RelativePath="data\draggerDefaults\transformerDragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19591,7 +20197,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\caches\SoGlyphCache.h">
+				RelativePath="data\draggerDefaults\translate1Dragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19606,7 +20212,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\upgraders\SoPackedColorV20.h">
+				RelativePath="data\draggerDefaults\translate1Dragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19621,7 +20227,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\misc\SoPick.h">
+				RelativePath="data\draggerDefaults\translate2Dragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">
@@ -19636,442 +20242,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\shapenodes\soshape_bigtexture.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\shapenodes\soshape_primdata.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\shapenodes\soshape_trianglesort.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\upgraders\SoShapeHintsV10.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\nodes\SoSoundElementHelper.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\actions\SoSubActionP.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\engines\SoSubEngineP.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\fields\SoSubFieldP.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\nodekits\SoSubKitP.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\engines\SoSubNodeEngineP.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\nodes\SoSubNodeP.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\elements\SoTextureScalePolicyElement.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\elements\SoTextureScaleQualityElement.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\nodes\SoUnknownNode.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\upgraders\SoUpgrader.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\VRMLnodes\SoVRMLSubInterpolatorP.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\io\SoWriterefCounter.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\C\threads\storagep.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\C\threads\syncp.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\misc\systemsanity.icc">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\threads\thread_pthread.ic">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\threads\thread_win32.ic">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\C\threads\threadp.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\C\threads\threadsutilp.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\C\tidbitsp.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\unconfig.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\C\glue\win32api.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\C\threads\workerp.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\C\threads\wpoolp.h">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\include\Inventor\C\glue\zlib.h">
+				RelativePath="data\draggerDefaults\translate2Dragger.h">
 				<FileConfiguration
 					Name="Debug|Win32"
 					ExcludedFromBuild="TRUE">

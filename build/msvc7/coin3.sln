@@ -1,5 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 8.00
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coin3", "coin3.vcproj", "{E6E846F9-A83E-4DED-AD32-186D3A937876}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coin3", "coin3.vcproj", "{25F242C4-7301-4A0B-8F9A-3BBC18B955D3}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -9,10 +9,10 @@ Global
 		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
-		{E6E846F9-A83E-4DED-AD32-186D3A937876}.Debug.ActiveCfg = Debug|Win32
-		{E6E846F9-A83E-4DED-AD32-186D3A937876}.Debug.Build.0 = Debug|Win32
-		{E6E846F9-A83E-4DED-AD32-186D3A937876}.Release.ActiveCfg = Release|Win32
-		{E6E846F9-A83E-4DED-AD32-186D3A937876}.Release.Build.0 = Release|Win32
+		{25F242C4-7301-4A0B-8F9A-3BBC18B955D3}.Debug.ActiveCfg = Debug|Win32
+		{25F242C4-7301-4A0B-8F9A-3BBC18B955D3}.Debug.Build.0 = Debug|Win32
+		{25F242C4-7301-4A0B-8F9A-3BBC18B955D3}.Release.ActiveCfg = Release|Win32
+		{25F242C4-7301-4A0B-8F9A-3BBC18B955D3}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
