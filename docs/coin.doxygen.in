@@ -233,7 +233,7 @@ GENERATE_BUGLIST       = YES
 
 ALIASES                = \
   WEB3DCOPYRIGHT="<b>The detailed class documentation is taken verbatim from the VRML97 standard (ISO/IEC 14772-1:1997). It is copyright The Web3D Consortium, and is used by permission of the Consortium:</b>\n\n" \
-  COININTERNAL="<em>This API member is considered internal to the library and is not documented, as it is not likely to be of interest to the application programmer.</em>"
+  COININTERNAL="<em>This API member is considered internal to the library and is not documented, as it is not likely to be of interest to the application programmer.</em>\n\n"
 
 # The ENABLED_SECTIONS tag can be used to enable conditional 
 # documentation sections, marked by \if sectionname ... \endif.
