@@ -41,7 +41,7 @@ SoGate::SoGate(SoType inputType)
 void
 SoGate::initClass()
 {
-  SO_ENGINE_INIT_ABSTRACT_CLASS(SoGate,SoEngine,"Engine");
+  SO_ENGINE_INTERNAL_INIT_ABSTRACT_CLASS(SoGate);
 }
 
 //

@@ -47,7 +47,7 @@ SoElapsedTime::SoElapsedTime()
 void
 SoElapsedTime::initClass()
 {
-  SO_ENGINE_INIT_CLASS(SoElapsedTime,SoEngine,"Engine");
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoElapsedTime);
 }
 
 

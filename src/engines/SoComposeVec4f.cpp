@@ -38,7 +38,7 @@ SoComposeVec4f::SoComposeVec4f()
 void
 SoComposeVec4f::initClass()
 {
-  SO_ENGINE_INIT_CLASS(SoComposeVec4f,SoEngine,"Engine");
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoComposeVec4f);
 }
 
 //

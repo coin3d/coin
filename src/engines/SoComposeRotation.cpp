@@ -37,7 +37,7 @@ SoComposeRotation::SoComposeRotation()
 void
 SoComposeRotation::initClass()
 {
-  SO_ENGINE_INIT_CLASS(SoComposeRotation,SoEngine,"Engine");
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoComposeRotation);
 }
 
 //

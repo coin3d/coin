@@ -39,7 +39,7 @@ SoInterpolate::SoInterpolate()
 void
 SoInterpolate::initClass()
 {
-  SO_ENGINE_INIT_ABSTRACT_CLASS(SoInterpolate,SoEngine,"Engine");
+  SO_ENGINE_INTERNAL_INIT_ABSTRACT_CLASS(SoInterpolate);
 }
 
 //

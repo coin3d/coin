@@ -40,7 +40,7 @@ SoOnOff::SoOnOff()
 void
 SoOnOff::initClass()
 {
-  SO_ENGINE_INIT_CLASS(SoOnOff,SoEngine,"Engine");
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoOnOff);
 }
 
 //

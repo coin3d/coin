@@ -41,7 +41,7 @@ SoDecomposeMatrix::SoDecomposeMatrix()
 void
 SoDecomposeMatrix::initClass()
 {
-  SO_ENGINE_INIT_CLASS(SoDecomposeMatrix,SoEngine,"Engine");
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoDecomposeMatrix);
 }
 
 //

@@ -85,8 +85,10 @@ SoEngine::getByName(const SbName & /* name */, SoEngineList & /* list */)
 void
 SoEngine::initClass()
 {
-  SoEngine::classTypeId=SoType::createType(SoFieldContainer::getClassTypeId(),
-					   SbName("Engine"));
+  SoEngine::classTypeId =
+    SoType::createType(SoFieldContainer::getClassTypeId(), SbName("Engine"));
+
+  SoEngine::initEngines();
 }
 
 void

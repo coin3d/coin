@@ -75,7 +75,7 @@ SoCalculator::~SoCalculator(void)
 void
 SoCalculator::initClass(void)
 {
-  SO_ENGINE_INIT_CLASS(SoCalculator, SoEngine, "Engine");
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoCalculator);
 }
 
 void

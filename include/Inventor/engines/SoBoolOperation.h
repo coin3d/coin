@@ -30,6 +30,8 @@
 #endif // COIN_EXCLUDE_SOBOOLOPERATION
 
 class SoBoolOperation : public SoEngine {
+  typedef SoEngine inherited;
+
   SO_ENGINE_HEADER(SoBoolOperation);
   
 public:

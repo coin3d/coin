@@ -40,7 +40,7 @@ SoInterpolateRotation::SoInterpolateRotation()
 void
 SoInterpolateRotation::initClass()
 {
-  SO_ENGINE_INIT_CLASS(SoInterpolateRotation,SoInterpolate,"Interpolate");
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoInterpolateRotation);
 }
 
 //

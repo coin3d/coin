@@ -44,7 +44,7 @@ SoTriggerAny::SoTriggerAny()
 void
 SoTriggerAny::initClass()
 {
-  SO_ENGINE_INIT_CLASS(SoTriggerAny,SoEngine,"Engine");
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoTriggerAny);
 }
 
 //

@@ -118,7 +118,7 @@ SoSelectOne::SoSelectOne(SoType inputType)
 void
 SoSelectOne::initClass()
 {
-  SO_ENGINE_INIT_ABSTRACT_CLASS(SoSelectOne,SoEngine,"Engine");
+  SO_ENGINE_INTERNAL_INIT_ABSTRACT_CLASS(SoSelectOne);
 }
 
 //

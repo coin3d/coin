@@ -32,7 +32,7 @@ SoFieldConverter::SoFieldConverter()
 void
 SoFieldConverter::initClass()
 {
-  SO_ENGINE_INIT_ABSTRACT_CLASS(SoFieldConverter,SoEngine,"Engine")
+  SO_ENGINE_INTERNAL_INIT_ABSTRACT_CLASS(SoFieldConverter);
   SoFieldConverter::initConverters();
 }
 

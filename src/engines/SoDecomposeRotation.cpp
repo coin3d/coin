@@ -38,7 +38,7 @@ SoDecomposeRotation::SoDecomposeRotation()
 void
 SoDecomposeRotation::initClass()
 {
-  SO_ENGINE_INIT_CLASS(SoDecomposeRotation,SoEngine,"Engine");
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoDecomposeRotation);
 }
 
 //

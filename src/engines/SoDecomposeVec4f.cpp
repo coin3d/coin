@@ -38,7 +38,7 @@ SoDecomposeVec4f::SoDecomposeVec4f()
 void
 SoDecomposeVec4f::initClass()
 {
-  SO_ENGINE_INIT_CLASS(SoDecomposeVec4f,SoEngine,"Engine");
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoDecomposeVec4f);
 }
 
 //

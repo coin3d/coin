@@ -36,7 +36,7 @@ SoDecomposeVec2f::SoDecomposeVec2f()
 void
 SoDecomposeVec2f::initClass()
 {
-  SO_ENGINE_INIT_CLASS(SoDecomposeVec2f,SoEngine,"Engine");
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoDecomposeVec2f);
 }
 
 //

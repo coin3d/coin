@@ -49,7 +49,7 @@ SoOneShot::SoOneShot()
 void
 SoOneShot::initClass()
 {
-  SO_ENGINE_INIT_CLASS(SoOneShot,SoEngine,"Engine");
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoOneShot);
 }
 
 

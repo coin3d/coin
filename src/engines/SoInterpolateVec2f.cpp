@@ -38,7 +38,7 @@ SoInterpolateVec2f::SoInterpolateVec2f()
 void
 SoInterpolateVec2f::initClass()
 {
-  SO_ENGINE_INIT_CLASS(SoInterpolateVec2f,SoInterpolate,"Interpolate");
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoInterpolateVec2f);
 }
 
 //

@@ -40,7 +40,7 @@ SoComposeMatrix::SoComposeMatrix()
 void
 SoComposeMatrix::initClass()
 {
-  SO_ENGINE_INIT_CLASS(SoComposeMatrix,SoEngine,"Engine");
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoComposeMatrix);
 }
 
 //

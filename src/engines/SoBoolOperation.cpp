@@ -38,7 +38,7 @@ SoBoolOperation::SoBoolOperation()
 void
 SoBoolOperation::initClass()
 {
-  SO_ENGINE_INIT_CLASS(SoBoolOperation,SoEngine,"Engine");
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoBoolOperation);
 }
 
 SoBoolOperation::~SoBoolOperation()

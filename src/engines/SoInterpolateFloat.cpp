@@ -38,7 +38,7 @@ SoInterpolateFloat::SoInterpolateFloat()
 void
 SoInterpolateFloat::initClass()
 {
-  SO_ENGINE_INIT_CLASS(SoInterpolateFloat,SoInterpolate,"Interpolate");
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoInterpolateFloat);
 }
 
 //

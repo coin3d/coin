@@ -40,7 +40,7 @@ SoConcatenate::SoConcatenate(SoType inputType)
 void
 SoConcatenate::initClass()
 {
-  SO_ENGINE_INIT_ABSTRACT_CLASS(SoConcatenate,SoEngine,"Engine");
+  SO_ENGINE_INTERNAL_INIT_ABSTRACT_CLASS(SoConcatenate);
 }
 
 //

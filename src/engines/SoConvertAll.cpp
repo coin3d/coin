@@ -91,8 +91,7 @@ SO_ENGINE_ABSTRACT_SOURCE(SoConvertAll);
 void
 SoConvertAll::initClass()
 {
-  SO_ENGINE_INIT_ABSTRACT_CLASS(SoConvertAll,
-				SoFieldConverter,"FieldConverter");
+  SO_ENGINE_INTERNAL_INIT_ABSTRACT_CLASS(SoConvertAll);
 
   SoType SFTypes[] = {
 #if !defined(COIN_EXCLUDE_SOSFBITMASK)
