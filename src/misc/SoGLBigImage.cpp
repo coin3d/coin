@@ -46,7 +46,7 @@
   occur because the projected size of the texture is calculated on the
   fly.  When mipmapping is enabled, the amount of texture memory used
   is doubled, and creating the texture object is much slower, so we
-  avoid this for SoGLBigImage.  
+  avoid this for SoGLBigImage.
 */
 
 #include <Inventor/misc/SoGLBigImage.h>
@@ -98,11 +98,11 @@ typedef struct {
 
 class SoGLBigImageP {
 public:
-  SoGLBigImageP(void);  
+  SoGLBigImageP(void);
   ~SoGLBigImageP();
 
   static SoType classTypeId;
-  
+
 #ifdef COIN_THREADSAFE
   cc_storage * storage;
   SbMutex mutex;
@@ -112,7 +112,7 @@ public:
   unsigned char ** cache;
   SbVec2s * cachesize;
   int numcachelevels;
-  
+
   // inline for speed
   inline SoGLBigImageTls * getTls(void) {
 #ifdef COIN_THREADSAFE
@@ -132,7 +132,7 @@ public:
     this->mutex.unlock();
 #endif // COIN_THREADSAFE
   }
-  
+
   void copySubImage(SoGLBigImageTls * tls,
                     const int idx,
                     const unsigned char * src,
@@ -179,7 +179,7 @@ soglbigimagetls_destruct(void * closure)
 {
   SoGLBigImageTls * tls = (SoGLBigImageTls*) closure;
   SoGLBigImageP::reset(tls, NULL);
-  
+
   // these are not destructed in reset()
   delete tls->myimage;
   delete[] tls->tmpbuf;
@@ -392,9 +392,9 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
       tls->glimagediv[i] = 1;
       tls->glimageage[i] = 0;
     }
-    
+
     int numbytes = tls->imagesize[0] * tls->imagesize[1] * numcomponents;
-    tls->averagebuf = 
+    tls->averagebuf =
       new unsigned int[numbytes ? numbytes : 1];
 
     // lock before testing/creating cache to avoid race conditions
@@ -404,7 +404,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
     }
     THIS->unlock();
   }
-  
+
   int level = 0;
   int div = 2;
   while ((tls->imagesize[0]/div > projsize[0]) &&
@@ -413,10 +413,10 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
     level++;
   }
   div >>= 1;
-  
+
   if (tls->glimagearray[idx] == NULL ||
       (tls->glimagediv[idx] != div && tls->changecnt < CHANGELIMIT)) {
-    
+
     if (tls->glimagearray[idx] == NULL) {
       tls->glimagearray[idx] = new SoGLImage();
     }
@@ -472,7 +472,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
                                     quality,
                                     0, state);
   }
-  
+
   SoGLDisplayList * dl = tls->glimagearray[idx]->getGLDisplayList(state);
   assert(dl);
   tls->glimageage[idx] = 0;
@@ -486,7 +486,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
   number of subtextures that can be changed each frame. If this limit
   is exceeded, this function will return TRUE, otherwise FALSE.
 */
-SbBool 
+SbBool
 SoGLBigImage::exceededChangeLimit(void)
 {
   return THIS->getTls()->changecnt >= CHANGELIMIT;
@@ -502,9 +502,9 @@ typedef struct {
 static void
 soglbigimage_unrefolddl_cb(void * tls, void * closure)
 {
-  soglbigimage_unrefolddl_data * data = 
+  soglbigimage_unrefolddl_data * data =
     (soglbigimage_unrefolddl_data *) closure;
-  
+
   SoGLBigImageP::unrefOldDL((SoGLBigImageTls*)tls, data->state, data->maxage);
 }
 
@@ -530,18 +530,18 @@ SoGLBigImage::unrefOldDL(SoState * state, const uint32_t maxage)
 SoGLBigImageP::SoGLBigImageP(void) :
   cache(NULL),
   cachesize(NULL),
-  numcachelevels(0) 
-{   
+  numcachelevels(0)
+{
 #ifdef COIN_THREADSAFE
   this->storage = cc_storage_construct_etc(sizeof(SoGLBigImageTls),
                                            soglbigimagetls_construct,
                                            soglbigimagetls_destruct);
 #else // COIN_THREADSAFE
   soglbigimagetls_construct(&this->storagedata);
-#endif // !COIN_THREADSAFE 
+#endif // !COIN_THREADSAFE
 }
 
-SoGLBigImageP::~SoGLBigImageP() 
+SoGLBigImageP::~SoGLBigImageP()
 {
   this->resetCache();
 #ifdef COIN_THREADSAFE
@@ -551,8 +551,8 @@ SoGLBigImageP::~SoGLBigImageP()
 #endif // !COIN_THREADSAFE
 }
 
-//  The method copySubImage() handles the downsampling. It averages 
-//  the full-resolution pixels to create the low resolution image.  
+//  The method copySubImage() handles the downsampling. It averages
+//  the full-resolution pixels to create the low resolution image.
 void
 SoGLBigImageP::copySubImage(SoGLBigImageTls * tls,
                             const int idx,
@@ -562,14 +562,14 @@ SoGLBigImageP::copySubImage(SoGLBigImageTls * tls,
                             unsigned char * dst,
                             const int div,
                             const int level)
-{  
+{
   if ((div == 1) || (this->cache && level < this->numcachelevels && this->cache[level])) {
     SbVec2s pos(idx % tls->dim[0], idx / tls->dim[0]);
-    
+
     // FIXME: investigate if it's possible to set the pixel transfer
     // mode so that we don't have to copy the data into a temporary
     // image. This is probably fast enough though.
-    
+
     int origin[2];
     int fullsize[2];
     int w, h;
@@ -578,7 +578,7 @@ SoGLBigImageP::copySubImage(SoGLBigImageTls * tls,
     if (div == 1) { // use original image
       origin[0] = pos[0] * tls->imagesize[0];
       origin[1] = pos[1] * tls->imagesize[1];
-    
+
       fullsize[0] = fsize[0];
       fullsize[1] = fsize[1];
       w = tls->imagesize[0];
@@ -587,17 +587,17 @@ SoGLBigImageP::copySubImage(SoGLBigImageTls * tls,
     }
     else { // use cache image
       origin[0] = pos[0] * (tls->imagesize[0] >> level);
-      origin[1] = pos[1] * (tls->imagesize[1] >> level);    
+      origin[1] = pos[1] * (tls->imagesize[1] >> level);
       fullsize[0] = this->cachesize[level][0];
       fullsize[1] = this->cachesize[level][1];
       w = tls->imagesize[0] >> level;
       h = tls->imagesize[1] >> level;
       datasrc = this->cache[level];
     }
-      
+
     // check for fast loop (common case)
     if ((origin[0] + w) < fullsize[0] && (origin[1] + h) < fullsize[1]) {
-      for (int y = 0; y < h; y++) {      
+      for (int y = 0; y < h; y++) {
         int tmpyadd = fullsize[0] * (origin[1]+y);
         for (int x = 0; x < w; x++) {
           const unsigned char * srcptr =
@@ -605,7 +605,7 @@ SoGLBigImageP::copySubImage(SoGLBigImageTls * tls,
           for (int c = 0; c < nc; c++) {
             *dst++ = srcptr[c];
           }
-        } 
+        }
       }
     }
     else { // slower loop (x and y values are clamped)
@@ -623,18 +623,18 @@ SoGLBigImageP::copySubImage(SoGLBigImageTls * tls,
   }
   else {
     SbVec2s pos(idx % tls->dim[0], idx / tls->dim[0]);
-    
+
     int origin[2];
     origin[0] = pos[0] * tls->imagesize[0];
     origin[1] = pos[1] * tls->imagesize[1];
-    
+
     int fullsize[2];
     fullsize[0] = fsize[0];
     fullsize[1] = fsize[1];
-    
+
     int w = tls->imagesize[0];
     int h = tls->imagesize[1];
-        
+
     unsigned int mask = (unsigned int) div-1;
 
     if ((origin[0] + w) > fullsize[0]) {
@@ -655,9 +655,9 @@ SoGLBigImageP::copySubImage(SoGLBigImageTls * tls,
     int y;
     for (y = 0; y < h; y++) {
       unsigned int * tmpaptr = aptr;
-      const unsigned char * srcptr = 
+      const unsigned char * srcptr =
         src + (fullsize[0] * (origin[1]+y) + origin[0]) * nc;
-      for (int x = 0; x < w; x++) { 
+      for (int x = 0; x < w; x++) {
         for (int c = 0; c < nc; c++) {
           aptr[c] += srcptr[c];
         }
@@ -666,12 +666,12 @@ SoGLBigImageP::copySubImage(SoGLBigImageTls * tls,
       }
       if ((y+1) & mask) aptr = tmpaptr;
     }
-    
-    aptr = tls->averagebuf;    
+
+    aptr = tls->averagebuf;
     int mydiv = div * div;
 
     int lineadd = tls->imagesize[0] - w;
-    
+
     lineadd /= div;
     w /= div;
     h /= div;
@@ -685,7 +685,7 @@ SoGLBigImageP::copySubImage(SoGLBigImageTls * tls,
         aptr += nc;
       }
       dst += lineadd*nc;
-    } 
+    }
   }
 }
 
@@ -731,7 +731,7 @@ SoGLBigImageP::copyResizeSubImage(SoGLBigImageTls * tls,
 // slow, but yields a higher quality result compared to when each
 // level is calculated based on the previous level.
 static  unsigned char *
-image_downsample(const unsigned char * bytes, const SbVec2s fullsize, 
+image_downsample(const unsigned char * bytes, const SbVec2s fullsize,
                  const int nc, const SbVec2s subsize, const int div)
 {
   unsigned char * dst = new unsigned char[subsize[0]*subsize[1]*nc];
@@ -750,12 +750,12 @@ image_downsample(const unsigned char * bytes, const SbVec2s fullsize,
 
       int avg[4] = {0};
       int numavg = 0;
-      
+
       for (int y2 = starty; y2 < stopy; y2++) {
         for (int x2 = startx; x2 < stopx; x2++) {
           const unsigned char * src = bytes + (fullsize[0]*y2 + x2) * nc;
           for (int c = 0; c < nc; c++) {
-            avg[c] += src[c]; 
+            avg[c] += src[c];
           }
           numavg++;
         }
@@ -774,7 +774,7 @@ image_downsample(const unsigned char * bytes, const SbVec2s fullsize,
     stopy += div;
     if (stopy > fullsize[1]) stopy = fullsize[1];
   }
-  
+
   return dst;
 }
 
@@ -820,11 +820,11 @@ image_downsample_fast(const int width, const int height, const int nc,
   }
 }
 
-void 
+void
 SoGLBigImageP::createCache(const unsigned char * bytes, const SbVec2s size, const int nc)
 {
   int levels = 0;
-  
+
   while (((size[0]>>levels) > 0) || ((size[1]>>levels) > 0)) {
     levels++;
   }
@@ -836,14 +836,14 @@ SoGLBigImageP::createCache(const unsigned char * bytes, const SbVec2s size, cons
   // temporarily set first cache to simplify code below
   this->cache[0] = (unsigned char*) bytes;
   this->cachesize[0] = size;
-            
+
   for (int l = 1; l < levels; l++) {
 #if 0 // high-quality downsample is too slow, currently disabled
     int sx = size[0] >> l;
     if (sx == 0) sx = 1;
     int sy = size[1] >> l;
     if (sy == 0) sy = 1;
-    
+
     this->cachesize[l] = SbVec2s((short)sx, (short)sy);
     this->cache[l] = image_downsample(bytes, size, nc, this->cachesize[l], 1<<l);
 #else // end of high quality downsample
@@ -854,15 +854,15 @@ SoGLBigImageP::createCache(const unsigned char * bytes, const SbVec2s size, cons
     if (h == 0) h = 1;
     this->cache[l] = new unsigned char[w*h*nc];
     image_downsample_fast(this->cachesize[l-1][0], this->cachesize[l-1][1], nc,
-                          this->cache[l-1], this->cache[l]); 
+                          this->cache[l-1], this->cache[l]);
 #endif // end of low quality downsample
   }
   this->cache[0] = NULL;
   this->cachesize[0] = SbVec2s(0, 0);
 }
 
-void 
-SoGLBigImageP::resetCache(void) 
+void
+SoGLBigImageP::resetCache(void)
 {
   for (int i = 0; i < this->numcachelevels; i++) {
     delete[] this->cache[i];
@@ -874,8 +874,8 @@ SoGLBigImageP::resetCache(void)
   this->numcachelevels = 0;
 }
 
-void 
-SoGLBigImageP::reset(SoGLBigImageTls * tls, SoState * state) 
+void
+SoGLBigImageP::reset(SoGLBigImageTls * tls, SoState * state)
 {
   const int n = tls->currentdim[0] * tls->currentdim[1];
   for (int i = 0; i < n; i++) {
@@ -895,7 +895,7 @@ SoGLBigImageP::reset(SoGLBigImageTls * tls, SoState * state)
   tls->currentdim.setValue(0,0);
 }
 
-void 
+void
 SoGLBigImageP::unrefOldDL(SoGLBigImageTls * tls, SoState * state, const uint32_t maxage)
 {
   const int numimages = tls->currentdim[0] * tls->currentdim[1];
@@ -926,11 +926,10 @@ void
 SoGLBigImageP::resetAllTls(SoState * state)
 {
 #ifdef COIN_THREADSAFE
-  cc_storage_apply_to_all(this->storage, SoGLBigImageP::reset, state);
+  cc_storage_apply_to_all(this->storage, soglbigimage_resetall_cb, state);
 #else // COIN_THREADSAFE
   SoGLBigImageP::reset(&this->storagedata, state);
 #endif // ! COIN_THREADSAFE
 }
 
 #endif // DOXYGEN_SKIP_THIS
-
