@@ -428,7 +428,8 @@ SoGroup::removeChild(SoNode * const child)
   if (idx < 0 || idx > this->getNumChildren()) {
     SoDebugError::post("SoGroup::removeChild",
                        "tried to remove non-existent child %p (%s)",
-                       child, child->getTypeId().getName().getString());
+                       child,
+                       child ? child->getTypeId().getName().getString() : "");
     return;
   }
 #endif // COIN_DEBUG
