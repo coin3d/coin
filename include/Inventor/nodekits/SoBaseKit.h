@@ -138,12 +138,13 @@ protected:
 
 private:
   friend class SoInteractionKit;
-  static SbBool findPart(const SbString & partName, SoBaseKit *& kit,
-                         int & partNum, SbBool & isList, int & listIdx,
-                         const SbBool makeIfNeeded, SoPath * path = NULL);
+  static SbBool findPart(const SbString & partname, SoBaseKit *& kit,
+                         int & partnum, SbBool & islist, int & listidx,
+                         const SbBool makeifneeded, SoPath * path = NULL,
+                         const SbBool recsearch = FALSE);
 
-  SbBool makePart(const int partNum);
-  int getRightSiblingIndex(const int partNum);
+  SbBool makePart(const int partnum);
+  int getRightSiblingIndex(const int partnum);
   int findNodeInThisKit(SoNode *node, const int parentnum = -1) const;
 
   static SoNodekitCatalog * classcatalog;

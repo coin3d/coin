@@ -696,7 +696,8 @@ SoBaseKit::getAnyPart(const SbName &partname, SbBool makeifneeded, SbBool leafch
 
   SbString partstring(partname.getString());
 
-  if (SoBaseKit::findPart(partstring, kit, partNum, isList, listIdx, makeifneeded)) {
+  if (SoBaseKit::findPart(partstring, kit, partNum, isList, listIdx, 
+                          makeifneeded, NULL, TRUE)) {
     if (!publiccheck || kit->getNodekitCatalog()->isPublic(partNum)) {
       if (!leafcheck || kit->getNodekitCatalog()->isLeaf(partNum)) {
         if (isList) {
@@ -1007,9 +1008,9 @@ SoBaseKit::countMyFields(SoOutput * /*out*/)
 // be set to the kit-node performing the search.
 //
 SbBool
-SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
-                    SbBool &isList, int &listIdx, const SbBool makeIfNeeded,
-                    SoPath *path)
+SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partnum,
+                    SbBool &islist, int &listidx, const SbBool makeifneeded,
+                    SoPath *path, const SbBool recsearch)
 {
   // BNF:
   //
@@ -1023,8 +1024,8 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
   // idx is an integer value
 
   if (partname == "this") {
-    isList = FALSE;
-    partNum = 0;
+    islist = FALSE;
+    partnum = 0;
     return TRUE;
   }
 
@@ -1035,7 +1036,7 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
   if (periodptr && (startbracket > periodptr))
     startbracket = NULL; // will handle later
 
-  isList = FALSE; // set to FALSE first
+  islist = FALSE; // set to FALSE first
   SbString firstpartname;
   if (startbracket) { // get index
     long int listindex = strtol(startbracket+1, NULL, 10);
@@ -1047,16 +1048,41 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
       return FALSE;
     }
     firstpartname = partname.getSubString(0, startbracket-stringptr-1);
-    listIdx = (int) listindex;
-    isList = TRUE;
+    listidx = (int) listindex;
+    islist = TRUE;
   }
   else if (periodptr) {
     firstpartname = partname.getSubString(0, periodptr-stringptr-1);
   }
   else firstpartname = partname;
-
-  partNum = kit->getNodekitCatalog()->getPartNumber(firstpartname);
-  if (partNum == SO_CATALOG_NAME_NOT_FOUND) {
+  
+  partnum = kit->getNodekitCatalog()->getPartNumber(firstpartname);
+  if (partnum == SO_CATALOG_NAME_NOT_FOUND) {
+    if (recsearch) { // search leaf nodekits for this part?
+      SoBaseKit *orgkit = kit;
+      assert(path == NULL); // should not do recsearch when creating path
+      const SoNodekitCatalog *catalog = orgkit->getNodekitCatalog();
+      for (int i = 1; i < orgkit->numCatalogEntries; i++) {
+        if (catalog->isLeaf(i) && 
+            catalog->getType(i).isDerivedFrom(SoBaseKit::getClassTypeId())) {
+          kit = (SoBaseKit*) orgkit->fieldList[i]->getValue();
+          SbBool didexist = kit != NULL;
+          if (!didexist) {
+            orgkit->makePart(i);
+            kit = (SoBaseKit*) orgkit->fieldList[i]->getValue();
+          }
+          if (SoBaseKit::findPart(partname, kit, partnum, islist, listidx,
+                                  makeifneeded, path, recsearch)) {
+            return TRUE;
+          }
+          else if (!didexist) {
+            // we created this part, remove it
+            orgkit->setPart(i, NULL);
+          }
+        }
+      }
+      kit = orgkit; // return with an error in this kit
+    }
 #if COIN_DEBUG && 1 // debug
     SoDebugError::postWarning("SoBaseKit::findPart",
                               "part ``%s'' not found", firstpartname.getString());
@@ -1064,28 +1090,28 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
     return FALSE;
   }
 
-  assert(partNum < kit->numCatalogEntries);
-  SoSFNode *nodefield = kit->fieldList[partNum];
+  assert(partnum < kit->numCatalogEntries);
+  SoSFNode *nodefield = kit->fieldList[partnum];
   assert(nodefield);
 
-  if (makeIfNeeded && nodefield->getValue() == NULL) {
-    kit->makePart(partNum);
+  if (makeifneeded && nodefield->getValue() == NULL) {
+    kit->makePart(partnum);
   }
 
   if (path) {
     const SoNodekitCatalog *catalog = kit->getNodekitCatalog();
     SbList <SoNode*> nodestopart;
-    int parent = catalog->getParentPartNumber(partNum);
+    int parent = catalog->getParentPartNumber(partnum);
     while (parent > 0) {
       SoNode *node = kit->fieldList[parent]->getValue();
       if (node == NULL) {
-        assert(makeIfNeeded == FALSE);
+        assert(makeifneeded == FALSE);
         break;
       }
       nodestopart.push(node);
       parent = catalog->getParentPartNumber(parent);
     }
-    assert(parent == 0 || !makeIfNeeded);
+    assert(parent == 0 || !makeifneeded);
     while (nodestopart.getLength()) {
       SoNode *node = nodestopart.pop();
       path->append(node);
@@ -1100,18 +1126,18 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
     SoNode *node = nodefield->getValue();
     if (node == NULL) return FALSE;
     SbString newpartname = partname.getSubString(periodptr-stringptr+1);
-    if (isList) {
+    if (islist) {
       SoNodeKitListPart *list = (SoNodeKitListPart*) node;
-      if (listIdx < 0 || listIdx >= list->getNumChildren()) {
+      if (listidx < 0 || listidx >= list->getNumChildren()) {
 #if COIN_DEBUG
         SoDebugError::postInfo("SoBaseKit::findPart",
                                "index (%d) out of bounds for part ``%s''",
-                               listIdx,
+                               listidx,
                                firstpartname.getString());
 #endif // COIN_DEBUG
         return FALSE;
       }
-      SoNode *partnode = list->getChild(listIdx);
+      SoNode *partnode = list->getChild(listidx);
       assert(partnode->isOfType(SoBaseKit::getClassTypeId()));
       kit = (SoBaseKit*)partnode;
 
@@ -1126,8 +1152,8 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
       kit = (SoBaseKit*)node;
     }
     if (path) path->append(kit);
-    return SoBaseKit::findPart(newpartname, kit, partNum, isList,
-                               listIdx, makeIfNeeded);
+    return SoBaseKit::findPart(newpartname, kit, partnum, islist,
+                               listidx, makeifneeded);
   }
 }
 
@@ -1135,15 +1161,15 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
 // makes part, makes sure node is connected in the scene
 //
 SbBool
-SoBaseKit::makePart(const int partNum)
+SoBaseKit::makePart(const int partnum)
 {
-  assert(partNum > 0 && partNum < this->numCatalogEntries);
+  assert(partnum > 0 && partnum < this->numCatalogEntries);
   const SoNodekitCatalog *catalog = this->getNodekitCatalog();
   assert(catalog);
-  assert(this->fieldList[partNum]->getValue() == NULL);
+  assert(this->fieldList[partnum]->getValue() == NULL);
 
-  SoNode *node = (SoNode*)catalog->getDefaultType(partNum).createInstance();
-  return this->setPart(partNum, node);
+  SoNode *node = (SoNode*)catalog->getDefaultType(partnum).createInstance();
+  return this->setPart(partnum, node);
 }
 
 /*!
@@ -1155,13 +1181,13 @@ SoBaseKit::makePart(const int partNum)
   This method is not part of the OIV API.
 */
 SbBool
-SoBaseKit::setPart(const int partNum, SoNode *node)
+SoBaseKit::setPart(const int partnum, SoNode *node)
 {
-  assert(partNum > 0 && partNum < this->numCatalogEntries);
+  assert(partnum > 0 && partnum < this->numCatalogEntries);
   const SoNodekitCatalog *catalog = this->getNodekitCatalog();
   assert(catalog);
 
-  int parentIdx = catalog->getParentPartNumber(partNum);
+  int parentIdx = catalog->getParentPartNumber(partnum);
   assert(parentIdx >= 0 && parentIdx < this->numCatalogEntries);
   SoNode *parent = NULL;
   if (parentIdx == 0) parent = this;
@@ -1174,7 +1200,7 @@ SoBaseKit::setPart(const int partNum, SoNode *node)
   SoChildList *childlist = parent->getChildren();
   assert(childlist != NULL);
 
-  SoNode *oldnode = this->fieldList[partNum]->getValue();
+  SoNode *oldnode = this->fieldList[partnum]->getValue();
 
   if (oldnode != NULL) { // part exists, replace
     int oldIdx = childlist->find(oldnode);
@@ -1183,7 +1209,7 @@ SoBaseKit::setPart(const int partNum, SoNode *node)
     if (node) childlist->insert(node, oldIdx);
   }
   else if (node) { // find where to insert in parent childlist
-    int rightSibling = this->getRightSiblingIndex(partNum);
+    int rightSibling = this->getRightSiblingIndex(partnum);
     if (rightSibling >= 0) { // part has right sibling, insert before
       int idx = childlist->find(this->fieldList[rightSibling]->getValue());
       assert(idx >= 0);
@@ -1193,7 +1219,7 @@ SoBaseKit::setPart(const int partNum, SoNode *node)
   }
 
   // set part field value
-  this->fieldList[partNum]->setValue(node);
+  this->fieldList[partnum]->setValue(node);
   return TRUE;
 }
 
@@ -1201,12 +1227,12 @@ SoBaseKit::setPart(const int partNum, SoNode *node)
 // returns part number of existing right sibling or -1 if none exists
 //
 int
-SoBaseKit::getRightSiblingIndex(const int partNum)
+SoBaseKit::getRightSiblingIndex(const int partnum)
 {
-  assert(partNum > 0 && partNum < this->numCatalogEntries);
+  assert(partnum > 0 && partnum < this->numCatalogEntries);
   const SoNodekitCatalog *catalog = this->getNodekitCatalog();
 
-  int sibling = catalog->getRightSiblingPartNumber(partNum);
+  int sibling = catalog->getRightSiblingPartNumber(partnum);
 
   // iterate until no more siblings or until we find an existing one
   while (sibling >= 0 && this->fieldList[sibling]->getValue() == NULL) {
