@@ -1218,13 +1218,21 @@ SoField::operator !=(const SoField & f) const
 
 /*!
   Returns \c TRUE if it is necessary to write the field when dumping a
-  scene graph.
+  scene graph. This needs to be done if the field is not default (it
+  has been changed from its default value), if it's ignored, or if
+  it's connected from another field or engine.
 */
 SbBool
 SoField::shouldWrite(void) const
 {
   if (!this->isDefault()) return TRUE;
   if (this->isIgnored()) return TRUE;
+  if (this->isConnected()) return TRUE;
+
+  // FIXME: SGI Inventor seems to test forward connections here
+  // also. We consider this is bug, since this field should not write
+  // just because some field is connected from this field.  
+  // pederb, 2002-02-07
   return FALSE;
 }
 
@@ -1464,7 +1472,7 @@ SoField::write(SoOutput * out, const SbName & name) const
     if (!this->isDefault()) {
       out->write(' ');
       this->writeValue(out);
-    }
+    }    
     if (this->isIgnored()) {
       out->write(' ');
       out->write(IGNOREDCHAR);
