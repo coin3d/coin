@@ -49,8 +49,8 @@ public:
   SoInput(void);
   SoInput(SoInput * dictIn);
 
+  SoProto * findProto(const SbName & name);
   void addProto(SoProto * proto);
-
   void pushProto(SoProto * proto);
   SoProto * getCurrentProto(void) const;
   void popProto(void);

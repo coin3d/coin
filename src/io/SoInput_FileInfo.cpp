@@ -419,6 +419,18 @@ SoInput_FileInfo::unrefProtos(void)
   this->protolist.truncate(0);
 }
 
+// search for PROTO in this SoInput instance
+SoProto * 
+SoInput_FileInfo::findProto(const SbName & name)
+{
+  const int n = this->protolist.getLength();
+  SoProto * const * ptr = this->protolist.getArrayPtr();
+  for (int i = 0; i < n; i++) {
+    if (ptr[i]->getProtoName() == name) return ptr[i];
+  }
+  return NULL;
+}
+
 // wrapper around this->reader. We delay creating the reader if we're
 // reading from stdin (reader == NULL).
 SoInput_Reader * 
@@ -502,7 +514,7 @@ SoInput_FileInfo::readInteger(int32_t & l)
     int v = 0;
     int mul = 1;
     for (i = 2; i < n; i++) {
-      char c = s[(n-1)-i];
+      char c = s[(n-1)-i+2];
       if (c >= '0' && c <= '9') {
         v += (c-'0') * mul;
       }

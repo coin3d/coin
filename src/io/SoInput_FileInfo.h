@@ -30,6 +30,7 @@
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
 #include "SoInput_Reader.h"
+#include <Inventor/misc/SoProto.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -121,6 +122,8 @@ public:
     this->routelist.append(tofield);
   }
 
+  SoProto * findProto(const SbName & name);
+
   void addProto(SoProto * proto) {
     this->protolist.append(proto);
   }
@@ -129,7 +132,7 @@ public:
     this->protostack.push(proto);
   }
   void popProto(void) {
-    this->protostack.pop();
+    (void) this->protostack.pop();
   }
   SoProto * getCurrentProto(void) {
     const int n = this->protostack.getLength();

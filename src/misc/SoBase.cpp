@@ -1799,7 +1799,12 @@ SoBase::createInstance(SoInput * in, const SbName & classname)
 #endif // debug
   }
 
-  SoProto * proto = SoProto::findProto(classname);
+  // search for PROTO in current SoInput instance
+  SoProto * proto = in->findProto(classname);
+  if (!proto) {
+    // search in global PROTO list
+    proto = SoProto::findProto(classname);
+  }
   if (proto) return proto->createProtoInstance();
 
   if (type == SoType::badType())

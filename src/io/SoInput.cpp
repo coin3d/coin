@@ -250,6 +250,22 @@ SoInput::addRoute(const SbName & fromnode, const SbName & fromfield,
 }
 
 /*!
+  Searches for PROTO named \a name. This function will only return
+  PROTOs that have been read by the current SoInput instance.
+
+  \since Coin 2.3
+*/
+SoProto * 
+SoInput::findProto(const SbName & name)
+{
+  SoInput_FileInfo * info = this->getTopOfStack();
+  if (info) {
+    return info->findProto(name);
+  }
+  return NULL;
+}
+
+/*!
   Adds a Proto which should be active in the current scope.
 
   \COIN_FUNCTION_EXTENSION
