@@ -25,6 +25,17 @@
 */
 
 #include <Inventor/elements/SoGLUpdateAreaElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#if HAVE_WINDOWS_H
+#include <windows.h>
+#endif // HAVE_WINDOWS_H
+
+#include <GL/gl.h>
 
 /*!
   \fn SoGLUpdateAreaElement::origin
@@ -59,46 +70,57 @@ SoGLUpdateAreaElement::~SoGLUpdateAreaElement()
 {
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 void
 SoGLUpdateAreaElement::init(SoState * state)
 {
   inherited::init(state);
   this->origin = getDefaultOrigin();
   this->size = getDefaultSize();
+
+  // set these to dummy values. scissor test will be disabled
+  this->screensize.setValue(0, 0);
+  this->screenorigin.setValue(0, 0);
+
+  // scissorstate is used to keep track of current scissor
+  // test state.
+  this->scissorstate = FALSE;
+
+  // disabled by default
+  glDisable(GL_SCISSOR_TEST);
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 void
 SoGLUpdateAreaElement::push(SoState * state)
 {
   inherited::push(state);
+  SoGLUpdateAreaElement * prev = (SoGLUpdateAreaElement*)
+    this->getNextInStack();
+  this->scissorstate = prev->scissorstate;
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 void
 SoGLUpdateAreaElement::pop(SoState * state,
                            const SoElement * prevTopElement)
 {
+  this->scissorstate = ((SoGLUpdateAreaElement*)prevTopElement)->scissorstate;
+  this->updategl();
   inherited::pop(state, prevTopElement);
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 SbBool
 SoGLUpdateAreaElement::matches(const SoElement * element) const
 {
   const SoGLUpdateAreaElement * elem = (SoGLUpdateAreaElement*) element;
-  return 
+  return
     this->origin == elem->origin &&
     this->size == elem->size;
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 SoElement *
 SoGLUpdateAreaElement::copyMatchInfo() const
 {
@@ -108,8 +130,13 @@ SoGLUpdateAreaElement::copyMatchInfo() const
   return elem;
 }
 
-//! FIXME: write doc.
 
+/*!  
+  Sets the update area. This can, for instance, be used when
+  rendering in the front buffer, to only render parts of the scene
+  during a window expose event.  \a origin and \a size is in
+  normalized window coordinates.
+*/
 void
 SoGLUpdateAreaElement::set(SoState * const state,
                            const SbVec2f & origin,
@@ -119,10 +146,21 @@ SoGLUpdateAreaElement::set(SoState * const state,
     inherited::getElement(state, SoGLUpdateAreaElement::classStackIndex);
   e->origin = origin;
   e->size = size;
+  SbVec2s winsize = SoViewportRegionElement::get(state).getWindowSize();
+  e->screenorigin[0] = (short) (origin[0]*float(winsize[0]));
+  e->screenorigin[1] = (short) (origin[1]*float(winsize[1]));
+  e->screensize[0] = (short) (size[0]*float(winsize[0]));
+  e->screensize[1] = (short) (size[1]*float(winsize[1]));
+  
+  e->updategl();
 }
 
-//! FIXME: write doc.
 
+/*!
+  Returns the current update area.
+
+  \sa set()
+*/
 SbBool
 SoGLUpdateAreaElement::get(SoState * const state,
                            SbVec2f & origin,
@@ -132,20 +170,13 @@ SoGLUpdateAreaElement::get(SoState * const state,
     inherited::getConstElement(state, SoGLUpdateAreaElement::classStackIndex);
   origin = e->origin;
   size = e->size;
-  
-  if (origin == SoGLUpdateAreaElement::getDefaultOrigin() && 
-      size == SoGLUpdateAreaElement::getDefaultSize())
-    return TRUE;
-  else
-    return FALSE;
+
+  return e->isDefault();
 }
 
-//! FIXME: write doc.
-
 /*!
-  FIXME: write doc.
+  Returns the default update area origin, (0,0).
 */
-
 SbVec2f
 SoGLUpdateAreaElement::getDefaultOrigin(void)
 {
@@ -153,11 +184,43 @@ SoGLUpdateAreaElement::getDefaultOrigin(void)
 }
 
 /*!
-  FIXME: write doc.
+  Returns the default update area size, (1,1).
 */
-
 SbVec2f
 SoGLUpdateAreaElement::getDefaultSize(void)
 {
   return SbVec2f(1.0f, 1.0f);
+}
+
+// return TRUE if element contains the default values
+SbBool
+SoGLUpdateAreaElement::isDefault(void) const
+{
+  return
+    this->origin == getDefaultOrigin() &&
+    this->size == getDefaultSize();
+}
+
+//
+// keeps GL in sync
+//
+void
+SoGLUpdateAreaElement::updategl(void)
+{
+  if (this->isDefault()) {
+    if (this->scissorstate) {
+      glDisable(GL_SCISSOR_TEST);
+      this->scissorstate = FALSE;
+    }
+  }
+  else {
+    if (!this->scissorstate) {
+      glEnable(GL_SCISSOR_TEST);
+      this->scissorstate = TRUE;
+    }
+    glScissor((GLint) this->screenorigin[0],
+              (GLint) this->screenorigin[1],
+              (GLint) this->screensize[0],
+              (GLint) this->screensize[1]);
+  }
 }

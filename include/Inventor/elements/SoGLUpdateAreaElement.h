@@ -22,6 +22,7 @@
 
 #include <Inventor/elements/SoSubElement.h>
 #include <Inventor/SbVec2f.h>
+#include <Inventor/SbVec2s.h>
 
 
 class COIN_DLL_API SoGLUpdateAreaElement : public SoElement {
@@ -35,7 +36,6 @@ protected:
 
 public:
   virtual void init(SoState * state);
-
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
                    const SoElement * prevTopElement);
@@ -55,6 +55,12 @@ public:
 protected:
   SbVec2f origin;
   SbVec2f size;
+
+private:
+  SbBool isDefault(void) const;
+  void updategl(void);
+  SbBool scissorstate;
+  SbVec2s screenorigin, screensize;  
 };
 
 #endif // !COIN_SOGLUPDATEAREAELEMENT_H
