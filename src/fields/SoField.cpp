@@ -1669,7 +1669,7 @@ SoField::notifyAuditors(SoNotList * l)
 {
   if (!this->hasExtendedStorage() && this->container)
     this->container->notify(l);
-  else if (this->storage->getNumAuditors())
+  else if (this->storage && this->storage->getNumAuditors())
     this->storage->getAuditors().notify(l);
 }
 
