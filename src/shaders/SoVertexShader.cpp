@@ -55,7 +55,7 @@ SbBool SoVertexShader::isSupported(SourceType sourceType)
   // GL driver. (But first check whether this is part of the TGS
   // Inventor API -- it's not very well designed, as we really need a
   // guaranteed GL context for this.) 20050120 mortene.
-  if (sourceType == ARB_PROGRAM) return FALSE;
+  if (sourceType == ARB_PROGRAM) return TRUE;
 
   // FIXME: Martin
 #if !defined(SO_CG_SHADER_SUPPORT)
