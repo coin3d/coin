@@ -999,11 +999,9 @@ glglue_resolve_symbols(cc_glglue * w)
 
 
 #if defined(GL_VERSION_1_2)
-  if (cc_glglue_glversion_matches_at_least(w, 1, 2, 0)) {
-    w->glDrawRangeElements = (COIN_PFNGLDRAWRANGEELEMENTSPROC) PROC(glDrawRangeElements);
-  } else {
-    w->glDrawRangeElements = NULL;
-  }
+  w->glDrawRangeElements = NULL;
+  if (cc_glglue_glversion_matches_at_least(w, 1, 2, 0)) 
+    w->glDrawRangeElements = (COIN_PFNGLDRAWRANGEELEMENTSPROC) PROC(glDrawRangeElements);   
 #endif /* GL_VERSION_1_2 */
 
 
