@@ -251,6 +251,9 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
   else if (normalCacheUsed && nbind == PER_VERTEX) {
     nbind = PER_VERTEX_INDEXED;
   }
+  else if (normalCacheUsed && nbind == PER_FACE_INDEXED) {
+    nbind = PER_FACE;
+  }
 
   Binding tbind = NONE;
   if (doTextures) {
@@ -376,6 +379,9 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
   if (!sendNormals) nbind = OVERALL;
   else if (normalCacheUsed && nbind == PER_VERTEX) {
     nbind = PER_VERTEX_INDEXED;
+  }
+  else if (normalCacheUsed && nbind == PER_FACE_INDEXED) {
+    nbind = PER_FACE;
   }
 
   Binding tbind = NONE;
