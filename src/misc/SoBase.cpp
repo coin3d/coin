@@ -115,9 +115,6 @@ SoBase::SoBase(void)
  */
 SoBase::~SoBase()
 {
-#if 0 // debug
-  SoDebugError::postInfo("SoBase::~SoBase", "starting destructor: %p", this);
-#endif // debug
 }
 
 /*!
@@ -129,6 +126,14 @@ SoBase::~SoBase()
 void
 SoBase::destroy(void)
 {
+#if COIN_DEBUG && 0 // debug
+  SbName dn = this->getName();
+  SoType t = this->getTypeId();
+  SoDebugError::postInfo("SoBase::destroy", "start -- %p '%s' ('%s')",
+                         this, t.getName().getString(), dn.getString());
+#endif // debug
+
+
 #if COIN_DEBUG
   if (SoBase::tracerefs) {
     SoDebugError::postInfo("SoBase::destroy",
@@ -173,6 +178,11 @@ SoBase::destroy(void)
 
   // Sjølmord.
   delete this;
+
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoBase::destroy", "done -- %p '%s' ('%s')",
+                         this, t.getName().getString(), dn.getString());
+#endif // debug
 }
 
 /*!

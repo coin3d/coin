@@ -97,6 +97,9 @@ SoNode::SoNode(void)
 */
 SoNode::~SoNode()
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoNode::~SoNode", "%p", this);
+#endif // debug
 }
 
 /*!

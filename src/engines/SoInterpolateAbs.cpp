@@ -38,6 +38,10 @@
 #include <Inventor/engines/SoInterpolateAbs.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 SO_ENGINE_ABSTRACT_SOURCE(SoInterpolate);
 
 /*!
@@ -62,4 +66,7 @@ SoInterpolate::initClass()
 */
 SoInterpolate::~SoInterpolate()
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoInterpolate::~SoInterpolate", "%p", this);
+#endif // debug
 }
