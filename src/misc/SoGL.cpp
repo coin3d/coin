@@ -1978,13 +1978,23 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
   if (!glrender) { // supply the sampling matrices
     SbMatrix glmodelmatrix = SoViewingMatrixElement::get(state);
     glmodelmatrix.multLeft(SoModelMatrixElement::get(state));
-    SbVec2s origin = SoViewportRegionElement::get(state).getViewportOriginPixels();
-    SbVec2s size = SoViewportRegionElement::get(state).getViewportSizePixels();
     GLint viewport[4];
-    viewport[0] = origin[0];
-    viewport[1] = origin[1];
-    viewport[2] = size[0];
-    viewport[3] = size[1];
+    // this element is not enabled for SoGetPrimitiveCountAction
+    if (state->isElementEnabled(SoViewportRegionElement::getClassStackIndex())) {
+      SbVec2s origin = SoViewportRegionElement::get(state).getViewportOriginPixels();
+      SbVec2s size = SoViewportRegionElement::get(state).getViewportSizePixels();
+
+      viewport[0] = origin[0];
+      viewport[1] = origin[1];
+      viewport[2] = size[0];
+      viewport[3] = size[1];
+    }
+    else {
+      viewport[0] = 0;
+      viewport[1] = 0;
+      viewport[2] = 640;
+      viewport[3] = 480;
+    }
     GLUWrapper()->gluLoadSamplingMatrices(nurbsrenderer,
                                           (float*)glmodelmatrix,
                                           SoProjectionMatrixElement::get(state)[0],
