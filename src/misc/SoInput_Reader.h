@@ -24,49 +24,30 @@
  *
 \**************************************************************************/
 
-#include <stdio.h>
-#include <string.h>
 #include <Inventor/SbString.h>
+#include <stdio.h>
 
 class SoInput_Reader {
 public:
-  SoInput_Reader(void) { }
-  virtual ~SoInput_Reader() { }
+  SoInput_Reader(void);
+  virtual ~SoInput_Reader();
 
   enum ReaderType {
     REGULAR_FILE,
     MEMBUFFER
   };
-  
+
   virtual ReaderType getType(void) const = 0;
   virtual int readBuffer(char * buf, const size_t readlen) = 0;
 };
 
 class SoInput_FileReader : public SoInput_Reader {
 public:
-  SoInput_FileReader(const char * const filename, FILE * filepointer) {
-    this->fp = filepointer;
-    this->filename = filename;
-  }
-  virtual ~SoInput_FileReader() {
+  SoInput_FileReader(const char * const filename, FILE * filepointer);
+  virtual ~SoInput_FileReader();
 
-    // Close files which are not a memory buffer nor the stdin and
-    // which we do have a filename for (if we don't have a filename,
-    // the FILE ptr was just passed in through setFilePointer() and
-    // is the library programmer's responsibility).
-    if (this->fp &&
-        (this->filename != "<stdin>") &&
-        (this->filename.getLength())) {
-      fclose(this->fp);
-    }
-  }
-
-  virtual ReaderType getType(void) const {
-    return REGULAR_FILE;
-  }
-  virtual int readBuffer(char * buf, const size_t readlen) {
-    return fread(buf, 1, readlen, this->fp);
-  }
+  virtual ReaderType getType(void) const;
+  virtual int readBuffer(char * buf, const size_t readlen);
 
 public:
   SbString filename;
@@ -76,25 +57,11 @@ public:
 
 class SoInput_MemBufferReader : public SoInput_Reader {
 public:
-  SoInput_MemBufferReader(void * bufPointer, size_t bufSize) {
-    this->buf = (char*) bufPointer;
-    this->buflen = bufSize;
-    this->bufpos = 0;
-  }
-  virtual ~SoInput_MemBufferReader() { }
+  SoInput_MemBufferReader(void * bufPointer, size_t bufSize);
+  virtual ~SoInput_MemBufferReader();
 
-  virtual ReaderType getType(void) const {
-    return MEMBUFFER;
-  }
-  virtual int readBuffer(char * buf, const size_t readlen) {
-    size_t len = this->buflen - this->bufpos;
-    if (len > readlen) len = readlen;
-
-    memcpy(buf, this->buf + this->bufpos, len);
-    this->bufpos += len;
-    
-    return len;
-  }
+  virtual ReaderType getType(void) const;
+  virtual int readBuffer(char * buf, const size_t readlen);
 
 public:
   char * buf;

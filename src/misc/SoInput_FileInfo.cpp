@@ -26,10 +26,11 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/misc/SoProto.h>
+#include <string.h>
 
 const unsigned int READBUFSIZE = 65536;
 
-SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * reader) 
+SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * reader)
 {
   this->reader = reader;
   this->readbuf = new char[READBUFSIZE];
@@ -320,4 +321,3 @@ SoInput_FileInfo::unrefProtos(void)
   }
   this->protolist.truncate(0);
 }
-
