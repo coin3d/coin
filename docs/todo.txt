@@ -347,6 +347,7 @@ STUFF TO FIX IN COIN
   from ROM (important for embedded systems).  This is just an idea - didn't
   find a more appropriate place to put it.
 
+
 * Rethink handling of camera properties and display configuration.
   2002-02-01  Morten Eriksen  <mortene@sim.no>
 
@@ -371,6 +372,7 @@ STUFF TO FIX IN COIN
   quality not as good as it should be.  SGI / TGS Inventor's SoSphere
   is (at least partly) triangulated, and looks better.
 
+
 * Implement an alternative to using macros for specifying nodekit parts.
   2002-02-20  Peder Blekken  <pederb@sim.no>
 
@@ -381,3 +383,14 @@ STUFF TO FIX IN COIN
   function that will interpret the strings and initialize the node kit 
   parts without using macros.
 
+
+* Make rendering (and other operations) robust for inconsistent scenegraphs.
+  2002-05-13  Morten Eriksen  <mortene@sim.no>
+
+  We should audit our rendering (and related) code and fix all cases
+  were we lack robustness for at least the most common mistakes.
+
+  Being able to import or otherwise construct iv-models that render
+  without crashing upon slight errors is important for the general
+  robustness of applications built on top of Coin. It will also be
+  important for the miscellaneous planned multithreaded functionality.

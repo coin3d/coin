@@ -70,3 +70,13 @@
     question.
 
 =====================================================================
+
+004 The ``buildings/Barcelona.iv'' model from the SGI Inventor archive
+    crashes on rendering in Coin, because we are less robust than SGI
+    / TGS Inventor in regard to faulty indices.
+
+    For a larger task: we should audit our rendering (and related)
+    code and fix all cases were we lack robustness for at least the
+    most common mistakes. See the docs/todo.txt item on this.
+
+=====================================================================
