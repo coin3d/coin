@@ -788,7 +788,8 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
     // Ouch. Does this to avoid having two subsequent write actions on
     // the same SoOutput to write "USE ..." when it should write a
     // full node/subgraph specification on the second run.  -mortene.
-    out->sobase2id->remove((const unsigned long)this);
+    if (out->findReference(this) != -1)
+      out->sobase2id->remove((const unsigned long)this);
   }
 
   // Don't need to write out the rest if we are writing anything but
