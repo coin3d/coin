@@ -433,7 +433,7 @@ wglglue_context_create_context(struct wglglue_contextdata * ctx, DWORD bitWin)
     PFD_TYPE_RGBA,         /* RGBA type */
     24,                    /* 24-bit color depth */
     0, 0, 0, 0, 0, 0,      /* color bits ignored */
-    0,                     /* no alpha buffer */
+    8,                     /* 8 bit alpha channel */
     0,                     /* shift bit ignored */
     0,                     /* no accumulation buffer */
     0, 0, 0, 0,            /* accum bits ignored */
