@@ -264,7 +264,7 @@ cc_build_search_list(const char * libname)
   if (!dyld_path) dyld_path = "";
   
   default_path = getenv("DYLD_FALLBACK_LIBRARY_PATH");
-  if (!default_path) default_path = "/usr/local/lib:/lib:/usr/lib";
+  if (!default_path) default_path = "/lib:/usr/lib";
 
 
   /* If we cannot find the library on the system, we might have a
