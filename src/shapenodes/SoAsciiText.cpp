@@ -55,9 +55,10 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoGlyph.h> /* SbBox2f */
 #include <Inventor/misc/SoState.h>
+#include <Inventor/caches/SoGlyphCache.h>
 #include <string.h>
 #include <float.h> // FLT_MIN
 
@@ -101,18 +102,13 @@ public:
   SoAsciiTextP(SoAsciiText * master) : master(master) { }
   SoAsciiText * master;
 
-  void setUpGlyphs(SoState * state, const cc_font_specification * fontspec, SoAsciiText * textnode);
-
+  void setUpGlyphs(SoState * state, SoAsciiText * textnode);
+  
   SbList <float> glyphwidths;
   SbList <float> stringwidths;
-  SbBool needsetup;
-  cc_font_specification * fontspec;
   SbBox3f maxglyphbbox;
 
-  cc_string * prevfontname; // Store important fontspecs so that changes can be detected
-  cc_string * prevfontstyle;
-  float prevfontsize;
-
+  SoGlyphCache * cache;
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -141,12 +137,7 @@ SoAsciiText::SoAsciiText(void)
   SO_NODE_SET_SF_ENUM_TYPE(justification, Justification);
 
   PRIVATE(this) = new SoAsciiTextP(this);
-  PRIVATE(this)->needsetup = TRUE;
-
-  PRIVATE(this)->prevfontname = cc_string_construct_new();
-  PRIVATE(this)->prevfontstyle = cc_string_construct_new();
-  PRIVATE(this)->prevfontsize = -1;
-
+  PRIVATE(this)->cache = NULL;
 }
 
 /*!
@@ -154,8 +145,7 @@ SoAsciiText::SoAsciiText(void)
 */
 SoAsciiText::~SoAsciiText()
 {
-  cc_string_destruct(PRIVATE(this)->prevfontname);
-  cc_string_destruct(PRIVATE(this)->prevfontstyle);
+  if (PRIVATE(this)->cache) PRIVATE(this)->cache->unref();
   delete PRIVATE(this);
 }
 
@@ -169,19 +159,15 @@ SoAsciiText::initClass(void)
 // Doc in parent.
 void
 SoAsciiText::GLRender(SoGLRenderAction * action)
-{
-    
+{  
   if (!this->shouldGLRender(action)) 
     return;
 
   SoState * state = action->getState();
+  PRIVATE(this)->setUpGlyphs(state, this);
+  SoCacheElement::addCacheDependency(state, PRIVATE(this)->cache);
 
-  cc_font_specification fontspec;
-  cc_fontspec_construct(&fontspec, SoFontNameElement::get(state).getString(),
-                        SoFontSizeElement::get(state),
-                        this->getComplexityValue(state->getAction()));
-
-  PRIVATE(this)->setUpGlyphs(state, &fontspec, this);
+  const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec(); 
 
   SbBool do2Dtextures = FALSE;
   SbBool do3Dtextures = FALSE;
@@ -242,14 +228,16 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
       const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, &fontspec);
-
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
 
       // Get kerning
       if (strcharidx > 0) {
         float kerningx, kerningy;
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
-        xpos += kerningx* fontspec.size;
+        xpos += kerningx* fontspec->size;
+      }
+      if (prevglyph) {
+        cc_glyph3d_unref(prevglyph);
       }
       prevglyph = glyph;
 
@@ -263,37 +251,38 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
         v2 = coords[*ptr++];
 
         if (do2Dtextures) {
-          glTexCoord2f(v0[0] + xpos/fontspec.size, v0[1] + ypos/fontspec.size);
+          glTexCoord2f(v0[0] + xpos/fontspec->size, v0[1] + ypos/fontspec->size);
         }
-        glVertex3f(v0[0] * fontspec.size + xpos, v0[1] * fontspec.size + ypos, 0.0f);
+        glVertex3f(v0[0] * fontspec->size + xpos, v0[1] * fontspec->size + ypos, 0.0f);
         
         if (do2Dtextures) {
-          glTexCoord2f(v1[0] + xpos/fontspec.size, v1[1] + ypos/fontspec.size);
+          glTexCoord2f(v1[0] + xpos/fontspec->size, v1[1] + ypos/fontspec->size);
         }
-        glVertex3f(v1[0] * fontspec.size + xpos, v1[1] * fontspec.size + ypos, 0.0f);
+        glVertex3f(v1[0] * fontspec->size + xpos, v1[1] * fontspec->size + ypos, 0.0f);
         
         if (do2Dtextures) {
-          glTexCoord2f(v2[0] + xpos/fontspec.size, v2[1] + ypos/fontspec.size);
+          glTexCoord2f(v2[0] + xpos/fontspec->size, v2[1] + ypos/fontspec->size);
         }
-        glVertex3f(v2[0] * fontspec.size + xpos, v2[1] * fontspec.size + ypos, 0.0f);
+        glVertex3f(v2[0] * fontspec->size + xpos, v2[1] * fontspec->size + ypos, 0.0f);
 
       }
 
       float advancex, advancey;
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
-      xpos += (advancex + stretchfactor) * fontspec.size;
-
+      xpos += (advancex + stretchfactor) * fontspec->size;
     }
-    ypos -= fontspec.size * this->spacing.getValue();
+    if (prevglyph) {
+      cc_glyph3d_unref(prevglyph);
+      prevglyph = NULL;
+    }
+
+    ypos -= fontspec->size * this->spacing.getValue();
   }
   glEnd();
 
-  
   if (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::OBJECT_SPACE) 
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
   
-  cc_fontspec_clean(&fontspec);  
-
 }
 
 // Doc in parent.
@@ -302,12 +291,9 @@ SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   if (action->is3DTextCountedAsTriangles()) {        
     SoState * state = action->getState();
-    cc_font_specification fontspec;
-    cc_fontspec_construct(&fontspec, SoFontNameElement::get(state).getString(),
-                          SoFontSizeElement::get(state),
-                          SoComplexityElement::get(state));
-    
-    PRIVATE(this)->setUpGlyphs(state, &fontspec, this);
+    PRIVATE(this)->setUpGlyphs(state, this);
+
+    const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
 
     const int lines = this->string.getNum();
     int numtris = 0;      
@@ -321,7 +307,7 @@ SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
         // set up to 127) be expanded to huge int numbers that turn
         // negative when casted to integer size.        
         const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-        const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, &fontspec);
+        cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
 
         int cnt = 0;
         const int * ptr = cc_glyph3d_getfaceindices(glyph);
@@ -329,10 +315,11 @@ SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
           cnt++;
 
         numtris += cnt / 3;
+        
+        cc_glyph3d_unref(glyph);
       }
     }
     action->addNumTriangles(numtris);
-    cc_fontspec_clean(&fontspec);
   }
   else {
     action->addNumText(this->string.getNum());
@@ -344,15 +331,12 @@ SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 void
 SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
-
   SoState * state = action->getState();
 
-  cc_font_specification fontspec;
-  cc_fontspec_construct(&fontspec, SoFontNameElement::get(state).getString(),
-                        SoFontSizeElement::get(state),
-                        SoComplexityElement::get(state));
+  PRIVATE(this)->setUpGlyphs(state, this);
+  SoCacheElement::addCacheDependency(state, PRIVATE(this)->cache);
 
-  PRIVATE(this)->setUpGlyphs(state, &fontspec, this);
+  const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
 
   int i;
   const int n = this->string.getNum();
@@ -362,10 +346,7 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   for (i = 0;i<PRIVATE(this)->stringwidths.getLength();++i) 
     maxw = SbMax(maxw, PRIVATE(this)->stringwidths[i]);
   
-  if(maxw == FLT_MIN) { // There is no text to bound. Returning.
-    box.setBounds(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 0.0f, 0.0f));
-    center = SbVec3f(0,0,0);
-    cc_fontspec_clean(&fontspec);
+  if (maxw == FLT_MIN) { // There is no text to bound. Returning.
     return; 
   }
 
@@ -380,10 +361,10 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   float minx, maxx;
   
   minx = 0;
-  maxx = maxw + maxwidth*fontspec.size;
+  maxx = maxw + maxwidth*fontspec->size;
 
-  miny = -fontspec.size * this->spacing.getValue() * (n-1);
-  maxy = fontspec.size;
+  miny = -fontspec->size * this->spacing.getValue() * (n-1);
+  maxy = fontspec->size;
 
   switch (this->justification.getValue()) {
   case SoAsciiText::LEFT:
@@ -403,12 +384,9 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   box.setBounds(SbVec3f(minx, miny, 0.0f), SbVec3f(maxx, maxy, 0.0f));
 
   // Expanding bbox so that glyphs like 'j's and 'q's are completely inside.
-  box.extendBy(SbVec3f(0,PRIVATE(this)->maxglyphbbox.getMin()[1] - (n-1)*fontspec.size, 0));  
+  box.extendBy(SbVec3f(0,PRIVATE(this)->maxglyphbbox.getMin()[1] - (n-1)*fontspec->size, 0));  
   box.extendBy(PRIVATE(this)->maxglyphbbox);
   center = box.getCenter();
-
-  cc_fontspec_clean(&fontspec);
-
 }
 
 // Doc in parent.
@@ -417,12 +395,9 @@ SoAsciiText::generatePrimitives(SoAction * action)
 {
 
   SoState * state = action->getState();
-  cc_font_specification fontspec;
-  cc_fontspec_construct(&fontspec, SoFontNameElement::get(state).getString(),
-                        SoFontSizeElement::get(state),
-                        this->getComplexityValue(action));
+  PRIVATE(this)->setUpGlyphs(state, this);
 
-  PRIVATE(this)->setUpGlyphs(state, &fontspec, this);
+  const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
 
   int i, n = this->string.getNum();
 
@@ -487,13 +462,16 @@ SoAsciiText::generatePrimitives(SoAction * action)
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
       const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, &fontspec);
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
       
       // Get kerning
       if (strcharidx > 0) {
         float kerningx, kerningy;
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
-        xpos += kerningx * fontspec.size;
+        xpos += kerningx * fontspec->size;
+      }
+      if (prevglyph) {
+        cc_glyph3d_unref(prevglyph);
       }
       prevglyph = glyph;
       detail.setCharacterIndex(strcharidx);
@@ -508,34 +486,34 @@ SoAsciiText::generatePrimitives(SoAction * action)
         v2 = coords[*ptr++];
 
         if(do2Dtextures) {
-          vertex.setTextureCoords(SbVec2f(v0[0] + xpos/fontspec.size, v0[1] + ypos/fontspec.size));
+          vertex.setTextureCoords(SbVec2f(v0[0] + xpos/fontspec->size, v0[1] + ypos/fontspec->size));
         }
-        vertex.setPoint(SbVec3f(v0[0] * fontspec.size + xpos, v0[1] * fontspec.size + ypos, 0.0f));
+        vertex.setPoint(SbVec3f(v0[0] * fontspec->size + xpos, v0[1] * fontspec->size + ypos, 0.0f));
         this->shapeVertex(&vertex);
 
         if(do2Dtextures) {
-          vertex.setTextureCoords(SbVec2f(v1[0] + xpos/fontspec.size, v1[1] + ypos/fontspec.size));
+          vertex.setTextureCoords(SbVec2f(v1[0] + xpos/fontspec->size, v1[1] + ypos/fontspec->size));
         }
-        vertex.setPoint(SbVec3f(v1[0] * fontspec.size + xpos, v1[1] * fontspec.size + ypos, 0.0f));
+        vertex.setPoint(SbVec3f(v1[0] * fontspec->size + xpos, v1[1] * fontspec->size + ypos, 0.0f));
         this->shapeVertex(&vertex);
 
         if(do2Dtextures) {
-          vertex.setTextureCoords(SbVec2f(v2[0] + xpos/fontspec.size, v2[1] + ypos/fontspec.size));
+          vertex.setTextureCoords(SbVec2f(v2[0] + xpos/fontspec->size, v2[1] + ypos/fontspec->size));
         }
-        vertex.setPoint(SbVec3f(v2[0] * fontspec.size + xpos, v2[1] * fontspec.size + ypos, 0.0f));
+        vertex.setPoint(SbVec3f(v2[0] * fontspec->size + xpos, v2[1] * fontspec->size + ypos, 0.0f));
         this->shapeVertex(&vertex);
-
       }
-
       float advancex, advancey;
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
-      xpos += (advancex + stretchfactor) * fontspec.size;
+      xpos += (advancex + stretchfactor) * fontspec->size;
     }
-    ypos -= fontspec.size * this->spacing.getValue();
+    ypos -= fontspec->size * this->spacing.getValue();
+    if (prevglyph) {
+      cc_glyph3d_unref(prevglyph);
+      prevglyph = NULL;
+    }
   }
   this->endShape();
-
-  cc_fontspec_clean(&fontspec);
 
 }
 
@@ -556,8 +534,12 @@ SoAsciiText::createTriangleDetail(SoRayPickAction * action,
 void 
 SoAsciiText::notify(SoNotList * list)
 {
-  SoField * f = list->getLastField();
-  if (f == &this->string) PRIVATE(this)->needsetup = TRUE;
+  if (PRIVATE(this)->cache) {
+    SoField * f = list->getLastField();
+    if (f == &this->string) {
+      PRIVATE(this)->cache->invalidate();
+    }
+  }
   inherited::notify(list);
 }
 
@@ -578,28 +560,18 @@ SoAsciiText::getWidth(const int idx, const float fontsize)
 
 // recalculate glyphs
 void
-SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspecptr, SoAsciiText * textnode)
+SoAsciiTextP::setUpGlyphs(SoState * state, SoAsciiText * textnode)
 {
-
-  // Note that this code is duplicated in SoText3::setUpGlyphs(), so
-  // migrate bugfixes and other improvements.
-
-  // We have to force a new setup if style, size or font has
-  // changed. This must be done if boundingbox and text alignment
-  // shall stay correct
-  if (cc_string_compare(&fontspecptr->name, this->prevfontname) != 0 ||
-      cc_string_compare(&fontspecptr->style, this->prevfontstyle)) {
-    this->needsetup = TRUE; // Force new a setup
-    cc_string_set_text(this->prevfontname, cc_string_get_text(&fontspecptr->name));
-    cc_string_set_text(this->prevfontstyle, cc_string_get_text(&fontspecptr->style));
-  }
-  if(fontspecptr->size != this->prevfontsize) {
-    this->prevfontsize = fontspecptr->size;
-    this->needsetup = TRUE;
-  }
-
-  if (!this->needsetup) return;
-  this->needsetup = FALSE;
+  if (this->cache && this->cache->isValid(state)) return;
+  SoGlyphCache * oldcache = this->cache;
+  
+  state->push();
+  SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
+  this->cache = new SoGlyphCache(state); 
+  this->cache->ref();
+  SoCacheElement::set(state, this->cache);
+  this->cache->readFontspec(state);
+  const cc_font_specification * fontspecptr = this->cache->getCachedFontspec(); 
 
   this->glyphwidths.truncate(0);
   this->stringwidths.truncate(0);
@@ -623,7 +595,8 @@ SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspe
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
       const uint32_t glyphidx = (const unsigned char) textnode->string[i][strcharidx];
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, fontspecptr);
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspecptr);
+      this->cache->addGlyph(glyph);
       assert(glyph);
 
       maxbbox = cc_glyph3d_getboundingbox(glyph); // Get max height
@@ -652,10 +625,11 @@ SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspe
     this->stringwidths.append(stringwidth);
   }
 
-  // Make sure the boundingbox is updated if this method was called due to
-  // a fontspec change.
-  this->master->touch();
+  state->pop();
+  SoCacheElement::setInvalid(storedinvalid);
 
+  // unref old cache after creating the new one to avoid recreating glyphs
+  if (oldcache) oldcache->unref();
 }
 
 #endif // DOXYGEN_SKIP_THIS

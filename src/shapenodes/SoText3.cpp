@@ -124,6 +124,8 @@
 #include <Inventor/nodes/SoNurbsProfile.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/caches/SoGlyphCache.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <string.h>
 
 #include <coindefs.h> // COIN_OBSOLETED()
@@ -209,16 +211,13 @@ public:
 
   void render(SoState * state, const cc_font_specification * fontspec, unsigned int part);
   void generate(SoAction * action, const cc_font_specification * fontspec, unsigned int part);
-
+  
   SbList <float> widths;
-  void setUpGlyphs(SoState * state, const cc_font_specification * fontspec, SoText3 * textnode);
-  SbBool needsetup;
+  void setUpGlyphs(SoState * state, SoText3 * textnode);
   SbBox3f maxglyphbbox;
-
-  cc_string * prevfontname; // Store important fontspecs so that changes can be detected
-  cc_string * prevfontstyle;
-  float prevfontsize;
   SoNormalGenerator * normalgenerator;
+
+  SoGlyphCache * cache;
 
 private:
   SoText3 * master;
@@ -256,15 +255,13 @@ SoText3::SoText3(void)
   SO_NODE_SET_SF_ENUM_TYPE(parts, Part);
 
   PRIVATE(this) = new SoText3P(this);
-  PRIVATE(this)->needsetup = TRUE;
-  PRIVATE(this)->prevfontname = cc_string_construct_new();
-  PRIVATE(this)->prevfontstyle = cc_string_construct_new();
-  PRIVATE(this)->prevfontsize = -1;
   PRIVATE(this)->normalgenerator = new SoNormalGenerator(FALSE, 0xff);
+  PRIVATE(this)->cache = NULL;
 }
 
 SoText3::~SoText3()
 {
+  if (PRIVATE(this)->cache) PRIVATE(this)->cache->unref();
   delete PRIVATE(this)->normalgenerator;
   delete PRIVATE(this);
 }
@@ -282,19 +279,13 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   SoState * state = action->getState();
 
-  cc_font_specification fontspec;
-  cc_fontspec_construct(&fontspec, SoFontNameElement::get(state).getString(),
-                        SoFontSizeElement::get(state),
-                        SoComplexityElement::get(state));
+  PRIVATE(this)->setUpGlyphs(state, this);
+  SoCacheElement::addCacheDependency(state, PRIVATE(this)->cache);
 
-  PRIVATE(this)->setUpGlyphs(state, &fontspec, this);
+  const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
+
   int i, n = PRIVATE(this)->widths.getLength();
-  if (n == 0) {
-    center = SbVec3f(0.0f, 0.0f, 0.0f);
-    box.setBounds(center, center);
-    cc_fontspec_clean(&fontspec);
-    return;
-  }
+  if (n == 0) return; // empty bbox
 
   float maxw = FLT_MIN;
   for (i = 0; i < n; i++) 
@@ -309,8 +300,8 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   SbBox2f maxbox;
   float maxglyphsize = 1;
   
-  float maxy = fontspec.size;
-  float miny = -this->spacing.getValue() * fontspec.size * (n-1);
+  float maxy = fontspec->size;
+  float miny = -this->spacing.getValue() * fontspec->size * (n-1);
 
   float minx, maxx;
   switch (this->justification.getValue()) {
@@ -390,15 +381,13 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   box.setBounds(SbVec3f(minx, miny, minz), SbVec3f(maxx, maxy, maxz));
 
   // Expanding bbox so that glyphs like 'j's and 'q's are completely inside.
-  box.extendBy(SbVec3f(0,PRIVATE(this)->maxglyphbbox.getMin()[1] - (n-1) * fontspec.size, 0));
+  box.extendBy(SbVec3f(0,PRIVATE(this)->maxglyphbbox.getMin()[1] - (n-1) * fontspec->size, 0));
   box.extendBy(PRIVATE(this)->maxglyphbbox);
 
   box.extendBy(SbVec3f(box.getMax()[0] + profsize, box.getMax()[1] + profsize, 0));
   box.extendBy(SbVec3f(box.getMin()[0] - profsize, box.getMin()[1] - profsize, 0));
     
   center = box.getCenter();
-
-  cc_fontspec_clean(&fontspec);
 }
 
 
@@ -417,18 +406,15 @@ SoText3::getCharacterBounds(SoState * state, int stringindex, int charindex)
 void
 SoText3::GLRender(SoGLRenderAction * action)
 {
-  
   if (!this->shouldGLRender(action)) 
     return;
 
   SoState * state = action->getState();
 
-  cc_font_specification fontspec;
-  cc_fontspec_construct(&fontspec, SoFontNameElement::get(state).getString(),
-                        SoFontSizeElement::get(state),
-                        this->getComplexityValue(state->getAction()));
+  PRIVATE(this)->setUpGlyphs(state, this);
+  SoCacheElement::addCacheDependency(state, PRIVATE(this)->cache);
 
-  PRIVATE(this)->setUpGlyphs(state, &fontspec, this);
+  const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
 
   SoMaterialBindingElement::Binding binding = SoMaterialBindingElement::get(state);
   SoMaterialBundle mb(action);
@@ -441,23 +427,22 @@ SoText3::GLRender(SoGLRenderAction * action)
   SbBool matperpart = (binding != SoMaterialBindingElement::OVERALL);
   
   if (prts & SoText3::FRONT) {
-    PRIVATE(this)->render(state, &fontspec, SoText3::FRONT);
+    PRIVATE(this)->render(state, fontspec, SoText3::FRONT);
   }
   if (prts & SoText3::SIDES) {
     if (matperpart && (numdiffuse > 1)) 
         mb.send(1, FALSE);    
-    PRIVATE(this)->render(state, &fontspec, SoText3::SIDES);
+    PRIVATE(this)->render(state, fontspec, SoText3::SIDES);
   }
   if (prts & SoText3::BACK) {
     if (matperpart && (numdiffuse > 2)) 
       mb.send(2, FALSE);    
-    PRIVATE(this)->render(state, &fontspec, SoText3::BACK);
+    PRIVATE(this)->render(state, fontspec, SoText3::BACK);
   }
   
   if (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::OBJECT_SPACE) 
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
     
-  cc_fontspec_clean(&fontspec);
 }
 
 // doc in parent
@@ -480,26 +465,21 @@ SoText3::generatePrimitives(SoAction * action)
 {
   SoState * state = action->getState();
 
-  cc_font_specification fontspec;
-  cc_fontspec_construct(&fontspec, SoFontNameElement::get(state).getString(),
-                        SoFontSizeElement::get(state),
-                        this->getComplexityValue(state->getAction()));
+  PRIVATE(this)->setUpGlyphs(state, this);
 
-  PRIVATE(this)->setUpGlyphs(state, &fontspec, this);
+  const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
 
   unsigned int prts = this->parts.getValue();
 
   if (prts & SoText3::FRONT) {
-    PRIVATE(this)->generate(action, &fontspec, SoText3::FRONT);
+    PRIVATE(this)->generate(action, fontspec, SoText3::FRONT);
   }
   if (prts & SoText3::SIDES) {
-    PRIVATE(this)->generate(action, &fontspec, SoText3::SIDES);
+    PRIVATE(this)->generate(action, fontspec, SoText3::SIDES);
   }
   if (prts & SoText3::BACK) {
-    PRIVATE(this)->generate(action, &fontspec, SoText3::BACK);
+    PRIVATE(this)->generate(action, fontspec, SoText3::BACK);
   }
-
-  cc_fontspec_clean(&fontspec);
 }
 
 // doc in parent
@@ -602,7 +582,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
       const uint32_t glyphidx = (const unsigned char) PUBLIC(this)->string[i][strcharidx];
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, fontspec);
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
       const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
 
       // Get kerning
@@ -611,9 +591,11 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
         xpos += kerningx * fontspec->size;
       }
+      if (prevglyph) {
+        cc_glyph3d_unref(prevglyph);
+      }
       prevglyph = glyph;
       
-
       if (part != SoText3::SIDES) {  // FRONT & BACK
         const int * ptr = cc_glyph3d_getfaceindices(glyph);
         glBegin(GL_TRIANGLES);
@@ -649,9 +631,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
           glVertex3f(v2[0] * fontspec->size + xpos, v2[1] * fontspec->size + ypos, zval);
 
         }
-
         glEnd();
-
       }
       else { // SIDES
 
@@ -884,9 +864,12 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
       xpos += advancex * fontspec->size;
 
     }
+    if (prevglyph) {
+      cc_glyph3d_unref(prevglyph);
+      prevglyph = NULL;
+    }
     ypos -= fontspec->size * PUBLIC(this)->spacing.getValue();
   }
-
 }
 
 // render text geometry
@@ -1016,7 +999,7 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.      
       const uint32_t glyphidx = (const unsigned char) PUBLIC(this)->string[i][strcharidx];
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, fontspec);    
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);    
       const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
 
       detail.setCharacterIndex(strcharidx);
@@ -1027,8 +1010,10 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
         xpos += kerningx * fontspec->size;
       }
+      if (prevglyph) {
+        cc_glyph3d_unref(prevglyph);
+      }
       prevglyph = glyph;
-
 
       if (part != SoText3::SIDES) {  // FRONT & BACK
         const int * ptr = cc_glyph3d_getfaceindices(glyph);
@@ -1319,6 +1304,10 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
       xpos += advancex * fontspec->size;
 
     }
+    if (prevglyph) {
+      cc_glyph3d_unref(prevglyph);
+      prevglyph = NULL;
+    }
     ypos -= fontspec->size * PUBLIC(this)->spacing.getValue();
   }
 
@@ -1329,36 +1318,28 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
 void 
 SoText3::notify(SoNotList * list)
 {
-  // Overridden to detect when the string field changes.
-  SoField * f = list->getLastField();
-  if (f == &this->string) PRIVATE(this)->needsetup = TRUE;
+  if (PRIVATE(this)->cache) {
+    SoField * f = list->getLastField();
+    if (f == &this->string) PRIVATE(this)->cache->invalidate();
+  }
   inherited::notify(list);
 }
 
 // recalculate glyphs
 void
-SoText3P::setUpGlyphs(SoState * state, const cc_font_specification * fontspec, SoText3 * textnode)
+SoText3P::setUpGlyphs(SoState * state, SoText3 * textnode)
 {
-  // Note that this code is duplicated in SoAsciiText::setUpGlyphs(),
-  // so migrate bugfixes and other improvements.
- 
-  // We have to force a new setup if style, size or font has
-  // changed. This must be done if boundingbox and text alignment
-  // shall stay correct
-  if (cc_string_compare(&fontspec->name, this->prevfontname) != 0 ||
-      cc_string_compare(&fontspec->style, this->prevfontstyle)) {
-    this->needsetup = TRUE; // Force new a setup
-    cc_string_set_text(this->prevfontname, cc_string_get_text(&fontspec->name));
-    cc_string_set_text(this->prevfontstyle, cc_string_get_text(&fontspec->style));
-  }
-  if(fontspec->size != this->prevfontsize) {
-    this->prevfontsize = fontspec->size;
-    this->needsetup = TRUE;
-  }
+  if (this->cache && this->cache->isValid(state)) return;
+  SoGlyphCache * oldcache = this->cache;
 
-  if (!this->needsetup) return;
-  this->needsetup = FALSE;
-
+  state->push();
+  SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
+  this->cache = new SoGlyphCache(state); 
+  this->cache->ref();
+  SoCacheElement::set(state, this->cache);
+  this->cache->readFontspec(state);
+  const cc_font_specification * fontspec = this->cache->getCachedFontspec(); 
+  
   this->widths.truncate(0);
 
   for (int i = 0; i < textnode->string.getNum(); i++) {
@@ -1381,7 +1362,8 @@ SoText3P::setUpGlyphs(SoState * state, const cc_font_specification * fontspec, S
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
       const uint32_t glyphidx = (const unsigned char) textnode->string[i][strcharidx];
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, fontspec);
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
+      this->cache->addGlyph(glyph);
       assert(glyph);
 
       maxbbox = cc_glyph3d_getboundingbox(glyph); // Get max height
@@ -1392,10 +1374,8 @@ SoText3P::setUpGlyphs(SoState * state, const cc_font_specification * fontspec, S
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);      
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
       
- 
       stringwidth += (advancex + kerningx) * fontspec->size;
       prevglyph = glyph;
-
     }
 
     if (prevglyph != NULL) {
@@ -1407,8 +1387,10 @@ SoText3P::setUpGlyphs(SoState * state, const cc_font_specification * fontspec, S
     this->widths.append(stringwidth);
   }
 
-  // Make sure boundingbox is updated if this method was called due to
-  // a fontspec change.
-  this->master->touch();
+  state->pop();
+  SoCacheElement::setInvalid(storedinvalid);
+
+  // unref old cache after creating the new one to avoid recreating glyphs
+  if (oldcache) oldcache->unref();
 
 }

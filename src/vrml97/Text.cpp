@@ -132,11 +132,10 @@
 #include <Inventor/system/gl.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/nodes/SoAsciiText.h>
-
+#include <Inventor/caches/SoGlyphCache.h>
+#include <Inventor/elements/SoCacheElement.h>
 
 #include "../fonts/glyph3d.h"
-
-static void fontstylechangeCB(void * data, SoSensor * sensor);
 
 class SoVRMLTextP {
 public:
@@ -145,10 +144,10 @@ public:
 
   float getWidth(const int idx, const float fontsize);
   SbList <float> glyphwidths;
-  SbBool needsetup;
-  cc_font_specification * fontspec;
-
   void setUpGlyphs(SoState * state, SoVRMLText * textnode);
+  SoGlyphCache * cache;
+
+  void updateFontStyle(void);
 
   SoFieldSensor * fontstylesensor;
 
@@ -166,7 +165,6 @@ public:
   int fontstyle;
 };
 
-
 #define PRIVATE(obj) (obj->pimpl)
 
 SO_NODE_SOURCE(SoVRMLText);
@@ -178,13 +176,19 @@ SoVRMLText::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLText, SO_VRML97_NODE_TYPE);
 }
 
+static void 
+fontstylechangeCB(void * data, SoSensor * sensor)
+{
+  SoVRMLTextP * pimpl = (SoVRMLTextP *) data;
+  if (pimpl->cache) pimpl->cache->invalidate();
+}
+
 /*!
   Constructor.
 */
 SoVRMLText::SoVRMLText(void)
 {
   PRIVATE(this) = new SoVRMLTextP(this);
-  PRIVATE(this)->needsetup = TRUE;
 
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLText);
 
@@ -209,8 +213,7 @@ SoVRMLText::SoVRMLText(void)
   PRIVATE(this)->fontstylesensor->attach(&fontStyle);
   PRIVATE(this)->fontstylesensor->setPriority(0);
   
-  PRIVATE(this)->fontspec = NULL;
-
+  PRIVATE(this)->cache = NULL;
 }
 
 float
@@ -228,10 +231,7 @@ SoVRMLTextP::getWidth(const int idx, const float fontsize)
 */
 SoVRMLText::~SoVRMLText()
 {
-
-  if (PRIVATE(this)->fontspec != NULL) {
-    cc_fontspec_clean(PRIVATE(this)->fontspec);
-  }
+  if (PRIVATE(this)->cache) PRIVATE(this)->cache->unref();
 
   delete PRIVATE(this)->fontstylesensor;
   delete PRIVATE(this);
@@ -241,12 +241,13 @@ SoVRMLText::~SoVRMLText()
 void
 SoVRMLText::GLRender(SoGLRenderAction * action)
 {
-
   if (!this->shouldGLRender(action)) return;
 
   SoState * state = action->getState();
-  PRIVATE(this)->fontspec->complexity = this->getComplexityValue(state->getAction());
   PRIVATE(this)->setUpGlyphs(state, this);
+  SoCacheElement::addCacheDependency(state, PRIVATE(this)->cache);
+
+  const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
@@ -386,7 +387,7 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
       const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, PRIVATE(this)->fontspec);
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
 
       float advancex, advancey;
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
@@ -405,6 +406,9 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
         float kerningy = 0.0f;
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
         xpos += kerningx * PRIVATE(this)->textsize;
+      }
+      if (prevglyph) {
+        cc_glyph3d_unref(prevglyph);
       }
       prevglyph = glyph;
 
@@ -450,7 +454,11 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
       else
         ypos += spacing * PRIVATE(this)->maxglyphheight;
     }
-   
+
+    if (prevglyph) {
+      cc_glyph3d_unref(prevglyph);
+      prevglyph = NULL;
+    }
   }
   glEnd();
 }
@@ -461,6 +469,7 @@ void
 SoVRMLText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   PRIVATE(this)->setUpGlyphs(action->getState(), this);
+  const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
 
   if (action->is3DTextCountedAsTriangles()) {        
     const int lines = this->string.getNum();
@@ -476,7 +485,7 @@ SoVRMLText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
         // set up to 127) be expanded to huge int numbers that turn
         // negative when casted to integer size.             
         const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-        const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, PRIVATE(this)->fontspec);
+        cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
 
         int cnt = 0;
         const int * ptr = cc_glyph3d_getfaceindices(glyph);
@@ -484,6 +493,8 @@ SoVRMLText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
           cnt++;
 
         numtris += cnt / 3;
+        
+        cc_glyph3d_unref(glyph);
       }
     }
     action->addNumTriangles(numtris);
@@ -499,8 +510,10 @@ SoVRMLText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 void
 SoVRMLText::notify(SoNotList * list)
 {
-  SoField * f = list->getLastField();
-  if (f == &this->string) PRIVATE(this)->needsetup = TRUE;
+  if (PRIVATE(this)->cache) {
+    SoField * f = list->getLastField();
+    if (f == &this->string) PRIVATE(this)->cache->invalidate();
+  }
   inherited::notify(list);
 }
 
@@ -519,6 +532,7 @@ SoVRMLText::computeBBox(SoAction * action,
                         SbVec3f & center)
 {
   PRIVATE(this)->setUpGlyphs(action->getState(), this);
+  SoCacheElement::addCacheDependency(action->getState(), PRIVATE(this)->cache);
 
   int i;
   const int n = this->string.getNum();
@@ -531,12 +545,10 @@ SoVRMLText::computeBBox(SoAction * action,
     maxstringchars = SbMax(maxstringchars, this->string[i].getLength());
   }
 
-  if(maxw == FLT_MIN) { // There is no text to bound. Returning.
-    box.setBounds(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 0.0f, 0.0f));
-    center = SbVec3f(0,0,0);
+  if (maxw == FLT_MIN) { // There is no text to bound. Returning.
     return; 
   }
-
+  
 
   float maxglyphsize = PRIVATE(this)->maxglyphheight;  
   float maxlength = 0.0f;
@@ -680,8 +692,8 @@ SoVRMLText::computeBBox(SoAction * action,
 void
 SoVRMLText::generatePrimitives(SoAction * action)
 {
-
   PRIVATE(this)->setUpGlyphs(action->getState(), this);
+  const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
 
   int i, n = this->string.getNum();
   const float spacing = PRIVATE(this)->textspacing * PRIVATE(this)->textsize;
@@ -823,7 +835,7 @@ SoVRMLText::generatePrimitives(SoAction * action)
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
       const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, PRIVATE(this)->fontspec);
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
 
       float advancex, advancey;
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
@@ -843,6 +855,9 @@ SoVRMLText::generatePrimitives(SoAction * action)
         float kerningy = 0.0f;
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
         xpos += kerningx * PRIVATE(this)->textsize;
+      }
+      if (prevglyph) {
+        cc_glyph3d_unref(prevglyph);
       }
       prevglyph = glyph;
 
@@ -890,7 +905,10 @@ SoVRMLText::generatePrimitives(SoAction * action)
       else
         ypos += spacing * PRIVATE(this)->maxglyphheight;
     }
-
+    if (prevglyph) {
+      cc_glyph3d_unref(prevglyph);
+      prevglyph = NULL;
+    }
   }
 
   this->endShape();
@@ -898,24 +916,97 @@ SoVRMLText::generatePrimitives(SoAction * action)
 
 #undef PRIVATE
 
+void
+SoVRMLTextP::updateFontStyle(void)
+{
+  SoVRMLFontStyle * fs = (SoVRMLFontStyle*) this->master->fontStyle.getValue();
+  if (!fs) {
+    this->textsize = 1.0f;
+    this->textspacing = 1.0f;
+    this->lefttorighttext = TRUE;
+    this->toptobottomtext = TRUE;
+    this->horizontaltext = TRUE;
+    this->justificationmajor = SoAsciiText::LEFT;
+    this->justificationminor = SoAsciiText::LEFT;
+    this->fontfamily = SoVRMLFontStyle::SERIF;
+    this->fontstyle = SoVRMLFontStyle::PLAIN;
+    return;
+  }
+
+  // Major mode
+  if (!strcmp(fs->justify[0].getString(),"BEGIN") || 
+      !strcmp(fs->justify[0].getString(),"FIRST") ||
+      (fs->justify[0].getLength() == 0)) {
+    this->justificationmajor = SoAsciiText::LEFT;  
+  } 
+  else if (!strcmp(fs->justify[0].getString(),"MIDDLE")) {
+    this->justificationmajor = SoAsciiText::CENTER;
+  } 
+  else if (!strcmp(fs->justify[0].getString(),"END")) {
+    this->justificationmajor = SoAsciiText::RIGHT;
+  }
+    
+  // Minor mode
+  if (fs->justify.getNum() > 1) {
+    if (!strcmp(fs->justify[1].getString(),"BEGIN") || 
+        !strcmp(fs->justify[1].getString(),"FIRST") ||
+        (fs->justify[1].getLength() == 0))
+      this->justificationminor = SoAsciiText::LEFT;  
+    else if (!strcmp(fs->justify[1].getString(),"MIDDLE")) 
+      this->justificationminor = SoAsciiText::CENTER;
+    else if (!strcmp(fs->justify[1].getString(),"END")) 
+      this->justificationminor = SoAsciiText::RIGHT;
+  }
+  
+  this->lefttorighttext = fs->leftToRight.getValue();
+  this->toptobottomtext = fs->topToBottom.getValue();
+  this->horizontaltext = fs->horizontal.getValue();
+  this->textsize = fs->size.getValue();
+  this->textspacing = fs->spacing.getValue();
+
+  this->fontfamily = SoVRMLFontStyle::SERIF;
+  this->fontstyle = SoVRMLFontStyle::PLAIN;
+
+  const char * family = fs->family[0].getString();
+  if (strlen(family) != 0) {
+    if (!strcmp(family, "SERIF"))
+      this->fontfamily = SoVRMLFontStyle::SERIF;
+    else if (!strcmp(family, "SANS"))
+      this->fontfamily = SoVRMLFontStyle::SANS;
+    else if (!strcmp(family, "TYPEWRITER"))
+      this->fontfamily = SoVRMLFontStyle::TYPEWRITER;
+  }
+      
+  const char * style = fs->style[0].getString();
+  if (strlen(style) != 0) {
+    if (!strcmp(style, "PLAIN"))
+      this->fontstyle = SoVRMLFontStyle::PLAIN;
+    else if (!strcmp(style, "BOLD"))
+      this->fontstyle = SoVRMLFontStyle::BOLD;
+    else if (!strcmp(style, "ITALIC"))
+      this->fontstyle = SoVRMLFontStyle::ITALIC;
+    else if (!strcmp(style, "BOLDITALIC"))
+      this->fontstyle = SoVRMLFontStyle::BOLDITALIC;
+  }
+}
 
 // recalculate glyphs
 void
 SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
 {
-  // Note that this code is duplicated in SoText3::setUpGlyphs(), so
-  // migrate bugfixes and other improvements.
+  if (this->cache && this->cache->isValid(state)) return;
+  
+  this->updateFontStyle();
 
-  if (!this->needsetup) return;
-  this->needsetup = FALSE;
+  SoGlyphCache * oldcache = this->cache;
 
-  if (this->fontspec != NULL) {
-    cc_fontspec_clean(this->fontspec);
-    delete this->fontspec;
-  }
-
-  // Build up font-spesification struct
-  this->fontspec = new cc_font_specification;
+  state->push();
+  SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
+  this->cache = new SoGlyphCache(state); 
+  this->cache->ref();
+  SoCacheElement::set(state, this->cache);
+  this->cache->readFontspec(state);
+  const cc_font_specification * fontspec = this->cache->getCachedFontspec(); 
 
   SbString fontstr;
   switch (this->fontfamily) {
@@ -931,11 +1022,6 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
   case  SoVRMLFontStyle::BOLDITALIC: fontstr += ":Bold Italic"; break;
   default: /* FIXME: check for and warn on faulty input data. 20030921 mortene. */ break;
   }
-
-  cc_fontspec_construct(this->fontspec,
-                        fontstr.getString(),
-                        this->textsize,
-                        this->master->getComplexityValue(state->getAction()));
 
   this->glyphwidths.truncate(0);
 
@@ -958,12 +1044,13 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.   
       const uint32_t glyphidx = (const unsigned char) textnode->string[i][strcharidx];
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, this->fontspec);
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
       assert(glyph);
+      this->cache->addGlyph(glyph);
 
       maxbbox = cc_glyph3d_getboundingbox(glyph); // Get max height
-      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[0] * this->fontspec->size, 0));
-      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[1] * this->fontspec->size, 0));
+      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[0] * fontspec->size, 0));
+      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[1] * fontspec->size, 0));
 
       if (strcharidx > 0) 
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);          
@@ -982,85 +1069,10 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
 
     this->glyphwidths.append(stringwidth);
   }
+  state->pop();
+  SoCacheElement::setInvalid(storedinvalid);
 
+  // unref old cache after creating the new one to avoid recreating glyphs
+  if (oldcache) oldcache->unref();
 }
 
-void 
-fontstylechangeCB(void * data, SoSensor * sensor)
-{
-
-  SoVRMLTextP * pimpl = (SoVRMLTextP *) data;
-
-  SoVRMLFontStyle * fs = (SoVRMLFontStyle*) pimpl->master->fontStyle.getValue();
-  if (!fs) {
-    pimpl->textsize = 1.0f;
-    pimpl->textspacing = 1.0f;
-    pimpl->lefttorighttext = TRUE;
-    pimpl->toptobottomtext = TRUE;
-    pimpl->horizontaltext = TRUE;
-    pimpl->justificationmajor = SoAsciiText::LEFT;
-    pimpl->justificationminor = SoAsciiText::LEFT;
-    pimpl->fontfamily = SoVRMLFontStyle::SERIF;
-    pimpl->fontstyle = SoVRMLFontStyle::PLAIN;
-    return;
-  }
-
-  // Major mode
-  if (!strcmp(fs->justify[0].getString(),"BEGIN") || 
-      !strcmp(fs->justify[0].getString(),"FIRST") ||
-      (fs->justify[0].getLength() == 0)) {
-    pimpl->justificationmajor = SoAsciiText::LEFT;  
-  } 
-  else if (!strcmp(fs->justify[0].getString(),"MIDDLE")) {
-    pimpl->justificationmajor = SoAsciiText::CENTER;
-  } 
-  else if (!strcmp(fs->justify[0].getString(),"END")) {
-    pimpl->justificationmajor = SoAsciiText::RIGHT;
-  }
-    
-  // Minor mode
-  if (fs->justify.getNum() > 1) {
-    if (!strcmp(fs->justify[1].getString(),"BEGIN") || 
-        !strcmp(fs->justify[1].getString(),"FIRST") ||
-        (fs->justify[1].getLength() == 0))
-      pimpl->justificationminor = SoAsciiText::LEFT;  
-    else if (!strcmp(fs->justify[1].getString(),"MIDDLE")) 
-      pimpl->justificationminor = SoAsciiText::CENTER;
-    else if (!strcmp(fs->justify[1].getString(),"END")) 
-      pimpl->justificationminor = SoAsciiText::RIGHT;
-  }
-  
-  pimpl->lefttorighttext = fs->leftToRight.getValue();
-  pimpl->toptobottomtext = fs->topToBottom.getValue();
-  pimpl->horizontaltext = fs->horizontal.getValue();
-  pimpl->textsize = fs->size.getValue();
-  pimpl->textspacing = fs->spacing.getValue();
-
-  pimpl->fontfamily = SoVRMLFontStyle::SERIF;
-  pimpl->fontstyle = SoVRMLFontStyle::PLAIN;
-
-  const char * family = fs->family[0].getString();
-  if (strlen(family) != 0) {
-    if (!strcmp(family, "SERIF"))
-      pimpl->fontfamily = SoVRMLFontStyle::SERIF;
-    else if (!strcmp(family, "SANS"))
-      pimpl->fontfamily = SoVRMLFontStyle::SANS;
-    else if (!strcmp(family, "TYPEWRITER"))
-      pimpl->fontfamily = SoVRMLFontStyle::TYPEWRITER;
-  }
-      
-  const char * style = fs->style[0].getString();
-  if (strlen(style) != 0) {
-    if (!strcmp(style, "PLAIN"))
-      pimpl->fontstyle = SoVRMLFontStyle::PLAIN;
-    else if (!strcmp(style, "BOLD"))
-      pimpl->fontstyle = SoVRMLFontStyle::BOLD;
-    else if (!strcmp(style, "ITALIC"))
-      pimpl->fontstyle = SoVRMLFontStyle::ITALIC;
-    else if (!strcmp(style, "BOLDITALIC"))
-      pimpl->fontstyle = SoVRMLFontStyle::BOLDITALIC;
-  }
-
-  pimpl->needsetup = TRUE;
-
-}

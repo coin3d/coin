@@ -104,6 +104,9 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/caches/SoGlyphCache.h>
+#include <Inventor/elements/SoCacheElement.h>
 
 // The "lean and mean" define is a workaround for a Cygwin bug: when
 // windows.h is included _after_ one of the X11 or GLX headers above
@@ -164,8 +167,6 @@ public:
   SoText2P(SoText2 * textnode) : master(textnode)
   {
     this->bbox.makeEmpty();
-    this->prevfontname = SbName("");
-    this->prevfontsize = 0.0;
   }
 
   SbBool getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
@@ -175,15 +176,18 @@ public:
   SbBool shouldBuildGlyphCache(SoState * state);
   void dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos);
 
-  cc_font_specification * fontspec;
-
-  SbList< SbString > laststring;
-  SbList<int> stringwidth;
+  SbList <int> stringwidth;
   SbList< SbList<SbVec2s> > positions;
   SbBox2s bbox;
-  SbName prevfontname;
-  float prevfontsize;
-  int numberoflines;
+
+  SoGlyphCache * cache;
+  SoFieldSensor * spacingsensor;
+  SoFieldSensor * stringsensor;
+
+  static void sensor_cb(void * userdata, SoSensor * s) {
+    SoText2P * thisp = (SoText2P*) userdata;
+    if (thisp->cache) thisp->cache->invalidate();
+  }
 
 private:
   SoText2 * master;
@@ -216,9 +220,13 @@ SoText2::SoText2(void)
   SO_NODE_DEFINE_ENUM_VALUE(Justification, CENTER);
   SO_NODE_SET_SF_ENUM_TYPE(justification, Justification);
 
-  PRIVATE(this)->fontspec = NULL;
-  PRIVATE(this)->numberoflines = -1;
-
+  PRIVATE(this)->stringsensor = new SoFieldSensor(SoText2P::sensor_cb, PRIVATE(this));
+  PRIVATE(this)->stringsensor->attach(&this->string);
+  PRIVATE(this)->stringsensor->setPriority(0);
+  PRIVATE(this)->spacingsensor = new SoFieldSensor(SoText2P::sensor_cb, PRIVATE(this));
+  PRIVATE(this)->spacingsensor->attach(&this->spacing);
+  PRIVATE(this)->spacingsensor->setPriority(0);
+  PRIVATE(this)->cache = NULL;
 }
 
 /*!
@@ -226,10 +234,9 @@ SoText2::SoText2(void)
 */
 SoText2::~SoText2()
 {
-  
-  if (PRIVATE(this)->fontspec != NULL) {
-    cc_fontspec_clean(PRIVATE(this)->fontspec);
-  }
+  if (PRIVATE(this)->cache) PRIVATE(this)->cache->unref();
+  delete PRIVATE(this)->stringsensor;
+  delete PRIVATE(this)->spacingsensor;
 
   PRIVATE(this)->flushGlyphCache();
   delete PRIVATE(this);
@@ -257,6 +264,9 @@ SoText2::GLRender(SoGLRenderAction * action)
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   // Render using SoGlyphs
   PRIVATE(this)->buildGlyphCache(state);
+  SoCacheElement::addCacheDependency(state, PRIVATE(this)->cache);
+
+  const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
 
   // Render only if bbox not outside cull planes.
   SbBox3f box;
@@ -287,7 +297,9 @@ SoText2::GLRender(SoGLRenderAction * action)
     glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
     glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 
-    float spacesize = SoFontSizeElement::get(state) / 3;  
+    float fontsize = SoFontSizeElement::get(state);
+    float spacesize = fontsize / 3;  
+
     float xpos = nilpoint[0];      // to get rid of compiler warning..
     float ypos = nilpoint[1];
     float rasterx, rastery, rpx, rpy, offsetx, offsety;
@@ -296,11 +308,12 @@ SoText2::GLRender(SoGLRenderAction * action)
     int thispos[2];
     int thissize[2];
     const unsigned char * buffer = NULL;
-    const cc_glyph2d * prevglyph = NULL;
+    cc_glyph2d * prevglyph = NULL;
     
-    const int nrlines = PRIVATE(this)->laststring.getLength();
+    const int nrlines = this->string.getNum();
 
     for (int i = 0; i < nrlines; i++) {
+      SbString str = this->string[i];
       switch (this->justification.getValue()) {
       case SoText2::LEFT:
         xpos = nilpoint[0];
@@ -313,11 +326,11 @@ SoText2::GLRender(SoGLRenderAction * action)
         break;
       }
 
-      const unsigned int length = PRIVATE(this)->laststring[i].getLength();
+      const unsigned int length = str.getLength();
       for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
         
-        const uint32_t glyphidx = (const unsigned char) PRIVATE(this)->laststring[i][strcharidx];
-        const cc_glyph2d * glyph = cc_glyph2d_getglyph(glyphidx, PRIVATE(this)->fontspec, 0.0f);
+        const uint32_t glyphidx = (const unsigned char) str[strcharidx];
+        cc_glyph2d * glyph = cc_glyph2d_ref(glyphidx, fontspec, 0.0f);
         
         buffer = cc_glyph2d_getbitmap(glyph, thissize, thispos);
         
@@ -351,12 +364,23 @@ SoText2::GLRender(SoGLRenderAction * action)
         if (buffer) { glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer); }
 
         xpos += (advancex + kerningx);
+
+        if (prevglyph) {
+          // should be safe to unref here. SoGlyphCache will have a
+          // ref'ed instance
+          cc_glyph2d_unref(prevglyph);
+        }
         prevglyph = glyph;
-
       }
+      
+      ypos -= (((int) fontsize) * this->spacing.getValue());
+      
+    }
 
-      ypos -= (((int) SoFontSizeElement::get(state)) * this->spacing.getValue());
-
+    if (prevglyph) {
+      // should be safe to unref here. SoGlyphCache will have a ref'ed
+      // instance
+      cc_glyph2d_unref(prevglyph);
     }
       
     glPixelStorei(GL_UNPACK_ALIGNMENT,4);
@@ -384,7 +408,6 @@ SoText2::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   SbVec3f v0, v1, v2, v3;
   // this will cause a cache dependency on the view volume,
   // model matrix and viewport.
-
   if (!PRIVATE(this)->getQuad(action->getState(), v0, v1, v2, v3))
     return; // empty
   
@@ -396,6 +419,8 @@ SoText2::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   box.extendBy(v3);
 
   center = box.getCenter();
+
+  SoCacheElement::addCacheDependency(action->getState(), PRIVATE(this)->cache);
 }
 
 // doc in super
@@ -517,7 +542,6 @@ SoText2P::flushGlyphCache()
 {
   this->stringwidth.truncate(0);
   this->positions.truncate(0);
-  this->laststring.truncate(0);
   this->bbox.makeEmpty();
 }
 
@@ -528,7 +552,6 @@ SbBool
 SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
                   SbVec3f & v2, SbVec3f & v3)
 {
-
   this->buildGlyphCache(state);
 
   short xmin, ymin, xmax, ymax;
@@ -640,56 +663,38 @@ SoText2P::dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos)
 SbBool
 SoText2P::shouldBuildGlyphCache(SoState * state)
 {
-
-  const SbName curfontname = SoFontNameElement::get(state);
-  const float curfontsize = SoFontSizeElement::get(state);
-
-  if (this->prevfontname != curfontname ||
-      this->prevfontsize != curfontsize)  
-    return TRUE; 
-  
-  if (this->numberoflines != PUBLIC(this)->string.getNum())  
-    return TRUE; 
-
-  for (int i=0; i < this->numberoflines; i++) {
-    if (this->laststring[i] != PUBLIC(this)->string[i]) 
-      return TRUE;
-  }
-
-  return FALSE;
-
+  if (this->cache == NULL) return TRUE;
+  return !this->cache->isValid(state);
 }
 
 void
 SoText2P::buildGlyphCache(SoState * state)
 {
   if (!this->shouldBuildGlyphCache(state)) { return; }
-
-  this->prevfontname = SoFontNameElement::get(state);
-  this->prevfontsize = SoFontSizeElement::get(state);
+  
   this->flushGlyphCache();
+
+  // don't unref the old cache until after we've created the new
+  // cache.
+  SoGlyphCache * oldcache = this->cache;
+
+  state->push();
+  SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
+  this->cache = new SoGlyphCache(state); 
+  this->cache->ref();
+  SoCacheElement::set(state, this->cache);
+  this->cache->readFontspec(state);
+
   const int nrlines = PUBLIC(this)->string.getNum();
-  this->numberoflines = nrlines;
   SbVec2s penpos(0, 0);
 
-  // Build up font-spesification struct
-  if (this->fontspec != NULL) {
-    cc_fontspec_clean(this->fontspec);
-    delete this->fontspec;
-  }
-
-  this->fontspec = new cc_font_specification;
-  cc_fontspec_construct(this->fontspec,
-                        SoFontNameElement::get(state).getString(),
-                        SoFontSizeElement::get(state),
-                        SoComplexityElement::get(state));
+  const cc_font_specification * fontspec = this->cache->getCachedFontspec();
 
   this->bbox.makeEmpty();
 
   for (int i=0; i < nrlines; i++) {
-
-    const unsigned int length = PUBLIC(this)->string[i].getLength();
-    this->laststring.append(SbString(PUBLIC(this)->string[i]));
+    SbString str = PUBLIC(this)->string[i];
+    const unsigned int length = str.getLength();
     this->positions.append(SbList<SbVec2s>());
 
     int glyphwidth = 0;
@@ -704,18 +709,18 @@ SoText2P::buildGlyphCache(SoState * state)
 
     // fetch all glyphs first
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
-
       // Note that the "unsigned char" cast is needed to avoid 8-bit
       // chars using the highest bit (i.e. characters above the ASCII
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
-      const uint32_t glyphidx = (const unsigned char) this->laststring[i][strcharidx];
-      cc_glyph2d * glyph = cc_glyph2d_getglyph(glyphidx, this->fontspec, 0.0f);
-
+      const uint32_t glyphidx = (const unsigned char) str[strcharidx];
+      cc_glyph2d * glyph = cc_glyph2d_ref(glyphidx, fontspec, 0.0f);
       // Should _always_ be able to get hold of a glyph -- if no
       // glyph is available for a specific character, a default
       // empty rectangle should be used.  -mortene.
       assert(glyph);
+
+      this->cache->addGlyph(glyph);
 
       // Must fetch special modifiers so that heights for chars like
       // 'q' and 'g' will be taken into account when creating a
@@ -747,4 +752,8 @@ SoText2P::buildGlyphCache(SoState * state)
     penpos = SbVec2s(0, penpos[1] - (short)(SoFontSizeElement::get(state) * PUBLIC(this)->spacing.getValue()));
 
   }
+  state->pop();
+  SoCacheElement::setInvalid(storedinvalid);
+
+  if (oldcache) oldcache->unref();
 }
