@@ -3693,4 +3693,19 @@ end
 
     20040813 jornskaa
 
+    UPDATE 20040818 mortene: it is mentioned in the bug title, but
+    just to stress this: the problem only manifests itself on Windows
+    systems (tested by Wong on both "pure" native Win32, and on top of
+    the MKS NuTCracker suite). On UNIX systems (tested on hp-ux 10),
+    we seem to be as fast as SGI Inventor.
+
+    Another peculiarity with the above file: ivperf built on top of
+    Coin reports twice as many triangles as ivperf built on top of SGI
+    Inventor, according to Wong. Very peculiar, should be
+    investigated. jornskaa suggests this may be due to higher default
+    tessellation complexity in Coin's SoSphere-nodes.
+
+    (Note, split this last part out as a separate bug-item in this
+    list if the load-speed issue is solved first.)
+
 =====================================================================
