@@ -41,13 +41,6 @@ extern "C" {
 }
 #endif /* emacs indentation */
 
-/* Move the function from dlp.h to dl.h (and add COIN_DLL_API) for
-   next minor release. (Remember to make the same change for the HEAD
-   (i.e. to become 3.0) branch aswell. */
-#if COIN_MINOR_VERSION < 1
-#error The cc_dl_available() function should be added to the API properly from Coin 2.2.
-#endif
-
 SbBool cc_dl_available(void);
 
 #ifdef __cplusplus
