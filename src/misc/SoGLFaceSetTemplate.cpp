@@ -127,8 +127,8 @@
 #elif MBINDING==PER_VERTEX_INDEXED
     materials->send(*matindices++, TRUE);
 #endif
-#if NBINDING==PER_VERTEX && TEXTURES==TRUE
-    currnormal = &normals[v2];
+#if NBINDING==PER_VERTEX
+    currnormal = normals++;
     glNormal3fv((const GLfloat*)currnormal);
 #elif NBINDING==PER_VERTEX_INDEXED
     currnormal = &normals[*normalindices++];
@@ -147,7 +147,7 @@
 #elif MBINDING==PER_VERTEX_INDEXED
     materials->send(*matindices++, TRUE);
 #endif
-#if NBINDING==PER_VERTEX && TEXTURES==TRUE
+#if NBINDING==PER_VERTEX
     currnormal = normals++;
     glNormal3fv((const GLfloat*)currnormal);
 #elif NBINDING==PER_VERTEX_INDEXED

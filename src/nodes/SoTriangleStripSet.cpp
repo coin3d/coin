@@ -56,10 +56,14 @@
 #if !defined(COIN_EXCLUDE_SOSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoShapeHintsElement.h>
 #endif // !COIN_EXCLUDE_SOSHAPEHINTSELEMENT
-
 #if !defined(COIN_EXCLUDE_SOCREASEANGLEELEMENT)
 #include <Inventor/elements/SoCreaseAngleElement.h>
 #endif // !COIN_EXCLUDE_SOCREASEANGLEELEMENT
+#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
+#include <Inventor/elements/SoLightModelElement.h>
+#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
+
+
 
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoNormalGenerator.h>
@@ -93,7 +97,6 @@
 */
 
 // *************************************************************************
-
 SO_NODE_SOURCE(SoTriangleStripSet);
 
 /*!
@@ -123,6 +126,7 @@ SoTriangleStripSet::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTriangleStripSet);
 }
+
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
@@ -238,10 +242,16 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;
   SbBool doTextures;
-  SbBool needNormals;
+  SbBool needNormals = TRUE;
   
-  SoVertexShape::getGLData(action->getState(), tmp, normals,
-			   needNormals);
+#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
+  needNormals =
+    (SoLightModelElement::get(state) !=
+     SoLightModelElement::BASE_COLOR);
+#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
+
+  SoVertexShape::getVertexData(action->getState(), tmp, normals,
+			       needNormals);
   
   const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
   

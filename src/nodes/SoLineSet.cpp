@@ -65,6 +65,9 @@
 #if !defined(COIN_EXCLUDE_SODRAWSTYLEELEMENT)
 #include <Inventor/elements/SoDrawStyleElement.h>
 #endif
+#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
+#include <Inventor/elements/SoLightModelElement.h>
+#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
 #if !defined(COIN_EXCLUDE_SOGLLIGHTMODELELEMENT)
 #include <Inventor/elements/SoGLLightModelElement.h>
 #endif // !COIN_EXCLUDE_SOGLLIGHTMODELELEMENT
@@ -245,9 +248,15 @@ SoLineSet::GLRender(SoGLRenderAction * action)
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;
   SbBool doTextures;
-  SbBool needNormals;
+  SbBool needNormals = TRUE;
   
-  SoVertexShape::getGLData(action->getState(), tmp, normals,
+#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
+  needNormals =
+    (SoLightModelElement::get(state) !=
+     SoLightModelElement::BASE_COLOR);
+#endif // !COIN_EXCLUDE_SOLOGHTMODELELEMENT
+
+  SoVertexShape::getVertexData(action->getState(), tmp, normals,
 			   needNormals);
   
   if (normals == NULL) needNormals = FALSE;

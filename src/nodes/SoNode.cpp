@@ -697,7 +697,7 @@ SoNode::callback(SoCallbackAction * /* action */)
 void
 SoNode::getMatrixS(SoAction * const action, SoNode * const node)
 {
-#if 1 // debug
+#if 0 // debug
   SoDebugError::postInfo("SoNode::getMatrixS",
 			 "%s",
 			 node->getTypeId().getName().getString());

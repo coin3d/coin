@@ -124,7 +124,7 @@ SoVertexShape::generateDefaultNormals(SoState * ,
   normals were generated, \e FALSE otherwise.
   
   This method is not part of the original OIV API. Do not overload it if
-  you intend to create a node which can be used on both Coin and OIV.
+  you intend to create a node that can be used on both Coin and OIV.
 */
 SbBool
 SoVertexShape::generateDefaultNormals(SoState * /* state */,
@@ -263,15 +263,11 @@ SoVertexShape::generateNormals(SoState * const state)
   FIXME: write function documentation
 */
 void 
-SoVertexShape::getGLData(SoState * state,
-			 const SoCoordinateElement *& coords,
-			 const SbVec3f *& normals,
-			 SbBool & needNormals)
-{  
-  needNormals =
-    (SoLightModelElement::get(state) !=
-     SoLightModelElement::BASE_COLOR);
-  
+SoVertexShape::getVertexData(SoState * state,
+			     const SoCoordinateElement *& coords,
+			     const SbVec3f *& normals,
+			     const SbBool needNormals)
+{    
   coords = SoCoordinateElement::getInstance(state);
   assert(coords);
   

@@ -66,17 +66,17 @@ protected:
 #if !defined(COIN_EXCLUDE_SOACTION)
   static SbBool areTexCoordsIndexed(SoAction * action);
 #endif // !COIN_EXCLUDE_SOACTION
-
-  SbBool getGLData(SoState * state,
-		   const SoCoordinateElement *& coords, 
-		   const SbVec3f *& normals,
-		   const int32_t *& cindices,
-		   const int32_t *& nindices,
-		   const int32_t *& tindices,
-		   const int32_t *& mindices,
-		   int & numcindices,
-		   SbBool & needNormals,
-		   SbBool & normalCacheUsed);
+  
+  SbBool getVertexData(SoState * state,
+		       const SoCoordinateElement *& coords, 
+		       const SbVec3f *& normals,
+		       const int32_t *& cindices,
+		       const int32_t *& nindices,
+		       const int32_t *& tindices,
+		       const int32_t *& mindices,
+		       int & numcindices,
+		       const SbBool needNormals,
+		       SbBool & normalCacheUsed);
  
 private:
 #if !defined(COIN_EXCLUDE_SOACTION)

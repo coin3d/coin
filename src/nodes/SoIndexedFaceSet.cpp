@@ -33,6 +33,12 @@
 #include <Inventor/caches/SoConvexDataCache.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/SoPrimitiveVertex.h>
+
+#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/details/SoFaceDetail.h>
+#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
 #if !defined(COIN_EXCLUDE_SOMATERIALBUNDLE)
 #include <Inventor/bundles/SoMaterialBundle.h>
@@ -339,12 +345,18 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
   const int32_t * tindices;
   const int32_t * mindices;
   SbBool doTextures;
-  SbBool sendNormals;
+  SbBool sendNormals = TRUE;
   SbBool normalCacheUsed;
 
-  getGLData(state, coords, normals, cindices, 
-	    nindices, tindices, mindices, numindices, 
-	    sendNormals, normalCacheUsed);
+#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
+  sendNormals =
+    (SoLightModelElement::get(state) !=
+     SoLightModelElement::BASE_COLOR);
+#endif // !COIN_EXCLUDE_SOLOGHTMODELELEMENT
+
+  getVertexData(state, coords, normals, cindices, 
+		nindices, tindices, mindices, numindices, 
+		sendNormals, normalCacheUsed);
 
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
   doTextures = tb.needCoordinates();
@@ -394,7 +406,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
     if (nbind == PER_VERTEX) nbind = PER_VERTEX_INDEXED;
     else if (nbind == PER_FACE) nbind = PER_FACE_INDEXED;
 
-    tbind = PER_VERTEX_INDEXED;
+    if (tbind != NONE) tbind = PER_VERTEX_INDEXED;
   }
   
   SoMaterialBundle mb(action);
@@ -421,14 +433,220 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 #if !defined(COIN_EXCLUDE_SOACTION)
+
+  // this define actually makes the code below more readable  :-)
+#define DO_VERTEX(idx) \
+  if (mbind == PER_VERTEX) {                  \
+    vertex.setMaterialIndex(matnr++);         \
+  }                                           \
+  else if (mbind == PER_VERTEX_INDEXED) {     \
+    vertex.setMaterialIndex(*mindices++); \
+  }                                         \
+  if (nbind == PER_VERTEX) {                \
+    currnormal = normals++;                 \
+    vertex.setNormal(*currnormal);          \
+  }                                         \
+  else if (nbind == PER_VERTEX_INDEXED) {   \
+    currnormal = &normals[*nindices++];     \
+    vertex.setNormal(*currnormal);          \
+  }                                         \
+  if (tbind != NONE) {                      \
+    vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++)); \
+  }                                         \
+  else if (tb.isFunction()) {               \
+    vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal)); \
+  }                                         \
+  vertex.setPoint(coords->get3(idx));        \
+  this->shapeVertex(&vertex);
+
 /*!
   FIXME: write function documentation
 */
 void 
-SoIndexedFaceSet::generatePrimitives(SoAction * /* action */)
+SoIndexedFaceSet::generatePrimitives(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented yet");
+  SoState * state = action->getState();
+
+  if (this->vertexProperty.getValue()) {
+    state->push();
+    this->vertexProperty.getValue()->doAction(action);
+  }
+
+  if (coordIndex.getNum() && coordIndex[coordIndex.getNum()-1] >= 0) {
+    coordIndex.set1Value(coordIndex.getNum(), -1);
+  }
+  
+  Binding mbind = this->findMaterialBinding(state);
+  Binding nbind = this->findNormalBinding(state);
+
+  // FIXME: what the puck? 19990405 mortene.
+  if (this->numTriangles == -1 &&
+      this->numQuads == -1 &&
+      this->numPolygons == -1) {
+    SbBool ok = this->countPrimitives();
+    assert(ok);
+  }
+
+  const SoCoordinateElement * coords;
+  const SbVec3f * normals;
+  const int32_t * cindices;
+  int32_t numindices;
+  const int32_t * nindices;
+  const int32_t * tindices;
+  const int32_t * mindices;
+  SbBool doTextures;
+  SbBool sendNormals;
+  SbBool normalCacheUsed;
+
+  sendNormals = TRUE; // always generate normals
+  
+  getVertexData(state, coords, normals, cindices, 
+		nindices, tindices, mindices, numindices, 
+		sendNormals, normalCacheUsed);
+
+  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  doTextures = tb.needCoordinates();
+
+  if (!sendNormals) nbind = OVERALL;
+  else if (normalCacheUsed && nbind == PER_VERTEX) {
+    nbind = PER_VERTEX_INDEXED;
+  } 
+  
+  Binding tbind = NONE;
+  if (doTextures) {
+    if (SoTextureCoordinateBindingElement::get(state) ==
+	SoTextureCoordinateBindingElement::PER_VERTEX) {
+      tbind = PER_VERTEX;
+      tindices = NULL;
+    }
+    else {
+      tbind = PER_VERTEX_INDEXED;
+      if (tindices == NULL) tindices = cindices;
+    }
+  }
+
+  if (this->numPolygons > 0 && 
+      SoShapeHintsElement::getFaceType(state) != 
+      SoShapeHintsElement::CONVEX) {
+    if (this->convexCache == NULL) {
+      this->convexCache = new SoConvexDataCache(state);
+      this->convexCache->generate(coords, cindices, numindices,
+				  mindices, nindices, tindices,
+				  (SoConvexDataCache::Binding)mbind, 
+				  (SoConvexDataCache::Binding)nbind, 
+				  (SoConvexDataCache::Binding)tbind);
+      
+    }
+    cindices = this->convexCache->getCoordIndices();
+    numindices = this->convexCache->getNumCoordIndices();
+    mindices = this->convexCache->getMaterialIndices();
+    nindices = this->convexCache->getNormalIndices();
+    tindices = this->convexCache->getTexIndices();
+
+    if (mbind == PER_VERTEX) mbind = PER_VERTEX_INDEXED;
+    else if (mbind == PER_FACE) mbind = PER_FACE_INDEXED;
+    if (nbind == PER_VERTEX) nbind = PER_VERTEX_INDEXED;
+    else if (nbind == PER_FACE) nbind = PER_FACE_INDEXED;
+
+    if (tbind != NONE) tbind = PER_VERTEX_INDEXED;
+  }
+
+
+  int texidx = 0;
+  TriangleShape mode = POLYGON; 
+  TriangleShape newmode; 
+  const int32_t *viptr = cindices;
+  const int32_t *viendptr = viptr + numindices;
+  int32_t v1, v2, v3, v4, v5;
+
+  SoPrimitiveVertex vertex;
+
+#ifndef NDEBUG
+  v5 = 0; // to avoid warnings
+#endif
+
+  SbVec3f dummynormal(0,0,1);
+  const SbVec3f *currnormal = &dummynormal;
+  if (normals) currnormal = normals;
+  vertex.setNormal(*currnormal);
+
+  int matnr = 0;
+  
+  while (viptr < viendptr) {
+    v1 = *viptr++;
+    v2 = *viptr++;
+    v3 = *viptr++;
+    assert(v1 >= 0 && v2 >= 0 && v3 >= 0);
+    v4 = *viptr++;
+    if (v4  < 0) newmode = TRIANGLES;
+    else {
+      v5 = *viptr++;
+      if (v5 < 0) newmode = QUADS;
+      else newmode = POLYGON;
+    }
+    if (newmode != mode) {
+      if (mode != POLYGON) this->endShape();
+      mode = newmode;
+      this->beginShape(action, mode);
+    }
+    else if (mode == POLYGON) this->beginShape(action, POLYGON);
+    
+    // vertex 1 can't use DO_VERTEX
+    if (mbind == PER_VERTEX || mbind == PER_FACE) {
+      vertex.setMaterialIndex(matnr++);
+    }
+    else if (mbind == PER_VERTEX_INDEXED || mbind == PER_FACE_INDEXED) {
+      vertex.setMaterialIndex(*mindices++);
+    }
+    if (nbind == PER_VERTEX || nbind == PER_VERTEX_INDEXED) {
+      currnormal = normals++;
+      vertex.setNormal(*currnormal);
+    }
+    else if (nbind == PER_VERTEX_INDEXED || nbind == PER_FACE_INDEXED) {
+      currnormal = &normals[*nindices++];
+      glNormal3fv((const GLfloat*)currnormal);      
+    }
+    
+    if (tbind != NONE) {
+      vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++));
+    }
+    else if (tb.isFunction()) {
+      vertex.setTextureCoords(tb.get(coords->get3(v1), *currnormal));
+    }
+    vertex.setPoint(coords->get3(v1));
+    this->shapeVertex(&vertex);
+
+    DO_VERTEX(v2);
+    DO_VERTEX(v3);
+
+    if (mode != TRIANGLES) {
+      DO_VERTEX(v4);
+      if (mode == POLYGON) {
+	DO_VERTEX(v5);
+	v1 = *viptr++;
+	while (v1 >= 0) {
+	  DO_VERTEX(v1);
+	  v1 = *viptr++;
+	}
+	this->endShape();
+      }
+    }
+    if (mbind == PER_VERTEX_INDEXED) {
+      mindices++;
+    }
+    if (nbind == PER_VERTEX_INDEXED) {
+      nindices++;
+    }
+    if (tindices) tindices++;
+  }
+  if (mode == POLYGON) this->endShape();
+  
+  if (this->vertexProperty.getValue()) {
+    state->pop();
+  }
 }
+#undef DO_VERTEX
+
 #endif // !COIN_EXCLUDE_SOACTION
 
 #if !defined(COIN_EXCLUDE_SORAYPICKACTION)
@@ -436,13 +654,13 @@ SoIndexedFaceSet::generatePrimitives(SoAction * /* action */)
   FIXME: write function documentation
 */
 SoDetail *
-SoIndexedFaceSet::createTriangleDetail(SoRayPickAction * /* action */,
-				       const SoPrimitiveVertex * /* v1 */,
-				       const SoPrimitiveVertex * /* v2 */,
-				       const SoPrimitiveVertex * /* v3 */,
-				       SoPickedPoint * /* pp */)
+SoIndexedFaceSet::createTriangleDetail(SoRayPickAction *action,
+				       const SoPrimitiveVertex *v1,
+				       const SoPrimitiveVertex *v2,
+				       const SoPrimitiveVertex *v3,
+				       SoPickedPoint *pp)
 {
-  assert(0 && "FIXME: not implemented yet");
+  assert(0 && "FIXME: not implemented");
   return NULL;
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION

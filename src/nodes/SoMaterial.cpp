@@ -39,6 +39,11 @@
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 #include <Inventor/actions/SoCallbackAction.h>
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+#include <Inventor/actions/SoPickAction.h>
+#endif // !COIN_EXCLUDE_SOPICKACTION
+
+
 
 #if !defined(COIN_EXCLUDE_SOGLAMBIENTCOLORELEMENT)
 #include <Inventor/elements/SoGLAmbientColorElement.h>
@@ -153,6 +158,25 @@ SoMaterial::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoTransparencyElement);
   SO_ENABLE(SoGLRenderAction, SoGLPolygonStippleElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+  SO_ENABLE(SoPickAction, SoAmbientColorElement);
+  SO_ENABLE(SoPickAction, SoDiffuseColorElement);
+  SO_ENABLE(SoPickAction, SoEmissiveColorElement);
+  SO_ENABLE(SoPickAction, SoSpecularColorElement);
+  SO_ENABLE(SoPickAction, SoShininessElement);
+  SO_ENABLE(SoPickAction, SoTransparencyElement);
+#endif // !COIN_EXCLUDE_SOPICKACTION
+
+#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
+  SO_ENABLE(SoCallbackAction, SoAmbientColorElement);
+  SO_ENABLE(SoCallbackAction, SoDiffuseColorElement);
+  SO_ENABLE(SoCallbackAction, SoEmissiveColorElement);
+  SO_ENABLE(SoCallbackAction, SoSpecularColorElement);
+  SO_ENABLE(SoCallbackAction, SoShininessElement);
+  SO_ENABLE(SoCallbackAction, SoTransparencyElement);
+#endif // !COIN_EXCLUDE_SOCALLBACKACTION
+
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

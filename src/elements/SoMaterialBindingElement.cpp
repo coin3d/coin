@@ -27,9 +27,6 @@
 #include <Inventor/elements/SoMaterialBindingElement.h>
 
 #include <Inventor/SbName.h>
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
-#include <Inventor/elements/SoGLShadeModelElement.h>
-#endif
 
 #include <assert.h>
 
@@ -145,12 +142,6 @@ SoMaterialBindingElement::set(SoState * const state,
   assert((int)binding >= (int)OVERALL && 
 	 (int)binding <= (int)PER_VERTEX_INDEXED);
   SoInt32Element::set(classStackIndex, state, node, binding);
-
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
-  SoGLShadeModelElement::setMaterial(state,
-				     binding == PER_VERTEX ||
-				     binding == PER_VERTEX_INDEXED);
-#endif
 }
 
 //! FIXME: write doc.

@@ -27,10 +27,6 @@
 #include <Inventor/elements/SoNormalBindingElement.h>
 
 #include <Inventor/SbName.h>
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
-#include <Inventor/elements/SoGLShadeModelElement.h>
-#endif
-
 #include <assert.h>
 
 /*!
@@ -144,12 +140,6 @@ SoNormalBindingElement::set(SoState * const state,
 {
   assert((int)binding >= OVERALL && (int)binding <= PER_VERTEX_INDEXED);
   SoInt32Element::set(classStackIndex, state, node, binding);
-
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
-  SoGLShadeModelElement::setNormal(state,
-				   binding == PER_VERTEX ||
-				   binding == PER_VERTEX_INDEXED);
-#endif
 }
 
 //! FIXME: write doc.

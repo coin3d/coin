@@ -123,6 +123,7 @@ SoNormal::GLRender(SoGLRenderAction * action)
   //       to optimize rendering (pederb)
   //
   SoNormal::doAction(action);
+
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 

@@ -45,6 +45,9 @@
 #if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
 #include <Inventor/elements/SoOverrideElement.h>
 #endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
+#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
+#include <Inventor/elements/SoGLShadeModelElement.h>
+#endif
 
 /*!
   \enum SoMaterialBinding::Binding
@@ -158,7 +161,21 @@ SoMaterialBinding::initClass(void)
 void 
 SoMaterialBinding::GLRender(SoGLRenderAction * action)
 {
-  SoMaterialBinding::doAction(action);
+  if (!value.isIgnored()
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+      && !SoOverrideElement::getMaterialBindingOverride(action->getState())
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
+      ) {
+    Binding binding = (Binding)value.getValue();
+    SoMaterialBindingElement::set(action->getState(), 
+				  (SoMaterialBindingElement::Binding)
+				  binding);
+#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
+    SoGLShadeModelElement::setMaterial(action->getState(),
+				       binding == PER_VERTEX ||
+				       binding == PER_VERTEX_INDEXED);
+#endif 
+  }
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 

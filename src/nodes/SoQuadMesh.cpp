@@ -39,6 +39,9 @@
 #include <GL/gl.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
+#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
+#include <Inventor/elements/SoLightModelElement.h>
+#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
 #if !defined(COIN_EXCLUDE_SOGLCOORDINATEELEMENT)
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #endif // !COIN_EXCLUDE_SOGLCOORDINATEELEMENT
@@ -100,7 +103,6 @@
 */
 
 // *************************************************************************
-
 SO_NODE_SOURCE(SoQuadMesh);
 
 /*!
@@ -249,10 +251,16 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;
   SbBool doTextures;
-  SbBool needNormals;
+  SbBool needNormals = TRUE;
+
+#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
+  needNormals =
+    (SoLightModelElement::get(state) !=
+     SoLightModelElement::BASE_COLOR);
+#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
   
-  SoVertexShape::getGLData(action->getState(), tmp, normals,
-			   needNormals);
+  SoVertexShape::getVertexData(action->getState(), tmp, normals,
+			       needNormals);
   
   const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
   

@@ -455,8 +455,8 @@ SoRayPickAction::intersect(const SbVec3f &v0,
   if (u < 0.0f || u > 1.0f)
     return FALSE;
    
-   // prepare to test V parameter
-  SbVec3f qvec = tvec - edge1;
+  // prepare to test V parameter
+  SbVec3f qvec = tvec.cross(edge1);
   
   // calculate V parameter and test bounds
   v = dir.dot(qvec) * inv_det;
@@ -468,8 +468,8 @@ SoRayPickAction::intersect(const SbVec3f &v0,
   
   // calculate t and intersection point
   float t = edge2.dot(qvec) * inv_det;
-  
   intersection = orig + t*dir;
+  
   return TRUE;
 }
 

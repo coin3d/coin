@@ -84,7 +84,7 @@ private:
   virtual void notify(SoNotList *list);
 
   SbBool countPrimitives();
-
+  
   int numTriangles;
   int numQuads;
   int numPolygons;

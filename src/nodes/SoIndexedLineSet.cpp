@@ -316,13 +316,19 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   const int32_t * tindices;
   const int32_t * mindices;
   SbBool doTextures;
-  SbBool sendNormals;
+  SbBool sendNormals = TRUE;
   SbBool normalCacheUsed;
 
-  getGLData(state, coords, normals, cindices, 
-	    nindices, tindices, mindices, numindices, 
-	    sendNormals, normalCacheUsed);
+#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
+  sendNormals =
+    (SoLightModelElement::get(state) !=
+     SoLightModelElement::BASE_COLOR);
+#endif // !COIN_EXCLUDE_SOLOGHTMODELELEMENT
 
+  getVertexData(state, coords, normals, cindices, 
+		nindices, tindices, mindices, numindices, 
+		sendNormals, normalCacheUsed);
+  
   if (normals == NULL) sendNormals = FALSE;
   
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);

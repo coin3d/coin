@@ -66,10 +66,10 @@ protected:
 		      const int num, const SbVec3f * normals);
   SoNormalCache * getNormalCache(void) const;
 
-  void getGLData(SoState * state,
-		 const SoCoordinateElement *& coords,
-		 const SbVec3f *& normals,
-		 SbBool & needNormals);
+  void getVertexData(SoState * state,
+		     const SoCoordinateElement *& coords,
+		     const SbVec3f *& normals,
+		     const SbBool needNormals);
 
 private:
   virtual SbBool generateDefaultNormals(SoState * state,

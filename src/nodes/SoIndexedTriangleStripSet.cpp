@@ -148,6 +148,7 @@ SoIndexedTriangleStripSet::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoIndexedTriangleStripSet);
 }
 
+
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   \internal
@@ -275,12 +276,18 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
   const int32_t * tindices;
   const int32_t * mindices;
   SbBool doTextures;
-  SbBool sendNormals;
+  SbBool sendNormals = TRUE;
   SbBool normalCacheUsed;
 
-  getGLData(state, coords, normals, cindices, 
-	    nindices, tindices, mindices, numindices, 
-	    sendNormals, normalCacheUsed);
+#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
+  sendNormals =
+    (SoLightModelElement::get(state) !=
+     SoLightModelElement::BASE_COLOR);
+#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
+
+  getVertexData(state, coords, normals, cindices, 
+		nindices, tindices, mindices, numindices, 
+		sendNormals, normalCacheUsed);
 
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
   doTextures = tb.needCoordinates();

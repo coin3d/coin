@@ -40,6 +40,8 @@ class SbVec2f;
 class SoMaterialBundle;
 
 
+// *************************************************************************
+
 class SoShape : public SoNode {
   typedef SoNode inherited;
 
@@ -52,7 +54,8 @@ public:
     TRIANGLE_STRIP,
     TRIANGLE_FAN,
     TRIANGLES,
-    POLYGON
+    POLYGON,
+    QUADS,
   };
 
   virtual SbBool affectsState(void) const;
@@ -84,6 +87,7 @@ public:
 
 
 protected:
+  friend class shapePrimitiveData; // internal class
   SoShape(void);
   virtual ~SoShape();
 
@@ -137,7 +141,6 @@ protected:
 			    const SoPrimitiveVertex * const v);
   void beginShape(SoAction * const action, const TriangleShape shapeType,
 		  SoFaceDetail * const faceDetail = NULL);
-
   void shapeVertex(const SoPrimitiveVertex * const v);
   void endShape();
 #endif // !COIN_EXCLUDE_SOACTION

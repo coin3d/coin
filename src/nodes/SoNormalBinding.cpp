@@ -42,6 +42,9 @@
 #if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
 #include <Inventor/elements/SoNormalBindingElement.h>
 #endif // !COIN_EXCLUDE_SONORMALBINDINGELEMENT
+#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
+#include <Inventor/elements/SoGLShadeModelElement.h>
+#endif
 
 /*!
   \enum SoNormalBinding::Binding
@@ -152,6 +155,14 @@ void
 SoNormalBinding::GLRender(SoGLRenderAction * action)
 {
   SoNormalBinding::doAction(action);
+#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
+  if (!value.isIgnored()) {
+    Binding binding = (Binding)value.getValue();
+    SoGLShadeModelElement::setNormal(action->getState(),
+				     binding == PER_VERTEX ||
+				     binding == PER_VERTEX_INDEXED);
+  }
+#endif
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 

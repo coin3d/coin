@@ -31,8 +31,12 @@
   FIXME: write doc
  */
 SoPrimitiveVertex::SoPrimitiveVertex(void)
+  : point(0.0f, 0.0f, 0.0f),
+    normal(0.0f, 0.0f, 1.0f),
+    textureCoords(0.0f, 0.0f, 0.0f, 1.0f),
+    materialIndex(0),
+    detail(NULL)
 {
-  this->detail = NULL;
 }
 
 /*!

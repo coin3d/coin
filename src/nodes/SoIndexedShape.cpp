@@ -299,18 +299,18 @@ SoIndexedShape::generateDefaultNormals(SoState * state,
   FIXME: write function documentation
 */
 SbBool 
-SoIndexedShape::getGLData(SoState * state,
-			  const SoCoordinateElement *& coords, 
-			  const SbVec3f *& normals,
-			  const int32_t *& cindices,
-			  const int32_t *& nindices,
-			  const int32_t *& tindices,
-			  const int32_t *& mindices,
-			  int & numcindices,
-			  SbBool & needNormals,
-			  SbBool & normalCacheUsed)
+SoIndexedShape::getVertexData(SoState * state,
+			      const SoCoordinateElement *& coords, 
+			      const SbVec3f *& normals,
+			      const int32_t *& cindices,
+			      const int32_t *& nindices,
+			      const int32_t *& tindices,
+			      const int32_t *& mindices,
+			      int & numcindices,
+			      const SbBool needNormals,
+			      SbBool & normalCacheUsed)
 {
-  SoVertexShape::getGLData(state, coords, normals, needNormals);
+  SoVertexShape::getVertexData(state, coords, normals, needNormals);
   
   cindices = this->coordIndex.getValues(0);
   numcindices = this->coordIndex.getNum();

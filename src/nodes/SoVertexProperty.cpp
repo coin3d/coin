@@ -72,6 +72,9 @@
 #if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
 #include <Inventor/elements/SoOverrideElement.h>
 #endif 
+#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
+#include <Inventor/elements/SoGLShadeModelElement.h>
+#endif
 
 /*!
   \enum SoVertexProperty::Binding
@@ -228,6 +231,27 @@ void
 SoVertexProperty::GLRender(SoGLRenderAction * action)
 {
   SoVertexProperty::doAction((SoAction*)action);
+#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
+  SoState *state = action->getState();
+  if (!normalBinding.isIgnored()) {
+    Binding binding = (Binding)normalBinding.getValue();
+    SoGLShadeModelElement::setNormal(state,
+				     binding == PER_VERTEX ||
+				     binding == PER_VERTEX_INDEXED);
+  }
+  if (!materialBinding.isIgnored()
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+      && !SoOverrideElement::getMaterialBindingOverride(state)
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
+      ) {
+    Binding binding = (Binding)materialBinding.getValue();
+    SoGLShadeModelElement::setMaterial(state,
+				       binding == PER_VERTEX ||
+				       binding == PER_VERTEX_INDEXED);
+    
+    
+  }
+#endif // !COIN_EXCLUDE_SOGLSHADEMODELELEMENT
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
