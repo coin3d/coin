@@ -230,6 +230,8 @@ glxglue_init(cc_glglue * w)
 
 /*** GLX offscreen contexts **************************************************/
 
+#ifdef HAVE_GLX
+
 struct glxglue_contextdata {
   XVisualInfo * visinfo;
   GLXContext glxcontext;
@@ -477,3 +479,4 @@ glxglue_context_destruct(void * ctx)
   glxglue_contextdata_cleanup(context);
   free(context);
 }
+#endif // HAVE_GLX
