@@ -371,7 +371,7 @@ public:
                            const SbBool dlist,
                            const SbBool mipmap,
                            const int border);
-  void resizeImage(unsigned char *&imageptr, 
+  void resizeImage(SoState * state, unsigned char *&imageptr, 
                    int &xsize, int &ysize, int &zsize);
   SbBool shouldCreateMipmap(void);
   void applyFilter(const SbBool ismipmap);
@@ -969,13 +969,16 @@ void cleanup_tmpimage(void)
 // buffer if that happens, and the new size in xsize, ysize.
 //
 void
-SoGLImageP::resizeImage(unsigned char *& imageptr, 
+SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr, 
                         int & xsize, int & ysize, int & zsize)
 {
+  SbVec3s size;
+  int numcomponents;
+  unsigned char *bytes = this->image->getValue(size, numcomponents);
+
   unsigned int newx = (unsigned int)nearest_power_of_two(xsize-2*this->border);
   unsigned int newy = (unsigned int)nearest_power_of_two(ysize-2*this->border);
-  unsigned int newz = 
-    (zsize==0)?0:(unsigned int)nearest_power_of_two(zsize-2*this->border);
+  unsigned int newz = (unsigned int)nearest_power_of_two(zsize-2*this->border);
 
   // if >= 256 and low quality, don't scale up unless size is
   // close to an above power of two. This saves a lot of texture memory
@@ -997,13 +1000,36 @@ SoGLImageP::resizeImage(unsigned char *& imageptr,
   }
 
   // downscale to legal GL size (implementation dependant)
-  // FIXME: Proxy textures is probably a better way of doing this as
-  // it takes numcomponents into account as well (kintel 20011129).
-  // Support 3D textures (kintel 20011119).
-  unsigned long maxsize = SoGLTextureImageElement::getMaxGLTextureSize();
-  while (newx > maxsize) newx >>= 1;
-  while (newy > maxsize) newy >>= 1;
-  while (newz > maxsize) newz >>= 1;
+  SoGLTextureImageElement * elem = (SoGLTextureImageElement *)
+    state->getConstElement(SoGLTextureImageElement::getClassStackIndex());
+  SbBool sizeok = false;
+#if COIN_DEBUG
+  SbVec3s orgsize(newx, newy, newz);
+#endif
+  while (!sizeok) {
+    sizeok = elem->isTextureSizeLegal(newx, newy, newz, numcomponents);
+    if (!sizeok) {
+      int max = SbMax(newx, SbMax(newy, newz));
+      if (max==newz) newz >>= 1;
+      else if (max==newy) newy >>= 1;
+      else newx >>= 1;
+    }
+  }
+#if COIN_DEBUG
+  if (orgsize[0]!=newx || orgsize[1]!=newy || orgsize[2]!=newz) {
+    if (newz)
+      SoDebugError::postInfo("SoGLImageP::resizeImage",
+                             "Too large 3D texture rescaled (%dx%dx%d)"
+                             "->(%dx%dx%d)", 
+                             orgsize[0], orgsize[1], orgsize[2],
+                             newx, newy, newz);
+    else
+      SoDebugError::postInfo("SoGLImageP::resizeImage",
+                             "Too large 2D texture rescaled (%dx%d)"
+                             "->(%dx%d)", 
+                             orgsize[0], orgsize[1], newx, newy);
+  }
+#endif // COIN_DEBUG
 
   newx += 2 * this->border;
   newy += 2 * this->border;
@@ -1012,10 +1038,6 @@ SoGLImageP::resizeImage(unsigned char *& imageptr,
   if ((newx != (unsigned long) xsize) || 
       (newy != (unsigned long) ysize) ||
       (newz != (unsigned long) zsize)) { // We need to resize
-    SbVec3s size;
-    int numcomponents;
-    unsigned char *bytes = this->image->getValue(size, numcomponents);
-
     int numbytes = newx * newy * ((newz==0)?1:newz) * numcomponents;
     if (numbytes > glimage_tmpimagebuffersize) {
       if (glimage_tmpimagebuffer == NULL) atexit(cleanup_tmpimage);
@@ -1118,7 +1140,7 @@ SoGLImageP::createGLDisplayList(SoState *state)
 
   // these might change if image is resized
   unsigned char *imageptr = (unsigned char *) bytes;
-  this->resizeImage(imageptr, xsize, ysize, zsize);
+  this->resizeImage(state, imageptr, xsize, ysize, zsize);
 
   SbBool mipmap = this->shouldCreateMipmap();
 
