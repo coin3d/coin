@@ -24,6 +24,7 @@
 #include <GLUWrapper.h>
 
 #include <assert.h>
+#include <../tidbits.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -139,25 +140,30 @@ GLUWrapper_set_version(const GLubyte * versionstr)
       GLU_instance->version.minor = atoi(start);
     }
   }
-#if 0 /* debug */
   else {
-#if _WIN32
-#error fprintf() in an MSWindows DLL is bad.
-#endif /* _WIN32 */
-    (void)fprintf(stderr, "Invalid GLU versionstring: \"%s\"\n", versionstr);
-    (void)fflush(stderr);
+    /* FIXME: fix when C-versions of the So*Error classes are in place.
+       20020514 mortene. */
+/*     SoDebugError::post("GLUWrapper_set_version", */
+/*                        "Invalid GLU versionstring: \"%s\"\n", versionstr); */
   }
-#endif /* debug */
-#if 0 /* debug */
-#if _WIN32
-#error fprintf() in an MSWindows DLL is bad.
-#endif /* _WIN32 */
-  (void)fprintf(stderr, "GLU version: %d.%d.%d\n",
-                GLU_instance->version.major,
-                GLU_instance->version.minor,
-                GLU_instance->version.release);
-  (void)fflush(stderr);
-#endif /* debug */
+
+  { // Run-time help for debugging GLU problems on remote sites.
+    int COIN_DEBUG_GLU_INFO = 0;
+    const char * env = coin_getenv("COIN_DEBUG_GLU_INFO");
+    if (env) { COIN_DEBUG_GLU_INFO = atoi(env); }
+    if (COIN_DEBUG_GLU_INFO) {
+      /* FIXME: remove printfs when C-versions of the So*Error classes
+         are in place.  20020514 mortene. */
+      (void)printf("gluGetString(GLU_VERSION)=='%s' (=> %d.%d.%d)\n",
+                   GLU_instance->gluGetString(GLU_VERSION),
+                   GLU_instance->version.major,
+                   GLU_instance->version.minor,
+                   GLU_instance->version.release);
+
+      (void)printf("gluGetString(GLU_EXTENSIONS)=='%s'\n",
+                   GLU_instance->gluGetString(GLU_EXTENSIONS));
+    }
+  }
 }
 
 static int
