@@ -99,6 +99,15 @@
 #elif MBINDING==PER_VERTEX_INDEXED || MBINDING==PER_STRIP_INDEXED
     materials->send(*matindices++, TRUE);
 #endif
+
+    // needed for nvidia color-per-face-bug workaround
+#if MBINDING==PER_TRIANGLE
+    materials->send(matnr, TRUE);
+#elif MBINDING==PER_TRIANGLE_INDEXED
+    materials->send(*matindices, TRUE);
+#endif
+    // end of nvidia workaround
+
 #if NBINDING==PER_VERTEX || NBINDING==PER_STRIP
     currnormal = normals++;
     glNormal3fv((const GLfloat*)currnormal);
@@ -119,6 +128,19 @@
 #elif MBINDING==PER_VERTEX_INDEXED
     materials->send(*matindices++, TRUE);
 #endif
+
+    // needed for nvidia color-per-face-bug workaround
+#if MBINDING==PER_TRIANGLE
+    materials->send(matnr, TRUE);
+#elif MBINDING==PER_TRIANGLE_INDEXED
+    materials->send(*matindices, TRUE);
+#elif MBINDING==PER_STRIP
+    materials->send(matnr-1, TRUE);
+#elif MBINDING==PER_STRIP_INDEXED
+    materials->send(matindices[-1], TRUE);
+#endif
+    // end of nvidia workaround
+
 #if NBINDING==PER_VERTEX
     currnormal = normals++;
     glNormal3fv((const GLfloat*)currnormal);
@@ -139,6 +161,14 @@
 #elif MBINDING==PER_VERTEX_INDEXED || MBINDING==PER_TRIANGLE_INDEXED
     materials->send(*matindices++, TRUE);
 #endif
+    // needed for nvidia color-per-face-bug workaround
+#if MBINDING==PER_STRIP
+    materials->send(matnr-1, TRUE);
+#elif MBINDING==PER_STRIP_INDEXED
+    materials->send(matindices[-1], TRUE);
+#endif
+    // end of nvidia workaround
+
 #if NBINDING==PER_VERTEX || NBINDING==PER_TRIANGLE
     currnormal = normals++;
     glNormal3fv((const GLfloat*)currnormal);
@@ -160,6 +190,14 @@
 #elif MBINDING==PER_VERTEX_INDEXED || MBINDING==PER_TRIANGLE_INDEXED
       materials->send(*matindices++, TRUE);
 #endif
+      // needed for nvidia color-per-face-bug workaround
+#if MBINDING==PER_STRIP
+      materials->send(matnr-1, TRUE);
+#elif MBINDING==PER_STRIP_INDEXED
+      materials->send(matindices[-1], TRUE);
+#endif
+    // end of nvidia workaround
+
 #if NBINDING==PER_VERTEX || NBINDING==PER_TRIANGLE
       currnormal = normals++;
       glNormal3fv((const GLfloat*)currnormal);

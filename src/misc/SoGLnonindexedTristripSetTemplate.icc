@@ -74,6 +74,13 @@
 #if MBINDING==PER_STRIP || MBINDING==PER_VERTEX
     mb->send(matnr++, TRUE);
 #endif
+
+    // workaround for nvidia color-per-face-bug
+#if MBINDING==PER_FACE
+    mb->send(matnr, TRUE);
+#endif
+    // end of nvidia workaround
+
 #if TEXTURES==TRUE
     tb->send(texnr++, coords->get3(idx), *currnormal);
 #endif
@@ -87,6 +94,15 @@
 #if MBINDING==PER_VERTEX
     mb->send(matnr++, TRUE);
 #endif
+
+    // workaround for nvidia color-per-face-bug
+#if MBINDING==PER_FACE
+    mb->send(matnr, TRUE);
+#elif MBINDING==PER_STRIP
+    mb->send(matnr-1, TRUE);    
+#endif
+    // end of nvidia workaround
+
 #if TEXTURES==TRUE
     tb->send(texnr++, coords->get3(idx), *currnormal);
 #endif
@@ -101,6 +117,13 @@
 #if MBINDING==PER_FACE || MBINDING==PER_VERTEX
       mb->send(matnr++, TRUE);
 #endif
+
+      // workaround for nvidia color-per-face-bug
+#if MBINDING==PER_STRIP
+      mb->send(matnr-1, TRUE);    
+#endif
+      // end of nvidia workaround
+      
 #if TEXTURES==TRUE
       tb->send(texnr++, coords->get3(idx), *currnormal);
 #endif

@@ -113,7 +113,10 @@
 #endif
 #if MBINDING==PER_VERTEX
       mb->send(matnr++, TRUE);
+#elif MBINDING!=OVERALL // only needed for nvidia color-per-face bug workaround
+      mb->send(matnr-1, TRUE);
 #endif
+
 #if TEXTURES==TRUE
       tb->send(texnr++, coords->get3(idx), *currnormal);
 #endif
