@@ -152,13 +152,6 @@ SoQuadMesh::~SoQuadMesh()
 
 // Documented in superclass.
 void
-SoQuadMesh::initClass(void)
-{
-  SO_NODE_INTERNAL_INIT_CLASS(SoQuadMesh, SO_FROM_INVENTOR_1);
-}
-
-// Documented in superclass.
-void
 SoQuadMesh::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   inherited::computeCoordBBox(action,
@@ -591,53 +584,56 @@ static void sogl_qmesh_m3_n3_t1
 #undef PER_FACE
 #undef PER_VERTEX
 
+
+// Documented in superclass.
+void
+SoQuadMesh::initClass(void)
+{
+  SO_NODE_INTERNAL_INIT_CLASS(SoQuadMesh, SO_FROM_INVENTOR_1);
+
+  soquadmesh_ni_render_funcs[ 0] = sogl_qmesh_m0_n0_t0;
+  soquadmesh_ni_render_funcs[ 1] = sogl_qmesh_m0_n0_t1;
+  soquadmesh_ni_render_funcs[ 2] = sogl_qmesh_m0_n1_t0;
+  soquadmesh_ni_render_funcs[ 3] = sogl_qmesh_m0_n1_t1;
+  soquadmesh_ni_render_funcs[ 4] = sogl_qmesh_m0_n2_t0;
+  soquadmesh_ni_render_funcs[ 5] = sogl_qmesh_m0_n2_t1;
+  soquadmesh_ni_render_funcs[ 6] = sogl_qmesh_m0_n3_t0;
+  soquadmesh_ni_render_funcs[ 7] = sogl_qmesh_m0_n3_t1;
+
+  soquadmesh_ni_render_funcs[ 8] = sogl_qmesh_m1_n0_t0;
+  soquadmesh_ni_render_funcs[ 9] = sogl_qmesh_m1_n0_t1;
+  soquadmesh_ni_render_funcs[10] = sogl_qmesh_m1_n1_t0;
+  soquadmesh_ni_render_funcs[11] = sogl_qmesh_m1_n1_t1;
+  soquadmesh_ni_render_funcs[12] = sogl_qmesh_m1_n2_t0;
+  soquadmesh_ni_render_funcs[13] = sogl_qmesh_m1_n2_t1;
+  soquadmesh_ni_render_funcs[14] = sogl_qmesh_m1_n3_t0;
+  soquadmesh_ni_render_funcs[15] = sogl_qmesh_m1_n3_t1;
+  
+  soquadmesh_ni_render_funcs[16] = sogl_qmesh_m2_n0_t0;
+  soquadmesh_ni_render_funcs[17] = sogl_qmesh_m2_n0_t1;
+  soquadmesh_ni_render_funcs[18] = sogl_qmesh_m2_n1_t0;
+  soquadmesh_ni_render_funcs[19] = sogl_qmesh_m2_n1_t1;
+  soquadmesh_ni_render_funcs[20] = sogl_qmesh_m2_n2_t0;
+  soquadmesh_ni_render_funcs[21] = sogl_qmesh_m2_n2_t1;
+  soquadmesh_ni_render_funcs[22] = sogl_qmesh_m2_n3_t0;
+  soquadmesh_ni_render_funcs[23] = sogl_qmesh_m2_n3_t1;
+
+  soquadmesh_ni_render_funcs[24] = sogl_qmesh_m3_n0_t0;
+  soquadmesh_ni_render_funcs[25] = sogl_qmesh_m3_n0_t1;
+  soquadmesh_ni_render_funcs[26] = sogl_qmesh_m3_n1_t0;
+  soquadmesh_ni_render_funcs[27] = sogl_qmesh_m3_n1_t1;
+  soquadmesh_ni_render_funcs[28] = sogl_qmesh_m3_n2_t0;
+  soquadmesh_ni_render_funcs[29] = sogl_qmesh_m3_n2_t1;
+  soquadmesh_ni_render_funcs[30] = sogl_qmesh_m3_n3_t0;
+  soquadmesh_ni_render_funcs[31] = sogl_qmesh_m3_n3_t1;
+}
+
 // -----
 
 // Documented in superclass.
 void
 SoQuadMesh::GLRender(SoGLRenderAction * action)
 {
-  static int first = 1;
-  if (first) {
-    first = 0;
-    soquadmesh_ni_render_funcs[ 0] = sogl_qmesh_m0_n0_t0;
-    soquadmesh_ni_render_funcs[ 1] = sogl_qmesh_m0_n0_t1;
-    soquadmesh_ni_render_funcs[ 2] = sogl_qmesh_m0_n1_t0;
-    soquadmesh_ni_render_funcs[ 3] = sogl_qmesh_m0_n1_t1;
-    soquadmesh_ni_render_funcs[ 4] = sogl_qmesh_m0_n2_t0;
-    soquadmesh_ni_render_funcs[ 5] = sogl_qmesh_m0_n2_t1;
-    soquadmesh_ni_render_funcs[ 6] = sogl_qmesh_m0_n3_t0;
-    soquadmesh_ni_render_funcs[ 7] = sogl_qmesh_m0_n3_t1;
-
-    soquadmesh_ni_render_funcs[ 8] = sogl_qmesh_m1_n0_t0;
-    soquadmesh_ni_render_funcs[ 9] = sogl_qmesh_m1_n0_t1;
-    soquadmesh_ni_render_funcs[10] = sogl_qmesh_m1_n1_t0;
-    soquadmesh_ni_render_funcs[11] = sogl_qmesh_m1_n1_t1;
-    soquadmesh_ni_render_funcs[12] = sogl_qmesh_m1_n2_t0;
-    soquadmesh_ni_render_funcs[13] = sogl_qmesh_m1_n2_t1;
-    soquadmesh_ni_render_funcs[14] = sogl_qmesh_m1_n3_t0;
-    soquadmesh_ni_render_funcs[15] = sogl_qmesh_m1_n3_t1;
-
-    soquadmesh_ni_render_funcs[16] = sogl_qmesh_m2_n0_t0;
-    soquadmesh_ni_render_funcs[17] = sogl_qmesh_m2_n0_t1;
-    soquadmesh_ni_render_funcs[18] = sogl_qmesh_m2_n1_t0;
-    soquadmesh_ni_render_funcs[19] = sogl_qmesh_m2_n1_t1;
-    soquadmesh_ni_render_funcs[20] = sogl_qmesh_m2_n2_t0;
-    soquadmesh_ni_render_funcs[21] = sogl_qmesh_m2_n2_t1;
-    soquadmesh_ni_render_funcs[22] = sogl_qmesh_m2_n3_t0;
-    soquadmesh_ni_render_funcs[23] = sogl_qmesh_m2_n3_t1;
-
-    soquadmesh_ni_render_funcs[24] = sogl_qmesh_m3_n0_t0;
-    soquadmesh_ni_render_funcs[25] = sogl_qmesh_m3_n0_t1;
-    soquadmesh_ni_render_funcs[26] = sogl_qmesh_m3_n1_t0;
-    soquadmesh_ni_render_funcs[27] = sogl_qmesh_m3_n1_t1;
-    soquadmesh_ni_render_funcs[28] = sogl_qmesh_m3_n2_t0;
-    soquadmesh_ni_render_funcs[29] = sogl_qmesh_m3_n2_t1;
-    soquadmesh_ni_render_funcs[30] = sogl_qmesh_m3_n3_t0;
-    soquadmesh_ni_render_funcs[31] = sogl_qmesh_m3_n3_t1;
-
-  }
-
   SoState * state = action->getState();
 
   SbBool didpush = FALSE;
