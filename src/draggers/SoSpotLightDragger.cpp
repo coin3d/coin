@@ -213,6 +213,11 @@ SoSpotLightDragger::SoSpotLightDragger(void)
   this->setPartAsDefault("beamPlacement", "spotLightBeamPlacement");
   this->setPartAsDefault("material", "spotLightOverallMaterial");
 
+  // create this part here so that we don't add this node to the scene
+  // graph during handleEvent() (causes changes to the scene graph
+  // during traversal)
+  this->setPart("translatorRotInv", new SoRotation);
+
   SoSwitch *sw;
   sw = SO_GET_ANY_PART(this, "beamSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 0);
