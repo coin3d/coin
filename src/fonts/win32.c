@@ -569,8 +569,11 @@ cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
   LOGFONT lfont;
   GLYPHMETRICS gm;
 
-  /* NOTE: Do not make this matrix 'static'. It seems like Win95/98/ME fails if
-     the idmatrix is static. Newer versions seems to not mind though. */
+  /* NOTE: Do not make this matrix 'static'. It seems like Win95/98/ME
+     fails if the idmatrix is static. Newer versions seems to not mind
+     though.  handegar. */
+  /* FIXME: this should be investigated in more detail -- how the heck
+     can it make a difference whether or not it's static? 20031118 mortene. */
   const MAT2 identitymatrix = { { 0, 1 }, { 0, 0 },
 				{ 0, 0 }, { 0, 1 } };
   DWORD ret;
@@ -692,8 +695,11 @@ cc_flww32_get_bitmap(void * font, int glyph)
   struct cc_flw_bitmap * bm = NULL;
   GLYPHMETRICS gm;
 
-  /* NOTE: Do not make this matrix 'static'. It seems like Win95/98/ME fails if
-     the idmatrix is static. Newer versions seems to not mind though. */
+  /* NOTE: Do not make this matrix 'static'. It seems like Win95/98/ME
+     fails if the idmatrix is static. Newer versions seems to not mind
+     though. */
+  /* FIXME: this should be investigated in more detail -- how the heck
+     can it make a difference whether or not it's static? 20031118 mortene. */
   const MAT2 identitymatrix = { { 0, 1 }, { 0, 0 },
 				{ 0, 0 }, { 0, 1 } };
   DWORD ret;
@@ -824,7 +830,6 @@ static void
 flww32_getVerticesFromPath(HDC hdc)
 {
 
-  double * vertex;
   LPPOINT p_points = NULL;
   LPBYTE p_types = NULL;
   int numpoints, i, lastmoveto;
@@ -873,9 +878,9 @@ flww32_getVerticesFromPath(HDC hdc)
         continue;
       }                
 					
-      /* Close the conture? */
+      /* Close the contour? */
       if (p_types[i] & PT_CLOSEFIGURE) {				
-        vertex = (double *) malloc(3*sizeof(double));
+        double vertex[3];
 	
 	if (flww32_win9598Me) {
 	  /* If the current OS is Windows95/98/Me, the last vertex
@@ -894,15 +899,13 @@ flww32_getVerticesFromPath(HDC hdc)
         vertex [1] = p_points[lastmoveto].y;
         vertex [2] = 0;
         flww32_addTessVertex(vertex);
-
-        free(vertex);
-      } else {
-        vertex = (double *) malloc(3*sizeof(double));
+      }
+      else {
+        double vertex[3];
         vertex [0] = p_points[i].x;
         vertex [1] = p_points[i].y;
         vertex [2] = 0;
         flww32_addTessVertex(vertex);		
-        free(vertex);
       }
     }       
     if (p_points != NULL) free(p_points);
@@ -959,8 +962,15 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   cc_string_destruct(fontname);
 
 
+  /* FIXME: we're being unnecessary robust for much of the code below
+     calling into Win32 API functions. For most or all of the calls we
+     should just wrap the Win32 API calls in the glue/C/win32api.h
+     interface, catch errors, inform about the problem and assert()
+     there -- to simplify the client code below. 20031118 mortene. */
+
   /* 
-     If NULL is returned due to an error, glyph3d.c will load the default font instead. 
+     If NULL is returned due to an error, glyph3d.c will load the
+     default font instead.
   */
 
   memdc = CreateCompatibleDC(NULL);
@@ -1078,16 +1088,15 @@ static void
 flww32_addTessVertex(double * vertex)
 {
 
-  int * counter;
-  float * point;
-  point = malloc(sizeof(float)*2);
+  int * counter = (int *)malloc(sizeof(int));
+  float * point = (float *)malloc(sizeof(float)*2);
+
   point[0] = flww32_tessellator.vertex_scale * ((float) vertex[0]);
   point[1] = flww32_tessellator.vertex_scale * ((float) vertex[1]);
   cc_list_append(flww32_tessellator.vertexlist, point);
   
   cc_list_append(flww32_tessellator.edgeindexlist, (void *) (flww32_tessellator.vertex_counter));
 
-  counter = malloc(sizeof(int));
   counter[0] = flww32_tessellator.vertex_counter++;
   GLUWrapper()->gluTessVertex(flww32_tessellator.tessellator_object, vertex, counter);
 
@@ -1186,15 +1195,14 @@ static void CALLBACK
 flww32_combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[4], int **dataOut)
 {
 
-  int * ret;  
-  float * point;
-  point = malloc(sizeof(float)*2);
+  int * ret = (int *)malloc(sizeof(int));
+  float * point = (float *)malloc(sizeof(float)*2);
+
   point[0] = flww32_tessellator.vertex_scale * ((float) coords[0]);
   point[1] = flww32_tessellator.vertex_scale * ((float) coords[1]);
 
   cc_list_append(flww32_tessellator.vertexlist, point);
 
-  ret = malloc(sizeof(int));
   ret[0] = flww32_tessellator.vertex_counter++;
   
   *dataOut = ret;
@@ -1296,10 +1304,13 @@ cc_flww32_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
 static int
 flww32_calcfontsize(float complexity)
 {
-  int sizes[] = {10, 25, 50, 100, 500, 1000, 2500, 4000, 6000, 8000, 10000};
-  unsigned int index;
-  index = (unsigned int) (10*complexity);
-  if (index > 10) index = 10;	
+  const int sizes[] = {
+    10, 25, 50, 100, 500, 1000, 2500, 4000, 6000, 8000, 10000
+  };
+  unsigned int index = (unsigned int)(10 * complexity);
+  const unsigned int lastidx = sizeof(sizes) / sizeof(sizes[0]) - 1;
+  if (index > lastidx) index = lastidx;	
+
   return sizes[index];
 }
 
