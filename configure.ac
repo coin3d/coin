@@ -1432,10 +1432,6 @@ if $sim_ac_build_library; then
     # adjust for the Think Different factor
     COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS -lobjc"
   fi
-  # Mac OS X 10.2 needs some additional tweaks (see also src/Makefile.am)
-  if $sim_ac_macosx_10_2; then
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS -Wl,-prebind"
-  fi
 
   case "$sim_ac_framework:$sim_ac_make_dsp" in
   true:* | *:true )
