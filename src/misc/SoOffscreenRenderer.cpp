@@ -194,6 +194,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/misc/SoGLBigImage.h>
@@ -511,8 +512,6 @@ static void
 pre_render_cb(void * userdata, SoGLRenderAction * action)
 {
   glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
-  action->removePreRenderCallback(pre_render_cb, userdata);
-
   action->setRenderingIsRemote(FALSE);
 }
 
@@ -533,14 +532,16 @@ SoOffscreenRendererP::GLRenderAbortCallback(void *userData)
   const SoFullPath * path = (const SoFullPath*) thisp->renderaction->getCurPath();
   SoNode * node = path->getTail();
 
+
   if (thisp->lastnodewasacamera) {
-    thisp->setCameraViewvolForTile(thisp->visitedcamera);
+    thisp->setCameraViewvolForTile(thisp->visitedcamera);    
     thisp->lastnodewasacamera = FALSE;
   }
 
   if (node && node->isOfType(SoCamera::getClassTypeId())) {
     thisp->visitedcamera = (SoCamera *) node;
     thisp->lastnodewasacamera = TRUE;
+    SoCacheElement::invalidate(thisp->renderaction->getState());
   }
 
   return SoGLRenderAction::CONTINUE;
@@ -606,7 +607,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     forcetiled || (fullsize[0] > tilesize[0]) || (fullsize[1] > tilesize[1]);
 
   this->internaldata->setBufferSize(tiledrendering ? tilesize : regionsize);
-  if (!tiledrendering) { this->renderaction->setViewportRegion(this->viewport); }
+  //if (!tiledrendering) { this->renderaction->setViewportRegion(this->viewport); }
 
   // contextid is the id used when rendering
   uint32_t contextid = this->renderaction->getCacheContext();
@@ -671,12 +672,12 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
       this->numsubscreens[i] = (fullsize[i] + (tilesize[i] - 1)) / tilesize[i];
     }
 
+    this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
     // We have to grab cameras using this callback during rendering
     this->visitedcamera = NULL;
     this->renderaction->setAbortCallback(SoOffscreenRendererP::GLRenderAbortCallback, this);
-
+    
     // Render entire scenegraph for each subscreen.
-
     for (int y=0; y < this->numsubscreens[1]; y++) {
       for (int x=0; x < this->numsubscreens[0]; x++) {
         this->currenttile = SbVec2s(x, y);
@@ -693,11 +694,9 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
           if (this->subsize[1] == 0) { this->subsize[1] = this->subtilesize[1]; }
         }
 
-        if (tiledrendering) {
-          SbViewportRegion subviewport = SbViewportRegion(SbVec2s(this->subsize[0], this->subsize[1]));
-          if (this->renderaction) { this->renderaction->setViewportRegion(subviewport); }
-        }
-
+        SbViewportRegion subviewport = SbViewportRegion(SbVec2s(this->subsize[0], this->subsize[1]));
+        this->renderaction->setViewportRegion(subviewport); 
+        
 #if 0   /* disabled next lines as they otherwise break usage of make_current() and
 	 * reinstate_previous() in the wgl implementation. 20031106 tamer.
 	 *
@@ -711,15 +710,15 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
           return FALSE;
         }
 #endif
-
-        this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
-
-        if (base->isOfType(SoNode::getClassTypeId()))
+       
+        if (base->isOfType(SoNode::getClassTypeId())) 
           this->renderaction->apply((SoNode *)base);
         else if (base->isOfType(SoPath::getClassTypeId()))
           this->renderaction->apply((SoPath *)base);
-        else assert(FALSE && "impossible");
-
+        else {
+          assert(FALSE && "Cannot apply to anything else than an SoNode and an SoBase");
+        }
+        
         this->internaldata->postRender();
 
         const SbVec2s idsize = this->internaldata->getBufferSize();
@@ -764,6 +763,9 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   }
   // Regular, non-tiled rendering.
   else {
+
+    this->renderaction->setViewportRegion(this->viewport);
+
     // needed to clear viewport after glViewport is called
     this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
 
@@ -771,8 +773,10 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
       this->renderaction->apply((SoNode *)base);
     else if (base->isOfType(SoPath::getClassTypeId()))
       this->renderaction->apply((SoPath *)base);
-    else assert(FALSE && "impossible");
-
+    else  {
+      assert(FALSE && "Cannot apply to anything else than an SoNode and an SoBase");
+    }
+    
     this->internaldata->postRender();
 
     SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
@@ -1527,6 +1531,7 @@ SoOffscreenRendererP::pasteSubscreen(const SbVec2s & subscreenidx,
                  srcbuf + SUBBUFFERWIDTH * j,
                  SUBBUFFERWIDTH);
   }
+
 }
 
 // Return largest size of offscreen canvas system can handle. Will
