@@ -179,8 +179,8 @@ SoGLPolygonOffsetElement::updategl(void)
         glEnable(GL_POLYGON_OFFSET_LINE);
       if ((this->style & POINTS) && !(this->currentstyles & POINTS))
         glEnable(GL_POLYGON_OFFSET_POINT);
-      glPolygonOffset(this->currentoffsetfactor,
-                      this->currentoffsetunits);
+      glPolygonOffset(this->offsetfactor,
+                      this->offsetunits);
     }
 #endif // GL_VERSION_1_1
 
@@ -191,9 +191,9 @@ SoGLPolygonOffsetElement::updategl(void)
       // ok on old SGI HW
 
       // try to detect if user attempted to specify a bias, and not units
-      SbBool isbias = this->currentoffsetunits > 0.0f && this->currentoffsetunits < 0.01f;
-      glPolygonOffsetEXT(this->currentoffsetfactor,
-                         isbias ? this->currentoffsetunits : 0.000001);
+      SbBool isbias = this->offsetunits > 0.0f && this->offsetunits < 0.01f;
+      glPolygonOffsetEXT(this->offsetfactor,
+                         isbias ? this->offsetunits : 0.000001);
       if ((this->style & FILLED) && !(this->currentstyles & FILLED)) {
         glEnable(GL_POLYGON_OFFSET_EXT);
       }
@@ -221,8 +221,7 @@ SoGLPolygonOffsetElement::updategl(void)
     }
 #endif // GL_EXT_polygon_offset && (!GL_VERSION_1_1 || defined(__sgi))
     this->currentstyles = (Style) 0;
-  }
-  
+  }  
   // update current offset values before returning
   this->currentoffsetfactor = this->offsetfactor;
   this->currentoffsetunits = this->offsetunits;
