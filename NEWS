@@ -1,28 +1,33 @@
 New in Coin v2.0.0b (so far):
-- NB: v2.0 is in the future
-- NB: this is an unstable source repository we don't release Coin from
-* This Coin branch is now under the GPL license
-* Inventor/C/ include hierarchy for C ADTs in Coin
-* platform-independent thread-handling abstraction classes
-* thread-safe action traversals
-* VRML97 support (see doc XXX for missing parts)
-* 3D-textures (SoTexture3, ...XXX list public API XXX...)
-* Audio support
-* support for dynamically loadable extension nodes on some platforms
-  (Win32/MSVC++6, Linux/gcc)
-* SoExtSelection can now also select only the visible polygons in a model
-* SoOffscreenRenderer now handles generating arbitrarily huge images
-* optimized LazyElement traversal
-* added man-page coin-config.1
-* the usual bugfixes, optimizations, and documentation updates
-* more standard build setup for generated documentation
-* automatic generation of MS DevStudio project files for building Coin
-* debian package setup
-* verified support for Mac OS X / Darwin platforms
-* new SoTransparencyType node, with support for setting SoTransparencyType
-  in the scene graph.
-* exports base class SbClip for general polygon clipping routines
-* application data sharing through SoMField::setValuesPointer()
+- NB: this is an unstable development-source repository - we do our
+  stable releases from the Coin-1 and Coin-2 repositories.
+* legal issues
+  - Coin beyond Coin 1.* switched to being licensed under the GPL
+* new features
+  - platform-independent thread-handling abstraction classes
+  - thread-safe action traversals possible with --enable-threadsafe
+  - VRML97 support (see doc XXX for missing parts)
+  - 3d-textures (SoTexture3, ...XXX list public API XXX...)
+  - audio support
+  - dynamic loading of extension nodes possible on selected platforms
+  - SoExtSelection: can also select only the visible polygons in a model
+  - SoOffscreenRenderer: now handles generating arbitrarily huge images
+  - new SoTransparencyType node, with support for setting SoTransparencyType
+    in the scene graph.
+  - exports base class SbClip for general polygon clipping routines
+  - application data sharing through SoMField::setValuesPointer()
+* optimizations
+  - display list render caching
+  - optimized LazyElement traversal
+* compile/build/install
+  - Inventor/C/ include hierarchy for C ADTs in Coin
+  - man-page for coin-config.1
+  - more standard build setup for generated documentation
+  - MS Developer Studio project files generation
+  - Linux/Debian package setup
+  - Mac OS X/Darwin support, with custom framework installation
+* and the usual batch of bugfixes, optimizations, documentation updates,
+  and build setup improvements
 
 New in Coin v1.0 (2001-08-13):
 * speedy Cygwin builds with new, simpler wrapmsvc.exe compiler wrapper
