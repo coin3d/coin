@@ -165,7 +165,7 @@ SoBumpMap::GLRender(SoGLRenderAction * action)
         PRIVATE(this)->glimage->setData(bytes, size, nc,
                                         SoGLImage::CLAMP_TO_EDGE,
                                         SoGLImage::CLAMP_TO_EDGE,
-                                        0.4f);
+                                        1.0f); // max quality for bumpmaps
         PRIVATE(this)->glimagevalid = TRUE;
       }
       SoBumpMapElement::set(state, this, PRIVATE(this)->glimage);
