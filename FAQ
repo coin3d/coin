@@ -67,6 +67,7 @@ A:      Coin will probably never be 100% thread safe, but in Coin 2.0 we've
         synchronization though, but we've added many thread classes to
         make this easier for you (SbMutex, SbRWMutex, SbStorage,
         SbBarrier, ...).
+
        
 Q1.2:   Can Coin do multi-pipe rendering?
 
@@ -77,6 +78,7 @@ A:      Yes, but you have to do some work. Coin can do thread-safe
         testing with SGI's OpenGL Multipipe SDK, and we might release
         a viewer using that SDK.  Please contact us if you're
         interested in multi-pipe rendering.
+
 
 Q1.3:   Can I do volume rendering with Coin?
 
