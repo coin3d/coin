@@ -63,7 +63,7 @@ inline void NORMALIZE(SbVec3f &v)
 
 void
 soshape_bumprender::renderBump(SoState * state,
-                               const SoPrimitiveVertexCache * cache, 
+                               const SoPrimitiveVertexCache * cache,
                                SoLight * light, const SbMatrix & toobjectspace)
 {
   this->initLight(light, toobjectspace);
@@ -90,7 +90,7 @@ soshape_bumprender::renderBump(SoState * state,
   glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_DOT3_RGB);
   glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_PREVIOUS);
 
-  const SoPrimitiveVertexCache::Vertex * vptr = 
+  const SoPrimitiveVertexCache::Vertex * vptr =
     cache->getVertices();
   const int n = cache->getNumIndices();
   const SbVec3f * cmptr = this->cubemaplist.getArrayPtr();
@@ -107,7 +107,7 @@ soshape_bumprender::renderBump(SoState * state,
                               (GLvoid*) cmptr);
   cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
 
-  cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT, 
+  cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT,
                            (const GLvoid*) cache->getIndices());
 
   cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
@@ -125,9 +125,11 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
 {
   const cc_glglue * glue = sogl_glue_instance(state);
 
-  const SoPrimitiveVertexCache::Vertex * vptr = 
+  const SoPrimitiveVertexCache::Vertex * vptr =
     cache->getVertices();
   const int n = cache->getNumIndices();
+  
+  SbBool colorpervertex = cache->colorPerVertex();
 
   cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
                             (GLvoid*) &vptr->vertex);
@@ -141,25 +143,34 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
                               (GLvoid*) &vptr->texcoord0);
   cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
 
-
-  cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT, 
+  if (colorpervertex) {
+    cc_glglue_glColorPointer(glue, 4, GL_UNSIGNED_BYTE,
+                             sizeof(SoPrimitiveVertexCache::Vertex),
+                             (GLvoid*) &vptr->rgba);
+    cc_glglue_glEnableClientState(glue, GL_COLOR_ARRAY);
+  }
+  cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT,
                            (const GLvoid*) cache->getIndices());
 
   cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
   cc_glglue_glDisableClientState(glue, GL_NORMAL_ARRAY);
   cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+
+  if (colorpervertex) {
+    cc_glglue_glDisableClientState(glue, GL_COLOR_ARRAY);
+  }
 }
 
 void
 soshape_bumprender::calcTangentSpace(const SoPrimitiveVertexCache * cache)
 {
-  const SoPrimitiveVertexCache::Vertex * vptr = 
+  const SoPrimitiveVertexCache::Vertex * vptr =
     cache->getVertices();
   int i;
 
   const int numv = cache->getNumVertices();
   const int32_t * idxptr = cache->getIndices();
-  
+
   this->tangentlist.truncate(0);
 
   for (i = 0; i < numv; i++) {
@@ -192,8 +203,8 @@ soshape_bumprender::calcTangentSpace(const SoPrimitiveVertexCache * cache)
     float deltaS0 = v1.bumpcoord[0] - v0.bumpcoord[0];
     float deltaS1 = v2.bumpcoord[0] - v0.bumpcoord[0];
     tTangent = deltaS1 * side0 - deltaS0 * side1;
-    NORMALIZE(tTangent);    
-    
+    NORMALIZE(tTangent);
+
     for (int j = 0; j < 3; j++) {
       this->tangentlist[idx[j]*2] += sTangent;
       this->tangentlist[idx[j]*2+1] += tTangent;
@@ -211,7 +222,7 @@ soshape_bumprender::calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight 
   SbVec3f lightvec;
   SbVec3f tlightvec;
 
-  const SoPrimitiveVertexCache::Vertex * vptr = 
+  const SoPrimitiveVertexCache::Vertex * vptr =
     cache->getVertices();
   const int numv = cache->getNumVertices();
 
@@ -231,7 +242,7 @@ soshape_bumprender::calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight 
     this->cubemaplist.append(SbVec3f(sTangent.dot(tlightvec),
                                      tTangent.dot(tlightvec),
                                      v.normal.dot(lightvec)));
-    
+
   }
 }
 
