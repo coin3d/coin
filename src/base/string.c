@@ -376,7 +376,7 @@ cc_string_is(const cc_string * me)
 } /* cc_string_is() */
 
 int
-cc_string_compare(cc_string * lhs, const cc_string * rhs)
+cc_string_compare(const cc_string * lhs, const cc_string * rhs)
 {
   return cc_string_compare_text(lhs->pointer, rhs->pointer);
 } /* cc_string_compare() */
@@ -388,11 +388,23 @@ cc_string_compare_text(const char * lhs, const char * rhs)
 } /* cc_string_compare_text() */
 
 int
-cc_string_compare_subtext(cc_string * me, const char * text, int offset)
+cc_string_compare_subtext(const cc_string * me, const char * text, int offset)
 {
   /* FIXME: assert on invalid offset */
   return strncmp(me->pointer + offset, text, strlen(text));
 } /* cc_string_compare_prefix() */
+
+/* ********************************************************************** */
+
+void
+cc_string_apply(cc_string * string, char (*function)(char input))
+{
+  int len, i;
+  assert(function != NULL);
+  len = cc_string_length(string);
+  for ( i = 0; i < len; i++ )
+    string->pointer[i] = function(string->pointer[i]);
+}
 
 /* ********************************************************************** */
 
