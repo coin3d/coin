@@ -59,7 +59,14 @@
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoCullElement.h>
-#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/elements/SoBumpMapElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoLightElement.h>
+#include <Inventor/elements/SoGLMultiTextureImageElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoLightElement.h>
 
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGLBigImage.h>
@@ -77,11 +84,12 @@
 #include <Inventor/SbTime.h>
 #include <Inventor/C/tidbitsp.h>
 
-// SoShape.cpp grew too big, so I had to move some code into
-// three new files. pederb, 2001-07-18
+// SoShape.cpp grew too big, so I had to move some code into new
+// files. pederb, 2001-07-18
 #include "soshape_primdata.h"
 #include "soshape_trianglesort.h"
 #include "soshape_bigtexture.h"
+#include "soshape_bumprender.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -177,14 +185,17 @@ typedef struct {
   SbList <soshape_bigtexture*> * bigtexturelist;
   SbList <uint32_t> * bigtexturecontext;
   soshape_trianglesort * trianglesort;
-  
+
   soshape_bigtexture * currentbigtexture;
   // used in generatePrimitives() callbacks to set correct material
   SoMaterialBundle * currentbundle;
-  
+
+  soshape_bumprender * bumprender;
+
   // need these in invokeTriangleCallbacks()
-  SbBool is_doing_sorted_rendering;    
-  SbBool is_doing_bigtexture_rendering; 
+  SbBool is_doing_sorted_rendering;
+  SbBool is_doing_bigtexture_rendering;
+  SbBool is_doing_bumpmap_rendering;
 } soshape_staticdata;
 
 static soshape_bigtexture *
@@ -205,14 +216,15 @@ static void
 soshape_construct_staticdata(void * closure)
 {
   soshape_staticdata * data = (soshape_staticdata*) closure;
-  
+
   data->bigtexturelist = new SbList <soshape_bigtexture*>;
   data->bigtexturecontext = new SbList <uint32_t>;
   data->primdata = new soshape_primdata();
   data->trianglesort = new soshape_trianglesort();
+  data->bumprender = NULL;
   data->is_doing_sorted_rendering = FALSE;
   data->is_doing_bigtexture_rendering = FALSE;
-  
+  data->is_doing_bumpmap_rendering = FALSE;
 }
 
 static void
@@ -222,6 +234,7 @@ soshape_destruct_staticdata(void * closure)
   for (int i = 0; i < data->bigtexturelist->getLength(); i++) {
     delete (*(data->bigtexturelist))[i];
   }
+  delete data->bumprender;
   delete data->bigtexturelist;
   delete data->bigtexturecontext;
   delete data->primdata;
@@ -244,7 +257,7 @@ soshape_get_staticdata(void)
 #endif // !COIN_THREADSAFE
 }
 
-// called by atexit 
+// called by atexit
 static void
 soshape_cleanup(void)
 {
@@ -285,8 +298,8 @@ SoShape::initClass(void)
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoShape, SO_FROM_INVENTOR_1);
 
 #ifdef COIN_THREADSAFE
-  soshape_staticstorage = 
-    new SbStorage(sizeof(soshape_staticdata), 
+  soshape_staticstorage =
+    new SbStorage(sizeof(soshape_staticdata),
                   soshape_construct_staticdata,
                   soshape_destruct_staticdata);
 #else // COIN_THREADSAFE
@@ -355,7 +368,7 @@ SoShape::rayPick(SoRayPickAction * action)
 {
   if (this->shouldRayPick(action)) {
     this->computeObjectSpaceRay(action);
-    
+
     if (!PRIVATE(this)->bboxcache ||
         !PRIVATE(this)->bboxcache->isValid(action->getState()) ||
         soshape_ray_intersect(action, PRIVATE(this)->bboxcache->getProjectedBox())) {
@@ -459,7 +472,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
   if (SoDrawStyleElement::get(state) == SoDrawStyleElement::INVISIBLE)
     return FALSE;
-  
+
   if (!state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
     if (PRIVATE(this)->bboxcache && PRIVATE(this)->bboxcache->isValid(state)) {
       if (SoCullElement::cullTest(state, PRIVATE(this)->bboxcache->getProjectedBox())) {
@@ -467,12 +480,12 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       }
     }
   }
-  
+
   SbBool transparent = SoTextureImageElement::containsTransparency(state);
   if (!transparent) {
     transparent = SoLazyElement::getInstance(state)->isTransparent();
   }
-  
+
   if (action->handleTransparency(transparent))
     return FALSE;
 
@@ -506,7 +519,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     shapedata->is_doing_sorted_rendering = TRUE;
     this->generatePrimitives(action);
     shapedata->is_doing_sorted_rendering = FALSE;
-    
+
     shapedata->trianglesort->endShape(state, mb); // this will render the triangles
     return FALSE; // tell shape _not_ to render
   }
@@ -529,7 +542,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     SoGLBigImage * big = (SoGLBigImage*) glimage;
 
     shapedata->is_doing_bigtexture_rendering = TRUE;
-    
+
     soshape_bigtexture * bigtex = soshape_get_bigtexture(shapedata, action->getCacheContext());
     shapedata->currentbigtexture = bigtex;
     bigtex->beginShape(big, SoTextureQualityElement::get(state));
@@ -544,6 +557,61 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     return FALSE;
   }
 
+  if (SoBumpMapElement::get(state)) {
+    const SoNodeList & lights = SoLightElement::getLights(state);
+    if (lights.getLength()) {
+      soshape_staticdata * shapedata = soshape_get_staticdata();
+      if (shapedata->bumprender == NULL) {
+        shapedata->bumprender = new soshape_bumprender;
+      }
+      shapedata->bumprender->init(state);
+      shapedata->is_doing_bumpmap_rendering = TRUE;
+      this->generatePrimitives(action);
+      shapedata->is_doing_bumpmap_rendering = FALSE;
+      
+      // FIXME: disable multi-texture units 2-n (if active)
+      
+      glPushAttrib(GL_DEPTH_BUFFER_BIT);
+      glDepthFunc(GL_LEQUAL);
+      glDisable(GL_LIGHTING);
+      glColor3f(1.0f, 1.0f, 1.0f);
+           
+      // fetch matrix that convert the light from its object space
+      // to the OpenGL world space
+      SbMatrix lm = SoLightElement::getMatrix(state, 0);
+
+      // convert light back to this objects' object space
+      SbMatrix m = SoModelMatrixElement::get(state) *
+        SoViewingMatrixElement::get(state);
+      m = m.inverse();
+      m.multLeft(lm);
+
+      shapedata->bumprender->renderBump((SoLight*)lights[0], m);
+      
+      SoGLLazyElement::getInstance(state)->reset(state, 
+                                                 SoLazyElement::DIFFUSE_MASK|
+                                                 SoLazyElement::GLIMAGE_MASK);
+      SoMaterialBundle mb(action);
+      mb.sendFirst();
+      
+      glEnable(GL_BLEND);
+      glBlendFunc(GL_DST_COLOR, GL_ZERO);
+      glDisable(GL_LIGHTING);
+      
+      if (SoGLTextureEnabledElement::get(state)) glEnable(GL_TEXTURE_2D);
+      // FIXME: enable multi-texture units 1-n (if active)
+      
+      shapedata->bumprender->renderNormal();
+      glPopAttrib();
+      glDisable(GL_BLEND); // FIXME: temporary for FPS-counter
+      
+      SoGLLazyElement::getInstance(state)->reset(state, 
+                                                 SoLazyElement::LIGHT_MODEL_MASK|
+                                                 SoLazyElement::BLENDING_MASK);
+      
+      return FALSE;
+    }
+  }
 #if COIN_DEBUG && 0 // enable this to test generatePrimitives() rendering
   SoMaterialBundle mb(action);
   mb.sendFirst();
@@ -631,7 +699,7 @@ SoShape::computeObjectSpaceRay(SoRayPickAction * const action,
 
   For this to work, you must supply a face or line detail when
   generating primitives. If you supply \c NULL for the detail argument in
-  SoShape::beginShape(), you'll have to override this method.  
+  SoShape::beginShape(), you'll have to override this method.
 */
 SoDetail *
 SoShape::createTriangleDetail(SoRayPickAction * action,
@@ -783,6 +851,9 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
     else if (shapedata->is_doing_bigtexture_rendering) {
       shapedata->currentbigtexture->triangle(action->getState(), v1, v2, v3);
     }
+    else if (shapedata->is_doing_bumpmap_rendering) {
+      shapedata->bumprender->addTriangle(v1, v2, v3);
+    }
     else {
       glBegin(GL_TRIANGLES);
       glTexCoord4fv(v1->getTextureCoords().getValue());
@@ -931,7 +1002,7 @@ SoShape::invokePointCallbacks(SoAction * const action,
 
   \begin verbatim
   SoPrimitiveVertex vertex;
-  
+
   this->beginShape(action, SoShape::POLYGON);
   vertex.setPoint(SbVec3f(0.0f, 0.0f, 0.0f));
   this->shapeVertex(&vertex);
@@ -955,7 +1026,7 @@ SoShape::invokePointCallbacks(SoAction * const action,
   the last argument, and not an SoFaceDetail. This is because we
   accept more TriangleShape types, and the detail might be a
   SoFaceDetail or a SoLineDetail. There is no use sending in a
-  SoPointDetail, as nothing will be done with it.  
+  SoPointDetail, as nothing will be done with it.
 */
 void
 SoShape::beginShape(SoAction * const action, const TriangleShape shapetype,
@@ -1136,12 +1207,12 @@ SoShape::notify(SoNotList * nl)
   NULL if no bounding box cache has been created. If not NULL, the
   caller must check if the cache is valid before using it. This
   can be done using SoCache::isValid().
-  
+
   \COIN_FUNCTION_EXTENSION
 
   \since Coin 2.0
 */
-const SoBoundingBoxCache * 
+const SoBoundingBoxCache *
 SoShape::getBoundingBoxCache(void) const
 {
   return PRIVATE(this)->bboxcache;
@@ -1170,7 +1241,7 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     PRIVATE(this)->bboxcache = NULL;
     PRIVATE(this)->unlock();
   }
-  
+
   SbBool shouldcache = PRIVATE(this)->shouldcache;
   SbBool storedinvalid = FALSE;
   if (shouldcache) {
@@ -1217,7 +1288,7 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   }
 }
 
-void 
+void
 SoShapeP::calibrateBBoxCache(void)
 {
   int i;
@@ -1245,4 +1316,3 @@ SoShapeP::calibrateBBoxCache(void)
 }
 
 #undef PRIVATE
-
