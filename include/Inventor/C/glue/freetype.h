@@ -54,6 +54,8 @@ extern "C" {
  * necessary structs and types.
  */
 
+#define FC_PIXEL_SIZE "pixelsize" /* Double */
+
 typedef enum _FcMatchKind {
   FcMatchPattern, FcMatchFont
 } FcMatchKind;
@@ -81,6 +83,7 @@ FcPattern * cc_fcglue_FcFontMatch(void * config, FcPattern * pattern, FcResult *
 FcResult cc_fcglue_FcPatternGetString(const FcPattern * pattern, const char * object, int n, unsigned char ** s);
 void cc_fcglue_FcPatternDestroy(FcPattern * pattern);
 void cc_fcglue_FcPatternPrint(const FcPattern * pattern);
+int cc_fcglue_FcPatternAddDouble(FcPattern *pattern, const char *object, double d);
 
 #ifdef HAVE_FREETYPE
 #include <ft2build.h>

@@ -73,6 +73,7 @@ typedef FcPattern * (*cc_fcglue_FcFontMatch_t)(void * config, FcPattern * p, FcR
 typedef FcResult (*cc_fcglue_FcPatternGetString_t)(const FcPattern * p, const char * object, int n, unsigned char ** s);
 typedef void (*cc_fcglue_FcPatternDestroy_t)(FcPattern * p);
 typedef void (*cc_fcglue_FcPatternPrint_t)(const FcPattern * p);
+typedef int (*cc_fcglue_FcPatternAddDouble_t)(FcPattern *p, const char *object, double d);
 
 typedef struct {
   int available;
@@ -84,6 +85,7 @@ typedef struct {
   cc_fcglue_FcPatternGetString_t FcPatternGetString;
   cc_fcglue_FcPatternDestroy_t FcPatternDestroy;
   cc_fcglue_FcPatternPrint_t FcPatternPrint;
+  cc_fcglue_FcPatternAddDouble_t FcPatternAddDouble;
 } cc_fcglue_t;
 
 typedef FT_Error (*cc_ftglue_FT_Init_FreeType_t)(FT_Library * library);
@@ -218,6 +220,7 @@ fcglue_init(void)
       FCGLUE_REGISTER_FUNC(cc_fcglue_FcPatternGetString_t, FcPatternGetString);
       FCGLUE_REGISTER_FUNC(cc_fcglue_FcPatternDestroy_t, FcPatternDestroy);
       FCGLUE_REGISTER_FUNC(cc_fcglue_FcPatternPrint_t, FcPatternPrint);
+      FCGLUE_REGISTER_FUNC(cc_fcglue_FcPatternAddDouble_t, FcPatternAddDouble);
 
       /* Do this late, so we can detect recursive calls to this function. */
       fontconfig_instance = fi;
@@ -287,6 +290,13 @@ cc_fcglue_FcPatternPrint(const FcPattern * pattern)
 {
   assert(fontconfig_instance && fontconfig_instance->available);
   return fontconfig_instance->FcPatternPrint(pattern);
+}
+
+int
+cc_fcglue_FcPatternAddDouble(FcPattern *p, const char *object, double d)
+{
+  assert(fontconfig_instance && fontconfig_instance->available);
+  return fontconfig_instance->FcPatternAddDouble(p, object, d);
 }
 
 int
