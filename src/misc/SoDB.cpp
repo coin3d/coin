@@ -410,7 +410,15 @@ SoDB::init(void)
 
   const char * env;
 
-#if defined(HAVE_SOUND) && defined(HAVE_VRML97) && 1 // disabled 2002-01-29 pederb. Crashes under Linux
+#if defined(HAVE_SOUND) && defined(HAVE_VRML97)
+
+  // FIXME: default disabled, as sound support through OpenAL caused
+  // crashes under Linux.
+  //
+  // Nobody bothered to document what was crashing, and how and why
+  // and how to solve it, though. *grumpf*
+  //
+  // 20030507 mortene.
 
   SbBool initaudio = FALSE;
 
@@ -1462,3 +1470,80 @@ SoDBP::listWin32ProcessModules(void)
 }
 
 #endif // !HAVE_WINDLL_RUNTIME_BINDING || !HAVE_TLHELP32_H
+
+/* *********************************************************************** */
+
+// FIXME: there should be a proper check in the configure script for
+// the presence of the Win32 API, so we could replace this
+// non-standardized compiler-dependent define. 20030509 mortene.
+#ifdef _WIN32
+
+class StaticObjectInDLL {
+public:
+  StaticObjectInDLL(void)
+  {
+    if (StaticObjectInDLL::AlreadyPresent()) {
+      MessageBox(NULL,
+                 "Detected two instances of the Coin library in the same\n"
+                 "process image!!\n\n"
+
+                 "Application can not continue without errors, and\n"
+                 "will exit when you quit this dialog box.\n\n"
+
+                 "This is an indication of a serious problem with the\n"
+                 "settings in your project configuration.\n\n"
+
+                 "One likely cause of this error is that a different\n"
+                 "configuration of the Coin library was linked with\n"
+                 "the GUI-binding library (e.g. SoWin or SoQt) than\n"
+                 "for the application's linker settings. Try for instance\n"
+                 "to check if there is a mismatch between debug and release\n"
+                 "libraries.\n\n"
+
+                 "If you are completely lost as how to find and fix\n"
+                 "this problem on your own, try the\n"
+                 "<coin-discuss@coin3d.org> mailing list (or the support\n"
+                 "address <coin-support@coin3d.org> if you hold a Coin\n"
+                 "Professional Edition License).\n",
+                 
+
+                 "Fatal error!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
+      exit(1);
+    }
+    else {
+      StaticObjectInDLL::RegisterPresenceOfDLL();
+    }
+  }
+
+  static SbBool AlreadyPresent(void)
+  {
+    HANDLE h = OpenMutex(0, FALSE, StaticObjectInDLL::mutexName().getString());
+    return (h != NULL) ? TRUE : FALSE;
+  }
+
+  static void RegisterPresenceOfDLL(void)
+  {
+    (void)CreateMutex(NULL, FALSE, StaticObjectInDLL::mutexName().getString());
+    // The mutex is automatically destructed by the operating system
+    // when the process exits.
+  }
+
+private:
+  static SbString mutexName(void)
+  {
+    SbString s;
+    s.sprintf("COIN_LIBRARY_PROCESS_%d", GetCurrentProcessId());
+    return s;
+  }
+};
+
+// Only one of these objects should be allocated for the process. If
+// two or more of them are it means that multiple instances of the
+// Coin library is loaded for the same process image -- and we'll
+// throw up the error message box.
+
+static StaticObjectInDLL dllobject;
+
+#endif // _WIN32
+
+/* *********************************************************************** */
