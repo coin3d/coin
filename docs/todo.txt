@@ -1073,6 +1073,22 @@ STUFF TO FIX IN COIN
     sorts of kinds of debugging information, if possible).
 
 
+044 Use GL_TEXTURE_RECTANGLE_EXT extension.
+    2004-07-14  Karin Kosina  <kyrah@sim.no>
+
+    On cards that support it, we should use the GL_TEXTURE_RECTANGLE_EXT
+    OpenGL extension for non-power-of-two textures. In addition to
+    the obvious places, this includes creating (and binding)
+    pBuffers. 
+
+    Note that even though we will still need fallback code for
+    older drivers that don't support this, I believe this would be
+    worthwhile. On modern cards, GL_TEXTURE_RECTANGLE_EXT is
+    often faster than GL_TEXTURE_2D, and if somebody is using a  
+    lot of textures (think font rendering), they will appreciate 
+    both the speedup and the savings in texture memory.
+
+
 
 OTHER COIN-RELATED STUFF TO FIX
 ===============================
