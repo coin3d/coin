@@ -19,10 +19,17 @@
 
 /*!
   \class SoWWWInline SoWWWInline.h Inventor/nodes/SoWWWInline.h
-  \brief The SoWWWInline class is a VRML1 node used to include data from an url.
+  \brief The SoWWWInline class is a node used to include data from an URL.
   \ingroup nodes
 
-  FIXME: write class doc
+  If the URL is not a local file, the application is responsible for
+  supplying a callback to a function which will fetch the data of the
+  URL.
+
+  As long as no data has been imported, the scenegraph representation
+  of the node will be that of a bounding box enclosing the geometry we
+  expect to fetch from the URL.  The application is naturally also
+  responsible for specifying the expected dimensions of the geometry.
 */
 
 #include <Inventor/nodes/SoWWWInline.h>
@@ -73,7 +80,7 @@
 
 /*!
   \var SoSFString SoWWWInline::name
-  Name of file/url where children should be read.
+  Name of file/URL where children should be read.
 */
 
 /*!
@@ -86,15 +93,17 @@
 */
 /*!
   \var SoSFNode SoWWWInline::alternateRep
-  ALternate representation. Used when children can't be read from name.
+  Alternate representation. Used when children can't be read from name.
 */
 
 // static members
 SoWWWInlineFetchURLCB * SoWWWInline::fetchurlcb;
 void * SoWWWInline::fetchurlcbdata;
-SbBool SoWWWInline::readassofile;
 SbColor * SoWWWInline::bboxcolor;
 SoWWWInline::BboxVisibility SoWWWInline::bboxvisibility = SoWWWInline::UNTIL_LOADED;
+// FIXME: shouldn't this have an explicit init value? (Check what TGS
+// Inventor is using.) 20010816 mortene.
+SbBool SoWWWInline::readassofile;
 
 void
 SoWWWInline::cleanup(void)
@@ -176,7 +185,8 @@ SoWWWInline::SoWWWInline()
   SO_NODE_ADD_FIELD(bboxSize, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(alternateRep, (NULL));
 
-
+  // Instantiated dynamically to avoid problems on platforms with
+  // systemloaders that hate static constructors in C++ libraries.
   if (SoWWWInline::bboxcolor == NULL) {
     SoWWWInline::bboxcolor = new SbColor(0.8f, 0.8f, 0.8f);
     atexit(SoWWWInline::cleanup);
@@ -206,7 +216,8 @@ SoWWWInline::initClass(void)
 }
 
 /*!
-  FIXME: write function documentation
+  If the SoWWWInline::name field specifies a relative URL, use this
+  method to name the complete URL.
 */
 void
 SoWWWInline::setFullURLName(const SbString & url)
@@ -215,16 +226,18 @@ SoWWWInline::setFullURLName(const SbString & url)
 }
 
 /*!
-  FIXME: write function documentation
+  If a full URL has been set with the SoWWWInline::setFullURLName()
+  method, return it.  If not, returns the value of the
+  SoWWWInline::name field.
 */
 const SbString &
 SoWWWInline::getFullURLName(void)
 {
-  return THIS->fullname;
+  return THIS->fullname.getLength() ? THIS->fullname : this->name.getValue();
 }
 
 /*!
-  FIXME: write function documentation
+  Returns a subgraph with a deep copy of the children of this node.
 */
 SoGroup *
 SoWWWInline::copyChildren(void) const
@@ -240,7 +253,7 @@ SoWWWInline::copyChildren(void) const
 
 /*!
   Start requesting URL data. This might trigger a callback to
-  the callback set in setFetchURLCallBack.
+  the callback set in SoWWWInline::setFetchURLCallBack().
 */
 void
 SoWWWInline::requestURLData(void)
@@ -253,8 +266,8 @@ SoWWWInline::requestURLData(void)
 }
 
 /*!
-  Returns \a TRUE if requestURLData() has been called without
-  being canceled by cancelURLData().
+  Returns \c TRUE if SoWWWInline::requestURLData() has been called
+  without being canceled by SoWWWInline::cancelURLData().
 */
 SbBool
 SoWWWInline::isURLDataRequested(void) const
@@ -263,8 +276,8 @@ SoWWWInline::isURLDataRequested(void) const
 }
 
 /*!
-  Return \a TRUE if the current child data has been read
-  from file an url.
+  Return \c TRUE if the current child data has been read from file an
+  URL.
 */
 SbBool
 SoWWWInline::isURLDataHere(void) const
@@ -275,10 +288,10 @@ SoWWWInline::isURLDataHere(void) const
   return FALSE;
 }
 
-/*!  
+/*!
   Can be used to signal that URL loading has been canceled.  You
   should use this method if you intend to request URL data more than
-  once.  
+  once.
 */
 void
 SoWWWInline::cancelURLDataRequest(void)
@@ -287,8 +300,7 @@ SoWWWInline::cancelURLDataRequest(void)
 }
 
 /*!
-  Returns the child data for this node. This can be data read from a 
-  file, from an url or the contents of alternateRep.
+  Manually set up the subgraph for this node.
 */
 void
 SoWWWInline::setChildData(SoNode * urldata)
@@ -298,19 +310,21 @@ SoWWWInline::setChildData(SoNode * urldata)
 }
 
 /*!
-  FIXME: write function documentation
+  Returns the child data for this node. This can be data read from a
+  file, from an URL, from the contents of SoWWWInline::alternateRep or
+  that was manually set with SoWWWInline::setChildData().
 */
 SoNode *
 SoWWWInline::getChildData(void) const
 {
-  if (THIS->children->getLength())
-    return (*THIS->children)[0];
+  if (THIS->children->getLength()) { return (*THIS->children)[0]; }
   return NULL;
 }
 
 /*!
-  Sets the URL fetch callback. This will be used in readInstance()
-  or when the user calls requestURLData().
+  Sets the URL fetch callback. This will be used in
+  SoWWWInline::readInstance() or when the user calls
+  SoWWWInline::requestURLData().
 */
 void
 SoWWWInline::setFetchURLCallBack(SoWWWInlineFetchURLCB * f,
@@ -321,7 +335,7 @@ SoWWWInline::setFetchURLCallBack(SoWWWInlineFetchURLCB * f,
 }
 
 /*!
-  Sets the boundinb box visibility strategy.
+  Sets the bounding box visibility strategy.
 */
 void
 SoWWWInline::setBoundingBoxVisibility(BboxVisibility b)
@@ -357,8 +371,12 @@ SoWWWInline::getBoundingBoxColor(void)
 }
 
 /*!
-  Sets whether children should be read from a local file, 
-  in the same manner as SoFile children are read.
+  Sets whether children should be read from a local file, in the same
+  manner as SoFile children are read.
+
+  If this is set to \c TRUE, the URL must point to a file on the local
+  file system, as can be accessed by the standard C library fopen()
+  call.
 */
 void
 SoWWWInline::setReadAsSoFile(SbBool onoff)
@@ -367,7 +385,7 @@ SoWWWInline::setReadAsSoFile(SbBool onoff)
 }
 
 /*!
-  Returns if children should be read as a SoFile.
+  Returns if children should be read from local files.
 
   \sa setReadAsSoFile()
 */
@@ -447,7 +465,7 @@ SoWWWInline::GLRender(SoGLRenderAction * action)
   state->pop(); // restore state
 }
 
-// doc from parent
+// doc in super
 void
 SoWWWInline::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -474,6 +492,7 @@ SoWWWInline::getChildren(void) const
   return THIS->children;
 }
 
+// doc in super
 void
 SoWWWInline::doAction(SoAction * action)
 {
@@ -487,53 +506,53 @@ SoWWWInline::doAction(SoAction * action)
   }
 }
 
-/*!  
+/*!
   This method should probably have been private in OIV. It is
-  obsoleted in Coin. Let us know if you need it.  
+  obsoleted in Coin. Let us know if you need it.
 */
 void
-SoWWWInline::doActionOnKidsOrBox(SoAction * /* action */)
+SoWWWInline::doActionOnKidsOrBox(SoAction * action)
 {
   COIN_OBSOLETED();
 }
 
-// doc from parent
+// doc in super
 void
 SoWWWInline::callback(SoCallbackAction * action)
 {
   SoWWWInline::doAction((SoAction *)action);
 }
 
-// doc from parent
+// doc in super
 void
 SoWWWInline::getMatrix(SoGetMatrixAction * action)
 {
   SoWWWInline::doAction((SoAction *)action);
 }
 
-// doc from parent
+// doc in super
 void
 SoWWWInline::handleEvent(SoHandleEventAction * action)
 {
   SoWWWInline::doAction((SoAction *)action);
 }
 
-// doc from parent
+// doc in super
 void
 SoWWWInline::search(SoSearchAction * action)
 {
-  // mayby search subgraph???
+  // maybe search subgraph???
   inherited::search(action);
 }
 
-// doc from parent
+// doc in super
 void
 SoWWWInline::pick(SoPickAction * action)
 {
   SoWWWInline::doAction((SoAction *)action);
 }
 
-// doc from parent
+// doc in super
 void
 SoWWWInline::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
@@ -552,10 +571,10 @@ SoWWWInline::addBoundingBoxChild(SbVec3f center, SbVec3f size)
 
   orgsize *= 0.5f;
   SbBox3f bbox(orgcenter-orgsize, orgcenter+orgsize);
-  
+
   size *= 0.5f;
   SbBox3f newbox(center-size, center+size);
-  
+
   bbox.extendBy(newbox);
   this->bboxCenter = bbox.getCenter();
   bbox.getSize(size[0], size[1], size[2]);
@@ -607,9 +626,9 @@ SoWWWInlineP::readNamedFile(SoInput * in)
   // If we can't find file, ignore it. Note that this does not match
   // the way Inventor works, which will make the whole read process
   // exit with a failure code.
-  SbString name = this->fullname.getLength() ? 
-    this->fullname : this->owner->name.getValue();
-  
+
+  SbString name = this->owner->getFullURLName();
+
   if (!in->pushFile(name.getString())) return TRUE;
 
   SoSeparator * node = SoDB::readAll(in);
@@ -642,7 +661,7 @@ SoWWWInlineP::readNamedFile(SoInput * in)
 SbBool
 SoWWWInlineP::readChildren(SoInput * in)
 {
-  if (in && SoWWWInline::readassofile && 
+  if (in && SoWWWInline::readassofile &&
       this->owner->name.getValue() != UNDEFINED_FILE) {
     if (!this->readNamedFile(in)) {
       if (this->owner->alternateRep.getValue()) {
@@ -656,8 +675,7 @@ SoWWWInlineP::readChildren(SoInput * in)
   }
   else if (!SoWWWInline::readassofile) {
     if (SoWWWInline::fetchurlcb) {
-      SoWWWInline::fetchurlcb(this->fullname.getLength() ?
-                              this->fullname : this->owner->name.getValue(), 
+      SoWWWInline::fetchurlcb(this->owner->getFullURLName(),
                               SoWWWInline::fetchurlcbdata,
                               this->owner);
     }
@@ -666,4 +684,3 @@ SoWWWInlineP::readChildren(SoInput * in)
 }
 
 #endif // DOXYGEN_SKIP_THIS
-
