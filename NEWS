@@ -6,9 +6,10 @@ New in Coin v2.0.0a (so far):
 * multithread support primitive data types
 * thread-safe action traversals
 * VRML97 support (see doc XXX for missing parts)
+* 3D-textures (SoTexture3, ...XXX list public API XXX...)
 * SoExtSelection can now also select only the visible polygons in a model
 * SoOffscreenRenderer now handles generating arbitrarily huge images
-* 3D-textures (SoTexture3, ...XXX list public API XXX...)
+* optimized LazyElement traversal
 * added man-page coin-config.1
 * the usual bugfixes, optimizations, and documentation updates
 * more standard build setup for generated documentation
