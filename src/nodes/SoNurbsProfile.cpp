@@ -199,7 +199,7 @@ SoNurbsProfile::getTrimCurve(SoState * state, int32_t & numpoints,
       // Print errormessage
       static uint32_t current_errors = 0;
       if (current_errors < 1) {
-        SoDebugError::postWarning("SoNurbsProfile::getVertices", "Illegal profile "
+        SoDebugError::postWarning("SoNurbsProfile::getTrimCurve", "Illegal profile "
                                   "coordinate index specified: %d. Should be within "
                                   "[0, %d]", idx, numcoords - 1);
       }
