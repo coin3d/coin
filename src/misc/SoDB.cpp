@@ -371,9 +371,8 @@
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbStorage.h>
 #include <Inventor/threads/SbRWMutex.h>
-#include <Inventor/C/threads/recmutex.h>
+#include <Inventor/C/threads/recmutexp.h>
 static SbRWMutex * sodb_globalmutex = NULL;
-static cc_recmutex * sodb_notificationmutex = NULL;
 #endif // COIN_THREADSAFE
 
 #ifdef HAVE_3DS_IMPORT_CAPABILITIES
@@ -468,7 +467,6 @@ SoDB::init(void)
   // initialize thread system first
   cc_thread_init();
 #ifdef COIN_THREADSAFE
-  sodb_notificationmutex = cc_recmutex_construct();
   sodb_globalmutex = new SbRWMutex(SbRWMutex::READ_PRECEDENCE);
 #endif // COIN_THREADSAFE
 #endif // HAVE_THREADS
@@ -782,9 +780,6 @@ SoDBP::clean(void)
   delete SoDBP::headerlist;
   
 #ifdef COIN_THREADSAFE
-  // we can't delete this here since it might be needed by some atexit
-  // functions
-  // cc_recmutex_destruct(sodb_notificationmutex);
   delete sodb_globalmutex;
 #endif // COIN_THREADSAFE
 #endif // COIN_DEBUG
@@ -807,10 +802,6 @@ void
 SoDB::cleanup(void)
 {
   coin_atexit_cleanup();
-#ifdef COIN_THREADSAFE
-  cc_recmutex_destruct(sodb_notificationmutex);
-  sodb_notificationmutex = NULL;
-#endif // COIN_THREADSAFE
 }
 
 /*!
@@ -1460,7 +1451,7 @@ void
 SoDB::startNotify(void)
 {
 #ifdef COIN_THREADSAFE
-  (void) cc_recmutex_lock(sodb_notificationmutex);
+  (void) cc_recmutex_internal_notify_lock();
 #endif // COIN_THREADSAFE
   SoDBP::notificationcounter++;
 }
@@ -1487,7 +1478,7 @@ SoDB::endNotify(void)
     if (sm->isDelaySensorPending()) sm->processImmediateQueue();
   }
 #ifdef COIN_THREADSAFE
-  (void) cc_recmutex_unlock(sodb_notificationmutex);
+  (void) cc_recmutex_internal_notify_unlock();
 #endif // COIN_THREADSAFE
 
 }
