@@ -527,7 +527,9 @@ SoVRMLBackgroundP::buildGeometry()
     // Calculate vertices and normals
     double x, y, z;
     int counter = 0;
-    for (int i=0;i<slices;++i) {
+    int i;
+
+    for (i=0;i<slices;++i) {
       for (int j=0;j<len;++j) {
         x = sphereradius * cos(i * ((2 * M_PI) / slices)) * sin(angles[j]);
         y = sphereradius * cos(angles[j]);
