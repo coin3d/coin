@@ -3987,3 +3987,36 @@ incremented during the copy, but never decremented :(
     20041010 mortene.
 
 =====================================================================
+
+151 Incompability with Visual C++ v7.
+
+    Trying to compile the following causes error messages from the
+    compiler:
+
+ ----8<----- [snip] --------------------8<----- [snip] ----------------
+#include <Inventor/C/basic.h>
+#include <complex>
+ ----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    ..because our hacks to provide single precision math functions on
+    platforms that are missing them fails with some code in the
+    <complex> system header. I.e. this code from basic.h:
+
+#define cosf(x) (float)cos(x)
+
+    ..causes the following code from <complex>:
+
+static _Ty __cdecl cos(_Ty _Left)
+	{	// return cos(_Left)
+	return (::cosf(_Left));
+	}
+
+    ..to fail with an error message about "illegal token on right side
+    of '::'".
+
+    The error is rather obvious, but I'm not sure how to fix
+    this. Ideas would be welcome.
+
+    20041015 mortene.
+
+=====================================================================
