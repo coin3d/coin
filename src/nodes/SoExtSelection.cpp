@@ -1347,13 +1347,24 @@ SoExtSelectionP::cameraCB(void * data,
 
   float right = float(rectbbox.getMax()[0] - org[0]) / float(siz[0]);
   float top = float(rectbbox.getMax()[1] - org[1]) / float(siz[1]);
-
+  
+  // use an epsilon to avoid an empty view volume
   const float EPS = 0.001f;
 
-  // increment to avoid empty view volume
-  if (right - left < EPS) right = left + EPS;
-  if (top - bottom < EPS) top = bottom + EPS;
-
+  if (right - left < EPS) {
+    right = left + EPS;
+    if (right > 1.0f) {
+      right = 1.0f;
+      left = right - EPS;
+    }
+  }
+  if (top - bottom < EPS) {
+    top = bottom + EPS;
+    if (top > 1.0f) {
+      top = 1.0f;
+      bottom = top - EPS;
+    }
+  }
   vv = vv.narrow(left, bottom, right, top);
   SoCullElement::setViewVolume(state, vv);
   return SoCallbackAction::CONTINUE;
