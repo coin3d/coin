@@ -353,6 +353,10 @@ my_normalize(SbVec3f & vec)
   return len;
 }
 
+// set this to TRUE to create triangles, even if convex == TRUE just
+// testing this feature. Will consider an environment variable or
+// something later. pederb, 2005-01-25
+static const SbBool ALWAYS_CREATE_TRIANGLES = FALSE;
 
 class SoVRMLExtrusionP {
 public:
@@ -408,6 +412,7 @@ public:
 
 #undef PRIVATE
 #define PRIVATE(obj) (obj)->pimpl
+#define PUBLIC(obj) obj->master
 
 SO_NODE_SOURCE(SoVRMLExtrusion);
 
@@ -903,6 +908,11 @@ SoVRMLExtrusionP::generateCoords(void)
     }
   }
 
+#define ADD_POINT(i0, j0) \
+  do { \
+    this->idx.append((i0)*numcross+(j0)); \
+  } while (0)
+
   // this macro makes the code below more readable
 #define ADD_TRIANGLE(i0, j0, i1, j1, i2, j2) \
   do { \
@@ -912,11 +922,25 @@ SoVRMLExtrusionP::generateCoords(void)
     this->idx.append(-1); \
   } while (0)
 
+#define ADD_QUAD(i0, j0, i1, j1, i2, j2, i3, j3)   \
+  do { \
+    this->idx.append((i0)*numcross+(j0)); \
+    this->idx.append((i3)*numcross+(j3)); \
+    this->idx.append((i2)*numcross+(j2)); \
+    this->idx.append((i1)*numcross+(j1)); \
+    this->idx.append(-1); \
+  } while (0)
+
   // create walls
   for (i = 0; i < numspine-1; i++) {
     for (j = 0; j < numcross-1; j++) {
-      ADD_TRIANGLE(i, j, i+1, j, i+1, j+1);
-      ADD_TRIANGLE(i, j, i+1, j+1, i, j+1);
+      if (PUBLIC(this)->convex.getValue() && !ALWAYS_CREATE_TRIANGLES) {
+        ADD_QUAD(i, j, i+1, j, i+1, j+1, i, j+1);
+      }
+      else {
+        ADD_TRIANGLE(i, j, i+1, j, i+1, j+1);
+        ADD_TRIANGLE(i, j, i+1, j+1, i, j+1);
+      }
     }
   }
 
@@ -938,15 +962,28 @@ SoVRMLExtrusionP::generateCoords(void)
     }
 
     if (this->master->convex.getValue()) {
-      for (i = 1; i < (connected ? numcross-2 : numcross-1); i++) {
-        ADD_TRIANGLE(numspine, 0, numspine, i, numspine, i+1);
+      if (ALWAYS_CREATE_TRIANGLES) {
+        for (i = 1; i < (connected ? numcross-2 : numcross-1); i++) {
+          ADD_TRIANGLE(numspine, 0, numspine, i, numspine, i+1);
+        }
+      }
+      else {
+        for (int i = (connected ? numcross-2 : numcross-1); i >= 0; i--) {
+          ADD_POINT(numspine, i);
+        }
+        this->idx.append(-1);
       }
     }
     else {
       // let the tesselator create triangles
-      this->tess.beginPolygon();
+      this->tess.beginPolygon(FALSE);
       for (i = (connected ? numcross-2 : numcross-1); i >= 0; i--) {
-        this->tess.addVertex(this->coord[numcross*numspine + i], (void*) ((uintptr_t) (numcross*numspine + i)));
+        int theidx = numcross*numspine + i;
+        SbVec3f tc;
+        tc.setValue(cross[i][0],
+                    cross[i][1],
+                    0.0f);
+        this->tess.addVertex(tc, (void*) ((uintptr_t) theidx));
       }
       this->tess.endPolygon();
     }
@@ -970,23 +1007,37 @@ SoVRMLExtrusionP::generateCoords(void)
     }
 
     if (this->master->convex.getValue()) {
-      for (i = 1; i < (connected ? numcross-2 : numcross-1); i++) {
-        ADD_TRIANGLE(numspine+1, numcross-1,
-                     numspine+1, numcross-1-i,
-                     numspine+1, numcross-2-i);
+      if (ALWAYS_CREATE_TRIANGLES) {
+        for (i = 1; i < (connected ? numcross-2 : numcross-1); i++) {
+          ADD_TRIANGLE(numspine+1, numcross-1,
+                       numspine+1, numcross-1-i,
+                       numspine+1, numcross-2-i);
+        }
+      }
+      else {
+        for (int i = 0; i < (connected ? numcross-1 : numcross); i++) {
+          ADD_POINT(numspine+1, i);
+        }
+        this->idx.append(-1);
       }
     }
     else {
       // let the tesselator create triangles
-      this->tess.beginPolygon();
+      this->tess.beginPolygon(FALSE);
       for (i = (connected ? numcross-2 : numcross-1); i >= 0; i--) {
         int theidx = (numspine+1)*numcross + numcross - 1 - i;
-        this->tess.addVertex(this->coord[theidx], (void*) ((uintptr_t) theidx));
+        SbVec3f tc;
+        tc.setValue(cross[(numcross-1)-i][0],
+                    cross[(numcross-1)-i][1],
+                    0.0f);
+        this->tess.addVertex(tc, (void*) ((uintptr_t) theidx));
       }
       this->tess.endPolygon();
     }
   }
 #undef ADD_TRIANGLE
+#undef ADD_QUAD
+#undef ADD_POINT
 }
 
 //
@@ -1024,4 +1075,7 @@ SoVRMLExtrusionP::tess_callback(void * v0, void * v1, void * v2, void * data)
   thisp->idx.append((int)((long)v2));
   thisp->idx.append(-1);
 }
+
+#undef PUBLIC
+#undef PRIVATE
 
