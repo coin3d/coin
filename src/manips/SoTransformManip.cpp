@@ -123,7 +123,7 @@ SoTransformManip::getDragger(void)
 #if COIN_DEBUG
       SoDebugError::post("SoTransformManip::getDragger",
                          "Child is not a dragger!");
-#endif // debug
+#endif // COIN_DEBUG
     }
   }
   return NULL;
@@ -142,8 +142,9 @@ SoTransformManip::replaceNode(SoPath * path)
   if (!fulltail->isOfType(SoTransform::getClassTypeId())) {
 #if COIN_DEBUG
     SoDebugError::post("SoTransformManip::replaceNode",
-                       "End of path is not an SoTransform");
-#endif // debug
+                       "end of path (%p) is not an SoTransform, but an %s",
+                       fulltail, fulltail->getTypeId().getName().getString());
+#endif // COIN_DEBUG
     return FALSE;
   }
   SoNode *tail = path->getTail();
@@ -169,15 +170,16 @@ SoTransformManip::replaceNode(SoPath * path)
 #if COIN_DEBUG
     SoDebugError::post("SoTransformManip::replaceNode",
                        "Path is too short");
-#endif // debug
+#endif // COIN_DEBUG
     return FALSE;
   }
   SoNode *parent = fullpath->getNodeFromTail(1);
   if (!parent->isOfType(SoGroup::getClassTypeId())) {
 #if COIN_DEBUG
     SoDebugError::post("SoTransformManip::replaceNode",
-                       "Parent node is not a group");
-#endif // debug
+                       "Parent node %p is not an SoGroup, but %s",
+                       parent, parent->getTypeId().getName().getString());
+#endif // COIN_DEBUG
     return FALSE;
   }
   this->ref();
@@ -203,8 +205,9 @@ SoTransformManip::replaceManip(SoPath * path, SoTransform * newone) const
   if (fulltail != (SoNode*)this) {
 #if COIN_DEBUG
     SoDebugError::post("SoTransformManip::replaceManip",
-                       "Child to replace is not this manip");
-#endif // debug
+                       "Child to replace is not this manip (but %s at %p)",
+                       fulltail->getTypeId().getName().getString(), fulltail);
+#endif // COIN_DEBUG
   }
   SoNode *tail = path->getTail();
   if (tail->isOfType(SoBaseKit::getClassTypeId())) {
@@ -222,15 +225,16 @@ SoTransformManip::replaceManip(SoPath * path, SoTransform * newone) const
 #if COIN_DEBUG
     SoDebugError::post("SoTransformManip::replaceManip",
                        "Path is too short");
-#endif // debug
+#endif // COIN_DEBUG
     return FALSE;
   }
   SoNode *parent = fullpath->getNodeFromTail(1);
   if (!parent->isOfType(SoGroup::getClassTypeId())) {
 #if COIN_DEBUG
-    SoDebugError::post("SoTransformManip::replaceManip",
-                       "Parent node is not a group");
-#endif // debug
+    SoDebugError::post("SoTransformManip::replaceNode",
+                       "Parent node %p is not an SoGroup, but %s",
+                       parent, parent->getTypeId().getName().getString());
+#endif // COIN_DEBUG
     return FALSE;
   }
   if (newone == NULL) newone = new SoTransform;
