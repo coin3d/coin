@@ -548,6 +548,7 @@ SoShape::getComplexityValue(SoAction * action)
 SbBool
 SoShape::shouldGLRender(SoGLRenderAction * action)
 {
+  if (action->abortNow()) return FALSE;
   if (action->getCurPathCode() == SoAction::OFF_PATH &&
       !this->affectsState()) return FALSE;
 

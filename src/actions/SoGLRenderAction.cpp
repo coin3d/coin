@@ -189,6 +189,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   this->updateorigin.setValue(0.0f, 0.0f);
   this->updatesize.setValue(1.0f, 1.0f);
   this->renderingremote = FALSE;
+  this->abortcallback = NULL;
 }
 
 /*!
@@ -622,14 +623,36 @@ SoGLRenderAction::getCurPass(void) const
 }
 
 /*!
-  Returns \c TRUE if the render action should abort now.  It always
-  returns \c FALSE at this moment.
+  Returns \c TRUE if the render action should abort now based on user 
+  callback.
+
+  \sa setAbortCallback()
 */
 SbBool
 SoGLRenderAction::abortNow(void)
 {
-  COIN_STUB(); // FIXME
-  return FALSE;
+  if (this->hasTerminated()) return TRUE;
+  SbBool abort = FALSE;
+  if (this->abortcallback) {
+    switch (this->abortcallback(this->abortcallbackdata)) {
+    case CONTINUE:
+      break;
+    case ABORT:
+      this->setTerminated(TRUE);
+      abort = TRUE;
+      break;
+    case PRUNE:
+      // abort this node, but do not abort rendering
+      abort = TRUE;
+      break;
+    case DELAY:
+      this->addDelayedPath((SoPath*)this->getCurPath());
+      // prune this node
+      abort = TRUE;
+      break;
+    }
+  }
+  return abort;
 }
 
 /*!
