@@ -434,9 +434,11 @@ SoHandleBoxDragger::dragStart(void)
     break;
   case WHATKIND_EXTRUDER:
     this->lineProj->setLine(SbLine(this->getDraggerCenter(), startPt));
+    this->ctrlOffset = this->calcCtrlOffset(startPt);
     break;
   case WHATKIND_UNIFORM:
     this->lineProj->setLine(SbLine(this->getDraggerCenter(), startPt));
+    this->ctrlOffset = this->calcCtrlOffset(startPt);
     break;
   }
   this->ctrlDown = this->getEvent()->wasCtrlDown();
@@ -511,18 +513,16 @@ SoHandleBoxDragger::drag(void)
     SbVec3f projPt = this->lineProj->project(this->getNormalizedLocaterPosition());
     SbVec3f center = this->getDraggerCenter();
     if (this->getEvent()->wasCtrlDown()) {
-      //
-      // FIXME: need to figure out what to do here... pederb, 20000222
-      //
-      COIN_STUB();
+      center += this->ctrlOffset;
     }
 
     float orglen = (startPt-center).length();
     float currlen = (projPt-center).length();
     float scale = 0.0f;
+    
     if (orglen > 0.0f) scale = currlen / orglen;
-    if (scale > 0.0f && (startPt-center).dot(projPt-center) < 0.0f) scale = 0.0f;
-
+    if (scale > 0.0f && (startPt-center).dot(projPt-center) <= 0.0f) scale = 0.0f;
+    
     SbVec3f scalevec(scale, scale, scale);
     if (this->whatkind == WHATKIND_EXTRUDER) {
       if (this->whatnum <= 2) scalevec[0] = scalevec[2] = 1.0f;
@@ -699,3 +699,23 @@ SoHandleBoxDragger::getDraggerCenter()
   this->getSurroundScaleMatrices(mat, inv);
   return SbVec3f(mat[3][0], mat[3][1], mat[3][2]);
 }
+
+SbVec3f 
+SoHandleBoxDragger::calcCtrlOffset(const SbVec3f startpt)
+{
+  SbMatrix m, inv;
+  this->getSurroundScaleMatrices(m, inv);
+  SbVec3f v = SbVec3f(m[3][0], m[3][1], m[3][2]) - startpt;
+  
+  for (int i = 0; i < 3; i++) {
+    v[i] *= inv[i][i];
+    if (v[i] < -0.95) v[i] = -1.0f;
+    else if (v[i] > 0.95) v[i] = 1.0f;
+    else v[i] = 0.0f;
+    v[i] *= m[i][i];
+  }
+  return v;
+}
+
+
+

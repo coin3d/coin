@@ -148,9 +148,11 @@ private:
   int constraintState;
   SbBool ctrlDown;
   SbVec3f worldRestartPt;
+  SbVec3f ctrlOffset;
   
   void getSurroundScaleMatrices(SbMatrix &matrix, SbMatrix &inv);
   SbVec3f getDraggerCenter();
+  SbVec3f calcCtrlOffset(const SbVec3f startpt);
 };
 
 #endif // !COIN_SOHANDLEBOXDRAGGER_H
