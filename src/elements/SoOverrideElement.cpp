@@ -23,7 +23,7 @@
   \ingroup elements
 
   Only certain elements can be overridden.
-  
+
   Coin has an optional feature that makes it possible to have separate
   diffuse color and transparency override settings. Set the
   environment variable COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE to
@@ -347,6 +347,16 @@ SoOverrideElement::getTransparencyOverride(SoState * const state)
 */
 
 SbBool
+SoOverrideElement::getTransparencyTypeOverride(SoState * const state)
+{
+  SO_GET_OVERRIDE(TRANSPARENCY_TYPE);
+}
+
+/*!
+  FIXME: write doc.
+*/
+
+SbBool
 SoOverrideElement::getPolygonOffsetOverride(SoState * const state)
 {
   SO_GET_OVERRIDE(POLYGON_OFFSET);
@@ -613,4 +623,17 @@ SoOverrideElement::setTransparencyOverride(SoState * const state,
   if (!use_separate_transp_diffuse()) {
     SO_SET_OVERRIDE(DIFFUSE_COLOR);
   }
+}
+
+/*!
+  Can be used to set the transparency type override.
+
+  \sa setDiffuseColorOverride().
+*/
+void
+SoOverrideElement::setTransparencyTypeOverride(SoState * const state,
+                                               SoNode * const /* node */,
+                                               const SbBool override)
+{
+  SO_SET_OVERRIDE(TRANSPARENCY_TYPE);
 }

@@ -35,14 +35,15 @@
 #include <coindefs.h> // COIN_OBSOLETED()
 #include <assert.h>
 
-#define FLAG_LIGHTING     0x0001
-#define FLAG_TEXENABLED   0x0002
-#define FLAG_TEXFUNC      0x0004
-#define FLAG_BBOXCMPLX    0x0008
-#define FLAG_INVISIBLE    0x0010
-#define FLAG_ABORTCB      0x0020
-#define FLAG_SCREENDOOR   0x0040
-#define FLAG_OVERRIDE     0x0080
+#define FLAG_TRANSPARENCYTYPE_MASK 0x000f
+#define FLAG_LIGHTING              0x0010
+#define FLAG_TEXENABLED            0x0020
+#define FLAG_TEXFUNC               0x0040
+#define FLAG_BBOXCMPLX             0x0080
+#define FLAG_INVISIBLE             0x0100
+#define FLAG_ABORTCB               0x0200
+#define FLAG_SCREENDOOR            0x0400
+#define FLAG_OVERRIDE              0x0800
 
 #define FLAG_TEXMASK (FLAG_TEXENABLED|FLAG_TEXFUNC)
 #define FLAG_DELAYMASK (FLAG_BBOXCMPLX|FLAG_INVISIBLE|FLAG_ABORTCB)
@@ -160,13 +161,10 @@ void
 SoShapeStyleElement::setTransparencyType(SoState * const state,
                                          const int32_t value)
 {
+  assert(value >= 0 && value < FLAG_TRANSPARENCYTYPE_MASK);
   SoShapeStyleElement * elem = getElement(state);
-  if (value == (int32_t) SoGLRenderAction::SCREEN_DOOR) {
-    elem->flags |= FLAG_SCREENDOOR;
-  }
-  else {
-    elem->flags &= ~FLAG_SCREENDOOR;
-  }
+  elem->flags &= ~FLAG_TRANSPARENCYTYPE_MASK;
+  elem->flags |= value;
 }
 
 //! FIXME: write doc.
@@ -237,7 +235,23 @@ SbBool
 SoShapeStyleElement::isScreenDoor(SoState * const state)
 {
   const SoShapeStyleElement * elem = getConstElement(state);
-  return (elem->flags & FLAG_SCREENDOOR) != 0;
+  int val = elem->flags & FLAG_TRANSPARENCYTYPE_MASK;
+  return val == (int) SoGLRenderAction::SCREEN_DOOR;
+}
+
+/*!
+  Returns the current transparency type.
+
+  This method was not part of the Open Inventor 2.1 API, and is an
+  extension specific to Coin.
+  
+  \since 2001-11-04 
+*/
+int 
+SoShapeStyleElement::getTransparencyType(SoState * const state)
+{
+  const SoShapeStyleElement * elem = getConstElement(state);
+  return (elem->flags & FLAG_TRANSPARENCYTYPE_MASK);
 }
 
 /*!

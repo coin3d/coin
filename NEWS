@@ -8,6 +8,8 @@ New in Coin v2.0.0a (so far):
 * debian package setup
 * rpm package setup
 * verified support for Mac OS X / Darwin platforms
+* new TransparencyType node, with support for setting TransparencyType
+  in the scene graph.
 
 New in Coin v1.0 (2001-08-13):
 * speedy Cygwin builds with new, simpler wrapmsvc.exe compiler wrapper

@@ -37,29 +37,30 @@ protected:
 
 public:
   enum FlagBits {
-    AMBIENT_COLOR    = 0x00000001,
-    COLOR_INDEX      = 0x00000002,
-    COMPLEXITY       = 0x00000004,
-    COMPLEXITY_TYPE  = 0x00000008,
-    CREASE_ANGLE     = 0x00000010,
-    DIFFUSE_COLOR    = 0x00000020,
-    DRAW_STYLE       = 0x00000040,
-    EMISSIVE_COLOR   = 0x00000080,
-    FONT_NAME        = 0x00000100,
-    FONT_SIZE        = 0x00000200,
-    LIGHT_MODEL      = 0x00000400,
-    LINE_PATTERN     = 0x00000800,
-    LINE_WIDTH       = 0x00001000,
-    MATERIAL_BINDING = 0x00002000,
-    POINT_SIZE       = 0x00004000,
-    PICK_STYLE       = 0x00008000,
-    SHAPE_HINTS      = 0x00010000,
-    SHININESS        = 0x00020000,
-    SPECULAR_COLOR   = 0x00040000,
-    POLYGON_OFFSET   = 0x00080000,
-    TRANSPARENCY     = 0x00100000
+    AMBIENT_COLOR     = 0x00000001,
+    COLOR_INDEX       = 0x00000002,
+    COMPLEXITY        = 0x00000004,
+    COMPLEXITY_TYPE   = 0x00000008,
+    CREASE_ANGLE      = 0x00000010,
+    DIFFUSE_COLOR     = 0x00000020,
+    DRAW_STYLE        = 0x00000040,
+    EMISSIVE_COLOR    = 0x00000080,
+    FONT_NAME         = 0x00000100,
+    FONT_SIZE         = 0x00000200,
+    LIGHT_MODEL       = 0x00000400,
+    LINE_PATTERN      = 0x00000800,
+    LINE_WIDTH        = 0x00001000,
+    MATERIAL_BINDING  = 0x00002000,
+    POINT_SIZE        = 0x00004000,
+    PICK_STYLE        = 0x00008000,
+    SHAPE_HINTS       = 0x00010000,
+    SHININESS         = 0x00020000,
+    SPECULAR_COLOR    = 0x00040000,
+    POLYGON_OFFSET    = 0x00080000,
+    TRANSPARENCY      = 0x00100000,
+    TRANSPARENCY_TYPE = 0x00200000 
   };
-
+  
   virtual void init(SoState * state);
 
   virtual void push(SoState * state);
@@ -92,6 +93,7 @@ public:
   static SbBool getShininessOverride(SoState * const state);
   static SbBool getSpecularColorOverride(SoState * const state);
   static SbBool getTransparencyOverride(SoState * const state);
+  static SbBool getTransparencyTypeOverride(SoState * const state);
 
   static void setAmbientColorOverride(SoState * const state,
                                       SoNode * const node,
@@ -156,6 +158,9 @@ public:
   static void setTransparencyOverride(SoState * const state,
                                       SoNode * const node,
                                       const SbBool override);
+  static void setTransparencyTypeOverride(SoState * const state,
+                                          SoNode * const node,
+                                          const SbBool override);
 
   virtual void print(FILE * file) const;
 

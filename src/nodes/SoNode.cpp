@@ -382,7 +382,9 @@ SoNode::initClasses(void)
   SoVertexProperty::initClass();
   SoWWWInline::initClass();
 
-  // this node is not part of the public API yet.
+  SoTransparencyType::initClass();
+
+  // this node are not part of the public API yet.
   SoTextureScalePolicy::initClass();
 }
 

@@ -114,6 +114,7 @@
 #include "SoTransformation.cpp"
 #include "SoTranslation.cpp"
 #include "SoTriangleStripSet.cpp"
+#include "SoTransparencyType.cpp"
 #include "SoUnits.cpp"
 #include "SoUnknownNode.cpp"
 #include "SoVertexProperty.cpp"

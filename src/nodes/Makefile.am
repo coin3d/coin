@@ -95,6 +95,7 @@ RegularSources = \
 	SoTextureCoordinatePlane.cpp \
 	SoTextureScalePolicy.cpp \
 	SoTransform.cpp \
+	SoTransparencyType.cpp \
 	SoTransformSeparator.cpp \
 	SoTransformation.cpp \
 	SoTranslation.cpp \
@@ -205,6 +206,7 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoTextureCoordinateFunction.h \
 	../../include/Inventor/nodes/SoTextureCoordinatePlane.h \
 	../../include/Inventor/nodes/SoTransform.h \
+	../../include/Inventor/nodes/SoTransparencyType.h \
 	../../include/Inventor/nodes/SoTransformSeparator.h \
 	../../include/Inventor/nodes/SoTransformation.h \
 	../../include/Inventor/nodes/SoTranslation.h \

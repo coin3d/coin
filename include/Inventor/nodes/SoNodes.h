@@ -121,5 +121,6 @@
 #include <Inventor/nodes/SoTextureCoordinatePlane.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodes/SoWWWInline.h>
+#include <Inventor/nodes/SoTransparencyType.h>
 
 #endif // !COIN_SONODES_H

@@ -218,6 +218,7 @@ RegularSources = \
 	SoTextureCoordinatePlane.cpp \
 	SoTextureScalePolicy.cpp \
 	SoTransform.cpp \
+	SoTransparencyType.cpp \
 	SoTransformSeparator.cpp \
 	SoTransformation.cpp \
 	SoTranslation.cpp \
@@ -330,6 +331,7 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoTextureCoordinateFunction.h \
 	../../include/Inventor/nodes/SoTextureCoordinatePlane.h \
 	../../include/Inventor/nodes/SoTransform.h \
+	../../include/Inventor/nodes/SoTransparencyType.h \
 	../../include/Inventor/nodes/SoTransformSeparator.h \
 	../../include/Inventor/nodes/SoTransformation.h \
 	../../include/Inventor/nodes/SoTranslation.h \
@@ -486,6 +488,7 @@ nodes_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinatePlane.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureScalePolicy.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTransform.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoTransparencyType.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTransformSeparator.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTransformation.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTranslation.$(OBJEXT) \
@@ -566,6 +569,7 @@ libnodes_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinatePlane.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureScalePolicy.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTransform.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoTransparencyType.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTransformSeparator.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTransformation.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTranslation.lo \
@@ -642,6 +646,7 @@ libnodes@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinatePlane.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureScalePolicy.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTransform.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoTransparencyType.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTransformSeparator.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTransformation.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTranslation.lo \
@@ -801,6 +806,8 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoTransformation.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTranslation.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoTranslation.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoTransparencyType.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoTransparencyType.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTriangleStripSet.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoTriangleStripSet.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoUnits.Plo $(DEPDIR)/SoUnits.Po \
@@ -1095,6 +1102,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTransformation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTranslation.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTranslation.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTransparencyType.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTransparencyType.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTriangleStripSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTriangleStripSet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoUnits.Plo@am__quote@

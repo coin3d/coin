@@ -60,6 +60,7 @@ public:
   static void setOverrides(SoState * const state, const SbBool value);
 
   static SbBool isScreenDoor(SoState * const state);
+  static int getTransparencyType(SoState * const state);
   SbBool isTextureFunction(void) const;
 
 private:

@@ -215,6 +215,7 @@ if test -x ${srcdir}/src/extensions/superglu/configure; then
   AC_DEFINE(HAVE_SUPERGLU,, [*EXPERIMENTAL* to use the GLU we've "appropriated" from SGI])
   HAVE_SUPERGLU=1
   AC_CONFIG_SUBDIRS([src/extensions/superglu])
+  CPPFLAGS="$CPPFLAGS -I$coin_build_dir/src/extensions"
 else
   enable_superglu=false
   HAVE_SUPERGLU=0
@@ -804,6 +805,10 @@ if test x"$enable_hacking" = x"yes"; then
   if $enable_superglu; then
     HACKING_LIBDIRS="$HACKING_LIBDIRS -L${coin_build_dir}/src/extensions/superglu/.libs"
     EXTRA_LIBS="$EXTRA_LIBS -l${SUPERGLUPREFIX}GLU"
+  fi
+  if $sim_ac_enable_threads; then
+    HACKING_LIBDIRS="$HACKING_LIBDIRS -L${coin_build_dir}/src/extensions/threads/.libs"
+    EXTRA_LIBS="$EXTRA_LIBS -lthreads"
   fi
   COIN_HACKING_LIBDIRS="$HACKING_LIBDIRS"
   COIN_EXTRA_LIBS="$EXTRA_LIBS $COIN_EXTRA_LIBS"
