@@ -82,6 +82,7 @@ PrivateHeaders = \
 	SoOffscreenGLXData.icc \
 	SoOffscreenWGLData.icc \
 	cppmangle.icc \
+	defaultfonts.h \
 	../../include/Inventor/misc/SoFontLib.h
 
 ##$ BEGIN TEMPLATE Make-Common(misc, misc)
