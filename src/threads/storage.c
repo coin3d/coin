@@ -115,6 +115,40 @@ cc_storage_get(cc_storage * storage)
   return val;
 }
 
+/* struct needed for cc_hash wrapper callback */
+typedef struct {
+  cc_storage_apply_func * func;
+  void * closure;
+} cc_storage_hash_apply_data; 
+
+/* callback from cc_hash_apply. will simply call the function specified
+   in cc_storage_apply_to_appl */
+static void 
+storage_hash_apply(unsigned long key, void * val, void * closure)
+{
+  cc_storage_hash_apply_data * data = 
+    (cc_storage_hash_apply_data*) closure;
+  data->func(val, data->closure);
+}
+
+void 
+cc_storage_apply_to_all(cc_storage * storage, 
+                        cc_storage_apply_func * func, 
+                        void * closure)
+{
+  /* need to set up a struct to use cc_hash_apply */
+  cc_storage_hash_apply_data mydata;
+  
+  /* store func and closure in struct */
+  mydata.func = func;
+  mydata.closure = closure;
+
+  cc_mutex_lock(storage->mutex);
+  cc_hash_apply(storage->dict, storage_hash_apply, &mydata);
+  cc_mutex_unlock(storage->mutex);
+}
+
+
 /* ********************************************************************** */
 
 void 
@@ -164,6 +198,13 @@ cc_storage_thread_cleanup(unsigned long threadid)
   \fn void * SbStorage::get(void)
 
   This method returns the calling thread's thread-local memory block.
+*/
+
+/*!
+  \fn void SbStorage::applyToAll(cc_storage_apply_func * func, void * closure)
+  
+  This method will call \a func for all thread local storage data.
+  \a closure will be supplied as the second parameter to the callback.
 */
 
 /* ********************************************************************** */

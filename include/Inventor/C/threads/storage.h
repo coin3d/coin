@@ -31,13 +31,22 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/* ********************************************************************** */
+#if 0 // for emacs indentation
+}
+#endif // for emacs indentation
 
+/* ********************************************************************** */
+typedef void cc_storage_apply_func(void * dataptr, void * closure);
 COIN_DLL_API cc_storage * cc_storage_construct(unsigned int size);
-COIN_DLL_API cc_storage * cc_storage_construct_etc(unsigned int size, void (*constructor)(void *), void (*destructor)(void *));
+COIN_DLL_API cc_storage * cc_storage_construct_etc(unsigned int size, 
+                                                   void (*constructor)(void *), 
+                                                   void (*destructor)(void *));
 COIN_DLL_API void cc_storage_destruct(cc_storage * storage);
 
 COIN_DLL_API void * cc_storage_get(cc_storage * storage);
+COIN_DLL_API void cc_storage_apply_to_all(cc_storage * storage, 
+                                          cc_storage_apply_func * func, 
+                                          void * closure);
 
 /* ********************************************************************** */
 
