@@ -50,7 +50,8 @@ dist_draggerdefdata_DATA = \
 	transformerDragger.iv \
 	transformBoxDragger.iv
 
-dist_noinst_SCRIPTS = \
+# FIXME: use dist_noinst_SCRIPTS when it works
+noinst_SCRIPTS = \
 	$(srcdir)/iv2h.sh
 
 # This is necessary to include so the headers are actually built.
