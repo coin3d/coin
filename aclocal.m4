@@ -1954,11 +1954,11 @@ if test x"$enable_exceptions" = x"no"; then
   if test "x$GXX" = "xyes"; then
     unset _exception_flag
     dnl This is for GCC >= 2.8
-    SIM_COMPILER_OPTION([-fno-exceptions], [_exception_flag=-fno-exceptions])
+    SIM_AC_CXX_COMPILER_OPTION([-fno-exceptions], [_exception_flag=-fno-exceptions])
     if test x"${_exception_flag+set}" != x"set"; then
       dnl For GCC versions < 2.8
-      SIM_COMPILER_OPTION([-fno-handle-exceptions],
-                          [_exception_flag=-fno-handle-exceptions])
+      SIM_AC_CXX_COMPILER_OPTION([-fno-handle-exceptions],
+                                 [_exception_flag=-fno-handle-exceptions])
     fi
     if test x"${_exception_flag+set}" != x"set"; then
       AC_MSG_WARN([couldn't find a valid option for avoiding exception handling])
@@ -1974,34 +1974,48 @@ fi
 ])
 
 
-# Usage:
-#   SIM_COMPILER_OPTION( OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
-#
-# Description:
 #   Use this file to store miscellaneous macros related to checking
 #   compiler features.
+
+# Usage:
+#   SIM_AC_CC_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
+#   SIM_AC_CXX_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
+#
+# Description:
+#
+#   Check whether the current C or C++ compiler can handle a
+#   particular command-line option.
+#
 #
 # Author: Morten Eriksen, <mortene@sim.no>.
 #
-# TODO:
-#   * [mortene:19991125] make SIM_COMPILER_OPTION work with C compilers.
-#
-#   * [mortene:19991218] improve SIM_COMPILER_OPTION by catching
-#     and analyzing stderr (at least to see if there was any output
-#     there.)
+#   * [mortene:19991218] improve macros by catching and analyzing
+#     stderr (at least to see if there was any output there)?
 #
 
-AC_DEFUN([SIM_COMPILER_OPTION], [
-AC_PREREQ([2.13])
-AC_MSG_CHECKING([whether $CXX accepts $1])
-_save_cxxflags=$CXXFLAGS
-CXXFLAGS="$CXXFLAGS [$1]"
-AC_TRY_COMPILE( [], [], [_accept_result=yes $2], [_accept_result=no $3])
-AC_MSG_RESULT([$_accept_result])
-CXXFLAGS=$_save_cxxflags
-unset _accept_result _save_cxxflags
+AC_DEFUN([SIM_AC_COMPILER_OPTION], [
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS [$1]"
+AC_TRY_COMPILE([], [], [sim_ac_accept_result=yes $2], [sim_ac_accept_result=no $3])
+AC_MSG_RESULT([$sim_ac_accept_result])
+CPPFLAGS=$sim_ac_save_cppflags
 ])
 
+AC_DEFUN([SIM_AC_CC_COMPILER_OPTION], [
+AC_LANG_SAVE
+AC_LANG_C
+AC_MSG_CHECKING([whether $CC accepts $1])
+SIM_AC_COMPILER_OPTION($1, $2, $3)
+AC_LANG_RESTORE
+])
+
+AC_DEFUN([SIM_AC_CXX_COMPILER_OPTION], [
+AC_LANG_SAVE
+AC_LANG_CPLUSPLUS
+AC_MSG_CHECKING([whether $CXX accepts $1])
+SIM_AC_COMPILER_OPTION($1, $2, $3)
+AC_LANG_RESTORE
+])
 
 # Usage:
 #   SIM_PROFILING_SUPPORT
@@ -2061,10 +2075,15 @@ fi
 # TODO:
 #   * [mortene:19991114] find out how to get GCC's
 #     -Werror-implicit-function-declaration option to work as expected
+#
+#   * [mortene:20000606] there are a few assumptions here which doesn't
+#     necessarily hold water: both the C and C++ compiler doesn't have
+#     to be "compatible", i.e. the C compiler could be gcc, while the
+#     C++ compiler could be a native compiler, for instance. So some
+#     restructuring should be done.
 # 
 
 AC_DEFUN([SIM_COMPILER_WARNINGS], [
-AC_PREREQ([2.14])
 AC_ARG_ENABLE(
   [warnings],
   AC_HELP_STRING([--enable-warnings],
@@ -2078,11 +2097,18 @@ AC_ARG_ENABLE(
 
 if test x"$enable_warnings" = x"yes"; then
   if test x"$GXX" = x"yes" || test x"$GCC" = x"yes"; then
-    SIM_COMPILER_OPTION([-Wno-multichar], [_warn_flags=-Wno-multichar])
-    _warn_flags="-W -Wall -Wno-unused $_warn_flags"
-
-    CFLAGS="$CFLAGS $_warn_flags"
-    CXXFLAGS="$CXXFLAGS $_warn_flags"
+    sim_ac_common_gcc_warnings="-W -Wall -Wno-unused"
+    # -fno-multichar can be different for gcc and egcs c++, for instance,
+    # so we need to do separate checks.
+    if test x"$CC" = x"$CXX"; then
+      CPPFLAGS="$CPPFLAGS $sim_ac_common_gcc_warnings"
+      SIM_AC_CXX_COMPILER_OPTION([-Wno-multichar], [CPPFLAGS="$CPPFLAGS -Wno-multichar"])
+    else
+      CFLAGS="$CFLAGS $sim_ac_common_gcc_warnings"
+      SIM_AC_CC_COMPILER_OPTION([-Wno-multichar], [CFLAGS="$CFLAGS -Wno-multichar"])
+      CXXFLAGS="$CXXFLAGS $sim_ac_common_gcc_warnings"
+      SIM_AC_CXX_COMPILER_OPTION([-Wno-multichar], [CXXFLAGS="$CXXFLAGS -Wno-multichar"])
+    fi
   else
     case $host in
     *-*-irix*) 
@@ -2090,7 +2116,7 @@ if test x"$enable_warnings" = x"yes"; then
         _warn_flags=
         _woffs=""
         ### Turn on all warnings ######################################
-        SIM_COMPILER_OPTION([-fullwarn],
+        SIM_AC_CC_COMPILER_OPTION([-fullwarn],
                             [_warn_flags="$_warn_flags -fullwarn"])
 
 
@@ -2100,30 +2126,30 @@ if test x"$enable_warnings" = x"yes"; then
 
         # Turn off ``type qualifiers are meaningless in this declaration''
         # warnings.
-        SIM_COMPILER_OPTION([-woff 3115], [_woffs="$_woffs 3115"])
+        SIM_AC_CC_COMPILER_OPTION([-woff 3115], [_woffs="$_woffs 3115"])
         # Turn off warnings on unused variables.
-        SIM_COMPILER_OPTION([-woff 3262], [_woffs="$_woffs 3262"])
+        SIM_AC_CC_COMPILER_OPTION([-woff 3262], [_woffs="$_woffs 3262"])
 
         ### SGI MipsPro v7.30 #########################################
 
 	# "The function was declared but never referenced."
-        SIM_COMPILER_OPTION([-woff 1174], [_woffs="$_woffs 1174"])
+        SIM_AC_CC_COMPILER_OPTION([-woff 1174], [_woffs="$_woffs 1174"])
         # "The controlling expression is constant." (kill warning on
         # if (0), assert(FALSE), etc).
-        SIM_COMPILER_OPTION([-woff 1209], [_woffs="$_woffs 1209"])
+        SIM_AC_CC_COMPILER_OPTION([-woff 1209], [_woffs="$_woffs 1209"])
         # Kill warnings on extra semicolons (which happens with some
         # of the Coin macros).
-        SIM_COMPILER_OPTION([-woff 1355], [_woffs="$_woffs 1355"])
+        SIM_AC_CC_COMPILER_OPTION([-woff 1355], [_woffs="$_woffs 1355"])
         # Non-virtual destructors in base classes.
-        SIM_COMPILER_OPTION([-woff 1375], [_woffs="$_woffs 1375"])
+        SIM_AC_CC_COMPILER_OPTION([-woff 1375], [_woffs="$_woffs 1375"])
         # Unused argument to a function.
-        SIM_COMPILER_OPTION([-woff 3201], [_woffs="$_woffs 3201"])
+        SIM_AC_CC_COMPILER_OPTION([-woff 3201], [_woffs="$_woffs 3201"])
         # Meaningless type qualifier on return type (happens with the
         # SoField macros in Coin).
-        SIM_COMPILER_OPTION([-woff 3303], [_woffs="$_woffs 3303"])
+        SIM_AC_CC_COMPILER_OPTION([-woff 3303], [_woffs="$_woffs 3303"])
         # Statement is not reachable (the Lex/Flex generated code in
         # Coin/src/engines makes lots of shitty code which needs this).
-        SIM_COMPILER_OPTION([-woff 1110], [_woffs="$_woffs 1110"])
+        SIM_AC_CC_COMPILER_OPTION([-woff 1110], [_woffs="$_woffs 1110"])
 
         ###############################################################
 
@@ -2137,8 +2163,7 @@ if test x"$enable_warnings" = x"yes"; then
 
         ###############################################################
 
-        CFLAGS="$CFLAGS $_warn_flags"
-        CXXFLAGS="$CXXFLAGS $_warn_flags"
+        CPPFLAGS="$CPPFLAGS $_warn_flags"
       fi
     ;;
     esac
