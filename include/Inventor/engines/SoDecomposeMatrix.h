@@ -23,6 +23,7 @@
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/fields/SoMFMatrix.h>
+#include <Inventor/fields/SoMFVec3f.h>
 
 
 class COIN_DLL_EXPORT SoDecomposeMatrix : public SoEngine {
@@ -31,12 +32,12 @@ class COIN_DLL_EXPORT SoDecomposeMatrix : public SoEngine {
 
 public:
   SoMFMatrix matrix;
+  SoMFVec3f center;
 
   SoEngineOutput translation; // SoMFVec3f
   SoEngineOutput rotation; // SoMFRotation
   SoEngineOutput scaleFactor; // SoMFVec3f
   SoEngineOutput scaleOrientation; // SoMFRotation
-  SoEngineOutput center; // SoMFVec3f
 };
 
 #endif // !COIN_SODECOMPOSEMATRIX_H

@@ -41,12 +41,12 @@ SoDecomposeMatrix::SoDecomposeMatrix()
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoDecomposeMatrix);
 
   SO_ENGINE_ADD_INPUT(matrix,(SbMatrix()));
+  SO_ENGINE_ADD_INPUT(center,(SbVec3f()));
 
   SO_ENGINE_ADD_OUTPUT(translation,SoMFVec3f);
   SO_ENGINE_ADD_OUTPUT(rotation,SoMFRotation);
   SO_ENGINE_ADD_OUTPUT(scaleFactor,SoMFVec3f);
   SO_ENGINE_ADD_OUTPUT(scaleOrientation,SoMFRotation);
-  SO_ENGINE_ADD_OUTPUT(center,SoMFVec3f);
 }
 
 // overloaded from parent
@@ -73,19 +73,18 @@ SoDecomposeMatrix::evaluate()
   SO_ENGINE_OUTPUT(rotation,SoMFRotation,setNum(num));
   SO_ENGINE_OUTPUT(scaleFactor,SoMFVec3f,setNum(num));
   SO_ENGINE_OUTPUT(scaleOrientation,SoMFRotation,setNum(num));
-  SO_ENGINE_OUTPUT(center,SoMFVec3f,setNum(num));
 
   int i;
-  SbVec3f translationVal,scaleFactorVal,centerVal;
+  SbVec3f translationVal,scaleFactorVal;
   SbRotation rotationVal,scaleOrientationVal;
   for (i = 0; i < num; i++) {
+    SbVec3f c = (i < center.getNum()) ? center[i] : SbVec3f(0.0f, 0.0f, 0.0f);
     this->matrix[i].getTransform(translationVal,rotationVal,scaleFactorVal,
-                                 scaleOrientationVal,centerVal);
+                                 scaleOrientationVal, c);
     SO_ENGINE_OUTPUT(translation,SoMFVec3f,set1Value(i,translationVal));
     SO_ENGINE_OUTPUT(rotation,SoMFRotation,set1Value(i,rotationVal));
     SO_ENGINE_OUTPUT(scaleFactor,SoMFVec3f,set1Value(i,scaleFactorVal));
     SO_ENGINE_OUTPUT(scaleOrientation,SoMFRotation,
                      set1Value(i,scaleOrientationVal));
-    SO_ENGINE_OUTPUT(center,SoMFVec3f,set1Value(i,centerVal));
   }
 }
