@@ -113,3 +113,11 @@ THE LINKS
 
   Contains lots of information about obsoleted features and field
   value limitations that we need to check that we heed.
+
+* Information about the OpenGL ABI:
+
+    http://oss.sgi.com/projects/ogl-sample/registry/ARB/get_proc_address.txt
+    http://oss.sgi.com/projects/ogl-sample/ABI/
+
+* An application partly covering the ideas behind our "gl-attack"
+  suggested project: <URL:http://glean.sourceforge.net>.
