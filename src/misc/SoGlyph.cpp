@@ -107,6 +107,8 @@ public:
 };
 
 #define PRIVATE(p) ((p)->pimpl)
+#define PUBLIC(p) ((p)->master)
+
 
 /*!
   Constructor.
@@ -655,14 +657,14 @@ SoGlyph::getBitmap(SbVec2s & size, SbVec2s & pos, const SbBool antialiased) cons
 void
 SoGlyphP::setup3DFontData(void)
 {
-  master->setFontType(SoGlyph::FONT3D);
+  PUBLIC(this)->setFontType(SoGlyph::FONT3D);
   
   if (character <= 32 || character >= 127) {
     // treat all these characters as spaces
     static int spaceidx[] = { -1 };
-    this->master->setCoords(NULL);
-    this->master->setFaceIndices(spaceidx);
-    this->master->setEdgeIndices(spaceidx);
+    PUBLIC(this)->setCoords(NULL);
+    PUBLIC(this)->setFaceIndices(spaceidx);
+    PUBLIC(this)->setEdgeIndices(spaceidx);
     this->bbox.setBounds(SbVec2f(0.0f, 0.0f), SbVec2f(0.2f, 0.0f));
     this->flags.didcalcbbox = 1;
   }
@@ -673,16 +675,16 @@ SoGlyphP::setup3DFontData(void)
     if (vector_glyph == NULL) {
       // Default hardcoded 3d font. Size = 1.0
       const int idx = this->character-33;
-      this->master->setCoords((const SbVec2f *)coin_default3dfont_get_coords()[idx]);
-      this->master->setFaceIndices(coin_default3dfont_get_faceidx()[idx]);
-      this->master->setEdgeIndices(coin_default3dfont_get_edgeidx()[idx]);
+      PUBLIC(this)->setCoords((const SbVec2f *)coin_default3dfont_get_coords()[idx]);
+      PUBLIC(this)->setFaceIndices(coin_default3dfont_get_faceidx()[idx]);
+      PUBLIC(this)->setEdgeIndices(coin_default3dfont_get_edgeidx()[idx]);
     } 
     else {
       // Install truetype font
 
-      this->master->setCoords((const SbVec2f *)cc_flw_get_vector_glyph_coords(vector_glyph));
-      this->master->setFaceIndices(cc_flw_get_vector_glyph_faceidx(vector_glyph));
-      this->master->setEdgeIndices(cc_flw_get_vector_glyph_edgeidx(vector_glyph));
+      PUBLIC(this)->setCoords((const SbVec2f *)cc_flw_get_vector_glyph_coords(vector_glyph));
+      PUBLIC(this)->setFaceIndices(cc_flw_get_vector_glyph_faceidx(vector_glyph));
+      PUBLIC(this)->setEdgeIndices(cc_flw_get_vector_glyph_edgeidx(vector_glyph));
     }
   }
 }
@@ -702,3 +704,4 @@ SoGlyphP::createSystemGlyph(const char character, const SbName & font)
 }
 
 #undef PRIVATE
+#undef PUBLIC
