@@ -28,7 +28,69 @@
   \ingroup actions
   \ingroup collision
 
-  FIXME: document.
+  Below is a simple usage example for this class. It was written as a
+  stand-alone framework set up for profiling and optimization of the
+  SoIntersectionDetectionAction. It tests intersection of all shapes
+  against each other for the loaded file.
+
+  \code
+  #include <stdlib.h>
+  #include <Inventor/SbTime.h>
+  #include <Inventor/SoDB.h>
+  #include <Inventor/SoInteraction.h>
+  #include <Inventor/collision/SoIntersectionDetectionAction.h>
+  #include <Inventor/errors/SoDebugError.h>
+  #include <Inventor/nodekits/SoNodeKit.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  
+  static SoIntersectionDetectionAction::Resp
+  intersectionCB(void * closure, 
+                 const SoIntersectingPrimitive * pr1,
+                 const SoIntersectingPrimitive * pr2)
+  {
+    (void)fprintf(stdout, "intersection hit!\n");
+    return SoIntersectionDetectionAction::NEXT_PRIMITIVE;
+  }
+  
+  int
+  main(int argc, char ** argv)
+  {
+    SoDB::init();
+    SoNodeKit::init();
+    SoInteraction::init();
+  
+    if (argc != 2) {
+      (void)fprintf(stderr, "\n\tUsage: testapp <filename.iv>\n\n");
+      exit(1);
+    }
+  
+    SoInput in;
+    SbBool ok = in.openFile(argv[1]);
+    assert(ok);
+    SoSeparator * root = SoDB::readAll(&in);
+    assert(root);
+  
+    root->ref();
+  
+    SoIntersectionDetectionAction ida;
+    ida.addIntersectionCallback(intersectionCB, NULL);
+    ida.setManipsEnabled(FALSE);
+    ida.setDraggersEnabled(FALSE);
+    ida.setIntersectionDetectionEpsilon(10.0f);
+  
+    SbTime starttime = SbTime::getTimeOfDay();
+    SoDebugError::postInfo("main", "SoIntersectionDetectionAction::apply");
+  
+    ida.apply(root);
+  
+    SoDebugError::postInfo("main", "apply() done after %f seconds.",
+                           (SbTime::getTimeOfDay() - starttime).getValue());
+  
+    root->unref();
+  
+    return 0;
+  }
+  \endcode
 
   \since 20021022
 */
