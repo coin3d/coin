@@ -1063,21 +1063,31 @@ AC_TRY_LINK([
 # * Handle the detection and inclusion of X11 libraries.
 # *******************************************************************
 
-SIM_AC_CHECK_X11([COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_x11_cppflags"
-                  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_x11_ldflags"
-                  COIN_EXTRA_LIBS="$sim_ac_x11_libs $COIN_EXTRA_LIBS"])
+case $host_os in
+  darwin* ) 
+    # Don't try to link against X11 on Mac OS X.
+    ;; 
+  * ) 
+    SIM_AC_CHECK_X11([
+      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_x11_cppflags"
+      COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_x11_ldflags"
+      COIN_EXTRA_LIBS="$sim_ac_x11_libs $COIN_EXTRA_LIBS"])
 
-if test x"$sim_ac_x11_avail" = xyes; then
-  #  If the X11 shared memory extension is available, include it as
-  #  the Mesa library has probably been linked against it.
-  SIM_AC_CHECK_X11SHMEM(COIN_EXTRA_LIBS="$sim_ac_x11shmem_libs $COIN_EXTRA_LIBS")
-fi
+    if test x"$sim_ac_x11_avail" = xyes; then
+      #  If the X11 shared memory extension is available, include it as
+      #  the Mesa library has probably been linked against it.
+      SIM_AC_CHECK_X11SHMEM(
+        COIN_EXTRA_LIBS="$sim_ac_x11shmem_libs $COIN_EXTRA_LIBS"
+      )
+    fi
 
-## We need this extra, final X11 check to set up the HAVE_X11_AVAILABLE
-## define -- the X_DISPLAY_MISSING define provided by the built-in
-## Autoconf X11 check is not strict enough.
-SIM_AC_CHECK_X11_READY([AC_DEFINE([HAVE_X11_AVAILABLE],1,
-                          [define if it is possible to build against X11])])
+    ## We need this extra, final X11 check to set up the HAVE_X11_AVAILABLE
+    ## define -- the X_DISPLAY_MISSING define provided by the built-in
+    ## Autoconf X11 check is not strict enough.
+    SIM_AC_CHECK_X11_READY([AC_DEFINE([HAVE_X11_AVAILABLE],1,
+                           [define if it is possible to build against X11])])
+    ;;
+esac
 
 # *******************************************************************
 # * Test for installation of Mesa or OpenGL development system.
@@ -1105,13 +1115,13 @@ SIM_AC_CHECK_OPENGL(
     LIBS="$LIBS $sim_ac_wgl_libs"
     COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_wgl_libs"
   ], [
-    SIM_AC_HAVE_GLX_IFELSE([
-      AC_DEFINE([HAVE_GLX], 1, [define if you have GLX X11 OpenGL bindings])
+    SIM_AC_HAVE_AGL_IFELSE([
+      AC_DEFINE([HAVE_AGL], 1, [define if you have AGL OpenGL bindings])
+      LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
+      COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
     ], [
-      SIM_AC_HAVE_AGL_IFELSE([
-        AC_DEFINE([HAVE_AGL], 1, [define if you have AGL OpenGL bindings])
-        LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
-        COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
+      SIM_AC_HAVE_GLX_IFELSE([
+        AC_DEFINE([HAVE_GLX], 1, [define if you have GLX X11 OpenGL bindings])
       ], [
         SIM_AC_CONFIGURATION_WARNING([Could not find or compile or link against any usable window-system OpenGL binding, neither GLX (OpenGL on X11), nor WGL (OpenGL on Win32) nor AGL (OpenGL on Mac OS). The SoOffscreenRenderer functionality will be disabled. Note: this might be a configure bug. Check the file config.log.])
       ])
