@@ -120,11 +120,11 @@ typedef BOOL (WINAPI * COIN_PFNWGLCHOOSEPIXELFORMATPROC)(HDC hdc,
                                                          UINT * nNumFormats);
 
 typedef BOOL (WINAPI * COIN_PFNWGLGETPIXELFORMATATTRIBIVPROC)(HDC hdc,
-							      int iPixelFormat,
-							      int iLayerPlane,
-							      UINT nAttribautes,
-							      const int * piAttributes,
-							      int * piValues);
+                                                              int iPixelFormat,
+                                                              int iLayerPlane,
+                                                              UINT nAttribautes,
+                                                              const int * piAttributes,
+                                                              int * piValues);
 
 static COIN_PFNWGLCHOOSEPIXELFORMATPROC wglglue_wglChoosePixelFormat = NULL;
 static COIN_PFNWGLGETPIXELFORMATATTRIBIVPROC wglglue_wglGetPixelFormatAttribiv = NULL;
@@ -533,7 +533,7 @@ wglglue_context_create_software(struct wglglue_contextdata * ctx, SbBool warnone
 
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("wglglue_context_create_software",
-			   "creating software buffer");
+                           "creating software buffer");
   }
 
   context->memorydc = CreateCompatibleDC(NULL);
@@ -543,8 +543,8 @@ wglglue_context_create_software(struct wglglue_contextdata * ctx, SbBool warnone
     if (warnonerrors || coin_glglue_debug()) {
       DWORD dwError = GetLastError();
       cc_debugerror_postwarning("wglglue_context_create_software",
-				"CreateCompatibleDC(NULL) failed with "
-				"error code %d.", dwError);
+                                "CreateCompatibleDC(NULL) failed with "
+                                "error code %d.", dwError);
     }
     return FALSE;
   }
@@ -576,8 +576,8 @@ wglglue_context_create_software(struct wglglue_contextdata * ctx, SbBool warnone
       if (warnonerrors || coin_glglue_debug()) {
         DWORD dwError = GetLastError();
         cc_debugerror_postwarning("wglglue_context_create_software",
-				  "CreateDIBSection() failed with error "
-				  "code %d.", dwError);
+                                  "CreateDIBSection() failed with error "
+                                  "code %d.", dwError);
       }
       return FALSE;
     }
@@ -589,8 +589,8 @@ wglglue_context_create_software(struct wglglue_contextdata * ctx, SbBool warnone
     if (warnonerrors || coin_glglue_debug()) {
       DWORD dwError = GetLastError();
       cc_debugerror_postwarning("wglglue_context_create_software",
-				"SelectObject() failed with error code %d.",
-				dwError);
+                                "SelectObject() failed with error code %d.",
+                                dwError);
     }
     return FALSE;
   }
@@ -601,8 +601,8 @@ wglglue_context_create_software(struct wglglue_contextdata * ctx, SbBool warnone
 
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("wglglue_context_create_software",
-			   "success creating software buffer, HGLRC==%p",
-			   context->wglcontext);
+                           "success creating software buffer, HGLRC==%p",
+                           context->wglcontext);
   }
 
   return TRUE;
@@ -644,8 +644,8 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
       if (!RegisterClass(&wc)) {
         DWORD dwError = GetLastError();
         cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-				  "RegisterClass(&wc) failed with "
-				  "error code %d.", dwError);
+                                  "RegisterClass(&wc) failed with "
+                                  "error code %d.", dwError);
         return FALSE;
       }
       /* FIXME: unregister at app exit? pederb, 2003-12-15 */
@@ -669,8 +669,8 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
       {
         DWORD dwError = GetLastError();
         cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-				  "CreateWindow(...) failed with "
-				  "error code %d.", dwError);
+                                  "CreateWindow(...) failed with "
+                                  "error code %d.", dwError);
         return FALSE;
       }
 
@@ -681,8 +681,8 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
       if (context->memorydc == NULL) {
         DWORD dwError = GetLastError();
         cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-				  "GetDC(hWnd) failed with "
-				  "error code %d.", dwError);
+                                  "GetDC(hWnd) failed with "
+                                  "error code %d.", dwError);
         return FALSE;
       }
     }
@@ -823,8 +823,8 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
     }
 
     if (!wglglue_wglQueryPbuffer(context->hpbuffer,
-				 WGL_PBUFFER_HEIGHT_ARB,
-				 &(context->height))) {
+                                 WGL_PBUFFER_HEIGHT_ARB,
+                                 &(context->height))) {
       if (warnonerrors || coin_glglue_debug()) {
         cc_debugerror_postwarning("wglglue_context_create_pbuffer",
                                   "Couldn't query the pbuffer height.");
@@ -835,8 +835,8 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
 
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("wglglue_context_create_pbuffer",
-			   "success creating pbuffer, HGLRC==%p",
-			   context->wglcontext);
+                           "success creating pbuffer, HGLRC==%p",
+                           context->wglcontext);
   }
 
   return TRUE;
@@ -1028,8 +1028,8 @@ wglglue_context_pbuffer_max(void * c, unsigned int * lims)
   if (!wglglue_wglGetPixelFormatAttribiv) { return FALSE; }
  
   ok = wglglue_wglGetPixelFormatAttribiv(ctx->memorydc, ctx->pixelformat,
-					 0, /* main plane */
-					 3, attribs, attribvals);
+                                         0, /* main plane */
+                                         3, attribs, attribvals);
   if (!ok) {
     if (coin_glglue_debug()) {
       DWORD dwError = GetLastError();

@@ -174,6 +174,25 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+/* If AGL is available, we don't want WGL nor GLX, as that has the
+   potential to cause harm: e.g. while we at one place in the code
+   might use AGL to create a context, other places we might use GLX to
+   make that same context current -- *kaboom*.
+
+   (It is at least possible that both AGL and GLX are available at the
+   same time, since X11 is a portable window system.) */
+#ifdef HAVE_AGL
+#undef HAVE_WGL
+#undef HAVE_GLX
+#endif /* HAVE_AGL */
+
+/* If WGL is available, we don't want AGL nor GLX. See above
+   comments. */
+#ifdef HAVE_WGL
+#undef HAVE_AGL
+#undef HAVE_GLX
+#endif /* HAVE_AGL */
+
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
@@ -909,12 +928,12 @@ glglue_resolve_symbols(cc_glglue * w)
         ColorTableParameterfvSGI, ColorTableParameterivSGI,
         GetColorTableParameterfvSGI, GetColorTableParameterivSGI:
 
-	TEXTURE_COLOR_TABLE_SGI		0x80BC
+        TEXTURE_COLOR_TABLE_SGI         0x80BC
 
         Accepted by the <target> parameter of ColorTableSGI,
         GetColorTableParameterivSGI, and GetColorTableParameterfvSGI:
 
-	PROXY_TEXTURE_COLOR_TABLE_SGI	0x80BD
+        PROXY_TEXTURE_COLOR_TABLE_SGI   0x80BD
 
     As paletted textures can only be supported through extensions, we
     should probably implement support for using this one in addition
@@ -3694,6 +3713,11 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
 
   if (cached) { /* value cached */ return; }
 
+  if (coin_glglue_debug()) {
+    cc_debugerror_postinfo("cc_glglue_context_max_dimensions",
+                           "query by making a dummy offscreen context");
+  }
+
   cached = TRUE; /* Flip flag on first run. Note: it doesn't matter
                     that the detection below might fail -- as we
                     should report <0,0> on consecutive runs. */
@@ -3710,6 +3734,11 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
   if (!ok) { cc_glglue_context_destruct(ctx); return; }
 
   glGetIntegerv(GL_MAX_VIEWPORT_DIMS, size);
+  if (coin_glglue_debug()) {
+    cc_debugerror_postinfo("cc_glglue_context_max_dimensions",
+                           "GL_MAX_VIEWPORT_DIMS==<%d, %d>",
+                           size[0], size[1]);
+  }
 
   vendor = (const char *)glGetString(GL_VENDOR);
   if (strcmp(vendor, "NVIDIA Corporation") == 0) {
@@ -3738,29 +3767,50 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
     size[1] = cc_min(size[1], 512);
   }
 
-  cc_glglue_context_reinstate_previous(ctx);
-  cc_glglue_context_destruct(ctx);
-
-  /* FIXME: if we're on e.g. GLX and are going to use pbuffers, we
-     should check the GLX_MAX_PBUFFER_WIDTH, GLX_MAX_PBUFFER_HEIGHT
-     and GLX_MAX_PBUFFER_PIXELS values to see if they limit us
-     further.
-
-     Similar limits probably also exists for WGL and AGL pbuffers.
-
-     20030812 mortene.
-  */
-
   *width = (unsigned int) size[0];
   *height = (unsigned int) size[1];
 
-  /* FIXME: increase the below limit somewhat (to e.g. 2048x2048)
-     after implementing the check for pbuffer limits, as described in
-     the above FIXME note. 1024x1024 is really too small -- it will
-     cause unnecessary additional rendering passes for most (?) usage,
-     which causes a big performance hit. 20031202 mortene. */
+  /* Check additional limits from pbuffer capabilities: */
+  {
+    /* will be filled with max-width, max-height and max-pixels: */
+    unsigned int pbufmax[3];
+    /* query functions below should return TRUE if implemented, and
+       the current offscreen buffer is a pbuffer: */
+    SbBool ok = FALSE;
+#if defined(HAVE_WGL)
+    ok = wglglue_context_pbuffer_max(ctx, pbufmax);
+#elif defined(HAVE_GLX)
+    /* FIXME: implement check on GLX_MAX_PBUFFER_WIDTH,
+       GLX_MAX_PBUFFER_HEIGHT, and GLX_MAX_PBUFFER_PIXELS. 20030812 mortene. */
+#elif defined(HAVE_AGL)
+    /* FIXME: similar limits probably exists for AGL. 20040713 mortene. */
+#endif
+    if (ok) {
+      int modulo = 0;
 
-  /* Limit the maximum tilesize to 1024x1024 pixels.
+      if (coin_glglue_debug()) {
+        cc_debugerror_postinfo("cc_glglue_context_max_dimensions",
+                               "pbuffer max dimensions, "
+                               "width==%u, height==%u, pixels==%u",
+                               pbufmax[0], pbufmax[1], pbufmax[2]);
+      }
+
+      *width = cc_min(*width, pbufmax[0]);
+      *height = cc_min(*height, pbufmax[1]);
+
+      while ((*width * *height) > pbufmax[2]) {
+        if (modulo % 2) { *width /= 2; }
+        else { *height /= 2; }
+        modulo++;
+      }
+    }
+  }
+
+  cc_glglue_context_reinstate_previous(ctx);
+  cc_glglue_context_destruct(ctx);
+
+  /* Force an additional limit to the maximum tilesize to 4096x4096
+     pixels.
   
      This is done to work around a problem with some OpenGL drivers: a
      huge value is returned for the maximum offscreen OpenGL canvas,
@@ -3771,13 +3821,13 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
      software OpenGL renderer, which reports a maximum viewport size
      of 16k x 16k pixels.
   */
-  *width = cc_min(*width, 1024);
-  *height = cc_min(*height, 1024);
-
+  *width = cc_min(*width, 4096);
+  *height = cc_min(*height, 4096);
 
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("cc_glglue_context_max_dimensions",
-                           "max dimensions==<%d, %d>", width, height);
+                           "clamped max dimensions==<%u, %u>",
+                           *width, *height);
   }
 
   /* cache values for next invocation */
@@ -3913,7 +3963,8 @@ proxy_mipmap_3d(const cc_glglue * glw, int width, int height, int depth, const i
 }
 
 SbBool
-cc_glglue_is_texture_size_legal(const cc_glglue * glw, int xsize, int ysize, int zsize, 
+cc_glglue_is_texture_size_legal(const cc_glglue * glw,
+                                int xsize, int ysize, int zsize, 
                                 int bytespertexel, SbBool mipmap)
 { 
   GLenum format;
