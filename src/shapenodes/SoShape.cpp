@@ -526,17 +526,6 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     return FALSE;
   }
 
-  // this test is needed since it seems like nVIDIA has an ugly bug in
-  // their color-in-displaylist handling
-  const cc_glglue * glue = sogl_glue_instance(state);
-  if (glue->nvidia_color_in_displaylist_bug) {
-    if (SoMaterialBindingElement::get(state) != 
-        SoMaterialBindingElement::OVERALL) {
-      SoCacheElement::setInvalid(TRUE);
-      SoCacheElement::invalidate(state);
-    }
-  }
-
   // test if we should sort triangles before rendering
   if (transparent &&
       ((action->getTransparencyType() ==
@@ -596,6 +585,8 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
     return FALSE;
   }
+
+  const cc_glglue * glue = sogl_glue_instance(state);
 
   if (SoBumpMapElement::get(state)) {
     const SoNodeList & lights = SoLightElement::getLights(state);

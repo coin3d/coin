@@ -134,6 +134,7 @@
 #elif MBINDING==PER_VERTEX_INDEXED || MBINDING==PER_FACE_INDEXED
     materials->send(*matindices++, TRUE);
 #endif
+
 #if NBINDING==PER_VERTEX || NBINDING==PER_FACE
     currnormal = normals++;
     glNormal3fv((const GLfloat*)currnormal);
@@ -154,6 +155,14 @@
 #elif MBINDING==PER_VERTEX_INDEXED
     materials->send(*matindices++, TRUE);
 #endif
+
+    // nvidia color-per-face-bug workaround
+#if MBINDING==PER_FACE
+    materials->send(matnr-1, TRUE);
+#elif MBINDING==PER_FACE_INDEXED
+    materials->send(matindices[-1], TRUE);
+#endif
+
 #if NBINDING==PER_VERTEX
     currnormal = normals++;
     glNormal3fv((const GLfloat*)currnormal);
@@ -174,6 +183,14 @@
 #elif MBINDING==PER_VERTEX_INDEXED
     materials->send(*matindices++, TRUE);
 #endif
+
+    // nvidia color-per-face-bug workaround
+#if MBINDING==PER_FACE
+    materials->send(matnr-1, TRUE);
+#elif MBINDING==PER_FACE_INDEXED
+    materials->send(matindices[-1], TRUE);
+#endif
+
 #if NBINDING==PER_VERTEX
     currnormal = normals++;
     glNormal3fv((const GLfloat*)currnormal);
@@ -195,6 +212,14 @@
 #elif MBINDING==PER_VERTEX_INDEXED
       materials->send(*matindices++, TRUE);
 #endif
+
+    // nvidia color-per-face-bug workaround
+#if MBINDING==PER_FACE
+      materials->send(matnr-1, TRUE);
+#elif MBINDING==PER_FACE_INDEXED
+      materials->send(matindices[-1], TRUE);
+#endif
+
 #if NBINDING==PER_VERTEX
       currnormal = normals++;
       glNormal3fv((const GLfloat*)currnormal);
@@ -215,6 +240,14 @@
 #elif MBINDING==PER_VERTEX_INDEXED
         materials->send(*matindices++, TRUE);
 #endif
+
+    // nvidia color-per-face-bug workaround
+#if MBINDING==PER_FACE
+        materials->send(matnr-1, TRUE);
+#elif MBINDING==PER_FACE_INDEXED
+        materials->send(matindices[-1], TRUE);
+#endif
+
 #if NBINDING==PER_VERTEX
         currnormal = normals++;
         glNormal3fv((const GLfloat*)currnormal);
@@ -249,6 +282,14 @@
 #elif MBINDING==PER_VERTEX_INDEXED
           materials->send(*matindices++, TRUE);
 #endif
+
+    // nvidia color-per-face-bug workaround
+#if MBINDING==PER_FACE
+          materials->send(matnr-1, TRUE);
+#elif MBINDING==PER_FACE_INDEXED
+          materials->send(matindices[-1], TRUE);
+#endif
+
 #if NBINDING==PER_VERTEX
           currnormal = normals++;
           glNormal3fv((const GLfloat*)currnormal);

@@ -435,14 +435,6 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
 
   Binding mbind = this->findMaterialBinding(state);
 
-  if (mbind != OVERALL) {
-    const cc_glglue * glue = sogl_glue_instance(state);
-    if (glue->nvidia_color_in_displaylist_bug) {
-      SoCacheElement::setInvalid(TRUE);
-      SoCacheElement::invalidate(state);
-    }
-  }
-
   Binding nbind = this->findNormalBinding(state);
 
   const SoCoordinateElement * coords;

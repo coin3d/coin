@@ -264,14 +264,6 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
     mindices = cindices;
   }
 
-  if (mbind != SoVRMLIndexedLineSetP::OVERALL) {
-    const cc_glglue * glue = sogl_glue_instance(state);
-    if (glue->nvidia_color_in_displaylist_bug) {
-      SoCacheElement::setInvalid(TRUE);
-      SoCacheElement::invalidate(state);
-    }
-  }
-
   SbBool drawPoints =
     SoDrawStyleElement::get(state) == SoDrawStyleElement::POINTS;
 

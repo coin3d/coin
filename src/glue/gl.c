@@ -1709,11 +1709,11 @@ cc_glglue_instance(int contextid)
     gi->vendor_is_nvidia = strcmp((const char*)gi->vendorstr, "NVIDIA Corporation") == 0;
 
     /* FIXME: update when nVidia fixes their driver. pederb, 2004-09-01 */
-    gi->nvidia_color_in_displaylist_bug = gi->vendor_is_nvidia;
+    gi->nvidia_color_per_face_bug = gi->vendor_is_nvidia;
     
-    if (gi->nvidia_color_in_displaylist_bug) {
-      const char * env = coin_getenv("COIN_NO_NVIDIA_COLOR_IN_DISPLAYLIST_BUG_WORKAROUND");
-      if (env) gi->nvidia_color_in_displaylist_bug = 0;
+    if (gi->nvidia_color_per_face_bug) {
+      const char * env = coin_getenv("COIN_NO_NVIDIA_COLOR_PER_FACE_BUG_WORKAROUND");
+      if (env) gi->nvidia_color_per_face_bug = 0;
     }
     gi->rendererstr = (const char *)glGetString(GL_RENDERER);
     gi->extensionsstr = (const char *)glGetString(GL_EXTENSIONS);

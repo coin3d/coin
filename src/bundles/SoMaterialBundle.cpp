@@ -40,6 +40,11 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
+#include <Inventor/C/glue/glp.h>
+#include <Inventor/misc/SoGL.h>
+
+#define FLAG_COLORONLY  0x01
+#define FLAG_NVIDIA_BUG 0x02
 
 /*!
   Constructor with \a action being the action applied to the
@@ -49,8 +54,19 @@ SoMaterialBundle::SoMaterialBundle(SoAction *action)
   : SoBundle(action)
 {
   this->firsttime = TRUE; // other members will be set in setUpElements
-  this->coloronly = 
-    SoLazyElement::getLightModel(this->state) == SoLazyElement::BASE_COLOR;
+
+  // HACK warning: The colorindex data member is used as a
+  // bitmask. Needed to store some extra flags in this class. pederb,
+  // 2004-09-02
+  this->coloronly = 0;
+  
+  if (SoLazyElement::getLightModel(this->state) == SoLazyElement::BASE_COLOR) 
+    this->coloronly |= FLAG_COLORONLY;
+
+  const cc_glglue * glue = sogl_glue_instance(this->state);
+  if (glue->nvidia_color_per_face_bug) {
+    this->coloronly |= FLAG_NVIDIA_BUG;
+  }
 }
 
 /*!
@@ -91,8 +107,8 @@ void
 SoMaterialBundle::send(const int index, const SbBool betweenbeginend)
 {
   if (this->firsttime) this->setupElements(betweenbeginend);
-  if (index != this->currindex) {
-    this->reallySend(index);
+  if (index != this->currindex || (this->coloronly & FLAG_NVIDIA_BUG)) {
+    this->lazyelem->sendDiffuseByIndex(index);    
     this->currindex = index;
   }
 }
@@ -117,7 +133,7 @@ SoMaterialBundle::forceSend(const int index)
 SbBool
 SoMaterialBundle::isColorOnly(void) const
 {
-  return this->coloronly;
+  return (this->coloronly & FLAG_COLORONLY) != 0;
 }
 
 //
@@ -137,7 +153,7 @@ SoMaterialBundle::setupElements(const SbBool isbetweenbeginend)
   this->lazyelem = (const SoGLLazyElement*) SoLazyElement::getInstance(this->state);
   this->currindex = 0;
   
-  if (isbetweenbeginend || this->coloronly) {
+  if (isbetweenbeginend || (this->coloronly & FLAG_COLORONLY)) {
     this->lazyelem->send(this->state, SoLazyElement::DIFFUSE_ONLY_MASK); 
   }
   else {
@@ -145,3 +161,7 @@ SoMaterialBundle::setupElements(const SbBool isbetweenbeginend)
   }
   this->firsttime = FALSE;
 }
+
+#undef FLAG_COLORONLY
+#undef FLAG_NVIDIA_BUG
+

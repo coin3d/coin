@@ -547,7 +547,11 @@ SoGLLazyElement::sendDiffuseByIndex(const int index) const
   }
   else {
     uint32_t col = this->packedpointer[safeindex] | this->transpmask;
-    if (col != this->glstate.diffuse) this->sendPackedDiffuse(col);
+    // this test is really not necessary. SoMaterialBundle does the
+    // same test.  We also need to send the color here to work around
+    // an nVIDIA bug 
+    // if (col != this->glstate.diffuse)
+    this->sendPackedDiffuse(col);
   }
 }
 
