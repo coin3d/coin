@@ -24,8 +24,8 @@
 ;;;;; Test input fields of SoShuttle node, play around with these ;;;;;;;;;;;;
 
 (-> (-> shuttle 'speed) 'setvalue 0.5)
-(-> (-> shuttle 'translation0) 'setvalue 0 1 0)
-(-> (-> shuttle 'translation1) 'setvalue 0 -1 0)
+(-> (-> shuttle 'translation0) 'setvalue 1 1 0)
+(-> (-> shuttle 'translation1) 'setvalue -1 1 0)
 
 ;; turn off then back on
 (-> (-> shuttle 'on) 'setvalue 0)

@@ -38,11 +38,14 @@
 
 /*!
   \var SoSFVec3f SoShuttle::translation0
-  Translation at the start and end of the cycle.
+
+  Translation at the start and end of the cycle. Default value is (0,
+  0, 0).
 */
 /*!
   \var SoSFVec3f SoShuttle::translation1
-  Translation at the middle of the cycle.
+
+  Translation at the middle of the cycle. Default value is (0, 0, 0).
 */
 /*!
   \var SoSFFloat SoShuttle::speed
@@ -99,4 +102,34 @@ void
 SoShuttle::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShuttle);
+}
+
+/*!
+  Overloaded to not write out internal engine connections.
+*/
+void
+SoShuttle::write(SoWriteAction * action)
+{
+
+  // Decouple connections to/from internal engine to avoid it being
+  // written.
+  this->timer->on.disconnect(&this->on);
+  this->timer->on = FALSE;
+  this->calculator->b.disconnect(&this->speed);
+  this->interpolator->input0.disconnect(&this->translation0);
+  this->interpolator->input1.disconnect(&this->translation1);
+  this->translation.disconnect(&this->interpolator->output);
+
+  inherited::write(action);
+
+  // Reenable all connections to/from internal engine.
+  this->timer->on.connectFrom(&this->on);
+  this->calculator->b.connectFrom(&this->speed);
+  this->interpolator->input0.connectFrom(&this->translation0);
+  this->interpolator->input1.connectFrom(&this->translation1);
+  this->translation.connectFrom(&this->interpolator->output);
+
+  // Make sure "on" field of the timer engine get synchronized with
+  // the "on" field of the shuttle.
+  this->on.touch();
 }
