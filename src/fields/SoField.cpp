@@ -1692,6 +1692,9 @@ SoField::evaluateField(void) const
 
   assert(this->storage != NULL);
 
+  // lock _before_ testing FLAG_ISEVALUATING to be thread safe
+  CC_MUTEX_LOCK(this->storage->mutex);
+
   // Recursive calls to SoField::evalute() should _absolutely_ not
   // happen, as the state of the field variables might not be
   // consistent while evaluating.
@@ -1700,6 +1703,7 @@ SoField::evaluateField(void) const
   // _immediate_ repercussions are non-fatal, so we just spit out this
   // error message and carry on -- to not cause any more application
   // programmer frustrations than necessary.
+
   if (this->getStatus(FLAG_ISEVALUATING)) {
 #if COIN_DEBUG
     SoDebugError::post("SoField::evaluate",
@@ -1711,10 +1715,10 @@ SoField::evaluateField(void) const
                        "We strongly advise you to investigate and resolve "
                        "this issue before moving on.");
 #endif // COIN_DEBUG
+    CC_MUTEX_UNLOCK(this->storage->mutex);
     return;
   }
 
-  CC_MUTEX_LOCK(this->storage->mutex);
   // Cast away the const. (evaluate() must be const, since we're using
   // evaluate() from getValue().)
   SoField * that = (SoField *)this;
