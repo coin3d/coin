@@ -399,7 +399,6 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
         }
       }             
 
-
       if (strcharidx > 0) {
         float kerningx = 0.0f;
         float kerningy = 0.0f;
@@ -418,14 +417,17 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
           glTexCoord2f(v0[0], v0[1]);
         }
         glVertex3f((v0[0]*PRIVATE(this)->textsize) + xpos, (v0[1]*PRIVATE(this)->textsize) + ypos, 0.0f);
+
         if (do2Dtextures) {
           glTexCoord2f(v1[0], v1[1]);
         }
         glVertex3f(v1[0] * PRIVATE(this)->textsize + xpos, v1[1] * PRIVATE(this)->textsize + ypos, 0.0f);
+
         if (do2Dtextures) {
           glTexCoord2f(v2[0], v2[1]);
         }
         glVertex3f(v2[0] * PRIVATE(this)->textsize + xpos, v2[1] * PRIVATE(this)->textsize + ypos, 0.0f);
+
       }
       
       if (!PRIVATE(this)->horizontaltext) {
@@ -682,6 +684,11 @@ SoVRMLText::generatePrimitives(SoAction * action)
   int i, n = this->string.getNum();
   const float spacing = PRIVATE(this)->textspacing * PRIVATE(this)->textsize;
 
+  SbBool do2Dtextures = FALSE;
+  SbBool do3Dtextures = FALSE;
+  if (SoGLTextureEnabledElement::get(action->getState())) do2Dtextures = TRUE;
+  else if (SoGLTexture3EnabledElement::get(action->getState())) do3Dtextures = TRUE;
+
   SoPrimitiveVertex vertex;
   SoTextDetail detail;
   detail.setPart(0);
@@ -697,11 +704,9 @@ SoVRMLText::generatePrimitives(SoAction * action)
   for (i = 0; i < n; ++i) 
     maxstringchars = SbMax(maxstringchars, this->string[i].getLength());
 
-
   for (i = 0; i < n; i++) {
     detail.setStringIndex(i);
     float xpos = 0.0f;
-
     
     float stretchlength = 0.0f;
     if (i < this->length.getNum()) 
@@ -715,8 +720,7 @@ SoVRMLText::generatePrimitives(SoAction * action)
         compressfactor = (this->maxExtent.getValue() * PRIVATE(this)->textsize) / PRIVATE(this)->glyphwidths[i];
       }
     }
-    
-    
+        
     if (PRIVATE(this)->horizontaltext) { // -- Horizontal text ----------------------
       
       switch (PRIVATE(this)->justificationmajor) {
@@ -795,6 +799,8 @@ SoVRMLText::generatePrimitives(SoAction * action)
 
     }
     
+
+    cc_glyph3d * prevglyph = NULL;
     const unsigned int length = this->string[i].getLength();
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
 
@@ -803,34 +809,50 @@ SoVRMLText::generatePrimitives(SoAction * action)
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
       const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-      const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, PRIVATE(this)->fontspec);
+      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, PRIVATE(this)->fontspec);
+
+      float advancex, advancey;
+      cc_glyph3d_getadvance(glyph, &advancex, &advancey);
 
       const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
       const int * ptr = cc_glyph3d_getfaceindices(glyph);
 
       detail.setCharacterIndex(strcharidx);
 
-      float width = cc_glyph3d_getwidth(glyph);
-      if (width == 0) 
-        width = PRIVATE(this)->textsize / 3; // SPACE width is set to fontsize/3
-
       if (PRIVATE(this)->horizontaltext) {
         if (!PRIVATE(this)->lefttorighttext)
-          xpos -= (width + stretchfactor) * PRIVATE(this)->textsize * compressfactor;
+          xpos -= (advancex + stretchfactor) * PRIVATE(this)->textsize * compressfactor;
       }             
+      
+      if (strcharidx > 0) {       
+        float kerningx = 0.0f;
+        float kerningy = 0.0f;
+        cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
+        xpos += kerningx * PRIVATE(this)->textsize;
+      }
+      prevglyph = glyph;
 
       while (*ptr >= 0) {
         SbVec2f v0, v1, v2;
         v0 = coords[*ptr++];
         v1 = coords[*ptr++];
         v2 = coords[*ptr++];
-        vertex.setTextureCoords(SbVec2f(v0[0], v0[1]));
+
+        if (do2Dtextures) {
+          vertex.setTextureCoords(SbVec2f(v0[0], v0[1]));
+        }
         vertex.setPoint(SbVec3f(v0[0] * PRIVATE(this)->textsize + xpos, v0[1] * PRIVATE(this)->textsize + ypos, 0.0f));
         this->shapeVertex(&vertex);
-        vertex.setTextureCoords(SbVec2f(v1[0], v1[1]));
+
+        if (do2Dtextures) {
+          vertex.setTextureCoords(SbVec2f(v1[0], v1[1]));
+        }
         vertex.setPoint(SbVec3f(v1[0] * PRIVATE(this)->textsize + xpos, v1[1] * PRIVATE(this)->textsize + ypos, 0.0f));
         this->shapeVertex(&vertex);
-        vertex.setTextureCoords(SbVec2f(v2[0], v2[1]));
+
+        if (do2Dtextures) {
+          vertex.setTextureCoords(SbVec2f(v2[0], v2[1]));
+        }
         vertex.setPoint(SbVec3f(v2[0] * PRIVATE(this)->textsize + xpos, v2[1] * PRIVATE(this)->textsize + ypos, 0.0f));
         this->shapeVertex(&vertex);
       }
@@ -842,9 +864,9 @@ SoVRMLText::generatePrimitives(SoAction * action)
         else 
           ypos += PRIVATE(this)->textsize;       
       } else if (PRIVATE(this)->lefttorighttext)
-        xpos += (width + stretchfactor) * PRIVATE(this)->textsize * compressfactor; 
+        xpos += (advancex + stretchfactor) * PRIVATE(this)->textsize * compressfactor; 
     }
-
+    
     if (PRIVATE(this)->horizontaltext) {
       if (PRIVATE(this)->toptobottomtext)
         ypos -= spacing * PRIVATE(this)->maxglyphheight;
