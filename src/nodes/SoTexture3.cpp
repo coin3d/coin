@@ -99,6 +99,8 @@
 /*!
   \var SoSFEnum SoTexture3::wrapR
   Wrapping strategy for the R coordinate (depth).
+
+  \since 2001-MM-DD
 */
 /*!
   \var SoSFEnum SoTexture3::wrapS
@@ -141,6 +143,7 @@ SoTexture3::SoTexture3(void)
 
   SO_NODE_SET_SF_ENUM_TYPE(wrapS, Wrap);
   SO_NODE_SET_SF_ENUM_TYPE(wrapT, Wrap);
+  SO_NODE_SET_SF_ENUM_TYPE(wrapR, Wrap);
 
   SO_NODE_DEFINE_ENUM_VALUE(Model, MODULATE);
   SO_NODE_DEFINE_ENUM_VALUE(Model, DECAL);
