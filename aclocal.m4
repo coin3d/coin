@@ -4710,7 +4710,7 @@ inline TestClass::TestClass(int) { for (int i=0; i<1; i++) i=0; }
 if test x"$sim_cv_c_inlinefor" = x"yes"; then
   ifelse([$1], , :, [$1])
 else
-  SIM_AC_ERROR([c--])
+  SIM_AC_ERROR([c--inlinefor])
   $2
 fi
 ])

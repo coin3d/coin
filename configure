@@ -8287,10 +8287,10 @@ echo >&2 ""
 
 : ${sim_ac_message_file=$ac_aux_dir/m4/errors.txt}
 if test -f $sim_ac_message_file; then
-  sim_ac_message="`sed -n -e '/^!c--$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
+  sim_ac_message="`sed -n -e '/^!c--inlinefor$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
   if test x"$sim_ac_message" = x""; then
-    { { echo "$as_me:$LINENO: error: no message named 'c--' in '$sim_ac_message_file' - notify the $PACKAGE_NAME maintainer(s)" >&5
-echo "$as_me: error: no message named 'c--' in '$sim_ac_message_file' - notify the $PACKAGE_NAME maintainer(s)" >&2;}
+    { { echo "$as_me:$LINENO: error: no message named 'c--inlinefor' in '$sim_ac_message_file' - notify the $PACKAGE_NAME maintainer(s)" >&5
+echo "$as_me: error: no message named 'c--inlinefor' in '$sim_ac_message_file' - notify the $PACKAGE_NAME maintainer(s)" >&2;}
    { (exit 1); exit 1; }; }
   else
     eval "echo >&2 \"$sim_ac_message\""
