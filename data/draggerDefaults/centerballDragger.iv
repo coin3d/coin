@@ -27,6 +27,11 @@ DEF CENTERBALL_STRIPE Separator {
    # This is needed because SoDragger::GLRender() sets up default
    # rendering for dragger geometry to be backface culled.
    ShapeHints {
+      # Note: removing this node doesn't seem to have any influence on
+      # the geometry on most systems, but "backfacing lines" are not
+      # rendered on my NVidia RIVA TNT2 card, Linux system, tested
+      # with many different driver versions up to and including at
+      # least 53.36.
       shapeType UNKNOWN_SHAPE_TYPE
       vertexOrdering UNKNOWN_ORDERING
    }
