@@ -1,5 +1,7 @@
-Here is some information about a common problem when building on IBM
-AIX platforms:
+Here is some information about a few common problems when building on
+IBM AIX platforms:
+
+========================================================================
 
  1 If you get the error message "Arg list too long" when linking the
    Coin library, you need to re-run ``configure'' with the
@@ -14,19 +16,32 @@ AIX platforms:
    the README.IRIX file.
 
 
- 2 There have been a report on the configure and build process not
-   being able to find the correct linker and/or combination of linker
-   arguments to properly link together the final libCoin.[so|a]
-   file.
+ 2 We have a report on the final link-stage of a build-process
+   initiated with the ``--enable-compact'' option to configure ending
+   in this error from the AIX linker when used with GNU GCC:
 
-   We do not have an AIX platform to test on, so we can't reproduce
-   and fix this problem. We would be grateful for any further input
-   provided from people using Coin on AIX.
+     ld: 0711-781 ERROR: TOC overflow. TOC size: 78464 Maximum size: 65536
 
+   You should be able to fix this by either passing the -mminimal-toc
+   option to the GCC compiler, like this:
+
+     $ <srcpath>/configure <youroptions> CFLAGS=-mminimal-toc
+
+   or the -bbigtoc option to the linker, like this:
+
+     $ <srcpath>/configure <youroptions> LDFLAGS=-bbigtoc
+
+   Note that the last option needs PRPQ P91128 for AIX ld.
+
+========================================================================
 
 These are so far the only problems we are aware of on IBM AIX
 platforms when trying to configure and build Coin. If you bump into
 any other problems, please let us know.
+
+Note that we do not have an AIX platform to test on, so we can't
+reproduce and fix this problem. We would be grateful for any further
+input provided from people using Coin on AIX.
 
 --
 mortene@sim.no
