@@ -522,8 +522,6 @@ SbTesselator::clippable(SbTVertex *v)
 void
 SbTesselator::emitTriangle(SbTVertex *t)
 {
-  SbTVertex *tmp;
-
   assert(t);
   assert(t->next);
   assert(t->next->next);
@@ -531,21 +529,19 @@ SbTesselator::emitTriangle(SbTVertex *t)
 
   this->callback(t->data, t->next->data, t->next->next->data,
                  this->callbackData);
-  tmp = t->next;
-  t->next = t->next->next;
-  tmp->next->prev = t;
+
+  this->cutTriangle(t);
 }
 
+// Cuts t->next out of the triangle vertex list.
 //
-// Throw away triangle
-//
+// FIXME: bad design, this should have been a method on
+// SbTVertex. 20031007 mortene.
 void
-SbTesselator::cutTriangle(SbTVertex *t)
+SbTesselator::cutTriangle(SbTVertex * t)
 {
-  SbTVertex *tmp;
-  tmp=t->next;
-  t->next=t->next->next;
-  tmp->next->prev = t;
+  t->next->next->prev = t;
+  t->next = t->next->next;
 }
 
 //
