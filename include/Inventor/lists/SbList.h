@@ -27,7 +27,10 @@
 
 template <class Type>
 class SbList {
-  const int DEFAULTSIZE = 4;
+  // Older compilers aren't too happy about const declarations in the
+  // class definitions, so use the enum trick described by Scott
+  // Meyers in "Effective C++".
+  enum { DEFAULTSIZE = 4 };
 
 public:
   SbList(const int sizehint = DEFAULTSIZE);
