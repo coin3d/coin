@@ -111,6 +111,7 @@ SoVRMLIndexedShape::getVertexData(SoState * state,
   if (this->texCoordIndex.getNum() <= 0 || tindices[0] < 0) tindices = NULL;
 
   normalcacheused = FALSE;
+  nindices = NULL;
 
   if (neednormals) {
     nindices = this->normalIndex.getValues(0);
