@@ -23,7 +23,6 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/projectors/SbCylinderPlaneProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <coindefs.h> // COIN_STUB()
 
 #include <data/draggerDefaults/rotateCylindricalDragger.h>
 
@@ -164,13 +163,25 @@ SoRotateCylindricalDragger::getProjector(void) const
 void
 SoRotateCylindricalDragger::copyContents(const SoFieldContainer * fromfc, SbBool copyconnections)
 {
+  inherited::copyContents(fromfc, copyconnections);
+  
   assert(fromfc->isOfType(SoRotateCylindricalDragger::getClassTypeId()));
   SoRotateCylindricalDragger *from = (SoRotateCylindricalDragger *)fromfc;
-  this->cylinderProj = (SbCylinderProjector*)from->cylinderProj->copy();
-  this->userProj = FALSE;
-  if (copyconnections) {
-    COIN_STUB();
+  if (!this->userProj) {
+    delete this->cylinderProj; 
   }
+  this->cylinderProj = NULL;
+  
+  if (from->cylinderProj) {
+    this->cylinderProj = (SbCylinderProjector*) 
+      from->cylinderProj->copy();
+  }
+  else {
+    // just create a new one
+    this->cylinderProj = new SbCylinderPlaneProjector();
+  }
+  // we copied or created a new one, and need to delete it.
+  this->userProj = FALSE;
 }
 
 void
@@ -210,7 +221,7 @@ SoRotateCylindricalDragger::dragStart(void)
 
   this->cylinderProj->setViewVolume(this->getViewVolume());
   this->cylinderProj->setWorkingSpace(this->getLocalToWorldMatrix());
-  
+
   switch (this->getFrontOnProjector()) {
   case FRONT:
     this->cylinderProj->setFront(TRUE);

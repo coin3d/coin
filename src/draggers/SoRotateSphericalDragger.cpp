@@ -23,7 +23,6 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/projectors/SbSpherePlaneProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <coindefs.h> // COIN_STUB()
 
 #include <data/draggerDefaults/rotateSphericalDragger.h>
 
@@ -166,15 +165,21 @@ SoRotateSphericalDragger::getProjector(void) const
 void
 SoRotateSphericalDragger::copyContents(const SoFieldContainer * fromfc, SbBool copyconnections)
 {
+  inherited::copyContents(fromfc, copyconnections);
   assert(fromfc->isOfType(SoRotateSphericalDragger::getClassTypeId()));
   SoRotateSphericalDragger *from = (SoRotateSphericalDragger*) fromfc;
 
-  this->sphereProj = (SbSphereProjector*)from->sphereProj->copy();
-  this->userProj = FALSE;
-
-  if (copyconnections) {
-    COIN_STUB();
+  if (!this->userProj) {
+    delete this->sphereProj;
   }
+  if (from->sphereProj) {
+    this->sphereProj = (SbSphereProjector*)from->sphereProj->copy();
+  }
+  else {
+    this->sphereProj = new SbSpherePlaneProjector();
+  }
+  // we copied or created a new one, and need to delete it
+  this->userProj = FALSE;
 }
 
 void
