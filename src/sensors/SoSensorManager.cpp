@@ -22,7 +22,7 @@
   \brief The SoSensorManager class handles the sensor queues.
   \ingroup sensors
 
-  TODO: doc
+  FIXME: doc
 
   ..provides methods for inserting, removing, processing (emptying)
   queues of sensors..
@@ -270,9 +270,15 @@ SoSensorManager::processTimerQueue(void)
 
 /*!
   Trigger all delay queue entries in priority order.
+
+  The \a isidle flag indicates whether or not the processing happens
+  because the application is idle or because the delay queue timeout
+  was reached.
+
+  \sa SoDB::setDelaySensorTimeout()
  */
 void
-SoSensorManager::processDelayQueue(SbBool /* isIdle */)
+SoSensorManager::processDelayQueue(SbBool isidle)
 {
   if (this->processingdelayqueue || this->delayqueue.getLength() == 0)
     return;
@@ -284,16 +290,23 @@ SoSensorManager::processDelayQueue(SbBool /* isIdle */)
 
   this->processingdelayqueue = TRUE;
 
-  // FIXME: isIdle flag should be considered for something..? 19990205 mortene.
-
   // Sensors with higher priorities are triggered first.
   while (this->delayqueue.getLength()) {
 #if DEBUG_DELAY_SENSORHANDLING // debug
     SoDebugError::postInfo("SoSensorManager::processDelayQueue",
-                           "trigger element with pri %d",
+                           "treat element with pri %d",
                            this->delayqueue[i]->getPriority());
 #endif // debug
-    this->delayqueue[0]->trigger();
+
+    if (!isidle && this->delayqueue[0]->isIdleOnly()) {
+      // Will be merged back into the "real" queue after processing
+      // has completed and queue has emptied.
+      this->insertDelaySensor(this->delayqueue[0]);
+      this->delayqueue[0]->unschedule();
+    }
+    else {
+      this->delayqueue[0]->trigger();
+    }
   }
 
   this->processingdelayqueue = FALSE;
@@ -525,7 +538,7 @@ int
 SoSensorManager::doSelect(int /* nfds */, fd_set * /* readfds */, fd_set * /* writefds */,
                           fd_set * /* exceptfds */, struct timeval * /* userTimeOut */)
 {
-  // TODO: implement. See SoDB::doSelect() (which should probably only
+  // FIXME: implement. See SoDB::doSelect() (which should probably only
   // be a wrapper around this call). 19990425 mortene.
   COIN_STUB();
   return 0;

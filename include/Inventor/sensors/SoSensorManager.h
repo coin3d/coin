@@ -50,7 +50,7 @@ public:
   void rescheduleTimer(SoTimerSensor * s);
   void removeRescheduledTimer(SoTimerQueueSensor * s);
 
-  void processDelayQueue(SbBool isIdle);
+  void processDelayQueue(SbBool isidle);
   void processImmediateQueue(void);
   void processTimerQueue(void);
 

@@ -19,26 +19,29 @@
 
 /*!
   \class SoIdleSensor SoIdleSensor.h Inventor/sensors/SoIdleSensor.h
-  \brief The SoIdleSensor class is a sensor which will trigger as soon as
-  the application is idle.
+  \brief The SoIdleSensor class is a sensor which will trigger as soon as the application is idle.
   \ingroup sensors
 
-  TODO: doc
- */
+  An SoIdleSensor differs from an SoOneShotSensor in that it will not
+  trigger if the delay queue processing is occurring due to the delay
+  queue timeout, but \e only when the application is idle.
+
+  \sa SoDB::setDelaySensorTimeout()
+*/
 
 #include <Inventor/sensors/SoIdleSensor.h>
 #include <assert.h>
 
 /*!
-  Constructor.
+  Default constructor.
  */
 SoIdleSensor::SoIdleSensor(void)
 {
 }
 
 /*!
-  Constructor taking as parameters the sensor callback function and the
-  userdata which will be passed the callback.
+  Constructor taking as parameters the sensor callback function and
+  the userdata which will be passed the callback.
 
   \sa setFunction(), setData()
  */
@@ -52,4 +55,12 @@ SoIdleSensor::SoIdleSensor(SoSensorCB * func, void * data)
 */
 SoIdleSensor::~SoIdleSensor(void)
 {
+}
+
+// Only processed when application is idle -- not at delay queue
+// timeouts.
+SbBool
+SoIdleSensor::isIdleOnly(void) const
+{
+  return TRUE;
 }

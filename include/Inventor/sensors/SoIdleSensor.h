@@ -30,6 +30,9 @@ public:
   SoIdleSensor(void);
   SoIdleSensor(SoSensorCB * func, void * data);
   virtual ~SoIdleSensor(void);
+
+private:
+  virtual SbBool isIdleOnly(void) const;
 };
 
 #endif // !COIN_SOIDLESENSOR_H

@@ -40,6 +40,8 @@ public:
   virtual void unschedule(void);
   virtual SbBool isScheduled(void) const;
 
+  virtual SbBool isIdleOnly(void) const;
+
 protected:
   SbBool scheduled;
 

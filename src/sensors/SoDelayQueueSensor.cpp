@@ -19,12 +19,16 @@
 
 /*!
   \class SoDelayQueueSensor SoDelayQueueSensor.h Inventor/sensors/SoDelayQueueSensor.h
-  \brief The SoDelayQueueSensor class is the abstract base class for
-  priority scheduled sensors.
+  \brief The SoDelayQueueSensor class is the abstract base class for priority scheduled sensors.
   \ingroup sensors
 
-  TODO: doc
- */
+  Delay queue sensors are invoked upon various events \e not related
+  to time occurs. See documentation of subclasses to see which types
+  of events can be surveilled by the builtin sensor types.
+
+  The priority values can be used to queue events by their importance,
+  so the sensors are triggered in the sequence you want.
+*/
 
 #include <Inventor/sensors/SoDelayQueueSensor.h>
 #include <Inventor/SoDB.h>
@@ -36,11 +40,11 @@
 
 /*!
   \var SbBool SoDelayQueueSensor::scheduled
-  \a TRUE if the sensor is currently scheduled.
+  \c TRUE if the sensor is currently scheduled.
 */
 
 /*!
-  Constructor.
+  Default constructor.
  */
 SoDelayQueueSensor::SoDelayQueueSensor(void)
 {
@@ -49,12 +53,12 @@ SoDelayQueueSensor::SoDelayQueueSensor(void)
 }
 
 /*!
-  Constructor taking as parameters the sensor callback function and the
-  userdata which will be passed the callback.
+  Constructor taking as arguments the sensor callback function and
+  the userdata which will be passed the callback.
 
   \sa setFunction(), setData()
  */
-SoDelayQueueSensor::SoDelayQueueSensor(SoSensorCB *func, void *data)
+SoDelayQueueSensor::SoDelayQueueSensor(SoSensorCB * func, void * data)
   : inherited(func, data)
 {
   this->scheduled = FALSE;
@@ -82,9 +86,12 @@ SoDelayQueueSensor::setPriority(uint32_t pri)
 {
   this->priority = pri;
 
-  // FIXME: reschedule if new priority is != old priority?
-  // FIXME: immediately trigger if isScheduled()==TRUE and pri=0.
-  // 20000401 mortene.
+  if (this->isScheduled()) {
+    // Immediately trigger if scheduled and priority is set to zero.
+    if (pri == 0) this->trigger();
+    // FIXME: reschedule if new priority is != old priority?
+    // 20000401 mortene.
+  }
 }
 
 /*!
@@ -114,7 +121,7 @@ SoDelayQueueSensor::getDefaultPriority(void)
   triggered either when the CPU is idle, or when the specified delay
   queue time-out is reached.
 
-  \sa unschedule(), isScheduled()
+  \sa SoDB::setDelaySensorTimeout(), unschedule(), isScheduled()
  */
 void
 SoDelayQueueSensor::schedule(void)
@@ -157,6 +164,19 @@ SbBool
 SoDelayQueueSensor::isScheduled(void) const
 {
   return this->scheduled;
+}
+
+/*!
+  Returns a flag indicating whether or not the sensor should only be
+  triggered if the application is truly idle, and \e not when the
+  delay queue is processed because of the delay queue timeout.
+
+  \sa SoDB::setDelaySensorTimeout()
+ */
+SbBool
+SoDelayQueueSensor::isIdleOnly(void) const
+{
+  return FALSE;
 }
 
 SbBool
