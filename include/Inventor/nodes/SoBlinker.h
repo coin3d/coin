@@ -25,6 +25,9 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
 
+class SoSensor;
+class SoOneShotSensor;
+class SoTimeCounter;
 
 class SoBlinker : public SoSwitch {
   typedef SoSwitch inherited;
@@ -43,6 +46,16 @@ public:
 
 protected:
   virtual ~SoBlinker();
+  virtual void notify(SoNotList *list);
+
+private:
+  void setCounterLimits(void);
+  SoOneShotSensor *childrenSensor;
+  SoOneShotSensor *whichSensor;
+  SoTimeCounter *counter;
+
+  static void childrenCB(void *d, SoSensor *s);
+  static void whichCB(void *d, SoSensor *s);
 };
 
 #endif // !COIN_SOBLINKER_H
