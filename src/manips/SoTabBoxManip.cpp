@@ -21,6 +21,20 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoTabBoxManip SoTabBoxManip.h Inventor/manips/SoTabBoxManip.h
+  \brief The SoTabBoxManip class wraps an SoTabBoxDragger.
+  \ingroup manips
+
+  The SoTabBoxManip provides a convenient mechanism for the
+  application programmer for setting up an SoTabBoxDragger in the
+  scene connected to the relevant fields of an SoTransform node.
+
+  The interaction from the end-user with the manipulator will then
+  automatically influence the transformation matrix for the geometry
+  following it in the scenegraph.
+*/
+
 #include <Inventor/manips/SoTabBoxManip.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoSurroundScale.h>
@@ -28,13 +42,17 @@
 
 SO_NODE_SOURCE(SoTabBoxManip);
 
-// doc in super
+// Doc in superclass.
 void
 SoTabBoxManip::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTabBoxManip);
 }
 
+/*!
+  Constructor sets us up with an SoTabBoxDragger for manipulating a
+  transformation.
+*/
 SoTabBoxManip::SoTabBoxManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTabBoxManip);
@@ -42,12 +60,17 @@ SoTabBoxManip::SoTabBoxManip(void)
   SoTabBoxDragger *dragger = new SoTabBoxDragger;
   this->setDragger(dragger);
 
-  SoSurroundScale *ss = (SoSurroundScale*) dragger->getPart("surroundScale", TRUE);
+  SoSurroundScale * ss =
+    (SoSurroundScale *)dragger->getPart("surroundScale", TRUE);
   ss->numNodesUpToContainer = 4;
   ss->numNodesUpToReset = 3;
 }
 
 
+/*!
+  Protected destructor. (SoHandleBoxManip is automatically destructed
+  when it's reference count goes to 0.)
+ */
 SoTabBoxManip::~SoTabBoxManip()
 {
 }
