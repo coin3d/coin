@@ -313,9 +313,6 @@ SoTimeCounter::inputChanged(SoField * which)
       this->starttime = this->timeIn.getValue().getValue();
     }
   }
-  else {
-    assert(0 && "unknown field");
-  }
 
   // Either the timeIn field changed enough to reach a new step, or
   // some of the control fields changed -- so lets notify the slaves.
