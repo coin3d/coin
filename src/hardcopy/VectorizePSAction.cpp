@@ -34,6 +34,7 @@
 #include "VectorizeActionP.h"
 #include <Inventor/C/tidbitsp.h>
 #include <stdio.h>
+#include <math.h> // for floor() and ceil()
 
 // *************************************************************************
 
@@ -256,16 +257,16 @@ SoVectorizePSAction::printHeader(void) const
 {
   FILE * file = this->getOutput()->getFilePointer();
 
-  float viewport[4];
+  int viewport[4];
 
-  viewport[0] = PRIVATE(this)->convertToPS(this->getPageStartpos())[0];
-  viewport[1] = PRIVATE(this)->convertToPS(this->getPageStartpos())[1];
-  viewport[2] = PRIVATE(this)->convertToPS(this->getPageSize())[0];
-  viewport[3] = PRIVATE(this)->convertToPS(this->getPageSize())[1];
+  viewport[0] = int(floor(PRIVATE(this)->convertToPS(this->getPageStartpos())[0]));
+  viewport[1] = int(floor(PRIVATE(this)->convertToPS(this->getPageStartpos())[1]));
+  viewport[2] = int(ceil(PRIVATE(this)->convertToPS(this->getPageSize())[0]));
+  viewport[3] = int(ceil(PRIVATE(this)->convertToPS(this->getPageSize())[1]));
 
   fputs("%!PS-Adobe-2.0 EPSF-2.0\n", file);
   fprintf(file, "%%%%Creator: Coin 2.0\n");
-  fprintf(file, "%%%%BoundingBox: %g %g %g %g\n",
+  fprintf(file, "%%%%BoundingBox: %d %d %d %d\n",
           viewport[0], viewport[1], viewport[2], viewport[3]);
   fputs("%%EndComments\n", file);
   fputs("\n", file);
