@@ -456,6 +456,7 @@ SoGLLazyElement::sendDiffuseByIndex(int index) const
                                 "index %d out of bounds [0, %d] "
                                 "(this warning will only be printed once, but there "
                                 "might be more errors)",
+                                index,
                                 this->coinstate.numdiffuse-1);
       first = 0;
     }
