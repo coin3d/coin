@@ -193,4 +193,9 @@ X11 SDK, available at http://www.apple.com/macosx/x11/. Since the
 default on Mac OS X is not to use X11, you have to specify the
 --enable-x11 configure option.
 
+!smallchange-unavailable
+Could not build against the SmallChange library. If you are sure
+SmallChange is properly installed on your system, see the file
+config.log to find out what went wrong.
+
 !end
