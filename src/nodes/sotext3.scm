@@ -19,11 +19,16 @@
 ;;;;; Test input fields of SoText3 node, play around with these ;;;;;;;;;;;;;;
 
 ;; SoText3::parts
-(-> (-> text3 'parts) 'setvalue SoText3::ALL) ; FRONT/SIDES/BACK/ALL
+(-> (-> text3 'parts) 'setvalue SoText3::FRONT)
+(-> (-> text3 'parts) 'setvalue SoText3::SIDES)
+(-> (-> text3 'parts) 'setvalue SoText3::BACK)
+(-> (-> text3 'parts) 'setvalue SoText3::ALL)
 
 ;; SoText3::string
-(set-mfield-values! (-> text3 'string) 0
-                    (map new-sbstring '("tjo" "bing" "!")))
+(begin
+  (set-mfield-values! (-> text3 'string) 0
+                      (map new-sbstring '("tjo" "bing" "!!")))
+  (-> viewer 'viewall))
 
 ;; SoText3::justification
 (-> (-> text3 'justification) 'setvalue SoText3::CENTER) ; LEFT/RIGHT/CENTER
@@ -71,16 +76,37 @@
 (define coords2field (-> profile2coords 'point))
 (set-mfield-values! coords2field 0
                     '(
+                      ; For the first SoLinearProfile.
                       #(0.00 0.00)
-                      #(1.00 0.25)
-                      #(2.00 0.50)
-                      #(3.00 0.25)
+                      #(1.00 0.75)
+                      #(2.00 0.5)
+                      #(3.00 0.75)
                       #(4.00 0.00)
+
+                      ; For the second SoLinearProfile.
+                      #(5.00 0.00)
+                      #(6.00 0.75)
+                      #(7.00 0.5)
+                      #(8.00 0.75)
+                      #(9.00 0.00)
                       ))
 
-(define linearindex (-> linearprofile 'index))
-(set-mfield-values! linearindex 0 '(0 1 2 3 4))
+;; Try second set of coordinates first. FIXME: bugs
+(set-mfield-values! (-> linearprofile 'index) 0 '(5 6 7 8 9))
+;; Use first set.
+(set-mfield-values! (-> linearprofile 'index) 0 '(0 1 2 3 4))
 
+;; Add the second SoLinearProfile.
+(define linearprofile2 (new-solinearprofile))
+(-> (-> linearprofile2 'linkage) 'setvalue SoProfile::ADD_TO_CURRENT)
+(-> root 'insertchild linearprofile2 2)
+(set-mfield-values! (-> linearprofile2 'index) 0 '(5 6 7 8 9))
+
+;; Use only the second SoLinearProfile. FIXME: bugs
+(-> (-> linearprofile2 'linkage) 'setvalue SoProfile::START_NEW)
+
+;; Remove second SoLinearProfile.
+(-> root 'removechild linearprofile2)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Misc operations on the graph with the SoText3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
