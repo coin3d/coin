@@ -81,7 +81,7 @@
 
 /*!
   \var SoSFString SoTexture2::filename
-  Texture filename. Specify either this or use SoTeture2::image, not both.
+  Texture filename. Specify either this or use SoTexture2::image, not both.
 */
 /*!
   \var SoSFImage SoTexture2::image
@@ -101,7 +101,7 @@
 */
 /*!
   \var SoSFColor SoTexture2::blendColor
-  Blend color. Used when model is BLEND.
+  Blend color. Used when SoTexture2::model is SoTexture2::BLEND.
 */
 
 // *************************************************************************

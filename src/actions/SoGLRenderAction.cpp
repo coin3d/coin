@@ -177,10 +177,12 @@
 /*!
   \var SoGLRenderAction::TransparencyType SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD
 
+  This transparency type is a Coin extension versus the Open Inventor
+  API.
+
   Transparent objects are rendered using additive alpha blending,
   Transparent objects are rendered back to front, and triangles in
-  each object are sorted back to front before rendering. This
-  transparency type is a Coin extension versus the Open Inventor API.
+  each object are sorted back to front before rendering.
 
   See description for SORTED_OBJECT_SORTED_TRIANGLE_BLEND for more
   information about this transparency type.
@@ -190,11 +192,13 @@
 /*!
   \var SoGLRenderAction::TransparencyType SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND
 
+  This transparency type is a Coin extension versus the Open Inventor
+  API.
+
   Transparent objects are rendered using multiplicative alpha
   blending, Transparent objects are rendered back to front, and
   triangles in each object are sorted back to front before
-  rendering. This transparency type is a Coin extension versus the
-  Open Inventor API.
+  rendering.
 
   Use this transparency type when you have one (or more) transparent
   object where you know triangles might overlap inside the object.
