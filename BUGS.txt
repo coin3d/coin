@@ -1910,3 +1910,40 @@
     20031009 mortene, reported by kintel.
 
 =====================================================================
+
+079 SoPolygonOffset node only works for offsetting polygons?
+
+    The following example should, AFAICU, offset the lineset to
+    overlay the polygon:
+
+    --------------8<----------- [snip] ------------------8<--------
+    #Inventor V2.1 ascii
+    
+    Separator {
+       Coordinate3 { point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ] }
+    
+       BaseColor { rgb 0 0.5 0 }
+       FaceSet { numVertices [ 4 ] }
+    
+       PolygonOffset {
+         styles LINES
+         units -1.0
+       }
+    
+       BaseColor { rgb 1 1 0 }
+       IndexedLineSet { coordIndex [ 0, 1, 2, 3, 0, 2, -1, 1, 3 -1 ] }
+    }
+    --------------8<----------- [snip] ------------------8<--------
+
+    ..but at least on my box (Linux, NVidia drivers) this doesn't
+    work. Offsetting the polygons works as expected. According to
+    pederb, SoPolygonOffset is often seen to have problems on points
+    and lines. Should investigate more platforms and see if line /
+    point offsetting works at all on any of them -- if not, this
+    smells of a Coin bug.
+
+    I consider this a minor to medium priority problem.
+
+    20031011 mortene.
+
+=====================================================================
