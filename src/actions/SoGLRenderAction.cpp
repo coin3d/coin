@@ -885,12 +885,8 @@ SoGLRenderAction::addTransPath(SoPath * path)
 
   // test if we can find the bbox using SoShape::getBoundingBoxCache()
   // or SoShape::computeBBox. This is the common case, and quite a lot
-  // faster than using an SoGetBoundingBoxAction. We only do this if
-  // no cache is currently open, to avoid cache dependencies on model
-  // matrix and view volume, which would be very bad for cache
-  // performance.
-  if (!this->state->isCacheOpen() &&
-      tail->isOfType(SoShape::getClassTypeId())) { // common case
+  // faster than using an SoGetBoundingBoxAction.
+  if (tail->isOfType(SoShape::getClassTypeId())) { // common case
     SoShape * tailshape = (SoShape*) tail;
     const SoBoundingBoxCache * bboxcache = tailshape->getBoundingBoxCache();
     SbVec3f center;
@@ -914,15 +910,7 @@ SoGLRenderAction::addTransPath(SoPath * path)
     THIS->bboxaction->setViewportRegion(SoViewportRegionElement::get(this->state));
     THIS->bboxaction->apply(path);
     SbVec3f center = THIS->bboxaction->getBoundingBox().getCenter();
-    // Disable cache dependencies on the view volume. We just need it
-    // to calcuate the distance to the object and it should not affect
-    // GLRenderCaches. When a cache is closed, it just stops recording
-    // which elements that are read while the cache is created.
-    SbBool wasopen = this->state->isCacheOpen();
-    this->state->setCacheOpen(FALSE);
     dist = SoViewVolumeElement::get(this->state).getPlane(0.0f).getDistance(center);
-    // open the cache again (if it was open).
-    this->state->setCacheOpen(wasopen);
   }
   THIS->transpobjdistances.append(dist);
 }
