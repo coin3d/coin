@@ -517,8 +517,12 @@ SoPath::findFork(const SoPath * const path) const
   const int len = SbMin(this->getFullLength(), path->getFullLength());
   if (len == 0 || this->nodes[0] != path->nodes[0]) return -1;
   int i;
+
+  const int * thisidxptr = this->indices.getArrayPtr();
+  const int * pathidxptr = path->indices.getArrayPtr();
+
   for (i = 1; i < len; i++) {
-    if (this->indices[i] != path->indices[i]) break;
+    if (thisidxptr[i] != pathidxptr[i]) break;
   }
   return i - 1;
 }
@@ -532,7 +536,8 @@ int
 SoPath::findNode(const SoNode * const node) const
 {
   const int len = this->getFullLength();
-  for (int i = 0; i < len; i++) if (this->nodes[i] == node) return i;
+  const SoNode ** nodeptr = (const SoNode**) this->nodes.getArrayPtr();
+  for (int i = 0; i < len; i++) if (nodeptr[i] == node) return i;
   return -1;
 }
 
@@ -559,9 +564,12 @@ SoPath::containsPath(const SoPath * const path) const
 
   int offset = this->findNode(path->nodes[0]); // find head in this path
   if ((offset < 0) || (offset + thatlen > thislen)) return FALSE;
+ 
+  const int * thisidxptr = this->indices.getArrayPtr();
+  const int * pathidxptr = path->indices.getArrayPtr();
 
   for (int i = 1; i < thatlen; i++) {
-    if (this->indices[offset+i] != path->indices[i]) return FALSE;
+    if (thisidxptr[offset+i] != pathidxptr[i]) return FALSE;
   }
   return TRUE;
 }
@@ -579,8 +587,11 @@ operator==(const SoPath & lhs, const SoPath & rhs)
   if (len == 0) return TRUE;
   if (lhs.nodes[0] != rhs.nodes[0]) return FALSE;
 
+  const int * lhsptr = lhs.indices.getArrayPtr();
+  const int * rhsptr = rhs.indices.getArrayPtr();
+
   for (int i = 1; i < len; i++) {
-    if (lhs.indices[i] != rhs.indices[i]) return FALSE;
+    if (lhsptr[i] != rhsptr[i]) return FALSE;
   }
   return TRUE;
 }
