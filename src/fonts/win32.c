@@ -85,7 +85,7 @@ static void CALLBACK flww32_beginCallback(GLenum which);
 static void CALLBACK flww32_endCallback(void);
 static void CALLBACK flww32_combineCallback(GLdouble coords[3], GLvoid * data, GLfloat weight[4], int **dataOut);
 static void CALLBACK flww32_errorCallback(GLenum error_code);
-static void flww32_addTessVertex(double * vertex);
+static void flww32_addTessVertex(double x, double y);
 
 static void flww32_buildVertexList(struct cc_flw_vector_glyph * newglyph);
 static void flww32_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph);
@@ -880,8 +880,6 @@ flww32_getVerticesFromPath(HDC hdc)
 					
       /* Close the contour? */
       if (p_types[i] & PT_CLOSEFIGURE) {				
-        double vertex[3];
-	
 	if (flww32_win9598Me) {
 	  /* If the current OS is Windows95/98/Me, the last vertex
 	    must be added before closing the figure-path. If the OS is
@@ -889,23 +887,13 @@ flww32_getVerticesFromPath(HDC hdc)
 	    will lead to a 'gap' which looks quite ugly when
 	    extruded. The 'flww32_win9598Me' is a static SbBool
 	    initialized once in 'flww32_initialize()'. */
-	  vertex [0] = p_points[i].x;
-	  vertex [1] = p_points[i].y;
-	  vertex [2] = 0;
-	  flww32_addTessVertex(vertex);
+	  flww32_addTessVertex(p_points[i].x, p_points[i].y);
 	}
 
-        vertex [0] = p_points[lastmoveto].x;
-        vertex [1] = p_points[lastmoveto].y;
-        vertex [2] = 0;
-        flww32_addTessVertex(vertex);
+        flww32_addTessVertex(p_points[lastmoveto].x, p_points[lastmoveto].y);
       }
       else {
-        double vertex[3];
-        vertex [0] = p_points[i].x;
-        vertex [1] = p_points[i].y;
-        vertex [2] = 0;
-        flww32_addTessVertex(vertex);		
+        flww32_addTessVertex(p_points[i].x, p_points[i].y);		
       }
     }       
     if (p_points != NULL) free(p_points);
@@ -1085,23 +1073,24 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
 
 
 static void
-flww32_addTessVertex(double * vertex)
+flww32_addTessVertex(double x, double y)
 {
-
   int * counter = (int *)malloc(sizeof(int));
   float * point = (float *)malloc(sizeof(float)*2);
 
-  point[0] = flww32_tessellator.vertex_scale * ((float) vertex[0]);
-  point[1] = flww32_tessellator.vertex_scale * ((float) vertex[1]);
+  point[0] = flww32_tessellator.vertex_scale * (float)x;
+  point[1] = flww32_tessellator.vertex_scale * (float)y;
   cc_list_append(flww32_tessellator.vertexlist, point);
   
   cc_list_append(flww32_tessellator.edgeindexlist, (void *) (flww32_tessellator.vertex_counter));
 
   counter[0] = flww32_tessellator.vertex_counter++;
-  GLUWrapper()->gluTessVertex(flww32_tessellator.tessellator_object, vertex, counter);
+  {
+    GLdouble v[3] = { x, y, 0 };
+    GLUWrapper()->gluTessVertex(flww32_tessellator.tessellator_object, v, counter);
+  }
 
   cc_list_append(flww32_tessellator.edgeindexlist, (void *) (flww32_tessellator.vertex_counter));
-
 }
 
 
