@@ -290,7 +290,7 @@ int coin_glglue_extension_available(const char * extensions, const char * ext);
 #if (COIN_MINOR_VERSION > 2)
 #error Update public API!
 #endif
-void cc_glglue_context_max_dimensions(short * width, short * height);
+void cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height);
 
 
 #ifdef __cplusplus
