@@ -21,6 +21,10 @@
  *
 \**************************************************************************/
 
+// FIXME: should be documented and be part of the Doxygen API doc,
+// since it's a public class (and possibly useful
+// externally). 20030225 mortene.
+
 #include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/lists/SbList.h>
 
