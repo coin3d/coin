@@ -118,16 +118,18 @@ protected:
   virtual void setDefaultOnNonWritingFields(void);
   void countMyFields(SoOutput * out);
 
+  virtual SbBool setPart(const int partNum, SoNode * node);
+
   SoChildList * children;
   SbBool connectionsSetUp;
 
 private:
+  friend class SoInteractionKit;
   static SbBool findPart(const SbString & partName, SoBaseKit *& kit,
                          int & partNum, SbBool & isList, int & listIdx,
                          const SbBool makeIfNeeded, SoPath * path = NULL);
 
   SbBool makePart(const int partNum);
-  SbBool setPart(const int partNum, SoNode * node);
   int getRightSiblingIndex(const int partNum);
 
   static SoNodekitCatalog * classcatalog;

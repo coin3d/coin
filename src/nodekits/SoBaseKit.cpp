@@ -160,8 +160,31 @@ SoBaseKit::getPart(const SbName & partname, SbBool makeifneeded)
   FIXME: write function documentation
 */
 SbString
-SoBaseKit::getPartString(const SoBase * /*part*/)
+SoBaseKit::getPartString(const SoBase *part)
 {
+#if 0 // under development
+  SoFullPath *path = NULL;
+  SoSearchAction sa;
+  if (part->isOfType(SoPath::getClassTypeId())) {
+    path = (SoFullPath*)part;
+  }
+  else {
+    assert(part->isOfType(SoNode::getClassTypeId()));
+    SbBool oldSearch = SoBaseKit::isSearchingChildren();
+    SoBaseKit::setSearchingChildren(TRUE);
+    sa.setNode((SoNode*)part);
+    sa.setInterest(SoSearchAction::FIRST);
+    sa.setSearchingAll(FALSE);
+    sa.apply(this);
+    path = (SoFullPath*) sa.getPath();
+    SoBaseKit::setSearchingChildren(oldSearch);
+  }
+
+  if (path) {
+    int n = path->getLength();
+    path->unref();
+  }
+#endif
   COIN_STUB();
   return SbString();
 }
@@ -664,9 +687,6 @@ SoBaseKit::createPathToAnyPart(const SbName &partname, SbBool makeifneeded, SbBo
 {
   // FIXME: leafcheck and publiccheck support, pederb 2000-01-07
 
-  // FIXME: need to investigate whether containerNode for lists should be
-  // in the path. pederb, 2000-01-07
-
   SoPath *path;
   if (pathtoextend) {
     path = pathtoextend->copy();
@@ -711,6 +731,7 @@ SoBaseKit::createPathToAnyPart(const SbName &partname, SbBool makeifneeded, SbBo
           return NULL;
         }
         else {
+          path->append(list->getContainerNode());
           path->append(list->getChild(listIdx));
         }
       }
@@ -975,6 +996,7 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
 #endif // COIN_DEBUG
       return FALSE;
     }
+    firstpartname = partname.getSubString(0, startbracket-stringptr-1);
     listIdx = (int) listindex;
     isList = TRUE;
   }
@@ -1000,7 +1022,8 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
     kit->makePart(partNum);
   }
 
-  if (periodptr == NULL) { // singlename found, do not recurse any more
+  if (periodptr == NULL) {
+    // singlename or singlelistname found, do not recurse any more
     return TRUE; // all info has been found, just return TRUE
   }
   else { // recurse
@@ -1008,10 +1031,8 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
     if (node == NULL) return FALSE;
     SbString newpartname = partname.getSubString(periodptr-stringptr+1);
     if (isList) {
-      if (path) path->append(node);
-      SoChildList *children = node->getChildren();
-      assert(children != NULL);
-      if (listIdx < 0 || listIdx >= children->getLength()) {
+      SoNodeKitListPart *list = (SoNodeKitListPart*) node;
+      if (listIdx < 0 || listIdx >= list->getNumChildren()) {
 #if COIN_DEBUG
         SoDebugError::postInfo("SoBaseKit::findPart",
                                "index (%d) out of bounds for part ``%s''",
@@ -1020,16 +1041,21 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
 #endif // COIN_DEBUG
         return FALSE;
       }
-      SoNode *partnode = (*children)[listIdx];
+      SoNode *partnode = list->getChild(listIdx);
       assert(partnode->isOfType(SoBaseKit::getClassTypeId()));
       kit = (SoBaseKit*)partnode;
+
+      if (path) {
+        path->append(list);
+        path->append(list->getContainerNode());
+      }
     }
     else {
       // FIXME: replace with test and debug message? pederb, 2000-01-04
       assert(node->isOfType(SoBaseKit::getClassTypeId()));
       kit = (SoBaseKit*)node;
     }
-    path->append(kit);
+    if (path) path->append(kit);
     return SoBaseKit::findPart(newpartname, kit, partNum, isList,
                                listIdx, makeIfNeeded);
   }
@@ -1050,11 +1076,14 @@ SoBaseKit::makePart(const int partNum)
   return this->setPart(partNum, node);
 }
 
-//
-// sets parts, updates nodekit scene graph, and makes sure
-// graph is valid with respect to right siblings and parents.
-// if node is NULL, part will be removed
-//
+/*!
+  Sets parts, updates nodekit scene graph, and makes sure
+  graph is valid with respect to right siblings and parent.
+  This method is virtual to enable subclasses to detect when a
+  part changes value.
+
+  This method is not part of the OIV API.
+*/
 SbBool
 SoBaseKit::setPart(const int partNum, SoNode *node)
 {
