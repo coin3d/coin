@@ -63,10 +63,27 @@
   can be seen from the usage example in the SoSurroundScale class
   documentation.
 
-  One common way of using only \e parts of a dragger is to replace /
-  disable the geometry that you don't want the end-user to interact
-  with. The following code example shows how to remove the translation
-  functionality of the SoTransformBoxDragger:
+  The appearance of draggers can be modified by either using the
+  SoDragger::setPart() method (see usage example below) or by setting
+  up external Inventor-format files which the geometry parts are read
+  from. The latter method can be done by setting the environment
+  variable \c SO_DRAGGER_DIR to point to a directory with replacement
+  geometry files. The name of the new files and the name of the nodes
+  / sub-graphs with the replacement geometries must follow a rigid
+  scheme. We advise you to look at the Coin sourcecode directory
+  Coin/data/draggerDefaults/ to see how the replacement geometry files
+  should be named. Setting \c SO_DRAGGER_DIR to this directory and
+  modifying the files there provides a convenient way to play around
+  with new dragger geometry arrangements.
+
+
+  As mentioned above, SoDragger::setPart() can be used to modify the
+  appearance of a dragger by changing it's default geometry. One
+  common technique is for instance to take advantage of this to use
+  only \e parts of a dragger, by replacing / disabling the geometry
+  that you don't want the end-user to interact with. The following
+  code example shows how to remove the translation functionality of
+  the SoTransformBoxDragger:
 
   \code
   #include <Inventor/Qt/SoQt.h>
