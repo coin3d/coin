@@ -531,7 +531,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
     // FIXME: test if we actually got a pbuffer. pederb, 2003-11-27
     
     if (this->glaction) delete this->glaction;
-    this->glaction = new SoGLRenderAction(SbViewportRegion(size));
+    this->glaction = new SoGLRenderAction(SbViewportRegion(this->glcontextsize));
     this->glaction->addPreRenderCallback(SoSceneTexture2P::prerendercb, (void*) this);
     this->glimagevalid = FALSE;
   }
