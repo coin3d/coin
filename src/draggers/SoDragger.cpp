@@ -22,21 +22,24 @@
   \brief The SoDragger class is the base class for all draggers.
   \ingroup draggers
 
-  In holds the motion matrix, and offers lots of convenience methods
-  for subdraggers. The motion matrix is used to modify the model matrix
-  during traversal, and all draggers should update this during dragging.
+  It holds the motion matrix, and offers lots of convenience methods
+  for subdraggers. The motion matrix is used to modify the model
+  matrix during traversal, and all draggers should update this during
+  dragging.
 */
 
 /*!
   \var SoSFBool SoDragger::isActive
-  Is TRUE whenever the user is interacting with the dragger.
+  Is \c TRUE whenever the user is interacting with the dragger.
 */
 
 /*!
   \enum SoDragger::ProjectorFrontSetting 
-  Holds various settings for projectors, which might affect cylindrical and spherical based draggers.
-  Specifies whether dragging should be based on the front or back of the 
-  sphere/cylinder, or if the picked point should be used to decide this.
+
+  Holds various settings for projectors, which might affect
+  cylindrical and spherical based draggers.  Specifies whether
+  dragging should be based on the front or back of the sphere /
+  cylinder, or if the picked point should be used to decide this.
 */
 
 /*!

@@ -19,11 +19,25 @@
 
 /*!
   \class SoDragPointDragger SoDragPointDragger.h Inventor/draggers/SoDragPointDragger.h
-  \brief The SoDragPointDragger class is (FIXME: doc)
+  \brief The SoDragPointDragger class provides mechanisms for moving a point in 3D.
   \ingroup draggers
+
+  This dragger is convenient to use when it is desirable that the
+  end-user should interact with points by positioning them freely in
+  3D space.
+
+  The dragger consists of a part for 2D motion in a plane (like the
+  SoTranslate2Dragger) and another part on the axis normal to the
+  plane.
+
+  While the dragger is inactive (ie the user is not currently grabbing
+  and/or dragging it's parts), any of the CTRL keys on the keyboard
+  can be used to switch the orientation of the 2D-plane part and the
+  normal-axis part so the normal-axis part points along one of the
+  other principal axes.
 */
-// FIXME: document class properly. Should include a diagram of the
-// catalog structure. Plus a link to the default geometry-file?
+// FIXME: Should include a diagram of the catalog structure in the
+// class documentation. Plus an URL-link to the default geometry-file?
 // 20010909 mortene.
 
 #include <Inventor/draggers/SoDragPointDragger.h>
