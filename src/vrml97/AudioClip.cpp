@@ -148,7 +148,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/SoInput.h>
+
 #include <string.h>
+#include <stdio.h> // for EOF
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -418,9 +420,60 @@ SoVRMLAudioClip::setCallbacks(open_func *opencb, read_func *readcb,
   PRIVATE(this)->callbackuserdataptr = userdataptr;
 }
 
+void * 
+SoVRMLAudioClip::open(const SbStringList &url)
+{
+  if (PRIVATE(this)->open == NULL)
+    return NULL;
+
+#ifdef HAVE_THREADS
+  SbThreadAutoLock autoLock(&PRIVATE(this)->syncmutex);
+#endif
+  return PRIVATE(this)->open(url, this, PRIVATE(this)->callbackuserdataptr);
+}
+
+int
+SoVRMLAudioClip::seek(void *datasource, long offset, int whence)
+{
+  if (PRIVATE(this)->seek == NULL)
+    return -1;
+
+#ifdef HAVE_THREADS
+  SbThreadAutoLock autoLock(&PRIVATE(this)->syncmutex);
+#endif
+  return PRIVATE(this)->seek(datasource, offset, whence,
+                             this, PRIVATE(this)->callbackuserdataptr);
+}
+
+long
+SoVRMLAudioClip::tell(void *datasource)
+{
+  if (PRIVATE(this)->tell == NULL)
+    return -1L;
+
+#ifdef HAVE_THREADS
+  SbThreadAutoLock autoLock(&PRIVATE(this)->syncmutex);
+#endif
+  return PRIVATE(this)->tell(datasource, 
+                             this, PRIVATE(this)->callbackuserdataptr);
+}
+
+int
+SoVRMLAudioClip::close(void *datasource)
+{
+  if (PRIVATE(this)->close == NULL)
+    return EOF;
+
+#ifdef HAVE_THREADS
+  SbThreadAutoLock autoLock(&PRIVATE(this)->syncmutex);
+#endif
+  return PRIVATE(this)->close(datasource, 
+                              this, PRIVATE(this)->callbackuserdataptr);
+}
+
 size_t
 SoVRMLAudioClip::read(void *datasource, void *buffer,
-                            int numframes, int &channels)
+                      int numframes, int &channels)
 {
   assert (PRIVATE(this)->read != NULL);
 
