@@ -18,12 +18,13 @@
 \**************************************************************************/
 
 #include <Inventor/engines/SoConvertAll.h>
+#include <Inventor/SoDB.h>
+#include <Inventor/engines/SoSubEngineP.h>
+#include <Inventor/fields/SoFields.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/lists/SoFieldList.h>
-#include <Inventor/SoDB.h>
-#include <Inventor/fields/SoFields.h>
+#include <Inventor/lists/SoTypeList.h>
 #include <assert.h>
-#include <Inventor/engines/SoSubEngineP.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -492,6 +493,13 @@ static void mftime_to_mfstring(SoField * from, SoField * to)
   }
 }
 
+// Function for "converting" SoField -> SoSFTrigger _and_
+// SoSFTrigger -> SoField.
+static void to_and_from_sftrigger(SoField * from, SoField * to)
+{
+  to->setDirty(FALSE);
+}
+
 void
 SoConvertAll::register_converter(converter_func * f, SoType from, SoType to)
 {
@@ -861,6 +869,25 @@ SoConvertAll::initClass(void)
   SOCONVERTALL_ADDCONVERTER(mftime_to_mfstring, SoMFTime, SoMFString);
 
 #undef SOCONVERTALL_ADDCONVERTER
+
+  // Now add conversion to and from SoSFTrigger for all other
+  // non-abstract field types (all conversions done by the same
+  // function).
+
+  SoTypeList allfieldtypes;
+  int nrfieldtypes = SoType::getAllDerivedFrom(SoField::getClassTypeId(),
+                                               allfieldtypes);
+  for (int i=0; i < nrfieldtypes; i++) {
+    if (allfieldtypes[i].canCreateInstance() &&
+        allfieldtypes[i] != SoSFTrigger::getClassTypeId()) {
+      SoConvertAll::register_converter(to_and_from_sftrigger,
+                                       SoSFTrigger::getClassTypeId(),
+                                       allfieldtypes[i]);
+      SoConvertAll::register_converter(to_and_from_sftrigger,
+                                       allfieldtypes[i],
+                                       SoSFTrigger::getClassTypeId());
+    }
+  }
 }
 
 SoConvertAll::SoConvertAll(const SoType from, const SoType to)

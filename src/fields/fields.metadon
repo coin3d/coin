@@ -31,7 +31,7 @@
 # ID         SoSFShort
 # ID         SoSFString
 # ID         SoSFTime
-#            SoSFTrigger
+# ID         SoSFTrigger
 # ID         SoSFUInt32
 # ID         SoSFUShort
 # ID         SoSFVec2f
