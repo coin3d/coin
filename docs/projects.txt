@@ -34,3 +34,5 @@ projects:
   Suse Linux (.rpm), Debian (.pkg), HP-UX (depot), SGI IRIX
   (something), etc.  Check out the Samba distribution, there are lots
   of templates to look at.
+
+* Do the work needed for being compatible with 64-bit systems.
