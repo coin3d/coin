@@ -74,46 +74,39 @@
 
 class SoDraggerCache {
 public:
-  SoDraggerCache(SoDragger *parent) : path(4), dragger(parent) {
-
+  SoDraggerCache(SoDragger *parent) : 
+    path(4), 
+    dragger(parent),
+    matrixAction(new SoGetMatrixAction(dragger->getViewportRegion())),
+    draggerToWorld(SbMatrix::identity()),
+    worldToDragger(SbMatrix::identity())
+  {
   }
 
-  void checkUpdate(const SoFullPath *newpath, const int draggeridx) {
-    if (path.getHead() != newpath->getHead()) this->update(newpath, draggeridx);
-    else {
-      int i;
-      for (i = 1; i <= draggeridx; i++) {
-        if (this->path.getIndex(i) != newpath->getIndex(i)) break;
-        if (this->path.getNode(i) != newpath->getNode(i)) break;
-      }
-      if (i <= draggeridx) this->update(newpath, draggeridx);
-    }
-    this->updateMatrix();
+  ~SoDraggerCache() {
+    delete this->matrixAction;
   }
 
-  void updateMatrix() {
-    SoGetMatrixAction action(this->dragger->getViewportRegion());
-    action.apply(&this->path);
-    this->draggerToWorld = action.getMatrix();
-    this->worldToDragger = action.getInverse();
+  void updateMatrix(void) {
+    this->matrixAction->setViewportRegion(this->dragger->getViewportRegion());
+    this->matrixAction->apply(&this->path);
+    this->draggerToWorld = this->matrixAction->getMatrix();
+    this->worldToDragger = this->matrixAction->getInverse();
   }
-
-  SoTempPath path;
-  SoDragger *dragger;
-  SbMatrix draggerToWorld;
-  SbMatrix worldToDragger;
-
-  //
-  // FIXME: cache more matrices here, pederb
-  //
-
-private:
+  
   void update(const SoFullPath *newpath, const int draggeridx) {
     this->path.setHead(newpath->getHead());
     for (int i = 1; i <= draggeridx; i++) {
-      this->path.append(newpath->getNode(i));
+      this->path.append(newpath->getIndex(i));
     }
+    this->updateMatrix();
   }
+  
+  SoTempPath path;                 // use temp path to avoid auditor overhead
+  SoDragger *dragger;              // pointer to cache owner
+  SoGetMatrixAction *matrixAction; // avoid reallocating this action each frame
+  SbMatrix draggerToWorld;
+  SbMatrix worldToDragger;
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -405,7 +398,6 @@ SbMatrix
 SoDragger::getLocalToWorldMatrix(void)
 {
   assert(this->draggerCache);
-  this->draggerCache->updateMatrix();
   SbMatrix m = this->draggerCache->draggerToWorld;
   m.multLeft(this->getMotionMatrix());
   return m;
@@ -418,9 +410,7 @@ SoDragger::getLocalToWorldMatrix(void)
 SbMatrix
 SoDragger::getWorldToLocalMatrix(void)
 {
-  // FIXME: cache the inverse motion matrix
   assert(this->draggerCache);
-  this->draggerCache->updateMatrix();
   SbMatrix m = this->draggerCache->worldToDragger;
   m.multRight(this->getMotionMatrix().inverse());
   return m;
@@ -1234,6 +1224,6 @@ void
 SoDragger::updateDraggerCache(const SoPath *path)
 {
   if (this->draggerCache == NULL) this->draggerCache = new SoDraggerCache(this);
-  if (path) this->draggerCache->checkUpdate((const SoFullPath*)path, path->findNode(this));
+  if (path) this->draggerCache->update((const SoFullPath*)path, path->findNode(this));
   else this->draggerCache->updateMatrix();
 }
