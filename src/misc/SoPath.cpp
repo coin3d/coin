@@ -54,6 +54,7 @@ sopath_dump(SoPath * p)
 {
   SoFullPath * path = (SoFullPath *)p;
 
+  (void)fprintf(stderr, "(path %p, len %d)  ", path, path->getLength());
   for (int i=0; i < path->getLength(); i++) {
     SoNode * n = path->getNodeFromTail(i);
     (void)fprintf(stderr, "%p (%s), ",
@@ -110,7 +111,7 @@ SoPath::operator=(const SoPath & rhs)
 
   // Add ourself as an auditor to the children lists of the path.
   if (this->isauditing) {
-    for (int i = 0; i < this->getLength(); i++) {
+    for (int i = 0; i < this->getFullLength(); i++) {
       SoChildList * cl = this->nodes[i]->getChildren();
       if (cl) cl->addPathAuditor(this);
     }
@@ -153,7 +154,7 @@ SoPath::setHead(SoNode * const node)
 SoNode *
 SoPath::getHead(void) const
 {
-  if (this->nodes.getLength() == 0) return NULL;
+  if (this->getFullLength() == 0) return NULL;
   return (SoNode *) this->nodes[0];
 }
 
@@ -165,7 +166,7 @@ void
 SoPath::append(const int childindex)
 {
 #if COIN_DEBUG
-  if (this->nodes.getLength() == 0) {
+  if (this->getFullLength() == 0) {
     SoDebugError::post("SoPath::append",
                        "SoPath was empty.\n");
     return;
@@ -173,7 +174,7 @@ SoPath::append(const int childindex)
 #endif // COIN_DEBUG
 
   SoChildList * children =
-    this->nodes[this->nodes.getLength()-1]->getChildren();
+    this->nodes[this->getFullLength() - 1]->getChildren();
   assert(children);
 
 #if COIN_DEBUG
@@ -196,22 +197,22 @@ SoPath::append(const int childindex)
 void
 SoPath::append(SoNode * const node)
 {
-  if (this->nodes.getLength() == 0) {
+  if (this->getFullLength() == 0) {
     this->setHead(node);
     return;
   }
 
   SoChildList * children =
-    this->nodes[this->nodes.getLength()-1]->getChildren();
+    this->nodes[this->getFullLength() - 1]->getChildren();
   assert(children);
 
   const int idx = children->find((void *)node);
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
   if (idx < 0) {
     SoDebugError::post("SoPath::append", "node not found as child of tail");
     return;
   }
-#endif // debug
+#endif // COIN_DEBUG
 
   this->append(node, idx);
 }
@@ -225,18 +226,18 @@ SoPath::append(SoNode * const node)
 void
 SoPath::append(const SoPath * const frompath)
 {
-  if (!this->nodes.getLength()) { // append to empty path
+  if (!this->getFullLength()) { // append to empty path
     this->operator=(*frompath);
     return;
   }
 
-  if (!frompath->nodes.getLength()) // nothing to append
+  if (!frompath->getFullLength()) // nothing to append
     return;
 
   SoNode * const head = frompath->getHead();
-  SoNode * const tail = this->nodes[this->nodes.getLength() - 1];
+  SoNode * const tail = this->nodes[this->getFullLength() - 1];
   if (head == tail) { // easy
-    const int length = frompath->nodes.getLength();
+    const int length = frompath->getFullLength();
     for (int i = 1; i < length; i++) {
       this->append((SoNode *)frompath->nodes[i], frompath->indices[i]);
     }
@@ -263,7 +264,7 @@ SoPath::append(const SoPath * const frompath)
     SoNode * child = (*tailchildren)[kid];
     if (child == head) {
       this->append(head, kid);
-      const int length = frompath->nodes.getLength();
+      const int length = frompath->getFullLength();
       for (int i = 1; i < length; i++) {
         this->append((SoNode *)frompath->nodes[i], frompath->indices[i]);
       }
@@ -287,7 +288,7 @@ SoPath::append(SoNode * const node, const int index)
 {
   if (this->firsthidden < 0) {
     if (this->hasHiddenChildren(node))
-      this->firsthidden = this->nodes.getLength();
+      this->firsthidden = this->getFullLength();
   }
   this->nodes.append(node);
   this->indices.append(index);
@@ -332,6 +333,19 @@ SoPath::getTail(void) const
 #endif // COIN_DEBUG
     return NULL;
   }
+
+#if COIN_DEBUG && 0 // debug
+  int len = this->nodes.getLength();
+  (void)fprintf(stderr, "** getTail() **\n\tNODES(len=%d): ", len);
+  for (int i=0; i < len; i++)
+    (void)fprintf(stderr, "%p ", this->nodes[i]);
+  len = this->indices.getLength();
+  (void)fprintf(stderr, "\n\tIDX(len=%d): ", len);
+  for (int j=0; j < len; j++)
+    (void)fprintf(stderr, "%d ", this->indices[j]);
+  (void)fprintf(stderr, "\n");
+#endif // debug
+
   return this->nodes[this->getLength() - 1];
 }
 
@@ -343,7 +357,7 @@ SoNode *
 SoPath::getNode(const int index) const
 {
 #if COIN_DEBUG
-  if (index < 0 || index >= this->nodes.getLength()) {
+  if (index < 0 || index >= this->getFullLength()) {
     SoDebugError::post("SoPath::getNode", "index %d is out of bounds.",
                        index);
     return NULL;
@@ -377,12 +391,13 @@ int
 SoPath::getIndex(const int index) const
 {
 #if COIN_DEBUG
-  if (index < 0 || index >= this->indices.getLength()) {
+  if (index < 0 || index >= this->getFullLength()) {
     SoDebugError::post("SoPath::getIndex", "index %d is out of bounds.",
                        index);
     return -1;
   }
 #endif // COIN_DEBUG
+
   return this->indices[index];
 }
 
@@ -442,7 +457,7 @@ void
 SoPath::truncate(const int length, const SbBool donotify)
 {
 #if COIN_DEBUG
-  if (length < 0 || length > this->nodes.getLength()) {
+  if (length < 0 || length > this->getFullLength()) {
     SoDebugError::post("SoPath::truncate", "invalid length %d", length);
     return;
   }
@@ -452,6 +467,14 @@ SoPath::truncate(const int length, const SbBool donotify)
   if (this->isauditing) {
     for (int i = length; i < this->getFullLength(); i++) {
       SoChildList * cl = this->nodes[i]->getChildren();
+#if COIN_DEBUG && 0 // debug
+      if (cl) {
+        SoDebugError::postInfo("SoPath::truncate",
+                               "nodes[%d]=%p childlist=%p "
+                               "removePathAuditor(%p)",
+                               i, this->nodes[i], cl, this);
+      }
+#endif // debug
       if (cl) cl->removePathAuditor(this);
     }
   }
@@ -473,7 +496,7 @@ SoPath::truncate(const int length, const SbBool donotify)
 int
 SoPath::findFork(const SoPath * const path) const
 {
-  const int len = SbMin(this->nodes.getLength(), path->nodes.getLength());
+  const int len = SbMin(this->getFullLength(), path->getFullLength());
   if (len == 0 || this->nodes[0] != path->nodes[0]) return -1;
   int i;
   for (i = 1; i < len; i++) {
@@ -490,7 +513,7 @@ SoPath::findFork(const SoPath * const path) const
 int
 SoPath::findNode(const SoNode * const node) const
 {
-  const int len = this->nodes.getLength();
+  const int len = this->getFullLength();
   for (int i = 0; i < len; i++) if (this->nodes[i] == node) return i;
   return -1;
 }
@@ -512,8 +535,8 @@ SoPath::containsNode(const SoNode * const node) const
 SbBool
 SoPath::containsPath(const SoPath * const path) const
 {
-  int thislen = this->nodes.getLength();
-  int thatlen = path->nodes.getLength();
+  int thislen = this->getFullLength();
+  int thatlen = path->getFullLength();
   if (thatlen == 0 || thatlen > thislen) return FALSE;
 
   int offset = this->findNode(path->nodes[0]); // find head in this path
@@ -533,8 +556,8 @@ SbBool
 operator==(const SoPath & lhs, const SoPath & rhs)
 {
   if (&lhs == &rhs) return TRUE;
-  const int len = lhs.nodes.getLength();
-  if (len != rhs.nodes.getLength()) return FALSE;
+  const int len = lhs.getFullLength();
+  if (len != rhs.getFullLength()) return FALSE;
   if (len == 0) return TRUE;
   if (lhs.nodes[0] != rhs.nodes[0]) return FALSE;
 
@@ -566,18 +589,18 @@ SoPath::copy(const int startfromnodeindex, int numnodes) const
 {
 #if COIN_DEBUG
   if (startfromnodeindex < 0 ||
-      startfromnodeindex >= this->nodes.getLength()) {
+      startfromnodeindex >= this->getFullLength()) {
     SoDebugError::post("SoPath::copy",
                        "startfromnodeindex was out of bounds with %d.",
                        startfromnodeindex);
     return NULL;
   }
 #endif // COIN_DEBUG
-  if (numnodes == 0) numnodes = this->nodes.getLength() - startfromnodeindex;
+  if (numnodes == 0) numnodes = this->getFullLength() - startfromnodeindex;
 
 #if COIN_DEBUG
   if (numnodes <= 0 ||
-      (startfromnodeindex + numnodes) > this->nodes.getLength()) {
+      (startfromnodeindex + numnodes) > this->getFullLength()) {
     SoDebugError::post("SoPath::copy", "numnodes has invalid value %d",
                        numnodes);
     return NULL;
@@ -635,11 +658,19 @@ SoPath::getByName(const SbName name, SoPathList & l)
 void
 SoPath::insertIndex(SoNode * const parent, const int newindex)
 {
-  if (parent == this->getTail()) return;
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoPath::insertIndex",
+                         "(%p)  parent=%p, newindex=%d",
+                         this, parent, newindex);
+  sopath_dump(this);
+#endif // debug
+
+  if (parent == this->nodes[this->getFullLength() - 1]) return;
 
   int pos = this->findNode(parent);
   assert(pos != -1); // shouldn't be notified if parent is not in path
   pos++;
+
   if (newindex <= this->indices[pos]) this->indices[pos]++;
 }
 
@@ -654,10 +685,21 @@ SoPath::insertIndex(SoNode * const parent, const int newindex)
 void
 SoPath::removeIndex(SoNode * const parent, const int oldindex)
 {
-  if (parent == this->getTail()) return;
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoPath::removeIndex",
+                         "(%p)  parent=%p (%s), oldindex=%d",
+                         this,
+                         parent,
+                         parent->getTypeId().getName().getString(),
+                         oldindex);
+  sopath_dump(this);
+#endif // debug
+
+  if (parent == this->nodes[this->getFullLength() - 1]) return;
 
   int pos = this->findNode(parent);
-  assert(pos != -1); // shouldn't be notified if parent is not in path
+  // shouldn't be notified if parent is not in path
+  assert(pos >= 0 && pos < this->getFullLength()-1);
   pos++;
 
   if (oldindex < this->indices[pos]) this->indices[pos]--;
@@ -673,28 +715,36 @@ void
 SoPath::replaceIndex(SoNode * const parent, const int index,
                      SoNode * const newchild)
 {
-  if (parent == this->getTail()) return;
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoPath::replaceIndex",
+                         "(%p)  parent=%p (%s), newchild=%p (%s)",
+                         this,
+                         parent, parent->getTypeId().getName().getString(),
+                         newchild, newchild->getTypeId().getName().getString());
+
+#endif // debug
+
+  if (parent == this->nodes[this->getFullLength() - 1]) return;
 
   int pos = this->findNode(parent);
   assert(pos != -1); // shouldn't be notified if parent is not in path
   pos++;
 
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoPath::replaceIndex",
-                         "(%p)  parent: %p (%s), pos: %d",
-                         this,
-                         parent, parent->getTypeId().getName().getString(),
-                         pos,
-                         newchild, newchild->getTypeId().getName().getString());
-
-#endif // debug
-
   if (index == this->indices[pos]) {
     this->nodes.set(pos, newchild);
-    // If the newchild node is a group node _not_ at the tail, the
-    // remaining set of indices will not be correct -- so let's
-    // truncate the path here.
-    if (pos < (this->nodes.getLength() - 1)) this->truncate(pos);
+
+    // This is unnecessary and a bit silly, but it simplifies the code
+    // as we don't have to do anything special to check whether or not
+    // we're actually auditing SoChildList instances in the path. With
+    // this in place, we'll always be auditing all (or none, depending
+    // on the isauditing flag).
+    SoChildList * cl = newchild->getChildren();
+    if (cl && this->isauditing) cl->addPathAuditor(this);
+
+    // If the newchild node is a node _not_ at the tail, the remaining
+    // set of indices will not be correct -- so let's truncate the
+    // path here.
+    if (pos < (this->getFullLength() - 1)) this->truncate(pos);
   }
 
 #if COIN_DEBUG && 0 // debug
@@ -832,7 +882,9 @@ SoPath::isRelevantNotification(SoNotList * const l) const
 void
 SoPath::auditPath(const SbBool flag)
 {
-  assert(this->getLength() == 0); // Don't change value in a "running" SoPath.
+  // Don't change value in a "running" SoPath.
+  assert(this->getFullLength() == 0);
+
   this->isauditing = flag;
 }
 
