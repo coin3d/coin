@@ -348,13 +348,6 @@ coin_strncasecmp(const char * s1, const char * s2, int len)
 
 /**************************************************************************/
 
-enum CoinEndiannessValues {
-  COIN_HOST_IS_UNKNOWNENDIAN = -1,
-  COIN_HOST_IS_LITTLEENDIAN = 0,
-  COIN_HOST_IS_BIGENDIAN = 1
-};
-
-static
 int
 coin_host_get_endianness(void)
 {

@@ -33,6 +33,14 @@ extern "C" {
 
 /* ********************************************************************** */
 
+enum CoinEndiannessValues {
+  COIN_HOST_IS_UNKNOWNENDIAN = -1,
+  COIN_HOST_IS_LITTLEENDIAN = 0,
+  COIN_HOST_IS_BIGENDIAN = 1
+};
+
+int coin_host_get_endianness(void);
+
 int coin_snprintf(char * dst, unsigned int n, const char * fmtstr, ...);
 int coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args);
 
