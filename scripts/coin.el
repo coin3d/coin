@@ -1,7 +1,7 @@
 ;;; coin.el --- miscellaneous code which simplifies some of the more
 ;;; mundane tasks when editing Coin sources in GNU Emacs.
 
-;; Copyright (C) 1999 Systems in Motion.
+;; Copyright (C) 1998-2000 Systems in Motion.
 ;; Author: Morten Eriksen, <mortene@sim.no>.
 
 ;; This file is part of Coin.
