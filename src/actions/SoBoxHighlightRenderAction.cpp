@@ -437,7 +437,7 @@ SoBoxHighlightRenderActionP::drawNoShapeBox(const SoPath * path)
   }
   this->bboxtransform->matrix = transform; 
   
-  PUBLIC(this)->::SoGLRenderAction::apply(this->bboxseparator);
+  PUBLIC(this)->SoGLRenderAction::apply(this->bboxseparator);
 
   // remove camera
   this->bboxseparator->removeChild(0);
