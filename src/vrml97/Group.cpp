@@ -447,7 +447,7 @@ SoVRMLGroup::GLRenderBelowPath(SoGLRenderAction * action)
   SoGLCacheList * createcache = NULL;
   if (this->renderCaching.getValue() == ON) {
     // test if bbox is outside view-volume
-    if (this->cullTestNoPush(state)) {
+    if (!state->isCacheOpen() && this->cullTestNoPush(state)) {
       return;
     }
 
@@ -475,8 +475,9 @@ SoVRMLGroup::GLRenderBelowPath(SoGLRenderAction * action)
   state->push();
   if (createcache) createcache->open(action);
 
-  SbBool outsidefrustum = this->cullTest(state);
-
+  SbBool outsidefrustum = (createcache || state->isCacheOpen()) ? 
+    FALSE : this->cullTest(state);
+  
   if (createcache || !outsidefrustum) {
     int n = this->getChildren()->getLength();
     SoNode ** childarray = (SoNode**) this->getChildren()->getArrayPtr();

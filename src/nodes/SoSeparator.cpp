@@ -454,7 +454,7 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
       (SoSeparator::getNumRenderCaches() > 0)) {
 
     // test if bbox is outside view-volume
-    if (this->cullTestNoPush(state)) {
+    if (!state->isCacheOpen() && this->cullTestNoPush(state)) {
       return;
     }
     if (!THIS->glcachelist) {
@@ -480,8 +480,8 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
 
   state->push();
   if (createcache) createcache->open(action);
-
-  SbBool outsidefrustum = this->cullTest(state);
+  
+  SbBool outsidefrustum = createcache || state->isCacheOpen() ? FALSE : this->cullTest(state);
   if (createcache || !outsidefrustum) {
     int n = this->children->getLength();
     SoNode ** childarray = (SoNode**) this->children->getArrayPtr();
