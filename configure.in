@@ -141,9 +141,9 @@ fi
 
 if $BUILD_WITH_MSVC; then
   RANLIB=:
-else
-  AC_PROG_LIBTOOL
 fi
+
+AC_PROG_LIBTOOL
 
 # case "$host_os" in
 #   irix*)
