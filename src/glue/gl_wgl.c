@@ -322,17 +322,53 @@ wglglue_contextdata_cleanup(struct wglglue_contextdata * ctx)
 {
   if (ctx == NULL) { return; }
 
+  /* FIXME: the error handling below can and should be simplified, by
+     implementing and using excpetion catching wrappers from
+     glue/win32api. 20031124 mortene. */
+
   if (ctx->wglcontext && ctx->noappglcontextavail) {
-    (void)wglDeleteContext(ctx->wglcontext);
+    const BOOL r = wglDeleteContext(ctx->wglcontext);
+    if (!r) {
+      cc_win32_print_error("wglglue_contextdata_cleanup",
+                           "wglDeleteContext", GetLastError());
+    }
   }
-  if (ctx->oldbitmap) { (void)SelectObject(ctx->memorydc, ctx->bitmap); }
-  if (ctx->bitmap) { DeleteObject(ctx->bitmap); }
+  if (ctx->oldbitmap) {
+    const HGDIOBJ o = SelectObject(ctx->memorydc, ctx->oldbitmap);
+    if (!o) {
+      cc_win32_print_error("wglglue_contextdata_cleanup",
+                           "SelectObject", GetLastError());
+    }
+  }
+  if (ctx->bitmap) {
+    const BOOL r = DeleteObject(ctx->bitmap);
+    if (!r) {
+      cc_win32_print_error("wglglue_contextdata_cleanup",
+                           "DeleteObject", GetLastError());
+    }
+  }
   if (ctx->hpbuffer) {
-    wglglue_wglReleasePbufferDC(ctx->hpbuffer, ctx->memorydc);
-    wglglue_wglDestroyPbuffer(ctx->hpbuffer);
+    {
+      const int r = wglglue_wglReleasePbufferDC(ctx->hpbuffer, ctx->memorydc);
+      if (!r) {
+        cc_win32_print_error("wglglue_contextdata_cleanup",
+                             "wglReleasePbufferDC", GetLastError());
+      }
+    }
+    {
+      const BOOL r = wglglue_wglDestroyPbuffer(ctx->hpbuffer);
+      if (!r) {
+        cc_win32_print_error("wglglue_contextdata_cleanup",
+                             "wglDestroyPbuffer", GetLastError());
+      }
+    }
   }
   if (ctx->memorydc && ctx->noappglcontextavail) { 
-    DeleteDC(ctx->memorydc);
+    const BOOL r = DeleteDC(ctx->memorydc);
+    if (!r) {
+      cc_win32_print_error("wglglue_contextdata_cleanup",
+                           "DeleteDC", GetLastError());
+    }
   }
 
   free(ctx);
