@@ -78,15 +78,17 @@ typedef void (APIENTRY *gluPwlCurve_t)(void *, GLint, GLfloat *, GLint, GLenum);
 typedef void (APIENTRY *gluNurbsCallback_t)(void *, GLenum, gluNurbsCallback_cb_t);
 typedef void (APIENTRY *gluNurbsCallbackData_t)(void *, GLvoid *);
   /* gluTesselator routines */
-typedef GLUtesselator * (APIENTRY *gluNewTess_t)(void);
-typedef void (APIENTRY *gluTessCallback_t)(GLUtesselator * tessobj, GLenum type, _GLUfuncptr CallbackFunc);
-typedef void (APIENTRY *gluTessProperty_t)(GLUtesselator * tessobj, GLenum property, GLdouble value);
-typedef void (APIENTRY *gluTessBeginPolygon_t)(GLUtesselator * tessobj, void * user_data);
-typedef void (APIENTRY *gluTessEndPolygon_t)(GLUtesselator * tessobj);
-typedef void (APIENTRY *gluTessBeginContour_t)(GLUtesselator * tessobj);
-typedef void (APIENTRY *gluTessEndContour_t)(GLUtesselator * tessobj);
-typedef void (APIENTRY *gluTessVertex_t)(GLUtesselator * tessobj, GLdouble coords[3], void * vertex_data);
-typedef void (APIENTRY *gluDeleteTess_t)(GLUtesselator * tessobj);
+
+typedef struct coin_GLUtesselator coin_GLUtesselator;
+typedef coin_GLUtesselator * (APIENTRY *gluNewTess_t)(void);
+typedef void (APIENTRY *gluTessCallback_t)(coin_GLUtesselator * tessobj, GLenum type, _GLUfuncptr CallbackFunc);
+typedef void (APIENTRY *gluTessProperty_t)(coin_GLUtesselator * tessobj, GLenum property, GLdouble value);
+typedef void (APIENTRY *gluTessBeginPolygon_t)(coin_GLUtesselator * tessobj, void * user_data);
+typedef void (APIENTRY *gluTessEndPolygon_t)(coin_GLUtesselator * tessobj);
+typedef void (APIENTRY *gluTessBeginContour_t)(coin_GLUtesselator * tessobj);
+typedef void (APIENTRY *gluTessEndContour_t)(coin_GLUtesselator * tessobj);
+typedef void (APIENTRY *gluTessVertex_t)(coin_GLUtesselator * tessobj, GLdouble coords[3], void * vertex_data);
+typedef void (APIENTRY *gluDeleteTess_t)(coin_GLUtesselator * tessobj);
 
 typedef struct {
   /* Is the GLU library at all available? */
