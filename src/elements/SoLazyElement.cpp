@@ -700,9 +700,9 @@ SoLazyElement::setMaterials(SoState * state, SoNode *node, uint32_t bitmask,
     if (welem) elem = welem;
     elem->lazyDidntSet((~eltbitmask) & bitmask);
   }
-  SoShapeStyleElement::setTransparentMaterial(state, elem->coinstate.istransparent);
+  SoShapeStyleElement::setTransparentMaterial(state, istransparent);
   SoLazyElement::setAlphaTest(state, 
-                              !elem->coinstate.istransparent && 
+                              !istransparent && 
                               elem->coinstate.glimageusealphatest);
 }
 
