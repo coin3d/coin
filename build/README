@@ -2,17 +2,3 @@ coin.spec.in
 
         Template processed by configure script to generate an RPM
         specification file coin.spec.
-
-geniwz.pl
-
-        Perl script which generates specification file for
-        InstallShield Express v2.12. Invoke the script by running
-
-	       $ make ispkg
-
-        in the [coin_builddir]/build/ subdir. Installshield's
-        IsxBuild.exe need to be in the $PATH.
-
-        A self-extracting executable SETUPEX.EXE with the
-        InstallShield install should then be available under
-        [coin_builddir]/build/coin/.
