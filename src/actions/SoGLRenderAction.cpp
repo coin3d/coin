@@ -291,13 +291,13 @@
   paths are heavily based on OpenGL extensions. The first method is
   based on extensions which are only available on NVIDIA chipsets
   (GeForce3 and above, except GeForce4 MX). These extensions are \c
-  GL_NV_texture_shader, \c GL_NV_texture_rectangle, \c
-  GL_NV_register_combiners, \c GL_ARB_shadow and \c
-  GL_ARB_depth_texture.
-  Please note that this transparency type occupy all four texture
-  units on the NVIDIA card for all the rendering passes, except the
-  first. Textured surfaces will therefore only be textured if they
-  are not occluded by another transparent surface.
+  GL_NV_texture_shader, \c GL_NV_texture_rectangle or \c
+  GL_EXT_texture_rectangle, \c GL_NV_register_combiners, \c
+  GL_ARB_shadow and \c GL_ARB_depth_texture.  Please note that this
+  transparency type occupy all four texture units on the NVIDIA card
+  for all the rendering passes, except the first. Textured surfaces
+  will therefore only be textured if they are not occluded by another
+  transparent surface.
 
   The second method utilise the \c GL_ARB_fragment_program
   extension. This extension is currently supported by the GeForceFX
@@ -490,24 +490,24 @@ SoGLRenderAction::initClass(void)
 static const char * sortedlayersblendprogram = 
 "!!ARBfp1.0\n"
 "OPTION ARB_precision_hint_nicest;\n"
-"TEMP tmp;"
-"PARAM c0 = {0, 1, 0.0040000002, 0};" // 0.004 = precision delta value for float division
-"TEMP R0;"
-"TEMP R1;"
-"TEMP H0;"
-"TXP R0.x, fragment.texcoord[3], texture[3], RECT;"
-"RCP R1.x, fragment.texcoord[3].w;"
-"MAD R0.x, fragment.texcoord[3].z, R1.x, -R0.x;"
-"ADD R0.x, c0.z, -R0.x;"
-"CMP H0.x, R0.x, c0.x, c0.y;"
-"MOV H0, -H0.x;"
-"KIL H0;"
+"TEMP tmp;\n"
+"PARAM c0 = {0, 1, 0.0040000002, 0};\n" // 0.004 = precision delta value for float division
+"TEMP R0;\n"
+"TEMP R1;\n"
+"TEMP H0;\n"
+"TXP R0.x, fragment.texcoord[3], texture[3], RECT;\n"
+"RCP R1.x, fragment.texcoord[3].w;\n"
+"MAD R0.x, fragment.texcoord[3].z, R1.x, -R0.x;\n"
+"ADD R0.x, c0.z, -R0.x;\n"
+"CMP H0.x, R0.x, c0.x, c0.y;\n"
+"MOV H0, -H0.x;\n"
+"KIL H0;\n"
 // -- Adding texture from unit 0 --
 // FIXME: This is a hackish solution. Texture settings like
 // GL_MODULATE, GL_LUMINANCE etc. are ignored. (20031215 handegar)
-"TEX tmp, fragment.texcoord[0], texture[0], 2D;"
-"MOV tmp.a, 0;"
-"ADD result.color, fragment.color.primary, tmp;"
+"TEX tmp, fragment.texcoord[0], texture[0], 2D;\n"
+"MOV tmp.a, 0;\n"
+"ADD result.color, fragment.color.primary, tmp;\n"
 "END";
 
 #undef THIS
