@@ -27,17 +27,17 @@ BUILT_SOURCES = \
 	pointLightDragger.h \
 	handleBoxDragger.h
 
-translate1Dragger.h: $(top_srcdir)/data/draggerDefaults/translate1Dragger.iv
+translate1Dragger.h: $(top_srcdir)/data/draggerDefaults/translate1Dragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/translate1Dragger.iv > translate1Dragger.h
 
-translate2Dragger.h: $(top_srcdir)/data/draggerDefaults/translate2Dragger.iv
+translate2Dragger.h: $(top_srcdir)/data/draggerDefaults/translate2Dragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/translate2Dragger.iv > translate2Dragger.h
 
-dragPointDragger.h: $(top_srcdir)/data/draggerDefaults/dragPointDragger.iv
+dragPointDragger.h: $(top_srcdir)/data/draggerDefaults/dragPointDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/dragPointDragger.iv > dragPointDragger.h
 
-pointLightDragger.h: $(top_srcdir)/data/draggerDefaults/pointLightDragger.iv
+pointLightDragger.h: $(top_srcdir)/data/draggerDefaults/pointLightDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/pointLightDragger.iv > pointLightDragger.h
 
-handleBoxDragger.h: $(top_srcdir)/data/draggerDefaults/handleBoxDragger.iv
+handleBoxDragger.h: $(top_srcdir)/data/draggerDefaults/handleBoxDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/handleBoxDragger.iv > handleBoxDragger.h
