@@ -110,6 +110,19 @@ exitfunc:
   }
 }
 
+static BOOL WINAPI
+coin_GetVersionEx(LPOSVERSIONINFO osvi) 
+{
+
+  /* Because one might want to fetch extended version-info using the
+     extended version of the OSVERSIONINFO struct (service pack info
+     etc.), errorhandeling will not be taken care of at this point. See
+     <URL:http://msdn.microsoft.com/library/default.asp?url=/library/en-us/sysinfo/base/getting_the_system_version.asp>
+     for an example of use. */
+
+  return GetVersionEx(osvi);
+}
+
 /* ********************************************************************** */
 
 static int WINAPI
@@ -117,13 +130,34 @@ coin_GetTextFace(HDC hdc, /* handle to device context */
                  int nCount, /* length of buffer receiving typeface name */
                  LPTSTR lpFaceName) /* pointer to buffer receiving typeface name */
 {
-  int copied;
 
-  /* Check input parameters (we've had problem reports about this
-     function failing in unexpected ways). */
-  assert((lpFaceName == NULL) || (nCount > 0));
+  OSVERSIONINFO osvi;
+  
+  /* FIXME: Due to a bug in WIN95/98/ME, the GetTextFace(-,-,NULL)
+     will allways return size=0. A workaround is to specify the
+     expected size of the font name (in this case; 1024 chars). The
+     fontname will be zero terminated, so name-lengths below 1024 will
+     be OK. If size >= 1024, the system will crop the
+     string. (20031011 handegar).*/
+  
+  int copied = GetTextFace(hdc, nCount, lpFaceName);
+  if (copied == 0 && lpFaceName == NULL) {    
+    /* NOTE: We could have used the 'VerifyVersionInfo()'
+       function, but this is not supported on Win95/98/ME. */
 
-  copied = GetTextFace(hdc, nCount, lpFaceName);
+    ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
+    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);  
+
+    if (!coin_GetVersionEx(&osvi)) {      
+      cc_win32_print_error("coin_GetTextFace", "GetVersionEx()", GetLastError());
+      assert(FALSE && "unexpected error");      
+    }
+    if (osvi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS) {          
+      /* This is a wellknown WIN95/98/Me bug. Return a default, large number. */
+      copied = 1024;
+    }
+  }
+
   if (copied == 0) {
     cc_string apicall;
     DWORD err = GetLastError();
@@ -138,6 +172,7 @@ coin_GetTextFace(HDC hdc, /* handle to device context */
     assert(FALSE && "unexpected error");
     cc_string_clean(&apicall);
   }
+
   return copied;
 }
 
@@ -169,6 +204,7 @@ cc_win32(void)
   /* set up all function pointers */
   instance->GetTextFace = coin_GetTextFace;
   instance->LocalFree = coin_LocalFree;
+  instance->GetVersionEx = coin_GetVersionEx;
 
   return instance;
 }
