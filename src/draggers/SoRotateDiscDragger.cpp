@@ -23,10 +23,15 @@
 
 /*!
   \class SoRotateDiscDragger SoRotateDiscDragger.h Inventor/draggers/SoRotateDiscDragger.h
-  \brief The SoRotateDiscDragger class is (FIXME: doc)
+  \brief The SoRotateDiscDragger class is for rotating geometry around a single axis.
   \ingroup draggers
 
-  FIXME: document class
+  Use an instance of this dragger class in your scenegraph to let the
+  end-users of your application rotate geometry around any axis vector
+  in 3D.
+
+  For the dragger orientation and positiing itself, use some kind of
+  transformation node in your scenegraph, as usual.
 */
 
 #include <Inventor/draggers/SoRotateDiscDragger.h>
@@ -38,6 +43,26 @@
 #include <math.h>
 
 #include <data/draggerDefaults/rotateDiscDragger.h>
+
+/*!
+  \var SoSFRotation SoRotateDiscDragger::rotation
+
+  This field is continuously updated to contain the rotation of the
+  current direction vector of the dragger.
+
+  The application programmer using this dragger in his scenegraph
+  should connect the relevant node fields in the scene to this field
+  to make them follow the dragger orientation.
+*/
+
+/*!
+  \var SoFieldSensor * SoRotateDiscDragger::fieldSensor
+  \internal
+*/
+/*!
+  \var SbPlaneProjector * SoRotateDiscDragger::planeProj
+  \internal
+*/
 
 
 SO_KIT_SOURCE(SoRotateDiscDragger);
