@@ -52,9 +52,9 @@
 #ifdef HAVE_VSNPRINTF
 
 int
-coin_vsnprintf(char * dst, size_t n, const char * fmtstr, va_list args)
+coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
 {
-  int length = vsnprintf(dst, n, fmtstr, args);
+  int length = vsnprintf(dst, (size_t)n, fmtstr, args);
 
   /* Not all vsnprintf() implementations returns -1 upon failure (this
      is what vsnprintf() from GNU libc is documented to do).
@@ -74,10 +74,10 @@ coin_vsnprintf(char * dst, size_t n, const char * fmtstr, va_list args)
 #elif defined HAVE__VSNPRINTF 
 
 int
-coin_vsnprintf(char * dst, size_t n, const char * fmtstr, va_list args)
+coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
 {
   /* This is how it is defined in MSVC++ 5.0. */
-  return _vsnprintf(dst, n, fmtstr, args);
+  return _vsnprintf(dst, (size_t)n, fmtstr, args);
 }
 
 #else /* neither vsnprintf() nor _vsnprintf() available, roll our own */
@@ -158,10 +158,10 @@ nullfileptr(void)
 }
 
 int
-coin_vsnprintf(char * dst, size_t n, const char * fmtstr, va_list args)
+coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
 {
   int len = vfprintf(nullfileptr(), fmtstr, args);
-  if (((size_t)(len+1)) > n) return -1;
+  if ((len + 1) > n) return -1;
   (void)vsprintf(dst, fmtstr, args);
   return len;
 }
@@ -175,7 +175,7 @@ coin_vsnprintf(char * dst, size_t n, const char * fmtstr, va_list args)
 */
 
 int
-coin_snprintf(char * dst, size_t n, const char * fmtstr, ...)
+coin_snprintf(char * dst, unsigned int n, const char * fmtstr, ...)
 {
   int len;
   va_list argptr;

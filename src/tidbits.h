@@ -33,9 +33,8 @@ extern "C" {
 #include <Inventor/system/inttypes.h>
 #include <stdarg.h>
 
-
-int coin_snprintf(char * dst, size_t n, const char * fmtstr, ...);
-int coin_vsnprintf(char * dst, size_t n, const char * fmtstr, va_list args);
+int coin_snprintf(char * dst, unsigned int n, const char * fmtstr, ...);
+int coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args);
 
 const char * coin_getenv(const char *);
 int coin_strncasecmp(const char *, const char *, int);
