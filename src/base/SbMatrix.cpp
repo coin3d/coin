@@ -341,6 +341,9 @@ SbMatrix::inverse(void) const
 
   // FIXME: we should be using an optimized way of calculating the
   // inverse matrix. 20010114 mortene.
+  // UPDATE 20020513 mortene: pederb has written one which is now
+  // available in Coin/patches/.
+
   result.matrix[0][0] = this->det3(1, 2, 3, 1, 2, 3);
   result.matrix[1][0] = -this->det3(1, 2, 3, 0, 2, 3);
   result.matrix[2][0] = this->det3(1, 2, 3, 0, 1, 3);
