@@ -198,6 +198,7 @@ class SoDBP {
 public:
   static void clean(void);
   static void updateRealTimeFieldCB(void * data, SoSensor * sensor);
+  static void listWin32ProcessModules(void);
 
   static SbList<SoDB_HeaderInfo *> * headerlist;
   static SoSensorManager * sensormanager;
@@ -245,6 +246,11 @@ void
 SoDB::init(void)
 {
   if (SoDB::isInitialized()) return;
+
+  // This should prove helpful for debugging the pervasive problem
+  // under Win32 with loading multiple instances of the same library.
+  const char * env = coin_getenv("COIN_DEBUG_LISTMODULES");
+  if (env && (atoi(env) > 0)) { SoDBP::listWin32ProcessModules(); }
 
   // Sanity check: if anything here breaks, either
   // include/Inventor/system/inttypes.h.in or the bitwidth define
@@ -1195,3 +1201,82 @@ SoDB::enableRealTimeSensor(SbBool on)
                                  on ? "on" : "off");
 #endif // COIN_DEBUG
 }
+
+
+#if defined(HAVE_WINDLL_RUNTIME_BINDING) && defined(HAVE_TLHELP32_H)
+
+#include <tlhelp32.h>
+
+
+typedef HANDLE (WINAPI * CreateToolhelp32Snapshot_t)(DWORD, DWORD);
+typedef BOOL (WINAPI * Module32First_t)(HANDLE, LPMODULEENTRY32);
+typedef BOOL (WINAPI * Module32Next_t)(HANDLE, LPMODULEENTRY32);
+
+static CreateToolhelp32Snapshot_t funCreateToolhelp32Snapshot;
+static Module32First_t funModule32First;
+static Module32Next_t funModule32Next;
+
+
+void
+SoDBP::listWin32ProcessModules(void)
+{
+  BOOL ok;
+
+  HINSTANCE kernel32dll = LoadLibrary("kernel32.dll");
+  assert(kernel32dll && "LoadLibrary(''kernel32.dll'') failed");
+
+  funCreateToolhelp32Snapshot = (CreateToolhelp32Snapshot_t)
+    GetProcAddress(kernel32dll, "CreateToolhelp32Snapshot");
+  funModule32First = (Module32First_t)
+    GetProcAddress(kernel32dll, "Module32First");
+  funModule32Next = (Module32Next_t)
+    GetProcAddress(kernel32dll, "Module32Next");
+
+
+  do {
+  if (!funCreateToolhelp32Snapshot || !funModule32First || !funModule32Next) {
+    SoDebugError::postWarning("SoDBP::listWin32ProcessModules",
+                              "Tool Help Library not available (NT4?)");
+      break; // goto end of do-while loop
+  }
+
+  HANDLE tool32snap = funCreateToolhelp32Snapshot(TH32CS_SNAPALL, 0);
+  assert((tool32snap != (void *)-1) && "CreateToolhelp32Snapshot() failed");
+
+  MODULEENTRY32 moduleentry;
+  moduleentry.dwSize = sizeof(MODULEENTRY32);
+  ok = funModule32First(tool32snap, &moduleentry);
+  assert(ok && "Module32First() failed"); 
+
+  SoDebugError::postInfo("SoDBP::listWin32ProcessModules",
+                         "MODULEENTRY32.szModule=='%s', .szExePath=='%s'",
+                         moduleentry.szModule, moduleentry.szExePath);
+
+  while (funModule32Next(tool32snap, &moduleentry)) {
+    SoDebugError::postInfo("SoDBP::listWin32ProcessModules",
+                           "MODULEENTRY32.szModule=='%s', .szExePath=='%s'",
+                           moduleentry.szModule, moduleentry.szExePath);
+  }
+
+  assert(GetLastError()==ERROR_NO_MORE_FILES && "Module32Next() failed"); 
+
+  ok = CloseHandle(tool32snap);
+  assert(ok && "CloseHandle() failed");
+  } while (0);
+
+  ok = FreeLibrary(kernel32dll);
+  assert(ok && "FreeLibrary() failed");
+}
+
+
+#else // !HAVE_WINDLL_RUNTIME_BINDING || !HAVE_TLHELP32_H
+
+void
+SoDBP::listWin32ProcessModules(void)
+{
+  SoDebugError::postWarning("SoDBP::listWin32ProcessModules",
+                            "Tool Help Library not available "
+                            "(non-win32 platform?)");
+}
+
+#endif // !HAVE_WINDLL_RUNTIME_BINDING || !HAVE_TLHELP32_H
