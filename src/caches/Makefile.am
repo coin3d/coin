@@ -46,7 +46,7 @@ endif
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
 
-INCLUDES = -I$(top_srcdir)/include
+INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/src/extensions
 
 libcaches_la_SOURCES = $(BuildSources)
 EXTRA_libcaches_la_SOURCES = \

@@ -97,7 +97,7 @@ endif
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
 
-INCLUDES = -I$(top_srcdir)/include
+INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/src/extensions
 
 libmisc_la_SOURCES = $(BuildSources)
 EXTRA_libmisc_la_SOURCES = \
