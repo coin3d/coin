@@ -322,13 +322,13 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
   // Send level 0 (original image) to OpenGL
   if (useglsubimage) {
     if (glw->glTexSubImage3D)
-      glw->glTexSubImage3D(glw->COIN_GL_TEXTURE_3D, 0, 0, 0, 0,
-                    width, height, depth, format,
-                    GL_UNSIGNED_BYTE, data);
+      glw->glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, 0,
+                           width, height, depth, format,
+                           GL_UNSIGNED_BYTE, data);
   }
   else {
     if (glw->glTexImage3D)
-      glw->glTexImage3D(glw->COIN_GL_TEXTURE_3D, 0, nc, width, height, depth, 
+      glw->glTexImage3D(GL_TEXTURE_3D, 0, nc, width, height, depth, 
 			0, format, GL_UNSIGNED_BYTE, data);
   }
   unsigned char *src = (unsigned char *) data;
@@ -340,13 +340,13 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
     src = mipmap_buffer;
     if (useglsubimage) {
     if (glw->glTexSubImage3D)
-      glw->glTexSubImage3D(glw->COIN_GL_TEXTURE_3D, level, 0, 0, 0,
+      glw->glTexSubImage3D(GL_TEXTURE_3D, level, 0, 0, 0,
                            width, height, depth, format,
                            GL_UNSIGNED_BYTE, (void*) src);
     }
     else {
       if (glw->glTexImage3D)
-	glw->glTexImage3D(glw->COIN_GL_TEXTURE_3D, level, nc, width,
+	glw->glTexImage3D(GL_TEXTURE_3D, level, nc, width,
 			  height, depth, 0, format, GL_UNSIGNED_BYTE,
 			  (void *) src);
     }
@@ -659,7 +659,7 @@ SoGLImage::setData(const SbImage *image,
       }
       else {
         if (is3D) {
-          glw->glTexSubImage3D(glw->COIN_GL_TEXTURE_3D, 0, 0, 0, 0,
+          glw->glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, 0,
                                size[0], size[1], size[2],
                                format, GL_UNSIGNED_BYTE,
                                (void*) bytes);
@@ -1216,7 +1216,7 @@ translate_wrap(SoState *state, const SoGLImage::Wrap wrap)
   if (wrap == SoGLImage::REPEAT) return (GLenum) GL_REPEAT;
   if (wrap == SoGLImage::CLAMP_TO_EDGE) {
     const GLWrapper_t * glw = GLWRAPPER_FROM_STATE(state);
-    if (glw->COIN_GL_CLAMP_TO_EDGE) return (GLenum) glw->COIN_GL_CLAMP_TO_EDGE;
+    if (glw->hasTextureEdgeClamp) return GL_CLAMP_TO_EDGE;
   }
   return (GLenum) GL_CLAMP;
 }
@@ -1257,21 +1257,21 @@ SoGLImageP::reallyCreateTexture(SoState *state,
 
   //FIXME: Check GLWrapper capability as well? (kintel 20011129)
   if (SoGLTexture3EnabledElement::get(state)) { // 3D textures
-    glTexParameteri(glw->COIN_GL_TEXTURE_3D, GL_TEXTURE_WRAP_S,
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S,
                     translate_wrap(state, this->wraps));
-    glTexParameteri(glw->COIN_GL_TEXTURE_3D, GL_TEXTURE_WRAP_T,
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T,
                     translate_wrap(state, this->wrapt));
-    glTexParameteri(glw->COIN_GL_TEXTURE_3D, GL_TEXTURE_WRAP_R,
+    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R,
                     translate_wrap(state, this->wrapr));
 
     // just initialize to a filter that is valid also for non mipmapped
     // images. Filter will be applied later by SoGLTextureImageElement
-    glTexParameterf(glw->COIN_GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(glw->COIN_GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
     if (!mipmap) {
       if (glw->glTexImage3D)
-        glw->glTexImage3D(glw->COIN_GL_TEXTURE_3D, 0, numComponents, w, h, d,
+        glw->glTexImage3D(GL_TEXTURE_3D, 0, numComponents, w, h, d,
                           border, glformat, GL_UNSIGNED_BYTE, texture);
     }
     else { // mipmaps

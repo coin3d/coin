@@ -242,8 +242,8 @@ SoGLDisplayList::bindTexture(SoState *state)
   const GLWrapper_t * glw = GLWrapper(this->context);
   if (glw->glBindTexture) {
     if (SoGLTexture3EnabledElement::get(state)) {
-      if (glw->COIN_GL_TEXTURE_3D)
-        glw->glBindTexture(glw->COIN_GL_TEXTURE_3D, (GLuint) this->firstindex);
+      if (glw->has3DTextures)
+        glw->glBindTexture(GL_TEXTURE_3D, (GLuint) this->firstindex);
     }
     else glw->glBindTexture(GL_TEXTURE_2D, (GLuint) this->firstindex);
   }

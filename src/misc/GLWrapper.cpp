@@ -33,9 +33,6 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-#ifndef COIN_INTERNAL
-#include <stdio.h>
-#endif
 #include <Inventor/errors/SoDebugError.h>
 
 
@@ -129,20 +126,14 @@ GLWrapper_getProcAddressMethod(GLWrapper_t *gi)
 
 /* FIXME: support HP-UX? (Doesn't have dlopen().) 20010626 mortene. */
 
-#ifdef COIN_INTERNAL
 static GLWrapper_t * GL_instance = NULL;
 static SbDict * gldict = NULL;
-#else
-static int gldict = 0;
-#endif
 
-#ifdef COIN_INTERNAL
 static void
 free_GLWrapper_instance(unsigned long key, void * value)
 {
   free(value);
 }
-#endif
 
 /* Cleans up at exit. */
 static void
@@ -150,10 +141,8 @@ GLWrapper_cleanup(void)
 {
   // FIXME: clean up. 20011115 mortene.
   // if (GL_libhandle) { CLOSE_RUNTIME_BINDING(GL_libhandle); }
-#ifdef COIN_INTERNAL
   gldict->applyToAll(free_GLWrapper_instance);
   delete gldict;
-#endif
 }
 
 /*
@@ -218,11 +207,6 @@ GLWrapper_set_glxVersion(GLWrapper_t * gi)
 #ifdef HAVE_GLX
   gi->glxVersion.major = 0;
   gi->glxVersion.minor = 0;
-#ifndef COIN_INTERNAL
-  Display *dpy = XOpenDisplay(NULL);
-  ok = (int)glXQueryVersion(dpy, &gi->glxVersion.major, &gi->glxVersion.minor);
-  XCloseDisplay(dpy);
-#endif
 #endif
   return ok;
 }
@@ -304,14 +288,7 @@ GLWrapper_glxEXTSupported(GLWrapper_t * wrapper, const char * extension)
     return 0;
 
   if (!extensions) {
-#ifdef COIN_INTERNAL
     extensions = NULL;
-#else
-    Display *dpy = XOpenDisplay(NULL);
-    int screen = XDefaultScreen(dpy);
-    extensions = glXQueryExtensionsString(dpy, screen);
-    XCloseDisplay(dpy);
-#endif
   }
   start = extensions;
   for (;;) {
@@ -335,31 +312,20 @@ GLWrapper(int contextid)
 {
   if (!gldict) {  /* First invocation, do initializations. */
     coin_atexit((coin_atexit_f *)GLWrapper_cleanup);
-#ifdef COIN_INTERNAL
     gldict = new SbDict;
-#endif
   }
 
   int found;
-#ifdef COIN_INTERNAL
   void * ptr;
   found = (int)gldict->find(contextid, ptr);
-#else
-  static void *ptr = NULL;
-  found = gldict;
-#endif
   GLWrapper_t * gi = NULL;
 
   if (!found) {
     gi = (GLWrapper_t *)malloc(sizeof(GLWrapper_t));
     /* FIXME: handle out-of-memory on malloc(). 20000928 mortene. */
 
-#ifdef COIN_INTERNAL
     ptr = gi;
     gldict->enter(contextid, ptr);
-#else
-    ptr = gi;
-#endif
 
     gi->libhandle = NULL;
     GLWrapper_set_glVersion(gi);
@@ -378,27 +344,19 @@ GLWrapper(int contextid)
 #endif
 #endif
 
-#ifdef COIN_INTERNAL
     if (COIN_DEBUG && 0) {
       SoDebugError::postInfo("GLWrapper",
                              "Using %s for dynamic binding.\n",
                              GLWrapper_getProcAddressMethod(gi));
     }
-#else
-    printf("GLWrapper(): Using %s for dynamic binding.\n",
-           GLWrapper_getProcAddressMethod(gi));
-#endif
 
     // Initialize everything to zero.
-    gi->COIN_GL_TEXTURE_3D = (GLenum)0;
-    gi->COIN_GL_PROXY_TEXTURE_3D = (GLenum)0;
-    gi->COIN_GL_TEXTURE_WRAP_R = (GLenum)0;
-    gi->COIN_GL_TEXTURE_DEPTH = (GLenum)0;
-    gi->COIN_GL_MAX_3D_TEXTURE_SIZE = (GLenum)0;
-    gi->COIN_GL_PACK_IMAGE_HEIGHT = (GLenum)0;
-    gi->COIN_GL_UNPACK_IMAGE_HEIGHT = (GLenum)0;
-    gi->COIN_GL_PACK_SKIP_IMAGES = (GLenum)0;
-    gi->COIN_GL_UNPACK_SKIP_IMAGES = (GLenum)0;
+
+    gi->has3DTextures = FALSE;
+    gi->has2DProxyTextures = FALSE;
+    gi->has3DProxyTextures = FALSE;
+    gi->hasTextureEdgeClamp = FALSE;
+
     gi->glTexImage3D = NULL;
     gi->glCopyTexSubImage3D = NULL;
     gi->glTexSubImage3D = NULL;
@@ -407,57 +365,89 @@ GLWrapper(int contextid)
     gi->glGenTextures = NULL;
     gi->glTexSubImage2D = NULL;
 
-    gi->COIN_GL_CLAMP_TO_EDGE = (GLenum)0;
-
 #ifdef HAVE_GLX
     gi->glXGetCurrentDisplay = NULL;
 #endif
 
-    // Enums and functions are resolved separately because of
-    // better readability in case of static binding.
+    // Sanity checks for enum _EXT value assumed to be equal to the
+    // final / "proper" / standard OpenGL enum values. (If not, we
+    // could end up with hard-to-find bugs because of mismatches with
+    // the compiled values versus the run-time values.)
+    //
+    // This doesn't really _fix_ anything, it is just meant as an aid
+    // to smoke out platforms where we're getting unexpected enum
+    // values.
+    SbBool enumsok = TRUE;
+#ifdef GL_CLAMP_TO_EDGE_EXT
+    enumsok = enumsok && (GL_CLAMP_TO_EDGE == GL_CLAMP_TO_EDGE_EXT);
+#endif // GL_CLAMP_TO_EDGE_EXT
+#ifdef GL_CLAMP_TO_EDGE_SGIS // Sanity check
+    enumsok = enumsok && (GL_CLAMP_TO_EDGE == GL_CLAMP_TO_EDGE_SGIS);
+#endif // GL_CLAMP_TO_EDGE_SGIS
+#ifdef GL_MAX_3D_TEXTURE_SIZE_EXT
+    enumsok = enumsok && (GL_MAX_3D_TEXTURE_SIZE == GL_MAX_3D_TEXTURE_SIZE_EXT);
+#endif // GL_MAX_3D_TEXTURE_SIZE_EXT
+#ifdef GL_PACK_IMAGE_HEIGHT_EXT
+    enumsok = enumsok && (GL_PACK_IMAGE_HEIGHT == GL_PACK_IMAGE_HEIGHT_EXT);
+#endif // GL_PACK_IMAGE_HEIGHT_EXT
+#ifdef GL_PACK_SKIP_IMAGES_EXT
+    enumsok = enumsok && (GL_PACK_SKIP_IMAGES == GL_PACK_SKIP_IMAGES_EXT);
+#endif // GL_PACK_SKIP_IMAGES_EXT
+#ifdef GL_PROXY_TEXTURE_2D_EXT
+    enumsok = enumsok && (GL_PROXY_TEXTURE_2D == GL_PROXY_TEXTURE_2D_EXT);
+#endif // GL_PROXY_TEXTURE_2D_EXT
+#ifdef GL_PROXY_TEXTURE_3D_EXT
+    enumsok = enumsok && (GL_PROXY_TEXTURE_3D == GL_PROXY_TEXTURE_3D_EXT);
+#endif // GL_PROXY_TEXTURE_3D_EXT
+#ifdef GL_TEXTURE_3D_EXT
+    enumsok = enumsok && (GL_TEXTURE_3D == GL_TEXTURE_3D_EXT);
+#endif // GL_TEXTURE_3D_EXT
+#ifdef GL_TEXTURE_DEPTH_EXT
+    enumsok = enumsok && (GL_TEXTURE_DEPTH == GL_TEXTURE_DEPTH_EXT);
+#endif // GL_TEXTURE_DEPTH_EXT
+#ifdef GL_TEXTURE_WRAP_R_EXT
+    enumsok = enumsok && (GL_TEXTURE_WRAP_R == GL_TEXTURE_WRAP_R_EXT);
+#endif // GL_TEXTURE_WRAP_R_EXT
+#ifdef GL_UNPACK_IMAGE_HEIGHT_EXT
+    enumsok = enumsok && (GL_UNPACK_IMAGE_HEIGHT == GL_UNPACK_IMAGE_HEIGHT_EXT);
+#endif // GL_UNPACK_IMAGE_HEIGHT_EXT
+#ifdef GL_UNPACK_SKIP_IMAGES_EXT
+    enumsok = enumsok && (GL_UNPACK_SKIP_IMAGES == GL_UNPACK_SKIP_IMAGES_EXT);
+#endif // GL_UNPACK_SKIP_IMAGES_EXT
+
+    assert(enumsok && "OpenGL enum value assumption(s) failed!");
 
 
-    // Resolve our enum equivalents
+    // Enums and functions are resolved separately because of better
+    // readability in case of static binding.
+
+    // Resolve requests for supported features.
     if (GLWrapper_glVersionMatchesAtLeast(gi,1,2,0)) {
-      gi->COIN_GL_TEXTURE_3D = GL_TEXTURE_3D;
-      gi->COIN_GL_PROXY_TEXTURE_3D = GL_PROXY_TEXTURE_3D;
-      gi->COIN_GL_TEXTURE_WRAP_R = GL_TEXTURE_WRAP_R;
-      gi->COIN_GL_TEXTURE_DEPTH = GL_TEXTURE_DEPTH;
-      gi->COIN_GL_MAX_3D_TEXTURE_SIZE = GL_MAX_3D_TEXTURE_SIZE;
-      gi->COIN_GL_PACK_IMAGE_HEIGHT = GL_PACK_IMAGE_HEIGHT;
-      gi->COIN_GL_UNPACK_IMAGE_HEIGHT = GL_UNPACK_IMAGE_HEIGHT;
-      gi->COIN_GL_PACK_SKIP_IMAGES = GL_PACK_SKIP_IMAGES;
-      gi->COIN_GL_UNPACK_SKIP_IMAGES = GL_UNPACK_SKIP_IMAGES;
+      gi->has3DTextures = TRUE;
+      gi->has3DProxyTextures = TRUE;
     }
     else if (GLWrapper_glVersionMatchesAtLeast(gi,1,1,0) &&
              GLWrapper_glEXTSupported(gi,"GL_EXT_texture3D")) {
-      gi->COIN_GL_TEXTURE_3D = GL_TEXTURE_3D_EXT;
-      gi->COIN_GL_PROXY_TEXTURE_3D = GL_PROXY_TEXTURE_3D;
-      gi->COIN_GL_TEXTURE_WRAP_R = GL_TEXTURE_WRAP_R_EXT;
-      gi->COIN_GL_TEXTURE_DEPTH = GL_TEXTURE_DEPTH_EXT;
-      gi->COIN_GL_MAX_3D_TEXTURE_SIZE = GL_MAX_3D_TEXTURE_SIZE_EXT;
-      gi->COIN_GL_PACK_IMAGE_HEIGHT = GL_PACK_IMAGE_HEIGHT_EXT;
-      gi->COIN_GL_UNPACK_IMAGE_HEIGHT = GL_UNPACK_IMAGE_HEIGHT_EXT;
-      gi->COIN_GL_PACK_SKIP_IMAGES = GL_PACK_SKIP_IMAGES_EXT;
-      gi->COIN_GL_UNPACK_SKIP_IMAGES = GL_UNPACK_SKIP_IMAGES_EXT;
+      gi->has3DTextures = TRUE;
+      gi->has3DProxyTextures = TRUE;
     }
 
     if (GLWrapper_glVersionMatchesAtLeast(gi,1,2,0)) {
-      gi->COIN_GL_CLAMP_TO_EDGE = GL_CLAMP_TO_EDGE;
+      gi->hasTextureEdgeClamp = TRUE;
     }
     else if (GLWrapper_glEXTSupported(gi, "GL_SGIS_texture_edge_clamp")) {
-      gi->COIN_GL_CLAMP_TO_EDGE = GL_CLAMP_TO_EDGE_SGIS;
+      gi->hasTextureEdgeClamp = TRUE;
     }
     //FIXME: Does this extension actually exist?
 //      else if (GLWrapper_glEXTSupported(gi, "GL_EXT_texture_edge_clamp")) {
-//        gi->COIN_GL_CLAMP_TO_EDGE = GL_CLAMP_TO_EDGE_EXT;
+//        gi->hasTextureEdgeClamp = TRUE;
 //      }
 
     if (GLWrapper_glVersionMatchesAtLeast(gi,1,1,0)) {
-      gi->COIN_GL_PROXY_TEXTURE_2D = GL_PROXY_TEXTURE_2D;
+      gi->has2DProxyTextures = TRUE;
     }
     else if (GLWrapper_glEXTSupported(gi, "GL_EXT_texture")) {
-      gi->COIN_GL_PROXY_TEXTURE_2D = GL_PROXY_TEXTURE_2D_EXT;
+      gi->has2DProxyTextures = TRUE;
     }
 
     // Resolve our functions

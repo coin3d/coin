@@ -852,7 +852,7 @@ SoExtSelection::draw(SoGLRenderAction *action)
 	       GL_CURRENT_BIT);
   glDisable(GL_LIGHTING);
   glDisable(GL_TEXTURE_2D);
-  if (glw->COIN_GL_TEXTURE_3D) glDisable(glw->COIN_GL_TEXTURE_3D);
+  if (glw->has3DTextures) glDisable(GL_TEXTURE_3D);
   glDisable(GL_FOG);
   glDisable(GL_DEPTH_TEST);
 

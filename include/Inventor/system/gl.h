@@ -68,79 +68,50 @@
   extension enums which we want to use if we run-time detect the
   extension function calls to be available, so we just define these
   values here if not defined already.
-
-  (Note if you are inserting more of these: the enums below are sorted
-  alphabetically.)
 */
+
+/* Note: GL_CLAMP_TO_EDGE_EXT and GL_CLAMP_TO_EDGE_SGIS have the same
+   enum values as GL_CLAMP_TO_EDGE. We only use the "real" enum
+   name. */
+
 #ifndef GL_CLAMP_TO_EDGE
 #define GL_CLAMP_TO_EDGE                  ((GLenum)0x812F)
 #endif /* !GL_CLAMP_TO_EDGE */
-#ifndef GL_CLAMP_TO_EDGE_EXT
-#define GL_CLAMP_TO_EDGE_EXT              ((GLenum)0x812F)
-#endif /* !GL_CLAMP_TO_EDGE_EXT */
-#ifndef GL_CLAMP_TO_EDGE_SGIS
-#define GL_CLAMP_TO_EDGE_SGIS             ((GLenum)0x812F)
-#endif /* !GL_CLAMP_TO_EDGE_SGIS */
+
+
+/* Note: all following enums also have an *_EXT version with the same
+   enum value as the "real" enum. We only use the "real" enum name in
+   Coin code. */
+
 #ifndef GL_MAX_3D_TEXTURE_SIZE
 #define GL_MAX_3D_TEXTURE_SIZE            ((GLenum)0x8073)
 #endif /* !GL_MAX_3D_TEXTURE_SIZE */
-#ifndef GL_MAX_3D_TEXTURE_SIZE_EXT
-#define GL_MAX_3D_TEXTURE_SIZE_EXT        ((GLenum)0x8073)
-#endif /* !GL_MAX_3D_TEXTURE_SIZE_EXT */
 #ifndef GL_PACK_IMAGE_HEIGHT
 #define GL_PACK_IMAGE_HEIGHT              ((GLenum)0x806C)
 #endif /* !GL_PACK_IMAGE_HEIGHT */
-#ifndef GL_PACK_IMAGE_HEIGHT_EXT
-#define GL_PACK_IMAGE_HEIGHT_EXT          ((GLenum)0x806C)
-#endif /* !GL_PACK_IMAGE_HEIGHT_EXT */
 #ifndef GL_PACK_SKIP_IMAGES
 #define GL_PACK_SKIP_IMAGES               ((GLenum)0x806B)
 #endif /* !GL_PACK_SKIP_IMAGES */
-#ifndef GL_PACK_SKIP_IMAGES_EXT
-#define GL_PACK_SKIP_IMAGES_EXT           ((GLenum)0x806B)
-#endif /* !GL_PACK_SKIP_IMAGES_EXT */
 #ifndef GL_PROXY_TEXTURE_2D
 #define GL_PROXY_TEXTURE_2D               ((GLenum)0x8064)
 #endif /* !GL_PROXY_TEXTURE_2D */
-#ifndef GL_PROXY_TEXTURE_2D_EXT
-#define GL_PROXY_TEXTURE_2D_EXT           ((GLenum)0x8064)
-#endif /* !GL_PROXY_TEXTURE_2D_EXT */
 #ifndef GL_PROXY_TEXTURE_3D
 #define GL_PROXY_TEXTURE_3D               ((GLenum)0x8070)
 #endif /* !GL_PROXY_TEXTURE_3D */
-#ifndef GL_PROXY_TEXTURE_3D_EXT
-#define GL_PROXY_TEXTURE_3D_EXT           ((GLenum)0x8070)
-#endif /* !GL_PROXY_TEXTURE_3D_EXT */
 #ifndef GL_TEXTURE_3D
 #define GL_TEXTURE_3D                     ((GLenum)0x806F)
 #endif /* !GL_TEXTURE_3D */
-#ifndef GL_TEXTURE_3D_EXT
-#define GL_TEXTURE_3D_EXT                 ((GLenum)0x806F)
-#endif /* !GL_TEXTURE_3D_EXT */
 #ifndef GL_TEXTURE_DEPTH
 #define GL_TEXTURE_DEPTH                  ((GLenum)0x8071)
 #endif /* !GL_TEXTURE_DEPTH */
-#ifndef GL_TEXTURE_DEPTH_EXT
-#define GL_TEXTURE_DEPTH_EXT              ((GLenum)0x8071)
-#endif /* !GL_TEXTURE_DEPTH_EXT */
 #ifndef GL_TEXTURE_WRAP_R
 #define GL_TEXTURE_WRAP_R                 ((GLenum)0x8072)
 #endif /* !GL_TEXTURE_WRAP_R */
-#ifndef GL_TEXTURE_WRAP_R_EXT
-#define GL_TEXTURE_WRAP_R_EXT             ((GLenum)0x8072)
-#endif /* !GL_TEXTURE_WRAP_R_EXT */
 #ifndef GL_UNPACK_IMAGE_HEIGHT
 #define GL_UNPACK_IMAGE_HEIGHT            ((GLenum)0x806E)
 #endif /* !GL_UNPACK_IMAGE_HEIGHT */
-#ifndef GL_UNPACK_IMAGE_HEIGHT_EXT
-#define GL_UNPACK_IMAGE_HEIGHT_EXT        ((GLenum)0x806E)
-#endif /* !GL_UNPACK_IMAGE_HEIGHT_EXT */
 #ifndef GL_UNPACK_SKIP_IMAGES
 #define GL_UNPACK_SKIP_IMAGES             ((GLenum)0x806D)
 #endif /* !GL_UNPACK_SKIP_IMAGES */
-#ifndef GL_UNPACK_SKIP_IMAGES_EXT
-#define GL_UNPACK_SKIP_IMAGES_EXT         ((GLenum)0x806D)
-#endif /* !GL_UNPACK_SKIP_IMAGES_EXT */
-
 
 #endif /* ! COIN_GL_H */

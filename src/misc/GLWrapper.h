@@ -28,22 +28,8 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#ifdef COIN_INTERNAL
 #include <Inventor/system/gl.h>
-#else /* COIN_INTERNAL */
-/*
- * FIXME: Temporary code to test GLWrapper outside Coin.
- * pederb, 2001-12-05
- */
-#ifdef __APPLE__
-#include <OpenGL/gl.h>
-#else /* __APPLE__ */
-#ifdef _WIN32
-#include <windows.h>
-#endif /* _WIN32 */
-#include <GL/gl.h>
-#endif /* !__APPLE__ */ 
-#endif /* ! COIN_INTERNAL */
+#include <Inventor/SbBasic.h>
 
 #ifdef HAVE_GLX
 #include <GL/glx.h>
@@ -92,26 +78,13 @@ typedef struct {
     int major, minor;
   } glxVersion;
 
-  void *libhandle; // Only used in case of dlopen()/dlsym() binding
+  void * libhandle; /* Only used in case of dlopen()/dlsym() binding */
 
-  /* Our own "enums". Will be 0 if not available, otherwise they
-     contain a valid GLenum. */
-  GLenum COIN_GL_TEXTURE_3D;
-  GLenum COIN_GL_PROXY_TEXTURE_3D;
-  GLenum COIN_GL_TEXTURE_WRAP_R;
-  GLenum COIN_GL_TEXTURE_DEPTH;
-  GLenum COIN_GL_MAX_3D_TEXTURE_SIZE;
-  GLenum COIN_GL_PACK_IMAGE_HEIGHT;
-  GLenum COIN_GL_UNPACK_IMAGE_HEIGHT;
-  GLenum COIN_GL_PACK_SKIP_IMAGES;
-  GLenum COIN_GL_UNPACK_SKIP_IMAGES;
-  //FIXME: Check OpenGL 1.0 availability of these (kintel 20011204)
-  GLenum COIN_GL_TEXTURE_GEN_R;
-  GLenum COIN_GL_TEXTURE_GEN_Q;
-
-  GLenum COIN_GL_CLAMP_TO_EDGE;
-
-  GLenum COIN_GL_PROXY_TEXTURE_2D;
+  /* Capability flags for features of the underlying OpenGL implementation. */
+  SbBool has3DTextures;
+  SbBool has2DProxyTextures;
+  SbBool has3DProxyTextures;
+  SbBool hasTextureEdgeClamp;
 
   /* OpenGL calls. Will be NULL if not available, otherwise they
      contain a valid function pointer into the OpenGL library. */

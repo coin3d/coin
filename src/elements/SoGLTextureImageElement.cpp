@@ -313,13 +313,13 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
 {
   const GLWrapper_t * glw = GLWRAPPER_FROM_STATE(this->state);
   if (zsize==0) { // 2D textures
-    if (glw->COIN_GL_PROXY_TEXTURE_2D) {
+    if (glw->has2DProxyTextures) {
       GLint w;
-      glTexImage2D(glw->COIN_GL_PROXY_TEXTURE_2D, 0, bytespertexel,
+      glTexImage2D(GL_PROXY_TEXTURE_2D, 0, bytespertexel,
                    xsize, ysize, 0,
                    GL_RGBA, GL_UNSIGNED_BYTE,
                    NULL);
-      glGetTexLevelParameteriv(glw->COIN_GL_PROXY_TEXTURE_2D, 0, 
+      glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0, 
                                GL_TEXTURE_WIDTH, &w);
       if (w==0) return FALSE;
       return TRUE;
@@ -332,13 +332,13 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
     }
   }
   else { // 3D textures
-    if (glw->COIN_GL_PROXY_TEXTURE_3D && glw->glTexImage3D) {
+    if (glw->has3DProxyTextures && glw->glTexImage3D) {
       GLint w;
-      glw->glTexImage3D(glw->COIN_GL_PROXY_TEXTURE_3D, 0, bytespertexel,
+      glw->glTexImage3D(GL_PROXY_TEXTURE_3D, 0, bytespertexel,
                         xsize, ysize, zsize, 0,
                         GL_RGBA, GL_UNSIGNED_BYTE,
                         NULL);
-      glGetTexLevelParameteriv(glw->COIN_GL_PROXY_TEXTURE_3D, 0, 
+      glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, 0, 
                                GL_TEXTURE_WIDTH, &w);
       if (w==0) return FALSE;
       return TRUE;
@@ -346,4 +346,3 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
     return FALSE; // 3D textured not supported
   }
 }
-
