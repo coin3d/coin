@@ -404,11 +404,13 @@ SoProto::writeInterface(SoOutput * out)
     case SoField::EVENTIN_FIELD:
       out->write("eventIn ");
       out->write(t.getName().getString());
+      out->write(' ');
       out->write(fd->getFieldName(i).getString());
       break;
     case SoField::EVENTOUT_FIELD:
       out->write("eventOut ");
       out->write(t.getName().getString());
+      out->write(' ');
       out->write(fd->getFieldName(i).getString());
       break;
     default:
@@ -705,7 +707,6 @@ SoProto::createInstanceRoot(SoProtoInstance * inst) const
   this->connectISRefs(inst, root, cpy);
 
   int n = PRIVATE(this)->routelist.getLength() / 4;
-  
   SoSearchAction sa;
 
   for (int i = 0; i < n; i++) {
