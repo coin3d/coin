@@ -1,0 +1,25 @@
+mortene ("x" means "done"):
+
+        x get rid of C++ stream usage
+        x kill SO_ARB_SHADER_SUPPORT define
+        x kill SO_GLSL_SHADER_SUPPORT define
+        x kill SO_CG_SHADER_SUPPORT define
+        x dynamic pickup of libCg.so / cg.dll(?)
+        x make all nodes conform to identification mechs for internal Coin nodes
+        - robustify, upon missing GL support, or missing Cg library 
+        - sphere_arb.iv: bug on sphere #2 from the left on my ATI Radeon laptop
+        - sphere_glsl.iv: bugs upon first *redraw* on my NVidia desktop
+        - sphere_cg.iv: better handling of streams of error messages from Cg
+        - support context ID changing
+        - clean up the SOURCE_HINT #define (use an element to pass on error messages?)
+        - Cheshire Cat for classes in public API (may be ok already)
+        - check all public API elements against TGS Inventor
+            - SoShaderProgram is SoGroup, should perhaps be inheriting SoNode
+            - SoShaderParameter has a similar incompatibility
+        x make sure public and private headers are handled correctly
+        - trim header-file inclusion
+        - grep for FIXMEs, and check all of them
+        - write API documentation
+
+        -> copy to Coin-2 (for 2.4.0 release)
+        -> example program(s) and/or iv-files
