@@ -11105,7 +11105,7 @@ if test x"$GCC" = x"yes"; then
     s/ /-I/
     p
   }'
-  EOF`
+EOF`
   result=
   for inc_path in $2; do
     additem=true

@@ -33060,7 +33060,7 @@ if test x"$GCC" = x"yes"; then
     s/ /-I/
     p
   }'
-  EOF`
+EOF`
   result=
   for inc_path in $CPPFLAGS; do
     additem=true
@@ -33091,7 +33091,7 @@ if test x"$GCC" = x"yes"; then
     s/ /-I/
     p
   }'
-  EOF`
+EOF`
   result=
   for inc_path in $COIN_EXTRA_CPPFLAGS; do
     additem=true
