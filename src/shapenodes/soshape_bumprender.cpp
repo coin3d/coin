@@ -38,6 +38,9 @@
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoBumpMapMatrixElement.h>
+#include <Inventor/elements/SoTextureMatrixElement.h>
+#include <Inventor/elements/SoMultiTextureMatrixElement.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -74,6 +77,10 @@ soshape_bumprender::renderBump(SoState * state,
   this->initLight(light, toobjectspace);
   this->calcTSBCoords(cache, light);
 
+  const SbMatrix & oldtexture0matrix = SoTextureMatrixElement::get(state);
+  const SbMatrix & oldtexture1matrix = SoMultiTextureMatrixElement::get(state, 1);
+  const SbMatrix & bumpmapmatrix = SoBumpMapMatrixElement::get(state);
+
   const cc_glglue * glue = sogl_glue_instance(state);
   int i, lastenabled = -1;
   const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
@@ -90,6 +97,13 @@ soshape_bumprender::renderBump(SoState * state,
 
   // set up textures
   cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
+
+  if (bumpmapmatrix != oldtexture0matrix) {
+    glMatrixMode(GL_TEXTURE);
+    glLoadMatrixf(bumpmapmatrix[0]);
+    glMatrixMode(GL_MODELVIEW);
+  }
+
   glEnable(GL_TEXTURE_2D);
   bumpimage->getGLDisplayList(state)->call(state);
   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
@@ -97,6 +111,12 @@ soshape_bumprender::renderBump(SoState * state,
   glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_REPLACE);
 
   cc_glglue_glActiveTexture(glue, GL_TEXTURE1);
+
+  if (oldtexture1matrix != SbMatrix::identity()) {
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity(); // load identity texture matrix
+    glMatrixMode(GL_MODELVIEW);
+  }
   coin_apply_normalization_cube_map(glue);
   glEnable(GL_TEXTURE_CUBE_MAP);
   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
@@ -143,7 +163,21 @@ soshape_bumprender::renderBump(SoState * state,
     // restore blend mode for texture unit 1
     SoGLMultiTextureImageElement::restore(state, 1);
   }
+
+  if (oldtexture1matrix != SbMatrix::identity()) {
+    cc_glglue_glActiveTexture(glue, GL_TEXTURE1);
+    glMatrixMode(GL_TEXTURE);
+    glLoadMatrixf(oldtexture1matrix[0]);
+    glMatrixMode(GL_MODELVIEW);
+  }
+  
   cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
+
+  if (bumpmapmatrix != oldtexture0matrix) {
+    glMatrixMode(GL_TEXTURE);
+    glLoadMatrixf(oldtexture0matrix[0]);
+    glMatrixMode(GL_MODELVIEW);
+  }
   // disable texturing for unit 0 if not enabled
   if (!SoGLTextureEnabledElement::get(state)) glDisable(GL_TEXTURE_2D);
 }
