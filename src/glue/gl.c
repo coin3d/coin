@@ -21,6 +21,38 @@
  *
 \**************************************************************************/
 
+/*!
+  For the library/API doc, here's the environment variables
+  influencing the OpenGL binding:
+
+  - COIN_DEBUG_GLGLUE: set equal to "1" to make the wrapper
+    initalization spit out lots of info about the underlying OpenGL
+    implementation.
+
+  - COIN_PREFER_GLPOLYGONOFFSET_EXT: when set to "1" and both
+    glPolygonOffset() and glPolygonOffsetEXT() is available, the
+    latter will be used. This can be useful to work around a
+    problematic glPolygonOffset() implementation for certain SGI
+    platforms.
+
+  - COIN_FULL_INDIRECT_RENDERING: set to "1" to let Coin take
+    advantage of OpenGL1.1+ and extensions even when doing
+    remote/indirect rendering.
+ 
+    We don't allow this now, for mainly two reaons: 1) we've seen
+    NVidia GLX bugs when attempting this. 2) We generally prefer a
+    "better safe than sorry".
+
+    We might consider changing this strategy to default to allow it,
+    and provide an envvar to turn it off instead -- if we can indeed
+    get confirmation that the assumed NVidia driver bug is indeed
+    NVidia's problem.
+
+  - COIN_FORCE_GL1_0_ONLY: set to "1" to disallow use of OpenGL1.1+
+    and extensions under any circumstances.
+*/
+
+
 /*
   Useful resources:
 
@@ -595,12 +627,20 @@ cc_glglue_isdirect(const cc_glglue * w)
 static SbBool
 glglue_allow_newer_opengl(const cc_glglue * w)
 {
-  static int v = -1;
-  if (v == -1) {
-    v = (glglue_resolve_envvar("COIN_FULL_INDIRECT_RENDERING") > 0) ? 1 : 0;
+  static SbBool fullindirect = -1;
+  static SbBool force1_0 = -1;
+
+  if (fullindirect == -1) {
+    fullindirect = (glglue_resolve_envvar("COIN_FULL_INDIRECT_RENDERING") > 0);
   }
 
-  return (w->glx.isdirect || v);
+  if (force1_0 == -1) {
+    force1_0 = (glglue_resolve_envvar("COIN_FORCE_GL1_0_ONLY") > 0);
+  }
+
+  if (force1_0) return FALSE;
+  if (w->glx.isdirect && !fullindirect) return FALSE;
+  return TRUE;
 }
 
 /*!
