@@ -431,7 +431,7 @@ SoPath::truncate(const int length, const SbBool donotify)
 
   // Remove ourself as an auditor to the nodes' children lists.
   if (this->isauditing) {
-    for (int i = length; i < this->getLength(); i++) {
+    for (int i = length; i < this->getFullLength(); i++) {
       SoChildList * cl = this->nodes[i]->getChildren();
       if (cl) cl->removePathAuditor(this);
     }
