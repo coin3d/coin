@@ -99,25 +99,11 @@ SbMatrix::SbMatrix(const float a11, const float a12,
                    const float a41, const float a42,
                    const float a43, const float a44)
 {
-  this->matrix[0][0] = a11;
-  this->matrix[0][1] = a12;
-  this->matrix[0][2] = a13;
-  this->matrix[0][3] = a14;
-
-  this->matrix[1][0] = a21;
-  this->matrix[1][1] = a22;
-  this->matrix[1][2] = a23;
-  this->matrix[1][3] = a24;
-
-  this->matrix[2][0] = a31;
-  this->matrix[2][1] = a32;
-  this->matrix[2][2] = a33;
-  this->matrix[2][3] = a34;
-
-  this->matrix[3][0] = a41;
-  this->matrix[3][1] = a42;
-  this->matrix[3][2] = a43;
-  this->matrix[3][3] = a44;
+  const SbMat m = { { a11, a12, a13, a14 },
+                    { a21, a22, a23, a24 },
+                    { a31, a32, a33, a34 },
+                    { a41, a42, a43, a44 } };
+  this->setValue(m);
 }
 
 /*!
