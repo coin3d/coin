@@ -872,22 +872,23 @@ SoGLRenderAction::endTraversal(SoNode * node)
 SbBool
 SoGLRenderAction::handleTransparency(SbBool istransparent)
 {
-  SoState * state = this->getState();
-  const cc_glglue *glue = sogl_glue_instance(state);
+  SoState * thestate = this->getState();
+  const cc_glglue *glue = sogl_glue_instance(thestate);
 
   SoGLRenderAction::TransparencyType transptype = 
     (SoGLRenderAction::TransparencyType)
-    SoShapeStyleElement::getTransparencyType(state);
+    SoShapeStyleElement::getTransparencyType(thestate);
 
 
   if (THIS->transparencytype == SORTED_LAYERS_BLEND) {
 
     // Do not cache anything. We must have full control!
-    SoCacheElement::invalidate(state);
+    SoCacheElement::invalidate(thestate);
     
-    THIS->sortedlayersblendprojectionmatrix = SoProjectionMatrixElement::get(this->getState());
+    THIS->sortedlayersblendprojectionmatrix = 
+      SoProjectionMatrixElement::get(thestate);
 
-    if (!SoTextureEnabledElement::get(state)) {
+    if (!SoTextureEnabledElement::get(thestate)) {
       if (glue->has_arb_fragment_program && !THIS->usenvidiaregistercombiners) {
         THIS->setupFragmentProgram();
       }
@@ -906,9 +907,9 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
   // check common cases first
   if (!istransparent || transptype == SoGLRenderAction::NONE || transptype == SoGLRenderAction::SCREEN_DOOR) {
     if (THIS->smoothing) {
-      SoLazyElement::enableBlending(state, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      SoLazyElement::enableBlending(thestate, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
-    else SoLazyElement::disableBlending(state);
+    else SoLazyElement::disableBlending(thestate);
     return FALSE;
   }
 
