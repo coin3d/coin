@@ -682,3 +682,18 @@ THE WISH LIST
   (Perhaps a better, more general solution would be to just add
   SoOffscreenRenderer::prepareForRendering(), and let the application
   programmer apply his own SoGLRenderAction?)
+
+* Support for field value expressions in Inventor ascii files
+  2002-03-18  Peder Blekken <pederb@sim.no>
+
+  It would be very useful to allow field value expressions. E.g. for 
+  an SoSFVec3f, you should be able to write:
+  
+  SomeNode {
+    somefield (3500+4500) (1300+5600) (2300/3.0-1230*1.2)
+  }
+
+  In this example I just used parentheses to signal begin/end expression.
+  I'm not sure if this is the best solution though.
+
+
