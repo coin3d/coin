@@ -5407,8 +5407,15 @@ trap 'exit 1' 1 2 15
 test "$no_create" = yes || $SHELL $CONFIG_STATUS || exit 1
 
 
-# echo "" | tr -d "
-"
+if test x"$sim_ac_linking_style" = xmswin; then
+  for sim_ac_winfile in build/coin.dsp build/coin.mak; do
+    mv $sim_ac_winfile $sim_ac_winfile.bak
+    echo "(Win)DOS-ifying $sim_ac_winfile"
+    sed -e 's/$/
+/' < $sim_ac_winfile.bak > $sim_ac_winfile
+  done
+fi
+
 
 # *******************************************************************
 # * Platform-specific stuff.
@@ -5476,6 +5483,8 @@ case "$host_os" in
     echo ;;
 esac
 
+# FIXME: should detect MSVC properly, not just rely on mswin==MSVC.
+# (The same test is used at a lot of other places aswell.) 20000609 mortene.
 if test x"$sim_ac_linking_style" = xmswin; then
     echo ""
     echo " Detected MSVC++. There are some hints regarding this compiler"
