@@ -440,11 +440,7 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey)
     free(kpairs);
 
   } 
-  else {
-    cc_win32_print_error("cc_flww32_get_font", "GetKerningPairs()", GetLastError());
-    return NULL;
-  }
-
+ 
   return (void *)wfont;
 }
 
@@ -967,7 +963,6 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   cc_string_destruct(fontname);
 
 
-
   /* 
      If NULL is returned due to an error, glyph3d.c will load the default font instead. 
   */
@@ -1067,7 +1062,11 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   flww32_buildVertexList(new_vector_glyph);
   flww32_buildFaceIndexList(new_vector_glyph);
   flww32_buildEdgeIndexList(new_vector_glyph);
-  
+
+  /* Remove allocated DCs */
+  DeleteObject(membmp);
+  DeleteObject(screendc);
+  DeleteObject(memdc);
   return new_vector_glyph; 
 
 }
