@@ -1300,8 +1300,6 @@ SoExtSelectionP::triangleCB(void * userData,
     }
   }
   // triangle is hit/surrounded by the lasso
-  thisp->primcbdata.hit = TRUE;
-
   if (thisp->triangleFilterCB) {
     if (thisp->triangleFilterCB(thisp->triangleFilterCBData,
                                 action, v1, v2, v3)) {
@@ -1311,6 +1309,7 @@ SoExtSelectionP::triangleCB(void * userData,
       thisp->primcbdata.abort = TRUE;
     }
   }
+  else thisp->primcbdata.hit = TRUE;
 }
 
 // line segment callback from SoCallbackAction
@@ -1368,7 +1367,6 @@ SoExtSelectionP::lineSegmentCB(void *userData,
   }
 
   // line segment is hit/surrounded by the lasso
-  thisp->primcbdata.hit = TRUE;
 
   if (thisp->lineFilterCB) {
     if (thisp->lineFilterCB(thisp->lineFilterCBData,
@@ -1379,6 +1377,7 @@ SoExtSelectionP::lineSegmentCB(void *userData,
       thisp->primcbdata.abort = TRUE;
     }
   }
+  else thisp->primcbdata.hit = TRUE;
 }
 
 // line segment callback from SoCallbackAction
@@ -1411,7 +1410,6 @@ SoExtSelectionP::pointCB(void *userData,
   }
 
   // line segment is surrounded by the lasso
-  thisp->primcbdata.hit = TRUE;
 
   if (thisp->pointFilterCB) {
     if (thisp->pointFilterCB(thisp->pointFilterCBData,
@@ -1422,6 +1420,7 @@ SoExtSelectionP::pointCB(void *userData,
       thisp->primcbdata.abort = TRUE;
     }
   }
+  else thisp->primcbdata.hit = TRUE;
 }
 
 // invoke selection policy on a shape
