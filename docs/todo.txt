@@ -422,3 +422,21 @@ STUFF TO FIX IN COIN
 
   For Nvidia specific hardware/drivers:
     <URL:http://developer.nvidia.com/view.asp?IO=Interactive_Order_Transparency>
+
+
+* Detect multiple instances of the Coin library within the same run-time application space.
+  2002-06-18  Morten Eriksen  <mortene@sim.no>
+
+  This seems to happen time and again with app programmers
+  "double-linking" with So* and Coin at the same time, causing two
+  Coin instances to live in memory -- which quickly causes a
+  mysterious looking crash.
+
+  We should use some kind of "intra-app" communication mechanism under
+  MSWindows to detect this case and throw up a big, fat error message
+  before exiting.
+
+  (Then pass on a patch to TrollTech, so they can do the same thing
+  with Qt -- that would relieve us of the common problems of app
+  programmers double-linking against Qt through SoQt and their
+  app-code.)
