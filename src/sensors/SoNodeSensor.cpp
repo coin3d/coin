@@ -36,6 +36,7 @@
 
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/errors/SoDebugError.h>
 
 /*!
   Default constructor.
@@ -79,6 +80,12 @@ SoNodeSensor::~SoNodeSensor(void)
 void
 SoNodeSensor::attach(SoNode * node)
 {
+  if (this->convict != NULL) {
+    this->detach();
+    SoDebugError::postWarning("SoNodeSensor::attach", 
+                              "Attaching node sensor that is already attached.", 
+                              this);
+  }
   this->convict = node;
   node->addAuditor(this, SoNotRec::SENSOR);
 }
