@@ -145,8 +145,11 @@ SoBlinker::notify(SoNotList * nl)
   // Check if a child was added or removed.
   int lastchildidx = this->getNumChildren() - 1;
   if (this->counter->max.getValue() != lastchildidx) {
-    this->counter->enableNotify(FALSE); // Wrap to avoid recursive invocation.
-    this->counter->min.setValue(lastchildidx >= 0 ? 0 : SO_SWITCH_NONE);
+    // Wrap to avoid recursive invocation.
+    this->counter->enableNotify(FALSE);
+    // Note that if we have one child, the counting should go from -1
+    // to 0 (so the child is toggled on and off).
+    this->counter->min.setValue(lastchildidx > 0 ? 0 : SO_SWITCH_NONE);
     this->counter->max.setValue(lastchildidx >= 0 ? lastchildidx : SO_SWITCH_NONE);
     this->counter->enableNotify(TRUE);
   }
