@@ -96,6 +96,8 @@ SoDB_checkGCCBuiltinExpectSanity(void)
     DUMP("The buggy compiler can be found on at least the following Linux");
     DUMP("distributions: SuSE 9.0");
     DUMP("");
+    DUMP("The bug can at least be found in GCC version 3.3.0 through 3.3.2.");
+    DUMP("");
     DUMP("You are strongly encouraged to upgrade your GCC installation.");
     DUMP("Coin is probably not the only library that gets in trouble");
     DUMP("because of this bug.");
