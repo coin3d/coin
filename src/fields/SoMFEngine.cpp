@@ -128,6 +128,8 @@ SoMFEngine::setValues(const int start, const int num, const SoEngine ** newvals)
   // Disable temporarily, so we under any circumstances will not send
   // more than one notification about the changes.
   SbBool notificstate = this->enableNotify(FALSE);
+  // Important note: the notification state is reset at the end, so
+  // this function should *not* have multiple return-points.
 
   // ref() new engines before unref()-ing old ones, in case there are
   // common engines (we don't want any premature destruction to happen).
@@ -151,6 +153,8 @@ SoMFEngine::set1Value(const int idx, SoEngine * newval)
   // Disable temporarily, so we under no circumstances will send more
   // than one notification about the change.
   SbBool notificstate = this->enableNotify(FALSE);
+  // Important note: the notification state is reset at the end, so
+  // this function should *not* have multiple return-points.
 
   // Don't use getNum(), getValues() or operator[] to find old values,
   // since this might trigger a recursive evaluation call if the field 
@@ -165,40 +169,40 @@ SoMFEngine::set1Value(const int idx, SoEngine * newval)
   }
 
   SoEngine * oldptr = this->values[idx];
-  if (oldptr == newval) return;
-
-  if (oldptr) {
+  if (oldptr != newval) {
+    if (oldptr) {
 #ifdef COIN_INTERNAL_SOMFPATH
-    SoNode * h = oldptr->getHead();
-    // The path should be audited by us at all times. So don't use
-    // SoMFPath to wrap SoTempPath or SoLightPath, for instance.
-    assert(h==this->pathheads[idx] &&
-           "Path head changed without notification!");
-    if (h) {
-      h->removeAuditor(this, SoNotRec::FIELD);
-      h->unref();
+      SoNode * h = oldptr->getHead();
+      // The path should be audited by us at all times. So don't use
+      // SoMFPath to wrap SoTempPath or SoLightPath, for instance.
+      assert(h==this->pathheads[idx] &&
+	     "Path head changed without notification!");
+      if (h) {
+	h->removeAuditor(this, SoNotRec::FIELD);
+	h->unref();
+      }
+#endif // COIN_INTERNAL_SOMFPATH
+      oldptr->removeAuditor(this, SoNotRec::FIELD);
+      oldptr->unref();
     }
-#endif // COIN_INTERNAL_SOMFPATH
-    oldptr->removeAuditor(this, SoNotRec::FIELD);
-    oldptr->unref();
-  }
 
-  if (newval) {
-    newval->addAuditor(this, SoNotRec::FIELD);
-    newval->ref();
+    if (newval) {
+      newval->addAuditor(this, SoNotRec::FIELD);
+      newval->ref();
 #ifdef COIN_INTERNAL_SOMFPATH
-    SoNode * h = newval->getHead();
-    if (h) {
-      h->addAuditor(this, SoNotRec::FIELD);
-      h->ref();
+      SoNode * h = newval->getHead();
+      if (h) {
+	h->addAuditor(this, SoNotRec::FIELD);
+	h->ref();
+      }
+#endif // COIN_INTERNAL_SOMFPATH
     }
+
+    this->values[idx] = newval;
+#ifdef COIN_INTERNAL_SOMFPATH
+    this->pathheads[idx] = newval ? newval->getHead() : NULL;
 #endif // COIN_INTERNAL_SOMFPATH
   }
-
-  this->values[idx] = newval;
-#ifdef COIN_INTERNAL_SOMFPATH
-  this->pathheads[idx] = newval ? newval->getHead() : NULL;
-#endif // COIN_INTERNAL_SOMFPATH
 
   // Finally, send notification.
   (void)this->enableNotify(notificstate);
@@ -268,6 +272,8 @@ SoMFEngine::insertSpace(int start, int num)
   // Disable temporarily so we don't send notification prematurely
   // from inherited::insertSpace().
   SbBool notificstate = this->enableNotify(FALSE);
+  // Important note: the notification state is reset at the end, so
+  // this function should *not* have multiple return-points.
 
   inherited::insertSpace(start, num);
   for (int i=start; i < start+num; i++) {
@@ -381,6 +387,8 @@ SoMFEngine::fixCopy(SbBool copyconnections)
   // Disable temporarily, so we under no circumstances will send more
   // than one notification about the changes.
   SbBool notificstate = this->enableNotify(FALSE);
+  // Important note: the notification state is reset at the end, so
+  // this function should *not* have multiple return-points.
 
   for (int i=0; i < this->getNum(); i++) {
     SoEngine * n = (*this)[i];
