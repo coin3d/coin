@@ -131,10 +131,10 @@
         SbPlane p1(*c1,*c2,*c4);
         SbPlane p2(*c1,*c4,*c3);
         SbVec3f n = p1.getNormal() + p2.getNormal();
-        if (qmeshNormalize(n, n1->sqrLength() + n2->sqrLength() +
-                           n3->sqrLength() + n4->sqrLength()));
+        SbBool quadok = qmeshNormalize(n, n1->sqrLength() + n2->sqrLength() +
+                                          n3->sqrLength() + n4->sqrLength());
 #if COIN_DEBUG
-        else
+        if ( !quadok )
           SoDebugError::postWarning("SoQuadMesh::GLRender",
                                     "Can not compute normal because of "
                                     "wrong quad coordinates.");
