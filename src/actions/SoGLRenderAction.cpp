@@ -281,6 +281,8 @@
 
   The return codes which an SoGLRenderAbortCB callback function should
   use.
+
+  \sa setAbortCallback()
 */
 /*!
   \var SoGLRenderAction::AbortCode SoGLRenderAction::CONTINUE
@@ -476,6 +478,36 @@ SoGLRenderAction::getUpdateArea(SbVec2f & origin, SbVec2f & size) const
 /*!
   Sets the abort callback.  The abort callback is called by the action
   for each node during traversal to check for abort conditions.
+
+  The callback method should return one of the
+  SoGLRenderAction::AbortCode enum values to indicate how the action
+  should proceed further.
+
+  Since the client SoGLRenderAbortCB callback function only has a
+  single void* argument for the userdata, one has to do some
+  additional work to find out which node the callback was made
+  for. One can do this by for instance passing along the action
+  pointer as userdata, and then call the
+  SoGLRenderAction::getCurPath() method. The tail of the path will
+  then be the last traversed node. Like this:
+
+  \code
+  // set up so we can abort or otherwise intervene with the render
+  // traversal:
+  myRenderAction->setAbortCallback(MyRenderCallback, myRenderAction);
+
+  // [...]
+
+  SoGLRenderAction::AbortCode
+  MyRenderCallback(void * userdata)
+  {
+    SoGLRenderAction * action = (SoGLRenderAction *)userdata;
+    SoNode * lastnode = action->getCurPath()->getTail();
+
+    // [...]
+    return SoGLRenderAction::CONTINUE;
+  }
+  \endcode
 
   \sa SoGLRenderAction::AbortCode
 */
