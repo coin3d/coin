@@ -38,6 +38,7 @@
   SoOffscreenRenderer * myRenderer = new SoOffscreenRenderer(vpregion);
   SoNode * root = myViewer->getSceneManager()->getSceneGraph();
   SbBool ok = myRenderer->render(root);
+  unsigned char * imgbuffer = myRenderer->getBuffer();
   // [then use image buffer in a texture, or write it to file, or whatever]
   \endcode
 
@@ -99,7 +100,7 @@
      // dump to file
      SbString framefile;
      framefile.sprintf("frame%06d.rgb", i);
-     offscreenrend->writeToRGB(framefile);
+     offscreenrend->writeToRGB(framefile.getString());
 
      // advance "current time" by the frames-per-second value, which
      // is 24 fps in this example
@@ -457,6 +458,11 @@ static void getMaxCB(void *ptr, SoAction *action)
 SbVec2s
 SoOffscreenRenderer::getMaximumResolution(void)
 {
+  // FIXME: this measures the maximum resolution allowed by OpenGL,
+  // which is wrong from Coin v2 onwards, as we can now make offscreen
+  // renderings of any size. Can't just change the return value,
+  // though, as there's internal code in the SoOffscreenRenderer that
+  // uses this method to check for the maximum "tile size". 200302113 mortene.
 
   static SbBool isvisited = FALSE;
   static short dims[2] = {128, 128};
