@@ -802,7 +802,6 @@ cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph)
 
   struct cc_flw_vector_glyph * vector_glyph = NULL;
   struct cc_flw_font * fs;
-  struct cc_flw_glyph * gs;
  
   FLW_MUTEX_LOCK(flw_global_lock);
 

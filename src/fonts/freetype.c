@@ -70,9 +70,9 @@ int cc_flwft_get_glyph(void * font, unsigned int charidx) { assert(FALSE); retur
 void cc_flwft_get_advance(void * font, int glyph, float *x, float *y) { assert(FALSE); }
 void cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y) { assert(FALSE); }
 void cc_flwft_done_glyph(void * font, int glyph) { assert(FALSE); }
-  
-struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
-struct cc_flw_vector_glyph * cc_flwft_get_vector_glyph(void * font, int glyph){ assert(FALSE); return NULL; }
+
+struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, unsigned int glyph) { assert(FALSE); return NULL; }
+struct cc_flw_vector_glyph * cc_flwft_get_vector_glyph(void * font, unsigned int glyph){ assert(FALSE); return NULL; }
 
 float * cc_flwft_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
 int * cc_flwft_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }

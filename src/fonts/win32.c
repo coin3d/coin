@@ -92,7 +92,7 @@ struct cc_flw_bitmap * cc_flww32_get_bitmap(void * font, int glyph) { assert(FAL
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/glue/win32api.h>
-#include <Inventor/C/glue/fontlib_wrapper.h>
+#include "fontlib_wrapper.h"
 
 /* ************************************************************************* */
 

@@ -96,7 +96,6 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   int glyphidx;
   int fontidx;
   void * val;
-  cc_flw_vector_glyph * vectorglyph;
   cc_font_specification * newspec;
   int namelen = 0;
 
