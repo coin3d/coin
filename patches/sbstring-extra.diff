@@ -1,0 +1,17 @@
+Index: src/misc/SoType.cpp
+===================================================================
+RCS file: /export/cvsroot/Coin/src/misc/SoType.cpp,v
+retrieving revision 1.25
+diff -u -r1.25 SoType.cpp
+--- src/misc/SoType.cpp	24 Jan 2002 11:39:01 -0000	1.25
++++ src/misc/SoType.cpp	13 Feb 2002 15:29:59 -0000
+@@ -234,8 +234,7 @@
+   // and get the correct type id, even though the types in some type
+   // hierarchies are named internally without the prefix.
+   SbString tmp(name.getString());
+-  if ((tmp.getLength() > 2) && (strcmp(tmp.getSubString(0, 1).getString(), "So") == 0))
+-    tmp = tmp.getSubString(2);
++  if (tmp.compareSubString("So") == 0) tmp = tmp.getSubString(2);
+   SbName noprefixname(tmp);
+ 
+   void * temp = NULL;
