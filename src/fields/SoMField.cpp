@@ -492,10 +492,10 @@ SoMField::insertSpace(int start, int num)
 void
 SoMField::allocValues(int newnum)
 {
-  // Important notice: the "malloc-version" of this method is found in
-  // SoMField.cpp. If you make modifications here, do check whether or
-  // not they should be matched with modifications in that method
-  // aswell.
+  // Important notice: the "non-realloc"-version of this method is
+  // found in SoSubField.h. If you make modifications here, do check
+  // whether or not they should be matched with modifications in that
+  // method aswell.
 
   assert(newnum >= 0);
 
@@ -525,7 +525,8 @@ SoMField::allocValues(int newnum)
                              getTypeId().getName().getString(), this);
 #endif // debug
 
-
+      // FIXME: Umm.. aren't we supposed to use realloc() here?
+      // 20000915 mortene.
       unsigned char * newblock = new unsigned char[this->maxNum * fsize];
 
       (void)memcpy(newblock, this->valuesPtr(),
@@ -545,7 +546,12 @@ SoMField::allocValues(int newnum)
   // FIXME: it seems bogus to 1) call valueChanged() from this method
   // (I think it would be better to do that from the callers), 2) not
   // call valueChanged() when setNum() expands the number of
-  // values. 20000915 mortene.
+  // values.
+  //
+  // If/when this is fixed, remember to also fix the allocValues()
+  // macro in SoSubField.h.
+  //
+  // 20000915 mortene.
   if (valchanged) this->valueChanged();
 }
 #endif // DOXYGEN_SKIP_THIS
