@@ -301,8 +301,10 @@ SoSeparator::rayPick(SoRayPickAction * action)
 void
 SoSeparator::search(SoSearchAction * action)
 {
-  // Include this node in the search.
-  inherited::search(action);
+  // Include this node in the search. (_Don't_ use the
+  // SoGroup::search(), as it will also traverse all children.)
+  SoNode::search(action);
+
   if (action->isFound()) return;
 
   SoSeparator::doAction(action);
