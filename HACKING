@@ -5,7 +5,7 @@ development. 19990926 mortene.
 
 * Building Coin for development
 	- discuss common C++ large project problems
-	- solutions applied in the Coin projects
+	- solutions applied in Coin
 		o using multiply configure'd build directories
 			- slim
 			- full debug
