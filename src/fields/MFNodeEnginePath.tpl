@@ -118,16 +118,18 @@ SoMF_Typename_::set1Value(const int idx, So_Typename_ * newval)
   // than one notification about the change.
   SbBool notificstate = this->enableNotify(FALSE);
 
+  // Don't use getNum(), getValues() or operator[] to find old values,
+  // since this might trigger a recursive evaluation call if the field 
+  // is connected.
+
   // Expand array if necessary.
-  if (idx >= this->getNum()) {
+  if (idx >= this->num) {
 #ifdef COIN_INTERNAL_PATH
-    for (int i = this->getNum(); i <= idx; i++) this->pathheads.append(NULL);
+    for (int i = this->num; i <= idx; i++) this->pathheads.append(NULL);
 #endif // COIN_INTERNAL_PATH
     this->setNum(idx + 1);
   }
 
-  // Don't use getValues() or operator[[] to find oldptr, since this
-  // might trigger a recursive evaluation call if the field is connected.
   So_Typename_ * oldptr = this->values[idx];
   if (oldptr == newval) return;
 
