@@ -524,28 +524,8 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
   }
   // Ok, we've passed the first write stage and is _really_ writing.
 
-#if 0 
-  // OBSOLETED 2002-02-07 pederb. We shouldn't do this. Only fields
-  // that are written (shouldWrite() == TRUE) or referenced needs to
-  // have a description. This is now handled in
-  // writeFieldDescription().
-
-  // Make sure all fields get written on user extension nodes (or
-  // SoUnknownNode), even if they have their default flags set to
-  // TRUE.
-  SbList<SbBool> defaultflags(this->getNumFields() ? this->getNumFields() : 1);
-  if (!object->getIsBuiltIn()) {
-    for (i=0; i < this->getNumFields(); i++) {
-      SoField * f = this->getField(object, i);
-      defaultflags.append(f->isDefault());
-      f->setDefault(FALSE);
-    }
-  }
-#endif // OBSOLETED
-
   // FIXME: is this really the best place to write the flags +
   // numfields value? 20000102 mortene.
-
   if (out->isBinary()) {
     // Check how many fields will be written.
     uint8_t numfields = 0;
@@ -580,16 +560,6 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
 
   for (i=0; i < this->getNumFields(); i++)
     this->getField(object, i)->write(out, this->getFieldName(i));
-
-#if 0 // OBSOLETED, 2002-02-07 pederb. See obsoleted block above.
-  // Reset the default flags if we're writing a user extension node
-  // (or SoUnknownNode).
-  if (!object->getIsBuiltIn()) {
-    for (i=0; i < this->getNumFields(); i++) {
-      this->getField(object, i)->setDefault(defaultflags[i]);
-    }
-  }
-#endif // OBSOLETED
 }
 
 
@@ -814,24 +784,14 @@ SoFieldData::writeFieldDescriptions(SoOutput * out,
     out->write("fields [ ");
   }
 
-  SbBool extnode = !object->getIsBuiltIn();
-
   SbBool atleastonewritten = FALSE;
   for (int i = 0; i < this->getNumFields(); i++) {
     const SoField * f = this->getField(object, i);
-    // Write field description if shouldWrite() returns TRUE, or if
-    // 'object' is an extension node and some field is connected from
-    // the field FIXME: SoFieldContainer::isBuiltIn() is protected so
-    // we can't determine if 'object' is a built in node or not. We
-    // just have to assume that it is.  pederb, 2002-02-07
-    forwardlist.truncate(0);
-    if (f->shouldWrite() || (extnode && f->getForwardConnections(forwardlist) > 0)) {
-      if (!out->isBinary() && atleastonewritten) out->write(", ");
-      out->write((const char *)(f->getTypeId().getName()));
-      if (!out->isBinary()) out->write(' ');
-      out->write((const char *)(this->getFieldName(i)));
-      atleastonewritten = TRUE;
-    }
+    if (!out->isBinary() && atleastonewritten) out->write(", ");
+    out->write((const char *)(f->getTypeId().getName()));
+    if (!out->isBinary()) out->write(' ');
+    out->write((const char *)(this->getFieldName(i)));
+    atleastonewritten = TRUE;
   }
 
   if (!out->isBinary()) out->write(" ]\n");
