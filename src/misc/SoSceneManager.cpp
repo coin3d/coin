@@ -102,6 +102,7 @@ SoSceneManager::~SoSceneManager()
   if (this->deleteglaction) delete this->glaction;
   if (this->deletehandleeventaction) delete this->handleeventaction;
 
+  this->setSceneGraph(NULL);
   delete this->rootsensor;
   delete this->redrawshot;
 }
@@ -185,7 +186,7 @@ SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
   SoDebugError::postInfo("SoSceneManager::render", "before glrender->apply()");
 #endif // debug
   // Apply the SoGLRenderAction to the scenegraph root.
-  this->glaction->apply(this->scene);
+  if (this->scene) this->glaction->apply(this->scene);
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoSceneManager::render", "after glrender->apply()");
 #endif // debug
@@ -201,7 +202,7 @@ SoSceneManager::processEvent(const SoEvent * const event)
   assert(this->handleeventaction);
 
   this->handleeventaction->setEvent(event);
-  this->handleeventaction->apply(this->scene);
+  if (this->scene) this->handleeventaction->apply(this->scene);
   return this->handleeventaction->isHandled();
 }
 
@@ -323,12 +324,15 @@ SoSceneManager::setSceneGraph(SoNode * const sceneroot)
   if (this->scene) this->scene->unref();
 
   this->scene = sceneroot;
-  this->scene->ref();
 
-  if (!this->rootsensor)
-    this->rootsensor = new SoNodeSensor(SoSceneManager::nodesensorCB, this);
+  if (this->scene) {
+    this->scene->ref();
 
-  this->rootsensor->attach(sceneroot);
+    if (!this->rootsensor)
+      this->rootsensor = new SoNodeSensor(SoSceneManager::nodesensorCB, this);
+
+    this->rootsensor->attach(sceneroot);
+  }
 }
 
 /*!
