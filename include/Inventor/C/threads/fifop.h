@@ -57,7 +57,6 @@ struct cc_fifo {
 
   unsigned int   elements;
 
-  cc_mutex       sleepmutex; /* can access be used instead? */
   cc_condvar     sleep;
 };
 

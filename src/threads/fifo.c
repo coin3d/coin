@@ -59,7 +59,6 @@ cc_fifo_struct_init(cc_fifo * fifo)
   fifo->tail = NULL;
   fifo->free = NULL;
   fifo->elements = 0;
-  cc_mutex_struct_init(&fifo->sleepmutex);
   cc_condvar_struct_init(&fifo->sleep);
 } /* cc_fifo_struct_init() */
 
@@ -86,7 +85,6 @@ cc_fifo_struct_clean(cc_fifo * fifo)
     cc_fifo_item_delete(item);
     item = next;
   }
-  cc_mutex_struct_clean(&fifo->sleepmutex);
   cc_condvar_struct_clean(&fifo->sleep);
 } /* cc_fifo_struct_clean() */
 
@@ -147,26 +145,18 @@ cc_fifo_retrieve(cc_fifo * fifo, void ** ptr, uint32_t * type)
 {
   cc_fifo_item * item;
   assert(fifo != NULL && ptr != NULL);
+  cc_mutex_lock(&fifo->access);
   while ( TRUE ) {
-    cc_mutex_lock(&fifo->access);
     if ( fifo->elements == 0 ) {
-      cc_mutex_unlock(&fifo->access);
-      cc_condvar_wait(&fifo->sleep, &fifo->sleepmutex);
-   /*
-      is this a critical point?
-      what if pointer is pushed and barrier woken before cc_barrier_wait()
-      is called?
-      can this be avoided by using ::access instead of separate mutex?
-      got to figure that one out...
-   */
+      cc_condvar_wait(&fifo->sleep, &fifo->access);
     } else {
       item = i_unlink_head(fifo);
       *ptr = item->item;
       if ( type != NULL ) *type = item->type;
       item->next = fifo->free;
       fifo->free = item;
-      cc_condvar_wake_one(&fifo->sleep);
       cc_mutex_unlock(&fifo->access);
+      cc_condvar_wake_one(&fifo->sleep);
       return;
     }
   }
@@ -195,8 +185,8 @@ cc_fifo_try_retrieve(cc_fifo * fifo, void ** ptr, uint32_t * type)
   *ptr = item->item;
   if ( type != NULL ) *type = item->type;
   cc_fifo_item_delete(item);
-  cc_condvar_wake_one(&fifo->sleep);
   cc_mutex_unlock(&fifo->access);
+  cc_condvar_wake_one(&fifo->sleep);
   return TRUE;
 } /* cc_fifo_try_retrieve() */
 
