@@ -180,8 +180,8 @@ SoSFPath::readValue(SoInput * in)
 void
 SoSFPath::writeValue(SoOutput * out) const
 {
-  // NB: This code is common for SoMFNode, SoMFPath and SoMFEngine.
-  // That's why we check for the base type before writing.
+  // NB: This code is common for SoSFNode, SoSFPath and SoSFEngine.
+  // That's why we check the base type before writing.
   SoBase * base = this->getValue();
   if (base) {
     if (base->isOfType(SoNode::getClassTypeId())) {
@@ -214,13 +214,22 @@ SoSFPath::countWriteRefs(SoOutput * out) const
 {
   inherited::countWriteRefs(out);
 
-  SoPath * n = this->getValue();
-  // Set the "from field" flag as FALSE, as that flag is meant to be
-  // used for references through field-to-field connections.
-  if (n) n->addWriteReference(out, FALSE);
-#ifdef COIN_INTERNAL_PATH
-  if (n && n->getHead()) n->getHead()->addWriteReference(out, FALSE);
-#endif // COIN_INTERNAL_PATH
+  SoBase * base = this->getValue();
+  if (base == NULL) return;
+
+  // NB: This code is common for SoSFNode, SoSFPath and SoSFEngine.
+  // That's why we check the base type before writing/counting
+
+  if (base->isOfType(SoNode::getClassTypeId())) {
+    ((SoNode*)base)->writeInstance(out);
+  }
+  else if (base->isOfType(SoEngine::getClassTypeId())) {
+    ((SoEngine*)base)->addWriteReference(out);
+  }
+  else if (base->isOfType(SoPath::getClassTypeId())) {
+    SoWriteAction wa(out);
+    wa.continueToApply((SoPath*)base);
+  }
 }
 
 // Override from parent to update our path pointer reference.
