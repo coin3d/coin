@@ -492,7 +492,7 @@ SoImage::notify(SoNotList * list)
   else if (f == &this->width || f == &this->height) {
     this->resizedimagevalid = FALSE;
   }
-  SoNode::notify(list);
+  inherited::notify(list);
 }
 
 /*!

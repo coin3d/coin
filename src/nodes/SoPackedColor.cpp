@@ -156,5 +156,5 @@ SoPackedColor::notify(SoNotList *list)
   if (f == &this->orderedRGBA) {
     this->checktransparent = TRUE;
   }
-  SoNode::notify(list);
+  inherited::notify(list);
 }

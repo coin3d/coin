@@ -365,7 +365,7 @@ SoTexture3::notify(SoNotList * l)
   else if (f == &this->wrapS || f == &this->wrapT || f == &this->wrapR) {
     this->glimagevalid = FALSE;
   }
-  SoNode::notify(l);
+  inherited::notify(l);
 }
 
 //
