@@ -414,6 +414,12 @@
     *understood*, though, which seems dangerous.. see the FIXME code
     comment in SoChildList::remove().
 
+    UPDATE 20021014 rolvs: I tried to reintroduce the bug by undoing
+    the change done by pederb as described in SoChildList::remove()
+    FIXME. I was not able to reproduce the described effect. I'm
+    investigating this further, as there seem to be some gravel in the
+    list-machinery. (See FIXME in SoChildList::insert)
+
 =====================================================================
 
 021 SoGetBoundingBoxAction can be made to fail when applied to a path.
