@@ -210,6 +210,21 @@ soshape_bigtexture::clip_triangles(SoState * state)
                                     dummymod, dummycol);
   SbVec4f tmp;
   int i, j;
+
+  for (i = 0; i < n; i++) {
+    tmp = this->vertexlist[i]->getTextureCoords();
+    texturematrix.multVecMatrix(tmp, tmp);
+    SbVec3f tmp3;
+    tmp.getReal(tmp3);
+
+    for (j = 0; j < 2; j++) {
+      if (wrap[j] == SoTextureImageElement::CLAMP) {
+        tmp3[j] = SbClamp(tmp3[j], 0.0f, 1.0f);
+      }
+    }
+    this->vertexlist[i]->setTextureCoords(tmp3);
+  }
+
   // adjust the texture coordinates to account for REPEAT mode.
   if ((wrap[0] == SoTextureImageElement::REPEAT) ||
       (wrap[1] == SoTextureImageElement::REPEAT)) {
