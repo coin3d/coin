@@ -640,8 +640,8 @@ SoRayPickAction::intersect(const SbVec3f & v0, const SbVec3f & v1,
   SbVec3f op0, op1; // object space
   SbVec3f p0, p1; // world space
 
-  THIS->osline.getClosestPoints(line, op0, op1);
-
+  if (!THIS->osline.getClosestPoints(line, op0, op1)) return FALSE;
+  
   // clamp op1 between v0 and v1
   if ((op1-v0).dot(line.getDirection()) < 0.0f) op1 = v0;
   else if ((v1-op1).dot(line.getDirection()) < 0.0f) op1 = v1;
