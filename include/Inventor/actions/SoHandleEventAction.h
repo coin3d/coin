@@ -65,4 +65,9 @@ private:
   class SoHandleEventActionP * pimpl;
 };
 
+#ifndef COIN_INTERNAL
+// For SGI / TGS Open Inventor compile-time compatibility.
+#include <Inventor/actions/SoRayPickAction.h>
+#endif // COIN_INTERNAL
+
 #endif // !COIN_SOHANDLEEVENTACTION_H
