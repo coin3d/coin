@@ -19,17 +19,16 @@
 
 /*!
   \class SoFieldSensor SoFieldSensor.h Inventor/sensors/SoFieldSensor.h
-  \brief The SoFieldSensor class detects changes to an attached SoField
-  derived object.
+  \brief The SoFieldSensor class detects changes to a field.
   \ingroup sensors
 
-  FIXME: doc
- */
+  Attach a field to a sensor of this type to put it under
+  surveillance, so you can act upon changes to the field.
+*/
 
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/fields/SoField.h>
-#include <coindefs.h> // COIN_STUB()
-#include <assert.h>
+
 
 /*!
   Constructor.
@@ -40,12 +39,12 @@ SoFieldSensor::SoFieldSensor(void)
 }
 
 /*!
-  Constructor taking as parameters the sensor callback function and the
-  userdata which will be passed the callback.
+  Constructor taking as parameters the sensor callback function and
+  the userdata which will be passed the callback.
 
   \sa setFunction(), setData()
  */
-SoFieldSensor::SoFieldSensor(SoSensorCB *func, void *data)
+SoFieldSensor::SoFieldSensor(SoSensorCB * func, void * data)
   : inherited(func, data)
 {
   this->convict = NULL;
@@ -60,8 +59,8 @@ SoFieldSensor::~SoFieldSensor(void)
 }
 
 /*!
-  Attach sensor to a field. Whenever the field's value changes,
-  the sensor will be triggered and call the callback function.
+  Attach sensor to a field. Whenever the field's value changes, the
+  sensor will be triggered and call the callback function.
 
   \sa detach()
  */
@@ -73,15 +72,15 @@ SoFieldSensor::attach(SoField * field)
 }
 
 /*!
-  Detach sensor from field. As long as an SoFieldSensor is detached, it will
-  never call its callback function.
+  Detach sensor from field. As long as an SoFieldSensor is detached,
+  it will never call its callback function.
 
   \sa attach()
  */
 void
 SoFieldSensor::detach(void)
 {
-  if(this->convict) this->convict->removeAuditor(this, SoNotRec::SENSOR);
+  if (this->convict) this->convict->removeAuditor(this, SoNotRec::SENSOR);
   this->convict = NULL;
 }
 
@@ -96,14 +95,24 @@ SoFieldSensor::getAttachedField(void) const
   return this->convict;
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
 SoFieldSensor::trigger(void)
 {
   this->convict->evaluate();
   inherited::trigger();
+}
+
+// Doc from superclass.
+void
+SoFieldSensor::notify(SoNotList * l)
+{
+  inherited::notify(l);
+
+  // FIXME: I don't know what the heck we're supposed to do here, but
+  // I included the overloading in case we find out after 1.0 release,
+  // and need to fix the behavior without changing the class signature
+  // (which would break binary compatibility). 20000402 mortene.
 }
 
 // Doc from superclass.

@@ -38,7 +38,9 @@ public:
   virtual void trigger(void);
 
 private:
+  virtual void notify(SoNotList * l);
   virtual void dyingReference(void);
+
   SoField * convict;
 };
 

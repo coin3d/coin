@@ -18,9 +18,9 @@
 # ID          SoTimerSensor
 # ID      SoDelayQueueSensor
 # ID          SoDataSensor
-# Id              SoFieldSensor
-# Id              SoNodeSensor
-# Id              SoPathSensor
+# ID              SoFieldSensor
+# ID              SoNodeSensor
+# ID              SoPathSensor
 # ID          SoIdleSensor
 # ID          SoOneShotSensor
 #

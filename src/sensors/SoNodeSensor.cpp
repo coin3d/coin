@@ -19,15 +19,19 @@
 
 /*!
   \class SoNodeSensor SoNodeSensor.h Inventor/sensors/SoNodeSensor.h
-  \brief The SoNodeSensor class detects changes to an attached SoNode derived object.
+  \brief The SoNodeSensor class detects changes to nodes.
   \ingroup sensors
 
-  FIXME: doc (detects field changes, children changes in group nodes, ...)
- */
+  Attach a node to a sensor of this type to put it under surveillance,
+  so you can act upon changes to the node.
+
+  Any modification to the node's fields will trigger the sensor, as
+  will changes to node's children (if any), including if nodes are
+  added or removed as children below the node in the subgraph.
+*/
 
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/nodes/SoNode.h>
-#include <coindefs.h> // COIN_STUB()
 
 /*!
   Default constructor.
@@ -43,7 +47,7 @@ SoNodeSensor::SoNodeSensor(void)
 
   \sa setFunction(), setData()
 */
-SoNodeSensor::SoNodeSensor(SoSensorCB *func, void *data)
+SoNodeSensor::SoNodeSensor(SoSensorCB * func, void * data)
   : inherited(func, data)
 {
   this->convict = NULL;
@@ -84,7 +88,7 @@ SoNodeSensor::attach(SoNode * node)
 void
 SoNodeSensor::detach(void)
 {
-  if(this->convict) this->convict->removeAuditor(this, SoNotRec::SENSOR);
+  if (this->convict) this->convict->removeAuditor(this, SoNotRec::SENSOR);
   this->convict = NULL;
 }
 

@@ -36,7 +36,7 @@ public:
   SoPath * getAttachedPath(void) const;
 
 protected:
-  void notify(SoNotList * list);
+  void notify(SoNotList * l);
 
 private:
   virtual void dyingReference(void);

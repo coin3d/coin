@@ -19,33 +19,34 @@
 
 /*!
   \class SoPathSensor SoPathSensor.h Inventor/sensors/SoPathSensor.h
-  \brief The SoPathSensor class detects changes to an attached SoPath
-  derived object.
+  \brief The SoPathSensor class detects changes to paths.
   \ingroup sensors
 
-  FIXME: doc
- */
+  If you need to know when a path changes (i.e. nodes in the path has
+  been removed, or new nodes is added), use this sensor to get a
+  notification.
+*/
 
 #include <Inventor/sensors/SoPathSensor.h>
-#include <coindefs.h> // COIN_STUB()
-#include <stdlib.h> // NULL
-#include <assert.h>
+#include <Inventor/SoPath.h>
+
 
 /*!
-  Constructor.
- */
+  Default constructor. Use setFunction() to set up a callback function
+  later.
+*/
 SoPathSensor::SoPathSensor(void)
 {
   this->convict = NULL;
 }
 
 /*!
-  Constructor taking as parameters the sensor callback function and the
-  userdata which will be passed the callback.
+  Constructor taking as parameters the sensor callback function and
+  the userdata which will be passed the callback.
 
   \sa setFunction(), setData()
  */
-SoPathSensor::SoPathSensor(SoSensorCB *func, void *data)
+SoPathSensor::SoPathSensor(SoSensorCB * func, void * data)
   : inherited(func, data)
 {
   this->convict = NULL;
@@ -60,8 +61,8 @@ SoPathSensor::~SoPathSensor(void)
 }
 
 /*!
-  Attach sensor to a path. Whenever the path's value changes,
-  the sensor will be triggered and call the callback function.
+  Attach sensor to a path. Whenever the path changes, the sensor will
+  be triggered and call the callback function.
 
   \sa detach()
  */
@@ -69,19 +70,19 @@ void
 SoPathSensor::attach(SoPath * path)
 {
   this->convict = path;
-  // FIXME: add myself to path's list of auditors.
+  path->addAuditor(this, SoNotRec::SENSOR);
 }
 
 /*!
-  Detach sensor from path. As long as an SoPathSensor is detached, it will
-  never call its callback function.
+  Detach sensor from path. As long as an SoPathSensor is detached, it
+  will never invoke its callback function.
 
   \sa attach()
  */
 void
 SoPathSensor::detach(void)
 {
-  // FIXME: remove myself from path's auditor list.
+  if (this->convict) this->convict->removeAuditor(this, SoNotRec::SENSOR);
   this->convict = NULL;
 }
 
@@ -96,18 +97,19 @@ SoPathSensor::getAttachedPath(void) const
   return this->convict;
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from superclass.
 void
-SoPathSensor::notify(SoNotList * /* list */)
+SoPathSensor::notify(SoNotList * l)
 {
-  COIN_STUB();
+  inherited::notify(l);
+
+  // FIXME: I don't know what the heck we're supposed to do here, but
+  // I included the overloading in case we find out after 1.0 release,
+  // and need to fix the behavior without changing the class signature
+  // (which would break binary compatibility). 20000402 mortene.
 }
 
-/*!
-  \internal
-*/
+// Doc from superclass.
 void
 SoPathSensor::dyingReference(void)
 {
