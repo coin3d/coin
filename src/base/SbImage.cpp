@@ -55,8 +55,8 @@
 
 static SbBool SIMAGE_failed_to_load = FALSE;
 static void * SIMAGE_libhandle = NULL;
-//  typedef SIMAGE_read_image_t unsigned char * (*)(const char *, int *, int *, int *);
-static unsigned char * (*SIMAGE_read_image)(const char *, int *, int *, int *) = NULL;
+typedef unsigned char * (*SIMAGE_read_image_t)(const char *, int *, int *, int *);
+static SIMAGE_read_image_t SIMAGE_read_image;
 
 static void SIMAGE_cleanup(void)
 {
@@ -311,8 +311,9 @@ SbImage::readFile(const SbString & filename,
       else {
         (void)atexit(SIMAGE_cleanup);
 
-        SIMAGE_read_image = (unsigned char *(*)(const char *, int *, int *, int *))
-          dlsym(SIMAGE_libhandle, "simage_read_image");
+        SIMAGE_read_image =
+          (SIMAGE_read_image_t)dlsym(SIMAGE_libhandle, "simage_read_image");
+
         if (!SIMAGE_read_image) {
           SIMAGE_failed_to_load = TRUE;
 #if COIN_DEBUG
