@@ -54,9 +54,9 @@
       rgb 1 0 0 #red
     }
     AsciiText {
-      width [ 0 3 20 ]
+      width [ 0, 3, 20 ]
       justification LEFT #Standard alignment
-      string [ "LEFT" "LEFT" "LEFT" "LEFT" "LEFT LEFT" ]
+      string [ "LEFT", "LEFT", "LEFT", "LEFT", "LEFT LEFT" ]
     }
     BaseColor { 
       rgb 1 1 0
@@ -70,9 +70,9 @@
       rgb 0 1 0 #green
     }
     AsciiText {
-      width [ 0 3 20 ]
+      width [ 0, 3, 20 ]
       justification RIGHT
-      string [ "RIGHT" "RIGHT" "RIGHT" "RIGHT" "RIGHT RIGHT" ]
+      string [ "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT RIGHT" ]
     }
     BaseColor { 
       rgb 0 1 1
@@ -86,9 +86,9 @@
       rgb 0 0 1 #blue
     }
     AsciiText {
-      width [ 0 3 20 ]
+      width [ 0, 3, 20 ]
       justification CENTER
-      string [ "CENTER" "CENTER" "CENTER" "CENTER" "CENTER CENTER" ]
+      string [ "CENTER", "CENTER", "CENTER", "CENTER", "CENTER CENTER" ]
     }
     BaseColor { 
       rgb 1 0 1
@@ -690,6 +690,7 @@ SoAsciiTextP::setUpGlyphs(SoState * state, SoAsciiText * textnode)
 
   this->glyphwidths.truncate(0);
   this->stringwidths.truncate(0);
+  this->maxglyphbbox.makeEmpty();
 
   float kerningx = 0;
   float kerningy = 0;
