@@ -249,7 +249,7 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   float maxglyphsize = 1;
   
   float maxy = fontspec.size;
-  float miny = this->spacing.getValue() * fontspec.size * (n-1);
+  float miny = -this->spacing.getValue() * fontspec.size * (n-1);
 
   float minx, maxx;
   switch (this->justification.getValue()) {
@@ -357,7 +357,8 @@ void
 SoText3::GLRender(SoGLRenderAction * action)
 {
 
-  if (!this->shouldGLRender(action)) return;
+  if (!this->shouldGLRender(action)) 
+    return;
 
   SoState * state = action->getState();
 
@@ -475,7 +476,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
     if (first) {
       first = FALSE;
       SoDebugError::postWarning("SoText3::GLRender",
-                                "3D-textures not properly supported for this node type yet.");
+                                "3D-textures not supported for this node type yet.");
     }
   }
 
