@@ -332,7 +332,7 @@ SoInput::addProto(SoProto * proto)
   }
 }
 
-/*
+/*!
   Pushed a Proto onto the Proto stack. The Proto stack is used during
   VRML2 file parsing.
 
@@ -353,7 +353,7 @@ SoInput::pushProto(SoProto * proto)
   }
 }
 
-/*
+/*!
   Pops a Proto off the Proto stack.
 
   This method was not part of the Inventor v2.1 API, and is an
@@ -373,7 +373,7 @@ SoInput::popProto(void)
   }
 }
 
-/*
+/*!
   Returns the Proto at the top of the Proto stack.
 
   This method was not part of the Inventor v2.1 API, and is an

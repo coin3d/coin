@@ -192,7 +192,7 @@ SoEngineOutput::getNodeContainer(void) const
   return (SoNodeEngine*) this->container;
 }
 
-/*
+/*!
   Returns \e TRUE if the container is a NodeEngine.
 
   This method was not part of the Open Inventor 2.1 API, and is an
