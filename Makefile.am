@@ -131,7 +131,8 @@ EXTRA_DIST = \
 	packaging/windows/footer.nsi.in \
 	packaging/windows/heading.nsi.in \
 	packaging/windows/middle.nsi.in \
-	packaging/windows/post.nsi.in
+	packaging/windows/post.nsi.in \
+	examples/bindings/glutiv.cpp
 
 coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
 	@$(SHELL) config.status --file=$@:coin.cfg.in
