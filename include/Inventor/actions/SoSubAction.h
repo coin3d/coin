@@ -27,19 +27,19 @@
 #endif // !COIN_INTERNAL
 
 
-#define SO_ACTION_ADD_METHOD(nodeclass, method) \
+#define SO_ACTION_ADD_METHOD(_nodeclass_, _method_) \
   do { \
-    addMethod(nodeclass::getClassTypeId(), (SoActionMethod)method); \
+    addMethod(_nodeclass_::getClassTypeId(), (SoActionMethod)_method_); \
   } while (0)
 
 
-#define SO_ACTION_CONSTRUCTOR(classname) \
+#define SO_ACTION_CONSTRUCTOR(_classname_) \
   do { \
-    classname::traversalMethods = this->methods; \
+    _classname_::traversalMethods = this->methods; \
   } while (0)
 
 
-#define SO_ACTION_HEADER(classname) \
+#define SO_ACTION_HEADER(_classname_) \
 public: \
   virtual SoType getTypeId(void) const; \
   static SoType getClassTypeId(void); \
@@ -55,38 +55,38 @@ private: \
   static SoType classTypeId
 
 
-#define SO_ACTION_SOURCE(classname) \
-SoEnabledElementsList * classname::enabledElements = NULL; \
-SoActionMethodList * classname::methods = NULL; \
-SoType classname::classTypeId = SoType::badType(); \
-SoType classname::getClassTypeId(void) { return classname::classTypeId; } \
-SoType classname::getTypeId(void) const { return classname::classTypeId; } \
-const SoEnabledElementsList & classname::getEnabledElements(void) const \
+#define SO_ACTION_SOURCE(_classname_) \
+SoEnabledElementsList * _classname_::enabledElements = NULL; \
+SoActionMethodList * _classname_::methods = NULL; \
+SoType _classname_::classTypeId = SoType::badType(); \
+SoType _classname_::getClassTypeId(void) { return _classname_::classTypeId; } \
+SoType _classname_::getTypeId(void) const { return _classname_::classTypeId; } \
+const SoEnabledElementsList & _classname_::getEnabledElements(void) const \
 { \
-  assert(classname::enabledElements); \
-  return *classname::enabledElements; \
+  assert(_classname_::enabledElements); \
+  return *_classname_::enabledElements; \
 } \
 void \
-classname::addMethod(const SoType type, SoActionMethod method) \
+_classname_::addMethod(const SoType type, SoActionMethod method) \
 { \
-  assert(classname::methods); \
-  classname::methods->addMethod(type, method); \
+  assert(_classname_::methods); \
+  _classname_::methods->addMethod(type, method); \
 } \
 void \
-classname::enableElement(const SoType type, const int stackindex) \
+_classname_::enableElement(const SoType type, const int stackindex) \
 { \
-  assert(classname::enabledElements); \
-  classname::enabledElements->enable(type, stackindex); \
+  assert(_classname_::enabledElements); \
+  _classname_::enabledElements->enable(type, stackindex); \
 }
 
 
-#define SO_ACTION_INIT_CLASS(classname, parentclassname) \
+#define SO_ACTION_INIT_CLASS(_classname_, _parentclassname_) \
   do { \
-    assert(classname::getClassTypeId() == SoType::badType()); \
-    assert(parentclassname::getClassTypeId() != SoType::badType()); \
-    classname::classTypeId = SoType::createType(parentclassname::getClassTypeId(), SO__QUOTE(classname)); \
-    classname::enabledElements = new SoEnabledElementsList(parentclassname::enabledElements); \
-    classname::methods = new SoActionMethodList(parentclassname::methods); \
+    assert(_classname_::getClassTypeId() == SoType::badType()); \
+    assert(_parentclassname_::getClassTypeId() != SoType::badType()); \
+    _classname_::classTypeId = SoType::createType(_parentclassname_::getClassTypeId(), SO__QUOTE(_classname_)); \
+    _classname_::enabledElements = new SoEnabledElementsList(_parentclassname_::enabledElements); \
+    _classname_::methods = new SoActionMethodList(_parentclassname_::methods); \
   } while (0)
 
 
