@@ -74,6 +74,8 @@ typedef FT_Error (*cc_ftglue_FT_Get_Kerning_t)(FT_Face face, unsigned int left, 
 typedef FT_Error (*cc_ftglue_FT_Get_Glyph_t)(void * glyphslot, FT_Glyph * glyph);
 typedef FT_Error (*cc_ftglue_FT_Glyph_To_Bitmap_t)(FT_Glyph * glyph, int rendermode, FT_Vector * origin, int destroy);
 typedef void (*cc_ftglue_FT_Done_Glyph_t)(FT_Glyph glyph);
+typedef FT_Error (*cc_ftglue_FT_Outline_Decompose_t)(FT_Outline * outline, const FT_Outline_Funcs * func_interface, void * user);
+
 
 typedef struct {
   int available;
@@ -91,6 +93,7 @@ typedef struct {
   cc_ftglue_FT_Get_Glyph_t FT_Get_Glyph; 
   cc_ftglue_FT_Glyph_To_Bitmap_t FT_Glyph_To_Bitmap; 
   cc_ftglue_FT_Done_Glyph_t FT_Done_Glyph;
+  cc_ftglue_FT_Outline_Decompose_t FT_Outline_Decompose;
 } cc_ftglue_t;
 
 static cc_ftglue_t * freetype_instance = NULL;
@@ -193,6 +196,7 @@ ftglue_init(void)
       FTGLUE_REGISTER_FUNC(cc_ftglue_FT_Get_Glyph_t, FT_Get_Glyph); 
       FTGLUE_REGISTER_FUNC(cc_ftglue_FT_Glyph_To_Bitmap_t, FT_Glyph_To_Bitmap); 
       FTGLUE_REGISTER_FUNC(cc_ftglue_FT_Done_Glyph_t, FT_Done_Glyph);
+      FTGLUE_REGISTER_FUNC(cc_ftglue_FT_Outline_Decompose_t, FT_Outline_Decompose);
 
       /* Do this late, so we can detect recursive calls to this function. */
       freetype_instance = fi;
@@ -312,3 +316,11 @@ cc_ftglue_available(void)
   ftglue_init();
   return freetype_instance && freetype_instance->available;
 }
+
+FT_Error 
+cc_ftglue_FT_Outline_Decompose(FT_Outline * outline, const FT_Outline_Funcs * func_interface, void * user)
+{
+  assert(freetype_instance && freetype_instance->available);
+  return freetype_instance->FT_Outline_Decompose(outline, func_interface, user);
+}
+
