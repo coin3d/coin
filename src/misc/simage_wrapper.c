@@ -212,7 +212,14 @@ simage_wrapper(void)
     simage_wrapper_t * si = (simage_wrapper_t *)malloc(sizeof(simage_wrapper_t));
     (void)atexit(simage_wrapper_cleanup);
 
-    /* Detect recursive calls. */
+    /*
+      Detect recursive calls. Not overly useful, but it could still
+      catch the "don't do this" error of a function used from
+      simage_wrapper() calling back to simage_wrapper() (after
+      simage_instance has been set, and in a build where the
+      thread-handling abstractions are missing (with them in place,
+      execution would hang indefinitely on the CC_SYNC_BEGIN)).
+    */
     {
       static int is_initializing = 0;
       assert(is_initializing == 0);
