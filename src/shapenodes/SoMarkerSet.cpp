@@ -1204,7 +1204,7 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
     // probably become a bottleneck. Should really partition marker
     // positions in a oct-tree data structure and cull several at
     // the same time.  20031219 mortene.
-    if (SoCullElement::cullTest(state, bbox, TRUE)) { continue; }
+    if (SoCullElement::cullTest(state, bbox, FALSE)) { continue; }
 
     vv.projectToScreen(point, point); // normalized screen coordinates
     point[0] = point[0] * float(vpsize[0]); // screen pixel position
