@@ -20,9 +20,9 @@
 #ifndef __SBBOX_H__
 #define __SBBOX_H__
 
-#if defined(__SOLIB_INTERNAL__)
+#if defined(COIN_INTERNAL)
 #error "Do not include SbBox.h internally."
-#endif // __SOLIB_INTERNAL__
+#endif // COIN_INTERNAL
 
 #define __INCLUDED_FROM_SBBOX_H__
 #include <Inventor/SbBox2f.h>

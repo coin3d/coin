@@ -113,12 +113,12 @@ private:
   int firstHidden;
 };
 
-#ifndef __SOLIB_INTERNAL__
+#ifndef COIN_INTERNAL
 #include <Inventor/SoFullPath.h>
-#endif // __SOLIB_INTERNAL__
+#endif // COIN_INTERNAL
 
-#ifndef __SOLIB_INTERNAL__
+#ifndef COIN_INTERNAL
 #include <Inventor/misc/SoLightPath.h>
-#endif // __SOLIB_INTERNAL__
+#endif // COIN_INTERNAL
 
 #endif // !__SOPATH_H__

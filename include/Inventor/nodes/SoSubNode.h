@@ -126,7 +126,7 @@ _class_::createInstance(void) \
 
 
 
-#if defined(__SOLIB_INTERNAL__)
+#if defined(COIN_INTERNAL)
 #define SO_NODE_INTERNAL_CONSTRUCTOR(_class_) \
   do { \
     SO_NODE_CONSTRUCTOR(_class_); \
@@ -165,7 +165,7 @@ _class_::createInstance(void) \
   } while (0)
 
 
-#if defined(__SOLIB_INTERNAL__)
+#if defined(COIN_INTERNAL)
 #define SO_NODE_INTERNAL_INIT_CLASS(_class_) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
@@ -183,7 +183,7 @@ _class_::createInstance(void) \
   } while (0)
 
 
-#if defined(__SOLIB_INTERNAL__)
+#if defined(COIN_INTERNAL)
 #define SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(_class_) \
   do { \
     const char * classname = SO__QUOTE(_class_); \

@@ -81,7 +81,7 @@ _class_::getClassNodekitCatalogPtr(void) \
   } while (0)
 
 
-#if defined(__SOLIB_INTERNAL__)
+#if defined(COIN_INTERNAL)
 // Internal note for developers: match changes to this macro with the
 // same changes to SoBaseKit::initClass().
 #define SO_KIT_INTERNAL_INIT_CLASS(_class_) \
@@ -102,7 +102,7 @@ _class_::getClassNodekitCatalogPtr(void) \
   } while (0)
 
 
-#if defined(__SOLIB_INTERNAL__)
+#if defined(COIN_INTERNAL)
 #define SO_KIT_INTERNAL_CONSTRUCTOR(_class_) \
   do { \
     SO_NODE_INTERNAL_CONSTRUCTOR(_class_); \

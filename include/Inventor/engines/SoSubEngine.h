@@ -125,7 +125,7 @@
                                    SO__QUOTE(_class_)); \
   } while (0)
 
-#if defined(__SOLIB_INTERNAL__)
+#if defined(COIN_INTERNAL)
 #define SO_ENGINE_INTERNAL_INIT_ABSTRACT_CLASS(_class_) \
   do { \
     /* Make sure we only initialize once. */ \
@@ -156,7 +156,7 @@
                                    &_class_::createInstance); \
   } while (0)
 
-#if defined(__SOLIB_INTERNAL__)
+#if defined(COIN_INTERNAL)
 #define SO_ENGINE_INTERNAL_INIT_CLASS(_class_) \
   do { \
     /* Make sure we only initialize once. */ \

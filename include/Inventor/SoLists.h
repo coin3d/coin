@@ -20,9 +20,9 @@
 #ifndef __SOLISTS_H__
 #define __SOLISTS_H__
 
-#if defined(__SOLIB_INTERNAL__)
+#if defined(COIN_INTERNAL)
 #error "Do not include SoLists.h internally."
-#endif // __SOLIB_INTERNAL__
+#endif // COIN_INTERNAL
 
 #include <Inventor/lists/SbPList.h>
 #include <Inventor/lists/SbIntList.h>

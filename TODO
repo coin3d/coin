@@ -32,7 +32,7 @@ TODO:
   nice feature.
 
 * [mortene:19991107] example programs and tools shouldn't be compiled
-  with the __SOLIB_INTERNAL__ define set.
+  with the COIN_INTERNAL define set.
 
 * [mortene:19990926] add configure option to enable crash (and
   subsequent core dump, of course) on SoDebugError::postWarning() and
@@ -67,8 +67,7 @@ TODO:
   with") __ (double underscore) or beginning with _[A-Z] (single
   underscore immediately followed by an uppercase letter) are reserved
   in C++ for the implementation. All header file "wrapper definitions"
-  must be rewritten, and the __SOLIB_INTERNAL__ define must be
-  changed.
+  must be rewritten.
 
 * [mortene:19991128] code restructuring: convert internal use of lists
   to SbList wherever possible.

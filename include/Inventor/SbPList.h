@@ -20,9 +20,9 @@
 #ifndef __SBPLIST_H__
 #define __SBPLIST_H__
 
-#if defined(__SOLIB_INTERNAL__)
+#if defined(COIN_INTERNAL)
 #error "Do not include Inventor/SbPList.h internally (use Inventor/lists/SbPList.h)."
-#endif // __SOLIB_INTERNAL__
+#endif // COIN_INTERNAL
 
 #define __INCLUDED_FROM_SBPLIST_H__
 #include <Inventor/lists/SbPList.h>

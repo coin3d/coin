@@ -20,7 +20,7 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/SoInteraction.h>
-#if defined(__SOLIB_INTERNAL__)
+#if defined(COIN_INTERNAL)
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/lists/SoTypeList.h>
 #else // Compiled outside the internal build process.

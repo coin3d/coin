@@ -20,9 +20,9 @@
 #ifndef __SB_H__
 #define __SB_H__
 
-#if defined(__SOLIB_INTERNAL__)
+#if defined(COIN_INTERNAL)
 #error "Do not include Sb.h internally."
-#endif // __SOLIB_INTERNAL__
+#endif // COIN_INTERNAL
 
 // Include all header files for the basic classes.
 

@@ -3920,7 +3920,7 @@ else
 fi
 
 
-CPPFLAGS="$CPPFLAGS -D__SOLIB_INTERNAL__"
+CPPFLAGS="$CPPFLAGS -DCOIN_INTERNAL"
 
 
 for ac_header in unistd.h io.h

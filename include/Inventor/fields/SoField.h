@@ -188,9 +188,9 @@ private:
   SbBool donotify;
 };
 
-#if !defined(__SOLIB_INTERNAL__)
+#if !defined(COIN_INTERNAL)
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoMField.h>
-#endif // !__SOLIB_INTERNAL__
+#endif // !COIN_INTERNAL
 
 #endif // !__SOFIELD_H__

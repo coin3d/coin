@@ -186,7 +186,7 @@ dnl  the API interface "Open Inventor strict", meaning the user must
 dnl  use the exact same include files as under "real" Open Inventor.
 dnl  We would then need to know that we are actually allowed to include
 dnl  any file during internal build.
-CPPFLAGS="$CPPFLAGS -D__SOLIB_INTERNAL__"
+CPPFLAGS="$CPPFLAGS -DCOIN_INTERNAL"
 
 
 AC_CHECK_HEADERS(unistd.h io.h)

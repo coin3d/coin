@@ -20,9 +20,9 @@
 #ifndef __SOCOMPOSE_H__
 #define __SOCOMPOSE_H__
 
-#if defined(__SOLIB_INTERNAL__)
+#if defined(COIN_INTERNAL)
 #error "Do not include SbCompose.h internally."
-#endif // __SOLIB_INTERNAL__
+#endif // COIN_INTERNAL
 
 #define __INCLUDED_FROM_SOCOMPOSE_H__
 #include <Inventor/engines/SoComposeVec2f.h>

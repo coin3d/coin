@@ -82,10 +82,10 @@ protected:
   void * defaultItem;
 };
 
-#ifndef __SOLIB_INTERNAL__
+#ifndef COIN_INTERNAL
 #define __INCLUDED_FROM_SBPLIST_H__
 #include <Inventor/lists/SbStringList.h>
 #undef __INCLUDED_FROM_SBPLIST_H__
-#endif // __SOLIB_INTERNAL__
+#endif // COIN_INTERNAL
 
 #endif // !__LISTS_SBPLIST_H__

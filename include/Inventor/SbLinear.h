@@ -20,9 +20,9 @@
 #ifndef __SBLINEAR_H__
 #define __SBLINEAR_H__
 
-#if defined(__SOLIB_INTERNAL__)
+#if defined(COIN_INTERNAL)
 #error "Do not include SbLinear.h internally."
-#endif // __SOLIB_INTERNAL__
+#endif // COIN_INTERNAL
 
 #define __INCLUDED_FROM_SBLINEAR_H__
 #include <Inventor/SbVec2f.h>
