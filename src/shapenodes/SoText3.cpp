@@ -55,11 +55,14 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
+#include <Inventor/elements/SoCreaseAngleElement.h>
 #include <Inventor/misc/SoGlyph.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoNormalGenerator.h>
 #include <Inventor/nodes/SoProfile.h>
 #include <Inventor/nodes/SoNurbsProfile.h>
 #include <Inventor/SbLine.h>
+#include <Inventor/lists/SbList.h>
 #include <string.h>
 
 #include <coindefs.h> // COIN_OBSOLETED()
@@ -154,6 +157,7 @@ public:
   cc_string * prevfontname; // Store important fontspecs so that changes can be detected
   cc_string * prevfontstyle;
   float prevfontsize;
+  SoNormalGenerator * normalgenerator;
 
 private:
   SoText3 * master;
@@ -193,10 +197,12 @@ SoText3::SoText3(void)
   PRIVATE(this)->prevfontname = cc_string_construct_new();
   PRIVATE(this)->prevfontstyle = cc_string_construct_new();
   PRIVATE(this)->prevfontsize = -1;
+  PRIVATE(this)->normalgenerator = new SoNormalGenerator(FALSE, 0xff);
 }
 
 SoText3::~SoText3()
 {
+  delete PRIVATE(this)->normalgenerator;
   delete PRIVATE(this);
 }
 
@@ -350,6 +356,7 @@ SoText3::getCharacterBounds(SoState * state, int stringindex, int charindex)
 void
 SoText3::GLRender(SoGLRenderAction * action)
 {
+
   if (!this->shouldGLRender(action)) return;
 
   SoState * state = action->getState();
@@ -460,7 +467,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
   float nearz =  FLT_MAX;
   float farz  = -FLT_MAX;
 
-  const SoNodeList profilenodes = SoProfileElement::get(state);
+  const SoNodeList & profilenodes = SoProfileElement::get(state);
   int numprofiles = profilenodes.getLength();
 
   if (numprofiles > 0) {
@@ -468,7 +475,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
     // Find near/far z (for modifying position of front/back)
 
     for (int l=numprofiles-1; l>=0; l--) {
-      SoProfile *pn = (SoProfile *)profilenodes[l];
+      SoProfile * pn = (SoProfile *) profilenodes[l];
       pn->getVertices(state, profnum, profcoords);
 
       if (profnum > 0) {
@@ -479,8 +486,8 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
           break;
         }
       }
-    }
 
+    }
     nearz = -nearz;
     farz = -farz;
   }
@@ -489,18 +496,12 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
     farz = -1.0;
   }
 
-  if (part != SoText3::SIDES) {
-    glBegin(GL_TRIANGLES);
-    if (part == SoText3::FRONT)
-      glNormal3f(0.0f, 0.0f, 1.0f);
-    else
-      glNormal3f(0.0f, 0.0f, -1.0f);
-  }
 
   int glyphidx = 0;
   float ypos = 0.0f;
-
+ 
   for (i = 0; i < n; i++) {
+
     float xpos = 0.0f;
     switch (PUBLIC(this)->justification.getValue()) {
     case SoText3::RIGHT:
@@ -510,7 +511,6 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
       xpos = - this->widths[i] * 0.5f;
       break;
     }
-
 
     cc_glyph3d * prevglyph = NULL;
     const unsigned int length = PUBLIC(this)->string[i].getLength();
@@ -524,29 +524,31 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
       cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, fontspec);
       const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
 
-
       // Get kerning
       if (strcharidx > 0) {
         float kerningx, kerningy;
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
-        xpos += kerningx* fontspec->size;
+        xpos += kerningx * fontspec->size;
       }
       prevglyph = glyph;
       
 
       if (part != SoText3::SIDES) {  // FRONT & BACK
         const int * ptr = cc_glyph3d_getfaceindices(glyph);
-
+        glBegin(GL_TRIANGLES);
+       
         while (*ptr >= 0) {
           SbVec2f v0, v1, v2;
           float zval;
           if (part == SoText3::FRONT) {
+            glNormal3f(0.0f, 0.0f, 1.0f);
             v0 = coords[*ptr++];
             v1 = coords[*ptr++];
             v2 = coords[*ptr++];
             zval = nearz;
           }
           else {  // BACK
+            glNormal3f(0.0f, 0.0f, -1.0f);
             v2 = coords[*ptr++];
             v1 = coords[*ptr++];
             v0 = coords[*ptr++];
@@ -556,150 +558,209 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
           glVertex3f(v1[0] * fontspec->size + xpos, v1[1] * fontspec->size + ypos, zval);
           glVertex3f(v2[0] * fontspec->size + xpos, v2[1] * fontspec->size + ypos, zval);
         }
+
+        glEnd();
+
       }
       else { // SIDES
+
         if (profilenodes.getLength() == 0) {  // no profile - extrude
+
           const int * ptr = cc_glyph3d_getedgeindices(glyph);
           SbVec2f v0, v1;
           int counter = 0;
-          glBegin(GL_QUADS);
 
+          glBegin(GL_QUADS);
           while (*ptr >= 0) {            
+
             v0 = coords[*ptr++];
             v1 = coords[*ptr++];
 
-            SbVec3f tmp(v0[0]-v1[0], v0[1] - v1[1], 0.0f);
-            SbVec3f normal = tmp.cross(SbVec3f(0.0f, 0.0f, 1.0f));
-            normal.normalize();
+            const int * ccw = (int *) cc_glyph3d_getnextccwedge(glyph, counter);
+            const int * cw  = (int *) cc_glyph3d_getnextcwedge(glyph, counter);
+            SbVec3f vleft(coords[*(ccw+1)][0], coords[*(ccw+1)][1], 0);
+            SbVec3f vright(coords[*cw][0], coords[*cw][1], 0);
+            counter++;
+           
             v0[0] = v0[0] * fontspec->size + xpos;
             v0[1] = v0[1] * fontspec->size + ypos;
             v1[0] = v1[0] * fontspec->size + xpos;
             v1[1] = v1[1] * fontspec->size + ypos;
-            glNormal3fv(normal.getValue());
-            glVertex3f(v1[0], v1[1], 0.0f);
-            glVertex3f(v0[0], v0[1], 0.0f);
-            glVertex3f(v0[0], v0[1], -1.0f);
-            glVertex3f(v1[0], v1[1], -1.0f);
+            vleft[0] = vleft[0] * fontspec->size + xpos;
+            vleft[1] = vleft[1] * fontspec->size + ypos;
+            vright[0] = vright[0] * fontspec->size + xpos;
+            vright[1] = vright[1] * fontspec->size + ypos;
+
+            // create two 'normal' vectors pointing out from the edges
+            SbVec3f normala(vleft[0] - v0[0], vleft[1] - v0[1], 0.0f);
+            normala = normala.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+            if (normala.length() > 0)
+              normala.normalize();
+       
+            SbVec3f normalb(v1[0] - vright[0], v1[1] - vright[1], 0.0f);
+            normalb = normalb.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+            if (normalb.length() > 0)
+              normalb.normalize();
+
+            SbBool flatshading = FALSE;
+            float dot = normala.dot(normalb);
+            if(acos(dot) > SoCreaseAngleElement::get(state)) {
+              normala = SbVec3f(v1[0] - v0[0], v1[1] - v0[1], 0.0f);
+              normala = normala.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+              if (normala.length() > 0)
+                normala.normalize();
+              flatshading = TRUE;
+            }
+
+            if (!flatshading) {
+              glNormal3fv(normala.getValue());
+              glVertex3f(v1[0], v1[1], 0.0f);          
+              glNormal3fv(normalb.getValue());
+              glVertex3f(v0[0], v0[1], 0.0f);
+              glNormal3fv(normalb.getValue());
+              glVertex3f(v0[0], v0[1], -1.0f);
+              glNormal3fv(normala.getValue());
+              glVertex3f(v1[0], v1[1], -1.0f);
+            }
+            else {
+              glNormal3fv(normala.getValue());
+              glVertex3f(v1[0], v1[1], 0.0f);          
+              glVertex3f(v0[0], v0[1], 0.0f);
+              glVertex3f(v0[0], v0[1], -1.0f);
+              glVertex3f(v1[0], v1[1], -1.0f);
+            }
           }
           glEnd();
+
         }
         else {  // profile
-          const int *indices = cc_glyph3d_getedgeindices(glyph);
+    
+          const int * indices = cc_glyph3d_getedgeindices(glyph);
           int ind = 0;
+          SbVec3f normala, normalb;
+
+          SbList <SbVec3f> vertexlist;         
+          this->normalgenerator->reset(FALSE);
 
           while (*indices >= 0) {
+            
             int i0 = *indices++;
             int i1 = *indices++;
             SbVec3f va(coords[i0][0], coords[i0][1], nearz);
             SbVec3f vb(coords[i1][0], coords[i1][1], nearz);
-            int *ccw = (int *) cc_glyph3d_getnextccwedge(glyph, ind);
-            int *cw  = (int *) cc_glyph3d_getnextcwedge(glyph, ind);
-            SbVec3f vc(coords[*(ccw+1)][0], coords[*(ccw+1)][1], nearz);
-            SbVec3f vd(coords[*cw][0], coords[*cw][1], nearz);
+            const int * ccw = (int *) cc_glyph3d_getnextccwedge(glyph, ind);
+            const int * cw  = (int *) cc_glyph3d_getnextcwedge(glyph, ind);
+            SbVec3f vleft(coords[*(ccw+1)][0], coords[*(ccw+1)][1], nearz);
+            SbVec3f vright(coords[*cw][0], coords[*cw][1], nearz);
             ind++;
+        
+            va[0] = va[0] * fontspec->size;
+            va[1] = va[1] * fontspec->size;
+            vb[0] = vb[0] * fontspec->size;
+            vb[1] = vb[1] * fontspec->size;
+            vleft[0] = vleft[0] * fontspec->size;
+            vleft[1] = vleft[1] * fontspec->size;
+            vright[0] = vright[0] * fontspec->size;
+            vright[1] = vright[1] * fontspec->size;
 
-            va[0] = va[0] * fontspec->size + xpos;
-            va[1] = va[1] * fontspec->size + ypos;
-            vb[0] = vb[0] * fontspec->size + xpos;
-            vb[1] = vb[1] * fontspec->size + ypos;
-            vc[0] = vc[0] * fontspec->size + xpos;
-            vc[1] = vc[1] * fontspec->size + ypos;
-            vd[0] = vd[0] * fontspec->size + xpos;
-            vd[1] = vd[1] * fontspec->size + ypos;
+            // create two 'normal' vectors pointing out from the edges
+            SbVec3f normala(vleft[0] - va[0], vleft[1] - va[1], 0.0f);
+            normala = normala.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+            if (normala.length() > 0) 
+              normala.normalize();
 
-            // create two 'normal' vectors pointing out from the
-            // edges, for aligning the profile
-            SbVec3f tmp1(vc[0]-va[0], vc[1]-va[1], 0.0f);
-            tmp1 = tmp1.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
-            if (tmp1.length() > 0) 
-              tmp1.normalize(); // Generates a warning on Win32, not on Linux... (handegar)
-
-            SbVec3f tmp2(vb[0]-vd[0], vb[1]-vd[1], 0.0f);
-            tmp2 = tmp2.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
-            if (tmp2.length() > 0)
-              tmp2.normalize();
-
-
-            SoProfile *pn = (SoProfile *)profilenodes[firstprofile];
+            SbVec3f normalb(vb[0] - vright[0], vb[1] - vright[1], 0.0f);
+            normalb = normalb.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+            if (normalb.length() > 0)
+              normalb.normalize();
+  
+            SoProfile * pn = (SoProfile *) profilenodes[firstprofile];
             pn->getVertices(state, profnum, profcoords);
 
-            SbVec3f edgea(va[0]+(profcoords[0][1]*tmp2[0]), va[1]+(profcoords[0][1]*tmp2[1]), -profcoords[0][0] );
-            SbVec3f edgeb(vb[0]+(profcoords[0][1]*tmp1[0]), vb[1]+(profcoords[0][1]*tmp1[1]), -profcoords[0][0] );
-            float edgez = -profcoords[0][0];  // -----
-            // look through all profiles.
-            int twisted = 0;
-
+            SbVec3f vc,vd;
+            SbVec2f starta(va[0], va[1]);
+            SbVec2f startb(vb[0], vb[1]);
+            
             for (int j=firstprofile; j<numprofiles; j++) {
-              SoProfile *pn = (SoProfile *)profilenodes[j];
+              SoProfile * pn = (SoProfile *) profilenodes[j];
               pn->getVertices(state, profnum, profcoords);
-              // iterate through all profile coords, drawing quads (and calculating normals)
-              glBegin(GL_QUADS);
-
-              for (int k=0; k<profnum; k++) {
-                if (profcoords[k][0] != 0) {
-                  vd[0] = va[0] + ((profcoords[k][1] * tmp2[0]));
-                  vd[1] = va[1] + ((profcoords[k][1] * tmp2[1]));
-                  vd[2] = -profcoords[k][0];
-                  vc[0] = vb[0] + ((profcoords[k][1] * tmp1[0]));
-                  vc[1] = vb[1] + ((profcoords[k][1] * tmp1[1]));
-                  vc[2] = -profcoords[k][0];
-                  // normal
-                  SbVec3f normal(edgea[0] - vd[0], edgea[1]-vd[1],  edgez + profcoords[k][0]);
-                  normal = normal.cross(SbVec3f(edgeb[0]-edgea[0], edgeb[1]-edgea[1], 0));
-                  // FIXME: check if 'valid' normals (resulting triangle instead if quad, etc), 20000926 skei.
-
-                  if (normal.length() > 0) {
-                    normal.normalize();
-                    //check if resulting quad-edges will cross
-                    SbVec3f edge1 = edgeb-edgea;
-                    SbVec3f edge2 = vc-vd;
-                    //leftedge.normalize();          // ok not to normalize those? skei
-                    //rightedge.normalize();
-
-                    if (edge1.dot(edge2) < 0) {
-                      SbLine leftline(edgeb,vc);
-                      SbLine rightline(edgea,vd);
-                      SbVec3f inter1,inter2;
-                      leftline.getClosestPoints(rightline,inter1,inter2);
-
-                      if (twisted == 0) {
-                        glNormal3f( normal[0], normal[1], normal[2] );
-                        glVertex3f(edgeb[0], edgeb[1], edgez);
-                        glVertex3f(edgea[0], edgea[1], edgez);
-                        glVertex3f(inter1[0],inter1[1],inter1[2]);
-                        glVertex3f(inter1[0],inter1[1],inter1[2]);
-                        twisted = 1;
-                      }
-                      else {
-                        glNormal3f( -normal[0], -normal[1], -normal[2] );
-                        glVertex3f(inter1[0],inter1[1],inter1[2]);
-                        glVertex3f(inter1[0],inter1[1],inter1[2]);
-                        glVertex3f(vd[0], vd[1], -profcoords[k][0] );
-                        glVertex3f(vc[0], vc[1], -profcoords[k][0] );
-                        twisted = 0;
-                      }
-                    }
-                    else {
-                      glNormal3f( normal[0], normal[1], normal[2] );
-                      // vertices
-                      glVertex3f(edgeb[0], edgeb[1], edgez);
-                      glVertex3f(edgea[0], edgea[1], edgez);
-                      glVertex3f(vd[0], vd[1], -profcoords[k][0] );
-                      glVertex3f(vc[0], vc[1], -profcoords[k][0] );
-                    }
-                  }
-                  edgeb = vc;
-                  edgea = vd;
-                  edgez = -profcoords[k][0];
+              
+              for (int k=1; k<profnum; k++) {
+                
+                // Calc points for two next faces
+                vd[0] = starta[0] + (profcoords[k][1] * normalb[0]);
+                vd[1] = starta[1] + (profcoords[k][1] * normalb[1]);
+                vd[2] = -profcoords[k][0];
+                vc[0] = startb[0] + (profcoords[k][1] * normala[0]);
+                vc[1] = startb[1] + (profcoords[k][1] * normala[1]);
+                vc[2] = -profcoords[k][0];
+                
+                // The windows tesselation sometimes return
+                // illegal/empty tris. A test must be done to
+                // prevent stdout from being flooded with
+                // normalize() warnings from inside the normal
+                // generator.
+               
+                if ((va != vd) && (va != vb) && (vd != vb)) {	
+                  vertexlist.append(va);
+                  vertexlist.append(vd);
+                  vertexlist.append(vb);
+                  normalgenerator->triangle(va,vd,vb);
                 }
-              }
-              glEnd();
+                
+                if ((vb != vd) && (vb != vc) && (vd != vc)) {	               
+                  vertexlist.append(vb);
+                  vertexlist.append(vd);
+                  vertexlist.append(vc);
+                  normalgenerator->triangle(vb,vd,vc);
+                }                       
+                
+                va = vd;
+                vb = vc;
+                
+              }            
             }
+            
           }
+          
+    
+          normalgenerator->generate(SoCreaseAngleElement::get(state));
+          const SbVec3f * normals = normalgenerator->getNormals();          
+          const int size = vertexlist.getLength();
+
+          // NOTE: We add the xpos and ypos to each vertex at this
+          // point because Linux systems seems to accumulate an error
+          // when calculating the normals (ie. two 'o's in a row
+          // doesn't get the same normals due to the xpos
+          // difference). This doesn't happen on Windows so it is
+          // probably a floating point precision issue linked to the
+          // compilator. (Tested on MSVC 6 and GCC 2.95.4) (20031010
+          // handegar).
+
+          glBegin(GL_TRIANGLES);         
+          for (int z = 0;z < size;z += 3) {
+            glNormal3fv(normals[z].getValue());
+            glVertex3fv(SbVec3f(vertexlist[z][0] + xpos, 
+                                vertexlist[z][1] + ypos, 
+                                vertexlist[z][2]).getValue());
+            glNormal3fv(normals[z+1].getValue());
+            glVertex3fv(SbVec3f(vertexlist[z+1][0] + xpos, 
+                                vertexlist[z+1][1] + ypos, 
+                                vertexlist[z+1][2]).getValue());
+   
+            glNormal3fv(normals[z+2].getValue());
+            glVertex3fv(SbVec3f(vertexlist[z+2][0] + xpos, 
+                                vertexlist[z+2][1] + ypos, 
+                                vertexlist[z+2][2]).getValue());
+          }
+          glEnd();
+                    
+          vertexlist.truncate(0);
+
         }
+
       }
 
-      // FIXME: Add proper support for kerning aswell. (20030923 handegar)
       float advancex, advancey;
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
       xpos += advancex * fontspec->size;
@@ -707,7 +768,10 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
     }
     ypos -= fontspec->size * PUBLIC(this)->spacing.getValue();
   }
-  if (part != SoText3::SIDES) glEnd();
+
+
+
+
 }
 
 // render text geometry
@@ -751,7 +815,7 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
   float nearz =  FLT_MAX;
   float farz  = -FLT_MAX;
 
-  const SoNodeList profilenodes = SoProfileElement::get(state);
+  const SoNodeList & profilenodes = SoProfileElement::get(state);
   int numprofiles = profilenodes.getLength();
 
   if (numprofiles > 0) {
@@ -780,14 +844,6 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
     farz = -1.0;
   }
 
-  if (part != SoText3::SIDES) {
-    PUBLIC(this)->beginShape(action, SoShape::TRIANGLES, NULL);
-    if (part == SoText3::FRONT)
-      vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
-    else
-      vertex.setNormal(SbVec3f(0.0f, 0.0f, -1.0f));
-  }
-
   int glyphidx = 0;
   float ypos = 0.0f;
 
@@ -803,6 +859,7 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
       break;
     }
 
+    cc_glyph3d * prevglyph = NULL;
     const unsigned int length = PUBLIC(this)->string[i].getLength();
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
 
@@ -811,24 +868,36 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.      
       const uint32_t glyphidx = (const unsigned char) PUBLIC(this)->string[i][strcharidx];
-      const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, fontspec);
-    
+      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, fontspec);    
       const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
+
       detail.setCharacterIndex(strcharidx);
+
+      // Get kerning
+      if (strcharidx > 0) {
+        float kerningx, kerningy;
+        cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
+        xpos += kerningx * fontspec->size;
+      }
+      prevglyph = glyph;
+
 
       if (part != SoText3::SIDES) {  // FRONT & BACK
         const int * ptr = cc_glyph3d_getfaceindices(glyph);
-
+        PUBLIC(this)->beginShape(action, SoShape::TRIANGLES, NULL);
+        
         while (*ptr >= 0) {
           SbVec2f v0, v1, v2;
           float zval;
           if (part == SoText3::FRONT) {
+            vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
             v0 = coords[*ptr++];
             v1 = coords[*ptr++];
             v2 = coords[*ptr++];
             zval = nearz;
           }
           else {  // BACK
+            vertex.setNormal(SbVec3f(0.0f, 0.0f, -1.0f));
             v2 = coords[*ptr++];
             v1 = coords[*ptr++];
             v0 = coords[*ptr++];
@@ -841,161 +910,207 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
           vertex.setPoint(SbVec3f(v2[0] * fontspec->size + xpos, v2[1] * fontspec->size + ypos, zval));
           PUBLIC(this)->shapeVertex(&vertex);
         }
+
+        PUBLIC(this)->endShape();
+
       }
       else { // SIDES
         if (profilenodes.getLength() == 0) {  // no profile - extrude
+         
           const int * ptr = cc_glyph3d_getedgeindices(glyph);
           SbVec2f v0, v1;
+          int counter = 0;          
           PUBLIC(this)->beginShape(action, SoShape::QUADS, NULL);
 
-          while (*ptr >= 0) {
+          while (*ptr >= 0) {            
+
             v0 = coords[*ptr++];
             v1 = coords[*ptr++];
-
-            SbVec3f tmp(v0[0]-v1[0], v0[1] - v1[1], 0.0f);
-            SbVec3f normal = tmp.cross(SbVec3f(0.0f, 0.0f, 1.0f));
-            normal.normalize();
+            const int * ccw = (int *) cc_glyph3d_getnextccwedge(glyph, counter);
+            const int * cw  = (int *) cc_glyph3d_getnextcwedge(glyph, counter);
+            SbVec3f vleft(coords[*(ccw+1)][0], coords[*(ccw+1)][1], 0);
+            SbVec3f vright(coords[*cw][0], coords[*cw][1], 0);
+            counter++;
+           
             v0[0] = v0[0] * fontspec->size + xpos;
             v0[1] = v0[1] * fontspec->size + ypos;
             v1[0] = v1[0] * fontspec->size + xpos;
             v1[1] = v1[1] * fontspec->size + ypos;
-            vertex.setNormal(normal);
-            vertex.setPoint(SbVec3f(v1[0], v1[1], 0.0f));
-            PUBLIC(this)->shapeVertex(&vertex);
-            vertex.setPoint(SbVec3f(v0[0], v0[1], 0.0f));
-            PUBLIC(this)->shapeVertex(&vertex);
-            vertex.setPoint(SbVec3f(v0[0], v0[1], -1.0f));
-            PUBLIC(this)->shapeVertex(&vertex);
-            vertex.setPoint(SbVec3f(v1[0], v1[1], -1.0f));
-            PUBLIC(this)->shapeVertex(&vertex);
+            vleft[0] = vleft[0] * fontspec->size + xpos;
+            vleft[1] = vleft[1] * fontspec->size + ypos;
+            vright[0] = vright[0] * fontspec->size + xpos;
+            vright[1] = vright[1] * fontspec->size + ypos;
+
+            // create two 'normal' vectors pointing out from the edges
+            SbVec3f normala(vleft[0] - v0[0], vleft[1] - v0[1], 0.0f);
+            normala = normala.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+            if (normala.length() > 0)
+              normala.normalize();
+       
+            SbVec3f normalb(v1[0] - vright[0], v1[1] - vright[1], 0.0f);
+            normalb = normalb.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+            if (normalb.length() > 0)
+              normalb.normalize();
+
+            SbBool flatshading = FALSE;
+            float dot = normala.dot(normalb);
+            if(acos(dot) > SoCreaseAngleElement::get(state)) {
+              normala = SbVec3f(v1[0] - v0[0], v1[1] - v0[1], 0.0f);
+              normala = normala.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+              if (normala.length() > 0)
+                normala.normalize();
+              flatshading = TRUE;
+            }
+
+            if (!flatshading) {
+              vertex.setNormal(normala);
+              vertex.setPoint(SbVec3f(v1[0], v1[1], 0.0f));  
+              PUBLIC(this)->shapeVertex(&vertex);              
+              vertex.setNormal(normalb);
+              vertex.setPoint(SbVec3f(v0[0], v0[1], 0.0f));  
+              PUBLIC(this)->shapeVertex(&vertex);              
+              vertex.setNormal(normalb);
+              vertex.setPoint(SbVec3f(v0[0], v0[1], -1.0f));  
+              PUBLIC(this)->shapeVertex(&vertex);              
+              vertex.setNormal(normala);
+              vertex.setPoint(SbVec3f(v1[0], v1[1], -1.0f));  
+              PUBLIC(this)->shapeVertex(&vertex);
+            }
+            else {
+              vertex.setNormal(normala);
+              vertex.setPoint(SbVec3f(v1[0], v1[1], 0.0f));  
+              PUBLIC(this)->shapeVertex(&vertex);
+              vertex.setPoint(SbVec3f(v0[0], v0[1], 0.0f));  
+              PUBLIC(this)->shapeVertex(&vertex);              
+              vertex.setPoint(SbVec3f(v0[0], v0[1], -1.0f));  
+              PUBLIC(this)->shapeVertex(&vertex);              
+              vertex.setPoint(SbVec3f(v1[0], v1[1], -1.0f));  
+              PUBLIC(this)->shapeVertex(&vertex);
+            }
           }
+          
           PUBLIC(this)->endShape();
+
         }
         else {  // profile
+
           const int *indices = cc_glyph3d_getedgeindices(glyph);
           int ind = 0;
+          SbVec3f normala, normalb;
+
+          SbList <SbVec3f> vertexlist;         
+          this->normalgenerator->reset(FALSE);
 
           while (*indices >= 0) {
+
             int i0 = *indices++;
             int i1 = *indices++;
             SbVec3f va(coords[i0][0], coords[i0][1], nearz);
             SbVec3f vb(coords[i1][0], coords[i1][1], nearz);
-            int *ccw = (int *) cc_glyph3d_getnextccwedge(glyph, ind);
-            int *cw  = (int *) cc_glyph3d_getnextcwedge(glyph, ind);
-            SbVec3f vc(coords[*(ccw+1)][0], coords[*(ccw+1)][1], nearz);
-            SbVec3f vd(coords[*cw][0], coords[*cw][1], nearz);
+            const int *ccw = (int *) cc_glyph3d_getnextccwedge(glyph, ind);
+            const int *cw  = (int *) cc_glyph3d_getnextcwedge(glyph, ind);
+            SbVec3f vleft(coords[*(ccw+1)][0], coords[*(ccw+1)][1], nearz);
+            SbVec3f vright(coords[*cw][0], coords[*cw][1], nearz);        
             ind++;
 
-            va[0] = va[0] * fontspec->size + xpos;
-            va[1] = va[1] * fontspec->size + ypos;
-            vb[0] = vb[0] * fontspec->size + xpos;
-            vb[1] = vb[1] * fontspec->size + ypos;
-            vc[0] = vc[0] * fontspec->size + xpos;
-            vc[1] = vc[1] * fontspec->size + ypos;
-            vd[0] = vd[0] * fontspec->size + xpos;
-            vd[1] = vd[1] * fontspec->size + ypos;
+            va[0] = va[0] * fontspec->size;
+            va[1] = va[1] * fontspec->size;
+            vb[0] = vb[0] * fontspec->size;
+            vb[1] = vb[1] * fontspec->size;
+            vleft[0] = vleft[0] * fontspec->size;
+            vleft[1] = vleft[1] * fontspec->size;
+            vright[0] = vright[0] * fontspec->size;
+            vright[1] = vright[1] * fontspec->size;
 
-            // create two 'normal' vectors pointing out from the
-            // edges, for aligning the profile
-            SbVec3f tmp1(vc[0]-va[0], vc[1]-va[1], 0.0f);
-            tmp1 = tmp1.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
-            if (tmp1.length() > 0)
-              tmp1.normalize();
+            // create two 'normal' vectors pointing out from the edges
+            SbVec3f normala(vleft[0] - va[0], vleft[1] - va[1], 0.0f);
+            normala = normala.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+            if (normala.length() > 0) 
+              normala.normalize();
 
-            SbVec3f tmp2(vb[0]-vd[0], vb[1]-vd[1], 0.0f);
-            tmp2 = tmp2.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
-            if (tmp2.length() > 0)
-              tmp2.normalize();
+            SbVec3f normalb(vb[0] - vright[0], vb[1] - vright[1], 0.0f);
+            normalb = normalb.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+            if (normalb.length() > 0)
+              normalb.normalize();
 
             SoProfile *pn = (SoProfile *)profilenodes[firstprofile];
             pn->getVertices(state, profnum, profcoords);
-
-            SbVec3f edgea(va[0]+(profcoords[0][1]*tmp2[0]), va[1]+(profcoords[0][1]*tmp2[1]), -profcoords[0][0] );
-            SbVec3f edgeb(vb[0]+(profcoords[0][1]*tmp1[0]), vb[1]+(profcoords[0][1]*tmp1[1]), -profcoords[0][0] );
-            float edgez = -profcoords[0][0];  // -----
-            // look through all profiles.
-            int twisted = 0;
-
+         
+            SbVec3f vc,vd;
+            SbVec2f starta(va[0], va[1]);
+            SbVec2f startb(vb[0], vb[1]);
+        
             for (int j=firstprofile; j<numprofiles; j++) {
               SoProfile *pn = (SoProfile *)profilenodes[j];
               pn->getVertices(state, profnum, profcoords);
-              // iterate through all profile coords, drawing quads
-              // (and calculating normals)
-              PUBLIC(this)->beginShape(action, SoShape::QUADS, NULL);
 
-              for (int k=0; k<profnum; k++) {
-                if (profcoords[k][0] != 0) {
-                  vd[0] = va[0] + ((profcoords[k][1] * tmp2[0]));
-                  vd[1] = va[1] + ((profcoords[k][1] * tmp2[1]));
-                  vd[2] = -profcoords[k][0];
-                  vc[0] = vb[0] + ((profcoords[k][1] * tmp1[0]));
-                  vc[1] = vb[1] + ((profcoords[k][1] * tmp1[1]));
-                  vc[2] = -profcoords[k][0];
-                  // normal
-                  SbVec3f normal(edgea[0] - vd[0],edgea[1] - vd[1], edgez + profcoords[k][0]);
-                  normal = normal.cross( SbVec3f( edgeb[0]-edgea[0], edgeb[1]-edgea[1], 0));
-                  // FIXME: check if 'valid' normals (resulting
-                  // triangle instead if quad, etc), 20000926 skei.
+              for (int k=1; k<profnum; k++) {
+                
+                // Calc points for two next faces
+                vd[0] = starta[0] + (profcoords[k][1] * normalb[0]);
+                vd[1] = starta[1] + (profcoords[k][1] * normalb[1]);
+                vd[2] = -profcoords[k][0];
+                vc[0] = startb[0] + (profcoords[k][1] * normala[0]);
+                vc[1] = startb[1] + (profcoords[k][1] * normala[1]);
+                vc[2] = -profcoords[k][0];
 
-                  if (normal.length() > 0) {
-                    normal.normalize();
-                    //check if resulting quad-edges will cross
-                    SbVec3f edge1 = edgeb-edgea;
-                    SbVec3f edge2 = vc-vd;
-                    //leftedge.normalize(); // ok not to normalize those? skei
-                    //rightedge.normalize();
-
-                    if (edge1.dot(edge2) < 0) {
-                      SbLine leftline(edgeb,vc);
-                      SbLine rightline(edgea,vd);
-                      SbVec3f inter1,inter2;
-                      leftline.getClosestPoints(rightline,inter1,inter2);
-
-                      if (twisted == 0) {
-                        vertex.setNormal(normal);
-                        vertex.setPoint(SbVec3f(edgeb[0], edgeb[1], edgez));
-                        PUBLIC(this)->shapeVertex(&vertex);
-                        vertex.setPoint(SbVec3f(edgea[0], edgea[1], edgez));
-                        PUBLIC(this)->shapeVertex(&vertex);
-                        vertex.setPoint(SbVec3f(inter1[0],inter1[1],inter1[2]));
-                        PUBLIC(this)->shapeVertex(&vertex);
-                        vertex.setPoint(SbVec3f(inter1[0],inter1[1],inter1[2]));
-                        PUBLIC(this)->shapeVertex(&vertex);
-                        twisted = 1;
-                      }
-                      else {
-                        vertex.setNormal(-normal);
-                        vertex.setPoint(SbVec3f(inter1[0],inter1[1],inter1[2]));
-                        PUBLIC(this)->shapeVertex(&vertex);
-                        vertex.setPoint(SbVec3f(inter1[0],inter1[1],inter1[2]));
-                        PUBLIC(this)->shapeVertex(&vertex);
-                        vertex.setPoint(SbVec3f(vd[0], vd[1], -profcoords[k][0]));
-                        PUBLIC(this)->shapeVertex(&vertex);
-                        vertex.setPoint(SbVec3f(vc[0], vc[1], -profcoords[k][0]));
-                        PUBLIC(this)->shapeVertex(&vertex);
-                        twisted = 0;
-                      }
-                    }
-                    else {
-                      vertex.setNormal(normal);
-                      vertex.setPoint(SbVec3f(edgeb[0], edgeb[1], edgez));
-                      PUBLIC(this)->shapeVertex(&vertex);
-                      vertex.setPoint(SbVec3f(edgea[0], edgea[1], edgez));
-                      PUBLIC(this)->shapeVertex(&vertex);
-                      vertex.setPoint(SbVec3f(vd[0], vd[1], -profcoords[k][0]));
-                      PUBLIC(this)->shapeVertex(&vertex);
-                      vertex.setPoint(SbVec3f(vc[0], vc[1], -profcoords[k][0]));
-                      PUBLIC(this)->shapeVertex(&vertex);
-                    }
-                  }
-                  edgeb = vc;
-                  edgea = vd;
-                  edgez = -profcoords[k][0];
+                // The windows tesselation sometimes return
+                // illegal/empty tris. A test must be done to prevent
+                // stdout from being flooded with normalize() warnings
+                // from inside the normal generator.
+               
+                if ((va != vd) && (va != vb) && (vd != vb)) {	
+                  vertexlist.append(va);
+                  vertexlist.append(vd);
+                  vertexlist.append(vb);
+                  normalgenerator->triangle(va,vd,vb);
                 }
-              }
-              PUBLIC(this)->endShape();
+                
+                if ((vb != vd) && (vb != vc) && (vd != vc)) {	               
+                  vertexlist.append(vb);
+                  vertexlist.append(vd);
+                  vertexlist.append(vc);
+                  normalgenerator->triangle(vb,vd,vc);
+                }                       
+                
+                va = vd;
+                vb = vc;
+
+              }       
+              
             }
+
           }
+
+
+          normalgenerator->generate(SoCreaseAngleElement::get(state));
+          const SbVec3f * normals = normalgenerator->getNormals();          
+          const int size = vertexlist.getLength();
+
+          PUBLIC(this)->beginShape(action, SoShape::TRIANGLES, NULL);
+          for (int z = 0;z < size;z += 3) {      
+            vertex.setNormal(normals[z].getValue());
+            vertex.setPoint(SbVec3f(vertexlist[z][0] + xpos, 
+                                    vertexlist[z][1] + ypos, 
+                                    vertexlist[z][2]).getValue());
+            PUBLIC(this)->shapeVertex(&vertex);              
+          
+            vertex.setNormal(normals[z+1].getValue());
+            vertex.setPoint(SbVec3f(vertexlist[z+1][0] + xpos, 
+                                    vertexlist[z+1][1] + ypos, 
+                                    vertexlist[z+1][2]).getValue());
+            PUBLIC(this)->shapeVertex(&vertex);              
+          
+            vertex.setNormal(normals[z+2].getValue());
+            vertex.setPoint(SbVec3f(vertexlist[z+2][0] + xpos, 
+                                    vertexlist[z+2][1] + ypos, 
+                                    vertexlist[z+2][2]).getValue());
+            PUBLIC(this)->shapeVertex(&vertex);              
+                             
+          }
+          PUBLIC(this)->endShape();          
+          vertexlist.truncate(0);
+
         }
       }
 
@@ -1008,7 +1123,6 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
     ypos -= fontspec->size * PUBLIC(this)->spacing.getValue();
   }
 
-  if (part != SoText3::SIDES) PUBLIC(this)->endShape();
 
 }
 
