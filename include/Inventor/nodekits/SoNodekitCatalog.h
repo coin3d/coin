@@ -21,8 +21,12 @@
 #define __SONODEKITCATALOG_H__
 
 #include <Inventor/SoType.h>
+#include <Inventor/lists/SbList.h>
 
 class SbName;
+
+
+#define SO_CATALOG_NAME_NOT_FOUND -1
 
 
 class SoNodekitCatalog
@@ -82,6 +86,9 @@ public:
 			 SoTypeList * checked) const;
 
   void printCheck(void) const;
+
+private:
+  SbList<class CatalogItem *> items;
 };
 
 #endif // !__SONODEKITCATALOG_H__

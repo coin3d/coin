@@ -19,10 +19,13 @@
 
 /*!
   \class SoNodekitCatalog SoNodekitCatalog.h Inventor/nodekits/SoNodekitCatalog.h
-  \brief The SoNodekitCatalog class ...
+  \brief The SoNodekitCatalog class is a container for nodekit layouts.
   \ingroup nodekits
 
-  FIXME: write class doc
+  Nodekits store all their hierarchical layout information and part
+  information in instances of this class.
+
+  \sa SoNodeKit, SoBaseKit
 */
 
 #include <Inventor/nodekits/SoNodekitCatalog.h>
@@ -30,306 +33,521 @@
 #include <Inventor/SbName.h>
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
+
+// Private container class.
+class CatalogItem {
+public:
+  CatalogItem(void) { }
+  ~CatalogItem() { }
+
+  SbName name, parentname, siblingname;
+  SoType type, defaulttype, containertype;
+  SbBool isdefaultnull, islist, ispublic;
+  SoTypeList itemtypeslist;
+};
+
 /*!
-  FIXME: write function documentation
+  Initialization of static variables.
 */
 void
 SoNodekitCatalog::initClass(void)
 {
-  assert(0 && "FIXME: not implemented yet");
 }
 
 /*!
-  FIXME: write function documentation
+  Constructor.
 */
 SoNodekitCatalog::SoNodekitCatalog(void)
 {
-  assert(0 && "FIXME: not implemented yet");
 }
 
 /*!
-  FIXME: write function documentation
+  Destructor.
 */
 SoNodekitCatalog::~SoNodekitCatalog()
 {
-  assert(0 && "FIXME: not implemented yet");
+  for (int i=0; i < this->items.getLength(); i++) delete this->items[i];
 }
 
 /*!
-  FIXME: write function documentation
+  Returns total number of entries in the catalog.
 */
 int
 SoNodekitCatalog::getNumEntries(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return 0;
+  return this->items.getLength();
 }
 
 /*!
-  FIXME: write function documentation
+  Returns part number in catalog with \a name. If part exists with that name,
+  returns SO_CATALOG_NAME_NOT_FOUND.
 */
 int
-SoNodekitCatalog::getPartNumber(const SbName & /*name*/) const
+SoNodekitCatalog::getPartNumber(const SbName & name) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return 0;
+  int nritems = this->getNumEntries();
+  for (int i=0; i < nritems; i++) {
+    if (name == this->items[i]->name) return i;
+  }
+  return SO_CATALOG_NAME_NOT_FOUND;
 }
 
 /*!
-  FIXME: write function documentation
+  Given the \a part number, return name of that part.
 */
 const SbName &
-SoNodekitCatalog::getName(int /*part*/) const
+SoNodekitCatalog::getName(int part) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  static SbName name;
-  return name;
+#if COIN_DEBUG // debug
+  if (part < 0 || part >= this->getNumEntries()) {
+    SoDebugError::post("SoNodekitCatalog::getName",
+		       "invalid part number, %d", part);
+    static SbName name;
+    return name;
+  }
+#endif // debug
+  
+  return this->items[part]->name;
 }
 
 /*!
-  FIXME: write function documentation
+  Given the \a part number, return type.
 */
 SoType
-SoNodekitCatalog::getType(int /*part*/) const
+SoNodekitCatalog::getType(int part) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return SoType::badType();
+#if COIN_DEBUG // debug
+  if (part < 0 || part >= this->getNumEntries()) {
+    SoDebugError::post("SoNodekitCatalog::getType",
+		       "invalid part number, %d", part);
+    return SoType::badType();
+  }
+#endif // debug
+  
+  return this->items[part]->type;
 }
 
 /*!
-  FIXME: write function documentation
+  Given the part \a name, return type.
 */
 SoType
-SoNodekitCatalog::getType(const SbName & /*name*/) const
+SoNodekitCatalog::getType(const SbName & name) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return SoType::badType();
+  int part = this->getPartNumber(name);
+#if COIN_DEBUG // debug
+  if (part == SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::getType",
+		       "invalid part name, \"%s\"", name.getString());
+    return SoType::badType();
+  }
+#endif // debug
+  return this->items[part]->type;
 }
 
 /*!
-  FIXME: write function documentation
+  Given \a part number, return default type of part.
 */
 SoType
-SoNodekitCatalog::getDefaultType(int /*part*/) const
+SoNodekitCatalog::getDefaultType(int part) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return SoType::badType();
+#if COIN_DEBUG // debug
+  if (part < 0 || part >= this->getNumEntries()) {
+    SoDebugError::post("SoNodekitCatalog::getDefaultType",
+		       "invalid part number, %d", part);
+    return SoType::badType();
+  }
+#endif // debug
+  
+  return this->items[part]->defaulttype;
 }
 
 /*!
-  FIXME: write function documentation
+  Given part \a name, return default type of part.
 */
 SoType
-SoNodekitCatalog::getDefaultType(const SbName & /*name*/) const
+SoNodekitCatalog::getDefaultType(const SbName & name) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return SoType::badType();
+  int part = this->getPartNumber(name);
+#if COIN_DEBUG // debug
+  if (part == SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::getDefaultType",
+		       "invalid part name, \"%s\"", name.getString());
+    return SoType::badType();
+  }
+#endif // debug
+  return this->items[part]->defaulttype;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns \c TRUE if the \a part is empty by default, otherwise \c FALSE.
 */
 SbBool
-SoNodekitCatalog::isNullByDefault(int /*part*/) const
+SoNodekitCatalog::isNullByDefault(int part) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return FALSE;
+#if COIN_DEBUG // debug
+  if (part < 0 || part >= this->getNumEntries()) {
+    SoDebugError::post("SoNodekitCatalog::isNullByDefault",
+		       "invalid part number, %d", part);
+    return TRUE;
+  }
+#endif // debug
+  
+  return this->items[part]->isdefaultnull;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns \c TRUE if part \name is empty by default, otherwise \c FALSE.
 */
 SbBool
-SoNodekitCatalog::isNullByDefault(const SbName & /*name*/) const
+SoNodekitCatalog::isNullByDefault(const SbName & name) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return FALSE;
+  int part = this->getPartNumber(name);
+#if COIN_DEBUG // debug
+  if (part == SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::isNullByDefault",
+		       "invalid part name, \"%s\"", name.getString());
+    return TRUE;
+  }
+#endif // debug
+  return this->items[part]->isdefaultnull;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns \c TRUE if the \a part is \e not a parent for any
+  other parts in the nodekit catalog.
 */
 SbBool
-SoNodekitCatalog::isLeaf(int /*part*/) const
+SoNodekitCatalog::isLeaf(int part) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return FALSE;
+#if COIN_DEBUG // debug
+  if (part < 0 || part >= this->getNumEntries()) {
+    SoDebugError::post("SoNodekitCatalog::isLeaf",
+		       "invalid part number, %d", part);
+    return TRUE;
+  }
+#endif // debug
+  for (int i=0; i < this->items.getLength(); i++) {
+    if ((i != part) && (this->items[part]->name == this->items[i]->name))
+      return FALSE;
+  }
+  return TRUE;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns \c TRUE if the part \a name is \e not a parent for any
+  other parts in the nodekit catalog.
 */
 SbBool
-SoNodekitCatalog::isLeaf(const SbName & /*name*/) const
+SoNodekitCatalog::isLeaf(const SbName & name) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return FALSE;
+  int part = this->getPartNumber(name);
+#if COIN_DEBUG // debug
+  if (part == SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::isLeaf",
+		       "invalid part name, \"%s\"", name.getString());
+    return TRUE;
+  }
+#endif // debug
+  return this->isLeaf(part);
 }
 
 /*!
-  FIXME: write function documentation
+  Returns name of parent of \a part. If \a part doesn't have a parent,
+  the empty string is returned.
 */
 const SbName &
-SoNodekitCatalog::getParentName(int /*part*/) const
+SoNodekitCatalog::getParentName(int part) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  static SbName name;
-  return name;
+#if COIN_DEBUG // debug
+  if (part < 0 || part >= this->getNumEntries()) {
+    SoDebugError::post("SoNodekitCatalog::getParentName",
+		       "invalid part number, %d", part);
+    static SbName name;
+    return name;
+  }
+#endif // debug
+  return this->items[part]->parentname;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns name of parent of the part. If \a name doesn't have a parent,
+  the empty string is returned.
 */
 const SbName &
-SoNodekitCatalog::getParentName(const SbName & /*name*/) const
+SoNodekitCatalog::getParentName(const SbName & name) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  static SbName name;
-  return name;
+  int part = this->getPartNumber(name);
+#if COIN_DEBUG // debug
+  if (part == SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::getParentName",
+		       "invalid part name, \"%s\"", name.getString());
+    static SbName name;
+    return name;
+  }
+#endif // debug
+  return this->getParentName(part);
 }
 
 /*!
-  FIXME: write function documentation
+  Returns part number of given part's parent. If \a part doesn't have a parent,
+  SO_CATALOG_NAME_NOT_FOUND is returned.
 */
 int
-SoNodekitCatalog::getParentPartNumber(int /*part*/) const
+SoNodekitCatalog::getParentPartNumber(int part) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return 0;
+#if COIN_DEBUG // debug
+  if (part < 0 || part >= this->getNumEntries()) {
+    SoDebugError::post("SoNodekitCatalog::getParentPartNumber",
+		       "invalid part number, %d", part);
+    return SO_CATALOG_NAME_NOT_FOUND;
+  }
+#endif // debug
+  return this->getPartNumber(this->items[part]->parentname);
 }
 
 /*!
-  FIXME: write function documentation
+  Returns part number of given part's parent. If \a name doesn't have a parent,
+  SO_CATALOG_NAME_NOT_FOUND is returned.
 */
 int
-SoNodekitCatalog::getParentPartNumber(const SbName & /*name*/) const
+SoNodekitCatalog::getParentPartNumber(const SbName & name) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return 0;
+  int part = this->getPartNumber(name);
+#if COIN_DEBUG // debug
+  if (part == SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::getParentPartNumber",
+		       "invalid part name, \"%s\"", name.getString());
+    return part;
+  }
+#endif // debug
+  return this->getParentPartNumber(part);
 }
 
 /*!
-  FIXME: write function documentation
+  Returns name of right sibling of \a part. Returns the empty string if
+  \a part doesn't have a right sibling.
 */
 const SbName &
-SoNodekitCatalog::getRightSiblingName(int /*part*/) const
+SoNodekitCatalog::getRightSiblingName(int part) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  static SbName name;
-  return name;
+#if COIN_DEBUG // debug
+  if (part < 0 || part >= this->getNumEntries()) {
+    SoDebugError::post("SoNodekitCatalog::getRightSiblingName",
+		       "invalid part number, %d", part);
+    static SbName name;
+    return name;
+  }
+#endif // debug
+  return this->items[part]->siblingname;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns name of sibling of the part. Returns the empty string if
+  \a name doesn't have a right sibling.
 */
 const SbName &
-SoNodekitCatalog::getRightSiblingName(const SbName & /*name*/) const
+SoNodekitCatalog::getRightSiblingName(const SbName & name) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  static SbName name;
-  return name;
+  int part = this->getPartNumber(name);
+#if COIN_DEBUG // debug
+  if (part == SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::getRightSiblingName",
+		       "invalid part name, \"%s\"", name.getString());
+    static SbName name;
+    return name;
+  }
+#endif // debug
+  return this->getRightSiblingName(part);
 }
 
 /*!
-  FIXME: write function documentation
+  Returns part number of given part's sibling. Returns 
+  SO_CATALOG_NAME_NOT_FOUND if \a part doesn't have a right sibling.
 */
 int
-SoNodekitCatalog::getRightSiblingPartNumber(int /*part*/) const
+SoNodekitCatalog::getRightSiblingPartNumber(int part) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return 0;
+#if COIN_DEBUG // debug
+  if (part < 0 || part >= this->getNumEntries()) {
+    SoDebugError::post("SoNodekitCatalog::getRightSiblingPartNumber",
+		       "invalid part number, %d", part);
+    return SO_CATALOG_NAME_NOT_FOUND;
+  }
+#endif // debug
+  return this->getPartNumber(this->items[part]->siblingname);
 }
 
 /*!
-  FIXME: write function documentation
+  Returns part number of given part's right sibling. Returns 
+  SO_CATALOG_NAME_NOT_FOUND if part doesn't have a right sibling.
 */
 int
-SoNodekitCatalog::getRightSiblingPartNumber(const SbName & /*name*/) const
+SoNodekitCatalog::getRightSiblingPartNumber(const SbName & name) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return 0;
+  int part = this->getPartNumber(name);
+#if COIN_DEBUG // debug
+  if (part == SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::getRightSiblingPartNumber",
+		       "invalid part name, \"%s\"", name.getString());
+    return part;
+  }
+#endif // debug
+  return this->getRightSiblingPartNumber(part);
 }
 
 /*!
-  FIXME: write function documentation
+  Returns \c TRUE if the given \a part is a list container.
 */
 SbBool
-SoNodekitCatalog::isList(int /*part*/) const
+SoNodekitCatalog::isList(int part) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return FALSE;
+#if COIN_DEBUG // debug
+  if (part < 0 || part >= this->getNumEntries()) {
+    SoDebugError::post("SoNodekitCatalog::isList",
+		       "invalid part number, %d", part);
+    return FALSE;
+  }
+#endif // debug
+  return this->items[part]->islist;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns \c TRUE if the given part is a list container.
 */
 SbBool
-SoNodekitCatalog::isList(const SbName & /*name*/) const
-{
-  assert(0 && "FIXME: not implemented yet");
-  return FALSE;
+SoNodekitCatalog::isList(const SbName & name) const
+{ 
+  int part = this->getPartNumber(name);
+#if COIN_DEBUG // debug
+  if (part == SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::isList",
+		       "invalid part name, \"%s\"", name.getString());
+    return FALSE;
+  }
+#endif // debug
+  return this->isList(part);
 }
 
 /*!
-  FIXME: write function documentation
+  Returns type of list container (SoGroup, SoSeparator, SoSwitch, etc)
+  which \a part is.
 */
 SoType
-SoNodekitCatalog::getListContainerType(int /*part*/) const
+SoNodekitCatalog::getListContainerType(int part) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return SoType::badType();
+#if COIN_DEBUG // debug
+  if (part < 0 || part >= this->getNumEntries()) {
+    SoDebugError::post("SoNodekitCatalog::getListContainerType",
+		       "invalid part number, %d", part);
+    return SoType::badType();
+  }
+  else if (!this->items[part]->islist) {
+    SoDebugError::post("SoNodekitCatalog::getListContainerType",
+		       "part %d is not a list container", part);
+    return SoType::badType();
+  }
+#endif // debug
+  return this->items[part]->containertype;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns type of list container (SoGroup, SoSeparator, SoSwitch, etc)
+  which the named part is.
 */
 SoType
-SoNodekitCatalog::getListContainerType(const SbName & /*name*/) const
+SoNodekitCatalog::getListContainerType(const SbName & name) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return SoType::badType();
+  int part = this->getPartNumber(name);
+#if COIN_DEBUG // debug
+  if (part == SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::getListContainerType",
+		       "invalid part name, \"%s\"", name.getString());
+    return SoType::badType();
+  }
+#endif // debug
+  return this->getListContainerType(part);
 }
 
 /*!
-  FIXME: write function documentation
+  Returns list of node types which are allowed to be children of the
+  list container \a part.
 */
 const SoTypeList &
-SoNodekitCatalog::getListItemTypes(int /*part*/) const
+SoNodekitCatalog::getListItemTypes(int part) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  static SoTypeList l;
-  return l;
+#if COIN_DEBUG // debug
+  if (part < 0 || part >= this->getNumEntries()) {
+    SoDebugError::post("SoNodekitCatalog::getListItemTypes",
+		       "invalid part number, %d", part);
+    static SoTypeList l;
+    return l;
+  }
+  else if (!this->items[part]->islist) {
+    SoDebugError::post("SoNodekitCatalog::getListItemTypes",
+		       "part %d is not a list container", part);
+    static SoTypeList l;
+    return l;
+  }
+#endif // debug
+  return this->items[part]->itemtypeslist;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns list of node types which are allowed to be children of the
+  named list container part.
 */
 const SoTypeList &
-SoNodekitCatalog::getListItemTypes(const SbName & /*name*/) const
+SoNodekitCatalog::getListItemTypes(const SbName & name) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  static SoTypeList l;
-  return l;
+  int part = this->getPartNumber(name);
+#if COIN_DEBUG // debug
+  if (part == SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::getListItemTypes",
+		       "invalid part name, \"%s\"", name.getString());
+    static SoTypeList l;
+    return l;
+  }
+#endif // debug
+  return this->getListItemTypes(part);
 }
 
 /*!
-  FIXME: write function documentation
+  Returns \c TRUE if \a part is visible and publicly available for
+  queries and modifications, \c FALSE if \a part is hidden.
 */
 SbBool
-SoNodekitCatalog::isPublic(int /*part*/) const
+SoNodekitCatalog::isPublic(int part) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return FALSE;
+#if COIN_DEBUG // debug
+  if (part < 0 || part >= this->getNumEntries()) {
+    SoDebugError::post("SoNodekitCatalog::isPublic",
+		       "invalid part number, %d", part);
+    return FALSE;
+  }
+#endif // debug
+  return this->items[part]->ispublic;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns \c TRUE if the part is visible and publicly available for
+  queries and modifications, \c FALSE if it is hidden.
 */
 SbBool
-SoNodekitCatalog::isPublic(const SbName & /*name*/) const
+SoNodekitCatalog::isPublic(const SbName & name) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return FALSE;
+  int part = this->getPartNumber(name);
+#if COIN_DEBUG // debug
+  if (part == SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::isPublic",
+		       "invalid part name, \"%s\"", name.getString());
+    return FALSE;
+  }
+#endif // debug
+  return this->isPublic(part);
 }
 
 /*!
@@ -343,54 +561,142 @@ SoNodekitCatalog::clone(SoType /*type*/) const
 }
 
 /*!
-  FIXME: write function documentation
+  Add a new entry to the catalog. Returns \c TRUE if add was ok.
 */
 SbBool
-SoNodekitCatalog::addEntry(const SbName & /*name*/, SoType /*type*/,
-			   SoType /*defaulttype*/, SbBool /*isdefaultnull*/,
-			   const SbName & /*parent*/, const SbName & /*rightsibling*/,
-			   SbBool /*islist*/, SoType /*listcontainertype*/,
-			   SoType /*listitemtype*/, SbBool /*ispublic*/)
+SoNodekitCatalog::addEntry(const SbName & name, SoType type,
+			   SoType defaulttype, SbBool isdefaultnull,
+			   const SbName & parent, const SbName & rightsibling,
+			   SbBool islist, SoType listcontainertype,
+			   SoType listitemtype, SbBool ispublic)
 {
-  assert(0 && "FIXME: not implemented yet");
-  return FALSE;
+#if COIN_DEBUG // debug
+  if (name == "") {
+    SoDebugError::post("SoNodekitCatalog::addEntry", "empty name not allowed");
+    return FALSE;
+  }
+  else if (this->getPartNumber(name) != SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::addEntry",
+		       "partname \"%s\" already in use", name.getString());
+    return FALSE;
+  }
+  else if ((type == SoType::badType()) || (defaulttype == SoType::badType()) ||
+	   (listcontainertype == SoType::badType()) ||
+	   (listitemtype == SoType::badType())) {
+    SoDebugError::post("SoNodekitCatalog::addEntry", "bad type");
+    return FALSE;
+  }
+#endif // debug
+
+  CatalogItem * newitem = new CatalogItem;
+  newitem->name = name;
+  newitem->type = type;
+  newitem->defaulttype = defaulttype;
+  newitem->isdefaultnull = isdefaultnull;
+  newitem->parentname = parent;
+  newitem->siblingname = rightsibling;
+  newitem->islist = islist;
+  newitem->containertype = listcontainertype;
+  newitem->itemtypeslist.append(listitemtype);
+  newitem->ispublic = ispublic;
+  this->items.append(newitem);
+  return TRUE;
 }
 
 /*!
-  FIXME: write function documentation
+  Add another allowable type for the given \a part. \a part must of course
+  be a list container item.
 */
 void
-SoNodekitCatalog::addListItemType(int /*part*/, SoType /*type*/)
+SoNodekitCatalog::addListItemType(int part, SoType type)
 {
-  assert(0 && "FIXME: not implemented yet");
+#if COIN_DEBUG // debug
+  if (part < 0 || part >= this->getNumEntries()) {
+    SoDebugError::post("SoNodekitCatalog::addListItemType",
+		       "invalid part number, %d", part);
+    return;
+  }
+  else if (type == SoType::badType()) {
+    SoDebugError::post("SoNodekitCatalog::addListItemType",
+		       "tried to add SoType::badType()");
+    return;
+  }
+  else if (!this->items[part]->islist) {
+    SoDebugError::post("SoNodekitCatalog::addListItemType",
+		       "tried to add a listitemtype to non-list item");
+    return;
+  }
+  else if (this->items[part]->itemtypeslist.find(type) != -1) {
+    SoDebugError::post("SoNodekitCatalog::addListItemType",
+		       "type ``%s''already present in list",
+		       type.getName().getString());
+    return;
+  }
+#endif // debug
+  this->items[part]->itemtypeslist.append(type);
 }
 
 /*!
-  FIXME: write function documentation
+  Add another allowable type for the \a name part. The part must of course
+  be a list container.
 */
 void
-SoNodekitCatalog::addListItemType(const SbName & /*name*/, SoType /*type*/)
+SoNodekitCatalog::addListItemType(const SbName & name, SoType type)
 {
-  assert(0 && "FIXME: not implemented yet");
+  int part = this->getPartNumber(name);
+#if COIN_DEBUG // debug
+  if (part == SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::addListItemType",
+		       "invalid part name, \"%s\"", name.getString());
+    return;
+  }
+#endif // debug
+  this->addListItemType(part, type);
 }
 
 /*!
-  FIXME: write function documentation
+  Set the type and default type of a part to be subtypes of the old
+  types. Useful for "narrowing" the specification of a nodekit which
+  inherits the catalog of a more generic nodekit superclass.
 */
 void
-SoNodekitCatalog::narrowTypes(const SbName & /*name*/,
-			      SoType /*newtype*/, SoType /*newdefaulttype*/)
+SoNodekitCatalog::narrowTypes(const SbName & name,
+			      SoType newtype, SoType newdefaulttype)
 {
-  assert(0 && "FIXME: not implemented yet");
+  int part = this->getPartNumber(name);
+#if COIN_DEBUG // debug
+  if (part == SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::narrowTypes",
+		       "invalid part name, \"%s\"", name.getString());
+    return;
+  }
+  else if ((!newtype.isDerivedFrom(this->items[part]->type)) ||
+	   (!newdefaulttype.isDerivedFrom(this->items[part]->defaulttype))) {
+    SoDebugError::post("SoNodekitCatalog::narrowTypes",
+		       "the new types are not derived from the old types");
+    return;
+  }
+#endif // debug
+  this->items[part]->type = newtype;
+  this->items[part]->defaulttype = newdefaulttype;
 }
 
 /*!
-  FIXME: write function documentation
+  Change whether or not the part with the given \a name is created by
+  default.
 */
 void
-SoNodekitCatalog::setNullByDefault(const SbName & /*name*/, SbBool /*nullbydefault*/)
+SoNodekitCatalog::setNullByDefault(const SbName & name, SbBool nullbydefault)
 {
-  assert(0 && "FIXME: not implemented yet");
+  int part = this->getPartNumber(name);
+#if COIN_DEBUG // debug
+  if (part == SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::setNullByDefault",
+		       "invalid part name, \"%s\"", name.getString());
+    return;
+  }
+#endif // debug
+  this->items[part]->isdefaultnull = nullbydefault;
 }
 
 /*!
@@ -405,10 +711,36 @@ SoNodekitCatalog::recursiveSearch(int /*part*/, const SbName & /*name*/,
 }
 
 /*!
-  FIXME: write function documentation
+  Lists all catalog parts, which is useful for debugging. 
 */
 void
 SoNodekitCatalog::printCheck(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  int nritems = this->getNumEntries();
+  fprintf(stdout, "catalog printout: number of entries = %d\n", nritems);
+  for (int i=0; i < nritems; i++) {
+    CatalogItem * item = this->items[i];
+
+    fprintf(stdout,
+	    "#%d\n"
+	    "    name = %s, type = %s, defaultType = %s\n"
+	    "    nullByDefault = %d\n"
+	    "    parentName = %s\n"
+	    "    sibling = %s, listPart = %d\n",
+	    i, item->name.getString(),
+	    item->type == SoType::badType() ? "*bad*" : item->type.getName().getString(),
+	    item->defaulttype == SoType::badType() ? "*bad*" : item->defaulttype.getName().getString(),
+	    item->isdefaultnull, item->parentname.getString(),
+	    item->siblingname.getString(), item->islist);
+
+    if (item->islist) {
+      fprintf(stdout, "listItemTypes =");
+      for (int j=0; j < item->itemtypeslist.getLength(); j++) {
+	fprintf(stdout, " %s", item->itemtypeslist[j].getName().getString());
+      }
+      fprintf(stdout, "\n");
+    }
+
+    fprintf(stdout, "    publicPart = %d\n", item->ispublic);
+  }
 }
