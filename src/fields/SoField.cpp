@@ -1552,12 +1552,27 @@ SoField::copyConnection(const SoField * fromfield)
 #undef COPYCONNECT
 }
 
+// This templatized inline is just a convenience function for reading
+// with error detection.
+template <class Type>
+static inline SbBool
+READ_VAL(SoInput * in, Type & val)
+{
+  if (!in->read(val)) {
+    SoReadError::post(in, "Premature end of file");
+    return FALSE;
+  }
+  return TRUE;
+}
+
+
 /*!
   Reads and sets the value of this field from the given SoInput
   instance.  Returns \c FALSE if the field value can not be parsed
   from the input.
 
-  This field has the \a name given as the second argument.
+  The second argument is the field's context-specific \a name, which
+  is typically its unique identifier in its field container.
 
   \sa set(), write()
 */
@@ -1573,14 +1588,6 @@ SoField::read(SoInput * in, const SbName & name)
     return readok;
   }
 
-  // This macro is convenient for reading with error detection.
-#define READ_VAL(val) \
-  if (!in->read(val)) { \
-    SoReadError::post(in, "Premature end of file"); \
-    return FALSE; \
-  }
-
-
   this->setDefault(FALSE);
   this->setDirty(FALSE);
 
@@ -1588,7 +1595,7 @@ SoField::read(SoInput * in, const SbName & name)
     char c;
     // Check for the ignored flag first, as it is valid to let the
     // field data be just the ignored flag and nothing else.
-    READ_VAL(c);
+    if (!READ_VAL(in, c)) { return FALSE; }
 
     if (c == IGNOREDCHAR) this->setIgnored(TRUE);
     else {
@@ -1658,7 +1665,7 @@ SoField::read(SoInput * in, const SbName & name)
 
     // Check for the "ignored", "connection" and "default" flags.
     unsigned int flags;
-    READ_VAL(flags);
+    if (!READ_VAL(in, flags)) { return FALSE; }
 
     if (flags & SoField::IGNORED) this->setIgnored(TRUE);
     if (flags & SoField::CONNECTED) { if (!this->readConnection(in)) return FALSE; }
@@ -1667,13 +1674,11 @@ SoField::read(SoInput * in, const SbName & name)
     if (flags & ~SoField::ALLFILEFLAGS) {
       SoDebugError::postWarning("SoField::read",
                                 "unknown field flags (0x%x) -- ",
-                                "please report to coin-support@coin3d.org",
+                                "please report to <coin-support@coin3d.org>",
                                 flags);
     }
 #endif // COIN_DEBUG
   }
-
-#undef READ_VAL
 
   return TRUE;
 }
