@@ -93,38 +93,51 @@ SbViewVolume::~SbViewVolume(void)
 void
 SbViewVolume::getMatrices(SbMatrix& affine, SbMatrix& proj) const
 {
-  affine = this->getCameraSpaceMatrix();
-
-  // Find rotation of camera "up vector".
   SbVec3f upvec = this->upperleftfrust - this->lowerleftfrust;
 #if COIN_DEBUG
   if (upvec == SbVec3f(0.0f, 0.0f, 0.0f)) {
     SoDebugError::postWarning("SbViewVolume::getMatrices",
                               "empty frustum!");
+    affine = SbMatrix::identity();
     proj = SbMatrix::identity();
     return;
   }
 #endif // COIN_DEBUG
-  upvec.normalize();
-  affine.multDirMatrix(upvec, upvec);
-  SbRotation zrot(upvec, SbVec3f(0, 1, 0));
+  SbVec3f rightvec = this->lowerrightfrust - this->lowerleftfrust;
 
-  // Combine with affine matrix.
-  SbMatrix tmp;
-  tmp.setRotate(zrot);
-  affine.multRight(tmp);
+  // store width and height (needed to generate projection matrix)
+  float height = upvec.normalize();
+  float width = rightvec.normalize();
 
+  // build matrix that will transform into camera coordinate system
+  SbMatrix mat;
+  mat[0][0] = rightvec[0];
+  mat[0][1] = rightvec[1];
+  mat[0][2] = rightvec[2];
+  mat[0][3] = 0.0f;
 
-  // Transform frustum corner vectors back to original position.
-  SbVec3f ll, lr, ul;
-  affine.multVecMatrix(this->lowerleftfrust, ll);
-  affine.multVecMatrix(this->upperleftfrust, ul);
-  affine.multVecMatrix(this->lowerrightfrust, lr);
+  mat[1][0] = upvec[0];
+  mat[1][1] = upvec[1];
+  mat[1][2] = upvec[2];
+  mat[1][3] = 0.0f;
 
-  float l = ll[0];
-  float r = lr[0];
-  float t = ul[1];
-  float b = ll[1];
+  mat[2][0] = -this->projectiondir[0];
+  mat[2][1] = -this->projectiondir[1];
+  mat[2][2] = -this->projectiondir[2];
+  mat[2][3] = 0.0f;
+
+  mat[3][0] = this->projectionpt[0];
+  mat[3][1] = this->projectionpt[1];
+  mat[3][2] = this->projectionpt[2];
+  mat[3][3] = 1.0f;
+  
+  // the affine matrix is the inverse of the camera coordinate system
+  affine = mat.inverse();
+
+  float l = -width * 0.5f;
+  float r = width * 0.5f;
+  float t = height * 0.5f;
+  float b = - height * 0.5f;
   float n = this->getNearDist();
   float f = n + this->getDepth();
 
