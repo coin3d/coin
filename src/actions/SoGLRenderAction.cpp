@@ -310,6 +310,9 @@
   units on the NVIDIA card for all the rendering passes, except the
   first one. Textured surfaces will therefore only be textured if they
   are not occluded by another transparent surface.
+
+  \since Coin 2.2
+  \since TGS Inventor 4.0
 */
 
 // FIXME: document what happens if the number of passes with the above
