@@ -16,7 +16,7 @@ cat <<HERE_DOC_END
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2002 by Systems in Motion.  All rights reserved.
+ *  Copyright (C) 1998-2003 by Systems in Motion.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@ cat <<HERE_DOC_END
  *
  *  See <URL:http://www.coin3d.org> for  more information.
  *
- *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY.
+ *  Systems in Motion, Teknobyen, Abels Gate 5, 7030 Trondheim, NORWAY.
  *  <URL:http://www.sim.no>.
  *
 \**************************************************************************/
