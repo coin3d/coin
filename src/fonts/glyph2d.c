@@ -109,7 +109,9 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
   struct cc_flw_bitmap * bm;
   struct cc_font_specification * newspec;
   int namelen = 0;
- 
+  cc_string * fonttoload;
+
+
   /* Beacuse this function is the entry point for glyph2d, the mutex
      is initialized here. */
   if (glyph2d_fonthash_lock == NULL) 
@@ -133,17 +135,26 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
   /* build a new glyph struct with bitmap */    
   glyph = (cc_glyph2d *) malloc(sizeof(cc_glyph2d));
   
-  /* FIXME: Must add family and style support (2Sep2003 handegar) */
   newspec = (cc_font_specification *) malloc(sizeof(cc_font_specification)); 
   assert(newspec);
   newspec->size = spec->size;
   newspec->name = cc_string_construct_new();
+  newspec->style = cc_string_construct_new();
   cc_string_set_text(newspec->name, cc_string_get_text(spec->name));
-  
+  cc_string_set_text(newspec->style, cc_string_get_text(spec->style));
+  glyph->fontspec = newspec;
 
-  glyph->fontspec = newspec; 
-  fontidx = cc_flw_get_font(cc_string_get_text(newspec->name), (int)(newspec->size), (int)(newspec->size));
+  fonttoload = cc_string_construct_new();
+  cc_string_set_text(fonttoload, cc_string_get_text(spec->name));
+  if (cc_string_length(spec->style) > 0) {
+    cc_string_append_text(fonttoload, " ");
+    cc_string_append_string(fonttoload, spec->style);
+  }
+  fontidx = cc_flw_get_font(cc_string_get_text(fonttoload), (int)(newspec->size), (int)(newspec->size));
+  cc_string_destruct(fonttoload);
   assert(fontidx >= 0);
+
+
   
 
   /* Should _always_ be able to get hold of a glyph -- if no glyph is
@@ -186,6 +197,7 @@ glyph2d_specmatch(const cc_font_specification * spec1,
 
   /* FIXME: Add compare for family and style (20030902 handegar) */
   if ((!cc_string_compare(spec1->name, spec2->name)) &&
+      (!cc_string_compare(spec1->style, spec2->style)) &&
       (spec1->size == spec2->size)) {
     return TRUE;
   }
