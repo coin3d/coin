@@ -29,9 +29,11 @@ PrivateHeaders = \
 if BUILD_WITH_MSVC
 # win32 isn't able to link wrappers without including all dependencies
 else
-noinst_PROGRAMS = wrappers
-wrappers_SOURCES = wrappers.cpp
-wrappers_LDADD = libthreads.la
+# also disabled for other platforms since there were also problems
+# with IRIX CC
+#noinst_PROGRAMS = wrappers
+#wrappers_SOURCES = wrappers.cpp
+#wrappers_LDADD = libthreads.la
 endif
 
 ##$ BEGIN TEMPLATE Make-Common(threads)
