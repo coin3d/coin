@@ -440,8 +440,8 @@ void
 SoGroup::removeChild(SoNode * const child)
 {
   int idx = this->findChild(child);
-
-  if (idx < 0 || idx > this->getNumChildren()) {
+  
+  if (idx < 0) {
 #if COIN_DEBUG
     SoDebugError::post("SoGroup::removeChild",
                        "tried to remove non-existent child %p (%s)",
