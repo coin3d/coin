@@ -151,17 +151,31 @@ SbTime::zero(void)
   time/date.
 
   \sa zero().
- */
-
+*/
 SbTime
-#ifndef _WIN32
-SbTime::max(void)
-#else // _WIN32
 SbTime::maxTime(void)
-#endif // ! _WIN32
 {
   return SbTime(((double)INT_MAX) + 0.999999);
 }
+
+
+#ifndef _WIN32
+/*!
+  Returns an SbTime instance representing the maximum representable
+  time/date.
+
+  This method is not available under MSWindows, as max() crashes with
+  a define macro Microsoft has polluted the global namespace with.
+
+  \sa zero().
+*/
+SbTime
+SbTime::max(void)
+{
+  return SbTime::maxTime();
+}
+#endif // !_WIN32
+
 
 /*!
   Reset an SbTime instance to \a sec number of seconds.
