@@ -255,13 +255,6 @@ if test x"$sim_ac_macosx_10_2ff" = x"true"; then
   LD_TWOLEVEL_NAMESPACE=1
 fi
 
-#  Initialize libtool
-#
-# FIXME: this must be done even when we're not using libtool (as when
-# building with MSVC++), because that's where at least the enable_static
-# and enable_shared flags are set up. 20030324 mortene.
-AC_PROG_LIBTOOL
-
 # **************************************************************************
 #  Locate C++ compiler and set C++ as the default language to use
 #  in tests. The configure script will automatically terminate if
@@ -277,10 +270,20 @@ AC_PROG_LIBTOOL
 #  check is run).
 
 AC_PROG_CXX
-AC_LANG_CPLUSPLUS
+AC_PROG_CXXCPP
+
+# we only interface with C libraries
+AC_LANG(C)
 
 # **************************************************************************
+#  Initialize libtool
+#
+# FIXME: this must be done even when we're not using libtool (as when
+# building with MSVC++), because that's where at least the enable_static
+# and enable_shared flags are set up. 20030324 mortene.
+AC_PROG_LIBTOOL
 
+# **************************************************************************
 #  These are used for constructing the coin-config file.
 AC_SUBST([COIN_EXTRA_CPPFLAGS], [$CPPFLAGS])
 AC_SUBST([COIN_EXTRA_CFLAGS], [])
