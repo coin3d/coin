@@ -173,6 +173,7 @@ public:
   static SoCallbackAction::Response vrmlcylinder_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response vrmlifs_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response vrmlils_cb(void *, SoCallbackAction *, const SoNode *);
+  static SoCallbackAction::Response vrmlpointset_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response vrmlsphere_cb(void *, SoCallbackAction *, const SoNode *);
 
   static SoCallbackAction::Response vrmlelevation_cb(void *, SoCallbackAction *, const SoNode *);
@@ -1011,6 +1012,44 @@ SoToVRMLActionP::vrmlils_cb(void * closure, SoCallbackAction * action, const SoN
                                  oldils->colorIndex.getValues(0));
   }
   tail->addChild(ils);
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
+SoToVRMLActionP::vrmlpointset_cb(void * closure, SoCallbackAction * action, const SoNode * node)
+{
+  SoToVRMLActionP * thisp = (SoToVRMLActionP*) closure;
+
+  const SoVRMLPointSet * oldps = (const SoVRMLPointSet*) node;
+
+  SoPointSet * ps = new SoPointSet;
+  SoGroup * tail = thisp->get_current_tail();
+
+  SoVRMLColor * color = (SoVRMLColor*) oldps->color.getValue();
+  SoVRMLCoordinate * coord = (SoVRMLCoordinate*) oldps->coord.getValue();
+  
+  if (coord) {
+    SbName name = coord->getName();
+    SoCoordinate3 * newcoord = (SoCoordinate3*) 
+      thisp->search_for_node(thisp->vrmlpath->getHead(),
+                             name,
+                             SoCoordinate3::getClassTypeId());
+    if (!newcoord) {
+      newcoord = new SoCoordinate3;
+      newcoord->setName(name);
+      newcoord->point.setValues(0, coord->point.getNum(),
+                                coord->point.getValues(0));
+    }
+    tail->addChild(newcoord);
+  }
+
+  if (color) {
+    SoMaterial * mat = thisp->find_or_create_material();
+    mat->diffuseColor.setValues(0, color->color.getNum(),
+                                color->color.getValues(0));
+  }
+
+  tail->addChild(ps);
   return SoCallbackAction::CONTINUE;
 }
 
