@@ -1622,6 +1622,7 @@ cc_glglue_has_multitexture(const cc_glglue * w)
 int 
 cc_glglue_max_texture_units(const cc_glglue * w)
 {
+  if (!glglue_allow_newer_opengl(w)) return 1;
   return w->maxtextureunits; /* will be 1 when multitexturing is not available */
 }
 
