@@ -725,6 +725,13 @@ fi
 
 AM_CONDITIONAL([DEB_PACKAGEABLE], [$sim_ac_debian_packageable])
 
+sim_ac_macosx_packageable=false
+if test -d /Developer/Applications/PackageMaker.app; then
+  sim_ac_macosx_packageable=true
+fi
+
+AM_CONDITIONAL([MACOSX_PACKAGEABLE], [$sim_ac_macosx_packageable])
+
 # *******************************************************************
 # Configure an alternate installation?
 
