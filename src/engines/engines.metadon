@@ -53,24 +53,6 @@
 #
 # COMMENTS
 #
-# Field converters we need to make:
-# <UL>
-# <LI>Scalar casting</LI>
-# <LI>Color <=> Vec3f</LI>
-# <LI>Float <=> Time</LI>
-# <LI>Matrix <=> Rotation</LI>
-# <LI>Name <=> Enum</LI>
-# <LI>Rotation <=> Vec4f (quaternion)</LI>
-# </UL>
-#
-# Miscellaneous tasks:
-# <UL>
-# <LI>Set dirty-bits and check it during notify to prevent redundant
-#     notifying</LI>
-# <LI>evaluate</LI>
-# <LI>Create and send SoNotList-parameters</LI>
-# <LI>Handle loops</LI>
-# </UL>
 # END COMMENTS
 #
 #############################################################################
