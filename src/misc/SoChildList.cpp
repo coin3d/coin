@@ -278,12 +278,14 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
   // use a local array pointer for speed
   SoNode ** childarray = (SoNode **) this->getArrayPtr();
 
-  switch (action->getPathCode(numindices, indices)) {
+  SoAction::PathCode pathcode = action->getCurPathCode();
+
+  switch (pathcode) {
   case SoAction::NO_PATH:
   case SoAction::BELOW_PATH:
     // always traverse all nodes.
     action->pushCurPath();
-    for (i = first; i <= last && !action->hasTerminated(); i++) {
+    for (i = first; (i <= last) && !action->hasTerminated(); i++) {
       node = childarray[i];
       action->popPushCurPath(i, node);
       action->traverse(node);
@@ -291,19 +293,28 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
     action->popCurPath();
     break;
   case SoAction::OFF_PATH:
-    // only traverse nodes that affects state.
-    action->pushCurPath();
-    for (i = first; i <= last && !action->hasTerminated(); i++) {
+    for (i = first; (i <= last) && !action->hasTerminated(); i++) {      
       node = childarray[i];
+      // only traverse nodes that affects state
       if (node->affectsState()) {
-        action->popPushCurPath(i, node);
+        action->pushCurPath(i, node);
         action->traverse(node);
+        action->popCurPath(pathcode);
       }
     }
-    action->popCurPath();
     break;
   case SoAction::IN_PATH:
-    this->traverseInPath(action, numindices, indices);
+    for (i = first; (i <= last) && !action->hasTerminated(); i++) {
+      node = childarray[i];
+      action->pushCurPath(i, node);
+      // if we're OFF_PATH after pushing, we only traverse if the node
+      // affects the state.
+      if ((action->getCurPathCode() != SoAction::OFF_PATH) ||
+          node->affectsState()) {
+        action->traverse(node);
+      }
+      action->popCurPath(pathcode);
+    }
     break;
   default:
     assert(0 && "unknown path code.");
