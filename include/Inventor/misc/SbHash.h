@@ -25,8 +25,13 @@
 \**************************************************************************/
 
 #include <assert.h>
-#include <stddef.h> // NULL definition
-#include <string.h>
+#include <stddef.h> // NULL
+#include <string.h> // memset()
+
+#ifndef TRUE
+#define FALSE (0)
+#define TRUE  (!FALSE)
+#endif // !TRUE
 
 // We usually implement inline functions below the class definition,
 // since we think that makes the file more readable. However, this is
@@ -35,13 +40,13 @@
 // class.
 
 // This class (SbHash<Type, Key>) is internal and must not be exposed
-// in the API.
+// in the Coin API.
 
 template <class Type, class Key>
 class SbHashEntry {
 public:
   Key key;
-  Type * val;
+  Type obj;
   SbHashEntry<Type, Key> * next;
 };
 
@@ -49,10 +54,10 @@ template <class Type, class Key>
 class SbHash {
 public:
   typedef unsigned long SbHashFunc(const Key key);
-  typedef void SbHashApplyFunc(Key key, Type * obj, void * closure);
+  typedef void SbHashApplyFunc(Key key, Type obj, void * closure);
 
 public:
-  SbHash(int size = 256, float loadfactor = 0.0f) {
+  SbHash(unsigned int size = 256, float loadfactor = 0.0f) {
     if ( loadfactor <= 0.0f ) { loadfactor = 0.75f; }
     unsigned int s = 1;
     while ( s < size ) { s <<= 1; } // power-of-two size
@@ -79,25 +84,27 @@ public:
       }
     }
     memset(this->buckets, 0, this->size * sizeof(SbHashEntry<Type, Key> *));
-    this->elements = NULL;
+    this->elements = 0;
   }
 
-  int put(Key key, Type * obj) {
+  int put(Key key, Type obj) {
     unsigned int i = this->getIndex(key);
     SbHashEntry<Type, Key> * entry = this->buckets[i];
     while ( entry ) {
-      if ( entry->key == key ) { // Replace the old value
-        entry->val = obj;
+      if ( entry->key == key ) {
+        /* Replace the old value */
+        entry->obj = obj;
         return FALSE;
       }
       entry = entry->next;
     }
 
-    // Key not already in the hash table; insert a new
-    // entry as the first element in the bucket
+    /* Key not already in the hash table; insert a new
+     * entry as the first element in the bucket
+     */
     entry = new SbHashEntry<Type, Key>;
     entry->key = key;
-    entry->val = val;
+    entry->obj = obj;
     entry->next = this->buckets[i];
     this->buckets[i] = entry;
 
@@ -105,13 +112,13 @@ public:
     return TRUE;
   }
 
-  int get(Key key, Type *& obj) const {
+  int get(Key key, Type & obj) const {
     SbHashEntry<Type, Key> * entry;
     unsigned int i = this->getIndex(key);
     entry = this->buckets[i];
     while ( entry ) {
       if ( entry->key == key ) {
-        *obj = entry->val;
+        obj = entry->obj;
         return TRUE;
       }
       entry = entry->next;
@@ -147,7 +154,7 @@ public:
     for ( i = 0; i < this->size; i++ ) {
       elem = this->buckets[i];
       while ( elem ) {
-        func(elem->key, elem->val, closure);
+        func(elem->key, elem->obj, closure);
         elem = elem->next;
       }
     }
@@ -182,15 +189,16 @@ protected:
     return (unsigned long) key;
   }
 
-  unsigned int getIndex(const Key key) {
-    key = this->hashfunc(key);
-    key -= (key << 7); /* i.e. key = key * -127; */
-    return key & (this->size - 1);
+  unsigned int getIndex(const Key key) const {
+    unsigned int idx = this->hashfunc(key);
+    idx -= (idx << 7); /* i.e. key = key * -127; */
+    return idx & (this->size - 1);
   }
 
   void resize(unsigned int newsize) {
-    if (this->size >= newsize) return; // we don't shrink the table
-    // assert(coin_is_power_of_two(newsize));
+    /* we don't shrink the table */
+    if (this->size >= newsize) return;
+    /* assert(coin_is_power_of_two(newsize)); */
 
     unsigned int oldsize = this->size;
     SbHashEntry<Type, Key> ** oldbuckets = this->buckets;
@@ -200,12 +208,12 @@ protected:
     this->threshold = (unsigned int) (newsize * this->loadfactor);
     this->buckets = new SbHashEntry<Type, Key> * [newsize];
 
-    // Transfer all mappings
-    int i;
+    /* Transfer all mappings */
+    unsigned int i;
     for ( i = 0; i < oldsize; i++ ) {
       SbHashEntry<Type, Key> * entry = oldbuckets[i];
       while ( entry ) {
-        this->put(entry->key, entry->val);
+        this->put(entry->key, entry->obj);
         entry = entry->next;
       }
     }
@@ -217,6 +225,7 @@ private:
   unsigned int size;
   unsigned int elements;
   unsigned int threshold;
+
   SbHashEntry<Type, Key> ** buckets;
   SbHashFunc * hashfunc;
 
