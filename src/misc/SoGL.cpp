@@ -3966,7 +3966,7 @@ sogl_glerror_debugging(void)
 }
 
 // Convert an OpenGL enum error code to a textual representation.
-const SbString
+SbString
 sogl_glerror_string(int err)
 {
   SbString errorstring;

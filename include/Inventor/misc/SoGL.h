@@ -28,8 +28,7 @@
 // This file contains GL code which is shared between two or more nodes.
 //
 
-#include <Inventor/SbBasic.h>
-#include <Inventor/system/inttypes.h>
+#include <Inventor/SbString.h>
 
 class SoShape;
 class SoState;
@@ -160,6 +159,6 @@ sogl_render_pointset(const SoGLCoordinateElement * coords,
                      int32_t idx);
 
 SbBool sogl_glerror_debugging(void);
-const SbString sogl_glerror_string(int err);
+SbString sogl_glerror_string(int err);
 
 #endif // !COIN_SOGL_H
