@@ -749,6 +749,9 @@ glglue_resolve_symbols(cc_glglue * w)
 #endif /* disabled */
 
 
+  w->glBlendEquation == NULL;
+  w->glBlendEquationEXT == NULL;
+
 #if defined(GL_VERSION_1_4)
   if (cc_glglue_glversion_matches_at_least(w, 1, 4, 0)) {
     w->glBlendEquation = (COIN_PFNGLBLENDEQUATIONPROC)PROC(glBlendEquation);
