@@ -137,6 +137,8 @@
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/misc/SoProtoInstance.h>
+#include <Inventor/misc/SoGLImage.h>
+#include <Inventor/misc/SoGLBigImage.h>
 #include <../tidbits.h> // coin_atexit()
 #include <coindefs.h> // COIN_STUB()
 #include <stdlib.h>
@@ -367,6 +369,9 @@ SoDB::init(void)
 
   SoProto::initClass();
   SoProtoInstance::initClass();
+
+  SoGLImage::initClass();
+  SoGLBigImage::initClass();
 
 #ifdef HAVE_VRML97
   so_vrml_init();

@@ -215,14 +215,23 @@ SoGLBigImage::unref(SoState * state)
   inherited::unref(state);
 }
 
+/*!
+  \COININTERNAL
+  \since 2002-11-07
+*/
+void
+SoGLBigImage::initClass(void)
+{
+  assert(SoGLBigImageP::classTypeId.isBad());
+  SoGLBigImageP::classTypeId =
+    SoType::createType(SoGLImage::getClassTypeId(), SbName("GLBigImage"));
+}
+
 // Doc in superclass.
 SoType
 SoGLBigImage::getClassTypeId(void)
 {
-  if (SoGLBigImageP::classTypeId.isBad()) {
-    SoGLBigImageP::classTypeId =
-      SoType::createType(SoGLImage::getClassTypeId(), SbName("GLBigImage"));
-  }
+  assert(!SoGLBigImageP::classTypeId.isBad());
   return SoGLBigImageP::classTypeId;
 }
 

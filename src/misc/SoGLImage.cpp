@@ -641,16 +641,27 @@ SoGLImage::SoGLImage(void)
   }
 }
 
+
+/*!
+  \COININTERNAL
+
+  \since 2002-11-07
+*/
+void
+SoGLImage::initClass(void)
+{
+  assert(SoGLImageP::classTypeId.isBad());
+  SoGLImageP::classTypeId = SoType::createType(SoType::badType(),
+                                               SbName("GLImage"));
+}
+
 /*!
   Returns the type id for this class.
 */
 SoType
 SoGLImage::getClassTypeId(void)
 {
-  if (SoGLImageP::classTypeId.isBad()) {
-    SoGLImageP::classTypeId = SoType::createType(SoType::badType(),
-                                                 SbName("GLImage"));
-  }
+  assert(!SoGLImageP::classTypeId.isBad());
   return SoGLImageP::classTypeId;
 }
 
@@ -1683,8 +1694,10 @@ SoGLImage::tagImage(SoState *state, SoGLImage *image)
 {
   assert(image);
   if (image) {
+    LOCK_DLISTS(image);
     image->resetAge();
     image->pimpl->tagDL(state);
+    UNLOCK_DLISTS(image);
   }
 }
 

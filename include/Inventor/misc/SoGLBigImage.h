@@ -76,6 +76,9 @@ public:
 protected:
   virtual void unrefOldDL(SoState * state, const uint32_t maxage);
 
+public:
+  static void initClass(void);
+
 private:
   virtual ~SoGLBigImage();
 

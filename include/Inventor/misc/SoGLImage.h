@@ -149,6 +149,9 @@ public:
   void setEndFrameCallback(void (*cb)(void *), void * closure);
   int getNumFramesSinceUsed(void) const;
 
+public:
+  static void initClass(void);
+
 private:
   static void registerImage(SoGLImage * image);
   static void unregisterImage(SoGLImage * image);
