@@ -37,6 +37,8 @@
   Binding PER_VERTEX, PER_FACE or OVERALL can be set for material,
   and normals. The default material binding is OVERALL. The default
   normal binding is PER_VERTEX.
+
+  \sa SoIndexedFaceSet, SoIndexedTriangleStripSet
 */
 
 #include <Inventor/nodes/SoFaceSet.h>

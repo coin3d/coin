@@ -33,6 +33,37 @@
   The exact meaning of a binding depends on what particular shape type
   a material or a set of materials are applied to.
 
+  Here is a very simple usage example:
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Separator {
+     Coordinate3 {
+        point [ 0 0 0, 1 0 0, 1 1 0 ]
+     }
+  
+     Material {
+        diffuseColor [ 1 0 0, 1 1 0, 0 0 1 ]
+     }
+  
+     MaterialBinding {
+        value PER_VERTEX_INDEXED
+     }
+  
+     IndexedFaceSet {
+        coordIndex [ 0, 1, 2, -1 ]
+        materialIndex [ 0, 1, 0 ]
+     }
+  }
+  \endverbatim
+
+  With SoMaterialBinding::value set to \c PER_VERTEX_INDEXED above,
+  the material indices will be taken from the
+  SoIndexedFaceSet::materialIndex field when rendering. If
+  SoMaterialBinding::value is set to \c PER_VERTEX, they will follow
+  the indices of the SoIndexedFaceSet::coordIndex field.
+
   \sa SoMaterial
 */
 

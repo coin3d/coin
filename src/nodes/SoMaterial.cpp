@@ -69,11 +69,33 @@
 
   The SoMaterial::transparency values will always be treated normally.
 
+  Here is a very simple usage example:
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Separator {
+     Coordinate3 {
+        point [ 0 0 0, 1 0 0, 1 1 0 ]
+     }
+  
+     Material {
+        diffuseColor [ 1 0 0, 1 1 0, 0 0 1 ]
+     }
+  
+     MaterialBinding {
+        value PER_VERTEX
+     }
+  
+     IndexedFaceSet {
+        coordIndex [ 0, 1, 2, -1 ]
+     }
+  }
+  \endverbatim
+
   \sa SoMaterialBinding, SoBaseColor, SoPackedColor
 */
 
-// FIXME: add a usage example to the class doc. 20020118 mortene.
-//
 // FIXME: should also describe what happens if the number of values in
 // the fields are not consistent. 20020119 mortene.
 

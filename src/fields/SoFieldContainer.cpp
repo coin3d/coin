@@ -585,9 +585,17 @@ SoFieldContainer::getFieldData(void) const
   except external scenegraph references if \a copyconnections is \c
   FALSE.
 
-  This is the method that should be overridden by subclasses which
-  needs to account for internal data that are not handled
-  automatically.
+  This is the protected method that should be overridden by extension
+  node / engine / dragger / whatever subclasses which needs to account
+  for internal data that are not handled automatically.
+
+  Note that for simply copying e.g. a node from application code, it
+  should be sufficient to do:
+
+  \code
+  SoNode * mynewnode = templatenode->copy();
+  \endcode
+
 
   Make sure that when you override the copyContents() method in your
   extension class that you also make it call upwards to it's parent

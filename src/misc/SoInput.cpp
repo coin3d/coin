@@ -596,9 +596,13 @@ SoInput::closeFile(void)
 }
 
 /*!
-  Checks to see if the current file is a valid file which can be read by
-  the Coin library.
- */
+  Checks to see if the current file is a valid file which can be read
+  by the Coin library.
+
+  When reading files through e.g. SoDB::readAll(), this is
+  automatically checked for you, so application code should usually
+  not need to use this method.
+*/
 SbBool
 SoInput::isValidFile(void)
 {
@@ -614,9 +618,13 @@ SoInput::isValidFile(void)
 }
 
 /*!
-  Returns \c TRUE if it looks like the memory buffer contains a valid file
-  which can be read by the Coin library.
- */
+  Returns \c TRUE if the current text buffer represents a valid
+  iv-file which can be read by the Coin library.
+
+  When reading files through e.g. SoDB::readAll(), this is
+  automatically checked for you, so application code should usually
+  not need to use this method.
+*/
 SbBool
 SoInput::isValidBuffer(void)
 {

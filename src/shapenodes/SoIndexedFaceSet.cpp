@@ -32,6 +32,22 @@
   vertexProperty node if set), can be indexed to create triangles,
   quads or polygons.
 
+  Here's a usage example of just about the simplest possible use of
+  this node, to show a single polygon face:
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Separator {
+     Coordinate3 {
+        point [ 0 0 0, 1 0 0, 1 1 0 ]
+     }
+     IndexedFaceSet {
+        coordIndex [ 0, 1, 2, -1 ]
+     }
+  }
+  \endverbatim
+
   Binding PER_VERTEX_INDEXED, PER_VERTEX, PER_FACE_INDEXED, PER_FACE
   or OVERALL can be set for material, and normals. The default
   material binding is OVERALL. The default normal binding is
@@ -44,6 +60,37 @@
   -1 wherever there is a -1 in the coordIndex field. This is done to
   make this node more human readable.)
 
+
+  A fairly common request when rendering facesets is how to display a
+  set of faces with different colors on the backside versus the
+  frontside. There is not \e direct support for this in the API, but
+  it can easily be implemented by duplicating all faces in both the
+  SoShapeHints::COUNTERCLOCKWISE and the SoShapeHints::CLOCKWISE
+  order. Here is a simple usage example, showing the technique for a
+  single triangle face:
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Separator {
+     Coordinate3 { point [ 0 0 0, 1 0 0, 1 1 0 ] }
+  
+     Material { diffuseColor [ 1 0 0, 1 1 0 ] }
+     MaterialBinding { value PER_FACE_INDEXED }
+  
+     ShapeHints {
+        vertexOrdering COUNTERCLOCKWISE
+        shapeType SOLID
+     }
+  
+     IndexedFaceSet {
+        coordIndex [ 0, 1, 2, -1, 2, 1, 0, -1 ]
+        materialIndex [ 0, 1 ]
+     }
+  }
+  \endverbatim
+
+  \sa SoFaceSet, SoIndexedTriangleStripSet
 */
 
 #include <Inventor/nodes/SoIndexedFaceSet.h>
