@@ -154,7 +154,7 @@ main(int argc, char ** argv)
     exit(1);
   }
 
-  FILE * snapfp = fopen(snapshotdump, "w");
+  FILE * snapfp = fopen(snapshotdump, "wb");
   if (!snapfp) {
     (void)fprintf(stderr, "Couldn't open file '%s'.\n", snapshotdump);
     exit(1);

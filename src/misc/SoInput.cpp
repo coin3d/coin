@@ -2149,7 +2149,7 @@ SoInput::findFile(const char * basename, SbString & fullname)
 
     struct stat buf;
     if ((stat(fullname.getString(), &buf) == 0) && !S_ISDIR(buf.st_mode)) {
-      fp = fopen(fullname.getString(), "r");
+      fp = fopen(fullname.getString(), "rb");
 #if COIN_DEBUG && DEBUG_FILE_SEARCHING // debug
       SoDebugError::postInfo("SoInput::findFile",
                              "fopen(%s)", fullname.getString());

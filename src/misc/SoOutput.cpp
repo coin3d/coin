@@ -181,7 +181,7 @@ SoOutput::getFilePointer(void) const
 SbBool
 SoOutput::openFile(const char * const fileName)
 {
-  FILE * newfile = fopen(fileName, "w");
+  FILE * newfile = fopen(fileName, "wb");
   if (newfile) {
     this->setFilePointer(newfile);
     this->usersetfp = TRUE;
