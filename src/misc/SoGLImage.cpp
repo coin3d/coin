@@ -179,6 +179,9 @@ static int COIN_ENABLE_CONFORMANT_GL_CLAMP = -1;
 
 // *************************************************************************
 
+// buffer used for creating mipmap images
+static SbStorage * glimage_bufferstorage = NULL;
+
 typedef struct {
   unsigned char * buffer;
   int buffersize;
@@ -205,24 +208,12 @@ glimage_buffer_destruct(void * buffer)
 }
 
 
-static SbStorage * glimage_bufferstorage = NULL;
-
-static void
-glimage_buffer_cleanup(void)
-{
-  delete glimage_bufferstorage;
-  glimage_bufferstorage = NULL;
-}
-
 static unsigned char *
 glimage_get_buffer(const int buffersize, const SbBool mipmap)
 {
   soglimage_buffer * buf = NULL;
-  if (glimage_bufferstorage == NULL) {
-    coin_atexit((coin_atexit_f*) glimage_buffer_cleanup, 0);
-    glimage_bufferstorage = new SbStorage(sizeof(soglimage_buffer),
-                                          glimage_buffer_construct, glimage_buffer_destruct);
-  }
+  assert(glimage_bufferstorage != NULL);
+  
   buf = (soglimage_buffer*)
     glimage_bufferstorage->get();
   if (mipmap) {
@@ -649,11 +640,11 @@ SbMutex * SoGLImageP::mutex;
 // we now share one mutex among all glimages to avoid allocating too
 // many mutexes.
 #ifdef COIN_THREADSAFE
-#define LOCK_DLISTS(_thisp_)  SoGLImageP::mutex->lock()
-#define UNLOCK_DLISTS(_thisp_)  SoGLImageP::mutex->unlock()
+#define LOCK_GLIMAGE SoGLImageP::mutex->lock()
+#define UNLOCK_GLIMAGE SoGLImageP::mutex->unlock()
 #else // COIN_THREADSAFE
-#define LOCK_DLISTS(_thisp_)
-#define UNLOCK_DLISTS(_thisp_)
+#define LOCK_GLIMAGE
+#define UNLOCK_GLIMAGE
 #endif // !COIN_THREADSAFE
 
 // *************************************************************************
@@ -728,6 +719,9 @@ SoGLImage::initClass(void)
 #ifdef COIN_THREADSAFE
   SoGLImageP::mutex = new SbMutex;
 #endif // COIN_THREADSAFE
+  glimage_bufferstorage = new SbStorage(sizeof(soglimage_buffer),
+                                        glimage_buffer_construct, glimage_buffer_destruct);
+
   cc_coin_atexit((coin_atexit_f*)SoGLImage::cleanupClass);
 }
 
@@ -737,6 +731,8 @@ SoGLImage::initClass(void)
 void
 SoGLImage::cleanupClass(void)
 {
+  delete glimage_bufferstorage;
+  glimage_bufferstorage = NULL;
 #ifdef COIN_THREADSAFE
   delete SoGLImageP::mutex;
   SoGLImageP::mutex = NULL;
@@ -1099,16 +1095,16 @@ SoGLImage::getImage(void) const
 SoGLDisplayList *
 SoGLImage::getGLDisplayList(SoState *state)
 {
-  LOCK_DLISTS(this);
+  LOCK_GLIMAGE;
   SoGLDisplayList *dl = PRIVATE(this)->findDL(state);
-  UNLOCK_DLISTS(this);
+  UNLOCK_GLIMAGE;
 
   if (dl == NULL) {
     dl = PRIVATE(this)->createGLDisplayList(state);
     if (dl) {
-      LOCK_DLISTS(this);
+      LOCK_GLIMAGE;
       PRIVATE(this)->dlists.append(SoGLImageP::dldata(dl));
-      UNLOCK_DLISTS(this);
+      UNLOCK_GLIMAGE;
     }
   }
   if (dl && !dl->isMipMapTextureObject() && PRIVATE(this)->image) {
@@ -1116,7 +1112,7 @@ SoGLImage::getGLDisplayList(SoState *state)
     float oldquality = PRIVATE(this)->quality;
     PRIVATE(this)->quality = quality;
     if (PRIVATE(this)->shouldCreateMipmap()) {
-      LOCK_DLISTS(this);
+      LOCK_GLIMAGE;
       // recreate DL to get a mipmapped image
       int n = PRIVATE(this)->dlists.getLength();
       for (int i = 0; i < n; i++) {
@@ -1127,7 +1123,7 @@ SoGLImage::getGLDisplayList(SoState *state)
           break;
         }
       }
-      UNLOCK_DLISTS(this);
+      UNLOCK_GLIMAGE;
     }
     else PRIVATE(this)->quality = oldquality;
   }
@@ -1832,13 +1828,12 @@ SoGLImageP::getNextGLImageId(void)
 
 static SbList <SoGLImage*> * glimage_reglist;
 static uint32_t glimage_maxage = 60;
-static void * glimage_reglist_mutex = NULL;
 
 static void
 regimage_cleanup(void)
 {
-  CC_MUTEX_DESTRUCT(glimage_reglist_mutex);
   delete glimage_reglist;
+  glimage_reglist = NULL;
 }
 
 /*!
@@ -1866,10 +1861,10 @@ SoGLImage::tagImage(SoState *state, SoGLImage *image)
 {
   assert(image);
   if (image) {
-    LOCK_DLISTS(image);
+    LOCK_GLIMAGE;
     image->resetAge();
     image->pimpl->tagDL(state);
-    UNLOCK_DLISTS(image);
+    UNLOCK_GLIMAGE;
   }
 }
 
@@ -1884,7 +1879,7 @@ void
 SoGLImage::endFrame(SoState *state)
 {
   if (glimage_reglist) {
-    CC_MUTEX_LOCK(glimage_reglist_mutex);
+    LOCK_GLIMAGE;
     int n = glimage_reglist->getLength();
     for (int i = 0; i < n; i++) {
       SoGLImage *img = (*glimage_reglist)[i];
@@ -1892,7 +1887,7 @@ SoGLImage::endFrame(SoState *state)
       if (img->pimpl->endframecb)
         img->pimpl->endframecb(img->pimpl->endframeclosure);
     }
-    CC_MUTEX_UNLOCK(glimage_reglist_mutex);
+    UNLOCK_GLIMAGE;
   }
 }
 
@@ -1943,18 +1938,14 @@ SoGLImage::setDisplayListMaxAge(const uint32_t maxage)
 void
 SoGLImage::registerImage(SoGLImage *image)
 {
-  if (!glimage_reglist_mutex) {
-    CC_MUTEX_CONSTRUCT(glimage_reglist_mutex);
-  }
-
-  CC_MUTEX_LOCK(glimage_reglist_mutex);
+  LOCK_GLIMAGE;
   if (glimage_reglist == NULL) {
     coin_atexit((coin_atexit_f *)regimage_cleanup, 0);
     glimage_reglist = new SbList<SoGLImage*>;
   }
   assert(glimage_reglist->find(image) < 0);
   glimage_reglist->append(image);
-  CC_MUTEX_UNLOCK(glimage_reglist_mutex);
+  UNLOCK_GLIMAGE;
 }
 
 // used internally to keep track of the SoGLImages
@@ -1963,13 +1954,13 @@ SoGLImage::unregisterImage(SoGLImage *image)
 {
   assert(glimage_reglist);
 
-  CC_MUTEX_LOCK(glimage_reglist_mutex);
+  LOCK_GLIMAGE;
   int idx = glimage_reglist->find(image);
   assert(idx >= 0);
   if (idx >= 0) {
     glimage_reglist->removeFast(idx);
   }
-  CC_MUTEX_UNLOCK(glimage_reglist_mutex);
+  UNLOCK_GLIMAGE;
 }
 
 // *************************************************************************
@@ -2004,6 +1995,6 @@ SoGLImageP::contextCleanup(uint32_t context, void * closure)
 // *************************************************************************
 
 #undef PRIVATE
-#undef LOCK_DLISTS
-#undef UNLOCK_DLISTS
+#undef LOCK_GLIMAGE
+#undef UNLOCK_GLIMAGE
 
