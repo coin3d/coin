@@ -4064,3 +4064,23 @@ Separator {
     readInstance() solution outlined above is not good enough.
 
 =====================================================================
+
+114 VRML-nodes are erroneously renamed upon import.
+
+    VRML-nodes can legally be named in ways which are not ok for
+    ordinary Inventor/Coin nodes. They are therefore sometimes renamed
+    in error upon import of VRML97-files, from within SoBase::setName().
+
+    I suggest this is fixed within SoBase::setName(), by making the
+    code check whether or not the class is internal and has the
+    "SoVRML" prefix, and if so; do the Right Thing wrt the VRML97
+    spec.
+
+    (BTW, do we have the same problem wrt VRML 1 nodes?)
+
+    According to kintel, this is probably quite a bit of work to do
+    properly, one will for instance have to read node names in UTF-8.
+
+    20040521 mortene, bug reported by kintel.
+
+=====================================================================
