@@ -1410,7 +1410,6 @@ SoShape::notify(SoNotList * nl)
     PRIVATE(this)->pvcache->invalidate();
   }
   PRIVATE(this)->flags &= ~SoShapeP::SHOULD_BBOX_CACHE;
-  PRIVATE(this)->flags |= SoShapeP::DISABLE_VERTEX_ARRAY_CACHE;
   PRIVATE(this)->unlock();
 }
 
