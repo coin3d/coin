@@ -136,8 +136,9 @@ SoAction::initClass(void)
   SoAction::methods = new SoActionMethodList(NULL);
 
   // Override element is used everywhere.
-  SO_ENABLE(SoActio, SoOverrideElement);
-
+  SoAction::enabledElements->enable(SoOverrideElement::getClassTypeId(),
+                                    SoOverrideElement::getClassStackIndex());
+  
   SoAction::initClasses();
 }
 
@@ -240,6 +241,7 @@ SoAction::apply(SoPath * path)
   }
 
   if (path->getLength() && path->getNode(0)) {
+    // FIXME: is this correct? Seems too simple. 20000301 mortene.
     SoNode * node = path->getNode(0);
     this->beginTraversal(node);
     this->endTraversal(node);
@@ -305,97 +307,100 @@ SoAction::invalidateState(void)
 // *************************************************************************
 
 /*!
-  This method is for filling into the lookup tables.
-  It does nothing, except for traversing the graph.
+  This method is used for filling up the lookup tables with void
+  methods.
 */
-
 void
 SoAction::nullAction(SoAction *, SoNode *)
 {
 }
 
 /*!
-  This method returns a code indicating what (node, path, or pathlist)
-  the action instance is being applied to.
+  Returns a code indicating what (node, path, or pathlist) the action
+  instance is being applied to.
 */
-
 SoAction::AppliedCode
-SoAction::getWhatAppliedTo() const
+SoAction::getWhatAppliedTo(void) const
 {
   return this->appliedcode;
 }
 
 /*!
-  This method returns a pointer to the node the action is being applied to.
-  If action was not applied to a node (but a path or a pathlist), the method
-  returns NULL.
-*/
+  Returns a pointer to the node the action is being applied to.
 
+  If action is not being applied to a node (but a path or a pathlist),
+  the method returns \c NULL.
+*/
 SoNode *
-SoAction::getNodeAppliedTo() const
+SoAction::getNodeAppliedTo(void) const
 {
-  return this->applieddata.node;
+  return this->appliedcode == SoAction::NODE ? this->applieddata.node : NULL;
 }
 
 /*!
-  This method returns a pointer to the path the action is being applied to.
-  If action was not applied to a path (but a node or a pathlist), the method
-  returns NULL.
+  Returns a pointer to the path the action is being applied to.
+
+  If action is not being applied to a path (but a node or a pathlist),
+  the method returns \c NULL.
 */
-
 SoPath *
-SoAction::getPathAppliedTo() const
+SoAction::getPathAppliedTo(void) const
 {
-  return this->applieddata.path;
+  return this->appliedcode == SoAction::PATH ? this->applieddata.path : NULL;
 }
 
 /*!
-  This method returns a pointer to the path list the action is currently
-  being applied to.  If action was not applied to a path list (but a node
-  or a path), the method returns NULL.  The path list is not necessarily the
-  one SoAction::apply() was called with - the action may have reorganized
-  the path list for efficiency reasons (to conform with the four rules
-  mentioned for SoAction::apply()).
+  Returns a pointer to the path list the action is currently being
+  applied to.
+
+  If action is not being applied to a path list (but a node or a
+  path), the method returns \c NULL.
+
+  The returned pathlist pointer need not be equal to the list apply()
+  was called with, as the action may have reorganized the path list
+  for efficiency reasons.
 
   \sa void SoAction::apply(const SoPathList &, SbBool)
 */
-
 const SoPathList *
-SoAction::getPathListAppliedTo() const
+SoAction::getPathListAppliedTo(void) const
 {
-  return this->applieddata.pathlistdata.pathlist;
+  return this->appliedcode == SoAction::PATH_LIST ?
+    this->applieddata.pathlistdata.pathlist : NULL;
 }
 
 /*!
-  This method returns a pointer to the original path list the action is
-  being applied to.  If the action was not applied to a path list (but a node
-  or a path), the method returns NULL.
+  Returns a pointer to the original path list the action is being
+  applied to.
+
+  If the action is not being applied to a path list (but a node or a
+  path), the method returns \c NULL.
 */
 
 const SoPathList *
-SoAction::getOriginalPathListAppliedto() const
+SoAction::getOriginalPathListAppliedto(void) const
 {
-  return this->applieddata.pathlistdata.origpathlist;
+  return this->appliedcode == SoAction::PATH_LIST ?
+    this->applieddata.pathlistdata.origpathlist : NULL;
 }
 
 /*!
-  This method returns TRUE if the current path list being applied is the
-  last path list (generated) from the original path list.
+  Returns \c TRUE if the current path list being applied is the last
+  path list from the set passed to apply().
 */
-
 SbBool
-SoAction::isLastPathListAppliedTo() const
+SoAction::isLastPathListAppliedTo(void) const
 {
   COIN_STUB();
   return FALSE;
 }
 
 /*!
-  This method returns a code that indicates where the current node lies with
-  respect to the path(s) the action is being applied to.  The arguments
-  \a indices and \a numIndices are only set if the method returns IN_PATH.
+  Returns a code that indicates where the current node lies with
+  respect to the path(s) the action is being applied to.  The
+  arguments \a indices and \a numIndices are only set if the method
+  returns IN_PATH.
 */
-
 SoAction::PathCode
 SoAction::getPathCode(int & numIndices, const int * & indices)
 {
@@ -619,21 +624,20 @@ SoAction::popCurPath(void)
 // *************************************************************************
 
 /*!
-  FIXME: write doc.
+  Returns a list of the elements used by action instances of this
+  class upon traversal operations.
 */
-
 const SoEnabledElementsList &
-SoAction::getEnabledElements() const
+SoAction::getEnabledElements(void) const
 {
   return *(this->enabledElements);
 }
 
 /*!
-  This virtual method can be overloaded to initialize the action at traversal
-  start.  Default method just calls traverse(node), which any overloaded
-  method must do too (or call inherited::beginTraversal(node)).
+  This virtual method can be overloaded to initialize the action at
+  traversal start.  Default method just calls traverse(), which any
+  overloaded method must do too (or call SoAction::beginTraversal()).
 */
-
 void
 SoAction::beginTraversal(SoNode * node)
 {
@@ -641,10 +645,9 @@ SoAction::beginTraversal(SoNode * node)
 }
 
 /*!
-  This virtual method can be overloaded to execute code after the scene graph
-  traversal.  Default method does nothing.
+  This virtual method can be overloaded to execute code after the
+  scene graph traversal.  Default method does nothing.
 */
-
 void
 SoAction::endTraversal(SoNode * node)
 {
@@ -677,34 +680,45 @@ SoAction::shouldCompactPathList() const
   return FALSE;
 }
 
+/*!
+  Store our state, traverse the given \a path, restore our state and
+  continue traversal.
+ */
 void
-SoAction::switchToPathTraversal(SoPath *path)
+SoAction::switchToPathTraversal(SoPath * path)
 {
-  AppliedData oldData = this->applieddata;
-  AppliedCode oldCode = this->appliedcode;
-  PathCode oldPathCode = this->currentpathcode;
-  SoTempPath oldPath = this->currentpath;
+  // Store current state.
+  AppliedData storeddata = this->applieddata;
+  AppliedCode storedcode = this->appliedcode;
+  PathCode storedpathcode = this->currentpathcode;
+  SoTempPath storedpath = this->currentpath;
 
+  // Start path traversal. Don't use beginTraversal() (the user might
+  // have overloaded it).
   this->appliedcode = SoAction::PATH;
   this->applieddata.path = path;
   this->currentpathcode = SoAction::IN_PATH;
-
   this->traverse(path->getNode(0));
 
-  // restore previous state
-  this->currentpath = oldPath;
-  this->currentpathcode = oldPathCode;
-  this->applieddata = oldData;
-  this->appliedcode = oldCode;
+  // Restore previous state.
+  this->currentpath = storedpath;
+  this->currentpathcode = storedpathcode;
+  this->applieddata = storeddata;
+  this->appliedcode = storedcode;
 }
 
+/*!
+  Store our state, traverse the subgraph rooted at the given \a node,
+  restore our state and continue traversal.
+ */
 void
-SoAction::switchToNodeTraversal(SoNode *node)
+SoAction::switchToNodeTraversal(SoNode * node)
 {
-  AppliedData oldData = this->applieddata;
-  AppliedCode oldCode = this->appliedcode;
-  PathCode oldPathCode = this->currentpathcode;
-  SoTempPath oldPath = this->currentpath;
+  // Store current state.
+  AppliedData storeddata = this->applieddata;
+  AppliedCode storedcode = this->appliedcode;
+  PathCode storedpathcode = this->currentpathcode;
+  SoTempPath storedpath = this->currentpath;
 
   this->appliedcode = SoAction::NODE;
   this->applieddata.node = node;
@@ -713,9 +727,9 @@ SoAction::switchToNodeTraversal(SoNode *node)
 
   this->traverse(node);
 
-  // restore previous state
-  this->currentpath = oldPath;
-  this->currentpathcode = oldPathCode;
-  this->applieddata = oldData;
-  this->appliedcode = oldCode;
+  // Restore previous state.
+  this->currentpath = storedpath;
+  this->currentpathcode = storedpathcode;
+  this->applieddata = storeddata;
+  this->appliedcode = storedcode;
 }
