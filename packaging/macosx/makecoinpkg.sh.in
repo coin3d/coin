@@ -47,7 +47,7 @@ ditto -rsrcFork @top_srcdir@/packaging/macosx/Coin_Welcome.rtfd pkgresources/Wel
 if test x$VERBOSE = x; then
   REDIRECT='> /dev/null 2>&1'
 fi
-eval "/Developer/Applications/PackageMaker.app/Contents/MacOS/PackageMaker -build -p $PWD/Coin.pkg -f $PWD/pkgroot -r pkgresources -i Coin_Info.plist -d Coin_Description.plist $REDIRECT"
+eval "/Developer/Applications/PackageMaker.app/Contents/MacOS/PackageMaker -build -p $PWD/Coin.pkg -f $PWD/pkgroot -r $PWD/pkgresources -i Coin_Info.plist -d Coin_Description.plist $REDIRECT"
 
 # Remove temporary files
 rm -rf pkgroot pkgresources
