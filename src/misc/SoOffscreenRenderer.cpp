@@ -29,7 +29,7 @@
   sending to a Postscript-capable printer).
 
   Currently offscreen rendering can only be done with GLX (i.e. OpenGL
-  on X11).
+  on X11) and WGL (i.e. OpenGL on Win32).
 
  */
 
@@ -104,9 +104,9 @@ public:
     // which will otherwise say ``Template deduction failed to find a
     // match for the call to 'SbMin'''. mortene.
     this->buffersize[0] = SbMax((short)1,
-				SbMin((short)size[0], (short)maxsize[0]));
+        SbMin((short)size[0], (short)maxsize[0]));
     this->buffersize[1] = SbMax((short)1,
-				SbMin((short)size[1], (short)maxsize[1]));
+        SbMin((short)size[1], (short)maxsize[1]));
   }
 
   SbVec2s getSize(void) const {
@@ -283,7 +283,214 @@ private:
   GLXPixmap glxpixmap;
 };
 
-#endif // HAVE_GLX
+// #endif // HAVE_GLX
+#else if HAVE_WGL
+
+class SoOffscreenWGLData : public SoOffscreenInternalData {
+public:
+  SoOffscreenWGLData(void)
+  {
+    this->buffer = NULL;
+    this->context = NULL;
+    this->devicecontext = NULL;
+    this->bitmap = NULL;
+    this->oldbitmap = NULL;
+  }
+
+  virtual ~SoOffscreenWGLData() {
+    CleanupWGL();
+    delete[] this->buffer;
+
+  }
+
+  virtual void setBufferSize(const SbVec2s & size) {
+    SoOffscreenInternalData::setBufferSize(size);
+
+    delete[] this->buffer;
+    this->buffer =
+      new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
+
+    InitWGL();
+  }
+
+  virtual SbBool makeContextCurrent(void) {
+    assert(this->buffer);
+    if (this->context && this->bitmap) {
+      wglMakeCurrent (this->devicecontext, this->context);
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  virtual unsigned char * getBuffer(void) {
+    return this->buffer;
+  }
+
+  virtual void postRender(void) {
+    SbVec2s size = this->getSize();
+
+    if (this->context && this->buffer) {
+      glPixelStorei(GL_PACK_ALIGNMENT, 1);
+      glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
+                   this->buffer);
+      glPixelStorei(GL_PACK_ALIGNMENT, 4);
+    }
+  }
+
+  static SbVec2s getMaxDimensions(void) {
+    // FIXME: where can we get hold of the _real_ max values for
+    // Pixmap and/or GLXPixmap? 20000417 mortene.
+    return SbVec2s(32767, 32767);
+  }
+
+  void CleanupWGL() {
+    // cleanup member variabler
+    if(this->devicecontext != NULL) {
+      if(this->oldbitmap != NULL) {
+        SelectObject(this->devicecontext, this->oldbitmap);
+        this->oldbitmap = NULL;
+      }
+      if(this->bitmap != NULL) {
+        DeleteObject(this->bitmap);
+        this->bitmap = NULL;
+      }
+      DeleteDC(this->devicecontext);
+      this->devicecontext = NULL;
+    }
+  }
+
+  void InitWGL() {
+    // initialization of member variables
+
+    this->CleanupWGL();
+    
+    this->devicecontext = CreateCompatibleDC(NULL);
+    if(this->devicecontext == NULL) {
+      DWORD dwError = GetLastError();
+      SoDebugError::postWarning("SoOffscreenWGLData::InitWGL",
+                                "Couldn't create DC. CreateCompatibleDC() failed with error code %d.", dwError);
+      return;
+    }
+
+    void *pvBits;
+
+    BITMAPINFO bmi;
+    bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+    bmi.bmiHeader.biWidth = this->buffersize[0];
+    bmi.bmiHeader.biHeight = this->buffersize[1];
+    bmi.bmiHeader.biPlanes = 1;
+    bmi.bmiHeader.biBitCount = 24;
+    bmi.bmiHeader.biCompression = BI_RGB; 
+    bmi.bmiHeader.biSizeImage = 0;
+    bmi.bmiHeader.biXPelsPerMeter = 0;
+    bmi.bmiHeader.biYPelsPerMeter = 0;
+    bmi.bmiHeader.biClrUsed  = 0;
+    bmi.bmiHeader.biClrImportant = 0;
+    bmi.bmiColors[0].rgbBlue = 0;
+    bmi.bmiColors[0].rgbGreen;
+    bmi.bmiColors[0].rgbRed;
+    bmi.bmiColors[0].rgbReserved;
+
+    // make a bitmap to draw to
+    this->bitmap = CreateDIBSection(this->devicecontext, &bmi, DIB_RGB_COLORS, &pvBits, NULL, 0);
+    if(this->bitmap == NULL) {
+      DWORD dwError = GetLastError();
+      SoDebugError::postWarning("SoOffscreenWGLData::InitWGL",
+                                "Couldn't create DIB. CreateDIBSection() failed with error code %d.", dwError);
+      return;
+    }
+
+    this->oldbitmap = (HBITMAP) SelectObject(this->devicecontext, this->bitmap);
+    if (this->oldbitmap == NULL) {
+      DWORD dwError = GetLastError();
+      SoDebugError::postWarning("SoOffscreenWGLData::InitWGL",
+                                "Couldn't select bitmap into device context. SelectObject() failed with error code %d.", dwError);
+    }
+
+    PIXELFORMATDESCRIPTOR pfd = { 
+        sizeof(PIXELFORMATDESCRIPTOR),   // size of this pfd 
+        1,                     // version number 
+        PFD_DRAW_TO_BITMAP |   // support bitmap 
+        PFD_SUPPORT_OPENGL,    // support OpenGL 
+        PFD_TYPE_RGBA,         // RGBA type 
+        24,                    // 24-bit color depth 
+        0, 0, 0, 0, 0, 0,      // color bits ignored 
+        0,                     // no alpha buffer 
+        0,                     // shift bit ignored 
+        0,                     // no accumulation buffer 
+        0, 0, 0, 0,            // accum bits ignored 
+        32,                    // 32-bit z-buffer 
+        0,                     // no stencil buffer 
+        0,                     // no auxiliary buffer 
+        PFD_MAIN_PLANE,        // main layer 
+        0,                     // reserved 
+        0, 0, 0                // layer masks ignored 
+    }; 
+
+    int  iPixelFormat; 
+ 
+    // get the best available match of pixel format for the device context  
+    iPixelFormat = ChoosePixelFormat(this->devicecontext, &pfd); 
+    if (iPixelFormat == 0) {
+      DWORD dwError = GetLastError();
+      SoDebugError::postWarning("SoOffscreenWGLData::InitWGL",
+                                "ChoosePixelFormat failed with error code %d.", dwError);
+    }
+
+    bool ret;
+ 
+    // make that the pixel format of the device context 
+    ret = SetPixelFormat(this->devicecontext, iPixelFormat, &pfd); 
+    if (!ret)
+    {
+      DWORD dwError = GetLastError();
+      SoDebugError::postWarning("SoOffscreenWGLData::InitWGL",
+                                "SetPixelFormat failed with error code %d.", dwError);
+    }
+
+    // verify that the pixel format of the device context supports OpenGL
+    iPixelFormat = GetPixelFormat(this->devicecontext);
+    if (iPixelFormat == 0) {
+      DWORD dwError = GetLastError();
+      SoDebugError::postWarning("SoOffscreenWGLData::InitWGL",
+                                "GetPixelFormat failed with error code %d.", dwError);
+    }
+
+    iPixelFormat = DescribePixelFormat(this->devicecontext, iPixelFormat,  sizeof(PIXELFORMATDESCRIPTOR), &pfd);
+    if (iPixelFormat == 0) {
+      DWORD dwError = GetLastError();
+      SoDebugError::postWarning("SoOffscreenWGLData::InitWGL",
+                                "DescribePixelFormat failed with error code %d.", dwError);
+    }
+
+    if (!(pfd.dwFlags & PFD_SUPPORT_OPENGL)) {
+      SoDebugError::postWarning("SoOffscreenWGLData::InitWGL",
+                                "Device Context doesn't support OpenGL, according to DescribePixelFormat.");
+    }
+
+    // Create WGL context
+    this->context = wglCreateContext(this->devicecontext);
+    if(this->context == NULL) {
+      DWORD dwError = GetLastError();
+      SoDebugError::postWarning("SoOffscreenWGLData::InitWGL",
+                                "wglCreateContext failed with error code %d.", dwError);
+      return;
+    }
+  }
+
+private:
+  virtual SbVec2s getMax(void) {
+    return SoOffscreenWGLData::getMaxDimensions();
+  }
+
+  unsigned char * buffer;
+  HGLRC context;
+  HDC devicecontext;
+  HBITMAP bitmap;
+  HBITMAP oldbitmap;
+};
+
+#endif // HAVE_WGL
 
 #endif // DOXYGEN_SKIP_THIS
 
@@ -303,7 +510,11 @@ SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion
 {
 #ifdef HAVE_GLX
   this->internaldata = new SoOffscreenGLXData();
-#endif // HAVE_GLX
+// #endif // HAVE_GLX
+#else if HAVE_WGL
+  this->internaldata = new SoOffscreenWGLData();
+#endif // HAVE_WGL
+
   this->setViewportRegion(viewportregion);
 }
 
@@ -323,7 +534,10 @@ SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
 {
 #ifdef HAVE_GLX
   this->internaldata = new SoOffscreenGLXData();
-#endif // HAVE_GLX
+//#endif // HAVE_GLX
+#else if HAVE_WGL
+  this->internaldata = new SoOffscreenWGLData();
+#endif // HAVE_WGL
   assert(action);
   this->setViewportRegion(action->getViewportRegion());
 }
@@ -356,7 +570,10 @@ SoOffscreenRenderer::getMaximumResolution(void)
 {
 #ifdef HAVE_GLX
   SoOffscreenGLXData::getMaxDimensions();
-#endif // HAVE_GLX
+// #endif // HAVE_GLX
+#else if HAVE_WGL
+  SoOffscreenWGLData::getMaxDimensions();
+#endif // HAVE_WGL
   return SbVec2s(0, 0);
 }
 
