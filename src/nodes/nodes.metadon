@@ -56,7 +56,7 @@
 #   T!G! --                       SoAnnotation
 #   -!   --                       SoSelection
 #   -!   --                               SoExtSelection
-#   T!   --                       SoLocateHighlight
+# IDT!G!!--                       SoLocateHighlight
 #    !   --                               SoWWWAnchor
 #        --                       SoRenderList
 #        --                               SoOctreeOrdering

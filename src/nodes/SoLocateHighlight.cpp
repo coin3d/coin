@@ -19,61 +19,72 @@
 
 /*!
   \class SoLocateHighlight SoLocateHighlight.h Inventor/nodes/SoLocateHighlight.h
-  \brief The SoLocateHighlight class ...
+  \brief The SoLocateHighlight class highlights geometry under the cursor.
   \ingroup nodes
 
-  FIXME: write class doc
+  This node is supposed to draw to the front buffer. However, in Coin
+  we always draw to the back buffer, forcing a scene redraw whenever
+  a highlight state changes.
 */
 
 
 #include <Inventor/nodes/SoLocateHighlight.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <coindefs.h> // COIN_STUB()
-
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoEmissiveColorElement.h>
+#include <Inventor/elements/SoDiffuseColorElement.h>
+#include <Inventor/SoFullPath.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoChildList.h>
+#include <Inventor/events/SoLocation2Event.h>
+#include <Inventor/SoPickedPoint.h>
 
 /*!
   \enum SoLocateHighlight::Modes
-  FIXME: write documentation for enum
+  Enum type for behaviour modes.
 */
 /*!
   \var SoLocateHighlight::Modes SoLocateHighlight::AUTO
-  FIXME: write documentation for enum definition
+  Highlight when mouse cursor is over the contents of the node.
 */
 /*!
   \var SoLocateHighlight::Modes SoLocateHighlight::ON
-  FIXME: write documentation for enum definition
+  Always highlight.
 */
 /*!
   \var SoLocateHighlight::Modes SoLocateHighlight::OFF
-  FIXME: write documentation for enum definition
+  Never highlight.
 */
 /*!
   \enum SoLocateHighlight::Styles
-  FIXME: write documentation for enum
+  Enum type for highlight styles.
 */
 /*!
   \var SoLocateHighlight::Styles SoLocateHighlight::EMISSIVE
-  FIXME: write documentation for enum definition
+  Highlight using emissive color override.
 */
 /*!
   \var SoLocateHighlight::Styles SoLocateHighlight::EMISSIVE_DIFFUSE
-  FIXME: write documentation for enum definition
+  Highlight useing emissive and diffuse color override.
 */
-
 
 /*!
   \var SoSFColor SoLocateHighlight::color
-  FIXME: write documentation for field
+  The color used for highlighting.
 */
+
 /*!
   \var SoSFEnum SoLocateHighlight::style
-  FIXME: write documentation for field
+  The highlight style.
 */
 /*!
   \var SoSFEnum SoLocateHighlight::mode
-  FIXME: write documentation for field
+  The highlight mode.
 */
 
+SoFullPath * SoLocateHighlight::currenthighlight = NULL;
 
 // *************************************************************************
 
@@ -98,6 +109,8 @@ SoLocateHighlight::SoLocateHighlight()
   SO_NODE_DEFINE_ENUM_VALUE(Modes, ON);
   SO_NODE_DEFINE_ENUM_VALUE(Modes, OFF);
   SO_NODE_SET_SF_ENUM_TYPE(mode, Modes);
+
+  this->highlighted = FALSE;
 }
 
 /*!
@@ -107,11 +120,7 @@ SoLocateHighlight::~SoLocateHighlight()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoLocateHighlight class. This includes setting up the
-  type system, among other things.
-*/
+// doc from parent
 void
 SoLocateHighlight::initClass(void)
 {
@@ -119,48 +128,125 @@ SoLocateHighlight::initClass(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Static method that can be used to turn off the current highlight.
 */
 void
-SoLocateHighlight::turnOffCurrentHighlight(SoGLRenderAction * /* action */)
+SoLocateHighlight::turnOffCurrentHighlight(SoGLRenderAction * action)
 {
-  // FIXME: stub. 19990224 mortene.
+  SoLocateHighlight::turnoffcurrent(action);
 }
 
-
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
-SoLocateHighlight::handleEvent(SoHandleEventAction *action)
+SoLocateHighlight::handleEvent(SoHandleEventAction * action)
 {
-  // FIXME: implement (pederb)
+  Modes mymode = (Modes) this->mode.getValue();
+  if (mymode == AUTO) {
+    const SoEvent * event = action->getEvent();
+    if (event->isOfType(SoLocation2Event::getClassTypeId())) {
+      const SoPickedPoint * pp = action->getPickedPoint();
+      if (pp && pp->getPath()->containsPath(action->getCurPath())) {
+        if (!this->highlighted) {
+          SoLocateHighlight::turnoffcurrent(action);
+          SoLocateHighlight::currenthighlight = (SoFullPath*)
+            action->getCurPath()->copy();
+          SoLocateHighlight::currenthighlight->ref();
+          this->highlighted = TRUE;
+          this->touch(); // force scene redraw
+          this->redrawHighlighted(action, TRUE);
+        }
+      }
+      else {
+        if (this->highlighted) {
+          SoLocateHighlight::turnoffcurrent(action);
+        }
+      }
+    }
+  }
   inherited::handleEvent(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
-SoLocateHighlight::GLRenderBelowPath(SoGLRenderAction * /* action */)
+SoLocateHighlight::GLRenderBelowPath(SoGLRenderAction * action)
 {
-  COIN_STUB();
+  SoState * state = action->getState();
+  if (!this->cullTest(state)) {
+    state->push();
+    if (this->highlighted || this->mode.getValue() == ON) {
+      this->setOverride(action);
+    }
+    int n = this->children->getLength();
+    SoAction::PathCode pathcode = action->getCurPathCode();
+    for (int i = 0; i < n; i++) {
+      action->pushCurPath(i);
+      (*this->children)[i]->GLRenderBelowPath(action);
+      action->popCurPath(pathcode);
+    }
+    state->pop();
+  }
+}
+
+// doc from parent
+void
+SoLocateHighlight::GLRenderInPath(SoGLRenderAction * action)
+{
+  SoState * state = action->getState();
+  int numIndices;
+  const int * indices;
+  action->getPathCode(numIndices, indices);
+
+  state->push();
+  if (this->highlighted || this->mode.getValue() == ON) {
+    this->setOverride(action);
+  }
+  this->children->traverse(action, 0, indices[numIndices-1]);
+  state->pop();
 }
 
 /*!
-  FIXME: write doc
- */
-void
-SoLocateHighlight::GLRenderInPath(SoGLRenderAction * /* action */)
-{
-  COIN_STUB();
-}
-
-/*!
-  FIXME: write doc
- */
+  Empty method in Coin. Can be used by subclasses to be told
+  when status change.
+*/
 void
 SoLocateHighlight::redrawHighlighted(SoAction * /* act */, SbBool /* flag */)
 {
-  COIN_STUB();
+}
+
+//
+// update override state before rendering
+//
+void
+SoLocateHighlight::setOverride(SoGLRenderAction * action)
+{
+  SoState * state = action->getState();
+  SoEmissiveColorElement::set(state, this,
+                              1, &this->color.getValue());
+  SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
+
+  Styles mystyle = (Styles) this->style.getValue();
+  if (mystyle == SoLocateHighlight::EMISSIVE_DIFFUSE) {
+    SoDiffuseColorElement::set(state, this,
+                               1, &this->color.getValue());
+    SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+  }
+}
+
+// private convenience method
+void
+SoLocateHighlight::turnoffcurrent(SoAction * action)
+{
+  if (SoLocateHighlight::currenthighlight &&
+      SoLocateHighlight::currenthighlight->getLength()) {
+    SoNode * tail = SoLocateHighlight::currenthighlight->getTail();
+    if (tail->isOfType(SoLocateHighlight::getClassTypeId())) {
+      ((SoLocateHighlight*)tail)->highlighted = FALSE;
+      ((SoLocateHighlight*)tail)->touch(); // force scene redraw
+      if (action) ((SoLocateHighlight*)tail)->redrawHighlighted(action, FALSE);
+    }
+  }
+  if (SoLocateHighlight::currenthighlight) {
+    SoLocateHighlight::currenthighlight->unref();
+    SoLocateHighlight::currenthighlight = NULL;
+  }
 }

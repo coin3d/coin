@@ -25,6 +25,7 @@
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFEnum.h>
 
+class SoFullPath;
 
 class COIN_DLL_EXPORT SoLocateHighlight : public SoSeparator {
   typedef SoSeparator inherited;
@@ -54,8 +55,14 @@ public:
 
 protected:
   virtual ~SoLocateHighlight();
+  virtual void redrawHighlighted(SoAction * act, SbBool  flag);
 
-  virtual void redrawHighlighted(SoAction *act, SbBool  flag);
+private:
+
+  static void turnoffcurrent(SoAction * action);
+  void setOverride(SoGLRenderAction * action);
+  static SoFullPath * currenthighlight;
+  SbBool highlighted;
 };
 
 #endif // !COIN_SOLOCATEHIGHLIGHT_H
