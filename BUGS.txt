@@ -368,7 +368,7 @@
 
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
     #Inventor V2.1 ascii
-  
+
     Separator {
        TransformerManip { }
        Text3 { string "b"   parts ALL }
@@ -393,7 +393,7 @@
 
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
     #Inventor V2.1 ascii
-  
+
     Separator {
        TransformerManip { }
        Text3 { string "b"   parts ALL }
@@ -419,28 +419,28 @@
     #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
     #include <Inventor/draggers/SoTransformBoxDragger.h>
     #include <Inventor/nodes/SoSeparator.h>
-    
-    
+
+
     int
     main(int argc, char ** argv)
     {
       QWidget * window = SoQt::init(argv[0]);
-    
+
       SoTransformBoxDragger * dragger = new SoTransformBoxDragger;
-    
+
       SbString str;
       for (int i = 1; i <= 6; i++) {
         str.sprintf("translator%d.translator", i);
         dragger->setPart(str.getString(), new SoSeparator);
       }
-    
+
       SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
       viewer->setSceneGraph(dragger);
       viewer->show();
       SoQt::show(window);
-    
+
       SoQt::mainLoop();
-    
+
       delete viewer;
       return 0;
     }
@@ -455,17 +455,17 @@
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
     Coin error in SoChildList::removePathAuditor(): no SoPath 0x80f5fd8 is auditing list 0x80a3038! (of parent 0x80a2b70 (Dragger))
     test: /home/sigma/mortene/code/coin-head/src/errors/SoDebugError.cpp:216: void check_breakpoints(const char *): Assertion `0 && "Coin debug break"' failed.
-    
+
     Program received signal SIGABRT, Aborted.
     [Switching to Thread 1024 (LWP 2619)]
     0x40d7c9f1 in kill () from /lib/libc.so.6
     (gdb) bt
     [snip]
     #5  0x408cbceb in SoDebugError::post (
-        source=0x409d07c0 "SoChildList::removePathAuditor", 
+        source=0x409d07c0 "SoChildList::removePathAuditor",
         format=0x409d0780 "no SoPath %p is auditing list %p! (of parent %p (%s))")
         at /home/sigma/mortene/code/coin-head/src/errors/SoDebugError.cpp:216
-    #6  0x4097bfe5 in SoChildList::removePathAuditor (this=0x80a3038, 
+    #6  0x4097bfe5 in SoChildList::removePathAuditor (this=0x80a3038,
         path=0x80f5fd8)
         at /home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:364
     #7  0x409bd29f in SoPath::truncate (this=0x80f5fd8, length=0, donotify=1)
@@ -487,6 +487,85 @@
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
 
 
-    20020821 mortene.    
+    20020821 mortene.
+
+=====================================================================
+
+021 SoGetBoundingBoxAction can be made to fail when applied to a path.
+
+    The erroneous behavior can be reproduced with the following code:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #include <Inventor/SoInput.h>
+    #include <Inventor/actions/SoBoxHighlightRenderAction.h>
+    #include <Inventor/actions/SoGetBoundingBoxAction.h>
+    #include <Inventor/actions/SoSearchAction.h>
+    #include <Inventor/nodes/SoPerspectiveCamera.h>
+    #include <Inventor/nodes/SoSelection.h>
+    #include <Inventor/nodes/SoSeparator.h>
+
+    const char scene[] ="#Inventor V2.1 ascii\n\n
+    DEF ROOT Separator {
+      Transform {
+        rotation	1 0 0  1.5708
+        center	4 8 12
+      }
+
+      DEF CUBESEP Separator {
+        DEF CUBE Cube { }
+      }
+    }";
+
+
+    int main( int argc, char ** argv )
+    {
+      SoDB::init();
+
+      SoInput in;
+      in.setBuffer((void *)scene, strlen(scene));
+      SoSeparator * root = SoDB::readAll(&in);
+      root->ref();
+      assert(root);
+
+      SoNode * node = SoNode::getByName(SbName("CUBE"));
+      assert(node);
+
+      SoSearchAction sa;
+      sa.setNode(node);
+      sa.apply(root);
+
+      SoPath * path = sa.getPath();
+      assert(path);
+      path->ref();
+
+      SoGetBoundingBoxAction * bboxaction = new SoGetBoundingBoxAction(SbViewportRegion());
+
+      fprintf(stdout, "SoGetBoundingBoxAction::apply(SoNode *):\n");
+      bboxaction->apply(root);
+      bboxaction->getXfBoundingBox().print(stdout); fprintf(stdout, "\n");
+
+      fprintf(stdout, "\n\n");
+
+      fprintf(stdout, "SoGetBoundingBoxAction::apply(SoPath *):\n");
+      bboxaction->apply(path);
+      bboxaction->getXfBoundingBox().print(stdout); fprintf(stdout, "\n");
+
+      path->unref();
+      delete bboxaction;
+      root->unref();
+      return 0;
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    The code first applies an SoGetBoundingBoxAction to the root node
+    and then to a path from the root node to the cube node. Both runs
+    should produce the same result, but the boundingbox calculated on
+    the path-run comes out wrong.
+
+    The bug has something to do with the SoTransform node that is part
+    of the path. If the rotation is removed, it works. If the center
+    shift is removed, it works. If both are left in, it bugs.
+
+    20020822 mortene. (discovered by kintel.)
 
 =====================================================================
