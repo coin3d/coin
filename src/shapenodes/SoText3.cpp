@@ -575,8 +575,8 @@ SoText3::render(SoState * state, unsigned int part)
             SoProfile *pn = (SoProfile *)profilenodes[firstprofile];
             pn->getVertices(state, profnum, profcoords);
 
-            SbVec3f edgea( va[0]+(profcoords[0][1]*tmp2[0]), va[1]+(profcoords[0][1]*tmp2[1]), -profcoords[0][0] );
-            SbVec3f edgeb( vb[0]+(profcoords[0][1]*tmp1[0]), vb[1]+(profcoords[0][1]*tmp1[1]), -profcoords[0][0] );
+            SbVec3f edgea(va[0]+(profcoords[0][1]*tmp2[0]), va[1]+(profcoords[0][1]*tmp2[1]), -profcoords[0][0] );
+            SbVec3f edgeb(vb[0]+(profcoords[0][1]*tmp1[0]), vb[1]+(profcoords[0][1]*tmp1[1]), -profcoords[0][0] );
             float edgez = -profcoords[0][0];  // -----
             // look through all profiles.
             int twisted = 0;
@@ -589,7 +589,6 @@ SoText3::render(SoState * state, unsigned int part)
 
               for (int k=0; k<profnum; k++) {
                 if (profcoords[k][0] != 0) {
-
                   vd[0] = va[0] + ((profcoords[k][1] * tmp2[0]));
                   vd[1] = va[1] + ((profcoords[k][1] * tmp2[1]));
                   vd[2] = -profcoords[k][0];
@@ -598,7 +597,7 @@ SoText3::render(SoState * state, unsigned int part)
                   vc[2] = -profcoords[k][0];
                   // normal
                   SbVec3f normal(edgea[0] - vd[0], edgea[1]-vd[1],  edgez + profcoords[k][0]);
-                  normal = normal.cross( SbVec3f( edgeb[0]-edgea[0], edgeb[1]-edgea[1], 0 ) );
+                  normal = normal.cross(SbVec3f(edgeb[0]-edgea[0], edgeb[1]-edgea[1], 0));
                   // FIXME: check if 'valid' normals (resulting triangle instead if quad, etc), 20000926 skei.
 
                   if (normal.length() > 0) {
@@ -731,10 +730,10 @@ SoText3::generate(SoAction * action, unsigned int part)
     float xpos = 0.0f;
     switch (this->justification.getValue()) {
     case SoText3::RIGHT:
-      xpos = -PRIVATE(this)->widths[i] * size;
+      xpos = -PRIVATE(this)->widths[i];
       break;
     case SoText3::CENTER:
-      xpos = - PRIVATE(this)->widths[i] * size * 0.5f;
+      xpos = - PRIVATE(this)->widths[i] * 0.5f;
       break;
     }
 
@@ -835,17 +834,19 @@ SoText3::generate(SoAction * action, unsigned int part)
             // edges, for aligning the profile
             SbVec3f tmp1(vc[0]-va[0], vc[1]-va[1], 0.0f);
             tmp1 = tmp1.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
-            tmp1.normalize();
+            if (tmp1.length() > 0)
+              tmp1.normalize();
 
             SbVec3f tmp2(vb[0]-vd[0], vb[1]-vd[1], 0.0f);
             tmp2 = tmp2.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
-            tmp2.normalize();
+            if (tmp2.length() > 0)
+              tmp2.normalize();
 
             SoProfile *pn = (SoProfile *)profilenodes[firstprofile];
             pn->getVertices(state, profnum, profcoords);
 
-            SbVec3f edgea( va[0]+(profcoords[0][1]*tmp2[0]), va[1]+(profcoords[0][1]*tmp2[1]), -profcoords[0][0] );
-            SbVec3f edgeb( vb[0]+(profcoords[0][1]*tmp1[0]), vb[1]+(profcoords[0][1]*tmp1[1]), -profcoords[0][0] );
+            SbVec3f edgea(va[0]+(profcoords[0][1]*tmp2[0]), va[1]+(profcoords[0][1]*tmp2[1]), -profcoords[0][0] );
+            SbVec3f edgeb(vb[0]+(profcoords[0][1]*tmp1[0]), vb[1]+(profcoords[0][1]*tmp1[1]), -profcoords[0][0] );
             float edgez = -profcoords[0][0];  // -----
             // look through all profiles.
             int twisted = 0;
@@ -866,8 +867,8 @@ SoText3::generate(SoAction * action, unsigned int part)
                   vc[1] = vb[1] + ((profcoords[k][1] * tmp1[1]));
                   vc[2] = -profcoords[k][0];
                   // normal
-                  SbVec3f normal( vd[0]-edgea[0], vd[1]-edgea[1], -profcoords[k][0] - edgez );
-                  normal = normal.cross( SbVec3f( edgeb[0]-edgea[0], edgeb[1]-edgea[1], 0 ) );
+                  SbVec3f normal(edgea[0] - vd[0],edgea[1] - vd[1], edgez + profcoords[k][0]);
+                  normal = normal.cross( SbVec3f( edgeb[0]-edgea[0], edgeb[1]-edgea[1], 0));
                   // FIXME: check if 'valid' normals (resulting
                   // triangle instead if quad, etc), 20000926 skei.
 
