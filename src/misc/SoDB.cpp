@@ -1286,13 +1286,16 @@ SoDBP::updateRealTimeFieldCB(void * /* data */, SoSensor * /* sensor */)
   Set the time interval between updates for the \c realTime global field
   to \a interval. Default value is 1/12 s.
 
+  Setting the interval to a zero time will disable automatic updates
+  of the realTime field.
+
   \sa getRealTimeInterval(), getGlobalField()
  */
 void
 SoDB::setRealTimeInterval(const SbTime & interval)
 {
 #if COIN_DEBUG
-  if (interval < SbTime(0.0)) {
+  if (interval < SbTime::zero()) {
     SoDebugError::postWarning("SoDB::setRealTimeInterval",
                               "Tried to set negative interval.");
     return;
@@ -1301,10 +1304,9 @@ SoDB::setRealTimeInterval(const SbTime & interval)
 
   SbBool isscheduled = SoDBP::globaltimersensor->isScheduled();
   if (isscheduled) SoDBP::globaltimersensor->unschedule();
-  if (interval != SbTime(0.0)) {
-    SoDBP::globaltimersensor->setInterval(interval);
-    if (isscheduled) SoDBP::globaltimersensor->schedule();
-  }
+  SoDBP::globaltimersensor->setInterval(interval);
+  if (isscheduled && interval != SbTime::zero()) 
+    SoDBP::globaltimersensor->schedule();
 }
 
 /*!
@@ -1503,7 +1505,9 @@ SoDB::enableRealTimeSensor(SbBool on)
 
   SbBool isscheduled = SoDBP::globaltimersensor->isScheduled();
   if (isscheduled && !on) SoDBP::globaltimersensor->unschedule();
-  else if (!isscheduled && on) SoDBP::globaltimersensor->schedule();
+  else if (!isscheduled && on && 
+           SoDBP::globaltimersensor->getInterval() != SbTime::zero()) 
+    SoDBP::globaltimersensor->schedule();
 #if COIN_DEBUG
   else SoDebugError::postWarning("SoDB::enableRealTimeSensor",
                                  "realtime sensor already %s",
