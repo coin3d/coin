@@ -20,8 +20,8 @@
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/draggers/SoCenterballDragger.h>
 #include <Inventor/draggers/SoDirectionalLightDragger.h>
+#include <Inventor/draggers/SoDragPointDragger.h>
 // FIXME: enable these as they are added. 20000107 mortene.
-//  #include <Inventor/draggers/SoDragPointDragger.h>
 //  #include <Inventor/draggers/SoHandleBoxDragger.h>
 //  #include <Inventor/draggers/SoJackDragger.h>
 //  #include <Inventor/draggers/SoPointLightDragger.h>
@@ -78,8 +78,8 @@ SoDragger::initClasses(void)
 {
   SoCenterballDragger::initClass();
   SoDirectionalLightDragger::initClass();
+  SoDragPointDragger::initClass();
 // FIXME: enable these as they are added. 20000107 mortene.
-//    SoDragPointDragger::initClass();
 //    SoHandleBoxDragger::initClass();
 //    SoJackDragger::initClass();
 //    SoPointLightDragger::initClass();

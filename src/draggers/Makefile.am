@@ -4,12 +4,14 @@
 ALLSOURCES = \
 	SoDragger.cpp SoDragger.h \
 	SoCenterballDragger.cpp SoCenterballDragger.h \
-	SoDirectionalLightDragger.cpp SoDirectionalLightDragger.h
+	SoDirectionalLightDragger.cpp SoDirectionalLightDragger.h \
+	SoDragPointDragger.cpp SoDragPointDragger.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/draggers/SoDragger.h \
 	$(top_srcdir)/include/Inventor/draggers/SoCenterballDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoDirectionalLightDragger.h
+	$(top_srcdir)/include/Inventor/draggers/SoDirectionalLightDragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoDragPointDragger.h
 
 ##$ BEGIN TEMPLATE Make-Common(draggers)
 
