@@ -296,6 +296,9 @@ SoGLCacheContextElement::areMipMapsFast(SoState * state)
 void
 SoGLCacheContextElement::shouldAutoCache(SoState * state, int bits)
 {
+  SoGLCacheContextElement * elem = (SoGLCacheContextElement*)
+    state->getElementNoPush(classStackIndex);
+  elem->autocachebits |= bits;
 }
 
 /*!
