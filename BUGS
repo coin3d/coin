@@ -1,17 +1,23 @@
 =====================================================================
 
 000 Bounding box calculation is _very_ lousy when there are rotations
-    in the scenegraph (ouch!). To reproduce in a way that shows off
-    the bug well, load this scenegraph into the
-    SoGuiExamples/engines/computebbox example:
+    comined with bounding boxes for geometry that are not centered
+    around it's local origo. To reproduce in a way that shows off the
+    bug well, load this scenegraph into the
+    SoGuiExamples/engines/computexfbbox example:
 
     ---8<-------8<-------8<-------8<-------8<-------8<-------8<----
     #Inventor V2.0 ascii
     
     Separator {
-       Cube { }
-       Rotation { rotation 0 0 1  0.785389 }
-       Cube { }
+       Coordinate3 { point [ 0 0 0, 1 0 0, 1 1 0, 0 1 0 ] }
+       DEF square IndexedFaceSet { coordIndex [ 0, 1, 2, 3, -1 ] }
+    
+       RotationXYZ { axis Z  angle 0.5 }
+       USE square
+    
+       RotationXYZ { axis Z  angle 0.5 }
+       USE square
     }
     ---8<-------8<-------8<-------8<-------8<-------8<-------8<----
 
