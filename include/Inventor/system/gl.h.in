@@ -54,12 +54,12 @@
    name. */
 
 #ifndef GL_CLAMP_TO_EDGE
-#define GL_CLAMP_TO_EDGE                  ((GLenum)0x812F)
+#define GL_CLAMP_TO_EDGE                  0x812F
 #endif /* !GL_CLAMP_TO_EDGE */
 
 /* Define for the REPLACE texture model (OpenGL 1.1). */
 #ifndef GL_REPLACE
-#define GL_REPLACE                        ((GLenum)0x1E01)
+#define GL_REPLACE                        0x1E01
 #endif /* !GL_REPLACE */
 
 /* Note: all following enums also have an *_EXT version with the same
@@ -67,63 +67,63 @@
    Coin code. */
 
 #ifndef GL_MAX_3D_TEXTURE_SIZE
-#define GL_MAX_3D_TEXTURE_SIZE            ((GLenum)0x8073)
+#define GL_MAX_3D_TEXTURE_SIZE            0x8073
 #endif /* !GL_MAX_3D_TEXTURE_SIZE */
 #ifndef GL_PACK_IMAGE_HEIGHT
-#define GL_PACK_IMAGE_HEIGHT              ((GLenum)0x806C)
+#define GL_PACK_IMAGE_HEIGHT              0x806C
 #endif /* !GL_PACK_IMAGE_HEIGHT */
 #ifndef GL_PACK_SKIP_IMAGES
-#define GL_PACK_SKIP_IMAGES               ((GLenum)0x806B)
+#define GL_PACK_SKIP_IMAGES               0x806B
 #endif /* !GL_PACK_SKIP_IMAGES */
 #ifndef GL_PROXY_TEXTURE_2D
-#define GL_PROXY_TEXTURE_2D               ((GLenum)0x8064)
+#define GL_PROXY_TEXTURE_2D               0x8064
 #endif /* !GL_PROXY_TEXTURE_2D */
 #ifndef GL_PROXY_TEXTURE_3D
-#define GL_PROXY_TEXTURE_3D               ((GLenum)0x8070)
+#define GL_PROXY_TEXTURE_3D               0x8070
 #endif /* !GL_PROXY_TEXTURE_3D */
 #ifndef GL_TEXTURE_3D
-#define GL_TEXTURE_3D                     ((GLenum)0x806F)
+#define GL_TEXTURE_3D                     0x806F
 #endif /* !GL_TEXTURE_3D */
 #ifndef GL_TEXTURE_DEPTH
-#define GL_TEXTURE_DEPTH                  ((GLenum)0x8071)
+#define GL_TEXTURE_DEPTH                  0x8071
 #endif /* !GL_TEXTURE_DEPTH */
 #ifndef GL_TEXTURE_WRAP_R
-#define GL_TEXTURE_WRAP_R                 ((GLenum)0x8072)
+#define GL_TEXTURE_WRAP_R                 0x8072
 #endif /* !GL_TEXTURE_WRAP_R */
 #ifndef GL_UNPACK_IMAGE_HEIGHT
-#define GL_UNPACK_IMAGE_HEIGHT            ((GLenum)0x806E)
+#define GL_UNPACK_IMAGE_HEIGHT            0x806E
 #endif /* !GL_UNPACK_IMAGE_HEIGHT */
 #ifndef GL_UNPACK_SKIP_IMAGES
-#define GL_UNPACK_SKIP_IMAGES             ((GLenum)0x806D)
+#define GL_UNPACK_SKIP_IMAGES             0x806D
 #endif /* !GL_UNPACK_SKIP_IMAGES */
 #ifndef GL_COLOR_TABLE_WIDTH
-#define GL_COLOR_TABLE_WIDTH              ((GLenum)0x80D9)
+#define GL_COLOR_TABLE_WIDTH              0x80D9
 #endif /* !GL_COLOR_TABLE_WIDTH */
 
 /* OpenGL multitexture defines. For now we just define for maximum four units */
 #ifndef GL_TEXTURE0
-#define GL_TEXTURE0                       ((GLenum)0x84C0)
+#define GL_TEXTURE0                       0x84C0
 #endif /* !GL_TEXTURE0 */
 #ifndef GL_TEXTURE1
-#define GL_TEXTURE1                       ((GLenum)0x84C1)
+#define GL_TEXTURE1                       0x84C1
 #endif /* !GL_TEXTURE1 */
 #ifndef GL_TEXTURE2
-#define GL_TEXTURE2                       ((GLenum)0x84C2)
+#define GL_TEXTURE2                       0x84C2
 #endif /* !GL_TEXTURE2 */
 #ifndef GL_TEXTURE3
-#define GL_TEXTURE3                       ((GLenum)0x84C3)
+#define GL_TEXTURE3                       0x84C3
 #endif /* !GL_TEXTURE3 */
 #ifndef GL_MAX_TEXTURE_UNITS
-#define GL_MAX_TEXTURE_UNITS              ((GLenum)0x84E2)
+#define GL_MAX_TEXTURE_UNITS              0x84E2
 #endif /* !GL_MAX_TEXTURE_UNITS */
 #ifndef GL_ACTIVE_TEXTURE
-#define GL_ACTIVE_TEXTURE                 ((GLenum)0x84E0)
+#define GL_ACTIVE_TEXTURE                 0x84E0
 #endif /* !GL_ACTIVE_TEXTURE */
 
 /* A define from the old EXT_polygon_offset from SGI. This define at
    least missing from Microsoft's OpenGL 1.1 SDK. */
 #ifndef GL_POLYGON_OFFSET_EXT
-#define GL_POLYGON_OFFSET_EXT             ((GLenum)0x8037)
+#define GL_POLYGON_OFFSET_EXT             0x8037
 #endif /* !GL_POLYGON_OFFSET_EXT */
 
 /* color table extension defines */
@@ -299,136 +299,136 @@
 
 /* gluGetString */
 #ifndef GLU_VERSION
-#define GLU_VERSION ((GLenum)100800)
+#define GLU_VERSION 100800
 #endif /* ! GLU_VERSION */
 #ifndef GLU_EXTENSIONS
-#define GLU_EXTENSIONS ((GLenum)100801)
+#define GLU_EXTENSIONS 100801
 #endif /* ! GLU_EXTENSIONS */
 
 /* NurbsDisplay */
 #ifndef GLU_OUTLINE_POLYGON
-#define GLU_OUTLINE_POLYGON ((GLenum)100240)
+#define GLU_OUTLINE_POLYGON 100240
 #endif /* ! GLU_OUTLINE_POLYGON */
 #ifndef GLU_OUTLINE_PATCH
-#define GLU_OUTLINE_PATCH ((GLenum)100241)
+#define GLU_OUTLINE_PATCH 100241
 #endif /* ! GLU_OUTLINE_PATCH */
 
 /* NurbsCallback */
 #ifndef GLU_NURBS_ERROR
-#define GLU_NURBS_ERROR ((GLenum)100103)
+#define GLU_NURBS_ERROR 100103
 #endif /* ! GLU_NURBS_ERROR */
 #ifndef GLU_ERROR
-#define GLU_ERROR ((GLenum)100103)
+#define GLU_ERROR 100103
 #endif /* ! GLU_ERROR */
 #ifndef GLU_NURBS_BEGIN
-#define GLU_NURBS_BEGIN ((GLenum)100164)
+#define GLU_NURBS_BEGIN 100164
 #endif /* ! GLU_NURBS_BEGIN */
 #ifndef GLU_NURBS_VERTEX
-#define GLU_NURBS_VERTEX ((GLenum)100165)
+#define GLU_NURBS_VERTEX 100165
 #endif /* ! GLU_NURBS_VERTEX */
 #ifndef GLU_NURBS_NORMAL
-#define GLU_NURBS_NORMAL ((GLenum)100166)
+#define GLU_NURBS_NORMAL 100166
 #endif /* ! GLU_NURBS_NORMAL */
 #ifndef GLU_NURBS_COLOR
-#define GLU_NURBS_COLOR ((GLenum)100167)
+#define GLU_NURBS_COLOR 100167
 #endif /* ! GLU_NURBS_COLOR */
 #ifndef GLU_NURBS_TEXTURE_COORD
-#define GLU_NURBS_TEXTURE_COORD ((GLenum)100168)
+#define GLU_NURBS_TEXTURE_COORD 100168
 #endif /* ! GLU_NURBS_TEXTURE_COORD */
 #ifndef GLU_NURBS_END
-#define GLU_NURBS_END ((GLenum)100169)
+#define GLU_NURBS_END 100169
 #endif /* ! GLU_NURBS_END */
 #ifndef GLU_NURBS_BEGIN_DATA
-#define GLU_NURBS_BEGIN_DATA ((GLenum)100170)
+#define GLU_NURBS_BEGIN_DATA 100170
 #endif /* ! GLU_NURBS_BEGIN_DATA */
 #ifndef GLU_NURBS_VERTEX_DATA
-#define GLU_NURBS_VERTEX_DATA ((GLenum)100171)
+#define GLU_NURBS_VERTEX_DATA 100171
 #endif /* ! GLU_NURBS_VERTEX_DATA */
 #ifndef GLU_NURBS_NORMAL_DATA
-#define GLU_NURBS_NORMAL_DATA ((GLenum)100172)
+#define GLU_NURBS_NORMAL_DATA 100172
 #endif /* ! GLU_NURBS_NORMAL_DATA */
 #ifndef GLU_NURBS_COLOR_DATA
-#define GLU_NURBS_COLOR_DATA ((GLenum)100173)
+#define GLU_NURBS_COLOR_DATA 100173
 #endif /* ! GLU_NURBS_COLOR_DATA */
 #ifndef GLU_NURBS_TEXTURE_COORD_DATA
-#define GLU_NURBS_TEXTURE_COORD_DATA ((GLenum)100174)
+#define GLU_NURBS_TEXTURE_COORD_DATA 100174
 #endif /* ! GLU_NURBS_TEXTURE_COORD_DATA */
 #ifndef GLU_NURBS_END_DATA
-#define GLU_NURBS_END_DATA ((GLenum)100175)
+#define GLU_NURBS_END_DATA 100175
 #endif /* ! GLU_NURBS_END_DATA */
 
 /* NurbsProperty */
 #ifndef GLU_AUTO_LOAD_MATRIX
-#define GLU_AUTO_LOAD_MATRIX ((GLenum)100200)
+#define GLU_AUTO_LOAD_MATRIX 100200
 #endif /* ! GLU_AUTO_LOAD_MATRIX */
 #ifndef GLU_CULLING
-#define GLU_CULLING ((GLenum)100201)
+#define GLU_CULLING 100201
 #endif /* ! GLU_CULLING */
 #ifndef GLU_SAMPLING_TOLERANCE
-#define GLU_SAMPLING_TOLERANCE ((GLenum)100203)
+#define GLU_SAMPLING_TOLERANCE 100203
 #endif /* ! GLU_SAMPLING_TOLERANCE */
 #ifndef GLU_DISPLAY_MODE
-#define GLU_DISPLAY_MODE ((GLenum)100204)
+#define GLU_DISPLAY_MODE 100204
 #endif /* ! GLU_DISPLAY_MODE */
 #ifndef GLU_PARAMETRIC_TOLERANCE
-#define GLU_PARAMETRIC_TOLERANCE ((GLenum)100202)
+#define GLU_PARAMETRIC_TOLERANCE 100202
 #endif /* ! GLU_PARAMETRIC_TOLERANCE */
 #ifndef GLU_SAMPLING_METHOD
-#define GLU_SAMPLING_METHOD ((GLenum)100205)
+#define GLU_SAMPLING_METHOD 100205
 #endif /* ! GLU_SAMPLING_METHOD */
 #ifndef GLU_U_STEP
-#define GLU_U_STEP ((GLenum)100206)
+#define GLU_U_STEP 100206
 #endif /* ! GLU_U_STEP */
 #ifndef GLU_V_STEP
-#define GLU_V_STEP ((GLenum)100207)
+#define GLU_V_STEP 100207
 #endif /* ! GLU_V_STEP */
 #ifndef GLU_NURBS_MODE
-#define GLU_NURBS_MODE ((GLenum)100160)
+#define GLU_NURBS_MODE 100160
 #endif /* ! GLU_NURBS_MODE */
 #ifndef GLU_NURBS_TESSELLATOR
-#define GLU_NURBS_TESSELLATOR ((GLenum)100161)
+#define GLU_NURBS_TESSELLATOR 100161
 #endif /* ! GLU_NURBS_TESSELLATOR */
 #ifndef GLU_NURBS_RENDERER
-#define GLU_NURBS_RENDERER ((GLenum)100162)
+#define GLU_NURBS_RENDERER 100162
 #endif /* ! GLU_NURBS_RENDERER */
 
 /* NurbsSampling */
 #ifndef GLU_OBJECT_PARAMETRIC_ERROR
-#define GLU_OBJECT_PARAMETRIC_ERROR ((GLenum)100208)
+#define GLU_OBJECT_PARAMETRIC_ERROR 100208
 #endif /* ! GLU_OBJECT_PARAMETRIC_ERROR */
 #ifndef GLU_OBJECT_PATH_LENGTH
-#define GLU_OBJECT_PATH_LENGTH ((GLenum)100209)
+#define GLU_OBJECT_PATH_LENGTH 100209
 #endif /* ! GLU_OBJECT_PATH_LENGTH */
 #ifndef GLU_PATH_LENGTH
-#define GLU_PATH_LENGTH ((GLenum)100215)
+#define GLU_PATH_LENGTH 100215
 #endif /* ! GLU_PATH_LENGTH */
 #ifndef GLU_PARAMETRIC_ERROR
-#define GLU_PARAMETRIC_ERROR ((GLenum)100216)
+#define GLU_PARAMETRIC_ERROR 100216
 #endif /* ! GLU_PARAMETRIC_ERROR */
 #ifndef GLU_DOMAIN_DISTANCE
-#define GLU_DOMAIN_DISTANCE ((GLenum)100217)
+#define GLU_DOMAIN_DISTANCE 100217
 #endif /* ! GLU_DOMAIN_DISTANCE */
 
 /* NurbsTrim */
 #ifndef GLU_MAP1_TRIM_2
-#define GLU_MAP1_TRIM_2 ((GLenum)100210)
+#define GLU_MAP1_TRIM_2 100210
 #endif /* ! GLU_MAP1_TRIM_2 */
 #ifndef GLU_MAP1_TRIM_3
-#define GLU_MAP1_TRIM_3 ((GLenum)100211)
+#define GLU_MAP1_TRIM_3 100211
 #endif /* ! GLU_MAP1_TRIM_3 */
 
 /* QuadricDrawStyle */
 #ifndef GLU_POINT
-#define GLU_POINT ((GLenum)100010)
+#define GLU_POINT 100010
 #endif /* ! GLU_POINT */
 #ifndef GLU_LINE
-#define GLU_LINE ((GLenum)100011)
+#define GLU_LINE 100011
 #endif /* ! GLU_LINE */
 #ifndef GLU_FILL
-#define GLU_FILL ((GLenum)100012)
+#define GLU_FILL 100012
 #endif /* ! GLU_FILL */
 #ifndef GLU_SILHOUETTE
-#define GLU_SILHOUETTE ((GLenum)10001)
+#define GLU_SILHOUETTE 10001
 #endif /* ! GLU_SILHOUETTE */
 
 /*** GLU enums, end ***************************************************/
