@@ -76,7 +76,7 @@ public:
 
     F1 = 0xffbe, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12,
 
-    BACKSPACE = 0xff08, TAB = 0xff08,
+    BACKSPACE = 0xff08, TAB = 0xff09,
     RETURN = 0xff0d, ENTER = 0xff0d,
     PAUSE = 0xff13, SCROLL_LOCK = 0xff14,
     ESCAPE = 0xff1b, DELETE = 0xffff, KEY_DELETE = DELETE,
