@@ -1,37 +1,17 @@
 RegularSources = \
-	dl.c \
-	gl.c \
-	gl_wgl.c gl_agl.c gl_glx.c \
-	GLUWrapper.c \
-	simage_wrapper.c \
-	openal_wrapper.c \
-	win32api.c \
-	zlib.c \
-	bzip2.c \
-	freetype.c \
-	glue-dummy.cpp
+	fontlib_wrapper.c win32.c freetype.c \
+	glyph2d.c glyph3d.c
 
 LinkHackSources = \
-	all-glue-c.c \
-	glue-dummy.cpp
+	all-fonts-c.c
 
-# Header installation is controlled from include/Inventor/C/glue/Makefile.am.
-PublicHeaders =
+PublicHeaders = 
+
 PrivateHeaders = \
-	../../include/Inventor/C/glue/dlp.h \
-	../../include/Inventor/C/glue/glp.h \
-	../../include/Inventor/C/glue/gl_wgl.h \
-	../../include/Inventor/C/glue/gl_glx.h \
-	../../include/Inventor/C/glue/gl_agl.h \
-	../../include/Inventor/C/glue/GLUWrapper.h \
-	../../include/Inventor/C/glue/simage_wrapper.h \
-	../../include/Inventor/C/glue/openal_wrapper.h \
-	../../include/Inventor/C/glue/win32api.h \
-	../../include/Inventor/C/glue/zlib.h \
-	../../include/Inventor/C/glue/bzip2.h \
-	../../include/Inventor/C/glue/freetype.h
+	fontlib_wrapper.h win32.h freetype.h \
+	fontspec.h glyph2d.h glyph3d.h
 
-##$ BEGIN TEMPLATE Make-Common(glue, glue)
+##$ BEGIN TEMPLATE Make-Common(fonts, fonts)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -58,12 +38,12 @@ ExtraSources = $(LinkHackSources)
 endif
 
 if BUILD_WITH_MSVC
-noinst_LIBRARIES = glue.lst
+noinst_LIBRARIES = fonts.lst
 else
 if HACKING_DYNAMIC_MODULES
-lib_LTLIBRARIES = libglue@SUFFIX@LINKHACK.la
+lib_LTLIBRARIES = libfonts@SUFFIX@LINKHACK.la
 else
-noinst_LTLIBRARIES = libglue.la
+noinst_LTLIBRARIES = libfonts.la
 endif
 endif
 
@@ -75,49 +55,49 @@ DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncl
 
 # header installation
 if MAC_FRAMEWORK
-libglueincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/glue
+libfontsincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/fonts
 # hack to change libdir value when installing Mac OS X compiler framework
 lib@nop@dir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Libraries
 else
-libglueincdir = $(includedir)/Inventor/glue
+libfontsincdir = $(includedir)/Inventor/fonts
 endif
-libglueinc_HEADERS = $(PublicHeaders)
+libfontsinc_HEADERS = $(PublicHeaders)
 
-libglue_la_SOURCES = $(BuildSources)
-EXTRA_libglue_la_SOURCES = \
+libfonts_la_SOURCES = $(BuildSources)
+EXTRA_libfonts_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-libglue@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
-EXTRA_libglue@SUFFIX@LINKHACK_la_SOURCES = \
+libfonts@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
+EXTRA_libfonts@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-glue_lst_SOURCES = $(BuildSources)
-EXTRA_glue_lst_SOURCES = \
+fonts_lst_SOURCES = $(BuildSources)
+EXTRA_fonts_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 # this rule causes a make warning, so we remove it when it is not in use
-glue.lst: Makefile $(glue_lst_OBJECTS)
-	@echo "Linking glue.lst..."; \
+fonts.lst: Makefile $(fonts_lst_OBJECTS)
+	@echo "Linking fonts.lst..."; \
 	rm -f $@; touch $@; \
-	for i in $(glue_lst_OBJECTS); do echo $$i >>$@; done
+	for i in $(fonts_lst_OBJECTS); do echo $$i >>$@; done
 
-install-libglueincHEADERS: $(libglueinc_HEADERS)
+install-libfontsincHEADERS: $(libfontsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	@if test x"$(libglueinc_HEADERS)" = x""; then :; else \
-	  echo " $(mkinstalldirs) $(DESTDIR)$(libglueincdir)"; \
-	  $(mkinstalldirs) $(DESTDIR)$(libglueincdir); \
+	@if test x"$(libfontsinc_HEADERS)" = x""; then :; else \
+	  echo " $(mkinstalldirs) $(DESTDIR)$(libfontsincdir)"; \
+	  $(mkinstalldirs) $(DESTDIR)$(libfontsincdir); \
 	fi
-	@list='$(libglueinc_HEADERS)'; for p in $$list; do \
+	@list='$(libfontsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(libglueincdir)/$$f"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libfontsincdir)/$$f"; \
 	  if cmp -s "$$src" "$$dst"; then :; else \
 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
 	    $(INSTALL_HEADER) "$$src" "$$dst"; \
 	  fi \
 	done
 	@list='$(ObsoletedHeaders)'; for f in $$list; do \
-	  file="$(DESTDIR)$(libglueincdir)/$$f"; \
+	  file="$(DESTDIR)$(libfontsincdir)/$$f"; \
 	  if test -x "$$file"; then \
 	    echo " rm -f $$file"; \
 	    rm -f "$$file"; \
