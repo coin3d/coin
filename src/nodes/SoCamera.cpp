@@ -39,10 +39,8 @@
 /*¡
   FIXME:
   <ul>
-  <li>value of viewportMapping field is ignored</li>
   <li>antialiasing by "jittering" the camera when doing multipass
       rendering has not been implemented yet</li>
-  <li>aspect ratio for rendering when height > width of viewport is wrong</li>
   </ul>
  */
 
@@ -60,6 +58,21 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/elements/SoDrawStyleElement.h>
+#include <Inventor/elements/SoGLLineWidthElement.h>
+#include <Inventor/elements/SoGLShapeHintsElement.h>
+#include <Inventor/elements/SoGLPolygonStippleElement.h>
+#include <Inventor/misc/SoState.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#endif // _WIN32
+
+#include <GL/gl.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 // FIXME: should document the enum values. 20000310 mortene.
 /*!
@@ -318,10 +331,41 @@ SoCamera::handleEvent(SoHandleEventAction * action)
   // mortene.
   SoState * state = action->getState();
 
-  float aspectratio =
-    SoViewportRegionElement::get(state).getViewportAspectRatio();
+  SbViewportRegion vp = SoViewportRegionElement::get(state);
+  float aspectratio = vp.getViewportAspectRatio();
+  int vpm = this->viewportMapping.getValue();
 
-  SbViewVolume vv = this->getViewVolume(aspectratio);
+  SbViewVolume vv = 
+    this->getViewVolume(vpm == ADJUST_CAMERA ? aspectratio : 0.0f);
+  
+  SbBool adjustvp = FALSE;
+  
+  switch (vpm) {
+  case CROP_VIEWPORT_FILL_FRAME:
+  case CROP_VIEWPORT_LINE_FRAME:
+  case CROP_VIEWPORT_NO_FRAME:
+    adjustvp = TRUE;
+    break;
+  case ADJUST_CAMERA:
+  case LEAVE_ALONE:
+    break;
+  default:
+    assert(0 && "unknown viewport mapping");
+    break;
+  }
+
+  if (adjustvp) {
+    float cameraratio = this->aspectRatio.getValue(); 
+    if (aspectratio != cameraratio) {      
+      if (aspectratio < cameraratio) {
+        vp.scaleHeight(aspectratio/cameraratio);
+      }
+      else {
+        vp.scaleWidth(cameraratio/aspectratio);
+      }
+      SoViewportRegionElement::set(action->getState(), vp);
+    }
+  }
   SoViewVolumeElement::set(state, this, vv);
 }
 
@@ -345,23 +389,20 @@ SoCamera::doAction(SoAction * action)
 {
   SoState * state = action->getState();
 
-  float aspectratio =
-    SoViewportRegionElement::get(state).getViewportAspectRatio();
-
+  SbViewportRegion vp = SoViewportRegionElement::get(state);
+  float aspectratio = vp.getViewportAspectRatio();
   int vpm = this->viewportMapping.getValue();
   
   SbViewVolume vv = 
     this->getViewVolume(vpm == ADJUST_CAMERA ? aspectratio : 0.0f);
+  
+  SbBool adjustvp = FALSE;
 
   switch (vpm) {
   case CROP_VIEWPORT_FILL_FRAME:
-    // FIXME: adjust viewport, pederb, 20000402
-    break;
   case CROP_VIEWPORT_LINE_FRAME:
-    // FIXME: adjust viewport, pederb, 20000402
-    break;
   case CROP_VIEWPORT_NO_FRAME:
-    // FIXME: adjust viewport, pederb, 20000402
+    adjustvp = TRUE;
     break;
   case ADJUST_CAMERA:
   case LEAVE_ALONE:
@@ -369,6 +410,24 @@ SoCamera::doAction(SoAction * action)
   default:
     assert(0 && "unknown viewport mapping");
     break;
+  }
+
+  if (adjustvp) {
+    float cameraratio = this->aspectRatio.getValue(); 
+    if (aspectratio != cameraratio) {
+      SbViewportRegion newvp = vp;
+
+      if (aspectratio < cameraratio) {
+        newvp.scaleHeight(aspectratio/cameraratio);
+      }
+      else {
+        newvp.scaleWidth(cameraratio/aspectratio);
+      }
+      if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
+        this->drawCroppedFrame((SoGLRenderAction*)action, vpm, vp, newvp);
+      }
+      SoViewportRegionElement::set(action->getState(), newvp);
+    }
   }
 
   SoViewVolumeElement::set(state, this, vv);
@@ -425,3 +484,118 @@ SoCamera::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoCamera::doAction(action);
 }
+
+void 
+SoCamera::drawCroppedFrame(SoGLRenderAction *action,
+                           const int viewportmapping,
+                           const SbViewportRegion & oldvp,
+                           const SbViewportRegion & newvp)
+{
+  if (viewportmapping == SoCamera::CROP_VIEWPORT_NO_FRAME) return;
+  
+  if (action->handleTransparency(FALSE))
+    return;
+
+  SoState *state = action->getState();
+  state->push();
+  
+  if (viewportmapping == SoCamera::CROP_VIEWPORT_LINE_FRAME) {
+    SoLineWidthElement::set(state, this, 1.0f);
+    const SoGLLineWidthElement * lw = (SoGLLineWidthElement *)
+      state->getConstElement(SoGLLineWidthElement::getClassStackIndex());
+    lw->evaluate();
+  }
+  else { // FILL
+    SoDrawStyleElement::set(state, this, SoDrawStyleElement::FILLED);
+    const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
+      state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
+    sh->forceSend(TRUE, FALSE); // turn off backface culling
+    SoGLPolygonStippleElement::set(state, FALSE);
+    const SoGLPolygonStippleElement * ps = (SoGLPolygonStippleElement *)
+      state->getConstElement(SoGLPolygonStippleElement::getClassStackIndex());
+    ps->evaluate(); // lazy element, force evaluate
+  }
+
+  SbVec2s oldorigin = oldvp.getViewportOriginPixels();
+  SbVec2s oldsize = oldvp.getViewportSizePixels();
+  glMatrixMode(GL_PROJECTION);
+  // projection matrix will be set later, so don't push
+  glOrtho(oldorigin[0], oldorigin[0]+oldsize[0]-1,
+          oldorigin[1], oldorigin[1]+oldsize[1]-1,
+          -1, 1);
+
+  glPushAttrib(GL_LIGHTING_BIT|
+               GL_FOG_BIT|
+               GL_DEPTH_BUFFER_BIT|
+               GL_TEXTURE_BIT);
+
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity();
+  glDisable(GL_LIGHTING);
+  glDisable(GL_TEXTURE_2D);
+  glDisable(GL_FOG);
+  glDisable(GL_DEPTH_TEST);
+  glColor3f(0.8f, 0.8f, 0.8f);
+
+  SbVec2s origin = newvp.getViewportOriginPixels();
+  SbVec2s size = newvp.getViewportSizePixels();
+  SbVec2s orgsize = oldvp.getViewportSizePixels();
+  
+  if (size[0] < orgsize[0]) {
+    short minpos = origin[0] - 1;
+    short maxpos = origin[0] + size[0];
+    if (viewportmapping == SoCamera::CROP_VIEWPORT_LINE_FRAME) {
+      glBegin(GL_LINES);
+      glVertex2s(minpos, oldorigin[1]);
+      glVertex2s(minpos, oldorigin[1]+oldsize[1]);
+      glVertex2s(maxpos, oldorigin[1]);
+      glVertex2s(maxpos, oldorigin[1]+oldsize[1]);
+      glEnd();
+    }
+    else {
+      glBegin(GL_QUADS);
+      glVertex2s(oldorigin[0], oldorigin[1]);
+      glVertex2s(oldorigin[0], oldorigin[1]+oldsize[1]-1);
+      glVertex2s(minpos, oldorigin[1]+oldsize[1]);
+      glVertex2s(minpos, oldorigin[1]);
+
+      glVertex2s(maxpos, oldorigin[1]);
+      glVertex2s(maxpos, oldorigin[1]+oldsize[1]-1);
+      glVertex2s(oldorigin[0]+oldsize[0]-1, oldorigin[1]+oldsize[1]-1);
+      glVertex2s(oldorigin[0]+oldsize[0]-1, oldorigin[1]);
+      glEnd();
+    }
+  }
+  else if (size[1] < orgsize[1]) {
+    short minpos = origin[1] - 1;
+    short maxpos = origin[1] + size[1];
+    if (viewportmapping == SoCamera::CROP_VIEWPORT_LINE_FRAME) {
+      glBegin(GL_LINES);
+      glVertex2s(oldorigin[0], minpos);
+      glVertex2s(oldorigin[0]+oldsize[0], minpos);
+      glVertex2s(oldorigin[0], maxpos);
+      glVertex2s(oldorigin[0]+oldsize[0], maxpos);
+      glEnd();
+    }
+    else {
+      glBegin(GL_QUADS);
+      glVertex2s(oldorigin[0], minpos);
+      glVertex2s(oldorigin[0]+oldsize[0]-1, minpos);
+      glVertex2s(oldorigin[0]+oldsize[0]-1, oldorigin[1]);
+      glVertex2s(oldorigin[0], oldorigin[1]);
+
+      glVertex2s(oldorigin[0], maxpos);
+      glVertex2s(oldorigin[0], oldorigin[1]+oldsize[1]-1);
+      glVertex2s(oldorigin[0]+oldsize[0]-1, oldorigin[1]+oldsize[1]-1);
+      glVertex2s(oldorigin[1]+oldsize[0]-1, maxpos);
+      glEnd();
+    }
+  }
+
+  glPopMatrix();
+  glPopAttrib();
+
+  state->pop();
+}
+
