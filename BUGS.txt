@@ -3987,34 +3987,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-154 SoVRMLBillboard buggy with non-uniform scaling?
-
-    Looks like it from this wrl file:
-
-----8<----- [snip] --------------------8<----- [snip] ----------------
-#VRML V2.0 utf8
-
-Transform {
-  scale 1 1 2
-  children Billboard {
-    children Shape {
-      geometry Text {
-        string "6406/2-3"
-      }
-    }
-  }
-}
-----8<----- [snip] --------------------8<----- [snip] ----------------
-
-    20041025 mortene, reported by kintel.
-
-    UPDATE 20050103 sit: warnings if Transform.axisOfRotation is
-    (0, 0, 1) == toviewer, since normal vector of two identical vector is zero.
-Coin warning in SbPlane::SbPlane(): Plane normal vector is a null vector.
-Coin warning in SbVec3f::normalize(): The length of the vector should be > 0.0f to be able to normalize.
-
-=====================================================================
-
 155 Writing of nodekits breaks, after being referenced in an earlier
     write through fieldconnections alone.
 
@@ -4675,42 +4647,11 @@ Separator {
 
     20041217 mortene.
 
-=====================================================================
-
-182 SoExtSelection with lassoMode==VISIBLE_SHAPES crashes with
-    selection outside of the canvas.
-
-    To reproduce, load any model into the
-    SoGuiExamples/nodes/extselection example, hit 'v' to switch to
-    VISIBLE_SHAPES lassoMode, and 'r' to set lassoType to
-    RECTANGLE. Start a selection anywhere within the window, then drag
-    the rectangle way outside the window and release the mouse
-    button. This will usually cause a crash.
-
-    High priority item.
-
-    20041217 mortene.
-
-=====================================================================
-
-183 Resource leak with SoSpotLightDragger.
-
-    To reproduce, set the envvar COIN_DEBUG_TRACK_SOBASE_INSTANCES=1,
-    then run the examinerviewer example of SoGuiExamples on the
-    following iv-file:
-
-----8<----- [snip] --------------------8<----- [snip] ----------------
-#Inventor V2.1 ascii
-
-SpotLightDragger
-----8<----- [snip] --------------------8<----- [snip] ----------------
-
-    Then exit without interacting with the dragger at all. An
-    SoRotation node will be reported "dangling" upon exit.
-
-    Note that this is most likely a different bug than item #160.
-
-    20041220 mortene.
+    UPDATE 20050103 mortene: this bug report is bogus. pederb had a
+    problem reported that he believed to be caused by this, but
+    further investigation revealed that everything seems to be in
+    order in this respect. Further investigation is needed to figure
+    out the real cause of the reported bug.
 
 =====================================================================
 
@@ -4729,5 +4670,15 @@ SpotLightDragger
     safe signature, then deprecate the use of the original ones.
 
     20041221 mortene.
+
+=====================================================================
+
+185 SoVRMLBillboard buggy with axisOfRotation field set.
+
+    Warnings if axisOfRotation is parallel with vector-to-camera,
+    typically (0, 0, 1) for our standard viewers. Their cross product
+    will give a null vector, which causes errors in the calculations.
+
+    20050103 sit.
 
 =====================================================================
