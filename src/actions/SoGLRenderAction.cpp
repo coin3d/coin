@@ -147,11 +147,6 @@ SoGLRenderAction::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoOverrideElement);
   SO_ENABLE(SoGLRenderAction, SoTextureOverrideElement);
   SO_ENABLE(SoGLRenderAction, SoWindowElement);
-
-  // FIXME: if the order of initialization for these two is reversed,
-  // the viewport region when rendering comes out all wrong. This is
-  // probably due to a bug somewhere. 20000305 mortene.
-  SO_ENABLE(SoGLRenderAction, SoViewportRegionElement);
   SO_ENABLE(SoGLRenderAction, SoGLViewportRegionElement);
 }
 
@@ -177,7 +172,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   this->passcallbackdata = NULL;
   this->smoothing = FALSE;
   this->numpasses = 1;
-  this->transparencytype = SoGLRenderAction::DELAYED_BLEND;
+  this->transparencytype = SoGLRenderAction::SCREEN_DOOR;
   this->firstrender = TRUE;
   this->delayedrender = FALSE;
   this->sortrender = FALSE;
