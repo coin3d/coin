@@ -161,7 +161,8 @@ public:
   float maxglyphheight;
   float maxglyphwidth;
   SbBox3f maxglyphbbox;
-
+  int fontfamily;
+  int fontstyle;
 };
 
 
@@ -229,8 +230,6 @@ SoVRMLText::~SoVRMLText()
 
   if (PRIVATE(this)->fontspec != NULL) {
     cc_string_destruct(PRIVATE(this)->fontspec->name);
-    if (PRIVATE(this)->fontspec->family != NULL)
-      cc_string_destruct(PRIVATE(this)->fontspec->family);
     if (PRIVATE(this)->fontspec->style != NULL)
       cc_string_destruct(PRIVATE(this)->fontspec->style);
     delete PRIVATE(this)->fontspec;
@@ -490,6 +489,7 @@ SoVRMLText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   }
 
 }
+
 
 // Doc in parent
 void
@@ -861,13 +861,33 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
   if (!this->needsetup) return;
   this->needsetup = FALSE;
 
-  // Build up font-spesification struct  
+  if (this->fontspec != NULL) {
+    cc_string_destruct(this->fontspec->name);
+    cc_string_destruct(this->fontspec->style);
+    delete this->fontspec;
+  }
+
+  // Build up font-spesification struct
   this->fontspec = new cc_font_specification;
   this->fontspec->name = cc_string_construct_new();
-  cc_string_set_text(this->fontspec->name, SoFontNameElement::get(state).getString());
-  this->fontspec->family = NULL;
-  this->fontspec->style = NULL;
-  this->fontspec->size = SoFontSizeElement::get(state);
+  
+  if (this->fontfamily == SoVRMLFontStyle::PLAIN)
+    cc_string_set_text(this->fontspec->name, "Times New Roman");
+  else if (this->fontfamily == SoVRMLFontStyle::SANS)
+    cc_string_set_text(this->fontspec->name, "Arial");
+  else if (this->fontfamily == SoVRMLFontStyle::TYPEWRITER)
+    cc_string_set_text(this->fontspec->name, "Courier New");
+
+  this->fontspec->style = cc_string_construct_new();
+  if (this->fontstyle == SoVRMLFontStyle::BOLD)
+    cc_string_set_text(this->fontspec->style, "Bold");
+  else if (this->fontstyle == SoVRMLFontStyle::ITALIC)
+    cc_string_set_text(this->fontspec->style, "Italic");
+  else if (this->fontstyle == SoVRMLFontStyle::BOLDITALIC)
+    cc_string_set_text(this->fontspec->style, "Bold Italic");
+  else cc_string_set_text(this->fontspec->style, "");
+
+  this->fontspec->size = this->textsize;
 
   this->glyphwidths.truncate(0);
 
@@ -920,6 +940,8 @@ fontstylechangeCB(void * data, SoSensor * sensor)
     pimpl->horizontaltext = TRUE;
     pimpl->justificationmajor = SoAsciiText::LEFT;
     pimpl->justificationminor = SoAsciiText::LEFT;
+    pimpl->fontfamily = SoVRMLFontStyle::SERIF;
+    pimpl->fontstyle = SoVRMLFontStyle::PLAIN;
     return;
   }
 
@@ -953,5 +975,32 @@ fontstylechangeCB(void * data, SoSensor * sensor)
   pimpl->horizontaltext = fs->horizontal.getValue();
   pimpl->textsize = fs->size.getValue();
   pimpl->textspacing = fs->spacing.getValue();
+
+  pimpl->fontfamily = SoVRMLFontStyle::SERIF;
+  pimpl->fontstyle = SoVRMLFontStyle::PLAIN;
+
+  const char * family = fs->family[0].getString();
+  if (strlen(family) != 0) {
+    if (!strcmp(family, "SERIF"))
+      pimpl->fontfamily = SoVRMLFontStyle::SERIF;
+    else if (!strcmp(family, "SANS"))
+      pimpl->fontfamily = SoVRMLFontStyle::SANS;
+    else if (!strcmp(family, "TYPEWRITER"))
+      pimpl->fontfamily = SoVRMLFontStyle::TYPEWRITER;
+  }
+      
+  const char * style = fs->style[0].getString();
+  if (strlen(style) != 0) {
+    if (!strcmp(style, "PLAIN"))
+      pimpl->fontstyle = SoVRMLFontStyle::PLAIN;
+    else if (!strcmp(style, "BOLD"))
+      pimpl->fontstyle = SoVRMLFontStyle::BOLD;
+    else if (!strcmp(style, "ITALIC"))
+      pimpl->fontstyle = SoVRMLFontStyle::ITALIC;
+    else if (!strcmp(style, "BOLDITALIC"))
+      pimpl->fontstyle = SoVRMLFontStyle::BOLDITALIC;
+  }
+
+  pimpl->needsetup = TRUE;
 
 }
