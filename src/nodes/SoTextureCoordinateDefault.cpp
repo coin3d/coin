@@ -23,10 +23,12 @@
 
 /*!
   \class SoTextureCoordinateDefault SoTextureCoordinateDefault.h Inventor/nodes/SoTextureCoordinateDefault.h
-  \brief The SoTextureCoordinateDefault class ...
+  \brief The SoTextureCoordinateDefault class removes texture coordinates from the state.
   \ingroup nodes
 
-  FIXME: write class doc
+  Shapes below this node in the scenegraph will have to use its default 
+  texture coordinates as SoTextureCoordinateDefault cleans out all previously
+  defined texture coordinates and texture coordinate functions.
 */
 
 #include <Inventor/nodes/SoTextureCoordinateDefault.h>
@@ -61,18 +63,14 @@ SoTextureCoordinateDefault::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateDefault, SO_FROM_INVENTOR_1);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoTextureCoordinateDefault::doAction(SoAction * action)
 {
   SoTextureCoordinateElement::setDefault(action->getState(), this);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoTextureCoordinateDefault::GLRender(SoGLRenderAction * action)
 {
@@ -81,18 +79,14 @@ SoTextureCoordinateDefault::GLRender(SoGLRenderAction * action)
   SoTextureCoordinateDefault::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoTextureCoordinateDefault::callback(SoCallbackAction * action)
 {
   SoTextureCoordinateDefault::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoTextureCoordinateDefault::pick(SoPickAction * action)
 {
