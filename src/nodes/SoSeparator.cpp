@@ -320,8 +320,8 @@ void
 SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
 {  
   SoState * state = action->getState();
-  state->push();
   if (!this->cullTest(state)) {
+    state->push();
     int n = this->children->getLength();
     SoAction::PathCode pathcode = action->getCurPathCode();
     for (int i = 0; i < n; i++) {
@@ -329,8 +329,8 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
       (*this->children)[i]->GLRenderBelowPath(action);
       action->popCurPath(pathcode);
     }
+    state->pop();
   }
-  state->pop();
 }
 
 // Doc from superclass.
