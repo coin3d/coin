@@ -147,8 +147,6 @@ openal_wrapper(void)
 
       oal->available = 0;
       openal_failed_to_load = 1;
-
-      openal_instance = oal;
     }
     else {
       OPENALWRAPPER_REGISTER_FUNC(alGetString, alGetString_t);
@@ -179,10 +177,10 @@ openal_wrapper(void)
       OPENALWRAPPER_REGISTER_FUNC(alBufferData, alBufferData_t);
       OPENALWRAPPER_REGISTER_FUNC(alGenBuffers, alGenBuffers_t);
       OPENALWRAPPER_REGISTER_FUNC(alDeleteBuffers, alDeleteBuffers_t);
-
-      /* Do this late, so we can detect recursive calls to this function. */
-      openal_instance = oal;
     }
+
+    /* Do this late, so we can detect recursive calls to this function. */
+    openal_instance = oal;
   }
   CC_SYNC_END(openal_wrapper);
   return openal_instance;
