@@ -271,6 +271,7 @@
 #include <Inventor/elements/SoBumpMapCoordinateElement.h>
 #include <Inventor/elements/SoBumpMapMatrixElement.h>
 #include <Inventor/elements/SoTextureCombineElement.h>
+#include <Inventor/elements/SoCacheHintElement.h>
 
 #include <Inventor/elements/SoCullElement.h> // internal element
 #include <Inventor/elements/SoGLLazyElement.h> // internal element
@@ -465,6 +466,7 @@ SoElement::initElements(void)
   SoBumpMapMatrixElement::initClass();
 
   SoTextureCombineElement::initClass();
+  SoCacheHintElement::initClass();
 }
 
 // Note: the following documentation for initClass() will also be

@@ -189,6 +189,7 @@
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/nodes/SoSceneTexture2.h>
 #include <Inventor/nodes/SoTextureCombine.h>
+#include <Inventor/nodes/SoCacheHint.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <assert.h>
 #include <stdlib.h>
@@ -622,6 +623,7 @@ SoNode::initClasses(void)
   SoTextureCoordinateCylinder::initClass();
 
   SoTextureCombine::initClass();
+  SoCacheHint::initClass();
 }
 
 /*!
