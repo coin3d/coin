@@ -1703,6 +1703,10 @@ else
   sim_ac_make_dsp=false
 fi;
 
+if $sim_ac_make_dsp; then
+  enable_dependency_tracking=no
+fi
+
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
 # compiling with it and to generate an MSWindows .dll file.
 
@@ -3107,11 +3111,13 @@ echo "${ECHO_T}$sim_ac_msvcrt" >&6
     LIBS="$LIBS $sim_ac_msvcrt_LIBS"
     # sim_ac_msvcrt_LIBLIBS is set up at the end
     # sim_ac_msvcrt_LIBLDFLAGS is set up at the end
-    COIN_MSVC_LIBC=$sim_ac_msvcrt
-
 
 
 fi
+
+COIN_MSVC_LIBC=$sim_ac_msvcrt
+
+
 
 # **************************************************************************
 
@@ -5096,7 +5102,7 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5099 "configure"' > conftest.$ac_ext
+  echo '#line 5105 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5632,7 +5638,7 @@ chmod -w .
 save_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:5635: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+if { (eval echo configure:5641: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -7425,7 +7431,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7428 "configure"
+#line 7434 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -7523,7 +7529,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7526 "configure"
+#line 7532 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -20554,6 +20560,72 @@ exec_prefix=$sim_ac_save_exec_prefix
 # unset sim_ac_eval_uniq
 
 
+# **************************************************************************
+# Remove gcc system directories includes from the CPPFLAGS.
+
+
+if test x"$GCC" = x"yes"; then
+ sim_ac_save_cpp=$CPP
+ CPP="cpp"
+ case $host_os in
+  darwin*) CPP="cpp3"
+    ;;
+  esac
+  cpp_sys_dirs=`$CPP -v <<EOF 2>&1 | sed -n -e \
+  '/#include <...> search starts here:/,/End of search list./{
+    /#include <...> search starts here:/b
+    /End of search list./b
+    s/ /-I/
+    p
+  }'
+  EOF`
+  result=
+  for inc_path in $CPPFLAGS; do
+    additem=true
+    for sys_dir in $cpp_sys_dirs; do
+      if test x$inc_path = x$sys_dir; then
+        additem=false
+        break
+      fi
+    done
+    $additem && result="$result $inc_path"
+  done
+  CPPFLAGS=$result
+  CPP=$sim_ac_save_cpp
+fi
+
+
+if test x"$GCC" = x"yes"; then
+ sim_ac_save_cpp=$CPP
+ CPP="cpp"
+ case $host_os in
+  darwin*) CPP="cpp3"
+    ;;
+  esac
+  cpp_sys_dirs=`$CPP -v <<EOF 2>&1 | sed -n -e \
+  '/#include <...> search starts here:/,/End of search list./{
+    /#include <...> search starts here:/b
+    /End of search list./b
+    s/ /-I/
+    p
+  }'
+  EOF`
+  result=
+  for inc_path in $SIMAGE_EXTRA_CPPFLAGS; do
+    additem=true
+    for sys_dir in $cpp_sys_dirs; do
+      if test x$inc_path = x$sys_dir; then
+        additem=false
+        break
+      fi
+    done
+    $additem && result="$result $inc_path"
+  done
+  SIMAGE_EXTRA_CPPFLAGS=$result
+  CPP=$sim_ac_save_cpp
+fi
+
+
 case $enable_static in
 yes | true)  COIN_STATIC=true ;;
 *)           COIN_STATIC=false ;;
@@ -20633,47 +20705,9 @@ else
   BUILD_WITH_MSVC_FALSE=
 fi
 
-if $sim_ac_make_dsp; then
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="Coin build type:msvc .dsp"
-else
-  sim_ac_configuration_settings="$sim_ac_configuration_settings|Coin build type:msvc .dsp"
-fi
+COIN_COMPILER="$CXX"
 
-  CC=$coin_src_dir/cfg/m4/gendsp.sh
-  CXX=$coin_src_dir/cfg/m4/gendsp.sh
-  CXXLD=$coin_src_dir/cfg/m4/gendsp.sh
-  # Yes, this is totally bogus stuff, but don't worry about it.  As long
-  # as gendsp.sh recognizes it...  20030219 larsa
-  CPPFLAGS="$CPPFLAGS -Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
-  LDFLAGS="$LDFLAGS -Wl,-Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
-  LIBFLAGS="$LIBFLAGS -o coin$COIN_MAJOR_VERSION.so.0"
-
-  COIN_DSP_LIBS=
-  for arg in $LIBS; do
-    case $arg in
-    -l* )
-      libname=`echo $arg | cut -c3-`
-      if test x"$COIN_DSP_LIBS" = x""; then
-        COIN_DSP_LIBS="$libname.lib"
-      else
-        COIN_DSP_LIBS="$COIN_DSP_LIBS $libname.lib"
-      fi
-      ;;
-    * )
-      ;;
-    esac
-  done
-
-
-  # this can't be set up at the point the libtool script is generated
-  mv libtool libtool.bak
-  sed -e "s%^CC=\"gcc\"%CC=\"$coin_src_dir/cfg/m4/gendsp.sh\"%" \
-      -e "s%^CC=\".*/wrapmsvc.exe\"%CC=\"$coin_src_dir/cfg/m4/gendsp.sh\"%" \
-      <libtool.bak >libtool
-  rm -f libtool.bak
-  chmod 755 libtool
-elif $sim_ac_build_library; then
+if $sim_ac_build_library; then
   if $BUILD_WITH_MSVC; then
     rm -f vc60.pdb
     LIBFLAGS="$LIBFLAGS $sim_ac_msvcrt_LIBLDFLAGS"
@@ -20752,13 +20786,11 @@ fi
     fi
   fi
 
-  COIN_COMPILER="$CXX"
   if $BUILD_WITH_MSVC; then
     # we'll use the installed wrapper when we use the coin-config script later
     # so we can remove the source code hierarchy
     COIN_COMPILER="wrapmsvc"
   fi
-
 
   sim_ac_path_problem=true # until proven otherwise
   eval "prefix=${prefix}"
@@ -20823,14 +20855,16 @@ fi
     COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS -L/usr/lib/gcc/darwin/3.1/private/"
   fi
 
-  if $sim_ac_framework; then :; else
+  case "$sim_ac_framework:$sim_ac_make_dsp" in
+  false:false )
     if test x${sim_ac_configuration_settings+set} != xset; then
   sim_ac_configuration_settings="Install prefix:$prefix"
 else
   sim_ac_configuration_settings="$sim_ac_configuration_settings|Install prefix:$prefix"
 fi
 
-  fi
+    ;;
+  esac
 else
   if test x${sim_ac_configuration_settings+set} != xset; then
   sim_ac_configuration_settings="Coin build type:build disabled"
@@ -20839,6 +20873,89 @@ else
 fi
 
 fi
+
+
+
+# **************************************************************************
+# Microsoft Developer Studio Project files
+
+COIN_DSP_LIBDIRS=
+COIN_DSP_LIBS=
+COIN_DSP_INCS=
+COIN_DSP_DEFS=
+
+if $sim_ac_make_dsp; then
+  if test x${sim_ac_configuration_settings+set} != xset; then
+  sim_ac_configuration_settings="Coin build type:msvc .dsp"
+else
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|Coin build type:msvc .dsp"
+fi
+
+
+  for arg in $CPPFLAGS $LDFLAGS $LIBS; do
+    case $arg in
+    -L* )
+      # libdir=`echo $arg | cut -c3-`
+      # libdir=`cygpath -w "$libdir" 2>/dev/null || echo "$libdir"`
+      # COIN_DSP_LIBDIRS="$COIN_DSP_LIBDIRS /? \"$libdir\""
+      # FIXME: there is no /L-option to feed to the linker - $LIB is used
+      # at linktime, so the libs must be in such a location already...
+      ;;
+    -l* )
+      libname=`echo $arg | cut -c3-`
+      if test x"$COIN_DSP_LIBS" = x""; then
+        COIN_DSP_LIBS="$libname.lib"
+      else
+        COIN_DSP_LIBS="$COIN_DSP_LIBS $libname.lib"
+      fi
+      ;;
+    -I* )
+      incdir=`echo $arg | cut -c3-`
+      incdir=`cygpath -w "$incdir" 2>/dev/null || echo "$incdir"`
+      if test x"$COIN_DSP_INCS" = x""; then
+        COIN_DSP_INCS="/I \"$incdir\""
+      else
+        COIN_DSP_INCS="$COIN_DSP_INCS /I \"$incdir\""
+      fi
+      ;;
+    -DCOIN_DEBUG* | -DNDEBUG )
+      # Defines that vary between release/debug configurations can't be
+      # set up dynamically in COIN_DSP_DEFS - they must be static in the
+      # gendsp.sh script.  We therefore catche them here so we can ignore
+      # checking for them below.
+      ;;
+    -D*=* | -D* )
+      define=`echo $arg | cut -c3-`
+      if test x"$COIN_DSP_DEFS" = x""; then
+        COIN_DSP_DEFS="/D \"$define\""
+      else
+        COIN_DSP_DEFS="$COIN_DSP_DEFS /D \"$define\""
+      fi
+      ;;
+    esac
+  done
+
+  CC=$coin_src_dir/cfg/m4/gendsp.sh
+  CXX=$coin_src_dir/cfg/m4/gendsp.sh
+  CXXLD=$coin_src_dir/cfg/m4/gendsp.sh
+  # Yes, this is totally bogus stuff, but don't worry about it.  As long
+  # as gendsp.sh recognizes it...  20030219 larsa
+  CPPFLAGS="$CPPFLAGS -Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
+  LDFLAGS="$LDFLAGS -Wl,-Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
+  LIBFLAGS="$LIBFLAGS -o coin$COIN_MAJOR_VERSION.so.0"
+
+  # this can't be set up at the point the libtool script is generated
+  mv libtool libtool.bak
+  sed -e "s%^CC=\"gcc\"%CC=\"$coin_src_dir/cfg/m4/gendsp.sh\"%" \
+      -e "s%^CC=\".*/wrapmsvc.exe\"%CC=\"$coin_src_dir/cfg/m4/gendsp.sh\"%" \
+      <libtool.bak >libtool
+  rm -f libtool.bak
+  chmod 755 libtool
+fi
+
+
+
+
 
 # **************************************************************************
 
@@ -21609,8 +21726,10 @@ s,@SIM_INCLUDE_GLU_H@,$SIM_INCLUDE_GLU_H,;t t
 s,@SIM_INCLUDE_GLEXT_H@,$SIM_INCLUDE_GLEXT_H,;t t
 s,@BUILD_WITH_MSVC_TRUE@,$BUILD_WITH_MSVC_TRUE,;t t
 s,@BUILD_WITH_MSVC_FALSE@,$BUILD_WITH_MSVC_FALSE,;t t
-s,@COIN_DSP_LIBS@,$COIN_DSP_LIBS,;t t
 s,@COIN_COMPILER@,$COIN_COMPILER,;t t
+s,@COIN_DSP_LIBS@,$COIN_DSP_LIBS,;t t
+s,@COIN_DSP_INCS@,$COIN_DSP_INCS,;t t
+s,@COIN_DSP_DEFS@,$COIN_DSP_DEFS,;t t
 CEOF
 
 _ACEOF
