@@ -229,6 +229,16 @@
     UPDATE 20040706 mortene: we've had several external reports about
     this, so consider this a high priority item.
 
+    UPDATE 20040714 jornskaa: The bug happens when a SoSurroundScale
+    node in the scenegraph. When this node calculates a non-uniform
+    scale, the result is that the node to be scaled is sheared.  This
+    could be because a rotation takes place that brings a node out of
+    it's local coordinates system before the scaling in the
+    SoSurroundScale node takes place - which causes shearing. But the
+    reason for the bug is probably located somewhere else. Probably is
+    it something that happens during the traversal of the scenegraph
+    when using the SoGetMatrixAction.
+
 =====================================================================
 
 019 When using the CTRL key while doing scaling with
@@ -3365,38 +3375,5 @@ Separator {
     This bug also exists for other projects using --setup.
 
     20040707 kintel
-
-=====================================================================
-
-124 SoText3 is rendered "inverted" with regard to vertex ordering.
-
-    Shapes in Coin are generally rendered with polygon vertices in
-    counterclockwise ordering, but SoText3 geometry seems to be
-    rendered in clockwise order, view the following file in a viewer:
-
---------8<------------- [snip] --------------8<------------- [snip]
-#Inventor V2.1 ascii
-
-
-Separator {
-   ShapeHints {
-      vertexOrdering COUNTERCLOCKWISE
-      shapeType SOLID
-   }
-   Text3 {
-      string [ "Coin3D" ]
-      parts ALL
-   }
-}
---------8<------------- [snip] --------------8<------------- [snip]
-
-    Specifying vertexOrdering==COUNTERCLOCKWISE and shapeType==SOLID
-    is often a major optimization measure for Coin standard shapes, as
-    it causes backface culling to happen. With SoText3, this will then
-    cull frontfaces instead, which is not good.
-
-    This is a medium priority issue.
-
-    20040709 mortene.
 
 =====================================================================
