@@ -1441,6 +1441,30 @@ SoExtSelectionP::triangleCB(void * userData,
                             const SoPrimitiveVertex * v2,
                             const SoPrimitiveVertex * v3)
 {
+  // FIXME: there's a potential here for what could amount to a huge
+  // optimization possibility: instead of waiting for this callback to
+  // be triggered for each and every triangle, one could use the
+  // preShapeCallback() we set up to detect the most common straight
+  // collections of primitive types -- such as SoIndexedFaceSet,
+  // SoFaceSet, SoQuadMesh, etc -- and then *loop* through the
+  // polygons in those shapes nodes and render them there (that's the
+  // optimization part).
+  //
+  // If implementing this scheme, one would have to turn off the
+  // SoCallbackAction triangle-callback hook, or otherwise ignore it
+  // (that would probably be less optimal, though), until the next
+  // shape is traversed (to avoid duplicated rendering).
+  //
+  // This strategy should of course also work for non-polygon
+  // primitives, such as in SoLineSet, SoPointSet etc.
+  //
+  // I haven't done any profiling, but it seems like this is likely to
+  // have a huge impact on models with *lots* of polygon and/or line
+  // and/or point primitives collected in relatively few shape nodes,
+  // as one should get rid of much overhead.
+  //
+  // 20020807 mortene.
+
   SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
 
   thisp->drawcallbackcounter++;
