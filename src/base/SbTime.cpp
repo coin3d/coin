@@ -379,8 +379,10 @@ SbTime::format(const char * const fmt) const
         break;
 
       default:
-        // TODO: should output warning to library user here, but have to
-        // wait for larsa to implement OI-style postmsg stuff. 19980826 mortene.
+#if COIN_DEBUG
+        SoDebugError::postWarning("SbTime::format",
+                                  "Unknown formatting char '%c'.", m);
+#endif // COIN_DEBUG
         break;
       }
     }
