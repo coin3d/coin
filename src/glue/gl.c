@@ -613,6 +613,124 @@ glglue_resolve_symbols(cc_glglue * w)
 
 #undef PROC
 
+
+/* Give warnings on known faulty drivers. */
+static void
+glglue_check_driver(const char * vendor, const char * renderer,
+                    const char * version)
+{
+#ifdef COIN_DEBUG
+  /* Only spit out this in debug builds, as the bug was never properly
+     confirmed. */
+  if (coin_glglue_radeon_warning()) {
+    if (strcmp(renderer, "Radeon 7500 DDR x86/SSE2") == 0) {
+      cc_debugerror_postwarning("glglue_check_driver",
+                                "We've had an unconfirmed bugreport that "
+                                "this OpenGL driver ('%s') may crash upon "
+                                "attempts to use 3D texturing. "
+                                "We would like to get assistance to help "
+                                "us debug the cause of this problem, so "
+                                "please get in touch with us at "
+                                "<coin-support@coin3d.org>. "
+                                "This debug message can be turned off "
+                                "permanently by setting the environment "
+                                "variable COIN_GLGLUE_NO_RADEON_WARNING=1.",
+                                renderer);
+
+      /*
+        Some additional information:
+
+        The full driver information for the driver where this was
+        reported is as follows:
+
+        GL_VENDOR == 'ATI Technologies Inc.'
+        GL_RENDERER == 'Radeon 7500 DDR x86/SSE2'
+        GL_VERSION == '1.3.3302 Win2000 Release'
+
+        The driver was reported to crash on MSWin with the
+        SoGuiExamples/nodes/texture3 example. The reporter couldn't
+        help us debug it, as he could a) not get a call-stack
+        backtrace, and b) swapped his card for an NVidia card.
+
+        Perhaps we should get hold of a Radeon card ourselves, to test
+        and debug the problem.
+
+        <mortene@sim.no>
+      */
+    }
+  }
+#endif /* COIN_DEBUG */
+
+  if (coin_glglue_old_matrox_warning() &&
+      (strcmp(renderer, "Matrox G400") == 0) &&
+      (strcmp(version, "1.1.3 Aug 30 2001") == 0)) {
+    cc_debugerror_postwarning("glglue_check_driver",
+                              "This old OpenGL driver (\"%s\" \"%s\") has "
+                              "known bugs, please upgrade.  "
+                              "(This debug message can be turned off "
+                              "permanently by setting the environment "
+                              "variable COIN_GLGLUE_NO_G400_WARNING=1).",
+                              renderer, version);
+  }
+
+  if (coin_glglue_old_elsa_warning() &&
+      (strcmp(renderer, "ELSA TNT2 Vanta/PCI/SSE") == 0) &&
+      (strcmp(version, "1.1.4 (4.06.00.266)") == 0)) {
+    cc_debugerror_postwarning("glglue_check_driver",
+                              "This old OpenGL driver (\"%s\" \"%s\") has "
+                              "known bugs, please upgrade.  "
+                              "(This debug message can be turned off "
+                              "permanently by setting the environment "
+                              "variable COIN_GLGLUE_NO_ELSA_WARNING=1).",
+                              renderer, version);
+  }
+
+  /*
+    The full driver information for the driver where this was reported
+    is as follows:
+
+    GL_VENDOR == 'Matrox Graphics Inc.'
+    GL_RENDERER == 'Matrox G400'
+    GL_VERSION == '1.1.3 Aug 30 2001'
+
+    GL_VENDOR == 'ELSA AG (Aachen, Germany).'
+    GL_RENDERER == 'ELSA TNT2 Vanta/PCI/SSE'
+    GL_VERSION == '1.1.4 (4.06.00.266)'
+
+    The driver was reported to crash on MSWin under following
+    conditions, quoted verbatim from the problem report:
+
+    ------8<---- [snip] -----------8<---- [snip] -----
+
+    I observe a bit of strange behaviour on my NT4 systems. I have an
+    appliction which uses the the following bit of code:
+
+    // Define line width
+    SoDrawStyle *drawStyle = new SoDrawStyle;
+    drawStyle->lineWidth.setValue(3);
+    drawStyle->linePattern.setValue(0x0F0F);
+    root->addChild(drawStyle);
+           
+    // Define line connection
+    SoCoordinate3 *coords = new SoCoordinate3;
+    coords->point.setValues(0, 2, vert);
+    root->addChild(coords);
+           
+    SoLineSet *lineSet = new SoLineSet ;
+    lineSet->numVertices.set1Value(0, 2) ;
+    root->addChild(lineSet);
+           
+    It defines a line with a dashed pattern. When the line is in a
+    direction and the viewing direction is not parrallel to this line
+    all works fine. In case the viewing direction is the same as the
+    line direction one of my systems crashes [...]
+
+    ------8<---- [snip] -----------8<---- [snip] -----
+
+    <mortene@sim.no>
+  */
+}
+
 /* We're basically using the Singleton pattern to instantiate and
    return OpenGL-glue "object structs". We're constructing one
    instance for each OpenGL context, though.  */
@@ -692,114 +810,7 @@ cc_glglue_instance(int contextid)
                              gi->glx.isdirect ? "" : "in");
     }
 
-#ifdef COIN_DEBUG
-    if (coin_glglue_radeon_warning()) {
-      if (strcmp(gi->rendererstr, "Radeon 7500 DDR x86/SSE2") == 0) {
-        cc_debugerror_postwarning("cc_glglue_instance",
-                                  "We've had an unconfirmed bugreport that "
-                                  "this OpenGL driver ('%s') may crash upon "
-                                  "attempts to use 3D texturing. "
-                                  "We would like to get assistance to help "
-                                  "us debug the cause of this problem, so "
-                                  "please get in touch with us at "
-                                  "<coin-support@coin3d.org>. "
-                                  "This debug message can be turned off "
-                                  "permanently by setting the environment "
-                                  "variable COIN_GLGLUE_NO_RADEON_WARNING=1.",
-                                  gi->rendererstr);
-        /* Some additional information:
-
-           The full driver information for the driver where this was
-           reported is as follows:
-
-             GL_VERSION == '1.3.3302 Win2000 Release'
-             GL_VENDOR == 'ATI Technologies Inc.'
-             GL_RENDERER == 'Radeon 7500 DDR x86/SSE2'
-
-           The driver was reported to crash on MSWin with the
-           SoGuiExamples/nodes/texture3 example. The reporter couldn't
-           help us debug it, as he could a) not get a call-stack
-           backtrace, and b) swapped his card for an NVidia card.
-
-           Perhaps we should get hold of a Radeon card ourselves, to
-           test and debug the problem.
-
-           <mortene@sim.no>
-        */
-      }
-    }
-#endif /* COIN_DEBUG */
-
-    if (coin_glglue_old_matrox_warning() &&
-        (strcmp(gi->rendererstr, "Matrox G400") == 0) &&
-        (strcmp(gi->versionstr, "1.1.3 Aug 30 2001") == 0)) {
-      cc_debugerror_postwarning("cc_glglue_instance",
-                                "This old OpenGL driver (\"%s\" \"%s\") has "
-                                "known bugs, please upgrade.  "
-                                "(This debug message can be turned off "
-                                "permanently by setting the environment "
-                                "variable COIN_GLGLUE_NO_G400_WARNING=1).",
-                                gi->rendererstr, gi->versionstr);
-    }
-
-    if (coin_glglue_old_elsa_warning() &&
-        (strcmp(gi->rendererstr, "ELSA TNT2 Vanta/PCI/SSE") == 0) &&
-        (strcmp(gi->versionstr, "1.1.4 (4.06.00.266)") == 0)) {
-      cc_debugerror_postwarning("cc_glglue_instance",
-                                "This old OpenGL driver (\"%s\" \"%s\") has "
-                                "known bugs, please upgrade.  "
-                                "(This debug message can be turned off "
-                                "permanently by setting the environment "
-                                "variable COIN_GLGLUE_NO_ELSA_WARNING=1).",
-                                gi->rendererstr, gi->versionstr);
-    }
-
-    /* The full driver information for the driver where this was
-       reported is as follows:
-
-       GL_VENDOR == 'Matrox Graphics Inc.'
-       GL_RENDERER == 'Matrox G400'
-       GL_VERSION == '1.1.3 Aug 30 2001'
-
-       GL_VENDOR == 'ELSA AG (Aachen, Germany).'
-       GL_RENDERER == 'ELSA TNT2 Vanta/PCI/SSE'
-       GL_VERSION == '1.1.4 (4.06.00.266)'
-
-       The driver was reported to crash on MSWin under following
-       conditions, quoted verbatim from the problem report:
-
-       ------8<---- [snip] -----------8<---- [snip] -----
-
-       I observe a bit of strange behaviour on my NT4 systems. I
-       have an appliction which uses the the following bit of
-       code:
-
-       // Define line width
-       SoDrawStyle *drawStyle = new SoDrawStyle;
-       drawStyle->lineWidth.setValue(3);
-       drawStyle->linePattern.setValue(0x0F0F);
-       root->addChild(drawStyle);
-           
-       // Define line connection
-       SoCoordinate3 *coords = new SoCoordinate3;
-       coords->point.setValues(0, 2, vert);
-       root->addChild(coords);
-           
-       SoLineSet *lineSet = new SoLineSet ;
-       lineSet->numVertices.set1Value(0, 2) ;
-       root->addChild(lineSet);
-           
-       It defines a line with a dashed pattern. When the line is
-       in a direction and the viewing direction is not parrallel
-       to this line all works fine. In case the viewing direction
-       is the same as the line direction one of my systems crashes
-       [...]
-
-       ------8<---- [snip] -----------8<---- [snip] -----
-
-       <mortene@sim.no>
-    */
-
+    glglue_check_driver(gi->vendorstr, gi->rendererstr, gi->versionstr);
 
     /* Resolve our function pointers. */
     glglue_resolve_symbols(gi);
