@@ -44,6 +44,8 @@ void wglglue_context_release_pbuffer(void * ctx);
 SbBool wglglue_context_pbuffer_is_bound(void * ctx);
 SbBool wglglue_context_can_render_to_texture(void * ctx);
 
+SbBool wglglue_context_pbuffer_max(void * ctx, unsigned int * lims);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
