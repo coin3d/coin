@@ -92,6 +92,12 @@
   \endverbatim
 */
 
+#include <assert.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <coindefs.h> // COIN_OBSOLETED()
 #include <Inventor/SoInput.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -112,11 +118,6 @@
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbImage.h>
-#include <assert.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
@@ -234,7 +235,6 @@
 
 // *************************************************************************
 
-#ifndef DOXYGEN_SKIP_THIS
 class SoTexture2P {
 public:
   int readstatus;
@@ -245,15 +245,14 @@ public:
   SbMutex mutex;
 #endif // COIN_THREADSAFE
 };
-#endif // DOXYGEN_SKIP_THIS
 
 
-#undef THIS
-#define THIS this->pimpl
+#undef PRIVATE
+#define PRIVATE(p) (p->pimpl)
 
 #ifdef COIN_THREADSAFE
-#define LOCK_GLIMAGE(_thisp_) (_thisp_)->pimpl->mutex.lock()
-#define UNLOCK_GLIMAGE(_thisp_) (_thisp_)->pimpl->mutex.unlock()
+#define LOCK_GLIMAGE(_thisp_) (PRIVATE(_thisp_)->mutex.lock())
+#define UNLOCK_GLIMAGE(_thisp_) (PRIVATE(_thisp_)->mutex.unlock())
 #else // COIN_THREADSAFE
 #define LOCK_GLIMAGE(_thisp_)
 #define UNLOCK_GLIMAGE(_thisp_)
@@ -267,7 +266,7 @@ SO_NODE_SOURCE(SoTexture2);
 */
 SoTexture2::SoTexture2(void)
 {
-  THIS = new SoTexture2P;
+  PRIVATE(this) = new SoTexture2P;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTexture2);
 
@@ -289,16 +288,16 @@ SoTexture2::SoTexture2(void)
   SO_NODE_DEFINE_ENUM_VALUE(Model, BLEND);
   SO_NODE_SET_SF_ENUM_TYPE(model, Model);
 
-  THIS->glimage = NULL;
-  THIS->glimagevalid = FALSE;
-  THIS->readstatus = 1;
+  PRIVATE(this)->glimage = NULL;
+  PRIVATE(this)->glimagevalid = FALSE;
+  PRIVATE(this)->readstatus = 1;
 
   // use field sensor for filename since we will load an image if
   // filename changes. This is a time-consuming task which should
   // not be done in notify().
-  THIS->filenamesensor = new SoFieldSensor(filenameSensorCB, this);
-  THIS->filenamesensor->setPriority(0);
-  THIS->filenamesensor->attach(&this->filename);
+  PRIVATE(this)->filenamesensor = new SoFieldSensor(filenameSensorCB, this);
+  PRIVATE(this)->filenamesensor->setPriority(0);
+  PRIVATE(this)->filenamesensor->attach(&this->filename);
 }
 
 /*!
@@ -307,9 +306,9 @@ SoTexture2::SoTexture2(void)
 */
 SoTexture2::~SoTexture2()
 {
-  if (THIS->glimage) THIS->glimage->unref(NULL);
-  delete THIS->filenamesensor;
-  delete THIS;
+  if (PRIVATE(this)->glimage) PRIVATE(this)->glimage->unref(NULL);
+  delete PRIVATE(this)->filenamesensor;
+  delete PRIVATE(this);
 }
 
 // Documented in superclass.
@@ -338,7 +337,7 @@ SoTexture2::initClass(void)
 SbBool
 SoTexture2::readInstance(SoInput * in, unsigned short flags)
 {
-  THIS->filenamesensor->detach();
+  PRIVATE(this)->filenamesensor->detach();
   SbBool readOK = inherited::readInstance(in, flags);
   this->setReadStatus((int) readOK);
   if (readOK && !filename.isDefault() && filename.getValue() != "") {
@@ -348,7 +347,7 @@ SoTexture2::readInstance(SoInput * in, unsigned short flags)
       this->setReadStatus(FALSE);
     }
   }
-  THIS->filenamesensor->attach(&this->filename);
+  PRIVATE(this)->filenamesensor->attach(&this->filename);
   return readOK;
 }
 
@@ -373,7 +372,7 @@ SoTexture2::GLRender(SoGLRenderAction * action)
 
   LOCK_GLIMAGE(this);
 
-  if (!THIS->glimagevalid) {
+  if (!PRIVATE(this)->glimagevalid) {
     int nc;
     SbVec2s size;
     const unsigned char * bytes =
@@ -383,24 +382,24 @@ SoTexture2::GLRender(SoGLRenderAction * action)
       SoTextureScalePolicyElement::FRACTURE;
 
     if (needbig &&
-        (THIS->glimage == NULL ||
-         THIS->glimage->getTypeId() != SoGLBigImage::getClassTypeId())) {
-      if (THIS->glimage) THIS->glimage->unref(state);
-      THIS->glimage = new SoGLBigImage();
+        (PRIVATE(this)->glimage == NULL ||
+         PRIVATE(this)->glimage->getTypeId() != SoGLBigImage::getClassTypeId())) {
+      if (PRIVATE(this)->glimage) PRIVATE(this)->glimage->unref(state);
+      PRIVATE(this)->glimage = new SoGLBigImage();
     }
     else if (!needbig &&
-             (THIS->glimage == NULL ||
-              THIS->glimage->getTypeId() != SoGLImage::getClassTypeId())) {
-      if (THIS->glimage) THIS->glimage->unref(state);
-      THIS->glimage = new SoGLImage();
+             (PRIVATE(this)->glimage == NULL ||
+              PRIVATE(this)->glimage->getTypeId() != SoGLImage::getClassTypeId())) {
+      if (PRIVATE(this)->glimage) PRIVATE(this)->glimage->unref(state);
+      PRIVATE(this)->glimage = new SoGLImage();
     }
 
     if (bytes && size != SbVec2s(0,0)) {
-      THIS->glimage->setData(bytes, size, nc,
+      PRIVATE(this)->glimage->setData(bytes, size, nc,
                              translateWrap((Wrap)this->wrapS.getValue()),
                              translateWrap((Wrap)this->wrapT.getValue()),
                              quality);
-      THIS->glimagevalid = TRUE;
+      PRIVATE(this)->glimagevalid = TRUE;
       // don't cache while creating a texture object
       SoCacheElement::setInvalid(TRUE);
       if (state->isCacheOpen()) {
@@ -409,20 +408,20 @@ SoTexture2::GLRender(SoGLRenderAction * action)
     }
   }
 
-  if (THIS->glimage && THIS->glimage->getTypeId() == SoGLBigImage::getClassTypeId()) {
+  if (PRIVATE(this)->glimage && PRIVATE(this)->glimage->getTypeId() == SoGLBigImage::getClassTypeId()) {
     SoCacheElement::invalidate(state);
   }
 
   UNLOCK_GLIMAGE(this);
 
   SoGLTextureImageElement::set(state, this,
-                               THIS->glimagevalid ? THIS->glimage : NULL,
+                               PRIVATE(this)->glimagevalid ? PRIVATE(this)->glimage : NULL,
                                (SoTextureImageElement::Model) model.getValue(),
                                this->blendColor.getValue());
 
   SoGLTexture3EnabledElement::set(state, this, FALSE);
   SoGLTextureEnabledElement::set(state,
-                                 this, THIS->glimagevalid &&
+                                 this, PRIVATE(this)->glimagevalid &&
                                  quality > 0.0f);
 
   if (this->isOverride()) {
@@ -508,7 +507,7 @@ SoTexture2::readImage(const SbString & fname, int & w, int & h, int & nc,
 int
 SoTexture2::getReadStatus(void)
 {
-  return THIS->readstatus;
+  return PRIVATE(this)->readstatus;
 }
 
 /*!
@@ -518,7 +517,7 @@ SoTexture2::getReadStatus(void)
 void
 SoTexture2::setReadStatus(int s)
 {
-  THIS->readstatus = s;
+  PRIVATE(this)->readstatus = s;
 }
 
 // Documented in superclass. Overridden to detect when fields change.
@@ -527,14 +526,14 @@ SoTexture2::notify(SoNotList * l)
 {
   SoField * f = l->getLastField();
   if (f == &this->image) {
-    THIS->glimagevalid = FALSE;
+    PRIVATE(this)->glimagevalid = FALSE;
 
     // write image, not filename
     this->filename.setDefault(TRUE);
     this->image.setDefault(FALSE);
   }
   else if (f == &this->wrapS || f == &this->wrapT) {
-    THIS->glimagevalid = FALSE;
+    PRIVATE(this)->glimagevalid = FALSE;
   }
   inherited::notify(l);
 }
@@ -560,7 +559,7 @@ SoTexture2::loadFilename(void)
       SbBool oldnotify = this->image.enableNotify(FALSE);
       this->image.setValue(size, nc, bytes);
       this->image.enableNotify(oldnotify);
-      THIS->glimagevalid = FALSE; // recreate GL image in next GLRender()
+      PRIVATE(this)->glimagevalid = FALSE; // recreate GL image in next GLRender()
       retval = TRUE;
     }
   }
@@ -589,3 +588,4 @@ SoTexture2::filenameSensorCB(void * data, SoSensor *)
 #undef LOCK_GLIMAGE
 #undef UNLOCK_GLIMAGE
 
+#undef PRIVATE
