@@ -115,6 +115,9 @@
 
 #include <Inventor/annex/HardCopy/SoHardCopy.h>
 #include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
+#include <Inventor/annex/HardCopy/SoVectorizeCGMAction.h>
+#include <Inventor/annex/HardCopy/SoVectorizeHPGLAction.h>
+#include <Inventor/annex/HardCopy/SoVectorizeGDIAction.h>
 
 // *************************************************************************
 
@@ -126,12 +129,15 @@
 void
 SoHardCopy::init(void)
 {
-  static int first = 1;
-  if (first) {
-    SoVectorizeAction::initClass();
-    SoVectorizePSAction::initClass();
-    first = 0;
-  }
+  static SbBool first = TRUE;
+  if (!first) { return; }
+  first = FALSE;
+
+  SoVectorizeAction::initClass();
+  SoVectorizePSAction::initClass();
+  SoVectorizeCGMAction::initClass();
+  SoVectorizeHPGLAction::initClass();
+  SoVectorizeGDIAction::initClass();
 }
 
 /*!

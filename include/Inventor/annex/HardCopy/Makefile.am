@@ -2,9 +2,15 @@
 PublicHeaders = \
 	SoHardCopy.h \
 	SoPSVectorOutput.h \
+	SoCGMVectorOutput.h \
+	SoHPGLVectorOutput.h \
+	SoGDIVectorOutput.h \
 	SoVectorOutput.h \
 	SoVectorizeAction.h \
-	SoVectorizePSAction.h
+	SoVectorizePSAction.h \
+	SoVectorizeCGMAction.h \
+	SoVectorizeHPGLAction.h \
+	SoVectorizeGDIAction.h
 PrivateHeaders =
 ObsoleteHeaders =
 
