@@ -850,75 +850,137 @@ else
 fi
 ])
 
+dnl ************************************************************************
 dnl Usage:
-dnl  SIM_CHECK_SIMAGE([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+dnl   SIM_CHECK_SIMAGE( ACTION-IF-FOUND, ACTION-IF-NOT-FOUND, ATTRIBUTE-LIST )
 dnl
-dnl  Try to find the simage library development system, which is used
-dnl  by e.g. the Coin library for importing texture bitmap files. If
-dnl  it is found, these shell variables are set:
+dnl Description:
+dnl   This macro locates the simage development system.  If it is found, the
+dnl   set of variables listed below are set up as described and made available
+dnl   to the configure script.
 dnl
-dnl    $sim_ac_simage_cppflags (extra flags the compiler needs for simage)
-dnl    $sim_ac_simage_ldflags  (extra flags the linker needs for simage)
-dnl    $sim_ac_simage_libs     (link libraries the linker needs for simage)
+dnl ATTRIBUTE-LIST Options:
+dnl   [no]default              whether --with-simage is default or not
+dnl                            (default on)
+dnl   [no]searchprefix         whether $exec_prefix is to be searched
+dnl                            (default off)
 dnl
-dnl  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
-dnl  In addition, the variable $sim_ac_simage_avail is set to "yes"
-dnl  if the simage development system is found.
+dnl Autoconf Variables:
+dnl   $sim_ac_simage_avail     yes | no
+dnl   $sim_ac_simage_cppflags  (extra flags the compiler needs for simage)
+dnl   $sim_ac_simage_ldflags   (extra flags the linker needs for simage)
+dnl   $sim_ac_simage_libs      (link libraries the linker needs for simage)
+dnl   $CPPFLAGS                $CPPFLAGS $sim_ac_simage_cppflags
+dnl   $LDFLAGS                 $LDFLAGS $sim_ac_simage_ldflags
+dnl   $LIBS                    $sim_ac_simage_libs $LIBS
 dnl
+dnl Automake Conditionals:
+dnl   HAVE_LIBSIMAGE           (code disabled)
 dnl
-dnl Author: Morten Eriksen, <mortene@sim.no>.
+dnl Config.h Defines:
+dnl   HAVE_LIBSIMAGE           (code disabled)
+dnl   HAVE_SIMAGE_H            (code disabled)
+dnl
+dnl Authors:
+dnl   Morten Eriksen, <mortene@sim.no>
+dnl   Lars J. Aas, <larsa@sim.no>
 dnl
 dnl TODO:
-dnl    * [mortene:20000122] make sure this work on MSWin (with
-dnl      Cygwin installation)
+dnl * [mortene:20000122] make sure this work on MSWin (with Cygwin)
+dnl * [larsa:20000220] find a less strict AC_PREREQ setting
 dnl
+
+define([sim4_strcompact],[patsubst(patsubst(translit([$1],[
+	], [  ]), [\b +\b], [ ]), [^ \| $], [])])dnl
 
 AC_DEFUN(SIM_CHECK_SIMAGE,[
 dnl Autoconf is a developer tool, so don't bother to support older versions.
 AC_PREREQ([2.14.1])
 
-AC_ARG_WITH(simage, AC_HELP_STRING([--with-simage=DIR], [use simage for loading texture files [default=yes]]), , [with_simage=yes])
+divert(-1)
+# set up attribute variable default values
+define([sim4_simage_with],yes)
+define([sim4_simage_searchprefix],no)
+
+# set up all the valid attributes to zero-expanding m4 defines
+pushdef([default],[define([sim4_simage_with],yes)])
+pushdef([nodefault],[define([sim4_simage_with],no)])
+pushdef([searchprefix],[define([sim4_simage_searchprefix],yes)])
+pushdef([nosearchprefix],[define([sim4_simage_searchprefix],no)])
+
+# ensure that ATTRIBUTE-LIST expands to the empty string (when compacted) -
+# otherwise there's a problem with SIM_CHECK_SIMAGE's given arguments
+ifelse(sim4_strcompact($3), , ,
+  [errprint([SIM_CHECK_SIMAGE ATTRIBUTE-LIST parse error: ]sim4_strcompact($3)[
+])])
+
+# clean up the attribute definitions
+popdef([default])
+popdef([nodefault])
+popdef([searchprefix])
+popdef([nosearchprefix])
+divert
+
+AC_ARG_WITH(simage, AC_HELP_STRING([--with-simage=DIR], changequote({,}){use simage for loading texture files [default=}sim4_simage_with{]}changequote([,])), , [with_simage=sim4_simage_with])
 
 sim_ac_simage_avail=no
 
-if test x"$with_simage" != xno; then
+if test "x$with_simage" != "xno"; then
   sim_ac_path=$PATH
-  if test x"$with_simage" != xyes; then
+  if test "x$with_simage" != "xyes"; then
     sim_ac_path=${with_simage}/bin:$PATH
+    ifelse(sim4_simage_searchprefix, yes,
+    [if test "x$exec_prefix" != "xNONE"; then
+      sim_ac_path=$sim_ac_path:$sim_ac_path/bin
+    fi], :)
   fi
 
-  AC_PATH_PROG(sim_ac_conf_cmd, simage-config, true, $sim_ac_path)
+  AC_PATH_PROG(sim_ac_conf_cmd, simage-config, false, $sim_ac_path)
+  if test "x$sim_ac_conf_cmd" = "xfalse"; then
+    AC_MSG_WARN(could not find 'simage-config' in $sim_ac_path)
+  fi
 
   sim_ac_simage_cppflags=`$sim_ac_conf_cmd --cppflags`
   sim_ac_simage_ldflags=`$sim_ac_conf_cmd --ldflags`
   sim_ac_simage_libs=`$sim_ac_conf_cmd --libs`
 
-  sim_ac_save_cppflags=$CPPFLAGS
-  sim_ac_save_ldflags=$LDFLAGS
-  sim_ac_save_libs=$LIBS
-
-  CPPFLAGS="$CPPFLAGS $sim_ac_simage_cppflags"
-  LDFLAGS="$LDFLAGS $sim_ac_simage_ldflags"
-  LIBS="$sim_ac_simage_libs $LIBS"
-
   AC_CACHE_CHECK([whether the simage library is available],
-    sim_cv_lib_simage_avail,
-    [AC_TRY_LINK([#include <simage.h>],
-                 [(void)simage_read_image(0L, 0L, 0L, 0L);],
-                 sim_cv_lib_simage_avail=yes,
-                 sim_cv_lib_simage_avail=no)])
-
-  if test x"$sim_cv_lib_simage_avail" = xyes; then
-    sim_ac_simage_avail=yes
-    ifelse($1, , :, $1)
-  else
+    sim_cv_lib_simage_avail, [
+    sim_ac_save_cppflags=$CPPFLAGS
+    sim_ac_save_ldflags=$LDFLAGS
+    sim_ac_save_libs=$LIBS
+    CPPFLAGS="$CPPFLAGS $sim_ac_simage_cppflags"
+    LDFLAGS="$LDFLAGS $sim_ac_simage_ldflags"
+    LIBS="$sim_ac_simage_libs $LIBS"
+    AC_TRY_LINK([#include <simage.h>],
+                [(void)simage_read_image(0L, 0L, 0L, 0L);],
+                sim_cv_lib_simage_avail=yes,
+                sim_cv_lib_simage_avail=no)
     CPPFLAGS=$sim_ac_save_cppflags
     LDFLAGS=$sim_ac_save_ldflags
     LIBS=$sim_ac_save_libs
+  ])
+
+  if test x"$sim_cv_lib_simage_avail" = xyes; then
+    sim_ac_simage_avail=yes
+    CPPFLAGS="$CPPFLAGS $sim_ac_simage_cppflags"
+    LDFLAGS="$LDFLAGS $sim_ac_simage_ldflags"
+    LIBS="$sim_ac_simage_libs $LIBS"
+dnl AM_CONDITIONAL(HAVE_LIBSIMAGE, true)
+dnl AC_DEFINE(HAVE_SIMAGE_H, 1,
+dnl   [Define this if you have simage.h])
+dnl AC_DEFINE(HAVE_LIBSIMAGE, 1,
+dnl   [Define this if you are going to use libsimage])
+    ifelse($1, , :, $1)
+  else
+dnl AM_CONDITIONAL(HAVE_LIBSIMAGE, false)
     ifelse($2, , :, $2)
   fi
+else
+  ifelse($2, , :, $2)
 fi
 ])
+
 
 dnl Usage:
 dnl  SIM_CHECK_X11([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])

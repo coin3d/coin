@@ -107,7 +107,8 @@ SIM_CHECK_SIMAGE([AC_DEFINE(HAVE_LIBSIMAGE)
                  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_simage_cppflags"
                  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_simage_ldflags"
                  COIN_EXTRA_LIBS="$sim_ac_simage_libs $COIN_EXTRA_LIBS"],
-                 [AC_MSG_WARN(simage development system not found)])
+                 AC_MSG_WARN(simage development system not found),
+                 [default searchprefix])
 
 dnl  We need to check for the math library on our own if its not
 dnl  "inherited" from the simage library.
