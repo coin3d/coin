@@ -1,5 +1,5 @@
 dnl  This can be any file in the package.
-AC_INIT(src/SoDB.cpp)
+AC_INIT(src/misc/SoDB.cpp)
 
 dnl  Locate C++ compiler and set C++ as the default compiler to run
 dnl  in tests.

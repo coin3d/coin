@@ -92,7 +92,7 @@ LIBS =
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-ALLSOURCES =  	SoBase.cpp 	SoBase.h 	SoChildList.cpp 	SoChildList.h 	SoGL.cpp 	SoGL.h 	SoGLImage.cpp 	SoGLImage.h 	SoNormalGenerator.cpp 	SoNormalGenerator.h 	SoNotification.cpp 	SoNotification.h 	SoState.cpp 	SoState.h
+ALLSOURCES =  	SoBase.cpp 	SoBase.h 	SoChildList.cpp 	SoChildList.h 	SoGL.cpp 	SoGL.h 	SoGLImage.cpp 	SoGLImage.h 	SoNormalGenerator.cpp 	SoNormalGenerator.h 	SoNotification.cpp 	SoNotification.h 	SoState.cpp 	SoState.h 	SoDB.cpp 	SoDB.h 	SoFullPath.cpp 	SoFullPath.h 	SoImageInterface.cpp 	SoImageInterface.h 	SoInput.cpp 	SoInput.h 	SoInteraction.cpp 	SoInteraction.h 	SoOutput.cpp 	SoOutput.h 	SoPath.cpp 	SoPath.h 	SoPickedPoint.cpp 	SoPickedPoint.h 	SoPrimitiveVertex.cpp 	SoPrimitiveVertex.h 	SoSceneManager.cpp 	SoSceneManager.h 	SoType.cpp 	SoType.h
 
 
 libmisc_la_SOURCES = $(ALLSOURCES)
@@ -122,11 +122,16 @@ X_PRE_LIBS = @X_PRE_LIBS@
 libmiscLINKHACK_la_LDFLAGS = 
 libmiscLINKHACK_la_LIBADD = 
 libmiscLINKHACK_la_OBJECTS =  SoBase.lo SoChildList.lo SoGL.lo \
-SoGLImage.lo SoNormalGenerator.lo SoNotification.lo SoState.lo
+SoGLImage.lo SoNormalGenerator.lo SoNotification.lo SoState.lo SoDB.lo \
+SoFullPath.lo SoImageInterface.lo SoInput.lo SoInteraction.lo \
+SoOutput.lo SoPath.lo SoPickedPoint.lo SoPrimitiveVertex.lo \
+SoSceneManager.lo SoType.lo
 libmisc_la_LDFLAGS = 
 libmisc_la_LIBADD = 
 libmisc_la_OBJECTS =  SoBase.lo SoChildList.lo SoGL.lo SoGLImage.lo \
-SoNormalGenerator.lo SoNotification.lo SoState.lo
+SoNormalGenerator.lo SoNotification.lo SoState.lo SoDB.lo SoFullPath.lo \
+SoImageInterface.lo SoInput.lo SoInteraction.lo SoOutput.lo SoPath.lo \
+SoPickedPoint.lo SoPrimitiveVertex.lo SoSceneManager.lo SoType.lo
 CXXFLAGS = @CXXFLAGS@
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -146,9 +151,12 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = gtar
 GZIP_ENV = --best
-DEP_FILES =  .deps/SoBase.P .deps/SoChildList.P .deps/SoGL.P \
-.deps/SoGLImage.P .deps/SoNormalGenerator.P .deps/SoNotification.P \
-.deps/SoState.P
+DEP_FILES =  .deps/SoBase.P .deps/SoChildList.P .deps/SoDB.P \
+.deps/SoFullPath.P .deps/SoGL.P .deps/SoGLImage.P \
+.deps/SoImageInterface.P .deps/SoInput.P .deps/SoInteraction.P \
+.deps/SoNormalGenerator.P .deps/SoNotification.P .deps/SoOutput.P \
+.deps/SoPath.P .deps/SoPickedPoint.P .deps/SoPrimitiveVertex.P \
+.deps/SoSceneManager.P .deps/SoState.P .deps/SoType.P
 SOURCES = $(libmiscLINKHACK_la_SOURCES) $(libmisc_la_SOURCES)
 OBJECTS = $(libmiscLINKHACK_la_OBJECTS) $(libmisc_la_OBJECTS)
 

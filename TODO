@@ -20,6 +20,12 @@ TODO:
 
 *** BUILD ITEMS ***
 
+* [mortene:19991108] it looks like the header files are copied twice
+  upon ``make install'', so the hack in the Makefile.am files to work
+  around an Automake bug should be improved a bit.. or perhaps we
+  could just as well wait for the next Automake release, and remove
+  the hack altogether?
+
 * [mortene:19991107] example programs shouldn't be compiled with the
   __SOLIB_INTERNAL__ define set.
 

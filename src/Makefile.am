@@ -28,32 +28,12 @@ SUBDIRS = $(TESTLIBDIR) \
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-## All source files from the base directory used when building the
-## library, including all headers.
+## The build process won't complete the final link stage unless we've
+## got at least one sourcefile specified here. So it seems there's a
+## bug (or missing feature) in Automake, which we fool be using the
+## empty sourcefile dummy.cpp. 19991108 mortene.
 
-libCoin_la_SOURCES = \
-	SoDB.cpp \
-	SoDB.h \
-	SoFullPath.cpp \
-	SoFullPath.h \
-	SoImageInterface.cpp \
-	SoImageInterface.h \
-	SoInput.cpp \
-	SoInput.h \
-	SoInteraction.cpp \
-	SoInteraction.h \
-	SoOutput.cpp \
-	SoOutput.h \
-	SoPath.cpp \
-	SoPath.h \
-	SoPickedPoint.cpp \
-	SoPickedPoint.h \
-	SoPrimitiveVertex.cpp \
-	SoPrimitiveVertex.h \
-	SoSceneManager.cpp \
-	SoSceneManager.h \
-	SoType.cpp \
-	SoType.h
+libCoin_la_SOURCES = dummy.cpp
 
 ## Installation information.
 

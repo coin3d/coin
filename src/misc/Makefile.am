@@ -29,7 +29,30 @@ ALLSOURCES = \
 	SoNotification.cpp \
 	SoNotification.h \
 	SoState.cpp \
-	SoState.h
+	SoState.h \
+	SoDB.cpp \
+	SoDB.h \
+	SoFullPath.cpp \
+	SoFullPath.h \
+	SoImageInterface.cpp \
+	SoImageInterface.h \
+	SoInput.cpp \
+	SoInput.h \
+	SoInteraction.cpp \
+	SoInteraction.h \
+	SoOutput.cpp \
+	SoOutput.h \
+	SoPath.cpp \
+	SoPath.h \
+	SoPickedPoint.cpp \
+	SoPickedPoint.h \
+	SoPrimitiveVertex.cpp \
+	SoPrimitiveVertex.h \
+	SoSceneManager.cpp \
+	SoSceneManager.h \
+	SoType.cpp \
+	SoType.h
+
 
 libmisc_la_SOURCES = $(ALLSOURCES)
 libmiscLINKHACK_la_SOURCES = $(ALLSOURCES)
