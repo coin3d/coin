@@ -1,7 +1,6 @@
 
 baseincdir = $(includedir)/Inventor/C/base
 baseinc_HEADERS = \
-	dict.h \
 	hash.h \
 	heap.h \
 	memalloc.h \
