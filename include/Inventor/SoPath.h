@@ -25,9 +25,6 @@
 #include <Inventor/lists/SoNodeList.h>
 
 class SoPath;
-typedef SoPath SoLightPath;
-typedef SoPath SoTempPath;
-
 class SoNode;
 class SoWriteAction;
 class SoNotList;
@@ -118,6 +115,10 @@ private:
 
 #ifndef __SOLIB_INTERNAL__
 #include <Inventor/SoFullPath.h>
+#endif // __SOLIB_INTERNAL__
+
+#ifndef __SOLIB_INTERNAL__
+#include <Inventor/misc/SoLightPath.h>
 #endif // __SOLIB_INTERNAL__
 
 #endif // !__SOPATH_H__

@@ -11,6 +11,8 @@ ALLSOURCES = \
 	SoState.cpp SoState.h \
 	SoDB.cpp SoDB.h \
 	SoFullPath.cpp SoFullPath.h \
+	SoTempPath.cpp SoTempPath.h \
+	SoLightPath.cpp SoLightPath.h \
 	SoImageInterface.cpp SoImageInterface.h \
 	SoInput.cpp SoInput.h \
 	SoInteraction.cpp SoInteraction.h \
@@ -31,7 +33,9 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/misc/SoCallbackList.h \
 	$(top_srcdir)/include/Inventor/misc/SoChildList.h \
 	$(top_srcdir)/include/Inventor/misc/SoNotification.h \
-	$(top_srcdir)/include/Inventor/misc/SoState.h
+	$(top_srcdir)/include/Inventor/misc/SoState.h \
+	$(top_srcdir)/include/Inventor/misc/SoLightPath.h \
+	$(top_srcdir)/include/Inventor/misc/SoTempPath.h
 
 ##$ BEGIN TEMPLATE Make-Common(misc)
 

@@ -213,8 +213,8 @@ SoPath::append(const int childIndex)
   }
 #endif // COIN_DEBUG
 
-  SoChildList *children = 
-    this->nodes[this->nodes.getLength()-1]->getChildren();  
+  SoChildList *children =
+    this->nodes[this->nodes.getLength()-1]->getChildren();
   assert(children);
 
 #if COIN_DEBUG
@@ -241,26 +241,19 @@ SoPath::append(SoNode * const node)
     this->setHead(node);
     return;
   }
-  SoChildList *children = 
-    this->nodes[this->nodes.getLength()-1]->getChildren();  
+  SoChildList *children =
+    this->nodes[this->nodes.getLength()-1]->getChildren();
   assert(children);
-  
+
   const int idx = children->find((void*)node);
 #if COIN_DEBUG && 1 // debug
   if (idx < 0) {
-#if COIN_DEBUG && 1 // debug
-    SoDebugError::postInfo("SoPath::append",
-                           "tail: %s, node: %s",
-                           this->nodes[this->nodes.getLength()-1]->getTypeId().getName().getString(),
-                           node->getTypeId().getName().getString());
-#endif // debug
-    
     SoDebugError::postInfo("SoPath::append",
                            "node not found as child of tail");
     assert(0 && "unexpected error");
   }
 #endif // debug
-  
+
   this->append(node, idx);
 }
 
@@ -277,7 +270,7 @@ SoPath::append(const SoPath * const fromPath)
     operator = (*fromPath);
     return;
   }
-  
+
   if (! fromPath->nodes.getLength()) // nothing to append
     return;
 
@@ -337,7 +330,7 @@ void
 SoPath::append(SoNode * const node, const int index)
 {
   if (this->firstHidden < 0) {
-    if (this->hasHiddenChildren(node)) 
+    if (this->hasHiddenChildren(node))
       this->firstHidden = this->nodes.getLength();
   }
   this->nodes.append(node);
@@ -440,7 +433,7 @@ SoPath::getIndexFromTail(const int index) const
     assert(0);
   }
 #endif // COIN_DEBUG
-  return this->indices[this->indices.getLength() - index - 1];
+  return this->indices[this->getLength() - index - 1];
 }
 
 /*!
@@ -491,7 +484,7 @@ SoPath::truncate(const int length, const SbBool /*doNotify*/)
 #endif // COIN_DEBUG
   this->nodes.truncate(length);
   this->indices.truncate(length);
-  
+
   if (length <= this->firstHidden) this->findFirstHidden();
 }
 
@@ -555,7 +548,7 @@ SoPath::containsPath(const SoPath * const path) const
 
   int offset = this->findNode(path->nodes[0]); // find head in this path
   if ((offset < 0) || (offset + thatlen > thislen)) return FALSE;
-  
+
   for (int i = 1; i < thatlen; i++) {
     if (this->indices[offset+i] != path->indices[i]) return FALSE;
   }
@@ -669,7 +662,7 @@ SoPath::insertIndex(SoNode * const parent, const int newIndex)
   int pos = this->findNode(parent) + 1;
   assert(pos > 0); // shouldn't be notified if parent is not in path
   if (pos < this->nodes.getLength()) {
-    if (newIndex <= this->indices[pos]) { 
+    if (newIndex <= this->indices[pos]) {
       this->indices[pos] = this->indices[pos] + 1;
     }
   }
@@ -691,7 +684,7 @@ SoPath::removeIndex(SoNode * const parent, const int oldIndex)
     }
     else if (oldIndex == this->indices[pos]) {
       // if node in path is removed, we have to truncate path
-      this->truncate(pos, FALSE);
+      this->truncate(pos);
     }
   }
 }
@@ -712,7 +705,7 @@ SoPath::replaceIndex(SoNode * const parent, const int index,
       // use newChild in the path, since the path beyond newChild will
       // not be correct. I think it is best to truncate the path after
       // the parent node. pederb 2000-01-10
-      this->truncate(pos, FALSE);
+      this->truncate(pos);
     }
   }
 }
@@ -767,10 +760,10 @@ SoPath::readInstance(SoInput * /*in*/, unsigned short /*flags*/)
 // private convenience method that tests if a node has hidden children.
 // It would probably be a good idea to move this method to SoNode.
 //
-SbBool 
+SbBool
 SoPath::hasHiddenChildren(SoNode *node) const
 {
-  return (node->getChildren() != NULL) && 
+  return (node->getChildren() != NULL) &&
     !node->isOfType(SoGroup::getClassTypeId());
 }
 
