@@ -328,6 +328,7 @@
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/SbBox2f.h>
 #include <float.h>
 #include <math.h>
 #ifdef HAVE_CONFIG_H
@@ -351,7 +352,6 @@ my_normalize(SbVec3f & vec)
 }
 
 
-#ifndef DOXYGEN_SKIP_THIS
 class SoVRMLExtrusionP {
 public:
   SoVRMLExtrusionP(SoVRMLExtrusion * master)
@@ -403,11 +403,8 @@ public:
 #endif // COIN_THREADSAFE
   }
 };
-#endif // DOXYGEN_SKIP_THIS
 
-#undef THIS
-#define THIS this->pimpl
-
+#define PRIVATE(obj) (obj)->pimpl
 
 SO_NODE_SOURCE(SoVRMLExtrusion);
 
@@ -423,7 +420,7 @@ SoVRMLExtrusion::initClass(void) // static
 */
 SoVRMLExtrusion::SoVRMLExtrusion(void)
 {
-  THIS = new SoVRMLExtrusionP(this);
+  PRIVATE(this) = new SoVRMLExtrusionP(this);
 
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLExtrusion);
 
@@ -459,7 +456,7 @@ SoVRMLExtrusion::SoVRMLExtrusion(void)
 */
 SoVRMLExtrusion::~SoVRMLExtrusion()
 {
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 
@@ -469,20 +466,20 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
 
-  THIS->readLock();
+  PRIVATE(this)->readLock();
   this->updateCache();
 
   SoState * state = action->getState();
 
   SbBool doTextures = SoGLTextureEnabledElement::get(state);
-  const SbVec3f * normals = THIS->gen.getNormals();
+  const SbVec3f * normals = PRIVATE(this)->gen.getNormals();
 
-  SoCoordinateElement::set3(state, this, THIS->coord.getLength(), THIS->coord.getArrayPtr());
+  SoCoordinateElement::set3(state, this, PRIVATE(this)->coord.getLength(), PRIVATE(this)->coord.getArrayPtr());
   const SoCoordinateElement * coords = SoCoordinateElement::getInstance(state);
 
   if (doTextures) {
-    SoTextureCoordinateElement::set2(state, this, THIS->tcoord.getLength(),
-                                     THIS->tcoord.getArrayPtr());
+    SoTextureCoordinateElement::set2(state, this, PRIVATE(this)->tcoord.getLength(),
+                                     PRIVATE(this)->tcoord.getArrayPtr());
   }
 
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
@@ -494,21 +491,21 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
   this->setupShapeHints(state, this->ccw.getValue(), this->solid.getValue());
 
   sogl_render_faceset((SoGLCoordinateElement *) coords,
-                      THIS->idx.getArrayPtr(),
-                      THIS->idx.getLength(),
+                      PRIVATE(this)->idx.getArrayPtr(),
+                      PRIVATE(this)->idx.getLength(),
                       normals,
                       NULL,
                       &mb,
                       NULL,
                       &tb,
-                      THIS->idx.getArrayPtr(),
+                      PRIVATE(this)->idx.getArrayPtr(),
                       3, /* SoIndexedFaceSet::PER_VERTEX */
                       0,
                       doTextures?1:0);
-  THIS->readUnlock();
+  PRIVATE(this)->readUnlock();
 
   // send approx number of triangles for autocache handling
-  sogl_autocache_update(state, THIS->idx.getLength() / 4);
+  sogl_autocache_update(state, PRIVATE(this)->idx.getLength() / 4);
 
 }
 
@@ -516,10 +513,10 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
 void
 SoVRMLExtrusion::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  THIS->readLock();
+  PRIVATE(this)->readLock();
   this->updateCache();
-  action->addNumTriangles(THIS->idx.getLength() / 4);
-  THIS->readUnlock();
+  action->addNumTriangles(PRIVATE(this)->idx.getLength() / 4);
+  PRIVATE(this)->readUnlock();
 }
 
 // Doc in parent
@@ -528,33 +525,33 @@ SoVRMLExtrusion::computeBBox(SoAction * action,
                              SbBox3f & box,
                              SbVec3f & center)
 {
-  THIS->readLock();
+  PRIVATE(this)->readLock();
 
   this->updateCache();
 
-  int num = THIS->coord.getLength();
-  const SbVec3f * coords = THIS->coord.getArrayPtr();
+  int num = PRIVATE(this)->coord.getLength();
+  const SbVec3f * coords = PRIVATE(this)->coord.getArrayPtr();
 
   box.makeEmpty();
   while (num--) {
     box.extendBy(*coords++);
   }
   if (!box.isEmpty()) center = box.getCenter();
-  THIS->readUnlock();
+  PRIVATE(this)->readUnlock();
 }
 
 // Doc in parent
 void
 SoVRMLExtrusion::generatePrimitives(SoAction * action)
 {
-  THIS->readLock();
+  PRIVATE(this)->readLock();
   this->updateCache();
 
-  const SbVec3f * normals = THIS->gen.getNormals();
-  const SbVec2f * tcoords = THIS->tcoord.getArrayPtr();
-  const SbVec3f * coords = THIS->coord.getArrayPtr();
-  const int32_t * iptr = THIS->idx.getArrayPtr();
-  const int32_t * endptr = iptr + THIS->idx.getLength();
+  const SbVec3f * normals = PRIVATE(this)->gen.getNormals();
+  const SbVec2f * tcoords = PRIVATE(this)->tcoord.getArrayPtr();
+  const SbVec3f * coords = PRIVATE(this)->coord.getArrayPtr();
+  const int32_t * iptr = PRIVATE(this)->idx.getArrayPtr();
+  const int32_t * endptr = iptr + PRIVATE(this)->idx.getLength();
 
   SoPrimitiveVertex vertex;
 
@@ -571,7 +568,7 @@ SoVRMLExtrusion::generatePrimitives(SoAction * action)
     }
   }
   this->endShape();
-  THIS->readUnlock();
+  PRIVATE(this)->readUnlock();
 }
 
 //
@@ -580,14 +577,14 @@ SoVRMLExtrusion::generatePrimitives(SoAction * action)
 void
 SoVRMLExtrusion::updateCache(void)
 {
-  if (THIS->dirty) {
-    THIS->readUnlock();
-    THIS->writeLock();
-    THIS->generateCoords();
-    THIS->generateNormals();
-    THIS->dirty = FALSE;
-    THIS->writeUnlock();
-    THIS->readLock();
+  if (PRIVATE(this)->dirty) {
+    PRIVATE(this)->readUnlock();
+    PRIVATE(this)->writeLock();
+    PRIVATE(this)->generateCoords();
+    PRIVATE(this)->generateNormals();
+    PRIVATE(this)->dirty = FALSE;
+    PRIVATE(this)->writeUnlock();
+    PRIVATE(this)->readLock();
   }
 }
 
@@ -595,7 +592,7 @@ SoVRMLExtrusion::updateCache(void)
 void
 SoVRMLExtrusion::notify(SoNotList * list)
 {
-  THIS->dirty = TRUE;
+  PRIVATE(this)->dirty = TRUE;
   inherited::notify(list);
 }
 
@@ -612,9 +609,7 @@ SoVRMLExtrusion::createTriangleDetail(SoRayPickAction * action,
   return NULL;
 }
 
-#undef THIS
-#ifndef DOXYGEN_SKIP_THIS
-
+#undef PRIVATE
 
 static SbVec3f
 calculate_y_axis(const SbVec3f * spine, const int i,
@@ -699,6 +694,9 @@ SoVRMLExtrusionP::generateCoords(void)
 
   SbMatrix matrix = SbMatrix::identity();
 
+  SbBox2f crossbox;
+  crossbox.makeEmpty();
+
   int i, j, numcross;
   SbBool connected = FALSE;   // is cross section closed
   SbBool closed = FALSE;      // is spine closed
@@ -706,14 +704,12 @@ SoVRMLExtrusionP::generateCoords(void)
   const SbVec2f * cross =  master->crossSection.getValues(0);
   if (cross[0] == cross[numcross-1]) {
     connected = TRUE;
-    numcross--;
   }
 
   int numspine = master->spine.getNum();
   const SbVec3f * spine = master->spine.getValues(0);
   if (spine[0] == spine[numspine-1]) {
     closed = TRUE;
-    numspine--;
   }
 
   SbVec3f prevY(0.0f, 0.0f, 0.0f);
@@ -751,6 +747,11 @@ SoVRMLExtrusionP::generateCoords(void)
 
   int numscale = this->master->scale.getNum();
   const SbVec2f * scale = this->master->scale.getValues(0);
+
+  // calculate cross section bbox
+  for (j = 0; j < numcross; j++) {
+    crossbox.extendBy(cross[j]);
+  }
 
   // loop through all spines
   for (i = 0; i < numspine; i++) {
@@ -809,14 +810,16 @@ SoVRMLExtrusionP::generateCoords(void)
 
     for (j = 0; j < numcross; j++) {
       SbVec3f c;
+      SbVec2f tc;
       c[0] = cross[j][0];
       c[1] = 0.0f;
       c[2] = cross[j][1];
 
       matrix.multVecMatrix(c, c);
-      this->coord.append(c);
-      this->tcoord.append(SbVec2f(float(j)/float(connected ? numcross : numcross-1),
-                                  float(i)/float(closed ? numspine : numspine-1)));
+      this->coord.append(c);     
+      tc[0] = ((float)j) / ((float)(numcross-1));
+      tc[1] = ((float)i) / ((float)(numspine-1));
+      this->tcoord.append(tc);
     }
   }
 
@@ -829,63 +832,78 @@ SoVRMLExtrusionP::generateCoords(void)
     this->idx.append(-1); \
   } while (0)
 
-  // create beginCap polygon
-  if (this->master->beginCap.getValue() && !closed) {
-    if (this->master->convex.getValue()) {
-      for (i = 1; i < numcross-1; i++) {
-        ADD_TRIANGLE(0, 0, 0, i, 0, i+1);
-      }
-    }
-    else {
-      // let the tesselator create triangles
-      this->tess.beginPolygon();
-      for (i = 0; i < numcross; i++) {
-        this->tess.addVertex(this->coord[i], (void*) i);
-      }
-      this->tess.endPolygon();
-    }
-  }
-
-
-  // create endCap polygon
-  if (this->master->endCap.getValue() && !closed) {
-    if (this->master->convex.getValue()) {
-      for (i = 1; i < numcross-1; i++) {
-        ADD_TRIANGLE(numspine-1, numcross-1,
-                     numspine-1, numcross-1-i,
-                     numspine-1, numcross-2-i);
-      }
-    }
-    else {
-      // let the tesselator create triangles
-      this->tess.beginPolygon();
-      for (i = 0; i < numcross; i++) {
-        int idx = (numspine-1)*numcross + numcross - 1 - i;
-        this->tess.addVertex(this->coord[idx], (void*) idx);
-      }
-      this->tess.endPolygon();
-    }
-  }
-
   // create walls
   for (i = 0; i < numspine-1; i++) {
     for (j = 0; j < numcross-1; j++) {
       ADD_TRIANGLE(i, j, i+1, j, i+1, j+1);
       ADD_TRIANGLE(i, j, i+1, j+1, i, j+1);
     }
-    if (connected) {
-      ADD_TRIANGLE(i, j, i+1, j, i+1, 0);
-      ADD_TRIANGLE(i, j, i+1, 0, i, 0);
+  }
+
+  SbVec2f crossboxsize = crossbox.getMax() - crossbox.getMin();
+  
+  // create beginCap polygon
+  if (this->master->beginCap.getValue() && !closed) {
+    // create texcoords
+    for (i = 0; i < numcross; i++) {
+      SbVec2f c = cross[i];
+      c -= crossbox.getMin();
+      c[0] /= crossboxsize[0];
+      c[1] /= crossboxsize[1];
+      this->tcoord.append(c);
+    }
+    // just duplicated begincap coords to simplify texture coordinate handling
+    for (i = 0; i < numcross; i++) {
+      this->coord.append(coord[i]);
+    }
+
+    if (this->master->convex.getValue()) {
+      for (i = 1; i < (connected ? numcross-2 : numcross-1); i++) {
+        ADD_TRIANGLE(numspine, 0, numspine, i, numspine, i+1);
+      }
+    }
+    else {
+      // let the tesselator create triangles
+      this->tess.beginPolygon();
+      for (i = (connected ? numcross-2 : numcross-1); i >= 0; i--) {
+        this->tess.addVertex(this->coord[numcross*numspine + i], (void*) (numcross*numspine + i));
+      }
+      this->tess.endPolygon();
     }
   }
-  if (closed) {
-    for (j = 0; j < numcross-1; j++) {
-      ADD_TRIANGLE(numspine-1, j, 0, j, 0, j+1);
-      ADD_TRIANGLE(numspine-1, j, 0, j+1, numspine-1, j+1);
+
+  // create endCap polygon
+  if (this->master->endCap.getValue() && !closed) {
+    // just duplicate endcap coords to simplify texture coordinate handling
+    for (i = 0; i < numcross; i++) {
+      this->coord.append(coord[(numspine-1)*numcross+i]);
     }
-    if (connected) {
-      ADD_TRIANGLE(numspine-1, j, 0, j, 0, 0);
-      ADD_TRIANGLE(numspine-1, j, 0, 0, numspine-1, 0);
+    // create texcoords
+    for (i = 0; i < numcross; i++) {
+      SbVec2f c = cross[i];
+      c -= crossbox.getMin();
+      c[0] /= crossboxsize[0];
+      c[1] /= crossboxsize[1];
+      // the endCap texcoords should be flipped in the T dimension
+      c[1] = 1.0f - c[1];
+      this->tcoord.append(c);
+    }
+
+    if (this->master->convex.getValue()) {
+      for (i = 1; i < (connected ? numcross-2 : numcross-1); i++) {
+        ADD_TRIANGLE(numspine+1, numcross-1,
+                     numspine+1, numcross-1-i,
+                     numspine+1, numcross-2-i);
+      }
+    }
+    else {
+      // let the tesselator create triangles
+      this->tess.beginPolygon();
+      for (i = (connected ? numcross-2 : numcross-1); i >= 0; i--) {
+        int idx = (numspine+1)*numcross + numcross - 1 - i;
+        this->tess.addVertex(this->coord[idx], (void*) idx);
+      }
+      this->tess.endPolygon();
     }
   }
 #undef ADD_TRIANGLE
@@ -927,4 +945,3 @@ SoVRMLExtrusionP::tess_callback(void * v0, void * v1, void * v2, void * data)
   thisp->idx.append(-1);
 }
 
-#endif // DOXYGEN_SKIP_THIS
