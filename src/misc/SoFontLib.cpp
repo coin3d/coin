@@ -71,8 +71,14 @@ SoFontLib::initialize()
   CC_MUTEX_LOCK(SoFontLib_mutex);
   
   // Where to look for font files
-  SoInput::addEnvDirectoriesLast("COIN_FONT_PATH", NULL);
+  if (coin_getenv("COIN_FONT_PATH") != NULL) {
+    SoInput::addEnvDirectoriesLast("COIN_FONT_PATH", NULL);
+  }
+
 #ifdef HAVE_WINDOWS_H
+  // FIXME: shouldn't this rather be set from a $WINDIR type env var?
+  // AFAIK, the Windows system directory doesn't have to be under
+  // C:/WINDOWS. 20030316 mortene.
   SoInput::addDirectoryLast("c:/WINDOWS/Fonts");
 #endif
   
