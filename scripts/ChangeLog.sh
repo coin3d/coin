@@ -31,7 +31,8 @@ cvs log -d">= 1 January 2001" | $cvs2cl --stdin --header $headerfile --separate-
   --ignore '(Makefile\.in|configure|aclocal\.m4|config\.sub|config\.guess)$' \
   --ignore '(ltconfig|ltmain\.sh|missing|mkinstalldirs|stamp-h.*|install-sh)$' \
   --ignore 'config\.h\.in$' \
-  --ignore 'conf-macros/'
+  --ignore 'conf-macros/' \
+  --ignore 'cfg/m4/'
 
 rm ChangeLog.bak $headerfile
 
