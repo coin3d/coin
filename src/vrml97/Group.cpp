@@ -164,7 +164,6 @@ public:
 
   SoBoundingBoxCache * bboxcache;
 #ifdef COIN_THREADSAFE
-  SbMutex bboxmutex;
   SbStorage * glcachestorage;
 #else // COIN_THREADSAFE
 private:
@@ -215,16 +214,6 @@ SoVRMLGroup::initClass(void)
 
 #undef THIS
 #define THIS this->pimpl
-
-#ifdef COIN_THREADSAFE
-#define TRY_LOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.tryLock()
-#define LOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.lock()
-#define UNLOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.unlock()
-#else // COIN_THREADSAFE
-#define TRY_LOCK_BBOX(_thisp_) TRUE
-#define LOCK_BBOX(_thisp_)
-#define UNLOCK_BBOX(_thisp_)
-#endif // COIN_THREADSAFE
 
 /*!
   Constructor.
@@ -373,8 +362,6 @@ SoVRMLGroup::getBoundingBox(SoGetBoundingBoxAction * action)
     break;
   }
 
-  if (iscaching) iscaching = TRY_LOCK_BBOX(this);
-
   SbBool validcache = iscaching && THIS->bboxcache && THIS->bboxcache->isValid(state);
 
   if (iscaching && validcache) {
@@ -421,8 +408,6 @@ SoVRMLGroup::getBoundingBox(SoGetBoundingBoxAction * action)
     state->pop();
     if (iscaching) SoCacheElement::setInvalid(storedinvalid);
   }
-
-  if (iscaching) UNLOCK_BBOX(this);
 
   if (!childrenbbox.isEmpty()) {
     action->extendBy(childrenbbox);
@@ -687,7 +672,6 @@ SoVRMLGroup::cullTest(SoState * state)
   if (SoCullElement::completelyInside(state)) return FALSE;
   
   SbBool outside = FALSE;
-  LOCK_BBOX(this);
   if (THIS->bboxcache &&
       THIS->bboxcache->isValid(state)) {
     const SbBox3f & bbox = THIS->bboxcache->getProjectedBox();
@@ -695,7 +679,6 @@ SoVRMLGroup::cullTest(SoState * state)
       outside = SoCullElement::cullBox(state, bbox);
     }
   }
-  UNLOCK_BBOX(this);
   return outside;
 }
 
@@ -709,7 +692,6 @@ SoVRMLGroup::cullTestNoPush(SoState * state)
   if (SoCullElement::completelyInside(state)) return FALSE;
 
   SbBool outside = FALSE;
-  LOCK_BBOX(this);
   if (THIS->bboxcache &&
       THIS->bboxcache->isValid(state)) {
     const SbBox3f & bbox = THIS->bboxcache->getProjectedBox();
@@ -717,10 +699,7 @@ SoVRMLGroup::cullTestNoPush(SoState * state)
       outside = SoCullElement::cullTest(state, bbox);
     }
   }
-  UNLOCK_BBOX(this);
   return outside;
 }
 
 #undef THIS
-#undef LOCK_BBOX
-#undef UNLOCK_BBOX

@@ -93,7 +93,6 @@
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbStorage.h>
-#include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
 
 /*!
@@ -148,20 +147,9 @@ public:
   static double bboxcachetimelimit;
   SoBoundingBoxCache * bboxcache;
   SbBool shouldcache;
-#ifdef COIN_THREADSAFE
-  SbMutex bboxmutex;
-#endif // COIN_THREADSAFE
 };
 
 double SoShapeP::bboxcachetimelimit;
-
-#ifdef COIN_THREADSAFE
-#define LOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.lock()
-#define UNLOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.unlock()
-#else // COIN_THREADSAFE
-#define LOCK_BBOX(_thisp_)
-#define UNLOCK_BBOX(_thisp_)
-#endif // COIN_THREADSAFE
 
 #undef PRIVATE
 #define PRIVATE(_thisp_) ((_thisp_)->pimpl)
@@ -353,17 +341,10 @@ SoShape::rayPick(SoRayPickAction * action)
   if (this->shouldRayPick(action)) {
     this->computeObjectSpaceRay(action);
     
-    LOCK_BBOX(this);
     if (!PRIVATE(this)->bboxcache ||
         !PRIVATE(this)->bboxcache->isValid(action->getState()) ||
         soshape_ray_intersect(action, PRIVATE(this)->bboxcache->getProjectedBox())) {
-      UNLOCK_BBOX(this); // unlock as soon as possible
       this->generatePrimitives(action);
-    }
-    else {
-      // if we get here, the ray didn't intersect the bbox in the
-      // cache and we don't need to generate the primitives.
-      UNLOCK_BBOX(this);
     }
   }
 }
@@ -465,14 +446,11 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     return FALSE;
   
   if (!state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
-    LOCK_BBOX(this);
     if (PRIVATE(this)->bboxcache && PRIVATE(this)->bboxcache->isValid(state)) {
       if (SoCullElement::cullTest(state, PRIVATE(this)->bboxcache->getProjectedBox())) {
-        UNLOCK_BBOX(this);
         return FALSE;
       }
     }
-    UNLOCK_BBOX(this);
   }
   
   SbBool transparent = SoTextureImageElement::containsTransparency(state);
@@ -1128,12 +1106,10 @@ void
 SoShape::notify(SoNotList * nl)
 {
   inherited::notify(nl);
-  LOCK_BBOX(this);
   if (PRIVATE(this)->bboxcache) {
     PRIVATE(this)->bboxcache->invalidate();
   }
   PRIVATE(this)->shouldcache = FALSE;
-  UNLOCK_BBOX(this);
 }
 
 /*!
@@ -1156,7 +1132,6 @@ void
 SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   SoState * state = action->getState();
-  LOCK_BBOX(this);
   SbBool isvalid = PRIVATE(this)->bboxcache && PRIVATE(this)->bboxcache->isValid(state);
   if (isvalid) {
     box = PRIVATE(this)->bboxcache->getProjectedBox();
@@ -1164,7 +1139,6 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     center = PRIVATE(this)->bboxcache->getCenter();
   }
   if (isvalid) {
-    UNLOCK_BBOX(this);
     return;
   }
 
@@ -1214,7 +1188,6 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
       SoCacheElement::setInvalid(storedinvalid);
     }
   }
-  UNLOCK_BBOX(this);
 }
 
 void 
@@ -1245,6 +1218,4 @@ SoShapeP::calibrateBBoxCache(void)
 }
 
 #undef PRIVATE
-#undef LOCK_BBOX
-#undef UNLOCK_BBOX
 

@@ -141,7 +141,6 @@ public:
   SoChildList * childlist;
   SbBool childlistvalid;
 #ifdef COIN_THREADSAFE
-  SbMutex bboxmutex;
   SbMutex childlistmutex;
 #endif // COIN_THREADSAFE
   void lockChildList(void) {
@@ -173,16 +172,6 @@ SoVRMLShape::initClass(void) // static
 }
 
 #define PRIVATE(thisp) ((thisp)->pimpl)
-
-#ifdef COIN_THREADSAFE
-#define TRY_LOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.tryLock()
-#define LOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.lock()
-#define UNLOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.unlock()
-#else // COIN_THREADSAFE
-#define TRY_LOCK_BBOX(_thisp_) TRUE
-#define LOCK_BBOX(_thisp_)
-#define UNLOCK_BBOX(_thisp_)
-#endif // COIN_THREADSAFE
 
 SoVRMLShape::SoVRMLShape(void)
 {
@@ -270,8 +259,6 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
 
-  LOCK_BBOX(this);
-
   if (SoComplexityTypeElement::get(state) ==
       SoComplexityTypeElement::BOUNDING_BOX) {
     
@@ -282,8 +269,6 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
       SbVec3f center = (box.getMin() + box.getMax()) * 0.5f;
       SbVec3f size = box.getMax()  - box.getMin();
       
-      UNLOCK_BBOX(this);
-
       if (SoGLTextureEnabledElement::get(state)) {
         SoGLTextureEnabledElement::set(state, FALSE);
       }
@@ -315,13 +300,10 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
       PRIVATE(this)->bboxcache->isValid(state)) {
     if (!SoCullElement::completelyInside(state)) {
       if (SoCullElement::cullTest(state, PRIVATE(this)->bboxcache->getProjectedBox())) {
-        UNLOCK_BBOX(this);
         return;
       }
     }
   }
-
-  UNLOCK_BBOX(this);
 
   state->push();
 
@@ -403,8 +385,6 @@ SoVRMLShape::getBoundingBox(SoGetBoundingBoxAction * action)
     break;
   }
   
-  if (iscaching) iscaching = TRY_LOCK_BBOX(this);
-
   SbBool validcache = iscaching && PRIVATE(this)->bboxcache && PRIVATE(this)->bboxcache->isValid(state);
 
   if (iscaching && validcache) {
@@ -453,8 +433,6 @@ SoVRMLShape::getBoundingBox(SoGetBoundingBoxAction * action)
     if (iscaching) SoCacheElement::setInvalid(storedinvalid);
   }
 
-  if (iscaching) UNLOCK_BBOX(this);
-
   if (!childrenbbox.isEmpty()) {
     action->extendBy(childrenbbox);
     if (childrencenterset) {
@@ -482,15 +460,10 @@ vrmlshape_ray_intersect(SoRayPickAction * action, const SbBox3f & box)
 void
 SoVRMLShape::rayPick(SoRayPickAction * action)
 {
-  LOCK_BBOX(this);
   if (!PRIVATE(this)->bboxcache || !PRIVATE(this)->bboxcache->isValid(action->getState()) ||
       !action->hasWorldSpaceRay() ||
       vrmlshape_ray_intersect(action, PRIVATE(this)->bboxcache->getProjectedBox())) {
-    UNLOCK_BBOX(this);
     SoVRMLShape::doAction(action);
-  }
-  else {
-    UNLOCK_BBOX(this);
   }
 }
 

@@ -202,7 +202,6 @@ public:
   }
   SoBoundingBoxCache * bboxcache;
 #ifdef COIN_THREADSAFE
-  SbMutex bboxmutex;
   SbStorage * glcachestorage;
 #else // COIN_THREADSAFE
   SoGLCacheList * glcachelist;
@@ -242,16 +241,6 @@ SoSeparatorP::getGLCacheList(const SbBool createifnull)
 #define THIS this->pimpl
 
 // *************************************************************************
-
-#ifdef COIN_THREADSAFE
-#define TRY_LOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.tryLock()
-#define LOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.lock()
-#define UNLOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.unlock()
-#else // COIN_THREADSAFE
-#define TRY_LOCK_BBOX(_thisp_) TRUE
-#define LOCK_BBOX(_thisp_)
-#define UNLOCK_BBOX(_thisp_)
-#endif // COIN_THREADSAFE
 
 SO_NODE_SOURCE(SoSeparator);
 
@@ -392,12 +381,6 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     break;
   }
 
-  // we need to use TRY_LOCK_BBOX here since it's possible that
-  // several bbox actions are used to traverse the scene graph at the
-  // same time (by the same thread). For example,
-  // SoSurroundScale::getBoundingBox() applies a new bbox action to
-  // the scene graph.
-  if (iscaching) iscaching = TRY_LOCK_BBOX(this);
   SbBool validcache = iscaching && THIS->bboxcache && THIS->bboxcache->isValid(state);
 
   if (iscaching && validcache) {
@@ -443,8 +426,6 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     state->pop();
     if (iscaching) SoCacheElement::setInvalid(storedinvalid);
   }
-
-  if (iscaching) UNLOCK_BBOX(this);
 
   if (!childrenbbox.isEmpty()) {
     action->extendBy(childrenbbox);
@@ -823,7 +804,6 @@ SoSeparator::cullTest(SoState * state)
   if (SoCullElement::completelyInside(state)) return FALSE;
   
   SbBool outside = FALSE;
-  LOCK_BBOX(this);
   if (THIS->bboxcache &&
       THIS->bboxcache->isValid(state)) {
     const SbBox3f & bbox = THIS->bboxcache->getProjectedBox();
@@ -831,7 +811,6 @@ SoSeparator::cullTest(SoState * state)
       outside = SoCullElement::cullBox(state, bbox);
     }
   }
-  UNLOCK_BBOX(this);
   return outside;
 }
 
@@ -847,7 +826,6 @@ SoSeparator::cullTestNoPush(SoState * state)
   if (SoCullElement::completelyInside(state)) return FALSE;
 
   SbBool outside = FALSE;
-  LOCK_BBOX(this);
   if (THIS->bboxcache &&
       THIS->bboxcache->isValid(state)) {
     const SbBox3f & bbox = THIS->bboxcache->getProjectedBox();
@@ -855,10 +833,7 @@ SoSeparator::cullTestNoPush(SoState * state)
       outside = SoCullElement::cullTest(state, bbox);
     }
   }
-  UNLOCK_BBOX(this);
   return outside;
 }
 
 #undef THIS
-#undef LOCK_BBOX
-#undef UNLOCK_BBOX
