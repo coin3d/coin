@@ -607,16 +607,13 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
                                   "error code %d.", dwError);
         return FALSE;
       }
+      /* FIXME: unregister at app exit? pederb, 2003-12-15 */
     }
     
     {
       HWND hWnd;
       HINSTANCE hInstance = GetModuleHandle(NULL);
       
-      /* FIXME: what happens to hWnd? Should we delete it? pederb,
-         2003-12-15
-       */
-
       if (!(hWnd = CreateWindow(
                      "coin_gl_wgl",   /* class name */
                      "coin_gl_wgl",   /* window title */
