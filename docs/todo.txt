@@ -431,3 +431,23 @@ STUFF TO FIX IN COIN
     used by a larger audience, adding value to the Coin library we
     offer, so the code will be maintained instead of bit-rotting, etc
     etc.
+
+018 Check out and build simage as part of the Coin build process.
+    2002-08-01  Morten Eriksen  <mortene@sim.no>
+
+    This would:
+
+        * kill a bunch of common support problems for us
+
+        * it seems somewhat favorable anyway to make the Coin library
+          guaranteed "useable" with regard to textures, with no
+          external dependencies
+
+        * make it less likely that the simage sourcecode is slowly
+          rotting away
+
+     Note that we should still keep simage as a separate CVS project,
+     as it could be usable in other contexts. We should also set up a
+     configure option that makes it possible to _exclude_ simage from
+     Coin build, as not everyone needs to be able to load textures
+     from disk.
