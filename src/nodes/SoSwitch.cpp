@@ -151,7 +151,9 @@ SoSwitch::getBoundingBox(SoGetBoundingBoxAction * action)
 }
 
 /*!
-  FIXME: write function documentation
+  This method must be overridden in SoSwitch nodes to take into account
+  if the search involves every single node, or just the nodes involved in
+  normal graph traversal.
 */
 void
 SoSwitch::search(SoSearchAction * action)

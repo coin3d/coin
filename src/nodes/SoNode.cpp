@@ -611,10 +611,9 @@ SoNode::searchS(SoAction * const action, SoNode * const node)
 }
 
 /*!
-  This method is used by SoSearchAction instances to traverse and search the
-  scene graph.  It must be overridden in SoSwitch nodes to take into account
-  if the search involves every single node, or just the nodes involved in
-  normal graph traversal.
+  This method is used by SoSearchAction instances to traverse and
+  search the scene graph for specific nodes, specified by type, name
+  or pointer value.
 */
 void
 SoNode::search(SoSearchAction * action)
