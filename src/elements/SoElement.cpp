@@ -591,7 +591,7 @@ SoElement::getDepth() const
 }
 
 /*!
-  \fn void SoElement::capture(SoState * const state);
+  \fn void SoElement::capture(SoState * const state) const;
 
   This function does whatever is necessary in the state for caching
   purposes.  If should be called by subclasses of SoElement whenever
