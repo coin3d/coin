@@ -67,9 +67,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#include <coindefs.h> // COIN_STUB()
-
-
 #ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
 
 class SoDraggerCache {
@@ -617,8 +614,7 @@ SoDragger::createPathToThis(void)
 const SoPath *
 SoDragger::getSurrogatePartPickedOwner(void) const
 {
-  COIN_STUB();
-  return NULL;
+  return THIS->surrogateownerpath;
 }
 
 /*!
@@ -628,9 +624,7 @@ SoDragger::getSurrogatePartPickedOwner(void) const
 const SbName &
 SoDragger::getSurrogatePartPickedName(void) const
 {
-  COIN_STUB();
-  static SbName n;
-  return n;
+  return THIS->surrogatename;
 }
 
 /*!
@@ -639,8 +633,7 @@ SoDragger::getSurrogatePartPickedName(void) const
 const SoPath *
 SoDragger::getSurrogatePartPickedPath(void) const
 {
-  COIN_STUB();
-  return NULL;
+  return THIS->surrogatepath;
 }
 
 /*!
@@ -722,7 +715,10 @@ SoDragger::setHandleEventAction(SoHandleEventAction * action)
 void
 SoDragger::setTempPathToThis(const SoPath *)
 {
-  COIN_STUB();
+#if COIN_DEBUG
+  SoDebugError::postWarning("SoDragger::setTempPathToThis",
+                            "Not implemented in Coin.");
+#endif // COIN_DEBUG
 }
 
 /*!
@@ -848,21 +844,25 @@ SoDragger::workValuesIntoTransform(SbMatrix & matrix, const SbVec3f * translatio
 }
 
 /*!
-  Use when there is no scaleorientation. Faster than workFieldsIntoTransform().
+  Use when there is no scaleorientation. Faster than workValuesIntoTransform().
+  Not implemented in Coin. We just forward the call to workValuesIntoTransform().
 */
 void
 SoDragger::getTransformFast(SbMatrix & matrix, SbVec3f & translation, SbRotation & rotation, SbVec3f & scalefactor, SbRotation & scaleorientation, const SbVec3f & center)
 {
-  COIN_STUB();
+  SoDragger::workValuesIntoTransform(matrix, &translation, &rotation, &scalefactor, 
+                                     &scaleorientation, &center);
 }
 
 /*!
   \overload
+  Not implemented in Coin. We just forward the call to workValuesIntoTransform().
 */
 void
 SoDragger::getTransformFast(SbMatrix & matrix, SbVec3f & translation, SbRotation & rotation, SbVec3f & scalefactor, SbRotation & scaleorientation)
 {
-  COIN_STUB();
+  SoDragger::workValuesIntoTransform(matrix, &translation, &rotation, &scalefactor, 
+                                     &scaleorientation, NULL);
 }
 
 /*!
