@@ -117,15 +117,14 @@ SoGLCacheList::~SoGLCacheList()
 SbBool
 SoGLCacheList::call(SoGLRenderAction * action)
 {
-  // do a quick return if caching has been disabled for this cache
-  // list
-  if (THIS->numcaches == 0) return FALSE;
+  // do a quick return if there are no caches in the list
+  int n = THIS->itemlist.getLength();
+  if (n == 0) return FALSE;
 
   int i;
   SoState * state = action->getState();
   int context = SoGLCacheContextElement::get(state);
 
-  int n = THIS->itemlist.getLength();
 
   for (i = 0; i < n; i++) {
     SoGLRenderCache * cache = THIS->itemlist[i];
@@ -215,20 +214,33 @@ SoGLCacheList::close(SoGLRenderAction * action)
 
   SoState * state = action->getState();
 
+  // close open cache before accepting it or throwing it away
   if (THIS->opencache) {
     THIS->opencache->close();
-    THIS->itemlist.append(THIS->opencache);
     SoGLLazyElement::endCaching(state);            
-    THIS->opencache = NULL;
   }
   if (SoCacheElement::setInvalid(THIS->savedinvalid)) {
     // notify parent caches
     SoCacheElement::setInvalid(TRUE);
     THIS->numframesok = 0;
+    // just throw away the open cache, it's invalid
+    if (THIS->opencache) {
+      THIS->opencache->unref();
+      THIS->opencache = NULL;
+    }
   }
   else {
     THIS->numframesok++;
   }
+
+  // open cache is ok, add it to the cache list
+  if (THIS->opencache) {
+    THIS->itemlist.append(THIS->opencache);
+    THIS->opencache = NULL;
+  }
+
+  THIS->opencache = NULL;
+
   int bits = SoGLCacheContextElement::resetAutoCacheBits(state);
   SoGLCacheContextElement::setAutoCacheBits(state, bits|THIS->autocachebits);
   THIS->autocachebits = bits;
