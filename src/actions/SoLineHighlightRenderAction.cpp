@@ -42,7 +42,6 @@
 #include <Inventor/elements/SoLinePatternElement.h>
 #include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoPolygonOffsetElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
@@ -124,6 +123,7 @@ void
 SoLineHighlightRenderAction::apply(SoNode * node)
 {
   SoGLRenderAction::apply(node);
+
   if (this->hlVisible) {
     if (this->searchaction == NULL) {
       this->searchaction = new SoSearchAction;
@@ -261,19 +261,17 @@ SoLineHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * p
 
   SoState * state = this->getState();
   state->push();
-
+  
   SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
   SoDiffuseColorElement::set(state, NULL, 1, &color);
   SoLineWidthElement::set(state, this->linewidth);
   SoLinePatternElement::set(state, this->linepattern);
   SoTextureQualityElement::set(state, 0.0f);
-  SoPolygonOffsetElement::set(state, NULL, 1.0f, 1.0f, SoPolygonOffsetElement::FILLED, TRUE);
   SoDrawStyleElement::set(state, SoDrawStyleElement::LINES);
   SoOverrideElement::setLightModelOverride(state, NULL, TRUE);
   SoOverrideElement::setDiffuseColorOverride(state, NULL, TRUE);
   SoOverrideElement::setLineWidthOverride(state, NULL, TRUE);
   SoOverrideElement::setLinePatternOverride(state, NULL, TRUE);
-  SoOverrideElement::setPolygonOffsetOverride(state, NULL, TRUE);
   SoTextureOverrideElement::setQualityOverride(state, TRUE);
 
   for (i = 0; i < pathlist->getLength(); i++) {
