@@ -44,6 +44,10 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   \var SbBool SoFieldContainer::isBuiltIn
   FIXME: write doc
@@ -62,7 +66,7 @@ SoType SoFieldContainer::classTypeId = SoType::badType();
 */
 
 SoFieldContainer::SoFieldContainer(void)
-  : fieldData(), isBuiltIn(TRUE), donotify(TRUE)
+  : isBuiltIn(TRUE), donotify(TRUE)
 {
 }
 
@@ -414,20 +418,13 @@ SoFieldContainer::getIsBuiltIn(void) const
 
 
 /*!
-  Must be overloaded in subclasses which actually contains fields. The
-  default method returns \a NULL.
-
-  FIXME: implementation is not yet correct. 19990403 mortene.
+  Returns a pointer to the class-wide field data storage object
+  for this instance. If no fields are present, returns \c NULL.
  */
 const SoFieldData *
 SoFieldContainer::getFieldData(void) const
 {
-#if 0 // breaks SoGroup::readInstance(). 19990403 mortene.
-  if (this->fieldData.getNumFields() < 1) return NULL;
-  else return &this->fieldData;
-#else
-  return &this->fieldData;
-#endif
+  return NULL;
 }
 
 
@@ -533,7 +530,12 @@ SoFieldContainer::readInstance(SoInput * in, unsigned short /* flags */)
   }
 #endif // disabled
 
-  SbBool notbuiltin;
-  if (!this->fieldData.read(in, this, TRUE, notbuiltin)) return FALSE;
+  const SoFieldData * fd = this->getFieldData();
+  if (fd) {
+    SbBool notbuiltin;
+    // The "error on unknown field" is FALSE, in case we are a group
+    // node and hit a child name.
+    return fd->read(in, this, FALSE, notbuiltin);
+  }
   return TRUE;
 }

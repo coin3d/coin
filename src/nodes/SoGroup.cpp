@@ -107,16 +107,13 @@ SoGroup::getNumChildren() const
   FIXME: write function documentation
 */
 SbBool
-SoGroup::readInstance(SoInput * in, unsigned short /* flags */)
+SoGroup::readInstance(SoInput * in, unsigned short flags)
 {
-  SbName typeString;
-  // FIXME: cast-hack to compile. 19980915 mortene.
-  SoFieldData * fdata = (SoFieldData *)this->getFieldData();
-
   // FIXME: tmp disabled reading of not built in node types, as I need
   // to find out how to do this properly for both ascii and binary
   // formats (.iv and .wrl). 19990708 mortene.
 #if 0
+  SbName typeString;
   if (in->read(typeString, TRUE)) {
     if (typeString == "fields") {
       if (!fdata->readFieldTypes(in, this)) {
@@ -130,8 +127,9 @@ SoGroup::readInstance(SoInput * in, unsigned short /* flags */)
   }
 #endif
 
-  SbBool notbuiltin;
-  return (fdata->read(in, this, FALSE, notbuiltin) && this->readChildren(in));
+  // For nodes with fields inheriting SoGroup, the fields must come
+  // before the children, according to the file format specification.
+  return inherited::readInstance(in, flags) && this->readChildren(in);
 }
 
 /*!
@@ -164,7 +162,7 @@ SoGroup::readChildren(SoInput * in)
     }
   }
   else {
-#if 0 // new code
+#if 0 // new code -- not working yet. 19991231 mortene.
     SbBool done = FALSE;
     while (!done) {
       SoBase * child = NULL;

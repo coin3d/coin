@@ -678,10 +678,6 @@ SoNode::writeS(SoAction * const action, SoNode * const node)
 void
 SoNode::write(SoWriteAction * action)
 {
-  // Note: make sure this code is in sync with the code in
-  // SoSFNode::writeValue(). Any changes here need to be propagated to
-  // that method.
-
   SoOutput * out = action->getOutput();
   if (out->getStage() == SoOutput::COUNT_REFS) {
     this->addWriteReference(out, FALSE);
@@ -741,8 +737,8 @@ SoNode::getNodeId(void) const
 }
 
 /*!
-  This method is called from write() if we're in the actual writing pass
-  of the write action taking place. It dumps the node to the given output
+  This method is called from write() if the actual writing pass of the
+  write action is taking place. It dumps the node to the given output
   stream.
 */
 void
@@ -793,10 +789,9 @@ SoNode::getNextNodeId(void)
 
 /*!
   FIXME: write function documentation
-*/
+ */
 const SoFieldData **
 SoNode::getFieldDataPtr(void)
 {
-  COIN_STUB();
   return NULL;
 }

@@ -60,12 +60,13 @@ private:
 
 #define SO_NODE_SET_SF_ENUM_TYPE(_fieldname_, _enumtype_) \
   do { \
-    int _enum_num; \
-    const int * _enum_vals; \
-    const SbName * _enum_names; \
-    this->fieldData.getEnumData(SO__QUOTE(_enumtype_), \
-                                _enum_num, _enum_vals, _enum_names); \
-    this->_fieldname_.setEnums(_enum_num, _enum_vals, _enum_names); \
+    /* Don't need to worry about name clashes, as we're inside our own scope. */ \
+    int enum_num; \
+    const int * enum_vals; \
+    const SbName * enum_names; \
+    classfielddata->getEnumData(SO__QUOTE(_enumtype_), \
+                                enum_num, enum_vals, enum_names); \
+    this->_fieldname_.setEnums(enum_num, enum_vals, enum_names); \
   } while (FALSE)
 
 #endif // !__SOSFENUM_H__

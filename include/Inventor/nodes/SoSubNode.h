@@ -29,6 +29,11 @@
 private: \
   static unsigned int classinstances; \
   static SoType classTypeId; \
+  static const SoFieldData ** parentclassfielddata; \
+  static SoFieldData * classfielddata; \
+protected: \
+  static const SoFieldData ** getFieldDataPtr(void); \
+  virtual const SoFieldData * getFieldData(void) const; \
 public: \
   static SoType getClassTypeId(void); \
   virtual SoType getTypeId(void) const
@@ -36,12 +41,15 @@ public: \
 
 #define SO_NODE_HEADER(_class_) \
   SO_NODE_ABSTRACT_HEADER(_class_); \
+private: \
   static void * createInstance(void)
 
 
 #define SO_NODE_ABSTRACT_SOURCE(_class_) \
 unsigned int _class_::classinstances = 0; \
 SoType _class_::classTypeId = SoType::badType(); \
+const SoFieldData ** _class_::parentclassfielddata = NULL; \
+SoFieldData * _class_::classfielddata = NULL; \
  \
 SoType \
 _class_::getClassTypeId(void) \
@@ -54,11 +62,23 @@ _class_::getTypeId(void) const \
 { \
   return _class_::classTypeId; \
 } \
+ \
+const SoFieldData ** \
+_class_::getFieldDataPtr(void) \
+{ \
+  return (const SoFieldData **)(&_class_::classfielddata); \
+} \
+ \
+const SoFieldData * \
+_class_::getFieldData(void) const \
+{ \
+  return _class_::classfielddata; \
+}
 
 
 
 #define SO_NODE_SOURCE(_class_) \
-SO_NODE_ABSTRACT_SOURCE(_class_) \
+SO_NODE_ABSTRACT_SOURCE(_class_); \
  \
 void * \
 _class_::createInstance(void) \
@@ -76,7 +96,13 @@ _class_::createInstance(void) \
     _class_::classinstances++; \
     /* Catch attempts to use a node class which has not been initialized. */ \
     assert(_class_::classTypeId != SoType::badType()); \
-    /* Extensions classes from the application programmers should not be \
+    /* Initialize a fielddata container for the class only once. */ \
+    if (!_class_::classfielddata) { \
+      _class_::classfielddata = \
+        new SoFieldData(_class_::parentclassfielddata ? \
+                        *_class_::parentclassfielddata : NULL); \
+    } \
+    /* Extension classes from the application programmers should not be \
        considered native. This is important to get the export code to do \
        the Right Thing. */ \
     this->isBuiltIn = FALSE; \
@@ -86,44 +112,43 @@ _class_::createInstance(void) \
 #if defined(__SOLIB_INTERNAL__)
 #define SO_NODE_INTERNAL_CONSTRUCTOR(_class_) \
   do { \
-    _class_::classinstances++; \
-    /* Catch attempts to use a node class which has not been initialized. */ \
-    assert(_class_::classTypeId != SoType::badType()); \
+    SO_NODE_CONSTRUCTOR(_class_); \
+    this->isBuiltIn = TRUE; \
   } while (0)
 #endif // INTERNAL macro definition
 
 
-#define SO_NODE_INIT_CLASS(_class_, _parentclass_, _parentname_) \
+#define PRIVATE_COMMON_INIT_CODE(_class_, _classname_, _createfunc_, _parentclass_) \
   do { \
     /* Make sure we only initialize once. */ \
     assert(_class_::classTypeId == SoType::badType()); \
-    /* It's safe to use a temp variable here without fear of namespace */ \
-    /* collisions, due to the fact that we're in the do-while local scope. */ \
-    SoType parenttype = SoType::fromName(_parentname_); \
     /* Make sure superclass gets initialized before subclass. */ \
-    assert(parenttype != SoType::badType()); \
+    assert(_parentclass_::getClassTypeId() != SoType::badType()); \
  \
+    /* Set up entry in the type system. */ \
     _class_::classTypeId = \
-      SoType::createType(parenttype, SO__QUOTE(_class_), \
-                         &_class_::createInstance, \
+      SoType::createType(_parentclass_::getClassTypeId(), \
+                         _classname_, \
+                         _createfunc_, \
                          SoNode::nextActionMethodIndex++); \
+ \
+    /* Store parent's fielddata pointer for later use in the constructor. */ \
+    _class_::parentclassfielddata = _parentclass_::getFieldDataPtr(); \
+  } while (0)
+
+
+#define SO_NODE_INIT_CLASS(_class_, _parentclass_, _parentname_) \
+  do { \
+    const char * classname = SO__QUOTE(_class_); \
+    PRIVATE_COMMON_INIT_CODE(_class_, classname, &_class_::createInstance, _parentclass_); \
   } while (0)
 
 
 #if defined(__SOLIB_INTERNAL__)
 #define SO_NODE_INTERNAL_INIT_CLASS(_class_) \
   do { \
-    /* Make sure we only initialize once. */ \
-    assert(_class_::classTypeId == SoType::badType()); \
-    /* Make sure superclass gets initialized before subclass. */ \
-    assert(inherited::getClassTypeId() != SoType::badType()); \
- \
     const char * classname = SO__QUOTE(_class_); \
-    _class_::classTypeId = \
-      SoType::createType(inherited::getClassTypeId(), \
-                         &classname[2], \
-                         &_class_::createInstance, \
-                         SoNode::nextActionMethodIndex++); \
+    PRIVATE_COMMON_INIT_CODE(_class_, &classname[2], &_class_::createInstance, inherited); \
   } while (0)
 #endif // INTERNAL macro definition
 
@@ -131,42 +156,23 @@ _class_::createInstance(void) \
 
 #define SO_NODE_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_) \
   do { \
-    /* Make sure we only initialize once. */ \
-    assert(_class_::classTypeId == SoType::badType()); \
-    /* It's safe to use a temp variable here without fear of namespace */ \
-    /* collisions, due to the fact that we're in the do-while local scope. */ \
-    SoType parenttype = SoType::fromName(_parentname_); \
-    /* Make sure superclass gets initialized before subclass. */ \
-    assert(parenttype != SoType::badType()); \
- \
-    _class_::classTypeId = \
-      SoType::createType(parenttype, SO__QUOTE(_class_), \
-                         NULL, \
-                         SoNode::nextActionMethodIndex++); \
+    const char * classname = SO__QUOTE(_class_); \
+    PRIVATE_COMMON_INIT_CODE(_class_, classname, NULL, _parentclass_); \
   } while (0)
 
 
 #if defined(__SOLIB_INTERNAL__)
 #define SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(_class_) \
   do { \
-    /* Make sure we only initialize once. */ \
-    assert(_class_::classTypeId == SoType::badType()); \
-    /* Make sure superclass gets initialized before subclass. */ \
-    assert(inherited::getClassTypeId() != SoType::badType()); \
- \
     const char * classname = SO__QUOTE(_class_); \
-    _class_::classTypeId = \
-      SoType::createType(inherited::getClassTypeId(), \
-                         &classname[2], \
-                         NULL, \
-                         SoNode::nextActionMethodIndex++); \
+    PRIVATE_COMMON_INIT_CODE(_class_, &classname[2], NULL, inherited); \
   } while (0)
 #endif // INTERNAL macro definition
 
 
 #define SO_NODE_ADD_FIELD(_fieldname_, _defaultval_) \
 do { \
-  this->fieldData.addField(this, SO__QUOTE(_fieldname_), &this->_fieldname_);\
+  if (SO_NODE_IS_FIRST_INSTANCE()) classfielddata->addField(this, SO__QUOTE(_fieldname_), &this->_fieldname_);\
   this->_fieldname_.setValue _defaultval_;\
   this->_fieldname_.setContainer(this); \
   this->_fieldname_.setDefault(TRUE); \
@@ -174,7 +180,8 @@ do { \
 
 
 #define SO_NODE_DEFINE_ENUM_VALUE(_enumname_, _enumval_) \
-  this->fieldData.addEnumValue(SO__QUOTE(_enumname_), SO__QUOTE(_enumval_), \
+  classfielddata->addEnumValue(SO__QUOTE(_enumname_), \
+                               SO__QUOTE(_enumval_), \
                                _enumval_)
 
 #endif // !__SOSUBNODE_H__

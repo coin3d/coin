@@ -79,9 +79,6 @@ public:
                                      const SbBool copyConnections);
   static void copyDone(void);
 
-  // FIXME: hide this. 19990610 mortene.
-  SoFieldData fieldData;
-
 protected:
   SoFieldContainer(void);
   ~SoFieldContainer(void);

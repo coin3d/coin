@@ -306,7 +306,7 @@ SoSeparator::search(SoSearchAction * action)
   // Include this node in the search.
   inherited::search(action);
   if (action->isFound()) return;
-  
+
   SoSeparator::doAction(action);
 }
 
@@ -393,6 +393,6 @@ SoSeparator::cullTest(SoGLRenderAction * /* action */, int & /* cullResults */)
 SbBool
 SoSeparator::readInstance(SoInput * in, unsigned short flags)
 {
-  // FIXME: what else?
+  // FIXME: anything missing here?
   return inherited::readInstance(in, flags);
 }

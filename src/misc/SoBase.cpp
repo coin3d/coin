@@ -583,7 +583,7 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
   SbName name;
   SbBool result = in->read(name, TRUE);
   if (!result) {
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoBase::read", "hit EOF");
 #endif // debug
     return TRUE; // EOF, return TRUE with base==NULL
@@ -826,7 +826,7 @@ SoBase::readReference(SoInput * in, SoBase *& base)
 SbBool
 SoBase::readBase(SoInput * in, SbName & className, SoBase *& base)
 {
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoBase::readBase", "className: '%s'",
                          className.getString());
 #endif // debug

@@ -40,7 +40,7 @@ public:
   SoFieldData(int numfields);
   ~SoFieldData();
 
-  void addField(SoFieldContainer * defObject, const char * fieldName,
+  void addField(SoFieldContainer * base, const char * name,
                 const SoField * field);
 
   void overlay(SoFieldContainer * to, const SoFieldContainer * from,
