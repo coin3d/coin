@@ -237,10 +237,24 @@ glglue_resolve_envvar(const char * txt)
   return val ? atoi(val) : 0;
 }
 
+/* Returns whether or not COIN_GLGLUE_SILENCE_DRIVER_WARNINGS is set
+   to a value > 0. If so, all known driver bugs will just be silently
+   accepted and attempted worked around. */
+static int
+coin_glglue_silence_all_driver_warnings(void)
+{
+  static int d = -1;
+  if (d == -1) { d = glglue_resolve_envvar("COIN_GLGLUE_SILENCE_DRIVER_WARNINGS"); }
+  /* Note the inversion of the envvar value versus the return value. */
+  return (d > 0) ? 0 : 1;
+}
+
 /* Return value of COIN_GLGLUE_NO_RADEON_WARNING environment variable. */
 static int
 coin_glglue_radeon_warning(void)
 {
+  if (coin_glglue_silence_all_driver_warnings()) { return 0; }
+
   static int d = -1;
   if (d == -1) { d = glglue_resolve_envvar("COIN_GLGLUE_NO_RADEON_WARNING"); }
   /* Note the inversion of the envvar value versus the return value. */
@@ -251,6 +265,8 @@ coin_glglue_radeon_warning(void)
 static int
 coin_glglue_old_matrox_warning(void)
 {
+  if (coin_glglue_silence_all_driver_warnings()) { return 0; }
+
   static int d = -1;
   if (d == -1) { d = glglue_resolve_envvar("COIN_GLGLUE_NO_G400_WARNING"); }
   /* Note the inversion of the envvar value versus the return value. */
@@ -261,6 +277,8 @@ coin_glglue_old_matrox_warning(void)
 static int
 coin_glglue_old_elsa_warning(void)
 {
+  if (coin_glglue_silence_all_driver_warnings()) { return 0; }
+
   static int d = -1;
   if (d == -1) { d = glglue_resolve_envvar("COIN_GLGLUE_NO_ELSA_WARNING"); }
   /* Note the inversion of the envvar value versus the return value. */
@@ -271,8 +289,22 @@ coin_glglue_old_elsa_warning(void)
 static int
 coin_glglue_sun_expert3d_warning(void)
 {
+  if (coin_glglue_silence_all_driver_warnings()) { return 0; }
+
   static int d = -1;
   if (d == -1) { d = glglue_resolve_envvar("COIN_GLGLUE_NO_SUN_EXPERT3D_WARNING"); }
+  /* Note the inversion of the envvar value versus the return value. */
+  return (d > 0) ? 0 : 1;
+}
+
+/* Return value of COIN_GLGLUE_NO_TRIDENT_WARNING environment variable. */
+static int
+coin_glglue_trident_warning(void)
+{
+  if (coin_glglue_silence_all_driver_warnings()) { return 0; }
+
+  static int d = -1;
+  if (d == -1) { d = glglue_resolve_envvar("COIN_GLGLUE_NO_TRIDENT_WARNING"); }
   /* Note the inversion of the envvar value versus the return value. */
   return (d > 0) ? 0 : 1;
 }
@@ -928,6 +960,16 @@ glglue_resolve_symbols(cc_glglue * w)
 
 #undef PROC
 
+static SbBool
+glglue_check_trident_clampedge_bug(const char * vendor,
+                                   const char * renderer,
+                                   const char * version)
+{
+  return
+    (strcmp(vendor, "Trident") == 0) &&
+    (strcmp(renderer, "Blade XP/AGP") == 0) &&
+    (strcmp(version, "1.2.1") == 0);
+}
 
 /* Give warnings on known faulty drivers. */
 static void
@@ -1089,6 +1131,25 @@ glglue_check_driver(const char * vendor, const char * renderer,
 
     <mortene@sim.no>
   */
+  }
+
+  if (coin_glglue_trident_warning() &&
+      glglue_check_trident_clampedge_bug(vendor, renderer, version)) {
+    cc_debugerror_postwarning("glglue_check_driver",
+                              "This OpenGL driver (\"%s\" \"%s\" \"%s\") has "
+                              "a known problem: it doesn't support the "
+                              "GL_CLAMP_TO_EDGE texture wrapping mode. "
+                              "(This debug message can be turned off "
+                              "permanently by setting the environment variable"
+                              " COIN_GLGLUE_NO_TRIDENT_WARNING=1).",
+                              vendor, renderer, version);
+    /*
+      This problem manifests itself in the form of a glGetError()
+      reporting GL_INVALID_ENUM if GL_TEXTURE_WRAP_[S|T] is attempted
+      set to GL_CLAMP_TO_EDGE. GL_CLAMP_TO_EDGE was introduced with
+      OpenGL v1.2.0, and the driver reports v1.2.1, so it is supposed
+      to work.
+    */
   }
 }
 
@@ -1500,7 +1561,16 @@ cc_glglue_has_2d_proxy_textures(const cc_glglue * w)
 SbBool
 cc_glglue_has_texture_edge_clamp(const cc_glglue * w)
 {
+  static int buggytrident = -1;
+
   if (!glglue_allow_newer_opengl(w)) return FALSE;
+
+  if (buggytrident == -1) {
+    buggytrident = glglue_check_trident_clampedge_bug(w->vendorstr,
+                                                      w->rendererstr,
+                                                      w->versionstr);
+  }
+  if (buggytrident) { return FALSE; }
 
   return
     cc_glglue_glversion_matches_at_least(w, 1, 2, 0) ||
