@@ -33,6 +33,7 @@
 #ifdef HAVE_THREADS
 
 #include <Inventor/C/threads/mutex.h>
+#include <Inventor/C/threads/sync.h>
 
 #define CC_MUTEX_CONSTRUCT(_mymutex_) \
   _mymutex_ = (void*) cc_mutex_construct()
@@ -46,12 +47,20 @@
 #define CC_MUTEX_UNLOCK(_mymutex_) \
   cc_mutex_unlock((cc_mutex*) _mymutex_)
 
+#define CC_SYNC_BEGIN(_myid_) \
+  void * mydummysyncptr = cc_sync_begin((void*) _myid_)
+
+#define CC_SYNC_END(_myid_) \
+  cc_sync_end(mydummysyncptr)
+
 #else /* HAVE_THREADS */
 
 #define CC_MUTEX_CONSTRUCT(_mymutex_)
 #define CC_MUTEX_DESTRUCT(_mymutex_)
 #define CC_MUTEX_LOCK(_mymutex_)
 #define CC_MUTEX_UNLOCK(_mymutex_)
+#define CC_SYNC_BEGIN(_myid_)
+#define CC_SYNC_END(_myid_)
 
 #endif /* ! HAVE_THREADS */
 
