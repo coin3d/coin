@@ -39,8 +39,7 @@ static cc_hash * glyph2d_fonthash = NULL;
 */
 static void * glyph2d_fonthash_lock = NULL;
 
-
-/* See 'fontlib_wrapper' for a description */
+/* Set '#if 1' to enable debug output to stderr for tracking mutex locking. */
 #if 0
 #define GLYPH2D_MUTEX_LOCK(m) \
   do { \
@@ -73,7 +72,7 @@ cc_glyph2d_initialize()
   
   glyph2d_fonthash = cc_hash_construct(15, 0.75);
 
-  GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);  
+  GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
 }
 
 
