@@ -218,9 +218,9 @@ PrivateHeaders = \
 	$(top_srcdir)/include/Inventor/nodes/SoSubNodeP.h \
 	$(top_srcdir)/include/Inventor/nodes/SoUnknownNode.h \
 	$(top_srcdir)/include/Inventor/nodes/SoTextureScalePolicy.h \
-	$(top_srcdir)/include/Inventor/nodes/soshape_primdata.h \
-	$(top_srcdir)/include/Inventor/nodes/soshape_trianglesort.h \
-	$(top_srcdir)/include/Inventor/nodes/soshape_bigtexture.h 
+	$(top_srcdir)/src/nodes/soshape_primdata.h \
+	$(top_srcdir)/src/nodes/soshape_trianglesort.h \
+	$(top_srcdir)/src/nodes/soshape_bigtexture.h 
 	
 
 ##$ BEGIN TEMPLATE Make-Common(nodes)
