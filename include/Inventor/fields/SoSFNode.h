@@ -21,6 +21,7 @@
 #define __SOSFNODE_H__
 
 #include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoSubField.h>
 
 class SoNode;
 
@@ -28,46 +29,11 @@ class SoNode;
 class SoSFNode : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE SField(SoSFNode, SoNode *, SoNode *)
-private:
-  static SoType classTypeId;
+  SO_SFIELD_HEADER(SoSFNode, SoNode *, SoNode *);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
 
-  virtual void copyFrom(const SoField & field);
-  const SoSFNode & operator = (const SoSFNode & field);
-  virtual SbBool isSame(const SoField & field) const;
-public:
-  SoSFNode(void);
-  virtual ~SoSFNode(void);
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-public:
-  /*! Returns this field's value. */
-  SoNode * getValue(void) const
-    { this->evaluate(); return this->value; }
-  void setValue(SoNode * newvalue);
-  /*! Copy value from \a newvalue into this field. */
-  SoNode * operator = (SoNode * newvalue)
-    { this->setValue(newvalue); return this->value; }
-
-  int operator == (const SoSFNode & field) const;
-  /*! Returns \a TRUE if this field is not equal to \a field. */
-  int operator != (const SoSFNode & field) const
-    { return ! operator == (field); }
-
-protected:
-  /*! The value contained in the field. */
-  SoNode * value;
-//$ END TEMPLATE SField
-
-public:
   virtual void fixCopy(SbBool copyConnections);
   virtual SbBool referencesCopy(void) const;
 

@@ -121,6 +121,20 @@ SoSFBitMask::operator = (const SoSFBitMask & field)
 // *************************************************************************
 
 /*!
+  Constructor.
+ */
+SoSFBitMask::SoSFBitMask(void)
+{
+}
+
+/*!
+  Destructor.
+ */
+SoSFBitMask::~SoSFBitMask()
+{
+}
+
+/*!
   Does initialization common for all objects of the
   SoSFBitMask class. This includes setting up the
   type system, among other things.

@@ -21,49 +21,16 @@
 #define __SOSFUSHORT_H__
 
 #include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoSubField.h>
 
 
 class SoSFUShort : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE SField(SoSFUShort, unsigned short, const unsigned short)
-private:
-  static SoType classTypeId;
+  SO_SFIELD_HEADER(SoSFUShort, unsigned short, const unsigned short);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
-
-  virtual void copyFrom(const SoField & field);
-  const SoSFUShort & operator = (const SoSFUShort & field);
-  virtual SbBool isSame(const SoField & field) const;
-public:
-  SoSFUShort(void);
-  virtual ~SoSFUShort(void);
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-public:
-  /*! Returns this field's value. */
-  const unsigned short getValue(void) const
-    { this->evaluate(); return this->value; }
-  void setValue(const unsigned short newvalue);
-  /*! Copy value from \a newvalue into this field. */
-  const unsigned short operator = (const unsigned short newvalue)
-    { this->setValue(newvalue); return this->value; }
-
-  int operator == (const SoSFUShort & field) const;
-  /*! Returns \a TRUE if this field is not equal to \a field. */
-  int operator != (const SoSFUShort & field) const
-    { return ! operator == (field); }
-
-protected:
-  /*! The value contained in the field. */
-  unsigned short value;
-//$ END TEMPLATE SField
 
 private:
   virtual void convertTo(SoField * dest) const;

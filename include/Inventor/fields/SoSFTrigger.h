@@ -21,6 +21,7 @@
 #define __SOSFTRIGGER_H__
 
 #include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoSubField.h>
 
 class SoNotList;
 
@@ -28,43 +29,25 @@ class SoNotList;
 class SoSFTrigger : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE Field(SoSFTrigger)
-private:
-  static SoType classTypeId;
+  SO_SFIELD_CONSTRUCTOR_HEADER(SoSFTrigger);
+  SO_SFIELD_REQUIRED_HEADER(SoSFTrigger);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
 
-  virtual void copyFrom(const SoField & field);
-  const SoSFTrigger & operator = (const SoSFTrigger & field);
-  virtual SbBool isSame(const SoField & field) const;
-//$ END TEMPLATE Field
-//$ BEGIN TEMPLATE FieldConstructor(SoSFTrigger)
-public:
-  SoSFTrigger(void);
-  virtual ~SoSFTrigger(void);
-//$ END TEMPLATE FieldConstructor
-//$ BEGIN TEMPLATE SFieldRW()
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-//$ END TEMPLATE SFieldRW
-
-
-public:
   void setValue(void);
   void getValue(void) const;
 
-  int operator == (const SoSFTrigger & trigger) const;
-  int operator != (const SoSFTrigger & trigger) const;
+  int operator==(const SoSFTrigger & trigger) const;
+  int operator!=(const SoSFTrigger & trigger) const;
 
   virtual void startNotify(void);
   virtual void notify(SoNotList * list);
   virtual void touch(void);
+
+private:
+  virtual SbBool readValue(SoInput * in);
+  virtual void writeValue(SoOutput * out) const;
 };
 
 #endif // !__SOSFTRIGGER_H__

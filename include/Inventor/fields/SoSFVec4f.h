@@ -21,51 +21,17 @@
 #define __SOSFVEC4F_H__
 
 #include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbVec4f.h>
 
 class SoSFVec4f : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE SField(SoSFVec4f, SbVec4f, const SbVec4f &)
-private:
-  static SoType classTypeId;
+  SO_SFIELD_HEADER(SoSFVec4f, SbVec4f, const SbVec4f &);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
 
-  virtual void copyFrom(const SoField & field);
-  const SoSFVec4f & operator = (const SoSFVec4f & field);
-  virtual SbBool isSame(const SoField & field) const;
-public:
-  SoSFVec4f(void);
-  virtual ~SoSFVec4f(void);
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-public:
-  /*! Returns this field's value. */
-  const SbVec4f & getValue(void) const
-    { this->evaluate(); return this->value; }
-  void setValue(const SbVec4f & newvalue);
-  /*! Copy value from \a newvalue into this field. */
-  const SbVec4f & operator = (const SbVec4f & newvalue)
-    { this->setValue(newvalue); return this->value; }
-
-  int operator == (const SoSFVec4f & field) const;
-  /*! Returns \a TRUE if this field is not equal to \a field. */
-  int operator != (const SoSFVec4f & field) const
-    { return ! operator == (field); }
-
-protected:
-  /*! The value contained in the field. */
-  SbVec4f value;
-//$ END TEMPLATE SField
-
-public:
   void setValue(const float x, const float y, const float z, const float w);
   void setValue(const float xyzw[4]);
 

@@ -26,27 +26,10 @@
 class SoSFBitMask : public SoSFEnum {
   typedef SoSFEnum inherited;
 
-//$ BEGIN TEMPLATE SFieldDerived(SoSFBitMask, int)
-private:
-  static SoType classTypeId;
+  SO_SFIELD_DERIVED_HEADER(SoSFBitMask, int, int);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
-
-  virtual void copyFrom(const SoField & field);
-  const SoSFBitMask & operator = (const SoSFBitMask & field);
-  virtual SbBool isSame(const SoField & field) const;
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-public:
-  int operator = (const int newvalue)
-    { this->setValue(newvalue); return this->value; }
-//$ END TEMPLATE SFieldDerived
 
 protected:
   virtual SbBool findEnumValue(const SbName & name, int & val);

@@ -21,48 +21,15 @@
 #define __SOSFBOOL_H__
 
 #include <Inventor/fields/SoSField.h>
-
+#include <Inventor/fields/SoSubField.h>
 
 class SoSFBool : public SoSField {
   typedef SoSField inherited;
-//$ BEGIN TEMPLATE SField(SoSFBool, SbBool, const SbBool)
-private:
-  static SoType classTypeId;
+
+  SO_SFIELD_HEADER(SoSFBool, SbBool, const SbBool);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
-
-  virtual void copyFrom(const SoField & field);
-  const SoSFBool & operator = (const SoSFBool & field);
-  virtual SbBool isSame(const SoField & field) const;
-public:
-  SoSFBool(void);
-  virtual ~SoSFBool(void);
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-public:
-  /*! Returns this field's value. */
-  const SbBool getValue(void) const
-    { this->evaluate(); return this->value; }
-  void setValue(const SbBool newvalue);
-  /*! Copy value from \a newvalue into this field. */
-  const SbBool operator = (const SbBool newvalue)
-    { this->setValue(newvalue); return this->value; }
-
-  int operator == (const SoSFBool & field) const;
-  /*! Returns \a TRUE if this field is not equal to \a field. */
-  int operator != (const SoSFBool & field) const
-    { return ! operator == (field); }
-
-protected:
-  /*! The value contained in the field. */
-  SbBool value;
-//$ END TEMPLATE SField
 
 private:
   virtual void convertTo(SoField * dest) const;

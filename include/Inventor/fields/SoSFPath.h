@@ -21,6 +21,7 @@
 #define __SOSFPATH_H__
 
 #include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoSubField.h>
 
 class SoPath;
 class SoNotList;
@@ -28,46 +29,12 @@ class SoNotList;
 
 class SoSFPath : public SoSField {
   typedef SoSField inherited;
-//$ BEGIN TEMPLATE SField(SoSFPath, SoPath *, SoPath *)
-private:
-  static SoType classTypeId;
+
+  SO_SFIELD_HEADER(SoSFPath, SoPath *, SoPath *);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
 
-  virtual void copyFrom(const SoField & field);
-  const SoSFPath & operator = (const SoSFPath & field);
-  virtual SbBool isSame(const SoField & field) const;
-public:
-  SoSFPath(void);
-  virtual ~SoSFPath(void);
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-public:
-  /*! Returns this field's value. */
-  SoPath * getValue(void) const
-    { this->evaluate(); return this->value; }
-  void setValue(SoPath * newvalue);
-  /*! Copy value from \a newvalue into this field. */
-  SoPath * operator = (SoPath * newvalue)
-    { this->setValue(newvalue); return this->value; }
-
-  int operator == (const SoSFPath & field) const;
-  /*! Returns \a TRUE if this field is not equal to \a field. */
-  int operator != (const SoSFPath & field) const
-    { return ! operator == (field); }
-
-protected:
-  /*! The value contained in the field. */
-  SoPath * value;
-//$ END TEMPLATE SField
-
-public:
   virtual void notify(SoNotList * list);
   virtual void fixCopy(SbBool copyConnections);
   virtual SbBool referencesCopy(void) const;

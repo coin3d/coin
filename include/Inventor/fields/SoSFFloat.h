@@ -21,49 +21,16 @@
 #define __SOSFFLOAT_H__
 
 #include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoSubField.h>
 
 
 class SoSFFloat : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE SField(SoSFFloat, float, const float)
-private:
-  static SoType classTypeId;
+  SO_SFIELD_HEADER(SoSFFloat, float, const float);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
-
-  virtual void copyFrom(const SoField & field);
-  const SoSFFloat & operator = (const SoSFFloat & field);
-  virtual SbBool isSame(const SoField & field) const;
-public:
-  SoSFFloat(void);
-  virtual ~SoSFFloat(void);
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-public:
-  /*! Returns this field's value. */
-  const float getValue(void) const
-    { this->evaluate(); return this->value; }
-  void setValue(const float newvalue);
-  /*! Copy value from \a newvalue into this field. */
-  const float operator = (const float newvalue)
-    { this->setValue(newvalue); return this->value; }
-
-  int operator == (const SoSFFloat & field) const;
-  /*! Returns \a TRUE if this field is not equal to \a field. */
-  int operator != (const SoSFFloat & field) const
-    { return ! operator == (field); }
-
-protected:
-  /*! The value contained in the field. */
-  float value;
-//$ END TEMPLATE SField
 
 private:
   virtual void convertTo(SoField *dest) const;

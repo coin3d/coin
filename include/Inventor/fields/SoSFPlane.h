@@ -21,50 +21,17 @@
 #define __SOSFPLANE_H__
 
 #include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbPlane.h>
 
 
 class SoSFPlane : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE SField(SoSFPlane, SbPlane, const SbPlane &)
-private:
-  static SoType classTypeId;
+  SO_SFIELD_HEADER(SoSFPlane, SbPlane, const SbPlane &);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
-
-  virtual void copyFrom(const SoField & field);
-  const SoSFPlane & operator = (const SoSFPlane & field);
-  virtual SbBool isSame(const SoField & field) const;
-public:
-  SoSFPlane(void);
-  virtual ~SoSFPlane(void);
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-public:
-  /*! Returns this field's value. */
-  const SbPlane & getValue(void) const
-    { this->evaluate(); return this->value; }
-  void setValue(const SbPlane & newvalue);
-  /*! Copy value from \a newvalue into this field. */
-  const SbPlane & operator = (const SbPlane & newvalue)
-    { this->setValue(newvalue); return this->value; }
-
-  int operator == (const SoSFPlane & field) const;
-  /*! Returns \a TRUE if this field is not equal to \a field. */
-  int operator != (const SoSFPlane & field) const
-    { return ! operator == (field); }
-
-protected:
-  /*! The value contained in the field. */
-  SbPlane value;
-//$ END TEMPLATE SField
 
 private:
   virtual void convertTo(SoField * dest) const;

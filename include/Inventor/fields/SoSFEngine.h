@@ -21,51 +21,19 @@
 #define __SOSFENGINE_H__
 
 #include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoSubField.h>
 
 class SoEngine;
 
 
 class SoSFEngine : public SoSField {
   typedef SoSField inherited;
-//$ BEGIN TEMPLATE SField(SoSFEngine, SoEngine *, SoEngine *)
-private:
-  static SoType classTypeId;
+
+  SO_SFIELD_HEADER(SoSFEngine, SoEngine *, SoEngine *);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
 
-  virtual void copyFrom(const SoField & field);
-  const SoSFEngine & operator = (const SoSFEngine & field);
-  virtual SbBool isSame(const SoField & field) const;
-public:
-  SoSFEngine(void);
-  virtual ~SoSFEngine(void);
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-public:
-  /*! Returns this field's value. */
-  SoEngine * getValue(void) const
-    { this->evaluate(); return this->value; }
-  void setValue(SoEngine * newvalue);
-  /*! Copy value from \a newvalue into this field. */
-  SoEngine * operator = (SoEngine * newvalue)
-    { this->setValue(newvalue); return this->value; }
-
-  int operator == (const SoSFEngine & field) const;
-  /*! Returns \a TRUE if this field is not equal to \a field. */
-  int operator != (const SoSFEngine & field) const
-    { return ! operator == (field); }
-
-protected:
-  /*! The value contained in the field. */
-  SoEngine * value;
-//$ END TEMPLATE SField
-public:
   virtual void fixCopy(SbBool copyConnections);
   virtual SbBool referencesCopy(void) const;
 

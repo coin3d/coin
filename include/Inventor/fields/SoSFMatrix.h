@@ -21,52 +21,18 @@
 #define __SOSFMATRIX_H__
 
 #include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbMatrix.h>
 
 
 class SoSFMatrix : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE SField(SoSFMatrix, SbMatrix, const SbMatrix &)
-private:
-  static SoType classTypeId;
+  SO_SFIELD_HEADER(SoSFMatrix, SbMatrix, const SbMatrix &);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
 
-  virtual void copyFrom(const SoField & field);
-  const SoSFMatrix & operator = (const SoSFMatrix & field);
-  virtual SbBool isSame(const SoField & field) const;
-public:
-  SoSFMatrix(void);
-  virtual ~SoSFMatrix(void);
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-public:
-  /*! Returns this field's value. */
-  const SbMatrix & getValue(void) const
-    { this->evaluate(); return this->value; }
-  void setValue(const SbMatrix & newvalue);
-  /*! Copy value from \a newvalue into this field. */
-  const SbMatrix & operator = (const SbMatrix & newvalue)
-    { this->setValue(newvalue); return this->value; }
-
-  int operator == (const SoSFMatrix & field) const;
-  /*! Returns \a TRUE if this field is not equal to \a field. */
-  int operator != (const SoSFMatrix & field) const
-    { return ! operator == (field); }
-
-protected:
-  /*! The value contained in the field. */
-  SbMatrix value;
-//$ END TEMPLATE SField
-
-public:
   void setValue(const float a11, const float a12,
                 const float a13, const float a14,
 

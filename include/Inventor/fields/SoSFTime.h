@@ -21,50 +21,17 @@
 #define __SOSFTIME_H__
 
 #include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbTime.h>
 
 
 class SoSFTime : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE SField(SoSFTime, SbTime, const SbTime &)
-private:
-  static SoType classTypeId;
+  SO_SFIELD_HEADER(SoSFTime, SbTime, const SbTime &);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
-
-  virtual void copyFrom(const SoField & field);
-  const SoSFTime & operator = (const SoSFTime & field);
-  virtual SbBool isSame(const SoField & field) const;
-public:
-  SoSFTime(void);
-  virtual ~SoSFTime(void);
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-public:
-  /*! Returns this field's value. */
-  const SbTime & getValue(void) const
-    { this->evaluate(); return this->value; }
-  void setValue(const SbTime & newvalue);
-  /*! Copy value from \a newvalue into this field. */
-  const SbTime & operator = (const SbTime & newvalue)
-    { this->setValue(newvalue); return this->value; }
-
-  int operator == (const SoSFTime & field) const;
-  /*! Returns \a TRUE if this field is not equal to \a field. */
-  int operator != (const SoSFTime & field) const
-    { return ! operator == (field); }
-
-protected:
-  /*! The value contained in the field. */
-  SbTime value;
-//$ END TEMPLATE SField
 
 private:
   virtual void convertTo(SoField * dest) const;

@@ -21,52 +21,18 @@
 #define __SOSFENUM_H__
 
 #include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbString.h>
 
 
 class SoSFEnum : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE SField(SoSFEnum, int, int)
-private:
-  static SoType classTypeId;
+  SO_SFIELD_HEADER(SoSFEnum, int, int);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
 
-  virtual void copyFrom(const SoField & field);
-  const SoSFEnum & operator = (const SoSFEnum & field);
-  virtual SbBool isSame(const SoField & field) const;
-public:
-  SoSFEnum(void);
-  virtual ~SoSFEnum(void);
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-public:
-  /*! Returns this field's value. */
-  int getValue(void) const
-    { this->evaluate(); return this->value; }
-  void setValue(int newvalue);
-  /*! Copy value from \a newvalue into this field. */
-  int operator = (int newvalue)
-    { this->setValue(newvalue); return this->value; }
-
-  int operator == (const SoSFEnum & field) const;
-  /*! Returns \a TRUE if this field is not equal to \a field. */
-  int operator != (const SoSFEnum & field) const
-    { return ! operator == (field); }
-
-protected:
-  /*! The value contained in the field. */
-  int value;
-//$ END TEMPLATE SField
-
-public:
   void setValue(const SbName name);
   void setEnums(const int num, const int * vals, const SbName * names);
 

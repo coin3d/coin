@@ -21,52 +21,18 @@
 #define __SOSFNAME_H__
 
 #include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbName.h>
 
 
 class SoSFName : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE SField(SoSFName, SbName, const SbName)
-private:
-  static SoType classTypeId;
+  SO_SFIELD_HEADER(SoSFName, SbName, const SbName);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
 
-  virtual void copyFrom(const SoField & field);
-  const SoSFName & operator = (const SoSFName & field);
-  virtual SbBool isSame(const SoField & field) const;
-public:
-  SoSFName(void);
-  virtual ~SoSFName(void);
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-public:
-  /*! Returns this field's value. */
-  const SbName getValue(void) const
-    { this->evaluate(); return this->value; }
-  void setValue(const SbName newvalue);
-  /*! Copy value from \a newvalue into this field. */
-  const SbName operator = (const SbName newvalue)
-    { this->setValue(newvalue); return this->value; }
-
-  int operator == (const SoSFName & field) const;
-  /*! Returns \a TRUE if this field is not equal to \a field. */
-  int operator != (const SoSFName & field) const
-    { return ! operator == (field); }
-
-protected:
-  /*! The value contained in the field. */
-  SbName value;
-//$ END TEMPLATE SField
-
-public:
   void setValue(const char * const name);
 
 private:

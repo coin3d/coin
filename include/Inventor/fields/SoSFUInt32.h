@@ -21,49 +21,16 @@
 #define __SOSFUINT32_H__
 
 #include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoSubField.h>
 
 
 class SoSFUInt32 : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE SField(SoSFUInt32, uint32_t, const uint32_t)
-private:
-  static SoType classTypeId;
+  SO_SFIELD_HEADER(SoSFUInt32, uint32_t, const uint32_t);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
-
-  virtual void copyFrom(const SoField & field);
-  const SoSFUInt32 & operator = (const SoSFUInt32 & field);
-  virtual SbBool isSame(const SoField & field) const;
-public:
-  SoSFUInt32(void);
-  virtual ~SoSFUInt32(void);
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-public:
-  /*! Returns this field's value. */
-  const uint32_t getValue(void) const
-    { this->evaluate(); return this->value; }
-  void setValue(const uint32_t newvalue);
-  /*! Copy value from \a newvalue into this field. */
-  const uint32_t operator = (const uint32_t newvalue)
-    { this->setValue(newvalue); return this->value; }
-
-  int operator == (const SoSFUInt32 & field) const;
-  /*! Returns \a TRUE if this field is not equal to \a field. */
-  int operator != (const SoSFUInt32 & field) const
-    { return ! operator == (field); }
-
-protected:
-  /*! The value contained in the field. */
-  uint32_t value;
-//$ END TEMPLATE SField
 
 private:
   virtual void convertTo(SoField * dest) const;

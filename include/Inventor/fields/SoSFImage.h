@@ -21,52 +21,33 @@
 #define __SOSFIMAGE_H__
 
 #include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbVec2s.h>
 
 
 class SoSFImage : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE Field(SoSFImage)
-private:
-  static SoType classTypeId;
+  SO_SFIELD_CONSTRUCTOR_HEADER(SoSFImage);
+  SO_SFIELD_REQUIRED_HEADER(SoSFImage);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
 
-  virtual void copyFrom(const SoField & field);
-  const SoSFImage & operator = (const SoSFImage & field);
-  virtual SbBool isSame(const SoField & field) const;
-//$ END TEMPLATE Field
-//$ BEGIN TEMPLATE FieldConstructor(SoSFImage)
-public:
-  SoSFImage(void);
-  virtual ~SoSFImage(void);
-//$ END TEMPLATE FieldConstructor
-//$ BEGIN TEMPLATE SFieldRW()
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-//$ END TEMPLATE SFieldRW
-
-public:
   const unsigned char * getValue(SbVec2s & size, int & nc) const;
   void setValue(const SbVec2s & size, const int nc,
                 const unsigned char * const bytes);
 
-  int operator == (const SoSFImage & field) const;
-  /*! Returns \a TRUE if this field is not equal to \a field. */
-  int operator != (const SoSFImage & field) const
-    { return ! operator == (field); }
+  int operator==(const SoSFImage & field) const;
+  int operator!=(const SoSFImage & field) const { return ! operator == (field); }
 
   unsigned char * startEditing(SbVec2s & size, int & nc);
   void finishEditing(void);
 
 private:
+  virtual SbBool readValue(SoInput * in);
+  virtual void writeValue(SoOutput * out) const;
+
   SbVec2s imgdim;
   unsigned char * pixblock;
   int bytedepth;

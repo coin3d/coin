@@ -21,52 +21,18 @@
 #define __SOSFCOLOR_H__
 
 #include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbColor.h>
 
 
 class SoSFColor : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE SField(SoSFColor, SbColor, const SbColor &)
-private:
-  static SoType classTypeId;
+  SO_SFIELD_HEADER(SoSFColor, SbColor, const SbColor &);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
 
-  virtual void copyFrom(const SoField & field);
-  const SoSFColor & operator = (const SoSFColor & field);
-  virtual SbBool isSame(const SoField & field) const;
-public:
-  SoSFColor(void);
-  virtual ~SoSFColor(void);
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-public:
-  /*! Returns this field's value. */
-  const SbColor & getValue(void) const
-    { this->evaluate(); return this->value; }
-  void setValue(const SbColor & newvalue);
-  /*! Copy value from \a newvalue into this field. */
-  const SbColor & operator = (const SbColor & newvalue)
-    { this->setValue(newvalue); return this->value; }
-
-  int operator == (const SoSFColor & field) const;
-  /*! Returns \a TRUE if this field is not equal to \a field. */
-  int operator != (const SoSFColor & field) const
-    { return ! operator == (field); }
-
-protected:
-  /*! The value contained in the field. */
-  SbColor value;
-//$ END TEMPLATE SField
-
-public:
   void setValue(const SbVec3f & vec);
   void setValue(const float red, const float green, const float blue);
   void setValue(const float rgb[3]);

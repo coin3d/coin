@@ -21,52 +21,18 @@
 #define __SOSFROTATION_H__
 
 #include <Inventor/fields/SoSField.h>
+#include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbRotation.h>
 
 
 class SoSFRotation : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE SField(SoSFRotation, SbRotation, const SbRotation &)
-private:
-  static SoType classTypeId;
+  SO_SFIELD_HEADER(SoSFRotation, SbRotation, const SbRotation &);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
 
-  virtual void copyFrom(const SoField & field);
-  const SoSFRotation & operator = (const SoSFRotation & field);
-  virtual SbBool isSame(const SoField & field) const;
-public:
-  SoSFRotation(void);
-  virtual ~SoSFRotation(void);
-private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
-public:
-  /*! Returns this field's value. */
-  const SbRotation & getValue(void) const
-    { this->evaluate(); return this->value; }
-  void setValue(const SbRotation & newvalue);
-  /*! Copy value from \a newvalue into this field. */
-  const SbRotation & operator = (const SbRotation & newvalue)
-    { this->setValue(newvalue); return this->value; }
-
-  int operator == (const SoSFRotation & field) const;
-  /*! Returns \a TRUE if this field is not equal to \a field. */
-  int operator != (const SoSFRotation & field) const
-    { return ! operator == (field); }
-
-protected:
-  /*! The value contained in the field. */
-  SbRotation value;
-//$ END TEMPLATE SField
-
-public:
   void getValue(SbVec3f & axis, float & angle) const;
   void setValue(const float q0, const float q1, const float q2, const float q3);
   void setValue(const float q[4]);
