@@ -91,7 +91,7 @@ SoCullElement::push(SoState * state)
   coordinate system.
 */
 void
-SoCullElement::addPlanes(SoState * state, const SbPlane * planes, int numplanes)
+SoCullElement::addPlanes(SoState * state, const SbPlane * planes, const int numplanes)
 {
   SoCullElement * elem = (SoCullElement *)
     SoElement::getElement(state, classStackIndex);
