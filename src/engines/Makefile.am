@@ -96,6 +96,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoComposeVec4f.h \
 	$(top_srcdir)/include/Inventor/engines/SoComputeBoundingBox.h \
 	$(top_srcdir)/include/Inventor/engines/SoConcatenate.h \
+	$(top_srcdir)/include/Inventor/engines/SoConvertAll.h \
 	$(top_srcdir)/include/Inventor/engines/SoCounter.h \
 	$(top_srcdir)/include/Inventor/engines/SoDecomposeMatrix.h \
 	$(top_srcdir)/include/Inventor/engines/SoDecomposeRotation.h \
