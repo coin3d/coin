@@ -44,16 +44,25 @@ DEF centerballStripeActive Separator {
 ### Geometry definitions for the arrows ######################################
 
 DEF CENTERBALL_DOUBLEHEAD_ARROW Separator {
-   Coordinate3 { point [ 0 0.1 1, 0 -0.1  1 ] }
-   IndexedLineSet { coordIndex [ 0, 1, -1 ] }
+   Coordinate3 { point [ 0 0.1 1, 0 -0.1  1, 0 0.1 -1, 0 -0.1 -1 ] }
+   IndexedLineSet { coordIndex [ 0, 1, -1, 2, 3, -1 ] }
    
    Complexity { value 0.1 }
 
-   Translation { translation 0 0.12 1 }
-   DEF CENTERBALL_TRANSLATOR_HEAD Cone { height 0.05  bottomRadius 0.025 }
-   Translation { translation 0 -0.24 0 }
-   Rotation { rotation 1 0 0  3.14 }
-   USE CENTERBALL_TRANSLATOR_HEAD
+   Separator {
+     Translation { translation 0 0.12 1 }
+     DEF CENTERBALL_TRANSLATOR_HEAD Cone { height 0.05  bottomRadius 0.025 }
+     Translation { translation 0 -0.24 0 }
+     Rotation { rotation 1 0 0  3.14 }
+     USE CENTERBALL_TRANSLATOR_HEAD
+   }
+   Separator {
+     Translation { translation 0 0.12 -1 }
+     USE CENTERBALL_TRANSLATOR_HEAD
+     Translation { translation 0 -0.24 0 }
+     Rotation { rotation 1 0 0  3.14 }
+     USE CENTERBALL_TRANSLATOR_HEAD
+   }
 }
 
 DEF CENTERBALL_AXIS_CROSS Separator {
