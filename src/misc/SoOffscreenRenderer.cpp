@@ -179,6 +179,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoCullElement.h>
+#include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/tidbits.h>
 
@@ -246,6 +247,7 @@ public:
   // Return FALSE if the necessary resource for rendering are not
   // available.
   virtual SbBool makeContextCurrent(uint32_t contextid) = 0;
+  virtual void unmakeContextCurrent(void) = 0;
 
   virtual unsigned char * getBuffer(void) = 0;
 
@@ -274,12 +276,39 @@ public:
      return this->buffersize;
   }
 
-  // Will be called right after a render operation has taken
-  // place. Default method does nothing.
-  virtual void postRender(void) { }
-
 protected:
   SbVec2s buffersize;
+
+private:
+  SbList <uint32_t> contextidused;
+
+public:
+  // add an id to the list of id used for the current context
+  void addContextId(const uint32_t id) {
+    if (this->contextidused.find(id) == -1) {
+      this->contextidused.append(id);
+    }
+  }
+  // notify SoContextHandler about destruction
+  void destructingContext(void) {
+    if (this->contextidused.getLength()) {
+      // just use one of the context ids. 
+      this->makeContextCurrent(this->contextidused[0]);
+      for (int i = 0; i < this->contextidused.getLength(); i++) {
+        SoContextHandler::destructingContext(this->contextidused[i]);
+      }
+      this->contextidused.truncate(0);
+      this->unmakeContextCurrent();
+    }
+  }
+
+  void postRender(void)  {
+    SbVec2s size = this->getSize();
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
+                 this->getBuffer());
+    glPixelStorei(GL_PACK_ALIGNMENT, 4);
+  }
 };
 
 
@@ -373,6 +402,9 @@ SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
 */
 SoOffscreenRenderer::~SoOffscreenRenderer()
 {
+  if (PRIVATE(this)->internaldata) {
+    PRIVATE(this)->internaldata->destructingContext();
+  }
   delete [] PRIVATE(this)->buffer;
   if(PRIVATE(this)->mustusesubscreens) delete [] PRIVATE(this)->subscreen;
   delete PRIVATE(this)->internaldata;
@@ -650,6 +682,10 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     return FALSE;
   }
 
+  // contextid is the id used when rendering
+  uint32_t contextid = this->renderaction->getCacheContext();
+  // oldcontext is used to restore the context id if the render action
+  // is not allocated by us.
   uint32_t oldcontext = this->renderaction->getCacheContext();
 
   if (!this->internaldata->makeContextCurrent(oldcontext)) {
@@ -677,7 +713,8 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
                0.0f);
 
   if (!this->didallocaction) {
-    this->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
+    contextid = SoGLCacheContextElement::getUniqueCacheContext();
+    this->renderaction->setCacheContext(contextid);
   }
 
   // Allocate target buffer
@@ -732,13 +769,17 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 
     this->internaldata->postRender();
     this->convertBuffer();
-
   }
+
+  this->internaldata->unmakeContextCurrent();
+  // add contextid to the list of contextids used. If the user has set
+  // the GLRenderAction, we might use several contextids in the same
+  // context.
+  this->internaldata->addContextId(contextid);
 
   if (!this->didallocaction) {
     this->renderaction->setCacheContext(oldcontext);
   }
-
 
   return TRUE;
 }

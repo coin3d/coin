@@ -43,10 +43,9 @@ public:
   static int buildGLAttrs(int * attrs, int trynum);
   virtual void setBufferSize(const SbVec2s & size);
   virtual SbBool makeContextCurrent(uint32_t contextid);
+  virtual void unmakeContextCurrent(void);
   virtual unsigned char * getBuffer(void);
   static SbVec2f getResolution(void);
-
-  virtual void postRender(void);
 
 private:
   static Display * getDisplay(void);
@@ -296,45 +295,36 @@ SoOffscreenGLXData::getBuffer(void)
 }
 
 void
-SoOffscreenGLXData::postRender(void)
+SoOffscreenGLXData::unmakeContextCurrent(void)
 {
-  SbVec2s size = this->getSize();
-
-  if (this->context && this->buffer) {
-    glPixelStorei(GL_PACK_ALIGNMENT, 1);
-    glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
-                 this->buffer);
-    glPixelStorei(GL_PACK_ALIGNMENT, 4);
-
+#if DEBUG_GLXCONTEXT_HANDLING // debug
+  SoDebugError::postInfo("SoOffscreenGLXData::postRender",
+                         "releasing context (glxMakeCurrent(d, None, NULL))");
+#endif // debug
+  (void) glXMakeCurrent(SoOffscreenGLXData::getDisplay(), None, NULL); // release
+    
+  // The previous context is stored and reset to make it possible
+  // to use an SoOffscreenRenderer from for instance an SoCallback
+  // node callback during SoGLRenderAction traversal, without the
+  // need for any extra book-keeping on the application side.
+  
+  if (this->storedcontext && this->storeddrawable && this->storeddisplay) {
 #if DEBUG_GLXCONTEXT_HANDLING // debug
     SoDebugError::postInfo("SoOffscreenGLXData::postRender",
-                           "releasing context (glxMakeCurrent(d, None, NULL))");
-#endif // debug
-    (void) glXMakeCurrent(SoOffscreenGLXData::getDisplay(), None, NULL); // release
-
-    // The previous context is stored and reset to make it possible
-    // to use an SoOffscreenRenderer from for instance an SoCallback
-    // node callback during SoGLRenderAction traversal, without the
-    // need for any extra book-keeping on the application side.
-
-    if (this->storedcontext && this->storeddrawable && this->storeddisplay) {
-#if DEBUG_GLXCONTEXT_HANDLING // debug
-      SoDebugError::postInfo("SoOffscreenGLXData::postRender",
-                             "restoring context %p to be current "
-                             "(drawable==%p, display==%p)",
-                             this->storedcontext,
-                             this->storeddrawable,
-                             this->storeddisplay);
+                           "restoring context %p to be current "
+                           "(drawable==%p, display==%p)",
+                           this->storedcontext,
+                           this->storeddrawable,
+                           this->storeddisplay);
 #endif // debug
 
-      // FIXME: this causes a crash for the Mesa version 3.4.2 that
-      // comes with XFree86 v4, on the third invocation after two
-      // successful runs first. This is _bad_. 20020729 mortene.
-      //
-      // UPDATE: this might be our bug, and could be fixed
-      // now -- test. 20020802 mortene.
-      (void) glXMakeCurrent(this->storeddisplay, this->storeddrawable,
-                            this->storedcontext);
-    }
+    // FIXME: this causes a crash for the Mesa version 3.4.2 that
+    // comes with XFree86 v4, on the third invocation after two
+    // successful runs first. This is _bad_. 20020729 mortene.
+    //
+    // UPDATE: this might be our bug, and could be fixed
+    // now -- test. 20020802 mortene.
+    (void) glXMakeCurrent(this->storeddisplay, this->storeddrawable,
+                          this->storedcontext);
   }
 }

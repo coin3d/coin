@@ -36,8 +36,8 @@ public:
   static SbVec2f getResolution(void);
   virtual void setBufferSize(const SbVec2s & size);
   virtual SbBool makeContextCurrent(uint32_t contextid);
+  virtual void unmakeContextCurrent(void);
   virtual unsigned char * getBuffer(void);
-  virtual void postRender(void);
 
 private:
   unsigned char * buffer;
@@ -158,25 +158,16 @@ SoOffscreenAGLData::getBuffer(void)
   return this->buffer;
 }
 
-void 
-SoOffscreenAGLData::postRender(void) 
-{
-  SbVec2s size = this->getSize();
+void
+SoOffscreenAGLData::unmakeContextCurrent(void)
+{   
+  // The previous context is stored and reset to make it possible
+  // to use an SoOffscreenRenderer from for instance an SoCallback
+  // node callback during SoGLRenderAction traversal, without the
+  // need for any extra book-keeping on the application side.
   
-  if (this->context && this->buffer) {
-    glPixelStorei(GL_PACK_ALIGNMENT, 1);
-    glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
-                 this->buffer);
-    glPixelStorei(GL_PACK_ALIGNMENT, 4);
-    
-    // The previous context is stored and reset to make it possible
-    // to use an SoOffscreenRenderer from for instance an SoCallback
-    // node callback during SoGLRenderAction traversal, without the
-    // need for any extra book-keeping on the application side.
-    
-    if (this->storedcontext && this->storeddrawable) {
-      aglSetDrawable(storedcontext, storeddrawable);
-      aglSetCurrentContext(storedcontext);
-    }
+  if (this->storedcontext && this->storeddrawable) {
+    aglSetDrawable(storedcontext, storeddrawable);
+    aglSetCurrentContext(storedcontext);
   }
 }
