@@ -473,6 +473,81 @@ STUFF TO FIX IN COIN
     has. Shouldn't take more than ~ 1 man-week to fix properly,
     including full configure/build integration.
 
+    Here's a summary I wrote for Kyrah about this task, interspersed
+    with a couple of specific bug-reports on QGL:
+
+    ----8<---- [snip] -----------8<---- [snip] -------
+
+    A "first cut" would be fairly quick to do:
+
+        * Scramble together all QGL-related code for all platforms and
+          more or less dump it into SoQt/src/Inventor/Qt/widgets/QGL/.
+
+        * Merge it into the configure/build setup, so Mac vs Win vs
+          X11 sourcecode is picked when applicable.
+
+        * Rename classes in a way that avoids them crashing with the
+          "real" QGL namespace, to avoid linker problems for
+          clients.
+
+          (But we should do this in a non-intrusive way, so it's
+          straightforward to diff against new Qt/QGL releases to
+          incorporate TT's fixes.)
+
+        * Anything else?
+
+    Then later:
+
+        * Fix Mac issues.
+
+        * Fix other known bugs where we have littered work-arounds in
+          our SoQt-code.
+
+        * Fix the context-silliness problem reported by François
+          Painchaud:
+
+            void QGLContext::makeCurrent()
+            {
+                if ( currentCtx )
+                {
+                    if ( currentCtx == this )    // already current
+                        return;
+                    currentCtx->doneCurrent();
+                }
+                // etc.
+
+            "..where currentCtx is a static data member used to cache
+             the current QGLContext. Because Qt is not aware of any
+             OpenGL graphics context done externally, [...]
+             QGLContext::makeCurrent() does not update the graphics
+             context when it should."
+
+          And another problem with this reported by pederb:
+
+            "I have a [showstopper]. QGLContext is not thread safe so
+             it's impossible to use Qt/SoQt when running
+             multithread/multipipe applications.
+
+             This is caused by the static currentCtx sillyness that Qt
+             is using.  currentCtx should probably be removed from
+             QGLContext. It's a silly optimization. If the current
+             QGLContext is needed this should be handled by a (thread
+             local) hash table or something."
+
+
+        * Make it possible to take over the job now handled (poorly)
+          by QGLContext::chooseContext() -- Peder has a showstopper
+          problem with this for Geo2k on Windows (chooseContext()
+          picks a visual with 8-bit Z-buffer).
+
+        * Improve overall design, throw out the stuff we have no use
+          for.
+
+        * Collect the common parts that would be possible to reuse for
+          the other So*-toolkits.
+
+    ----8<---- [snip] -----------8<---- [snip] -------
+
 
 026 WWW-interface on Coin / SoWin / SoQt builds.
     2002-12-18  Morten Eriksen  <mortene@sim.no>
