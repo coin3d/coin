@@ -514,9 +514,6 @@ if $sim_cv_netinet_in_h; then
     [Define if you have the <netinet/in.h> header file.])
 fi
 
-# headers used on Mac OS X
-AC_CHECK_HEADERS([AGL/agl.h Carbon/Carbon.h])
-
 # For Inventor/system/inttypes.h.in.
 #
 # Note: this assumes AC_CHECK_HEADERS(sys/types.h stdint.h) has been done.
@@ -1437,7 +1434,6 @@ elif $sim_ac_build_library; then
   # Mac OS X 10.2 needs some additional tweaks (see also src/Makefile.am)
   if $sim_ac_macosx_10_2; then
     COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS -L/usr/lib/gcc/darwin/3.1/private/"
-    LIBS="$LIBS -lgcc"
   fi
 
   if $sim_ac_framework; then :; else
@@ -1560,7 +1556,12 @@ case "$host_os" in
     esac
     ;;
   darwin*)
-    if test "$CXX" = c++; then ac_coin_unknown_platform=false; fi
+    case "$CXX" in
+      c++ | g++)
+        ac_coin_untested_platform=false
+        ac_coin_not_sim_platform=false
+      ;;
+    esac
     ;;
   beos)
     case "$host_cpu" in
