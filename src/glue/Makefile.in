@@ -130,6 +130,8 @@ coin_configure_date = @coin_configure_date@
 coin_html_dir = @coin_html_dir@
 coin_man_dir = @coin_man_dir@
 coin_src_dir = @coin_src_dir@
+coin_w32_build_dir = @coin_w32_build_dir@
+coin_w32_src_dir = @coin_w32_src_dir@
 htmldir = @htmldir@
 install_sh = @install_sh@
 nop = @nop@
@@ -141,10 +143,9 @@ sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 RegularSources = \
-	gl.c \
-	gl_wgl.c gl_wgl.h gl_nsgl.c gl_nsgl.h \
-	gl_glx.c gl_glx.h \
 	dl.c \
+	gl.c \
+	gl_wgl.c gl_nsgl.c gl_glx.c \
 	GLUWrapper.c \
 	simage_wrapper.c \
 	openal_wrapper.c
@@ -157,9 +158,12 @@ LinkHackSources = \
 # Header installation is controlled from include/Inventor/C/glue/Makefile.am.
 PublicHeaders = 
 PrivateHeaders = \
-	GLUWrapper.h \
-	simage_wrapper.h \
-	openal_wrapper.h
+	../../include/Inventor/C/glue/gl_wgl.h \
+	../../include/Inventor/C/glue/gl_glx.h \
+	../../include/Inventor/C/glue/gl_nsgl.h \
+	../../include/Inventor/C/glue/GLUWrapper.h \
+	../../include/Inventor/C/glue/simage_wrapper.h \
+	../../include/Inventor/C/glue/openal_wrapper.h
 
 
 
@@ -215,9 +219,9 @@ LIBRARIES = $(noinst_LIBRARIES)
 glue_lst_AR = $(AR) cru
 glue_lst_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_glue_lst_OBJECTS = all-c.$(OBJEXT)
-@HACKING_COMPACT_BUILD_FALSE@am_glue_lst_OBJECTS = gl.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	gl_wgl.$(OBJEXT) gl_nsgl.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	gl_glx.$(OBJEXT) dl.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@am_glue_lst_OBJECTS = dl.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	gl.$(OBJEXT) gl_wgl.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	gl_nsgl.$(OBJEXT) gl_glx.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	GLUWrapper.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	openal_wrapper.$(OBJEXT)
@@ -227,8 +231,8 @@ LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libglue_la_LDFLAGS =
 libglue_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_libglue_la_OBJECTS = all-c.lo
-@HACKING_COMPACT_BUILD_FALSE@am_libglue_la_OBJECTS = gl.lo gl_wgl.lo \
-@HACKING_COMPACT_BUILD_FALSE@	gl_nsgl.lo gl_glx.lo dl.lo \
+@HACKING_COMPACT_BUILD_FALSE@am_libglue_la_OBJECTS = dl.lo gl.lo \
+@HACKING_COMPACT_BUILD_FALSE@	gl_wgl.lo gl_nsgl.lo gl_glx.lo \
 @HACKING_COMPACT_BUILD_FALSE@	GLUWrapper.lo simage_wrapper.lo \
 @HACKING_COMPACT_BUILD_FALSE@	openal_wrapper.lo
 libglue_la_OBJECTS = $(am_libglue_la_OBJECTS)
@@ -237,8 +241,8 @@ libglue@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_libglue@SUFFIX@LINKHACK_la_OBJECTS = \
 @HACKING_COMPACT_BUILD_TRUE@	all-c.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libglue@SUFFIX@LINKHACK_la_OBJECTS = \
-@HACKING_COMPACT_BUILD_FALSE@	gl.lo gl_wgl.lo gl_nsgl.lo \
-@HACKING_COMPACT_BUILD_FALSE@	gl_glx.lo dl.lo GLUWrapper.lo \
+@HACKING_COMPACT_BUILD_FALSE@	dl.lo gl.lo gl_wgl.lo gl_nsgl.lo \
+@HACKING_COMPACT_BUILD_FALSE@	gl_glx.lo GLUWrapper.lo \
 @HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.lo \
 @HACKING_COMPACT_BUILD_FALSE@	openal_wrapper.lo
 libglue@SUFFIX@LINKHACK_la_OBJECTS = \
