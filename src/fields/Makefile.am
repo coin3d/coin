@@ -181,7 +181,7 @@ EXTRA_fields_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 fields.lst: Makefile $(fields_lst_OBJECTS)
 	@echo "Linking fields.lst..."; \
-	rm -f $@; \
+	rm -f $@; touch $@; \
 	for i in $(fields_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libfieldsincHEADERS: $(libfieldsinc_HEADERS)

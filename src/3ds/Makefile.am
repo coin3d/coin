@@ -73,7 +73,7 @@ EXTRA_3ds_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 3ds.lst: Makefile $(3ds_lst_OBJECTS)
 	@echo "Linking 3ds.lst..."; \
-	rm -f $@; \
+	rm -f $@; touch $@; \
 	for i in $(3ds_lst_OBJECTS); do echo $$i >>$@; done
 
 install-lib3dsincHEADERS: $(lib3dsinc_HEADERS)

@@ -69,7 +69,7 @@ EXTRA_glue_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 glue.lst: Makefile $(glue_lst_OBJECTS)
 	@echo "Linking glue.lst..."; \
-	rm -f $@; \
+	rm -f $@; touch $@; \
 	for i in $(glue_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libglueincHEADERS: $(libglueinc_HEADERS)

@@ -259,7 +259,7 @@ EXTRA_elements_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 elements.lst: Makefile $(elements_lst_OBJECTS)
 	@echo "Linking elements.lst..."; \
-	rm -f $@; \
+	rm -f $@; touch $@; \
 	for i in $(elements_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libelementsincHEADERS: $(libelementsinc_HEADERS)

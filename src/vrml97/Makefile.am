@@ -201,7 +201,7 @@ EXTRA_vrml97_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 vrml97.lst: Makefile $(vrml97_lst_OBJECTS)
 	@echo "Linking vrml97.lst..."; \
-	rm -f $@; \
+	rm -f $@; touch $@; \
 	for i in $(vrml97_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libvrml97incHEADERS: $(libvrml97inc_HEADERS)

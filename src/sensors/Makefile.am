@@ -87,7 +87,7 @@ EXTRA_sensors_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 sensors.lst: Makefile $(sensors_lst_OBJECTS)
 	@echo "Linking sensors.lst..."; \
-	rm -f $@; \
+	rm -f $@; touch $@; \
 	for i in $(sensors_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libsensorsincHEADERS: $(libsensorsinc_HEADERS)

@@ -85,7 +85,7 @@ EXTRA_projectors_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 projectors.lst: Makefile $(projectors_lst_OBJECTS)
 	@echo "Linking projectors.lst..."; \
-	rm -f $@; \
+	rm -f $@; touch $@; \
 	for i in $(projectors_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libprojectorsincHEADERS: $(libprojectorsinc_HEADERS)

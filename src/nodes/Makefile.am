@@ -288,7 +288,7 @@ EXTRA_nodes_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 nodes.lst: Makefile $(nodes_lst_OBJECTS)
 	@echo "Linking nodes.lst..."; \
-	rm -f $@; \
+	rm -f $@; touch $@; \
 	for i in $(nodes_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libnodesincHEADERS: $(libnodesinc_HEADERS)

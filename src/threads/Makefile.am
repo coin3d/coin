@@ -92,7 +92,7 @@ EXTRA_threads_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 threads.lst: Makefile $(threads_lst_OBJECTS)
 	@echo "Linking threads.lst..."; \
-	rm -f $@; \
+	rm -f $@; touch $@; \
 	for i in $(threads_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libthreadsincHEADERS: $(libthreadsinc_HEADERS)

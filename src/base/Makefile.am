@@ -159,7 +159,7 @@ EXTRA_base_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 base.lst: Makefile $(base_lst_OBJECTS)
 	@echo "Linking base.lst..."; \
-	rm -f $@; \
+	rm -f $@; touch $@; \
 	for i in $(base_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libbaseincHEADERS: $(libbaseinc_HEADERS)

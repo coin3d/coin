@@ -57,7 +57,7 @@ EXTRA_-xxx-_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 -xxx-.lst: Makefile $(-xxx-_lst_OBJECTS)
 	@echo "Linking -xxx-.lst..."; \
-	rm -f $@; \
+	rm -f $@; touch $@; \
 	for i in $(-xxx-_lst_OBJECTS); do echo $$i >>$@; done
 
 install-lib-xxx-incHEADERS: $(lib-xxx-inc_HEADERS)

@@ -74,7 +74,7 @@ EXTRA_errors_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 errors.lst: Makefile $(errors_lst_OBJECTS)
 	@echo "Linking errors.lst..."; \
-	rm -f $@; \
+	rm -f $@; touch $@; \
 	for i in $(errors_lst_OBJECTS); do echo $$i >>$@; done
 
 install-liberrorsincHEADERS: $(liberrorsinc_HEADERS)
