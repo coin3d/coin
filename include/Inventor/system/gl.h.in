@@ -526,4 +526,28 @@
 /*** GLU enums, end ***************************************************/
 /**********************************************************************/
 
+/* WGL enums that might not be available on the system. */
+
+#ifndef WGL_COLOR_BITS_ARB
+#define WGL_COLOR_BITS_ARB 0x2014
+#endif /* WGL_COLOR_BITS_ARB */
+#ifndef WGL_ALPHA_BITS_ARB
+#define WGL_ALPHA_BITS_ARB 0x201B
+#endif /* WGL_ALPHA_BITS_ARB */
+#ifndef WGL_DEPTH_BITS_ARB
+#define WGL_DEPTH_BITS_ARB 0x2022
+#endif /* WGL_DEPTH_BITS_ARB */
+#ifndef WGL_DRAW_TO_PBUFFER_ARB
+#define WGL_DRAW_TO_PBUFFER_ARB 0x202D
+#endif /* WGL_DRAW_TO_PBUFFER_ARB */
+#ifndef WGL_PBUFFER_WIDTH_ARB
+#define WGL_PBUFFER_WIDTH_ARB 0x2034
+#endif /* WGL_PBUFFER_WIDTH_ARB */
+#ifndef WGL_PBUFFER_HEIGHT_ARB
+#define WGL_PBUFFER_HEIGHT_ARB 0x2035
+#endif /* WGL_PBUFFER_HEIGHT_ARB */
+
+/*** WGL enums, end ***************************************************/
+/**********************************************************************/
+
 #endif /* ! COIN_GL_H */
