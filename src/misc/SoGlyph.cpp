@@ -360,6 +360,13 @@ SoGlyph_cleanup(void)
 const SoGlyph *
 SoGlyph::getGlyph(const char character, const SbName & font)
 {
+  // FIXME: the API and implementation of this class isn't consistent
+  // with regard to the paraneters and variabls that are glyph codes
+  // -- some places they are "char", other places "int", some places
+  // signed, other places unsigned. Should audit and fix as much as
+  // possible without breaking API and ABI compatibility. *sigh*
+  // 20030611 mortene.
+
   // Similar code in start of getGlyph(..., state) - keep in sync.
   if (SoGlyph_mutex == NULL) {
     CC_MUTEX_CONSTRUCT(SoGlyph_mutex);
