@@ -29,15 +29,15 @@
 
 class SbMutex {
 public:
-  SbMutex(void) { this->mutex = ccb_mutex_construct(); }
-  ~SbMutex(void) { ccb_mutex_destruct(this->mutex); }
+  SbMutex(void) { this->mutex = cc_mutex_construct(); }
+  ~SbMutex(void) { cc_mutex_destruct(this->mutex); }
   
-  SbBool lock(void) { return ccb_mutex_lock(this->mutex); }
-  SbBool tryLock(void) { return ccb_mutex_try_lock(this->mutex); }
-  SbBool unlock(void) { return ccb_mutex_unlock(this->mutex); }
+  SbBool lock(void) { return cc_mutex_lock(this->mutex); }
+  SbBool tryLock(void) { return cc_mutex_try_lock(this->mutex); }
+  SbBool unlock(void) { return cc_mutex_unlock(this->mutex); }
 
 private:
-  ccb_mutex * mutex;
+  cc_mutex * mutex;
 };
 
 // *************************************************************************

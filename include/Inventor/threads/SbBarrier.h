@@ -28,13 +28,13 @@
 
 class SbBarrier {
 public:
-  SbBarrier(unsigned int count) { this->barrier = ccb_barrier_construct(count); }
-  ~SbBarrier(void) { ccb_barrier_destruct(this->barrier); }
+  SbBarrier(unsigned int count) { this->barrier = cc_barrier_construct(count); }
+  ~SbBarrier(void) { cc_barrier_destruct(this->barrier); }
 
-  int enter(void) { return ccb_barrier_enter(this->barrier); }
+  int enter(void) { return cc_barrier_enter(this->barrier); }
 
 private:
-  ccb_barrier * barrier;
+  cc_barrier * barrier;
 };
 
 // *************************************************************************

@@ -30,19 +30,19 @@
 
 class SbCondVar {
 public:
-  SbCondVar(void) { this->condvar = ccb_condvar_construct(); }
-  ~SbCondVar(void) { ccb_condvar_destruct(this->condvar); }
+  SbCondVar(void) { this->condvar = cc_condvar_construct(); }
+  ~SbCondVar(void) { cc_condvar_destruct(this->condvar); }
 
-  SbBool wait(void) { return ccb_condvar_wait(this->condvar); }
+  SbBool wait(void) { return cc_condvar_wait(this->condvar); }
   SbBool timedWait(SbTime period) {
-    return ccb_condvar_timed_wait(this->condvar, period.getValue());
+    return cc_condvar_timed_wait(this->condvar, period.getValue());
   }
 
-  void wakeOne(void) { ccb_condvar_wake_one(this->condvar); }
-  void wakeAll(void) { ccb_condvar_wake_all(this->condvar); }
+  void wakeOne(void) { cc_condvar_wake_one(this->condvar); }
+  void wakeAll(void) { cc_condvar_wake_all(this->condvar); }
 
 private:
-  ccb_condvar * condvar;
+  cc_condvar * condvar;
 };
 
 // *************************************************************************

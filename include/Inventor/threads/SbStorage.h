@@ -28,15 +28,15 @@
 
 class SbStorage {
 public:
-  SbStorage(unsigned int size) { this->storage = ccb_storage_construct(size); }
+  SbStorage(unsigned int size) { this->storage = cc_storage_construct(size); }
   SbStorage(unsigned int size, void (*constr)(void *), void (*destr)(void *))
-    { this->storage = ccb_storage_construct_etc(size, constr, destr); }
-  ~SbStorage(void) { ccb_storage_destruct(this->storage); }
+    { this->storage = cc_storage_construct_etc(size, constr, destr); }
+  ~SbStorage(void) { cc_storage_destruct(this->storage); }
 
-  void * get(void) { return ccb_storage_get(this->storage); }
+  void * get(void) { return cc_storage_get(this->storage); }
 
 private:
-  ccb_storage * storage;
+  cc_storage * storage;
 };
 
 // *************************************************************************

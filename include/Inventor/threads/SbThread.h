@@ -30,26 +30,26 @@
 class SbThread {
 public:
   static SbThread * create(void *(*func)(void *), void * closure) {
-    return new SbThread(ccb_thread_construct(func, closure));
+    return new SbThread(cc_thread_construct(func, closure));
   }
   static void destroy(SbThread * thread) {
-    ccb_thread_destruct(thread->thread);
+    cc_thread_destruct(thread->thread);
     delete thread;
   }
 
   int join(void ** retval = 0L) {
-    return ccb_thread_join(this->thread, retval);
+    return cc_thread_join(this->thread, retval);
   }
   static int join(SbThread * thread, void ** retval = 0L) {
-    return ccb_thread_join(thread->thread, retval);
+    return cc_thread_join(thread->thread, retval);
   }
 
 protected:
-  SbThread(ccb_thread * thread) { this->thread = thread; }
+  SbThread(cc_thread * thread) { this->thread = thread; }
   ~SbThread(void) {}
 
 private:
-  ccb_thread * thread;
+  cc_thread * thread;
 };
 
 // *************************************************************************

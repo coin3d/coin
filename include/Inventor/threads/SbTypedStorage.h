@@ -29,15 +29,15 @@
 template <class Type>
 class SbTypedStorage {
 public:
-  SbTypedStorage(unsigned int size) { this->storage = ccb_storage_construct(size); }
+  SbTypedStorage(unsigned int size) { this->storage = cc_storage_construct(size); }
   SbTypedStorage(unsigned int size, void (*constr)(void *), void (*destr)(void *))
-    { this->storage = ccb_storage_construct_etc(size, constr, destr); }
-  ~SbTypedStorage(void) { ccb_storage_destruct(this->storage); }
+    { this->storage = cc_storage_construct_etc(size, constr, destr); }
+  ~SbTypedStorage(void) { cc_storage_destruct(this->storage); }
 
-  Type get(void) { return (Type) ccb_storage_get(this->storage); }
+  Type get(void) { return (Type) cc_storage_get(this->storage); }
 
 private:
-  ccb_storage * storage;
+  cc_storage * storage;
 };
 
 // *************************************************************************

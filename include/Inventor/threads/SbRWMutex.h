@@ -34,21 +34,21 @@ public:
   };
 
   SbRWMutex(Precedence policy) {
-    this->rwmutex = ccb_rwmutex_construct_etc(
-      (policy == WRITE_PRECEDENCE)? CCB_WRITE_PRECEDENCE : CCB_READ_PRECEDENCE);
+    this->rwmutex = cc_rwmutex_construct_etc(
+      (policy == WRITE_PRECEDENCE)? CC_WRITE_PRECEDENCE : CC_READ_PRECEDENCE);
   }
-  ~SbRWMutex(void) { ccb_rwmutex_destruct(this->rwmutex); }
+  ~SbRWMutex(void) { cc_rwmutex_destruct(this->rwmutex); }
 
-  int writeLock(void) { return ccb_rwmutex_write_lock(this->rwmutex); }
-  int tryWriteLock(void) { return ccb_rwmutex_write_try_lock(this->rwmutex); }
-  int writeUnlock(void) { return ccb_rwmutex_write_unlock(this->rwmutex); }
+  int writeLock(void) { return cc_rwmutex_write_lock(this->rwmutex); }
+  int tryWriteLock(void) { return cc_rwmutex_write_try_lock(this->rwmutex); }
+  int writeUnlock(void) { return cc_rwmutex_write_unlock(this->rwmutex); }
 
-  int readLock(void) { return ccb_rwmutex_read_lock(this->rwmutex); }
-  int tryReadLock(void) { return ccb_rwmutex_read_try_lock(this->rwmutex); }
-  int readUnlock(void) { return ccb_rwmutex_read_unlock(this->rwmutex); }
+  int readLock(void) { return cc_rwmutex_read_lock(this->rwmutex); }
+  int tryReadLock(void) { return cc_rwmutex_read_try_lock(this->rwmutex); }
+  int readUnlock(void) { return cc_rwmutex_read_unlock(this->rwmutex); }
 
 private:
-  ccb_rwmutex * rwmutex;
+  cc_rwmutex * rwmutex;
 };
 
 // *************************************************************************
