@@ -47,16 +47,17 @@ public:
 
 protected:
   virtual void inputChanged(SoField * which);
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
-  virtual void writeInstance(SoOutput * out);
 
 private:
   SoGate(void);
   ~SoGate();
-  void commonConstructor(void);
-  void initInputOutput(const SoType type);
 
   virtual void evaluate(void);
+
+  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  virtual void writeInstance(SoOutput * out);
+
+  SbBool initialize(const SoType inputfieldtype);
 
   // SoSelectOne instances uses a dynamic set of inputs and outputs,
   // as they are not common for all instances of the class (like for

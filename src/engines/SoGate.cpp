@@ -35,6 +35,10 @@
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 
 /*!
   \var SoMField * SoGate::input
@@ -69,12 +73,11 @@ SO_INTERNAL_ENGINE_SOURCE_DYNAMIC_IO(SoGate);
 
 /**************************************************************************/
 
-/*!
-  Default constructor. Used when reading engine from file.
-*/
+// Default constructor. Leaves engine in invalid state. Should only be
+// used from import code or copy code.
 SoGate::SoGate(void)
 {
-  this->commonConstructor();
+  this->input = NULL;
 }
 
 /*!
@@ -82,8 +85,15 @@ SoGate::SoGate(void)
 */
 SoGate::SoGate(SoType type)
 {
-  this->commonConstructor();
-  this->initInputOutput(type);
+  this->input = NULL;
+  if (!this->initialize(type)) {
+#if COIN_DEBUG
+    SoDebugError::post("SoGate::SoGate",
+                       "invalid type '%s' for input field",
+                       type == SoType::badType() ? "badType" :
+                       type.getName().getString());
+#endif // COIN_DEBUG
+  }
 }
 
 
@@ -94,42 +104,38 @@ SoGate::initClass(void)
   SO_ENGINE_INTERNAL_INIT_CLASS(SoGate);
 }
 
-void
-SoGate::commonConstructor(void)
-{
-  this->dynamicinput = new SoFieldData;
-  this->dynamicoutput = new SoEngineOutputData;
-
-  this->enable.setValue(FALSE);
-  this->enable.setContainer(this);
-  this->trigger.setContainer(this);
-  this->typeField.setValue(SbName(""));
-  this->typeField.setContainer(this);
-
-  // The "type" field must be added first, so it comes out first when
-  // writing.
-  this->dynamicinput->addField(this, "type", &this->typeField);
-  this->dynamicinput->addField(this, "enable", &this->enable);
-  this->dynamicinput->addField(this, "trigger", &this->trigger);
-
-  this->output = new SoEngineOutput;
-  this->output->enable(this->enable.getValue());
-  this->output->setContainer(this);
-
-  this->input = NULL;
-}
-
-// called from constructor or readInstance() to init input/output
-void
-SoGate::initInputOutput(const SoType type)
+// Set up the input and output fields of the engine. This is done from
+// either the non-default constructor or the readInstance() import
+// code.
+SbBool
+SoGate::initialize(const SoType inputfieldtype)
 {
   assert(this->input == NULL);
-  this->input = (SoMField *) type.createInstance();
-  this->input->setNum(0);
-  this->input->setContainer(this);
 
-  this->dynamicinput->addField(this, "input", this->input);
-  this->dynamicoutput->addOutput(this, "output", this->output, type);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoGate);
+  SO_ENGINE_ADD_INPUT(trigger, ());
+  SO_ENGINE_ADD_INPUT(enable, (FALSE));
+
+  if (inputfieldtype.isDerivedFrom(SoMField::getClassTypeId()) &&
+      inputfieldtype.canCreateInstance()) {
+    // Instead of SO_ENGINE_ADD_INPUT().
+    this->input = (SoMField *)inputfieldtype.createInstance();
+    this->input->setNum(0);
+    this->input->setContainer(this);
+    this->dynamicinput = new SoFieldData(SoGate::inputdata);
+    this->dynamicinput->addField(this, "input", this->input);
+  }
+  else {
+    return FALSE;
+  }
+
+  // Instead of SO_ENGINE_ADD_OUTPUT().
+  this->output = new SoEngineOutput;
+  this->dynamicoutput = new SoEngineOutputData(SoGate::outputdata);
+  this->dynamicoutput->addOutput(this, "output", this->output, inputfieldtype);
+  this->output->setContainer(this);
+
+  return TRUE;
 }
 
 /*!
@@ -176,42 +182,20 @@ SoGate::inputChanged(SoField * which)
 }
 
 /*!
-  Overloaded to initialize type of gate after reading.
+  Overloaded to initialize type of gate before reading.
 */
 SbBool
-SoGate::readInstance(SoInput *in, unsigned short flags)
+SoGate::readInstance(SoInput * in, unsigned short flags)
 {
-  // FIXME: check binary format read vs Inventor. 20000505 mortene.
-
-  this->typeField.setValue(SbName(""));
-  SbBool ret = inherited::readInstance(in, flags);
-  if (ret) {
-    if (this->typeField.getValue() != SbName("")) {
-      SoType type = SoType::fromName(this->typeField.getValue());
-      if (type.isDerivedFrom(SoMField::getClassTypeId())) {
-        this->initInputOutput(type);
-      }
-      else if (type != SoType::badType()) {
-        SoReadError::post(in,  "The type ``%s'' is not a type of MField", type.getName().getString());
-        ret = FALSE;
-      }
-    }
-    else {
-      SoReadError::post(in, "SoGate is missing type field");
-      ret = FALSE;
-    }
-  }
-  return ret;
+  // COIN_STUB();
+  return FALSE;
 }
 
 /*!
   Overloaded to write type of gate.
 */
 void
-SoGate::writeInstance(SoOutput *out)
+SoGate::writeInstance(SoOutput * out)
 {
-  // FIXME: check binary format write vs Inventor. 20000505 mortene.
-
-  this->typeField.setValue(this->input->getTypeId().getName());
-  inherited::writeInstance(out);
+  // COIN_STUB();
 }
