@@ -25,7 +25,9 @@
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoMFString.h>
+#include <Inventor/lists/SbList.h>
 
+struct so_eval_node;
 
 class SoCalculator : public SoEngine {
   typedef SoEngine inherited;
@@ -53,6 +55,23 @@ protected:
 
 private:
   virtual void evaluate(void);
+  SbList <struct so_eval_node*> evaluatorList;
+
+  static void readfieldcb(const char *name, float *data, void *cbdata);
+  static void writefieldcb(const char *name, float *data, int comp, void *cbdata);
+
+  void evaluateExpression(struct so_eval_node *node);
+  void findUsed(struct so_eval_node *node, char *inused, char *outused);
+
+  SoField *getFieldFake(const char *fieldname);
+
+  float ta_th[8];
+  SbVec3f tA_tH[8];
+
+  float a_h[8];
+  SbVec3f A_H[8];
+  float oa_od[4];
+  SbVec3f oA_oD[4];
 };
 
 #endif // !COIN_SOCALCULATOR_H

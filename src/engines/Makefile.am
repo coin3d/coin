@@ -32,10 +32,9 @@ ALLSOURCES = \
 	SoOnOff.cpp SoOnOff.h \
 	SoOneShot.cpp SoOneShot.h \
 	SoSelectOne.cpp SoSelectOne.h \
-	SoTriggerAny.cpp SoTriggerAny.h
-
-# Add these permanently when the code compiles.
-#	evaluator.c evaluator.h evaluator.tab.c lex.so_eval.c
+	SoTriggerAny.cpp SoTriggerAny.h \
+	evaluator.c evaluator.h \
+	evaluator.tab.c
 
 
 ALLINSTHEADERS = \

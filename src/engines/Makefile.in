@@ -128,11 +128,10 @@ ALLSOURCES = \
 	SoOnOff.cpp SoOnOff.h \
 	SoOneShot.cpp SoOneShot.h \
 	SoSelectOne.cpp SoSelectOne.h \
-	SoTriggerAny.cpp SoTriggerAny.h
+	SoTriggerAny.cpp SoTriggerAny.h \
+	evaluator.c evaluator.h \
+	evaluator.tab.c
 
-
-# Add these permanently when the code compiles.
-#	evaluator.c evaluator.h evaluator.tab.c lex.so_eval.c
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoSubEngine.h \
@@ -213,7 +212,7 @@ SoElapsedTime.lo SoEngine.lo SoEngineOutput.lo SoExpressionParser.lo \
 SoFieldConverter.lo SoGate.lo SoInterpolateAbs.lo SoInterpolateFloat.lo \
 SoInterpolateRotation.lo SoInterpolateVec2f.lo SoInterpolateVec3f.lo \
 SoInterpolateVec4f.lo SoOnOff.lo SoOneShot.lo SoSelectOne.lo \
-SoTriggerAny.lo
+SoTriggerAny.lo evaluator.lo evaluator.tab.lo
 libengines_la_OBJECTS =  $(am_libengines_la_OBJECTS)
 libenginesLINKHACK_la_LDFLAGS = 
 libenginesLINKHACK_la_LIBADD = 
@@ -226,16 +225,16 @@ SoElapsedTime.lo SoEngine.lo SoEngineOutput.lo SoExpressionParser.lo \
 SoFieldConverter.lo SoGate.lo SoInterpolateAbs.lo SoInterpolateFloat.lo \
 SoInterpolateRotation.lo SoInterpolateVec2f.lo SoInterpolateVec3f.lo \
 SoInterpolateVec4f.lo SoOnOff.lo SoOneShot.lo SoSelectOne.lo \
-SoTriggerAny.lo
+SoTriggerAny.lo evaluator.lo evaluator.tab.lo
 libenginesLINKHACK_la_OBJECTS =  $(am_libenginesLINKHACK_la_OBJECTS)
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CFLAGS = @CFLAGS@
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 CXXFLAGS = @CXXFLAGS@
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-CFLAGS = @CFLAGS@
-COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES =  $(libengines_la_SOURCES) \
@@ -264,7 +263,8 @@ $(DEPDIR)/SoInterpolateAbs.Plo $(DEPDIR)/SoInterpolateFloat.Plo \
 $(DEPDIR)/SoInterpolateRotation.Plo $(DEPDIR)/SoInterpolateVec2f.Plo \
 $(DEPDIR)/SoInterpolateVec3f.Plo $(DEPDIR)/SoInterpolateVec4f.Plo \
 $(DEPDIR)/SoOnOff.Plo $(DEPDIR)/SoOneShot.Plo $(DEPDIR)/SoSelectOne.Plo \
-$(DEPDIR)/SoTriggerAny.Plo
+$(DEPDIR)/SoTriggerAny.Plo $(DEPDIR)/evaluator.Plo \
+$(DEPDIR)/evaluator.tab.Plo
 SOURCES = $(libengines_la_SOURCES) $(libenginesLINKHACK_la_SOURCES)
 OBJECTS = $(am_libengines_la_OBJECTS) $(am_libenginesLINKHACK_la_OBJECTS)
 
@@ -427,6 +427,8 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoOneShot.Plo
 @AMDEP@include $(DEPDIR)/SoSelectOne.Plo
 @AMDEP@include $(DEPDIR)/SoTriggerAny.Plo
+@AMDEP@include $(DEPDIR)/evaluator.Plo
+@AMDEP@include $(DEPDIR)/evaluator.tab.Plo
 
 mostlyclean-depend:
 
@@ -436,6 +438,21 @@ distclean-depend:
 	-rm -rf $(DEPDIR)
 
 maintainer-clean-depend:
+
+@AMDEP@CCDEPMODE = @CCDEPMODE@
+
+.c.o:
+@AMDEP@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(COMPILE) -c -o $@ $<
+
+.c.lo:
+@AMDEP@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
+@AMDEP@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LTCOMPILE) -c -o $@ $<
+
 
 @AMDEP@CXXDEPMODE = @CXXDEPMODE@
 

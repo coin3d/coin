@@ -1,7 +1,12 @@
-%{ 
+%{
+/*
+ * Syntax analyzer for SoCalculator expressions.
+ * compile with 'bison -p so_eval evaluator.y'
+ */ 
 #include "evaluator.h"
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 %}
 
 %union
@@ -12,7 +17,7 @@
   so_eval_node *node;
 }
 
-/* tokens that needs the value */
+/* tokens that have some associated value */
 %token <value> LEX_VALUE
 %token <reg> LEX_TMP_FLT_REG LEX_IN_FLT_REG LEX_OUT_FLT_REG
 %token <reg> LEX_TMP_VEC_REG LEX_IN_VEC_REG LEX_OUT_VEC_REG
@@ -46,22 +51,25 @@
 %start expression
 
 %{
-static const char *get_regname(char reg, int regtype); 
-enum { REGTYPE_IN, REGTYPE_OUT, REGTYPE_TMP };
-so_eval_node *root_node;
+  static const char *get_regname(char reg, int regtype); 
+  enum { REGTYPE_IN, REGTYPE_OUT, REGTYPE_TMP };
+  so_eval_node *root_node;
+  int so_evalerror(char *);
+  int so_evallex(void);
 %}
 
 %%
 /* 
  * FIXME: it might be legal to write an expression like this:
- *     a = b = b = 1.0
+ *     oa = ob = oc = 1.0
  *
  * this is not supported yet, but it shouldn't be too difficult to support it if
- * it is a legal expression.
+ * it is a legal expression (I don't think it is). pederb, 20000307
  */
 
-expression    : expression ';' subexpression { $$ = so_eval_create_binary(ID_SEPARATOR, $1, $3); }
-              | subexpression { root_node = $1; }
+expression    : expression ';' subexpression 
+              { root_node = so_eval_create_binary(ID_SEPARATOR, $1, $3); $$ = root_node; }
+              | subexpression { root_node = $1; $$ = $1; }
               ;
 
 subexpression : fltlhs '=' fltstatement { $$ = so_eval_create_binary(ID_ASSIGN_FLT, $1, $3); }
@@ -97,7 +105,8 @@ fltstatement  : boolstatement '?' fltstatement ':' fltstatement
               | LEX_FMOD '(' fltstatement ',' fltstatement ')' 
               { $$ = so_eval_create_binary(ID_FMOD, $3, $5); }
 
-              | '-' fltstatement %prec UNARY { $$ = so_eval_create_unary(ID_NEG, $2); }
+              | '-' fltstatement %prec UNARY { fprintf(stderr,"heck!\n"); $$ = so_eval_create_unary(ID_NEG, $2); }
+              | '(' fltstatement ')' { $$ = $2; }
               | LEX_FLTFUNC '(' fltstatement ')' { $$ = so_eval_create_unary($1, $3);}
               | LEX_LEN '(' vecstatement ')' { $$ = so_eval_create_unary(ID_LEN, $3);}
               | LEX_DOT '(' vecstatement ')' { $$ = so_eval_create_unary(ID_DOT, $3); }
@@ -122,12 +131,16 @@ vecstatement  : boolstatement '?' vecstatement ':' vecstatement
               | vecstatement '?' vecstatement ':' vecstatement
               { $$ = so_eval_create_ternary(ID_VEC_COND, so_eval_create_unary(ID_TEST_VEC, $1), $3, $5); }
 
-              | vecstatement '+' vecstatement  { $$ = so_eval_create_binary(ID_ADD, $1, $3); }
-              | vecstatement '-' vecstatement  { $$ = so_eval_create_binary(ID_SUB, $1, $3); }
+              | vecstatement '+' vecstatement  { $$ = so_eval_create_binary(ID_ADD_VEC, $1, $3); }
+              | vecstatement '-' vecstatement { $$ = so_eval_create_binary(ID_SUB_VEC, $1, $3); }
+              | vecstatement '*' fltstatement { $$ = so_eval_create_binary(ID_MUL_VEC_FLT, $1, $3); }
+              | vecstatement '/' fltstatement { $$ = so_eval_create_binary(ID_DIV_VEC_FLT, $1, $3); }
+              | fltstatement '*' vecstatement { $$ = so_eval_create_binary(ID_MUL_VEC_FLT, $3, $1); }
               | LEX_CROSS '(' vecstatement ',' vecstatement ')'
               { $$ = so_eval_create_binary(ID_CROSS, $3, $5); }
 
-              |'-' vecstatement %prec UNARY { $$ = so_eval_create_unary(ID_NEG, $2); }
+              |'-' vecstatement %prec UNARY { $$ = so_eval_create_unary(ID_NEG_VEC, $2); }
+              | '(' vecstatement ')' { $$ = $2; }
               | LEX_NORMALIZE '(' vecstatement ')'
               { $$ = so_eval_create_unary(ID_NORMALIZE, $3); }
 
@@ -146,6 +159,7 @@ boolstatement : fltstatement LEX_EQ fltstatement { $$ = so_eval_create_binary(ID
               | boolstatement LEX_AND boolstatement { $$ = so_eval_create_binary(ID_AND, $1, $3); }
               | boolstatement LEX_OR boolstatement { $$ = so_eval_create_binary(ID_OR, $1, $3); }
               | '!' boolstatement %prec UNARY { $$ = so_eval_create_unary(ID_NOT, $2); }
+              | '(' boolstatement ')' { $$ = $2; }
               ;
 %%
 
@@ -172,7 +186,12 @@ get_regname(char reg, int regtype)
 } 
 
 
-#include "lex.so_eval.c" /* our lexical analyzer */
+
+#include "lex.so_eval.c" /* our lexical scanner */
+
+/* some very simple error handling for now :) */
+static char *myerrorptr;
+static char myerrorbuf[512];
 
 /*
  * parse the text string into a tree structure.
@@ -180,12 +199,38 @@ get_regname(char reg, int regtype)
 so_eval_node *
 so_eval_parse(const char *buffer)
 {
-  /* FIXME: error handling is obviously needed */
+  /* FIXME: better error handling is obviously needed */
   YY_BUFFER_STATE state;
+  myerrorptr = NULL;
   root_node = NULL;
-  state = so_eval_scan_string(buffer);
-  so_eval_delete_buffer(state);
-  assert(root_node != NULL);
+  state = so_eval_scan_string(buffer); /* flex routine */
+  so_evalparse(); /* start parsing */
+  so_eval_delete_buffer(state); /* flex routine */
+  if (myerrorptr) return NULL;
   return root_node;
 }
+
+/*
+ * returns current error message or NULL if none.
+ */
+const char *
+so_eval_error(void)
+{
+  return myerrorptr;
+}
+
+/*
+ * called by bison parser upon lexical/syntax error.
+ */
+int 
+so_evalerror(char *myerr)
+{
+  strncpy(myerrorbuf, myerr, 512);
+  myerrorbuf[511] = 0; /* just in case string was too long */
+  myerrorptr = myerrorbuf; /* signal error */
+  so_eval_delete(root_node); /* free memory used */
+  root_node = NULL;
+  return 0;
+}
+
 

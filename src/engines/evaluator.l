@@ -1,8 +1,28 @@
 %{
+/**************************************************************************\
+ *
+ *  Copyright (C) 1998-2000 by Systems in Motion.  All rights reserved.
+ *
+ *  This file is part of the Coin library.
+ *
+ *  This file may be distributed under the terms of the Q Public License
+ *  as defined by Troll Tech AS of Norway and appearing in the file
+ *  LICENSE.QPL included in the packaging of this file.
+ *
+ *  If you want to use Coin in applications not covered by licenses
+ *  compatible with the QPL, you can contact SIM to aquire a
+ *  Professional Edition license for Coin.
+ *
+ *  Systems in Motion AS, Prof. Brochs gate 6, N-7030 Trondheim, NORWAY
+ *  http://www.sim.no/ sales@sim.no Voice: +47 22114160 Fax: +47 67172912
+ *
+\**************************************************************************/
+
 /*
- * Lexical parser for an SoCalculator expression
+ * Lexical scanner for SoCalculator
  */
-#include <math.h>
+
+#include "SbBasic.h"
 #include <float.h>
 #include <stdlib.h>
 #include "evaluator.h"
@@ -13,6 +33,7 @@
 
 Digit                           [0-9]
 Space                           [ \t]
+Exp                             [eE][+-]?{Digit}+
 
 %%
 {Space}+                        ;
@@ -24,7 +45,8 @@ Space                           [ \t]
 "!="                            return LEX_NEQ;
 "&&"                            return LEX_AND;
 "||"                            return LEX_OR;
-[!-+*/=\[\]\%?:(),;]            return(yytext[0]);
+"-"                             return '-';
+[!+*/=\[\]%?:(),;]              return(yytext[0]);
 MAXFLOAT                        { yylval.value = FLT_MAX; return LEX_VALUE; }
 MINFLOAT                        { yylval.value = FLT_MIN; return LEX_VALUE; }
 M_E                             { yylval.value = (float)M_E; return LEX_VALUE; }
@@ -59,8 +81,8 @@ dot                             { return LEX_DOT; }
 length                          { return LEX_LEN; }
 normalize                       { return LEX_NORMALIZE; }
 vec3f                           { return LEX_VEC3F; }
-{Digit}+"."{Digit}*             { yylval.value = atof(yytext); return LEX_VALUE; }
-{Digit}+                        { yylval.value = atof(yytext); return LEX_VALUE; }
+[+-]?{Digit}+"."{Digit}*{Exp}?  { yylval.value = atof(yytext); return LEX_VALUE; }
+[+-]?{Digit}+{Exp}?             { yylval.value = atof(yytext); return LEX_VALUE; }
 t[a-h]                          { yylval.reg = yytext[1]; return LEX_TMP_FLT_REG; }
 o[a-d]                          { yylval.reg = yytext[1]; return LEX_OUT_FLT_REG; }
 [a-h]                           { yylval.reg = yytext[0]; return LEX_IN_FLT_REG; } 
