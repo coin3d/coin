@@ -61,7 +61,7 @@
      ShapeHints {
        creaseAngle 1.5 
        shapeType SOLID
-       vertexOrdering CLOCKWISE
+       vertexOrdering COUNTERCLOCKWISE
      }       
      Material {
        diffuseColor 0.6 0.6 0.8
@@ -626,22 +626,22 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
       if (part != SoText3::SIDES) {  // FRONT & BACK
         const int * ptr = cc_glyph3d_getfaceindices(glyph);
         glBegin(GL_TRIANGLES);
-    
+        
         while (*ptr >= 0) {
           SbVec2f v0, v1, v2;
           float zval;
           if (part == SoText3::FRONT) {         
             glNormal3f(0.0f, 0.0f, 1.0f);
-            v0 = coords[*ptr++];
-            v1 = coords[*ptr++];
             v2 = coords[*ptr++];
+            v1 = coords[*ptr++];
+            v0 = coords[*ptr++];
             zval = nearz;
           }
           else {  // BACK
             glNormal3f(0.0f, 0.0f, -1.0f);
-            v2 = coords[*ptr++];
-            v1 = coords[*ptr++];
             v0 = coords[*ptr++];
+            v1 = coords[*ptr++];
+            v2 = coords[*ptr++];
             zval = farz;
           }
           if(do2Dtextures)
@@ -670,10 +670,9 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
 
           glBegin(GL_QUADS);
  
-          while (*ptr >= 0) {            
-
-            v0 = coords[*ptr++];
+          while (*ptr >= 0) {
             v1 = coords[*ptr++];
+            v0 = coords[*ptr++];
             const int * ccw = (int *) cc_glyph3d_getnextccwedge(glyph, counter);
             const int * cw  = (int *) cc_glyph3d_getnextcwedge(glyph, counter);
             SbVec3f vleft(coords[*(ccw+1)][0], coords[*(ccw+1)][1], 0);
@@ -681,23 +680,25 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
             counter++;
                       
             // create two 'normal' vectors pointing out from the edges
-            SbVec3f normala(vleft[0] - v0[0], vleft[1] - v0[1], 0.0f);
-            normala = normala.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+            SbVec3f normala(vright[0] - v0[0], vright[1] - v0[1], 0.0f);
+            normala = normala.cross(SbVec3f(0.0f, 0.0f,  1.0f));
             if (normala.length() > 0)
               normala.normalize();
        
-            SbVec3f normalb(v1[0] - vright[0], v1[1] - vright[1], 0.0f);
-            normalb = normalb.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+            SbVec3f normalb(v1[0] - vleft[0], v1[1] - vleft[1], 0.0f);
+            normalb = normalb.cross(SbVec3f(0.0f, 0.0f,  1.0f));
             if (normalb.length() > 0)
               normalb.normalize();
 
             SbBool flatshading = FALSE;
             float dot = normala.dot(normalb);
+
             if(acos(dot) > creaseangle) {
               normala = SbVec3f(v1[0] - v0[0], v1[1] - v0[1], 0.0f);
-              normala = normala.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+              normala = normala.cross(SbVec3f(0.0f, 0.0f, 1.0f));
               if (normala.length() > 0)
                 normala.normalize();
+
               flatshading = TRUE;
             }
           
@@ -754,7 +755,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
 
         }
         else {  // profile
-    
+          
           const int * indices = cc_glyph3d_getedgeindices(glyph);
           int ind = 0;
           SbVec3f normala, normalb;
@@ -863,20 +864,20 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
             // FIXME: Add proper texturing for profile
             // coords. (20031010 handegar)
 
-            glNormal3fv(normals[z].getValue());
-            glVertex3fv(SbVec3f(vertexlist[z][0] + xpos, 
-                                vertexlist[z][1] + ypos, 
-                                vertexlist[z][2]).getValue());
+            glNormal3fv(normals[z+2].getValue());
+            glVertex3fv(SbVec3f(vertexlist[z+2][0] + xpos, 
+                                vertexlist[z+2][1] + ypos, 
+                                vertexlist[z+2][2]).getValue());
 
             glNormal3fv(normals[z+1].getValue());
             glVertex3fv(SbVec3f(vertexlist[z+1][0] + xpos, 
                                 vertexlist[z+1][1] + ypos, 
                                 vertexlist[z+1][2]).getValue());
    
-            glNormal3fv(normals[z+2].getValue());
-            glVertex3fv(SbVec3f(vertexlist[z+2][0] + xpos, 
-                                vertexlist[z+2][1] + ypos, 
-                                vertexlist[z+2][2]).getValue());
+            glNormal3fv(normals[z].getValue());
+            glVertex3fv(SbVec3f(vertexlist[z][0] + xpos, 
+                                vertexlist[z][1] + ypos, 
+                                vertexlist[z][2]).getValue());
           }
           glEnd();
                     
@@ -1051,16 +1052,16 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
           float zval;
           if (part == SoText3::FRONT) {
             vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
-            v0 = coords[*ptr++];
-            v1 = coords[*ptr++];
             v2 = coords[*ptr++];
+            v1 = coords[*ptr++];
+            v0 = coords[*ptr++];
             zval = nearz;
           }
           else {  // BACK
             vertex.setNormal(SbVec3f(0.0f, 0.0f, -1.0f));
-            v2 = coords[*ptr++];
-            v1 = coords[*ptr++];
             v0 = coords[*ptr++];
+            v1 = coords[*ptr++];
+            v2 = coords[*ptr++];
             zval = farz;
           }
 
@@ -1095,9 +1096,8 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
           PUBLIC(this)->beginShape(action, SoShape::QUADS, NULL);
 
           while (*ptr >= 0) {            
-
-            v0 = coords[*ptr++];
             v1 = coords[*ptr++];
+            v0 = coords[*ptr++];
             const int * ccw = (int *) cc_glyph3d_getnextccwedge(glyph, counter);
             const int * cw  = (int *) cc_glyph3d_getnextcwedge(glyph, counter);
             SbVec3f vleft(coords[*(ccw+1)][0], coords[*(ccw+1)][1], 0);
@@ -1114,13 +1114,13 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
             vright[1] = vright[1];
 
             // create two 'normal' vectors pointing out from the edges
-            SbVec3f normala(vleft[0] - v0[0], vleft[1] - v0[1], 0.0f);
-            normala = normala.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+            SbVec3f normala(vright[0] - v0[0], vright[1] - v0[1], 0.0f);
+            normala = normala.cross(SbVec3f(0.0f, 0.0f,  1.0f));
             if (normala.length() > 0)
               normala.normalize();
        
-            SbVec3f normalb(v1[0] - vright[0], v1[1] - vright[1], 0.0f);
-            normalb = normalb.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+            SbVec3f normalb(v1[0] - vleft[0], v1[1] - vleft[1], 0.0f);
+            normalb = normalb.cross(SbVec3f(0.0f, 0.0f,  1.0f));
             if (normalb.length() > 0)
               normalb.normalize();
 
@@ -1128,7 +1128,7 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
             float dot = normala.dot(normalb);
             if(acos(dot) > creaseangle) {
               normala = SbVec3f(v1[0] - v0[0], v1[1] - v0[1], 0.0f);
-              normala = normala.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+              normala = normala.cross(SbVec3f(0.0f, 0.0f,  1.0f));
               if (normala.length() > 0)
                 normala.normalize();
               flatshading = TRUE;
@@ -1301,10 +1301,10 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
 
           PUBLIC(this)->beginShape(action, SoShape::TRIANGLES, NULL);
           for (int z = 0;z < size;z += 3) {      
-            vertex.setNormal(normals[z].getValue());
-            vertex.setPoint(SbVec3f(vertexlist[z][0] + xpos, 
-                                    vertexlist[z][1] + ypos, 
-                                    vertexlist[z][2]).getValue());
+            vertex.setNormal(normals[z+2].getValue());
+            vertex.setPoint(SbVec3f(vertexlist[z+2][0] + xpos, 
+                                    vertexlist[z+2][1] + ypos, 
+                                    vertexlist[z+2][2]).getValue());
             PUBLIC(this)->shapeVertex(&vertex);              
           
             vertex.setNormal(normals[z+1].getValue());
@@ -1313,10 +1313,10 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
                                     vertexlist[z+1][2]).getValue());
             PUBLIC(this)->shapeVertex(&vertex);              
           
-            vertex.setNormal(normals[z+2].getValue());
-            vertex.setPoint(SbVec3f(vertexlist[z+2][0] + xpos, 
-                                    vertexlist[z+2][1] + ypos, 
-                                    vertexlist[z+2][2]).getValue());
+            vertex.setNormal(normals[z].getValue());
+            vertex.setPoint(SbVec3f(vertexlist[z][0] + xpos, 
+                                    vertexlist[z][1] + ypos, 
+                                    vertexlist[z][2]).getValue());
             PUBLIC(this)->shapeVertex(&vertex);              
                              
           }
