@@ -43,6 +43,99 @@
   This node has many fields, but usually it is sufficient to set only
   one or very few fields. FIXME: more doc, pederb, 2004-01-27
 
+  In addition to the functions you can set in rgbOperation (or
+  alphaOperation), it's possible to create more complex texture
+  functions by combining two textures that have already been
+  combined. You can use the SoSceneTexture2 node to create those
+  textures. Below is an example that shows how to implement Arg0*Arg1
+  + Arg2*Arg0, where Arg0 = texture1 RGB, Arg1 = texture2 RGB, Arg2 =
+  texture 2 alpha:
+
+  \verbatim 
+
+  ShapeHints { vertexOrdering COUNTERCLOCKWISE shapeType SOLID }
+
+  Separator {
+    SceneTexture2 {
+      size 256 256
+      transparencyFunction NONE
+      scene Separator {
+        OrthographicCamera {
+          height 2
+          aspectRatio 1
+          position 0 0 1
+          viewportMapping LEAVE_ALONE
+        }
+        LightModel { model BASE_COLOR }
+        Coordinate3 {
+          point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ] 
+        }
+        DEF texture1 Texture2 { filename "texture1.png" }
+        TextureUnit { unit 1 }
+        TextureCombine {
+          rgbOperation MODULATE
+          rgbSource [ PREVIOUS, TEXTURE ]
+          rgbOperand [ SRC_COLOR, SRC_COLOR ]
+          alphaOperation REPLACE
+          alphaSource [TEXTURE]
+          alphaOperand [ SRC_ALPHA ]
+        }
+        DEF texture2 Texture2 { filename "texture2_with_alpha.png" }
+        TextureCoordinate2 {
+          point [0 0, 1 0, 1 1, 0 1]
+        }
+        FaceSet { numVertices 4 }
+      }
+    }
+    TextureUnit { unit 1 }
+    TextureCombine {
+      rgbOperation ADD
+      rgbSource [ PREVIOUS, TEXTURE ]
+      rgbOperand [ SRC_COLOR, SRC_COLOR ]
+      alphaOperation REPLACE
+      alphaSource [TEXTURE]
+      alphaOperand [ SRC_ALPHA ]
+    }
+    SceneTexture2 {
+      size 256 256
+      transparencyFunction NONE
+      scene Separator {
+        OrthographicCamera {
+          height 2
+          aspectRatio 1
+          position 0 0 1
+          viewportMapping LEAVE_ALONE
+        }
+        LightModel { model BASE_COLOR }
+        Coordinate3 {
+          point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ] 
+        }
+        USE texture1
+        TextureUnit { unit 1 }
+        TextureCombine {
+          rgbOperation MODULATE
+          rgbSource [ PREVIOUS, TEXTURE ]
+          rgbOperand [ SRC_COLOR, SRC_ALPHA ]
+          alphaOperation REPLACE
+          alphaSource [TEXTURE]
+          alphaOperand [ SRC_ALPHA ]
+        }
+        USE texture2
+        TextureCoordinate2 {
+          point [0 0, 1 0, 1 1, 0 1]
+        }
+        FaceSet { numVertices 4 }
+      }
+    }
+    # map resulting texture onto a Cube
+    Cube { }
+  }
+  \endverbatim
+
+  It should be possible to create almost any kind of texture function
+  using this scheme, at the cost of extra texture memory usage (the
+  intermediate textures), of course.
+
   \since Coin 2.3
 */
 
