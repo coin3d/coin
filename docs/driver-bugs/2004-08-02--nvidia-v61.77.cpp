@@ -84,44 +84,13 @@ expose_cb(void)
 
     glColor4f(0, 1, 0, 1);
 
-#if 0
     glBegin(GL_TRIANGLES);
     const int nr = ((float)rand() / RAND_MAX) * 32;
-    //    printf("nr==%d\n", nr);
+    printf("nr==%d\n", nr);
     for (i=0; i < nr; i++) { send_triangle(); }
     glColor4f(1, 0, 0, 1);
     send_triangle();
     glEnd();
-#elif 1
-    const int nr = ((float)rand() / RAND_MAX) * 32;
-    //    printf("nr==%d\n", nr);
-    for (i=0; i < nr; i++) { 
-      glBegin(GL_TRIANGLES);
-      send_triangle(); 
-      glEnd();
-    }
-    glBegin(GL_TRIANGLES);
-    glColor4f(1, 0, 0, 1);
-    send_triangle();
-    glEnd();
-#else
-
-    glBegin(GL_TRIANGLES);
-    send_triangle();
-    send_triangle();
-    send_triangle();
-    send_triangle();
-    send_triangle();
-    send_triangle();
-    send_triangle();
-    send_triangle();
-    send_triangle();
-    send_triangle();
-    send_triangle();
-    glColor4f(1, 0, 0, 1);
-    send_triangle();
-    glEnd();
-#endif
 
     glEndList();
 
