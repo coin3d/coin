@@ -355,7 +355,7 @@ SoInput::checkISReference(SoFieldContainer * container,
   crash. This is an intrinsic limitation for MSWindows DLLs.
 
   \sa openFile(), closeFile()
- */
+*/
 void
 SoInput::setFilePointer(FILE * newFP)
 {
@@ -386,7 +386,8 @@ SoInput::setFilePointer(FILE * newFP)
   the SoInput instance will \e not default to reading from stdin after
   a call has been made to this method.
 
-  \sa setFilePointer(), pushFile(), closeFile() */
+  \sa setFilePointer(), pushFile(), closeFile()
+*/
 SbBool
 SoInput::openFile(const char * fileName, SbBool okIfNotFound)
 {
@@ -419,7 +420,7 @@ SoInput::openFile(const char * fileName, SbBool okIfNotFound)
   otherwise.
 
   \sa openFile()
- */
+*/
 SbBool
 SoInput::pushFile(const char * filename)
 {
@@ -522,7 +523,7 @@ SoInput::isValidBuffer(void)
   crash. This is an intrinsic limitation for MSWindows DLLs.
 
   \sa getCurFileName()
- */
+*/
 FILE *
 SoInput::getCurFile(void) const
 {
@@ -547,16 +548,39 @@ SoInput::getCurFileName(void) const
 
 /*!
   Sets up the input stream for reading from the strings pointed to by a
-  NULL-terminated array of string pointers.
+  NULL-terminated array of string pointers.  It is intended for reading
+  memory-inlined scene graphs.
 
-  This method was added to solve the compiler portability problem of 
-  compiling large, static string buffers.  Some compilers have fixed max-
-  lengths on this feature, just over 1KB, which obviously becomes a problem
-  real fast.  This method lets you specify the buffer as an array of
-  smaller string buffers, typically one string for each line in the
-  Inventor file.
+  The rationale for this function is that there is a compiler portability
+  problem with compiling large, static string buffers.  Some compilers
+  have fixed max-lengths on this feature, just over 1KB, which obviously
+  becomes a problem real fast.  This method lets you specify the buffer
+  as an array of smaller string buffers, typically one string for each
+  line in the Inventor file.
 
-  \since 2002-02-10
+  \code
+  SoNode *
+  makeSceneGraph(void) {
+    static const char * inlinescenegraph[] = {
+      "#Inventor V2.1 ascii",
+      "",
+      "Separator {",
+      "  Cube {",
+      "  }",
+      "}",
+      NULL
+    };
+    SoInput in;
+    if ( !in.setStringArray(inlinescenegraph) ) return NULL;
+    return SoDB::readAll(&in);
+  }
+  \endcode
+
+  \sa setBuffer()
+
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.1
 */
 void
 SoInput::setStringArray(const char * strings[])
@@ -584,7 +608,7 @@ SoInput::setStringArray(const char * strings[])
   designed as "const char *", but this his how the original SGI
   Inventor API is, and we duplicate the method signature for
   compatibility reasons.
- */
+*/
 void
 SoInput::setBuffer(void * bufpointer, size_t bufsize)
 {
@@ -615,7 +639,7 @@ SoInput::setBuffer(void * bufpointer, size_t bufsize)
 /*!
   Returns number of bytes read so far from the current file or memory
   buffer.
- */
+*/
 size_t
 SoInput::getNumBytesRead(void) const
 {
@@ -636,7 +660,7 @@ SoInput::getHeader(void)
   Returns the library version needed to read a file with the given header.
   If the header of the current file is not valid, this method returns
   \a 0.0f.
- */
+*/
 float
 SoInput::getIVVersion(void)
 {
@@ -646,7 +670,7 @@ SoInput::getIVVersion(void)
 
 /*!
   Returns \c TRUE if the current file is in binary format.
- */
+*/
 SbBool
 SoInput::isBinary(void)
 {
@@ -658,7 +682,7 @@ SoInput::isBinary(void)
   Get next character in current stream. Returns \c FALSE on end of file.
 
   \sa read()
- */
+*/
 SbBool
 SoInput::get(char & c)
 {
@@ -696,7 +720,7 @@ SoInput::getASCIIFile(char & c)
   A number in hexadecimal format must have the "0x" prefix.
 
   Returns \c FALSE if end of file is encountered.
- */
+*/
 SbBool
 SoInput::readHex(uint32_t & l)
 {
@@ -722,7 +746,7 @@ SoInput::readHex(uint32_t & l)
 /*!
   Skips whitespace and reads next character in input stream.
   Returns \c FALSE if encountering end of file.
- */
+*/
 SbBool
 SoInput::read(char & c)
 {
