@@ -300,3 +300,34 @@
     mortene 20020729.
 
 =====================================================================
+
+014 SoExtSelection with ALL_SHAPES selection doesn't always work
+    properly with SoArray.
+
+    Reproduce by running the SoGuiExamples/nodes/extselection example
+    on the following scene:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #Inventor V2.1 ascii
+
+    Array {
+       numElements1 2
+       separation1 3 0 0
+
+       Cube { }
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    ..if you select any _one_ of the cubes, I believe it works
+    correctly: the SoArray with both cubes are selected. (Or does it
+    -- should perhaps the correct policy be to select only that cube?
+    Unlikely, but ask Peder about his opinion.)
+
+    But if you draw up a lasso to select _both_ cubes, _none_ are
+    actually selected.
+
+    Note that it *does* work correctly for VISIBLE_SHAPES selection.
+
+    mortene 20020806.
+
+=====================================================================
