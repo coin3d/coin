@@ -67,13 +67,25 @@ static void *
 worker_thread_entry(void * data)
 {
   cc_worker * worker = (cc_worker*) data;
+  /* FIXME, FIXME, FIXME!!!!!  John Ivar Haugland reported problems
+   * with the worker code after updating from IRIX 6.5.15 to
+   * 6.5.18. What happened was that the new thread somehow managed to
+   * send the begincond signal (in worker_thread_loop()) before the
+   * main thread got around to waiting for it. This should be
+   * impossible, since the main thread locks a mutex before starting
+   * the new thread (in worker_start_thread(), and the new thread also
+   * locks this mutex before sending the begincond signal. Very
+   * strange. A beer to the person who finds the flaw in my logic
+   * here.  pederb, 2002-12-18 */
+
+  /* This sleep is only a workaround for the bug described above */
+  cc_sleep(2.0f); 
   worker_thread_loop(worker);
   return NULL;
 }
 
 /*
- * called to start thread. Assumes worker->mutex is locked by caller
- */
+ * called to start thread. Assumes worker->mutex is locked by caller */
 static void 
 worker_start_thread(cc_worker * worker)
 {
