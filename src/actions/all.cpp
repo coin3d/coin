@@ -39,3 +39,5 @@
 #include "SoToVRMLAction.cpp"
 #include "SoToVRML2Action.cpp"
 #include "SoWriteAction.cpp"
+#include "SoIntersectionDetectionAction.cpp"
+
