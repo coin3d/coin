@@ -72,6 +72,7 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGenerate.h>
 #include <Inventor/misc/SoPick.h>
@@ -130,8 +131,9 @@ SoSphere::GLRender(SoGLRenderAction * action)
   if (SoGLTextureEnabledElement::get(state)) doTextures = TRUE;
   else if (SoGLTexture3EnabledElement::get(state)) do3DTextures = TRUE;
 
-  SbBool sendNormals = !mb.isColorOnly();
-
+  SbBool sendNormals = !mb.isColorOnly() || 
+    (SoTextureCoordinateElement::getType(state) == SoTextureCoordinateElement::FUNCTION);
+  
   float complexity = SbClamp(this->getComplexityValue(action), 0.0f, 1.0f);
 
   unsigned int flags = 0;

@@ -134,7 +134,9 @@ SoCube::GLRender(SoGLRenderAction * action)
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
-  SbBool sendNormals = ! mb.isColorOnly();
+
+  SbBool sendNormals = !mb.isColorOnly() || 
+    (SoTextureCoordinateElement::getType(state) == SoTextureCoordinateElement::FUNCTION);
 
   unsigned int flags = 0;
   if (materialPerPart) flags |= SOGL_MATERIAL_PER_PART;

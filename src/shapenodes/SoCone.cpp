@@ -68,6 +68,7 @@
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGenerate.h>
 #include <Inventor/misc/SoPick.h>
@@ -183,10 +184,15 @@ SoCone::GLRender(SoGLRenderAction * action)
   else if (SoGLTexture3EnabledElement::get(state)) do3DTextures = TRUE;
 
   SoCone::Part p = (SoCone::Part) this->parts.getValue();
-  unsigned int flags = SOGL_NEED_NORMALS;
+
+  SoMaterialBundle mb(action);
+  SbBool sendNormals = !mb.isColorOnly() || 
+    (SoTextureCoordinateElement::getType(state) == SoTextureCoordinateElement::FUNCTION);
+
+  unsigned int flags = 0;
   if (doTextures) flags |= SOGL_NEED_TEXCOORDS;
   else if (do3DTextures) flags |= SOGL_NEED_3DTEXCOORDS;
-
+  if (sendNormals) flags |= SOGL_NEED_NORMALS;
   if (p & SoCone::SIDES) flags |= SOGL_RENDER_SIDE;
   if (p & SoCone::BOTTOM) flags |= SOGL_RENDER_BOTTOM;
 
@@ -196,7 +202,6 @@ SoCone::GLRender(SoGLRenderAction * action)
       bind == SoMaterialBindingElement::PER_PART_INDEXED)
     flags |= SOGL_MATERIAL_PER_PART;
 
-  SoMaterialBundle mb(action);
   mb.sendFirst();
 
   float complexity = this->getComplexityValue(action);

@@ -442,8 +442,10 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
   SbBool doTextures;
   SbBool normalCacheUsed;
   SoMaterialBundle mb(action);
+  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  doTextures = tb.needCoordinates();
 
-  SbBool sendNormals = !mb.isColorOnly();
+  SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
 
   this->getVertexData(state, coords, normals, cindices,
                       nindices, tindices, mindices, numindices,
@@ -469,9 +471,6 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
     nbind = PER_VERTEX_INDEXED;
     tindices = cindices;
   }
-
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
-  doTextures = tb.needCoordinates();
 
   Binding tbind = NONE;
   if (doTextures) {

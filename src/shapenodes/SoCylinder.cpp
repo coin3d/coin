@@ -188,8 +188,11 @@ SoCylinder::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
+  SbBool sendNormals = !mb.isColorOnly() || 
+    (SoTextureCoordinateElement::getType(state) == SoTextureCoordinateElement::FUNCTION);
+
   unsigned int flags = 0;
-  if (!mb.isColorOnly())
+  if (sendNormals)
     flags |= SOGL_NEED_NORMALS;
   if (SoGLTextureEnabledElement::get(state))
     flags |= SOGL_NEED_TEXCOORDS;

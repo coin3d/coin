@@ -573,16 +573,17 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;
   SbBool doTextures;
+
+  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  doTextures = tb.needCoordinates();
+
   SoMaterialBundle mb(action);
-  SbBool needNormals = !mb.isColorOnly();
+  SbBool needNormals = !mb.isColorOnly() || tb.isFunction();
 
   SoVertexShape::getVertexData(action->getState(), tmp, normals,
                                needNormals);
 
   const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
-
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
-  doTextures = tb.needCoordinates();
 
   if (!needNormals) nbind = OVERALL;
 

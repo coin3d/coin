@@ -477,16 +477,15 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
     SbBool doTextures;
 
     SoMaterialBundle mb(action);
+    SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+    doTextures = tb.needCoordinates();
 
-    SbBool needNormals = !mb.isColorOnly();
+    SbBool needNormals = !mb.isColorOnly() || tb.isFunction();
 
     SoVertexShape::getVertexData(state, tmp, normals,
                                  needNormals);
 
     const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
-
-    SoTextureCoordinateBundle tb(action, TRUE, FALSE);
-    doTextures = tb.needCoordinates();
 
     Binding mbind = this->findMaterialBinding(state);
     Binding nbind = this->findNormalBinding(state);

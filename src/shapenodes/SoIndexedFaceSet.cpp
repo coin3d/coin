@@ -329,14 +329,13 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
 
   SoMaterialBundle mb(action);
 
-  SbBool sendNormals = !mb.isColorOnly();
+  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  doTextures = tb.needCoordinates();
+  SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
 
   this->getVertexData(state, coords, normals, cindices,
                       nindices, tindices, mindices, numindices,
                       sendNormals, normalCacheUsed);
-
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
-  doTextures = tb.needCoordinates();
 
   if (!sendNormals) nbind = OVERALL;
   else if (nbind == OVERALL) {

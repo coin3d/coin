@@ -177,6 +177,7 @@ SoPointSet::GLRender(SoGLRenderAction * action)
 {
   int32_t numpts = this->numPoints.getValue();
   if (numpts == 0) return;
+  if (!this->shouldGLRender(action)) return;
 
   SoState * state = action->getState();
 
@@ -189,7 +190,12 @@ SoPointSet::GLRender(SoGLRenderAction * action)
 
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;
-  SbBool needNormals = SoLazyElement::getLightModel(state) != SoLazyElement::BASE_COLOR;
+
+  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  SbBool doTextures = tb.needCoordinates();
+  SoMaterialBundle mb(action);
+  
+  SbBool needNormals = !mb.isColorOnly() || tb.isFunction();
 
   SoVertexShape::getVertexData(state, tmp, normals,
                                needNormals);
@@ -203,16 +209,7 @@ SoPointSet::GLRender(SoGLRenderAction * action)
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   }
 
-  if (!this->shouldGLRender(action)) {
-    if (didpush)
-      state->pop();
-    return;
-  }
-
   const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
-
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
-  SbBool doTextures = tb.needCoordinates();
 
   Binding mbind = this->findMaterialBinding(action->getState());
 
@@ -224,7 +221,6 @@ SoPointSet::GLRender(SoGLRenderAction * action)
     else glNormal3f(0.0f, 0.0f, 1.0f);
   }
 
-  SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
 
   int32_t idx = this->startIndex.getValue();

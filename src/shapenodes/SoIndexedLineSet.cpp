@@ -195,6 +195,8 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   if (this->coordIndex.getNum() < 2) return;
   SoState * state = action->getState();
 
+  if (!this->shouldGLRender(action)) return;
+  
   SbBool didpush = FALSE;
 
   if (this->vertexProperty.getValue()) {
@@ -202,6 +204,10 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
     didpush = TRUE;
     this->vertexProperty.getValue()->GLRender(action);
   }
+
+  SoMaterialBundle mb(action);
+  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  SbBool doTextures = tb.needCoordinates();
 
   const SoCoordinateElement * coords;
   const SbVec3f * normals;
@@ -212,7 +218,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   const int32_t * mindices;
   SbBool normalCacheUsed;
 
-  SbBool sendNormals = SoLazyElement::getLightModel(state) != SoLazyElement::BASE_COLOR;
+  SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
 
   getVertexData(state, coords, normals, cindices,
                 nindices, tindices, mindices, numindices,
@@ -225,12 +231,6 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
     }
     sendNormals = FALSE;
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-  }
-
-  if (!this->shouldGLRender(action)) {
-    if (didpush)
-      state->pop();
-    return;
   }
 
   Binding mbind = this->findMaterialBinding(state);
@@ -249,9 +249,6 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
     }
   }
 
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
-  SbBool doTextures = tb.needCoordinates();
-
   if (doTextures) {
     if (SoTextureCoordinateBindingElement::get(state) ==
         SoTextureCoordinateBindingElement::PER_VERTEX) {
@@ -262,17 +259,15 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
     }
   }
 
+  mb.sendFirst(); // make sure we have the correct material
+
   if (!sendNormals) nbind = OVERALL;
   else if (nbind == OVERALL) {
     glNormal3fv((const GLfloat *)normals);
   }
 
-  SoMaterialBundle mb(action);
-  mb.sendFirst(); // make sure we have the correct material
-
   SbBool drawPoints =
     SoDrawStyleElement::get(state) == SoDrawStyleElement::POINTS;
-
 
   sogl_render_lineset((SoGLCoordinateElement*)coords,
                       cindices,
