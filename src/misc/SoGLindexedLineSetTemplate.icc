@@ -85,8 +85,12 @@
   while (indices < end) {
     previ = *indices++;
 
+    // Variable used for counting errors and make sure not a bunch of
+    // errormessages flood the screen.
+    static uint32_t current_errors = 0;
+
+    // This test is for robustness upon buggy data sets
     if (previ < 0 || previ >= numcoords) {
-      static uint32_t current_errors = 0;
       if (current_errors < 1) {
         SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
                                   "index: %d (Should be within [0, %d]). Aborting "
@@ -116,7 +120,19 @@
     texcoords->send(texindices ? *texindices++ : texidx++,coords->get3(previ), *currnormal);
 #endif
     i = (indices < end) ? *indices++ : -1;
-    while (i >= 0 && i < numcoords) {
+    while (i >= 0) {
+      // For robustness upon buggy data sets
+      if (i >= numcoords) {
+        if (current_errors < 1) {
+          SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
+                                    "index: %d (Should be within [0, %d]). Aborting "
+                                    "rendering. This message will be shown once, but "
+                                    "there might be more errors", i, numcoords - 1);
+        }
+        current_errors++;
+        break;
+      }
+
 #if MBINDING==PER_SEGMENT
       materials->send(matnr++, TRUE);
 #elif MBINDING==PER_SEGMENT_INDEXED
@@ -173,8 +189,12 @@
 
     i = *indices++;
 
+    // Variable used for counting errors and make sure not a bunch of
+    // errormessages flood the screen.
+    static uint32_t current_errors = 0;
+
+    // This test is for robustness upon buggy data sets
     if (i < 0 || i >= numcoords) {
-      static uint32_t current_errors = 0;
       if (current_errors < 1) {
         SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
                                   "index: %d (Should be within [0, %d]). Aborting "
@@ -204,7 +224,19 @@
 #endif
     SEND_VERTEX(i);
     i = indices < end ? *indices++ : -1;
-    while (i >= 0 && i < numcoords) {
+    while (i >= 0) {
+      // For robustness upon buggy data sets
+      if (i >= numcoords) {
+        if (current_errors < 1) {
+          SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
+                                    "index: %d (Should be within [0, %d]). Aborting "
+                                    "rendering. This message will be shown once, but "
+                                    "there might be more errors", i, numcoords - 1);
+        }
+        current_errors++;
+        break;
+      }
+
 #if MBINDING==PER_VERTEX
       materials->send(matnr++, TRUE);
 #elif MBINDING==PER_VERTEX_INDEXED
