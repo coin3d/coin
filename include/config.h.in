@@ -67,6 +67,9 @@
 /* define this to the full libCoin major.minor.micro version number */
 #undef COIN_VERSION
 
+/* define for runtime linking with fontconfig */
+#undef FONTCONFIG_RUNTIME_LINKING
+
 /* define for runtime linking with freetype */
 #undef FREETYPE_RUNTIME_LINKING
 
@@ -123,6 +126,12 @@
 
 /* whether or not finite() is available */
 #undef HAVE_FINITE
+
+/* define if you have the fontconfig library */
+#undef HAVE_FONTCONFIG
+
+/* define that the Fontconfig header is available */
+#undef HAVE_FONTCONFIG_H
 
 /* whether or not fpclass() is available */
 #undef HAVE_FPCLASS

@@ -465,7 +465,7 @@ ac_includes_default="\
 #endif"
 
 ac_subdirs_all="$ac_subdirs_all src/extensions/superglu"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os RFC822_DATE coin_configure_date BUILD_WITH_MSVC MAC_FRAMEWORK MAC_FRAMEWORK_NAME MAC_FRAMEWORK_PREFIX MAC_FRAMEWORK_VERSION nop ivincludedir frameworkdir COIN_MAJOR_VERSION COIN_MINOR_VERSION COIN_MICRO_VERSION COIN_BETA_VERSION COIN_VERSION LT_CURRENT LT_REVISION LT_AGE COIN_SO_VERSION CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT COIN_MSVC_LIBC INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT MAC_FRAMEWORK_TRUE MAC_FRAMEWORK_FALSE MACOSX_10_2FF_TRUE MACOSX_10_2FF_FALSE MACOSX_TRUE MACOSX_FALSE MACOSX_NAME CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CPP F77 FFLAGS ac_ct_F77 LIBTOOL COIN_EXTRA_CPPFLAGS COIN_EXTRA_CFLAGS COIN_EXTRA_CXXFLAGS COIN_EXTRA_LDFLAGS COIN_EXTRA_LIBS HAVE_3DS_IMPORT_CAPABILITIES BUILD_3DS_CAPABILITIES_TRUE BUILD_3DS_CAPABILITIES_FALSE HAVE_VRML97 BUILD_VRML97_TRUE BUILD_VRML97_FALSE subdirs HAVE_SUPERGLU SUPERGLUPREFIX BUILD_WITH_SUPERGLU_TRUE BUILD_WITH_SUPERGLU_FALSE HAVE_THREADS BUILD_WITH_THREADS_TRUE BUILD_WITH_THREADS_FALSE HAVE_THREADSAFE BUILD_LIBRARY_TRUE BUILD_LIBRARY_FALSE htmldir COIN_DOC_HTML coin_html_dir COIN_DOC_MAN coin_man_dir BUILD_MANPAGES_TRUE BUILD_MANPAGES_FALSE BUILD_HTMLPAGES_TRUE BUILD_HTMLPAGES_FALSE sim_ac_doxygen_exe sim_ac_perl_exe path_tag sim_ac_makensis_exe sim_ac_dpkg_buildpackage_exe WIN_PACKAGEABLE_TRUE WIN_PACKAGEABLE_FALSE DEB_PACKAGEABLE_TRUE DEB_PACKAGEABLE_FALSE sim_ac_packagemaker_app MACOSX_PACKAGEABLE_TRUE MACOSX_PACKAGEABLE_FALSE CONFIG SUFFIX DSUFFIX sim_ac_simage_configcmd HAVE_SOUND BUILD_WITH_SOUND_TRUE BUILD_WITH_SOUND_FALSE HAVE_FREETYPE_TRUE HAVE_FREETYPE_FALSE X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS HACKING_COMPACT_BUILD_TRUE HACKING_COMPACT_BUILD_FALSE HACKING_DYNAMIC_MODULES_TRUE HACKING_DYNAMIC_MODULES_FALSE COIN_HACKING_LIBDIRS coin_build_dir coin_w32_build_dir coin_src_dir coin_w32_src_dir LIBFLAGS SIM_INCLUDE_WINDOWS_H SIM_INCLUDE_GL_H SIM_INCLUDE_GLU_H SIM_INCLUDE_GLEXT_H BUILD_WITH_MSVC_TRUE BUILD_WITH_MSVC_FALSE COIN_COMPILER ac_compiler_gnu COIN_DSP_LIBS COIN_DSP_INCS COIN_DSP_DEFS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os RFC822_DATE coin_configure_date BUILD_WITH_MSVC MAC_FRAMEWORK MAC_FRAMEWORK_NAME MAC_FRAMEWORK_PREFIX MAC_FRAMEWORK_VERSION nop ivincludedir frameworkdir COIN_MAJOR_VERSION COIN_MINOR_VERSION COIN_MICRO_VERSION COIN_BETA_VERSION COIN_VERSION LT_CURRENT LT_REVISION LT_AGE COIN_SO_VERSION CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT COIN_MSVC_LIBC INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT MAC_FRAMEWORK_TRUE MAC_FRAMEWORK_FALSE MACOSX_10_2FF_TRUE MACOSX_10_2FF_FALSE MACOSX_TRUE MACOSX_FALSE MACOSX_NAME CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CPP F77 FFLAGS ac_ct_F77 LIBTOOL COIN_EXTRA_CPPFLAGS COIN_EXTRA_CFLAGS COIN_EXTRA_CXXFLAGS COIN_EXTRA_LDFLAGS COIN_EXTRA_LIBS HAVE_3DS_IMPORT_CAPABILITIES BUILD_3DS_CAPABILITIES_TRUE BUILD_3DS_CAPABILITIES_FALSE HAVE_VRML97 BUILD_VRML97_TRUE BUILD_VRML97_FALSE subdirs HAVE_SUPERGLU SUPERGLUPREFIX BUILD_WITH_SUPERGLU_TRUE BUILD_WITH_SUPERGLU_FALSE HAVE_THREADS BUILD_WITH_THREADS_TRUE BUILD_WITH_THREADS_FALSE HAVE_THREADSAFE BUILD_LIBRARY_TRUE BUILD_LIBRARY_FALSE htmldir COIN_DOC_HTML coin_html_dir COIN_DOC_MAN coin_man_dir BUILD_MANPAGES_TRUE BUILD_MANPAGES_FALSE BUILD_HTMLPAGES_TRUE BUILD_HTMLPAGES_FALSE sim_ac_doxygen_exe sim_ac_perl_exe path_tag sim_ac_makensis_exe sim_ac_dpkg_buildpackage_exe WIN_PACKAGEABLE_TRUE WIN_PACKAGEABLE_FALSE DEB_PACKAGEABLE_TRUE DEB_PACKAGEABLE_FALSE sim_ac_packagemaker_app MACOSX_PACKAGEABLE_TRUE MACOSX_PACKAGEABLE_FALSE CONFIG SUFFIX DSUFFIX sim_ac_simage_configcmd HAVE_SOUND BUILD_WITH_SOUND_TRUE BUILD_WITH_SOUND_FALSE HAVE_FONTCONFIG_TRUE HAVE_FONTCONFIG_FALSE HAVE_FREETYPE_TRUE HAVE_FREETYPE_FALSE X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS HACKING_COMPACT_BUILD_TRUE HACKING_COMPACT_BUILD_FALSE HACKING_DYNAMIC_MODULES_TRUE HACKING_DYNAMIC_MODULES_FALSE COIN_HACKING_LIBDIRS coin_build_dir coin_w32_build_dir coin_src_dir coin_w32_src_dir LIBFLAGS SIM_INCLUDE_WINDOWS_H SIM_INCLUDE_GL_H SIM_INCLUDE_GLU_H SIM_INCLUDE_GLEXT_H BUILD_WITH_MSVC_TRUE BUILD_WITH_MSVC_FALSE COIN_COMPILER ac_compiler_gnu COIN_DSP_LIBS COIN_DSP_INCS COIN_DSP_DEFS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -1074,6 +1074,8 @@ Optional Features:
   --disable-sound         disable sound support
   --enable-dl-openal      use runtime dynamic linking for OpenAL if possible
                           [default=yes]
+  --disable-dl-fontconfig disable runtime dynamic linking for fontconfig if
+                          possible [default=--enable-dl-fontconfig]
   --disable-dl-freetype   disable runtime dynamic linking for freetype if
                           possible [default=--enable-dl-freetype]
   --disable-dl-zlib       disable runtime dynamic linking for libz if possible
@@ -1107,6 +1109,7 @@ Optional Packages:
                           [default=yes]
   --with-simage=DIR       use simage for loading texture files
   --with-openal=PATH      enable/disable OpenAL support
+  --with-fontconfig=PATH  enable/disable Fontconfig support
   --with-freetype=PATH    enable/disable Freetype support
   --with-zlib=PATH        enable/disable zlib support
   --with-bzip2=PATH       enable/disable bzip2 support
@@ -4823,7 +4826,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 4826 "configure"' > conftest.$ac_ext
+  echo '#line 4829 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5668,7 +5671,7 @@ fi
 
 
 # Provide some information about the compiler.
-echo "$as_me:5671:" \
+echo "$as_me:5674:" \
      "checking for Fortran 77 compiler version" >&5
 ac_compiler=`set X $ac_compile; echo $2`
 { (eval echo "$as_me:$LINENO: \"$ac_compiler --version </dev/null >&5\"") >&5
@@ -6679,11 +6682,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6682: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6685: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:6686: \$? = $ac_status" >&5
+   echo "$as_me:6689: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -6911,11 +6914,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6914: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6917: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:6918: \$? = $ac_status" >&5
+   echo "$as_me:6921: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -6978,11 +6981,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6981: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6984: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:6985: \$? = $ac_status" >&5
+   echo "$as_me:6988: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -8990,7 +8993,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 8993 "configure"
+#line 8996 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -9088,7 +9091,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 9091 "configure"
+#line 9094 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11222,11 +11225,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:11225: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:11228: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:11229: \$? = $ac_status" >&5
+   echo "$as_me:11232: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -11289,11 +11292,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:11292: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:11295: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:11296: \$? = $ac_status" >&5
+   echo "$as_me:11299: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -12532,7 +12535,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 12535 "configure"
+#line 12538 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12630,7 +12633,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 12633 "configure"
+#line 12636 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13452,11 +13455,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13455: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13458: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:13459: \$? = $ac_status" >&5
+   echo "$as_me:13462: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -13519,11 +13522,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13522: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13525: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:13526: \$? = $ac_status" >&5
+   echo "$as_me:13529: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -15459,11 +15462,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15462: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15465: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:15466: \$? = $ac_status" >&5
+   echo "$as_me:15469: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -15691,11 +15694,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15694: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15697: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:15698: \$? = $ac_status" >&5
+   echo "$as_me:15701: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -15758,11 +15761,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15761: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15764: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:15765: \$? = $ac_status" >&5
+   echo "$as_me:15768: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -17770,7 +17773,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 17773 "configure"
+#line 17776 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -17868,7 +17871,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 17871 "configure"
+#line 17874 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -19990,7 +19993,7 @@ if test x"$with_pthread" != xno; then
 echo $ECHO_N "checking for POSIX threads... $ECHO_C" >&6
   # At least under FreeBSD, we link to pthreads library with -pthread.
   for sim_ac_pthreads_libcheck in "-lpthread" "-pthread"; do
-    if ! $sim_ac_pthread_avail; then
+    if $sim_ac_pthread_avail; then :; else
       LIBS="$sim_ac_pthreads_libcheck $sim_ac_save_libs"
       cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
@@ -26936,7 +26939,7 @@ echo $ECHO_N "checking for the dl library... $ECHO_C" >&6
   # At least under FreeBSD, dlopen() et al is part of the C library.
   # On HP-UX, dlopen() might reside in a library "svld" instead of "dl".
   for sim_ac_dl_libcheck in "" "-ldl" "-lsvld"; do
-    if ! $sim_ac_dl_avail; then
+    if $sim_ac_dl_avail; then :; else
       LIBS="$sim_ac_dl_libcheck $sim_ac_save_libs"
       cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
@@ -27427,7 +27430,7 @@ echo "${ECHO_T}no" >&6
 fi
 
 
-  if ! test "X$sim_ac_simage_configcmd" = "Xfalse"; then
+  if test "X$sim_ac_simage_configcmd" = "Xfalse"; then :; else
     test -n "$CONFIG" &&
       $sim_ac_simage_configcmd --alternate=$CONFIG >/dev/null 2>/dev/null &&
       sim_ac_simage_configcmd="$sim_ac_simage_configcmd --alternate=$CONFIG"
@@ -27941,6 +27944,297 @@ else
 fi
 
 
+# ********************************************************************
+# * Set us up for using the Fontconfig font library (if wanted, and if
+# * available).
+# ********************************************************************
+
+# Check whether --enable-dl-fontconfig or --disable-dl-fontconfig was given.
+if test "${enable_dl_fontconfig+set}" = set; then
+  enableval="$enable_dl_fontconfig"
+  case "${enableval}" in
+    yes | true) enable_dl_fontconfig=true ;;
+    no | false) enable_dl_fontconfig=false ;;
+    *)
+{ { echo "$as_me:$LINENO: error: invalid value \"${enableval}\" for \"--enable-dl-fontconfig\" configure argument" >&5
+echo "$as_me: error: invalid value \"${enableval}\" for \"--enable-dl-fontconfig\" configure argument" >&2;}
+   { (exit 1); exit 1; }; }
+ ;;
+  esac
+else
+  enable_dl_fontconfig=true
+fi;
+
+sim_ac_have_fontconfig=false
+if $enable_dl_fontconfig && $coin_can_do_runtime_linking; then
+
+cat >>confdefs.h <<_ACEOF
+#define FONTCONFIG_RUNTIME_LINKING 1
+_ACEOF
+
+
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|Fontconfig support:Yes, run-time binding"
+else
+  sim_ac_configuration_settings="Fontconfig support:Yes, run-time binding"
+fi
+
+else
+  : ${sim_ac_have_fontconfig=false}
+
+# Check whether --with-fontconfig or --without-fontconfig was given.
+if test "${with_fontconfig+set}" = set; then
+  withval="$with_fontconfig"
+  case $withval in
+  yes | "") sim_ac_want_fontconfig=true ;;
+  no)       sim_ac_want_fontconfig=false ;;
+  *)        sim_ac_want_fontconfig=true
+            sim_ac_fontconfig_path=$withval ;;
+  esac
+else
+  sim_ac_want_fontconfig=true
+fi;
+case $sim_ac_want_fontconfig in
+true)
+  $sim_ac_have_fontconfig && break
+  sim_ac_fontconfig_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_fontconfig_save_LDFLAGS=$LDFLAGS
+  sim_ac_fontconfig_save_LIBS=$LIBS
+
+  sim_ac_fontconfig_debug=false
+  test -n "`echo -- $CPPFLAGS $CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
+    sim_ac_fontconfig_debug=true
+  # test -z "$sim_ac_fontconfig_path" -a x"$prefix" != xNONE &&
+  #   sim_ac_fontconfig_path=$prefix
+  sim_ac_fontconfig_name=fontconfig
+  sim_ac_fontconfig_libs="-l$sim_ac_fontconfig_name"
+  if test -n "$sim_ac_fontconfig_path"; then
+    for sim_ac_fontconfig_candidate in \
+      `( ls $sim_ac_fontconfig_path/lib/fontconfig*.lib;
+         ls $sim_ac_fontconfig_path/lib/fontconfig*d.lib;
+         ls $sim_ac_fontconfig_path/lib/libfontconfig*.lib;
+         ls $sim_ac_fontconfig_path/lib/libfontconfig*d.lib ) 2>/dev/null`
+    do
+      case $sim_ac_fontconfig_candidate in
+      *d.lib)
+        $sim_ac_fontconfig_debug &&
+          sim_ac_fontconfig_name=`basename $sim_ac_fontconfig_candidate .lib` ;;
+      *.lib)
+        sim_ac_fontconfig_name=`basename $sim_ac_fontconfig_candidate .lib` ;;
+      esac
+    done
+    sim_ac_fontconfig_cppflags="-I$sim_ac_fontconfig_path/include"
+    CPPFLAGS="$CPPFLAGS $sim_ac_fontconfig_cppflags"
+    sim_ac_fontconfig_ldflags="-L$sim_ac_fontconfig_path/lib"
+    LDFLAGS="$LDFLAGS $sim_ac_fontconfig_ldflags"
+    sim_ac_fontconfig_libs="-l$sim_ac_fontconfig_name"
+    # unset sim_ac_fontconfig_candidate
+    # unset sim_ac_fontconfig_path
+  fi
+
+  sim_ac_fontconfig_header_avail=false
+echo "$as_me:$LINENO: checking how to include fontconfig.h" >&5
+echo $ECHO_N "checking how to include fontconfig.h... $ECHO_C" >&6
+if test x"$with_fontconfig" != x"no"; then
+  sim_ac_fontconfig_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_fontconfig_cppflags=
+
+  if test x"$with_fontconfig" != xyes && test x"$with_fontconfig" != x""; then
+    sim_ac_fontconfig_cppflags="-I${with_fontconfig}/include -I${with_fontconfig}/include/fontconfig"
+  fi
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_fontconfig_cppflags"
+
+
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <fontconfig/fontconfig.h>
+_ACEOF
+if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_c_preproc_warn_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  ac_cv_header_fontconfig_fontconfig_h=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_cv_header_fontconfig_fontconfig_h=no
+fi
+rm -f conftest.err conftest.$ac_ext
+if test $ac_cv_header_fontconfig_fontconfig_h = yes; then
+
+    sim_ac_fontconfig_header_avail=true
+    sim_ac_fontconfig_header=fontconfig.h
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_FONTCONFIG_H 1
+_ACEOF
+
+
+fi
+
+
+
+
+  CPPFLAGS="$sim_ac_fontconfig_save_CPPFLAGS"
+  if $sim_ac_fontconfig_header_avail; then
+    if test x"$sim_ac_fontconfig_cppflags" = x""; then
+      echo "$as_me:$LINENO: result: #include <$sim_ac_fontconfig_header>" >&5
+echo "${ECHO_T}#include <$sim_ac_fontconfig_header>" >&6
+    else
+      echo "$as_me:$LINENO: result: $sim_ac_fontconfig_cppflags, #include <$sim_ac_fontconfig_header>" >&5
+echo "${ECHO_T}$sim_ac_fontconfig_cppflags, #include <$sim_ac_fontconfig_header>" >&6
+    fi
+    CPPFLAGS="$CPPFLAGS $sim_ac_fontconfig_cppflags"
+  else
+    echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+
+  fi
+else
+  echo "$as_me:$LINENO: result: disabled" >&5
+echo "${ECHO_T}disabled" >&6
+
+fi
+
+
+  echo "$as_me:$LINENO: checking for Fontconfig" >&5
+echo $ECHO_N "checking for Fontconfig... $ECHO_C" >&6
+  LIBS="$sim_ac_fontconfig_libs $LIBS"
+  cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <fontconfig/fontconfig.h>
+int
+main ()
+{
+FcGetVersion();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_have_fontconfig=true
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+
+  CPPFLAGS=$sim_ac_fontconfig_save_CPPFLAGS
+  LDFLAGS=$sim_ac_fontconfig_save_LDFLAGS
+  LIBS=$sim_ac_fontconfig_save_LIBS
+  # unset sim_ac_fontconfig_debug
+  # unset sim_ac_fontconfig_name
+  # unset sim_ac_fontconfig_save_CPPFLAGS
+  # unset sim_ac_fontconfig_save_LDFLAGS
+  # unset sim_ac_fontconfig_save_LIBS
+  ;;
+esac
+if $sim_ac_want_fontconfig; then
+  if $sim_ac_have_fontconfig; then
+    echo "$as_me:$LINENO: result: success ($sim_ac_fontconfig_libs)" >&5
+echo "${ECHO_T}success ($sim_ac_fontconfig_libs)" >&6
+
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_FONTCONFIG 1
+_ACEOF
+
+    CPPFLAGS="$CPPFLAGS $sim_ac_fontconfig_cppflags"
+    LDFLAGS="$LDFLAGS $sim_ac_fontconfig_ldflags"
+    LIBS="$sim_ac_fontconfig_libs $LIBS"
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_fontconfig_cppflags"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_fontconfig_ldflags"
+    COIN_EXTRA_LIBS="$sim_ac_fontconfig_libs $COIN_EXTRA_LIBS"
+
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|Fontconfig support:Yes, link-time binding"
+else
+  sim_ac_configuration_settings="Fontconfig support:Yes, link-time binding"
+fi
+
+
+  else
+    echo "$as_me:$LINENO: result: failure" >&5
+echo "${ECHO_T}failure" >&6
+
+    if $sim_ac_fontconfig_desired; then
+
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|Fontconfig support:No"
+else
+  sim_ac_configuration_settings="Fontconfig support:No"
+fi
+
+    fi
+
+  fi
+else
+  echo "$as_me:$LINENO: result: disabled" >&5
+echo "${ECHO_T}disabled" >&6
+
+    if $sim_ac_fontconfig_desired; then
+
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|Fontconfig support:No"
+else
+  sim_ac_configuration_settings="Fontconfig support:No"
+fi
+
+    fi
+
+fi
+# unset sim_ac_want_fontconfig
+
+fi
+
+
+
+if $sim_ac_have_fontconfig; then
+  HAVE_FONTCONFIG_TRUE=
+  HAVE_FONTCONFIG_FALSE='#'
+else
+  HAVE_FONTCONFIG_TRUE='#'
+  HAVE_FONTCONFIG_FALSE=
+fi
+
+
 # **************************************************************************
 # Set us up for using TrueType fonts. Through the FreeType library (if
 # wanted, and if available), and / or the Win32 API.
@@ -27981,9 +28275,9 @@ _ACEOF
 
 
 if test x"${sim_ac_configuration_settings+set}" = x"set"; then
-  sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType library:If available, run-time linking"
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType library:Yes, run-time binding"
 else
-  sim_ac_configuration_settings="FreeType library:If available, run-time linking"
+  sim_ac_configuration_settings="FreeType library:Yes, run-time binding"
 fi
 
 else
@@ -28008,8 +28302,6 @@ true)
   sim_ac_freetype_save_LDFLAGS=$LDFLAGS
   sim_ac_freetype_save_LIBS=$LIBS
 
-case $host_os in
-*)
   sim_ac_freetype_debug=false
   test -n "`echo -- $CPPFLAGS $CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
     sim_ac_freetype_debug=true
@@ -28040,8 +28332,6 @@ case $host_os in
     # unset sim_ac_freetype_candidate
     # unset sim_ac_freetype_path
   fi
-;;
-esac
 
   sim_ac_freetype_header_avail=false
 echo "$as_me:$LINENO: checking how to include ft2build.h" >&5
@@ -30811,7 +31101,7 @@ fi
 
   sim_ac_glchk_hit=false
   for sim_ac_tmp_outerloop in barebones withpthreads; do
-    if ! $sim_ac_glchk_hit; then
+    if $sim_ac_glchk_hit; then :; else
 
       sim_ac_oglchk_pthreadslib=""
       if test "$sim_ac_tmp_outerloop" = "withpthreads"; then
@@ -30862,7 +31152,7 @@ if test x"$with_pthread" != xno; then
 echo $ECHO_N "checking for POSIX threads... $ECHO_C" >&6
   # At least under FreeBSD, we link to pthreads library with -pthread.
   for sim_ac_pthreads_libcheck in "-lpthread" "-pthread"; do
-    if ! $sim_ac_pthread_avail; then
+    if $sim_ac_pthread_avail; then :; else
       LIBS="$sim_ac_pthreads_libcheck $sim_ac_save_libs"
       cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
@@ -30989,7 +31279,7 @@ fi
 echo $ECHO_N "checking for OpenGL library dev-kit... $ECHO_C" >&6
       # Mac OS X uses nada (only LDFLAGS), which is why "" was set first
       for sim_ac_ogl_libcheck in "" $sim_ac_ogl_first $sim_ac_ogl_second; do
-        if ! $sim_ac_glchk_hit; then
+        if $sim_ac_glchk_hit; then :; else
           LIBS="$sim_ac_ogl_libcheck $sim_ac_oglchk_pthreadslib $sim_ac_save_libs"
           cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
@@ -33108,6 +33398,13 @@ echo "$as_me: error: conditional \"BUILD_WITH_SOUND\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
+if test -z "${HAVE_FONTCONFIG_TRUE}" && test -z "${HAVE_FONTCONFIG_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"HAVE_FONTCONFIG\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"HAVE_FONTCONFIG\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
 if test -z "${HAVE_FREETYPE_TRUE}" && test -z "${HAVE_FREETYPE_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"HAVE_FREETYPE\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
@@ -33884,6 +34181,8 @@ s,@sim_ac_simage_configcmd@,$sim_ac_simage_configcmd,;t t
 s,@HAVE_SOUND@,$HAVE_SOUND,;t t
 s,@BUILD_WITH_SOUND_TRUE@,$BUILD_WITH_SOUND_TRUE,;t t
 s,@BUILD_WITH_SOUND_FALSE@,$BUILD_WITH_SOUND_FALSE,;t t
+s,@HAVE_FONTCONFIG_TRUE@,$HAVE_FONTCONFIG_TRUE,;t t
+s,@HAVE_FONTCONFIG_FALSE@,$HAVE_FONTCONFIG_FALSE,;t t
 s,@HAVE_FREETYPE_TRUE@,$HAVE_FREETYPE_TRUE,;t t
 s,@HAVE_FREETYPE_FALSE@,$HAVE_FREETYPE_FALSE,;t t
 s,@X_CFLAGS@,$X_CFLAGS,;t t

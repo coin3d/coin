@@ -74,7 +74,7 @@ if $sim_ac_coin_desired; then
 
   AC_PATH_PROG(sim_ac_coin_configcmd, coin-config, false, $sim_ac_path)
 
-  if ! test "X$sim_ac_coin_configcmd" = "Xfalse"; then
+  if test "X$sim_ac_coin_configcmd" != "Xfalse"; then
     test -n "$CONFIG" &&
       $sim_ac_coin_configcmd --alternate=$CONFIG >/dev/null 2>/dev/null &&
       sim_ac_coin_configcmd="$sim_ac_coin_configcmd --alternate=$CONFIG"
@@ -119,7 +119,7 @@ if $sim_ac_coin_desired; then
       LIBS=$sim_ac_save_libs
     ])
     sim_ac_coin_avail=$sim_cv_coin_avail
-    if ! $sim_ac_coin_avail; then
+    if $sim_ac_coin_avail; then :; else
       AC_MSG_WARN([
 Compilation and/or linking with the Coin main library SDK failed, for
 unknown reason. If you are familiar with configure-based configuration
