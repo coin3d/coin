@@ -30,7 +30,7 @@
 
 class SoNormalBundleP;
 
-class SoNormalBundle : public SoBundle {
+class COIN_DLL_API SoNormalBundle : public SoBundle {
 public:
   SoNormalBundle(SoAction * action, SbBool forrendering);
   ~SoNormalBundle();
