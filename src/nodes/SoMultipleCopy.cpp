@@ -41,10 +41,12 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoSwitch.h> // SO_SWITCH_ALL
 
 /*!
   \var SoMFMatrix SoMultipleCopy::matrix
@@ -216,8 +218,15 @@ SoMultipleCopy::getMatrix(SoGetMatrixAction *action)
 void
 SoMultipleCopy::search(SoSearchAction *action)
 {
-  SoNode::search(action);
+  SoState * state = action->getState();
+  state->push();
+  // set Switch element so that subgraphs depending on this element
+  // will traverse all children (it's set during normal traversal in
+  // doAction()).
+  SoSwitchElement::set(action->getState(), SO_SWITCH_ALL);
+  // just use SoGroup::search() to traverse all children.
   inherited::search(action);
+  state->pop();  
 }
 
 // Doc in superclass.
