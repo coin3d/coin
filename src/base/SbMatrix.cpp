@@ -34,6 +34,8 @@
 
   * The SbMatrix::factor() function has not been implemented yet.
 
+  * The element access methods should be inlined.
+
   * Optimizations are not done yet, so there's a lot of room for
     improvements.
 
@@ -310,6 +312,8 @@ SbMatrix::inverse(void) const
 
   SbMatrix result;
 
+  // FIXME: we should be using an optimized way of calculating the
+  // inverse matrix. 20010114 mortene.
   result.matrix[0][0] = this->det3(1, 2, 3, 1, 2, 3);
   result.matrix[1][0] = -this->det3(1, 2, 3, 0, 2, 3);
   result.matrix[2][0] = this->det3(1, 2, 3, 0, 1, 3);
@@ -381,17 +385,13 @@ SbMatrix::operator SbMat&(void)
 float *
 SbMatrix::operator [](int i)
 {
-#if COIN_DEBUG
+#if COIN_EXTRA_DEBUG
   if (i<0 || i>3) {
-    SoDebugError::postWarning("SbMatrix::operator[]",
-                              "Index (%d) is out of bounds. "
-                              "Clamping to bounds.");
-    if (i<0) i=0;
-    else if (i>3) i=3;
+    SoDebugError::post("SbMatrix::operator[]", "Index out of bounds. ");
   }
-#endif // COIN_DEBUG
+#endif // COIN_EXTRA_DEBUG
 
-   return matrix[i];
+   return this->matrix[i];
 }
 
 /*!
@@ -403,17 +403,13 @@ SbMatrix::operator [](int i)
 const float *
 SbMatrix::operator [](int i) const
 {
-#if COIN_DEBUG
+#if COIN_EXTRA_DEBUG
   if (i<0 || i>3) {
-    SoDebugError::postWarning("SbMatrix::operator[]",
-                              "Index (%d) is out of bounds. "
-                              "Clamping to bounds.");
-    if (i<0) i=0;
-    else if (i>3) i=3;
+    SoDebugError::postWarning("SbMatrix::operator[]", "Index out of bounds. ");
   }
-#endif // COIN_DEBUG
+#endif // COIN_EXTRA_DEBUG
 
-   return matrix[i];
+   return this->matrix[i];
 }
 
 /*!
