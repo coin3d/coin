@@ -17,7 +17,7 @@ RegularSources = \
 	glue-dummy.cpp
 
 LinkHackSources = \
-	all-c.c \
+	all-glue-c.c \
 	glue-dummy.cpp
 
 # Header installation is controlled from include/Inventor/C/glue/Makefile.am.

@@ -250,7 +250,7 @@ RegularSources = \
 
 
 LinkHackSources = \
-	all.cpp
+	all-hardcopy-cpp.cpp
 
 PublicHeaders = \
 	../../include/Inventor/annex/HardCopy/SoHardCopy.h \
@@ -323,8 +323,8 @@ hardcopy_lst_AR = $(AR) cru
 hardcopy_lst_LIBADD =
 am__hardcopy_lst_SOURCES_DIST = HardCopy.cpp PSVectorOutput.cpp \
 	VectorOutput.cpp VectorizeAction.cpp VectorizeActionP.cpp \
-	VectorizePSAction.cpp all.cpp
-am__objects_1 = all.$(OBJEXT)
+	VectorizePSAction.cpp all-hardcopy-cpp.cpp
+am__objects_1 = all-hardcopy-cpp.$(OBJEXT)
 am__objects_2 = HardCopy.$(OBJEXT) PSVectorOutput.$(OBJEXT) \
 	VectorOutput.$(OBJEXT) VectorizeAction.$(OBJEXT) \
 	VectorizeActionP.$(OBJEXT) VectorizePSAction.$(OBJEXT)
@@ -337,9 +337,9 @@ am__EXTRA_hardcopy_lst_SOURCES_DIST = \
 	../../include/Inventor/annex/HardCopy/SoVectorOutput.h \
 	../../include/Inventor/annex/HardCopy/SoVectorizeAction.h \
 	../../include/Inventor/annex/HardCopy/SoVectorizePSAction.h \
-	VectorizeActionP.h VectorizeItems.h all.cpp HardCopy.cpp \
-	PSVectorOutput.cpp VectorOutput.cpp VectorizeAction.cpp \
-	VectorizeActionP.cpp VectorizePSAction.cpp
+	VectorizeActionP.h VectorizeItems.h all-hardcopy-cpp.cpp \
+	HardCopy.cpp PSVectorOutput.cpp VectorOutput.cpp \
+	VectorizeAction.cpp VectorizeActionP.cpp VectorizePSAction.cpp
 hardcopy_lst_OBJECTS = $(am_hardcopy_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -347,8 +347,8 @@ libhardcopy_la_LDFLAGS =
 libhardcopy_la_LIBADD =
 am__libhardcopy_la_SOURCES_DIST = HardCopy.cpp PSVectorOutput.cpp \
 	VectorOutput.cpp VectorizeAction.cpp VectorizeActionP.cpp \
-	VectorizePSAction.cpp all.cpp
-am__objects_6 = all.lo
+	VectorizePSAction.cpp all-hardcopy-cpp.cpp
+am__objects_6 = all-hardcopy-cpp.lo
 am__objects_7 = HardCopy.lo PSVectorOutput.lo VectorOutput.lo \
 	VectorizeAction.lo VectorizeActionP.lo VectorizePSAction.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
@@ -360,15 +360,15 @@ am__EXTRA_libhardcopy_la_SOURCES_DIST = \
 	../../include/Inventor/annex/HardCopy/SoVectorOutput.h \
 	../../include/Inventor/annex/HardCopy/SoVectorizeAction.h \
 	../../include/Inventor/annex/HardCopy/SoVectorizePSAction.h \
-	VectorizeActionP.h VectorizeItems.h all.cpp HardCopy.cpp \
-	PSVectorOutput.cpp VectorOutput.cpp VectorizeAction.cpp \
-	VectorizeActionP.cpp VectorizePSAction.cpp
+	VectorizeActionP.h VectorizeItems.h all-hardcopy-cpp.cpp \
+	HardCopy.cpp PSVectorOutput.cpp VectorOutput.cpp \
+	VectorizeAction.cpp VectorizeActionP.cpp VectorizePSAction.cpp
 libhardcopy_la_OBJECTS = $(am_libhardcopy_la_OBJECTS)
 libhardcopy@SUFFIX@LINKHACK_la_LDFLAGS =
 libhardcopy@SUFFIX@LINKHACK_la_LIBADD =
 am__libhardcopy@SUFFIX@LINKHACK_la_SOURCES_DIST = HardCopy.cpp \
 	PSVectorOutput.cpp VectorOutput.cpp VectorizeAction.cpp \
-	VectorizeActionP.cpp VectorizePSAction.cpp all.cpp
+	VectorizeActionP.cpp VectorizePSAction.cpp all-hardcopy-cpp.cpp
 am_libhardcopy@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libhardcopy@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/annex/HardCopy/SoHardCopy.h \
@@ -376,9 +376,9 @@ am__EXTRA_libhardcopy@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/annex/HardCopy/SoVectorOutput.h \
 	../../include/Inventor/annex/HardCopy/SoVectorizeAction.h \
 	../../include/Inventor/annex/HardCopy/SoVectorizePSAction.h \
-	VectorizeActionP.h VectorizeItems.h all.cpp HardCopy.cpp \
-	PSVectorOutput.cpp VectorOutput.cpp VectorizeAction.cpp \
-	VectorizeActionP.cpp VectorizePSAction.cpp
+	VectorizeActionP.h VectorizeItems.h all-hardcopy-cpp.cpp \
+	HardCopy.cpp PSVectorOutput.cpp VectorOutput.cpp \
+	VectorizeAction.cpp VectorizeActionP.cpp VectorizePSAction.cpp
 libhardcopy@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libhardcopy@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -394,7 +394,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/VectorizeActionP.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/VectorizePSAction.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/VectorizePSAction.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all.Plo ./$(DEPDIR)/all.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-hardcopy-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-hardcopy-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -493,8 +494,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizeActionP.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizePSAction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VectorizePSAction.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-hardcopy-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-hardcopy-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

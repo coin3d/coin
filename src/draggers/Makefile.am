@@ -25,7 +25,7 @@ RegularSources = \
 	SoTranslate1Dragger.cpp \
 	SoTranslate2Dragger.cpp
 LinkHackSources = \
-	all.cpp
+	all-draggers-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/draggers/SoDragger.h \
 	../../include/Inventor/draggers/SoCenterballDragger.h \

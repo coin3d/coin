@@ -317,7 +317,7 @@ RegularSources = \
 	SoSoundElement.cpp
 
 LinkHackSources = \
-	all.cpp
+	all-elements-cpp.cpp
 
 PublicHeaders = \
 	../../include/Inventor/elements/SoSubElement.h \
@@ -496,8 +496,8 @@ am__elements_lst_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoViewportRegionElement.cpp SoWindowElement.cpp \
 	SoListenerPositionElement.cpp SoListenerOrientationElement.cpp \
 	SoListenerGainElement.cpp SoListenerDopplerElement.cpp \
-	SoSoundElement.cpp all.cpp
-am__objects_1 = all.$(OBJEXT)
+	SoSoundElement.cpp all-elements-cpp.cpp
+am__objects_1 = all-elements-cpp.$(OBJEXT)
 am__objects_2 = SoAccumulatedElement.$(OBJEXT) \
 	SoAmbientColorElement.$(OBJEXT) \
 	SoAnnoText3CharOrientElement.$(OBJEXT) \
@@ -624,8 +624,8 @@ am__EXTRA_elements_lst_SOURCES_DIST = \
 	../../include/Inventor/elements/SoSoundElement.h \
 	../../include/Inventor/elements/SoTextureScalePolicyElement.h \
 	../../include/Inventor/elements/SoTextureScaleQualityElement.h \
-	all.cpp SoAccumulatedElement.cpp SoAmbientColorElement.cpp \
-	SoAnnoText3CharOrientElement.cpp \
+	all-elements-cpp.cpp SoAccumulatedElement.cpp \
+	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp SoBBoxModelMatrixElement.cpp \
 	SoCacheElement.cpp SoClipPlaneElement.cpp \
@@ -704,8 +704,8 @@ am__libelements_la_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoViewportRegionElement.cpp SoWindowElement.cpp \
 	SoListenerPositionElement.cpp SoListenerOrientationElement.cpp \
 	SoListenerGainElement.cpp SoListenerDopplerElement.cpp \
-	SoSoundElement.cpp all.cpp
-am__objects_6 = all.lo
+	SoSoundElement.cpp all-elements-cpp.cpp
+am__objects_6 = all-elements-cpp.lo
 am__objects_7 = SoAccumulatedElement.lo SoAmbientColorElement.lo \
 	SoAnnoText3CharOrientElement.lo \
 	SoAnnoText3FontSizeHintElement.lo \
@@ -820,8 +820,8 @@ am__EXTRA_libelements_la_SOURCES_DIST = \
 	../../include/Inventor/elements/SoSoundElement.h \
 	../../include/Inventor/elements/SoTextureScalePolicyElement.h \
 	../../include/Inventor/elements/SoTextureScaleQualityElement.h \
-	all.cpp SoAccumulatedElement.cpp SoAmbientColorElement.cpp \
-	SoAnnoText3CharOrientElement.cpp \
+	all-elements-cpp.cpp SoAccumulatedElement.cpp \
+	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp SoBBoxModelMatrixElement.cpp \
 	SoCacheElement.cpp SoClipPlaneElement.cpp \
@@ -899,7 +899,7 @@ am__libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoViewportRegionElement.cpp SoWindowElement.cpp \
 	SoListenerPositionElement.cpp SoListenerOrientationElement.cpp \
 	SoListenerGainElement.cpp SoListenerDopplerElement.cpp \
-	SoSoundElement.cpp all.cpp
+	SoSoundElement.cpp all-elements-cpp.cpp
 am_libelements@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/elements/SoSubElement.h \
@@ -977,8 +977,8 @@ am__EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/elements/SoSoundElement.h \
 	../../include/Inventor/elements/SoTextureScalePolicyElement.h \
 	../../include/Inventor/elements/SoTextureScaleQualityElement.h \
-	all.cpp SoAccumulatedElement.cpp SoAmbientColorElement.cpp \
-	SoAnnoText3CharOrientElement.cpp \
+	all-elements-cpp.cpp SoAccumulatedElement.cpp \
+	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp SoBBoxModelMatrixElement.cpp \
 	SoCacheElement.cpp SoClipPlaneElement.cpp \
@@ -1161,8 +1161,9 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoViewportRegionElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoViewportRegionElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoWindowElement.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoWindowElement.Po ./$(DEPDIR)/all.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all.Po
+@AMDEP_TRUE@	./$(DEPDIR)/SoWindowElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-elements-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-elements-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -1400,8 +1401,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoViewportRegionElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoWindowElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoWindowElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-elements-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-elements-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

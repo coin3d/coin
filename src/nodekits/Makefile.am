@@ -16,7 +16,7 @@ RegularSources = \
 	SoShapeKit.cpp \
 	SoWrapperKit.cpp
 LinkHackSources = \
-	all.cpp
+	all-nodekits-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/nodekits/SoSubKit.h \
 	../../include/Inventor/nodekits/SoNodeKit.h \

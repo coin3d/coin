@@ -255,7 +255,7 @@ RegularSources = \
 	SoTimerSensor.cpp
 
 LinkHackSources = \
-	all.cpp
+	all-sensors-cpp.cpp
 
 PublicHeaders = \
 	../../include/Inventor/sensors/SoSensors.h \
@@ -337,8 +337,8 @@ am__sensors_lst_SOURCES_DIST = SoAlarmSensor.cpp SoDataSensor.cpp \
 	SoDelayQueueSensor.cpp SoFieldSensor.cpp SoIdleSensor.cpp \
 	SoNodeSensor.cpp SoOneShotSensor.cpp SoPathSensor.cpp \
 	SoSensor.cpp SoSensorManager.cpp SoTimerQueueSensor.cpp \
-	SoTimerSensor.cpp all.cpp
-am__objects_1 = all.$(OBJEXT)
+	SoTimerSensor.cpp all-sensors-cpp.cpp
+am__objects_1 = all-sensors-cpp.$(OBJEXT)
 am__objects_2 = SoAlarmSensor.$(OBJEXT) SoDataSensor.$(OBJEXT) \
 	SoDelayQueueSensor.$(OBJEXT) SoFieldSensor.$(OBJEXT) \
 	SoIdleSensor.$(OBJEXT) SoNodeSensor.$(OBJEXT) \
@@ -361,11 +361,12 @@ am__EXTRA_sensors_lst_SOURCES_DIST = \
 	../../include/Inventor/sensors/SoSensor.h \
 	../../include/Inventor/sensors/SoSensorManager.h \
 	../../include/Inventor/sensors/SoTimerQueueSensor.h \
-	../../include/Inventor/sensors/SoTimerSensor.h all.cpp \
-	SoAlarmSensor.cpp SoDataSensor.cpp SoDelayQueueSensor.cpp \
-	SoFieldSensor.cpp SoIdleSensor.cpp SoNodeSensor.cpp \
-	SoOneShotSensor.cpp SoPathSensor.cpp SoSensor.cpp \
-	SoSensorManager.cpp SoTimerQueueSensor.cpp SoTimerSensor.cpp
+	../../include/Inventor/sensors/SoTimerSensor.h \
+	all-sensors-cpp.cpp SoAlarmSensor.cpp SoDataSensor.cpp \
+	SoDelayQueueSensor.cpp SoFieldSensor.cpp SoIdleSensor.cpp \
+	SoNodeSensor.cpp SoOneShotSensor.cpp SoPathSensor.cpp \
+	SoSensor.cpp SoSensorManager.cpp SoTimerQueueSensor.cpp \
+	SoTimerSensor.cpp
 sensors_lst_OBJECTS = $(am_sensors_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -375,8 +376,8 @@ am__libsensors_la_SOURCES_DIST = SoAlarmSensor.cpp SoDataSensor.cpp \
 	SoDelayQueueSensor.cpp SoFieldSensor.cpp SoIdleSensor.cpp \
 	SoNodeSensor.cpp SoOneShotSensor.cpp SoPathSensor.cpp \
 	SoSensor.cpp SoSensorManager.cpp SoTimerQueueSensor.cpp \
-	SoTimerSensor.cpp all.cpp
-am__objects_6 = all.lo
+	SoTimerSensor.cpp all-sensors-cpp.cpp
+am__objects_6 = all-sensors-cpp.lo
 am__objects_7 = SoAlarmSensor.lo SoDataSensor.lo SoDelayQueueSensor.lo \
 	SoFieldSensor.lo SoIdleSensor.lo SoNodeSensor.lo \
 	SoOneShotSensor.lo SoPathSensor.lo SoSensor.lo \
@@ -397,11 +398,12 @@ am__EXTRA_libsensors_la_SOURCES_DIST = \
 	../../include/Inventor/sensors/SoSensor.h \
 	../../include/Inventor/sensors/SoSensorManager.h \
 	../../include/Inventor/sensors/SoTimerQueueSensor.h \
-	../../include/Inventor/sensors/SoTimerSensor.h all.cpp \
-	SoAlarmSensor.cpp SoDataSensor.cpp SoDelayQueueSensor.cpp \
-	SoFieldSensor.cpp SoIdleSensor.cpp SoNodeSensor.cpp \
-	SoOneShotSensor.cpp SoPathSensor.cpp SoSensor.cpp \
-	SoSensorManager.cpp SoTimerQueueSensor.cpp SoTimerSensor.cpp
+	../../include/Inventor/sensors/SoTimerSensor.h \
+	all-sensors-cpp.cpp SoAlarmSensor.cpp SoDataSensor.cpp \
+	SoDelayQueueSensor.cpp SoFieldSensor.cpp SoIdleSensor.cpp \
+	SoNodeSensor.cpp SoOneShotSensor.cpp SoPathSensor.cpp \
+	SoSensor.cpp SoSensorManager.cpp SoTimerQueueSensor.cpp \
+	SoTimerSensor.cpp
 libsensors_la_OBJECTS = $(am_libsensors_la_OBJECTS)
 libsensors@SUFFIX@LINKHACK_la_LDFLAGS =
 libsensors@SUFFIX@LINKHACK_la_LIBADD =
@@ -409,7 +411,7 @@ am__libsensors@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAlarmSensor.cpp \
 	SoDataSensor.cpp SoDelayQueueSensor.cpp SoFieldSensor.cpp \
 	SoIdleSensor.cpp SoNodeSensor.cpp SoOneShotSensor.cpp \
 	SoPathSensor.cpp SoSensor.cpp SoSensorManager.cpp \
-	SoTimerQueueSensor.cpp SoTimerSensor.cpp all.cpp
+	SoTimerQueueSensor.cpp SoTimerSensor.cpp all-sensors-cpp.cpp
 am_libsensors@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libsensors@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/sensors/SoSensors.h \
@@ -424,11 +426,12 @@ am__EXTRA_libsensors@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/sensors/SoSensor.h \
 	../../include/Inventor/sensors/SoSensorManager.h \
 	../../include/Inventor/sensors/SoTimerQueueSensor.h \
-	../../include/Inventor/sensors/SoTimerSensor.h all.cpp \
-	SoAlarmSensor.cpp SoDataSensor.cpp SoDelayQueueSensor.cpp \
-	SoFieldSensor.cpp SoIdleSensor.cpp SoNodeSensor.cpp \
-	SoOneShotSensor.cpp SoPathSensor.cpp SoSensor.cpp \
-	SoSensorManager.cpp SoTimerQueueSensor.cpp SoTimerSensor.cpp
+	../../include/Inventor/sensors/SoTimerSensor.h \
+	all-sensors-cpp.cpp SoAlarmSensor.cpp SoDataSensor.cpp \
+	SoDelayQueueSensor.cpp SoFieldSensor.cpp SoIdleSensor.cpp \
+	SoNodeSensor.cpp SoOneShotSensor.cpp SoPathSensor.cpp \
+	SoSensor.cpp SoSensorManager.cpp SoTimerQueueSensor.cpp \
+	SoTimerSensor.cpp
 libsensors@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libsensors@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -455,8 +458,9 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoTimerQueueSensor.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTimerQueueSensor.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTimerSensor.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTimerSensor.Po ./$(DEPDIR)/all.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all.Po
+@AMDEP_TRUE@	./$(DEPDIR)/SoTimerSensor.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-sensors-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-sensors-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -567,8 +571,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTimerQueueSensor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTimerSensor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTimerSensor.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-sensors-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-sensors-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

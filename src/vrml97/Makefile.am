@@ -77,7 +77,7 @@ PublicHeaders = \
 PrivateHeaders = \
 	../../include/Inventor/VRMLnodes/SoVRMLSubInterpolatorP.h
 LinkHackSources = \
-	all.cpp
+	all-vrml97-cpp.cpp
 RegularSources = \
 	Anchor.cpp \
 	Appearance.cpp \

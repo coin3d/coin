@@ -250,7 +250,7 @@ RegularSources = \
 	SoTextureCoordinateCache.cpp
 
 LinkHackSources = \
-	all.cpp
+	all-caches-cpp.cpp
 
 PublicHeaders = \
 	../../include/Inventor/caches/SoBoundingBoxCache.h \
@@ -324,8 +324,9 @@ caches_lst_AR = $(AR) cru
 caches_lst_LIBADD =
 am__caches_lst_SOURCES_DIST = SoBoundingBoxCache.cpp SoCache.cpp \
 	SoConvexDataCache.cpp SoGLCacheList.cpp SoGLRenderCache.cpp \
-	SoNormalCache.cpp SoTextureCoordinateCache.cpp all.cpp
-am__objects_1 = all.$(OBJEXT)
+	SoNormalCache.cpp SoTextureCoordinateCache.cpp \
+	all-caches-cpp.cpp
+am__objects_1 = all-caches-cpp.$(OBJEXT)
 am__objects_2 = SoBoundingBoxCache.$(OBJEXT) SoCache.$(OBJEXT) \
 	SoConvexDataCache.$(OBJEXT) SoGLCacheList.$(OBJEXT) \
 	SoGLRenderCache.$(OBJEXT) SoNormalCache.$(OBJEXT) \
@@ -341,7 +342,7 @@ am__EXTRA_caches_lst_SOURCES_DIST = \
 	../../include/Inventor/caches/SoGLRenderCache.h \
 	../../include/Inventor/caches/SoNormalCache.h \
 	../../include/Inventor/caches/SoTextureCoordinateCache.h \
-	all.cpp SoBoundingBoxCache.cpp SoCache.cpp \
+	all-caches-cpp.cpp SoBoundingBoxCache.cpp SoCache.cpp \
 	SoConvexDataCache.cpp SoGLCacheList.cpp SoGLRenderCache.cpp \
 	SoNormalCache.cpp SoTextureCoordinateCache.cpp
 caches_lst_OBJECTS = $(am_caches_lst_OBJECTS)
@@ -351,8 +352,9 @@ libcaches_la_LDFLAGS =
 libcaches_la_LIBADD =
 am__libcaches_la_SOURCES_DIST = SoBoundingBoxCache.cpp SoCache.cpp \
 	SoConvexDataCache.cpp SoGLCacheList.cpp SoGLRenderCache.cpp \
-	SoNormalCache.cpp SoTextureCoordinateCache.cpp all.cpp
-am__objects_6 = all.lo
+	SoNormalCache.cpp SoTextureCoordinateCache.cpp \
+	all-caches-cpp.cpp
+am__objects_6 = all-caches-cpp.lo
 am__objects_7 = SoBoundingBoxCache.lo SoCache.lo SoConvexDataCache.lo \
 	SoGLCacheList.lo SoGLRenderCache.lo SoNormalCache.lo \
 	SoTextureCoordinateCache.lo
@@ -367,7 +369,7 @@ am__EXTRA_libcaches_la_SOURCES_DIST = \
 	../../include/Inventor/caches/SoGLRenderCache.h \
 	../../include/Inventor/caches/SoNormalCache.h \
 	../../include/Inventor/caches/SoTextureCoordinateCache.h \
-	all.cpp SoBoundingBoxCache.cpp SoCache.cpp \
+	all-caches-cpp.cpp SoBoundingBoxCache.cpp SoCache.cpp \
 	SoConvexDataCache.cpp SoGLCacheList.cpp SoGLRenderCache.cpp \
 	SoNormalCache.cpp SoTextureCoordinateCache.cpp
 libcaches_la_OBJECTS = $(am_libcaches_la_OBJECTS)
@@ -376,7 +378,7 @@ libcaches@SUFFIX@LINKHACK_la_LIBADD =
 am__libcaches@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBoundingBoxCache.cpp \
 	SoCache.cpp SoConvexDataCache.cpp SoGLCacheList.cpp \
 	SoGLRenderCache.cpp SoNormalCache.cpp \
-	SoTextureCoordinateCache.cpp all.cpp
+	SoTextureCoordinateCache.cpp all-caches-cpp.cpp
 am_libcaches@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/caches/SoBoundingBoxCache.h \
@@ -386,7 +388,7 @@ am__EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/caches/SoGLRenderCache.h \
 	../../include/Inventor/caches/SoNormalCache.h \
 	../../include/Inventor/caches/SoTextureCoordinateCache.h \
-	all.cpp SoBoundingBoxCache.cpp SoCache.cpp \
+	all-caches-cpp.cpp SoBoundingBoxCache.cpp SoCache.cpp \
 	SoConvexDataCache.cpp SoGLCacheList.cpp SoGLRenderCache.cpp \
 	SoNormalCache.cpp SoTextureCoordinateCache.cpp
 libcaches@SUFFIX@LINKHACK_la_OBJECTS = \
@@ -406,7 +408,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoNormalCache.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateCache.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateCache.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all.Plo ./$(DEPDIR)/all.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-caches-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-caches-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -507,8 +510,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNormalCache.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateCache.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateCache.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-caches-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-caches-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

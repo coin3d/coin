@@ -31,7 +31,7 @@ RegularSources = \
 	soshape_bigtexture.cpp \
 	soshape_trianglesort.cpp
 LinkHackSources = \
-	all-cpp.cpp
+	all-shapenodes-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/nodes/SoAsciiText.h \
 	../../include/Inventor/nodes/SoCone.h \

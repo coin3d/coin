@@ -5,7 +5,7 @@ RegularSources = \
         SoUpgrader.cpp \
         SoPackedColorV20.cpp
 LinkHackSources = \
-        all.cpp
+        all-upgraders-cpp.cpp
 PublicHeaders =
 PrivateHeaders = \
         SoUpgrader.h \

@@ -59,7 +59,7 @@ RegularSources = \
 	SoSField.cpp \
 	SoGlobalField.cpp
 LinkHackSources = \
-	all.cpp
+	all-fields-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/fields/SoSubField.h \
 	../../include/Inventor/fields/SoFields.h \

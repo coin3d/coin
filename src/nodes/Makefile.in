@@ -326,7 +326,7 @@ RegularSources = \
 	SoWWWInline.cpp
 
 LinkHackSources = \
-	all.cpp
+	all-nodes-cpp.cpp
 
 PublicHeaders = \
 	../../include/Inventor/nodes/SoSubNode.h \
@@ -509,8 +509,8 @@ am__nodes_lst_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
 	SoTextureScalePolicy.cpp SoTransform.cpp SoTransparencyType.cpp \
 	SoTransformSeparator.cpp SoTransformation.cpp SoTranslation.cpp \
 	SoUnits.cpp SoUnknownNode.cpp SoVertexProperty.cpp \
-	SoWWWAnchor.cpp SoWWWInline.cpp all.cpp
-am__objects_1 = all.$(OBJEXT)
+	SoWWWAnchor.cpp SoWWWInline.cpp all-nodes-cpp.cpp
+am__objects_1 = all-nodes-cpp.$(OBJEXT)
 am__objects_2 = SoAnnotation.$(OBJEXT) SoAntiSquish.$(OBJEXT) \
 	SoArray.$(OBJEXT) SoBaseColor.$(OBJEXT) SoBlinker.$(OBJEXT) \
 	SoCallback.$(OBJEXT) SoCamera.$(OBJEXT) SoClipPlane.$(OBJEXT) \
@@ -644,7 +644,7 @@ am__EXTRA_nodes_lst_SOURCES_DIST = \
 	../../include/Inventor/nodes/SoWWWInline.h \
 	../../include/Inventor/nodes/SoSubNodeP.h \
 	../../include/Inventor/nodes/SoUnknownNode.h \
-	SoSoundElementHelper.h all.cpp SoAnnotation.cpp \
+	SoSoundElementHelper.h all-nodes-cpp.cpp SoAnnotation.cpp \
 	SoAntiSquish.cpp SoArray.cpp SoBaseColor.cpp SoBlinker.cpp \
 	SoCallback.cpp SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp \
 	SoComplexity.cpp SoCoordinate3.cpp SoCoordinate4.cpp \
@@ -704,8 +704,8 @@ am__libnodes_la_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
 	SoTextureScalePolicy.cpp SoTransform.cpp SoTransparencyType.cpp \
 	SoTransformSeparator.cpp SoTransformation.cpp SoTranslation.cpp \
 	SoUnits.cpp SoUnknownNode.cpp SoVertexProperty.cpp \
-	SoWWWAnchor.cpp SoWWWInline.cpp all.cpp
-am__objects_6 = all.lo
+	SoWWWAnchor.cpp SoWWWInline.cpp all-nodes-cpp.cpp
+am__objects_6 = all-nodes-cpp.lo
 am__objects_7 = SoAnnotation.lo SoAntiSquish.lo SoArray.lo \
 	SoBaseColor.lo SoBlinker.lo SoCallback.lo SoCamera.lo \
 	SoClipPlane.lo SoColorIndex.lo SoComplexity.lo SoCoordinate3.lo \
@@ -825,7 +825,7 @@ am__EXTRA_libnodes_la_SOURCES_DIST = \
 	../../include/Inventor/nodes/SoWWWInline.h \
 	../../include/Inventor/nodes/SoSubNodeP.h \
 	../../include/Inventor/nodes/SoUnknownNode.h \
-	SoSoundElementHelper.h all.cpp SoAnnotation.cpp \
+	SoSoundElementHelper.h all-nodes-cpp.cpp SoAnnotation.cpp \
 	SoAntiSquish.cpp SoArray.cpp SoBaseColor.cpp SoBlinker.cpp \
 	SoCallback.cpp SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp \
 	SoComplexity.cpp SoCoordinate3.cpp SoCoordinate4.cpp \
@@ -883,7 +883,7 @@ am__libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAnnotation.cpp \
 	SoTextureScalePolicy.cpp SoTransform.cpp SoTransparencyType.cpp \
 	SoTransformSeparator.cpp SoTransformation.cpp SoTranslation.cpp \
 	SoUnits.cpp SoUnknownNode.cpp SoVertexProperty.cpp \
-	SoWWWAnchor.cpp SoWWWInline.cpp all.cpp
+	SoWWWAnchor.cpp SoWWWInline.cpp all-nodes-cpp.cpp
 am_libnodes@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/nodes/SoSubNode.h \
@@ -975,7 +975,7 @@ am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/nodes/SoWWWInline.h \
 	../../include/Inventor/nodes/SoSubNodeP.h \
 	../../include/Inventor/nodes/SoUnknownNode.h \
-	SoSoundElementHelper.h all.cpp SoAnnotation.cpp \
+	SoSoundElementHelper.h all-nodes-cpp.cpp SoAnnotation.cpp \
 	SoAntiSquish.cpp SoArray.cpp SoBaseColor.cpp SoBlinker.cpp \
 	SoCallback.cpp SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp \
 	SoComplexity.cpp SoCoordinate3.cpp SoCoordinate4.cpp \
@@ -1152,8 +1152,9 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoWWWAnchor.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoWWWAnchor.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoWWWInline.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoWWWInline.Po ./$(DEPDIR)/all.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all.Po
+@AMDEP_TRUE@	./$(DEPDIR)/SoWWWInline.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-nodes-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-nodes-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -1406,8 +1407,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoWWWAnchor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoWWWInline.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoWWWInline.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-nodes-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-nodes-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

@@ -86,7 +86,7 @@ RegularSources = \
 	SoWWWAnchor.cpp \
 	SoWWWInline.cpp
 LinkHackSources = \
-	all.cpp
+	all-nodes-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/nodes/SoSubNode.h \
 	../../include/Inventor/nodes/SoNodes.h \

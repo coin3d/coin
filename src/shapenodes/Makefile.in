@@ -271,7 +271,7 @@ RegularSources = \
 	soshape_trianglesort.cpp
 
 LinkHackSources = \
-	all-cpp.cpp
+	all-shapenodes-cpp.cpp
 
 PublicHeaders = \
 	../../include/Inventor/nodes/SoAsciiText.h \
@@ -374,8 +374,8 @@ am__shapenodes_lst_SOURCES_DIST = SoAsciiText.cpp SoCone.cpp SoCube.cpp \
 	SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp SoSphere.cpp \
 	SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
 	SoVertexShape.cpp soshape_primdata.cpp soshape_bigtexture.cpp \
-	soshape_trianglesort.cpp all-cpp.cpp
-am__objects_1 = all-cpp.$(OBJEXT)
+	soshape_trianglesort.cpp all-shapenodes-cpp.cpp
+am__objects_1 = all-shapenodes-cpp.$(OBJEXT)
 am__objects_2 = SoAsciiText.$(OBJEXT) SoCone.$(OBJEXT) SoCube.$(OBJEXT) \
 	SoCylinder.$(OBJEXT) SoFaceSet.$(OBJEXT) SoImage.$(OBJEXT) \
 	SoIndexedFaceSet.$(OBJEXT) SoIndexedLineSet.$(OBJEXT) \
@@ -418,9 +418,9 @@ am__EXTRA_shapenodes_lst_SOURCES_DIST = \
 	../../include/Inventor/nodes/SoText3.h \
 	../../include/Inventor/nodes/SoTriangleStripSet.h \
 	../../include/Inventor/nodes/SoVertexShape.h soshape_primdata.h \
-	soshape_trianglesort.h soshape_bigtexture.h all-cpp.cpp \
-	SoAsciiText.cpp SoCone.cpp SoCube.cpp SoCylinder.cpp \
-	SoFaceSet.cpp SoImage.cpp SoIndexedFaceSet.cpp \
+	soshape_trianglesort.h soshape_bigtexture.h \
+	all-shapenodes-cpp.cpp SoAsciiText.cpp SoCone.cpp SoCube.cpp \
+	SoCylinder.cpp SoFaceSet.cpp SoImage.cpp SoIndexedFaceSet.cpp \
 	SoIndexedLineSet.cpp SoIndexedNurbsCurve.cpp \
 	SoIndexedNurbsSurface.cpp SoIndexedShape.cpp \
 	SoIndexedTriangleStripSet.cpp SoLineSet.cpp SoMarkerSet.cpp \
@@ -443,8 +443,8 @@ am__libshapenodes_la_SOURCES_DIST = SoAsciiText.cpp SoCone.cpp \
 	SoNurbsSurface.cpp SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp \
 	SoSphere.cpp SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
 	SoVertexShape.cpp soshape_primdata.cpp soshape_bigtexture.cpp \
-	soshape_trianglesort.cpp all-cpp.cpp
-am__objects_6 = all-cpp.lo
+	soshape_trianglesort.cpp all-shapenodes-cpp.cpp
+am__objects_6 = all-shapenodes-cpp.lo
 am__objects_7 = SoAsciiText.lo SoCone.lo SoCube.lo SoCylinder.lo \
 	SoFaceSet.lo SoImage.lo SoIndexedFaceSet.lo SoIndexedLineSet.lo \
 	SoIndexedNurbsCurve.lo SoIndexedNurbsSurface.lo \
@@ -483,9 +483,9 @@ am__EXTRA_libshapenodes_la_SOURCES_DIST = \
 	../../include/Inventor/nodes/SoText3.h \
 	../../include/Inventor/nodes/SoTriangleStripSet.h \
 	../../include/Inventor/nodes/SoVertexShape.h soshape_primdata.h \
-	soshape_trianglesort.h soshape_bigtexture.h all-cpp.cpp \
-	SoAsciiText.cpp SoCone.cpp SoCube.cpp SoCylinder.cpp \
-	SoFaceSet.cpp SoImage.cpp SoIndexedFaceSet.cpp \
+	soshape_trianglesort.h soshape_bigtexture.h \
+	all-shapenodes-cpp.cpp SoAsciiText.cpp SoCone.cpp SoCube.cpp \
+	SoCylinder.cpp SoFaceSet.cpp SoImage.cpp SoIndexedFaceSet.cpp \
 	SoIndexedLineSet.cpp SoIndexedNurbsCurve.cpp \
 	SoIndexedNurbsSurface.cpp SoIndexedShape.cpp \
 	SoIndexedTriangleStripSet.cpp SoLineSet.cpp SoMarkerSet.cpp \
@@ -506,7 +506,7 @@ am__libshapenodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAsciiText.cpp \
 	SoNurbsSurface.cpp SoPointSet.cpp SoQuadMesh.cpp SoShape.cpp \
 	SoSphere.cpp SoText2.cpp SoText3.cpp SoTriangleStripSet.cpp \
 	SoVertexShape.cpp soshape_primdata.cpp soshape_bigtexture.cpp \
-	soshape_trianglesort.cpp all-cpp.cpp
+	soshape_trianglesort.cpp all-shapenodes-cpp.cpp
 am_libshapenodes@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libshapenodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/nodes/SoAsciiText.h \
@@ -534,9 +534,9 @@ am__EXTRA_libshapenodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/nodes/SoText3.h \
 	../../include/Inventor/nodes/SoTriangleStripSet.h \
 	../../include/Inventor/nodes/SoVertexShape.h soshape_primdata.h \
-	soshape_trianglesort.h soshape_bigtexture.h all-cpp.cpp \
-	SoAsciiText.cpp SoCone.cpp SoCube.cpp SoCylinder.cpp \
-	SoFaceSet.cpp SoImage.cpp SoIndexedFaceSet.cpp \
+	soshape_trianglesort.h soshape_bigtexture.h \
+	all-shapenodes-cpp.cpp SoAsciiText.cpp SoCone.cpp SoCube.cpp \
+	SoCylinder.cpp SoFaceSet.cpp SoImage.cpp SoIndexedFaceSet.cpp \
 	SoIndexedLineSet.cpp SoIndexedNurbsCurve.cpp \
 	SoIndexedNurbsSurface.cpp SoIndexedShape.cpp \
 	SoIndexedTriangleStripSet.cpp SoLineSet.cpp SoMarkerSet.cpp \
@@ -589,7 +589,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoTriangleStripSet.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoVertexShape.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoVertexShape.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all-cpp.Plo ./$(DEPDIR)/all-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-shapenodes-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-shapenodes-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/soshape_bigtexture.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/soshape_bigtexture.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/soshape_primdata.Plo \
@@ -732,8 +733,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTriangleStripSet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexShape.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexShape.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-shapenodes-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-shapenodes-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/soshape_bigtexture.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/soshape_bigtexture.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/soshape_primdata.Plo@am__quote@

@@ -21,7 +21,7 @@ RegularSources = \
 	SoPickedPointList.cpp \
 	SoTypeList.cpp
 LinkHackSources = \
-	all.cpp
+	all-lists-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/lists/SbList.h \
 	../../include/Inventor/lists/SbPList.h \

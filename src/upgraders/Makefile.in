@@ -245,7 +245,7 @@ RegularSources = \
         SoPackedColorV20.cpp
 
 LinkHackSources = \
-        all.cpp
+        all-upgraders-cpp.cpp
 
 PublicHeaders = 
 PrivateHeaders = \
@@ -313,36 +313,37 @@ LIBRARIES = $(noinst_LIBRARIES)
 upgraders_lst_AR = $(AR) cru
 upgraders_lst_LIBADD =
 am__upgraders_lst_SOURCES_DIST = SoUpgrader.cpp SoPackedColorV20.cpp \
-	all.cpp
-am__objects_1 = all.$(OBJEXT)
+	all-upgraders-cpp.cpp
+am__objects_1 = all-upgraders-cpp.$(OBJEXT)
 am__objects_2 = SoUpgrader.$(OBJEXT) SoPackedColorV20.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_upgraders_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_upgraders_lst_SOURCES_DIST = SoUpgrader.h SoPackedColorV20.h \
-	all.cpp SoUpgrader.cpp SoPackedColorV20.cpp
+	all-upgraders-cpp.cpp SoUpgrader.cpp SoPackedColorV20.cpp
 upgraders_lst_OBJECTS = $(am_upgraders_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libupgraders_la_LDFLAGS =
 libupgraders_la_LIBADD =
 am__libupgraders_la_SOURCES_DIST = SoUpgrader.cpp SoPackedColorV20.cpp \
-	all.cpp
-am__objects_6 = all.lo
+	all-upgraders-cpp.cpp
+am__objects_6 = all-upgraders-cpp.lo
 am__objects_7 = SoUpgrader.lo SoPackedColorV20.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libupgraders_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libupgraders_la_SOURCES_DIST = SoUpgrader.h SoPackedColorV20.h \
-	all.cpp SoUpgrader.cpp SoPackedColorV20.cpp
+	all-upgraders-cpp.cpp SoUpgrader.cpp SoPackedColorV20.cpp
 libupgraders_la_OBJECTS = $(am_libupgraders_la_OBJECTS)
 libupgraders@SUFFIX@LINKHACK_la_LDFLAGS =
 libupgraders@SUFFIX@LINKHACK_la_LIBADD =
 am__libupgraders@SUFFIX@LINKHACK_la_SOURCES_DIST = SoUpgrader.cpp \
-	SoPackedColorV20.cpp all.cpp
+	SoPackedColorV20.cpp all-upgraders-cpp.cpp
 am_libupgraders@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libupgraders@SUFFIX@LINKHACK_la_SOURCES_DIST = SoUpgrader.h \
-	SoPackedColorV20.h all.cpp SoUpgrader.cpp SoPackedColorV20.cpp
+	SoPackedColorV20.h all-upgraders-cpp.cpp SoUpgrader.cpp \
+	SoPackedColorV20.cpp
 libupgraders@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libupgraders@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -350,8 +351,9 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoPackedColorV20.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPackedColorV20.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoUpgrader.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoUpgrader.Po ./$(DEPDIR)/all.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all.Po
+@AMDEP_TRUE@	./$(DEPDIR)/SoUpgrader.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-upgraders-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-upgraders-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -442,8 +444,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPackedColorV20.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoUpgrader.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoUpgrader.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-upgraders-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-upgraders-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

@@ -29,7 +29,7 @@ RegularSources = \
 	SoGLViewportRegionElement.cpp \
 	SoGLDisplayList.cpp
 LinkHackSources = \
-	all-cpp.cpp
+	all-glelements-cpp.cpp
 PublicHeaders = \
 	../../../include/Inventor/elements/SoGLCacheContextElement.h \
 	../../../include/Inventor/elements/SoGLClipPlaneElement.h \

@@ -14,7 +14,7 @@ RegularSources = \
 	SbSphereSectionProjector.cpp \
 	SbSphereSheetProjector.cpp
 LinkHackSources = \
-	all.cpp
+	all-projectors-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/projectors/SbProjectors.h \
 	../../include/Inventor/projectors/SbCylinderPlaneProjector.h \

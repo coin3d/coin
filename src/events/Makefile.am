@@ -10,7 +10,7 @@ RegularSources = \
 	SoMouseButtonEvent.cpp \
 	SoSpaceballButtonEvent.cpp
 LinkHackSources = \
-	all.cpp
+	all-events-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/events/SoSubEvent.h \
 	../../include/Inventor/events/SoButtonEvent.h \

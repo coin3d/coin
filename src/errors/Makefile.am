@@ -9,8 +9,8 @@ RegularSources = \
 	SoMemoryError.cpp \
 	SoReadError.cpp
 LinkHackSources = \
-	all-c.c \
-	all-cpp.cpp
+	all-errors-c.c \
+	all-errors-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/errors/SoErrors.h \
 	../../include/Inventor/errors/SoDebugError.h \

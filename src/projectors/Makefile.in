@@ -254,7 +254,7 @@ RegularSources = \
 	SbSphereSheetProjector.cpp
 
 LinkHackSources = \
-	all.cpp
+	all-projectors-cpp.cpp
 
 PublicHeaders = \
 	../../include/Inventor/projectors/SbProjectors.h \
@@ -336,8 +336,8 @@ am__projectors_lst_SOURCES_DIST = SbCylinderPlaneProjector.cpp \
 	SbCylinderSheetProjector.cpp SbLineProjector.cpp \
 	SbPlaneProjector.cpp SbProjector.cpp SbSpherePlaneProjector.cpp \
 	SbSphereProjector.cpp SbSphereSectionProjector.cpp \
-	SbSphereSheetProjector.cpp all.cpp
-am__objects_1 = all.$(OBJEXT)
+	SbSphereSheetProjector.cpp all-projectors-cpp.cpp
+am__objects_1 = all-projectors-cpp.$(OBJEXT)
 am__objects_2 = SbCylinderPlaneProjector.$(OBJEXT) \
 	SbCylinderProjector.$(OBJEXT) \
 	SbCylinderSectionProjector.$(OBJEXT) \
@@ -362,11 +362,12 @@ am__EXTRA_projectors_lst_SOURCES_DIST = \
 	../../include/Inventor/projectors/SbSphereProjector.h \
 	../../include/Inventor/projectors/SbSphereSectionProjector.h \
 	../../include/Inventor/projectors/SbSphereSheetProjector.h \
-	all.cpp SbCylinderPlaneProjector.cpp SbCylinderProjector.cpp \
-	SbCylinderSectionProjector.cpp SbCylinderSheetProjector.cpp \
-	SbLineProjector.cpp SbPlaneProjector.cpp SbProjector.cpp \
-	SbSpherePlaneProjector.cpp SbSphereProjector.cpp \
-	SbSphereSectionProjector.cpp SbSphereSheetProjector.cpp
+	all-projectors-cpp.cpp SbCylinderPlaneProjector.cpp \
+	SbCylinderProjector.cpp SbCylinderSectionProjector.cpp \
+	SbCylinderSheetProjector.cpp SbLineProjector.cpp \
+	SbPlaneProjector.cpp SbProjector.cpp SbSpherePlaneProjector.cpp \
+	SbSphereProjector.cpp SbSphereSectionProjector.cpp \
+	SbSphereSheetProjector.cpp
 projectors_lst_OBJECTS = $(am_projectors_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -377,8 +378,8 @@ am__libprojectors_la_SOURCES_DIST = SbCylinderPlaneProjector.cpp \
 	SbCylinderSheetProjector.cpp SbLineProjector.cpp \
 	SbPlaneProjector.cpp SbProjector.cpp SbSpherePlaneProjector.cpp \
 	SbSphereProjector.cpp SbSphereSectionProjector.cpp \
-	SbSphereSheetProjector.cpp all.cpp
-am__objects_6 = all.lo
+	SbSphereSheetProjector.cpp all-projectors-cpp.cpp
+am__objects_6 = all-projectors-cpp.lo
 am__objects_7 = SbCylinderPlaneProjector.lo SbCylinderProjector.lo \
 	SbCylinderSectionProjector.lo SbCylinderSheetProjector.lo \
 	SbLineProjector.lo SbPlaneProjector.lo SbProjector.lo \
@@ -400,11 +401,12 @@ am__EXTRA_libprojectors_la_SOURCES_DIST = \
 	../../include/Inventor/projectors/SbSphereProjector.h \
 	../../include/Inventor/projectors/SbSphereSectionProjector.h \
 	../../include/Inventor/projectors/SbSphereSheetProjector.h \
-	all.cpp SbCylinderPlaneProjector.cpp SbCylinderProjector.cpp \
-	SbCylinderSectionProjector.cpp SbCylinderSheetProjector.cpp \
-	SbLineProjector.cpp SbPlaneProjector.cpp SbProjector.cpp \
-	SbSpherePlaneProjector.cpp SbSphereProjector.cpp \
-	SbSphereSectionProjector.cpp SbSphereSheetProjector.cpp
+	all-projectors-cpp.cpp SbCylinderPlaneProjector.cpp \
+	SbCylinderProjector.cpp SbCylinderSectionProjector.cpp \
+	SbCylinderSheetProjector.cpp SbLineProjector.cpp \
+	SbPlaneProjector.cpp SbProjector.cpp SbSpherePlaneProjector.cpp \
+	SbSphereProjector.cpp SbSphereSectionProjector.cpp \
+	SbSphereSheetProjector.cpp
 libprojectors_la_OBJECTS = $(am_libprojectors_la_OBJECTS)
 libprojectors@SUFFIX@LINKHACK_la_LDFLAGS =
 libprojectors@SUFFIX@LINKHACK_la_LIBADD =
@@ -413,7 +415,8 @@ am__libprojectors@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SbCylinderSectionProjector.cpp SbCylinderSheetProjector.cpp \
 	SbLineProjector.cpp SbPlaneProjector.cpp SbProjector.cpp \
 	SbSpherePlaneProjector.cpp SbSphereProjector.cpp \
-	SbSphereSectionProjector.cpp SbSphereSheetProjector.cpp all.cpp
+	SbSphereSectionProjector.cpp SbSphereSheetProjector.cpp \
+	all-projectors-cpp.cpp
 am_libprojectors@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libprojectors@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/projectors/SbProjectors.h \
@@ -428,11 +431,12 @@ am__EXTRA_libprojectors@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/projectors/SbSphereProjector.h \
 	../../include/Inventor/projectors/SbSphereSectionProjector.h \
 	../../include/Inventor/projectors/SbSphereSheetProjector.h \
-	all.cpp SbCylinderPlaneProjector.cpp SbCylinderProjector.cpp \
-	SbCylinderSectionProjector.cpp SbCylinderSheetProjector.cpp \
-	SbLineProjector.cpp SbPlaneProjector.cpp SbProjector.cpp \
-	SbSpherePlaneProjector.cpp SbSphereProjector.cpp \
-	SbSphereSectionProjector.cpp SbSphereSheetProjector.cpp
+	all-projectors-cpp.cpp SbCylinderPlaneProjector.cpp \
+	SbCylinderProjector.cpp SbCylinderSectionProjector.cpp \
+	SbCylinderSheetProjector.cpp SbLineProjector.cpp \
+	SbPlaneProjector.cpp SbProjector.cpp SbSpherePlaneProjector.cpp \
+	SbSphereProjector.cpp SbSphereSectionProjector.cpp \
+	SbSphereSheetProjector.cpp
 libprojectors@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libprojectors@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -459,7 +463,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SbSphereSectionProjector.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbSphereSheetProjector.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SbSphereSheetProjector.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all.Plo ./$(DEPDIR)/all.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-projectors-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-projectors-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -568,8 +573,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbSphereSectionProjector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbSphereSheetProjector.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbSphereSheetProjector.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-projectors-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-projectors-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

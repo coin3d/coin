@@ -40,7 +40,7 @@ RegularSources = \
 	SoWriteAction.cpp \
 	SoAudioRenderAction.cpp
 LinkHackSources = \
-	all.cpp
+	all-actions-cpp.cpp
 
 ##$ BEGIN TEMPLATE Make-Common(actions, actions)
 # **************************************************************************

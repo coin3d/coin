@@ -265,7 +265,7 @@ RegularSources = \
 	SoTranslate2Dragger.cpp
 
 LinkHackSources = \
-	all.cpp
+	all-draggers-cpp.cpp
 
 PublicHeaders = \
 	../../include/Inventor/draggers/SoDragger.h \
@@ -364,8 +364,9 @@ am__draggers_lst_SOURCES_DIST = SoDragger.cpp SoCenterballDragger.cpp \
 	SoSpotLightDragger.cpp SoTabBoxDragger.cpp \
 	SoTabPlaneDragger.cpp SoTrackballDragger.cpp \
 	SoTransformBoxDragger.cpp SoTransformerDragger.cpp \
-	SoTranslate1Dragger.cpp SoTranslate2Dragger.cpp all.cpp
-am__objects_1 = all.$(OBJEXT)
+	SoTranslate1Dragger.cpp SoTranslate2Dragger.cpp \
+	all-draggers-cpp.cpp
+am__objects_1 = all-draggers-cpp.$(OBJEXT)
 am__objects_2 = SoDragger.$(OBJEXT) SoCenterballDragger.$(OBJEXT) \
 	SoDirectionalLightDragger.$(OBJEXT) \
 	SoDragPointDragger.$(OBJEXT) SoHandleBoxDragger.$(OBJEXT) \
@@ -404,8 +405,8 @@ am__EXTRA_draggers_lst_SOURCES_DIST = \
 	../../include/Inventor/draggers/SoTransformBoxDragger.h \
 	../../include/Inventor/draggers/SoTransformerDragger.h \
 	../../include/Inventor/draggers/SoTranslate1Dragger.h \
-	../../include/Inventor/draggers/SoTranslate2Dragger.h all.cpp \
-	SoDragger.cpp SoCenterballDragger.cpp \
+	../../include/Inventor/draggers/SoTranslate2Dragger.h \
+	all-draggers-cpp.cpp SoDragger.cpp SoCenterballDragger.cpp \
 	SoDirectionalLightDragger.cpp SoDragPointDragger.cpp \
 	SoHandleBoxDragger.cpp SoJackDragger.cpp \
 	SoPointLightDragger.cpp SoRotateCylindricalDragger.cpp \
@@ -431,8 +432,9 @@ am__libdraggers_la_SOURCES_DIST = SoDragger.cpp SoCenterballDragger.cpp \
 	SoSpotLightDragger.cpp SoTabBoxDragger.cpp \
 	SoTabPlaneDragger.cpp SoTrackballDragger.cpp \
 	SoTransformBoxDragger.cpp SoTransformerDragger.cpp \
-	SoTranslate1Dragger.cpp SoTranslate2Dragger.cpp all.cpp
-am__objects_6 = all.lo
+	SoTranslate1Dragger.cpp SoTranslate2Dragger.cpp \
+	all-draggers-cpp.cpp
+am__objects_6 = all-draggers-cpp.lo
 am__objects_7 = SoDragger.lo SoCenterballDragger.lo \
 	SoDirectionalLightDragger.lo SoDragPointDragger.lo \
 	SoHandleBoxDragger.lo SoJackDragger.lo SoPointLightDragger.lo \
@@ -468,8 +470,8 @@ am__EXTRA_libdraggers_la_SOURCES_DIST = \
 	../../include/Inventor/draggers/SoTransformBoxDragger.h \
 	../../include/Inventor/draggers/SoTransformerDragger.h \
 	../../include/Inventor/draggers/SoTranslate1Dragger.h \
-	../../include/Inventor/draggers/SoTranslate2Dragger.h all.cpp \
-	SoDragger.cpp SoCenterballDragger.cpp \
+	../../include/Inventor/draggers/SoTranslate2Dragger.h \
+	all-draggers-cpp.cpp SoDragger.cpp SoCenterballDragger.cpp \
 	SoDirectionalLightDragger.cpp SoDragPointDragger.cpp \
 	SoHandleBoxDragger.cpp SoJackDragger.cpp \
 	SoPointLightDragger.cpp SoRotateCylindricalDragger.cpp \
@@ -493,7 +495,8 @@ am__libdraggers@SUFFIX@LINKHACK_la_SOURCES_DIST = SoDragger.cpp \
 	SoSpotLightDragger.cpp SoTabBoxDragger.cpp \
 	SoTabPlaneDragger.cpp SoTrackballDragger.cpp \
 	SoTransformBoxDragger.cpp SoTransformerDragger.cpp \
-	SoTranslate1Dragger.cpp SoTranslate2Dragger.cpp all.cpp
+	SoTranslate1Dragger.cpp SoTranslate2Dragger.cpp \
+	all-draggers-cpp.cpp
 am_libdraggers@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libdraggers@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/draggers/SoDragger.h \
@@ -517,8 +520,8 @@ am__EXTRA_libdraggers@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/draggers/SoTransformBoxDragger.h \
 	../../include/Inventor/draggers/SoTransformerDragger.h \
 	../../include/Inventor/draggers/SoTranslate1Dragger.h \
-	../../include/Inventor/draggers/SoTranslate2Dragger.h all.cpp \
-	SoDragger.cpp SoCenterballDragger.cpp \
+	../../include/Inventor/draggers/SoTranslate2Dragger.h \
+	all-draggers-cpp.cpp SoDragger.cpp SoCenterballDragger.cpp \
 	SoDirectionalLightDragger.cpp SoDragPointDragger.cpp \
 	SoHandleBoxDragger.cpp SoJackDragger.cpp \
 	SoPointLightDragger.cpp SoRotateCylindricalDragger.cpp \
@@ -576,7 +579,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoTranslate1Dragger.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTranslate2Dragger.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTranslate2Dragger.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all.Plo ./$(DEPDIR)/all.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-draggers-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-draggers-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -707,8 +711,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTranslate1Dragger.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTranslate2Dragger.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTranslate2Dragger.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-draggers-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-draggers-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

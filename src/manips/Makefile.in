@@ -256,7 +256,7 @@ RegularSources = \
 	commoncode.cpp
 
 LinkHackSources = \
-	all.cpp
+	all-manips-cpp.cpp
 
 PublicHeaders = \
 	../../include/Inventor/manips/SoClipPlaneManip.h \
@@ -338,8 +338,8 @@ am__manips_lst_SOURCES_DIST = SoClipPlaneManip.cpp \
 	SoSpotLightManip.cpp SoTransformManip.cpp SoCenterballManip.cpp \
 	SoHandleBoxManip.cpp SoJackManip.cpp SoTabBoxManip.cpp \
 	SoTrackballManip.cpp SoTransformBoxManip.cpp \
-	SoTransformerManip.cpp commoncode.cpp all.cpp
-am__objects_1 = all.$(OBJEXT)
+	SoTransformerManip.cpp commoncode.cpp all-manips-cpp.cpp
+am__objects_1 = all-manips-cpp.$(OBJEXT)
 am__objects_2 = SoClipPlaneManip.$(OBJEXT) \
 	SoDirectionalLightManip.$(OBJEXT) SoPointLightManip.$(OBJEXT) \
 	SoSpotLightManip.$(OBJEXT) SoTransformManip.$(OBJEXT) \
@@ -362,11 +362,12 @@ am__EXTRA_manips_lst_SOURCES_DIST = \
 	../../include/Inventor/manips/SoTabBoxManip.h \
 	../../include/Inventor/manips/SoTrackballManip.h \
 	../../include/Inventor/manips/SoTransformBoxManip.h \
-	../../include/Inventor/manips/SoTransformerManip.h all.cpp \
-	SoClipPlaneManip.cpp SoDirectionalLightManip.cpp \
-	SoPointLightManip.cpp SoSpotLightManip.cpp SoTransformManip.cpp \
-	SoCenterballManip.cpp SoHandleBoxManip.cpp SoJackManip.cpp \
-	SoTabBoxManip.cpp SoTrackballManip.cpp SoTransformBoxManip.cpp \
+	../../include/Inventor/manips/SoTransformerManip.h \
+	all-manips-cpp.cpp SoClipPlaneManip.cpp \
+	SoDirectionalLightManip.cpp SoPointLightManip.cpp \
+	SoSpotLightManip.cpp SoTransformManip.cpp SoCenterballManip.cpp \
+	SoHandleBoxManip.cpp SoJackManip.cpp SoTabBoxManip.cpp \
+	SoTrackballManip.cpp SoTransformBoxManip.cpp \
 	SoTransformerManip.cpp commoncode.cpp
 manips_lst_OBJECTS = $(am_manips_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -378,8 +379,8 @@ am__libmanips_la_SOURCES_DIST = SoClipPlaneManip.cpp \
 	SoSpotLightManip.cpp SoTransformManip.cpp SoCenterballManip.cpp \
 	SoHandleBoxManip.cpp SoJackManip.cpp SoTabBoxManip.cpp \
 	SoTrackballManip.cpp SoTransformBoxManip.cpp \
-	SoTransformerManip.cpp commoncode.cpp all.cpp
-am__objects_6 = all.lo
+	SoTransformerManip.cpp commoncode.cpp all-manips-cpp.cpp
+am__objects_6 = all-manips-cpp.lo
 am__objects_7 = SoClipPlaneManip.lo SoDirectionalLightManip.lo \
 	SoPointLightManip.lo SoSpotLightManip.lo SoTransformManip.lo \
 	SoCenterballManip.lo SoHandleBoxManip.lo SoJackManip.lo \
@@ -400,11 +401,12 @@ am__EXTRA_libmanips_la_SOURCES_DIST = \
 	../../include/Inventor/manips/SoTabBoxManip.h \
 	../../include/Inventor/manips/SoTrackballManip.h \
 	../../include/Inventor/manips/SoTransformBoxManip.h \
-	../../include/Inventor/manips/SoTransformerManip.h all.cpp \
-	SoClipPlaneManip.cpp SoDirectionalLightManip.cpp \
-	SoPointLightManip.cpp SoSpotLightManip.cpp SoTransformManip.cpp \
-	SoCenterballManip.cpp SoHandleBoxManip.cpp SoJackManip.cpp \
-	SoTabBoxManip.cpp SoTrackballManip.cpp SoTransformBoxManip.cpp \
+	../../include/Inventor/manips/SoTransformerManip.h \
+	all-manips-cpp.cpp SoClipPlaneManip.cpp \
+	SoDirectionalLightManip.cpp SoPointLightManip.cpp \
+	SoSpotLightManip.cpp SoTransformManip.cpp SoCenterballManip.cpp \
+	SoHandleBoxManip.cpp SoJackManip.cpp SoTabBoxManip.cpp \
+	SoTrackballManip.cpp SoTransformBoxManip.cpp \
 	SoTransformerManip.cpp commoncode.cpp
 libmanips_la_OBJECTS = $(am_libmanips_la_OBJECTS)
 libmanips@SUFFIX@LINKHACK_la_LDFLAGS =
@@ -414,7 +416,7 @@ am__libmanips@SUFFIX@LINKHACK_la_SOURCES_DIST = SoClipPlaneManip.cpp \
 	SoSpotLightManip.cpp SoTransformManip.cpp SoCenterballManip.cpp \
 	SoHandleBoxManip.cpp SoJackManip.cpp SoTabBoxManip.cpp \
 	SoTrackballManip.cpp SoTransformBoxManip.cpp \
-	SoTransformerManip.cpp commoncode.cpp all.cpp
+	SoTransformerManip.cpp commoncode.cpp all-manips-cpp.cpp
 am_libmanips@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libmanips@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/manips/SoClipPlaneManip.h \
@@ -428,11 +430,12 @@ am__EXTRA_libmanips@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/manips/SoTabBoxManip.h \
 	../../include/Inventor/manips/SoTrackballManip.h \
 	../../include/Inventor/manips/SoTransformBoxManip.h \
-	../../include/Inventor/manips/SoTransformerManip.h all.cpp \
-	SoClipPlaneManip.cpp SoDirectionalLightManip.cpp \
-	SoPointLightManip.cpp SoSpotLightManip.cpp SoTransformManip.cpp \
-	SoCenterballManip.cpp SoHandleBoxManip.cpp SoJackManip.cpp \
-	SoTabBoxManip.cpp SoTrackballManip.cpp SoTransformBoxManip.cpp \
+	../../include/Inventor/manips/SoTransformerManip.h \
+	all-manips-cpp.cpp SoClipPlaneManip.cpp \
+	SoDirectionalLightManip.cpp SoPointLightManip.cpp \
+	SoSpotLightManip.cpp SoTransformManip.cpp SoCenterballManip.cpp \
+	SoHandleBoxManip.cpp SoJackManip.cpp SoTabBoxManip.cpp \
+	SoTrackballManip.cpp SoTransformBoxManip.cpp \
 	SoTransformerManip.cpp commoncode.cpp
 libmanips@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libmanips@SUFFIX@LINKHACK_la_OBJECTS)
@@ -462,7 +465,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoTransformManip.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTransformerManip.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTransformerManip.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all.Plo ./$(DEPDIR)/all.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-manips-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-manips-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/commoncode.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/commoncode.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
@@ -575,8 +579,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTransformManip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTransformerManip.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTransformerManip.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-manips-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-manips-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/commoncode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/commoncode.Po@am__quote@
 

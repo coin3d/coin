@@ -257,7 +257,7 @@ RegularSources = \
 
 
 LinkHackSources = \
-	all-c.c \
+	all-glue-c.c \
 	glue-dummy.cpp
 
 
@@ -342,8 +342,8 @@ glue_lst_LIBADD =
 am__glue_lst_SOURCES_DIST = flwfreetype.c flwwin32.c dl.c gl.c gl_wgl.c \
 	gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
 	openal_wrapper.c fontlib_wrapper.c win32api.c zlib.c bzip2.c \
-	freetype.c glue-dummy.cpp all-c.c
-am__objects_1 = all-c.$(OBJEXT) glue-dummy.$(OBJEXT)
+	freetype.c glue-dummy.cpp all-glue-c.c
+am__objects_1 = all-glue-c.$(OBJEXT) glue-dummy.$(OBJEXT)
 am__objects_2 = flwfreetype.$(OBJEXT) flwwin32.$(OBJEXT) dl.$(OBJEXT) \
 	gl.$(OBJEXT) gl_wgl.$(OBJEXT) gl_agl.$(OBJEXT) gl_glx.$(OBJEXT) \
 	GLUWrapper.$(OBJEXT) simage_wrapper.$(OBJEXT) \
@@ -367,10 +367,11 @@ am__EXTRA_glue_lst_SOURCES_DIST = \
 	../../include/Inventor/C/glue/win32api.h \
 	../../include/Inventor/C/glue/zlib.h \
 	../../include/Inventor/C/glue/bzip2.h \
-	../../include/Inventor/C/glue/freetype.h all-c.c glue-dummy.cpp \
-	flwfreetype.c flwwin32.c dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
-	GLUWrapper.c simage_wrapper.c openal_wrapper.c \
-	fontlib_wrapper.c win32api.c zlib.c bzip2.c freetype.c
+	../../include/Inventor/C/glue/freetype.h all-glue-c.c \
+	glue-dummy.cpp flwfreetype.c flwwin32.c dl.c gl.c gl_wgl.c \
+	gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
+	openal_wrapper.c fontlib_wrapper.c win32api.c zlib.c bzip2.c \
+	freetype.c
 glue_lst_OBJECTS = $(am_glue_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -379,8 +380,8 @@ libglue_la_LIBADD =
 am__libglue_la_SOURCES_DIST = flwfreetype.c flwwin32.c dl.c gl.c \
 	gl_wgl.c gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
 	openal_wrapper.c fontlib_wrapper.c win32api.c zlib.c bzip2.c \
-	freetype.c glue-dummy.cpp all-c.c
-am__objects_6 = all-c.lo glue-dummy.lo
+	freetype.c glue-dummy.cpp all-glue-c.c
+am__objects_6 = all-glue-c.lo glue-dummy.lo
 am__objects_7 = flwfreetype.lo flwwin32.lo dl.lo gl.lo gl_wgl.lo \
 	gl_agl.lo gl_glx.lo GLUWrapper.lo simage_wrapper.lo \
 	openal_wrapper.lo fontlib_wrapper.lo win32api.lo zlib.lo \
@@ -402,17 +403,18 @@ am__EXTRA_libglue_la_SOURCES_DIST = \
 	../../include/Inventor/C/glue/win32api.h \
 	../../include/Inventor/C/glue/zlib.h \
 	../../include/Inventor/C/glue/bzip2.h \
-	../../include/Inventor/C/glue/freetype.h all-c.c glue-dummy.cpp \
-	flwfreetype.c flwwin32.c dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
-	GLUWrapper.c simage_wrapper.c openal_wrapper.c \
-	fontlib_wrapper.c win32api.c zlib.c bzip2.c freetype.c
+	../../include/Inventor/C/glue/freetype.h all-glue-c.c \
+	glue-dummy.cpp flwfreetype.c flwwin32.c dl.c gl.c gl_wgl.c \
+	gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
+	openal_wrapper.c fontlib_wrapper.c win32api.c zlib.c bzip2.c \
+	freetype.c
 libglue_la_OBJECTS = $(am_libglue_la_OBJECTS)
 libglue@SUFFIX@LINKHACK_la_LDFLAGS =
 libglue@SUFFIX@LINKHACK_la_LIBADD =
 am__libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = flwfreetype.c flwwin32.c \
 	dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c GLUWrapper.c \
 	simage_wrapper.c openal_wrapper.c fontlib_wrapper.c win32api.c \
-	zlib.c bzip2.c freetype.c glue-dummy.cpp all-c.c
+	zlib.c bzip2.c freetype.c glue-dummy.cpp all-glue-c.c
 am_libglue@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/C/glue/flwfreetype.h \
@@ -428,17 +430,19 @@ am__EXTRA_libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/C/glue/win32api.h \
 	../../include/Inventor/C/glue/zlib.h \
 	../../include/Inventor/C/glue/bzip2.h \
-	../../include/Inventor/C/glue/freetype.h all-c.c glue-dummy.cpp \
-	flwfreetype.c flwwin32.c dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
-	GLUWrapper.c simage_wrapper.c openal_wrapper.c \
-	fontlib_wrapper.c win32api.c zlib.c bzip2.c freetype.c
+	../../include/Inventor/C/glue/freetype.h all-glue-c.c \
+	glue-dummy.cpp flwfreetype.c flwwin32.c dl.c gl.c gl_wgl.c \
+	gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
+	openal_wrapper.c fontlib_wrapper.c win32api.c zlib.c bzip2.c \
+	freetype.c
 libglue@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libglue@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/GLUWrapper.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/GLUWrapper.Po ./$(DEPDIR)/all-c.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-c.Po ./$(DEPDIR)/bzip2.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/GLUWrapper.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-glue-c.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-glue-c.Po ./$(DEPDIR)/bzip2.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/bzip2.Po ./$(DEPDIR)/dl.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/dl.Po ./$(DEPDIR)/flwfreetype.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/flwfreetype.Po ./$(DEPDIR)/flwwin32.Plo \
@@ -546,8 +550,8 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GLUWrapper.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GLUWrapper.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-c.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-c.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-glue-c.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-glue-c.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bzip2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bzip2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dl.Plo@am__quote@

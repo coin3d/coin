@@ -256,7 +256,7 @@ RegularSources = \
 	threads-dummy.cpp
 
 LinkHackSources = \
-	all-c.c \
+	all-threads-c.c \
 	threads-dummy.cpp
 
 PublicHeaders = \
@@ -361,8 +361,8 @@ threads_lst_AR = $(AR) cru
 threads_lst_LIBADD =
 am__threads_lst_SOURCES_DIST = common.c thread.c mutex.c rwmutex.c \
 	storage.c condvar.c worker.c wpool.c sched.c sync.c fifo.c \
-	barrier.c threads-dummy.cpp all-c.c
-am__objects_1 = all-c.$(OBJEXT) threads-dummy.$(OBJEXT)
+	barrier.c threads-dummy.cpp all-threads-c.c
+am__objects_1 = all-threads-c.$(OBJEXT) threads-dummy.$(OBJEXT)
 am__objects_2 = common.$(OBJEXT) thread.$(OBJEXT) mutex.$(OBJEXT) \
 	rwmutex.$(OBJEXT) storage.$(OBJEXT) condvar.$(OBJEXT) \
 	worker.$(OBJEXT) wpool.$(OBJEXT) sched.$(OBJEXT) sync.$(OBJEXT) \
@@ -394,7 +394,7 @@ am__EXTRA_threads_lst_SOURCES_DIST = \
 	../../include/Inventor/C/threads/threadp.h \
 	../../include/Inventor/C/threads/threadsutilp.h \
 	../../include/Inventor/C/threads/workerp.h \
-	../../include/Inventor/C/threads/wpoolp.h all-c.c \
+	../../include/Inventor/C/threads/wpoolp.h all-threads-c.c \
 	threads-dummy.cpp common.c thread.c mutex.c rwmutex.c storage.c \
 	condvar.c worker.c wpool.c sched.c sync.c fifo.c barrier.c
 threads_lst_OBJECTS = $(am_threads_lst_OBJECTS)
@@ -404,8 +404,8 @@ libthreads_la_LDFLAGS =
 libthreads_la_LIBADD =
 am__libthreads_la_SOURCES_DIST = common.c thread.c mutex.c rwmutex.c \
 	storage.c condvar.c worker.c wpool.c sched.c sync.c fifo.c \
-	barrier.c threads-dummy.cpp all-c.c
-am__objects_7 = all-c.lo threads-dummy.lo
+	barrier.c threads-dummy.cpp all-threads-c.c
+am__objects_7 = all-threads-c.lo threads-dummy.lo
 am__objects_8 = common.lo thread.lo mutex.lo rwmutex.lo storage.lo \
 	condvar.lo worker.lo wpool.lo sched.lo sync.lo fifo.lo \
 	barrier.lo threads-dummy.lo
@@ -436,7 +436,7 @@ am__EXTRA_libthreads_la_SOURCES_DIST = \
 	../../include/Inventor/C/threads/threadp.h \
 	../../include/Inventor/C/threads/threadsutilp.h \
 	../../include/Inventor/C/threads/workerp.h \
-	../../include/Inventor/C/threads/wpoolp.h all-c.c \
+	../../include/Inventor/C/threads/wpoolp.h all-threads-c.c \
 	threads-dummy.cpp common.c thread.c mutex.c rwmutex.c storage.c \
 	condvar.c worker.c wpool.c sched.c sync.c fifo.c barrier.c
 libthreads_la_OBJECTS = $(am_libthreads_la_OBJECTS)
@@ -444,7 +444,7 @@ libthreads@SUFFIX@LINKHACK_la_LDFLAGS =
 libthreads@SUFFIX@LINKHACK_la_LIBADD =
 am__libthreads@SUFFIX@LINKHACK_la_SOURCES_DIST = common.c thread.c \
 	mutex.c rwmutex.c storage.c condvar.c worker.c wpool.c sched.c \
-	sync.c fifo.c barrier.c threads-dummy.cpp all-c.c
+	sync.c fifo.c barrier.c threads-dummy.cpp all-threads-c.c
 am_libthreads@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_9)
 am__EXTRA_libthreads@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/threads/SbThread.h \
@@ -470,14 +470,15 @@ am__EXTRA_libthreads@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/C/threads/threadp.h \
 	../../include/Inventor/C/threads/threadsutilp.h \
 	../../include/Inventor/C/threads/workerp.h \
-	../../include/Inventor/C/threads/wpoolp.h all-c.c \
+	../../include/Inventor/C/threads/wpoolp.h all-threads-c.c \
 	threads-dummy.cpp common.c thread.c mutex.c rwmutex.c storage.c \
 	condvar.c worker.c wpool.c sched.c sync.c fifo.c barrier.c
 libthreads@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libthreads@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/all-c.Plo ./$(DEPDIR)/all-c.Po \
+@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/all-threads-c.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-threads-c.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/barrier.Plo ./$(DEPDIR)/barrier.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/common.Plo ./$(DEPDIR)/common.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/condvar.Plo ./$(DEPDIR)/condvar.Po \
@@ -579,8 +580,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-c.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-c.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-threads-c.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-threads-c.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/barrier.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/barrier.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common.Plo@am__quote@

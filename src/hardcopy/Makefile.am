@@ -8,7 +8,7 @@ RegularSources = \
 	VectorizePSAction.cpp
 
 LinkHackSources = \
-	all.cpp
+	all-hardcopy-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/annex/HardCopy/SoHardCopy.h \
 	../../include/Inventor/annex/HardCopy/SoPSVectorOutput.h \

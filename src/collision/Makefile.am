@@ -5,7 +5,7 @@ RegularSources = \
 	SbTri3f.cpp \
 	SoIntersectionDetectionAction.cpp
 LinkHackSources = \
-	all-cpp.cpp
+	all-collision-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/collision/SoIntersectionDetectionAction.h
 PrivateHeaders =  \

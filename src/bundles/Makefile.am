@@ -7,7 +7,7 @@ RegularSources = \
 	SoNormalBundle.cpp \
 	SoTextureCoordinateBundle.cpp
 LinkHackSources = \
-	all.cpp
+	all-bundles-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/bundles/SoBundle.h \
 	../../include/Inventor/bundles/SoMaterialBundle.h \

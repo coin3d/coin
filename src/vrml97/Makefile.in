@@ -316,7 +316,7 @@ PrivateHeaders = \
 	../../include/Inventor/VRMLnodes/SoVRMLSubInterpolatorP.h
 
 LinkHackSources = \
-	all.cpp
+	all-vrml97-cpp.cpp
 
 RegularSources = \
 	Anchor.cpp \
@@ -465,8 +465,8 @@ am__vrml97_lst_SOURCES_DIST = Anchor.cpp Appearance.cpp AudioClip.cpp \
 	Text.cpp Texture.cpp TextureCoordinate.cpp TextureTransform.cpp \
 	TimeSensor.cpp TouchSensor.cpp Transform.cpp VertexLine.cpp \
 	VertexPoint.cpp VertexShape.cpp Viewpoint.cpp \
-	VisibilitySensor.cpp WorldInfo.cpp all.cpp
-am__objects_1 = all.$(OBJEXT)
+	VisibilitySensor.cpp WorldInfo.cpp all-vrml97-cpp.cpp
+am__objects_1 = all-vrml97-cpp.$(OBJEXT)
 am__objects_2 = Anchor.$(OBJEXT) Appearance.$(OBJEXT) \
 	AudioClip.$(OBJEXT) Background.$(OBJEXT) Billboard.$(OBJEXT) \
 	Box.$(OBJEXT) Collision.$(OBJEXT) Color.$(OBJEXT) \
@@ -568,8 +568,8 @@ am__EXTRA_vrml97_lst_SOURCES_DIST = \
 	../../include/Inventor/VRMLnodes/SoVRMLVisibilitySensor.h \
 	../../include/Inventor/VRMLnodes/SoVRMLWorldInfo.h \
 	../../include/Inventor/VRMLnodes/SoVRMLSubInterpolatorP.h \
-	all.cpp Anchor.cpp Appearance.cpp AudioClip.cpp Background.cpp \
-	Billboard.cpp Box.cpp Collision.cpp Color.cpp \
+	all-vrml97-cpp.cpp Anchor.cpp Appearance.cpp AudioClip.cpp \
+	Background.cpp Billboard.cpp Box.cpp Collision.cpp Color.cpp \
 	ColorInterpolator.cpp Cone.cpp Coordinate.cpp \
 	CoordinateInterpolator.cpp Cylinder.cpp CylinderSensor.cpp \
 	DirectionalLight.cpp DragSensor.cpp ElevationGrid.cpp \
@@ -610,8 +610,8 @@ am__libvrml97_la_SOURCES_DIST = Anchor.cpp Appearance.cpp AudioClip.cpp \
 	Text.cpp Texture.cpp TextureCoordinate.cpp TextureTransform.cpp \
 	TimeSensor.cpp TouchSensor.cpp Transform.cpp VertexLine.cpp \
 	VertexPoint.cpp VertexShape.cpp Viewpoint.cpp \
-	VisibilitySensor.cpp WorldInfo.cpp all.cpp
-am__objects_6 = all.lo
+	VisibilitySensor.cpp WorldInfo.cpp all-vrml97-cpp.cpp
+am__objects_6 = all-vrml97-cpp.lo
 am__objects_7 = Anchor.lo Appearance.lo AudioClip.lo Background.lo \
 	Billboard.lo Box.lo Collision.lo Color.lo ColorInterpolator.lo \
 	Cone.lo Coordinate.lo CoordinateInterpolator.lo Cylinder.lo \
@@ -705,8 +705,8 @@ am__EXTRA_libvrml97_la_SOURCES_DIST = \
 	../../include/Inventor/VRMLnodes/SoVRMLVisibilitySensor.h \
 	../../include/Inventor/VRMLnodes/SoVRMLWorldInfo.h \
 	../../include/Inventor/VRMLnodes/SoVRMLSubInterpolatorP.h \
-	all.cpp Anchor.cpp Appearance.cpp AudioClip.cpp Background.cpp \
-	Billboard.cpp Box.cpp Collision.cpp Color.cpp \
+	all-vrml97-cpp.cpp Anchor.cpp Appearance.cpp AudioClip.cpp \
+	Background.cpp Billboard.cpp Box.cpp Collision.cpp Color.cpp \
 	ColorInterpolator.cpp Cone.cpp Coordinate.cpp \
 	CoordinateInterpolator.cpp Cylinder.cpp CylinderSensor.cpp \
 	DirectionalLight.cpp DragSensor.cpp ElevationGrid.cpp \
@@ -745,7 +745,7 @@ am__libvrml97@SUFFIX@LINKHACK_la_SOURCES_DIST = Anchor.cpp \
 	Text.cpp Texture.cpp TextureCoordinate.cpp TextureTransform.cpp \
 	TimeSensor.cpp TouchSensor.cpp Transform.cpp VertexLine.cpp \
 	VertexPoint.cpp VertexShape.cpp Viewpoint.cpp \
-	VisibilitySensor.cpp WorldInfo.cpp all.cpp
+	VisibilitySensor.cpp WorldInfo.cpp all-vrml97-cpp.cpp
 am_libvrml97@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/VRMLnodes/SoVRML.h \
@@ -819,8 +819,8 @@ am__EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/VRMLnodes/SoVRMLVisibilitySensor.h \
 	../../include/Inventor/VRMLnodes/SoVRMLWorldInfo.h \
 	../../include/Inventor/VRMLnodes/SoVRMLSubInterpolatorP.h \
-	all.cpp Anchor.cpp Appearance.cpp AudioClip.cpp Background.cpp \
-	Billboard.cpp Box.cpp Collision.cpp Color.cpp \
+	all-vrml97-cpp.cpp Anchor.cpp Appearance.cpp AudioClip.cpp \
+	Background.cpp Billboard.cpp Box.cpp Collision.cpp Color.cpp \
 	ColorInterpolator.cpp Cone.cpp Coordinate.cpp \
 	CoordinateInterpolator.cpp Cylinder.cpp CylinderSensor.cpp \
 	DirectionalLight.cpp DragSensor.cpp ElevationGrid.cpp \
@@ -941,7 +941,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/VisibilitySensor.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/VisibilitySensor.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/WorldInfo.Plo ./$(DEPDIR)/WorldInfo.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all.Plo ./$(DEPDIR)/all.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-vrml97-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-vrml97-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -1162,8 +1163,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/VisibilitySensor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WorldInfo.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WorldInfo.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-vrml97-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-vrml97-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

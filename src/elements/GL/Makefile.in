@@ -269,7 +269,7 @@ RegularSources = \
 	SoGLDisplayList.cpp
 
 LinkHackSources = \
-	all-cpp.cpp
+	all-glelements-cpp.cpp
 
 PublicHeaders = \
 	../../../include/Inventor/elements/SoGLCacheContextElement.h \
@@ -375,8 +375,8 @@ am__glelements_lst_SOURCES_DIST = SoGLCacheContextElement.cpp \
 	SoGLTexture3EnabledElement.cpp SoGLTextureImageElement.cpp \
 	SoGLTextureMatrixElement.cpp SoGLUpdateAreaElement.cpp \
 	SoGLViewingMatrixElement.cpp SoGLViewportRegionElement.cpp \
-	SoGLDisplayList.cpp all-cpp.cpp
-am__objects_1 = all-cpp.$(OBJEXT)
+	SoGLDisplayList.cpp all-glelements-cpp.cpp
+am__objects_1 = all-glelements-cpp.$(OBJEXT)
 am__objects_2 = SoGLCacheContextElement.$(OBJEXT) \
 	SoGLClipPlaneElement.$(OBJEXT) SoGLColorIndexElement.$(OBJEXT) \
 	SoGLCoordinateElement.$(OBJEXT) SoGLDrawStyleElement.$(OBJEXT) \
@@ -426,7 +426,7 @@ am__EXTRA_glelements_lst_SOURCES_DIST = \
 	../../../include/Inventor/elements/SoGLUpdateAreaElement.h \
 	../../../include/Inventor/elements/SoGLViewingMatrixElement.h \
 	../../../include/Inventor/elements/SoGLViewportRegionElement.h \
-	all-cpp.cpp SoGLCacheContextElement.cpp \
+	all-glelements-cpp.cpp SoGLCacheContextElement.cpp \
 	SoGLClipPlaneElement.cpp SoGLColorIndexElement.cpp \
 	SoGLCoordinateElement.cpp SoGLDrawStyleElement.cpp \
 	SoGLEnvironmentElement.cpp SoGLLazyElement.cpp \
@@ -458,8 +458,8 @@ am__libglelements_la_SOURCES_DIST = SoGLCacheContextElement.cpp \
 	SoGLTexture3EnabledElement.cpp SoGLTextureImageElement.cpp \
 	SoGLTextureMatrixElement.cpp SoGLUpdateAreaElement.cpp \
 	SoGLViewingMatrixElement.cpp SoGLViewportRegionElement.cpp \
-	SoGLDisplayList.cpp all-cpp.cpp
-am__objects_6 = all-cpp.lo
+	SoGLDisplayList.cpp all-glelements-cpp.cpp
+am__objects_6 = all-glelements-cpp.lo
 am__objects_7 = SoGLCacheContextElement.lo SoGLClipPlaneElement.lo \
 	SoGLColorIndexElement.lo SoGLCoordinateElement.lo \
 	SoGLDrawStyleElement.lo SoGLEnvironmentElement.lo \
@@ -504,7 +504,7 @@ am__EXTRA_libglelements_la_SOURCES_DIST = \
 	../../../include/Inventor/elements/SoGLUpdateAreaElement.h \
 	../../../include/Inventor/elements/SoGLViewingMatrixElement.h \
 	../../../include/Inventor/elements/SoGLViewportRegionElement.h \
-	all-cpp.cpp SoGLCacheContextElement.cpp \
+	all-glelements-cpp.cpp SoGLCacheContextElement.cpp \
 	SoGLClipPlaneElement.cpp SoGLColorIndexElement.cpp \
 	SoGLCoordinateElement.cpp SoGLDrawStyleElement.cpp \
 	SoGLEnvironmentElement.cpp SoGLLazyElement.cpp \
@@ -534,7 +534,8 @@ am__libglelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoGLTextureEnabledElement.cpp SoGLTexture3EnabledElement.cpp \
 	SoGLTextureImageElement.cpp SoGLTextureMatrixElement.cpp \
 	SoGLUpdateAreaElement.cpp SoGLViewingMatrixElement.cpp \
-	SoGLViewportRegionElement.cpp SoGLDisplayList.cpp all-cpp.cpp
+	SoGLViewportRegionElement.cpp SoGLDisplayList.cpp \
+	all-glelements-cpp.cpp
 am_libglelements@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libglelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../../include/Inventor/elements/SoGLCacheContextElement.h \
@@ -564,7 +565,7 @@ am__EXTRA_libglelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../../include/Inventor/elements/SoGLUpdateAreaElement.h \
 	../../../include/Inventor/elements/SoGLViewingMatrixElement.h \
 	../../../include/Inventor/elements/SoGLViewportRegionElement.h \
-	all-cpp.cpp SoGLCacheContextElement.cpp \
+	all-glelements-cpp.cpp SoGLCacheContextElement.cpp \
 	SoGLClipPlaneElement.cpp SoGLColorIndexElement.cpp \
 	SoGLCoordinateElement.cpp SoGLDrawStyleElement.cpp \
 	SoGLEnvironmentElement.cpp SoGLLazyElement.cpp \
@@ -634,7 +635,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLViewingMatrixElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLViewportRegionElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLViewportRegionElement.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all-cpp.Plo ./$(DEPDIR)/all-cpp.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-glelements-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-glelements-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -773,8 +775,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLViewingMatrixElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLViewportRegionElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLViewportRegionElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-glelements-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-glelements-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

@@ -12,7 +12,7 @@ RegularSources = \
 	SoPointDetail.cpp \
 	SoTextDetail.cpp
 LinkHackSources = \
-	all.cpp
+	all-details-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/details/SoSubDetail.h \
 	../../include/Inventor/details/SoDetail.h \

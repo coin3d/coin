@@ -296,8 +296,8 @@ RegularSources = \
 	$(ThreadsDependentSources)
 
 LinkHackSources = \
-	all-c.c \
-	all-cpp.cpp
+	all-base-c.c \
+	all-base-cpp.cpp
 
 PublicHeaders = 
 PrivateHeaders = \
@@ -417,8 +417,9 @@ am__base_lst_SOURCES_DIST = hash.c heap.c list.c memalloc.c rbptree.c \
 	SbString.cpp SbTesselator.cpp SbTime.cpp SbVec2s.cpp \
 	SbVec2f.cpp SbVec2d.cpp SbVec3s.cpp SbVec3f.cpp SbVec3d.cpp \
 	SbVec4f.cpp SbVec4d.cpp SbViewVolume.cpp SbDPViewVolume.cpp \
-	SbViewportRegion.cpp SbXfBox3f.cpp all-c.c all-cpp.cpp
-am__objects_1 = all-c.$(OBJEXT) all-cpp.$(OBJEXT)
+	SbViewportRegion.cpp SbXfBox3f.cpp all-base-c.c \
+	all-base-cpp.cpp
+am__objects_1 = all-base-c.$(OBJEXT) all-base-cpp.$(OBJEXT)
 @BUILD_WITH_THREADS_TRUE@am__objects_2 =
 @BUILD_WITH_THREADS_FALSE@am__objects_2 =
 am__objects_3 = hash.$(OBJEXT) heap.$(OBJEXT) list.$(OBJEXT) \
@@ -486,18 +487,18 @@ am__EXTRA_base_lst_SOURCES_DIST = \
 	../../include/Inventor/C/base/hashp.h \
 	../../include/Inventor/C/base/heapp.h \
 	../../include/Inventor/C/base/dynarray.h \
-	../../include/Inventor/C/base/namemap.h all-c.c all-cpp.cpp \
-	hash.c heap.c list.c memalloc.c rbptree.c time.c string.c \
-	dynarray.cpp namemap.c SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp \
-	SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp SbClip.cpp SbColor.cpp \
-	SbColor4f.cpp SbCylinder.cpp SbDict.cpp SbDPLine.cpp \
-	SbDPMatrix.cpp SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp \
-	SbImage.cpp SbLine.cpp SbMatrix.cpp SbName.cpp SbOctTree.cpp \
-	SbPlane.cpp SbRotation.cpp SbSphere.cpp SbString.cpp \
-	SbTesselator.cpp SbTime.cpp SbVec2s.cpp SbVec2f.cpp SbVec2d.cpp \
-	SbVec3s.cpp SbVec3f.cpp SbVec3d.cpp SbVec4f.cpp SbVec4d.cpp \
-	SbViewVolume.cpp SbDPViewVolume.cpp SbViewportRegion.cpp \
-	SbXfBox3f.cpp
+	../../include/Inventor/C/base/namemap.h all-base-c.c \
+	all-base-cpp.cpp hash.c heap.c list.c memalloc.c rbptree.c \
+	time.c string.c dynarray.cpp namemap.c SbBSPTree.cpp \
+	SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp \
+	SbClip.cpp SbColor.cpp SbColor4f.cpp SbCylinder.cpp SbDict.cpp \
+	SbDPLine.cpp SbDPMatrix.cpp SbDPPlane.cpp SbDPRotation.cpp \
+	SbHeap.cpp SbImage.cpp SbLine.cpp SbMatrix.cpp SbName.cpp \
+	SbOctTree.cpp SbPlane.cpp SbRotation.cpp SbSphere.cpp \
+	SbString.cpp SbTesselator.cpp SbTime.cpp SbVec2s.cpp \
+	SbVec2f.cpp SbVec2d.cpp SbVec3s.cpp SbVec3f.cpp SbVec3d.cpp \
+	SbVec4f.cpp SbVec4d.cpp SbViewVolume.cpp SbDPViewVolume.cpp \
+	SbViewportRegion.cpp SbXfBox3f.cpp
 base_lst_OBJECTS = $(am_base_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -513,8 +514,9 @@ am__libbase_la_SOURCES_DIST = hash.c heap.c list.c memalloc.c rbptree.c \
 	SbString.cpp SbTesselator.cpp SbTime.cpp SbVec2s.cpp \
 	SbVec2f.cpp SbVec2d.cpp SbVec3s.cpp SbVec3f.cpp SbVec3d.cpp \
 	SbVec4f.cpp SbVec4d.cpp SbViewVolume.cpp SbDPViewVolume.cpp \
-	SbViewportRegion.cpp SbXfBox3f.cpp all-c.c all-cpp.cpp
-am__objects_7 = all-c.lo all-cpp.lo
+	SbViewportRegion.cpp SbXfBox3f.cpp all-base-c.c \
+	all-base-cpp.cpp
+am__objects_7 = all-base-c.lo all-base-cpp.lo
 am__objects_8 = hash.lo heap.lo list.lo memalloc.lo rbptree.lo time.lo \
 	string.lo dynarray.lo namemap.lo SbBSPTree.lo SbBox2s.lo \
 	SbBox3s.lo SbBox2f.lo SbBox2d.lo SbBox3f.lo SbClip.lo \
@@ -574,18 +576,18 @@ am__EXTRA_libbase_la_SOURCES_DIST = \
 	../../include/Inventor/C/base/hashp.h \
 	../../include/Inventor/C/base/heapp.h \
 	../../include/Inventor/C/base/dynarray.h \
-	../../include/Inventor/C/base/namemap.h all-c.c all-cpp.cpp \
-	hash.c heap.c list.c memalloc.c rbptree.c time.c string.c \
-	dynarray.cpp namemap.c SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp \
-	SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp SbClip.cpp SbColor.cpp \
-	SbColor4f.cpp SbCylinder.cpp SbDict.cpp SbDPLine.cpp \
-	SbDPMatrix.cpp SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp \
-	SbImage.cpp SbLine.cpp SbMatrix.cpp SbName.cpp SbOctTree.cpp \
-	SbPlane.cpp SbRotation.cpp SbSphere.cpp SbString.cpp \
-	SbTesselator.cpp SbTime.cpp SbVec2s.cpp SbVec2f.cpp SbVec2d.cpp \
-	SbVec3s.cpp SbVec3f.cpp SbVec3d.cpp SbVec4f.cpp SbVec4d.cpp \
-	SbViewVolume.cpp SbDPViewVolume.cpp SbViewportRegion.cpp \
-	SbXfBox3f.cpp
+	../../include/Inventor/C/base/namemap.h all-base-c.c \
+	all-base-cpp.cpp hash.c heap.c list.c memalloc.c rbptree.c \
+	time.c string.c dynarray.cpp namemap.c SbBSPTree.cpp \
+	SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp \
+	SbClip.cpp SbColor.cpp SbColor4f.cpp SbCylinder.cpp SbDict.cpp \
+	SbDPLine.cpp SbDPMatrix.cpp SbDPPlane.cpp SbDPRotation.cpp \
+	SbHeap.cpp SbImage.cpp SbLine.cpp SbMatrix.cpp SbName.cpp \
+	SbOctTree.cpp SbPlane.cpp SbRotation.cpp SbSphere.cpp \
+	SbString.cpp SbTesselator.cpp SbTime.cpp SbVec2s.cpp \
+	SbVec2f.cpp SbVec2d.cpp SbVec3s.cpp SbVec3f.cpp SbVec3d.cpp \
+	SbVec4f.cpp SbVec4d.cpp SbViewVolume.cpp SbDPViewVolume.cpp \
+	SbViewportRegion.cpp SbXfBox3f.cpp
 libbase_la_OBJECTS = $(am_libbase_la_OBJECTS)
 libbase@SUFFIX@LINKHACK_la_LDFLAGS =
 libbase@SUFFIX@LINKHACK_la_LIBADD =
@@ -599,8 +601,8 @@ am__libbase@SUFFIX@LINKHACK_la_SOURCES_DIST = hash.c heap.c list.c \
 	SbSphere.cpp SbString.cpp SbTesselator.cpp SbTime.cpp \
 	SbVec2s.cpp SbVec2f.cpp SbVec2d.cpp SbVec3s.cpp SbVec3f.cpp \
 	SbVec3d.cpp SbVec4f.cpp SbVec4d.cpp SbViewVolume.cpp \
-	SbDPViewVolume.cpp SbViewportRegion.cpp SbXfBox3f.cpp all-c.c \
-	all-cpp.cpp
+	SbDPViewVolume.cpp SbViewportRegion.cpp SbXfBox3f.cpp \
+	all-base-c.c all-base-cpp.cpp
 am_libbase@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_9)
 am__EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/C/base/memalloc.h \
@@ -647,18 +649,18 @@ am__EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/C/base/hashp.h \
 	../../include/Inventor/C/base/heapp.h \
 	../../include/Inventor/C/base/dynarray.h \
-	../../include/Inventor/C/base/namemap.h all-c.c all-cpp.cpp \
-	hash.c heap.c list.c memalloc.c rbptree.c time.c string.c \
-	dynarray.cpp namemap.c SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp \
-	SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp SbClip.cpp SbColor.cpp \
-	SbColor4f.cpp SbCylinder.cpp SbDict.cpp SbDPLine.cpp \
-	SbDPMatrix.cpp SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp \
-	SbImage.cpp SbLine.cpp SbMatrix.cpp SbName.cpp SbOctTree.cpp \
-	SbPlane.cpp SbRotation.cpp SbSphere.cpp SbString.cpp \
-	SbTesselator.cpp SbTime.cpp SbVec2s.cpp SbVec2f.cpp SbVec2d.cpp \
-	SbVec3s.cpp SbVec3f.cpp SbVec3d.cpp SbVec4f.cpp SbVec4d.cpp \
-	SbViewVolume.cpp SbDPViewVolume.cpp SbViewportRegion.cpp \
-	SbXfBox3f.cpp
+	../../include/Inventor/C/base/namemap.h all-base-c.c \
+	all-base-cpp.cpp hash.c heap.c list.c memalloc.c rbptree.c \
+	time.c string.c dynarray.cpp namemap.c SbBSPTree.cpp \
+	SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp \
+	SbClip.cpp SbColor.cpp SbColor4f.cpp SbCylinder.cpp SbDict.cpp \
+	SbDPLine.cpp SbDPMatrix.cpp SbDPPlane.cpp SbDPRotation.cpp \
+	SbHeap.cpp SbImage.cpp SbLine.cpp SbMatrix.cpp SbName.cpp \
+	SbOctTree.cpp SbPlane.cpp SbRotation.cpp SbSphere.cpp \
+	SbString.cpp SbTesselator.cpp SbTime.cpp SbVec2s.cpp \
+	SbVec2f.cpp SbVec2d.cpp SbVec3s.cpp SbVec3f.cpp SbVec3d.cpp \
+	SbVec4f.cpp SbVec4d.cpp SbViewVolume.cpp SbDPViewVolume.cpp \
+	SbViewportRegion.cpp SbXfBox3f.cpp
 libbase@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libbase@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -708,8 +710,10 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SbViewportRegion.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SbViewportRegion.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SbXfBox3f.Plo ./$(DEPDIR)/SbXfBox3f.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all-c.Plo ./$(DEPDIR)/all-c.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all-cpp.Plo ./$(DEPDIR)/all-cpp.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-base-c.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-base-c.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-base-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-base-cpp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/dynarray.Plo ./$(DEPDIR)/dynarray.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/hash.Plo ./$(DEPDIR)/hash.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/heap.Plo ./$(DEPDIR)/heap.Po \
@@ -883,10 +887,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbViewportRegion.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbXfBox3f.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbXfBox3f.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-c.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-c.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-base-c.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-base-c.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-base-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-base-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dynarray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dynarray.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hash.Plo@am__quote@

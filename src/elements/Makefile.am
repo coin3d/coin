@@ -77,7 +77,7 @@ RegularSources = \
 	SoListenerDopplerElement.cpp \
 	SoSoundElement.cpp
 LinkHackSources = \
-	all.cpp
+	all-elements-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/elements/SoSubElement.h \
 	../../include/Inventor/elements/SoElements.h \

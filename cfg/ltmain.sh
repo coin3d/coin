@@ -96,6 +96,9 @@ fi
 # Make sure IFS has a sensible default
 : ${IFS=" 	"}
 
+# Make sure MKS sh doesn't run case/esac switches in case-insensitive mode
+DUALCASE=1
+
 if test "$build_libtool_libs" != yes && test "$build_old_libs" != yes; then
   $echo "$modename: not configured to build any kind of library" 1>&2
   $echo "Fatal configuration error.  See the $PACKAGE docs for more information." 1>&2
@@ -1226,38 +1229,6 @@ EOF
 	continue
 	;;
 
-      -l*)
-	if test "X$arg" = "X-lc" || test "X$arg" = "X-lm"; then
-	  case $host in
-	  *-*-cygwin* | *-*-pw32* | *-*-beos*)
-	    # These systems don't actually have a C or math library (as such)
-	    continue
-	    ;;
-	  *-*-mingw* | *-*-os2*)
-	    # These systems don't actually have a C library (as such)
-	    test "X$arg" = "X-lc" && continue
-	    ;;
-	  *-*-openbsd* | *-*-freebsd*)
-	    # Do not include libc due to us having libc/libc_r.
-	    test "X$arg" = "X-lc" && continue
-	    ;;
-	  *-*-rhapsody* | *-*-darwin1.[012])
-	    # Rhapsody C and math libraries are in the System framework
-	    deplibs="$deplibs -framework System"
-	    continue
-	  esac
-	elif test "X$arg" = "X-lc_r"; then
-	 case $host in
-	 *-*-openbsd* | *-*-freebsd*)
-	   # Do not include libc_r directly, use -pthread flag.
-	   continue
-	   ;;
-	 esac
-	fi
-	deplibs="$deplibs $arg"
-	continue
-	;;
-
       -L*)
 	dir=`$echo "X$arg" | $Xsed -e 's/^-L//'`
 	# We need an absolute path.
@@ -1287,6 +1258,38 @@ EOF
 	  esac
 	  ;;
 	esac
+	continue
+	;;
+
+      -l*)
+	if test "X$arg" = "X-lc" || test "X$arg" = "X-lm"; then
+	  case $host in
+	  *-*-cygwin* | *-*-pw32* | *-*-beos*)
+	    # These systems don't actually have a C or math library (as such)
+	    continue
+	    ;;
+	  *-*-mingw* | *-*-os2*)
+	    # These systems don't actually have a C library (as such)
+	    test "X$arg" = "X-lc" && continue
+	    ;;
+	  *-*-openbsd* | *-*-freebsd*)
+	    # Do not include libc due to us having libc/libc_r.
+	    test "X$arg" = "X-lc" && continue
+	    ;;
+	  *-*-rhapsody* | *-*-darwin1.[012])
+	    # Rhapsody C and math libraries are in the System framework
+	    deplibs="$deplibs -framework System"
+	    continue
+	  esac
+	elif test "X$arg" = "X-lc_r"; then
+	 case $host in
+	 *-*-openbsd* | *-*-freebsd*)
+	   # Do not include libc_r directly, use -pthread flag.
+	   continue
+	   ;;
+	 esac
+	fi
+	deplibs="$deplibs $arg"
 	continue
 	;;
 

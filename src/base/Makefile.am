@@ -59,8 +59,8 @@ RegularSources = \
 	SbXfBox3f.cpp \
 	$(ThreadsDependentSources)
 LinkHackSources = \
-	all-c.c \
-	all-cpp.cpp
+	all-base-c.c \
+	all-base-cpp.cpp
 PublicHeaders =
 PrivateHeaders = \
 	../../include/Inventor/C/base/memalloc.h \

@@ -245,7 +245,7 @@ RegularSources = \
 	SoIntersectionDetectionAction.cpp
 
 LinkHackSources = \
-	all-cpp.cpp
+	all-collision-cpp.cpp
 
 PublicHeaders = \
 	../../include/Inventor/collision/SoIntersectionDetectionAction.h
@@ -314,8 +314,8 @@ LIBRARIES = $(noinst_LIBRARIES)
 collision_lst_AR = $(AR) cru
 collision_lst_LIBADD =
 am__collision_lst_SOURCES_DIST = SbTri3f.cpp \
-	SoIntersectionDetectionAction.cpp all-cpp.cpp
-am__objects_1 = all-cpp.$(OBJEXT)
+	SoIntersectionDetectionAction.cpp all-collision-cpp.cpp
+am__objects_1 = all-collision-cpp.$(OBJEXT)
 am__objects_2 = SbTri3f.$(OBJEXT) \
 	SoIntersectionDetectionAction.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
@@ -323,7 +323,7 @@ am__objects_2 = SbTri3f.$(OBJEXT) \
 am_collision_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_collision_lst_SOURCES_DIST = \
 	../../include/Inventor/collision/SoIntersectionDetectionAction.h \
-	SbTri3f.h all-cpp.cpp SbTri3f.cpp \
+	SbTri3f.h all-collision-cpp.cpp SbTri3f.cpp \
 	SoIntersectionDetectionAction.cpp
 collision_lst_OBJECTS = $(am_collision_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -331,25 +331,25 @@ LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libcollision_la_LDFLAGS =
 libcollision_la_LIBADD =
 am__libcollision_la_SOURCES_DIST = SbTri3f.cpp \
-	SoIntersectionDetectionAction.cpp all-cpp.cpp
-am__objects_6 = all-cpp.lo
+	SoIntersectionDetectionAction.cpp all-collision-cpp.cpp
+am__objects_6 = all-collision-cpp.lo
 am__objects_7 = SbTri3f.lo SoIntersectionDetectionAction.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libcollision_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libcollision_la_SOURCES_DIST = \
 	../../include/Inventor/collision/SoIntersectionDetectionAction.h \
-	SbTri3f.h all-cpp.cpp SbTri3f.cpp \
+	SbTri3f.h all-collision-cpp.cpp SbTri3f.cpp \
 	SoIntersectionDetectionAction.cpp
 libcollision_la_OBJECTS = $(am_libcollision_la_OBJECTS)
 libcollision@SUFFIX@LINKHACK_la_LDFLAGS =
 libcollision@SUFFIX@LINKHACK_la_LIBADD =
 am__libcollision@SUFFIX@LINKHACK_la_SOURCES_DIST = SbTri3f.cpp \
-	SoIntersectionDetectionAction.cpp all-cpp.cpp
+	SoIntersectionDetectionAction.cpp all-collision-cpp.cpp
 am_libcollision@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libcollision@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/collision/SoIntersectionDetectionAction.h \
-	SbTri3f.h all-cpp.cpp SbTri3f.cpp \
+	SbTri3f.h all-collision-cpp.cpp SbTri3f.cpp \
 	SoIntersectionDetectionAction.cpp
 libcollision@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libcollision@SUFFIX@LINKHACK_la_OBJECTS)
@@ -358,7 +358,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SbTri3f.Plo ./$(DEPDIR)/SbTri3f.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoIntersectionDetectionAction.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoIntersectionDetectionAction.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all-cpp.Plo ./$(DEPDIR)/all-cpp.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-collision-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-collision-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -449,8 +450,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbTri3f.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoIntersectionDetectionAction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoIntersectionDetectionAction.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-collision-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-collision-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

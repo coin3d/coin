@@ -41,8 +41,8 @@ RegularSources = \
 	evaluator.c \
 	evaluator_tab.c
 LinkHackSources = \
-	all-cpp.cpp \
-	all-c.c
+	all-engines-cpp.cpp \
+	all-engines-c.c
 PublicHeaders = \
 	../../include/Inventor/engines/SoSubEngine.h \
 	../../include/Inventor/engines/SoSubNodeEngine.h \

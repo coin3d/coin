@@ -15,7 +15,7 @@ RegularSources = \
 	SoTimerQueueSensor.cpp \
 	SoTimerSensor.cpp
 LinkHackSources = \
-	all.cpp
+	all-sensors-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/sensors/SoSensors.h \
 	../../include/Inventor/sensors/SoAlarmSensor.h \

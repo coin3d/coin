@@ -10,7 +10,7 @@ RegularSources = \
 	SoNormalCache.cpp \
 	SoTextureCoordinateCache.cpp
 LinkHackSources = \
-	all.cpp
+	all-caches-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/caches/SoBoundingBoxCache.h \
 	../../include/Inventor/caches/SoCache.h \

@@ -252,7 +252,7 @@ RegularSources = \
 	SoTextDetail.cpp
 
 LinkHackSources = \
-	all.cpp
+	all-details-cpp.cpp
 
 PublicHeaders = \
 	../../include/Inventor/details/SoSubDetail.h \
@@ -331,8 +331,8 @@ details_lst_LIBADD =
 am__details_lst_SOURCES_DIST = SoDetail.cpp SoConeDetail.cpp \
 	SoCubeDetail.cpp SoCylinderDetail.cpp SoFaceDetail.cpp \
 	SoLineDetail.cpp SoNodeKitDetail.cpp SoPointDetail.cpp \
-	SoTextDetail.cpp all.cpp
-am__objects_1 = all.$(OBJEXT)
+	SoTextDetail.cpp all-details-cpp.cpp
+am__objects_1 = all-details-cpp.$(OBJEXT)
 am__objects_2 = SoDetail.$(OBJEXT) SoConeDetail.$(OBJEXT) \
 	SoCubeDetail.$(OBJEXT) SoCylinderDetail.$(OBJEXT) \
 	SoFaceDetail.$(OBJEXT) SoLineDetail.$(OBJEXT) \
@@ -352,10 +352,11 @@ am__EXTRA_details_lst_SOURCES_DIST = \
 	../../include/Inventor/details/SoLineDetail.h \
 	../../include/Inventor/details/SoNodeKitDetail.h \
 	../../include/Inventor/details/SoPointDetail.h \
-	../../include/Inventor/details/SoTextDetail.h all.cpp \
-	SoDetail.cpp SoConeDetail.cpp SoCubeDetail.cpp \
-	SoCylinderDetail.cpp SoFaceDetail.cpp SoLineDetail.cpp \
-	SoNodeKitDetail.cpp SoPointDetail.cpp SoTextDetail.cpp
+	../../include/Inventor/details/SoTextDetail.h \
+	all-details-cpp.cpp SoDetail.cpp SoConeDetail.cpp \
+	SoCubeDetail.cpp SoCylinderDetail.cpp SoFaceDetail.cpp \
+	SoLineDetail.cpp SoNodeKitDetail.cpp SoPointDetail.cpp \
+	SoTextDetail.cpp
 details_lst_OBJECTS = $(am_details_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -364,8 +365,8 @@ libdetails_la_LIBADD =
 am__libdetails_la_SOURCES_DIST = SoDetail.cpp SoConeDetail.cpp \
 	SoCubeDetail.cpp SoCylinderDetail.cpp SoFaceDetail.cpp \
 	SoLineDetail.cpp SoNodeKitDetail.cpp SoPointDetail.cpp \
-	SoTextDetail.cpp all.cpp
-am__objects_6 = all.lo
+	SoTextDetail.cpp all-details-cpp.cpp
+am__objects_6 = all-details-cpp.lo
 am__objects_7 = SoDetail.lo SoConeDetail.lo SoCubeDetail.lo \
 	SoCylinderDetail.lo SoFaceDetail.lo SoLineDetail.lo \
 	SoNodeKitDetail.lo SoPointDetail.lo SoTextDetail.lo
@@ -383,17 +384,18 @@ am__EXTRA_libdetails_la_SOURCES_DIST = \
 	../../include/Inventor/details/SoLineDetail.h \
 	../../include/Inventor/details/SoNodeKitDetail.h \
 	../../include/Inventor/details/SoPointDetail.h \
-	../../include/Inventor/details/SoTextDetail.h all.cpp \
-	SoDetail.cpp SoConeDetail.cpp SoCubeDetail.cpp \
-	SoCylinderDetail.cpp SoFaceDetail.cpp SoLineDetail.cpp \
-	SoNodeKitDetail.cpp SoPointDetail.cpp SoTextDetail.cpp
+	../../include/Inventor/details/SoTextDetail.h \
+	all-details-cpp.cpp SoDetail.cpp SoConeDetail.cpp \
+	SoCubeDetail.cpp SoCylinderDetail.cpp SoFaceDetail.cpp \
+	SoLineDetail.cpp SoNodeKitDetail.cpp SoPointDetail.cpp \
+	SoTextDetail.cpp
 libdetails_la_OBJECTS = $(am_libdetails_la_OBJECTS)
 libdetails@SUFFIX@LINKHACK_la_LDFLAGS =
 libdetails@SUFFIX@LINKHACK_la_LIBADD =
 am__libdetails@SUFFIX@LINKHACK_la_SOURCES_DIST = SoDetail.cpp \
 	SoConeDetail.cpp SoCubeDetail.cpp SoCylinderDetail.cpp \
 	SoFaceDetail.cpp SoLineDetail.cpp SoNodeKitDetail.cpp \
-	SoPointDetail.cpp SoTextDetail.cpp all.cpp
+	SoPointDetail.cpp SoTextDetail.cpp all-details-cpp.cpp
 am_libdetails@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libdetails@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/details/SoSubDetail.h \
@@ -406,10 +408,11 @@ am__EXTRA_libdetails@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/details/SoLineDetail.h \
 	../../include/Inventor/details/SoNodeKitDetail.h \
 	../../include/Inventor/details/SoPointDetail.h \
-	../../include/Inventor/details/SoTextDetail.h all.cpp \
-	SoDetail.cpp SoConeDetail.cpp SoCubeDetail.cpp \
-	SoCylinderDetail.cpp SoFaceDetail.cpp SoLineDetail.cpp \
-	SoNodeKitDetail.cpp SoPointDetail.cpp SoTextDetail.cpp
+	../../include/Inventor/details/SoTextDetail.h \
+	all-details-cpp.cpp SoDetail.cpp SoConeDetail.cpp \
+	SoCubeDetail.cpp SoCylinderDetail.cpp SoFaceDetail.cpp \
+	SoLineDetail.cpp SoNodeKitDetail.cpp SoPointDetail.cpp \
+	SoTextDetail.cpp
 libdetails@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libdetails@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -430,8 +433,9 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoPointDetail.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPointDetail.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextDetail.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTextDetail.Po ./$(DEPDIR)/all.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all.Po
+@AMDEP_TRUE@	./$(DEPDIR)/SoTextDetail.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-details-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-details-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -536,8 +540,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPointDetail.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextDetail.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextDetail.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-details-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-details-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

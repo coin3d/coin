@@ -282,7 +282,7 @@ RegularSources = \
 	SoAudioRenderAction.cpp
 
 LinkHackSources = \
-	all.cpp
+	all-actions-cpp.cpp
 
 
 
@@ -351,8 +351,8 @@ am__actions_lst_SOURCES_DIST = SoAction.cpp \
 	SoHandleEventAction.cpp SoLineHighlightRenderAction.cpp \
 	SoPickAction.cpp SoRayPickAction.cpp SoSearchAction.cpp \
 	SoToVRMLAction.cpp SoToVRML2Action.cpp SoWriteAction.cpp \
-	SoAudioRenderAction.cpp all.cpp
-am__objects_1 = all.$(OBJEXT)
+	SoAudioRenderAction.cpp all-actions-cpp.cpp
+am__objects_1 = all-actions-cpp.$(OBJEXT)
 am__objects_2 = SoAction.$(OBJEXT) SoBoxHighlightRenderAction.$(OBJEXT) \
 	SoCallbackAction.$(OBJEXT) SoGLRenderAction.$(OBJEXT) \
 	SoGetBoundingBoxAction.$(OBJEXT) SoGetMatrixAction.$(OBJEXT) \
@@ -384,8 +384,8 @@ am__EXTRA_actions_lst_SOURCES_DIST = \
 	../../include/Inventor/actions/SoToVRML2Action.h \
 	../../include/Inventor/actions/SoWriteAction.h \
 	../../include/Inventor/actions/SoAudioRenderAction.h \
-	../../include/Inventor/actions/SoSubActionP.h all.cpp \
-	SoAction.cpp SoBoxHighlightRenderAction.cpp \
+	../../include/Inventor/actions/SoSubActionP.h \
+	all-actions-cpp.cpp SoAction.cpp SoBoxHighlightRenderAction.cpp \
 	SoCallbackAction.cpp SoGLRenderAction.cpp \
 	SoGetBoundingBoxAction.cpp SoGetMatrixAction.cpp \
 	SoGetPrimitiveCountAction.cpp SoHandleEventAction.cpp \
@@ -404,8 +404,8 @@ am__libactions_la_SOURCES_DIST = SoAction.cpp \
 	SoHandleEventAction.cpp SoLineHighlightRenderAction.cpp \
 	SoPickAction.cpp SoRayPickAction.cpp SoSearchAction.cpp \
 	SoToVRMLAction.cpp SoToVRML2Action.cpp SoWriteAction.cpp \
-	SoAudioRenderAction.cpp all.cpp
-am__objects_6 = all.lo
+	SoAudioRenderAction.cpp all-actions-cpp.cpp
+am__objects_6 = all-actions-cpp.lo
 am__objects_7 = SoAction.lo SoBoxHighlightRenderAction.lo \
 	SoCallbackAction.lo SoGLRenderAction.lo \
 	SoGetBoundingBoxAction.lo SoGetMatrixAction.lo \
@@ -435,8 +435,8 @@ am__EXTRA_libactions_la_SOURCES_DIST = \
 	../../include/Inventor/actions/SoToVRML2Action.h \
 	../../include/Inventor/actions/SoWriteAction.h \
 	../../include/Inventor/actions/SoAudioRenderAction.h \
-	../../include/Inventor/actions/SoSubActionP.h all.cpp \
-	SoAction.cpp SoBoxHighlightRenderAction.cpp \
+	../../include/Inventor/actions/SoSubActionP.h \
+	all-actions-cpp.cpp SoAction.cpp SoBoxHighlightRenderAction.cpp \
 	SoCallbackAction.cpp SoGLRenderAction.cpp \
 	SoGetBoundingBoxAction.cpp SoGetMatrixAction.cpp \
 	SoGetPrimitiveCountAction.cpp SoHandleEventAction.cpp \
@@ -453,7 +453,7 @@ am__libactions@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAction.cpp \
 	SoHandleEventAction.cpp SoLineHighlightRenderAction.cpp \
 	SoPickAction.cpp SoRayPickAction.cpp SoSearchAction.cpp \
 	SoToVRMLAction.cpp SoToVRML2Action.cpp SoWriteAction.cpp \
-	SoAudioRenderAction.cpp all.cpp
+	SoAudioRenderAction.cpp all-actions-cpp.cpp
 am_libactions@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/actions/SoSubAction.h \
@@ -474,8 +474,8 @@ am__EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/actions/SoToVRML2Action.h \
 	../../include/Inventor/actions/SoWriteAction.h \
 	../../include/Inventor/actions/SoAudioRenderAction.h \
-	../../include/Inventor/actions/SoSubActionP.h all.cpp \
-	SoAction.cpp SoBoxHighlightRenderAction.cpp \
+	../../include/Inventor/actions/SoSubActionP.h \
+	all-actions-cpp.cpp SoAction.cpp SoBoxHighlightRenderAction.cpp \
 	SoCallbackAction.cpp SoGLRenderAction.cpp \
 	SoGetBoundingBoxAction.cpp SoGetMatrixAction.cpp \
 	SoGetPrimitiveCountAction.cpp SoHandleEventAction.cpp \
@@ -516,8 +516,9 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoToVRMLAction.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoToVRMLAction.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoWriteAction.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoWriteAction.Po ./$(DEPDIR)/all.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all.Po
+@AMDEP_TRUE@	./$(DEPDIR)/SoWriteAction.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/all-actions-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/all-actions-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -636,8 +637,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoToVRMLAction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoWriteAction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoWriteAction.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-actions-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-actions-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

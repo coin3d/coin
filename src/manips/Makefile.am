@@ -16,7 +16,7 @@ RegularSources = \
 	SoTransformerManip.cpp \
 	commoncode.cpp
 LinkHackSources = \
-	all.cpp
+	all-manips-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/manips/SoClipPlaneManip.h \
 	../../include/Inventor/manips/SoDirectionalLightManip.h \

@@ -46,8 +46,8 @@ RegularSources = \
 	AudioTools.cpp \
 	gzmemio.c
 LinkHackSources = \
-	all-cpp.cpp \
-	all-c.c
+	all-misc-cpp.cpp \
+	all-misc-c.c
 PublicHeaders = \
 	../../include/Inventor/misc/SoAuditorList.h \
 	../../include/Inventor/misc/SoBase.h \
