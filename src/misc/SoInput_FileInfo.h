@@ -28,6 +28,7 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/SbName.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include "SoInput_Reader.h"
 
 class SoInput_FileInfo {
@@ -51,7 +52,9 @@ public:
   // header parse actually succeeded.
   SbBool readHeader(SoInput * input);
   SbBool isMemBuffer(void) {
-    return this->reader->getType() == SoInput_Reader::MEMBUFFER;
+    // if reader == NULL, it means that we're reading from stdin
+    if (this->reader == NULL) return FALSE;
+    return this->getReader()->getType() == SoInput_Reader::MEMBUFFER;
   }
   SbBool isBinary(void) {
     return this->isbinary;
@@ -75,10 +78,14 @@ public:
     return this->linenr;
   }
   FILE * ivFilePointer(void) {
-    return this->reader->getFilePointer();
+    // if reader == NULL, it means that we're reading from stdin
+    if (this->reader == NULL) return coin_get_stdin();
+    return this->getReader()->getFilePointer();
   }
   const SbString & ivFilename(void) {
-    return this->reader->getFilename();
+    // if reader == NULL, it means that we're reading from stdin
+    if (this->reader == NULL) return this->stdinname;
+    return this->getReader()->getFilename();
   }
   SbBool isEndOfFile(void) {
     return this->eof;
@@ -139,6 +146,8 @@ public:
   void unrefProtos(void);
 
 private:
+
+  SoInput_Reader * getReader(void); 
   SoInput_Reader * reader;
 
   unsigned int linenr;
@@ -164,6 +173,8 @@ private:
   SbList <SbName> routelist;
   SbList <SoProto*> protolist;
   SbList <SoProto*> protostack;
+
+  SbString stdinname; // needed for ivFilename()
 };
 
 #endif // COIN_SOINPUT_FILEINFO_H

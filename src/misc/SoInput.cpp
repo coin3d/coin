@@ -358,8 +358,14 @@ SoInput::setFilePointer(FILE * newFP)
   this->closeFile();
 
   const char * name = (newFP == coin_get_stdin()) ? "<stdin>" : "";
+  SoInput_Reader * reader = NULL;
 
-  SoInput_Reader * reader = SoInput_Reader::createReader(newFP, SbString(name));
+  // delay creating the reader if we're reading from
+  // stdin. SoInput_FileInfo will create it when we know that we're
+  // actually going to read from stdin
+  if (newFP != coin_get_stdin()) {
+    reader = SoInput_Reader::createReader(newFP, SbString(name));
+  }
   SoInput_FileInfo * newfile = new SoInput_FileInfo(reader);
   if (newfile) this->filestack.insert(newfile, 0);
 }

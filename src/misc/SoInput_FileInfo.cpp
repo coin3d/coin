@@ -26,6 +26,7 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/misc/SoProto.h>
+#include <Inventor/C/tidbitsp.h>
 #include <string.h>
 
 const unsigned int READBUFSIZE = 65536;
@@ -50,6 +51,7 @@ SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * reader)
   this->vrml2file = FALSE;
   this->prefunc = NULL;
   this->postfunc = NULL;
+  this->stdinname = "<stdin>";
 }
 
 SoInput_FileInfo::~SoInput_FileInfo()
@@ -64,9 +66,8 @@ SoInput_FileInfo::doBufferRead(void)
   // Make sure that we really do need to read more bytes.
   assert(this->backbuffer.getLength() == 0);
   assert(this->readbufidx == this->readbuflen);
-  assert(this->reader);
 
-  int len = this->reader->readBuffer(this->readbuf, READBUFSIZE);
+  int len = this->getReader()->readBuffer(this->readbuf, READBUFSIZE);
   if (len <= 0) {
     this->readbufidx = 0;
     this->readbuflen = 0;
@@ -320,4 +321,15 @@ SoInput_FileInfo::unrefProtos(void)
     this->protolist[i]->unref();
   }
   this->protolist.truncate(0);
+}
+
+// wrapper around this->reader. We delay creating the reader if we're
+// reading from stdin (reader == NULL).
+SoInput_Reader * 
+SoInput_FileInfo::getReader(void)
+{
+  if (this->reader == NULL) {
+    this->reader = SoInput_Reader::createReader(coin_get_stdin(), SbString("<stdin>"));
+  }
+  return this->reader;
 }
