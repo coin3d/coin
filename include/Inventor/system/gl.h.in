@@ -431,6 +431,24 @@
 #define GLU_SILHOUETTE 10001
 #endif /* ! GLU_SILHOUETTE */
 
+/* Tesselator */
+#ifndef GLU_TESS_BEGIN
+#define GLU_TESS_BEGIN 100100
+#endif
+#ifndef GLU_TESS_VERTEX
+#define GLU_TESS_VERTEX 100101
+#endif
+#ifndef GLU_TESS_END 
+#define GLU_TESS_END 100102
+#endif
+#ifndef GLU_TESS_ERROR
+#define GLU_TESS_ERROR 100103
+#endif
+#ifndef GLU_TESS_COMBINE
+#define GLU_TESS_COMBINE 100105
+#endif
+
+
 /*** GLU enums, end ***************************************************/
 /**********************************************************************/
 
