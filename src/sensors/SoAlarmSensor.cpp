@@ -55,7 +55,8 @@ SoAlarmSensor::~SoAlarmSensor(void)
 }
 
 /*!
-  Set the time at which the sensor will trigger.
+  Set the time at which the sensor will trigger. You must also
+  schedule() the sensor manually after calling this method.
 
   \sa setTimeFromNow(), getTime()
  */
@@ -66,7 +67,8 @@ SoAlarmSensor::setTime(const SbTime & absTime)
 }
 
 /*!
-  Set the alarm to be at a specified offset from the current time.
+  Set the alarm to be at a specified offset from the current time. You
+  must also schedule() the sensor manually after calling this method.
 
   \sa setTime(), getTime()
  */
