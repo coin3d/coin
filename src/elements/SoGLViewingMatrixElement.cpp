@@ -59,8 +59,8 @@ SoGLViewingMatrixElement::initClass(void)
 SoGLViewingMatrixElement::SoGLViewingMatrixElement(void)
   : state(NULL)
 {
-    setTypeId(SoGLViewingMatrixElement::classTypeId);
-    setStackIndex(SoGLViewingMatrixElement::classStackIndex);
+  this->setTypeId(SoGLViewingMatrixElement::classTypeId);
+  this->setStackIndex(SoGLViewingMatrixElement::classStackIndex);
 }
 
 /*!
@@ -76,13 +76,9 @@ SoGLViewingMatrixElement::~SoGLViewingMatrixElement(void)
 void
 SoGLViewingMatrixElement::init(SoState * state)
 {
-#if 0 // too much debug output.. 981021 mortene.
-  SoDebugError::postInfo("SoGLViewingMatrixElement::init",
-                         "");
-#endif // 0
   inherited::init(state);
   this->state = state;
-  glLoadIdentity(); // maybe not strictly necessary?
+  //  glLoadIdentity(); // maybe not strictly necessary?
 }
 
 //! FIXME: write doc.
@@ -90,14 +86,10 @@ SoGLViewingMatrixElement::init(SoState * state)
 void
 SoGLViewingMatrixElement::push(SoState * state)
 {
-#if 0 // too much debug output.. 981021 mortene.
-  SoDebugError::postInfo("SoGLViewingMatrixElement::push()", "");
-#endif // 0
   inherited::push(state);
   SoGLViewingMatrixElement *elem = (SoGLViewingMatrixElement*)
     this->next;
   elem->state = state;
-  //glPushMatrix();
 }
 
 //! FIXME: write doc.
@@ -106,10 +98,6 @@ void
 SoGLViewingMatrixElement::pop(SoState * state,
                               const SoElement * prevTopElement)
 {
-#if 0 // too much debug output.. 981021 mortene.
-  SoDebugError::postInfo("SoGLViewingMatrixElement::pop()", "");
-#endif // 0
-  //glPopMatrix();
   inherited::pop(state, prevTopElement);
 }
 
@@ -118,9 +106,9 @@ SoGLViewingMatrixElement::pop(SoState * state,
 uint32_t
 SoGLViewingMatrixElement::getNodeId(SoState * const state)
 {
-  SoGLViewingMatrixElement *elem = (SoGLViewingMatrixElement*)
+  const SoReplacedElement *elem = (const SoReplacedElement*)
     SoElement::getConstElement(state, classStackIndex);
-  return elem->getNodeId(state);
+  return elem->getNodeId();
 }
 
 //! FIXME: write doc.
@@ -133,13 +121,8 @@ SoGLViewingMatrixElement::setElt(const SbMatrix & matrix)
   SbBool isIdentity = FALSE;
   const SbMatrix &mat = SoModelMatrixElement::get(this->state, isIdentity);
   if (!isIdentity) {
-#if COIN_DEBUG // debug
-    SoDebugError::postInfo("SoGLViewingMatrixElement::setElt",
-                           "mult model");
-#endif // debug
     this->viewingMatrix.multRight(mat);
   }
-
   this->updategl();
 }
 
@@ -148,8 +131,5 @@ SoGLViewingMatrixElement::setElt(const SbMatrix & matrix)
 void
 SoGLViewingMatrixElement::updategl()
 {
-#if 0 // debug
-  SoDebugError::postInfo("SoGLViewingMatrixElement::updategl", "");
-#endif // debug
   glLoadMatrixf((float*)this->viewingMatrix);
 }
