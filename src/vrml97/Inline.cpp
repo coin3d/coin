@@ -118,8 +118,7 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/elements/SoGLDiffuseColorElement.h>
-#include <Inventor/elements/SoGLLightModelElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include "../tidbits.h" // coin_atexit()
 #include <stdlib.h>
@@ -402,12 +401,11 @@ SoVRMLInline::GLRender(SoGLRenderAction * action)
       ((vis == ALWAYS) || 
        (vis == UNTIL_LOADED && child == NULL))) {
     SoState * state = action->getState();
-    SoGLLightModelElement::forceSend(state, SoLightModelElement::BASE_COLOR);
+    
+    uint32_t packedcolor = sovrmlinline_bboxcolor->getPackedValue();
+    SoGLLazyElement::sendLightModel(state, SoLazyElement::BASE_COLOR);
+    SoGLLazyElement::sendPackedDiffuse(state, packedcolor);
     SoGLTextureEnabledElement::forceSend(state, FALSE);
-
-    SoGLDiffuseColorElement * diffuse = (SoGLDiffuseColorElement*)
-      SoDiffuseColorElement::getInstance(state);
-    diffuse->sendOnePacked(sovrmlinline_bboxcolor->getPackedValue());
     
     SbVec3f center = this->bboxCenter.getValue();
     SbVec3f minv = center - size*0.5f;
