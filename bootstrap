@@ -6,13 +6,20 @@
 
 # Author: Morten Eriksen, <mortene@sim.no>.
 
-# Makes it possible to run bootstrapping from any location.
-directory=`echo "$0" | sed 's/[^\/]*$//g'`;
-me=`echo "$0" | sed 's/^.*\///g'`;
-cd $directory
+
+wd=`echo "$0" | sed 's,[^\/]*$,,g'`;
+me=`echo "$0" | sed 's,^.*/,,g'`;
+
+cd $wd
 if test ! -f ./"$me"; then
-  echo "unexpected problem with your shell - bailing out"
+  echo >&2 "$me: error: unexpected problem with your shell - bailing out"
   exit 1
+fi
+
+if test x"$@" = x"" -a ! -f cfg/mkinstalldirs; then
+  echo "$me: assuming '--add' was meant."
+  set : --add
+  shift
 fi
 
 AUTOCONF_VER=2.49c  # Autoconf from CVS
@@ -26,18 +33,22 @@ AUTOMAKE_ADD=
 libtoolize=false
 if test "$1" = "--clean"; then
   rm -f aclocal.m4 \
-        config.guess \
         config.h.in \
-        config.sub \
-        configure \
-        depcomp \
-        install-sh \
-        ltconfig \
-        ltmain.sh \
-        missing \
-        mkinstalldirs \
         stamp-h*
-  find . -name Makefile.in -print | xargs rm -f
+  ( cd cfg;
+    rm -f aclocal.m4 \
+          config.guess \
+          config.sub \
+          configure \
+          depcomp \
+          install-sh \
+          ltconfig \
+          ltmain.sh \
+          missing \
+          mkinstalldirs \
+          ltcf-*.sh
+  )
+  find . -name Makefile.in -print | grep -v "^./data/" | xargs rm -f
   exit
 elif test "$1" = "--add"; then
   AUTOMAKE_ADD="--add-missing --gnu --copy"
