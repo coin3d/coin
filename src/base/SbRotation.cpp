@@ -543,7 +543,9 @@ operator*(const SbRotation & q1, const SbRotation & q2)
 
 /*!
   Rotate the \a src vector and put the result in \a dst.
- */
+
+  It is safe to let src and dst be the same SbVec3f instance. 
+*/
 void
 SbRotation::multVec(const SbVec3f & src, SbVec3f & dst) const
 {
