@@ -1506,3 +1506,17 @@
     20021218 mortene.
 
 =====================================================================
+
+049 3ds file import seems to generate faulty SoTriangleStripSet nodes.
+
+    This happens for most of the models I've tried:
+
+        Coin error in SoSeparator::GLRenderBelowPath(): GL error:
+        GL_INVALID_VALUE, nodetype: TriangleStripSet
+
+    And the models are not being influenced by the light source(s) in
+    the scene.
+
+    20021219 mortene.
+
+=====================================================================
