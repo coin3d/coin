@@ -21,8 +21,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_OPENGL_DYNAMIC_BINDING
-#define GL_GLEXT_PROTOTYPES
+//FIXME: temporary fix awaiting configure-check for this feature (kintel 20011125)
+#ifndef __APPLE__
+#define COIN_OPENGL_DYNAMIC_BINDING
 #endif
 
 #include "GLWrapper.h"
