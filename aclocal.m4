@@ -1311,9 +1311,9 @@ do
     if test "$sim_ac_bytesize" = "$2"; then
       sim_ac_searching=false
       if test "$sim_ac_type" = "$1"; then
-        AC_DEFINE_UNQUOTED(AC_TR_CPP(have_$1), 1, [hola])
+        AC_DEFINE_UNQUOTED(AC_TR_CPP(have_$1), 1, [define this if the type is available on the system])
       fi
-      AC_DEFINE_UNQUOTED(AC_TR_CPP(coin_$1), $sim_ac_type, [hepp])
+      AC_DEFINE_UNQUOTED(AC_TR_CPP(coin_$1), $sim_ac_type, [define this to a type of the indicated bitwidth])
     fi
   fi
 done

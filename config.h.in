@@ -9,16 +9,16 @@
 /* Build target system. */
 #undef COIN_CONFIGURE_TARGET
 
-/* hepp */
+/* define this to a type of the indicated bitwidth */
 #undef COIN_INT16_T
 
-/* hepp */
+/* define this to a type of the indicated bitwidth */
 #undef COIN_INT32_T
 
-/* hepp */
+/* define this to a type of the indicated bitwidth */
 #undef COIN_INT64_T
 
-/* hepp */
+/* define this to a type of the indicated bitwidth */
 #undef COIN_INT8_T
 
 /* define this to the libCoin major version number */
@@ -30,16 +30,16 @@
 /* define this to the libCoin minor version number */
 #undef COIN_MINOR_VERSION
 
-/* hepp */
+/* define this to a type of the indicated bitwidth */
 #undef COIN_UINT16_T
 
-/* hepp */
+/* define this to a type of the indicated bitwidth */
 #undef COIN_UINT32_T
 
-/* hepp */
+/* define this to a type of the indicated bitwidth */
 #undef COIN_UINT64_T
 
-/* hepp */
+/* define this to a type of the indicated bitwidth */
 #undef COIN_UINT8_T
 
 /* define this to the full libCoin major.minor.micro version number */
@@ -66,16 +66,16 @@
 /* define if preprocessor can quote arguments with the hash symbol */
 #undef HAVE_HASH_QUOTING
 
-/* hola */
+/* define this if the type is available on the system */
 #undef HAVE_INT16_T
 
-/* hola */
+/* define this if the type is available on the system */
 #undef HAVE_INT32_T
 
-/* hola */
+/* define this if the type is available on the system */
 #undef HAVE_INT64_T
 
-/* hola */
+/* define this if the type is available on the system */
 #undef HAVE_INT8_T
 
 /* Define if you have the <io.h> header file. */
@@ -102,16 +102,16 @@
 /* Define if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
 
-/* hola */
+/* define this if the type is available on the system */
 #undef HAVE_UINT16_T
 
-/* hola */
+/* define this if the type is available on the system */
 #undef HAVE_UINT32_T
 
-/* hola */
+/* define this if the type is available on the system */
 #undef HAVE_UINT64_T
 
-/* hola */
+/* define this if the type is available on the system */
 #undef HAVE_UINT8_T
 
 /* Define if you have the <unistd.h> header file. */
