@@ -396,7 +396,7 @@ so_eval_traverse(so_eval_node *node, so_eval_param *result, const so_eval_cbdata
     else if (param1.value > 0.0f) {
       result->value = (float) pow(param1.value, param2.value);
     }
-    else { // param1.value < 0.0, param2.value must be an integral value
+    else { /* param1.value < 0.0, param2.value must be an integral value */
       result->value = (float) pow(param1.value, floor(param2.value + 0.5));
     }
     break;
