@@ -224,7 +224,6 @@ SoLinearProfile::getVertices(SoState * state, int32_t & numvertices,
     // Append the coordinates to a list over the profile coordinates.
     // When 3D profile coordinates have been specified, only the
     // 2D-part of the coordinates will be used.
-    int n = this->index.getNum();
     for (int i = 0; i < n; i++) {
       int idx = this->index[i];
 

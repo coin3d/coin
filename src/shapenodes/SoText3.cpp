@@ -557,6 +557,9 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
 
   const SoNodeList & profilenodes = SoProfileElement::get(state);
   int numprofiles = profilenodes.getLength();
+  // Indicates if a valid profile has been specified. If it has not,
+  // text will be rendered extruded.
+  SbBool validprofile = FALSE;
 
   if (numprofiles > 0) {
     assert(profilenodes[0]->getTypeId().isDerivedFrom(SoProfile::getClassTypeId()));
@@ -570,16 +573,21 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
         if (profcoords[profnum-1][0] > farz) farz = profcoords[profnum-1][0];
         if (profcoords[0][0] < nearz) nearz = profcoords[0][0];
         if (pn->linkage.getValue() == SoProfile::START_FIRST) {
-          if (firstprofile == -1) firstprofile = l;
+          if (firstprofile == -1) {
+            firstprofile = l;
+            validprofile = TRUE;
+          }
           break;
         }
       }
-
     }
     nearz = -nearz;
     farz = -farz;
   }
-  else {
+  
+  // If no profiles have been specified, or if no valid coordinates have
+  // been given, set near and far / front and back values to default.
+  if (!validprofile) {
     nearz = 0.0;
     farz = -1.0;
   }
@@ -662,8 +670,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
       }
       else { // SIDES
 
-        if (profilenodes.getLength() == 0) {  // no profile - extrude
-
+        if (!validprofile) {  // no profile - extrude
           const int * ptr = cc_glyph3d_getedgeindices(glyph);
           SbVec2f v0, v1;
           int counter = 0;
@@ -755,6 +762,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
 
         }
         else {  // profile
+          assert(validprofile && firstprofile >= 0);
           
           const int * indices = cc_glyph3d_getedgeindices(glyph);
           int ind = 0;

@@ -46,6 +46,7 @@
 #include <Inventor/elements/SoProfileCoordinateElement.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/threads/SbStorage.h>
 
@@ -155,8 +156,17 @@ SoNurbsProfile::getTrimCurve(SoState * state, int32_t & numpoints,
   const SoProfileCoordinateElement * elem = (const SoProfileCoordinateElement*)
     SoProfileCoordinateElement::getInstance(state);
 
-  numpoints = elem->getNum();
-  if (numpoints) {
+  coordListNurbsProfile->truncate(0);
+
+  // Get the number of SoProfileCoordinate2/3 points
+  int32_t numcoords = elem->getNum();
+  // Get the number of profile coordinate indices
+  int n = this->index.getNum();
+
+  if (numcoords) {
+    // Both 2D or 3D profile coordinates might have been specified, so
+    // get the appropriate coordinates and save the number of floats
+    // per vector for later usage.
     if (elem->is2D()) {
       points = (float*) elem->getArrayPtr2();
       floatspervec = 2;
@@ -165,14 +175,38 @@ SoNurbsProfile::getTrimCurve(SoState * state, int32_t & numpoints,
       points = (float*) elem->getArrayPtr3();
       floatspervec = 3;
     }
+
+    assert(points);
   }
-  coordListNurbsProfile->truncate(0);
-  int n = this->index.getNum();
+  
+  // Append the coordinates to a list over the profile coordinates.
   for (int i = 0; i < n; i++) {
-    for (int j = 0; j < floatspervec; j++) {
-      coordListNurbsProfile->append(points[this->index[i]*floatspervec+j]);
+    int idx = this->index[i];
+
+    // If valid profile coordinates have been specified
+    if (idx >= 0 && idx < numcoords) {
+      for (int j = 0; j < floatspervec; j++) {
+        coordListNurbsProfile->append(points[(idx * floatspervec) + j]);
+      }
+    }
+    // If invalid profile coordinates have been specified
+    else {
+      // Add dummy coordinate for robustness
+      for (int j = 0; j < floatspervec; j++) {
+        coordListNurbsProfile->append(0.0f);
+      }
+      
+      // Print errormessage
+      static uint32_t current_errors = 0;
+      if (current_errors < 1) {
+        SoDebugError::postWarning("SoNurbsProfile::getVertices", "Illegal profile "
+                                  "coordinate index specified: %d. Should be within "
+                                  "[0, %d]", idx, numcoords - 1);
+      }
+      current_errors++;
     }
   }
+
   points = (float*) coordListNurbsProfile->getArrayPtr();
   numpoints = n;
 }
