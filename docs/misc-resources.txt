@@ -227,10 +227,11 @@ THE LINKS
   - http://www.sdsc.edu/~nadeau, homepage of David Nadeau, with misc
     research papers
 
-
   - The Seismic Unix project <URL:http://www.cwp.mines.edu/cwpcodes>
     Tools for loading and processing seismic data, including support
     for SEGY import.
+
+  - OpenDX (at www.opendx.org) has volume rendering capabilities.
 
 * OpenGL and ActiveX:
 
