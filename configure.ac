@@ -1358,6 +1358,12 @@ SIM_AC_CHECK_OPENGL(
     ])
   ])
 
+  SIM_AC_HAVE_AGL_PBUFFER([
+    AC_DEFINE_UNQUOTED([HAVE_AGL_PBUFFER],1,
+                       [define if AGL pBuffers are available on the system])
+  ])
+
+
   if $enable_superglu; then
     SIM_AC_CONFIGURATION_SETTING([GLU linkage], [superglu])
   else
