@@ -827,6 +827,7 @@ fi
 am_aux_dir=`cd $ac_aux_dir && pwd`
 ])
 
+
 # AM_PROG_INSTALL_SH
 # ------------------
 # Define $install_sh.

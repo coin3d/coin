@@ -8175,18 +8175,18 @@ if test "${enable_threadsafe+set}" = set; then
 fi;
 fi
 
-COIN_THREADSAFE=0
+sim_ac_coin_threadsafe=false
 if $sim_ac_enable_threadsafe; then
-  COIN_THREADSAFE = 1
+  sim_ac_coin_threadsafe=true
 
 cat >>confdefs.h <<\EOF
-#define COIN_THREADSAFE
+#define COIN_THREADSAFE 1
 EOF
 
   if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="Thread safe:Yes"
+  sim_ac_configuration_settings="Thread safe:Yes  (in development)"
 else
-  sim_ac_configuration_settings="$sim_ac_configuration_settings|Thread safe:Yes"
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|Thread safe:Yes  (in development)"
 fi
 
 else

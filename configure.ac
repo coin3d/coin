@@ -343,11 +343,11 @@ if test "$sim_ac_threads_api" != "none"; then
     esac])
 fi
 
-COIN_THREADSAFE=0
+sim_ac_coin_threadsafe=false
 if $sim_ac_enable_threadsafe; then
-  COIN_THREADSAFE=1
-  AC_DEFINE([COIN_THREADSAFE],, [define to compile thread safe library])
-  SIM_AC_CONFIGURATION_SETTING([Thread safe], [Yes])
+  sim_ac_coin_threadsafe=true
+  AC_DEFINE([COIN_THREADSAFE], 1, [define to compile thread safe library])
+  SIM_AC_CONFIGURATION_SETTING([Thread safe], [Yes  (in development)])
 else
   SIM_AC_CONFIGURATION_SETTING([Thread safe], [No  (enable with --enable-threadsafe)])
 fi
