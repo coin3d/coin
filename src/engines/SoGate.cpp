@@ -70,6 +70,10 @@ SoGate::commonConstructor(void)
   this->gateInputData->addField(this, "enable", &this->enable);
   this->gateInputData->addField(this, "trigger", &this->trigger);
   this->gateInputData->addField(this, "type", &this->typeField);
+
+  this->output = new SoEngineOutput;
+  this->output->enable(this->enable.getValue());
+  this->output->setContainer(this);
 }
 
 // called from constructor or readInstance() to init input/output
@@ -79,12 +83,8 @@ SoGate::initInputOutput(const SoType type)
   this->input = (SoMField *) type.createInstance();
   this->input->setNum(0);
   this->input->setContainer(this);
-
-  this->gateInputData->addField(this, "input", this->input);
   
-  this->output = new SoEngineOutput;
-  this->output->enable(this->enable.getValue());
-  this->output->setContainer(this);
+  this->gateInputData->addField(this, "input", this->input);
   this->gateOutputData->addOutput(this, "output", this->output, type); 
 }
 
