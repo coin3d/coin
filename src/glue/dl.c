@@ -557,6 +557,12 @@ cc_dl_open(const char * filename)
     }
   }
 
+  if (cc_dl_debugging() && h) {
+    cc_debugerror_postinfo("cc_dl_open",
+                           "\"%s\" success => cc_libhandle==%p, nativehnd==%p", 
+                           cc_string_get_text(&h->libname), h, h->nativehnd);
+  }
+
   return h;
 }
 
@@ -610,7 +616,7 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
   } 
 
   /* If we did not specifically load the library ourselves
-     (handle->nativehandle being NULL), or if the symbol could not be
+     (handle->nativehnd being NULL), or if the symbol could not be
      found in the library, let's try if we can find it in any of the
      loaded libs. */
 
@@ -662,6 +668,13 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
 void
 cc_dl_close(cc_libhandle handle)
 {
+  if (cc_dl_debugging()) {
+    cc_debugerror_postinfo("cc_dl_close",
+                           "closing '%s', cc_libhandle==%p, nativehnd==%p",
+                           cc_string_get_text(&handle->libname),
+                           handle, handle->nativehnd);
+  }
+
 #ifdef HAVE_DL_LIB
 
   int result = dlclose(handle->nativehnd);
