@@ -19,15 +19,43 @@
 
 /*!
   \class SoType Inventor/SoType.h
-  \brief The SoType class is the identifier class used in the run-time type
-  check system used in Coin.
+  \brief The SoType class is the basis for the run-time type system in Coin.
+  \ingroup general
 
-  All class types derived from SoBase must be registered before any instances
-  are created, and base classes must be registered before any of their derived
-  classes are.
+  Many of the classes in the Coin library must have their type
+  information registered before any instances are created (including,
+  but not limited to: engines, nodes, fields, actions, nodekits and
+  manipulators). The use of SoType to store this information provides
+  lots of various functionality for working with class hierarchies,
+  comparing class types, instantiating objects from classnames, etc
+  etc.
 
-  A notable feature of the SoType class is that it is only 16 bits long and
-  therefore should be passed around by value for efficiency reasons.
+  It is for instance possible to do things like this:
+
+  \code
+  void cleanLens(SoNode * anode)
+  {
+    assert(anode->getTypeId().isDerivedFrom(SoCamera::getClassTypeId()));
+
+    if (anode->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
+      // do something..
+    }
+    else if (anode->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+      // do something..
+    }
+    else {
+      SoDebugError::postWarning("cleanLens", "Unknown camera type!\n");
+    }
+  }
+  \endcode
+
+  A notable feature of the SoType class is that it is only 16 bits
+  long and therefore should be passed around by value for efficiency
+  reasons.
+
+  One important note about the use of SoType to register class
+  information: super classes must be registered before any of their
+  derived classes are.
 */
 
 
