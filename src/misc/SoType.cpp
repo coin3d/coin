@@ -216,6 +216,12 @@ SoType::overrideType(const SoType originalType,
   return originalType;
 }
 
+// FIXME: when doing multi-threaded programming with Coin, one might want to
+// override a type only for the local thread.  A new method in the API seems
+// to be needed (overrideThreadLocalType?).  This change will of course have
+// far-reaching consequences for the whole SoType class implementation.
+// 2002-01-24 larsa
+
 /*!
   This static method returns the SoType object associated with name \a name.
   If no known type matches the given name, SoType::badType() is returned.
