@@ -45,6 +45,11 @@
   This method returns a pointer to the top element of the given element
   stack.  The element is read-only and must not be changed under any
   circumstances or strange side-effect will occur.
+
+  Note that this function will assert if the element with the given
+  stack identity value is not presently on the state stack. To check
+  whether or not an element is present in the stack, use
+  SoState::isElementEnabled().
 */
 
 /*!
