@@ -9,6 +9,7 @@ RegularSources = \
 	SoBlinker.cpp \
 	SoBumpMap.cpp \
 	SoBumpMapCoordinate.cpp \
+	SoBumpMapTransform.cpp \
 	SoBumpMappingProperty.cpp \
 	SoCallback.cpp \
 	SoCamera.cpp \

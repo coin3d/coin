@@ -248,6 +248,7 @@ PublicHeaders = \
 	SoBBoxModelMatrixElement.h \
 	SoBumpMapElement.h \
 	SoBumpMapCoordinateElement.h \
+	SoBumpMapMatrixElement.h \
 	SoCacheElement.h \
 	SoClipPlaneElement.h \
 	SoComplexityElement.h \

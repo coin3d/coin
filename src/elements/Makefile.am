@@ -12,6 +12,7 @@ RegularSources = \
 	SoBBoxModelMatrixElement.cpp \
 	SoBumpMapElement.cpp \
 	SoBumpMapCoordinateElement.cpp \
+	SoBumpMapMatrixElement.cpp \
 	SoBumpMappingPropertyElement.cpp \
 	SoCacheElement.cpp \
 	SoClipPlaneElement.cpp \
