@@ -491,7 +491,9 @@ SoOutput::setFloatPrecision(const int precision)
   has to be done in multiple stages to account for the export of
   references/connections within the scene graphs.
 
-  This method is basically just used from within SoWriteAction.
+  This method is basically just used from within SoWriteAction, and
+  should usually not be of interest to the application programmer. Do
+  not use it unless you \e really know what you are doing.
 
   \sa getStage()
 */

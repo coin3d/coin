@@ -21,6 +21,23 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoVRMLInterpolator SoVRMLInterpolator.h Inventor/VRMLnodes/SoVRMLInterpolator.h
+  \brief The SoVRMLInterpolator class is an internal abstract class.
+  \ingroup VRMLnodes
+
+  \COININTERNAL
+*/
+
+/*!
+  \var SoMFFloat key
+  \COININTERNAL
+*/
+/*!
+  \var SoSFFloat set_fraction
+  \COININTERNAL
+*/
+
 #include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/engines/SoSubNodeEngineP.h>
@@ -45,6 +62,9 @@ SoVRMLInterpolator::~SoVRMLInterpolator() // virtual, protected
 {
 }
 
+/*!
+  \COININTERNAL
+*/
 int 
 SoVRMLInterpolator::getKeyValueIndex(float & interp)
 {

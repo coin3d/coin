@@ -25,6 +25,7 @@
   \class SoListener SoListener.h Inventor/nodes/SoListener.h
   \brief The SoListener class defines listener attributes used when rendering sound.
   \ingroup nodes
+  \ingroup sound
 
   When rendering geometry, one needs to have a camera defining certain
   attributes related to vieweing. The SoListener plays a similar
@@ -38,7 +39,8 @@
   Coin does not currently support doppler effects, so the
   dopplerVelocity and dopplerFactor fields are currently ignored.
 
-  \sa SoVRMLSound */
+  \sa SoVRMLSound
+*/
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

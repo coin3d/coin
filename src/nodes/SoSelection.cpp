@@ -105,10 +105,27 @@
   This node is not initialized in SoDB::init(), since it is part of
   the interaction kit "add-on". Before using this node, you should
   therefore call SoInteraction::init(). If you're using one of the
-  standard GUI-toolkits (SoXt / SoQt / SoGtk / SoWin)
-  SoInteraction::init() will be called for you from the
-  So[Xt|Qt|Gtk|Win]::init() method and you don't have to worry about
-  it.
+  standard GUI-toolkits (SoXt / SoQt / SoWin) SoInteraction::init()
+  will be called for you from the So[Xt|Qt|Win]::init() method and you
+  don't have to worry about it.
+
+  With regard to using multiple SoSelection nodes at the same time in
+  the same scene graph: this is possible, but it is not
+  straightforward. The standard viewers provided by SoQt, SoWin, et
+  al, will only snoop on one SoSelection node (part of the the legacy
+  API from SGI's InventorXt), so selection changes on the others
+  doesn't trigger redraws. You don't necessarily see what's happening
+  in other words.  You'll have to hook up manually and trigger redraws
+  yourself.
+
+  Also be aware that when having multiple SoSelection nodes in the
+  scene graph active at the same time, the SoHandleEventAction
+  traversals that you intend for selection-change on one SoSelection
+  node will also affect all the other SoSelection nodes in the scene
+  -- usually delesecting everything below them since you will be
+  clicking outside the selectable objects.  You'll therefore also have
+  to manually override that behaviour, if you want selection change on
+  one SoSelection node to not affect the others.
 */
 
 

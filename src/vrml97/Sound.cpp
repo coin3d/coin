@@ -25,6 +25,7 @@
   \class SoVRMLSound SoVRMLSound.h Inventor/VRMLnodes/SoVRMLSound.h
   \brief The SoVRMLSound class is used to represent a sound source.
   \ingroup VRMLnodes
+  \ingroup sound
 
   \WEB3DCOPYRIGHT
 
