@@ -23,7 +23,7 @@ AC_CANONICAL_SYSTEM
 SIM_AC_SETUP_MSVC_IFELSE([], [
   case $host in
   *-cygwin)
-    AC_MSG_ERROR([You need Microsoft Visual C++ to build Coin on Cygwin])
+#    AC_MSG_ERROR([You need Microsoft Visual C++ to build Coin on Cygwin])
     ;;
   esac
 ])
@@ -259,11 +259,20 @@ AC_SUBST(COIN_EXTRA_LIBS)
 AC_LANG_CPLUSPLUS
 AC_PROG_CXX
 
-SIM_COMPILER_INLINE_FOR(,
-  [AC_MSG_ERROR([the "$CXX" C++ compiler is not capable of compiling Coin])])
+## Smoke out some known defunct compilers. ###############################
+
+SIM_AC_COMPILER_INLINE_FOR(,
+  [AC_MSG_ERROR([This C++ compiler ("$CXX") is not capable of compiling Coin.])])
+
+SIM_AC_COMPILER_SWITCH_IN_VIRTUAL_DESTRUCTOR(,
+  [AC_MSG_ERROR([This C++ compiler ("$CXX") is not capable of compiling Coin.
+If you are using the Sun CC compiler, try upgrading to a new version or even
+downgrading to an older version.])])
+
+## See which way the compiler knows the name of the current function. ####
 SIM_AC_CHECK_VAR_FUNCTIONNAME
 
-
+## Headers we might want to use. #########################################
 AC_CHECK_HEADERS([unistd.h sys/types.h sys/param.h io.h windows.h winsock2.h])
 
 # According to Coin user Ralf Corsepius, at least SunOS4 needs

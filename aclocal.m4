@@ -242,13 +242,8 @@ AC_DEFINE_UNQUOTED(VERSION, "$VERSION", [Version number of package])])
 
 # Autoconf 2.50 wants to disallow AM_ names.  We explicitly allow
 # the ones we care about.
-ifdef([m4_pattern_allow], [m4_pattern_allow([AM_CFLAGS])])
-ifdef([m4_pattern_allow], [m4_pattern_allow([AM_CPPFLAGS])])
-ifdef([m4_pattern_allow], [m4_pattern_allow([AM_CXXFLAGS])])
-ifdef([m4_pattern_allow], [m4_pattern_allow([AM_OBJCFLAGS])])
-ifdef([m4_pattern_allow], [m4_pattern_allow([AM_FFLAGS])])
-ifdef([m4_pattern_allow], [m4_pattern_allow([AM_RFLAGS])])
-ifdef([m4_pattern_allow], [m4_pattern_allow([AM_GCJFLAGS])])
+ifdef([m4_pattern_allow],
+      [m4_pattern_allow([^AM_(C|CPP|CXX|OBJC|F|R|GCJ)FLAGS])])dnl
 
 # Some tools Automake needs.
 AC_REQUIRE([AM_SANITY_CHECK])dnl
@@ -1136,20 +1131,19 @@ else
 fi])
 
 # Usage:
-#   SIM_COMPILER_INLINE_FOR( [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND ]])
+#   SIM_AC_COMPILER_INLINE_FOR( [ACTION-IF-OK [, ACTION-IF-FAILS ] ] )
 #
 # Description:
-#   See if the compiler supports for(;;){} loops inside inlined
+#   Check if the compiler supports for(;;){} loops inside inlined
 #   constructors.
 #
 #   This smokes out the useless HPUX 10.20 CC compiler.
 #
 
-AC_DEFUN([SIM_COMPILER_INLINE_FOR], [
-AC_PREREQ([2.14])
+AC_DEFUN([SIM_AC_COMPILER_INLINE_FOR], [
 
 AC_CACHE_CHECK(
-  [whether the C++ compiler handles inlined loops],
+  [if the compiler handles for() loops in inlined constructors],
   sim_cv_c_inlinefor,
   [cat > sim_ac_test.h <<EOF
 class TestClass {
@@ -1165,15 +1159,48 @@ EOF
                  [sim_cv_c_inlinefor=no])
 ])
 
-rm -rf sim_ac_test.h
+rm -f sim_ac_test.h
 
 if test x"$sim_cv_c_inlinefor" = x"yes"; then
   ifelse([$1], , :, [$1])
 else
-  ifelse([$2], , :, [$2])
+  AC_MSG_WARN(Could not compile testcase.)
+  $2
 fi
 ])
 
+
+# Usage:
+#   SIM_AC_COMPILER_SWITCH_IN_VIRTUAL_DESTRUCTOR( [ACTION-IF-OK [, ACTION-IF-FAILS ] ] )
+#
+# Description:
+#   Check if the compiler crashes on switch() statements inside virtual
+#   destructors.
+#
+#   This smokes out a particular patch-level version of the CC compiler
+#   for Sun WorkShop 6 (update 1 C++ 5.2 Patch 109508-01 2001/01/31).
+#
+
+AC_DEFUN([SIM_AC_COMPILER_SWITCH_IN_VIRTUAL_DESTRUCTOR], [
+
+AC_CACHE_CHECK(
+  [if the compiler handles switch statements in virtual destructors],
+  sim_cv_c_virtualdestrswitch,
+  [AC_TRY_COMPILE([
+class hepp { virtual ~hepp(); };
+hepp::~hepp() { switch(0) { } }
+],
+[],
+                  [sim_cv_c_virtualdestrswitch=yes],
+                  [sim_cv_c_virtualdestrswitch=no])])
+
+if test x"$sim_cv_c_virtualdestrswitch" = x"yes"; then
+  ifelse([$1], , :, [$1])
+else
+  AC_MSG_WARN(Could not compile testcase.)
+  $2
+fi
+])
 
 # Usage:
 #   SIM_AC_CHECK_VAR_FUNCTIONNAME
@@ -1748,10 +1775,18 @@ if test x"$sim_ac_vsnprintf_avail" = xno; then
   sim_ac__vsnprintf_avail=$sim_cv_func__vsnprintf
 fi
 
-test x"$sim_ac_snprintf_avail" = x"yes" && AC_DEFINE(HAVE_SNPRINTF)
-test x"$sim_ac_vsnprintf_avail" = x"yes" && AC_DEFINE(HAVE_VSNPRINTF)
-test x"$sim_ac__snprintf_avail" = x"yes" && AC_DEFINE(HAVE__SNPRINTF)
-test x"$sim_ac__vsnprintf_avail" = x"yes" && AC_DEFINE(HAVE__VSNPRINTF)
+test x"$sim_ac_snprintf_avail" = x"yes" &&
+  AC_DEFINE([HAVE_SNPRINTF],,
+    [define if snprintf() is available])
+test x"$sim_ac_vsnprintf_avail" = x"yes" &&
+  AC_DEFINE([HAVE_VSNPRINTF],,
+    [define if vsnprintf() is available])
+test x"$sim_ac__snprintf_avail" = x"yes" &&
+  AC_DEFINE([HAVE__SNPRINTF],,
+    [define if _snprintf() is available])
+test x"$sim_ac__vsnprintf_avail" = x"yes" &&
+  AC_DEFINE([HAVE__VSNPRINTF],,
+    [define if _vsnprintf() is available])
 ])
 
 
