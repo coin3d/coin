@@ -166,6 +166,7 @@ SoOutput_MemBufferWriter::makeRoomInBuf(size_t bytes)
 }
 
 
+#ifdef HAVE_ZLIB
 //
 // zlib writer
 //
@@ -223,8 +224,10 @@ SoOutput_GZFileWriter::bytesInBuf(void)
   return 0;
 }
 
+#endif // HAVE_ZLIB
 
 
+#ifdef HAVE_BZIP2
 //
 // bzip2 writer
 //
@@ -293,4 +296,6 @@ SoOutput_BZ2FileWriter::bytesInBuf(void)
 {
   return this->writecounter;
 }
+
+#endif // HAVE_BZIP2
 
