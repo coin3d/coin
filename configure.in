@@ -66,8 +66,36 @@ AM_DISABLE_STATIC
 dnl  Turn off default maintainer make-rules -- use ./autogen.sh instead.
 AM_MAINTAINER_MODE
 
-dnl Initialize libtool
+dnl  Initialize libtool
 AM_PROG_LIBTOOL
+
+dnl  Yep, this is important in case we want to add code to make
+dnl  the API interface "Open Inventor strict", meaning the user must
+dnl  use the exact same include files as under "real" Open Inventor.
+dnl  We would then need to know that we are actually allowed to include
+dnl  any file during internal build.
+CXXFLAGS="$CXXFLAGS -D__SOLIB_INTERNAL__"
+
+
+dnl *******************************************************************
+dnl * Test for installation of Mesa or OpenGL development system.
+dnl *
+dnl * FIXME: wrap all of this inside a "--with-rendering" or somesuch.
+dnl * 19990915 mortene.
+dnl *
+dnl * FIXME: the MDL_HAVE_OPENGL test has _lots_ of room for improvement:
+dnl * it won't work under Win32, and it unconditionally includes the
+dnl * glu, glx and glut libraries if they are available. Besides, it
+dnl * doesn't seem to check for a _development_ system, only the libs.
+dnl * 19990915 mortene.
+dnl *******************************************************************
+
+MDL_HAVE_OPENGL
+
+if test "x$mdl_cv_have_OpenGL" = "xno"; then
+  AC_MSG_ERROR([
+*** Needs an OpenGL-compatible development installation to compile!])
+fi
 
 
 dnl *******************************************************************
@@ -96,7 +124,7 @@ dnl *******************************************************************
 
 if test "x$ac_cv_prog_cxx_g" = "xyes"; then
   AC_ARG_ENABLE(symbols,
-    [  --enable-symbols          turn on symbol debug information [default=yes]],
+    [  --enable-symbols        turn on symbol debug information [default=yes]],
     [case "${enableval}" in
       yes) enable_symbols=yes ;;
       no)  enable_symbols=no ;;
@@ -111,11 +139,53 @@ fi
 
 
 dnl *******************************************************************
+dnl * Enable/disable compilation with profiling information
+dnl * for parsing by gprof (this is a g++ only option).
+dnl *******************************************************************
+
+if test "x$ac_cv_prog_cxx_g" = "xyes"; then
+  AC_ARG_ENABLE(profile,
+    [  --enable-profile        turn on inclusion of profiling code [default=no]],
+    [case "${enableval}" in
+      yes) enable_profile=yes ;;
+      no)  enable_profile=no ;;
+      *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-profile) ;;
+    esac],
+    enable_profile=no)
+
+  if test "x$enable_profile" = "xyes"; then
+    CXXFLAGS="$CXXFLAGS -pg"
+    LDFLAGS="$LDFLAGS -pg"
+  fi
+fi
+
+
+dnl *******************************************************************
+dnl * Enable/disable compilation with warnings turned on (g++ only).
+dnl *******************************************************************
+
+if test "x$ac_cv_prog_gxx" = "xyes"; then
+  AC_ARG_ENABLE(warnings,
+    [  --enable-warnings       turn on warnings when compiling [default=no]],
+    [case "${enableval}" in
+      yes) enable_warnings=yes ;;
+      no)  enable_warnings=no ;;
+      *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-warnings) ;;
+    esac],
+    enable_warnings=no)
+
+  if test "x$enable_warnings" = "xyes"; then
+    CXXFLAGS="$CXXFLAGS -W -Wall"
+  fi
+fi
+
+
+dnl *******************************************************************
 dnl * Check if we want to use simage (if available).
 dnl *******************************************************************
 
 AC_ARG_WITH(simage,
-  [  --with-simage           use the simage library for loading textures [default=yes]],
+  [  --with-simage           use simage (if found) for texture import [default=yes]],
   [case "${withval}" in
     yes) want_simage=yes ;;
     no)  want_simage=no ;;
@@ -124,10 +194,10 @@ AC_ARG_WITH(simage,
   [want_simage=yes])
 
 dnl *******************************************************************
-dnl * Check if libsimage development system is installed.
+dnl * Check if libsimage development system is installed (if necessary).
 dnl *******************************************************************
 
-if test "$want_simage" = yes; then
+if test "x$want_simage" = "xyes"; then
   AC_CHECK_HEADER(simage.h, simage_dev=yes, simage_dev=no)
   if test "$simage_dev" = yes; then
     AC_CHECK_LIB(simage, simage_read_image, , simage_dev=no, -lz -lm)

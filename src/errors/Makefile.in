@@ -89,7 +89,7 @@ noinst_LTLIBRARIES = liberrors.la
 
 LIBS = 
 
-INCLUDES = -I$(top_srcdir)/include/
+INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
 liberrors_la_SOURCES =  	SoDebugError.cpp 	SoDebugError.h 	SoError.cpp 	SoError.h 	SoMemoryError.cpp 	SoMemoryError.h 	SoReadError.cpp 	SoReadError.h
 

@@ -89,7 +89,7 @@ noinst_LTLIBRARIES = libsensors.la
 
 LIBS = 
 
-INCLUDES = -I$(top_srcdir)/include/
+INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libsensors_la_SOURCES =  	SoAlarmSensor.cpp 	SoAlarmSensor.h 	SoDataSensor.cpp 	SoDataSensor.h 	SoDelayQueueSensor.cpp 	SoDelayQueueSensor.h 	SoFieldSensor.cpp 	SoFieldSensor.h 	SoIdleSensor.cpp 	SoIdleSensor.h 	SoNodeSensor.cpp 	SoNodeSensor.h 	SoOneShotSensor.cpp 	SoOneShotSensor.h 	SoPathSensor.cpp 	SoPathSensor.h 	SoSensor.cpp 	SoSensor.h 	SoSensorManager.cpp 	SoSensorManager.h 	SoTimerQueueSensor.cpp 	SoTimerQueueSensor.h 	SoTimerSensor.cpp 	SoTimerSensor.h
 

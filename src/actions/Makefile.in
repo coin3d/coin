@@ -89,7 +89,7 @@ noinst_LTLIBRARIES = libactions.la
 
 LIBS = 
 
-INCLUDES = -I$(top_srcdir)/include/
+INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libactions_la_SOURCES =  	SoAction.cpp 	SoAction.h 	SoBoxHighlightRenderAction.cpp 	SoBoxHighlightRenderAction.h 	SoCallbackAction.cpp 	SoCallbackAction.h 	SoGLRenderAction.cpp 	SoGLRenderAction.h 	SoGetBoundingBoxAction.cpp 	SoGetBoundingBoxAction.h 	SoGetMatrixAction.cpp 	SoGetMatrixAction.h 	SoGetPrimitiveCountAction.cpp 	SoGetPrimitiveCountAction.h 	SoGlobalSimplifyAction.cpp 	SoGlobalSimplifyAction.h 	SoHandleEventAction.cpp 	SoHandleEventAction.h 	SoLineHighlightRenderAction.cpp 	SoLineHighlightRenderAction.h 	SoPickAction.cpp 	SoPickAction.h 	SoRayPickAction.cpp 	SoRayPickAction.h 	SoReorganizeAction.cpp 	SoReorganizeAction.h 	SoSearchAction.cpp 	SoSearchAction.h 	SoShapeSimplifyAction.cpp 	SoShapeSimplifyAction.h 	SoSimplifyAction.cpp 	SoSimplifyAction.h 	SoToVRML2Action.cpp 	SoToVRML2Action.h 	SoToVRMLAction.cpp 	SoToVRMLAction.h 	SoWriteAction.cpp 	SoWriteAction.h
 

@@ -89,7 +89,7 @@ noinst_LTLIBRARIES = libmisc.la
 
 LIBS = 
 
-INCLUDES = -I$(top_srcdir)/include/
+INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libmisc_la_SOURCES =  	SoBase.cpp 	SoBase.h 	SoChildList.cpp 	SoChildList.h 	SoGL.cpp 	SoGL.h 	SoGLImage.cpp 	SoGLImage.h 	SoNormalGenerator.cpp 	SoNormalGenerator.h 	SoNotification.cpp 	SoNotification.h 	SoState.cpp 	SoState.h 	SoTessellator.cpp 	SoTessellator.h
 

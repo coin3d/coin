@@ -89,7 +89,7 @@ noinst_LTLIBRARIES = libevents.la
 
 LIBS = 
 
-INCLUDES = -I$(top_srcdir)/include/
+INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libevents_la_SOURCES =  	SoButtonEvent.cpp 	SoButtonEvent.h 	SoEvent.cpp 	SoEvent.h 	SoKeyboardEvent.cpp 	SoKeyboardEvent.h 	SoLocation2Event.cpp 	SoLocation2Event.h 	SoMotion3Event.cpp 	SoMotion3Event.h 	SoMouseButtonEvent.cpp 	SoMouseButtonEvent.h 	SoSpaceballButtonEvent.cpp 	SoSpaceballButtonEvent.h
 

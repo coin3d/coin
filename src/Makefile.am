@@ -6,7 +6,7 @@ SUBDIRS = \
 
 lib_LTLIBRARIES = libCoin.la
 
-INCLUDES = -I$(top_srcdir)/include/
+INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
 ## All source files from the base directory used when building the
 ## library, including all headers.

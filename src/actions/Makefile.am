@@ -7,7 +7,7 @@ noinst_LTLIBRARIES = libactions.la
 ## needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
 
-INCLUDES = -I$(top_srcdir)/include/
+INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
 ## All source files used when building this submodule, including all
 ## headers.

@@ -89,7 +89,7 @@ noinst_LTLIBRARIES = libcaches.la
 
 LIBS = 
 
-INCLUDES = -I$(top_srcdir)/include/
+INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libcaches_la_SOURCES =  	SoBoundingBoxCache.cpp 	SoBoundingBoxCache.h 	SoCache.cpp 	SoCache.h 	SoConvexDataCache.cpp 	SoConvexDataCache.h 	SoNormalCache.cpp 	SoNormalCache.h 	SoTextureCoordinateCache.cpp 	SoTextureCoordinateCache.h
 

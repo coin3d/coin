@@ -89,7 +89,7 @@ noinst_LTLIBRARIES = libVRMLnodes.la
 
 LIBS = 
 
-INCLUDES = -I$(top_srcdir)/include/
+INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libVRMLnodes_la_SOURCES =  	SoVRMLInterpOutput.cpp 	SoVRMLInterpOutput.h 	SoVRMLInterpolator.cpp 	SoVRMLInterpolator.h
 

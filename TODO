@@ -4,19 +4,11 @@ Todo
 
 (format is: "* [author:conceived-date] item", listed in no particular order)
 
-* [mortene:19990912] include check in configure.in for OpenGL/Mesa.
-
 * [mortene:19990912] get rid of Inventor/system/inttypes.h.
 
 * [mortene:19990912] get rid of Inventor/system/kosher.h. (Needs to
   try compiling under g++ and SGI CC to check that we've covered the
   functionality provided.)
-
-* [mortene:19990912] add configure options for turning compilation
-  with profiling information on or off.
-
-* [mortene:19990912] add configure options for turning compilation
-  with all compiler warnings on or off.
 
 * [mortene:19990912] add options in configure for compiling slimmed
   versions of Coin (--without-coin-engines etc). Or perhaps make a
@@ -31,16 +23,34 @@ Todo
   faster turn-around when doing development.
 
 * [mortene:19990913] integrate the doxygen man- and html-generation
+  into "make install".
 
-* [mortene:19990914] check possibility of making all .o/.lo files into
-  .so shared libraries to avoid long linking times (could be a
-  brilliant hack if it is possible)
+* [mortene:19990916] improve the autoconf macro which checks for
+  Mesa/OpenGL (read the FIXME's in configure.in just above where it's
+  in use).
+
+* [mortene:19990916] make ``install'' avoid re-installing header files
+  which has not been modified (and other untouched files, for that
+  matter).
+
+* [mortene:19990914] check possibility of making all .o/.lo files (or
+  only the .la files?) into .so shared libraries to avoid long linking
+  times (could be a brilliant hack if it is possible)
 
 ===============================================================================
 Done
 ====
 
 (format is: "* [author:conceived-date][implementer:finished-date] item")
+
+* [mortene:19990912][mortene:19990916] add configure options for
+  turning compilation with profiling information on or off.
+
+* [mortene:19990912][mortene:19990916] add configure options for
+  turning compilation with all compiler warnings on or off.
+
+* [mortene:19990912][mortene:19990915] include check in configure.in
+  for OpenGL/Mesa.
 
 * [mortene:19990912][mortene:19990913] add configure option for doing
   compilation without any symbols included in the object files.

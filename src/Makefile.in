@@ -90,7 +90,7 @@ SUBDIRS =  	VRMLnodes actions bundles caches elements engines errors events 	fie
 
 lib_LTLIBRARIES = libCoin.la
 
-INCLUDES = -I$(top_srcdir)/include/
+INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libCoin_la_SOURCES =  	SbBSPTree.cpp 	SbBSPTree.h 	SbBox2f.cpp 	SbBox2f.h 	SbBox2s.cpp 	SbBox2s.h 	SbBox3f.cpp 	SbBox3f.h 	SbColor.cpp 	SbColor.h 	SbColor4f.cpp 	SbColor4f.h 	SbCylinder.cpp 	SbCylinder.h 	SbDict.cpp 	SbDict.h 	SbLine.cpp 	SbLine.h 	SbMatrix.cpp 	SbMatrix.h 	SbName.cpp 	SbName.h 	SbPlane.cpp 	SbPlane.h 	SbRotation.cpp 	SbRotation.h 	SbSphere.cpp 	SbSphere.h 	SbString.cpp 	SbString.h 	SbTime.cpp 	SbTime.h 	SbVec2f.cpp 	SbVec2f.h 	SbVec2s.cpp 	SbVec2s.h 	SbVec3f.cpp 	SbVec3f.h 	SbVec4f.cpp 	SbVec4f.h 	SbViewVolume.cpp 	SbViewVolume.h 	SbViewportRegion.cpp 	SbViewportRegion.h 	SbXfBox3f.cpp 	SbXfBox3f.h 	SoDB.cpp 	SoDB.h 	SoFullPath.cpp 	SoFullPath.h 	SoImageInterface.cpp 	SoImageInterface.h 	SoInput.cpp 	SoInput.h 	SoInteraction.cpp 	SoInteraction.h 	SoOutput.cpp 	SoOutput.h 	SoPath.cpp 	SoPath.h 	SoPickedPoint.cpp 	SoPickedPoint.h 	SoPrimitiveVertex.cpp 	SoPrimitiveVertex.h 	SoSceneManager.cpp 	SoSceneManager.h 	SoType.cpp 	SoType.h
 
