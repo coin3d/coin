@@ -96,29 +96,44 @@ SoFile::GLRender(SoGLRenderAction * action)
 SbBool
 SoFile::readInstance(SoInput * in, unsigned short flags)
 {
-  // FIXME: 19990423, pederb
-  // not quite sure what to do when an error occurs during
-  // subfile read. Should I return with an error, or continue
-  // trodding along?
-
   if (!inherited::readInstance(in, flags)) return FALSE;
 
-  if (name.getValue().getLength() == 0 ||
-      strcmp(name.getValue().getString(), UNDEFINED_FILE) == 0) {
-    SoReadError::post(in, "Undefined file name in SoFile");
+  if (this->name.getValue().getLength() == 0 ||
+      strcmp(this->name.getValue().getString(), UNDEFINED_FILE) == 0) {
+    // We handle this different than Inventor, where the read process
+    // fails upon an unspecified filename.
+    SoReadError::post(in, "Undefined filename in SoFile");
     return TRUE;
   }
 
-  in->pushFile(name.getValue().getString());
+  // If we can't find file, ignore it. Note that this does not match
+  // the way Inventor works, which will make the whole read process
+  // exit with a failure code.
+  if (!in->pushFile(this->name.getValue().getString())) return TRUE;
+
   SoSeparator * node = SoDB::readAll(in);
   // Popping the file off the stack again is done implicit in SoInput
-  // upon hitting EOF.
+  // upon hitting EOF (unless the read fails, see below).
 
-  if (node) this->children->append((SoNode *)node);
+  if (node) {
+    this->children->truncate(0);
+    this->children->append((SoNode *)node);
+  }
   else {
-    SoReadError::post(in, "Unable to open subfile: ``%s''",
+    // Take care of popping the file off the stack. This is a bit
+    // "hack-ish", but its done this way instead of loosening the
+    // protection of SoInput::popFile().
+    if (in->getCurFileName() == this->name.getValue()) {
+      char dummy;
+      while (!in->eof()) in->get(dummy);
+    }
+
+    // Note that we handle this differently than Inventor, which lets
+    // the whole import fail.
+    SoReadError::post(in, "Unable to read subfile: ``%s''",
                       this->name.getValue().getString());
   }
+
   return TRUE;
 }
 
