@@ -155,7 +155,6 @@
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/sensors/SoTimerSensor.h>
-#include <Inventor/C/glue/fontlib_wrapper.h>
 #include <coindefs.h> // COIN_STUB()
 #include <stdlib.h>
 
@@ -472,9 +471,6 @@ SoDB::init(void)
   }
 #endif // HAVE_SOUND
   
-  // Initialize font library wrapper
-  cc_flw_initialize();
-  
   // Register all valid file format headers.
   SoDB::registerHeader(SbString("#Inventor V2.1 ascii   "), FALSE, 2.1f,
                        NULL, NULL, NULL);
@@ -613,9 +609,6 @@ SoDBP::clean(void)
   for (int i = 0; i < SoDBP::headerlist->getLength(); i++)
     delete (*SoDBP::headerlist)[i];
   delete SoDBP::headerlist;
-  
-  // Cleanup font lib wrapper
-  cc_flw_exit();
   
 #ifdef COIN_THREADSAFE
   // we can't delete this here since it might be needed by some atexit
