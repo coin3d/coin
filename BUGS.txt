@@ -736,4 +736,13 @@
 
     20020927 larsa.
 
+    UPDATE 20020927 mortene: this could simply be caused by the GLX /
+    X11 drivers lacking support for any alpha-enabled visuals
+    (according to spec, it is not guaranteed that any such visual is
+    available). Anyway, the right way to solve this problem is to 1)
+    write our own weight-function for X11 visuals (like it's been done
+    for MSWin visuals in SoWin's SoWinGLWidget.cpp), for better
+    control of the selection process. Then 2) warn the user if we
+    can't get hold of any visual capable of all requested features.
+
 =====================================================================
