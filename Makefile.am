@@ -125,6 +125,7 @@ EXTRA_DIST = \
 	packaging/debian/libcoin40-doc.README.Debian.in \
 	packaging/debian/libcoin40-runtime.files.in \
 	packaging/debian/libcoin40-runtime.README.Debian.in \
+	packaging/macosx/uninstall-coin.pl \
 	packaging/redhat/coin.spec.in \
 	packaging/windows/Makefile.in \
 	packaging/windows/bfheader.nsi.in \
