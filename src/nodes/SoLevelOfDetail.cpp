@@ -41,6 +41,7 @@
 #include <Inventor/misc/SoChildList.h>
 #include <stdlib.h>
 
+// FIXME: not safe in an multithreaded environment. 20020106 mortene.
 static SoGetBoundingBoxAction * bboxAction = NULL;
 
 static void
@@ -52,6 +53,7 @@ SoLevelOfDetail_cleanup_func(void)
 
 /*!
   \var SoMFFloat SoLevelOfDetail::screenArea
+
   The screen areas for each child.
 */
 
@@ -125,47 +127,58 @@ SoLevelOfDetail::doAction(SoAction *action)
   SoState * state = action->getState();
   int n = this->getNumChildren();
   if (n == 0) return;
-  float complexity = SoComplexityElement::get(state);
 
-  // quick test to see if we should just traverse last child
-  if ((SoComplexityTypeElement::get(state) ==
-       SoComplexityTypeElement::BOUNDING_BOX) ||
-      (complexity == 0.0f) ||
-      (n == 1) ||
-      (this->screenArea.getNum() == 0)) {
-    state->push();
-    this->getChildren()->traverse(action, n-1);
-    state->pop();
-    return;
-  }
+  SbVec2s size;
+  SbBox3f bbox;
+  int i;
+  int idx = -1;
+  float projarea = 0.0f;
+
+  SoComplexityTypeElement::Type complext = SoComplexityTypeElement::get(state);
+  float complexity = SbClamp(SoComplexityElement::get(state), 0.0f, 1.0f);
+
+  if (n == 1) { idx = 0; goto traverse; }
+  if (complext == SoComplexityTypeElement::BOUNDING_BOX) { idx = n - 1; goto traverse; }
+  if (complexity == 0.0f) { idx = n - 1; goto traverse; }
+  if (complexity == 1.0f) { idx = 0; goto traverse; }
+  if (this->screenArea.getNum() == 0) { idx = 0; goto traverse; }
+
   if (!bboxAction) {
-    SbViewportRegion dummy;
-    bboxAction = new SoGetBoundingBoxAction(dummy);
+    // The viewport region will be replaced every time the action is
+    // used, so we can just feed it a dummy here.
+    bboxAction = new SoGetBoundingBoxAction(SbViewportRegion());
     (void)atexit(SoLevelOfDetail_cleanup_func);
   }
+
   bboxAction->setViewportRegion(SoViewportRegionElement::get(state));
   bboxAction->apply(this); // find bbox of all children
-  SbVec2s size;
-  SbBox3f bbox = bboxAction->getBoundingBox();
+  bbox = bboxAction->getBoundingBox();
   SoShape::getScreenSize(state, bbox, size);
 
-  float area = float(size[0])*float(size[1])*complexity;
+  // The multiplication factor from the complexity setting is
+  // complexity+0.5 because the documented behavior of SoLevelOfDetail
+  // is to show lower detail levels than normal when
+  // SoComplexity::value < 0.5, and to show higher detail levels when
+  // SoComplexity::value > 0.5.
+  projarea = float(size[0]) * float(size[1]) * (complexity + 0.5f);
 
   // in case there are too few screenArea values
   n = SbMin(n, this->screenArea.getNum());
 
-  for (int i = 0; i < n; i++) {
-    if (area > this->screenArea[i]) {
-      state->push();
-      this->getChildren()->traverse(action, i);
-      state->pop();
-      return;
-    }
+  for (i = 0; i < n; i++) {
+    if (projarea > this->screenArea[i]) { idx = i; goto traverse; }
   }
-  // if we get here, the last child should be traversed
+
+  // If we get here, projected area was lower than any of the
+  // screenArea value, so the last child should be traversed.
+  idx = this->getNumChildren() - 1;
+  // (fall through to traverse:)
+
+ traverse:
   state->push();
-  this->getChildren()->traverse(action, this->getNumChildren()-1);
+  this->getChildren()->traverse(action, idx);
   state->pop();
+  return;
 }
 
 // doc in parent
