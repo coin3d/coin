@@ -98,7 +98,7 @@ make_dither_matrix(uint32_t * ptr, int size)
 
   while (currsize < size) {
     nextsize = currsize << 1;
-    nextmatrix = new unsigned int[nextsize*nextsize];
+    nextmatrix = new uint32_t[nextsize*nextsize];
     generate_next_matrix(currmatrix, currsize, nextmatrix);
     if (currmatrix != two_by_two) delete[] currmatrix;
     currmatrix = nextmatrix;
@@ -138,7 +138,7 @@ create_matrix_bitmap(int intensity, unsigned char * bitmap,
   for (i = 0; i < 32*4; i++) bitmap[i] = 0;
   for (i = 0; i < size; i++) {
     for (j = 0; j < size; j++) {
-      if (matrix[i*size+j] > (unsigned int) intensity) {
+      if (matrix[i*size+j] > (uint32_t) intensity) {
         set_bit(i*32+j, bitmap);
         cnt++;
       }
