@@ -380,6 +380,11 @@ SoTrackballDragger::setDefaultOnNonWritingFields(void)
   this->antiSquish.setDefault(TRUE);
   this->surroundScale.setDefault(TRUE);
 
+  SoRotation * rot = (SoRotation*) this->getAnyPart("userAxisRotation", FALSE);
+  if (rot && rot->rotation.getValue() == SbRotation::identity()) {
+    this->userAxisRotation.setDefault(TRUE);
+  }
+
   SoSwitch * sw = (SoSwitch*) this->userAxisSwitch.getValue();
   if (sw && sw->whichChild.getValue() == SO_SWITCH_NONE)
     this->userAxisSwitch.setDefault(TRUE);

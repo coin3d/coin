@@ -180,6 +180,8 @@ SoDirectionalLightDragger::SoDirectionalLightDragger(void)
   this->translFieldSensor->setPriority(0);
 
   this->setUpConnections(TRUE, TRUE);
+
+  this->translatorSep.setDefault(TRUE);
 }
 
 /*!

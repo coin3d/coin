@@ -212,6 +212,14 @@ SoTabBoxDragger::SoTabBoxDragger(void)
   this->scaleFieldSensor = new SoFieldSensor(SoTabBoxDragger::fieldSensorCB, this);
   this->translFieldSensor = new SoFieldSensor(SoTabBoxDragger::fieldSensorCB, this);
   this->setUpConnections(TRUE, TRUE);
+
+ //  this->tabPlane1.setDefault(TRUE);
+//   this->tabPlane2.setDefault(TRUE);
+//   this->tabPlane3.setDefault(TRUE);
+//   this->tabPlane4.setDefault(TRUE);
+//   this->tabPlane5.setDefault(TRUE);
+//   this->tabPlane6.setDefault(TRUE);
+// 
 }
 
 
@@ -346,21 +354,28 @@ SoTabBoxDragger::initTransformNodes(void)
   SoTransform *tf;
   tf = SO_GET_ANY_PART(this, "tabPlane1Xf", SoTransform);
   tf->translation = SbVec3f(0.0f, 0.0f, 1.0f);
+  this->tabPlane1Xf.setDefault(TRUE);
   tf = SO_GET_ANY_PART(this, "tabPlane2Xf", SoTransform);
   tf->translation = SbVec3f(0.0f, 0.0f, -1.0f);
   tf->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), (float) M_PI);
+  this->tabPlane2Xf.setDefault(TRUE);
   tf = SO_GET_ANY_PART(this, "tabPlane3Xf", SoTransform);
   tf->translation = SbVec3f(1.0f, 0.0f, 0.0f);
   tf->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), ((float) M_PI)*0.5f);
+  this->tabPlane3Xf.setDefault(TRUE);
   tf = SO_GET_ANY_PART(this, "tabPlane4Xf", SoTransform);
   tf->translation = SbVec3f(-1.0f, 0.0f, 0.0f);
   tf->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), ((float) -M_PI)*0.5f);
+  this->tabPlane4Xf.setDefault(TRUE);
   tf = SO_GET_ANY_PART(this, "tabPlane5Xf", SoTransform);
   tf->translation = SbVec3f(0.0f, 1.0f, 0.0f);
   tf->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) -M_PI)*0.5f);
+  this->tabPlane5Xf.setDefault(TRUE);
   tf = SO_GET_ANY_PART(this, "tabPlane6Xf", SoTransform);
   tf->translation = SbVec3f(0.0f, -1.0f, 0.0f);
   tf->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) M_PI)*0.5f);
+  this->tabPlane6Xf.setDefault(TRUE);
+
 }
 
 /*!

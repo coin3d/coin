@@ -705,12 +705,15 @@ SoTabPlaneDragger::createPrivateParts(void)
 {
   SoMaterialBinding *mb = SO_GET_ANY_PART(this, "scaleTabMaterialBinding", SoMaterialBinding);
   mb->value = SoMaterialBinding::OVERALL;
+  this->scaleTabMaterialBinding.setDefault(TRUE);
 
   SoNormalBinding *nb = SO_GET_ANY_PART(this, "scaleTabNormalBinding", SoNormalBinding);
   nb->value = SoNormalBinding::OVERALL;
+  this->scaleTabNormalBinding.setDefault(TRUE);
 
   SoNormal *normal = SO_GET_ANY_PART(this, "scaleTabNormal", SoNormal);
   normal->vector.setValue(SbVec3f(0.0f, 0.0f, 1.0f));
+  this->scaleTabNormal.setDefault(TRUE);
 
   SoIndexedFaceSet *fs;
   SbString str;
@@ -726,6 +729,7 @@ SoTabPlaneDragger::createPrivateParts(void)
       str.sprintf("cornerScaleTab%d", i-4);
     fs = (SoIndexedFaceSet*) this->getAnyPart(SbName(str.getString()), TRUE);
     fs->coordIndex.setNum(5);
+
     ptr = fs->coordIndex.startEditing();
     {
       for (j = 0; j < 4; j++) ptr[j] = idx++;
@@ -734,12 +738,18 @@ SoTabPlaneDragger::createPrivateParts(void)
     fs->coordIndex.finishEditing();
     fs->normalIndex.setValue(0);
     fs->materialIndex.setValue(0);
+
+    SoField * f = this->getField(SbName(str.getString()));
+    assert(f);
+    f->setDefault(TRUE);
   }
 
   // turn off render caching since the geometry below this node might
   // change very often.
   SoSeparator *sep = SO_GET_ANY_PART(this, "scaleTabs", SoSeparator);
   sep->renderCaching = SoSeparator::OFF;
+  // this is the default, so don't write it
+  this->scaleTabs.setDefault(TRUE);
 }
 
 //

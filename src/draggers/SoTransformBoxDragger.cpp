@@ -260,25 +260,35 @@ SoTransformBoxDragger::SoTransformBoxDragger(void)
   SoRotation *rot;
   rot = SO_GET_ANY_PART(this, "rotator1Rot", SoRotation);
   rot->rotation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), ((float) M_PI)/2.0f);
+  this->rotator1Rot.setDefault(TRUE);
   rot = SO_GET_ANY_PART(this, "rotator2Rot", SoRotation);
   rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) M_PI)/2.0f);
+  this->rotator2Rot.setDefault(TRUE);
   rot = SO_GET_ANY_PART(this, "rotator3Rot", SoRotation);
   rot->rotation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
+  this->rotator3Rot.setDefault(TRUE);
 
   rot = SO_GET_ANY_PART(this, "translator1Rot", SoRotation);
   rot->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), ((float) M_PI)/2.0f);
+  this->translator1Rot.setDefault(TRUE);
   rot = SO_GET_ANY_PART(this, "translator2Rot", SoRotation);
   rot->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), ((float) -M_PI)/2.0f);
+  this->translator2Rot.setDefault(TRUE);
 
   rot = SO_GET_ANY_PART(this, "translator3Rot", SoRotation);
   rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) M_PI)/2.0f);
+  this->translator3Rot.setDefault(TRUE);
   rot = SO_GET_ANY_PART(this, "translator4Rot", SoRotation);
   rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) -M_PI)/2.0f);
+  this->translator4Rot.setDefault(TRUE);
 
   rot = SO_GET_ANY_PART(this, "translator5Rot", SoRotation);
   rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), (float) M_PI);
+  this->translator5Rot.setDefault(TRUE);
+
   rot = SO_GET_ANY_PART(this, "translator6Rot", SoRotation);
   rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), 0.0f);
+  this->translator6Rot.setDefault(TRUE);
 
   SoAntiSquish *squish = SO_GET_ANY_PART(this, "antiSquish", SoAntiSquish);
   squish->sizing = SoAntiSquish::BIGGEST_DIMENSION;
@@ -292,6 +302,8 @@ SoTransformBoxDragger::SoTransformBoxDragger(void)
   this->scaleFieldSensor = new SoFieldSensor(SoTransformBoxDragger::fieldSensorCB, this);
   this->scaleFieldSensor->setPriority(0);
   this->setUpConnections(TRUE, TRUE);
+
+  this->scaler.setDefault(TRUE);
 }
 
 /*!

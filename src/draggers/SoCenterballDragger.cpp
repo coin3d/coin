@@ -222,6 +222,11 @@ SoCenterballDragger::SoCenterballDragger(void)
   rot = SO_GET_ANY_PART(this, "rotY90", SoRotation);
   rot->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), ((float) M_PI)*0.5f);
 
+  // reset default flags for parts we set to a default value
+  this->rot2X90.setDefault(TRUE);
+  this->rotX90.setDefault(TRUE);
+  this->rotY90.setDefault(TRUE);
+
   SoAntiSquish *squish = SO_GET_ANY_PART(this, "antiSquish", SoAntiSquish);
   squish->sizing = SoAntiSquish::LONGEST_DIAGONAL;
   squish->recalcAlways = FALSE;

@@ -232,6 +232,9 @@ SoSpotLightDragger::SoSpotLightDragger(void)
   this->angleFieldSensor = new SoFieldSensor(SoSpotLightDragger::fieldSensorCB, this);
   this->angleFieldSensor->setPriority(0);
 
+  this->translatorSep.setDefault(TRUE);
+  this->beamSep.setDefault(TRUE);
+
   this->setUpConnections(TRUE, TRUE);
 }
 

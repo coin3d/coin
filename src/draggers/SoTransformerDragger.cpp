@@ -814,6 +814,19 @@ SoTransformerDragger::SoTransformerDragger(void)
   this->rotateFieldSensor->setPriority(0);
 
   this->setUpConnections(TRUE, TRUE);
+
+  // make sure these are not written if they have the default value.
+  // FIXME: investigate why this is needed. There must be a
+  // notification that is sent somewhere that causes the fields to
+  // become non-default. pederb, 2003-04-01
+  this->translatorSep.setDefault(TRUE);
+  this->rotatorSep.setDefault(TRUE);
+  this->scaleSep.setDefault(TRUE);
+  this->translateBoxFeedbackSep.setDefault(TRUE);
+  this->axisFeedbackSep.setDefault(TRUE);
+  this->scale8LocateGroup.setDefault(TRUE);
+  this->scale7LocateGroup.setDefault(TRUE);
+  this->circleFeedbackSep.setDefault(TRUE);
 }
 
 /*!
