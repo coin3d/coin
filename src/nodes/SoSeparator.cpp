@@ -30,26 +30,25 @@
   through the use of caching.
 */
 
-#include <Inventor/misc/SoChildList.h>
-#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/caches/SoBoundingBoxCache.h>
-#include <Inventor/caches/SoGLCacheList.h>
 
-#include <Inventor/misc/SoState.h>
-
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-
+#include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/caches/SoGLCacheList.h>
 #include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 #include <Inventor/elements/SoCullElement.h>
+#include <Inventor/elements/SoLocalBBoxMatrixElement.h>
+#include <Inventor/misc/SoChildList.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+
 #include "../tidbits.h" // coin_getenv()
 
 #ifdef HAVE_CONFIG_H
@@ -58,10 +57,6 @@
 
 #include <Inventor/system/gl.h>
 #include <coindefs.h> // COIN_OBSOLETED()
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #if COIN_DEBUG
 #define GLCACHE_DEBUG 0 // set to 1 to debug caching
@@ -438,44 +433,44 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
       }
       action->popPushCurPath(i, childarray[i]);
       childarray[i]->GLRenderBelowPath(action);
-      // The GL error test is disabled for this optimized path.
-      // If you get a GL error reporting an error in the Separator node,
-      // enable this code to see exactly which node caused the error.
-      //  pederb, 20000916
 
-#if 0 // enable to debug GL errors
-      int err = glGetError();
-      if (err != GL_NO_ERROR) {
-        const char * errorstring;
-        switch (err) {
-        case GL_INVALID_VALUE:
-          errorstring = "GL_INVALID_VALUE";
-          break;
-        case GL_INVALID_ENUM:
-          errorstring = "GL_INVALID_ENUM";
-          break;
-        case GL_INVALID_OPERATION:
-          errorstring = "GL_INVALID_OPERATION";
-          break;
-        case GL_STACK_OVERFLOW:
-          errorstring = "GL_STACK_OVERFLOW";
-          break;
-        case GL_STACK_UNDERFLOW:
-          errorstring = "GL_STACK_UNDERFLOW";
-          break;
-        case GL_OUT_OF_MEMORY:
-          errorstring = "GL_OUT_OF_MEMORY";
-          break;
-        default:
-          errorstring = "Unknown GL error";
-          break;
+      // The GL error test is disabled for this optimized path.  If
+      // you get a GL error reporting an error in the Separator node,
+      // enable this code (flip "FALSE" to "TRUE") to see exactly
+      // which node caused the error.
+      if (COIN_DEBUG && FALSE) {
+        int err = glGetError();
+        if (err != GL_NO_ERROR) {
+          const char * errorstring;
+          switch (err) {
+          case GL_INVALID_VALUE:
+            errorstring = "GL_INVALID_VALUE";
+            break;
+          case GL_INVALID_ENUM:
+            errorstring = "GL_INVALID_ENUM";
+            break;
+          case GL_INVALID_OPERATION:
+            errorstring = "GL_INVALID_OPERATION";
+            break;
+          case GL_STACK_OVERFLOW:
+            errorstring = "GL_STACK_OVERFLOW";
+            break;
+          case GL_STACK_UNDERFLOW:
+            errorstring = "GL_STACK_UNDERFLOW";
+            break;
+          case GL_OUT_OF_MEMORY:
+            errorstring = "GL_OUT_OF_MEMORY";
+            break;
+          default:
+            errorstring = "Unknown GL error";
+            break;
+          }
+          SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
+                                 "GL error: %s, nodetype: %s",
+                                 errorstring,
+                                 (*this->children)[i]->getTypeId().getName().getString());
         }
-        SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
-                               "GL error: %s, nodetype: %s",
-                               errorstring,
-                               (*this->children)[i]->getTypeId().getName().getString());
       }
-#endif // GL debug
     }
     action->popCurPath();
   }
