@@ -1177,9 +1177,13 @@ glglue_resolve_symbols(cc_glglue * w)
      if (!w->_func_) { \
        w->has_nv_register_combiners = FALSE; \
        if (COIN_DEBUG || coin_glglue_debug()) { \
-         cc_debugerror_postwarning("glglue_init", \
-                                   "GL_NV_register_combiners found, but %s " \
-                                   "function missing.", SO__QUOTE(_func_)); \
+         static SbBool error_reported = FALSE; \
+         if (!error_reported) { \
+           cc_debugerror_postwarning("glglue_init", \
+                                     "GL_NV_register_combiners found, but %s " \
+                                     "function missing.", SO__QUOTE(_func_)); \
+           error_reported = TRUE; \
+         } \
        } \
      } \
    } while (0)
@@ -1255,9 +1259,13 @@ glglue_resolve_symbols(cc_glglue * w)
      if (!w->_func_) { \
        w->has_arb_fragment_program = FALSE; \
        if (COIN_DEBUG || coin_glglue_debug()) { \
-         cc_debugerror_postwarning("glglue_init", \
-                                   "GL_ARB_fragment_program found, but %s " \
-                                   "function missing.", SO__QUOTE(_func_)); \
+         static SbBool error_reported = FALSE; \
+         if (!error_reported) { \
+           cc_debugerror_postwarning("glglue_init", \
+                                     "GL_ARB_fragment_program found, but %s " \
+                                     "function missing.", SO__QUOTE(_func_)); \
+           error_reported = TRUE; \
+         } \
        } \
      } \
    } while (0)
@@ -1362,9 +1370,13 @@ glglue_resolve_symbols(cc_glglue * w)
      if (!w->_func_) { \
        w->has_arb_vertex_program = FALSE; \
        if (COIN_DEBUG || coin_glglue_debug()) { \
-         cc_debugerror_postwarning("glglue_init", \
-                                   "GL_ARB_vertex_program found, but %s " \
-                                   "function missing.", SO__QUOTE(_func_)); \
+         static SbBool error_reported = FALSE; \
+         if (!error_reported) { \
+           cc_debugerror_postwarning("glglue_init", \
+                                     "GL_ARB_vertex_program found, but %s " \
+                                     "function missing.", SO__QUOTE(_func_)); \
+           error_reported = TRUE; \
+         } \
        } \
      } \
    } while (0)
