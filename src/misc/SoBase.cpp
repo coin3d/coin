@@ -160,6 +160,32 @@ SoType SoBase::classTypeId;
 SbBool SoBase::tracerefs = FALSE;
 uint32_t SoBase::writecounter = 0;
 
+/**********************************************************************/
+
+// For counting write references during SoWriteAction traversal, to
+// make DEF / USE come out correctly in the output. The hash mapping
+// is from SoBase* -> int.
+static SbDict * writerefs = NULL;
+
+static inline int
+get_current_writeref(const SoBase * base)
+{
+  void * val;
+  SbBool found = writerefs->find((const unsigned long)base, val);
+  int refcount = 0;
+  if (found) { refcount = (int)val; }
+  return refcount;
+}
+
+static inline void
+set_current_writeref(const SoBase * base, const int rc)
+{
+  assert(rc >= 0 && "buggy writerefcounter");
+  (void)writerefs->enter((const unsigned long)base, (void *)rc);
+}
+
+/**********************************************************************/
+
 // This can be any "magic" bitpattern of 4 bits which seems unlikely
 // to be randomly assigned to a memory byte upon destruction. I chose
 // "1101".  <mortene@sim.no>
@@ -172,9 +198,15 @@ uint32_t SoBase::writecounter = 0;
 SoBase::SoBase(void)
 {
   this->objdata.referencecount = 0;
-  this->objdata.writerefcount = 0;
-  this->objdata.multirefs = FALSE;
   this->objdata.ingraph = FALSE;
+
+  if (writerefs == NULL) {
+    writerefs = new SbDict;
+    // Since the SbDict design is crap, make sure we at least detect
+    // problems on platforms not commonly used internally for testing.
+    assert((sizeof(unsigned long) >= sizeof(SoBase *)) && "SbDict overflow");
+    assert((sizeof(void *) >= sizeof(int)) && "SbDict overflow");
+  }
 
   // The 4 bits allocated for the "alive" bitpattern is used in
   // SoBase::ref() to try to detect when the instance has been
@@ -296,7 +328,7 @@ SoBase::initClass(void)
   SoBase::refwriteprefix = new SbString("+");
 }
 
-// Clean up all commonly allocated resources before applcation
+// Clean up all commonly allocated resources before application
 // exit. Only for debugging purposes.
 void
 SoBase::cleanClass(void)
@@ -311,6 +343,7 @@ SoBase::cleanClass(void)
   delete SoBase::name2obj; SoBase::name2obj = NULL;
   delete SoBase::obj2name; SoBase::obj2name = NULL;
 
+  delete writerefs;
   delete SoBase::refwriteprefix;
 #endif // COIN_DEBUG
 }
@@ -639,22 +672,20 @@ SoBase::addWriteReference(SoOutput * out, SbBool isfromfield)
 {
   assert(out->getStage() == SoOutput::COUNT_REFS);
 
+  int refcount = get_current_writeref(this);
+
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoBase::addWriteReference",
                          "%p/%s: %d -> %d",
-                         this,
-                         this->getTypeId().getName().getString(),
-                         this->objdata.writerefcount,
-                         this->objdata.writerefcount + 1);
+                         this, this->getTypeId().getName().getString(),
+                         refcount, refcount + 1);
 #endif // debug
 
-  // FIXME: a fairly limited number of bits has been reserved for this
-  // counter, so we should really try to detect overflows. (Ditto for
-  // underflows.) 20020217 mortene.
-  this->objdata.writerefcount++;
+  refcount++;
 
-  if (this->objdata.writerefcount > 1) this->objdata.multirefs = TRUE;
   if (!isfromfield) this->objdata.ingraph = TRUE;
+
+  set_current_writeref(this, refcount);
 }
 
 /*!
@@ -897,7 +928,7 @@ SoBase::getTraceRefs(void)
 SbBool
 SoBase::hasMultipleWriteRefs(void) const
 {
-  return this->objdata.multirefs;
+  return get_current_writeref(this) > 1;
 }
 
 /*!
@@ -969,27 +1000,33 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
     }
   }
 
+  int refcount = get_current_writeref(this);
+
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoBase::writeHeader",
                          "%p/%s: %d -> %d",
                          this,
                          this->getTypeId().getName().getString(),
-                         this->objdata.writerefcount,
-                         this->objdata.writerefcount - 1);
+                         refcount, refcount - 1);
 #endif // debug
 
   SoBase * thisp = (SoBase *)this;
-  thisp->objdata.writerefcount--;
+  refcount--;
 
-  if (this->objdata.writerefcount == 0) {
-    // Make ready for next inital write action pass.
+  if (refcount == 0) {
+    // Make ready for next inital write action pass by resetting data.
     thisp->objdata.ingraph = FALSE;
-    thisp->objdata.multirefs = FALSE;
+    SbBool found = writerefs->remove((const unsigned long)this);
+    assert(found && "writeref hash in trouble");
+
     // Ouch. Does this to avoid having two subsequent write actions on
     // the same SoOutput to write "USE ..." when it should write a
     // full node/subgraph specification on the second run.  -mortene.
     if (out->findReference(this) != -1)
       out->sobase2id->remove((unsigned long)this);
+  }
+  else {
+    set_current_writeref(this, refcount);
   }
 
   // Don't need to write out the rest if we are writing anything but
