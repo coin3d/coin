@@ -263,6 +263,16 @@ SoLineSet::GLRender(SoGLRenderAction * action)
   const int32_t * ptr = numVertices.getValues(0);
   const int32_t * end = ptr + numVertices.getNum();
 
+  //
+  // fix to render hidden geometry (used in dragges)
+  //
+  int32_t dummy_array[1] = {-1};
+  if (this->numVertices.isDefault() && (ptr + 1 == end) && (*ptr == -1)) {
+    ptr = dummy_array;
+    dummy_array[0] = coords->getNum() - idx; // draw all available vertices
+    end = ptr + 1;
+  }
+
   int matnr = 0;
   int texnr = 0;
 
