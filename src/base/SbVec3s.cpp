@@ -26,6 +26,8 @@
   This vector class provides storage for a 3 dimensional vector
   as well as simple integer arithmetic operations.
 
+  \since 2001-11-12
+
   \sa SbVec2s, SbVec2f, SbVec3f, SbVec4f.
 */
 

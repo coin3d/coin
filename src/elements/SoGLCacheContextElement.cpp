@@ -278,6 +278,8 @@ SoGLCacheContextElement::getOpenGLVersion(SoState *state,
 /*!
   Returns the OpenGL version for the current context. This method
   is an extension versus the Open Inventor API.
+
+  \since 2001-11-08
 */
 void
 SoGLCacheContextElement::getOpenGLVersion(SoState *state, 
@@ -310,6 +312,13 @@ SoGLCacheContextElement::getOpenGLVersion(SoState *state,
   glversionlist->append(info);
 }
 
+/*!
+  Returns true if the OpenGL version for the current context at 
+  least matches that defined by the \e major, \e minor and \e revision 
+  parameters.
+  
+  \since 2001-11-08
+*/
 SbBool
 SoGLCacheContextElement::openGLVersionMatchesAtLeast(SoState *state,
                                                      int major,
@@ -327,8 +336,13 @@ SoGLCacheContextElement::openGLVersionMatchesAtLeast(SoState *state,
 }
 
 /*!
+  \internal
+
   Returns a GLWrapper instance that is valid for the context defined by
   /e state. This method is an extension versus the Open Inventor API.
+  FIXME: Make GLWrapper publicly available?
+
+  \since 2001-11-08
 */
 GLWrapper *
 SoGLCacheContextElement::getGLWrapper(SoState *state)
