@@ -462,7 +462,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
 SbBool 
 SoGLBigImage::exceededChangeLimit(void)
 {
-  return THIS->changecnt > CHANGELIMIT;
+  return THIS->changecnt >= CHANGELIMIT;
 }
 
 // Documented in superclass. Overridden to handle age on subimages.
