@@ -583,6 +583,11 @@ include/Inventor/system/gl.h: $(srcdir)/include/Inventor/system/gl.h.in config.s
 include/Inventor/system/inttypes.h: $(srcdir)/include/Inventor/system/inttypes.h.in config.status
 	@./config.status --header=$@
 
+docs/coin.doxygen: $(srcdir)/docs/coin.doxygen.in config.status
+	@if test -d docs; then :; else mkdir docs; fi
+	@./config.status --file=$@:$@.in
+	@$(srcdir)/cfg/m4/doxy4win.pl docs/coin.doxygen
+
 doxygen-doc: built-sources
 	if test x"@COIN_DOC_HTML@" = x"YES"; then \
 	  mkdir -p "@coin_html_dir@"; \
