@@ -123,6 +123,7 @@ protected:
   void createFieldList(void); // replaces above method
   virtual void createDefaultParts(void);
   const SoNodekitParts * getNodekitPartsList(void) const; // not part of Coin
+  SoSFNode ** getCatalogNodes(void) const; // replaces above method
 
   void catalogError(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);

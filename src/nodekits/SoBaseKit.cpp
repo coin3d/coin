@@ -1002,6 +1002,12 @@ SoBaseKit::getNodekitPartsList(void) const
   return NULL;
 }
 
+SoSFNode **
+SoBaseKit::getCatalogNodes(void) const
+{
+  return this->fieldList;
+}
+
 /*!
   FIXME: write function documentation
 */
