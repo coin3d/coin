@@ -1025,7 +1025,9 @@ else
   sim_include_gl_h="#include <GL/gl.h>"
 fi
 
-if test x"$ac_cv_header_superglu_h" = x"no"; then
+if $enable_superglu; then
+  sim_include_glu_h="#include <superglu/include/superglu.h>"
+else
   if test x"$ac_cv_header_GL_glu_h" = x"no"; then
     if test x"$ac_cv_header_OpenGL_glu_h" = x"no"; then
       sim_include_glu_h="/* #include <GL/glu.h> - not found on system */"
@@ -1035,8 +1037,6 @@ if test x"$ac_cv_header_superglu_h" = x"no"; then
   else
     sim_include_glu_h="#include <GL/glu.h>"
   fi
-else
-  sim_include_glu_h="#include <superglu/include/superglu.h>"
 fi
 
 if test x"$ac_cv_header_GL_glext_h" = x"no"; then
