@@ -29,10 +29,10 @@ while test $# -gt 0; do
       echo @COIN_VERSION@
       ;;
     --cppflags)
-      echo -I@prefix@@includedir@ @COIN_EXTRA_CPPFLAGS@
+      echo -I@includedir@ @COIN_EXTRA_CPPFLAGS@
       ;;
     --ldflags)
-      echo -L@prefix@@libdir@ @COIN_EXTRA_LDFLAGS@
+      echo -L@libdir@ @COIN_EXTRA_LDFLAGS@
       ;;
     --libs)
       echo -lCoin @COIN_EXTRA_LIBS@

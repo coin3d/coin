@@ -1525,3 +1525,17 @@ else
 fi
 ])
 
+dnl  Expand these variables into their correct full directory paths:
+dnl   $prefix  $exec_prefix  $includedir  $libdir
+dnl
+dnl  Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+
+AC_DEFUN(SIM_EXPAND_DIR_VARS,
+[
+test "x$prefix" = xNONE && prefix=$ac_default_prefix
+test "x$exec_prefix" = xNONE && exec_prefix=${prefix}
+includedir=`eval echo $includedir`
+libdir=`eval echo $libdir`
+])
+

@@ -241,6 +241,8 @@ dnl *******************************************************************
 dnl * List all files configure shall generate.
 dnl *******************************************************************
 
+SIM_EXPAND_DIR_VARS
+
 dnl * To be able to generate include/Inventor/SbBasic.h
 test -d include           || mkdir include
 test -d include/Inventor  || mkdir include/Inventor
