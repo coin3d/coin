@@ -18,6 +18,29 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/draggers/SoCenterballDragger.h>
+// FIXME: enable these as they are added. 20000107 mortene.
+//  #include <Inventor/draggers/SoDirectionalLightDragger.h>
+//  #include <Inventor/draggers/SoDragPointDragger.h>
+//  #include <Inventor/draggers/SoHandleBoxDragger.h>
+//  #include <Inventor/draggers/SoJackDragger.h>
+//  #include <Inventor/draggers/SoPointLightDragger.h>
+//  #include <Inventor/draggers/SoRotateCylindricalDragger.h>
+//  #include <Inventor/draggers/SoRotateDiscDragger.h>
+//  #include <Inventor/draggers/SoRotateSphericalDragger.h>
+//  #include <Inventor/draggers/SoScale1Dragger.h>
+//  #include <Inventor/draggers/SoScale2Dragger.h>
+//  #include <Inventor/draggers/SoScale2UniformDragger.h>
+//  #include <Inventor/draggers/SoScaleUniformDragger.h>
+//  #include <Inventor/draggers/SoSpotLightDragger.h>
+//  #include <Inventor/draggers/SoTabBoxDragger.h>
+//  #include <Inventor/draggers/SoTabPlaneDragger.h>
+//  #include <Inventor/draggers/SoTrackballDragger.h>
+//  #include <Inventor/draggers/SoTransformBoxDragger.h>
+//  #include <Inventor/draggers/SoTransformerDragger.h>
+//  #include <Inventor/draggers/SoTranslate1Dragger.h>
+//  #include <Inventor/draggers/SoTranslate2Dragger.h>
+
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbViewVolume.h>
@@ -46,12 +69,35 @@ void
 SoDragger::initClass(void)
 {
   SO_KIT_INTERNAL_INIT_CLASS(SoDragger);
+
+  SoDragger::initClasses();
 }
 
 void
 SoDragger::initClasses(void)
 {
-  COIN_STUB();
+  SoCenterballDragger::initClass();
+// FIXME: enable these as they are added. 20000107 mortene.
+//    SoDirectionalLightDragger::initClass();
+//    SoDragPointDragger::initClass();
+//    SoHandleBoxDragger::initClass();
+//    SoJackDragger::initClass();
+//    SoPointLightDragger::initClass();
+//    SoRotateCylindricalDragger::initClass();
+//    SoRotateDiscDragger::initClass();
+//    SoRotateSphericalDragger::initClass();
+//    SoScale1Dragger::initClass();
+//    SoScale2Dragger::initClass();
+//    SoScale2UniformDragger::initClass();
+//    SoScaleUniformDragger::initClass();
+//    SoSpotLightDragger::initClass();
+//    SoTabBoxDragger::initClass();
+//    SoTabPlaneDragger::initClass();
+//    SoTrackballDragger::initClass();
+//    SoTransformBoxDragger::initClass();
+//    SoTransformerDragger::initClass();
+//    SoTranslate1Dragger::initClass();
+//    SoTranslate2Dragger::initClass();
 }
 
 void

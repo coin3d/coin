@@ -2,10 +2,12 @@
 ## 19991229 mortene.
 
 ALLSOURCES = \
-	SoDragger.cpp SoDragger.h
+	SoDragger.cpp SoDragger.h \
+	SoCenterballDragger.cpp SoCenterballDragger.h
 
 ALLINSTHEADERS = \
-	$(top_srcdir)/include/Inventor/draggers/SoDragger.h
+	$(top_srcdir)/include/Inventor/draggers/SoDragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoCenterballDragger.h
 
 ##$ BEGIN TEMPLATE Make-Common(draggers)
 
