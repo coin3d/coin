@@ -370,8 +370,6 @@ INPUT                = \
 #	$(COINDIR)/include/Inventor/actions/SoCallbackAction.h \
 #	$(COINDIR)/src/actions/SoGLRenderAction.cpp \
 #	$(COINDIR)/include/Inventor/actions/SoGLRenderAction.h \
-#	$(COINDIR)/src/actions/SoGenerateNormalsAction.cpp \
-#	$(COINDIR)/include/Inventor/actions/SoGenerateNormalsAction.h \
 #	$(COINDIR)/src/actions/SoGetBoundingBoxAction.cpp \
 #	$(COINDIR)/include/Inventor/actions/SoGetBoundingBoxAction.h \
 #	$(COINDIR)/src/actions/SoGetMatrixAction.cpp \
@@ -380,8 +378,6 @@ INPUT                = \
 #	$(COINDIR)/include/Inventor/actions/SoGetPrimitiveCountAction.h \
 #	$(COINDIR)/src/actions/SoGlobalSimplifyAction.cpp \
 #	$(COINDIR)/include/Inventor/actions/SoGlobalSimplifyAction.h \
-#	$(COINDIR)/src/actions/SoGraphVerifyAction.cpp \
-#	$(COINDIR)/include/Inventor/actions/SoGraphVerifyAction.h \
 #	$(COINDIR)/src/actions/SoHandleEventAction.cpp \
 #	$(COINDIR)/include/Inventor/actions/SoHandleEventAction.h \
 #	$(COINDIR)/src/actions/SoLineHighlightRenderAction.cpp \

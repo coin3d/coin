@@ -45,9 +45,11 @@
 # What about these old SIM-specific buggers?:
 # <UL>
 # <LI>SoGenerateNormalsAction (really necessary? move outside into
-#     app-land?)</LI>
+#     app-land?) -- moved to the CVS Attic, pick it up again at a 
+#     later time</LI>
 # <LI>SoGraphVerifyAction (don't use action? move out of Coin in app-land?
-#    Call it SoVerifyAction?)</LI>
+#     Call it SoVerifyAction?) -- moved to the CVS Attic, pick it up
+#     again at a later time</LI>
 # <LI>SoURLImportAction (integrate within SoWWWInline and -Anchor?)</LI>
 # </UL>
 #
