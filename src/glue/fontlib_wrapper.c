@@ -33,6 +33,7 @@
 
 #include <Inventor/C/glue/fontlib_wrapper.h>
 #include <Inventor/C/glue/flwfreetype.h>
+#include <Inventor/C/glue/flwwin32.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/base/string.h>
@@ -64,7 +65,11 @@ static SbBool wrapper_initialized = FALSE;
 /* This is the file-global flag that indicates whether or not we can
    and will use the FreeType library. */
 static SbBool freetypelib = FALSE;
-  
+
+/* This is the file-global flag that indicates whether or not we can
+   and will use the Win32 API. */
+static SbBool win32api = FALSE;
+
 #define NOGLYPH -1
 
 /* ********************************************************************** */
@@ -124,7 +129,7 @@ fontstruct_new(void * font)
 static void
 fontstruct_set_fontname(struct cc_fontstruct * fs, const char * newname)
 {
-  assert (fs && newname);
+  assert(fs && newname);
   if (!fs->fontname)
     fs->fontname = cc_string_construct_new();
   cc_string_set_text(fs->fontname, newname);
@@ -133,7 +138,7 @@ fontstruct_set_fontname(struct cc_fontstruct * fs, const char * newname)
 static void
 fontstruct_set_requestname(struct cc_fontstruct * fs, const char * newname)
 {
-  assert (fs && newname);
+  assert(fs && newname);
   if (!fs->requestname)
     fs->requestname = cc_string_construct_new();
   cc_string_set_text(fs->requestname, newname);
@@ -142,7 +147,7 @@ fontstruct_set_requestname(struct cc_fontstruct * fs, const char * newname)
 static void
 fontstruct_set_size(struct cc_fontstruct * fs, const int x, const int y)
 {
-  assert (fs);
+  assert(fs);
   fs->sizex = x;
   fs->sizey = y;
 }
@@ -152,7 +157,7 @@ fontstruct_expand()
 {
   int i;
   struct cc_fontstruct **newfonts;
-  assert (fonts);
+  assert(fonts);
   newfonts = (struct cc_fontstruct **)malloc(sizeof(struct cc_fontstruct*) * 2 * fontmax);
   for (i=0; i<fontmax; i++)
     newfonts[i] = fonts[i];
@@ -167,7 +172,7 @@ static int
 fontstruct_insert(struct cc_fontstruct * fs)
 {
   int i;
-  assert (fs && fonts);
+  assert(fs && fonts);
   /* Check for (and reuse) empty slots */
   for (i=0; i<fontmax; i++) {
     if (!fonts[i]) {
@@ -186,7 +191,7 @@ fontstruct_insert(struct cc_fontstruct * fs)
 static void
 fontstruct_rmglyph(struct cc_fontstruct * fs, int glyph)
 {
-  assert (fs && glyph<fs->glyphcnt && fs->glyphs[glyph].glyph != NOGLYPH);
+  assert(fs && glyph<fs->glyphcnt && fs->glyphs[glyph].glyph != NOGLYPH);
   fs->glyphs[glyph].glyph = NOGLYPH;
   cc_flw_done_bitmap(fs->glyphs[glyph].bitmap);
   fs->glyphs[glyph].bitmap = NULL;
@@ -196,7 +201,7 @@ static void
 fontstruct_rmfont(int font)
 {
   int i;
-  assert (font<fontcnt && fonts[font]);
+  assert(font<fontcnt && fonts[font]);
   if (fonts[font]->fontname)
     cc_string_destruct(fonts[font]->fontname);
   if (fonts[font]->requestname)
@@ -213,7 +218,7 @@ static void
 fontstruct_cleanup()
 {
   int i;
-  assert (fonts);
+  assert(fonts);
   for (i=0; i<fontcnt; i++)
     fontstruct_rmfont(i);
   free(fonts);
@@ -222,7 +227,7 @@ fontstruct_cleanup()
 static void
 fontstruct_dumpfont(struct cc_fontstruct * fs)
 {
-  assert (fs);
+  assert(fs);
   if (cc_flw_debug()) {
     cc_debugerror_postinfo("fontstruct_dumpfont", "  Font %s / %s :\n", cc_string_get_text(fs->fontname), cc_string_get_text(fs->requestname));
     cc_debugerror_postinfo("fontstruct_dumpfont", "    glyphcnt %d\n", fs->glyphcnt);
@@ -235,7 +240,7 @@ static void
 fontstruct_dump()
 {
   int i;
-  assert (fonts); 
+  assert(fonts); 
   if (cc_flw_debug()) {
     cc_debugerror_postinfo("fontstruct_dump", "Fontlib cache: %d fonts.\n", fontcnt);
     for (i=0; i<fontcnt; i++)
@@ -248,7 +253,7 @@ fontstruct_expand_glyphs(struct cc_fontstruct * fs)
 {
   int i;
   struct cc_glyphstruct * newglyphs;
-  assert (fs && fs->glyphs);
+  assert(fs && fs->glyphs);
   newglyphs = (struct cc_glyphstruct *)malloc(sizeof(struct cc_glyphstruct) * 2 * fs->glyphmax);
   for (i=0; i<fs->glyphmax; i++)
     newglyphs[i] = fs->glyphs[i];
@@ -264,7 +269,7 @@ fontstruct_insert_glyph(int font, int glyph, int defaultglyph)
 {
   int i;
   struct cc_fontstruct * fs;
-  assert (font<fontcnt && fonts && fonts[font]);
+  assert(font<fontcnt && fonts && fonts[font]);
   fs = fonts[font];
   /* Check for (and reuse) empty slots */
   for (i=0; i<fs->glyphmax; i++) {
@@ -318,12 +323,20 @@ cc_flw_initialize(void)
                            "FreeType library %s",
                            freetypelib ? "can be used" : "can not be used");
   }
+
+  win32api = cc_flww32_initialize();
+  if (cc_flw_debug()) {
+    cc_debugerror_postinfo("cc_flw_initialize",
+                           "Win32 API %s for font support",
+                           win32api ? "can be used" : "can not be used");
+  }
 }
 
 void
 cc_flw_exit()
 {
   if (freetypelib) { cc_flwft_exit(); }
+  if (win32api) { cc_flww32_exit(); }
 
   fontstruct_cleanup();
 }
@@ -403,22 +416,20 @@ int
 cc_flw_get_font(const char * fontname, const int sizex, const int sizey)
 {
   int i;
-  for (i=0; i< fontcnt; i++) {
+  for (i = 0; i < fontcnt; i++) {
     if ((fonts[i]->defaultfont ||
          (fonts[i]->sizex == sizex && fonts[i]->sizey == sizey)) &&
         !strcmp(fontname, cc_string_get_text(fonts[i]->requestname)))
       break;
   }
 
-  if (i == fontcnt) { i = -1; }
- 
-  return i;
+  return (i == fontcnt) ? -1 : i;
 }
 
 void
 cc_flw_done_font(int font)
 {
-  assert (font >= 0 && font < fontcnt && fonts[font]);
+  assert(font >= 0 && font < fontcnt && fonts[font]);
 
   if (freetypelib) {
     if (!fonts[font]->defaultfont) { cc_flwft_done_font(fonts[font]->font); }
@@ -430,7 +441,7 @@ cc_flw_done_font(int font)
 int
 cc_flw_get_num_charmaps(int font)
 {
-  assert (font >= 0 && font < fontcnt && fonts[font]);
+  assert(font >= 0 && font < fontcnt && fonts[font]);
 
   if (freetypelib && !fonts[font]->defaultfont)
     return cc_flwft_get_num_charmaps(fonts[font]->font);
@@ -438,10 +449,10 @@ cc_flw_get_num_charmaps(int font)
   return 0;
 }
 
-cc_string *
+const char *
 cc_flw_get_charmap_name(int font, int charmap)
 {
-  assert (font >= 0 && font < fontcnt && fonts[font]);
+  assert(font >= 0 && font < fontcnt && fonts[font]);
 
   if (freetypelib && !fonts[font]->defaultfont)
     return cc_flwft_get_charmap_name(fonts[font]->font, charmap);
@@ -450,17 +461,17 @@ cc_flw_get_charmap_name(int font, int charmap)
 }
 
 
-cc_string *
+const char *
 cc_flw_get_font_name(int font)
 {
-  assert (font >= 0 && fonts[font]);
-  return fonts[font]->fontname;
+  assert(font >= 0 && fonts[font]);
+  return cc_string_get_text(fonts[font]->fontname);
 }
 
 int
 cc_flw_set_charmap(int font, int charmap)
 {
-  assert (font >= 0 && font < fontcnt && fonts[font]);
+  assert(font >= 0 && font < fontcnt && fonts[font]);
 
   if (freetypelib && !fonts[font]->defaultfont)
     return cc_flwft_set_charmap(fonts[font]->font, charmap);
@@ -471,7 +482,7 @@ cc_flw_set_charmap(int font, int charmap)
 int
 cc_flw_set_char_size(int font, int width, int height)
 {
-  assert (font >= 0 && font < fontcnt && fonts[font]);
+  assert(font >= 0 && font < fontcnt && fonts[font]);
   fonts[font]->sizex = width;
   fonts[font]->sizey = height;
 
@@ -484,7 +495,7 @@ cc_flw_set_char_size(int font, int width, int height)
 int
 cc_flw_set_font_rotation(int font, float angle)
 {
-  assert (font >= 0 && font < fontcnt && fonts[font]);
+  assert(font >= 0 && font < fontcnt && fonts[font]);
 
   if (freetypelib && !fonts[font]->defaultfont)
     return cc_flwft_set_font_rotation(fonts[font]->font, angle);
@@ -537,7 +548,7 @@ int
 cc_flw_get_advance(int font, int glyph, float *x, float *y)
 {
   struct cc_fontstruct * fs;
-  assert (font >= 0 && font < fontcnt && fonts[font]);
+  assert(font >= 0 && font < fontcnt && fonts[font]);
   fs = fonts[font];
   if (fs->defaultfont || fs->glyphs[glyph].defaultglyph) {
     *x = 8;
@@ -556,7 +567,7 @@ int
 cc_flw_get_kerning(int font, int glyph1, int glyph2, float *x, float *y)
 {
   struct cc_fontstruct * fs;
-  assert (font >= 0 && font < fontcnt && fonts[font]);
+  assert(font >= 0 && font < fontcnt && fonts[font]);
   fs = fonts[font];
   if (fs->defaultfont || fs->glyphs[glyph1].defaultglyph || fs->glyphs[glyph2].defaultglyph) {
     *x = 0;
@@ -577,7 +588,7 @@ void
 cc_flw_done_glyph(int font, int glyph)
 {
   struct cc_fontstruct * fs;
-  assert (font >= 0 && font < fontcnt && fonts[font]);
+  assert(font >= 0 && font < fontcnt && fonts[font]);
   fs = fonts[font];
   if (glyph<fs->glyphcnt && fs->glyphs[glyph].glyph != NOGLYPH) {
 
@@ -598,7 +609,7 @@ cc_flw_get_bitmap(int font, int glyph)
   int i, defaultglyph;
   defaultglyph = 0;
   bm = NULL;
-  assert (font >= 0 && font < fontcnt && fonts[font]);
+  assert(font >= 0 && font < fontcnt && fonts[font]);
   fs = fonts[font];
   if (glyph<fs->glyphcnt && fs->glyphs[glyph].glyph != NOGLYPH) {
     if (fs->glyphs[glyph].bitmap) {

@@ -62,7 +62,7 @@ public:
 
 void * SoFontLibP::apimutex = NULL;
 SbStringList * SoFontLibP::fontfiles = NULL;
-SbDict * SoFontLibP::openfonts;
+SbDict * SoFontLibP::openfonts = NULL;
 
 
 /*************************************************************************/
@@ -185,7 +185,7 @@ SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbV
   // Check if we already know the requestname for this fontname
   if (SoFontLibP::openfonts->find((unsigned long)fontname.getString(), (void *&)strptr)) {
     path = *strptr;
-    font = cc_flw_create_font( path.getString(), size[0], size[1] );
+    font = cc_flw_create_font(path.getString(), size[0], size[1]);
   } 
   else {
     // Check if we know the font file for this font name
@@ -221,20 +221,41 @@ SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbV
     
 #if COIN_DEBUG
     if (cc_flw_debug()) {
-      SoDebugError::postInfo("SoFontLib::createFont", "creating font '%s', using file '%s'", 
+      SoDebugError::postInfo("SoFontLib::createFont",
+                             "font '%s' maps to font filename '%s'", 
                              fontname.getString(), 
-                             path.getLength() > 0 ? path.getString() : "<defaultFont>");
+                             path.getLength() > 0 ?
+                             path.getString() :
+                             "<defaultFont> (will use fontname as-is)");
     }
-#endif
+#endif // COIN_DEBUG
+
+    // File not to be found anywhere, use fontname as is (and get
+    // default font).
+    if (path.getLength() == 0) { path = fontname; }
+
+    font = cc_flw_create_font(path.getString(), size[0], size[1]);
+
+#if COIN_DEBUG
+    if (cc_flw_debug()) {
+      const char * createdfontname = NULL;
+      if (font >=0) { createdfontname = cc_flw_get_font_name(font); }
+      SoDebugError::postInfo("SoFontLib::createFont",
+                             "attempt at creating font from '%s' %s, "
+                             "actual font name is '%s'",
+                             path.getString(),
+                             font >= 0 ? "succeeded" : "failed",
+                             createdfontname ? createdfontname : "<n/a>");
+    }
+#endif // COIN_DEBUG
     
-    // File not to be found anywhere, use fontname as is (and get default font)
-    if (path.getLength() == 0)
-      path = fontname;
-    font = cc_flw_create_font( path.getString(), size[0], size[1] );
-    // Add font to openfonts dict
+    // Add font to openfonts dict.
+    //
+    // FIXME: won't 'font' _always_ be >= 0, due to our fall-back on
+    // the default font? 20030526 mortene.
     if (font >= 0) {
       SbString * newfont = new SbString(path);
-      SoFontLibP::openfonts->enter((unsigned long)fontname.getString(), (void *)newfont);
+      SoFontLibP::openfonts->enter((unsigned long)fontname.getString(), newfont);
     }
   }
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
@@ -246,10 +267,11 @@ int
 SoFontLib::getFont(const SbName &fontname, const SbVec2s &size)
 {
   CC_MUTEX_LOCK(SoFontLibP::apimutex);
-  SbString * requestname;
+  void * val;
   int font = -1;
-  if ( SoFontLibP::openfonts->find((unsigned long)fontname.getString(), (void *&)requestname) ) {
-    font = cc_flw_get_font( requestname->getString(), (int)size[0], (int)size[1]);
+  if (SoFontLibP::openfonts->find((unsigned long)fontname.getString(), val)) {
+    SbString * reqname = (SbString *)val;
+    font = cc_flw_get_font(reqname->getString(), (int)size[0], (int)size[1]);
   }
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
   return font;
@@ -279,15 +301,12 @@ SbString
 SoFontLib::getCharmapName(const int font, const int charmap)
 {
   CC_MUTEX_LOCK(SoFontLibP::apimutex);
-  cc_string * name;
+  const char * name = "unknown";
   if (font >= 0) {
     name = cc_flw_get_charmap_name(font, charmap);
-  } else {
-    name = cc_string_construct_new();
-    cc_string_set_text(name, "unknown");
   }
-  SbString retval = cc_string_get_text(name);
-  cc_string_destruct(name);
+
+  SbString retval(name);
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
   return retval;
 }
@@ -306,7 +325,8 @@ SoFontLib::setDefaultCharmap(const int font)
 {
   assert (font >= 0);
   CC_MUTEX_LOCK(SoFontLibP::apimutex);
-  cc_string * str, * name;
+  const char * str;
+  const char * name;
   int defidx = -1;
   int preference = 0;
   char * charmap = "unknown";
@@ -315,7 +335,7 @@ SoFontLib::setDefaultCharmap(const int font)
 #if COIN_DEBUG
   if (cc_flw_debug()) {
     SoDebugError::postInfo("SoFontLib::setDefaultCharmap", "font '%s' has %d charmaps", 
-                           cc_string_get_text(name), cnt);
+                           name, cnt);
   }
 #endif
   for (int i=0; i<cnt; i++) {
@@ -323,21 +343,20 @@ SoFontLib::setDefaultCharmap(const int font)
 #if COIN_DEBUG
     if (cc_flw_debug()) {
       SoDebugError::postInfo("SoFontLib::setDefaultCharmap", "charmap %d is '%s'", 
-                             i, str ? cc_string_get_text(str) : "<undefined>");
+                             i, str ? str : "<undefined>");
     }
 #endif
     if (str) {
       // We prefer latin_1, but as a fallback unicode will get most characters right.
-      if ( preference < 2 && !strcmp(cc_string_get_text(str), "latin_1") ) {
+      if (preference < 2 && !strcmp(str, "latin_1")) {
         defidx = i;
         charmap = "latin_1";
         preference = 2;
-      } else if ( preference < 1 && !strcmp(cc_string_get_text(str), "unicode") ) {
+      } else if (preference < 1 && !strcmp(str, "unicode")) {
         defidx = i;
         charmap = "unicode";
         preference = 1;
       }
-      cc_string_destruct(str);
     }
   }
   if (defidx >= 0) {
@@ -345,18 +364,17 @@ SoFontLib::setDefaultCharmap(const int font)
 #if COIN_DEBUG
     if (cc_flw_debug()) {
       SoDebugError::postInfo("SoFontLib::setDefaultCharmap", "setting charmap '%s' for font '%s'", 
-                             charmap, cc_string_get_text(name));
+                             charmap, name);
     }
 #endif
   } else {
 #if COIN_DEBUG
     if (cc_flw_debug()) {
       SoDebugError::postWarning("SoFontLib::setDefaultCharmap", "no default charmap for font '%s'", 
-                                cc_string_get_text(name));
+                                name);
     }
 #endif
   }
-  cc_string_destruct(name);
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
 }
 

@@ -39,7 +39,7 @@ cc_string * cc_flwft_get_font_style(void * font) { assert(FALSE); return NULL; }
 void cc_flwft_done_font(void * font) { assert(FALSE); }
 
 int cc_flwft_get_num_charmaps(void * font) { assert(FALSE); return 0; }
-cc_string * cc_flwft_get_charmap_name(void * font, int charmap) { assert(FALSE); return NULL; }
+const char * cc_flwft_get_charmap_name(void * font, int charmap) { assert(FALSE); return NULL; }
 int cc_flwft_set_charmap(void * font, int charmap) { assert(FALSE); return 0; }
 
 int cc_flwft_set_char_size(void * font, int width, int height) { assert(FALSE); return 0; }
@@ -169,7 +169,7 @@ cc_flwft_get_font_name(void * font)
 {
   FT_Face face;
   cc_string * name;
-  assert (font);
+  assert(font);
   face = (FT_Face)font;
   name = cc_string_construct_new();
   cc_string_sprintf(name, "%s %s", face->family_name, face->style_name);
@@ -181,7 +181,7 @@ cc_flwft_get_font_style(void * font)
 {
   FT_Face face;
   cc_string * name;
-  assert (font);
+  assert(font);
   face = (FT_Face)font;
   name = cc_string_construct_new();
   cc_string_set_text(name, face->style_name);
@@ -193,7 +193,7 @@ cc_flwft_done_font(void * font)
 {
   FT_Error error;
   FT_Face face;
-  assert (font);
+  assert(font);
   face = (FT_Face)font;
   error = FT_Done_Face(face);
   if ( error ) {
@@ -204,19 +204,18 @@ cc_flwft_done_font(void * font)
 int
 cc_flwft_get_num_charmaps(void * font)
 {
-  assert (font);
+  assert(font);
   return ((FT_Face)font)->num_charmaps;
 }
 
-cc_string *
+const char *
 cc_flwft_get_charmap_name(void * font, int charmap)
 {
   FT_Face face;
-  char * name = "unknown";
-  cc_string * charmapname;
-  assert (font);
+  const char * name = "unknown";
+  assert(font);
   face = (FT_Face)font;
-  charmapname = cc_string_construct_new();
+
   if (charmap < face->num_charmaps) {
     switch (face->charmaps[charmap]->encoding) {
     case FT_ENCODING_UNICODE:	 
@@ -253,8 +252,8 @@ cc_flwft_get_charmap_name(void * font, int charmap)
       break;
     }
   }
-  cc_string_set_text(charmapname, name);
-  return charmapname;
+
+  return name;
 }
 
 int
@@ -262,7 +261,7 @@ cc_flwft_set_charmap(void * font, int charmap)
 {
   FT_Error error;
   FT_Face face;
-  assert (font);
+  assert(font);
   face = (FT_Face)font;
   if ( charmap < face->num_charmaps) {
     error = FT_Select_Charmap(face, face->charmaps[charmap]->encoding);
@@ -278,7 +277,7 @@ cc_flwft_set_char_size(void * font, int width, int height)
 {
   FT_Error error;
   FT_Face face;
-  assert (font);
+  assert(font);
   face = (FT_Face)font;
   /* FIXME: the input arguments for width and height looks
      bogus. Check against the FreeType API doc. 20030515 mortene. */
@@ -295,7 +294,7 @@ cc_flwft_set_font_rotation(void * font, float angle)
 {
   FT_Matrix matrix;
   FT_Face face;
-  assert (font);
+  assert(font);
   face = (FT_Face)font;
   matrix.xx = (FT_Fixed)( cos(angle)*0x10000);
   matrix.xy = (FT_Fixed)(-sin(angle)*0x10000);
@@ -313,7 +312,7 @@ int
 cc_flwft_get_glyph(void * font, unsigned int charidx)
 {
   FT_Face face;
-  /* assert (font);  */
+  /* assert(font);  */
   face = (FT_Face)font;
   
   /* FIXME: check code paths & reenable assert. Comments follow */
@@ -337,7 +336,7 @@ cc_flwft_get_advance(void * font, int glyph, float *x, float *y)
   FT_Error error;
   FT_Face face;
   int tmp;
-  assert (font);
+  assert(font);
   face = (FT_Face)font;
   error = FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
   if (error) {
@@ -357,7 +356,7 @@ cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y)
   FT_Error error;
   FT_Vector kerning;
   FT_Face face;
-  assert (font);
+  assert(font);
   face = (FT_Face)font;
   if ( FT_HAS_KERNING(face) ) {
     error = FT_Get_Kerning(face, glyph1, glyph2, ft_kerning_default, &kerning);
@@ -390,7 +389,7 @@ cc_flwft_get_bitmap(void * font, int glyph)
   FT_Glyph g;
   FT_BitmapGlyph tfbmg;
   FT_Bitmap * tfbm;
-  assert (font);
+  assert(font);
   
   face = (FT_Face)font;
   error = FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);

@@ -64,11 +64,11 @@ extern "C" {
   void cc_flw_done_font(int font);
 
   int cc_flw_get_num_charmaps(int font);
-  cc_string * cc_flw_get_charmap_name(int font, int charmap);
+  const char * cc_flw_get_charmap_name(int font, int charmap);
   int cc_flw_set_charmap(int font, int charmap);
 
   int cc_flw_set_char_size(int font, int width, int height);
-  cc_string * cc_flw_get_font_name(int font);
+  const char * cc_flw_get_font_name(int font);
   int cc_flw_set_font_rotation(int font, float angle);
 
   int cc_flw_get_glyph(int font, int charidx);

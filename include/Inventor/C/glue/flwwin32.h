@@ -43,7 +43,7 @@ extern "C" {
   void cc_flww32_done_font(void * font);
 
   int cc_flww32_get_num_charmaps(void * font);
-  cc_string * cc_flww32_get_charmap_name(void * font, int charmap);
+  const char * cc_flww32_get_charmap_name(void * font, int charmap);
   int cc_flww32_set_charmap(void * font, int charmap);
 
   int cc_flww32_set_char_size(void * font, int width, int height);

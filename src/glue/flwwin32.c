@@ -44,7 +44,7 @@ cc_string * cc_flww32_get_font_style(void * font) { assert(FALSE); return NULL; 
 void cc_flww32_done_font(void * font) { assert(FALSE); }
 
 int cc_flww32_get_num_charmaps(void * font) { assert(FALSE); return 0; }
-cc_string * cc_flww32_get_charmap_name(void * font, int charmap) { assert(FALSE); return NULL; }
+const char * cc_flww32_get_charmap_name(void * font, int charmap) { assert(FALSE); return NULL; }
 int cc_flww32_set_charmap(void * font, int charmap) { assert(FALSE); return 0; }
 
 int cc_flww32_set_char_size(void * font, int width, int height) { assert(FALSE); return 0; }
@@ -65,9 +65,21 @@ int cc_flww32_get_outline(void * font, int glyph) { assert(FALSE); return 0; }
 #include <stdio.h>
 #include <stddef.h>
 
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <wingdi.h>
+
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/base/string.h>
+
+struct cc_flww32_globals_s {
+  HDC devctx;
+};
+
+static struct cc_flww32_globals_s cc_flww32_globals = {
+  NULL /* devctx */
+};
 
 static SbBool
 cc_debug(void)
@@ -79,12 +91,25 @@ cc_debug(void)
 SbBool
 cc_flww32_initialize(void)
 {
+  cc_flww32_globals.devctx = CreateDC("DISPLAY", NULL, NULL, NULL);
+  if (cc_flww32_globals.devctx == NULL) {
+    /* FIXME: use GetLastError() to report problem, or wrap
+       CreateDC() like in SoWin's Win32API.cpp. 20030526 mortene. */
+    assert(FALSE && "CreateDC() failed");
+    return FALSE;
+  }
   return TRUE;
 }
 
 void
 cc_flww32_exit(void)
 {
+  BOOL ok = DeleteDC(cc_flww32_globals.devctx);
+  if (!ok) {
+    /* FIXME: use GetLastError() to report problem, or wrap like in
+       SoWin's Win32API.cpp. 20030526 mortene. */
+    assert(FALSE && "DeleteDC() failed");
+  }
 }
 
 /* Allocates and returns a new font id matching the exact fontname.
@@ -139,15 +164,13 @@ cc_flww32_get_num_charmaps(void * font)
   return 0;
 }
 
-/* Returns the name string of the character mapping given by the index
+/* Returns the name of the character mapping given by the index
    number. */
-cc_string *
+const char *
 cc_flww32_get_charmap_name(void * font, int charmapidx)
 {
   /* FIXME: unimplemented. 20030515 mortene. */
-  cc_string * charmapname = cc_string_construct_new();
-  cc_string_set_text(charmapname, "unknown");
-  return charmapname;
+  return "unknown";
 }
 
 /* Set the current character translation map. */
