@@ -39,14 +39,15 @@ cfgdata_DATA = coin-@CONFIG@.cfg
 endif
 
 EXTRA_DIST = \
-	ChangeLog.1999 \
-	ChangeLog.2000 \
 	LICENSE.GPL \
 	README.AIX \
 	README.IRIX \
 	README.MAC \
 	README.WIN32 \
 	coin.cfg.in \
+	docs/ChangeLog.1999 \
+	docs/ChangeLog.2000 \
+	docs/ChangeLog.2001 \
 	docs/coin.doxygen.in \
 	cfg/m4/doxy4win.pl \
 	cfg/m4/errors.txt \
