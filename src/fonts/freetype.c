@@ -173,6 +173,8 @@ static flwft_tessellator_t flwft_tessellator;
 
 /* ************************************************************************* */
 
+#ifdef FREETYPE_RUNTIME_LINKING
+
 #ifndef FT_ENC_TAG
 #define FT_ENC_TAG(value, a, b, c, d) \
           value = (((FT_UInt32)(a) << 24) | \
@@ -204,6 +206,7 @@ enum Coin_FT_Encoding {
   FT_ENC_TAG(FT_ENCODING_APPLE_ROMAN, 'a', 'r', 'm', 'n')
   
 };
+#endif // FREETYPE_RUNTIME_LINKING
 
 /* ************************************************************************* */
 
@@ -477,7 +480,7 @@ find_font_file(const char * fontname)
       }
 
       if (found) {
-        /* Stor permanent in global name hash. */
+        /* Store permanent in global name hash. */
         foundfile = cc_namemap_get_address(cc_string_get_text(&str));
         goto done;
       }
