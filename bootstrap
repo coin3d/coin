@@ -23,6 +23,7 @@ PROJECT=Coin
 MACRODIR=cfg/m4
 AUTOMAKE_ADD=
 
+libtoolize=false
 if test "$1" = "--clean"; then
   rm -f aclocal.m4 \
         config.guess \
@@ -36,10 +37,11 @@ if test "$1" = "--clean"; then
         missing \
         mkinstalldirs \
         stamp-h*
-  find . -name Makefile.in -print | xargs rm
+  find . -name Makefile.in -print | xargs rm -f
   exit
 elif test "$1" = "--add"; then
   AUTOMAKE_ADD="--add-missing --gnu --copy"
+  libtoolize=true
 fi
 
 echo "Checking the installed configuration tools..."
@@ -94,8 +96,15 @@ fi
 # abnormal exit?
 ${DIE=false} && echo "" && echo "Aborted." && exit 1
 
+# **************************************************************************
+
 echo "Running aclocal (generating aclocal.m4)..."
 aclocal -I $MACRODIR
+
+if $libtoolize; then
+  libtoolize --copy --force
+  ( cd cfg; patch -p0 < ltmain.sh.diff )
+fi
 
 echo "Running autoconf (generating the configure script)..."
 ( autoconf 3>&1 1>&2 2>&3 | grep -v AR_FLAGS) 3>&1 1>&2 2>&3

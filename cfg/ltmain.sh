@@ -1698,15 +1698,16 @@ compiler."
 	irix)
 	  major=`expr $current - $age + 1`
 	  versuffix="$major.$revision"
-	  verstring="sgi$major.$revision"
+	  verstring="sgi$major"
 
-	  # Add in all the interfaces that we are compatible with.
-	  loop=$revision
-	  while test $loop != 0; do
-	    iface=`expr $revision - $loop`
-	    loop=`expr $loop - 1`
-	    verstring="sgi$major.$iface:$verstring"
-	  done
+#	NB: This part is commented out to fix a problem with IRIX ld.
+#	  # Add in all the interfaces that we are compatible with.
+#	  loop=$revision
+#	  while test $loop != 0; do
+#	    iface=`expr $revision - $loop`
+#	    loop=`expr $loop - 1`
+#	    verstring="sgi$major.$iface:$verstring"
+#	  done
 	  ;;
 
 	linux)
