@@ -422,6 +422,12 @@
     double-quotes and backslashes a while ago, and I believe this
     problem has been fixed now.
 
+    UPDATE 20040614 mortene: backslashes were backslashed, i.e. "\"
+    would become "\\" on export. This does not match the behavior of
+    SGI Inventor, and besides, we don't contract "\\" back to "\" upon
+    import, so I changed the code to write "\" as "\" -- as I tested
+    SGI Inventor to do.
+
 =====================================================================
 
 029 SoSFEnum / SoMFEnum / SoSFBitMask / SoMFBitMask can't be used for
