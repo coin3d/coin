@@ -32,15 +32,25 @@ public:
   SoInput_Reader(void);
   virtual ~SoInput_Reader();
 
+  // add a new enum for each reader that is implemented
   enum ReaderType {
     REGULAR_FILE,
     MEMBUFFER,
     GZFILE
   };
+
+  // must be overloaded to return type
   virtual ReaderType getType(void) const = 0;
+
+  // must be overloaded to read data
   virtual int readBuffer(char * buf, const size_t readlen) = 0;
 
+  // should be overloader to return filename. Default method returns
+  // an empty string.
   virtual const SbString & getFilename(void);
+
+  // default method returns NULL. Should only be overloaded if the
+  // reader uses FILE * to read data.
   virtual FILE * getFilePointer(void);
 
 public:
