@@ -23,6 +23,8 @@
 # ID  SoInteraction
 # id  SoPath
 # id      SoFullPath
+# id      SoTempPath
+#     SoLightPath
 #     SoPickedPoint
 # i   SoPrimitiveVertex
 # id  SoSceneManager

@@ -19,7 +19,7 @@
 
 /*!
   \class SoSFPath SoSFPath.h Inventor/fields/SoSFPath.h
-  \brief The SoSFPath class ...
+  \brief The SoSFPath class is a container for an SoPath object.
   \ingroup fields
 
   FIXME: write class doc
@@ -30,6 +30,7 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoMFPath.h>
 #include <coindefs.h> // COIN_STUB()
 #if COIN_DEBUG
@@ -37,52 +38,43 @@
 #endif // COIN_DEBUG
 
 
-
 SO_SFIELD_SOURCE(SoSFPath, SoPath *, SoPath *);
 
 
-/*!
-  Does initialization common for all objects of the
-  SoSFPath class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoSFPath::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFPath);
 }
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
-SoSFPath::readValue(SoInput * /* in */)
+SoSFPath::readValue(SoInput * in)
 {
-  COIN_STUB();
-  return FALSE;
+  SoBase * baseptr;
+  if (!SoBase::read(in, baseptr, SoPath::getClassTypeId())) return FALSE;
+
+  if (in->eof()) {
+    SoReadError::post(in, "Premature end of file");
+    return FALSE;
+  }
+
+  this->setValue((SoPath *)baseptr);
+  return TRUE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
-SoSFPath::notify(SoNotList * /* list */)
+SoSFPath::notify(SoNotList * l)
 {
   COIN_STUB();
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
-SoSFPath::fixCopy(SbBool /* copyConnections */)
+SoSFPath::fixCopy(SbBool copyconnections)
 {
   COIN_STUB();
 }
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoSFPath::referencesCopy(void) const
 {

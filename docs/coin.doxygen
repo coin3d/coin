@@ -183,6 +183,9 @@ INPUT                = \
 	$(top_srcdir)/src/misc/SoBase.cpp \
 	$(top_srcdir)/include/Inventor/misc/SoBase.h \
 	\
+	$(top_srcdir)/src/misc/SoPath.cpp \
+	$(top_srcdir)/include/Inventor/SoPath.h \
+        \
 	$(top_srcdir)/src/errors/SoError.cpp \
 	$(top_srcdir)/include/Inventor/errors/SoError.h \
 	$(top_srcdir)/src/errors/SoReadError.cpp \
@@ -281,13 +284,13 @@ INPUT                = \
 	$(top_srcdir)/include/Inventor/fields/SoSFNode.h \
 	$(top_srcdir)/src/fields/SoMFNode.cpp \
 	$(top_srcdir)/include/Inventor/fields/SoMFNode.h \
+	$(top_srcdir)/src/fields/SoSFTrigger.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFTrigger.h \
 
 #	$(top_srcdir)/src/fields/SoSFEngine.cpp \
 #	$(top_srcdir)/include/Inventor/fields/SoSFEngine.h \
 #	$(top_srcdir)/src/fields/SoSFPath.cpp \
 #	$(top_srcdir)/include/Inventor/fields/SoSFPath.h \
-#	$(top_srcdir)/src/fields/SoSFTrigger.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoSFTrigger.h \
 #	$(top_srcdir)/src/fields/SoMFEngine.cpp \
 #	$(top_srcdir)/include/Inventor/fields/SoMFEngine.h \
 #	$(top_srcdir)/src/fields/SoMFPath.cpp \
@@ -406,8 +409,6 @@ INPUT                = \
 #	$(top_srcdir)/src/misc/SoChildList.cpp \
 #	$(top_srcdir)/include/Inventor/misc/SoChildList.h \
 #	\
-#	$(top_srcdir)/src/SoPath.cpp \
-#	$(top_srcdir)/include/Inventor/SoPath.h \
 #	$(top_srcdir)/src/SoFullPath.cpp \
 #	$(top_srcdir)/include/Inventor/SoFullPath.h \
 #	\
@@ -1020,7 +1021,7 @@ HTML_FOOTER          =
 # fine-tune the look of the HTML output. If the tag is left blank doxygen
 # will generate a default style sheet
 
-HTML_STYLESHEET      =
+HTML_STYLESHEET      = #coin.css
 
 # If the HTML_ALIGN_MEMBERS tag is set to YES, the members of classes,
 # files or namespaces will be aligned in HTML using tables. If set to

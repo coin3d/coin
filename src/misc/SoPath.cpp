@@ -25,6 +25,10 @@
   SoPath objects contain a list of SoNode pointers and a list of child
   indices. Indices are necessary to disambiguate situations where a
   node uses the same node as a child multiple times.
+
+  Paths can be export and imported to/from file, like other SoBase
+  derived objects. Read the documentation on the write() method to see
+  how the file format is.
 */
 
 // FIXME:
@@ -37,8 +41,10 @@
 #include <Inventor/SoPath.h>
 
 #include <Inventor/SbString.h>
+#include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -810,11 +816,38 @@ SoPath::initClass(void)
 
 // *************************************************************************
 
-// This virtual method is used to read a SoPath from the in stream.
+// This virtual method is used to read an SoPath from the input
+// stream. See the documentation on write() for an explanation of the
+// file format.
 SbBool
 SoPath::readInstance(SoInput * in, unsigned short flags)
 {
-  COIN_STUB();
+  SoBase * baseptr;
+  if (!SoBase::read(in, baseptr, SoNode::getClassTypeId())) return FALSE;
+  this->setHead((SoNode *)baseptr);
+
+  int nrindices;
+  if (!in->read(nrindices)) {
+    SoReadError::post(in, "Couldn't read number of indices");
+    return FALSE;
+  }
+  
+  for (int i=0; i < nrindices; i++) {
+    int index;
+    if (!in->read(index)) {
+      SoReadError::post(in, "Couldn't read index value");
+      return FALSE;
+    }
+
+    SoChildList * tailchildren = this->getTail()->getChildren();
+    if (!tailchildren || index < 0 || index >= tailchildren->getLength()) {
+      SoReadError::post(in, "Invalid index value %d", index);
+      return FALSE;
+    }
+
+    this->append(index);
+  }
+  
   return TRUE;
 }
 

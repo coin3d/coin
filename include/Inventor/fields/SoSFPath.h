@@ -35,8 +35,8 @@ class SoSFPath : public SoSField {
 public:
   static void initClass(void);
 
-  virtual void notify(SoNotList * list);
-  virtual void fixCopy(SbBool copyConnections);
+  virtual void notify(SoNotList * l);
+  virtual void fixCopy(SbBool copyconnections);
   virtual SbBool referencesCopy(void) const;
 
 private:
