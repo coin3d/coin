@@ -153,31 +153,11 @@ protected:
   void updateDraggerCache(const SoPath * path);
 
 private:
-  static float minscale;
-  int mingesture;
-  SoHandleEventAction * eventaction;
-  ProjectorFrontSetting frontonprojector;
-  SbBool valuechangedcbenabled;
-  SbBool ignoreinbbox;
-  const SoEvent * currentevent;
-  SoPath * pickedpath;
-  class SoDraggerCache * draggercache;
-
-  SoCallbackList startCB;
-  SoCallbackList motionCB;
-  SoCallbackList finishCB;
-  SoCallbackList valueChangedCB;
-  SoCallbackList otherEventCB;
-  SbMatrix startmotionmatrix;
-  SbVec3f startingpoint;
-  SbViewVolume viewvolume;
-  SbViewportRegion viewport;
-  SbVec2s startlocaterpos;
-  SoDragger * activechilddragger;
-  SbBool isgrabbing;
-
   SbBool isPicked(SoPath * path);
   void eventHandled(const SoEvent * event, SoHandleEventAction * action);
+  static float minscale;
+  
+  class SoDraggerP * pimpl;
 };
 
 #endif // !COIN_SODRAGGER_H
