@@ -136,6 +136,9 @@ public:
                              const SbBool color, const SbBool normal,
                              const SbBool texture, const SbBool * enabled,
                              const int lastenabled);
+
+  static void vbo_schedule(unsigned long key, void * value);
+  static void vbo_delete(void * closure, uint32_t contextid);
 };
 
 #undef PRIVATE
@@ -220,8 +223,7 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
 */
 SoPrimitiveVertexCache::~SoPrimitiveVertexCache()
 {
-  // FIXME: schedule delete for VBOs. Need a new function in
-  // SoGLCacheContextElement.  pederb, 2004-02-24
+  PRIVATE(this)->vbodict.applyToAll(SoPrimitiveVertexCacheP::vbo_schedule);
   if (PRIVATE(this)->lastenabled >= 1) {
     delete[] PRIVATE(this)->multitexcoords;
   }
@@ -238,7 +240,7 @@ SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
   const SbBool * enabled = NULL;
   const SbBool normal = (arrays & NORMAL) != 0;
   const SbBool texture = (arrays & TEXCOORD) != 0;
-  SbBool color = this->colorPerVertex() && ((arrays & COLOR) != 0);  
+  const SbBool color = this->colorPerVertex() && ((arrays & COLOR) != 0);  
   if (texture) {
     enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
   }
@@ -921,6 +923,45 @@ SoPrimitiveVertexCacheP::countVBOSize(const cc_glglue * glue,
     size += this->indices.getLength()*sizeof(int32_t);
   }
   return size;
+}
+
+void
+SoPrimitiveVertexCacheP::vbo_schedule(unsigned long key,
+                                      void * value)
+{
+  SoGLCacheContextElement::scheduleDeleteCallback((uint32_t) key,
+                                                  vbo_delete, value);
+}
+
+void
+SoPrimitiveVertexCacheP::vbo_delete(void * closure, uint32_t contextid)
+{
+  SoPrimitiveVertexCache_vboidx * vbo =
+    (SoPrimitiveVertexCache_vboidx *) closure;
+  
+  const cc_glglue * glue = cc_glglue_instance((int)contextid);
+  if (vbo->triangleindex) {
+    cc_glglue_glDeleteBuffers(glue, 1, &vbo->triangleindex);
+  }
+  if (vbo->vertex) {
+    cc_glglue_glDeleteBuffers(glue, 1, &vbo->vertex);
+  }
+  if (vbo->normal) {
+    cc_glglue_glDeleteBuffers(glue, 1, &vbo->normal);
+  }
+  if (vbo->texcoord0) {
+    cc_glglue_glDeleteBuffers(glue, 1, &vbo->texcoord0);
+  }
+  if (vbo->rgba) {
+    cc_glglue_glDeleteBuffers(glue, 1, &vbo->rgba);
+  }
+
+  for (int i = 1; i < MAX_UNITS; i++) {
+    if (vbo->multitex[i]) {
+      cc_glglue_glDeleteBuffers(glue, 1, &vbo->multitex[i]);
+    }
+  }
+  delete vbo;
 }
 
 
