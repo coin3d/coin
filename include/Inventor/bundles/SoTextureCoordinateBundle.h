@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -42,14 +42,14 @@ class SoTextureCoordinateCache;
 class SoTextureCoordinateBundle : public SoBundle {
   typedef SoBundle inherited;
 public:
-  SoTextureCoordinateBundle(SoAction * const action, 
-			    const SbBool forRendering,
-			    const SbBool setUpDefault = TRUE);
+  SoTextureCoordinateBundle(SoAction * const action,
+                            const SbBool forRendering,
+                            const SbBool setUpDefault = TRUE);
   ~SoTextureCoordinateBundle();
 
   SbBool needCoordinates() const;
   SbBool isFunction() const;
-  
+
   const SbVec4f &get(const int index);
   const SbVec4f &get(const SbVec3f &point, const SbVec3f &normal);
 
@@ -58,11 +58,11 @@ public:
     glElt->send(index);
   }
   void send(const int index, const SbVec3f &point,
-	    const SbVec3f &normal) const {
+            const SbVec3f &normal) const {
     glElt->send(index, point, normal);
   }
 #endif // ! COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT
-  
+
 private:
   const SoTextureCoordinateElement *coordElt;
   const SoGLTextureCoordinateElement *glElt;

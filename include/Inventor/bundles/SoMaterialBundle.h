@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -51,13 +51,13 @@ public:
   SbBool isColorOnly() const;
 
   void setPacked(const uint32_t *packed,
-		 const int num);
+                 const int num);
 
 private:
 
   void reallySend(const int index, const SbBool isBetweenBeginEnd);
   void setupElements(const SbBool betweenBeginEnd);
-  
+
   SbBool doStipple;
   SbBool firstTime;
   SbBool colorOnly;

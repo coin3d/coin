@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -40,7 +40,7 @@ SoCache::SoCache(SoState * const state)
   this->invalidated = FALSE;
   if (state)
     this->stateDepth = state->getDepth();
-  else 
+  else
     this->stateDepth = 0;
 }
 
@@ -51,11 +51,11 @@ SoCache::~SoCache()
 {
   delete [] this->elementFlags;
 }
-  
+
 /*!
   Increases the reference count by one.
 */
-void 
+void
 SoCache::ref()
 {
   this->refCount++;
@@ -66,7 +66,7 @@ SoCache::ref()
   zero, the cache is deleted. The SoCache::destroy() method is called
   before the destructor is called.
 */
-void 
+void
 SoCache::unref(SoState *state)
 {
   if (--this->refCount == 0) {
@@ -79,7 +79,7 @@ SoCache::unref(SoState *state)
 /*!
   Adds \a elem to the list of elements this cache depends on.
 */
-void 
+void
 SoCache::addElement(const SoElement * const elem)
 {
   this->elements.append((void*)elem);
@@ -89,7 +89,7 @@ SoCache::addElement(const SoElement * const elem)
 /*!
   Adds dependencies from \a cache to this cache.
 */
-void 
+void
 SoCache::addCacheDependency(const SoState * /* state */, SoCache * /* cache */)
 {
   assert(0);
@@ -97,8 +97,8 @@ SoCache::addCacheDependency(const SoState * /* state */, SoCache * /* cache */)
 
 /*!
   Return \e TRUE if this cache is valid, \e FALSE otherwise.
-*/ 
-SbBool 
+*/
+SbBool
 SoCache::isValid(const SoState * /* state */) const
 {
   if (this->invalidated) return FALSE;
@@ -108,7 +108,7 @@ SoCache::isValid(const SoState * /* state */) const
 
 /*!
   Returns the element that caused the invalidation. Returns \e NULL
-  if the cache is valid, or if the cache was not invalidated 
+  if the cache is valid, or if the cache was not invalidated
   bacause of an element.
 */
 const SoElement *
@@ -123,7 +123,7 @@ SoCache::getInvalidElement(const SoState * const state) const
 /*!
   Forces an cache to be invalid.
 */
-void 
+void
 SoCache::invalidate()
 {
   this->invalidated = TRUE;
@@ -133,7 +133,7 @@ SoCache::invalidate()
   Can be overloaded by subclasses to clean up before they are
   deleted. Default method does nothing.
 */
-void 
+void
 SoCache::destroy(SoState *)
 {
 }

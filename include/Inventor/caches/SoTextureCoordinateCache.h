@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -34,8 +34,8 @@ public:
 
   // TODO: more ways to generate texture coordinates
   void generate(const SbBox3f &bbox, const SbVec3f *vertices,
-		const int numvertices);
-  
+                const int numvertices);
+
   const SbVec2f *get() const;
   int getNum() const;
 

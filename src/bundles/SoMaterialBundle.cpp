@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -92,7 +92,7 @@ SoMaterialBundle::~SoMaterialBundle()
 /*!
   Currently not in use. It is only provided for OIV comliance.
 */
-void 
+void
 SoMaterialBundle::setUpMultiple()
 {
 }
@@ -101,29 +101,29 @@ SoMaterialBundle::setUpMultiple()
   Sends the initial material values to GL. Must be done once in all
   geometry nodes before the rendering begins.
 */
-void 
+void
 SoMaterialBundle::sendFirst()
 {
   this->setupElements(FALSE);
-  this->reallySend(0, FALSE);  
+  this->reallySend(0, FALSE);
 
   // a small optimization to avoid uneccesary material
   // testing (it is most common to have multiple diffuse values)
   if (!diffuseOnly) {
-    if (TRUE && 
+    if (TRUE &&
 #if !defined(COIN_EXCLUDE_SOGLAMBIENTCOLORELEMENT)
-	ambientElt->getNum() <= 1 &&
+        ambientElt->getNum() <= 1 &&
 #endif
 #if !defined(COIN_EXCLUDE_SOGLSPECULARCOLORELEMENT)
-	specularElt->getNum() <= 1 &&
+        specularElt->getNum() <= 1 &&
 #endif
 #if !defined(COIN_EXCLUDE_SOGLEMISSIVECOLORELEMENT)
-	emissiveElt->getNum() <= 1 &&
+        emissiveElt->getNum() <= 1 &&
 #endif
 #if !defined(COIN_EXCLUDE_SOGLSHININESSELEMENT)
-	shininessElt->getNum() <= 1
+        shininessElt->getNum() <= 1
 #endif
-	) diffuseOnly = TRUE;
+        ) diffuseOnly = TRUE;
   }
 }
 
@@ -131,12 +131,12 @@ SoMaterialBundle::sendFirst()
   Sends material values with index \a index to GL. Will test
   whether the current index equals \a index before sending.
 
-  \a betweenBeginEnd should be \e TRUE if your program is 
+  \a betweenBeginEnd should be \e TRUE if your program is
   between a glBegin() and glEnd() (it is illegal to change
   polygon stipple between a glBegin() and glEnd()).
 
 */
-void 
+void
 SoMaterialBundle::send(const int index, const SbBool betweenBeginEnd)
 {
   if (this->firstTime) this->setupElements(FALSE);
@@ -149,7 +149,7 @@ SoMaterialBundle::send(const int index, const SbBool betweenBeginEnd)
   Will send the material to GL even though \a index equals
   the current index. Provided for OIV compability.
 */
-void 
+void
 SoMaterialBundle::forceSend(const int index)
 {
   if (this->firstTime) this->setupElements(FALSE);
@@ -159,7 +159,7 @@ SoMaterialBundle::forceSend(const int index)
 /*!
   Returns \e TRUE if the current light model is BASE_COLOR.
 */
-SbBool 
+SbBool
 SoMaterialBundle::isColorOnly() const
 {
   return this->colorOnly;
@@ -168,7 +168,7 @@ SoMaterialBundle::isColorOnly() const
 //
 // private method. Will send the material values to GL.
 //
-void 
+void
 SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
 {
 #if !defined(COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT)
@@ -189,18 +189,18 @@ SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
   }
 #endif // !COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT
 
-  // FIXME: probably not needed anymore. It was an ugly piece 
+  // FIXME: probably not needed anymore. It was an ugly piece
   // of code anyway... pederb, 990608
   if (packedColors) {
     if (1 || index != this->currPacked) {
       this->currPacked = index;
-      if (this->currPacked >= this->numPacked) 
-	this->currPacked = this->numPacked - 1;
+      if (this->currPacked >= this->numPacked)
+        this->currPacked = this->numPacked - 1;
       uint32_t p = packedColors[this->currPacked];
       glColor4ub((p&0xff000000)>>24,
-		 (p&0xff0000)>>16,
-		 (p&0xff00)>>8,
-		 p&0xff);
+                 (p&0xff0000)>>16,
+                 (p&0xff00)>>8,
+                 p&0xff);
     }
   }
 #if !defined(COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT)
@@ -242,7 +242,7 @@ SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
 //
 // private method. Stores info and element pointers.
 //
-void 
+void
 SoMaterialBundle::setupElements(const SbBool /* betweenBeginEnd */)
 {
   this->currIndex = -1; // set to an impossible value
@@ -252,14 +252,14 @@ SoMaterialBundle::setupElements(const SbBool /* betweenBeginEnd */)
 #else // COIN_EXCLUDE_SOSHAPESTYLEELEMENT
   this->doStipple = TRUE;
 #endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
-  this->diffuseOnly = this->colorOnly = 
+  this->diffuseOnly = this->colorOnly =
     SoLightModelElement::get(this->state) ==
     SoLightModelElement::BASE_COLOR;
-  
+
 #if !defined(COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT)
   diffuseElt = (SoGLDiffuseColorElement*)
     state->getConstElement(SoGLDiffuseColorElement::getClassStackIndex());
-  if (diffuseElt->isPacked()) 
+  if (diffuseElt->isPacked())
     setPacked(diffuseElt->packedColors, diffuseElt->numColors);
 #endif // !COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT
 #if !defined(COIN_EXCLUDE_SOTRANSPARENCYELEMENT)
@@ -297,7 +297,7 @@ SoMaterialBundle::setupElements(const SbBool /* betweenBeginEnd */)
 /*!
   FIXME: document (pederb)
 */
-void 
+void
 SoMaterialBundle::setPacked(const uint32_t * /* packed */, const int /* num */)
 {
 //   this->packedColors = packed;

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -35,10 +35,10 @@
 /*!
   \enum SoConvexDataCache::Binding
   \brief The Binding enum is used to specify bindings.
-  
+
   Binding applies to normals, materials and texture coordinates.
 */
-  
+
 
 /*!
   Constructor with \a state being the current state.
@@ -62,7 +62,7 @@ SoConvexDataCache::~SoConvexDataCache()
 const int32_t *
 SoConvexDataCache::getCoordIndices() const
 {
-  if (this->coordIndices.getLength()) 
+  if (this->coordIndices.getLength())
     return this->coordIndices.constArrayPointer();
   return NULL;
 }
@@ -71,7 +71,7 @@ SoConvexDataCache::getCoordIndices() const
   Returns the number of coordinate indices.
   \sa SoConvexDataCache::getCoordIndices()
 */
-int 
+int
 SoConvexDataCache::getNumCoordIndices() const
 {
   return this->coordIndices.getLength();
@@ -84,7 +84,7 @@ SoConvexDataCache::getNumCoordIndices() const
 const int32_t *
 SoConvexDataCache::getMaterialIndices() const
 {
-  if (this->materialIndices.getLength()) 
+  if (this->materialIndices.getLength())
     return this->materialIndices.constArrayPointer();
   return NULL;
 }
@@ -93,7 +93,7 @@ SoConvexDataCache::getMaterialIndices() const
   Returns the number of material indices.
   \sa SoConvexDataCache::getMaterialIndices()
 */
-int 
+int
 SoConvexDataCache::getNumMaterialIndices() const
 {
   return this->materialIndices.getLength();
@@ -106,7 +106,7 @@ SoConvexDataCache::getNumMaterialIndices() const
 const int32_t *
 SoConvexDataCache::getNormalIndices() const
 {
-  if (this->normalIndices.getLength()) 
+  if (this->normalIndices.getLength())
     return this->normalIndices.constArrayPointer();
   return NULL;
 }
@@ -115,7 +115,7 @@ SoConvexDataCache::getNormalIndices() const
   Returns the number of normal indices.
   \sa SoConvexDataCache::getNormalIndices()
 */
-int 
+int
 SoConvexDataCache::getNumNormalIndices() const
 {
   return this->normalIndices.getLength();
@@ -128,24 +128,24 @@ SoConvexDataCache::getNumNormalIndices() const
 const int32_t *
 SoConvexDataCache::getTexIndices() const
 {
-  if (this->texIndices.getLength()) 
+  if (this->texIndices.getLength())
     return this->texIndices.constArrayPointer();
   return NULL;
-  
+
 }
 
 /*!
   Returns the number of texture coordinate indices.
   \sa SoConvexDataCache::getTexIndices()
 */
-int 
+int
 SoConvexDataCache::getNumTexIndices() const
 {
   return this->texIndices.getLength();
 }
 
 
-typedef struct 
+typedef struct
 {
   int  matnr;
   int  texnr;
@@ -179,18 +179,18 @@ typedef struct {
 /*!
   Generates the convexified data. FIXME: doc
 */
-void 
-SoConvexDataCache::generate(const SoCoordinateElement * const coords, 
-			    const int32_t *vind,
-			    const int numv,
-			    const int32_t *mind, const int32_t *nind,
-			    const int32_t *tind,
-			    const Binding matbind, const Binding normbind,
-			    const Binding texbind)
+void
+SoConvexDataCache::generate(const SoCoordinateElement * const coords,
+                            const int32_t *vind,
+                            const int numv,
+                            const int32_t *mind, const int32_t *nind,
+                            const int32_t *tind,
+                            const Binding matbind, const Binding normbind,
+                            const Binding texbind)
 {
 #if COIN_DEBUG
-  SoDebugError::postInfo("SoConvexDataCache::generate", 
-			 "generating convex data"); 
+  SoDebugError::postInfo("SoConvexDataCache::generate",
+                         "generating convex data");
 #endif
 
   // remove old data
@@ -223,17 +223,17 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
 
   // create tessellator
   SbTesselator tessellator(do_triangle, &tessdata);
-  
+
   // if PER_FACE binding, the binding must change to PER_FACE_INDEXED
   // if convexify data is used.
   tessdata.vertexIndex = &this->coordIndices;
-  if (matbind != NONE) 
+  if (matbind != NONE)
     tessdata.matIndex = &this->materialIndices;
-  if (normbind != NONE) 
+  if (normbind != NONE)
     tessdata.normIndex = &this->normalIndices;
   if (texbind != NONE)
     tessdata.texIndex = &this->texIndices;
-  
+
   tessellator.beginPolygon();
   for (int i = 0; i < numv; i++) {
     if (vind[i] < 0) {
@@ -242,31 +242,31 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
       if (normbind != PER_VERTEX) normnr++;
       if (texbind == PER_VERTEX_INDEXED) texnr++;
       if (i < numv - 1) { // if not last polygon
-	tessellator.beginPolygon();
+        tessellator.beginPolygon();
       }
     }
     else {
       tessdata.vertexInfo[i].vertexnr = vind[i];
       if (mind)
-	tessdata.vertexInfo[i].matnr = mind[matnr];
+        tessdata.vertexInfo[i].matnr = mind[matnr];
       else tessdata.vertexInfo[i].matnr = matnr;
       if (matbind >= PER_VERTEX) {
-	matnr++;
+        matnr++;
       }
       if (nind)
-	tessdata.vertexInfo[i].normnr = nind[normnr];
+        tessdata.vertexInfo[i].normnr = nind[normnr];
       else tessdata.vertexInfo[i].normnr = normnr;
       if (normbind >= PER_VERTEX)
-	normnr++;
+        normnr++;
       if (tind)
-	tessdata.vertexInfo[i].texnr = tind[texnr++];
+        tessdata.vertexInfo[i].texnr = tind[texnr++];
       else
-	tessdata.vertexInfo[i].texnr = texnr++;
-      tessellator.addVertex(coords->get3(vind[i]), 
-			    (void*)&tessdata.vertexInfo[i]);
+        tessdata.vertexInfo[i].texnr = texnr++;
+      tessellator.addVertex(coords->get3(vind[i]),
+                            (void*)&tessdata.vertexInfo[i]);
     }
   }
-  
+
   delete [] tessdata.vertexInfo;
 
   // get rid of wasted memory. Is not absolutely necessary,
@@ -280,26 +280,26 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
 //
 // helper function for do_triangle() below
 //
-static void 
+static void
 vertex_tri(tVertexInfo *info, tTessData *tessdata)
 {
   tessdata->vertexIndex->append(info->vertexnr);
   tessdata->numvertexind++;
-  
-  if (tessdata->matIndex && 
-      (tessdata->firstvertex || 
+
+  if (tessdata->matIndex &&
+      (tessdata->firstvertex ||
        tessdata->matbind >= SoConvexDataCache::PER_VERTEX)) {
     tessdata->matIndex->append(info->matnr);
     tessdata->nummatind++;
   }
-  
-  if (tessdata->normIndex && 
-      (tessdata->firstvertex || 
+
+  if (tessdata->normIndex &&
+      (tessdata->firstvertex ||
        tessdata->normbind >= SoConvexDataCache::PER_VERTEX)) {
     tessdata->normIndex->append(info->normnr);
     tessdata->numnormind++;
   }
-  if (tessdata->texIndex && 
+  if (tessdata->texIndex &&
       tessdata->texbind != SoConvexDataCache::NONE) {
     tessdata->texIndex->append(info->texnr);
     tessdata->numtexind++;
@@ -309,8 +309,8 @@ vertex_tri(tVertexInfo *info, tTessData *tessdata)
 
 //
 // handles callbacks from SbTesselator
-// 
-static void 
+//
+static void
 do_triangle(void *v0, void *v1, void *v2, void *data)
 {
   tTessData *tessdata = (tTessData*)data;
@@ -318,21 +318,21 @@ do_triangle(void *v0, void *v1, void *v2, void *data)
   vertex_tri((tVertexInfo*)v0, tessdata);
   vertex_tri((tVertexInfo*)v1, tessdata);
   vertex_tri((tVertexInfo*)v2, tessdata);
-  
+
   tessdata->vertexIndex->append(-1);
-  if (tessdata->matIndex && 
+  if (tessdata->matIndex &&
       tessdata->matbind >= SoConvexDataCache::PER_VERTEX) {
     tessdata->matIndex->append(-1);
     tessdata->nummatind++;
   }
-  if (tessdata->normIndex && 
+  if (tessdata->normIndex &&
       tessdata->normbind >= SoConvexDataCache::PER_VERTEX) {
     tessdata->normIndex->append(-1);
     tessdata->numnormind++;
   }
-  if (tessdata->texIndex && 
+  if (tessdata->texIndex &&
       tessdata->texbind != SoConvexDataCache::NONE) {
     tessdata->texIndex->append(-1);
     tessdata->numtexind++;
-  } 
+  }
 }

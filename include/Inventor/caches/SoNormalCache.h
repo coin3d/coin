@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -33,59 +33,59 @@ class SoNormalCache : public SoCache {
 public:
   SoNormalCache(SoState * const state);
   ~SoNormalCache();
-  
+
   void set(const int num, const SbVec3f * const normals);
   void set(SoNormalGenerator *generator);
-  
+
   void generatePerVertex(const SbVec3f * const coords,
-			 const int32_t *coordindices, 
-			 const int numcoordindices,
-			 const float crease_angle,
-			 const SbVec3f *facenormals = NULL,
-			 const SbBool ccw = TRUE,
-			 const int numFaces = -1,
-			 const SbBool tristrip = FALSE);
-  
+                         const int32_t *coordindices,
+                         const int numcoordindices,
+                         const float crease_angle,
+                         const SbVec3f *facenormals = NULL,
+                         const SbBool ccw = TRUE,
+                         const int numFaces = -1,
+                         const SbBool tristrip = FALSE);
+
 
   void generatePerFace(const SbVec3f * const coords,
-		       const int32_t *coordindices,
-		       const int numcoorindices,
-		       const SbBool ccw,
-		       const int numFaces = -1);
+                       const int32_t *coordindices,
+                       const int numcoorindices,
+                       const SbBool ccw,
+                       const int numFaces = -1);
 
   void generatePerFaceStrip(const SbVec3f * const coords,
-			    const int32_t *coordindices,
-			    const int numcoorindices,
-			    const SbBool ccw,
-			    const int numFaces = -1);
-  
+                            const int32_t *coordindices,
+                            const int numcoorindices,
+                            const SbBool ccw,
+                            const int numFaces = -1);
+
   void generatePerStrip(const SbVec3f * const coords,
-			const int32_t *coordindices,
-			const int numcoorindices,
-			const SbBool ccw,
-			const int numStrips = -1);
+                        const int32_t *coordindices,
+                        const int numcoorindices,
+                        const SbBool ccw,
+                        const int numStrips = -1);
 
   void generatePerVertexQuad(const SbVec3f * const coords,
-			     const int vPerRow,
-			     const int vPerColumn,
-			     const SbBool ccw);
+                             const int vPerRow,
+                             const int vPerColumn,
+                             const SbBool ccw);
 
   void generatePerFaceQuad(const SbVec3f * const coords,
-			   const int vPerRow,
-			   const int vPerColumn,
-			   const SbBool ccw);
+                           const int vPerRow,
+                           const int vPerColumn,
+                           const SbBool ccw);
 
   void generatePerRowQuad(const SbVec3f * const coords,
-			  const int vPerRow,
-			  const int vPerColumn,
-			  const SbBool ccw);
-  
+                          const int vPerRow,
+                          const int vPerColumn,
+                          const SbBool ccw);
+
   int getNum() const;
   const SbVec3f *getNormals() const;
 
   int getNumIndices() const;
   const int32_t *getIndices() const;
-  
+
 private:
   int numNormals;
   union {

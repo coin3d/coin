@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -29,14 +29,14 @@ class SoElement;
 class SoCache {
 public:
   SoCache(SoState * const state);
-  
+
   void ref();
   void unref(SoState *state = NULL);
 
   void addElement(const SoElement * const elem);
-  
+
   virtual void addCacheDependency(const SoState *state,
-				  SoCache *cache);
+                                  SoCache *cache);
   virtual SbBool isValid(const SoState *state) const;
   const SoElement *getInvalidElement(const SoState * const state) const;
   void invalidate();

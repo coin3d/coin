@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -56,12 +56,12 @@ SoNormalCache::~SoNormalCache()
 {
   clearGenerator();
 }
-  
+
 /*!
   Sets an array of normals for this cache. The normals will not
   be deleted when the instance is deleted.
 */
-void 
+void
 SoNormalCache::set(const int num, const SbVec3f * const normals)
 {
   this->clearGenerator();
@@ -88,7 +88,7 @@ SoNormalCache::set(SoNormalGenerator *generator)
 /*!
   Returns the number of normals in the cache.
 */
-int 
+int
 SoNormalCache::getNum() const
 {
   if (this->numNormals == 0 && this->normalData.generator) {
@@ -113,7 +113,7 @@ SoNormalCache::getNormals() const
   Returns the number of indices in this cache. Normals are
   generated with PER_VERTEX_INDEXED binding.
 */
-int 
+int
 SoNormalCache::getNumIndices() const
 {
   return this->indices.getLength();
@@ -130,9 +130,9 @@ SoNormalCache::getIndices() const
   return NULL;
 }
 
-static int 
+static int
 count_faces(const int32_t *ptr,
-	    const int numindices)
+            const int numindices)
 {
   const int32_t *endptr = ptr + numindices;
   int cnt = 0;
@@ -144,7 +144,7 @@ count_faces(const int32_t *ptr,
 
 static int
 count_strip_faces(const int32_t *ptr,
-		  const int numindices)
+                  const int numindices)
 {
   const int32_t *endptr = ptr + numindices;
   int cnt = 0;
@@ -157,9 +157,9 @@ count_strip_faces(const int32_t *ptr,
 
 }
 
-static int 
+static int
 count_strips(const int32_t *ptr,
-	     const int numindices)
+             const int numindices)
 {
   const int32_t *endptr = ptr + numindices;
   int cnt = 0;
@@ -172,13 +172,13 @@ count_strips(const int32_t *ptr,
 }
 
 //
-// calculates the normal vector for a vertex, based on the 
+// calculates the normal vector for a vertex, based on the
 // normal vectors of all incident faces
 //
-static void 
-calc_normal_vec(const SbVec3f *facenormals, const int facenum, 
-		SbList <int32_t> &faceArray, const float threshold,
-		SbVec3f &vertnormal)
+static void
+calc_normal_vec(const SbVec3f *facenormals, const int facenum,
+                SbList <int32_t> &faceArray, const float threshold,
+                SbVec3f &vertnormal)
 {
   // start with face normal vector
   const SbVec3f *facenormal = &facenormals[facenum];
@@ -192,7 +192,7 @@ calc_normal_vec(const SbVec3f *facenormals, const int facenum,
     if (currface != facenum) { // check all but this face
       const SbVec3f &normal = facenormals[currface];
       if ((normal.dot(*facenormal)) > threshold) {
-	// smooth towards this face
+        // smooth towards this face
         vertnormal += normal;
       }
     }
@@ -206,15 +206,15 @@ calc_normal_vec(const SbVec3f *facenormals, const int facenum,
   the vertex normals are calculated. \a triStrip should be
   \e TRUE if the geometry consists of triangle strips.
 */
-void 
+void
 SoNormalCache::generatePerVertex(const SbVec3f * const coords,
-				 const int32_t *vindex, 
-				 const int numvi,
-				 const float crease_angle,
-				 const SbVec3f *facenormals,
-				 const SbBool ccw,
-				 const int numFaces,
-				 const SbBool tristrip)
+                                 const int32_t *vindex,
+                                 const int numvi,
+                                 const float crease_angle,
+                                 const SbVec3f *facenormals,
+                                 const SbBool ccw,
+                                 const int numFaces,
+                                 const SbBool tristrip)
 {
   this->clearGenerator();
   this->indices.truncate(0);
@@ -226,21 +226,21 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
     // use a SoNormalCache to store temporary data
     if (tristrip) {
       tempcache.generatePerFaceStrip(coords,
-				     vindex,
-				     numvi,
-				     ccw,
-				     numFaces);
+                                     vindex,
+                                     numvi,
+                                     ccw,
+                                     numFaces);
     }
     else {
       tempcache.generatePerFace(coords,
-				vindex,
-				numvi,
-				ccw,
-				numFaces);
+                                vindex,
+                                numvi,
+                                ccw,
+                                numFaces);
     }
     facenorm = tempcache.getNormals();
   }
-  
+
   // find biggest vertex index
   int i;
   int maxi = 0;
@@ -249,8 +249,8 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
     temp = vindex[i]; // don't care about -1's
     if (temp > maxi) maxi = temp;
   }
-  
-  // for each vertex, store all faceindices the vertex is a part of 
+
+  // for each vertex, store all faceindices the vertex is a part of
   SbList<int32_t> *vertexFaceArray = new SbList<int32_t>[maxi+1]; // [0, maxi]
 
   // for each vertex, store all normals that have been calculated
@@ -270,13 +270,13 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
       temp = vindex[i++];
       assert(temp >= 0);
       vertexFaceArray[temp].append(numfaces);
-      
+
       numfaces++;
       temp = vindex[i++];
-    
+
       while (temp >= 0) {
-	vertexFaceArray[temp].append(numfaces++);
-	temp = vindex[i++];
+        vertexFaceArray[temp].append(numfaces++);
+        temp = vindex[i++];
       }
     }
   }
@@ -284,7 +284,7 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
     for (i = 0; i < numvi; i++) {
       temp = vindex[i];
       if (temp >= 0)
-	vertexFaceArray[temp].append(numfaces);
+        vertexFaceArray[temp].append(numfaces);
       else numfaces++;
     }
   }
@@ -301,18 +301,18 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
     currindex = vindex[i];
     if (currindex >= 0) {
       if (tristrip) {
-	if (++stripcnt > 3) facenum++; // next face
+        if (++stripcnt > 3) facenum++; // next face
       }
       // calc normal for this vertex
       SbVec3f tmpvec;
-      calc_normal_vec(facenorm, facenum, vertexFaceArray[currindex], 
-		      threshold, tmpvec);
+      calc_normal_vec(facenorm, facenum, vertexFaceArray[currindex],
+                      threshold, tmpvec);
       tmpvec.normalize();
 
       if (normalArray.getLength() <= nindex)
-	normalArray.append(tmpvec);
+        normalArray.append(tmpvec);
       else
-	normalArray[nindex] = tmpvec;
+        normalArray[nindex] = tmpvec;
 
       // try to find equal normal (total smoothing)
       SbList <int32_t> &array = vertexNormalArray[currindex];
@@ -320,22 +320,22 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
       n = array.getLength();
       int same_normal = -1;
       for (j = 0; j < n && !found; j++) {
-	same_normal = array[j];
-	found = normalArray[same_normal].equals(normalArray[nindex], 
-						NORMAL_EPSILON);
+        same_normal = array[j];
+        found = normalArray[same_normal].equals(normalArray[nindex],
+                                                NORMAL_EPSILON);
       }
       if (found)
-	this->indices.append(same_normal);
+        this->indices.append(same_normal);
       // might be equal to the previous normal (when all normals for a face are eq)
-      else if ((nindex > 0) && 
-	       normalArray[nindex].equals(normalArray[nindex-1], 
-					  NORMAL_EPSILON)) {
-	this->indices.append(nindex-1);
+      else if ((nindex > 0) &&
+               normalArray[nindex].equals(normalArray[nindex-1],
+                                          NORMAL_EPSILON)) {
+        this->indices.append(nindex-1);
       }
       else {
-	this->indices.append(nindex);
-	array.append(nindex);
-	nindex++;
+        this->indices.append(nindex);
+        array.append(nindex);
+        nindex++;
       }
     }
     else { // new face
@@ -349,9 +349,9 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
     this->numNormals = this->normalArray.getLength();
   }
 #if 0 && COIN_DEBUG
-  SoDebugError::post(("SoNormalCache::generatePerVertex", 
-		      "generated normals per vertex: %p %d %d\n",
-		      normals, numNormals, this->indices.getLength());
+  SoDebugError::post(("SoNormalCache::generatePerVertex",
+                      "generated normals per vertex: %p %d %d\n",
+                      normals, numNormals, this->indices.getLength());
 #endif
   delete [] vertexFaceArray;
   delete [] vertexNormalArray;
@@ -362,12 +362,12 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
   and \a cind. Assumes indices are correct (all faces has at least
   three vertices, index array ends with a -1).
 */
-void 
+void
 SoNormalCache::generatePerFace(const SbVec3f * const coords,
-			       const int32_t *cind,
-			       const int nv,
-			       const SbBool ccw,
-			       const int numFaces)
+                               const int32_t *cind,
+                               const int nv,
+                               const SbBool ccw,
+                               const int numFaces)
 {
   this->clearGenerator();
   // FIXME: make this code robust. 19990405 mortene.
@@ -379,17 +379,17 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
   const int32_t *endptr = cind + nv;
 
   SbVec3f tmpvec;
-  
+
   while(cind < endptr) {
     int v0 = cind[0];
     int v1 = cind[1];
     int v2 = cind[2];
-    
+
     if (cind[3] < 0) { // triangle
       if (!ccw)
-	tmpvec = (coords[v0] - coords[v1]).cross(coords[v2] - coords[v1]);
-      else 
-	tmpvec = (coords[v2] - coords[v1]).cross(coords[v0] - coords[v1]);
+        tmpvec = (coords[v0] - coords[v1]).cross(coords[v2] - coords[v1]);
+      else
+        tmpvec = (coords[v2] - coords[v1]).cross(coords[v0] - coords[v1]);
       tmpvec.normalize();
       this->normalArray.append(tmpvec);
       cind += 4; // goto next triangle/polygon
@@ -397,28 +397,28 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
     else { // more than 3 vertices
       // use Newell's method to calculate normal vector
       const SbVec3f *vert1, *vert2;
-      tmpvec.setValue(0.0f, 0.0f, 0.0f); 
+      tmpvec.setValue(0.0f, 0.0f, 0.0f);
       vert2 = coords + v0;
       cind++; // v0 is already read
       while (*cind >= 0) {
-	vert1 = vert2;
-	vert2 = coords + *cind++;
-	tmpvec[0] += ((*vert1)[1] - (*vert2)[1]) * ((*vert1)[2] + (*vert2)[2]);
-	tmpvec[1] += ((*vert1)[2] - (*vert2)[2]) * ((*vert1)[0] + (*vert2)[0]);
-	tmpvec[2] += ((*vert1)[0] - (*vert2)[0]) * ((*vert1)[1] + (*vert2)[1]);
+        vert1 = vert2;
+        vert2 = coords + *cind++;
+        tmpvec[0] += ((*vert1)[1] - (*vert2)[1]) * ((*vert1)[2] + (*vert2)[2]);
+        tmpvec[1] += ((*vert1)[2] - (*vert2)[2]) * ((*vert1)[0] + (*vert2)[0]);
+        tmpvec[2] += ((*vert1)[0] - (*vert2)[0]) * ((*vert1)[1] + (*vert2)[1]);
       }
       vert1 = vert2;  // last edge (back to v0)
       vert2 = coords + v0;
       tmpvec[0] += ((*vert1)[1] - (*vert2)[1]) * ((*vert1)[2] + (*vert2)[2]);
       tmpvec[1] += ((*vert1)[2] - (*vert2)[2]) * ((*vert1)[0] + (*vert2)[0]);
       tmpvec[2] += ((*vert1)[0] - (*vert2)[0]) * ((*vert1)[1] + (*vert2)[1]);
-	
+
       tmpvec.normalize();
       this->normalArray.append(ccw ? tmpvec : -tmpvec);
       cind++; // skip the -1
     }
   }
-  
+
   if (this->normalArray.getLength()) {
     this->normalData.normals = this->normalArray.constArrayPointer();
     this->numNormals = this->normalArray.getLength();
@@ -426,26 +426,26 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
 
 #if 0 // debug
   SoDebugError::postInfo("SoNormalCache::generatePerFace",
-			 "generated normals per face: %p %d",
-			 normals, numNormals);
+                         "generated normals per face: %p %d",
+                         normals, numNormals);
 #endif // debug
 }
 
 /*!
   Generates face normals for triangle strips.
 */
-void 
+void
 SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
-				    const int32_t *cind,
-				    const int nv,
-				    const SbBool ccw,
-				    const int numFaces)
+                                    const int32_t *cind,
+                                    const int nv,
+                                    const SbBool ccw,
+                                    const int numFaces)
 {
   this->clearGenerator();
   this->indices.truncate(0);
-  
-  const int numalloc = numFaces > 0 ? numFaces : count_strip_faces(cind, 
-								   nv);
+
+  const int numalloc = numFaces > 0 ? numFaces : count_strip_faces(cind,
+                                                                   nv);
   this->normalArray.clear(numalloc);
 
   const int32_t *endptr = cind + nv;
@@ -455,19 +455,19 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
 
   SbBool flip = ccw;
 
-  while (cind < endptr) {    
+  while (cind < endptr) {
     flip = ccw;
     c0 = &coords[*cind++];
     c1 = &coords[*cind++];
     c2 = &coords[*cind++];
-    
+
     if (!flip)
       n = (*c0 - *c1).cross(*c2 - *c1);
-    else 
+    else
       n = (*c2 - *c1).cross(*c0 - *c1);
     n.normalize();
     this->normalArray.append(n);
-    
+
     int idx = *cind++;
     while (idx >= 0) {
       c0 = c1;
@@ -475,9 +475,9 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
       c2 = &coords[idx];
       flip = !flip;
       if (!flip)
-	n = (*c0 - *c1).cross(*c2 - *c1);
-      else 
-	n = (*c2 - *c1).cross(*c0 - *c1);
+        n = (*c0 - *c1).cross(*c2 - *c1);
+      else
+        n = (*c2 - *c1).cross(*c0 - *c1);
       n.normalize();
       this->normalArray.append(n);
       idx = *cind++;
@@ -491,8 +491,8 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
 
 #if 0 && COIN_DEBUG
   SoDebugError::post("SoNormalCache::generatePerFaceStrip",
-		     "generated tristrip normals per face: %p %d",
-		     normals, numNormals);
+                     "generated tristrip normals per face: %p %d",
+                     normals, numNormals);
 #endif // debug
 
 }
@@ -500,37 +500,37 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
 /*!
   Generates one normal per triangle strips (avarages all triangle normals).
 */
-void 
+void
 SoNormalCache::generatePerStrip(const SbVec3f * const coords,
-				const int32_t *cind,
-				const int nv,
-				const SbBool ccw,
-				const int numStrips)
+                                const int32_t *cind,
+                                const int nv,
+                                const SbBool ccw,
+                                const int numStrips)
 {
   this->clearGenerator();
   this->indices.truncate(0);
-  
+
   const int numalloc = numStrips > 0 ? numStrips : count_strips(cind, nv);
   this->normalArray.clear(numalloc);
 
   const int32_t *endptr = cind + nv;
-  
+
   const SbVec3f *c0, *c1, *c2;
   SbVec3f n;
-  
+
   SbBool flip = ccw;
 
-  while (cind < endptr) {    
+  while (cind < endptr) {
     flip = ccw;
     c0 = &coords[*cind++];
     c1 = &coords[*cind++];
     c2 = &coords[*cind++];
-    
+
     if (!flip)
       n = (*c0 - *c1).cross(*c2 - *c1);
-    else 
+    else
       n = (*c2 - *c1).cross(*c0 - *c1);
-    
+
     int idx = *cind++;
     while (idx >= 0) {
       c0 = c1;
@@ -538,13 +538,13 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
       c2 = &coords[idx];
       flip = !flip;
       if (!flip)
-	n += (*c0 - *c1).cross(*c2 - *c1);
-      else 
-	n += (*c2 - *c1).cross(*c0 - *c1);
+        n += (*c0 - *c1).cross(*c2 - *c1);
+      else
+        n += (*c2 - *c1).cross(*c0 - *c1);
       idx = *cind++;
     }
     n.normalize();
-    this->normalArray.append(n); 
+    this->normalArray.append(n);
   }
   if (this->normalArray.getLength()) {
     this->normalData.normals = this->normalArray.constArrayPointer();
@@ -555,21 +555,21 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
 /*!
   Generates PER_VERTEX normals for quad data.
 */
-void 
+void
 SoNormalCache::generatePerVertexQuad(const SbVec3f * const coords,
-				     const int vPerRow,
-				     const int vPerColumn,
-				     const SbBool ccw)
-{  
+                                     const int vPerRow,
+                                     const int vPerColumn,
+                                     const SbBool ccw)
+{
   this->clearGenerator();
   this->normalArray.clear(vPerRow * vPerColumn);
-  
+
   SoNormalCache tempcache(NULL);
   tempcache.generatePerFaceQuad(coords, vPerRow, vPerColumn, ccw);
   const SbVec3f *facenormals = tempcache.getNormals();
 
 #define IDX(r,c) ((r)*(vPerRow-1)+(c))
-  
+
   for (int i = 0; i < vPerColumn; i++) {
     for (int j = 0; j < vPerRow; j++) {
       SbVec3f n(0,0,0);
@@ -591,11 +591,11 @@ SoNormalCache::generatePerVertexQuad(const SbVec3f * const coords,
 /*!
   Generates per face normals for quad data.
 */
-void 
+void
 SoNormalCache::generatePerFaceQuad(const SbVec3f * const coords,
-				   const int vPerRow,
-				   const int vPerColumn,
-				   const SbBool ccw)
+                                   const int vPerRow,
+                                   const int vPerColumn,
+                                   const SbBool ccw)
 {
   this->clearGenerator();
   this->normalArray.clear((vPerRow-1) * (vPerColumn-1));
@@ -622,11 +622,11 @@ SoNormalCache::generatePerFaceQuad(const SbVec3f * const coords,
 /*!
   Generates per row normals for quad data.
 */
-void 
+void
 SoNormalCache::generatePerRowQuad(const SbVec3f * const coords,
-				  const int vPerRow,
-				  const int vPerColumn,
-				  const SbBool ccw)
+                                  const int vPerRow,
+                                  const int vPerColumn,
+                                  const SbBool ccw)
 {
   this->clearGenerator();
   this->normalArray.clear(vPerColumn-1);
@@ -648,7 +648,7 @@ SoNormalCache::generatePerRowQuad(const SbVec3f * const coords,
 
   if (this->normalArray.getLength()) {
     this->normalData.normals = this->normalArray.constArrayPointer();
-    this->numNormals = this->normalArray.getLength();  
+    this->numNormals = this->normalArray.getLength();
   }
 }
 
@@ -657,7 +657,7 @@ SoNormalCache::generatePerRowQuad(const SbVec3f * const coords,
 //
 // frees generator and resets normal data.
 //
-void 
+void
 SoNormalCache::clearGenerator()
 {
   if (this->numNormals == 0 && this->normalData.generator) {
@@ -666,5 +666,3 @@ SoNormalCache::clearGenerator()
   this->normalData.normals = NULL;
   this->numNormals = 0;
 }
-
-

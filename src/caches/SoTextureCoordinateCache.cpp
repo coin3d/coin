@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -31,7 +31,7 @@ SoTextureCoordinateCache::SoTextureCoordinateCache(SoState * const state)
   : SoCache(state)
 {
 }
- 
+
 /*!
   Destructor.
 */
@@ -45,15 +45,15 @@ SoTextureCoordinateCache::~SoTextureCoordinateCache()
   geometry. This is usually called default texture coordinates
   in OIV.
 */
-void 
-SoTextureCoordinateCache::generate(const SbBox3f &bbox, 
-				   const SbVec3f *vertices,
-				   const int numvertices)
+void
+SoTextureCoordinateCache::generate(const SbBox3f &bbox,
+                                   const SbVec3f *vertices,
+                                   const int numvertices)
 {
   float sizes[3];
   float minvalues[3];
   int   offsets[3];
-      
+
   bbox.getSize(sizes[0], sizes[1], sizes[2]);
   minvalues[0] = bbox.getMin()[0];
   minvalues[1] = bbox.getMin()[1];
@@ -78,7 +78,7 @@ SoTextureCoordinateCache::generate(const SbBox3f &bbox,
     SbSwap(minvalues[0], minvalues[1]);
     SbSwap(offsets[0], offsets[1]);
   }
-      
+
   // allocate space for texture coordinates
   this->texCoords.setBufferSize(numvertices);
 
@@ -106,7 +106,7 @@ SoTextureCoordinateCache::get() const
 /*!
   Returns the number of generated texture coordinates.
 */
-int 
+int
 SoTextureCoordinateCache::getNum() const
 {
   return this->texCoords.getLength();

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -65,9 +65,9 @@
   should be generated.
 */
 SoTextureCoordinateBundle::
-SoTextureCoordinateBundle(SoAction * const action, 
-			  const SbBool forRendering,
-			  const SbBool setUpDefault)
+SoTextureCoordinateBundle(SoAction * const action,
+                          const SbBool forRendering,
+                          const SbBool setUpDefault)
   : SoBundle(action)
 {
   this->flags = 0;
@@ -84,7 +84,7 @@ SoTextureCoordinateBundle(SoAction * const action,
     }
     break;
   case SoTextureCoordinateElement::FUNCTION:
-    this->flags |= FLAG_FUNCTION; 
+    this->flags |= FLAG_FUNCTION;
     this->flags |= FLAG_NEEDCOORDS; // not automatically generated
     break;
 
@@ -112,10 +112,10 @@ SoTextureCoordinateBundle(SoAction * const action,
   if (forRendering && (glElt == NULL)) {
     this->flags &= ~FLAG_NEEDCOORDS;
   }
-  
+
   if (forRendering) this->flags |= FLAG_FOR_RENDERING;
 }
-  
+
 /*!
   Destructor.
 */
@@ -126,7 +126,7 @@ SoTextureCoordinateBundle::~SoTextureCoordinateBundle()
 /*!
   Returns \e TRUE if texture coordinates is needed dureing rendering.
 */
-SbBool 
+SbBool
 SoTextureCoordinateBundle::needCoordinates() const
 {
   return (this->flags & FLAG_NEEDCOORDS) != 0;
@@ -135,7 +135,7 @@ SoTextureCoordinateBundle::needCoordinates() const
 /*!
   Returns \e TRUE if a texture coordinate function should be used.
 */
-SbBool 
+SbBool
 SoTextureCoordinateBundle::isFunction() const
 {
   return (this->flags & FLAG_FUNCTION) != 0;
@@ -145,7 +145,7 @@ SoTextureCoordinateBundle::isFunction() const
   Returns the texture coordinates based on \a point and \a normal.
   Should only be used if SoTextureCoordinateBundle::isFunction() is \a TRUE.
 */
-const SbVec4f & 
+const SbVec4f &
 SoTextureCoordinateBundle::get(const SbVec3f &point, const SbVec3f &normal)
 {
   assert(coordElt != NULL && (this->flags & FLAG_FUNCTION));
@@ -166,7 +166,7 @@ SoTextureCoordinateBundle::get(const int index)
 
 /*!
   \fn void SoTextureCoordinateBundle::send(const int index) const
-  Send texture coordinates to GL. Should only be used if 
+  Send texture coordinates to GL. Should only be used if
   SoTextureCoordinateBundle::isFunction() is \a FALSE.
 */
 
@@ -176,4 +176,3 @@ SoTextureCoordinateBundle::get(const int index)
   code if ordinary texture coordinates or function texture coordinates
   are used.
 */
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -25,20 +25,20 @@
 
 class SoBoundingBoxCache : public SoCache {
   typedef SoCache inherited;
-public: 
+public:
   SoBoundingBoxCache(SoState *state);
   ~SoBoundingBoxCache();
-  
+
   void set(const SbXfBox3f &boundingBox,
-	   SbBool centerSet,
-	   const SbVec3f &centerPoint);
-  
+           SbBool centerSet,
+           const SbVec3f &centerPoint);
+
   const SbXfBox3f &getBox() const;
   const SbBox3f &getProjectedBox() const;
-  
+
   SbBool isCenterSet() const;
   const SbVec3f &getCenter() const;
-  
+
   static void setHasLinesOrPoints(SoState *state);
   SbBool hasLinesOrPoints() const;
 

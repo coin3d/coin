@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -45,14 +45,14 @@ public:
     PER_VERTEX,
     PER_VERTEX_INDEXED
   };
-  
-  void generate(const SoCoordinateElement* const coords, 
-		const int32_t *coordindices,
-		const int numcoordindices,
-		const int32_t *matindices, const int32_t *normindices,
-		const int32_t *texindices,
-		const Binding matbinding, const Binding normbinding,
-		const Binding texbinding);
+
+  void generate(const SoCoordinateElement* const coords,
+                const int32_t *coordindices,
+                const int numcoordindices,
+                const int32_t *matindices, const int32_t *normindices,
+                const int32_t *texindices,
+                const Binding matbinding, const Binding normbinding,
+                const Binding texbinding);
 
   const int32_t *getCoordIndices() const;
   int getNumCoordIndices() const;
@@ -62,12 +62,12 @@ public:
   int getNumNormalIndices() const;
   const int32_t *getTexIndices() const;
   int getNumTexIndices() const;
-  
+
 private:
   SbList <int32_t> coordIndices;
   SbList <int32_t> normalIndices;
   SbList <int32_t> materialIndices;
-  SbList <int32_t> texIndices; 
+  SbList <int32_t> texIndices;
 };
 
 #endif // !__SOCONVEXDATACACHE_H__

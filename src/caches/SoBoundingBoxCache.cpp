@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -41,23 +41,23 @@ SoBoundingBoxCache::SoBoundingBoxCache(SoState *state)
 SoBoundingBoxCache::~SoBoundingBoxCache()
 {
 }
-  
+
 /*!
   Sets the data for this cache. \a boundingBox is the node's bounding
   box, \a centerSet and \a centerPoints specifies the center of the
   geometry inside \a boundingBox.
 */
-void 
+void
 SoBoundingBoxCache::set(const SbXfBox3f &boundingBox,
-			SbBool centerSet,
-			const SbVec3f &centerPoint)
+                        SbBool centerSet,
+                        const SbVec3f &centerPoint)
 {
   this->bbox = boundingBox;
   this->localBBox = boundingBox.project();
   this->centerSet = centerSet ? 1 : 0;
   this->centerPoint = centerPoint;
 }
-  
+
 /*!
   Returns the bounding box for this cache.
 */
@@ -75,14 +75,14 @@ SoBoundingBoxCache::getProjectedBox() const
 {
   return this->localBBox;
 }
-  
+
 /*!
   Returns whether the center of the bounding box was set in the
   SoBoundingBoxCache::set() method.
 
   \sa SoBoundingBoxCache::getCenter()
 */
-SbBool 
+SbBool
 SoBoundingBoxCache::isCenterSet() const
 {
   return this->centerSet == 1;
@@ -104,7 +104,7 @@ SoBoundingBoxCache::getCenter() const
 
   \sa SoBoundingBoxCache::hasLinesOrPoints()
 */
-void 
+void
 SoBoundingBoxCache::setHasLinesOrPoints(SoState *state)
 {
   if (state) {}
@@ -115,7 +115,7 @@ SoBoundingBoxCache::setHasLinesOrPoints(SoState *state)
   Return \e TRUE if the hasLinesOrPoints flag has been set.
   Not used for the moment. Provided for OIV compliance.
 */
-SbBool 
+SbBool
 SoBoundingBoxCache::hasLinesOrPoints() const
 {
   return this->linesOrPoints == 1;
