@@ -49,6 +49,10 @@ public:
   virtual void notify(SoNotList * list);
   virtual SbBool generateDefaultNormals(SoState * state,
 	        			SoNormalBundle * bundle);
+  virtual SbBool generateDefaultNormals(SoState * state,
+					SoNormalCache * cache);
+  void generateNormals(SoState * const state);
+
 #if !defined(COIN_EXCLUDE_SOWRITEACTION)
   virtual void write(SoWriteAction * writeAction);
 #endif // !COIN_EXCLUDE_SOWRITEACTION
@@ -72,9 +76,6 @@ protected:
 		     const SbBool needNormals);
 
 private:
-  virtual SbBool generateDefaultNormals(SoState * state,
-					SoNormalCache * cache);
-  void generateNormals(SoState * const state);
   SoNormalCache * normalCache;
 };
 

@@ -610,7 +610,7 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
     }
     else if (nbind == PER_VERTEX_INDEXED || nbind == PER_FACE_INDEXED) {
       currnormal = &normals[*nindices++];
-      glNormal3fv((const GLfloat*)currnormal);      
+      vertex.setNormal(*currnormal);
     }
     
     if (tbind != NONE) {

@@ -327,11 +327,14 @@ SoIndexedShape::getVertexData(SoState * state,
     
     normalCacheUsed = FALSE;
     if (normals == NULL) {
-      normals = getNormalCache()->getNormals();
-      nindices = getNormalCache()->getIndices();
+      if (this->getNormalCache() == NULL ||  
+	  !this->getNormalCache()->isValid(state)) {
+	generateNormals(state);
+      }
+      normals = this->getNormalCache()->getNormals();
+      nindices = this->getNormalCache()->getIndices();
       normalCacheUsed = TRUE;
     }
   }
-
   return TRUE;
 }
