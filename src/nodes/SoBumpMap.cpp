@@ -32,6 +32,9 @@
   http://www.paulsprojects.net/tutorials/simplebump/simplebump.html
   for a nice introduction about bump mapping and normal maps.
   
+  Grayscale images will be treated as height maps, and automatically
+  converted to normal maps.
+
   For bump mapping to work with extension nodes for Coin, the
   SoShape::generatePrimitives() method must be correctly implemented
   for the shape. This is needed since tangent space coordinates needs
@@ -60,6 +63,7 @@
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbImage.h>
+#include <Inventor/SbVec3f.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/C/glue/gl.h>
 
@@ -118,11 +122,85 @@ public:
   SoFieldSensor * filenamesensor;
   SoGLImage * glimage;
   SbBool glimagevalid;
+  SbImage convertedheightmap;
+  SbBool didconvert;
 };
-
 
 #undef PRIVATE
 #define PRIVATE(p) (p->pimpl)
+
+static void 
+convert_heightmap_to_normalmap(const unsigned char * srcptr, 
+                               const SbVec2s size,
+                               const int nc,
+                               SbImage & dst)
+{
+  float dx, dy;
+  int width = size[0];
+  int height = size[1];
+  unsigned char * dstptr = new unsigned char[width*height*3];
+  unsigned char * dststore = dstptr;
+  unsigned char red;
+  SbVec3f n;
+
+#define GET_PIXEL_RED(x_, y_) \
+  srcptr[(y_)*width*nc + (x_)*nc]
+  
+  for (int y = 0; y < height; y++) {
+    for (int x = 0; x < width; x++) {      
+      // do Y Sobel filter
+      red = GET_PIXEL_RED((x-1+width) % width, (y+1) % height);
+      dy  = ((float) red) / 255.0f * -1.0f;
+      
+      red = GET_PIXEL_RED(x % width, (y+1) % height);
+      dy += ((float) red) / 255.0f * -2.0f;
+      
+      red = GET_PIXEL_RED((x+1) % width, (y+1) % height);
+      dy += ((float) red) / 255.0f * -1.0f;
+      
+      red = GET_PIXEL_RED((x-1+width) % width, (y-1+height) % height);
+      dy += ((float) red) / 255.0f *  1.0f;
+      
+      red = GET_PIXEL_RED(x % width, (y-1+height) % height);
+      dy += ((float) red) / 255.0f *  2.0f;
+      
+      red = GET_PIXEL_RED((x+1) % width, (y-1+height) % height);
+      dy += ((float) red) / 255.0f *  1.0f;
+      
+      // Do X Sobel filter
+      red = GET_PIXEL_RED((x-1+width) % width, (y-1+height) % height);
+      dx  = ((float) red) / 255.0f * -1.0f;
+      
+      red = GET_PIXEL_RED((x-1+width) % width,   y % height);
+      dx += ((float) red) / 255.0f * -2.0f;
+      
+      red = GET_PIXEL_RED((x-1+width) % width, (y+1) % height);
+      dx += ((float) red) / 255.0f * -1.0f;
+            
+      red = GET_PIXEL_RED((x+1) % width, (y-1+height) % height);
+      dx += ((float) red) / 255.0f *  1.0f;
+      
+      red = GET_PIXEL_RED((x+1) % width,   y % height);
+      dx += ((float) red) / 255.0f *  2.0f;
+      
+      red = GET_PIXEL_RED((x+1) % width, (y+1) % height);
+      dx += ((float) red) / 255.0f *  1.0f;
+            
+      n[0] = -dx;
+      n[1] = -dy;
+      n[2] = 1.0f;
+      n.normalize();
+            
+      *dstptr++ = (unsigned char) ((n[0]+1.0f) * 128.0f);
+      *dstptr++ = (unsigned char) ((n[1]+1.0f) * 128.0f);
+      *dstptr++ = (unsigned char) ((n[2]+1.0f) * 128.0f);
+    }
+  }      
+#undef GET_PIXEL_RED
+  dst.setValue(size, 3, dststore);
+  delete[] dststore;
+}
+
 
 SO_NODE_SOURCE(SoBumpMap);
 
@@ -134,6 +212,7 @@ SoBumpMap::SoBumpMap(void)
   PRIVATE(this) = new SoBumpMapP;
   PRIVATE(this)->glimage = new SoGLImage;
   PRIVATE(this)->glimagevalid = FALSE;
+  PRIVATE(this)->didconvert = FALSE;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoBumpMap);
 
@@ -218,6 +297,13 @@ SoBumpMap::GLRender(SoGLRenderAction * action)
 
     if (bytes && size != SbVec2s(0,0)) {
       if (!PRIVATE(this)->glimagevalid) {
+        if (nc < 3) {
+          if (!PRIVATE(this)->didconvert) {
+            convert_heightmap_to_normalmap(bytes, size, nc, PRIVATE(this)->convertedheightmap);
+            PRIVATE(this)->didconvert = TRUE;
+          }
+          bytes = PRIVATE(this)->convertedheightmap.getValue(size, nc);
+        }
         PRIVATE(this)->glimage->setData(bytes, size, nc,
                                         bumpmap_translateWrap((Wrap)this->wrapS.getValue()),
                                         bumpmap_translateWrap((Wrap)this->wrapT.getValue()),
@@ -274,6 +360,7 @@ SoBumpMap::notify(SoNotList * l)
     // write image, not filename
     this->filename.setDefault(TRUE);
     this->image.setDefault(FALSE);
+    PRIVATE(this)->didconvert = FALSE;
   }
   PRIVATE(this)->glimagevalid = FALSE;
   inherited::notify(l);
@@ -300,6 +387,7 @@ SoBumpMap::loadFilename(void)
       SbBool oldnotify = this->image.enableNotify(FALSE);
       this->image.setValue(size, nc, bytes);
       this->image.enableNotify(oldnotify);
+      PRIVATE(this)->didconvert = FALSE;
       retval = TRUE;
     }
   }
