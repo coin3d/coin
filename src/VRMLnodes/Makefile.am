@@ -2,6 +2,10 @@
 
 noinst_LTLIBRARIES = libVRMLnodes.la
 
+## Remove any linklibraries detected by configure, as they are not
+## needed in the submodules -- only in the toplevel libCoin build.
+LIBS = 
+
 INCLUDES = -I$(top_srcdir)/include/
 
 ## All source files used when building this submodule, including all

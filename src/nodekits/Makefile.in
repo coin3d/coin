@@ -87,6 +87,8 @@ VERSION = @VERSION@
 
 noinst_LTLIBRARIES = libnodekits.la
 
+LIBS = 
+
 INCLUDES = -I$(top_srcdir)/include/
 
 libnodekits_la_SOURCES =  	SoNodeKit.cpp 	SoNodeKit.h
@@ -97,15 +99,14 @@ libnodekitsincdir = $(includedir)/Inventor/nodekits
 libnodekitsinc_HEADERS =  	$(top_srcdir)/include/Inventor/nodekits/SoNodeKit.h
 
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
-CONFIG_HEADER = ../../config.h
+CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(noinst_LTLIBRARIES)
 
 
-DEFS = @DEFS@ -I. -I$(srcdir) -I../..
+DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
-LIBS = @LIBS@
 libnodekits_la_LDFLAGS = 
 libnodekits_la_LIBADD = 
 libnodekits_la_OBJECTS =  SoNodeKit.lo

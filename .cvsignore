@@ -5,3 +5,5 @@ config.cache
 config.h
 config.log
 libtool
+stamp-h1.in
+stamp-h2.in

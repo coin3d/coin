@@ -87,6 +87,8 @@ VERSION = @VERSION@
 
 noinst_LTLIBRARIES = libsensors.la
 
+LIBS = 
+
 INCLUDES = -I$(top_srcdir)/include/
 
 libsensors_la_SOURCES =  	SoAlarmSensor.cpp 	SoAlarmSensor.h 	SoDataSensor.cpp 	SoDataSensor.h 	SoDelayQueueSensor.cpp 	SoDelayQueueSensor.h 	SoFieldSensor.cpp 	SoFieldSensor.h 	SoIdleSensor.cpp 	SoIdleSensor.h 	SoNodeSensor.cpp 	SoNodeSensor.h 	SoOneShotSensor.cpp 	SoOneShotSensor.h 	SoPathSensor.cpp 	SoPathSensor.h 	SoSensor.cpp 	SoSensor.h 	SoSensorManager.cpp 	SoSensorManager.h 	SoTimerQueueSensor.cpp 	SoTimerQueueSensor.h 	SoTimerSensor.cpp 	SoTimerSensor.h
@@ -97,15 +99,14 @@ libsensorsincdir = $(includedir)/Inventor/sensors
 libsensorsinc_HEADERS =  	$(top_srcdir)/include/Inventor/sensors/SoAlarmSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoDataSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoDelayQueueSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoFieldSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoIdleSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoNodeSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoOneShotSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoPathSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoSensorManager.h 	$(top_srcdir)/include/Inventor/sensors/SoTimerQueueSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoTimerSensor.h
 
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
-CONFIG_HEADER = ../../config.h
+CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(noinst_LTLIBRARIES)
 
 
-DEFS = @DEFS@ -I. -I$(srcdir) -I../..
+DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
-LIBS = @LIBS@
 libsensors_la_LDFLAGS = 
 libsensors_la_LIBADD = 
 libsensors_la_OBJECTS =  SoAlarmSensor.lo SoDataSensor.lo \

@@ -87,6 +87,8 @@ VERSION = @VERSION@
 
 noinst_LTLIBRARIES = libengines.la
 
+LIBS = 
+
 INCLUDES = -I$(top_srcdir)/include/
 
 libengines_la_SOURCES =  	SoBoolOperation.cpp 	SoBoolOperation.h 	SoCalculator.cpp 	SoCalculator.h 	SoComposeMatrix.cpp 	SoComposeMatrix.h 	SoComposeRotation.cpp 	SoComposeRotation.h 	SoComposeVec2f.cpp 	SoComposeVec2f.h 	SoComposeVec3f.cpp 	SoComposeVec3f.h 	SoComposeVec4f.cpp 	SoComposeVec4f.h 	SoConcatenate.cpp 	SoConcatenate.h 	SoConvertAll.cpp 	SoConvertAll.h 	SoCounter.cpp 	SoCounter.h 	SoDecomposeMatrix.cpp 	SoDecomposeMatrix.h 	SoDecomposeRotation.cpp 	SoDecomposeRotation.h 	SoDecomposeVec2f.cpp 	SoDecomposeVec2f.h 	SoDecomposeVec3f.cpp 	SoDecomposeVec3f.h 	SoDecomposeVec4f.cpp 	SoDecomposeVec4f.h 	SoElapsedTime.cpp 	SoElapsedTime.h 	SoEngine.cpp 	SoEngine.h 	SoEngineOutput.cpp 	SoEngineOutput.h 	SoExpressionParser.cpp 	SoExpressionParser.h 	SoFieldConverter.cpp 	SoFieldConverter.h 	SoGate.cpp 	SoGate.h 	SoInterpolateAbs.cpp 	SoInterpolateAbs.h 	SoInterpolateFloat.cpp 	SoInterpolateFloat.h 	SoInterpolateRotation.cpp 	SoInterpolateRotation.h 	SoInterpolateVec2f.cpp 	SoInterpolateVec2f.h 	SoInterpolateVec3f.cpp 	SoInterpolateVec3f.h 	SoInterpolateVec4f.cpp 	SoInterpolateVec4f.h 	SoOnOff.cpp 	SoOnOff.h 	SoOneShot.cpp 	SoOneShot.h 	SoSelectOne.cpp 	SoSelectOne.h 	SoTriggerAny.cpp 	SoTriggerAny.h
@@ -97,15 +99,14 @@ libenginesincdir = $(includedir)/Inventor/engines
 libenginesinc_HEADERS =  	$(top_srcdir)/include/Inventor/engines/SoBoolOperation.h 	$(top_srcdir)/include/Inventor/engines/SoCalculator.h 	$(top_srcdir)/include/Inventor/engines/SoComposeMatrix.h 	$(top_srcdir)/include/Inventor/engines/SoComposeRotation.h 	$(top_srcdir)/include/Inventor/engines/SoComposeVec2f.h 	$(top_srcdir)/include/Inventor/engines/SoComposeVec3f.h 	$(top_srcdir)/include/Inventor/engines/SoComposeVec4f.h 	$(top_srcdir)/include/Inventor/engines/SoConcatenate.h 	$(top_srcdir)/include/Inventor/engines/SoConvertAll.h 	$(top_srcdir)/include/Inventor/engines/SoCounter.h 	$(top_srcdir)/include/Inventor/engines/SoDecomposeMatrix.h 	$(top_srcdir)/include/Inventor/engines/SoDecomposeRotation.h 	$(top_srcdir)/include/Inventor/engines/SoDecomposeVec2f.h 	$(top_srcdir)/include/Inventor/engines/SoDecomposeVec3f.h 	$(top_srcdir)/include/Inventor/engines/SoDecomposeVec4f.h 	$(top_srcdir)/include/Inventor/engines/SoElapsedTime.h 	$(top_srcdir)/include/Inventor/engines/SoEngine.h 	$(top_srcdir)/include/Inventor/engines/SoEngineOutput.h 	$(top_srcdir)/include/Inventor/engines/SoExpressionParser.h 	$(top_srcdir)/include/Inventor/engines/SoFieldConverter.h 	$(top_srcdir)/include/Inventor/engines/SoGate.h 	$(top_srcdir)/include/Inventor/engines/SoInterpolate.h 	$(top_srcdir)/include/Inventor/engines/SoInterpolateAbs.h 	$(top_srcdir)/include/Inventor/engines/SoInterpolateFloat.h 	$(top_srcdir)/include/Inventor/engines/SoInterpolateRotation.h 	$(top_srcdir)/include/Inventor/engines/SoInterpolateVec2f.h 	$(top_srcdir)/include/Inventor/engines/SoInterpolateVec3f.h 	$(top_srcdir)/include/Inventor/engines/SoInterpolateVec4f.h 	$(top_srcdir)/include/Inventor/engines/SoOnOff.h 	$(top_srcdir)/include/Inventor/engines/SoOneShot.h 	$(top_srcdir)/include/Inventor/engines/SoSelectOne.h 	$(top_srcdir)/include/Inventor/engines/SoTriggerAny.h
 
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
-CONFIG_HEADER = ../../config.h
+CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(noinst_LTLIBRARIES)
 
 
-DEFS = @DEFS@ -I. -I$(srcdir) -I../..
+DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
-LIBS = @LIBS@
 libengines_la_LDFLAGS = 
 libengines_la_LIBADD = 
 libengines_la_OBJECTS =  SoBoolOperation.lo SoCalculator.lo \

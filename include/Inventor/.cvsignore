@@ -1,3 +1,5 @@
 soconfig.h
 SbBasic.h
 Makefile
+stamp-h2.in
+stamp-h3.in

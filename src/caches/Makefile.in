@@ -87,6 +87,8 @@ VERSION = @VERSION@
 
 noinst_LTLIBRARIES = libcaches.la
 
+LIBS = 
+
 INCLUDES = -I$(top_srcdir)/include/
 
 libcaches_la_SOURCES =  	SoBoundingBoxCache.cpp 	SoBoundingBoxCache.h 	SoCache.cpp 	SoCache.h 	SoConvexDataCache.cpp 	SoConvexDataCache.h 	SoNormalCache.cpp 	SoNormalCache.h 	SoTextureCoordinateCache.cpp 	SoTextureCoordinateCache.h
@@ -97,15 +99,14 @@ libcachesincdir = $(includedir)/Inventor/caches
 libcachesinc_HEADERS =  	$(top_srcdir)/include/Inventor/caches/SoBoundingBoxCache.h 	$(top_srcdir)/include/Inventor/caches/SoCache.h 	$(top_srcdir)/include/Inventor/caches/SoConvexDataCache.h 	$(top_srcdir)/include/Inventor/caches/SoNormalCache.h 	$(top_srcdir)/include/Inventor/caches/SoTextureCoordinateCache.h
 
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
-CONFIG_HEADER = ../../config.h
+CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(noinst_LTLIBRARIES)
 
 
-DEFS = @DEFS@ -I. -I$(srcdir) -I../..
+DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
-LIBS = @LIBS@
 libcaches_la_LDFLAGS = 
 libcaches_la_LIBADD = 
 libcaches_la_OBJECTS =  SoBoundingBoxCache.lo SoCache.lo \

@@ -145,9 +145,9 @@ inline void SbSwap( Type & A, Type & B ) {
 // verson numbers in "client" sources. NB: they are automatically
 // synchronized with the settings in configure.in when configure is
 // run.
-#define COIN_VERSION_MAJOR @COIN_MAJOR_VERSION@
-#define COIN_VERSION_MINOR @COIN_MINOR_VERSION@
-#define COIN_VERSION_MICRO @COIN_MICRO_VERSION@
-#define COIN_VERSION_STR "@COIN_VERSION@"
+#undef COIN_MAJOR_VERSION
+#undef COIN_MINOR_VERSION
+#undef COIN_MICRO_VERSION
+#undef COIN_VERSION
 
 #endif // !__SBBASIC_H__

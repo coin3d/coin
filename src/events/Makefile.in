@@ -87,6 +87,8 @@ VERSION = @VERSION@
 
 noinst_LTLIBRARIES = libevents.la
 
+LIBS = 
+
 INCLUDES = -I$(top_srcdir)/include/
 
 libevents_la_SOURCES =  	SoButtonEvent.cpp 	SoButtonEvent.h 	SoEvent.cpp 	SoEvent.h 	SoKeyboardEvent.cpp 	SoKeyboardEvent.h 	SoLocation2Event.cpp 	SoLocation2Event.h 	SoMotion3Event.cpp 	SoMotion3Event.h 	SoMouseButtonEvent.cpp 	SoMouseButtonEvent.h 	SoSpaceballButtonEvent.cpp 	SoSpaceballButtonEvent.h
@@ -97,15 +99,14 @@ libeventsincdir = $(includedir)/Inventor/events
 libeventsinc_HEADERS =  	$(top_srcdir)/include/Inventor/events/SoButtonEvent.h 	$(top_srcdir)/include/Inventor/events/SoEvent.h 	$(top_srcdir)/include/Inventor/events/SoKeyboardEvent.h 	$(top_srcdir)/include/Inventor/events/SoLocation2Event.h 	$(top_srcdir)/include/Inventor/events/SoMotion3Event.h 	$(top_srcdir)/include/Inventor/events/SoMouseButtonEvent.h 	$(top_srcdir)/include/Inventor/events/SoSpaceballButtonEvent.h
 
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
-CONFIG_HEADER = ../../config.h
+CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(noinst_LTLIBRARIES)
 
 
-DEFS = @DEFS@ -I. -I$(srcdir) -I../..
+DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
-LIBS = @LIBS@
 libevents_la_LDFLAGS = 
 libevents_la_LIBADD = 
 libevents_la_OBJECTS =  SoButtonEvent.lo SoEvent.lo SoKeyboardEvent.lo \

@@ -87,6 +87,8 @@ VERSION = @VERSION@
 
 noinst_LTLIBRARIES = liberrors.la
 
+LIBS = 
+
 INCLUDES = -I$(top_srcdir)/include/
 
 liberrors_la_SOURCES =  	SoDebugError.cpp 	SoDebugError.h 	SoError.cpp 	SoError.h 	SoMemoryError.cpp 	SoMemoryError.h 	SoReadError.cpp 	SoReadError.h
@@ -97,15 +99,14 @@ liberrorsincdir = $(includedir)/Inventor/errors
 liberrorsinc_HEADERS =  	$(top_srcdir)/include/Inventor/errors/SoDebugError.h 	$(top_srcdir)/include/Inventor/errors/SoError.h 	$(top_srcdir)/include/Inventor/errors/SoMemoryError.h 	$(top_srcdir)/include/Inventor/errors/SoReadError.h
 
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
-CONFIG_HEADER = ../../config.h
+CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(noinst_LTLIBRARIES)
 
 
-DEFS = @DEFS@ -I. -I$(srcdir) -I../..
+DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
-LIBS = @LIBS@
 liberrors_la_LDFLAGS = 
 liberrors_la_LIBADD = 
 liberrors_la_OBJECTS =  SoDebugError.lo SoError.lo SoMemoryError.lo \

@@ -90,7 +90,7 @@ systemincdir = $(includedir)/Inventor/system
 systeminc_HEADERS =  	$(top_srcdir)/include/Inventor/system/inttypes.h 	$(top_srcdir)/include/Inventor/system/kosher.h
 
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
-CONFIG_HEADER = ../../config.h
+CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 HEADERS =  $(systeminc_HEADERS)
 

@@ -87,6 +87,8 @@ VERSION = @VERSION@
 
 noinst_LTLIBRARIES = libVRMLnodes.la
 
+LIBS = 
+
 INCLUDES = -I$(top_srcdir)/include/
 
 libVRMLnodes_la_SOURCES =  	SoVRMLInterpOutput.cpp 	SoVRMLInterpOutput.h 	SoVRMLInterpolator.cpp 	SoVRMLInterpolator.h
@@ -97,15 +99,14 @@ libVRMLnodesincdir = $(includedir)/Inventor/VRMLnodes
 libVRMLnodesinc_HEADERS =  	$(top_srcdir)/include/Inventor/VRMLnodes/SoVRMLInterpOutput.h 	$(top_srcdir)/include/Inventor/VRMLnodes/SoVRMLInterpolator.h
 
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
-CONFIG_HEADER = ../../config.h
+CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(noinst_LTLIBRARIES)
 
 
-DEFS = @DEFS@ -I. -I$(srcdir) -I../..
+DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
-LIBS = @LIBS@
 libVRMLnodes_la_LDFLAGS = 
 libVRMLnodes_la_LIBADD = 
 libVRMLnodes_la_OBJECTS =  SoVRMLInterpOutput.lo SoVRMLInterpolator.lo

@@ -1,8 +1,8 @@
 ## Process this file with automake to generate Makefile.in.
 
-## FIXME: this file should be rendered obsolete, as the information
-## contained in inttypes.h and kosher.h should be moved to config.h.
-## 19990912 mortene.
+## FIXME: this file should eventually be rendered obsolete, as the
+## information contained in inttypes.h and kosher.h should be moved to
+## config.h.  19990912 mortene.
 
 ## Installation information.
 

@@ -42,6 +42,12 @@ AC_SUBST(LT_AGE)
 
 VERSION=$COIN_VERSION
 
+dnl  These are for include/Inventor/SbBasic.h.
+
+AC_DEFINE_UNQUOTED(COIN_MAJOR_VERSION, $COIN_MAJOR_VERSION)
+AC_DEFINE_UNQUOTED(COIN_MINOR_VERSION, $COIN_MINOR_VERSION)
+AC_DEFINE_UNQUOTED(COIN_MICRO_VERSION, $COIN_MICRO_VERSION)
+AC_DEFINE_UNQUOTED(COIN_VERSION, "$COIN_VERSION")
 
 dnl *******************************************************************
 dnl * Miscellaneous options and initializations.
@@ -49,8 +55,9 @@ dnl *******************************************************************
 
 AM_INIT_AUTOMAKE(libCoin, $VERSION)
 
-dnl  File to cram the configure tests into.
-AM_CONFIG_HEADER(config.h)
+dnl  File to cram results from the configure tests into.
+dnl AM_CONFIG_HEADER(config.h)
+AM_CONFIG_HEADER(config.h include/Inventor/SbBasic.h)
 
 dnl  Default to not building a static library.
 dnl  Can be overridden by the user with --enable-static.
@@ -64,17 +71,57 @@ AM_PROG_LIBTOOL
 
 
 dnl *******************************************************************
+dnl * Enable/disable compilation with debug information.
+dnl *******************************************************************
+
+AC_ARG_ENABLE(debug,
+  [  --enable-debug          turn on Coin debugging [default=yes]],
+  [case "${enableval}" in
+    yes) enable_debug=yes ;;
+    no)  enable_debug=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-debug) ;;
+  esac],
+  enable_debug=yes)
+
+if test "x$enable_debug" = "xyes"; then
+  CXXFLAGS="$CXXFLAGS -DCOIN_DEBUG=1"
+else
+  CXXFLAGS="$CXXFLAGS -DCOIN_DEBUG=0 -DNDEBUG"
+fi
+
+
+dnl *******************************************************************
+dnl * Enable/disable compilation with symbol information.
+dnl *******************************************************************
+
+if test "x$ac_cv_prog_cxx_g" = "xyes"; then
+  AC_ARG_ENABLE(symbols,
+    [  --enable-symbols          turn on symbol debug information [default=yes]],
+    [case "${enableval}" in
+      yes) enable_symbols=yes ;;
+      no)  enable_symbols=no ;;
+      *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-symbols) ;;
+    esac],
+    enable_symbols=yes)
+
+  if test "x$enable_symbols" = "xno"; then
+    CXXFLAGS="`echo $CXXFLAGS | sed 's/-g//'`"
+  fi
+fi
+
+
+dnl *******************************************************************
 dnl * Check if we want to use simage (if available).
 dnl *******************************************************************
 
 AC_ARG_WITH(simage,
-	[  --with-simage           use the simage library for loading textures [default=yes]],
-	[case "${withval}" in
-		yes) want_simage=yes ;;
-		no)  want_simage=no ;;
-		*) AC_MSG_ERROR(bad value \"${withval}\" for --with-simage) ;;
-	esac],
-	[want_simage=yes])
+  [  --with-simage           use the simage library for loading textures [default=yes]],
+  [case "${withval}" in
+    yes) want_simage=yes ;;
+    no)  want_simage=no ;;
+    *) AC_MSG_ERROR(bad value \"${withval}\" for --with-simage) ;;
+  esac],
+  [want_simage=yes])
 
 dnl *******************************************************************
 dnl * Check if libsimage development system is installed.
@@ -90,9 +137,6 @@ if test "$want_simage" = yes; then
   fi
 fi
 
-if test "$simage_dev" = yes; then
-  AC_DEFINE(HAVE_SIMAGELIB, 1)
-fi
 
 
 dnl *******************************************************************
@@ -100,7 +144,6 @@ dnl * List all files configure shall generate.
 dnl *******************************************************************
 
 AC_OUTPUT(include/Makefile include/Inventor/Makefile \
-	include/Inventor/SbBasic.h \
 	Makefile src/Makefile \
 	src/VRMLnodes/Makefile src/actions/Makefile src/bundles/Makefile \
 	src/caches/Makefile src/elements/Makefile src/engines/Makefile \

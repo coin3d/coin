@@ -87,6 +87,8 @@ VERSION = @VERSION@
 
 noinst_LTLIBRARIES = libmisc.la
 
+LIBS = 
+
 INCLUDES = -I$(top_srcdir)/include/
 
 libmisc_la_SOURCES =  	SoBase.cpp 	SoBase.h 	SoChildList.cpp 	SoChildList.h 	SoGL.cpp 	SoGL.h 	SoGLImage.cpp 	SoGLImage.h 	SoNormalGenerator.cpp 	SoNormalGenerator.h 	SoNotification.cpp 	SoNotification.h 	SoState.cpp 	SoState.h 	SoTessellator.cpp 	SoTessellator.h
@@ -97,15 +99,14 @@ libmiscincdir = $(includedir)/Inventor/misc
 libmiscinc_HEADERS =  	$(top_srcdir)/include/Inventor/misc/SoAuditorList.h 	$(top_srcdir)/include/Inventor/misc/SoBase.h 	$(top_srcdir)/include/Inventor/misc/SoBasic.h 	$(top_srcdir)/include/Inventor/misc/SoCallbackList.h 	$(top_srcdir)/include/Inventor/misc/SoChildList.h 	$(top_srcdir)/include/Inventor/misc/SoNotification.h 	$(top_srcdir)/include/Inventor/misc/SoState.h
 
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
-CONFIG_HEADER = ../../config.h
+CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(noinst_LTLIBRARIES)
 
 
-DEFS = @DEFS@ -I. -I$(srcdir) -I../..
+DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
-LIBS = @LIBS@
 libmisc_la_LDFLAGS = 
 libmisc_la_LIBADD = 
 libmisc_la_OBJECTS =  SoBase.lo SoChildList.lo SoGL.lo SoGLImage.lo \

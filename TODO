@@ -2,13 +2,9 @@
 Todo
 ====
 
-(format is: "* [author:conceived-date] item", listed in approx
-prioritized order)
+(format is: "* [author:conceived-date] item", listed in no particular order)
 
 * [mortene:19990912] include check in configure.in for OpenGL/Mesa.
-
-* [mortene:19990913] remove multiple -lsimage on the final libCoin
-  link line.
 
 * [mortene:19990912] get rid of Inventor/system/inttypes.h.
 
@@ -17,13 +13,14 @@ prioritized order)
   functionality provided.)
 
 * [mortene:19990912] add configure options for turning compilation
-  with debug information on or off.
-
-* [mortene:19990912] add configure options for turning compilation
   with profiling information on or off.
 
+* [mortene:19990912] add configure options for turning compilation
+  with all compiler warnings on or off.
+
 * [mortene:19990912] add options in configure for compiling slimmed
-  versions of Coin (--without-coin-engines etc).
+  versions of Coin (--without-coin-engines etc). Or perhaps make a
+  single --compile-basesystem option instead?
 
 * [mortene:19990913] move tasklist from docs/todo.txt into this file.
 
@@ -33,11 +30,26 @@ prioritized order)
 * [mortene:19990913] write a file ``HACKING'' with tips & tricks for
   faster turn-around when doing development.
 
+* [mortene:19990913] integrate the doxygen man- and html-generation
+
 ===============================================================================
 Done
 ====
 
 (format is: "* [author:conceived-date][implementer:finished-date] item")
+
+* [mortene:19990912][mortene:19990913] add configure option for doing
+  compilation without any symbols included in the object files.
+
+* [mortene:19990912][mortene:19990913] add configure option for
+  turning compilation with all debug information on or off.
+
+* [mortene:19990913][mortene:19990913] avoid having
+  include/Inventor/SbBasic.h being regenerated if it would be
+  identical to the file already present.
+
+* [mortene:19990913][mortene:19990913] remove multiple -lsimage on the
+  final libCoin link line.
 
 * [mortene:19990913][mortene:19990913] ``make'' package within the
   srcdir, so the .cvsignore file(s) can be constructed and submitted.

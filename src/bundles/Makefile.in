@@ -87,6 +87,8 @@ VERSION = @VERSION@
 
 noinst_LTLIBRARIES = libbundles.la
 
+LIBS = 
+
 INCLUDES = -I$(top_srcdir)/include/
 
 libbundles_la_SOURCES =  	SoBundle.cpp 	SoBundle.h 	SoMaterialBundle.cpp 	SoMaterialBundle.h 	SoTextureCoordinateBundle.cpp 	SoTextureCoordinateBundle.h
@@ -97,15 +99,14 @@ libbundlesincdir = $(includedir)/Inventor/bundles
 libbundlesinc_HEADERS =  	$(top_srcdir)/include/Inventor/bundles/SoBundle.h 	$(top_srcdir)/include/Inventor/bundles/SoMaterialBundle.h 	$(top_srcdir)/include/Inventor/bundles/SoTextureCoordinateBundle.h
 
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
-CONFIG_HEADER = ../../config.h
+CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(noinst_LTLIBRARIES)
 
 
-DEFS = @DEFS@ -I. -I$(srcdir) -I../..
+DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
-LIBS = @LIBS@
 libbundles_la_LDFLAGS = 
 libbundles_la_LIBADD = 
 libbundles_la_OBJECTS =  SoBundle.lo SoMaterialBundle.lo \

@@ -284,7 +284,7 @@ SoDB::getVersion(void)
 {
   static SbString s;
   s = "SIM Coin ";
-  s += COIN_VERSION_STR;
+  s += COIN_VERSION;
   return s.getString();
 }
 

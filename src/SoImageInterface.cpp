@@ -24,9 +24,9 @@
 
 #include <config.h>
 
-#if defined(HAVE_SIMAGELIB)
+#if defined(HAVE_LIBSIMAGE)
 #include <simage.h>
-#endif // HAVE_SIMAGELIB
+#endif // HAVE_LIBSIMAGE
 
 //
 // TODO: write support for other image libraries
@@ -193,10 +193,10 @@ SoImageInterface::load(const SbBool forceTry)
     // should be inserted here. 
     //
 
-#if defined(HAVE_SIMAGELIB)
+#if defined(HAVE_LIBSIMAGE)
     this->dataPtr = simage_read_image(this->filename.getString(),
 				      &w, &h, &nc);
-#endif // HAVE_SIMAGELIB
+#endif // HAVE_LIBSIMAGE
     if (this->dataPtr) {
       this->orgSize = this->size = SbVec2s(w, h);
       this->orgNumComponents = this->numComponents = nc;
