@@ -281,27 +281,6 @@ else
 fi
 ]) # SIM_AC_SETUP_MSVC_IFELSE
 
-# **************************************************************************
-
-AC_DEFUN([SIM_AC_MSVC_SUPPORT],
-[# **************************************************************************
-# If the Microsoft Visual C++ cl.exe compiler is available, set us up for
-# compiling with it and to generate an MSWindows .dll file.
-
-: ${BUILD_WITH_MSVC=false}
-sim_ac_msvccc=`cd $srcdir; pwd`/cfg/m4/msvccc
-if test -z "$CC" -a -z "$CXX" && $sim_ac_msvccc >/dev/null 2>&1; then
-  m4_ifdef([$0_VISITED],
-    [AC_FATAL([Macro $0 invoked multiple times])])
-  m4_define([$0_VISITED], 1)
-  CC=$sim_ac_msvccc
-  CXX=$sim_ac_msvccc
-  export CC CXX
-  BUILD_WITH_MSVC=true
-fi
-AC_SUBST(BUILD_WITH_MSVC)
-]) # SIM_AC_MSVC_SUPPORT
-
 # EOF **********************************************************************
 
 # Do all the work for Automake.  This macro actually does too much --
