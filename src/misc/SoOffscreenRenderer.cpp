@@ -574,8 +574,6 @@ SoOffscreenRenderer::getBuffer(void) const
 static int
 write_short(FILE * fp, unsigned short val)
 {
-  // FIXME: does this code really work on both little endian and big
-  // endian platforms? 20000110 mortene.
   unsigned char tmp[2];
   tmp[0] = (unsigned char)(val >> 8);
   tmp[1] = (unsigned char)(val & 0xff);
@@ -651,18 +649,18 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp,
   return FALSE;
 }
 
-/*!  
+/*!
   Returns TRUE if the buffer can be saved as a file of type \a
   filetypeextension, using SoOffscreenRenderer::writeToFile().  This
   function needs simage v1.1 or newer. Examples of supported
   extensions are: jpg, png, tiff and rgb. The extension match is
   not case sensitive.
 
-  This method is an extension versus the Open Inventor API.  
+  This method is an extension versus the Open Inventor API.
 
   \sa  getNumWriteFiletypes(), getWriteFiletypeInfo(), writeToFile()
 */
-SbBool 
+SbBool
 SoOffscreenRenderer::isWriteSupported(const SbName & filetypeextension) const
 {
   if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
@@ -679,12 +677,12 @@ SoOffscreenRenderer::isWriteSupported(const SbName & filetypeextension) const
 /*!
   Returns the number of available exporters. Information about exporters
   can be found using getNumWriteFiletypes().
-  
-  This method is an extension versus the Open Inventor API.  
+
+  This method is an extension versus the Open Inventor API.
 
   \sa getWriteFiletypeInfo()
 */
-int 
+int
 SoOffscreenRenderer::getNumWriteFiletypes(void) const
 {
   if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
@@ -697,17 +695,17 @@ SoOffscreenRenderer::getNumWriteFiletypes(void) const
   return simage_wrapper()->simage_get_num_savers();
 }
 
-/*!  
+/*!
   Returns information about an image exporter. \a extlist is a list of filenameextensions
   for a file format. E.g. for JPEG it is legal to use both jpg and jpeg. \a fullname
   is the full name of the image format. \a description is an optional string with
   more information about the file format.
-  
-  This method is an extension versus the Open Inventor API.  
-  
+
+  This method is an extension versus the Open Inventor API.
+
   \sa getNumWriteFiletypes(), writeToFile()
 */
-void 
+void
 SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
                                           SbList <SbName> & extlist,
                                           SbString & fullname,
@@ -725,7 +723,7 @@ SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
   void * saver = simage_wrapper()->simage_get_saver_handle(idx);
   SbString allext(simage_wrapper()->simage_get_saver_extensions(saver));
   const char * start = allext.getString();
-  const char * curr = start; 
+  const char * curr = start;
   char * end = strchr(curr, ',');
   while (end) {
     SbString ext = allext.getSubString(curr-start, end-start-1);
@@ -743,12 +741,12 @@ SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
 
 /*!
   Saves the buffer to \a filename, in the filetype specified by \a filetypeextensions.
-  
-  This method is an extension versus the Open Inventor API.  
-  
+
+  This method is an extension versus the Open Inventor API.
+
   \sa isWriteSupported()
 */
-SbBool 
+SbBool
 SoOffscreenRenderer::writeToFile(const SbString & filename, const SbName & filetypeextension) const
 {
   if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
