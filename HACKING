@@ -213,10 +213,33 @@ and explains the principles applied fairly well.
   useful for tracking down memory corruption problems. A link to
   Valgrind can be found on <URL:http://freshmeat.net>.
 
-  Note that Valgrind, with a few patches to the current version (1.0.3
-  as of this writing), can also be used for profiling code _without_
+  Note that Valgrind, can also be used for profiling code _without_
   having to re-compile everything (like what is necessary for gprof,
   for instance).
+
+  Another interesting feature of Valgrind is that it has a skin called
+  "helgrind" which supposedly can do analysis of code to see if it's
+  re-entrant / thread-safe. I (mortene) haven't tested it yet, but if
+  it works, it would be extremely useful for debugging hard to find
+  bugs suspected to be due to synchronization problems over multiple
+  threads.
+
+
+* OpenGL debugging:
+
+   - Useful environment variables for the Mesa OpenGL implementation:
+
+        * export LIBGL_ALWAYS_INDIRECT=yes
+
+          (Avoids any use of hardware acceleration -- useful for
+          running Coin-on-Mesa under Valgrind.)
+
+        * export LIBGL_DEBUG=yes
+        * export MESA_DEBUG=yes
+
+
+   [FIXME: add in information about how to turn off NVidia HW
+   acceleration (also useful for Valgrinding). 20031017 mortene.]
 
 
 
