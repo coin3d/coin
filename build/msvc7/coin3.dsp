@@ -55,6 +55,10 @@ LINK32=link.exe
 # ADD BASE LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /machine:I386
 # ADD LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /machine:I386 /out:"coin3.dll" /opt:nowin98
 # SUBTRACT LINK32 /pdb:none
+# Begin Special Build Tool
+SOURCE=
+PostBuild_Cmds=installcoin.bat
+# End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "coin3 - Win32 Debug"
 
@@ -80,6 +84,10 @@ BSC32=bscmake.exe
 LINK32=link.exe
 # ADD BASE LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
 # ADD LINK32 opengl32.lib gdi32.lib winmm.lib user32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept /out:"coin3d.dll"
+# Begin Special Build Tool
+SOURCE=
+PostBuild_Cmds=installcoin.bat
+# End Special Build Tool
 
 !ENDIF
 

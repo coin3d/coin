@@ -8,10 +8,6 @@ libtool
 config.status
 config.log
 vc70.pdb
-coin3.sln
-coin3.suo
-coin3.ncb
-coin3.vcproj
 Info.plist
 version.plist
 coin-default.cfg
