@@ -233,7 +233,7 @@ SoNodekitCatalog::isLeaf(int part) const
   }
 #endif // debug
   for (int i=0; i < this->items.getLength(); i++) {
-    if ((i != part) && (this->items[part]->name == this->items[i]->name))
+    if ((i != part) && (this->items[part]->name == this->items[i]->parentname))
       return FALSE;
   }
   return TRUE;
