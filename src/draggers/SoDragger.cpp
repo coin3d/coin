@@ -843,6 +843,7 @@ SoDragger::getEvent(void) const
 SoPath *
 SoDragger::createPathToThis(void)
 {
+  assert(THIS->draggercache);
   if (THIS->draggercache == NULL) return NULL; // should not happen
   assert(THIS->draggercache->path);
   SoPath * orgpath = (SoPath *) THIS->draggercache->path;
@@ -1292,7 +1293,11 @@ SoDragger::handleEvent(SoHandleEventAction * action)
 {
   const SoEvent * event = action->getEvent();
 
-  //
+  if (!action->getGrabber())
+    this->updateDraggerCache(action->getCurPath());
+  else
+    this->updateDraggerCache(NULL);
+
   // this is a special case, to be able to detect when somebody
   // clicks ctrl over a dragger. This has a special meaning for
   // some draggers, and it's the only time the otherEvent callbacks
@@ -1344,7 +1349,6 @@ SoDragger::handleEvent(SoHandleEventAction * action)
 
       THIS->startlocaterpos = event->getPosition();
       THIS->isgrabbing = FALSE;
-      this->updateDraggerCache(THIS->eventaction->getCurPath());
       this->saveStartParameters();
       THIS->startCB.invokeCallbacks(this);
     }
@@ -1362,7 +1366,6 @@ SoDragger::handleEvent(SoHandleEventAction * action)
   }
   else if (this->isActive.getValue() && event->isOfType(SoLocation2Event::getClassTypeId())) {
     this->eventHandled(event, action);
-    this->updateDraggerCache(NULL);
     THIS->motionCB.invokeCallbacks(this);
     if (!THIS->isgrabbing) {
       this->grabEventsSetup();
@@ -1384,18 +1387,14 @@ SoDragger::handleEvent(SoHandleEventAction * action)
 void
 SoDragger::transferMotion(SoDragger * child)
 {
-  SbString partname = this->getPartString(child);
   SbMatrix childmatrix = child->getMotionMatrix();
-  SbMatrix parttolocal, localtopart;
-
-  SbBool oldval = this->enableValueChangedCallbacks(FALSE);
-  this->setMotionMatrix(THIS->startmotionmatrix);
-  this->enableValueChangedCallbacks(oldval);
-  this->transformMatrixToLocalSpace(childmatrix, childmatrix, SbName(partname.getString()));
-  SbMatrix mat = THIS->startmotionmatrix;
-  mat.multRight(childmatrix);
-  this->setMotionMatrix(mat);
   child->setMotionMatrix(SbMatrix::identity());
+  child->transformMatrixLocalToWorld(childmatrix, childmatrix);
+  this->transformMatrixWorldToLocal(childmatrix, childmatrix);
+  
+  SbMatrix matrix = this->getStartMotionMatrix();
+  matrix.multLeft(childmatrix);
+  this->setMotionMatrix(matrix);
 }
 
 /*!
