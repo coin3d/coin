@@ -2,13 +2,12 @@ New in Coin v2.0.0a (so far):
 - NB: v2.0 is *far* ahead in the future
 - NB: this is an unstable source repository we don't release Coin from
 * added man-page coin-config.1
-* SoGLPointSizeElement::getValidRange()
 * the usual bugfixes, optimizations and documentation updates
 * more standard build setup for generated documentation
 * debian package setup
 * rpm package setup
 * verified support for Mac OS X / Darwin platforms
-* new TransparencyType node, with support for setting TransparencyType
+* new SoTransparencyType node, with support for setting SoTransparencyType
   in the scene graph.
 
 New in Coin v1.0 (2001-08-13):
