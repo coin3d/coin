@@ -27,7 +27,7 @@
 
 class SbMatrix;
 
-class COIN_DLL_EXPORT SbBox3f {
+class COIN_DLL_API SbBox3f {
 public:
   SbBox3f(void);
   SbBox3f(const float minx, const float miny, const float minz,
@@ -69,8 +69,8 @@ public:
   SbBool outside(const SbMatrix & mvp, int & cullbits) const;
   SbVec3f getClosestPoint(const SbVec3f & point) const;
 
-  friend COIN_DLL_EXPORT int operator ==(const SbBox3f & b1, const SbBox3f & b2);
-  friend COIN_DLL_EXPORT int operator !=(const SbBox3f & b1, const SbBox3f & b2);
+  friend COIN_DLL_API int operator ==(const SbBox3f & b1, const SbBox3f & b2);
+  friend COIN_DLL_API int operator !=(const SbBox3f & b1, const SbBox3f & b2);
 
   void print(FILE * file) const;
 
@@ -78,7 +78,7 @@ private:
   SbVec3f min, max;
 };
 
-COIN_DLL_EXPORT int operator ==(const SbBox3f & b1, const SbBox3f & b2);
-COIN_DLL_EXPORT int operator !=(const SbBox3f & b1, const SbBox3f & b2);
+COIN_DLL_API int operator ==(const SbBox3f & b1, const SbBox3f & b2);
+COIN_DLL_API int operator !=(const SbBox3f & b1, const SbBox3f & b2);
 
 #endif // !COIN_SBBOX3F_H

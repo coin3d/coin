@@ -50,7 +50,7 @@ class SoDB_HeaderInfo;
 typedef void SoDBHeaderCB(void * data, SoInput * in);
 
 
-class COIN_DLL_EXPORT SoDB {
+class COIN_DLL_API SoDB {
 public:
   static void init(void);
 

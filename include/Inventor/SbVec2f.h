@@ -24,7 +24,7 @@
 
 #include <Inventor/SbBasic.h>
 
-class COIN_DLL_EXPORT SbVec2f {
+class COIN_DLL_API SbVec2f {
 public:
   SbVec2f(void);
   SbVec2f(const float v[2]);
@@ -46,13 +46,13 @@ public:
   SbVec2f & operator -= (const SbVec2f & u);
   SbVec2f operator -(void) const;
 
-  friend COIN_DLL_EXPORT SbVec2f operator * (const SbVec2f & v, const float d);
-  friend COIN_DLL_EXPORT SbVec2f operator * (const float d, const SbVec2f & v);
-  friend COIN_DLL_EXPORT SbVec2f operator / (const SbVec2f & v, const float d);
-  friend COIN_DLL_EXPORT SbVec2f operator + (const SbVec2f & v1, const SbVec2f & v2);
-  friend COIN_DLL_EXPORT SbVec2f operator - (const SbVec2f & v1, const SbVec2f & v2);
-  friend COIN_DLL_EXPORT int operator == (const SbVec2f & v1, const SbVec2f & v2);
-  friend COIN_DLL_EXPORT int operator != (const SbVec2f & v1, const SbVec2f & v2);
+  friend COIN_DLL_API SbVec2f operator * (const SbVec2f & v, const float d);
+  friend COIN_DLL_API SbVec2f operator * (const float d, const SbVec2f & v);
+  friend COIN_DLL_API SbVec2f operator / (const SbVec2f & v, const float d);
+  friend COIN_DLL_API SbVec2f operator + (const SbVec2f & v1, const SbVec2f & v2);
+  friend COIN_DLL_API SbVec2f operator - (const SbVec2f & v1, const SbVec2f & v2);
+  friend COIN_DLL_API int operator == (const SbVec2f & v1, const SbVec2f & v2);
+  friend COIN_DLL_API int operator != (const SbVec2f & v1, const SbVec2f & v2);
 
   void print(FILE * fp) const;
 
@@ -60,13 +60,13 @@ private:
   float vec[2];
 };
 
-COIN_DLL_EXPORT SbVec2f operator * (const SbVec2f & v, const float d);
-COIN_DLL_EXPORT SbVec2f operator * (const float d, const SbVec2f & v);
-COIN_DLL_EXPORT SbVec2f operator / (const SbVec2f & v, const float d);
-COIN_DLL_EXPORT SbVec2f operator + (const SbVec2f & v1, const SbVec2f & v2);
-COIN_DLL_EXPORT SbVec2f operator - (const SbVec2f & v1, const SbVec2f & v2);
-COIN_DLL_EXPORT int operator == (const SbVec2f & v1, const SbVec2f & v2);
-COIN_DLL_EXPORT int operator != (const SbVec2f & v1, const SbVec2f & v2);
+COIN_DLL_API SbVec2f operator * (const SbVec2f & v, const float d);
+COIN_DLL_API SbVec2f operator * (const float d, const SbVec2f & v);
+COIN_DLL_API SbVec2f operator / (const SbVec2f & v, const float d);
+COIN_DLL_API SbVec2f operator + (const SbVec2f & v1, const SbVec2f & v2);
+COIN_DLL_API SbVec2f operator - (const SbVec2f & v1, const SbVec2f & v2);
+COIN_DLL_API int operator == (const SbVec2f & v1, const SbVec2f & v2);
+COIN_DLL_API int operator != (const SbVec2f & v1, const SbVec2f & v2);
 
 
 // *************************************************************************

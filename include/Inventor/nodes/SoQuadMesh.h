@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoSFInt32.h>
 
 
-class COIN_DLL_EXPORT SoQuadMesh : public SoNonIndexedShape {
+class COIN_DLL_API SoQuadMesh : public SoNonIndexedShape {
   typedef SoNonIndexedShape inherited;
 
   SO_NODE_HEADER(SoQuadMesh);

@@ -33,7 +33,7 @@ class SoGLTextureCoordinateElement;
 class SoTextureCoordinateCache;
 class SoVertexShape;
 
-class COIN_DLL_EXPORT SoTextureCoordinateBundle : public SoBundle {
+class COIN_DLL_API SoTextureCoordinateBundle : public SoBundle {
   typedef SoBundle inherited;
 public:
   SoTextureCoordinateBundle(SoAction * const action,

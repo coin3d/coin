@@ -29,7 +29,7 @@
 
 struct so_eval_node;
 
-class COIN_DLL_EXPORT SoCalculator : public SoEngine {
+class COIN_DLL_API SoCalculator : public SoEngine {
   typedef SoEngine inherited;
 
   SO_ENGINE_HEADER(SoCalculator);

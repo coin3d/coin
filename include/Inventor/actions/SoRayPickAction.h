@@ -34,7 +34,7 @@ class SbViewportRegion;
 class SoPickedPoint;
 
 
-class COIN_DLL_EXPORT SoRayPickAction : public SoPickAction {
+class COIN_DLL_API SoRayPickAction : public SoPickAction {
   typedef SoPickAction inherited;
 
   SO_ACTION_HEADER(SoRayPickAction);

@@ -25,7 +25,7 @@
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/fields/SoSFFloat.h>
 
-class COIN_DLL_EXPORT SoInterpolate : public SoEngine {
+class COIN_DLL_API SoInterpolate : public SoEngine {
   typedef SoEngine inherited;
   SO_ENGINE_ABSTRACT_HEADER(SoInterpolate);
 

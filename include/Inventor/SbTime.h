@@ -38,7 +38,7 @@ struct timeval;
 #include <Inventor/SbString.h>
 
 
-class COIN_DLL_EXPORT SbTime {
+class COIN_DLL_API SbTime {
 public:
   SbTime(void);
   SbTime(const double sec);
@@ -69,14 +69,14 @@ public:
   SbString formatDate(const char * const fmt = "%#c") const;
 #endif // _WIN32
   SbBool parsedate(const char * const date);
-  friend COIN_DLL_EXPORT SbTime operator +(const SbTime & t0, const SbTime & t1);
-  friend COIN_DLL_EXPORT SbTime operator -(const SbTime & t0, const SbTime & t1);
+  friend COIN_DLL_API SbTime operator +(const SbTime & t0, const SbTime & t1);
+  friend COIN_DLL_API SbTime operator -(const SbTime & t0, const SbTime & t1);
   SbTime & operator +=(const SbTime & tm);
   SbTime & operator -=(const SbTime & tm);
   SbTime operator -(void) const;
-  friend COIN_DLL_EXPORT SbTime operator *(const double s, const SbTime & tm);
-  friend COIN_DLL_EXPORT SbTime operator *(const SbTime & tm, const double s);
-  friend COIN_DLL_EXPORT SbTime operator /(const SbTime & tm, const double s);
+  friend COIN_DLL_API SbTime operator *(const double s, const SbTime & tm);
+  friend COIN_DLL_API SbTime operator *(const SbTime & tm, const double s);
+  friend COIN_DLL_API SbTime operator /(const SbTime & tm, const double s);
   SbTime & operator *=(const double s);
   SbTime & operator /=(const double s);
   double operator /(const SbTime & tm) const;
@@ -95,10 +95,10 @@ private:
   void addToString(SbString & str, const double val) const;
 };
 
-COIN_DLL_EXPORT SbTime operator +(const SbTime & t0, const SbTime & t1);
-COIN_DLL_EXPORT SbTime operator -(const SbTime & t0, const SbTime & t1);
-COIN_DLL_EXPORT SbTime operator *(const double s, const SbTime & tm);
-COIN_DLL_EXPORT SbTime operator *(const SbTime & tm, const double s);
-COIN_DLL_EXPORT SbTime operator /(const SbTime & tm, const double s);
+COIN_DLL_API SbTime operator +(const SbTime & t0, const SbTime & t1);
+COIN_DLL_API SbTime operator -(const SbTime & t0, const SbTime & t1);
+COIN_DLL_API SbTime operator *(const double s, const SbTime & tm);
+COIN_DLL_API SbTime operator *(const SbTime & tm, const double s);
+COIN_DLL_API SbTime operator /(const SbTime & tm, const double s);
 
 #endif // !COIN_SBTIME_H

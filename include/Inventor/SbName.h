@@ -30,7 +30,7 @@
 class SbString;
 struct SbNameChunk;
 
-class COIN_DLL_EXPORT SbNameEntry {
+class COIN_DLL_API SbNameEntry {
   friend class SbName;
 public:
   SbBool isEmpty(void) const
@@ -58,7 +58,7 @@ public:
   static void print_info();
 };
 
-class COIN_DLL_EXPORT SbName {
+class COIN_DLL_API SbName {
 public:
   SbName(void);
   SbName(const char * nameString);
@@ -74,23 +74,23 @@ public:
   static SbBool isBaseNameChar(const char c);
 
   int operator ! (void) const;
-  friend COIN_DLL_EXPORT int operator == (const SbName & lhs, const char * rhs);
-  friend COIN_DLL_EXPORT int operator == (const char * lhs, const SbName & rhs);
-  friend COIN_DLL_EXPORT int operator == (const SbName & lhs, const SbName & rhs);
-  friend COIN_DLL_EXPORT int operator != (const SbName & lhs, const char * rhs);
-  friend COIN_DLL_EXPORT int operator != (const char * lhs, const SbName & rhs);
-  friend COIN_DLL_EXPORT int operator != (const SbName & lhs, const SbName & rhs);
+  friend COIN_DLL_API int operator == (const SbName & lhs, const char * rhs);
+  friend COIN_DLL_API int operator == (const char * lhs, const SbName & rhs);
+  friend COIN_DLL_API int operator == (const SbName & lhs, const SbName & rhs);
+  friend COIN_DLL_API int operator != (const SbName & lhs, const char * rhs);
+  friend COIN_DLL_API int operator != (const char * lhs, const SbName & rhs);
+  friend COIN_DLL_API int operator != (const SbName & lhs, const SbName & rhs);
 
   operator const char * (void) const;
 
 private:
   const SbNameEntry * entry;
 };
-COIN_DLL_EXPORT int operator == (const SbName & lhs, const char * rhs);
-COIN_DLL_EXPORT int operator == (const char * lhs, const SbName & rhs);
-COIN_DLL_EXPORT int operator == (const SbName & lhs, const SbName & rhs);
-COIN_DLL_EXPORT int operator != (const SbName & lhs, const char * rhs);
-COIN_DLL_EXPORT int operator != (const char * lhs, const SbName & rhs);
-COIN_DLL_EXPORT int operator != (const SbName & lhs, const SbName & rhs);
+COIN_DLL_API int operator == (const SbName & lhs, const char * rhs);
+COIN_DLL_API int operator == (const char * lhs, const SbName & rhs);
+COIN_DLL_API int operator == (const SbName & lhs, const SbName & rhs);
+COIN_DLL_API int operator != (const SbName & lhs, const char * rhs);
+COIN_DLL_API int operator != (const char * lhs, const SbName & rhs);
+COIN_DLL_API int operator != (const SbName & lhs, const SbName & rhs);
 
 #endif // !COIN_SBNAME_H

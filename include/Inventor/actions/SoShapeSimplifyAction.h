@@ -23,7 +23,7 @@
 #include <Inventor/actions/SoSimplifyAction.h>
 
 
-class COIN_DLL_EXPORT SoShapeSimplifyAction : public SoSimplifyAction {
+class COIN_DLL_API SoShapeSimplifyAction : public SoSimplifyAction {
   typedef SoSimplifyAction inherited;
 
   SO_ACTION_HEADER(SoShapeSimplifyAction);

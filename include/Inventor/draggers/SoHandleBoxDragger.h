@@ -28,7 +28,7 @@ class SoFieldSensor;
 class SbPlaneProjector;
 class SbLineProjector;
 
-class COIN_DLL_EXPORT SoHandleBoxDragger : public SoDragger {
+class COIN_DLL_API SoHandleBoxDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoHandleBoxDragger);

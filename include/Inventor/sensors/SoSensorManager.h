@@ -35,7 +35,7 @@ class SoTimerQueueSensor;
 class SoTimerSensor;
 class SbTime;
 
-class COIN_DLL_EXPORT SoSensorManager {
+class COIN_DLL_API SoSensorManager {
 public:
   SoSensorManager(void);
   ~SoSensorManager();

@@ -24,7 +24,7 @@
 #include <Inventor/elements/SoReplacedElement.h>
 
 
-class COIN_DLL_EXPORT SoFontNameElement : public SoReplacedElement {
+class COIN_DLL_API SoFontNameElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
   SO_ELEMENT_HEADER(SoFontNameElement);

@@ -28,7 +28,7 @@
 #include <Inventor/SbVec3f.h>
 
 
-class COIN_DLL_EXPORT SoGetMatrixAction : public SoAction {
+class COIN_DLL_API SoGetMatrixAction : public SoAction {
   typedef SoAction inherited;
 
   SO_ACTION_HEADER(SoGetMatrixAction);

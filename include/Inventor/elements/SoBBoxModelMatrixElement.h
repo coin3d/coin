@@ -25,7 +25,7 @@
 class SoLocalBBoxMatrixElement;
 
 
-class COIN_DLL_EXPORT SoBBoxModelMatrixElement : public SoModelMatrixElement {
+class COIN_DLL_API SoBBoxModelMatrixElement : public SoModelMatrixElement {
   typedef SoModelMatrixElement inherited;
 
   SO_ELEMENT_HEADER(SoBBoxModelMatrixElement);

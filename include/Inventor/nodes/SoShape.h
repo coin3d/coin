@@ -35,7 +35,7 @@ class SbVec2f;
 class SoMaterialBundle;
 
 
-class COIN_DLL_EXPORT SoShape : public SoNode {
+class COIN_DLL_API SoShape : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_ABSTRACT_HEADER(SoShape);

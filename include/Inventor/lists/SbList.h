@@ -26,7 +26,7 @@
 
 
 template <class Type>
-class COIN_DLL_EXPORT SbList {
+class COIN_DLL_API SbList {
   // Older compilers aren't too happy about const declarations in the
   // class definitions, so use the enum trick described by Scott
   // Meyers in "Effective C++".

@@ -27,7 +27,7 @@ class SoBaseKit;
 class SoNode;
 
 
-class COIN_DLL_EXPORT SoNodeKitDetail : public SoDetail {
+class COIN_DLL_API SoNodeKitDetail : public SoDetail {
   typedef SoDetail inherited;
 
   SO_DETAIL_HEADER(SoNodeKitDetail);

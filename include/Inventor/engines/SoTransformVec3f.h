@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoMFMatrix.h>
 
-class COIN_DLL_EXPORT SoTransformVec3f : public SoEngine {
+class COIN_DLL_API SoTransformVec3f : public SoEngine {
   typedef SoEngine inherited;
 
   SO_ENGINE_HEADER(SoTransformVec3f);

@@ -27,7 +27,7 @@
 class SbMatrix;
 
 
-class COIN_DLL_EXPORT SoTexture2Transform : public SoNode {
+class COIN_DLL_API SoTexture2Transform : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoTexture2Transform);

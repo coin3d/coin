@@ -25,7 +25,7 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbLine.h>
 
-class COIN_DLL_EXPORT SbCylinder {
+class COIN_DLL_API SbCylinder {
 public:
   SbCylinder(void);
   SbCylinder(const SbLine& a, const float r);

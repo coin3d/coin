@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoMFInt32.h>
 
 
-class COIN_DLL_EXPORT SoMarkerSet : public SoPointSet {
+class COIN_DLL_API SoMarkerSet : public SoPointSet {
   typedef SoPointSet inherited;
 
   SO_NODE_HEADER(SoMarkerSet);

@@ -24,7 +24,7 @@
 #include <Inventor/SbTime.h>
 
 
-class COIN_DLL_EXPORT SoTimerQueueSensor : public SoSensor {
+class COIN_DLL_API SoTimerQueueSensor : public SoSensor {
   typedef SoSensor inherited;
 
 public:

@@ -26,7 +26,7 @@
 class SoNotList;
 
 
-class COIN_DLL_EXPORT SoEngineOutput {
+class COIN_DLL_API SoEngineOutput {
 public:
   SoEngineOutput(void);
   virtual ~SoEngineOutput();

@@ -29,7 +29,7 @@ struct SbTVertex;
 class SbHeap;
 class SbVec3f;
 
-class COIN_DLL_EXPORT SbTesselator {
+class COIN_DLL_API SbTesselator {
 public:
   SbTesselator(void (*callback)(void * v0, void * v1, void * v2,
                                 void * data) = NULL, void * userdata = NULL);

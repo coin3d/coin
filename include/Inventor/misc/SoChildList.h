@@ -26,7 +26,7 @@ class SoPath;
 class SoAction;
 
 
-class COIN_DLL_EXPORT SoChildList : public SoNodeList {
+class COIN_DLL_API SoChildList : public SoNodeList {
   typedef SoNodeList inherited;
 
 public:

@@ -25,7 +25,7 @@
 #include <Inventor/SbRotation.h>
 
 
-class COIN_DLL_EXPORT SoSFRotation : public SoSField {
+class COIN_DLL_API SoSFRotation : public SoSField {
   typedef SoSField inherited;
 
   SO_SFIELD_HEADER(SoSFRotation, SbRotation, const SbRotation &);

@@ -32,7 +32,7 @@ class SoOutput;
 class SoEnumEntry;
 class SoFieldEntry;
 
-class COIN_DLL_EXPORT SoFieldData {
+class COIN_DLL_API SoFieldData {
 public:
   SoFieldData(void);
   SoFieldData(const SoFieldData & fd);

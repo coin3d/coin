@@ -30,7 +30,7 @@ class SoFieldSensor;
 class SbPlaneProjector;
 
 
-class COIN_DLL_EXPORT SoSpotLightDragger : public SoDragger {
+class COIN_DLL_API SoSpotLightDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoSpotLightDragger);

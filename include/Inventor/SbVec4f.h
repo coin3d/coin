@@ -26,7 +26,7 @@
 
 class SbVec3f;
 
-class COIN_DLL_EXPORT SbVec4f {
+class COIN_DLL_API SbVec4f {
 public:
   SbVec4f(void);
   SbVec4f(const float v[4]);
@@ -49,13 +49,13 @@ public:
   SbVec4f& operator +=(const SbVec4f& u);
   SbVec4f& operator -=(const SbVec4f& u);
   SbVec4f operator -(void) const;
-  friend COIN_DLL_EXPORT SbVec4f operator *(const SbVec4f& v, const float d);
-  friend COIN_DLL_EXPORT SbVec4f operator *(const float d, const SbVec4f& v);
-  friend COIN_DLL_EXPORT SbVec4f operator /(const SbVec4f& v, const float d);
-  friend COIN_DLL_EXPORT SbVec4f operator +(const SbVec4f& v1, const SbVec4f& v2);
-  friend COIN_DLL_EXPORT SbVec4f operator -(const SbVec4f& v1, const SbVec4f& v2);
-  friend COIN_DLL_EXPORT int operator ==(const SbVec4f& v1, const SbVec4f& v2);
-  friend COIN_DLL_EXPORT int operator !=(const SbVec4f& v1, const SbVec4f& v2);
+  friend COIN_DLL_API SbVec4f operator *(const SbVec4f& v, const float d);
+  friend COIN_DLL_API SbVec4f operator *(const float d, const SbVec4f& v);
+  friend COIN_DLL_API SbVec4f operator /(const SbVec4f& v, const float d);
+  friend COIN_DLL_API SbVec4f operator +(const SbVec4f& v1, const SbVec4f& v2);
+  friend COIN_DLL_API SbVec4f operator -(const SbVec4f& v1, const SbVec4f& v2);
+  friend COIN_DLL_API int operator ==(const SbVec4f& v1, const SbVec4f& v2);
+  friend COIN_DLL_API int operator !=(const SbVec4f& v1, const SbVec4f& v2);
 
   void print(FILE * fp) const;
 
@@ -63,12 +63,12 @@ private:
   float vec[4];
 };
 
-COIN_DLL_EXPORT SbVec4f operator *(const SbVec4f& v, const float d);
-COIN_DLL_EXPORT SbVec4f operator *(const float d, const SbVec4f& v);
-COIN_DLL_EXPORT SbVec4f operator /(const SbVec4f& v, const float d);
-COIN_DLL_EXPORT SbVec4f operator +(const SbVec4f& v1, const SbVec4f& v2);
-COIN_DLL_EXPORT SbVec4f operator -(const SbVec4f& v1, const SbVec4f& v2);
-COIN_DLL_EXPORT int operator ==(const SbVec4f& v1, const SbVec4f& v2);
-COIN_DLL_EXPORT int operator !=(const SbVec4f& v1, const SbVec4f& v2);
+COIN_DLL_API SbVec4f operator *(const SbVec4f& v, const float d);
+COIN_DLL_API SbVec4f operator *(const float d, const SbVec4f& v);
+COIN_DLL_API SbVec4f operator /(const SbVec4f& v, const float d);
+COIN_DLL_API SbVec4f operator +(const SbVec4f& v1, const SbVec4f& v2);
+COIN_DLL_API SbVec4f operator -(const SbVec4f& v1, const SbVec4f& v2);
+COIN_DLL_API int operator ==(const SbVec4f& v1, const SbVec4f& v2);
+COIN_DLL_API int operator !=(const SbVec4f& v1, const SbVec4f& v2);
 
 #endif // !COIN_SBVEC4F_H

@@ -29,7 +29,7 @@
 class SoGetBoundingBoxAction;
 
 
-class COIN_DLL_EXPORT SoComputeBoundingBox : public SoEngine {
+class COIN_DLL_API SoComputeBoundingBox : public SoEngine {
   typedef SoEngine inherited;
 
   SO_ENGINE_HEADER(SoComputeBoundingBox);

@@ -26,7 +26,7 @@
 #include <Inventor/SbLine.h>
 
 
-class COIN_DLL_EXPORT SbLineProjector : public SbProjector {
+class COIN_DLL_API SbLineProjector : public SbProjector {
   typedef SbProjector inherited;
 
 public:

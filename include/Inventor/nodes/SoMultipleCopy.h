@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoMFMatrix.h>
 
 
-class COIN_DLL_EXPORT SoMultipleCopy : public SoGroup {
+class COIN_DLL_API SoMultipleCopy : public SoGroup {
   typedef SoGroup inherited;
 
   SO_NODE_HEADER(SoMultipleCopy);

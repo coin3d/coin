@@ -27,7 +27,7 @@ class SbPList;
 class SbDictEntry;
 
 
-class COIN_DLL_EXPORT SbDict {
+class COIN_DLL_API SbDict {
 public:
   SbDict(const int entries = 251);
   SbDict(const SbDict & from);

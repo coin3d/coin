@@ -24,7 +24,7 @@
 #include <Inventor/nodes/SoCamera.h>
 
 
-class COIN_DLL_EXPORT SoOrthographicCamera : public SoCamera {
+class COIN_DLL_API SoOrthographicCamera : public SoCamera {
   typedef SoCamera inherited;
 
   SO_NODE_HEADER(SoOrthographicCamera);

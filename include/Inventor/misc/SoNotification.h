@@ -27,7 +27,7 @@
 class SoBase;
 
 
-class COIN_DLL_EXPORT SoNotRec {
+class COIN_DLL_API SoNotRec {
 public:
   enum Type {
     CONTAINER,
@@ -56,7 +56,7 @@ class SoEngineOutput;
 class SoField;
 class SoVRMLInterpOutput;
 
-class COIN_DLL_EXPORT SoNotList {
+class COIN_DLL_API SoNotList {
 public:
   SoNotList(void);
   SoNotList(const SoNotList * nl);

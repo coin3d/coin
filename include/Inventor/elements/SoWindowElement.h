@@ -37,7 +37,7 @@ typedef void Display;
 class SoGLRenderAction;
 
 
-class COIN_DLL_EXPORT SoWindowElement : public SoElement {
+class COIN_DLL_API SoWindowElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_HEADER(SoWindowElement);

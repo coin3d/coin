@@ -27,7 +27,7 @@
 #include <Inventor/fields/SoSFEnum.h>
 
 
-class COIN_DLL_EXPORT SoText2 : public SoShape {
+class COIN_DLL_API SoText2 : public SoShape {
   typedef SoShape inherited;
 
   SO_NODE_HEADER(SoText2);

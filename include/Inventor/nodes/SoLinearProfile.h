@@ -24,7 +24,7 @@
 #include <Inventor/nodes/SoProfile.h>
 
 
-class COIN_DLL_EXPORT SoLinearProfile : public SoProfile {
+class COIN_DLL_API SoLinearProfile : public SoProfile {
   typedef SoProfile inherited;
 
   SO_NODE_HEADER(SoLinearProfile);

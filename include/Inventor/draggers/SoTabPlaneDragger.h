@@ -29,7 +29,7 @@ class SbLineProjector;
 class SbPlaneProjector;
 
 
-class COIN_DLL_EXPORT SoTabPlaneDragger : public SoDragger {
+class COIN_DLL_API SoTabPlaneDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoTabPlaneDragger);

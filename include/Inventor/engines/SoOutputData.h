@@ -30,7 +30,7 @@ class SoOutput;
 class SoOutputDataEntry;
 class SoType;
 
-class COIN_DLL_EXPORT SoEngineOutputData {
+class COIN_DLL_API SoEngineOutputData {
 public:
   SoEngineOutputData();
   SoEngineOutputData(const SoEngineOutputData *data);

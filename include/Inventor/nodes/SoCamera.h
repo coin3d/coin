@@ -46,7 +46,7 @@
 class SoPath;
 
 
-class COIN_DLL_EXPORT SoCamera : public SoNode {
+class COIN_DLL_API SoCamera : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_ABSTRACT_HEADER(SoCamera);

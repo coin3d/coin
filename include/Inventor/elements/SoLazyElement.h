@@ -34,7 +34,7 @@ class SoColorPacker;
 // subelements.
 //
 
-class COIN_DLL_EXPORT SoLazyElement : public SoElement {
+class COIN_DLL_API SoLazyElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_HEADER(SoLazyElement);
@@ -174,7 +174,7 @@ private:
 //
 // We really don't care about this class
 //
-class COIN_DLL_EXPORT SoColorPacker {
+class COIN_DLL_API SoColorPacker {
 public:
   SoColorPacker() {}
   ~SoColorPacker() {}

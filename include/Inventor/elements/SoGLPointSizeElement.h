@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoPointSizeElement.h>
 
 
-class COIN_DLL_EXPORT SoGLPointSizeElement : public SoPointSizeElement {
+class COIN_DLL_API SoGLPointSizeElement : public SoPointSizeElement {
   typedef SoPointSizeElement inherited;
 
   SO_ELEMENT_HEADER(SoGLPointSizeElement);

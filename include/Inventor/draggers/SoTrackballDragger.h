@@ -33,7 +33,7 @@ class SbCylinderProjector;
 class SbLineProjector;
 class SoTimerSensor;
 
-class COIN_DLL_EXPORT SoTrackballDragger : public SoDragger {
+class COIN_DLL_API SoTrackballDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoTrackballDragger);

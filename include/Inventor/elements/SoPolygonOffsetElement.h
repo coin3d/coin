@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoReplacedElement.h>
 
 
-class COIN_DLL_EXPORT SoPolygonOffsetElement : public SoReplacedElement {
+class COIN_DLL_API SoPolygonOffsetElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
   SO_ELEMENT_HEADER(SoPolygonOffsetElement);

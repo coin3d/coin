@@ -23,7 +23,7 @@
 #include <Inventor/SoType.h>
 
 
-class COIN_DLL_EXPORT SoDetail {
+class COIN_DLL_API SoDetail {
 
 public:
   virtual ~SoDetail();

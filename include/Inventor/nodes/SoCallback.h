@@ -25,7 +25,7 @@
 
 typedef void SoCallbackCB(void * userdata, SoAction * action);
 
-class COIN_DLL_EXPORT SoCallback : public SoNode {
+class COIN_DLL_API SoCallback : public SoNode {
     typedef SoNode inherited;
 
   SO_NODE_HEADER(SoCallback);

@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoEnvironmentElement.h>
 
 
-class COIN_DLL_EXPORT SoGLEnvironmentElement : public SoEnvironmentElement {
+class COIN_DLL_API SoGLEnvironmentElement : public SoEnvironmentElement {
   typedef SoEnvironmentElement inherited;
 
   SO_ELEMENT_HEADER(SoGLEnvironmentElement);

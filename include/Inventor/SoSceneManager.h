@@ -36,7 +36,7 @@ class SoSceneManager;
 typedef void SoSceneManagerRenderCB(void * userdata, SoSceneManager * mgr);
 
 
-class COIN_DLL_EXPORT SoSceneManager {
+class COIN_DLL_API SoSceneManager {
 public:
   SoSceneManager(void);
   virtual ~SoSceneManager();

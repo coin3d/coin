@@ -42,7 +42,7 @@ public:
   }
 };
 
-class COIN_DLL_EXPORT SoClipPlaneElement : public SoAccumulatedElement {
+class COIN_DLL_API SoClipPlaneElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
   SO_ELEMENT_HEADER(SoClipPlaneElement);

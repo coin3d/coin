@@ -27,7 +27,7 @@
 #include <Inventor/elements/SoPolygonOffsetElement.h>
 
 
-class COIN_DLL_EXPORT SoPolygonOffset : public SoNode {
+class COIN_DLL_API SoPolygonOffset : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoPolygonOffset);

@@ -29,7 +29,7 @@ class SoPath;
 class SoNotList;
 
 
-class COIN_DLL_EXPORT SoDataSensor : public SoDelayQueueSensor {
+class COIN_DLL_API SoDataSensor : public SoDelayQueueSensor {
   typedef SoDelayQueueSensor inherited;
 
 public:

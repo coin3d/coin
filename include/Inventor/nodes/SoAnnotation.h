@@ -24,7 +24,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 
 
-class COIN_DLL_EXPORT SoAnnotation : public SoSeparator {
+class COIN_DLL_API SoAnnotation : public SoSeparator {
   typedef SoSeparator inherited;
 
   SO_NODE_HEADER(SoAnnotation);

@@ -23,7 +23,7 @@
 #include <Inventor/errors/SoError.h>
 
 
-class COIN_DLL_EXPORT SoMemoryError : public SoError {
+class COIN_DLL_API SoMemoryError : public SoError {
   typedef SoError inherited;
 
 public:

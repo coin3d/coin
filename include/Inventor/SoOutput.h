@@ -31,7 +31,7 @@ class SoBase;
 
 typedef void * SoOutputReallocCB(void * ptr, size_t newSize);
 
-class COIN_DLL_EXPORT SoOutput {
+class COIN_DLL_API SoOutput {
 public:
   enum Stage { COUNT_REFS, WRITE };
   // Bitwise flags for the annotations.

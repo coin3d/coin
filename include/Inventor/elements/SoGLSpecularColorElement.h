@@ -24,7 +24,7 @@
 #include <Inventor/SbColor.h>
 
 
-class COIN_DLL_EXPORT SoGLSpecularColorElement : public SoSpecularColorElement {
+class COIN_DLL_API SoGLSpecularColorElement : public SoSpecularColorElement {
   typedef SoSpecularColorElement inherited;
 
   SO_ELEMENT_HEADER(SoGLSpecularColorElement);

@@ -25,7 +25,7 @@
 #include <Inventor/SbPlane.h>
 
 
-class COIN_DLL_EXPORT SoMFPlane : public SoMField {
+class COIN_DLL_API SoMFPlane : public SoMField {
   typedef SoMField inherited;
 
   SO_MFIELD_HEADER(SoMFPlane, SbPlane, const SbPlane &);

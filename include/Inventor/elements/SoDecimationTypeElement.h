@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoInt32Element.h>
 
 
-class COIN_DLL_EXPORT SoDecimationTypeElement : public SoInt32Element {
+class COIN_DLL_API SoDecimationTypeElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
   SO_ELEMENT_HEADER(SoDecimationTypeElement);

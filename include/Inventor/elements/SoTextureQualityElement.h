@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoFloatElement.h>
 
 
-class COIN_DLL_EXPORT SoTextureQualityElement : public SoFloatElement {
+class COIN_DLL_API SoTextureQualityElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
   SO_ELEMENT_HEADER(SoTextureQualityElement);

@@ -23,7 +23,7 @@
 #include <Inventor/fields/SoSFEnum.h>
 
 
-class COIN_DLL_EXPORT SoSFBitMask : public SoSFEnum {
+class COIN_DLL_API SoSFBitMask : public SoSFEnum {
   typedef SoSFEnum inherited;
 
   SO_SFIELD_DERIVED_HEADER(SoSFBitMask, int, int);

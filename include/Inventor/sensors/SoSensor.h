@@ -26,7 +26,7 @@ class SoSensor;
 
 typedef void SoSensorCB(void * data, SoSensor * sensor);
 
-class COIN_DLL_EXPORT SoSensor {
+class COIN_DLL_API SoSensor {
 public:
   SoSensor(void);
   SoSensor(SoSensorCB * func, void * data);

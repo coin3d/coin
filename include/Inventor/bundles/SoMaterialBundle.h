@@ -34,7 +34,7 @@ class SoGLSpecularColorElement;
 class SoTransparencyElement;
 class SoGLColorIndexElement;
 
-class COIN_DLL_EXPORT SoMaterialBundle : public SoBundle {
+class COIN_DLL_API SoMaterialBundle : public SoBundle {
   typedef SoBundle inherited;
 public:
   SoMaterialBundle(SoAction *action);

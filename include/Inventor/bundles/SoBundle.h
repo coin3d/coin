@@ -26,7 +26,7 @@ class SoAction;
 class SoState;
 
 
-class COIN_DLL_EXPORT SoBundle {
+class COIN_DLL_API SoBundle {
 protected:
   SoBundle(SoAction *action);
   ~SoBundle();

@@ -23,7 +23,7 @@
 #include <Inventor/SbBasic.h>
 
 
-class COIN_DLL_EXPORT SoLockManager {
+class COIN_DLL_API SoLockManager {
 public:
   static void SetUnlockString(char * unlockstr);
   static char * GetUnlockString(void);

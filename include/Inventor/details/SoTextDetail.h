@@ -23,7 +23,7 @@
 #include <Inventor/details/SoSubDetail.h>
 
 
-class COIN_DLL_EXPORT SoTextDetail : public SoDetail {
+class COIN_DLL_API SoTextDetail : public SoDetail {
   typedef SoDetail inherited;
 
   SO_DETAIL_HEADER(SoTextDetail);

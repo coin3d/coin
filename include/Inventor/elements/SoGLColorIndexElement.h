@@ -22,7 +22,7 @@
 
 #include <Inventor/elements/SoReplacedElement.h>
 
-class COIN_DLL_EXPORT SoGLColorIndexElement : public SoReplacedElement {
+class COIN_DLL_API SoGLColorIndexElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
   SO_ELEMENT_HEADER(SoGLColorIndexElement);

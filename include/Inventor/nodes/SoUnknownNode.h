@@ -25,7 +25,7 @@
 class SoChildList;
 
 
-class COIN_DLL_EXPORT SoUnknownNode : public SoNode {
+class COIN_DLL_API SoUnknownNode : public SoNode {
   typedef SoNode inherited;
 
   // The following definitions are used instead of SO_NODE_HEADER() to

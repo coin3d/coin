@@ -30,7 +30,7 @@ class SoFieldSensor;
 class SbSphereProjector;
 
 
-class COIN_DLL_EXPORT SoRotateSphericalDragger : public SoDragger {
+class COIN_DLL_API SoRotateSphericalDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoRotateSphericalDragger);

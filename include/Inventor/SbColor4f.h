@@ -25,7 +25,7 @@
 
 class SbVec4f;
 
-class COIN_DLL_EXPORT SbColor4f {
+class COIN_DLL_API SbColor4f {
 public:
   SbColor4f(void);
   SbColor4f(const SbColor &rgb, const float alpha);
@@ -57,13 +57,13 @@ public:
   SbColor4f &operator+=(const SbColor4f &c);
   SbColor4f &operator-=(const SbColor4f &c);
 
-  friend COIN_DLL_EXPORT SbColor4f operator *(const SbColor4f &c, const float d);
-  friend COIN_DLL_EXPORT SbColor4f operator *(const float d, const SbColor4f &c);
-  friend COIN_DLL_EXPORT SbColor4f operator /(const SbColor4f &c, const float d);
-  friend COIN_DLL_EXPORT SbColor4f operator +(const SbColor4f &v1, const SbColor4f &v2);
-  friend COIN_DLL_EXPORT SbColor4f operator -(const SbColor4f &v1, const SbColor4f &v2);
-  friend COIN_DLL_EXPORT int operator ==(const SbColor4f &v1, const SbColor4f &v2);
-  friend COIN_DLL_EXPORT int operator !=(const SbColor4f &v1, const SbColor4f &v2);
+  friend COIN_DLL_API SbColor4f operator *(const SbColor4f &c, const float d);
+  friend COIN_DLL_API SbColor4f operator *(const float d, const SbColor4f &c);
+  friend COIN_DLL_API SbColor4f operator /(const SbColor4f &c, const float d);
+  friend COIN_DLL_API SbColor4f operator +(const SbColor4f &v1, const SbColor4f &v2);
+  friend COIN_DLL_API SbColor4f operator -(const SbColor4f &v1, const SbColor4f &v2);
+  friend COIN_DLL_API int operator ==(const SbColor4f &v1, const SbColor4f &v2);
+  friend COIN_DLL_API int operator !=(const SbColor4f &v1, const SbColor4f &v2);
 
 private:
   float vec[4];
@@ -73,12 +73,12 @@ private:
   float alpha() const { return this->vec[3]; }
 };
 
-COIN_DLL_EXPORT SbColor4f operator *(const SbColor4f &c, const float d);
-COIN_DLL_EXPORT SbColor4f operator *(const float d, const SbColor4f &c);
-COIN_DLL_EXPORT SbColor4f operator /(const SbColor4f &c, const float d);
-COIN_DLL_EXPORT SbColor4f operator +(const SbColor4f &v1, const SbColor4f &v2);
-COIN_DLL_EXPORT SbColor4f operator -(const SbColor4f &v1, const SbColor4f &v2);
-COIN_DLL_EXPORT int operator ==(const SbColor4f &v1, const SbColor4f &v2);
-COIN_DLL_EXPORT int operator !=(const SbColor4f &v1, const SbColor4f &v2);
+COIN_DLL_API SbColor4f operator *(const SbColor4f &c, const float d);
+COIN_DLL_API SbColor4f operator *(const float d, const SbColor4f &c);
+COIN_DLL_API SbColor4f operator /(const SbColor4f &c, const float d);
+COIN_DLL_API SbColor4f operator +(const SbColor4f &v1, const SbColor4f &v2);
+COIN_DLL_API SbColor4f operator -(const SbColor4f &v1, const SbColor4f &v2);
+COIN_DLL_API int operator ==(const SbColor4f &v1, const SbColor4f &v2);
+COIN_DLL_API int operator !=(const SbColor4f &v1, const SbColor4f &v2);
 
 #endif // !COIN_SBCOLOR4F_H

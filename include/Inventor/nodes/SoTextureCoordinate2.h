@@ -24,7 +24,7 @@
 #include <Inventor/fields/SoMFVec2f.h>
 
 
-class COIN_DLL_EXPORT SoTextureCoordinate2 : public SoNode {
+class COIN_DLL_API SoTextureCoordinate2 : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoTextureCoordinate2);

@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoNormalElement.h>
 
 
-class COIN_DLL_EXPORT SoGLNormalElement : public SoNormalElement {
+class COIN_DLL_API SoGLNormalElement : public SoNormalElement {
   typedef SoNormalElement inherited;
 
   SO_ELEMENT_HEADER(SoGLNormalElement);

@@ -26,7 +26,7 @@
 class SoPathList;
 
 
-class COIN_DLL_EXPORT SoBoxHighlightRenderAction : public SoGLRenderAction {
+class COIN_DLL_API SoBoxHighlightRenderAction : public SoGLRenderAction {
   typedef SoGLRenderAction inherited;
 
   SO_ACTION_HEADER(SoBoxHighlightRenderAction);

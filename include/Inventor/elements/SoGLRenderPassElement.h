@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoSubElement.h>
 
 
-class COIN_DLL_EXPORT SoGLRenderPassElement : public SoElement {
+class COIN_DLL_API SoGLRenderPassElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_HEADER(SoGLRenderPassElement);

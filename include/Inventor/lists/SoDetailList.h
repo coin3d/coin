@@ -25,7 +25,7 @@
 class SoDetail;
 
 
-class COIN_DLL_EXPORT SoDetailList : public SbList<SoDetail *> {
+class COIN_DLL_API SoDetailList : public SbList<SoDetail *> {
 
 public:
   SoDetailList(void) : SbList<SoDetail *>() { }

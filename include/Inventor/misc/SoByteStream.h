@@ -28,7 +28,7 @@ class SoPath;
 class SoPathList;
 
 
-class COIN_DLL_EXPORT SoByteStream {
+class COIN_DLL_API SoByteStream {
 
 public:
   SoByteStream(void);

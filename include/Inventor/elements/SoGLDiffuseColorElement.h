@@ -24,7 +24,7 @@
 #include <Inventor/SbVec4f.h>
 
 
-class COIN_DLL_EXPORT SoGLDiffuseColorElement : public SoDiffuseColorElement {
+class COIN_DLL_API SoGLDiffuseColorElement : public SoDiffuseColorElement {
   typedef SoDiffuseColorElement inherited;
 
   SO_ELEMENT_HEADER(SoGLDiffuseColorElement);

@@ -24,7 +24,7 @@
 #include <Inventor/SbColor.h>
 
 
-class COIN_DLL_EXPORT SoGLEmissiveColorElement : public SoEmissiveColorElement {
+class COIN_DLL_API SoGLEmissiveColorElement : public SoEmissiveColorElement {
   typedef SoEmissiveColorElement inherited;
 
   SO_ELEMENT_HEADER(SoGLEmissiveColorElement);

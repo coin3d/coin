@@ -26,7 +26,7 @@
 #include <Inventor/fields/SoSFBitMask.h>
 
 
-class COIN_DLL_EXPORT SoFontStyle : public SoFont {
+class COIN_DLL_API SoFontStyle : public SoFont {
   typedef SoFont inherited;
 
   SO_NODE_HEADER(SoFontStyle);

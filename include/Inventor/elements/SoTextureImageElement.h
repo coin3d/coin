@@ -27,7 +27,7 @@
 class SoState;
 
 
-class COIN_DLL_EXPORT SoTextureImageElement : public SoReplacedElement {
+class COIN_DLL_API SoTextureImageElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
   SO_ELEMENT_HEADER(SoTextureImageElement);

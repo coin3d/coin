@@ -28,7 +28,7 @@ class SbViewportRegion;
 class SbVec2f;
 
 
-class COIN_DLL_EXPORT SoEvent {
+class COIN_DLL_API SoEvent {
 
 public:
   SoEvent(void);

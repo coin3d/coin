@@ -30,7 +30,7 @@
 class SoFieldSensor;
 class SoSensor;
 
-class COIN_DLL_EXPORT SoTexture2 : public SoNode {
+class COIN_DLL_API SoTexture2 : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoTexture2);

@@ -28,7 +28,7 @@
 #include <Inventor/SbVec3f.h>
 
 
-class COIN_DLL_EXPORT SoTransform : public SoTransformation {
+class COIN_DLL_API SoTransform : public SoTransformation {
   typedef SoTransformation inherited;
 
   SO_NODE_HEADER(SoTransform);

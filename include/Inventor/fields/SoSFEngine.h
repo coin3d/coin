@@ -31,7 +31,7 @@
 class SoEngine;
 
 
-class COIN_DLL_EXPORT SoSFEngine : public SoSField {
+class COIN_DLL_API SoSFEngine : public SoSField {
   typedef SoSField inherited;
 
   SO_SFIELD_HEADER(SoSFEngine, SoEngine *, SoEngine *);

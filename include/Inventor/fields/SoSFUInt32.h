@@ -24,7 +24,7 @@
 #include <Inventor/fields/SoSubField.h>
 
 
-class COIN_DLL_EXPORT SoSFUInt32 : public SoSField {
+class COIN_DLL_API SoSFUInt32 : public SoSField {
   typedef SoSField inherited;
 
   SO_SFIELD_HEADER(SoSFUInt32, uint32_t, uint32_t);

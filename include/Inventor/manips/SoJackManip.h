@@ -23,7 +23,7 @@
 #include <Inventor/manips/SoTransformManip.h>
 
 
-class COIN_DLL_EXPORT SoJackManip : public SoTransformManip {
+class COIN_DLL_API SoJackManip : public SoTransformManip {
   typedef SoTransformManip inherited;
 
   SO_NODE_HEADER(SoJackManip);

@@ -25,7 +25,7 @@
 class SoNode;
 class SoTempPath;
 
-class COIN_DLL_EXPORT SoLightPath {
+class COIN_DLL_API SoLightPath {
 public:
   SoLightPath(SoNode *node, const int approxlength);
   SoLightPath(const int approxlength);

@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoFloatElement.h>
 
 
-class COIN_DLL_EXPORT SoCreaseAngleElement : public SoFloatElement {
+class COIN_DLL_API SoCreaseAngleElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
   SO_ELEMENT_HEADER(SoCreaseAngleElement);

@@ -31,7 +31,7 @@ class SoTypeList;
 struct SoTypeData;
 template <class Type> class SbList;
 
-class COIN_DLL_EXPORT SoType {
+class COIN_DLL_API SoType {
 public:
   typedef void * (*instantiationMethod)(void);
 

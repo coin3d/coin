@@ -26,7 +26,7 @@
 class SbBox3f;
 class SbViewVolume;
 
-class COIN_DLL_EXPORT SoCullElement : public SoElement {
+class COIN_DLL_API SoCullElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_HEADER(SoCullElement);

@@ -25,7 +25,7 @@
 class SoEngineOutput;
 
 
-class COIN_DLL_EXPORT SoFieldConverter : public SoEngine {
+class COIN_DLL_API SoFieldConverter : public SoEngine {
   typedef SoEngine inherited;
   SO_ENGINE_ABSTRACT_HEADER(SoFieldConverter);
 

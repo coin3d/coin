@@ -27,7 +27,7 @@ class SoVRMLPROTODef;
 class SoVRMLEXTERNPROTODef;
 
 
-class COIN_DLL_EXPORT SoWriteAction : public SoAction {
+class COIN_DLL_API SoWriteAction : public SoAction {
   typedef SoAction inherited;
 
   SO_ACTION_HEADER(SoWriteAction);

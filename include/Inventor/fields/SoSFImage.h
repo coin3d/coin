@@ -25,7 +25,7 @@
 #include <Inventor/SbVec2s.h>
 
 
-class COIN_DLL_EXPORT SoSFImage : public SoSField {
+class COIN_DLL_API SoSFImage : public SoSField {
   typedef SoSField inherited;
 
   SO_SFIELD_CONSTRUCTOR_HEADER(SoSFImage);

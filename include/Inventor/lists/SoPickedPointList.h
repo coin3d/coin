@@ -25,7 +25,7 @@
 class SoPickedPoint;
 
 
-class COIN_DLL_EXPORT SoPickedPointList : public SbList<SoPickedPoint *> {
+class COIN_DLL_API SoPickedPointList : public SbList<SoPickedPoint *> {
 
 public:
   SoPickedPointList(void) : SbList<SoPickedPoint *>() { }

@@ -24,7 +24,7 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec2f.h>
 
-class COIN_DLL_EXPORT SbBox2f {
+class COIN_DLL_API SbBox2f {
 public:
   SbBox2f(void);
   SbBox2f(float xmin, float ymin, float xmax, float ymax);
@@ -50,8 +50,8 @@ public:
   SbBool isEmpty(void) const;
   SbBool hasArea(void) const;
 
-  friend COIN_DLL_EXPORT int operator ==(const SbBox2f & b1, const SbBox2f & b2);
-  friend COIN_DLL_EXPORT int operator !=(const SbBox2f & b1, const SbBox2f & b2);
+  friend COIN_DLL_API int operator ==(const SbBox2f & b1, const SbBox2f & b2);
+  friend COIN_DLL_API int operator !=(const SbBox2f & b1, const SbBox2f & b2);
 
 private:
   SbVec2f minpt, maxpt;
@@ -60,7 +60,7 @@ private:
   float height(void) const;
 };
 
-COIN_DLL_EXPORT int operator ==(const SbBox2f & b1, const SbBox2f & b2);
-COIN_DLL_EXPORT int operator !=(const SbBox2f & b1, const SbBox2f & b2);
+COIN_DLL_API int operator ==(const SbBox2f & b1, const SbBox2f & b2);
+COIN_DLL_API int operator !=(const SbBox2f & b1, const SbBox2f & b2);
 
 #endif // !COIN_SBBOX2F_H

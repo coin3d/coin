@@ -24,7 +24,7 @@
 
 class SoGLRenderCache;
 
-class COIN_DLL_EXPORT SoGLLazyElement : public SoLazyElement {
+class COIN_DLL_API SoGLLazyElement : public SoLazyElement {
   typedef SoLazyElement inherited;
 
   SO_ELEMENT_HEADER(SoGLLazyElement);

@@ -38,7 +38,7 @@ class SbStringList;
 class SoInput_FileInfo;
 
 
-class COIN_DLL_EXPORT SoInput {
+class COIN_DLL_API SoInput {
 public:
   SoInput(void);
   SoInput(SoInput * dictIn);

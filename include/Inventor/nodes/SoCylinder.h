@@ -26,7 +26,7 @@
 #include <Inventor/fields/SoSFBitMask.h>
 
 
-class COIN_DLL_EXPORT SoCylinder : public SoShape {
+class COIN_DLL_API SoCylinder : public SoShape {
   typedef SoShape inherited;
 
   SO_NODE_HEADER(SoCylinder);

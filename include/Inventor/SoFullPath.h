@@ -23,7 +23,7 @@
 #include <Inventor/SoPath.h>
 
 
-class COIN_DLL_EXPORT SoFullPath : public SoPath {
+class COIN_DLL_API SoFullPath : public SoPath {
   typedef SoPath inherited;
   friend class SoTempPath;
 

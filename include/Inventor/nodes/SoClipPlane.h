@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoSFBool.h>
 
 
-class COIN_DLL_EXPORT SoClipPlane : public SoNode {
+class COIN_DLL_API SoClipPlane : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoClipPlane);

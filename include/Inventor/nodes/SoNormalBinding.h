@@ -25,7 +25,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 
 
-class COIN_DLL_EXPORT SoNormalBinding : public SoNode {
+class COIN_DLL_API SoNormalBinding : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoNormalBinding);

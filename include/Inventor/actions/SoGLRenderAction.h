@@ -31,7 +31,7 @@
 typedef void SoGLRenderPassCB(void * userdata);
 
 
-class COIN_DLL_EXPORT SoGLRenderAction : public SoAction {
+class COIN_DLL_API SoGLRenderAction : public SoAction {
   typedef SoAction inherited;
 
   SO_ACTION_HEADER(SoGLRenderAction);

@@ -24,7 +24,7 @@
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbVec4f.h>
 
-class COIN_DLL_EXPORT SoSFVec4f : public SoSField {
+class COIN_DLL_API SoSFVec4f : public SoSField {
   typedef SoSField inherited;
 
   SO_SFIELD_HEADER(SoSFVec4f, SbVec4f, const SbVec4f &);

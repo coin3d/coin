@@ -24,7 +24,7 @@
 #include <Inventor/system/inttypes.h>
 
 
-class COIN_DLL_EXPORT SoReplacedElement : public SoElement {
+class COIN_DLL_API SoReplacedElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_ABSTRACT_HEADER(SoReplacedElement);

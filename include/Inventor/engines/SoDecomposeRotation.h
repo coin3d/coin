@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoMFRotation.h>
 
 
-class COIN_DLL_EXPORT SoDecomposeRotation : public SoEngine {
+class COIN_DLL_API SoDecomposeRotation : public SoEngine {
   typedef SoEngine inherited;
   SO_COMPOSE__HEADER(SoDecomposeRotation);
 

@@ -26,7 +26,7 @@
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbVec2f.h>
 
-class COIN_DLL_EXPORT SoTextureCoordinateCache : public SoCache {
+class COIN_DLL_API SoTextureCoordinateCache : public SoCache {
   typedef SoCache inherited;
 public:
   SoTextureCoordinateCache(SoState * const state);

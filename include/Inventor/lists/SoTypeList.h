@@ -23,7 +23,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SoType.h>
 
-class COIN_DLL_EXPORT SoTypeList : public SbList<SoType> {
+class COIN_DLL_API SoTypeList : public SbList<SoType> {
 
 public:
   SoTypeList(void) : SbList<SoType>() { }

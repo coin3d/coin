@@ -27,7 +27,7 @@
 
 class SoLight;
 
-class COIN_DLL_EXPORT SoLightElement : public SoAccumulatedElement {
+class COIN_DLL_API SoLightElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
   SO_ELEMENT_HEADER(SoLightElement);

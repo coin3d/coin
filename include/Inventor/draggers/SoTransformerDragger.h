@@ -30,7 +30,7 @@ class SoSensor;
 class SoFieldSensor;
 
 
-class COIN_DLL_EXPORT SoTransformerDragger : public SoDragger {
+class COIN_DLL_API SoTransformerDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoTransformerDragger);

@@ -26,7 +26,7 @@
 #include <Inventor/fields/SoSFShort.h>
 
 
-class COIN_DLL_EXPORT SoCounter : public SoEngine {
+class COIN_DLL_API SoCounter : public SoEngine {
   typedef SoEngine inherited;
 
   SO_ENGINE_HEADER(SoCounter);

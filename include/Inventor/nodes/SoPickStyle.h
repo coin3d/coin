@@ -25,7 +25,7 @@
 #include <Inventor/elements/SoPickStyleElement.h>
 
 
-class COIN_DLL_EXPORT SoPickStyle : public SoNode {
+class COIN_DLL_API SoPickStyle : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoPickStyle);

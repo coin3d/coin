@@ -30,7 +30,7 @@ class SoElapsedTime;
 class SoCalculator;
 class SoInterpolateVec3f;
 
-class COIN_DLL_EXPORT SoShuttle : public SoTranslation {
+class COIN_DLL_API SoShuttle : public SoTranslation {
   typedef SoTranslation inherited;
 
   SO_NODE_HEADER(SoShuttle);

@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoLineWidthElement.h>
 
 
-class COIN_DLL_EXPORT SoGLLineWidthElement : public SoLineWidthElement {
+class COIN_DLL_API SoGLLineWidthElement : public SoLineWidthElement {
   typedef SoLineWidthElement inherited;
 
   SO_ELEMENT_HEADER(SoGLLineWidthElement);

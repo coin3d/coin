@@ -26,7 +26,7 @@
 #include <Inventor/fields/SoMFVec4f.h>
 
 
-class COIN_DLL_EXPORT SoDecomposeVec4f : public SoEngine {
+class COIN_DLL_API SoDecomposeVec4f : public SoEngine {
   typedef SoEngine inherited;
   SO_COMPOSE__HEADER(SoDecomposeVec4f);
 

@@ -31,7 +31,7 @@ class SoSensor;
 class SoFieldSensor;
 class SbImage;
 
-class COIN_DLL_EXPORT SoImage : public SoShape {
+class COIN_DLL_API SoImage : public SoShape {
   typedef SoShape inherited;
 
   SO_NODE_HEADER(SoImage);

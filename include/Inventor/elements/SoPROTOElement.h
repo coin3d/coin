@@ -22,7 +22,7 @@
 
 #include <Inventor/elements/SoSubElement.h>
 
-class COIN_DLL_EXPORT SoPROTOElement : public SoElement {
+class COIN_DLL_API SoPROTOElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_HEADER(SoPROTOElement);

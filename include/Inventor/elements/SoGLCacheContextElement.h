@@ -22,7 +22,7 @@
 
 #include <Inventor/elements/SoSubElement.h>
 
-class COIN_DLL_EXPORT SoGLCacheContextElement : public SoElement {
+class COIN_DLL_API SoGLCacheContextElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_HEADER(SoGLCacheContextElement);
@@ -64,7 +64,7 @@ private:
 };
 
 // implementation in Coin/src/elements/SoGLDisplayList.cpp
-class COIN_DLL_EXPORT SoGLDisplayList {
+class COIN_DLL_API SoGLDisplayList {
   friend class SoGLCacheContextElement;
   ~SoGLDisplayList();
 public:

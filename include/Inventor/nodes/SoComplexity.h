@@ -26,7 +26,7 @@
 #include <Inventor/elements/SoComplexityTypeElement.h>
 
 
-class COIN_DLL_EXPORT SoComplexity : public SoNode {
+class COIN_DLL_API SoComplexity : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoComplexity);

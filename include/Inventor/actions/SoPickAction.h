@@ -25,7 +25,7 @@
 #include <Inventor/SbViewportRegion.h>
 
 
-class COIN_DLL_EXPORT SoPickAction : public SoAction {
+class COIN_DLL_API SoPickAction : public SoAction {
   typedef SoAction inherited;
 
   SO_ACTION_HEADER(SoPickAction);

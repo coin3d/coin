@@ -30,7 +30,7 @@ class SbVec4f;
 
 typedef float SbMat[4][4];
 
-class COIN_DLL_EXPORT SbMatrix {
+class COIN_DLL_API SbMatrix {
 public:
   SbMatrix(void);
   SbMatrix(const float a11, const float a12, const float a13, const float a14,
@@ -63,9 +63,9 @@ public:
   const float * operator [](int i) const;
   SbMatrix & operator =(const SbRotation & q);
   SbMatrix & operator *=(const SbMatrix & m);
-  friend COIN_DLL_EXPORT SbMatrix operator *(const SbMatrix & m1, const SbMatrix & m2);
-  friend COIN_DLL_EXPORT int operator ==(const SbMatrix & m1, const SbMatrix & m2);
-  friend COIN_DLL_EXPORT int operator !=(const SbMatrix & m1, const SbMatrix & m2);
+  friend COIN_DLL_API SbMatrix operator *(const SbMatrix & m1, const SbMatrix & m2);
+  friend COIN_DLL_API int operator ==(const SbMatrix & m1, const SbMatrix & m2);
+  friend COIN_DLL_API int operator !=(const SbMatrix & m1, const SbMatrix & m2);
   void getValue(SbMat & m) const;
   static SbMatrix identity(void);
   void setScale(const float s);
@@ -104,8 +104,8 @@ private:
   void operator *=(const float v);
 };
 
-COIN_DLL_EXPORT SbMatrix operator *(const SbMatrix & m1, const SbMatrix & m2);
-COIN_DLL_EXPORT int operator ==(const SbMatrix & m1, const SbMatrix & m2);
-COIN_DLL_EXPORT int operator !=(const SbMatrix & m1, const SbMatrix & m2);
+COIN_DLL_API SbMatrix operator *(const SbMatrix & m1, const SbMatrix & m2);
+COIN_DLL_API int operator ==(const SbMatrix & m1, const SbMatrix & m2);
+COIN_DLL_API int operator !=(const SbMatrix & m1, const SbMatrix & m2);
 
 #endif // !COIN_SBMATRIX_H

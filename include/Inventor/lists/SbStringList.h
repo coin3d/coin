@@ -25,7 +25,7 @@
 class SbString;
 
 
-class COIN_DLL_EXPORT SbStringList : public SbList<SbString *> {
+class COIN_DLL_API SbStringList : public SbList<SbString *> {
 public:
   SbStringList(void) : SbList<SbString *>() { }
   SbStringList(const int sizehint) : SbList<SbString *>(sizehint) { }

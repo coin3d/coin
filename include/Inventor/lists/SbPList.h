@@ -22,7 +22,7 @@
 
 #include <Inventor/lists/SbList.h>
 
-class COIN_DLL_EXPORT SbPList : public SbList<void *> {
+class COIN_DLL_API SbPList : public SbList<void *> {
 public:
   SbPList(void) : SbList<void *>() { }
   SbPList(const int sizehint) : SbList<void *>(sizehint) { }

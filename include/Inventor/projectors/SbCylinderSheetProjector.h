@@ -25,7 +25,7 @@
 #include <Inventor/SbRotation.h>
 
 
-class COIN_DLL_EXPORT SbCylinderSheetProjector : public SbCylinderProjector {
+class COIN_DLL_API SbCylinderSheetProjector : public SbCylinderProjector {
   typedef SbCylinderProjector inherited;
 
 public:

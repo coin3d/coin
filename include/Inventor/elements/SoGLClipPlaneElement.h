@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoClipPlaneElement.h>
 
 
-class COIN_DLL_EXPORT SoGLClipPlaneElement : public SoClipPlaneElement {
+class COIN_DLL_API SoGLClipPlaneElement : public SoClipPlaneElement {
   typedef SoClipPlaneElement inherited;
 
   SO_ELEMENT_HEADER(SoGLClipPlaneElement);

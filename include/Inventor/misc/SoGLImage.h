@@ -27,7 +27,7 @@
 class SoGLDisplayList;
 class SoState;
 
-class COIN_DLL_EXPORT SoGLImage {
+class COIN_DLL_API SoGLImage {
 public:
 
   SoGLImage();

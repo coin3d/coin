@@ -25,7 +25,7 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec3f.h>
 
-class COIN_DLL_EXPORT SbLine {
+class COIN_DLL_API SbLine {
 public:
   SbLine(void);
   SbLine(const SbVec3f& p0, const SbVec3f& p1);

@@ -25,7 +25,7 @@
 
 class SbString;
 
-class COIN_DLL_EXPORT SbImage {
+class COIN_DLL_API SbImage {
 public:
   SbImage(void);
   SbImage(const unsigned char * bytes,

@@ -23,7 +23,7 @@
 #include <Inventor/nodekits/SoSeparatorKit.h>
 
 
-class COIN_DLL_EXPORT SoShapeKit : public SoSeparatorKit {
+class COIN_DLL_API SoShapeKit : public SoSeparatorKit {
   typedef SoSeparatorKit inherited;
 
   SO_KIT_HEADER(SoShapeKit);

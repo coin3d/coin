@@ -27,7 +27,7 @@
 class SoEngineOutput;
 
 
-class COIN_DLL_EXPORT SoSelectOne : public SoEngine {
+class COIN_DLL_API SoSelectOne : public SoEngine {
   typedef SoEngine inherited;
 
   SO_ENGINE_HEADER(SoSelectOne);

@@ -26,7 +26,7 @@ class SoOutput;
 class SoNode;
 
 
-class COIN_DLL_EXPORT SoTranSender {
+class COIN_DLL_API SoTranSender {
 
 public:
   SoTranSender(SoOutput * output);

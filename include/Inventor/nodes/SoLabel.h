@@ -24,7 +24,7 @@
 #include <Inventor/fields/SoSFName.h>
 
 
-class COIN_DLL_EXPORT SoLabel : public SoNode {
+class COIN_DLL_API SoLabel : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoLabel);

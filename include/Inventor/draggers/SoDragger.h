@@ -46,7 +46,7 @@ class SoPickedPoint;
 typedef void SoDraggerCB(void * data, SoDragger * dragger);
 
 
-class COIN_DLL_EXPORT SoDragger : public SoInteractionKit {
+class COIN_DLL_API SoDragger : public SoInteractionKit {
   typedef SoInteractionKit inherited;
 
   SO_KIT_HEADER(SoDragger);

@@ -24,7 +24,7 @@
 #include <Inventor/fields/SoSFString.h>
 
 
-class COIN_DLL_EXPORT SoInfo : public SoNode {
+class COIN_DLL_API SoInfo : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoInfo);

@@ -29,7 +29,7 @@
  (SoSpaceballButtonEvent::isButtonReleaseEvent(EVENT, SoSpaceballButtonEvent::BUTTON))
 
 
-class COIN_DLL_EXPORT SoSpaceballButtonEvent : public SoButtonEvent {
+class COIN_DLL_API SoSpaceballButtonEvent : public SoButtonEvent {
   typedef SoButtonEvent inherited;
 
   SO_EVENT_HEADER();

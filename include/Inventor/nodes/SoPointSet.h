@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoSFInt32.h>
 
 
-class COIN_DLL_EXPORT SoPointSet : public SoNonIndexedShape {
+class COIN_DLL_API SoPointSet : public SoNonIndexedShape {
   typedef SoNonIndexedShape inherited;
 
   SO_NODE_HEADER(SoPointSet);

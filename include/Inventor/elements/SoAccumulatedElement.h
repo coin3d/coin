@@ -24,7 +24,7 @@
 #include <Inventor/lists/SbList.h>
 
 
-class COIN_DLL_EXPORT SoAccumulatedElement : public SoElement {
+class COIN_DLL_API SoAccumulatedElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_ABSTRACT_HEADER(SoAccumulatedElement);

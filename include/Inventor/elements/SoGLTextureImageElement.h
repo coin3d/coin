@@ -25,7 +25,7 @@
 class SoGLImage;
 class SoGLDisplayList;
 
-class COIN_DLL_EXPORT SoGLTextureImageElement : public SoTextureImageElement {
+class COIN_DLL_API SoGLTextureImageElement : public SoTextureImageElement {
   typedef SoTextureImageElement inherited;
 
   SO_ELEMENT_HEADER(SoGLTextureImageElement);

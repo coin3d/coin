@@ -23,7 +23,7 @@
 #include <Inventor/SbBasic.h> // for SbBool type
 
 
-class COIN_DLL_EXPORT SoInteraction {
+class COIN_DLL_API SoInteraction {
 public:
   static void init(void);
 

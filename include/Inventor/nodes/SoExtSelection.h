@@ -26,7 +26,7 @@
 #include <Inventor/SbColor.h>
 
 
-class COIN_DLL_EXPORT SoExtSelection : public SoSelection {
+class COIN_DLL_API SoExtSelection : public SoSelection {
   typedef SoSelection inherited;
 
   SO_NODE_HEADER(SoExtSelection);

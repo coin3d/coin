@@ -28,7 +28,7 @@ class SoTypeList;
 class SoElement;
 
 
-class COIN_DLL_EXPORT SoState {
+class COIN_DLL_API SoState {
 public:
   SoState(SoAction * const action,
           const SoTypeList & enabledElements);

@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoShapeHintsElement.h>
 
 
-class COIN_DLL_EXPORT SoGLShapeHintsElement : public SoShapeHintsElement {
+class COIN_DLL_API SoGLShapeHintsElement : public SoShapeHintsElement {
   typedef SoShapeHintsElement inherited;
 
   SO_ELEMENT_HEADER(SoGLShapeHintsElement);

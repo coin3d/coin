@@ -29,7 +29,7 @@
 #include <Inventor/fields/SoSFTrigger.h>
 #include <Inventor/fields/SoSFShort.h>
 
-class COIN_DLL_EXPORT SoTimeCounter : public SoEngine {
+class COIN_DLL_API SoTimeCounter : public SoEngine {
   typedef SoEngine inherited;
   SO_ENGINE_HEADER(SoTimeCounter);
 

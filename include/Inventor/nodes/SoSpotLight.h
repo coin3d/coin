@@ -26,7 +26,7 @@
 #include <Inventor/fields/SoSFFloat.h>
 
 
-class COIN_DLL_EXPORT SoSpotLight : public SoLight {
+class COIN_DLL_API SoSpotLight : public SoLight {
   typedef SoLight inherited;
 
   SO_NODE_HEADER(SoSpotLight);

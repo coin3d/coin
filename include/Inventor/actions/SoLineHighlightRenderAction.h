@@ -24,7 +24,7 @@
 #include <Inventor/SbColor.h>
 
 
-class COIN_DLL_EXPORT SoLineHighlightRenderAction : public SoGLRenderAction {
+class COIN_DLL_API SoLineHighlightRenderAction : public SoGLRenderAction {
   typedef SoGLRenderAction inherited;
 
   SO_ACTION_HEADER(SoLineHighlightRenderAction);

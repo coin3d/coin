@@ -30,7 +30,7 @@ class SoPickedPointList;
 class SoRayPickAction;
 
 
-class COIN_DLL_EXPORT SoHandleEventAction : public SoAction {
+class COIN_DLL_API SoHandleEventAction : public SoAction {
   typedef SoAction inherited;
 
   SO_ACTION_HEADER(SoHandleEventAction);

@@ -25,7 +25,7 @@
 class SoVRMLInterpOutput;
 
 
-class COIN_DLL_EXPORT SoVRMLInterpOutputList : public SbList<SoVRMLInterpOutput *> {
+class COIN_DLL_API SoVRMLInterpOutputList : public SbList<SoVRMLInterpOutput *> {
 public:
   SoVRMLInterpOutputList(void) : SbList<SoVRMLInterpOutput *>() { }
   SoVRMLInterpOutputList(const int sizehint) : SbList<SoVRMLInterpOutput *>(sizehint) { }

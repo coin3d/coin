@@ -28,7 +28,7 @@
 
 class SoConvexDataCache;
 
-class COIN_DLL_EXPORT SoIndexedFaceSet : public SoIndexedShape {
+class COIN_DLL_API SoIndexedFaceSet : public SoIndexedShape {
   typedef SoIndexedShape inherited;
 
   SO_NODE_HEADER(SoIndexedFaceSet);

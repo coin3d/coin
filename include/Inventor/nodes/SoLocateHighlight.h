@@ -27,7 +27,7 @@
 
 class SoFullPath;
 
-class COIN_DLL_EXPORT SoLocateHighlight : public SoSeparator {
+class COIN_DLL_API SoLocateHighlight : public SoSeparator {
   typedef SoSeparator inherited;
 
   SO_NODE_HEADER(SoLocateHighlight);

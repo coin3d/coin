@@ -26,7 +26,7 @@ class SoGroup;
 class SoInput;
 
 
-class COIN_DLL_EXPORT SoTranReceiver {
+class COIN_DLL_API SoTranReceiver {
 
 public:
   SoTranReceiver(SoGroup * root);

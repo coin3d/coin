@@ -30,7 +30,7 @@
 #endif /* ERROR */
 
 
-class COIN_DLL_EXPORT SoDebugError : public SoError {
+class COIN_DLL_API SoDebugError : public SoError {
   typedef SoError inherited;
 
 public:

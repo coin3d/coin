@@ -26,7 +26,7 @@ class SoElement;
 #include <Inventor/SbBasic.h>
 #include <Inventor/lists/SbList.h>
 
-class COIN_DLL_EXPORT SoCache {
+class COIN_DLL_API SoCache {
 public:
   SoCache(SoState * const state);
 

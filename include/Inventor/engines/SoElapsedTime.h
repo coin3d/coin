@@ -28,7 +28,7 @@
 #include <Inventor/fields/SoSFTrigger.h>
 
 
-class COIN_DLL_EXPORT SoElapsedTime : public SoEngine {
+class COIN_DLL_API SoElapsedTime : public SoEngine {
   typedef SoEngine inherited;
 
   SO_ENGINE_HEADER(SoElapsedTime);

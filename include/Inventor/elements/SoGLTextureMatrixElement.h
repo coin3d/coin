@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoTextureMatrixElement.h>
 
 
-class COIN_DLL_EXPORT SoGLTextureMatrixElement : public SoTextureMatrixElement {
+class COIN_DLL_API SoGLTextureMatrixElement : public SoTextureMatrixElement {
   typedef SoTextureMatrixElement inherited;
 
   SO_ELEMENT_HEADER(SoGLTextureMatrixElement);

@@ -26,7 +26,7 @@
 class SbMatrix;
 class SbVec3f;
 
-class COIN_DLL_EXPORT SbRotation {
+class COIN_DLL_API SbRotation {
 public:
   SbRotation(void);
   SbRotation(const SbVec3f & axis, const float radians);
@@ -47,10 +47,10 @@ public:
   SbRotation & setValue(const SbVec3f & axis, const float radians);
   SbRotation & setValue(const SbVec3f & rotateFrom, const SbVec3f & rotateTo);
   SbRotation & operator *=(const SbRotation & q);
-  friend COIN_DLL_EXPORT int operator ==(const SbRotation & q1, const SbRotation & q2);
-  friend COIN_DLL_EXPORT int operator !=(const SbRotation & q1, const SbRotation & q2);
+  friend COIN_DLL_API int operator ==(const SbRotation & q1, const SbRotation & q2);
+  friend COIN_DLL_API int operator !=(const SbRotation & q1, const SbRotation & q2);
   SbBool equals(const SbRotation & r, const float tolerance) const;
-  friend COIN_DLL_EXPORT SbRotation operator *(const SbRotation & q1, const SbRotation & q2);
+  friend COIN_DLL_API SbRotation operator *(const SbRotation & q1, const SbRotation & q2);
   void multVec(const SbVec3f & src, SbVec3f & dst) const;
 
   void scaleAngle(const float scaleFactor);
@@ -64,8 +64,8 @@ private:
   SbVec4f quat;
 };
 
-COIN_DLL_EXPORT int operator ==(const SbRotation & q1, const SbRotation & q2);
-COIN_DLL_EXPORT int operator !=(const SbRotation & q1, const SbRotation & q2);
-COIN_DLL_EXPORT SbRotation operator *(const SbRotation & q1, const SbRotation & q2);
+COIN_DLL_API int operator ==(const SbRotation & q1, const SbRotation & q2);
+COIN_DLL_API int operator !=(const SbRotation & q1, const SbRotation & q2);
+COIN_DLL_API SbRotation operator *(const SbRotation & q1, const SbRotation & q2);
 
 #endif // !COIN_SBROTATION_H

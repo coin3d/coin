@@ -26,7 +26,7 @@ class SoNode;
 class SoBaseKit;
 class SoSearchAction;
 
-class COIN_DLL_EXPORT SoNodeKitPath : public SoPath {
+class COIN_DLL_API SoNodeKitPath : public SoPath {
   typedef SoPath inherited;
 
 public:
@@ -41,7 +41,7 @@ public:
   SbBool containsNode(SoBaseKit * node) const;
   int findFork(const SoNodeKitPath * path) const;
 
-  friend COIN_DLL_EXPORT int operator==(const SoNodeKitPath & p1, const SoNodeKitPath & p2);
+  friend COIN_DLL_API int operator==(const SoNodeKitPath & p1, const SoNodeKitPath & p2);
 
 protected:
   SoNodeKitPath(const int approxLength);
@@ -65,6 +65,6 @@ private:
   void replaceIndex(SoNode *parent,const int index,SoNode *newChild);
 };
 
-COIN_DLL_EXPORT int operator==(const SoNodeKitPath & p1, const SoNodeKitPath & p2);
+COIN_DLL_API int operator==(const SoNodeKitPath & p1, const SoNodeKitPath & p2);
 
 #endif // !COIN_SONODEKITPATH_H

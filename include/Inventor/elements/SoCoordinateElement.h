@@ -25,7 +25,7 @@
 #include <Inventor/SbVec4f.h>
 
 
-class COIN_DLL_EXPORT SoCoordinateElement : public SoReplacedElement {
+class COIN_DLL_API SoCoordinateElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
   SO_ELEMENT_HEADER(SoCoordinateElement);

@@ -25,7 +25,7 @@
 #include <Inventor/lists/SbPList.h>
 
 
-class COIN_DLL_EXPORT SoModelMatrixElement : public SoAccumulatedElement {
+class COIN_DLL_API SoModelMatrixElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
   SO_ELEMENT_HEADER(SoModelMatrixElement);

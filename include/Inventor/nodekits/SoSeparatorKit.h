@@ -24,7 +24,7 @@
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/fields/SoSFEnum.h>
 
-class COIN_DLL_EXPORT SoSeparatorKit : public SoBaseKit {
+class COIN_DLL_API SoSeparatorKit : public SoBaseKit {
   typedef SoBaseKit inherited;
 
   SO_KIT_HEADER(SoSeparatorKit);

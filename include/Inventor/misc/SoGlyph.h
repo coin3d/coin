@@ -26,7 +26,7 @@
 class SbVec2f;
 class SbName;
 
-class COIN_DLL_EXPORT SoGlyph {
+class COIN_DLL_API SoGlyph {
 public:
 
   static const SoGlyph *getGlyph(const char character, const SbName &font);

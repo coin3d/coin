@@ -60,7 +60,7 @@ typedef void SoPointCB(void * userdata, SoCallbackAction * action,
                        const SoPrimitiveVertex * v);
 
 
-class COIN_DLL_EXPORT SoCallbackAction : public SoAction {
+class COIN_DLL_API SoCallbackAction : public SoAction {
   typedef SoAction inherited;
 
   SO_ACTION_HEADER(SoCallbackAction);

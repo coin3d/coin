@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 
 
-class COIN_DLL_EXPORT SoGLViewportRegionElement : public SoViewportRegionElement {
+class COIN_DLL_API SoGLViewportRegionElement : public SoViewportRegionElement {
   typedef SoViewportRegionElement inherited;
 
   SO_ELEMENT_HEADER(SoGLViewportRegionElement);

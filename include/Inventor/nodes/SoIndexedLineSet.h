@@ -26,7 +26,7 @@
 #define SO_END_LINE_INDEX (-1)
 
 
-class COIN_DLL_EXPORT SoIndexedLineSet : public SoIndexedShape {
+class COIN_DLL_API SoIndexedLineSet : public SoIndexedShape {
   typedef SoIndexedShape inherited;
 
   SO_NODE_HEADER(SoIndexedLineSet);

@@ -25,7 +25,7 @@
 
 class SoProfile;
 
-class COIN_DLL_EXPORT SoProfileElement : public SoAccumulatedElement {
+class COIN_DLL_API SoProfileElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
   SO_ELEMENT_HEADER(SoProfileElement);

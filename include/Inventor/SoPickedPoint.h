@@ -32,7 +32,7 @@ class SoNode;
 class SoState;
 class SbMatrix;
 
-class COIN_DLL_EXPORT SoPickedPoint {
+class COIN_DLL_API SoPickedPoint {
 public:
   SoPickedPoint(const SoPickedPoint & pp);
   SoPickedPoint(const SoPath * const path, SoState * const state,

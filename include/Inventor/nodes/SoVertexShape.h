@@ -36,7 +36,7 @@ class SoTextureCoordinateElement;
 class SoCoordinateElement;
 
 
-class COIN_DLL_EXPORT SoVertexShape : public SoShape {
+class COIN_DLL_API SoVertexShape : public SoShape {
   typedef SoShape inherited;
 
   SO_NODE_ABSTRACT_HEADER(SoVertexShape);

@@ -26,7 +26,7 @@
 #include <Inventor/lists/SoPathList.h>
 
 
-class COIN_DLL_EXPORT SoSearchAction : public SoAction {
+class COIN_DLL_API SoSearchAction : public SoAction {
   typedef SoAction inherited;
 
   SO_ACTION_HEADER(SoSearchAction);

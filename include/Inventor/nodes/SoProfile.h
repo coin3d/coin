@@ -29,7 +29,7 @@ class SbVec2f;
 class SoState;
 
 
-class COIN_DLL_EXPORT SoProfile : public SoNode {
+class COIN_DLL_API SoProfile : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_ABSTRACT_HEADER(SoProfile);

@@ -22,7 +22,7 @@
 
 #include <Inventor/elements/SoSubElement.h>
 
-class COIN_DLL_EXPORT SoTextureOverrideElement : public SoElement {
+class COIN_DLL_API SoTextureOverrideElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_HEADER(SoTextureOverrideElement);

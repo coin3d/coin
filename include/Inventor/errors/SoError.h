@@ -32,7 +32,7 @@ class SoEngine;
 typedef void SoErrorCB(const class SoError * error, void * data);
 
 
-class COIN_DLL_EXPORT SoError {
+class COIN_DLL_API SoError {
 public:
   static void setHandlerCallback(SoErrorCB * const func, void * const data);
   static SoErrorCB * getHandlerCallback(void);

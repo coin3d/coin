@@ -23,7 +23,7 @@
 #include <Inventor/engines/SoInterpolate.h>
 #include <Inventor/fields/SoMFVec2f.h>
 
-class COIN_DLL_EXPORT SoInterpolateVec2f : public SoInterpolate {
+class COIN_DLL_API SoInterpolateVec2f : public SoInterpolate {
   typedef SoInterpolate inherited;
   SO_INTERPOLATE_HEADER(SoInterpolateVec2f);
 

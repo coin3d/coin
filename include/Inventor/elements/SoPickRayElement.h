@@ -24,7 +24,7 @@
 #include <Inventor/SbViewVolume.h>
 
 
-class COIN_DLL_EXPORT SoPickRayElement : public SoElement {
+class COIN_DLL_API SoPickRayElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_HEADER(SoPickRayElement);

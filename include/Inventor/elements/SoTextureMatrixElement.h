@@ -24,7 +24,7 @@
 #include <Inventor/SbMatrix.h>
 
 
-class COIN_DLL_EXPORT SoTextureMatrixElement : public SoAccumulatedElement {
+class COIN_DLL_API SoTextureMatrixElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
   SO_ELEMENT_HEADER(SoTextureMatrixElement);

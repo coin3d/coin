@@ -30,7 +30,7 @@ class SoNode;
 class SoPath;
 
 
-class COIN_DLL_EXPORT SoOffscreenRenderer {
+class COIN_DLL_API SoOffscreenRenderer {
 public:
   enum Components {
     LUMINANCE = 1,

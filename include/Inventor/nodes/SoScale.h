@@ -25,7 +25,7 @@
 #include <Inventor/nodes/SoTransformation.h>
 
 
-class COIN_DLL_EXPORT SoScale : public SoTransformation {
+class COIN_DLL_API SoScale : public SoTransformation {
   typedef SoTransformation inherited;
 
   SO_NODE_HEADER(SoScale);

@@ -26,7 +26,7 @@
 #include <Inventor/fields/SoMFVec3f.h>
 
 
-class COIN_DLL_EXPORT SoComposeRotation : public SoEngine {
+class COIN_DLL_API SoComposeRotation : public SoEngine {
   typedef SoEngine inherited;
 
   SO_COMPOSE__HEADER(SoComposeRotation);

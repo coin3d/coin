@@ -28,7 +28,7 @@
 class SbMatrix;
 
 
-class COIN_DLL_EXPORT SoSurroundScale : public SoTransformation {
+class COIN_DLL_API SoSurroundScale : public SoTransformation {
   typedef SoTransformation inherited;
 
   SO_NODE_HEADER(SoSurroundScale);

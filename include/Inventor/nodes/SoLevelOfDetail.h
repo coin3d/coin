@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoMFFloat.h>
 
 
-class COIN_DLL_EXPORT SoLevelOfDetail : public SoGroup {
+class COIN_DLL_API SoLevelOfDetail : public SoGroup {
   typedef SoGroup inherited;
 
   SO_NODE_HEADER(SoLevelOfDetail);

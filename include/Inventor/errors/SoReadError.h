@@ -25,7 +25,7 @@
 class SoInput;
 
 
-class COIN_DLL_EXPORT SoReadError : public SoError {
+class COIN_DLL_API SoReadError : public SoError {
   typedef SoError inherited;
 
 public:

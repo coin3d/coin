@@ -23,7 +23,7 @@
 #include <Inventor/actions/SoToVRMLAction.h>
 
 
-class COIN_DLL_EXPORT SoToVRML2Action : public SoToVRMLAction {
+class COIN_DLL_API SoToVRML2Action : public SoToVRMLAction {
   typedef SoToVRMLAction inherited;
 
   SO_ACTION_HEADER(SoToVRML2Action);

@@ -33,7 +33,7 @@ class SoSensor;
 class SbVec3f;
 class SbMatrix;
 
-class COIN_DLL_EXPORT SoDirectionalLightManip : public SoDirectionalLight {
+class COIN_DLL_API SoDirectionalLightManip : public SoDirectionalLight {
   typedef SoDirectionalLight inherited;
 
   SO_NODE_HEADER(SoDirectionalLightManip);

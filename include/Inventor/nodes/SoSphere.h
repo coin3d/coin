@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoSFFloat.h>
 
 
-class COIN_DLL_EXPORT SoSphere : public SoShape {
+class COIN_DLL_API SoSphere : public SoShape {
   typedef SoShape inherited;
 
   SO_NODE_HEADER(SoSphere);

@@ -27,7 +27,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 
 
-class COIN_DLL_EXPORT SoDrawStyle : public SoNode {
+class COIN_DLL_API SoDrawStyle : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoDrawStyle);

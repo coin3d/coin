@@ -37,7 +37,7 @@ class SoSensor;
 class SoSeparator;
 
 
-class COIN_DLL_EXPORT SoInteractionKit : public SoBaseKit {
+class COIN_DLL_API SoInteractionKit : public SoBaseKit {
   typedef SoBaseKit inherited;
 
   SO_KIT_HEADER(SoInteractionKit);

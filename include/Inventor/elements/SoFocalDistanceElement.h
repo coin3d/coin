@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoFloatElement.h>
 
 
-class COIN_DLL_EXPORT SoFocalDistanceElement : public SoFloatElement {
+class COIN_DLL_API SoFocalDistanceElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
   SO_ELEMENT_HEADER(SoFocalDistanceElement);

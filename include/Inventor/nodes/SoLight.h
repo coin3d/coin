@@ -26,7 +26,7 @@
 #include <Inventor/fields/SoSFColor.h>
 
 
-class COIN_DLL_EXPORT SoLight : public SoNode {
+class COIN_DLL_API SoLight : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_ABSTRACT_HEADER(SoLight);

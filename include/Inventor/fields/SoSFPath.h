@@ -28,7 +28,7 @@ class SoNotList;
 class SoNode;
 
 
-class COIN_DLL_EXPORT SoSFPath : public SoSField {
+class COIN_DLL_API SoSFPath : public SoSField {
   typedef SoSField inherited;
 
   SO_SFIELD_HEADER(SoSFPath, SoPath *, SoPath *);

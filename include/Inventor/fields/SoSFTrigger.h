@@ -26,7 +26,7 @@
 class SoNotList;
 
 
-class COIN_DLL_EXPORT SoSFTrigger : public SoSField {
+class COIN_DLL_API SoSFTrigger : public SoSField {
   typedef SoSField inherited;
 
   SO_SFIELD_CONSTRUCTOR_HEADER(SoSFTrigger);

@@ -33,7 +33,7 @@ class SoOutput;
 class SoVRMLInterpOutput;
 
 
-class COIN_DLL_EXPORT SoField {
+class COIN_DLL_API SoField {
 
 public:
   virtual ~SoField();

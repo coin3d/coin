@@ -28,7 +28,7 @@
 #include <Inventor/elements/SoEnvironmentElement.h>
 
 
-class COIN_DLL_EXPORT SoEnvironment : public SoNode {
+class COIN_DLL_API SoEnvironment : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoEnvironment);

@@ -29,7 +29,7 @@ class SoSensor;
 class SoOneShotSensor;
 class SoTimeCounter;
 
-class COIN_DLL_EXPORT SoBlinker : public SoSwitch {
+class COIN_DLL_API SoBlinker : public SoSwitch {
   typedef SoSwitch inherited;
 
   SO_NODE_HEADER(SoBlinker);

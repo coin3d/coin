@@ -26,7 +26,7 @@ class SoBase;
 #include <Inventor/lists/SbPList.h>
 
 
-class COIN_DLL_EXPORT SoBaseList : public SbPList {
+class COIN_DLL_API SoBaseList : public SbPList {
 public:
   SoBaseList(void);
   SoBaseList(const int size);

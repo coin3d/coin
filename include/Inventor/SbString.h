@@ -30,7 +30,7 @@
 #define SB_STRING_STATIC_STORAGE_SIZE 128
 
 
-class COIN_DLL_EXPORT SbString {
+class COIN_DLL_API SbString {
 public:
   SbString(void);
   SbString(const char * str);
@@ -54,12 +54,12 @@ public:
   SbString & operator += (const char * str);
   SbString & operator += (const SbString & str);
   int operator ! (void) const;
-  friend COIN_DLL_EXPORT int operator == (const SbString & str, const char * s);
-  friend COIN_DLL_EXPORT int operator == (const char * s, const SbString & str);
-  friend COIN_DLL_EXPORT int operator == (const SbString & str1, const SbString & str2);
-  friend COIN_DLL_EXPORT int operator != (const SbString & str, const char * s);
-  friend COIN_DLL_EXPORT int operator != (const char * s, const SbString & str);
-  friend COIN_DLL_EXPORT int operator != (const SbString & str1, const SbString & str2);
+  friend COIN_DLL_API int operator == (const SbString & str, const char * s);
+  friend COIN_DLL_API int operator == (const char * s, const SbString & str);
+  friend COIN_DLL_API int operator == (const SbString & str1, const SbString & str2);
+  friend COIN_DLL_API int operator != (const SbString & str, const char * s);
+  friend COIN_DLL_API int operator != (const char * s, const SbString & str);
+  friend COIN_DLL_API int operator != (const SbString & str1, const SbString & str2);
   static uint32_t hash(const char * s);
 
   SbString & operator += (const char c);
@@ -75,11 +75,11 @@ private:
   void expand(int additional);
 };
 
-COIN_DLL_EXPORT int operator == (const SbString & str, const char * s);
-COIN_DLL_EXPORT int operator == (const char * s, const SbString & str);
-COIN_DLL_EXPORT int operator == (const SbString & str1, const SbString & str2);
-COIN_DLL_EXPORT int operator != (const SbString & str, const char * s);
-COIN_DLL_EXPORT int operator != (const char * s, const SbString & str);
-COIN_DLL_EXPORT int operator != (const SbString & str1, const SbString & str2);
+COIN_DLL_API int operator == (const SbString & str, const char * s);
+COIN_DLL_API int operator == (const char * s, const SbString & str);
+COIN_DLL_API int operator == (const SbString & str1, const SbString & str2);
+COIN_DLL_API int operator != (const SbString & str, const char * s);
+COIN_DLL_API int operator != (const char * s, const SbString & str);
+COIN_DLL_API int operator != (const SbString & str1, const SbString & str2);
 
 #endif // !COIN_SBSTRING_H

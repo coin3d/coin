@@ -27,7 +27,7 @@
 #include <Inventor/SbXfBox3f.h>
 
 
-class COIN_DLL_EXPORT SoGetBoundingBoxAction : public SoAction {
+class COIN_DLL_API SoGetBoundingBoxAction : public SoAction {
   typedef SoAction inherited;
 
   SO_ACTION_HEADER(SoGetBoundingBoxAction);

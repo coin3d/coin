@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoSubElement.h>
 
 
-class COIN_DLL_EXPORT SoGLPolygonStippleElement : public SoElement {
+class COIN_DLL_API SoGLPolygonStippleElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_HEADER(SoGLPolygonStippleElement);

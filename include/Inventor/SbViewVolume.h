@@ -33,7 +33,7 @@ class SbRotation;
 class SbVec2f;
 class SbVec3f;
 
-class COIN_DLL_EXPORT SbViewVolume {
+class COIN_DLL_API SbViewVolume {
 public:
   enum ProjectionType { ORTHOGRAPHIC = 0, PERSPECTIVE = 1 };
 
