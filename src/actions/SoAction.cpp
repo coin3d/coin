@@ -56,6 +56,9 @@
 
 #include <coindefs.h> // COIN_OBSOLETED
 
+// define this to debug path traversal
+// #define COIN_DEBUG_PATH_TRAVERAL 1
+
 // *************************************************************************
 
 SoEnabledElementsList * SoAction::enabledElements = NULL;
@@ -338,7 +341,7 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
     // remove unnecessary paths
     sortedlist.uniquify();
     int num = sortedlist.getLength();
-    
+
     // if all head nodes are the same we can traverse in one go
     if (sortedlist[0]->getHead() == sortedlist[num-1]->getHead()) {
       this->currentpath.setHead(sortedlist[0]->getHead());
@@ -366,7 +369,7 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
           SoAction::IN_PATH : SoAction::BELOW_PATH;
         this->currentpath.setHead(templist[0]->getHead());
         this->beginTraversal(templist[0]->getHead());
-        templist.truncate(0); 
+        templist.truncate(0);
       }
     }
   }
@@ -517,21 +520,22 @@ SoAction::pushCurPath(const int childindex, SoNode * node)
   int curlen = this->currentpath.getFullLength();
 
   if (this->currentpathcode == IN_PATH) {
-    // optimization. if node has no children, we know
-    // it is at end of path, and we don't need to do
-    // further tests.
-    if (node && node->getChildren() == NULL) {
-      this->currentpathcode = BELOW_PATH;
-      return;
-    }
-
     if (this->getWhatAppliedTo() == PATH) {
-      if (curlen == this->applieddata.path->getFullLength()) {
-        this->currentpathcode = BELOW_PATH;
-      }
-      else if (this->currentpath.getIndex(curlen-1) !=
-               this->applieddata.path->getIndex(curlen-1)) {
+      assert(curlen <= this->applieddata.path->getFullLength());
+      if (this->currentpath.getIndex(curlen-1) !=
+          this->applieddata.path->getIndex(curlen-1)) {
+#ifdef COIN_DEBUG_PATH_TRAVERSAL
+        fprintf(stderr,"off path at: %d (%s), depth: %d\n",
+                childindex, node->getName().getString(), curlen);
+#endif // COIN_DEBUG_PATH_TRAVERSAL
         this->currentpathcode = OFF_PATH;
+      }
+      else if (curlen == this->applieddata.path->getFullLength()) {
+        this->currentpathcode = BELOW_PATH;
+#ifdef COIN_DEBUG_PATH_TRAVERSAL
+        fprintf(stderr,"below path at: %d (%s), depth: %d\n",
+                childindex, node->getName().getString(),curlen);
+#endif // COIN_DEBUG_PATH_TRAVERSAL
       }
     }
     else {
@@ -541,25 +545,36 @@ SoAction::pushCurPath(const int childindex, SoNode * node)
       // contains current path.  this is a lame and slow way to do it,
       // but I don't think path list traversal is used that often,
       // and not for a huge amount of paths. If I'm wrong, we'll just
-      // have to optimize this, for instance by implementing 
-      // the SGI's SoCompactPathList class. 
+      // have to optimize this, for instance by implementing
+      // the SGI's SoCompactPathList class.
       //                                       pederb, 2001-03-28
       const SoPathList * pl = this->applieddata.pathlistdata.pathlist;
       int i, n = pl->getLength();
+      int len = -1;
 
       for (i = 0; i < n; i++) {
         const SoPath * path = (*pl)[i];
-        int len = path->getFullLength();
+        len = path->getFullLength();
         // small optimization, no use testing if path is shorter
         if (len >= curlen) {
-          if (path->containsPath(&this->currentpath)) {
-            if (len == curlen) this->currentpathcode = BELOW_PATH;
-            break;
-          }
+          if (path->containsPath(&this->currentpath)) break;
         }
       }
       // if no path is found, we're off path
-      if (i == n) this->currentpathcode = OFF_PATH;
+      if (i == n) {
+        this->currentpathcode = OFF_PATH;
+#ifdef COIN_DEBUG_PATH_TRAVERSAL
+        fprintf(stderr,"off path at: %d (%s), depth: %d\n",
+                childindex, node->getName().getString(), curlen);
+#endif // COIN_DEBUG_PATH_TRAVERSAL
+      }
+      else if (len == curlen) {
+        this->currentpathcode = BELOW_PATH;
+#ifdef COIN_DEBUG_PATH_TRAVERSAL
+        fprintf(stderr,"below path at: %d (%s), depth: %d\n",
+                childindex, node->getName().getString(), curlen);
+#endif // COIN_DEBUG_PATH_TRAVERSAL
+      }
     }
   }
 }
@@ -644,7 +659,7 @@ SoAction::usePathCode(int & numindices, const int * & indices)
           myarray->append(idx);
           previdx = idx;
         }
-      }      
+      }
     }
     numindices = myarray->getLength();
     indices = myarray->getArrayPtr();
