@@ -280,7 +280,7 @@ SoShape::initClass(void)
 #endif // ! COIN_THREADSAFE
 
   SoShapeP::calibrateBBoxCache();
-  coin_atexit((coin_atexit_f*) soshape_cleanup);
+  coin_atexit((coin_atexit_f*) soshape_cleanup, 0);
 }
 
 // Doc in parent.

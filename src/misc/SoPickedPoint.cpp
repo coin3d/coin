@@ -40,7 +40,7 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoTextureMatrixElement.h>
 #include <Inventor/details/SoDetail.h>
-#include <Inventor/C/tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h>
 #include <assert.h>
 
 
@@ -377,7 +377,7 @@ SoPickedPoint::getMatrixAction() const
 {
   if (matrixAction == NULL) {
     matrixAction = new SoGetMatrixAction(this->viewport);
-    coin_atexit((coin_atexit_f *)clean_class);
+    coin_atexit((coin_atexit_f *)clean_class, 0);
   }
   else {
     matrixAction->setViewportRegion(this->viewport);

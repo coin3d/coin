@@ -26,7 +26,7 @@
 
 #include <Inventor/C/errors/debugerror.h>
 
-#include "Inventor/C/tidbits.h" /* coin_atexit() */
+#include "Inventor/C/tidbits.h"
 #include <stdlib.h>
 #include <assert.h>
 #include <stddef.h>
@@ -206,7 +206,7 @@ cc_mutex_init(void)
 
   if (cc_global_mutex == NULL) {
     cc_global_mutex = cc_mutex_construct();
-    coin_atexit((coin_atexit_f*) cc_mutex_cleanup);
+    coin_atexit((coin_atexit_f*) cc_mutex_cleanup, 0);
   }
 }
 

@@ -170,7 +170,7 @@ SoVRMLInline::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLInline, SO_VRML97_NODE_TYPE);
   sovrmlinline_bboxcolor = new SbColor(0.8f, 0.8f, 0.8f);
-  coin_atexit((coin_atexit_f*) sovrmlinline_cleanup_color);
+  coin_atexit((coin_atexit_f*) sovrmlinline_cleanup_color, 0);
   SoAudioRenderAction::addMethod(SoVRMLInline::getClassTypeId(),
                                  SoAudioRenderAction::callDoAction);
 }

@@ -185,7 +185,7 @@ glimage_get_buffer(const int buffersize, const SbBool mipmap)
   soglimage_buffer * buf = NULL;
 #ifdef COIN_THREADSAFE
   if (glimage_bufferstorage == NULL) {
-    coin_atexit((coin_atexit_f*) glimage_buffer_cleanup);
+    coin_atexit((coin_atexit_f*) glimage_buffer_cleanup, 0);
     glimage_bufferstorage = new SbStorage(sizeof(soglimage_buffer),
                                           glimage_buffer_construct, glimage_buffer_destruct);
   }
@@ -195,7 +195,7 @@ glimage_get_buffer(const int buffersize, const SbBool mipmap)
   if (glimage_buffer == NULL) {
     glimage_buffer = new soglimage_buffer;
     glimage_buffer_construct((void*) glimage_buffer);
-    coin_atexit((coin_atexit_f*) glimage_buffer_cleanup);
+    coin_atexit((coin_atexit_f*) glimage_buffer_cleanup, 0);
   }
   buf = glimage_buffer;
 #endif // ! COIN_THREADSAFE
@@ -1771,7 +1771,7 @@ SoGLImage::registerImage(SoGLImage *image)
 
   CC_MUTEX_LOCK(glimage_reglist_mutex);
   if (glimage_reglist == NULL) {
-    coin_atexit((coin_atexit_f *)regimage_cleanup);
+    coin_atexit((coin_atexit_f *)regimage_cleanup, 0);
     glimage_reglist = new SbList<SoGLImage*>;
   }
   assert(glimage_reglist->find(image) < 0);

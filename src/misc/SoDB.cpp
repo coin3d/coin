@@ -391,7 +391,7 @@ SoDB::init(void)
 
   const char * env;
 
-#if defined(HAVE_SOUND) && defined(HAVE_VRML97) && 0 // disabled 2002-01-29 pederb. Crashes under Linux
+#if defined(HAVE_SOUND) && defined(HAVE_VRML97) && 1 // disabled 2002-01-29 pederb. Crashes under Linux
   SoAudioDevice * audioDevice;
   audioDevice = SoAudioDevice::instance();
   env = coin_getenv("COIN_SOUND_DRIVER_NAME");
@@ -498,7 +498,7 @@ SoDB::init(void)
   // Debugging for memory leaks will be easier if we can clean up the
   // resource usage. This needs to be done last in init(), so we get
   // called _before_ clean() methods in other classes.
-  coin_atexit((coin_atexit_f *)SoDBP::clean);
+  coin_atexit((coin_atexit_f *)SoDBP::clean, 0);
 #endif // COIN_DEBUG
 }
 
@@ -511,7 +511,7 @@ void
 SoDBP::clean(void)
 {
 #ifdef HAVE_SOUND
-#if 0
+#ifndef _WIN32
   // FIXME: For some reasen, this crashes in the OpenAL32.dll on
   // Windows. Investigate.  20021104 thammer.
   SoAudioDevice::instance()->cleanup();
@@ -559,7 +559,7 @@ SoDB::getVersion(void)
 {
   if (coin_versionstring == NULL) {
     coin_versionstring = new SbString;
-    coin_atexit((coin_atexit_f *)cleanup_func);
+    coin_atexit((coin_atexit_f *)cleanup_func, 0);
   }
   *coin_versionstring = "SIM Coin ";
   *coin_versionstring += COIN_VERSION;

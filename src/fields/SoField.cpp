@@ -458,7 +458,7 @@ SoField::initClass(void)
   assert(SoField::classTypeId == SoType::badType());
 
   CC_MUTEX_CONSTRUCT(sofield_mutex);
-  coin_atexit((coin_atexit_f*) field_mutex_cleanup);
+  coin_atexit((coin_atexit_f*) field_mutex_cleanup, 0);
 
   SoField::classTypeId = SoType::createType(SoType::badType(), "Field");
   SoField::initClasses();
@@ -1140,7 +1140,7 @@ SoField::get(SbString & valuestring)
   if (field_buffer_size < STARTSIZE) {
     field_buffer = malloc(STARTSIZE);
     field_buffer_size = STARTSIZE;
-    coin_atexit((coin_atexit_f *)field_buffer_cleanup);
+    coin_atexit((coin_atexit_f *)field_buffer_cleanup, 0);
   }
 
   out.setBuffer(field_buffer, field_buffer_size,

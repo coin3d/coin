@@ -26,7 +26,7 @@
 #include <Inventor/C/threads/mutex.h>
 #include <Inventor/C/base/hash.h>
 #include <stddef.h>
-#include "Inventor/C/tidbits.h" /* coin_atexit */
+#include "Inventor/C/tidbits.h"
 
 static cc_mutex * sync_global_mutex = NULL;
 static cc_hash * sync_hash_table = NULL;
@@ -52,7 +52,7 @@ void
 cc_sync_init(void)
 {
   if (sync_global_mutex == NULL) {
-    coin_atexit((coin_atexit_f*) sync_cleanup);
+    coin_atexit((coin_atexit_f*) sync_cleanup, 0);
 
     sync_hash_table = cc_hash_construct(256, 0.75f);    
     sync_global_mutex = cc_mutex_construct();

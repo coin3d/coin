@@ -36,7 +36,7 @@
 #include <Inventor/SoNodeKitPath.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/C/tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 
 #if COIN_DEBUG
@@ -284,7 +284,7 @@ SoNodeKitPath::getSearchAction(void)
     SoNodeKitPath::searchAction = new SoSearchAction();
     searchAction->setInterest(SoSearchAction::FIRST);
     searchAction->setSearchingAll(FALSE);
-    coin_atexit((coin_atexit_f *)SoNodeKitPath::clean);
+    coin_atexit((coin_atexit_f *)SoNodeKitPath::clean, 0);
   }
   return SoNodeKitPath::searchAction;
 }

@@ -34,7 +34,7 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/elements/SoProfileCoordinateElement.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/C/tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H
@@ -128,7 +128,7 @@ SoLinearProfile::initClass(void)
   so_linearprofile_single_data = new so_linearprofile_data;
   so_linearprofile_construct_data((void*) so_linearprofile_single_data);
 #endif // ! COIN_THREADSAFE
-  coin_atexit((coin_atexit_f*) so_linearprofile_cleanup);
+  coin_atexit((coin_atexit_f*) so_linearprofile_cleanup, 0);
 }
 
 // Doc from superclass.

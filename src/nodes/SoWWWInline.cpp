@@ -46,7 +46,7 @@
 #include <Inventor/nodes/SoWWWInline.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
-#include <Inventor/C/tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h>
 #include <coindefs.h> // COIN_OBSOLETED()
 #include <Inventor/SbColor.h>
 
@@ -174,7 +174,7 @@ SoWWWInline::SoWWWInline()
   if (SoWWWInline::bboxcolor == NULL) {
     SoWWWInline::bboxcolor = new SbColor(0.8f, 0.8f, 0.8f);
     wwwinline_colorpacker = new SoColorPacker;
-    coin_atexit((coin_atexit_f *)SoWWWInline::cleanup);
+    coin_atexit((coin_atexit_f *)SoWWWInline::cleanup, 0);
   }
 }
 

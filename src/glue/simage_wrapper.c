@@ -210,7 +210,7 @@ simage_wrapper(void)
 
     /* First invocation, do initializations. */
     simage_wrapper_t * si = (simage_wrapper_t *)malloc(sizeof(simage_wrapper_t));
-    (void)coin_atexit((coin_atexit_f *)simage_wrapper_cleanup);
+    (void)coin_atexit((coin_atexit_f *)simage_wrapper_cleanup, 0);
 
     /* Detect recursive calls. */
     {

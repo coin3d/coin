@@ -85,7 +85,7 @@ build_convert_dicts(void)
   int i;
   converttoprintable = new SbDict();
   converttoprintable_shift = new SbDict();
-  coin_atexit((coin_atexit_f *)sokeyboardevent_cleanup);
+  coin_atexit((coin_atexit_f *)sokeyboardevent_cleanup, 0);
 
 #undef ADD_KEY // just in case
 #define ADD_KEY(x,y) d->enter((unsigned long)(SoKeyboardEvent::x), (void*)y)

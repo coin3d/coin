@@ -451,7 +451,7 @@ SoNode::initClass(void)
 
   // initialize the compatibility dict
   SoNode::compatibilitydict = new SbDict;
-  coin_atexit((coin_atexit_f*)SoNode::cleanupClass);
+  coin_atexit((coin_atexit_f*)SoNode::cleanupClass, 0);
 
   SoNode::setCompatibilityTypes(SoNode::getClassTypeId(),
                                 SO_FROM_INVENTOR_1);

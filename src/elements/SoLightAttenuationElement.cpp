@@ -64,7 +64,7 @@ SoLightAttenuationElement::initClass(void)
   SO_ELEMENT_INIT_CLASS(SoLightAttenuationElement, inherited);
   defaultattenuation = new SbVec3f;
   defaultattenuation->setValue(0.0f, 0.0f, 1.0f);
-  coin_atexit((coin_atexit_f *)SoLightAttenuationElement_cleanup_func);
+  coin_atexit((coin_atexit_f *)SoLightAttenuationElement_cleanup_func, 0);
 }
 
 /*!

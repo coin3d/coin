@@ -124,7 +124,7 @@ SoDebugError::initClass(void)
         ptr++;
       }
       breakpoints = new char*[num_breakpoints];
-      coin_atexit((coin_atexit_f *)debug_break_cleanup);
+      coin_atexit((coin_atexit_f *)debug_break_cleanup, 0);
       const int envstrlen = strlen(env);
       char * cpy = new char[envstrlen + 1];
       (void)strcpy(cpy, env);

@@ -34,7 +34,7 @@
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/SoFullPath.h>
-#include <Inventor/C/tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h>
 #include <assert.h>
 
 

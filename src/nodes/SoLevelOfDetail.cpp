@@ -151,7 +151,7 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoChildList.h>
-#include <Inventor/C/tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H
@@ -300,7 +300,7 @@ SoLevelOfDetail::initClass(void)
   so_lod_single_data = new so_lod_static_data;
   so_lod_construct_data((void*) so_lod_single_data);
 #endif // COIN_THREADSAFE
-  coin_atexit((coin_atexit_f*) so_lod_cleanup);
+  coin_atexit((coin_atexit_f*) so_lod_cleanup, 0);
 }
 
 // Documented in superclass.

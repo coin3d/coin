@@ -952,7 +952,7 @@ cc_glglue_instance(int contextid)
 
   if (!gldict) {  /* First invocation, do initializations. */
     gldict = cc_hash_construct(16, 0.75f);
-    coin_atexit((coin_atexit_f *)glglue_cleanup);
+    coin_atexit((coin_atexit_f *)glglue_cleanup, 0);
   }
 
   found = cc_hash_get(gldict, (unsigned long) contextid, &ptr);

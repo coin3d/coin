@@ -123,7 +123,7 @@ SbNameEntry::initClass(void)
   for (int i = 0; i < SbNameEntry::nameTableSize; i++) { SbNameEntry::nameTable[i] = NULL; }
   SbNameEntry::chunk = NULL;
 
-  coin_atexit((coin_atexit_f*) SbNameEntry::cleanup);
+  coin_atexit((coin_atexit_f*) SbNameEntry::cleanup, 0);
 }
 
 void

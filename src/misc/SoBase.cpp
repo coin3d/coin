@@ -393,7 +393,7 @@ SoBase::destroy(void)
 void
 SoBase::initClass(void)
 {
-  coin_atexit((coin_atexit_f *)SoBase::cleanClass);
+  coin_atexit((coin_atexit_f *)SoBase::cleanClass, 0);
 
   // Avoid multiple attempts at initialization.
   assert(SoBase::classTypeId == SoType::badType());
@@ -864,7 +864,7 @@ SoBase::getAuditors(void) const
 
   if (sobase_auditordict == NULL) {
     sobase_auditordict = new SbDict();
-    coin_atexit((coin_atexit_f*)sobase_cleanup_auditordict);
+    coin_atexit((coin_atexit_f*)sobase_cleanup_auditordict, 0);
   }
 
   SoAuditorList * list = NULL;

@@ -37,7 +37,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbViewVolume.h>
-#include <Inventor/C/tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H
@@ -157,7 +157,7 @@ SoNurbsProfile::initClass(void)
   so_nurbsprofile_single_data = new so_nurbsprofile_data;
   so_nurbsprofile_construct_data((void*) so_nurbsprofile_single_data);
 #endif // ! COIN_THREADSAFE
-  coin_atexit((coin_atexit_f*) so_nurbsprofile_cleanup);
+  coin_atexit((coin_atexit_f*) so_nurbsprofile_cleanup, 0);
 }
 
 // Doc from superclass.

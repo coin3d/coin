@@ -58,7 +58,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/C/tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H
@@ -109,7 +109,7 @@ SoTextureCoordinateEnvironment::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateEnvironment, SO_FROM_INVENTOR_1);
 
   SoTextureCoordinateEnvironmentP::dummy_texcoords = new SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
-  coin_atexit((coin_atexit_f *)SoTextureCoordinateEnvironmentP::cleanup_func);
+  coin_atexit((coin_atexit_f *)SoTextureCoordinateEnvironmentP::cleanup_func, 0);
 }
 
 // generates texture coordinates for GLRender, callback and pick actions

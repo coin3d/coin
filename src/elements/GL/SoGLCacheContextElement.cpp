@@ -79,7 +79,7 @@ SoGLCacheContextElement::initClass(void)
   extsupportlist = new SbList <so_glext_info *>;
   scheduledeletelist = new SbList <SoGLDisplayList*>;
   CC_MUTEX_CONSTRUCT(glcache_mutex);
-  coin_atexit((coin_atexit_f *)soglcachecontext_cleanup);
+  coin_atexit((coin_atexit_f *)soglcachecontext_cleanup, 0);
 }
 
 /*!

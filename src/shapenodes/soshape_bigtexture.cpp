@@ -32,7 +32,7 @@
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/nodes/SoShape.h>
-#include <Inventor/C/tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H

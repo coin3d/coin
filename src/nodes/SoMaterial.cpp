@@ -91,7 +91,7 @@
 #include <Inventor/elements/SoEmissiveColorElement.h>
 #include <Inventor/elements/SoShininessElement.h>
 #include <Inventor/elements/SoTransparencyElement.h>
-#include <Inventor/C/tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 
 /*!

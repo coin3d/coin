@@ -180,7 +180,7 @@ SoVRMLImageTexture::initClass(void) // static
 
 #ifdef HAVE_THREADS
   imagetexture_scheduler = cc_sched_construct(1);
-  coin_atexit((coin_atexit_f*) imagetexture_cleanup);
+  coin_atexit((coin_atexit_f*) imagetexture_cleanup, 0);
 #endif // HAVE_THREADS
 }
 

@@ -90,7 +90,7 @@ SoProtoInstance::initClass(void)
                        SoNode::nextActionMethodIndex++);
 
   protoinstance_dict = new SbDict;
-  coin_atexit((coin_atexit_f*) SoProtoInstance::cleanupClass);
+  coin_atexit((coin_atexit_f*) SoProtoInstance::cleanupClass, 0);
 }
 
 void
