@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -89,6 +89,68 @@
 
   See specifically the section "References and Deletion" in Chapter 3
   to learn about the reference counting techniques.
+
+
+  Often when using the Coin library, one is interested in making
+  extensions to it. Of particular interest is setting up extension
+  nodes, which are then traversed, rendered and otherwise used by the
+  rest of the library as any internal node.
+
+  The Coin header file Inventor/nodes/SoSubNode.h includes a set of
+  convenience macros for quick and easy construction of extension
+  nodes. Here's a complete snippet of code which shows how to set up a
+  skeleton framework for an extension node class:
+
+  \code
+  #include <Inventor/nodes/SoWWWInline.h>
+
+  class MyWWWInline : public SoWWWInline {
+    SO_NODE_HEADER(MyWWWInline);
+
+  public:
+    static void initClass(void);
+    MyWWWInline(void);
+
+  protected:
+    virtual ~MyWWWInline();
+  };
+
+  SO_NODE_SOURCE(MyWWWInline);
+
+  MyWWWInline::MyWWWInline(void)
+  {
+    SO_NODE_CONSTRUCTOR(MyWWWInline);
+  }
+
+  MyWWWInline::~MyWWWInline()
+  {
+  }
+
+  void
+  MyWWWInline::initClass(void)
+  {
+    SO_NODE_INIT_CLASS(MyWWWInline, SoWWWInline, "SoWWWInline");
+  }
+
+  int
+  main(int argc, char ** argv)
+  {
+    SoDB::init();
+    MyWWWInline::initClass();
+
+    // [...]
+
+    return 0;
+  }
+  \endcode
+
+  You can then override for instance the GLRender() method to have
+  your new class render OpenGL geometry different from it's
+  superclass.
+
+  For a complete reference on how to extend the Coin library, we
+  strongly recommend that you get hold of the «The Inventor Toolmaker»
+  book (ISBN 0-201-62493-1).
 */
 
 #include <Inventor/SoOutput.h>
