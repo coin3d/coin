@@ -195,6 +195,9 @@ THE LINKS
 
   http://www.nigels.com/research/
 
+* An LGPL-licensed library with at least some CSG support:
+  <URL:http://gts.sourceforge.net/>.
+
 * FLTK binding against SGI Inventor:
   <URL:http://fl-inventor.sourceforge.net/>, make sure it can also
   work with Coin. Note: they are using some of our pixmap graphics on
