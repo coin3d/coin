@@ -57,9 +57,9 @@ private:
     PER_VERTEX = 5 ,
     PER_VERTEX_INDEXED = 6
   };
-
-  Binding findMaterialBinding(void) const;
-
+  
+  Binding findMaterialBinding(SoState * state) const;
+  
 }; // class SoVRMLIndexedLineSet
 
 #endif // ! COIN_SOVRMLINDEXEDLINESET_H

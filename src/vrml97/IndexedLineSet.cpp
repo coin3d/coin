@@ -127,6 +127,8 @@
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
 #include <assert.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/details/SoLineDetail.h>
@@ -156,17 +158,46 @@ SoVRMLIndexedLineSet::~SoVRMLIndexedLineSet()
 }
 
 SoVRMLIndexedLineSet::Binding
-SoVRMLIndexedLineSet::findMaterialBinding(void) const
+SoVRMLIndexedLineSet::findMaterialBinding(SoState * state) const
 {
   Binding binding = OVERALL;
-  if (this->color.getValue()) {
-    if (this->colorPerVertex.getValue()) {
+  if (SoOverrideElement::getMaterialBindingOverride(state)) {
+    switch (SoMaterialBindingElement::get(state)) {
+    case SoMaterialBindingElement::OVERALL:
+      binding = OVERALL;
+      break;
+    case SoMaterialBindingElement::PER_VERTEX:
+      binding = PER_VERTEX;
+      break;
+    case SoMaterialBindingElement::PER_VERTEX_INDEXED:
       binding = PER_VERTEX_INDEXED;
-      if (!this->colorIndex.getNum()) binding = PER_VERTEX;
-    }
-    else {
+      break;
+    case SoMaterialBindingElement::PER_PART:
+    case SoMaterialBindingElement::PER_FACE:
       binding = PER_LINE;
-      if (this->colorIndex.getNum()) binding = PER_LINE_INDEXED;
+      break;
+    case SoMaterialBindingElement::PER_FACE_INDEXED:
+    case SoMaterialBindingElement::PER_PART_INDEXED:
+      binding = PER_LINE_INDEXED;
+      break;
+    default:
+#if COIN_DEBUG
+      SoDebugError::postWarning("SoVRMLIndexedLineSet::findMaterialBinding",
+                                "unknown material binding setting");
+#endif // COIN_DEBUG
+      break;
+    }
+  }
+  else {
+    if (this->color.getValue()) {
+      if (this->colorPerVertex.getValue()) {
+        binding = PER_VERTEX_INDEXED;
+        if (!this->colorIndex.getNum()) binding = PER_VERTEX;
+      }
+      else {
+        binding = PER_LINE;
+        if (this->colorIndex.getNum()) binding = PER_LINE_INDEXED;
+      }
     }
   }
   return binding;
@@ -211,7 +242,7 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
   numindices = this->coordIndex.getNum();
   mindices = this->colorIndex.getNum() ? this->colorIndex.getValues(0) : NULL;
 
-  Binding mbind = this->findMaterialBinding();
+  Binding mbind = this->findMaterialBinding(state);
   if (mbind == PER_VERTEX) {
     mbind = PER_VERTEX_INDEXED;
     mindices = cindices;
@@ -319,7 +350,7 @@ SoVRMLIndexedLineSet::generatePrimitives(SoAction * action)
   numindices = this->coordIndex.getNum();
   matindices = this->colorIndex.getNum() ? this->colorIndex.getValues(0) : NULL;
 
-  Binding mbind = this->findMaterialBinding();
+  Binding mbind = this->findMaterialBinding(state);
   if (mbind == PER_VERTEX) {
     mbind = PER_VERTEX_INDEXED;
     matindices = cindices;
