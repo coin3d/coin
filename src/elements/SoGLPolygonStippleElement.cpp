@@ -50,8 +50,9 @@ static unsigned int two_by_two[] = {0, 2, 3, 1};
 //
 // Used to generate a matrix twice the size of the input
 //
-static void generate_next_matrix(unsigned int *old, int oldsize,
-                                 unsigned int *matrix)
+static void 
+generate_next_matrix(unsigned int * old, int oldsize,
+                     unsigned int * matrix)
 {
   int i,j;
   int newsize = oldsize << 1;
@@ -65,14 +66,15 @@ static void generate_next_matrix(unsigned int *old, int oldsize,
 
 //
 // Creates a matrix by starting with a 2x2 and doubling until size
-// Warning: only binary sizes!!
+// Warning: only 2^n sizes!!
 //
-static void make_dither_matrix(uint32_t *ptr, int size)
+static void 
+make_dither_matrix(uint32_t * ptr, int size)
 {
   int currsize = 2;
 
-  unsigned int *currmatrix = two_by_two;
-  unsigned int *nextmatrix = NULL;
+  unsigned int * currmatrix = two_by_two;
+  unsigned int * nextmatrix = NULL;
   int nextsize;
 
   while (currsize < size) {
@@ -94,7 +96,8 @@ static void make_dither_matrix(uint32_t *ptr, int size)
 //
 // Sets a bit bitnr bits from ptr
 //
-static void set_bit(int bitnr, uint32_t *ptr)
+static void 
+set_bit(int bitnr, uint32_t * ptr)
 {
   int byte = bitnr / 32;
   int bit = bitnr % 32;
@@ -107,8 +110,9 @@ static void set_bit(int bitnr, uint32_t *ptr)
 //
 // Create a bitmap from a 32x32 matrix
 //
-static void create_matrix_bitmap(int intensity, uint32_t *bitmap,
-                                 uint32_t *matrix, int size)
+static void 
+create_matrix_bitmap(int intensity, uint32_t *bitmap,
+                     uint32_t *matrix, int size)
 {
   int cnt = 0;
   int i,j;
@@ -136,9 +140,10 @@ SoGLPolygonStippleElement::initClass()
   // create patterns
   int i;
   unsigned int matrix[32*32];
-  make_dither_matrix(matrix, 32);
+  make_dither_matrix(matrix, 32); 
   for (i = 0; i <= 64; i++) {
-    create_matrix_bitmap(((32*32)*i)/64,
+    int intensity = (32 * 32 * i) / 64 - 1;
+    create_matrix_bitmap((intensity >= 0) ? intensity : 0,
                          (uint32_t*)&patterns[i][0], matrix, 32);
   }
 }
