@@ -115,7 +115,7 @@ class SoFontP {
   
   SoFontP(SoFont * owner) {
     this->owner = owner;
-    this->lastsize = 0.0;
+    this->lastsize = 0.0f;
     this->firsttime = TRUE;
   }
 };
@@ -206,7 +206,7 @@ SoFont::doAction(SoAction * action)
   // Inventor). 20030317 mortene.
 
   const char * this_name = this->name.getValue().getString();
-  const int this_size = (int) this->size.getValue();
+  const float this_size = this->size.getValue();
   if (PRIVATE(this)->firsttime || 
       PRIVATE(this)->lastsize != this_size || 
       strcmp(PRIVATE(this)->lastfontname.getString(), this_name)) {
@@ -217,7 +217,7 @@ SoFont::doAction(SoAction * action)
     // requesting glyphs from the font. 20030527 mortene.
 
     int font = cc_flw_create_font(this->name.getValue().getString(),
-                                  this_size, this_size);
+                                  (int)this_size, (int)this_size);
     // 'font' should _always_ be >= 0, due to our fall-back on the
     // default font.
     assert((font >= 0) && "could not create font");
