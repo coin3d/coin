@@ -413,3 +413,14 @@ THE WISH LIST
   Update 2001-07-03 pederb: It would also be nice if setOverride()
   could be done field-by-field, and not just for the entire node.
 
+
+* SoDB::registerImporter()
+  2001-07-06  Marius Kintel <kintel@sim.no>, Peder Blekken <pederb@sim.no>
+  (write-up by mortene@sim.no)
+
+  Instead of (or at least in addition to) the silly
+  SoDB::registerHeader() function (bad design, as it can only handle
+  files with a header looking like the original Inventor and VRML
+  stuff) we should perhaps make available a function
+  registerImporter() for generally supporting any file format for
+  import to Coin scenegraphs.
