@@ -182,11 +182,12 @@ SbPlane::transform(const SbMatrix& matrix)
   SbVec3f ptInPlane = this->normal * this->distance;
 
   // according to discussions on comp.graphics.algorithms, the inverse
-  // transpose matrix should be used to transform the plane.
+  // transpose matrix should be used to rotate the plane normal.
   SbMatrix invtransp = matrix.inverse().transpose();
-  
-  invtransp.multVecMatrix(ptInPlane, ptInPlane);
   invtransp.multDirMatrix(this->normal, this->normal);
+
+  // the point should be transformed using the original matrix
+  matrix.multVecMatrix(ptInPlane, ptInPlane);
   
   this->normal.normalize();
   this->distance = this->normal.dot(ptInPlane);
