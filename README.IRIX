@@ -1,4 +1,4 @@
-Here are some information about common problems when building on SGI
+Here is some information about common problems when building on SGI
 IRIX platforms, sorted in approximate order of your chances of getting
 hit by the problem:
 
@@ -49,9 +49,9 @@ hit by the problem:
    and linking on a local disk instead.
 
 
-The above is a complete list of the possible problems we are aware of
-on SGI IRIX platforms when trying to configure and build Coin. If you
-bump into any other problems, please let us know.
+The above is a complete list of the problems we are aware of on SGI
+IRIX platforms when trying to configure and build Coin. If you bump
+into any other problems, please let us know.
 
 --
 mortene@sim.no
