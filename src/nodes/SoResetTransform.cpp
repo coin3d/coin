@@ -38,7 +38,8 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoGLModelMatrixElement.h>
-
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 
 /*!
   \enum SoResetTransform::ResetType
@@ -103,7 +104,13 @@ SoResetTransform::GLRender(SoGLRenderAction * action)
 {
   if (!this->whatToReset.isIgnored() &&
       (this->whatToReset.getValue() & SoResetTransform::TRANSFORM)) {
-    SoGLModelMatrixElement::makeIdentity(action->getState(), this);
+    SoState * state = action->getState();
+    // It's impossible to cache separators with this node as a child.
+    // Invalidate the caches to help the auto cache logic. 
+    // pederb, 2005-01-13
+    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);     
+    SoCacheElement::invalidate(state);
+    SoGLModelMatrixElement::makeIdentity(state, this);
   }
 }
 
