@@ -424,7 +424,7 @@ SoInteractionKit::readDefaultParts(const char * fileName,
       SoDebugError::post("SoInteractionKit::readDefaultParts",
                          "Could not find file '%s' for the dragger "
                          "default parts.",
-                         fullname);
+                         fullname.getString());
     }
   }
 
