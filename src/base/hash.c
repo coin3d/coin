@@ -77,15 +77,18 @@ hash_resize(cc_hash * ht, unsigned int newsize)
 /* public api */
 
 /*!
+  Construct a hash table.
 
-  Construct a hash table. \a size is the initial bucket size, \a
-  loadfactor is the percentage the table should be filled before
+  \a size is the initial bucket size. The caller need not attempt to
+  find a good (prime number) value for this argument to ensure good
+  hashing. That will be taken care of internally.
+
+  \a loadfactor is the percentage the table should be filled before
   resizing, and should be a number from 0 to 1. It is of course
   possible to specify a number bigger than 1, but then there will be
   greater chance of having many elements on the same bucket (linear
   search for an element). If you supply a number <= 0 for loadfactor,
   the default value 0.75 will be used.
-
 */
 cc_hash *
 cc_hash_construct(unsigned int size, float loadfactor)
