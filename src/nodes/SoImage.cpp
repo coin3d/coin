@@ -217,16 +217,16 @@ SoImage::GLRender(SoGLRenderAction *action)
   SbVec3f nilpoint = SoImage::getNilpoint(state);
   SbVec2s size = this->imageData->getSize();
 
-  float xpos = 0.0; // init unnecessary, but kills a compiler warning.
+  int xpos = 0;
   switch (this->horAlignment.getValue()) {
   case SoImage::LEFT:
-    xpos = nilpoint[0];
+    xpos = (int)nilpoint[0];
     break;
   case SoImage::RIGHT:
-    xpos = nilpoint[0] - (float)size[0];
+    xpos = (int)nilpoint[0] - size[0];
     break;
   case SoImage::CENTER:
-    xpos = nilpoint[0] - (float)size[0]*0.5f;
+    xpos = (int)nilpoint[0] - (size[0]>>1);
     break;
 #if COIN_DEBUG
   default:
@@ -236,16 +236,16 @@ SoImage::GLRender(SoGLRenderAction *action)
 #endif // COIN_DEBUG
   }
 
-  float ypos = 0.0; // init unnecessary, but kills a compiler warning.
+  int ypos = 0;
   switch (this->vertAlignment.getValue()) {
   case SoImage::TOP:
-    ypos = nilpoint[1] - (float)size[1];
+    ypos = (int)nilpoint[1] - size[1];
     break;
   case SoImage::BOTTOM:
-    ypos = nilpoint[1];
+    ypos = (int)nilpoint[1];
     break;
   case SoImage::HALF:
-    ypos = nilpoint[1] - (float)size[1]*0.5f;
+    ypos = (int)nilpoint[1] - (size[1]>>1);
     break;
 #if COIN_DEBUG
   default:
@@ -276,38 +276,51 @@ SoImage::GLRender(SoGLRenderAction *action)
 #endif
   }
 
+  int srcw = size[0];
+  int srch = size[1];
+  int skipx = 0;
+  int skipy = 0;
+
+  if (xpos >= vpsize[0]) return;
+  else if (xpos < -size[0]) return;
+  else if (xpos < 0) {
+    srcw += xpos;
+    skipx = -xpos;
+    xpos = 0;
+  }
+
+  if (ypos > vpsize[1]) return;
+  else if (ypos < -size[1]) return;
+  else if (ypos < 0) {
+    srch += ypos;
+    skipy = -ypos;
+    ypos = 0;
+  }
+
+  if (srcw > vpsize[0] - xpos) {
+    srcw = vpsize[0]-xpos;
+  }
+  if (srch > vpsize[1] - ypos) {
+    srch = vpsize[1]-ypos;
+  }
+
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix();
   glLoadIdentity();
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   glLoadIdentity();
-
-  short srcw = size[0];
-  short srch = size[1];
-  
-  if (xpos < 0.0f) {
-    srcw += (short)xpos;
-    xpos = 0;
-  }
-  if (ypos < 0.0f) {
-    srch += (short)ypos;
-    ypos = 0;
-  }
-
-  srcw = SbMin(srcw, (short)(vpsize[0]-(short)xpos));
-  srch = SbMin(srch, (short)(vpsize[1]-(short)ypos));
-
-  // FIXME: push raster state?
+  // FIXME: push raster state? pederb, 20000509
   glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
-
-  glRasterPos3f(xpos, ypos, -nilpoint[2]);
+  
+  glRasterPos3f((float)xpos, (float)ypos, -nilpoint[2]);
   glPixelStorei(GL_UNPACK_ROW_LENGTH, size[0]);
-  glPixelStorei(GL_PACK_ROW_LENGTH, vpsize[0]); // needed?
-
+  glPixelStorei(GL_UNPACK_SKIP_PIXELS, skipx);
+  glPixelStorei(GL_UNPACK_SKIP_ROWS, skipy);
+  glPixelStorei(GL_PACK_ROW_LENGTH, vpsize[0]);
+  
   glDrawPixels(srcw, srch, format, GL_UNSIGNED_BYTE,
-               (const GLvoid*)this->imageData->getDataPtr());
-
+               (const GLvoid*) this->imageData->getDataPtr());
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();
   glMatrixMode(GL_MODELVIEW);
