@@ -24,12 +24,10 @@
 #if defined(SO_CG_SHADER_SUPPORT)
 
 #include "SoGLCgShader.h"
-#include <iostream>
+
 #include <assert.h>
 
-/***************************************************************************
- ***                   SoGLCgShaderParameter implementation              ***
- ***************************************************************************/
+// *************************************************************************
 
 SoGLCgShaderParameter::SoGLCgShaderParameter(SoGLCgShaderObject*   shader,
 					     const char*           name,

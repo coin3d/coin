@@ -22,12 +22,13 @@
 \**************************************************************************/
 
 #include <Inventor/nodes/SoGLShaderProgram.h>
+
+#include <assert.h>
+
 #include "SoGLShaderObject.h"
 #include "SoGLARBShader.h"
 #include "SoGLCgShader.h"
 #include "SoGLSLShader.h"
-#include <assert.h>
-#include <iostream>
 
 // *************************************************************************
 

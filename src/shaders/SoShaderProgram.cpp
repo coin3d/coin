@@ -22,15 +22,16 @@
 \**************************************************************************/
 
 #include <Inventor/nodes/SoShaderProgram.h>
-#include <Inventor/nodes/SoShaderObject.h>
-#include <Inventor/nodes/SoGLShaderProgram.h>
-#include <Inventor/elements/SoGLShaderProgramElement.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoElements.h>
-#include <Inventor/sensors/SoNodeSensor.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <iostream>
+
 #include <assert.h>
+
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoGLShaderProgramElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/nodes/SoGLShaderProgram.h>
+#include <Inventor/nodes/SoShaderObject.h>
+#include <Inventor/sensors/SoNodeSensor.h>
 
 // *************************************************************************
 

@@ -24,8 +24,12 @@
 #if defined(SO_GLSL_SHADER_SUPPORT)
 
 #include "SoGLSLShader.h"
+
+// *************************************************************************
+
+// FIXME: get rid of this. 20050120 mortene.
+
 #include <GL/glu.h>
-#include <iostream>
 
 #ifdef _WIN32
 PFNGLGETACTIVEUNIFORMARBPROC     glGetActiveUniformARB;
@@ -52,9 +56,7 @@ PFNGLCREATEPROGRAMOBJECTARBPROC  glCreateProgramObjectARB;
 PFNGLGETOBJECTPARAMETERIVARBPROC glGetObjectParameterivARB;
 #endif
 
-/***************************************************************************
- ***                  SoGLSLShaderParameter implementation               ***
- ***************************************************************************/
+// *************************************************************************
 
 SoGLSLShaderParameter::SoGLSLShaderParameter(GLhandleARB           program,
 					     const char*           theName, 

@@ -23,10 +23,12 @@
 
 #include <Inventor/nodes/SoShaderParameter.h>
 
+#include <assert.h>
+
 #include "SoGLShaderObject.h"
 #include "SoGLCgShader.h"
-#include <iostream>
-#include <assert.h>
+
+// *************************************************************************
 
 /* **************************************************************************
  * ***                             SoShaderParameter                      ***

@@ -24,7 +24,6 @@
 #include <Inventor/nodes/SoShaderObject.h>
 
 #include <assert.h>
-#include <fstream>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
@@ -45,20 +44,20 @@
 class SoShaderObjectP 
 {
 public:
-  SoShaderObjectP(SoShaderObject *ownerptr);  
+  SoShaderObjectP(SoShaderObject *ownerptr); 
   ~SoShaderObjectP();
 
-  void GLRender(SoGLRenderAction *action);  
+  void GLRender(SoGLRenderAction *action); 
 
-  SoShaderObject           * owner;
-  SoGLShaderObject         * glShaderObject;
-  SbBool                     glShaderShouldLoad;
-  SbBool                     glShaderIsInGLProgram;
+  SoShaderObject * owner;
+  SoGLShaderObject * glShaderObject;
+  SbBool glShaderShouldLoad;
+  SbBool glShaderIsInGLProgram;
   SoShaderObject::SourceType cachedSourceType;
-  SbString                   cachedSourceProgram;
+  SbString cachedSourceProgram;
 
   void updateParameters(int start, int num);
-  void updateAllParameters();  
+  void updateAllParameters(); 
   void updateStateMatrixParameters();
   SbBool containStateMatrixParameters() const;
   void removeGLShaderFromGLProgram(SoGLShaderProgram *glProgram);
@@ -67,11 +66,11 @@ private:
   SoNodeSensor *sensor;
   static void sensorCB(void *data, SoSensor *);
 
-  void checkType();   // sets cachedSourceType
-  void readSource();  // sets cachedSourceProgram depending on sourceType
+  void checkType(); // sets cachedSourceType
+  void readSource(); // sets cachedSourceProgram depending on sourceType
 
   SbBool isSupported(SoShaderObject::SourceType sourceType);
-  
+
 #if defined(SOURCE_HINT)
   SbString getSourceHint() const;
 #endif
@@ -93,19 +92,19 @@ void SoShaderObject::initClass()
 SoShaderObject::SoShaderObject()
 {
   SO_NODE_CONSTRUCTOR(SoShaderObject);
-  
+
   SO_NODE_ADD_FIELD(isActive, (TRUE));
 
   SO_NODE_DEFINE_ENUM_VALUE(SourceType, ARB_PROGRAM);
   SO_NODE_DEFINE_ENUM_VALUE(SourceType, CG_PROGRAM);
   SO_NODE_DEFINE_ENUM_VALUE(SourceType, GLSL_PROGRAM);
   SO_NODE_DEFINE_ENUM_VALUE(SourceType, FILENAME);
-  
-  SO_NODE_ADD_FIELD(sourceType,    (FILENAME));
+
+  SO_NODE_ADD_FIELD(sourceType, (FILENAME));
   SO_NODE_SET_SF_ENUM_TYPE(sourceType, SourceType);
-  
+
   SO_NODE_ADD_FIELD(sourceProgram, (""));
-  SO_NODE_ADD_FIELD(parameter,     (NULL));  parameter.deleteValues(0,1);
+  SO_NODE_ADD_FIELD(parameter, (NULL)); parameter.deleteValues(0,1);
 
   SELF = new SoShaderObjectP(this);
 }
@@ -120,13 +119,13 @@ void SoShaderObject::GLRender(SoGLRenderAction * action)
   SELF->GLRender(action);
 }
 
-// Really send the parameters from start to start + num to the shaders.
+// Really send the parameters from start to start + num to the shaders. 
 void SoShaderObject::updateParameters(int start, int num)
 {
   SELF->updateParameters(start, num);
 }
 
-// Really send all the parameters to the shaders.
+// Really send all the parameters to the shaders. 
 void SoShaderObject::updateAllParameters()
 {
   SELF->updateAllParameters();
@@ -165,25 +164,25 @@ void SoShaderObject::removeGLShaderFromGLProgram(SoGLShaderProgram *glProgram)
 }
 
 /* ***************************************************************************
- * ***          private implementation of SoShaderObjectP                  ***
+ * *** private implementation of SoShaderObjectP ***
  * ***************************************************************************/
 
 SoShaderObjectP::SoShaderObjectP(SoShaderObject * ownerptr)
 {
-  this->owner  = ownerptr;
+  this->owner = ownerptr;
   this->sensor = new SoNodeSensor(SoShaderObjectP::sensorCB, this);
   this->sensor->attach(ownerptr);
 
-  this->glShaderObject        = NULL;
-  this->glShaderShouldLoad    = TRUE;
+  this->glShaderObject = NULL;
+  this->glShaderShouldLoad = TRUE;
   this->glShaderIsInGLProgram = FALSE;
-  this->cachedSourceType      = SoShaderObject::FILENAME;
+  this->cachedSourceType = SoShaderObject::FILENAME;
 }
 
 SoShaderObjectP::~SoShaderObjectP()
 {
   delete this->sensor;
-  
+
   if (this->glShaderObject) {
     delete this->glShaderObject; this->glShaderObject = NULL;
   }
@@ -192,13 +191,13 @@ SoShaderObjectP::~SoShaderObjectP()
 void
 SoShaderObjectP::GLRender(SoGLRenderAction * action)
 {
-  SoState           * state         = action->getState();
+  SoState * state = action->getState();
   SoGLShaderProgram * shaderProgram = SoGLShaderProgramElement::get(state);
-  
+
   assert(shaderProgram);
 
   SbBool flag = this->owner->isActive.getValue();
-  
+
   if (!flag) {
     if (this->glShaderObject) this->glShaderObject->setIsActive(FALSE);
     return;
@@ -209,7 +208,7 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
 
   if (this->glShaderShouldLoad) {
     this->glShaderShouldLoad = FALSE;
-    checkType();  // set this->cachedSourceType
+    checkType(); // set this->cachedSourceType
     readSource(); // set this->cachedSourceProgram
 
     // if file could not be read
@@ -227,33 +226,33 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
                                 "%s is not supported", s.getString());
       return;
     }
-    
+
     // Is current shaderObject of proper type? -> if not: remove it
     if (this->glShaderObject) {
       SbBool flag = FALSE;
-      
+
       switch (this->glShaderObject->shaderType()) {
-        case SoGLShader::ARB_SHADER: 
-	  if (this->cachedSourceType != SoShaderObject::ARB_PROGRAM) flag=TRUE;
-	  break;
-        case SoGLShader::CG_SHADER: 
-	  if (this->cachedSourceType != SoShaderObject::CG_PROGRAM)  flag=TRUE;
-	  break;
-        case SoGLShader::GLSL_SHADER: 
-	  if (this->cachedSourceType != SoShaderObject::GLSL_PROGRAM)flag=TRUE;
-	  break;
-        default:
-	  assert(FALSE && "This shouldn't happen!");
+      case SoGLShader::ARB_SHADER: 
+        if (this->cachedSourceType != SoShaderObject::ARB_PROGRAM) flag=TRUE;
+        break;
+      case SoGLShader::CG_SHADER: 
+        if (this->cachedSourceType != SoShaderObject::CG_PROGRAM) flag=TRUE;
+        break;
+      case SoGLShader::GLSL_SHADER: 
+        if (this->cachedSourceType != SoShaderObject::GLSL_PROGRAM)flag=TRUE;
+        break;
+      default:
+        assert(FALSE && "This shouldn't happen!");
       }
       if (flag) {
-	if (this->glShaderIsInGLProgram) {
-	  shaderProgram->removeShaderObject(this->glShaderObject);
-	  this->glShaderIsInGLProgram = FALSE;
-	}
-	if (this->glShaderObject) {
-	  delete this->glShaderObject;
-	  this->glShaderObject = NULL;
-	}
+        if (this->glShaderIsInGLProgram) {
+          shaderProgram->removeShaderObject(this->glShaderObject);
+          this->glShaderIsInGLProgram = FALSE;
+        }
+        if (this->glShaderObject) {
+          delete this->glShaderObject;
+          this->glShaderObject = NULL;
+        }
       }
     }
     // Is current shaderObject already created? -> if not: create it
@@ -261,27 +260,27 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
       switch (this->cachedSourceType) {
 #if defined(SO_ARB_SHADER_SUPPORT)
       case SoShaderObject::ARB_PROGRAM:
-	this->glShaderObject = (SoGLShaderObject*) new SoGLARBShaderObject;
-	break;
+        this->glShaderObject = (SoGLShaderObject*) new SoGLARBShaderObject;
+        break;
 #endif
 #if defined(SO_CG_SHADER_SUPPORT)
       case SoShaderObject::CG_PROGRAM:
-	this->glShaderObject = (SoGLShaderObject*) new SoGLCgShaderObject;
-	break;
+        this->glShaderObject = (SoGLShaderObject*) new SoGLCgShaderObject;
+        break;
 #endif
 #if defined(SO_GLSL_SHADER_SUPPORT)
       case SoShaderObject::GLSL_PROGRAM:
-	this->glShaderObject = (SoGLShaderObject*) new SoGLSLShaderObject;
-	break;
+        this->glShaderObject = (SoGLShaderObject*) new SoGLSLShaderObject;
+        break;
 #endif
       default:
-	assert(FALSE && "This shouldn't happen!");
+        assert(FALSE && "This shouldn't happen!");
       }
       this->glShaderObject->setIsVertexShader(this->owner->isVertexShader());
     }
     else
       shaderProgram->postShouldLink();
-    
+
 #if defined(SOURCE_HINT)
     this->glShaderObject->sourceHint = getSourceHint();
 #endif
@@ -309,7 +308,7 @@ SoShaderObjectP::checkType()
 
   // determine sourceType from file extension
   SbString fileName = this->owner->sourceProgram.getValue();
-  int      len      = fileName.getLength();
+  int len = fileName.getLength();
   if (len > 5) {
     SbString subStr = fileName.getSubString(len-5);
     if (subStr == ".glsl") {
@@ -325,33 +324,34 @@ SoShaderObjectP::checkType()
     }
     if (subStr == ".fp") {
       this->cachedSourceType = this->owner->isVertexShader() 
-	? SoShaderObject::FILENAME : SoShaderObject::ARB_PROGRAM;
+        ? SoShaderObject::FILENAME : SoShaderObject::ARB_PROGRAM;
       return;
     }
     if (subStr==".vp") {
       this->cachedSourceType = this->owner->isVertexShader() 
-	? SoShaderObject::ARB_PROGRAM : SoShaderObject::FILENAME;
+        ? SoShaderObject::ARB_PROGRAM : SoShaderObject::FILENAME;
       return;
     }
   }
   SoDebugError::postWarning("SoShaderObjectP::checkType",
                             "Could not determine shader type of file '%s'!\n"
-                            "   Following file extensions are supported:\n"
-                            "       *.fp -> ARB_PROGRAM (fragment)\n"
-                            "       *.vp -> ARB_PROGRAM (vertex)\n"
-                            "       *.cg -> CG_PROGRAM (fragment|vertex)\n"
-                            "       *.glsl -> GLSL_PROGRAM (fragment|vertex)\n",
+                            "Following file extensions are supported:\n"
+                            "*.fp -> ARB_PROGRAM (fragment)\n"
+                            "*.vp -> ARB_PROGRAM (vertex)\n"
+                            "*.cg -> CG_PROGRAM (fragment|vertex)\n"
+                            "*.glsl -> GLSL_PROGRAM (fragment|vertex)\n",
                             fileName.getString());
   // error: could not determine SourceType
   this->cachedSourceType = SoShaderObject::FILENAME;
 }
 
 // read the file if neccessary and assign content to this->cachedSourceProgram
-void SoShaderObjectP::readSource()
+void
+SoShaderObjectP::readSource(void)
 {
   SoShaderObject::SourceType srcType = 
     (SoShaderObject::SourceType)this->owner->sourceType.getValue();
-  
+
   this->cachedSourceProgram.makeEmpty();
 
   if (this->owner->sourceProgram.isDefault())
@@ -361,23 +361,35 @@ void SoShaderObjectP::readSource()
   else {
     if (this->cachedSourceType != SoShaderObject::FILENAME) {
       SbString fileName = this->owner->sourceProgram.getValue();
-      std::ifstream is(fileName.getString());
-      if (is) {
-	char* srcStr;
-	int   length;
-	is.seekg (0, std::ios::end);
-	length = is.tellg();
-	is.seekg (0, std::ios::beg);
-	srcStr = new char[length+1];
-	is.read(srcStr, length);
-	srcStr[length] = '\0';
-	this->cachedSourceProgram = srcStr;
-	delete [] srcStr;
+
+      // FIXME: should really look for the file in all paths that
+      // SoInput::getDirectories() had when .iv-file was
+      // read. 20050120 mortene. 
+      FILE * f = fopen(fileName.getString(), "rb");
+      if (f) {
+        int ok = fseek(f, 0L, SEEK_END);
+        assert(ok); // FIXME: be more robust. 20050120 mortene.
+        const long length = ftell(f);
+        assert(length != -1); // FIXME: be more robust. 20050120 mortene.
+        assert(length != 0); // FIXME: be more robust. 20050120 mortene.
+
+        ok = fseek(f, 0L, SEEK_SET);
+        assert(ok); // FIXME: be more robust. 20050120 mortene.
+
+        char * srcstr = new char[length+1];
+        size_t readlen = fread(srcstr, 1, length, f);
+        assert(readlen == (size_t)length); // FIXME: be more robust. 20050120 mortene.
+
+        srcstr[length] = '\0';
+        this->cachedSourceProgram = srcstr;
+        delete[] srcstr;
       }
       else {
-	this->cachedSourceType = SoShaderObject::FILENAME;
-	std::cerr << "WARNING: could not read shader file " 
-	     << fileName.getString() << std::endl;
+        this->cachedSourceType = SoShaderObject::FILENAME;
+
+        SoDebugError::postWarning("SoShaderObjectP::readSource",
+                                  "Could not read shader file '%s'",
+                                  fileName.getString());
       }
     }
   }
@@ -396,10 +408,10 @@ void SoShaderObjectP::updateParameters(int start, int num)
   // FIXME: the group's children are ignored at the moment (20041011 martin)
   if (!this->owner->isActive.getValue() || this->glShaderObject==NULL) return;
   if (start < 0 || num < 0) return;
-  
+
   int cnt = this->owner->parameter.getNum();
   int end = start+num;
-  
+
   end = (end > cnt) ? cnt : end;
   for (int i=start; i<end; i++) {
     SoUniformShaderParameter * param = 
@@ -433,7 +445,7 @@ void SoShaderObjectP::updateStateMatrixParameters()
 #if defined(SO_CG_SHADER_SUPPORT)
 #define STATE_PARAM SoShaderStateMatrixParameter 
   if (this->glShaderObject==NULL || !this->glShaderObject->isActive()) return;
-  
+
   int i, cnt = this->owner->parameter.getNum();
   for (i=0; i<cnt; i++) {
     STATE_PARAM *param = (STATE_PARAM*)this->owner->parameter[i];
@@ -470,9 +482,9 @@ SbBool SoShaderObjectP::containStateMatrixParameters() const
 }
 
 void SoShaderObjectP::removeGLShaderFromGLProgram(SoGLShaderProgram *glProgram)
-{  
+{ 
   if (glProgram == NULL) return;
-  
+
   if (this->glShaderObject != NULL) {
     if (this->glShaderIsInGLProgram) {
       glProgram->removeShaderObject(this->glShaderObject);
@@ -487,7 +499,7 @@ SbString SoShaderObjectP::getSourceHint() const
   SoShaderObject::SourceType srcType;
 
   srcType = (SoShaderObject::SourceType)this->owner->sourceType.getValue();
-  
+
   if (srcType == SoShaderObject::FILENAME)
     return this->owner->sourceProgram.getValue();
   else

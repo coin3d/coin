@@ -24,7 +24,10 @@
 #if defined(SO_ARB_SHADER_SUPPORT)
 
 #include "SoGLARBShader.h"
-#include <iostream>
+
+// *************************************************************************
+
+// FIXME: get rid of this. 20050120 mortene.
 
 #include <GL/glext.h>
 
@@ -42,9 +45,7 @@ PFNGLPROGRAMSTRINGARBPROC           glProgramStringARB;
 PFNGLDELETEPROGRAMSARBPROC          glDeleteProgramsARB;
 #endif
 
-/*****************************************************************************
- ***                      SoGLARBShaderParameter implementation            ***
- *****************************************************************************/
+// *************************************************************************
 
 SoGLARBShaderParameter::SoGLARBShaderParameter(GLenum theTarget, GLuint index)
 {
