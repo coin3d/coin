@@ -74,10 +74,10 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
     else { // Fall back to display list
       this->type = DISPLAY_LIST;
       this->firstindex = (unsigned int) glGenLists(allocnum);
-      SoDebugError::post("SoGLDisplayList::SoGLDisplayList",
-                         "could not reserve %d displaylist%s", allocnum, allocnum==1 ? "" : "s");
-      // FIXME: be robust -- don't just ignore this! GL displaylists
-      // can be a scarce resource. 20020212 mortene.
+      if (this->firstindex == 0) {
+        SoDebugError::post("SoGLDisplayList::SoGLDisplayList",
+                           "could not reserve %d displaylist%s", allocnum, allocnum==1 ? "" : "s");
+      }
     }
   }
   else {
