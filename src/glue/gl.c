@@ -2936,7 +2936,13 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
   *width = (unsigned int) size[0];
   *height = (unsigned int) size[1];
 
-  /* Limit the maximum tilesize to 2048x2048 pixels.
+  /* FIXME: increase the below limit somewhat (to e.g. 2048x2048)
+     after implementing the check for pbuffer limits, as described in
+     the above FIXME note. 1024x1024 is really too small -- it will
+     cause unnecessary additional rendering passes for most (?) usage,
+     which causes a big performance hit. 20031202 mortene. */
+
+  /* Limit the maximum tilesize to 1024x1024 pixels.
   
      This is done to work around a problem with some OpenGL drivers: a
      huge value is returned for the maximum offscreen OpenGL canvas,
@@ -2947,8 +2953,8 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
      software OpenGL renderer, which reports a maximum viewport size
      of 16k x 16k pixels.
   */
-  *width = cc_min(*width, 2048);
-  *height = cc_min(*height, 2048);
+  *width = cc_min(*width, 1024);
+  *height = cc_min(*height, 1024);
 
 
   if (coin_glglue_debug()) {
