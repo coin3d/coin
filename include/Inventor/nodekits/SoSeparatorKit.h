@@ -41,8 +41,6 @@ class COIN_DLL_API SoSeparatorKit : public SoBaseKit {
   SO_KIT_CATALOG_ENTRY_HEADER(transform);
   SO_KIT_CATALOG_ENTRY_HEADER(units);
 
-  // FIXME: API elements missing. 19991107 mortene.
-
 public:
   SoSeparatorKit(void);
 
