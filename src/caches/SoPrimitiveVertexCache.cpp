@@ -38,6 +38,8 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <stddef.h>
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/misc/SoGL.h>
 #include <string.h> // memcmp()
 
 #ifndef DOXYGEN_SKIP_THIS
@@ -63,6 +65,8 @@ public:
   int numdiffuse;
   int numtransp;
   int prevfaceidx;
+  SbBool colorpervertex;
+  uint32_t firstcolor;
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -102,6 +106,21 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
     PRIVATE(this)->diffuseptr = lelem->getDiffusePointer();
     PRIVATE(this)->transpptr = lelem->getTransparencyPointer();
   }
+
+  // set up variables to test if we need to supply color per vertex
+  PRIVATE(this)->colorpervertex = FALSE;
+  
+  // just store diffuse color with index 0
+  uint32_t col;
+  if (PRIVATE(this)->packedptr) {
+    col = PRIVATE(this)->packedptr[0];
+  }
+  else {
+    SbColor tmpc = PRIVATE(this)->diffuseptr[0];
+    float tmpt = PRIVATE(this)->transpptr[0];
+    col = tmpc.getPackedValue(tmpt);
+  }
+  PRIVATE(this)->firstcolor = col;  
 }
 
 /*!
@@ -140,6 +159,7 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
       float tmpt = PRIVATE(this)->transpptr[SbClamp(midx,0,PRIVATE(this)->numtransp)];
       col = tmpc.getPackedValue(tmpt);
     }
+    if (col != PRIVATE(this)->firstcolor) PRIVATE(this)->colorpervertex = TRUE;
     
     v.rgba[0] = col>>24;
     v.rgba[1] = (col>>16)&0xff;
@@ -210,6 +230,12 @@ int
 SoPrimitiveVertexCache::getIndex(const int idx) const
 {
   return PRIVATE(this)->indices[idx];
+}
+
+SbBool 
+SoPrimitiveVertexCache::colorPerVertex(void) const
+{
+  return PRIVATE(this)->colorpervertex;
 }
 
 #undef PRIVATE

@@ -32,6 +32,7 @@
 class SoPrimitiveVertexCacheP;
 class SoPrimitiveVertex;
 class SoPointDetail;
+class SoState;
 
 // FIXME: evaluate the design of this class, pederb 2003-11-17
 
@@ -67,6 +68,7 @@ public:
   const int32_t * getIndices(void) const;
   const Vertex & getVertex(const int idx) const;
   int32_t getIndex(const int idx) const;
+  SbBool colorPerVertex(void) const;
 
 private:
   SoPrimitiveVertexCacheP * pimpl;
