@@ -26,6 +26,7 @@
  */
 
 #include <Inventor/projectors/SbCylinderSectionProjector.h>
+#include <math.h>
 #include <assert.h>
 
 #if COIN_DEBUG
@@ -115,7 +116,7 @@ SbRotation
 SbCylinderSectionProjector::getRotation(const SbVec3f &point1,
                                         const SbVec3f &point2)
 {
-  const SbLine &axis = this->cylinder.getAxis(); 
+  const SbLine &axis = this->cylinder.getAxis();
   SbVec3f v1 = point1 - axis.getClosestPoint(point1);
   SbVec3f v2 = point2 - axis.getClosestPoint(point2);
   return SbRotation(v1, v2); // rotate vector v1 into vector v2
@@ -159,18 +160,18 @@ SbCylinderSectionProjector::setupTolerance(void)
   SbVec3f refDir;
   if (this->orientToEye) {
     refDir = -this->viewVol.getProjectionDirection();
-    this->worldToWorking.multDirMatrix(refDir, refDir);    
+    this->worldToWorking.multDirMatrix(refDir, refDir);
   }
   else {
     refDir = SbVec3f(0.0f, 0.0f, 1.0f);
   }
   float radius = this->cylinder.getRadius();
   this->tolDist = this->tolerance * radius;
-  
+
   const SbLine &axis = this->cylinder.getAxis();
   SbVec3f somePt = axis.getPosition() + refDir;
   SbVec3f ptOnAxis = axis.getClosestPoint(somePt);
-  
+
   // find plane direction perpendicular to line
   this->planeDir = somePt - ptOnAxis;
   this->planeDir.normalize();
@@ -180,12 +181,12 @@ SbCylinderSectionProjector::setupTolerance(void)
 
   // distance from plane to cylinder axis
   this->planeDist = (float)sqrt(radius*radius-this->tolDist*this->tolDist);
-  
+
   this->tolPlane = SbPlane(this->planeDir, this->planeDist);
-  
+
   // create line parallel to axis, but in plane
   SbVec3f linePt = axis.getPosition()+this->planeDir*this->planeDist;
   this->planeLine = SbLine(linePt, linePt+axis.getDirection());
-  
+
   this->needSetup = FALSE;
 }
