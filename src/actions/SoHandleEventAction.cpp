@@ -30,6 +30,7 @@
 
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoSubAction.h>
+#include <Inventor/events/SoEvent.h>
 #include <Inventor/SbName.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/lists/SoPickedPointList.h>
@@ -38,6 +39,7 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoWindowElement.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/actions/SoRayPickAction.h>
 
 // *************************************************************************
 
@@ -150,8 +152,15 @@ SoHandleEventAction::initClass(void)
 /*!
   A constructor.
 */
-SoHandleEventAction::SoHandleEventAction(const SbViewportRegion &
-                                         viewportRegion)
+SoHandleEventAction::SoHandleEventAction(const SbViewportRegion &viewportRegion)
+  : viewport(viewportRegion),
+    event(NULL),
+    grabber(NULL),
+    pickRoot(NULL),
+    pickValid(FALSE),
+    pickAction(NULL),
+    applyNode(NULL)
+
 {
   SO_ACTION_CONSTRUCTOR(SoHandleEventAction);
 
@@ -161,10 +170,6 @@ SoHandleEventAction::SoHandleEventAction(const SbViewportRegion &
     SO_ACTION_ADD_METHOD(SoNode, SoNode::handleEventS);
   }
   methods->setUp(); // FIXME: not sure if this should be called here...
-
-  this->vpregion = viewportRegion;
-  this->event = NULL;
-  this->grabbernode = NULL;
 }
 
 /*!
@@ -172,6 +177,7 @@ SoHandleEventAction::SoHandleEventAction(const SbViewportRegion &
 */
 SoHandleEventAction::~SoHandleEventAction()
 {
+  delete this->pickAction;
 }
 
 /*!
@@ -180,7 +186,9 @@ SoHandleEventAction::~SoHandleEventAction()
 void
 SoHandleEventAction::setViewportRegion(const SbViewportRegion & newRegion)
 {
-  this->vpregion = newRegion;
+  this->viewport = newRegion;
+  delete this->pickAction;
+  this->pickAction = NULL;
 }
 
 /*!
@@ -189,7 +197,7 @@ SoHandleEventAction::setViewportRegion(const SbViewportRegion & newRegion)
 const SbViewportRegion &
 SoHandleEventAction::getViewportRegion(void) const
 {
-  return this->vpregion;
+  return this->viewport;
 }
 
 /*!
@@ -244,7 +252,7 @@ SoHandleEventAction::isHandled(void) const
 void
 SoHandleEventAction::setGrabber(SoNode * node)
 {
-  this->grabbernode = node;
+  this->grabber = node;
 }
 
 /*!
@@ -257,12 +265,12 @@ SoHandleEventAction::releaseGrabber(void)
 }
 
 /*!
-  This method returns the grabber node.
+  This method returns the grabber node, or NULL if no grabber is active.
 */
 SoNode *
 SoHandleEventAction::getGrabber(void) const
 {
-  return this->grabbernode;
+  return this->grabber;
 }
 
 /*!
@@ -270,9 +278,9 @@ SoHandleEventAction::getGrabber(void) const
   nodes that tracks the cursor.
 */
 void
-SoHandleEventAction::setPickRoot(SoNode * /* node */)
+SoHandleEventAction::setPickRoot(SoNode *node)
 {
-  COIN_STUB();
+  this->pickRoot = node;
 }
 
 /*!
@@ -282,17 +290,16 @@ SoHandleEventAction::setPickRoot(SoNode * /* node */)
 SoNode *
 SoHandleEventAction::getPickRoot(void) const
 {
-  COIN_STUB();
-  return NULL;
+  return this->pickRoot;
 }
 
 /*!
   This method sets the pick radius.
 */
 void
-SoHandleEventAction::setPickRadius(float /* radiusInPixels */)
+SoHandleEventAction::setPickRadius(const float radiusInPixels)
 {
-  COIN_STUB();
+  this->getPickAction()->setRadius(radiusInPixels);
 }
 
 /*!
@@ -301,8 +308,15 @@ SoHandleEventAction::setPickRadius(float /* radiusInPixels */)
 const SoPickedPoint *
 SoHandleEventAction::getPickedPoint(void)
 {
-  COIN_STUB();
-  return NULL;
+  if (this->event && (this->pickRoot || this->applyNode) &&
+      (!this->pickValid || this->didPickAll)) {
+    this->getPickAction()->setPoint(this->event->getPosition());
+    this->getPickAction()->setPickAll(FALSE);
+    this->getPickAction()->apply(this->pickRoot ? this->pickRoot : this->applyNode);
+    this->pickValid = TRUE;
+    this->didPickAll = FALSE;
+  }
+  return this->getPickAction()->getPickedPoint();
 }
 
 /*!
@@ -311,9 +325,20 @@ SoHandleEventAction::getPickedPoint(void)
 const SoPickedPointList &
 SoHandleEventAction::getPickedPointList(void)
 {
-  COIN_STUB();
-  static SoPickedPointList pl;
-  return pl;
+  //
+  // Maybe it is A Good Thing to make an extension to SoRayPickAction, to always
+  // make it store all picked point, but also store the closest picked point?
+  // pederb, 19991214
+  //
+
+  if (this->event && (this->pickRoot || this->applyNode) &&
+      (!this->pickValid || this->didPickAll)) {
+    this->getPickAction()->setPickAll(TRUE);
+    this->getPickAction()->apply(this->pickRoot ? this->pickRoot : this->applyNode);
+    this->pickValid = TRUE;
+    this->didPickAll = TRUE;
+  }
+  return this->getPickAction()->getPickedPointList();
 }
 
 /*!
@@ -322,5 +347,24 @@ SoHandleEventAction::getPickedPointList(void)
 void
 SoHandleEventAction::beginTraversal(SoNode * node)
 {
-  this->traverse(node);
+  assert(this->event);
+  this->pickValid = FALSE;
+  this->applyNode = node;
+
+  if (this->grabber) {
+    // ?? is this correct ?? pederb, 19991214
+    this->traverse(this->grabber);
+  }
+  else {
+    this->traverse(node);
+  }
+}
+
+SoRayPickAction *
+SoHandleEventAction::getPickAction()
+{
+  if (this->pickAction == NULL) {
+    this->pickAction = new SoRayPickAction(this->viewport);
+  }
+  return this->pickAction;
 }

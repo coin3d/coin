@@ -26,7 +26,7 @@
 class SoEvent;
 class SoPickedPoint;
 class SoPickedPointList;
-
+class SoRayPickAction;
 
 class SoHandleEventAction : public SoAction {
   typedef SoAction inherited;
@@ -67,7 +67,7 @@ public:
   SoNode * getGrabber(void) const;
   void setPickRoot(SoNode * node);
   SoNode * getPickRoot(void) const;
-  void setPickRadius(float radiusInPixels);
+  void setPickRadius(const float radiusInPixels);
   const SoPickedPoint * getPickedPoint(void);
   const SoPickedPointList & getPickedPointList(void);
 
@@ -75,10 +75,17 @@ protected:
   virtual void beginTraversal(SoNode * node);
 
 private:
-  SbViewportRegion vpregion;
-  const SoEvent * event;
-  SoNode * grabbernode;
 
+  SoRayPickAction *getPickAction();
+
+  SbViewportRegion viewport;
+  const SoEvent *event;
+  SoNode *grabber;
+  SoNode *pickRoot;
+  SbBool pickValid;
+  SbBool didPickAll;
+  SoRayPickAction *pickAction;
+  SoNode *applyNode;
 };
 
 #endif // !__SOHANDLEEVENTACTION_H__
