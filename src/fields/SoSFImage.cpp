@@ -116,12 +116,24 @@ SoSFImage::readValue(SoInput * in)
     return FALSE;
   }
 
-  if (this->imgdim[0] <= 0 || this->imgdim[1] <= 0 ||
-      this->bytedepth < 1 || this->bytedepth > 4) {
+  // Note: empty images (dimensions 0x0x0) are allowed.
+
+  if (this->imgdim[0] < 0 || this->imgdim[1] < 0 ||
+      this->bytedepth < 0 || this->bytedepth > 4) {
     SoReadError::post(in, "Invalid image specification %dx%dx%d",
                       this->imgdim[0], this->imgdim[1], this->bytedepth);
     return FALSE;
   }
+
+  int buffersize = this->imgdim[0] * this->imgdim[1] * this->bytedepth;
+
+  if (buffersize == 0 &&
+      (this->imgdim[0] != 0 || this->imgdim[1] != 0 || this->bytedepth != 0)) {
+    SoReadError::post(in, "Invalid image specification %dx%dx%d",
+                      this->imgdim[0], this->imgdim[1], this->bytedepth);
+    return FALSE;
+  }
+
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoSFImage::readValue", "image dimensions: %dx%dx%d",
@@ -129,22 +141,37 @@ SoSFImage::readValue(SoInput * in)
 #endif // debug
 
   delete [] this->pixblock;
-  this->pixblock =
-    new unsigned char[this->imgdim[0] * this->imgdim[1] * this->bytedepth];
+  this->pixblock = NULL;
+  if (!buffersize) return TRUE;
 
-  int byte = 0;
-  for (int i = 0; i < this->imgdim[0] * this->imgdim[1]; i++) {
-    uint32_t l;
-    if (!in->read(l)) {
+  // Aling data -- since this is what is done during import of binary
+  // files with version number 2.0 (and older?).
+  buffersize = ((buffersize + 3) / 4) * 4;
+
+  this->pixblock = new unsigned char[buffersize];
+
+  // The binary image format of 2.1 and later tries to be less
+  // wasteful when storing images.
+  if (in->isBinary() && in->getIVVersion() >= 2.1f) {
+    if (!in->readBinaryArray(this->pixblock, buffersize)) {
       SoReadError::post(in, "Premature end of file");
       return FALSE;
     }
-    for (int j = 0; j < this->bytedepth; j++) {
-      this->pixblock[byte++] =
-        (unsigned char) ((l >> (8 * (this->bytedepth-j-1))) & 0xFF);
+  }
+  else {
+    int byte = 0;
+    for (int i = 0; i < this->imgdim[0] * this->imgdim[1]; i++) {
+      uint32_t l;
+      if (!in->read(l)) {
+        SoReadError::post(in, "Premature end of file");
+        return FALSE;
+      }
+      for (int j = 0; j < this->bytedepth; j++) {
+        this->pixblock[byte++] =
+          (unsigned char) ((l >> (8 * (this->bytedepth-j-1))) & 0xFF);
+      }
     }
   }
-
   return TRUE;
 }
 
@@ -184,17 +211,24 @@ void
 SoSFImage::setValue(const SbVec2s & size, const int nc,
                     const unsigned char * const bytes)
 {
-  int buffersize = size[0] * size[1] * nc;
-  // Must align buffer because the binary format has the data aligned.
-  buffersize = ((buffersize + 3) / 4) * 4;
-  unsigned char * newblock = new unsigned char[buffersize];
-
   delete[] this->pixblock;
-  this->pixblock = newblock;
-  this->imgdim = size;
-  this->bytedepth = nc;
-  memcpy(this->pixblock, bytes,
-         this->imgdim[0] * this->imgdim[1] * this->bytedepth);
+  this->pixblock = NULL;
+
+  int buffersize = size[0] * size[1] * nc;
+
+  if (buffersize) { // images can be empty
+
+    // Align buffers because the binary file format has the data aligned
+    // (simplifies export code).
+    buffersize = ((buffersize + 3) / 4) * 4;
+    unsigned char * newblock = new unsigned char[buffersize];
+    this->pixblock = newblock;
+
+    this->imgdim = size;
+    this->bytedepth = nc;
+    memcpy(this->pixblock, bytes,
+           this->imgdim[0] * this->imgdim[1] * this->bytedepth);
+  }
 
   this->valueChanged();
 }
@@ -227,18 +261,29 @@ SoSFImage::writeValue(SoOutput * out) const
   out->write(this->imgdim[1]);
   if (!out->isBinary()) out->write(' ');
   out->write(this->bytedepth);
-  if (!out->isBinary()) out->write('\n');
 
-  if (!out->isBinary()) out->indent();
-
-  for (int i=0; i < this->imgdim[0] * this->imgdim[1]; i++) {
-    uint32_t data = 0;
-    for (int j=0; j < this->bytedepth; j++) {
-      if (j) data <<= 8;
-      data |= (uint32_t)(this->pixblock[i * this->bytedepth + j]);
+  if (out->isBinary()) {
+    int buffersize = this->imgdim[0] * this->imgdim[1] * this->bytedepth;
+    if (buffersize) { // in case of an empty image
+      out->writeBinaryArray(this->pixblock, buffersize);
+      int padsize = ((buffersize + 3) / 4) * 4 - buffersize;
+      if (padsize) {
+        unsigned char pads[3] = {'\0','\0','\0'};
+        out->writeBinaryArray(this->pixblock, padsize);
+      }
     }
-    out->write(data);
-    if (!out->isBinary()) {
+  }
+  else {
+    out->write('\n');
+    out->indent();
+
+    for (int i=0; i < this->imgdim[0] * this->imgdim[1]; i++) {
+      uint32_t data = 0;
+      for (int j=0; j < this->bytedepth; j++) {
+        if (j) data <<= 8;
+        data |= (uint32_t)(this->pixblock[i * this->bytedepth + j]);
+      }
+      out->write(data);
       if (((i+1)%8 == 0) && (i+1 != this->imgdim[0] * this->imgdim[1])) {
         out->write('\n');
         out->indent();
