@@ -350,18 +350,13 @@ SoRayPickAction::computeWorldSpaceRay()
     }
 #endif // COIN_DEBUG
 
-#if 1
-    vv.getNearFarRay(this->normvpPoint, this->rayStart, this->rayDirection);
-#else
-    SbLine line;
-    vv.projectPointToLine(this->normvpPoint, line);
-    this->rayStart = line.getPosition();
-    this->rayDirection = line.getDirection();
-#endif
+    SbLine tempLine;
+    vv.projectPointToLine(this->normvpPoint, tempLine);
+    this->rayStart = tempLine.getPosition();
+    this->rayDirection = tempLine.getDirection();
 
-    this->rayDirection.normalize();
-    this->rayNear = vv.getNearDist();
-    this->rayFar = vv.getNearDist() + vv.getDepth();
+    this->rayNear = 0.0f;
+    this->rayFar = vv.getDepth();
 
     // radius of ray for start and far positions
     this->rayRadiusStart =

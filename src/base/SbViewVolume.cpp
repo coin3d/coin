@@ -200,6 +200,7 @@ void
 SbViewVolume::projectPointToLine(const SbVec2f& pt,
                                  SbVec3f& line0, SbVec3f& line1) const
 {
+#if 0 // OBSOLETED, pederb 19991215. More efficient version below
   SbVec3f scr_n(pt[0], pt[1], -1.0f);
   SbVec3f scr_f(pt[0], pt[1], 1.0f);
 
@@ -217,6 +218,34 @@ SbViewVolume::projectPointToLine(const SbVec2f& pt,
 
   m.multVecMatrix(scr_n, line0);
   m.multVecMatrix(scr_f, line1);
+
+#else // new, faster version
+
+  SbVec3f dx = this->lowerrightfrust - this->lowerleftfrust;
+  SbVec3f dy = this->upperleftfrust - this->lowerleftfrust;
+
+#if COIN_DEBUG
+  if (dx.sqrLength() == 0.0f || dy.sqrLength() == 0.0f) {
+    SoDebugError::postWarning("SbViewVolume::projectPointToLine",
+                              "invalid frustum: <%f, %f, %f>",
+                              this->lowerrightfrust,
+                              this->lowerleftfrust,
+                              this->upperleftfrust);
+    return;
+  }
+#endif // COIN_DEBUG
+
+  line0 = this->lowerleftfrust + dx*pt[0] + dy*pt[1];
+  SbVec3f dir;
+  if (this->type == PERSPECTIVE) {
+    dir = line0 - projectionpt;
+    dir.normalize();
+  }
+  else {
+    dir = this->projectiondir;
+  }
+  line1 = line0 + dir*this->getDepth();
+#endif // faster version
 }
 
 /*!
@@ -634,7 +663,7 @@ SbViewVolume::rotateCamera(const SbRotation& q)
   SbMatrix mat;
   mat.setRotate(q);
 
-  mat.multVecMatrix(this->projectiondir, this->projectiondir);
+  mat.multDirMatrix(this->projectiondir, this->projectiondir);
 
   if(this->type == SbViewVolume::ORTHOGRAPHIC) {
     mat.multVecMatrix(this->lowerleftfrust, this->lowerleftfrust);
@@ -900,43 +929,6 @@ float
 SbViewVolume::getDepth(void) const
 {
   return this->nearfardistance;
-}
-
-/*!
-  Takes a point in normalized near plane coordinates and sets \a start
-  point in 3D and direction \a dir for a line from the near plane to
-  the far plane.
-
-  Note: this method is not part of the original Open Inventor API.
- */
-void
-SbViewVolume::getNearFarRay(const SbVec2f &normPoint,
-                            SbVec3f &start, SbVec3f &dir) const
-{
-  // FIXME: pederb, why not use projectPointToLine()? 19991215 mortene.
-
-  SbVec3f dx = this->lowerrightfrust - this->lowerleftfrust;
-  SbVec3f dy = this->upperleftfrust - this->lowerleftfrust;
-
-#if COIN_DEBUG
-  if (dx.length() == 0.0f || dy.length() == 0.0f) {
-    SoDebugError::postWarning("SbViewVolume::getNearFarRay",
-                              "invalid frustum: <%f, %f, %f>",
-                              this->lowerrightfrust,
-                              this->lowerleftfrust,
-                              this->upperleftfrust);
-    return;
-  }
-#endif // COIN_DEBUG
-
-  start = this->lowerleftfrust + dx*normPoint[0] + dy*normPoint[1];
-  if (this->type == PERSPECTIVE) {
-    dir = start - projectionpt;
-    dir.normalize();
-  }
-  else {
-    dir = this->projectiondir;
-  }
 }
 
 /*!
