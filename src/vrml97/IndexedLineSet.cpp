@@ -105,7 +105,6 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/misc/SoGL.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -139,6 +138,23 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif
 
+class SoVRMLIndexedLineSetP {
+public:
+  enum Binding {
+    // Needs to be these specific values to match the rendering code
+    // in SoGL.cpp.  FIXME: bad dependency. It looks like the same
+    // dependency also exists many other places in the Coin
+    // sources. Should grep around and fix this. 20020805 mortene.
+    OVERALL = 0,
+    PER_LINE = 3,
+    PER_LINE_INDEXED = 4,
+    PER_VERTEX = 5 ,
+    PER_VERTEX_INDEXED = 6
+  };
+
+  static Binding findMaterialBinding(SoVRMLIndexedLineSet * node, SoState * state);
+};
+
 
 SO_NODE_SOURCE(SoVRMLIndexedLineSet);
 
@@ -157,8 +173,9 @@ SoVRMLIndexedLineSet::~SoVRMLIndexedLineSet()
 {
 }
 
-SoVRMLIndexedLineSet::Binding
-SoVRMLIndexedLineSet::findMaterialBinding(SoState * state) const
+SoVRMLIndexedLineSetP::Binding
+SoVRMLIndexedLineSetP::findMaterialBinding(SoVRMLIndexedLineSet * node,
+                                           SoState * state)
 {
   Binding binding = OVERALL;
   if (SoOverrideElement::getMaterialBindingOverride(state)) {
@@ -182,21 +199,21 @@ SoVRMLIndexedLineSet::findMaterialBinding(SoState * state) const
       break;
     default:
 #if COIN_DEBUG
-      SoDebugError::postWarning("SoVRMLIndexedLineSet::findMaterialBinding",
+      SoDebugError::postWarning("SoVRMLIndexedLineSetP::findMaterialBinding",
                                 "unknown material binding setting");
 #endif // COIN_DEBUG
       break;
     }
   }
   else {
-    if (this->color.getValue()) {
-      if (this->colorPerVertex.getValue()) {
+    if (node->color.getValue()) {
+      if (node->colorPerVertex.getValue()) {
         binding = PER_VERTEX_INDEXED;
-        if (!this->colorIndex.getNum()) binding = PER_VERTEX;
+        if (!node->colorIndex.getNum()) binding = PER_VERTEX;
       }
       else {
         binding = PER_LINE;
-        if (this->colorIndex.getNum()) binding = PER_LINE_INDEXED;
+        if (node->colorIndex.getNum()) binding = PER_LINE_INDEXED;
       }
     }
   }
@@ -238,9 +255,10 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
   numindices = this->coordIndex.getNum();
   mindices = this->colorIndex.getNum() ? this->colorIndex.getValues(0) : NULL;
 
-  Binding mbind = this->findMaterialBinding(state);
-  if (mbind == PER_VERTEX) {
-    mbind = PER_VERTEX_INDEXED;
+  SoVRMLIndexedLineSetP::Binding mbind =
+    SoVRMLIndexedLineSetP::findMaterialBinding(this, state);
+  if (mbind == SoVRMLIndexedLineSetP::PER_VERTEX) {
+    mbind = SoVRMLIndexedLineSetP::PER_VERTEX_INDEXED;
     mindices = cindices;
   }
 
@@ -346,13 +364,14 @@ SoVRMLIndexedLineSet::generatePrimitives(SoAction * action)
   numindices = this->coordIndex.getNum();
   matindices = this->colorIndex.getNum() ? this->colorIndex.getValues(0) : NULL;
 
-  Binding mbind = this->findMaterialBinding(state);
-  if (mbind == PER_VERTEX) {
-    mbind = PER_VERTEX_INDEXED;
+  SoVRMLIndexedLineSetP::Binding mbind =
+    SoVRMLIndexedLineSetP::findMaterialBinding(this, state);
+  if (mbind == SoVRMLIndexedLineSetP::PER_VERTEX) {
+    mbind = SoVRMLIndexedLineSetP::PER_VERTEX_INDEXED;
     matindices = cindices;
   }
 
-  if (mbind == PER_LINE || mbind == OVERALL) {
+  if (mbind == SoVRMLIndexedLineSetP::PER_LINE || mbind == SoVRMLIndexedLineSetP::OVERALL) {
     matindices = NULL;
   }
 
@@ -373,7 +392,7 @@ SoVRMLIndexedLineSet::generatePrimitives(SoAction * action)
       pointDetail.setMaterialIndex(*matindices);
       vertex.setMaterialIndex(*matindices++);
     }
-    else if (mbind != OVERALL) {
+    else if (mbind != SoVRMLIndexedLineSetP::OVERALL) {
       pointDetail.setMaterialIndex(matnr);
       vertex.setMaterialIndex(matnr++);
     }
@@ -383,7 +402,7 @@ SoVRMLIndexedLineSet::generatePrimitives(SoAction * action)
 
     i = *cindices++;
     assert(i >= 0);
-    if (mbind >= PER_VERTEX) {
+    if (mbind >= SoVRMLIndexedLineSetP::PER_VERTEX) {
       if (matindices) vertex.setMaterialIndex(*matindices++);
       else vertex.setMaterialIndex(matnr++);
       pointDetail.setMaterialIndex(vertex.getMaterialIndex());
@@ -395,7 +414,7 @@ SoVRMLIndexedLineSet::generatePrimitives(SoAction * action)
 
     i = cindices < end ? *cindices++ : -1;
     while (i >= 0) {
-      if (mbind >= PER_VERTEX) {
+      if (mbind >= SoVRMLIndexedLineSetP::PER_VERTEX) {
         if (matindices) vertex.setMaterialIndex(*matindices++);
         else vertex.setMaterialIndex(matnr++);
         pointDetail.setMaterialIndex(vertex.getMaterialIndex());
@@ -407,7 +426,7 @@ SoVRMLIndexedLineSet::generatePrimitives(SoAction * action)
       i = cindices < end ? *cindices++ : -1;
     }
     this->endShape(); // end of line strip
-    if (mbind == PER_VERTEX_INDEXED) matindices++;
+    if (mbind == SoVRMLIndexedLineSetP::PER_VERTEX_INDEXED) matindices++;
     lineDetail.incLineIndex();
   }
   state->pop();
