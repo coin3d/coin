@@ -53,7 +53,7 @@ private:
   SbDictEntry ** buckets;
   SbDictEntry *findEntry(const unsigned long key,
                          const unsigned long bucketnum,
-                         SbDictEntry **prev = NULL) const;
+                         SbDictEntry **prev = (SbDictEntry **) NULL) const;
   static void copyval(unsigned long key, void * value, void * data);
 
 };

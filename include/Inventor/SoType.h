@@ -57,11 +57,11 @@ public:
   SbBool operator >  (const SoType type) const;
 
   static const SoType createType(const SoType parent, const SbName name,
-                                 const instantiationMethod method = NULL,
+                                 const instantiationMethod method = (instantiationMethod) NULL,
                                  const uint16_t data = 0);
 
   static const SoType overrideType(const SoType originalType,
-                                   const instantiationMethod method = NULL);
+                                   const instantiationMethod method = (instantiationMethod) NULL);
 
   static void init(void);
 
