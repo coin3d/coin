@@ -85,6 +85,8 @@ void coin_locale_reset(cc_string * storedold);
 */
 double coin_atof(const char * ptr);
 
+/* ********************************************************************** */
+
 /*
   Functions to output ascii85 encoded data. Used for instance for Postscript
   image rendering.
@@ -103,6 +105,8 @@ void coin_flush_ascii85(FILE * fp,
                         int * tuplecnt, int * linecnt,
                         const int rowlen);
 
+/* ********************************************************************** */
+
 /*
   Parse version string of type <major>.<minor>.<patch>. <minor> or
   <patch> might not be in the string. It's possible to supply NULL for
@@ -112,6 +116,10 @@ SbBool coin_parse_versionstring(const char * versionstr,
                                 int * major,
                                 int * minor,
                                 int * patch);
+
+/* ********************************************************************** */
+
+SbBool coin_getcwd(cc_string * str);
 
 /* ********************************************************************** */
 

@@ -32,6 +32,7 @@
 #endif /* HAVE_CONFIG_H */
 
 #include <assert.h>
+#include <errno.h>
 #include <locale.h>
 #include <string.h> /* strncasecmp() */
 #include <stdio.h>
@@ -41,6 +42,17 @@
 #include <windows.h> /* GetEnvironmentVariable() */
 #endif /* HAVE_WINDOWS_H */
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#if HAVE_IO_H
+#include <io.h> /* defines open() on MSVC++ 5.0 */
+#endif /* HAVE_IO_H */
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif /* HAVE_UNISTD_H */
+
+
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/base/string.h>
@@ -49,13 +61,9 @@
 
 /**************************************************************************/
 
-/* FIXME: we should _really_ grab some BSD/PD-style licensed code to
-   provide a replacement for the (v)snprintf functions. Not only would
-   that provide a fail-safe option on obscure platforms, but as it is
-   now, we also have problems with locale settings. Under the German
-   locale, for instance, floating-point numbers comes out with ",",
-   not ".", as the decimal-point separator. This is bad, as it causes
-   us to write invalid .iv-files.
+/* FIXME: we should grab some BSD/PD-style licensed code to provide a
+   replacement for the (v)snprintf functions. This would provide a
+   fail-safe option on obscure platforms.
 
    Here is handegar's list of possible candidates (note that many of
    these can probably be ruled out due to the license restrictions --
@@ -169,16 +177,6 @@ coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
 }
 
 #else /* neither vsnprintf() nor _vsnprintf() available, roll our own */
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#if HAVE_IO_H
-#include <io.h> /* defines open() on MSVC++ 5.0 */
-#endif /* HAVE_IO_H */
-#if HAVE_UNISTD_H
-#include <unistd.h>
-#endif /* HAVE_UNISTD_H */
 
 /*
   This is a butt-ugly hack to emulate the vsnprintf() extension
@@ -1157,6 +1155,8 @@ coin_atof(const char * ptr)
   return v;
 }
 
+/**************************************************************************/
+
 /* helper function for ascii85 handling */
 static int
 coin_encode_ascii85(const unsigned char * in, unsigned char * out)
@@ -1239,6 +1239,8 @@ coin_flush_ascii85(FILE * fp,
   coin_output_ascii85(fp, 0, tuple, linebuf, tuplecnt, linecnt, rowlen, TRUE);
 }
 
+/**************************************************************************/
+
 SbBool
 coin_parse_versionstring(const char * versionstr,
                          int * major,
@@ -1292,5 +1294,41 @@ coin_parse_versionstring(const char * versionstr,
   return TRUE;
 }
 
+/**************************************************************************/
+
+/* Stores the name of the current working directory in the \a str
+   argument.
+
+   Returns TRUE if current working directory could be found, FALSE if
+   not. If FALSE is returned, an error message will be stored in \a
+   str.
+
+   \a str must have been initialized before being passed to this
+   function.
+
+   The rationale behind this wrapper around the POSIX.1 getcwd()
+   function is to abstract away the extra operations necessary to
+   handle that the input buffer is guaranteed to be large enough.
+*/
+SbBool
+coin_getcwd(cc_string * str)
+{
+  char buf[256], * dynbuf = NULL;
+  size_t bufsize = sizeof(buf);
+  char * cwd = getcwd(buf, bufsize);
+
+  while ((cwd == NULL) && (errno == ERANGE)) {
+    bufsize *= 2;
+    if (dynbuf != NULL) { free(dynbuf); }
+    dynbuf = (char *)malloc(bufsize);
+    cwd = getcwd(dynbuf, bufsize);
+  }
+
+  if (cwd == NULL) { cc_string_set_text(str, strerror(errno)); }
+  else { cc_string_set_text(str, cwd); }
+
+  if (dynbuf != NULL) { free(dynbuf); }
+  return cwd ? TRUE : FALSE;
+}
 
 /**************************************************************************/
