@@ -19,59 +19,79 @@
 
 /*!
   \class SoSceneManager SoSceneManager.h Inventor/SoSceneManager.h
-  \brief The SoSceneManager class is the interface between the scene graph
-  and the window system dependent classes.
+  \brief The SoSceneManager class provides the main interface between the scene graph and the GUI toolkit.
   \ingroup general
 
-  TODO: more doc
+  The renderarea class from the GUI toolkit you are using uses this
+  class as the interface against the scene graph. Event handling and
+  providing "hooks" to do rendering are the main functions of the
+  class.
+
+  A Coin library instance within an application will typically contain
+  a single SoSceneManager object. The pointer for this object is
+  stored in the GUI renderarea class.
 */
 
 #include <Inventor/SoSceneManager.h>
+#include <Inventor/SoDB.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/fields/SoField.h>
+#include <Inventor/nodes/SoNode.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
-#include <Inventor/actions/SoGLRenderAction.h>
 
+#include <coindefs.h> // COIN_STUB()
 #ifdef _WIN32
 #include <windows.h>
 #endif // _WIN32
-
 #include <GL/gl.h>
-#include <GL/glu.h> // For gluErrorString - not absolutely necessary.
-
-#include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/nodes/SoNode.h>
 #include <assert.h>
 
-/*
-  \typedef void SoSceneManagerRenderCB(void * userData, SoSceneManager * mgr)
 
-  FIXME: write doc
+// Metadon doc:
+/*¡
+  FIXME, this is missing from the implementation:
+  <ul>
+  <li>reinitialize()</li>
+  </ul>
+ */
+
+/*!
+  \typedef typedef SoSceneManager::SoSceneManagerRenderCB(void * userdata, SoSceneManager * mgr)
+  Render callback function must have this signature.
 */
 
 
-/*!
-  Constructor.
- */
-SoSceneManager::SoSceneManager()
-{
-  this->glAction = new SoGLRenderAction(SbViewportRegion(400,400));
-  this->deleteGLAction = TRUE;
+SbBool SoSceneManager::touchtimer = TRUE;
 
-  this->handleeventaction = new SoHandleEventAction(SbViewportRegion(400,400));
+
+/*!
+  Constructor. Sets up default SoGLRenderAction and
+  SoHandleEventAction instances.
+ */
+SoSceneManager::SoSceneManager(void)
+{
+  this->glaction = new SoGLRenderAction(SbViewportRegion(400, 400));
+  this->deleteglaction = TRUE;
+
+  this->handleeventaction =
+    new SoHandleEventAction(SbViewportRegion(400, 400));
   this->deletehandleeventaction = TRUE;
 
   this->scene = NULL;
   this->rootsensor = NULL;
   this->redrawshot = NULL;
 
-  this->backgroundIndex = 0;
+  this->backgroundindex = 0;
   this->backgroundcolor.setValue(0.0f, 0.0f, 0.0f);
-  this->rgbMode = TRUE;
+  this->rgbmode = TRUE;
   this->active = FALSE;
-  this->redrawPri = SoSceneManager::getDefaultRedrawPriority();
+  this->redrawpri = SoSceneManager::getDefaultRedrawPriority();
 
-  this->renderCB = NULL;
-  this->renderCBdata = NULL;
+  this->rendercb = NULL;
+  this->rendercbdata = NULL;
 }
 
 /*!
@@ -79,7 +99,7 @@ SoSceneManager::SoSceneManager()
  */
 SoSceneManager::~SoSceneManager()
 {
-  if (this->deleteGLAction) delete this->glAction;
+  if (this->deleteglaction) delete this->glaction;
   if (this->deletehandleeventaction) delete this->handleeventaction;
 
   delete this->rootsensor;
@@ -88,10 +108,16 @@ SoSceneManager::~SoSceneManager()
 
 /*!
   Render the scene graph.
+
+  If \a clearwindow is \c TRUE, clear the rendering buffer before
+  drawing. If \a clearzbuffer is \c TRUE, clear the depth buffer
+  values before rendering. Both of these arguments should normally be
+  \c TRUE, but they can be set to \c FALSE to optimize for special
+  cases (e.g. when doing wireframe rendering one doesn't need a depth
+  buffer).
  */
 void
-SoSceneManager::render(const SbBool clearWindow,
-                       const SbBool clearZbuffer)
+SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 {
 #if 0 // OBSOLETED: doesn't seem like this code is needed anymore. 20000229 mortene.
 
@@ -102,7 +128,7 @@ SoSceneManager::render(const SbBool clearWindow,
   // is a mess right now, and need to be sorted out. Should the init
   // code be moved to elements? 19990215 mortene.
 
-  SbViewportRegion vp = this->glAction->getViewportRegion();
+  SbViewportRegion vp = this->glaction->getViewportRegion();
   SbVec2s origin = vp.getViewportOriginPixels();
   SbVec2s size = vp.getViewportSizePixels();
 #if COIN_DEBUG && 0 // debug
@@ -115,8 +141,8 @@ SoSceneManager::render(const SbBool clearWindow,
 #endif // OBSOLETED
 
   GLbitfield mask = 0;
-  if (clearWindow) mask |= GL_COLOR_BUFFER_BIT;
-  if (clearZbuffer) mask |= GL_DEPTH_BUFFER_BIT;
+  if (clearwindow) mask |= GL_COLOR_BUFFER_BIT;
+  if (clearzbuffer) mask |= GL_DEPTH_BUFFER_BIT;
 
   glClearColor(this->backgroundcolor[0],
                this->backgroundcolor[1],
@@ -170,13 +196,13 @@ SoSceneManager::render(const SbBool clearWindow,
                          "to the scenegraph _now_");
 #endif // debug
 
-  // Apply the GLRenderAction to the scenegraph root.
-  this->glAction->apply(this->scene);
+  // Apply the SoGLRenderAction to the scenegraph root.
+  this->glaction->apply(this->scene);
 }
 
 /*!
-  Process the given event by applying an SoHandleEventAction on the scene
-  graph.
+  Process the given event by applying an SoHandleEventAction on the
+  scene graph.
  */
 SbBool
 SoSceneManager::processEvent(const SoEvent * const event)
@@ -184,29 +210,29 @@ SoSceneManager::processEvent(const SoEvent * const event)
   assert(this->handleeventaction);
 
   this->handleeventaction->setEvent(event);
-  // FIXME: other initialization which must be done? 19990214 mortene.
-
   this->handleeventaction->apply(this->scene);
   return this->handleeventaction->isHandled();
 }
 
 /*!
-  FIXME: write doc
+  Reinitialize after the GL context has changed.
  */
 void
 SoSceneManager::reinitialize(void)
 {
-  // FIXME: implement
-  assert(FALSE);
+  COIN_STUB(); // FIXME: implement
 }
 
 /*!
-  FIXME: write doc
+  Redraw at first opportunity as system becomes idle.
+
+  Multiple calls to this method before an actual redraw has taken
+  place will only result in a single redraw of the scene.
  */
 void
 SoSceneManager::scheduleRedraw(void)
 {
-  if (this->active && this->renderCB) {
+  if (this->active && this->rendercb) {
     if (!this->redrawshot) {
       this->redrawshot =
         new SoOneShotSensor(SoSceneManager::redrawshotTriggeredCB, this);
@@ -223,31 +249,40 @@ SoSceneManager::scheduleRedraw(void)
 }
 
 /*!
-  FIXME: write doc
+  Returns the \e active flag.
  */
 int
 SoSceneManager::isActive(void) const
 {
-  // FIXME: implement
-  assert(0);
-  return 0;
+  return this->active;
 }
 
 /*!
-  FIXME: write doc
+  Do an immediate redraw by calling the redraw callback function.
  */
 void
 SoSceneManager::redraw(void)
 {
-  if (this->renderCB) this->renderCB(this->renderCBdata, this);
+  if (this->rendercb) {
+    this->rendercb(this->rendercbdata, this);
+
+    // Automatically re-triggers rendering if any animation stuff is
+    // connected to the realTime field.
+    if (this->touchtimer) {
+      SoField * realtime = SoDB::getGlobalField("realTime");
+      realtime->touch();
+    }
+  }
 }
 
+// Internal callback.
 void
 SoSceneManager::redrawshotTriggeredCB(void * data, SoSensor * /* sensor */)
 {
   ((SoSceneManager *)data)->redraw();
 }
 
+// Internal callback.
 void
 SoSceneManager::nodesensorCB(void * data, SoSensor * /* sensor */)
 {
@@ -259,30 +294,30 @@ SoSceneManager::nodesensorCB(void * data, SoSensor * /* sensor */)
 }
 
 /*!
-  Set the node which is top of the scene graph we're managing.
-  The \a newScene node reference count will be increased by 1, and
-  any previously set scene graph top node will have it's reference
-  count decreased by 1.
+  Set the node which is top of the scene graph we're managing.  The \a
+  sceneroot node reference count will be increased by 1, and any
+  previously set scene graph top node will have it's reference count
+  decreased by 1.
 
   \sa getSceneGraph()
- */
+*/
 void
-SoSceneManager::setSceneGraph(SoNode * const newScene)
+SoSceneManager::setSceneGraph(SoNode * const sceneroot)
 {
   if (this->rootsensor) this->rootsensor->detach();
   if (this->scene) this->scene->unref();
 
-  this->scene = newScene;
+  this->scene = sceneroot;
   this->scene->ref();
 
   if (!this->rootsensor)
     this->rootsensor = new SoNodeSensor(SoSceneManager::nodesensorCB, this);
 
-  this->rootsensor->attach(newScene);
+  this->rootsensor->attach(sceneroot);
 }
 
 /*!
-  FIXME: write doc
+  Returns pointer to root of scene graph.
  */
 SoNode *
 SoSceneManager::getSceneGraph(void) const
@@ -291,65 +326,68 @@ SoSceneManager::getSceneGraph(void) const
 }
 
 /*!
-  FIXME: write doc
+  Update window size. Typically used by the GUI renderarea instance
+  upon user interaction.
  */
 void
-SoSceneManager::setWindowSize(const SbVec2s &newSize)
+SoSceneManager::setWindowSize(const SbVec2s & newsize)
 {
-  SbViewportRegion region = this->glAction->getViewportRegion();
-  region.setWindowSize(newSize[0], newSize[1]);
-  this->glAction->setViewportRegion(region);
+  SbViewportRegion region = this->glaction->getViewportRegion();
+  region.setWindowSize(newsize[0], newsize[1]);
+  this->glaction->setViewportRegion(region);
 
   region = this->handleeventaction->getViewportRegion();
-  region.setWindowSize(newSize[0], newSize[1]);
+  region.setWindowSize(newsize[0], newsize[1]);
   this->handleeventaction->setViewportRegion(region);
 }
 
 /*!
-  FIXME: write doc
+  Returns the current render action window size.
  */
 const SbVec2s &
 SoSceneManager::getWindowSize(void) const
 {
-  return this->glAction->getViewportRegion().getWindowSize();
+  return this->glaction->getViewportRegion().getWindowSize();
 }
 
 /*!
-  FIXME: write doc
+  Set size of rendering area for the viewport within the current
+  window.
  */
 void
-SoSceneManager::setSize(const SbVec2s &newSize)
+SoSceneManager::setSize(const SbVec2s & newsize)
 {
-  SbViewportRegion region = this->glAction->getViewportRegion();
+  SbViewportRegion region = this->glaction->getViewportRegion();
   SbVec2s origin = region.getViewportOriginPixels();
-  region.setViewportPixels(origin, newSize);
-  this->glAction->setViewportRegion(region);
+  region.setViewportPixels(origin, newsize);
+  this->glaction->setViewportRegion(region);
 
   region = this->handleeventaction->getViewportRegion();
   origin = region.getViewportOriginPixels();
-  region.setViewportPixels(origin, newSize);
+  region.setViewportPixels(origin, newsize);
   this->handleeventaction->setViewportRegion(region);
 }
 
 /*!
-  FIXME: write doc
+  Returns size of render area.
  */
 const SbVec2s &
 SoSceneManager::getSize(void) const
 {
-  return this->glAction->getViewportRegion().getViewportSizePixels();
+  return this->glaction->getViewportRegion().getViewportSizePixels();
 }
 
 /*!
-  FIXME: write doc
+  Set origin of render area of the viewport region within the
+  rendering window.
  */
 void
-SoSceneManager::setOrigin(const SbVec2s &newOrigin)
+SoSceneManager::setOrigin(const SbVec2s & newOrigin)
 {
-  SbViewportRegion region = this->glAction->getViewportRegion();
+  SbViewportRegion region = this->glaction->getViewportRegion();
   SbVec2s size = region.getViewportSizePixels();
   region.setViewportPixels(newOrigin, size);
-  this->glAction->setViewportRegion(region);
+  this->glaction->setViewportRegion(region);
 
   region = this->handleeventaction->getViewportRegion();
   size = region.getViewportSizePixels();
@@ -358,46 +396,46 @@ SoSceneManager::setOrigin(const SbVec2s &newOrigin)
 }
 
 /*!
-  FIXME: write doc
+  Returns origin of rendering area.
  */
 const SbVec2s &
 SoSceneManager::getOrigin(void) const
 {
-  return this->glAction->getViewportRegion().getViewportOriginPixels();
+  return this->glaction->getViewportRegion().getViewportOriginPixels();
 }
 
 /*!
-  FIXME: write doc
+  Change viewport region.
  */
 void
-SoSceneManager::setViewportRegion(const SbViewportRegion & newRegion)
+SoSceneManager::setViewportRegion(const SbViewportRegion & newregion)
 {
-  // FIXME: implement
-  this->glAction->setViewportRegion(newRegion);
-  this->handleeventaction->setViewportRegion(newRegion);
+  this->glaction->setViewportRegion(newregion);
+  this->handleeventaction->setViewportRegion(newregion);
 }
 
 /*!
-  FIXME: write doc
+  Returns current viewport region used by the renderaction and the
+  event handling.
  */
 const SbViewportRegion &
 SoSceneManager::getViewportRegion(void) const
 {
-  // FIXME: should glAction's SbViewportRegion represent the SoSceneManager's?
-  return this->glAction->getViewportRegion();
+  return this->glaction->getViewportRegion();
 }
 
 /*!
-  FIXME: write doc
+  Sets color of rendering canvas.
  */
 void
-SoSceneManager::setBackgroundColor(const SbColor &color)
+SoSceneManager::setBackgroundColor(const SbColor & color)
 {
   this->backgroundcolor = color;
 }
 
 /*!
-  FIXME: write doc
+  Returns color used for clearing the rendering area before rendering
+  the scene.
  */
 const SbColor &
 SoSceneManager::getBackgroundColor(void) const
@@ -406,44 +444,58 @@ SoSceneManager::getBackgroundColor(void) const
 }
 
 /*!
-  FIXME: write doc
+  Set index of background color in the color lookup table if rendering
+  in colorindex mode.
+
+  Note: colorindex mode is not supported yet in Coin.
  */
 void
 SoSceneManager::setBackgroundIndex(const int index)
 {
-  this->backgroundIndex = index;
+  this->backgroundindex = index;
 }
 
 /*!
-  FIXME: write doc
+  Returns index of colormap for background filling.
+
+  \sa setBackgroundIndex()
  */
 int
 SoSceneManager::getBackgroundIndex(void) const
 {
-  return this->backgroundIndex;
+  return this->backgroundindex;
 }
 
 /*!
-  FIXME: write doc
+  Turn RGB truecolor mode on or off. If you turn truecolor mode off,
+  colorindex mode will be used instead.
+
+  Note: colorindex mode is not supported yet in Coin, so calls to this
+  method will be ignored.
  */
 void
-SoSceneManager::setRGBMode(const SbBool onOrOff)
+SoSceneManager::setRGBMode(const SbBool flag)
 {
-  assert(onOrOff == TRUE);
-  this->rgbMode = onOrOff;
+  if (flag == TRUE) {
+    SoDebugError::postWarning("SoSceneManager::setRGBMode",
+                              "Colorindex mode rendering not supported "
+                              "in Coin, ignoring attempt at turning off "
+                              "truecolor mode.");
+  }
+  this->rgbmode = flag;
 }
 
 /*!
-  FIXME: write doc
+  Returns the "truecolor or colorindex" mode flag.
  */
 SbBool
 SoSceneManager::isRGBMode(void) const
 {
-  return this->rgbMode;
+  return this->rgbmode;
 }
 
 /*!
-  FIXME: write doc
+  Activate rendering and event handling. Default is \c on.
  */
 void
 SoSceneManager::activate(void)
@@ -452,7 +504,7 @@ SoSceneManager::activate(void)
 }
 
 /*!
-  FIXME: write doc
+  Deactive rendering and event handling.
  */
 void
 SoSceneManager::deactivate(void)
@@ -461,87 +513,104 @@ SoSceneManager::deactivate(void)
 }
 
 /*!
-  FIXME: write doc
+  Set the callback function \a f to invoke when rendering the
+  scene. \a userdata will be passed as the first argument of the
+  function.
  */
 void
-SoSceneManager::setRenderCallback(SoSceneManagerRenderCB *f,
-                                  void * const userData)
+SoSceneManager::setRenderCallback(SoSceneManagerRenderCB * f,
+                                  void * const userdata)
 {
-  this->renderCB = f;
-  this->renderCBdata = userData;
+  this->rendercb = f;
+  this->rendercbdata = userdata;
 }
 
 /*!
-  FIXME: write doc
+  Returns \c TRUE if the SoSceneManager automatically redraws the
+  scene upon detecting changes in the scene graph.
+
+  The automatic redraw is turned on and off by setting either a valid
+  callback function with setRenderCallback(), or by passing \c NULL.
  */
 SbBool
 SoSceneManager::isAutoRedraw(void) const
 {
-  return this->renderCB != NULL;
+  return this->rendercb != NULL;
 }
 
 /*!
-  FIXME: write doc
+  Set up the redraw \a priority for the SoOneShotSensor used to
+  trigger redraws. By setting this lower than for your own sensors,
+  you can make sure some code is always run before redraw happens.
+
+  \sa SoDelayQueueSensor
  */
 void
 SoSceneManager::setRedrawPriority(const uint32_t priority)
 {
-  this->redrawPri = priority;
+  this->redrawpri = priority;
 
   if (this->redrawshot) this->redrawshot->setPriority(priority);
 }
 
 /*!
-  FIXME: write doc
+  Returns value of priority on the redraw sensor.
  */
 uint32_t
 SoSceneManager::getRedrawPriority(void) const
 {
-  return this->redrawPri;
+  return this->redrawpri;
 }
 
 /*!
-  FIXME: write doc
+  Turn antialiased rendering on or off.
+
+  See documentation for SoGLRenderAction::setSmoothing() and
+  SoGLRenderAction::setNumPasses().
  */
 void
-SoSceneManager::setAntialiasing(const SbBool smoothing, const int numPasses)
+SoSceneManager::setAntialiasing(const SbBool smoothing, const int numpasses)
 {
-  this->glAction->setSmoothing(smoothing);
-  this->glAction->setNumPasses(numPasses);
+  this->glaction->setSmoothing(smoothing);
+  this->glaction->setNumPasses(numpasses);
 }
 
 /*!
-  FIXME: write doc
+  Returns rendering pass information.
+
+  \sa setAntialiasing()
  */
 void
-SoSceneManager::getAntialiasing(SbBool &smoothing, int &numPasses) const
+SoSceneManager::getAntialiasing(SbBool & smoothing, int & numpasses) const
 {
-  smoothing = this->glAction->isSmoothing();
-  numPasses = this->glAction->getNumPasses();
+  smoothing = this->glaction->isSmoothing();
+  numpasses = this->glaction->getNumPasses();
 }
 
 /*!
-  FIXME: write doc
+  Set the \a action to use for rendering. Overrides the default action
+  made in the constructor.
  */
 void
 SoSceneManager::setGLRenderAction(SoGLRenderAction * const action)
 {
-  if (this->deleteGLAction) delete this->glAction;
-  this->glAction = action;
-  this->deleteGLAction = FALSE;
+  if (this->deleteglaction) delete this->glaction;
+  this->glaction = action;
+  this->deleteglaction = FALSE;
 }
 
 /*!
-  FIXME: write doc
+  Returns pointer to render action.
  */
 SoGLRenderAction *
 SoSceneManager::getGLRenderAction(void) const
 {
-  return this->glAction;
+  return this->glaction;
 }
 
 /*!
-  FIXME: write doc
+  Set the \a action to use for event handling. Overrides the default
+  action made in the constructor.
  */
 void
 SoSceneManager::setHandleEventAction(SoHandleEventAction * hea)
@@ -552,7 +621,7 @@ SoSceneManager::setHandleEventAction(SoHandleEventAction * hea)
 }
 
 /*!
-  FIXME: write doc
+  Returns pointer to event handler action.
  */
 SoHandleEventAction *
 SoSceneManager::getHandleEventAction(void) const
@@ -561,7 +630,9 @@ SoSceneManager::getHandleEventAction(void) const
 }
 
 /*!
-  FIXME: write doc
+  Returns the default priority of the redraw sensor.
+
+  \sa SoDelayQueueSensor, setRedrawPriority()
  */
 uint32_t
 SoSceneManager::getDefaultRedrawPriority(void)
@@ -570,22 +641,25 @@ SoSceneManager::getDefaultRedrawPriority(void)
 }
 
 /*!
-  FIXME: write doc
+  Set whether or not for SoSceneManager instances to "touch" the
+  global \c realTime field after a redraw. If this is not done,
+  redrawing when animating the scene will only happen as fast as the
+  \c realTime interval goes (which defaults to 12 times a second).
+
+  \sa SoDB::setRealTimeInterval()
  */
 void
-SoSceneManager::enableRealTimeUpdate(const SbBool /* flag */)
+SoSceneManager::enableRealTimeUpdate(const SbBool flag)
 {
-  // FIXME: implement -- check SoDB::enableRealTimeUpdate()
-  assert(0);
+  SoSceneManager::touchtimer = flag;
 }
 
 /*!
-  FIXME: write doc
+  Returns whether or not we automatically notifies everything
+  connected to the \c realTime field after a redraw.
  */
 SbBool
 SoSceneManager::isRealTimeUpdateEnabled(void)
 {
-  // FIXME: implement
-  assert(0);
-  return FALSE;
+  return SoSceneManager::touchtimer;
 }

@@ -20,7 +20,6 @@
 #ifndef COIN_SOSCENEMANAGER_H
 #define COIN_SOSCENEMANAGER_H
 
-#include <stdio.h> // For NULL definition
 #include <Inventor/SbColor.h>
 #include <Inventor/SbVec2s.h>
 
@@ -37,23 +36,20 @@ class SoSensor;
 class SoSceneManager
 {
 public:
-  /*!
-    FIXME: write doc
-  */
-  typedef void SoSceneManagerRenderCB(void * userData, SoSceneManager * mgr);
+  typedef void SoSceneManagerRenderCB(void * userdata, SoSceneManager * mgr);
 
   SoSceneManager(void);
   virtual ~SoSceneManager();
-  virtual void render(const SbBool clearWindow = TRUE,
-                      const SbBool clearZbuffer = TRUE);
+  virtual void render(const SbBool clearwindow = TRUE,
+                      const SbBool clearzbuffer = TRUE);
   virtual SbBool processEvent(const SoEvent * const event);
   void reinitialize(void);
   void scheduleRedraw(void);
-  virtual void setSceneGraph(SoNode * const newScene);
+  virtual void setSceneGraph(SoNode * const sceneroot);
   virtual SoNode * getSceneGraph(void) const;
-  void setWindowSize(const SbVec2s & newSize);
+  void setWindowSize(const SbVec2s & newsize);
   const SbVec2s & getWindowSize(void) const;
-  void setSize(const SbVec2s & newSize);
+  void setSize(const SbVec2s & newsize);
   const SbVec2s & getSize(void) const;
   void setOrigin(const SbVec2s & newOrigin);
   const SbVec2s & getOrigin(void) const;
@@ -91,11 +87,11 @@ private:
   static void nodesensorCB(void * data, SoSensor * sensor);
   static void redrawshotTriggeredCB(void * data, SoSensor * sensor);
 
-  SoSceneManagerRenderCB * renderCB;
-  void * renderCBdata;
+  SoSceneManagerRenderCB * rendercb;
+  void * rendercbdata;
 
-  SoGLRenderAction * glAction;
-  SbBool deleteGLAction;
+  SoGLRenderAction * glaction;
+  SbBool deleteglaction;
   SoHandleEventAction * handleeventaction;
   SbBool deletehandleeventaction;
 
@@ -104,11 +100,12 @@ private:
   SoOneShotSensor * redrawshot;
 
   SbColor backgroundcolor;
-  int backgroundIndex;
-  SbBool rgbMode;
+  int backgroundindex;
+  SbBool rgbmode;
   SbBool active;
+  static SbBool touchtimer;
 
-  uint32_t redrawPri;
+  uint32_t redrawpri;
 };
 
 #endif // !COIN_SOSCENEMANAGER_H

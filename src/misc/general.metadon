@@ -27,7 +27,7 @@
 #     SoLightPath
 #     SoPickedPoint
 # i   SoPrimitiveVertex
-# id  SoSceneManager
+# ID  SoSceneManager
 # id  SoType
 #
 ############################################################################

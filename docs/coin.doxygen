@@ -181,6 +181,7 @@ INPUT                = \
 	$(top_builddir)/include/Inventor/SbBasic.h \
 	\
 	$(top_srcdir)/src/misc/SoBase.cpp $(top_srcdir)/include/Inventor/misc/SoBase.h \
+	$(top_srcdir)/src/misc/SoSceneManager.cpp $(top_srcdir)/include/Inventor/SoSceneManager.h \
 	\
 	$(top_srcdir)/src/fields/SoFieldContainer.cpp $(top_srcdir)/include/Inventor/fields/SoFieldContainer.h \
 	\
@@ -435,7 +436,6 @@ INPUT                = \
 #	$(top_srcdir)/src/SoInteraction.cpp $(top_srcdir)/include/Inventor/SoInteraction.h \
 #	$(top_srcdir)/src/SoPickedPoint.cpp $(top_srcdir)/include/Inventor/SoPickedPoint.h \
 #	$(top_srcdir)/src/SoPrimitiveVertex.cpp $(top_srcdir)/include/Inventor/SoPrimitiveVertex.h \
-#	$(top_srcdir)/src/SoSceneManager.cpp $(top_srcdir)/include/Inventor/SoSceneManager.h \
 #	\
 #	$(top_srcdir)/src/SoType.cpp $(top_srcdir)/include/Inventor/SoType.h \
 #	\
