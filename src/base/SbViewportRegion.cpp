@@ -302,7 +302,7 @@ SbViewportRegion::getViewportOrigin(void) const
 }
 
 /*
-  Rounds of the given fractional number to the nearest integer.
+  Rounds off the given fractional number to the nearest integer.
 */
 inline int round(float a)
 {
