@@ -55,23 +55,15 @@ sched_worker_entry_point(void * userdata)
   func = NULL;
   closure = NULL;
   cc_mutex_lock(sched->mutex);
-  if (cc_list_get_length(sched->funclist)) {
+  while (cc_list_get_length(sched->funclist)) {
     func = (void (*)(void*)) cc_list_pop(sched->funclist);
     closure = cc_list_pop(sched->closurelist);
+
+    cc_mutex_unlock(sched->mutex);
+    func(closure);
+    cc_mutex_lock(sched->mutex);
   }
   cc_mutex_unlock(sched->mutex);
-
-  if (func) {
-    /* do the actual scheduled work */
-    func(closure);
-    
-    cc_mutex_lock(sched->mutex);
-    if (cc_list_get_length(sched->funclist)) {
-      /* try to trigger a new worker */
-      sched_try_trigger(sched);
-    }
-    cc_mutex_unlock(sched->mutex);
-  }
 }
 
 /* ********************************************************************** */
