@@ -99,6 +99,11 @@ SIM_AC_CHECK_LINKSTYLE
 
 if test x"$sim_ac_linking_style" = xmswin; then
   COIN_LIBNAME=coin.lib
+  # wsock32.lib is needed on MSWin for the ntohs() and ntohl() calls used
+  # in SoInput.cpp. FIXME: we should probably avoid using those calls
+  # (they don't seem very "64bit-clean", for instance). 20000609 mortene.
+  LIBS="wsock32.lib $LIBS"
+  COIN_EXTRA_LIBS="wsock32.lib $COIN_EXTRA_LIBS"
 else
   COIN_LIBNAME=-lCoin
 fi
