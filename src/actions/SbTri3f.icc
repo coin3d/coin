@@ -438,10 +438,6 @@ SbTri3f::getDistance(const SbVec3f & p) const
         float d = this->getDistance(p, thisp[j], thisp[(j+1)%3]);
 	if (d < dist) dist = d;
       }
-//      for (int j=0;j<3;j++) {
-//        float d = (p-thisp[j]).length();
-//	if (d < dist) dist = d;
-//      }
     }
   }
   else {
