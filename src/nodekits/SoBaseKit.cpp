@@ -1181,10 +1181,12 @@ SoBaseKit::findPart(const SbString & partname, SoBaseKit *& kit, int & partnum,
       kit = orgkit; // return with an error in this kit
     }
 #if COIN_DEBUG
-    SoDebugError::postWarning("SoBaseKit::findPart",
-                              "part ``%s'' not found in %s", 
-                              firstpartname.getString(),
-                              kit->getTypeId().getName().getString());
+    if (makeifneeded) { // user probably expected part to be found, post a warning
+      SoDebugError::postWarning("SoBaseKit::findPart",
+                                "part ``%s'' not found in %s",
+                                firstpartname.getString(),
+                                kit->getTypeId().getName().getString());
+    }
 #endif // COIN_DEBUG
     return FALSE;
   }
