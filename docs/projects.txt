@@ -7,13 +7,6 @@ projects:
 * A "gl-attack" application stressing many different aspects of
   OpenGL-drivers to try to make them crash or exhibit bugs.
 
-* A good viewer GUI framework.
-
-* Java-binding to the Coin API. See the file
-  foreign-language-bindings.txt.
-
-* Python-binding. See the file foreign-language-bindings.txt.
-
 * Work with the documentation to improve it (add example code
   snippets, screenshots, elaborate on the important parts, ...).
 
