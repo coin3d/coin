@@ -727,8 +727,16 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   }
 
   if (soshape_use_gl_vertex_arrays && ((PRIVATE(this)->flags & SoShapeP::DISABLE_VERTEX_ARRAY_CACHE) == 0)) {
-    // only create cache for built in Coin shapes. Make it possible to
-    // override by setting COIN_USE_GL_VERTEX_ARRAYS=-1
+    // Only create cache for built in Coin shapes, as it is often
+    // tempting for developers writing Coin extension nodes to not
+    // bother with implementing a proper generatePrimitives()
+    // function.
+    //
+    // Can be overridden by setting COIN_USE_GL_VERTEX_ARRAYS=-1.
+    //
+    // FIXME: we should make it possible to have more fine-grained
+    // control of this, to somehow flag *particular* extension nodes
+    // as ok for vertex array rendering. 20040220 mortene.
     if (!this->isBuiltIn && (soshape_use_gl_vertex_arrays != -1)) return TRUE;
     soshape_staticdata * shapedata = soshape_get_staticdata();
     // lock mutex since pvcache is shared among all threads
