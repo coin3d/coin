@@ -1120,3 +1120,18 @@ SbViewVolume::transform(const SbMatrix &matrix)
     this->upperleftfrust += this->projectionpt;
   }
 }
+
+/*!  
+  Returns the view up vector for this view volume. It's a vector
+  which is perpendicular to the projection direction, and parallel and
+  oriented in the same direction as the vector from the lower left
+  corner to the upper left corner of the near plane.  
+*/
+SbVec3f 
+SbViewVolume::getViewUp(void) const
+{
+  SbVec3f v = this->upperleftfrust - this->lowerleftfrust;
+  v.normalize();
+  return v;
+}
+

@@ -81,6 +81,7 @@ public:
   void print(FILE * fp) const;  
   void getViewVolumePlanes(SbPlane planes[6]) const;
   void transform(const SbMatrix &matrix);
+  SbVec3f getViewUp(void) const;
 
 private:
   ProjectionType type;
