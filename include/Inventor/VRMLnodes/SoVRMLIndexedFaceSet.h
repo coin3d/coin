@@ -71,8 +71,8 @@ private:
     PER_VERTEX_INDEXED
   };
 
-  Binding findMaterialBinding(void) const;
-  Binding findNormalBinding(void) const;
+  Binding findMaterialBinding(SoState * state) const;
+  Binding findNormalBinding(SoState * state) const;
 
   virtual void notify(SoNotList * list);
   

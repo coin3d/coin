@@ -211,6 +211,9 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/VRMLnodes/SoVRMLCoordinate.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
@@ -318,17 +321,47 @@ SoVRMLIndexedFaceSet::~SoVRMLIndexedFaceSet() // virtual, protected
 // translates current material binding into the internal Binding enum.
 //
 SoVRMLIndexedFaceSet::Binding
-SoVRMLIndexedFaceSet::findMaterialBinding(void) const
+SoVRMLIndexedFaceSet::findMaterialBinding(SoState * state) const
 {
   Binding binding = OVERALL;
-  if (this->color.getValue()) {
-    if (this->colorPerVertex.getValue()) {
+
+  if (SoOverrideElement::getMaterialBindingOverride(state)) {
+    switch (SoMaterialBindingElement::get(state)) {
+    case SoMaterialBindingElement::OVERALL:
+      binding = OVERALL;
+      break;
+    case SoMaterialBindingElement::PER_VERTEX:
+      binding = PER_VERTEX;
+      break;
+    case SoMaterialBindingElement::PER_VERTEX_INDEXED:
       binding = PER_VERTEX_INDEXED;
-      if (!this->colorIndex.getNum()) binding = PER_VERTEX;
-    }
-    else {
+      break;
+    case SoMaterialBindingElement::PER_PART:
+    case SoMaterialBindingElement::PER_FACE:
       binding = PER_FACE;
-      if (this->colorIndex.getNum()) binding = PER_FACE_INDEXED;
+      break;
+    case SoMaterialBindingElement::PER_PART_INDEXED:
+    case SoMaterialBindingElement::PER_FACE_INDEXED:
+      binding = PER_FACE_INDEXED;
+      break;
+    default:
+#if COIN_DEBUG
+      SoDebugError::postWarning("SoVRMLIndexedFaceSet::findMaterialBinding",
+                                "unknown material binding setting");
+#endif // COIN_DEBUG
+      break;
+    }
+  }
+  else {
+    if (this->color.getValue()) {
+      if (this->colorPerVertex.getValue()) {
+        binding = PER_VERTEX_INDEXED;
+        if (!this->colorIndex.getNum()) binding = PER_VERTEX;
+      }
+      else {
+        binding = PER_FACE;
+        if (this->colorIndex.getNum()) binding = PER_FACE_INDEXED;
+      }
     }
   }
   return binding;
@@ -339,16 +372,46 @@ SoVRMLIndexedFaceSet::findMaterialBinding(void) const
 // translates current normal binding into the internal Binding enum.
 //
 SoVRMLIndexedFaceSet::Binding
-SoVRMLIndexedFaceSet::findNormalBinding(void) const
+SoVRMLIndexedFaceSet::findNormalBinding(SoState * state) const
 {
   Binding binding = OVERALL;
-  if (this->normalPerVertex.getValue()) {
-    binding = PER_VERTEX_INDEXED;
-    if (this->normal.getValue() && !this->normalIndex.getNum()) binding = PER_VERTEX;
+
+  if (SoOverrideElement::getNormalBindingOverride(state)) {
+    switch (SoNormalBindingElement::get(state)) {
+    case SoNormalBindingElement::OVERALL:
+      binding = OVERALL;
+      break;
+    case SoNormalBindingElement::PER_VERTEX:
+      binding = PER_VERTEX;
+      break;
+    case SoNormalBindingElement::PER_VERTEX_INDEXED:
+      binding = PER_VERTEX_INDEXED;
+      break;
+    case SoNormalBindingElement::PER_PART:
+    case SoNormalBindingElement::PER_FACE:
+      binding = PER_FACE;
+      break;
+    case SoNormalBindingElement::PER_PART_INDEXED:
+    case SoNormalBindingElement::PER_FACE_INDEXED:
+      binding = PER_FACE_INDEXED;
+      break;
+    default:
+#if COIN_DEBUG
+      SoDebugError::postWarning("SoVRMLIndexedFaceSet::findNormalBinding",
+                                "unknown normal binding setting");
+#endif // COIN_DEBUG
+      break;
+    }
   }
   else {
-    binding = PER_FACE;
-    if (this->normalIndex.getNum()) binding = PER_FACE_INDEXED;
+    if (this->normalPerVertex.getValue()) {
+      binding = PER_VERTEX_INDEXED;
+      if (this->normal.getValue() && !this->normalIndex.getNum()) binding = PER_VERTEX;
+    }
+    else {
+      binding = PER_FACE;
+      if (this->normalIndex.getNum()) binding = PER_FACE_INDEXED;
+    }
   }
   return binding;
 }
@@ -370,8 +433,8 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
     this->coordIndex.set1Value(coordIndex.getNum(), -1);
   }
 
-  Binding mbind = this->findMaterialBinding();
-  Binding nbind = this->findNormalBinding();
+  Binding mbind = this->findMaterialBinding(state);
+  Binding nbind = this->findNormalBinding(state);
 
   const SoCoordinateElement * coords;
   const SbVec3f * normals;
@@ -549,8 +612,8 @@ SoVRMLIndexedFaceSet::generatePrimitives(SoAction * action)
     coordIndex.set1Value(coordIndex.getNum(), -1);
   }
 
-  Binding mbind = this->findMaterialBinding();
-  Binding nbind = this->findNormalBinding();
+  Binding mbind = this->findMaterialBinding(state);
+  Binding nbind = this->findNormalBinding(state);
 
   const SoCoordinateElement * coords;
   const SbVec3f * normals;
@@ -732,7 +795,7 @@ SoVRMLIndexedFaceSet::generateDefaultNormals(SoState * state,
   const SbVec3f * coords = node->point.getValues(0);
 
 
-  switch (this->findNormalBinding()) {
+  switch (this->findNormalBinding(state)) {
   case PER_VERTEX:
   case PER_VERTEX_INDEXED:
     nc->generatePerVertex(coords,
@@ -834,8 +897,8 @@ SoVRMLIndexedFaceSet::useConvexCache(SoAction * action,
                       dummynindices, tindices, mindices, numindices,
                       FALSE, dummy);
 
-  Binding mbind = this->findMaterialBinding();
-  Binding nbind = this->findNormalBinding();
+  Binding mbind = this->findMaterialBinding(state);
+  Binding nbind = this->findNormalBinding(state);
 
   if (normalsfromcache && nbind == PER_VERTEX) {
     nbind = PER_VERTEX_INDEXED;
