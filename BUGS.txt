@@ -787,3 +787,19 @@
     20020930 mortene.
 
 =====================================================================
+
+034 The rendering performance when loading
+    Coin/data/draggerDefaults/transformerDragger.iv into an
+    examinerviewer seems disproportionately bad versus what one would
+    expect (it doesn't look like it contains all that much geometry).
+
+    Should investigate why this happens. (Do a profile run, perhaps?)
+
+    This is a high priority task, which is probably hard enough to
+    debug that it should be left to pederb.  ;-)
+
+    Found and reported on coin-discuss by Coin-user Martin Vogt.
+
+    20021007 mortene.
+
+=====================================================================
