@@ -56,21 +56,21 @@ typedef void cc_debugerror_cb(const cc_debugerror * err, void * data);
 
 /* ********************************************************************** */
 
-void cc_debugerror_post(const char * source, const char * format, ...);
-void cc_debugerror_postwarning(const char * source, const char * format, ...);
-void cc_debugerror_postinfo(const char * source, const char * format, ...);
+COIN_DLL_API void cc_debugerror_post(const char * source, const char * format, ...);
+COIN_DLL_API void cc_debugerror_postwarning(const char * source, const char * format, ...);
+COIN_DLL_API void cc_debugerror_postinfo(const char * source, const char * format, ...);
 
 
-void cc_debugerror_init(cc_debugerror * me);
-void cc_debugerror_clean(cc_debugerror * me);
+COIN_DLL_API void cc_debugerror_init(cc_debugerror * me);
+COIN_DLL_API void cc_debugerror_clean(cc_debugerror * me);
 
-CC_DEBUGERROR_SEVERITY cc_debugerror_get_severity(const cc_debugerror * me);
+COIN_DLL_API CC_DEBUGERROR_SEVERITY cc_debugerror_get_severity(const cc_debugerror * me);
 
-void cc_debugerror_set_handler_callback(cc_debugerror_cb * function, void * data);
-cc_debugerror_cb * cc_debugerror_get_handler_callback(void);
-void * cc_debugerror_get_handler_data(void);
+COIN_DLL_API void cc_debugerror_set_handler_callback(cc_debugerror_cb * function, void * data);
+COIN_DLL_API cc_debugerror_cb * cc_debugerror_get_handler_callback(void);
+COIN_DLL_API void * cc_debugerror_get_handler_data(void);
 
-cc_debugerror_cb * cc_debugerror_get_handler(void ** data);
+COIN_DLL_API cc_debugerror_cb * cc_debugerror_get_handler(void ** data);
 
 /* ********************************************************************** */
 
