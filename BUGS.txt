@@ -315,10 +315,14 @@
     correct result. Selecting any two cubes, or the side cubes by
     themselves, will _not_ make the SoMultipleCopy get selected.
 
-    With VISIBLE_SHAPES, the behavior is slightly different: select
-    any two cubes, or the middle cube by itself, or all three cubes --
-    and it works. Select any of the side cubes by themselves, and
-    selection fails to work.
+    With VISIBLE_SHAPES everything works.
+
+    Update (after investigation by handegar): this is probably because
+    shapes are toggled, so if any shape has multiple references in the
+    selected area, it will first be selected, then un-selected, then
+    selected, etc. If it's referenced an even number of times, it will
+    finally end up un-selected. This is probably the reason for bug
+    #014 aswell.
 
     mortene 20020806.
 
