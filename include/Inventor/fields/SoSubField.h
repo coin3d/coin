@@ -276,6 +276,7 @@ _class_::_class_(void) \
  \
 _class_::~_class_(void) \
 { \
+  this->enableNotify(FALSE); /* Avoid notifying destructed containers. */ \
   this->deleteAllValues(); \
 }
 
