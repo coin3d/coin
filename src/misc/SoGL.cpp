@@ -35,14 +35,12 @@
 #include <string.h>
 #include <math.h>
 
-// NOT IN USE?? 19990925 mortene.
-#if 0
+
 //
 // function used to check if an extension is supported
-// based on glut 3.3 function
 //
 static int
-extensionSupported(char *extension)
+extension_supported(char *extension)
 {
   static const GLubyte *extensions = NULL;
   const GLubyte *start;
@@ -70,7 +68,7 @@ extensionSupported(char *extension)
   }
   return 0;
 }
-#endif // NOT IN USE??
+
 
 static SbBool isInitialized = FALSE;
 static int maxTextureSize;
@@ -101,7 +99,7 @@ sogl_global_init()
 
 #if GL_VERSION_1_1
 #elif GL_EXT_polygon_offset
-  polygonOffsetEXT = extensionSupported("GL_EXT_polygon_offset");
+  polygonOffsetEXT = extension_supported("GL_EXT_polygon_offset");
 #if 0 // debug
   fprintf(stderr,"polygon offset ext: %d\n", polygonOffsetEXT);
 #endif // debug
@@ -109,7 +107,7 @@ sogl_global_init()
 
 #if GL_VERSION_1_1
 #elif GL_EXT_texture_object
-  textureObjectEXT = extensionSupported("GL_EXT_texture_object");
+  textureObjectEXT = extension_supported("GL_EXT_texture_object");
 #if 0 // debug
   fprintf(stderr,"texture object ext: %d\n", textureObjectEXT);
 #endif // debug
@@ -117,7 +115,7 @@ sogl_global_init()
 
 #if GL_VERSION_1_1
 #elif GL_EXT_vertex_array
-  vertexArrayEXT = extensionSupported("GL_EXT_vertex_array");
+  vertexArrayEXT = extension_supported("GL_EXT_vertex_array");
 #if 0 // debug
   fprintf(stderr,"vertex arrayext: %d\n", vertexArrayEXT);
 #endif // debug
