@@ -31,12 +31,97 @@
   You should be able to use this action for most of your "simple"
   traversal needs, instead of cooking up your own code, as the
   SoCallbackAction is rather flexible.
-*/
 
-// Metadon doc:
-/*¡
-  FIXME: doesn't handle pathlist traversal yet. 20000305 mortene.
- */
+  A common use of this action is to extract geometry of non-primitive
+  shapes as triangles.  A full-fledged example that demonstrates this
+  on a scenegraph with two spheres follows:
+
+  \code
+   #include <Inventor/SoDB.h>
+   #include <Inventor/SoPrimitiveVertex.h>
+   #include <Inventor/actions/SoCallbackAction.h>
+   #include <Inventor/nodes/SoCoordinate3.h>
+   #include <Inventor/nodes/SoIndexedFaceSet.h>
+   #include <Inventor/nodes/SoSeparator.h>
+   #include <Inventor/nodes/SoShape.h>
+   #include <Inventor/nodes/SoSphere.h>
+   #include <Inventor/nodes/SoTranslation.h>
+
+
+   static SoCoordinate3 * coord3 = NULL;
+   static SoIndexedFaceSet * ifs = NULL;
+
+   static int coord3idx = 0;
+
+
+   static void
+   triangle_cb(void * userdata, SoCallbackAction * action,
+               const SoPrimitiveVertex * v1,
+               const SoPrimitiveVertex * v2,
+               const SoPrimitiveVertex * v3)
+   {
+     const SbVec3f vtx[] = { v1->getPoint(), v2->getPoint(), v3->getPoint() };
+     const SbMatrix mm = action->getModelMatrix();
+
+     SbVec3f vx[3];
+     for (int j=0; j < 3; j++) { mm.multVecMatrix(vtx[j], vx[j]); }
+
+     // (This is sub-optimal -- should scan for the same vertex
+     // coordinates already being present in the SoCoordinate3
+     // node. We'll get lots of duplicate coordinates from this.)
+     coord3->point.setNum(coord3->point.getNum() + 3);
+     coord3->point.setValues(coord3idx, 3, vx);
+
+     int32_t indices[] = { coord3idx, coord3idx + 1, coord3idx + 2, -1 };
+     coord3idx += 3;
+
+     int oldsize = ifs->coordIndex.getNum();
+     ifs->coordIndex.setNum(oldsize + 4);
+     ifs->coordIndex.setValues(oldsize, 4, indices);
+
+     // (Note that it would likely be desirable to grab normal vectors,
+     // materials and / or texture coordinates in a real-world
+     // application. How to do this is not shown by the above code,
+     // but it is not much different from the extraction of vertex
+     // coordinates.)
+   }
+
+
+   int
+   main(void)
+   {
+     SoDB::init();
+
+     SoSeparator * root = new SoSeparator;
+     root->addChild(new SoSphere);
+     SoTranslation * trans = new SoTranslation;
+     trans->translation.setValue(10, 0, 0);
+     root->addChild(trans);
+     SoSphere * ss = new SoSphere;
+     ss->radius = 3;
+     root->addChild(ss);
+
+     root->ref();
+
+     coord3 = new SoCoordinate3;
+     coord3->point.setNum(0);
+     ifs = new SoIndexedFaceSet;
+     ifs->coordIndex.setNum(0);
+
+     SoCallbackAction ca;
+     ca.addTriangleCallback(SoShape::getClassTypeId(), triangle_cb, NULL);
+     ca.apply(root);
+
+     root->unref();
+
+     // [the generated SoCoordinate3 and SoIndexedFaceSet nodes would now
+     // typically be used in a scenegraph in a viewer, or written to disk
+     // or something]
+
+     return 0;
+   }
+  \endcode
+*/
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoSubActionP.h>
