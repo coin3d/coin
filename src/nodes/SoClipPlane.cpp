@@ -26,6 +26,16 @@
   planes to define the viewing frustum: top, bottom, left, right, near
   and far. If you want extra clipping planes for "slicing" the visible
   geometry, you can do that by using nodes of this type.
+
+  Note that OpenGL implementations have a fixed maximum number of
+  clipping planes available. To find out what this number is, you can
+  use the following code:
+
+  \code
+      #include <Inventor/elements/SoGLClipPlaneElement.h>
+      // ...[snip]...
+      int maxplanes = SoGLClipPlaneElement::getMaxGLPlanes();
+  \endcode
 */
 
 #include <Inventor/nodes/SoClipPlane.h>
