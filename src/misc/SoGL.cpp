@@ -2005,7 +2005,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   
   // clear GL error(s) if parametric error value is out of range.
   // FIXME: man, this is ugly! 20020530 mortene.
-  while (glGetError() == GL_INVALID_VALUE);
+  if (glrender) { while (glGetError() == GL_INVALID_VALUE); }
 }
 
 void
@@ -2168,7 +2168,8 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
 
   GLUWrapper()->gluEndCurve(nurbsrenderer);
   // clear GL error(s) if parametric error value is out of range.
-  while (glGetError() == GL_INVALID_VALUE);
+  // FIXME: man, this is ugly! 20020530 mortene.
+  if (glrender) { while (glGetError() == GL_INVALID_VALUE); }
 }
 
 
