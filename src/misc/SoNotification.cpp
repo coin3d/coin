@@ -34,6 +34,7 @@
 */
 
 #include <Inventor/misc/SoNotification.h>
+#include <Inventor/nodes/SoNode.h>
 #include <assert.h>
 #include <time.h>
 
@@ -145,8 +146,9 @@ SoNotList::SoNotList(void)
   this->lastfield = NULL;
   this->lastengine = NULL;
   this->lastinterp = NULL;
-//    this->stamp = 0;
-  this->stamp = time(NULL);
+  // this is used in SoNode::notify() to stop a notification
+  // when a node has already been notified.
+  this->stamp = SoNode::getNextNodeId();
 }
 
 /*!
@@ -177,7 +179,6 @@ SoNotList::append(SoNotRec * const rec)
   if (!this->head) this->head = rec;
 
   if (!this->firstnoderec) this->firstnoderec = rec;
-//    this->stamp = time(NULL);
 }
 
 /*!

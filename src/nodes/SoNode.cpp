@@ -147,8 +147,13 @@ SoNode::notify(SoNotList * l)
                          this, this->getTypeId().getName().getString(),
                          this->getName().getString(), l);
 #endif // debug
-  this->uniqueId = SoNode::nextUniqueId++;
-  inherited::notify(l);
+
+  // only continue if node hasn't already been notified.
+  // The time stamp is set in the SoNotList constructor.
+  if (l->getTimeStamp() > this->uniqueId) {
+    this->uniqueId = SoNode::nextUniqueId++;
+    inherited::notify(l);
+  }
 }
 
 /*!
@@ -573,7 +578,7 @@ SoNode::callbackS(SoAction * action, SoNode * node)
   SoCallbackAction * const cbAction = (SoCallbackAction *)(action);
   if (cbAction->hasTerminated()) return;
   cbAction->setCurrentNode(node);
-  
+
   cbAction->invokePreCallbacks(node);
   if (cbAction->getCurrentResponse() == SoCallbackAction::CONTINUE) {
     node->callback(cbAction);
