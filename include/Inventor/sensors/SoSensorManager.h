@@ -22,13 +22,6 @@
 
 #include <Inventor/SbBasic.h>
 
-// FIXME: do this properly through something configure based.
-// 19991214 mortene.
-// Note: fd_set is in time.h under AIX
-#if defined(_WIN32) || defined(__BEOS__) || defined(_AIX)
-typedef struct fd_set fd_set;
-#endif //_WIN32 || __BEOS__
-
 class SoDelayQueueSensor;
 class SoTimerQueueSensor;
 class SoTimerSensor;
@@ -59,8 +52,8 @@ public:
   void setDelaySensorTimeout(const SbTime & t);
   const SbTime & getDelaySensorTimeout(void);
 
-  int doSelect(int nfds, fd_set * readfds, fd_set * writefds,
-               fd_set * exceptfds, struct timeval * userTimeOut);
+  int doSelect(int nfds, void * readfds, void * writefds,
+               void * exceptfds, struct timeval * userTimeOut);
 
 private:
   void notifyChanged(void);

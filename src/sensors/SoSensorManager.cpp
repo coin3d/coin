@@ -58,6 +58,12 @@
 
 #include <assert.h>
 
+// FIXME: find fd_set definition properly through something configure
+// based.  19991214 mortene.  (Note: fd_set is in time.h under AIX?)
+#if HAVE_UNISTD_H
+#include <unistd.h> // fd_set (?)
+#endif // HAVE_UNISTD_H
+
 
 // Keep these around. Even though the SoSensorManager code seems to be
 // working as it should now, a lot of other stuff around in the Coin
@@ -582,10 +588,14 @@ SoSensorManager::notifyChanged(void)
   This is a wrapper around the standard select(2) call, which will
   make sure the sensor queues are updated while waiting for any action
   to happen on the given file descriptors.
- */
+
+  The void* arguments must be valid pointers to fd_set
+  structures. We've changed this from the original SGI Inventor API to
+  avoid messing up the header file with system-specific includes.
+*/
 int
-SoSensorManager::doSelect(int /* nfds */, fd_set * /* readfds */, fd_set * /* writefds */,
-                          fd_set * /* exceptfds */, struct timeval * /* userTimeOut */)
+SoSensorManager::doSelect(int nfds, void * readfds, void * writefds,
+                          void * exceptfds, struct timeval * usertimeout)
 {
   // FIXME: implement. See SoDB::doSelect() (which should probably only
   // be a wrapper around this call). 19990425 mortene.
