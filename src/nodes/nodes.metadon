@@ -35,7 +35,7 @@
 # IDTBG----!                              SoFaceSet
 # IDTBG----!                              SoLineSet
 # IDTBG----!                              SoPointSet
-#   T! ----!                                      SoMarkerSet
+# I T!G----!                                      SoMarkerSet
 # IDtBG----!                              SoQuadMesh
 # IDTBG----!                              SoTriangleStripSet
 # ID-B-----!                      SoIndexedShape
@@ -105,8 +105,8 @@
 # ID-------!      SoLabel
 # IDT-G---C!      SoLightModel
 # ID-BG-P-C!      SoProfile
-# iD !!-!-!!              SoLinearProfile
-# iD !!-!-!!              SoNurbsProfile
+# ID-!!-!-!!              SoLinearProfile
+# iD-!!-!-!!              SoNurbsProfile
 # IDT-G---C!      SoMaterial
 # IDT-G-P-C!      SoMaterialBinding
 # ID--G-P-C!      SoNormal

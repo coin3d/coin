@@ -31,7 +31,6 @@
 #include <Inventor/elements/SoProfileCoordinateElement.h>
 #include <Inventor/lists/SbList.h>
 #include <stdlib.h>
-#include <coindefs.h> // COIN_STUB()
 
 static SbList <float> * coordListLinearProfile = NULL;
 
@@ -106,7 +105,10 @@ void
 SoLinearProfile::getVertices(SoState * state, int32_t & numvertices,
                              SbVec2f *& vertices)
 {
-  COIN_STUB();
-  numvertices = 0;
-  vertices = NULL;
+  const SoProfileCoordinateElement * elem = (const SoProfileCoordinateElement*)
+    SoProfileCoordinateElement::getInstance(state);
+  numvertices = elem->getNum();
+  // Need to cast away const. Looks like bad design -- shouldn't the
+  // vertices argument to this function be "const SbVec2f *"?
+  vertices = numvertices ? (SbVec2f *)elem->getArrayPtr2() : NULL;
 }
