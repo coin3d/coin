@@ -90,8 +90,6 @@
 (set-mfield-values! (-> booloperation 'a) 0 '(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0))
 (set-mfield-values! (-> booloperation 'b) 0 '(1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1))
 (set-mfield-values! (-> booloperation 'operation) 0
-                    '( 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 ))
-(set-mfield-values! (-> booloperation 'operation) 0
                     (list SoBoolOperation::CLEAR
                           SoBoolOperation::SET
                           SoBoolOperation::ENUM_A
@@ -109,18 +107,18 @@
                           SoBoolOperation::A_EQUALS_B
                           SoBoolOperation::A_NOT_EQUALS_B ))
                        
-;; Test with zero available values for the input fields.
-(-> (-> booloperation 'a) 'setnum 5)
-(-> (-> booloperation 'a) 'set1value 0 1)
-(-> (-> booloperation 'a) 'getnum)
-(set-mfield-values! (-> booloperation 'a) 0 '(0 0))
+;; Test with "missing" values.
+(-> (-> booloperation 'a) 'setnum 1)
+(-> (-> booloperation 'b) 'setnum 1)
+(-> (-> booloperation 'operation) 'setnum 0)
+
 
 ;; Export scenegraph with engine.
 (define writeaction (new-sowriteaction))
 (-> writeaction 'apply (-> viewer 'getscenegraph))
 
 ;; Read scenegraph with engine in it.
-(let ((buffer "#Inventor V2.1 ascii\n\n Text3 { string \"X\" = Booloperation { max 8 } . output }")
+(let ((buffer "#Inventor V2.1 ascii\n\n Text3 { string \"X\" = BoolOperation { a TRUE  b FALSE  operation NOT_A_OR_B } . output }")
       (input (new-soinput)))
   (-> input 'setbuffer (void-cast buffer) (string-length buffer))
   (let ((sceneroot (sodb::readall input)))
@@ -145,3 +143,10 @@
 (-> (-> text 'justification) 'setValue SoText3::CENTER)
 (-> (-> text 'string) 'disconnect)
 (-> viewer 'viewAll)
+
+;; Import scenegraph with engine from file.
+(let ((input (new-soinput)))
+  (-> input 'openfile "/home/sigma/mortene/tmp/boolop.iv")
+  (let ((sceneroot (sodb::readall input)))
+    (-> viewer 'setscenegraph sceneroot)
+    (-> viewer 'viewall)))

@@ -13,7 +13,7 @@
 # ==
 # HIERARCHY
 # i   SoEngine
-# Id      SoBoolOperation
+# ID      SoBoolOperation
 # Id      SoCalculator
 # Id      SoComposeVec2f
 # Id      SoComposeVec3f
