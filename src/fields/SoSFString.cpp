@@ -185,14 +185,12 @@ SoSFString::cleanClass(void)
 SbBool
 SoSFString::readValue(SoInput * in)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
   return in->read(value);
 }
 
 void
 SoSFString::writeValue(SoOutput * out) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
   out->write(this->getValue());
 }
 

@@ -151,11 +151,12 @@ SoNode::initClass(void)
 {
   // Make sure we only initialize once.
   assert(SoNode::classTypeId == SoType::badType());
+  // Make sure parent class has been initialized.
+  assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoNode::classTypeId = SoType::createType(inherited::getClassTypeId(),
-					   "Node",
-					   NULL,
-					   SoNode::nextActionMethodIndex++);
+  SoNode::classTypeId =
+    SoType::createType(inherited::getClassTypeId(), "Node", NULL,
+		       SoNode::nextActionMethodIndex++);
 
   SoNode::initClasses();
 }

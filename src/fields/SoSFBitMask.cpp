@@ -41,7 +41,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE SFieldRequired( SoSFBitMask )
+//$ BEGIN TEMPLATE SFieldRequired(SoSFBitMask)
 
 SoType SoSFBitMask::classTypeId = SoType::badType();
 
@@ -130,7 +130,7 @@ SoSFBitMask::operator = (const SoSFBitMask & field)
 void
 SoSFBitMask::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFBitMask )
+//$ BEGIN TEMPLATE FieldInitClass(SFBitMask)
   // Make sure we only initialize once.
   assert(SoSFBitMask::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -236,29 +236,32 @@ SoSFBitMask::readValue(SoInput * in)
   return TRUE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoSFBitMask::writeValue(SoOutput * out) const
 {
   assert(!out->isBinary() && "FIXME: not implemented");
+#if 0 // FIXME: not as simple as this? 19990711 mortene.
+  if (out->isBinary()) {
+    out->write(this->value);
+    return;
+  }
+#endif
 
   SbBool paran=FALSE;
   int out_vals_written = 0;
   
-  int restval=value;
+  int restval=this->value;
   int i=0;
   while (restval) {
-    if (i>=numEnums) break;
-    if (enumValues[i] & restval) {
-      restval &= ~enumValues[i];
+    if (i>=this->numEnums) break;
+    if (this->enumValues[i] & restval) {
+      restval &= ~this->enumValues[i];
       if (!out_vals_written && restval) {
 	out->write('(');
 	paran=TRUE;
       }
       if (out_vals_written++) out->write(" | ");
-      out->write((const char *)enumNames[i].getString());
+      out->write((const char *)this->enumNames[i].getString());
     }
 
     i++;
@@ -267,7 +270,7 @@ SoSFBitMask::writeValue(SoOutput * out) const
   if (!out_vals_written) out->write("()");
 
 #if COIN_DEBUG
-  if(restval) {
+  if (restval) {
     SoDebugError::post("SoSFBitMask::writeValue",
 		       "unable to write some bits (0x%x)",
 		       restval);

@@ -259,11 +259,16 @@ SoType::isDerivedFrom(const SoType parent) const
   }
 
   SoType type = *this;
-  if (type == parent) return TRUE;
-
-  while (! (type = SoType::typeDataList[type.getKey()]->parent).isBad())
-    if (type == parent)
-      return TRUE;
+  do {
+#if 0 // debug
+    SoDebugError::postInfo("SoType::isDerivedFrom",
+			   "this: '%s' parent: '%s'",
+			   type.getName().getString(),
+			   parent.getName().getString());
+#endif // debug
+    if (type == parent) return TRUE;
+    type = SoType::typeDataList[type.getKey()]->parent;
+  } while (!type.isBad());
 
   return FALSE;
 }

@@ -208,35 +208,36 @@ SoSFBool::cleanClass(void)
 SbBool
 SoSFBool::readValue(SoInput * in)
 {
-  assert(!in->isBinary() && "FIXME: read binary format. 19990621 mortene");
-
   // accept 0 or 1
-  if (in->read(value)) {
-    if (value != 0 && value != 1) {
+  if (in->read(this->value)) {
+    if (this->value != 0 && this->value != 1) {
       SoReadError::post(in, "Illegal value for SoSFBool: %d "
-			"(must be 0 or 1)", value);
+			"(must be 0 or 1)", this->value);
       return FALSE;
     }
     return TRUE;
   }
 
+  if (in->isBinary()) {
+    SoReadError::post(in, "Couldn't read field");
+    return FALSE;
+  }
+
   // read TRUE/FALSE keyword
   SbName n;
-  if (! in->read(n, TRUE))
-    return FALSE;
+  if (!in->read(n, TRUE)) return FALSE;
     
   if (n == "TRUE") {
-    value = TRUE;
+    this->value = TRUE;
     return TRUE;
   }
 
   if (n == "FALSE") {
-    value = FALSE;
+    this->value = FALSE;
     return TRUE;
   }
 
-  SoReadError::post(in,
-		    "Unknown value (\"%s\") for SoSFBool (must be TRUE or "
+  SoReadError::post(in, "Unknown value (\"%s\") for SoSFBool (must be TRUE or "
 		    "FALSE)", n.getString());
   return FALSE;
 }

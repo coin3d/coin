@@ -25,7 +25,7 @@
 */
 
 /*¡
-  potensial buffer overflow errors detected, should be fixed - 990610 larsa
+  Potential buffer overflow errors detected, should be fixed - 990610 larsa
 */
 
 #include <Inventor/errors/SoReadError.h>
@@ -98,7 +98,7 @@ SoReadError::getClassTypeId(void)
 */
 
 SoType
-SoReadError::getTypeId(void) const // virtual
+SoReadError::getTypeId(void) const
 {
   return SoReadError::classTypeId;
 }
@@ -108,9 +108,7 @@ SoReadError::getTypeId(void) const // virtual
 */
 
 void
-SoReadError::setHandlerCallback(
-  SoErrorCB * const function,
-  void * const data)
+SoReadError::setHandlerCallback(SoErrorCB * const function, void * const data)
 {
   SoReadError::callback = function;
   SoReadError::callbackData = data;
@@ -141,10 +139,7 @@ SoReadError::getHandlerData(void)
 */
 
 void
-SoReadError::post(
-  const SoInput * const in,
-  const char * const format,
-  ...)
+SoReadError::post(const SoInput * const in, const char * const format, ...)
 {
   SoReadError error;
   error.setDebugString("Coin read error: ");
@@ -166,8 +161,7 @@ SoReadError::post(
 */
 
 SoErrorCB *
-SoReadError::getHandler(
-  void * & data) const
+SoReadError::getHandler(void * & data) const
 {
   data = SoReadError::callbackData;
   return SoReadError::callback;

@@ -114,6 +114,23 @@ SOURCES       =	\
 	    ../src/fields/SoSFBool.cpp \
 	    ../src/fields/SoSFString.cpp \
 	\
+	    ../src/fields/SoSFBitMask.cpp \
+	    ../src/fields/SoSFColor.cpp \
+	    ../src/fields/SoSFEnum.cpp \
+	    ../src/fields/SoSFFloat.cpp \
+	    ../src/fields/SoSFImage.cpp \
+	    ../src/fields/SoSFMatrix.cpp \
+	    ../src/fields/SoSFName.cpp \
+	    ../src/fields/SoSFPlane.cpp \
+	    ../src/fields/SoSFRotation.cpp \
+	    ../src/fields/SoSFShort.cpp \
+	    ../src/fields/SoSFTime.cpp \
+	    ../src/fields/SoSFUInt32.cpp \
+	    ../src/fields/SoSFUShort.cpp \
+	    ../src/fields/SoSFVec2f.cpp \
+	    ../src/fields/SoSFVec3f.cpp \
+	    ../src/fields/SoSFVec4f.cpp \
+	\
 	../src/nodes/SoNode.cpp \
 	  ../src/nodes/SoGroup.cpp \
 	  ../src/nodes/SoInfo.cpp \

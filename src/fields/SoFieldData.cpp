@@ -270,28 +270,56 @@ SbBool
 SoFieldData::read(SoInput * in, SoFieldContainer * object,
 		  SbBool errorOnUnknownField, SbBool & notBuiltIn) const
 {
-  assert(!in->isBinary() && "FIXME: not implemented yet");
-
   // FIXME: use object and notBuiltIn somehow. 19990610 mortene.
 
-  SbName fieldName;
+  unsigned int numfields;
+  if (in->isBinary()) {
+    if (!in->read(numfields)) {
+      SoReadError::post(in, "premature EOF");
+      return FALSE;
+    }
 
-  if (fields.getLength() == 0) return TRUE; 
+    // FIXME: invalid check? (same field may be written several
+    // times?) 19990711 mortene.
+    if (numfields > fields.getLength()) {
+      SoReadError::post(in, "invalid number of fields; %d", numfields);
+      return FALSE;
+    }
+  }
+  else {
+    numfields = fields.getLength();
+  }
 
-  while (TRUE) {
-    if (!in->read(fieldName, TRUE) || !fieldName) return TRUE;
+  if (numfields == 0) return TRUE; 
 
-    SbBool foundName;
-    if (!this->read(in, object, fieldName, foundName)) return FALSE;
+  if (in->isBinary()) {
+    for (int i=0; i < numfields; i++) {
+      SbName fieldName;
+      if (!in->read(fieldName, TRUE) || !fieldName) return TRUE;
 
-    if (!foundName) {
-      if (errorOnUnknownField) {
-	SoReadError::post(in, "Unknown field \"%s\"", fieldName.getString());
-	return FALSE;
-      }
-      else {
-	in->putBack(fieldName.getString());
-	return TRUE;
+      SbBool foundName;
+      if (!this->read(in, object, fieldName, foundName)) return FALSE;
+      // FIXME: handle case for binary format. 19990711 mortene.
+      assert(foundName);
+    }
+  }
+  else {
+    while (TRUE) {
+      SbName fieldName;
+      if (!in->read(fieldName, TRUE) || !fieldName) return TRUE;
+
+      SbBool foundName;
+      if (!this->read(in, object, fieldName, foundName)) return FALSE;
+
+      if (!foundName) {
+	if (errorOnUnknownField) {
+	  SoReadError::post(in, "Unknown field \"%s\"", fieldName.getString());
+	  return FALSE;
+	}
+	else {
+	  in->putBack(fieldName.getString());
+	  return TRUE;
+	}
       }
     }
   }
@@ -304,14 +332,12 @@ SbBool
 SoFieldData::read(SoInput * in, SoFieldContainer * object,
 		  const SbName & fieldName, SbBool & foundName) const
 {
-  assert(!in->isBinary() && "FIXME: not implemented yet");
-
   // FIXME: use object somehow. 19990610 mortene.
 
   int i;
   for (i = 0; i < fields.getLength(); i++) {
     if (fieldName == getFieldName(i)) {
-      if (!getField(object, i)->read(in, fieldName)) return FALSE;
+      if (!this->getField(object, i)->read(in, fieldName)) return FALSE;
       break;
     }
   }

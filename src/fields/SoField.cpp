@@ -1082,13 +1082,28 @@ SoField::shouldWrite(void) const
 }
 
 /*!
-  Called whenever another slave attaches itself to us. \a numConnections
-  is the differnce in number of connections made (i.e. if stuff is \e
-  disconnected, \a numConnections will be a negative number).
+  Called whenever another slave attaches or detaches itself to us.
+  \a numConnections is the difference in number of connections
+  made (i.e. if stuff is \e disconnected, \a numConnections will be
+  a negative number).
  */
 void
 SoField::connectionStatusChanged(int numConnections)
 {
+  // FIXME: not sure if this is correct or not. Looks like it could
+  // have unwanted side effects (premature destruction). 19990711
+  // mortene.
+#if 0
+  while (numConnections > 0) { 
+    this->ref();
+    numConnections--;
+  }
+
+  while (numConnections < 0) { 
+    this->unref();
+    numConnections++;
+  }
+#endif // disabled
 }
 
 /*!
@@ -1139,33 +1154,53 @@ SoField::copyConnection(const SoField * fromfield)
 SbBool
 SoField::read(SoInput * in, const SbName & name)
 {
-  assert(!in->isBinary() && "FIXME: not implemented yet");
-
   this->setDefault(FALSE);
   this->setDirty(FALSE);
 
-  // Check for ignored flag first.
-  char c;
-  if (!in->read(c)) return FALSE;
-  if (c == IGNOREDCHAR) {
-    this->setIgnored(TRUE);
-    return TRUE;
-  }
-  else {
-    in->putBack(c);
+  if (!in->isBinary()) {
+    // Check for ignored flag first.
+    char c;
+    if (!in->read(c)) return FALSE;
+    if (c == IGNOREDCHAR) {
+      this->setIgnored(TRUE);
+      return TRUE;
+    }
+    else {
+      in->putBack(c);
+    }
   }
   
-  // No ignored flag, try to read value.
   if (!this->readValue(in)) {
     SoReadError::post(in, "Couldn't read value for field \"%s\"",
 		      name.getString());
     return FALSE;
   }
 
-  // Check again for ignored flag. 
-  if (!in->read(c)) return FALSE;
-  if (c == IGNOREDCHAR) this->setIgnored(TRUE);
-  else in->putBack(c);
+  if (in->isBinary()) {
+    unsigned int flags;
+    if (!in->read(flags)) {
+      SoReadError::post(in, "Couldn't read field flags for field \"%s\"", 
+			name.getString());
+      return FALSE;
+    }
+
+    if (flags & 0x01) this->setIgnored(TRUE);
+    if (flags & 0x04) this->setDefault(TRUE);
+#if COIN_DEBUG
+    // FIXME: probably more flags to take care of. 19990711 mortene.
+    if (flags & ~(0x01 | 0x04)) {
+      SoDebugError::postInfo("SoField::read",
+			     "unknown field flags (flags: 0x%x)", flags);
+    }
+#endif // COIN_DEBUG
+  }
+  else {
+    // Check again for ignored flag. 
+    char c;
+    if (!in->read(c)) return FALSE;
+    if (c == IGNOREDCHAR) this->setIgnored(TRUE);
+    else in->putBack(c);
+  }
   
   // FIXME: call touch()? Probably not. 19990406 mortene.
   return TRUE;

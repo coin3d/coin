@@ -157,10 +157,6 @@ public:
 
   SbBool getChunkOfBytes(unsigned char * ptr, size_t length)
     {
-      // Using this method on an ASCII stream would puck up the line
-      // counter.
-      assert(this->isbinary);
-
       // Suck out any bytes from the backbuffer first.
       while ((this->backBufIndex >= 0) && (length > 0)) {
 	*ptr++ = this->backBuf[this->backBufIndex--];
@@ -704,7 +700,7 @@ SoInput::read(char & c, SbBool skip)
   whitespace character or left or right bracket (i.e. ``['' or ``]'').
 
   Returns \a FALSE upon encountering end of file before the string is
-  fully parsed.
+  fully parsed, or any other error.
 */
 SbBool
 SoInput::read(SbString & s)
@@ -712,10 +708,38 @@ SoInput::read(SbString & s)
   SoInput_FileInfo * fi = this->getTopOfStack();
   assert(fi);
 
-  // FIXME: binary read version not implemented yet. 19990626 mortene.
-  assert(!this->isBinary());
+  if (!this->checkHeader()) return FALSE;
 
-  if (!this->checkHeader() || !fi->skipWhiteSpace()) return FALSE;
+  ////////////////////
+  // Binary read
+  ////////////////////
+
+  if (this->isBinary()) {
+    // FIXME: guess at a sensible limit. 19990711 mortene.
+    const unsigned int MAXSTRLEN = 10 * 1024;
+    unsigned int slen;
+
+    if (!this->read(slen)) return FALSE;
+    // Sanity check
+    if (slen > MAXSTRLEN) {
+      SoReadError::post(this, "String too long (%d characters)", slen);
+      return FALSE;
+    }
+
+    char buffer[MAXSTRLEN+4+1];
+    if (slen && !fi->getChunkOfBytes((unsigned char *)buffer, ((slen+3)/4)*4))
+      return FALSE;
+    buffer[slen] = '\0';
+    s = buffer;
+    return TRUE;
+  }
+
+
+  ////////////////////
+  // ASCII read
+  ////////////////////
+
+  if (!fi->skipWhiteSpace()) return FALSE;
 
   s.makeEmpty();
 
@@ -787,59 +811,74 @@ SoInput::read(SbName & n, SbBool validIdent)
   SoInput_FileInfo * fi = this->getTopOfStack();
   assert(fi);
 
-  // FIXME: binary read version not implemented yet. 19990626 mortene.
-  assert(!this->isBinary());
+  if (!this->checkHeader()) return FALSE;
 
-  if (!this->checkHeader() || !fi->skipWhiteSpace()) return FALSE;
-
-  if (!validIdent) {
+  if (this->isBinary()) {
     SbString s;
-    if (!this->read(s)) return FALSE;
+    SbBool result = this->read(s);
+    if (s.getLength() < 1) result = FALSE;
 
-    // Strip off any "{" or "}" characters.
-    int stripoff = 0, idx = s.getLength()-1;
-    assert(idx >= 0);
-    const char * cstr = s.getString();
-    assert(cstr && strlen(cstr) == s.getLength());
-    while (((cstr[idx] == '{') || (cstr[idx] == '}')) && (idx > 0)) idx--;
-    
-    if (idx == s.getLength()-1) {
-      // No trailing '{' or '}'.
-      n = s;
+    if (result && validIdent) {
+      if (!SbName::isIdentStartChar(s[0])) result = FALSE;
+      for (int i = 1; (i < s.getLength()) && result; i++)
+	if (!SbName::isIdentChar(s[i])) result = FALSE;
     }
-    else {
-      // Trailing brackets; rip out correct part of string and put the
-      // rest back in again.
-      n = s.getSubString(0, idx);
-      fi->putBack(&cstr[idx+1]);
-    }
+
+    if (!result) return FALSE;
+    else n = s;
   }
   else {
-    SbString s;
-    char buf[256];
-    char * b = buf;
-    char c;
-    SbBool gotchar;
+    if (!fi->skipWhiteSpace()) return FALSE;
 
-    if ((gotchar = fi->get(c)) && SbName::isIdentStartChar(c)) {
-      *b++ = c;
+    if (!validIdent) {
+      SbString s;
+      if (!this->read(s)) return FALSE;
 
-      while ((gotchar = fi->get(c)) && SbName::isIdentChar(c)) {
-	*b++ = c;
-	if (b - buf == 255) {
-	  *b = '\0';
-	  s += buf;
-	  b = buf;
-	}
+      // Strip off any "{" or "}" characters.
+      int stripoff = 0, idx = s.getLength()-1;
+      assert(idx >= 0);
+      const char * cstr = s.getString();
+      assert(cstr && strlen(cstr) == s.getLength());
+      while (((cstr[idx] == '{') || (cstr[idx] == '}')) && (idx > 0)) idx--;
+    
+      if (idx == s.getLength()-1) {
+	// No trailing '{' or '}'.
+	n = s;
+      }
+      else {
+	// Trailing brackets; rip out correct part of string and put the
+	// rest back in again.
+	n = s.getSubString(0, idx);
+	fi->putBack(&cstr[idx+1]);
       }
     }
-    // This behavior is pretty silly, but this is how it is supposed
-    // to work, apparently -- _not_ returning FALSE upon end-of-file.
-    if (gotchar) fi->putBack(c);
-    *b = '\0';
-    s += buf;
-    n = SbName(s);
-    if (b == buf) return FALSE;
+    else {
+      SbString s;
+      char buf[256];
+      char * b = buf;
+      char c;
+      SbBool gotchar;
+
+      if ((gotchar = fi->get(c)) && SbName::isIdentStartChar(c)) {
+	*b++ = c;
+
+	while ((gotchar = fi->get(c)) && SbName::isIdentChar(c)) {
+	  *b++ = c;
+	  if (b - buf == 255) {
+	    *b = '\0';
+	    s += buf;
+	    b = buf;
+	  }
+	}
+      }
+      // This behavior is pretty silly, but this is how it is supposed
+      // to work, apparently -- _not_ returning FALSE upon end-of-file.
+      if (gotchar) fi->putBack(c);
+      *b = '\0';
+      s += buf;
+      n = SbName(s);
+      if (b == buf) return FALSE;
+    }
   }
 
   return TRUE;
@@ -883,9 +922,15 @@ SoInput::read(int & i)
 SbBool
 SoInput::read(unsigned int & i)
 {
-  // FIXME: binary read version not implemented yet. 19990626 mortene.
-  assert(!this->isBinary());
-  READ_UNSIGNED_INTEGER(i, unsigned int);
+  if (this->isBinary()) {
+    int32_t tmp;
+    if (!this->readBinaryArray(&tmp, 1)) return FALSE;
+    i = tmp;
+    return TRUE;
+  }
+  else {
+    READ_UNSIGNED_INTEGER(i, unsigned int);
+  }
 }
 
 /*!
@@ -907,9 +952,15 @@ SoInput::read(short & s)
 SbBool
 SoInput::read(unsigned short & s)
 {
-  // FIXME: binary read version not implemented yet. 19990626 mortene.
-  assert(!this->isBinary());
-  READ_UNSIGNED_INTEGER(s, unsigned short);
+  if (this->isBinary()) {
+    int32_t tmp;
+    if (!this->readBinaryArray(&tmp, 1)) return FALSE;
+    s = tmp;
+    return TRUE;
+  }
+  else {
+    READ_UNSIGNED_INTEGER(s, unsigned short);
+  }
 }
 
 /*!
@@ -1023,12 +1074,22 @@ SoInput::eof(void) const
 void
 SoInput::getLocationString(SbString & str) const
 {
-  str = "\tOccurred at line ";
-  char buf[40];
-  sprintf(buf, "%3d", this->getTopOfStack()->linenr);
-  str += buf;
-  str += " in ";
-  str += this->getCurFileName();
+  if (this->isBinary()) {
+    str = "\tOccurred at position ";
+    char buf[32];
+    sprintf(buf, "%d", this->getTopOfStack()->getNumBytesParsedSoFar());
+    str += buf;
+    str += " in binary file ";
+    str += this->getCurFileName();
+  }
+  else {
+    str = "\tOccurred at line ";
+    char buf[32];
+    sprintf(buf, "%3d", this->getTopOfStack()->linenr);
+    str += buf;
+    str += " in ";
+    str += this->getCurFileName();
+  }
 }
 
 /*!

@@ -148,8 +148,6 @@ SoGroup::getNumChildren() const
 SbBool
 SoGroup::readInstance(SoInput * in, unsigned short flags)
 {
-  assert(!in->isBinary() && "FIXME: not implemented yet");
-
   SbName typeString;
   // FIXME: cast-hack to compile. 19980915 mortene.
   SoFieldData * fdata = (SoFieldData *)this->getFieldData();
@@ -176,36 +174,39 @@ SoGroup::readInstance(SoInput * in, unsigned short flags)
 }
 
 /*!
-  FIXME: write function documentation
+  Read all children of this node from \a in and attach them below this group.
+  Returns \a FALSE upon read error.
 */
 SbBool
 SoGroup::readChildren(SoInput * in)
 {
-  assert(!in->isBinary() && "FIXME: not implemented yet");
-
-  SoBase * child;
   SbBool ret = TRUE;
- 
-  while (TRUE) {
-    child = NULL;
-    if (SoBase::read(in, child, SoNode::getClassTypeId())) {
-      if (child != NULL) this->addChild((SoNode *)child);
-      else break;
 
-#if 0 // FIXME: progress aware code tmp disabled. 19980923 mortene
-      if (!SoDB::progress(in)) {
-	ret = FALSE;
-	break;
-      }
-#endif // disabled
-    }
-    else {
-      if (child && (child != (SoBase *)-1)) {
-	child->ref();
-	child->unref();
-      }
+  if (in->isBinary()) {
+    unsigned int numchildren;
+    ret = in->read(numchildren);
+    // FIXME: insert real limit after debugging is done. 19990711 mortene.
+    if (ret && numchildren > 1000) {
+      SoReadError::post(in, "File corrupt, found group node with %d children",
+			numchildren);
       ret = FALSE;
-      break;
+    }
+
+    for (unsigned int i=0; (i < numchildren) && ret; i++) {
+      SoBase * child = NULL;
+      if (ret = SoBase::read(in, child, SoNode::getClassTypeId())) {
+	assert(child);
+	this->addChild((SoNode *)child);
+      }
+    }
+  }
+  else {
+    while (ret) {
+      SoBase * child = NULL;
+      if (ret = SoBase::read(in, child, SoNode::getClassTypeId())) {
+	if (child != NULL) this->addChild((SoNode *)child);
+	else break;
+      }
     }
   }
  

@@ -83,6 +83,8 @@ SoFieldContainer::initClass(void)
 {
   // Make sure we init this class only once.
   assert(SoFieldContainer::classTypeId == SoType::badType());
+  // Make sure parent class has been initialized.
+  assert(inherited::getClassTypeId() != SoType::badType());
 
   SoFieldContainer::classTypeId =
     SoType::createType(inherited::getClassTypeId(), "FieldContainer", NULL);
@@ -519,13 +521,12 @@ SoFieldContainer::copyDone(void)
 SbBool
 SoFieldContainer::readInstance(SoInput * in, unsigned short flags)
 {
-  assert(!in->isBinary() && "FIXME: not implemented yet");
-
   // FIXME: proof-read code (it has just been moved verbatim over from
   // SoNode). 19990403 mortene.
 
-  // FIXME: handle "flags". 19990403 mortene.
-
+  // FIXME: handle non-builtin type correct for ASCII and binary
+  // formats. 19990403 mortene.
+#if 0 // old QvLib code
   SbName typeString;
   if (in->read(typeString, TRUE)) {
     if (typeString == "fields") {
@@ -538,6 +539,7 @@ SoFieldContainer::readInstance(SoInput * in, unsigned short flags)
       in->putBack(typeString.getString());
     }
   }
+#endif // disabled
 
   SbBool notbuiltin;
   if (!this->fieldData.read(in, this, TRUE, notbuiltin)) return FALSE;

@@ -153,6 +153,7 @@ SoDB::init(void)
   SoError::initErrors();
   SoInput::init();
   SoBase::initClass();
+  SoFieldContainer::initClass();
   SoField::initClass();
 #if !defined(COIN_EXCLUDE_SOELEMENT)
   // Elements must be initialized before actions.
@@ -241,6 +242,7 @@ SoDB::clean(void)
   SoElement::cleanClass();
 #endif // !(COIN_EXCLUDE_SOELEMENT
   SoField::cleanClass();
+  SoFieldContainer::cleanClass();
   SoBase::cleanClass();
   SoInput::clean();
   SoError::cleanErrors();
@@ -285,7 +287,7 @@ SoDB::read(SoInput * in, SoPath *& path)
   Return \a FALSE on error.
 */
 SbBool
-SoDB::read(SoInput * in, SoBase * & base)
+SoDB::read(SoInput * in, SoBase *& base)
 {
   if (!in->isValidFile()) return FALSE;
   return SoBase::read(in, base, SoBase::getClassTypeId());
@@ -297,7 +299,9 @@ SoDB::read(SoInput * in, SoBase * & base)
 
   The reference count of the node will initially be zero.
 
-  Returns \a FALSE on error.
+  Returns \a FALSE on error. Returns \a TRUE with \a rootNode equal to
+  \a NULL if we hit end of file instead of a new node specification in
+  the file.
  */
 #if !defined(COIN_EXCLUDE_SONODE)
 SbBool
@@ -305,7 +309,7 @@ SoDB::read(SoInput * in, SoNode *& rootNode)
 {
   SoBase * baseptr;
   SbBool result = SoDB::read(in, baseptr);
-  if (result) {
+  if (result && baseptr) {
     if (baseptr->isOfType(SoNode::getClassTypeId())) {
       rootNode = (SoNode *)baseptr;
     }
@@ -326,13 +330,38 @@ SoDB::read(SoInput * in, SoNode *& rootNode)
   the most common way of constructing and exporting scene graphs), no extra
   SoSeparator node will be made.
 
-  The reference count of the top separator will initially be zero.
+  The reference count of the root separator returned from this method will
+  be zero. Other nodes in the returned scene graph will have reference counts
+  according to the number of parent-child relationsships, as usual.
 
   Returns \a NULL on any error.
  */
 SoSeparator *
 SoDB::readAll(SoInput * in)
 {
+#if 1 // New code, designed to work better with binary files. 19990711 mortene.
+
+  SoSeparator * root = NULL;
+  SoNode * topnode = NULL;
+
+  while (SoDB::read(in, topnode) && topnode) {
+    if (!root) {
+      if (topnode->getTypeId() == SoSeparator::getClassTypeId())
+	root = (SoSeparator *)topnode;
+      else
+	root = new SoSeparator;
+    }
+
+    if (root != topnode) root->addChild(topnode);
+
+    topnode = NULL;
+  }
+
+  // FIXME: check that we are at EOF. 19990711 mortene.
+
+  return root;
+
+#else // Old code
   if (!in->isValidFile()) return NULL;
 
   // FIXME: read paths aswell. 19990403 mortene.
@@ -377,10 +406,11 @@ SoDB::readAll(SoInput * in)
     }
   }
 
-  // FIXME: this should really be done implicit in SoInput. 19990708 mortene.
+  // FIXME: this should really be done implicit in SoInput upon
+  // hitting EOF. 19990708 mortene.
   in->popFile();
-
   return root;
+#endif
 }
 #endif // !COIN_EXCLUDE_SOSEPARATOR
 

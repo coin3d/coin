@@ -561,8 +561,6 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
 SbBool
 SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
 {
-  assert(!in->isBinary() && "FIXME: can't handle binary input");
-
   assert(expectedType != SoType::badType());
   base = NULL;
 
@@ -570,11 +568,12 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
   SbBool result = in->read(name, TRUE);
   if (!result) return TRUE; // EOF, return TRUE with base==NULL
 
-#if 0 // debug
+#if 1 // debug
   SoDebugError::postInfo("SoBase::read", "name: '%s'",
 			 name.getString());
 #endif // debug
 
+  // FIXME: DEF/USE doesn't work with binary files yet. 19990711 mortene.
   if (name == REFERENCE_KEYWORD) result = SoBase::readReference(in, base);
   else result = SoBase::readBase(in, name, base);
 
@@ -815,8 +814,6 @@ SoBase::readReference(SoInput * in, SoBase *& base)
 SbBool
 SoBase::readBase(SoInput * in, SbName & className, SoBase *& base)
 {
-  assert(!in->isBinary() && "FIXME: can't handle binary input");
-
 #if 0 // debug
   SoDebugError::postInfo("SoBase::readBase", "className: '%s'",
 			 className.getString());
@@ -827,6 +824,7 @@ SoBase::readBase(SoInput * in, SbName & className, SoBase *& base)
 
   SbName refName;
 
+  // FIXME: doesn't work with binary files yet. 19990711 mortene.
   if (className == DEFINITION_KEYWORD) {
     if (!in->read(refName, FALSE) || !in->read(className, TRUE)) {
       SoReadError::post(in, "Premature end of file after %s",
@@ -849,10 +847,9 @@ SoBase::readBase(SoInput * in, SbName & className, SoBase *& base)
   if (ret) {
     SbBool gotChar;
     char c;
-    if (!(gotChar = in->read(c)) || c != OPEN_BRACE) {
+    if (!in->isBinary() && (!(gotChar = in->read(c)) || c != OPEN_BRACE)) {
       if (gotChar)
-	SoReadError::post(in, "Expected '%c'; got '%c'",
-			  OPEN_BRACE, c);
+	SoReadError::post(in, "Expected '%c'; got '%c'", OPEN_BRACE, c);
       else
 	SoReadError::post(in, "Expected '%c'; got EOF", OPEN_BRACE);
       ret = FALSE;
@@ -860,17 +857,17 @@ SoBase::readBase(SoInput * in, SbName & className, SoBase *& base)
     else {
       ret = SoBase::readBaseInstance(in, className, refName, base);
       
-      if (!ret) {
-	flush = TRUE;
-      }
-      else if (!(gotChar = in->read(c)) || c != CLOSE_BRACE) {
-	if (gotChar)
-	  SoReadError::post(in, "Expected '%c'; got '%c'",
-			    CLOSE_BRACE, c);
-	else
-	  SoReadError::post(in, "Expected '%c'; got EOF",
-			    CLOSE_BRACE);
-	ret = FALSE;
+      if (!in->isBinary()) {
+	if (!ret) {
+	  flush = TRUE;
+	}
+	else if (!(gotChar = in->read(c)) || c != CLOSE_BRACE) {
+	  if (gotChar)
+	    SoReadError::post(in, "Expected '%c'; got '%c'", CLOSE_BRACE, c);
+	  else
+	    SoReadError::post(in, "Expected '%c'; got EOF", CLOSE_BRACE);
+	  ret = FALSE;
+	}
       }
     }
   }
@@ -886,21 +883,32 @@ SbBool
 SoBase::readBaseInstance(SoInput * in, const SbName & className,
 			 const SbName & refName, SoBase *& base)
 {
-  assert(!in->isBinary() && "FIXME: can't handle binary input");
-
-  SbBool retval = FALSE, protoparsing = FALSE;
+  SbBool retval = TRUE;
 
   if (base = SoBase::createInstance(in, className)) {
     if (!(!refName)) in->addReference(refName, base);
 
-    // FIXME: set the "flags" parameter correctly when we find out
-    // what its really for. 19990403 mortene.
-    if (base->readInstance(in, 0)) {
-      retval = TRUE;
-    }
-    else {
+    unsigned short flags = 0;
+    if (in->isBinary())
+      retval = in->read(flags);
+#if 0 // I believe the flags parameter is not interesting during ASCII read.
+    else
+      flags =
+	(base->isOfType(SoGroup::getClassTypeId()) ? IS_GROUP : 0x0) |
+	(base->isOfType(SoEngine::getClassTypeId()) ? IS_ENGINE : 0x0);
+#endif // unused
+
+    if (retval) retval = base->readInstance(in, flags);
+
+    if (!retval) {
       if (!(!refName)) in->removeReference(refName);
+      base->ref();
+      base->unref();
+      base = NULL;
     }
+  }
+  else {
+    retval = FALSE;
   }
 
   return retval;
@@ -916,6 +924,8 @@ SoBase::createInstance(SoInput * in, const SbName & className)
   SoBase * instance = (SoBase *)insttype.createInstance(); 
 
   if (!instance) {
+    assert(0 && "FIXME: not implemented");
+
     // FIXME: is this ok for .iv-files? Or is it only for VRML 1 (or
     // VRML 1 & 2)? Check and maybe fix. 19990403 mortene.
     SbString unknownString;
@@ -935,6 +945,8 @@ SoBase::createInstance(SoInput * in, const SbName & className)
 void
 SoBase::flushInput(SoInput * in)
 {
+  assert(!in->isBinary());
+
   int nestLevel = 1;
   char c;
   
