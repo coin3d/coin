@@ -491,15 +491,13 @@ SoAction::getOriginalPathListAppliedTo(void) const
 }
 
 /*!
-  Returns \c TRUE if the current path list being applied is the last
-  path list from the set passed to apply().
+  This method is not supported in Coin. It should probably
+  have been private in OIV.
 */
 SbBool
 SoAction::isLastPathListAppliedTo(void) const
 {
-  // FIXME: path list traversal is not really supported yet. We just
-  // apply the paths one by one, so technically it should be correct
-  // to return TRUE here...
+  COIN_OBSOLETED();
   return TRUE;
 }
 
