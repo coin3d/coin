@@ -86,8 +86,8 @@ static const char NULL_KEYWORD[] = "NULL";
 // pointer for each and every object, we'll cut down on a decent
 // amount of memory use this way (SoBase should be kept as slim as
 // possible, as any dead weight is brought along in a lot of objects).
-SbDict * SoBase::name2obj_dict; // maps from char * to SbPList(SoBase)
-SbDict * SoBase::obj2name_dict; // maps from SoBase * to char *
+SbDict * SoBase::name2obj; // maps from char * to SbPList(SoBase)
+SbDict * SoBase::obj2name; // maps from SoBase * to char *
 
 SbString * SoBase::refwriteprefix = NULL;
 
@@ -155,8 +155,8 @@ SoBase::initClass(void)
 
   SoBase::classTypeId = SoType::createType(SoType::badType(), "Base");
 
-  SoBase::name2obj_dict = new SbDict;
-  SoBase::obj2name_dict = new SbDict;
+  SoBase::name2obj = new SbDict;
+  SoBase::obj2name = new SbDict;
   SoBase::refwriteprefix = new SbString("+");
 }
 
@@ -168,14 +168,14 @@ void
 SoBase::cleanClass(void)
 {
 #if COIN_DEBUG
-  assert(SoBase::name2obj_dict);
-  assert(SoBase::obj2name_dict);
+  assert(SoBase::name2obj);
+  assert(SoBase::obj2name);
 
   // Delete the SbPLists in the dictionaries.
-  SoBase::name2obj_dict->applyToAll(SoBase::freeLists);
+  SoBase::name2obj->applyToAll(SoBase::freeLists);
 
-  delete SoBase::name2obj_dict; SoBase::name2obj_dict = NULL;
-  delete SoBase::obj2name_dict; SoBase::obj2name_dict = NULL;
+  delete SoBase::name2obj; SoBase::name2obj = NULL;
+  delete SoBase::obj2name; SoBase::obj2name = NULL;
 
   delete SoBase::refwriteprefix;
 #endif // COIN_DEBUG
@@ -307,10 +307,10 @@ SoBase::getName(void) const
 {
   // If this assert fails, SoBase::initClass() has probably not been
   // called.
-  assert(SoBase::obj2name_dict);
+  assert(SoBase::obj2name);
 
   void * value;
-  SbBool found = SoBase::obj2name_dict->find((unsigned long)this, value);
+  SbBool found = SoBase::obj2name->find((unsigned long)this, value);
   return found ? SbName((const char *)value) : SbName();
 }
 
@@ -373,10 +373,10 @@ SoBase::addName(SoBase * const b, const char * const name)
 {
   SbPList * l;
   void * t;
-  if (!SoBase::name2obj_dict->find((unsigned long)name, t)) {
+  if (!SoBase::name2obj->find((unsigned long)name, t)) {
     // name not used before, create new list
     l = new SbPList;
-    SoBase::name2obj_dict->enter((unsigned long)name, l);
+    SoBase::name2obj->enter((unsigned long)name, l);
   }
   else {
     // name is used before, find pointer to old list
@@ -386,7 +386,7 @@ SoBase::addName(SoBase * const b, const char * const name)
   l->append(b);
 
   // set name of object. SbDict::enter() will overwrite old name
-  SoBase::obj2name_dict->enter((unsigned long)b, (void *)name);
+  SoBase::obj2name->enter((unsigned long)b, (void *)name);
 }
 
 /*!
@@ -396,7 +396,7 @@ void
 SoBase::removeName(SoBase * const b, const char * const name)
 {
   void * t;
-  SbBool found = SoBase::name2obj_dict->find((unsigned long)name, t);
+  SbBool found = SoBase::name2obj->find((unsigned long)name, t);
   assert(found);
 
   SbPList * list = (SbPList *) t;
@@ -404,7 +404,7 @@ SoBase::removeName(SoBase * const b, const char * const name)
   assert(i >= 0);
   list->remove(i);
 
-  SoBase::obj2name_dict->remove((unsigned long)b);
+  SoBase::obj2name->remove((unsigned long)b);
 }
 
 /*!
@@ -420,9 +420,9 @@ SoBase::startNotify(void)
   Notifies all auditors for this instance when changes are made.
 */
 void
-SoBase::notify(SoNotList * list)
+SoBase::notify(SoNotList * l)
 {
-  this->auditors.notify(list);
+  this->auditors.notify(l);
 }
 
 /*!
@@ -465,18 +465,18 @@ SoBase::getAuditors(void) const
   count the number of references to this object in the scene graph.
 */
 void
-SoBase::addWriteReference(SoOutput * out, SbBool isFromField)
+SoBase::addWriteReference(SoOutput * out, SbBool isfromfield)
 {
   assert(out->getStage() == SoOutput::COUNT_REFS);
 
   this->objdata.writerefcount++;
   if (this->objdata.writerefcount > 1) this->objdata.multirefs = TRUE;
-  if (!isFromField) this->objdata.ingraph = TRUE;
+  if (!isfromfield) this->objdata.ingraph = TRUE;
 }
 
 /*!
-  Returns \a TRUE if this object should be written out during a write action.
-  Will return \a FALSE if no references to this object has been made in the
+  Returns \c TRUE if this object should be written out during a write action.
+  Will return \c FALSE if no references to this object has been made in the
   scene graph.
 
   Note that connections from the fields of fieldcontainer objects is not
@@ -514,18 +514,18 @@ SoBase::decrementCurrentWriteCounter(void)
 }
 
 /*!
-  Returns the object of \a type, or derived from \ type, registered
+  Returns the object of \a type, or derived from \a type, registered
   under \a name. If several has been registered under the same name
   with the same type, returns the first.
 
   If no object of a valid type or subtype has been registered with the
-  given name, returns \a NULL.
+  given name, returns \c NULL.
 */
 SoBase *
 SoBase::getNamedBase(const SbName & name, SoType type)
 {
   void * t;
-  if (SoBase::name2obj_dict->find((unsigned long)((const char *)name), t)) {
+  if (SoBase::name2obj->find((unsigned long)((const char *)name), t)) {
     SbPList * l = (SbPList *)t;
     if (l->getLength()) {
       SoBase * b = (SoBase *)((*l)[0]);
@@ -548,7 +548,7 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
   int matches = 0;
 
   void * t;
-  if (SoBase::name2obj_dict->find((unsigned long)((const char *)name), t)) {
+  if (SoBase::name2obj->find((unsigned long)((const char *)name), t)) {
     SbPList * l = (SbPList *)t;
     for (int i=0; i < l->getLength(); i++) {
       SoBase * b = (SoBase *)((*l)[i]);
@@ -563,13 +563,12 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
 }
 
 /*!
-
   Read next SoBase derived instance from the \a in stream, check that
-  it is derived from \a expectedType and place a pointer to the newly
+  it is derived from \a expectedtype and place a pointer to the newly
   allocated instance in \a base.
 
   \c FALSE is returned on read errors, mismatch with the \a
-  expectedType, or if there are attempts at referencing (through the
+  expectedtype, or if there are attempts at referencing (through the
   \c USE keyword) unknown instances.
 
   If we return \c TRUE with \a base equal to \c NULL, there was either
@@ -583,9 +582,9 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
 
 */
 SbBool
-SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
+SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
 {
-  assert(expectedType != SoType::badType());
+  assert(expectedtype != SoType::badType());
   base = NULL;
 
   SbName name;
@@ -610,10 +609,10 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
     SoType type = base->getTypeId();
     assert(type != SoType::badType());
 
-    if (!type.isDerivedFrom(expectedType)) {
+    if (!type.isDerivedFrom(expectedtype)) {
       SoReadError::post(in, "Type '%s' is not derived from '%s'",
                         type.getName().getString(),
-                        expectedType.getName().getString());
+                        expectedtype.getName().getString());
       result = FALSE;
     }
   }
@@ -673,7 +672,7 @@ SoBase::getTraceRefs(void)
 }
 
 /*!
-  Returns \a TRUE if this object will be written more than once upon
+  Returns \c TRUE if this object will be written more than once upon
   export. Note that the result from this method is only valid during the
   second pass of a write action (and partly during the COUNT_REFS pass).
  */
@@ -702,7 +701,7 @@ SoBase::hasMultipleWriteRefs(void) const
   \sa writeFooter(), SoOutput::indent()
  */
 SbBool
-SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
+SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
 {
   if (!out->isBinary()) {
     out->write(END_OF_LINE);
@@ -741,8 +740,8 @@ SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
     out->write(this->getFileFormatName());
     if (out->isBinary()) {
       uint32_t flags = 0x0;
-      if (isGroup) flags |= SoBase::IS_GROUP;
-      if (isEngine) flags |= SoBase::IS_ENGINE;
+      if (isgroup) flags |= SoBase::IS_GROUP;
+      if (isengine) flags |= SoBase::IS_ENGINE;
       out->write(flags);
     }
     else {
@@ -852,35 +851,33 @@ SoBase::readReference(SoInput * in, SoBase *& base)
   return TRUE;
 }
 
-/*!
-  \internal
- */
+// Read the SoBase instance.
 SbBool
-SoBase::readBase(SoInput * in, SbName & className, SoBase *& base)
+SoBase::readBase(SoInput * in, SbName & classname, SoBase *& base)
 {
 #if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoBase::readBase", "className: '%s'",
-                         className.getString());
+  SoDebugError::postInfo("SoBase::readBase", "classname: '%s'",
+                         classname.getString());
 #endif // debug
 
   SbBool ret = TRUE, flush = FALSE;
   base = NULL;
 
-  SbName refName;
+  SbName refname;
 
-  if (className == DEF_KEYWORD) {
-    if (!in->read(refName, FALSE) || !in->read(className, TRUE)) {
+  if (classname == DEF_KEYWORD) {
+    if (!in->read(refname, FALSE) || !in->read(classname, TRUE)) {
       SoReadError::post(in, "Premature end of file after %s", DEF_KEYWORD);
       ret = FALSE;
     }
 
-    if (!refName) {
+    if (!refname) {
       SoReadError::post(in, "No name given after %s", DEF_KEYWORD);
       ret = FALSE;
     }
 
-    if (!className) {
-      SoReadError::post(in, "Invalid definition of %s", refName.getString());
+    if (!classname) {
+      SoReadError::post(in, "Invalid definition of %s", refname.getString());
       ret = FALSE;
     }
   }
@@ -896,7 +893,7 @@ SoBase::readBase(SoInput * in, SbName & className, SoBase *& base)
       ret = FALSE;
     }
     else {
-      ret = SoBase::readBaseInstance(in, className, refName, base);
+      ret = SoBase::readBaseInstance(in, classname, refname, base);
 
       if (!in->isBinary()) {
         if (!ret) {
@@ -917,23 +914,21 @@ SoBase::readBase(SoInput * in, SbName & className, SoBase *& base)
   return ret;
 }
 
-/*!
-  \internal
- */
+// Read the SoBase instance.
 SbBool
-SoBase::readBaseInstance(SoInput * in, const SbName & className,
-                         const SbName & refName, SoBase *& base)
+SoBase::readBaseInstance(SoInput * in, const SbName & classname,
+                         const SbName & refname, SoBase *& base)
 {
   SbBool retval = TRUE;
 
-  if ((base = SoBase::createInstance(in, className))) {
-    if (!(!refName)) {
+  if ((base = SoBase::createInstance(in, classname))) {
+    if (!(!refname)) {
       // Set up new entry in reference hash -- with full name.
-      in->addReference(refName, base);
+      in->addReference(refname, base);
 
       // Remove reference counter suffix, if any (i.e. "goldsphere+2"
       // becomes "goldsphere").
-      SbString instancename = refName.getString();
+      SbString instancename = refname.getString();
       const char * strp = instancename.getString();
       const char * occ = strstr(strp, SoBase::refwriteprefix->getString());
 
@@ -954,7 +949,7 @@ SoBase::readBaseInstance(SoInput * in, const SbName & className,
     if (retval) retval = base->readInstance(in, flags);
 
     if (!retval) {
-      if (!(!refName)) in->removeReference(refName);
+      if (!(!refname)) in->removeReference(refname);
       base->ref();
       base->unref();
       base = NULL;
@@ -967,13 +962,11 @@ SoBase::readBaseInstance(SoInput * in, const SbName & className,
   return retval;
 }
 
-/*!
-  \internal
- */
+// Create a new instance of the "classname" type.
 SoBase *
-SoBase::createInstance(SoInput * in, const SbName & className)
+SoBase::createInstance(SoInput * in, const SbName & classname)
 {
-  SoType type = SoType::fromName(className);
+  SoType type = SoType::fromName(classname);
 
   SoBase * instance = NULL;
 
@@ -981,11 +974,11 @@ SoBase::createInstance(SoInput * in, const SbName & className)
     // Default to SoUnknownNode for now.. FIXME: what if we're dealing
     // with an unknown engine? 20000105 mortene.
     SoUnknownNode * unknownnode = new SoUnknownNode;
-    unknownnode->setNodeClassName(className);
+    unknownnode->setNodeClassName(classname);
     instance = unknownnode;
   }
   else if (!type.canCreateInstance()) {
-    SoReadError::post(in, "Class \"%s\" is abstract", className.getString());
+    SoReadError::post(in, "Class \"%s\" is abstract", classname.getString());
   }
   else {
     instance = (SoBase *)type.createInstance();
@@ -994,19 +987,17 @@ SoBase::createInstance(SoInput * in, const SbName & className)
   return instance;
 }
 
-/*!
-  \internal
- */
+// Hmm.
 void
 SoBase::flushInput(SoInput * in)
 {
   assert(!in->isBinary());
 
-  int nestLevel = 1;
+  int nestlevel = 1;
   char c;
 
-  while (nestLevel > 0 && in->read(c)) {
-    if (c == CLOSE_BRACE) nestLevel--;
-    else if (c == OPEN_BRACE) nestLevel++;
+  while (nestlevel > 0 && in->read(c)) {
+    if (c == CLOSE_BRACE) nestlevel--;
+    else if (c == OPEN_BRACE) nestlevel++;
   }
 }

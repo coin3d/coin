@@ -51,13 +51,13 @@ public:
   static void removeName(SoBase * const base, const char * const name);
 
   virtual void startNotify(void);
-  virtual void notify(SoNotList * list);
+  virtual void notify(SoNotList * l);
 
   void addAuditor(void * const auditor, const SoNotRec::Type type);
   void removeAuditor(void * const auditor, const SoNotRec::Type type);
   const SoAuditorList & getAuditors(void) const;
 
-  virtual void addWriteReference(SoOutput * out, SbBool isFromField = FALSE);
+  virtual void addWriteReference(SoOutput * out, SbBool isfromfield = FALSE);
   SbBool shouldWrite(void);
 
   static void incrementCurrentWriteCounter(void);
@@ -67,7 +67,7 @@ public:
   static int getNamedBases(const SbName & name, SoBaseList & baselist,
                            SoType type);
 
-  static SbBool read(SoInput * in, SoBase *& base, SoType expectedType);
+  static SbBool read(SoInput * in, SoBase *& base, SoType expectedtype);
   static void setInstancePrefix(const SbString & c);
 
   static void setTraceRefs(SbBool trace);
@@ -84,7 +84,7 @@ protected:
   virtual void destroy(void);
 
   SbBool hasMultipleWriteRefs(void) const;
-  SbBool writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const;
+  SbBool writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const;
   void writeFooter(SoOutput * out) const;
   virtual const char * getFileFormatName(void) const;
 
@@ -95,11 +95,11 @@ protected:
 
 private:
   static SbBool readReference(SoInput * in, SoBase *& base);
-  static SbBool readBase(SoInput * in, SbName & className, SoBase *& base);
-  static SbBool readBaseInstance(SoInput * in, const SbName & className,
-                                 const SbName & refName, SoBase *& base);
+  static SbBool readBase(SoInput * in, SbName & classname, SoBase *& base);
+  static SbBool readBaseInstance(SoInput * in, const SbName & classname,
+                                 const SbName & refname, SoBase *& base);
 
-  static SoBase * createInstance(SoInput * in, const SbName & className);
+  static SoBase * createInstance(SoInput * in, const SbName & classname);
   static void flushInput(SoInput * in);
 
   static void cleanClass(void);
@@ -131,8 +131,8 @@ private:
   // SoAuditorList.
   SoAuditorList auditors;
 
-  static SbDict * name2obj_dict;
-  static SbDict * obj2name_dict;
+  static SbDict * name2obj;
+  static SbDict * obj2name;
 
   static SbString * refwriteprefix;
 
