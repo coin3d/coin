@@ -202,6 +202,8 @@ static void
 fontstruct_rmglyph(struct cc_flw_font * fs, unsigned int glyph)
 {
   struct cc_flw_glyph * gs = flw_glyphidx2glyphptr(fs, glyph);
+  /* workaround so that flw_done_bitmap() doesn't free our static data */
+  if (gs->fromdefaultfont) gs->bitmap->buffer = NULL;
   flw_done_bitmap(gs->bitmap);
 }
 
@@ -773,7 +775,7 @@ cc_flw_get_bitmap(unsigned int font, unsigned int glyph)
   }
 
   gs->bitmap = bm;
-
+  gs->fromdefaultfont = fromdefaultfont;
  done:
   FLW_MUTEX_UNLOCK(flw_global_lock);
   return bm;
