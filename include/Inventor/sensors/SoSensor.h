@@ -34,7 +34,7 @@ public:
 
   void setFunction(SoSensorCB * callbackfunction);
   SoSensorCB * getFunction(void) const;
-  void setData(void * callbackData);
+  void setData(void * callbackdata);
   void * getData(void) const;
 
   virtual void schedule(void) = 0;

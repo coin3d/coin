@@ -19,23 +19,36 @@
 
 /*!
   \class SoSensor SoSensor.h Inventor/sensors/SoSensor.h
-  \brief The SoSensor class is the abstract base class which the other
-  sensor classes are built upon.
+  \brief The SoSensor class is the abstract base class for all sensors.
   \ingroup sensors
 
-  TODO: doc on what sensors are
+  Sensors is a mechanism in Coin for scheduling jobs to be run upon
+  specific events. The events in question could be particular points
+  in time, or changes to entities in the scene graph.
 
-  \sa SoSensorManager
-  \sa SoTimerQueueSensor SoDelayQueueSensor
-  \sa SoTimerSensor SoAlarmSensor
-  \sa SoIdleSensor SoDataSensor SoOneShotSensor
-  \sa SoPathSensor SoFieldSensor SoNodeSensor
+  See documentation of subclasses for insight into exactly for what
+  types of events we can trigger sensor callbacks.
+
+  For most tasks where application programmers can use sensors, it is
+  also possible to achieve the same results by using engines. There
+  are a few important differences between sensors and engines, though:
+
+  Engines are considered part of the scene graph, and is written to
+  file upon SoWriteAction export operations. Sensors, on the other
+  hand, are not included in export operations.
+
+  Engines basically connects fields (and comes with a lot of builtin
+  functionality for combining and converting inputs and outputs), you
+  just decide which engine you want, connect inputs and output and
+  forgets about it. Sensors are a lot more flexible in what you can do
+  when they trigger, as control is transfered internally from Coin to
+  your registered callback functions.
+
+  \sa SoSensorManager, SoEngine
  */
 
 #include <Inventor/sensors/SoSensor.h>
 #include <coindefs.h> // COIN_STUB()
-#include <stdlib.h> // to get NULL definition
-#include <assert.h>
 
 /*!
   \var SoSensorCB * SoSensor::func
@@ -47,26 +60,40 @@
 */
 
 /*!
-  \fn virtual void SoSensor::schedule(void) = 0
+  \fn virtual void SoSensor::schedule(void)
+
   Put the sensor in a queue to be triggered at a later time.
+
   \sa unschedule(), isScheduled()
  */
 /*!
-  \fn virtual void SoSensor::unschedule(void) = 0
-  Remove sensor from queue. The sensor will not be triggered again unless
-  it is re-scheduled.
+  \fn virtual void SoSensor::unschedule(void)
+
+  Remove sensor from queue. The sensor will not be triggered unless it
+  is later rescheduled.
+
   \sa schedule(), isScheduled()
  */
 /*!
-  \fn virtual SbBool SoSensor::isScheduled(void) const = 0
+  \fn virtual SbBool SoSensor::isScheduled(void) const
+
   Check if this sensor is scheduled for triggering.
+
   \sa schedule(), unschedule()
  */
 /*!
-  \fn virtual SbBool SoSensor::isBefore(const SoSensor * s) const = 0
-  Returns \a TRUE if this sensor should precede sensor \a s in its
+  \fn virtual SbBool SoSensor::isBefore(const SoSensor * s) const
+
+  Returns \c TRUE if this sensor should precede sensor \a s in its
   sensor queue.
  */
+
+/*!
+  \typedef void SoSensor::SoSensorCB(void * data, SoSensor * sensor)
+
+  Sensor callback functions must have this signature to be valid for
+  registering with SoSensor.
+*/
 
 
 /*!
@@ -78,8 +105,8 @@ SoSensor::SoSensor(void)
 }
 
 /*!
-  Constructor taking as parameters the sensor callback function and the
-  userdata which will be passed the callback.
+  Constructor taking as parameters the sensor callback function \a
+  func and the user \a data pointer which will be passed the callback.
 
   \sa setFunction(), setData()
  */
@@ -97,8 +124,8 @@ SoSensor::~SoSensor(void)
 }
 
 /*!
-  Set the callback function pointer which will be used when the sensor is
-  triggered.
+  Set the callback function pointer which will be used when the sensor
+  is triggered.
 
   \sa getFunction(), setData()
  */
@@ -120,15 +147,15 @@ SoSensor::getFunction(void) const
 }
 
 /*!
-  Set the user-supplied data pointer which will be used as one of the
-  arguments to the sensor callback function.
+  Set the user-supplied data pointer which will be used as the first
+  argument to the sensor callback function.
 
   \sa getData(), setFunction()
  */
 void
-SoSensor::setData(void * callbackData)
+SoSensor::setData(void * callbackdata)
 {
-  this->funcData = callbackData;
+  this->funcData = callbackdata;
 }
 
 /*!
@@ -143,28 +170,28 @@ SoSensor::getData(void) const
 }
 
 /*!
-  \internal
-
-  First unschedule and then trigger the callback function.
+  Trigger the callback function.
  */
 void
 SoSensor::trigger(void)
 {
   this->unschedule();
-  if(this->func) this->func(this->funcData, this);
+  if (this->func) this->func(this->funcData, this);
 }
 
 /*!
-  FIXME: write doc
+  \internal
+  Open Inventor function not implemented in Coin.
  */
 void
-SoSensor::setNextInQueue(SoSensor * /* next */)
+SoSensor::setNextInQueue(SoSensor * next)
 {
   COIN_STUB();
 }
 
 /*!
-  FIXME: write doc
+  \internal
+  Open Inventor function not implemented in Coin.
  */
 SoSensor *
 SoSensor::getNextInQueue(void) const
@@ -174,10 +201,10 @@ SoSensor::getNextInQueue(void) const
 }
 
 /*!
-  FIXME: write doc
+  Sets up initialization for static data for the sensors. Called by
+  SoDB::init().
  */
 void
 SoSensor::initClass(void)
 {
-  COIN_STUB();
 }

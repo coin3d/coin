@@ -31,8 +31,8 @@ public:
   SoAlarmSensor(SoSensorCB * func, void * data);
   virtual ~SoAlarmSensor(void);
 
-  void setTime(const SbTime & absTime);
-  void setTimeFromNow(const SbTime & relTime);
+  void setTime(const SbTime & abstime);
+  void setTimeFromNow(const SbTime & reltime);
   const SbTime & getTime(void) const;
 
   virtual void schedule(void);

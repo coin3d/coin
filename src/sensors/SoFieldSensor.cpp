@@ -23,7 +23,7 @@
   derived object.
   \ingroup sensors
 
-  TODO: doc
+  FIXME: doc
  */
 
 #include <Inventor/sensors/SoFieldSensor.h>

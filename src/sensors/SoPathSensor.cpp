@@ -23,7 +23,7 @@
   derived object.
   \ingroup sensors
 
-  TODO: doc
+  FIXME: doc
  */
 
 #include <Inventor/sensors/SoPathSensor.h>
@@ -69,7 +69,7 @@ void
 SoPathSensor::attach(SoPath * path)
 {
   this->convict = path;
-  // TODO: add myself to path's list of auditors.
+  // FIXME: add myself to path's list of auditors.
 }
 
 /*!
@@ -81,7 +81,7 @@ SoPathSensor::attach(SoPath * path)
 void
 SoPathSensor::detach(void)
 {
-  // TODO: remove myself from path's auditor list.
+  // FIXME: remove myself from path's auditor list.
   this->convict = NULL;
 }
 

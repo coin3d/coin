@@ -172,6 +172,7 @@ SoDB::init(void)
   SoNode::initClass();
   SoEngine::initClass();
   SoEvent::initClass();
+  SoSensor::initClass();
 
   // Register all valid file format headers.
   SoDB::registerHeader(SbString("#Inventor V2.1 ascii   "), FALSE, 2.1f,

@@ -23,7 +23,7 @@
   monitoring changes in a scene graph.
   \ingroup sensors
 
-  TODO: doc
+  FIXME: doc
  */
 
 #include <Inventor/sensors/SoDataSensor.h>
@@ -106,7 +106,7 @@ SoDataSensor::getTriggerField(void) const
 SoPath *
 SoDataSensor::getTriggerPath(void) const
 {
-  // TODO: implement
+  // FIXME: implement
   assert(0);
   return NULL;
 }

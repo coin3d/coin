@@ -12,16 +12,16 @@
 # ID
 # ==
 # HIERARCHY
-# Id  SoSensor
-# Id      SoTimerQueueSensor
-# Id          SoAlarmSensor
-# Id          SoTimerSensor
-# Id      SoDelayQueueSensor
+# ID  SoSensor
+# ID      SoTimerQueueSensor
+# ID          SoAlarmSensor
+# ID          SoTimerSensor
+# ID      SoDelayQueueSensor
 # id          SoDataSensor
 # Id              SoFieldSensor
 # Id              SoNodeSensor
 # Id              SoPathSensor
-# id          SoIdleSensor
-# Id          SoOneShotSensor
+# ID          SoIdleSensor
+# ID          SoOneShotSensor
 #
 ############################################################################

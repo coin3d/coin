@@ -45,7 +45,7 @@ private:
   virtual void trigger(void);
 
   SbTime base, interval;
-  SbBool notsetBaseTime;
+  SbBool setbasetime;
   SbBool istriggering, wasunscheduled;
 };
 

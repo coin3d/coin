@@ -23,7 +23,7 @@
   derived object.
   \ingroup sensors
 
-  TODO: doc (detects field changes, children changes in group nodes, ...)
+  FIXME: doc (detects field changes, children changes in group nodes, ...)
  */
 
 #include <Inventor/sensors/SoNodeSensor.h>

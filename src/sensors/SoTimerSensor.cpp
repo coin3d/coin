@@ -19,12 +19,15 @@
 
 /*!
   \class SoTimerSensor SoTimerSensor.h Inventor/sensors/SoTimerSensor.h
-  \brief The SoTimerSensor class is a sensor which will trigger repeatedly at
-  certain intervals.
+  \brief The SoTimerSensor class is a sensor which will trigger at given intervals.
   \ingroup sensors
 
-  TODO: doc
- */
+  Use sensors of this class when you want a job repeated at a certain
+  interval.
+
+  SoTimerSensor instances is commonly used to trigger animation
+  updates at a constant framerate.
+*/
 
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/SoDB.h>
@@ -37,19 +40,19 @@
 #define DEBUG_TIMERSENSOR_TRACE 0
 
 /*!
-  Constructor.
+  Default constructor. Sets up an interval of 1/30th of a second.
  */
 SoTimerSensor::SoTimerSensor(void)
 {
   this->interval.setValue(1.0f/30.0f);
-  this->notsetBaseTime = TRUE;
+  this->setbasetime = FALSE;
   this->istriggering = FALSE;
   this->wasunscheduled = FALSE;
 }
 
 /*!
-  Constructor taking as parameters the sensor callback function and the
-  userdata which will be passed the callback.
+  Constructor taking as parameters the sensor callback function and
+  the userdata which will be passed the callback.
 
   \sa setFunction(), setData()
  */
@@ -57,7 +60,7 @@ SoTimerSensor::SoTimerSensor(SoSensorCB * func, void * data)
   : inherited(func, data)
 {
   this->interval.setValue(1.0f/30.0f);
-  this->notsetBaseTime = TRUE;
+  this->setbasetime = FALSE;
   this->istriggering = FALSE;
   this->wasunscheduled = FALSE;
 }
@@ -70,7 +73,14 @@ SoTimerSensor::~SoTimerSensor(void)
 }
 
 /*!
-  Set the base trigger time.
+  Set the \a base trigger time.
+
+  If you use this method, the trigger times will be on intervals from
+  the given value.
+
+  Without an explicitly set base time, the next trigger invocation
+  after a trigger has happened will be on the current time plus the
+  interval time.
 
   \sa getBaseTime()
  */
@@ -78,7 +88,7 @@ void
 SoTimerSensor::setBaseTime(const SbTime & base)
 {
   this->base = base;
-  this->notsetBaseTime = FALSE;
+  this->setbasetime = TRUE;
   // FIXME: reschedule? 19990425 mortene.
 }
 
@@ -122,12 +132,12 @@ SoTimerSensor::getInterval(void) const
 void
 SoTimerSensor::reschedule(const SbTime & schedtime)
 {
-  if (this->notsetBaseTime) {
+  if (!this->setbasetime) {
     this->base = schedtime;
     this->setTriggerTime(this->base + this->interval);
 #if DEBUG_TIMERSENSOR_TRACE // debug
     SoDebugError::postInfo("SoTimerSensor::reschedule",
-                           "(notsetBaseTime) base: %lf, new trigger time: %lf",
+                           "(setbasetime) base: %lf, new trigger time: %lf",
                            this->base.getValue(), this->getTriggerTime());
 #endif // debug
   }
@@ -171,8 +181,8 @@ SoTimerSensor::schedule(void)
 }
 
 /*!
-  Overrides the virtual unschedule() method to handle unschedule() calls
-  during triggering.
+  Overrides the virtual unschedule() method to handle unschedule()
+  calls during triggering.
  */
 void
 SoTimerSensor::unschedule(void)
@@ -194,8 +204,8 @@ SoTimerSensor::unschedule(void)
 }
 
 /*!
-  Overides the virtual trigger() method to be able to reschedule ourselves
-  after we've been triggered.
+  Overides the virtual trigger() method to be able to reschedule
+  ourselves after we've been triggered.
 */
 void
 SoTimerSensor::trigger(void)
@@ -222,8 +232,8 @@ SoTimerSensor::trigger(void)
 }
 
 /*!
-  Need to overload this method in SoTimerSensor, otherwise we can't return
-  the correct schedule status during triggering.
+  Need to overload this method in SoTimerSensor, otherwise we can't
+  return the correct schedule status during triggering.
  */
 SbBool
 SoTimerSensor::isScheduled(void)

@@ -19,11 +19,11 @@
 
 /*!
   \class SoAlarmSensor SoAlarmSensor.h Inventor/sensors/SoAlarmSensor.h
-  \brief The SoAlarmSensor class is a sensor which will trigger once at
-  a specified time.
+  \brief The SoAlarmSensor class is a sensor which will trigger once at a specified time.
   \ingroup sensors
 
-  TODO: doc
+  SoAlarmSensor provides a convenient way of setting up triggers for
+  jobs which should be executed only once when they are scheduled.
  */
 
 #include <Inventor/sensors/SoAlarmSensor.h>
@@ -34,19 +34,19 @@
 #endif // COIN_DEBUG
 
 /*!
-  Constructor.
+  Default constructor.
  */
 SoAlarmSensor::SoAlarmSensor(void)
 {
 }
 
 /*!
-  Constructor taking as parameters the sensor callback function and the
-  userdata which will be passed the callback.
+  Constructor taking as parameters the sensor callback function and
+  the userdata which will be passed the callback.
 
   \sa setFunction(), setData()
  */
-SoAlarmSensor::SoAlarmSensor(SoSensorCB *func, void *data)
+SoAlarmSensor::SoAlarmSensor(SoSensorCB * func, void * data)
   : inherited(func, data)
 {
 }
@@ -59,32 +59,37 @@ SoAlarmSensor::~SoAlarmSensor(void)
 }
 
 /*!
-  Set the time at which the sensor will trigger. You must also
-  schedule() the sensor manually after calling this method.
+  Set the time at which the sensor will trigger.
+
+  Note that you must manually schedule() the sensor after calling this
+  method.
 
   \sa setTimeFromNow(), getTime()
  */
 void
-SoAlarmSensor::setTime(const SbTime & absTime)
+SoAlarmSensor::setTime(const SbTime & abstime)
 {
-  this->alarm = absTime;
+  this->alarm = abstime;
 }
 
 /*!
-  Set the alarm to be at a specified offset from the current time. You
-  must also schedule() the sensor manually after calling this method.
+  Set the alarm to be at a specified offset from the current time.
+
+  Note that you must manually schedule() the sensor after calling this
+  method.
 
   \sa setTime(), getTime()
  */
 void
-SoAlarmSensor::setTimeFromNow(const SbTime & relTime)
+SoAlarmSensor::setTimeFromNow(const SbTime & reltime)
 {
   this->alarm.setToTimeOfDay();
-  this->alarm += relTime;
+  this->alarm += reltime;
 }
 
 /*!
-  Returns the alarm time.
+  Returns the trigger time for the alarm as an absolute value from
+  1970-01-01 00:00:00.
 
   \sa setTime(), setTimeFromNow()
  */

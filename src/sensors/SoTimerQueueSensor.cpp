@@ -19,12 +19,18 @@
 
 /*!
   \class SoTimerQueueSensor SoTimerQueueSensor.h Inventor/sensors/SoTimerQueueSensor.h
-  \brief The SoTimerQueueSensor class is the abstract base class for
-  sensors trigging upon the occurence of certain timer events.
+  \brief The SoTimerQueueSensor class is the abstract base class for sensors triggering on certain timer events.
   \ingroup sensors
 
-  TODO: doc
- */
+  Timer sensors triggers upon specific points in time. If a timer
+  sensor can not trigger at the exact moment it has been scheduled
+  (due to other activity in Coin, a task suspended or heavy load from
+  other applications on the system), it will be triggered at the first
+  opportunity after the scheduled time has passed.
+
+  See the documentation of the subclasses for information on what ways
+  there are to specify times, intervals, etc.
+*/
 
 #include <Inventor/sensors/SoTimerQueueSensor.h>
 #include <Inventor/SoDB.h>
@@ -36,12 +42,12 @@
 
 /*!
   \var SbBool SoTimerQueueSensor::scheduled
-  \a TRUE if the sensor is currently scheduled.
+  \c TRUE if the sensor is currently scheduled.
 */
 
 
 /*!
-  Constructor.
+  Default constructor.
  */
 SoTimerQueueSensor::SoTimerQueueSensor(void)
   : scheduled(FALSE)
@@ -49,7 +55,7 @@ SoTimerQueueSensor::SoTimerQueueSensor(void)
 }
 
 /*!
-  Constructor taking as parameters the sensor callback function and the
+  Constructor taking as arguments the sensor callback function and the
   userdata which will be passed the callback.
 
   \sa setFunction(), setData()
@@ -64,9 +70,9 @@ SoTimerQueueSensor::SoTimerQueueSensor(SoSensorCB * func, void * data)
 */
 SoTimerQueueSensor::~SoTimerQueueSensor(void)
 {
-  // NB: it won't work to move this to the SoSensor destructor (where
-  // it really belongs), because you can't use pure virtual methods
-  // from a destructor.
+  // Note: it won't work to move this to the SoSensor destructor
+  // (where it really belongs), because you can't use pure virtual
+  // methods from a destructor.
   if (this->isScheduled()) this->unschedule();
 }
 

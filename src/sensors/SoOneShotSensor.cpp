@@ -21,9 +21,7 @@
   \class SoOneShotSensor SoOneShotSensor.h Inventor/sensors/SoOneShotSensor.h
   \brief The SoOneShotSensor class is a sensor which will trigger once.
   \ingroup sensors
-
-  TODO: doc
- */
+*/
 
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <assert.h>
@@ -36,8 +34,8 @@ SoOneShotSensor::SoOneShotSensor(void)
 }
 
 /*!
-  Constructor taking as parameters the sensor callback function and the
-  userdata which will be passed the callback.
+  Constructor taking as parameters the sensor callback function and
+  the userdata which will be passed the callback.
 
   \sa setFunction(), setData()
  */
