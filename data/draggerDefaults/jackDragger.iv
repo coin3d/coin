@@ -9,7 +9,7 @@ DEF JACK_GREENISH_MATERIAL Material { diffuseColor 0 0.3 0.2  emissiveColor 0 0.
 
 ### Geometry definitions for the various translation geometry ################
 
-DEF JACK_TRANSLATOR_AXIS Cube { width 2  height 0.1  depth 0.1 }
+DEF JACK_TRANSLATOR_AXIS Cube { width 2.2  height 0.1  depth 0.1 }
 
 DEF jackTranslatorLineTranslator Separator {
    USE JACK_INACTIVE_MATERIAL
