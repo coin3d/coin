@@ -39,8 +39,10 @@ SoDB_compileTimeAsserts(void)
 }
 
 // *************************************************************************
-// GCC 3.3.* (up to 3.3.3) contains a bug in builtin_expect() which makes
-// the assert macro fail
+// GCC 3.3.1/3.3.2 contains a bug in builtin_expect() which makes the assert
+// macro fail.
+// 
+// See http://gcc.gnu.org/bugzilla/show_bug.cgi?id=13239
 
 struct GCCAssertBomber {
   GCCAssertBomber () : _y(0) { }
@@ -55,23 +57,15 @@ void
 SoDB_checkGCCBuiltinExpectSanity(void)
 {
 #ifdef HAVE___BUILTIN_EXPECT
-  SbBool bogus_assert = FALSE;
-
-  if ( __builtin_expect(!!(GCCAssertBomberFunc2()._y==0), 1) ? FALSE : TRUE ) {
-    bogus_assert = TRUE;
-  }
-
-  if ( __builtin_expect(!!(GCCAssertBomberFunc1() &&
-                          (GCCAssertBomberFunc2()._y)==0), 1) ? FALSE : TRUE ) {
-    bogus_assert = TRUE;
-  }
-
+  int bogus_assert =
+    __builtin_expect(!!(GCCAssertBomberFunc1() &&
+                        (GCCAssertBomberFunc2()._y)==0), 1) ? 0 : -1;
   if ( bogus_assert ) {
     SoDebugError::post("SoDB::init",
       "Sanity checking has revealed that Coin has been built with a version "
       "of GCC that comes with a buggy assert() macro that gives false "
       "positives.  "
-      "To fix this problem, you need to fix the header file or upgrade GCC, "
+      "To fix this problem, you need to fix assert.h or upgrade GCC, "
       "and then rebuild the Coin library (and other libraries you have built "
       "with this faulty compiler.");
     exit(-1);
