@@ -169,6 +169,9 @@ STUFF TO FIX IN COIN
     kintel is that '+' is not allowed to be used as the 1st character
     of a node name identifier under VRML97.
 
+    Update 2002-11-05 mortene: estimate made at our November 2002 SIM
+    Coin summit; "1 man-week should be more than sufficient".
+
 
 004 Re-design the public API for handling textures
     2001-11-28  Peder Blekken  <pederb@sim.no>, write-down by mortene@sim.no
@@ -505,3 +508,77 @@ STUFF TO FIX IN COIN
     Integrating something like this in Coin, and then catching crash
     signals (if this is possible under MSWin..) could be a helpful
     feature.
+
+
+022 VRML97 VRMLScript scripting node.
+    2002-12-18  Morten Eriksen  <mortene@sim.no>
+
+    (Merged from the "hotlist" after our November 2002 SIM Coin
+    summit.)
+
+    Can probably be based on the Javascript engine from the Mozilla
+    project. Script node interface should be mostly in place, only a
+    couple or three days of extra work. But we should also add in the
+    time needed to make it fit into the configure/build process, which
+    is some days extra -- hard to make a good estimate on that.
+
+
+023 SoCollisionManager & So@Gui@CollisionViewer.
+    2002-12-18  Morten Eriksen  <mortene@sim.no>
+
+    (Merged from the "hotlist" after our November 2002 SIM Coin
+    summit.)
+
+    From TGS's Inventor API additions. larsa's estimate: ~ 1 man-week.
+
+
+024 Optimizing the performance of the SoIntersectionDetectionAction.
+    2002-12-18  Morten Eriksen  <mortene@sim.no>
+
+    (Merged from the "hotlist" after our November 2002 SIM Coin
+    summit.)
+
+    Now uses an algorithm with O(n^2) asymptotic time, where n is the
+    number of triangle primitives. This renders it almost unusable.
+
+    larsa's estimate for optimizing away the horrible algorithm-time:
+    a bit more than 1 man-week.
+
+    kintel has been working on this, but decided to go for a solution
+    where he integrates another library. This library is ok to use for
+    kintel's application, but can not be integrated into Coin due to
+    license and/or copyright issues.
+
+
+025 Integrate QGL into SoQt.
+    2002-12-18  Morten Eriksen  <mortene@sim.no>
+
+    (Merged from the "hotlist" after our November 2002 SIM Coin
+    summit.)
+
+    Should be done to make it possible to fix a bunch of bugs that QGL
+    has. Shouldn't take more than ~ 1 man-week to fix properly,
+    including full configure/build integration.
+
+
+
+OTHER COIN-RELATED STUFF TO FIX
+===============================
+
+These are from a "hotlist" of items after our November 2002 SIM Coin
+summit -- i.e. tasks that we should try really hard to get resources
+for in upcoming projects:
+
+   * SoWin completion: ~ 2 man-weeks.
+
+   * SoXt completion: ~ 3 man-weeks.
+
+   * Profit library made release-ready: ~ 2-3 days.
+
+   * Dime library made release-ready: ~ 2-3 days.
+
+   * Better font support: 1-2 man-weeks.
+
+   * Use simacros for old projects (Coin-1, Coin, SoQt, SoWin, Profit,
+     Dime, etc etc) instead of conf-macros: ~ 1/2 day for each
+     project.
