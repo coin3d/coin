@@ -46,6 +46,7 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbLine.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <assert.h>
 #include <string.h>
 #include <math.h>
@@ -783,8 +784,7 @@ void
 SbMatrix::getTransform(SbVec3f& /* t */, SbRotation& /* r */, SbVec3f& /* s */,
                        SbRotation& /* so */) const
 {
-  // TODO: not implemented.
-  assert(0);
+  COIN_STUB();
 }
 
 /*!
@@ -803,8 +803,7 @@ SbMatrix::getTransform(SbVec3f& /* translation */,
                        SbRotation& /* scaleOrientation */,
                        const SbVec3f& /* center */) const
 {
-  // TODO: not implemented.
-  assert(0);
+  COIN_STUB();
 }
 
 /*!
@@ -816,8 +815,7 @@ SbBool
 SbMatrix::factor(SbMatrix& /* r */, SbVec3f& /* s */, SbMatrix& /* u */, SbVec3f& /* t */,
                  SbMatrix& /* proj */)
 {
-  // TODO: not implemented.
-  assert(0);
+  COIN_STUB();
   return FALSE;
 }
 
