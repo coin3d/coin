@@ -709,7 +709,12 @@ SbDPViewVolume::ortho(double left, double right,
                     double bottom, double top,
                     double nearval, double farval)
 {
-#if COIN_DEBUG
+#if defined(COIN_DEBUG) && 0 // disabled 2002-08-30 pederb
+
+  // these parameter tests are probably incorrect. It is possible to
+  // set left > right etc. in SGI/TGS Inventor, and it should be
+  // possible to do this in Coin also.
+
   if (left>right) {
     SoDebugError::postWarning("SbDPViewVolume::ortho",
                               "right coordinate (%f) should be larger than "
@@ -736,7 +741,7 @@ SbDPViewVolume::ortho(double left, double right,
     farval=nearval;
     nearval=tmp;
   }
-#endif // COIN_DEBUG
+#endif // disabled
 
   this->type = SbDPViewVolume::ORTHOGRAPHIC;
   this->projPoint.setValue(0.0f, 0.0f, 0.0f);
