@@ -269,6 +269,18 @@ inline Type SbSqr(const Type val) {
 
 /* *********************************************************************** */
 
+/* Enable to generate COIN.DLL (under Win32). */
+#ifdef COIN_MAKE_DLL
+#define COIN_DLL_EXPORT __declspec(dllexport)
+#endif /* !COIN_MAKE_DLL */
+
+/* Empty define to avoid errors when _not_ compiling as a DLL. */
+#ifndef COIN_DLL_EXPORT
+#define COIN_DLL_EXPORT
+#endif /* !COIN_DLL_EXPORT */
+
+/* *********************************************************************** */
+
 /* A unique identifier to recognize whether or not we're running under
  * Systems in Motion's Coin library.
  */
