@@ -103,6 +103,12 @@ SoSpotLightManip::setDragger(SoDragger * newdragger)
       this->children->set(0, newdragger);
     }
     else {
+      // replace the shared material node to be able to modify it
+      SoMaterial *mat = new SoMaterial;
+      if (!newdragger->setPart(SbName("material"), (SoNode*)mat)) {
+        mat->ref();
+        mat->unref();
+      }
       this->children->append(newdragger);
       SoSpotLightManip::fieldSensorCB(this, NULL);
       newdragger->addValueChangedCallback(SoSpotLightManip::valueChangedCB, this);
@@ -424,7 +430,8 @@ SoSpotLightManip::fieldSensorCB(void * m, SoSensor *)
     dragger->setMotionMatrix(matrix);
     
     SoMaterial *material = (SoMaterial*)dragger->getPart("material", TRUE);
-    material->diffuseColor = thisp->color.getValue();
+    material->diffuseColor = SbColor(0.0f, 0.0f, 0.0f);
+    material->emissiveColor = thisp->color.getValue();
   }
 }
 
