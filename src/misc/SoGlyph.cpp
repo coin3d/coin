@@ -615,13 +615,13 @@ SoGlyph::getAdvance(void) const
 {
   assert(PRIVATE(this)->fontidx >= 0 && PRIVATE(this)->glyphidx >= 0);
 
-  float x, y;
+  int x, y;
   // FIXME: the 'get_advance' call has been separated into one
   // 'get_vector_advance' and one 'get_bitmap_advance' call. As we
   // cannot separate whether we are dealing with bitmaps or vector
-  // glyphs in this class, we choose 'get_vector_advance' as
+  // glyphs in this class, we choose 'get_bitmap_advance' as
   // default. (20030926 handegar)    
-  cc_flw_get_vector_advance(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx, &x, &y);
+  cc_flw_get_bitmap_advance(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx, &x, &y);
   return SbVec2s((short)x, (short)y);
 }
 
@@ -632,9 +632,9 @@ SoGlyph::getKerning(const SoGlyph & rightglyph) const
   assert(PRIVATE(this)->fontidx >= 0 && PRIVATE(this)->glyphidx >= 0);
   assert(PRIVATE(&rightglyph)->fontidx >= 0 && PRIVATE(&rightglyph)->glyphidx >= 0);
 
-  float x, y;
+  int x, y;
   // FIXME: Same issues as with 'getAdvance()'. See fixme. (20030926 handegar)
-  cc_flw_get_vector_kerning(PRIVATE(this)->fontidx,
+  cc_flw_get_bitmap_kerning(PRIVATE(this)->fontidx,
                             PRIVATE(this)->glyphidx, PRIVATE(&rightglyph)->glyphidx,
                             &x, &y);
   return SbVec2s((short)x, (short)y);
