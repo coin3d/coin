@@ -140,9 +140,11 @@ LT_CURRENT = @LT_CURRENT@
 LT_REVISION = @LT_REVISION@
 MACOSX_10_2FF_FALSE = @MACOSX_10_2FF_FALSE@
 MACOSX_10_2FF_TRUE = @MACOSX_10_2FF_TRUE@
+MACOSX_FALSE = @MACOSX_FALSE@
 MACOSX_NAME = @MACOSX_NAME@
 MACOSX_PACKAGEABLE_FALSE = @MACOSX_PACKAGEABLE_FALSE@
 MACOSX_PACKAGEABLE_TRUE = @MACOSX_PACKAGEABLE_TRUE@
+MACOSX_TRUE = @MACOSX_TRUE@
 MAC_FRAMEWORK = @MAC_FRAMEWORK@
 MAC_FRAMEWORK_FALSE = @MAC_FRAMEWORK_FALSE@
 MAC_FRAMEWORK_NAME = @MAC_FRAMEWORK_NAME@
@@ -246,7 +248,8 @@ target_vendor = @target_vendor@
 
 RegularSources = \
         SoUpgrader.cpp \
-        SoPackedColorV20.cpp
+        SoPackedColorV20.cpp \
+        SoShapeHintsV10.cpp
 
 LinkHackSources = \
         all-upgraders-cpp.cpp
@@ -254,7 +257,8 @@ LinkHackSources = \
 PublicHeaders = 
 PrivateHeaders = \
         SoUpgrader.h \
-        SoPackedColorV20.h
+        SoPackedColorV20.h \
+        SoShapeHintsV10.h
 
 ObsoleteHeaders = 
 
@@ -318,43 +322,48 @@ LIBRARIES = $(noinst_LIBRARIES)
 upgraders_lst_AR = $(AR) cru
 upgraders_lst_LIBADD =
 am__upgraders_lst_SOURCES_DIST = SoUpgrader.cpp SoPackedColorV20.cpp \
-	all-upgraders-cpp.cpp
+	SoShapeHintsV10.cpp all-upgraders-cpp.cpp
 am__objects_1 = all-upgraders-cpp.$(OBJEXT)
-am__objects_2 = SoUpgrader.$(OBJEXT) SoPackedColorV20.$(OBJEXT)
+am__objects_2 = SoUpgrader.$(OBJEXT) SoPackedColorV20.$(OBJEXT) \
+	SoShapeHintsV10.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_upgraders_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_upgraders_lst_SOURCES_DIST = SoUpgrader.h SoPackedColorV20.h \
-	all-upgraders-cpp.cpp SoUpgrader.cpp SoPackedColorV20.cpp
+	SoShapeHintsV10.h all-upgraders-cpp.cpp SoUpgrader.cpp \
+	SoPackedColorV20.cpp SoShapeHintsV10.cpp
 upgraders_lst_OBJECTS = $(am_upgraders_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libupgraders_la_LDFLAGS =
 libupgraders_la_LIBADD =
 am__libupgraders_la_SOURCES_DIST = SoUpgrader.cpp SoPackedColorV20.cpp \
-	all-upgraders-cpp.cpp
+	SoShapeHintsV10.cpp all-upgraders-cpp.cpp
 am__objects_6 = all-upgraders-cpp.lo
-am__objects_7 = SoUpgrader.lo SoPackedColorV20.lo
+am__objects_7 = SoUpgrader.lo SoPackedColorV20.lo SoShapeHintsV10.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libupgraders_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libupgraders_la_SOURCES_DIST = SoUpgrader.h SoPackedColorV20.h \
-	all-upgraders-cpp.cpp SoUpgrader.cpp SoPackedColorV20.cpp
+	SoShapeHintsV10.h all-upgraders-cpp.cpp SoUpgrader.cpp \
+	SoPackedColorV20.cpp SoShapeHintsV10.cpp
 libupgraders_la_OBJECTS = $(am_libupgraders_la_OBJECTS)
 libupgraders@SUFFIX@LINKHACK_la_LDFLAGS =
 libupgraders@SUFFIX@LINKHACK_la_LIBADD =
 am__libupgraders@SUFFIX@LINKHACK_la_SOURCES_DIST = SoUpgrader.cpp \
-	SoPackedColorV20.cpp all-upgraders-cpp.cpp
+	SoPackedColorV20.cpp SoShapeHintsV10.cpp all-upgraders-cpp.cpp
 am_libupgraders@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libupgraders@SUFFIX@LINKHACK_la_SOURCES_DIST = SoUpgrader.h \
-	SoPackedColorV20.h all-upgraders-cpp.cpp SoUpgrader.cpp \
-	SoPackedColorV20.cpp
+	SoPackedColorV20.h SoShapeHintsV10.h all-upgraders-cpp.cpp \
+	SoUpgrader.cpp SoPackedColorV20.cpp SoShapeHintsV10.cpp
 libupgraders@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libupgraders@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoPackedColorV20.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPackedColorV20.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShapeHintsV10.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShapeHintsV10.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoUpgrader.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoUpgrader.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-upgraders-cpp.Plo \
@@ -447,6 +456,8 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPackedColorV20.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPackedColorV20.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShapeHintsV10.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShapeHintsV10.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoUpgrader.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoUpgrader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-upgraders-cpp.Plo@am__quote@

@@ -36,6 +36,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
 #include "SoPackedColorV20.h"
+#include "SoShapeHintsV10.h"
 #include <stddef.h> // for NULL
 
 //
@@ -48,6 +49,7 @@ soupgrader_init_classes(void)
   if (first) {
     first = 0;
     SoPackedColorV20::initClass();
+    SoShapeHintsV10::initClass();
   }
 }
 
@@ -59,7 +61,17 @@ soupgrader_init_classes(void)
 SoBase * 
 SoUpgrader::tryCreateNode(const SbName & name, const float ivversion)
 {
-  if (ivversion == 2.0f) {
+  if (ivversion == 1.0f) {
+    soupgrader_init_classes();
+    
+    SbString s(name.getString());
+    s += "V10";
+    SoType type = SoType::fromName(SbName(s.getString()));
+    if (type.canCreateInstance()) {
+      return (SoBase*) type.createInstance();
+    }
+  }
+  else if (ivversion == 2.0f) {
     soupgrader_init_classes();
     
     SbString s(name.getString());
@@ -85,6 +97,10 @@ SoUpgrader::createUpgrade(const SoBase * base)
 
   if (type == SoPackedColorV20::getClassTypeId()) {
     SoPackedColorV20 * pp = (SoPackedColorV20*) base;
+    return (SoBase*) pp->createUpgrade();
+  }
+  else if (type == SoShapeHintsV10::getClassTypeId()) {
+    SoShapeHintsV10 * pp = (SoShapeHintsV10*) base;
     return (SoBase*) pp->createUpgrade();
   }
   else {

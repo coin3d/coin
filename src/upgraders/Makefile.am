@@ -3,13 +3,15 @@
 
 RegularSources = \
         SoUpgrader.cpp \
-        SoPackedColorV20.cpp
+        SoPackedColorV20.cpp \
+        SoShapeHintsV10.cpp
 LinkHackSources = \
         all-upgraders-cpp.cpp
 PublicHeaders =
 PrivateHeaders = \
         SoUpgrader.h \
-        SoPackedColorV20.h
+        SoPackedColorV20.h \
+        SoShapeHintsV10.h
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(upgraders, upgraders)

@@ -1,3 +1,6 @@
+#ifndef COIN_SOSHAPEHINTV10_H
+#define COIN_SOSHAPEHINTV10_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,7 +24,39 @@
  *
 \**************************************************************************/
 
-#include "SoUpgrader.cpp"
-#include "SoPackedColorV20.cpp"
-#include "SoShapeHintsV10.cpp"
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* !COIN_INTERNAL */
 
+#include <Inventor/fields/SoSFBitMask.h>
+#include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/nodes/SoSubNode.h>
+
+class SoShapeHints;
+
+class COIN_DLL_API SoShapeHintsV10 : public SoNode {
+  typedef SoNode inherited;
+
+  SO_NODE_HEADER(SoShapeHintsV10);
+
+public:
+
+  // These are the old hints
+  enum Hint {
+    SURFACE = 0x00, UNORDERED, CONCAVE, SOLID, ORDERED, CONVEX
+  };
+
+  // These are the two old fields
+  SoSFBitMask hints;
+  SoSFFloat creaseAngle;
+
+  static void initClass(void);
+  SoShapeHintsV10(void);
+
+  SoShapeHints * createUpgrade(void) const;
+
+protected:
+  virtual ~SoShapeHintsV10();
+};
+
+#endif // !COIN_SOSHAPEHINTSV10_H
