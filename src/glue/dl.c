@@ -677,13 +677,15 @@ cc_dl_close(cc_libhandle handle)
 
 #ifdef HAVE_DL_LIB
 
-  int result = dlclose(handle->nativehnd);
-
-  if (result != 0) {
-    const char * e = dlerror();
-    if (e) {
-      cc_debugerror_post("cc_dl_close", "dlclose(\"%s\") failed with: '%s'",
-                         cc_string_get_text(&handle->libname), e);
+  {
+    int result = dlclose(handle->nativehnd);
+    
+    if (result != 0) {
+      const char * e = dlerror();
+      if (e) {
+        cc_debugerror_post("cc_dl_close", "dlclose(\"%s\") failed with: '%s'",
+                           cc_string_get_text(&handle->libname), e);
+      }
     }
   }
 
