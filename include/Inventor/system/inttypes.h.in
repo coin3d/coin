@@ -31,6 +31,7 @@
     int16_t uint16_t
     int32_t uint32_t
     int64_t uint64_t
+    intptr_t uintptr_t
 
   (The 64-bit types are not guaranteed to be present, check for
   HAVE_INT64_T and HAVE_UINT64_T.)
@@ -83,6 +84,8 @@
 #undef HAVE_UINT32_T
 #undef HAVE_INT64_T
 #undef HAVE_UINT64_T
+#undef HAVE_INTPTR_T
+#undef HAVE_UINTPTR_T
 
 /* The type which the configure script found to match the given
    bitwidth. */
@@ -94,6 +97,8 @@
 #undef COIN_UINT32_T
 #undef COIN_INT64_T
 #undef COIN_UINT64_T
+#undef COIN_INTPTR_T
+#undef COIN_UINTPTR_T
 
 #endif /* (end wrapper) ! COIN_CONFIGURE_BUILD */
 
@@ -153,5 +158,15 @@ typedef COIN_INT64_T int64_t;
 typedef COIN_UINT64_T uint64_t;
 #define HAVE_UINT64_T 1
 #endif /* !HAVE_UINT64_T && COIN_UINT64_T */
+
+#if !defined(HAVE_INTPTR_T) && defined(COIN_INTPTR_T)
+typedef COIN_INTPTR_T intptr_t;
+#define HAVE_INTPTR_T 1
+#endif /* !HAVE_INTPTR_T && COIN_INTPTR_T */
+
+#if !defined(HAVE_UINTPTR_T) && defined(COIN_UINTPTR_T)
+typedef COIN_UINTPTR_T uintptr_t;
+#define HAVE_UINTPTR_T 1
+#endif /* !HAVE_UINTPTR_T && COIN_UINTPTR_T */
 
 #endif /* !COIN_INTTYPES_H */
