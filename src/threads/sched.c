@@ -142,9 +142,10 @@ cc_sched_get_num_threads(cc_sched * sched)
   return cc_wpool_get_num_workers(sched->pool);
 }
 
-/*!
-  Schedule a not job. \a priority is currently ignored, but
-  in the future this will be supported.
+/*! 
+  Schedule a new job. A thread calls \a workfunc with the \a closure
+  argument when a thread becomes available. \a priority is currently
+  ignored, but in the future this will be supported.
 */
 void
 cc_sched_schedule(cc_sched * sched,
