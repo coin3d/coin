@@ -588,7 +588,7 @@ $1
 #
 # SIM_AC_ERROR( ERROR [, ERROR ...] )
 #   Fetches the error messages from the error message file and displays
-#   them on stderr.
+#   them on stderr. The configure process will subsequently exit.
 #
 # SIM_AC_WITH_ERROR( WITHARG )
 #   Invokes AC_MSG_ERROR in a consistent way for problems with the --with-*
@@ -8911,15 +8911,15 @@ if test x"$with_opengl" != x"no"; then
 
   CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
 
-  SIM_AC_CHECK_HEADER_SILENT([GL/gl.h], [
+  SIM_AC_CHECK_HEADER_SILENT([OpenGL/gl.h], [
     sim_ac_gl_header_avail=true
-    sim_ac_gl_header=GL/gl.h
-    AC_DEFINE([HAVE_GL_GL_H], 1, [define if the GL header should be included as GL/gl.h])
+    sim_ac_gl_header=OpenGL/gl.h
+    AC_DEFINE([HAVE_OPENGL_GL_H], 1, [define if the GL header should be included as OpenGL/gl.h])
   ], [
-    SIM_AC_CHECK_HEADER_SILENT([OpenGL/gl.h], [
+    SIM_AC_CHECK_HEADER_SILENT([GL/gl.h], [
       sim_ac_gl_header_avail=true
-      sim_ac_gl_header=OpenGL/gl.h
-      AC_DEFINE([HAVE_OPENGL_GL_H], 1, [define if the GL header should be included as OpenGL/gl.h])
+      sim_ac_gl_header=GL/gl.h
+      AC_DEFINE([HAVE_GL_GL_H], 1, [define if the GL header should be included as GL/gl.h])
     ])
   ])
 
@@ -8968,15 +8968,15 @@ if test x"$with_opengl" != x"no"; then
 
   CPPFLAGS="$CPPFLAGS $sim_ac_glu_cppflags"
 
-  SIM_AC_CHECK_HEADER_SILENT([GL/glu.h], [
+  SIM_AC_CHECK_HEADER_SILENT([OpenGL/glu.h], [
     sim_ac_glu_header_avail=true
-    sim_ac_glu_header=GL/glu.h
-    AC_DEFINE([HAVE_GL_GLU_H], 1, [define if the GLU header should be included as GL/glu.h])
+    sim_ac_glu_header=OpenGL/glu.h
+    AC_DEFINE([HAVE_OPENGL_GLU_H], 1, [define if the GLU header should be included as OpenGL/glu.h])
   ], [
-    SIM_AC_CHECK_HEADER_SILENT([OpenGL/glu.h], [
+    SIM_AC_CHECK_HEADER_SILENT([GL/glu.h], [
       sim_ac_glu_header_avail=true
-      sim_ac_glu_header=OpenGL/glu.h
-      AC_DEFINE([HAVE_OPENGL_GLU_H], 1, [define if the GLU header should be included as OpenGL/glu.h])
+      sim_ac_glu_header=GL/glu.h
+      AC_DEFINE([HAVE_GL_GLU_H], 1, [define if the GLU header should be included as GL/glu.h])
     ])
   ])
 
@@ -9025,15 +9025,15 @@ if test x"$with_opengl" != x"no"; then
 
   CPPFLAGS="$CPPFLAGS $sim_ac_glext_cppflags"
 
-  SIM_AC_CHECK_HEADER_SILENT([GL/glext.h], [
+  SIM_AC_CHECK_HEADER_SILENT([OpenGL/glext.h], [
     sim_ac_glext_header_avail=true
-    sim_ac_glext_header=GL/glext.h
-    AC_DEFINE([HAVE_GL_GLEXT_H], 1, [define if the GLEXT header should be included as GL/glext.h])
+    sim_ac_glext_header=OpenGL/glext.h
+    AC_DEFINE([HAVE_OPENGL_GLEXT_H], 1, [define if the GLEXT header should be included as OpenGL/glext.h])
   ], [
-    SIM_AC_CHECK_HEADER_SILENT([OpenGL/gl.h], [
+    SIM_AC_CHECK_HEADER_SILENT([GL/gl.h], [
       sim_ac_glext_header_avail=true
-      sim_ac_glext_header=OpenGL/glext.h
-      AC_DEFINE([HAVE_OPENGL_GLEXT_H], 1, [define if the GLEXT header should be included as OpenGL/glext.h])
+      sim_ac_glext_header=GL/glext.h
+      AC_DEFINE([HAVE_GL_GLEXT_H], 1, [define if the GLEXT header should be included as GL/glext.h])
     ])
   ])
 
