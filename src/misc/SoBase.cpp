@@ -1778,21 +1778,19 @@ SoBase::readBaseInstance(SoInput * in, const SbName & classname,
     // SoGlobalField's constructor automatically adds itself to the
     // list of global fields without checking if the field already
     // exists.
+    globalfield->ref(); // increase refcount to 2, so the next call will not destruct the node
     SoGlobalField::removeGlobalFieldContainer(globalfield);
+    globalfield->unrefNoDelete(); // corrects ref count back to zero
       
-    // ..but first, do a sanity check on the SoGlobalField node.
-    int numfields = globalfield->getFieldData()->getNumFields();
-    if (numfields != 1) {
-      SoReadError::post(in, "Global fields can only contain one field, not %d",
-                        numfields);
-      goto failed;
-    }
+    // A read-error sanity check should have been done in
+    // SoGlobalField::readInstance().
+    assert(globalfield->getFieldData()->getNumFields() == 1);
 
     // Now, see if the global field is in the database already.
     SoField * f = SoDB::getGlobalField(globalfield->getName());
     if (f) {
       SoField * basefield = globalfield->getFieldData()->getField(globalfield, 0);
-      assert(basefield && "base (SoGlobalField) does not appear to have a field, this should be impossible");
+      assert(basefield && "base (SoGlobalField) does not appear to have a field");
         
       if (!f->isOfType(basefield->getClassTypeId())) {
         SoReadError::post(in, "Types of equally named global fields do not match: existing: %s, new: %s", 
@@ -1803,8 +1801,9 @@ SoBase::readBaseInstance(SoInput * in, const SbName & classname,
       SoGlobalField * container = (SoGlobalField *)f->getContainer();
       container->copyFieldValues(globalfield, TRUE); // Assign new global field values to old global field
           
-      base->ref(); base->unref(); // remove newly made SoGlobalField, use the existing one instead
-      base = container; // Assign the base global field to the already loaded global field
+      // Remove newly made SoGlobalField, use the existing one instead:
+      base->ref(); base->unref();
+      base = container;
     }
     else {
       // The global field was first removed to check the existence
