@@ -20,7 +20,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/manips/SoDirectionalLightManip.h \
 	$(top_srcdir)/include/Inventor/manips/SoPointLightManip.h \
 	$(top_srcdir)/include/Inventor/manips/SoSpotLightManip.h \
-	$(top_srcdir)/include/Inventor/manips/SoTransformManip.h
+	$(top_srcdir)/include/Inventor/manips/SoTransformManip.h \
 	$(top_srcdir)/include/Inventor/manips/SoCenterballManip.h \
 	$(top_srcdir)/include/Inventor/manips/SoHandleBoxManip.h \
 	$(top_srcdir)/include/Inventor/manips/SoJackManip.h \
