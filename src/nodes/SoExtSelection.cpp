@@ -2443,6 +2443,12 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
       results. Therefore we automatically reduce the size of the
       offscreen to fit within the maximum offscreen limitations.
       (20020812 handegar)
+
+      UPDATE 20041028 mortene: this is a rather nasty problem, as we
+      have no guarantee that SoOffscreenRenderer uses the same
+      criteria as below for deciding whether to use tiled rendering or
+      not. (In fact, it doesn't.) This should /really/ be improved
+      upon, if possible.
     */
     unsigned int maxsize[2];
     cc_glglue_context_max_dimensions(&maxsize[0], &maxsize[1]);
