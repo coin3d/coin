@@ -366,10 +366,11 @@ SoSceneManager::getOrigin(void) const
   FIXME: write doc
  */
 void
-SoSceneManager::setViewportRegion(const SbViewportRegion & /* newRegion */)
+SoSceneManager::setViewportRegion(const SbViewportRegion & newRegion)
 {
   // FIXME: implement
-  assert(0);
+  this->glAction->setViewportRegion(newRegion);
+  this->handleeventaction->setViewportRegion(newRegion);
 }
 
 /*!
@@ -378,10 +379,8 @@ SoSceneManager::setViewportRegion(const SbViewportRegion & /* newRegion */)
 const SbViewportRegion &
 SoSceneManager::getViewportRegion(void) const
 {
-  // FIXME: implement
-  assert(0);
-  static SbViewportRegion vpr;
-  return vpr;
+  // FIXME: should glAction's SbViewportRegion represent the SoSceneManager's?
+  return this->glAction->getViewportRegion();
 }
 
 /*!
