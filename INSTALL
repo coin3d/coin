@@ -383,12 +383,11 @@ Configuration Options
   This option can be used to specify where X is installed, in case the
   configure script is not able to locate it on its own.
 
---with-mesa=DIR
+--with-mesa
 
-  This option can be used to specify where the Mesa library is
-  installed, in case the configure script is not able to locate it on
-  its own.  This also indicates that linking should be done against
-  libMesa instead of GL.
+  This option can be used to indicate to the configure script to
+  prefer the Mesa library (i.e. libMesaGL / mesagl.lib) over an OpenGL
+  library installed under the default libGL / opengl32.lib name.
 
 --with-opengl=DIR
 
