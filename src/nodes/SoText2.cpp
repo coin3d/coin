@@ -47,7 +47,6 @@
 
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <coindefs.h> // COIN_STUB()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -77,10 +76,14 @@
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoGLLightModelElement.h>
-
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/details/SoTextDetail.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/SbPlane.h>
+#include <Inventor/SbLine.h>
 
 #include <limits.h>
 
@@ -117,8 +120,26 @@ static const unsigned int NOT_AVAILABLE = UINT_MAX;
   FIXME: write documentation for field
 */
 
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoText2P {
+public:
+  SoText2P(SoText2 * textnode) : textnode(textnode) {}
+
+  SoText2 * textnode;
+
+public:
+  void getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1, 
+               SbVec3f & v2, SbVec3f & v3);
+  SbVec2f getFontSize(SoState * state);
+};
+
+#endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
+
+#undef THIS
+#define THIS this->pimpl
 
 SO_NODE_SOURCE(SoText2);
 
@@ -127,6 +148,8 @@ SO_NODE_SOURCE(SoText2);
 */
 SoText2::SoText2(void)
 {
+  THIS = new SoText2P(this);
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoText2);
 
   SO_NODE_ADD_FIELD(string, (""));
@@ -144,6 +167,7 @@ SoText2::SoText2(void)
 */
 SoText2::~SoText2()
 {
+  delete THIS;
 }
 
 /*!
@@ -488,21 +512,97 @@ SoText2::GLRender(SoGLRenderAction * action)
   FIXME: write function documentation
 */
 void
-SoText2::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
+SoText2::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
-  // FIXME: implement properly. 19990418 mortene.
-  box.setBounds(SbVec3f(-1.0f, -1.0f, -0.1f),
-	            SbVec3f(1.0f, 1.0f, 0.1f));
-  center.setValue(0.0f, 0.0f, 0.0f);
+  SbVec3f v0, v1, v2, v3;
+  // this will cause a cache dependency on the view volume,
+  // model matrix and viewport.
+  THIS->getQuad(action->getState(), v0, v1, v2, v3);
+
+  box.makeEmpty();
+  box.extendBy(v0);
+  box.extendBy(v1);
+  box.extendBy(v2);
+  box.extendBy(v3);
+  center = box.getCenter();
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoText2::rayPick(SoRayPickAction * /* action */)
+SoText2::rayPick(SoRayPickAction * action)
 {
-  COIN_STUB();
+  if (!this->shouldRayPick(action)) return;
+  action->setObjectSpace();
+
+  SbVec3f v0, v1, v2, v3;
+  THIS->getQuad(action->getState(), v0, v1, v2, v3);
+  if (v0 == v1 || v0 == v3) return; // empty
+
+  SbVec3f isect;
+  SbVec3f bary;
+  SbBool front;
+  SbBool hit = action->intersect(v0, v1, v2, isect, bary, front);
+  if (!hit) hit = action->intersect(v0, v2, v3, isect, bary, front);
+  
+  if (hit && action->isBetweenPlanes(isect)) {
+    // find normalized 2D hitpoint on quad
+    float h = (v3-v0).length();
+    float w = (v1-v0).length();
+    SbLine horiz(v2,v3);
+    SbVec3f ptonline = horiz.getClosestPoint(isect);
+    float vdist = (ptonline-isect).length();
+    vdist /= h;
+
+    SbLine vert(v0,v3);
+    ptonline = vert.getClosestPoint(isect);
+    float hdist = (ptonline-isect).length();
+    hdist /= w;
+    
+    // find which string and character was hit
+    float fonth =  1.0f / float(this->string.getNum());
+    int stringidx = SbClamp(int(vdist/fonth), 0, this->string.getNum()-1);
+    
+    int maxlen = 0;
+    for (int i = 0; i < this->string.getNum(); i++) {
+      int len = this->string[i].getLength();
+      if (len > maxlen) maxlen = len;
+    }
+    // assumes all characters are equal size...
+    float fontw = 1.0f / float(maxlen);
+    
+    // find the character
+    int charidx = -1;
+    int strlength = this->string[stringidx].getLength();
+    switch (this->justification.getValue()) {
+    case LEFT:
+      charidx = int(hdist / fontw);
+      break;
+    case RIGHT:
+      charidx = (strlength-1) - int((1.0f-hdist)/fontw); 
+      break;
+    case CENTER:
+      {
+        float strstart = 0.5f - fontw*float(strlength)*0.5f;
+        charidx = int((hdist-strstart) / fontw);
+      }
+      break;
+    default:
+      assert(0 && "unknown justification");
+    }
+
+    if (charidx >= 0 && charidx < strlength) { // we have a hit!
+      SoPickedPoint * pp = action->addIntersection(isect);
+      SoTextDetail * detail = new SoTextDetail;
+      
+      detail->setStringIndex(stringidx);
+      detail->setCharacterIndex(charidx);
+      pp->setDetail(detail, this);
+      pp->setMaterialIndex(0);
+      pp->setObjectNormal(SbVec3f(0.0f, 0.0f, 1.0f));
+    }
+  }
 }
 
 /*!
@@ -522,5 +622,96 @@ SoText2::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 void
 SoText2::generatePrimitives(SoAction * /* action */)
 {
-  COIN_STUB();
+  // this is supposed to be empty. There are not primitives.
 }
+
+
+// SoText2P methods below
+#undef THIS
+
+// Calculates a quad around the text in 3D.
+void
+SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
+                  SbVec3f & v2, SbVec3f & v3)
+{
+  SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
+  const SbMatrix & mat = SoModelMatrixElement::get(state);
+  mat.multVecMatrix(nilpoint, nilpoint);
+
+  const SbViewVolume &vv = SoViewVolumeElement::get(state);
+
+  SbVec3f screenpoint;
+  vv.projectToScreen(nilpoint, screenpoint);
+
+  const SbViewportRegion & vp = SoViewportRegionElement::get(state);
+  SbVec2s vpsize = vp.getViewportSizePixels();
+
+  // find normalized width and height of text
+
+  // FIXME: this only works for the default font
+  SbVec2f fontsize = this->getFontSize(state);
+
+  // normalize size
+  fontsize[0] /= vpsize[0];
+  fontsize[1] /= vpsize[1];
+  
+  float nh = this->textnode->string.getNum() * fontsize[1] * this->textnode->spacing.getValue();
+  float nw = 0.0f;
+  for (int i = 0; i < this->textnode->string.getNum(); i++) {
+    const SbString & s = this->textnode->string[i];
+    float w = s.getLength()*fontsize[0];
+    if (w > nw) nw = w;
+  }
+
+  float halfw = nw * 0.5f;
+  SbVec2f n0, n1, n2, n3;
+
+  n0 = SbVec2f(screenpoint[0]-halfw, screenpoint[1]-nh+fontsize[1]);
+  n1 = SbVec2f(screenpoint[0]+halfw, screenpoint[1]-nh+fontsize[1]);
+  n2 = SbVec2f(screenpoint[0]+halfw, screenpoint[1]+fontsize[1]);
+  n3 = SbVec2f(screenpoint[0]-halfw, screenpoint[1]+fontsize[1]);
+
+  switch (this->textnode->justification.getValue()) {
+  case SoText2::LEFT:
+    n0[0] += halfw;
+    n1[0] += halfw;
+    n2[0] += halfw;
+    n3[0] += halfw;
+    break;
+  case SoText2::RIGHT:
+    n0[0] -= halfw;
+    n1[0] -= halfw;
+    n2[0] -= halfw;
+    n3[0] -= halfw;
+    break;
+  case SoText2::CENTER:
+    break;
+  default:
+    assert(0 && "unknown alignment");
+    break;
+  }
+
+  // get distance from nilpoint to camera plane
+  float dist = -vv.getPlane(0.0f).getDistance(nilpoint);
+
+  // find the four image points in the plane
+  v0 = vv.getPlanePoint(dist, n0);
+  v1 = vv.getPlanePoint(dist, n1);
+  v2 = vv.getPlanePoint(dist, n2);
+  v3 = vv.getPlanePoint(dist, n3);
+
+  // transform back to object space
+  SbMatrix inv = mat.inverse();
+  inv.multVecMatrix(v0, v0);
+  inv.multVecMatrix(v1, v1);
+  inv.multVecMatrix(v2, v2);
+  inv.multVecMatrix(v3, v3);
+}
+
+SbVec2f 
+SoText2P::getFontSize(SoState * /* state */)
+{
+  // FIXME: consider state when we support font loading
+  return SbVec2f(8.0f, 12.0f);
+}
+

@@ -55,6 +55,10 @@ protected:
 
   virtual void generatePrimitives(SoAction * action);
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
+
+private:
+  class SoText2P * pimpl;
+  friend class SoText2P;                     
 };
 
 #endif // !COIN_SOTEXT2_H
