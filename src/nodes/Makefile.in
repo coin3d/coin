@@ -318,7 +318,7 @@ RegularSources = \
 	SoTextureCoordinate3.cpp \
 	SoTextureCoordinateBinding.cpp \
 	SoTextureCoordinateCube.cpp \
-	SoTextureCoordinateCone.cpp \
+	SoTextureCoordinateCylinder.cpp \
 	SoTextureCoordinateSphere.cpp \
 	SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
@@ -430,7 +430,7 @@ am__nodes_lst_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
 	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
 	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
-	SoTextureCoordinateCube.cpp SoTextureCoordinateCone.cpp \
+	SoTextureCoordinateCube.cpp SoTextureCoordinateCylinder.cpp \
 	SoTextureCoordinateSphere.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
@@ -475,7 +475,7 @@ am__objects_2 = SoAnnotation.$(OBJEXT) SoAntiSquish.$(OBJEXT) \
 	SoTextureCoordinate3.$(OBJEXT) \
 	SoTextureCoordinateBinding.$(OBJEXT) \
 	SoTextureCoordinateCube.$(OBJEXT) \
-	SoTextureCoordinateCone.$(OBJEXT) \
+	SoTextureCoordinateCylinder.$(OBJEXT) \
 	SoTextureCoordinateSphere.$(OBJEXT) \
 	SoTextureCoordinateDefault.$(OBJEXT) \
 	SoTextureCoordinateEnvironment.$(OBJEXT) \
@@ -515,7 +515,7 @@ am__EXTRA_nodes_lst_SOURCES_DIST = SoSoundElementHelper.h \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
 	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
 	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
-	SoTextureCoordinateCube.cpp SoTextureCoordinateCone.cpp \
+	SoTextureCoordinateCube.cpp SoTextureCoordinateCylinder.cpp \
 	SoTextureCoordinateSphere.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
@@ -553,7 +553,7 @@ am__libnodes_la_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
 	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
 	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
-	SoTextureCoordinateCube.cpp SoTextureCoordinateCone.cpp \
+	SoTextureCoordinateCube.cpp SoTextureCoordinateCylinder.cpp \
 	SoTextureCoordinateSphere.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
@@ -585,7 +585,7 @@ am__objects_7 = SoAnnotation.lo SoAntiSquish.lo SoArray.lo \
 	SoTexture3.lo SoTexture2Transform.lo SoTexture3Transform.lo \
 	SoTextureCombine.lo SoTextureCoordinate2.lo \
 	SoTextureCoordinate3.lo SoTextureCoordinateBinding.lo \
-	SoTextureCoordinateCube.lo SoTextureCoordinateCone.lo \
+	SoTextureCoordinateCube.lo SoTextureCoordinateCylinder.lo \
 	SoTextureCoordinateSphere.lo SoTextureCoordinateDefault.lo \
 	SoTextureCoordinateEnvironment.lo \
 	SoTextureCoordinateFunction.lo SoTextureCoordinatePlane.lo \
@@ -622,7 +622,7 @@ am__EXTRA_libnodes_la_SOURCES_DIST = SoSoundElementHelper.h \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
 	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
 	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
-	SoTextureCoordinateCube.cpp SoTextureCoordinateCone.cpp \
+	SoTextureCoordinateCube.cpp SoTextureCoordinateCylinder.cpp \
 	SoTextureCoordinateSphere.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
@@ -658,7 +658,7 @@ am__libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAnnotation.cpp \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
 	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
 	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
-	SoTextureCoordinateCube.cpp SoTextureCoordinateCone.cpp \
+	SoTextureCoordinateCube.cpp SoTextureCoordinateCylinder.cpp \
 	SoTextureCoordinateSphere.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
@@ -693,7 +693,7 @@ am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
 	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
 	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
-	SoTextureCoordinateCube.cpp SoTextureCoordinateCone.cpp \
+	SoTextureCoordinateCube.cpp SoTextureCoordinateCylinder.cpp \
 	SoTextureCoordinateSphere.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
@@ -834,10 +834,10 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinate3.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateBinding.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateBinding.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateCone.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateCone.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateCube.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateCube.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateCylinder.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateCylinder.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateDefault.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateDefault.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateEnvironment.Plo \
@@ -1107,10 +1107,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinate3.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateBinding.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateBinding.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateCone.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateCone.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateCube.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateCube.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateCylinder.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateCylinder.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateDefault.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateDefault.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateEnvironment.Plo@am__quote@
