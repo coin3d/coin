@@ -782,11 +782,12 @@ AC_ARG_WITH(simage, AC_HELP_STRING([--with-simage=DIR], [use simage for loading 
 sim_ac_simage_avail=no
 
 if ! test x"$with_simage" = xno; then
-  sim_ac_conf_cmd=simage-config
-
+  sim_ac_path=$PATH
   if ! test x"$with_simage" = xyes; then
-    sim_ac_conf_cmd=${with_simage}/bin/simage-config
+    sim_ac_path=${with_simage}/bin:$PATH
   fi
+
+  AC_PATH_PROG(sim_ac_conf_cmd, simage-config, true, $sim_ac_path)
 
   sim_ac_simage_cppflags=`$sim_ac_conf_cmd --cppflags`
   sim_ac_simage_ldflags=`$sim_ac_conf_cmd --ldflags`
@@ -816,6 +817,131 @@ if ! test x"$with_simage" = xno; then
     LIBS=$sim_ac_save_libs
     ifelse($2, , :, $2)
   fi
+fi
+])
+
+dnl Usage:
+dnl  SIM_CHECK_X11([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+dnl
+dnl  Try to find the X11 development system. If it is found, these
+dnl  shell variables are set:
+dnl
+dnl    $sim_ac_x11_cppflags (extra flags the compiler needs for X11)
+dnl    $sim_ac_x11_ldflags  (extra flags the linker needs for X11)
+dnl    $sim_ac_x11_libs     (link libraries the linker needs for X11)
+dnl
+dnl  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+dnl  In addition, the variable $sim_ac_x11_avail is set to "yes" if
+dnl  the X11 development system is found.
+dnl
+dnl
+dnl Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+dnl TODO:
+dnl    * [mortene:20000122] make sure this work on MSWin (with
+dnl      Cygwin installation)
+dnl
+
+AC_DEFUN(SIM_CHECK_X11,[
+dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_PREREQ([2.14.1])
+
+sim_ac_x11_avail=no
+
+AC_PATH_XTRA
+
+if test x"$no_x" != xyes; then
+  #  *** DEBUG ***
+  #  Keep this around, as it can be handy when testing on new systems.
+  # echo "X_CFLAGS: $X_CFLAGS"
+  # echo "X_PRE_LIBS: $X_PRE_LIBS"
+  # echo "X_LIBS: $X_LIBS"
+  # echo "X_EXTRA_LIBS: $X_EXTRA_LIBS"
+  # echo
+  # echo "CFLAGS: $CFLAGS"
+  # echo "CPPFLAGS: $CPPFLAGS"
+  # echo "CXXFLAGS: $CXXFLAGS"
+  # echo "LDFLAGS: $LDFLAGS"
+  # echo "LIBS: $LIBS"
+  # exit 0
+
+  sim_ac_x11_cppflags="$X_CFLAGS"
+  sim_ac_x11_ldflags="$X_LIBS"
+  sim_ac_x11_libs="$X_PRE_LIBS -lX11 $X_EXTRA_LIBS"
+
+  sim_ac_save_cppflags=$CPPFLAGS
+  sim_ac_save_ldflags=$LDFLAGS
+  sim_ac_save_libs=$LIBS
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_x11_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_x11_ldflags"
+  LIBS="$sim_ac_x11_libs $LIBS"
+
+  AC_CACHE_CHECK([whether we can link against X11],
+    sim_cv_lib_x11_avail,
+    [AC_TRY_LINK([#include <X11/Xlib.h>],
+                 [(void)XOpenDisplay(0L);],
+                 sim_cv_lib_x11_avail=yes,
+                 sim_cv_lib_x11_avail=no)])
+
+  if test x"$sim_cv_lib_x11_avail" = xyes; then
+    sim_ac_x11_avail=yes
+    ifelse($1, , :, $1)
+  else
+    CPPFLAGS=$sim_ac_save_cppflags
+    LDFLAGS=$sim_ac_save_ldflags
+    LIBS=$sim_ac_save_libs
+    ifelse($2, , :, $2)
+  fi
+fi
+])
+
+
+dnl Usage:
+dnl  SIM_CHECK_X11SHMEM([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+dnl
+dnl  Try to find the X11 shared memory extension. If it is found, this
+dnl  shell variable is set:
+dnl
+dnl    $sim_ac_x11shmem_libs   (link libraries the linker needs for X11 Shm)
+dnl
+dnl  The LIBS flag will also be modified accordingly. In addition, the
+dnl  variable $sim_ac_x11shmem_avail is set to "yes" if the X11 shared
+dnl  memory extension is found.
+dnl
+dnl
+dnl Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+dnl TODO:
+dnl    * [mortene:20000122] make sure this work on MSWin (with
+dnl      Cygwin installation)
+dnl
+
+AC_DEFUN(SIM_CHECK_X11SHMEM,[
+dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_PREREQ([2.14.1])
+
+sim_ac_x11shmem_avail=no
+sim_ac_x11shmem_libs="-lXext"
+sim_ac_save_libs=$LIBS
+LIBS="$sim_ac_x11shmem_libs $LIBS"
+
+AC_CACHE_CHECK([whether the X11 shared memory extension is available],
+  sim_cv_lib_x11shmem_avail,
+  [AC_TRY_LINK([#include <X11/Xlib.h>
+                #include <X11/extensions/XShm.h>],
+               [(void)XShmQueryVersion(0L, 0L, 0L, 0L);],
+               sim_cv_lib_x11shmem_avail=yes,
+               sim_cv_lib_x11shmem_avail=no)])
+
+if test x"$sim_cv_lib_x11shmem_avail" = xyes; then
+  sim_ac_x11shmem_avail=yes
+  ifelse($1, , :, $1)
+else
+  CPPFLAGS=$sim_ac_save_cppflags
+  LDFLAGS=$sim_ac_save_ldflags
+  LIBS=$sim_ac_save_libs
+  ifelse($2, , :, $2)
 fi
 ])
 

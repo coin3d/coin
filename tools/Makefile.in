@@ -93,6 +93,7 @@ PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 VERSION = @VERSION@
 install_sh = @install_sh@
+sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
 
 SUBDIRS = ivcat ivhierarchy ivNodeKitStructure renderos

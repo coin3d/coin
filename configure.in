@@ -106,64 +106,16 @@ dnl *******************************************************************
 dnl * Handle the detection and inclusion of X11 libraries.
 dnl *******************************************************************
 
-dnl Code using the OpenGL/Mesa library needs X11 to link on UNIX systems.
-AC_PATH_XTRA
+SIM_CHECK_X11([COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_x11_cppflags"
+               COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_x11_ldflags"
+               COIN_EXTRA_LIBS="$sim_ac_x11_libs $COIN_EXTRA_LIBS"])
 
-if test x"$no_x" != xyes; then
-  #  *** DEBUG ***
-  #  Keep this around, as it can be handy when testing on new systems.
-  # echo "X_CFLAGS: $X_CFLAGS"
-  # echo "X_PRE_LIBS: $X_PRE_LIBS"
-  # echo "X_LIBS: $X_LIBS"
-  # echo "X_EXTRA_LIBS: $X_EXTRA_LIBS"
-  # echo
-  # echo "CFLAGS: $CFLAGS"
-  # echo "CPPFLAGS: $CPPFLAGS"
-  # echo "CXXFLAGS: $CXXFLAGS"
-  # echo "LDFLAGS: $LDFLAGS"
-  # echo "LIBS: $LIBS"
-  # exit 0
-
-  LIBS="$X_PRE_LIBS -lX11 $X_EXTRA_LIBS $LIBS"
-  CPPFLAGS="$CPPFLAGS $X_CFLAGS"
-  LDFLAGS="$LDFLAGS $X_LIBS"
-
-  AC_CACHE_CHECK([whether we can link against X11],
-    sim_cv_lib_X11_avail,
-    [AC_TRY_LINK([#include <X11/Xlib.h>],
-                 [(void)XOpenDisplay(0L);],
-                 sim_cv_lib_X11_avail=yes,
-                 sim_cv_lib_X11_avail=no)])
-
-  if test x"$sim_cv_lib_X11_avail" = xno; then
-    AC_MSG_ERROR([Weird X11 installation.])
-  fi
-
-  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $X_CFLAGS"
-  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $X_LIBS"
-  COIN_EXTRA_LIBS="$X_PRE_LIBS -lX11 $X_EXTRA_LIBS $COIN_EXTRA_LIBS"
-
-  dnl If the X11 shared memory extension is available, it is likely that
-  dnl the Mesa libraries will be using it, so include it to be sure.
-
-  sim_ac_save_libs=$LIBS
-  LIBS="-lXext $LIBS"
-
-  AC_CACHE_CHECK([whether the X11 shared memory extension is available],
-    sim_cv_lib_x11shmem_avail,
-    [AC_TRY_LINK([#include <X11/Xlib.h>
-                  #include <X11/extensions/XShm.h>],
-                 [(void)XShmQueryVersion(0L, 0L, 0L, 0L);],
-                 sim_cv_lib_x11shmem_avail=yes,
-                 sim_cv_lib_x11shmem_avail=no)])
-
-  if test x"$sim_cv_lib_x11shmem_avail" = xyes; then
-    COIN_EXTRA_LIBS="-lXext $COIN_EXTRA_LIBS"
-  else
-    LIBS=$sim_ac_save_libs
-  fi
-
+if test x"$sim_ac_x11_avail" = xyes; then
+  dnl  If the X11 shared memory extension is available, include it as
+  dnl  the Mesa library has probably been linked against it.
+  SIM_CHECK_X11SHMEM(COIN_EXTRA_LIBS="$sim_ac_x11shmem_libs $COIN_EXTRA_LIBS")
 fi
+
 
 dnl *******************************************************************
 dnl * Test for installation of Mesa or OpenGL development system.
@@ -221,9 +173,9 @@ dnl  any file during internal build.
 CPPFLAGS="$CPPFLAGS -D__SOLIB_INTERNAL__"
 
 
-
 AC_CHECK_HEADERS(unistd.h io.h)
 AC_CHECK_FUNCS(vsnprintf _vsnprintf snprintf _snprintf)
+
 
 dnl *******************************************************************
 dnl * Enable/disable compilation with the "incremental linking through
@@ -231,7 +183,7 @@ dnl * the use of dynamic libraries"-hack.
 dnl *******************************************************************
 
 AC_ARG_ENABLE(hacking,
-  [  --enable-hacking        enable hacks for quick turn-around [default=no]],
+  AC_HELP_STRING([--enable-hacking], [enable hacks for quick turn-around cycles during development [default=no]]),
   [case "${enableval}" in
     yes) enable_hacking=yes ;;
     no)  enable_hacking=no ;;
@@ -239,7 +191,18 @@ AC_ARG_ENABLE(hacking,
   esac],
   enable_hacking=no)
 
-AM_CONDITIONAL(HACKING_DYNAMIC_MODULES, test "x$enable_hacking" = "xyes")
+AM_CONDITIONAL(HACKING_DYNAMIC_MODULES, test x"$enable_hacking" = x"yes")
+
+if test x"$enable_hacking" = x"yes"; then
+  COIN_EXTRA_LIBS=" \
+        -lcoindevLINKHACK -lbaseLINKHACK -lVRMLnodesLINKHACK \
+        -lactionsLINKHACK -lbundlesLINKHACK -lcachesLINKHACK \
+        -ldetailsLINKHACK -ldraggersLINKHACK -lelementsLINKHACK \
+        -lenginesLINKHACK -lerrorsLINKHACK -leventsLINKHACK \
+        -lfieldsLINKHACK -lmanipsLINKHACK -lmiscLINKHACK \
+        -llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK \
+        -lprojectorsLINKHACK -lsensorsLINKHACK $COIN_EXTRA_LIBS"
+fi
 
 
 dnl *******************************************************************
@@ -247,7 +210,7 @@ dnl * Do we want to build the tools?
 dnl *******************************************************************
 
 AC_ARG_WITH(tools,
-  [  --with-tools            build Coin-based tools [default=yes]],
+  AC_HELP_STRING([--with-tools], [build Coin-based tools [default=yes]]),
   [case "${withval}" in
     yes) want_tools=yes ;;
     no)  want_tools=no ;;
@@ -255,18 +218,15 @@ AC_ARG_WITH(tools,
   esac],
   [want_tools=yes])
 
-if test "x$want_tools" = "xno"; then
-  echo "FIXME: --without-tools has been temp disabled. 20000112 mortene."
-fi
+AM_CONDITIONAL(BUILD_TOOLS, test x"$want_tools" = xyes)
 
-AM_CONDITIONAL(BUILD_TOOLS, test "x$want_tools" = "xyes")
 
 dnl *******************************************************************
 dnl * Do we want to build the example programs?
 dnl *******************************************************************
 
 AC_ARG_WITH(examples,
-  [  --with-examples         build Coin example programs [default=yes]],
+  AC_HELP_STRING([--with-examples], [build Coin example programs [default=yes]]),
   [case "${withval}" in
     yes) want_examples=yes ;;
     no)  want_examples=no ;;
@@ -274,11 +234,8 @@ AC_ARG_WITH(examples,
   esac],
   [want_examples=yes])
 
-if test "x$want_examples" = "xno"; then
-  echo "FIXME: --without-tools has been temp disabled. 20000112 mortene."
-fi
+AM_CONDITIONAL(BUILD_EXAMPLES, test x"$want_examples" = xyes)
 
-AM_CONDITIONAL(BUILD_EXAMPLES, test "x$want_examples" = "xyes")
 
 dnl *******************************************************************
 dnl * List all files configure shall generate.
