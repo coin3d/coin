@@ -171,10 +171,19 @@ STUFF TO FIX IN COIN
 
     Update 2002-10-29 mortene: one additional word of warning from
     kintel is that '+' is not allowed to be used as the 1st character
-    of a node name identifier under VRML97.
+    of a node name identifier under VRML97. Coin's scheme for
+    auto-prefixing node names with a '+' character when there are
+    multiple references to them (i.e. there are DEF/USE pairs) makes
+    us write invalid VRML97 files!
 
     Update 2002-11-05 mortene: estimate made at our November 2002 SIM
     Coin summit; "1 man-week should be more than sufficient".
+
+    Update 2003-03-12 mortene: additional tidbit to think about; if
+    the app programmer uses SoOutput::setHeaderString() to explicitly
+    force a particular file format, we should heed that (and spit out
+    warnings in debug mode if the scene graph to be written contains
+    non-compatible nodes).
 
 
 004 Re-design the public API for handling textures
