@@ -179,6 +179,9 @@
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoTextureUnitElement.h>
+#include <Inventor/elements/SoGLMultiTextureImageElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/sensors/SoFieldSensor.h>
@@ -524,18 +527,30 @@ SoTexture2::GLRender(SoGLRenderAction * action)
     }
   }
   
-  SoGLTextureImageElement::set(state, this,
-                               PRIVATE(this)->glimagevalid ? PRIVATE(this)->glimage : NULL,
-                               glmodel,
-                               this->blendColor.getValue());
-  
-  SoGLTexture3EnabledElement::set(state, this, FALSE);
-  SoGLTextureEnabledElement::set(state,
-                                 this, PRIVATE(this)->glimagevalid &&
-                                 quality > 0.0f);
-
-  if (this->isOverride()) {
-    SoTextureOverrideElement::setImageOverride(state, TRUE);
+  int unit = SoTextureUnitElement::get(state);
+  if (unit == 0) {
+    SoGLTextureImageElement::set(state, this,
+                                 PRIVATE(this)->glimagevalid ? PRIVATE(this)->glimage : NULL,
+                                 glmodel,
+                                 this->blendColor.getValue());
+    
+    SoGLTexture3EnabledElement::set(state, this, FALSE);
+    SoGLTextureEnabledElement::set(state,
+                                   this, PRIVATE(this)->glimagevalid &&
+                                   quality > 0.0f);
+    if (this->isOverride()) {
+      SoTextureOverrideElement::setImageOverride(state, TRUE);
+    }
+  }
+  else {
+    SoGLMultiTextureImageElement::set(state, this, unit,
+                                      PRIVATE(this)->glimagevalid ? PRIVATE(this)->glimage : NULL,
+                                      glmodel,
+                                      this->blendColor.getValue());
+    
+    SoGLMultiTextureEnabledElement::set(state, this, unit,
+                                        PRIVATE(this)->glimagevalid &&
+                                        quality > 0.0f);
   }
 }
 
