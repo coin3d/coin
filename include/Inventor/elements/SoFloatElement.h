@@ -40,18 +40,17 @@ public:
 
   virtual void print(FILE * file) const;
 
-  static  void set(const int stackIndex, SoState * const state,
-                    SoNode * const node, const float value);
-  static  void set(const int stackIndex, SoState * const state,
-                    const float value);
+  static void set(const int stackIndex, SoState * const state,
+                  SoNode * const node, const float value);
+  static void set(const int stackIndex, SoState * const state,
+                  const float value);
 
-  static  float get(const int stackIndex, SoState * const state);
+  static float get(const int stackIndex, SoState * const state);
 
   virtual void setElt(float value);
 
 protected:
-          float data;
-
+  float data;
 };
 
 #endif // !COIN_SOFLOATELEMENT_H

@@ -321,8 +321,8 @@ SoElement::pop(SoState * state, const SoElement * prevTopElement)
 }
 
 /*!
-  This function is for printing element information, mostly for
-  debugging purposes.
+  This function is for printing element information, and is used
+  mostly for debugging purposes.
 */
 void
 SoElement::print(FILE * file) const
@@ -531,7 +531,10 @@ SoElement::isLazy(void) const
 }
 
 /*!
-  Evaluates lazy GL element.
+  Evaluates lazy element. This will finally push the element value to
+  the rendering state.
+
+  \sa isLazy()
 */
 void
 SoElement::lazyEvaluate(void) const

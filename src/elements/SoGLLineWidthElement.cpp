@@ -82,11 +82,7 @@ float SoGLLineWidthElement::sizerange[2] = { RANGE_NOT_CHECKED, -1.0f};
 
 SO_ELEMENT_SOURCE(SoGLLineWidthElement);
 
-/*!
-  This static method initializes static data for the
-  SoGLLineWidthElement class.
-*/
-
+// doc in super
 void
 SoGLLineWidthElement::initClass(void)
 {
@@ -94,15 +90,13 @@ SoGLLineWidthElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
-
 SoGLLineWidthElement::~SoGLLineWidthElement(void)
 {
 }
 
-//! FIXME: write doc.
-
+// doc in super
 void
 SoGLLineWidthElement::init(SoState * state)
 {
@@ -110,8 +104,7 @@ SoGLLineWidthElement::init(SoState * state)
   this->current = -1.0f;
 }
 
-//! FIXME: write doc.
-
+// doc in super
 void
 SoGLLineWidthElement::push(SoState * state)
 {
@@ -121,19 +114,16 @@ SoGLLineWidthElement::push(SoState * state)
   this->current = prev->current;
 }
 
-//! FIXME: write doc.
-
+// doc in super
 void
-SoGLLineWidthElement::pop(SoState * state,
-                          const SoElement * prevTopElement)
+SoGLLineWidthElement::pop(SoState * state, const SoElement * prevTopElement)
 {
   SoGLLineWidthElement * prev = (SoGLLineWidthElement*)prevTopElement;
   this->current = prev->current;
   inherited::pop(state, prevTopElement);
 }
 
-//! FIXME: write doc.
-
+// doc in super
 void
 SoGLLineWidthElement::setElt(float width)
 {

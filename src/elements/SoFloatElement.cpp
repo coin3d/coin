@@ -19,26 +19,16 @@
 
 /*!
   \class SoFloatElement Inventor/elements/SoFloatElement.h
-  \brief Abstract base class for elements that only take care of a float value.
+  \brief SoFloatElement is an abstract base class for elements that consists of a single float value.
   \ingroup elements
 */
 
 #include <Inventor/elements/SoFloatElement.h>
-
 #include <assert.h>
-
-/*!
-  \var SoFloatElement::data
-
-  FIXME: write doc.
-*/
 
 SO_ELEMENT_ABSTRACT_SOURCE(SoFloatElement);
 
-/*!
-  This static method initializes static data for the SoFloatElement class.
-*/
-
+// doc in super
 void
 SoFloatElement::initClass(void)
 {
@@ -46,100 +36,95 @@ SoFloatElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
-
 SoFloatElement::~SoFloatElement(void)
 {
 }
 
-//! FIXME: write doc.
-
+// doc in super
 SbBool
 SoFloatElement::matches(const SoElement * element) const
 {
-    assert(element);
-    if (getTypeId() != element->getTypeId())
-        return FALSE;
-    if (this->data != ((SoFloatElement *)element)->data)
-        return FALSE;
-    return TRUE;
+  assert(element);
+  if (getTypeId() != element->getTypeId()) { return FALSE; }
+  if (this->data != ((SoFloatElement *)element)->data) { return FALSE; }
+  return TRUE;
 }
 
-//! FIXME: write doc.
-
+// doc in super
 SoElement *
 SoFloatElement::copyMatchInfo(void) const
 {
-//    inherited::copyMatchInfo();
-    assert(getTypeId().canCreateInstance());
-    SoFloatElement * element = (SoFloatElement *) getTypeId().createInstance();
-    element->data = this->data;
-    // DEPRECATED 980807 pederb. copyMatchInfo() should only copy
-    // information needed in matches(). An exact copy is not needed.
-    //    element->dataNode = this->dataNode;
-    return element;
+  // SoElement::copyMatchInfo is abstract
+  //    inherited::copyMatchInfo();
+  assert(getTypeId().canCreateInstance());
+  SoFloatElement * element = (SoFloatElement *) getTypeId().createInstance();
+  element->data = this->data;
+  // DEPRECATED 980807 pederb. copyMatchInfo() should only copy
+  // information needed in matches(). An exact copy is not needed.
+  //    element->dataNode = this->dataNode;
+  return element;
 }
 
-//! FIXME: write doc.
-
+// doc in super
 void
 SoFloatElement::print(FILE * file) const
 {
-    fprintf(file, "%s[%p]: data = %f\n",
-        getTypeId().getName().getString(), this, this->data);
-}
-
-//! FIXME: write doc.
-
-void
-SoFloatElement::set(const int index,
-                    SoState * const state,
-                    SoNode * const /* node */,
-                    const float value)
-{
-  SoFloatElement * element = (SoFloatElement *)
-    (getElement(state, index));
-
-  if (element) {
-    element->setElt(value);
-  }
+  (void)fprintf(file, "%s[%p]: data = %f\n",
+                this->getTypeId().getName().getString(), this, this->data);
 }
 
 /*!
-  FIXME: write doc.
-*/
+  Static method for setting the \a value of an element in the given \a
+  state at the given stack \a index.
+ */
+void
+SoFloatElement::set(const int index,
+                    SoState * const state,
+                    SoNode * const node, // unused
+                    const float value)
+{
+  SoFloatElement * element = (SoFloatElement *)
+    (SoFloatElement::getElement(state, index));
 
+  if (element) { element->setElt(value); }
+}
+
+/*!
+  Static method for setting the \a value of an element in the given \a
+  state at the given \a stackIndex.
+ */
 void
 SoFloatElement::set(const int stackIndex, SoState * const state,
                     const float value)
 {
-  set(stackIndex, state, NULL, value);
+  SoFloatElement::set(stackIndex, state, NULL, value);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Static method to fetch the value of the element of this type from
+  the given \a state at the given stack \a index.
+ */
 float
-SoFloatElement::get(const int index,
-                    SoState * const state)
+SoFloatElement::get(const int index, SoState * const state)
 {
   SoFloatElement * element = (SoFloatElement *)
     (getConstElement(state, index)); //, NULL );
-  if (element)
-    return element->data;
+  if (element) { return element->data; }
   return 0.0f;
 }
 
-//! FIXME: write doc.
-
+/*!
+  Set element value.
+ */
 void
 SoFloatElement::setElt(float value)
 {
   this->data = value;
 }
 
-//! FIXME: write doc.
-
+// doc in super
 void
 SoFloatElement::init(SoState * state)
 {

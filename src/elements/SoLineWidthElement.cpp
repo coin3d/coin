@@ -19,10 +19,15 @@
 
 /*!
   \class SoLineWidthElement Inventor/elements/SoLineWidthElement.h
-  \brief The SoLineWidthElement class is yet to be documented.
+  \brief The SoLineWidthElement class changes the linewidth setting of the render state.
   \ingroup elements
 
-  FIXME: write doc.
+  Requests from the scenegraph to change the linewidth when rendering
+  line primitives will be made through this element, which forwards it
+  to the appropriate native call in the underlying rendering library.
+
+  Subsequent nodes rendering line primitives will use the width
+  setting (for instance SoLineSet nodes).
 */
 
 #include <Inventor/elements/SoLineWidthElement.h>
@@ -32,11 +37,7 @@
 
 SO_ELEMENT_SOURCE(SoLineWidthElement);
 
-/*!
-  This static method initializes static data for the
-  SoLineWidthElement class.
-*/
-
+// doc in super
 void
 SoLineWidthElement::initClass(void)
 {
@@ -44,16 +45,13 @@ SoLineWidthElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
-
-SoLineWidthElement::~SoLineWidthElement(// virtual protected
-    void)
+SoLineWidthElement::~SoLineWidthElement()
 {
 }
 
-//! FIXME: write doc.
-
+// doc in super
 void
 SoLineWidthElement::init(SoState * state)
 {
@@ -61,39 +59,42 @@ SoLineWidthElement::init(SoState * state)
   this->data = SoLineWidthElement::getDefault();
 }
 
-//! FIXME: write doc.
-
-//$ EXPORT INLINE
+/*!
+  Set up the current state's \a lineWidth value.
+ */
 void
 SoLineWidthElement::set(SoState * const state, SoNode * const node,
                         const float lineWidth)
 {
-  SoFloatElement::set(classStackIndex,state, node, lineWidth);
+  SoFloatElement::set(classStackIndex, state, node, lineWidth);
 }
 
-//! FIXME: write doc.
-
-//$ EXPORT INLINE
+/*!
+  Set up the current state's \a lineWidth value.
+ */
 void
 SoLineWidthElement::set(SoState * const state, const float lineWidth)
 {
-  set(state, NULL, lineWidth);
+  SoLineWidthElement::set(state, NULL, lineWidth);
 }
 
-//! FIXME: write doc.
-
-//$ EXPORT INLINE
+/*!
+  Returns the current line width value.
+ */
 float
 SoLineWidthElement::get(SoState * const state)
 {
   return SoFloatElement::get(classStackIndex, state);
 }
 
-//! FIXME: write doc.
-
-//$ EXPORT INLINE
+/*!
+  Returns the default linewidth value if no value has been set
+  explicitly.
+ */
 float
-SoLineWidthElement::getDefault()
+SoLineWidthElement::getDefault(void)
 {
+  // 0 is an indicator value which means "use the default value of the
+  // rendering-library specific So*LineWidth element".
   return 0.0f;
 }
