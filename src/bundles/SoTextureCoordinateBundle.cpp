@@ -301,7 +301,6 @@ void
 SoTextureCoordinateBundle::initDefaultMulti(SoAction * action, const int unit)
 {
   this->flags |= FLAG_NEEDCOORDS;
-  this->flags |= FLAG_FUNCTION;
 
   if (!(this->flags & FLAG_DIDPUSH)) {
     this->state->push();
