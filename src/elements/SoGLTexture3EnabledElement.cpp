@@ -23,15 +23,9 @@
 
 /*!
   \class SoGLTexture3EnabledElement Inventor/elements/SoGLTexture3EnabledElement.h
-  \brief The SoGLTexture3EnabledElement class is a lazy element which controls
+  \brief The SoGLTexture3EnabledElement class is an element which controls
   whether 3D texturing is enabled or not.
   \ingroup elements
-
-  This element is evaluated in SoShape::shouldGLRender() so you'll
-  normally not have to worry about this being a lazy element. However,
-  if you implement your own shape and need to disable texturing while
-  rendering, use the forceSend() method to change the GL state without
-  changing the state of the element.
 
   \since 2001-11-26
 */
@@ -72,7 +66,7 @@ SoGLTexture3EnabledElement::set(SoState * const state,
                                SoNode * const node,
                                const SbBool enabled)
 {
-  SoInt32Element::set(classStackIndex, state, node, (int32_t) enabled);
+  inherited::set(state, node, enabled);
   SoShapeStyleElement::setTexture3Enabled(state, enabled);
 }
 
@@ -81,8 +75,8 @@ SoGLTexture3EnabledElement::set(SoState * const state,
 void
 SoGLTexture3EnabledElement::init(SoState * state)
 {
+  inherited::init(state);
   this->state = state;
-  this->data = SoGLTexture3EnabledElement::getDefault();
   this->updategl();
 }
 
@@ -91,7 +85,7 @@ void
 SoGLTexture3EnabledElement::push(SoState * state)
 {
   SoGLTexture3EnabledElement * prev = (SoGLTexture3EnabledElement*) this->getNextInStack();
-  
+
   this->data = prev->data;
   this->state = state;
   // capture previous element since we might or might not change the
@@ -121,13 +115,12 @@ SoGLTexture3EnabledElement::set(SoState * const state, const SbBool enabled)
 
 
 /*!
-  Return current state of this element. This is not the same as the
-  current GL state, since this is a lazy element.
+  Return current state of this element. 
 */
 SbBool
 SoGLTexture3EnabledElement::get(SoState * const state)
 {
-  return (SbBool) SoInt32Element::get(classStackIndex, state);
+  return (SbBool) inherited::get(state);
 }
 
 /*!
@@ -136,10 +129,10 @@ SoGLTexture3EnabledElement::get(SoState * const state)
 SbBool
 SoGLTexture3EnabledElement::getDefault(void)
 {
-  return FALSE;
+  return inherited::getDefault();
 }
 
-void 
+void
 SoGLTexture3EnabledElement::setElt(int32_t value)
 {
   if (this->data != value) {

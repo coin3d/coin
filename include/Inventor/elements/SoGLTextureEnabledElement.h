@@ -24,10 +24,10 @@
  *
 \**************************************************************************/
 
-#include <Inventor/elements/SoInt32Element.h>
+#include <Inventor/elements/SoTextureEnabledElement.h>
 
-class COIN_DLL_API SoGLTextureEnabledElement : public SoInt32Element {
-  typedef SoInt32Element inherited;
+class COIN_DLL_API SoGLTextureEnabledElement : public SoTextureEnabledElement {
+  typedef SoTextureEnabledElement inherited;
 
   SO_ELEMENT_HEADER(SoGLTextureEnabledElement);
 public:

@@ -215,6 +215,8 @@ RegularSources = \
 	SoTextOutlineEnabledElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
 	SoTextureCoordinateElement.cpp \
+	SoTextureEnabledElement.cpp \
+	SoTexture3EnabledElement.cpp \
 	SoTextureImageElement.cpp \
 	SoTextureMatrixElement.cpp \
 	SoTextureOverrideElement.cpp \
@@ -314,6 +316,8 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoTextOutlineEnabledElement.h \
 	../../include/Inventor/elements/SoTextureCoordinateBindingElement.h \
 	../../include/Inventor/elements/SoTextureCoordinateElement.h \
+	../../include/Inventor/elements/SoTextureEnabledElement.h \
+	../../include/Inventor/elements/SoTexture3EnabledElement.h \
 	../../include/Inventor/elements/SoTextureImageElement.h \
 	../../include/Inventor/elements/SoTextureMatrixElement.h \
 	../../include/Inventor/elements/SoTextureOverrideElement.h \
@@ -462,6 +466,8 @@ elements_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTextOutlineEnabledElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateBindingElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureEnabledElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoTexture3EnabledElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureImageElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureMatrixElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureOverrideElement.$(OBJEXT) \
@@ -557,6 +563,8 @@ libelements_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTextOutlineEnabledElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateBindingElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureEnabledElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoTexture3EnabledElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureImageElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureOverrideElement.lo \
@@ -651,6 +659,8 @@ libelements@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTextOutlineEnabledElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateBindingElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureEnabledElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoTexture3EnabledElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureImageElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureOverrideElement.lo \
@@ -824,10 +834,14 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoSwitchElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextOutlineEnabledElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextOutlineEnabledElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoTexture3EnabledElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoTexture3EnabledElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextureCoordinateBindingElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextureCoordinateBindingElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextureCoordinateElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextureCoordinateElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoTextureEnabledElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoTextureEnabledElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextureImageElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextureImageElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextureMatrixElement.Plo \
@@ -1089,10 +1103,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSwitchElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextOutlineEnabledElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextOutlineEnabledElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTexture3EnabledElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTexture3EnabledElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureCoordinateBindingElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureCoordinateBindingElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureCoordinateElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureCoordinateElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureEnabledElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureEnabledElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureImageElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureImageElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureMatrixElement.Plo@am__quote@

@@ -1,5 +1,5 @@
-#ifndef COIN_SOGLTEXTURE3ENABLEDELEMENT_H
-#define COIN_SOGLTEXTURE3ENABLEDELEMENT_H
+#ifndef COIN_SOTEXTURE3ENABLEDELEMENT_H
+#define COIN_SOTEXTURE3ENABLEDELEMENT_H
 
 /**************************************************************************\
  *
@@ -24,36 +24,26 @@
  *
 \**************************************************************************/
 
-#include <Inventor/elements/SoTexture3EnabledElement.h>
+#include <Inventor/elements/SoInt32Element.h>
 
-class COIN_DLL_API SoGLTexture3EnabledElement : public SoTexture3EnabledElement {
-  typedef SoTexture3EnabledElement inherited;
+class COIN_DLL_API SoTexture3EnabledElement : public SoInt32Element {
+  typedef SoInt32Element inherited;
 
-  SO_ELEMENT_HEADER(SoGLTexture3EnabledElement);
+  SO_ELEMENT_HEADER(SoTexture3EnabledElement);
 public:
   static void initClass(void);
 protected:
-  virtual ~SoGLTexture3EnabledElement();
-
+  virtual ~SoTexture3EnabledElement();
+  
 public:
   virtual void init(SoState * state);
-
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                   const SoElement * prevTopElement);
-
   static  void set(SoState * const state, SoNode * const node,
                    const SbBool enabled);
-  static  void set(SoState * const state, const SbBool enabled);
-
   static SbBool get(SoState * const state);
   static SbBool getDefault(void);
 
   virtual void setElt(int32_t value);
-
-private:
-  void updategl(void);
-  SoState * state;
 };
 
-#endif // !COIN_SOGLTEXTURE3ENABLEDELEMENT_H
+#endif // !COIN_SOTEXTURE3ENABLEDELEMENT_H
+

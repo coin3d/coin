@@ -80,6 +80,8 @@ RegularSources = \
 	SoTextOutlineEnabledElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
 	SoTextureCoordinateElement.cpp \
+	SoTextureEnabledElement.cpp \
+	SoTexture3EnabledElement.cpp \
 	SoTextureImageElement.cpp \
 	SoTextureMatrixElement.cpp \
 	SoTextureOverrideElement.cpp \
@@ -177,6 +179,8 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoTextOutlineEnabledElement.h \
 	../../include/Inventor/elements/SoTextureCoordinateBindingElement.h \
 	../../include/Inventor/elements/SoTextureCoordinateElement.h \
+	../../include/Inventor/elements/SoTextureEnabledElement.h \
+	../../include/Inventor/elements/SoTexture3EnabledElement.h \
 	../../include/Inventor/elements/SoTextureImageElement.h \
 	../../include/Inventor/elements/SoTextureMatrixElement.h \
 	../../include/Inventor/elements/SoTextureOverrideElement.h \
