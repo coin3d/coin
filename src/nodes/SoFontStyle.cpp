@@ -88,7 +88,7 @@
 
 SO_NODE_SOURCE(SoFontStyle);
 
-static SbBool fontstyle_messageflag = true;
+static SbBool fontstyle_messageflag = TRUE;
 
 /*!
   Constructor.
@@ -141,7 +141,7 @@ SoFontStyle::getFontName(void) const
                               "Font name ('%s') is ignored when using FontStyle nodes. "
                               "Use the 'family' and 'style' fields instead.", 
                               fontname.getString());    
-    fontstyle_messageflag = false; // Only display this message once.
+    fontstyle_messageflag = FALSE; // Only display this message once.
   }
 #endif
 
@@ -188,8 +188,6 @@ SoFontStyle::getFontName(void) const
     break;
 #endif // COIN_DEUG
   }
-
-
 
   return fontname;
 }
