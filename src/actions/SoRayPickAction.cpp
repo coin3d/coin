@@ -515,6 +515,15 @@ SoRayPickAction::intersect(const SbVec3f & v0, const SbVec3f & v1,
   // world space, but it is impossible to calculate the object space
   // intersection point, so we just return FALSE.
   if (!THIS->objectspacevalid) return FALSE;
+  
+  // test if we have a valid line, and do point intersection testing
+  // if we don't
+  if (v0 == v1) {
+    intersection = v0;
+    // this might return TRUE or FALSE. We already set the
+    // intersection point.
+    return this->intersect(v0);
+  }
 
   SbLine line(v0, v1);
   SbVec3f op0, op1; // object space
@@ -550,6 +559,12 @@ SoRayPickAction::intersect(const SbVec3f & v0, const SbVec3f & v1,
 SbBool
 SoRayPickAction::intersect(const SbVec3f & point) const
 {
+  // Calculating intersections when we have a degenerate transform
+  // makes no sense. We could do the intersection calculations in
+  // world space, but it is impossible to calculate the object space
+  // intersection point, so we just return FALSE.
+  if (!THIS->objectspacevalid) return FALSE;
+
   SbVec3f wpoint;
   THIS->obj2world.multVecMatrix(point, wpoint);
   SbVec3f ptonline = THIS->wsline.getClosestPoint(wpoint);
@@ -567,8 +582,8 @@ SoRayPickAction::intersect(const SbVec3f & point) const
 
 // calculates the square distance (smallest possible) from a 2D point
 // to a 2D rectangle
-static float 
-dist_to_quad(const float xmin, const float ymin, 
+static float
+dist_to_quad(const float xmin, const float ymin,
              const float xmax, const float ymax,
              const float x, const float y,
              float & cx, float & cy)
@@ -647,7 +662,7 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
 
   SbVec3f ptonray, ptonbox;
   float sqrmindist = FLT_MAX;
-  
+
   SbBool conepick = usefullviewvolume && !THIS->isFlagSet(SoRayPickActionP::WS_RAY_SET);
 
   int i;
@@ -674,7 +689,7 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
     }
     if (numnear == 8 || numfar == 8) return FALSE;
   }
-  
+
   for (int j = 0; j < 2; j++) {
     for (i = 0; i < 3; i++) {
       SbVec3f norm(0.0f, 0.0f, 0.0f);
@@ -686,7 +701,7 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
         int i1 = (i+1) % 3;
         int i2 = (i+2) % 3;
         float x, y;
-        
+
         float d = dist_to_quad(bounds[0][i1], bounds[0][i2],
                                bounds[1][i1], bounds[1][i2],
                                isect[i1], isect[i2],
@@ -695,7 +710,7 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
           // center of ray hit box directly
           intersection = isect;
           return TRUE;
-        } 
+        }
         else if (d < sqrmindist) {
           sqrmindist = d;
           ptonray = ptonbox = isect;
@@ -710,14 +725,14 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
     SbVec3f wptonray, wptonbox;
     THIS->obj2world.multVecMatrix(ptonbox, wptonbox);
     THIS->obj2world.multVecMatrix(ptonray, wptonray);
-    
+
     float raypos = THIS->nearplane.getDistance(wptonray);
     float distance = (wptonray-wptonbox).length();
 
     // find ray radius at wptonray
     float radius = THIS->rayradiusstart +
       THIS->rayradiusdelta * raypos;
-    
+
     // test for cone intersection
     if (radius >= distance) {
       intersection = ptonbox; // set intersection to the point on box closest to ray
@@ -886,7 +901,7 @@ SoRayPickActionP::calcObjectSpaceData(SoState * ownerstate)
   this->calcMatrices(ownerstate);
 
   SbVec3f start, dir;
-  
+
   if (this->objectspacevalid) {
     this->world2obj.multVecMatrix(this->raystart, start);
     this->world2obj.multDirMatrix(this->raydirection, dir);
