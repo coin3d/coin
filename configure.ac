@@ -1239,8 +1239,11 @@ if $sim_ac_make_dsp; then
   CC=$coin_src_dir/cfg/m4/gendsp.sh
   CXX=$coin_src_dir/cfg/m4/gendsp.sh
   CXXLD=$coin_src_dir/cfg/m4/gendsp.sh
+  # Yes, this is totally bogus stuff, but don't worry about it.  As long
+  # as gendsp.sh recognizes it...  20030219 larsa
   CPPFLAGS="$CPPFLAGS -Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
   LDFLAGS="$LDFLAGS -Wl,-Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
+  LIBFLAGS="$LIBFLAGS -o coin$COIN_MAJOR_VERSION.so.0"
   # this can't be set up at the point the libtool script is generated
   mv libtool libtool.bak
   sed -e "s%^CC=\"gcc\"%CC=\"$coin_src_dir/cfg/m4/gendsp.sh\"%" \
