@@ -1,6 +1,11 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+BUILT_SOURCES = \
+	$(top_srcdir)/src/engines/lex.so_eval.c \
+	$(top_srcdir)/src/engines/evaluator.tab.c
+
+
 ALLSOURCES = \
 	SoBoolOperation.cpp SoBoolOperation.h \
 	SoCalculator.cpp SoCalculator.h \
@@ -79,6 +84,15 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoTimeCounter.h \
 	$(top_srcdir)/include/Inventor/engines/SoTransformVec3f.h \
 	$(top_srcdir)/include/Inventor/engines/SoTriggerAny.h
+
+
+$(top_srcdir)/src/engines/lex.so_eval.c: $(top_srcdir)/src/engines/evaluator.l
+	flex -o$(top_srcdir)/src/engines/lex.so_eval.c $(top_srcdir)/src/engines/evaluator.l
+
+$(top_srcdir)/src/engines/evaluator.tab.c: $(top_srcdir)/src/engines/lex.so_eval.c $(top_srcdir)/src/engines/evaluator.y
+	bison -p so_eval -o $(top_srcdir)/src/engines/evaluator.tab.c $(top_srcdir)/src/engines/evaluator.y
+
+
 
 ##$ BEGIN TEMPLATE Make-Common(engines)
 

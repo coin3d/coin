@@ -97,6 +97,11 @@ install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
 
+BUILT_SOURCES = \
+	$(top_srcdir)/src/engines/lex.so_eval.c \
+	$(top_srcdir)/src/engines/evaluator.tab.c
+
+
 ALLSOURCES = \
 	SoBoolOperation.cpp SoBoolOperation.h \
 	SoCalculator.cpp SoCalculator.h \
@@ -521,6 +526,7 @@ distclean-generic:
 
 maintainer-clean-generic:
 	-rm -f Makefile.in
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 mostlyclean-am:  mostlyclean-libLTLIBRARIES \
 		mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
 		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
@@ -568,6 +574,12 @@ uninstall-am uninstall all-redirect all-am all install-strip \
 installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
+
+$(top_srcdir)/src/engines/lex.so_eval.c: $(top_srcdir)/src/engines/evaluator.l
+	flex -o$(top_srcdir)/src/engines/lex.so_eval.c $(top_srcdir)/src/engines/evaluator.l
+
+$(top_srcdir)/src/engines/evaluator.tab.c: $(top_srcdir)/src/engines/lex.so_eval.c $(top_srcdir)/src/engines/evaluator.y
+	bison -p so_eval -o $(top_srcdir)/src/engines/evaluator.tab.c $(top_srcdir)/src/engines/evaluator.y
 
 # Replaced the ordinary install to compare files and only install if
 # there's any changes. mortene.
