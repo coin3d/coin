@@ -703,6 +703,17 @@ if $sim_ac_build_library; then
     AC_SUBST(coin_configure_date)
   fi
 else
+  if test -n "$COIN_EXTRA_LIBS"; then
+    COIN_EXTRA_LIBS="-lCoin${SUFFIX} $COIN_EXTRA_LIBS"
+  else
+    COIN_EXTRA_LIBS="-lCoin${SUFFIX}"
+  fi
+
+  # For the build/coin.spec RPM specification file.
+  SIM_AC_ISO8601_DATE(coin_configure_date)
+  AC_SUBST(coin_configure_date)
+fi
+else
   SIM_AC_CONFIGURATION_SETTING([Coin build type], [build disabled])
 fi
 
@@ -830,6 +841,8 @@ SIM_AC_CONFIGURATION_SUMMARY
 if $sim_ac_build_library; then
   echo ""
   echo "Now, run 'make install' to build and install Coin."
+  echo ""
+else
   echo ""
 fi
 
