@@ -198,6 +198,10 @@ SoHandleEventAction::isHandled(void) const
 /*!
   Set a \a node pointer which will get all future events handled by
   this action until releaseGrabber() is called.
+
+  Note that since later SoHandleEventAction invokations are just applied
+  directly on the grabber node, using SoHandleEventAction methods like
+  getCurPath() will return bogus data.
 */
 void
 SoHandleEventAction::setGrabber(SoNode * node)
