@@ -215,3 +215,13 @@ THE WISH LIST
   multvecmatrix(), multdirmatrix(), multleft(), multright(), 
   inverse() and identity(). 
 
+* A better hash/dict class than SbDict.
+  2001-03-29 Morten Eriksen <mortene@sim.no>
+  [upwards compatible extension]
+
+  Perhaps something like
+
+        SbDictT (templatized key type, void* value type)
+          +- SbDict32 (key type == uint16_t)
+          +- SbDict64 (key type == uint32_t)
+          +- SbDict (key type == unsigned long, for API compatibility)
