@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <math.h>
+#include <stdio.h>
 
 #include <Inventor/C/glue/fontlib_wrapper.h>
 #include <Inventor/C/glue/flwfreetype.h>
@@ -36,7 +37,7 @@ flwftExit()
   FT_Done_FreeType(library);
 }
 
-FLWfont 
+FLWfont
 flwftGetFont(const char * fontname)
 {
   int error;
@@ -58,10 +59,10 @@ flwftGetFontName(FLWfont font, char * buffer, int bufsize)
   FT_Face face;
   if (font) {
     face = (FT_Face)font;
-    if (bufsize > strlen(face->family_name) + strlen(face->style_name) + 1) {
+    if (bufsize > (int) strlen(face->family_name) + (int) strlen(face->style_name) + 1) {
       sprintf(buffer, "%s %s", face->family_name, face->style_name);
       return 0;
-    } else if (bufsize > strlen(face->family_name)) {
+    } else if (bufsize > (int) strlen(face->family_name)) {
       sprintf(buffer, face->family_name);
       return 0;
     }
@@ -75,7 +76,7 @@ flwftGetFontStyle(FLWfont font, char * buffer, int bufsize)
   FT_Face face;
   if (font) {
     face = (FT_Face)font;
-    if (bufsize > strlen(face->style_name)) {
+    if (bufsize > (int) strlen(face->style_name)) {
       strcpy(buffer, face->style_name);
       return 0;
     }
@@ -83,7 +84,7 @@ flwftGetFontStyle(FLWfont font, char * buffer, int bufsize)
   return -1;
 }
 
-void 
+void
 flwftDoneFont(FLWfont font)
 {
   int error;
@@ -115,34 +116,39 @@ flwftGetCharmapName(FLWfont font, int charmap, char * buffer, int bufsize)
     face = (FT_Face)font;
     if (charmap < face->num_charmaps) {
       switch (face->charmaps[charmap]->encoding) {
-      case ft_encoding_symbol: 
+      case ft_encoding_symbol:
         name = "symbol"; break;
-      case ft_encoding_unicode:	       
+      case ft_encoding_unicode:	
         name = "unicode"; break;
-      case ft_encoding_latin_1:	       
-        name = "latin_1"; break;
-      case ft_encoding_latin_2:	       
+        /* disabled 2003-03-13 pederb. Not defined on my system */
+
+/*       case ft_encoding_latin_1:	 */
+/*         name = "latin_1"; break; */
+      case ft_encoding_latin_2:	
         name = "latin_2"; break;
-      case ft_encoding_sjis:	       
+      case ft_encoding_sjis:	
         name = "sjis"; break;
-      case ft_encoding_gb2312:  
+      case ft_encoding_gb2312:
         name = "gb2312"; break;
-      case ft_encoding_big5:	       
+      case ft_encoding_big5:	
         name = "big5"; break;
-      case ft_encoding_wansung:	       
+      case ft_encoding_wansung:	
         name = "wansung"; break;
-      case ft_encoding_johab:	       
+      case ft_encoding_johab:	
         name = "johab"; break;
-      case ft_encoding_adobe_standard: 
+      case ft_encoding_adobe_standard:
         name = "adobe_standard"; break;
-      case ft_encoding_adobe_expert:   
+      case ft_encoding_adobe_expert:
         name = "adobe_expert"; break;
-      case ft_encoding_adobe_custom:   
+      case ft_encoding_adobe_custom:
         name = "adobe_custom"; break;
-      case ft_encoding_apple_roman:    
+      case ft_encoding_apple_roman:
         name = "apple_roman"; break;
+      default:
+        /* name will be set to unknown */
+        break;
       }
-      if (strlen(name) < bufsize) {
+      if ((int) strlen(name) < bufsize) {
         strcpy(buffer, name);
         return 0;
       } else
@@ -152,7 +158,7 @@ flwftGetCharmapName(FLWfont font, int charmap, char * buffer, int bufsize)
   return -1;
 }
 
-int 
+int
 flwftSetCharmap(FLWfont font, int charmap)
 {
   int error;
@@ -261,7 +267,7 @@ flwftGetKerning(FLWfont font, FLWglyph glyph1, FLWglyph glyph2, float *x, float 
     return -1;
 }
 
-void 
+void
 flwftDoneGlyph(FLWfont font, FLWglyph glyph)
 {
   // No action, since an FLWglyph is just an index.
@@ -339,7 +345,7 @@ flwftGetBitmap(FLWfont font, FLWglyph glyph)
     return NULL;
 }
 
-int 
+int
 flwftGetOutline(FLWfont font, FLWglyph glyph)
 {
   // FIXME: implement.
@@ -350,4 +356,3 @@ flwftGetOutline(FLWfont font, FLWglyph glyph)
 #ifdef __cplusplus
 }
 #endif
-
