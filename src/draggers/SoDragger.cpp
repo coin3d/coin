@@ -128,7 +128,7 @@
 class SoDraggerCache {
 public:
   SoDraggerCache(SoDragger * parent) :
-    path((SoFullPath*)new SoPath(4)),
+    path((SoFullPath*)new SoTempPath(4)),
     dragger(parent),
     matrixAction(new SoGetMatrixAction(dragger->getViewportRegion())),
     draggerToWorld(SbMatrix::identity()),
