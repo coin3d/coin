@@ -38,6 +38,7 @@
 
 
 static int COIN_AUTO_CACHING = -1;
+static int COIN_DEBUG_CACHING = -1;
 
 #include <Inventor/caches/SoGLCacheList.h>
 #include <Inventor/caches/SoGLRenderCache.h>
@@ -47,6 +48,7 @@ static int COIN_AUTO_CACHING = -1;
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -95,6 +97,13 @@ SoGLCacheList::SoGLCacheList(int numcaches)
     if (env) COIN_AUTO_CACHING = atoi(env);
     else COIN_AUTO_CACHING = 0;
   }
+#if COIN_DEBUG
+  if (COIN_DEBUG_CACHING < 0) {
+    const char * env = coin_getenv("COIN_DEBUG_CACHING");
+    if (env) COIN_DEBUG_CACHING = atoi(env);
+    else COIN_DEBUG_CACHING = 0;
+  }
+#endif // debug
 }
 
 /*!
@@ -148,6 +157,13 @@ SoGLCacheList::call(SoGLRenderAction * action)
       }
     }
   }
+#if COIN_DEBUG
+  if (COIN_DEBUG_CACHING) {
+    SoDebugError::postInfo("SoGLCacheList::call",
+                           "no valid cache found for %p. Node has %d caches\n",
+                           this, n);
+  }
+#endif // debug
   return FALSE;
 }
 
@@ -199,6 +215,13 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
     SoGLLazyElement::beginCaching(state, THIS->opencache->getPreLazyState(),
                                   THIS->opencache->getPostLazyState());
     THIS->opencache->open(state);
+
+#if COIN_DEBUG // debug
+    if (COIN_DEBUG_CACHING) {
+      SoDebugError::postInfo("SoGLCacheList::open",
+                             "trying to create cache: %p", this);
+    }
+#endif // debug
   }
   THIS->autocachebits = SoGLCacheContextElement::resetAutoCacheBits(state);
 }
@@ -235,6 +258,12 @@ SoGLCacheList::close(SoGLRenderAction * action)
 
   // open cache is ok, add it to the cache list
   if (THIS->opencache) {
+#if COIN_DEBUG
+    if (COIN_DEBUG_CACHING) {
+      SoDebugError::postInfo("SoGLCacheList::close",
+                             "new cache created: %p", this);
+    }
+#endif // debug
     THIS->itemlist.append(THIS->opencache);
     THIS->opencache = NULL;
   }
@@ -252,6 +281,12 @@ void
 SoGLCacheList::invalidateAll(void)
 {
   int n = THIS->itemlist.getLength();
+#if COIN_DEBUG
+  if (n && COIN_DEBUG_CACHING) {
+    SoDebugError::postInfo("SoGLCacheList::invalidateAll",
+                           "invalidate all: %p (num caches = %d)", this, n);
+  }
+#endif // debug
   for (int i = 0; i < n; i++) {
     THIS->itemlist[i]->invalidate();
   }
