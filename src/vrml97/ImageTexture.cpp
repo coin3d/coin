@@ -128,10 +128,12 @@ public:
   SbBool glimagevalid;
   SbImage image;
   SoFieldSensor * urlsensor;
+
   void readimage_cleanup(void);
 #ifdef HAVE_THREADS
   SbString scheduledfilename;
   SbMutex readimagemutex;
+  SbBool isdestructing;
 #endif // HAVE_THREADS
 };
 
@@ -186,13 +188,17 @@ SoVRMLImageTexture::SoVRMLImageTexture(void)
   THIS->glimage = NULL;
   THIS->glimagevalid = FALSE;
   THIS->readstatus = 1;
-
+  
   // use field sensor for url since we will load an image if
   // filename changes. This is a time-consuming task which should
   // not be done in notify().
   THIS->urlsensor = new SoFieldSensor(urlSensorCB, this);
   THIS->urlsensor->setPriority(0);
   THIS->urlsensor->attach(&this->url);
+
+#ifdef HAVE_THREADS
+  THIS->isdestructing = FALSE;
+#endif // HAVE_THREADS
 }
 
 /*!
@@ -200,10 +206,14 @@ SoVRMLImageTexture::SoVRMLImageTexture(void)
 */
 SoVRMLImageTexture::~SoVRMLImageTexture()
 {
-  // lock and unlock in case a thread is currently reading the image
-  THIS->readimagemutex.lock();
-  THIS->readimagemutex.unlock();
-  
+#ifdef HAVE_THREADS
+  // just wait for all threads to finish reading
+  if (imagetexture_scheduler) {
+    THIS->isdestructing = TRUE; // signal thread that we are destructing
+    cc_sched_wait_all(imagetexture_scheduler);
+  }
+#endif // HAVE_THREADS  
+
   if (THIS->glimage) THIS->glimage->unref(NULL);
   delete THIS->urlsensor;
   delete THIS;
@@ -407,16 +417,15 @@ SoVRMLImageTexture::read_thread(void * closure)
 #ifdef HAVE_THREADS
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
   
-  if (!imagetexture_is_exiting) {
+  if (!imagetexture_is_exiting && !THISP->isdestructing) {
     
     (void) THISP->image.readFile(THISP->scheduledfilename);
     
     assert(THISP->glimage);
     THISP->glimage->setEndFrameCallback(glimage_callback, thisp);
     THISP->glimagevalid = FALSE;
-  }
-  
-  thisp->unref(); // we ref'd in image_read_cb() 
+    thisp->touch(); // schedule redraw
+  }  
   THISP->readimagemutex.unlock(); // unlock to enable new images to be read
 #endif // HAVE_THREADS
 }
@@ -428,7 +437,6 @@ SbBool
 SoVRMLImageTexture::image_read_cb(const SbString & filename, SbImage * image, void * closure)
 {
 #ifdef HAVE_THREADS
-
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
   assert(&THISP->image == image);
   assert(THISP->glimage);
@@ -437,7 +445,6 @@ SoVRMLImageTexture::image_read_cb(const SbString & filename, SbImage * image, vo
   }
   // lock mutex to avoid another thread overwriting our data.
   (void) THISP->readimagemutex.lock();
-  thisp->ref(); // ref to make sure the node isn't deleted while we're reading
 
   THISP->scheduledfilename = filename;
 
