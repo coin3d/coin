@@ -992,7 +992,7 @@ SoRayPickActionP::calcObjectSpaceData(SoState * ownerstate)
 void
 SoRayPickActionP::calcMatrices(SoState * state)
 {
-  const float VALID_LIMIT = 1.0e-12f;
+  const float VALID_LIMIT = 1.0e-12f;  // FIXME: why not FLT_EPSILON? 20010916 mortene.
   this->obj2world = SoModelMatrixElement::get(state);
   if (this->isFlagSet(EXTRA_MATRIX)) {
     this->obj2world.multLeft(this->extramatrix);

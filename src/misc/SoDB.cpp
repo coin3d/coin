@@ -40,7 +40,15 @@
 
   See <http://www.coin3d.org> for more information about Coin and the
   SoXt, SoQt and other GUI glue libraries.
- */
+
+  <b>IMPORTANT NOTE: the documentation for the Coin library is still a
+  work-in-progress.</b> Although most classes have been documented
+  properly, there are still "holes" in the documentation for certain
+  sets of classes.  Complete documentation for the Inventor API can be
+  found on the web-pages of Template Graphics Systems at <a
+  href="http://www.tgs.com">http://www.tgs.com</a>, just follow the
+  links to the "Open Inventor C++" classes documentation.
+*/
 
 /*! \defgroup actions Actions */
 /*! \defgroup base Base classes */

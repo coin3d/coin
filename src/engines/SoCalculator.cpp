@@ -353,6 +353,11 @@ SoCalculator::evaluateExpression(struct so_eval_node *node, const int fieldidx)
 //
 // inused and outused must be cleared before calling this method
 //
+// FIXME: this becomes a bottleneck if there are many SoCalculator
+// engines in the scenegraph which are updated all the time. See the
+// SoGuiExamples/coin-competitions/SIM-20010914/kaos.cpp.in for some
+// great test-code to use while profiling.  Could be solved by caching
+// the set of expressions found.  20010917 mortene.
 void
 SoCalculator::findUsed(struct so_eval_node *node, char *inused, char *outused)
 {

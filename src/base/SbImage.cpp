@@ -189,7 +189,8 @@ SbImage::readFile(const SbString & filename,
       simagedata = simage_wrapper()->simage_read_image(finalname.getString(), &w, &h, &nc);
 #if COIN_DEBUG
       if (!simagedata) {
-        SoDebugError::post("SbImage::readFile", "%s",
+        SoDebugError::post("SbImage::readFile", "(%s) %s",
+                           filename.getString(),
                            simage_wrapper()->simage_get_last_error ?
                            simage_wrapper()->simage_get_last_error() :
                            "Unknown error");

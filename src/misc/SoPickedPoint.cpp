@@ -26,6 +26,8 @@
   as position, normal, texture coordinate and material index in the
   current material. It might also hold detail information (an SoDetail
   subclass) for every node in the picked path.
+
+  \sa SoRayPickAction
 */
 
 #include <Inventor/SoPickedPoint.h>

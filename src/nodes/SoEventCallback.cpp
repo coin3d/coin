@@ -61,6 +61,16 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+/*!
+  \typedef void SoEventCallback::SoEventCallbackCB(void * userdata, SoEventCallback * node)
+
+  Callback functions for SoEventCallback::addEventCallback() must be
+  of this type.  \a userdata is the last argument to
+  SoEventCallback::addEventCallback(), and \a node is of course the
+  SoEventCallback node in the scenegraph which caused the invocation
+  of the callback.
+*/
+
 
 SO_NODE_SOURCE(SoEventCallback);
 

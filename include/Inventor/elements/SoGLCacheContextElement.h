@@ -66,6 +66,12 @@ private:
   int autocachebits;
 };
 
+
+// FIXME: keep separate classes in separate header files for
+// consistency and clean design -- so split the following into it's
+// own SoGLDisplayList.h file (unless there are compelling reasons
+// _not_ to do this that have escaped my attention).  20010912 mortene.
+
 // implementation in Coin/src/elements/SoGLDisplayList.cpp
 class COIN_DLL_API SoGLDisplayList {
   friend class SoGLCacheContextElement;
