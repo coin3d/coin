@@ -52,6 +52,7 @@ private:
   SbBool enabled;
   SoEngine * container;
   SoFieldList slaves;
+  SbDict notifyflags;
 };
 
 #endif // !COIN_SOENGINEOUTPUT_H

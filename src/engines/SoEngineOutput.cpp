@@ -230,10 +230,24 @@ SoEngineOutput::operator[](int i) const
 void
 SoEngineOutput::prepareToWrite(void) const
 {
+  // Cast away constness for working with the SbDict instance.
+  SoEngineOutput * that = (SoEngineOutput *)this;
+  that->notifyflags.clear();
+
   int n = this->slaves.getLength();
   for (int i = 0; i < n; i++) {
+    that->notifyflags.enter((unsigned long)(this->slaves[i]),
+                            (void *)(this->slaves[i]->isNotifyEnabled()));
     this->slaves[i]->enableNotify(FALSE);
   }
+}
+
+// Restore the slave fields' "notification enabled" flags after
+// SoEngine::evaluate().
+static void
+restore_notifyflags(unsigned long fieldptr, void * enabledflag)
+{
+  ((SoField *)fieldptr)->enableNotify((SbBool)enabledflag);
 }
 
 /*!
@@ -245,10 +259,7 @@ SoEngineOutput::prepareToWrite(void) const
 void
 SoEngineOutput::doneWriting(void) const
 {
-  int n = this->slaves.getLength();
-  for (int i = 0; i < n; i++) {
-    this->slaves[i]->enableNotify(TRUE);
-  }
+  this->notifyflags.applyToAll(restore_notifyflags);
 }
 
 /*!
