@@ -148,9 +148,8 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
 
     if (character <= 32 || character >= 127) {
 
-      /*
-      // FIXME: Charachers other than space, should be replaced with
-      // squares. (20030910 handegar)
+      /* FIXME: Charachers other than space, should be replaced with
+         squares. (20030910 handegar)
       */
 
       /* treat all these characters as spaces*/
@@ -205,12 +204,12 @@ cc_glyph3d_getnextcwedge(const cc_glyph3d * g, int edgeidx)
 
   edgeptr = cc_glyph3d_getedgeindices(g);
 
-  // test for common case
+  /* test for common case */
   if (edgeidx > 0) {
     if (edgeptr[idx] == edgeptr[idx-1])
       return &edgeptr[idx-2];
   }
-  // do a linear search
+  /* do a linear search */
   findidx = edgeptr[idx];
   ptr = edgeptr;
   while (*ptr >= 0) {
@@ -231,11 +230,11 @@ cc_glyph3d_getnextccwedge(const cc_glyph3d * g, int edgeidx)
   
   edgeptr = cc_glyph3d_getedgeindices(g);
 
-  // test for common case
+  /* test for common case */
   if (edgeptr[idx+1] == edgeptr[idx+2])
     return &edgeptr[idx+2];
 
-  // do a linear search
+  /* do a linear search */
   findidx = edgeptr[idx+1];
   ptr = edgeptr;
   while (*ptr >= 0) {
@@ -316,9 +315,7 @@ glyph3d_specmatch(const cc_font_specification * spec1,
   assert(spec1);
   assert(spec2);
 
-  /*
-  // FIXME: Add compare for family and style (20030902 handegar)
-  */
+  /* FIXME: Add compare for family and style (20030902 handegar) */
   if ((!cc_string_compare(spec1->name, spec2->name)) &&
       (spec1->size == spec2->size)) {
     return TRUE;

@@ -828,11 +828,10 @@ cc_flw_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
   else if (win32api) {
     return cc_flww32_get_vector_glyph_coords(vecglyph);
   } else {
-    /*
-    // FIXME: Should one assert here instead? It should be impossible
-    // to call this method with an valid glyph and get NULL
-    // returned... Goes for the others below aswell (20030912
-    // handegar)
+    /* FIXME: Should one assert here instead? It should be impossible
+       to call this method with an valid glyph and get NULL
+       returned... Goes for the others below aswell (20030912
+       handegar)
     */
     return NULL;
   }

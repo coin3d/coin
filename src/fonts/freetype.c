@@ -700,12 +700,10 @@ cc_flwft_get_advance(void * font, int glyph, float *x, float *y)
   tmp = face->glyph->advance.y * flwft_tessellator.vertex_scale;
   y[0] = (tmp / 64.0f) * fontscalingy;
 
-  /*
-  // FIXME: This will always return 0 when handeling bitmap
-  // glyphs... Currently, the advancement in SoText2 is based on
-  // bitmap-width. Maybe a separate method for getting the
-  // advancement in ints should be made for bitmaps (20030911
-  // handegar)
+  /* FIXME: This will always return 0 when handling bitmap
+     glyphs... Currently, the advancement in SoText2 is based on
+     bitmap-width. Maybe a separate method for getting the advancement
+     in ints should be made for bitmaps (20030911 handegar)
   */
 }
 
@@ -735,12 +733,10 @@ cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y)
     *y = 0.0;
   }
 
-  /*
-  // FIXME: This will always return 0 when handeling bitmap
-  // glyphs... Currently, the advancement in SoText2 is based on
-  // bitmap-width. Maybe a separate method for getting the
-  // advancement in ints should be made for bitmaps (20030911
-  // handegar)
+  /* FIXME: This will always return 0 when handling bitmap
+     glyphs... Currently, the advancement in SoText2 is based on
+     bitmap-width. Maybe a separate method for getting the advancement
+     in ints should be made for bitmaps (20030911 handegar)
   */
 
 }

@@ -1212,7 +1212,7 @@ coin_output_ascii85(FILE * fp,
 {
   int i;
   if (flush) {
-    // fill up tuple
+    /* fill up tuple */
     for (i = *tuplecnt; i < 4; i++) tuple[i] = 0;
   }
   else {
