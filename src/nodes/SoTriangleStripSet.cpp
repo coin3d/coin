@@ -321,60 +321,50 @@ SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   const SoCoordinateElement * coords =
     SoCoordinateElement::getInstance(state);
   assert(coords);
-
-  SbBool perVertex = TRUE;
-
-  SoNormalBindingElement::Binding normbind =
-    SoNormalBindingElement::get(state);
-
-  switch (normbind) {
-  case SoNormalBindingElement::PER_FACE:
-  case SoNormalBindingElement::PER_FACE_INDEXED:
-  case SoNormalBindingElement::PER_PART:
-  case SoNormalBindingElement::PER_PART_INDEXED:
-    perVertex = FALSE;
-    break;
-  default:
-    break;
-  }
-
-  if (perVertex) {
-    SoNormalGenerator * gen =
-      new SoNormalGenerator(ccw, this->numVertices.getNum()*3);
-
-    int32_t idx = startIndex.getValue();
-    int32_t dummyarray[1];
-    const int32_t * ptr = numVertices.getValues(0);
-    const int32_t * start = ptr;
-    const int32_t * end = ptr + numVertices.getNum();
-    this->fixNumVerticesPointers(state, ptr, end, dummyarray);
-
-    const SoCoordinateElement * coords =
-      SoCoordinateElement::getInstance(state);
-
-    while (ptr < end) {
-      int num = *ptr++ - 3;
-      assert(num >= 0);
-      SbVec3f striptri[3];
-      striptri[0] = coords->get3(idx++);
-      striptri[1] = coords->get3(idx++);
+  
+  SoNormalGenerator * gen =
+    new SoNormalGenerator(ccw, this->numVertices.getNum()*3);
+  
+  int32_t idx = startIndex.getValue();
+  int32_t dummyarray[1];
+  const int32_t * ptr = numVertices.getValues(0);
+  const int32_t * start = ptr;
+  const int32_t * end = ptr + numVertices.getNum();
+  this->fixNumVerticesPointers(state, ptr, end, dummyarray);
+  
+  while (ptr < end) {
+    int num = *ptr++ - 3;
+    assert(num >= 0);
+    SbVec3f striptri[3];
+    striptri[0] = coords->get3(idx++);
+    striptri[1] = coords->get3(idx++);
+    striptri[2] = coords->get3(idx++);
+    gen->triangle(striptri[0], striptri[1], striptri[2]);
+    SbBool flag = FALSE;
+    while (num--) {
+      if (flag) striptri[1] = striptri[2];
+      else striptri[0] = striptri[2];
+      flag = !flag;
       striptri[2] = coords->get3(idx++);
       gen->triangle(striptri[0], striptri[1], striptri[2]);
-      SbBool flag = FALSE;
-      while (num--) {
-        if (flag) striptri[1] = striptri[2];
-        else striptri[0] = striptri[2];
-        flag = !flag;
-        striptri[2] = coords->get3(idx++);
-        gen->triangle(striptri[0], striptri[1], striptri[2]);
-      }
     }
+  }
+  
+  switch (this->findNormalBinding(state)) {
+  case OVERALL:
+    gen->generateOverall();
+    break;
+  case PER_STRIP:
+    gen->generatePerStrip(start, end-start);
+    break;
+  case PER_FACE:
+    gen->generatePerFace();
+    break;
+  case PER_VERTEX:
     gen->generate(SoCreaseAngleElement::get(state), start, end-start);
-    nc->set(gen);
+    break;
   }
-  else {
-    assert(0 && "FIXME: Normals per face or per strip not implemented (pederb)");
-  }
+  nc->set(gen);
   return TRUE;
 }
 
