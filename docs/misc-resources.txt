@@ -120,6 +120,16 @@ THE LINKS
   Also in the proceedings of the ACM Symposium on Virtual Reality
   Software and Technology (VRST'99), pp. 74-81, 1999.
 
+* There's supposedly a shadow demo on www.opengl.org, with source
+  code, which demonstrates how to do shadows on all kinds of (NVidia)
+  gfx cards, from TNT (sw shadow volumes) to GeForce 3 (hardware
+  shadow mapping).
+
+* This link has some useful information on doing hardware-supported
+  dynamic shadowing on NVidia gfx-cards:
+
+    <URL:http://developer.nvidia.com/view.asp?IO=hwshadowmap_paper>
+
 * A 3D model search engine (with lots of VRML models, at least):
   http://shape.cs.princeton.edu
 
@@ -134,3 +144,5 @@ THE LINKS
 * Open Dynamics Engine, simulation of articulated rigid body dynamics:
   http://www.q12.org/ode/ode.html (also has links to other similar
   engines)
+
+* Driver for input device spaceball: http://www.3dconnexion.com/software/sdk/
