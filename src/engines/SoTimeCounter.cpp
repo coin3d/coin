@@ -338,7 +338,7 @@ void
 SoTimeCounter::calcNumSteps(void)
 {
   short stepval = this->step.getValue();
-  this->numsteps = (this->max.getValue() - this->min.getValue()) / stepval + 1;
+  this->numsteps = (this->max.getValue() - this->min.getValue()) / SbAbs(stepval) + 1;
 }
 
 // recalculate duty steps.
@@ -381,12 +381,23 @@ SoTimeCounter::findOutputValue(double timeincycle) const
     for (i = 0; i < this->numsteps; i++) {
       if (timeincycle <= this->dutylimits[i]) break;
     }
-    val = minval + i * stepval;
+    if (stepval >= 0) {
+      val = minval + i * stepval;
+    }
+    else {
+      val = maxval + i*stepval;
+    }
   }
   else {
     double steptime = this->cyclelen / this->numsteps;
-    val = minval + (short)(timeincycle / steptime) * stepval;
+    if (stepval >= 0) {
+      val = minval + (short)(timeincycle / steptime) * stepval;
+    }
+    else {
+      val = maxval + (short)(timeincycle / steptime) * stepval;      
+    }
     if (val > maxval) val = maxval;
+    if (val < minval) val = minval;
   }
   assert(val >= minval && val <= maxval);
   return val;
