@@ -210,6 +210,8 @@ libelementsincdir = $(includedir)/Inventor/elements
 libelementsLINKHACKincdir = $(includedir)/Inventor/elements
 
 ALLINSTHEADERS = \
+	$(top_srcdir)/include/Inventor/elements/SoSubElement.h \
+	$(top_srcdir)/include/Inventor/elements/SoElements.h \
 	$(top_srcdir)/include/Inventor/elements/SoAccumulatedElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoAmbientColorElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoAnnoText3CharOrientElement.h \
@@ -236,6 +238,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoFontSizeElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLAmbientColorElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLClipPlaneElement.h \
+	$(top_srcdir)/include/Inventor/elements/SoGLColorIndexElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLCoordinateElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLDiffuseColorElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLDrawStyleElement.h \
@@ -271,6 +274,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoLinePatternElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoLineWidthElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoLocalBBoxMatrixElement.h \
+	$(top_srcdir)/include/Inventor/elements/SoLongElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoMaterialBindingElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoModelMatrixElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoNormalBindingElement.h \

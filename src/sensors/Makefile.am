@@ -50,6 +50,7 @@ libsensorsincdir = $(includedir)/Inventor/sensors
 libsensorsLINKHACKincdir = $(includedir)/Inventor/sensors
 
 ALLINSTHEADERS = \
+	$(top_srcdir)/include/Inventor/sensors/SoSensors.h \
 	$(top_srcdir)/include/Inventor/sensors/SoAlarmSensor.h \
 	$(top_srcdir)/include/Inventor/sensors/SoDataSensor.h \
 	$(top_srcdir)/include/Inventor/sensors/SoDelayQueueSensor.h \

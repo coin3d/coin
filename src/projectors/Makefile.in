@@ -101,7 +101,7 @@ libprojectorsLINKHACK_la_SOURCES = $(ALLSOURCES)
 libprojectorsincdir = $(includedir)/Inventor/projectors
 libprojectorsLINKHACKincdir = $(includedir)/Inventor/projectors
 
-ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/projectors/SbCylinderPlaneProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbCylinderProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbCylinderSectionProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbCylinderSheetProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbLineProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbPlaneProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbSpherePlaneProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbSphereProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbSphereSectionProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbSphereSheetProjector.h
+ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/projectors/SbProjectors.h 	$(top_srcdir)/include/Inventor/projectors/SbCylinderPlaneProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbCylinderProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbCylinderSectionProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbCylinderSheetProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbLineProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbPlaneProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbSpherePlaneProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbSphereProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbSphereSectionProjector.h 	$(top_srcdir)/include/Inventor/projectors/SbSphereSheetProjector.h
 
 
 libprojectorsinc_HEADERS = $(ALLINSTHEADERS)

@@ -101,7 +101,7 @@ libsensorsLINKHACK_la_SOURCES = $(ALLSOURCES)
 libsensorsincdir = $(includedir)/Inventor/sensors
 libsensorsLINKHACKincdir = $(includedir)/Inventor/sensors
 
-ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/sensors/SoAlarmSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoDataSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoDelayQueueSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoFieldSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoIdleSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoNodeSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoOneShotSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoPathSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoSensorManager.h 	$(top_srcdir)/include/Inventor/sensors/SoTimerQueueSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoTimerSensor.h
+ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/sensors/SoSensors.h 	$(top_srcdir)/include/Inventor/sensors/SoAlarmSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoDataSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoDelayQueueSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoFieldSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoIdleSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoNodeSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoOneShotSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoPathSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoSensorManager.h 	$(top_srcdir)/include/Inventor/sensors/SoTimerQueueSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoTimerSensor.h
 
 
 libsensorsinc_HEADERS = $(ALLINSTHEADERS)

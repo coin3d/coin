@@ -88,8 +88,11 @@ libenginesincdir = $(includedir)/Inventor/engines
 libenginesLINKHACKincdir = $(includedir)/Inventor/engines
 
 ALLINSTHEADERS = \
+	$(top_srcdir)/include/Inventor/engines/SoSubEngine.h \
+	$(top_srcdir)/include/Inventor/engines/SoEngines.h \
 	$(top_srcdir)/include/Inventor/engines/SoBoolOperation.h \
 	$(top_srcdir)/include/Inventor/engines/SoCalculator.h \
+	$(top_srcdir)/include/Inventor/engines/SoCompose.h \
 	$(top_srcdir)/include/Inventor/engines/SoComposeMatrix.h \
 	$(top_srcdir)/include/Inventor/engines/SoComposeRotation.h \
 	$(top_srcdir)/include/Inventor/engines/SoComposeVec2f.h \

@@ -101,7 +101,7 @@ libeventsLINKHACK_la_SOURCES = $(ALLSOURCES)
 libeventsincdir = $(includedir)/Inventor/events
 libeventsLINKHACKincdir = $(includedir)/Inventor/events
 
-ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/events/SoButtonEvent.h 	$(top_srcdir)/include/Inventor/events/SoEvent.h 	$(top_srcdir)/include/Inventor/events/SoKeyboardEvent.h 	$(top_srcdir)/include/Inventor/events/SoLocation2Event.h 	$(top_srcdir)/include/Inventor/events/SoMotion3Event.h 	$(top_srcdir)/include/Inventor/events/SoMouseButtonEvent.h 	$(top_srcdir)/include/Inventor/events/SoSpaceballButtonEvent.h
+ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/events/SoSubEvent.h 	$(top_srcdir)/include/Inventor/events/SoButtonEvent.h 	$(top_srcdir)/include/Inventor/events/SoEvent.h 	$(top_srcdir)/include/Inventor/events/SoKeyboardEvent.h 	$(top_srcdir)/include/Inventor/events/SoLocation2Event.h 	$(top_srcdir)/include/Inventor/events/SoMotion3Event.h 	$(top_srcdir)/include/Inventor/events/SoMouseButtonEvent.h 	$(top_srcdir)/include/Inventor/events/SoSpaceballButtonEvent.h
 
 
 libeventsinc_HEADERS = $(ALLINSTHEADERS)

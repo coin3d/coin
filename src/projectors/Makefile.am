@@ -48,6 +48,7 @@ libprojectorsincdir = $(includedir)/Inventor/projectors
 libprojectorsLINKHACKincdir = $(includedir)/Inventor/projectors
 
 ALLINSTHEADERS = \
+	$(top_srcdir)/include/Inventor/projectors/SbProjectors.h \
 	$(top_srcdir)/include/Inventor/projectors/SbCylinderPlaneProjector.h \
 	$(top_srcdir)/include/Inventor/projectors/SbCylinderProjector.h \
 	$(top_srcdir)/include/Inventor/projectors/SbCylinderSectionProjector.h \

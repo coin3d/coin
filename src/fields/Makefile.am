@@ -124,6 +124,8 @@ libfieldsincdir = $(includedir)/Inventor/fields
 libfieldsLINKHACKincdir = $(includedir)/Inventor/fields
 
 ALLINSTHEADERS = \
+	$(top_srcdir)/include/Inventor/fields/SoSubField.h \
+	$(top_srcdir)/include/Inventor/fields/SoFields.h \
 	$(top_srcdir)/include/Inventor/fields/SoField.h \
 	$(top_srcdir)/include/Inventor/fields/SoFieldContainer.h \
 	$(top_srcdir)/include/Inventor/fields/SoFieldData.h \
@@ -134,6 +136,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/fields/SoMFEnum.h \
 	$(top_srcdir)/include/Inventor/fields/SoMFFloat.h \
 	$(top_srcdir)/include/Inventor/fields/SoMFInt32.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFLong.h \
 	$(top_srcdir)/include/Inventor/fields/SoMFMatrix.h \
 	$(top_srcdir)/include/Inventor/fields/SoMFName.h \
 	$(top_srcdir)/include/Inventor/fields/SoMFNode.h \
@@ -144,6 +147,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/fields/SoMFString.h \
 	$(top_srcdir)/include/Inventor/fields/SoMFTime.h \
 	$(top_srcdir)/include/Inventor/fields/SoMFUInt32.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFULong.h \
 	$(top_srcdir)/include/Inventor/fields/SoMFUShort.h \
 	$(top_srcdir)/include/Inventor/fields/SoMFVec2f.h \
 	$(top_srcdir)/include/Inventor/fields/SoMFVec3f.h \
@@ -157,6 +161,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/fields/SoSFFloat.h \
 	$(top_srcdir)/include/Inventor/fields/SoSFImage.h \
 	$(top_srcdir)/include/Inventor/fields/SoSFInt32.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFLong.h \
 	$(top_srcdir)/include/Inventor/fields/SoSFMatrix.h \
 	$(top_srcdir)/include/Inventor/fields/SoSFName.h \
 	$(top_srcdir)/include/Inventor/fields/SoSFNode.h \
@@ -168,6 +173,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/fields/SoSFTime.h \
 	$(top_srcdir)/include/Inventor/fields/SoSFTrigger.h \
 	$(top_srcdir)/include/Inventor/fields/SoSFUInt32.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFULong.h \
 	$(top_srcdir)/include/Inventor/fields/SoSFUShort.h \
 	$(top_srcdir)/include/Inventor/fields/SoSFVec2f.h \
 	$(top_srcdir)/include/Inventor/fields/SoSFVec3f.h \

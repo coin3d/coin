@@ -40,6 +40,7 @@ libeventsincdir = $(includedir)/Inventor/events
 libeventsLINKHACKincdir = $(includedir)/Inventor/events
 
 ALLINSTHEADERS = \
+	$(top_srcdir)/include/Inventor/events/SoSubEvent.h \
 	$(top_srcdir)/include/Inventor/events/SoButtonEvent.h \
 	$(top_srcdir)/include/Inventor/events/SoEvent.h \
 	$(top_srcdir)/include/Inventor/events/SoKeyboardEvent.h \

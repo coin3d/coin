@@ -34,6 +34,7 @@ liberrorsincdir = $(includedir)/Inventor/errors
 liberrorsLINKHACKincdir = $(includedir)/Inventor/errors
 
 ALLINSTHEADERS = \
+	$(top_srcdir)/include/Inventor/errors/SoErrors.h \
 	$(top_srcdir)/include/Inventor/errors/SoDebugError.h \
 	$(top_srcdir)/include/Inventor/errors/SoError.h \
 	$(top_srcdir)/include/Inventor/errors/SoMemoryError.h \

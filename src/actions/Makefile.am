@@ -65,6 +65,8 @@ libactionsincdir = $(includedir)/Inventor/actions
 libactionsLINKHACKincdir = $(includedir)/Inventor/actions
 
 ALLINSTHEADERS = \
+	$(top_srcdir)/include/Inventor/actions/SoSubAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoActions.h \
 	$(top_srcdir)/include/Inventor/actions/SoAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoBoxHighlightRenderAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoCallbackAction.h \

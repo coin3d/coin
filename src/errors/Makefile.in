@@ -101,7 +101,7 @@ liberrorsLINKHACK_la_SOURCES = $(ALLSOURCES)
 liberrorsincdir = $(includedir)/Inventor/errors
 liberrorsLINKHACKincdir = $(includedir)/Inventor/errors
 
-ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/errors/SoDebugError.h 	$(top_srcdir)/include/Inventor/errors/SoError.h 	$(top_srcdir)/include/Inventor/errors/SoMemoryError.h 	$(top_srcdir)/include/Inventor/errors/SoReadError.h
+ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/errors/SoErrors.h 	$(top_srcdir)/include/Inventor/errors/SoDebugError.h 	$(top_srcdir)/include/Inventor/errors/SoError.h 	$(top_srcdir)/include/Inventor/errors/SoMemoryError.h 	$(top_srcdir)/include/Inventor/errors/SoReadError.h
 
 
 liberrorsinc_HEADERS = $(ALLINSTHEADERS)
