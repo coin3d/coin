@@ -35,6 +35,7 @@
 #include <Inventor/nodekits/SoSeparatorKit.h>
 #include <Inventor/nodekits/SoShapeKit.h>
 #include <Inventor/nodekits/SoWrapperKit.h>
+#include <Inventor/actions/SoRayPickAction.h>
 
 /*!
   FIXME: write function documentation
@@ -54,4 +55,7 @@ SoNodeKit::init(void)
   SoWrapperKit::initClass();
 
   // FIXME: stuff missing? 19991106 mortene.
+
+  SoType type = SoBaseKit::getClassTypeId();
+  SoRayPickAction::addMethod(type, SoNode::rayPickS);
 }

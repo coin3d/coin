@@ -102,8 +102,6 @@ protected:
   void append(SoNode * const node, const int index);
   SoNodeList nodes;
   SbIntList indices;
-  int numPublic;
-  int minNumPublic;
   SbBool doAuditors;
 
   int getFullLength(void) const;
@@ -111,6 +109,11 @@ protected:
   void truncate(const int length, const SbBool doNotify);
 
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
+
+private:
+  SbBool hasHiddenChildren(SoNode *node) const;
+  void findFirstHidden();
+  int firstHidden;
 };
 
 #ifndef __SOLIB_INTERNAL__

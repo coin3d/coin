@@ -24,6 +24,7 @@
 
 class SoNode;
 class SoBaseKit;
+class SoSearchAction;
 
 class SoNodeKitPath : public SoPath
 {
@@ -32,9 +33,9 @@ class SoNodeKitPath : public SoPath
 public:
   int getLength(void) const;
   SoNode * getTail(void) const;
-  SoNode * getNode(int i) const;
-  SoNode * getNodeFromTail(int i) const;
-  void truncate(int start);
+  SoNode * getNode(const int idx) const;
+  SoNode * getNodeFromTail(const int idx) const;
+  void truncate(const int length);
   void pop(void);
   void append(SoBaseKit * childKit);
   void append(const SoNodeKitPath * fromPath);
@@ -44,8 +45,25 @@ public:
   friend int operator==(const SoNodeKitPath & p1, const SoNodeKitPath & p2);
 
 protected:
-  SoNodeKitPath(int approxLength);
-  virtual ~SoNodeKitPath();
+  SoNodeKitPath(const int approxLength);
+  virtual ~SoNodeKitPath();  
+
+private:
+  
+  static void clean(void);
+  static SoSearchAction *searchAction;
+  SoSearchAction *getSearchAction(void);
+
+  // these methods should not be used on an SoNodeKitPath
+  void append(const int childIndex);
+  void append(SoNode *childNode);
+  void append(const SoPath *fromPath);
+  void push(const int childIndex);
+  int getIndex(const int i) const;
+  int getIndexFromTail(const int i) const;
+  void insertIndex(SoNode *parent,const int newIndex);
+  void removeIndex(SoNode *parent,const int oldIndex);
+  void replaceIndex(SoNode *parent,const int index,SoNode *newChild);
 };
 
 #endif // !__SONODEKITPATH_H__

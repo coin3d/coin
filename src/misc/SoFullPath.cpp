@@ -30,6 +30,11 @@
 */
 
 #include <Inventor/SoFullPath.h>
+#include <assert.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 /*!
   A constructor.
@@ -52,33 +57,30 @@ SoFullPath::~SoFullPath(void)
   This method overrides SoPath::pop() to allow clients to get at all the nodes
   in the path.
 */
-
 void
 SoFullPath::pop(void)
 {
-  truncate(getFullLength() - 1);
+  this->truncate(this->nodes.getLength() - 1);
 }
 
 /*!
   This method overrides SoPath::getTail() to allow clients to get the tail
   node, counting internal path nodes.
 */
-
 SoNode *
 SoFullPath::getTail(void) const
 {
-  return nodes[ getFullLength() - 1 ];
+  return this->nodes[this->nodes.getLength() - 1];
 }
 
 /*!
   This method overrides SoPath::getNodeFromTail() to allow clients to get the
   node positioned \a index nodes from the tail, counting internal path nodes.
 */
-
 SoNode *
 SoFullPath::getNodeFromTail(const int index) const
 {
-  return nodes[ getFullLength() - 1 - index ];
+  return this->nodes[this->nodes.getLength() - 1 - index];
 }
 
 /*!
@@ -86,19 +88,21 @@ SoFullPath::getNodeFromTail(const int index) const
   the child index number for nodes based on their position from the tail,
   counting hidden nodes.
 */
-
 int
 SoFullPath::getIndexFromTail(const int index) const
 {
-  return indices[ getFullLength() - 1 - index ];
+  return this->indices[this->nodes.getLength() - 1 - index];
 }
 
 /*!
   This method returns the length of the path, counting hidden nodes also.
 */
-
 int
 SoFullPath::getLength(void) const
 {
-  return getFullLength();
+  return this->nodes.getLength();
 }
+
+
+
+

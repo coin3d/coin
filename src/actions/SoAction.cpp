@@ -207,7 +207,6 @@ void
 SoAction::apply(SoNode * rootNode)
 {
   this->isTerminated = FALSE;
-
 #if 0 // FIXME: doesn't work with a rootNode == NULL. 19990819 mortene.
   assert(rootNode);
   rootNode->ref();
@@ -440,17 +439,17 @@ SoAction::traverse(SoNode * const node)
   switch (this->currentPathCode) {
   case IN_PATH:
     {
-      int idx = this->currentPath.getLength();
+      int idx = this->currentPath.getFullLength();
 
       if (this->appliedData.path->getNode(idx-1) != node) {
         this->currentPathCode = OFF_PATH;
       }
       else { // either in or below path
-        if (idx == this->appliedData.path->getLength()) {
+        if (idx == this->appliedData.path->getFullLength()) {
           this->currentPathCode = BELOW_PATH;
         }
         else {
-          assert(idx < this->appliedData.path->getLength());
+          assert(idx < this->appliedData.path->getFullLength());
           assert(node->isOfType(SoGroup::getClassTypeId()));
           this->nextInPathChildIndex = this->appliedData.path->getIndex(idx);
         }
@@ -611,7 +610,7 @@ SoAction::usePathCode(int & numIndices, const int * & indices)
 #if 0 // OBSOLETED 19991108, code won't work for SoArray and SoMultipleCopy
   dummyArray[0] = this->nextInPathChildIndex;
 #else // new, more flexible code
-  dummyArray[0] = this->appliedData.path->getIndex(this->currentPath.getLength());
+  dummyArray[0] = this->appliedData.path->getIndex(this->currentPath.getFullLength());
 #endif // end of new code
   indices = dummyArray;
 }

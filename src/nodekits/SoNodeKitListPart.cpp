@@ -43,6 +43,7 @@
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
+#include <Inventor/actions/SoSearchAction.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -66,6 +67,8 @@ SoNodeKitListPart::SoNodeKitListPart()
   this->containerNode.setDefault(TRUE);
 
   this->typelistlocked = FALSE;
+  this->children = new SoChildList(this);
+  this->children->append(this->containerNode.getValue());
 }
 
 /*!
@@ -73,6 +76,7 @@ SoNodeKitListPart::SoNodeKitListPart()
 */
 SoNodeKitListPart::~SoNodeKitListPart()
 {
+  delete this->children;
   this->containerNode.setValue(NULL);
 }
 
@@ -121,13 +125,14 @@ SoNodeKitListPart::setContainerType(SoType newContainerType)
 #endif // debug
 
   SoGroup * newroot = (SoGroup *) newContainerType.createInstance();
-
-  SoChildList * kids = this->getChildren();
+  SoChildList * kids = this->containerNode.getValue()->getChildren();
   for (int i=0; i < kids->getLength(); i++) {
     newroot->addChild((*kids)[i]);
   }
 
   this->containerNode.setValue(newroot);
+  this->children->remove(0);
+  this->children->append(newroot);
 
   const SbName nameoftype = newContainerType.getName();
   if (nameoftype != this->containerTypeName.getValue()) {
@@ -377,7 +382,7 @@ SoNodeKitListPart::affectsState(void) const
 void
 SoNodeKitListPart::doAction(SoAction * action)
 {
-  this->containerNode.getValue()->doAction(action);
+  this->children->traverse(action);
 }
 
 /*!
@@ -386,7 +391,7 @@ SoNodeKitListPart::doAction(SoAction * action)
 void
 SoNodeKitListPart::callback(SoCallbackAction * action)
 {
-  this->containerNode.getValue()->callback(action);
+  this->children->traverse((SoAction*)action);
 }
 
 /*!
@@ -395,7 +400,7 @@ SoNodeKitListPart::callback(SoCallbackAction * action)
 void
 SoNodeKitListPart::GLRender(SoGLRenderAction * action)
 {
-  this->containerNode.getValue()->GLRender(action);
+  this->children->traverse((SoAction*)action);
 }
 
 /*!
@@ -404,7 +409,7 @@ SoNodeKitListPart::GLRender(SoGLRenderAction * action)
 void
 SoNodeKitListPart::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  this->containerNode.getValue()->getBoundingBox(action);
+  this->children->traverse((SoAction*)action);
 }
 
 /*!
@@ -413,7 +418,7 @@ SoNodeKitListPart::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoNodeKitListPart::getMatrix(SoGetMatrixAction * action)
 {
-  this->containerNode.getValue()->getMatrix(action);
+  this->children->traverse((SoAction*)action);
 }
 
 /*!
@@ -422,7 +427,7 @@ SoNodeKitListPart::getMatrix(SoGetMatrixAction * action)
 void
 SoNodeKitListPart::handleEvent(SoHandleEventAction * action)
 {
-  this->containerNode.getValue()->handleEvent(action);
+  this->children->traverse((SoAction*)action);
 }
 
 /*!
@@ -431,7 +436,7 @@ SoNodeKitListPart::handleEvent(SoHandleEventAction * action)
 void
 SoNodeKitListPart::pick(SoPickAction * action)
 {
-  this->containerNode.getValue()->pick(action);
+  this->children->traverse((SoAction*)action);
 }
 
 /*!
@@ -440,7 +445,9 @@ SoNodeKitListPart::pick(SoPickAction * action)
 void
 SoNodeKitListPart::search(SoSearchAction * action)
 {
-  this->containerNode.getValue()->search(action);
+  inherited::search(action);
+  if (!action->isFound())
+    this->children->traverse((SoAction*)action);
 }
 
 /*!
@@ -449,7 +456,7 @@ SoNodeKitListPart::search(SoSearchAction * action)
 void
 SoNodeKitListPart::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  this->containerNode.getValue()->getPrimitiveCount(action);
+  this->children->traverse((SoAction*)action);
 }
 
 /*!
@@ -458,7 +465,7 @@ SoNodeKitListPart::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 SoChildList *
 SoNodeKitListPart::getChildren(void) const
 {
-  return this->containerNode.getValue()->getChildren();
+  return this->children;
 }
 
 /*!
@@ -511,9 +518,17 @@ SoNodeKitListPart::syncInternalData(void)
 
   // Set up container node, if necessary.
   if (this->containerNode.getValue() == NULL) {
-    this->containerNode.setValue(new SoGroup); // use containerTypeName???
+    SoType containerType = SoType::fromName(this->containerTypeName.getValue());
+    this->containerNode.setValue((SoNode*)containerType.createInstance());
     this->containerNode.setDefault(TRUE);
   }
-
+  
+  if (this->children->getLength() == 0) {
+    this->children->append(this->containerNode.getValue());
+  }
+  else if ((*this->children)[0] != this->containerNode.getValue()) {
+    this->children->remove(0);
+    this->children->append(this->containerNode.getValue());
+  }
   // FIXME: lock typelist after import? 19991128 mortene.
 }

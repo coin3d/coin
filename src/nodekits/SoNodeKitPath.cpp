@@ -19,134 +19,320 @@
 
 /*!
   \class SoNodeKitPath SoNodeKitPath.h Inventor/SoNodeKitPath.h
-  \brief The SoNodeKitPath class ...
+  \brief The SoNodeKitPath class is a path that contains only nodekit nodes.
   \ingroup nodekits
 
-  FIXME: write class doc
+  All other nodes are hidden from the user.
 */
 
 #include <Inventor/SoNodeKitPath.h>
 #include <Inventor/misc/SoBasic.h> // COIN_STUB()
+#include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <stdlib.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
+SoSearchAction *SoNodeKitPath::searchAction;
 
 /*!
-  FIXME: write function documentation
+  A constructor.
 */
-SoNodeKitPath::SoNodeKitPath(int /*approxLength*/)
+SoNodeKitPath::SoNodeKitPath(const int approxLength)
+  : SoPath(approxLength)
 {
-  COIN_STUB();
+#if COIN_DEBUG && 1 // debug
+  int n = this->nodes.getLength();
+  for (int i = 0; i < n; i++) {
+    if (this->nodes[i]->isOfType(SoBaseKit::getClassTypeId()))
+      return;
+  }
+  SoDebugError::postInfo("SoNodeKitPath::SoNodeKitPath",
+                         "no nodekits in path");
+#endif // debug 
 }
 
 /*!
-  FIXME: write function documentation
+  The destructor.
 */
 SoNodeKitPath::~SoNodeKitPath()
 {
-  COIN_STUB();
 }
 
 /*!
-  FIXME: write function documentation
+  Returns the length of the path (the number of nodekit nodes).
 */
 int
 SoNodeKitPath::getLength(void) const
 {
-  COIN_STUB();
-  return -1;
+  int n = this->nodes.getLength();
+  int cnt = 0;
+  for (int i = 0; i < n; i++) {
+    if (this->nodes[i]->isOfType(SoBaseKit::getClassTypeId())) cnt++;
+  }
+  return cnt;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns the tail of the path (the last nodekit in the path).
 */
 SoNode *
 SoNodeKitPath::getTail(void) const
 {
-  COIN_STUB();
+  for (int i = this->nodes.getLength()-1; i >= 0; i--) {
+    if (this->nodes[i]->isOfType(SoBaseKit::getClassTypeId()))
+      return this->nodes[i];
+  }
+#if COIN_DEBUG && 1 // debug
+  SoDebugError::postInfo("SoNodeKitPath::getTail",
+                         "no nodekit in path");
+#endif // debug
   return NULL;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns nodekit number \a idx in path.
 */
 SoNode *
-SoNodeKitPath::getNode(int /*i*/) const
+SoNodeKitPath::getNode(const int idx) const
 {
-  COIN_STUB();
+  int n = this->nodes.getLength();
+  int cnt = 0;
+  for (int i = 0; i < n; i++) {
+    if (this->nodes[i]->isOfType(SoBaseKit::getClassTypeId())) {
+      if (cnt++ == idx) return this->nodes[i];
+    }
+  }
+#if COIN_DEBUG && 1 // debug
+  SoDebugError::postInfo("SoNodeKitPath::getNode",
+                         "index %d out of bounds", idx);
+#endif // debug
+
   return NULL;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns nodekit number \a idx in the path, from the tail.
 */
 SoNode *
-SoNodeKitPath::getNodeFromTail(int /*i*/) const
+SoNodeKitPath::getNodeFromTail(const int idx) const
 {
-  COIN_STUB();
+  int cnt = 0;
+  for (int i = this->nodes.getLength()-1; i >=0; i--) {
+    if (this->nodes[i]->isOfType(SoBaseKit::getClassTypeId())) {
+      if (cnt++ == idx) return this->nodes[i];
+    }
+  }
+#if COIN_DEBUG && 1 // debug
+  SoDebugError::postInfo("SoNodeKitPath::getNodeFromTail",
+                         "index %d out of bounds", idx);
+#endif // debug
   return NULL;
 }
 
 /*!
-  FIXME: write function documentation
+  Truncates the path at nodekit number \a length.
 */
 void
-SoNodeKitPath::truncate(int /*start*/)
+SoNodeKitPath::truncate(const int length)
 {
-  COIN_STUB();
+  int i, n = this->nodes.getLength();
+  int cnt = 0;
+  for (i = 0; i < n; i++) {
+    if (this->nodes[i]->isOfType(SoBaseKit::getClassTypeId())) {
+      if (cnt++ == length) break;
+    }
+  }
+  if (i < n) SoPath::truncate(i);
+#if COIN_DEBUG && 1 // debug
+  else {
+    SoDebugError::postInfo("SoNodeKitPath::truncate",
+                           "illegal length: %d", length);
+  }
+#endif // debug
 }
 
 /*!
-  FIXME: write function documentation
+  Pops off the last nodekit (truncates at last tail).
 */
 void
 SoNodeKitPath::pop(void)
 {
-  COIN_STUB();
+  int i = this->nodes.getLength() - 1;
+  for (; i >= 0; i--) {
+    if (this->nodes[i]->isOfType(SoBaseKit::getClassTypeId())) break;
+  }
+  if (i < 0) {
+#if COIN_DEBUG && 1 // debug
+    SoDebugError::postInfo("SoNodeKitPath::pop",
+                           "no nodekits in path");
+#endif // debug
+    return;
+  }
+  SoPath::truncate(i);
 }
 
 /*!
-  FIXME: write function documentation
+  Appends \a childKit to the path. childKit should be a part in the
+  tail nodekit of this path. In effect, the path from the tail to first 
+  occurrance of \a childKit will be appended to the path. 
 */
 void
-SoNodeKitPath::append(SoBaseKit * /*childKit*/)
+SoNodeKitPath::append(SoBaseKit *childKit)
 {
-  COIN_STUB();
+  if (this->getLength() == 0) this->setHead(childKit);
+  else {
+    SoBaseKit *tail = (SoBaseKit*) this->getTail();
+    assert(tail != NULL);
+    SoSearchAction *sa = this->getSearchAction();
+    sa->setNode(childKit);
+    SbBool oldSearch = tail->isSearchingChildren();
+    tail->setSearchingChildren(TRUE);
+    sa->apply(tail);
+    tail->setSearchingChildren(oldSearch);
+    SoPath *path = sa->getPath();
+    if (path) SoPath::append(path);
+    else {
+#if COIN_DEBUG && 1 // debug
+      SoDebugError::postInfo("SoNodeKitPath::append",
+                             "childKit not found as part of tail");
+#endif // debug
+    }
+  }
 }
 
 /*!
-  FIXME: write function documentation
+  Appends the nodekit path to this path. Head of \a fromPath must 
+  be a part in the current tail.
 */
 void
-SoNodeKitPath::append(const SoNodeKitPath * /*fromPath*/)
+SoNodeKitPath::append(const SoNodeKitPath *fromPath)
 {
-  COIN_STUB();
+  int n = fromPath->getLength();
+  for (int i = 0; i < n; i++) {
+    this->append((SoBaseKit*)fromPath->getNode(i));
+  }
 }
 
 /*!
-  FIXME: write function documentation
+  Returns \e TRUE if \a node is in this path.
 */
 SbBool
-SoNodeKitPath::containsNode(SoBaseKit * /*node*/) const
+SoNodeKitPath::containsNode(SoBaseKit *node) const
 {
-  COIN_STUB();
-  return FALSE;
+  return SoPath::containsNode((SoNode*)node);
 }
 
 /*!
-  FIXME: write function documentation
+  Returns the index of last common nodekit, or -1 if head
+  node differs.
 */
 int
-SoNodeKitPath::findFork(const SoNodeKitPath * /*path*/) const
+SoNodeKitPath::findFork(const SoNodeKitPath *path) const
 {
-  COIN_STUB();
-  return 0;
+  int i, n = SbMin(this->getLength(), path->getLength());
+  for (i = 0; i < n; i++) {
+    if (this->getNode(i) != path->getNode(i)) break;
+  }
+  return i-1;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns \e TRUE if paths are equal, \e FALSE otherwise.
 */
 int
-operator==(const SoNodeKitPath & /*p1*/, const SoNodeKitPath & /*p2*/)
+operator==(const SoNodeKitPath &p1, const SoNodeKitPath &p2)
 {
-  COIN_STUB();
+  if (&p1 == &p2) return TRUE; 
+  int n = p1.getLength();
+  if (n != p2.getLength()) return FALSE;
+  
+  for (int i = 0; i < n; i++) {
+    if (p1.getNode(i) != p2.getNode(i)) return FALSE;
+  }
+  return TRUE;
+}
+
+
+//
+// atexit() method
+//
+void
+SoNodeKitPath::clean(void)
+{
+  delete SoNodeKitPath::searchAction;
+  SoNodeKitPath::searchAction = NULL;
+}
+
+//
+// returns a search action to be used while serching for nodes
+//
+SoSearchAction *
+SoNodeKitPath::getSearchAction(void)
+{
+  if (SoNodeKitPath::searchAction == NULL) {
+    SoNodeKitPath::searchAction = new SoSearchAction();
+    searchAction->setInterest(SoSearchAction::FIRST);
+    searchAction->setSearchingAll(FALSE);
+    atexit(SoNodeKitPath::clean);
+  }
+  return SoNodeKitPath::searchAction;
+}
+
+//
+// private methods, just to keep the user from making mistakes
+//
+
+void 
+SoNodeKitPath::append(const int)
+{
+
+}
+
+void 
+SoNodeKitPath::append(SoNode *)
+{
+}
+
+void 
+SoNodeKitPath::append(const SoPath *)
+{
+}
+
+void 
+SoNodeKitPath::push(const int)
+{
+}
+
+int 
+SoNodeKitPath::getIndex(const int) const
+{
   return 0;
 }
+
+int 
+SoNodeKitPath::getIndexFromTail(const int) const
+{
+  return 0;
+}
+
+void 
+SoNodeKitPath::insertIndex(SoNode *, const int)
+{
+}
+
+void 
+SoNodeKitPath::removeIndex(SoNode *,const int)
+{
+}
+
+void 
+SoNodeKitPath::replaceIndex(SoNode *, const int, SoNode *)
+{
+}
+
+
+
+
