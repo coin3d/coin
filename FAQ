@@ -11,23 +11,15 @@ FAQ, take a look at the FAQs directory in the SoGuiExamples archive.
 For answers to common qquestions regarding the SoQt library, see the FAQ
 in the SoQt source archive.
 
+For answers to commone questions regarding licensing, see the FAQ.legal
+file in the Coin source archive.
+
 The most up-to-date version of this file can always be found at
 http://source.coin3d.org/Coin/FAQ
 
 
 Index
 =====
-
-0: Legal Issues
-  Q1: Coin is under the GNU General Public License ("GPL").
-      Can I use it in my proprietary, commercially sold application?
-
-  Q2: Is it possible to use the Coin library without the restrictions
-      of the GNU GPL?
-
-  Q3: How can you sell a "Professional Edition License" when the
-      library is released under the GNU GPL? Wouldn't that be
-      disallowed by the GNU GPL?
 
 1: Extensions and Ports
   Q1: Are there plans for making Coin multi-thread safe?
