@@ -24,6 +24,16 @@
 /*!
   \class SoVRMLDragSensor SoVRMLDragSensor.h Inventor/VRMLnodes/SoVRMLDragSensor.h
   \brief The SoVRMLDragSensor class is a superclass for VRML drag sensors.
+
+  This class collects the two fields that are common for some of the
+  sensor nodes, plus some common functions for these. Since this is an
+  abstract "helper" class, it does not represent an actual node from
+  the VRML97 specification, so don't use it as such.
+
+  For more information, a detailed discussion of drag sensors is
+  available in section 4.6.7.4 of the VRML97 specification:
+
+  <http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.4>.
 */
 
 #include <Inventor/VRMLnodes/SoVRMLDragSensor.h>
@@ -40,16 +50,39 @@
 
 /*!
   \var SoSFVec3f SoVRMLDragSensor::trackPoint_changed
+
   An event out that is generated when the trackpoint is changed.
 */
 
 /*!
   \var SoSFBool SoVRMLDragSensor::autoOffset
 
-  When TRUE, the offset field is updated when a dragging sequence is
-  finished.  Default value is TRUE.
-
+  When \c TRUE, the offset field is updated when a dragging sequence
+  is finished.  Default value is \c TRUE.
 */
+
+/*!
+  \fn SbBool SoVRMLDragSensor::dragStart(void)
+
+  \COININTERNAL
+
+  Called when dragger is selected (picked) by the user.
+/*!
+  \fn void SoVRMLDragSensor::drag(void)
+
+  \COININTERNAL
+
+  Called when user drags the mouse after picking the dragger.
+*/
+/*!
+  \fn void SoVRMLDragSensor::dragFinish(void)
+
+  \COININTERNAL
+
+  Called when mouse button is released after picking and interacting
+  with the dragger.
+*/
+
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLDragSensor);
 

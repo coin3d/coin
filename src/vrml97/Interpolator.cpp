@@ -24,7 +24,6 @@
 /*!
   \class SoVRMLInterpolator SoVRMLInterpolator.h Inventor/VRMLnodes/SoVRMLInterpolator.h
   \brief The SoVRMLInterpolator class is an internal abstract class.
-  \ingroup VRMLnodes
 
   This class collects the two fields that are common for all
   interpolator nodes, plus common code that operates on these
