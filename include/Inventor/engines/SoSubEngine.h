@@ -196,8 +196,8 @@ _class_::createInstance(void) \
   do { \
     if (_outmember_.isEnabled()) \
       for (int _i = 0;_i < _outmember_.getNumConnections(); _i++) { \
-        _outtype_ *_field = (_outtype_*) _outmember_[_i]; \
-        if (!_field->isReadOnly()) \
+        _outtype_ * field = (_outtype_*) _outmember_[_i]; \
+        if (!field->isReadOnly()) \
            ((_outtype_ *)_outmember_[_i])->_outval_; \
       } \
   } while (0)
