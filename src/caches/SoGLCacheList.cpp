@@ -139,6 +139,8 @@ SoGLCacheList::call(SoGLRenderAction * action)
         // the maximum number of caches is exceeded.
         THIS->itemlist.remove(i);
         THIS->itemlist.append(cache);
+        // update lazy GL state before calling cache
+        SoGLLazyElement::getInstance(state)->send(state, SoLazyElement::ALL_MASK);
         cache->call(state);
         SoGLLazyElement::postCacheCall(state, cache->getPostLazyState());
         cache->unref(state);
@@ -216,8 +218,8 @@ SoGLCacheList::close(SoGLRenderAction * action)
   if (THIS->opencache) {
     THIS->opencache->close();
     THIS->itemlist.append(THIS->opencache);
+    SoGLLazyElement::endCaching(state);            
     THIS->opencache = NULL;
-    SoGLLazyElement::endCaching(state);
   }
   if (SoCacheElement::setInvalid(THIS->savedinvalid)) {
     // notify parent caches

@@ -30,6 +30,13 @@
   (hopefully) work in the same way as the Inventor class though.
 */
 
+#ifdef COIN_DEBUG
+// #define GLLAZY_DEBUG(_x_) (fprintf(stderr,"%s\n", _x_))
+#define GLLAZY_DEBUG(x)
+#else
+#define GLLAZY_DEBUG(x)
+#endif
+                     
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
@@ -379,6 +386,7 @@ SoGLLazyElement::init(SoState * state)
   this->colorpacker = NULL;
   this->precachestate = NULL;
   this->postcachestate = NULL;
+  this->forcediffuse = FALSE;
   glDisable(GL_POLYGON_STIPPLE);
 
   GLboolean rgba;
@@ -404,6 +412,7 @@ SoGLLazyElement::push(SoState * state)
   this->didsetbitmask = prev->didsetbitmask;
   this->didntsetbitmask = prev->didntsetbitmask;
   this->cachebitmask = prev->cachebitmask;
+  this->forcediffuse = prev->forcediffuse;
 }
 
 void 
@@ -416,6 +425,7 @@ SoGLLazyElement::pop(SoState *state, const SoElement * prevtopelement)
   this->didsetbitmask = prev->didsetbitmask;
   this->didntsetbitmask = prev->didntsetbitmask;
   this->cachebitmask = prev->cachebitmask;
+  this->forcediffuse = prev->forcediffuse;
 }
 
 //! FIXME: write doc
@@ -509,7 +519,19 @@ SoGLLazyElement::send(const SoState * state, uint32_t mask) const
         }
         break;
       case DIFFUSE_CASE:
-        this->sendDiffuseByIndex(0);
+        if (this->forcediffuse) {
+          // we always send the first diffuse color for the first
+          // material in an open cache
+          if (this->colorindex) {
+            glIndexi((GLint)this->coinstate.colorindexarray[0]);
+          }
+          else {
+            this->sendPackedDiffuse(this->packedpointer[0]|this->transpmask);
+          }
+        }
+        else {
+          this->sendDiffuseByIndex(0);
+        }
         break;
       case AMBIENT_CASE:
         if (this->coinstate.ambient != this->glstate.ambient) {
@@ -899,6 +921,7 @@ SoGLLazyElement::beginCaching(SoState * state, GLState * prestate,
                               GLState * poststate)
 {
   SoGLLazyElement * elem = getInstance(state);
+  elem->send(state, ALL_MASK); // send lazy state before starting to build cache
   *prestate = elem->glstate; // copy current GL state
   elem->precachestate = prestate;
   elem->postcachestate = poststate;
@@ -907,6 +930,7 @@ SoGLLazyElement::beginCaching(SoState * state, GLState * prestate,
   elem->didsetbitmask = 0;
   elem->didntsetbitmask = 0;
   elem->cachebitmask = 0;
+  elem->forcediffuse = FALSE;
 }
 
 void 
@@ -918,6 +942,7 @@ SoGLLazyElement::endCaching(SoState * state)
   elem->precachestate->cachebitmask = elem->didntsetbitmask;
   elem->precachestate = NULL;
   elem->postcachestate = NULL;
+  elem->forcediffuse = FALSE;
 }
 
 void 
@@ -980,53 +1005,94 @@ SbBool
 SoGLLazyElement::preCacheCall(SoState * state, GLState * prestate)
 {
   SoGLLazyElement * elem = getInstance(state);
-  const GLState & curr = elem->glstate;
+
+  struct CoinState & curr = elem->coinstate;
   uint32_t mask = prestate->cachebitmask;
 
   for (int i = 0; (i < LAZYCASES_LAST)&&mask; i++, mask>>=1) {
     if (mask&1) {
       switch (i) {
       case LIGHT_MODEL_CASE:
-        if (curr.lightmodel != prestate->lightmodel) return FALSE;
+        if (curr.lightmodel != prestate->lightmodel) {
+          GLLAZY_DEBUG("light model failed");
+          return FALSE;
+        }
         break;
       case DIFFUSE_CASE:
-        if (curr.diffuse != prestate->diffuse) return FALSE;
+        // diffuse color is handled by always sending the first
+        // diffuse color for the first material set inside a cache.
         break;
       case AMBIENT_CASE:
-        if (curr.ambient != prestate->ambient) return FALSE;
+        if (curr.ambient != prestate->ambient) {
+          GLLAZY_DEBUG("ambient failed");
+          return FALSE;
+        }
         break;
       case SPECULAR_CASE:
-        if (curr.specular != prestate->specular) return FALSE;
+        if (curr.specular != prestate->specular) {
+          GLLAZY_DEBUG("specular failed");
+          return FALSE;
+        }
         break;
       case EMISSIVE_CASE:
-        if (curr.emissive != prestate->emissive) return FALSE;
+        if (curr.emissive != prestate->emissive) {
+          GLLAZY_DEBUG("emissive failed");
+          return FALSE;
+        }
         break;
       case SHININESS_CASE:
-        if (curr.shininess != prestate->shininess) return FALSE;
+        if (curr.shininess != prestate->shininess) {
+          GLLAZY_DEBUG("shininess failed");
+          return FALSE;
+        }
         break;
       case BLENDING_CASE:
-        if (curr.blending != prestate->blending) return FALSE;
+        if (curr.blending != prestate->blending) {
+          GLLAZY_DEBUG("blending failed");
+          return FALSE;
+        }
         break;
       case TRANSPARENCY_CASE:
-        if (curr.stipplenum != prestate->stipplenum) return FALSE;
+        if (curr.stipplenum != prestate->stipplenum) {
+          GLLAZY_DEBUG("transparency failed");
+          return FALSE;
+        }
         break;
       case VERTEXORDERING_CASE:
-        if (curr.vertexordering != prestate->vertexordering) return FALSE;
+        if (curr.vertexordering != prestate->vertexordering) {
+          GLLAZY_DEBUG("vertexordering failed");
+          return FALSE;
+        }
         break;
       case CULLING_CASE:
-        if (curr.culling != prestate->culling) return FALSE;
+        if (curr.culling != prestate->culling) {
+          GLLAZY_DEBUG("culling failed");
+          return FALSE;
+        }
         break;
       case TWOSIDE_CASE:
-        if (curr.twoside != prestate->twoside) return FALSE;
+        if (curr.twoside != prestate->twoside) {
+          GLLAZY_DEBUG("twoside failed");
+          return FALSE;
+        }
         break;
       case SHADE_MODEL_CASE:
-        if (curr.flatshading != prestate->flatshading) return FALSE;
+        if (curr.flatshading != prestate->flatshading) {
+          GLLAZY_DEBUG("shade model failed");
+          return FALSE;
+        }
         break;
       case GLIMAGE_CASE:
-        if (curr.glimageid != prestate->glimageid) return FALSE;
+        if ((int32_t) curr.glimageid != prestate->glimageid) {
+          GLLAZY_DEBUG("glimageid failed");
+          return FALSE;
+        }
         break;
       case ALPHATEST_CASE:
-        if (curr.alphatest != prestate->alphatest) return FALSE;
+        if (curr.alphatest != prestate->alphatest) {
+          GLLAZY_DEBUG("alphatest failed");
+          return FALSE;
+        }
         break;
       }
     }
@@ -1038,12 +1104,25 @@ SoGLLazyElement::preCacheCall(SoState * state, GLState * prestate)
 void 
 SoGLLazyElement::lazyDidSet(uint32_t mask)
 {
+  if (mask & DIFFUSE_MASK) {
+    if (!(this->didsetbitmask & DIFFUSE_MASK)) {
+      // to be safe, always send first diffuse when a cache is open
+      this->forcediffuse = TRUE;
+    }
+  }
   this->didsetbitmask |= mask;
 }
 
 void 
 SoGLLazyElement::lazyDidntSet(uint32_t mask)
 {
+  if (mask & DIFFUSE_MASK) {
+    if (!(this->didsetbitmask & DIFFUSE_MASK)) {
+      // to be safe, always send first diffuse when a cache is open
+      this->didsetbitmask |= DIFFUSE_MASK;
+      this->forcediffuse = TRUE;
+    }
+  }
   uint32_t pre = this->didntsetbitmask;
   this->didntsetbitmask |= mask&(~this->didsetbitmask);
 }

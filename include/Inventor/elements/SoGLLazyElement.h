@@ -84,7 +84,8 @@ public:
   uint32_t didsetbitmask;
   uint32_t didntsetbitmask;
   uint32_t cachebitmask;
-
+  
+  SbBool forcediffuse;
   GLState glstate;
   GLState * postcachestate;
   GLState * precachestate;
