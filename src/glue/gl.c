@@ -96,9 +96,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef HAVE_AGL_AGL_H
+#ifdef HAVE_AGL
 #include <AGL/AGL.h>
-#endif /* HAVE_AGL_AGL_H */
+#endif /* HAVE_AGL */
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
