@@ -121,7 +121,6 @@ glyphstruct_new(void)
 static struct cc_flw_font *
 fontstruct_new(void * font)
 {
-  unsigned int i;
   struct cc_flw_font * fs;
   fs = (struct cc_flw_font *)malloc(sizeof(struct cc_flw_font));
   fs->font = font;
@@ -235,7 +234,6 @@ cc_flw_debug(void)
 void
 cc_flw_initialize(void)
 {
-  unsigned int i;
   const char * env;
 
   assert(wrapper_initialized == FALSE && "init only once");
