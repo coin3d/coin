@@ -23,11 +23,10 @@
 #include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
 #include <Inventor/projectors/SbSphereSheetProjector.h>
-#if 0 // FIXME: enable as they are implemented. 19990329 mortene.
 #include <Inventor/projectors/SbSphereSectionProjector.h>
 #include <Inventor/projectors/SbSpherePlaneProjector.h>
 #include <Inventor/projectors/SbCylinderSheetProjector.h>
 #include <Inventor/projectors/SbCylinderSectionProjector.h>
 #include <Inventor/projectors/SbCylinderPlaneProjector.h>
-#endif // 0
+
 #endif // COIN_SBPROJECTORS_H
