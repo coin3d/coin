@@ -219,7 +219,7 @@ soshape_bigtexture::clip_triangles(SoState * state)
                                     wrap[0], wrap[1], 
                                     dummymod, dummycol);
   SbVec4f tmp;
-  int i, j;
+  int i;
 
   for (i = 0; i < n; i++) {
     tmp = this->vertexlist[i]->getTextureCoords();
