@@ -525,6 +525,14 @@ SOURCE="@coin_src_dir@\src\caches\SoConvexDataCache.cpp"
 # End Source File
 # Begin Source File
 
+SOURCE="@coin_src_dir@\src\caches\SoGLRenderCache.cpp"
+# End Source File
+# Begin Source File
+
+SOURCE="@coin_src_dir@\src\caches\SoGLCacheList.cpp"
+# End Source File
+# Begin Source File
+
 SOURCE="@coin_src_dir@\src\nodes\SoCoordinate3.cpp"
 # End Source File
 # Begin Source File

@@ -8,6 +8,8 @@ ALLSOURCES = \
 	SoBoundingBoxCache.cpp SoBoundingBoxCache.h \
 	SoCache.cpp SoCache.h \
 	SoConvexDataCache.cpp SoConvexDataCache.h \
+	SoGLCacheList.cpp SoGLCacheList.h \
+	SoGLRenderCache.cpp SoGLRenderCache.h \
 	SoNormalCache.cpp SoNormalCache.h \
 	SoTextureCoordinateCache.cpp SoTextureCoordinateCache.h
 endif
@@ -16,6 +18,8 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/caches/SoBoundingBoxCache.h \
 	$(top_srcdir)/include/Inventor/caches/SoCache.h \
 	$(top_srcdir)/include/Inventor/caches/SoConvexDataCache.h \
+	$(top_srcdir)/include/Inventor/caches/SoGLCacheList.h \
+	$(top_srcdir)/include/Inventor/caches/SoGLRenderCache.h \
 	$(top_srcdir)/include/Inventor/caches/SoNormalCache.h \
 	$(top_srcdir)/include/Inventor/caches/SoTextureCoordinateCache.h
 

@@ -113,6 +113,8 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 @HACKING_COMPACT_BUILD_FALSE@	SoBoundingBoxCache.cpp SoBoundingBoxCache.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoCache.cpp SoCache.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoConvexDataCache.cpp SoConvexDataCache.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLCacheList.cpp SoGLCacheList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLRenderCache.cpp SoGLRenderCache.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoNormalCache.cpp SoNormalCache.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateCache.cpp SoTextureCoordinateCache.h
 
@@ -120,6 +122,8 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/caches/SoBoundingBoxCache.h \
 	$(top_srcdir)/include/Inventor/caches/SoCache.h \
 	$(top_srcdir)/include/Inventor/caches/SoConvexDataCache.h \
+	$(top_srcdir)/include/Inventor/caches/SoGLCacheList.h \
+	$(top_srcdir)/include/Inventor/caches/SoGLRenderCache.h \
 	$(top_srcdir)/include/Inventor/caches/SoNormalCache.h \
 	$(top_srcdir)/include/Inventor/caches/SoTextureCoordinateCache.h
 
@@ -160,7 +164,8 @@ libcaches_la_LDFLAGS =
 libcaches_la_LIBADD = 
 @HACKING_COMPACT_BUILD_FALSE@am_libcaches_la_OBJECTS =  \
 @HACKING_COMPACT_BUILD_FALSE@SoBoundingBoxCache.lo SoCache.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoConvexDataCache.lo SoNormalCache.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoConvexDataCache.lo SoGLCacheList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLRenderCache.lo SoNormalCache.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateCache.lo
 @HACKING_COMPACT_BUILD_TRUE@am_libcaches_la_OBJECTS =  all.lo
 libcaches_la_OBJECTS =  $(am_libcaches_la_OBJECTS)
@@ -168,7 +173,8 @@ libcachesLINKHACK_la_LDFLAGS =
 libcachesLINKHACK_la_LIBADD = 
 @HACKING_COMPACT_BUILD_FALSE@am_libcachesLINKHACK_la_OBJECTS =  \
 @HACKING_COMPACT_BUILD_FALSE@SoBoundingBoxCache.lo SoCache.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoConvexDataCache.lo SoNormalCache.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoConvexDataCache.lo SoGLCacheList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLRenderCache.lo SoNormalCache.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateCache.lo
 @HACKING_COMPACT_BUILD_TRUE@am_libcachesLINKHACK_la_OBJECTS =  all.lo
 libcachesLINKHACK_la_OBJECTS =  $(am_libcachesLINKHACK_la_OBJECTS)
@@ -188,6 +194,7 @@ HEADERS =  $(libcachesinc_HEADERS)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoBoundingBoxCache.Plo \
 $(DEPDIR)/SoCache.Plo $(DEPDIR)/SoConvexDataCache.Plo \
+$(DEPDIR)/SoGLCacheList.Plo $(DEPDIR)/SoGLRenderCache.Plo \
 $(DEPDIR)/SoNormalCache.Plo $(DEPDIR)/SoTextureCoordinateCache.Plo \
 $(DEPDIR)/all.Plo
 DIST_COMMON =  $(libcachesinc_HEADERS) Makefile.am Makefile.in
@@ -315,6 +322,8 @@ maintainer-clean-tags:
 @AMDEP@include $(DEPDIR)/SoBoundingBoxCache.Plo
 @AMDEP@include $(DEPDIR)/SoCache.Plo
 @AMDEP@include $(DEPDIR)/SoConvexDataCache.Plo
+@AMDEP@include $(DEPDIR)/SoGLCacheList.Plo
+@AMDEP@include $(DEPDIR)/SoGLRenderCache.Plo
 @AMDEP@include $(DEPDIR)/SoNormalCache.Plo
 @AMDEP@include $(DEPDIR)/SoTextureCoordinateCache.Plo
 @AMDEP@include $(DEPDIR)/all.Plo

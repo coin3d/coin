@@ -147,6 +147,8 @@ make doxygen-doc
 @includedir@/Inventor/caches/SoBoundingBoxCache.h
 @includedir@/Inventor/caches/SoCache.h
 @includedir@/Inventor/caches/SoConvexDataCache.h
+@includedir@/Inventor/caches/SoGLRenderCache.h
+@includedir@/Inventor/caches/SoGLCacheList.h
 @includedir@/Inventor/caches/SoNormalCache.h
 @includedir@/Inventor/caches/SoTextureCoordinateCache.h
 @includedir@/Inventor/details/SoConeDetail.h

@@ -145,6 +145,8 @@ CLEAN :
 	-@erase "$(INTDIR)\SoConeDetail.obj"
 	-@erase "$(INTDIR)\SoConvertAll.obj"
 	-@erase "$(INTDIR)\SoConvexDataCache.obj"
+	-@erase "$(INTDIR)\SoGLRenderCache.obj"
+	-@erase "$(INTDIR)\SoGLCacheList.obj"
 	-@erase "$(INTDIR)\SoCoordinate3.obj"
 	-@erase "$(INTDIR)\SoCoordinate4.obj"
 	-@erase "$(INTDIR)\SoCoordinateElement.obj"
@@ -682,6 +684,8 @@ LIB32_OBJS= \
 	"$(INTDIR)\SoConeDetail.obj" \
 	"$(INTDIR)\SoConvertAll.obj" \
 	"$(INTDIR)\SoConvexDataCache.obj" \
+	"$(INTDIR)\SoGLRenderCache.obj" \
+	"$(INTDIR)\SoGLCacheList.obj" \
 	"$(INTDIR)\SoCoordinate3.obj" \
 	"$(INTDIR)\SoCoordinate4.obj" \
 	"$(INTDIR)\SoCoordinateElement.obj" \
@@ -1183,6 +1187,8 @@ CLEAN :
 	-@erase "$(INTDIR)\SoConeDetail.obj"
 	-@erase "$(INTDIR)\SoConvertAll.obj"
 	-@erase "$(INTDIR)\SoConvexDataCache.obj"
+	-@erase "$(INTDIR)\SoGLRenderCache.obj"
+	-@erase "$(INTDIR)\SoGLCacheList.obj"
 	-@erase "$(INTDIR)\SoCoordinate3.obj"
 	-@erase "$(INTDIR)\SoCoordinate4.obj"
 	-@erase "$(INTDIR)\SoCoordinateElement.obj"
@@ -1721,6 +1727,8 @@ LIB32_OBJS= \
 	"$(INTDIR)\SoConeDetail.obj" \
 	"$(INTDIR)\SoConvertAll.obj" \
 	"$(INTDIR)\SoConvexDataCache.obj" \
+	"$(INTDIR)\SoGLRenderCache.obj" \
+	"$(INTDIR)\SoGLCacheList.obj" \
 	"$(INTDIR)\SoCoordinate3.obj" \
 	"$(INTDIR)\SoCoordinate4.obj" \
 	"$(INTDIR)\SoCoordinateElement.obj" \
@@ -2760,6 +2768,18 @@ SOURCE="@coin_src_dir@\src\engines\SoConvertAll.cpp"
 SOURCE="@coin_src_dir@\src\caches\SoConvexDataCache.cpp"
 
 "$(INTDIR)\SoConvexDataCache.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\caches\SoGLRenderCache.cpp"
+
+"$(INTDIR)\SoGLRenderCache.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\caches\SoGLCacheList.cpp"
+
+"$(INTDIR)\SoGLCacheList.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
