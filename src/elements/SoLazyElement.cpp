@@ -942,9 +942,11 @@ SoLazyElement::setShadeModelElt(SbBool flatshading)
 
 // SoColorPacker class. FIXME: move to separate file and document, pederb, 2002-09-09
 
+static uint32_t colorpacker_default = 0xccccccff;
+
 SoColorPacker::SoColorPacker(void)
 {
-  this->array = NULL;
+  this->array = &colorpacker_default;
   this->arraysize = 0;
   this->diffuseid = 0;
   this->transpid = 0;
@@ -952,7 +954,9 @@ SoColorPacker::SoColorPacker(void)
 
 SoColorPacker::~SoColorPacker()
 {
-  delete[] this->array;
+  if (this->array != &colorpacker_default) {
+    delete[] this->array;
+  }
 }
 
 void 
@@ -960,7 +964,9 @@ SoColorPacker::reallocate(const int32_t size)
 {
   assert(size > this->arraysize);
   uint32_t * newarray = new uint32_t[size];
-  delete[] this->array;
+  if (this->array != &colorpacker_default) {
+    delete[] this->array;
+  }
   this->array = newarray;
   this->arraysize = size;
 }
