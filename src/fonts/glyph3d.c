@@ -31,6 +31,7 @@
 #include <assert.h>
 #include <stdio.h>
 
+#include <Inventor/C/basic.h>
 #include <Inventor/C/base/list.h>
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/base/hashp.h>
@@ -109,7 +110,7 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   cc_glyph3d * glyph;
   int glyphidx;
   int fontidx;
-  int i, temp;
+  int i;
   void * val;
   cc_font_specification * newspec;
   int namelen = 0;
