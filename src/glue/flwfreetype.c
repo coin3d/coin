@@ -33,9 +33,9 @@
 #include <Inventor/C/errors/debugerror.h>
 
 #include <ft2build.h>
-// FT build macros don't work for MSVC dsp builds. preng 2003-03-11
-// #include FT_FREETYPE_H
-// #include FT_GLYPH_H
+/* FT build macros don't work for MSVC dsp builds. preng 2003-03-11
+ * #include FT_FREETYPE_H
+ * #include FT_GLYPH_H */
 #include <freetype/freetype.h>
 #include <freetype/ftglyph.h>
 
@@ -324,7 +324,7 @@ flwftGetKerning(FLWfont font, FLWglyph glyph1, FLWglyph glyph2, float *x, float 
 void
 flwftDoneGlyph(FLWfont font, FLWglyph glyph)
 {
-  // No action, since an FLWglyph is just an index.
+  /* No action, since an FLWglyph is just an index. */
 }
 
 FLWbitmap *
@@ -334,12 +334,12 @@ flwftGetBitmap(FLWfont font, FLWglyph glyph)
   FLWbitmap * bm;
   FT_Face face;
   FT_Glyph g;
-  // FT_Matrix matrix;
-  // FT_Vector vec;
+  /* FT_Matrix matrix;
+   * FT_Vector vec; */
   FT_BitmapGlyph tfbmg;
   FT_Bitmap * tfbm;
-  // FT_BBox bb;
-  // float angle;
+  /* FT_BBox bb;
+   * float angle; */
   if (font) {
     face = (FT_Face)font;
     error = FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
@@ -390,8 +390,8 @@ flwftGetBitmap(FLWfont font, FLWglyph glyph)
     bm->rows = tfbm->rows;
     bm->width = tfbm->width;
     bm->pitch = tfbm->pitch;
-    // bm->advanceX = face->glyph->advance.x >> 6;
-    // bm->advanceY = face->glyph->advance.y >> 6;
+    /* bm->advanceX = face->glyph->advance.x >> 6;
+     * bm->advanceY = face->glyph->advance.y >> 6; */
     memcpy(bm->buffer, tfbm->buffer, tfbm->rows * tfbm->pitch);
     FT_Done_Glyph(g);
     return bm;
@@ -402,7 +402,7 @@ flwftGetBitmap(FLWfont font, FLWglyph glyph)
 int
 flwftGetOutline(FLWfont font, FLWglyph glyph)
 {
-  // FIXME: implement.
+  /* FIXME: implement. */
   fprintf(stderr,"flwftGetOutline has not been implemented yet.\n");
   return 0;
 }
