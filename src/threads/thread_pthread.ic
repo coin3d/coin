@@ -27,7 +27,7 @@ internal_init(cc_thread * thread)
   int status = pthread_attr_init(&(thread->pthread.threadattrs));
   if (status != 0) {
     if (COIN_DEBUG)
-      cc_fprintf(stderr, "pthread_attr_init() error: %d\n", status);
+      cc_debugerror_post("internal_init", "pthread_attr_init() error: %d\n", status);
     return CC_ERROR;
   }
 
@@ -36,7 +36,7 @@ internal_init(cc_thread * thread)
                           thread->func, thread->closure);
   if (status != 0) {
     if (COIN_DEBUG)
-      cc_fprintf(stderr, "pthread_create() error: %d\n", status);
+      cc_debugerror_post("internal_init", "pthread_create() error: %d\n", status);
     return CC_ERROR;
   }
   return CC_OK;
@@ -48,7 +48,7 @@ internal_clean(cc_thread * thread)
   int status = pthread_attr_destroy(&(thread->pthread.threadattrs));
   if (status != 0) {
     if (COIN_DEBUG)
-      cc_fprintf(stderr, "pthread_attr_destroy() error: %d\n", status);
+      cc_debugerror_post("internal_clean", "pthread_attr_destroy() error: %d\n", status);
     return CC_ERROR;
   }
   return CC_OK;
@@ -61,7 +61,7 @@ internal_join(cc_thread * thread,
   int status = pthread_join(thread->pthread.threadid, retvalptr);
   if (status != 0) {
     if (COIN_DEBUG)
-      cc_fprintf(stderr, "pthread_join() error: %d\n", status);
+      cc_debugerror_post("internal_join", "pthread_join() error: %d\n", status);
     return CC_ERROR;
   }
   return CC_OK;

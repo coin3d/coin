@@ -22,7 +22,7 @@
 #include <Inventor/C/threads/condvar.h>
 #include <Inventor/C/threads/condvarp.h>
 
-#include <Inventor/C/base/debug.h>
+#include <Inventor/C/errors/debugerror.h>
 
 #include <stdlib.h>
 #include <assert.h>

@@ -31,8 +31,9 @@ win32_mutex_struct_init(cc_mutex * mutex_struct)
       char *errstr;
       err = GetLastError();
       errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "CreateMutex() error: %d, \"%s\"\n",
-        err, errstr);
+      cc_debugerror_post("win32_mutex_struct_init",
+                         "CreateMutex() error: %d, \"%s\"\n",
+                         err, errstr);
       cc_internal_w32_freelasterrorstring(errstr);
     }
     return CC_ERROR;
@@ -50,8 +51,9 @@ win32_mutex_struct_clean(cc_mutex * mutex_struct)
       char *errstr;
       err = GetLastError();
       errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "CloseHandle() error: %d, \"%s\"\n",
-        err, errstr);
+      cc_debugerror_post("win32_mutex_struct_clean",
+                         "CloseHandle() error: %d, \"%s\"\n",
+                         err, errstr);
       cc_internal_w32_freelasterrorstring(errstr);
     }
     return CC_ERROR;
@@ -70,8 +72,9 @@ win32_mutex_lock(cc_mutex * mutex)
       char *errstr;
       err = GetLastError();
       errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "WaitSingleObject() error: %d, \"%s\"\n",
-        err, errstr);
+      cc_debugerror_post("win32_mutex_lock",
+                         "WaitSingleObject() error: %d, \"%s\"\n",
+                         err, errstr);
       cc_internal_w32_freelasterrorstring(errstr);
     }
     return CC_ERROR;
@@ -95,8 +98,9 @@ win32_mutex_try_lock(cc_mutex * mutex)
     char *errstr;
     err = GetLastError();
     errstr = cc_internal_w32_getlasterrorstring(err);
-    cc_fprintf(stderr, "WaitSingleObject() error: %d, \"%s\"\n",
-               err, errstr);
+    cc_debugerror_post("win32_mutex_try_lock",
+                       "WaitSingleObject() error: %d, \"%s\"\n",
+                       err, errstr);
     cc_internal_w32_freelasterrorstring(errstr);
   }
   return CC_ERROR;
@@ -112,8 +116,9 @@ win32_mutex_unlock(cc_mutex * mutex)
       char *errstr;
       err = GetLastError();
       errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "ReleaseMutex() error: %d, \"%s\"\n",
-        err, errstr);
+      cc_debugerror_post("win32_mutex_unlock",
+                         "ReleaseMutex() error: %d, \"%s\"\n",
+                         err, errstr);
       cc_internal_w32_freelasterrorstring(errstr);
     }
     return CC_ERROR;

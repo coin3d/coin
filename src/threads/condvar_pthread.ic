@@ -29,7 +29,8 @@ internal_condvar_struct_init(cc_condvar * condvar_struct)
   int status = pthread_cond_init(&(condvar_struct->pthread.condid), NULL);
   if (status != 0) {
     if (COIN_DEBUG)
-      cc_fprintf(stderr, "pthread_cond_init() error: %d\n", status);
+      cc_debugerror_post("internal_condvar_struct_init",
+			 "pthread_cond_init() error: %d\n", status);
     return CC_ERROR;
   }
   return CC_OK;
@@ -43,7 +44,8 @@ internal_condvar_struct_clean(cc_condvar * condvar_struct)
   status = pthread_cond_destroy(&(condvar_struct->pthread.condid));
   if (status != 0) {
     if (COIN_DEBUG)
-      cc_fprintf(stderr, "pthread_cond_destroy() error: %d\n", status);
+      cc_debugerror_post("internal_condvar_struct_clean",
+			 "pthread_cond_destroy() error: %d\n", status);
     ret = CC_ERROR;
   }
   return ret;
@@ -58,7 +60,8 @@ internal_condvar_wait(cc_condvar * condvar, cc_mutex * mutex)
                              &mutex->pthread.mutexid);
   if (status != 0) {
     if (COIN_DEBUG)
-      cc_fprintf(stderr, "pthread_cond_wait() error: %d\n", status);
+      cc_debugerror_post("internal_condvar_wait",
+			 "pthread_cond_wait() error: %d\n", status);
     return CC_ERROR;
   }
   return CC_OK;
@@ -94,14 +97,16 @@ internal_condvar_timed_wait(cc_condvar * condvar, cc_mutex * mutex, cc_time peri
     else {
       ret = CC_ERROR;
       if (COIN_DEBUG) {
-        cc_fprintf_lock();
-        cc_fprintf_locked(stderr, "pthread_cond_timedwait() error: %d", status);
+        cc_debugerror_post("internal_condvar_timed_wait",
+			   "pthread_cond_timedwait() error: %d", status);
         switch (status) {
-        case EINTR: cc_fprintf_locked(stderr, "EINTR\n"); break;
-        case EBUSY: cc_fprintf_locked(stderr, "EBUSY\n"); break;
-        default: cc_fprintf_locked(stderr, "default\n"); break;
+        case EINTR: cc_debugerror_post("internal_condvar_timed_wait",
+				       "EINTR\n"); break;
+        case EBUSY: cc_debugerror_post("internal_condvar_timed_wait",
+				       "EBUSY\n"); break;
+        default: cc_debugerror_post("internal_condvar_timed_wait",
+				    "default\n"); break;
         }
-        cc_fprintf_unlock();
       }
     }
   }
@@ -115,7 +120,8 @@ internal_condvar_wake_one(cc_condvar * condvar)
   status = pthread_cond_signal(&condvar->pthread.condid);
   if (status != 0) {
     if (COIN_DEBUG)
-      cc_fprintf(stderr, "pthread_cond_signal() error: %d\n", status);
+      cc_debugerror_post("internal_condvar_wake_one",
+			 "pthread_cond_signal() error: %d\n", status);
     return CC_ERROR;
   }
   return CC_OK;
@@ -127,7 +133,8 @@ internal_condvar_wake_all(cc_condvar * condvar)
   int status = pthread_cond_broadcast(&condvar->pthread.condid);
   if (status != 0) {
     if (COIN_DEBUG)
-      cc_fprintf(stderr, "pthread_cond_broadcast() error: %d\n", status);
+      cc_debugerror_post("internal_condvar_wake_all",
+			 "pthread_cond_broadcast() error: %d\n", status);
     return CC_ERROR;
   }
   return CC_OK;

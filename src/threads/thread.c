@@ -24,7 +24,7 @@
 #include <Inventor/C/threads/mutexp.h>
 #include <Inventor/C/threads/syncp.h>
 #include <Inventor/C/base/basep.h>
-#include <Inventor/C/base/debug.h>
+#include <Inventor/C/errors/debugerror.h>
 
 #include <stdlib.h>
 #include <assert.h>

@@ -22,7 +22,7 @@
 #include <Inventor/C/threads/rwmutex.h>
 #include <Inventor/C/threads/rwmutexp.h>
 
-#include <Inventor/C/base/debug.h>
+#include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/threads/mutex.h>
 #include <Inventor/C/threads/condvar.h>
 

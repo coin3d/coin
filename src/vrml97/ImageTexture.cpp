@@ -113,7 +113,6 @@ static int imagedata_maxage;
 
 #include <Inventor/C/threads/sched.h>
 #include <Inventor/threads/SbMutex.h>
-#include <Inventor/C/base/debug.h>
 
 static cc_sched * imagetexture_scheduler = NULL;
 static SbBool imagetexture_is_exiting = FALSE;

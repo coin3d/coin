@@ -43,8 +43,9 @@ internal_condvar_struct_init(cc_condvar * condvar_struct)
       char *errstr;
       err = GetLastError();
       errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "CreateEvent() error: %d, \"%s\"\n",
-        err, errstr);
+      cc_debugerror_post("internal_condvar_struct_init",
+			 "CreateEvent() error: %d, \"%s\"\n",
+			 err, errstr);
       cc_internal_w32_freelasterrorstring(errstr);
     }
     return CC_ERROR;
@@ -58,8 +59,9 @@ internal_condvar_struct_init(cc_condvar * condvar_struct)
       char *errstr;
       err = GetLastError();
       errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "CreateEvent() error: %d, \"%s\"\n",
-        err, errstr);
+      cc_debugerror_post("internal_condvar_struct_init",
+			 "CreateEvent() error: %d, \"%s\"\n",
+			 err, errstr);
       cc_internal_w32_freelasterrorstring(errstr);
     }
     return CC_ERROR;
@@ -81,8 +83,9 @@ internal_condvar_struct_clean(cc_condvar * condvar_struct)
       char *errstr;
       err = GetLastError();
       errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "CloseHandle() error: %d, \"%s\"\n",
-        err, errstr);
+      cc_debugerror_post("internal_condvar_struct_clean",
+			 "CloseHandle() error: %d, \"%s\"\n",
+			 err, errstr);
       cc_internal_w32_freelasterrorstring(errstr);
     }
     ret = CC_ERROR;
@@ -94,8 +97,9 @@ internal_condvar_struct_clean(cc_condvar * condvar_struct)
       char *errstr;
       err = GetLastError();
       errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "CloseHandle() error: %d, \"%s\"\n",
-        err, errstr);
+      cc_debugerror_post("internal_condvar_struct_clean",
+			 "CloseHandle() error: %d, \"%s\"\n",
+			 err, errstr);
       cc_internal_w32_freelasterrorstring(errstr);
     }
     ret = CC_ERROR;
@@ -143,8 +147,9 @@ internal_condvar_wait_common(cc_condvar * condvar, cc_mutex * mutex, DWORD perio
       char *errstr;
       err = GetLastError();
       errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "WaitForMultipleObjects() error: %d, \"%s\"\n",
-        err, errstr);
+      cc_debugerror_post("internal_condvar_wait_common",
+			 "WaitForMultipleObjects() error: %d, \"%s\"\n",
+			 err, errstr);
       cc_internal_w32_freelasterrorstring(errstr);
     }
     return CC_ERROR;

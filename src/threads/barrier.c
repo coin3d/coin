@@ -19,8 +19,6 @@
  *
 \**************************************************************************/
 
-#include <Inventor/C/base/debug.h>
-
 #include <Inventor/C/threads/barrier.h>
 #include <Inventor/C/threads/barrierp.h>
 

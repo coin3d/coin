@@ -53,8 +53,8 @@ internal_init(cc_thread * thread)
       char *errstr;
       err = GetLastError();
       errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "CreateThread() error: %d, \"%s\"\n",
-                 err, errstr);
+      cc_debugerror_post("internal_init", "CreateThread() error: %d, \"%s\"\n",
+                         err, errstr);
       cc_internal_w32_freelasterrorstring(errstr);
     }
     return CC_ERROR;
@@ -84,16 +84,18 @@ internal_join(cc_thread * thread,
       char *errstr;
       err = GetLastError();
       errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "WaitForSingleObject() error: %d, \"%s\"\n",
-        err, errstr);
+      cc_debugerror_post("internal_join",
+                         "WaitForSingleObject() error: %d, \"%s\"\n",
+                         err, errstr);
       cc_internal_w32_freelasterrorstring(errstr);
     }
     return CC_ERROR;
   }
   else if (status != WAIT_OBJECT_0) {
     if (COIN_DEBUG) {
-      cc_fprintf(stderr, "WaitForSingleObject() - unknown return value: %d\n",
-                 status);
+      cc_debugerror_post("internal_join",
+                         "WaitForSingleObject() - unknown return value: %d\n",
+                         status);
     }
     return CC_ERROR;
   }
@@ -104,8 +106,9 @@ internal_join(cc_thread * thread,
       char *errstr;
       err = GetLastError();
       errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "GetExitCodeThread() error: %d, \"%s\"\n",
-        err, errstr);
+      cc_debugerror_post("internal_join",
+                         "GetExitCodeThread() error: %d, \"%s\"\n",
+                         err, errstr);
       cc_internal_w32_freelasterrorstring(errstr);
     }
   }
@@ -120,4 +123,3 @@ internal_join(cc_thread * thread,
 
   return bstatus ? CC_OK : CC_ERROR;
 }
-

@@ -22,7 +22,7 @@
 #include <Inventor/C/threads/mutex.h>
 #include <Inventor/C/threads/mutexp.h>
 
-#include <Inventor/C/base/debug.h>
+#include <Inventor/C/errors/debugerror.h>
 
 #include "../tidbits.h" /* coin_atexit() */
 #include <stdlib.h>
