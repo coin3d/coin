@@ -223,12 +223,24 @@
 
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
 
+    One additional hint for debugging this (or other problems related
+    to bbox calculations): use the SoGuiExamples/engines/computexfbox
+    example to see the exact boundaries of the bbox for a scene.
+
+    mortene 20020604.
+
 =====================================================================
 
 009 The CenterballDragger is FUBAR: click and hold on the invisible
     ball with LMB and voilently drag around a bit -- the yellow axis
     markers flips out completely and we'll quickly get an
     assert. Nasty.
+
+    Looks like this is caused by the accumulation of floating point
+    calculation errors (due to low-precision). Somewhere, we should
+    probably store an initial matrix / transform with absolute offsets
+    instead of accumulating up a "current" matrix / transform. (This
+    is just an early guess, though. It could be something else.)
 
     mortene 20020624.
 
