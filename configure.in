@@ -175,6 +175,22 @@ fi
 
 
 dnl *******************************************************************
+dnl ** Check if GLX is available.
+dnl *******************************************************************
+
+AC_CACHE_CHECK([whether GLX is available],
+  sim_cv_func_glx_avail,
+  [AC_TRY_LINK([#include <GL/glx.h>],
+               [(void)glXChooseVisual(0L, 0, 0L);],
+               sim_cv_func_glx_avail=yes,
+               sim_cv_func_glx_avail=no)])
+
+if test x"$sim_cv_func_glx_avail" = xyes; then
+  AC_DEFINE(HAVE_GLX)
+fi
+
+
+dnl *******************************************************************
 dnl * Compiler control.
 dnl *******************************************************************
 
