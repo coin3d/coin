@@ -330,6 +330,24 @@ fi
 # *******************************************************************
 # Enable/disable separate Coin modules
 
+sim_ac_enable_java_wrapper=false
+AC_ARG_ENABLE(
+  [java-wrapper],
+  AC_HELP_STRING([--enable-java-wrapper], [enable building java wrapper]), [
+  case $enableval in
+    yes | true) sim_ac_enable_java_wrapper=true ;;
+    *) ;;
+  esac])
+
+AM_CONDITIONAL([BUILD_JAVA_WRAPPER], [$sim_ac_enable_java_wrapper])
+
+if $sim_ac_enable_java_wrapper; then
+  AC_DEFINE([HAVE_JAVA_WRAPPER], 1, [Define this if you build the Java wrapper])
+  SIM_AC_CONFIGURATION_SETTING([Generate Java wrapper], [Yes (not really)])
+else
+  SIM_AC_CONFIGURATION_SETTING([Generate Java wrapper], [No (default)])
+fi
+
 # *******************************************************************
 # See if we should build with 3ds import capabilities.
 
