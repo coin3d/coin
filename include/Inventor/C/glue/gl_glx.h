@@ -40,6 +40,11 @@ void glxglue_init(cc_glglue * w);
 void * glxglue_getprocaddress(const char * fname);
 int glxglue_ext_supported(const cc_glglue * w, const char * extension);
 
+void * glxglue_context_create_offscreen(unsigned int width, unsigned int height);
+SbBool glxglue_context_make_current(const cc_glglue * glw, void * ctx);
+void glxglue_context_reinstate_previous(void * ctx);
+void glxglue_context_destruct(void * ctx);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

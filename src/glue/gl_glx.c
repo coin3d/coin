@@ -26,6 +26,8 @@
 #endif /* HAVE_CONFIG_H */
 
 #include <stdlib.h>
+#include <assert.h>
+#include <string.h>
 #include <Inventor/C/basic.h>
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/errors/debugerror.h>
@@ -223,4 +225,255 @@ glxglue_init(cc_glglue * w)
     }
   }
 #endif /* HAVE_GLX */
+}
+
+
+/*** GLX offscreen contexts **************************************************/
+
+struct glxglue_contextdata {
+  XVisualInfo * visinfo;
+  GLXContext glxcontext;
+  unsigned int width, height;
+  Pixmap pixmap;
+  GLXPixmap glxpixmap;
+
+  Display * storeddisplay;
+  GLXDrawable storeddrawable;
+  GLXContext storedcontext;
+};
+
+static void
+glxglue_contextdata_init(struct glxglue_contextdata * c)
+{
+  c->visinfo = NULL;
+  c->glxcontext = NULL;
+  c->pixmap = 0;
+  c->glxpixmap = 0;
+
+  c->storeddisplay = NULL;
+  c->storeddrawable = 0;
+  c->storedcontext = NULL;
+}
+
+static void
+glxglue_contextdata_cleanup(struct glxglue_contextdata * c)
+{
+  if (c->glxcontext) glXDestroyContext(glxglue_display, c->glxcontext);
+  if (c->glxpixmap) glXDestroyGLXPixmap(glxglue_display, c->glxpixmap);
+  if (c->pixmap) XFreePixmap(glxglue_display, c->pixmap);
+  if (c->visinfo) XFree(c->visinfo);
+}
+
+/* NOTE: the strategy applied here for iterating through OpenGL canvas
+   settings is exactly the same as the one applied in
+   SoXt/src/Inventor/Xt/SoXtGLWidget.cpp. So if you make any fixes or
+   other improvements here, migrate your changes. */
+static int
+glxglue_build_GL_attrs(int * attrs, int trynum)
+{
+  int pos = 0;
+  attrs[pos++] = GLX_RGBA;
+  attrs[pos++] = GLX_DEPTH_SIZE;
+  attrs[pos++] = 1;
+
+  /* FIXME: An accumulator buffer should be added if numpasses >
+     1. Mesa returns a GL_INVALID_OPERATION error if the accumulator
+     buffer is missing, while NVIDIA automatically creates
+     one. 20021127 handegar. */
+
+  if (! (trynum & 0x04)) {
+    attrs[pos++] = GLX_STENCIL_SIZE;
+    attrs[pos++] = 1;
+  }
+  if (! (trynum & 0x02)) {
+    attrs[pos++] = GLX_DOUBLEBUFFER;
+  }
+  if (! (trynum & 0x01)) {
+    attrs[pos++] = GLX_RED_SIZE;
+    attrs[pos++] = 4;
+    attrs[pos++] = GLX_GREEN_SIZE;
+    attrs[pos++] = 4;
+    attrs[pos++] = GLX_BLUE_SIZE;
+    attrs[pos++] = 4;
+    /* FIXME: won't get an alpha channel in the context unless we also
+       request a particular ALPHA bitsize. 20020605 mortene. */
+  }
+  attrs[pos++] = None;
+  return pos;
+}
+
+static XVisualInfo *
+glxglue_find_gl_visual(void)
+{
+  int trynum = 0;
+  const int ARRAYSIZE = 32;
+  int attrs[ARRAYSIZE];
+  XVisualInfo * visinfo = NULL;
+
+  if (glxglue_display == NULL) { return NULL; }
+
+  while (visinfo == NULL && trynum < 8) {
+    int arraysize = glxglue_build_GL_attrs(attrs, trynum);
+    assert(arraysize < ARRAYSIZE);
+    visinfo = glXChooseVisual(glxglue_display, DefaultScreen(glxglue_display),
+                              attrs);
+    trynum++;
+  }
+
+  if (!visinfo) {
+    cc_debugerror_postwarning("glxglue_find_gl_visual",
+                              "Couldn't get any OpenGL-capable RGBA X11 visual.");
+    return NULL;
+  }
+
+  return visinfo;
+}
+
+void *
+glxglue_context_create_offscreen(unsigned int width, unsigned int height)
+{
+  /* FIXME: on SGI boxes with p-buffer support, that should be used
+     instead of a standard offscreen GLX context, as it would render
+     much faster (due to hardware acceleration). 20020503 mortene. */
+
+  struct glxglue_contextdata context, * retctx;
+  glxglue_contextdata_init(&context);
+
+  context.width = width;
+  context.height = height;
+
+  context.visinfo = glxglue_find_gl_visual();
+  if (context.visinfo == NULL) { return NULL; }
+
+  /* Note that the value of the last argument (which indicates whether
+     or not we're asking for a DRI-capable context) is "False" on
+     purpose, as the man pages for glXCreateContext() says:
+    
+          [...] direct rendering contexts [...] may be unable to
+          render to GLX pixmaps [...]
+    
+     Rendering to a GLX pixmap is of course exactly what we want to be
+     able to do. */
+  context.glxcontext = glXCreateContext(glxglue_display, context.visinfo, 0,
+                                        False);
+  if (context.glxcontext == NULL) {
+    cc_debugerror_postwarning("glxglue_create_offscreen_context",
+                              "Couldn't create GLX context.");
+    glxglue_contextdata_cleanup(&context);
+    return NULL;
+  }
+
+  if (coin_glglue_debug()) {
+    cc_debugerror_postinfo("glxglue_create_offscreen_context",
+                           "made new offscreen context == %p",
+                           context.glxcontext);
+  }
+
+  context.pixmap = XCreatePixmap(glxglue_display,
+                                 DefaultRootWindow(glxglue_display),
+                                 width, height, context.visinfo->depth);
+  if (context.pixmap == 0) {
+    cc_debugerror_postwarning("glxglue_create_offscreen_context",
+                              "Couldn't create %dx%dx%d X11 Pixmap.",
+                              width, height, context.visinfo->depth);
+    glxglue_contextdata_cleanup(&context);
+    return NULL;
+  }
+
+  context.glxpixmap = glXCreateGLXPixmap(glxglue_display,
+                                         context.visinfo, context.pixmap);
+  if (context.glxpixmap == 0) {
+    cc_debugerror_postwarning("glxglue_create_offscreen_context",
+                              "Couldn't create GLX Pixmap.");
+    glxglue_contextdata_cleanup(&context);
+    return NULL;
+  }
+
+  retctx = (struct glxglue_contextdata *)malloc(sizeof(struct glxglue_contextdata));
+  (void)memcpy(retctx, &context, sizeof(struct glxglue_contextdata));
+  return retctx;
+}
+
+SbBool
+glxglue_context_make_current(const cc_glglue * glw, void * ctx)
+{
+  struct glxglue_contextdata * context = (struct glxglue_contextdata *)ctx;
+  Bool r;
+
+  context->storedcontext = glXGetCurrentContext();
+  if (context->storedcontext) {
+    context->storeddisplay = (Display *)cc_glglue_glXGetCurrentDisplay(glw);
+    context->storeddrawable = glXGetCurrentDrawable();
+  }
+
+  if (coin_glglue_debug()) {
+    cc_debugerror_postinfo("glxglue_make_context_current",
+                           "store current status first => context==%p, "
+                           "drawable==%p, display==%p",
+                           context->storedcontext,
+                           context->storeddrawable,
+                           context->storeddisplay);
+  }
+
+  r = glXMakeCurrent(glxglue_display, context->glxpixmap, context->glxcontext);
+
+  if (coin_glglue_debug()) {
+    cc_debugerror_postinfo("glxglue_make_context_current",
+                           "%ssuccessfully made context %p current",
+                           (r == True) ? "" : "un", context->glxcontext);
+  }
+
+  return (r == True) ? TRUE : FALSE;
+}
+
+void
+glxglue_context_reinstate_previous(void * ctx)
+{
+  struct glxglue_contextdata * context = (struct glxglue_contextdata *)ctx;
+
+  if (coin_glglue_debug()) {
+    cc_debugerror_postinfo("glxglue_context_reinstate_previous",
+                           "releasing context (glxMakeCurrent(d, None, NULL))");
+  }
+
+  (void)glXMakeCurrent(glxglue_display, None, NULL); /* release */
+    
+  /* The previous context is stored and reset to make it possible to
+     use an SoOffscreenRenderer from for instance an SoCallback node
+     callback during SoGLRenderAction traversal, without the need for
+     any extra book-keeping on the application side. */
+  
+  if (context->storedcontext && context->storeddrawable && context->storeddisplay) {
+    if (coin_glglue_debug()) {
+      cc_debugerror_postinfo("glxglue_context_reinstate_previous",
+                             "restoring context %p to be current "
+                             "(drawable==%p, display==%p)",
+                             context->storedcontext,
+                             context->storeddrawable,
+                             context->storeddisplay);
+    }
+
+    /* FIXME: this causes a crash for the Mesa version 3.4.2 that
+       comes with XFree86 v4, on the third invocation after two
+       successful runs first. This is _bad_. 20020729 mortene.
+      
+       UPDATE: this might be our bug, and could be fixed now --
+       test. 20020802 mortene. */
+    (void)glXMakeCurrent(context->storeddisplay, context->storeddrawable,
+                         context->storedcontext);
+  }
+}
+
+void
+glxglue_context_destruct(void * ctx)
+{
+  struct glxglue_contextdata * context = (struct glxglue_contextdata *)ctx;
+
+  if (coin_glglue_debug()) {
+    cc_debugerror_postinfo("glxglue_context_destruct",
+                           "destroy context %p", context->glxcontext);
+  }
+
+  glxglue_contextdata_cleanup(context);
+  free(context);
 }
