@@ -19,10 +19,19 @@
 
 /*!
   \class SoPointLightDragger SoPointLightDragger.h Inventor/draggers/SoPointLightDragger.h
-  \brief The SoPointLightDragger class is (FIXME: doc)
+  \brief The SoPointLightDragger class provides interactive geometry for manipulating a point light source.
   \ingroup draggers
 
-  FIXME: document class
+  This dragger is well suited to use for setting up the fields of a
+  SoPointLight node, as it provides geometry for the end-user to
+  translate a point in 3D space.
+
+  The Coin library also includes a manipulator class,
+  SoPointLightManip, which wraps the functionality provided by this
+  class inside the necessary mechanisms for connecting it to
+  SoPointLight node instances in a scenegraph.
+
+  \sa SoPointLightManip
 */
 
 #include <Inventor/draggers/SoPointLightDragger.h>
@@ -33,9 +42,21 @@
 
 #include <data/draggerDefaults/pointLightDragger.h>
 
+/*!
+  \var SoSFVec3f SoPointLightDragger::translation
+
+  This field is continuously updated to contain the translation of the
+  pointlight dragger. The application programmer will typically
+  connect this to the SoPointLight::location field of a SoPointLight
+  node (unless using the SoPointLightManip class, where this is taken
+  care of automatically).
+
+  It may also of course be connected to any other location /
+  translation field controlling the position of scenegraph geometry,
+  it does not have to part of a SoPointLight node specifically.
+*/
 
 SO_KIT_SOURCE(SoPointLightDragger);
-
 
 // doc in superclass
 void
