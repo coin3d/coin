@@ -19,16 +19,19 @@
 
 /*!
   \class SoGroup SoGroup.h Inventor/nodes/SoGroup.h
-  \brief The SoGroup class ...
+  \brief The SoGroup class is a node which managed other node instances.
   \ingroup nodes
 
-  FIXME: write class doc
+  The internal scene datastructures in Coin is managed as directed
+  graphs. The graphs are built by setting up a hierarchy through the
+  use of group nodes (either of this type, or from subclasses like
+  SoSeparator) which is then traversed when applying actions (like
+  SoGLRenderAction) to it.
 */
 
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <assert.h>
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/misc/SoChildList.h>
@@ -40,13 +43,17 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/actions/SoCallbackAction.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 
 static const char * const DEFINITION_KEYWORD = "DEF";
 static const char * const REFERENCE_KEYWORD  = "USE";
 
 /*!
   \var SoChildList * SoGroup::children
-  FIXME: write doc
+  List of managed child nodes.
 */
 
 // *************************************************************************
@@ -54,7 +61,7 @@ static const char * const REFERENCE_KEYWORD  = "USE";
 SO_NODE_SOURCE(SoGroup);
 
 /*!
-  Constructor.
+  Default constructor.
 */
 SoGroup::SoGroup(void)
 {
@@ -64,11 +71,17 @@ SoGroup::SoGroup(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Constructor.
+
+  The \a nchildren argument is a hint to the group instance about how
+  many children it is expected will be managed by this node. This
+  makes it possible to do better resource allocation.
 */
-SoGroup::SoGroup(int /* nchildren */)
+SoGroup::SoGroup(int nchildren)
 {
-  COIN_STUB();
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoGroup);
+
+  this->children = new SoChildList(this, nchildren);
 }
 
 /*!
@@ -80,7 +93,7 @@ SoGroup::~SoGroup()
 }
 
 /*!
-  FIXME: write function documentation
+  Returns pointer to child node at \a index.
 */
 SoNode *
 SoGroup::getChild(const int index) const
@@ -91,17 +104,15 @@ SoGroup::getChild(const int index) const
 }
 
 /*!
-  FIXME: write function documentation
+  Returns number of child nodes managed by this group.
 */
 int
-SoGroup::getNumChildren() const
+SoGroup::getNumChildren(void) const
 {
   return this->children->getLength();
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 SbBool
 SoGroup::readInstance(SoInput * in, unsigned short flags)
 {
@@ -193,7 +204,8 @@ SoGroup::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 }
 
 /*!
-  FIXME: write function documentation
+  Append a child \a node to the list of children nodes this group node
+  is managing.
 */
 void
 SoGroup::addChild(SoNode * const node)
@@ -203,25 +215,26 @@ SoGroup::addChild(SoNode * const node)
 }
 
 /*!
-  FIXME: write function documentation
+  Insert a \a child node at position \a newchildindex.
 */
 void
-SoGroup::insertChild(SoNode * const child, const int newChildIndex)
+SoGroup::insertChild(SoNode * const child, const int newchildindex)
 {
-  this->children->insert(child, newChildIndex);
+  this->children->insert(child, newchildindex);
 }
 
 /*!
-  FIXME: write function documentation
+  Remove node at \a childindex in our list of children.
 */
 void
-SoGroup::removeChild(const int childIndex)
+SoGroup::removeChild(const int childindex)
 {
-  this->children->remove(childIndex);
+  this->children->remove(childindex);
 }
 
 /*!
-  FIXME: write function documentation
+  Returns index in our list of children for child \a node, or -1 if \a
+  node is not a child of this group node.
 */
 int
 SoGroup::findChild(const SoNode * const node) const
@@ -229,33 +242,27 @@ SoGroup::findChild(const SoNode * const node) const
   return this->children->find((SoNode *) node);
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoGroup class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
-SoGroup::initClass()
+SoGroup::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoGroup);
 }
 
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoGroup::doAction(SoAction * action)
 {
-  int numIndices;
+  int numindices;
   const int * indices;
-  switch (action->getPathCode(numIndices, indices)) {
+  switch (action->getPathCode(numindices, indices)) {
   case SoAction::IN_PATH:
     // FIXME: not necessary to traverse children which do not
     // affect state and is not in indices[] ?
     // But, traversal will stop pretty soon anyway, so it might
     // be slower to include a check here. pederb, 19990618
-    this->children->traverse(action, 0, indices[numIndices - 1]);
+    this->children->traverse(action, 0, indices[numindices - 1]);
     break;
 
   case SoAction::NO_PATH:
@@ -278,52 +285,46 @@ SoGroup::doAction(SoAction * action)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoGroup::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  int numIndices;
+  int numindices;
   const int * indices;
-  int lastChildIndex;
+  int lastchildindex;
 
-  if (action->getPathCode(numIndices, indices) == SoAction::IN_PATH)
-    lastChildIndex = indices[numIndices-1];
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH)
+    lastchildindex = indices[numindices-1];
   else
-    lastChildIndex = getNumChildren() - 1;
+    lastchildindex = getNumChildren() - 1;
 
   // Initialize accumulation variables.
   SbVec3f acccenter(0.0f, 0.0f, 0.0f);
-  int numCenters = 0;
+  int numcenters = 0;
 
-  for (int i = 0; i <= lastChildIndex; i++) {
+  for (int i = 0; i <= lastchildindex; i++) {
     this->children->traverse(action, i);
 
     // If center point is set, accumulate.
     if (action->isCenterSet()) {
       acccenter += action->getCenter();
-        numCenters++;
+        numcenters++;
         action->resetCenter();
     }
   }
 
-  if (numCenters != 0)
-    action->setCenter(acccenter / float(numCenters), FALSE);
+  if (numcenters != 0)
+    action->setCenter(acccenter / float(numcenters), FALSE);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoGroup::GLRender(SoGLRenderAction * action)
 {
   SoGroup::doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoGroup::callback(SoCallbackAction * action)
 {
@@ -334,9 +335,7 @@ SoGroup::callback(SoCallbackAction * action)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoGroup::getMatrix(SoGetMatrixAction * action)
 {
@@ -351,28 +350,21 @@ SoGroup::getMatrix(SoGetMatrixAction * action)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoGroup::pick(SoPickAction * action)
 {
   SoGroup::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoGroup::handleEvent(SoHandleEventAction * action)
 {
   SoGroup::doAction((SoAction *)action);
 }
 
-/*!
-  Write action method is overloaded from SoNode to call
-  SoBase::addWriteReference() on the children of the group.
-*/
+// Doc from superclass.
 void
 SoGroup::write(SoWriteAction * action)
 {
@@ -393,9 +385,7 @@ SoGroup::write(SoWriteAction * action)
   else assert(0 && "unknown stage");
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoGroup::search(SoSearchAction * action)
 {
@@ -408,7 +398,7 @@ SoGroup::search(SoSearchAction * action)
 }
 
 /*!
-  FIXME: write function documentation
+  Returns list of children.
 */
 SoChildList *
 SoGroup::getChildren(void) const
@@ -417,22 +407,29 @@ SoGroup::getChildren(void) const
 }
 
 /*!
-  FIXME: write function documentation
+  Remove \a child from the set of children managed by this group node.
+  Will decrease the reference count of \a child by 1.
 */
 void
 SoGroup::removeChild(SoNode * const child)
 {
   int idx = this->findChild(child);
-  if (idx >= 0) {
-    this->removeChild(idx);
+
+#if COIN_DEBUG
+  if (idx < 0 || idx > this->getNumChildren()) {
+    SoDebugError::post("SoGroup::removeChild",
+                       "tried to remove non-existent child %p (%s)",
+                       child, child->getTypeId().getName().getString());
+    return;
   }
-  else {
-    // FIXME: write some debug info
-  }
+#endif // COIN_DEBUG
+
+  this->removeChild(idx);
 }
 
 /*!
-  FIXME: write function documentation
+  Do not manage the children anymore. Will dereference all children by
+  1 as they are removed.
 */
 void
 SoGroup::removeAllChildren(void)
@@ -441,29 +438,56 @@ SoGroup::removeAllChildren(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Replace child at \a index with \a newChild.
+
+  Dereferences the child previously at \a index, and increases the
+  reference count of \a newChild by 1.
 */
 void
-SoGroup::replaceChild(const int index, SoNode * const newChild)
+SoGroup::replaceChild(const int index, SoNode * const newchild)
 {
   this->removeChild(index);
-  this->insertChild(newChild, index);
+  this->insertChild(newchild, index);
 }
 
 /*!
-  FIXME: write function documentation
+  Replace \a oldchild with \a newchild.
+
+  Dereferences \a oldchild by 1, and increases the reference count of
+  \a newchild by 1.
 */
 void
-SoGroup::replaceChild(SoNode * const oldChild, SoNode * const newChild)
+SoGroup::replaceChild(SoNode * const oldchild, SoNode * const newchild)
 {
-  this->replaceChild(this->findChild(oldChild), newChild);
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoGroup::replaceChild",
+                         "(%p) from %p (%s) to %p (%s)",
+                         this,
+                         oldchild,
+                         oldchild->getTypeId().getName().getString(),
+                         newchild,
+                         newchild->getTypeId().getName().getString());
+#endif // debug
+
+  int idx = this->findChild(oldchild);
+
+#if COIN_DEBUG
+  if (idx < 0 || idx > this->getNumChildren()) {
+    SoDebugError::post("SoGroup::replaceChild",
+                       "(%p) Tried to remove non-existent child %p (%s)",
+                       this,
+                       oldchild,
+                       oldchild->getTypeId().getName().getString());
+    return;
+  }
+#endif // COIN_DEBUG
+
+  this->replaceChild(idx, newchild);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from parent class.
 void
-SoGroup::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoGroup::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  SoGroup::doAction((SoAction*)action);
+  SoGroup::doAction((SoAction *)action);
 }

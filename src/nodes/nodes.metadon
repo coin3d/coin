@@ -51,8 +51,8 @@
 #   TbG-- -!              SoText2
 # IDTBG--R-!              SoText3
 #    B -P--!      SoAnnoText3Property
-#   -BGMP-C       SoGroup
-#   -BGM--C               SoSeparator
+# ID-BGMP-CS      SoGroup
+# ID-BGM--C!              SoSeparator
 #   T!G! --                       SoAnnotation
 #   -!   --                       SoSelection
 #   -!   --                               SoExtSelection

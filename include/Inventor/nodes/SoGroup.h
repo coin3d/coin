@@ -36,15 +36,15 @@ public:
   SoGroup(int nchildren);
 
   void addChild(SoNode * const node);
-  void insertChild(SoNode * const child, const int newChildIndex);
+  void insertChild(SoNode * const child, const int newchildindex);
   SoNode * getChild(const int index) const;
   int findChild(const SoNode * const node) const;
   int getNumChildren(void) const;
-  void removeChild(const int childIndex);
+  void removeChild(const int childindex);
   void removeChild(SoNode * const child);
   void removeAllChildren(void);
-  void replaceChild(const int index, SoNode * const newChild);
-  void replaceChild(SoNode * const oldChild, SoNode * const newChild);
+  void replaceChild(const int index, SoNode * const newchild);
+  void replaceChild(SoNode * const oldchild, SoNode * const newchild);
 
   virtual void doAction(SoAction * action);
   virtual void GLRender(SoGLRenderAction * action);

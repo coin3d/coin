@@ -33,6 +33,7 @@ class SoSeparator : public SoGroup {
 public:
   static void initClass(void);
   SoSeparator(void);
+  SoSeparator(const int nchildren);
 
   enum CacheEnabled {
     OFF, ON, AUTO
@@ -43,11 +44,6 @@ public:
   SoSFEnum renderCulling;
   SoSFEnum pickCulling;
 
-  SoSeparator(const int nChildren);
-
-  static void setNumRenderCaches(const int howMany);
-  static int getNumRenderCaches(void);
-  virtual SbBool affectsState(void) const;
 
   virtual void doAction(SoAction * action);
   virtual void GLRender(SoGLRenderAction * action);
@@ -62,17 +58,25 @@ public:
   virtual void search(SoSearchAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
-  virtual void notify(SoNotList * list);
+  virtual void notify(SoNotList * nl);
+
+  static void setNumRenderCaches(const int howmany);
+  static int getNumRenderCaches(void);
+  virtual SbBool affectsState(void) const;
+
 
 protected:
   virtual ~SoSeparator();
 
-  virtual SbBool cullTest(SoGLRenderAction * action, int & cullResults);
-
+  virtual SbBool cullTest(SoGLRenderAction * action, int & cullresults);
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
 
+
 private:
-  class SoBoundingBoxCache * bboxCache;
+  void commonConstructor(void);
+
+  class SoBoundingBoxCache * bboxcache;
+  static int numrendercaches;
 };
 
 #endif // !COIN_SOSEPARATOR_H

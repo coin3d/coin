@@ -19,12 +19,24 @@
 
 /*!
   \class SoSeparator SoSeparator.h Inventor/nodes/SoSeparator.h
-  \brief The SoSeparator class ...
+  \brief The SoSeparator class is a state-preserving group node.
   \ingroup nodes
 
-  FIXME: write class doc
+  Subgraphs parented by SoSeparator nodes will not affect the state,
+  as they push and pop the traversal state before and after traversal
+  of its children.
+
+  SoSeparator nodes also provides options for traversal optimalization
+  through the use of caching.
 */
 
+// Metadon doc:
+/*¡
+  <ul>
+  <li>rendercaching is not implemented, neither is renderculling nor
+      pickculling</li>
+  </ul>
+ */
 
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -45,40 +57,78 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 
+// Maximum number of caches available for allocation for the
+// rendercaching (FIXME: which is not implemented yet.. 20000426 mortene).
+int SoSeparator::numrendercaches = 2;
+
 
 /*!
   \enum SoSeparator::CacheEnabled
-  FIXME: write documentation for enum
+
+  Enumeration of flags for the fields deciding which optimalizations
+  to do in SoSeparator nodes. There are two types of settings
+  available: caching policies or culling policies. See doumentation of
+  fields.
 */
 /*!
   \var SoSeparator::CacheEnabled SoSeparator::OFF
-  FIXME: write documentation for enum definition
+  No caching.
 */
 /*!
   \var SoSeparator::CacheEnabled SoSeparator::ON
-  FIXME: write documentation for enum definition
+  Always try to cache state.
 */
 /*!
   \var SoSeparator::CacheEnabled SoSeparator::AUTO
-  FIXME: write documentation for enum definition
+  Use heuristics to try to figure out the optimal caching policy.
 */
 
 
 /*!
   \var SoSFEnum SoSeparator::renderCaching
-  FIXME: write documentation for field
+
+  Policy for caching of rendering instructions for faster
+  execution. This will typically use the OpenGL \e renderlists
+  mechanism.
+
+  Default value is SoSeparator::AUTO.
+
+  If you know that some parts of your scene will never change,
+  rendering might happen faster if you explicitly set this field to
+  SoSeparator::ON. If you on the other hand know that parts of the
+  scene will change a lot (like for every redraw), it will be
+  beneficial to set this field to SoSeparator::OFF for the top-level
+  separator node of this (sub)graph.
 */
 /*!
   \var SoSFEnum SoSeparator::boundingBoxCaching
-  FIXME: write documentation for field
+
+  Policy for caching bounding box calculations. Default value is
+  SoSeparator::AUTO.
+
+  See also documentation for SoSeparator::renderCaching.
 */
 /*!
   \var SoSFEnum SoSeparator::renderCulling
-  FIXME: write documentation for field
+
+  Policy for doing viewport culling during rendering
+  traversals. Default value is SoSeparator::AUTO.
+
+  When the render culling is turned off for Coin, it will be left to
+  do for the underlying immediate mode rendering library. This will
+  often be faster than doing culling from within Coin, so be careful
+  to monitor the change in execution speed if setting this field to
+  SoSeparator::ON.
+
+  See also documentation for SoSeparator::renderCaching.
 */
 /*!
   \var SoSFEnum SoSeparator::pickCulling
-  FIXME: write documentation for field
+
+  Policy for doing viewport culling during pick traversals. Default
+  value is SoSeparator::AUTO.
+
+  See documentation for SoSeparator::renderCulling.
 */
 
 
@@ -87,9 +137,29 @@
 SO_NODE_SOURCE(SoSeparator);
 
 /*!
-  Constructor.
+  Default constructor.
 */
-SoSeparator::SoSeparator()
+SoSeparator::SoSeparator(void)
+{
+  this->commonConstructor();
+}
+
+/*!
+  Constructor.
+
+  The \a nchildren argument is a hint to the separator group instance
+  about how many children it is expected will be managed by this
+  node. This makes it possible to do better resource allocation.
+*/
+SoSeparator::SoSeparator(const int nchildren)
+  : SoGroup(nchildren)
+{
+  this->commonConstructor();
+}
+
+// private common constructor helper function
+void
+SoSeparator::commonConstructor(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoSeparator);
 
@@ -107,35 +177,28 @@ SoSeparator::SoSeparator()
   SO_NODE_SET_SF_ENUM_TYPE(renderCulling, CacheEnabled);
   SO_NODE_SET_SF_ENUM_TYPE(pickCulling, CacheEnabled);
 
-  this->bboxCache = NULL;
+  this->bboxcache = NULL;
 }
 
 /*!
-  Destructor.
+  Destructor. Frees resources used to implement caches.
 */
 SoSeparator::~SoSeparator()
 {
-  delete this->bboxCache;
+  delete this->bboxcache;
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoSeparator class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoSeparator::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoSeparator);
 
   SO_ENABLE(SoGetBoundingBoxAction, SoCacheElement);
-
   SO_ENABLE(SoGLRenderAction, SoCacheElement);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoSeparator::doAction(SoAction * action)
 {
@@ -144,9 +207,7 @@ SoSeparator::doAction(SoAction * action)
   action->getState()->pop();
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -161,7 +222,7 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
   // "behavior" in the children subgraphs if the value is set to
   // AUTO. 19990513 mortene.
   SbBool iscaching = this->boundingBoxCaching.getValue() != OFF;
-  SbBool validcache = this->bboxCache && this->bboxCache->isValid(state);
+  SbBool validcache = this->bboxcache && this->bboxcache->isValid(state);
 
   // FIXME: there needs to be some extra magic here to make caching
   // work correctly when the bounding box is calculated in camera
@@ -171,9 +232,9 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
   //  assert (!action->isInCameraSpace());
 
   if (iscaching && validcache) {
-    childrenbbox = this->bboxCache->getBox();
-    childrencenterset = this->bboxCache->isCenterSet();
-    childrencenter = this->bboxCache->getCenter();
+    childrenbbox = this->bboxcache->getBox();
+    childrencenterset = this->bboxcache->isCenterSet();
+    childrencenter = this->bboxcache->getCenter();
   }
   else {
     SbXfBox3f abox = action->getXfBoundingBox();
@@ -193,9 +254,9 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     if (iscaching) {
       // FIXME: continuous new & delete during traversal is probably a
       // performance killer.. fix. 19990422 mortene.
-      delete this->bboxCache;
-      this->bboxCache = new SoBoundingBoxCache(state);
-      this->bboxCache->set(childrenbbox, childrencenterset, childrencenter);
+      delete this->bboxcache;
+      this->bboxcache = new SoBoundingBoxCache(state);
+      this->bboxcache->set(childrenbbox, childrencenterset, childrencenter);
     }
   }
 
@@ -213,9 +274,7 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoSeparator::callback(SoCallbackAction * action)
 {
@@ -224,9 +283,7 @@ SoSeparator::callback(SoCallbackAction * action)
   action->getState()->pop();
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoSeparator::GLRender(SoGLRenderAction * action)
 {
@@ -235,9 +292,7 @@ SoSeparator::GLRender(SoGLRenderAction * action)
   action->getState()->pop();
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
 SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
 {
@@ -246,16 +301,14 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
   action->getState()->pop();
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
 SoSeparator::GLRenderInPath(SoGLRenderAction * action)
 {
   assert(action->getCurPathCode() == SoAction::IN_PATH);
 
   int numIndices;
-  const int *indices;
+  const int * indices;
   action->getPathCode(numIndices, indices);
 
   action->getState()->push();
@@ -263,27 +316,21 @@ SoSeparator::GLRenderInPath(SoGLRenderAction * action)
   action->getState()->pop();
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
 SoSeparator::GLRenderOffPath(SoGLRenderAction *)
 {
   // do nothing, since all state changes will be reset by the separator
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoSeparator::handleEvent(SoHandleEventAction * action)
 {
   SoSeparator::doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoSeparator::rayPick(SoRayPickAction * action)
 {
@@ -295,9 +342,7 @@ SoSeparator::rayPick(SoRayPickAction * action)
   SoSeparator::doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoSeparator::search(SoSearchAction * action)
 {
@@ -310,9 +355,7 @@ SoSeparator::search(SoSearchAction * action)
   SoSeparator::doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoSeparator::getMatrix(SoGetMatrixAction * action)
 {
@@ -323,78 +366,74 @@ SoSeparator::getMatrix(SoGetMatrixAction * action)
 }
 
 /*!
-  FIXME: write function documentation
-*/
-SoSeparator::SoSeparator(const int /* nChildren */)
-{
-  COIN_STUB();
-}
+  Set up number of caches SoSeparator nodes may allocate for render
+  caching. More caches might give better performance, but will use
+  more memory.
 
-/*!
-  FIXME: write function documentation
+  Default value is 2.
 */
 void
-SoSeparator::setNumRenderCaches(const int /* howMany */)
+SoSeparator::setNumRenderCaches(const int howmany)
 {
-  COIN_STUB();
+  SoSeparator::numrendercaches = howmany;
+  // FIXME: not in use, as render caching has not been implemented
+  // yet. 20000426 mortene.
 }
 
 /*!
-  FIXME: write function documentation
+  Returns maximum number of caches SoSeparator nodes are allowed to
+  use for render caching.
+
+  \sa setNumRenderCaches()
 */
 int
-SoSeparator::getNumRenderCaches()
+SoSeparator::getNumRenderCaches(void)
 {
-  COIN_STUB();
-  return 0;
+  return SoSeparator::numrendercaches;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 SbBool
 SoSeparator::affectsState(void) const
 {
+  // Subgraphs parented by SoSeparator nodes will not affect the
+  // state, as they push and pop the traversal state before and after
+  // traversal of its children.
   return FALSE;
 }
 
-
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoSeparator::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoSeparator::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  SoSeparator::doAction((SoAction*)action);
+  SoSeparator::doAction((SoAction *)action);
+}
+
+// Doc from superclass.
+void
+SoSeparator::notify(SoNotList * nl)
+{
+  inherited::notify(nl);
+
+  if (this->bboxcache) this->bboxcache->invalidate();
+  // FIXME: flag other caches (as they are implemented) as
+  // dirty. 20000426 mortene.
 }
 
 /*!
-  FIXME: write doc
- */
-void
-SoSeparator::notify(SoNotList * list)
-{
-  // FIXME: flag caches as dirty. 19990612 mortene.
-  inherited::notify(list);
-
-  if (this->bboxCache) {
-    this->bboxCache->invalidate();
-  }
-}
-
-/*!
-  FIXME: write doc
- */
+  \internal
+*/
 SbBool
-SoSeparator::cullTest(SoGLRenderAction * /* action */, int & /* cullResults */)
+SoSeparator::cullTest(SoGLRenderAction * action, int & cullresults)
 {
+  // FIXME: not implemented, as support for render- and pickculling is
+  // missing. 20000426 mortene.
+
   COIN_STUB();
   return FALSE;
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 SbBool
 SoSeparator::readInstance(SoInput * in, unsigned short flags)
 {
