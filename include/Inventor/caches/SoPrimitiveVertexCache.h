@@ -60,6 +60,9 @@ public:
                    const SoPrimitiveVertex * v1,
                    const SoPrimitiveVertex * v2,
                    const int * pointdetailidx = NULL);
+  void addLine(const SoPrimitiveVertex * v0,
+               const SoPrimitiveVertex * v1);
+  void addPoint(const SoPrimitiveVertex * v);
 
   int getNumVertices(void) const;
   int getNumIndices(void) const;
@@ -71,8 +74,17 @@ public:
   SbBool colorPerVertex(void) const;
   const SbVec4f * getMultiTextureCoordinateArray(const int unit) const;
 
+  int getNumLineIndices(void) const;
+  int getNumPointIndices(void) const;
+  
+  const int32_t * getLineIndices(void) const;
+  const int32_t * getPointIndices(void) const;
+
 private:
   SoPrimitiveVertexCacheP * pimpl;
+
+  
+
 };
 
 #endif // COIN_SOPRIMITIVEVERTEXCACHE_H

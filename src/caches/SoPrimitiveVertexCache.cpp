@@ -36,6 +36,7 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/details/SoPointDetail.h>
+#include <Inventor/details/SoLineDetail.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <stddef.h>
 #include <Inventor/C/glue/gl.h>
@@ -50,6 +51,8 @@ public:
 
   SbList <SoPrimitiveVertexCache::Vertex> vertices;
   SbList <int32_t> indices;
+  SbList <int32_t> lineindices;
+  SbList <int32_t> pointindices;
   SbHash <int32_t, SoPrimitiveVertexCache::Vertex> vhash;
 
   const SbVec2f * bumpcoords;
@@ -210,22 +213,166 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
       PRIVATE(this)->indices.append(idx);
       
       // update texture coordinates for unit 1-n
-      for (int i = 1; i <= PRIVATE(this)->lastenabled; i++) {
+      for (int j = 1; j <= PRIVATE(this)->lastenabled; j++) {
         if (v.texcoordidx >= 0 &&
-            (PRIVATE(this)->multielem->getType(i) == SoTextureCoordinateElement::EXPLICIT)) {
-          PRIVATE(this)->multitexcoords[i].append(PRIVATE(this)->multielem->get4(i, v.texcoordidx));
+            (PRIVATE(this)->multielem->getType(j) == SoTextureCoordinateElement::EXPLICIT)) {
+          PRIVATE(this)->multitexcoords[j].append(PRIVATE(this)->multielem->get4(j, v.texcoordidx));
         }
-        else if (PRIVATE(this)->multielem->getType(i) == SoTextureCoordinateElement::FUNCTION) {
-          PRIVATE(this)->multitexcoords[i].append(PRIVATE(this)->multielem->get(i, v.vertex, v.normal));
+        else if (PRIVATE(this)->multielem->getType(j) == SoTextureCoordinateElement::FUNCTION) {
+          PRIVATE(this)->multitexcoords[j].append(PRIVATE(this)->multielem->get(j, v.vertex, v.normal));
         }
         else {
-          PRIVATE(this)->multitexcoords[i].append(v.texcoord0);
+          PRIVATE(this)->multitexcoords[j].append(v.texcoord0);
         }
       }
     }
     else {
       PRIVATE(this)->indices.append(idx);
     }
+  }
+}
+
+void 
+SoPrimitiveVertexCache::addLine(const SoPrimitiveVertex * v0,
+                                const SoPrimitiveVertex * v1)
+{
+  if (PRIVATE(this)->lastenabled >= 1 && PRIVATE(this)->multielem == NULL) {
+    // fetch SoMultiTextureCoordinateElement the first time we get here
+    PRIVATE(this)->multielem = SoMultiTextureCoordinateElement::getInstance(PRIVATE(this)->state);
+  }
+  const SoPrimitiveVertex *vp[2] = { v0,v1 };
+
+  for (int i = 0; i < 2; i++) {
+    Vertex v;
+    v.vertex = vp[i]->getPoint();
+    v.normal = vp[i]->getNormal();
+    const SbVec4f & tmp = vp[i]->getTextureCoords();
+    v.bumpcoord = SbVec2f(tmp[0], tmp[1]);
+    v.texcoord0 = tmp;
+    v.texcoordidx = -1;
+    
+    int midx = vp[i]->getMaterialIndex();
+    uint32_t col;
+    if (PRIVATE(this)->packedptr) {
+      col = PRIVATE(this)->packedptr[SbClamp(midx, 0, PRIVATE(this)->numdiffuse)];
+    }
+    else {
+      SbColor tmpc = PRIVATE(this)->diffuseptr[SbClamp(midx,0,PRIVATE(this)->numdiffuse)];
+      float tmpt = PRIVATE(this)->transpptr[SbClamp(midx,0,PRIVATE(this)->numtransp)];
+      col = tmpc.getPackedValue(tmpt);
+    }
+    if (col != PRIVATE(this)->firstcolor) PRIVATE(this)->colorpervertex = TRUE;
+    
+    v.rgba[0] = col>>24;
+    v.rgba[1] = (col>>16)&0xff;
+    v.rgba[2] = (col>>8)&0xff;
+    v.rgba[3] = col&0xff;
+    
+    SoDetail * d = (SoDetail*) vp[i]->getDetail();
+
+    if (d && d->isOfType(SoLineDetail::getClassTypeId())) {
+      SoLineDetail * ld = (SoLineDetail*) d;
+      const SoPointDetail * pd;
+      if (i == 0) pd = ld->getPoint0();
+      else pd = ld->getPoint1();
+      
+      int tidx  = v.texcoordidx = ((SoPointDetail*)pd)->getTextureCoordIndex();            
+      if (PRIVATE(this)->numbumpcoords) {
+        v.bumpcoord = PRIVATE(this)->bumpcoords[SbClamp(tidx, 0, PRIVATE(this)->numbumpcoords)];
+      }
+    }
+    int32_t idx;
+    if (!PRIVATE(this)->vhash.get(v, idx)) {
+      idx = PRIVATE(this)->vertices.getLength();
+      PRIVATE(this)->vhash.put(v, idx);
+      PRIVATE(this)->vertices.append(v);
+      PRIVATE(this)->lineindices.append(idx);
+      
+      // update texture coordinates for unit 1-n
+      for (int j = 1; j <= PRIVATE(this)->lastenabled; j++) {
+        if (v.texcoordidx >= 0 &&
+            (PRIVATE(this)->multielem->getType(j) == SoTextureCoordinateElement::EXPLICIT)) {
+          PRIVATE(this)->multitexcoords[j].append(PRIVATE(this)->multielem->get4(j, v.texcoordidx));
+        }
+        else if (PRIVATE(this)->multielem->getType(j) == SoTextureCoordinateElement::FUNCTION) {
+          PRIVATE(this)->multitexcoords[j].append(PRIVATE(this)->multielem->get(j, v.vertex, v.normal));
+        }
+        else {
+          PRIVATE(this)->multitexcoords[j].append(v.texcoord0);
+        }
+      }
+    }
+    else {
+      PRIVATE(this)->lineindices.append(idx);
+    }
+  }
+}
+
+void 
+SoPrimitiveVertexCache::addPoint(const SoPrimitiveVertex * v0)
+{
+  if (PRIVATE(this)->lastenabled >= 1 && PRIVATE(this)->multielem == NULL) {
+    // fetch SoMultiTextureCoordinateElement the first time we get here
+    PRIVATE(this)->multielem = SoMultiTextureCoordinateElement::getInstance(PRIVATE(this)->state);
+  }
+  Vertex v;
+  v.vertex = v0->getPoint();
+  v.normal = v0->getNormal();
+  const SbVec4f & tmp = v0->getTextureCoords();
+  v.bumpcoord = SbVec2f(tmp[0], tmp[1]);
+  v.texcoord0 = tmp;
+  v.texcoordidx = -1;
+    
+  int midx = v0->getMaterialIndex();
+  uint32_t col;
+  if (PRIVATE(this)->packedptr) {
+    col = PRIVATE(this)->packedptr[SbClamp(midx, 0, PRIVATE(this)->numdiffuse)];
+  }
+  else {
+    SbColor tmpc = PRIVATE(this)->diffuseptr[SbClamp(midx,0,PRIVATE(this)->numdiffuse)];
+    float tmpt = PRIVATE(this)->transpptr[SbClamp(midx,0,PRIVATE(this)->numtransp)];
+    col = tmpc.getPackedValue(tmpt);
+  }
+  if (col != PRIVATE(this)->firstcolor) PRIVATE(this)->colorpervertex = TRUE;
+    
+  v.rgba[0] = col>>24;
+  v.rgba[1] = (col>>16)&0xff;
+  v.rgba[2] = (col>>8)&0xff;
+  v.rgba[3] = col&0xff;
+    
+  SoDetail * d = (SoDetail*) v0->getDetail();
+
+  if (d && d->isOfType(SoPointDetail::getClassTypeId())) {
+    SoPointDetail * pd = (SoPointDetail*) d;      
+    int tidx  = v.texcoordidx = pd->getTextureCoordIndex();            
+    if (PRIVATE(this)->numbumpcoords) {
+      v.bumpcoord = PRIVATE(this)->bumpcoords[SbClamp(tidx, 0, PRIVATE(this)->numbumpcoords)];
+    }
+  }
+
+  int32_t idx;
+  if (!PRIVATE(this)->vhash.get(v, idx)) {
+    idx = PRIVATE(this)->vertices.getLength();
+    PRIVATE(this)->vhash.put(v, idx);
+    PRIVATE(this)->vertices.append(v);
+    PRIVATE(this)->pointindices.append(idx);
+      
+    // update texture coordinates for unit 1-n
+    for (int j = 1; j <= PRIVATE(this)->lastenabled; j++) {
+      if (v.texcoordidx >= 0 &&
+          (PRIVATE(this)->multielem->getType(j) == SoTextureCoordinateElement::EXPLICIT)) {
+        PRIVATE(this)->multitexcoords[j].append(PRIVATE(this)->multielem->get4(j, v.texcoordidx));
+      }
+      else if (PRIVATE(this)->multielem->getType(j) == SoTextureCoordinateElement::FUNCTION) {
+        PRIVATE(this)->multitexcoords[j].append(PRIVATE(this)->multielem->get(j, v.vertex, v.normal));
+      }
+      else {
+        PRIVATE(this)->multitexcoords[j].append(v.texcoord0);
+      }
+    }
+  }
+  else {
+    PRIVATE(this)->pointindices.append(idx);
   }
 }
 
@@ -278,6 +425,31 @@ SoPrimitiveVertexCache::getMultiTextureCoordinateArray(const int unit) const
   return PRIVATE(this)->multitexcoords[unit].getArrayPtr();
 }
 
+int 
+SoPrimitiveVertexCache::getNumLineIndices(void) const
+{
+  return 0;
+}
+
+int 
+SoPrimitiveVertexCache::getNumPointIndices(void) const
+{
+  return 0;
+}
+
+  
+const int32_t * 
+SoPrimitiveVertexCache::getLineIndices(void) const
+{
+  return NULL;
+}
+
+const int32_t * 
+SoPrimitiveVertexCache::getPointIndices(void) const
+{
+  return NULL;
+}
+
 
 #undef PRIVATE
 
@@ -298,4 +470,6 @@ SoPrimitiveVertexCache::Vertex::operator==(const Vertex & v) const
 {
   return memcmp(this, &v, sizeof(Vertex)) == 0;
 }
+
+
 
