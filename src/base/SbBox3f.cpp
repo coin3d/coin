@@ -133,9 +133,9 @@ SbBox3f::getCenter(void) const
     SoDebugError::postWarning("SbBox3f::getCenter",
                               "The box is empty.");
 #endif // COIN_DEBUG
-  return SbVec3f((max[0] + min[0]) * 0.5f,
-                 (max[1] + min[1]) * 0.5f,
-                 (max[2] + min[2]) * 0.5f);
+  return SbVec3f((this->max[0] + this->min[0]) * 0.5f,
+                 (this->max[1] + this->min[1]) * 0.5f,
+                 (this->max[2] + this->min[2]) * 0.5f);
 }
 
 /*!
