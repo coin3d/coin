@@ -215,11 +215,16 @@ THE LINKS
         http://lager.dyndns.org/GnuMICR/download/latest/
                 (GPL'd, see README)
 
-  An organized "free fonts" project (they are released under the GPL):
+* An organized "free fonts" project (they are released under the GPL):
   http://www.nongnu.org/freefont/
 
-  A Free Software TrueType/PostScript/... font editor:
+* A Free Software TrueType/PostScript/... font editor:
   http://pfaedit.sourceforge.net/
+
+* In 2003-01, Bitstream and the Gnome project announced that Bitstream
+  will soon give away 10 fonts that can be used for just about any
+  purpose (licensing certainly seems liberal enough for us to include
+  in Coin).
 
 * OpenGL and ActiveX:
 
