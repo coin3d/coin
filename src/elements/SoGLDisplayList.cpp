@@ -95,7 +95,7 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
       // use temporary variable, in case GLuint is typedef'ed to
       // something other than unsigned int
       GLuint tmpindex;
-      glw->glGenTextures(1, &tmpindex);
+      cc_glglue_glGenTextures(glw, 1, &tmpindex);
       this->firstindex = (unsigned int )tmpindex;
     }
     else { // Fall back to display list
@@ -134,8 +134,9 @@ SoGLDisplayList::~SoGLDisplayList()
     // safe just to copy and delete the first index.
     GLuint tmpindex = (GLuint) this->firstindex;
     const cc_glglue * glw = cc_glglue_instance(this->context);
-    if (glw->glDeleteTextures)
-      glw->glDeleteTextures(1, &tmpindex);
+    if (glw->glDeleteTextures) {
+      cc_glglue_glDeleteTextures(glw, 1, &tmpindex);
+    }
   }
 }
 
@@ -276,8 +277,8 @@ SoGLDisplayList::bindTexture(SoState *state)
   if (glw->glBindTexture) {
     if (SoGLTexture3EnabledElement::get(state)) {
       if (glw->has3DTextures)
-        glw->glBindTexture(GL_TEXTURE_3D, (GLuint) this->firstindex);
+        cc_glglue_glBindTexture(glw, GL_TEXTURE_3D, (GLuint)this->firstindex);
     }
-    else glw->glBindTexture(GL_TEXTURE_2D, (GLuint) this->firstindex);
+    else cc_glglue_glBindTexture(glw, GL_TEXTURE_2D, (GLuint)this->firstindex);
   }
 }

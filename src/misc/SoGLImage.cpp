@@ -346,9 +346,9 @@ fast_mipmap(SoState * state, int width, int height, const int nc,
 
   if (useglsubimage) {
     if (glw->glTexSubImage2D)
-      glw->glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
-                           width, height, format,
-                           GL_UNSIGNED_BYTE, data);
+      cc_glglue_glTexSubImage2D(glw, GL_TEXTURE_2D, 0, 0, 0,
+                                width, height, format,
+                                GL_UNSIGNED_BYTE, data);
   }
   else {
     glTexImage2D(GL_TEXTURE_2D, 0, nc, width, height, 0, format,
@@ -362,9 +362,9 @@ fast_mipmap(SoState * state, int width, int height, const int nc,
     src = mipmap_buffer;
     if (useglsubimage) {
     if (glw->glTexSubImage2D)
-      glw->glTexSubImage2D(GL_TEXTURE_2D, level, 0, 0,
-                           width, height, format,
-                           GL_UNSIGNED_BYTE, (void*) src);
+      cc_glglue_glTexSubImage2D(glw, GL_TEXTURE_2D, level, 0, 0,
+                                width, height, format,
+                                GL_UNSIGNED_BYTE, (void*) src);
     }
     else {
       glTexImage2D(GL_TEXTURE_2D, level, nc, width,
@@ -389,14 +389,14 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
   // Send level 0 (original image) to OpenGL
   if (useglsubimage) {
     if (glw->glTexSubImage3D)
-      glw->glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, 0,
-                           width, height, depth, format,
-                           GL_UNSIGNED_BYTE, data);
+      cc_glglue_glTexSubImage3D(glw, GL_TEXTURE_3D, 0, 0, 0, 0,
+                                width, height, depth, format,
+                                GL_UNSIGNED_BYTE, data);
   }
   else {
     if (glw->glTexImage3D)
-      glw->glTexImage3D(GL_TEXTURE_3D, 0, nc, width, height, depth,
-			0, format, GL_UNSIGNED_BYTE, data);
+      cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, 0, nc, width, height, depth,
+                             0, format, GL_UNSIGNED_BYTE, data);
   }
   unsigned char *src = (unsigned char *) data;
   for (int level = 1; level <= levels; level++) {
@@ -407,15 +407,15 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
     src = mipmap_buffer;
     if (useglsubimage) {
     if (glw->glTexSubImage3D)
-      glw->glTexSubImage3D(GL_TEXTURE_3D, level, 0, 0, 0,
-                           width, height, depth, format,
-                           GL_UNSIGNED_BYTE, (void*) src);
+      cc_glglue_glTexSubImage3D(glw, GL_TEXTURE_3D, level, 0, 0, 0,
+                                width, height, depth, format,
+                                GL_UNSIGNED_BYTE, (void*) src);
     }
     else {
       if (glw->glTexImage3D)
-	glw->glTexImage3D(GL_TEXTURE_3D, level, nc, width,
-			  height, depth, 0, format, GL_UNSIGNED_BYTE,
-			  (void *) src);
+	cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, level, nc, width,
+                               height, depth, 0, format, GL_UNSIGNED_BYTE,
+                               (void *) src);
     }
   }
 }
@@ -801,16 +801,16 @@ SoGLImage::setData(const SbImage *image,
       }
       else {
         if (is3D) {
-          glw->glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, 0,
-                               size[0], size[1], size[2],
-                               format, GL_UNSIGNED_BYTE,
-                               (void*) bytes);
+          cc_glglue_glTexSubImage3D(glw, GL_TEXTURE_3D, 0, 0, 0, 0,
+                                    size[0], size[1], size[2],
+                                    format, GL_UNSIGNED_BYTE,
+                                    (void*) bytes);
         }
         else {
-          glw->glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
-                               size[0], size[1],
-                               format, GL_UNSIGNED_BYTE,
-                               (void*) bytes);
+          cc_glglue_glTexSubImage2D(glw, GL_TEXTURE_2D, 0, 0, 0,
+                                    size[0], size[1],
+                                    format, GL_UNSIGNED_BYTE,
+                                    (void*) bytes);
         }
       }
     }
@@ -1408,8 +1408,8 @@ SoGLImageP::reallyCreateTexture(SoState *state,
 
     if (!mipmap) {
       if (glw->glTexImage3D)
-        glw->glTexImage3D(GL_TEXTURE_3D, 0, numComponents, w, h, d,
-                          border, glformat, GL_UNSIGNED_BYTE, texture);
+        cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, 0, numComponents, w, h, d,
+                               border, glformat, GL_UNSIGNED_BYTE, texture);
     }
     else { // mipmaps
       //FIXME: TEX2->TEX3 ? (kintel 20011129)
