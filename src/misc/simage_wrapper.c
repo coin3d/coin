@@ -354,7 +354,7 @@ simage_wrapper(void)
 #endif
         si->s_params_set = NULL;
         si->s_params_get = NULL;
-        si->s_stream_open = ;
+        si->s_stream_open = NULL;
         si->s_stream_get_buffer = NULL;
         si->s_stream_close = NULL;
         si->s_stream_destroy = NULL;
