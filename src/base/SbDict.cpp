@@ -35,42 +35,6 @@
   An entry consists of an unique key and a generic pointer.
 */
 
-//
-// internal class
-//
-class SbDictEntry
-{
-private:
-  SbDictEntry(const unsigned long key, void * const value) {
-    this->key = key;
-    this->value = value;
-  }
-private:
-  void * operator new(size_t, cc_memalloc * allocator) {
-    return cc_memalloc_allocate(allocator);
-  }
-
-  unsigned long key;
-  void * value;
-  SbDictEntry * next;
-
-  friend class SbDict;
-};
-
-//
-// default hashing function will just return the key
-//
-static unsigned long
-default_hashfunc(const unsigned long key)
-{
-  return key;
-}
-
-// Macro to return the memory allocator for an instance. See FIXME in
-// constructor and copy operator.
-#define GET_MEMALLOC(instance) \
-  (cc_memalloc*) ((instance)->buckets[instance->tablesize])
-
 // *************************************************************************
 
 /*!
@@ -81,17 +45,7 @@ default_hashfunc(const unsigned long key)
 SbDict::SbDict(const int entries)
 {
   assert(entries > 0);
-  this->tablesize = entries;
-  // allocate one extra item to store the memory allocator 
-  // 
-  // FIXME: when it's safe to change the ABI, create a private member
-  // to store the cc_memalloc pointer instead of using the buckets
-  // array. pederb, 2002-01-30
-  this->buckets = new SbDictEntry *[this->tablesize+1];
-  this->buckets[this->tablesize] = (SbDictEntry*)
-    cc_memalloc_construct(sizeof(SbDictEntry));
-  this->hashfunc = default_hashfunc;
-  for (int i = 0; i < this->tablesize; i++) this->buckets[i] = NULL;
+  this->hashtable = cc_hash_construct(entries, 0.75f);
 }
 
 /*!
@@ -99,6 +53,7 @@ SbDict::SbDict(const int entries)
 */
 SbDict::SbDict(const SbDict & from)
 {
+  this->hashtable = NULL;
   this->operator=(from);
 }
 
@@ -107,9 +62,7 @@ SbDict::SbDict(const SbDict & from)
 */
 SbDict::~SbDict()
 {
-  this->clear();
-  cc_memalloc_destruct(GET_MEMALLOC(this));
-  delete[] buckets;
+  cc_hash_destruct(this->hashtable);
 }
 
 /*!
@@ -118,17 +71,12 @@ SbDict::~SbDict()
 SbDict &
 SbDict::operator=(const SbDict & from)
 {
-  this->tablesize = from.tablesize;
-  this->hashfunc = from.hashfunc;
-  // allocate one extra to store the memory allocator
-  // 
-  // FIXME: when it's safe to change the ABI, create a private member
-  // to store the cc_memalloc pointer instead of using the buckets
-  // array. pederb, 2002-01-30
-  this->buckets = new SbDictEntry *[this->tablesize+1];
-  this->buckets[this->tablesize] = (SbDictEntry*)
-    cc_memalloc_construct(sizeof(SbDictEntry));
-  for (int i = 0; i < this->tablesize; i++) this->buckets[i] = NULL;
+  if (this->hashtable) {
+    // clear old values
+    this->clear();
+    cc_hash_destruct(this->hashtable);
+  }
+  this->hashtable = cc_hash_construct(cc_hash_get_num_elements(from.hashtable), 0.75f);
   from.applyToAll(copyval, this);
   return *this;
 }
@@ -150,20 +98,7 @@ SbDict::copyval(unsigned long key, void * value, void * data)
 void
 SbDict::clear(void)
 {
-  int i;
-  SbDictEntry * entry, * nextEntry;
-  
-  cc_memalloc * allocator = GET_MEMALLOC(this);
-
-  for (i = 0; i < this->tablesize; i++) {
-    for (entry = buckets[i]; entry != NULL; entry = nextEntry) {
-      nextEntry = entry->next;
-      cc_memalloc_deallocate(allocator, (void*) entry);
-    }
-    buckets[i] = NULL;
-  }
-  // FIXME: consider calling cc_memalloc_clear(). But, it will be
-  // faster not to do this, of course. pederb, 2002-01-30
+  cc_hash_clear(this->hashtable);
 }
 
 /*!
@@ -177,19 +112,7 @@ SbDict::clear(void)
 SbBool
 SbDict::enter(const unsigned long key, void * const value)
 {
-  const unsigned long bucketnum = this->hashfunc(key) % this->tablesize;
-  SbDictEntry *entry = findEntry(key, bucketnum);
-
-  if (entry == NULL) {
-    entry = new (GET_MEMALLOC(this)) SbDictEntry(key, value);
-    entry->next = this->buckets[bucketnum];
-    this->buckets[bucketnum] = entry;
-    return TRUE;
-  }
-  else {
-    entry->value = value;
-    return FALSE;
-  }
+  return cc_hash_put(this->hashtable, key, value);
 }
 
 /*!
@@ -200,16 +123,7 @@ SbDict::enter(const unsigned long key, void * const value)
 SbBool
 SbDict::find(const unsigned long key, void *& value) const
 {
-  const unsigned long bucketnum = this->hashfunc(key) % this->tablesize;
-  SbDictEntry *entry = findEntry(key, bucketnum);
-  if (entry == NULL) {
-    value = NULL;
-    return FALSE;
-  }
-  else {
-    value = entry->value;
-    return TRUE;
-  }
+  return cc_hash_get(this->hashtable, key, &value);
 }
 
 /*!
@@ -219,21 +133,21 @@ SbDict::find(const unsigned long key, void *& value) const
 SbBool
 SbDict::remove(const unsigned long key)
 {
-  const unsigned long bucketnum = this->hashfunc(key) % this->tablesize;
-  SbDictEntry *prev = NULL;
-  SbDictEntry *entry = findEntry(key, bucketnum, &prev);
-  if (entry == NULL)
-    return FALSE;
-  else {
-    if (prev) {
-      prev->next = entry->next;
-    }
-    else {
-      this->buckets[bucketnum] = entry->next;
-    }
-    cc_memalloc_deallocate(GET_MEMALLOC(this), (void*) entry);
-    return TRUE;
-  }
+  return cc_hash_remove(this->hashtable, key);
+}
+
+
+// needed to support the extra applyToAll function. The actual
+// function pointer is supplied as the closure pointer, and we just
+// call that function from our dummy callback. This is needed since
+// cc_hash only supports one apply function type.
+typedef void sbdict_dummy_apply_func(unsigned long, void *);
+
+static void
+sbdict_dummy_apply(unsigned long key, void * value, void * closure)
+{
+  sbdict_dummy_apply_func * func = (sbdict_dummy_apply_func*) closure;
+  func(key, value);
 }
 
 /*!
@@ -242,33 +156,30 @@ SbDict::remove(const unsigned long key)
 void
 SbDict::applyToAll(void (* rtn)(unsigned long key, void * value)) const
 {
-  SbDictEntry * entry;
-  int n = this->tablesize;
-  for (int i = 0; i < n; i++) {
-    entry = this->buckets[i];
-    while (entry) {
-      rtn(entry->key, entry->value);
-      entry = entry->next;
-    }
-  }
+  cc_hash_apply(this->hashtable, sbdict_dummy_apply, (void*) rtn);
 }
 
 /*!
   \overload
 */
 void
-SbDict::applyToAll(void (* rtn)(unsigned long key, void * value, void * data),
+SbDict::applyToAll(void (* rtn)(unsigned long, void *, void *),
                    void * data) const
 {
-  SbDictEntry * entry;
-  int n = this->tablesize;
-  for (int i = 0; i < n; i++) {
-    entry = this->buckets[i];
-    while (entry) {
-      rtn(entry->key, entry->value, data);
-      entry = entry->next;
-    }
-  }
+  cc_hash_apply(this->hashtable, rtn, data);
+}
+
+typedef struct {
+  SbPList * keys;
+  SbPList * values;
+} sbdict_makeplist_data;
+
+static void
+sbdict_makeplist_cb(unsigned long key, void * value, void * closure)
+{
+  sbdict_makeplist_data * data = (sbdict_makeplist_data*) closure;
+  data->keys->append((void*)key);
+  data->values->append(value);
 }
 
 /*!
@@ -277,31 +188,11 @@ SbDict::applyToAll(void (* rtn)(unsigned long key, void * value, void * data),
 void
 SbDict::makePList(SbPList & keys, SbPList & values)
 {
-  SbDictEntry * entry;
-  int n = this->tablesize;
-  for (int i = 0; i < n; i++) {
-    entry = this->buckets[i];
-    while (entry) {
-      keys.append((void *)entry->key);
-      values.append((void *)entry->value);
-      entry = entry->next;
-    }
-  }
-}
+  sbdict_makeplist_data applydata;
+  applydata.keys = &keys;
+  applydata.values = &values;
 
-SbDictEntry *
-SbDict::findEntry(const unsigned long key,
-                  const unsigned long bucketnum,
-                  SbDictEntry **prev) const
-{
-  if (prev) *prev = NULL;
-  SbDictEntry *entry = buckets[bucketnum];
-  while (entry) {
-    if (entry->key == key) break;
-    if (prev) *prev = entry;
-    entry = entry->next;
-  }
-  return entry;
+  cc_hash_apply(this->hashtable, sbdict_makeplist_cb, &applydata);
 }
 
 /*!
@@ -317,45 +208,8 @@ SbDict::findEntry(const unsigned long key,
   This function is not part of the OIV API.
 */
 void
-SbDict::setHashingFunction(unsigned long (*func)(const unsigned long key))
+SbDict::setHashingFunction(unsigned long (*func)(unsigned long key))
 {
-  this->hashfunc = func;
+  cc_hash_set_hash_func(this->hashtable, func);
 }
 
-
-
-/*
-  For debugging
-  */
-// void
-// SbDict::dump(void)
-// {
-//   int i;
-//   SbDictEntry * entry, * nextEntry;
-
-//   for (i = 0; i < this->tablesize; i++) {
-//     for (entry = buckets[i]; entry != NULL; entry = nextEntry) {
-//       nextEntry = entry->next;
-//       printf("entry: '%s' %p\n", entry->key, entry->value);
-//     }
-//   }
-// }
-
-// void SbDict::print_info()
-// {
-//   int i, cnt;
-//   SbDictEntry * entry;
-
-//   printf("---------- dict info ------------------\n");
-
-//   for (i = 0; i < this->tablesize; i++) {
-//     entry = buckets[i];
-//     cnt = 0;
-//     while (entry) {
-//       entry = entry->next;
-//       cnt++;
-//     }
-//     printf(" bucket: %d, cnt: %d\n", i, cnt);
-//   }
-//   printf("\n\n\n");
-// }

@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -25,11 +25,10 @@
 \**************************************************************************/
 
 #include <Inventor/SbBasic.h>
+#include <Inventor/C/base/hash.h>
 #include <stddef.h>
 
 class SbPList;
-class SbDictEntry;
-
 
 class COIN_DLL_API SbDict {
 public:
@@ -49,17 +48,11 @@ public:
   void makePList(SbPList & keys, SbPList & values);
   SbBool remove(const unsigned long key);
 
-  void setHashingFunction(unsigned long (*func)(const unsigned long key));
+  void setHashingFunction(unsigned long (*func)(unsigned long key));
 
 private:
-  unsigned long (*hashfunc)(const unsigned long key);
-  int tablesize;
-  SbDictEntry ** buckets;
-  SbDictEntry *findEntry(const unsigned long key,
-                         const unsigned long bucketnum,
-                         SbDictEntry **prev = (SbDictEntry **) NULL) const;
+  cc_hash * hashtable;
   static void copyval(unsigned long key, void * value, void * data);
-
 };
 
 #endif // !COIN_SBDICT_H
