@@ -663,7 +663,7 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 #define GL_ARB_shadow 1
 #define GL_EXT_texture_rectangle 1
 #define GL_ARB_fragment_program 1
-
+#define GL_ARB_vertex_program 1
 
 #else /* static binding */
 
@@ -1237,6 +1237,212 @@ glglue_resolve_symbols(cc_glglue * w)
      w->has_arb_fragment_program = TRUE;
  } 
 #endif /* GL_ARB_fragment_program */
+
+
+
+  w->has_arb_vertex_program = FALSE;
+  w->glVertexAttrib1sARB = NULL;
+  w->glVertexAttrib1fARB = NULL;
+  w->glVertexAttrib1dARB = NULL;
+  w->glVertexAttrib2sARB = NULL;
+  w->glVertexAttrib2fARB = NULL;
+  w->glVertexAttrib2dARB = NULL;
+  w->glVertexAttrib3sARB = NULL;
+  w->glVertexAttrib3fARB = NULL;
+  w->glVertexAttrib3dARB = NULL;
+  w->glVertexAttrib4sARB = NULL;
+  w->glVertexAttrib4fARB = NULL;
+  w->glVertexAttrib4dARB = NULL;
+  w->glVertexAttrib4NubARB = NULL;
+  w->glVertexAttrib1svARB = NULL;
+  w->glVertexAttrib1fvARB = NULL;
+  w->glVertexAttrib1dvARB = NULL;
+  w->glVertexAttrib2svARB = NULL;
+  w->glVertexAttrib2fvARB = NULL;
+  w->glVertexAttrib2dvARB = NULL;
+  w->glVertexAttrib3svARB = NULL;
+  w->glVertexAttrib3fvARB = NULL;
+  w->glVertexAttrib3dvARB = NULL;
+  w->glVertexAttrib4bvARB = NULL;
+  w->glVertexAttrib4svARB = NULL;
+  w->glVertexAttrib4ivARB = NULL;
+  w->glVertexAttrib4ubvARB = NULL;
+  w->glVertexAttrib4usvARB = NULL;
+  w->glVertexAttrib4uivARB = NULL;
+  w->glVertexAttrib4fvARB = NULL;
+  w->glVertexAttrib4dvARB = NULL;
+  w->glVertexAttrib4NbvARB = NULL;
+  w->glVertexAttrib4NsvARB = NULL;
+  w->glVertexAttrib4NivARB = NULL;
+  w->glVertexAttrib4NubvARB = NULL;
+  w->glVertexAttrib4NusvARB = NULL;
+  w->glVertexAttrib4NuivARB = NULL;
+  w->glVertexAttribPointerARB = NULL;
+  w->glEnableVertexAttribArrayARB = NULL;
+  w->glDisableVertexAttribArrayARB = NULL;
+  w->glProgramStringARB = NULL;
+  w->glBindProgramARB = NULL;
+  w->glDeleteProgramsARB = NULL;
+  w->glGenProgramsARB = NULL;
+  w->glProgramEnvParameter4dARB = NULL;
+  w->glProgramEnvParameter4dvARB = NULL;
+  w->glProgramEnvParameter4fARB = NULL;
+  w->glProgramEnvParameter4fvARB = NULL;
+  w->glProgramLocalParameter4dARB = NULL;
+  w->glProgramLocalParameter4dvARB = NULL;
+  w->glProgramLocalParameter4fARB = NULL;
+  w->glProgramLocalParameter4fvARB = NULL;
+  w->glGetProgramEnvParameterdvARB = NULL;
+  w->glGetProgramEnvParameterfvARB = NULL;
+  w->glGetProgramLocalParameterdvARB = NULL;
+  w->glGetProgramLocalParameterfvARB = NULL;
+  w->glGetProgramivARB = NULL;
+  w->glGetProgramStringARB = NULL;
+  w->glGetVertexAttribdvARB = NULL;
+  w->glGetVertexAttribfvARB = NULL;
+  w->glGetVertexAttribivARB = NULL;
+  w->glGetVertexAttribPointervARB = NULL;
+  w->glIsProgramARB = NULL;
+
+
+#ifdef GL_ARB_vertex_program
+
+  if (cc_glglue_glext_supported(w, "GL_ARB_vertex_program")) {
+    w->glVertexAttrib1sARB = (COIN_PFNGLVERTEXATTRIB1SARBPROC) PROC(glVertexAttrib1sARB);
+    w->glVertexAttrib1fARB = (COIN_PFNGLVERTEXATTRIB1FARBPROC) PROC(glVertexAttrib1fARB);
+    w->glVertexAttrib1dARB = (COIN_PFNGLVERTEXATTRIB1DARBPROC) PROC(glVertexAttrib1dARB);
+    w->glVertexAttrib2sARB = (COIN_PFNGLVERTEXATTRIB2SARBPROC) PROC(glVertexAttrib2sARB);
+    w->glVertexAttrib2fARB = (COIN_PFNGLVERTEXATTRIB2FARBPROC) PROC(glVertexAttrib2fARB);
+    w->glVertexAttrib2dARB = (COIN_PFNGLVERTEXATTRIB2DARBPROC) PROC(glVertexAttrib2dARB);
+    w->glVertexAttrib3sARB = (COIN_PFNGLVERTEXATTRIB3SARBPROC) PROC(glVertexAttrib3sARB);
+    w->glVertexAttrib3fARB = (COIN_PFNGLVERTEXATTRIB3FARBPROC) PROC(glVertexAttrib3fARB);
+    w->glVertexAttrib3dARB = (COIN_PFNGLVERTEXATTRIB3DARBPROC) PROC(glVertexAttrib3dARB);
+    w->glVertexAttrib4sARB = (COIN_PFNGLVERTEXATTRIB4SARBPROC) PROC(glVertexAttrib4sARB);
+    w->glVertexAttrib4fARB = (COIN_PFNGLVERTEXATTRIB4FARBPROC) PROC(glVertexAttrib4fARB);
+    w->glVertexAttrib4dARB = (COIN_PFNGLVERTEXATTRIB4DARBPROC) PROC(glVertexAttrib4dARB);
+    w->glVertexAttrib4NubARB = (COIN_PFNGLVERTEXATTRIB4NUBARBPROC) PROC(glVertexAttrib4NubARB);
+    w->glVertexAttrib1svARB = (COIN_PFNGLVERTEXATTRIB1SVARBPROC) PROC(glVertexAttrib1svARB);
+    w->glVertexAttrib1fvARB = (COIN_PFNGLVERTEXATTRIB1FVARBPROC) PROC(glVertexAttrib1fvARB);
+    w->glVertexAttrib1dvARB = (COIN_PFNGLVERTEXATTRIB1DVARBPROC) PROC(glVertexAttrib1dvARB);
+    w->glVertexAttrib2svARB = (COIN_PFNGLVERTEXATTRIB2SVARBPROC) PROC(glVertexAttrib2svARB);
+    w->glVertexAttrib2fvARB = (COIN_PFNGLVERTEXATTRIB2FVARBPROC) PROC(glVertexAttrib2fvARB);
+    w->glVertexAttrib2dvARB = (COIN_PFNGLVERTEXATTRIB2DVARBPROC) PROC(glVertexAttrib2dvARB);
+    w->glVertexAttrib3svARB = (COIN_PFNGLVERTEXATTRIB3SVARBPROC) PROC(glVertexAttrib3svARB);
+    w->glVertexAttrib3fvARB = (COIN_PFNGLVERTEXATTRIB3FVARBPROC) PROC(glVertexAttrib3fvARB);
+    w->glVertexAttrib3dvARB = (COIN_PFNGLVERTEXATTRIB3DVARBPROC) PROC(glVertexAttrib3dvARB);
+    w->glVertexAttrib4bvARB = (COIN_PFNGLVERTEXATTRIB4BVARBPROC) PROC(glVertexAttrib4bvARB);
+    w->glVertexAttrib4svARB = (COIN_PFNGLVERTEXATTRIB4SVARBPROC) PROC(glVertexAttrib4svARB);
+    w->glVertexAttrib4ivARB = (COIN_PFNGLVERTEXATTRIB4IVARBPROC) PROC(glVertexAttrib4ivARB);
+    w->glVertexAttrib4ubvARB = (COIN_PFNGLVERTEXATTRIB4UBVARBPROC) PROC(glVertexAttrib4ubvARB);
+    w->glVertexAttrib4usvARB = (COIN_PFNGLVERTEXATTRIB4USVARBPROC) PROC(glVertexAttrib4usvARB);
+    w->glVertexAttrib4uivARB = (COIN_PFNGLVERTEXATTRIB4UIVARBPROC) PROC(glVertexAttrib4uivARB);
+    w->glVertexAttrib4fvARB = (COIN_PFNGLVERTEXATTRIB4FVARBPROC) PROC(glVertexAttrib4fvARB);
+    w->glVertexAttrib4dvARB = (COIN_PFNGLVERTEXATTRIB4DVARBPROC) PROC(glVertexAttrib4dvARB);
+    w->glVertexAttrib4NbvARB = (COIN_PFNGLVERTEXATTRIB4NBVARBPROC) PROC(glVertexAttrib4NbvARB);
+    w->glVertexAttrib4NsvARB = (COIN_PFNGLVERTEXATTRIB4NSVARBPROC) PROC(glVertexAttrib4NsvARB);
+    w->glVertexAttrib4NivARB = (COIN_PFNGLVERTEXATTRIB4NIVARBPROC) PROC(glVertexAttrib4NivARB);
+    w->glVertexAttrib4NubvARB = (COIN_PFNGLVERTEXATTRIB4NUBVARBPROC) PROC(glVertexAttrib4NubvARB);
+    w->glVertexAttrib4NusvARB = (COIN_PFNGLVERTEXATTRIB4NUSVARBPROC) PROC(glVertexAttrib4NusvARB);
+    w->glVertexAttrib4NuivARB = (COIN_PFNGLVERTEXATTRIB4NUIVARBPROC) PROC(glVertexAttrib4NuivARB);
+    w->glVertexAttribPointerARB = (COIN_PFNGLVERTEXATTRIBPOINTERARBPROC) PROC(glVertexAttribPointerARB);
+    w->glEnableVertexAttribArrayARB = (COIN_PFNGLENABLEVERTEXATTRIBARRAYARBPROC) PROC(glEnableVertexAttribArrayARB);
+    w->glDisableVertexAttribArrayARB = (COIN_PFNGLDISABLEVERTEXATTRIBARRAYARBPROC) PROC(glDisableVertexAttribArrayARB);
+    w->glProgramStringARB = (COIN_PFNGLPROGRAMSTRINGARBPROC) PROC(glProgramStringARB);
+    w->glBindProgramARB = (COIN_PFNGLBINDPROGRAMARBPROC) PROC(glBindProgramARB);
+    w->glDeleteProgramsARB = (COIN_PFNGLDELETEPROGRAMSARBPROC) PROC(glDeleteProgramsARB);
+    w->glGenProgramsARB = (COIN_PFNGLGENPROGRAMSARBPROC) PROC(glGenProgramsARB);
+    w->glProgramEnvParameter4dARB = (COIN_PFNGLPROGRAMENVPARAMETER4DARBPROC) PROC(glProgramEnvParameter4dARB);
+    w->glProgramEnvParameter4dvARB = (COIN_PFNGLPROGRAMENVPARAMETER4DVARBPROC) PROC(glProgramEnvParameter4dvARB);
+    w->glProgramEnvParameter4fARB = (COIN_PFNGLPROGRAMENVPARAMETER4FARBPROC) PROC(glProgramEnvParameter4fARB);
+    w->glProgramEnvParameter4fvARB = (COIN_PFNGLPROGRAMENVPARAMETER4FVARBPROC) PROC(glProgramEnvParameter4fvARB);
+    w->glProgramLocalParameter4dARB = (COIN_PFNGLPROGRAMLOCALPARAMETER4DARBPROC) PROC(glProgramLocalParameter4dARB);
+    w->glProgramLocalParameter4dvARB = (COIN_PFNGLPROGRAMLOCALPARAMETER4DVARBPROC) PROC(glProgramLocalParameter4dvARB);
+    w->glProgramLocalParameter4fARB = (COIN_PFNGLPROGRAMLOCALPARAMETER4FARBPROC) PROC(glProgramLocalParameter4fARB);
+    w->glProgramLocalParameter4fvARB = (COIN_PFNGLPROGRAMLOCALPARAMETER4FVARBPROC) PROC(glProgramLocalParameter4fvARB);
+    w->glGetProgramEnvParameterdvARB = (COIN_PFNGLGETPROGRAMENVPARAMETERDVARBPROC) PROC(glGetProgramEnvParameterdvARB);
+    w->glGetProgramEnvParameterfvARB = (COIN_PFNGLGETPROGRAMENVPARAMETERFVARBPROC) PROC(glGetProgramEnvParameterfvARB);
+    w->glGetProgramLocalParameterdvARB = (COIN_PFNGLGETPROGRAMLOCALPARAMETERDVARBPROC) PROC(glGetProgramLocalParameterdvARB);
+    w->glGetProgramLocalParameterfvARB = (COIN_PFNGLGETPROGRAMLOCALPARAMETERFVARBPROC) PROC(glGetProgramLocalParameterfvARB);
+    w->glGetProgramivARB = (COIN_PFNGLGETPROGRAMIVARBPROC) PROC(glGetProgramivARB);
+    w->glGetProgramStringARB = (COIN_PFNGLGETPROGRAMSTRINGARBPROC) PROC(glGetProgramStringARB);
+    w->glGetVertexAttribdvARB = (COIN_PFNGLGETVERTEXATTRIBDVARBPROC) PROC(glGetVertexAttribdvARB);
+    w->glGetVertexAttribfvARB = (COIN_PFNGLGETVERTEXATTRIBFVARBPROC) PROC(glGetVertexAttribfvARB);
+    w->glGetVertexAttribivARB = (COIN_PFNGLGETVERTEXATTRIBIVARBPROC) PROC(glGetVertexAttribivARB);
+    w->glGetVertexAttribPointervARB = (COIN_PFNGLGETVERTEXATTRIBPOINTERVARBPROC) PROC(glGetVertexAttribPointervARB);
+    w->glIsProgramARB = (COIN_PFNGLISPROGRAMARBPROC) PROC(glIsProgramARB);
+
+    if (!(w->glVertexAttrib1sARB &&
+          w->glVertexAttrib1fARB &&
+          w->glVertexAttrib1dARB &&
+          w->glVertexAttrib2sARB &&
+          w->glVertexAttrib2fARB &&
+          w->glVertexAttrib2dARB &&
+          w->glVertexAttrib3sARB &&
+          w->glVertexAttrib3fARB &&
+          w->glVertexAttrib3dARB &&
+          w->glVertexAttrib4sARB &&
+          w->glVertexAttrib4fARB &&
+          w->glVertexAttrib4dARB &&
+          w->glVertexAttrib4NubARB &&
+          w->glVertexAttrib1svARB &&
+          w->glVertexAttrib1fvARB &&
+          w->glVertexAttrib1dvARB &&
+          w->glVertexAttrib2svARB &&
+          w->glVertexAttrib2fvARB &&
+          w->glVertexAttrib2dvARB &&
+          w->glVertexAttrib3svARB &&
+          w->glVertexAttrib3fvARB &&
+          w->glVertexAttrib3dvARB &&
+          w->glVertexAttrib4bvARB &&
+          w->glVertexAttrib4svARB &&
+          w->glVertexAttrib4ivARB &&
+          w->glVertexAttrib4ubvARB &&
+          w->glVertexAttrib4usvARB &&
+          w->glVertexAttrib4uivARB &&
+          w->glVertexAttrib4fvARB &&
+          w->glVertexAttrib4dvARB &&
+          w->glVertexAttrib4NbvARB &&
+          w->glVertexAttrib4NsvARB &&
+          w->glVertexAttrib4NivARB &&
+          w->glVertexAttrib4NubvARB &&
+          w->glVertexAttrib4NusvARB &&
+          w->glVertexAttrib4NuivARB &&
+          w->glVertexAttribPointerARB &&
+          w->glEnableVertexAttribArrayARB &&
+          w->glDisableVertexAttribArrayARB &&
+          w->glProgramStringARB &&
+          w->glBindProgramARB &&
+          w->glDeleteProgramsARB &&
+          w->glGenProgramsARB &&
+          w->glProgramEnvParameter4dARB &&
+          w->glProgramEnvParameter4dvARB &&
+          w->glProgramEnvParameter4fARB &&
+          w->glProgramEnvParameter4fvARB &&
+          w->glProgramLocalParameter4dARB &&
+          w->glProgramLocalParameter4dvARB &&
+          w->glProgramLocalParameter4fARB &&
+          w->glProgramLocalParameter4fvARB &&
+          w->glGetProgramEnvParameterdvARB &&
+          w->glGetProgramEnvParameterfvARB &&
+          w->glGetProgramLocalParameterdvARB &&
+          w->glGetProgramLocalParameterfvARB &&
+          w->glGetProgramivARB &&
+          w->glGetProgramStringARB &&
+          w->glGetVertexAttribdvARB &&
+          w->glGetVertexAttribfvARB &&
+          w->glGetVertexAttribivARB &&
+          w->glGetVertexAttribPointervARB &&
+          w->glIsProgramARB)) {
+      cc_debugerror_postwarning("glglue_init","GL_ARB_vertex_program found, but one or more "
+                                "of its functions could not be bound."); 
+    } else 
+      w->has_arb_vertex_program = TRUE;
+
+
+  } 
+#endif /* GL_ARB_vertex_program */
+
+
 
 
   w->glVertexArrayRangeNV = NULL;
@@ -2865,6 +3071,14 @@ cc_glglue_has_arb_fragment_program(const cc_glglue * glue)
 {
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
   return glue->has_arb_fragment_program;
+}
+
+/* GL_ARB_vertex_program */
+SbBool
+cc_glglue_has_arb_vertex_program(const cc_glglue * glue)
+{
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
+  return glue->has_arb_vertex_program;
 }
 
 /* GL_EXT_texture_env_combine || GL_ARB_texture_env_combine || OGL 1.4 */

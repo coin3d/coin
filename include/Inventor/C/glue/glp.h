@@ -388,6 +388,65 @@ typedef void (APIENTRY * COIN_PFNGLGETPROGRAMSTRINGARBPROC)(GLenum target,
 typedef GLboolean (APIENTRY * COIN_PFNGLISPROGRAMARBPROC)(GLuint program);
 
 
+/* Typedefs for GL_ARB_vertex_program */
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB1SARBPROC)(GLuint index, GLshort x);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB1FARBPROC)(GLuint index, GLfloat x);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB1DARBPROC)(GLuint index, GLdouble x);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB2SARBPROC)(GLuint index, GLshort x, GLshort y);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB2FARBPROC)(GLuint index, GLfloat x, GLfloat y);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB2DARBPROC)(GLuint index, GLdouble x, GLdouble y);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB3SARBPROC)(GLuint index, GLshort x, 
+                                                          GLshort y, GLshort z);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB3FARBPROC)(GLuint index, GLfloat x, 
+                                                          GLfloat y, GLfloat z);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB3DARBPROC)(GLuint index, GLdouble x, 
+                                                          GLdouble y, GLdouble z);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4SARBPROC)(GLuint index, GLshort x, 
+                                                          GLshort y, GLshort z, GLshort w);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4FARBPROC)(GLuint index, GLfloat x, 
+                                                          GLfloat y, GLfloat z, GLfloat w);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4DARBPROC)(GLuint index, GLdouble x, 
+                                                          GLdouble y, GLdouble z, GLdouble w);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4NUBARBPROC)(GLuint index, GLubyte x, 
+                                                            GLubyte y, GLubyte z, GLubyte w);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB1SVARBPROC)(GLuint index, const GLshort *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB1FVARBPROC)(GLuint index, const GLfloat *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB1DVARBPROC)(GLuint index, const GLdouble *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB2SVARBPROC)(GLuint index, const GLshort *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB2FVARBPROC)(GLuint index, const GLfloat *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB2DVARBPROC)(GLuint index, const GLdouble *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB3SVARBPROC)(GLuint index, const GLshort *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB3FVARBPROC)(GLuint index, const GLfloat *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB3DVARBPROC)(GLuint index, const GLdouble *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4BVARBPROC)(GLuint index, const GLbyte *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4SVARBPROC)(GLuint index, const GLshort *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4IVARBPROC)(GLuint index, const GLint *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4UBVARBPROC)(GLuint index, const GLubyte *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4USVARBPROC)(GLuint index, const GLushort *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4UIVARBPROC)(GLuint index, const GLuint *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4FVARBPROC)(GLuint index, const GLfloat *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4DVARBPROC)(GLuint index, const GLdouble *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4NBVARBPROC)(GLuint index, const GLbyte *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4NSVARBPROC)(GLuint index, const GLshort *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4NIVARBPROC)(GLuint index, const GLint *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4NUBVARBPROC)(GLuint index, const GLubyte *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4NUSVARBPROC)(GLuint index, const GLushort *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIB4NUIVARBPROC)(GLuint index, const GLuint *v);
+typedef void (APIENTRY * COIN_PFNGLVERTEXATTRIBPOINTERARBPROC)(GLuint index, GLint size, 
+                                                               GLenum type, GLboolean normalized,
+                                                               GLsizei stride, 
+                                                               const GLvoid *pointer);
+typedef void (APIENTRY * COIN_PFNGLENABLEVERTEXATTRIBARRAYARBPROC)(GLuint index);
+typedef void (APIENTRY * COIN_PFNGLDISABLEVERTEXATTRIBARRAYARBPROC)(GLuint index);
+typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBDVARBPROC)(GLuint index, GLenum pname, 
+                                                             GLdouble *params);
+typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBFVARBPROC)(GLuint index, GLenum pname, 
+                                                             GLfloat *params);
+typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBIVARBPROC)(GLuint index, GLenum pname, 
+                                                             GLint *params);
+typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBPOINTERVARBPROC)(GLuint index, GLenum pname, 
+                                                                   GLvoid **pointer);
+
 
 /* Typedefs for GLX functions. */
 typedef void *(APIENTRY * COIN_PFNGLXGETCURRENTDISPLAYPROC)(void);
@@ -495,6 +554,7 @@ struct cc_glglue {
   COIN_PFNGLGETBUFFERPARAMETERIVPROC glGetBufferParameteriv;
   COIN_PFNGLGETBUFFERPOINTERVPROC glGetBufferPointerv;
 
+  /* NV register combiners */
   COIN_PFNGLCOMBINERPARAMETERFVNVPROC glCombinerParameterfvNV;
   COIN_PFNGLCOMBINERPARAMETERIVNVPROC glCombinerParameterivNV;
   COIN_PFNGLCOMBINERPARAMETERFNVPROC glCombinerParameterfNV;
@@ -509,6 +569,7 @@ struct cc_glglue {
   COIN_PFNGLGETFINALCOMBINERINPUTPARAMETERFVNVPROC glGetFinalCombinerInputParameterfvNV;
   COIN_PFNGLGETFINALCOMBINERINPUTPARAMETERIVNVPROC glGetFinalCombinerInputParameterivNV;
 
+  /* fragment program */
   COIN_PFNGLPROGRAMSTRINGARBPROC glProgramStringARB;
   COIN_PFNGLBINDPROGRAMARBPROC glBindProgramARB;
   COIN_PFNGLDELETEPROGRAMSARBPROC glDeleteProgramsARB;
@@ -529,6 +590,51 @@ struct cc_glglue {
   COIN_PFNGLGETPROGRAMSTRINGARBPROC glGetProgramStringARB;
   COIN_PFNGLISPROGRAMARBPROC glIsProgramARB;
 
+  /* vertex program */
+  COIN_PFNGLVERTEXATTRIB1SARBPROC glVertexAttrib1sARB;
+  COIN_PFNGLVERTEXATTRIB1FARBPROC glVertexAttrib1fARB;
+  COIN_PFNGLVERTEXATTRIB1DARBPROC glVertexAttrib1dARB;
+  COIN_PFNGLVERTEXATTRIB2SARBPROC glVertexAttrib2sARB;
+  COIN_PFNGLVERTEXATTRIB2FARBPROC glVertexAttrib2fARB;
+  COIN_PFNGLVERTEXATTRIB2DARBPROC glVertexAttrib2dARB;
+  COIN_PFNGLVERTEXATTRIB3SARBPROC glVertexAttrib3sARB;
+  COIN_PFNGLVERTEXATTRIB3FARBPROC glVertexAttrib3fARB;
+  COIN_PFNGLVERTEXATTRIB3DARBPROC glVertexAttrib3dARB;
+  COIN_PFNGLVERTEXATTRIB4SARBPROC glVertexAttrib4sARB;
+  COIN_PFNGLVERTEXATTRIB4FARBPROC glVertexAttrib4fARB;
+  COIN_PFNGLVERTEXATTRIB4DARBPROC glVertexAttrib4dARB;
+  COIN_PFNGLVERTEXATTRIB4NUBARBPROC glVertexAttrib4NubARB;
+  COIN_PFNGLVERTEXATTRIB1SVARBPROC glVertexAttrib1svARB;
+  COIN_PFNGLVERTEXATTRIB1FVARBPROC glVertexAttrib1fvARB;
+  COIN_PFNGLVERTEXATTRIB1DVARBPROC glVertexAttrib1dvARB;
+  COIN_PFNGLVERTEXATTRIB2SVARBPROC glVertexAttrib2svARB;
+  COIN_PFNGLVERTEXATTRIB2FVARBPROC glVertexAttrib2fvARB;
+  COIN_PFNGLVERTEXATTRIB2DVARBPROC glVertexAttrib2dvARB;
+  COIN_PFNGLVERTEXATTRIB3SVARBPROC glVertexAttrib3svARB;
+  COIN_PFNGLVERTEXATTRIB3FVARBPROC glVertexAttrib3fvARB;
+  COIN_PFNGLVERTEXATTRIB3DVARBPROC glVertexAttrib3dvARB;
+  COIN_PFNGLVERTEXATTRIB4BVARBPROC glVertexAttrib4bvARB;
+  COIN_PFNGLVERTEXATTRIB4SVARBPROC glVertexAttrib4svARB;
+  COIN_PFNGLVERTEXATTRIB4IVARBPROC glVertexAttrib4ivARB;
+  COIN_PFNGLVERTEXATTRIB4UBVARBPROC glVertexAttrib4ubvARB;
+  COIN_PFNGLVERTEXATTRIB4USVARBPROC glVertexAttrib4usvARB;
+  COIN_PFNGLVERTEXATTRIB4UIVARBPROC glVertexAttrib4uivARB;
+  COIN_PFNGLVERTEXATTRIB4FVARBPROC glVertexAttrib4fvARB;
+  COIN_PFNGLVERTEXATTRIB4DVARBPROC glVertexAttrib4dvARB;
+  COIN_PFNGLVERTEXATTRIB4NBVARBPROC glVertexAttrib4NbvARB;
+  COIN_PFNGLVERTEXATTRIB4NSVARBPROC glVertexAttrib4NsvARB;
+  COIN_PFNGLVERTEXATTRIB4NIVARBPROC glVertexAttrib4NivARB;
+  COIN_PFNGLVERTEXATTRIB4NUBVARBPROC glVertexAttrib4NubvARB;
+  COIN_PFNGLVERTEXATTRIB4NUSVARBPROC glVertexAttrib4NusvARB;
+  COIN_PFNGLVERTEXATTRIB4NUIVARBPROC glVertexAttrib4NuivARB;
+  COIN_PFNGLVERTEXATTRIBPOINTERARBPROC glVertexAttribPointerARB;
+  COIN_PFNGLENABLEVERTEXATTRIBARRAYARBPROC glEnableVertexAttribArrayARB;
+  COIN_PFNGLDISABLEVERTEXATTRIBARRAYARBPROC glDisableVertexAttribArrayARB; 
+  COIN_PFNGLGETVERTEXATTRIBDVARBPROC glGetVertexAttribdvARB;
+  COIN_PFNGLGETVERTEXATTRIBFVARBPROC glGetVertexAttribfvARB;
+  COIN_PFNGLGETVERTEXATTRIBIVARBPROC glGetVertexAttribivARB;
+  COIN_PFNGLGETVERTEXATTRIBPOINTERVARBPROC glGetVertexAttribPointervARB;
+  
   const char * versionstr;
   const char * vendorstr;
   SbBool vendor_is_SGI;
@@ -549,6 +655,7 @@ struct cc_glglue {
   SbBool has_depth_texture;
   SbBool has_shadow;
   SbBool has_arb_fragment_program;
+  SbBool has_arb_vertex_program;
   SbBool has_texture_env_combine;
 
   int max_lights;
