@@ -121,6 +121,7 @@ public:
     : container(c), fieldtype(t),
       maptoconverter(13) // save about ~1kB vs default SbDict nr of buckets
     {
+      this->mutex = NULL;
       CC_MUTEX_CONSTRUCT(this->mutex);
     }
 
