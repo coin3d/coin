@@ -54,8 +54,6 @@ SoShapeKit::SoShapeKit(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoShapeKit);
 
-  SO_KIT_ADD_CATALOG_ENTRY(localTransform, SoTransform, TRUE, topSeparator, , TRUE);
-
   SO_KIT_ADD_CATALOG_ENTRY(materialBinding, SoMaterialBinding, TRUE, topSeparator, childList, TRUE);
   SO_KIT_ADD_CATALOG_ENTRY(normalBinding, SoNormalBinding, TRUE, topSeparator, childList, TRUE);
   SO_KIT_ADD_CATALOG_ENTRY(textureCoordinateBinding, SoTextureCoordinateBinding, TRUE, topSeparator, childList, TRUE);

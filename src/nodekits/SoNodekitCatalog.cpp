@@ -627,6 +627,11 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
   }
 #endif // debug
 
+#if 0 // debug
+  SoDebugError::postInfo("SoNodekitCatalog::addEntry",
+			 "new entry: ``%s''", name.getString());
+#endif // debug
+
   CatalogItem * newitem = new CatalogItem;
   newitem->name = name;
   newitem->type = type;
@@ -656,6 +661,11 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
 
   // First find parent.
   while (this->items[position]->name != newitem->parentname) position++;
+
+#if 0 // debug
+  SoDebugError::postInfo("SoNodekitCatalog::addEntry",
+			 "parent position: %d", position);
+#endif // debug
 
   // See if we're only child so far..
   position++;
@@ -690,6 +700,11 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
   CatalogItem * prev = this->items[position-1];
   if (prev->parentname == newitem->parentname)
     prev->siblingname = newitem->name;
+
+#if 0 // debug
+  SoDebugError::postInfo("SoNodekitCatalog::addEntry",
+			 "item position: %d", position);
+#endif // debug
 
   if (position == this->items.getLength()) this->items.append(newitem);
   else this->items.insert(newitem, position);
