@@ -116,6 +116,14 @@ protected:
                       const float s,
                       const float t,
                       const SbVec3f & normal);
+  void generateVertex(SoPrimitiveVertex * const pv,
+                      const SbVec3f & point,
+                      const SbBool useTexFunc,
+                      const SoTextureCoordinateElement * const tce,
+                      const float s,
+                      const float t,
+                      const float r,
+                      const SbVec3f & normal);
 
 private:
   void rayPickBoundingBox(SoRayPickAction * action);

@@ -152,6 +152,7 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
   SoGLNormalizeElement::forceSend(state, TRUE);
 
   float size = SoFontSizeElement::get(state);
+  SbBool do3DTextures = SoGLTexture3EnabledElement::get(state);
   SbBool doTextures = SoGLTextureEnabledElement::get(state);
 
   int i, n = this->string.getNum();
@@ -190,15 +191,24 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
         v0 = coords[*ptr++];
         v1 = coords[*ptr++];
         v2 = coords[*ptr++];
-        if (doTextures) {
+        if (do3DTextures) {
+          glTexCoord3f(v0[0], v0[1], v0[2]);
+        }
+        else if (doTextures) {
           glTexCoord2f(v0[0], v0[1]);
         }
         glVertex3f(v0[0] * size + xpos, v0[1] * size + ypos, 0.0f);
-        if (doTextures) {
+        if (do3DTextures) {
+          glTexCoord3f(v1[0], v1[1], v1[2]);
+        }
+        else if (doTextures) {
           glTexCoord2f(v1[0], v1[1]);
         }
         glVertex3f(v1[0] * size + xpos, v1[1] * size + ypos, 0.0f);
-        if (doTextures) {
+        if (do3DTextures) {
+          glTexCoord3f(v2[0], v2[1], v2[2]);
+        }
+        else if (doTextures) {
           glTexCoord2f(v2[0], v2[1]);
         }
         glVertex3f(v2[0] * size + xpos, v2[1] * size + ypos, 0.0f);
@@ -340,13 +350,13 @@ SoAsciiText::generatePrimitives(SoAction * action)
         v0 = coords[*ptr++];
         v1 = coords[*ptr++];
         v2 = coords[*ptr++];
-        vertex.setTextureCoords(SbVec2f(v0[0], v0[1]));
+        vertex.setTextureCoords(SbVec3f(v0[0], v0[1], v0[2]));
         vertex.setPoint(SbVec3f(v0[0] * size + xpos, v0[1] * size + ypos, 0.0f));
         this->shapeVertex(&vertex);
-        vertex.setTextureCoords(SbVec2f(v1[0], v1[1]));
+        vertex.setTextureCoords(SbVec2f(v1[0], v1[1], v1[2]));
         vertex.setPoint(SbVec3f(v1[0] * size + xpos, v1[1] * size + ypos, 0.0f));
         this->shapeVertex(&vertex);
-        vertex.setTextureCoords(SbVec2f(v2[0], v2[1]));
+        vertex.setTextureCoords(SbVec2f(v2[0], v2[1], v2[2]));
         vertex.setPoint(SbVec3f(v2[0] * size + xpos, v2[1] * size + ypos, 0.0f));
         this->shapeVertex(&vertex);
       }

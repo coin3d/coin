@@ -55,6 +55,7 @@
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoCullElement.h>
 
@@ -336,7 +337,8 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   // update manually
   const SoGLTextureImageElement * ti = (SoGLTextureImageElement *)
     state->getConstElement(SoGLTextureImageElement::getClassStackIndex());
-  ti->evaluate(SoGLTextureEnabledElement::get(state),
+  ti->evaluate(SoGLTextureEnabledElement::get(state) ||
+               SoGLTexture3EnabledElement::get(state),
                transparent && !SoShapeStyleElement::isScreenDoor(state));
 
   if (SoComplexityTypeElement::get(state) ==
@@ -803,7 +805,7 @@ SoShape::endShape(void)
 
 /*!
   Convenience function which sets up an SoPrimitiveVertex, and sends
-  it using the SoShape::shapeVertex() function.
+  it using the SoShape::shapeVertex() function. 2D version
 */
 void
 SoShape::generateVertex(SoPrimitiveVertex * const pv,
@@ -814,11 +816,30 @@ SoShape::generateVertex(SoPrimitiveVertex * const pv,
                         const float t,
                         const SbVec3f & normal)
 {
+  this->generateVertex(pv, point, usetexfunc, tce, s, t, 0.0f, normal);
+}
+
+/*!
+  Convenience function which sets up an SoPrimitiveVertex, and sends
+  it using the SoShape::shapeVertex() function. 3D version.
+
+  \since 2001-12-04
+*/
+void
+SoShape::generateVertex(SoPrimitiveVertex * const pv,
+                        const SbVec3f & point,
+                        const SbBool usetexfunc,
+                        const SoTextureCoordinateElement * const tce,
+                        const float s,
+                        const float t,
+                        const float r,
+                        const SbVec3f & normal)
+{
   SbVec4f texCoord;
   if (usetexfunc)
     texCoord = tce->get(point, normal);
   else
-    texCoord.setValue(s, t, 0.0f, 1.0f);
+    texCoord.setValue(s, t, r, 1.0f);
   pv->setPoint(point);
   pv->setNormal(normal);
   pv->setTextureCoords(texCoord);
