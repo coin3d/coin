@@ -68,13 +68,7 @@
   subclasses of this class), or look at the example code applications
   of the Coin library to see how actions are generally used.
 
-
-  For extending the Coin library with your own action classes, we
-  strongly recommend that you make yourself acquainted with the
-  excellent «The Inventor Toolmaker» book (ISBN 0-201-62493-1), which
-  describes the tasks involved in detail.  Reading the sourcecode of
-  the built-in action classes in Coin should also provide very
-  helpful.
+  \TOOLMAKER_REF
 
   The following example shows the basic outline on how to set up your
   own extension action class:

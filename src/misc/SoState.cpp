@@ -32,7 +32,9 @@
 
   For more information on the inner workings of traversal states in
   Coin, we recommend the book «The Inventor Toolmaker» (ISBN
-  0-201-62493-1).
+  0-201-62493-1), also available at SGI's <a
+  href="http://techpubs.sgi.com/library">online library</a>. Search
+  for "Toolmaker".
 */
 // FIXME: should link to example(s) sourcecode extending the library
 // by setting up new elements and/or actions. 20010716 mortene.

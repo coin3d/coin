@@ -37,13 +37,7 @@
   </ul>
 
 
-  If you as an application programmer is planning to write extensions
-  in the form of e.g. new nodekit classes or new dragger classes, we
-  recommend buying the book «The Inventor Toolmaker», ISBN
-  0-201-62493-1. This book was written by the original SGI Inventor
-  designers and explains many of the underlying design ideas, aswell
-  as having lots of hands-on examples on how to extend the Coin
-  toolkit in ways that are true to the fundamental design ideas.
+  \TOOLMAKER_REF
 */
 
 #include <Inventor/nodekits/SoBaseKit.h>

@@ -52,13 +52,7 @@
   book actually uses the Inventor API traversal mechanism as the case
   study for explaining the Visitor pattern.
 
-
-  For extending the Coin library with your own action, node and
-  element classes, we strongly recommend that you make yourself
-  acquainted with the excellent «The Inventor Toolmaker» book (ISBN
-  0-201-62493-1), which describes the tasks involved in detail.
-  Reading the sourcecode of the built-in classes in Coin should also
-  provide very helpful.
+  \TOOLMAKER_REF
 
   The following is a complete example on how to extend Coin with your
   own traversal elements. First, the class declaration of the new

@@ -154,10 +154,7 @@
   your new class render OpenGL geometry different from it's
   superclass.
 
-  For a complete reference on how to extend the Coin library, we
-  strongly recommend that you get hold of the «The Inventor Toolmaker»
-  book (ISBN 0-201-62493-1), which explains all the details about how
-  to make extensions classes for any part of Coin.
+  \TOOLMAKER_REF
 */
 
 #include <Inventor/SoOutput.h>
