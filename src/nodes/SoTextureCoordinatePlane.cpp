@@ -153,8 +153,8 @@ SoTextureCoordinatePlane::generate(void * userdata,
   SoTextureCoordinatePlane *thisp =
     (SoTextureCoordinatePlane*) userdata;
 
-  thisp->gencache.ret.setValue(thisp->gencache.s.dot(p) * thisp->gencache.mul_s,
-                               thisp->gencache.t.dot(p) * thisp->gencache.mul_t,
+  thisp->gencache.ret.setValue(thisp->gencache.s.dot(p),
+                               thisp->gencache.t.dot(p),
                                0.0f, 1.0f);
   return thisp->gencache.ret;
 }
@@ -247,11 +247,7 @@ SoTextureCoordinatePlane::setupGencache(void)
 {
   this->gencache.s = this->directionS.getValue();
   this->gencache.t = this->directionT.getValue();
-  float lens = this->gencache.s.length();
-  float lent = this->gencache.t.length();
-  this->gencache.mul_s = 1.0f / lens;
-  this->gencache.mul_t = 1.0f / lent;
-  this->gencache.s /= lens;
-  this->gencache.t /= lent;
+  // FIXME: the other variables in gencache are actually not needed.
+  // Remove before Coin 3.0. pederb, 2004-04-14
 }
 
