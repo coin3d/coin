@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodekits/SoSceneKit.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodekits/SoCameraKit.h>
 #include <Inventor/nodekits/SoLightKit.h>
 #include <Inventor/nodekits/SoShapeKit.h>

@@ -29,6 +29,7 @@
 */
 
 #include <Inventor/nodekits/SoInteractionKit.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoSearchAction.h>

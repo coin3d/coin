@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodekits/SoShapeKit.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodekits/SoAppearanceKit.h>
 #include <Inventor/nodekits/SoNodeKitListPart.h>
 #include <Inventor/nodes/SoPickStyle.h>

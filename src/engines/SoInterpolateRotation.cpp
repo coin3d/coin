@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/engines/SoInterpolateRotation.h>
+#include <Inventor/engines/SoSubEngineP.h>
 #include <Inventor/SbVec3f.h>
 
 SO_INTERPOLATE_SOURCE(SoInterpolateRotation, SoMFRotation, SbRotation,

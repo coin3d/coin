@@ -33,6 +33,7 @@
 */
 
 #include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodekits/SoNodeKitListPart.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoCallback.h>

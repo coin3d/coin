@@ -27,6 +27,7 @@
 
 
 #include <Inventor/nodekits/SoAppearanceKit.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoEnvironment.h>
 #include <Inventor/nodes/SoDrawStyle.h>

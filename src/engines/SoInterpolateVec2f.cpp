@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/engines/SoInterpolateVec2f.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 SO_INTERPOLATE_SOURCE(SoInterpolateVec2f, SoMFVec2f, SbVec2f, (0.0f,0.0f),
                       (0.0f,0.0f), (v1-v0)*a+v0);

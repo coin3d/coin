@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodekits/SoLightKit.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoTransformSeparator.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoDirectionalLight.h>

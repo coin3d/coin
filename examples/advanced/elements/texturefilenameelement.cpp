@@ -46,12 +46,6 @@ TextureFilenameElement::init(SoState * /* state */)
   this->filename.makeEmpty();
 }
 
-TextureFilenameElement::TextureFilenameElement(void)
-{
-  this->setTypeId(TextureFilenameElement::classTypeId);
-  this->setStackIndex(TextureFilenameElement::classStackIndex);
-}
-
 TextureFilenameElement::~TextureFilenameElement()
 {
 }

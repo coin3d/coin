@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/engines/SoInterpolateFloat.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 SO_INTERPOLATE_SOURCE(SoInterpolateFloat, SoMFFloat, float, (0.0f), (1.0f),
                       (v1-v0)*a+v0);
