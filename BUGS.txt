@@ -63,6 +63,12 @@
     perhaps this kind of malformed input should be trapped earlier and
     reported as a read-error. 20021104 rolvs
 
+    UPDATE 20021104 mortene: it should *absolutely* be caught and
+    trigger a read-error and bail out. As is said right at the
+    beginning of this bug-report, Coin should *never* fail by crashing
+    for malformed input files -- that would cause major headaches for
+    those who want to have a robust client application.
+
 =====================================================================
 
 003 There are seams in texturemaps on SGI Octane with "IMPACTSR"
