@@ -305,6 +305,11 @@ SoError::appendToDebugString(const char * const str)
 void
 SoError::handleError(void)
 {
+  // If this assert() statement were present earlier, it could have
+  // saved me half the day of debugging today.. 20021015 mortene.
+  assert((SoError::classTypeId != SoType::badType()) &&
+         "SoError attempted used before class was initialized");
+
   cc_error_handle(&this->err);
 }
 
