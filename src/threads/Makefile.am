@@ -25,7 +25,14 @@ PublicHeaders = \
 	../../include/Inventor/threads/SbBarrier.h \
 	../../include/Inventor/threads/SbThreadAutoLock.h
 PrivateHeaders = \
-	wrappers.cpp # for checking validity of inline C++ wrapper headers
+	condvar_pthread.ic \
+	condvar_win32.ic \
+	mutex_pthread.ic \
+	mutex_win32cs.ic \
+	mutex_win32mutex.ic \
+	thread_pthread.ic \
+	thread_win32.ic \
+	wrappers.cpp
 
 if BUILD_WITH_MSVC
 # win32 isn't able to link wrappers without including all dependencies
