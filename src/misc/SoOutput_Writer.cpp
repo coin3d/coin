@@ -248,7 +248,7 @@ SoOutput_BZ2FileWriter::~SoOutput_BZ2FileWriter()
     int bzerror = BZ_OK;
     BZ2_bzWriteClose(&bzerror, this->bzfp, 0, NULL, NULL);
     if (bzerror != BZ_OK) {
-      SoDebugError::postWarning("SoOutput_BZ2FileWriter::write", 
+      SoDebugError::postWarning("SoOutput_BZ2FileWriter::~SoOutput_BZ2FileWriter", 
                                 "Error when closing bzip2 file.");    
       
     }
