@@ -1655,35 +1655,44 @@ SoField::copyConnection(const SoField * fromfield)
   for (i = 0; i < fromfield->storage->masterfields.getLength(); i++) {
     SoField * master = fromfield->storage->masterfields[i];
     SoFieldContainer * masterfc = master->getContainer();
+    SbName fieldname;
+    (void) masterfc->getFieldName(master, fieldname);
     int ptroffset = (char *)master - (char *)masterfc;
     SoFieldContainer * copyfc = masterfc->copyThroughConnection(); 
-    SoField * copyfield = (SoField*) ((char *)copyfc + ptroffset);
+    SoField * copyfield = copyfc->getField(fieldname);
     
-    SbBool notify = TRUE;
+    SbBool notnotify = FALSE;
     switch (master->getFieldType()) {
     case EVENTIN_FIELD:
     case EVENTOUT_FIELD:
-      notify = FALSE;
+      notnotify = TRUE;
       break;
     default:
       break;
     }
-    (void) this->connectFrom(copyfield, notify, TRUE);
+    (void) this->connectFrom(copyfield, notnotify, TRUE);
   }
   for (i = 0; i < fromfield->storage->masterengineouts.getLength(); i++) {
     SoEngineOutput * master = fromfield->storage->masterengineouts[i];
-    SoFieldContainer * masterfc;
+    SoEngineOutput * copyeo = NULL;
+    
     if (master->isNodeEngineOutput()) {
-      masterfc = master->getNodeContainer();
+      SbName name;
+      SoNodeEngine * masterengine = master->getNodeContainer();
+      (void) masterengine->getOutputName(master, name);
+      SoNodeEngine * copyengine = (SoNodeEngine*) 
+        masterengine->copyThroughConnection(); 
+      copyeo = copyengine->getOutput(name); 
     }
     else {
-      masterfc = master->getContainer();
+      SbName name;
+      SoEngine * masterengine = master->getContainer();
+      (void) masterengine->getOutputName(master, name);
+      SoEngine * copyengine = (SoEngine*) 
+        masterengine->copyThroughConnection(); 
+      copyeo = copyengine->getOutput(name);
     }
-    assert(masterfc != NULL);
-    int ptroffset = (char *)master - (char *)masterfc;
-    SoFieldContainer * copyfc = masterfc->copyThroughConnection(); 
-    SoEngineOutput * copyeo = (SoEngineOutput*) ((char *)copyfc + ptroffset);
-
+    assert(copyeo);
     (void) this->connectFrom(copyeo, FALSE, TRUE);
   }
 }
