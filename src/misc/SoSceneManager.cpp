@@ -190,7 +190,7 @@ SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
   // trigger and SoSceneManager::render() actually being called. It
   // will also help us avoid "double redraws" at expose events.
   if (THIS->rootsensor && THIS->rootsensor->isScheduled()) {
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoSceneManager::render",
                            "rootsensor unschedule");
 #endif // debug
@@ -240,7 +240,7 @@ SoSceneManager::scheduleRedraw(void)
       THIS->redrawshot->setPriority(this->getRedrawPriority());
     }
 
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoSceneManager::scheduleRedraw",
                            "scheduling redrawshot (oneshotsensor) %p",
                            THIS->redrawshot);
@@ -399,6 +399,11 @@ SoSceneManager::getSize(void) const
 void
 SoSceneManager::setOrigin(const SbVec2s & newOrigin)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoSceneManager::setOrigin",
+                         "(%d, %d)", newOrigin[0], newOrigin[1]);
+#endif // debug
+
   SbViewportRegion region = THIS->glaction->getViewportRegion();
   SbVec2s size = region.getViewportSizePixels();
   region.setViewportPixels(newOrigin, size);
@@ -432,6 +437,19 @@ SoSceneManager::getOrigin(void) const
 void
 SoSceneManager::setViewportRegion(const SbViewportRegion & newregion)
 {
+#if COIN_DEBUG && 0 // debug
+  const SbVec2s & ws = newregion.getWindowSize();
+  const SbVec2s & vpop = newregion.getViewportOriginPixels();
+  const SbVec2s & vpsp = newregion.getViewportSizePixels();
+  SoDebugError::postInfo("SoSceneManager::setViewportRegion",
+                         "windowsize=(%d, %d) "
+                         "viewportorigin=(%d, %d) "
+                         "viewportsize=(%d, %d) ",
+                         ws[0], ws[1],
+                         vpop[0], vpop[1],
+                         vpsp[0], vpsp[1]);
+#endif // debug
+
   THIS->glaction->setViewportRegion(newregion);
   THIS->handleeventaction->setViewportRegion(newregion);
 }
@@ -719,7 +737,7 @@ SoSceneManagerP::redrawshotTriggeredCB(void * data, SoSensor * /* sensor */)
 void
 SoSceneManagerP::nodesensorCB(void * data, SoSensor * /* sensor */)
 {
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoSceneManager::nodesensorCB",
                          "detected change in scene graph");
 #endif // debug
@@ -731,6 +749,14 @@ SoSceneManagerP::prerendercb(void * userdata, SoGLRenderAction * action)
 {
   // remove callback again
   action->removePreRenderCallback(prerendercb, userdata);
+
+#if COIN_DEBUG && 0 // debug
+  GLint view[4];
+  glGetIntegerv(GL_VIEWPORT, view);
+  SoDebugError::postInfo("SoSceneManagerP::prerendercb",
+                         "GL_VIEWPORT=<%d, %d, %d, %d>",
+                         view[0], view[1], view[2], view[3]);
+#endif // debug
 
   // clear the viewport
   glClear(((SoSceneManagerP*)userdata)->clearmask);

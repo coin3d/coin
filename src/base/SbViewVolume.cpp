@@ -27,11 +27,22 @@
   \ingroup base
 
   This class contains the necessary information for storing a view
-  volume.  It has methods for projection of primitives from or into
-  the 3D volume, doing camera transforms, view volume transforms etc.
+  volume.  It has methods for projection of primitives into the 3D
+  volume from 2D points in the projection plane or vice versa, doing
+  camera transforms, view volume transforms, etc.
 
-  \sa SbViewportRegion.
+  \sa SbViewportRegion
 */
+
+// FIXME: I have a nagging feeling that it is bad design to use the
+// *same* class entity for embedding the abstractions and the
+// functionality of both perspective and orthographic view volumes.
+//
+// Should investigate, then possibly fixing this design flaw by
+// splitting up into two different classes (inheriting a common
+// abstract viewvolume-class?), while keeping this class around as a
+// wrapper class for the new abstractions to be API compatible with
+// client code using the original API. 20010824 mortene.
 
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/SbRotation.h>
@@ -86,7 +97,7 @@
   \internal
 */
 
-/*!  
+/*!
   \var float SbViewVolume::nearDist
   \internal
 */
@@ -106,7 +117,7 @@
   \internal
 */
 
-/*! 
+/*!
   \var SbVec3f SbViewVolume::ulf
   \internal
 */
@@ -324,9 +335,9 @@ SbViewVolume::getAlignRotation(SbBool rightangleonly) const
 }
 
 /*!
-  Given a sphere with center in \a worldCenter and an initial radius of \a 1.0,
-  return the scale factor needed to make this sphere have a \a normRadius
-  radius when projected onto the near clipping plane.
+  Given a sphere with center in \a worldCenter and an initial radius
+  of 1.0, return the scale factor needed to make this sphere have a \a
+  normRadius radius when projected onto the near clipping plane.
  */
 float
 SbViewVolume::getWorldToScreenScale(const SbVec3f& worldCenter,
@@ -374,7 +385,6 @@ SbViewVolume::narrow(float left, float bottom,
 }
 
 /*!
-
   Returns a narrowed version of the view volume which is within the
   given [0, 1] normalized coordinates. The box x and y coordinates are
   taken to be corner points of a normalized "view window" on the near
@@ -393,13 +403,17 @@ SbViewVolume::narrow(const SbBox3f & box) const
   return ret;
 }
 
-// FIXME: bitmap-illustration for function doc which shows how the
-// frustum is set up wrt the input arguments. 20010919 mortene.
+// FIXME: make an illustration for the following documentation of an
+// orthographic view volume, annotated with the input arguments to the
+// function. 20010824 mortene.
 /*!
   Set up the view volume as a rectangular box for orthographic
-  parallel projections. The line of sight will be along the negative
-  z axis, through the center of the plane defined by the point
-  <(right+left)/2, (top+bottom)/2, 0>.
+  parallel projections.
+
+  The line of sight will be along the negative z axis, through the
+  center of the plane defined by the point
+
+      [(right+left)/2, (top+bottom)/2, 0]
 
   \sa perspective().
 */
@@ -412,8 +426,9 @@ SbViewVolume::ortho(float left, float right,
   this->dpvv.copyValues(*this);
 }
 
-// FIXME: bitmap-illustration for function doc which shows how the
-// frustum is set up wrt the input arguments. 20010919 mortene.
+// FIXME: make an illustration for the following documentation of a
+// perspective view volume, annotated with the input arguments to the
+// function. 20010824 mortene.
 /*!
   Set up the view volume for perspective projections. The line of
   sight will be through origo along the negative z axis.
@@ -434,7 +449,7 @@ SbViewVolume::perspective(float fovy, float aspect,
   \sa translateCamera().
  */
 void
-SbViewVolume::rotateCamera(const SbRotation& q)
+SbViewVolume::rotateCamera(const SbRotation & q)
 {
   const float * quat = q.getValue();
   double dpquat[4];
@@ -454,7 +469,7 @@ SbViewVolume::rotateCamera(const SbRotation& q)
   \sa rotateCamera().
  */
 void
-SbViewVolume::translateCamera(const SbVec3f& v)
+SbViewVolume::translateCamera(const SbVec3f & v)
 {
   SbVec3d dpv(v[0], v[1], v[2]);
   this->dpvv.translateCamera(dpv);
@@ -475,12 +490,12 @@ SbViewVolume::zVector(void) const
 }
 
 /*!
-  Return a copy SbViewVolume with narrowed depth by supplying parameters
-  for new near and far clipping planes.
+  Return a copy SbViewVolume with narrowed depth by supplying
+  parameters for new near and far clipping planes.
 
   \a nearval and \farval should be relative to the current clipping
-  planes. A value of 1.0 is at the current near plane. A value of
-  0.0 is at the current far plane.
+  planes. A value of 1.0 is at the current near plane. A value of 0.0
+  is at the current far plane.
 
   \sa zVector().
 */
@@ -495,8 +510,8 @@ SbViewVolume::zNarrow(float nearval, float farval) const
 }
 
 /*!
-  Scale width and height of viewing frustum by the given ratio around the
-  projection plane center axis.
+  Scale width and height of viewing frustum by the given ratio around
+  the projection plane center axis.
 
   \sa scaleWidth(), scaleHeight().
  */
@@ -669,8 +684,8 @@ SbViewVolume::transform(const SbMatrix & matrix)
 }
 
 /*!
-  Returns the view up vector for this view volume. It's a vector
-  which is perpendicular to the projection direction, and parallel and
+  Returns the view up vector for this view volume. It's a vector which
+  is perpendicular to the projection direction, and parallel and
   oriented in the same direction as the vector from the lower left
   corner to the upper left corner of the near plane.
 */

@@ -87,27 +87,27 @@ SbBox3f::~SbBox3f(void)
 }
 
 /*!
-  Returns the minimum point. This should usually be the lower left corner
-  point of the box.
+  Returns the minimum point. This should usually be the lower left
+  corner point of the box.
 
   \sa getOrigin(), getMax().
 */
-const SbVec3f&
+const SbVec3f &
 SbBox3f::getMin(void) const
 {
-  return min;
+  return this->min;
 }
 
 /*!
-  Returns the maximum point. This should usually be the upper right corner
-  point of the box.
+  Returns the maximum point. This should usually be the upper right
+  corner point of the box.
 
   \sa getMin().
 */
-const SbVec3f&
+const SbVec3f &
 SbBox3f::getMax(void) const
 {
-  return max;
+  return this->max;
 }
 
 /*!
@@ -116,7 +116,7 @@ SbBox3f::getMax(void) const
 SbVec3f &
 SbBox3f::getMin(void)
 {
-  return min;
+  return this->min;
 }
 
 /*!
@@ -125,7 +125,7 @@ SbBox3f::getMin(void)
 SbVec3f &
 SbBox3f::getMax(void)
 {
-  return max;
+  return this->max;
 }
 
 /*!
@@ -362,11 +362,12 @@ SbBox3f::hasVolume(void) const
 float
 SbBox3f::getVolume(void) const
 {
-  if (this->hasVolume())
-    return ((this->max[0]-this->min[0]) *
-            (this->max[1]-this->min[1]) *
-            (this->max[2]-this->min[2]));
-  else return 0.0f;
+  if (!this->hasVolume()) { return 0.0f; }
+
+  return
+    (this->max[0] - this->min[0]) *
+    (this->max[1] - this->min[1]) *
+    (this->max[2] - this->min[2]);
 }
 
 /*!
@@ -483,18 +484,18 @@ operator !=(const SbBox3f & b1, const SbBox3f & b2)
 /*!
   Check if the box is outside the view volume defined by the \a mvp
   matrix. Sets \a cullbits according to which planes we're inside or
-  outside. Bit 0 (0x1) is cleared when box is completely inside
-  left and right clipping planes. Bit 1 (0x2) is cleared when
-  box is inside top and bottom clipping planes. Bit 2 (0x4) is
-  cleared when box is inside near and far clipping planes.
+  outside. Bit 0 (0x1) is cleared when box is completely inside left
+  and right clipping planes. Bit 1 (0x2) is cleared when box is inside
+  top and bottom clipping planes. Bit 2 (0x4) is cleared when box is
+  inside near and far clipping planes.
 
-  Returns TRUE if box is completely outside one of the clipping
-  planes. FALSE otherwise.
+  Returns \c TRUE if box is completely outside one of the clipping
+  planes. \c FALSE otherwise.
 */
 SbBool
 SbBox3f::outside(const SbMatrix & mvp, int & cullbits) const
 {
-  // FIXME: this functions is untested (code written by
+  // FIXME: this function is untested (code written by
   // pederb). 20000615 mortene.
 
   int i;
@@ -542,7 +543,6 @@ SbBox3f::getClosestPoint(const SbVec3f & point) const
   float halfdepth = (this->max[2] - this->min[2]) / 2.0f;
 
   // Move point to be on the nearest plane of the box.
-//    printf("%f %f %f\n", devx, devy, devz);
   if ((fabs(devx) > fabs(devy)) && (fabs(devx) > fabs(devz)))
     closest[0] = center[0] + halfwidth * ((devx < 0.0f) ? -1.0f : 1.0f);
   else if (fabs(devy) > fabs(devz))

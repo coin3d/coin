@@ -33,6 +33,11 @@
 
   \sa SoTranslate2Dragger, SoDragPointDragger
 */
+// FIXME: in class-doc, explain that one should always connect to the
+// x-coordinate of this dragger. Also show by a code snippet how to 0)
+// use a SoDecomposeVec3fEngine for extracting the x-coordinate, and
+// 1) set up a vertical or "depth" version of the dragger by using a
+// rotation transform. 20011021 mortene.
 
 #include <Inventor/draggers/SoTranslate1Dragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>

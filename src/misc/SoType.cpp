@@ -422,8 +422,8 @@ SoType::badType(void)
 */
 
 /*!
-  This method returns TRUE if the given type is derived from (or \e is) the
-  \a parent type, and FALSE otherwise.
+  This method returns \c TRUE if the given type is derived from (or \e
+  is) the \a parent type, and \c FALSE otherwise.
 */
 
 SbBool
@@ -442,7 +442,7 @@ SoType::isDerivedFrom(const SoType parent) const
 
   SoType type = *this;
   do {
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoType::isDerivedFrom",
                            "this: '%s' parent: '%s'",
                            type.getName().getString(),

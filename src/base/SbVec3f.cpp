@@ -390,8 +390,8 @@ SbVec3f::setValue(const SbVec3f & barycentric,
 }
 
 /*!
-  Sets this vector to the double precision vector \a v, converting
-  the vector to a single precision vector.
+  Sets this vector to the double precision vector \a v, converting the
+  vector to a single precision vector.
 
   \since 2002-04-25
 */
@@ -418,7 +418,8 @@ SbVec3f::setValue(const SbVec3d & v)
 }
 
 /*!
-  Multiply components of vector with value \a d. Returns reference to self.
+  Multiply components of vector with scalar value \a d. Returns
+  reference to self.
 */
 SbVec3f &
 SbVec3f::operator *=(const float d)
@@ -430,7 +431,8 @@ SbVec3f::operator *=(const float d)
 }
 
 /*!
-  Divides components of vector with value \a d. Returns reference to self.
+  Divides components of vector with scalar value \a d. Returns
+  reference to self.
 */
 SbVec3f &
 SbVec3f::operator /=(const float d)
@@ -565,8 +567,8 @@ int
 operator ==(const SbVec3f & v1, const SbVec3f & v2)
 {
   if (v1.vec[0] == v2.vec[0] &&
-     v1.vec[1] == v2.vec[1] &&
-     v1.vec[2] == v2.vec[2]) return TRUE;
+      v1.vec[1] == v2.vec[1] &&
+      v1.vec[2] == v2.vec[2]) return TRUE;
   return FALSE;
 }
 

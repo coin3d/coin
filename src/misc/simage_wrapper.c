@@ -210,8 +210,12 @@ simage_wrapper(void)
 
         /* MSWindows DLL names for the simage library */
         /* FIXME: a bit of a hack this, but it looks difficult to find
-           a better strategy. 20010626 mortene. */
+           a better strategy. Perhaps it'd be a good idea to use an
+           application programmer controlled environment variable?
+           20010626 mortene. */
         "simage1", "simage2", "simage3", "simage4", "simage5", "simage6",
+        /* FIXME: not checking for simageXd.dll names (ie debug
+           versions of the library). 20010926 mortene. */
         NULL
       };
 
