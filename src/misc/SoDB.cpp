@@ -652,14 +652,19 @@ SoDB::init(void)
   // FIXME: there are nodes in TGS' later Inventor versions that we do
   // not support, so it's not really correct to register 2.4 and 2.5
   // headers.  20010925 mortene.
-  SoDB::registerHeader(SbString("#Inventor V2.4 ascii   "), FALSE, 2.0f,
+  SoDB::registerHeader(SbString("#Inventor V2.4 ascii   "), FALSE, 2.4f,
                        NULL, NULL, NULL);
-  SoDB::registerHeader(SbString("#Inventor V2.4 binary  "), TRUE, 2.0f,
+  SoDB::registerHeader(SbString("#Inventor V2.4 binary  "), TRUE, 2.4f,
                        NULL, NULL, NULL);
-  SoDB::registerHeader(SbString("#Inventor V2.5 ascii   "), FALSE, 2.0f,
+  SoDB::registerHeader(SbString("#Inventor V2.5 ascii   "), FALSE, 2.5f,
                        NULL, NULL, NULL);
-  SoDB::registerHeader(SbString("#Inventor V2.5 binary  "), TRUE, 2.0f,
+  SoDB::registerHeader(SbString("#Inventor V2.5 binary  "), TRUE, 2.5f,
                        NULL, NULL, NULL);
+  // FIXME: TGS has released many more versions than this. There are
+  // at least 2.6, 3.0, 3.1 and 4.0, as of now. What should we do with
+  // those? Simply add them in the same manner? Should investigate
+  // with someone holding a TGS license how the header look for output
+  // written with these versions. 20040909 mortene.
 
   SoDB::registerHeader(SbString("#Inventor V2.0 ascii   "), FALSE, 2.0f,
                        NULL, NULL, NULL);
@@ -670,11 +675,18 @@ SoDB::init(void)
   // files.  Should spit out a warning, and a helpful message on how
   // it is possible to convert old files, and then exit import.
   // 20010925 mortene.
+  //
+  // UPDATE 20040909 mortene: pederb has implemented the "upgraders"
+  // mechanism, and at least a few upgrader nodes for V1.0
+  // stuff. Should investigate the exact status of this.
   SoDB::registerHeader(SbString("#Inventor V1.0 ascii   "), FALSE, 1.0f,
                        NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V1.0 binary  "), TRUE, 1.0f,
                        NULL, NULL, NULL);
 
+  // The VRML 1 standard was made from SGI's Inventor V2.1 (and should
+  // be a pure sub-set), so that's what we pretend the format version
+  // is, internally.
   SoDB::registerHeader(SbString("#VRML V1.0 ascii   "), FALSE, 2.1f,
                        NULL, NULL, NULL);
 
