@@ -126,12 +126,12 @@ SoVertexProperty::SoVertexProperty()
   SO_NODE_ADD_FIELD(normal, (0));
   SO_NODE_ADD_FIELD(texCoord, (0));
   SO_NODE_ADD_FIELD(orderedRGBA, (0));
-  // FIXME: is this the correct way of making empty multifields?
-  // 19990301 mortene.
-  vertex.setNum(0);
-  texCoord.setNum(0);
-  normal.setNum(0);
-  orderedRGBA.setNum(0);
+
+  // Make multivalue fields empty.
+  this->vertex.setNum(0);
+  this->texCoord.setNum(0);
+  this->normal.setNum(0);
+  this->orderedRGBA.setNum(0);
 
   SO_NODE_ADD_FIELD(normalBinding, (SoVertexProperty::PER_VERTEX_INDEXED));
   SO_NODE_ADD_FIELD(materialBinding, (SoVertexProperty::OVERALL));

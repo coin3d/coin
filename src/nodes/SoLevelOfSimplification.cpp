@@ -53,12 +53,11 @@ SoLevelOfSimplification::SoLevelOfSimplification()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoLevelOfSimplification);
 
-  SO_NODE_ADD_FIELD(percentages, (0.0f));
-  // FIXME: is this the correct way of making an empty multifield?
-  // 19990301 mortene.
-  percentages.setNum(0);
-
   SO_NODE_ADD_FIELD(numTriangles, (-1));
+  SO_NODE_ADD_FIELD(percentages, (0.0f));
+
+  // Make multivalue field empty.
+  this->percentages.setNum(0);
 }
 
 /*!

@@ -110,7 +110,6 @@ SoShuttle::initClass(void)
 void
 SoShuttle::write(SoWriteAction * action)
 {
-
   // Decouple connections to/from internal engine to avoid it being
   // written.
   this->timer->on.disconnect(&this->on);
