@@ -183,7 +183,7 @@ libvrml97@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libvrml97incdir = $(includedir)/Inventor/vrml97
+libvrml97incdir = $(includedir)/Inventor/VRMLnodes
 libvrml97inc_HEADERS = $(PublicHeaders)
 
 vrml97_lst_SOURCES = $(BuildSources)

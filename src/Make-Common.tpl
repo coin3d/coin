@@ -33,7 +33,11 @@ lib-xxx-@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_lib-xxx-@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+//$ IF "-xxx-" eq "vrml97"
+lib-xxx-incdir = $(includedir)/Inventor/VRMLnodes
+//$ ELSE
 lib-xxx-incdir = $(includedir)/Inventor/-xxx-
+//$ ENDIF
 lib-xxx-inc_HEADERS = $(PublicHeaders)
 
 -xxx-_lst_SOURCES = $(BuildSources)
