@@ -404,6 +404,12 @@ SoInput::SoInput(SoInput * dictIn)
 void
 SoInput::constructorsCommon(void)
 {
+  // If an SoInput instance is made before SoDB::init() was called,
+  // we'll get a crash further down into the call stack from this
+  // function, so let's try to catch this potential confusing problem
+  // early on:
+  assert(SoDB::isInitialized() && "SoDB::init() has not been called!");
+
   PRIVATE(this) = new SoInputP(this);
 
   /* It is not possible to "pass" C library data from the application
