@@ -23,6 +23,9 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/lists/SoTypeList.h>
+#include <Inventor/fields/SoSFNode.h>
+#include <Inventor/fields/SoSFName.h>
+#include <Inventor/fields/SoMFName.h>
 
 class SoGroup;
 
@@ -78,9 +81,14 @@ protected:
   SoChildList * children;
 
 private:
-  SoGroup * root;
-  SoTypeList allowedtypes;
+  void syncInternalData(void);
+
+  SoSFNode containerNode;
+  SoSFName containerTypeName;
+  SoMFName childTypeNames;
+
   SbBool typelistlocked;
+  SoTypeList allowedtypes;
 };
 
 #endif // !__SONODEKITLISTPART_H__

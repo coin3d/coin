@@ -38,7 +38,7 @@
  */
 
 /*¡
-  Import, export and copy functionality is missing.
+  Keep SoChildList * children updated.
  */
 
 #include <Inventor/nodekits/SoNodeKitListPart.h>
@@ -62,8 +62,12 @@ SoNodeKitListPart::SoNodeKitListPart()
 {
   SO_NODE_CONSTRUCTOR(SoNodeKitListPart);
 
-  this->root = new SoGroup;
-  this->root->ref();
+  SO_NODE_ADD_FIELD(containerTypeName,(SoGroup::getClassTypeId().getName().getString()));
+  SO_NODE_ADD_FIELD(childTypeNames,(SoNode::getClassTypeId().getName().getString()));
+  SO_NODE_ADD_FIELD(containerNode,(NULL));
+
+  this->containerNode.setValue(new SoGroup);
+  this->containerNode.setDefault(TRUE);
 
   this->typelistlocked = FALSE;
 }
@@ -73,7 +77,7 @@ SoNodeKitListPart::SoNodeKitListPart()
 */
 SoNodeKitListPart::~SoNodeKitListPart()
 {
-  this->root->unref();
+  this->containerNode.setValue(NULL);
 }
 
 /*!
@@ -93,7 +97,7 @@ SoNodeKitListPart::initClass(void)
 SoType
 SoNodeKitListPart::getContainerType(void) const
 {
-  return this->root->getTypeId();
+  return this->containerNode.getValue()->getTypeId();
 }
 
 /*!
@@ -121,15 +125,18 @@ SoNodeKitListPart::setContainerType(SoType newContainerType)
 #endif // debug
 
   SoGroup * newroot = (SoGroup *) newContainerType.createInstance();
-  newroot->ref();
 
   SoChildList * children = this->getChildren();
   for (int i=0; i < children->getLength(); i++) {
     newroot->addChild((*children)[i]);
   }
 
-  this->root->unref();
-  this->root = newroot;
+  this->containerNode.setValue(newroot);
+
+  const SbName nameoftype = newContainerType.getName();
+  if (nameoftype != this->containerTypeName.getValue()) {
+    this->containerTypeName.setValue(nameoftype);
+  }
 }
 
 /*!
@@ -174,6 +181,9 @@ SoNodeKitListPart::addChildType(SoType typeToAdd)
       return;
     }
   }
+
+  this->childTypeNames.set1Value(this->allowedtypes.getLength(),
+                                 typeToAdd.getName());
   this->allowedtypes.append(typeToAdd);
 }
 
@@ -211,7 +221,7 @@ SoNodeKitListPart::isChildPermitted(const SoNode * child) const
 void
 SoNodeKitListPart::containerSet(const char * fieldDataString)
 {
-  this->root->set(fieldDataString);
+  this->containerNode.getValue()->set(fieldDataString);
 }
 
 /*!
@@ -251,7 +261,7 @@ SoNodeKitListPart::addChild(SoNode * child)
     return;
   }
 
-  this->root->addChild(child);
+  ((SoGroup *) this->containerNode.getValue())->addChild(child);
 }
 
 /*!
@@ -270,7 +280,7 @@ SoNodeKitListPart::insertChild(SoNode * child, int childIndex)
     return;
   }
 
-  this->root->insertChild(child, childIndex);
+  ((SoGroup *) this->containerNode.getValue())->insertChild(child, childIndex);
 }
 
 /*!
@@ -279,7 +289,7 @@ SoNodeKitListPart::insertChild(SoNode * child, int childIndex)
 SoNode *
 SoNodeKitListPart::getChild(int index) const
 {
-  return this->root->getChild(index);
+  return ((SoGroup *) this->containerNode.getValue())->getChild(index);
 }
 
 /*!
@@ -288,7 +298,7 @@ SoNodeKitListPart::getChild(int index) const
 int
 SoNodeKitListPart::findChild(SoNode * child) const
 {
-  return this->root->findChild(child);
+  return ((SoGroup *) this->containerNode.getValue())->findChild(child);
 }
 
 /*!
@@ -297,7 +307,7 @@ SoNodeKitListPart::findChild(SoNode * child) const
 int
 SoNodeKitListPart::getNumChildren(void) const
 {
-  return this->root->getNumChildren();
+  return ((SoGroup *) this->containerNode.getValue())->getNumChildren();
 }
 
 /*!
@@ -306,7 +316,7 @@ SoNodeKitListPart::getNumChildren(void) const
 void
 SoNodeKitListPart::removeChild(int index)
 {
-  this->root->removeChild(index);
+  ((SoGroup *) this->containerNode.getValue())->removeChild(index);
 }
 
 /*!
@@ -315,7 +325,7 @@ SoNodeKitListPart::removeChild(int index)
 void
 SoNodeKitListPart::removeChild(SoNode * child)
 {
-  this->root->removeChild(child);
+  ((SoGroup *) this->containerNode.getValue())->removeChild(child);
 }
 
 /*!
@@ -334,7 +344,7 @@ SoNodeKitListPart::replaceChild(int index, SoNode * newChild)
     return;
   }
 
-  this->root->replaceChild(index, newChild);
+  ((SoGroup *) this->containerNode.getValue())->replaceChild(index, newChild);
 }
 
 /*!
@@ -353,7 +363,7 @@ SoNodeKitListPart::replaceChild(SoNode * oldChild, SoNode * newChild)
     return;
   }
 
-  this->root->replaceChild(oldChild, newChild);
+  ((SoGroup *) this->containerNode.getValue())->replaceChild(oldChild, newChild);
 }
 
 /*!
@@ -362,7 +372,7 @@ SoNodeKitListPart::replaceChild(SoNode * oldChild, SoNode * newChild)
 SbBool
 SoNodeKitListPart::affectsState(void) const
 {
-  return this->root->affectsState();
+  return this->containerNode.getValue()->affectsState();
 }
 
 /*!
@@ -371,7 +381,7 @@ SoNodeKitListPart::affectsState(void) const
 void
 SoNodeKitListPart::doAction(SoAction * action)
 {
-  this->root->doAction(action);
+  this->containerNode.getValue()->doAction(action);
 }
 
 /*!
@@ -380,7 +390,7 @@ SoNodeKitListPart::doAction(SoAction * action)
 void
 SoNodeKitListPart::callback(SoCallbackAction * action)
 {
-  this->root->callback(action);
+  this->containerNode.getValue()->callback(action);
 }
 
 /*!
@@ -389,7 +399,7 @@ SoNodeKitListPart::callback(SoCallbackAction * action)
 void
 SoNodeKitListPart::GLRender(SoGLRenderAction * action)
 {
-  this->root->GLRender(action);
+  this->containerNode.getValue()->GLRender(action);
 }
 
 /*!
@@ -398,7 +408,7 @@ SoNodeKitListPart::GLRender(SoGLRenderAction * action)
 void
 SoNodeKitListPart::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  this->root->getBoundingBox(action);
+  this->containerNode.getValue()->getBoundingBox(action);
 }
 
 /*!
@@ -407,7 +417,7 @@ SoNodeKitListPart::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoNodeKitListPart::getMatrix(SoGetMatrixAction * action)
 {
-  this->root->getMatrix(action);
+  this->containerNode.getValue()->getMatrix(action);
 }
 
 /*!
@@ -416,7 +426,7 @@ SoNodeKitListPart::getMatrix(SoGetMatrixAction * action)
 void
 SoNodeKitListPart::handleEvent(SoHandleEventAction * action)
 {
-  this->root->handleEvent(action);
+  this->containerNode.getValue()->handleEvent(action);
 }
 
 /*!
@@ -425,7 +435,7 @@ SoNodeKitListPart::handleEvent(SoHandleEventAction * action)
 void
 SoNodeKitListPart::pick(SoPickAction * action)
 {
-  this->root->pick(action);
+  this->containerNode.getValue()->pick(action);
 }
 
 /*!
@@ -434,7 +444,7 @@ SoNodeKitListPart::pick(SoPickAction * action)
 void
 SoNodeKitListPart::search(SoSearchAction * action)
 {
-  this->root->search(action);
+  this->containerNode.getValue()->search(action);
 }
 
 /*!
@@ -443,7 +453,7 @@ SoNodeKitListPart::search(SoSearchAction * action)
 void
 SoNodeKitListPart::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  this->root->getPrimitiveCount(action);
+  this->containerNode.getValue()->getPrimitiveCount(action);
 }
 
 /*!
@@ -452,7 +462,7 @@ SoNodeKitListPart::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 SoChildList *
 SoNodeKitListPart::getChildren(void) const
 {
-  return this->root->getChildren();
+  return this->containerNode.getValue()->getChildren();
 }
 
 /*!
@@ -462,25 +472,52 @@ SoNodeKitListPart::getChildren(void) const
 SoGroup *
 SoNodeKitListPart::getContainerNode(void)
 {
-  return this->root;
+  return (SoGroup *) this->containerNode.getValue();
 }
 
 /*!
-  FIXME: write function documentation
+  Overload this method to set up internal data according to what
+  is contained within the imported field values.
 */
 SbBool
-SoNodeKitListPart::readInstance(SoInput * /*in*/, unsigned short /*flags*/)
+SoNodeKitListPart::readInstance(SoInput * in, unsigned short flags)
 {
-  assert(0 && "FIXME: not implemented yet");
+  if (inherited::readInstance(in, flags)) {
+    this->syncInternalData();
+    return TRUE;
+  }
   return FALSE;
 }
 
 /*!
-  FIXME: write function documentation
+  Overload this method to set up internal data according to what
+  is contained within the copied field values.
 */
 void
-SoNodeKitListPart::copyContents(const SoFieldContainer * /*fromFC*/,
-                                SbBool /*copyConnections*/)
+SoNodeKitListPart::copyContents(const SoFieldContainer * fromFC,
+                                SbBool copyConnections)
 {
-  assert(0 && "FIXME: not implemented yet");
+  inherited::copyContents(fromFC, copyConnections);
+  this->syncInternalData();
+}
+
+/*!
+  Synchronize internal data with the contents of the fields.
+ */
+void
+SoNodeKitListPart::syncInternalData(void)
+{
+  // Set up type list.
+  this->allowedtypes.truncate(0);
+  for (int i=0; i < this->childTypeNames.getNum(); i++) {
+    this->allowedtypes.append(SoType::fromName(this->childTypeNames[i]));
+  }
+  
+  // Set up container node, if necessary.
+  if (this->containerNode.getValue() == NULL) {
+    this->containerNode.setValue(new SoGroup);
+    this->containerNode.setDefault(TRUE);
+  }
+  
+  // FIXME: lock typelist after import? 19991128 mortene.
 }
