@@ -290,6 +290,108 @@ created from the source release tarball.
 
 ==============================================================================
 
+Code Standard (RFD)
+===================
+
+* If the code you write is not expected to work 100%;
+  - leave a "FIXME" message if you believe the code is fairly correct,
+    but you are unsure and have not checked the correctness yet (like
+    error-catching, ambiguities in the OIV docs that will require some
+    testing, ...), or if there are known deficiencies.
+  - insert an "assert( FALSE )" if the code lacks certain sections, so
+    situations where unimplemented features are used will be caught.
+
+  A FIXME-message must include a short description of the problem, who wrote
+  the message, and when.  Example:
+
+    // FIXME: this code will sometimes fail, hasn't yet determined why.
+    // 19990423 mortene.
+
+  or
+
+    // FIXME: sometimes fails for unknown reasons. 19990423 mortene.
+
+  This goes also for other keywords in comments (see below).  It makes it
+  much easier when others try to fix code that doesn't work.  You will know
+  who to ask if you don't understand the problem, and the date will indicate
+  among other things the urgency of the problem.  If a FIXME-message has
+  been left alone for months, it is probably not very important.
+ 
+* If blocks of code are commented out (obsoleted) to make place for new code,
+  or because it has become superfluous, one should mark it like the example
+  below if it is a large block of code, if the new code is very experimental,
+  or if the new code is obfuscated (e.g. because of optimizations).
+
+    #if 0// OBSOLETE: <textual description>. <yymmdd userid>.
+    ...old code...
+    #else // short description of new code
+    ...new code...
+    #endif // newcode
+
+* During debugging, write debug code like this:
+
+    #if 1 // debug<br>
+      SoDebugError::postInfo(...<br>
+    #endif // debug
+
+  Then, flip "#if 1" to "#if 0" if there is a chance that the debug
+  information might be useful later -- otherwise remove it.  If there are
+  many debug statements in the same category, use a define for that
+  category (#if DEBUG_<category>) and define it to 0 at the top of the file.
+  See src/sensors/SoSensorManager.cpp for examples.
+
+* Do not under any circumstances use printf() / fprintf() for output.
+  It should not be necessary - the Coin classes SoDebugError and
+  SoReadError were implemented for a reason.  Debug messages with
+  printf() / fprintf() is uncool when you use Windows, and besides
+  it's bloody irritating to walk through the code later to remove them.
+
+* Code formatting rules. The default is to use Kernighan and Ritchie style.
+
+  - Braces: keep opening braces on the end of the line, and closing braces
+    at the start. Like this:
+
+      if (...) {
+        ...
+      }
+
+      And not like this:
+
+      if (...)
+      {
+        ...
+      }
+
+    The exception from this rule is functions, which should have the opening
+    brace on the next line.
+
+  - Indentation: use 2 spaces extra for each level of nesting.  Never use
+    tabulators.
+
+  - Spacing: use 1 space after commas and around operators (like +, -, *,
+    /, ==, &&</code>, etc), but not after or before parentheses.
+    Like this:
+
+      if (val) i = sqrt(a) * func(b, c);
+
+    Not like this:
+
+      if ( val ) i=sqrt(a)*func(b,c);
+
+  - Naming: class names should be uppercased for each word, function names for
+    each word except the first one, variable names should be all lowercase,
+    and defines, enums and constants should be all uppercase. Example:
+
+      float
+      MathClass::calculateValue(float in)
+      {
+        const float FACTOR = 2.78;
+        ...
+        ...
+      }
+
+==============================================================================
+
 Footnotes
 =========
 
