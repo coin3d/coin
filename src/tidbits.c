@@ -964,6 +964,7 @@ coin_viewvolume_jitter(int numpasses, int curpass, const int * vpsize, float * j
 typedef void(*atexit_func_type)(void);
 
 static cc_list * atexit_list = NULL;
+static SbBool isexiting = FALSE;
 
 typedef struct {
   coin_atexit_f * func;
@@ -998,6 +999,8 @@ coin_atexit_cleanup(void)
   int i, n;
   tb_atexit_data * data;
   if (!atexit_list) return;
+
+  isexiting = TRUE;
 
   n = cc_list_get_length(atexit_list);
 
@@ -1035,6 +1038,8 @@ coin_atexit(coin_atexit_f * f, uint32_t priority)
 {
   tb_atexit_data * data;
 
+  assert(!isexiting && "tried to attach an atexit function while exiting");
+
   if (atexit_list == NULL) {
     atexit_list = cc_list_construct();
     /* The atexit() registration was disabled, since it has proved
@@ -1060,6 +1065,16 @@ coin_atexit(coin_atexit_f * f, uint32_t priority)
   data->cnt = cc_list_get_length(atexit_list);
   
   cc_list_append(atexit_list, data);
+}
+
+/*
+  Returns \c TRUE if we are currently iterating over the functions
+  registered with coin_atexit(), otherwise \c FALSE.
+ */
+SbBool
+coin_is_exiting(void)
+{
+  return isexiting;
 }
 
 /**************************************************************************/
