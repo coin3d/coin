@@ -424,6 +424,8 @@ SoNormalGenerator::calcFaceNormal(void)
                               "Normal vector found to be of zero length "
                               "for face with vertex coordinates:%s",
                               s.getString());
+    // Set to a dummy value to avoid secondary warnings.
+    ret.setValue(1.0f, 0.0f, 0.0f);
   }
 #endif // COIN_DEBUG
 
