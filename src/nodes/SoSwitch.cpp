@@ -122,7 +122,7 @@ SoSwitch::SoSwitch(int numchildren)
   this->commonConstructor();
 }
 
-void 
+void
 SoSwitch::commonConstructor(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoSwitch);
@@ -188,7 +188,7 @@ SoSwitch::search(SoSearchAction * action)
 
   if (action->isSearchingAll()) {
     this->children->traverse(action);
-  } 
+  }
   else {
     SoSwitch::doAction(action);
   }
@@ -199,7 +199,7 @@ void
 SoSwitch::doAction(SoAction * action)
 {
   SoState * state = action->getState();
-  int idx = this->whichChild.isIgnored() ? 
+  int idx = this->whichChild.isIgnored() ?
     SO_SWITCH_NONE : this->whichChild.getValue();
   if (idx == SO_SWITCH_INHERIT) {
     idx = SoSwitchElement::get(action->getState());
@@ -209,11 +209,11 @@ SoSwitch::doAction(SoAction * action)
   else {
     SoSwitchElement::set(state, idx);
   }
-  
+
   int numindices;
   const int * indices;
   SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
-  
+
   if (idx == SO_SWITCH_ALL) {
     if (action->isOfType(SoGetBoundingBoxAction::getClassTypeId())) {
       // calculate center of bbox if bboxaction. This makes the
@@ -224,11 +224,11 @@ SoSwitch::doAction(SoAction * action)
       int numcenters = 0;
       // only traverse nodes in path(s) for IN_PATH traversal
       int n = pathcode == SoAction::IN_PATH ? numindices : this->getNumChildren();
-      
+
       for (int i = 0; i < n; i++) {
-        this->children->traverse(bbaction, 
+        this->children->traverse(bbaction,
                                  pathcode == SoAction::IN_PATH ? indices[i] : i);
-          
+
         // If center point is set, accumulate.
         if (bbaction->isCenterSet()) {
           acccenter += bbaction->getCenter();
@@ -327,7 +327,7 @@ SoSwitch::affectsState(void) const
   // (To handle this exact case, SGI and TGS Inventor seems to use a
   // global static flag SoSearchAction::duringSearchAll. We find this
   // to be an utterly crap idea, though.)
-  // 
+  //
   // So to be safe, we _always_ behave as if whichChild is set to
   // traverse all children. The worst that can happen is that we get a
   // "false positive", ie TRUE when it should be FALSE. That means the
@@ -354,28 +354,28 @@ void
 SoSwitch::audioRender(SoAudioRenderAction * action)
 {
   SbBool lookforsoundnode = FALSE;
-  SbBool oldhassound, oldisplaying;
+  SbBool oldhassound = FALSE, oldisplaying = FALSE; // initialize to avoid compiler warnings
   int numindices;
   const int * indices;
   SoState * state = action->getState();
-  if ( (action->getPathCode(numindices, indices) != SoAction::IN_PATH) &&
-       (PRIVATE(this)->hassoundchild != SoSwitchP::NO) )
+  if ((action->getPathCode(numindices, indices) != SoAction::IN_PATH) &&
+      (PRIVATE(this)->hassoundchild != SoSwitchP::NO) )
     lookforsoundnode = TRUE;
   if (lookforsoundnode) {
     oldhassound = SoSoundElement::setSceneGraphHasSoundNode(state, this, FALSE);
     oldisplaying = SoSoundElement::setSoundNodeIsPlaying(state, this, FALSE);
   }
-      
-  SoSwitch::doAction((SoAction*)action);
   
+  SoSwitch::doAction((SoAction*)action);
+
   if (lookforsoundnode) {
-      SbBool soundnodefound = SoSoundElement::sceneGraphHasSoundNode(state);
-      PRIVATE(this)->soundchildplaying = SoSoundElement::soundNodeIsPlaying(state);
-      SoSoundElement::setSceneGraphHasSoundNode(state, this, oldhassound || soundnodefound);
-      SoSoundElement::setSoundNodeIsPlaying(state, this, 
-                                            oldisplaying || PRIVATE(this)->soundchildplaying);
-      PRIVATE(this)->hassoundchild = soundnodefound ? SoSwitchP::YES : 
-        SoSwitchP::NO;
+    SbBool soundnodefound = SoSoundElement::sceneGraphHasSoundNode(state);
+    PRIVATE(this)->soundchildplaying = SoSoundElement::soundNodeIsPlaying(state);
+    SoSoundElement::setSceneGraphHasSoundNode(state, this, oldhassound || soundnodefound);
+    SoSoundElement::setSoundNodeIsPlaying(state, this,
+                                          oldisplaying || PRIVATE(this)->soundchildplaying);
+    PRIVATE(this)->hassoundchild = soundnodefound ? SoSwitchP::YES :
+      SoSwitchP::NO;
   }
 }
 
