@@ -493,10 +493,10 @@ SoRayPickAction::intersect(const SbVec3f & point) const
   // distance between points
   float distance = (wpoint-ptonline).length();
 
-  float raypos = (ptonline - THIS->raystart).length();
+  float raypos = THIS->nearplane.getDistance(ptonline);
 
   float radius = THIS->rayradiusstart +
-    THIS->rayradiusdelta * raypos/THIS->rayfar;
+    THIS->rayradiusdelta * raypos;
 
   return (radius >= distance);
 }
