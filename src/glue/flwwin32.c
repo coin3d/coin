@@ -116,8 +116,6 @@ font_enum_proc(ENUMLOGFONTEX * logicalfont, NEWTEXTMETRICEX * physicalfont,
 SbBool
 cc_flww32_initialize(void)
 {
-  HFONT wfont;
-
   if (cc_flw_debug()) { /* list all fonts on system */
     LOGFONT logfont; /* logical font information */
 
@@ -412,7 +410,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
   bm->buffer = (unsigned char *)malloc(bm->rows * bm->pitch);
   assert(bm->buffer);
   {
-    int i;
+    unsigned int i;
     for (i = 0; i < bm->rows; i++) {
       (void)memcpy(&(bm->buffer[i * bm->pitch]),
                    /* the win32 bitmap is doubleword aligned pr row */

@@ -10,6 +10,7 @@
 #include <windows.h>
 
 #include <Inventor/C/glue/win32api.h>
+#include <Inventor/C/errors/debugerror.h>
 
 
 /* internal helper function */

@@ -166,8 +166,9 @@ SoFontLib::exit(void)
     delete (SbString*) values[i];
   }
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
-  if (SoFontLibP::apimutex != NULL)
+  if (SoFontLibP::apimutex != NULL) {
     CC_MUTEX_DESTRUCT(SoFontLibP::apimutex);
+  }
 
   delete SoFontLibP::openfonts;
   SoFontLibP::openfonts = NULL;
