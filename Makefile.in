@@ -79,6 +79,7 @@ COIN_HACKING_LIBDIRS = @COIN_HACKING_LIBDIRS@
 COIN_MAJOR_VERSION = @COIN_MAJOR_VERSION@
 COIN_MICRO_VERSION = @COIN_MICRO_VERSION@
 COIN_MINOR_VERSION = @COIN_MINOR_VERSION@
+COIN_MSVC_LIBC = @COIN_MSVC_LIBC@
 COIN_VERSION = @COIN_VERSION@
 CONFIG = @CONFIG@
 CXX = @CXX@
@@ -155,14 +156,15 @@ DISTCLEANFILES = \
 @BUILD_LIBRARY_TRUE@cfgdata_DATA = coin-@CONFIG@.cfg
 
 EXTRA_DIST = \
-	ChangeLog.1999 \
-	ChangeLog.2000 \
 	LICENSE.GPL \
 	README.AIX \
 	README.IRIX \
 	README.MAC \
 	README.WIN32 \
 	coin.cfg.in \
+	docs/ChangeLog.1999 \
+	docs/ChangeLog.2000 \
+	docs/ChangeLog.2001 \
 	docs/coin.doxygen.in \
 	cfg/m4/doxy4win.pl \
 	cfg/m4/errors.txt \
@@ -201,7 +203,7 @@ DIST_COMMON = README $(dist_m4data_DATA) AUTHORS COPYING ChangeLog \
 	INSTALL Makefile.am Makefile.in NEWS THANKS aclocal.m4 \
 	cfg/config.guess cfg/config.sub cfg/depcomp cfg/install-sh \
 	cfg/ltconfig cfg/ltmain.sh cfg/missing cfg/mkinstalldirs \
-	cfg/texinfo.tex configure configure.in
+	cfg/texinfo.tex configure configure.ac
 DIST_SUBDIRS = . bin include data src man html
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
@@ -216,7 +218,7 @@ clean-libtool:
 
 distclean-libtool:
 	-rm -f libtool
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
@@ -226,10 +228,10 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 
 $(top_builddir)/config.status: $(srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	$(SHELL) ./config.status --recheck
-$(srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(srcdir)/configure.in $(ACLOCAL_M4) $(CONFIGURE_DEPENDENCIES)
+$(srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(srcdir)/configure.ac $(ACLOCAL_M4) $(CONFIGURE_DEPENDENCIES)
 	cd $(srcdir) && $(AUTOCONF)
 
-$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ configure.in 
+$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ configure.ac 
 	cd $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 src/extensions/vrml97/src/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/extensions/vrml97/src/Makefile.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
@@ -543,10 +545,10 @@ coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
 # sources needed to generate docs must be created by this rule
 built-sources: $(BUILT_SOURCES)
 
-include/Inventor/SbBasic.h: $(srcdir)/include/Inventor/SbBasic.h.in
+include/Inventor/SbBasic.h: $(srcdir)/include/Inventor/SbBasic.h.in config.status
 	@./config.status --header=$@
 
-include/Inventor/system/inttypes.h: $(srcdir)/include/Inventor/system/inttypes.h.in
+include/Inventor/system/inttypes.h: $(srcdir)/include/Inventor/system/inttypes.h.in config.status
 	@./config.status --header=$@
 
 doxygen-doc: built-sources

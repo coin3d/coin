@@ -79,6 +79,7 @@ COIN_HACKING_LIBDIRS = @COIN_HACKING_LIBDIRS@
 COIN_MAJOR_VERSION = @COIN_MAJOR_VERSION@
 COIN_MICRO_VERSION = @COIN_MICRO_VERSION@
 COIN_MINOR_VERSION = @COIN_MINOR_VERSION@
+COIN_MSVC_LIBC = @COIN_MSVC_LIBC@
 COIN_VERSION = @COIN_VERSION@
 CONFIG = @CONFIG@
 CXX = @CXX@
@@ -170,7 +171,7 @@ clean-libtool:
 
 distclean-libtool:
 	-rm -f libtool
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  include/Inventor/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
@@ -411,8 +412,8 @@ uninstall-info: uninstall-info-recursive
 	uninstall-recursive
 
 
-SbBasic.h: $(srcdir)/SbBasic.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
+SbBasic.h: $(srcdir)/SbBasic.h.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(MAKE) include/Inventor/SbBasic.h )
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
