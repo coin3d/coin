@@ -186,7 +186,7 @@ SO_ACTION_SOURCE(SoVectorizeAction);
 void
 SoVectorizeAction::initClass(void)
 {
-   SO_ACTION_INIT_CLASS(SoVectorizeAction, SoCallbackAction);
+   SO_ACTION_INTERNAL_INIT_CLASS(SoVectorizeAction, SoCallbackAction);
 }
 
 /*!

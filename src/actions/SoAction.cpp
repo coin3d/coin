@@ -196,6 +196,7 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/C/tidbitsp.h>
 
 #include <assert.h>
 #include <stdlib.h>
@@ -390,6 +391,17 @@ SoAction::initClass(void)
                                     SoOverrideElement::getClassStackIndex());
 
   SoAction::initClasses();
+  coin_atexit((coin_atexit_f*) SoAction::cleanup, 0);
+}
+
+// private cleanup method
+void
+SoAction::cleanup(void)
+{
+  delete SoAction::enabledElements;
+  SoAction::enabledElements = NULL;
+  delete SoAction::methods;
+  SoAction::methods = NULL;
 }
 
 /*!

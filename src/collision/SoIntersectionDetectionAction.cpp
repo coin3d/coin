@@ -262,7 +262,7 @@ SO_ACTION_SOURCE(SoIntersectionDetectionAction);
 void
 SoIntersectionDetectionAction::initClass(void)
 {
-  SO_ACTION_INIT_CLASS(SoIntersectionDetectionAction, SoAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoIntersectionDetectionAction, SoAction);
 }
 
 SoIntersectionDetectionAction::SoIntersectionDetectionAction(void)

@@ -143,9 +143,10 @@ private:
   /* The enabledElements and methods variables are protected in the
      original OIV API. This is not such a good idea, see the comments
      in SoSubAction.h for SO_ACTION_HEADER. */
+
+  static void cleanup(void);
   static SoEnabledElementsList * enabledElements;
   static SoActionMethodList * methods;
-
   SoTempPath currentpath;
   PathCode currentpathcode;
 

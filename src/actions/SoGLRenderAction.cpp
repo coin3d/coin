@@ -361,7 +361,7 @@ SO_ACTION_SOURCE(SoGLRenderAction);
 void
 SoGLRenderAction::initClass(void)
 {
-  SO_ACTION_INIT_CLASS(SoGLRenderAction, SoAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoGLRenderAction, SoAction);
 
   SO_ENABLE(SoGLRenderAction, SoDecimationPercentageElement);
   SO_ENABLE(SoGLRenderAction, SoDecimationTypeElement);

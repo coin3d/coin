@@ -38,7 +38,7 @@ SO_ACTION_SOURCE(SoGlobalSimplifyAction);
 void
 SoGlobalSimplifyAction::initClass(void)
 {
-  SO_ACTION_INIT_CLASS(SoGlobalSimplifyAction, SoSimplifyAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoGlobalSimplifyAction, SoSimplifyAction);
 }
 
 

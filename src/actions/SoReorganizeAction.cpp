@@ -37,7 +37,7 @@ SO_ACTION_SOURCE(SoReorganizeAction);
 void
 SoReorganizeAction::initClass(void)
 {
-  SO_ACTION_INIT_CLASS(SoReorganizeAction, SoSimplifyAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoReorganizeAction, SoSimplifyAction);
 }
 
 

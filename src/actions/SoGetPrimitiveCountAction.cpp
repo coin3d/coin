@@ -56,7 +56,7 @@ SO_ACTION_SOURCE(SoGetPrimitiveCountAction);
 void
 SoGetPrimitiveCountAction::initClass(void)
 {
-  SO_ACTION_INIT_CLASS(SoGetPrimitiveCountAction, SoAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoGetPrimitiveCountAction, SoAction);
 
   SO_ENABLE(SoGetPrimitiveCountAction, SoDecimationPercentageElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoDecimationTypeElement);

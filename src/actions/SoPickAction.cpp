@@ -69,7 +69,7 @@ SO_ACTION_SOURCE(SoPickAction);
 void
 SoPickAction::initClass(void)
 {
-  SO_ACTION_INIT_CLASS(SoPickAction, SoAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoPickAction, SoAction);
 
   SO_ENABLE(SoPickAction, SoViewportRegionElement);
   SO_ENABLE(SoPickAction, SoDecimationTypeElement);

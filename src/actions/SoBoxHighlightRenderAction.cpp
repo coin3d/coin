@@ -186,7 +186,7 @@ SO_ACTION_SOURCE(SoBoxHighlightRenderAction);
 void
 SoBoxHighlightRenderAction::initClass(void)
 {
-  SO_ACTION_INIT_CLASS(SoBoxHighlightRenderAction, SoGLRenderAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoBoxHighlightRenderAction, SoGLRenderAction);
 }
 
 

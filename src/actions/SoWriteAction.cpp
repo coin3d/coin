@@ -111,7 +111,7 @@ SO_ACTION_SOURCE(SoWriteAction);
 void
 SoWriteAction::initClass(void)
 {
-  SO_ACTION_INIT_CLASS(SoWriteAction, SoAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoWriteAction, SoAction);
 }
 
 /*!

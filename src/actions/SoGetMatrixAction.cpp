@@ -94,7 +94,7 @@ SO_ACTION_SOURCE(SoGetMatrixAction);
 void
 SoGetMatrixAction::initClass(void)
 {
-  SO_ACTION_INIT_CLASS(SoGetMatrixAction, SoAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoGetMatrixAction, SoAction);
 
   SO_ENABLE(SoGetMatrixAction, SoViewportRegionElement);
 }

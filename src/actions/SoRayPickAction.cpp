@@ -221,7 +221,7 @@ SO_ACTION_SOURCE(SoRayPickAction);
 void
 SoRayPickAction::initClass(void)
 {
-  SO_ACTION_INIT_CLASS(SoRayPickAction, SoPickAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoRayPickAction, SoPickAction);
 
   SO_ENABLE(SoRayPickAction, SoPickRayElement);
   SO_ENABLE(SoRayPickAction, SoViewportRegionElement);

@@ -332,7 +332,7 @@ SO_ACTION_SOURCE(SoCallbackAction);
 void
 SoCallbackAction::initClass(void)
 {
-  SO_ACTION_INIT_CLASS(SoCallbackAction, SoAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoCallbackAction, SoAction);
 
   SO_ENABLE(SoCallbackAction, SoViewportRegionElement);
   SO_ENABLE(SoCallbackAction, SoDecimationTypeElement);

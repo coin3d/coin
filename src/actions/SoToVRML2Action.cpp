@@ -145,7 +145,7 @@ SO_ACTION_SOURCE(SoToVRML2Action);
 void
 SoToVRML2Action::initClass(void)
 {
-  SO_ACTION_INIT_CLASS(SoToVRML2Action, SoToVRMLAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoToVRML2Action, SoToVRMLAction);
 }
 
 /*!

@@ -202,7 +202,7 @@ public:
 void
 SoToVRMLAction::initClass(void)
 {
-  SO_ACTION_INIT_CLASS(SoToVRMLAction, SoAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoToVRMLAction, SoAction);
 }
 
 

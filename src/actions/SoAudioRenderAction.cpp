@@ -75,7 +75,7 @@ SO_ACTION_SOURCE(SoAudioRenderAction);
 
 void SoAudioRenderAction::initClass()
 {
-  SO_ACTION_INIT_CLASS(SoAudioRenderAction, SoAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoAudioRenderAction, SoAction);
 
   SO_ENABLE(SoAudioRenderAction, SoModelMatrixElement);
   SO_ENABLE(SoAudioRenderAction, SoSwitchElement);

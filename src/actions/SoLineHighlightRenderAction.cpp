@@ -109,7 +109,7 @@ SO_ACTION_SOURCE(SoLineHighlightRenderAction);
 void
 SoLineHighlightRenderAction::initClass(void)
 {
-  SO_ACTION_INIT_CLASS(SoLineHighlightRenderAction, SoGLRenderAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoLineHighlightRenderAction, SoGLRenderAction);
 }
 
 

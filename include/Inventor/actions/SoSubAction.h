@@ -30,6 +30,7 @@
 #include <Inventor/actions/SoAction.h>
 #else // !COIN_INTERNAL
 #include <Inventor/SbName.h>
+#include <Inventor/actions/SoSubActionP.h>
 #endif // COIN_INTERNAL
 
 
@@ -65,6 +66,7 @@ private: \
   /* the original OIV API. This is not such a good idea, since */ \
   /* exposed static class member variables is a major grievance */ \
   /* with regard to Win32 DLLs. */ \
+  static void cleanup(void); \
   static SoEnabledElementsList * enabledElements; \
   static SoActionMethodList * methods; \
   static SoType classTypeId
@@ -96,8 +98,15 @@ _classname_::enableElement(const SoType type, const int stackindex) \
 { \
   assert(_classname_::enabledElements); \
   _classname_::enabledElements->enable(type, stackindex); \
+} \
+void \
+_classname_::cleanup(void) \
+{ \
+  delete _classname_::enabledElements; \
+  _classname_::enabledElements = NULL; \
+  delete _classname_::methods; \
+  _classname_::methods = NULL; \
 }
-
 
 #define SO_ACTION_INIT_CLASS(_classname_, _parentclassname_) \
   do { \

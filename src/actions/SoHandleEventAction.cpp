@@ -89,7 +89,7 @@ SO_ACTION_SOURCE(SoHandleEventAction);
 void
 SoHandleEventAction::initClass(void)
 {
-  SO_ACTION_INIT_CLASS(SoHandleEventAction, SoAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoHandleEventAction, SoAction);
 
   SO_ENABLE(SoHandleEventAction, SoSwitchElement);
   SO_ENABLE(SoHandleEventAction, SoViewVolumeElement);

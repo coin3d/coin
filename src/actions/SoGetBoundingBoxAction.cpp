@@ -215,7 +215,7 @@ SO_ACTION_SOURCE(SoGetBoundingBoxAction);
 void
 SoGetBoundingBoxAction::initClass(void)
 {
-  SO_ACTION_INIT_CLASS(SoGetBoundingBoxAction, SoAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoGetBoundingBoxAction, SoAction);
 
   SO_ENABLE(SoGetBoundingBoxAction, SoViewportRegionElement);
 }

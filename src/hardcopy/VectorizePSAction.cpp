@@ -94,7 +94,7 @@ SO_ACTION_SOURCE(SoVectorizePSAction);
 void
 SoVectorizePSAction::initClass(void)
 {
-   SO_ACTION_INIT_CLASS(SoVectorizePSAction, SoVectorizeAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoVectorizePSAction, SoVectorizeAction);
 }
 
 /*!

@@ -107,7 +107,7 @@ SbBool SoSearchAction::duringSearchAll = FALSE;
 void
 SoSearchAction::initClass(void)
 {
-  SO_ACTION_INIT_CLASS(SoSearchAction, SoAction);
+  SO_ACTION_INTERNAL_INIT_CLASS(SoSearchAction, SoAction);
 }
 
 
