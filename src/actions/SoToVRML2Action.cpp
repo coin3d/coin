@@ -63,14 +63,56 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#ifdef HAVE_VRML97
-#include <Inventor/VRMLnodes/SoVRMLNodes.h>
-#include <Inventor/VRMLnodes/SoVRML.h>
-#endif // HAVE_VRML97
-
 SO_ACTION_SOURCE(SoToVRML2Action);
 
 // *************************************************************************
+
+// Overridden from parent class.
+void
+SoToVRML2Action::initClass(void)
+{
+  SO_ACTION_INIT_CLASS(SoToVRML2Action, SoToVRMLAction);
+}
+
+/*!
+  \fn SoToVRML2Action::SoToVRML2Action(void)
+  Constructor.
+*/
+
+/*!
+  \fn SoToVRML2Action::~SoToVRML2Action(void)
+  The destructor.
+*/
+
+/*!
+  \fn SoNode * SoToVRML2Action::getVRML2SceneGraph(void) const
+
+  Return a pointer to the root node of the generated scenegraph of
+  only VRML2 / VRML97 nodes.
+
+  Will return \c NULL if VRML97 support was not compiled into the
+  library.
+*/
+
+// *************************************************************************
+
+#ifndef HAVE_VRML97
+SoToVRML2Action::SoToVRML2Action(void)
+{
+  SO_ACTION_CONSTRUCTOR(SoToVRML2Action);
+}
+
+SoToVRML2Action::~SoToVRML2Action() { }
+void SoToVRML2Action::apply(SoNode * node) { }
+void SoToVRML2Action::apply(SoPath * path) { }
+void SoToVRML2Action::apply(const SoPathList & pathlist, SbBool obeysrules) { }
+SoNode * SoToVRML2Action::getVRML2SceneGraph(void) const { return NULL; }
+void SoToVRML2Action::beginTraversal(SoNode * node) { }
+
+#else // HAVE_VRML97
+
+#include <Inventor/VRMLnodes/SoVRMLNodes.h>
+#include <Inventor/VRMLnodes/SoVRML.h>
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -83,15 +125,13 @@ public:
     this->vrml2root = NULL;
   }
 
-  void init(void) {
-      
-#ifdef HAVE_VRML97
+  void init(void)
+  {
     this->vrml2root = new SoVRMLGroup;
     this->vrmlcoords = new SbList <SoVRMLCoordinate *>;
     this->vrmlnormals = new SbList <SoVRMLNormal *>;
     this->vrmlcolors = new SbList <SoVRMLColor *>;
     this->vrmltexcoords = new SbList <SoVRMLTextureCoordinate *>;
-#endif // HAVE_VRML97
 
     if (this->vrml2path) {
       this->vrml2path->unref();
@@ -104,7 +144,6 @@ public:
     }
     this->vrml2root->ref();
     this->vrml2path->setHead(this->vrml2root);
-    
   }
 
   SoToVRML2Action * master;
@@ -112,11 +151,10 @@ public:
   SbDict dict;
   SoCallbackAction cbaction;
   SoSearchAction searchaction;
-  SoFullPath * vrml2path;
 
-#ifdef HAVE_VRML97
   static SoCallbackAction::Response unsupported_cb(void *, SoCallbackAction *, const SoNode *);
   
+  SoFullPath * vrml2path;
   SoVRMLGroup * vrml2root;
   SbList <SoVRMLCoordinate *> * vrmlcoords;
   SbList <SoVRMLNormal *> * vrmlnormals;
@@ -159,7 +197,6 @@ public:
   static SoCallbackAction::Response sopercam_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response sodirlight_cb(void *, SoCallbackAction *, const SoNode *);
   static SoCallbackAction::Response sowwwinl_cb(void *, SoCallbackAction *, const SoNode *);
-#endif // HAVE_VRML97
 
 };
 
@@ -172,20 +209,10 @@ public:
 
 // *************************************************************************
 
-// Overridden from parent class.
-void
-SoToVRML2Action::initClass(void)
-{
-  SO_ACTION_INIT_CLASS(SoToVRML2Action, SoToVRMLAction);
-}
-
-
-/*!
-  Constructor.
-*/
-
 SoToVRML2Action::SoToVRML2Action(void)
 {
+  SO_ACTION_CONSTRUCTOR(SoToVRML2Action);
+
   PRIVATE(this) = new SoToVRML2ActionP(this);
 
 #define ADD_PRE_CB(_node_, _cb_) \
@@ -194,8 +221,6 @@ SoToVRML2Action::SoToVRML2Action(void)
   PRIVATE(this)->cbaction.addPostCallback(_node_::getClassTypeId(), SoToVRML2ActionP::_cb_, PRIVATE(this))
 #define ADD_UNSUPPORTED(_node_) \
   PRIVATE(this)->cbaction.addPreCallback(_node_::getClassTypeId(), SoToVRML2ActionP::unsupported_cb, PRIVATE(this))
-
-#ifdef HAVE_VRML97
 
   // Shape nodes
   ADD_PRE_CB(SoAsciiText, soasciitext_cb);
@@ -231,16 +256,10 @@ SoToVRML2Action::SoToVRML2Action(void)
   ADD_UNSUPPORTED(SoSpotLight);
   ADD_PRE_CB(SoWWWInline, sowwwinl_cb);
 
-#endif // HAVE_VRML97
-
 #undef ADD_PRE_CB
 #undef ADD_POST_CB
 #undef ADD_UNSUPPORTED
 }
-
-/*!
-  The destructor.
-*/
 
 SoToVRML2Action::~SoToVRML2Action(void)
 {
@@ -284,8 +303,6 @@ SoToVRML2Action::beginTraversal(SoNode * node)
 {  
   assert(0 && "should never get here");
 }
-
-#ifdef HAVE_VRML97
 
 SoNode *
 SoToVRML2Action::getVRML2SceneGraph(void) const
@@ -970,6 +987,5 @@ SoToVRML2ActionP::sowwwinl_cb(void * closure, SoCallbackAction * action, const S
   THISP(closure)->get_current_tail()->addChild(inl);
   return SoCallbackAction::CONTINUE;
 }
-
 
 #endif // HAVE_VRML97
