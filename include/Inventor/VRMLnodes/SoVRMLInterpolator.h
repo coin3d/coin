@@ -20,7 +20,6 @@
 #ifndef COIN_SOVRMLINTERPOLATOR_H
 #define COIN_SOVRMLINTERPOLATOR_H
 
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 
 

@@ -21,7 +21,6 @@
 #define COIN_SONODEKITLISTPART_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSFName.h>

@@ -20,12 +20,14 @@
 #ifndef COIN_SBPLIST_H
 #define COIN_SBPLIST_H
 
-#if defined(COIN_INTERNAL)
-#error "Do not include Inventor/SbPList.h internally (use Inventor/lists/SbPList.h)."
+#ifndef COIN_INTERNAL
+ // The next two includes are for Open Inventor compatibility.
+ #include <Inventor/lists/SbBasic.h>
+ #include <Inventor/lists/SbLinear.h>
+ // Here's the class definition of SbPList in Coin.
+ #include <Inventor/lists/SbPList.h>
+#else // COIN_INTERNAL
+ #error "Do not include Inventor/SbPList.h internally (use Inventor/lists/SbPList.h)."
 #endif // COIN_INTERNAL
-
-#define COIN_INCLUDED_FROM_SBPLIST_H
-#include <Inventor/lists/SbPList.h>
-#undef  COIN_INCLUDED_FROM_SBPLIST_H
 
 #endif // !COIN_SBPLIST_H

@@ -24,8 +24,15 @@
 #include <Inventor/SoType.h>
 #include <stdio.h>
 
-class SoNode;
+#ifdef COIN_INTERNAL
 class SoState;
+#else // !COIN_INTERNAL
+// For compatibility with applications originally developed on top of
+// Open Inventor.
+#include <Inventor/misc/SoState.h>
+#endif // !COIN_INTERNAL
+
+class SoNode;
 
 
 class SoElement {
