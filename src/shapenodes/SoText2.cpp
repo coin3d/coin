@@ -666,6 +666,7 @@ SoText2P::buildGlyphCache(SoState * state)
       assert(this->glyphs[i][j]);
     }
     // now calculate positions and bbox
+    float w = 0.0f;
     for (j = 0; j < strlength; j++) {
       SbVec2s thispos;
       (void)this->glyphs[i][j]->getBitmap(thissize, thispos, FALSE);
@@ -679,9 +680,10 @@ SoText2P::buildGlyphCache(SoState * state)
       this->bbox.extendBy(pos);
       this->bbox.extendBy(pos + SbVec2s(advance[0]+kerning[0], thissize[1]));
       penpos += advance + kerning;
+      w += (float) (advance[0] + kerning[0]);
     }
-
-    this->stringwidth.append(this->positions[i][strlength - 1][0] + thissize[0]);
+    
+    this->stringwidth.append(w);
     penpos = SbVec2s(0, penpos[1] - (short)(this->prevfontsize * PUBLIC(this)->spacing.getValue()));
   }
 }
