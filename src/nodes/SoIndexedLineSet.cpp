@@ -215,10 +215,6 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
     this->vertexProperty.getValue()->GLRender(action);
   }
 
-  SoShape::GLRender(action);
-  if (didpush) state->pop();
-  return;
-
   // If the coordIndex field is invalid by not including the
   // terminating -1, fix the field by adding it.
   //
