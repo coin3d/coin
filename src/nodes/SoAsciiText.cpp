@@ -47,6 +47,7 @@
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGlyph.h>
 #include <Inventor/misc/SoState.h>
 #include <string.h>
@@ -57,9 +58,6 @@
 #endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 /*!
   \enum SoAsciiText::Justification
@@ -159,7 +157,20 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
   SoGLNormalizeElement::forceSend(state, TRUE);
 
   float size = SoFontSizeElement::get(state);
-  SbBool doTextures = SoGLTextureEnabledElement::get(state);
+  SbBool do2Dtextures = FALSE;
+  SbBool do3Dtextures = FALSE;
+  if (SoGLTextureEnabledElement::get(state)) do2Dtextures = TRUE;
+  else if (SoGLTexture3EnabledElement::get(state)) do3Dtextures = TRUE;
+  // FIXME: implement proper support for 3D-texturing, and get rid of
+  // this. 20020120 mortene.
+  if (do3Dtextures) {
+    static SbBool first = TRUE;
+    if (first) {
+      first = FALSE;
+      SoDebugError::postWarning("SoAsciiText::GLRender",
+                                "3D-textures not properly supported for this node type yet.");
+    }
+  }
 
   int i, n = this->string.getNum();
 
@@ -191,15 +202,15 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
         v0 = coords[*ptr++];
         v1 = coords[*ptr++];
         v2 = coords[*ptr++];
-        if (doTextures) {
+        if (do2Dtextures) {
           glTexCoord2f(v0[0], v0[1]);
         }
         glVertex3f(v0[0] * size + xpos, v0[1] * size + ypos, 0.0f);
-        if (doTextures) {
+        if (do2Dtextures) {
           glTexCoord2f(v1[0], v1[1]);
         }
         glVertex3f(v1[0] * size + xpos, v1[1] * size + ypos, 0.0f);
-        if (doTextures) {
+        if (do2Dtextures) {
           glTexCoord2f(v2[0], v2[1]);
         }
         glVertex3f(v2[0] * size + xpos, v2[1] * size + ypos, 0.0f);

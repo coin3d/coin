@@ -404,6 +404,7 @@ SoText3::render(SoState * state, unsigned int part)
   float size = SoFontSizeElement::get(state);
   // FIXME: not in use (yet?). 20000525 mortene.
   // SbBool doTextures = SoGLTextureEnabledElement::get(state);
+  // SbBool do3DTextures = SoGLTexture3EnabledElement::get(state);
   int i, n = THIS->widths.getLength();
 
   int firstprofile = -1;
