@@ -124,6 +124,12 @@ SbBool coin_getcwd(cc_string * str);
 
 /* ********************************************************************** */
 
+int coin_isinf(double value);
+int coin_isnan(double value);
+int coin_finite(double value);
+
+/* ********************************************************************** */
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */

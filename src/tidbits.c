@@ -33,6 +33,8 @@
 
 #include <assert.h>
 #include <errno.h>
+#include <math.h> /* isinf(), isnan(), finite() */
+#include <float.h> /* _fpclass(), _isnan(), _finite() */
 #include <locale.h>
 #include <string.h> /* strncasecmp() */
 #include <stdio.h>
@@ -1360,6 +1362,77 @@ coin_getcwd(cc_string * str)
 
   if (dynbuf != NULL) { free(dynbuf); }
   return cwd ? TRUE : FALSE;
+}
+
+/**************************************************************************/
+
+/* Returns -1 if value equals negative infinity, +1 if it is equal to
+   positive infinity, or 0 if the number is not infinite.
+
+   Note that on some systems, this method will always return 0
+   (i.e. false positives).
+*/
+int
+coin_isinf(double value)
+{
+#ifdef HAVE_ISINF
+  return isinf(value);
+#elif defined(HAVE__FPCLASS)
+  if (_fpclass(value) == _FPCLASS_NINF) { return -1; }
+  if (_fpclass(value) == _FPCLASS_PINF) { return +1; }
+  return 0;
+#else
+  /* FIXME: it might be possible to investigate the fp bits and decide
+     in a portable manner whether or not they represent an infinite. A
+     groups.google.com search turned up inconclusive. 20030919
+     mortene. */
+  return 0;
+#endif
+}
+
+/* Returns 0 if the bitpattern of the \a value argument is not a valid
+   floating point number, otherwise returns non-zero.
+
+   Note that on some systems, this method will always return 0
+   (i.e. false positives).
+*/
+int
+coin_isnan(double value)
+{
+#ifdef HAVE_ISNAN
+  return isnan(value);
+#elif defined(HAVE__ISNAN)
+  return _isnan(value);
+#elif defined(HAVE__FPCLASS)
+  if (_fpclass(value) == _FPCLASS_SNAN) { return 1; }
+  if (_fpclass(value) == _FPCLASS_QNAN) { return 1; }
+  return 0;
+#else
+  /* FIXME: it might be possible to investigate the fp bits and decide
+     in a portable manner whether or not they represent a NaN. A
+     groups.google.com search turned up inconclusive. 20030919
+     mortene. */
+  return 0;
+#endif
+}
+
+/* Returns 0 if the bitpattern of the \a value argument is not a valid
+   floating point number, or an infinite number, otherwise returns
+   non-zero.
+
+   Note that on some systems, this method will always return 1
+   (i.e. false positives).
+*/
+int
+coin_finite(double value)
+{
+#ifdef HAVE_FINITE
+  return finite(value);
+#elif defined(HAVE__FINITE)
+  return _finite(value);
+#else
+  return !coin_isinf() && !coin_isnan();
+#endif
 }
 
 /**************************************************************************/
