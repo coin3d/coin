@@ -6,7 +6,6 @@
 
 (define root (new-sogroup))
 (define text3 (new-sotext3))
-(-> (-> text3 'string) 'setValue "x") ; initial value, workaround Bugzilla #193
 (-> root 'addchild text3)
 
 (define viewer (new-soxtexaminerviewer))

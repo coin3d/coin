@@ -6,7 +6,6 @@
 
 ;; Make scene-graph and first viewer
 (define text (new-sotext3))
-(-> (-> text 'string) 'setValue "x") ; initial value, workaround Bugzilla #193
 
 (define selectone (new-soselectone (somffloat::getclasstypeid)))
 (-> (-> text 'string) 'connectFrom (-> selectone 'output))
@@ -27,7 +26,7 @@
 (set-mfield-values! (somffloat-cast (-> selectone 'input)) 0
                     '(0.1111 0.2 0.4))
 (-> (-> selectone 'index) 'getvalue)
-(-> (-> selectone 'index) 'setvalue 1)
+(-> (-> selectone 'index) 'setvalue 0)
                     
 
 ;; Copy the scenegraph.

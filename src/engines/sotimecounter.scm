@@ -6,7 +6,6 @@
 
 ;; Make scene-graph and first viewer
 (define text (new-sotext3))
-(-> (-> text 'string) 'setValue "x") ; initial value, workaround Bugzilla #193
 
 (define timecounter (new-sotimecounter))
 (-> (-> text 'string) 'connectFrom (-> timecounter 'output))
@@ -30,6 +29,8 @@
 
 ;; FIXME: should have code for playing around with the
 ;; SoTimeCounter::duty field. 20000911 mortene.
+
+;; FIXME: should have code for testing the syncOut output. 20000919 mortene.
 
 
 ;; Copy the scenegraph.
@@ -59,7 +60,7 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;; False alarms (ex-possible bugs) and ex-bugs ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; Fixed bugs and false alarms (ex-possible bugs) ;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; The counter doesn't restart at the modulo value of the step, but at
 ;; 0. This is confirmed to match the behavior of SGI Open Inventor.
@@ -93,7 +94,7 @@
   (-> (-> timecounter 'frequency) 'setValue 0.2)
   (-> (-> timecounter 'step) 'setValue 1))
 ;; Play around with this value to reproduce bug (update: now fixed).
-(-> (-> timecounter 'reset) 'setValue -250)
+(-> (-> timecounter 'reset) 'setValue 250)
 
 
 
@@ -101,5 +102,6 @@
 ;;;;; scratch area ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (-> (-> text 'justification) 'setValue SoText3::CENTER)
+(-> (-> text 'parts) 'setValue SoText3::ALL)
 (-> (-> text 'string) 'disconnect)
 (-> viewer 'viewAll)
