@@ -27,6 +27,24 @@
   \ingroup caches
 */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#include <Inventor/C/tidbits.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/caches/SoGLCacheList.h>
+#include <Inventor/caches/SoGLRenderCache.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/system/gl.h>
+
+// *************************************************************************
+
 // SGI Inventor uses an LRU/MRU strategy or something here. We're not
 // quite sure we should support multiple caches per SoSeparator
 // though. After all, there is some overhead in cheching for valid
@@ -36,26 +54,10 @@
 // store at least one cache per cache context to support rendering in
 // multiple contexts though.
 
-
 static int COIN_AUTO_CACHING = -1;
 static int COIN_DEBUG_CACHING = -1;
 
-#include <Inventor/caches/SoGLCacheList.h>
-#include <Inventor/caches/SoGLRenderCache.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoGLLazyElement.h>
-#include <Inventor/C/tidbits.h>
-#include <Inventor/errors/SoDebugError.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-#include <Inventor/system/gl.h>
-
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
 
 class SoGLCacheListP {
 public:
@@ -71,10 +73,10 @@ public:
   int numframesok;
 };
 
-#endif // DOXYGEN_SKIP_THIS
-
 #undef THIS
 #define THIS this->pimpl
+
+// *************************************************************************
 
 /*!
   Constructor.
@@ -152,6 +154,28 @@ SoGLCacheList::call(SoGLRenderAction * action)
         SoGLLazyElement::postCacheCall(state, cache->getPostLazyState());
         cache->unref(state);
         THIS->numused++;
+
+#if COIN_DEBUG
+      // The GL error test is default disabled for this optimized
+      // path.  If you get a GL error report somewhere else, enable
+      // this code by setting the environment variable
+      // COIN_GLERROR_DEBUGGING to "1" to see if the error comes only
+      // after invoking a GL renderlist. We've seen this happen, which
+      // is peculiar -- as the same OpenGL commands are sent when
+      // _building_ a cache).
+      static SbBool chkglerr = sogl_glerror_debugging();
+      if (chkglerr) {
+        GLenum err = glGetError();
+        if (err != GL_NO_ERROR) {
+          SoDebugError::post("SoGLCacheList::call",
+                             "An OpenGL error (%s) was detected after a "
+                             "renderlist invocation. This shouldn't happen, "
+                             "low-level debugging is needed.",
+                             sogl_glerror_string(err).getString());
+        }
+      }
+#endif // COIN_DEBUG
+
         return TRUE;
       }
     }
