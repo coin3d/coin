@@ -25,13 +25,10 @@
 //
 //  developed originally by PC John (peciva@fit.vutbr.cz)
 
-#ifdef _MSC_VER
-#pragma warning(disable:4275)
-#pragma warning(disable:4251)
-#endif
 #include <Inventor/SbString.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/C/tidbits.h>
 
 #include "SoStream.h"
 #include <stdlib.h>
@@ -44,34 +41,13 @@
 #define MAX_NUM_LENGTH 32
 
 
-static SoStream::StreamEndianOrdering hostEndianOrdering = (SoStream::StreamEndianOrdering)-1;
-static SoStream::StreamEndianOrdering getOrdering()
-{
-  union {
-    uint32_t i32;
-    struct {
-      uint8_t b1;
-      uint8_t b2;
-      uint8_t b3;
-      uint8_t b4;
-    } b;
-  } s;
-  s.b1 = 1; s.b2 = 2; s.b3 = 3; s.b4 = 4;
-  switch (s.i32) {
-  case 0x01020304: return SoStream::BIG_ENDIAN_STREAM;
-  case 0x04030201: return SoStream::LITTLE_ENDIAN_STREAM;
-  default: SoDebugError::post("SoStream::getHostEndianOrdering()",
-             "Strange byte ordering - not BIG_ENDIAN, nor LITTLE_ENDIAN.");
-  }
-  assert(false && "Unknown machine byte ordering.");
-  return SoStream::HOST_DEP;
-}
-
 SoStream::StreamEndianOrdering SoStream::getHostEndianOrdering()
 {
-  if (hostEndianOrdering == -1)
-    hostEndianOrdering = getOrdering();
-  return hostEndianOrdering;
+  switch (coin_host_get_endianness()) {
+  case COIN_HOST_IS_LITTLEENDIAN: return SoStream::LITTLE_ENDIAN_STREAM;
+  case COIN_HOST_IS_BIGENDIAN: return SoStream::BIG_ENDIAN_STREAM;
+  default: assert(FALSE && "unknown byteordering"); return SoStream::HOST_DEP;
+  }
 }
 
 void SoStream::updateNeedEndianConversion()
