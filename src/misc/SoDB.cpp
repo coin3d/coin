@@ -1259,16 +1259,20 @@ SoDB::renameGlobalField(const SbName & from, const SbName & to)
   }
 #endif // COIN_DEBUG
 
-  if (to == "") { // Remove field.
+  if (to == "") { // Empty string is a special case, remove field.
+    assert(gf->getRefCount() == 1);
     SoGlobalField::removeGlobalFieldContainer(gf);
+    return;
   }
-  else {
-    // Existing entry by same name? If so, remove it.
-    SoGlobalField * old = SoGlobalField::getGlobalFieldContainer(to);
-    if (old) SoGlobalField::removeGlobalFieldContainer(old);
 
-    gf->setName(to);
+  // Existing entry by the same "to"-name? If so, remove it.
+  SoGlobalField * old = SoGlobalField::getGlobalFieldContainer(to);
+  if (old) {
+    assert(old->getRefCount() == 1);
+    SoGlobalField::removeGlobalFieldContainer(old);
   }
+
+  gf->setName(to);
 }
 
 // This is the timer sensor callback which updates the realTime global
