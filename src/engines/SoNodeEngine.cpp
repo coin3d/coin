@@ -211,20 +211,23 @@ SoNodeEngine::notify(SoNotList * nl)
   if (this->isNotifying()) return;
   this->flags |= FLAG_ISNOTIFYING;
 
-  // FIXME: we don't add ourselves to the notification list. This
-  // should probably be done, but I've postponed it until we see the
-  // need to fix all interaction with the notification list. 20000911 mortene.
-
-
   // Let engine know that a field changed, so we can recalculate
   // internal variables, if necessary.
   this->inputChanged(nl->getLastField());
+
+  // add ourself to the notification list
+  SoNotRec rec(this);
+  rec.setType(SoNotRec::ENGINE);
+  nl->append(&rec);
 
   // Notify the slave fields connected to our engine outputs.
   const SoEngineOutputData * outputs = this->getOutputData();
   int numoutputs = outputs->getNumOutputs();
   for (int i = 0; i < numoutputs; i++)
     outputs->getOutput(this, i)->touchSlaves(nl, this->isNotifyEnabled());
+
+  // notify auditors?
+  //  inherited::notify(nl);
 
   this->flags &= ~FLAG_ISNOTIFYING;
 
