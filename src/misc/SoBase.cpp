@@ -1803,7 +1803,20 @@ SoBase::readBaseInstance(SoInput * in, const SbName & classname,
       }
         
       SoGlobalField * container = (SoGlobalField *)f->getContainer();
+
+      // Copy new field values into the existing field. Open Inventor
+      // apparently does not copy the new values into the old field,
+      // but it seems logical to do so.
+      SoFieldContainer::initCopyDict();
       container->copyFieldValues(globalfield, TRUE); // Assign new global field values to old global field
+      SoFieldContainer::copyDone();
+
+      // Make sure to update the mapping in SoInput if necessary
+      if (!(!refname)) {
+        // Set up new entry in reference hash -- with full name.
+        in->removeReference(refname);
+        in->addReference(refname, container);
+      }
           
       // Remove newly made SoGlobalField, use the existing one instead:
       base->ref(); base->unref();
