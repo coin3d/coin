@@ -84,11 +84,10 @@ SbVec2d::dot(const SbVec2d& v) const
 }
 
 /*!
-  Compares the vector with \a v and returns TRUE if the largest distance
-  between the vectors are larger than the square root of the given
-  tolerance value.
- */
-
+  Compares the vector with \a v and returns \c TRUE if the distance
+  between the vectors is smaller or equal to the square root of
+  \a tolerance.
+*/
 SbBool
 SbVec2d::equals(const SbVec2d& v, const double tolerance) const
 {

@@ -221,10 +221,10 @@ SbVec3f::dot(const SbVec3f & v) const
   return this->vec[0]*v.vec[0] + this->vec[1]*v.vec[1] + this->vec[2]*v.vec[2];
 }
 
-/*!
-  Compares the vector with \a v and returns \c TRUE if the largest
-  distance between the vectors are larger than the square root of the
-  given tolerance value.
+/*!  
+  Compares the vector with \a v and returns \c TRUE if the distance
+  between the vectors is smaller or equal to the square root of
+  \a tolerance.
 */
 SbBool
 SbVec3f::equals(const SbVec3f & v, const float tolerance) const

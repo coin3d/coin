@@ -122,9 +122,9 @@ SbVec3d::dot(const SbVec3d & v) const
 }
 
 /*!
-  Compares the vector with \a v and returns \c TRUE if the largest
-  distance between the vectors are larger than the square root of the
-  given tolerance value.
+  Compares the vector with \a v and returns \c TRUE if the distance
+  between the vectors is smaller or equal to the square root of
+  \a tolerance.
 */
 SbBool
 SbVec3d::equals(const SbVec3d & v, const double tolerance) const
