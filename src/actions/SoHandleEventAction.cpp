@@ -159,7 +159,9 @@ SoHandleEventAction::isHandled(void) const
 void
 SoHandleEventAction::setGrabber(SoNode * node)
 {
+  this->releaseGrabber();
   this->grabber = node;
+  if (node) node->grabEventsSetup();
 }
 
 /*!
@@ -171,6 +173,7 @@ SoHandleEventAction::setGrabber(SoNode * node)
 void
 SoHandleEventAction::releaseGrabber(void)
 {
+  if (this->grabber) this->grabber->grabEventsCleanup();
   this->setGrabber(NULL);
 }
 
