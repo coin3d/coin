@@ -863,6 +863,8 @@ SoInput::read(char & c, SbBool skip)
 SbBool
 SoInput::read(SbString & s)
 {
+  if (this->eof()) return FALSE;
+
   SoInput_FileInfo * fi = this->getTopOfStack();
   assert(fi);
 
