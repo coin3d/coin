@@ -148,6 +148,7 @@ public:
       this->lastchar = -1;
       this->eof = FALSE;
       this->isbinary = FALSE;
+      this->vrml1file = FALSE;
     }
 
   ~SoInput_FileInfo()
@@ -345,6 +346,7 @@ public:
 
       this->header = "";
       this->ivversion = 0.0f;
+      this->vrml1file = FALSE;
 
       char c;
       if (!this->get(c)) return FALSE;
@@ -361,8 +363,14 @@ public:
 
       if (!SoDB::getHeaderData(this->header, this->isbinary, this->ivversion,
                                this->prefunc, this->postfunc, this->userdata,
-                               TRUE))
+                               TRUE)) {
         this->ivversion = 0.0f;
+      }
+      else {
+        if (this->header == SbString("#VRML V1.0 ascii")) {
+          this->vrml1file = TRUE;
+        }
+      }
       return TRUE;
     }
 
@@ -380,6 +388,11 @@ public:
     {
       return this->ivversion;
     }
+
+  SbBool isFileVRML1(void)
+  {
+    return this->vrml1file;
+  }
 
   void setIvVersion(const float v)
     {
@@ -432,6 +445,7 @@ private:
   char lastchar; // Last read character.
   SbBool ismembuffer;
   SbBool headerisread, eof;
+  SbBool vrml1file;
 };
 
 SbStringList * SoInput::dirsearchlist = NULL;
@@ -2049,6 +2063,18 @@ SoInput::convertDoubleArray(char * from, double * to, int len)
     from += sizeof(double);
     to++;
   }
+}
+
+/*!
+  Returns \e TRUE if current file is a VRML V1.0 file.
+
+  This method is an extension versus the Open Inventor API.
+*/
+SbBool 
+SoInput::isFileVRML1(void)
+{
+  if (!this->checkHeader()) return FALSE;
+  return this->getTopOfStack()->isFileVRML1();
 }
 
 /*!
