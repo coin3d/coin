@@ -1,7 +1,7 @@
-This file contains information about building and using Coin on Mac OS X.
+This file contains information about building Coin on Mac OS X.
+For more information on getting started, known issues, and more, see
+http://www.coin3d.org/mac/.
 
-For more information on getting started using Coin, see
-http://www.coin3d.org/mac/
 
 Building Coin
 =============
@@ -127,56 +127,9 @@ Carbon/Cocoa/GLUT.
 Common problems (and solutions)
 ===============================
 
-o HardCopy includes
-  -----------------
-
-In the documentation, the include paths for the HardCopy classes for
-vectorized printing (http://doc.coin3d.org/Coin/group__hardcopy.html)
-are #include <HardCopy/XXX> instead of #include
-<Inventor/annex/HardCopy/XXX>. This is intentional: It's the path that
-TGS Inventor uses, and we want Coin and Inventor to be as compatible
-as possible.
-
-You options are:
-
-- Add "-I/Library/Frameworks/Inventor.framework/Headers/annex" to your
-  compiler flags. (This is how we do it on Windows and GNU/Linux.) 
-
-- Create a symbolic link /usr/local/include/HardCopy, which points to
-  /Library/Frameworks/Inventor.framework/Headers/annex/HardCopy.
-
-- If you write the code yourself: It is perfectly possible to write
-  <Inventor/annex/HardCopy/XXX>, which will make your code more
-  portable between Coin on different platforms, but not portable
-  between Coin and TGS. (TGS doesn't support Mac OS X at all, so if
-  you want Mac OS X support, that's probably your best option.)
-
-
-o Is there anything I can do to increase performance?
----------------------------------------------------
-
-Yes. There are two things that you should consider when you want to
-increase the performance of your application.
-
-First, take a look at your scene graph. Remove empty (unused)
-nodes. Keep in mind that OpenGL state changes are expensive, so
-position objects in a way that they can share textures and materials
-whenever possible. Try to optimize your scene graph for render
-caching. And so on... This is not Mac-specific advice, but I'm
-repeating it here since it's so important.
-
-Secondly, you might want to change the settings for automatic render
-caching (storing rendering instructions for faster execution, usually
-by using display lists). Display lists take up precious graphics card
-memory, so we are rather conservative about when we enable caching.
-(See http://doc.coin3d.org/Coin/classSoSeparator.html#m0/ for more
-information about render caching.)
-
-If you have enough graphics memory, you'll probably want to override
-Coin's all-too-cautious behaviour - try e.g. setting the
-COIN_AUTOCACHE_LOCAL_MAX variable to 10000 instead of the default,
-1000. Your mileage may vary, but I get up to a 100% FPS speedup on my
-Powerbook (ATI Radeon 9000) by doing this.
+The following is a list of problem related to building Coin. For issues 
+related to Coin/Mac usage, please refer to the FAQ at 
+http://www.coin3d.org/mac/faq.html.
 
 
 o Conflicting installations of Inventor framework and library
@@ -191,24 +144,6 @@ include path _before_ trying to use the headers that come with the
 framework. Removing the old header files should solve the problem.
                                                          
 
-o MACOSX_DEPLOYMENT_TARGET warning
-  --------------------------------
-
-You might get the following warning when building your application:
-
-ld: warning dynamic shared library:
-/System/Library/Frameworks/AGL.framework/AGL not made a weak library
-in output with MACOSX_DEPLOYMENT_TARGET environment variable set to:
-10.1
-
-This has nothing to do with Coin, but is rather a peculiarity of the
-Mac OS X "December 2002" developer tools. The warning is totally
-harmless. You can ignore it, or you can set the environment variable
-MACOSX_DEPLOYMENT_TARGET="10.2". (FYI, it essentially has to do with
-how missing symbols at startup are handled. I recommend you read the
-relevant TechNote[6] if you are interested in background information.)
-
-
 o Directory names with spaces
   ----------------------------
 
@@ -220,22 +155,6 @@ on it.
 
 Until this has been fixed, I suggest the obvious workaround of not 
 having any spaces in the path leading to Coin.
-
-
-o "When I try to load a texture, my application crashes"
-  ------------------------------------------------------
-
-If this happens, you are probably affected by a fairly common problem
-with a broken QuickTime component component installed by Toast. In
-that case, you should get the following warning:
-
-  ## Component Manager: attempting to find symbols in a component alias
-  of type (regR/carP/x!bt)
-  space-test has exited due to signal 10 (SIGBUS).
-
-If you get the above error message, see if you have a file called
-Toast Video CD Support.qtx in /Library/QuickTime/. If so, move it
-away, and you should get rid of the error message and the crash.
 
 
 o "Undefined symbol: __Znwm"
