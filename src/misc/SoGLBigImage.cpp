@@ -232,7 +232,17 @@ SoGLBigImage::initSubImages(SoState * state,
   THIS->glimagesize[0] = next_power_of_two(THIS->imagesize[0]);
   THIS->glimagesize[1] = next_power_of_two(THIS->imagesize[1]);
 
-  int highbit;
+  if (THIS->glimagesize[0] > THIS->imagesize[0] && THIS->glimagesize[0] >= 256) {
+    int diff = THIS->imagesize[0] - (THIS->glimagesize[0]>>1);
+    float ratio = float(diff) / float(THIS->glimagesize[0]>>1);
+    if (ratio < 0.3) THIS->glimagesize[0] >>= 1;
+  }
+
+  if (THIS->glimagesize[1] > THIS->imagesize[1] && THIS->glimagesize[1] >= 256) {
+    int diff = THIS->imagesize[1] - (THIS->glimagesize[1]>>1);
+    float ratio = float(diff) / float(THIS->glimagesize[1]>>1);
+    if (ratio < 0.3) THIS->glimagesize[1] >>= 1;
+  }
 
   SbVec2s size(0,0);
   int nc;
