@@ -48,7 +48,7 @@
   values defined in the fontStyle field (see SoVRMLFontStyle).
   Text nodes may contain multiple text strings specified using the
   UTF-8 encoding as specified by ISO 10646-1:1993 (see
-  <http://www.web3d.org/technicalinfo/specifications/vrml97/part1/references.html#[UTF8]>).
+  <http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/references.html#[UTF8]>).
   The text strings are stored in the order in which the text mode
   characters are to be produced as defined by the parameters in the
   FontStyle node.

@@ -40,7 +40,7 @@
   fields of the Sphere node.
 
   <center>
-  <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/sphere.gif">
+  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/Images/sphere.gif">
   Figure 6.15 -- Sphere node
   </center>
 

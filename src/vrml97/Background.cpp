@@ -52,7 +52,7 @@
   local coordinate system and are affected by the accumulated rotation
   of their ancestors as described below.  Background nodes are
   bindable nodes as described in 4.6.10, Bindable children nodes
-  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.10>).
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.6.10>).
   There exists a Background stack, in which the top-most Background on
   the stack is the currently active Background. To move a Background
   to the top of the stack, a TRUE value is sent to the set_bind
@@ -60,7 +60,7 @@
   view. A FALSE value sent to set_bind removes the Background from the
   stack and unbinds it from the browser's view. More detail on the
   bind stack is described in 4.6.10, Bindable children nodes
-  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.10>).
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.6.10>).
 
   The backdrop is conceptually a partial sphere (the ground) enclosed
   inside of a full sphere (the sky) in the local coordinate system
@@ -125,7 +125,7 @@
   orientation as if the image were displayed normally in 2D.
 
   <center>
-  <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/background.gif">
+  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/Images/background.gif">
   Figure 6.1
   </center>
 
@@ -143,7 +143,7 @@
   GIF (see E.[GIF]) format is recommended (including transparency).
   More detail on the url fields can be found in 4.5, VRML and the
   World Wide Web
-  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.5>).
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.5>).
 
 
 */

@@ -48,7 +48,7 @@
   node.
 
   <center>
-  <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/cone.gif">
+  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/Images/cone.gif">
   Figure 6.3
   </center>
 

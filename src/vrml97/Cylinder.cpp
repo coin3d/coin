@@ -54,7 +54,7 @@
   activation).
 
   <center>
-  <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/cylinder.gif">
+  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/Images/cylinder.gif">
   Figure 6.4
   </center>
 

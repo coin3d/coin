@@ -43,13 +43,13 @@
   field. The keyValue field and value_changed events are defined in
   RGB colour space. A linear interpolation using the value of
   set_fraction as input is performed in HSV space (see 
-  http://www.web3d.org/technicalinfo/specifications/vrml97/part1/bibliography.html#[FOLE]
+  http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/bibliography.html#[FOLE]
   for description of RGB and HSV colour spaces). The results are undefined
   when interpolating between two consecutive keys with complementary
   hues.  
 
   4.6.8, Interpolator nodes
-  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.8>), 
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.6.8>), 
   contains a detailed discussion of interpolators.
 
 */

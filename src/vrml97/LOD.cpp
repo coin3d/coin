@@ -45,7 +45,7 @@
   detail. The range field specifies the ideal distances at which to
   switch between the levels. Subclause 4.6.5, Grouping and children
   nodes
-  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5>),
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.6.5>),
   contains details on the types of nodes that are legal values
   for level.
 

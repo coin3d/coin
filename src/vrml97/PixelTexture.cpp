@@ -46,17 +46,17 @@
   lower-left pixel of the pixel image corresponds to s=0.0, t=0.0, and
   the top-right pixel of the image corresponds to s = 1.0, t = 1.0.
   See 4.6.11, Texture maps
-  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.11>),
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.6.11>),
   for a general description of texture
   maps. Figure 6.13 depicts an example PixelTexture.
 
   <center>
-  <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/PixelTexture.gif">
+  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/Images/PixelTexture.gif">
   Figure 6.13 -- PixelTexture node
   </center>
 
   See 4.14, Lighting model
-  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14>),
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.14>),
   for a description of how the texture values interact with the
   appearance of the geometry.  SoSFImage, describes the
   specification of an image.  The repeatS and repeatT fields specify
