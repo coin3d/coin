@@ -784,9 +784,11 @@ glglue_resolve_symbols(cc_glglue * w)
         !w->glMultiTexCoord3fv ||
         !w->glMultiTexCoord4fv) {
       w->glActiveTexture = NULL; /* cc_glglue_has_multitexture() will return FALSE */
-      cc_debugerror_postwarning("glglue_init",
-                                "glActiveTexture found, but one or more of the other "
-                                "multitexture functions were not found");
+      if (COIN_DEBUG || coin_glglue_debug()) {
+        cc_debugerror_postwarning("glglue_init",
+                                  "glActiveTexture found, but one or more of the other "
+                                  "multitexture functions were not found");
+      }
     }
   }
   w->maxtextureunits = 1; /* when multitexturing is not available */
@@ -996,9 +998,11 @@ glglue_resolve_symbols(cc_glglue * w)
         !w->glDrawElements ||
         !w->glArrayElement) {
       w->glVertexPointer = NULL; /* cc_glglue_has_vertex_array() will return FALSE */
-      cc_debugerror_postwarning("glglue_init",
-                                "glVertexPointer found, but one or more of the other "
-                                "vertex array functions were not found");
+      if (COIN_DEBUG || coin_glglue_debug()) {
+        cc_debugerror_postwarning("glglue_init",
+                                  "glVertexPointer found, but one or more of the other "
+                                  "vertex array functions were not found");
+      }
     }
   }
 #endif /* GL_VERSION_1_1 */
@@ -1091,9 +1095,11 @@ glglue_resolve_symbols(cc_glglue * w)
         !w->glGetBufferParameteriv ||
         !w->glGetBufferPointerv) {
       w->glBindBuffer = NULL; /* so that cc_glglue_has_vertex_buffer_object() will return FALSE */
-      cc_debugerror_postwarning("glglue_init",
-                                "glBindBuffer found, but one or more of the other "
-                                "vertex buffer object functions were not found");
+      if (COIN_DEBUG || coin_glglue_debug()) {
+        cc_debugerror_postwarning("glglue_init",
+                                  "glBindBuffer found, but one or more of the other "
+                                  "vertex buffer object functions were not found");
+      }
     }
   }
 
@@ -1120,11 +1126,13 @@ glglue_resolve_symbols(cc_glglue * w)
 #define BIND_FUNCTION_WITH_WARN(_func_, _type_) \
    w->_func_ = (_type_)PROC(_func_); \
    do { \
-     if (!w->_func_ && (COIN_DEBUG || coin_glglue_debug())) { \
-       cc_debugerror_postwarning("glglue_init", \
-                                 "GL_NV_register_combiners found, but %s " \
-                                 "function missing.", SO__QUOTE(_func_)); \
+     if (!w->_func_) { \
        w->has_nv_register_combiners = FALSE; \
+       if (COIN_DEBUG || coin_glglue_debug()) { \
+         cc_debugerror_postwarning("glglue_init", \
+                                   "GL_NV_register_combiners found, but %s " \
+                                   "function missing.", SO__QUOTE(_func_)); \
+       } \
      } \
    } while (0)
         
@@ -1196,11 +1204,13 @@ glglue_resolve_symbols(cc_glglue * w)
 #define BIND_FUNCTION_WITH_WARN(_func_, _type_) \
    w->_func_ = (_type_)PROC(_func_); \
    do { \
-     if (!w->_func_ && (COIN_DEBUG || coin_glglue_debug())) { \
-       cc_debugerror_postwarning("glglue_init", \
-                                 "GL_ARB_fragment_program found, but %s " \
-                                 "function missing.", SO__QUOTE(_func_)); \
+     if (!w->_func_) { \
        w->has_arb_fragment_program = FALSE; \
+       if (COIN_DEBUG || coin_glglue_debug()) { \
+         cc_debugerror_postwarning("glglue_init", \
+                                   "GL_ARB_fragment_program found, but %s " \
+                                   "function missing.", SO__QUOTE(_func_)); \
+       } \
      } \
    } while (0)
  
@@ -1301,11 +1311,13 @@ glglue_resolve_symbols(cc_glglue * w)
 #define BIND_FUNCTION_WITH_WARN(_func_, _type_) \
    w->_func_ = (_type_)PROC(_func_); \
    do { \
-     if (!w->_func_ && (COIN_DEBUG || coin_glglue_debug())) { \
-       cc_debugerror_postwarning("glglue_init", \
-                                 "GL_ARB_vertex_program found, but %s " \
-                                 "function missing.", SO__QUOTE(_func_)); \
+     if (!w->_func_) { \
        w->has_arb_vertex_program = FALSE; \
+       if (COIN_DEBUG || coin_glglue_debug()) { \
+         cc_debugerror_postwarning("glglue_init", \
+                                   "GL_ARB_vertex_program found, but %s " \
+                                   "function missing.", SO__QUOTE(_func_)); \
+       } \
      } \
    } while (0)
 
@@ -1398,10 +1410,11 @@ glglue_resolve_symbols(cc_glglue * w)
           !w->glAllocateMemoryNV ||
           !w->glFreeMemoryNV) {
         w->glVertexArrayRangeNV = NULL;
-        cc_debugerror_postwarning("glglue_init",
-                                  "glVertexArrayRangeNV found, but one or more of the other "
-                                  "vertex array functions were not found");
-
+        if (COIN_DEBUG || coin_glglue_debug()) {
+          cc_debugerror_postwarning("glglue_init",
+                                    "glVertexArrayRangeNV found, but one or more of the other "
+                                    "vertex array functions were not found");
+        }
       }
     }
   }
