@@ -43,16 +43,16 @@ public:
   SoSFRotation scaleOrientation;
   SoSFVec3f center;
 
-  void pointAt(const SbVec3f & fromPoint, const SbVec3f & toPoint);
+  void pointAt(const SbVec3f & frompoint, const SbVec3f & topoint);
   void getScaleSpaceMatrix(SbMatrix & mat, SbMatrix & inv) const;
   void getRotationSpaceMatrix(SbMatrix & mat, SbMatrix & inv) const;
   void getTranslationSpaceMatrix(SbMatrix & mat, SbMatrix & inv) const;
   void multLeft(const SbMatrix & mat);
   void multRight(const SbMatrix & mat);
-  void combineLeft(SoTransformation * nodeOnRight);
-  void combineRight(SoTransformation * nodeOnLeft);
+  void combineLeft(SoTransformation * nodeonright);
+  void combineRight(SoTransformation * nodeonleft);
   void setMatrix(const SbMatrix & mat);
-  void recenter(const SbVec3f & newCenter);
+  void recenter(const SbVec3f & newcenter);
 
   virtual void doAction(SoAction * action);
   virtual void GLRender(SoGLRenderAction * action);

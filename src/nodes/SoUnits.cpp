@@ -19,92 +19,48 @@
 
 /*!
   \class SoUnits SoUnits.h Inventor/nodes/SoUnits.h
-  \brief The SoUnits class ...
+  \brief The SoUnits class is a node for setting unit types.
   \ingroup nodes
 
-  FIXME: write class doc
+  Even though Coin doesn't care what units you are using in your scene
+  graph \e per \e se, there's an advantage to using SoUnits nodes: you
+  have a way to split your scene graph into different "conceptual"
+  parts.
+
+  When encountering SoUnit nodes, the traversal actions methods makes
+  sure the following geometry is scaled accordingly.
 */
+
+// Metadon doc:
+/*¡
+  FIXME: doesn't work correctly for unit settings ANGSTROMS or
+  POINTS. 20000321 mortene.
+ */
 
 #include <Inventor/nodes/SoUnits.h>
 
-
-
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
-
-#include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-
-#include <Inventor/elements/SoUnitsElement.h>
+#include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
+#include <Inventor/elements/SoGLNormalizeElement.h>
+#include <Inventor/elements/SoUnitsElement.h>
 
 /*!
   \enum SoUnits::Units
-  FIXME: write documentation for enum
-*/
-/*!
-  \var SoUnits::Units SoUnits::METERS
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoUnits::Units SoUnits::CENTIMETERS
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoUnits::Units SoUnits::MILLIMETERS
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoUnits::Units SoUnits::MICROMETERS
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoUnits::Units SoUnits::MICRONS
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoUnits::Units SoUnits::NANOMETERS
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoUnits::Units SoUnits::ANGSTROMS
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoUnits::Units SoUnits::KILOMETERS
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoUnits::Units SoUnits::FEET
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoUnits::Units SoUnits::INCHES
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoUnits::Units SoUnits::POINTS
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoUnits::Units SoUnits::YARDS
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoUnits::Units SoUnits::MILES
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoUnits::Units SoUnits::NAUTICAL_MILES
-  FIXME: write documentation for enum definition
+
+  Enumerates the available unit settings.
 */
 
 
 /*!
   \var SoSFEnum SoUnits::units
-  FIXME: write documentation for field
+
+  The units which will be used for nodes following this node in the
+  traversal (until the next SoUnit node, if any). Default value of the
+  field is SoUnits::METERS.
 */
 
 
@@ -136,7 +92,7 @@ SO_NODE_SOURCE(SoUnits);
 /*!
   Constructor.
 */
-SoUnits::SoUnits()
+SoUnits::SoUnits(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoUnits);
 
@@ -166,11 +122,7 @@ SoUnits::~SoUnits()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoUnits class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoUnits::initClass(void)
 {
@@ -183,9 +135,7 @@ SoUnits::initClass(void)
   SO_ENABLE(SoGetPrimitiveCountAction, SoUnitsElement);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoUnits::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -201,9 +151,7 @@ SoUnits::getBoundingBox(SoGetBoundingBoxAction * action)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoUnits::GLRender(SoGLRenderAction * action)
 {
@@ -223,11 +171,9 @@ SoUnits::GLRender(SoGLRenderAction * action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoUnits::doAction(SoAction *action)
+SoUnits::doAction(SoAction * action)
 {
   SoUnitsElement::Units currentunit = SoUnitsElement::get(action->getState());
 
@@ -241,38 +187,30 @@ SoUnits::doAction(SoAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoUnits::callback(SoCallbackAction *action)
+SoUnits::callback(SoCallbackAction * action)
 {
-  SoUnits::doAction((SoAction*)action);
+  SoUnits::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoUnits::getMatrix(SoGetMatrixAction *action)
+SoUnits::getMatrix(SoGetMatrixAction * action)
 {
-  SoUnits::doAction((SoAction*)action);
+  SoUnits::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoUnits::pick(SoPickAction *action)
+SoUnits::pick(SoPickAction * action)
 {
-  SoUnits::doAction((SoAction*)action);
+  SoUnits::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoUnits::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoUnits::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  SoUnits::doAction((SoAction*)action);
+  SoUnits::doAction((SoAction *)action);
 }

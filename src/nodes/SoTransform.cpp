@@ -19,42 +19,48 @@
 
 /*!
   \class SoTransform SoTransform.h Inventor/nodes/SoTransform.h
-  \brief The SoTransform class ...
+  \brief The SoTransform class is the "all-purpose" transformation node type.
   \ingroup nodes
 
-  FIXME: write class doc
+  Like SoMatrixTransform, nodes of this type gives the application
+  programmer maximum flexibility when specifying geometry
+  transformations in a scene graph. If you want to set and keep the
+  various components of the transformation matrix in separate
+  entities, this node type is preferable, though.
+
+  The order of operations is: first scaling is done, then rotation,
+  then translation.
 */
 
 #include <Inventor/nodes/SoTransform.h>
 
-
-#include <coindefs.h> // COIN_STUB()
-
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
-
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoGLNormalizeElement.h>
 
+#include <coindefs.h> // COIN_STUB()
+
+
 /*!
   \var SoSFVec3f SoTransform::translation
-  FIXME: write documentation for field
+  The translation part of the transformation.
 */
 /*!
   \var SoSFRotation SoTransform::rotation
-  FIXME: write documentation for field
+  The rotation part of the transformation.
 */
 /*!
   \var SoSFVec3f SoTransform::scaleFactor
-  FIXME: write documentation for field
+  The scaling part of the transformation.
 */
 /*!
   \var SoSFRotation SoTransform::scaleOrientation
-  FIXME: write documentation for field
+  The orientation the object is set to before scaling.
 */
 /*!
   \var SoSFVec3f SoTransform::center
-  FIXME: write documentation for field
+  The center point for the rotation.
 */
 
 // *************************************************************************
@@ -64,15 +70,14 @@ SO_NODE_SOURCE(SoTransform);
 /*!
   Constructor.
 */
-SoTransform::SoTransform()
+SoTransform::SoTransform(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTransform);
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
-  SO_NODE_ADD_FIELD(scaleOrientation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f),
-                                                  0.0f)));
+  SO_NODE_ADD_FIELD(scaleOrientation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
   SO_NODE_ADD_FIELD(center, (0.0f, 0.0f, 0.0f));
 }
 
@@ -83,11 +88,7 @@ SoTransform::~SoTransform()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoTransform class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoTransform::initClass(void)
 {
@@ -98,8 +99,7 @@ SoTransform::initClass(void)
   FIXME: write function documentation
 */
 void
-SoTransform::pointAt(const SbVec3f & /* fromPoint */,
-                     const SbVec3f & /* toPoint */)
+SoTransform::pointAt(const SbVec3f & frompoint, const SbVec3f & topoint)
 {
   COIN_STUB();
 }
@@ -108,8 +108,7 @@ SoTransform::pointAt(const SbVec3f & /* fromPoint */,
   FIXME: write function documentation
 */
 void
-SoTransform::getScaleSpaceMatrix(SbMatrix & /* mat */,
-                                 SbMatrix & /* inv */) const
+SoTransform::getScaleSpaceMatrix(SbMatrix & mat, SbMatrix & inv) const
 {
   COIN_STUB();
 }
@@ -118,8 +117,7 @@ SoTransform::getScaleSpaceMatrix(SbMatrix & /* mat */,
   FIXME: write function documentation
 */
 void
-SoTransform::getRotationSpaceMatrix(SbMatrix & /* mat */,
-                                    SbMatrix & /* inv */) const
+SoTransform::getRotationSpaceMatrix(SbMatrix & mat, SbMatrix & inv) const
 {
   COIN_STUB();
 }
@@ -128,8 +126,7 @@ SoTransform::getRotationSpaceMatrix(SbMatrix & /* mat */,
   FIXME: write function documentation
 */
 void
-SoTransform::getTranslationSpaceMatrix(SbMatrix & /* mat */,
-                                       SbMatrix & /* inv */) const
+SoTransform::getTranslationSpaceMatrix(SbMatrix & mat, SbMatrix & inv) const
 {
   COIN_STUB();
 }
@@ -138,7 +135,7 @@ SoTransform::getTranslationSpaceMatrix(SbMatrix & /* mat */,
   FIXME: write function documentation
 */
 void
-SoTransform::multLeft(const SbMatrix & /* mat */)
+SoTransform::multLeft(const SbMatrix & mat)
 {
   COIN_STUB();
 }
@@ -147,7 +144,7 @@ SoTransform::multLeft(const SbMatrix & /* mat */)
   FIXME: write function documentation
 */
 void
-SoTransform::multRight(const SbMatrix & /* mat */)
+SoTransform::multRight(const SbMatrix & mat)
 {
   COIN_STUB();
 }
@@ -156,7 +153,7 @@ SoTransform::multRight(const SbMatrix & /* mat */)
   FIXME: write function documentation
 */
 void
-SoTransform::combineLeft(SoTransformation * /* nodeOnRight */)
+SoTransform::combineLeft(SoTransformation * nodeonright)
 {
   COIN_STUB();
 }
@@ -165,7 +162,7 @@ SoTransform::combineLeft(SoTransformation * /* nodeOnRight */)
   FIXME: write function documentation
 */
 void
-SoTransform::combineRight(SoTransformation * /* nodeOnLeft */)
+SoTransform::combineRight(SoTransformation * nodeonleft)
 {
   COIN_STUB();
 }
@@ -174,7 +171,7 @@ SoTransform::combineRight(SoTransformation * /* nodeOnLeft */)
   FIXME: write function documentation
 */
 void
-SoTransform::setMatrix(const SbMatrix & /* mat */)
+SoTransform::setMatrix(const SbMatrix & mat)
 {
   COIN_STUB();
 }
@@ -183,18 +180,16 @@ SoTransform::setMatrix(const SbMatrix & /* mat */)
   FIXME: write function documentation
 */
 void
-SoTransform::recenter(const SbVec3f & /* newCenter */)
+SoTransform::recenter(const SbVec3f & newcenter)
 {
   COIN_STUB();
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoTransform::doAction(SoAction * action)
 {
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
   SbVec3f angle;
   float rot;
   rotation.getValue().getValue(angle, rot);
@@ -231,9 +226,7 @@ SoTransform::doAction(SoAction * action)
   SoModelMatrixElement::mult(action->getState(), this, matrix);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoTransform::GLRender(SoGLRenderAction * action)
 {
@@ -243,18 +236,14 @@ SoTransform::GLRender(SoGLRenderAction * action)
   SoTransform::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoTransform::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoTransform::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoTransform::getMatrix(SoGetMatrixAction * action)
 {
@@ -270,29 +259,23 @@ SoTransform::getMatrix(SoGetMatrixAction * action)
   action->getInverse().multRight(mi);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoTransform::callback(SoCallbackAction * action)
 {
   SoTransform::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoTransform::pick(SoPickAction * action)
 {
   SoTransform::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoTransform::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoTransform::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoTransform::doAction((SoAction *)action);
 }

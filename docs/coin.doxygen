@@ -196,8 +196,18 @@ INPUT                = \
 	$(top_srcdir)/src/nodes/SoCylinder.cpp $(top_srcdir)/include/Inventor/nodes/SoCylinder.h \
 	$(top_srcdir)/src/nodes/SoTransformation.cpp $(top_srcdir)/include/Inventor/nodes/SoTransformation.h \
 	$(top_srcdir)/src/nodes/SoAntiSquish.cpp $(top_srcdir)/include/Inventor/nodes/SoAntiSquish.h \
+	$(top_srcdir)/src/nodes/SoMatrixTransform.cpp $(top_srcdir)/include/Inventor/nodes/SoMatrixTransform.h \
 	$(top_srcdir)/src/nodes/SoRotation.cpp $(top_srcdir)/include/Inventor/nodes/SoRotation.h \
+	$(top_srcdir)/src/nodes/SoPendulum.cpp $(top_srcdir)/include/Inventor/nodes/SoPendulum.h \
 	$(top_srcdir)/src/nodes/SoRotor.cpp $(top_srcdir)/include/Inventor/nodes/SoRotor.h \
+	$(top_srcdir)/src/nodes/SoResetTransform.cpp $(top_srcdir)/include/Inventor/nodes/SoResetTransform.h \
+	$(top_srcdir)/src/nodes/SoRotationXYZ.cpp $(top_srcdir)/include/Inventor/nodes/SoRotationXYZ.h \
+	$(top_srcdir)/src/nodes/SoScale.cpp $(top_srcdir)/include/Inventor/nodes/SoScale.h \
+	$(top_srcdir)/src/nodes/SoTranslation.cpp $(top_srcdir)/include/Inventor/nodes/SoTranslation.h \
+	$(top_srcdir)/src/nodes/SoShuttle.cpp $(top_srcdir)/include/Inventor/nodes/SoShuttle.h \
+	$(top_srcdir)/src/nodes/SoSurroundScale.cpp $(top_srcdir)/include/Inventor/nodes/SoSurroundScale.h \
+	$(top_srcdir)/src/nodes/SoTransform.cpp $(top_srcdir)/include/Inventor/nodes/SoTransform.h \
+	$(top_srcdir)/src/nodes/SoUnits.cpp $(top_srcdir)/include/Inventor/nodes/SoUnits.h \
 
 #	$(top_srcdir)/src/nodes/SoAnnoText3.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnoText3.h \
 #	$(top_srcdir)/src/nodes/SoAnnoText3Property.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnoText3Property.h \
@@ -241,7 +251,6 @@ INPUT                = \
 #	$(top_srcdir)/src/nodes/SoMarkerSet.cpp $(top_srcdir)/include/Inventor/nodes/SoMarkerSet.h \
 #	$(top_srcdir)/src/nodes/SoMaterial.cpp $(top_srcdir)/include/Inventor/nodes/SoMaterial.h \
 #	$(top_srcdir)/src/nodes/SoMaterialBinding.cpp $(top_srcdir)/include/Inventor/nodes/SoMaterialBinding.h \
-#	$(top_srcdir)/src/nodes/SoMatrixTransform.cpp $(top_srcdir)/include/Inventor/nodes/SoMatrixTransform.h \
 #	$(top_srcdir)/src/nodes/SoMultipleCopy.cpp $(top_srcdir)/include/Inventor/nodes/SoMultipleCopy.h \
 #	$(top_srcdir)/src/nodes/SoNonIndexedShape.cpp $(top_srcdir)/include/Inventor/nodes/SoNonIndexedShape.h \
 #	$(top_srcdir)/src/nodes/SoNormal.cpp $(top_srcdir)/include/Inventor/nodes/SoNormal.h \
@@ -251,7 +260,6 @@ INPUT                = \
 #	$(top_srcdir)/src/nodes/SoNurbsSurface.cpp $(top_srcdir)/include/Inventor/nodes/SoNurbsSurface.h \
 #	$(top_srcdir)/src/nodes/SoPackedColor.cpp $(top_srcdir)/include/Inventor/nodes/SoPackedColor.h \
 #	$(top_srcdir)/src/nodes/SoPathSwitch.cpp $(top_srcdir)/include/Inventor/nodes/SoPathSwitch.h \
-#	$(top_srcdir)/src/nodes/SoPendulum.cpp $(top_srcdir)/include/Inventor/nodes/SoPendulum.h \
 #	$(top_srcdir)/src/nodes/SoPickStyle.cpp $(top_srcdir)/include/Inventor/nodes/SoPickStyle.h \
 #	$(top_srcdir)/src/nodes/SoPointLight.cpp $(top_srcdir)/include/Inventor/nodes/SoPointLight.h \
 #	$(top_srcdir)/src/nodes/SoPointSet.cpp $(top_srcdir)/include/Inventor/nodes/SoPointSet.h \
@@ -260,16 +268,11 @@ INPUT                = \
 #	$(top_srcdir)/src/nodes/SoProfileCoordinate2.cpp $(top_srcdir)/include/Inventor/nodes/SoProfileCoordinate2.h \
 #	$(top_srcdir)/src/nodes/SoProfileCoordinate3.cpp $(top_srcdir)/include/Inventor/nodes/SoProfileCoordinate3.h \
 #	$(top_srcdir)/src/nodes/SoQuadMesh.cpp $(top_srcdir)/include/Inventor/nodes/SoQuadMesh.h \
-#	$(top_srcdir)/src/nodes/SoResetTransform.cpp $(top_srcdir)/include/Inventor/nodes/SoResetTransform.h \
-#	$(top_srcdir)/src/nodes/SoRotationXYZ.cpp $(top_srcdir)/include/Inventor/nodes/SoRotationXYZ.h \
-#	$(top_srcdir)/src/nodes/SoScale.cpp $(top_srcdir)/include/Inventor/nodes/SoScale.h \
 #	$(top_srcdir)/src/nodes/SoSelection.cpp $(top_srcdir)/include/Inventor/nodes/SoSelection.h \
 #	$(top_srcdir)/src/nodes/SoSeparator.cpp $(top_srcdir)/include/Inventor/nodes/SoSeparator.h \
 #	$(top_srcdir)/src/nodes/SoShapeHints.cpp $(top_srcdir)/include/Inventor/nodes/SoShapeHints.h \
-#	$(top_srcdir)/src/nodes/SoShuttle.cpp $(top_srcdir)/include/Inventor/nodes/SoShuttle.h \
 #	$(top_srcdir)/src/nodes/SoSphere.cpp $(top_srcdir)/include/Inventor/nodes/SoSphere.h \
 #	$(top_srcdir)/src/nodes/SoSpotLight.cpp $(top_srcdir)/include/Inventor/nodes/SoSpotLight.h \
-#	$(top_srcdir)/src/nodes/SoSurroundScale.cpp $(top_srcdir)/include/Inventor/nodes/SoSurroundScale.h \
 #	$(top_srcdir)/src/nodes/SoSwitch.cpp $(top_srcdir)/include/Inventor/nodes/SoSwitch.h \
 #	$(top_srcdir)/src/nodes/SoText2.cpp $(top_srcdir)/include/Inventor/nodes/SoText2.h \
 #	$(top_srcdir)/src/nodes/SoText3.cpp $(top_srcdir)/include/Inventor/nodes/SoText3.h \
@@ -281,11 +284,8 @@ INPUT                = \
 #	$(top_srcdir)/src/nodes/SoTextureCoordinateEnvironment.cpp $(top_srcdir)/include/Inventor/nodes/SoTextureCoordinateEnvironment.h \
 #	$(top_srcdir)/src/nodes/SoTextureCoordinateFunction.cpp $(top_srcdir)/include/Inventor/nodes/SoTextureCoordinateFunction.h \
 #	$(top_srcdir)/src/nodes/SoTextureCoordinatePlane.cpp $(top_srcdir)/include/Inventor/nodes/SoTextureCoordinatePlane.h \
-#	$(top_srcdir)/src/nodes/SoTransform.cpp $(top_srcdir)/include/Inventor/nodes/SoTransform.h \
 #	$(top_srcdir)/src/nodes/SoTransformSeparator.cpp $(top_srcdir)/include/Inventor/nodes/SoTransformSeparator.h \
-#	$(top_srcdir)/src/nodes/SoTranslation.cpp $(top_srcdir)/include/Inventor/nodes/SoTranslation.h \
 #	$(top_srcdir)/src/nodes/SoTriangleStripSet.cpp $(top_srcdir)/include/Inventor/nodes/SoTriangleStripSet.h \
-#	$(top_srcdir)/src/nodes/SoUnits.cpp $(top_srcdir)/include/Inventor/nodes/SoUnits.h \
 #	$(top_srcdir)/src/nodes/SoVertexProperty.cpp $(top_srcdir)/include/Inventor/nodes/SoVertexProperty.h \
 #	$(top_srcdir)/src/nodes/SoVertexShape.cpp $(top_srcdir)/include/Inventor/nodes/SoVertexShape.h \
 #	$(top_srcdir)/src/nodes/SoWWWAnchor.cpp $(top_srcdir)/include/Inventor/nodes/SoWWWAnchor.h \

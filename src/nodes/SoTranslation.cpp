@@ -19,10 +19,11 @@
 
 /*!
   \class SoTranslation SoTranslation.h Inventor/nodes/SoTranslation.h
-  \brief The SoTranslation class ...
+  \brief The SoTranslation class is a node type for specifying geometry translations.
   \ingroup nodes
 
-  FIXME: write class doc
+  For simply translating some geometry in a scene graph, you can use
+  this node type.
 */
 
 #include <Inventor/nodes/SoTranslation.h>
@@ -33,7 +34,7 @@
 
 /*!
   \var SoSFVec3f SoTranslation::translation
-  FIXME: write documentation for field
+  Set the X, Y and Z translation values. Defaults to <0, 0, 0>.
 */
 
 // *************************************************************************
@@ -43,7 +44,7 @@ SO_NODE_SOURCE(SoTranslation);
 /*!
   Constructor.
 */
-SoTranslation::SoTranslation()
+SoTranslation::SoTranslation(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTranslation);
 
@@ -57,20 +58,14 @@ SoTranslation::~SoTranslation()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoTranslation class. This includes setting up the
-  type system, among other things.
-*/
+// Doc in superclass.
 void
 SoTranslation::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTranslation);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoTranslation::doAction(SoAction * action)
 {
@@ -80,38 +75,30 @@ SoTranslation::doAction(SoAction * action)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoTranslation::GLRender(SoGLRenderAction * action)
 {
   SoTranslation::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoTranslation::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoTranslation::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc in superclass.
 void
-SoTranslation::callback(SoCallbackAction *action)
+SoTranslation::callback(SoCallbackAction * action)
 {
-  SoTranslation::doAction((SoAction*)action);
+  SoTranslation::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc in superclass.
 void
-SoTranslation::getMatrix(SoGetMatrixAction *action)
+SoTranslation::getMatrix(SoGetMatrixAction * action)
 {
   SbVec3f v = this->translation.getValue();
   SbMatrix m;
@@ -121,20 +108,16 @@ SoTranslation::getMatrix(SoGetMatrixAction *action)
   action->getInverse().multRight(m);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc in superclass.
 void
-SoTranslation::pick(SoPickAction *action)
+SoTranslation::pick(SoPickAction * action)
 {
-  SoTranslation::doAction((SoAction*)action);
+  SoTranslation::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc in superclass.
 void
-SoTranslation::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoTranslation::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  SoTranslation::doAction((SoAction*)action);
+  SoTranslation::doAction((SoAction *)action);
 }

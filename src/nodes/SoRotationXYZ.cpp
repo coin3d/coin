@@ -19,44 +19,35 @@
 
 /*!
   \class SoRotationXYZ SoRotationXYZ.h Inventor/nodes/SoRotationXYZ.h
-  \brief The SoRotationXYZ class ...
+  \brief The SoRotationXYZ class is a node type for specifying rotation around a particular axis.
   \ingroup nodes
 
-  FIXME: write class doc
+  Application programmers can use nodes of this type instead of
+  SoRotation nodes for simplicity and clarity if the rotation will
+  only happen around one particular axis.
+
+  Using SoRotationXYZ nodes are also simpler and more efficient than
+  using SoRotation nodes if you are connecting engines to rotation
+  angles for animation purposes.
 */
 
 #include <Inventor/nodes/SoRotationXYZ.h>
-
-
 
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 
 /*!
   \enum SoRotationXYZ::Axis
-  FIXME: write documentation for enum
+  Enumerated values for the 3 axes.
 */
-/*!
-  \var SoRotationXYZ::Axis SoRotationXYZ::X
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoRotationXYZ::Axis SoRotationXYZ::Y
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoRotationXYZ::Axis SoRotationXYZ::Z
-  FIXME: write documentation for enum definition
-*/
-
 
 /*!
   \var SoSFEnum SoRotationXYZ::axis
-  FIXME: write documentation for field
+  Which axis to rotate around. Defaults to SoRotationXYZ::X.
 */
 /*!
   \var SoSFFloat SoRotationXYZ::angle
-  FIXME: write documentation for field
+  The angle to rotate, specified in radians.
 */
 
 
@@ -67,7 +58,7 @@ SO_NODE_SOURCE(SoRotationXYZ);
 /*!
   Constructor.
 */
-SoRotationXYZ::SoRotationXYZ()
+SoRotationXYZ::SoRotationXYZ(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoRotationXYZ);
 
@@ -87,20 +78,14 @@ SoRotationXYZ::~SoRotationXYZ()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoRotationXYZ class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoRotationXYZ::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoRotationXYZ);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoRotationXYZ::doAction(SoAction * action)
 {
@@ -111,36 +96,28 @@ SoRotationXYZ::doAction(SoAction * action)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoRotationXYZ::callback(SoCallbackAction * action)
 {
   SoRotationXYZ::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoRotationXYZ::GLRender(SoGLRenderAction * action)
 {
   SoRotationXYZ::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoRotationXYZ::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoRotationXYZ::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoRotationXYZ::getMatrix(SoGetMatrixAction * action)
 {
@@ -155,18 +132,14 @@ SoRotationXYZ::getMatrix(SoGetMatrixAction * action)
   action->getInverse().multRight(m);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoRotationXYZ::pick(SoPickAction * action)
 {
   SoRotationXYZ::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 SbBool
 SoRotationXYZ::getVector(SbVec3f & rotvec) const
 {
@@ -177,9 +150,9 @@ SoRotationXYZ::getVector(SbVec3f & rotvec) const
   return TRUE;
 }
 
-
 /*!
-  FIXME: write doc
+  Returns an SbRotation object with values set up to correspond with
+  the specified rotation of the node.
  */
 SbRotation
 SoRotationXYZ::getRotation(void) const
@@ -189,9 +162,7 @@ SoRotationXYZ::getRotation(void) const
   return SbRotation(axis, this->angle.getValue());
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
 SoRotationXYZ::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {

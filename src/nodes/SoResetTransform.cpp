@@ -19,10 +19,12 @@
 
 /*!
   \class SoResetTransform SoResetTransform.h Inventor/nodes/SoResetTransform.h
-  \brief The SoResetTransform class ...
+  \brief The SoResetTransform class is a node type which makes it possible to "nullify" state during traversal.
   \ingroup nodes
 
-  FIXME: write class doc
+  SoResetTransform is useful for setting up geometry in the scene
+  graph which will not be influenced by the transformation nodes
+  before it during traversal.
 */
 
 #include <Inventor/nodes/SoResetTransform.h>
@@ -33,23 +35,29 @@
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 
+
 /*!
   \enum SoResetTransform::ResetType
-  FIXME: write documentation for enum
+
+  The different options for what to reset.
 */
 /*!
   \var SoResetTransform::ResetType SoResetTransform::TRANSFORM
-  FIXME: write documentation for enum definition
+
+  Reset current model transformation.
 */
 /*!
   \var SoResetTransform::ResetType SoResetTransform::BBOX
-  FIXME: write documentation for enum definition
+
+  Reset current bounding box settings.
 */
 
 
 /*!
   \var SoSFBitMask SoResetTransform::whatToReset
-  FIXME: write documentation for field
+
+  What this node instance should reset in the state when met during
+  traversal. Default value is SoResetTransform::TRANSFORM.
 */
 
 
@@ -60,7 +68,7 @@ SO_NODE_SOURCE(SoResetTransform);
 /*!
   Constructor.
 */
-SoResetTransform::SoResetTransform()
+SoResetTransform::SoResetTransform(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoResetTransform);
 
@@ -78,20 +86,14 @@ SoResetTransform::~SoResetTransform()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoResetTransform class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoResetTransform::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoResetTransform);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoResetTransform::GLRender(SoGLRenderAction * action)
 {
@@ -103,9 +105,7 @@ SoResetTransform::GLRender(SoGLRenderAction * action)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoResetTransform::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -117,9 +117,7 @@ SoResetTransform::getBoundingBox(SoGetBoundingBoxAction * action)
                               SbMatrix::identity());
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
 SoResetTransform::doAction(SoAction *action)
 {
@@ -128,18 +126,14 @@ SoResetTransform::doAction(SoAction *action)
                               SbMatrix::identity());
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
 SoResetTransform::callback(SoCallbackAction *action)
 {
   SoResetTransform::doAction((SoAction*)action);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from superclass.
 void
 SoResetTransform::getMatrix(SoGetMatrixAction *action)
 {
@@ -149,18 +143,14 @@ SoResetTransform::getMatrix(SoGetMatrixAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
 SoResetTransform::pick(SoPickAction *action)
 {
   SoResetTransform::doAction((SoAction*)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
 SoResetTransform::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {

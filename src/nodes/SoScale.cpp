@@ -19,10 +19,12 @@
 
 /*!
   \class SoScale SoScale.h Inventor/nodes/SoScale.h
-  \brief The SoScale class ...
+  \brief The SoScale class is a node type for scaling scene graph geometry.
   \ingroup nodes
 
-  FIXME: write class doc
+  Use nodes of this type to apply scaling during e.g. rendering
+  traversal. Scale values are specified in a triple-value vector, with
+  one scale factor for each of the 3 axes.
 */
 
 #include <Inventor/nodes/SoScale.h>
@@ -34,7 +36,13 @@
 
 /*!
   \var SoSFVec3f SoScale::scaleFactor
-  FIXME: write documentation for field
+
+  Specifies scale values along the 3 axes (i.e. scaling does not need
+  to be uniform). The most common use of scaling operations is to do
+  scaling along a single direction, in this case set the scale factor
+  values of the other two axes to 1.0.
+
+  The default value of this vector field is <1, 1, 1>.
 */
 
 // *************************************************************************
@@ -44,7 +52,7 @@ SO_NODE_SOURCE(SoScale);
 /*!
   Constructor.
 */
-SoScale::SoScale()
+SoScale::SoScale(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoScale);
 
@@ -58,20 +66,14 @@ SoScale::~SoScale()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoScale class. This includes setting up the
-  type system, among other things.
-*/
+// Doc in superclass.
 void
 SoScale::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoScale);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoScale::doAction(SoAction * action)
 {
@@ -79,9 +81,7 @@ SoScale::doAction(SoAction * action)
                                 this->scaleFactor.getValue());
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoScale::GLRender(SoGLRenderAction * action)
 {
@@ -92,27 +92,21 @@ SoScale::GLRender(SoGLRenderAction * action)
   SoScale::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoScale::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoScale::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc in superclass.
 void
 SoScale::callback(SoCallbackAction *action)
 {
   SoScale::doAction((SoAction*)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc in superclass.
 void
 SoScale::getMatrix(SoGetMatrixAction * action)
 {
@@ -121,23 +115,19 @@ SoScale::getMatrix(SoGetMatrixAction * action)
 
   m.setScale(scalevec);
   action->getMatrix().multLeft(m);
-  
+
   m.setScale(SbVec3f(1.0f / scalevec[0], 1.0f / scalevec[1], 1.0f / scalevec[2]));
   action->getInverse().multRight(m);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc in superclass.
 void
 SoScale::pick(SoPickAction *action)
 {
   SoScale::doAction((SoAction*)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc in superclass.
 void
 SoScale::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {

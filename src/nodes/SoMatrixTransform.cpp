@@ -19,10 +19,14 @@
 
 /*!
   \class SoMatrixTransform SoMatrixTransform.h Inventor/nodes/SoMatrixTransform.h
-  \brief The SoMatrixTransform class ...
+  \brief The SoMatrixTransform class is a transformation node.
   \ingroup nodes
 
-  FIXME: write class doc
+  This class is the most flexible transformation node, as you can use
+  it to accumulate any kind of transformation matrix on top of the
+  current model transformation matrix.
+
+  \sa SoTransform
 */
 
 #include <Inventor/nodes/SoMatrixTransform.h>
@@ -34,7 +38,7 @@
 
 /*!
   \var SoSFMatrix SoMatrixTransform::matrix
-  FIXME: write documentation for field
+  The transformation matrix. Defaults to the identity matrix.
 */
 
 
@@ -45,7 +49,7 @@ SO_NODE_SOURCE(SoMatrixTransform);
 /*!
   Constructor.
 */
-SoMatrixTransform::SoMatrixTransform()
+SoMatrixTransform::SoMatrixTransform(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoMatrixTransform);
 
@@ -59,20 +63,14 @@ SoMatrixTransform::~SoMatrixTransform()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoMatrixTransform class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoMatrixTransform::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoMatrixTransform);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoMatrixTransform::doAction(SoAction * action)
 {
@@ -82,64 +80,52 @@ SoMatrixTransform::doAction(SoAction * action)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoMatrixTransform::GLRender(SoGLRenderAction * action)
 {
-  // TODO: code to test if matrix is legal. For now we'll
-  // just invalidate the flag in the normalize element (pederb).
+  // FIXME: code to test if matrix is legal. For now we'll just
+  // invalidate the flag in the normalize element (pederb).
   SoGLNormalizeElement::setMatrixState(action->getState(), FALSE);
 
   SoMatrixTransform::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoMatrixTransform::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoMatrixTransform::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoMatrixTransform::callback(SoCallbackAction *action)
+SoMatrixTransform::callback(SoCallbackAction * action)
 {
-  SoMatrixTransform::doAction((SoAction*)action);
+  SoMatrixTransform::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoMatrixTransform::getMatrix(SoGetMatrixAction *action)
+SoMatrixTransform::getMatrix(SoGetMatrixAction * action)
 {
   SbMatrix m = this->matrix.getValue();
   action->getMatrix().multLeft(m);
-  
+
   SbMatrix mi = m.inverse();
   action->getInverse().multRight(mi);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoMatrixTransform::pick(SoPickAction *action)
+SoMatrixTransform::pick(SoPickAction * action)
 {
-  SoMatrixTransform::doAction((SoAction*)action);
+  SoMatrixTransform::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoMatrixTransform::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoMatrixTransform::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  SoMatrixTransform::doAction((SoAction*)action);
+  SoMatrixTransform::doAction((SoAction *)action);
 }

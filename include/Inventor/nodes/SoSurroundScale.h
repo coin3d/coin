@@ -65,7 +65,7 @@ protected:
   SbBool doTranslations;
 
 private:
-  SbBool ignoreInBBox;
+  SbBool ignoreinbbox;
 };
 
 #endif // !COIN_SOSURROUNDSCALE_H
