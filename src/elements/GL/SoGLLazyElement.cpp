@@ -456,7 +456,8 @@ SoGLLazyElement::pop(SoState *state, const SoElement * prevtopelement)
 void
 SoGLLazyElement::sendAllMaterial(SoState * state)
 {
-  assert(0 && "Not implemented yet. Provided for API compatibility.");
+  SoGLLazyElement * elem = getInstance(state);
+  elem->send(state, ALL_MASK);
 }
 
 //! FIXME: write doc
@@ -464,7 +465,8 @@ SoGLLazyElement::sendAllMaterial(SoState * state)
 void
 SoGLLazyElement::sendNoMaterial(SoState * state)
 {
-  assert(0 && "Not implemented yet. Provided for API compatibility.");
+  SoGLLazyElement * elem = getInstance(state);
+  elem->send(state, NO_COLOR_MASK);
 }
 
 //! FIXME: write doc
@@ -472,7 +474,8 @@ SoGLLazyElement::sendNoMaterial(SoState * state)
 void
 SoGLLazyElement::sendOnlyDiffuseColor(SoState * state)
 {
-  assert(0 && "Not implemented yet. Provided for API compatibility.");
+  SoGLLazyElement * elem = getInstance(state);
+  elem->send(state, DIFFUSE_ONLY_MASK);
 }
 
 //! FIXME: write doc
