@@ -54,6 +54,10 @@
 #endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   \enum SoAsciiText::Justification
   Font justification values.
@@ -175,12 +179,6 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
     }
 
     const char * str = this->string[i].getString();
-    int len = strlen(str);
-    float horizspacing = 0.0f;
-    if (len > 1) {
-      horizspacing = ((currwidth - THIS->glyphwidths[i]) / (len - 1)) * size;
-    }
-
     while (*str++) {
       const SoGlyph * glyph = THIS->glyphs[glyphidx++];
       const SbVec2f * coords = glyph->getCoords();
@@ -203,7 +201,7 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
         }
         glVertex3f(v2[0] * size + xpos, v2[1] * size + ypos, 0.0f);
       }
-      xpos += glyph->getWidth() * size + horizspacing;
+      xpos += glyph->getWidth() * size;
     }
     ypos -= size * this->spacing.getValue();
   }
@@ -323,11 +321,6 @@ SoAsciiText::generatePrimitives(SoAction * action)
     }
 
     const char * str = this->string[i].getString();
-    int len = strlen(str);
-    float horizspacing = 0.0f;
-    if (len > 1) {
-      horizspacing = ((currwidth - THIS->glyphwidths[i]) / (len - 1)) * size;
-    }
     int charidx = 0;
 
     while (*str++) {
@@ -350,7 +343,7 @@ SoAsciiText::generatePrimitives(SoAction * action)
         vertex.setPoint(SbVec3f(v2[0] * size + xpos, v2[1] * size + ypos, 0.0f));
         this->shapeVertex(&vertex);
       }
-      xpos += glyph->getWidth() * size + horizspacing;
+      xpos += glyph->getWidth() * size;
     }
     ypos -= size * this->spacing.getValue();
   }
