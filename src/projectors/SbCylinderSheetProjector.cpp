@@ -19,10 +19,16 @@
 
 /*!
   \class SbCylinderSheetProjector SbCylinderSheetProjector.h Inventor/projectors/SbCylinderSheetProjector.h
-  \brief The SbCylinderSheetProjector class is ... blablabla FIXME.
+  \brief The SbCylinderSheetProjector class projects 2D points to 3D points on a sheet covering a cylindrical shape.
   \ingroup projectors
+ */
 
-  FIXME: write doc
+// Metadon doc:
+/*¡
+  FIXME: we do not use a hyperbolic sheet, as we're supposed to do,
+  for this class. Instead we use a straight plane. This should hardly
+  be noticable for the user, but for correctness, a hyperbolic sheet
+  should of course be used. 20000308 mortene.
  */
 
 #include <Inventor/projectors/SbCylinderSheetProjector.h>
@@ -33,47 +39,48 @@
 #endif // COIN_DEBUG
 
 /*! \var SbCylinderSheetProjector::workingProjPoint
-  FIXME: write doc
+  Last projected point, in the working space coordinate system.
 */
 /*! \var SbCylinderSheetProjector::planeDir
-  FIXME: write doc
+  Normal vector of the plane defining the orientation of the sheet.
 */
 /*! \var SbCylinderSheetProjector::tolPlane
-  FIXME: write doc
+  The tolerance value specifying how much of the cylinder is "above"
+  the sheet.
 */
 
 
 /*!
-  FIXME: write doc
+  Constructor. Uses default cylinder defintion, see
+  SbCylinderProjector::SbCylinderProjector().
+
+  \a orienttoeye decides whether or not the cylinder and sheet should
+  always be oriented towards the viewer.
 */
-SbCylinderSheetProjector::SbCylinderSheetProjector(const SbBool orientToEye)
-  : inherited(orientToEye)
+SbCylinderSheetProjector::SbCylinderSheetProjector(const SbBool orienttoeye)
+  : inherited(orienttoeye)
 {
 }
 
 /*!
-  FIXME: write doc
+  Constructor with explicit definition of projection cylinder.
 */
 SbCylinderSheetProjector::SbCylinderSheetProjector(const SbCylinder & cyl,
-                                                   const SbBool orientToEye)
-  : inherited(cyl, orientToEye)
+                                                   const SbBool orienttoeye)
+  : inherited(cyl, orienttoeye)
 {
 }
 
-/*!
-  FIXME: write doc
-*/
+// Overloaded from parent.
 SbProjector *
 SbCylinderSheetProjector::copy(void) const
 {
   return new SbCylinderSheetProjector(*this);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Overloaded from parent.
 SbVec3f
-SbCylinderSheetProjector::project(const SbVec2f &point)
+SbCylinderSheetProjector::project(const SbVec2f & point)
 {
   if (this->needSetup) this->setupPlane();
 
@@ -100,14 +107,12 @@ SbCylinderSheetProjector::project(const SbVec2f &point)
   return projpt;
 }
 
-/*!
-  FIXME: write doc
-*/
+// Overloaded from parent.
 SbRotation
-SbCylinderSheetProjector::getRotation(const SbVec3f &point1,
-                                      const SbVec3f &point2)
+SbCylinderSheetProjector::getRotation(const SbVec3f & point1,
+                                      const SbVec3f & point2)
 {
-  const SbLine &axis = this->cylinder.getAxis();
+  const SbLine & axis = this->cylinder.getAxis();
   SbVec3f v1 = point1 - axis.getClosestPoint(point1);
   SbVec3f v2 = point2 - axis.getClosestPoint(point2);
   SbRotation rot(v1, v2); // rotate vector v1 into vector v2
@@ -124,12 +129,13 @@ SbCylinderSheetProjector::getRotation(const SbVec3f &point1,
 }
 
 /*!
-  FIXME: write doc
+  Recalculates projection surface settings after changes to the
+  parameters.
 */
 void
 SbCylinderSheetProjector::setupPlane(void)
 {
-  const SbLine &axis = this->cylinder.getAxis();
+  const SbLine & axis = this->cylinder.getAxis();
   SbVec3f refDir;
   if (this->orientToEye) {
     refDir = -this->viewVol.getProjectionDirection();

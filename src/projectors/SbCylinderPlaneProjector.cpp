@@ -19,10 +19,15 @@
 
 /*!
   \class SbCylinderPlaneProjector SbCylinderPlaneProjector.h Inventor/projectors/SbCylinderPlaneProjector.h
-  \brief The SbCylinderPlaneProjector class is ... blablabla FIXME.
+  \brief The SbCylinderPlaneProjector class projects 2D points to a half-cylinder and a plane.
   \ingroup projectors
 
-  FIXME: write doc
+  This projector uses a plane along with the half-cylinder of
+  SbCylinderSectionProjector for projections. If the 2D point mapping
+  "misses" the cylinder section, the 3D point will be projected onto
+  the plane.
+
+  \sa SbSpherePlaneProjector
  */
 
 #include <Inventor/projectors/SbCylinderPlaneProjector.h>
@@ -33,38 +38,35 @@
 #include <float.h>
 
 /*!
-  FIXME: write doc
+  Default constructor. See
+  SbCylinderSectionProjector::SbCylinderSectionProjector().
 */
-SbCylinderPlaneProjector::SbCylinderPlaneProjector(const float edgeTol,
-                                                   const SbBool orientToEye)
-  : SbCylinderSectionProjector(edgeTol, orientToEye)
+SbCylinderPlaneProjector::SbCylinderPlaneProjector(const float edgetol,
+                                                   const SbBool orienttoeye)
+  : SbCylinderSectionProjector(edgetol, orienttoeye)
 {
 }
 
 /*!
-  FIXME: write doc
+  Constructor with explicit specification of projection cylinder.
 */
-SbCylinderPlaneProjector::SbCylinderPlaneProjector(const SbCylinder &cyl,
-                                                   const float edgeTol,
-                                                   const SbBool orientToEye)
-  : SbCylinderSectionProjector(cyl, edgeTol, orientToEye)
+SbCylinderPlaneProjector::SbCylinderPlaneProjector(const SbCylinder & cyl,
+                                                   const float edgetol,
+                                                   const SbBool orienttoeye)
+  : SbCylinderSectionProjector(cyl, edgetol, orienttoeye)
 {
 }
 
-/*!
-  FIXME: write doc
-*/
+// Overloaded from parent.
 SbProjector *
 SbCylinderPlaneProjector::copy(void) const
 {
   return new SbCylinderPlaneProjector(*this);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Overloaded from parent.
 SbVec3f
-SbCylinderPlaneProjector::project(const SbVec2f &point)
+SbCylinderPlaneProjector::project(const SbVec2f & point)
 {
   if (this->needSetup) this->setupTolerance();
 
@@ -85,12 +87,10 @@ SbCylinderPlaneProjector::project(const SbVec2f &point)
   return projpt;
 }
 
-/*!
-  FIXME: write doc
-*/
+// Overloaded from parent.
 SbRotation
-SbCylinderPlaneProjector::getRotation(const SbVec3f &point1,
-                                      const SbVec3f &point2)
+SbCylinderPlaneProjector::getRotation(const SbVec3f & point1,
+                                      const SbVec3f & point2)
 {
   SbBool tol1 = this->isWithinTolerance(point1);
   SbBool tol2 = this->isWithinTolerance(point2);
@@ -98,11 +98,12 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f &point1,
 }
 
 /*!
-  FIXME: write doc
+  Calculates rotation from \a point1 to \a point2, with \a tol1 and \a
+  tol2 deciding whether or not to use the tolerance setting.
 */
 SbRotation
-SbCylinderPlaneProjector::getRotation(const SbVec3f &point1, const SbBool tol1,
-                                      const SbVec3f &point2, const SbBool tol2)
+SbCylinderPlaneProjector::getRotation(const SbVec3f & point1, const SbBool tol1,
+                                      const SbVec3f & point2, const SbBool tol2)
 {
   if (tol1 && tol2) return inherited::getRotation(point1, point2);
   if (point1 == point2) {
@@ -111,23 +112,23 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f &point1, const SbBool tol1,
 
   // create a line to project projections onto. This will make
   // the below calculations much simpler.
-  SbLine horizLine;
+  SbLine horizline;
   {
     SbVec3f dir = this->cylinder.getAxis().getDirection().cross(this->planeDir);
-    horizLine = SbLine(this->planeLine.getPosition(),
+    horizline = SbLine(this->planeLine.getPosition(),
                        this->planeLine.getPosition() + dir);
   }
 
   //
-  // pt1 is the point projected onto horizLine. pt1_tol is different from
+  // pt1 is the point projected onto horizline. pt1_tol is different from
   // pt1 if tol1==FALSE. pt1_tol will then be on the edge of the cylinder
   // section, where the cylinder section intersects the plane, but it will
-  // also be on horizLine.
+  // also be on horizline.
   //
   SbVec3f pt1, pt1_tol, pt2, pt2_tol;
 
-  pt1 = horizLine.getClosestPoint(point1);
-  pt2 = horizLine.getClosestPoint(point2);
+  pt1 = horizline.getClosestPoint(point1);
+  pt2 = horizline.getClosestPoint(point2);
 
   if (tol1) {
     pt1_tol = pt1;
@@ -139,7 +140,7 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f &point1, const SbBool tol1,
       assert(0 && "shouldn't happen");
       pt1_tol = point1;
     }
-    pt1_tol = horizLine.getClosestPoint(pt1_tol);
+    pt1_tol = horizline.getClosestPoint(pt1_tol);
   }
   if (tol2) {
     pt2_tol = pt2;
@@ -151,7 +152,7 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f &point1, const SbBool tol1,
       assert(0 && "shouldn't happen");
       pt2_tol = point2;
     }
-    pt2_tol = horizLine.getClosestPoint(pt2_tol);
+    pt2_tol = horizline.getClosestPoint(pt2_tol);
   }
 
   // find normal cylinder-section rotation

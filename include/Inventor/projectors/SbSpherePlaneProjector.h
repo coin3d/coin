@@ -22,16 +22,17 @@
 
 #include <Inventor/projectors/SbSphereSectionProjector.h>
 
+
 class SbSpherePlaneProjector : public SbSphereSectionProjector
 {
   typedef SbSphereSectionProjector inherited;
 
 public:
-  SbSpherePlaneProjector(const float edgeTol = 0.9f,
-                         const SbBool orientToEye = TRUE);
+  SbSpherePlaneProjector(const float edgetol = 0.9f,
+                         const SbBool orienttoeye = TRUE);
   SbSpherePlaneProjector(const SbSphere & sph,
-                         const float edgeTol = 0.9f,
-                         const SbBool orientToEye = TRUE);
+                         const float edgetol = 0.9f,
+                         const SbBool orienttoeye = TRUE);
 
   virtual SbProjector * copy(void) const;
   virtual SbVec3f project(const SbVec2f & point);

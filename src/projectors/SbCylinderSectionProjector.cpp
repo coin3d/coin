@@ -19,11 +19,15 @@
 
 /*!
   \class SbCylinderSectionProjector SbCylinderSectionProjector.h Inventor/projectors/SbCylinderSectionProjector.h
-  \brief The SbCylinderSectionProjector class is ... blablabla FIXME.
+  \brief The SbCylinderSectionProjector projects 2D points to a sliced cylinder.
   \ingroup projectors
 
-  FIXME: write doc
- */
+  The projection cylinder for this class is sliced by a clipping plane
+  parallel to its height axis. Projections will be mapped to the
+  remaining cylinder part.
+
+  \sa SbSphereSectionProjector
+*/
 
 #include <Inventor/projectors/SbCylinderSectionProjector.h>
 #include <assert.h>
@@ -33,62 +37,63 @@
 #endif // COIN_DEBUG
 
 /*! \var SbCylinderSectionProjector::tolerance
-  FIXME: write doc
+  Tolerance value, deciding how much of the half-cylinder to do
+  projections against.
 */
 /*! \var SbCylinderSectionProjector::tolDist
-  FIXME: write doc
-*/
-/*! \var SbCylinderSectionProjector::planeDir
-  FIXME: write doc
-*/
-/*! \var SbCylinderSectionProjector::planeLine
-  FIXME: write doc
-*/
-/*! \var SbCylinderSectionProjector::planeDist
-  FIXME: write doc
+  Tolerance value multiplied with the cylinder radius.
 */
 /*! \var SbCylinderSectionProjector::tolPlane
-  FIXME: write doc
+  Defines the plane cutting the cylinder into a projection part.
+*/
+/*! \var SbCylinderSectionProjector::planeDir
+  Direction of cutting plane.
+*/
+/*! \var SbCylinderSectionProjector::planeLine
+  A line within the plane which is parallel to the cylinder axis.
+*/
+/*! \var SbCylinderSectionProjector::planeDist
+  Distance from plane to cylinder axis.
 */
 
 
 /*!
-  FIXME: write doc
+  Default constructor. See SbCylinderProjector::SbCylinderProjector().
+
+  The \a edgetol value should be within <0, 1], and specifies how much
+  of the cylinder is used as a projection surface. 1.0 means the full
+  front half is used.
 */
-SbCylinderSectionProjector::SbCylinderSectionProjector(const float edgeTol,
-                                                       const SbBool orientToEye)
-  : SbCylinderProjector(orientToEye),
-    tolerance(edgeTol)
+SbCylinderSectionProjector::SbCylinderSectionProjector(const float edgetol,
+                                                       const SbBool orienttoeye)
+  : SbCylinderProjector(orienttoeye),
+    tolerance(edgetol)
 {
   this->needSetup = TRUE;
 }
 
 /*!
-  FIXME: write doc
+  Constructor with explicit setting of the projection cylinder.
 */
 SbCylinderSectionProjector::SbCylinderSectionProjector(const SbCylinder & cyl,
-                                                       const float edgeTol,
-                                                       const SbBool orientToEye)
-  : inherited(cyl, orientToEye),
-    tolerance(edgeTol)
+                                                       const float edgetol,
+                                                       const SbBool orienttoeye)
+  : inherited(cyl, orienttoeye),
+    tolerance(edgetol)
 {
   this->needSetup = TRUE;
 }
 
-/*!
-  FIXME: write doc
-*/
+// Overloaded from parent.
 SbProjector *
 SbCylinderSectionProjector::copy(void) const
 {
   return new SbCylinderSectionProjector(*this);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Overloaded from parent.
 SbVec3f
-SbCylinderSectionProjector::project(const SbVec2f &point)
+SbCylinderSectionProjector::project(const SbVec2f & point)
 {
   if (this->needSetup) this->setupTolerance();
 
@@ -102,7 +107,7 @@ SbCylinderSectionProjector::project(const SbVec2f &point)
       SoDebugError::postWarning("SbCylinderSectionProjector::project",
                                 "working line is parallel to cylinder axis.");
 #endif // COIN_DEBUG
-      // set to 0,0,0 to avoid crazy rotations. lastPoint will then
+      // set to 0, 0, 0 to avoid crazy rotations. lastPoint will then
       // never change, and there will be no rotation in getRotation()
       projpt = SbVec3f(0.0f, 0.0f, 0.0f);
     }
@@ -120,16 +125,12 @@ SbCylinderSectionProjector::project(const SbVec2f &point)
   return projpt;
 }
 
-/*!
-  Find a rotation that rotates from \a point1 on cylinder to
-  \a point2, also on cylinder. The rotation will be about the
-  cylinder axis.
-*/
+// Overloaded from parent.
 SbRotation
-SbCylinderSectionProjector::getRotation(const SbVec3f &point1,
-                                        const SbVec3f &point2)
+SbCylinderSectionProjector::getRotation(const SbVec3f & point1,
+                                        const SbVec3f & point2)
 {
-  const SbLine &axis = this->cylinder.getAxis();
+  const SbLine & axis = this->cylinder.getAxis();
   SbVec3f v1 = point1 - axis.getClosestPoint(point1);
   SbVec3f v2 = point2 - axis.getClosestPoint(point2);
 
@@ -147,17 +148,24 @@ SbCylinderSectionProjector::getRotation(const SbVec3f &point1,
 }
 
 /*!
-  FIXME: write doc
+  The \a edgetol value decides how much of the surface of the cylinder
+  is used for projection. 1.0 means the full cylinder half is used.
 */
 void
-SbCylinderSectionProjector::setTolerance(const float edgeTol)
+SbCylinderSectionProjector::setTolerance(const float edgetol)
 {
-  this->tolerance = edgeTol;
+#if COIN_DEBUG // COIN_DEBUG
+  if (edgetol <= 0.0f || edgetol > 1.0f) {
+    SoDebugError::postWarning("SbCylinderSectionProjector::setTolerance",
+                              "edge tolerance should be within <0, 1].");
+  }
+#endif // COIN_DEBUG
+  this->tolerance = edgetol;
   this->needSetup = TRUE;
 }
 
 /*!
-  FIXME: write doc
+  Returns edge tolerance for the cylinder half.
 */
 float
 SbCylinderSectionProjector::getTolerance(void) const
@@ -166,54 +174,57 @@ SbCylinderSectionProjector::getTolerance(void) const
 }
 
 /*!
-  FIXME: write doc
+  Check if \a point is within the part of the cylinder used for
+  projections.
 */
 SbBool
-SbCylinderSectionProjector::isWithinTolerance(const SbVec3f &point)
+SbCylinderSectionProjector::isWithinTolerance(const SbVec3f & point)
 {
   if (this->needSetup) this->setupTolerance();
   // check if behind tolerance plane
   if (!this->tolPlane.isInHalfSpace(point)) return FALSE;
 
-  SbVec3f ptOnLine = this->planeLine.getClosestPoint(point);
-  if ((ptOnLine-point).sqrLength() > this->sqrTolDist) return FALSE;
+  SbVec3f ptonline = this->planeLine.getClosestPoint(point);
+  if ((ptonline-point).sqrLength() > this->sqrtoldist) return FALSE;
   return TRUE;
 }
 
 /*!
-  FIXME: write doc
+  Recalculate the internal projection surface settings. Needs to be
+  done if any of the parameters influencing the projection surface
+  have been changed from subclasses without using the access methods.
 */
 void
 SbCylinderSectionProjector::setupTolerance(void)
 {
-  SbVec3f refDir;
+  SbVec3f refdir;
   if (this->orientToEye) {
-    refDir = -this->viewVol.getProjectionDirection();
-    this->worldToWorking.multDirMatrix(refDir, refDir);
+    refdir = -this->viewVol.getProjectionDirection();
+    this->worldToWorking.multDirMatrix(refdir, refdir);
   }
   else {
-    refDir = SbVec3f(0.0f, 0.0f, 1.0f);
+    refdir = SbVec3f(0.0f, 0.0f, 1.0f);
   }
   float radius = this->cylinder.getRadius();
   this->tolDist = this->tolerance * radius;
-  this->sqrTolDist = this->tolDist * this->tolDist;
-  const SbLine &axis = this->cylinder.getAxis();
-  SbVec3f somePt = axis.getPosition() + refDir;
-  SbVec3f ptOnAxis = axis.getClosestPoint(somePt);
+  this->sqrtoldist = this->tolDist * this->tolDist;
+  const SbLine & axis = this->cylinder.getAxis();
+  SbVec3f somept = axis.getPosition() + refdir;
+  SbVec3f ptonaxis = axis.getClosestPoint(somept);
 
   // find plane direction perpendicular to line
-  this->planeDir = somePt - ptOnAxis;
+  this->planeDir = somept - ptonaxis;
   this->planeDir.normalize();
   if (!this->intersectFront) {
     this->planeDir = -this->planeDir;
   }
   // distance from plane to cylinder axis
-  this->planeDist = sqrt(radius*radius - this->tolDist*this->tolDist);
+  this->planeDist = sqrt(radius * radius - this->tolDist * this->tolDist);
 
   // create line parallel to axis, but in plane
-  SbVec3f linePt = axis.getPosition()+this->planeDir*this->planeDist;
-  this->planeLine = SbLine(linePt, linePt+axis.getDirection());
-  this->tolPlane = SbPlane(this->planeDir, linePt);
+  SbVec3f linept = axis.getPosition()+this->planeDir * this->planeDist;
+  this->planeLine = SbLine(linept, linept + axis.getDirection());
+  this->tolPlane = SbPlane(this->planeDir, linept);
 
   this->needSetup = FALSE;
 }

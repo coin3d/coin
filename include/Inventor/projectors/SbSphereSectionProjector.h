@@ -23,22 +23,23 @@
 #include <Inventor/projectors/SbSphereProjector.h>
 #include <Inventor/SbPlane.h>
 
+
 class SbSphereSectionProjector : public SbSphereProjector
 {
   typedef SbSphereProjector inherited;
 
 public:
-  SbSphereSectionProjector(const float edgeTol = 0.9f,
-                           const SbBool orientToEye = TRUE);
+  SbSphereSectionProjector(const float edgetol = 0.9f,
+                           const SbBool orienttoeye = TRUE);
   SbSphereSectionProjector(const SbSphere & sph,
-                           const float edgeTol = 0.9f,
-                           const SbBool orientToEye = TRUE);
+                           const float edgetol = 0.9f,
+                           const SbBool orienttoeye = TRUE);
 
   virtual SbProjector * copy(void) const;
   virtual SbVec3f project(const SbVec2f & point);
   virtual SbRotation getRotation(const SbVec3f & point1,
                                  const SbVec3f & point2);
-  void setTolerance(const float edgeTol);
+  void setTolerance(const float edgetol);
   float getTolerance(void) const;
   void setRadialFactor(const float rad = 0.0f);
   float getRadialFactor(void) const;
@@ -54,7 +55,9 @@ protected:
   SbVec3f planeDir;
   float planeDist;
   SbPlane tolPlane;
-  float sqrTolDist;
+
+private:
+  float sqrtoldist;
 };
 
 #endif // !COIN_SBSPHERESECTIONPROJECTOR_H

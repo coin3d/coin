@@ -19,10 +19,15 @@
 
 /*!
   \class SbSpherePlaneProjector SbSpherePlaneProjector.h Inventor/projectors/SbSpherePlaneProjector.h
-  \brief The SbSpherePlaneProjector class is ... blablabla FIXME.
+  \brief The SbSpherePlaneProjector class projects 2D points to a half-sphere and a plane.
   \ingroup projectors
 
-  FIXME: write doc
+  This projector uses a plane along with the half-sphere of
+  SbSphereSectionProjector for projections. If the 2D point mapping
+  "misses" the sphere section, the 3D point will be projected onto
+  the plane.
+
+  \sa SbCylinderPlaneProjector
  */
 
 #include <Inventor/projectors/SbSpherePlaneProjector.h>
@@ -32,39 +37,37 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+
 /*!
-  FIXME: write doc
+  Default constructor. See
+  SbSphereSectionProjector::SbSphereSectionProjector().
 */
-SbSpherePlaneProjector::SbSpherePlaneProjector(const float edgeTol,
-                                               const SbBool orientToEye)
-  : inherited(edgeTol, orientToEye)
+SbSpherePlaneProjector::SbSpherePlaneProjector(const float edgetol,
+                                               const SbBool orienttoeye)
+  : inherited(edgetol, orienttoeye)
 {
 }
 
 /*!
-  FIXME: write doc
+  Constructor with explicit specification of projection sphere.
 */
-SbSpherePlaneProjector::SbSpherePlaneProjector(const SbSphere &sph,
-                                               const float edgeTol,
-                                               const SbBool orientToEye)
-  : inherited(sph, edgeTol, orientToEye)
+SbSpherePlaneProjector::SbSpherePlaneProjector(const SbSphere & sph,
+                                               const float edgetol,
+                                               const SbBool orienttoeye)
+  : inherited(sph, edgetol, orienttoeye)
 {
 }
 
-/*!
-  FIXME: write doc
-*/
+// Overloaded from parent.
 SbProjector *
 SbSpherePlaneProjector::copy(void) const
 {
   return new SbSpherePlaneProjector(*this);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Overloaded from parent.
 SbVec3f
-SbSpherePlaneProjector::project(const SbVec2f &point)
+SbSpherePlaneProjector::project(const SbVec2f & point)
 {
   if (this->needSetup) this->setupTolerance();
 
@@ -78,7 +81,7 @@ SbSpherePlaneProjector::project(const SbVec2f &point)
       SoDebugError::postWarning("SbSphereSectionProjector::project",
                                 "working line is perpendicular to plane direction.");
 #endif // COIN_DEBUG
-      // set to 0,0,0 to avoid crazy rotations. lastPoint will then
+      // set to 0, 0, 0 to avoid crazy rotations. lastPoint will then
       // never change, and there will be no rotation in getRotation()
       projpt = SbVec3f(0.0f, 0.0f, 0.0f);
     }
@@ -87,23 +90,22 @@ SbSpherePlaneProjector::project(const SbVec2f &point)
   return projpt;
 }
 
-/*!
-  FIXME: write doc
-*/
+// Overloaded from parent.
 SbRotation
-SbSpherePlaneProjector::getRotation(const SbVec3f &point1,
-                                    const SbVec3f &point2)
+SbSpherePlaneProjector::getRotation(const SbVec3f & point1,
+                                    const SbVec3f & point2)
 {
   return this->getRotation(point1, this->isWithinTolerance(point1),
                            point2, this->isWithinTolerance(point2));
 }
 
 /*!
-  FIXME: write doc
+  Calculates rotation from \a point1 to \a point2, with \a tol1 and \a
+  tol2 deciding whether or not to use the tolerance setting.
 */
 SbRotation
-SbSpherePlaneProjector::getRotation(const SbVec3f &point1, const SbBool tol1,
-                                    const SbVec3f &point2, const SbBool tol2)
+SbSpherePlaneProjector::getRotation(const SbVec3f & point1, const SbBool tol1,
+                                    const SbVec3f & point2, const SbBool tol2)
 {
   if (tol1 && tol2) return inherited::getRotation(point1, point2);
   SbVec3f vec = point2 - point1;

@@ -17,14 +17,14 @@
 # HIERARCHY
 # ID  SbProjector
 # ID      SbCylinderProjector
-#             SbCylinderSectionProjector
-#                 SbCylinderPlaneProjector
-#             SbCylinderSheetProjector
+# ID          SbCylinderSectionProjector
+# ID              SbCylinderPlaneProjector
+# ID          SbCylinderSheetProjector
 # ID      SbLineProjector
 # ID      SbPlaneProjector
 # ID      SbSphereProjector
-#             SbSphereSectionProjector
-#                 SbSpherePlaneProjector
-# i           SbSphereSheetProjector
+# ID          SbSphereSectionProjector
+# ID              SbSpherePlaneProjector
+# ID          SbSphereSheetProjector
 #
 ############################################################################

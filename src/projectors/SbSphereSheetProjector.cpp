@@ -19,15 +19,14 @@
 
 /*!
   \class SbSphereSheetProjector SbSphereSheetProjector.h Inventor/projectors/SbSphereSheetProjector.h
-  \brief The SbSphereSheetProjector class is ... blablabla FIXME.
+  \brief The SbSphereSheetProjector class projects 2D points to 3D points on a sheet covering a spherical shape.
   \ingroup projectors
-
-  FIXME: doc
  */
 
+// Metadon doc:
 /*¡
-  Outside the sphere, points will map to a plane -- not a hyperbolical
-  sheet, as they are supposed to be.
+  FIXME: Outside the sphere, points will map to a plane -- not a
+  hyperbolical sheet, as they are supposed to be.  pederb.
 */
 
 #include <Inventor/projectors/SbSphereSheetProjector.h>
@@ -39,52 +38,66 @@
 
 /*!
   \var SbSphereSheetProjector::workingProjPoint
+
+  Last projected point, in the working space coordinate system.
 */
 /*!
   \var SbSphereSheetProjector::planePoint
+
+  Position of the center of the sphere in the plane of the hyberbolic
+  sheet.
 */
 /*!
   \var SbSphereSheetProjector::planeDir
+
+  Normal vector of the plane defining the orientation of the sheet.
 */
 /*!
   \var SbSphereSheetProjector::planeDist
+  \internal
+
+  FIXME: not used, probably not needed until sheet code is in
+  place. 20000308 mortene.
 */
 /*!
   \var SbSphereSheetProjector::tolPlane
+
+  The tolerance value specifying how much of the sphere is "above"
+  the sheet.
 */
 
 
 /*!
-  FIXME: write doc
+  Constructor. Uses default sphere defintion, see
+  SbSphereProjector::SbSphereProjector().
+
+  \a orienttoeye decides whether or not the sheet should always be
+  oriented towards the viewer.
 */
-SbSphereSheetProjector::SbSphereSheetProjector(const SbBool orientToEye)
-  : SbSphereProjector(orientToEye)
+SbSphereSheetProjector::SbSphereSheetProjector(const SbBool orienttoeye)
+  : SbSphereProjector(orienttoeye)
 {
 }
 
 /*!
-  FIXME: write doc
+  Constructor with explicit definition of projection sphere.
 */
-SbSphereSheetProjector::SbSphereSheetProjector(const SbSphere &sph,
-                                               const SbBool orientToEye)
-  : SbSphereProjector(sph, orientToEye)
+SbSphereSheetProjector::SbSphereSheetProjector(const SbSphere & sph,
+                                               const SbBool orienttoeye)
+  : SbSphereProjector(sph, orienttoeye)
 {
 }
 
-/*!
-  FIXME: write doc
-*/
+// Overloaded from parent.
 SbProjector *
 SbSphereSheetProjector::copy(void) const
 {
   return new SbSphereSheetProjector(*this);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Overloaded from parent.
 SbVec3f
-SbSphereSheetProjector::project(const SbVec2f &point)
+SbSphereSheetProjector::project(const SbVec2f & point)
 {
   if (this->needSetup) this->setupPlane();
 
@@ -92,7 +105,7 @@ SbSphereSheetProjector::project(const SbVec2f &point)
   // FIXME: need to intersect with a hyperbolic sheet if intersection
   // hits a point on the sphere with an angle bigger than 45 or something
   // degrees from the planeDir (or if line doesn't intersect at all).
-  // morten suggeste a formula like this: z = a*x^2 + b*y^2 + c, where sign
+  // mortene suggest a formula like this: z = a*x^2 + b*y^2 + c, where sign
   // of a differs from sign of b. Will investigate later.
   //
   // pederb, 19991210
@@ -108,7 +121,7 @@ SbSphereSheetProjector::project(const SbVec2f &point)
       SoDebugError::postWarning("SbSphereSectionProjector::project",
                                 "working line is perpendicular to plane direction.");
 #endif // COIN_DEBUG
-      // set to 0,0,0 to avoid crazy rotations. lastPoint will then
+      // set to 0, 0, 0 to avoid crazy rotations. lastPoint will then
       // never change, and there will be no rotation in getRotation()
       projpt = SbVec3f(0.0f, 0.0f, 0.0f);
     }
@@ -118,9 +131,7 @@ SbSphereSheetProjector::project(const SbVec2f &point)
   return projpt;
 }
 
-/*!
-  FIXME: write doc
-*/
+// Overloaded from parent.
 SbRotation
 SbSphereSheetProjector::getRotation(const SbVec3f & point1,
                                     const SbVec3f & point2)
@@ -130,7 +141,8 @@ SbSphereSheetProjector::getRotation(const SbVec3f & point1,
 }
 
 /*!
-  FIXME: write doc
+  Recalculates projection surface settings after changes to the
+  parameters.
 */
 void
 SbSphereSheetProjector::setupPlane(void)

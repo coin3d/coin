@@ -23,7 +23,7 @@
   \ingroup projectors
 
   Projectors are used in the Coin library for mapping 2D coordinates
-  (typically from position of the mouse cursor in the rendering
+  (typically from the position of the mouse cursor in the rendering
   window) to 3D "world" coordinates.
 
   Mapping 2D coordinates to 3D coordinates is something which is done
