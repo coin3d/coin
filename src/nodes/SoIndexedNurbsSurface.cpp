@@ -26,9 +26,10 @@
   \brief The SoIndexedNurbsSurface class can be used to render NURBS surfaces.
   \ingroup nodes
 
-  It is very similar to the SoNurbsSurface class, but control points
+  It is very similar to the SoNurbsSurface class, but controlpoints
   can be specified using indices.
 */
+// FIXME: more class doc. Usage example! 20011220 mortene.
 
 #include <Inventor/nodes/SoIndexedNurbsSurface.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -177,9 +178,7 @@ SoIndexedNurbsSurface::computeBBox(SoAction * action,
   if (num) center = acccenter / float(num);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 void
 SoIndexedNurbsSurface::GLRender(SoGLRenderAction * action)
 {
@@ -194,7 +193,7 @@ SoIndexedNurbsSurface::GLRender(SoGLRenderAction * action)
   glDisable(GL_AUTO_NORMAL);
 }
 
-// doc from parent
+// Doc in superclass.
 void
 SoIndexedNurbsSurface::rayPick(SoRayPickAction * action)
 {
@@ -228,7 +227,7 @@ typedef struct {
 } coin_ins_cbdata;
 
 
-// doc from parent
+// Documented in superclass.
 void
 SoIndexedNurbsSurface::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
@@ -237,7 +236,9 @@ SoIndexedNurbsSurface::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 }
 
 /*!
-  Not implemented. Should probably have been private in OIV.
+  This method is part of the original SGI Inventor API, but not
+  implemented in Coin, as it looks like a method that should probably
+  have been private in Open Inventor.
 */
 void
 SoIndexedNurbsSurface::sendPrimitive(SoAction * ,  SoPrimitiveVertex *)
@@ -245,7 +246,7 @@ SoIndexedNurbsSurface::sendPrimitive(SoAction * ,  SoPrimitiveVertex *)
   COIN_OBSOLETED();
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoIndexedNurbsSurface::generatePrimitives(SoAction * action)
 {

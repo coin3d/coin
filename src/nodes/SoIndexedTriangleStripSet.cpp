@@ -85,7 +85,7 @@ SoIndexedTriangleStripSet::~SoIndexedTriangleStripSet()
 {
 }
 
-// doc from superclass
+// Documented in superclass.
 void
 SoIndexedTriangleStripSet::initClass(void)
 {
@@ -173,7 +173,7 @@ SoIndexedTriangleStripSet::findNormalBinding(SoState * const state) const
   return binding;
 }
 
-// doc from superclass
+// Documented in superclass.
 void
 SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
 {
@@ -381,7 +381,7 @@ SoIndexedTriangleStripSet::countPrimitives(int & strips, int & tris)
   }
 }
 
-// doc from superclass
+// Documented in superclass.
 void
 SoIndexedTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
@@ -412,9 +412,7 @@ SoIndexedTriangleStripSet::willSetShadeModel(void) const
   return TRUE;
 }
 
-/*!
-  FIXME: write doc
-*/
+// Documented in superclass.
 void
 SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
 {

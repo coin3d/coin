@@ -28,17 +28,20 @@
 
   Successive text rendering nodes will use fonts with the style
   settings of this node, if a font with the given settings can be
-  found and loaded from the system. (And if not, a default fallback
-  will be used. So consider SoFontStyle nodes as nodes giving \e hints
-  about font settings, as you are \e not guaranteed to get exactly
-  what you want.)
+  found and loaded from the system.
 
-  FIXME: this node will just be ignored yet due to capabilities
-  missing in the SoText2 and SoText3 node implementations (they use
-  hardcoded font data). 20000326 mortene.
+  If the specified font style can not be found on the client system, a
+  default fallback will be used. So the application programmer must
+  consider SoFontStyle nodes as nodes giving \e hints about font
+  settings, as you are \e not guaranteed to get exactly what you want.
 
   \sa SoFont, SoText2, SoText3
 */
+
+// FIXME: this node will just be ignored yet due to capabilities
+// missing in the SoText2 and SoText3 node implementations (they use
+// hardcoded font data). 20000326 mortene.
+
 
 #include <Inventor/nodes/SoFontStyle.h>
 #include <Inventor/nodes/SoSubNodeP.h>

@@ -31,6 +31,8 @@
   surfaces when doing 3D visualization, we recommend finding a good
   book on the subject.
 */
+// FIXME: Usage example! Also give a reference to a decent
+// book on NURBS. 20011220 mortene.
 
 #include <Inventor/nodes/SoIndexedNurbsCurve.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -214,7 +216,9 @@ SoIndexedNurbsCurve::getBoundingBox(SoGetBoundingBoxAction * action)
 }
 
 /*!
-  Not implemented in Coin. Should probably have been private in OIV.
+  This method is part of the original SGI Inventor API, but not
+  implemented in Coin, as it looks like a method that should probably
+  have been private in Open Inventor.
 */
 void
 SoIndexedNurbsCurve::sendPrimitive(SoAction * ,  SoPrimitiveVertex *)

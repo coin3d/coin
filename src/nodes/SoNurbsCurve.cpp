@@ -32,7 +32,8 @@
   book on the subject.
 */
 // FIXME: recommend the book pederb bought about the subject? If so,
-// also add to class doc for SoNurbsSurface (and others?). 20010909 mortene.
+// also add to class doc for SoNurbsSurface (and others?). Plus, add a
+// usage exaple. 20010909 mortene.
 
 #include <Inventor/nodes/SoNurbsCurve.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -211,8 +212,9 @@ SoNurbsCurve::getBoundingBox(SoGetBoundingBoxAction * action)
 }
 
 /*!
-  Not implemented in Coin, as this method should probably have been
-  private in the SGI Open Inventor API.
+  This method is part of the original SGI Inventor API, but not
+  implemented in Coin, as it looks like a method that should probably
+  have been private in Open Inventor.
 */
 void
 SoNurbsCurve::sendPrimitive(SoAction * a, SoPrimitiveVertex * p)
