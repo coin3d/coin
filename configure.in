@@ -216,6 +216,9 @@ fi
 
 SIM_AC_HAVE_SIMAGE_IFELSE(
   AC_DEFINE(HAVE_LIBSIMAGE)
+  CPPFLAGS="$CPPFLAGS $sim_ac_simage_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_simage_ldflags"
+  LIBS="$sim_ac_simage_libs $LIBS"
   COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_simage_cppflags"
   COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_simage_ldflags"
   COIN_EXTRA_LIBS="$sim_ac_simage_libs $COIN_EXTRA_LIBS"
