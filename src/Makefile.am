@@ -44,7 +44,7 @@ endif
 
 SUBDIRS = \
 	extensions actions base bundles caches details draggers elements \
-	engines errors events fields fonts glue manips misc lists nodekits \
+	engines errors events fields fonts glue io manips misc lists nodekits \
 	nodes shapenodes projectors sensors upgraders \
 	3ds collision hardcopy $(THREADSDIR) $(VRML97DIR) .
 
@@ -69,11 +69,11 @@ libCoin@SUFFIX@_la_LIBADD = \
 	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
 	elements/GL/libglelements.la engines/libengines.la \
 	errors/liberrors.la events/libevents.la fields/libfields.la \
-	fonts/libfonts.la glue/libglue.la misc/libmisc.la lists/liblists.la \
-	nodekits/libnodekits.la nodes/libnodes.la shapenodes/libshapenodes.la \
-	projectors/libprojectors.la sensors/libsensors.la \
-	details/libdetails.la draggers/libdraggers.la manips/libmanips.la \
-	upgraders/libupgraders.la \
+	fonts/libfonts.la glue/libglue.la io/libio.la misc/libmisc.la \
+	lists/liblists.la nodekits/libnodekits.la nodes/libnodes.la \
+	shapenodes/libshapenodes.la projectors/libprojectors.la \
+	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
+	manips/libmanips.la upgraders/libupgraders.la \
 	3ds/libformat3ds.la collision/libcollision.la hardcopy/libhardcopy.la \
 	$(THREADSLIBADD) $(VRML97LIBADD) $(SUPERGLULIBADD)
 endif
@@ -87,7 +87,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	bundles/bundles.lst caches/caches.lst elements/elements.lst \
 	elements/GL/glelements.lst engines/engines.lst \
 	errors/errors.lst events/events.lst fields/fields.lst \
-	fonts/fonts.lst glue/glue.lst misc/misc.lst lists/lists.lst \
+	fonts/fonts.lst glue/glue.lst io/io.lst misc/misc.lst lists/lists.lst \
 	nodekits/nodekits.lst nodes/nodes.lst shapenodes/shapenodes.lst \
 	projectors/projectors.lst sensors/sensors.lst \
 	details/details.lst draggers/draggers.lst manips/manips.lst \

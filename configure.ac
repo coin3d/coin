@@ -1472,7 +1472,7 @@ AM_CONDITIONAL(HACKING_DYNAMIC_MODULES, test x"$enable_hacking" = x"yes")
 if test x"$enable_hacking" = x"yes"; then
   for dir in \
     base actions bundles caches details draggers elements \
-    elements/GL:glelements engines errors events fields fonts glue \
+    elements/GL:glelements engines errors events fields fonts glue io \
     manips misc lists nodekits nodes shapenodes projectors \
     sensors upgraders hardcopy collision 3ds:format3ds; \
   do
@@ -1774,6 +1774,7 @@ AC_CONFIG_FILES([
         src/fields/Makefile
         src/fonts/Makefile
         src/glue/Makefile
+        src/io/Makefile
         src/manips/Makefile
         src/misc/Makefile
         src/lists/Makefile

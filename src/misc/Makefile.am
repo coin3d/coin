@@ -14,12 +14,7 @@ RegularSources = \
 	SoFullPath.cpp \
 	SoTempPath.cpp \
 	SoLightPath.cpp \
-	SoInput.cpp \
-	SoInput_FileInfo.cpp \
-	SoInput_Reader.cpp \
 	SoInteraction.cpp \
-	SoOutput.cpp \
-	SoOutput_Writer.cpp \
 	SoPath.cpp \
 	SoPick.cpp \
 	SoPickedPoint.cpp \
@@ -34,15 +29,10 @@ RegularSources = \
 	SoOffscreenWGLData.cpp \
 	SoGenerate.cpp \
 	SoLockManager.cpp \
-	SoByteStream.cpp \
-	SoTranSender.cpp \
-	SoTranReceiver.cpp \
 	SoAudioDevice.cpp \
-	AudioTools.cpp \
-	gzmemio.c
+	AudioTools.cpp
 LinkHackSources = \
-	all-misc-cpp.cpp \
-	all-misc-c.c
+	all-misc-cpp.cpp
 PublicHeaders = \
 	../../include/Inventor/misc/SoAuditorList.h \
 	../../include/Inventor/misc/SoBase.h \
@@ -79,15 +69,11 @@ PrivateHeaders = \
 	SoGLnonindexedTristripSetTemplate.icc \
 	SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc \
-	SoInput_FileInfo.h \
-	SoInput_Reader.h \
 	SoOffscreenInternalData.h \
 	SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h \
 	SoOffscreenWGLData.h \
-	SoOutput_Writer.h \
-	cppmangle.icc \
-	gzmemio.h
+	cppmangle.icc
 
 ##$ BEGIN TEMPLATE Make-Common(misc, misc)
 # **************************************************************************
