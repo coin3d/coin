@@ -1496,6 +1496,12 @@ SoBase::readReference(SoInput * in, SoBase *& base)
     return FALSE;
   }
 
+  // when referencing an SoProtoInstance, we need to return the proto
+  // instance's root node, not the actual proto instance node.
+  if (base->isOfType(SoProtoInstance::getClassTypeId())) {
+    base = ((SoProtoInstance*) base)->getRootNode();
+  }
+
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoBase::readReference",
                          "USE: '%s'", refname.getString());
