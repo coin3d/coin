@@ -385,6 +385,9 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
     
     cc_glglue_context_make_current(this->glcontext);  
     this->glaction->apply(scene);
+    // Make sure that rendering to pBuffer is completed to avoid 
+    // flickering. DON'T REMOVE THIS. You have been warned.
+    glFlush();
     cc_glglue_context_reinstate_previous(this->glcontext);
   }
   if (!this->glimagevalid || (this->glimage == NULL)) {
