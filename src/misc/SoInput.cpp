@@ -1517,6 +1517,13 @@ SoInput::clean(void)
 SbString
 SoInput::getPathname(const char * const filename)
 {
+  // FIXME: this method would be a prime candidate for the planned
+  // SbFile class of filesystem abstractions to hide system
+  // differences. 20011021 mortene.
+
+  // FIXME: checking for system instead of feature is bad coding
+  // style.  Use a configure check instead. 20011021 mortene.
+
 #ifdef _WIN32
 
   char drive[_MAX_DRIVE];
@@ -1556,6 +1563,12 @@ SoInput::getPathname(const SbString & s)
 SbString
 SoInput::getBasename(const char * const filename)
 {
+  // FIXME: this method would be a prime candidate for the planned
+  // SbFile class of filesystem abstractions to hide system
+  // differences. 20011021 mortene.
+
+  // FIXME: checking for system instead of feature is bad coding
+  // style.  Use a configure check instead. 20011021 mortene.
 #ifdef _WIN32
 
   char fname[_MAX_FNAME];

@@ -38,6 +38,12 @@
  const SoTextureCoordinateBundle * const texcoords,
  const int32_t *texindices)
 {
+  // FIXME: checking for system instead of feature is bad coding
+  // style.  Use a configure check instead of the _WIN32 below. (It
+  // looks bogus anyway -- it's a compiler problem we're trying to
+  // avoid, so checking for the OS instead is of course silly.)  There
+  // are more of these further down this file.  20011021 mortene.
+
   // to avoid compiler warnings
 #if NINDEX==FALSE && !defined(_WIN32)
   if (normalindices);
