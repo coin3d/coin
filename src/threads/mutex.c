@@ -40,8 +40,8 @@
 #ifdef USE_W32THREAD
 /* we test if Win32 TryEnterCriticalSection exists, and use Win32
    critical section if it does, and Win32 mutex if it doesn't */
-typedef BOOL cc_mutex_try_enter_critical_section_func(LPCRITICAL_SECTION);
-static cc_mutex_try_enter_critical_section_func * cc_mutex_try_enter_critical_section = NULL; 
+typedef BOOL cc_mutex_TryEnterCriticalSection_func(LPCRITICAL_SECTION);
+static cc_mutex_TryEnterCriticalSection_func * cc_mutex_TryEnterCriticalSection = NULL; 
 #include "mutex_win32mutex.ic" 
 #include "mutex_win32cs.ic" 
 #endif /* USE_W32THREAD */
@@ -57,7 +57,7 @@ cc_mutex_struct_init(cc_mutex * mutex_struct)
 {
   int ok;
 #ifdef USE_W32THREAD
-  if (cc_mutex_try_enter_critical_section)
+  if (cc_mutex_TryEnterCriticalSection)
     ok = win32_cs_struct_init(mutex_struct);
   else 
     ok = win32_mutex_struct_init(mutex_struct);
@@ -77,7 +77,7 @@ cc_mutex_struct_clean(cc_mutex * mutex_struct)
   int ok;
   assert(mutex_struct);
 #ifdef USE_W32THREAD
-  if (cc_mutex_try_enter_critical_section)
+  if (cc_mutex_TryEnterCriticalSection)
     ok = win32_cs_struct_clean(mutex_struct);
   else 
     ok = win32_mutex_struct_clean(mutex_struct);
@@ -126,7 +126,7 @@ cc_mutex_lock(cc_mutex * mutex)
   assert(mutex != NULL);
 
 #ifdef USE_W32THREAD
-  if (cc_mutex_try_enter_critical_section)
+  if (cc_mutex_TryEnterCriticalSection)
     ok = win32_cs_lock(mutex);
   else 
     ok = win32_mutex_lock(mutex);
@@ -146,7 +146,7 @@ cc_mutex_try_lock(cc_mutex * mutex)
   int ok;
   assert(mutex != NULL);
 #ifdef USE_W32THREAD
-  if (cc_mutex_try_enter_critical_section)
+  if (cc_mutex_TryEnterCriticalSection)
     ok = win32_cs_try_lock(mutex);
   else 
     ok = win32_mutex_try_lock(mutex);
@@ -166,7 +166,7 @@ cc_mutex_unlock(cc_mutex * mutex)
   int ok;
   assert(mutex != NULL);
 #ifdef USE_W32THREAD
-  if (cc_mutex_try_enter_critical_section)
+  if (cc_mutex_TryEnterCriticalSection)
     ok = win32_cs_unlock(mutex);
   else 
     ok = win32_mutex_unlock(mutex);
@@ -196,11 +196,11 @@ cc_mutex_init(void)
      wrong, and we should investigate. <mortene> */
   assert(h && "GetModuleHandle('kernel32.dll') failed!");
 
-  /* this function is unsupported in Win95/98/Me and NT <=3.51 */
-  cc_mutex_try_enter_critical_section = 
-    (cc_mutex_try_enter_critical_section_func*)
+  /* This function is unsupported in Win95/98/Me and NT <=3.51, but we
+     still want to use it if it's available, since it can provide
+     major speed-ups for certain aspects of Win32 mutex handling. */
+  cc_mutex_TryEnterCriticalSection = (cc_mutex_TryEnterCriticalSection_func *)
     GetProcAddress(h, "TryEnterCriticalSection");
-  }
   
 #endif /* USE_W32THREAD */
 

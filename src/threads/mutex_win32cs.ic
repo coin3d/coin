@@ -49,7 +49,7 @@ static int
 win32_cs_try_lock(cc_mutex * mutex)
 {
   BOOL status;
-  status = cc_mutex_try_enter_critical_section(&mutex->w32thread.critical_section);
+  status = cc_mutex_TryEnterCriticalSection(&mutex->w32thread.critical_section);
   return status == TRUE ? CC_OK : CC_BUSY;
 }
 
