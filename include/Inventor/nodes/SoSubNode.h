@@ -31,12 +31,12 @@ private: \
   static SoType classTypeId; \
 public: \
   static SoType getClassTypeId(void); \
-  virtual SoType getTypeId(void) const; \
+  virtual SoType getTypeId(void) const
 
 
 #define SO_NODE_HEADER(_class_) \
-  SO_NODE_ABSTRACT_HEADER(_class_) \
-  static void * createInstance(void); \
+  SO_NODE_ABSTRACT_HEADER(_class_); \
+  static void * createInstance(void)
 
 
 #define SO_NODE_ABSTRACT_SOURCE(_class_) \
@@ -175,6 +175,6 @@ do { \
 
 #define SO_NODE_DEFINE_ENUM_VALUE(_enumname_, _enumval_) \
   this->fieldData.addEnumValue(SO__QUOTE(_enumname_), SO__QUOTE(_enumval_), \
-                               _enumval_);
+                               _enumval_)
 
 #endif // !__SOSUBNODE_H__

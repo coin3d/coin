@@ -36,12 +36,12 @@ protected: \
  \
 private: \
   static SoNodekitCatalog * classcatalog; \
-  static const SoNodekitCatalog ** parentcatalogptr; \
+  static const SoNodekitCatalog ** parentcatalogptr
 
 
 
 #define SO_KIT_CATALOG_ENTRY_HEADER(_entry_) \
-protected: SoSFNode _entry_; \
+protected: SoSFNode _entry_
 
 
 
@@ -67,7 +67,7 @@ const SoNodekitCatalog ** \
 _class_::getClassNodekitCatalogPtr(void) \
 { \
   return (const class SoNodekitCatalog **)&_class_::classcatalog; \
-} \
+}
 
 
 #define SO_KIT_IS_FIRST_INSTANCE() \
