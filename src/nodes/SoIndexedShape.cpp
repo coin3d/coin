@@ -309,6 +309,7 @@ SoIndexedShape::getVertexData(SoState * state,
   tindices = this->textureCoordIndex.getValues(0);
   if (this->textureCoordIndex.getNum() <= 0 || tindices[0] < 0) tindices = NULL;
 
+  normalCacheUsed = FALSE;
   if (needNormals) {
     nindices = this->normalIndex.getValues(0);
     if (this->normalIndex.getNum() <= 0 || nindices[0] < 0) nindices = NULL;
