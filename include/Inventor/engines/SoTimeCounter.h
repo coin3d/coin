@@ -24,6 +24,7 @@
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/fields/SoSFTime.h>
 #include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFTrigger.h>
 #include <Inventor/fields/SoSFShort.h>
@@ -39,7 +40,7 @@ public:
   SoSFShort step;
   SoSFBool on;
   SoSFFloat frequency;
-  SoSFFloat duty;
+  SoMFFloat duty;
   SoSFShort reset;
   SoSFTrigger syncIn;
 
@@ -53,8 +54,25 @@ protected:
   virtual ~SoTimeCounter();
   
 private:
+
   virtual void evaluate(void);
   virtual void inputChanged(SoField * which);
+
+  SbBool prevon;
+  SbBool ispaused;
+  double pausetimeincycle;
+  int lastoutput;
+  short outputvalue;
+  int numsteps;
+  int stepnum;
+  double starttime;
+  double cyclelen;
+  short findOutputValue(double timeincycle) const;
+  void setOutputValue(short value);
+  void calcDutySteps(void);
+  void calcNumSteps(void);
+
+  SbList <double> dutylimits; 
 };
 
 #endif // !COIN_SOTIMECOUNTER_H
