@@ -41,6 +41,23 @@
   to be calculated for each vertex in the shape. All shape nodes which
   are a standard part of Coin meets this criteria.
 
+  Bump mapping in Coin requires OpenGL 1.3, or the following OpenGL
+  extensions: GL_ARB_multitexture, GL_ARB_texture_cube_map,
+  GL_ARB_texture_env_combine and GL_ARB_texture_env_dot3 (or the
+  corresponding EXT extensions). If the run-time system doesn't meet
+  these requirements, Coin will post a warning and the bump map will
+  simply be ignored.
+
+  GL_ARB_vertex_program and GL_ARB_fragment_program is required to get
+  specular lighting on the bumps. If these extensions are not
+  available, the bumps will be rendered with diffuse lighting only.
+  
+  Bump mapped objects will be rendered with multiple rendering
+  passes. One extra pass per light source for diffuse only bumps, and
+  two extra passes per light source for diffuse and specular
+  bumps. You can turn off specular lighting on the bumps by setting
+  specularColor to (0.0, 0.0, 0.0).
+
   \since Coin 2.2
 */
 
