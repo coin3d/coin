@@ -201,6 +201,12 @@ public:
   SoBoundingBoxCache * bboxcache;
 #ifdef COIN_THREADSAFE
   SbStorage * glcachestorage;
+  static void invalidate_gl_cache(void * tls, void *) {
+    soseparator_storage * ptr = (soseparator_storage*) tls;
+    if (ptr->glcachelist) {
+      ptr->glcachelist->invalidateAll();
+    }
+  }
 #else // COIN_THREADSAFE
   SoGLCacheList * glcachelist;
 #endif // !COIN_THREADSAFE
@@ -209,6 +215,16 @@ public:
 
 public:
   SoGLCacheList * getGLCacheList(SbBool createifnull);
+
+  void invalidateGLCaches(void) {
+#ifdef COIN_THREADSAFE
+    glcachestorage->applyToAll(invalidate_gl_cache, NULL);
+#else // COIN_THREADSAFE
+    if (this->glcachelist) {
+      this->glcachelist->invalidateAll(); 
+    }
+#endif // !COIN_THREADSAFE
+  }
 };
 
 #ifdef COIN_THREADSAFE
@@ -754,14 +770,7 @@ SoSeparator::notify(SoNotList * nl)
   inherited::notify(nl);
 
   if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->invalidate();
-  SoGLCacheList * glcachelist = PRIVATE(this)->getGLCacheList(FALSE);
-  if (glcachelist) {
-#if GLCACHE_DEBUG && 0 // debug
-    SoDebugError::postInfo("SoSeparator::notify",
-                           "Invalidating GL cache: %p", this);
-#endif // debug
-    glcachelist->invalidateAll();
-  }
+  PRIVATE(this)->invalidateGLCaches();
   PRIVATE(this)->hassoundchild = SoSeparatorP::MAYBE;
 }
 
