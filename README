@@ -16,11 +16,11 @@ www.coin3d.org
 
 LICENSE
 
-Coin is released publicly under the Q Public License (QPL) for
-developers of free software (see LICENSE.QPL) and is also available
-for commercial use under a Professional Edition license. Read the QPL
-carefully to decide whether or not your use of Coin is compatible with
-this free, open source license.
+Coin is released publicly under the GNU Lesser General Public License
+(LGPL) for developers of free software (see LICENSE.LGPL) and is also
+available for any proprietary use under a Professional Edition
+license. Read the LGPL carefully to decide whether or not your use of
+Coin is compatible with this free, open source license.
 
 There are files in the distribution used in the build process which is
 covered under the GPL (see LICENSE.GPL).

@@ -21,7 +21,7 @@ Summary: A high-level 3D visualization library.
 Name: Coin
 Version: @VERSION@
 Release: @coin_configure_date@
-Copyright: Q Public License (QPL)
+Copyright: GNU Lesser General Public License (LGPL)
 Group: Development/Libraries
 URL: http://www.coin3d.org
 Vendor: Systems in Motion
