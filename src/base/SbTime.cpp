@@ -540,6 +540,7 @@ SbTime::parsedate(const char * const date)
     dateptr++; // we don't care if it's wednesday
   if (*dateptr == '\0') return FALSE;
   dateptr -= 2; // step back
+  if ( dataptr < date ) return FALSE;
   if (dateptr[0] != 'y' && dateptr[1] == ',') { // RFC 822 / RFC 1123 format
     // FORMAT: Wkd, DD Mnth YYYY HH:MM:SS GMT
 #if COIN_DEBUG && 0 // debug
@@ -623,7 +624,10 @@ SbTime::parsedate(const char * const date)
     while (*dateptr != '-' && *dateptr != '\0') dateptr++;
     if (*dateptr == '\0') return FALSE;
     dateptr++;
+    // put number of years since 1900 into tm_year
     time.tm_year = atoi(dateptr);
+    if ( time.tm_year < 70 ) time.tm_year += 100;
+
     while (*dateptr != ' ' && *dateptr != '\t' && *dateptr != '\0') dateptr++;
     if (*dateptr == '\0') return FALSE;
     while (*dateptr == ' ' || *dateptr == '\t') dateptr++;
