@@ -96,15 +96,14 @@ socontexthandler_cleanup(void)
 void
 SoContextHandler::destructingContext(uint32_t contextid)
 {
-  const int n = socontexthandler_cblist ?
-    socontexthandler_cblist->getLength() : 0;
+  if (socontexthandler_cblist == NULL) { return; }
 
   // Work on a copy of the list, to allow
   // removeContextDestructionCallback() to be safely invoked while
   // iterating over the list.
   SbList <socontexthandler_cbitem> listcopy = *socontexthandler_cblist;
 
-  for (int i = 0; i < n; i++) {
+  for (int i = 0; i < listcopy.getLength(); i++) {
     const socontexthandler_cbitem & item = listcopy[i];
     item.func(contextid, item.closure);
   }
