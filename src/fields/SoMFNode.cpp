@@ -57,6 +57,7 @@
 #include <Inventor/SoPath.h>
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/errors/SoReadError.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -307,7 +308,11 @@ SoMFNode::read1Value(SoInput * in, int index)
 {
   SoSFNode sfnode;
   SbBool result = sfnode.readValue(in);
-  if (result) this->set1Value(index, sfnode.getValue());
+  if (result) {
+    result = sfnode.getValue() != NULL;
+    if (result) this->set1Value(index, sfnode.getValue());
+    else SoReadError::post(in, "NULL values in MFNode not allowed");
+  }
   return result;
 }
 
