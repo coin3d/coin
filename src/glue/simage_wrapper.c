@@ -135,6 +135,18 @@ simage_wrapper_resize3d(unsigned char * imagedata,
   return NULL;
 }
 
+s_params *
+simage_wrapper_s_params_create(void)
+{
+  return NULL;
+}
+
+void
+simage_wrapper_s_params_destroy(s_params *params)
+{
+  return;
+}
+
 void
 simage_wrapper_s_params_set(s_params * params, ...)
 {
@@ -335,6 +347,8 @@ simage_wrapper(void)
 #if !defined(HAVE_LIBSIMAGE) || defined(SIMAGE_VERSION_1_4)
         SIMAGEWRAPPER_REGISTER_FUNC(simage_resize3d, simage_resize3d_t);
 
+        SIMAGEWRAPPER_REGISTER_FUNC(s_params_create, s_params_create_t);
+        SIMAGEWRAPPER_REGISTER_FUNC(s_params_destroy, s_params_destroy_t);
         SIMAGEWRAPPER_REGISTER_FUNC(s_params_set, s_params_set_t);
         SIMAGEWRAPPER_REGISTER_FUNC(s_params_get, s_params_get_t);
         SIMAGEWRAPPER_REGISTER_FUNC(s_stream_open, s_stream_open_t);
@@ -356,6 +370,8 @@ simage_wrapper(void)
         si->s_stream_destroy = simage_wrapper_s_stream_destroy;
         si->s_stream_params = simage_wrapper_s_stream_params;
 #endif
+        si->s_params_create = NULL;
+        si->s_params_destroy = NULL;
         si->s_params_set = NULL;
         si->s_params_get = NULL;
         si->s_stream_open = NULL;

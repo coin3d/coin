@@ -101,6 +101,8 @@ extern "C" {
   typedef struct simage_stream_s s_stream;
 #endif
 
+  typedef s_params * (*s_params_create_t)(void);
+  typedef void (*s_params_destroy_t)(s_params * params);
   typedef void (*s_params_set_t)(s_params * params, ...);
   typedef int (*s_params_get_t)(s_params * params, ...);
 
@@ -141,6 +143,8 @@ extern "C" {
     simage_get_saver_fullname_t simage_get_saver_fullname;
     simage_get_saver_description_t simage_get_saver_description;
 
+    s_params_create_t s_params_create;
+    s_params_destroy_t s_params_destroy;
     s_params_set_t s_params_set;
     s_params_get_t s_params_get;
 
