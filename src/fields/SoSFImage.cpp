@@ -266,7 +266,8 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
 {
   delete[] this->pixblock;
   this->pixblock = NULL;
-
+  this->imgdim = size;
+  this->bytedepth = nc;
   int buffersize = size[0] * size[1] * nc;
 
   if (buffersize) { // images can be empty
@@ -277,8 +278,6 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
     unsigned char * newblock = new unsigned char[buffersize];
     this->pixblock = newblock;
 
-    this->imgdim = size;
-    this->bytedepth = nc;
     if (bytes) {
       (void)memcpy(this->pixblock, bytes,
                    this->imgdim[0] * this->imgdim[1] * this->bytedepth);
@@ -288,7 +287,6 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
                    this->imgdim[0] * this->imgdim[1] * this->bytedepth);
     }
   }
-
   this->valueChanged();
 }
 
