@@ -610,6 +610,7 @@ SoNode::initClasses(void)
   SoSceneTexture2::initClass();
 
   SoTextureCoordinateCube::initClass();
+  SoTextureCoordinateSphere::initClass();
 
 }
 
