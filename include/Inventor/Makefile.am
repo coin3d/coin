@@ -11,8 +11,8 @@ DISTCLEANFILES = \
 EXTRA_DIST = \
 	SbBasic.h.in
 
-SbBasic.h: $(srcdir)/SbBasic.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
+SbBasic.h: $(srcdir)/SbBasic.h.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(MAKE) include/Inventor/SbBasic.h )
 
 libCoinincdir = $(includedir)/Inventor
 nodist_libCoininc_HEADERS = \

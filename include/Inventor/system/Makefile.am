@@ -10,8 +10,8 @@ EXTRA_DIST = \
 	inttypes.h.in \
 	gl.h
 
-inttypes.h: $(srcdir)/inttypes.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
+inttypes.h: $(srcdir)/inttypes.h.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(MAKE) include/Inventor/system/inttypes.h )
 
 # header installation information
 
