@@ -352,6 +352,9 @@
 
 #include <coindefs.h> // COIN_STUB()
 
+#ifdef HAVE_SHADERS
+#include <Inventor/nodes/SoShaders.h>
+#endif
 
 #ifdef HAVE_VRML97
 #include <Inventor/VRMLnodes/SoVRML.h>
@@ -567,6 +570,10 @@ SoDB::init(void)
   SoGLBigImage::initClass();
 
   SoHardCopy::init();
+
+#ifdef HAVE_SHADERS
+  SoShaders::init();
+#endif
 
 #ifdef HAVE_VRML97
   so_vrml_init();
