@@ -1,0 +1,23 @@
+WHAT'S THIS?
+============
+
+A collection of useful/interesting links for Coin developers. It can, for 
+instance, be resources needed when adding new features to Coin or links to 
+techniques for optimizing Coin.
+
+THE LINKS
+=========
+
+* UNC Collide Research Group
+  2000-12-14 Peder Blekken <pederb@sim.no>
+  http://www.cs.unc.edu/~geom/collide/index.shtml
+
+  Contains discussions on several collision detection algorithms.
+
+* nVIDIA GL_vertex_array_range and GL_NV_fence
+  2000-12-14 Peder Blekken <pederb@sim.no>
+  http://www.nvidia.com/Marketing/Developer/DevRel.nsf/pages/AEE3673F9B8DBC228825693B00619F9C
+
+  nVIDIA extensions for optimized rendering without using display lists.
+  Link has example program, source code and documentation.
+
