@@ -72,8 +72,8 @@ cc_barrier_enter(cc_barrier * barrier)
   barrier->counter++;
   if (barrier->counter == barrier->numthreads) {
     barrier->counter = 0;
-    cc_mutex_unlock(barrier->mutex);
     cc_condvar_wake_all(barrier->condvar);
+    cc_mutex_unlock(barrier->mutex);
     return 1;
   }
   else {
