@@ -161,6 +161,26 @@
   position, focal distance and near and far clipping planes.
 */
 
+/*!
+  \enum SoCamera::StereoMode
+  Enumerates the possible stereo modes.
+*/
+
+/*!
+  \var SoCamera::MONOSCOPIC,
+  No stereo.
+*/
+
+/*!
+  \var SoCamera::LEFT_VIEW,
+  Left view.
+*/
+
+/*!
+  \var SoCamera::RIGHT_VIEW
+  Right view.
+*/
+
 
 SO_NODE_ABSTRACT_SOURCE(SoCamera);
 
@@ -186,6 +206,10 @@ SoCamera::SoCamera()
   SO_NODE_DEFINE_ENUM_VALUE(ViewportMapping, LEAVE_ALONE);
 
   SO_NODE_SET_SF_ENUM_TYPE(viewportMapping, ViewportMapping);
+
+  this->stereomode = MONOSCOPIC;
+  this->stereoadjustment = 0.1f;
+  this->balanceadjustment = 0.0f;
 }
 
 /*!
@@ -307,13 +331,29 @@ SoCamera::GLRender(SoGLRenderAction * action)
   SbViewportRegion vp;
   SbViewVolume vv;
   this->getView(action, vv, vp);
+
   SbMatrix affine, proj;
   if (vv.getDepth() == 0.0f || vv.getWidth() == 0.0f || vv.getHeight() == 0.0f) {
     // Handle empty scenes.
     affine = proj = SbMatrix::identity();
   }
   else {
-    vv.getMatrices(affine, proj);
+    if (this->stereomode != MONOSCOPIC) {
+      SbViewVolume copyvv = vv;
+      SbMatrix dummy;
+      float offset = this->stereoadjustment * 0.5f;
+      if (this->stereomode == LEFT_VIEW) offset = -offset;
+      SbVec3f r = vv.getProjectionDirection().cross(vv.getViewUp());
+      r.normalize();
+      r *= offset;
+      vv.translateCamera(-(r * (vv.getNearDist() / this->focalDistance.getValue())));
+      vv.getMatrices(dummy, proj);
+      copyvv.translateCamera(r);
+      copyvv.getMatrices(affine, dummy);
+    }
+    else {
+      vv.getMatrices(affine, proj);
+    }
     SoCullElement::setViewVolume(state, vv);
   }
 
@@ -437,17 +477,17 @@ SoCamera::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 }
 
 //
-// private method which calculates view volume, and calculates 
-// new viewport region if viewportMapping requires this. 
+// private method which calculates view volume, and calculates
+// new viewport region if viewportMapping requires this.
 // The state is updated with the new viewport, not with the
 // new view volume.
 //
-void 
+void
 SoCamera::getView(SoAction * action, SbViewVolume & resultvv, SbViewportRegion & resultvp,
                   const SbBool considermodelmatrix)
 {
   SoState * state = action->getState();
-  
+
   resultvp = SoViewportRegionElement::get(state);
   float aspectratio = resultvp.getViewportAspectRatio();
   int vpm = this->viewportMapping.getValue();
@@ -472,7 +512,7 @@ SoCamera::getView(SoAction * action, SbViewVolume & resultvv, SbViewportRegion &
     assert(0 && "unknown viewport mapping");
     break;
   }
-  
+
   if (considermodelmatrix) {
     SbBool isidentity;
     const SbMatrix &mm = SoModelMatrixElement::get(state, isidentity);
@@ -612,5 +652,59 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
   glPopAttrib();
 
   state->pop();
+}
+
+/*!
+  Sets the stereo mode.
+*/
+void 
+SoCamera::setStereoMode(StereoMode mode)
+{
+  this->stereomode = mode;
+}
+
+/*!
+  Returns the stereo mode.
+*/
+SoCamera::StereoMode 
+SoCamera::getStereoMode(void) const
+{
+  return this->stereomode;
+}
+
+/*!
+  Sets the stereo adjustment.
+*/
+void 
+SoCamera::setStereoAdjustment(float adjustment)
+{
+  this->stereoadjustment = adjustment;
+}
+
+/*!
+  Returns the stereo adjustment.
+*/
+float 
+SoCamera::getStereoAdjustment(void) const
+{
+  return this->stereoadjustment;
+}
+
+/*!
+  Sets the stereo balance adjustment.
+*/
+void 
+SoCamera::setBalanceAdjustment(float adjustment)
+{
+  this->balanceadjustment = adjustment;
+}
+
+/*!
+  Returns the stereo balance adjustment.
+*/
+float 
+SoCamera::getBalanceAdjustment(void) const
+{
+  return this->balanceadjustment;
 }
 

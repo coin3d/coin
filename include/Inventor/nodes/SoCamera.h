@@ -79,6 +79,20 @@ public:
                const float slack = 1.0f);
   SbViewportRegion getViewportBounds(const SbViewportRegion & region) const;
 
+  enum StereoMode {
+    MONOSCOPIC,
+    LEFT_VIEW,
+    RIGHT_VIEW
+  };
+
+  void setStereoMode(StereoMode mode);
+  StereoMode getStereoMode(void) const;
+
+  void setStereoAdjustment(float adjustment);
+  float getStereoAdjustment(void) const;
+  void setBalanceAdjustment(float adjustment);
+  float getBalanceAdjustment(void) const;
+
   virtual void doAction(SoAction * action);
   virtual void callback(SoCallbackAction * action);
   virtual void GLRender(SoGLRenderAction * action);
@@ -98,15 +112,19 @@ protected:
                       SbVec3f & jitteramount) const;
 
 private:
-  void getView(SoAction * action, SbViewVolume & resultvv, 
+  void getView(SoAction * action, SbViewVolume & resultvv,
                SbViewportRegion & resultvp,
-               const SbBool considermodelmatrix = TRUE); 
+               const SbBool considermodelmatrix = TRUE);
 
   void drawCroppedFrame(SoGLRenderAction * action,
                         const int viewportmapping,
                         const SbViewportRegion & oldvp,
                         const SbViewportRegion & newvp);
 
+
+  StereoMode stereomode;
+  float stereoadjustment;
+  float balanceadjustment;
 };
 
 #endif // !COIN_SOCAMERA_H
