@@ -978,7 +978,8 @@ LIBS="$sim_ac_x11mu_libs $LIBS"
 AC_CACHE_CHECK([whether the X11 miscellaneous utilities is available],
   sim_cv_lib_x11mu_avail,
   [AC_TRY_LINK([#include <X11/Xlib.h>
-                #include <X11/Xmu/Xmu.h>],
+                #include <X11/Xmu/Xmu.h>
+                #include <X11/Xmu/StdCmap.h>],
                [(void)XmuAllStandardColormaps(0L);],
                sim_cv_lib_x11mu_avail=yes,
                sim_cv_lib_x11mu_avail=no)])
