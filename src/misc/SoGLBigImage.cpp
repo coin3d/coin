@@ -277,6 +277,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
   }
 
   SoGLDisplayList * dl = THIS->glimagearray[idx]->getGLDisplayList(state);
+  SoGLImage::tagImage(state, THIS->glimagearray[idx]);
   dl->call(state);
 }
 
