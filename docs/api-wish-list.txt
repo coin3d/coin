@@ -49,6 +49,12 @@ THE WISH LIST
 
   The corresponding field classes should also be added.
 
+  [How about implementing classes SbVec[Single|Double]Float[2|3|4] and
+  SbVec[16|32|64]Integer[2|3|4] (perhaps also with "unsigned"
+  mutations?), and mapping the original Inventor API classes to these?
+  (We'd need some code in a sensible language for autogenerating all
+  the code for the class implementations.) 2000-12-07 mortene]
+
 * SoDepthBuffer, SoGLDepthBufferElement
   2000-12-07 Peder Blekken <pederb@sim.no>
 
