@@ -1145,6 +1145,10 @@ SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
   Saves the buffer to \a filename, in the filetype specified by \a
   filetypeextensions.
 
+  Note that you must still specify the \e full \a filename for the
+  first argument, i.e. the second argument will not automatically be
+  attached to the filename -- it is only used to decide the filetype.
+
   This method is an extension versus the orignal SGI Open Inventor
   API.
 

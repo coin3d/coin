@@ -26,7 +26,7 @@
   \brief The SoGetMatrixAction class is an action for accumulating the transformation matrix of a subgraph.
   \ingroup actions
 
-  This action makes it easy to calculate and convert back and from the
+  This action makes it easy to calculate and convert to and from the
   global coordinate system of your scene and local coordinates of
   parts in a hierarchical model.
 

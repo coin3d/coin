@@ -52,21 +52,22 @@
 
   <ul>
 
-  <li>vertexOrdering == CLOCKWISE | COUNTERCLOCKWISE, shapeType ==
+  <li>vertexOrdering == CLOCKWISE or COUNTERCLOCKWISE, shapeType ==
       SOLID: causes primitives to be backface culled and rendered with
       one-sided lighting.
   
-  <li>vertexOrdering == CLOCKWISE | COUNTERCLOCKWISE, shapeType ==
-      UNKNOWN_SHAPE_TYPE: primitives are \e not backface culled and
-      rendered with two-sided lighting.
+  <li>vertexOrdering == CLOCKWISE or COUNTERCLOCKWISE, shapeType ==
+      UNKNOWN_SHAPE_TYPE: primitives are \e not backface culled, and
+      they are rendered with two-sided lighting.
   
   <li>vertexOrdering == UNKNOWN_ORDERING, any shapeType: primitives
-      are \e not backface culled and rendered with one-sided lighting.
+      are \e not backface culled, and they are rendered with one-sided
+      lighting.
   
   </ul>
 
   (We find this strategy quite odd. It seems more sensible behavior
-  that when vertexordering is unknown, two-sided lighting should be
+  that when vertex ordering is unknown, two-sided lighting should be
   enabled, since it will be difficult to know if a normal points in or
   out of a polygon.  But for compatibility reasons we are of course
   sticking to the same behavior as the original SGI Inventor library.)
@@ -117,7 +118,8 @@
   \var SoShapeHints::ShapeType SoShapeHints::SOLID
 
   The subsequent shapes in the graph are all known to be completely
-  "closed", solid 3D shapes.
+  "closed", solid 3D shapes. Backface culling will be done if
+  vertexOrdering is known.
 */
 
 /*!
@@ -127,8 +129,28 @@
 /*!
   \var SoShapeHints::FaceType SoShapeHints::UNKNOWN_FACE_TYPE
 
-  Nothing known about subsequent polygon data, be conservative when
-  rendering.
+  Signifies: nothing is known about subsequent polygon data, be
+  conservative when rendering.
+
+  All polygons in the scene will be analyzed to see if they needs to
+  be tessellated (broken up) into triangles before passed on to the
+  underlying immediate mode rendering system.
+
+  The OpenGL rendering system handles most complex polygon types, but
+  not all: it can for instance have problems with many-sided, concave
+  polygons (concave polygons are "hollow", that is: rounded
+  inwards). Coin's internal tessellator will most often handle the
+  cases that OpenGL fails on.
+
+  So if you are seeing weird artifacts in how complex polygons are
+  rendered, try to change the SoShapeHints::faceType field to this
+  value and see if they are then rendered correctly.
+
+  Beware that turning on this functionality might have the effect of
+  making the rendering performance worse. If it has a noticable effect
+  on your particular scenegraph, we advise that you investigate
+  whether you could change how the polygons are generated for Coin
+  rendering and then avoid using this flag.
 */
 /*!
   \var SoShapeHints::FaceType SoShapeHints::CONVEX
