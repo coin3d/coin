@@ -17,6 +17,13 @@
  *
 \**************************************************************************/
 
+// SoConvertAll is an internal class used for converting values
+// between all built-in field types.
+//
+// Note that this class is not supposed to be used by the application
+// programmer -- so the API class definition header file is not
+// installed.
+
 #include <Inventor/engines/SoConvertAll.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/engines/SoSubEngineP.h>

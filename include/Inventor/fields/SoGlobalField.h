@@ -23,7 +23,7 @@
 #include <Inventor/fields/SoFieldContainer.h>
 
 
-class COIN_DLL_API SoGlobalField : public SoFieldContainer {
+class SoGlobalField : public SoFieldContainer {
   typedef SoFieldContainer inherited;
 
 public:

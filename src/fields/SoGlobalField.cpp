@@ -25,11 +25,13 @@
 // and export.
 //
 // Note that this class is not supposed to be used by the application
-// programmer, and the only place within Coin where it is
-// "consciously" used is from the SoDB class -- which also contains a
-// complete "front-end" API to this class (see the
-// SoDB::createGlobalField(), SoDB::getGlobalField() and
-// SoDB::renameGlobalField() methods).
+// programmer -- so the API class definition header file is not
+// installed.
+//
+// The only place within Coin where it is "consciously" used is from
+// the SoDB class -- which also contains a complete "front-end" API to
+// this class (see the SoDB::createGlobalField(),
+// SoDB::getGlobalField() and SoDB::renameGlobalField() methods).
 
 
 #include <Inventor/fields/SoGlobalField.h>

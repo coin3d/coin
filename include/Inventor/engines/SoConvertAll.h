@@ -24,7 +24,7 @@
 #include <Inventor/engines/SoEngineOutput.h>
 
 
-class COIN_DLL_API SoConvertAll : public SoFieldConverter {
+class SoConvertAll : public SoFieldConverter {
   typedef SoFieldConverter inherited;
 
   // SoConvertAll doesn't have a createInstance() method (because it
