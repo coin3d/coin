@@ -375,7 +375,7 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
 
     }
      
-    const cc_glyph3d * lastglyph = NULL;
+    cc_glyph3d * prevglyph = NULL;
 
     const unsigned int length = this->string[i].getLength();
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
@@ -385,22 +385,10 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
       const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-      const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, PRIVATE(this)->fontspec);
+      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, PRIVATE(this)->fontspec);
 
       float advancex, advancey;
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
-
-
-      // Kerning adjustments
-      if (lastglyph != NULL) {
-        float kerningx = 0.0f;
-        float kerningy = 0.0f;
-        // FIXME: Must implement proper kerning support here. (20030910 handegar)
-        //cc_glyph3d_getkerning(lastglyph, PRIVATE(this)->glyphs[glyphidx-1][0], &kerningx, &kerningy)/PRIVATE(this)->textsize; 
-        xpos += kerningx;
-      }
-
-      lastglyph = glyph;
 
       const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
       const int * ptr = cc_glyph3d_getfaceindices(glyph);
@@ -408,16 +396,17 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
       if (PRIVATE(this)->horizontaltext) {
         if (!PRIVATE(this)->lefttorighttext) {// Right to left text.
           xpos -= (advancex + stretchfactor) * compressfactor * PRIVATE(this)->textsize;
-
-          if (lastglyph != NULL) {
-            float kerningx = 0.0f;
-            float kerningy = 0.0f;
-            // FIXME: Must implement proper kerning support here. (20030910 handegar)
-            //cc_glyph3d_getkerning(lastglyph, PRIVATE(this)->glyphs[glyphidx-1][0], &kerningx, &kerningy)/PRIVATE(this)->textsize;
-            xpos += kerningx;
-          }
         }
       }             
+
+
+      if (strcharidx > 0) {
+        float kerningx = 0.0f;
+        float kerningy = 0.0f;
+        cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
+        xpos += kerningx * PRIVATE(this)->textsize;
+      }
+      prevglyph = glyph;
 
       while (*ptr >= 0) {
         SbVec2f v0, v1, v2;
@@ -945,6 +934,11 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
       prevglyph = glyph;
           
     }
+    
+    // Italic font might cause last letter to be outside bbox. Add width if needed.
+    if (advancex < cc_glyph3d_getwidth(prevglyph)) 
+      stringwidth += (cc_glyph3d_getwidth(prevglyph) - advancex);
+
     this->glyphwidths.append(stringwidth);
   }
 

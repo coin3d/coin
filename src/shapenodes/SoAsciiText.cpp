@@ -224,6 +224,7 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
       break;
     }
 
+    cc_glyph3d * prevglyph = NULL;
     const unsigned int length = this->string[i].getLength();
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
 
@@ -232,8 +233,17 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
       const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-      const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, &fontspec);
+      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, &fontspec);
 
+
+      // Get kerning
+      if (strcharidx > 0) {
+        float kerningx, kerningy;
+        cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
+        xpos += kerningx* fontspec.size;
+      }
+      prevglyph = glyph;
+      
       const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
       const int * ptr = cc_glyph3d_getfaceindices(glyph);
 
@@ -565,6 +575,10 @@ SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspe
       stringwidth += (advancex + kerningx) * fontspec->size;
       prevglyph = glyph;
     }
+
+    // Italic font might cause last letter to be outside bbox. Add width if needed.
+    if (advancex < cc_glyph3d_getwidth(prevglyph)) 
+      stringwidth += (cc_glyph3d_getwidth(prevglyph) - advancex) * fontspec->size;
 
     this->stringwidths.append(stringwidth);
   }
