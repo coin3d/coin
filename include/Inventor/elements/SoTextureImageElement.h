@@ -148,6 +148,7 @@ protected:
 
 private:
   void setDefaultValues(void);
+
 };
 
 #endif // !COIN_SOTEXTUREIMAGEELEMENT_H

@@ -57,8 +57,6 @@ public:
     CLAMP_TO_EDGE
   };
 
-  void applyQuality(SoGLDisplayList * dl, const float quality);
-
   void setData(const unsigned char * bytes,
                const SbVec2s & size,
                const int numcomponents,
@@ -125,7 +123,9 @@ public:
   Wrap getWrapS(void) const;
   Wrap getWrapT(void) const;
   Wrap getWrapR(void) const;
-
+  
+  uint32_t getGLImageId(void) const;
+  
 protected:
 
   void incAge(void) const;

@@ -32,6 +32,7 @@
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGL.h> // GL wrapper.
 #include <Inventor/misc/SoGLImage.h>
@@ -73,19 +74,7 @@ void
 SoGLTextureImageElement::init(SoState * state)
 {
   inherited::init(state);
-  this->dlist = NULL;
-  this->image = NULL;
-  this->didapply = FALSE;
-  this->quality = -1.0f;
-
-  // set these to illegal values to make sure things are initialized
-  // the first time.
-  this->glmodel = -1;
-  this->glblendcolor.setValue(-1.0f, -1.0f, -1.0f);
-  this->glalphatest = FALSE;
-  glDisable(GL_ALPHA_TEST);
-
-  // store state to be able to apply dlists
+  this->glimage = NULL;
   this->state = state;
 }
 
@@ -98,13 +87,8 @@ SoGLTextureImageElement::push(SoState * state)
   inherited::push(state);
   SoGLTextureImageElement * prev = (SoGLTextureImageElement*)
     this->getNextInStack();
-  this->glmodel = prev->glmodel;
-  this->glblendcolor = prev->glblendcolor;
-  this->glalphatest = prev->glalphatest;
+  this->glimage = NULL;
   this->state = state;
-  this->image = NULL;
-  this->dlist = NULL;
-  this->didapply = FALSE;
 }
 
 
@@ -117,14 +101,8 @@ SoGLTextureImageElement::pop(SoState * state,
   inherited::pop(state, prevTopElement);
   SoGLTextureImageElement * prev = (SoGLTextureImageElement*)
     prevTopElement;
-
-  if (prev->dlist) prev->dlist->unref(state); // unref dlist (ref'ed in set())
-  if (prev->image && prev->image->getImage()) prev->image->getImage()->readUnlock();
-
-  this->glmodel = prev->glmodel;
-  this->glblendcolor = prev->glblendcolor;
-  this->glalphatest = prev->glalphatest;
-  this->didapply = FALSE; // force texture to be applied in the next evaluate()
+  
+  if (prev->glimage && prev->glimage->getImage()) prev->glimage->getImage()->readUnlock();
 }
 
 static SoTextureImageElement::Wrap
@@ -143,15 +121,13 @@ translateWrap(const SoGLImage::Wrap wrap)
 void
 SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
                              SoGLImage * image, const Model model,
-                             const SbColor & blendColor,
-                             const SbBool didapply)
+                             const SbColor & blendColor)
 {
   SoGLTextureImageElement * elem = (SoGLTextureImageElement*)
-    SoReplacedElement::getElement(state, classStackIndex, node);
+    state->getElement(classStackIndex);
   if (!elem) return;
 
-  if (elem->dlist) elem->dlist->unref();
-  if (elem->image && elem->image->getImage()) elem->image->getImage()->readUnlock();
+  if (elem->glimage && elem->glimage->getImage()) elem->glimage->getImage()->readUnlock();
   if (image) {
     // keep SoTextureImageElement "up-to-date"
     inherited::set(state, node,
@@ -163,24 +139,15 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
                    translateWrap(image->getWrapR()),
                    model,
                    blendColor);
-    elem->quality = -1.0f;
-    elem->image = image;
+    elem->glimage = image;
     // make sure image isn't changed while this is the active texture
     if (image->getImage()) image->getImage()->readLock();
-    elem->didapply = didapply;
-    // FIXME: the next line causes a memory leak, according to
-    // Purify. 20001102 mortene.
-    elem->dlist = image->getGLDisplayList(state);
-    if (elem->dlist) elem->dlist->ref(); // ref to make sure dlist is not deleted too soon
-    elem->alphatest = image->useAlphaTest();
   }
   else {
-    elem->didapply = FALSE;
-    elem->image = NULL;
-    elem->dlist = NULL;
-    elem->alphatest = FALSE;
+    elem->glimage = NULL;
     inherited::setDefault(state, node);
   }
+  elem->updateLazyElement();
 }
 
 SoGLImage *
@@ -188,97 +155,23 @@ SoGLTextureImageElement::get(SoState * state, Model & model,
                              SbColor & blendcolor)
 {
   const SoGLTextureImageElement * elem = (const SoGLTextureImageElement*)
-    SoReplacedElement::getConstElement(state, classStackIndex);
-
+    state->getConstElement(classStackIndex);
+  
   model = elem->model;
   blendcolor = elem->blendColor;
-  return elem->image;
+  return elem->glimage;
 }
 
 // doc from parent
 SbBool
 SoGLTextureImageElement::hasTransparency(void) const
 {
-  if (this->image) {
+  if (this->glimage) {
     // only return TRUE if the image has transparency, and if it can't
     // be rendered using glAlphaTest()
-    return this->image->hasTransparency() && !this->image->useAlphaTest();
+    return this->glimage->hasTransparency() && !this->glimage->useAlphaTest();
   }
   return FALSE;
-}
-
-/*!
-  Evaluates this lazy element. \a enabled should be TRUE if texturing is
-  enabled. \a transparency should be TRUE if the current material is
-  transparent and screen door transparency is not used.
-*/
-void
-SoGLTextureImageElement::evaluate(const SbBool enabled, const SbBool transparency) const
-{
-  // cast away constness
-  SoGLTextureImageElement * elem = (SoGLTextureImageElement *)this;
-
-#ifdef HAVE_THREADS
-  // if threads is enabled, the image is loaded on demand, and we
-  // should trigger a image load by just attempting to fetch the data
-  // from the image.
-  if (!enabled && elem->image && elem->image->getImage()) {
-    SbVec3s size;
-    int nc;
-    (void) elem->image->getImage()->getValue(size, nc);
-  }
-#endif // HAVE_THREADS
-
-  if (enabled && elem->image) SoGLImage::tagImage(elem->state, elem->image);
-  if (enabled && elem->dlist) {
-    // notify the texture resource handler that this image/dl has been
-    // recently used
-    if (!elem->didapply) {
-      elem->dlist->call(elem->state);
-      elem->didapply = TRUE;
-      elem->quality = -1.0f;
-    }
-    float quality = SoTextureQualityElement::get(elem->state);
-    if (elem->quality != quality) {
-      elem->image->applyQuality(elem->dlist, quality);
-      elem->quality = quality;
-    }
-    if (int(elem->model) != elem->glmodel ||
-        (elem->model == BLEND && elem->blendColor != elem->glblendcolor)) {
-      elem->glmodel = (int) elem->model;
-      elem->glblendcolor = elem->blendColor;
-
-      if (model == DECAL) {
-        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-      }
-      else if (model == MODULATE) {
-        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-      }
-      else {
-        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
-        glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, blendColor.getValue());
-      }
-    }
-  }
-
-  // if transparent or !enabled, disable alpha test
-  if (transparency || !enabled) {
-    if (elem->glalphatest) {
-      glDisable(GL_ALPHA_TEST);
-      elem->glalphatest = FALSE;
-    }
-  }
-  else if (elem->alphatest != elem->glalphatest) {
-    // update GL alpha test
-    elem->glalphatest = elem->alphatest;
-    if (elem->alphatest) {
-      // draw everything with alpha > 0.5. This will make the texture
-      // look ok even when linear filtering is used.
-      glAlphaFunc(GL_GREATER, 0.5f);
-      glEnable(GL_ALPHA_TEST);
-    }
-    else glDisable(GL_ALPHA_TEST);
-  }
 }
 
 /*!
@@ -373,3 +266,18 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
     }
   }
 }
+
+void 
+SoGLTextureImageElement::updateLazyElement(void) const
+{
+  if (state->isElementEnabled(SoLazyElement::getClassStackIndex())) {
+    uint32_t glimageid = this->glimage ? this->glimage->getGLImageId() : 0;
+    SbBool alphatest = this->glimage && this->glimage->getImage() && 
+      this->glimage->getImage()->hasData() ? 
+      this->glimage->useAlphaTest() : FALSE;
+    
+    SoLazyElement::setGLImageId(state, glimageid, alphatest);
+  }
+}
+
+

@@ -119,21 +119,6 @@ SoCallback::callback(SoCallbackAction * action)
 void
 SoCallback::GLRender(SoGLRenderAction * action)
 {
-  if (this->cbfunc) {
-    SoState * state = action->getState();
-    
-    SbBool transparent = SoTextureImageElement::containsTransparency(state);
-    if (!transparent) {
-      transparent = SoLazyElement::getInstance(state)->isTransparent();
-    }
-    // SoGLTextureImageElement is lazy, but needs some arguments.
-    // Update manually
-    const SoGLTextureImageElement * ti = (SoGLTextureImageElement *)
-      state->getConstElement(SoGLTextureImageElement::getClassStackIndex());
-    ti->evaluate(SoGLTextureEnabledElement::get(state) ||
-                 SoGLTexture3EnabledElement::get(state),
-                 transparent && !SoShapeStyleElement::isScreenDoor(state));
-  }
   SoCallback::doAction(action);
 }
 

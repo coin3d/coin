@@ -453,14 +453,6 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   if (action->handleTransparency(transparent))
     return FALSE;
 
-  // SoGLTextureImageElement is lazy, but needs some arguments
-  // update manually
-  const SoGLTextureImageElement * ti = (SoGLTextureImageElement *)
-    state->getConstElement(SoGLTextureImageElement::getClassStackIndex());
-  ti->evaluate(SoGLTextureEnabledElement::get(state) ||
-               SoGLTexture3EnabledElement::get(state),
-               transparent && !SoShapeStyleElement::isScreenDoor(state));
-
   if (SoComplexityTypeElement::get(state) ==
       SoComplexityTypeElement::BOUNDING_BOX) {
 

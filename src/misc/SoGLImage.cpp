@@ -499,6 +499,8 @@ fast_image_resize3d(const unsigned char * src,
 class SoGLImageP {
 public:
   static SoType classTypeId;
+  static uint32_t current_glimageid;
+  static uint32_t getNextGLImageId(void);
 
   SoGLDisplayList *createGLDisplayList(SoState *state);
   void checkTransparency(void);
@@ -554,12 +556,14 @@ public:
   void tagDL(SoState *state);
   void unrefOldDL(SoState *state, const uint32_t maxage);
   SoGLImage *owner; // for debugging only
+  uint32_t glimageid;
 
   void init(void);
 };
 
 
 SoType SoGLImageP::classTypeId;
+uint32_t SoGLImageP::current_glimageid = 1;
 
 #endif // DOXYGEN_SKIP_THIS
 
@@ -650,18 +654,6 @@ SoGLImage::getTypeId(void) const
 }
 
 /*!
-  Used by SoGLTextureImageElement.
- */
-void
-SoGLImage::applyQuality(SoGLDisplayList *dl, const float quality)
-{
-  float oldquality = THIS->quality;
-  THIS->quality = quality;
-  THIS->applyFilter(dl->isMipMapTextureObject()); // GL calls are here
-  THIS->quality = oldquality;
-}
-
-/*!
   Returns whether an SoGLImage instance inherits (or is of) type \a
   type.
 */
@@ -743,6 +735,7 @@ SoGLImage::setData(const SbImage *image,
     return;
   }
 
+  THIS->glimageid = SoGLImageP::getNextGLImageId(); // assign an unique id to this image
   THIS->needtransparencytest = TRUE;
   THIS->hastransparency = FALSE;
   THIS->usealphatest = FALSE;
@@ -1036,6 +1029,16 @@ SoGLImage::getWrapR(void) const
   return THIS->wrapr;
 }
 
+/*!  
+  Returns an unique if for this GL image. This id can be used to
+  test for changes in an SoGLImage's internal data.  
+*/
+uint32_t 
+SoGLImage::getGLImageId(void) const
+{
+  return THIS->glimageid;
+}
+
 /*!
   Virtual method that will be called once each frame.  The method
   should unref display lists that has an age bigger or equal to \a
@@ -1068,6 +1071,7 @@ SoGLImageP::init(void)
   this->quality = 0.4f;
   this->imageage = 0;
   this->endframecb = NULL;
+  this->glimageid = 0; // glimageid 0 is an empty image
 }
 
 // returns the number of bits set, and xsets highbit to
@@ -1401,10 +1405,8 @@ SoGLImageP::reallyCreateTexture(SoState *state,
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R,
                     translate_wrap(state, this->wrapr));
 
-    // just initialize to a filter that is valid also for non mipmapped
-    // images. Filter will be applied later by SoGLTextureImageElement
-    glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    
+    this->applyFilter(mipmap);
 
     if (!mipmap) {
       if (glw->glTexImage3D)
@@ -1435,10 +1437,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
                     translate_wrap(state, this->wrapt));
 
-    // just initialize to a filter that is valid also for non mipmapped
-    // images. Filter will be applied later by SoGLTextureImageElement
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    this->applyFilter(mipmap);
 
     if (!mipmap) { // Create only level 0 texture.
       glTexImage2D(GL_TEXTURE_2D, 0, numComponents, w, h,
@@ -1613,6 +1612,14 @@ SoGLImageP::applyFilter(const SbBool ismipmap)
     }
   }
 }
+
+// returns an unique uint32_t id for gl images
+uint32_t 
+SoGLImageP::getNextGLImageId(void)
+{
+  return current_glimageid++;
+}
+
 #endif // DOXYGEN_SKIP_THIS
 
 //

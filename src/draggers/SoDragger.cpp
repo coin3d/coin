@@ -382,9 +382,10 @@ SoDragger::updateElements(SoState * state)
                              SoShapeHintsElement::SOLID,
                              SoShapeHintsElement::CONVEX);
   }
-  if (state->isElementEnabled(SoTextureImageElement::getClassStackIndex())) {
+  if (state->isElementEnabled(SoGLTextureImageElement::getClassStackIndex())) {
     // clear texture data
-    SoTextureImageElement::setDefault(state, this);
+    SoGLTextureImageElement::set(state, this, NULL, SoTextureImageElement::MODULATE,
+                                 SbColor(0.0f, 0.0f, 0.0f));
   }
   if (state->isElementEnabled(SoGLTextureEnabledElement::getClassStackIndex())) {
     // disable 2D texture

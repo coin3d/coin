@@ -135,6 +135,9 @@ SoLazyElement::init(SoState * state)
   this->coinstate.twoside = FALSE;
   this->coinstate.culling = FALSE;
   this->coinstate.flatshading = FALSE;
+  this->coinstate.glimageid = 0;
+  this->coinstate.glimageusealphatest = FALSE;
+  this->coinstate.alphatest = FALSE;
 }
 
 // ! FIXME: write doc
@@ -202,6 +205,9 @@ SoLazyElement::setTransparency(SoState *state, SoNode *node, int32_t numvalues,
   else if (state->isCacheOpen()) {
     elem->lazyDidntSet(TRANSPARENCY_MASK);
   }
+  SoLazyElement::setAlphaTest(state, 
+                              !elem->coinstate.istransparent && 
+                              elem->coinstate.glimageusealphatest);
 }
 
 // ! FIXME: write doc
@@ -220,6 +226,9 @@ SoLazyElement::setPacked(SoState * state, SoNode * node,
   else if (state->isCacheOpen()) {
     elem->lazyDidntSet(TRANSPARENCY_MASK|DIFFUSE_MASK);
   }
+  SoLazyElement::setAlphaTest(state, 
+                              !elem->coinstate.istransparent && 
+                              elem->coinstate.glimageusealphatest);
 }
 
 // ! FIXME: write doc
@@ -655,6 +664,9 @@ SoLazyElement::setMaterials(SoState * state, SoNode *node, uint32_t bitmask,
     if (welem) elem = welem;
     elem->lazyDidntSet((~eltbitmask) & bitmask);
   }
+  SoLazyElement::setAlphaTest(state, 
+                              !elem->coinstate.istransparent && 
+                              elem->coinstate.glimageusealphatest);
 }
 
 void 
@@ -713,6 +725,36 @@ SoLazyElement::setShadeModel(SoState * state, SbBool flatshading)
     elem->lazyDidntSet(SHADE_MODEL_MASK);
   }
 }
+
+void
+SoLazyElement::setGLImageId(SoState * state, uint32_t glimageid, SbBool alphatest)
+{
+  SoLazyElement * elem = SoLazyElement::getInstance(state);
+  if (elem->coinstate.glimageid != glimageid) {
+    elem = getWInstance(state);
+    elem->setGLImageIdElt(glimageid, alphatest);
+    if (state->isCacheOpen()) elem->lazyDidSet(GLIMAGE_MASK);
+  }
+  else if (state->isCacheOpen()) {
+    elem->lazyDidntSet(GLIMAGE_MASK);
+  }
+  SoLazyElement::setAlphaTest(state, !elem->coinstate.istransparent && alphatest);   
+}
+
+void 
+SoLazyElement::setAlphaTest(SoState * state, SbBool onoff)
+{
+  SoLazyElement * elem = SoLazyElement::getInstance(state);
+  if (elem->coinstate.alphatest != onoff) {
+    elem = getWInstance(state);
+    elem->setAlphaTestElt(onoff);
+    if (state->isCacheOpen()) elem->lazyDidSet(ALPHATEST_MASK);
+  }
+  else if (state->isCacheOpen()) {
+    elem->lazyDidntSet(ALPHATEST_MASK);
+  }
+}
+
 
 // ! FIXME: write doc
 
@@ -939,6 +981,20 @@ SoLazyElement::setShadeModelElt(SbBool flatshading)
 {
   this->coinstate.flatshading = flatshading;
 }
+
+void
+SoLazyElement::setGLImageIdElt(uint32_t glimageid, SbBool alphatest)
+{
+  this->coinstate.glimageid = glimageid;
+  this->coinstate.glimageusealphatest = alphatest;
+}
+
+void 
+SoLazyElement::setAlphaTestElt(const SbBool onoff)
+{
+  this->coinstate.alphatest = onoff;
+}
+
 
 // SoColorPacker class. FIXME: move to separate file and document, pederb, 2002-09-09
 

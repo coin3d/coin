@@ -45,14 +45,12 @@ public:
                    const SoElement * prevTopElement);
 
   static void set(SoState * const state, SoNode * const node,
-                  SoGLImage *image, const Model model,
-                  const SbColor &blendColor,
-                  const SbBool didapply = FALSE);
+                  SoGLImage * image, const Model model,
+                  const SbColor & blendColor);
 
   static SoGLImage * get(SoState * state, Model & model,
                          SbColor & blendcolor);
 
-  virtual void evaluate(const SbBool enabled, const SbBool transparency) const;
   static int32_t getMaxGLTextureSize(void);
   virtual SbBool isTextureSizeLegal(int xsize, int ysize, int zsize, 
                                     int bytespertexel);
@@ -61,15 +59,10 @@ protected:
   virtual SbBool hasTransparency(void) const;
 
 private:
-  SoGLImage * image;
-  SoGLDisplayList * dlist;
-  float quality;
-  SbBool alphatest;
+  void updateLazyElement(void) const;
+  SoGLImage * glimage;
+  SoGLDisplayList  * dlist;
   SoState * state;
-  int glmodel;
-  SbBool glalphatest;
-  SbColor glblendcolor;
-  SbBool didapply;
 };
 
 #endif // !COIN_SOGLTEXTUREIMAGEELEMENT_H
