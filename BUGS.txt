@@ -622,7 +622,7 @@
 
     20020910 mortene.
 
-    UPDATE 18122002 rolvs: This bug outweirds even the weather in
+    UPDATE 20021218 rolvs: This bug outweirds even the weather in
     Trondheim: The two Translation nodes in the TransformSeaparator
     can be removed, like this:
 
@@ -641,9 +641,76 @@
     n*[translation]. It might seem that TransformSeparator does more
     than it should do when preserving the current state. Tests in
     Flip/src/Inventor/nodes is added, that fails on this bug. 
+    
+    UPDATE 20020107 rolvs:
+
+    The traversal during the exectution of a SoGetBoundingBoxAction on
+    the SoTranslateSeparator performs state preservation differently
+    from the other actions, so I figured the errors is located
+    there. Applying the following patches fixes the bug, but is not
+    applied to production code as they don't really 'cure the
+    disease'. The patch 'bypasses' the SoBBoxModelMatrixElement in
+    some cases, so it behaves as a SoModelMatrixElement. This shows,
+    somewhat indirectly, that the main cause of error is in the class
+    "SoLocalBBoxMatrixElement".
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---        
+    Index: src/elements/SoBBoxModelMatrixElement.cpp
+    ===================================================================
+    RCS file: /export/cvsroot/Coin/src/elements/SoBBoxModelMatrixElement.cpp,v
+    retrieving revision 1.20
+    diff -u -r1.20 SoBBoxModelMatrixElement.cpp
+    --- src/elements/SoBBoxModelMatrixElement.cpp   18 Sep 2002 20:27:39 -0000      1.20
+    +++ src/elements/SoBBoxModelMatrixElement.cpp   7 Jan 2003 12:48:32 -0000
+    @@ -176,8 +176,7 @@
+    SbMatrix
+    SoBBoxModelMatrixElement::pushMatrixElt()
+    {
+    -  assert(0 && "Should never be called!");
+    -  return SbMatrix::identity();
+    +  return inherited::pushMatrixElt();
+    }
+ 
+    /*!
+    @@ -185,7 +184,7 @@
+    */
+ 
+    void
+    -SoBBoxModelMatrixElement::popMatrixElt(const SbMatrix &)
+    +SoBBoxModelMatrixElement::popMatrixElt(const SbMatrix &mt)
+    {
+    -  assert(0 && "Should never be called!");
+    +  inherited::popMatrixElt( mt );
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---        
+    Index: src/nodes/SoTransformSeparator.cpp
+    ===================================================================
+    RCS file: /export/cvsroot/Coin/src/nodes/SoTransformSeparator.cpp,v
+    retrieving revision 1.31
+    diff -u -r1.31 SoTransformSeparator.cpp
+    --- src/nodes/SoTransformSeparator.cpp  10 Dec 2002 13:02:01 -0000      1.31
+    +++ src/nodes/SoTransformSeparator.cpp  7 Jan 2003 12:46:42 -0000
+    @@ -90,14 +90,9 @@
+    void
+    SoTransformSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
+    {
+    -  SbMatrix matrix, localMatrix;
+    -  SoBBoxModelMatrixElement::pushMatrix(action->getState(),
+    -                                       matrix,
+    -                                       localMatrix);
+    +  SbMatrix matrix = SoModelMatrixElement::pushMatrix(action->getState());
+    inherited::getBoundingBox(action);
+    -  SoBBoxModelMatrixElement::popMatrix(action->getState(),
+    -                                      matrix,
+    -                                      localMatrix);
+    +  SoModelMatrixElement::popMatrix(action->getState(), matrix);
+    }
+           
+    // Documented in superclass.
+    
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---        
 
 =====================================================================
-
 025 Import hangs on invalid scenegraph. This reproduces the problem:
 
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
