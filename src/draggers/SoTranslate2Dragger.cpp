@@ -150,9 +150,7 @@ SoTranslate2Dragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return oldval;
 }
 
-/*!
-  \internal
-*/
+/*! \internal */
 void
 SoTranslate2Dragger::fieldSensorCB(void * d, SoSensor * s)
 {
@@ -166,9 +164,7 @@ SoTranslate2Dragger::fieldSensorCB(void * d, SoSensor * s)
   thisp->setMotionMatrix(matrix);
 }
 
-/*!
-  \internal
-*/
+/*! \internal */
 void
 SoTranslate2Dragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -187,6 +183,7 @@ SoTranslate2Dragger::valueChangedCB(void *, SoDragger * d)
   thisp->fieldSensor->attach(&thisp->translation);
 }
 
+/*! \internal */
 void
 SoTranslate2Dragger::startCB(void *, SoDragger * d)
 {
@@ -194,6 +191,7 @@ SoTranslate2Dragger::startCB(void *, SoDragger * d)
   thisp->dragStart();
 }
 
+/*! \internal */
 void
 SoTranslate2Dragger::motionCB(void *, SoDragger * d)
 {
@@ -201,6 +199,7 @@ SoTranslate2Dragger::motionCB(void *, SoDragger * d)
   thisp->drag();
 }
 
+/*! \internal */
 void
 SoTranslate2Dragger::finishCB(void *, SoDragger * d)
 {
@@ -208,6 +207,7 @@ SoTranslate2Dragger::finishCB(void *, SoDragger * d)
   thisp->dragFinish();
 }
 
+/*! \internal */
 void
 SoTranslate2Dragger::metaKeyChangeCB(void *, SoDragger *d)
 {
@@ -221,6 +221,9 @@ SoTranslate2Dragger::metaKeyChangeCB(void *, SoDragger *d)
            !event->wasShiftDown()) thisp->drag();
 }
 
+/*! \internal
+  Called when dragger is selected (picked) by the user.
+*/
 void
 SoTranslate2Dragger::dragStart(void)
 {
@@ -240,6 +243,9 @@ SoTranslate2Dragger::dragStart(void)
   }
 }
 
+/*! \internal
+  Called when user drags the mouse after picking the dragger.
+*/
 void
 SoTranslate2Dragger::drag(void)
 {
@@ -304,6 +310,10 @@ SoTranslate2Dragger::drag(void)
   this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(), motion));
 }
 
+/*! \internal
+  Called when mouse button is released after picking and interacting
+  with the dragger.
+*/
 void
 SoTranslate2Dragger::dragFinish(void)
 {

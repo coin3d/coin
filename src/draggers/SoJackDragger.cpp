@@ -106,6 +106,7 @@ SoJackDragger::~SoJackDragger()
   delete this->translFieldSensor;
 }
 
+// Doc in superclass.
 SbBool
 SoJackDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -179,6 +180,7 @@ SoJackDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return !(this->connectionsSetUp = onoff);
 }
 
+// Doc in superclass.
 void
 SoJackDragger::setDefaultOnNonWritingFields(void)
 {
@@ -192,6 +194,7 @@ SoJackDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
+/*! \internal */
 void
 SoJackDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -201,6 +204,7 @@ SoJackDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
+/*! \internal */
 void
 SoJackDragger::valueChangedCB(void *, SoDragger * d)
 {

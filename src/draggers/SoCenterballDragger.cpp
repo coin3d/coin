@@ -271,6 +271,7 @@ SoCenterballDragger::setSwitches(SoDragger * activechild)
 
 }
 
+// Doc in superclass.
 SbBool
 SoCenterballDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -346,6 +347,7 @@ SoCenterballDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return !(this->connectionsSetUp = onoff);
 }
 
+// Doc in superclass.
 void
 SoCenterballDragger::setDefaultOnNonWritingFields(void)
 {

@@ -434,6 +434,7 @@ SoTransformerDragger::~SoTransformerDragger()
   delete THIS;
 }
 
+// Doc in super.
 SbBool
 SoTransformerDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -489,6 +490,7 @@ SoTransformerDragger_set_default(SoDragger * dragger, const char * fmt,
   }
 }
 
+// Doc in superclass.
 void
 SoTransformerDragger::setDefaultOnNonWritingFields(void)
 {
@@ -505,6 +507,7 @@ SoTransformerDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
+/*! \internal */
 void
 SoTransformerDragger::fieldSensorCB(void *d, SoSensor *)
 {
@@ -514,6 +517,7 @@ SoTransformerDragger::fieldSensorCB(void *d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
+/*! \internal */
 void
 SoTransformerDragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -624,6 +628,7 @@ SoTransformerDragger::getInteractiveCenterInBoxSpace(void)
   else return SbVec3f(0.0f, 0.0f, 0.0f);
 }
 
+/*! \internal */
 void
 SoTransformerDragger::startCB(void *, SoDragger * d)
 {
@@ -631,6 +636,7 @@ SoTransformerDragger::startCB(void *, SoDragger * d)
   thisp->dragStart();
 }
 
+/*! \internal */
 void
 SoTransformerDragger::motionCB(void *, SoDragger * d)
 {
@@ -638,6 +644,7 @@ SoTransformerDragger::motionCB(void *, SoDragger * d)
   thisp->drag();
 }
 
+/*! \internal */
 void
 SoTransformerDragger::finishCB(void *, SoDragger * d)
 {
@@ -645,6 +652,7 @@ SoTransformerDragger::finishCB(void *, SoDragger * d)
   thisp->dragFinish();
 }
 
+/*! \internal */
 void
 SoTransformerDragger::metaKeyChangeCB(void *, SoDragger *d)
 {
@@ -669,6 +677,9 @@ invalidate_surroundscale(SoBaseKit * kit)
   if (ss) ss->invalidate();
 }
 
+/*! \internal
+  Called when dragger is selected (picked) by the user.
+*/
 void
 SoTransformerDragger::dragStart(void)
 {
@@ -850,6 +861,9 @@ SoTransformerDragger::dragStart(void)
   }
 }
 
+/*! \internal
+  Called when user drags the mouse after picking the dragger.
+*/
 void
 SoTransformerDragger::drag(void)
 {
@@ -1148,7 +1162,10 @@ SoTransformerDragger::dragRotate(void)
   this->unsquishKnobs();
 }
 
-
+/*! \internal
+  Called when mouse button is released after picking and interacting
+  with the dragger.
+*/
 void
 SoTransformerDragger::dragFinish(void)
 {

@@ -120,6 +120,7 @@ SoTabBoxDragger::~SoTabBoxDragger()
   delete this->translFieldSensor;
 }
 
+// Doc in superclass.
 SbBool
 SoTabBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -168,6 +169,7 @@ SoTabBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return !(this->connectionsSetUp = onoff);
 }
 
+// Doc in superclass.
 void
 SoTabBoxDragger::setDefaultOnNonWritingFields(void)
 {
@@ -183,6 +185,7 @@ SoTabBoxDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
+/*! \internal */
 void
 SoTabBoxDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -192,6 +195,7 @@ SoTabBoxDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
+/*! \internal */
 void
 SoTabBoxDragger::valueChangedCB(void *, SoDragger *d)
 {

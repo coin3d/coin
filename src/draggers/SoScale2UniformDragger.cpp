@@ -113,6 +113,7 @@ SoScale2UniformDragger::~SoScale2UniformDragger()
   delete this->fieldSensor;
 }
 
+// Doc in superclass.
 SbBool
 SoScale2UniformDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -139,6 +140,7 @@ SoScale2UniformDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return oldval;
 }
 
+/*! \internal */
 void
 SoScale2UniformDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -155,6 +157,7 @@ SoScale2UniformDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
+/*! \internal */
 void
 SoScale2UniformDragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -170,6 +173,7 @@ SoScale2UniformDragger::valueChangedCB(void *, SoDragger * d)
   thisp->fieldSensor->attach(&thisp->scaleFactor);
 }
 
+/*! \internal */
 void
 SoScale2UniformDragger::startCB(void *, SoDragger * d)
 {
@@ -177,6 +181,7 @@ SoScale2UniformDragger::startCB(void *, SoDragger * d)
   thisp->dragStart();
 }
 
+/*! \internal */
 void
 SoScale2UniformDragger::motionCB(void *, SoDragger * d)
 {
@@ -184,6 +189,7 @@ SoScale2UniformDragger::motionCB(void *, SoDragger * d)
   thisp->drag();
 }
 
+/*! \internal */
 void
 SoScale2UniformDragger::finishCB(void *, SoDragger * d)
 {
@@ -191,6 +197,9 @@ SoScale2UniformDragger::finishCB(void *, SoDragger * d)
   thisp->dragFinish();
 }
 
+/*! \internal
+  Called when dragger is selected (picked) by the user.
+*/
 void
 SoScale2UniformDragger::dragStart(void)
 {
@@ -205,6 +214,9 @@ SoScale2UniformDragger::dragStart(void)
   this->lineProj->setLine(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), startPt));
 }
 
+/*! \internal
+  Called when user drags the mouse after picking the dragger.
+*/
 void
 SoScale2UniformDragger::drag(void)
 {
@@ -228,6 +240,10 @@ SoScale2UniformDragger::drag(void)
                                           SbVec3f(0.0f, 0.0f, 0.0f)));
 }
 
+/*! \internal
+  Called when mouse button is released after picking and interacting
+  with the dragger.
+*/
 void
 SoScale2UniformDragger::dragFinish(void)
 {

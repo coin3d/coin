@@ -229,9 +229,7 @@ SoDirectionalLightDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
-/*!
-  \internal
-*/
+/*! \internal */
 void
 SoDirectionalLightDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -241,9 +239,7 @@ SoDirectionalLightDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
-/*!
-  \internal
-*/
+/*! \internal */
 void
 SoDirectionalLightDragger::valueChangedCB(void *, SoDragger * d)
 {

@@ -120,6 +120,7 @@ SoTranslate1Dragger::~SoTranslate1Dragger()
   delete this->fieldSensor;
 }
 
+// Doc in super.
 SbBool
 SoTranslate1Dragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -146,6 +147,7 @@ SoTranslate1Dragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return oldval;
 }
 
+/*! \internal */
 void
 SoTranslate1Dragger::fieldSensorCB(void *d, SoSensor *)
 {
@@ -159,13 +161,14 @@ SoTranslate1Dragger::fieldSensorCB(void *d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
+/*! \internal */
 void
 SoTranslate1Dragger::valueChangedCB(void *, SoDragger * d)
 {
   SoTranslate1Dragger *thisp = (SoTranslate1Dragger*)d;
   SbMatrix matrix = thisp->getMotionMatrix();
 
-#if 0
+#if 0 // FIXME: what's up here? 20011113 mortene.
   SbVec3f t;
   t[0] = matrix[3][0];
   t[1] = matrix[3][1];
@@ -187,6 +190,7 @@ SoTranslate1Dragger::valueChangedCB(void *, SoDragger * d)
 #endif
 }
 
+/*! \internal */
 void
 SoTranslate1Dragger::startCB(void *, SoDragger * d)
 {
@@ -194,6 +198,7 @@ SoTranslate1Dragger::startCB(void *, SoDragger * d)
   thisp->dragStart();
 }
 
+/*! \internal */
 void
 SoTranslate1Dragger::motionCB(void *, SoDragger * d)
 {
@@ -201,6 +206,7 @@ SoTranslate1Dragger::motionCB(void *, SoDragger * d)
   thisp->drag();
 }
 
+/*! \internal */
 void
 SoTranslate1Dragger::finishCB(void *, SoDragger * d)
 {
@@ -208,6 +214,9 @@ SoTranslate1Dragger::finishCB(void *, SoDragger * d)
   thisp->dragFinish();
 }
 
+/*! \internal
+  Called when dragger is selected (picked) by the user.
+*/
 void
 SoTranslate1Dragger::dragStart(void)
 {
@@ -221,6 +230,9 @@ SoTranslate1Dragger::dragStart(void)
   this->lineProj->setLine(SbLine(hitPt, hitPt + SbVec3f(1.0f, 0.0f, 0.0f)));
 }
 
+/*! \internal
+  Called when user drags the mouse after picking the dragger.
+*/
 void
 SoTranslate1Dragger::drag(void)
 {
@@ -233,6 +245,10 @@ SoTranslate1Dragger::drag(void)
   this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(), motion));
 }
 
+/*! \internal
+  Called when mouse button is released after picking and interacting
+  with the dragger.
+*/
 void
 SoTranslate1Dragger::dragFinish(void)
 {

@@ -19,11 +19,22 @@
 
 /*!
   \class SoHandleBoxDragger SoHandleBoxDragger.h Inventor/draggers/SoHandleBoxDragger.h
-  \brief The SoHandleBoxDragger class is (FIXME: doc)
+  \brief The SoHandleBoxDragger class provides support for interactive scaling and translation.
   \ingroup draggers
 
-  FIXME: document class
+  A handlebox dragger is convenient to use for letting the user
+  interact with geometry that can be scaled (uniformly or in a
+  non-uniform way) and translated in 3D.
+
+  The dragger consists of a "cube" of interaction geometry. The
+  end-user can click and drag any side of the cube to translate the
+  dragger and click and drag any of the corner or edge markers for
+  scaling operations.
 */
+// FIXME: Should include a diagram of the catalog structure in the
+// class documentation. Plus an URL-link to the default geometry-file?
+// Plus snapshot of how the dragger looks (and behaves?).  Plus a
+// small usage example.  20011113 mortene.
 
 #include <Inventor/draggers/SoHandleBoxDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
@@ -39,6 +50,34 @@
 #include <Inventor/actions/SoGetMatrixAction.h>
 
 #include <data/draggerDefaults/handleBoxDragger.h>
+
+/*!
+  \var SoSFVec3f SoHandleBoxDragger::scaleFactor
+
+  Continuously updated to contain the current vector of scaling along
+  the X, Y and Z axes.
+*/
+
+/*!
+  \var SoSFVec3f SoHandleBoxDragger::translation
+
+  Continuously updated to contain the current translation from the
+  dragger's local origo position.
+
+  The application programmer applying this dragger in his code should
+  connect the relevant node fields in the scene to this field to make
+  it follow the dragger.
+*/
+
+
+/*!
+  \var SoFieldSensor * SoHandleBoxDragger::translFieldSensor
+  \internal
+*/
+/*!
+  \var SoFieldSensor * SoHandleBoxDragger::scaleFieldSensor
+  \internal
+*/
 
 #define WHATKIND_NONE       0
 #define WHATKIND_TRANSLATOR 1
@@ -259,6 +298,7 @@ SoHandleBoxDragger::~SoHandleBoxDragger()
   delete this->scaleFieldSensor;
 }
 
+// Doc in superclass.
 SbBool
 SoHandleBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -289,6 +329,7 @@ SoHandleBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return !(this->connectionsSetUp = onoff);
 }
 
+// Doc in superclass.
 void
 SoHandleBoxDragger::setDefaultOnNonWritingFields(void)
 {
@@ -299,6 +340,7 @@ SoHandleBoxDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
+/*! \internal */
 void
 SoHandleBoxDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -308,6 +350,7 @@ SoHandleBoxDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
+/*! \internal */
 void
 SoHandleBoxDragger::valueChangedCB(void * f, SoDragger * d)
 {
@@ -328,6 +371,7 @@ SoHandleBoxDragger::valueChangedCB(void * f, SoDragger * d)
   thisp->scaleFieldSensor->attach(&thisp->scaleFactor);
 }
 
+/*! \internal */
 void
 SoHandleBoxDragger::startCB(void *, SoDragger * d)
 {
@@ -335,6 +379,7 @@ SoHandleBoxDragger::startCB(void *, SoDragger * d)
   thisp->dragStart();
 }
 
+/*! \internal */
 void
 SoHandleBoxDragger::motionCB(void *, SoDragger * d)
 {
@@ -342,6 +387,7 @@ SoHandleBoxDragger::motionCB(void *, SoDragger * d)
   thisp->drag();
 }
 
+/*! \internal */
 void
 SoHandleBoxDragger::finishCB(void *, SoDragger * d)
 {
@@ -349,6 +395,7 @@ SoHandleBoxDragger::finishCB(void *, SoDragger * d)
   thisp->dragFinish();
 }
 
+/*! \internal */
 void
 SoHandleBoxDragger::metaKeyChangeCB(void *, SoDragger * d)
 {
@@ -381,6 +428,9 @@ SoHandleBoxDragger_invalidate_surroundscale(SoBaseKit * kit)
   if (ss) ss->invalidate();
 }
 
+/*! \internal
+  Called when dragger is selected (picked) by the user.
+*/
 void
 SoHandleBoxDragger::dragStart(void)
 {
@@ -479,6 +529,9 @@ SoHandleBoxDragger::dragStart(void)
   this->updateSwitches();
 }
 
+/*! \internal
+  Called when user drags the mouse after picking the dragger.
+*/
 void
 SoHandleBoxDragger::drag(void)
 {
@@ -570,6 +623,10 @@ SoHandleBoxDragger::drag(void)
   }
 }
 
+/*! \internal
+  Called when mouse button is released after picking and interacting
+  with the dragger.
+*/
 void
 SoHandleBoxDragger::dragFinish(void)
 {
@@ -580,6 +637,9 @@ SoHandleBoxDragger::dragFinish(void)
   SoHandleBoxDragger_invalidate_surroundscale(this);
 }
 
+/*!
+  Activate or deactive all dragger geometry parts.
+*/
 void
 SoHandleBoxDragger::setAllPartsActive(SbBool onoroff)
 {
@@ -605,8 +665,10 @@ SoHandleBoxDragger::setAllPartsActive(SbBool onoroff)
   this->updateArrows();
 }
 
+// Return node pointer from a SoSFNode field. Does misc sanity
+// checking for robustness.
 SoNode *
-SoHandleBoxDragger::getNodeFieldNode(const char *fieldname)
+SoHandleBoxDragger::getNodeFieldNode(const char * fieldname)
 {
   SoField *field = this->getField(fieldname);
   assert(field != NULL);
@@ -616,7 +678,7 @@ SoHandleBoxDragger::getNodeFieldNode(const char *fieldname)
 }
 
 void
-SoHandleBoxDragger::updateSwitches()
+SoHandleBoxDragger::updateSwitches(void)
 {
   int i;
   SbString str;
@@ -660,7 +722,7 @@ SoHandleBoxDragger::updateSwitches()
 }
 
 void
-SoHandleBoxDragger::updateArrows()
+SoHandleBoxDragger::updateArrows(void)
 {
   int i;
   SbString str;
@@ -729,7 +791,7 @@ SoHandleBoxDragger::getSurroundScaleMatrices(SbMatrix &mat, SbMatrix &inv)
 }
 
 SbVec3f
-SoHandleBoxDragger::getDraggerCenter()
+SoHandleBoxDragger::getDraggerCenter(void)
 {
   SbMatrix mat, inv;
   this->getSurroundScaleMatrices(mat, inv);

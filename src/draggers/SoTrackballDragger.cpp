@@ -195,6 +195,7 @@ SoTrackballDragger::~SoTrackballDragger()
   delete THIS;
 }
 
+// Doc in superclass.
 SbBool
 SoTrackballDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -224,6 +225,7 @@ SoTrackballDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return !(this->connectionsSetUp = onoff);
 }
 
+// Doc in superclass.
 void
 SoTrackballDragger::setDefaultOnNonWritingFields(void)
 {
@@ -237,6 +239,7 @@ SoTrackballDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
+/*! \internal */
 void
 SoTrackballDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -246,6 +249,7 @@ SoTrackballDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
+/*! \internal */
 void
 SoTrackballDragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -293,6 +297,9 @@ SoTrackballDragger_invalidate_surroundscale(SoBaseKit * kit)
   if (ss) ss->invalidate();
 }
 
+/*! \internal
+  Called when dragger is selected (picked) by the user.
+*/
 void
 SoTrackballDragger::dragStart(void)
 {
@@ -400,6 +407,9 @@ SoTrackballDragger::dragStart(void)
   THIS->hasDragged = FALSE;
 }
 
+/*! \internal
+  Called when user drags the mouse after picking the dragger.
+*/
 void
 SoTrackballDragger::drag(void)
 {
@@ -458,6 +468,10 @@ SoTrackballDragger::drag(void)
   THIS->prevMousePos = this->getNormalizedLocaterPosition();
 }
 
+/*! \internal
+  Called when mouse button is released after picking and interacting
+  with the dragger.
+*/
 void
 SoTrackballDragger::dragFinish(void)
 {
@@ -536,6 +550,7 @@ SoTrackballDragger::setAllPartsActive(SbBool onoroff)
   SoInteractionKit::setSwitchValue(sw, val);
 }
 
+/*! \internal */
 void
 SoTrackballDragger::startCB(void *, SoDragger * d)
 {
@@ -543,6 +558,7 @@ SoTrackballDragger::startCB(void *, SoDragger * d)
   thisp->dragStart();
 }
 
+/*! \internal */
 void
 SoTrackballDragger::motionCB(void *, SoDragger * d)
 {
@@ -550,6 +566,7 @@ SoTrackballDragger::motionCB(void *, SoDragger * d)
   thisp->drag();
 }
 
+/*! \internal */
 void
 SoTrackballDragger::finishCB(void *, SoDragger * d)
 {
@@ -557,6 +574,7 @@ SoTrackballDragger::finishCB(void *, SoDragger * d)
   thisp->dragFinish();
 }
 
+/*! \internal */
 void
 SoTrackballDragger::metaKeyChangeCB(void *, SoDragger *)
 {

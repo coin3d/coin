@@ -208,7 +208,7 @@ SoDragPointDragger::~SoDragPointDragger()
   delete this->fieldSensor;
 }
 
-// doc in super
+// Doc in superclass.
 SbBool
 SoDragPointDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -361,7 +361,9 @@ SoDragPointDragger::showNextDraggerSet(void)
   this->updateSwitchNodes();
 }
 
-/*! \internal */
+/*! \internal
+  Called when dragger is selected (picked) by the user.
+*/
 void
 SoDragPointDragger::dragStart(void)
 {
@@ -393,14 +395,19 @@ SoDragPointDragger::dragStart(void)
   }
 }
 
-/*! \internal */
+/*! \internal
+  Called when user drags the mouse after picking the dragger.
+*/
 void
 SoDragPointDragger::drag(void)
 {
   // FIXME: update feedback information, pederb 20000202
 }
 
-/*! \internal */
+/*! \internal
+  Called when mouse button is released after picking and interacting
+  with the dragger.
+*/
 void
 SoDragPointDragger::dragFinish(void)
 {

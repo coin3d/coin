@@ -111,6 +111,7 @@ SoRotateCylindricalDragger::~SoRotateCylindricalDragger()
   if (!this->userProj) delete this->cylinderProj;
 }
 
+// Doc in superclass.
 SbBool
 SoRotateCylindricalDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -137,6 +138,7 @@ SoRotateCylindricalDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return oldval;
 }
 
+/*! \internal */
 void
 SoRotateCylindricalDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -153,6 +155,7 @@ SoRotateCylindricalDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
+/*! \internal */
 void
 SoRotateCylindricalDragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -205,6 +208,7 @@ SoRotateCylindricalDragger::copyContents(const SoFieldContainer * fromfc, SbBool
   this->userProj = FALSE;
 }
 
+/*! \internal */
 void
 SoRotateCylindricalDragger::startCB(void * f, SoDragger * d)
 {
@@ -212,6 +216,7 @@ SoRotateCylindricalDragger::startCB(void * f, SoDragger * d)
   thisp->dragStart();
 }
 
+/*! \internal */
 void
 SoRotateCylindricalDragger::motionCB(void * f, SoDragger * d)
 {
@@ -219,6 +224,7 @@ SoRotateCylindricalDragger::motionCB(void * f, SoDragger * d)
   thisp->drag();
 }
 
+/*! \internal */
 void
 SoRotateCylindricalDragger::doneCB(void * f, SoDragger * d)
 {
@@ -226,6 +232,9 @@ SoRotateCylindricalDragger::doneCB(void * f, SoDragger * d)
   thisp->dragFinish();
 }
 
+/*! \internal
+  Called when dragger is selected (picked) by the user.
+*/
 void
 SoRotateCylindricalDragger::dragStart(void)
 {
@@ -258,6 +267,9 @@ SoRotateCylindricalDragger::dragStart(void)
 
 }
 
+/*! \internal
+  Called when user drags the mouse after picking the dragger.
+*/
 void
 SoRotateCylindricalDragger::drag(void)
 {
@@ -273,6 +285,10 @@ SoRotateCylindricalDragger::drag(void)
                                              rot, SbVec3f(0.0f, 0.0f, 0.0f)));
 }
 
+/*! \internal
+  Called when mouse button is released after picking and interacting
+  with the dragger.
+*/
 void
 SoRotateCylindricalDragger::dragFinish(void)
 {

@@ -130,6 +130,7 @@ SoSpotLightDragger::~SoSpotLightDragger()
   delete this->planeProj;
 }
 
+// Doc in superclass.
 SbBool
 SoSpotLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -200,6 +201,7 @@ SoSpotLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return !(this->connectionsSetUp = onoff);
 }
 
+// Doc in superclass.
 void
 SoSpotLightDragger::setDefaultOnNonWritingFields(void)
 {
@@ -215,6 +217,7 @@ SoSpotLightDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
+/*! \internal */
 void
 SoSpotLightDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -224,6 +227,7 @@ SoSpotLightDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
+/*! \internal */
 void
 SoSpotLightDragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -247,6 +251,7 @@ SoSpotLightDragger::valueChangedCB(void *, SoDragger * d)
   invRot->rotation = rot.inverse();
 }
 
+/*! \internal */
 void
 SoSpotLightDragger::startCB(void *, SoDragger * d)
 {
@@ -254,6 +259,7 @@ SoSpotLightDragger::startCB(void *, SoDragger * d)
   thisp->dragStart();
 }
 
+/*! \internal */
 void
 SoSpotLightDragger::motionCB(void *, SoDragger * d)
 {
@@ -261,6 +267,7 @@ SoSpotLightDragger::motionCB(void *, SoDragger * d)
   thisp->drag();
 }
 
+/*! \internal */
 void
 SoSpotLightDragger::doneCB(void *, SoDragger * d)
 {
@@ -268,6 +275,9 @@ SoSpotLightDragger::doneCB(void *, SoDragger * d)
   thisp->dragFinish();
 }
 
+/*! \internal
+  Called when dragger is selected (picked) by the user.
+*/
 void
 SoSpotLightDragger::dragStart(void)
 {
@@ -283,6 +293,9 @@ SoSpotLightDragger::dragStart(void)
                                     hitPt));
 }
 
+/*! \internal
+  Called when user drags the mouse after picking the dragger.
+*/
 void
 SoSpotLightDragger::drag(void)
 {
@@ -299,6 +312,10 @@ SoSpotLightDragger::drag(void)
   this->setBeamScaleFromAngle((float)acos(dot));
 }
 
+/*! \internal
+  Called when mouse button is released after picking and interacting
+  with the dragger.
+*/
 void
 SoSpotLightDragger::dragFinish(void)
 {

@@ -111,6 +111,7 @@ SoScale2Dragger::~SoScale2Dragger()
   delete this->fieldSensor;
 }
 
+// Doc in superclass.
 SbBool
 SoScale2Dragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -137,6 +138,7 @@ SoScale2Dragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return oldval;
 }
 
+/*! \internal */
 void
 SoScale2Dragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -153,6 +155,7 @@ SoScale2Dragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
+/*! \internal */
 void
 SoScale2Dragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -168,6 +171,7 @@ SoScale2Dragger::valueChangedCB(void *, SoDragger * d)
   thisp->fieldSensor->attach(&thisp->scaleFactor);
 }
 
+/*! \internal */
 void
 SoScale2Dragger::startCB(void *, SoDragger * d)
 {
@@ -175,6 +179,7 @@ SoScale2Dragger::startCB(void *, SoDragger * d)
   thisp->dragStart();
 }
 
+/*! \internal */
 void
 SoScale2Dragger::motionCB(void *, SoDragger * d)
 {
@@ -182,6 +187,7 @@ SoScale2Dragger::motionCB(void *, SoDragger * d)
   thisp->drag();
 }
 
+/*! \internal */
 void
 SoScale2Dragger::finishCB(void *, SoDragger * d)
 {
@@ -189,6 +195,9 @@ SoScale2Dragger::finishCB(void *, SoDragger * d)
   thisp->dragFinish();
 }
 
+/*! \internal
+  Called when dragger is selected (picked) by the user.
+*/
 void
 SoScale2Dragger::dragStart(void)
 {
@@ -202,6 +211,9 @@ SoScale2Dragger::dragStart(void)
   this->planeProj->setPlane(SbPlane(SbVec3f(0.0f, 0.0f, 1.0f), hitPt));
 }
 
+/*! \internal
+  Called when user drags the mouse after picking the dragger.
+*/
 void
 SoScale2Dragger::drag(void)
 {
@@ -229,6 +241,10 @@ SoScale2Dragger::drag(void)
                                           SbVec3f(0.0f, 0.0f, 0.0f)));
 }
 
+/*! \internal
+  Called when mouse button is released after picking and interacting
+  with the dragger.
+*/
 void
 SoScale2Dragger::dragFinish(void)
 {

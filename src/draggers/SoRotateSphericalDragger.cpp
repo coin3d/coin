@@ -112,6 +112,7 @@ SoRotateSphericalDragger::~SoRotateSphericalDragger()
   if (!this->userProj) delete this->sphereProj;
 }
 
+// Doc in superclass.
 SbBool
 SoRotateSphericalDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -138,6 +139,7 @@ SoRotateSphericalDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return oldval;
 }
 
+/*! \internal */
 void
 SoRotateSphericalDragger::fieldSensorCB(void *d, SoSensor *)
 {
@@ -151,6 +153,7 @@ SoRotateSphericalDragger::fieldSensorCB(void *d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
+/*! \internal */
 void
 SoRotateSphericalDragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -200,6 +203,7 @@ SoRotateSphericalDragger::copyContents(const SoFieldContainer * fromfc, SbBool c
   this->userProj = FALSE;
 }
 
+/*! \internal */
 void
 SoRotateSphericalDragger::startCB(void *, SoDragger * d)
 {
@@ -207,6 +211,7 @@ SoRotateSphericalDragger::startCB(void *, SoDragger * d)
   thisp->dragStart();
 }
 
+/*! \internal */
 void
 SoRotateSphericalDragger::motionCB(void *, SoDragger * d)
 {
@@ -214,6 +219,7 @@ SoRotateSphericalDragger::motionCB(void *, SoDragger * d)
   thisp->drag();
 }
 
+/*! \internal */
 void
 SoRotateSphericalDragger::doneCB(void * f, SoDragger * d)
 {
@@ -221,6 +227,9 @@ SoRotateSphericalDragger::doneCB(void * f, SoDragger * d)
   thisp->dragFinish();
 }
 
+/*! \internal
+  Called when dragger is selected (picked) by the user.
+*/
 void
 SoRotateSphericalDragger::dragStart(void)
 {
@@ -255,6 +264,9 @@ SoRotateSphericalDragger::dragStart(void)
   this->prevMotionMatrix = this->getMotionMatrix();
 }
 
+/*! \internal
+  Called when user drags the mouse after picking the dragger.
+*/
 void
 SoRotateSphericalDragger::drag(void)
 {
@@ -273,6 +285,10 @@ SoRotateSphericalDragger::drag(void)
   this->setMotionMatrix(this->prevMotionMatrix);
 }
 
+/*! \internal
+  Called when mouse button is released after picking and interacting
+  with the dragger.
+*/
 void
 SoRotateSphericalDragger::dragFinish(void)
 {

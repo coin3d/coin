@@ -177,8 +177,7 @@ SoTabPlaneDragger::~SoTabPlaneDragger()
   delete this->lineProj;
 }
 
-//!
-
+// Doc in superclass.
 SbBool
 SoTabPlaneDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -208,8 +207,7 @@ SoTabPlaneDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return !(this->connectionsSetUp = onoff);
 }
 
-//!
-
+// Doc in superclass.
 void
 SoTabPlaneDragger::setDefaultOnNonWritingFields(void)
 {
@@ -219,6 +217,7 @@ SoTabPlaneDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
+/*! \internal */
 void
 SoTabPlaneDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -228,6 +227,7 @@ SoTabPlaneDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
+/*! \internal */
 void
 SoTabPlaneDragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -380,8 +380,8 @@ SoTabPlaneDragger::reallyAdjustScaleTabSize(SoGLRenderAction *action)
   coordnode->point.finishEditing();
 }
 
-/*!
-  Called when dragger is selected by the user.
+/*! \internal
+  Called when dragger is selected (picked) by the user.
 */
 void
 SoTabPlaneDragger::dragStart(void)
@@ -438,8 +438,8 @@ SoTabPlaneDragger::dragStart(void)
   }
 }
 
-/*!
-  Called when use drags the mouse.
+/*! \internal
+  Called when user drags the mouse after picking the dragger.
 */
 void
 SoTabPlaneDragger::drag(void)
@@ -535,8 +535,9 @@ SoTabPlaneDragger::drag(void)
   }
 }
 
-/*!
-  Called when mouse button is released.
+/*! \internal
+  Called when mouse button is released after picking and interacting
+  with the dragger.
 */
 void
 SoTabPlaneDragger::dragFinish(void)
@@ -544,6 +545,7 @@ SoTabPlaneDragger::dragFinish(void)
   this->whatkind = WHATKIND_NONE;
 }
 
+/*! \internal */
 void
 SoTabPlaneDragger::startCB(void *, SoDragger * d)
 {
@@ -551,6 +553,7 @@ SoTabPlaneDragger::startCB(void *, SoDragger * d)
   thisp->dragStart();
 }
 
+/*! \internal */
 void
 SoTabPlaneDragger::motionCB(void *, SoDragger * d)
 {
@@ -558,6 +561,7 @@ SoTabPlaneDragger::motionCB(void *, SoDragger * d)
   thisp->drag();
 }
 
+/*! \internal */
 void
 SoTabPlaneDragger::finishCB(void *, SoDragger * d)
 {
@@ -565,6 +569,7 @@ SoTabPlaneDragger::finishCB(void *, SoDragger * d)
   thisp->dragFinish();
 }
 
+/*! \internal */
 void
 SoTabPlaneDragger::metaKeyChangeCB(void *, SoDragger * d)
 {

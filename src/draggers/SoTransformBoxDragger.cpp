@@ -162,6 +162,7 @@ SoTransformBoxDragger::~SoTransformBoxDragger()
   delete this->scaleFieldSensor;
 }
 
+// Doc in super.
 SbBool
 SoTransformBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -253,6 +254,7 @@ SoTransformBoxDragger_set_default(SoDragger * dragger, const char * fmt,
   }
 }
 
+// Doc in superclass.
 void
 SoTransformBoxDragger::setDefaultOnNonWritingFields(void)
 {
@@ -264,6 +266,7 @@ SoTransformBoxDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
+/*! \internal */
 void
 SoTransformBoxDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -273,6 +276,7 @@ SoTransformBoxDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
+/*! \internal */
 void
 SoTransformBoxDragger::valueChangedCB(void *, SoDragger * d)
 {

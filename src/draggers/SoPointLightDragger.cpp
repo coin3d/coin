@@ -89,6 +89,7 @@ SoPointLightDragger::~SoPointLightDragger()
   delete this->fieldSensor;
 }
 
+// Doc in superclass.
 SbBool
 SoPointLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -140,6 +141,7 @@ SoPointLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return !(this->connectionsSetUp = onoff);
 }
 
+// Doc in superclass.
 void
 SoPointLightDragger::setDefaultOnNonWritingFields(void)
 {
@@ -148,6 +150,7 @@ SoPointLightDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
+/*! \internal */
 void
 SoPointLightDragger::fieldSensorCB(void *d, SoSensor *)
 {
@@ -157,6 +160,7 @@ SoPointLightDragger::fieldSensorCB(void *d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
+/*! \internal */
 void
 SoPointLightDragger::valueChangedCB(void *, SoDragger * d)
 {
