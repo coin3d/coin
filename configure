@@ -17466,9 +17466,9 @@ _ACEOF
   COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_freetype_ldflags"
   COIN_EXTRA_LIBS="$sim_ac_freetype_libs $COIN_EXTRA_LIBS"
   if test x"${sim_ac_configuration_settings+set}" = x"set"; then
-  sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType support:$sim_ac_freetype_path"
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType support:Yes, link-time binding"
 else
-  sim_ac_configuration_settings="FreeType support:$sim_ac_freetype_path"
+  sim_ac_configuration_settings="FreeType support:Yes, link-time binding"
 fi
 
 
@@ -22445,6 +22445,7 @@ s,@SIM_INCLUDE_GLEXT_H@,$SIM_INCLUDE_GLEXT_H,;t t
 s,@BUILD_WITH_MSVC_TRUE@,$BUILD_WITH_MSVC_TRUE,;t t
 s,@BUILD_WITH_MSVC_FALSE@,$BUILD_WITH_MSVC_FALSE,;t t
 s,@COIN_COMPILER@,$COIN_COMPILER,;t t
+s,@ac_compiler_gnu@,$ac_compiler_gnu,;t t
 s,@COIN_DSP_LIBS@,$COIN_DSP_LIBS,;t t
 s,@COIN_DSP_INCS@,$COIN_DSP_INCS,;t t
 s,@COIN_DSP_DEFS@,$COIN_DSP_DEFS,;t t
