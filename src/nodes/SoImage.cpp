@@ -51,6 +51,8 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include <src/misc/simage_wrapper.h>
+
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -640,33 +642,61 @@ SoImage::getImage(SbVec2s & size, int & nc)
     if (!this->resizedimagevalid) {
       SbVec2s orgsize;
       const unsigned char * orgdata = this->image.getValue(orgsize, nc);
-      SbVec2s newsize = this->getSize();
-      this->resizedimage->setValue(newsize, nc, NULL);
-      const unsigned char * rezdata = this->resizedimage->getValue(newsize, nc);
-      GLenum format;
-      switch (nc) {
-      default: // avoid compiler warnings
-      case 1: format = GL_LUMINANCE; break;
-      case 2: format = GL_LUMINANCE_ALPHA; break;
-      case 3: format = GL_RGB; break;
-      case 4: format = GL_RGBA; break;
-      }
-      glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-      glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
-      glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
-      glPixelStorei(GL_PACK_ROW_LENGTH, 0);
-      glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
-      glPixelStorei(GL_PACK_SKIP_ROWS, 0);
-      glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-      glPixelStorei(GL_PACK_ALIGNMENT, 1);
+      SbVec2s newsize = this->getSize();   
 
-      (void)GLUWrapper()->gluScaleImage(format,
-                                        orgsize[0], orgsize[1],
-                                        GL_UNSIGNED_BYTE, (void*) orgdata,
-                                        newsize[0], newsize[1],
-                                        GL_UNSIGNED_BYTE,
-                                        (void*) rezdata);
-      this->resizedimagevalid = TRUE;
+      // simage version 1.1.1 has a pretty high quality resize
+      // function. We prefer to use that to avoid using GLU, since
+      // GLU might require a valid GL context for gluScale to work.
+      // Also, there are lots of buggy GLU versions out there.
+      if (simage_wrapper()->available &&
+          simage_wrapper()->versionMatchesAtLeast(1,1,1) &&
+          simage_wrapper()->simage_resize) {
+        unsigned char * result = 
+          simage_wrapper()->simage_resize((unsigned char*) orgdata, 
+                                          int(orgsize[0]), int(orgsize[1]),
+                                          nc, int(newsize[0]), int(newsize[1]));
+        this->resizedimage->setValue(newsize, nc, result);
+        simage_wrapper()->simage_free_image(result);
+        this->resizedimagevalid = TRUE;
+      }
+      else if (GLUWrapper()->available &&
+               GLUWrapper()->gluScaleImage) {
+        this->resizedimage->setValue(newsize, nc, NULL);
+        const unsigned char * rezdata = this->resizedimage->getValue(newsize, nc);
+        GLenum format;
+        switch (nc) {
+        default: // avoid compiler warnings
+        case 1: format = GL_LUMINANCE; break;
+        case 2: format = GL_LUMINANCE_ALPHA; break;
+        case 3: format = GL_RGB; break;
+        case 4: format = GL_RGBA; break;
+        }
+        glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+        glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+        glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+        glPixelStorei(GL_PACK_ROW_LENGTH, 0);
+        glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
+        glPixelStorei(GL_PACK_SKIP_ROWS, 0);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glPixelStorei(GL_PACK_ALIGNMENT, 1);
+        
+        (void)GLUWrapper()->gluScaleImage(format,
+                                          orgsize[0], orgsize[1],
+                                          GL_UNSIGNED_BYTE, (void*) orgdata,
+                                          newsize[0], newsize[1],
+                                          GL_UNSIGNED_BYTE,
+                                          (void*) rezdata);
+        // restore to default
+        glPixelStorei(GL_PACK_ALIGNMENT, 4);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+        this->resizedimagevalid = TRUE;
+      }
+#if COIN_DEBUG
+      else {
+        SoDebugError::postInfo("SoImage::getImage",
+                               "No resize function found.");
+      }
+#endif // COIN_DEBUG
     }
     return this->resizedimage->getValue(size, nc);
   }

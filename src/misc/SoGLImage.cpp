@@ -78,6 +78,12 @@
 #include <GLUWrapper.h>
 #include <Inventor/lists/SbList.h>
 
+#include <src/misc/simage_wrapper.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 static float DEFAULT_LINEAR_LIMIT = 0.2f;
 static float DEFAULT_MIPMAP_LIMIT = 0.5f;
 static float DEFAULT_LINEAR_MIPMAP_LIMIT = 0.8f;
@@ -618,32 +624,54 @@ SoGLImageP::resizeImage(unsigned char *& imageptr, int & xsize, int & ysize,
       glimage_tmpimagebuffer = new unsigned char[numbytes];
       glimage_tmpimagebuffersize = numbytes;
     }
-    GLenum format;
-    switch (this->numcomponents) {
-    default: // avoid compiler warnings
-    case 1: format = GL_LUMINANCE; break;
-    case 2: format = GL_LUMINANCE_ALPHA; break;
-    case 3: format = GL_RGB; break;
-    case 4: format = GL_RGBA; break;
+    // simage version 1.1.1 has a pretty high quality resize
+    // function. We prefer to use that to avoid using GLU, since
+    // there are lots of buggy GLU libraries out there.
+    if (simage_wrapper()->available &&
+        simage_wrapper()->versionMatchesAtLeast(1,1,1) &&
+        simage_wrapper()->simage_resize) {
+      unsigned char * result = 
+        simage_wrapper()->simage_resize((unsigned char*) this->bytes, 
+                                        xsize, ysize, this->numcomponents,
+                                        newx, newy);
+      memcpy(glimage_tmpimagebuffer, result, numbytes);
+      simage_wrapper()->simage_free_image(result);
     }
-
-    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-    glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
-    glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
-    glPixelStorei(GL_PACK_ROW_LENGTH, 0);
-    glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
-    glPixelStorei(GL_PACK_SKIP_ROWS, 0);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glPixelStorei(GL_PACK_ALIGNMENT, 1);
-    
-    // FIXME: ignoring the error code. Silly. 20000929 mortene.
-    (void)GLUWrapper()->gluScaleImage(format, xsize, ysize,
-                                      GL_UNSIGNED_BYTE, (void*) this->bytes,
-                                      newx, newy, GL_UNSIGNED_BYTE,
-                                      (void*)glimage_tmpimagebuffer);
+    else if (GLUWrapper()->available &&
+             GLUWrapper()->gluScaleImage) {
+      GLenum format;
+      switch (this->numcomponents) {
+      default: // avoid compiler warnings
+      case 1: format = GL_LUMINANCE; break;
+      case 2: format = GL_LUMINANCE_ALPHA; break;
+      case 3: format = GL_RGB; break;
+      case 4: format = GL_RGBA; break;
+      }
+      
+      glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+      glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+      glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+      glPixelStorei(GL_PACK_ROW_LENGTH, 0);
+      glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
+      glPixelStorei(GL_PACK_SKIP_ROWS, 0);
+      glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+      glPixelStorei(GL_PACK_ALIGNMENT, 1);
+      
+      // FIXME: ignoring the error code. Silly. 20000929 mortene.
+      (void)GLUWrapper()->gluScaleImage(format, xsize, ysize,
+                                        GL_UNSIGNED_BYTE, (void*) this->bytes,
+                                        newx, newy, GL_UNSIGNED_BYTE,
+                                        (void*)glimage_tmpimagebuffer);
+      glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+      glPixelStorei(GL_PACK_ALIGNMENT, 4);
+    }
+#if COIN_DEBUG
+    else {
+      SoDebugError::postWarning("SoGLImageP::resizeImage",
+                                "No resize function found.");
+    }
+#endif // COIN_DEBUG
     imageptr = glimage_tmpimagebuffer;
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-    glPixelStorei(GL_PACK_ALIGNMENT, 4);
   }
   xsize = newx;
   ysize = newy;
