@@ -549,8 +549,10 @@ SbBool read3dsFile(SoStream *in, SoSeparator *&root,
   // turn double side lighting on
   // FIXME: optimization: double sided geometry is probably
   // specified by materials with MAT_TWO_SIDE chunk
+
+  // see doc why COUNTERCLOCKWISE and no UNKNOWN
   SoShapeHints *sh = new SoShapeHints;
-  sh->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE; // see doc why CLOCKWISE and no UNKNOWN
+  sh->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
   sh->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
   con.root->addChild(sh);
   SoMatrixTransform *matrix = NULL;
