@@ -3873,3 +3873,132 @@ main(int argc, char ** argv)
     20040427 mortene.
 
 =====================================================================
+
+109 Bug in handling of global fields.
+
+    Handling of global fields upon import needs some special concerns
+    taken (probably best done in SoBase::readBaseInstance() or
+    thereabouts) to handle the example program below (provided by Coin
+    user Nikolai Ruhe).
+
+    As can be seen from the program, referring to the global
+    "realTime" field (in the correct syntax, as described in Inventor
+    Mentor) fails with Coin, in the sense that it will not connect to
+    the actual realTime field (but probably just makes a new one --
+    but this needs to be checked).
+
+-------------8<---------------- [snip] --------------------------
+
+#include <Inventor/SoDB.h>
+#include <Inventor/Qt/SoQt.h>
+#include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoAsciiText.h>
+#include <Inventor/actions/SoWriteAction.h>
+
+static char* ivFile = 
+	"Separator {\n"
+	"  Translation { translation 0 20 0 }\n"
+	"  AsciiText {\n"
+	"    string \"\" =\n"
+ 	"    GlobalField {\n"
+ 	"      type \"SFTime\"\n"
+ 	"      realTime 0\n"
+ 	"    }    . realTime\n"
+	"  }\n"
+	"}\n";
+
+int main(int /*argc*/, char** argv)
+{
+	QWidget* myWindow = SoQt::init(argv[0]);
+	if(myWindow == 0)
+		exit(1);
+
+	SoSeparator* root = new SoSeparator;
+	root->ref();
+
+	// Create a Text3 object, and connect to the realTime field
+	SoAsciiText* myText = new SoAsciiText;
+	root->addChild(myText);
+	myText->string.connectFrom(SoDB::getGlobalField("realTime"));
+
+	SoInput in;
+	in.setBuffer(ivFile, strlen(ivFile));
+	SoNode* graph;
+	SoDB::read(&in, graph);
+	root->addChild(graph);
+
+	SoQtExaminerViewer* viewer = new SoQtExaminerViewer(myWindow);
+	viewer->setSceneGraph(root);
+	viewer->show();
+
+	SoWriteAction writeAction;
+	writeAction.apply(root);
+
+	SoQt::show(myWindow);
+	SoQt::mainLoop();
+
+	delete viewer;
+	root->unref();
+
+	return 0;
+}
+
+-------------8<---------------- [snip] --------------------------
+
+    20040428 mortene.
+
+=====================================================================
+
+110 SoNodeKitListPart::getChildren()->truncate(0) causes mayhem.
+
+    Reported by Jacob Støren / Fedem. Not surprising this, and there
+    are probably other ways that unexpected use of the SoChildList
+    returned from the virtual SoNode::getChildren() may cause
+    problems. Should audit.
+
+    20040503 mortene.
+
+=====================================================================
+
+111 SoBoxHighlightRenderAction may render boxes around non-selected
+    shapes.
+
+    Reported by Jochen Stier on coin-discuss. To reproduce, make the
+    following modification to the SoGuiExamples/nodes/selection
+    example program, then select any one of the shapes except the
+    bottom one.
+
+-------------8<---------------- [snip] --------------------------
+Index: selection.cpp.in
+===================================================================
+RCS file: /export/cvsroot/SoGuiExamples/nodes/selection.cpp.in,v
+retrieving revision 1.9
+diff -u -r1.9 selection.cpp.in
+--- selection.cpp.in    17 Feb 2003 09:53:46 -0000      1.9
++++ selection.cpp.in    3 May 2004 13:02:22 -0000
+@@ -68,7 +68,8 @@
+   for (int x = 0; x < 3; x++) {
+     for (int y = 0; y < 3; y++) {
+       for (int z = 0; z < 3; z++) {
+-        SoSeparator * sep = new SoSeparator;
++//         SoSeparator * sep = new SoSeparator;
++        SoGroup * sep = new SoGroup;
+         topsep->addChild(sep);
+ 
+         SoBaseColor * basecol = new SoBaseColor;
+
+-------------8<---------------- [snip] --------------------------
+
+    I've investigated a little bit, and the reason more than one shape
+    is rendered with a bounding box is because
+    SoBoxHighlightRenderAction::drawBoxes() will use an
+    SoGLRenderAction for rendering the full path to the actual
+    shape. If there are other shapes in that path (e.g. because there
+    is an SoGroup with an appearance or transformation change below
+    it, aswell as a shape node) those shapes will also get boxes
+    around them.
+
+    20040503 mortene.
+
+=====================================================================
