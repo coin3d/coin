@@ -20,6 +20,7 @@
 #ifndef COIN_SOGLPOINTSIZEELEMENT_H
 #define COIN_SOGLPOINTSIZEELEMENT_H
 
+#include <Inventor/SbVec2f.h>
 #include <Inventor/elements/SoPointSizeElement.h>
 
 
@@ -27,6 +28,7 @@ class COIN_DLL_API SoGLPointSizeElement : public SoPointSizeElement {
   typedef SoPointSizeElement inherited;
 
   SO_ELEMENT_HEADER(SoGLPointSizeElement);
+
 public:
   static void initClass(void);
 protected:
@@ -36,20 +38,24 @@ public:
   virtual void init(SoState * state);
 
   virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                   const SoElement * prevTopElement);
+  virtual void pop(SoState * state, const SoElement * prevTopElement);
 
   virtual void lazyEvaluate(void) const;
   virtual SbBool isLazy(void) const;
+
+  static SbVec2f getValidRange(void);
 
 protected:
   virtual void setElt(float size);
 
 private:
+  // FIXME: use native types, in this case an SbVec2f. Can't be fixed
+  // without breaking ABI compatibility, though, so wait until Coin
+  // version 2.  20010823 mortene.
   static float sizerange[2];
+
   float current;
   void updategl();
-
 };
 
 #endif // !COIN_SOGLPOINTSIZEELEMENT_H
