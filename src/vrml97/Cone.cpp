@@ -260,4 +260,4 @@ SoVRMLCone::computeBBox(SoAction * action,
   }
 }
 
-#undef CONE_SIDE_NUMTRIS 40.0f
+#undef CONE_SIDE_NUMTRIS

@@ -154,7 +154,7 @@ SbCylinder::intersect(const SbLine& l, SbVec3f& enter, SbVec3f& exit) const
 #if COIN_DEBUG
   if (!(l.getDirection().length()>0.0f))
     SoDebugError::postWarning("SbCylinder::intersect",
-                              "The ray 'l' has zero length => undefined", l);
+                              "The ray 'l' has zero length => undefined");
 #endif // COIN_DEBUG
   //
   // What seems to be the immediately most simple, gung-ho method of
