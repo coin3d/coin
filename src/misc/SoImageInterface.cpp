@@ -196,12 +196,12 @@ SoImageInterface::load(const SbBool forceTry)
 #if defined(HAVE_LIBSIMAGE)
     this->dataPtr = simage_read_image(this->filename.getString(),
 				      &w, &h, &nc);
-#endif // HAVE_LIBSIMAGE
     if (this->dataPtr) {
       this->orgSize = this->size = SbVec2s(w, h);
       this->orgNumComponents = this->numComponents = nc;
       return TRUE;
     }
+#endif // HAVE_LIBSIMAGE
   }
   return FALSE;
 }
