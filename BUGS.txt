@@ -409,6 +409,11 @@
 
     20020821 mortene.
 
+    UPDATE 20021010 mortene: pederb fixed a bug that seems to be
+    caused by the same error as this one. The bug was never really
+    *understood*, though, which seems dangerous.. see the FIXME code
+    comment in SoChildList::remove().
+
 =====================================================================
 
 021 SoGetBoundingBoxAction can be made to fail when applied to a path.
@@ -526,7 +531,7 @@
     Inventor doesn't make any tighter fit than we are. So there might
     be something fundamental about the case above which makes it
     impossible to have SbXfBox3f.extendBy(SbXfbox3f) come out with a
-    perfect fit?
+    perfect fit?  Need to investigate.
 
     20020826 mortene.
 
@@ -539,6 +544,8 @@
     Problem found by kintel.
 
     20020904 mortene.
+
+    UPDATE 20021010 mortene: kristian has started working on this.
 
 =====================================================================
 
@@ -590,8 +597,9 @@
 
     Update, some further investigations made: the bug disappears if we
     remove the invalid face (there are two "-1" in a row in the
-    coordIndex field). So the bug is simply caused by us not being as
-    robust as we should be.
+    coordIndex field). Bbox-calculation code should match the
+    rendering code in what action to take when detecting this case, so
+    bboxes matches the geometry that actually gets rendered.
 
     20020915 mortene.
 
@@ -771,6 +779,8 @@
 
     20020927 larsa.
 
+    UPDATE 20021010 mortene: fixed now?
+    
 =====================================================================
 
 033 Some of the default geometry files for dragger geometries uses an
