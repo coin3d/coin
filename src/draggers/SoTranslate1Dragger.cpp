@@ -62,12 +62,6 @@ SoTranslate1Dragger::setUpConnections(SbBool onoff, SbBool doitalways)
 }
 
 void
-SoTranslate1Dragger::setDefaultOnNonWritingFields(void)
-{
-  COIN_STUB();
-}
-
-void
 SoTranslate1Dragger::fieldSensorCB(void * f, SoSensor * s)
 {
   COIN_STUB();
