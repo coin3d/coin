@@ -28,14 +28,10 @@
 #include <assert.h>
 #include <stddef.h> // NULL definition
 
-class SbPList {
-  // Older compilers aren't too happy about const declarations in the
-  // class definitions, so use the enum trick described by Scott
-  // Meyers in "Effective C++".
+class COIN_DLL_API SbPList {
   enum { DEFAULTSIZE = 4 };
 
 public:
-  
   SbPList(const int sizehint = DEFAULTSIZE);
   SbPList(const SbPList & l);
   ~SbPList();
