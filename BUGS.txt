@@ -4008,6 +4008,11 @@ Transform {
 
     20041025 mortene, reported by kintel.
 
+    UPDATE 20050103 sit: warnings if Transform.axisOfRotation is
+    (0, 0, 1) == toviewer, since normal vector of two identical vector is zero.
+Coin warning in SbPlane::SbPlane(): Plane normal vector is a null vector.
+Coin warning in SbVec3f::normalize(): The length of the vector should be > 0.0f to be able to normalize.
+
 =====================================================================
 
 155 Writing of nodekits breaks, after being referenced in an earlier
