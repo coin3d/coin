@@ -31,7 +31,7 @@
 #include <assert.h>
 #include <stdio.h>
 
-
+#include <Inventor/C/base/list.h>
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/base/hashp.h>
 #include <Inventor/C/base/string.h>
@@ -44,7 +44,8 @@
 #include "glyph3d.h"
 #include "../misc/defaultfonts.h"
 
-static SbBool glyph3d_specmatch(const cc_font_specification * spec1, const cc_font_specification * spec2);
+static SbBool glyph3d_specmatch(const cc_font_specification * spec1, 
+                                const cc_font_specification * spec2);
 static void glyph3d_calcboundingbox(cc_glyph3d * g);
 
 struct cc_glyph3d {
@@ -111,10 +112,12 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   cc_glyph3d * glyph;
   int glyphidx;
   int fontidx;
+  int i;
   void * val;
   cc_font_specification * newspec;
   int namelen = 0;
   cc_string * fonttoload;
+  cc_list * glyphlist;
 
   /* Beacuse this function is the entry point for glyph3d, the mutex
      is initialized here. */
@@ -123,15 +126,28 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   
   assert(spec);
 
-  /* Has the glyph been created before? */
   GLYPH3D_MUTEX_LOCK(glyph3d_fonthash_lock);
+
+  /* Has the glyph been created before? */
   if (cc_hash_get(glyph3d_fonthash, (unsigned long) character, &val)) {
-    glyph = (cc_glyph3d *) val;
-    if (glyph3d_specmatch(spec, glyph->fontspec)) {
-      GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
-      return glyph;
-    }
+    glyphlist = (cc_list *) val;
+    for (i=0;i<cc_list_get_length(glyphlist);++i) {
+      glyph = (cc_glyph3d *) cc_list_get(glyphlist, i);
+      if (glyph3d_specmatch(spec, glyph->fontspec)) {
+        GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
+        return glyph;
+      }
+    }    
+  } else {
+    /* No fontspec list for this character is found. Create one and
+       add it to the hashtable. */
+    glyphlist = cc_list_construct();
+    cc_hash_put(glyph3d_fonthash, (unsigned long) character, glyphlist);
   }
+
+  assert(glyphlist);
+
+
 
   /* build a new glyph struct */
   glyph = (cc_glyph3d *) malloc(sizeof(cc_glyph3d));
@@ -199,7 +215,8 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   glyph3d_calcboundingbox(glyph);
   glyph->width = glyph->bbox[2] - glyph->bbox[0];
 
-  cc_hash_put(glyph3d_fonthash, (unsigned long) character, glyph);
+  /* Store newly created glyph in the list for this character */
+  cc_list_append(glyphlist, glyph);
 
   GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
   return glyph;

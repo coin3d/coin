@@ -106,10 +106,12 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
   cc_glyph2d * glyph;
   int fontidx;
   int glyphidx;
-  struct cc_flw_bitmap * bm;
-  struct cc_font_specification * newspec;
+  int i;
+  cc_flw_bitmap * bm;
+  cc_font_specification * newspec;
   int namelen = 0;
   cc_string * fonttoload;
+  cc_list * glyphlist;
 
 
   /* Beacuse this function is the entry point for glyph2d, the mutex
@@ -122,16 +124,24 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
   GLYPH2D_MUTEX_LOCK(glyph2d_fonthash_lock);
 
   /* Has the glyph been created before? */
-  if (cc_hash_get(glyph2d_fonthash, (unsigned long) character, &val)) {    
-    glyph = (cc_glyph2d *) val;
-    if (angle == glyph->angle) {
+  if (cc_hash_get(glyph2d_fonthash, (unsigned long) character, &val)) {
+    glyphlist = (cc_list *) val;
+    for (i=0;i<cc_list_get_length(glyphlist);++i) {
+      glyph = (cc_glyph2d *) cc_list_get(glyphlist, i);
       if (glyph2d_specmatch(spec, glyph->fontspec)) {
-        GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);         
+        GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
         return glyph;
       }
-    }
-  } 
-  
+    }    
+  } else {
+    /* No fontspec list for this character is found. Create one and
+       add it to the hashtable. */
+    glyphlist = cc_list_construct();
+    cc_hash_put(glyph2d_fonthash, (unsigned long) character, glyphlist);
+  }
+
+  assert(glyphlist);
+
   /* build a new glyph struct with bitmap */    
   glyph = (cc_glyph2d *) malloc(sizeof(cc_glyph2d));
   
@@ -180,8 +190,8 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
   glyph->bitmapoffsety = bm->bearingY;
   glyph->bitmap = bm->buffer;
   
-  /* Insert the new glyph into the hash-table using 'character' as key */
-  cc_hash_put(glyph2d_fonthash, (unsigned long) character, glyph);
+  /* Store newly created glyph in the list for this character */
+  cc_list_append(glyphlist, glyph);
   
   GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
   return glyph;
