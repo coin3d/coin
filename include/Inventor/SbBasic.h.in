@@ -95,7 +95,11 @@ typedef int SbBool;
 // Define the value for pi. UNIX systems typically have this defined
 // somewhere in math.h (as M_PI), but MSWindows systems don't. So we
 // define it here once and for all.
-#define SB_PI 3.14159265358979323846
+#if defined(unix) || defined(_AIX)
+#include <math.h>
+#else
+#define M_PI 3.14159265358979323846
+#endif
 
 // Some useful inline template functions (instead of macros):
 //   SbAbs(Val)              - returns absolute value

@@ -37,4 +37,9 @@
 #define DONT_NEED_TEMPLATE_DEFINITION (1)
 #endif
 
+#if defined(_WIN32) || defined(_AIX)
+// fix for stupid m$ (and AIX) compiler
+#define SB_MATRIX_WORKAROUND
+#endif
+
 #endif // !__COIN_KOSHER_H__

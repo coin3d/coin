@@ -27,9 +27,6 @@
 
 #include <Inventor/nodes/SoTexture2Transform.h>
 
-
-#include <math.h>
-
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureMatrixElement.h>
 #include <Inventor/actions/SoCallbackAction.h>

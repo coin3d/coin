@@ -31,7 +31,6 @@
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/misc/SoNormalGenerator.h>
-#include <math.h>
 
 //
 // fixme: add test to shrink normalArray.

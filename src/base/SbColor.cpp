@@ -34,8 +34,6 @@
 
   \sa SbVec3f, SbColor4f */
 
-#include <math.h>
-#include <assert.h>
 #include <Inventor/SbColor.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

@@ -31,7 +31,6 @@
 #endif // COIN_DEBUG
 #include <assert.h>
 #include <float.h>
-#include <math.h>
 
 /*!
   FIXME: write doc

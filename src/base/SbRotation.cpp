@@ -34,7 +34,6 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbMatrix.h>
-#include <math.h>
 #include <assert.h>
 #include <float.h>
 

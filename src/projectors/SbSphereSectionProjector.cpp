@@ -27,7 +27,6 @@
 
 #include <Inventor/projectors/SbSphereSectionProjector.h>
 #include <assert.h>
-#include <math.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

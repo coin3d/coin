@@ -46,7 +46,6 @@ These methods need better documentation:
 </UL>
 */
 
-#include <math.h>
 #include <assert.h>
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/SbRotation.h>
@@ -608,12 +607,12 @@ SbViewVolume::perspective(float fovy, float aspect,
                           float nearval, float farval)
 {
 #if COIN_DEBUG
-  if (fovy<0.0f || fovy > SB_PI) {
+  if (fovy<0.0f || fovy > M_PI) {
     SoDebugError::postWarning("SbViewVolume::perspective",
                               "Field of View 'fovy' (%f) is out of bounds "
                               "[0,PI]. Clamping to be within bounds.",fovy);
     if (fovy<0.0f) fovy=0.0f;
-    else if (fovy>SB_PI) fovy=SB_PI;
+    else if (fovy>M_PI) fovy=M_PI;
   }
 
   if (aspect<0.0f) {

@@ -371,7 +371,7 @@ SoNode::getByName(const SbName & /* name */, SoNodeList & /* l */)
   FIXME: write function documentation
 */
 void
-SoNode::getBoundingBoxS(SoAction * const action, SoNode * const node)
+SoNode::getBoundingBoxS(SoAction * action, SoNode * node)
 {
   assert(action && node);
   //  assert(action->getTypeId().isDerivedFrom(SoGetBoundingBoxAction::getClassTypeId()));
@@ -393,7 +393,7 @@ SoNode::getBoundingBox(SoGetBoundingBoxAction *)
   FIXME: write function documentation
 */
 void
-SoNode::getPrimitiveCountS(SoAction * const action, SoNode * const node)
+SoNode::getPrimitiveCountS(SoAction * action, SoNode * node)
 {
   assert(action && node);
   //  assert(action->getTypeId().isDerivedFrom(SoGetPrimitiveCountAction::getClassTypeId()));
@@ -413,8 +413,8 @@ SoNode::getPrimitiveCount(SoGetPrimitiveCountAction *)
   node.
 */
 void
-SoNode::GLRenderS(SoAction * const action,
-                  SoNode * const node)
+SoNode::GLRenderS(SoAction * action,
+                  SoNode * node)
 {
   assert(action && node);
   assert(action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId()));
@@ -514,8 +514,8 @@ SoNode::GLRenderOffPath(SoGLRenderAction * action)
   FIXME: write function documentation
 */
 void
-SoNode::callbackS(SoAction * const action,
-                  SoNode * const node)
+SoNode::callbackS(SoAction * action,
+                  SoNode * node)
 {
   assert(action && node);
   SoCallbackAction * const cbAction =
@@ -548,7 +548,7 @@ SoNode::callback(SoCallbackAction * /* action */)
   FIXME: write function documentation
 */
 void
-SoNode::getMatrixS(SoAction * const action, SoNode * const node)
+SoNode::getMatrixS(SoAction * action, SoNode * node)
 {
 #if 0 // debug
   SoDebugError::postInfo("SoNode::getMatrixS",
@@ -579,7 +579,7 @@ SoNode::getMatrix(SoGetMatrixAction * /* action */)
   FIXME: write function documentation
 */
 void
-SoNode::handleEventS(SoAction * const action, SoNode * const node)
+SoNode::handleEventS(SoAction * action, SoNode * node)
 {
   assert(action && node);
   assert(action->getTypeId().isDerivedFrom(SoHandleEventAction::getClassTypeId()));
@@ -600,7 +600,7 @@ SoNode::handleEvent(SoHandleEventAction * /* action */)
   FIXME: write function documentation
 */
 void
-SoNode::pickS(SoAction * const action, SoNode * const node)
+SoNode::pickS(SoAction * action, SoNode * node)
 {
   assert(action && node);
   assert(action->getTypeId().isDerivedFrom(SoPickAction::getClassTypeId()));
@@ -621,7 +621,7 @@ SoNode::pick(SoPickAction * /* action */)
   FIXME: write function documentation
 */
 void
-SoNode::rayPickS(SoAction * const action, SoNode * const node)
+SoNode::rayPickS(SoAction * action, SoNode * node)
 {
   assert(action && node);
   assert(action->getTypeId().isDerivedFrom(SoRayPickAction::getClassTypeId()));
@@ -648,7 +648,7 @@ SoNode::rayPick(SoRayPickAction * /* action */)
   FIXME: write function documentation
 */
 void
-SoNode::searchS(SoAction * const action, SoNode * const node)
+SoNode::searchS(SoAction * action, SoNode * node)
 {
   assert(action && node);
   assert(action->getTypeId().isDerivedFrom(SoSearchAction::getClassTypeId()));
@@ -709,7 +709,7 @@ SoNode::search(SoSearchAction * action)
   write() method.
 */
 void
-SoNode::writeS(SoAction * const action, SoNode * const node)
+SoNode::writeS(SoAction * action, SoNode * node)
 {
   assert(action && node);
   assert(action->getTypeId().isDerivedFrom(SoWriteAction::getClassTypeId()));

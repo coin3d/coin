@@ -34,7 +34,7 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbBox3f.h>
-#include <math.h>
+#include <Inventor/system/kosher.h>
 
 /*!
   \enum SoAntiSquish::Sizing
@@ -191,7 +191,7 @@ SoAntiSquish::getMatrix(SoGetMatrixAction *action)
                                  TRUE, action->getInverse());
 
   }
-#if _WIN32 // fix for stupid m$ vc6 compiler
+#ifdef SB_MATRIX_WORKAROUND
   action->getMatrix() = this->unsquishedMatrix;
   action->getInverse() = this->inverseMatrix;
 #else // normal compilers use this code

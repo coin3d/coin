@@ -29,7 +29,6 @@
   \sa SbVec2s, SbVec3f, SbVec4f
 */
 
-#include <math.h>
 #include <assert.h>
 #include <Inventor/SbVec2f.h>
 #if COIN_DEBUG

@@ -112,13 +112,13 @@ SoDragPointDragger::SoDragPointDragger(void)
 
   // set rotations to align draggers to their respective axis/planes
   SoRotation *xrot = new SoRotation;
-  xrot->rotation.setValue(SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), SB_PI*0.5f));
+  xrot->rotation.setValue(SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), M_PI*0.5f));
   this->setAnyPartAsDefault("rotX", xrot);
   SoRotation *yrot = new SoRotation;
-  yrot->rotation.setValue(SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), SB_PI*0.5f));
+  yrot->rotation.setValue(SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), M_PI*0.5f));
   this->setAnyPartAsDefault("rotY", yrot);
   SoRotation *zrot = new SoRotation;
-  zrot->rotation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), SB_PI*0.5f));
+  zrot->rotation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), M_PI*0.5f));
   this->setAnyPartAsDefault("rotZ", zrot);
 
   // initialize switch nodes

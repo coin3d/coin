@@ -71,7 +71,6 @@
 
 #include <GL/gl.h>
 #include <string.h>
-#include <math.h>
 
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoComplexityElement.h>

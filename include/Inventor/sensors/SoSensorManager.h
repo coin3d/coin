@@ -25,7 +25,8 @@
 
 // FIXME: do this properly through something configure based.
 // 19991214 mortene.
-#if defined(_WIN32) || defined(__BEOS__)
+// Note: fd_set is in time.h under AIX
+#if defined(_WIN32) || defined(__BEOS__) || defined(_AIX)
 typedef struct fd_set fd_set;
 #endif //_WIN32 || __BEOS__
 

@@ -41,7 +41,6 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/misc/SoState.h>
 #include <float.h>
-#include <math.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

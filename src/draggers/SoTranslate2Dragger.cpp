@@ -26,7 +26,6 @@
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/events/SoKeyboardEvent.h>
-#include <math.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

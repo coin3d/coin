@@ -27,7 +27,6 @@
 
   \sa SbCylinder */
 
-#include <math.h>
 #include <assert.h>
 #include <Inventor/SbSphere.h>
 #include <Inventor/SbBox3f.h>

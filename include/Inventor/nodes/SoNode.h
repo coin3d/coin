@@ -94,16 +94,16 @@ public:
   static uint32_t getNextNodeId(void);
   static int getActionMethodIndex(const SoType type);
 
-  static void getBoundingBoxS(SoAction * const action,SoNode * const node);
-  static void GLRenderS(SoAction * const action, SoNode * const node);
-  static void callbackS(SoAction * const action, SoNode * const node);
-  static void getMatrixS(SoAction * const action, SoNode * const node);
-  static void handleEventS(SoAction * const action, SoNode * const node);
-  static void pickS(SoAction * const action, SoNode * const node);
-  static void rayPickS(SoAction * const action, SoNode * const node);
-  static void searchS(SoAction * const action, SoNode * const node);
-  static void writeS(SoAction * const action, SoNode * const node);
-  static void getPrimitiveCountS(SoAction * const action, SoNode * const node);
+  static void getBoundingBoxS(SoAction * action,SoNode * node);
+  static void GLRenderS(SoAction * action, SoNode * node);
+  static void callbackS(SoAction * action, SoNode * node);
+  static void getMatrixS(SoAction * action, SoNode * node);
+  static void handleEventS(SoAction * action, SoNode * node);
+  static void pickS(SoAction * action, SoNode * node);
+  static void rayPickS(SoAction * action, SoNode * node);
+  static void searchS(SoAction * action, SoNode * node);
+  static void writeS(SoAction * action, SoNode * node);
+  static void getPrimitiveCountS(SoAction * action, SoNode * node);
 
 protected:
   SoNode(void);

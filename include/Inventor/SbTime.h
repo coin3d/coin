@@ -20,13 +20,14 @@
 #ifndef __SBTIME_H__
 #define __SBTIME_H__
 
-#ifdef _WIN32
+// Usually you get all you need from time.h
 #include <time.h>
+#ifdef _WIN32
 #include <sys/timeb.h>
 
 struct timeval;
-
-#else // ! WIN32
+#else
+// Sometimes (linux) sys/time.h is also needed
 #include <sys/time.h>
 #endif // ! WIN32
 

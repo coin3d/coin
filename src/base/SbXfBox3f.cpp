@@ -32,7 +32,6 @@
 
 #include <Inventor/SbXfBox3f.h>
 #include <float.h>
-#include <math.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

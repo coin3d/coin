@@ -51,8 +51,6 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/details/SoDetail.h>
 
-#include <math.h> // fabs()
-
 #define CYL_SIDE_NUMTRIS 40.0f
 
 /*!

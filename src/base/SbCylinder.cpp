@@ -29,7 +29,6 @@
 
   \sa SbLine, SbSphere */
 
-#include <math.h>
 #include <assert.h>
 #include <Inventor/SbCylinder.h>
 #if COIN_DEBUG

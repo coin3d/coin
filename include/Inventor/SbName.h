@@ -23,6 +23,9 @@
 #include <Inventor/SbBasic.h>
 
 #include <string.h>
+#ifdef _AIX
+#include <strings.h>
+#endif
 
 class SbString;
 struct SbNameChunk;

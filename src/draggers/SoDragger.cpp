@@ -74,9 +74,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#include <math.h> // sqrt()
-
-
 #ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
 
 class SoDraggerCache {

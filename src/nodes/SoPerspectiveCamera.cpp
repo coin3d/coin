@@ -30,7 +30,6 @@
 
 #include <Inventor/SbSphere.h>
 #include <assert.h>
-#include <math.h> // for atan()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -52,7 +51,7 @@ SoPerspectiveCamera::SoPerspectiveCamera()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoPerspectiveCamera);
 
-  SO_NODE_ADD_FIELD(heightAngle, (float(SB_PI)/4.0f));  // 45 degrees
+  SO_NODE_ADD_FIELD(heightAngle, (float(M_PI)/4.0f));  // 45 degrees
 }
 
 /*!

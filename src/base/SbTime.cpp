@@ -33,7 +33,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <limits.h>
-#include <math.h>
 #include <errno.h>
 
 #if COIN_DEBUG

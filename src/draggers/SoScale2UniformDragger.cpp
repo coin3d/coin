@@ -27,7 +27,6 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <math.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

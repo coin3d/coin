@@ -37,7 +37,6 @@
 #endif // !_WIN32
 
 #include <GL/gl.h>
-#include <math.h>
 
 SO_ELEMENT_SOURCE(SoGLModelMatrixElement);
 
@@ -199,7 +198,7 @@ SoGLModelMatrixElement::rotateEltBy(const SbRotation &rotation)
   SbVec3f axis;
   float angle;
   rotation.getValue(axis, angle);
-  glRotatef(angle*180.0f/float(SB_PI), axis[0], axis[1], axis[2]);
+  glRotatef(angle*180.0f/float(M_PI), axis[0], axis[1], axis[2]);
   inherited::rotateEltBy(rotation);
 }
 

@@ -37,7 +37,6 @@
 #include <windows.h>
 #endif // _WIN32
 #include <GL/gl.h>
-#include <math.h>
 #include <float.h>
 
 // *************************************************************************

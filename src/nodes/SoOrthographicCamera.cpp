@@ -31,7 +31,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 #include <Inventor/SbSphere.h>
-#include <math.h>
 
 /*!
   \var SoSFFloat SoOrthographicCamera::height

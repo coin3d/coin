@@ -25,7 +25,6 @@
 #include <Inventor/misc/SoNormalGenerator.h>
 #include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <stdio.h>
-#include <math.h>
 
 /*!
   Constructor with \a isccw indicating if polygons are specified

@@ -29,7 +29,6 @@
   \sa SbVec2f, SbVec2s, SbVec4f.
 */
 
-#include <math.h>
 #include <assert.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbMatrix.h>

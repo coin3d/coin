@@ -33,6 +33,13 @@ public:
 public:
   SbPlane plane;
   SbPlane wcPlane;
+  // Needed by AIX compiler
+  SbBool operator==(const so_plane_data &spd) const {
+    return spd.plane == plane && spd.wcPlane == wcPlane;
+  }
+  SbBool operator!=(const so_plane_data &spd) const {
+    return spd.plane != plane || spd.wcPlane != wcPlane;
+  }
 };
 
 class SoClipPlaneElement : public SoAccumulatedElement {

@@ -43,8 +43,6 @@
 #include <Inventor/elements/SoGLPolygonStippleElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 
-#include <math.h>
-
 /*!
   \var SoMFColor SoMaterial::ambientColor
   FIXME: write documentation for field

@@ -31,7 +31,6 @@
 #include <Inventor/SbTesselator.h>
 #include <Inventor/SbHeap.h>
 #include <stdio.h>
-#include <math.h>
 #include <limits.h>
 #include <assert.h>
 #include <float.h>

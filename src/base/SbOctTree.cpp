@@ -22,7 +22,6 @@
 #include <Inventor/SbPlane.h>
 #include <float.h>
 #include <stddef.h>
-#include <math.h>
 #include <Inventor/misc/SoBasic.h> // COIN_STUB()
 
 /*!

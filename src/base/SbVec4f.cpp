@@ -31,7 +31,6 @@
 */
 
 
-#include <math.h>
 #include <assert.h>
 #include <Inventor/SbVec4f.h>
 #include <Inventor/SbVec3f.h>
