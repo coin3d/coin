@@ -132,3 +132,10 @@ THE LINKS
   can _not_ do when we want to keep ABI compatibility in new releases:
 
     <URL:http://www.trolltech.com/developer/faqs/technical.html>
+
+* Distributed Open Inventor:
+
+        <URL:http://www.cg.tuwien.ac.at/research/vr/div/>
+
+  Also in the proceedings of the ACM Symposium on Virtual Reality
+  Software and Technology (VRST'99), pp. 74-81, 1999.
