@@ -158,19 +158,23 @@ EXTRA_DIST = \
 @BUILD_LIBRARY_TRUE@nodist_ccoininc_HEADERS = \
 @BUILD_LIBRARY_TRUE@	basic.h
 
+
+@BUILD_LIBRARY_TRUE@ccoininc_HEADERS = \
+@BUILD_LIBRARY_TRUE@	tidbits.h
+
 subdir = include/Inventor/C
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 DIST_SOURCES =
-HEADERS = $(nodist_ccoininc_HEADERS)
+HEADERS = $(ccoininc_HEADERS) $(nodist_ccoininc_HEADERS)
 
 
 RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	uninstall-info-recursive all-recursive install-data-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
-DIST_COMMON = Makefile.am Makefile.in
+DIST_COMMON = $(ccoininc_HEADERS) Makefile.am Makefile.in
 DIST_SUBDIRS = base errors glue threads
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
@@ -193,6 +197,23 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
 uninstall-info-am:
+@BUILD_LIBRARY_FALSE@install-ccoinincHEADERS: $(ccoininc_HEADERS)
+@BUILD_LIBRARY_FALSE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_FALSE@	$(mkinstalldirs) $(DESTDIR)$(ccoinincdir)
+@BUILD_LIBRARY_FALSE@	@list='$(ccoininc_HEADERS)'; for p in $$list; do \
+@BUILD_LIBRARY_FALSE@	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+@BUILD_LIBRARY_FALSE@	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+@BUILD_LIBRARY_FALSE@	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(ccoinincdir)/$$f"; \
+@BUILD_LIBRARY_FALSE@	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(ccoinincdir)/$$f; \
+@BUILD_LIBRARY_FALSE@	done
+
+uninstall-ccoinincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(ccoininc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(ccoinincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(ccoinincdir)/$$f; \
+	done
 @BUILD_LIBRARY_FALSE@install-nodist_ccoinincHEADERS: $(nodist_ccoininc_HEADERS)
 @BUILD_LIBRARY_FALSE@	@$(NORMAL_INSTALL)
 @BUILD_LIBRARY_FALSE@	$(mkinstalldirs) $(DESTDIR)$(ccoinincdir)
@@ -342,7 +363,7 @@ check: check-recursive
 all-am: Makefile $(HEADERS)
 installdirs: installdirs-recursive
 installdirs-am:
-	$(mkinstalldirs) $(DESTDIR)$(ccoinincdir)
+	$(mkinstalldirs) $(DESTDIR)$(ccoinincdir) $(DESTDIR)$(ccoinincdir)
 
 install: install-recursive
 install-exec: install-exec-recursive
@@ -386,7 +407,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-nodist_ccoinincHEADERS
+install-data-am: install-ccoinincHEADERS install-nodist_ccoinincHEADERS
 
 install-exec-am:
 
@@ -404,7 +425,8 @@ mostlyclean: mostlyclean-recursive
 
 mostlyclean-am: mostlyclean-generic mostlyclean-libtool
 
-uninstall-am: uninstall-info-am uninstall-nodist_ccoinincHEADERS
+uninstall-am: uninstall-ccoinincHEADERS uninstall-info-am \
+	uninstall-nodist_ccoinincHEADERS
 
 uninstall-info: uninstall-info-recursive
 
@@ -412,22 +434,39 @@ uninstall-info: uninstall-info-recursive
 	clean-generic clean-libtool clean-recursive distclean \
 	distclean-generic distclean-libtool distclean-recursive \
 	distclean-tags distdir dvi dvi-am dvi-recursive info info-am \
-	info-recursive install install-am install-data install-data-am \
-	install-data-recursive install-exec install-exec-am \
-	install-exec-recursive install-info install-info-am \
-	install-info-recursive install-man \
+	info-recursive install install-am install-ccoinincHEADERS \
+	install-data install-data-am install-data-recursive \
+	install-exec install-exec-am install-exec-recursive \
+	install-info install-info-am install-info-recursive install-man \
 	install-nodist_ccoinincHEADERS install-recursive install-strip \
 	installcheck installcheck-am installdirs installdirs-am \
 	installdirs-recursive maintainer-clean maintainer-clean-generic \
 	maintainer-clean-recursive mostlyclean mostlyclean-generic \
 	mostlyclean-libtool mostlyclean-recursive tags tags-recursive \
-	uninstall uninstall-am uninstall-info-am \
-	uninstall-info-recursive uninstall-nodist_ccoinincHEADERS \
-	uninstall-recursive
+	uninstall uninstall-am uninstall-ccoinincHEADERS \
+	uninstall-info-am uninstall-info-recursive \
+	uninstall-nodist_ccoinincHEADERS uninstall-recursive
 
 
 basic.h: $(srcdir)/basic.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
+
+# FIXME: could get rid of this Automake override stuff by adding a new
+# feature flag to Automake ("AM_CMP_BEFORE_INSTALL" or something.)
+# 20021124 mortene.
+
+@BUILD_LIBRARY_TRUE@install-ccoinincHEADERS: $(ccoininc_HEADERS)
+@BUILD_LIBRARY_TRUE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_TRUE@	$(mkinstalldirs) $(DESTDIR)$(ccoinincdir)
+@BUILD_LIBRARY_TRUE@	@list='$(ccoininc_HEADERS)'; for p in $$list; do \
+@BUILD_LIBRARY_TRUE@	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+@BUILD_LIBRARY_TRUE@	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+@BUILD_LIBRARY_TRUE@	  src="$$d$$p"; dst="$(DESTDIR)$(ccoinincdir)/$$f"; \
+@BUILD_LIBRARY_TRUE@	  if cmp -s "$$src" "$$dst"; then :; else \
+@BUILD_LIBRARY_TRUE@	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+@BUILD_LIBRARY_TRUE@	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+@BUILD_LIBRARY_TRUE@	  fi \
+@BUILD_LIBRARY_TRUE@	done
 
 @BUILD_LIBRARY_TRUE@install-nodist_ccoinincHEADERS: $(nodist_ccoininc_HEADERS)
 @BUILD_LIBRARY_TRUE@	@$(NORMAL_INSTALL)
