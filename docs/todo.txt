@@ -440,6 +440,10 @@ STUFF TO FIX IN COIN
     UPDATE 2002-09-03 mortene: SoToVRMLAction (and SoToVRML2Action)
     has now been implemented (by summer intern Kristian Eide).
 
+    UPDATE 2003-11-18 mortene: more code has been written which should
+    be moved to SoReorganizeAction; handegar has done a faceset ->
+    tristrip converter. See the internal CVS TriStripSetAction.
+
 
 018 Check out and build simage as part of the Coin build process.
     2002-08-01  Morten Eriksen  <mortene@sim.no>
@@ -1000,6 +1004,54 @@ STUFF TO FIX IN COIN
     following interesting post on the NSI forum on winamp.com:
     <a href="http://forums.winamp.com/showthread.php?s=&
     threadid=113541&highlight=GetDllVersion" />
+
+
+041 Generic ADT in C for dynamic arrays.
+    2003-11-18  Morten Eriksen  <mortene@sim.no>
+
+    The cc_list interface is being misused here and there (like in
+    src/fonts/freetype.c, for instance) in ways which could give us
+    trouble on 64-bit platforms -- like storing int values as void*.
+
+    Should be fixed by making an cc_list_int* ADT, or better: a
+    *generic* C dynamic array ADT -- e.g. by some macro hackery or
+    something.
+
+
+042 Coin internationalization.
+    2001-06-28  Morten Eriksen  <mortene@sim.no>
+
+    Sooner or later, my guess is that we will have to make SbString
+    and SbName capable of handling more than simple ASCII / iso-8859-*
+    character sets. Other areas of Coin probably also need some
+    rewriting for internationalization.
+
+    UPDATE 2001-06-28 larsa: Are there any alternatives better than
+    Unicode UTF-8 for this?
+
+    UPDATE 2003-01-22 mortene: kintel suggests auditing of the following;
+
+      o Node names (SbString/SbName storage + I/O).
+
+        (We cannot do much wrt. file formats since we want to be
+        compatible.  VRML97 is fully unicoded through utf-8, I guess
+        Inventor files and VRML1 are latin1 but I'm not sure. We can
+        always create our own Coin file format w/unicode support.)
+
+      o file I/O (unicode file names)
+
+        (File names are subject to file systems constraints and must
+        be handled separately.)
+
+      o Font handling, including text rendering through SoText2,
+        SoText3, SoAsciiText, and SoVRMLText.
+
+    UPDATE 2003-12-02 mortene: the following URL seems to contain a
+    lot of useful information
+
+        http://www.cl.cam.ac.uk/~mgk25/unicode.html
+
+
 
 
 OTHER COIN-RELATED STUFF TO FIX
