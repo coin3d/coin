@@ -76,10 +76,10 @@
 /* define if you have GLX X11 OpenGL bindings */
 #undef HAVE_GLX
 
-/* Define if you have the <GL/glu.h> header file. */
+/* define if the GLU header should be included as GL/glu.h */
 #undef HAVE_GL_GLU_H
 
-/* Define if you have the <GL/gl.h> header file. */
+/* define if the GL header should be included as GL/gl.h */
 #undef HAVE_GL_GL_H
 
 /* define if preprocessor can quote arguments with the hash symbol */
@@ -112,10 +112,10 @@
 /* define if you have OpenGL */
 #undef HAVE_OPENGL
 
-/* Define if you have the <OpenGL/glu.h> header file. */
+/* define if the GLU header should be included as OpenGL/glu.h */
 #undef HAVE_OPENGL_GLU_H
 
-/* Define if you have the <OpenGL/gl.h> header file. */
+/* define if the GL header should be included as OpenGL/gl.h */
 #undef HAVE_OPENGL_GL_H
 
 /* define if single-precision math functions are avialable */
