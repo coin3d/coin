@@ -205,7 +205,7 @@ maintainer-clean: maintainer-clean-am
 distclean distclean-generic distdir dvi dvi-am info info-am install \
 install-am install-data install-data-am install-exec install-exec-am \
 install-strip installcheck installcheck-am installdirs maintainer-clean \
-maintainer-clean-generic mostlyclean mostlyclean-generic tags uninstall \
+maintainer-clean-generic mostlyclean mostlyclean-generic uninstall \
 uninstall-am
 
 

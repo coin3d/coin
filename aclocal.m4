@@ -1821,7 +1821,7 @@ if $sim_ac_simage_desired; then
   AC_PATH_PROG(sim_ac_simage_configcmd, simage-config, false, $sim_ac_path)
 
   if $sim_ac_simage_configcmd; then
-    echo "$CPPFLAGS $CFLAGS $CXXFLAGS" | egrep -q -- "-g\\>" &&
+    test -n "`echo -- $CPPFLAGS $CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
       sim_ac_simage_configcmd="$sim_ac_simage_configcmd --debug"
     sim_ac_simage_cppflags=`$sim_ac_simage_configcmd --cppflags`
     sim_ac_simage_ldflags=`$sim_ac_simage_configcmd --ldflags`

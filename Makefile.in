@@ -467,7 +467,7 @@ maintainer-clean-am:  maintainer-clean-hdr maintainer-clean-tags \
 maintainer-clean: maintainer-clean-recursive
 	-rm -f config.status
 
-.PHONY: all all-am all-recursive all-recursive-am all-redirect check \
+.PHONY:  all all-am all-recursive all-recursive-am all-redirect check \
 check-am check-recursive clean clean-generic clean-hdr clean-recursive \
 clean-tags distclean distclean-generic distclean-hdr \
 distclean-recursive distclean-tags distdir dvi dvi-am dvi-recursive \
@@ -480,8 +480,7 @@ maintainer-clean maintainer-clean-generic maintainer-clean-hdr \
 maintainer-clean-recursive maintainer-clean-tags mostlyclean \
 mostlyclean-generic mostlyclean-hdr mostlyclean-recursive \
 mostlyclean-tags tags tags-recursive uninstall uninstall-am \
-uninstall-binSCRIPTS uninstall-data-recursive uninstall-exec-recursive \
-uninstall-m4dataDATA uninstall-recursive uninstalldirs-recursive
+uninstall-binSCRIPTS uninstall-m4dataDATA uninstall-recursive
 
 
 doxygen-doc:

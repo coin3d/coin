@@ -311,7 +311,7 @@ maintainer-clean-am:  maintainer-clean-tags maintainer-clean-generic \
 
 maintainer-clean: maintainer-clean-recursive
 
-.PHONY: all all-am all-recursive all-redirect check check-am \
+.PHONY:  all all-am all-recursive all-redirect check check-am \
 check-recursive clean clean-generic clean-recursive clean-tags \
 distclean distclean-generic distclean-recursive distclean-tags distdir \
 dvi dvi-am dvi-recursive info info-am info-recursive install install-am \
@@ -322,8 +322,7 @@ installdirs-am installdirs-recursive maintainer-clean \
 maintainer-clean-generic maintainer-clean-recursive \
 maintainer-clean-tags mostlyclean mostlyclean-generic \
 mostlyclean-recursive mostlyclean-tags tags tags-recursive uninstall \
-uninstall-am uninstall-data-recursive uninstall-exec-recursive \
-uninstall-recursive uninstalldirs-recursive
+uninstall-am uninstall-recursive
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

@@ -649,7 +649,7 @@ maintainer-clean-am:  maintainer-clean-libLTLIBRARIES \
 
 maintainer-clean: maintainer-clean-recursive
 
-.PHONY: all all-am all-recursive all-redirect check check-am \
+.PHONY:  all all-am all-recursive all-redirect check check-am \
 check-recursive clean clean-compile clean-depend clean-generic \
 clean-libLTLIBRARIES clean-libtool clean-recursive clean-tags distclean \
 distclean-compile distclean-depend distclean-generic \
@@ -667,10 +667,9 @@ maintainer-clean-libtool maintainer-clean-recursive \
 maintainer-clean-tags mostlyclean mostlyclean-compile \
 mostlyclean-depend mostlyclean-generic mostlyclean-libLTLIBRARIES \
 mostlyclean-libtool mostlyclean-recursive mostlyclean-tags tags \
-tags-recursive uninstall uninstall-am uninstall-data-recursive \
-uninstall-exec-recursive uninstall-libCoin_gincHEADERS \
+tags-recursive uninstall uninstall-am uninstall-libCoin_gincHEADERS \
 uninstall-libCoinincHEADERS uninstall-libLTLIBRARIES \
-uninstall-recursive uninstalldirs-recursive
+uninstall-recursive
 
 
 #### Additional "native" Make rules #########################################

@@ -46,9 +46,9 @@ cat >conftest.file <<_ASEOF
 exit 0
 _ASEOF
 chmod +x conftest.file
-if test -x conftest.file; then
+if test -x conftest.file >/dev/null 2>&1; then
   as_executable_p="test -x"
-elif test -f conftest.file; then
+elif test -f conftest.file >/dev/null 2>&1; then
   as_executable_p="test -f"
 else
   { { echo "$as_me:54: error: cannot check whether a file is executable on this system" >&5
@@ -1516,11 +1516,11 @@ if test "$program_transform_name" = s,x,x,; then
   program_transform_name=
 else
   # Double any \ or $.  echo might interpret backslashes.
-  cat <<\EOF >conftestsed
+  cat <<\EOF >conftest.sed
 s,\\,\\\\,g; s,\$,$$,g
 EOF
-  program_transform_name=`echo $program_transform_name | sed -f conftestsed`
-  rm -f conftestsed
+  program_transform_name=`echo $program_transform_name | sed -f conftest.sed`
+  rm -f conftest.sed
 fi
 test "$program_prefix" != NONE &&
   program_transform_name="s,^,${program_prefix},;$program_transform_name"
@@ -1585,18 +1585,18 @@ set dummy ${MAKE-make}; ac_make=`echo "$2" | sed 'y,./+-,__p_,'`
 if eval "test \"\${ac_cv_prog_make_${ac_make}_set+set}\" = set"; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  cat >conftestmake <<\EOF
+  cat >conftest.make <<\EOF
 all:
 	@echo 'ac_maketemp="${MAKE}"'
 EOF
 # GNU make sometimes prints "make[1]: Entering...", which would confuse us.
-eval `${MAKE-make} -f conftestmake 2>/dev/null | grep temp=`
+eval `${MAKE-make} -f conftest.make 2>/dev/null | grep temp=`
 if test -n "$ac_maketemp"; then
   eval ac_cv_prog_make_${ac_make}_set=yes
 else
   eval ac_cv_prog_make_${ac_make}_set=no
 fi
-rm -f conftestmake
+rm -f conftest.make
 fi
 if eval "test \"`echo '$ac_cv_prog_make_'${ac_make}_set`\" = yes"; then
   echo "$as_me:1602: result: yes" >&5
@@ -4822,7 +4822,7 @@ echo "$as_me: WARNING: --enable-warnings only has effect when using GNU gcc or g
 fi
 
 COIN_DEBUG_BUILD=false
-test -n "`echo $CPPFLAGS CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
+test -n "`echo -- $CPPFLAGS CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
   COIN_DEBUG_BUILD=true
 
 if $COIN_DEBUG_BUILD; then
@@ -5378,7 +5378,7 @@ echo "${ECHO_T}no" >&6
 fi
 
   if $sim_ac_simage_configcmd; then
-    echo "$CPPFLAGS $CFLAGS $CXXFLAGS" | egrep -q -- "-g\\>" &&
+    test -n "`echo -- $CPPFLAGS $CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
       sim_ac_simage_configcmd="$sim_ac_simage_configcmd --debug"
     sim_ac_simage_cppflags=`$sim_ac_simage_configcmd --cppflags`
     sim_ac_simage_ldflags=`$sim_ac_simage_configcmd --ldflags`
@@ -5688,9 +5688,9 @@ else
 else
   # One or both of the vars are not set, and there is no cached value.
 ac_x_includes=no ac_x_libraries=no
-rm -fr conftestdir
-if mkdir conftestdir; then
-  cd conftestdir
+rm -fr conftest.dir
+if mkdir conftest.dir; then
+  cd conftest.dir
   # Make sure to not put "make" in the Imakefile rules, since we grep it out.
   cat >Imakefile <<'EOF'
 acfindx:
@@ -5719,7 +5719,7 @@ EOF
     esac
   fi
   cd ..
-  rm -fr conftestdir
+  rm -fr conftest.dir
 fi
 
 # Standard set of common directories for X headers.
@@ -7721,9 +7721,9 @@ cat >conftest.file <<_ASEOF
 exit 0
 _ASEOF
 chmod +x conftest.file
-if test -x conftest.file; then
+if test -x conftest.file >/dev/null 2>&1; then
   as_executable_p="test -x"
-elif test -f conftest.file; then
+elif test -f conftest.file >/dev/null 2>&1; then
   as_executable_p="test -f"
 else
   { { echo "$as_me:7729: error: cannot check whether a file is executable on this system" >&5
@@ -8190,7 +8190,7 @@ echo X"$ac_file" |
   *)                      as_incr_dir=.;;
 esac
 as_dummy="$ac_dir"
-for as_mkdir_dir in `IFS='\\/'; set X $as_dummy; shift; echo "$@"`; do
+for as_mkdir_dir in `IFS='/\\'; set X $as_dummy; shift; echo "$@"`; do
   case $as_mkdir_dir in
     # Skip DOS drivespec
     ?:) as_incr_dir=$as_mkdir_dir ;;
@@ -8482,7 +8482,7 @@ echo X"$ac_file" |
   *)                      as_incr_dir=.;;
 esac
 as_dummy="$ac_dir"
-for as_mkdir_dir in `IFS='\\/'; set X $as_dummy; shift; echo "$@"`; do
+for as_mkdir_dir in `IFS='/\\'; set X $as_dummy; shift; echo "$@"`; do
   case $as_mkdir_dir in
     # Skip DOS drivespec
     ?:) as_incr_dir=$as_mkdir_dir ;;
