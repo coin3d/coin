@@ -7,6 +7,12 @@ Todo
 * [mortene:19990924] check for simage in the --prefix installation
   directory.
 
+* [mortene:19990926] add configure option for specifying location of
+  simage.
+
+* [mortene:19990926] add "testlib" idea from DDJ to increase
+  turnaround time when doing compile & link.
+
 * [mortene:19990912] get rid of Inventor/system/inttypes.h.
 
 * [mortene:19990912] get rid of Inventor/system/kosher.h. (Needs to
@@ -41,19 +47,23 @@ Todo
   which has not been modified (and other untouched files, for that
   matter).
 
-* [mortene:19990914] check possibility of making all .o/.lo files (or
-  only the .la files?) into .so shared libraries to avoid long linking
-  times (could be a brilliant hack if it is possible)
-
 * [mortene:19990917] clean up the .h-files before installation. Remove
   "//$ BEGIN TEMPLATE" and "//$ END TEMPLATE". Remove
   "#if.*(COIN_EXCLUDE_.*)" blocks?
+
+* [mortene:19990926] remove compiler warnings when configuring with
+  --disable-debug.
 
 ===============================================================================
 Done
 ====
 
 (format is: "* [author:conceived-date][implementer:finished-date] item")
+
+* [mortene:19990914][mortene:19990926] check possibility of making all
+  .o/.lo files (or only the .la files?) into .so shared libraries to
+  avoid long linking times (could be a brilliant hack if it is
+  possible)
 
 * [mortene:19990924][mortene:19990924] default to compile without RTTI
   and exceptions for g++/egcs?
