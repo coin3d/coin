@@ -50,6 +50,27 @@
 /*!
   \var SoSFRotation SoTransform::rotation
   The rotation part of the transformation.
+
+
+  Note that there is one \e very common mistake that is easy to make
+  when setting the value of a an SoSFRotation field, and that is to
+  inadvertently use the wrong SbRotation constructor. This example
+  should clarify the problem:
+
+  \code
+  mytransformnode->rotation.setValue(0, 0, 1, 1.5707963f);
+  \endcode
+
+  The programmer clearly tries to set a PI/2 rotation around the Z
+  axis, but this will fail, as the SbRotation constructor invoked
+  above is the one that takes as arguments the 4 floats of a \e
+  quaternion. What the programmer almost certainly wanted to do was to
+  use the SbRotation constructor that takes a rotation vector and a
+  rotation angle, which is invoked like this:
+
+  \code
+  mytransformnode->rotation.setValue(SbVec3f(0, 0, 1), 1.5707963f);
+  \endcode
 */
 /*!
   \var SoSFVec3f SoTransform::scaleFactor
