@@ -161,19 +161,6 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f & point1, const SbBool tol1,
   SbVec3f axis;
   float angle;
   rot.getValue(axis, angle);
-  SbBool positiveAngle = TRUE;
-  if (float(fabs(angle)) < FLT_EPSILON) {
-    // test if angle will be positive or negative
-    SbRotation dummy = inherited::getRotation(point1, point2);
-    SbVec3f axis;
-    float angle;
-    dummy.getValue(axis, angle);
-    if (angle < 0.0f) positiveAngle = FALSE;
-  }
-  else if (angle < 0.0f) {
-    positiveAngle = FALSE;
-  }
-
   float len = 0.0f;
 
   // both pts on same side of cylinder ?

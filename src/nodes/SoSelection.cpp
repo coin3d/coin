@@ -535,7 +535,7 @@ void
 SoSelection::handleEvent(SoHandleEventAction *action)
 {
   const SoEvent *event = action->getEvent();
-  
+
   SbBool haltaction = FALSE;
   if (SO_MOUSE_PRESS_EVENT(event, BUTTON1)) {
     if (this->mouseDownPickPath) {
@@ -543,17 +543,16 @@ SoSelection::handleEvent(SoHandleEventAction *action)
       this->mouseDownPickPath = NULL;
     }
     const SoPickedPoint *pp = action->getPickedPoint();
-    SoPath *selectionpath = NULL;
     if (pp) {
       this->mouseDownPickPath = pp->getPath();
       this->mouseDownPickPath->ref();
     }
     inherited::handleEvent(action);
   }
-  else if (SO_MOUSE_RELEASE_EVENT(event, BUTTON1)) {    
+  else if (SO_MOUSE_RELEASE_EVENT(event, BUTTON1)) {
     SbBool ignorepick = FALSE;
     SoPath *selpath = this->getSelectionPath(action, ignorepick, haltaction);
-    
+
     if (haltaction) {
       action->isHandled();
     }
@@ -610,8 +609,8 @@ SoSelection::getSelectionPath(SoHandleEventAction *action, SbBool &ignorepick,
   if (pp) {
     selectionpath = pp->getPath();
     int forkpos = selectionpath->findFork(this->mouseDownPickPath);
-    if (forkpos < selectionpath->getLength()-1) {      
-      ignorepick = TRUE;      
+    if (forkpos < selectionpath->getLength()-1) {
+      ignorepick = TRUE;
       return NULL;
     }
     if (this->pickCBFunc && (!this->callPickCBOnlyIfSelectable ||
