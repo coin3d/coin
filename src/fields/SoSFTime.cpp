@@ -73,9 +73,9 @@ sosftime_read_value(SoInput * in, SbTime & t)
   }
 
   if (!coin_finite(val)) {
-    SoReadError::post(in, "Detected non-valid floating point number");
-    SoDebugError::postWarning("sosftime_read_value",
-                              "replacing non-valid number with 0.0f");
+    SoReadError::post(in,
+                      "Detected non-valid floating point number, replacing "
+                      "with 0.0f");
     val = 0.0;
     // We don't return FALSE, thereby allowing the read process to
     // continue, as a convenience for the application programmer.
