@@ -679,6 +679,21 @@
 
     20020916 larsa.
 
+    UPDATE: This depends on how you entepret the interface of the
+    SoTimerSensor (and SoSensor). If you don't set the base time, you
+    expect the sensor to start ticking obj->getInterval() after
+    creation. (e.g. the base time is the time the object was
+    created). In view of this, the example behaves as expected: It
+    sets a base time, and starts ticking obj->getInterval() after the
+    base time. In the code abowe, the first tick happens as expected
+    aproximately six seconds after init, which equals (creation
+    time+4.0) + getInterval().
+
+    The actuall bug is, in my view, that the timer drifts when the
+    base time is not set: It should be unnecessary to do so to prevent
+    drift. It is possible to both remove the drift and simplify the
+    code. (in an upcoming patch). 20021122 rolvs
+
 =====================================================================
 
 028 So[SM]FString I/O problem
