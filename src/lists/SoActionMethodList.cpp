@@ -87,6 +87,8 @@ SoActionMethodList::operator[](const int index)
 void
 SoActionMethodList::addMethod(const SoType node, const SoActionMethod method)
 {
+  assert(node != SoType::badType());
+
   THIS->addedtypes.append(node);
   THIS->addedmethods.append(method);
   THIS->setupnumtypes = 0; // force a new setUp
