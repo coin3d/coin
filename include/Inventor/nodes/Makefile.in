@@ -342,6 +342,8 @@ PublicHeaders = \
 	SoTextureCoordinate3.h \
 	SoTextureCoordinateBinding.h \
 	SoTextureCoordinateCube.h \
+	SoTextureCoordinateCone.h \
+	SoTextureCoordinateSphere.h \
 	SoTextureCoordinateDefault.h \
 	SoTextureCoordinateEnvironment.h \
 	SoTextureCoordinateFunction.h \
