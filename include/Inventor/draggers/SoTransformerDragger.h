@@ -253,6 +253,53 @@ protected:
   SoFieldSensor * scaleFieldSensor;
   SoFieldSensor * rotateFieldSensor;
   SoNodeList antiSquishList;
+
+private:
+  class SbPlaneProjector *planeProj;
+  class SbLineProjector *lineProj;
+  class SbSphereProjector *sphereProj;
+  class SbCylinderProjector *cylProj;
+
+  SbMatrix prevMotionMatrix;
+  SbVec3f prevWorldHitPt;
+  SbVec3f ctrlOffset;
+  SbBool ctrlDown;
+  SbBool shiftDown;
+
+  State state;
+  SbBool locateHighlighting;
+  static int colinearThreshold;
+  int constraintState;
+  SbVec3f worldRestartPt;
+  
+  int whatkind;
+  int whatnum;
+  int dimension;
+  
+  void getSurroundScaleMatrices(SbMatrix &matrix, SbMatrix &inv);
+  SoNode *getNodeFieldNode(const char *fieldname);
+
+  void build_catalog1(void);
+  void build_catalog2(void);
+  void build_catalog3(void);
+  void build_catalog4(void);
+  void build_catalog5(void);
+  void build_catalog6(void);
+  
+  SbMatrix getWorkingToWorldMatrix(void);
+  SbMatrix getWorldToWorkingMatrix(void);
+  SbVec3f localToWorking(const SbVec3f &v);
+  SbVec3f workingToLocal(const SbVec3f &v);
+  SbVec3f calcCtrlOffset(const SbVec3f &startpt);
+  void setSwitchValue(const char *str, const int which);
+  
+  SbBool setDynamicTranslatorSwitches(const SoEvent *event);
+  SbBool setDynamicRotatorSwitches(const SoEvent *event);
+  SbBool setDynamicScaleSwitches(const SoEvent *event);
+
+  void dragTranslate();
+  void dragScale();
+  void dragRotate();
 };
 
 #endif // !COIN_SOTRANSFORMERDRAGGER_H

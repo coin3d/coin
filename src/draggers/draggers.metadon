@@ -28,7 +28,7 @@
 #          SoTabPlaneDragger
 # I        SoTrackballDragger
 # I        SoTransformBoxDragger
-#          SoTransformerDragger
+# i        SoTransformerDragger
 # I G      SoTranslate1Dragger
 # I        SoTranslate2Dragger
 #
