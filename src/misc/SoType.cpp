@@ -166,8 +166,12 @@ SoType::clean(void)
 /*!
   This method creates and registers a new class type.
 
-  Abstract types should use NULL for the \a method argument.
+  Classes that do not inherit any other class should use
+  SoType::badType() for the first argument. Abstract classes should
+  use \c NULL for the \a method argument.
 
+  The value passed in for the \a data parameter can be retrieved with
+  SoType::getData().
 */
 
 const SoType
