@@ -38,6 +38,10 @@
 
 #include <Inventor/misc/SoFontLib.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbName.h>
@@ -92,29 +96,42 @@ SoFontLib::initialize(void)
   }
 
 #ifdef HAVE_WINDOWS_H
-  // FIXME: shouldn't this rather be set from a $WINDIR type env var?
-  // AFAIK, the Windows system directory doesn't have to be under
-  // C:/WINDOWS. 20030316 mortene.
-  SoInput::addDirectoryLast("c:/WINDOWS/Fonts");
+  const char * windir = coin_getenv("WINDIR");
+  if (windir) {
+    SbString winfontpath = windir;
+    winfontpath += "/Fonts";
+    SoInput::addDirectoryLast(winfontpath.getString());
+  }
 #endif
 
-  // Built-in mappings from font name to font file name
+  // Built-in mappings from font name to font file name.
+  // NB! Prepend font names with ' ' to separate them from file names.
   const char * fontmappings[] = {
-    "Arial", "arial.ttf", "Arial Bold", "arialbd.ttf",
-    "Arial Bold Italic", "arialbi.ttf", "Arial Italic", "ariali.ttf",
-    "Century Gothic", "gothic.ttf", "Century Gothic Bold", "gothicb.ttf",
-    "Century Gothic Bold Italic", "gothicbi.ttf",
-    "Century Gothic Italic", "gothici.ttf",
-    "Courier", "cour.ttf", "Courier Bold", "courbd.ttf",
-    "Courier Bold Italic", "courbi.ttf", "Courier Italic", "couri.ttf",
-    "Simian", "simtoran.ttf", "Times New Roman", "times.ttf",
-    "Times New Roman Bold", "timesbd.ttf",
-    "Times New Roman Bold Italic", "timesbi.ttf",
-    "Times New Roman Italic", "timesi.ttf",
-    "Verdana", "verdana.ttf", "Verdana Bold", "verdanab.ttf",
-    "Verdana Bold Italic", "verdanaz.ttf", "Verdana Italic", "verdanai.ttf"
+    " Arial", "arial.ttf", 
+    " Arial Bold", "arialbd.ttf",
+    " Arial Bold Italic", "arialbi.ttf", 
+    " Arial Italic", "ariali.ttf",
+    " Century Gothic", "gothic.ttf", 
+    " Century Gothic Bold", "gothicb.ttf",
+    " Century Gothic Bold Italic", "gothicbi.ttf",
+    " Century Gothic Italic", "gothici.ttf",
+    " Courier", "cour.ttf", 
+    " Courier Bold", "courbd.ttf",
+    " Courier Bold Italic", "courbi.ttf", 
+    " Courier Italic", "couri.ttf",
+    " Simian", "simtoran.ttf", "simtgori.ttf", "simtchimp.ttf",
+    " Times New Roman", "times.ttf",
+    " Times New Roman Bold", "timesbd.ttf",
+    " Times New Roman Bold Italic", "timesbi.ttf",
+    " Times New Roman Italic", "timesi.ttf",
+    " Verdana", "verdana.ttf", 
+    " Verdana Bold", "verdanab.ttf",
+    " Verdana Bold Italic", "verdanaz.ttf", 
+    " Verdana Italic", "verdanai.ttf",
+    " OpenSymbol", "opens___.ttf",
+    " Small", "smalle.fon"
   };
-
+  
   SoFontLibP::fontfiles = new SbStringList;
   for (unsigned int i=0; i < (sizeof(fontmappings) / sizeof(fontmappings[0])); i++) {
     SoFontLibP::fontfiles->append(new SbString(fontmappings[i]));
@@ -155,7 +172,9 @@ SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbV
 {
   CC_MUTEX_LOCK(SoFontLibP::apimutex);
   SbString path, *strptr;
-  int fileidx, i;
+  int fileidx, i, listlen;
+  const char * tmp;
+  SbBool done;
   SbStringList emptylist;
   fileidx = -1;
   int font = -1;
@@ -166,18 +185,44 @@ SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbV
   } 
   else {
     // Check if we know the font file for this font name
-    for (i = 0; i < SoFontLibP::fontfiles->getLength(); i+=2) {
-      if (!strcmp((*SoFontLibP::fontfiles)[i]->getString(), fontname.getString())) {
-        fileidx = i;
-        i = SoFontLibP::fontfiles->getLength();
+    i = 0;
+    listlen = SoFontLibP::fontfiles->getLength();
+    done = FALSE;
+    while (i < listlen) {
+      tmp = (*SoFontLibP::fontfiles)[i]->getString();
+      if (tmp[0] == ' ') {  // Font name, check if it matches fontname parameter
+        if (!strcmp(tmp+1, fontname.getString())) {
+          while (!done) {
+            i++;
+            tmp = (*SoFontLibP::fontfiles)[i]->getString();
+            if (tmp[0] != ' ') {   // file name, check if file can be found
+              path = SoInput::searchForFile(*(*SoFontLibP::fontfiles)[i], SoInput::getDirectories(), emptylist);
+              if (path.getLength() > 0) {
+                fileidx = i;
+                done = TRUE;
+              }
+            } else {  // Next font name, means font file was not found
+              done = TRUE;
+            }
+          }
+          i = listlen;
+        }
       }
+      i++;
     }
-    if (fileidx >= 0) {  // Known font name, look for the font file
-      path = SoInput::searchForFile(*(*SoFontLibP::fontfiles)[fileidx+1], SoInput::getDirectories(), emptylist);
-    } 
-    else {  // Unknown font name, treat it as a font file name
+    
+    if (fileidx < 0) {  // Unknown font name, treat it as a font file name
       path = SoInput::searchForFile(fontname.getString(), SoInput::getDirectories(), emptylist);
     }
+    
+#if COIN_DEBUG
+    if (cc_flw_debug()) {
+      SoDebugError::postInfo("SoFontLib::createFont", "creating font '%s', using file '%s'", 
+                             fontname.getString(), 
+                             path.getLength() > 0 ? path.getString() : "<defaultFont>");
+    }
+#endif
+    
     // File not to be found anywhere, use fontname as is (and get default font)
     if (path.getLength() == 0)
       path = fontname;
@@ -188,6 +233,7 @@ SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbV
       SoFontLibP::openfonts.enter((unsigned long)fontname.getString(), (void *)newfont);
     }
   }
+  SoFontLib::setDefaultCharmap(font);
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
   return font;
 }
@@ -248,6 +294,65 @@ SoFontLib::setCharmap(const int font, const int charmap)
   CC_MUTEX_LOCK(SoFontLibP::apimutex);
   if (font >= 0)
     cc_flw_set_charmap(font, charmap);
+  CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
+}
+
+void
+SoFontLib::setDefaultCharmap(const int font)
+{
+  assert (font >= 0);
+  CC_MUTEX_LOCK(SoFontLibP::apimutex);
+  cc_string * str, * name;
+  int defidx = -1;
+  int preference = 0;
+  char * charmap = "unknown";
+  name = cc_flw_get_font_name(font);
+  int cnt = cc_flw_get_num_charmaps(font);
+#if COIN_DEBUG
+  if (cc_flw_debug()) {
+    SoDebugError::postInfo("SoFontLib::setDefaultCharmap", "font '%s' has %d charmaps", 
+                           cc_string_get_text(name), cnt);
+  }
+#endif
+  for (int i=0; i<cnt; i++) {
+    str = cc_flw_get_charmap_name(font, i);
+#if COIN_DEBUG
+    if (cc_flw_debug()) {
+      SoDebugError::postInfo("SoFontLib::setDefaultCharmap", "charmap %d is '%s'", 
+                             i, str ? cc_string_get_text(str) : "<undefined>");
+    }
+#endif
+    if (str) {
+      // We prefer latin_1, but as a fallback unicode will get most characters right.
+      if ( preference < 2 && !strcmp(cc_string_get_text(str), "latin_1") ) {
+        defidx = i;
+        charmap = "latin_1";
+        preference = 2;
+      } else if ( preference < 1 && !strcmp(cc_string_get_text(str), "unicode") ) {
+        defidx = i;
+        charmap = "unicode";
+        preference = 1;
+      }
+      cc_string_destruct(str);
+    }
+  }
+  if (defidx >= 0) {
+    cc_flw_set_charmap(font, defidx);
+#if COIN_DEBUG
+    if (cc_flw_debug()) {
+      SoDebugError::postInfo("SoFontLib::setDefaultCharmap", "setting charmap '%s' for font '%s'", 
+                             charmap, cc_string_get_text(name));
+    }
+#endif
+  } else {
+#if COIN_DEBUG
+    if (cc_flw_debug()) {
+      SoDebugError::postWarning("SoFontLib::setDefaultCharmap", "no default charmap for font '%s'", 
+                                cc_string_get_text(name));
+    }
+#endif
+  }
+  cc_string_destruct(name);
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
 }
 
