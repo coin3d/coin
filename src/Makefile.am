@@ -74,12 +74,7 @@ SUBDIRS = $(TESTLIBDIR) \
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-## The build process won't complete the final link stage unless we've
-## got at least one sourcefile specified here. So it seems there's a
-## bug (or missing feature) in Automake, which we fool by using the
-## empty sourcefile dummy.cpp. 19991108 mortene.
-
-libCoin_la_SOURCES = dummy.cpp
+libCoin_la_SOURCES = vsnprintf.c
 
 ## Installation information.
 

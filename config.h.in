@@ -8,6 +8,18 @@
 #undef COIN_MICRO_VERSION
 #undef COIN_VERSION
 
+/* Define if you have the _vsnprintf function.  */
+#undef HAVE__VSNPRINTF
+
+/* Define if you have the vsnprintf function.  */
+#undef HAVE_VSNPRINTF
+
+/* Define if you have the <io.h> header file.  */
+#undef HAVE_IO_H
+
+/* Define if you have the <unistd.h> header file.  */
+#undef HAVE_UNISTD_H
+
 /* Define if you have the simage library (-lsimage).  */
 #undef HAVE_LIBSIMAGE
 

@@ -950,13 +950,18 @@ else
 fi
 ])
 
-dnl  Use this file to store miscellaneous macros related to compiler
-dnl  queries.
+dnl  Use this file to store miscellaneous macros related to checking
+dnl  compiler features.
 dnl
 dnl  Author: Morten Eriksen, <mortene@sim.no>.
 dnl
 dnl  TODO:
+dnl
 dnl    * [mortene:19991125] make SIM_COMPILER_OPTION work with C compilers.
+dnl
+dnl    * [mortene:19991218] improve SIM_COMPILER_OPTION by catching
+dnl      and analyzing stderr (at least to see if there was any output
+dnl      there.)
 dnl
 
 
