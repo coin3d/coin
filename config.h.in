@@ -16,6 +16,7 @@
 #undef HAVE__VSNPRINTF
 #undef HAVE_HASH_QUOTING
 #undef HAVE_APOSTROPHES_QUOTING
+#undef HAVE_SINGLEPRECISION_MATH
 
 /* Define if you have the <io.h> header file. */
 #undef HAVE_IO_H
@@ -31,12 +32,6 @@
 
 /* Define if you have the `ipc' library (-lipc). */
 #undef HAVE_LIBIPC
-
-/* Define if you have the `m' library (-lm). */
-#undef HAVE_LIBM
-
-/* Define if you have the `mw' library (-lmw). */
-#undef HAVE_LIBMW
 
 /* Define if you have the `nsl' library (-lnsl). */
 #undef HAVE_LIBNSL

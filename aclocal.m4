@@ -896,6 +896,465 @@ fi
 ])
 
 # Usage:
+#   SIM_COMPILE_DEBUG( ACTION-IF-DEBUG, ACTION-IF-NOT-DEBUG )
+#
+# Description:
+#   Let the user decide if compilation should be done in "debug mode".
+#   If compilation is not done in debug mode, all assert()'s in the code
+#   will be disabled.
+#
+#   Also sets enable_debug variable to either "yes" or "no", so the
+#   configure.in writer can add package-specific actions. Default is "yes".
+#   This was also extended to enable the developer to set up the two first
+#   macro arguments following the well-known ACTION-IF / ACTION-IF-NOT
+#   concept.
+#
+#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+#   in the configure.in script.
+#
+# Authors:
+#   Morten Eriksen, <mortene@sim.no>
+#   Lars J. Aas, <larsa@sim.no>
+#
+# TODO:
+# * [larsa:20000220] Set up ATTRIBUTE-LIST for developer-configurable
+#   default-value.
+#
+
+AC_DEFUN([SIM_COMPILE_DEBUG], [
+AC_PREREQ([2.13])
+
+AC_ARG_ENABLE(
+  [debug],
+  AC_HELP_STRING([--enable-debug], [compile in debug mode [default=yes]]),
+  [case "${enableval}" in
+    yes) enable_debug=yes ;;
+    no)  enable_debug=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-debug) ;;
+  esac],
+  [enable_debug=yes])
+
+if test x"$enable_debug" = x"yes"; then
+  ifelse([$1], , :, [$1])
+else
+  CFLAGS="$CFLAGS -DNDEBUG"
+  CXXFLAGS="$CXXFLAGS -DNDEBUG"
+  $2
+fi
+])
+
+
+# Usage:
+#   SIM_DEBUGSYMBOLS
+#
+# Description:
+#   Let the user decide if debug symbol information should be compiled
+#   in. The compiled libraries/executables will use a lot less space
+#   if stripped for their symbol information.
+# 
+#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+#   in the configure.in script.
+# 
+# Author: Morten Eriksen, <mortene@sim.no>.
+# 
+# TODO:
+#   * [mortene:19991114] make this work with compilers other than gcc/g++
+# 
+
+AC_DEFUN([SIM_DEBUGSYMBOLS], [
+AC_PREREQ([2.13])
+AC_ARG_ENABLE(
+  [symbols],
+  AC_HELP_STRING([--enable-symbols],
+                 [(GCC only) include symbol debug information [default=yes]]),
+  [case "${enableval}" in
+    yes) enable_symbols=yes ;;
+    no)  enable_symbols=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-symbols) ;;
+  esac],
+  [enable_symbols=yes])
+
+if test x"$enable_symbols" = x"no"; then
+  if test x"$GXX" = x"yes" || x"$GCC" = x"yes"; then
+    CFLAGS="`echo $CFLAGS | sed 's/-g//'`"
+    CXXFLAGS="`echo $CXXFLAGS | sed 's/-g//'`"
+  else
+    AC_MSG_WARN([--disable-symbols only has effect when using GNU gcc or g++])
+  fi
+fi
+])
+
+
+# Usage:
+#   SIM_AC_RTTI_SUPPORT
+#
+# Description:
+#   Let the user decide if RTTI should be compiled in. The compiled
+#   libraries/executables will use a lot less space if they don't
+#   contain RTTI.
+# 
+#   Note: this macro must be placed after AC_PROG_CXX in the
+#   configure.in script.
+# 
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_RTTI_SUPPORT], [
+AC_PREREQ([2.13])
+AC_ARG_ENABLE(
+  [rtti],
+  AC_HELP_STRING([--enable-rtti], [(g++ only) compile with RTTI [default=yes]]),
+  [case "${enableval}" in
+    yes) enable_rtti=yes ;;
+    no)  enable_rtti=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-rtti) ;;
+  esac],
+  [enable_rtti=yes])
+
+if test x"$enable_rtti" = x"no"; then
+  if test x"$GXX" = x"yes"; then
+    CXXFLAGS="$CXXFLAGS -fno-rtti"
+  else
+    AC_MSG_WARN([--enable-rtti only has effect when using GNU g++])
+  fi
+fi
+])
+
+# Usage:
+#   SIM_CHECK_EXCEPTION_HANDLING
+#
+# Description:
+#   Let the user decide if C++ exception handling should be compiled
+#   in. The compiled libraries/executables will use a lot less space
+#   if they have exception handling support.
+#
+#   Note: this macro must be placed after AC_PROG_CXX in the
+#   configure.in script.
+#
+#   Author: Morten Eriksen, <mortene@sim.no>.
+#
+# TODO:
+#   * [mortene:19991114] make this work with compilers other than gcc/g++
+#
+
+AC_DEFUN([SIM_EXCEPTION_HANDLING], [
+AC_PREREQ([2.13])
+AC_ARG_ENABLE(
+  [exceptions],
+  AC_HELP_STRING([--enable-exceptions],
+                 [(g++ only) compile with exceptions [default=no]]),
+  [case "${enableval}" in
+    yes) enable_exceptions=yes ;;
+    no)  enable_exceptions=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-exceptions) ;;
+  esac],
+  [enable_exceptions=no])
+
+if test x"$enable_exceptions" = x"no"; then
+  if test "x$GXX" = "xyes"; then
+    unset _exception_flag
+    dnl This is for GCC >= 2.8
+    SIM_AC_CXX_COMPILER_OPTION([-fno-exceptions], [_exception_flag=-fno-exceptions])
+    if test x"${_exception_flag+set}" != x"set"; then
+      dnl For GCC versions < 2.8
+      SIM_AC_CXX_COMPILER_OPTION([-fno-handle-exceptions],
+                                 [_exception_flag=-fno-handle-exceptions])
+    fi
+    if test x"${_exception_flag+set}" != x"set"; then
+      AC_MSG_WARN([couldn't find a valid option for avoiding exception handling])
+    else
+      CXXFLAGS="$CXXFLAGS $_exception_flag"
+    fi
+  fi
+else
+  if test x"$GXX" != x"yes"; then
+    AC_MSG_WARN([--enable-exceptions only has effect when using GNU g++])
+  fi
+fi
+])
+
+
+#   Use this file to store miscellaneous macros related to checking
+#   compiler features.
+
+# Usage:
+#   SIM_AC_CC_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
+#   SIM_AC_CXX_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
+#
+# Description:
+#
+#   Check whether the current C or C++ compiler can handle a
+#   particular command-line option.
+#
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+#   * [mortene:19991218] improve macros by catching and analyzing
+#     stderr (at least to see if there was any output there)?
+#
+
+AC_DEFUN([SIM_AC_COMPILER_OPTION], [
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS [$1]"
+AC_TRY_COMPILE([], [], [sim_ac_accept_result=yes $2], [sim_ac_accept_result=no $3])
+AC_MSG_RESULT([$sim_ac_accept_result])
+CPPFLAGS=$sim_ac_save_cppflags
+])
+
+AC_DEFUN([SIM_AC_CC_COMPILER_OPTION], [
+AC_LANG_SAVE
+AC_LANG_C
+AC_MSG_CHECKING([whether $CC accepts $1])
+SIM_AC_COMPILER_OPTION($1, $2, $3)
+AC_LANG_RESTORE
+])
+
+AC_DEFUN([SIM_AC_CXX_COMPILER_OPTION], [
+AC_LANG_SAVE
+AC_LANG_CPLUSPLUS
+AC_MSG_CHECKING([whether $CXX accepts $1])
+SIM_AC_COMPILER_OPTION($1, $2, $3)
+AC_LANG_RESTORE
+])
+
+# Usage:
+#   SIM_PROFILING_SUPPORT
+#
+# Description:
+#   Let the user decide if profiling code should be compiled
+#   in. The compiled libraries/executables will use a lot less space
+#   if they don't contain profiling code information, and they will also
+#   execute faster.
+#
+#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+#   in the configure.in script.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+# TODO:
+#   * [mortene:19991114] make this work with compilers other than gcc/g++
+#
+
+AC_DEFUN([SIM_PROFILING_SUPPORT], [
+AC_PREREQ([2.13])
+AC_ARG_ENABLE(
+  [profile],
+  AC_HELP_STRING([--enable-profile],
+                 [(GCC only) turn on inclusion of profiling code [default=no]]),
+  [case "${enableval}" in
+    yes) enable_profile=yes ;;
+    no)  enable_profile=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-profile) ;;
+  esac],
+  [enable_profile=no])
+
+if test x"$enable_profile" = x"yes"; then
+  if test x"$GXX" = x"yes" || test x"$GCC" = x"yes"; then
+    CFLAGS="$CFLAGS -pg"
+    CXXFLAGS="$CXXFLAGS -pg"
+    LDFLAGS="$LDFLAGS -pg"
+  else
+    AC_MSG_WARN([--enable-profile only has effect when using GNU gcc or g++])
+  fi
+fi
+])
+
+
+# Usage:
+#   SIM_COMPILER_WARNINGS
+#
+# Description:
+#   Take care of making a sensible selection of warning messages
+#   to turn on or off.
+# 
+#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+#   in the configure.in script.
+# 
+# Author: Morten Eriksen, <mortene@sim.no>.
+# 
+# TODO:
+#   * [mortene:19991114] find out how to get GCC's
+#     -Werror-implicit-function-declaration option to work as expected
+#
+#   * [mortene:20000606] there are a few assumptions here which doesn't
+#     necessarily hold water: both the C and C++ compiler doesn't have
+#     to be "compatible", i.e. the C compiler could be gcc, while the
+#     C++ compiler could be a native compiler, for instance. So some
+#     restructuring should be done.
+# 
+#   * [larsa:20000607] don't check all -woff options to SGI MIPSpro CC,
+#     just put all of them on the same line, to check if the syntax is ok.
+
+AC_DEFUN([SIM_COMPILER_WARNINGS], [
+AC_ARG_ENABLE(
+  [warnings],
+  AC_HELP_STRING([--enable-warnings],
+                 [turn on warnings when compiling [default=yes]]),
+  [case "${enableval}" in
+    yes) enable_warnings=yes ;;
+    no)  enable_warnings=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-warnings) ;;
+  esac],
+  [enable_warnings=yes])
+
+if test x"$enable_warnings" = x"yes"; then
+  if test x"$GXX" = x"yes" || test x"$GCC" = x"yes"; then
+    sim_ac_common_gcc_warnings="-W -Wall -Wno-unused"
+    # -fno-multichar can be different for gcc and egcs c++, for instance,
+    # so we need to do separate checks.
+    if test x"$CC" = x"$CXX"; then
+      CPPFLAGS="$CPPFLAGS $sim_ac_common_gcc_warnings"
+      SIM_AC_CXX_COMPILER_OPTION([-Wno-multichar], [CPPFLAGS="$CPPFLAGS -Wno-multichar"])
+    else
+      CFLAGS="$CFLAGS $sim_ac_common_gcc_warnings"
+      SIM_AC_CC_COMPILER_OPTION([-Wno-multichar], [CFLAGS="$CFLAGS -Wno-multichar"])
+      CXXFLAGS="$CXXFLAGS $sim_ac_common_gcc_warnings"
+      SIM_AC_CXX_COMPILER_OPTION([-Wno-multichar], [CXXFLAGS="$CXXFLAGS -Wno-multichar"])
+    fi
+  else
+    case $host in
+    *-*-irix*) 
+      if test x"$CC" = xcc || test x"$CXX" = xCC; then
+        _warn_flags=
+        _woffs=""
+        ### Turn on all warnings ######################################
+        SIM_AC_CC_COMPILER_OPTION([-fullwarn],
+                            [_warn_flags="$_warn_flags -fullwarn"])
+
+
+        ### Turn off specific (bogus) warnings ########################
+
+        ### SGI MipsPro v?.?? (our compiler on IRIX 6.2) ##############
+
+        # Turn off ``type qualifiers are meaningless in this declaration''
+        # warnings.
+        SIM_AC_CC_COMPILER_OPTION([-woff 3115], [_woffs="$_woffs 3115"])
+        # Turn off warnings on unused variables.
+        SIM_AC_CC_COMPILER_OPTION([-woff 3262], [_woffs="$_woffs 3262"])
+
+        ### SGI MipsPro v7.30 #########################################
+
+	# "The function was declared but never referenced."
+        SIM_AC_CC_COMPILER_OPTION([-woff 1174], [_woffs="$_woffs 1174"])
+        # "The controlling expression is constant." (kill warning on
+        # if (0), assert(FALSE), etc).
+        SIM_AC_CC_COMPILER_OPTION([-woff 1209], [_woffs="$_woffs 1209"])
+        # Kill warnings on extra semicolons (which happens with some
+        # of the Coin macros).
+        SIM_AC_CC_COMPILER_OPTION([-woff 1355], [_woffs="$_woffs 1355"])
+        # Non-virtual destructors in base classes.
+        SIM_AC_CC_COMPILER_OPTION([-woff 1375], [_woffs="$_woffs 1375"])
+        # Unused argument to a function.
+        SIM_AC_CC_COMPILER_OPTION([-woff 3201], [_woffs="$_woffs 3201"])
+        # Meaningless type qualifier on return type (happens with the
+        # SoField macros in Coin).
+        SIM_AC_CC_COMPILER_OPTION([-woff 3303], [_woffs="$_woffs 3303"])
+        # Statement is not reachable (the Lex/Flex generated code in
+        # Coin/src/engines makes lots of shitty code which needs this).
+        SIM_AC_CC_COMPILER_OPTION([-woff 1110], [_woffs="$_woffs 1110"])
+
+        ###############################################################
+
+        # Convert to a comma-separated list behind the "-woff" option.
+        if test x"$_woffs" != x; then
+                _woffs=`echo $_woffs | sed "s%^ %%"`
+                _woffs=`echo $_woffs | sed "s% %,%g"`
+                _woffs=`echo $_woffs | sed "s%^%\-woff %"`
+                _warn_flags="$_warn_flags $_woffs"
+        fi
+
+        ###############################################################
+
+        CPPFLAGS="$CPPFLAGS $_warn_flags"
+      fi
+    ;;
+    esac
+  fi
+else
+  if test x"$GXX" != x"yes" && test x"$GCC" != x"yes"; then
+    AC_MSG_WARN([--enable-warnings only has effect when using GNU gcc or g++])
+  fi
+fi
+])
+
+
+# Usage:
+#  SIM_CHECK_SNPRINTF
+#
+# Description:
+#   Find out which of these "safe" and non-standard functions are
+#   available on the system: snprintf(), vsnprintf(), _snprintf()
+#   and _vsnprintf().
+#
+#   The variables sim_ac_snprintf_avail, sim_ac_vsnprintf_avail,
+#   sim_ac__snprintf_avail and sim_ac__vsnprintf_avail are set to either
+#   "yes" or "no" according to their availability, and HAVE_SNPRINTF
+#   etc will be defined properly.
+#
+# Authors:
+#   Morten Eriksen, <mortene@sim.no>.
+#
+
+AC_DEFUN([SIM_CHECK_NPRINTF], [
+AC_PREREQ([2.14])
+
+sim_ac_snprintf_avail=no
+sim_ac__snprintf_avail=no
+sim_ac_vsnprintf_avail=no
+sim_ac__vsnprintf_avail=no
+
+AC_CACHE_CHECK(
+  [whether snprintf() is available],
+  sim_cv_func_snprintf,
+  [AC_TRY_LINK([#include <stdio.h>],
+               [(void)snprintf(0L, 0, 0L);],
+               [sim_cv_func_snprintf=yes],
+               [sim_cv_func_snprintf=no])])
+
+sim_ac_snprintf_avail=$sim_cv_func_snprintf
+
+
+AC_CACHE_CHECK(
+  [whether vsnprintf() is available],
+  sim_cv_func_vsnprintf,
+  [AC_TRY_LINK([#include <stdio.h>],
+               [(void)vsnprintf(0L, 0, 0L, 0L);],
+               [sim_cv_func_vsnprintf=yes],
+               [sim_cv_func_vsnprintf=no])])
+
+sim_ac_vsnprintf_avail=$sim_cv_func_vsnprintf
+
+# We're not interested in _snprintf() unless snprintf() is unavailable.
+if test x"$sim_ac_snprintf_avail" = x"no"; then
+  AC_CACHE_CHECK(
+    [whether _snprintf() is available],
+    sim_cv_func__snprintf,
+    [AC_TRY_LINK([#include <stdio.h>],
+                 [(void)_snprintf(0L, 0, 0L);],
+                 [sim_cv_func__snprintf=yes],
+                 [sim_cv_func__snprintf=no])])
+  sim_ac__snprintf_avail=$sim_cv_func__snprintf
+fi
+
+# We're not interested in _vsnprintf() unless vsnprintf() is unavailable.
+if test x"$sim_ac_vsnprintf_avail" = xno; then
+  AC_CACHE_CHECK(
+    [whether _vsnprintf() is available],
+    sim_cv_func__vsnprintf,
+    [AC_TRY_LINK([#include <stdio.h>],
+                 [(void)_vsnprintf(0L, 0, 0L);],
+                 [sim_cv_func__vsnprintf=yes],
+                 [sim_cv_func__vsnprintf=no])])
+  sim_ac__vsnprintf_avail=$sim_cv_func__vsnprintf
+fi
+
+test x"$sim_ac_snprintf_avail" = x"yes" && AC_DEFINE(HAVE_SNPRINTF)
+test x"$sim_ac_vsnprintf_avail" = x"yes" && AC_DEFINE(HAVE_VSNPRINTF)
+test x"$sim_ac__snprintf_avail" = x"yes" && AC_DEFINE(HAVE__SNPRINTF)
+test x"$sim_ac__vsnprintf_avail" = x"yes" && AC_DEFINE(HAVE__VSNPRINTF)
+])
+
+
+# Usage:
 #   SIM_AC_CHECK_MACRO_QUOTE([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 # Description:
@@ -1208,6 +1667,55 @@ AC_DEFUN([SIM_PARSE_MODIFIER_LIST],
         [$4],
         [$5])])
 
+
+# Usage:
+#   SIM_AC_CHECK_MATHLIB([ACTION-IF-OK[, ACTION-IF-NOT-OK]])
+#
+# Description:
+#   Check if linker needs to explicitly link with the library with
+#   math functions. Sets environment variable $sim_ac_libm to the
+#   necessary linklibrary, plus includes this library in the LIBS
+#   env variable.
+#
+# Notes:
+#   There is a macro AC_CHECK_LIBM in the libtool distribution, but it
+#   does at least not work with SGI MIPSpro CC v7.30.
+#
+# Authors:
+#   Lars Jørgen Aas, <larsa@sim.no>
+#   Morten Eriksen, <mortene@sim.no>
+
+AC_DEFUN([SIM_AC_CHECK_MATHLIB], [
+
+sim_ac_store_libs=$LIBS
+sim_ac_libm=
+
+AC_CACHE_CHECK(
+  [for math library functions],
+  [sim_cv_lib_math],
+  [sim_cv_lib_math=UNDEFINED
+  # BeOS and Cygwin platforms has implicit math library linking,
+  # and ncr-sysv4.3 might use -lmw (according to AC_CHECK_LIBM in
+  # libtool.m4).
+  for sim_ac_math_chk in "" -lm -lmw; do
+    if test x"$sim_cv_lib_math" = xUNDEFINED; then
+      LIBS="$sim_ac_store_libs $sim_ac_math_chk"
+      AC_TRY_LINK([#include <math.h>],
+                  [fmod(1.0, 1.0); pow(1.0, 1.0); exp(1.0); sin(1.0)],
+                  [sim_cv_lib_math=$sim_ac_math_chk])
+    fi
+  done
+  ])
+
+if test x"$sim_cv_lib_math" != xUNDEFINED; then
+  LIBS="$sim_ac_libm $sim_ac_store_libs"
+  sim_ac_libm=$sim_cv_lib_math
+  $1
+else
+  LIBS=$sim_ac_store_libs
+  $2
+fi
+])
 
 # Usage:
 #  SIM_CHECK_X11([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
@@ -1795,463 +2303,6 @@ if test x"$with_pthread" != xno; then
     $2
   fi
 fi
-])
-
-
-# Usage:
-#   SIM_COMPILE_DEBUG( ACTION-IF-DEBUG, ACTION-IF-NOT-DEBUG )
-#
-# Description:
-#   Let the user decide if compilation should be done in "debug mode".
-#   If compilation is not done in debug mode, all assert()'s in the code
-#   will be disabled.
-#
-#   Also sets enable_debug variable to either "yes" or "no", so the
-#   configure.in writer can add package-specific actions. Default is "yes".
-#   This was also extended to enable the developer to set up the two first
-#   macro arguments following the well-known ACTION-IF / ACTION-IF-NOT
-#   concept.
-#
-#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
-#   in the configure.in script.
-#
-# Authors:
-#   Morten Eriksen, <mortene@sim.no>
-#   Lars J. Aas, <larsa@sim.no>
-#
-# TODO:
-# * [larsa:20000220] Set up ATTRIBUTE-LIST for developer-configurable
-#   default-value.
-#
-
-AC_DEFUN([SIM_COMPILE_DEBUG], [
-AC_PREREQ([2.13])
-
-AC_ARG_ENABLE(
-  [debug],
-  AC_HELP_STRING([--enable-debug], [compile in debug mode [default=yes]]),
-  [case "${enableval}" in
-    yes) enable_debug=yes ;;
-    no)  enable_debug=no ;;
-    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-debug) ;;
-  esac],
-  [enable_debug=yes])
-
-if test x"$enable_debug" = x"yes"; then
-  ifelse([$1], , :, [$1])
-else
-  CFLAGS="$CFLAGS -DNDEBUG"
-  CXXFLAGS="$CXXFLAGS -DNDEBUG"
-  $2
-fi
-])
-
-
-# Usage:
-#   SIM_DEBUGSYMBOLS
-#
-# Description:
-#   Let the user decide if debug symbol information should be compiled
-#   in. The compiled libraries/executables will use a lot less space
-#   if stripped for their symbol information.
-# 
-#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
-#   in the configure.in script.
-# 
-# Author: Morten Eriksen, <mortene@sim.no>.
-# 
-# TODO:
-#   * [mortene:19991114] make this work with compilers other than gcc/g++
-# 
-
-AC_DEFUN([SIM_DEBUGSYMBOLS], [
-AC_PREREQ([2.13])
-AC_ARG_ENABLE(
-  [symbols],
-  AC_HELP_STRING([--enable-symbols],
-                 [(GCC only) include symbol debug information [default=yes]]),
-  [case "${enableval}" in
-    yes) enable_symbols=yes ;;
-    no)  enable_symbols=no ;;
-    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-symbols) ;;
-  esac],
-  [enable_symbols=yes])
-
-if test x"$enable_symbols" = x"no"; then
-  if test x"$GXX" = x"yes" || x"$GCC" = x"yes"; then
-    CFLAGS="`echo $CFLAGS | sed 's/-g//'`"
-    CXXFLAGS="`echo $CXXFLAGS | sed 's/-g//'`"
-  else
-    AC_MSG_WARN([--disable-symbols only has effect when using GNU gcc or g++])
-  fi
-fi
-])
-
-
-# Usage:
-#   SIM_AC_RTTI_SUPPORT
-#
-# Description:
-#   Let the user decide if RTTI should be compiled in. The compiled
-#   libraries/executables will use a lot less space if they don't
-#   contain RTTI.
-# 
-#   Note: this macro must be placed after AC_PROG_CXX in the
-#   configure.in script.
-# 
-# Author: Morten Eriksen, <mortene@sim.no>.
-
-AC_DEFUN([SIM_AC_RTTI_SUPPORT], [
-AC_PREREQ([2.13])
-AC_ARG_ENABLE(
-  [rtti],
-  AC_HELP_STRING([--enable-rtti], [(g++ only) compile with RTTI [default=yes]]),
-  [case "${enableval}" in
-    yes) enable_rtti=yes ;;
-    no)  enable_rtti=no ;;
-    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-rtti) ;;
-  esac],
-  [enable_rtti=yes])
-
-if test x"$enable_rtti" = x"no"; then
-  if test x"$GXX" = x"yes"; then
-    CXXFLAGS="$CXXFLAGS -fno-rtti"
-  else
-    AC_MSG_WARN([--enable-rtti only has effect when using GNU g++])
-  fi
-fi
-])
-
-# Usage:
-#   SIM_CHECK_EXCEPTION_HANDLING
-#
-# Description:
-#   Let the user decide if C++ exception handling should be compiled
-#   in. The compiled libraries/executables will use a lot less space
-#   if they have exception handling support.
-#
-#   Note: this macro must be placed after AC_PROG_CXX in the
-#   configure.in script.
-#
-#   Author: Morten Eriksen, <mortene@sim.no>.
-#
-# TODO:
-#   * [mortene:19991114] make this work with compilers other than gcc/g++
-#
-
-AC_DEFUN([SIM_EXCEPTION_HANDLING], [
-AC_PREREQ([2.13])
-AC_ARG_ENABLE(
-  [exceptions],
-  AC_HELP_STRING([--enable-exceptions],
-                 [(g++ only) compile with exceptions [default=no]]),
-  [case "${enableval}" in
-    yes) enable_exceptions=yes ;;
-    no)  enable_exceptions=no ;;
-    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-exceptions) ;;
-  esac],
-  [enable_exceptions=no])
-
-if test x"$enable_exceptions" = x"no"; then
-  if test "x$GXX" = "xyes"; then
-    unset _exception_flag
-    dnl This is for GCC >= 2.8
-    SIM_AC_CXX_COMPILER_OPTION([-fno-exceptions], [_exception_flag=-fno-exceptions])
-    if test x"${_exception_flag+set}" != x"set"; then
-      dnl For GCC versions < 2.8
-      SIM_AC_CXX_COMPILER_OPTION([-fno-handle-exceptions],
-                                 [_exception_flag=-fno-handle-exceptions])
-    fi
-    if test x"${_exception_flag+set}" != x"set"; then
-      AC_MSG_WARN([couldn't find a valid option for avoiding exception handling])
-    else
-      CXXFLAGS="$CXXFLAGS $_exception_flag"
-    fi
-  fi
-else
-  if test x"$GXX" != x"yes"; then
-    AC_MSG_WARN([--enable-exceptions only has effect when using GNU g++])
-  fi
-fi
-])
-
-
-#   Use this file to store miscellaneous macros related to checking
-#   compiler features.
-
-# Usage:
-#   SIM_AC_CC_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
-#   SIM_AC_CXX_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
-#
-# Description:
-#
-#   Check whether the current C or C++ compiler can handle a
-#   particular command-line option.
-#
-#
-# Author: Morten Eriksen, <mortene@sim.no>.
-#
-#   * [mortene:19991218] improve macros by catching and analyzing
-#     stderr (at least to see if there was any output there)?
-#
-
-AC_DEFUN([SIM_AC_COMPILER_OPTION], [
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS [$1]"
-AC_TRY_COMPILE([], [], [sim_ac_accept_result=yes $2], [sim_ac_accept_result=no $3])
-AC_MSG_RESULT([$sim_ac_accept_result])
-CPPFLAGS=$sim_ac_save_cppflags
-])
-
-AC_DEFUN([SIM_AC_CC_COMPILER_OPTION], [
-AC_LANG_SAVE
-AC_LANG_C
-AC_MSG_CHECKING([whether $CC accepts $1])
-SIM_AC_COMPILER_OPTION($1, $2, $3)
-AC_LANG_RESTORE
-])
-
-AC_DEFUN([SIM_AC_CXX_COMPILER_OPTION], [
-AC_LANG_SAVE
-AC_LANG_CPLUSPLUS
-AC_MSG_CHECKING([whether $CXX accepts $1])
-SIM_AC_COMPILER_OPTION($1, $2, $3)
-AC_LANG_RESTORE
-])
-
-# Usage:
-#   SIM_PROFILING_SUPPORT
-#
-# Description:
-#   Let the user decide if profiling code should be compiled
-#   in. The compiled libraries/executables will use a lot less space
-#   if they don't contain profiling code information, and they will also
-#   execute faster.
-#
-#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
-#   in the configure.in script.
-#
-# Author: Morten Eriksen, <mortene@sim.no>.
-#
-# TODO:
-#   * [mortene:19991114] make this work with compilers other than gcc/g++
-#
-
-AC_DEFUN([SIM_PROFILING_SUPPORT], [
-AC_PREREQ([2.13])
-AC_ARG_ENABLE(
-  [profile],
-  AC_HELP_STRING([--enable-profile],
-                 [(GCC only) turn on inclusion of profiling code [default=no]]),
-  [case "${enableval}" in
-    yes) enable_profile=yes ;;
-    no)  enable_profile=no ;;
-    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-profile) ;;
-  esac],
-  [enable_profile=no])
-
-if test x"$enable_profile" = x"yes"; then
-  if test x"$GXX" = x"yes" || test x"$GCC" = x"yes"; then
-    CFLAGS="$CFLAGS -pg"
-    CXXFLAGS="$CXXFLAGS -pg"
-    LDFLAGS="$LDFLAGS -pg"
-  else
-    AC_MSG_WARN([--enable-profile only has effect when using GNU gcc or g++])
-  fi
-fi
-])
-
-
-# Usage:
-#   SIM_COMPILER_WARNINGS
-#
-# Description:
-#   Take care of making a sensible selection of warning messages
-#   to turn on or off.
-# 
-#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
-#   in the configure.in script.
-# 
-# Author: Morten Eriksen, <mortene@sim.no>.
-# 
-# TODO:
-#   * [mortene:19991114] find out how to get GCC's
-#     -Werror-implicit-function-declaration option to work as expected
-#
-#   * [mortene:20000606] there are a few assumptions here which doesn't
-#     necessarily hold water: both the C and C++ compiler doesn't have
-#     to be "compatible", i.e. the C compiler could be gcc, while the
-#     C++ compiler could be a native compiler, for instance. So some
-#     restructuring should be done.
-# 
-
-AC_DEFUN([SIM_COMPILER_WARNINGS], [
-AC_ARG_ENABLE(
-  [warnings],
-  AC_HELP_STRING([--enable-warnings],
-                 [turn on warnings when compiling [default=yes]]),
-  [case "${enableval}" in
-    yes) enable_warnings=yes ;;
-    no)  enable_warnings=no ;;
-    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-warnings) ;;
-  esac],
-  [enable_warnings=yes])
-
-if test x"$enable_warnings" = x"yes"; then
-  if test x"$GXX" = x"yes" || test x"$GCC" = x"yes"; then
-    sim_ac_common_gcc_warnings="-W -Wall -Wno-unused"
-    # -fno-multichar can be different for gcc and egcs c++, for instance,
-    # so we need to do separate checks.
-    if test x"$CC" = x"$CXX"; then
-      CPPFLAGS="$CPPFLAGS $sim_ac_common_gcc_warnings"
-      SIM_AC_CXX_COMPILER_OPTION([-Wno-multichar], [CPPFLAGS="$CPPFLAGS -Wno-multichar"])
-    else
-      CFLAGS="$CFLAGS $sim_ac_common_gcc_warnings"
-      SIM_AC_CC_COMPILER_OPTION([-Wno-multichar], [CFLAGS="$CFLAGS -Wno-multichar"])
-      CXXFLAGS="$CXXFLAGS $sim_ac_common_gcc_warnings"
-      SIM_AC_CXX_COMPILER_OPTION([-Wno-multichar], [CXXFLAGS="$CXXFLAGS -Wno-multichar"])
-    fi
-  else
-    case $host in
-    *-*-irix*) 
-      if test x"$CC" = xcc || test x"$CXX" = xCC; then
-        _warn_flags=
-        _woffs=""
-        ### Turn on all warnings ######################################
-        SIM_AC_CC_COMPILER_OPTION([-fullwarn],
-                            [_warn_flags="$_warn_flags -fullwarn"])
-
-
-        ### Turn off specific (bogus) warnings ########################
-
-        ### SGI MipsPro v?.?? (our compiler on IRIX 6.2) ##############
-
-        # Turn off ``type qualifiers are meaningless in this declaration''
-        # warnings.
-        SIM_AC_CC_COMPILER_OPTION([-woff 3115], [_woffs="$_woffs 3115"])
-        # Turn off warnings on unused variables.
-        SIM_AC_CC_COMPILER_OPTION([-woff 3262], [_woffs="$_woffs 3262"])
-
-        ### SGI MipsPro v7.30 #########################################
-
-	# "The function was declared but never referenced."
-        SIM_AC_CC_COMPILER_OPTION([-woff 1174], [_woffs="$_woffs 1174"])
-        # "The controlling expression is constant." (kill warning on
-        # if (0), assert(FALSE), etc).
-        SIM_AC_CC_COMPILER_OPTION([-woff 1209], [_woffs="$_woffs 1209"])
-        # Kill warnings on extra semicolons (which happens with some
-        # of the Coin macros).
-        SIM_AC_CC_COMPILER_OPTION([-woff 1355], [_woffs="$_woffs 1355"])
-        # Non-virtual destructors in base classes.
-        SIM_AC_CC_COMPILER_OPTION([-woff 1375], [_woffs="$_woffs 1375"])
-        # Unused argument to a function.
-        SIM_AC_CC_COMPILER_OPTION([-woff 3201], [_woffs="$_woffs 3201"])
-        # Meaningless type qualifier on return type (happens with the
-        # SoField macros in Coin).
-        SIM_AC_CC_COMPILER_OPTION([-woff 3303], [_woffs="$_woffs 3303"])
-        # Statement is not reachable (the Lex/Flex generated code in
-        # Coin/src/engines makes lots of shitty code which needs this).
-        SIM_AC_CC_COMPILER_OPTION([-woff 1110], [_woffs="$_woffs 1110"])
-
-        ###############################################################
-
-        # Convert to a comma-separated list behind the "-woff" option.
-        if test x"$_woffs" != x; then
-                _woffs=`echo $_woffs | sed "s%^ %%"`
-                _woffs=`echo $_woffs | sed "s% %,%g"`
-                _woffs=`echo $_woffs | sed "s%^%\-woff %"`
-                _warn_flags="$_warn_flags $_woffs"
-        fi
-
-        ###############################################################
-
-        CPPFLAGS="$CPPFLAGS $_warn_flags"
-      fi
-    ;;
-    esac
-  fi
-else
-  if test x"$GXX" != x"yes" && test x"$GCC" != x"yes"; then
-    AC_MSG_WARN([--enable-warnings only has effect when using GNU gcc or g++])
-  fi
-fi
-])
-
-
-# Usage:
-#  SIM_CHECK_SNPRINTF
-#
-# Description:
-#   Find out which of these "safe" and non-standard functions are
-#   available on the system: snprintf(), vsnprintf(), _snprintf()
-#   and _vsnprintf().
-#
-#   The variables sim_ac_snprintf_avail, sim_ac_vsnprintf_avail,
-#   sim_ac__snprintf_avail and sim_ac__vsnprintf_avail are set to either
-#   "yes" or "no" according to their availability, and HAVE_SNPRINTF
-#   etc will be defined properly.
-#
-# Authors:
-#   Morten Eriksen, <mortene@sim.no>.
-#
-
-AC_DEFUN([SIM_CHECK_NPRINTF], [
-AC_PREREQ([2.14])
-
-sim_ac_snprintf_avail=no
-sim_ac__snprintf_avail=no
-sim_ac_vsnprintf_avail=no
-sim_ac__vsnprintf_avail=no
-
-AC_CACHE_CHECK(
-  [whether snprintf() is available],
-  sim_cv_func_snprintf,
-  [AC_TRY_LINK([#include <stdio.h>],
-               [(void)snprintf(0L, 0, 0L);],
-               [sim_cv_func_snprintf=yes],
-               [sim_cv_func_snprintf=no])])
-
-sim_ac_snprintf_avail=$sim_cv_func_snprintf
-
-
-AC_CACHE_CHECK(
-  [whether vsnprintf() is available],
-  sim_cv_func_vsnprintf,
-  [AC_TRY_LINK([#include <stdio.h>],
-               [(void)vsnprintf(0L, 0, 0L, 0L);],
-               [sim_cv_func_vsnprintf=yes],
-               [sim_cv_func_vsnprintf=no])])
-
-sim_ac_vsnprintf_avail=$sim_cv_func_vsnprintf
-
-# We're not interested in _snprintf() unless snprintf() is unavailable.
-if test x"$sim_ac_snprintf_avail" = x"no"; then
-  AC_CACHE_CHECK(
-    [whether _snprintf() is available],
-    sim_cv_func__snprintf,
-    [AC_TRY_LINK([#include <stdio.h>],
-                 [(void)_snprintf(0L, 0, 0L);],
-                 [sim_cv_func__snprintf=yes],
-                 [sim_cv_func__snprintf=no])])
-  sim_ac__snprintf_avail=$sim_cv_func__snprintf
-fi
-
-# We're not interested in _vsnprintf() unless vsnprintf() is unavailable.
-if test x"$sim_ac_vsnprintf_avail" = xno; then
-  AC_CACHE_CHECK(
-    [whether _vsnprintf() is available],
-    sim_cv_func__vsnprintf,
-    [AC_TRY_LINK([#include <stdio.h>],
-                 [(void)_vsnprintf(0L, 0, 0L);],
-                 [sim_cv_func__vsnprintf=yes],
-                 [sim_cv_func__vsnprintf=no])])
-  sim_ac__vsnprintf_avail=$sim_cv_func__vsnprintf
-fi
-
-test x"$sim_ac_snprintf_avail" = x"yes" && AC_DEFINE(HAVE_SNPRINTF)
-test x"$sim_ac_vsnprintf_avail" = x"yes" && AC_DEFINE(HAVE_VSNPRINTF)
-test x"$sim_ac__snprintf_avail" = x"yes" && AC_DEFINE(HAVE__SNPRINTF)
-test x"$sim_ac__vsnprintf_avail" = x"yes" && AC_DEFINE(HAVE__VSNPRINTF)
 ])
 
 

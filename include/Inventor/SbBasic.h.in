@@ -178,6 +178,25 @@ typedef int SbBool;
 #define M_INVLN2 1.4426950408889633870E0 /* 1 / log(2) */
 #endif /* !M_INVLN2 */
 
+/* This define is set by the configure script if singleprecision math
+   functions are available from the C library API headers. */
+#undef HAVE_SINGLEPRECISION_MATH
+
+#ifndef HAVE_SINGLEPRECISION_MATH
+/* If singleprecision math functions are missing, define them to their
+   doubleprecision counterparts. This is done to be consistent with
+   SbBasic.h in Open Inventor. */
+#define cosf cos
+#define sinf sin
+#define tanf tan
+#define powf pow
+#define sqrtf sqrt
+#define acosf acos
+#define asinf asin
+#define atanf atan
+#define atan2f atan2
+#endif /* HAVE_SINGLEPRECISION_MATH */
+
 
 /* Some useful inline template functions (instead of macros):
  *   SbAbs(Val)              - returns absolute value

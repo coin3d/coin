@@ -138,8 +138,6 @@ else
 fi
 
 
-
-
 # *******************************************************************
 # * Set us up for using the simage library (if wanted, and if
 # * available).
@@ -152,13 +150,33 @@ SIM_AC_CHECK_SIMAGE([AC_DEFINE(HAVE_LIBSIMAGE)
                     AC_MSG_WARN(simage development system not found),
                     [default searchprefix])
 
-#  We need to check for the math library on our own if its not
-#  "inherited" from the simage library.
+
+# We need to check for the math library on our own if its not
+# "inherited" from the simage library. FIXME: this could better
+# be done with a "SIM_AC_MATHLIB_READY" test, in the same vein
+# as the X11 "readiness-test" in SoXt configure.in. 20000609 mortene.
+
 if test x"$sim_ac_simage_avail" = xno; then
-  AC_CHECK_LIBM
-  LIBS="$LIBM $LIBS"
-  COIN_EXTRA_LIBS="$LIBM $COIN_EXTRA_LIBS"
+  SIM_AC_CHECK_MATHLIB(COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_libm",
+                       AC_MSG_ERROR(could not find a way to use math library))
 fi
+
+AC_CACHE_CHECK([whether single-precision math functions are available],
+  sim_cv_func_singleprec_avail,
+  [AC_TRY_LINK([#include <math.h>],
+               [(void)sqrtf(1.0f);
+                (void)powf(1.0f, 1.0f);
+                (void)cosf(1.0f);
+                (void)sinf(1.0f);
+                (void)tanf(1.0f);
+                (void)acosf(1.0f);
+                (void)asinf(1.0f);
+                (void)atanf(1.0f);
+                (void)atan2f(1.0f, 1.0f);],
+               sim_cv_func_singleprec_avail=true,
+               sim_cv_func_singleprec_avail=false)])
+
+$sim_cv_func_singleprec_avail && AC_DEFINE(HAVE_SINGLEPRECISION_MATH)
 
 
 # *******************************************************************
