@@ -161,6 +161,38 @@
   your expressions easier to read. Please note that it's possible to
   have several statements in one expression. You just separate them
   with semicolons.
+  
+  Here is a simple example of how an SoCalculator engine may be used
+  in an .iv file:
+  
+  \code
+  
+  DEF mycamera Camera {
+    orientation 1 0 0 1.57
+  }
+
+  DEF headlight DirectionalLight {
+    intensity 0.8
+    direction 0 0 1 = Rot2Heading {
+      rotation 0 0 1 0 = USE mycamera . orientation
+    } . heading
+  }
+
+  Separator {
+    # Render a cube not affected by lighting
+    LightModel { model BASE_COLOR }
+    BaseColor { rgb = Calculator {
+                        a = USE headlight . intensity
+                        expression [ "oA = vec3f( a, a, a)" ]
+                      } . oA }
+    Cube {}
+  }
+
+  \endcode
+
+  In the example, the color of the Cube is a function of the intensity
+  of the DirectionalLight, even though the Cube is rendered without
+  lighting because of the BASE_COLOR LightModel.
 
 */
 
