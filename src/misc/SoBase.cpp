@@ -789,7 +789,7 @@ SoBase::getAuditors(void) const
   // FIXME: make threadsafe
   if (sobase_auditordict == NULL) {
     sobase_auditordict = new SbDict();
-    atexit(sobase_cleanup_auditordict);
+    coin_atexit((coin_atexit_f*)sobase_cleanup_auditordict);
   }
   
   SoAuditorList * list = NULL;
