@@ -105,13 +105,6 @@ several times as new problems show up.
 
       or superglu will be included in the dist tarball.
 
-    - Remember to try bootstrap on the dist tarball to see that all the
-      required m4 files are included in the dist.
-
-  - Builds to set up:
-
-    * Build against OpenGL 1.1 (lowest supported version)
-      - both debug and release mode
 
   * build a GUI toolkit + SoGuiExamples on top of Coin and run a few programs
 
