@@ -67,8 +67,6 @@ extern "C" {
                                        int value);
   typedef void (APIENTRY *alGetSourcei_t)(unsigned int source, int param, 
                                           int *value);
-  typedef void (APIENTRY *alGetSourceiv_t)(unsigned int source, int param, 
-                                           int *value);
   typedef void (APIENTRY *alSourceQueueBuffers_t)(unsigned int source, 
                                                   unsigned int n, 
                                                   unsigned int *buffers);
@@ -150,7 +148,6 @@ extern "C" {
     alSourcef_t alSourcef;
     alSourcei_t alSourcei;
     alGetSourcei_t alGetSourcei;
-    alGetSourceiv_t alGetSourceiv;
     alSourceQueueBuffers_t alSourceQueueBuffers;
     alSourceUnqueueBuffers_t alSourceUnqueueBuffers;
     alBufferData_t alBufferData;
