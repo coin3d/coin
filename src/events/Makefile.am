@@ -43,6 +43,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/events/SoSubEvent.h \
 	$(top_srcdir)/include/Inventor/events/SoButtonEvent.h \
 	$(top_srcdir)/include/Inventor/events/SoEvent.h \
+	$(top_srcdir)/include/Inventor/events/SoEvents.h \
 	$(top_srcdir)/include/Inventor/events/SoKeyboardEvent.h \
 	$(top_srcdir)/include/Inventor/events/SoLocation2Event.h \
 	$(top_srcdir)/include/Inventor/events/SoMotion3Event.h \
