@@ -887,11 +887,6 @@ SIM_AC_CHECK_OPENGL(
     ])
   ])
 
-  if test x"$sim_cv_have_glx" = xtrue; then
-    SIM_AC_HAVE_GLXGETPROCADDRESSARB_IFELSE([
-      AC_DEFINE([HAVE_GLXGETPROCADDRESSARB],, [define if glXGetProcAddressARB() is available])])
-  fi
-
   if $enable_superglu; then
     SIM_AC_CONFIGURATION_SETTING([GLU linkage], [superglu])
   else
