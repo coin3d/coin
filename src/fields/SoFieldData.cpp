@@ -553,7 +553,12 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
   }
 
   foundname = FALSE;
-  return FALSE;
+
+  // Should return TRUE. An example is that fieldname like material
+  // doesn't match name in ShapeKit, but is a part of appearance
+  // AppearanceKit in this ShapeKit. This will let BaseKit have a
+  // chance to read in the unknown fields.
+  return TRUE;
 }
 
 /*!
