@@ -43,7 +43,7 @@
   whatever) to be slightly delayed, thereby causing delays in timer
   sensor triggering.
 
-  On modern system, a timer will usually trigger within a few
+  On modern systems, a timer will usually trigger within a few
   milliseconds of it's designated time, though.
 
   If a timer sensor can not trigger at the exact moment it has been

@@ -32,6 +32,10 @@
   Since the SoFullPath is derived from SoPath and contains no private
   data, you can cast SoPath instances to the SoFullPath type.  This
   will allow you to examine hidden children.
+
+  (Actually, you are not supposed to allocate instances of this class
+  at all. It is only available as an "extended interface" into the
+  superclass SoPath.)
 */
 
 /*!

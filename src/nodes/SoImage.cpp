@@ -34,6 +34,81 @@
   position, and the image is rendered in that position, with
   z-buffer testing activated.
 
+  Here's a simple, stand-alone example on how to set up and show an
+  SoImage:
+
+  \code
+  #include <stdlib.h>
+  #include <Inventor/Qt/SoQt.h>
+  #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/nodes/SoCamera.h>
+  #include <Inventor/nodes/SoCube.h>
+  #include <Inventor/nodes/SoImage.h>
+
+  static void
+  mandel(double sr, double si, double width, double height,
+         int bwidth, int bheight, int mult, unsigned char * bmp, int n)
+  {
+    double zr, zr_old, zi, cr, ci;
+    int w;
+
+    for (int y=0; y<bheight; y++)
+      for (int x=0; x<bwidth; x++) {
+        cr = ((double)(x)/(double)(bwidth))*width+sr;
+        ci = ((double)(y)/(double)(bheight))*height+si;
+        zr = zi = 0.0;
+        for (w = 0; (w < n) && (zr*zr + zi*zi)<n; w++) {
+          zr_old = zr;
+          zr = zr*zr - zi*zi + cr;
+          zi = 2*zr_old*zi + ci;
+        }
+        bmp[y*bwidth+x] = w*mult;
+      }
+  }
+
+  int
+  main(int argc, char ** argv)
+  {
+    QWidget * mainwin = SoQt::init(argv[0]);
+
+    SoSeparator * root = new SoSeparator;
+    root->ref();
+
+    const int IMGWIDTH = 256;
+    const int IMGHEIGHT = 256;
+    unsigned char * img = new unsigned char[IMGWIDTH * IMGHEIGHT];
+    mandel(-0.5, 0.6, 0.025, 0.025, IMGWIDTH, IMGHEIGHT, 1, img, 256);
+
+    SoImage * nimage = new SoImage;
+    nimage->vertAlignment = SoImage::HALF;
+    nimage->horAlignment = SoImage::CENTER;
+    nimage->image.setValue(SbVec2s(IMGWIDTH, IMGHEIGHT), 1, img);
+
+    SoCube * cube = new SoCube;
+
+    root->addChild(cube);
+    root->addChild(nimage);
+
+    SoQtExaminerViewer * viewer = new SoQtExaminerViewer(mainwin);
+    viewer->setSceneGraph(root);
+    viewer->setTitle("SoImage use");
+    viewer->show();
+
+    SoCamera * cam = viewer->getCamera();
+    cam->position = SbVec3f(0, 0, 50);
+    cam->focalDistance = 50;
+
+    SoQt::show(mainwin);
+    SoQt::mainLoop();
+
+    delete viewer;
+    root->unref();
+    delete img;
+    return 0;
+  }
+  \endcode
+
   \since TGS Inventor 2.5
   \since Coin 1.0
 */
@@ -226,7 +301,7 @@ SoImage::GLRender(SoGLRenderAction * action)
   if (dataptr == NULL) return; // no image
 
   if (!this->shouldGLRender(action)) return;
-  
+
   SoState *state = action->getState();
   this->testTransparency();
   if (action->handleTransparency(this->transparency)) return;
@@ -413,8 +488,8 @@ SoImage::generatePrimitives(SoAction * action)
   // SoCallbackAction to get all data it needs to render
   // this quad correctly. pederb 19991131
 
-  // FIXME: We may need to explicitly turn on 2D texturing and turn off 
-  // 3D texturing, but what is the correct way of doing that in this 
+  // FIXME: We may need to explicitly turn on 2D texturing and turn off
+  // 3D texturing, but what is the correct way of doing that in this
   // case? (kintel 20011118)
 
   SbVec2s size;
@@ -664,7 +739,7 @@ SoImage::getImage(SbVec2s & size, int & nc)
     if (!this->resizedimagevalid) {
       SbVec2s orgsize;
       const unsigned char * orgdata = this->image.getValue(orgsize, nc);
-      SbVec2s newsize = this->getSize();   
+      SbVec2s newsize = this->getSize();
 
       // simage version 1.1.1 has a pretty high quality resize
       // function. We prefer to use that to avoid using GLU, since
@@ -673,8 +748,8 @@ SoImage::getImage(SbVec2s & size, int & nc)
       if (simage_wrapper()->available &&
           simage_wrapper()->versionMatchesAtLeast(1,1,1) &&
           simage_wrapper()->simage_resize) {
-        unsigned char * result = 
-          simage_wrapper()->simage_resize((unsigned char*) orgdata, 
+        unsigned char * result =
+          simage_wrapper()->simage_resize((unsigned char*) orgdata,
                                           int(orgsize[0]), int(orgsize[1]),
                                           nc, int(newsize[0]), int(newsize[1]));
         this->resizedimage->setValue(newsize, nc, result);
@@ -700,7 +775,7 @@ SoImage::getImage(SbVec2s & size, int & nc)
         glPixelStorei(GL_PACK_SKIP_ROWS, 0);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glPixelStorei(GL_PACK_ALIGNMENT, 1);
-        
+
         (void)GLUWrapper()->gluScaleImage(format,
                                           orgsize[0], orgsize[1],
                                           GL_UNSIGNED_BYTE, (void*) orgdata,

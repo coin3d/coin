@@ -31,12 +31,75 @@
   for rendering of the geometry in the scene.
 
   This node just defines the abstract interface by collecting common
-  fields all camera type nodes needs. Use of the non-abstract
-  subclasses within our scene graph.
+  fields that all camera type nodes needs. Use the non-abstract camera
+  node subclasses within a scene graph. The ones that are default part
+  of the Coin library are SoPerspectiveCamera and
+  SoOrthographicCamera, which uses the two different projections given
+  by their name.
 
   Note that the viewer components of the GUI glue libraries of Coin
   (SoXt, SoQt, SoWin, etc) will automatically insert a camera into a
   scene graph is none has been defined.
+
+  It is possible to have more than one camera in a scene graph. One
+  common trick is for instance to use a second camera to display
+  static geometry or overlay geometry (e.g. for head-up displays
+  ("HUD")), as shown by this example code:
+
+  \code
+  #include <Inventor/Qt/SoQt.h>
+  #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+  #include <Inventor/nodes/SoNodes.h>
+  
+  int
+  main(int argc, char ** argv)
+  {
+    QWidget * mainwin = SoQt::init(argv[0]);
+  
+    SoSeparator * root = new SoSeparator;
+    root->ref();
+  
+    // Adds a camera and a red cone. The first camera found in the
+    // scene graph by the SoQtExaminerViewer will be picked up and
+    // initialized automatically.
+  
+    root->addChild(new SoPerspectiveCamera);
+    SoMaterial * material = new SoMaterial;
+    material->diffuseColor.setValue(1.0, 0.0, 0.0);
+    root->addChild(material);
+    root->addChild(new SoCone);
+  
+  
+    // Set up a second camera for the remaining geometry. This camera
+    // will not be picked up and influenced by the viewer, so the
+    // geometry will be kept static.
+  
+    SoPerspectiveCamera * pcam = new SoPerspectiveCamera;
+    pcam->position = SbVec3f(0, 0, 5);
+    pcam->nearDistance = 0.1;
+    pcam->farDistance = 10;
+    root->addChild(pcam);
+  
+    // Adds a green cone to demonstrate static geometry.
+  
+    SoMaterial * greenmaterial = new SoMaterial;
+    greenmaterial->diffuseColor.setValue(0, 1.0, 0.0);
+    root->addChild(greenmaterial);
+    root->addChild(new SoCone);
+  
+  
+    SoQtExaminerViewer * viewer = new SoQtExaminerViewer(mainwin);
+    viewer->setSceneGraph(root);
+    viewer->show();
+  
+    SoQt::show(mainwin);
+    SoQt::mainLoop();
+  
+    delete viewer;
+    root->unref();
+    return 0;
+  }
+  \encode
 */
 
 #include <Inventor/nodes/SoCamera.h>
@@ -137,7 +200,7 @@
 
   It is therefore a good idea to keep the near and far clipping planes
   of your camera(s) as closely fitted around the geometry of the
-  scenegraph as possible.
+  scene graph as possible.
 
   \sa SoCamera::nearDistance, SoPolygonOffset
 */
