@@ -109,7 +109,7 @@
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
+#endif // HAVE_CONFIG_H
 
 static int imagedata_maxage;
 
@@ -139,7 +139,18 @@ public:
   SbMutex readimagemutex;
   SbBool isdestructing;
 #endif // HAVE_THREADS
+#ifdef COIN_THREADSAFE
+  SbMutex glimagemutex;
+#endif // COIN_THREADSAFE
 };
+
+#ifdef COIN_THREADSAFE
+#define LOCK_GLIMAGE(_thisp_) (_thisp_)->pimpl->glimagemutex.lock()
+#define UNLOCK_GLIMAGE(_thisp_) (_thisp_)->pimpl->glimagemutex.unlock()
+#else // COIN_THREADSAFE
+#define LOCK_GLIMAGE(_thisp_)
+#define UNLOCK_GLIMAGE(_thisp_)
+#endif // COIN_THREADSAFE
 
 #endif // DOXYGEN_SKIP_THIS
 
@@ -240,7 +251,7 @@ SoVRMLImageTexture::doAction(SoAction * action)
 }
 
 static SoGLImage::Wrap
-translateWrap(const SbBool repeat)
+imagetexture_translate_wrap(const SbBool repeat)
 {
   if (repeat) return SoGLImage::REPEAT;
   return SoGLImage::CLAMP_TO_EDGE;
@@ -256,6 +267,9 @@ SoVRMLImageTexture::GLRender(SoGLRenderAction * action)
     return;
 
   float quality = SoTextureQualityElement::get(state);
+
+  LOCK_GLIMAGE(this);
+  
   if (!PRIVATE(this)->glimagevalid) {
     SbBool needbig =
       SoTextureScalePolicyElement::get(state) ==
@@ -282,10 +296,12 @@ SoVRMLImageTexture::GLRender(SoGLRenderAction * action)
 
     PRIVATE(this)->glimagevalid = TRUE;
     PRIVATE(this)->glimage->setData(&PRIVATE(this)->image,
-                                    translateWrap(this->repeatS.getValue()),
-                                    translateWrap(this->repeatT.getValue()),
+                                    imagetexture_translate_wrap(this->repeatS.getValue()),
+                                    imagetexture_translate_wrap(this->repeatT.getValue()),
                                     quality);
   }
+
+  UNLOCK_GLIMAGE(this);
 
   SoGLTextureImageElement::set(state, this,
                                PRIVATE(this)->glimagevalid ? PRIVATE(this)->glimage : NULL,
@@ -508,3 +524,5 @@ SoVRMLImageTexture::setImageDataMaxAge(const uint32_t maxage)
 }
 
 #undef PRIVATE
+#undef LOCK_GLIMAGE
+#undef UNLOCK_GLIMAGE

@@ -93,6 +93,14 @@
 #include <assert.h>
 #include <stddef.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
+
 #ifndef DOXYGEN_SKIP_THIS
 
 class SoVRMLPixelTextureP {
@@ -100,9 +108,20 @@ public:
   SoGLImage * glimage;
   SbBool glimagevalid;
   int readstatus;
+#ifdef COIN_THREADSAFE
+  SbMutex glimagemutex;
+#endif // COIN_THREADSAFE
 };
 
 #endif // DOXYGEN_SKIP_THIS
+
+#ifdef COIN_THREADSAFE
+#define LOCK_GLIMAGE(_thisp_) (_thisp_)->pimpl->glimagemutex.lock()
+#define UNLOCK_GLIMAGE(_thisp_) (_thisp_)->pimpl->glimagemutex.unlock()
+#else // COIN_THREADSAFE
+#define LOCK_GLIMAGE(_thisp_)
+#define UNLOCK_GLIMAGE(_thisp_)
+#endif // COIN_THREADSAFE
 
 SO_NODE_SOURCE(SoVRMLPixelTexture);
 
@@ -149,7 +168,7 @@ SoVRMLPixelTexture::doAction(SoAction * action)
 }
 
 static SoGLImage::Wrap
-translateWrap(const SbBool repeat)
+pixeltexture_translate_wrap(const SbBool repeat)
 {
   if (repeat) return SoGLImage::REPEAT;
   return SoGLImage::CLAMP_TO_EDGE;
@@ -165,6 +184,9 @@ SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
     return;
 
   float quality = SoTextureQualityElement::get(state);
+
+  LOCK_GLIMAGE(this);
+
   if (!THIS->glimagevalid) {
     int nc;
     SbVec2s size;
@@ -189,12 +211,14 @@ SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
 
     if (bytes && size != SbVec2s(0,0)) {
       THIS->glimage->setData(bytes, size, nc,
-                             translateWrap(this->repeatS.getValue()),
-                             translateWrap(this->repeatT.getValue()),
+                             pixeltexture_translate_wrap(this->repeatS.getValue()),
+                             pixeltexture_translate_wrap(this->repeatT.getValue()),
                              quality);
       THIS->glimagevalid = TRUE;
     }
   }
+
+  UNLOCK_GLIMAGE(this);
 
   SoGLTextureImageElement::set(state, this,
                                THIS->glimagevalid ? THIS->glimage : NULL,
@@ -234,3 +258,7 @@ SoVRMLPixelTexture::notify(SoNotList * list)
   THIS->glimagevalid = FALSE;
   SoNode::notify(list);
 }
+
+#undef THIS
+#undef LOCK_GLIMAGE
+#undef UNLOCK_GLIMAGE
