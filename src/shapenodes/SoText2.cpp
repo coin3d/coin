@@ -350,15 +350,17 @@ SoText2::GLRender(SoGLRenderAction * action)
           kerningx = 0;
           kerningy = 0;          
         }
-
-        glRasterPos3f(rpx + advancex + kerningx, 
-                      rpy + advancey + kerningy,
-                      -nilpoint[2]);
-
+				
+        glRasterPos3f(rpx, rpy, -nilpoint[2]);
+	
         if (offvp) { glBitmap(0,0,0,0,offsetx,offsety,NULL); }
         if (buffer) { glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer); }
 
-        if (charwidth != 0) xpos += charwidth + 1;  // +1 so that TTFont letters dont get too close to each other...
+		// Select the longest if the font requires it.
+		if(charwidth < advancex)
+			charwidth = advancex;
+
+        if (charwidth != 0) xpos += (charwidth + kerningx) + 1;  // +1 so that TTFont letters dont get too close to each other...
         else xpos += (int) spacesize;
         
         prevglyph = glyph;
@@ -713,8 +715,8 @@ SoText2P::buildGlyphCache(SoState * state)
       
       glyphwidth = (int) cc_glyph2d_getwidth(glyph);
       if (glyphwidth == 0) // SPACE width is always returned 0, set to standardwidth/3.
-        glyphwidth = (int) SoFontSizeElement::get(state) / 3; 
-      actuallength += (glyphwidth+1);
+        glyphwidth = (int) SoFontSizeElement::get(state) / 3;
+
         
       // Must fetch special modifiers so that heights for chars like
       // 'q' and 'g' will be taken into account when creating a
@@ -726,13 +728,19 @@ SoText2P::buildGlyphCache(SoState * state)
       cc_glyph2d_getadvance(glyph, &advancex, &advancey);           
       SbVec2s kerning((short) kerningx, (short) kerningy);
       SbVec2s advance((short) advancex, (short) advancey);
-      
+
+   	  if(glyphwidth < advancex)
+		  glyphwidth = advancex;
+
       SbVec2s pos = penpos + SbVec2s((short) bitmappos[0], (short) bitmappos[1]) + SbVec2s(0, (short) -bitmapsize[1]);
       this->bbox.extendBy(pos);
-      this->bbox.extendBy(pos + SbVec2s(advance[0] + kerning[0] + glyphwidth, bitmapsize[1]));
+      this->bbox.extendBy(pos + SbVec2s(glyphwidth + kerning[0], bitmapsize[1]));
       this->positions[i].append(pos);
 
-      penpos += kerning + advance + SbVec2s(glyphwidth + 1, 0);
+		
+      actuallength += (glyphwidth + kerningx + 1);
+
+      penpos += kerning + SbVec2s(glyphwidth + 1, 0);
       prevglyph = glyph;
 
     }
