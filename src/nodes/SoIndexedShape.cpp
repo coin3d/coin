@@ -26,9 +26,9 @@
   \brief The SoIndexedShape class is the superclass for all indexed vertex shapes.
   \ingroup nodes
 
-  This class contains four fields for storing indices to coordinates,
-  normals, materials and texture coordinates. It also has some
-  convenience methods which can be used by it's subclasses.
+  This is an abstract class which contains storage for four fields for
+  indices to coordinates, normals, materials and texture coordinates
+  for it's subclasses.
 */
 
 #include <Inventor/nodes/SoIndexedShape.h>
@@ -39,6 +39,7 @@
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 
@@ -89,11 +90,45 @@ SoIndexedShape::initClass(void)
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoIndexedShape, SO_FROM_INVENTOR_1);
 }
 
+// Collects common error msg code for computeBBox() for both
+// Coordinate3 and Coordinate4 loops.
+static void
+error_idx_out_of_bounds(const SoIndexedShape * node, int idxidx, int upper)
+{
+  SbName n = node->getName();
+  SbString ns(" ");
+  ns += n;
+
+  SbName t = node->getTypeId().getName();
+
+  SbString bounds;
+  if (upper > 0) {
+    // (Note: the if-expression above should have been "upper >= 0",
+    // if it weren't for the default SoCoordinateElement containing
+    // one default coordinate.)
+    bounds.sprintf("should be within [0, %d]", upper);
+  }
+  else {
+    bounds = "but no coordinates are available from the state!";
+  }
+
+  SoDebugError::post("SoIndexedShape::computeBBox",
+                     "coordinate index nr %d for %snode%s of type %s is "
+                     "out of bounds: is %d, %s",
+                     idxidx,
+                     (n == "") ? "<unnamed> " : "",
+                     (n != "") ? ns.getString() : "",
+                     t.getString(),
+                     node->coordIndex[idxidx],
+                     bounds.getString());
+}
+
 // Documented in superclass. Overridden to calculate bounding box of
 // all indexed coordinates, using the coordIndex field.
 void
 SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
+  assert(box.isEmpty());
   SoState * state = action->getState();
 
   const SoCoordinateElement * coordelem = NULL;
@@ -104,38 +139,55 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   if (!vpvtx) {
     coordelem = SoCoordinateElement::getInstance(state);
   }
-  int numCoords = vpvtx ?
-    vp->vertex.getNum() :
-    coordelem->getNum();
-  if (numCoords == 0) return;
+
+  const int numcoords = vpvtx ? vp->vertex.getNum() : coordelem->getNum();
 
   if (vpvtx || coordelem->is3D()) {
     const SbVec3f * coords = vpvtx ?
       vp->vertex.getValues(0) :
       coordelem->getArrayPtr3();
     assert(coords);
-    box.makeEmpty();
-    const int32_t * ptr = coordIndex.getValues(0);
-    const int32_t * endptr = ptr + coordIndex.getNum();
+
+    const int32_t * ptr = this->coordIndex.getValues(0);
+    const int32_t * endptr = ptr + this->coordIndex.getNum();
     while (ptr < endptr) {
-      int idx = *ptr++;
-      assert(idx < numCoords);
-      if (idx >= 0) box.extendBy(coords[idx]);
+      const int idx = *ptr++;
+      if (idx < numcoords) {
+        if (idx >= 0) box.extendBy(coords[idx]);
+      }
+#if COIN_DEBUG
+      else {
+        const int faultyidxpos = (ptr - this->coordIndex.getValues(0)) - 1;
+        error_idx_out_of_bounds(this, faultyidxpos, numcoords - 1);
+        if (numcoords == 1) break; // give only one error msg on missing coords
+        // (note that there's always at least a single default
+        // coordinate on the state stack)
+      }
+#endif // COIN_DEBUG
     }
   }
   else {
-    const SbVec4f * coords =
-      coordelem->getArrayPtr4();
+    const SbVec4f * coords = coordelem->getArrayPtr4();
     assert(coords);
-    const int32_t * ptr = coordIndex.getValues(0);
-    const int32_t * endptr = ptr + coordIndex.getNum();
+    const int32_t * ptr = this->coordIndex.getValues(0);
+    const int32_t * endptr = ptr + this->coordIndex.getNum();
     while (ptr < endptr) {
       int idx = *ptr++;
-      assert(idx < numCoords);
-      if (idx >= 0) {
-        SbVec4f tmp = coords[idx];
-        box.extendBy(SbVec3f(tmp[0], tmp[1], tmp[2]));
+      if (idx < numcoords) {
+        if (idx >= 0) {
+          SbVec4f tmp = coords[idx];
+          box.extendBy(SbVec3f(tmp[0], tmp[1], tmp[2]));
+        }
       }
+#if COIN_DEBUG
+      else {
+        const int faultyidxpos = (ptr - this->coordIndex.getValues(0)) - 1;
+        error_idx_out_of_bounds(this, faultyidxpos, numcoords - 1);
+        if (numcoords == 1) break; // give only one error msg on missing coords
+        // (note that there's always at least a single default
+        // coordinate on the state stack)
+      }
+#endif // COIN_DEBUG
     }
   }
 
@@ -161,8 +213,8 @@ SoIndexedShape::areTexCoordsIndexed(SoAction * action)
 int
 SoIndexedShape::getNumVerts(const int startCoord)
 {
-  const int32_t * ptr = coordIndex.getValues(0);
-  const int32_t * endptr = ptr + coordIndex.getNum();
+  const int32_t * ptr = this->coordIndex.getValues(0);
+  const int32_t * endptr = ptr + this->coordIndex.getNum();
   ptr += startCoord;
   int cnt = 0;
   while (ptr < endptr && *ptr >= 0) cnt++, ptr++;
