@@ -3854,3 +3854,88 @@ main(int argc, char ** argv)
     20040304 thammer
 
 =====================================================================
+
+107 SoText2 flips Y-direction upon subsequent renderings.
+
+    The stand-alone example below was reported to have the text upside
+    down for Win2k for every other sensor invocation. We have not been
+    able to reproduce this on any local system.
+
+    --------8<----------- [snip] -----------------------------
+
+// Program using Coin & SoQt on Windows 2000 PC
+// Shows a flip flopping upside down of each character after each
+// reload of SoText2 ( if font name is set )
+
+#include <stdio.h>
+
+#include <qwidget.h>
+#include <Inventor/Qt/SoQt.h>
+#include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoFont.h>
+#include <Inventor/nodes/SoText2.h>
+#include <Inventor/sensors/SoTimerSensor.h>
+
+void setText(void*,SoSensor*);
+
+SoSeparator *root=NULL;
+SoSeparator *textNode=NULL;
+SoText2 *text=NULL;
+
+//////////////////////////////////////////////////////////////////////////
+void main(int argc, char *argv[])
+//////////////////////////////////////////////////////////////////////////
+{
+
+  QWidget *mainWindow = SoQt::init(argv[0]);
+
+  root = new SoSeparator;
+  root->ref();
+
+  textNode = new SoSeparator;
+
+  SoFont *font = new SoFont;
+  font->name.setValue("Times New Roman"); // comment this line and problem goes away
+  font->size.setValue(24);                // if name is not set then we get unscaleable font
+
+  textNode->addChild(font);
+
+  root->addChild(textNode);
+
+
+  SoQtExaminerViewer *v = new SoQtExaminerViewer(mainWindow);
+  v->setSceneGraph(root);
+  v->show();   
+
+  SoTimerSensor *timer = new SoTimerSensor(setText,NULL);
+  timer->setInterval(SbTime(1.));
+  timer->schedule();
+
+  SoQt::show(mainWindow);
+  SoQt::mainLoop();
+
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+void setText(void*,SoSensor*){
+//////////////////////////////////////////////////////////////////////////
+
+  printf("=== setText ===\n");
+
+  if(text) textNode->removeChild(text);
+
+  text = new SoText2;
+  text->string="Why does this happen ?";
+  text->justification=SoText2::CENTER;
+
+  textNode->addChild(text);
+
+}
+
+    --------8<----------- [snip] -----------------------------
+
+    20040312 mortene.
+
+=====================================================================
