@@ -157,4 +157,4 @@ SoVRMLDirectionalLight::GLRender(SoGLRenderAction * action)
 
 }
 
-#endif HAVE_VRML97
+#endif // HAVE_VRML97
