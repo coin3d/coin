@@ -39,6 +39,7 @@
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/lists/SoTypeList.h>
+#include <Inventor/C/tidbitsp.h>
 
 // FIXME: should perhaps use SbTime::parseDate() for So[SM]FString ->
 // So[SM]FTime conversion? 20000331 mortene.
@@ -636,12 +637,19 @@ SoConvertAll::register_converter(converter_func * f, SoType from, SoType to)
   assert(nonexist);
 }
 
+void
+SoConvertAll::cleanup(void)
+{
+  delete SoConvertAll::converter_dict;
+  SoConvertAll::converter_dict = NULL;
+}
+
 // doc in super
 void
 SoConvertAll::initClass(void)
 {
-  // FIXME: deallocate at final exit(). 20000311 mortene.
   SoConvertAll::converter_dict = new SbDict;
+  coin_atexit((coin_atexit_f*) SoConvertAll::cleanup, 0);
 
   // SoConvertAll doesn't have a createInstance() method (because it
   // doesn't have a default constructor), so use the ABSTRACT macros.
