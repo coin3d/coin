@@ -50,6 +50,7 @@ Options:
   --cppflags
   --ldflags
   --libs
+  --datadir
   --build <program> <sourcefile> [<sourcefile>]...
   --version
   --usage | --help"
@@ -62,6 +63,7 @@ do
   --cppflags)       echo "$cppflags" ;;
   --ldflags)        echo "$ldflags" ;;
   --libs)           echo "$libs" ;;
+  --datadir)        echo "$datadir" ;;
   --build)
     shift
     program=$1
