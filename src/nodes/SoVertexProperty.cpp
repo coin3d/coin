@@ -146,8 +146,8 @@ SoVertexProperty::SoVertexProperty()
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVertexProperty);
 
   SO_NODE_ADD_FIELD(vertex, (0));
-  SO_NODE_ADD_FIELD(texCoord, (0));
   SO_NODE_ADD_FIELD(normal, (0));
+  SO_NODE_ADD_FIELD(texCoord, (0));
   SO_NODE_ADD_FIELD(orderedRGBA, (0));
   // FIXME: is this the correct way of making empty multifields?
   // 19990301 mortene.
