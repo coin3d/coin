@@ -51,7 +51,8 @@ extern "C" {
 #endif /* __cplusplus */
 
 /* Callback func type. */
-typedef void (APIENTRY* gluNurbsCallback_cb_t)(void *, ...);
+typedef void (APIENTRY * gluNurbsCallback_cb_t)(void *, ...);
+
 
 /* Typedefinitions of function signatures for GLU calls we use. We
    need these for casting from the void-pointer return of dlsym().*/
@@ -76,7 +77,16 @@ typedef void (APIENTRY *gluNurbsCurve_t)(void *, GLint, GLfloat *, GLint, GLfloa
 typedef void (APIENTRY *gluPwlCurve_t)(void *, GLint, GLfloat *, GLint, GLenum);
 typedef void (APIENTRY *gluNurbsCallback_t)(void *, GLenum, gluNurbsCallback_cb_t);
 typedef void (APIENTRY *gluNurbsCallbackData_t)(void *, GLvoid *);
-
+  /* gluTesselator routines */
+typedef GLUtesselator * (APIENTRY *gluNewTess_t)(void);
+typedef void (APIENTRY *gluTessCallback_t)(GLUtesselator * tessobj, GLenum type, _GLUfuncptr CallbackFunc);
+typedef void (APIENTRY *gluTessProperty_t)(GLUtesselator * tessobj, GLenum property, GLdouble value);
+typedef void (APIENTRY *gluTessBeginPolygon_t)(GLUtesselator * tessobj, void * user_data);
+typedef void (APIENTRY *gluTessEndPolygon_t)(GLUtesselator * tessobj);
+typedef void (APIENTRY *gluTessBeginContour_t)(GLUtesselator * tessobj);
+typedef void (APIENTRY *gluTessEndContour_t)(GLUtesselator * tessobj);
+typedef void (APIENTRY *gluTessVertex_t)(GLUtesselator * tessobj, GLdouble coords[3], void * vertex_data);
+typedef void (APIENTRY *gluDeleteTess_t)(GLUtesselator * tessobj);
 
 typedef struct {
   /* Is the GLU library at all available? */
@@ -90,10 +100,12 @@ typedef struct {
                                unsigned int minor,
                                unsigned int release);
 
-  /* GLU calls which might be used. Note that any of these can be NULL
+  /* 
+     GLU calls which might be used. Note that any of these can be NULL
      pointers if the function is not available, unless marked as being
      always available. (That is, as long as GLU itself is available.)
-     */
+  */
+
   gluGetString_t gluGetString;
   gluScaleImage_t gluScaleImage; /* always present */
   gluNewNurbsRenderer_t gluNewNurbsRenderer;
@@ -111,6 +123,17 @@ typedef struct {
   gluPwlCurve_t gluPwlCurve;
   gluNurbsCallback_t gluNurbsCallback;
   gluNurbsCallbackData_t gluNurbsCallbackData;
+
+  gluNewTess_t gluNewTess;
+  gluTessCallback_t gluTessCallback; 
+  gluTessProperty_t gluTessProperty;
+  gluTessBeginPolygon_t gluTessBeginPolygon;
+  gluTessEndPolygon_t gluTessEndPolygon;
+  gluTessBeginContour_t gluTessBeginContour;
+  gluTessEndContour_t gluTessEndContour;
+  gluTessVertex_t gluTessVertex;
+  gluDeleteTess_t gluDeleteTess;
+
 } GLUWrapper_t;
 
 
