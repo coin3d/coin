@@ -23,104 +23,149 @@
 
 /*!
   \class SoVertexProperty SoVertexProperty.h Inventor/nodes/SoVertexProperty.h
-  \brief The SoVertexProperty class ...
+  \brief The SoVertexProperty class collects the functionality of various appearance nodes.
   \ingroup nodes
 
-  FIXME: write class doc
+  Instead of reading data from the current state stack of the
+  scenegraph traversal, nodes inheriting SoVertexShape can be set up
+  with an SoVertexProprty node in the SoVertexShape::vertexProperty
+  field. Coordinates, normals, texture coordinates and material /
+  color information will then be fetched from the vertexshape's
+  SoVertexProperty node instead of from the state stack.
+
+  The SoVertexProperty node provides fields for duplicating the
+  functionality of all these other Inventor node types: SoCoordinate3,
+  SoTextureCoordinate2, SoTextureCoordinate3, SoNormal, SoPackedColor,
+  SoMaterialBinding and SoNormalBinding.
+
+
+  The SoVertexProperty node was introduced fairly late in the design
+  of the Inventor API by SGI. The idea behind it was to provide a
+  means to specify the necessary data for vertexshape-derived nodes
+  which would be more efficient to work with than fetching the data
+  from the traversal state stack.
+
+  In practice, the effect is not at all very noticable. Since the use
+  of SoVertexProperty nodes in the SoVertexShape::vertexProperty field
+  somewhat breaks with the basic design of the Open Inventor API (the
+  SoVertexProperty data is not pushed to the traversal state stack),
+  you might be better off design-wise by using the usual mechanisms,
+  ie by setting up the individual nodes SoVertexProperty "collects".
+
+  One of the drawbacks will for instance be that it's not possible to
+  share \e parts of the SoVertexProperty node between several shapes,
+  which is something that can easily be done when setting up
+  individual state-changing nodes in the scenegraph.
+
+  \sa SoVertexShape
+  \sa SoCoordinate3, SoTextureCoordinate2, SoTextureCoordinate3, SoNormal
+  \sa SoPackedColor
+  \sa SoMaterialBinding, SoNormalBinding
 */
+// FIXME: should have a usage-example in the class-doc. 20020109 mortene.
 
-
-//
-// FIXME: this class is really not correctly implemented. Each
-// vertex shape node should support this node internally.
-// Right now we just push its values on the stack.
-//
+// FIXME: this class is really not optimally supported in Coin. Each
+// vertex shape node should support this node with internal handling
+// to harvest the expected efficiency gains.  Right now we just push
+// its values on the stack. ????-??-?? pederb.
 
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
-
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
-
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-
-#include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoNormalBindingElement.h>
-#include <Inventor/elements/SoGLNormalElement.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoDiffuseColorElement.h>
-#include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoGLCoordinateElement.h>
+#include <Inventor/elements/SoGLNormalElement.h>
 #include <Inventor/elements/SoGLPolygonStippleElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoNormalBindingElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 
 /*!
   \enum SoVertexProperty::Binding
-  FIXME: write documentation for enum
-*/
-/*!
-  \var SoVertexProperty::Binding SoVertexProperty::OVERALL
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoVertexProperty::Binding SoVertexProperty::PER_PART
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoVertexProperty::Binding SoVertexProperty::PER_PART_INDEXED
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoVertexProperty::Binding SoVertexProperty::PER_FACE
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoVertexProperty::Binding SoVertexProperty::PER_FACE_INDEXED
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoVertexProperty::Binding SoVertexProperty::PER_VERTEX
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoVertexProperty::Binding SoVertexProperty::PER_VERTEX_INDEXED
-  FIXME: write documentation for enum definition
+
+  The binding types available for our SoVertexProperty::normalBinding
+  and SoVertexProperty::materialBinding fields.
+
+  For a detailed explanation of each of the enumeration value binding
+  types, see the documentation of the SoMaterialBinding node.
 */
 
 
 /*!
   \var SoMFVec3f SoVertexProperty::vertex
-  FIXME: write documentation for field
+
+  This field sets up vertex coordinates in the same manner as
+  SoCoordinate3::point.
+
+  By default the field contains no coordinates.
+
+  \sa SoCoordinate3
 */
 /*!
   \var SoMFVec2f SoVertexProperty::texCoord
-  FIXME: write documentation for field
+
+  Same functionality as SoTextureCoordinate2::point.  By default the
+  field contains no coordinates.
+
+  \sa SoTextureCoordinate2
 */
 /*!
-  \var SoMFVec2f SoVertexProperty::texCoord3
-  FIXME: write documentation for field
+  \var SoMFVec3f SoVertexProperty::texCoord3
 
+  Same functionality as SoTextureCoordinate3::point.  By default the
+  field contains no coordinates.
+
+  \sa SoTextureCoordinate3
   \since 2001-12-05
 */
 /*!
   \var SoMFVec3f SoVertexProperty::normal
-  FIXME: write documentation for field
+
+  This field defines a set of normal vectors in the same manner as
+  SoNormal::vector.  By default the field contains no vectors.
+
+  \sa SoNormal
 */
 /*!
   \var SoSFEnum SoVertexProperty::normalBinding
-  FIXME: write documentation for field
+
+  Defines how to bind the normals specified in the
+  SoVertexProperty::normal set to the parts of the "owner" shape.
+  Must be one of the values in the SoVertexProperty::Binding enum.
+
+  Default value of the field is SoVertexProperty::PER_VERTEX_INDEXED.
+
+  \sa SoNormalBinding
 */
 /*!
   \var SoMFUInt32 SoVertexProperty::orderedRGBA
-  FIXME: write documentation for field
+
+  A set of "packed" 32-bit diffusecolor plus transparency
+  values. Works in the same manner as the SoPackedColor::orderedRGBA
+  field.
+
+  By default the field has no data.
+
+  \sa SoPackedColor
 */
 /*!
   \var SoSFEnum SoVertexProperty::materialBinding
-  FIXME: write documentation for field
+
+  Defines how to bind the colorvalues specified in the
+  SoVertexProperty::orderedRGBA set to the parts of the "owner" shape.
+  Must be one of the values in the SoVertexProperty::Binding enum.
+
+  Default value of the field is SoVertexProperty::OVERALL.
+
+  \sa SoMaterialBinding
 */
 
 
@@ -129,7 +174,7 @@ SO_NODE_SOURCE(SoVertexProperty);
 /*!
   Constructor.
 */
-SoVertexProperty::SoVertexProperty()
+SoVertexProperty::SoVertexProperty(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVertexProperty);
 
@@ -171,9 +216,9 @@ SoVertexProperty::~SoVertexProperty()
 {
 }
 
-// doc from parent
+// Documented in superclass.
 void
-SoVertexProperty::initClass()
+SoVertexProperty::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoVertexProperty);
 
@@ -204,9 +249,7 @@ SoVertexProperty::initClass()
   SO_ENABLE(SoGetPrimitiveCountAction, SoTextureCoordinateElement);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Documented in superclass.
 void
 SoVertexProperty::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -216,18 +259,14 @@ SoVertexProperty::getBoundingBox(SoGetBoundingBoxAction * action)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Documented in superclass.
 void
 SoVertexProperty::GLRender(SoGLRenderAction * action)
 {
   SoVertexProperty::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoVertexProperty::doAction(SoAction *action)
 {
@@ -309,36 +348,29 @@ SoVertexProperty::doAction(SoAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoVertexProperty::callback(SoCallbackAction *action)
 {
   SoVertexProperty::doAction((SoAction*)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoVertexProperty::pick(SoPickAction *action)
 {
   SoVertexProperty::doAction((SoAction*)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoVertexProperty::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoVertexProperty::doAction((SoAction*)action);
 }
 
-/*!
-  Overloaded to check for transparency when orderedRGBA changes
-*/
+// Documented in superclass. Overridden to check for transparency when
+// orderedRGBA changes.
 void
 SoVertexProperty::notify(SoNotList *list)
 {

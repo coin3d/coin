@@ -26,9 +26,10 @@
   \brief The SoVertexShape class is the superclass for all vertex based shapes.
   \ingroup nodes
 
-  Basically, every polygon, line or point based shape will inherit this class.
-  It contains methods for organizing the normal cache, and also holds the
-  vertexProperty field which can be used to set vertex data inside the node.
+  Basically, every polygon, line or point based shape will inherit
+  this class.  It contains methods for organizing the normal cache,
+  and also holds the vertexProperty field which can be used to set
+  vertex data inside the node.
 */
 
 #include <Inventor/nodes/SoVertexShape.h>
@@ -57,6 +58,7 @@
   not passed to the global state. This is done to provide a simple
   path to highly optimized rendering of vertexbased shapes.
 
+  \sa SoVertexProperty
 */
 
 
