@@ -135,7 +135,6 @@
 
 // *************************************************************************
 
-#ifndef DOXYGEN_SKIP_THIS
 class SoText3P {
 public:
 
@@ -149,15 +148,15 @@ public:
   SbBox3f maxglyphbbox;
 
 };
-#endif // DOXYGEN_SKIP_THIS
 
 #define PRIVATE(obj) (obj->pimpl)
 
+// *************************************************************************
+
 SO_NODE_SOURCE(SoText3);
 
-/*!
-  Constructor.
-*/
+// *************************************************************************
+
 SoText3::SoText3(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoText3);
@@ -184,9 +183,6 @@ SoText3::SoText3(void)
 
 }
 
-/*!
-  Destructor.
-*/
 SoText3::~SoText3()
 {
   if (PRIVATE(this)->fontspec != NULL) {
@@ -1010,5 +1006,3 @@ SoText3P::setUpGlyphs(SoState * state, SoText3 * textnode)
   }
 
 }
-
-//#endif // DOXYGEN_SKIP_PRIVATE(this)
