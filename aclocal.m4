@@ -590,6 +590,9 @@ $1
 #   Fetches the error messages from the error message file and displays
 #   them on stderr. The configure process will subsequently exit.
 #
+# SIM_AC_WARN( ERROR [, ERROR ...] )
+#   As SIM_AC_ERROR, but will not exit after displaying the message(s).
+#
 # SIM_AC_WITH_ERROR( WITHARG )
 #   Invokes AC_MSG_ERROR in a consistent way for problems with the --with-*
 #   $withval argument.
@@ -632,6 +635,12 @@ _SIM_AC_ERROR($@)
 echo >&2 ""
 AC_MSG_ERROR([aborting])
 ]) # SIM_AC_ERROR
+
+AC_DEFUN([SIM_AC_WARN], [
+echo >&2 ""
+_SIM_AC_ERROR($@)
+echo >&2 ""
+]) # SIM_AC_WARN
 
 AC_DEFUN([SIM_AC_WITH_ERROR], [
 AC_MSG_ERROR([invalid value "${withval}" for "$1" configure argument])
@@ -7699,7 +7708,7 @@ fi
 
 AC_DEFUN([SIM_AC_CC_COMPILER_OPTION], [
 AC_LANG_SAVE
-AC_LANG_C
+AC_LANG(C)
 AC_MSG_CHECKING([whether $CC accepts $1])
 SIM_AC_COMPILER_OPTION($1, $2, $3)
 AC_LANG_RESTORE
@@ -7707,7 +7716,7 @@ AC_LANG_RESTORE
 
 AC_DEFUN([SIM_AC_CXX_COMPILER_OPTION], [
 AC_LANG_SAVE
-AC_LANG_CPLUSPLUS
+AC_LANG(C++)
 AC_MSG_CHECKING([whether $CXX accepts $1])
 SIM_AC_COMPILER_OPTION($1, $2, $3)
 AC_LANG_RESTORE

@@ -4,6 +4,9 @@
 #include <unconfig.h>
 
 
+/* define this to the libCoin beta version letter */
+#undef COIN_BETA_VERSION
+
 /* Build system. */
 #undef COIN_CONFIGURE_BUILD
 
