@@ -48,6 +48,7 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <assert.h>
 
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
@@ -108,7 +109,7 @@ SoIndexedFaceSet::SoIndexedFaceSet()
 */
 SoIndexedFaceSet::~SoIndexedFaceSet()
 {
-  delete this->convexCache;
+  if (this->convexCache) this->convexCache->unref();
 }
 
 // doc from parent
@@ -201,10 +202,7 @@ SoIndexedFaceSet::findNormalBinding(SoState * const state) const
 void
 SoIndexedFaceSet::notify(SoNotList * list)
 {
-  if (this->convexCache) {
-    delete this->convexCache;
-    this->convexCache = NULL;
-  }
+  if (this->convexCache) this->convexCache->invalidate();
   SoField *f = list->getLastField();
   if (f == &this->coordIndex) this->concavestatus = STATUS_UNKNOWN;
   SoNode::notify(list);
@@ -570,25 +568,29 @@ SoIndexedFaceSet::useConvexCache(SoAction * action)
     const int32_t * ptr = this->coordIndex.getValues(0);
     const int32_t * endptr = ptr + this->coordIndex.getNum();
     int cnt = 0;
+    this->concavestatus = STATUS_CONVEX;
     while (ptr < endptr) {
       if (*ptr++ >= 0) cnt++;
       else {
-        if (cnt > 3) break; // found a quad or polygon
+        if (cnt > 3) { this->concavestatus = STATUS_CONCAVE; break; }
         cnt = 0;
       }
     }
-    if (ptr < endptr) concavestatus = STATUS_CONCAVE;
-    else concavestatus = STATUS_CONVEX;
   }
   if (this->concavestatus == STATUS_CONVEX) return FALSE;
 
   if (this->convexCache && this->convexCache->isValid(state))
     return TRUE;
 
-  delete this->convexCache;
+
+  if (this->convexCache) this->convexCache->unref();
+  SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
 
   // push to create cache dependencies
   state->push();
+  this->convexCache = new SoConvexDataCache(state);
+  this->convexCache->ref();
+  SoCacheElement::set(state, this->convexCache);
   if (this->vertexProperty.getValue()) this->vertexProperty.getValue()->doAction(action);
   const SoCoordinateElement * coords;
   const SbVec3f * normals;
@@ -628,13 +630,12 @@ SoIndexedFaceSet::useConvexCache(SoAction * action)
   if (mbind == PER_VERTEX_INDEXED && mindices == NULL) {
     mindices = cindices;
   }
-  this->convexCache = new SoConvexDataCache(state);
   this->convexCache->generate(coords, cindices, numindices,
                               mindices, nindices, tindices,
                               (SoConvexDataCache::Binding)mbind,
                               (SoConvexDataCache::Binding)nbind,
                               (SoConvexDataCache::Binding)tbind);
-
   state->pop();
+  SoCacheElement::setInvalid(storedinvalid);
   return TRUE;
 }
