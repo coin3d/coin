@@ -119,8 +119,6 @@ SoSceneManager::~SoSceneManager()
 void
 SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 {
-#if 0 // OBSOLETED: doesn't seem like this code is needed anymore. 20000229 mortene.
-
   // FIXME: this probably only needs to be done at the first
   // invocation, since the viewport will later always be
   // up-to-date. (?)  The division of initialization work between
@@ -137,8 +135,6 @@ SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
                          origin[0], origin[1], size[0], size[1]);
 #endif // debug
   glViewport(origin[0], origin[1], size[0], size[1]);
-
-#endif // OBSOLETED
 
   GLbitfield mask = 0;
   if (clearwindow) mask |= GL_COLOR_BUFFER_BIT;
@@ -196,8 +192,14 @@ SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
                          "to the scenegraph _now_");
 #endif // debug
 
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoSceneManager::render", "before glrender->apply()");
+#endif // debug
   // Apply the SoGLRenderAction to the scenegraph root.
   this->glaction->apply(this->scene);
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoSceneManager::render", "after glrender->apply()");
+#endif // debug
 }
 
 /*!
@@ -285,7 +287,15 @@ SoSceneManager::redraw(void)
 void
 SoSceneManager::redrawshotTriggeredCB(void * data, SoSensor * /* sensor */)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoSceneManager::redrawshotTriggeredCB", "start");
+#endif // debug
+
   ((SoSceneManager *)data)->redraw();
+
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoSceneManager::redrawshotTriggeredCB", "done\n\n");
+#endif // debug
 }
 
 // Internal callback.
