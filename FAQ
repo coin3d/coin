@@ -91,6 +91,14 @@ A:    Yes, as a service for those who would like to use the Coin library
       the GNU GPL, as you would use the Coin library under our
       "Professional Edition" license instead.
 
+      The Coin Professional Edition License additionally covers other
+      libraries in the "Coin family" for no extra cost, including all
+      the GUI toolkits (SoQt, SoWin, SoGtk, SoXt) and Systems in
+      Motion's 3D file format libraries Dime and Profit.
+
+      See <URL:http://www.coin3d.org> for more information about the
+      details of these libraries.
+
       Prioritized support services is also part of the package -- your
       support requests will be sent straight to the top of the
       todo-stack of our developers. The developers used as first-tier
@@ -107,7 +115,7 @@ A:    Yes, as a service for those who would like to use the Coin library
       sourcecode and use it in your own applications without having to
       worry about licensing issues. This is for instance very
       convenient when writing extensions components for Coin, like new
-      viewers.
+      nodes or action types.
 
       You may also cut'n'paste code from all our example programs in
       the same manner (these are also originally under the GNU GPL, by
@@ -123,7 +131,8 @@ A:    Systems in Motion can do this dual licensing "trick" with Coin
       line of code written for the Coin library. Therefore we are able
       to license the Coin library both as Free Software aswell as
       under a special purpose license for proprietary software
-      vendors.  TrollTech uses the same strategy for their Qt library.
+      vendors. (If you are familiar with TrollTech's "Qt" library,
+      they use the same strategy.)
 
 
 
