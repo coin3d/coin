@@ -527,6 +527,7 @@
 #include <Inventor/details/SoNodeKitDetail.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/lists/SoPickedPointList.h>
+#include <Inventor/lists/SoNodeList.h>
 #include <Inventor/errors/SoReadError.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -1104,35 +1105,8 @@ SoBaseKit::write(SoWriteAction * action)
   }
   else if (out->getStage() == SoOutput::WRITE) {
     if (this->writeHeader(out, FALSE, FALSE)) return; // no more to write
-    // if THIS->writedata != NULL, we must found that some parts or
-    // fields need to be written.
     if (THIS->writedata) {
-      const SoNodekitCatalog * catalog = this->getNodekitCatalog();
-
-      // loop through parts and see if we need to call setDefault(FALSE)
-      // on some of the fields.
-      int n = THIS->instancelist.getLength();
-      for (int i = 1; i < n; i++) {
-        SoSFNode * field = THIS->instancelist[i];
-        if (field->isDefault()) {
-          SoNode * node = field->getValue();
-          if (node) {
-            if (node->shouldWrite()) {
-              field->setDefault(FALSE);
-            }
-            else if (node->isOfType(SoBaseKit::getClassTypeId())) {
-              SoBaseKit * kit = (SoBaseKit*) node;
-              if (kit->forceChildDrivenWriteRefs(out)) {
-                field->setDefault(FALSE);
-              }
-            }
-          }
-        }
-      }
-
-      // use THIS->writedata to get correct order of fields
       THIS->writedata->write(out, this);
-
       // we don't need it any more
       delete THIS->writedata;
       THIS->writedata = NULL;
@@ -1170,9 +1144,6 @@ SoBaseKit::countMyFields(SoOutput * out)
   // already created?
   if (THIS->writedata) return;
 
-  // create THIS->writedata, which contains a sorted list of fields.
-  THIS->createWriteData();
-
   const SoNodekitCatalog * catalog = this->getNodekitCatalog();
 
   // test if some fields that are default should write anyway
@@ -1187,6 +1158,9 @@ SoBaseKit::countMyFields(SoOutput * out)
     }
   }
 
+  // create THIS->writedata, which contains a sorted list of fields.
+  THIS->createWriteData();
+
   // sets fields that should not be written to default, this
   // is a virtual methods, so subkits can do some work when needed.
   this->setDefaultOnNonWritingFields();
@@ -1194,6 +1168,8 @@ SoBaseKit::countMyFields(SoOutput * out)
   // test if parent of parts is writing. Then we must write part anyway.
   THIS->testParentWrite();
 
+  // we might count fields that won't be written here, but it
+  // doesn't matter, since we're operating on a copy of the fields.
 
   n = THIS->writedata->getNumFields();
   for (i = 0; i < n; i++) {
@@ -1209,14 +1185,18 @@ SoBaseKit::countMyFields(SoOutput * out)
     else {
       if (!field->isDefault()) field->write(out, name);
       else {
-        SoSFNode * part = (SoSFNode*) field;
-        // don't use SoSFNode::countWriteRefs() as we are trying
-        // to avoid writing this field/part.
-        part->SoField::countWriteRefs(out);
-        SoNode * node = part->getValue();
-        if (node && node->isOfType(SoBaseKit::getClassTypeId())) {
-          // recurse
-          ((SoBaseKit*)node)->countMyFields(out);
+        SoNode * node = (SoNode*) ((SoSFNode*)field)->getValue();
+        if (node) {
+          if (node->isOfType(SoBaseKit::getClassTypeId())) {
+            SoBaseKit * kit = (SoBaseKit*) node;
+            kit->countMyFields(out);
+            if (kit->forceChildDrivenWriteRefs(out)) {
+              field->setDefault(FALSE);
+              // add a write reference on the kit node only. We supply
+              // isfromfield TRUE to achieve this
+              kit->addWriteReference(out, TRUE);
+            }
+          }
         }
       }
     }
@@ -1991,48 +1971,54 @@ SoBaseKit::readInstance(SoInput * in, unsigned short flags)
   SbBool oldsetup = this->setUpConnections(FALSE);
 
   // store old part values to find which parts are read
-  SbList<SoNode*> nodelist;
+  SoNodeList nodelist;
+  SbList <SbBool> defaultlist;
+
+  const SoNodekitCatalog * cat = this->getNodekitCatalog();
 
   // Dummy first element to get indices to match instancelist (where
   // the dummy "this" catalog entry is first).
   nodelist.append(NULL);
+  defaultlist.append(FALSE);
 
+  // copy all parts into nodelist, and then set all parts to NULL
+  // and default before reading
   for (i = 1; i < THIS->instancelist.getLength(); i++) {
     nodelist.append(THIS->instancelist[i]->getValue());
+    defaultlist.append(THIS->instancelist[i]->isDefault());
+    THIS->instancelist[i]->setValue(NULL);
+    THIS->instancelist[i]->setDefault(TRUE);
   }
-
+  
+  // reset the node kit by removing all children. We will restore it
+  // by setting the parts again later
+  this->getChildren()->truncate(0);
+  
+  // actually read the nodekit
   SbBool ret = inherited::readInstance(in, flags);
-  if (ret) {
-    for (i = 1; i < THIS->instancelist.getLength(); i++) {
-      SoNode * partnode = THIS->instancelist[i]->getValue();
-      if (partnode != nodelist[i]) {
-        partnode->ref(); // ref to make sure node is not deleted
-        THIS->instancelist[i]->setValue(nodelist[i]); // restore old value
-        nodelist[i] = partnode; // set value for second iteration
-      }
-      else nodelist[i] = NULL;
-    }
-    
-    const SoNodekitCatalog * cat = this->getNodekitCatalog();
-    
-    for (i = 1; i < THIS->instancelist.getLength(); i++) {
-      if (nodelist[i]) { // part has changed
-        if (!cat->isPublic(i)) break; // private part => error, break out
-        this->setPart(i, nodelist[i]);
-        nodelist[i]->unrefNoDelete(); // should be safe to unref now
-        nodelist[i] = NULL;
-      }
-    }
-    if (i < THIS->instancelist.getLength()) {
-      // if we broke out prematurely from the loop, this error occurred
-      SoReadError::post(in,"Attempted to set private part '%s'",
-                        cat->getName(i).getString());
 
-      // unref remaining nodes
-      for (; i < THIS->instancelist.getLength(); i++) {
-        if (nodelist[i]) nodelist[i]->unref();
+  if (ret) {
+    // loop through fields and copy the read parts into nodelist
+    for (i = 1; i < THIS->instancelist.getLength(); i++) {
+      if (!THIS->instancelist[i]->isDefault()) { // we've read a part
+        nodelist.set(i, THIS->instancelist[i]->getValue());
+        defaultlist[i] = FALSE;
+        // set to NULL again so that setPart() will not get confused
+        THIS->instancelist[i]->setValue(NULL);
       }
-      return FALSE;
+    }
+     
+    // restore the nodekit with all old and read parts
+    for (i = 1; i < THIS->instancelist.getLength(); i++) {
+      if (!cat->isLeaf(i) && nodelist[i]) {
+        // if not leaf, remove all children. They will be re-added
+        // later when the children parts are set.
+        assert(nodelist[i]->isOfType(SoGroup::getClassTypeId()));
+        SoGroup * g = (SoGroup*) nodelist[i];
+        g->removeAllChildren();
+      }
+      this->setPart(i, nodelist[i]);
+      THIS->instancelist[i]->setDefault(defaultlist[i]);
     }
   }
 
@@ -2367,10 +2353,10 @@ SoBaseKitP::createWriteData(void)
   for (int pass = 0; pass < 3; pass++) {
     for (int i = 0; i < n; i++) {
       int part = catalog->getPartNumber(fielddata->getFieldName(i));
-      // never write private parts. SGI Inventor actually exports
-      // private parts in certain cases, but we feel this must be a
-      // bug, so we don't do this.  pederb, 2002-02-07
-      if (part > 0 && !catalog->isPublic(part)) continue;
+      // NB: earlier (before 2003-03-26) we did not write private
+      // parts.  However, several users have reported that SGI/TGS
+      // Inventor do this so we have to write them too. 
+      // pederb, 2003-03-26
       if ((pass == 0 && part < 0) ||
           (pass == 1 && part > 0 && catalog->isLeaf(part)) ||
           (pass == 2 && part > 0 && !catalog->isLeaf(part))) {
