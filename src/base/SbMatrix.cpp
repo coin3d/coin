@@ -52,55 +52,80 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-// FIXME: should merge all the PD code we're using from GGIV into
-// SbMatrix, SbRotation and SbVec3f proper (for two reasons: 1)
-// there's a lot of duplicated code here (like for instance the
-// matrix->quaternion decomposition, which also exists in
-// SbRotation::setValue(SbMatrix&)), and 2) the remaining code
-// snippets look generally useful outside the purpose of breaking down
-// a matrix into it's transformation components). 20010114 mortene.
+class SbMatrixP {
+public:
+  // FIXME: should merge all the PD code we're using from GGIV into
+  // SbMatrix, SbRotation and SbVec3f proper (for two reasons: 1)
+  // there's a lot of duplicated code here (like for instance the
+  // matrix->quaternion decomposition, which also exists in
+  // SbRotation::setValue(SbMatrix&)), and 2) the remaining code
+  // snippets look generally useful outside the purpose of breaking down
+  // a matrix into it's transformation components). 20010114 mortene.
 
-/*
- * declarations for polar_decomp algorithm from Graphics Gems IV,
- * by Ken Shoemake <shoemake@graphics.cis.upenn.edu>
- */
-enum QuatPart {X, Y, Z, W};
-typedef float HMatrix[4][4]; /* Right-handed, for column vectors */
-typedef struct {
-  SbVec4f t;    /* Translation components */
-  SbRotation  q;        /* Essential rotation     */
-  SbRotation  u;        /* Stretch rotation       */
-  SbVec4f k;    /* Stretch factors        */
-  float f;      /* Sign of determinant    */
-} AffineParts;
-static void decomp_affine(HMatrix A, AffineParts * parts);
+  /*
+   * declarations for polar_decomp algorithm from Graphics Gems IV,
+   * by Ken Shoemake <shoemake@graphics.cis.upenn.edu>
+   */
+  enum QuatPart {X, Y, Z, W};
+  typedef float HMatrix[4][4]; /* Right-handed, for column vectors */
+  typedef struct {
+    SbVec4f t;    /* Translation components */
+    SbRotation  q;        /* Essential rotation     */
+    SbRotation  u;        /* Stretch rotation       */
+    SbVec4f k;    /* Stretch factors        */
+    float f;      /* Sign of determinant    */
+  } AffineParts;
+  static void decomp_affine(HMatrix A, AffineParts * parts);
+  static SbRotation snuggle(SbRotation q, SbVec4f & k);
+  static SbVec4f spect_decomp(SbMatrixP::HMatrix S, SbMatrixP::HMatrix U);
+  static float polar_decomp(SbMatrixP::HMatrix M, SbMatrixP::HMatrix Q, SbMatrixP::HMatrix S);
 
-static const SbMat IDENTITYMATRIX = {
+  static SbMat IDENTITYMATRIX;
+
+  static SbBool isIdentity(const float fm[][4]) {
+#if 0 // I would assume that the memcmp() version is faster..? Should run some profile checks.
+    return ((fm[0][0] == 1.0f) && (fm[0][1] == 0.0f) && (fm[0][2] == 0.0f) && (fm[0][3] == 0.0f) &&
+            (fm[1][0] == 0.0f) && (fm[1][1] == 1.0f) && (fm[1][2] == 0.0f) && (fm[1][3] == 0.0f) &&
+            (fm[2][0] == 0.0f) && (fm[2][1] == 0.0f) && (fm[2][2] == 1.0f) && (fm[2][3] == 0.0f) &&
+            (fm[3][0] == 0.0f) && (fm[3][1] == 0.0f) && (fm[3][2] == 0.0f) && (fm[3][3] == 1.0f));
+#else
+    // Note: as far as I know, memcmp() only compares bytes until
+    // there's a mismatch (and does *not* run over the full array and
+    // adds up a total, as it sometimes seems from documentation). So
+    // this should be very quick for non-identity matrices.
+    //
+    // Also, we check the first value on it's own, to avoid the function
+    // call for the most common case.
+    return (fm[0][0]==1.0f) && memcmp(&fm[0][1], &IDENTITYMATRIX[0][1], (4 * 3 + 3) * sizeof(float)) == 0;
+#endif
+  }
+
+  static HMatrix mat_id;
+
+private:
+  static void mat_mult(SbMatrixP::HMatrix A, SbMatrixP::HMatrix B, SbMatrixP::HMatrix AB);
+  static float vdot(float * va, float * vb);
+  static void vcross(float * va, float * vb, float * v);
+  static void adjoint_transpose(SbMatrixP::HMatrix M, SbMatrixP::HMatrix MadjT);
+  static float mat_norm(SbMatrixP::HMatrix M, int tpose);
+  static float norm_inf(SbMatrixP::HMatrix M) {return mat_norm(M, 0);}
+  static float norm_one(SbMatrixP::HMatrix M) {return mat_norm(M, 1);}
+  static int find_max_col(SbMatrixP::HMatrix M);
+  static void make_reflector(float * v, float * u);
+  static void reflect_cols(SbMatrixP::HMatrix M, float * u);
+  static void reflect_rows(SbMatrixP::HMatrix M, float * u);
+  static void do_rank1(SbMatrixP::HMatrix M, SbMatrixP::HMatrix Q);
+  static void do_rank2(SbMatrixP::HMatrix M, SbMatrixP::HMatrix MadjT, SbMatrixP::HMatrix Q);
+};
+
+SbMat SbMatrixP::IDENTITYMATRIX = {
   { 1.0f, 0.0f, 0.0f, 0.0f },
   { 0.0f, 1.0f, 0.0f, 0.0f },
   { 0.0f, 0.0f, 1.0f, 0.0f },
   { 0.0f, 0.0f, 0.0f, 1.0f }
 };
 
-static inline
-SbBool SbMatrix_isIdentity(const float fm[][4])
-{
-#if 0 // I would assume that the memcmp() version is faster..? Should run some profile checks.
-  return ((fm[0][0] == 1.0f) && (fm[0][1] == 0.0f) && (fm[0][2] == 0.0f) && (fm[0][3] == 0.0f) &&
-          (fm[1][0] == 0.0f) && (fm[1][1] == 1.0f) && (fm[1][2] == 0.0f) && (fm[1][3] == 0.0f) &&
-          (fm[2][0] == 0.0f) && (fm[2][1] == 0.0f) && (fm[2][2] == 1.0f) && (fm[2][3] == 0.0f) &&
-          (fm[3][0] == 0.0f) && (fm[3][1] == 0.0f) && (fm[3][2] == 0.0f) && (fm[3][3] == 1.0f));
-#else
-  // Note: as far as I know, memcmp() only compares bytes until
-  // there's a mismatch (and does *not* run over the full array and
-  // adds up a total, as it sometimes seems from documentation). So
-  // this should be very quick for non-identity matrices.
-  //
-  // Also, we check the first value on it's own, to avoid the function
-  // call for the most common case.
-  return (fm[0][0]==1.0f) && memcmp(&fm[0][1], &IDENTITYMATRIX[0][1], (4 * 3 + 3) * sizeof(float)) == 0;
-#endif
-}
+SbMatrixP::HMatrix SbMatrixP::mat_id = {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
 
 /*!
   The default constructor does nothing. The matrix will be uninitialized.
@@ -529,7 +554,7 @@ SbMatrix::getValue(SbMat & m) const
 SbMatrix
 SbMatrix::identity(void)
 {
-  return SbMatrix(&IDENTITYMATRIX);
+  return SbMatrix(&SbMatrixP::IDENTITYMATRIX);
 }
 
 /*!
@@ -782,8 +807,8 @@ SbMatrix::getTransform(SbVec3f & t, SbRotation & r, SbVec3f & s,
   // FIXME: test if this code works with non-affine matrices.
   // pederb, 2000-01-17
 
-  AffineParts parts;
-  HMatrix hmatrix;
+  SbMatrixP::AffineParts parts;
+  SbMatrixP::HMatrix hmatrix;
 
   // transpose-copy
   hmatrix[0][0] = this->matrix[0][0];
@@ -806,22 +831,22 @@ SbMatrix::getTransform(SbVec3f & t, SbRotation & r, SbVec3f & s,
   hmatrix[3][2] = this->matrix[2][3];
   hmatrix[3][3] = this->matrix[3][3];
 
-  decomp_affine(hmatrix, &parts);
+  SbMatrixP::decomp_affine(hmatrix, &parts);
 
   float mul = 1.0f;
-  if (parts.t[W] != 0.0f) mul = 1.0f / parts.t[W];
-  t[0] = parts.t[X] * mul;
-  t[1] = parts.t[Y] * mul;
-  t[2] = parts.t[Z] * mul;
+  if (parts.t[SbMatrixP::W] != 0.0f) mul = 1.0f / parts.t[SbMatrixP::W];
+  t[0] = parts.t[SbMatrixP::X] * mul;
+  t[1] = parts.t[SbMatrixP::Y] * mul;
+  t[2] = parts.t[SbMatrixP::Z] * mul;
 
   r = parts.q;
   mul = 1.0f;
-  if (parts.k[W] != 0.0f) mul = 1.0f / parts.k[W];
+  if (parts.k[SbMatrixP::W] != 0.0f) mul = 1.0f / parts.k[SbMatrixP::W];
   // mul be sign of determinant to support negative scales.
   mul *= parts.f;
-  s[0] = parts.k[X] * mul;
-  s[1] = parts.k[Y] * mul;
-  s[2] = parts.k[Z] * mul;
+  s[0] = parts.k[SbMatrixP::X] * mul;
+  s[1] = parts.k[SbMatrixP::Y] * mul;
+  s[2] = parts.k[SbMatrixP::Z] * mul;
 
   so = parts.u;
 }
@@ -1023,9 +1048,9 @@ SbMatrix::multRight(const SbMatrix & m)
   // should be very quick in the common case where a matrix is not the
   // identity matrix.
   const SbMat & mfm = m.matrix;
-  if (SbMatrix_isIdentity(mfm)) { return *this; }
+  if (SbMatrixP::isIdentity(mfm)) { return *this; }
   SbMat & tfm = this->matrix;
-  if (SbMatrix_isIdentity(tfm)) { *this = m; return *this; }
+  if (SbMatrixP::isIdentity(tfm)) { *this = m; return *this; }
 
   SbMat tmp;
   (void)memcpy(tmp, tfm, 4*4*sizeof(float));
@@ -1056,9 +1081,9 @@ SbMatrix::multLeft(const SbMatrix & m)
   // matrix.  See also code comments at the start of
   // SbMatrix::multRight().
   const SbMat & mfm = m.matrix;
-  if (SbMatrix_isIdentity(mfm)) { return *this; }
+  if (SbMatrixP::isIdentity(mfm)) { return *this; }
   SbMat & tfm = this->matrix;
-  if (SbMatrix_isIdentity(tfm)) { *this = m; return *this; }
+  if (SbMatrixP::isIdentity(tfm)) { *this = m; return *this; }
 
   SbMat tmp;
   (void)memcpy(tmp, tfm, 4*4*sizeof(float));
@@ -1087,7 +1112,7 @@ SbMatrix::multMatrixVec(const SbVec3f & src, SbVec3f & dst) const
 {
   // Checks if the "this" matrix is equal to the identity matrix.  See
   // also code comments at the start of SbMatrix::multRight().
-  if (SbMatrix_isIdentity(this->matrix)) { dst = src; return; }
+  if (SbMatrixP::isIdentity(this->matrix)) { dst = src; return; }
 
   const float * t0 = (*this)[0];
   const float * t1 = (*this)[1];
@@ -1121,7 +1146,7 @@ SbMatrix::multVecMatrix(const SbVec3f & src, SbVec3f & dst) const
 {
   // Checks if the "this" matrix is equal to the identity matrix.  See
   // also code comments at the start of SbMatrix::multRight().
-  if (SbMatrix_isIdentity(this->matrix)) { dst = src; return; }
+  if (SbMatrixP::isIdentity(this->matrix)) { dst = src; return; }
 
   const float * t0 = this->matrix[0];
   const float * t1 = this->matrix[1];
@@ -1145,7 +1170,7 @@ SbMatrix::multVecMatrix(const SbVec4f & src, SbVec4f & dst) const
 {
   // Checks if the "this" matrix is equal to the identity matrix.  See
   // also code comments at the start of SbMatrix::multRight().
-  if (SbMatrix_isIdentity(this->matrix)) { dst = src; return; }
+  if (SbMatrixP::isIdentity(this->matrix)) { dst = src; return; }
 
   const float * t0 = (*this)[0];
   const float * t1 = (*this)[1];
@@ -1175,7 +1200,7 @@ SbMatrix::multDirMatrix(const SbVec3f & src, SbVec3f & dst) const
 {
   // Checks if the "this" matrix is equal to the identity matrix.  See
   // also code comments at the start of SbMatrix::multRight().
-  if (SbMatrix_isIdentity(this->matrix)) { dst = src; return; }
+  if (SbMatrixP::isIdentity(this->matrix)) { dst = src; return; }
 
   const float * t0 = (*this)[0];
   const float * t1 = (*this)[1];
@@ -1238,23 +1263,23 @@ SbMatrix::print(FILE * fp) const
 /******* Matrix Preliminaries *******/
 
 /** Fill out 3x3 matrix to 4x4 **/
-#define mat_pad(A) (A[W][X]=A[X][W]=A[W][Y]=A[Y][W]=A[W][Z]=A[Z][W]=0, A[W][W]=1)
+#define sp_mat_pad(A) (A[W][X]=A[X][W]=A[W][Y]=A[Y][W]=A[W][Z]=A[Z][W]=0, A[W][W]=1)
 
 /** Copy nxn matrix A to C using "gets" for assignment **/
-#define mat_copy(C, gets, A, n) {int i, j; for (i=0;i<n;i++) for (j=0;j<n;j++)\
+#define sp_mat_copy(C, gets, A, n) {int i, j; for (i=0;i<n;i++) for (j=0;j<n;j++)\
     C[i][j] gets (A[i][j]);}
 
 /** Copy transpose of nxn matrix A to C using "gets" for assignment **/
-#define mat_tpose(AT, gets, A, n) {int i, j; for (i=0;i<n;i++) for (j=0;j<n;j++)\
+#define sp_mat_tpose(AT, gets, A, n) {int i, j; for (i=0;i<n;i++) for (j=0;j<n;j++)\
     AT[i][j] gets (A[j][i]);}
 
 /** Assign nxn matrix C the element-wise combination of A and B using "op" **/
-#define mat_binop(C, gets, A, op, B, n) {int i, j; for (i=0;i<n;i++) for (j=0;j<n;j++)\
+#define sp_mat_binop(C, gets, A, op, B, n) {int i, j; for (i=0;i<n;i++) for (j=0;j<n;j++)\
     C[i][j] gets (A[i][j]) op (B[i][j]);}
 
 /** Multiply the upper left 3x3 parts of A and B to get AB **/
-static void
-mat_mult(HMatrix A, HMatrix B, HMatrix AB)
+void
+SbMatrixP::mat_mult(SbMatrixP::HMatrix A, SbMatrixP::HMatrix B, SbMatrixP::HMatrix AB)
 {
   int i, j;
   for (i=0; i<3; i++) for (j=0; j<3; j++)
@@ -1262,15 +1287,15 @@ mat_mult(HMatrix A, HMatrix B, HMatrix AB)
 }
 
 /** Return dot product of length 3 vectors va and vb **/
-static float
-vdot(float * va, float * vb)
+float
+SbMatrixP::vdot(float * va, float * vb)
 {
   return (va[0]*vb[0] + va[1]*vb[1] + va[2]*vb[2]);
 }
 
 /** Set v to cross product of length 3 vectors va and vb **/
-static void
-vcross(float * va, float * vb, float * v)
+void
+SbMatrixP::vcross(float * va, float * vb, float * v)
 {
   v[0] = va[1]*vb[2] - va[2]*vb[1];
   v[1] = va[2]*vb[0] - va[0]*vb[2];
@@ -1278,8 +1303,8 @@ vcross(float * va, float * vb, float * v)
 }
 
 /** Set MadjT to transpose of inverse of M times determinant of M **/
-static void
-adjoint_transpose(HMatrix M, HMatrix MadjT)
+void
+SbMatrixP::adjoint_transpose(SbMatrixP::HMatrix M, SbMatrixP::HMatrix MadjT)
 {
   vcross(M[1], M[2], MadjT[0]);
   vcross(M[2], M[0], MadjT[1]);
@@ -1288,11 +1313,9 @@ adjoint_transpose(HMatrix M, HMatrix MadjT)
 
 /******* Decomp Auxiliaries *******/
 
-static HMatrix mat_id = {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
-
 /** Compute either the 1 or infinity norm of M, depending on tpose **/
-static float
-mat_norm(HMatrix M, int tpose)
+float
+SbMatrixP::mat_norm(SbMatrixP::HMatrix M, int tpose)
 {
   int i;
   float sum, max;
@@ -1305,12 +1328,9 @@ mat_norm(HMatrix M, int tpose)
   return max;
 }
 
-static float norm_inf(HMatrix M) {return mat_norm(M, 0);}
-static float norm_one(HMatrix M) {return mat_norm(M, 1);}
-
 /** Return index of column of M containing maximum abs entry, or -1 if M=0 **/
-static int
-find_max_col(HMatrix M)
+int
+SbMatrixP::find_max_col(SbMatrixP::HMatrix M)
 {
   float abs, max;
   int i, j, col;
@@ -1323,8 +1343,8 @@ find_max_col(HMatrix M)
 }
 
 /** Setup u for Household reflection to zero all v components but first **/
-static void
-make_reflector(float * v, float * u)
+void
+SbMatrixP::make_reflector(float * v, float * u)
 {
   float s = (float)sqrt(vdot(v, v));
   u[0] = v[0]; u[1] = v[1];
@@ -1334,8 +1354,8 @@ make_reflector(float * v, float * u)
 }
 
 /** Apply Householder reflection represented by u to column vectors of M **/
-static void
-reflect_cols(HMatrix M, float * u)
+void
+SbMatrixP::reflect_cols(SbMatrixP::HMatrix M, float * u)
 {
   int i, j;
   for (i=0; i<3; i++) {
@@ -1344,8 +1364,8 @@ reflect_cols(HMatrix M, float * u)
   }
 }
 /** Apply Householder reflection represented by u to row vectors of M **/
-static void
-reflect_rows(HMatrix M, float * u)
+void
+SbMatrixP::reflect_rows(SbMatrixP::HMatrix M, float * u)
 {
   int i, j;
   for (i=0; i<3; i++) {
@@ -1355,12 +1375,12 @@ reflect_rows(HMatrix M, float * u)
 }
 
 /** Find orthogonal factor Q of rank 1 (or less) M **/
-static void
-do_rank1(HMatrix M, HMatrix Q)
+void
+SbMatrixP::do_rank1(SbMatrixP::HMatrix M, SbMatrixP::HMatrix Q)
 {
   float v1[3], v2[3], s;
   int col;
-  mat_copy(Q, =, mat_id, 4);
+  sp_mat_copy(Q, =, mat_id, 4);
   /* If rank(M) is 1, we should find a non-zero column in M */
   col = find_max_col(M);
   if (col<0) return; /* Rank is 0 */
@@ -1374,8 +1394,8 @@ do_rank1(HMatrix M, HMatrix Q)
 }
 
 /** Find orthogonal factor Q of rank 2 (or less) M using adjoint transpose **/
-static void
-do_rank2(HMatrix M, HMatrix MadjT, HMatrix Q)
+void
+SbMatrixP::do_rank2(SbMatrixP::HMatrix M, SbMatrixP::HMatrix MadjT, SbMatrixP::HMatrix Q)
 {
   float v1[3], v2[3];
   float w, x, y, z, c, s, d;
@@ -1409,14 +1429,14 @@ do_rank2(HMatrix M, HMatrix MadjT, HMatrix Q)
  * Technical Report 88-942, October 1988,
  * Department of Computer Science, Cornell University.
  */
-static float
-polar_decomp(HMatrix M, HMatrix Q, HMatrix S)
+float
+SbMatrixP::polar_decomp(SbMatrixP::HMatrix M, SbMatrixP::HMatrix Q, SbMatrixP::HMatrix S)
 {
 #define TOL 1.0e-6
-  HMatrix Mk, MadjTk, Ek;
+  SbMatrixP::HMatrix Mk, MadjTk, Ek;
   float det, M_one, M_inf, MadjT_one, MadjT_inf, E_one, gamma, g1, g2;
   int i, j;
-  mat_tpose(Mk, =, M, 3);
+  sp_mat_tpose(Mk, =, M, 3);
   M_one = norm_one(Mk);  M_inf = norm_inf(Mk);
   do {
     adjoint_transpose(Mk, MadjTk);
@@ -1426,17 +1446,19 @@ polar_decomp(HMatrix M, HMatrix Q, HMatrix S)
     gamma = (float)sqrt(sqrt((MadjT_one*MadjT_inf)/(M_one*M_inf))/fabs(det));
     g1 = gamma*0.5f;
     g2 = 0.5f/(gamma*det);
-    mat_copy(Ek, =, Mk, 3);
-    mat_binop(Mk, =, g1*Mk, +, g2*MadjTk, 3);
-    mat_copy(Ek, -=, Mk, 3);
+    sp_mat_copy(Ek, =, Mk, 3);
+    sp_mat_binop(Mk, =, g1*Mk, +, g2*MadjTk, 3);
+    sp_mat_copy(Ek, -=, Mk, 3);
     E_one = norm_one(Ek);
     M_one = norm_one(Mk);  M_inf = norm_inf(Mk);
   } while (E_one>(M_one*TOL));
-  mat_tpose(Q, =, Mk, 3); mat_pad(Q);
-  mat_mult(Mk, M, S);    mat_pad(S);
+  sp_mat_tpose(Q, =, Mk, 3); sp_mat_pad(Q);
+  SbMatrixP::mat_mult(Mk, M, S);    sp_mat_pad(S);
   for (i=0; i<3; i++) for (j=i; j<3; j++)
     S[i][j] = S[j][i] = 0.5f*(S[i][j]+S[j][i]);
   return (det);
+
+#undef TOL
 }
 
 /******* Spectral Decomposition *******/
@@ -1446,15 +1468,15 @@ polar_decomp(HMatrix M, HMatrix Q, HMatrix S)
  * matrix of the scale factors, then S = U K (U transpose). Uses Jacobi method.
  * See Gene H. Golub and Charles F. Van Loan. Matrix Computations. Hopkins 1983.
  */
-static SbVec4f
-spect_decomp(HMatrix S, HMatrix U)
+SbVec4f
+SbMatrixP::spect_decomp(SbMatrixP::HMatrix S, SbMatrixP::HMatrix U)
 {
   SbVec4f kv;
   double Diag[3], OffD[3]; /* OffD is off-diag (by omitted index) */
   double g, h, fabsh, fabsOffDi, t, theta, c, s, tau, ta, OffDq;
   static char nxt[] = {Y, Z, X};
   int sweep, i, j;
-  mat_copy(U, =, mat_id, 4);
+  sp_mat_copy(U, =, mat_id, 4);
   Diag[X] = S[X][X]; Diag[Y] = S[Y][Y]; Diag[Z] = S[Z][Z];
   OffD[X] = S[Y][Z]; OffD[Y] = S[Z][X]; OffD[Z] = S[X][Y];
   for (sweep=20; sweep>0; sweep--) {
@@ -1569,8 +1591,8 @@ spect_decomp(HMatrix S, HMatrix U)
  * See Ken Shoemake and Tom Duff. Matrix Animation and Polar Decomposition.
  * Proceedings of Graphics Interface 1992. Details on p. 262-263.
  */
-static SbRotation
-snuggle(SbRotation q, SbVec4f & k)
+SbRotation
+SbMatrixP::snuggle(SbRotation q, SbVec4f & k)
 {
 #define SQRTHALF (0.7071067811865475244f)
 #define sgn(n, v)    ((n)?-(v):(v))
@@ -1657,6 +1679,11 @@ snuggle(SbRotation q, SbVec4f & k)
   }
   k[X] = ka[X]; k[Y] = ka[Y]; k[Z] = ka[Z];
   return (p);
+
+#undef SQRTHALF
+#undef sgn
+#undef swap
+#undef cycle
 }
 
 /******* Decompose Affine Matrix *******/
@@ -1668,15 +1695,15 @@ snuggle(SbRotation q, SbVec4f & k)
  * See Ken Shoemake and Tom Duff. Matrix Animation and Polar Decomposition.
  * Proceedings of Graphics Interface 1992.
  */
-static void
-decomp_affine(HMatrix A, AffineParts * parts)
+void
+SbMatrixP::decomp_affine(SbMatrixP::HMatrix A, SbMatrixP::AffineParts * parts)
 {
-  HMatrix Q, S, U;
+  SbMatrixP::HMatrix Q, S, U;
   SbRotation p;
   parts->t = SbVec4f(A[X][W], A[Y][W], A[Z][W], 0);
   float det = polar_decomp(A, Q, S);
   if (det<0.0) {
-    mat_copy(Q, =, -Q, 3);
+    sp_mat_copy(Q, =, -Q, 3);
     parts->f = -1;
   }
   else parts->f = 1;
@@ -1693,3 +1720,8 @@ decomp_affine(HMatrix A, AffineParts * parts)
   p = snuggle(parts->u, parts->k);
   parts->u = p * parts->u;
 }
+
+#undef sp_mat_pad
+#undef sp_mat_copy
+#undef sp_mat_tpose
+#undef sp_mat_binop
