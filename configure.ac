@@ -305,15 +305,6 @@ AC_LANG(C)
 # and enable_shared flags are set up. 20030324 mortene.
 AC_PROG_LIBTOOL
 
-if test x"$sim_ac_macosx_10_2ff" = x"true"; then
-  # Libtool 1.5 supports two-level namespace builds only if the
-  # MACOSX_DEPLOYMENT_TARGET=10.3 environment variable is set. We don't 
-  # want to do that though for compatibility reasons, so we just reset the 
-  # allow_undefined_flag set by libtool here, and set up our own options 
-  # later in src/Makefile.am kyrah 20050314
-  allow_undefined_flag=""
-fi
-
 # **************************************************************************
 #  These are used for constructing the coin-config file.
 AC_SUBST([COIN_EXTRA_CPPFLAGS], [$CPPFLAGS])
