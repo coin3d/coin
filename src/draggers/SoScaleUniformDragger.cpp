@@ -94,7 +94,13 @@ SoScaleUniformDragger::SoScaleUniformDragger(void)
 
 }
 
+/*!
+  Protected destructor.
 
+  (Dragger classes are derived from SoBase, so they are reference
+  counted and automatically destroyed when their reference count goes
+  to 0.)
+ */
 SoScaleUniformDragger::~SoScaleUniformDragger()
 {
   delete this->lineProj;

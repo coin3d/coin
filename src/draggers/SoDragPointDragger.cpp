@@ -21,9 +21,10 @@
   \class SoDragPointDragger SoDragPointDragger.h Inventor/draggers/SoDragPointDragger.h
   \brief The SoDragPointDragger class is (FIXME: doc)
   \ingroup draggers
-
-  FIXME: document class
 */
+// FIXME: document class properly. Should include a diagram of the
+// catalog structure. Plus a link to the default geometry-file?
+// 20010909 mortene.
 
 #include <Inventor/draggers/SoDragPointDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
@@ -43,13 +44,16 @@
 
 SO_KIT_SOURCE(SoDragPointDragger);
 
-
+// Doc in superclass.
 void
 SoDragPointDragger::initClass(void)
 {
   SO_KIT_INTERNAL_INIT_CLASS(SoDragPointDragger);
 }
 
+/*!
+  FIXME: doc
+ */
 SoDragPointDragger::SoDragPointDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoDragPointDragger);
@@ -156,12 +160,19 @@ SoDragPointDragger::SoDragPointDragger(void)
   this->setUpConnections(TRUE, TRUE);
 }
 
+/*!
+  Protected destructor.
 
+  (Dragger classes are derived from SoBase, so they are reference
+  counted and automatically destroyed when their reference count goes
+  to 0.)
+ */
 SoDragPointDragger::~SoDragPointDragger()
 {
   delete this->fieldSensor;
 }
 
+// doc in super
 SbBool
 SoDragPointDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {

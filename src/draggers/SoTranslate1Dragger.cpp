@@ -100,7 +100,13 @@ SoTranslate1Dragger::SoTranslate1Dragger(void)
   this->setUpConnections(TRUE, TRUE);
 }
 
+/*!
+  Protected destructor.
 
+  (Dragger classes are derived from SoBase, so they are reference
+  counted and automatically destroyed when their reference count goes
+  to 0.)
+ */
 SoTranslate1Dragger::~SoTranslate1Dragger()
 {
   delete this->lineProj;

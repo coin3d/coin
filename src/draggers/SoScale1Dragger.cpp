@@ -93,7 +93,13 @@ SoScale1Dragger::SoScale1Dragger(void)
   this->setUpConnections(TRUE, TRUE);
 }
 
+/*!
+  Protected destructor.
 
+  (Dragger classes are derived from SoBase, so they are reference
+  counted and automatically destroyed when their reference count goes
+  to 0.)
+ */
 SoScale1Dragger::~SoScale1Dragger()
 {
   delete this->lineProj;

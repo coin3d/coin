@@ -92,7 +92,13 @@ SoRotateSphericalDragger::SoRotateSphericalDragger(void)
   this->setUpConnections(TRUE, TRUE);
 }
 
+/*!
+  Protected destructor.
 
+  (Dragger classes are derived from SoBase, so they are reference
+  counted and automatically destroyed when their reference count goes
+  to 0.)
+ */
 SoRotateSphericalDragger::~SoRotateSphericalDragger()
 {
   delete this->fieldSensor;

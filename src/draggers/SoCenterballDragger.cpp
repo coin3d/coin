@@ -146,8 +146,12 @@ SoCenterballDragger::SoCenterballDragger(void)
 }
 
 /*!
-  Destructor.
-*/
+  Protected destructor.
+
+  (Dragger classes are derived from SoBase, so they are reference
+  counted and automatically destroyed when their reference count goes
+  to 0.)
+ */
 SoCenterballDragger::~SoCenterballDragger()
 {
   delete this->rotFieldSensor;

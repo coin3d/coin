@@ -225,7 +225,7 @@ SoDragger::SoDragger(void)
 }
 
 /*!
-  The destructor.
+  Virtual protected destructor.
 */
 SoDragger::~SoDragger()
 {
