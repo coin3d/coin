@@ -24,6 +24,7 @@
 #include <GLUWrapper.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/glue/dl.h>
+#include <Inventor/C/errors/debugerror.h>
 
 #include <assert.h>
 #include <../tidbits.h>
@@ -73,14 +74,6 @@ GLUWrapper_set_version(const GLubyte * versionstr)
   GLU_instance->version.minor = 0;
   GLU_instance->version.release = 0;
 
-  /* FIXME: convert to cc_debugerror(). 20021015 mortene. */
-#if 0 /* debug */
-#if _WIN32
-#error fprintf() in an MSWindows DLL is bad.
-#endif /* _WIN32 */
-  (void)fprintf(stderr, "GLU version string: \"%s\"\n", versionstr);
-  (void)fflush(stderr);
-#endif /* debug */
   (void)strncpy(buffer, (const char *)versionstr, 255);
   buffer[255] = '\0'; /* strncpy() will not null-terminate if strlen > 255 */
   dotptr = strchr(buffer, '.');
@@ -111,10 +104,8 @@ GLUWrapper_set_version(const GLubyte * versionstr)
     }
   }
   else {
-    /* FIXME: fix when C-versions of the So*Error classes are in place.
-       20020514 mortene. */
-/*     SoDebugError::post("GLUWrapper_set_version", */
-/*                        "Invalid GLU versionstring: \"%s\"\n", versionstr); */
+    cc_debugerror_post("GLUWrapper_set_version",
+                       "Invalid GLU versionstring: \"%s\"\n", versionstr);
   }
 
   { /* Run-time help for debugging GLU problems on remote sites. */
@@ -122,16 +113,14 @@ GLUWrapper_set_version(const GLubyte * versionstr)
     const char * env = coin_getenv("COIN_DEBUG_GLU_INFO");
     if (env) { COIN_DEBUG_GLU_INFO = atoi(env); }
     if (COIN_DEBUG_GLU_INFO) {
-      /* FIXME: remove printfs when C-versions of the So*Error classes
-         are in place.  20020514 mortene. */
-      (void)printf("gluGetString(GLU_VERSION)=='%s' (=> %d.%d.%d)\n",
-                   GLU_instance->gluGetString(GLU_VERSION),
-                   GLU_instance->version.major,
-                   GLU_instance->version.minor,
-                   GLU_instance->version.release);
+      cc_debugerror_postinfo("gluGetString(GLU_VERSION)=='%s' (=> %d.%d.%d)\n",
+                             GLU_instance->gluGetString(GLU_VERSION),
+                             GLU_instance->version.major,
+                             GLU_instance->version.minor,
+                             GLU_instance->version.release);
 
-      (void)printf("gluGetString(GLU_EXTENSIONS)=='%s'\n",
-                   GLU_instance->gluGetString(GLU_EXTENSIONS));
+      cc_debugerror_postinfo("gluGetString(GLU_EXTENSIONS)=='%s'\n",
+                             GLU_instance->gluGetString(GLU_EXTENSIONS));
     }
   }
 }
