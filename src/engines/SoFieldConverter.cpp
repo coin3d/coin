@@ -88,6 +88,9 @@ SoFieldConverter::getConnectedInput(void)
   // method and that this implementation does the correct
   // thing. 20000409 mortene.
 
+  // FIXME: should it perhaps return the field connected to the
+  // output? 20000412 mortene.
+
   SoTypeList l;
   (void)SoType::getAllDerivedFrom(SoField::getClassTypeId(), l);
 
@@ -111,10 +114,10 @@ SoFieldConverter::getForwardConnections(SoFieldList & l) const
 {
   const SoEngineOutputData * outputs = this->getOutputData();
   assert(outputs && outputs->getNumOutputs() == 1);
-  
+
   SoEngineOutput * output = outputs->getOutput(this, 0);
   assert(output);
-  
+
   int n = output->getNumConnections();
   for (int i = 0; i < n; i++) l.append((*output)[i]);
   return n;
