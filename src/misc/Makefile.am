@@ -36,26 +36,26 @@ RegularSources = \
 LinkHackSources = \
 	all.cpp
 PublicHeaders = \
-	$(top_srcdir)/include/Inventor/misc/SoAuditorList.h \
-	$(top_srcdir)/include/Inventor/misc/SoBase.h \
-	$(top_srcdir)/include/Inventor/misc/SoBasic.h \
-	$(top_srcdir)/include/Inventor/misc/SoByteStream.h \
-	$(top_srcdir)/include/Inventor/misc/SoCallbackList.h \
-	$(top_srcdir)/include/Inventor/misc/SoChildList.h \
-	$(top_srcdir)/include/Inventor/misc/SoNormalGenerator.h \
-	$(top_srcdir)/include/Inventor/misc/SoNotification.h \
-	$(top_srcdir)/include/Inventor/misc/SoTranReceiver.h \
-	$(top_srcdir)/include/Inventor/misc/SoState.h \
-	$(top_srcdir)/include/Inventor/misc/SoTranscribe.h \
-	$(top_srcdir)/include/Inventor/misc/SoTranSender.h \
-	$(top_srcdir)/include/Inventor/misc/SoLightPath.h \
-	$(top_srcdir)/include/Inventor/misc/SoTempPath.h
+	../../include/Inventor/misc/SoAuditorList.h \
+	../../include/Inventor/misc/SoBase.h \
+	../../include/Inventor/misc/SoBasic.h \
+	../../include/Inventor/misc/SoByteStream.h \
+	../../include/Inventor/misc/SoCallbackList.h \
+	../../include/Inventor/misc/SoChildList.h \
+	../../include/Inventor/misc/SoNormalGenerator.h \
+	../../include/Inventor/misc/SoNotification.h \
+	../../include/Inventor/misc/SoTranReceiver.h \
+	../../include/Inventor/misc/SoState.h \
+	../../include/Inventor/misc/SoTranscribe.h \
+	../../include/Inventor/misc/SoTranSender.h \
+	../../include/Inventor/misc/SoLightPath.h \
+	../../include/Inventor/misc/SoTempPath.h
 PrivateHeaders = \
-	$(top_srcdir)/include/Inventor/misc/SoGL.h \
-	$(top_srcdir)/include/Inventor/misc/SoGLImage.h \
-	$(top_srcdir)/include/Inventor/misc/SoGLBigImage.h \
-	$(top_srcdir)/include/Inventor/misc/SoGlyph.h \
-	$(top_srcdir)/include/Inventor/misc/SoGenerate.h \
+	../../include/Inventor/misc/SoGL.h \
+	../../include/Inventor/misc/SoGLImage.h \
+	../../include/Inventor/misc/SoGLBigImage.h \
+	../../include/Inventor/misc/SoGlyph.h \
+	../../include/Inventor/misc/SoGenerate.h \
 	GLUWrapper.h \
 	simage_wrapper.h \
 	SoGLFaceSetTemplate.cpp \

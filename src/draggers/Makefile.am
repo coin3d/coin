@@ -27,28 +27,28 @@ RegularSources = \
 LinkHackSources = \
 	all.cpp
 PublicHeaders = \
-	$(top_srcdir)/include/Inventor/draggers/SoDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoCenterballDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoDirectionalLightDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoDragPointDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoHandleBoxDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoJackDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoPointLightDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoRotateCylindricalDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoRotateDiscDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoRotateSphericalDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoScale1Dragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoScale2Dragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoScale2UniformDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoScaleUniformDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoSpotLightDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoTabBoxDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoTabPlaneDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoTrackballDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoTransformBoxDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoTransformerDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoTranslate1Dragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoTranslate2Dragger.h
+	../../include/Inventor/draggers/SoDragger.h \
+	../../include/Inventor/draggers/SoCenterballDragger.h \
+	../../include/Inventor/draggers/SoDirectionalLightDragger.h \
+	../../include/Inventor/draggers/SoDragPointDragger.h \
+	../../include/Inventor/draggers/SoHandleBoxDragger.h \
+	../../include/Inventor/draggers/SoJackDragger.h \
+	../../include/Inventor/draggers/SoPointLightDragger.h \
+	../../include/Inventor/draggers/SoRotateCylindricalDragger.h \
+	../../include/Inventor/draggers/SoRotateDiscDragger.h \
+	../../include/Inventor/draggers/SoRotateSphericalDragger.h \
+	../../include/Inventor/draggers/SoScale1Dragger.h \
+	../../include/Inventor/draggers/SoScale2Dragger.h \
+	../../include/Inventor/draggers/SoScale2UniformDragger.h \
+	../../include/Inventor/draggers/SoScaleUniformDragger.h \
+	../../include/Inventor/draggers/SoSpotLightDragger.h \
+	../../include/Inventor/draggers/SoTabBoxDragger.h \
+	../../include/Inventor/draggers/SoTabPlaneDragger.h \
+	../../include/Inventor/draggers/SoTrackballDragger.h \
+	../../include/Inventor/draggers/SoTransformBoxDragger.h \
+	../../include/Inventor/draggers/SoTransformerDragger.h \
+	../../include/Inventor/draggers/SoTranslate1Dragger.h \
+	../../include/Inventor/draggers/SoTranslate2Dragger.h
 PrivateHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(draggers)

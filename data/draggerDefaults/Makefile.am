@@ -26,6 +26,9 @@ BUILT_SOURCES = \
 	transformerDragger.h \
 	transformBoxDragger.h
 
+DISTCLEANFILES = \
+	$(BUILT_SOURCES)
+
 draggerdefdatadir = $(datadir)/Coin/draggerDefaults
 dist_draggerdefdata_DATA = \
 	translate1Dragger.iv \
@@ -58,7 +61,7 @@ EXTRA_DIST = \
 	iv2h.sh
 
 # This is necessary to include so the headers are actually built.
-Makefile: $(BUILT_SOURCES)
+all-local: $(BUILT_SOURCES)
 
 # **************************************************************************
 

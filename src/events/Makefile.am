@@ -12,15 +12,15 @@ RegularSources = \
 LinkHackSources = \
 	all.cpp
 PublicHeaders = \
-	$(top_srcdir)/include/Inventor/events/SoSubEvent.h \
-	$(top_srcdir)/include/Inventor/events/SoButtonEvent.h \
-	$(top_srcdir)/include/Inventor/events/SoEvent.h \
-	$(top_srcdir)/include/Inventor/events/SoEvents.h \
-	$(top_srcdir)/include/Inventor/events/SoKeyboardEvent.h \
-	$(top_srcdir)/include/Inventor/events/SoLocation2Event.h \
-	$(top_srcdir)/include/Inventor/events/SoMotion3Event.h \
-	$(top_srcdir)/include/Inventor/events/SoMouseButtonEvent.h \
-	$(top_srcdir)/include/Inventor/events/SoSpaceballButtonEvent.h
+	../../include/Inventor/events/SoSubEvent.h \
+	../../include/Inventor/events/SoButtonEvent.h \
+	../../include/Inventor/events/SoEvent.h \
+	../../include/Inventor/events/SoEvents.h \
+	../../include/Inventor/events/SoKeyboardEvent.h \
+	../../include/Inventor/events/SoLocation2Event.h \
+	../../include/Inventor/events/SoMotion3Event.h \
+	../../include/Inventor/events/SoMouseButtonEvent.h \
+	../../include/Inventor/events/SoSpaceballButtonEvent.h
 PrivateHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(events)

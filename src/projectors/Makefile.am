@@ -16,18 +16,18 @@ RegularSources = \
 LinkHackSources = \
 	all.cpp
 PublicHeaders = \
-	$(top_srcdir)/include/Inventor/projectors/SbProjectors.h \
-	$(top_srcdir)/include/Inventor/projectors/SbCylinderPlaneProjector.h \
-	$(top_srcdir)/include/Inventor/projectors/SbCylinderProjector.h \
-	$(top_srcdir)/include/Inventor/projectors/SbCylinderSectionProjector.h \
-	$(top_srcdir)/include/Inventor/projectors/SbCylinderSheetProjector.h \
-	$(top_srcdir)/include/Inventor/projectors/SbLineProjector.h \
-	$(top_srcdir)/include/Inventor/projectors/SbPlaneProjector.h \
-	$(top_srcdir)/include/Inventor/projectors/SbProjector.h \
-	$(top_srcdir)/include/Inventor/projectors/SbSpherePlaneProjector.h \
-	$(top_srcdir)/include/Inventor/projectors/SbSphereProjector.h \
-	$(top_srcdir)/include/Inventor/projectors/SbSphereSectionProjector.h \
-	$(top_srcdir)/include/Inventor/projectors/SbSphereSheetProjector.h
+	../../include/Inventor/projectors/SbProjectors.h \
+	../../include/Inventor/projectors/SbCylinderPlaneProjector.h \
+	../../include/Inventor/projectors/SbCylinderProjector.h \
+	../../include/Inventor/projectors/SbCylinderSectionProjector.h \
+	../../include/Inventor/projectors/SbCylinderSheetProjector.h \
+	../../include/Inventor/projectors/SbLineProjector.h \
+	../../include/Inventor/projectors/SbPlaneProjector.h \
+	../../include/Inventor/projectors/SbProjector.h \
+	../../include/Inventor/projectors/SbSpherePlaneProjector.h \
+	../../include/Inventor/projectors/SbSphereProjector.h \
+	../../include/Inventor/projectors/SbSphereSectionProjector.h \
+	../../include/Inventor/projectors/SbSphereSheetProjector.h
 PrivateHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(projectors)

@@ -17,19 +17,19 @@ RegularSources = \
 LinkHackSources = \
 	all.cpp
 PublicHeaders = \
-	$(top_srcdir)/include/Inventor/sensors/SoSensors.h \
-	$(top_srcdir)/include/Inventor/sensors/SoAlarmSensor.h \
-	$(top_srcdir)/include/Inventor/sensors/SoDataSensor.h \
-	$(top_srcdir)/include/Inventor/sensors/SoDelayQueueSensor.h \
-	$(top_srcdir)/include/Inventor/sensors/SoFieldSensor.h \
-	$(top_srcdir)/include/Inventor/sensors/SoIdleSensor.h \
-	$(top_srcdir)/include/Inventor/sensors/SoNodeSensor.h \
-	$(top_srcdir)/include/Inventor/sensors/SoOneShotSensor.h \
-	$(top_srcdir)/include/Inventor/sensors/SoPathSensor.h \
-	$(top_srcdir)/include/Inventor/sensors/SoSensor.h \
-	$(top_srcdir)/include/Inventor/sensors/SoSensorManager.h \
-	$(top_srcdir)/include/Inventor/sensors/SoTimerQueueSensor.h \
-	$(top_srcdir)/include/Inventor/sensors/SoTimerSensor.h
+	../../include/Inventor/sensors/SoSensors.h \
+	../../include/Inventor/sensors/SoAlarmSensor.h \
+	../../include/Inventor/sensors/SoDataSensor.h \
+	../../include/Inventor/sensors/SoDelayQueueSensor.h \
+	../../include/Inventor/sensors/SoFieldSensor.h \
+	../../include/Inventor/sensors/SoIdleSensor.h \
+	../../include/Inventor/sensors/SoNodeSensor.h \
+	../../include/Inventor/sensors/SoOneShotSensor.h \
+	../../include/Inventor/sensors/SoPathSensor.h \
+	../../include/Inventor/sensors/SoSensor.h \
+	../../include/Inventor/sensors/SoSensorManager.h \
+	../../include/Inventor/sensors/SoTimerQueueSensor.h \
+	../../include/Inventor/sensors/SoTimerSensor.h
 PrivateHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(sensors)

@@ -12,13 +12,13 @@ RegularSources = \
 LinkHackSources = \
 	all.cpp
 PublicHeaders = \
-	$(top_srcdir)/include/Inventor/caches/SoBoundingBoxCache.h \
-	$(top_srcdir)/include/Inventor/caches/SoCache.h \
-	$(top_srcdir)/include/Inventor/caches/SoConvexDataCache.h \
-	$(top_srcdir)/include/Inventor/caches/SoGLCacheList.h \
-	$(top_srcdir)/include/Inventor/caches/SoGLRenderCache.h \
-	$(top_srcdir)/include/Inventor/caches/SoNormalCache.h \
-	$(top_srcdir)/include/Inventor/caches/SoTextureCoordinateCache.h
+	../../include/Inventor/caches/SoBoundingBoxCache.h \
+	../../include/Inventor/caches/SoCache.h \
+	../../include/Inventor/caches/SoConvexDataCache.h \
+	../../include/Inventor/caches/SoGLCacheList.h \
+	../../include/Inventor/caches/SoGLRenderCache.h \
+	../../include/Inventor/caches/SoNormalCache.h \
+	../../include/Inventor/caches/SoTextureCoordinateCache.h
 PrivateHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(caches)

@@ -61,51 +61,51 @@ libCoin@SUFFIX@_la_LDFLAGS = \
 # header installation
 libCoinincdir = $(includedir)/Inventor
 libCoininc_HEADERS = \
-	$(top_srcdir)/include/Inventor/SbPList.h \
-	$(top_srcdir)/include/Inventor/So.h \
-	$(top_srcdir)/include/Inventor/SoDB.h \
-	$(top_srcdir)/include/Inventor/SoFullPath.h \
-	$(top_srcdir)/include/Inventor/SoNodeKitPath.h \
-	$(top_srcdir)/include/Inventor/SoInput.h \
-	$(top_srcdir)/include/Inventor/SoInteraction.h \
-	$(top_srcdir)/include/Inventor/SoOffscreenRenderer.h \
-	$(top_srcdir)/include/Inventor/SoOutput.h \
-	$(top_srcdir)/include/Inventor/SoPath.h \
-	$(top_srcdir)/include/Inventor/SoPickedPoint.h \
-	$(top_srcdir)/include/Inventor/SoPrimitiveVertex.h \
-	$(top_srcdir)/include/Inventor/SoSceneManager.h \
-	$(top_srcdir)/include/Inventor/SoType.h \
-	$(top_srcdir)/include/Inventor/Sb.h \
-	$(top_srcdir)/include/Inventor/SbBox.h \
-	$(top_srcdir)/include/Inventor/SbBSPTree.h \
-	$(top_srcdir)/include/Inventor/SbLinear.h \
-	$(top_srcdir)/include/Inventor/SoLists.h \
-	$(top_srcdir)/include/Inventor/SbBox2f.h \
-	$(top_srcdir)/include/Inventor/SbBox2s.h \
-	$(top_srcdir)/include/Inventor/SbBox3f.h \
-	$(top_srcdir)/include/Inventor/SbColor.h \
-	$(top_srcdir)/include/Inventor/SbColor4f.h \
-	$(top_srcdir)/include/Inventor/SbCylinder.h \
-	$(top_srcdir)/include/Inventor/SbDict.h \
-	$(top_srcdir)/include/Inventor/SbHeap.h \
-	$(top_srcdir)/include/Inventor/SbImage.h \
-	$(top_srcdir)/include/Inventor/SbLine.h \
-	$(top_srcdir)/include/Inventor/SbMatrix.h \
-	$(top_srcdir)/include/Inventor/SbName.h \
-	$(top_srcdir)/include/Inventor/SbOctTree.h \
-	$(top_srcdir)/include/Inventor/SbPlane.h \
-	$(top_srcdir)/include/Inventor/SbRotation.h \
-	$(top_srcdir)/include/Inventor/SbSphere.h \
-	$(top_srcdir)/include/Inventor/SbString.h \
-	$(top_srcdir)/include/Inventor/SbTesselator.h \
-	$(top_srcdir)/include/Inventor/SbTime.h \
-	$(top_srcdir)/include/Inventor/SbVec2f.h \
-	$(top_srcdir)/include/Inventor/SbVec2s.h \
-	$(top_srcdir)/include/Inventor/SbVec3f.h \
-	$(top_srcdir)/include/Inventor/SbVec4f.h \
-	$(top_srcdir)/include/Inventor/SbViewVolume.h \
-	$(top_srcdir)/include/Inventor/SbViewportRegion.h \
-	$(top_srcdir)/include/Inventor/SbXfBox3f.h
+	../include/Inventor/SbPList.h \
+	../include/Inventor/So.h \
+	../include/Inventor/SoDB.h \
+	../include/Inventor/SoFullPath.h \
+	../include/Inventor/SoNodeKitPath.h \
+	../include/Inventor/SoInput.h \
+	../include/Inventor/SoInteraction.h \
+	../include/Inventor/SoOffscreenRenderer.h \
+	../include/Inventor/SoOutput.h \
+	../include/Inventor/SoPath.h \
+	../include/Inventor/SoPickedPoint.h \
+	../include/Inventor/SoPrimitiveVertex.h \
+	../include/Inventor/SoSceneManager.h \
+	../include/Inventor/SoType.h \
+	../include/Inventor/Sb.h \
+	../include/Inventor/SbBox.h \
+	../include/Inventor/SbBSPTree.h \
+	../include/Inventor/SbLinear.h \
+	../include/Inventor/SoLists.h \
+	../include/Inventor/SbBox2f.h \
+	../include/Inventor/SbBox2s.h \
+	../include/Inventor/SbBox3f.h \
+	../include/Inventor/SbColor.h \
+	../include/Inventor/SbColor4f.h \
+	../include/Inventor/SbCylinder.h \
+	../include/Inventor/SbDict.h \
+	../include/Inventor/SbHeap.h \
+	../include/Inventor/SbImage.h \
+	../include/Inventor/SbLine.h \
+	../include/Inventor/SbMatrix.h \
+	../include/Inventor/SbName.h \
+	../include/Inventor/SbOctTree.h \
+	../include/Inventor/SbPlane.h \
+	../include/Inventor/SbRotation.h \
+	../include/Inventor/SbSphere.h \
+	../include/Inventor/SbString.h \
+	../include/Inventor/SbTesselator.h \
+	../include/Inventor/SbTime.h \
+	../include/Inventor/SbVec2f.h \
+	../include/Inventor/SbVec2s.h \
+	../include/Inventor/SbVec3f.h \
+	../include/Inventor/SbVec4f.h \
+	../include/Inventor/SbViewVolume.h \
+	../include/Inventor/SbViewportRegion.h \
+	../include/Inventor/SbXfBox3f.h
 
 # **************************************************************************
 
@@ -174,7 +174,7 @@ uninstall-local:
 	done; \
 	baseincdir="$(DESTDIR)$(includedir)/Inventor"; \
 	for dir in \
-	  "$$baseincdir/VRMLNodes" \
+	  "$$baseincdir/VRMLnodes" \
 	  "$$baseincdir/actions" \
 	  "$$baseincdir/base" \
 	  "$$baseincdir/bundles" \

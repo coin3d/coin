@@ -4,8 +4,8 @@
 ## Sources and installation headers.
 
 PublicHeaders = \
-	$(top_srcdir)/include/Inventor/VRMLnodes/SoVRMLInterpOutput.h \
-	$(top_srcdir)/include/Inventor/VRMLnodes/SoVRMLInterpolator.h
+	../../include/Inventor/VRMLnodes/SoVRMLInterpOutput.h \
+	../../include/Inventor/VRMLnodes/SoVRMLInterpolator.h
 PrivateHeaders =
 LinkHackSources = \
 	all.cpp

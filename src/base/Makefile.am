@@ -34,34 +34,34 @@ LinkHackSources = \
 	all.cpp
 PublicHeaders =
 PrivateHeaders = \
-	$(top_srcdir)/include/Inventor/SbBSPTree.h \
-	$(top_srcdir)/include/Inventor/SbBox2f.h \
-	$(top_srcdir)/include/Inventor/SbBox2s.h \
-	$(top_srcdir)/include/Inventor/SbBox3f.h \
-	$(top_srcdir)/include/Inventor/SbClip.h \
-	$(top_srcdir)/include/Inventor/SbColor.h \
-	$(top_srcdir)/include/Inventor/SbColor4f.h \
-	$(top_srcdir)/include/Inventor/SbCylinder.h \
-	$(top_srcdir)/include/Inventor/SbDict.h \
-	$(top_srcdir)/include/Inventor/SbHeap.h \
-	$(top_srcdir)/include/Inventor/SbImage.h \
-	$(top_srcdir)/include/Inventor/SbLine.h \
-	$(top_srcdir)/include/Inventor/SbMatrix.h \
-	$(top_srcdir)/include/Inventor/SbName.h \
-	$(top_srcdir)/include/Inventor/SbOctTree.h \
-	$(top_srcdir)/include/Inventor/SbPlane.h \
-	$(top_srcdir)/include/Inventor/SbRotation.h \
-	$(top_srcdir)/include/Inventor/SbSphere.h \
-	$(top_srcdir)/include/Inventor/SbString.h \
-	$(top_srcdir)/include/Inventor/SbTesselator.h \
-	$(top_srcdir)/include/Inventor/SbTime.h \
-	$(top_srcdir)/include/Inventor/SbVec2f.h \
-	$(top_srcdir)/include/Inventor/SbVec2s.h \
-	$(top_srcdir)/include/Inventor/SbVec3f.h \
-	$(top_srcdir)/include/Inventor/SbVec4f.h \
-	$(top_srcdir)/include/Inventor/SbViewVolume.h \
-	$(top_srcdir)/include/Inventor/SbViewportRegion.h \
-	$(top_srcdir)/include/Inventor/SbXfBox3f.h
+	../../include/Inventor/SbBSPTree.h \
+	../../include/Inventor/SbBox2f.h \
+	../../include/Inventor/SbBox2s.h \
+	../../include/Inventor/SbBox3f.h \
+	../../include/Inventor/SbClip.h \
+	../../include/Inventor/SbColor.h \
+	../../include/Inventor/SbColor4f.h \
+	../../include/Inventor/SbCylinder.h \
+	../../include/Inventor/SbDict.h \
+	../../include/Inventor/SbHeap.h \
+	../../include/Inventor/SbImage.h \
+	../../include/Inventor/SbLine.h \
+	../../include/Inventor/SbMatrix.h \
+	../../include/Inventor/SbName.h \
+	../../include/Inventor/SbOctTree.h \
+	../../include/Inventor/SbPlane.h \
+	../../include/Inventor/SbRotation.h \
+	../../include/Inventor/SbSphere.h \
+	../../include/Inventor/SbString.h \
+	../../include/Inventor/SbTesselator.h \
+	../../include/Inventor/SbTime.h \
+	../../include/Inventor/SbVec2f.h \
+	../../include/Inventor/SbVec2s.h \
+	../../include/Inventor/SbVec3f.h \
+	../../include/Inventor/SbVec4f.h \
+	../../include/Inventor/SbViewVolume.h \
+	../../include/Inventor/SbViewportRegion.h \
+	../../include/Inventor/SbXfBox3f.h
 
 ##$ BEGIN TEMPLATE Make-Common(base)
 

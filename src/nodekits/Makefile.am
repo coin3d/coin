@@ -18,21 +18,21 @@ RegularSources = \
 LinkHackSources = \
 	all.cpp
 PublicHeaders = \
-	$(top_srcdir)/include/Inventor/nodekits/SoSubKit.h \
-	$(top_srcdir)/include/Inventor/nodekits/SoNodeKit.h \
-	$(top_srcdir)/include/Inventor/nodekits/SoNodeKitListPart.h \
-	$(top_srcdir)/include/Inventor/nodekits/SoNodekitCatalog.h \
-	$(top_srcdir)/include/Inventor/nodekits/SoBaseKit.h \
-	$(top_srcdir)/include/Inventor/nodekits/SoAppearanceKit.h \
-	$(top_srcdir)/include/Inventor/nodekits/SoCameraKit.h \
-	$(top_srcdir)/include/Inventor/nodekits/SoInteractionKit.h \
-	$(top_srcdir)/include/Inventor/nodekits/SoLightKit.h \
-	$(top_srcdir)/include/Inventor/nodekits/SoSceneKit.h \
-	$(top_srcdir)/include/Inventor/nodekits/SoSeparatorKit.h \
-	$(top_srcdir)/include/Inventor/nodekits/SoShapeKit.h \
-	$(top_srcdir)/include/Inventor/nodekits/SoWrapperKit.h
+	../../include/Inventor/nodekits/SoSubKit.h \
+	../../include/Inventor/nodekits/SoNodeKit.h \
+	../../include/Inventor/nodekits/SoNodeKitListPart.h \
+	../../include/Inventor/nodekits/SoNodekitCatalog.h \
+	../../include/Inventor/nodekits/SoBaseKit.h \
+	../../include/Inventor/nodekits/SoAppearanceKit.h \
+	../../include/Inventor/nodekits/SoCameraKit.h \
+	../../include/Inventor/nodekits/SoInteractionKit.h \
+	../../include/Inventor/nodekits/SoLightKit.h \
+	../../include/Inventor/nodekits/SoSceneKit.h \
+	../../include/Inventor/nodekits/SoSeparatorKit.h \
+	../../include/Inventor/nodekits/SoShapeKit.h \
+	../../include/Inventor/nodekits/SoWrapperKit.h
 PrivateHeaders = \
-	$(top_srcdir)/include/Inventor/nodekits/SoSubKitP.h
+	../../include/Inventor/nodekits/SoSubKitP.h
 
 ##$ BEGIN TEMPLATE Make-Common(nodekits)
 

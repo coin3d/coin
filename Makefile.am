@@ -5,12 +5,12 @@ SUBDIRS = . include data src build
 dist_bin_SCRIPTS = \
 	coin-config
 
-noinst_SCRIPTS = \
-	cfg/m4/msvccc
-
 BUILT_SOURCES = \
 	include/Inventor/SbBasic.h \
 	include/Inventor/system/inttypes.h \
+	coin-@CONFIG@.cfg
+
+DISTCLEANFILES = \
 	coin-@CONFIG@.cfg
 
 m4datadir = $(datadir)/aclocal
@@ -30,7 +30,9 @@ EXTRA_DIST = \
 	coin.cfg.in \
 	docs/coin.doxygen.in \
 	cfg/doxy4win.pl \
-	cfg/m4/msvccc
+	cfg/ltconfig \
+	cfg/m4/wrapmsvc.cpp \
+	cfg/m4/wrapmsvc.exe
 
 coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
 	@$(SHELL) config.status --file=$@:coin.cfg.in

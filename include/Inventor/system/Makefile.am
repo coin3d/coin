@@ -3,11 +3,14 @@
 BUILT_SOURCES = \
 	inttypes.h
 
+DISTCLEANFILES = \
+	inttypes.h
+
 EXTRA_DIST = \
 	inttypes.h.in
 
 inttypes.h: $(srcdir)/inttypes.h.in
-	@( cd $(top_builddir); $(MAKE) include/Inventor/system/inttypes.h )
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
 # header installation information
 

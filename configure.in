@@ -1,22 +1,22 @@
 # **************************************************************************
 
 # release version number info
-m4_define([COIN_MAJOR], [0])
-m4_define([COIN_MINOR], [9])
-m4_define([COIN_MICRO], [99])
+m4_define([COIN_MAJOR], [1])
+m4_define([COIN_MINOR], [0])
+m4_define([COIN_MICRO], [0])
 
-# FIXME: this setup is incorrect, and must be fixed before Coin 1.0
+# this setup is incorrect, and must be fixed before Coin 1.0
 # libtool ABI version info (see HACKING for setup information)
-m4_define([COIN_ABI_CURRENT], [COIN_MAJOR])
-m4_define([COIN_ABI_REVISION], [m4_eval((COIN_MINOR*100)+COIN_MICRO)])
-m4_define([COIN_ABI_AGE], [0])
+# m4_define([COIN_ABI_CURRENT], [COIN_MAJOR])
+# m4_define([COIN_ABI_REVISION], [m4_eval((COIN_MINOR*100)+COIN_MICRO)])
+# m4_define([COIN_ABI_AGE], [0])
 
 # This is probably a more correct setup, but will be harder to keep if
 # we want major and minor to grow slowly (but is that any point?)
 # 20010807 larsa
-# m4_define([COIN_ABI_CURRENT], [m4_eval((COIN_MAJOR*20)+COIN_MINOR)])
-# m4_define([COIN_ABI_REVISION], [COIN_MICRO])
-# m4_define([COIN_ABI_AGE], [COIN_MINOR])
+m4_define([COIN_ABI_CURRENT], [m4_eval((COIN_MAJOR*20)+COIN_MINOR)])
+m4_define([COIN_ABI_REVISION], [COIN_MICRO])
+m4_define([COIN_ABI_AGE], [COIN_MINOR])
 
 # **************************************************************************
 

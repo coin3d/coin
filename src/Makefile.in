@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4e from Makefile.am.
+# Makefile.in generated automatically by automake 1.4l from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
@@ -10,6 +10,11 @@
 # but WITHOUT ANY WARRANTY, to the extent permitted by law; without
 # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
+
+@SET_MAKE@
+
+# **************************************************************************
+# Process this file with automake to generate Makefile.in.
 
 SHELL = @SHELL@
 
@@ -31,11 +36,9 @@ infodir = @infodir@
 mandir = @mandir@
 includedir = @includedir@
 oldincludedir = /usr/include
-
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
-
 top_builddir = ..
 
 ACLOCAL = @ACLOCAL@
@@ -49,23 +52,18 @@ INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_HEADER = $(INSTALL_DATA)
 transform = @program_transform_name@
-
 NORMAL_INSTALL = :
 PRE_INSTALL = :
 POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-
 build_alias = @build_alias@
 build_triplet = @build@
 host_alias = @host_alias@
 host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
-
-@SET_MAKE@
-AMDEP = @AMDEP@
 AMTAR = @AMTAR@
 AS = @AS@
 AWK = @AWK@
@@ -88,9 +86,9 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+EXEEXT = @EXEEXT@
 HAVE_VRML97 = @HAVE_VRML97@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
-INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
@@ -98,14 +96,18 @@ LT_AGE = @LT_AGE@
 LT_CURRENT = @LT_CURRENT@
 LT_REVISION = @LT_REVISION@
 MAINT = @MAINT@
-MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
-STRIP = @STRIP@
 SUFFIX = @SUFFIX@
 VERSION = @VERSION@
-_am_include = @_am_include@
+X_CFLAGS = @X_CFLAGS@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
+X_LIBS = @X_LIBS@
+X_PRE_LIBS = @X_PRE_LIBS@
+am__include = @am__include@
+am__quote = @am__quote@
 coin_build_dir = @coin_build_dir@
 coin_configure_date = @coin_configure_date@
 coin_html_dir = @coin_html_dir@
@@ -116,9 +118,6 @@ path_tag = @path_tag@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
-
-# **************************************************************************
-# Process this file with automake to generate Makefile.in.
 
 @BUILD_VRML97_TRUE@VRML97DIR = vrml97
 @BUILD_VRML97_FALSE@VRML97DIR = 
@@ -137,6 +136,7 @@ INCLUDES = -I$(top_srcdir)/include
 
 @BUILD_WITH_MSVC_TRUE@lib_LIBRARIES = coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
 @BUILD_WITH_MSVC_FALSE@lib_LTLIBRARIES = libCoin@SUFFIX@.la
+
 @HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_LIBADD = 
 @HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_LIBADD = \
 @HACKING_DYNAMIC_MODULES_FALSE@	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libbase.la \
@@ -174,133 +174,185 @@ libCoin@SUFFIX@_la_LDFLAGS = \
 # header installation
 libCoinincdir = $(includedir)/Inventor
 libCoininc_HEADERS = \
-	$(top_srcdir)/include/Inventor/SbPList.h \
-	$(top_srcdir)/include/Inventor/So.h \
-	$(top_srcdir)/include/Inventor/SoDB.h \
-	$(top_srcdir)/include/Inventor/SoFullPath.h \
-	$(top_srcdir)/include/Inventor/SoNodeKitPath.h \
-	$(top_srcdir)/include/Inventor/SoInput.h \
-	$(top_srcdir)/include/Inventor/SoInteraction.h \
-	$(top_srcdir)/include/Inventor/SoOffscreenRenderer.h \
-	$(top_srcdir)/include/Inventor/SoOutput.h \
-	$(top_srcdir)/include/Inventor/SoPath.h \
-	$(top_srcdir)/include/Inventor/SoPickedPoint.h \
-	$(top_srcdir)/include/Inventor/SoPrimitiveVertex.h \
-	$(top_srcdir)/include/Inventor/SoSceneManager.h \
-	$(top_srcdir)/include/Inventor/SoType.h \
-	$(top_srcdir)/include/Inventor/Sb.h \
-	$(top_srcdir)/include/Inventor/SbBox.h \
-	$(top_srcdir)/include/Inventor/SbBSPTree.h \
-	$(top_srcdir)/include/Inventor/SbLinear.h \
-	$(top_srcdir)/include/Inventor/SoLists.h \
-	$(top_srcdir)/include/Inventor/SbBox2f.h \
-	$(top_srcdir)/include/Inventor/SbBox2s.h \
-	$(top_srcdir)/include/Inventor/SbBox3f.h \
-	$(top_srcdir)/include/Inventor/SbColor.h \
-	$(top_srcdir)/include/Inventor/SbColor4f.h \
-	$(top_srcdir)/include/Inventor/SbCylinder.h \
-	$(top_srcdir)/include/Inventor/SbDict.h \
-	$(top_srcdir)/include/Inventor/SbHeap.h \
-	$(top_srcdir)/include/Inventor/SbImage.h \
-	$(top_srcdir)/include/Inventor/SbLine.h \
-	$(top_srcdir)/include/Inventor/SbMatrix.h \
-	$(top_srcdir)/include/Inventor/SbName.h \
-	$(top_srcdir)/include/Inventor/SbOctTree.h \
-	$(top_srcdir)/include/Inventor/SbPlane.h \
-	$(top_srcdir)/include/Inventor/SbRotation.h \
-	$(top_srcdir)/include/Inventor/SbSphere.h \
-	$(top_srcdir)/include/Inventor/SbString.h \
-	$(top_srcdir)/include/Inventor/SbTesselator.h \
-	$(top_srcdir)/include/Inventor/SbTime.h \
-	$(top_srcdir)/include/Inventor/SbVec2f.h \
-	$(top_srcdir)/include/Inventor/SbVec2s.h \
-	$(top_srcdir)/include/Inventor/SbVec3f.h \
-	$(top_srcdir)/include/Inventor/SbVec4f.h \
-	$(top_srcdir)/include/Inventor/SbViewVolume.h \
-	$(top_srcdir)/include/Inventor/SbViewportRegion.h \
-	$(top_srcdir)/include/Inventor/SbXfBox3f.h
+	../include/Inventor/SbPList.h \
+	../include/Inventor/So.h \
+	../include/Inventor/SoDB.h \
+	../include/Inventor/SoFullPath.h \
+	../include/Inventor/SoNodeKitPath.h \
+	../include/Inventor/SoInput.h \
+	../include/Inventor/SoInteraction.h \
+	../include/Inventor/SoOffscreenRenderer.h \
+	../include/Inventor/SoOutput.h \
+	../include/Inventor/SoPath.h \
+	../include/Inventor/SoPickedPoint.h \
+	../include/Inventor/SoPrimitiveVertex.h \
+	../include/Inventor/SoSceneManager.h \
+	../include/Inventor/SoType.h \
+	../include/Inventor/Sb.h \
+	../include/Inventor/SbBox.h \
+	../include/Inventor/SbBSPTree.h \
+	../include/Inventor/SbLinear.h \
+	../include/Inventor/SoLists.h \
+	../include/Inventor/SbBox2f.h \
+	../include/Inventor/SbBox2s.h \
+	../include/Inventor/SbBox3f.h \
+	../include/Inventor/SbColor.h \
+	../include/Inventor/SbColor4f.h \
+	../include/Inventor/SbCylinder.h \
+	../include/Inventor/SbDict.h \
+	../include/Inventor/SbHeap.h \
+	../include/Inventor/SbImage.h \
+	../include/Inventor/SbLine.h \
+	../include/Inventor/SbMatrix.h \
+	../include/Inventor/SbName.h \
+	../include/Inventor/SbOctTree.h \
+	../include/Inventor/SbPlane.h \
+	../include/Inventor/SbRotation.h \
+	../include/Inventor/SbSphere.h \
+	../include/Inventor/SbString.h \
+	../include/Inventor/SbTesselator.h \
+	../include/Inventor/SbTime.h \
+	../include/Inventor/SbVec2f.h \
+	../include/Inventor/SbVec2s.h \
+	../include/Inventor/SbVec3f.h \
+	../include/Inventor/SbVec4f.h \
+	../include/Inventor/SbViewVolume.h \
+	../include/Inventor/SbViewportRegion.h \
+	../include/Inventor/SbXfBox3f.h
 
-EXEEXT =
-OBJEXT = o
 subdir = src
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 LIBRARIES = $(lib_LIBRARIES)
 
+coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
+@BUILD_VRML97_TRUE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES = \
+@BUILD_VRML97_TRUE@	VRMLnodes/VRMLnodes.lst actions/actions.lst \
+@BUILD_VRML97_TRUE@	base/base.lst bundles/bundles.lst \
+@BUILD_VRML97_TRUE@	caches/caches.lst elements/elements.lst \
+@BUILD_VRML97_TRUE@	engines/engines.lst errors/errors.lst \
+@BUILD_VRML97_TRUE@	events/events.lst fields/fields.lst \
+@BUILD_VRML97_TRUE@	misc/misc.lst lists/lists.lst \
+@BUILD_VRML97_TRUE@	nodekits/nodekits.lst nodes/nodes.lst \
+@BUILD_VRML97_TRUE@	projectors/projectors.lst \
+@BUILD_VRML97_TRUE@	sensors/sensors.lst details/details.lst \
+@BUILD_VRML97_TRUE@	draggers/draggers.lst manips/manips.lst \
+@BUILD_VRML97_TRUE@	$(VRML97DIR)/vrml97.lst
+@BUILD_VRML97_FALSE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES = \
+@BUILD_VRML97_FALSE@	VRMLnodes/VRMLnodes.lst actions/actions.lst \
+@BUILD_VRML97_FALSE@	base/base.lst bundles/bundles.lst \
+@BUILD_VRML97_FALSE@	caches/caches.lst elements/elements.lst \
+@BUILD_VRML97_FALSE@	engines/engines.lst errors/errors.lst \
+@BUILD_VRML97_FALSE@	events/events.lst fields/fields.lst \
+@BUILD_VRML97_FALSE@	misc/misc.lst lists/lists.lst \
+@BUILD_VRML97_FALSE@	nodekits/nodekits.lst nodes/nodes.lst \
+@BUILD_VRML97_FALSE@	projectors/projectors.lst \
+@BUILD_VRML97_FALSE@	sensors/sensors.lst details/details.lst \
+@BUILD_VRML97_FALSE@	draggers/draggers.lst manips/manips.lst
+am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = snprintf.$(OBJEXT)
+coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = \
+	$(am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS)
+LTLIBRARIES = $(lib_LTLIBRARIES)
 
-DEFS = @DEFS@ -I. -I$(srcdir) -I$(top_builddir)/include
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES = \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	VRMLnodes/libVRMLnodes.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	actions/libactions.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	base/libbase.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	bundles/libbundles.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	caches/libcaches.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	elements/libelements.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	engines/libengines.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	errors/liberrors.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	events/libevents.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	fields/libfields.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	misc/libmisc.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	lists/liblists.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	nodekits/libnodekits.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	nodes/libnodes.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	projectors/libprojectors.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	sensors/libsensors.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	details/libdetails.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	draggers/libdraggers.la \
+@BUILD_VRML97_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	manips/libmanips.la
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES = \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	VRMLnodes/libVRMLnodes.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	actions/libactions.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	base/libbase.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	bundles/libbundles.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	caches/libcaches.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	elements/libelements.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	engines/libengines.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	errors/liberrors.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	events/libevents.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	fields/libfields.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	misc/libmisc.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	lists/liblists.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	nodekits/libnodekits.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	nodes/libnodes.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	projectors/libprojectors.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	sensors/libsensors.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	details/libdetails.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	draggers/libdraggers.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	manips/libmanips.la \
+@BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	$(VRML97DIR)/libvrml97.la
+am_libCoin@SUFFIX@_la_OBJECTS = snprintf.lo
+libCoin@SUFFIX@_la_OBJECTS = $(am_libCoin@SUFFIX@_la_OBJECTS)
+
+DEFS = @DEFS@
+DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)/include
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
-X_CFLAGS = @X_CFLAGS@
-X_LIBS = @X_LIBS@
-X_EXTRA_LIBS = @X_EXTRA_LIBS@
-X_PRE_LIBS = @X_PRE_LIBS@
-coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
-@BUILD_VRML97_TRUE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES = \
-@BUILD_VRML97_TRUE@ VRMLnodes/VRMLnodes.lst actions/actions.lst \
-@BUILD_VRML97_TRUE@ base/base.lst bundles/bundles.lst caches/caches.lst \
-@BUILD_VRML97_TRUE@ elements/elements.lst engines/engines.lst \
-@BUILD_VRML97_TRUE@ errors/errors.lst events/events.lst \
-@BUILD_VRML97_TRUE@ fields/fields.lst misc/misc.lst lists/lists.lst \
-@BUILD_VRML97_TRUE@ nodekits/nodekits.lst nodes/nodes.lst \
-@BUILD_VRML97_TRUE@ projectors/projectors.lst sensors/sensors.lst \
-@BUILD_VRML97_TRUE@ details/details.lst draggers/draggers.lst \
-@BUILD_VRML97_TRUE@ manips/manips.lst $(VRML97DIR)/vrml97.lst
-@BUILD_VRML97_FALSE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES = \
-@BUILD_VRML97_FALSE@ VRMLnodes/VRMLnodes.lst actions/actions.lst \
-@BUILD_VRML97_FALSE@ base/base.lst bundles/bundles.lst caches/caches.lst \
-@BUILD_VRML97_FALSE@ elements/elements.lst engines/engines.lst \
-@BUILD_VRML97_FALSE@ errors/errors.lst events/events.lst \
-@BUILD_VRML97_FALSE@ fields/fields.lst misc/misc.lst lists/lists.lst \
-@BUILD_VRML97_FALSE@ nodekits/nodekits.lst nodes/nodes.lst \
-@BUILD_VRML97_FALSE@ projectors/projectors.lst sensors/sensors.lst \
-@BUILD_VRML97_FALSE@ details/details.lst draggers/draggers.lst \
-@BUILD_VRML97_FALSE@ manips/manips.lst
-am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = snprintf.$(OBJEXT)
-coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = \
-$(am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS)
-AR = ar
-LTLIBRARIES = $(lib_LTLIBRARIES)
-
-@BUILD_VRML97_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
-@BUILD_VRML97_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES =
-@HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
-am_libCoin@SUFFIX@_la_OBJECTS = snprintf.lo
-libCoin@SUFFIX@_la_OBJECTS = $(am_libCoin@SUFFIX@_la_OBJECTS)
-COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CFLAGS = @CFLAGS@
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
+@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/snprintf.Plo $(DEPDIR)/snprintf.Po
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+CFLAGS = @CFLAGS@
 DIST_SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) \
-$(libCoin@SUFFIX@_la_SOURCES)
+	$(libCoin@SUFFIX@_la_SOURCES)
 HEADERS = $(libCoininc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP@DEP_FILES = $(DEPDIR)/snprintf.Plo $(DEPDIR)/snprintf.Po
-DIST_COMMON = $(libCoininc_HEADERS) Makefile.am Makefile.in
 
+RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
+	uninstall-info-recursive all-recursive install-data-recursive \
+	install-exec-recursive installdirs-recursive install-recursive \
+	uninstall-recursive check-recursive installcheck-recursive
+DIST_COMMON = $(libCoininc_HEADERS) Makefile.am Makefile.in
 DIST_SUBDIRS = VRMLnodes actions base bundles caches details draggers \
-elements engines errors events fields manips misc lists nodekits nodes \
-projectors sensors vrml97 .
+	elements engines errors events fields manips misc lists \
+	nodekits nodes projectors sensors vrml97 .
 SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(libCoin@SUFFIX@_la_SOURCES)
-OBJECTS = $(am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) $(am_libCoin@SUFFIX@_la_OBJECTS)
 
 all: all-recursive
 
 .SUFFIXES:
-.SUFFIXES: .c .h .lo .o .obj
+.SUFFIXES: .c .lo .o .obj
 
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+	-rm -f libtool
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  src/Makefile
-
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
+
+AR = ar
 install-libLIBRARIES: $(lib_LIBRARIES)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
@@ -327,26 +379,6 @@ uninstall-libLIBRARIES:
 
 clean-libLIBRARIES:
 	-test -z "$(lib_LIBRARIES)" || rm -f $(lib_LIBRARIES)
-
-mostlyclean-compile:
-	-rm -f *.$(OBJEXT) core *.core
-
-distclean-compile:
-	-rm -f *.tab.c
-
-mostlyclean-libtool:
-	-rm -f *.lo
-
-clean-libtool:
-	-rm -rf .libs _libs
-
-distclean-libtool:
-	-rm -f libtool
-
-coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES)
-	-rm -f coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
-	$(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR) coin@COIN_MAJOR_VERSION@@SUFFIX@.lib $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD)
-	$(RANLIB) coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
@@ -366,9 +398,40 @@ uninstall-libLTLIBRARIES:
 
 clean-libLTLIBRARIES:
 	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
-
-libCoin@SUFFIX@.la: $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_DEPENDENCIES)
+libCoin@SUFFIX@.la: $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_DEPENDENCIES) 
 	$(LINK) -rpath $(libdir) $(libCoin@SUFFIX@_la_LDFLAGS) $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_LIBADD) $(LIBS)
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT) core *.core
+
+distclean-compile:
+	-rm -f *.tab.c
+
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/snprintf.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/snprintf.Po@am__quote@
+
+distclean-depend:
+	-rm -rf $(DEPDIR)
+
+.c.o:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(COMPILE) -c `test -f $< || echo '$(srcdir)/'`$<
+
+.c.obj:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(COMPILE) -c `cygpath -w $<`
+
+.c.lo:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LTCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
+CCDEPMODE = @CCDEPMODE@
+uninstall-info-am:
 
 uninstall-libCoinincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -384,10 +447,7 @@ uninstall-libCoinincHEADERS:
 # (1) if the variable is set in `config.status', edit `config.status'
 #     (which will cause the Makefiles to be regenerated when you run `make');
 # (2) otherwise, pass the desired values on the `make' command line.
-all-recursive install-data-recursive install-exec-recursive \
-installdirs-recursive install-recursive uninstall-recursive \
-install-info-recursive uninstall-info-recursive \
-check-recursive installcheck-recursive info-recursive dvi-recursive:
+$(RECURSIVE_TARGETS):
 	@set fnord $(MAKEFLAGS); amf=$$2; \
 	dot_seen=no; \
 	target=`echo $@ | sed s/-recursive//`; \
@@ -452,9 +512,9 @@ TAGS: tags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 	tags=; \
 	here=`pwd`; \
 	list='$(SUBDIRS)'; for subdir in $$list; do \
-   if test "$$subdir" = .; then :; else \
+	  if test "$$subdir" = .; then :; else \
 	    test -f $$subdir/TAGS && tags="$$tags -i $$here/$$subdir/TAGS"; \
-   fi; \
+	  fi; \
 	done; \
 	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
@@ -468,37 +528,10 @@ TAGS: tags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 GTAGS:
 	here=`CDPATH=: && cd $(top_builddir) && pwd` \
 	  && cd $(top_srcdir) \
-	  && gtags -i $$here
+	  && gtags -i $(GTAGS_ARGS) $$here
 
 distclean-tags:
-	-rm -f TAGS ID
-
-@AMDEP@@_am_include@ $(DEPDIR)/snprintf.Plo
-@AMDEP@@_am_include@ $(DEPDIR)/snprintf.Po
-
-distclean-depend:
-	-rm -rf $(DEPDIR)
-
-@AMDEP@CCDEPMODE = @CCDEPMODE@
-
-.c.o:
-@AMDEP@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(COMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
-
-.c.lo:
-@AMDEP@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
-@AMDEP@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(LTCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
-
-.c.obj:
-@AMDEP@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(COMPILE) -c -o $@ `cygpath -w $<`
-
+	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
@@ -506,9 +539,13 @@ top_distdir = ..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include/Inventor
+	$(mkinstalldirs) $(distdir)/../include/Inventor
 	@for file in $(DISTFILES); do \
-	  d=$(srcdir); \
+	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
+	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \
+	  if test "$$dir" != "$$file" && test "$$dir" != "."; then \
+	    $(mkinstalldirs) "$(distdir)/$$dir"; \
+	  fi; \
 	  if test -d $$d/$$file; then \
 	    cp -pR $$d/$$file $(distdir) \
 	    || exit 1; \
@@ -534,7 +571,6 @@ distdir: $(DISTFILES)
 check-am: all-am
 check: check-recursive
 all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
-
 installdirs: installdirs-recursive
 installdirs-am:
 	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libdir) $(DESTDIR)$(libCoinincdir)
@@ -548,23 +584,20 @@ install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 
 installcheck: installcheck-recursive
-
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
-	  INSTALL_PROGRAM_ENV='$(INSTALL_STRIP_PROGRAM_ENV)' install
-
+	  `test -z '$(STRIP)' || \
+	    echo "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'"` install
 mostlyclean-generic:
 
 clean-generic:
 
 distclean-generic:
-	-rm -f Makefile $(CONFIG_CLEAN_FILES)
-	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+	-rm -f Makefile $(CONFIG_CLEAN_FILES) stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-rm -f Makefile.in
 clean: clean-recursive
 
 clean-am: clean-generic clean-libLIBRARIES clean-libLTLIBRARIES \
@@ -575,11 +608,11 @@ distclean: distclean-recursive
 distclean-am: clean-am distclean-compile distclean-depend \
 	distclean-generic distclean-libtool distclean-tags
 
-dvi:
+dvi: dvi-recursive
 
 dvi-am:
 
-info:
+info: info-recursive
 
 info-am:
 
@@ -588,7 +621,7 @@ install-data-am: install-data-local install-libCoinincHEADERS
 install-exec-am: install-exec-local install-libLIBRARIES \
 	install-libLTLIBRARIES
 
-install-info:
+install-info: install-info-recursive
 
 install-man:
 
@@ -603,10 +636,12 @@ mostlyclean: mostlyclean-recursive
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
-uninstall-am: uninstall-libCoinincHEADERS uninstall-libLIBRARIES \
-	uninstall-libLTLIBRARIES uninstall-local
+uninstall-am: uninstall-info-am uninstall-libCoinincHEADERS \
+	uninstall-libLIBRARIES uninstall-libLTLIBRARIES uninstall-local
 
-.PHONY: all all-am all-recursive check check-am check-recursive clean \
+uninstall-info: uninstall-info-recursive
+
+.PHONY: $(RECURSIVE_TARGETS) GTAGS all all-am check check-am clean \
 	clean-generic clean-libLIBRARIES clean-libLTLIBRARIES \
 	clean-libtool clean-recursive distclean distclean-compile \
 	distclean-depend distclean-generic distclean-libtool \
@@ -615,17 +650,17 @@ uninstall-am: uninstall-libCoinincHEADERS uninstall-libLIBRARIES \
 	install-data install-data-am install-data-local \
 	install-data-recursive install-exec install-exec-am \
 	install-exec-local install-exec-recursive install-info \
-	install-info-recursive install-libCoinincHEADERS \
-	install-libLIBRARIES install-libLTLIBRARIES install-man \
-	install-recursive install-strip installcheck installcheck-am \
-	installcheck-recursive installdirs installdirs-am \
-	installdirs-recursive maintainer-clean maintainer-clean-generic \
-	maintainer-clean-recursive mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
-	tags tags-recursive uninstall uninstall-am \
-	uninstall-info-recursive uninstall-libCoinincHEADERS \
-	uninstall-libLIBRARIES uninstall-libLTLIBRARIES uninstall-local \
-	uninstall-recursive
+	install-info-am install-info-recursive \
+	install-libCoinincHEADERS install-libLIBRARIES \
+	install-libLTLIBRARIES install-man install-recursive \
+	install-strip installcheck installcheck-am installdirs \
+	installdirs-am installdirs-recursive maintainer-clean \
+	maintainer-clean-generic maintainer-clean-recursive mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	mostlyclean-recursive tags tags-recursive uninstall \
+	uninstall-am uninstall-info-am uninstall-info-recursive \
+	uninstall-libCoinincHEADERS uninstall-libLIBRARIES \
+	uninstall-libLTLIBRARIES uninstall-local uninstall-recursive
 
 
 # **************************************************************************
@@ -695,7 +730,7 @@ uninstall-local:
 	done; \
 	baseincdir="$(DESTDIR)$(includedir)/Inventor"; \
 	for dir in \
-	  "$$baseincdir/VRMLNodes" \
+	  "$$baseincdir/VRMLnodes" \
 	  "$$baseincdir/actions" \
 	  "$$baseincdir/base" \
 	  "$$baseincdir/bundles" \
@@ -722,7 +757,6 @@ uninstall-local:
 	    rmdir "$$dir"; \
 	  fi \
 	done;
-
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

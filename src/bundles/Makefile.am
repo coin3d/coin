@@ -8,9 +8,9 @@ RegularSources = \
 LinkHackSources = \
 	all.cpp
 PublicHeaders = \
-	$(top_srcdir)/include/Inventor/bundles/SoBundle.h \
-	$(top_srcdir)/include/Inventor/bundles/SoMaterialBundle.h \
-	$(top_srcdir)/include/Inventor/bundles/SoTextureCoordinateBundle.h
+	../../include/Inventor/bundles/SoBundle.h \
+	../../include/Inventor/bundles/SoMaterialBundle.h \
+	../../include/Inventor/bundles/SoTextureCoordinateBundle.h
 PrivateHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(bundles)

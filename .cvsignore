@@ -7,3 +7,4 @@ coin-*.cfg
 Coin-*.tar.gz
 .deps
 autom4te.cache
+stamp-h

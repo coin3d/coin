@@ -14,17 +14,17 @@ RegularSources = \
 LinkHackSources = \
 	all.cpp
 PublicHeaders = \
-	$(top_srcdir)/include/Inventor/details/SoSubDetail.h \
-	$(top_srcdir)/include/Inventor/details/SoDetail.h \
-	$(top_srcdir)/include/Inventor/details/SoDetails.h \
-	$(top_srcdir)/include/Inventor/details/SoConeDetail.h \
-	$(top_srcdir)/include/Inventor/details/SoCubeDetail.h \
-	$(top_srcdir)/include/Inventor/details/SoCylinderDetail.h \
-	$(top_srcdir)/include/Inventor/details/SoFaceDetail.h \
-	$(top_srcdir)/include/Inventor/details/SoLineDetail.h \
-	$(top_srcdir)/include/Inventor/details/SoNodeKitDetail.h \
-	$(top_srcdir)/include/Inventor/details/SoPointDetail.h \
-	$(top_srcdir)/include/Inventor/details/SoTextDetail.h
+	../../include/Inventor/details/SoSubDetail.h \
+	../../include/Inventor/details/SoDetail.h \
+	../../include/Inventor/details/SoDetails.h \
+	../../include/Inventor/details/SoConeDetail.h \
+	../../include/Inventor/details/SoCubeDetail.h \
+	../../include/Inventor/details/SoCylinderDetail.h \
+	../../include/Inventor/details/SoFaceDetail.h \
+	../../include/Inventor/details/SoLineDetail.h \
+	../../include/Inventor/details/SoNodeKitDetail.h \
+	../../include/Inventor/details/SoPointDetail.h \
+	../../include/Inventor/details/SoTextDetail.h
 PrivateHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(details)

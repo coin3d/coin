@@ -9,11 +9,11 @@ RegularSources = \
 LinkHackSources = \
 	all.cpp
 PublicHeaders = \
-	$(top_srcdir)/include/Inventor/errors/SoErrors.h \
-	$(top_srcdir)/include/Inventor/errors/SoDebugError.h \
-	$(top_srcdir)/include/Inventor/errors/SoError.h \
-	$(top_srcdir)/include/Inventor/errors/SoMemoryError.h \
-	$(top_srcdir)/include/Inventor/errors/SoReadError.h
+	../../include/Inventor/errors/SoErrors.h \
+	../../include/Inventor/errors/SoDebugError.h \
+	../../include/Inventor/errors/SoError.h \
+	../../include/Inventor/errors/SoMemoryError.h \
+	../../include/Inventor/errors/SoReadError.h
 PrivateHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(errors)

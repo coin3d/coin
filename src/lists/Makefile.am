@@ -24,25 +24,25 @@ RegularSources = \
 LinkHackSources = \
 	all.cpp
 PublicHeaders = \
-	$(top_srcdir)/include/Inventor/lists/SbList.h \
-	$(top_srcdir)/include/Inventor/lists/SbPList.h \
-	$(top_srcdir)/include/Inventor/lists/SbIntList.h \
-	$(top_srcdir)/include/Inventor/lists/SbVec3fList.h \
-	$(top_srcdir)/include/Inventor/lists/SbStringList.h \
-	$(top_srcdir)/include/Inventor/lists/SoActionMethodList.h \
-	$(top_srcdir)/include/Inventor/lists/SoAuditorList.h \
-	$(top_srcdir)/include/Inventor/lists/SoBaseList.h \
-	$(top_srcdir)/include/Inventor/lists/SoCallbackList.h \
-	$(top_srcdir)/include/Inventor/lists/SoDetailList.h \
-	$(top_srcdir)/include/Inventor/lists/SoEnabledElementsList.h \
-	$(top_srcdir)/include/Inventor/lists/SoEngineList.h \
-	$(top_srcdir)/include/Inventor/lists/SoEngineOutputList.h \
-	$(top_srcdir)/include/Inventor/lists/SoFieldList.h \
-	$(top_srcdir)/include/Inventor/lists/SoNodeList.h \
-	$(top_srcdir)/include/Inventor/lists/SoPathList.h \
-	$(top_srcdir)/include/Inventor/lists/SoPickedPointList.h \
-	$(top_srcdir)/include/Inventor/lists/SoTypeList.h \
-	$(top_srcdir)/include/Inventor/lists/SoVRMLInterpOutputList.h
+	../../include/Inventor/lists/SbList.h \
+	../../include/Inventor/lists/SbPList.h \
+	../../include/Inventor/lists/SbIntList.h \
+	../../include/Inventor/lists/SbVec3fList.h \
+	../../include/Inventor/lists/SbStringList.h \
+	../../include/Inventor/lists/SoActionMethodList.h \
+	../../include/Inventor/lists/SoAuditorList.h \
+	../../include/Inventor/lists/SoBaseList.h \
+	../../include/Inventor/lists/SoCallbackList.h \
+	../../include/Inventor/lists/SoDetailList.h \
+	../../include/Inventor/lists/SoEnabledElementsList.h \
+	../../include/Inventor/lists/SoEngineList.h \
+	../../include/Inventor/lists/SoEngineOutputList.h \
+	../../include/Inventor/lists/SoFieldList.h \
+	../../include/Inventor/lists/SoNodeList.h \
+	../../include/Inventor/lists/SoPathList.h \
+	../../include/Inventor/lists/SoPickedPointList.h \
+	../../include/Inventor/lists/SoTypeList.h \
+	../../include/Inventor/lists/SoVRMLInterpOutputList.h
 PrivateHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(lists)

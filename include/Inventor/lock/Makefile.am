@@ -5,4 +5,5 @@
 lockincdir = $(includedir)/Inventor/lock
 
 lockinc_HEADERS = \
-	$(top_srcdir)/include/Inventor/lock/SoLockMgr.h
+	SoLockMgr.h
+
