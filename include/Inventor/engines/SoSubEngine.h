@@ -1,3 +1,6 @@
+#ifndef COIN_SOSUBENGINE_H
+#define COIN_SOSUBENGINE_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,15 +24,14 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSUBENGINE_H
-#define COIN_SOSUBENGINE_H
-
+#include <assert.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/engines/SoOutputData.h>
 #include <Inventor/fields/SoFieldData.h>
-#include <assert.h>
+
+// *************************************************************************
 
 //
 // FIXME: document macros. pederb, 20000309
@@ -62,13 +64,12 @@ private: \
   public: \
     static void * createInstance(void)
 
+// *************************************************************************
 
 #define PRIVATE_ENGINE_TYPESYSTEM_SOURCE(_class_) \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
 SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
-/* Don't set value explicitly to SoType::badType(), to avoid a bug in */ \
-/* Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()). */ \
-SoType _class_::classTypeId
+SoType _class_::classTypeId STATIC_SOTYPE_INIT
 
 #define SO_ENGINE_ABSTRACT_SOURCE(_class_) \
 PRIVATE_ENGINE_TYPESYSTEM_SOURCE(_class_); \
@@ -112,6 +113,8 @@ _class_::createInstance(void) \
   return new _class_; \
 }
 
+// *************************************************************************
+
 #define SO_ENGINE_IS_FIRST_INSTANCE() \
    (classinstances == 1) 
 
@@ -137,6 +140,7 @@ _class_::createInstance(void) \
     SoBase::staticDataUnlock(); \
   } while (0)
 
+// *************************************************************************
 
 #define PRIVATE_COMMON_ENGINE_INIT_CODE(_class_, _classname_, _createfunc_, _parentclass_) \
   do { \
@@ -170,6 +174,7 @@ _class_::createInstance(void) \
     PRIVATE_COMMON_ENGINE_INIT_CODE(_class_, classname, NULL, _parentclass_); \
   } while (0)
 
+// *************************************************************************
 
 #define SO_ENGINE_ADD_INPUT(_input_, _defaultval_) \
   do { \
@@ -186,6 +191,7 @@ _class_::createInstance(void) \
     this->_output_.setContainer(this); \
   } while(0)
 
+// *************************************************************************
 
 #define SO_ENGINE_DEFINE_ENUM_VALUE(_enumname_, _enumval_) \
   do { \
@@ -213,6 +219,8 @@ _class_::createInstance(void) \
     } \
   } while (0)
 
+// *************************************************************************
+
 #define SO_COMPOSE__HEADER(_name_) \
   SO_ENGINE_HEADER(_name_); \
   private: \
@@ -222,5 +230,7 @@ _class_::createInstance(void) \
   public: \
    _name_(); \
     static void initClass()
+
+// *************************************************************************
 
 #endif // !COIN_SOSUBENGINE_H

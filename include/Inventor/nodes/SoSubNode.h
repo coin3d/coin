@@ -24,11 +24,6 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbName.h>
-#include <Inventor/SoType.h>
-#include <Inventor/fields/SoFieldData.h>
-#include <Inventor/nodes/SoNode.h>
-
 /*
   The most used macros and their arguments:
 
@@ -48,16 +43,22 @@
       SO_NODE_INIT_ABSTRACT_CLASS(classname, parentclassname, parentclassname)
 */
 
+// *************************************************************************
+
+#include <string.h> /* strcmp used in assert() */
+#include <Inventor/SbName.h>
+#include <Inventor/SoType.h>
+#include <Inventor/fields/SoFieldData.h>
+#include <Inventor/nodes/SoNode.h>
+
+// *************************************************************************
+
 #define PRIVATE_NODE_TYPESYSTEM_HEADER( ) \
 public: \
   static SoType getClassTypeId(void); \
   virtual SoType getTypeId(void) const; \
 private: \
   static SoType classTypeId
-
-#ifndef NDEBUG
-#include <string.h> /* strcmp used in assert() */
-#endif
 
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_ABSTRACT_HEADER(_class_) \
@@ -80,13 +81,12 @@ private: \
 private: \
   static void * createInstance(void)
 
+// *************************************************************************
 
 #define PRIVATE_NODE_TYPESYSTEM_SOURCE(_class_) \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
 SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
-/* Don't set value explicitly to SoType::badType(), to avoid a bug in */ \
-/* Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()). */ \
-SoType _class_::classTypeId
+SoType _class_::classTypeId STATIC_SOTYPE_INIT
 
 
 // FIXME: document. 20000103 mortene.
@@ -126,6 +126,8 @@ _class_::createInstance(void) \
   return new _class_; \
 }
 
+// *************************************************************************
+
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_IS_FIRST_INSTANCE() \
    (classinstances == 1)
@@ -158,6 +160,7 @@ _class_::createInstance(void) \
     SoBase::staticDataUnlock(); \
   } while (0)
 
+// *************************************************************************
 
 // FIXME: create-type with get-next and inc-next must be an atomic step in an MT
 // environment  20020216 larsa
@@ -205,6 +208,8 @@ _class_::createInstance(void) \
   } while (0)
 
 
+// *************************************************************************
+
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_ADD_FIELD(_field_, _defaultval_) \
   do { \
@@ -220,5 +225,7 @@ _class_::createInstance(void) \
     fieldData->addEnumValue(SO__QUOTE(_enumname_), \
                             SO__QUOTE(_enumval_), _enumval_); \
   } while (0)
+
+// *************************************************************************
 
 #endif // !COIN_SOSUBNODE_H

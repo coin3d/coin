@@ -40,26 +40,32 @@
 
 */
 
+// *************************************************************************
+
 #include <Inventor/errors/SoErrors.h>
+
+#include <assert.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/nodes/SoNode.h>
-#include <assert.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+// *************************************************************************
 
-SoType SoError::classTypeId;
+SoType SoError::classTypeId STATIC_SOTYPE_INIT;
 SoErrorCB * SoError::callback = NULL; // make use of default cc_error handler
 void * SoError::callbackData = NULL;
+
+// *************************************************************************
 
 // "Converter" constructor.
 SoError::SoError(const cc_error * error)

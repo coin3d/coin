@@ -261,6 +261,11 @@
 
 */
 
+// *************************************************************************
+
+#include <stdlib.h>
+#include <assert.h>
+
 #include <Inventor/elements/SoElements.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
@@ -280,8 +285,8 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/C/tidbitsp.h>
-#include <stdlib.h>
-#include <assert.h>
+
+// *************************************************************************
 
 /*!
   \fn SoElement * SoElement::getElement(SoState * const state, const int stackIndex)
@@ -314,10 +319,6 @@
   The depth of the element instance in the state stack.
 */
 
-/*! Provides mapping from state stack indices to element types. */
-SoTypeList * SoElement::stackToType;
-
-
 /*!
   \fn SoType SoElement::getClassTypeId(void)
   This static method returns the class type.
@@ -332,15 +333,18 @@ SoTypeList * SoElement::stackToType;
 */
 
 
+// *************************************************************************
+
+/*! Provides mapping from state stack indices to element types. */
+SoTypeList * SoElement::stackToType;
+
 int SoElement::classStackIndex;
-// Don't set value explicitly to SoType::badType(), to avoid a bug in
-// Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
-SoType SoElement::classTypeId;
+SoType SoElement::classTypeId STATIC_SOTYPE_INIT;
 
 SoType SoElement::getClassTypeId(void) { return SoElement::classTypeId; }
 int SoElement::getClassStackIndex(void) { return SoElement::classStackIndex; }
 
-
+// *************************************************************************
 
 /*!
   This function initializes all the built-in Coin element classes.

@@ -33,21 +33,25 @@
   callbacks for SoReadError might be a good idea.
 */
 
-#include <Inventor/errors/SoReadError.h>
+// *************************************************************************
 
-#include <Inventor/SoType.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/SbName.h>
+#include <Inventor/errors/SoReadError.h>
 
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <Inventor/SoType.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SbName.h>
 
-SoType SoReadError::classTypeId;
+// *************************************************************************
+
+SoType SoReadError::classTypeId STATIC_SOTYPE_INIT;
 SoErrorCB * SoReadError::callback = SoError::defaultHandlerCB;
 void * SoReadError::callbackData = NULL;
 
+// *************************************************************************
 
 // Documented for parent class.
 void

@@ -46,8 +46,11 @@
   referencing/dereferencing.
 */
 
-#include <Inventor/engines/SoEngines.h>
+// *************************************************************************
 
+#include <Inventor/engines/SoEngine.h>
+
+#include <Inventor/engines/SoEngines.h>
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/engines/SoOutputData.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -63,6 +66,8 @@
 #include <Inventor/C/threads/recmutexp.h>
 #endif // COIN_THREADSAFE
 
+// *************************************************************************
+
 // FIXME: document these properly. 20000405 mortene.
 /*!
   \fn const SoEngineOutputData * SoEngine::getOutputData(void) const
@@ -73,10 +78,11 @@
   \COININTERNAL
 */
 
+// *************************************************************************
 
-// Don't set value explicitly to SoType::badType(), to avoid a bug in
-// Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
-SoType SoEngine::classTypeId;
+SoType SoEngine::classTypeId STATIC_SOTYPE_INIT;
+
+// *************************************************************************
 
 /*!
   Default constructor.

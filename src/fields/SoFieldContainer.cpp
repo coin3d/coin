@@ -36,6 +36,8 @@
   \sa SoField
 */
 
+// *************************************************************************
+
 #include <string.h>
 #include <assert.h>
 
@@ -60,6 +62,8 @@
 #include "../io/SoWriterefCounter.h"
 #include <coindefs.h> // COIN_STUB()
 
+// *************************************************************************
+
 /*!
   \var SbBool SoFieldContainer::isBuiltIn
 
@@ -69,10 +73,9 @@
   store and read extension nodes and engines.
 */
 
+// *************************************************************************
 
-// Don't set value explicitly to SoType::badType(), to avoid a bug in
-// Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
-SoType SoFieldContainer::classTypeId;
+SoType SoFieldContainer::classTypeId STATIC_SOTYPE_INIT;
 
 // used by setUserData() and getUserData()
 static cc_hash * sofieldcontainer_userdata_dict = NULL;
@@ -89,6 +92,8 @@ sofieldcontainer_userdata_cleanup(void)
 
 #define FLAG_DONOTIFY      0x01
 #define FLAG_FIRSTINSTANCE 0x02
+
+// *************************************************************************
 
 /*!
   Constructor.

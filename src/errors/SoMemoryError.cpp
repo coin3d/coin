@@ -55,16 +55,22 @@
   application programmer.
 */
 
+// *************************************************************************
+
 #include <Inventor/errors/SoMemoryError.h>
-#include <Inventor/SoType.h>
-#include <Inventor/SbName.h>
+
 #include <stdio.h>
 
+#include <Inventor/SoType.h>
+#include <Inventor/SbName.h>
 
-SoType SoMemoryError::classTypeId;
+// *************************************************************************
+
+SoType SoMemoryError::classTypeId STATIC_SOTYPE_INIT;
 SoErrorCB * SoMemoryError::callback = SoError::defaultHandlerCB;
 void * SoMemoryError::callbackData = NULL;
 
+// *************************************************************************
 
 // Documented for parent class.
 void

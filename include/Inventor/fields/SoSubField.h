@@ -152,9 +152,7 @@ _class_::operator==(const _class_ & field) const \
 SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
 void * _class_::createInstance(void) { return new _class_; } \
-/* Don't set value explicitly to SoType::badType(), to avoid a bug in */ \
-/* Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()). */ \
-SoType _class_::classTypeId
+SoType _class_::classTypeId STATIC_SOTYPE_INIT
 
 
 #define PRIVATE_EQUALITY_SOURCE(_class_) \

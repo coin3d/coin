@@ -52,6 +52,8 @@
   \since Coin 2.0
 */
 
+// *************************************************************************
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -75,6 +77,8 @@
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
+
+// *************************************************************************
 
 // the number of subtextures that can be changed (resized) each frame.
 // By keeping this number small, we avoid slow updates when zooming in
@@ -155,7 +159,7 @@ public:
   void createCache(const unsigned char * bytes, const SbVec2s size, const int nc);
 };
 
-SoType SoGLBigImageP::classTypeId;
+SoType SoGLBigImageP::classTypeId STATIC_SOTYPE_INIT;
 
 static void
 soglbigimagetls_construct(void * closure)
@@ -186,6 +190,8 @@ soglbigimagetls_destruct(void * closure)
 }
 
 #define PRIVATE(obj) (obj->pimpl)
+
+// *************************************************************************
 
 /*!
   Constructor.

@@ -35,6 +35,8 @@
   how the file format is.
 */
 
+// *************************************************************************
+
 /*!
   \fn void SoPath::push(const int childindex)
 
@@ -48,20 +50,22 @@
   This method pops the tail off the path.
 */
 
+// *************************************************************************
+
+#include <Inventor/SoPath.h>
+
+#include "../io/SoWriterefCounter.h"
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
-#include "../io/SoWriterefCounter.h"
 #include <coindefs.h> // COIN_STUB()
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-
+// *************************************************************************
 
 #if COIN_DEBUG && 0 // Convenience function for dumping the SoPath during debugging.
 #include <Inventor/SoFullPath.h>
@@ -81,11 +85,11 @@ sopath_dump(SoPath * p)
 }
 #endif // COIN_DEBUG
 
+// *************************************************************************
 
-// Don't set value explicitly to SoType::badType(), to avoid a bug in
-// Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
-SoType SoPath::classTypeId;
+SoType SoPath::classTypeId STATIC_SOTYPE_INIT;
 
+// *************************************************************************
 
 /*!
   The default constructor.  \a approxlength is used to indicate in

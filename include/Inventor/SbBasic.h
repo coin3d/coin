@@ -86,4 +86,52 @@ inline Type SbSqr(const Type val) {
 
 /* *********************************************************************** */
 
+/* COMPILER BUG WORKAROUND:
+
+   We've had reports that Sun CC v4.0 is (likely) buggy, and doesn't
+   allow a statement like
+
+     SoType SoNode::classTypeId = SoType::badType();
+
+   As a hack we can however get around this by instead writing it as
+
+     SoType SoNode::classTypeId;
+
+   ..as the SoType variable will then be initialized to bitpattern
+   0x0000, which equals SoType::badType(). We can *however* not do
+   this for the Intel C/C++ compiler, as that does *not* init to the
+   0x0000 bitpattern (which may be a separate bug -- I haven't read
+   the C++ spec closely enough to decide whether that relied on
+   unspecified behavior or not).
+
+   The latest version of the Intel compiler has been tested to still
+   have this problem, so I've decided to re-install the old code, but
+   in this form:
+
+     SoType SoNode::classTypeId STATIC_SOTYPE_INIT;
+
+   ..so it is easy to revert if somebody complains that the code
+   reversal breaks their old Sun CC 4.0 compiler -- see the #define of
+   STATIC_SOTYPE_INIT below.
+
+   If that happens, we should work with the reporter, having access to
+   the buggy compiler, to make a configure check which sets the
+   SUN_CC_4_0_SOTYPE_INIT_BUG #define in include/Inventor/C/basic.h.in.
+
+   (Note that the Sun CC compiler has moved on, and a later version
+   we've tested, 5.4, does not have the bug.)
+
+   20050105 mortene.
+*/
+
+#define SUN_CC_4_0_SOTYPE_INIT_BUG 0 /* assume compiler is ok for now */
+
+#if SUN_CC_4_0_SOTYPE_INIT_BUG
+#define STATIC_SOTYPE_INIT
+#else
+#define STATIC_SOTYPE_INIT = SoType::badType()
+#endif
+
+/* *********************************************************************** */
+
 #endif /* !COIN_SBBASIC_H */

@@ -154,7 +154,7 @@ public:
 
 #define PRIVATE(_this_) (_this_)->pimpl
 
-SoType SoVRMLScript::classTypeId;
+SoType SoVRMLScript::classTypeId STATIC_SOTYPE_INIT;
 
 // Doc in parent
 void

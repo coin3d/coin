@@ -37,6 +37,7 @@
 // this class (see the SoDB::createGlobalField(),
 // SoDB::getGlobalField() and SoDB::renameGlobalField() methods).
 
+// *************************************************************************
 
 #include <Inventor/fields/SoGlobalField.h>
 
@@ -50,12 +51,13 @@
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/lists/SoBaseList.h>
 
-// Don't set value explicitly to SoType::badType(), to avoid a bug in
-// Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
-SoType SoGlobalField::classTypeId;
+// *************************************************************************
+
+SoType SoGlobalField::classTypeId STATIC_SOTYPE_INIT;
 
 SoBaseList * SoGlobalField::allcontainers = NULL;
 
+// *************************************************************************
 
 // Constructor. Pass NULL for the field pointer to construct an empty
 // SoGlobalField instance.

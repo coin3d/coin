@@ -168,12 +168,14 @@
   documentation of SoType::fromName().
 */
 
-#include <Inventor/nodes/SoNodes.h>
-#include <Inventor/nodes/SoTextureUnit.h>
-#include <Inventor/nodes/SoBumpMap.h>
-#include <Inventor/nodes/SoBumpMapCoordinate.h>
-#include <Inventor/nodes/SoBumpMapTransform.h>
+// *************************************************************************
 
+#include <Inventor/nodes/SoNode.h>
+
+#include <assert.h>
+#include <stdlib.h>
+
+#include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -184,21 +186,25 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/misc/SoProtoInstance.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/nodes/SoTextureScalePolicy.h> // possible part of public API in the future
-#include <Inventor/nodes/SoUnknownNode.h>
-#include <Inventor/nodes/SoSceneTexture2.h>
-#include <Inventor/nodes/SoTextureCombine.h>
+#include <Inventor/nodes/SoBumpMap.h>
+#include <Inventor/nodes/SoBumpMapCoordinate.h>
+#include <Inventor/nodes/SoBumpMapTransform.h>
 #include <Inventor/nodes/SoCacheHint.h>
-#include <Inventor/C/threads/threadsutilp.h>
-#include <assert.h>
-#include <stdlib.h>
+#include <Inventor/nodes/SoNodes.h>
+#include <Inventor/nodes/SoSceneTexture2.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/nodes/SoTextureCombine.h>
+#include <Inventor/nodes/SoTextureScalePolicy.h>
+#include <Inventor/nodes/SoTextureUnit.h>
+#include <Inventor/nodes/SoUnknownNode.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h> // glGetError
+
+// *************************************************************************
 
 /*!
   \var uint32_t SoNode::uniqueId
@@ -273,16 +279,17 @@
   Node is a client code extension.
 */
 
+// *************************************************************************
+
 uint32_t SoNode::nextUniqueId = 0;
 int SoNode::nextActionMethodIndex = 0;
-// Don't set value explicitly to SoType::badType(), to avoid a bug in
-// Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
-SoType SoNode::classTypeId;
+SoType SoNode::classTypeId STATIC_SOTYPE_INIT;
 SbDict * SoNode::compatibilitydict = NULL;
 static void * sonode_mutex = NULL;
 
-static void
-init_action_methods(void);
+static void init_action_methods(void);
+
+// *************************************************************************
 
 // Overridden from parent.
 SoType
@@ -290,6 +297,8 @@ SoNode::getClassTypeId(void)
 {
   return SoNode::classTypeId;
 }
+
+// *************************************************************************
 
 // defines for node state flags
 
@@ -321,6 +330,8 @@ SoNode::getState(const unsigned int bits) const
   return (this->stateflags & bits) != 0;
 }
 
+// *************************************************************************
+
 /*!
   Default constructor, initializes node instance.
 */
@@ -344,6 +355,8 @@ SoNode::~SoNode()
   SoDebugError::postInfo("SoNode::~SoNode", "%p", this);
 #endif // debug
 }
+
+// *************************************************************************
 
 /*!
   Make a duplicate of this node and return a pointer to the duplicate.

@@ -34,8 +34,8 @@
   of VRML interpolator nodes, which are in a sense engines embedded in
   the shape of ordinary nodes.
 
-  This class will likely be of no interest to the Coin application
-  programmers, and you can safely ignore it.
+  This abstract superclass will likely be of no interest to the Coin
+  application programmer, and you can safely ignore it.
 
   \COIN_CLASS_EXTENSION
 */
@@ -61,6 +61,8 @@
 #include <Inventor/C/threads/recmutexp.h>
 #endif // COIN_THREADSAFE
 
+// *************************************************************************
+
 // FIXME: document these properly. 20000405 mortene.
 /*!
   \fn const SoEngineOutputData * SoNodeEngine::getOutputData(void) const
@@ -71,12 +73,13 @@
   \COININTERNAL
 */
 
+// *************************************************************************
 
-// Don't set value explicitly to SoType::badType(), to avoid a bug in
-// Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
-SoType SoNodeEngine::classTypeId;
+SoType SoNodeEngine::classTypeId STATIC_SOTYPE_INIT;
 
 #define FLAG_ISNOTIFYING 0x1
+
+// *************************************************************************
 
 /*!
   Default constructor.

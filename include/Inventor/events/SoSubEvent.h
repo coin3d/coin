@@ -26,6 +26,8 @@
 
 #include <Inventor/events/SoEvent.h>
 
+// *************************************************************************
+
 #define SO_EVENT_HEADER() \
 private: \
   static SoType classTypeId; \
@@ -33,14 +35,14 @@ public: \
   static SoType getClassTypeId(void); \
   virtual SoType getTypeId(void) const
 
+// *************************************************************************
 
 #define SO_EVENT_SOURCE(_class_) \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
 SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
-/* Don't set value explicitly to SoType::badType(), to avoid a bug in */ \
-/* Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()). */ \
-SoType _class_::classTypeId
+SoType _class_::classTypeId STATIC_SOTYPE_INIT
 
+// *************************************************************************
 
 #define SO_EVENT_INIT_CLASS(_class_, _parentclass_) \
   do { \
@@ -52,5 +54,7 @@ SoType _class_::classTypeId
     _class_::classTypeId = \
       SoType::createType(_parentclass_::getClassTypeId(), SO__QUOTE(_class_)); \
   } while (0)
+
+// *************************************************************************
 
 #endif // !COIN_SOSUBEVENT_H

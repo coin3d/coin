@@ -422,9 +422,7 @@ SoFieldP::hashRealloc(void * bufptr, size_t size)
 
 // *************************************************************************
 
-// Don't set value explicitly to SoType::badType(), to avoid a bug in
-// Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
-SoType SoField::classTypeId;
+SoType SoField::classTypeId STATIC_SOTYPE_INIT;
 
 // *************************************************************************
 

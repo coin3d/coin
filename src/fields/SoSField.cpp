@@ -78,20 +78,20 @@
 // programmer should need to extend Coin with new single-value
 // fields. 20010913 mortene.
 
+// *************************************************************************
 
 #include <Inventor/fields/SoSField.h>
 
-#include <Inventor/fields/SoSubField.h>
 #include <assert.h>
 
-#if COIN_DEBUG
+#include <Inventor/fields/SoSubField.h>
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+// *************************************************************************
 
-// Don't set value explicitly to SoType::badType(), to avoid a bug in
-// Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
-SoType SoSField::classTypeId;
+SoType SoSField::classTypeId STATIC_SOTYPE_INIT;
+
+// *************************************************************************
 
 // Overridden from parent class.
 SoType

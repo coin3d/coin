@@ -31,11 +31,13 @@
   actions in Coin.  They typically contain the relevant information
   about what particular part of the shape a pick ray intersected with.
 
-  */
+*/
+
+// *************************************************************************
 
 #include <Inventor/details/SoDetails.h>
 
-SoType SoDetail::classTypeId;
+// *************************************************************************
 
 /*!
   \fn SoDetail * SoDetail::copy(void) const
@@ -80,6 +82,11 @@ SoType SoDetail::classTypeId;
   SO_DETAIL_INIT_CLASS.
 */
 
+// *************************************************************************
+
+SoType SoDetail::classTypeId STATIC_SOTYPE_INIT;
+
+// *************************************************************************
 
 /*!
   Default constructor.

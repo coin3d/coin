@@ -464,6 +464,10 @@ SoDB::init(void)
   // See systemsanity.icc
   SoDB_checkGCCBuiltinExpectSanity();
 
+  // See SbBasic.h, notes about bug in the Sun CC 4.0 compiler vs
+  // probable bug in the Intel compiler.
+  assert(SoNode::getClassTypeId() == SoType::badType() && "Data init failed! Get in touch with maintainers at <coin-support@coin3d.org>");
+
   // Sanity check: if anything here breaks, either
   // include/Inventor/system/inttypes.h.in or the bitwidth define
   // configure tests need fixing. Keep these tests around.

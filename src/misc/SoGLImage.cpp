@@ -621,8 +621,7 @@ public:
   static void contextCleanup(uint32_t context, void * closure);
 };
 
-
-SoType SoGLImageP::classTypeId;
+SoType SoGLImageP::classTypeId STATIC_SOTYPE_INIT;
 uint32_t SoGLImageP::current_glimageid = 1;
 
 #undef PRIVATE

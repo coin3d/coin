@@ -192,20 +192,20 @@
 
 */
 
+// *************************************************************************
+
+#include <Inventor/actions/SoAction.h>
+
+#include <assert.h>
+#include <stdlib.h>
+
 #include <Inventor/actions/SoActions.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoDB.h>
-
-#include <assert.h>
-#include <stdlib.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-
 #include <coindefs.h> // COIN_OBSOLETED
 
 // define this to debug path traversal
@@ -215,9 +215,7 @@
 
 SoEnabledElementsList * SoAction::enabledElements = NULL;
 SoActionMethodList * SoAction::methods = NULL;
-// Don't set value explicitly to SoType::badType(), to avoid a bug in
-// Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
-SoType SoAction::classTypeId;
+SoType SoAction::classTypeId STATIC_SOTYPE_INIT;
 
 // *************************************************************************
 

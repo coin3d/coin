@@ -229,13 +229,13 @@
   \sa SoSField
 */
 
-/*!
-  \fn int SoMField::getNum(void) const
-
-  Returns number of values in this field.
-*/
+// *************************************************************************
 
 #include <Inventor/fields/SoMField.h>
+
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbitsp.h>
@@ -244,9 +244,14 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSubField.h>
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
+
+// *************************************************************************
+
+/*!
+  \fn int SoMField::getNum(void) const
+
+  Returns number of values in this field.
+*/
 
 /*!
   \var int SoMField::num
@@ -262,9 +267,9 @@
   and set to \c FALSE through a enableDeleteValues() call.
 */
 
-// Don't set value explicitly to SoType::badType(), to avoid a bug in
-// Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
-SoType SoMField::classTypeId;
+// *************************************************************************
+
+SoType SoMField::classTypeId STATIC_SOTYPE_INIT;
 
 // need one static mutex for field_buffer in SoMField::get1(SbString &)
 static void * somfield_mutex = NULL;
@@ -274,6 +279,8 @@ somfield_mutex_cleanup(void)
 {
   CC_MUTEX_DESTRUCT(somfield_mutex);
 }
+
+// *************************************************************************
 
 // Overridden from parent class.
 SoType

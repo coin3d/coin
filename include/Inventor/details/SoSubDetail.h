@@ -27,6 +27,8 @@
 #include <Inventor/details/SoDetail.h>
 #include <assert.h>
 
+// *************************************************************************
+
 #define SO_DETAIL_HEADER(_class_) \
 public: \
   virtual SoType getTypeId(void) const; \
@@ -34,14 +36,14 @@ public: \
 private: \
   static SoType classTypeId
 
+// *************************************************************************
 
 #define SO_DETAIL_SOURCE(_class_) \
 SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
-/* Don't set value explicitly to SoType::badType(), to avoid a bug in */ \
-/* Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()). */ \
-SoType _class_::classTypeId
+SoType _class_::classTypeId STATIC_SOTYPE_INIT
 
+// *************************************************************************
 
 #define SO_DETAIL_INIT_CLASS(_class_, _parentclass_) \
   do { \
@@ -55,5 +57,6 @@ SoType _class_::classTypeId
                               SO__QUOTE(_class_)); \
   } while (0)
 
+// *************************************************************************
 
 #endif // !COIN_SOSUBDETAIL_H

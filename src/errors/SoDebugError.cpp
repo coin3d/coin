@@ -60,7 +60,15 @@
   in the debug version of Coin.
 */
 
+// *************************************************************************
+
 #include <Inventor/errors/SoDebugError.h>
+
+#include <assert.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/tidbits.h>
@@ -68,15 +76,14 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
 #include <Inventor/lists/SbList.h>
-#include <assert.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-SoType SoDebugError::classTypeId;
+// *************************************************************************
+
+SoType SoDebugError::classTypeId STATIC_SOTYPE_INIT;
 SoErrorCB * SoDebugError::callback = SoError::defaultHandlerCB;
 void * SoDebugError::callbackData = NULL;
+
+// *************************************************************************
 
 #if COIN_DEBUG
 
