@@ -780,8 +780,12 @@ SoProto::createInstanceRoot(SoProtoInstance * inst) const
   if (PRIVATE(this)->extprotonode) {
     return PRIVATE(this)->extprotonode->createInstanceRoot(inst);
   }
-
-  SoNode * root = PRIVATE(this)->defroot;
+  
+  SoNode * root;                                                               
+  if (PRIVATE(this)->defroot->getNumChildren() == 1)                           
+    root = PRIVATE(this)->defroot->getChild(0);                                
+  else root = PRIVATE(this)->defroot;                                          
+  
   SoNode * cpy;
   cpy = root->copy(FALSE);
   cpy->ref();
