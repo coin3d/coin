@@ -519,6 +519,11 @@ pre_render_cb(void * userdata, SoGLRenderAction * action)
 // camera has just been traversed, and then invokes the method which
 // narrows the camera viewport according to the current tile we're
 // rendering to.
+//
+// FIXME: if possible, it would be better to pick up from the state
+// whatever data we're now grabbing directly from the SoCamera nodes.
+// It'd be more robust, I believe, as the elements set by SoCamera can
+// in principle also be set from other code. 20041006 mortene.
 SoGLRenderAction::AbortCode
 SoOffscreenRendererP::GLRenderAbortCallback(void *userData)
 {
