@@ -62,7 +62,6 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SbColor4f.h>
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
 #include <float.h> // for FLT_EPSILON
 
 
@@ -818,7 +817,7 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
   glLoadIdentity();
   glDisable(GL_LIGHTING);
   glDisable(GL_TEXTURE_2D);
-  if (glw->has3DTextures) glDisable(GL_TEXTURE_3D);
+  if (cc_glglue_has_3d_textures(glw)) { glDisable(GL_TEXTURE_3D); }
   glDisable(GL_FOG);
   glDisable(GL_DEPTH_TEST);
   

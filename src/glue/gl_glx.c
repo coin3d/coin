@@ -35,6 +35,10 @@ typedef void *(APIENTRY * COIN_PFNGLXGETPROCADDRESS)(const GLubyte *);
 static COIN_PFNGLXGETPROCADDRESS coin_glx_glXGetProcAddress = NULL;
 static SbBool tried_bind_glXGetProcAddress = FALSE;
 
+#ifdef HAVE_GLX
+static Display * coin_glx_displayptr = NULL;
+#endif // HAVE_GLX
+
 void *
 coin_glx_getprocaddress(const char * fname)
 {
@@ -82,6 +86,23 @@ coin_glx_getprocaddress(const char * fname)
   return ptr;
 }
 
+SbBool
+coin_glx_isdirect(void)
+{
+#ifdef HAVE_GLX
+  GLXContext ctx = glXGetCurrentContext();
+
+  if (!ctx) {
+    cc_debugerror_postwarning("coin_glx_isdirect", "couldn't get current GLX context");
+    return TRUE;
+  }
+
+  if (!coin_glx_displayptr) { coin_glx_displayptr = XOpenDisplay(NULL); }
+  return glXIsDirect(coin_glx_displayptr, ctx) ? TRUE : FALSE;
+#else // ! HAVE_GLX
+  return TRUE;
+#endif // ! HAVE_GLX
+}
 
 /*
   Find GLX version.
@@ -93,28 +114,27 @@ coin_glx_version(int * major, int * minor)
   *major = -1;
   *minor = 0;
 #else /* HAVE_GLX */
-  Display * display = XOpenDisplay(NULL);
   Bool ok = False;
 
-  static SbBool first = TRUE;
-  if (!first) { return; }
-  first = FALSE;
+  if (!coin_glx_displayptr) { coin_glx_displayptr = XOpenDisplay(NULL); }
 
-  if (display) {
-    ok = glXQueryVersion(display, major, minor);
+  if (coin_glx_displayptr) {
+    ok = glXQueryVersion(coin_glx_displayptr, major, minor);
+
     /* The Display resources is never deallocated explicitly (but of
      * course implicitly by the system on application close
      * down). This to work around some strange problems with the
      * NVidia-driver 29.60 on XFree86 v4 when using XCloseDisplay() --
      * like doublebuffered visuals not working correctly.
      *
-     *   XCloseDisplay(display); */
+     *   XCloseDisplay(coin_glx_displayptr); */
   }
 
   if (!ok) {
     cc_debugerror_post("coin_glx_version",
                        "couldn't decide GLX version on your system -- ai!%s",
-                       display == NULL ? " (couldn't open NULL display)" : "");
+                       coin_glx_displayptr == NULL ?
+                       " (couldn't open NULL display)" : "");
   }
 
   if (coin_glglue_debug()) {

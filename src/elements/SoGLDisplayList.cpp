@@ -43,7 +43,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
 
 #include <string.h>
 #include <assert.h>
@@ -117,7 +116,7 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
   if (type == TEXTURE_OBJECT) {
     assert(allocnum == 1 && "it is only possible to create one texture object at a time");
     const cc_glglue * glw = cc_glglue_instance(this->context);
-    if (glw->glGenTextures) {
+    if (cc_glglue_has_texture_objects(glw)) {
       // use temporary variable, in case GLuint is typedef'ed to
       // something other than unsigned int
       GLuint tmpindex;
@@ -160,7 +159,7 @@ SoGLDisplayList::~SoGLDisplayList()
     // safe just to copy and delete the first index.
     GLuint tmpindex = (GLuint) this->firstindex;
     const cc_glglue * glw = cc_glglue_instance(this->context);
-    if (glw->glDeleteTextures) {
+    if (cc_glglue_has_texture_objects(glw)) {
       cc_glglue_glDeleteTextures(glw, 1, &tmpindex);
     }
   }
@@ -300,11 +299,15 @@ void
 SoGLDisplayList::bindTexture(SoState *state)
 {
   const cc_glglue * glw = cc_glglue_instance(this->context);
-  if (glw->glBindTexture) {
+  if (cc_glglue_has_texture_objects(glw)) {
     if (SoGLTexture3EnabledElement::get(state)) {
-      if (glw->has3DTextures)
+      // FIXME: shouldn't this rather be an assert()? 20020918 mortene.
+      if (cc_glglue_has_3d_textures(glw)) {
         cc_glglue_glBindTexture(glw, GL_TEXTURE_3D, (GLuint)this->firstindex);
+      }
     }
-    else cc_glglue_glBindTexture(glw, GL_TEXTURE_2D, (GLuint)this->firstindex);
+    else {
+      cc_glglue_glBindTexture(glw, GL_TEXTURE_2D, (GLuint)this->firstindex);
+    }
   }
 }

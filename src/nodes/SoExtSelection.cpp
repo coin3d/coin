@@ -90,7 +90,6 @@
 #include <Inventor/SbMatrix.h>
 #include <Inventor/nodes/SoVertexShape.h> 
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
 
 #include <Inventor/SoOffscreenRenderer.h> 
 #include <Inventor/SbTesselator.h> 
@@ -993,8 +992,7 @@ void
 SoExtSelection::draw(SoGLRenderAction *action)
 {
   const cc_glglue * glw = cc_glglue_instance(action->getCacheContext());
-
-  pimpl->has3DTextures = glw->has3DTextures;
+  pimpl->has3DTextures = cc_glglue_has_3d_textures(glw);
 
   SbViewportRegion vp = SoViewportRegionElement::get(action->getState());
   SbVec2s vpo = vp.getViewportOriginPixels();

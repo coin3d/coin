@@ -21,12 +21,30 @@
  *
 \**************************************************************************/
 
+/*
+  Useful resources:
+
+   - The OpenGL Extension Registry:
+     <URL:http://oss.sgi.com/projects/ogl-sample/registry/>
+
+   - Brian Paul presentation "Using OpenGL Extensions" from SIGGRAPH '97:
+     <URL:http://www.mesa3d.org/brianp/sig97/exten.htm>
+*/
+
+/* FIXME: should check if we're rendering to a remote context, and if
+   so disable all extension..? Perhaps provide an envvar to enable
+   them again? 20020917 mortene. */
+
+/* FIXME: demand at least OpenGL 1.1 to get around the glGenTexture()
+   problems Tingdahl is seeing? 20020917 mortene. */
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
+
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/errors/debugerror.h>
@@ -36,7 +54,11 @@
 #endif /* HAVE_AGL_AGL_H */
 
 /* FIXME: temporary fix awaiting configure-check for this feature
-   (kintel 20011125) */
+   (kintel 20011125)
+
+   UPDATE: fetch the define from include/Inventor/C/glue/dl.h (or
+   dlp.h). 20020919 mortene.
+*/
 #ifndef __APPLE__
 #define COIN_OPENGL_DYNAMIC_BINDING
 #endif
@@ -49,35 +71,37 @@
 #include <string.h>
 #include <Inventor/C/threads/threadsutilp.h>
 
-#ifdef HAVE_DLFCN_H
-#include <dlfcn.h> /* Programming interface to libdl. */
-#endif /* HAVE_DLFCN_H */
-
 #include "gl_wgl.h"
 #include "gl_glx.h"
 
 static cc_libhandle glglue_self_handle = NULL;
 static SbBool glglue_tried_open_self = FALSE;
 
+/* Resolve and return the integer value of an environment variable. */
+static int
+glglue_resolve_envvar(const char * txt)
+{
+  const char * val = coin_getenv(txt);
+  return val ? atoi(val) : 0;
+}
+
 /* Return value of COIN_DEBUG_GLGLUE environment variable. */
 int
 coin_glglue_debug(void)
 {
   static int d = -1;
-  if (d == -1) {
-    const char * debuggl = coin_getenv("COIN_DEBUG_GLGLUE");
-    d = debuggl ? atoi(debuggl) : 0;
-  }
-
+  if (d == -1) { d = glglue_resolve_envvar("COIN_DEBUG_GLGLUE"); }
   return (d > 0) ? 1 : 0;
 }
 
-/*
-   Define GLGLUE_REGISTER_FUNC macro. Casting the type is
-   necessary for this file to be compatible with C++ compilers.
-*/
-#define GLGLUE_REGISTER_FUNC(_wrapname_, _funcname_, _funcsig_) \
-  gi->_wrapname_ = (_funcsig_)glglue_getprocaddress(SO__QUOTE(_funcname_))
+/* Return value of COIN_PREFER_GLPOLYGONOFFSET_EXT environment variable. */
+static int
+glglue_prefer_glPolygonOffsetEXT(void)
+{
+  static int d = -1;
+  if (d == -1) { d = glglue_resolve_envvar("COIN_PREFER_GLPOLYGONOFFSET_EXT"); }
+  return (d > 0) ? 1 : 0;
+}
 
 /*
   Returns address of the symbol (usually a function) named by
@@ -183,7 +207,7 @@ glglue_set_glVersion(cc_glglue * wrapper)
 
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("glglue_set_glVersion",
-                           "parsed version nr: %d.%d.%d",
+                           "parsed to major=='%d', minor=='%d', micro=='%d'",
                            wrapper->glVersion.major,
                            wrapper->glVersion.minor,
                            wrapper->glVersion.release);
@@ -308,118 +332,141 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
   return 0;
 }
 
+#ifdef COIN_OPENGL_DYNAMIC_BINDING
+
+#define PROC(_func_) glglue_getprocaddress(SO__QUOTE(_func_))
+
+/* The OpenGL library which we dynamically pick up symbols from
+   /could/ have all these defined. For the code below which tries to
+   dynamically resolve the methods, we will assume that they are all
+   defined. By doing this little "trick", can we use the same code
+   below for resolving stuff dynamically as we need anyway to resolve
+   in a static manner. */
+#define GL_VERSION_1_1 1
+#define GL_VERSION_1_2 1
+#define GL_VERSION_1_3 1
+#define GLX_VERSION_1_1 1
+#define GLX_VERSION_1_2 1
+#define GLX_VERSION_1_3 1
+#define GL_EXT_polygon_offset 1
+#define GL_EXT_texture_object 1
+#define GL_EXT_subtexture 1
+#define GL_EXT_texture3D 1
+#define GL_ARB_multitexture 1
+
+#else /* static binding */
+
+#define PROC(_func_) (&_func_)
+
+#endif /* static binding */
+
+
 static void
-glglue_resolve_dynamic(cc_glglue * w)
+glglue_resolve_symbols(cc_glglue * w)
 {
-#define proc glglue_getprocaddress
+  /* Appeared in OpenGL v1.1. We store both the "real" function
+     pointer and the extension pointer, in case we need to work around
+     an SGI bug (see comments in cc_glglue_glPolygonOffset(). */
+  w->glPolygonOffset = NULL;
+  w->glPolygonOffsetEXT = NULL;
+#ifdef GL_VERSION_1_1
+  if (cc_glglue_glversion_matches_at_least(w, 1, 1, 0)) {
+    w->glPolygonOffset = (COIN_PFNGLPOLYGONOFFSETPROC)PROC(glPolygonOffset);
+  }
+#endif /* GL_VERSION_1_1 */
+#ifdef GL_EXT_polygon_offset
+  if (cc_glglue_glext_supported(w, "GL_EXT_polygon_offset")) {
+    w->glPolygonOffsetEXT = (COIN_PFNGLPOLYGONOFFSETPROC)PROC(glPolygonOffsetEXT);
+  }
+#endif /* GL_EXT_polygon_offset */
+
+
+
+  /* Appeared in OpenGL v1.1. */
+  w->glGenTextures = NULL;
+  w->glBindTexture = NULL;
+  w->glDeleteTextures = NULL;
+#ifdef GL_VERSION_1_1
+  if (cc_glglue_glversion_matches_at_least(w, 1, 1, 0)) {
+    w->glGenTextures = (COIN_PFNGLGENTEXTURESPROC)PROC(glGenTextures);
+    w->glBindTexture = (COIN_PFNGLBINDTEXTUREPROC)PROC(glBindTexture);
+    w->glDeleteTextures = (COIN_PFNGLDELETETEXTURESPROC)PROC(glDeleteTextures);
+  }
+#endif /* GL_VERSION_1_1 */
+#ifdef GL_EXT_texture_object
+  if (!w->glGenTextures && cc_glglue_glext_supported(w,"GL_EXT_texture_object")) {
+    w->glGenTextures = (COIN_PFNGLGENTEXTURESPROC)PROC(glGenTexturesEXT);
+    w->glBindTexture = (COIN_PFNGLBINDTEXTUREPROC)PROC(glBindTextureEXT);
+    w->glDeleteTextures = (COIN_PFNGLDELETETEXTURESPROC)PROC(glDeleteTexturesEXT);
+  }
+#endif /* GL_EXT_texture_object */
+
+  /* Appeared in OpenGL v1.1. */
+  w->glTexSubImage2D = NULL;
+#ifdef GL_VERSION_1_1
+  if (cc_glglue_glversion_matches_at_least(w, 1, 1, 0)) {
+    w->glTexSubImage2D = (COIN_PFNGLTEXSUBIMAGE2DPROC)PROC(glTexSubImage2D);
+  }
+#endif /* GL_VERSION_1_1 */
+#ifdef GL_EXT_subtexture
+  if (!w->glTexSubImage2D && cc_glglue_glext_supported(w,"GL_EXT_subtexture")) {
+    w->glTexSubImage2D = (COIN_PFNGLTEXSUBIMAGE2DPROC)PROC(glTexSubImage2DEXT);
+  }
+#endif /* GL_EXT_subtexture */
 
   /* These were introduced with OpenGL v1.2. */
-  w->glTexImage3D = (COIN_PFNGLTEXIMAGE3DPROC)proc("glTexImage3D");
-  w->glCopyTexSubImage3D = (COIN_PFNGLCOPYTEXSUBIMAGE3DPROC)proc("glCopyTexSubImage3D");
-  w->glTexSubImage3D = (COIN_PFNGLTEXSUBIMAGE3DPROC)proc("glTexSubImage3D");
-  /* Should be available if GL_EXT_texture3D is in the extension list. */
-  if (!w->glTexImage3D) {
-    w->glTexImage3D = (COIN_PFNGLTEXIMAGE3DPROC)proc("glTexImage3DEXT");
-    w->glCopyTexSubImage3D = (COIN_PFNGLCOPYTEXSUBIMAGE3DPROC)proc("glCopyTexSubImage3DEXT");
-    w->glTexSubImage3D = (COIN_PFNGLTEXSUBIMAGE3DPROC)proc("glTexSubImage3DEXT");
+  w->glTexImage3D = NULL;
+  w->glCopyTexSubImage3D = NULL;
+  w->glTexSubImage3D = NULL;
+#ifdef GL_VERSION_1_2
+  if (cc_glglue_glversion_matches_at_least(w, 1, 2, 0)) {
+    w->glTexImage3D = (COIN_PFNGLTEXIMAGE3DPROC)PROC(glTexImage3D);
+    w->glCopyTexSubImage3D = (COIN_PFNGLCOPYTEXSUBIMAGE3DPROC)PROC(glCopyTexSubImage3D);
+    w->glTexSubImage3D = (COIN_PFNGLTEXSUBIMAGE3DPROC)PROC(glTexSubImage3D);
   }
+#endif /* GL_VERSION_1_2 */
+#ifdef GL_EXT_texture3D
+  if (!w->glTexImage3D && cc_glglue_glext_supported(w,"GL_EXT_texture3D")) {
+    w->glTexImage3D = (COIN_PFNGLTEXIMAGE3DPROC)PROC(glTexImage3DEXT);
+    /* These are implicitly given if GL_EXT_texture3D is defined. */
+    w->glCopyTexSubImage3D = (COIN_PFNGLCOPYTEXSUBIMAGE3DPROC)PROC(glCopyTexSubImage3DEXT);
+    w->glTexSubImage3D = (COIN_PFNGLTEXSUBIMAGE3DPROC)PROC(glTexSubImage3DEXT);
+  }
+#endif /* GL_EXT_texture3D */
 
-  /* Appeared in OpenGL v1.1. */
-  w->glPolygonOffset = (COIN_PFNGLPOLYGONOFFSETPROC)proc("glPolygonOffset");
-  if (!w->glPolygonOffset) {
-    w->glPolygonOffset = (COIN_PFNGLPOLYGONOFFSETPROC)proc("glPolygonOffsetEXT");
-  }
-
-  /* Appeared in OpenGL v1.1. */
-  w->glBindTexture = (COIN_PFNGLBINDTEXTUREPROC)proc("glBindTexture");
-  w->glDeleteTextures = (COIN_PFNGLDELETETEXTURESPROC)proc("glDeleteTextures");
-  w->glGenTextures = (COIN_PFNGLGENTEXTURESPROC)proc("glGenTextures");
-  /* From GL_EXT_texture_object. */
-  if (!w->glBindTexture) {
-    w->glBindTexture = (COIN_PFNGLBINDTEXTUREPROC)proc("glBindTextureEXT");
-    w->glDeleteTextures = (COIN_PFNGLDELETETEXTURESPROC)proc("glDeleteTexturesEXT");
-    w->glGenTextures = (COIN_PFNGLGENTEXTURESPROC)proc("glGenTexturesEXT");
-  }
-
-  /* Appeared in OpenGL v1.1. */
-  w->glTexSubImage2D = (COIN_PFNGLTEXSUBIMAGE2DPROC)proc("glTexSubImage2D");
-  /* From GL_EXT_subtexture. */
-  if (!w->glTexSubImage2D) {
-    w->glTexSubImage2D = (COIN_PFNGLTEXSUBIMAGE2DPROC)proc("glTexSubImage2DEXT");
-  }
 
   /* Appeared in OpenGL v1.3. */
-  w->glActiveTexture = (COIN_PFNGLACTIVETEXTUREPROC)proc("glActiveTexture");
-  w->glMultiTexCoord2f = (COIN_PFNGLMULTITEXCOORD2FPROC)proc("glMultiTexCoord2f");
-  /* From GL_ARB_multitexture. */
-  if (!w->glActiveTexture) {
-    w->glActiveTexture = (COIN_PFNGLACTIVETEXTUREPROC)proc("glActiveTextureARB");
-    w->glMultiTexCoord2f = (COIN_PFNGLMULTITEXCOORD2FPROC)proc("glMultiTexCoord2fARB");
+  w->glActiveTexture = NULL;
+  w->glMultiTexCoord2f = NULL;
+#ifdef GL_VERSION_1_3
+  if (cc_glglue_glversion_matches_at_least(w, 1, 3, 0)) {
+    w->glActiveTexture = (COIN_PFNGLACTIVETEXTUREPROC)PROC(glActiveTexture);
+    w->glMultiTexCoord2f = (COIN_PFNGLMULTITEXCOORD2FPROC)PROC(glMultiTexCoord2f);
   }
+#endif /* GL_VERSION_1_3 */
+#ifdef GL_ARB_multitexture
+  if (!w->glActiveTexture && cc_glglue_glext_supported(w,"GL_ARB_multitexture")) {
+    w->glActiveTexture = (COIN_PFNGLACTIVETEXTUREPROC)PROC(glActiveTextureARB);
+    w->glMultiTexCoord2f = (COIN_PFNGLMULTITEXCOORD2FPROC)PROC(glMultiTexCoord2fARB);
+  }
+#endif /* GL_ARB_multitexture */
 
   /* Appeared in GLX 1.3. */
-  w->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)proc("glXGetCurrentDisplay");
+  w->glXGetCurrentDisplay = NULL;
+#ifdef GLX_VERSION_1_3
+  if (cc_glglue_glxversion_matches_at_least(w, 1, 3)) {
+    w->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)PROC(glXGetCurrentDisplay);
+  }
+#endif /* GLX_VERSION_1_3 */
   /* From GLX_EXT_import_context. */
-  if (!w->glXGetCurrentDisplay) {
-    w->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)proc("glXGetCurrentDisplayEXT");
-  }
-
-#undef proc
+  /* FIXME: need to implement extension querying for GLX. 20020919 mortene. */
+/*   if (!w->glXGetCurrentDisplay && cc_glglue_glxext_supported(w,"GLX_EXT_import_context")) { */
+/*     w->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)PROC(glXGetCurrentDisplayEXT); */
+/*   } */
 }
 
-/* Resolve requests for supported features. */
-static void
-glglue_init_feature_indicators(cc_glglue * w)
-{
-  w->has3DTextures = FALSE;
-  w->has3DProxyTextures = FALSE;
+#undef PROC
 
-  if (cc_glglue_glversion_matches_at_least(w,1,2,0)) {
-    w->has3DTextures = TRUE;
-    w->has3DProxyTextures = TRUE;
-  }
-  else if (cc_glglue_glversion_matches_at_least(w,1,1,0) &&
-           cc_glglue_glext_supported(w,"GL_EXT_texture3D")) {
-    w->has3DTextures = TRUE;
-    w->has3DProxyTextures = TRUE;
-  }
-
-
-  w->hasTextureEdgeClamp = FALSE;
-
-  if (cc_glglue_glversion_matches_at_least(w,1,2,0)) {
-    w->hasTextureEdgeClamp = TRUE;
-  }
-  else if (cc_glglue_glext_supported(w, "GL_SGIS_texture_edge_clamp")) {
-    w->hasTextureEdgeClamp = TRUE;
-  }
-  /* this test was for some reason disabled a while ago, which caused
-   * big problems for me.  _Never_ disable this test again, please!
-   * pederb, 2002-03-27 */
-  else if (cc_glglue_glext_supported(w, "GL_EXT_texture_edge_clamp")) {
-    w->hasTextureEdgeClamp = TRUE;
-  }
-
-
-  w->has2DProxyTextures = FALSE;
-
-  if (cc_glglue_glversion_matches_at_least(w,1,1,0)) {
-    w->has2DProxyTextures = TRUE;
-  }
-  else if (cc_glglue_glext_supported(w, "GL_EXT_texture")) {
-    w->has2DProxyTextures = TRUE;
-  }
-
-
-  w->hasMultitexture = FALSE;
-
-  if (cc_glglue_glversion_matches_at_least(w,1,3,0)) {
-    w->hasMultitexture = TRUE;
-  }
-  else if (cc_glglue_glext_supported(w, "GL_ARB_multitexture")) {
-    w->hasMultitexture = TRUE;
-  }
-}
 
 /* We're basically using the Singleton pattern to instantiate and
    return OpenGL-glue "object structs". We're constructing one
@@ -458,6 +505,8 @@ cc_glglue_instance(int contextid)
     assert((aglGetCurrentContext() != NULL) && "must have a current GL context when instantiating cc_glglue");
 #endif /* HAVE_AGL */
 
+    glglue_sanity_check_enums();
+
     gi = (cc_glglue*)malloc(sizeof(cc_glglue));
     /* FIXME: handle out-of-memory on malloc(). 20000928 mortene. */
 
@@ -472,151 +521,202 @@ cc_glglue_instance(int contextid)
     glglue_set_glVersion(gi);
     coin_glx_version(&(gi->glxVersion.major), &(gi->glxVersion.minor));
 
+    gi->isdirect = coin_glx_isdirect();
+    gi->vendor_is_SGI = strcmp(glGetString(GL_VENDOR), "SGI") == 0;
+
     if (coin_glglue_debug()) {
       cc_debugerror_postinfo("cc_glglue_instance",
-                             "glGetString(GL_VENDOR)=='%s'",
-                             glGetString(GL_VENDOR));
+                             "glGetString(GL_VENDOR)=='%s' (=> vendor_is_SGI==%s)",
+                             glGetString(GL_VENDOR),
+                             gi->vendor_is_SGI ? "TRUE" : "FALSE");
       cc_debugerror_postinfo("cc_glglue_instance",
                              "glGetString(GL_RENDERER)=='%s'",
                              glGetString(GL_RENDERER));
       cc_debugerror_postinfo("cc_glglue_instance",
                              "glGetString(GL_EXTENSIONS)=='%s'",
                              glGetString(GL_EXTENSIONS));
+
+      cc_debugerror_postinfo("cc_glglue_instance",
+                             "Rendering is %sdirect.",
+                             gi->isdirect ? "" : "in");
     }
 
-
-    /* Initialize function pointers to NULL pointers. */
-    gi->glTexImage3D = NULL;
-    gi->glCopyTexSubImage3D = NULL;
-    gi->glTexSubImage3D = NULL;
-    gi->glBindTexture = NULL;
-    gi->glDeleteTextures = NULL;
-    gi->glGenTextures = NULL;
-    gi->glTexSubImage2D = NULL;
-    gi->glActiveTexture = NULL;
-    gi->glMultiTexCoord2f = NULL;
-    gi->glXGetCurrentDisplay = NULL;
-
-    glglue_sanity_check_enums();
-
-    /* Resolve our functions */
-#ifdef COIN_OPENGL_DYNAMIC_BINDING
-    glglue_resolve_dynamic(gi);
-#else /* Static binding */
-    if (0) {
-    }
-#if GL_VERSION_1_2
-    else if (cc_glglue_glversion_matches_at_least(gi,1,2,0)) {
-      gi->glTexImage3D = &glTexImage3D;
-      gi->glCopyTexSubImage3D = &glCopyTexSubImage3D;
-      gi->glTexSubImage3D = &glTexSubImage3D;
-    }
-#endif
-#if GL_VERSION_1_1
-#ifdef GL_EXT_texture3D
-    else if (cc_glglue_glversion_matches_at_least(gi,1,1,0) &&
-             glglue_glext_supported(gi,"GL_EXT_texture3D")) {
-      gi->glTexImage3D = (COIN_PFNGLTEXIMAGE3DPROC)&glTexImage3DEXT;
-      /* FIXME: #ifdef these extensions as well or is that implicitly given? (kintel 20011123) */
-      if (cc_glglue_glext_supported(gi, "GL_EXT_copy_texture"))
-        gi->glCopyTexSubImage3D = (COIN_PFNGLCOPYTEXSUBIMAGE3DPROC)&glCopyTexSubImage3DEXT;
-      if (cc_glglue_glext_supported(gi, "GL_EXT_subtexture"))
-        gi->glTexSubImage3D = (COIN_PFNGLTEXSUBIMAGE3DPROC)&glTexSubImage3DEXT;
-    }
-#endif
-#endif
-
-    /* Some SGI OpenGL implementations report OpenGL 1.1 without supporting
-       glPolygonOffset 100%. They do support glPolygonOffsetEXT though, so we
-       hide the checking here.
-       FIXME: We may want to check this during configure instead. */
-    /* FIXME: Reintroduce the env variable check? */
-    if (0) {
-    }
-#if defined(__sgi)
-    else if (cc_glglue_glversion_matches_at_least(gi,1,1,0) &&
-             !glglue_glversion_matches_at_least(gi,1,2,0)) {
-      gi->glPolygonOffset = (COIN_PFNGLPOLYGONOFFSETPROC)&glPolygonOffsetEXT;
-    }
-#endif /* ! __sgi */
-    else {
-      gi->glPolygonOffset = (COIN_PFNGLPOLYGONOFFSETPROC)&glPolygonOffset;
-    }
-
-#if GL_VERSION_1_1
-    gi->glBindTexture =  &glBindTexture;
-    gi->glDeleteTextures = &glDeleteTextures;
-    gi->glGenTextures = &glGenTextures;
-#elif GL_EXT_texture_object
-    if (cc_glglue_glext_supported(gi, "GL_EXT_texture_object")) {
-      gi->glBindTexture =  &glBindTextureEXT;
-      gi->glDeleteTextures = &glDeleteTexturesEXT;
-      gi->glGenTextures = &glGenTexturesEXT;
-    }
-#endif /* !GL_VERSION_1_1 */
-
-#if GL_VERSION_1_1
-    gi->glTexSubImage2D = &glTexSubImage2D;
-#elif GL_EXT_subtexture
-    if (cc_glglue_glext_supported(gi, "GL_EXT_subtexture")) {
-      gi->glTexSubImage2D = &glTexSubImage2DEXT;
-    }
-#endif /* !GL_VERSION_1_1 */
-
-#if GL_VERSION_1_3
-    gi->glActiveTexture = &glActiveTexture;
-    gi->glMultiTexCoord2f = &glMultiTexCoord2f;
-#elif GL_ARB_multitexture
-    gi->glActiveTexture = &glActiveTextureARB;
-    gi->glMultiTexCoord2f = &glMultiTexCoord2fARB;
-#endif /* !GL_VERSION_1_3 */
-
-#endif /* !COIN_OPENGL_DYNAMIC_BINDING */
-
+    /* Resolve our function pointers. */
+    glglue_resolve_symbols(gi);
   }
   else {
     gi = (cc_glglue *)ptr;
   }
 
-  /* Set up all the "has-this-and-that" feature flags. */
-  glglue_init_feature_indicators(gi);
-
   CC_SYNC_END(cc_glglue_instance);
   return gi;
 }
 
-SbBool
-cc_glglue_has_3d_textures(const cc_glglue * glue)
-{
-  return glue->has3DTextures;
-}
+/*!
+  Whether glPolygonOffset() is availble or not: either we're on OpenGL
+  1.1 or the GL_EXT_polygon_offset extension is available.
 
+  Method then available for use:
+  \li cc_glglue_glPolygonOffset
+*/
 SbBool
-cc_glglue_has_2d_proxy_textures(const cc_glglue * glue)
+cc_glglue_has_polygon_offset(const cc_glglue * w)
 {
-  return glue->has2DProxyTextures;
-}
-
-SbBool
-cc_glglue_has_3d_proxy_textures(const cc_glglue * glue)
-{
-  return glue->has3DProxyTextures;
-}
-
-SbBool
-cc_glglue_has_texture_edge_clamp(const cc_glglue * glue)
-{
-  return glue->hasTextureEdgeClamp;
-}
-
-SbBool
-cc_glglue_has_multitexture(const cc_glglue * glue)
-{
-  return glue->hasMultitexture;
+  return (w->glPolygonOffset || w->glPolygonOffsetEXT) ? TRUE : FALSE;
 }
 
 void
-cc_glglue_glTexImage3D(const cc_glglue * glue,
+cc_glglue_glPolygonOffset(const cc_glglue * w,
+                          GLfloat factor,
+                          GLfloat bias)
+{
+  COIN_PFNGLPOLYGONOFFSETPROC poff = NULL;
+
+  assert(w->glPolygonOffset ||  w->glPolygonOffsetEXT);
+
+  poff = w->glPolygonOffset;
+
+  /* Some SGI OpenGL 1.1 driver(s) seems to have a buggy
+     implementation of glPolygonOffset(), according to pederb after
+     some debugging he did for Fedem. These drivers'
+     glPolygonOffsetEXT() actually seems to work better, so we prefer
+     that if available. */
+  if (w->vendor_is_SGI && w->glPolygonOffsetEXT &&
+      cc_glglue_glversion_matches_at_least(w, 1, 1, 0) &&
+      !cc_glglue_glversion_matches_at_least(w, 1, 2, 0)) {
+    poff = w->glPolygonOffsetEXT;
+  }
+
+  /* Since we know glPolygonOffset() can be problematic, we also
+     provide a way to prefer the EXT function instead through an
+     environment variable "COIN_PREFER_GLPOLYGONOFFSET_EXT" (which
+     could be handy for help debugging remote systems, at least). */
+  if (w->glPolygonOffsetEXT && glglue_prefer_glPolygonOffsetEXT()) {
+    poff = w->glPolygonOffsetEXT;
+  }
+
+  /* If glPolygonOffset() is not available (and the function pointer
+     was not set by any of the bug workaround if-checks above), fall
+     back on extension. */
+  if (poff == NULL) { poff = w->glPolygonOffsetEXT; }
+
+  poff(factor, bias);
+}
+
+/*!
+  Whether 3D texture objects are available or not: either we're on OpenGL
+  1.1, or the GL_EXT_texture_object extension is available.
+
+  Methods then available for use:
+
+  \li cc_glglue_glGenTextures
+  \li cc_glglue_glBindTexture
+  \li cc_glglue_glDeleteTextures
+*/
+SbBool
+cc_glglue_has_texture_objects(const cc_glglue * w)
+{
+  return w->glGenTextures && w->glBindTexture && w->glDeleteTextures;
+}
+
+void
+cc_glglue_glGenTextures(const cc_glglue * w, GLsizei n, GLuint * textures)
+{
+  assert(w->glGenTextures);
+  w->glGenTextures(n, textures);
+}
+
+void
+cc_glglue_glBindTexture(const cc_glglue * w, GLenum target, GLuint texture)
+{
+  assert(w->glBindTexture);
+  w->glBindTexture(target, texture);
+}
+
+void
+cc_glglue_glDeleteTextures(const cc_glglue * w, GLsizei n, const GLuint * textures)
+{
+  assert(w->glDeleteTextures);
+  w->glDeleteTextures(n, textures);
+}
+
+/*!
+  Whether sub-textures are supported: either we're on OpenGL 1.2, or
+  the GL_EXT_texture3D extension is available.
+
+  Methods then available for use:
+
+  \li cc_glglue_glTexImage3D
+  \li cc_glglue_glTexSubImage3D
+  \li cc_glglue_glCopyTexSubImage3D
+*/
+SbBool
+cc_glglue_has_texsubimage(const cc_glglue * w)
+{
+  return w->glTexSubImage2D ? TRUE : FALSE;
+}
+
+void
+cc_glglue_glTexSubImage2D(const cc_glglue * w,
+                          GLenum target,
+                          GLint level,
+                          GLint xoffset,
+                          GLint yoffset,
+                          GLsizei width,
+                          GLsizei height,
+                          GLenum format,
+                          GLenum type,
+                          const GLvoid * pixels)
+{
+  assert(w->glTexSubImage2D);
+  w->glTexSubImage2D(target, level, xoffset, yoffset,
+                     width, height, format, type, pixels);
+}
+
+/*!
+  Whether 3D textures are available or not: either we're on OpenGL
+  1.2, or the GL_EXT_texture3D extension is available.
+
+  Methods then available for use:
+
+  \li cc_glglue_glTexImage3D
+  \li cc_glglue_glTexSubImage3D
+  \li cc_glglue_glCopyTexSubImage3D
+*/
+SbBool
+cc_glglue_has_3d_textures(const cc_glglue * w)
+{
+  return
+    w->glTexImage3D &&
+    w->glCopyTexSubImage3D &&
+    w->glTexSubImage3D;
+}
+
+SbBool
+cc_glglue_has_2d_proxy_textures(const cc_glglue * w)
+{
+  return
+    cc_glglue_glversion_matches_at_least(w, 1, 1, 0) ||
+    cc_glglue_glext_supported(w, "GL_EXT_texture");
+}
+
+SbBool
+cc_glglue_has_texture_edge_clamp(const cc_glglue * w)
+{
+  return
+    cc_glglue_glversion_matches_at_least(w, 1, 2, 0) ||
+    cc_glglue_glext_supported(w, "GL_EXT_texture_edge_clamp") ||
+    cc_glglue_glext_supported(w, "GL_SGIS_texture_edge_clamp");
+}
+
+SbBool
+cc_glglue_has_multitexture(const cc_glglue * w)
+{
+  return w->glMultiTexCoord2f && w->glActiveTexture;
+}
+
+void
+cc_glglue_glTexImage3D(const cc_glglue * w,
                        GLenum target,
                        GLint level,
                        GLenum internalformat,
@@ -628,16 +728,14 @@ cc_glglue_glTexImage3D(const cc_glglue * glue,
                        GLenum type,
                        const GLvoid *pixels)
 {
-  assert(glue->glTexImage3D);
-  if (glue->glTexImage3D) {
-    glue->glTexImage3D(target, level, internalformat,
-                       width, height, depth, border,
-                       format, type, pixels);
-  }
+  assert(w->glTexImage3D);
+  w->glTexImage3D(target, level, internalformat,
+                  width, height, depth, border,
+                  format, type, pixels);
 }
 
 void
-cc_glglue_glTexSubImage3D(const cc_glglue * glue,
+cc_glglue_glTexSubImage3D(const cc_glglue * w,
                           GLenum target,
                           GLint level,
                           GLint xoffset,
@@ -650,16 +748,14 @@ cc_glglue_glTexSubImage3D(const cc_glglue * glue,
                           GLenum type,
                           const GLvoid * pixels)
 {
-  assert(glue->glTexSubImage3D);
-  if (glue->glTexSubImage3D) {
-    glue->glTexSubImage3D(target, level, xoffset, yoffset,
-                          zoffset, width, height, depth, format,
-                          type, pixels);
-  }
+  assert(w->glTexSubImage3D);
+  w->glTexSubImage3D(target, level, xoffset, yoffset,
+                     zoffset, width, height, depth, format,
+                     type, pixels);
 }
 
 void
-cc_glglue_glCopyTexSubImage3D(const cc_glglue * glue,
+cc_glglue_glCopyTexSubImage3D(const cc_glglue * w,
                               GLenum target,
                               GLint level,
                               GLint xoffset,
@@ -670,100 +766,43 @@ cc_glglue_glCopyTexSubImage3D(const cc_glglue * glue,
                               GLsizei width,
                               GLsizei height)
 {
-  assert(glue->glCopyTexSubImage3D);
-  if (glue->glCopyTexSubImage3D) {
-    glue->glCopyTexSubImage3D(target,
-                              level,
-                              xoffset,
-                              yoffset,
-                              zoffset,
-                              x,
-                              y,
-                              width,
-                              height);
-  }
+  assert(w->glCopyTexSubImage3D);
+  w->glCopyTexSubImage3D(target,
+                         level,
+                         xoffset,
+                         yoffset,
+                         zoffset,
+                         x,
+                         y,
+                         width,
+                         height);
 }
 
 void
-cc_glglue_glPolygonOffset(const cc_glglue * glue,
-                          GLfloat factor,
-                          GLfloat bias)
-{
-  assert(glue->glPolygonOffset);
-  if (glue->glPolygonOffset) {
-    glue->glPolygonOffset(factor, bias);
-  }
-}
-
-void
-cc_glglue_glBindTexture(const cc_glglue * glue,
-                        GLenum target,
-                        GLuint texture)
-{
-  assert(glue->glBindTexture);
-  if (glue->glBindTexture) {
-    glue->glBindTexture(target, texture);
-  }
-}
-
-void
-cc_glglue_glDeleteTextures(const cc_glglue * glue,
-                           GLsizei n,
-                           const GLuint * textures)
-{
-  assert(glue->glDeleteTextures);
-  if (glue->glDeleteTextures) {
-    glue->glDeleteTextures(n, textures);
-  }
-}
-
-void
-cc_glglue_glGenTextures(const cc_glglue * glue,
-                        GLsizei n,
-                        GLuint *textures)
-{
-  assert(glue->glGenTextures);
-  if (glue->glGenTextures) {
-    glue->glGenTextures(n, textures);
-  }
-}
-
-void
-cc_glglue_glTexSubImage2D(const cc_glglue * glue,
-                          GLenum target,
-                          GLint level,
-                          GLint xoffset,
-                          GLint yoffset,
-                          GLsizei width,
-                          GLsizei height,
-                          GLenum format,
-                          GLenum type,
-                          const GLvoid * pixels)
-{
-  if (glue->glTexSubImage2D) {
-    glue->glTexSubImage2D(target, level, xoffset, yoffset,
-                          width, height, format, type, pixels);
-  }
-}
-
-void
-cc_glglue_glActiveTexture(const cc_glglue * glue,
+cc_glglue_glActiveTexture(const cc_glglue * w,
                           GLenum texture)
 {
-  assert(glue->glActiveTexture);
-  if (glue->glActiveTexture) {
-    glue->glActiveTexture(texture);
-  }
+  assert(w->glActiveTexture);
+  w->glActiveTexture(texture);
 }
 
 void
-cc_glglue_glMultiTexCoord2f(const cc_glglue * glue,
+cc_glglue_glMultiTexCoord2f(const cc_glglue * w,
                             GLenum target,
                             GLfloat s,
                             GLfloat t)
 {
-  assert(glue->glMultiTexCoord2f);
-  if (glue->glMultiTexCoord2f) {
-    glue->glMultiTexCoord2f(target, s, t);
-  }
+  assert(w->glMultiTexCoord2f);
+  w->glMultiTexCoord2f(target, s, t);
+}
+
+/*!
+  Returns current X11 display the OpenGL context is in. If none, or if
+  the glXGetCurrentDisplay() method is not available (it was
+  introduced with GLX 1.3), returns \c NULL.
+*/
+void *
+cc_glglue_glXGetCurrentDisplay(const cc_glglue * w)
+{
+  return w->glXGetCurrentDisplay ? w->glXGetCurrentDisplay() : NULL;
 }

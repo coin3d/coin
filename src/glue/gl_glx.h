@@ -35,7 +35,7 @@ extern "C" {
 
 void * coin_glx_getprocaddress(const char * fname);
 void coin_glx_version(int * major, int * minor);
-
+SbBool coin_glx_isdirect(void);
 
 #ifdef __cplusplus
 }

@@ -28,6 +28,10 @@
 #error You have tried to use one of the private Coin header files
 #endif /* ! COIN_INTERNAL */
 
+/* NOTE: do *not* include this header file outside of the gl.c OpenGL
+   wrapper -- even if you're inside Coin library implementation
+   code. */
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
@@ -129,26 +133,23 @@ struct cc_glglue {
     int major, minor;
   } glxVersion;
 
-  /* Capability flags for features of the underlying OpenGL implementation. */
-  SbBool has3DTextures;
-  SbBool has2DProxyTextures;
-  SbBool has3DProxyTextures;
-  SbBool hasTextureEdgeClamp;
-  SbBool hasMultitexture;
-
   /* OpenGL calls. Will be NULL if not available, otherwise they
      contain a valid function pointer into the OpenGL library. */
+  COIN_PFNGLPOLYGONOFFSETPROC glPolygonOffset;
+  COIN_PFNGLPOLYGONOFFSETPROC glPolygonOffsetEXT;
+  COIN_PFNGLGENTEXTURESPROC glGenTextures;
+  COIN_PFNGLBINDTEXTUREPROC glBindTexture;
+  COIN_PFNGLDELETETEXTURESPROC glDeleteTextures;
   COIN_PFNGLTEXIMAGE3DPROC glTexImage3D;
   COIN_PFNGLCOPYTEXSUBIMAGE3DPROC glCopyTexSubImage3D;
   COIN_PFNGLTEXSUBIMAGE3DPROC glTexSubImage3D;
-  COIN_PFNGLPOLYGONOFFSETPROC glPolygonOffset;
-  COIN_PFNGLBINDTEXTUREPROC glBindTexture;
-  COIN_PFNGLDELETETEXTURESPROC glDeleteTextures;
-  COIN_PFNGLGENTEXTURESPROC glGenTextures;
   COIN_PFNGLTEXSUBIMAGE2DPROC glTexSubImage2D;
   COIN_PFNGLACTIVETEXTUREPROC glActiveTexture;
   COIN_PFNGLMULTITEXCOORD2FPROC glMultiTexCoord2f;
   COIN_PFNGLXGETCURRENTDISPLAYPROC glXGetCurrentDisplay;
+
+  SbBool isdirect;
+  SbBool vendor_is_SGI;
 };
 
 /* Exported internally to gl_glx.c and gl_wgl.c. */

@@ -96,7 +96,6 @@
 #include "../tidbits.h" // coin_getenv(), coin_atexit()
 #include <GLUWrapper.h>
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -346,10 +345,11 @@ fast_mipmap(SoState * state, int width, int height, const int nc,
   unsigned char * mipmap_buffer = glimage_get_buffer(memreq, TRUE);
 
   if (useglsubimage) {
-    if (glw->glTexSubImage2D)
+    if (cc_glglue_has_texsubimage(glw)) {
       cc_glglue_glTexSubImage2D(glw, GL_TEXTURE_2D, 0, 0, 0,
                                 width, height, format,
                                 GL_UNSIGNED_BYTE, data);
+    }
   }
   else {
     glTexImage2D(GL_TEXTURE_2D, 0, nc, width, height, 0, format,
@@ -362,10 +362,11 @@ fast_mipmap(SoState * state, int width, int height, const int nc,
     if (height > 1) height >>= 1;
     src = mipmap_buffer;
     if (useglsubimage) {
-    if (glw->glTexSubImage2D)
-      cc_glglue_glTexSubImage2D(glw, GL_TEXTURE_2D, level, 0, 0,
-                                width, height, format,
-                                GL_UNSIGNED_BYTE, (void*) src);
+      if (cc_glglue_has_texsubimage(glw)) {
+        cc_glglue_glTexSubImage2D(glw, GL_TEXTURE_2D, level, 0, 0,
+                                  width, height, format,
+                                  GL_UNSIGNED_BYTE, (void*) src);
+      }
     }
     else {
       glTexImage2D(GL_TEXTURE_2D, level, nc, width,
@@ -389,15 +390,17 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
 
   // Send level 0 (original image) to OpenGL
   if (useglsubimage) {
-    if (glw->glTexSubImage3D)
+    if (cc_glglue_has_3d_textures(glw)) {
       cc_glglue_glTexSubImage3D(glw, GL_TEXTURE_3D, 0, 0, 0, 0,
                                 width, height, depth, format,
                                 GL_UNSIGNED_BYTE, data);
+    }
   }
   else {
-    if (glw->glTexImage3D)
+    if (cc_glglue_has_3d_textures(glw)) {
       cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, 0, nc, width, height, depth,
                              0, format, GL_UNSIGNED_BYTE, data);
+    }
   }
   unsigned char *src = (unsigned char *) data;
   for (int level = 1; level <= levels; level++) {
@@ -407,16 +410,18 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
     if (depth > 1) depth >>= 1;
     src = mipmap_buffer;
     if (useglsubimage) {
-    if (glw->glTexSubImage3D)
-      cc_glglue_glTexSubImage3D(glw, GL_TEXTURE_3D, level, 0, 0, 0,
-                                width, height, depth, format,
-                                GL_UNSIGNED_BYTE, (void*) src);
+      if (cc_glglue_has_3d_textures(glw)) {
+        cc_glglue_glTexSubImage3D(glw, GL_TEXTURE_3D, level, 0, 0, 0,
+                                  width, height, depth, format,
+                                  GL_UNSIGNED_BYTE, (void*) src);
+      }
     }
     else {
-      if (glw->glTexImage3D)
+      if (cc_glglue_has_3d_textures(glw)) {
 	cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, level, nc, width,
                                height, depth, 0, format, GL_UNSIGNED_BYTE,
                                (void *) src);
+      }
     }
   }
 }
@@ -787,7 +792,8 @@ SoGLImage::setData(const SbImage *image,
 
     SbBool is3D = (size[2]==0)?FALSE:TRUE;
     SbBool usesubimage = COIN_TEX2_USE_GLTEXSUBIMAGE &&
-      (is3D && glw->glTexSubImage3D) || (!is3D && glw->glTexSubImage2D);
+      (is3D && cc_glglue_has_3d_textures(glw)) ||
+      (!is3D && cc_glglue_has_texsubimage(glw));
 
     if (!usesubimage) copyok=FALSE;
 
@@ -1386,7 +1392,7 @@ translate_wrap(SoState *state, const SoGLImage::Wrap wrap)
   if (wrap == SoGLImage::REPEAT) return (GLenum) GL_REPEAT;
   if (wrap == SoGLImage::CLAMP_TO_EDGE) {
     const cc_glglue * glw = sogl_glue_instance(state);
-    if (glw->hasTextureEdgeClamp) return GL_CLAMP_TO_EDGE;
+    if (cc_glglue_has_texture_edge_clamp(glw)) return GL_CLAMP_TO_EDGE;
   }
   return (GLenum) GL_CLAMP;
 }
@@ -1438,9 +1444,10 @@ SoGLImageP::reallyCreateTexture(SoState *state,
     this->applyFilter(mipmap);
 
     if (!mipmap) {
-      if (glw->glTexImage3D)
+      if (cc_glglue_has_3d_textures(glw)) {
         cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, 0, numComponents, w, h, d,
                                border, glformat, GL_UNSIGNED_BYTE, texture);
+      }
     }
     else { // mipmaps
       //FIXME: TEX2->TEX3 ? (kintel 20011129)
