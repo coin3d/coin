@@ -107,6 +107,8 @@ SoDetail::getClassTypeId(void)
   return SoDetail::classTypeId;
 }
 
+// Note: the following documentation for initClass() will also be
+// visible for subclasses, so keep it general.
 /*!
   Initialize relevant common data for all instances, like the type
   system.
@@ -121,6 +123,10 @@ SoDetail::initClass(void)
 
 /*!
   Call the initClass() methods of all built-in detail classes.
+
+  (The initClass() method of user extension detail classes -- if any
+  -- must be called explicitly by the application programmer in the
+  application initialization code.)
  */
 void
 SoDetail::initClasses(void)

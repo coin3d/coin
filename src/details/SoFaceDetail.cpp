@@ -19,10 +19,17 @@
 
 /*!
   \class SoFaceDetail SoFaceDetail.h Inventor/details/SoFaceDetail.h
-  \brief The SoFaceDetail class is yet to be documented.
+  \brief The SoFaceDetail class is for storing detailed polygon information.
   \ingroup details
 
-  FIXME: write doc.
+  Instances of this class are used among other things for storing
+  information about polygons after pick operations, and for storing
+  information returned to tesselation callbacks.
+
+  Note that a SoFaceDetail instance consists of a set of SoPointDetail
+  instances, one for each vertex of the polygon it represents.
+
+  \sa SoRayPickAction, SoPickedPoint, SoCallbackAction
 */
 
 #include <Inventor/details/SoFaceDetail.h>
@@ -31,7 +38,10 @@
 
 SO_DETAIL_SOURCE(SoFaceDetail);
 
-
+/*!
+  Default constructor sets up an empty, non-valid detail
+  specification.
+ */
 SoFaceDetail::SoFaceDetail(void)
   : pointsarray(NULL),
     numallocated(0),
@@ -41,17 +51,23 @@ SoFaceDetail::SoFaceDetail(void)
 {
 }
 
+/*!
+  Destructor, free internal resources used for storing the polygon
+  vertices.
+ */
 SoFaceDetail::~SoFaceDetail()
 {
   delete [] this->pointsarray;
 }
 
+// doc in super
 void
 SoFaceDetail::initClass(void)
 {
   SO_DETAIL_INIT_CLASS(SoFaceDetail, SoDetail);
 }
 
+// doc in super
 SoDetail *
 SoFaceDetail::copy(void) const
 {
@@ -67,12 +83,22 @@ SoFaceDetail::copy(void) const
   return copy;
 }
 
+/*!
+  Number of vertices making up the polygon.
+ */
 int
 SoFaceDetail::getNumPoints(void) const
 {
   return this->numpoints;
 }
 
+/*!
+  Returns a pointer into the array of vertices, starting at the \a
+  idx'th vertice of the polygon.
+
+  The array will contain (SoFaceDetail::getNumPoints() - \a idx)
+  elements.
+ */
 const SoPointDetail *
 SoFaceDetail::getPoint(const int idx) const
 {
@@ -80,24 +106,43 @@ SoFaceDetail::getPoint(const int idx) const
   return &this->pointsarray[idx];
 }
 
+/*!
+  Returns the full array of vertice details for the polygon. The array
+  will contain SoFaceDetail::getNumPoints() elements.
+ */
 SoPointDetail *
 SoFaceDetail::getPoints(void)
 {
   return this->pointsarray;
 }
 
+/*!
+  Returns the index of this polygon within the faceset node it is part
+  of.
+ */
 int
 SoFaceDetail::getFaceIndex(void) const
 {
   return this->faceindex;
 }
 
+/*!
+  If this SoFaceDetail represents a triangle tesselated from a complex
+  shape, this method returns the index of the part of the complex
+  shape it was tesselated from.
+ */
 int
 SoFaceDetail::getPartIndex(void) const
 {
   return this->partindex;
 }
 
+/*!
+  Used internally from library client code setting up a SoFaceDetail
+  instance.
+
+  \sa getNumPoints()
+ */
 void
 SoFaceDetail::setNumPoints(const int num)
 {
@@ -109,6 +154,12 @@ SoFaceDetail::setNumPoints(const int num)
   this->numpoints = num;
 }
 
+/*!
+  Used internally from library client code setting up a SoFaceDetail
+  instance.
+
+  \sa getPoint(), getPoints()
+ */
 void
 SoFaceDetail::setPoint(const int idx, const SoPointDetail * const detail)
 {
@@ -116,24 +167,44 @@ SoFaceDetail::setPoint(const int idx, const SoPointDetail * const detail)
   this->pointsarray[idx] = *detail;
 }
 
+/*!
+  Used internally from library client code setting up a SoFaceDetail
+  instance.
+
+  \sa getFaceIndex()
+ */
 void
 SoFaceDetail::setFaceIndex(const int idx)
 {
   this->faceindex = idx;
 }
 
+/*!
+  Used internally from library client code setting up a SoFaceDetail
+  instance.
+
+  \sa getPartIndex()
+ */
 void
 SoFaceDetail::setPartIndex(const int idx)
 {
   this->partindex = idx;
 }
 
+/*!
+  Used internally from library client code setting up a SoFaceDetail
+  instance.
+ */
 void
 SoFaceDetail::incFaceIndex(void)
 {
   this->faceindex++;
 }
 
+/*!
+  Used internally from library client code setting up a SoFaceDetail
+  instance.
+ */
 void
 SoFaceDetail::incPartIndex(void)
 {
