@@ -244,7 +244,16 @@ and explains the principles applied fairly well.
     Enabling this define may slow things down considerably, depending on
     how heavily the parts of Coin you use most are instrumented.
 
-6 How To Add / Modify A Class In Coin
+
+6 The Run-Time Environment
+==========================
+
+To enable the experimental support for display list caching, set the
+environment variable COIN_RENDER_CACHING to "1" and the renderCaching
+field of SoSeparator nodes to ON.
+
+
+7 How To Add / Modify A Class In Coin
 =====================================
 
   * Implement the class.
@@ -458,7 +467,7 @@ Enough about the larger issues, now for the mucky details that has
 been written down to guide the Coin programmers in being consistent
 versus the code "layout" (to make it more easily readable):
 
-  * If the code you write is not 100% complete;
+ 0) If the code you write is not 100% complete;
 
     - Leave a "FIXME" message if you believe the code is fairly
       correct, but you are unsure and have not checked the correctness
@@ -495,7 +504,7 @@ versus the code "layout" (to make it more easily readable):
     problem, and the date could indicate among other things the
     urgency of the problem.
  
-  * If blocks of code are commented out (obsoleted) to make place for
+ 1) If blocks of code are commented out (obsoleted) to make place for
     new code, or because it has become superfluous, one should mark it
     like the example below if it is a large block of code, if the new
     code is very experimental, or if the new code is obfuscated
@@ -507,18 +516,25 @@ versus the code "layout" (to make it more easily readable):
     ...new code...
     #endif // newcode
 
-    So do _not_ leave any code which has been commented out with the
-    language constructs "// ..." or "/* ... */" in anything you check
-    into CVS, at least not without commenting _why_ the code is still
-    present.  It's a bloody pain in the ass trying to figure out why
-    commented-out code is still present in a source file (is it new
-    code which *might* fix a bug, but which haven't been tested yet?
-    is it old code found to be buggy which have been removed? is it
-    commented out because it is a new feature which is yet to be
-    completed? etc etc etc).  People who do this should be taken out
-    behind the barn to be shot.
+    See also the next rule.
 
-  * During debugging, write debug code like this:
+ 2) Under *no* circumstances should developers leave any code which
+    has been commented out with the language constructs "// ..." or
+    "/* ... */" in anything you check into CVS, at least not without
+    commenting _why_ the code is still present.
+
+    It's often very time-consuming and just a bloody pain in the ass
+    and a waste of resources trying to figure out why commented-out
+    code is still present in a source file (is it new code which
+    *might* fix a bug, but which haven't been tested yet?  is it old
+    code found to be buggy which have been removed? is it commented
+    out because it is a new feature which is yet to be completed? etc
+    etc etc).
+
+    Programmers who sin against this rule should be taken out behind
+    the barn to be shot.
+
+ 3) During debugging, write debug code like this:
 
     #if COIN_DEBUG && 1 // debug
       SoDebugError::postInfo(...
@@ -544,7 +560,7 @@ versus the code "layout" (to make it more easily readable):
       SoDebugError::postInfo("SoDB::funnyRabbit", "follow the white rabbit");
     }
 
-  * Do not under any circumstances use printf() / fprintf() / puts()
+ 4) Do not under any circumstances use printf() / fprintf() / puts()
     or related functions for output.  It should not be necessary --
     the Coin class SoDebugError (and SoReadError) was implemented for
     a reason.  Debug messages with printf() / fprintf() is extremely
@@ -552,9 +568,9 @@ versus the code "layout" (to make it more easily readable):
     cause mysterious crashes), and besides it's bloody irritating to
     walk through the code later to remove them.
 
-  * Code formatting rules. The default is to use Kernighan and Ritchie style.
+ 5) Code formatting rules. The default is to use Kernighan and Ritchie style.
 
-    - Braces: keep opening braces on the end of the line, and closing
+   a) Braces: keep opening braces on the end of the line, and closing
       braces at the start. Like this:
 
       if (...) {
@@ -571,10 +587,10 @@ versus the code "layout" (to make it more easily readable):
       The exception from this rule is functions, which should have the
       opening brace on the next line.
 
-    - Indentation: use 2 spaces extra for each level of nesting.
+   b) Indentation: use 2 spaces extra for each level of nesting.
       *Never* use tabulator characters (ie ASCII code 0x09).
 
-    - Spacing: use 1 space after commas and around operators (like +,
+   c) Spacing: use 1 space after commas and around operators (like +,
       -, *, /, ==, &&, etc), but not after or before parentheses.
 
       Like this:
@@ -585,7 +601,7 @@ versus the code "layout" (to make it more easily readable):
 
       if ( val ) { i=sqrt(a)*func(b,c); }
 
-    - Naming: class names should be uppercased for each word, function
+   d) Naming: class names should be uppercased for each word, function
       names for each word except the first one, variable names should
       be all lowercase, and defines, enums and constants should be all
       uppercase. Example:
@@ -598,7 +614,7 @@ versus the code "layout" (to make it more easily readable):
         ...
       }
 
-    - Pointer types and references: use a space on each side of the
+   e) Pointer types and references: use a space on each side of the
       '*' and '&' operators, like this
 
         SoNode * mynode = NULL;
