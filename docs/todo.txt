@@ -1089,6 +1089,27 @@ STUFF TO FIX IN COIN
     both the speedup and the savings in texture memory.
 
 
+045 Coin / SoQt / Qt port or reimplementation of the SGI ''gview'' program.
+    2004-07-15  Morten Eriksen  <mortene@sim.no>
+
+    This is a program to dynamically toy around with a scene graph,
+    which is useful for many reasons. Build and run
+    inventor/apps/demos/gview/gview from the SGI Inventor source code
+    to check it out.
+
+    A reimplementation under our own copyright would be most useful
+    for us, but a simple port under SGI copyright to Qt / SoQt would
+    also be useful.
+
+    Should first check that it builds and runs without any problems
+    (and without any significant source code modifications) on Coin
+    and SoXt, though.
+
+    Would be a good task for a summer intern.
+
+
+// *************************************************************************
+
 
 OTHER COIN-RELATED STUFF TO FIX
 ===============================
