@@ -57,9 +57,6 @@
   \defgroup actions Actions
 */
 /*!
-  \defgroup vrml2 VRML 2.0
-*/
-/*!
   \defgroup details Detail classes
 */
 /*!
