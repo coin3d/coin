@@ -142,8 +142,6 @@ SoMF_Typename_::set1Value(const int idx, So_Typename_ * newval)
   if (oldptr == newval) return;
 
   if (oldptr) {
-    oldptr->removeAuditor(this, SoNotRec::FIELD);
-    oldptr->unref();
 #ifdef COIN_INTERNAL_SOMFPATH
     SoNode * h = oldptr->getHead();
     // The path should be audited by us at all times. So don't use
@@ -155,6 +153,8 @@ SoMF_Typename_::set1Value(const int idx, So_Typename_ * newval)
       h->unref();
     }
 #endif // COIN_INTERNAL_SOMFPATH
+    oldptr->removeAuditor(this, SoNotRec::FIELD);
+    oldptr->unref();
   }
 
   if (newval) {

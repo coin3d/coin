@@ -118,8 +118,6 @@ SoSFPath::setValue(SoPath * newval)
   if (oldptr == newval) return;
 
   if (oldptr) {
-    oldptr->removeAuditor(this, SoNotRec::FIELD);
-    oldptr->unref();
 #ifdef COIN_INTERNAL_SOSFPATH
     SoNode * h = oldptr->getHead();
     // The path should be audited by us at all times. So don't use
@@ -130,6 +128,8 @@ SoSFPath::setValue(SoPath * newval)
       h->unref();
     }
 #endif // COIN_INTERNAL_SOSFPATH
+    oldptr->removeAuditor(this, SoNotRec::FIELD);
+    oldptr->unref();
   }
 
   if (newval) {
