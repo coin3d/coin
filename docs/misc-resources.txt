@@ -219,8 +219,17 @@ THE LINKS
         http://lager.dyndns.org/GnuMICR/download/latest/
                 (GPL'd, see README)
 
-* Volume rendering publications / papers:
-  - <URL:http://www.sigchi.acm.org/pubs/>
+* Volume rendering resources:
+
+  - ACM publications / papers: <URL:http://www.sigchi.acm.org/pubs/>
+
+  - SGI's OpenGL Volumizer:
+    <URL:http://www.sgi.com/software/volumizer/> (check out the API,
+    check whitepapers, check out the sorucecode for importers, check
+    sample code for Inventor integration (SoVolumeShape))
+
+  - http://www.sdsc.edu/~nadeau, homepage of David Nadeau, with misc
+    research papers
 
 * OpenGL and ActiveX:
 
