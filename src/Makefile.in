@@ -203,7 +203,7 @@ INCLUDES = -I$(top_srcdir)/include
 
 libCoin@SUFFIX@_la_SOURCES = \
 	tidbits.c tidbitsp.h \
-	dummy.cpp
+	coin-dummy.cpp
 
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
@@ -221,7 +221,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
 	tidbits.c tidbitsp.h \
-	dummy.cpp
+	coin-dummy.cpp
 
 
 libCoin@SUFFIX@_la_LDFLAGS = \
@@ -504,7 +504,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@BUILD_WITH_THREADS_FALSE@	$(VRML97DIR)/vrml97.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@BUILD_WITH_THREADS_FALSE@	$(SUPERGLUDIR)/${SUPERGLUPREFIX}GLU.lst
 am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = tidbits.$(OBJEXT) \
-	dummy.$(OBJEXT)
+	coin-dummy.$(OBJEXT)
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = \
 	$(am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES)
@@ -721,7 +721,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@BUILD_WITH_THREADS_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	threads/libthreads.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@BUILD_WITH_THREADS_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	$(VRML97DIR)/libvrml97.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@BUILD_WITH_THREADS_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	$(SUPERGLUDIR)/lib${SUPERGLUPREFIX}GLU.la
-am_libCoin@SUFFIX@_la_OBJECTS = tidbits.lo dummy.lo
+am_libCoin@SUFFIX@_la_OBJECTS = tidbits.lo coin-dummy.lo
 libCoin@SUFFIX@_la_OBJECTS = $(am_libCoin@SUFFIX@_la_OBJECTS)
 
 DEFS = @DEFS@
@@ -730,7 +730,7 @@ CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/dummy.Plo $(DEPDIR)/dummy.Po \
+@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/coin-dummy.Plo $(DEPDIR)/coin-dummy.Po \
 @AMDEP_TRUE@	$(DEPDIR)/tidbits.Plo $(DEPDIR)/tidbits.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -841,8 +841,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/dummy.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/dummy.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/coin-dummy.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/coin-dummy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/tidbits.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/tidbits.Po@am__quote@
 

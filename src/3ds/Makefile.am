@@ -8,11 +8,11 @@ LinkHackSources = \
 PrivateHeaders = \
 	3dsLoader.h \
 	SoStream.h \
-	dummy.cpp
+	3ds-dummy.cpp
 # dummy included for 'make dist'
 else
-RegularSources = dummy.cpp
-LinkHackSources = dummy.cpp
+RegularSources = 3ds-dummy.cpp
+LinkHackSources = 3ds-dummy.cpp
 # for 'make dist'
 PrivateHeaders = 3dsLoader.cpp 3dsLoader.h SoStream.cpp SoStream.h
 endif

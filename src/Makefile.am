@@ -73,7 +73,7 @@ endif
 
 libCoin@SUFFIX@_la_SOURCES = \
 	tidbits.c tidbitsp.h \
-	dummy.cpp
+	coin-dummy.cpp
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	actions/actions.lst base/base.lst \
@@ -89,7 +89,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
 	tidbits.c tidbitsp.h \
-	dummy.cpp
+	coin-dummy.cpp
 
 ## Installation information.
 
