@@ -34,14 +34,6 @@ public:
   static void initClass(void);
   SoQuadMesh(void);
 
-  enum Binding {
-    OVERALL = 0,
-    PER_ROW,
-    PER_FACE,
-    PER_VERTEX,
-    NONE = OVERALL
-  };
-
   SoSFInt32 verticesPerColumn;
   SoSFInt32 verticesPerRow;
 
@@ -59,6 +51,14 @@ protected:
   virtual SbBool generateDefaultNormals(SoState *, SoNormalCache *);
 
 private:
+  enum Binding {
+    OVERALL = 0,
+    PER_ROW,
+    PER_FACE,
+    PER_VERTEX,
+    NONE = OVERALL
+  };
+
   Binding findMaterialBinding(SoState * const state) const;
   Binding findNormalBinding(SoState * const state) const;
 };

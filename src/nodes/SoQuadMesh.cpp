@@ -19,16 +19,27 @@
 
 /*!
   \class SoQuadMesh SoQuadMesh.h Inventor/nodes/SoQuadMesh.h
-  \brief The SoQuadMesh class ...
+  \brief The SoQuadMesh class is used to render and optimize a quadrilateral mesh.
   \ingroup nodes
 
-  FIXME: write class doc
+  This node uses the coordinates in order, either from the state or
+  from the vertexProperty node, to construct a quadrilateral mesh. The
+  quads are generated in row major order, using the two field
+  verticesPerColumn and verticesPerRow to specify the mesh. E.g. if
+  verticesPerColumn is 3 and verticesPerRow is 2, two quads will be
+  generated, the first one using (in order) coordinates 0, 1, 3 and 2,
+  the second one using coordinates 2, 3, 5 and 4 (you get three rows
+  of vertices; the first row uses vertices 0 and 1, the second row 2
+  and 3, and the third row 4 and 5).
+
+  Normals and materials can be bound PER_PART (per row), PER_FACE,
+  PER_VERTEX and OVERALL. The default material binding is OVERALL. The
+  default normal binding is PER_VERTEX.
 */
 
 #include <Inventor/nodes/SoQuadMesh.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SoPrimitiveVertex.h>
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/misc/SoState.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -55,41 +66,14 @@
 #endif
 
 /*!
-  \enum SoQuadMesh::Binding
-  FIXME: write documentation for enum
-*/
-/*!
-  \var SoQuadMesh::Binding SoQuadMesh::OVERALL
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoQuadMesh::Binding SoQuadMesh::PER_ROW
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoQuadMesh::Binding SoQuadMesh::PER_FACE
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoQuadMesh::Binding SoQuadMesh::PER_VERTEX
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoQuadMesh::Binding SoQuadMesh::NONE
-  FIXME: write documentation for enum definition
-*/
-
-
-/*!
   \var SoSFInt32 SoQuadMesh::verticesPerColumn
-  FIXME: write documentation for field
+  Specifies to number of vertices in each column.
 */
 /*!
   \var SoSFInt32 SoQuadMesh::verticesPerRow
-  FIXME: write documentation for field
+  Specifies the number of vertices in each row.
 */
 
-// *************************************************************************
 SO_NODE_SOURCE(SoQuadMesh);
 
 /*!
@@ -110,20 +94,14 @@ SoQuadMesh::~SoQuadMesh()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoQuadMesh class. This includes setting up the
-  type system, among other things.
-*/
+// doc from parent
 void
 SoQuadMesh::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoQuadMesh);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoQuadMesh::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
@@ -133,9 +111,9 @@ SoQuadMesh::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
                               box, center);
 }
 
-/*!
-  \internal
-*/
+//
+// translates current material binding to the internal Binding enum.
+//
 SoQuadMesh::Binding
 SoQuadMesh::findMaterialBinding(SoState * const state) const
 {
@@ -171,9 +149,9 @@ SoQuadMesh::findMaterialBinding(SoState * const state) const
 }
 
 
-/*!
-  \internal
-*/
+//
+// translates current normal binding to the internal Binding enum.
+//
 SoQuadMesh::Binding
 SoQuadMesh::findNormalBinding(SoState * const state) const
 {
@@ -208,12 +186,11 @@ SoQuadMesh::findNormalBinding(SoState * const state) const
   return binding;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoQuadMesh::GLRender(SoGLRenderAction * action)
 {
+  // FIXME: optimize rendering, pederb 20000809
   SoState * state = action->getState();
 
   if (this->vertexProperty.getValue()) {
@@ -246,12 +223,12 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
 
   const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
 
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
+  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
   doTextures = tb.needCoordinates();
 
   //
   // FIXME: should I test for texture coordinate binding other
-  // than PER_VERTEX_INDEXED. The normal an material bindings
+  // than PER_VERTEX_INDEXED. The normal and material bindings
   // are equal for indexed and nonindex, this is probably the
   // case for texture coordinate binding too... (pederb, 990701)
   //
@@ -330,12 +307,12 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
     state->pop();
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 SbBool
 SoQuadMesh::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 {
+  // FIXME: consider creaseAngle? pederb, 20000809
+
   if (verticesPerRow.getValue() < 2 || verticesPerColumn.getValue() < 2)
     return TRUE; // nothing to generate
 
@@ -377,9 +354,7 @@ SoQuadMesh::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   return TRUE;
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
 SoQuadMesh::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
@@ -390,18 +365,15 @@ SoQuadMesh::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 }
 
 /*!
-  FIXME: write doc
+  Overloaded to return FALSE. Normals are genereted in normal cache.
  */
 SbBool
 SoQuadMesh::generateDefaultNormals(SoState * /* state */, SoNormalBundle * /* nb */)
 {
-  COIN_STUB();
   return FALSE;
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
 SoQuadMesh::generatePrimitives(SoAction *action)
 {
