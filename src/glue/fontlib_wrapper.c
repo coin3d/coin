@@ -262,7 +262,9 @@ flw_exit(void)
   if (win32api) { cc_flww32_exit(); }
 
   n = cc_dynarray_length(fontarray);
-  for (i = 0; i < n; i++) { fontstruct_rmfont(i); }
+  while (n--) {
+    fontstruct_rmfont(n);
+  }
   cc_dynarray_destruct(fontarray);
 
   CC_MUTEX_DESTRUCT(flw_global_lock);
