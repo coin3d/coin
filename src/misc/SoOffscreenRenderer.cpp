@@ -477,20 +477,18 @@ SoOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
   
   PRIVATE(this)->requestedsize = PRIVATE(this)->viewport.getViewportSizePixels();
   
-  if((size[0] > maxsize[0]) || (size[1] > maxsize[1])){
-    this->pimpl->mustusesubscreens = TRUE;
-    this->pimpl->setupSubscreens(size);
-    this->pimpl->currentsubscreen = 0;
+  PRIVATE(this)->mustusesubscreens = (size[0] > maxsize[0]) || (size[1] > maxsize[1]);
+  if (PRIVATE(this)->mustusesubscreens) {
+    PRIVATE(this)->setupSubscreens(size);
+    PRIVATE(this)->currentsubscreen = 0;
     PRIVATE(this)->subviewport = SbViewportRegion(PRIVATE(this)->subscreensize);
-  } else {
-    this->pimpl->mustusesubscreens = FALSE;
   }
     
 
   SbVec2s dims = PRIVATE(this)->viewport.getViewportSizePixels();
 
 
-  if(!this->pimpl->mustusesubscreens){
+  if(!PRIVATE(this)->mustusesubscreens){
 
     if(PRIVATE(this)->renderaction) 
       PRIVATE(this)->renderaction->setViewportRegion(PRIVATE(this)->viewport);
