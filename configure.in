@@ -960,29 +960,10 @@ AM_CONFIG_HEADER(include/config.h)
 
 # **************************************************************************
 
-# FIXME: this way of setting up vrml97 gives us a warning with
-# Automake -- which sucks. It also makes ``configure'' fail if vrml97
-# is not present -- which sucks ostrich eggs real hard.
-#
-# Since AC_CONFIG_FILES() takes everything in it's argument verbatim,
-# it's not possible to just set up a $VRML97MAKEFILE variable.
-# But we should really try to fix this.
-#
-# 20011014 mortene.
-
-# Don't commit with this as part of AC_CONFIG_FILES(), please.
-# ``configure'' won't work for those without the vrml97 extension
-# checked out.
-#        src/extensions/vrml97/src/Makefile
-
-# The fix for the above is to have the sub-modules as separate Autoconf-
-# projects and use AC_CONFIG_SUBDIR(src/extensions/vrml97) and the same
-# for superglu.
-# 20011023 larsa
-
-# NEW FIX:
-# while boostrapping, exchange $vrml97makefile with the explicit filename,
-# then replace with variable and rerun autoconf to update configure-script.
+# ATTENTION [20011120 larsa]
+# The Makefile list is now automatically patched by bootstrap before
+# Autoconf is run for a second time.  Make sure the bootstrap process works
+# without any error messages before you commit changes to this part.
 
 vrml97makefile=src/extensions/vrml97/src/Makefile
 if test -f $srcdir/${vrml97makefile}.in; then :; else
@@ -1026,14 +1007,10 @@ AC_CONFIG_FILES([
         src/sensors/Makefile
         src/threads/Makefile
         src/extensions/Makefile
-	$vrml97makefile
+        src/extensions/vrml97/src/Makefile
         docs/coin.doxygen
 ])
 
-dnl ## when bootstrapping
-dnl src/extensions/vrml97/src/Makefile
-dnl ## when post-running autoconf:
-dnl $vrml97makefile
 AC_OUTPUT
 
 # *******************************************************************
