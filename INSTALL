@@ -195,11 +195,17 @@ Configuration Options
   This options turns off some run-time checking, warnings and asserts.
   The default is to have them enabled.
 
+  Note that you also need to use the "--disable-symbols" option
+  described below to make a library which is as "slim" as possible, as
+  you would typically do for a release version of your software.
+
 --disable-symbols
 
-  This option turns off debug symbols.  Debug symbols are needed to get
-  call stacks if the library crashes.  The default is to have debug
-  symbols enabled.
+  This option turns off debug symbols.  Debug symbols are needed to
+  get call stacks if the library crashes, and to make it possible to
+  trace the code inside a debugger with enough information available
+  within that environment to match up with the sourcecode.  The
+  default is to have debug symbols enabled.
 
 --enable-rtti
 
