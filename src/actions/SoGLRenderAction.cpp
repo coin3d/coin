@@ -64,6 +64,7 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoWindowElement.h>
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/misc/SoGL.h>
@@ -760,12 +761,18 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
   case SoGLRenderAction::DELAYED_ADD:
   case SoGLRenderAction::DELAYED_BLEND:
     this->addTransPath(this->getCurPath()->copy());
+    if (this->getState()->isCacheOpen()) {
+      SoCacheElement::invalidate(this->getState());
+    }
     return TRUE;
   case SoGLRenderAction::SORTED_OBJECT_ADD:
   case SoGLRenderAction::SORTED_OBJECT_BLEND:
   case SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD:
   case SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND:
     this->addTransPath(this->getCurPath()->copy());
+    if (this->getState()->isCacheOpen()) {
+      SoCacheElement::invalidate(this->getState());
+    }
     return TRUE; // delay render
   case SoGLRenderAction::NONE:
     assert(0 && "should not get here");
