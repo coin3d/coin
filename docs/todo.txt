@@ -431,3 +431,7 @@ STUFF TO FIX IN COIN
   *-operator:
 
     friend SbVec3f operator *(float d, const SbVec3f &v);
+
+
+  Note also that these changes would break the ABI, so this would have
+  to be done for the next major release.
