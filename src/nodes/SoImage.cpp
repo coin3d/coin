@@ -185,6 +185,9 @@ void
 SoImage::computeBBox(SoAction * action,
                      SbBox3f & box, SbVec3f & center)
 {
+  // ignore if node is empty
+  if (this->getSize() == SbVec2s(0,0)) return;
+
   SbVec3f v0, v1, v2, v3;
   // this will cause a cache dependency on the view volume,
   // model matrix and viewport.
@@ -202,8 +205,13 @@ SoImage::computeBBox(SoAction * action,
 void
 SoImage::GLRender(SoGLRenderAction * action)
 {
-  if (!this->shouldGLRender(action)) return;
+  SbVec2s size;
+  int nc;
+  const unsigned char * dataptr = this->getImage(size, nc);
+  if (dataptr == NULL) return; // no image
 
+  if (!this->shouldGLRender(action)) return;
+  
   SoState *state = action->getState();
   this->testTransparency();
   if (action->handleTransparency(this->transparency)) return;
@@ -212,9 +220,6 @@ SoImage::GLRender(SoGLRenderAction * action)
   SbVec2s vpsize = vp.getViewportSizePixels();
 
   SbVec3f nilpoint = SoImage::getNilpoint(state);
-  SbVec2s size;
-  int nc;
-  const unsigned char * dataptr = this->getImage(size, nc);
 
   int xpos = 0;
   switch (this->horAlignment.getValue()) {
@@ -339,6 +344,8 @@ SoImage::GLRender(SoGLRenderAction * action)
 void
 SoImage::rayPick(SoRayPickAction * action)
 {
+  if (this->getSize() == SbVec2s(0,0)) return;
+
   if (this->shouldRayPick(action)) {
     this->computeObjectSpaceRay(action);
 
@@ -367,6 +374,8 @@ SoImage::rayPick(SoRayPickAction * action)
 void
 SoImage::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
+  if (this->getSize() == SbVec2s(0,0)) return;
+
   if (this->shouldPrimitiveCount(action)) action->incNumImage();
 }
 
@@ -376,6 +385,8 @@ SoImage::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 void
 SoImage::generatePrimitives(SoAction * action)
 {
+  if (this->getSize() == SbVec2s(0,0)) return;
+
   SoState *state = action->getState();
   state->push();
 
@@ -605,6 +616,8 @@ SoImage::getSize(void) const
   int nc;
   (void) this->image.getValue(size, nc);
 
+  if (size[0] == 0 || size[1] == 0) return SbVec2s(0,0);
+
   if (this->width.getValue() > 0) {
     size[0] = this->width.getValue();
   }
@@ -617,6 +630,12 @@ SoImage::getSize(void) const
 const unsigned char *
 SoImage::getImage(SbVec2s & size, int & nc)
 {
+  if (this->getSize() == SbVec2s(0,0)) {
+    size = SbVec2s(0,0);
+    nc = 0;
+    return NULL;
+  }
+
   if (this->width.getValue() >= 0 || this->height.getValue() >= 0) {
     if (!this->resizedimagevalid) {
       SbVec2s orgsize;
@@ -696,7 +715,11 @@ SoImage::loadFilename(void)
       int nc;
       SbVec2s size;
       const unsigned char * bytes = tmpimage.getValue(size, nc);
+      // disable notification on image while setting data from filename
+      // as a notify will cause a filename.setDefault(TRUE).
+      SbBool oldnotify = this->image.enableNotify(FALSE);
       this->image.setValue(size, nc, bytes);
+      this->image.enableNotify(oldnotify);
       retval = TRUE;
     }
   }
@@ -712,7 +735,8 @@ SoImage::filenameSensorCB(void * data, SoSensor *)
 {
   SoImage * thisp = (SoImage*) data;
   thisp->setReadStatus(TRUE);
-  if (!thisp->loadFilename()) {
+  if (thisp->filename.getValue().getLength() &&
+      !thisp->loadFilename()) {
     SoDebugError::postWarning("SoImage::filenameSensorCB",
                               "Image file could not be read: %s",
                               thisp->filename.getValue().getString());
