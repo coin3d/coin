@@ -3,15 +3,16 @@
 #
 # Makefile for creating Mac OS X installers for the Coin binary SDK
 # builds Coin and creates the following files:
-#   Coin-$(VERSION).dmg         - DMG containing install packages
-#   Coin-$(VERSION)-no_inst.dmg - DMG containing only Inventor.framework
+#   Coin-@VERSION@.dmg         - DMG containing install packages
+#   Coin-@VERSION@-no_inst.dmg - DMG containing only Inventor.framework
 #   coin.info                   - Fink package file
 #
 # Usage:
-#   make VERSION=<coinversion> (e.g. make VERSION=2.1.0)
+#   make               - Makes release packages
+#   make debug         - Makes release packages
 #
 # Dependencies:
-#   - Coin-$(VERSION).tar.gz must be placed in ../
+#   - Coin-@VERSION@.tar.gz must be placed in ../
 #   - "libsimage.dylib" and "libfreetype.dylib" must be placed in 
 #     supportlibs/lib
 #
@@ -21,29 +22,48 @@
 
 #VERBOSE = -v
 
-install_prefix = $(PWD)/install
+top_srcdir = @top_srcdir@
+
+COINDIST = Coin-@VERSION@.tar.gz
+COIN = Coin-@VERSION@
+supportlibs = supportlibs/lib/libsimage.dylib supportlibs/lib/libfreetype.dylib
+
+# Default build type (overridden on cmd-line)
+BUILDTYPE = release
+
+ifeq ($(BUILDTYPE),release)
+  builddir = $(PWD)/build-release
+  BUILDOPTIONS = --enable-threadsafe --disable-3ds-import --enable-optimization --disable-debug --disable-symbosl --enable-shared --disable-static
+  DMGSUFFIX = @MACOSX_NAME@
+else
+  builddir = $(PWD)/build-debug
+  BUILDOPTIONS = --enable-threadsafe --disable-3ds-import --disable-optimization --enable-debug --enable-symbols --enable-shared --disable-static
+  DMGSUFFIX = @MACOSX_NAME@-debug
+endif
+
+COINLIB = $(builddir)/src/libCoin.la
+install_prefix = $(builddir)/install
 cointools_prefix = $(install_prefix)/usr/local
 framework_prefix = $(install_prefix)/Library/Frameworks
-top_srcdir = @top_srcdir@
-builddir = build-shared-release
-
-COINDIST = Coin-$(VERSION).tar.gz
-COIN = Coin-$(VERSION)
-COINLIB = $(builddir)/src/libCoin.la
-BUILDOPTIONS = --enable-threadsafe --disable-3ds-import --enable-optimization --disable-debug --disable-symbols
 
 # **************************************************************************
 
-all: $(COIN).dmg $(COIN)-no_inst.dmg coin.info
+all: $(COIN)-$(DMGSUFFIX).dmg $(COIN)-$(DMGSUFFIX)-no_inst.dmg coin.info
 
-coin.info: ../$(COINDIST) coin.info.template
-	@md5=`md5 -q ../$(COINDIST)`; \
-	cat coin.info.template | sed -e "s/@md5sum@/$$md5/" > coin.info
+coin.info: coin.info.template
+	@if test -f ../$(COINDIST); then \
+	md5=`md5 -q ../$(COINDIST)`; \
+	cat coin.info.template | sed -e "s/@md5sum@/$$md5/" > coin.info; \
+	else \
+	echo "Warning: ../$(COINDIST) not found, coin.info not generated."; \
+	fi
 
-$(COIN)-no_inst.dmg: $(COINLIB)
+#FIXME: Output name as parameter
+$(COIN)-$(DMGSUFFIX)-no_inst.dmg: $(COINLIB)
 	@sh makenoinstdmg.sh $(VERBOSE) -f $(framework_prefix)/Inventor.framework -c $(COIN)
 
-$(COIN).dmg: Coin.pkg CoinTools.pkg
+#FIXME: Move *.pkg into builddir
+$(COIN)-$(DMGSUFFIX).dmg: Coin.pkg CoinTools.pkg
 	@sh makeinstdmg.sh $(VERBOSE) -c $(COIN)
 
 Coin.pkg: $(COINLIB)
@@ -54,12 +74,11 @@ CoinTools.pkg: $(COINLIB)
 
 # Configure, build and install Coin
 # Includes copying of libsimage and libfreetype to the correct location
-$(COINLIB): ../$(COIN) supportlibs/lib/libsimage.dylib supportlibs/lib/libfreetype.dylib
+$(COINLIB): $(top_srcdir) $(supportlibs)
 	@if test -d $(builddir); then :; else mkdir $(builddir); fi
 	@cd $(builddir); \
-	../../$(COIN)/configure $(BUILDOPTIONS)
+	../$(top_srcdir)/configure $(BUILDOPTIONS)
 	cd $(builddir); $(MAKE)
 	cd $(builddir); $(MAKE) DESTDIR=$(install_prefix) install
 	touch $(COINLIB)
-	cp supportlibs/lib/libsimage.dylib $(framework_prefix)/Inventor.framework/Versions/Current/Resources
-	cp supportlibs/lib/libfreetype.dylib $(framework_prefix)/Inventor.framework/Versions/Current/Resources
+	cp $(supportlibs) $(framework_prefix)/Inventor.framework/Versions/Current/Resources

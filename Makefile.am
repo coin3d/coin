@@ -298,8 +298,10 @@ macosx-files:
 	done
 
 macosx-packages: macosx-files
-macosx-packages:
-	@( cd macosx; $(MAKE) VERSION=$(VERSION) )
+	@( cd macosx; $(MAKE) )
+
+macosx-debug-packages: macosx-files
+	@( cd macosx; $(MAKE) BUILDTYPE=debug )
 
 endif
 

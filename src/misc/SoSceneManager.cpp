@@ -188,8 +188,9 @@ void
 SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 {
 #ifdef HAVE_SOUND
-  if ( PRIVATE(this)->scene && SoAudioDevice::instance()->haveSound() &&
-       SoAudioDevice::instance()->isEnabled())
+  if (PRIVATE(this)->scene && 
+      SoAudioDevice::instance()->haveSound() &&
+      SoAudioDevice::instance()->isEnabled())
     PRIVATE(this)->audiorenderaction->apply(PRIVATE(this)->scene);
 #endif
 
@@ -236,10 +237,11 @@ SoSceneManager::render(SoGLRenderAction * action,
       glClearIndex((GLfloat) PRIVATE(this)->backgroundindex);
     }
     // Registering a callback is needed since the correct GL viewport
-    // is set by SoGLRenderAction before rendering.  It might not be
+    // is set by SoGLRenderAction before rendering. It might not be
     // correct when we get here.
     // This callback is removed again in the prerendercb function
-    action->addPreRenderCallback(PRIVATE(this)->prerendercb, (void*) (uintptr_t) mask);
+    action->addPreRenderCallback(PRIVATE(this)->prerendercb, 
+                                 (void*) (uintptr_t) mask);
   }
 
   if (initmatrices) {
@@ -606,7 +608,7 @@ SoSceneManager::isRGBMode(void) const
 }
 
 /*!
-  Activate rendering and event handling. Default is \c on.
+  Activate rendering and event handling. Default is \c off.
  */
 void
 SoSceneManager::activate(void)
