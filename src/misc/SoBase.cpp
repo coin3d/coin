@@ -223,7 +223,6 @@ dont_mangle_output_names(const SoBase *base)
 // parallel. 20020324 mortene.
 static SbDict * writerefs = NULL;
 
-#if COIN_DEBUG
 // Imported (with extern <funcdef>) and used from SoWriteAction to
 // check the writeref dict after a completed action traversal. The
 // dict should be empty, if writeref counting was correct.
@@ -232,7 +231,6 @@ coin_debug_get_writeref_dict(void)
 {
   return writerefs;
 }
-#endif // COIN_DEBUG
 
 static inline int
 get_current_writeref(const SoBase * base)
