@@ -170,7 +170,8 @@ for ( $mod = 0; $mod < @configfiles; $mod++ ) {
         $indent = "&nbsp;" x ($classdepth*$indentsize);
         $flagvals{$class} =~ s/ /&nbsp;/g;
         print HTML "<td><font color=$color face=arial>$indent$to$class$tc";
-        print HTML " <font color=$textcol>(\"$flagvals{$class}\" = $value)</font>";
+        my $valuestr = sprintf("%.2f", ($value < 0.01) ? 0 : $value);
+        print HTML " <font color=$textcol>(\"$flagvals{$class}\" = $valuestr)</font>";
         if ( defined $comments{$class} ) {
             print HTML "[<a href=#", $class, ".comments>comments</a>]\n";
             push( @commenttext, "<a name=$class.comments><strong>$class</strong></a>" );
