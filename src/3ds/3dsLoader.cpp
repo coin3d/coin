@@ -61,6 +61,7 @@
 #include <Inventor/nodes/SoMatrixTransform.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoNormalBinding.h>
+#include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoTextureCoordinate2.h>
@@ -529,6 +530,15 @@ bool read3dsFile(SoStream *in, SoSeparator *&root,
 
   // build base scene graph
 
+  // shape hints
+  // we need to switch backface culling off and
+  // turn double side lighting on
+  // FIXME: optimization: double sided geometry is probably
+  // specified by materials with MAT_TWO_SIDE chunk
+  SoShapeHints *sh = new SoShapeHints;
+  sh->vertexOrdering = SoShapeHints::CLOCKWISE; // see doc why CLOCKWISE and no UNKNOWN
+  sh->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+  con.root->addChild(sh);
   SoMatrixTransform *matrix = NULL;
   if (con.centerModel || modelSize != 0.f) {
     matrix = new SoMatrixTransform;
