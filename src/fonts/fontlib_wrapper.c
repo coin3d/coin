@@ -680,7 +680,7 @@ cc_flw_get_advance(unsigned int font, unsigned int glyph, float * x, float * y)
   struct cc_flw_glyph * gs;
 
   FLW_MUTEX_LOCK(flw_global_lock);
-  
+
   fs = flw_fontidx2fontptr(font);
   gs = flw_glyphidx2glyphptr(fs, glyph);
 
@@ -826,7 +826,7 @@ cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph)
 float * 
 cc_flw_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
 {
-  if(freetypelib)
+  if (freetypelib)
     return cc_flwft_get_vector_glyph_coords(vecglyph);
   else {
     cc_debugerror_postwarning("cc_flw_get_vector_glyph_coords", "Only Freetype is supported.");
@@ -837,7 +837,7 @@ cc_flw_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
 int * 
 cc_flw_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
 {
-  if(freetypelib)
+  if (freetypelib)
     return cc_flwft_get_vector_glyph_faceidx(vecglyph);
   else {
     cc_debugerror_postwarning("cc_flw_get_vector_glyph_faceidx", "Only Freetype is supported.");
@@ -848,7 +848,7 @@ cc_flw_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
 int * 
 cc_flw_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph)
 {
-  if(freetypelib)
+  if (freetypelib)
     return cc_flwft_get_vector_glyph_edgeidx(vecglyph);
   else {
     cc_debugerror_postwarning("cc_flw_get_vector_glyph_edgeidx", "Only Freetype is supported.");

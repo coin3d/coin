@@ -58,9 +58,9 @@ extern "C" {
   } cc_flw_bitmap;
   
   typedef struct cc_flw_vector_glyph {
-    cc_list * vertexlist;
-    cc_list * indexlist;
-    cc_list * edgeindexlist;
+    float * vertices;
+    int * faceindices;
+    int * edgeindices;
   } cc_flw_vector_glyph;
 
 
