@@ -2601,9 +2601,9 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
     delete this->lassorenderer;
   }
 
+  this->selectPaths(); // Execute a 'doSelect' on all stored paths.
+
   // Send signal to client that we are finished searching for tris
   PUBLIC(this)->finishCBList->invokeCallbacks(PUBLIC(this));
   PUBLIC(this)->touch();
-
-  this->selectPaths(); // Execute a 'doSelect' on all stored paths.
 }
