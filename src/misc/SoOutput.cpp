@@ -55,10 +55,10 @@
 
   \sa setStage(), getStage()
 */
-/*! \enum SoOutput::Stage SoOutput::COUNT_REFS
+/*! \enum SoOutput::COUNT_REFS
   Not writing, just counting the internal references in the scene graph.
 */
-/*! \enum SoOutput::Stage SoOutput::WRITE
+/*! \enum SoOutput::WRITE
   Signifies that actual data export should take place during this pass.
 */
 
@@ -66,10 +66,10 @@
   Values from this enum is used for debugging purposes to annotate the
   output from a write operation.
 */
-/*! \enum SoOutput::Annotations SoOutput::ADDRESSES
+/*! \enum SoOutput::ADDRESSES
   Annotate output with pointer address information.
 */
-/*! \enum SoOutput::Annotations SoOutput::REF_COUNTS
+/*! \enum SoOutput::REF_COUNTS
   Annotate output with reference counts of the objects written.
 */
 
