@@ -406,19 +406,19 @@ SoNode::initClass(void)
     SoType::createType(inherited::getClassTypeId(), "Node", NULL,
                        SoNode::nextActionMethodIndex++);
 
-  SoNode::initClasses();
-
-  // action methods must be initialized here, since both nodes and
-  // actions must be initialized before we can use
-  // SO_ACTION_ADD_METHOD
-  init_action_methods();
-
   // initialize the compatibility dict
   SoNode::compatibilitydict = new SbDict;
   atexit(SoNode::cleanupClass);
 
   SoNode::setCompatibilityTypes(SoNode::getClassTypeId(),
                                 SO_FROM_INVENTOR_1);
+
+  SoNode::initClasses();
+
+  // action methods must be initialized here, since both nodes and
+  // actions must be initialized before we can use
+  // SO_ACTION_ADD_METHOD
+  init_action_methods();
 }
 
 /*!
