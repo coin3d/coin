@@ -92,6 +92,8 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
     v.texcoord0 = tmp;
     v.texcoord1 = SbVec2f(tmp[0], tmp[1]);
     v.texcoordidx = -1;
+
+    // FIXME: fetch vertex color from SoLazyElement, pederb 2003-11-17
     v.rgba[0] = 0xcc;
     v.rgba[1] = 0xcc;
     v.rgba[2] = 0xcc;
@@ -101,6 +103,7 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
     if (d && d->isOfType(SoPointDetail::getClassTypeId())) {
       // FIXME: fetch texture coordinates from
       // SoBumpMapCoordinateElement and update bc
+      // pederb 2003-11-17
     }
 
     int32_t idx;
