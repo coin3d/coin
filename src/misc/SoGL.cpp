@@ -4016,7 +4016,16 @@ sogl_glerror_string(int err)
 static int SOGL_AUTOCACHE_REMOTE_MIN = 500;
 static int SOGL_AUTOCACHE_REMOTE_MAX = 5000;
 static int SOGL_AUTOCACHE_LOCAL_MIN = 100;
+
+// Rather enable caching on Mac OS X, since immediate mode
+// rendering is really slow there...
+// FIXME: Should really determine these settings heuristically 
+// kyrah 20031014
+#ifdef __APPLE__
+static int SOGL_AUTOCACHE_LOCAL_MAX = 10000;
+#else
 static int SOGL_AUTOCACHE_LOCAL_MAX = 1000;
+#endif
 
 /*!
   Called by each shape during rendering. Will enable/disable autocaching
