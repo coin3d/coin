@@ -125,6 +125,10 @@ build-shared-release/src/coin@COIN_MAJOR@.dll: Coin-$(VERSION)
 	../Coin-$(VERSION)/configure \
 	  CFLAGS="$(OPTCFLAGS) $(DLLCFLAGS)" \
 	  CXXFLAGS="$(OPTCFLAGS) $(DLLCFLAGS)" \
+	  --enable-threads \
+	  --enable-threadsafe \
+	  --enable-vrml97 \
+	  --enable-3ds-import \
 	  --disable-dependency-tracking \
 	  --disable-debug \
 	  --disable-symbols \
@@ -143,6 +147,10 @@ build-shared-debug/src/coin@COIN_MAJOR@d.dll: Coin-$(VERSION)
 	../Coin-$(VERSION)/configure \
 	  CFLAGS="$(DBGCFLAGS)" \
 	  CXXFLAGS="$(DBGCFLAGS)" \
+	  --enable-threads \
+	  --enable-threadsafe \
+	  --enable-vrml97 \
+	  --enable-3ds-import \
 	  --disable-dependency-tracking \
 	  --enable-debug \
 	  --enable-symbols \
