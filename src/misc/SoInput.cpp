@@ -394,19 +394,19 @@ SoInput::getCurrentProto(void) const
   return NULL;
 }
 
-/*
-  Checks if the next bytes in \a in is the IS keyword. Returns
-  \e TRUE if the IS keyword was found, \a readok will be set to
-  \e FALSE if some error occured while searching for the IS
-  keyword.
+/*!
+  Checks if the next bytes in \a in is the IS keyword. Returns \c TRUE
+  if the IS keyword was found, \a readok will be set to \c FALSE if
+  some error occured while searching for the IS keyword.
 
-  This method was not part of the Inventor v2.1 API, and is an
+  This method was not part of the SGI Inventor v2.1 API, and is an
   extension specific to Coin.
 
   \since 2001-10-23
 */
 SbBool
-SoInput::checkISReference(SoFieldContainer * container, const SbName & fieldname, SbBool & readok)
+SoInput::checkISReference(SoFieldContainer * container,
+                          const SbName & fieldname, SbBool & readok)
 {
   readok = TRUE;
   SoProto * proto = this->getCurrentProto();
