@@ -1028,7 +1028,7 @@ Optional Features:
                           [default=yes]
   --enable-3ds-import     enable 3ds import capabilities
   --disable-vrml97        disable VRML97 support
-  --enable-threads        enable platform-independent multithreading
+  --disable-threads       disable platform-independent multithreading
                           abstraction classes
   --disable-w32threads    never use Win32 threads, even when available
   --enable-threadsafe     enable thread safe traversals
