@@ -34,10 +34,10 @@
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/gl_agl.h>
 
-// FIXME: We probably should use a configure-time check for the
-// availability of the NSSymbol functions instead of a simple platform
-// check. Since these functions are part of the core Mac OS X system, this 
-// should be okay for the time being, though. kyrah 20030115
+/* FIXME: We probably should use a configure-time check for the
+   availability of the NSSymbol functions instead of a simple platform
+   check. Since these functions are part of the core Mac OS X system,
+   this should be okay for the time being, though. kyrah 20030115 */
 #ifdef __APPLE__
 
 
@@ -67,7 +67,7 @@ void * NSGLGetProcAddress(const char * name)
   return symbol ? NSAddressOfSymbol(symbol) : NULL;
 }
 
-#endif // __APPLE__
+#endif /* __APPLE__ */
 
 void *
 coin_nsgl_getprocaddress(const char * fname)
@@ -76,7 +76,7 @@ coin_nsgl_getprocaddress(const char * fname)
 #ifdef __APPLE__
   void * ptr = NSGLGetProcAddress(fname);
   return ptr;
-#endif // __APPLE__
+#endif /* __APPLE__ */
 
   return NULL;
 }
@@ -108,7 +108,7 @@ void aglglue_context_destruct(void * ctx)
 #else /* HAVE_AGL */
 
 
-// ---------------- Offscreen Rendering code -------------------
+/* ---------------- Offscreen Rendering code ------------------- */
 
 struct aglglue_contextdata {
   AGLDrawable drawable;
@@ -182,9 +182,9 @@ aglglue_context_create_offscreen(unsigned int width, unsigned int height)
 
   SetRect(&context.bounds, 0, 0, width, height);
 
-  // We have to save (and later restore) the old graphics port and 
-  // GHandle, since this function will probably called before the
-  // Mac OS X viewer is fully set up.
+  /* We have to save (and later restore) the old graphics port and 
+     GHandle, since this function will probably called before the
+     Mac OS X viewer is fully set up. */
   GetGWorld(&context.savedport, &context.savedgdh); 
 
   QDErr e = NewGWorld(&context.drawable, 32, &context.bounds, 
@@ -281,6 +281,6 @@ aglglue_context_destruct(void * ctx)
   free(context);
 }
 
-#endif // HAVE_AGL
+#endif /* HAVE_AGL */
 
 
