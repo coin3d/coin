@@ -2257,7 +2257,7 @@ SoExtSelectionP::checkOffscreenRendererCapabilities()
   if (SoExtSelectionP::debug()) {
     SoDebugError::postInfo("SoExtSelectionP::checkOffscreenRendererCapabilities",
                            "GL_{color}_BITS==[%d, %d, %d] "
-                           "maximumcolorcounter==%d",
+                           "maximumcolorcounter==%u",
                            red, green, blue,
                            this->maximumcolorcounter);
   }
