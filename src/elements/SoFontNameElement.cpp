@@ -102,7 +102,7 @@ SoFontNameElement::set(SoState * const state,
 
 //! FIXME: write doc.
 
-const SbName
+const SbName &
 SoFontNameElement::get(SoState * const state)
 {
   SoFontNameElement * element = (SoFontNameElement *)
@@ -156,8 +156,8 @@ SoFontNameElement::init(SoState * state)
 
 //! FIXME: write doc.
 
-const SbName
-SoFontNameElement::getDefault()
+SbName
+SoFontNameElement::getDefault(void)
 {
   return *SoFontNameElement::defaultfontname;
 }

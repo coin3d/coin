@@ -38,8 +38,8 @@ public:
 
   static void set(SoState * const state, SoNode * const node,
                   const SbName fontName);
-  static const SbName get(SoState * const state);
-  static const SbName getDefault();
+  static const SbName & get(SoState * const state);
+  static SbName getDefault(void);
 
   virtual SbBool matches(SoElement * element) const;
   virtual SoElement * copyMatchInfo() const;
