@@ -269,7 +269,7 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
 /*!
   Overloaded to return FALSE. Normals are generated directly in normal cache.
 */
-SbBool 
+SbBool
 SoIndexedTriangleStripSet::generateDefaultNormals(SoState *, SoNormalBundle *)
 {
   return FALSE;
@@ -343,11 +343,10 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
 void
 SoIndexedTriangleStripSet::countPrimitives(int & strips, int & tris)
 {
-  if (this->coordIndex.getNum() < 3) {
-    strips = 0;
-    tris = 0;
-    return;
-  }
+  strips = 0;
+  tris = 0;
+
+  if (this->coordIndex.getNum() < 3) return;
 
   const int32_t * ptr = this->coordIndex.getValues(0);
   const int32_t * endptr = ptr + this->coordIndex.getNum();
