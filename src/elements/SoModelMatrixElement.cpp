@@ -212,8 +212,10 @@ SoModelMatrixElement::scaleBy(SoState * const state,
 SbMatrix
 SoModelMatrixElement::pushMatrix(SoState * const state)
 {
+  // use SoState::getElementNoPush() instead of
+  // SoElement::getConstElement() to avoid cache dependencies
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
-    SoElement::getConstElement(state, classStackIndex);
+    state->getElementNoPush(classStackIndex);
   return elem->pushMatrixElt();
 }
 
@@ -225,8 +227,10 @@ void
 SoModelMatrixElement::popMatrix(SoState * const state,
                                 const SbMatrix & matrix)
 {
+  // use SoState::getElementNoPush() instead of
+  // SoElement::getConstElement() to avoid cache dependencies
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
-    SoElement::getConstElement(state, classStackIndex);
+    state->getElementNoPush(classStackIndex);
   elem->popMatrixElt(matrix);
 }
 
