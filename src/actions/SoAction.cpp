@@ -194,6 +194,9 @@ SoAction::isOfType(SoType type) const
 
 /*!
   Applies the action to the scene graph rooted at \a root.
+
+  Note that you should \e not apply an action to a node with a zero
+  reference count. The behavior in that case is undefined.
 */
 void
 SoAction::apply(SoNode * root)
@@ -212,7 +215,7 @@ SoAction::apply(SoNode * root)
     // So the graph is not deallocated during traversal.
     root->ref();
     // make sure state is created before traversing
-    (void) this->getState(); 
+    (void) this->getState();
     this->beginTraversal(root);
     this->endTraversal(root);
     this->applieddata.node = NULL;
@@ -241,7 +244,7 @@ SoAction::apply(SoPath * path)
   this->appliedcode = SoAction::PATH;
 
   // make sure state is created before traversing
-  (void) this->getState(); 
+  (void) this->getState();
 
   if (path->getLength() && path->getNode(0)) {
     SoNode * node = path->getNode(0);
@@ -281,9 +284,9 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
   assert(pathlist[0]->getNode(0));
 
   int n = pathlist.getLength();
- 
+
   // make sure state is created before traversing
-  (void) this->getState(); 
+  (void) this->getState();
 
   for (int i = 0; i < n; i++) {
     SoPath * path = pathlist[i];
@@ -495,7 +498,7 @@ SoAction::getState(void) const
 {
   if (this->state == NULL) {
     // cast away constness to set state
-    ((SoAction*)this)->state = 
+    ((SoAction*)this)->state =
       new SoState((SoAction*)this, this->getEnabledElements().getElements());
   }
   return this->state;
