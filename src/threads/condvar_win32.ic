@@ -21,12 +21,21 @@
 
 /* This file should only be included from condvar.c */
 
+#define EVENT_SIGNAL 0
+#define EVENT_BROADCAST 1
+
+/*
+ * This implementation is based on the SetEvent (3.2) solution decribed at
+ * http://www.cs.wustl.edu/~schmidt/win32-cv-1.html.
+ */
+
 static int
 internal_struct_init(cc_condvar * condvar_struct)
 {
   /* auto-reset, initially is non-signaled */
-  condvar_struct->w32thread.eventhandle_one = CreateEvent(NULL, FALSE, FALSE, NULL);
-  if (condvar_struct->w32thread.eventhandle_one == NULL) {
+  condvar_struct->w32thread.eventhandle[EVENT_SIGNAL] = 
+    CreateEvent(NULL, FALSE, FALSE, NULL);
+  if (condvar_struct->w32thread.eventhandle[EVENT_SIGNAL] == NULL) {
     if (COIN_DEBUG) {
       DWORD err;
       char *errstr;
@@ -39,8 +48,9 @@ internal_struct_init(cc_condvar * condvar_struct)
     return CC_ERROR;
   }
   /* auto-reset, initially is non-signaled */
-  condvar_struct->w32thread.eventhandle_all = CreateEvent(NULL, TRUE, FALSE, NULL);
-  if (condvar_struct->w32thread.eventhandle_all == NULL) {
+  condvar_struct->w32thread.eventhandle[EVENT_BROADCAST] = 
+    CreateEvent(NULL, TRUE, FALSE, NULL);
+  if (condvar_struct->w32thread.eventhandle[EVENT_BROADCAST] == NULL) {
     if (COIN_DEBUG) {
       DWORD err;
       char *errstr;
@@ -52,6 +62,8 @@ internal_struct_init(cc_condvar * condvar_struct)
     }
     return CC_ERROR;
   }
+  InitializeCriticalSection(&condvar_struct->w32thread.waiters_count_lock);  
+  condvar_struct->w32thread.waiters_count = 0; 
   return CC_OK;
 }
 
@@ -60,7 +72,7 @@ internal_struct_clean(cc_condvar * condvar_struct)
 {
   BOOL status;
   int ret = CC_OK;
-  status = CloseHandle(condvar_struct->w32thread.eventhandle_one);
+  status = CloseHandle(condvar_struct->w32thread.eventhandle[EVENT_SIGNAL]);
   if (status == FALSE) {
     if (COIN_DEBUG) {
       DWORD err;
@@ -73,7 +85,7 @@ internal_struct_clean(cc_condvar * condvar_struct)
     }
     ret = CC_ERROR;
   }
-  status = CloseHandle(condvar_struct->w32thread.eventhandle_all);
+  status = CloseHandle(condvar_struct->w32thread.eventhandle[EVENT_BROADCAST]);
   if (status == FALSE) {
     if (COIN_DEBUG) {
       DWORD err;
@@ -86,18 +98,43 @@ internal_struct_clean(cc_condvar * condvar_struct)
     }
     ret = CC_ERROR;
   }
+  DeleteCriticalSection(&condvar_struct->w32thread.waiters_count_lock);
   return ret;
 }
 
 static int
-internal_wait(cc_condvar * condvar)
+internal_wait_common(cc_condvar * condvar, cc_mutex * mutex, DWORD period)
 {
-  DWORD status;
-  HANDLE eventhandles[2];
+  int result;
+  int last_waiter;
 
-  eventhandles[0] = condvar->w32thread.eventhandle_one;
-  eventhandles[1] = condvar->w32thread.eventhandle_all;
-  status = WaitForMultipleObjects(2, eventhandles, FALSE, INFINITE);
+  EnterCriticalSection(&condvar->w32thread.waiters_count_lock);
+  condvar->w32thread.waiters_count++;
+  LeaveCriticalSection(&condvar->w32thread.waiters_count_lock);
+  
+  /* It's ok to release <mutex> here since Win32 manual-reset events
+   * maintain state when used with <SetEvent>.  This avoids the "lost
+   * wakeup" bug... */
+  cc_mutex_unlock(mutex);
+
+  result = WaitForMultipleObjects(2, condvar->w32thread.eventhandle, FALSE, period);
+  
+  EnterCriticalSection(&condvar->w32thread.waiters_count_lock);
+  condvar->w32thread.waiters_lock--;
+  last_waiter = 
+    result == WAIT_OBJECT_0 + EVENT_BROADCAST &&
+    condvar->w32thread.waiters_count == 0;
+  LeaveCriticalSection(&condvar->w32thread.waiters_count_lock);
+  /* Some thread called wake_all */
+  if (last_waiter) {
+    /* We're the last waiter to be notified or to stop waiting, so
+     * reset the manual event. */
+    ResetEvent(condvar->w32thread.eventhandle[EVENT_BROADCAST]);
+  }
+
+  /* relock the mutex before returning */
+  cc_mutex_lock(mutex);
+
   if (status == WAIT_FAILED) {
     if (COIN_DEBUG) {
       DWORD err;
@@ -110,69 +147,32 @@ internal_wait(cc_condvar * condvar)
     }
     return CC_ERROR;
   }
-  else if ((status != WAIT_OBJECT_0) && (status != WAIT_OBJECT_0+1) ) {
-    if (COIN_DEBUG) {
-      cc_fprintf(stderr, "WaitForSingleObject() - unknown return value: %d\n",
-                 status);
-    }
-    return CC_ERROR;
-  }
-  return CC_OK;
+
+  return result == WAIT_TIMEOUT ? CC_TIMEOUT : CC_OK;
+}
+
+static int
+internal_wait(cc_condvar * condvar, cc_mutex * mutex)
+{
+  return internal_wait_common(condvar, mutex, INFINITE);
 }
 
 static int
 internal_timed_wait(cc_condvar * condvar, cc_time period)
 {
-  DWORD status;
-  HANDLE eventhandles[2];
-
-  eventhandles[0] = condvar->w32thread.eventhandle_one;
-  eventhandles[1] = condvar->w32thread.eventhandle_all;
-  status = WaitForMultipleObjects(2, eventhandles, FALSE, (DWORD)floor(period*1000.0f));
-  if (status == WAIT_FAILED) {
-    if (COIN_DEBUG) {
-      DWORD err;
-      char *errstr;
-      err = GetLastError();
-      errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "WaitForMultipleObjects() error: %d, \"%s\"\n",
-        err, errstr);
-      cc_internal_w32_freelasterrorstring(errstr);
-    }
-    return CC_ERROR;
-  }
-  else if ((status == WAIT_OBJECT_0) || (status == WAIT_OBJECT_0+1)) {
-    return CC_OK;
-  }
-  else if (status == WAIT_TIMEOUT) {
-    return CC_TIMEOUT;
-  }
-  /* if we get here, there was an error */
-  if (COIN_DEBUG) {
-    cc_fprintf(stderr, "WaitForSingleObject() - unknown return value: %d\n",
-               status);
-  }
-  return CC_ERROR;
+  return internal_wait_common(condvar, mutex, (DWORD)floor(period*1000.0f));
 }
 
 static int
 internal_wake_one(cc_condvar * condvar)
 {
-  BOOL status;
-
-  status = PulseEvent(condvar->w32thread.eventhandle_one);
-  /* the event is auto-reset */
-  if (status == FALSE) {
-    if (COIN_DEBUG) {
-      DWORD err;
-      char *errstr;
-      err = GetLastError();
-      errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "SetEvent error: %d, \"%s\"\n",
-        err, errstr);
-      cc_internal_w32_freelasterrorstring(errstr);
-    }
-    return CC_ERROR;
+  int have_waiters;
+  EnterCriticalSection(&condvar->w32thread.waiters_count_lock);
+  have_waiters = convar->w32thread.waiters_count > 0;
+  LeaveCriticalSection(&condvar->w32thread.waiters_count_lock);
+  
+  if (have_waiters) {
+    SetEvent(condvar->w32thread.eventhandle[EVENT_SIGNAL]);
   }
   return CC_OK;
 }
@@ -180,20 +180,16 @@ internal_wake_one(cc_condvar * condvar)
 static int
 internal_wake_all(cc_condvar * condvar)
 {
-  BOOL status = PulseEvent(condvar->w32thread.eventhandle_all);
-  /* event is manually-reset, but PulseEvent will reset when all
-     waiting threads have been released */
-  if (status == FALSE) {
-    if (COIN_DEBUG) {
-      DWORD err;
-      char *errstr;
-      err = GetLastError();
-      errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "SetEvent error: %d, \"%s\"\n",
-        err, errstr);
-      cc_internal_w32_freelasterrorstring(errstr);
-    }
-    return CC_ERROR;
+  int have_waiters;
+  EnterCriticalSection(condvar->w32thread.waiters_count_lock);
+  have_waiters = condvar->waiters_count_lock > 0;
+  LeaveCriticalSection(condvar->w32thread.waiters_count_lock);
+  
+  if (have_waiters) {
+    SetEvent(condvar->w32thread.eventhandle[EVENT_BROADCAST]);
   }
   return CC_OK;
 }
+
+#undef EVENT_SIGNAL
+#undef EVENT_BROADCAST

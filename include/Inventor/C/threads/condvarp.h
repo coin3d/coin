@@ -48,8 +48,6 @@ extern "C" {
 #endif /* USE_W32THREAD */
 
 struct cc_condvar {
-  unsigned int type;
-
 #ifdef USE_PTHREAD
   struct cc_pthread_condvar_data {
     pthread_cond_t condid;
@@ -59,8 +57,9 @@ struct cc_condvar {
 
 #ifdef USE_W32THREAD
   struct cc_w32thread_condvar_data {
-    HANDLE eventhandle_one; /* for waking one waiting thread */
-    HANDLE eventhandle_all; /* for waking all waiting threads */
+    HANDLE eventhandle[2];
+    uint32_t waiters_count;
+    CRITICAL_SECTION waiters_count_lock;
   } w32thread;
 #undef NO_IMPLEMENTATION
 #endif /* USE_W32THREAD */
