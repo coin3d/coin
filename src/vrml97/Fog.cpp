@@ -104,6 +104,7 @@
   An eventOut that is sent when the node is bound/unbound.
 */
 
+#include <string.h>
 
 #include <Inventor/VRMLnodes/SoVRMLFog.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
