@@ -159,10 +159,19 @@ openal_wrapper(void)
       OPENALWRAPPER_REGISTER_FUNC(alSourcefv, alSourcefv_t);
       OPENALWRAPPER_REGISTER_FUNC(alSourcef, alSourcef_t);
       OPENALWRAPPER_REGISTER_FUNC(alSourcei, alSourcei_t);
+      
+      /* FIXME: ugly hack below. Under Linux the function is named
+         glGetSourceiv (the correct name since OpenAL uses the OpenGL
+         naming scheme). The imbeciles that created the Win32 API
+         managed to name this function alGetSourcei instead.  pederb,
+         2002-01-29 */
+
 #if (defined _WIN32 || defined __APPLE__)
       OPENALWRAPPER_REGISTER_FUNC(alGetSourcei, alGetSourcei_t);
+      oal->alGetSourceiv = oal->alGetSourcei;
 #else
       OPENALWRAPPER_REGISTER_FUNC(alGetSourceiv, alGetSourcei_t);
+      oal->alGetSourcei = oal->alGetSourceiv;
 #endif
       OPENALWRAPPER_REGISTER_FUNC(alSourceQueueBuffers, alSourceQueueBuffers_t);
       OPENALWRAPPER_REGISTER_FUNC(alSourceUnqueueBuffers, alSourceUnqueueBuffers_t);
