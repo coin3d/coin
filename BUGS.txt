@@ -3893,59 +3893,82 @@ incremented during the copy, but never decremented :(
 
 =====================================================================
 
-144 Tiled rendering with the SoOffscreenRenderer fails if no camera is
-    present in the scene graph.
+145 Compatibility issue: SoShapeHints::windingType missing in Coin.
 
-    Reproduce with this stand-alone example:
+    This was added for TGS OIV 4.0, so we should implement this for
+    compatibility reasons. We've also had an external request for
+    supporting polygons with holes, which this field is the public API
+    for doing.
 
-----8<----- [snip] --------------------8<----- [snip] ----------------
-#include <Inventor/SbViewportRegion.h>
-#include <Inventor/SoOffscreenRenderer.h>
-#include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoText2.h>
-#include <Inventor/nodes/SoPerspectiveCamera.h>
-#include <Inventor/C/tidbits.h>
+    pederb suggests using GLU for tessellating such polygons, as
+    adding that capability to SbTesselator is a non-trivial task.
 
-int
-main(void)
-{
-  SoDB::init();
+    Note that this breaks ABI-compatibility, so it is only relevant
+    for Coin 3.
 
-  SoSeparator * root = new SoSeparator;
-  root->ref();
+    20041010 mortene.
 
-  SoPerspectiveCamera * cam = new SoPerspectiveCamera;
-  // Enable this line, and it works as expected.
-//   root->addChild(cam);
+=====================================================================
 
-  SoText2 * txt = new SoText2;
-  txt->string.setValue("habaluba");
-  txt->justification = SoText2::LEFT;
-  root->addChild(txt);
+146 Compatibility issue: SoTexture2 and SoTexture3
+    "enableCompressedTexture" fields missing in Coin.
 
-  coin_setenv("COIN_OFFSCREENRENDERER_MAX_TILESIZE", "100", TRUE);
-  SbViewportRegion vp(400, 400);
+    This was added for TGS OIV 4.0, so we should implement this for
+    compatibility reasons.
 
-  cam->viewAll(root, vp);
-  
-  SoOffscreenRenderer renderer(vp);
-  renderer.render(root);
-  renderer.writeToFile("tst.jpg","jpg");
+    Adding at least stubs should be straightforward.
 
-  root->unref();
+    Note that this breaks ABI-compatibility, so it is only relevant
+    for Coin 3.
 
-  return 0;
-}
-----8<----- [snip] --------------------8<----- [snip] ----------------
+    20041010 mortene.
 
-    This is probably not too hard to fix. I'm not sure whether it
-    /should/ be fixed, though -- perhaps we should just spit out a
-    warning when no camera has been encountered in the scene graph
-    when doing tiled rendering? handegar can probably answer that.
+=====================================================================
 
-    20041005 mortene, issue originally reported on coin-discuss by
-    Albert van der Meer.
+147 Compatibility issue: SoDrawStyle::linePatternScaleFactor missing
+    in Coin.
+
+    This was added for TGS OIV 4.0, so we should implement this for
+    compatibility reasons.
+
+    Note that this breaks ABI-compatibility, so it is only relevant
+    for Coin 3.
+
+    20041010 mortene.
+
+=====================================================================
+
+148 Compatibility issue: SoVRMLSound fields dopplerFactor and
+    dopplerVelocity missing in Coin.
+
+    This was added for TGS OIV 4.0, so we should implement this for
+    compatibility reasons.
+
+    Note that this breaks ABI-compatibility, so it is only relevant
+    for Coin 3.
+
+    Note also that these fields break compatibility with the VRML97
+    spec if they have non-default values upon export. This should be
+    duly noted in their API doc, when written.
+
+    20041010 mortene.
+
+=====================================================================
+
+149 Compatibility issue: SoVRMLMovieTexture fields alpha, model,
+    blendColor and scaleTexCoord missing in Coin.
+
+    This was added for TGS OIV 4.0, so we should implement this for
+    compatibility reasons.
+
+    Note that this breaks ABI-compatibility, so it is only relevant
+    for Coin 3.
+
+    Note also that these fields break compatibility with the VRML97
+    spec if they have non-default values upon export. This should be
+    duly noted in their API doc, when written.
+
+    20041010 mortene.
 
 =====================================================================
 
