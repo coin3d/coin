@@ -40,8 +40,38 @@
 #endif /* GLUWRAPPER_ASSUME_GLU */
 
 
+
+#ifdef HAVE_DL_LIB
+
+  /* This should work on Linux and IRIX platforms, at least. Probably
+     some other UNIX-based systems aswell. */
+
+  #define LIBHANDLE_T void*
+  #define OPEN_RUNTIME_BINDING(LIBNAME) dlopen(LIBNAME, RTLD_LAZY)
+  #define CLOSE_RUNTIME_BINDING(RBHANDLE)  (void)dlclose(RBHANDLE)
+  #define GET_RUNTIME_SYMBOL(RBHANDLE, FUNCNAME) dlsym(RBHANDLE, FUNCNAME)
+
+#elif defined (HAVE_WINDLL_RUNTIME_BINDING)
+
+  /* This should work on all MSWindows systems. */
+
+  #define LIBHANDLE_T HINSTANCE
+  #define OPEN_RUNTIME_BINDING(LIBNAME) LoadLibrary(LIBNAME)
+  #define CLOSE_RUNTIME_BINDING(RBHANDLE)  (void)FreeLibrary(RBHANDLE)
+  #define GET_RUNTIME_SYMBOL(RBHANDLE, FUNCNAME) GetProcAddress(RBHANDLE, FUNCNAME)
+
+#else /* static binding */
+
+  /* To avoid compiler error on the LIBHANDLE_T type. */
+  #define LIBHANDLE_T void*
+
+#endif  /* static binding */
+
+/* FIXME: support HP-UX? (Doesn't have dlopen().) 20010626 mortene. */
+
+
 static GLUWrapper_t * GLU_instance = NULL;
-static void * GLU_libhandle = NULL;
+static LIBHANDLE_T GLU_libhandle = NULL;
 static int GLU_failed_to_load = 0;
 
 
@@ -50,7 +80,7 @@ static void
 GLUWrapper_cleanup(void)
 {
 #ifdef GLU_RUNTIME_LINKING
-  if (GLU_libhandle) (void)dlclose(GLU_libhandle);
+  if (GLU_libhandle) CLOSE_RUNTIME_BINDING(GLU_libhandle);
 #endif /* GLU_RUNTIME_LINKING */
 
   assert(GLU_instance);
@@ -189,33 +219,26 @@ GLUWrapper(void)
 
 #ifdef GLU_RUNTIME_LINKING
     {
+      /* FIXME: should we get the system shared library name from an
+         Autoconf check? 20000930 mortene. */
       const char * possiblelibnames[] = {
-        /* FIXME: should we get the system shared library name from an
-           Autoconf check? 20000930 mortene. */
+        /* MSWindows DLL name for the GLU library */
+        "glu32",
+
+        /* UNIX-style names */
         "GLU", "MesaGLU",
         "libGLU", "libMesaGLU",
         "libGLU.so", "libMesaGLU.so",
-        /* FIXME: this hits on HP-UX? 20000930 mortene. */
-        "libGLU.sl", "libMesaGLU.sl",
         NULL
       };
-      /* FIXME: implement same functionality on MSWindows. 20000930 mortene. */
+
       int idx = 0;
       while (!GLU_libhandle && possiblelibnames[idx]) {
         /*
-         *  FIXME: Purify complains about Bad Function Parameter here.
-         * Everything seems to work ok though.  pederb, 2001-02-07
+         * FIXME: Purify complains about Bad Function Parameter here.
+         * Everything seems to work ok though?  pederb, 2001-02-07
          */
-        GLU_libhandle = dlopen(possiblelibnames[idx], RTLD_LAZY);
-#if 0 /* debug */
-        if (!GLU_libhandle) {
-          (void)fprintf(stderr,
-                        "GLU wrapper debug: couldn't open '%s': '%s'\n",
-                        possiblelibnames[idx],
-                        dlerror());
-          (void)fflush(stderr);
-        }
-#endif /* debug */
+        GLU_libhandle = OPEN_RUNTIME_BINDING(possiblelibnames[idx]);
         idx++;
       }
 
@@ -229,10 +252,10 @@ GLUWrapper(void)
        necessary for this file to be compatible with C++ compilers. */
 #ifdef HAVE_HASH_QUOTING
 #define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-    GLU_instance->_funcname_ = (_funcsig_)dlsym(GLU_libhandle, #_funcname_)
+    GLU_instance->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(GLU_libhandle, #_funcname_)
 #elif defined(HAVE_APOSTROPHES_QUOTING)
 #define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-    GLU_instance->_funcname_ = (_funcsig_)dlsym(GLU_libhandle, "_funcname_")
+    GLU_instance->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(GLU_libhandle, "_funcname_")
 #else
 #error Unknown quoting.
 #endif

@@ -647,13 +647,13 @@ if test x"$sim_ac_gl_avail" = xyes; then
     AC_HELP_STRING([--enable-dl-glu],
                    [use runtime dynamic linking for GLU if possible [[default=yes]]]),
     [case "${enableval}" in
-      yes | true) enable_dl_glu=yes ;;
-      no | false) enable_dl_glu=no ;;
+      yes | true) enable_dl_glu=true ;;
+      no | false) enable_dl_glu=false ;;
       *) AC_MSG_ERROR(bad value "${enableval}" for --enable-dl-glu) ;;
     esac],
-    [enable_dl_glu=yes])
+    [enable_dl_glu=true])
 
-  if test x"$sim_ac_dl_avail" = xyes -a x"$enable_dl_glu" = xyes; then
+  if $coin_can_do_runtime_linking && $enable_dl_glu; then
     # See if GLU is part of GL library (this is the case on BeOS, for
     # instance) before setting us up for runtime linking.
     SIM_AC_GLU_READY_IFELSE([
