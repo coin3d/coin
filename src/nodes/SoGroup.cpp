@@ -47,6 +47,13 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/misc/SoGL.h>
+
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#include <Inventor/system/gl.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -372,6 +379,24 @@ SoGroup::GLRender(SoGLRenderAction * action)
       }
       action->popPushCurPath(i, childarray[i]);
       childarray[i]->GLRender(action);
+#if COIN_DEBUG
+      // The GL error test is default disabled for this optimized
+      // path.  If you get a GL error reporting an error in the
+      // Separator node, enable this code by setting the environment
+      // variable COIN_GLERROR_DEBUGGING to "1" to see exactly which
+      // node caused the error.
+      static SbBool chkglerr = sogl_glerror_debugging();
+      if (chkglerr) {
+        int err = glGetError();
+        if (err != GL_NO_ERROR) {
+          SoDebugError::postInfo("SoGroup::GLRenderBelowPath",
+                                 "GL error: %s, nodetype: %s",
+                                 sogl_glerror_string(err).getString(),
+                                 (*this->getChildren())[i]->getTypeId().getName().getString());
+        }
+      }
+#endif // COIN_DEBUG
+
     }
     action->popCurPath();
   }
