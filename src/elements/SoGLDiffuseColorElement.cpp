@@ -59,6 +59,20 @@ SoGLDiffuseColorElement::~SoGLDiffuseColorElement()
 {
 }
 
+inline void 
+SoGLDiffuseColorElement::updategl(const uint32_t col)
+{
+  this->currentpacked = col;
+  glColor4ub((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff, col&0xff);
+}
+
+inline void 
+SoGLDiffuseColorElement::updategl(const SbVec4f & col)
+{
+  this->current = col;
+  glColor4fv((const GLfloat*) &col);
+}
+
 //! FIXME: write doc.
 
 void
@@ -104,22 +118,6 @@ SoGLDiffuseColorElement::pop(SoState *state, const SoElement * prevTopElement)
     this->current = prev->current;
   }
 }
-
-
-inline void 
-SoGLDiffuseColorElement::updategl(const uint32_t col)
-{
-  this->currentpacked = col;
-  glColor4ub((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff, col&0xff);
-}
-
-inline void 
-SoGLDiffuseColorElement::updategl(const SbVec4f & col)
-{
-  this->current = col;
-  glColor4fv((const GLfloat*) &col);
-}
-
 
 //! FIXME: write doc.
 

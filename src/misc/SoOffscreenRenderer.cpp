@@ -725,7 +725,7 @@ SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
   SbString allext(simage_wrapper()->simage_get_saver_extensions(saver));
   const char * start = allext.getString();
   const char * curr = start;
-  char * end = strchr(curr, ',');
+  const char * end = strchr(curr, ',');
   while (end) {
     SbString ext = allext.getSubString(curr-start, end-start-1);
     extlist.append(SbName(ext.getString()));

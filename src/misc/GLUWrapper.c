@@ -200,8 +200,10 @@ GLUWrapper(void)
       /* FIXME: implement same functionality on MSWindows. 20000930 mortene. */
       int idx = 0;
       while (!GLU_libhandle && possiblelibnames[idx]) {
-        // FIXME: Purify complains about Bad Function Parameter here.
-        // Everything seems to work ok though.  pederb, 2001-02-07
+        /* 
+         *  FIXME: Purify complains about Bad Function Parameter here.
+         * Everything seems to work ok though.  pederb, 2001-02-07
+         */
         GLU_libhandle = dlopen(possiblelibnames[idx], RTLD_LAZY);
 #if 0 /* debug */
         if (!GLU_libhandle) {
@@ -279,7 +281,7 @@ GLUWrapper(void)
     if (GLU_instance->gluGetString == NULL) /* Was missing in GLU v1.0. */
       GLU_instance->gluGetString = GLUWrapper_gluGetString;
 
-#if COIN_DEBUG && 0 // debug
+#if 0 /* debug */
     /* Test code for the GLUWrapper_set_version() parsing. */
     GLUWrapper_set_version("1.2");
     (void)fprintf(stdout, "%d.%d.%d\n",

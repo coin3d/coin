@@ -144,8 +144,10 @@ simage_wrapper(void)
       /* FIXME: implement same functionality on MSWindows. 20000930 mortene. */
       int idx = 0;
       while (!simage_libhandle && possiblelibnames[idx]) {
-        // FIXME: Purify complains about Bad Function Parameter here.
-        // Everything seems to work ok though.  pederb, 2001-02-07
+        /* 
+         *  FIXME: Purify complains about Bad Function Parameter here.
+         * Everything seems to work ok though.  pederb, 2001-02-07
+         */
         simage_libhandle = dlopen(possiblelibnames[idx], RTLD_LAZY);
 #if 0 /* debug */
         if (!simage_libhandle) {
@@ -164,7 +166,6 @@ simage_wrapper(void)
         simage_failed_to_load = 1;
       }
     }
-
     /* Define SIMAGEWRAPPER_REGISTER_FUNC macro. Casting the type is
        necessary for this file to be compatible with C++ compilers. */
 #if HAVE_HASH_QUOTING
@@ -215,7 +216,7 @@ simage_wrapper(void)
     SIMAGEWRAPPER_REGISTER_FUNC(simage_next_power_of_two, simage_next_power_of_two_t);
 
     if (simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
-#if !defined(HAVE_LIBSIMAGE) || defined(SIMAGE_VERSION_1_1) 
+#if !defined(HAVE_LIBSIMAGE) || defined(SIMAGE_VERSION_1_1)
       SIMAGEWRAPPER_REGISTER_FUNC(simage_get_num_savers, simage_get_num_savers_t);
       SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_handle, simage_get_saver_handle_t);
       SIMAGEWRAPPER_REGISTER_FUNC(simage_check_save_supported, simage_check_save_supported_t);

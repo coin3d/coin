@@ -118,10 +118,10 @@ SoSelectOne::initialize(const SoType inputfieldtype)
   SbString multiname = inputfieldtype.getName().getString();
   // Built-in fields always start with the "MF", but we try to handle
   // user-defined fields aswell.
-  char * ptr = strstr(multiname.getString(), "MF");
+  const char * ptr = strstr(multiname.getString(), "MF");
   assert(ptr != NULL && "invalid input field type");
   unsigned int offset = ptr - multiname.getString();
-  SbString singlename = offset == 0 ? "" : multiname.getSubString(0, offset-1);
+  SbString singlename = offset == 0 ? SbString("") : multiname.getSubString(0, offset-1);
   singlename += 'S';
   singlename += multiname.getSubString(offset + 1);
 
