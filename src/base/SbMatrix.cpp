@@ -913,11 +913,11 @@ SbMatrix::multRight(const SbMatrix & m)
   SbMatrix tmp(*this);
   for (int i=0; i < 4; i++) {
     for (int j=0; j < 4; j++) {
-      (*this)[i][j] =
-        tmp[i][0] * m[0][j] +
-        tmp[i][1] * m[1][j] +
-        tmp[i][2] * m[2][j] +
-        tmp[i][3] * m[3][j];
+      this->matrix[i][j] =
+        tmp.matrix[i][0] * m.matrix[0][j] +
+        tmp.matrix[i][1] * m.matrix[1][j] +
+        tmp.matrix[i][2] * m.matrix[2][j] +
+        tmp.matrix[i][3] * m.matrix[3][j];
     }
   }
   return *this;
@@ -935,11 +935,11 @@ SbMatrix::multLeft(const SbMatrix & m)
   SbMatrix tmp(*this);
   for (int i=0; i < 4; i++) {
     for (int j=0; j < 4; j++) {
-      (*this)[i][j] =
-        tmp[0][j] * m[i][0] +
-        tmp[1][j] * m[i][1] +
-        tmp[2][j] * m[i][2] +
-        tmp[3][j] * m[i][3];
+      this->matrix[i][j] =
+        tmp.matrix[0][j] * m.matrix[i][0] +
+        tmp.matrix[1][j] * m.matrix[i][1] +
+        tmp.matrix[2][j] * m.matrix[i][2] +
+        tmp.matrix[3][j] * m.matrix[i][3];
     }
   }
   return *this;
