@@ -1138,7 +1138,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
 
   uint32_t newx = coin_geq_power_of_two(xsize - 2*this->border);
   uint32_t newy = coin_geq_power_of_two(ysize - 2*this->border);
-  uint32_t newz = coin_geq_power_of_two(zsize - 2*this->border);
+  uint32_t newz = zsize ? coin_geq_power_of_two(zsize - 2*this->border) : 0;
 
   // if >= 256 and low quality, don't scale up unless size is
   // close to an above power of two. This saves a lot of texture memory
