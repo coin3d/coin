@@ -9,7 +9,7 @@
 #  This perl script parses source code files and updates all the templant
 #  templates, header-inlines inline functions and more.
 #
-#  Hacked in perl by Lars J. Aas <larsa@sim.no>, 1998-2000
+#  Hacked in perl by Lars J. Aas <larsa@sim.no>, 1998-2002
 #
 #  TEMPLANT ENV VARIABLES:
 #
@@ -40,11 +40,22 @@
 #      //$ BEGIN EXPORT INLINE
 #      //$ END EXPORT INLINE
 #
+#  /*$ EVAL( expr ) */
+#
+#  Alternately, //$ ... can be replaced with
+#
+#  ##$ ...
+#  /*$ ... $/
+#
 ############################################################################
 #
 #  $Id$
 #
 #  $Log$
+#  Revision 1.5  2002/03/08 15:32:43  larsa
+#  Support C comments around commands.
+#  New command "/*$ EVAL(expr) */".
+#
 #  Revision 1.4  2000/01/13 17:22:32  mortene
 #  Updated headers by changing copyright time span from 1998-1999
 #  to 1998-2000.
@@ -119,8 +130,10 @@ $inline = 0;             # inline functions
 $debug = 0;              # dump debug output
 $compact = 1;            # only wrap level-0 templates with comments
 $spacing = 0;            # replace TABs with spaces, and remove WS at EOL
+$evaluations = 1;        # replace /*$ EVAL(expr) */ parts
 
-$prefix = '(\#\#\$|//\$)';
+$prefix = '(\#\#\$|//\$|/\*\$)';
+$postfix = '( *| +\*/)';
 
 @incpath = ();
 push( @incpath, "" );    # $incpath[0] is set to the current file's directory
@@ -210,6 +223,10 @@ foreach $file ( @files ) {
         &FoldInliningSource();
     }
 
+    # eval expressions?
+    &DoEvaluations() if ( $evaluations == 1 );
+
+    # strip trailing whitespace
     &FixSpacing() if ( $spacing == 1 );
 
     # save if changed
@@ -237,17 +254,21 @@ template:
     for ( $line = scalar( @lines ) - 1; $line >= 0; $line-- ) {
         if ( $lines[$line] =~ m|^$prefix +BEGIN +TEMPLATE +|o ) {
             chop( $proto = $lines[$line] );
-            $proto =~ s|^$prefix +BEGIN +TEMPLATE +||;
+            $proto =~ s|^$prefix +BEGIN +TEMPLATE +||o;
+            $proto =~ s|$postfix$||o;
             $name = $proto;
             $name =~ s/^([a-zA-Z0-9_-]+)\(.*/$1/og;
             $i = $line + 1;
             while ( $i < scalar( @lines ) ) {
                 if ( $lines[$i] =~ m|^$prefix +END +TEMPLATE +|o ) {
                     chop( $temp = $lines[$i] );
-                    $temp =~ s|^$prefix +END +TEMPLATE +||;
+                    $temp =~ s|^$prefix +END +TEMPLATE +||o;
+                    $localprefixstr = $1;
+                    $temp =~ s|$postfix$||o;
+                    $localpostfixstr = $1;
                     if ( $temp eq $name ) {
                         splice( @lines, $line, ($i - $line + 1), 
-                             ( "$1 INSERT TEMPLATE " . $proto . "\n" ) );
+                             ( "$localprefixstr INSERT TEMPLATE " . $proto . "$localpostfixstr\n" ) );
                         next template;
                     } else {
                         print STDERR "ERROR: TEMPLATE BEGIN ($name) / END mismatch.\n";
@@ -275,9 +296,12 @@ sub UnfoldTemplates { ######################################################
 
     $templates = 0;
     for ( $line = 0; $line < @lines; $line++ ) {
-        if ( $lines[$line] =~ /^$prefix +INSERT +TEMPLATE +/o ) {
+        if ( $lines[$line] =~ m|^$prefix +INSERT +TEMPLATE +|o ) {
             chop( $proto = $lines[$line] );
             $proto =~ s|^$prefix +INSERT +TEMPLATE +||o;
+            $prefixstr = $1;
+            $proto =~ s|$postfix$||o;
+            $postfixstr = $1;
             $name = $proto;
             $name =~ s/\(.*//o;
 
@@ -292,7 +316,7 @@ sub UnfoldTemplates { ######################################################
             }
 
             $arguments = $proto;
-            $arguments =~ s/^[^\(]+\([ \t]*(.*)[ \t]*\)[^()]*$/\1/;
+            $arguments =~ s/^[^\(]+\([ \t]*(.*)[ \t]*\)[^()]*$/$1/;
             @arguments = &SplitArgs( $arguments );
 
             if ($debug) {
@@ -301,7 +325,7 @@ sub UnfoldTemplates { ######################################################
                 }
             }
 
-            if ( $template[0] !~ /^$prefix +TEMPLATE +/ ) {
+            if ( $template[0] !~ m|^$prefix +TEMPLATE +|o ) {
                 print STDERR $filename, " is not a valid template file.\n";
                 exit( -1 );
             }
@@ -309,6 +333,8 @@ sub UnfoldTemplates { ######################################################
             chop( $prototype = shift( @template ) );
             $prototype =~ s|^$prefix +TEMPLATE +||o;
             $prefixstr = $1;
+            $prototype =~ s|$postfix$||o;
+            $postfixstr = $1;
             $prototypename = $prototype;
             $prototypename =~ s/\(.*//;
             if ( $prototypename ne $name ) {
@@ -317,7 +343,7 @@ sub UnfoldTemplates { ######################################################
                 exit( -1 );
             }
             $templatevariables = $prototype;
-            $templatevariables =~ s/^[^\(]*\((.*)\)[^()]*$/\1/;
+            $templatevariables =~ s/^[^\(]*\((.*)\)[^()]*$/$1/;
             @templatevariables = &SplitArgs( $templatevariables );
             foreach ( @templatevariables )  {
                 s/^[ \t]+//;
@@ -340,7 +366,7 @@ sub UnfoldTemplates { ######################################################
             for ( $index = 0; $index < scalar( @arguments ); $index++ ) {
                 for ( $linenum = 0; $linenum < scalar( @template ); $linenum++ ) {
                     $template[$linenum] =~
-   s/([^#])#[ \t]*$templatevariables[$index]/\1"$arguments[$index]"/g;
+   s/([^#])#[ \t]*$templatevariables[$index]/$1"$arguments[$index]"/g;
                     $template[$linenum] =~
    s/([ \t]*##[ \t]*)?$templatevariables[$index]([ \t]*##[ \t]*)?/$arguments[$index]/g;
                 }
@@ -349,8 +375,8 @@ sub UnfoldTemplates { ######################################################
             # insert template
             if ( $level == 0 || ! $compact ) { # add header and footer
                 unshift( @template, "$prefixstr BEGIN TEMPLATE " .
-                         $name . "(" . join( ", ", @arguments ) . ")\n" );
-                push( @template, "$prefixstr END TEMPLATE " . $name . "\n" );
+                         $name . "(" . join( ", ", @arguments ) . ")" . $postfixstr . "\n" );
+                push( @template, "$prefixstr END TEMPLATE " . $name . $postfixstr . "\n" );
             }
             splice( @lines, $line, 1, @template );
             $line += @template - 1;
@@ -614,6 +640,13 @@ sub SplitArgs { ############################################################
         s/[ \t]*$//g;
     }
     @args;
+}
+
+# evaluates expressions
+sub DoEvaluations { ########################################################
+    foreach $line ( @lines ) {
+        $line =~ s|/\*\$ +EVAL\((.*)\) +\*/|eval "$1"|eg;
+    }
 }
 
 # fixes some spacing
