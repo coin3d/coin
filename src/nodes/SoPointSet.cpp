@@ -54,6 +54,7 @@
 #include <Inventor/elements/SoGLLightModelElement.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/details/SoPointDetail.h>
+#include <Inventor/misc/SoGL.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -141,209 +142,10 @@ SoPointSet::findNormalBinding(SoState * const state) const
   return binding;
 }
 
-
-// here we include the 8 variations directly...
-
-static void
-sogl_render_pointset_m0n0t0(const SoGLCoordinateElement * coords,
-                            const SbVec3f * normals,
-                            SoMaterialBundle * mb,
-                            const SoTextureCoordinateBundle * tb,
-                            int32_t numpts,
-                            int32_t idx)
-{
-  int i;
-  const int unroll = numpts >> 2;
-  const int rest = numpts & 3;
-
-  glBegin(GL_POINTS);
-  for (i = 0; i < unroll; i++) {
-    coords->send(idx++);
-    coords->send(idx++);
-    coords->send(idx++);
-    coords->send(idx++);
-  }
-  for (i = 0; i < rest; i++) {
-    coords->send(idx++);
-  }
-  glEnd();
-}
-
-static void
-sogl_render_pointset_m0n0t1(const SoGLCoordinateElement * coords,
-                            const SbVec3f * normals,
-                            SoMaterialBundle * mb,
-                            const SoTextureCoordinateBundle * tb,
-                            int32_t numpts,
-                            int32_t idx)
-{
-  int texnr = 0;
-  const SbVec3f currnormal(0.0f,0.0f,1.0f);
-
-  glBegin(GL_POINTS);
-  for (int i = 0; i < numpts; i++) {
-    tb->send(texnr++, coords->get3(idx), currnormal);
-    coords->send(idx++);
-  }
-  glEnd();
-}
-
-static void
-sogl_render_pointset_m0n1t0(const SoGLCoordinateElement * coords,
-                            const SbVec3f * normals,
-                            SoMaterialBundle * mb,
-                            const SoTextureCoordinateBundle * tb,
-                            int32_t numpts,
-                            int32_t idx)
-{
-  glBegin(GL_POINTS);
-  for (int i = 0; i < numpts; i++) {
-    glNormal3fv((const GLfloat*)normals++);
-    coords->send(idx++);
-  }
-  glEnd();
-}
-
-static void
-sogl_render_pointset_m0n1t1(const SoGLCoordinateElement * coords,
-                            const SbVec3f * normals,
-                            SoMaterialBundle * mb,
-                            const SoTextureCoordinateBundle * tb,
-                            int32_t numpts,
-                            int32_t idx)
-{
-  int texnr = 0;
-  const SbVec3f currnormal(0.0f,0.0f,1.0f);
-
-  glBegin(GL_POINTS);
-  for (int i = 0; i < numpts; i++) {
-    glNormal3fv((const GLfloat*)normals++);
-    tb->send(texnr++, coords->get3(idx), currnormal);
-    coords->send(idx++);
-  }
-  glEnd();
-}
-
-static void
-sogl_render_pointset_m1n0t0(const SoGLCoordinateElement * coords,
-                            const SbVec3f * normals,
-                            SoMaterialBundle * mb,
-                            const SoTextureCoordinateBundle * tb,
-                            int32_t numpts,
-                            int32_t idx)
-{
-  int i;
-  int matnr = 0;
-  const int unroll = numpts >> 2;
-  const int rest = numpts & 3;
-
-  glBegin(GL_POINTS);
-  for (i = 0; i < unroll; i++) {
-    mb->send(matnr++, TRUE);
-    coords->send(idx++);
-    mb->send(matnr++, TRUE);
-    coords->send(idx++);
-    mb->send(matnr++, TRUE);
-    coords->send(idx++);
-    mb->send(matnr++, TRUE);
-    coords->send(idx++);
-  }
-  for (i = 0; i < rest; i++) {
-    mb->send(matnr++, TRUE);
-    coords->send(idx++);
-  }
-  glEnd();
-}
-
-static void
-sogl_render_pointset_m1n0t1(const SoGLCoordinateElement * coords,
-                            const SbVec3f * normals,
-                            SoMaterialBundle * mb,
-                            const SoTextureCoordinateBundle * tb,
-                            int32_t numpts,
-                            int32_t idx)
-{
-  int matnr = 0;
-  int texnr = 0;
-  const SbVec3f currnormal(0.0f,0.0f,1.0f);
-
-  glBegin(GL_POINTS);
-  for (int i = 0; i < numpts; i++) {
-    mb->send(matnr++, TRUE);
-    tb->send(texnr++, coords->get3(idx), currnormal);
-    coords->send(idx++);
-  }
-  glEnd();
-}
-
-static void
-sogl_render_pointset_m1n1t0(const SoGLCoordinateElement * coords,
-                            const SbVec3f * normals,
-                            SoMaterialBundle * mb,
-                            const SoTextureCoordinateBundle * tb,
-                            int32_t numpts,
-                            int32_t idx)
-{
-  int matnr = 0;
-
-  glBegin(GL_POINTS);
-  for (int i = 0; i < numpts; i++) {
-    mb->send(matnr++, TRUE);
-    glNormal3fv((const GLfloat*)normals++);
-    coords->send(idx++);
-  }
-  glEnd();
-}
-
-static void
-sogl_render_pointset_m1n1t1(const SoGLCoordinateElement * coords,
-                            const SbVec3f * normals,
-                            SoMaterialBundle * mb,
-                            const SoTextureCoordinateBundle * tb,
-                            int32_t numpts,
-                            int32_t idx)
-{
-  int matnr = 0;
-  int texnr = 0;
-  const SbVec3f currnormal(0.0f,0.0f,1.0f);
-
-  glBegin(GL_POINTS);
-  for (int i = 0; i < numpts; i++) {
-    glNormal3fv((const GLfloat*)normals++);
-    tb->send(texnr++, coords->get3(idx), currnormal);
-    coords->send(idx++);
-  }
-  glEnd();
-}
-
-// ---
-
-typedef void sogl_render_pointset_func(const SoGLCoordinateElement * coords,
-                                       const SbVec3f * normals,
-                                       SoMaterialBundle * mb,
-                                       const SoTextureCoordinateBundle * tb,
-                                       int32_t numpts,
-                                       int32_t idx);
-
-static sogl_render_pointset_func * sogl_render_pointset_funcs[8];
-
 // doc from parent
 void
 SoPointSet::GLRender(SoGLRenderAction * action)
 {
-  static int first = 1;
-  if (first) {
-    first = 0;
-    sogl_render_pointset_funcs[0] = sogl_render_pointset_m0n0t0;
-    sogl_render_pointset_funcs[1] = sogl_render_pointset_m0n0t1;
-    sogl_render_pointset_funcs[2] = sogl_render_pointset_m0n1t0;
-    sogl_render_pointset_funcs[3] = sogl_render_pointset_m0n1t1;
-    sogl_render_pointset_funcs[4] = sogl_render_pointset_m1n0t0;
-    sogl_render_pointset_funcs[5] = sogl_render_pointset_m1n0t1;
-    sogl_render_pointset_funcs[6] = sogl_render_pointset_m1n1t0;
-    sogl_render_pointset_funcs[7] = sogl_render_pointset_m1n1t1;
-  }
-
   SoState * state = action->getState();
 
   SbBool didpush = FALSE;
@@ -399,29 +201,11 @@ SoPointSet::GLRender(SoGLRenderAction * action)
   int32_t numpts = this->numPoints.getValue();
   if (numpts < 0) numpts = coords->getNum() - idx;
 
-  sogl_render_pointset_funcs[ (mbind << 2) | (nbind << 1) | doTextures ]
-    ( coords,
-      normals,
-      &mb,
-      &tb,
-      numpts,
-      idx);
-
-#if 0 // obsoleted 2001-1-19, skei
-
-  glBegin(GL_POINTS);
-  for (int i = 0; i < numpts; i++) {
-    if (nbind == PER_VERTEX) {
-      currnormal = normals++;
-      glNormal3fv((const GLfloat *)currnormal);
-    }
-    if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
-    if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
-    coords->send(idx++);
-  }
-  glEnd();
-
-#endif // obsoleted
+  sogl_render_pointset(coords,
+                       nbind != OVERALL ? normals : NULL,
+                       mbind != OVERALL ? &mb : NULL,
+                       doTextures ? &tb : NULL,
+                       numpts, idx);
 
   if (didpush)
     state->pop();

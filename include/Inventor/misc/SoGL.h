@@ -146,4 +146,12 @@ sogl_render_lineset(const SoGLCoordinateElement * const coords,
                     const int texture,
                     const int drawAsPoints);
 
+void
+sogl_render_pointset(const SoGLCoordinateElement * coords,
+                     const SbVec3f * normals,
+                     SoMaterialBundle * mb,
+                     const SoTextureCoordinateBundle * tb,
+                     int32_t numpts,
+                     int32_t idx);
+
 #endif // COIN_SOGL_H
