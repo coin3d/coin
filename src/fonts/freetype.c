@@ -721,19 +721,19 @@ cc_flwft_get_charmap_name(void * font, int charmap)
 
   if (charmap < face->num_charmaps) {
     switch (face->charmaps[charmap]->encoding) {
-    case FT_ENCODING_UNICODE:	 
+    case FT_ENCODING_UNICODE:    
       name = "unicode"; break; 
     case FT_ENCODING_MS_SYMBOL: 
       name = "symbol"; break; 
-    case FT_ENCODING_MS_SJIS:	 
+    case FT_ENCODING_MS_SJIS:    
       name = "sjis"; break; 
     case FT_ENCODING_MS_GB2312: 
       name = "gb2312"; break; 
-    case FT_ENCODING_MS_BIG5:	 
+    case FT_ENCODING_MS_BIG5:    
       name = "big5"; break; 
-    case FT_ENCODING_MS_WANSUNG:	 
+    case FT_ENCODING_MS_WANSUNG:         
       name = "wansung"; break; 
-    case FT_ENCODING_MS_JOHAB:	 
+    case FT_ENCODING_MS_JOHAB:   
       name = "johab"; break; 
     case FT_ENCODING_ADOBE_STANDARD: 
       name = "adobe_standard"; break; 
@@ -741,7 +741,7 @@ cc_flwft_get_charmap_name(void * font, int charmap)
       name = "adobe_expert"; break; 
     case FT_ENCODING_ADOBE_CUSTOM: 
       name = "adobe_custom"; break; 
-    case FT_ENCODING_ADOBE_LATIN_1:	  
+    case FT_ENCODING_ADOBE_LATIN_1:       
       name = "latin_1"; break;  
     case FT_ENCODING_APPLE_ROMAN: 
       name = "apple_roman"; break; 
