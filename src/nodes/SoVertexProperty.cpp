@@ -218,7 +218,8 @@ SoVertexProperty::GLRender(SoGLRenderAction * action)
   SbBool materialbindoverride = SoOverrideElement::getMaterialBindingOverride(state);
 
   if (SoShapeStyleElement::isScreenDoor(state) &&
-      ! this->orderedRGBA.isIgnored() && 
+      ! this->orderedRGBA.isIgnored() &&
+      this->orderedRGBA.getNum() &&
       ! SoOverrideElement::getTransparencyOverride(state)) {
     float t = (255 - (this->orderedRGBA[0] & 0xff)) / 255.0f;
     SoGLPolygonStippleElement::setTransparency(state, t);
