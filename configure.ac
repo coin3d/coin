@@ -1,5 +1,13 @@
 # **************************************************************************
 
+# FIXME: try to fix all problems with spaces in directory names;
+# whether it's the src dir, the install/build dir or directories with
+# dependent libraries. Alternatively, we should at least detect and
+# warn/exit. Ditto goes for all our other software modules aswell, of
+# course. 20020519 mortene.
+
+# **************************************************************************
+
 # release version number info
 m4_define([COIN_MAJOR], [2])
 m4_define([COIN_MINOR], [0])
