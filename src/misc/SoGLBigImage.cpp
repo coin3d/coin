@@ -451,14 +451,8 @@ SoGLBigImage::unrefOldDL(SoState * state, const uint32_t maxage)
 
 #ifndef DOXYGEN_SKIP_THIS
 
-//  The method copySubImage() handles the downsampling, and it's very
-//  primitive. If the GL texture should be half the size of the
-//  original subtexture, every second pixel is simply used.
-// 
-//  FIXME: I guess this may cause "patterns" in the textures, which
-//  has been observed. For a better result, the downsampling method
-//  should be improved by setting each pixel to the average of the
-//  pixels being downscaled. 20011219 pederb.
+//  The method copySubImage() handles the downsampling. It averages 
+//  the full-resolution pixels to create the low resolution image.  
 void
 SoGLBigImageP::copySubImage(const int idx,
                             const unsigned char * src,
