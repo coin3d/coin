@@ -51,172 +51,16 @@
   \sa SbString
 */
 
-#include <Inventor/SbName.h>
-#include <Inventor/SbString.h>
-#include <Inventor/C/threads/threadsutilp.h>
-#include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
-#include <stdio.h>
-#include <string.h>
+// *************************************************************************
+
 #include <ctype.h>
+#include <string.h>
 
+#include <Inventor/SbName.h>
 
-// **** The private SbNameEntry class **************************************
-
-static const int CHUNK_SIZE = 65536-32; // leave some room for other data
-static const int NAME_TABLE_SIZE = 1999;
-
-struct SbNameChunk {
-  char mem[CHUNK_SIZE];
-  char * curByte;
-  int bytesLeft;
-  SbNameChunk * next;
-};
-
-class SbNameEntry {
-public:
-  SbBool isEmpty(void) const
-    { return (! *str); }
-  SbBool isEqual(const char * const string) const
-    { return (strcmp(str, string) == 0); }
-
-  static void print_info();
-
-  static void initClass(void);
-  SbNameEntry(const char * const s, const unsigned long h,
-               SbNameEntry * const n)
-    { str = s; hashValue = h; next = n; };
-  static const SbNameEntry * insert(const char * const s);
-
-  static const char * findStringAddress(const char * s);
-
-  const char * str;
-
-  static void cleanup(void);
-
-private:
-  static int nameTableSize;
-  static SbNameEntry ** nameTable;
-  static struct SbNameChunk * chunk;
-  unsigned long hashValue;
-  SbNameEntry * next;
-
-  static void * mutex;
-};
-
-int SbNameEntry::nameTableSize;
-SbNameEntry * * SbNameEntry::nameTable;
-SbNameChunk * SbNameEntry::chunk;
-void * SbNameEntry::mutex = NULL;
-
-void 
-SbNameEntry::cleanup(void)
-{
-  SbNameChunk * chunk = SbNameEntry::chunk;
-  while (chunk) {
-    SbNameChunk * next = chunk->next;
-    delete chunk;
-    chunk = next;
-  }
-  
-  for (int i = 0; i < SbNameEntry::nameTableSize; i++) {
-    SbNameEntry * entry = SbNameEntry::nameTable[i];
-    while (entry) {
-      SbNameEntry * next = entry->next;
-      delete entry;
-      entry = next;
-    }
-  }
-  delete[] SbNameEntry::nameTable;
-  CC_MUTEX_DESTRUCT(SbNameEntry::mutex);
-}
-
-
-// This static method initializes static data for the SbNameEntry
-// class.
-void
-SbNameEntry::initClass(void)
-{
-  SbNameEntry::nameTableSize = NAME_TABLE_SIZE;
-  SbNameEntry::nameTable = new SbNameEntry * [ SbNameEntry::nameTableSize ];
-  for (int i = 0; i < SbNameEntry::nameTableSize; i++) { SbNameEntry::nameTable[i] = NULL; }
-  SbNameEntry::chunk = NULL;
-
-  coin_atexit((coin_atexit_f*) SbNameEntry::cleanup, 0);
-}
-
-void
-SbNameEntry::print_info(void)
-{
-  for (int i = 0; i < SbNameEntry::nameTableSize; i++) {
-    SbNameEntry * entry = SbNameEntry::nameTable[ i ];
-    int cnt = 0;
-    while (entry != NULL) {
-      entry = entry->next;
-      cnt++;
-    }
-    printf("name entry: %d, cnt: %d\n", i, cnt);
-  }
-}
-
-const char *
-SbNameEntry::findStringAddress(const char * s)
-{
-  // FIXME: the stringlen should be stored in the chunk before the
-  // actual string -- that could be an important optimization.
-  // 20030606 mortene.
-  int len = strlen(s) + 1;
-
-    // names > CHUNK_SIZE characters are truncated.
-  if (len >= CHUNK_SIZE) { len = CHUNK_SIZE; }
-
-  if (chunk == NULL || chunk->bytesLeft < len) {
-    SbNameChunk * newChunk = new SbNameChunk;
-
-    newChunk->curByte = newChunk->mem;
-    newChunk->bytesLeft = CHUNK_SIZE;
-    newChunk->next = chunk;
-
-    chunk = newChunk;
-  }
-
-  (void)strncpy(chunk->curByte, s, len);
-  s = chunk->curByte;
-
-  chunk->curByte += len;
-  chunk->bytesLeft -= len;
-
-  return s;
-}
-
-const SbNameEntry *
-SbNameEntry::insert(const char * const str)
-{
-  if (SbNameEntry::mutex == NULL) {
-    CC_MUTEX_CONSTRUCT(SbNameEntry::mutex);
-  }
-  CC_MUTEX_LOCK(SbNameEntry::mutex);
-  if (nameTableSize == 0) { initClass(); }
-
-  unsigned long h = SbString::hash(str);
-  unsigned long i = h % nameTableSize;
-  SbNameEntry * entry = nameTable[i];
-  SbNameEntry * head = entry;
-
-  while (entry != NULL) {
-    if (entry->hashValue == h && entry->isEqual( str) )
-      break;
-    entry = entry->next;
-  }
-
-  if (entry == NULL) {
-    entry = new SbNameEntry(findStringAddress(str), h, head );
-    nameTable[i] = entry;
-  }
-  CC_MUTEX_UNLOCK(SbNameEntry::mutex);
-  return entry;
-}
-
+#include <Inventor/C/base/namemap.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/SbString.h>
 
 // *************************************************************************
 
@@ -225,15 +69,15 @@ SbNameEntry::insert(const char * const str)
 */
 SbName::SbName(void)
 {
-  this->entry = SbNameEntry::insert("");
+  this->permaaddress = cc_namemap_get_address("");
 }
 
 /*!
-  Constructor. Adds the \a nameString string to the name table.
+  Constructor. Adds the \a namestring string to the name table.
 */
-SbName::SbName(const char * nameString)
+SbName::SbName(const char * namestring)
 {
-  this->entry = SbNameEntry::insert(nameString);
+  this->permaaddress = cc_namemap_get_address(namestring);
 }
 
 /*!
@@ -241,15 +85,15 @@ SbName::SbName(const char * nameString)
 */
 SbName::SbName(const SbString & str)
 {
-  this->entry = SbNameEntry::insert(str.getString());
+  this->permaaddress = cc_namemap_get_address(str.getString());
 }
 
 /*!
   Copy constructor.
 */
 SbName::SbName(const SbName & name)
-  : entry(name.entry)
 {
+  this->permaaddress = name.permaaddress;
 }
 
 /*!
@@ -276,7 +120,7 @@ SbName::~SbName()
 const char *
 SbName::getString(void) const
 {
-  return this->entry->str;
+  return this->permaaddress;
 }
 
 /*!
@@ -289,8 +133,9 @@ SbName::getLength(void) const
   // execution? 20010909 mortene.
   //
   // UPDATE 20030606 mortene: this can easily be done by storing an
-  // extra value in the memory chunk right before the string itself.
-  return strlen(this->entry->str);
+  // extra value in the memory chunk allocated inside namemap.c, right
+  // before the string itself.
+  return strlen(this->permaaddress);
 }
 
 /*!
@@ -382,88 +227,89 @@ SbName::isBaseNameChar(const char c)
   non-empty and \c TRUE if the SbName object is empty.  An empty name
   contains a null-length string.
 */
-
 int
-SbName::operator ! (void) const
+SbName::operator!(void) const
 {
-  return this->entry->isEmpty();
+  return this->permaaddress[0] == '\0';
 }
 
 /*!
-  This operator checks for equality and returns TRUE if so, and FALSE
-  otherwise.
+  This operator checks for equality and returns \c TRUE if so, and \c
+  FALSE otherwise.
 */
-
 int
-operator == (const SbName & lhs, const char *rhs)
+operator==(const SbName & lhs, const char * rhs)
 {
-  return lhs.entry->isEqual(rhs);
+  // Due to the nature of permanent unique mappings of same strings to
+  // same address in the name hash, we can simple compare pointer
+  // addresses.
+  return lhs.permaaddress == rhs;
 }
 
 /*!
-  This operator checks for equality and returns TRUE if so, and FALSE
-  otherwise.
+  This operator checks for equality and returns \c TRUE if so, and \c
+  FALSE otherwise.
 */
-
 int
-operator == (const char *lhs, const SbName & rhs)
+operator==(const char * lhs, const SbName & rhs)
 {
-  return rhs.entry->isEqual(lhs);
+  // Due to the nature of permanent unique mappings of same strings to
+  // same address in the name hash, we can simple compare pointer
+  // addresses.
+  return rhs.permaaddress == lhs;
 }
 
 /*!
-  This operator checks for equality and returns TRUE if so, and FALSE
-  otherwise.
+  This operator checks for equality and returns \c TRUE if so, and \c
+  FALSE otherwise.
 */
-
 int
-operator == (const SbName & lhs, const SbName & rhs)
+operator==(const SbName & lhs, const SbName & rhs)
 {
-  return (lhs.entry == rhs.entry);
+  // Due to the nature of permanent unique mappings of same strings to
+  // same address in the name hash, we can simple compare pointer
+  // addresses.
+  return lhs.permaaddress == rhs.permaaddress;
 }
 
 /*!
-  This operator checks for inequality and returns TRUE if so, and FALSE
-  if the names are equal.
+  This operator checks for inequality and returns \c TRUE if so, and
+  \c FALSE if the names are equal.
 */
-
 int
-operator != (const SbName & lhs, const char *rhs)
+operator!=(const SbName & lhs, const char * rhs)
 {
-  return ! lhs.entry->isEqual(rhs);
+  return !(lhs == rhs);
 }
 
 /*!
-  This operator checks for inequality and returns TRUE if so, and FALSE
-  if the names are equal.
+  This operator checks for inequality and returns \c TRUE if so, and
+  \c FALSE if the names are equal.
 */
-
 int
-operator != (const char *lhs, const SbName & rhs)
+operator!=(const char * lhs, const SbName & rhs)
 {
-  return ! rhs.entry->isEqual(lhs);
+  return !(lhs == rhs);
 }
 
 /*!
-  This operator checks for inequality and returns TRUE if so, and FALSE
-  if the names are equal.
+  This operator checks for inequality and returns \c TRUE if so, and
+  \c FALSE if the names are equal.
 */
-
 int
-operator != (const SbName & lhs, const SbName & rhs)
+operator!=(const SbName & lhs, const SbName & rhs)
 {
-  return lhs.entry != rhs.entry;
+  return !(lhs == rhs);
 }
 
 /*!
-  This operator returns a pointer to the character array for the name string.
-  It is intended for implicit use.  Use SbName::getString() explicitly instead
-  of this operator - it might be removed later.
+  This operator returns a pointer to the character array for the name
+  string.  It is intended for implicit use.  Use SbName::getString()
+  explicitly instead of this operator - it might be removed later.
 
   \sa const char * SbName::getString(void)
 */
-
 SbName::operator const char * (void) const
 {
-  return this->entry->str;
+  return this->permaaddress;
 }
