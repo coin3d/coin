@@ -35,7 +35,7 @@ SoType SoDetail::classTypeId;
 
 /*!
   \fn SoDetail * SoDetail::copy(void) const
-  Return a copy of ourself.
+  Return a deep copy of ourself.
 */
 
 // Note: the following documentation for getTypeId() will also be
