@@ -61,7 +61,7 @@ SO_NODE_SOURCE(SoNodeKitListPart);
 */
 SoNodeKitListPart::SoNodeKitListPart(void)
 {
-  SO_NODE_CONSTRUCTOR(SoNodeKitListPart);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoNodeKitListPart);
 
   SO_NODE_ADD_FIELD(containerTypeName,(SoGroup::getClassTypeId().getName().getString()));
   SO_NODE_ADD_FIELD(childTypeNames,(SoNode::getClassTypeId().getName().getString()));
