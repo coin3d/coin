@@ -1016,8 +1016,6 @@ if test -n "$ac_init_help"; then
 Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
-  --enable-cvs-auto-update
-                          auto-update CVS repository if possible
   --enable-msvcdsp        build .dsp, not library
   --disable-msvc          don't require MS Visual C++ on Cygwin
   --disable-dependency-tracking Speeds up one-time builds
@@ -1486,102 +1484,6 @@ ac_configure="$SHELL $ac_aux_dir/configure" # This should be Cygnus configure.
 # FIXME: detect and exit upon this problem (as seen reported on
 # coin-bugs): the install prefix is set to the same directory as the
 # build directory (or also as the srccode dir). 20020129 mortene.
-
-
-
-sim_ac_do_cvs_update=false
-sim_ac_cvs_changed=false
-sim_ac_cvs_problem=false
-sim_ac_cvs_save_builddir=`pwd`
-# Check whether --enable-cvs-auto-update or --disable-cvs-auto-update was given.
-if test "${enable_cvs_auto_update+set}" = set; then
-  enableval="$enable_cvs_auto_update"
-  case "$enableval" in
-  yes) sim_ac_do_cvs_update=true ;;
-  no)  sim_ac_do_cvs_update=false ;;
-  *)   { { echo "$as_me:$LINENO: error: \"$enableval\" given to --enable-cvs-update" >&5
-echo "$as_me: error: \"$enableval\" given to --enable-cvs-update" >&2;}
-   { (exit 1); exit 1; }; } ;;
-  esac
-fi;
-if test -d $srcdir/CVS; then
-
-  # the moving of "conf-macros" to "cfg/m4"
-
-
-cd $srcdir;
-test -d cfg/m4/CVS
-if test $? -ne 0; then sim_ac_cvs_changed=true; fi
-test ! -d conf-macros
-if test $? -ne 0; then sim_ac_cvs_changed=true; fi
-
-cd $sim_ac_cvs_save_builddir
-if $sim_ac_cvs_changed; then
-  if $sim_ac_do_cvs_update; then
-    echo "Performing repository update:"
-    cd $srcdir;
-    ( set -x
-
-    rm -rf conf-macros
-    cvs co CoinMacros
-   )
-    sim_ac_cvs_unfixed=false
-    test -d cfg/m4/CVS
-    if test $? -ne 0; then sim_ac_cvs_unfixed=true; fi
-    test ! -d conf-macros
-    if test $? -ne 0; then sim_ac_cvs_unfixed=true; fi
-
-    cd $sim_ac_cvs_save_builddir
-    if $sim_ac_cvs_unfixed; then
-      cat <<"CVS_CHANGE_EOF"
-
-The following update procedure does not seem to have produced the desired
-effect:
-
-
-    rm -rf conf-macros
-    cvs co CoinMacros
-
-
-You should investigate what went wrong and alert the relevant software
-developers about it.
-
-Aborting...
-CVS_CHANGE_EOF
-      exit 1
-    fi
-  else
-    $sim_ac_cvs_problem || {
-    cat <<"CVS_CHANGE_EOF"
-
-The configure script has detected source hierachy inconsistencies between
-your source repository and the master source repository.  This needs to be
-fixed before you can proceed.
-
-The suggested update procedure is to execute the following set of commands
-in the root source directory:
-CVS_CHANGE_EOF
-    }
-    cat <<"CVS_CHANGE_EOF"
-
-    rm -rf conf-macros
-    cvs co CoinMacros
-
-CVS_CHANGE_EOF
-    sim_ac_cvs_problem=true
-  fi
-fi
-
-
-  if $sim_ac_cvs_problem; then
-    cat <<"CVS_CHANGES_EOF"
-To make the above listed procedure be executed automatically, run configure
-again with "--enable-cvs-auto-update" added to the configure options.
-CVS_CHANGES_EOF
-  fi
-fi
-$sim_ac_cvs_problem && echo "" && echo "Aborting..." && exit 1
-
 
 
 
@@ -4718,7 +4620,7 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 4721 "configure"' > conftest.$ac_ext
+  echo '#line 4623 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5254,7 +5156,7 @@ chmod -w .
 save_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:5257: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+if { (eval echo configure:5159: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -7048,7 +6950,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7051 "configure"
+#line 6953 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -7146,7 +7048,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7149 "configure"
+#line 7051 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H

@@ -47,13 +47,6 @@ AC_CONFIG_SRCDIR(src/misc/SoDB.cpp)
 # coin-bugs): the install prefix is set to the same directory as the
 # build directory (or also as the srccode dir). 20020129 mortene.
 
-SIM_AC_CVS_CHANGES([
-  # the moving of "conf-macros" to "cfg/m4"
-  SIM_AC_CVS_CHANGE([
-    rm -rf conf-macros
-    cvs co CoinMacros
-  ], [test -d cfg/m4/CVS], [test ! -d conf-macros])
-])
 
 AH_TOP([
 #include <unconfig.h>
