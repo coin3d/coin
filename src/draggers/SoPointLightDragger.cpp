@@ -22,7 +22,6 @@
 #include <Inventor/draggers/SoDragPointDragger.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <coindefs.h> // COIN_STUB()
 
 #include <data/draggerDefaults/pointLightDragger.h>
 
@@ -123,9 +122,9 @@ SoPointLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 void
 SoPointLightDragger::setDefaultOnNonWritingFields(void)
 {
-  // FIXME: not sure if I should call setDefault() for any fields here...
-  // pederb, 20000203
-  COIN_STUB();
+  this->translator.setDefault(TRUE);
+
+  inherited::setDefaultOnNonWritingFields();
 }
 
 void

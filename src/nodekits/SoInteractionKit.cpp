@@ -91,7 +91,7 @@ interactionkit_cleanup(void)
   for (int i = 0; i < n; i++) {
     (*defaultdraggerparts)[i]->unref();
   }
-  
+
   delete defaultdraggerparts;
 }
 
@@ -296,10 +296,10 @@ SoInteractionKit::copyContents(const SoFieldContainer * fromFC,
 
   assert(fromFC->isOfType(SoInteractionKit::getClassTypeId()));
   SoInteractionKit * kit = (SoInteractionKit *) fromFC;
-  
+
   THIS->surrogatenamelist.truncate(0);
   THIS->surrogatepathlist.truncate(0);
-  
+
   const int n = kit->pimpl->surrogatenamelist.getLength();
   for (i = 0; i < n; i++) {
     THIS->surrogatenamelist.append(kit->pimpl->surrogatenamelist[i]);
@@ -601,7 +601,7 @@ SoInteractionKit::setDefaultOnNonWritingFields(void)
 
   const SoNodekitCatalog * catalog = this->getNodekitCatalog();
 
-  for (int i = 0; i < this->getCatalogInstances().getLength(); i++) {
+  for (int i = 1; i < this->getCatalogInstances().getLength(); i++) {
     if (!catalog->isLeaf(i)) {
       SoNode * node = this->getCatalogInstances()[i]->getValue();
       if (node && node->getTypeId() == SoSwitch::getClassTypeId()) {

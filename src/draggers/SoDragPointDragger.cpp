@@ -30,12 +30,6 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-
-#include <coindefs.h> // COIN_STUB()
-
 #include <data/draggerDefaults/dragPointDragger.h>
 
 
@@ -222,7 +216,20 @@ SoDragPointDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 void
 SoDragPointDragger::setDefaultOnNonWritingFields(void)
 {
-  COIN_STUB();
+  this->xTranslator.setDefault(TRUE);
+  this->yTranslator.setDefault(TRUE);
+  this->zTranslator.setDefault(TRUE);
+
+  this->xyTranslator.setDefault(TRUE);
+  this->xzTranslator.setDefault(TRUE);
+  this->yzTranslator.setDefault(TRUE);
+
+  this->planeFeedbackTranslation.setDefault(TRUE);
+  this->xFeedbackTranslation.setDefault(TRUE);
+  this->yFeedbackTranslation.setDefault(TRUE);
+  this->zFeedbackTranslation.setDefault(TRUE);
+
+  inherited::setDefaultOnNonWritingFields();
 }
 
 void

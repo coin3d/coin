@@ -418,10 +418,34 @@ SoTransformerDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return !(this->connectionsSetUp = onoff);
 }
 
+//
+// convenience method used to call setDefault on similar field
+//
+static void 
+set_default(SoDragger * dragger, const char * fmt, int minval, int maxval)
+{
+  SbString str;
+  for (int i = minval; i <= maxval; i++) {
+    str.sprintf(fmt, i);
+    SoField * f = dragger->getField(str.getString());
+    assert(f);
+    f->setDefault(TRUE);
+  }
+}
+
 void
 SoTransformerDragger::setDefaultOnNonWritingFields(void)
 {
-  COIN_STUB();
+  this->surroundScale.setDefault(TRUE);
+  this->circleFeedbackAntiSquish.setDefault(TRUE);
+  this->circleFeedbackTransform.setDefault(TRUE);
+  this->axisFeedbackLocation.setDefault(TRUE);
+  this->translateBoxFeedbackRotation.setDefault(TRUE);
+
+  set_default(this, "translator%dLocateGroup", 1, 6);
+  set_default(this, "rotator%dLocateGroup", 1, 6);
+  set_default(this, "scale%dLocateGroup", 1, 6);
+
   inherited::setDefaultOnNonWritingFields();
 }
 

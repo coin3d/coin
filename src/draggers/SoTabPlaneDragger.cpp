@@ -46,7 +46,6 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/SbRotation.h>
-#include <coindefs.h> // COIN_STUB()
 #include <assert.h>
 
 #include <data/draggerDefaults/tabPlaneDragger.h>
@@ -206,7 +205,9 @@ SoTabPlaneDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 void
 SoTabPlaneDragger::setDefaultOnNonWritingFields(void)
 {
-  COIN_STUB();
+  this->edgeScaleCoords.setDefault(TRUE);
+  this->cornerScaleCoords.setDefault(TRUE);
+
   inherited::setDefaultOnNonWritingFields();
 }
 

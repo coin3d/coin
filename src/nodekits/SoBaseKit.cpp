@@ -647,17 +647,33 @@ SoBaseKit::countMyFields(SoOutput * out)
   // create THIS->writedata, which contains a sorted list of fields.
   THIS->createWriteData();
 
+  const SoNodekitCatalog * catalog = this->getNodekitCatalog();
+
+  // test if some fields that are default should write anyway
+  int i, n = THIS->instancelist.getLength();
+  for (i = 1; i < n; i++) {
+    SoSFNode * field = THIS->instancelist[i];
+    if (field->isDefault()) {
+      SoNode * node = field->getValue();
+      if (node == NULL && ! catalog->isNullByDefault(i)) {
+        field->setDefault(FALSE);
+      }
+      if (node && !is_default_node(node, catalog->getDefaultType(i))) {
+        field->setDefault(FALSE);
+      }
+    }
+  }
+
   // sets fields that should not be written to default, this
   // is a virtual methods, so subkits can do some work when needed.
   this->setDefaultOnNonWritingFields();
 
-  // test if parent of parts is writing. Then we must write part.
+  // test if parent of parts is writing. Then we must write part anyway.
   THIS->testParentWrite();
 
-  const SoNodekitCatalog * catalog = this->getNodekitCatalog();
 
-  int n = THIS->writedata->getNumFields();
-  for (int i = 0; i < n; i++) {
+  n = THIS->writedata->getNumFields();
+  for (i = 0; i < n; i++) {
     const SbName name = THIS->writedata->getFieldName(i);
     SoField * field = THIS->writedata->getField(this, i);
     int partnum = catalog->getPartNumber(name);
@@ -668,13 +684,6 @@ SoBaseKit::countMyFields(SoOutput * out)
       }
     }
     else {
-      if (field->isDefault()) { // do a couple of tests to see if we should write anyway
-        SoNode * node = ((SoSFNode*)field)->getValue();
-        if (node == NULL && ! catalog->isNullByDefault(partnum))
-          field->setDefault(FALSE);
-        if (node && !is_default_node(node, catalog->getDefaultType(partnum)))
-          field->setDefault(FALSE);
-      }
       if (!field->isDefault()) field->write(out, name);
       else {
         SoSFNode * part = (SoSFNode*) field;
@@ -793,11 +802,6 @@ SoBaseKit::forceChildDrivenWriteRefs(SoOutput * out)
     return TRUE;
   }
   else {
-#if COIN_DEBUG && 1 // debug
-    SoDebugError::postInfo("SoBaseKit::forceChildDrivenWriteRefs",
-                           "no need to write");
-#endif // debug
-
     delete THIS->writedata;
     THIS->writedata = NULL;
     return FALSE;
@@ -1720,7 +1724,7 @@ SoBaseKitP::createWriteData(void)
       if ((pass == 0 && part < 0) ||
           (pass == 1 && part > 0 && catalog->isLeaf(part)) ||
           (pass == 2 && part > 0 && !catalog->isLeaf(part))) {
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG && 0 // debug
         SoDebugError::postInfo("SoBaseKitP::createWriteData",
                                "add field: %s, %d", fielddata->getFieldName(i).getString(),
                                fielddata->getField(this->kit, i)->isDefault());
@@ -1834,17 +1838,17 @@ SoBaseKitP::setParts(SbList <SoNode*> partlist, const SbBool leafparts)
 }
 
 //
-// Adds a SoNodekitDetail to the picked point. path should 
+// Adds a SoNodekitDetail to the picked point. path should
 // contain this kit.
 //
-void 
+void
 SoBaseKitP::addKitDetail(SoFullPath * path, SoPickedPoint * pp)
 {
   const SoNodekitCatalog * catalog = this->kit->getNodekitCatalog();
-  
+
   assert(path->findNode(this->kit) >= 0);
-  
-  const int n = path->getLength(); 
+
+  const int n = path->getLength();
   for (int i = path->findNode(this->kit) + 1; i < n; i++) {
     SoNode * node = path->getNode(i);
     int idx = this->kit->findNodeInThisKit(node, -1);
@@ -1859,7 +1863,7 @@ SoBaseKitP::addKitDetail(SoFullPath * path, SoPickedPoint * pp)
       if (node->isOfType(SoNodeKitListPart::getClassTypeId()) &&
           path->getLength() >= i + 2) {
         SbString str;
-        str.sprintf("%s[%d]", 
+        str.sprintf("%s[%d]",
                     partname.getString(),
                     path->getIndex(i+2));
         partname = SbName(str.getString());
@@ -1871,6 +1875,5 @@ SoBaseKitP::addKitDetail(SoFullPath * path, SoPickedPoint * pp)
     }
   }
 }
-
 
 #undef THIS

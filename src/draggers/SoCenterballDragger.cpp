@@ -41,8 +41,6 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
-#include <coindefs.h> // COIN_STUB()
-
 #include <data/draggerDefaults/centerballDragger.h>
 
 
@@ -325,7 +323,18 @@ SoCenterballDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 void
 SoCenterballDragger::setDefaultOnNonWritingFields(void)
 {
-  COIN_STUB();
+  this->rotator.setDefault(TRUE);
+  this->XCenterChanger.setDefault(TRUE);
+  this->YCenterChanger.setDefault(TRUE);
+  this->ZCenterChanger.setDefault(TRUE);
+  this->XRotator.setDefault(TRUE);
+  this->YRotator.setDefault(TRUE);
+  this->ZRotator.setDefault(TRUE);
+
+  this->surroundScale.setDefault(TRUE);
+  this->antiSquish.setDefault(TRUE);
+  this->translateToCenter.setDefault(TRUE);
+  
   inherited::setDefaultOnNonWritingFields();
 }
 

@@ -29,7 +29,6 @@
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
-#include <coindefs.h> // COIN_STUB()
 #include <math.h>
 
 #include <data/draggerDefaults/spotLightDragger.h>
@@ -183,7 +182,15 @@ SoSpotLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 void
 SoSpotLightDragger::setDefaultOnNonWritingFields(void)
 {
-  COIN_STUB();
+  if (!(this->angle.isConnectionEnabled() && this->angle.isConnected()) &&
+      this->angle.getValue() == 1.0f) this->angle.setDefault(TRUE);
+  
+  this->translator.setDefault(TRUE);
+  this->rotator.setDefault(TRUE);
+  
+  this->translatorRotInv.setDefault(TRUE);
+  this->beamScale.setDefault(TRUE);
+
   inherited::setDefaultOnNonWritingFields();
 }
 

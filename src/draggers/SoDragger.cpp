@@ -1202,7 +1202,25 @@ SoDragger::getActiveChildDragger(void) const
 void
 SoDragger::setDefaultOnNonWritingFields(void)
 {
-  // check standard fields
+#define CHECK_DEFAULT(name, type, val) \
+  f = (SoField*) this->getField(name); \
+  if (f && !(f->isConnectionEnabled() && f->isConnected())) { \
+    if (((type*)f)->getValue() == val) f->setDefault(TRUE); \
+  } \
+  f = NULL
+
+  // check common fields
+  SoField * f;
+  CHECK_DEFAULT("translation", SoSFVec3f, SbVec3f(0.0f, 0.0f, 0.0f));
+  CHECK_DEFAULT("center", SoSFVec3f, SbVec3f(0.0f, 0.0f, 0.0f));
+  CHECK_DEFAULT("scaleFactor", SoSFVec3f, SbVec3f(1.0f, 1.0f, 1.0f));
+  CHECK_DEFAULT("rotation", SoSFRotation, SbRotation::identity());
+
+#undef CHECK_DEFAULT
+  
+  this->isActive.setDefault(TRUE);
+  this->motionMatrix.setDefault(TRUE);
+  
   inherited::setDefaultOnNonWritingFields();
 }
 

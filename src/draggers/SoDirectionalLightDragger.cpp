@@ -152,7 +152,10 @@ SoDirectionalLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 void
 SoDirectionalLightDragger::setDefaultOnNonWritingFields(void)
 {
-  COIN_STUB();
+  this->translator.setDefault(TRUE);
+  this->rotator.setDefault(TRUE);
+  this->translatorRotInv.setDefault(TRUE);
+
   inherited::setDefaultOnNonWritingFields();
 }
 

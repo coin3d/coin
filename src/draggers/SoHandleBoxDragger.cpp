@@ -274,7 +274,10 @@ SoHandleBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 void
 SoHandleBoxDragger::setDefaultOnNonWritingFields(void)
 {
-  COIN_STUB();
+  this->surroundScale.setDefault(TRUE);
+  this->arrowTranslation.setDefault(TRUE);
+  this->drawStyle.setDefault(TRUE);
+
   inherited::setDefaultOnNonWritingFields();
 }
 

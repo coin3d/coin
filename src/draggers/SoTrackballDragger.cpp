@@ -31,7 +31,6 @@
 #include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/events/SoKeyboardEvent.h>
-#include <coindefs.h> // COIN_STUB()
 
 #include <data/draggerDefaults/trackballDragger.h>
 
@@ -176,7 +175,13 @@ SoTrackballDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 void
 SoTrackballDragger::setDefaultOnNonWritingFields(void)
 {
-  COIN_STUB();
+  this->antiSquish.setDefault(TRUE);
+  this->surroundScale.setDefault(TRUE);
+  
+  SoSwitch * sw = (SoSwitch*) this->userAxisSwitch.getValue();
+  if (sw && sw->whichChild.getValue() == SO_SWITCH_NONE) 
+    this->userAxisSwitch.setDefault(TRUE);
+ 
   inherited::setDefaultOnNonWritingFields();
 }
 

@@ -27,7 +27,6 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <coindefs.h> // COIN_STUB()
 
 #include <data/draggerDefaults/transformBoxDragger.h>
 
@@ -213,10 +212,29 @@ SoTransformBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return !(this->connectionsSetUp = onoff);
 }
 
+//
+// convenience method used to call setDefault on similar fields
+//
+static void 
+set_default(SoDragger * dragger, const char * fmt, int minval, int maxval)
+{
+  SbString str;
+  for (int i = minval; i <= maxval; i++) {
+    str.sprintf(fmt, i);
+    SoField * f = dragger->getField(str.getString());
+    assert(f);
+    f->setDefault(TRUE);
+  }
+}
+
 void
 SoTransformBoxDragger::setDefaultOnNonWritingFields(void)
 {
-  COIN_STUB();
+  this->surroundScale.setDefault(TRUE);
+  
+  set_default(this, "rotator%d", 1, 3);
+  set_default(this, "translator%d", 1, 6);
+
   inherited::setDefaultOnNonWritingFields();
 }
 

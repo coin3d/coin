@@ -32,7 +32,6 @@
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <coindefs.h> // COIN_STUB()
 
 #include <data/draggerDefaults/tabBoxDragger.h>
 
@@ -159,7 +158,15 @@ SoTabBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 void
 SoTabBoxDragger::setDefaultOnNonWritingFields(void)
 {
-  COIN_STUB();
+  this->surroundScale.setDefault(TRUE);
+
+  this->tabPlane1.setDefault(TRUE);
+  this->tabPlane2.setDefault(TRUE);
+  this->tabPlane3.setDefault(TRUE);
+  this->tabPlane4.setDefault(TRUE);
+  this->tabPlane5.setDefault(TRUE);
+  this->tabPlane6.setDefault(TRUE);
+
   inherited::setDefaultOnNonWritingFields();
 }
 

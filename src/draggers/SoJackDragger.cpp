@@ -33,7 +33,6 @@
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <coindefs.h> // COIN_STUB()
 
 #include <data/draggerDefaults/jackDragger.h>
 
@@ -175,7 +174,13 @@ SoJackDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 void
 SoJackDragger::setDefaultOnNonWritingFields(void)
 {
-  COIN_STUB();
+  this->translator.setDefault(TRUE);
+  this->rotator.setDefault(TRUE);
+  this->scaler.setDefault(TRUE);
+
+  this->antiSquish.setDefault(TRUE);
+  this->surroundScale.setDefault(TRUE);
+
   inherited::setDefaultOnNonWritingFields();
 }
 
