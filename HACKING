@@ -91,7 +91,32 @@ demonstration purposes):
         this little trick will be explained later in the walk-through.
 
   $ make install
-  [building will take quite some time, go for a coffee]
+
+        Building will take quite some time, go for a coffee.
+
+        The build process should complete without any compiler
+        warnings or errors -- if you see any, please notify us.
+
+        Shared library files for all sub-dirs in the Coin sourcecode
+        tree should now have been installed in $WORKDIR/install, along
+        with a top-level libCoin.so file.
+
+
+        Now, Libtool's .la-scheme for storing information about
+        installed libraries doesn't work too well when trying to build
+        further Libtool-based libraries or executables with the
+        "hacking enabled" Coin sub-library files. But we don't really
+        lose anything important without the .la-files, so we just
+        remove them:
+
+  $ cd $WORKDIR/install/lib
+  $ rm lib*LINKHACK*.la
+
+        Next step is to configure and build an interface library which
+        "connects" Coin with an underlying native 2D GUI toolkit. We
+        use SoXt in the example walk-through, but you can also use
+        SoQt (for TrollTech's Qt), SoGtk (for gtk+) or SoWin (for
+        interfacing against "pure" Win32 API under MSWindows).
 
   $ cd $WORKDIR/compile/SoXt
   $ $HOME/code/SoXt/configure --prefix=$WORKDIR/install
