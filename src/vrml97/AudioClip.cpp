@@ -144,6 +144,7 @@
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SoInput.h>
 #include <string.h>
@@ -158,6 +159,8 @@
 #endif
 
 #include <../misc/simage_wrapper.h>
+
+#define DEBUG_AUDIO 0
 
 class SoVRMLAudioClipP 
 {
@@ -176,6 +179,9 @@ public:
 
   static void stopTimeSensorCBWrapper(void *, SoSensor *);
   void stopTimeSensorCB(SoSensor *);
+
+  static void timerCBWrapper(void *, SoSensor *);
+  void timerCB(SoSensor *);
 
   void * internalFillBuffer(int frameoffset, void *buffer, 
                             int numframes, int &channels);
@@ -199,11 +205,13 @@ public:
   SoFieldSensor * loopsensor;
   SoFieldSensor * startTimeSensor;
   SoFieldSensor * stopTimeSensor;
+  SoTimerSensor * timerSensor;
 
   static SbStringList subdirectories;
   static SbTime pauseBetweenTracks;
   static SbTime introPause;
   static int defaultSampleRate;
+  static SbTime defaultTimerInterval;
 
   int sampleRate;
 
@@ -220,11 +228,11 @@ public:
   int bitspersample;
 
   SbList<SbString> playlist;
-  SbBool playlistDirty;
-  int currentPlaylistIndex;
+  volatile SbBool playlistDirty;
+  volatile int currentPlaylistIndex;
 
   SbBool loop;
-  SbBool endOfFile;
+  volatile SbBool soundHasFinishedPlaying;
 
 #ifdef HAVE_THREADS
   SbMutex syncmutex;
@@ -240,6 +248,7 @@ SbStringList SoVRMLAudioClipP::subdirectories = SbStringList();
 SbTime SoVRMLAudioClipP::pauseBetweenTracks = 2.0f;
 SbTime SoVRMLAudioClipP::introPause = 0.0f;
 int SoVRMLAudioClipP::defaultSampleRate = 44100;
+SbTime SoVRMLAudioClipP::defaultTimerInterval = 0.1f;
 SbBool SoVRMLAudioClipP::warnAboutMissingSimage = TRUE;
 
 #undef PRIVATE
@@ -254,8 +263,6 @@ void
 SoVRMLAudioClip::initClass(void) // static
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLAudioClip, SO_VRML97_NODE_TYPE);
-  SoAudioRenderAction::addMethod(SoVRMLAudioClip::getClassTypeId(),
-                                 SoNode::audioRenderS);
 }
 
 /*!
@@ -297,8 +304,14 @@ SoVRMLAudioClip::SoVRMLAudioClip(void)
   PRIVATE(this)->stopTimeSensor->setPriority(0);
   PRIVATE(this)->stopTimeSensor->attach(&this->stopTime);
 
+  PRIVATE(this)->timerSensor = new SoTimerSensor;
+  PRIVATE(this)->timerSensor->setFunction(PRIVATE(this)->timerCBWrapper);
+  PRIVATE(this)->timerSensor->setData(PRIVATE(this));
+  PRIVATE(this)->timerSensor->setInterval(SoVRMLAudioClipP::defaultTimerInterval);
+  PRIVATE(this)->timerSensor->schedule();
+
   PRIVATE(this)->loop = FALSE;
-  PRIVATE(this)->endOfFile = FALSE;
+  PRIVATE(this)->soundHasFinishedPlaying = FALSE;
 
   PRIVATE(this)->stream = NULL;
 
@@ -321,6 +334,9 @@ SoVRMLAudioClip::SoVRMLAudioClip(void)
 */
 SoVRMLAudioClip::~SoVRMLAudioClip() 
 {
+  PRIVATE(this)->timerSensor->unschedule();
+  delete PRIVATE(this)->timerSensor;
+
   PRIVATE(this)->unloadUrl();
 
   delete PRIVATE(this)->urlsensor;
@@ -347,6 +363,12 @@ void
 SoVRMLAudioClip::setDefaultIntroPause(SbTime pause)
 {
   SoVRMLAudioClipP::introPause = pause;
+}
+
+void 
+SoVRMLAudioClip::setDefaultTimerInterval(SbTime interval)
+{
+  SoVRMLAudioClipP::defaultTimerInterval = interval;
 }
 
 int 
@@ -409,51 +431,6 @@ SoVRMLAudioClip::getSubdirectories()
   return SoVRMLAudioClipP::subdirectories;
 }
 
-void 
-SoVRMLAudioClip::audioRender(SoAudioRenderAction *action)
-{
-#ifdef HAVE_THREADS
-  SbThreadAutoLock autoLock(&PRIVATE(this)->syncmutex);
-#endif
-  SbTime now = SbTime::getTimeOfDay();
-  SbTime start = this->startTime.getValue();
-  SbTime stop = this->stopTime.getValue();
-
-#if COIN_DEBUG && DEBUG_AUDIO // debug
-  SbString start_str = start.format("%D %h %m %s");
-  SbString stop_str = stop.format("%D %h %m %s");
-  SbString now_str = now.format("%D %h %m %s");
-#endif // debug
-
-  // 20021007 thammer removed: if ( (now<start) || ( (now>=stop) && (stop>start)) )
-
-  if ( (now>=stop) && (stop>start) ) 
-  {
-    // we shouldn't be playing now
-    if  (this->isActive.getValue())
-      PRIVATE(this)->stopPlaying();
-    return; 
-  }
-
-  // ( (now<stop) || (stop<=start) )
-
-  if (PRIVATE(this)->endOfFile == TRUE) {
-    if  (this->isActive.getValue()) {
-      // FIXME: perhaps add some additional slack, the size of one buffer? 20021008 thammer.
-      if ( (now-PRIVATE(this)->actualStartTime) > 
-           ((float)PRIVATE(this)->totalNumberOfFramesToPlay / (float)SoVRMLAudioClipP::defaultSampleRate) )
-        // we have played through the clip once, so we shouldn't play anymore
-        PRIVATE(this)->stopPlaying(); 
-    }
-    return; 
-  }
-
-  if (now>=start) {
-    if (!this->isActive.getValue())
-      PRIVATE(this)->startPlaying();
-  }
-}
-
 SbBool 
 SoVRMLAudioClipP::simageVersionOK(const char *functionName)
 {
@@ -482,12 +459,12 @@ SoVRMLAudioClipP::simageVersionOK(const char *functionName)
 void 
 SoVRMLAudioClipP::startPlaying()
 {
-#ifdef DEBUG_AUDIO
-  printf("ac:start\n");
-#endif
+#ifdef COIN_DEBUG && DEBUG_AUDIO
+  fprintf(stderr, "ac:start\n");
+#endif // debug 
   this->currentPause = SoVRMLAudioClipP::introPause;
   this->currentPlaylistIndex = 0;
-  this->endOfFile = FALSE;
+  this->soundHasFinishedPlaying = FALSE;
   PUBLIC(this)->isActive.setValue(TRUE);
   this->actualStartTime = 0.0f; // will be set in fillBuffers
   this->totalNumberOfFramesToPlay = 0; // will be increased in fillBuffers
@@ -496,9 +473,9 @@ SoVRMLAudioClipP::startPlaying()
 void 
 SoVRMLAudioClipP::stopPlaying()
 {
-#ifdef DEBUG_AUDIO
-  printf("ac:stop\n");
-#endif
+#ifdef COIN_DEBUG && DEBUG_AUDIO
+  fprintf(stderr, "ac:stop\n");
+#endif // debug
   PUBLIC(this)->isActive.setValue(FALSE);
   this->closeFile();
 }
@@ -531,78 +508,108 @@ SoVRMLAudioClipP::internalFillBuffer(int frameoffset, void *buffer, int numframe
   */
 
   if (!this->simageVersionOK("SoVRMLAudioClipP::internalFillBuffer")) {
-    this->endOfFile = TRUE;
     int outputsize = numframes * 1 * sizeof(int16_t);
     memset(buffer, 0, outputsize);
     channels=1;
     return NULL;
   }
+#if COIN_DEBUG && DEBUG_AUDIO
+  fprintf(stderr, "ac:f<");
+#endif // debug
 
-
-  if (currentPause>0.0) {
-    // deliver a zero'ed, mono buffer
-    int outputsize = numframes * 1 * sizeof(int16_t);
-    memset(buffer, 0, outputsize);
-    currentPause -= (double)numframes / (double)SoVRMLAudioClipP::defaultSampleRate;
-    channels = 1;
-    return buffer;
+  if (buffer == NULL) {
+    /* Note: The SoVRMLSound node has signalled that it has received an eof previously
+       sent by this SoVRMLAudioClip, and it has played all buffers including the last
+       one it received. This is a pretty good indicator that this SoVRMLAudioClip can
+       stop playing. 2002-11-06 thammer.
+     */
+    this->soundHasFinishedPlaying = TRUE;
+    return NULL;
   }
+#if COIN_DEBUG && DEBUG_AUDIO
+  fprintf(stderr, ">");
+#endif // debug
 
-  if (this->playlistDirty) {
-    this->playlistDirty = FALSE;
-    this->closeFile();
-    this->currentPlaylistIndex = 0;
-  }
+  assert (!this->soundHasFinishedPlaying);
 
-  if ( (!this->endOfFile) && (this->stream==NULL) ) {
-    if ( this->loop && (this->currentPlaylistIndex >= this->playlist.getLength()) ) 
+  SbBool bufferFilled = FALSE;
+  int framepos = 0;
+  int channelsdelivered = 1;
+  while (!bufferFilled) {
+    if (currentPause>0.0) {
+      // deliver a zero'ed,  buffer
+      int outputsize = (numframes - framepos) * channelsdelivered * sizeof(int16_t);
+      memset(((int16_t *)buffer) + framepos*channelsdelivered, 0, outputsize);
+      assert(PUBLIC(this)->pitch.getValue() > 0.0);
+      // fixme: handle invalid pitches properly. 20021105 thammer
+      // fixme: make sure access to fields are threadsafe. 20021106 thammer
+      currentPause -= (double)(numframes - framepos) / (double)SoVRMLAudioClipP::defaultSampleRate;
+      channels = channelsdelivered;
+      return buffer;
+    }
+
+    if (this->playlistDirty) {
+      this->playlistDirty = FALSE;
+      this->closeFile();
       this->currentPlaylistIndex = 0;
-    int startindex = this->currentPlaylistIndex;
-    SbBool ret = FALSE;
-    while ( (!ret) && (this->currentPlaylistIndex < this->playlist.getLength()) ) {
-      ret = openFile(this->currentPlaylistIndex);
+    }
+
+    if (this->stream==NULL) {
+      if ( this->loop && (this->currentPlaylistIndex >= this->playlist.getLength()) ) 
+        this->currentPlaylistIndex = 0;
+      int startindex = this->currentPlaylistIndex;
+      SbBool ret = FALSE;
+      while ( (!ret) && (this->currentPlaylistIndex < this->playlist.getLength()) ) {
+        ret = openFile(this->currentPlaylistIndex);
+        if (!ret) {
+          this->currentPlaylistIndex++;
+          if ( this->loop && (this->currentPlaylistIndex >= this->playlist.getLength()) &&
+               (this->currentPlaylistIndex != startindex) ) 
+            this->currentPlaylistIndex = 0;
+        }
+      } 
+      
       if (!ret) {
-        this->currentPlaylistIndex++;
-        if ( this->loop && (this->currentPlaylistIndex >= this->playlist.getLength()) &&
-             (this->currentPlaylistIndex != startindex) ) 
-          this->currentPlaylistIndex = 0;
+        int outputsize = (numframes - framepos) * channelsdelivered * sizeof(int16_t);
+        memset(((int16_t *)buffer) + framepos*channelsdelivered, 0, outputsize);
+        channels = channelsdelivered;
+        return NULL;
       }
-    } 
+    }
 
-    if (!ret)
-      this->endOfFile = TRUE;
-  }
+    assert(this->stream!=NULL);
+    assert(bitspersample == sizeof(int16_t) * 8);
 
-  if (this->endOfFile) {
-    // deliver a zero'ed, mono buffer
-    int outputsize = numframes * 1 * sizeof(int16_t);
-    memset(buffer, 0, outputsize);
-    channels=1;
-    return NULL;
-  }
-
-  assert(this->stream!=NULL);
-
-  assert(bitspersample == sizeof(int16_t) * 8);
-
-  int inputsize = numframes * this->channels * this->bitspersample / 8;
-
-  int numread = inputsize;
+    channelsdelivered = this->channels; 
+    // fixme: use this->channels instead of channelsdelivered?. 20021105 thammer
+    int inputsize = (numframes - framepos) * this->channels * this->bitspersample / 8;
+    int numread = inputsize;
   
-  simage_wrapper()->s_stream_get_buffer(this->stream, buffer, &numread, NULL);
+    simage_wrapper()->s_stream_get_buffer(this->stream,
+                                          ((int16_t *)buffer) + framepos*channelsdelivered, 
+                                          &numread, NULL);
+   
+    channels = this->channels;
 
-  if (numread != inputsize) {
-    closeFile();
-    // fill rest of buffer with zeros
-    for (int i=numread; i<inputsize; i++)
-      ((char *)buffer)[i] = 0;
+    if (numread != inputsize) {
+      closeFile();
+      framepos += (numread / (this->channels * this->bitspersample / 8));
+      /*      // fill rest of buffer with zeros
+      for (int i=numread; i<inputsize; i++)
+        ((char *)buffer)[i] = 0;
+      */
+      /* FIXME: If the sound is looping, or there are more urls to play,
+         we should really start playing the next file immediately instead
+         of inserting pause here. 20021104 thammer.
+      */
 
-    this->currentPlaylistIndex++;
-    if ( (this->currentPlaylistIndex<this->playlist.getLength()) && this->loop )
-      this->currentPause = SoVRMLAudioClipP::pauseBetweenTracks;
+      this->currentPlaylistIndex++;
+      if ( (this->currentPlaylistIndex<this->playlist.getLength()) && this->loop )
+        this->currentPause = SoVRMLAudioClipP::pauseBetweenTracks;
+    } else
+      bufferFilled = true;
   }
 
-  channels = this->channels;
   return buffer;
 }
 
@@ -742,6 +749,65 @@ SoVRMLAudioClipP::stopTimeSensorCB(SoSensor *)
     return; 
   }
 }
+//
+// checks current time to see if we should start or stop playing
+//
+void
+SoVRMLAudioClipP::timerCBWrapper(void * data, SoSensor *)
+{
+  SoVRMLAudioClipP * thisp = (SoVRMLAudioClipP*) data;
+  thisp->timerCB(NULL);
+}
+
+//
+// called when stopTime changes
+//
+void
+SoVRMLAudioClipP::timerCB(SoSensor *)
+{
+#ifdef HAVE_THREADS
+  SbThreadAutoLock autoLock(&this->syncmutex);
+#endif
+  SbTime now = SbTime::getTimeOfDay();
+  SbTime start = PUBLIC(this)->startTime.getValue();
+  SbTime stop = PUBLIC(this)->stopTime.getValue();
+
+#if COIN_DEBUG && DEBUG_AUDIO
+  SbString start_str = start.format("%D %h %m %s");
+  SbString stop_str = stop.format("%D %h %m %s");
+  SbString now_str = now.format("%D %h %m %s");
+#endif // debug
+
+#if COIN_DEBUG && DEBUG_AUDIO
+  fprintf(stderr, "(ac:timerCB)");
+#endif // debug
+
+  if ( (now>=stop) && (stop>start) ) 
+  {
+    // we shouldn't be playing now
+    if  (PUBLIC(this)->isActive.getValue())
+      this->stopPlaying();
+    return; 
+  }
+
+  // if we got this far, ( (now<stop) || (stop<=start) )
+  if (this->soundHasFinishedPlaying) {
+    if  (PUBLIC(this)->isActive.getValue()) {
+      // FIXME: perhaps add some additional slack, the size of one buffer? 20021008 thammer.
+      // we have played through the clip once, so we shouldn't play anymore
+#if COIN_DEBUG && DEBUG_AUDIO
+      fprintf(stderr, "clip::timerCB, soundHasFinishedPlaying\n");
+#endif // debug
+      this->stopPlaying(); 
+    }
+    return; 
+  }
+
+  if (now>=start) {
+    if (!PUBLIC(this)->isActive.getValue())
+      this->startPlaying();
+  }
+}
 
 SbBool 
 SoVRMLAudioClipP::openFile(int playlistIndex)
@@ -762,6 +828,10 @@ SoVRMLAudioClipP::openFile(const char *filename)
 
   this->stream = simage_wrapper()->s_stream_open(filename, NULL);
   if (this->stream == NULL) {
+    /*
+      FIXME: only one error message, and sound should stop playing.
+      20021101 thammer
+     */
     SoDebugError::postWarning("SoVRMLAudioClipP::openFile",
                               "Couldn't open file '%s'",
                               filename);
@@ -781,9 +851,9 @@ SoVRMLAudioClipP::openFile(const char *filename)
                  "samplerate", S_INTEGER_PARAM_TYPE, &this->samplerate, NULL);
   }
 
-  #ifdef DEBUG_AUDIO
-  printf("Wave file '%s' opened successfully\n", filename);
-  #endif
+#ifdef COIN_DEBUG && DEBUG_AUDIO
+  fprintf(stderr, "Wave file '%s' opened successfully\n", filename);
+#endif // debug
 
   return TRUE; // OK
 }

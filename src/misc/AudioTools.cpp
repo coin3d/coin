@@ -26,9 +26,11 @@
 #endif // HAVE_CONFIG_H
 
 #include "AudioTools.h"
+#include <Inventor/SbString.h>
+#include <../tidbits.h>
 #include <stdio.h>
 #include <assert.h>
-#include <Inventor/SbString.h>
+#include <stdlib.h>
 
 #ifdef HAVE_OPENAL
 #include <AL/altypes.h>
@@ -81,4 +83,16 @@ coin_get_openal_error(int errcode)
   }
 
 #endif // HAVE_SOUND
+}
+
+/* Return value of COIN_DEBUG_AUDIO environment variable. */
+int
+coin_debug_audio(void)
+{
+  static int d = -1;
+  if (d == -1) {
+    const char * val = coin_getenv("COIN_DEBUG_AUDIO");
+    d = val ? atoi(val) : 0;
+  }
+  return (d > 0) ? 1 : 0;
 }

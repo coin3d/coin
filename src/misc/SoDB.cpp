@@ -161,6 +161,12 @@
 #include <Inventor/VRMLnodes/SoVRML.h>
 #endif // HAVE_VRML97
 
+#ifdef HAVE_SOUND
+#include <Inventor/misc/SoAudioDevice.h>
+#include <Inventor/VRMLnodes/SoVRMLSound.h>
+#include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
+#endif // HAVE_SOUND
+
 #ifdef HAVE_THREADS
 #include <Inventor/C/threads/threadp.h>
 #endif // HAVE_THREADS
@@ -377,6 +383,27 @@ SoDB::init(void)
   so_vrml_init();
 #endif // HAVE_VRML97
 
+  const char * env;
+
+#ifdef HAVE_SOUND
+  SoAudioDevice * audioDevice;
+  audioDevice = SoAudioDevice::instance();
+  env = coin_getenv("COIN_SOUND_DRIVER_NAME");      
+  (void) audioDevice->init("OpenAL", env ? env : "DirectSound3D");
+  if (audioDevice->haveSound()) {
+    env = coin_getenv("COIN_SOUND_BUFFER_LENGTH");
+    int bufferlength = env ? atoi(env) : 44100;
+    env = coin_getenv("COIN_SOUND_NUM_BUFFERS");      
+    int numbuffers = env ? atoi(env) : 5;
+    env = coin_getenv("COIN_SOUND_THREAD_SLEEP_TIME");      
+    float threadsleeptime = env ? atof(env) : 0.250f;
+    SoVRMLSound::setDefaultBufferingProperties(bufferlength, numbuffers, threadsleeptime);
+    env = coin_getenv("COIN_SOUND_INTRO_PAUSE");      
+    float intropause = env ? atof(env) : 0.0f;
+    SoVRMLAudioClip::setDefaultIntroPause(intropause);
+  }
+#endif // HAVE_SOUND
+
   // Register all valid file format headers.
   SoDB::registerHeader(SbString("#Inventor V2.1 ascii   "), FALSE, 2.1f,
                        NULL, NULL, NULL);
@@ -456,7 +483,7 @@ SoDB::init(void)
   // Note that this is done late in the init()-process, to make sure
   // all Coin-features used in SoDB::listWin32ProcessModules() have
   // been initialized.
-  const char * env = coin_getenv("COIN_DEBUG_LISTMODULES");
+  env = coin_getenv("COIN_DEBUG_LISTMODULES");
   if (env && (atoi(env) > 0)) { SoDBP::listWin32ProcessModules(); }
 
   SoDBP::isinitialized = TRUE;
@@ -477,6 +504,13 @@ SoDB::init(void)
 void
 SoDBP::clean(void)
 {
+#ifdef HAVE_SOUND
+#if 0
+  // FIXME: For some reasen, this crashes in the OpenAL32.dll on Windows. Investigate.
+  // 20021104 thammer.
+  SoAudioDevice::instance()->cleanup();
+#endif
+#endif // HAVE_SOUND
 #if COIN_DEBUG
   // Avoid having the SoSensorManager instance trigging the callback
   // into the So@Gui@ class -- not only have it possible "died", but

@@ -27,5 +27,6 @@
 class SbString;
 
 const char * coin_get_openal_error(int errcode);
+int coin_debug_audio(void);
 
 #endif // COIN_AUDIOTOOLS_H

@@ -40,6 +40,7 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/fields/SoSFTime.h>
 #include <Inventor/nodes/SoNode.h>
@@ -55,7 +56,6 @@
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
-
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -73,6 +73,8 @@ public:
 
   SoGLRenderAction * glaction;
   SbBool deleteglaction;
+  SoAudioRenderAction *audiorenderaction;
+  SbBool deleteaudiorenderaction;
   SoHandleEventAction * handleeventaction;
   SbBool deletehandleeventaction;
 
@@ -127,6 +129,9 @@ SoSceneManager::SoSceneManager(void)
   THIS->glaction = new SoGLRenderAction(SbViewportRegion(400, 400));
   THIS->deleteglaction = TRUE;
 
+  THIS->audiorenderaction = new SoAudioRenderAction();
+  THIS->deleteaudiorenderaction = TRUE;
+
   THIS->handleeventaction =
     new SoHandleEventAction(SbViewportRegion(400, 400));
   THIS->deletehandleeventaction = TRUE;
@@ -151,6 +156,7 @@ SoSceneManager::SoSceneManager(void)
 SoSceneManager::~SoSceneManager()
 {
   if (THIS->deleteglaction) delete THIS->glaction;
+  if (THIS->deleteaudiorenderaction) delete THIS->audiorenderaction;
   if (THIS->deletehandleeventaction) delete THIS->handleeventaction;
 
   this->setSceneGraph(NULL);
@@ -173,6 +179,11 @@ SoSceneManager::~SoSceneManager()
 void
 SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 {
+#ifdef HAVE_SOUND
+  if (THIS->scene) 
+    THIS->audiorenderaction->apply(THIS->scene);
+#endif
+
   this->render(THIS->glaction, TRUE, clearwindow, clearzbuffer);
 }
 
@@ -697,6 +708,35 @@ SoGLRenderAction *
 SoSceneManager::getGLRenderAction(void) const
 {
   return THIS->glaction;
+}
+
+/*!
+  Set the \a action to use for rendering audio. Overrides the default action
+  made in the constructor.
+ */
+void
+SoSceneManager::setAudioRenderAction(SoAudioRenderAction * const action)
+{
+  if (THIS->deleteaudiorenderaction) {
+    delete THIS->audiorenderaction;
+    THIS->audiorenderaction = NULL;
+  }
+
+  // If action change, we need to invalidate state to enable lazy GL
+  // elements to be evaluated correctly.
+  //
+  if (action && action != THIS->audiorenderaction) action->invalidateState();
+  THIS->audiorenderaction = action;
+  THIS->deleteaudiorenderaction = FALSE;
+}
+
+/*!
+  Returns pointer to audio render action.
+ */
+SoAudioRenderAction *
+SoSceneManager::getAudioRenderAction(void) const
+{
+  return THIS->audiorenderaction;
 }
 
 /*!

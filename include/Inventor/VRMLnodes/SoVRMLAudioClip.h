@@ -59,6 +59,7 @@ public:
   static void setDefaultPauseBetweenTracks(SbTime pause);
   static void setDefaultIntroPause(SbTime pause);
   static void setDefaultSampleRate(int samplerate);
+  static void setDefaultTimerInterval(SbTime interval);
 
   int getSampleRate();
   int getCurrentFrameOffset();
@@ -67,8 +68,6 @@ public:
 
   void setFillBufferCallback(FillBufferCallback *callback, 
                              void *userdata=NULL);
-
-  virtual void audioRender(class SoAudioRenderAction *action);
 
 protected:
   virtual ~SoVRMLAudioClip();

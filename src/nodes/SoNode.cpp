@@ -1398,8 +1398,6 @@ init_action_methods(void)
                                  SoAction::nullAction);
   SoAudioRenderAction::addMethod(SoListener::getClassTypeId(),       
                                  SoNode::audioRenderS);
-  // Note: SoAudioRenderAction::addMethod is called for SoVRMLSound, 
-  // SoVRMLAudioClip and SoVRMLInline in these nodes' .cpp-files
   SoAudioRenderAction::addMethod(SoGroup::getClassTypeId(),          
                                  SoAudioRenderAction::callDoAction);
   SoAudioRenderAction::addMethod(SoWWWInline::getClassTypeId(),         

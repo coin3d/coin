@@ -29,7 +29,7 @@
 #include <Inventor/errors/SoDebugError.h>
 
 #include <Inventor/SbBasic.h>
-#include <../tidbits.h>
+#include "AudioTools.h"
 
 #ifdef HAVE_SOUND
 #include <AL/al.h>
@@ -48,8 +48,6 @@ public:
 
   static SoAudioDevice *singleton;
 
-  static void prerendercb(void * userdata, SoGLRenderAction * action);
-  
   static SoAudioDevice *private_instance();
 
   void *context;
@@ -58,7 +56,6 @@ public:
   COIN_ALCMAKECONTEXTCURRENT alcMakeContextCurrent;
   COIN_ALCDESTROYCONTEXT alcDestroyContext;
 #endif // HAVE_SOUND
-  SoGLRenderAction *glRenderAction;
   SoAudioRenderAction *audioRenderAction;
   SoNode *root;
 
@@ -87,7 +84,6 @@ SoAudioDevice::SoAudioDevice()
 {
   PRIVATE(this) = new SoAudioDeviceP(this);
   PRIVATE(this)->context = NULL;
-  PRIVATE(this)->glRenderAction = NULL;
   PRIVATE(this)->audioRenderAction = NULL;
   PRIVATE(this)->enabled = FALSE;
   PRIVATE(this)->root = NULL;
@@ -115,19 +111,6 @@ SoAudioDevice::~SoAudioDevice()
   delete PRIVATE(this);
 }
 
-/* Return value of COIN_DEBUG_AUDIO environment variable. */
-static int
-coin_debug_audio(void)
-{
-  static int d = -1;
-  if (d == -1) {
-    const char * val = coin_getenv("COIN_DEBUG_AUDIO");
-    d = val ? atoi(val) : 0;
-  }
-  return (d > 0) ? 1 : 0;
-}
-
-
 SbBool SoAudioDevice::init(const SbString &devicetype, 
                            const SbString &devicename)
 {
@@ -139,6 +122,8 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
                               "rendering");
     return FALSE;
   }
+
+  this->cleanup();
 
   PRIVATE(this)->device = alcOpenDevice((ALubyte*)devicename.getString());
 
@@ -210,27 +195,17 @@ void SoAudioDevice::setSceneGraph(SoNode *root)
   PRIVATE(this)->root = root;
 }
 
-void SoAudioDevice::setGLRenderAction(SoGLRenderAction *ra)
-{
-  PRIVATE(this)->glRenderAction = ra;
-}
-
 SbBool SoAudioDevice::enable()
 {
   if (PRIVATE(this)->enabled)
     return TRUE; // allready enabled
 
-  assert( (PRIVATE(this)->initOK) 
-          && (PRIVATE(this)->root != NULL) && (PRIVATE(this)->prerendercb != NULL) );
-  if ( !((PRIVATE(this)->initOK) 
-         && (PRIVATE(this)->root != NULL) && (PRIVATE(this)->prerendercb != NULL)) ) {
-    return FALSE;
-  }
-
   PRIVATE(this)->enabled = TRUE;
 
-  if (PRIVATE(this)->glRenderAction)
-    PRIVATE(this)->glRenderAction->addPreRenderCallback(PRIVATE(this)->prerendercb, PRIVATE(this));
+  /*  FIXME: implement enable/disable (disable -> stop playing).
+      2002-11-07 thammer
+  */
+
   return TRUE;
 }
 
@@ -241,13 +216,7 @@ void SoAudioDevice::disable()
   
   PRIVATE(this)->enabled = FALSE;
 
-  if (PRIVATE(this)->glRenderAction)
-    PRIVATE(this)->glRenderAction->removePreRenderCallback(PRIVATE(this)->prerendercb, PRIVATE(this));
 }
 
-void SoAudioDeviceP::prerendercb(void * userdata, SoGLRenderAction * action)
-{
-  SoAudioDeviceP *thisp = (SoAudioDeviceP *) userdata;
-  thisp->audioRenderAction->apply(thisp->root);
-}
+
 

@@ -115,3 +115,10 @@ void SoAudioRenderAction::callAudioRender(SoAction *action, SoNode *node)
   }
 #endif // HAVE_VRML97
 }
+
+/*
+FIXME 20021101 thammer: remember to override invalidateState if we
+keep an internal state at all. Called from 
+SoSceneManager.setAudioRenderAction
+*/
+ 

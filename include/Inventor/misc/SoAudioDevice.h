@@ -33,7 +33,6 @@ public:
   static SoAudioDevice *instance();
   SbBool init(const SbString &devicetype, const SbString &devicename);
   void setSceneGraph(SoNode *root);
-  void setGLRenderAction(SoGLRenderAction *ra);
   SbBool enable();
   void disable();
   SbBool haveSound();
