@@ -820,9 +820,7 @@ void
 SoSelection::handleEvent(SoHandleEventAction * action)
 {
   // Overridden to do selection picking.
-
   inherited::handleEvent(action);
-  if (action->isHandled()) return;
 
   const SoEvent * event = action->getEvent();
 
@@ -844,6 +842,7 @@ SoSelection::handleEvent(SoHandleEventAction * action)
       if (selectionpath) {
         this->mouseDownPickPath = selectionpath;
         this->mouseDownPickPath->ref();
+        action->setHandled();
       }
     }
   }
@@ -877,6 +876,7 @@ SoSelection::handleEvent(SoHandleEventAction * action)
     }
   }
 }
+
 
 // Uses a static search action to find path to node from this. If the
 // node is found, the returned path will be ref'ed. It's the caller's
