@@ -43,25 +43,25 @@
 
   \code
   // Copyright (C) 2000-2004 by Systems in Motion. All rights reserved.
-  
+
   #include <Inventor/Qt/SoQt.h>
   #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
   #include <Inventor/nodes/SoEventCallback.h>
   #include <Inventor/nodes/SoSeparator.h>
   #include <Inventor/nodes/SoCone.h>
   #include <Inventor/events/SoKeyboardEvent.h>
-  
+
   // ************************************************************
-  
+
   static void
   keypresscbfunc(void * userdata, SoEventCallback * keyboardcb)
   {
     SoQtExaminerViewer * viewer = (SoQtExaminerViewer *)userdata;
-  
+
     const SoEvent * event = keyboardcb->getEvent();
-    
+
     int shift = 0;
-  
+
     if (SO_KEY_PRESS_EVENT(event, U)) {
       shift = 40;
       keyboardcb->setHandled();
@@ -70,7 +70,7 @@
       shift = -40;
       keyboardcb->setHandled();
     }
-  
+
     if (keyboardcb->isHandled()) {
       SbViewportRegion vpr = viewer->getViewportRegion();
       SbVec2s size = vpr.getViewportSizePixels();
@@ -80,34 +80,34 @@
       viewer->setViewportRegion(vpr);
     }
   }
-  
+
   // ************************************************************
-  
+
   int
   main(int argc, char ** argv)
   {
     QWidget * window = SoQt::init(argv[0]);
-  
+
     SoSeparator * root = new SoSeparator;
     root->ref();
-  
+
     root->addChild(new SoCone);
-  
+
     SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
-  
+
     SoEventCallback * eventcb = new SoEventCallback;
     eventcb->addEventCallback(SoKeyboardEvent::getClassTypeId(),
                               keypresscbfunc, viewer);
     root->insertChild(eventcb, 0);
-  
+
     viewer->setViewing(FALSE);
     viewer->setDecoration(FALSE);
     viewer->setSceneGraph(root);
     viewer->show();
     SoQt::show(window);
-  
+
     SoQt::mainLoop();
-  
+
     delete viewer;
     root->unref();
     return 0;
@@ -454,7 +454,7 @@ SbViewportRegion::getViewportAspectRatio(void) const
   if this causes the viewport origin to be moved below (0,0), the
   origin coordinates will be clamped.
 
-  \sa scaleHeight().  
+  \sa scaleHeight().
 */
 void
 SbViewportRegion::scaleWidth(float ratio)
@@ -552,17 +552,28 @@ SbViewportRegion::getPixelsPerPoint(void) const
 
 /*!
   \relates SbViewportRegion
-
   Compares two SbViewportRegion instances for equality.
- */
+*/
 int
-operator ==(const SbViewportRegion& reg1, const SbViewportRegion& reg2)
+operator==(const SbViewportRegion & reg1, const SbViewportRegion & reg2)
 {
   return
     reg1.winsize == reg2.winsize &&
     reg1.getViewportOriginPixels() == reg2.getViewportOriginPixels() &&
     reg1.getViewportSizePixels() == reg2.getViewportSizePixels() &&
     reg1.pixperinch == reg2.pixperinch;
+}
+
+/*!
+  \relates SbViewportRegion
+  Compares two SbViewportRegion instances for inequality.
+
+  \since Coin 2.4
+*/
+int
+operator!=(const SbViewportRegion & reg1, const SbViewportRegion & reg2)
+{
+  return !(reg1 == reg2);
 }
 
 /*!
