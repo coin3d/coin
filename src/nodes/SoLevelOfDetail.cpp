@@ -151,14 +151,66 @@
 #include <../tidbits.h> // coin_atexit()
 #include <stdlib.h>
 
-// FIXME: not safe in an multithreaded environment. 20020106 mortene.
-static SoGetBoundingBoxAction * bboxAction = NULL;
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbStorage.h>
+#endif // COIN_THREADSAFE
+
+typedef struct {
+  SoGetBoundingBoxAction * bboxaction;
+} so_lod_static_data;
 
 static void
-SoLevelOfDetail_cleanup_func(void)
+so_lod_construct_data(void * closure)
 {
-  delete bboxAction;
-  bboxAction = NULL;
+  so_lod_static_data * data = (so_lod_static_data*) closure;
+  data->bboxaction = NULL;
+}
+
+static void
+so_lod_destruct_data(void * closure)
+{
+  so_lod_static_data * data = (so_lod_static_data*) closure;
+  delete data->bboxaction;
+}
+
+#ifdef COIN_THREADSAFE
+static SbStorage * so_lod_storage = NULL;
+#else // COIN_THREADSAFE
+static so_lod_static_data * so_lod_single_data = NULL;
+#endif // ! COIN_THREADSAFE
+
+// called from atexit
+static void
+so_lod_cleanup(void)
+{
+#ifdef COIN_THREADSAFE
+  delete so_lod_storage;
+#else // COIN_THREADSAFE
+  so_lod_destruct_data((void*) so_lod_single_data);
+  delete so_lod_single_data;
+#endif // ! COIN_THREADSAFE
+}
+
+static SoGetBoundingBoxAction *
+so_lod_get_bbox_action(void)
+{
+  so_lod_static_data * data = NULL;
+#ifdef COIN_THREADSAFE
+  data = (so_lod_static_data*) so_lod_storage->get();
+#else // COIN_THREADSAFE
+  data = so_lod_single_data;
+#endif // ! COIN_THREADSAFE
+  
+  if (data->bboxaction == NULL) {
+    // The viewport region will be replaced every time the action is
+    // used, so we can just feed it a dummy here.
+    data->bboxaction = new SoGetBoundingBoxAction(SbViewportRegion());
+  }
+  return data->bboxaction;
 }
 
 /*!
@@ -237,6 +289,15 @@ void
 SoLevelOfDetail::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoLevelOfDetail, SO_FROM_INVENTOR_1);
+
+#ifdef COIN_THREADSAFE
+  so_lod_storage = new SbStorage(sizeof(so_lod_static_data),
+                                 so_lod_construct_data, so_lod_destruct_data);
+#else // COIN_THREADSAFE
+  so_lod_single_data = new so_lod_static_data;
+  so_lod_construct_data((void*) so_lod_single_data);
+#endif // COIN_THREADSAFE
+  coin_atexit((coin_atexit_f*) so_lod_cleanup);
 }
 
 // Documented in superclass.
@@ -281,12 +342,7 @@ SoLevelOfDetail::doAction(SoAction *action)
   if (this->screenArea.getNum() == 0) { idx = 0; goto traverse; }
 
   if (!THIS->bboxcache || !THIS->bboxcache->isValid(state)) {
-    if (!bboxAction) {
-      // The viewport region will be replaced every time the action is
-      // used, so we can just feed it a dummy here.
-      bboxAction = new SoGetBoundingBoxAction(SbViewportRegion());
-      coin_atexit((coin_atexit_f *)SoLevelOfDetail_cleanup_func);
-    }
+    SoGetBoundingBoxAction * bboxAction = so_lod_get_bbox_action();
 
     bboxAction->setViewportRegion(SoViewportRegionElement::get(state));
     // need to apply on the current path, not on the node, since we
