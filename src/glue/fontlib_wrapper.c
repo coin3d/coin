@@ -256,7 +256,7 @@ flw_map_fontname_to_defaultfont(const char * reqname)
 static void
 flw_exit(void)
 {
-  unsigned int i, n;
+  unsigned int n;
 
   if (freetypelib) { cc_flwft_exit(); }
   if (win32api) { cc_flww32_exit(); }
