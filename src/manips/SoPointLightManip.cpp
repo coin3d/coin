@@ -195,56 +195,6 @@ SoPointLightManip::replaceNode(SoPath * path)
 }
 
 /*!
-  Replaces this manipulator specified by \a path with \a newnode. If
-  \a newnode is \e NULL, a SoPointLight will be created for you.
-*/
-SbBool
-SoPointLightManip::replaceManip(SoPath * path, SoPointLight * newone) const
-{
-  SoFullPath * fullpath = (SoFullPath *) path;
-  SoNode * fulltail = fullpath->getTail();
-  if (fulltail != (SoNode *)this) {
-#if COIN_DEBUG
-    SoDebugError::post("SoPointLightManip::replaceManip",
-                       "Child to replace is not this manip");
-#endif // debug
-  }
-  SoNode * tail = path->getTail();
-  if (tail->isOfType(SoBaseKit::getClassTypeId())) {
-    SoBaseKit * kit = (SoBaseKit *) ((SoNodeKitPath *)path)->getTail();
-    SbString partname = kit->getPartString(path);
-    if (partname != "") {
-      if (newone != NULL) {
-        this->transferFieldValues(this, newone);
-      }
-      kit->setPart(partname, newone);
-      return TRUE;
-    }
-  }
-  if (fullpath->getLength() < 2) {
-#if COIN_DEBUG
-    SoDebugError::post("SoPointLightManip::replaceManip",
-                       "Path is too short");
-#endif // debug
-    return FALSE;
-  }
-  SoNode * parent = fullpath->getNodeFromTail(1);
-  if (!parent->isOfType(SoGroup::getClassTypeId())) {
-#if COIN_DEBUG
-    SoDebugError::post("SoPointLightManip::replaceManip",
-                       "Parent node is not a group");
-#endif // debug
-    return FALSE;
-  }
-  if (newone == NULL) newone = new SoPointLight;
-  newone->ref();
-  this->transferFieldValues(this, newone);
-  ((SoGroup *)parent)->replaceChild((SoNode *)this, newone);
-  newone->unrefNoDelete();
-  return TRUE;
-}
-
-/*!
  */
 void
 SoPointLightManip::doAction(SoAction * action)

@@ -85,6 +85,9 @@ SoClipPlaneManip::replaceNode(SoPath * p)
 SbBool
 SoClipPlaneManip::replaceManip(SoPath * p, SoClipPlane * newone) const
 {
+  // FIXME: the code to implement this is in
+  // src/manips/commoncode.cpp. 20000427 mortene.
+
   COIN_STUB();
   return FALSE;
 }

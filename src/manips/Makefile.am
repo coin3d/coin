@@ -16,7 +16,8 @@ ALLSOURCES = \
 	SoTabBoxManip.cpp SoTabBoxManip.h \
 	SoTrackballManip.cpp SoTrackballManip.h \
 	SoTransformBoxManip.cpp SoTransformBoxManip.h \
-	SoTransformerManip.cpp SoTransformerManip.h
+	SoTransformerManip.cpp SoTransformerManip.h \
+	commoncode.cpp
 endif
 
 ALLINSTHEADERS = \

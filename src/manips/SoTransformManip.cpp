@@ -194,58 +194,6 @@ SoTransformManip::replaceNode(SoPath * path)
 }
 
 /*!
-  Replaces this manipulator specified by \a path with \a newnode. If
-  \a newnode is \e NULL, a SoTransform will be created for you.
-*/
-SbBool
-SoTransformManip::replaceManip(SoPath * path, SoTransform * newone) const
-{
-  SoFullPath *fullpath = (SoFullPath*) path;
-  SoNode *fulltail = fullpath->getTail();
-  if (fulltail != (SoNode*)this) {
-#if COIN_DEBUG
-    SoDebugError::post("SoTransformManip::replaceManip",
-                       "Child to replace is not this manip (but %s at %p)",
-                       fulltail->getTypeId().getName().getString(), fulltail);
-#endif // COIN_DEBUG
-  }
-  SoNode *tail = path->getTail();
-  if (tail->isOfType(SoBaseKit::getClassTypeId())) {
-    SoBaseKit *kit = (SoBaseKit*) ((SoNodeKitPath*)path)->getTail();
-    SbString partname = kit->getPartString(path);
-    if (partname != "") {
-      if (newone != NULL) {
-        this->transferFieldValues(this, newone);
-      }
-      kit->setPart(partname, newone);
-      return TRUE;
-    }
-  }
-  if (fullpath->getLength() < 2) {
-#if COIN_DEBUG
-    SoDebugError::post("SoTransformManip::replaceManip",
-                       "Path is too short");
-#endif // COIN_DEBUG
-    return FALSE;
-  }
-  SoNode *parent = fullpath->getNodeFromTail(1);
-  if (!parent->isOfType(SoGroup::getClassTypeId())) {
-#if COIN_DEBUG
-    SoDebugError::post("SoTransformManip::replaceNode",
-                       "Parent node %p is not an SoGroup, but %s",
-                       parent, parent->getTypeId().getName().getString());
-#endif // COIN_DEBUG
-    return FALSE;
-  }
-  if (newone == NULL) newone = new SoTransform;
-  newone->ref();
-  this->transferFieldValues(this, newone);
-  ((SoGroup*)parent)->replaceChild((SoNode*)this, newone);
-  newone->unrefNoDelete();
-  return TRUE;
-}
-
-/*!
  */
 void
 SoTransformManip::doAction(SoAction * action)

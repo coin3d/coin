@@ -109,7 +109,8 @@ sim_ac_conf_cmd = @sim_ac_conf_cmd@
 @HACKING_COMPACT_BUILD_FALSE@	SoTabBoxManip.cpp SoTabBoxManip.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoTrackballManip.cpp SoTrackballManip.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoTransformBoxManip.cpp SoTransformBoxManip.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoTransformerManip.cpp SoTransformerManip.h
+@HACKING_COMPACT_BUILD_FALSE@	SoTransformerManip.cpp SoTransformerManip.h \
+@HACKING_COMPACT_BUILD_FALSE@	commoncode.cpp
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/manips/SoClipPlaneManip.h \
@@ -168,7 +169,7 @@ libmanips_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoHandleBoxManip.lo SoJackManip.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoTabBoxManip.lo SoTrackballManip.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoTransformBoxManip.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTransformerManip.lo
+@HACKING_COMPACT_BUILD_FALSE@SoTransformerManip.lo commoncode.lo
 @HACKING_COMPACT_BUILD_TRUE@am_libmanips_la_OBJECTS =  all.lo
 libmanips_la_OBJECTS =  $(am_libmanips_la_OBJECTS)
 libmanipsLINKHACK_la_LDFLAGS = 
@@ -181,7 +182,7 @@ libmanipsLINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoHandleBoxManip.lo SoJackManip.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoTabBoxManip.lo SoTrackballManip.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoTransformBoxManip.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTransformerManip.lo
+@HACKING_COMPACT_BUILD_FALSE@SoTransformerManip.lo commoncode.lo
 @HACKING_COMPACT_BUILD_TRUE@am_libmanipsLINKHACK_la_OBJECTS =  all.lo
 libmanipsLINKHACK_la_OBJECTS =  $(am_libmanipsLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -210,7 +211,8 @@ $(DEPDIR)/SoHandleBoxManip.Plo $(DEPDIR)/SoJackManip.Plo \
 $(DEPDIR)/SoPointLightManip.Plo $(DEPDIR)/SoSpotLightManip.Plo \
 $(DEPDIR)/SoTabBoxManip.Plo $(DEPDIR)/SoTrackballManip.Plo \
 $(DEPDIR)/SoTransformBoxManip.Plo $(DEPDIR)/SoTransformManip.Plo \
-$(DEPDIR)/SoTransformerManip.Plo $(DEPDIR)/all.Plo
+$(DEPDIR)/SoTransformerManip.Plo $(DEPDIR)/all.Plo \
+$(DEPDIR)/commoncode.Plo
 SOURCES = $(libmanips_la_SOURCES) $(libmanipsLINKHACK_la_SOURCES)
 OBJECTS = $(am_libmanips_la_OBJECTS) $(am_libmanipsLINKHACK_la_OBJECTS)
 
@@ -355,6 +357,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoTransformManip.Plo
 @AMDEP@include $(DEPDIR)/SoTransformerManip.Plo
 @AMDEP@include $(DEPDIR)/all.Plo
+@AMDEP@include $(DEPDIR)/commoncode.Plo
 
 mostlyclean-depend:
 

@@ -10,3 +10,5 @@
 #include "SoTrackballManip.cpp"
 #include "SoTransformBoxManip.cpp"
 #include "SoTransformerManip.cpp"
+
+#include "commoncode.cpp"
