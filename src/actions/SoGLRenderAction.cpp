@@ -88,6 +88,8 @@
 #endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
+#include <string.h>
+
 // *************************************************************************
 
 /*!
