@@ -498,7 +498,7 @@ SoBaseKit::getMatrix(SoGetMatrixAction * action)
   int numIndices;
   const int * indices;
   if (action->getPathCode(numIndices, indices) == SoAction::IN_PATH) {
-    this->children->traverse(action, 0, indices[numIndices - 1]);
+    this->children->traverseInPath(action, numindices, indices);
   }
 }
 
