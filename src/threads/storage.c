@@ -201,7 +201,7 @@ cc_storage_thread_cleanup(unsigned long threadid)
 */
 
 /*!
-  \fn void SbStorage::applyToAll(cc_storage_apply_func * func, void * closure)
+  \fn void SbStorage::applyToAll(SbStorageApplyFunc * func, void * closure)
   
   This method will call \a func for all thread local storage data.
   \a closure will be supplied as the second parameter to the callback.

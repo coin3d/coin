@@ -26,6 +26,8 @@
 
 #include <Inventor/C/threads/storage.h>
 
+typedef void SbStorageApplyFunc(void * tls, void * closure);
+
 class SbStorage {
 public:
   SbStorage(unsigned int size) { this->storage = cc_storage_construct(size); }
@@ -34,8 +36,9 @@ public:
   ~SbStorage(void) { cc_storage_destruct(this->storage); }
 
   void * get(void) { return cc_storage_get(this->storage); }
-  void applyToAll(cc_storage_apply_func * func, void * closure) {
-    cc_storage_apply_to_all(this->storage, func, closure);
+  void applyToAll(SbStorageApplyFunc * func, void * closure) {
+    cc_storage_apply_to_all(this->storage, 
+                            (cc_storage_apply_func*)func, closure);
   }
 
 private:
@@ -43,3 +46,4 @@ private:
 };
 
 #endif // !COIN_SBSTORAGE_H
+
