@@ -1,25 +1,33 @@
-#Inventor V2.5 ascii
+#Inventor V2.1 ascii
 
 Group {
-   MultipleCopy {
-      matrix [
-       1 0 0 0
-       0 1 0 0
-       0 0 1 0
-       0 0 0 1,
-      
-       1 0 0 0
-       0 1 0 0
-       0 0 1 0
-       4 0 0 1,
+   Separator {
+      Material {
+         diffuseColor [ 1 0 0, 0 1 0, 0 0 1, 1 1 0, 1 0 1, 0 1 1, 1 1 1 ]
+      }
 
-       1 0 0 0
-       0 1 0 0
-       0 0 1 0
-       -4 0 0 1,
-      ]
-      
-      Cube {
+      MaterialBinding { value PER_PART }
+
+      MultipleCopy {
+         matrix [
+          1 0 0 0
+          0 1 0 0
+          0 0 1 0
+          0 0 0 1,
+          
+          1 0 0 0
+          0 1 0 0
+          0 0 1 0
+          4 0 0 1,
+
+          1 0 0 0
+          0 1 0 0
+          0 0 1 0
+          -4 0 0 1,
+         ]
+         
+         Cube {
+         }
       }
    }
 
