@@ -27,6 +27,7 @@
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
+#include <Inventor/C/errors/debugerror.h>
 
 
 void *
@@ -44,12 +45,34 @@ coin_wgl_getprocaddress(const char * fname)
      * framebuffer configuration and 2) the ICD driver installed. You
      * might be lucky though...
      *
-     * UPDATE 2002-09-06 mortene: couldn't we just get the executable
-     * handle by passing NULL to GetModuleHandle()? Investigate.
+     * UPDATE 2002-09-11 mortene: should at least replace
+     * "opengl32.dll" with the OpenGL library name found by the
+     * configure script.
      */
 
-    HINSTANCE h = GetModuleHandle("opengl32.dll");
-    if (h) { ptr = (void*) GetProcAddress(h, fname); }
+    /* If this worked like dlopen() on UNIX-like systems with libdl,
+     * we could just get the executable handle by passing NULL to
+     * GetModuleHandle(), and then get any symbol from that. That
+     * doesn't work, though, as GetProcAddress() will *only* resolve
+     * symbols from the specific DLL module handle.
+     */
+    HINSTANCE glhandle = GetModuleHandle("opengl32.dll");
+
+    if (!glhandle && coin_glglue_debug()) {
+      cc_debugerror_postwarning("coin_wgl_getprocaddress",
+                                "couldn't get hold of module handle for "
+                                "\"opengl32.dll\"");
+    }
+
+    if (glhandle) {
+      ptr = (void *)GetProcAddress(glhandle, fname);
+
+      if (ptr && coin_glglue_debug()) {
+        cc_debugerror_postinfo("coin_wgl_getprocaddress",
+                               "wglGetProcAddress() missed \"%s\", "
+                               "but found with GetProcAddress()", fname);
+      }
+    }
   }
   return ptr;
 #endif /* HAVE_WGL */
