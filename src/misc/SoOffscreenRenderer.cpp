@@ -1472,60 +1472,42 @@ SoOffscreenRendererP::getMaxTileSize(void)
 {
   // cache the values in static variables so that a new context is not
   // created every time render() is called in SoOffscreenRenderer
-  static SbVec2s maxtile(0, 0);
-  if (maxtile[0] > 0) return maxtile;
+  static unsigned int maxtile[2] = { 0, 0 };
+  if (maxtile[0] > 0) return SbVec2s((short)maxtile[0], (short)maxtile[1]);
 
-  SbVec2s dims;
-  unsigned int width = 128;
-  unsigned int height = 128;
+  unsigned int width, height;
   cc_glglue_context_max_dimensions(&width, &height);
+
   if (SoOffscreenRendererP::debug()) {
     SoDebugError::postInfo("SoOffscreenRendererP::getMaxTileSize",
-                           "maxtilesize==[%u, %u]", width, height);
+                           "cc_glglue_context_max_dimensions()==[%u, %u]",
+                           width, height);
   }
-
-  static int forcedtilewidth = -1;
-  static int forcedtileheight = -1;
 
   // Makes it possible to override the default tilesizes. Should prove
   // useful for debugging problems on remote sites.
-  const char * env;
-  if (forcedtilewidth == -1) {
-    env = coin_getenv("COIN_OFFSCREENRENDERER_TILEWIDTH");
-    forcedtilewidth = env ? atoi(env) : 0;
-    env = coin_getenv("COIN_OFFSCREENRENDERER_TILEHEIGHT");
-    forcedtileheight = env ? atoi(env) : 0;
-  }
+  const char * env = coin_getenv("COIN_OFFSCREENRENDERER_TILEWIDTH");
+  const unsigned int forcedtilewidth = env ? atoi(env) : 0;
+  env = coin_getenv("COIN_OFFSCREENRENDERER_TILEHEIGHT");
+  const unsigned int forcedtileheight = env ? atoi(env) : 0;
+
   if (forcedtilewidth != 0) { width = forcedtilewidth; }
   if (forcedtileheight != 0) { height = forcedtileheight; }
 
-  static unsigned int maxtilesize = 0;
-  if (maxtilesize == 0) {
-    env = coin_getenv("COIN_OFFSCREENRENDERER_MAX_TILESIZE");
-
-    // If not set by the user (as it would usually not be), limit the
-    // maximum tilesize to 2048x2048 pixels. This is done to work
-    // around a problem with some OpenGL drivers: a huge value is
-    // returned for the maximum offscreen OpenGL canvas, where the
-    // driver obviously does not take into account the amount of
-    // memory needed to actually allocate such a large buffer.
-    //
-    // This problem has at least been observed with the MS Windows XP
-    // software OpenGL renderer, which reports a maximum viewport size
-    // of 16k x 16k pixels.
-    maxtilesize = env ? atoi(env) : 2048;
-
-    // just in case
-    if (maxtilesize > SHRT_MAX) maxtilesize = SHRT_MAX;
+  // Also make it possible to force a maximum tilesize.
+  env = coin_getenv("COIN_OFFSCREENRENDERER_MAX_TILESIZE");
+  const unsigned int maxtilesize = env ? atoi(env) : 0;
+  if (maxtilesize != 0) {
+    width = SbMin(width, maxtilesize);
+    height = SbMin(height, maxtilesize);
   }
 
-  dims[0] = SbMin(width, maxtilesize);
-  dims[1] = SbMin(height, maxtilesize);
+  // cache result for later calls, and clamp to fit within a short
+  // integer type
+  maxtile[0] = SbMin(width, (unsigned int)SHRT_MAX);
+  maxtile[1] = SbMin(height, (unsigned int)SHRT_MAX);
 
-  // cache result for later calls
-  maxtile = dims;
-
-  return dims;
+  return SbVec2s((short)maxtile[0], (short)maxtile[1]);
 }
 
 #undef PRIVATE
