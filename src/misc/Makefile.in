@@ -255,12 +255,7 @@ RegularSources = \
 	SoFullPath.cpp \
 	SoTempPath.cpp \
 	SoLightPath.cpp \
-	SoInput.cpp \
-	SoInput_FileInfo.cpp \
-	SoInput_Reader.cpp \
 	SoInteraction.cpp \
-	SoOutput.cpp \
-	SoOutput_Writer.cpp \
 	SoPath.cpp \
 	SoPick.cpp \
 	SoPickedPoint.cpp \
@@ -275,12 +270,8 @@ RegularSources = \
 	SoOffscreenWGLData.cpp \
 	SoGenerate.cpp \
 	SoLockManager.cpp \
-	SoByteStream.cpp \
-	SoTranSender.cpp \
-	SoTranReceiver.cpp \
 	SoAudioDevice.cpp \
-	AudioTools.cpp \
-	gzmemio.c
+	AudioTools.cpp
 
 LinkHackSources = \
 	all-misc-cpp.cpp \
@@ -323,15 +314,11 @@ PrivateHeaders = \
 	SoGLnonindexedTristripSetTemplate.icc \
 	SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc \
-	SoInput_FileInfo.h \
-	SoInput_Reader.h \
 	SoOffscreenInternalData.h \
 	SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h \
 	SoOffscreenWGLData.h \
-	SoOutput_Writer.h \
-	cppmangle.icc \
-	gzmemio.h
+	cppmangle.icc
 
 
 
@@ -397,16 +384,13 @@ am__misc_lst_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoContextHandler.cpp SoGL.cpp SoGLImage.cpp SoGLBigImage.cpp \
 	SoGlyph.cpp SoNormalGenerator.cpp SoNotification.cpp \
 	SoNotRec.cpp SoState.cpp SoDB.cpp SoFullPath.cpp SoTempPath.cpp \
-	SoLightPath.cpp SoInput.cpp SoInput_FileInfo.cpp \
-	SoInput_Reader.cpp SoInteraction.cpp SoOutput.cpp \
-	SoOutput_Writer.cpp SoPath.cpp SoPick.cpp SoPickedPoint.cpp \
-	SoPrimitiveVertex.cpp SoProto.cpp SoProtoInstance.cpp \
-	SoSceneManager.cpp SoType.cpp SoOffscreenRenderer.cpp \
-	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
-	SoOffscreenWGLData.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
-	SoAudioDevice.cpp AudioTools.cpp gzmemio.c all-misc-cpp.cpp \
-	all-misc-c.c
+	SoLightPath.cpp SoInteraction.cpp SoPath.cpp SoPick.cpp \
+	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
+	SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
+	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoGenerate.cpp \
+	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp \
+	all-misc-cpp.cpp all-misc-c.c
 am__objects_1 = all-misc-cpp.$(OBJEXT) all-misc-c.$(OBJEXT)
 am__objects_2 = SoBase.$(OBJEXT) SoChildList.$(OBJEXT) \
 	SoContextHandler.$(OBJEXT) SoGL.$(OBJEXT) SoGLImage.$(OBJEXT) \
@@ -414,18 +398,14 @@ am__objects_2 = SoBase.$(OBJEXT) SoChildList.$(OBJEXT) \
 	SoNormalGenerator.$(OBJEXT) SoNotification.$(OBJEXT) \
 	SoNotRec.$(OBJEXT) SoState.$(OBJEXT) SoDB.$(OBJEXT) \
 	SoFullPath.$(OBJEXT) SoTempPath.$(OBJEXT) SoLightPath.$(OBJEXT) \
-	SoInput.$(OBJEXT) SoInput_FileInfo.$(OBJEXT) \
-	SoInput_Reader.$(OBJEXT) SoInteraction.$(OBJEXT) \
-	SoOutput.$(OBJEXT) SoOutput_Writer.$(OBJEXT) SoPath.$(OBJEXT) \
-	SoPick.$(OBJEXT) SoPickedPoint.$(OBJEXT) \
-	SoPrimitiveVertex.$(OBJEXT) SoProto.$(OBJEXT) \
-	SoProtoInstance.$(OBJEXT) SoSceneManager.$(OBJEXT) \
-	SoType.$(OBJEXT) SoOffscreenRenderer.$(OBJEXT) \
-	SoOffscreenAGLData.$(OBJEXT) SoOffscreenGLXData.$(OBJEXT) \
-	SoOffscreenWGLData.$(OBJEXT) SoGenerate.$(OBJEXT) \
-	SoLockManager.$(OBJEXT) SoByteStream.$(OBJEXT) \
-	SoTranSender.$(OBJEXT) SoTranReceiver.$(OBJEXT) \
-	SoAudioDevice.$(OBJEXT) AudioTools.$(OBJEXT) gzmemio.$(OBJEXT)
+	SoInteraction.$(OBJEXT) SoPath.$(OBJEXT) SoPick.$(OBJEXT) \
+	SoPickedPoint.$(OBJEXT) SoPrimitiveVertex.$(OBJEXT) \
+	SoProto.$(OBJEXT) SoProtoInstance.$(OBJEXT) \
+	SoSceneManager.$(OBJEXT) SoType.$(OBJEXT) \
+	SoOffscreenRenderer.$(OBJEXT) SoOffscreenAGLData.$(OBJEXT) \
+	SoOffscreenGLXData.$(OBJEXT) SoOffscreenWGLData.$(OBJEXT) \
+	SoGenerate.$(OBJEXT) SoLockManager.$(OBJEXT) \
+	SoAudioDevice.$(OBJEXT) AudioTools.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_misc_lst_OBJECTS = $(am__objects_3)
@@ -459,23 +439,18 @@ am__EXTRA_misc_lst_SOURCES_DIST = \
 	SoGLTristripTemplate.icc SoGLindexedLineSetTemplate.icc \
 	SoGLnonindexedFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
-	SoGLqmeshpreciselightingTemplate.icc SoInput_FileInfo.h \
-	SoInput_Reader.h SoOffscreenInternalData.h SoOffscreenAGLData.h \
-	SoOffscreenGLXData.h SoOffscreenWGLData.h SoOutput_Writer.h \
-	cppmangle.icc gzmemio.h all-misc-cpp.cpp all-misc-c.c \
-	SoBase.cpp SoChildList.cpp SoContextHandler.cpp SoGL.cpp \
-	SoGLImage.cpp SoGLBigImage.cpp SoGlyph.cpp \
-	SoNormalGenerator.cpp SoNotification.cpp SoNotRec.cpp \
-	SoState.cpp SoDB.cpp SoFullPath.cpp SoTempPath.cpp \
-	SoLightPath.cpp SoInput.cpp SoInput_FileInfo.cpp \
-	SoInput_Reader.cpp SoInteraction.cpp SoOutput.cpp \
-	SoOutput_Writer.cpp SoPath.cpp SoPick.cpp SoPickedPoint.cpp \
-	SoPrimitiveVertex.cpp SoProto.cpp SoProtoInstance.cpp \
-	SoSceneManager.cpp SoType.cpp SoOffscreenRenderer.cpp \
-	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
-	SoOffscreenWGLData.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
-	SoAudioDevice.cpp AudioTools.cpp gzmemio.c
+	SoGLqmeshpreciselightingTemplate.icc SoOffscreenInternalData.h \
+	SoOffscreenAGLData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
+	cppmangle.icc all-misc-cpp.cpp all-misc-c.c SoBase.cpp \
+	SoChildList.cpp SoContextHandler.cpp SoGL.cpp SoGLImage.cpp \
+	SoGLBigImage.cpp SoGlyph.cpp SoNormalGenerator.cpp \
+	SoNotification.cpp SoNotRec.cpp SoState.cpp SoDB.cpp \
+	SoFullPath.cpp SoTempPath.cpp SoLightPath.cpp SoInteraction.cpp \
+	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
+	SoProto.cpp SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
+	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoGenerate.cpp \
+	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp
 misc_lst_OBJECTS = $(am_misc_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -485,29 +460,23 @@ am__libmisc_la_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoContextHandler.cpp SoGL.cpp SoGLImage.cpp SoGLBigImage.cpp \
 	SoGlyph.cpp SoNormalGenerator.cpp SoNotification.cpp \
 	SoNotRec.cpp SoState.cpp SoDB.cpp SoFullPath.cpp SoTempPath.cpp \
-	SoLightPath.cpp SoInput.cpp SoInput_FileInfo.cpp \
-	SoInput_Reader.cpp SoInteraction.cpp SoOutput.cpp \
-	SoOutput_Writer.cpp SoPath.cpp SoPick.cpp SoPickedPoint.cpp \
-	SoPrimitiveVertex.cpp SoProto.cpp SoProtoInstance.cpp \
-	SoSceneManager.cpp SoType.cpp SoOffscreenRenderer.cpp \
-	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
-	SoOffscreenWGLData.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
-	SoAudioDevice.cpp AudioTools.cpp gzmemio.c all-misc-cpp.cpp \
-	all-misc-c.c
+	SoLightPath.cpp SoInteraction.cpp SoPath.cpp SoPick.cpp \
+	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
+	SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
+	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoGenerate.cpp \
+	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp \
+	all-misc-cpp.cpp all-misc-c.c
 am__objects_6 = all-misc-cpp.lo all-misc-c.lo
 am__objects_7 = SoBase.lo SoChildList.lo SoContextHandler.lo SoGL.lo \
 	SoGLImage.lo SoGLBigImage.lo SoGlyph.lo SoNormalGenerator.lo \
 	SoNotification.lo SoNotRec.lo SoState.lo SoDB.lo SoFullPath.lo \
-	SoTempPath.lo SoLightPath.lo SoInput.lo SoInput_FileInfo.lo \
-	SoInput_Reader.lo SoInteraction.lo SoOutput.lo \
-	SoOutput_Writer.lo SoPath.lo SoPick.lo SoPickedPoint.lo \
-	SoPrimitiveVertex.lo SoProto.lo SoProtoInstance.lo \
-	SoSceneManager.lo SoType.lo SoOffscreenRenderer.lo \
-	SoOffscreenAGLData.lo SoOffscreenGLXData.lo \
-	SoOffscreenWGLData.lo SoGenerate.lo SoLockManager.lo \
-	SoByteStream.lo SoTranSender.lo SoTranReceiver.lo \
-	SoAudioDevice.lo AudioTools.lo gzmemio.lo
+	SoTempPath.lo SoLightPath.lo SoInteraction.lo SoPath.lo \
+	SoPick.lo SoPickedPoint.lo SoPrimitiveVertex.lo SoProto.lo \
+	SoProtoInstance.lo SoSceneManager.lo SoType.lo \
+	SoOffscreenRenderer.lo SoOffscreenAGLData.lo \
+	SoOffscreenGLXData.lo SoOffscreenWGLData.lo SoGenerate.lo \
+	SoLockManager.lo SoAudioDevice.lo AudioTools.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libmisc_la_OBJECTS = $(am__objects_8)
@@ -541,23 +510,18 @@ am__EXTRA_libmisc_la_SOURCES_DIST = \
 	SoGLTristripTemplate.icc SoGLindexedLineSetTemplate.icc \
 	SoGLnonindexedFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
-	SoGLqmeshpreciselightingTemplate.icc SoInput_FileInfo.h \
-	SoInput_Reader.h SoOffscreenInternalData.h SoOffscreenAGLData.h \
-	SoOffscreenGLXData.h SoOffscreenWGLData.h SoOutput_Writer.h \
-	cppmangle.icc gzmemio.h all-misc-cpp.cpp all-misc-c.c \
-	SoBase.cpp SoChildList.cpp SoContextHandler.cpp SoGL.cpp \
-	SoGLImage.cpp SoGLBigImage.cpp SoGlyph.cpp \
-	SoNormalGenerator.cpp SoNotification.cpp SoNotRec.cpp \
-	SoState.cpp SoDB.cpp SoFullPath.cpp SoTempPath.cpp \
-	SoLightPath.cpp SoInput.cpp SoInput_FileInfo.cpp \
-	SoInput_Reader.cpp SoInteraction.cpp SoOutput.cpp \
-	SoOutput_Writer.cpp SoPath.cpp SoPick.cpp SoPickedPoint.cpp \
-	SoPrimitiveVertex.cpp SoProto.cpp SoProtoInstance.cpp \
-	SoSceneManager.cpp SoType.cpp SoOffscreenRenderer.cpp \
-	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
-	SoOffscreenWGLData.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
-	SoAudioDevice.cpp AudioTools.cpp gzmemio.c
+	SoGLqmeshpreciselightingTemplate.icc SoOffscreenInternalData.h \
+	SoOffscreenAGLData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
+	cppmangle.icc all-misc-cpp.cpp all-misc-c.c SoBase.cpp \
+	SoChildList.cpp SoContextHandler.cpp SoGL.cpp SoGLImage.cpp \
+	SoGLBigImage.cpp SoGlyph.cpp SoNormalGenerator.cpp \
+	SoNotification.cpp SoNotRec.cpp SoState.cpp SoDB.cpp \
+	SoFullPath.cpp SoTempPath.cpp SoLightPath.cpp SoInteraction.cpp \
+	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
+	SoProto.cpp SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
+	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoGenerate.cpp \
+	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp
 libmisc_la_OBJECTS = $(am_libmisc_la_OBJECTS)
 libmisc@SUFFIX@LINKHACK_la_LDFLAGS =
 libmisc@SUFFIX@LINKHACK_la_LIBADD =
@@ -565,16 +529,13 @@ am__libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoContextHandler.cpp SoGL.cpp SoGLImage.cpp SoGLBigImage.cpp \
 	SoGlyph.cpp SoNormalGenerator.cpp SoNotification.cpp \
 	SoNotRec.cpp SoState.cpp SoDB.cpp SoFullPath.cpp SoTempPath.cpp \
-	SoLightPath.cpp SoInput.cpp SoInput_FileInfo.cpp \
-	SoInput_Reader.cpp SoInteraction.cpp SoOutput.cpp \
-	SoOutput_Writer.cpp SoPath.cpp SoPick.cpp SoPickedPoint.cpp \
-	SoPrimitiveVertex.cpp SoProto.cpp SoProtoInstance.cpp \
-	SoSceneManager.cpp SoType.cpp SoOffscreenRenderer.cpp \
-	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
-	SoOffscreenWGLData.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
-	SoAudioDevice.cpp AudioTools.cpp gzmemio.c all-misc-cpp.cpp \
-	all-misc-c.c
+	SoLightPath.cpp SoInteraction.cpp SoPath.cpp SoPick.cpp \
+	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
+	SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
+	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoGenerate.cpp \
+	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp \
+	all-misc-cpp.cpp all-misc-c.c
 am_libmisc@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/misc/SoAuditorList.h \
@@ -606,23 +567,18 @@ am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoGLTristripTemplate.icc SoGLindexedLineSetTemplate.icc \
 	SoGLnonindexedFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
-	SoGLqmeshpreciselightingTemplate.icc SoInput_FileInfo.h \
-	SoInput_Reader.h SoOffscreenInternalData.h SoOffscreenAGLData.h \
-	SoOffscreenGLXData.h SoOffscreenWGLData.h SoOutput_Writer.h \
-	cppmangle.icc gzmemio.h all-misc-cpp.cpp all-misc-c.c \
-	SoBase.cpp SoChildList.cpp SoContextHandler.cpp SoGL.cpp \
-	SoGLImage.cpp SoGLBigImage.cpp SoGlyph.cpp \
-	SoNormalGenerator.cpp SoNotification.cpp SoNotRec.cpp \
-	SoState.cpp SoDB.cpp SoFullPath.cpp SoTempPath.cpp \
-	SoLightPath.cpp SoInput.cpp SoInput_FileInfo.cpp \
-	SoInput_Reader.cpp SoInteraction.cpp SoOutput.cpp \
-	SoOutput_Writer.cpp SoPath.cpp SoPick.cpp SoPickedPoint.cpp \
-	SoPrimitiveVertex.cpp SoProto.cpp SoProtoInstance.cpp \
-	SoSceneManager.cpp SoType.cpp SoOffscreenRenderer.cpp \
-	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
-	SoOffscreenWGLData.cpp SoGenerate.cpp SoLockManager.cpp \
-	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
-	SoAudioDevice.cpp AudioTools.cpp gzmemio.c
+	SoGLqmeshpreciselightingTemplate.icc SoOffscreenInternalData.h \
+	SoOffscreenAGLData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
+	cppmangle.icc all-misc-cpp.cpp all-misc-c.c SoBase.cpp \
+	SoChildList.cpp SoContextHandler.cpp SoGL.cpp SoGLImage.cpp \
+	SoGLBigImage.cpp SoGlyph.cpp SoNormalGenerator.cpp \
+	SoNotification.cpp SoNotRec.cpp SoState.cpp SoDB.cpp \
+	SoFullPath.cpp SoTempPath.cpp SoLightPath.cpp SoInteraction.cpp \
+	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
+	SoProto.cpp SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
+	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
+	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoGenerate.cpp \
+	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp
 libmisc@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libmisc@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -631,9 +587,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/AudioTools.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoAudioDevice.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoAudioDevice.Po ./$(DEPDIR)/SoBase.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoBase.Po ./$(DEPDIR)/SoByteStream.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoByteStream.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoChildList.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoBase.Po ./$(DEPDIR)/SoChildList.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoChildList.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoContextHandler.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoContextHandler.Po \
@@ -645,12 +599,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLImage.Plo ./$(DEPDIR)/SoGLImage.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGenerate.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGenerate.Po ./$(DEPDIR)/SoGlyph.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoGlyph.Po ./$(DEPDIR)/SoInput.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoInput.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoInput_FileInfo.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoInput_FileInfo.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoInput_Reader.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoInput_Reader.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGlyph.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoInteraction.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoInteraction.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoLightPath.Plo \
@@ -670,9 +619,6 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoOffscreenRenderer.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoOffscreenWGLData.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoOffscreenWGLData.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoOutput.Plo ./$(DEPDIR)/SoOutput.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoOutput_Writer.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoOutput_Writer.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPath.Plo ./$(DEPDIR)/SoPath.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPick.Plo ./$(DEPDIR)/SoPick.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPickedPoint.Plo \
@@ -686,16 +632,11 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoSceneManager.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoState.Plo ./$(DEPDIR)/SoState.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTempPath.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTempPath.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTranReceiver.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTranReceiver.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTranSender.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTranSender.Po ./$(DEPDIR)/SoType.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoTempPath.Po ./$(DEPDIR)/SoType.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoType.Po ./$(DEPDIR)/all-misc-c.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-misc-c.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-misc-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-misc-cpp.Po ./$(DEPDIR)/gzmemio.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/gzmemio.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-misc-cpp.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
@@ -788,8 +729,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAudioDevice.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBase.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBase.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoByteStream.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoByteStream.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoChildList.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoChildList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoContextHandler.Plo@am__quote@
@@ -808,12 +747,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGenerate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGlyph.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGlyph.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInput.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInput.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInput_FileInfo.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInput_FileInfo.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInput_Reader.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInput_Reader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInteraction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoInteraction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoLightPath.Plo@am__quote@
@@ -834,10 +767,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOffscreenRenderer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOffscreenWGLData.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOffscreenWGLData.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOutput.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOutput.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOutput_Writer.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoOutput_Writer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPath.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPath.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPick.Plo@am__quote@
@@ -856,18 +785,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoState.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTempPath.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTempPath.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTranReceiver.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTranReceiver.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTranSender.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTranSender.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoType.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoType.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-misc-c.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-misc-c.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-misc-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-misc-cpp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gzmemio.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gzmemio.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
