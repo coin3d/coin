@@ -277,7 +277,22 @@ INPUT                = \
 	$(top_srcdir)/include/Inventor/fields/SoSFBitMask.h \
 	$(top_srcdir)/src/fields/SoMFBitMask.cpp \
 	$(top_srcdir)/include/Inventor/fields/SoMFBitMask.h \
+	$(top_srcdir)/src/fields/SoSFNode.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFNode.h \
+	$(top_srcdir)/src/fields/SoMFNode.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFNode.h \
 
+#	$(top_srcdir)/src/fields/SoSFEngine.cpp \
+#	$(top_srcdir)/include/Inventor/fields/SoSFEngine.h \
+#	$(top_srcdir)/src/fields/SoSFPath.cpp \
+#	$(top_srcdir)/include/Inventor/fields/SoSFPath.h \
+#	$(top_srcdir)/src/fields/SoSFTrigger.cpp \
+#	$(top_srcdir)/include/Inventor/fields/SoSFTrigger.h \
+#	$(top_srcdir)/src/fields/SoMFEngine.cpp \
+#	$(top_srcdir)/include/Inventor/fields/SoMFEngine.h \
+#	$(top_srcdir)/src/fields/SoMFPath.cpp \
+#	$(top_srcdir)/include/Inventor/fields/SoMFPath.h \
+#	\
 #	$(top_srcdir)/src/base/SbBSPTree.cpp \	
 #	$(top_srcdir)/include/Inventor/SbBSPTree.h \
 #	$(top_srcdir)/include/Inventor/SbBox.h \
@@ -706,21 +721,6 @@ INPUT                = \
 #	$(top_srcdir)/include/Inventor/elements/SoViewportRegionElement.h \
 #	$(top_srcdir)/src/elements/SoWindowElement.cpp \
 #	$(top_srcdir)/include/Inventor/elements/SoWindowElement.h \
-#	\
-#	$(top_srcdir)/src/fields/SoSFEngine.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoSFEngine.h \
-#	$(top_srcdir)/src/fields/SoSFNode.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoSFNode.h \
-#	$(top_srcdir)/src/fields/SoSFPath.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoSFPath.h \
-#	$(top_srcdir)/src/fields/SoSFTrigger.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoSFTrigger.h \
-#	$(top_srcdir)/src/fields/SoMFEngine.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoMFEngine.h \
-#	$(top_srcdir)/src/fields/SoMFNode.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoMFNode.h \
-#	$(top_srcdir)/src/fields/SoMFPath.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoMFPath.h \
 #	\
 #	$(top_srcdir)/src/nodes/SoAnnoText3.cpp \
 #	$(top_srcdir)/include/Inventor/nodes/SoAnnoText3.h \

@@ -19,60 +19,39 @@
 
 /*!
   \class SoSFNode SoSFNode.h Inventor/fields/SoSFNode.h
-  \brief The SoSFNode class ...
+  \brief The SoSFNode class is a container for a single node.
   \ingroup fields
 
-  FIXME: write class doc
+  This field container stores a pointer to a Coin node. It takes care
+  of the necessary functionality for handling copy, import and export
+  operations.
+
+  Note that the node pointer stored in a field instance of this type
+  may be a \c NULL pointer.
+
+  \sa SoNode, SoMFNode
+
 */
 
-#include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/fields/SoSFNode.h>
-#include <Inventor/fields/SoMFNode.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/SbName.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
+
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/errors/SoReadError.h>
+#include <Inventor/fields/SoMFNode.h>
+#include <Inventor/nodes/SoNode.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
 
-
-// FIXME: can we use SO_SFIELD_SOURCE() instead? Depends on whether or
-// not we should do reference counting, I think. 19991227 mortene.
+// Can't use SO_SFIELD_SOURCE() because we need to modify setValue()
+// to ref and unref the passed node.
 SO_SFIELD_REQUIRED_SOURCE(SoSFNode);
 
 
-/*!
-  FIXME: write function documentation
-*/
-void
-SoSFNode::setValue(SoNode * newval)
-{
-  // FIXME: should we really ref/unref here? 19990630 mortene.
-
-  if (this->value) this->value->unref();
-  this->value = newval;
-  if (this->value) this->value->ref();
-  this->valueChanged();
-}
-
-/*!
-  FIXME: write function documentation
-*/
-SbBool
-SoSFNode::operator == (const SoSFNode & field) const
-{
-  return (this->getValue() == field.getValue());
-}
-
-/*!
-  Does initialization common for all objects of the
-  SoSFNode class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoSFNode::initClass(void)
 {
@@ -80,7 +59,7 @@ SoSFNode::initClass(void)
 }
 
 /*!
-  Constructor.
+  Constructor, sets initial node pointer to a \c NULL pointer.
 */
 SoSFNode::SoSFNode(void)
 {
@@ -88,99 +67,113 @@ SoSFNode::SoSFNode(void)
 }
 
 /*!
-  Destructor.
+  Destructor, dereferences the current node pointer if necessary.
 */
 SoSFNode::~SoSFNode(void)
 {
   this->setValue(NULL);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// Store the \a newval node pointer in this field. If \a newval is not
+// \c NULL, will add 1 to the reference count of the node.
+void
+SoSFNode::setValue(SoNode * newval)
+{
+  SoNode * oldptr = this->getValue();
+  if (oldptr) oldptr->unref();
+
+  this->value = newval;
+  if (this->value) this->value->ref();
+
+  this->valueChanged();
+}
+
+// Compares to see if the \a field points to the same node as this
+// field does, and returns \c TRUE if this is the case.
+//
+// Be aware that this method does \e not check for node/subgraph
+// equality if the pointers are not the same, so \c FALSE is returned
+// even though the contents of the node/subgraph are equal.
+SbBool
+SoSFNode::operator==(const SoSFNode & field) const
+{
+  return (this->getValue() == field.getValue());
+}
+
+// Import node.
 SbBool
 SoSFNode::readValue(SoInput * in)
 {
-  SoBase * baseptr = NULL;
-  SbBool result = SoBase::read(in, baseptr, SoNode::getClassTypeId());
+  SoBase * baseptr;
+  if (!SoBase::read(in, baseptr, SoNode::getClassTypeId())) return FALSE;
 
-  if (result) {
-    if (in->eof()) {
-      SoReadError::post(in, "Premature end of file");
-      result = FALSE;
-    }
-    else {
-      this->setValue((SoNode *)baseptr);
-    }
+  if (in->eof()) {
+    SoReadError::post(in, "Premature end of file");
+    return FALSE;
   }
-  return result;
+
+  this->setValue((SoNode *)baseptr);
+  return TRUE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
-void
-SoSFNode::fixCopy(SbBool /* copyConnections */)
-{
-  COIN_STUB();
-}
-
-/*!
-  FIXME: write function documentation
-*/
-SbBool
-SoSFNode::referencesCopy(void) const
-{
-  COIN_STUB();
-  return FALSE;
-}
-
-/*!
-  FIXME: write function documentation
-*/
+// Export node.
 void
 SoSFNode::writeValue(SoOutput * out) const
 {
-#if 0 // OBSOLETED: ugly and error-prone. 19991113 mortene.
-
-  // Note: make sure this code is in sync with the code in
-  // SoNode::write(). Any changes here might need to be propagated to
-  // that method.
-
-  // FIXME: could this be done in a better way? As it stands now, we
-  // need a "friend SoSFNode" definition in SoBase (writeHeader() and
-  // writeFooter() are protected members). 19991112 mortene.
-
-  SoNode * node = this->getValue();
-
-  if (out->getStage() == SoOutput::COUNT_REFS) {
-    node->addWriteReference(out, FALSE);
-  }
-  else if (out->getStage() == SoOutput::WRITE) {
-    if (node) {
-      if (node->writeHeader(out, FALSE, FALSE)) return;
-      node->writeInstance(out);
-      node->writeFooter(out);
-    }
-    else {
-      COIN_STUB();
-    }
-  }
-  else assert(0 && "unknown stage");
-
-#else // new code
-
   SoNode * node = this->getValue();
   if (node) {
     SoWriteAction wa(out);
     wa.continueToApply(node);
   }
   else {
-    // Yep, this'll work for both ASCII and binary formats.
+    // This actually works for both ASCII and binary formats.
     out->write("NULL");
   }
+}
 
-#endif // new code
+#endif // DOXYGEN_SKIP_THIS
+
+
+// Overridden from parent to propagate write reference counting to
+// node.
+void
+SoSFNode::countWriteRefs(SoOutput * out) const
+{
+  inherited::countWriteRefs(out);
+  SoNode * n = this->getValue();
+  // Set the "from field" flag as FALSE, is that flag is meant to be
+  // used for references through field-to-field connections.
+  if (n) n->addWriteReference(out, FALSE);
+}
+
+// Override from parent to update our node pointer reference, if
+// necessary.
+void
+SoSFNode::fixCopy(SbBool copyconnections)
+{
+  SoNode * n = this->getValue();
+  if (!n) return;
+
+  SoFieldContainer * fc = SoFieldContainer::findCopy(n, copyconnections);
+  this->setValue((SoNode *)fc);
+}
+
+// Override from SoField to check node pointer.
+SbBool
+SoSFNode::referencesCopy(void) const
+{
+  if (inherited::referencesCopy()) return TRUE;
+
+  SoNode * n = this->getValue();
+  if (n && SoFieldContainer::checkCopy(n)) return TRUE;
+
+  return FALSE;
 }
 
 void
@@ -197,13 +190,4 @@ SoSFNode::convertTo(SoField * dest) const
                        dest->getTypeId().getName().getString());
   }
 #endif // COIN_DEBUG
-}
-
-// Overridden from parent to propagate write reference counting to
-// value member.
-void
-SoSFNode::countWriteRefs(SoOutput * out) const
-{
-  inherited::countWriteRefs(out);
-  COIN_STUB();
 }

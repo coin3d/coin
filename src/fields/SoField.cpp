@@ -1316,8 +1316,8 @@ SoField::write(SoOutput * out, const SbName & name) const
 void
 SoField::countWriteRefs(SoOutput * out) const
 {
-  // FIXME: call the "writereference" method of all connected fields
-  // etc? 20000130 mortene.
+  // FIXME: call the "writereference" method of _all_ connected
+  // fields, engine outputs (?) and VRML interpolators? 20000130 mortene.
   SbName dummy;
   SoFieldContainer * fc = this->resolveWriteConnection(dummy);
   if (fc) fc->addWriteReference(out, TRUE);

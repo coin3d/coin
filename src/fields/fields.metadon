@@ -24,7 +24,7 @@
 # ID         SoSFInt32
 # ID         SoSFMatrix
 # ID         SoSFName
-#            SoSFNode
+# ID         SoSFNode
 #            SoSFPath
 # ID         SoSFPlane
 # ID         SoSFRotation
@@ -47,7 +47,7 @@
 # ID         SoMFInt32
 # ID         SoMFMatrix
 # ID         SoMFName
-#            SoMFNode
+# ID         SoMFNode
 #            SoMFPath
 # ID         SoMFPlane
 # ID         SoMFRotation
@@ -67,13 +67,6 @@
 #
 # COMMENTS
 #
-# Check:
-# <UL>
-# <LI>what's the difference between findEnumValue() in So[S|M]FEnum
-#     vs So[S|M]FBitMask?</LI>
-# <LI>valueChanged() called from everywhere it should be called?</LI>
-# </UL>
-# 
 # END COMMENTS
 # 
 ############################################################################

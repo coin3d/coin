@@ -34,7 +34,7 @@ class SoSFNode : public SoSField {
 public:
   static void initClass(void);
 
-  virtual void fixCopy(SbBool copyConnections);
+  virtual void fixCopy(SbBool copyconnections);
   virtual SbBool referencesCopy(void) const;
 
 private:
