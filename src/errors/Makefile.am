@@ -2,12 +2,14 @@
 ## 19990904 mortene.
 
 RegularSources = \
+	error.c \
+	debugerror.c \
 	SoDebugError.cpp \
 	SoError.cpp \
 	SoMemoryError.cpp \
 	SoReadError.cpp
 LinkHackSources = \
-	all.cpp
+	all.cpp all-c.c
 PublicHeaders = \
 	../../include/Inventor/errors/SoErrors.h \
 	../../include/Inventor/errors/SoDebugError.h \
