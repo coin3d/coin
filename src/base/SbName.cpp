@@ -49,7 +49,7 @@ SbName::SbName(void)
 SbName::SbName(const char *nameString)
 {
   this->entry = SbNameEntry::insert(nameString);
-};
+}
 
 /*!
   Constructor. Adds \a str to the name table.
