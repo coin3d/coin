@@ -11,13 +11,8 @@
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/base/hashp.h>
 #include <Inventor/C/base/string.h>
-#include <Inventor/C/glue/flwfreetype.h>
 
-/*
-// FIXME: These files must be moved to the correct directory later (
-// 1Sep2003 handegar)
-//#include "fontspec.h"
-*/
+#include "freetype.h"
 #include "glyph2d.h"
 
 static SbBool specmatch(const cc_font_specification * spec1, const cc_font_specification * spec2);

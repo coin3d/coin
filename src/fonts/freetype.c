@@ -30,8 +30,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include <Inventor/C/glue/flwfreetype.h>
-//#include "freetype.h"
+#include "freetype.h"
 
 #include <Inventor/C/glue/freetype.h>
 #include <Inventor/C/glue/GLUWrapper.h>

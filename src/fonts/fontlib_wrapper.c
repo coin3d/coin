@@ -33,17 +33,17 @@
 #include <assert.h>
 #include <stddef.h>
 
-#include <Inventor/C/glue/fontlib_wrapper.h>
-
 #include <Inventor/C/base/dynarray.h>
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/errors/debugerror.h>
-#include <Inventor/C/glue/flwfreetype.h>
+
 #include <Inventor/C/glue/flwwin32.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
 
+#include "fontlib_wrapper.h"
+#include "freetype.h"
 #include "../misc/defaultfonts.h"
 
 /* ********************************************************************** */

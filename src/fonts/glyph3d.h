@@ -2,7 +2,10 @@
    it. 20030901 mortene. */
 
 struct cc_glyph3d {
-  /* XXX */
+  
+
+
+
 };
 
 typedef struct cc_glyph3d cc_glyph3d;
