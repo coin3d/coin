@@ -606,15 +606,17 @@ SoSelection::removeFinishCallback(SoSelectionClassCB * f, void * userData)
 
   Possible return values from the callback:
 
-  - NULL: simulate that nothing was picked. This will clear the
+  <ul>
+  <li> NULL: simulate that nothing was picked. This will clear the
     selection for the SINGLE policy. The handle event action will be
-    halted.
-  - A path: the path will be selected/deselected. The handle event
-    action will be halted.
-  - A path containing only the Selection node: as NULL, but action
-    will not be halted.
-  - An empty path or a path not containing the Selection node: the
-    pick will be ignored.
+    halted.</li>
+  <li> A path: the path will be selected/deselected. The handle event
+    action will be halted. </li>
+  <li> A path containing only the Selection node: as NULL, but action
+    will not be halted. </li>
+  <li> An empty path or a path not containing the Selection node: the
+    pick will be ignored. </li>
+  </ul>
 
   if \a callOnlyIfSelectable is \c TRUE, the callback will only be
   called if the Selection node is in the picked path.  

@@ -935,6 +935,8 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
       const SbVec2s vprsize = vpr.getWindowSize();
       mousecoords[0] = mousecoords[0] < vprsize[0] ? mousecoords[0] : vprsize[0];
       mousecoords[1] = mousecoords[1] < vprsize[1] ? mousecoords[1] : vprsize[1];
+      // FIXME: this doesn't look entirely correct -- shouldn't
+      // SbViewportRegion::getOrigin() be the lower bound? 20050104 mortene.
       mousecoords[0] = mousecoords[0] < 0 ? 0 : mousecoords[0];
       mousecoords[1] = mousecoords[1] < 0 ? 0 : mousecoords[1];
     }

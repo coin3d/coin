@@ -394,6 +394,8 @@ SoVRMLBillboard::performRotation(SoState * state) const
     // 3. Rotate the local Z-axis of the billboard into the plane from 2.,
     //    pivoting around the axisOfRotation.
     SbVec3f zaxis(0.0f, 0.0f, 1.0f);
+    // FIXME: this is buggy if axisOfRotation and toviewer are
+    // parallel. 20050104 mortene.
     SbPlane plane(rotaxis.cross(toviewer), 0.0f);
     const SbVec3f n = plane.getNormal();
     SbVec3f vecinplane = zaxis - n * n[2];
