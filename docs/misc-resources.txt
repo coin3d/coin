@@ -152,6 +152,10 @@ THE LINKS
 
     <URL:http://developer.nvidia.com/view.asp?IO=hwshadowmap_paper>
 
+* Another NVidia link: search developer.nvidia.com for "Practical and
+  Robust Shadow Volumes" by Everitt and Kilgard. A good paper and a
+  demo.
+
 * A 3D model search engine (with lots of VRML models, at least):
   http://shape.cs.princeton.edu
 
@@ -201,7 +205,15 @@ THE LINKS
   <URL:http://devel-home.kde.org/~sewardj/> (or
   <URL:http://developer.kde.org/~sewardj>).
 
-* TrueType Fonts with very liberal licensing: <URL:http://fonts.tom7.com/>
+* TrueType Fonts with liberal licensing (?): <URL:http://fonts.tom7.com/>
 
 * Volume rendering publications / papers:
   - <URL:http://www.sigchi.acm.org/pubs/contents/proceedings/volvis/353888/>
+
+* OpenGL and ActiveX:
+
+  - Working demo code:
+    <URL:http://www.sulaco.co.za/opengl.htm>
+
+  - An OpenGL ActiveX Control Developed with MFC:
+    <URL:http://www.codeproject.com/opengl/opengl_activex.asp>
