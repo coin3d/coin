@@ -23,14 +23,25 @@
 
 /*!
   \class SbName SbName.h Inventor/SbName.h
-  \brief The SbName class stores strings by reference in a hash table.
+  \brief The SbName class stores strings by reference.
   \ingroup base
 
-  The class is used by inventor for keywords and other unique names that are
-  used all over the place and would waste tons of memory if they were
-  duplicated for each reference.  Because strings are uniquely identified
-  by their reference, string comparisons for SbName objects are very
-  efficient.
+  The class is used by Coin for storing keywords, names and other
+  strings. They are stored in a manner where identical strings are
+  guaranteed to map to the same memory address (as returned by the
+  SbName::getString() method).
+
+  The main advantage of storing identical strings to the same memory
+  address is that it simplifies comparison operations, and
+  particularly when working with string data as keys in other data
+  structures, like e.g. in hash (dictionary) tables.
+
+  Apart from that, mapping identical strings to the same memory
+  address can also save on memory resources, and provide run-time
+  optimizations. String comparisons for SbName objects are very
+  efficient, for instance.
+
+  \sa SbString
 */
 
 #include <Inventor/SbName.h>
@@ -248,8 +259,10 @@ SbName::~SbName()
 
 /*!
   This method returns pointer to character array for the name.
-*/
 
+  The returned memory pointer for the character string is guaranteed
+  to be valid for the remaining life time of the process.
+*/
 const char *
 SbName::getString(void) const
 {
