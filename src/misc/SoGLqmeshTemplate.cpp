@@ -25,45 +25,46 @@
     int j = 0;
     glBegin(GL_QUAD_STRIP);
 #if NBINDING==PER_ROW
-      currnormal = normals++;
-      glNormal3fv((const GLfloat *)currnormal);
+    currnormal = normals++;
+    glNormal3fv((const GLfloat *)currnormal);
 #endif
 #if MBINDING==PER_ROW
-      mb->send(midx++,TRUE);
+    mb->send(midx++,TRUE);
 #endif
-
+    
     for (j = 0; j < rowsize; j++) {
       curridx = IDX(i,j);
 #if NBINDING==PER_VERTEX
-        currnormal = &normals[curridx];
-        glNormal3fv((const GLfloat *)currnormal);
+      currnormal = &normals[curridx];
+      glNormal3fv((const GLfloat *)currnormal);
 #endif
 #if NBINDING==PER_FACE
-        currnormal = normals++;
-        glNormal3fv((const GLfloat *)currnormal);
+      currnormal = normals++;
+      glNormal3fv((const GLfloat *)currnormal);
 #endif
 #if MBINDING==PER_VERTEX
-        mb->send(curridx, TRUE);
+      mb->send(curridx, TRUE);
 #endif
-#if MBINDING==PER_FACE
-        mb->send(midx++, TRUE);
-#endif
-
+      
 #if TEXTURES==TRUE
-        tb->send(curridx, coords->get3(start + curridx),
-                *currnormal);
+      tb->send(curridx, coords->get3(start + curridx),
+               *currnormal);
 #endif
       coords->send(start + curridx);
       curridx = IDX(i+1,j);
 #if NBINDING==PER_VERTEX
-        currnormal = &normals[curridx];
-        glNormal3fv((const GLfloat *)currnormal);
+      currnormal = &normals[curridx];
+      glNormal3fv((const GLfloat *)currnormal);
 #endif
 #if MBINDING==PER_VERTEX
-        mb->send(curridx, TRUE);
+      mb->send(curridx, TRUE);
 #endif
 #if TEXTURES==TRUE
-        tb->send(curridx, coords->get3(start + curridx), *currnormal);
+      tb->send(curridx, coords->get3(start + curridx), *currnormal);
+#endif
+#if MBINDING==PER_FACE
+      // FIXME: optimize by moving first 2 vertices in row outside loop
+      if (j > 0) mb->send(midx++, TRUE);
 #endif
       coords->send(start + curridx);
     }

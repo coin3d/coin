@@ -41,6 +41,7 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/elements/SoGLShadeModelElement.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #if HAVE_CONFIG_H
@@ -587,14 +588,16 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
 
   SoState * state = action->getState();
 
+  SbBool didpush = FALSE;
+
   if (this->vertexProperty.getValue()) {
     state->push();
+    didpush = TRUE;
     this->vertexProperty.getValue()->GLRender(action);
   }
-
+  
   if (!this->shouldGLRender(action)) {
-    if (this->vertexProperty.getValue())
-      state->pop();
+    if (didpush) state->pop();
     return;
   }
 
@@ -624,8 +627,11 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
 
   Binding mbind = findMaterialBinding(action->getState());
   Binding nbind = findNormalBinding(action->getState());
-
   if (!needNormals) nbind = OVERALL;
+
+  if ((nbind == PER_FACE) || (mbind == PER_FACE)) {
+    SoGLShadeModelElement::getInstance(state)->forceSend(TRUE);
+  }
 
   if (needNormals && normals == NULL) {
     normals = getNormalCache()->getNormals();
@@ -695,8 +701,7 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
 
 #endif // obsoleted
 
-  if (this->vertexProperty.getValue())
-    state->pop();
+  if (didpush) state->pop();
 }
 
 // doc from parent
