@@ -31,22 +31,22 @@
   graphics library for complex visualization applications.
 
   Systems in Motion is working on providing libraries for interfacing
-  Coin with a wide range of windowing systems and GUI toolkits. The
-  library for interfacing against X11 through Xt/Motif is nearing
-  completion, and the SoQt library for interfacing to X11 or MSWin
-  systems through the Qt toolkit is also fully usable. Other libraries
-  in development includes SoWin (interfacing Coin directly with the
-  Win32 API), SoGtk (gkt+) and SoBe (BeOS).
+  Coin with a wide range of windowing systems and GUI toolkits.
+  SoXt is for interfacing with Xt/Motif on X Windows.
+  SoQt is for interfacing with Trolltech's cross-platform Qt toolkit
+    (UNIX, Windows, Mac OS X).
+  SoWin is for interfacing with the Win32 API on Windows and Windows NT.
+  SoGtk is for interfacing with GTK+.
 
-  See <http://www.coin3d.org> for more information about Coin and the
-  SoXt, SoQt and other GUI glue libraries.
+  See <http://www.coin3d.org/> for more information about Coin and the
+  GUI toolkit libraries.
 
   <b>IMPORTANT NOTE: the documentation for the Coin library is still a
   work-in-progress.</b> Although most classes have been documented
   properly, there are still "holes" in the documentation for certain
   sets of classes.  Complete documentation for the Inventor API can be
   found on the web-pages of Template Graphics Systems at <a
-  href="http://www.tgs.com">http://www.tgs.com</a>, just follow the
+  href="http://www.tgs.com/">http://www.tgs.com/</a>, just follow the
   links to the "Open Inventor C++" classes documentation.
 */
 
