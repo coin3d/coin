@@ -35,6 +35,7 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SoFullPath.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
 
 /*!
   \class SoTextureCoordinateCylinder include/Inventor/nodes/SoTextureCoordinateCylinder.h
@@ -99,8 +100,8 @@ SoTextureCoordinateCylinder::~SoTextureCoordinateCylinder()
 void
 SoTextureCoordinateCylinder::initClass(void)
 {
-  // FIXME: What should this one say?? (20040122 handegar)
-  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateCylinder, SO_FROM_INVENTOR_1|SoNode::VRML1);
+  // FIXME: This should actually be COIN_2_2_3 (20040122 handegar)
+  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateCylinder, SO_FROM_COIN_2_2);
   
   SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
   SO_ENABLE(SoCallbackAction, SoTextureCoordinateElement);
@@ -120,7 +121,6 @@ textureCoordinateCylinderCallback(void * userdata,
   SoFullPath * path = (SoFullPath *) state->getAction()->getCurPath();
   SoNode * node = path->getTail();
 
-
   if (!node->isOfType(SoShape::getClassTypeId())) {
     // FIXME: A better way to handle this? (20040122 handegar)
     assert(FALSE && "TextureCoordinateCylinder callback called for a non-SoShape node.");
@@ -131,11 +131,17 @@ textureCoordinateCylinderCallback(void * userdata,
 
   if (shape != pimpl->currentshape) {       
     pimpl->boundingbox.makeEmpty();
-    shape->computeBBox(state->getAction(), pimpl->boundingbox, pimpl->origo);
-    pimpl->origo = pimpl->boundingbox.getCenter();
+    const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();    
+    if (bboxcache && bboxcache->isValid(state)) {
+      pimpl->boundingbox = bboxcache->getProjectedBox();
+      pimpl->origo = pimpl->boundingbox.getCenter();
+    }
+    else {
+      shape->computeBBox(state->getAction(), pimpl->boundingbox, pimpl->origo);
+      pimpl->origo = pimpl->boundingbox.getCenter();
+    }
     pimpl->currentshape = shape;
   }
-
 
   const SbVec4f & ret = pimpl->calculateTextureCoordinate(point, normal);
   return ret;
@@ -165,9 +171,9 @@ SoTextureCoordinateCylinderP::calculateTextureCoordinate(SbVec3f point, SbVec3f 
 
   if (maxi == 1) { // Cylinder top or bottom?
 
-    // FIXME: A better solution might be to calculate the angle before
-    // deciding whether this is the cylinder top/bottom or
-    // not. (20040127 handegar) 
+    // FIXME: A nicer solution might be to calculate the angle between
+    // the origo<->point and the origo<->bboxcorner before deciding whether this
+    // is the cylinder top/bottom or not. (20040127 handegar)
     float d0 = bmax[2] - bmin[2];
     float d1 = bmax[0] - bmin[0];    
     if (d0 == 0.0f) d0 = 1.0f;
@@ -185,7 +191,6 @@ SoTextureCoordinateCylinderP::calculateTextureCoordinate(SbVec3f point, SbVec3f 
                  0.0f, 1.0f);
   }
 
-
   return tc;
 
 }
@@ -202,11 +207,8 @@ void
 SoTextureCoordinateCylinder::GLRender(SoGLRenderAction * action)
 {
   
-  if (PRIVATE(this)->currentstate != action->getState()) 
-    PRIVATE(this)->currentstate = action->getState();    
-
+  PRIVATE(this)->currentstate = action->getState();      
   PRIVATE(this)->currentshape = NULL;  
-
   SoTextureCoordinateElement::setFunction(PRIVATE(this)->currentstate, 
                                           this, textureCoordinateCylinderCallback, 
                                           PRIVATE(this));

@@ -35,6 +35,7 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SoFullPath.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
 
 /*!
   \class SoTextureCoordinateSphere include/Inventor/nodes/SoTextureCoordinateSphere.h
@@ -99,8 +100,8 @@ SoTextureCoordinateSphere::~SoTextureCoordinateSphere()
 void
 SoTextureCoordinateSphere::initClass(void)
 {
-  // FIXME: What should this one say?? (20040122 handegar)
-  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateSphere, SO_FROM_INVENTOR_1|SoNode::VRML1);
+  // FIXME: This should actually be COIN_2_2_3 (20040122 handegar)
+  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateSphere, SO_FROM_COIN_2_2);
   
   SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
   SO_ENABLE(SoCallbackAction, SoTextureCoordinateElement);
@@ -129,13 +130,19 @@ textureCoordinateSphereCallback(void * userdata,
   // Cast the node into a shape
   SoShape * shape = (SoShape *) node;
 
-  if (shape != pimpl->currentshape) {       
-    pimpl->boundingbox.makeEmpty();
-    shape->computeBBox(state->getAction(), pimpl->boundingbox, pimpl->origo);
-    pimpl->origo = pimpl->boundingbox.getCenter();
+  if (shape != pimpl->currentshape) {  
+    pimpl->boundingbox.makeEmpty();  
+    const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();    
+    if (bboxcache && bboxcache->isValid(state)) {
+      pimpl->boundingbox = bboxcache->getProjectedBox();
+      pimpl->origo = pimpl->boundingbox.getCenter();
+    }
+    else {
+      shape->computeBBox(state->getAction(), pimpl->boundingbox, pimpl->origo);
+      pimpl->origo = pimpl->boundingbox.getCenter();
+    }
     pimpl->currentshape = shape;
   }
-
 
   const SbVec4f & ret = pimpl->calculateTextureCoordinate(point, normal);
   return ret;
@@ -172,11 +179,8 @@ void
 SoTextureCoordinateSphere::GLRender(SoGLRenderAction * action)
 {
   
-  if (PRIVATE(this)->currentstate != action->getState()) 
-    PRIVATE(this)->currentstate = action->getState();    
-
+  PRIVATE(this)->currentstate = action->getState();    
   PRIVATE(this)->currentshape = NULL;  
-
   SoTextureCoordinateElement::setFunction(PRIVATE(this)->currentstate, 
                                           this, textureCoordinateSphereCallback, 
                                           PRIVATE(this));

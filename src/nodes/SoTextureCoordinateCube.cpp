@@ -35,6 +35,7 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SoFullPath.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
 
 /*!
   \class SoTextureCoordinateCube include/Inventor/nodes/SoTextureCoordinateCube.h
@@ -101,8 +102,8 @@ SoTextureCoordinateCube::~SoTextureCoordinateCube()
 void
 SoTextureCoordinateCube::initClass(void)
 {
-  // FIXME: What should this one say?? (20040122 handegar)
-  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateCube, SO_FROM_INVENTOR_1|SoNode::VRML1);
+  // FIXME: This should actually be COIN_2_2_3 (20040122 handegar)
+  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateCube, SO_FROM_COIN_2_2);
   
   SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
   SO_ENABLE(SoCallbackAction, SoTextureCoordinateElement);
@@ -131,18 +132,26 @@ textureCoordinateCubeCallback(void * userdata,
   // Cast the node into a shape
   SoShape * shape = (SoShape *) node;
 
-  if (shape != pimpl->currentshape) {       
+  if (shape != pimpl->currentshape) { 
     pimpl->boundingbox.makeEmpty();
-    shape->computeBBox(state->getAction(), pimpl->boundingbox, pimpl->origo);
-    SbVec3f c = pimpl->origo = pimpl->boundingbox.getCenter();
+    const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();    
+    if (bboxcache && bboxcache->isValid(state)) {
+      pimpl->boundingbox = bboxcache->getProjectedBox();
+      pimpl->origo = pimpl->boundingbox.getCenter();
+    }
+    else {
+      shape->computeBBox(state->getAction(), pimpl->boundingbox, pimpl->origo);
+      pimpl->origo = pimpl->boundingbox.getCenter();
+    }
     pimpl->currentshape = shape;
 
+    // Expanding the bbox making it cube shaped
     float sx, sy, sz;
     pimpl->boundingbox.getSize(sx, sy, sz);
     if (sy > sx) sx = sy;
     if (sz > sx) sx = sz;
     sx *= 0.5f;
-    
+    const SbVec3f c = pimpl->origo;
     pimpl->boundingbox.setBounds(c[0] - sx, c[1] - sx, c[2] - sx,
                                  c[0] + sx, c[1] + sx, c[2] + sx);
   }
@@ -177,7 +186,7 @@ SoTextureCoordinateCubeP::calculateTextureCoordinate(SbVec3f point, SbVec3f n)
   float t = (point[i1] - bmin[i1]) / d1;
 
   SbVec4f tc(s, t, 0.0f, 1.0f);
-  switch (maxi) {
+  switch (maxi) { // Flip textures according to projected cube-side
   case 0:
     tc[0] = 1.0f - t;
     tc[1] = s; 
@@ -211,11 +220,8 @@ void
 SoTextureCoordinateCube::GLRender(SoGLRenderAction * action)
 {
   
-  if (PRIVATE(this)->currentstate != action->getState()) 
-    PRIVATE(this)->currentstate = action->getState();    
-
+  PRIVATE(this)->currentstate = action->getState();    
   PRIVATE(this)->currentshape = NULL;  
-
   SoTextureCoordinateElement::setFunction(PRIVATE(this)->currentstate, 
                                           this, textureCoordinateCubeCallback,
                                           PRIVATE(this));
