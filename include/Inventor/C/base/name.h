@@ -59,7 +59,7 @@ int operator ! (void) const;
 /* ********************************************************************** */
 
 #ifdef __cplusplus
-extern "C" {
+} /* extern "C" */
 #endif /* __cplusplus */
 
 #endif /* ! CC_NAME_H */
