@@ -564,6 +564,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   if (SoBumpMapElement::get(state)) {
     const SoNodeList & lights = SoLightElement::getLights(state);
     if (lights.getLength()) {
+
       soshape_staticdata * shapedata = soshape_get_staticdata();
       // lock mutex since bumprender and pvcache is shared among all threads
       PRIVATE(this)->lock();
@@ -589,6 +590,8 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
         state->pop();
         SoCacheElement::setInvalid(storedinvalid);
       }
+
+      SoGLLazyElement::getInstance(state)->send(state, SoLazyElement::ALL_MASK);
       
       glPushAttrib(GL_DEPTH_BUFFER_BIT);
       glDepthFunc(GL_LEQUAL);
