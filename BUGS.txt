@@ -4162,6 +4162,12 @@ int main(int argc, char ** argv)
 }
     ----8<----- [snip] --------------------8<----- [snip] ----------------
 
+    Update. After reimplementing some of the Writeref-counting system,
+    this bug is now fixed. There is still a warning about "KIT" not
+    being removed from the writeref dict, so keep this
+    bugreport here until this is solved. pederb, 2004-11-08
+
+
 =====================================================================
 
 156 Setting a node that is not of SoVertexProperty type in
@@ -4294,76 +4300,6 @@ TransformBoxManip { }
 
 =====================================================================
 
-161 Error in VRML97-export of ROUTE connections.
-
-    This example demonstrates a bug where the names of the entities
-    that are connected are not included in the "ROUTE ..." output:
-
-----8<----- [snip] --------------------8<----- [snip] ----------------
-#include <Inventor/SoDB.h>
-#include <Inventor/SoInteraction.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
-#include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/VRMLnodes/SoVRMLGroup.h>
-#include <Inventor/VRMLnodes/SoVRMLText.h>
-#include <Inventor/VRMLnodes/SoVRMLFontStyle.h>
-#include <Inventor/VRMLnodes/SoVRMLSwitch.h>
-#include <Inventor/VRMLnodes/SoVRMLBillboard.h>
-#include <Inventor/VRMLnodes/SoVRMLShape.h>
-#include <Inventor/VRMLnodes/SoVRMLText.h>
-
-int main(int argc, char *argv[])
-{
-  SoDB::init();
-  SoInteraction::init();
-  SoBase::setInstancePrefix("_");
-
-  SoVRMLGroup *root = new SoVRMLGroup;
-  root->ref();
-
-  SoVRMLSwitch *sw = new SoVRMLSwitch;
-  sw->whichChoice = -1;
-  root->addChild(sw);
-  SoVRMLText *text = new SoVRMLText;
-  SoVRMLFontStyle *fontstyle = new SoVRMLFontStyle;
-  text->fontStyle = fontstyle;
-  fontstyle->family = "SANS";
-  fontstyle->size = 100;
-  sw->choice = text;
-
-  SoVRMLGroup *sub = new SoVRMLGroup;
-  root->addChild(sub);
-  SoVRMLBillboard *bb = new SoVRMLBillboard;
-  sub->addChild(bb);
-  SoVRMLShape *sh = new SoVRMLShape;
-  bb->addChild(sh);
-  SoVRMLText *txt = new SoVRMLText;
-  sh->geometry = txt;
-  SoVRMLFontStyle *fstyle = new SoVRMLFontStyle;
-  txt->fontStyle = fstyle;
-  fstyle->family = "SERIF";
-  fstyle->size = 50;
-  
-  txt->fontStyle.connectFrom(&text->fontStyle);
-
-  SoOutput out;
-  out.openFile("out.wrl");
-  out.setHeaderString("#VRML V2.0 utf8");
-  SoWriteAction wra(&out);
-  wra.apply(root);
-  out.closeFile();
-  
-  root->unref();
-}
-----8<----- [snip] --------------------8<----- [snip] ----------------
-
-    Bug reported by kintel.
-
-    20041104 mortene.
-
-=====================================================================
 
 162 Inconsistent traversal behavior upon traversal of VRML97-nodes
     with SoSFNode and/or SoMFNode fields.
@@ -4382,99 +4318,6 @@ int main(int argc, char *argv[])
 
 =====================================================================
 
-164 Write reference counter bugs upon export.
-
-    This example reproduces a problem caught by set_current_writeref()
-    in SoBase, where the write reference counter of an SoBase instance
-    comes out wrong during export:
-
-----8<----- [snip] --------------------8<----- [snip] ----------------
-#include <Inventor/SoDB.h>
-#include <Inventor/SoInteraction.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
-#include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/VRMLnodes/SoVRMLGroup.h>
-#include <Inventor/VRMLnodes/SoVRMLText.h>
-#include <Inventor/VRMLnodes/SoVRMLFontStyle.h>
-#include <Inventor/VRMLnodes/SoVRMLSwitch.h>
-#include <Inventor/VRMLnodes/SoVRMLBillboard.h>
-#include <Inventor/VRMLnodes/SoVRMLShape.h>
-#include <Inventor/VRMLnodes/SoVRMLText.h>
-
-int main(int argc, char *argv[])
-{
-  SoDB::init();
-  SoInteraction::init();
-  SoBase::setInstancePrefix("_");
-
-  SoVRMLGroup *root = new SoVRMLGroup;
-  root->ref();
-
-  SoVRMLSwitch *sw = new SoVRMLSwitch;
-  sw->whichChoice = -1;
-  root->addChild(sw);
-  SoVRMLText *text = new SoVRMLText;
-  SoVRMLFontStyle *fontstyle = new SoVRMLFontStyle;
-  text->fontStyle = fontstyle;
-  fontstyle->family = "SANS";
-  fontstyle->size = 100;
-  sw->choice = text;
-
-  SoVRMLGroup *sub;
-  SoVRMLBillboard *bb;
-  SoVRMLShape *sh;
-  SoVRMLText *txt;
-  SoVRMLFontStyle *fstyle;
-
-  sub = new SoVRMLGroup;
-  root->addChild(sub);
-  bb = new SoVRMLBillboard;
-  sub->addChild(bb);
-  sh = new SoVRMLShape;
-  bb->addChild(sh);
-  txt = new SoVRMLText;
-  sh->geometry = txt;
-  fstyle = new SoVRMLFontStyle;
-  txt->fontStyle = fstyle;
-  fstyle->family = "SERIF";
-  fstyle->size = 50;
-  txt->fontStyle.connectFrom(&text->fontStyle);
-
-  sub = new SoVRMLGroup;
-  root->addChild(sub);
-  bb = new SoVRMLBillboard;
-  sub->addChild(bb);
-  sh = new SoVRMLShape;
-  bb->addChild(sh);
-  txt = new SoVRMLText;
-  sh->geometry = txt;
-  fstyle = new SoVRMLFontStyle;
-  txt->fontStyle = fstyle;
-  fstyle->family = "SERIF";
-  fstyle->size = 50;
-  txt->fontStyle.connectFrom(&text->fontStyle);
-
-  SoOutput out;
-  out.openFile("out.iv");
-  out.setHeaderString("#Inventor V2.1 ascii");
-  SoWriteAction wra(&out);
-  wra.apply(root);
-  out.closeFile();
-
-  out.openFile("out2.iv");
-  out.setHeaderString("#Inventor V2.1 ascii");
-  wra.apply(root);
-  out.closeFile();
-
-  root->unref();
-}
-----8<----- [snip] --------------------8<----- [snip] ----------------
-
-    20041105 mortene, reported by kintel.
-
-=====================================================================
 
 165 Faulty error reporting upon reading bad file.
 
