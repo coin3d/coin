@@ -33,17 +33,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; Confirmed and potential bugs. ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Reproduce Bugzilla #194 by setting the value of
-;; SoTimeCounter::reset outside the min-max range.
-(begin ; Set up engine for test case.
-  (-> (-> timecounter 'min) 'setValue 0)
-  (-> (-> timecounter 'max) 'setValue 20)
-  (-> (-> timecounter 'frequency) 'setValue 0.2)
-  (-> (-> timecounter 'step) 'setValue 1))
-;; Play around with this value to reproduce bug.
-(-> (-> timecounter 'reset) 'setValue 50)
-
-
 ;; Reproduce Bugzilla #195: negative step values doesn't reverse the
 ;; counting order.
 (-> (-> timecounter 'step) 'setValue -1)
@@ -74,6 +63,17 @@
   (-> (-> timecounter 'max) 'setValue 40)
   (-> (-> timecounter 'max) 'setValue 10)
   (-> (-> timecounter 'min) 'setValue 0))
+
+
+;; Bugzilla #194: setting the value of SoTimeCounter::reset outside
+;; the min-max range.
+(begin ; Set up engine for test case.
+  (-> (-> timecounter 'min) 'setValue 0)
+  (-> (-> timecounter 'max) 'setValue 20)
+  (-> (-> timecounter 'frequency) 'setValue 0.2)
+  (-> (-> timecounter 'step) 'setValue 1))
+;; Play around with this value to reproduce bug (update: now fixed).
+(-> (-> timecounter 'reset) 'setValue -250)
 
 
 

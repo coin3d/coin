@@ -57,6 +57,7 @@ private:
 
   virtual void evaluate(void);
   virtual void inputChanged(SoField * which);
+  void calcStarttime(short value);
 
   SbBool prevon;
   SbBool ispaused;

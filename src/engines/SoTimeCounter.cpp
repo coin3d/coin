@@ -63,7 +63,11 @@
 
 /*!
   \var SoSFShort SoTimeCounter::reset
-  Manually set the counter to some value.
+
+  Manually set the counter to some value. If SoTimeCounter::reset is
+  set below the SoTimeCounter::min value or above the
+  SoTimeCounter::max value it will be clamped to the closest boundary
+  value.
 */
 
 /*!
@@ -215,9 +219,8 @@ SoTimeCounter::inputChanged(SoField * which)
     if ((offset % stepval) != 0) {
       val = minval + (offset / stepval) * stepval;
     }
-    if (val != this->outputvalue) {
-      this->setOutputValue(val);
-    }
+    this->calcStarttime(val);
+    this->setOutputValue(val);
   }
   else if (which == &this->syncIn) {
     this->starttime = this->timeIn.getValue().getValue();
@@ -337,5 +340,21 @@ SoTimeCounter::setOutputValue(short value)
   else if (this->firstoutputenable) {
     this->firstoutputenable = FALSE;
     this->output.enable(TRUE);
+  }
+}
+
+// calculates cycle starttime based on counter value and timeIn.
+// also sets stepnum. value must be in legal range
+void
+SoTimeCounter::calcStarttime(short value)
+{
+  this->stepnum = (value - this->min.getValue()) / this->step.getValue();
+  if (this->dutylimits.getLength()) {
+   this->starttime = this->timeIn.getValue().getValue()
+     - this->dutylimits[this->stepnum];
+  }
+  else {
+    this->starttime = this->timeIn.getValue().getValue() -
+      double(this->stepnum) * this->cyclelen / double(this->numsteps);
   }
 }
