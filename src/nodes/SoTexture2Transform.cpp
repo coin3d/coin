@@ -29,6 +29,7 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoGLTextureMatrixElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 
@@ -86,8 +87,8 @@ SoTexture2Transform::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoTexture2Transform);
 
   SO_ENABLE(SoGLRenderAction, SoGLTextureMatrixElement);
-
   SO_ENABLE(SoCallbackAction, SoTextureMatrixElement);
+  SO_ENABLE(SoPickAction, SoTextureMatrixElement);
 }
 
 
