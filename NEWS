@@ -1,6 +1,4 @@
-New in Coin v2.0.0b (so far):
-- NB: this is an unstable development-source repository - we do our
-  stable releases from the Coin-1 and Coin-2 repositories.
+New in Coin v2.0.0:
 * legal issues
   - Coin beyond Coin 1.* switched to being licensed under the GPL
 * new features

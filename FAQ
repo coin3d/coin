@@ -51,7 +51,7 @@ Index
   Q6: Why can't any of the transparency modes be perfect?
 
 3: Other Hows and Whys
-  Q1: Why is the .so-version 20 for Coin 1.0?
+  Q1: Why is the .so-version 20 for Coin 1.0 and 40 for Coin 2.0?
 
 
 
@@ -60,28 +60,29 @@ Section 1. Extensions and Ports
 
 Q1.1:   Are there plans for making Coin multi-thread safe?
 
-A:      Coin will probably never be 100% thread safe, but in Coin-2 we've 
-        added support for thread safe rendering. This means that you can 
-        render a scene graph using many threads, at the same time. The 
-        application programmer is responsible for all thread synchronization
-        though, but we've added many thread classes to make this easier
-        for you (SbMutex, SbRWMutex, SbStorage, SbBarrier, ...).
+A:      Coin will probably never be 100% thread safe, but in Coin 2.0 we've
+        added support for thread safe rendering. This means that you
+        can render a scene graph using many threads, at the same
+        time. The application programmer is responsible for all thread
+        synchronization though, but we've added many thread classes to
+        make this easier for you (SbMutex, SbRWMutex, SbStorage,
+        SbBarrier, ...).
        
 Q1.2:   Can Coin do multi-pipe rendering?
 
-A:      Yes, but you have to do most of the work. Coin can do thread-safe
-        rendering traversals, but we haven't implemented a simple viewer that
-        will set up the OpenGL contexts and handle the rendering for each
-        context yet. We've done some internal testing with SGI's OpenGL
-        Multipipe SDK, and we might release a viewer using that SDK.
-        Please contact us if you're interested in multi-pipe rendering.
+A:      Yes, but you have to do some work. Coin can do thread-safe
+        rendering traversals, but we haven't implemented a simple
+        viewer that will set up the OpenGL contexts and handle the
+        rendering for each context yet. We've done some internal
+        testing with SGI's OpenGL Multipipe SDK, and we might release
+        a viewer using that SDK.  Please contact us if you're
+        interested in multi-pipe rendering.
 
 Q1.3:   Can I do volume rendering with Coin?
 
 A:      There are no volume rendering extensions for Coin yet.  Support for
         3D textures, which is a prerequisite for proper volume rendering
-        support, was recently implemented in the Coin development branch
-        and will be available from release 2.0 of Coin.
+        support, was implemented for Coin 2.0.
 
         Exactly when fullblown volume rendering is going to be implemented
         is in the blue, but it is functionality we see a demand for, so we
@@ -264,7 +265,7 @@ A:      (First of all, read the documentation on
 Section 3. Other Hows and Whys
 ==============================
 
-Q3.1:   Why is the .so-version 20 for Coin 1.0?
+Q3.1:   Why is the .so-version 20 for Coin 1.0 and 40 for Coin 2.0?
 
 A:      This was done to keep the artificial mapping we have constructed
         between the release version number and ABI interface version of Coin

@@ -4,6 +4,10 @@ RELEASE NOTES
 This file describes notable changes in the Coin library in a more
 elaborate way than can be fit into to the compact NEWS summary file.
 
+The changes described here are issues that might have an effect on the
+compatibility of your source code when upgrading the library.
+
+
 Coin 2.0.0
 ==========
 
