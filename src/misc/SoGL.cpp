@@ -1596,44 +1596,6 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   const SoCoordinateElement * coords =
     SoCoordinateElement::getInstance(state);
 
-  float maxctrl = SbMax(numuctrlpts, numvctrlpts);
-
-  switch (SoComplexityTypeElement::get(state)) {
-  case SoComplexityTypeElement::SCREEN_SPACE:
-    {
-      SbBox3f box;
-      SbVec3f center;
-      shape->computeBBox(action, box, center);
-      SbVec2s size;
-      SoShape::getScreenSize(state, box, size);
-      float maxpix = (float) SbMax(size[0], size[1]);
-      if (maxpix < 1.0f) maxpix = 1.0f;
-      float complexity = SoComplexityElement::get(state);
-      complexity = SbMin(100.0f, (float)sqrt(complexity * maxpix) * maxctrl);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_SAMPLING_METHOD, GLU_W_DOMAIN_DISTANCE);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_U_STEP, complexity);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_V_STEP, complexity);
-      break;
-    }
-  case SoComplexityTypeElement::OBJECT_SPACE:
-    {
-      float complexity = SoComplexityElement::get(state);
-      // add and cube value to give higher complexity values more boost
-      complexity += 1.0f;
-      complexity = (float) pow(complexity, 3.0);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_SAMPLING_METHOD, GLU_W_DOMAIN_DISTANCE);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_U_STEP, complexity * maxctrl);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_V_STEP, complexity * maxctrl);
-      break;
-    }
-  case SoComplexityTypeElement::BOUNDING_BOX:
-    assert(0 && "should never get here");
-    break;
-  default:
-    assert(0 && "unknown complexity type");
-    break;
-  }
-
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
     // Should not set mode if GLU version is < 1.3, as NURBS_RENDERER
     // was the only game in town back then in the old days.
@@ -1683,6 +1645,65 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
       }
     }
     ptr = (float*) tmpcoordlist->getArrayPtr();
+  }
+
+  switch (SoComplexityTypeElement::get(state)) {
+  case SoComplexityTypeElement::SCREEN_SPACE:
+    {
+      SbBox3f box;
+      SbVec3f center;
+      shape->computeBBox(action, box, center);
+      float diag;
+      { 
+        float dx, dy, dz;
+        box.getSize(dx, dy, dz);
+        diag = (float) sqrt(dx*dx+dy*dy+dz*dz);
+        if (diag == 0.0f) diag = 1.0f;
+      }
+      SbVec2s size;
+      SoShape::getScreenSize(state, box, size);
+      float maxpix = (float) SbMax(size[0], size[1]);
+      if (maxpix < 1.0f) maxpix = 1.0f;
+      float complexity = SoComplexityElement::get(state);
+      if (complexity < 0.0001f) complexity = 0.0001f;
+      complexity *= maxpix;
+      complexity = diag * 0.5f / complexity;
+
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_SAMPLING_METHOD,
+                                     GLU_W_OBJECT_PARAMETRIC_ERROR);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_PARAMETRIC_TOLERANCE, 
+                                     complexity);
+      break;
+    }
+  case SoComplexityTypeElement::OBJECT_SPACE:
+    {
+      float diag;
+      {
+        SbBox3f box;
+        SbVec3f center;
+        shape->computeBBox(action, box, center);
+        float dx, dy, dz;
+        box.getSize(dx, dy, dz);
+        diag = (float) sqrt(dx*dx+dy*dy+dz*dz);
+        if (diag == 0.0f) diag = 1.0f;
+      }
+      float complexity = SoComplexityElement::get(state);
+      complexity *= complexity;
+      if (complexity < 0.0001f) complexity = 0.0001f;
+      complexity = diag * 0.01f / complexity;
+
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_SAMPLING_METHOD,
+                                     GLU_W_OBJECT_PARAMETRIC_ERROR);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_PARAMETRIC_TOLERANCE, 
+                                     complexity);
+      break;
+    }
+  case SoComplexityTypeElement::BOUNDING_BOX:
+    assert(0 && "should never get here");
+    break;
+  default:
+    assert(0 && "unknown complexity type");
+    break;
   }
 
   GLUWrapper()->gluBeginSurface(nurbsrenderer);
@@ -1782,6 +1803,9 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
     if (istrimming) GLUWrapper()->gluEndTrim(nurbsrenderer);
   }
   GLUWrapper()->gluEndSurface(nurbsrenderer);
+  
+  // clear GL error(s) if parametric error value is out of range.
+  while (glGetError() == GL_INVALID_VALUE);
 }
 
 void
@@ -1819,42 +1843,6 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
 
   const SoCoordinateElement * coords =
     SoCoordinateElement::getInstance(state);
-
-  switch (SoComplexityTypeElement::get(state)) {
-  case SoComplexityTypeElement::SCREEN_SPACE:
-    {
-      SbBox3f box;
-      SbVec3f center;
-      shape->computeBBox(action, box, center);
-      SbVec2s size;
-      SoShape::getScreenSize(state, box, size);
-      float maxpix = (float) SbMax(size[0], size[1]);
-      if (maxpix < 1.0f) maxpix = 1.0f;
-      float complexity = SoComplexityElement::get(state);
-      complexity = SbMin(100.0f, (float)sqrt(complexity * maxpix) * numctrlpts);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_SAMPLING_METHOD, GLU_W_DOMAIN_DISTANCE);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_U_STEP, complexity);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_V_STEP, complexity);
-      break;
-    }
-  case SoComplexityTypeElement::OBJECT_SPACE:
-    {
-      float complexity = SoComplexityElement::get(state);
-      // add and cube value to give higher complexity values more boost
-      complexity += 1.0f;
-      complexity = (float) pow(complexity, 3.0);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_SAMPLING_METHOD, GLU_W_DOMAIN_DISTANCE);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_U_STEP, complexity * numctrlpts);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_V_STEP, complexity * numctrlpts);
-      break;
-    }
-  case SoComplexityTypeElement::BOUNDING_BOX:
-    assert(0 && "should never get here");
-    break;
-  default:
-    assert(0 && "unknown complexity type");
-    break;
-  }
 
   GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_DISPLAY_MODE, drawaspoints ? GLU_W_POINT : GLU_W_LINE);
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
@@ -1903,6 +1891,65 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
     ptr = (float*) tmpcoordlist->getArrayPtr();
   }
 
+  switch (SoComplexityTypeElement::get(state)) {
+  case SoComplexityTypeElement::SCREEN_SPACE:
+    {
+      SbBox3f box;
+      SbVec3f center;
+      shape->computeBBox(action, box, center);
+      float diag;
+      { 
+        float dx, dy, dz;
+        box.getSize(dx, dy, dz);
+        diag = (float) sqrt(dx*dx+dy*dy+dz*dz);
+        if (diag == 0.0f) diag = 1.0f;
+      }
+      SbVec2s size;
+      SoShape::getScreenSize(state, box, size);
+      float maxpix = (float) SbMax(size[0], size[1]);
+      if (maxpix < 1.0f) maxpix = 1.0f;
+      float complexity = SoComplexityElement::get(state);
+      if (complexity < 0.0001f) complexity = 0.0001f;
+      complexity *= maxpix;
+      complexity = diag * 0.5f / complexity;
+
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_SAMPLING_METHOD,
+                                     GLU_W_OBJECT_PARAMETRIC_ERROR);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_PARAMETRIC_TOLERANCE, 
+                                     complexity);
+      break;
+    }
+  case SoComplexityTypeElement::OBJECT_SPACE:
+    {
+      float diag;
+      {
+        SbBox3f box;
+        SbVec3f center;
+        shape->computeBBox(action, box, center);
+        float dx, dy, dz;
+        box.getSize(dx, dy, dz);
+        diag = (float) sqrt(dx*dx+dy*dy+dz*dz);
+        if (diag == 0.0f) diag = 1.0f;
+      }
+      float complexity = SoComplexityElement::get(state);
+      complexity *= complexity;
+      if (complexity < 0.0001f) complexity = 0.0001f;
+      complexity = diag * 0.01f / complexity;
+
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_SAMPLING_METHOD,
+                                     GLU_W_OBJECT_PARAMETRIC_ERROR);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_PARAMETRIC_TOLERANCE, 
+                                     complexity);
+      break;
+    }
+  case SoComplexityTypeElement::BOUNDING_BOX:
+    assert(0 && "should never get here");
+    break;
+  default:
+    assert(0 && "unknown complexity type");
+    break;
+  }
+
   GLUWrapper()->gluBeginCurve(nurbsrenderer);
   GLUWrapper()->gluNurbsCurve(nurbsrenderer,
                               numknots,
@@ -1913,6 +1960,8 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
                               (GLenum)(dim == 3 ? GL_MAP1_VERTEX_3 : GL_MAP1_VERTEX_4));
 
   GLUWrapper()->gluEndCurve(nurbsrenderer);
+  // clear GL error(s) if parametric error value is out of range.
+  while (glGetError() == GL_INVALID_VALUE);
 }
 
 
