@@ -68,7 +68,9 @@ SoViewingMatrixElement::set(SoState * const state,
 {
   SoViewingMatrixElement * element = (SoViewingMatrixElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  element->setElt(viewingMatrix);
+  if (element) {
+    element->setElt(viewingMatrix);
+  }
 }
 
 //! FIXME: write doc.

@@ -119,11 +119,13 @@ SoProfileCoordinateElement::set2(SoState * const state,
   SoProfileCoordinateElement * element =
     (SoProfileCoordinateElement *)
     (getElement(state, classStackIndex, NULL));
-  element->numCoords = numCoords;
-  element->coords2 = coords;
-  element->coords3 = NULL;
-  element->coordsAre2D = TRUE;
-  element->nodeId = node->getNodeId();
+  if (element) {
+    element->numCoords = numCoords;
+    element->coords2 = coords;
+    element->coords3 = NULL;
+    element->coordsAre2D = TRUE;
+    element->nodeId = node->getNodeId();
+  }
 }
 
 /*!
@@ -139,11 +141,13 @@ SoProfileCoordinateElement::set3(SoState * const state,
   SoProfileCoordinateElement * element =
     (SoProfileCoordinateElement *)
     (getElement(state, classStackIndex, NULL));
-  element->numCoords = numCoords;
-  element->coords2 = NULL;
-  element->coords3 = coords;
-  element->coordsAre2D = FALSE;
-  element->nodeId = node->getNodeId();
+  if (element) {
+    element->numCoords = numCoords;
+    element->coords2 = NULL;
+    element->coords3 = coords;
+    element->coordsAre2D = FALSE;
+    element->nodeId = node->getNodeId();
+  }
 }
 
 /*!

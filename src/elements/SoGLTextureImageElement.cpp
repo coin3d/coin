@@ -146,6 +146,8 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
 {
   SoGLTextureImageElement * elem = (SoGLTextureImageElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
+  if (!elem) return;
+  
   if (elem->dlist) elem->dlist->unref();
   if (elem->image && elem->image->getImage()) elem->image->getImage()->readUnlock();
   if (image) {

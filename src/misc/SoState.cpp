@@ -195,7 +195,7 @@ SoState::getAction(void) const
 SoElement *
 SoState::getElement(const int stackindex)
 {
-  assert(this->isElementEnabled(stackindex));
+  if (!this->isElementEnabled(stackindex)) return NULL;
   SoElement * element = this->stack[stackindex];
 
 #if 0 // debug

@@ -93,7 +93,9 @@ SoPickRayElement::set(SoState * const state,
 {
   SoPickRayElement *elem = (SoPickRayElement*)
     SoElement::getElement(state, classStackIndex);
-  elem->volume = volume;
+  if (elem) {
+    elem->volume = volume;
+  }
 }
 
 //! FIXME: write doc.

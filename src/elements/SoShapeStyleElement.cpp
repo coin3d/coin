@@ -136,11 +136,13 @@ SoShapeStyleElement::setDrawStyle(SoState * const state,
                                   const int32_t value)
 {
   SoShapeStyleElement * elem = getElement(state);
-  if (value == (int32_t)SoDrawStyleElement::INVISIBLE) {
-    elem->flags |= FLAG_INVISIBLE;
-  }
-  else {
-    elem->flags &= ~FLAG_INVISIBLE;
+  if (elem) {
+    if (value == (int32_t)SoDrawStyleElement::INVISIBLE) {
+      elem->flags |= FLAG_INVISIBLE;
+    }
+    else {
+      elem->flags &= ~FLAG_INVISIBLE;
+    }
   }
 }
 
@@ -151,11 +153,13 @@ SoShapeStyleElement::setComplexityType(SoState * const state,
                                        const int32_t value)
 {
   SoShapeStyleElement * elem = getElement(state);
-  if (value == (int32_t) SoComplexityTypeElement::BOUNDING_BOX) {
-    elem->flags |= FLAG_BBOXCMPLX;
-  }
-  else {
-    elem->flags &= ~FLAG_BBOXCMPLX;
+  if (elem) {
+    if (value == (int32_t) SoComplexityTypeElement::BOUNDING_BOX) {
+      elem->flags |= FLAG_BBOXCMPLX;
+    }
+    else {
+      elem->flags &= ~FLAG_BBOXCMPLX;
+    }
   }
 }
 
@@ -167,8 +171,10 @@ SoShapeStyleElement::setTransparencyType(SoState * const state,
 {
   assert(value >= 0 && value < FLAG_TRANSPARENCYTYPE_MASK);
   SoShapeStyleElement * elem = getElement(state);
-  elem->flags &= ~FLAG_TRANSPARENCYTYPE_MASK;
-  elem->flags |= value;
+  if (elem) {
+    elem->flags &= ~FLAG_TRANSPARENCYTYPE_MASK;
+    elem->flags |= value;
+  }
 }
 
 //! FIXME: write doc.
@@ -178,11 +184,13 @@ SoShapeStyleElement::setTextureEnabled(SoState * const state,
                                        const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
-  if (value) {
-    elem->flags |= FLAG_TEXENABLED;
-  }
-  else {
-    elem->flags &= ~FLAG_TEXENABLED;
+  if (elem) {
+    if (value) {
+      elem->flags |= FLAG_TEXENABLED;
+    }
+    else {
+      elem->flags &= ~FLAG_TEXENABLED;
+    }
   }
 }
 
@@ -196,11 +204,13 @@ SoShapeStyleElement::setTexture3Enabled(SoState * const state,
                                        const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
-  if (value) {
-    elem->flags |= FLAG_TEX3ENABLED;
-  }
-  else {
-    elem->flags &= ~FLAG_TEX3ENABLED;
+  if (elem) {
+    if (value) {
+      elem->flags |= FLAG_TEX3ENABLED;
+    }
+    else {
+      elem->flags &= ~FLAG_TEX3ENABLED;
+    }
   }
 }
 
@@ -211,11 +221,13 @@ SoShapeStyleElement::setTextureFunction(SoState * const state,
                                         const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
-  if (value) {
-    elem->flags |= FLAG_TEXFUNC;
-  }
-  else {
-    elem->flags &= ~FLAG_TEXFUNC;
+  if (elem) {
+    if (value) {
+      elem->flags |= FLAG_TEXFUNC;
+    }
+    else {
+      elem->flags &= ~FLAG_TEXFUNC;
+    }
   }
 }
 
@@ -226,12 +238,13 @@ SoShapeStyleElement::setLightModel(SoState * const state,
                                    const int32_t value)
 {
   SoShapeStyleElement * elem = getElement(state);
-
-  if (value != (int32_t) SoLightModelElement::BASE_COLOR) {
-    elem->flags |= FLAG_LIGHTING;
-  }
-  else {
-    elem->flags &= ~FLAG_LIGHTING;
+  if (elem) {
+    if (value != (int32_t) SoLightModelElement::BASE_COLOR) {
+      elem->flags |= FLAG_LIGHTING;
+    }
+    else {
+      elem->flags &= ~FLAG_LIGHTING;
+    }
   }
 }
 
@@ -242,12 +255,13 @@ SoShapeStyleElement::setOverrides(SoState * const state,
                                   const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
-
-  if (value) {
-    elem->flags |= FLAG_OVERRIDE;
-  }
-  else {
-    elem->flags &= ~FLAG_OVERRIDE;
+  if (elem) {
+    if (value) {
+      elem->flags |= FLAG_OVERRIDE;
+    }
+    else {
+      elem->flags &= ~FLAG_OVERRIDE;
+    }
   }
 }
 

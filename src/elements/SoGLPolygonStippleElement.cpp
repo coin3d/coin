@@ -175,7 +175,9 @@ SoGLPolygonStippleElement::set(SoState * const state, const SbBool onoff)
   SoGLPolygonStippleElement *elem = (SoGLPolygonStippleElement*)
     SoElement::getElement(state, classStackIndex);
 
-  elem->isEnabled = onoff;
+  if (elem) {
+    elem->isEnabled = onoff;
+  }
 }
 
 //! FIXME: write doc.
@@ -187,11 +189,13 @@ SoGLPolygonStippleElement::setTransparency(SoState * const state,
   SoGLPolygonStippleElement *elem = (SoGLPolygonStippleElement*)
     SoElement::getElement(state, classStackIndex);
 
-  int stipplenum = (int)(64.0f*(transparency)); //0-64
-
-  if (stipplenum < 0) stipplenum = 0;
-  if (stipplenum > 64) stipplenum = 64;
-  elem->pattern = stipplenum;
+  if (elem) {
+    int stipplenum = (int)(64.0f*(transparency)); //0-64
+    
+    if (stipplenum < 0) stipplenum = 0;
+    if (stipplenum > 64) stipplenum = 64;
+    elem->pattern = stipplenum;
+  }
 }
 
 //! FIXME: write doc.

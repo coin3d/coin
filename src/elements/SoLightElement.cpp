@@ -76,14 +76,16 @@ SoLightElement::add(SoState * const state, SoLight * const light,
 {
   SoLightElement * elem = (SoLightElement*)
     SoElement::getElement(state, classStackIndex);
-
-  int i = elem->lights.getLength();
-  elem->lights.append(light);
-  elem->addNodeId(light);
-  if (i >= elem->matrixlist->getLength())
-    elem->matrixlist->append(matrix);
-  else
-    (*elem->matrixlist)[i] = matrix;
+  
+  if (elem) {
+    int i = elem->lights.getLength();
+    elem->lights.append(light);
+    elem->addNodeId(light);
+    if (i >= elem->matrixlist->getLength())
+      elem->matrixlist->append(matrix);
+    else
+      (*elem->matrixlist)[i] = matrix;
+  }
 }
 
 /*!

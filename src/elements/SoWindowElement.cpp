@@ -130,10 +130,12 @@ SoWindowElement::set(SoState * state,
 {
   SoWindowElement * elem = (SoWindowElement*)
     SoElement::getElement(state, classStackIndex);
-  elem->window = window;
-  elem->context = context;
-  elem->display = display;
-  elem->glRenderAction = action;
+  if (elem) {
+    elem->window = window;
+    elem->context = context;
+    elem->display = display;
+    elem->glRenderAction = action;
+  }
 }
 
 

@@ -121,8 +121,10 @@ SoLocalBBoxMatrixElement::makeIdentity(SoState * const state)
   SoLocalBBoxMatrixElement * element;
   element = (SoLocalBBoxMatrixElement *)
     SoElement::getElement(state, getClassStackIndex());
-  element->localMatrix.makeIdentity();
-  // inverse model matrix is set in push(), no need to set it here
+  if (element) {
+    element->localMatrix.makeIdentity();
+    // inverse model matrix is set in push(), no need to set it here
+  }
 }
 
 //! FIXME: write doc.
@@ -133,7 +135,9 @@ SoLocalBBoxMatrixElement::set(SoState * const state,
 {
   SoLocalBBoxMatrixElement * element = (SoLocalBBoxMatrixElement *)
     SoElement::getElement(state, getClassStackIndex());
-  element->localMatrix = matrix * element->modelInverseMatrix;
+  if (element) {
+    element->localMatrix = matrix * element->modelInverseMatrix;
+  }
 }
 
 //! FIXME: write doc.
@@ -145,7 +149,9 @@ SoLocalBBoxMatrixElement::mult(SoState * const state,
   SoLocalBBoxMatrixElement * element = (SoLocalBBoxMatrixElement *)
     SoElement::getElement(state, getClassStackIndex());
   
-  element->localMatrix.multLeft(matrix);
+  if (element) {
+    element->localMatrix.multLeft(matrix);
+  }
 }
 
 //! FIXME: write doc.
@@ -157,9 +163,11 @@ SoLocalBBoxMatrixElement::translateBy(SoState * const state,
   SoLocalBBoxMatrixElement * element = (SoLocalBBoxMatrixElement *)
     SoElement::getElement(state, getClassStackIndex());
 
-  SbMatrix matrix;
-  matrix.setTranslate(translation);
-  element->localMatrix.multLeft(matrix);
+  if (element) {
+    SbMatrix matrix;
+    matrix.setTranslate(translation);
+    element->localMatrix.multLeft(matrix);
+  }
 }
 
 //! FIXME: write doc.
@@ -170,10 +178,11 @@ SoLocalBBoxMatrixElement::rotateBy(SoState * const state,
 {
   SoLocalBBoxMatrixElement * element = (SoLocalBBoxMatrixElement *)
     SoElement::getElement(state, getClassStackIndex());
-
-  SbMatrix matrix;
-  matrix.setRotate(rotation);
-  element->localMatrix.multLeft(matrix);
+  if (element) {
+    SbMatrix matrix;
+    matrix.setRotate(rotation);
+    element->localMatrix.multLeft(matrix);
+  }
 }
 
 //! FIXME: write doc.
@@ -184,10 +193,12 @@ SoLocalBBoxMatrixElement::scaleBy(SoState * const state,
 {
   SoLocalBBoxMatrixElement * element = (SoLocalBBoxMatrixElement *)
     SoElement::getElement(state, getClassStackIndex());
-
-  SbMatrix matrix;
-  matrix.setScale(scaleFactor);
-  element->localMatrix.multLeft(matrix);
+  
+  if (element) {
+    SbMatrix matrix;
+    matrix.setScale(scaleFactor);
+    element->localMatrix.multLeft(matrix);
+  }
 }
 
 //! FIXME: write doc.
@@ -209,7 +220,6 @@ SoLocalBBoxMatrixElement::popMatrix(SoState * const state,
   // Important: use getElementNoPush to avoid a push on element
   SoLocalBBoxMatrixElement *elem = (SoLocalBBoxMatrixElement*)
     state->getElementNoPush(classStackIndex);
-
   elem->localMatrix = matrix;
 }
 

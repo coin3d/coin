@@ -143,13 +143,10 @@ SoGLNormalizeElement::setMatrixState(SoState * const state,
 {
   SoGLNormalizeElement * e = (SoGLNormalizeElement *)
     inherited::getElement(state, SoGLNormalizeElement::classStackIndex);
-  e->okMatrix = valid;
-
-#if 0 // debug
-  SoDebugError::postInfo("SoGLNormalizeElement::setMatrixState",
-                         "%d", valid);
-#endif // debug
-
+  
+  if (e) {
+    e->okMatrix = valid;
+  }
 }
 
 /*!
@@ -162,13 +159,9 @@ SoGLNormalizeElement::setUnitNormals(SoState * const state,
 {
   SoGLNormalizeElement * e = (SoGLNormalizeElement *)
     inherited::getElement(state, SoGLNormalizeElement::classStackIndex);
-  e->unitNormals = unitNormals;
-
-#if 0 // debug
-  SoDebugError::postInfo("SoGLNormalizeElement::setUnitNormals",
-                         "%d", unitNormals);
-#endif // debug
-
+  if (e) {
+    e->unitNormals = unitNormals;
+  }    
 }
 
 
@@ -211,7 +204,9 @@ SoGLNormalizeElement::forceSend(SoState * const state,
 #endif // debug
   SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
     SoElement::getElement(state, classStackIndex);
-  ne->updategl(!(unit && ne->okMatrix));
+  if (ne) {
+    ne->updategl(!(unit && ne->okMatrix));
+  }
 }
 
 //! FIXME: write doc.

@@ -73,9 +73,11 @@ SoNormalElement::set(SoState * const state,
 {
   SoNormalElement *elem = (SoNormalElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  elem->normals = normals;
-  elem->numNormals = numNormals;
-  elem->unitLength = unitLength;
+  if (elem) {
+    elem->normals = normals;
+    elem->numNormals = numNormals;
+    elem->unitLength = unitLength;
+  }
 }
 
 //! FIXME: write doc.

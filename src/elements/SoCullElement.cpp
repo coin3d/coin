@@ -106,24 +106,26 @@ SoCullElement::setViewVolume(SoState * state, const SbViewVolume & vv)
 {
   SoCullElement * elem = (SoCullElement *)
     SoElement::getElement(state, classStackIndex);
-  if (elem->numplanes + 6 > SoCullElement::MAXPLANES) { // _very_ unlikely
+  if (elem) {
+    if (elem->numplanes + 6 > SoCullElement::MAXPLANES) { // _very_ unlikely
 #if COIN_DEBUG
-    SoDebugError::postWarning("SoCullElement::setViewVolume",  "too many planes");
+      SoDebugError::postWarning("SoCullElement::setViewVolume",  "too many planes");
 #endif // COIN_DEBUG
-    return;
-  }
-  int i;
-  SbPlane vvplane[6];
-  vv.getViewVolumePlanes(vvplane);
-  if (elem->vvindex >= 0) { // overwrite old view volume
-    for (i = 0; i < 6; i++) {
-      elem->plane[elem->vvindex+i] = vvplane[i];
-      elem->flags &= ~(1<<(elem->vvindex+i));
+      return;
     }
-  }
-  else {
-    elem->vvindex = elem->numplanes;
-    for (i = 0; i < 6; i++) elem->plane[elem->numplanes++] = vvplane[i];
+    int i;
+    SbPlane vvplane[6];
+    vv.getViewVolumePlanes(vvplane);
+    if (elem->vvindex >= 0) { // overwrite old view volume
+      for (i = 0; i < 6; i++) {
+        elem->plane[elem->vvindex+i] = vvplane[i];
+        elem->flags &= ~(1<<(elem->vvindex+i));
+      }
+    }
+    else {
+      elem->vvindex = elem->numplanes;
+      for (i = 0; i < 6; i++) elem->plane[elem->numplanes++] = vvplane[i];
+    }
   }
 }
 
@@ -136,13 +138,15 @@ SoCullElement::addPlane(SoState * state, const SbPlane &newplane)
 {
   SoCullElement * elem = (SoCullElement *)
     SoElement::getElement(state, classStackIndex);
-  if (elem->numplanes >= SoCullElement::MAXPLANES) {  // _very_ unlikely
+  if (elem) {
+    if (elem->numplanes >= SoCullElement::MAXPLANES) {  // _very_ unlikely
 #if COIN_DEBUG
-    SoDebugError::postWarning("SoCullElement::addPlane",  "too many planes");
+      SoDebugError::postWarning("SoCullElement::addPlane",  "too many planes");
 #endif // COIN_DEBUG
-    return;
+      return;
+    }
+    elem->plane[elem->numplanes++] = newplane;
   }
-  elem->plane[elem->numplanes++] = newplane;
 }
 
 /*!
@@ -217,6 +221,8 @@ SoCullElement::docull(SoState * state, const SbBox3f & box, const SbBool transfo
   // try to avoid a push if possible
   SoCullElement * elem = (SoCullElement *)
     state->getElementNoPush(classStackIndex);
+  
+  if (!elem) return FALSE;
 
   int i, j;
   SbVec3f min, max;

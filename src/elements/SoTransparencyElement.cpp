@@ -84,12 +84,14 @@ SoTransparencyElement::set(SoState * const state, SoNode * const node,
                            const int32_t numValues,
                            const float * const values)
 {
-  SoTransparencyElement *elem = (SoTransparencyElement*)
+  SoTransparencyElement * elem = (SoTransparencyElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  if (numValues)
-    elem->setElt(numValues, values);
-  else
-    elem->setElt(1, &defaulttransparencyval);
+  if (elem) {
+    if (numValues)
+      elem->setElt(numValues, values);
+    else
+      elem->setElt(1, &defaulttransparencyval);
+  }
 }
 
 //! FIXME: write doc.

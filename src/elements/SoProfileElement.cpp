@@ -70,20 +70,22 @@ SoProfileElement::add(SoState * const state,
   SoProfileElement * element = (SoProfileElement *)
     getElement(state, classStackIndex);
 
-  switch ((SoProfileElement::Profile)profile->linkage.getValue()) {
-  case START_FIRST:
-    element->profiles.truncate(0);
-    element->profiles.append(profile);
-    element->setNodeId(profile);
-    break;
-  case START_NEW:
-    element->profiles.append(profile);
-    element->addNodeId(profile);
-    break;
-  case ADD_TO_CURRENT:
-    element->profiles.append(profile);
-    element->addNodeId(profile);
-    break;
+  if (element) {
+    switch ((SoProfileElement::Profile)profile->linkage.getValue()) {
+    case START_FIRST:
+      element->profiles.truncate(0);
+      element->profiles.append(profile);
+      element->setNodeId(profile);
+      break;
+    case START_NEW:
+      element->profiles.append(profile);
+      element->addNodeId(profile);
+      break;
+    case ADD_TO_CURRENT:
+      element->profiles.append(profile);
+      element->addNodeId(profile);
+      break;
+    }
   }
 }
 

@@ -64,8 +64,10 @@ SoTextureMatrixElement::makeIdentity(SoState * const state,
 {
   SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
     SoElement::getElement(state, classStackIndex);
-  elem->makeEltIdentity();
-  if (node) elem->setNodeId(node);
+  if (elem) {
+    elem->makeEltIdentity();
+    if (node) elem->setNodeId(node);
+  }
 }
 
 /*!
@@ -80,8 +82,10 @@ SoTextureMatrixElement::set(SoState * const state,
 {
   SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
     SoElement::getElement(state, classStackIndex);
-  elem->setElt(matrix);
-  if (node) elem->setNodeId(node);
+  if (elem) {
+    elem->setElt(matrix);
+    if (node) elem->setNodeId(node);
+  }
 }
 
 /*!
@@ -94,8 +98,10 @@ SoTextureMatrixElement::mult(SoState * const state,
 {
   SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
     SoElement::getElement(state, classStackIndex);
-  elem->multElt(matrix);
-  if (node) elem->addNodeId(node);
+  if (elem) {
+    elem->multElt(matrix);
+    if (node) elem->addNodeId(node);
+  }
 }
 
 
@@ -109,9 +115,10 @@ SoTextureMatrixElement::translateBy(SoState * const state,
 {
   SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
     SoElement::getElement(state, classStackIndex);
-  elem->translateEltBy(translation);
-  if (node) elem->addNodeId(node);
-
+  if (elem) {
+    elem->translateEltBy(translation);
+    if (node) elem->addNodeId(node);
+  }
 }
 
 /*!
@@ -124,9 +131,10 @@ SoTextureMatrixElement::rotateBy(SoState * const state,
 {
   SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
     SoElement::getElement(state, classStackIndex);
-  elem->rotateEltBy(rotation);
-  if (node) elem->addNodeId(node);
-
+  if (elem) {
+    elem->rotateEltBy(rotation);
+    if (node) elem->addNodeId(node);
+  }
 }
 
 /*!
@@ -139,8 +147,10 @@ SoTextureMatrixElement::scaleBy(SoState * const state,
 {
   SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
     SoElement::getElement(state, classStackIndex);
-  elem->scaleEltBy(scaleFactor);
-  if (node) elem->addNodeId(node);
+  if (elem) {
+    elem->scaleEltBy(scaleFactor);
+    if (node) elem->addNodeId(node);
+  }
 }
 
 

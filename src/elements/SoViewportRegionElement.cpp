@@ -100,7 +100,9 @@ SoViewportRegionElement::set(SoState * const state,
 {
   SoViewportRegionElement *elem = (SoViewportRegionElement*)
     SoElement::getElement(state, classStackIndex);
-  elem->setElt(viewportRegion);
+  if (elem) {
+    elem->setElt(viewportRegion);
+  }
 }
 
 //! FIXME: write doc.

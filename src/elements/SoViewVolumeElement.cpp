@@ -69,7 +69,9 @@ SoViewVolumeElement::set(SoState * const state,
 {
   SoViewVolumeElement * element = (SoViewVolumeElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  element->viewVolume = viewVolume;
+  if (element) {
+    element->viewVolume = viewVolume;
+  }
 }
 
 //! FIXME: write doc.

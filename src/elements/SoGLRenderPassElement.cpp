@@ -93,7 +93,9 @@ SoGLRenderPassElement::set(SoState * const state,
 {
   SoGLRenderPassElement * element = (SoGLRenderPassElement *)
     getElement(state, classStackIndex);
-  element->passnr = pass;
+  if (element) {
+    element->passnr = pass;
+  }
 }
 
 //! FIXME: write doc.

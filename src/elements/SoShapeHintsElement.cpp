@@ -114,8 +114,9 @@ SoShapeHintsElement::set(SoState * const state,
 {
   SoShapeHintsElement *elem = (SoShapeHintsElement*)
     SoElement::getElement(state, classStackIndex);
-
-  elem->setElt(vertexOrdering, shapeType, faceType);
+  if (elem) {
+    elem->setElt(vertexOrdering, shapeType, faceType);
+  }
 }
 
 //! FIXME: write doc.

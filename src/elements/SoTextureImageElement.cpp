@@ -150,7 +150,9 @@ SoTextureImageElement::setDefault(SoState * const state, SoNode * const node)
 {
   SoTextureImageElement * elem = (SoTextureImageElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  elem->setDefaultValues();
+  if (elem) {
+    elem->setDefaultValues();
+  }
 }
 
 //! FIXME: write doc.
@@ -163,9 +165,10 @@ SoTextureImageElement::set(SoState * const state, SoNode * const node,
 {
   SoTextureImageElement * elem = (SoTextureImageElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
-
-  elem->setElt(size, numComponents, bytes, wrapS, wrapT,
-               model, blendColor);
+  if (elem) {
+    elem->setElt(size, numComponents, bytes, wrapS, wrapT,
+                 model, blendColor);
+  }
 }
 
 /*!
@@ -185,8 +188,10 @@ SoTextureImageElement::set(SoState * const state, SoNode * const node,
   SoTextureImageElement * elem = (SoTextureImageElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
 
-  elem->setElt(size, numComponents, bytes, wrapS, wrapT, wrapR,
-               model, blendColor);
+  if (elem) {
+    elem->setElt(size, numComponents, bytes, wrapS, wrapT, wrapR,
+                 model, blendColor);
+  }
 }
 
 /*!

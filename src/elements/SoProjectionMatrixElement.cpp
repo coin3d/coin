@@ -64,7 +64,9 @@ SoProjectionMatrixElement::set(SoState * const state,
 {
   SoProjectionMatrixElement * element = (SoProjectionMatrixElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  element->setElt(projectionMatrix);
+  if (element) {
+    element->setElt(projectionMatrix);
+  }
 }
 
 //! FIXME: write doc.

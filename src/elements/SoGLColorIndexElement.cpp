@@ -114,8 +114,10 @@ SoGLColorIndexElement::set(SoState * const state, SoNode * const node,
 {
   SoGLColorIndexElement * elem = (SoGLColorIndexElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  elem->indices = indices;
-  elem->numindices = numindices;
+  if (elem) {
+    elem->indices = indices;
+    elem->numindices = numindices;
+  }
 }
 
 

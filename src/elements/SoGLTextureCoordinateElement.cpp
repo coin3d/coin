@@ -106,8 +106,10 @@ SoGLTextureCoordinateElement::setTexGen(SoState * const state,
 
   SoGLTextureCoordinateElement *element = (SoGLTextureCoordinateElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  element->setElt(texgenFunc, texgenData);
-  element->doCallback();
+  if (element) {
+    element->setElt(texgenFunc, texgenData);
+    element->doCallback();
+  }
 }
 
 //!  FIXME: write doc.

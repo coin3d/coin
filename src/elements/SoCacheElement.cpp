@@ -103,12 +103,14 @@ SoCacheElement::set(SoState * const state, SoCache * const cache)
 {
   SoCacheElement * elem = (SoCacheElement*)
     SoElement::getElement(state, classStackIndex);
-
-  if (elem->cache) elem->cache->unref();
-  elem->cache = cache;
-  if (elem->cache) {
-    elem->cache->ref();
-    state->setCacheOpen(TRUE);
+  
+  if (elem) {
+    if (elem->cache) elem->cache->unref();
+    elem->cache = cache;
+    if (elem->cache) {
+      elem->cache->ref();
+      state->setCacheOpen(TRUE);
+    }
   }
 }
 

@@ -89,7 +89,9 @@ SoFontNameElement::set(SoState * const state,
 {
   SoFontNameElement * element = (SoFontNameElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  element->fontName = fontName;
+  if (element) {
+    element->fontName = fontName;
+  }
 }
 
 //! FIXME: write doc.

@@ -125,13 +125,16 @@ SoReplacedElement::print(FILE * file) const
 */
 SoElement *
 SoReplacedElement::getElement(SoState * const state, const int stackIndex,
-                              SoNode * const node)
+                                     SoNode * const node)
 {
   SoReplacedElement * elem =
     (SoReplacedElement *)SoElement::getElement(state, stackIndex);
-  if (node) { elem->nodeId = node->getNodeId(); }
-  else { elem->nodeId = 0; }
-  return elem;
+  if (elem) {
+    if (node) { elem->nodeId = node->getNodeId(); }
+    else { elem->nodeId = 0; }
+    return elem;
+  }
+  return NULL;
 }
 
 /*!

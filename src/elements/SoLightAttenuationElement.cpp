@@ -82,7 +82,9 @@ SoLightAttenuationElement::set(SoState * const state,
 {
   SoLightAttenuationElement * element = (SoLightAttenuationElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  element->lightAttenuation = lightAttenuation;
+  if (element) {
+    element->lightAttenuation = lightAttenuation;
+  }
 }
 
 //! FIXME: write doc.

@@ -118,8 +118,10 @@ SoEnvironmentElement::set(SoState * const state,
 {
   SoEnvironmentElement * element = (SoEnvironmentElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  element->setElt(state, ambientIntensity, ambientColor, attenuation,
-                  fogType, fogColor, fogVisibility, fogStart);
+  if (element) {
+    element->setElt(state, ambientIntensity, ambientColor, attenuation,
+                    fogType, fogColor, fogVisibility, fogStart);
+  }
 }
 
 //! FIXME: write doc.

@@ -96,8 +96,9 @@ SoFloatElement::set(const int index,
 {
   SoFloatElement * element = (SoFloatElement *)
     (SoFloatElement::getElement(state, index));
-
-  if (element) { element->setElt(value); }
+  if (element) { 
+    element->setElt(value); 
+  }
 }
 
 /*!

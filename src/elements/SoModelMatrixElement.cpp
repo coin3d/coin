@@ -100,8 +100,10 @@ SoModelMatrixElement::makeIdentity(SoState * const state,
 {
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getElement(state, classStackIndex);
-  elem->makeEltIdentity();
-  if (node) elem->setNodeId(node);
+  if (elem) {
+    elem->makeEltIdentity();
+    if (node) elem->setNodeId(node);
+  }
 }
 
 /*!
@@ -114,8 +116,11 @@ SoModelMatrixElement::set(SoState * const state,
 {
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getElement(state, classStackIndex);
-  elem->setElt(matrix);
-  if (node) elem->setNodeId(node);
+
+  if (elem) {
+    elem->setElt(matrix);
+    if (node) elem->setNodeId(node);
+  }
 }
 
 /*!
@@ -127,9 +132,11 @@ SoModelMatrixElement::setCullMatrix(SoState * state, SoNode * node,
 {
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getElement(state, classStackIndex);
-  elem->cullMatrix = matrix;
-  elem->flags |= FLG_CULLMATRIX;
-  elem->flags &= ~FLG_COMBINED;
+  if (elem) {
+    elem->cullMatrix = matrix;
+    elem->flags |= FLG_CULLMATRIX;
+    elem->flags &= ~FLG_COMBINED;
+  }
 }
 
 /*!
@@ -142,8 +149,10 @@ SoModelMatrixElement::mult(SoState * const state,
 {
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getElement(state, classStackIndex);
-  elem->multElt(matrix);
-  if (node) elem->addNodeId(node);
+  if (elem) {
+    elem->multElt(matrix);
+    if (node) elem->addNodeId(node);
+  }
 }
 
 
@@ -157,8 +166,10 @@ SoModelMatrixElement::translateBy(SoState * const state,
 {
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getElement(state, classStackIndex);
-  elem->translateEltBy(translation);
-  if (node) elem->addNodeId(node);
+  if (elem) {
+    elem->translateEltBy(translation);
+    if (node) elem->addNodeId(node);
+  }
 }
 
 
@@ -172,9 +183,10 @@ SoModelMatrixElement::rotateBy(SoState * const state,
 {
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getElement(state, classStackIndex);
-  elem->rotateEltBy(rotation);
-  if (node) elem->addNodeId(node);
-
+  if (elem) {
+    elem->rotateEltBy(rotation);
+    if (node) elem->addNodeId(node);
+  }
 }
 
 /*!
@@ -187,8 +199,10 @@ SoModelMatrixElement::scaleBy(SoState * const state,
 {
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getElement(state, classStackIndex);
-  elem->scaleEltBy(scaleFactor);
-  if (node) elem->addNodeId(node);
+  if (elem) {
+    elem->scaleEltBy(scaleFactor);
+    if (node) elem->addNodeId(node);
+  }
 }
 
 /*!

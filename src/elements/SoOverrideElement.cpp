@@ -50,9 +50,9 @@ return (element->flags & flag)
 #define SO_SET_OVERRIDE(flag) \
 SoOverrideElement * const element = \
   (SoOverrideElement *) getElement(state, classStackIndex); \
-if (override) \
+if (element && override) \
   element->flags |= flag; \
-else \
+else if (element) \
   element->flags &= ~flag
 
 

@@ -114,20 +114,21 @@ SoGLLightIdElement::increment(SoState * const state,
 {
   SoGLLightIdElement * element = (SoGLLightIdElement *)
     getElement(state, getClassStackIndex());
-
-  assert(element);
-
-  element->data++;
-  if (element->data >= SoGLLightIdElement::getMaxGLSources()) {
-    element->data--;
+  
+  if (element) {
+    element->data++;
+    if (element->data >= SoGLLightIdElement::getMaxGLSources()) {
+      element->data--;
 #if COIN_DEBUG
-    SoDebugError::postWarning("SoGLLightIdElement::increment", "no GL light available");
+      SoDebugError::postWarning("SoGLLightIdElement::increment", "no GL light available");
 #endif
-    return -1;
+      return -1;
+    }
+    glEnable((GLenum)((int32_t)GL_LIGHT0 + element->data));
+    
+    return element->data;
   }
-  glEnable((GLenum)((int32_t)GL_LIGHT0 + element->data));
-
-  return element->data;
+  return -1;
 }
 
 //! FIXME: write doc.

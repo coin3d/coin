@@ -77,8 +77,10 @@ SoClipPlaneElement::add(SoState * const state,
 {
   SoClipPlaneElement *element =
     (SoClipPlaneElement*) SoElement::getElement(state, classStackIndex);
-  element->addToElt(plane, SoModelMatrixElement::get(state));
-  if (node) element->addNodeId(node);
+  if (element) {
+    element->addToElt(plane, SoModelMatrixElement::get(state));
+    if (node) element->addNodeId(node);
+  }
 }
 
 /*!

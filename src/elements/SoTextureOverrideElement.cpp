@@ -116,10 +116,12 @@ SoTextureOverrideElement::setQualityOverride(SoState *state, const SbBool value)
 {
   SoTextureOverrideElement * const element =
     (SoTextureOverrideElement *) getElement(state, classStackIndex);
-  if (value)
-    element->flags |= TEXTURE_QUALITY;
-  else
-    element->flags &= ~TEXTURE_QUALITY;
+  if (element) {
+    if (value)
+      element->flags |= TEXTURE_QUALITY;
+    else
+      element->flags &= ~TEXTURE_QUALITY;
+  }
 }
 
 //!
@@ -129,10 +131,12 @@ SoTextureOverrideElement::setImageOverride(SoState *state, const SbBool value)
 {
   SoTextureOverrideElement * const element =
     (SoTextureOverrideElement *) getElement(state, classStackIndex);
-  if (value)
-    element->flags |= TEXTURE_IMAGE;
-  else
-    element->flags &= ~TEXTURE_IMAGE;
+  if (element) {
+    if (value)
+      element->flags |= TEXTURE_IMAGE;
+    else
+      element->flags &= ~TEXTURE_IMAGE;
+  }
 }
 
 //!

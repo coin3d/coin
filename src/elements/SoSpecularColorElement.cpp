@@ -99,10 +99,12 @@ SoSpecularColorElement::set(SoState * const state, SoNode * const node,
 {
   SoSpecularColorElement *elem = (SoSpecularColorElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  if (numColors > 0)
-    elem->setElt(numColors, colors);
-  else
-    elem->setElt(1, defaultspecularcolor);
+  if (elem) {
+    if (numColors > 0)
+      elem->setElt(numColors, colors);
+    else
+      elem->setElt(1, defaultspecularcolor);
+  }
 }
 
 //! FIXME: write doc.

@@ -98,12 +98,14 @@ SoEmissiveColorElement::set(SoState * const state, SoNode * const node,
                            const int32_t numColors,
                            const SbColor * const colors)
 {
-  SoEmissiveColorElement *elem = (SoEmissiveColorElement*)
+  SoEmissiveColorElement * elem = (SoEmissiveColorElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  if (numColors > 0)
-    elem->setElt(numColors, colors);
-  else
-    elem->setElt(1, defaultemissivecolor);
+  if (elem) {
+    if (numColors > 0)
+      elem->setElt(numColors, colors);
+    else
+      elem->setElt(1, defaultemissivecolor);
+  }
 }
 
 //! FIXME: write doc.

@@ -122,10 +122,12 @@ SoCoordinateElement::set3(SoState * const state,
 {
   SoCoordinateElement *elem =
     (SoCoordinateElement*) SoElement::getElement(state, classStackIndex);
-  elem->areCoords3D = TRUE;
-  elem->coords3D = coords;
-  elem->numCoords = numCoords;
-  elem->nodeId = node->getNodeId();
+  if (elem) {
+    elem->areCoords3D = TRUE;
+    elem->coords3D = coords;
+    elem->numCoords = numCoords;
+    elem->nodeId = node->getNodeId();
+  }
 }
 
 //! FIXME: write doc.
@@ -138,11 +140,12 @@ SoCoordinateElement::set4(SoState * const state,
 {
   SoCoordinateElement *elem =
     (SoCoordinateElement*) SoElement::getElement(state, classStackIndex);
-  elem->areCoords3D = FALSE;
-  elem->coords4D = coords;
-  elem->numCoords = numCoords;
-
-  elem->nodeId = node->getNodeId();
+  if (elem) {
+    elem->areCoords3D = FALSE;
+    elem->coords4D = coords;
+    elem->numCoords = numCoords;
+    elem->nodeId = node->getNodeId();
+  }
 }
 
 //! FIXME: write doc.

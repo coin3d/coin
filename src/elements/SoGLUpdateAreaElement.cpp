@@ -145,15 +145,17 @@ SoGLUpdateAreaElement::set(SoState * const state,
 {
   SoGLUpdateAreaElement * e = (SoGLUpdateAreaElement *)
     inherited::getElement(state, SoGLUpdateAreaElement::classStackIndex);
-  e->origin = origin;
-  e->size = size;
-  SbVec2s winsize = SoViewportRegionElement::get(state).getWindowSize();
-  e->screenorigin[0] = (short) (origin[0]*float(winsize[0]));
-  e->screenorigin[1] = (short) (origin[1]*float(winsize[1]));
-  e->screensize[0] = (short) (size[0]*float(winsize[0]));
-  e->screensize[1] = (short) (size[1]*float(winsize[1]));
-  
-  e->updategl();
+  if (e) {
+    e->origin = origin;
+    e->size = size;
+    SbVec2s winsize = SoViewportRegionElement::get(state).getWindowSize();
+    e->screenorigin[0] = (short) (origin[0]*float(winsize[0]));
+    e->screenorigin[1] = (short) (origin[1]*float(winsize[1]));
+    e->screensize[0] = (short) (size[0]*float(winsize[0]));
+    e->screensize[1] = (short) (size[1]*float(winsize[1]));
+    
+    e->updategl();
+  }
 }
 
 

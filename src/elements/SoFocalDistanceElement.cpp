@@ -51,8 +51,7 @@ SoFocalDistanceElement::initClass(void)
   The destructor.
 */
 
-SoFocalDistanceElement::~SoFocalDistanceElement(// virtual protected
-    void)
+SoFocalDistanceElement::~SoFocalDistanceElement(void)
 {
 }
 
@@ -61,8 +60,8 @@ SoFocalDistanceElement::~SoFocalDistanceElement(// virtual protected
 void
 SoFocalDistanceElement::init(SoState * state)
 {
-    inherited::init(state);
-    this->data = getDefault();
+  inherited::init(state);
+  this->data = getDefault();
 }
 
 //! FIXME: write doc.
@@ -79,7 +78,7 @@ SoFocalDistanceElement::set(SoState * const state, SoNode * const node,
 void
 SoFocalDistanceElement::set(SoState * const state, const float distance)
 {
-  set(state, NULL, distance);
+  SoFocalDistanceElement::set(state, NULL, distance);
 }
 
 //! FIXME: write doc.

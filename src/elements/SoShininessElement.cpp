@@ -88,10 +88,12 @@ SoShininessElement::set(SoState * const state, SoNode * const node,
 {
   SoShininessElement *elem = (SoShininessElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  if (numValues > 0)
-    elem->setElt(numValues, values);
-  else
-    elem->setElt(1, &defaultshininessval);
+  if (elem) {
+    if (numValues > 0)
+      elem->setElt(numValues, values);
+    else
+      elem->setElt(1, &defaultshininessval);
+  }
 }
 
 //! FIXME: write doc.

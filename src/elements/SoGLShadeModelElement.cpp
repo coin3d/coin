@@ -118,7 +118,9 @@ SoGLShadeModelElement::set(SoState * state, const SbBool flat)
 {
   SoGLShadeModelElement * elem = (SoGLShadeModelElement*)
     state->getElement(classStackIndex);
-  elem->flat = flat;
+  if (elem) {
+    elem->flat = flat;
+  }
 }
 
 /*!

@@ -141,8 +141,10 @@ SoTextureCoordinateElement::setDefault(SoState * const state,
 {
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  element->whatKind = DEFAULT;
-  element->numCoords = 0;
+  if (element) {
+    element->whatKind = DEFAULT;
+    element->numCoords = 0;
+  }
 }
 
 //! FIXME: write doc.
@@ -155,13 +157,15 @@ SoTextureCoordinateElement::setFunction(SoState * const state,
 {
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
    SoReplacedElement::getElement(state, classStackIndex, node);
-  element->funcCB = func;
-  element->funcCBData = userdata;
-  element->whatKind = FUNCTION;
-  element->coords2 = NULL;
-  element->coords3 = NULL;
-  element->coords4 = NULL;
-  element->numCoords = 0;
+  if (element) {
+    element->funcCB = func;
+    element->funcCBData = userdata;
+    element->whatKind = FUNCTION;
+    element->coords2 = NULL;
+    element->coords3 = NULL;
+    element->coords4 = NULL;
+    element->numCoords = 0;
+  }
 }
 
 //! FIXME: write doc.
@@ -174,12 +178,14 @@ SoTextureCoordinateElement::set2(SoState * const state,
 {
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  element->coordsDimension = 2;
-  element->numCoords = numCoords;
-  element->coords2 = coords;
-  element->coords3 = NULL;
-  element->coords4 = NULL;
-  element->whatKind = EXPLICIT;
+  if (element) {
+    element->coordsDimension = 2;
+    element->numCoords = numCoords;
+    element->coords2 = coords;
+    element->coords3 = NULL;
+    element->coords4 = NULL;
+    element->whatKind = EXPLICIT;
+  }
 }
 
 /*! 
@@ -195,12 +201,14 @@ SoTextureCoordinateElement::set3(SoState * const state,
 {
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  element->coordsDimension = 3;
-  element->numCoords = numCoords;
-  element->coords2 = NULL;
-  element->coords3 = coords;
-  element->coords4 = NULL;
-  element->whatKind = EXPLICIT;
+  if (element) {
+    element->coordsDimension = 3;
+    element->numCoords = numCoords;
+    element->coords2 = NULL;
+    element->coords3 = coords;
+    element->coords4 = NULL;
+    element->whatKind = EXPLICIT;
+  }
 }
 
 //! FIXME: write doc.
@@ -213,12 +221,14 @@ SoTextureCoordinateElement::set4(SoState * const state,
 {
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  element->coordsDimension = 4;
-  element->numCoords = numCoords;
-  element->coords2 = NULL;
-  element->coords3 = NULL;
-  element->coords4 = coords;
-  element->whatKind = EXPLICIT;
+  if (element) {
+    element->coordsDimension = 4;
+    element->numCoords = numCoords;
+    element->coords2 = NULL;
+    element->coords3 = NULL;
+    element->coords4 = coords;
+    element->whatKind = EXPLICIT;
+  }
 }
 
 //! FIXME: write doc.

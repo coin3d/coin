@@ -103,7 +103,9 @@ SoPolygonOffsetElement::set(SoState * state, SoNode * node,
 {
   SoPolygonOffsetElement *elem = (SoPolygonOffsetElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  elem->setElt(factor, units, styles, on);
+  if (elem) {
+    elem->setElt(factor, units, styles, on);
+  }
 }
 
 //! FIXME: write doc.
