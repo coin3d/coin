@@ -904,9 +904,12 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
         srcfield->connectFrom(dstfield);
       }
       else {
-        // make bidirectional connection
         dstfield->connectFrom(srcfield);
+
+#if 0 // not such a good idea, disabled, pederb 2004-01-12
+        // make bidirectional connection
         srcfield->connectFrom(dstfield, FALSE, TRUE);
+#endif // disabled
       }
     }
     else {
