@@ -152,61 +152,76 @@ void
 SoAuditorList::notify(SoNotList * l)
 {
   const int num = this->getLength();
-  // FIXME: should perhaps use a more general mechanism to detect when
-  // to ignore notification? (In SoFieldContainer::notify() -- based
-  // on SoNotList::getTimeStamp()?) 20000304 mortene.
-  SbList<void *> notified(num);
-
-  for (int i = 0; i < num; i++) {
-    void * auditor = this->getObject(i);
-
-    if (notified.find(auditor) == -1) {
-      SoNotRec::Type type = this->getType(i);
-      switch (type) {
-      case SoNotRec::CONTAINER:
-      case SoNotRec::PARENT:
-        {
-          SoFieldContainer * obj = (SoFieldContainer *)auditor;
-          obj->notify(l);
-        }
-        break;
-
-      case SoNotRec::SENSOR:
-        {
-          SoDataSensor * obj = (SoDataSensor *)auditor;
-#if COIN_DEBUG && 0 // debug
-          SoDebugError::postInfo("SoAuditorList::notify",
-                                 "notify and schedule sensor: %p", obj);
-#endif // debug
-          obj->notify(l);
-          obj->schedule();
-        }
-        break;
-
-      case SoNotRec::FIELD:
-      case SoNotRec::ENGINE:
-        {
-          // We used to check whether or not the fields was already
-          // dirty before we transmitted the notification
-          // message. This is _not_ correct (the dirty flag is
-          // conceptually only relevant for whether or not to do
-          // re-evaluation), so don't try to "optimize" the
-          // notification mechanism by re-introducing that "feature".
-          // :^/
-          ((SoField *)auditor)->notify(l);
-        }
-        break;
-
-      default:
-        assert(0 && "Unknown auditor type");
+  if (num == 1) { // fast path for common case
+    this->doNotify(l, this->getObject(0), this->getType(0));
+  }
+  else if (num > 1) { // handle multiple auditors
+    // FIXME: should perhaps use a more general mechanism to detect when
+    // to ignore notification? (In SoFieldContainer::notify() -- based
+    // on SoNotList::getTimeStamp()?) 20000304 mortene.
+    SbList <void *> notified(num);
+    
+    for (int i = 0; i < num; i++) {
+      void * auditor = this->getObject(i);
+      if (notified.find(auditor) == -1) {
+        // use a copy of 'l', since the notification list might change
+        // when auditors are notified
+        SoNotList listcopy(l);
+        this->doNotify(&listcopy, auditor, this->getType(i));
+        notified.append(auditor);
       }
-      notified.append(auditor);
     }
-
+    
     // FIXME: it should be possible for the application programmer to
     // do this (it is for instance useful and tempting to do it upon
     // changes in engines). pederb, 2001-11-06
     assert(num == this->getLength() &&
            "auditors can not be removed during the notification loop");
+  }
+}
+
+//
+// Private method used to propagate 'l' to the 'auditor' of type 'type'
+//
+void 
+SoAuditorList::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type)
+{
+  switch (type) {
+  case SoNotRec::CONTAINER:
+  case SoNotRec::PARENT:
+    {
+      SoFieldContainer * obj = (SoFieldContainer *)auditor;
+      obj->notify(l);
+    }
+    break;
+    
+  case SoNotRec::SENSOR:
+    {
+      SoDataSensor * obj = (SoDataSensor *)auditor;
+#if COIN_DEBUG && 0 // debug
+      SoDebugError::postInfo("SoAuditorList::notify",
+                             "notify and schedule sensor: %p", obj);
+#endif // debug
+      obj->notify(l);
+      obj->schedule();
+    }
+    break;
+    
+  case SoNotRec::FIELD:
+  case SoNotRec::ENGINE:
+    {
+      // We used to check whether or not the fields was already
+      // dirty before we transmitted the notification
+      // message. This is _not_ correct (the dirty flag is
+      // conceptually only relevant for whether or not to do
+      // re-evaluation), so don't try to "optimize" the
+      // notification mechanism by re-introducing that "feature".
+      // :^/
+      ((SoField *)auditor)->notify(l);
+    }
+    break;
+    
+  default:
+    assert(0 && "Unknown auditor type");
   }
 }

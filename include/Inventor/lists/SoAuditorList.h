@@ -83,6 +83,9 @@ private:
   void * & operator[](const int) { return SbPList::operator[](0); }
   int operator==(const SbPList &) const { return 0; }
   int operator!=(const SbPList &) const { return 0; }
+
+  void doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type);
+
 };
 
 #endif // !COIN_SOAUDITORLIST_H
