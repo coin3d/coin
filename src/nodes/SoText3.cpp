@@ -53,6 +53,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/nodes/SoProfile.h>
+#include <Inventor/nodes/SoNurbsProfile.h>
 
 
 #ifdef _WIN32
@@ -192,7 +193,6 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   int numglyphs = this->glyphs.getLength();
   if (numglyphs == 0) return;
 
-  // FIXME: consider profile. pederb, 20000223
   float size = SoFontSizeElement::get(action->getState());
   int i, n = this->widths.getLength();
   if (n == 0) {
@@ -243,17 +243,42 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   int numprofiles = profilenodes.getLength();
   if ( numprofiles > 0) {
     assert(profilenodes[0]->getTypeId().isDerivedFrom(SoProfile::getClassTypeId()));
-    for (int i=numprofiles-1; i>=0; i--) {
+    for (int i = numprofiles-1; i >= 0; i--) {
       SoProfile *pn = (SoProfile *)profilenodes[i];
-      int num;
-      SbVec2f *coords;
-      pn->getVertices(state, num, coords);
-      for (int j=0; j<num; j++) {
-        if (-coords[j][0] > maxz) maxz = -coords[j][0];
-        if (-coords[j][0] < minz) minz = -coords[j][0];
-        if (coords[j][1] > profsize) profsize = coords[j][1];
+      if (pn->isOfType(SoNurbsProfile::getClassTypeId())) {
+        // Don't use SoProfile::getVertices() for SoNurbsProfile
+        // nodes as this would cause a call to the GLU library, which
+        // requires a valid GL context. Instead we approximate using
+        // SoNurbsProfile::getTrimCurve(), and use the control points
+        // to calculate the bounding box. This is an approximation,
+        // but the same technique is used in So[Indexed]NurbsSurface
+        // and So[Indexed]NurbsCurve. To avoid this approximation we
+        // would need our own NURBS library.    pederb, 20000926
+        SoNurbsProfile * np = (SoNurbsProfile*) pn;
+        float * knots;
+        int numknots;
+        int dim;
+        int numpts;
+        float * points;
+        np->getTrimCurve(state, numpts, points, dim, 
+                         numknots, knots);
+        for (int j = 0; j < numpts; j++) {
+          if (-points[j*dim] > maxz) maxz = -points[j*dim];
+          if (-points[j*dim] < minz) minz = -points[j*dim];
+          if (points[j*dim+1] > profsize) profsize = points[j*dim+1];
+        }
       }
-    }    
+      else {
+        int num;
+        SbVec2f *coords;
+        pn->getVertices(state, num, coords);
+        for (int j = 0; j < num; j++) {
+          if (-coords[j][0] > maxz) maxz = -coords[j][0];
+          if (-coords[j][0] < minz) minz = -coords[j][0];
+          if (coords[j][1] > profsize) profsize = coords[j][1];
+        }
+      }
+    }
   }
   else {
     // extrude
@@ -451,7 +476,7 @@ SoText3::render(SoState * state, unsigned int part)
     for (int l=numprofiles-1; l>=0; l--) {
       SoProfile *pn = (SoProfile *)profilenodes[l];
       pn->getVertices(state, profnum, profcoords);
-      
+
       if (profcoords[profnum-1][0] > farz) farz = profcoords[profnum-1][0];
       if (profcoords[0][0] < nearz) nearz = profcoords[0][0];
 
@@ -459,7 +484,7 @@ SoText3::render(SoState * state, unsigned int part)
         firstprofile = l;
         break;
       }
-    }    
+    }
   }
   nearz = -nearz;
   farz = -farz;
@@ -561,18 +586,18 @@ SoText3::render(SoState * state, unsigned int part)
             SbVec3f tmp1(va[0]-vc[0], va[1]-vc[1], 0.0f);
             tmp1 = tmp1.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
             tmp1.normalize();
-        
+
             SbVec3f tmp2(vd[0]-vb[0], vd[1]-vb[1], 0.0f);
             tmp2 = tmp2.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
             tmp2.normalize();
-          
+
             SoProfile *pn = (SoProfile *)profilenodes[firstprofile];
             pn->getVertices(state, profnum, profcoords);
 
             SbVec2f edgea( va[0]+(profcoords[0][1]*tmp2[0]), va[1]+(profcoords[0][1]*tmp2[1]) );
             SbVec2f edgeb( vb[0]+(profcoords[0][1]*tmp1[0]), vb[1]+(profcoords[0][1]*tmp1[1]) );
             float edgez = profcoords[0][0];
-          
+
               // look through all profiles.
             for (int j=firstprofile; j<numprofiles; j++) {
               SoProfile *pn = (SoProfile *)profilenodes[j];
@@ -595,7 +620,7 @@ SoText3::render(SoState * state, unsigned int part)
                   glVertex3f(edgea[0], edgea[1], edgez);
                   glVertex3f(vd[0], vd[1], -profcoords[k][0] );
                   glVertex3f(vc[0], vc[1], -profcoords[k][0] );
-                }  
+                }
                 edgeb = vc;
                 edgea = vd;
                 edgez = -profcoords[k][0];
