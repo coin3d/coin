@@ -4081,3 +4081,21 @@ Separator {
     20040607 mortene, bug reported on coin-discuss by Nikolai Ruhe.
 
 =====================================================================
+
+116 SoAsciiText::width behaves wrongly
+
+    According to the documentation, the width field specifies the
+    total width of the string, but Coin seems to use this field as the
+    spacing between each character instead.
+
+    #VRML V1.0 ascii
+    Separator {
+      AsciiText {
+        width [ 1, 10]
+        string [ "Some text string", "some other text string" ]
+      }
+    }
+
+    20040609 kintel
+
+=====================================================================
