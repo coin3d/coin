@@ -44,10 +44,12 @@
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/misc/SoGL.h>
 #include <string.h> // memcmp()
+#include <Inventor/system/gl.h>
 
 #define MAX_UNITS 16
 
 typedef struct  {
+  GLuint triangleindex;
   GLuint vertex;
   GLuint normal;
   GLuint texcoord0;
@@ -223,8 +225,7 @@ SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
   if (renderasvbo) {
     unsigned long contextid = (unsigned long) SoGLCacheContextElement::get(state);    
     PRIVATE(this)->enableVBOs(glue, contextid, color, normal, texture, enabled, lastenabled);
-    cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT,
-                             (const GLvoid*) this->getIndices());
+    cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT, NULL);
     PRIVATE(this)->disableVBOs(glue, color, normal, texture, enabled, lastenabled);
   }
   else {
@@ -813,6 +814,19 @@ SoPrimitiveVertexCacheP::enableVBOs(const cc_glglue * glue,
     cc_glglue_glNormalPointer(glue, GL_FLOAT, 0, NULL);
     cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
   }
+
+  if (vbo->triangleindex == 0) {
+    cc_glglue_glGenBuffers(glue, 1, &vbo->triangleindex);
+    cc_glglue_glBindBuffer(glue, GL_ELEMENT_ARRAY_BUFFER, vbo->triangleindex);
+    cc_glglue_glBufferData(glue, GL_ELEMENT_ARRAY_BUFFER, 
+                           this->indices.getLength()*sizeof(int32_t),
+                           this->indices.getArrayPtr(),
+                           GL_STATIC_DRAW);
+
+  }
+  else {
+    cc_glglue_glBindBuffer(glue, GL_ELEMENT_ARRAY_BUFFER, vbo->triangleindex);
+  }
 }
 
   
@@ -824,6 +838,7 @@ SoPrimitiveVertexCacheP::disableVBOs(const cc_glglue * glue,
 {
   this->disableArrays(glue, color, normal, texture, enabled, lastenabled);
   cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0); // Reset VBO binding  
+  cc_glglue_glBindBuffer(glue, GL_ELEMENT_ARRAY_BUFFER, 0); // Reset VBO binding  
 }
 
 #undef MAX_UNITS
