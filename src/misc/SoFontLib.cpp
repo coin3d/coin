@@ -48,7 +48,6 @@
 #include <Inventor/SoInput.h>
 
 /*************************************************************************/
-#ifndef DOXYGEN_SKIP_THIS
 
 class SoFontLibP {
 public:
@@ -62,8 +61,6 @@ SbStringList * SoFontLibP::fontfiles = NULL;
 SbDict SoFontLibP::openfonts;
 
 /*************************************************************************/
-
-#endif DOXYGEN_SKIP_THIS
 
 /*!
   Constructor.
