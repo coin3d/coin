@@ -208,7 +208,7 @@ THE LINKS
 * TrueType Fonts with liberal licensing (?): <URL:http://fonts.tom7.com/>
 
 * Volume rendering publications / papers:
-  - <URL:http://www.sigchi.acm.org/pubs/contents/proceedings/volvis/353888/>
+  - <URL:http://www.sigchi.acm.org/pubs/>
 
 * OpenGL and ActiveX:
 
