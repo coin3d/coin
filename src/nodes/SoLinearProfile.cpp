@@ -105,10 +105,29 @@ void
 SoLinearProfile::getVertices(SoState * state, int32_t & numvertices,
                              SbVec2f *& vertices)
 {
+  if (coordListLinearProfile == NULL) {
+    coordListLinearProfile = new SbList <float>;
+    atexit(cleanupLinearProfile);
+  }
   const SoProfileCoordinateElement * elem = (const SoProfileCoordinateElement*)
     SoProfileCoordinateElement::getInstance(state);
-  numvertices = elem->getNum();
-  // Need to cast away const. Looks like bad design -- shouldn't the
-  // vertices argument to this function be "const SbVec2f *"?
-  vertices = numvertices ? (SbVec2f *)elem->getArrayPtr2() : NULL;
+
+  coordListLinearProfile->truncate(0);
+
+  int32_t numcoords = elem->getNum();
+  if (numcoords) {
+    float * points = (float *)elem->getArrayPtr2();
+    int n = this->index.getNum();
+    for (int i = 0; i < n; i++) {
+      coordListLinearProfile->append(points[this->index[i]*2  ]);
+      coordListLinearProfile->append(points[this->index[i]*2+1]);
+    }
+
+    vertices = (SbVec2f *) coordListLinearProfile->getArrayPtr();
+    numvertices = n;
+  }
+  else {
+    vertices = NULL;
+    numvertices = 0;
+  }
 }
