@@ -24,7 +24,6 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoMFFloat.h>
-#include <GL/gl.h>
 
 class COIN_DLL_EXPORT SoNurbsSurface : public SoShape {
   typedef SoShape inherited;
@@ -62,11 +61,11 @@ protected:
 private:
   void * nurbsrenderer;
   void doNurbs(SoAction * action, const SbBool glrender);
-  
-  static void tessBegin(GLenum type, void * data);
-  static void tessTexCoord(GLfloat * texcoord, void * data);
-  static void tessNormal(GLfloat * normal, void * data);
-  static void tessVertex(GLfloat * vertex, void * data);
+
+  static void tessBegin(int type, void * data);
+  static void tessTexCoord(float * texcoord, void * data);
+  static void tessNormal(float * normal, void * data);
+  static void tessVertex(float * vertex, void * data);
   static void tessEnd(void * data);
 };
 
