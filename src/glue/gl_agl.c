@@ -50,8 +50,8 @@
 
 SbBool aglglue_context_is_using_pbuffer(void * ctx)
 {
-  // FIXME: Not sure how to handle this -- I think we should never get
-  // here in the first place if we don't have AGL at all. kyrah 20031123
+  /* FIXME: Not sure how to handle this -- I think we should never get
+     here in the first place if we don't have AGL at all. kyrah 20031123 */
   return FALSE;
 }
 
@@ -522,7 +522,7 @@ aglglue_context_bind_pbuffer(void * ctx)
 void 
 aglglue_context_release_pbuffer(void * ctx)
 {
-  // FIXME: implement, pederb 2003-11-25
+  /* FIXME: implement, pederb 2003-11-25 */
 }
 
 SbBool 
