@@ -1144,9 +1144,6 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/vrml97/Interpolator.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/LOD.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/Light.cpp \
-                         @path_tag@@coin_src_dir@/src/vrml97/Makefile.am \
-                         @path_tag@@coin_src_dir@/src/vrml97/Makefile.am.bak \
-                         @path_tag@@coin_src_dir@/src/vrml97/Makefile.in \
                          @path_tag@@coin_src_dir@/src/vrml97/Material.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/MovieTexture.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/NavigationInfo.cpp \
