@@ -398,7 +398,7 @@ SoClipPlaneManip::valueChangedCB(void * m, SoDragger * dragger)
   SbVec3f direction(0.0f, 1.0f, 0.0f);
   r.multVec(direction, direction);
   direction.normalize();
-  SbPlane plane(direction, -t);
+  SbPlane plane(direction, t);
 
   thisp->attachSensors(FALSE);
   if (thisp->plane.getValue() != plane) {
