@@ -30,6 +30,7 @@
 #endif // COIN_DEBUG
 
 #include <Inventor/SbCylinder.h>
+#include <Inventor/SbPlane.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>

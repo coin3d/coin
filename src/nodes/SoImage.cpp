@@ -33,22 +33,22 @@
 
 #include <Inventor/nodes/SoImage.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/SoInput.h>
 
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoTextureImageElement.h>
-
-#include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/misc/SoState.h>
 #include <Inventor/SbImage.h>
-#include <Inventor/lists/SbStringList.h>
+#include <Inventor/SbPlane.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoTextureImageElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
+#include <Inventor/lists/SbStringList.h>
+#include <Inventor/misc/SoState.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #if HAVE_CONFIG_H

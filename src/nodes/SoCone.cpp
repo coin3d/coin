@@ -26,7 +26,17 @@
 #include <Inventor/nodes/SoCone.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
+#include <Inventor/SbLine.h>
+#include <Inventor/SbPlane.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/details/SoConeDetail.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoGenerate.h>
 #include <Inventor/misc/SoState.h>
 #include <assert.h>
 
@@ -34,14 +44,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/details/SoConeDetail.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/misc/SoGenerate.h>
 
 /*!
   \enum SoCone::Part

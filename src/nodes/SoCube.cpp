@@ -29,6 +29,7 @@
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
+#include <Inventor/SbPlane.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
