@@ -1,3 +1,22 @@
+# Spec file for constructing installation package in RPM format.
+# Quick instructions (these are similar to instructions found in
+# the simage.spec.in file):
+#
+#   * run configure with the "--prefix" option set to the final
+#     installation directory (or leave out to default to /usr/local/)
+#
+#   * copy the top_builddir/build/coin.spec file to the
+#     /usr/src/redhat/SPECS directory (on RedHat Linux, may differ
+#     on other system (on Mandrake, for instance, you should swap
+#     /usr/src/redhat/ with /usr/src/RPM))
+#
+#   * "cd /usr/src/redhat/SPECS", "rpm -bb coin.spec"
+#
+# There should now be a file Coin-something.rpm below
+# /usr/src/redhat/RPMS.
+#
+#                                                    20000705 mortene.
+
 Summary: A high-level 3D visualization library.
 Name: Coin
 Version: @VERSION@
@@ -49,7 +68,7 @@ cd $RPM_BUILD_DIR/Coin
 make install-strip
 # FIXME: for some unknown reason, the lib-file is not automatically
 # stripped, so we "hack" it in. 20000705 mortene.
-strip @libdir@/libCoin-0.6.so.0.0.0
+strip @libdir@/libCoin.so.0.0.0
 make doxygen-doc
 
 %files
@@ -558,8 +577,8 @@ make doxygen-doc
 @includedir@/Inventor/sensors/SoTimerQueueSensor.h
 @includedir@/Inventor/sensors/SoTimerSensor.h
 @includedir@/Inventor/system/inttypes.h
-@libdir@/libCoin-0.6.so.0
-@libdir@/libCoin-0.6.so.0.0.0
+@libdir@/libCoin.so.0
+@libdir@/libCoin.so.0.0.0
 @libdir@/libCoin.la
 @libdir@/libCoin.so
 @mandir@/man3/SbBSPTree.3
