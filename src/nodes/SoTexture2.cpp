@@ -401,6 +401,11 @@ SoTexture2::GLRender(SoGLRenderAction * action)
                              translateWrap((Wrap)this->wrapT.getValue()),
                              quality);
       THIS->glimagevalid = TRUE;
+      // don't cache while creating a texture object
+      SoCacheElement::setInvalid(TRUE);
+      if (state->isCacheOpen()) {
+        SoCacheElement::invalidate(state);
+      }
     }
   }
 

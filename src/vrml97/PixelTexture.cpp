@@ -249,6 +249,11 @@ SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
                              pixeltexture_translate_wrap(this->repeatT.getValue()),
                              quality);
       THIS->glimagevalid = TRUE;
+      // don't cache while creating a texture object
+      SoCacheElement::setInvalid(TRUE);
+      if (state->isCacheOpen()) {
+        SoCacheElement::invalidate(state);
+      }
     }
   }
 

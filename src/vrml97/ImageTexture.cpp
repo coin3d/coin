@@ -333,6 +333,11 @@ SoVRMLImageTexture::GLRender(SoGLRenderAction * action)
                                     imagetexture_translate_wrap(this->repeatS.getValue()),
                                     imagetexture_translate_wrap(this->repeatT.getValue()),
                                     quality);
+    // don't cache while creating a texture object
+    SoCacheElement::setInvalid(TRUE);
+    if (state->isCacheOpen()) {
+      SoCacheElement::invalidate(state);
+    }
   }
 
   if (PRIVATE(this)->glimage && PRIVATE(this)->glimage->getTypeId() == SoGLBigImage::getClassTypeId()) {
