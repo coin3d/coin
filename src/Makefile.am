@@ -186,6 +186,7 @@ install-libCoinincHEADERS: $(libCoininc_HEADERS)
 	  fi \
 	done
 
+if BUILD_WITH_MSVC
 install-exec-local: coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
 	for ext in dll pdb; do \
@@ -196,6 +197,9 @@ install-exec-local: coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
 	    $(INSTALL_PROGRAM) "$$file" "$(DESTDIR)$(bindir)/$$file"; \
 	  fi \
 	done
+else
+install-exec-local:
+endif
 
 install-data-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \

@@ -1059,16 +1059,17 @@ install-libCoinincHEADERS: $(libCoininc_HEADERS)
 	  fi \
 	done
 
-install-exec-local: coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
-	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
-	for ext in dll pdb; do \
-	  file="$$basename.$$ext"; \
-	  if test -f "$$file"; then \
-	    $(mkinstalldirs) "$(DESTDIR)$(bindir)"; \
-	    echo " $(INSTALL_PROGRAM) $$file $(DESTDIR)$(bindir)/$$file"; \
-	    $(INSTALL_PROGRAM) "$$file" "$(DESTDIR)$(bindir)/$$file"; \
-	  fi \
-	done
+@BUILD_WITH_MSVC_TRUE@install-exec-local: coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
+@BUILD_WITH_MSVC_TRUE@	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
+@BUILD_WITH_MSVC_TRUE@	for ext in dll pdb; do \
+@BUILD_WITH_MSVC_TRUE@	  file="$$basename.$$ext"; \
+@BUILD_WITH_MSVC_TRUE@	  if test -f "$$file"; then \
+@BUILD_WITH_MSVC_TRUE@	    $(mkinstalldirs) "$(DESTDIR)$(bindir)"; \
+@BUILD_WITH_MSVC_TRUE@	    echo " $(INSTALL_PROGRAM) $$file $(DESTDIR)$(bindir)/$$file"; \
+@BUILD_WITH_MSVC_TRUE@	    $(INSTALL_PROGRAM) "$$file" "$(DESTDIR)$(bindir)/$$file"; \
+@BUILD_WITH_MSVC_TRUE@	  fi \
+@BUILD_WITH_MSVC_TRUE@	done
+@BUILD_WITH_MSVC_FALSE@install-exec-local:
 
 install-data-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
