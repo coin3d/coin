@@ -213,6 +213,8 @@
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/threads/SbMutex.h>
+#include <Inventor/threads/SbCondVar.h>
 #include <Inventor/SbTime.h>
 #include <stddef.h>
 
@@ -229,8 +231,7 @@
 #endif
 
 #ifdef HAVE_SOUND
-#include <AL/al.h>
-#include <AL/altypes.h>
+#include <../glue/openal_wrapper.h>
 #endif
 
 #define DEBUG_AUDIO 0
@@ -256,10 +257,10 @@ public:
   void deleteAlBuffers();
 
   SoFieldSensor * sourcesensor;
-#ifdef HAVE_SOUND
-  ALuint sourceId;
-  SbList<ALuint> alBuffers;
-#endif // HAVE_SOUND
+
+  unsigned int sourceId;
+  SbList<unsigned int> alBuffers;
+
   SoVRMLAudioClip *currentAudioClip;
   SbBool playing;
   SbBool useTimerCallback;
@@ -272,6 +273,8 @@ public:
   SbMutex syncmutex;
 #endif
   volatile SbBool exitthread;
+  SbMutex exitthreadmutex;
+  SbCondVar exitthreadcondvar;
   volatile SbBool errorInThread;
 
 
@@ -365,9 +368,9 @@ SoVRMLSound::SoVRMLSound(void)
 
 #ifdef HAVE_SOUND
   if (SoAudioDevice::instance()->haveSound()) {
-    ALint  error;
-    alGenSources(1, &(PRIVATE(this)->sourceId));
-    if ((error = alGetError()) != AL_NO_ERROR) {
+    int  error;
+    openal_wrapper()->alGenSources(1, &(PRIVATE(this)->sourceId));
+    if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
       SoDebugError::post("SoVRMLSound::SoVRMLSound",
                          "alGenSources failed. %s",
                          coin_get_openal_error(error));
@@ -395,9 +398,9 @@ SoVRMLSound::~SoVRMLSound(void)
 
 #ifdef HAVE_SOUND
   if (SoAudioDevice::instance()->haveSound()) {
-    ALint  error;
-    alDeleteSources(1, &(PRIVATE(this)->sourceId));
-    if ((error = alGetError()) != AL_NO_ERROR) {
+    int error;
+    openal_wrapper()->alDeleteSources(1, &(PRIVATE(this)->sourceId));
+    if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
       SoDebugError::postWarning("SoVRMLSound::~SoVRMLSound",
                                 "alDeleteSources() failed. %s",
                                 coin_get_openal_error(error));
@@ -454,7 +457,7 @@ void SoVRMLSound::getBufferingProperties(int &bufferLength, int &numBuffers, SbT
 
 #ifdef HAVE_SOUND
 static inline
-void SbVec3f2ALfloat3(ALfloat *dest, const SbVec3f &source)
+void SbVec3f2ALfloat3(float *dest, const SbVec3f &source)
 {
   source.getValue(dest[0], dest[1], dest[2]);
 }
@@ -517,9 +520,9 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   SoDebugError::postInfo("SoVRMLSound::audioRender", "listenerpos = (%0.2f, %0.2f, %0.2f)", x, y, z);
 #endif // debug
 
-  ALint error;
+  int error;
   SbVec3f pos, worldpos;
-  ALfloat alfloat3[3];
+  float alfloat3[3];
 
   pos = this->location.getValue();
   SoModelMatrixElement::get(action->getState()).multVecMatrix(pos, worldpos); 
@@ -533,8 +536,8 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   SbVec3f2ALfloat3(alfloat3, worldpos);
 
   // Position ...
-  alSourcefv(PRIVATE(this)->sourceId, AL_POSITION, alfloat3);
-  if ((error = alGetError()) != AL_NO_ERROR) {
+  openal_wrapper()->alSourcefv(PRIVATE(this)->sourceId, AL_POSITION, alfloat3);
+  if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
     SoDebugError::postWarning("SoVRMLSound::audioRender",
                               "alSourcefv(,AL_POSITION,) failed. %s",
                               coin_get_openal_error(error));
@@ -542,9 +545,10 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   }
 
 #if 0
-  // 20021007 thammer note: if we ever want to implement velocity 
-  // (supported by OpenAL) then this is how it should be done
-  // get alfloat3 from PRIVATE(this)->velocity
+  // Note: if we ever want to implement velocity 
+  // (supported by OpenAL) then this is how it should be done.
+  // get alfloat3 from PRIVATE(this)->velocity.
+  // 2002-10-07 thammer.
   SbVec3f2ALfloat3(alfloat3, velocity.getValue());
 
   alSourcefv(this->sourceId, AL_VELOCITY, alfloat3);
@@ -560,8 +564,8 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   float gain = this->intensity.getValue();
   gain *= listenergain;
   gain = (gain > 0.0f) ? ((gain < 1.0f) ? gain : 1.0f) : 0.0f;
-  alSourcef(PRIVATE(this)->sourceId,AL_GAIN, gain);
-  if ((error = alGetError()) != AL_NO_ERROR) {
+  openal_wrapper()->alSourcef(PRIVATE(this)->sourceId,AL_GAIN, gain);
+  if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
     SoDebugError::postWarning("SoVRMLSound::audioRender",
                               "alSourcef(,AL_GAIN,) failed. %s",
                               coin_get_openal_error(error));
@@ -595,16 +599,18 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
       was disabled, as it should be.  This difference is probably due
       to poor DirectSound3D drivers for the Extigy.  2002-11-07
       thammer.  */
-    alSourcef(PRIVATE(this)->sourceId, AL_ROLLOFF_FACTOR, 0.0f); // no distance attenuation
-    if ((error = alGetError()) != AL_NO_ERROR) {
+    openal_wrapper()->alSourcef(PRIVATE(this)->sourceId, 
+                                AL_ROLLOFF_FACTOR, 0.0f); // no distance attenuation
+    if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
       SoDebugError::postWarning("SoVRMLSound::audioRender",
                                 "alSourcef(,AL_ROLLOFF_FACTOR,) failed. %s",
                                 coin_get_openal_error(error));
       return;
     }
 
-    alSourcef(PRIVATE(this)->sourceId, AL_MIN_GAIN, gain); // no distance attenuation
-    if ((error = alGetError()) != AL_NO_ERROR) {
+    openal_wrapper()->alSourcef(PRIVATE(this)->sourceId, 
+                                AL_MIN_GAIN, gain); // no distance attenuation
+    if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
       SoDebugError::postWarning("SoVRMLSound::audioRender",
                                 "alSourcef(,AL_MIN_GAIN,) failed. %s",
                                 coin_get_openal_error(error));
@@ -612,8 +618,9 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
     }
  } 
    else {
-    alSourcef(PRIVATE(this)->sourceId, AL_ROLLOFF_FACTOR, 1.0f); // default
-    if ((error = alGetError()) != AL_NO_ERROR) {
+    openal_wrapper()->alSourcef(PRIVATE(this)->sourceId, 
+                                AL_ROLLOFF_FACTOR, 1.0f); // default
+    if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
       SoDebugError::postWarning("SoVRMLSound::audioRender",
                                 "alSourcef(,AL_ROLLOFF_FACTOR,) failed. %s",
                                 coin_get_openal_error(error));
@@ -626,8 +633,9 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
     // it results in an error). Since we are only setting the gain to its 
     // default value anyways, it's no problem to just leave this disabled 
     // in here until they have fixed it... 20030113 kyrah
-    alSourcef(PRIVATE(this)->sourceId, AL_MIN_GAIN, 0.0f); // default
-    if ((error = alGetError()) != AL_NO_ERROR) {
+    openal_wrapper()->alSourcef(PRIVATE(this)->sourceId, 
+                                AL_MIN_GAIN, 0.0f); // default
+    if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
       SoDebugError::postWarning("SoVRMLSound::audioRender",
                                 "alSourcef(,AL_MIN_GAIN,) failed. %s",
                                 coin_get_openal_error(error));
@@ -678,10 +686,10 @@ stereo2mono(short int *buffer, int length)
 }
 
 #ifdef HAVE_SOUND
-static ALenum
+static int
 getALSampleFormat(int channels, int bitspersample)
 {
-  ALenum  alformat = 0;;
+  int  alformat = 0;;
 
   if ( (channels==1) && (bitspersample==8) )
     alformat = AL_FORMAT_MONO8;
@@ -699,12 +707,12 @@ getALSampleFormat(int channels, int bitspersample)
 void SoVRMLSoundP::deleteAlBuffers()
 {
 #ifdef HAVE_SOUND
-  ALint error;
+  int error;
   if (SoAudioDevice::instance()->haveSound()) {
     while (this->alBuffers.getLength() > 0) {
-        ALuint bufferid = this->alBuffers.pop();
-        alDeleteBuffers(1, &bufferid);
-        if ((error = alGetError()) != AL_NO_ERROR) {
+        unsigned int bufferid = this->alBuffers.pop();
+        openal_wrapper()->alDeleteBuffers(1, &bufferid);
+        if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
           SoDebugError::postWarning("SoVRMLSound::deleteAlBuffers",
                                     "alDeleteBuffers failed. %s",
                                     coin_get_openal_error(error));
@@ -722,15 +730,26 @@ void *SoVRMLSoundP::threadCallbackWrapper(void *userdata)
 
 void *SoVRMLSoundP::threadCallback()
 {
-  /* FIXME: An application using Coin might crash when shutdown because
-     a SoAudioClip node might have been deleted (even though it is ref'ed).
-     Using this->currentAudioClip in the fillThread is then undefined...
-     Investigate this further. 20021104 thammer
-  */
+  /* FIXME: An application using Coin might crash when shutdown
+     because a SoAudioClip node might have been deleted (even though
+     it is ref'ed). Using this->currentAudioClip in the fillThread is
+     then undefined...  Investigate this further. 20021104 thammer */
   while (!this->exitthread) {
     this->fillBuffers();
+    /* FIXME: If we're not playing (and the thread should be
+       idle-ing), the sleep time could be a lot longer, or we could
+       have infinite sleeping time, as long as the main thread calls
+       wake() on the condvar when thread should exit or when playback
+       should start. This would make the thread consume less CPU time
+       when idle. 2003-01-20 thammer. */
 #ifdef HAVE_THREADS
-    cc_sleep(this->workerThreadSleepTime.getValue());
+    // cc_sleep(this->workerThreadSleepTime.getValue());
+    /* Note: See http://www.llnl.gov/computing/tutorials/workshops/workshop/pthreads/MAIN.html#ConditionVariables 
+       for a sample of condvar usage. 2002-01-20 thammer. */
+    this->exitthreadmutex.lock();
+    if (!this->exitthread) 
+      this->exitthreadcondvar.timedWait(this->exitthreadmutex, this->workerThreadSleepTime);
+    this->exitthreadmutex.unlock();
 #endif
   }
   return NULL;
@@ -756,7 +775,7 @@ SbBool SoVRMLSoundP::stopPlaying()
   if (!this->playing)
     return TRUE;
 
-  ALint error;
+  int error;
 
   // stop timersensor
   if (this->timersensor) {
@@ -767,13 +786,15 @@ SbBool SoVRMLSoundP::stopPlaying()
   }
 
   /* FIXME: joining with workerThread will normally cause a lag of
-     sleepTime. This should be fixed in some way. 20021107 thammer.
-  */
+     sleepTime. This should be fixed in some way. 20021107 thammer. */
 
   // stop thread
 #ifdef HAVE_THREADS
   if (this->workerThread!=NULL) {
+    this->exitthreadmutex.lock();
     this->exitthread = TRUE;
+    this->exitthreadcondvar.wakeAll();
+    this->exitthreadmutex.unlock();
     void *retval = NULL;
     cc_thread_join(this->workerThread, &retval);
     cc_thread_destruct(this->workerThread);
@@ -786,8 +807,8 @@ SbBool SoVRMLSoundP::stopPlaying()
   SbBool retval = TRUE;
 
 
-  alSourceStop(this->sourceId);
-  if ((error = alGetError()) != AL_NO_ERROR) {
+  openal_wrapper()->alSourceStop(this->sourceId);
+  if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
     SoDebugError::postWarning("SoVRMLSound::stopPlaying",
                               "alSourceStop failed. %s",
                               coin_get_openal_error(error));
@@ -800,8 +821,8 @@ SbBool SoVRMLSoundP::stopPlaying()
      2002-11-07 thammer.
   */
 
-  alSourceRewind(this->sourceId);
-  if ((error = alGetError()) != AL_NO_ERROR) {
+  openal_wrapper()->alSourceRewind(this->sourceId);
+  if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
     SoDebugError::postWarning("SoVRMLSound::stopPlaying",
                               "alSourceRewind failed. %s",
                               coin_get_openal_error(error));
@@ -812,20 +833,11 @@ SbBool SoVRMLSoundP::stopPlaying()
      Look at how it is done in SoAudioRender.
      20021106 thammer.
    */
-  ALint      processed;
-  ALint      queued;
+  int      processed;
+  int      queued;
 
-#if (defined _WIN32 || defined __APPLE__)
-  alGetSourcei(this->sourceId, AL_BUFFERS_QUEUED, &queued);
-#else
-  alGetSourceiv(this->sourceId, AL_BUFFERS_QUEUED, &queued);
-#endif
-//#ifdef _WIN32
-#if (defined _WIN32 || defined __APPLE__)
-  alGetSourcei(this->sourceId, AL_BUFFERS_PROCESSED, &processed);
-#else
-  alGetSourceiv(this->sourceId, AL_BUFFERS_PROCESSED, &processed);
-#endif
+  openal_wrapper()->alGetSourcei(this->sourceId, AL_BUFFERS_QUEUED, &queued);
+  openal_wrapper()->alGetSourcei(this->sourceId, AL_BUFFERS_PROCESSED, &processed);
 
   /* Note: if the sound was stopped after the thread reported to the audioclip that all
      buffer were played, queued and processed should both be 0. If the sound was stopped
@@ -841,10 +853,11 @@ SbBool SoVRMLSoundP::stopPlaying()
 #endif // debug  
 
   if (processed >0) {
-    ALuint *removedBuffers = new ALuint[processed];
-    alSourceUnqueueBuffers(this->sourceId, processed, removedBuffers);
+    unsigned int *removedBuffers = new unsigned int[processed];
+    openal_wrapper()->alSourceUnqueueBuffers(this->sourceId, 
+                                             processed, removedBuffers);
     delete[] removedBuffers;
-    if ((error = alGetError()) != AL_NO_ERROR) {
+    if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
       SoDebugError::postWarning("SoVRMLSoundP::stopPlaying",
                                 "alSourceUnqueueBuffers failed. %s",
                                 coin_get_openal_error(error));
@@ -852,32 +865,30 @@ SbBool SoVRMLSoundP::stopPlaying()
     }
   }
 
-  /* Note: The OpenAL manual states that when a source is stopped, "the entire
-     queue is considered processed" (see documentation for "Unqueueing command".
-     However, sometimes (encountered on Win32 using OpenAL from CVS) after
-     stopping, processed==0 and queued != 0, which means that the above 
-     unqueueing would fail (because it unqueues only processed buffers).
+  /* Note: The OpenAL manual states that when a source is stopped,
+     "the entire queue is considered processed" (see documentation for
+     "Unqueueing command".  However, sometimes (encountered on Win32
+     using OpenAL from CVS) after stopping, processed==0 and queued !=
+     0, which means that the above unqueueing would fail (because it
+     unqueues only processed buffers).
 
      So, we try explisitly setting the AL_BUFFER source attribute to NULL,
      which is legal according to the OpenAL documentation (and also redundant,
      wrt alSourceUnqueueBuffers according to the same documentation).
 
      To be absolutely sure the queue is empty, we verify this with an assert.
-  */
+  
+     2003-01-17 thammer. */
 
-  alSourcei(this->sourceId, AL_BUFFER, AL_NONE);
-  if ((error = alGetError()) != AL_NO_ERROR) {
+  openal_wrapper()->alSourcei(this->sourceId, AL_BUFFER, AL_NONE);
+  if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
     SoDebugError::postWarning("SoVRMLSoundP::stopPlaying",
                               "alSourcei(,AL_BUFFER, AL_NONE) failed. %s",
                               coin_get_openal_error(error));
     return FALSE;
   }
 
-#if (defined _WIN32 || defined __APPLE__)
-  alGetSourcei(this->sourceId, AL_BUFFERS_QUEUED, &queued);
-#else
-  alGetSourceiv(this->sourceId, AL_BUFFERS_QUEUED, &queued);
-#endif
+  openal_wrapper()->alGetSourcei(this->sourceId, AL_BUFFERS_QUEUED, &queued);
 
   assert(queued == 0);
 
@@ -904,12 +915,12 @@ SbBool SoVRMLSoundP::startPlaying()
   if (this->playing)
     return TRUE;
 
-  ALint error;
+  int error;
 
   assert(this->alBuffers.getLength() == 0);
 
-  alSourcei(this->sourceId,AL_LOOPING, FALSE);
-  if ((error = alGetError()) != AL_NO_ERROR) {
+  openal_wrapper()->alSourcei(this->sourceId, AL_LOOPING, FALSE);
+  if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
     SoDebugError::postWarning("SoVRMLSoundP::startPlaying",
                               "alSourcei(,AL_LOOPING,) failed. %s",
                               coin_get_openal_error(error));
@@ -939,7 +950,13 @@ SbBool SoVRMLSoundP::startPlaying()
     // stop existing thread, start new thread
 #ifdef HAVE_THREADS
     if (this->workerThread!=NULL) {
+      /* FIXME: Verify that this will actually happen sometimes. Also
+       verify that it is indeed necessary to stop and start the
+       thread. 2003-01-20 thammer. */
+      this->exitthreadmutex.lock();
       this->exitthread = TRUE;
+      this->exitthreadcondvar.wakeAll();
+      this->exitthreadmutex.unlock();
       void *retval = NULL;
       cc_thread_join(this->workerThread, &retval);
       cc_thread_destruct(this->workerThread);
@@ -976,37 +993,30 @@ void SoVRMLSoundP::fillBuffers()
     return;
   }
 
-  ALint      processed;
+  int      processed;
 
   // Get status
-#if (defined _WIN32 || defined __APPLE__)
-  alGetSourcei(this->sourceId, AL_BUFFERS_PROCESSED, &processed);
-#else
-  alGetSourceiv(this->sourceId, AL_BUFFERS_PROCESSED, &processed);
-#endif
+  openal_wrapper()->alGetSourcei(this->sourceId, AL_BUFFERS_PROCESSED, &processed);
 
-  ALint      queued;
-#if (defined _WIN32 || defined __APPLE__)
-  alGetSourcei(this->sourceId, AL_BUFFERS_QUEUED, &queued);
-#else
-  alGetSourceiv(this->sourceId, AL_BUFFERS_QUEUED, &queued);
-#endif
+  int      queued;
+  openal_wrapper()->alGetSourcei(this->sourceId, AL_BUFFERS_QUEUED, &queued);
 
 #if COIN_DEBUG && DEBUG_AUDIO
   SoDebugError::postInfo("SoVRMLSound::fillBuffers",
                          "Processed: %d, Queued: %d", processed, queued);
 #endif // debug
 
-  ALuint bufferid = 0;
-  ALint error;
+  unsigned int bufferid = 0;
+  int error;
   void *ret;
 
 #if 0
   // 20021021 thammer, kept for debugging purposes
   if (queued<=0) {
-    // no buffers were queued, so there's nothing to do
-    // this should only happen after audioclip::fillBuffer() returns NULL to indicate an EOF,
-    // and sound::fillBuffers() does not queue new buffers after that
+    // no buffers were queued, so there's nothing to do. This should
+    // only happen after audioclip::fillBuffer() returns NULL to
+    // indicate an EOF, and sound::fillBuffers() does not queue new
+    // buffers after that
     #if COIN_DEBUG && DEBUG_AUDIO // debug
             SoDebugError::postInfo("SoVRMLSound::fillBuffers",
                                    "No more buffers queued (we're "
@@ -1019,8 +1029,9 @@ void SoVRMLSoundP::fillBuffers()
   if (this->endoffile) {
     if (processed > 0) {
       assert(queued > 0);
-      ALuint *removedBuffers = new ALuint[processed];
-      alSourceUnqueueBuffers(this->sourceId, processed, removedBuffers);
+      unsigned int *removedBuffers = new unsigned int[processed];
+      openal_wrapper()->alSourceUnqueueBuffers(this->sourceId, processed, 
+                                               removedBuffers);
       delete[] removedBuffers;
     } else if (queued == 0) {
       this->waitingForAudioClipToFinish = TRUE;
@@ -1032,12 +1043,13 @@ void SoVRMLSoundP::fillBuffers()
     }
   } else {
     while (((processed > 0) || (queued<this->numBuffers)) && !this->endoffile)  {
-      // FIXME: perhaps we should reread processed in the while loop too. 
-      // This might make buffer underruns less frequent. 20021007 thammer
+      // FIXME: perhaps we should reread processed in the while loop
+      // too. This might make buffer underruns less frequent.
+      // 2002-10-07 thammer.
 
       if (queued < this->numBuffers) {
-        alGenBuffers(1, &bufferid);
-        if ((error = alGetError()) != AL_NO_ERROR) {
+        openal_wrapper()->alGenBuffers(1, &bufferid);
+        if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
           SoDebugError::post("SoVRMLSoundP::fillBuffers",
                              "alGenBuffers failed. %s",
                              coin_get_openal_error(error));
@@ -1047,8 +1059,8 @@ void SoVRMLSoundP::fillBuffers()
         this->alBuffers.push(bufferid);
       } else {
       // unqueue one buffer
-        alSourceUnqueueBuffers(this->sourceId, 1, &bufferid);
-        if ((error = alGetError()) != AL_NO_ERROR) {
+        openal_wrapper()->alSourceUnqueueBuffers(this->sourceId, 1, &bufferid);
+        if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
           SoDebugError::post("SoVRMLSound::fillBuffers",
                              "alSourceUnqueueBuffers failed. "
                              "Queued: %d, Processed: %d."
@@ -1063,10 +1075,12 @@ void SoVRMLSoundP::fillBuffers()
 
       int frameoffset, channels;
       frameoffset=0;
-      /* Notes (mainly kept for future debugging of deadlock issues): 
+      /* Notes (mainly kept for future debugging of deadlock issues):
          Unlocking syncmutex here might open up a can of worms. I have
-         looked at the variables used in this thread, and it looks like it's
-         ok to unlock at this point, but it's very easy to overlook something!
+         looked at the variables used in this thread, and it looks
+         like it's ok to unlock at this point, but it's very easy to
+         overlook something!
+
          The reason I had to look into doing more finegrained 
          synchronization was because
          I stumbled across a deadlock. Description of the deadlock:
@@ -1093,8 +1107,7 @@ void SoVRMLSoundP::fillBuffers()
          This also fixes the first deadlock described above, so I'll probably
          get away with not unlocking syncmutex here afterall.
 
-         2002-11-18 thammer
-       */
+         2002-11-18 thammer */
       ret = this->currentAudioClip->fillBuffer(frameoffset, this->audioBuffer, 
                                                this->bufferLength, channels);
 
@@ -1105,14 +1118,14 @@ void SoVRMLSoundP::fillBuffers()
 
       // copy buffer data to the newly generated or unqueued openal buffer
 
-      ALenum  alformat = 0;;
+      int  alformat = 0;;
       alformat = getALSampleFormat(this->channels, 16);
 
-      alBufferData(bufferid, alformat, this->audioBuffer, 
+      openal_wrapper()->alBufferData(bufferid, alformat, this->audioBuffer, 
                    this->bufferLength * sizeof(int16_t) * this->channels, 
                    this->currentAudioClip->getSampleRate());
 
-      if ((error = alGetError()) != AL_NO_ERROR) {
+      if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
         SoDebugError::post("SoVRMLSound::fillBuffers",
                            "alBufferData(buffer=%d, format=%d, data=%p, "
                            "size=%d, freq=%d) failed. "
@@ -1128,8 +1141,8 @@ void SoVRMLSoundP::fillBuffers()
       }
 
       // Queue buffer
-      alSourceQueueBuffers(this->sourceId, 1, &bufferid);
-      if ((error = alGetError()) != AL_NO_ERROR) {
+      openal_wrapper()->alSourceQueueBuffers(this->sourceId, 1, &bufferid);
+      if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
         SoDebugError::post("SoVRMLSound::fillBuffers",
                            "alSourceQueueBuffers failed. "
                            "Queued: %d, Processed: %d."
@@ -1141,25 +1154,23 @@ void SoVRMLSoundP::fillBuffers()
       }
 
       if (ret == NULL) {
-        this->endoffile = true; // AudioClip has reached EOF (or an error), so we shouldn't fill any more buffers
+        this->endoffile = true; 
+        // AudioClip has reached EOF (or an error), so we shouldn't
+        // fill any more buffers
       }
 
-      // Check to see if we're still playing
-      // if not, make sure to start over again.
-      // If we're not playing, it's because the buffers have not been filled up 
-      // (unqueued, filled, queued) fast enough, so the source has played the last 
-      // buffer in the queue and changed state from playing to stopped.
+      // Check to see if we're still playing if not, make sure to
+      // start over again. If we're not playing, it's because the
+      // buffers have not been filled up (unqueued, filled, queued)
+      // fast enough, so the source has played the last buffer in the
+      // queue and changed state from playing to stopped.
 
-      ALint      state;
-#if (defined _WIN32 || defined __APPLE__)
-      alGetSourcei(this->sourceId, AL_SOURCE_STATE, &state);
-#else
-      alGetSourceiv(this->sourceId, AL_SOURCE_STATE, &state);
-#endif
+      int      state;
+      openal_wrapper()->alGetSourcei(this->sourceId, AL_SOURCE_STATE, &state);
       if (state != AL_PLAYING) {
         if ( (state == AL_STOPPED) || (state == AL_INITIAL) ) {
-          alSourcePlay(this->sourceId);
-          if ((error = alGetError()) != AL_NO_ERROR) {
+          openal_wrapper()->alSourcePlay(this->sourceId);
+          if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
             SoDebugError::post("SoVRMLSoundP::fillBuffers",
                                "alSourcePlay(sid=%d) failed: %s",
                                this->sourceId,
@@ -1297,11 +1308,11 @@ SoVRMLSoundP::sourceSensorCB(SoSensor *)
      supported is thus [0.01..2.0]. 2002-11-07 thammer.
   */
 
-  ALint error;
+  int error;
   float pitch = this->currentAudioClip->pitch.getValue();
   pitch = (pitch >= 0.01f) ? ( (pitch<=2.0f) ? pitch : 2.0f ) : 0.01f;
-  alSourcef(this->sourceId, AL_PITCH, pitch);
-  if ((error = alGetError()) != AL_NO_ERROR)
+  openal_wrapper()->alSourcef(this->sourceId, AL_PITCH, pitch);
+  if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR)
   {
     SoDebugError::postWarning("SoVRMLSoundP::sourceSensorCB",
                               "alSourcef(,AL_PITCH,) failed. %s",
