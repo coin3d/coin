@@ -1,17 +1,17 @@
-dnl  This can be any file in the package.
+#  This can be any file in the package.
 AC_INIT(src/misc/SoDB.cpp)
 
-dnl  Used for the SoCalculator expression parser.
-dnl AC_PROG_LEX
-dnl AC_PROG_YACC
-dnl FIXME: tmp disabled -- I'm not sure how fond Automake is of the
-dnl mixing and matching of lex and yacc sources, and the pre-generated
-dnl C-files. 20000416 mortene.
+#  Used for the SoCalculator expression parser.
+# AC_PROG_LEX
+# AC_PROG_YACC
+# FIXME: tmp disabled -- I'm not sure how fond Automake is of the
+# mixing and matching of lex and yacc sources, and the pre-generated
+# C-files. 20000416 mortene.
 
 
-dnl  Locate C++ compiler and set C++ as the default language to use
-dnl  in tests. The configure script will automatically terminate if
-dnl  it doesn't find a C++ compiler.
+#  Locate C++ compiler and set C++ as the default language to use
+#  in tests. The configure script will automatically terminate if
+#  it doesn't find a C++ compiler.
 AC_PROG_CXX
 AC_LANG_CPLUSPLUS
 
@@ -19,18 +19,18 @@ SIM_COMPILER_INLINE_FOR(, AC_MSG_ERROR(the \"$CXX\" C++ compiler is not capable 
 SIM_AC_CHECK_VAR_FUNCTIONNAME
 
 
-dnl *******************************************************************
-dnl * Library version control.
-dnl *******************************************************************
+# *******************************************************************
+# * Library version control.
+# *******************************************************************
 
-dnl  Making releases:
-dnl    COIN_MICRO_VERSION += 1;
-dnl    COIN_INTERFACE_AGE += 1;
-dnl    COIN_BINARY_AGE += 1;
-dnl  if any functions have been added, set COIN_INTERFACE_AGE to 0.
-dnl  if backwards compatibility has been broken,
-dnl  set COIN_BINARY_AGE _and_ COIN_INTERFACE_AGE to 0.
-dnl 
+#  Making releases:
+#    COIN_MICRO_VERSION += 1;
+#    COIN_INTERFACE_AGE += 1;
+#    COIN_BINARY_AGE += 1;
+#  if any functions have been added, set COIN_INTERFACE_AGE to 0.
+#  if backwards compatibility has been broken,
+#  set COIN_BINARY_AGE _and_ COIN_INTERFACE_AGE to 0.
+# 
 COIN_MAJOR_VERSION=0
 COIN_MINOR_VERSION=6
 COIN_MICRO_VERSION=0
@@ -45,7 +45,7 @@ AC_SUBST(COIN_VERSION)
 AC_SUBST(COIN_INTERFACE_AGE)
 AC_SUBST(COIN_BINARY_AGE)
 
-dnl  libtool versioning
+#  libtool versioning
 LT_RELEASE=$COIN_MAJOR_VERSION.$COIN_MINOR_VERSION
 LT_CURRENT=`expr $COIN_MICRO_VERSION - $COIN_INTERFACE_AGE`
 LT_REVISION=$COIN_INTERFACE_AGE
@@ -57,34 +57,34 @@ AC_SUBST(LT_AGE)
 
 VERSION=$COIN_VERSION
 
-dnl  These are for include/Inventor/SbBasic.h.
+#  These are for include/Inventor/SbBasic.h.
 
 AC_DEFINE_UNQUOTED(COIN_MAJOR_VERSION, $COIN_MAJOR_VERSION)
 AC_DEFINE_UNQUOTED(COIN_MINOR_VERSION, $COIN_MINOR_VERSION)
 AC_DEFINE_UNQUOTED(COIN_MICRO_VERSION, $COIN_MICRO_VERSION)
 AC_DEFINE_UNQUOTED(COIN_VERSION, "$COIN_VERSION")
 
-dnl *******************************************************************
-dnl * Miscellaneous options and initializations.
-dnl *******************************************************************
+# *******************************************************************
+# * Miscellaneous options and initializations.
+# *******************************************************************
 
 AM_INIT_AUTOMAKE(libCoin, $VERSION)
 
-dnl  Files to cram results from the configure tests into.
+#  Files to cram results from the configure tests into.
 AM_CONFIG_HEADER(config.h include/Inventor/SbBasic.h)
 
-dnl  Default to not building a static library.
-dnl  Can be overridden by the user with --enable-static.
+#  Default to not building a static library.
+#  Can be overridden by the user with --enable-static.
 AM_DISABLE_STATIC
 
-dnl  Turn off default maintainer make-rules -- use ./autogen.sh instead.
+#  Turn off default maintainer make-rules -- use ./autogen.sh instead.
 AM_MAINTAINER_MODE
 
-dnl  Initialize libtool
+#  Initialize libtool
 AC_PROG_LIBTOOL
 
 
-dnl  These are used for constructing the coin-config file.
+#  These are used for constructing the coin-config file.
 COIN_EXTRA_CPPFLAGS=
 COIN_EXTRA_LDFLAGS=
 COIN_EXTRA_LIBS=
@@ -105,9 +105,9 @@ fi
 AC_SUBST(COIN_LIBNAME)
 
 
-dnl *******************************************************************
-dnl * Check compiler features, bugs, etc.
-dnl *******************************************************************
+# *******************************************************************
+# * Check compiler features, bugs, etc.
+# *******************************************************************
 
 SIM_AC_CHECK_MACRO_QUOTE( , AC_MSG_ERROR(couldn't figure out how to quote strings in macros))
 if test x"$sim_ac_quote_hash" = xyes; then
@@ -120,10 +120,10 @@ fi
 
 
 
-dnl *******************************************************************
-dnl * Set us up for using the simage library (if wanted, and if
-dnl * available).
-dnl *******************************************************************
+# *******************************************************************
+# * Set us up for using the simage library (if wanted, and if
+# * available).
+# *******************************************************************
 
 SIM_AC_CHECK_SIMAGE([AC_DEFINE(HAVE_LIBSIMAGE)
                     COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_simage_cppflags"
@@ -132,8 +132,8 @@ SIM_AC_CHECK_SIMAGE([AC_DEFINE(HAVE_LIBSIMAGE)
                     AC_MSG_WARN(simage development system not found),
                     [default searchprefix])
 
-dnl  We need to check for the math library on our own if its not
-dnl  "inherited" from the simage library.
+#  We need to check for the math library on our own if its not
+#  "inherited" from the simage library.
 if test x"$sim_ac_simage_avail" = xno; then
   AC_CHECK_LIBM
   LIBS="$LIBM $LIBS"
@@ -141,24 +141,24 @@ if test x"$sim_ac_simage_avail" = xno; then
 fi
 
 
-dnl *******************************************************************
-dnl * Handle the detection and inclusion of X11 libraries.
-dnl *******************************************************************
+# *******************************************************************
+# * Handle the detection and inclusion of X11 libraries.
+# *******************************************************************
 
 SIM_CHECK_X11([COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_x11_cppflags"
                COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_x11_ldflags"
                COIN_EXTRA_LIBS="$sim_ac_x11_libs $COIN_EXTRA_LIBS"])
 
 if test x"$sim_ac_x11_avail" = xyes; then
-  dnl  If the X11 shared memory extension is available, include it as
-  dnl  the Mesa library has probably been linked against it.
+  #  If the X11 shared memory extension is available, include it as
+  #  the Mesa library has probably been linked against it.
   SIM_CHECK_X11SHMEM(COIN_EXTRA_LIBS="$sim_ac_x11shmem_libs $COIN_EXTRA_LIBS")
 fi
 
 
-dnl *******************************************************************
-dnl * Test for installation of Mesa or OpenGL development system.
-dnl *******************************************************************
+# *******************************************************************
+# * Test for installation of Mesa or OpenGL development system.
+# *******************************************************************
 
 SIM_AC_CHECK_OPENGL([AC_DEFINE(HAVE_OPENGL)
                     COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_gl_cppflags"
@@ -170,9 +170,9 @@ SIM_AC_CHECK_OPENGL([AC_DEFINE(HAVE_OPENGL)
 # as it would be handy for making e.g. import/export-only versions of the
 # library. 20000123 mortene.
 
-dnl *******************************************************************
-dnl ** Check if the Mesa offscreen rendering interface is available.
-dnl *******************************************************************
+# *******************************************************************
+# ** Check if the Mesa offscreen rendering interface is available.
+# *******************************************************************
 
 AC_CACHE_CHECK([whether Mesa offscreen rendering is available],
   sim_cv_func_osmesacreatecontext_avail,
@@ -197,9 +197,9 @@ if test x"$sim_cv_func_osmesacreatecontext_avail" = xyes; then
 fi
 
 
-dnl *******************************************************************
-dnl ** Check if GLX is available.
-dnl *******************************************************************
+# *******************************************************************
+# ** Check if GLX is available.
+# *******************************************************************
 
 AC_CACHE_CHECK([whether GLX is available],
   sim_cv_func_glx_avail,
@@ -213,9 +213,9 @@ if test x"$sim_cv_func_glx_avail" = xyes; then
 fi
 
 
-dnl *******************************************************************
-dnl * Compiler control.
-dnl *******************************************************************
+# *******************************************************************
+# * Compiler control.
+# *******************************************************************
 
 SIM_COMPILE_DEBUG(CXXFLAGS="$CXXFLAGS -DCOIN_DEBUG=1", CXXFLAGS="$CXXFLAGS -DCOIN_DEBUG=0")
 
@@ -225,24 +225,24 @@ SIM_EXCEPTION_HANDLING
 SIM_PROFILING_SUPPORT
 SIM_COMPILER_WARNINGS
 
-dnl  Yep, this is important in case we want to add code to make
-dnl  the API interface "Open Inventor strict", meaning the user must
-dnl  use the exact same include files as under "real" Open Inventor.
-dnl  We would then need to know that we are actually allowed to include
-dnl  any file during internal build.
+#  Yep, this is important in case we want to add code to make
+#  the API interface "Open Inventor strict", meaning the user must
+#  use the exact same include files as under "real" Open Inventor.
+#  We would then need to know that we are actually allowed to include
+#  any file during internal build.
 CPPFLAGS="$CPPFLAGS -DCOIN_INTERNAL"
 
 
 AC_CHECK_HEADERS(unistd.h io.h)
 SIM_CHECK_NPRINTF
-dnl **obsoleted**  AC_CHECK_FUNCS(vsnprintf _vsnprintf snprintf _snprintf)
 
 
-dnl *******************************************************************
-dnl * Provide this nasty hack to help building Coin on platforms
-dnl * where one can bump into the "Arg list too long" problem
-dnl * (both AIX and IRIX 6.2 with standard settings are known to fail).
-dnl *******************************************************************
+# *******************************************************************
+# * Provide this nasty hack to help building Coin on platforms
+# * where one can bump into the "Arg list too long" problem
+# * (IBM AIX, SGI IRIX 6.2 and IRIX 6.5 with standard settings are
+# * known to fail).
+# *******************************************************************
 
 AC_ARG_ENABLE(compact,
   AC_HELP_STRING([--enable-compact], [enable hack for compact compilation [default=no]]),
@@ -257,10 +257,10 @@ AM_CONDITIONAL(HACKING_COMPACT_BUILD, test x"$enable_compact" = x"yes")
 
 
 
-dnl *******************************************************************
-dnl * Enable/disable compilation with the "incremental linking through
-dnl * the use of dynamic libraries"-hack.
-dnl *******************************************************************
+# *******************************************************************
+# * Enable/disable compilation with the "incremental linking through
+# * the use of dynamic libraries"-hack.
+# *******************************************************************
 
 AC_ARG_ENABLE(hacking,
   AC_HELP_STRING([--enable-hacking], [enable hacks for quick turn-around cycles during development [default=no]]),
@@ -283,11 +283,11 @@ fi
 AC_SUBST(COIN_HACKING_LIBDIRS)
 
 
-dnl *******************************************************************
-dnl * Do we want libtool to use some other depmode? (makedep, cpp, etc)
-dnl * 
-dnl * By default, dependencies are not made for Solaris, for example...
-dnl *******************************************************************
+# *******************************************************************
+# * Do we want libtool to use some other depmode? (makedep, cpp, etc)
+# * 
+# * By default, dependencies are not made for Solaris, for example...
+# *******************************************************************
 
 AC_ARG_WITH(depmode,
   AC_HELP_STRING([--with-depmode=MODE], [override dependency mode setting]),
@@ -296,9 +296,9 @@ AC_ARG_WITH(depmode,
 # FIXME: should do a check for whether or not the compilers can
 # actually use the given depmode. 20000525 mortene.
 
-dnl *******************************************************************
-dnl * Do we want to build the tools?
-dnl *******************************************************************
+# *******************************************************************
+# * Do we want to build the tools?
+# *******************************************************************
 
 AC_ARG_WITH(tools,
   AC_HELP_STRING([--with-tools], [build Coin-based tools [default=yes]]),
@@ -312,9 +312,9 @@ AC_ARG_WITH(tools,
 AM_CONDITIONAL(BUILD_TOOLS, test x"$want_tools" = xyes)
 
 
-dnl *******************************************************************
-dnl * Do we want to build the example programs?
-dnl *******************************************************************
+# *******************************************************************
+# * Do we want to build the example programs?
+# *******************************************************************
 
 AC_ARG_WITH(examples,
   AC_HELP_STRING([--with-examples], [build Coin example programs [default=yes]]),
@@ -328,18 +328,18 @@ AC_ARG_WITH(examples,
 AM_CONDITIONAL(BUILD_EXAMPLES, test x"$want_examples" = xyes)
 
 
-dnl *******************************************************************
-dnl * List all files configure shall generate.
-dnl *******************************************************************
+# *******************************************************************
+# * List all files configure shall generate.
+# *******************************************************************
 
 SIM_EXPAND_DIR_VARS
 
-dnl Set coin_build_dir so we can change coin.dsp
+# Set coin_build_dir so we can change coin.dsp
 coin_current_dir=`pwd`
 SIM_AC_DOBACKSLASH(coin_build_dir,$coin_current_dir)
 AC_SUBST(coin_build_dir)
 
-dnl Set coin_src_dir so we can change coin.dsp
+# Set coin_src_dir so we can change coin.dsp
 SIM_AC_DOBACKSLASH(coin_src_dir,$srcdir)
 AC_SUBST(coin_src_dir)
 
@@ -388,9 +388,9 @@ AC_OUTPUT([
 # echo "" | tr -d "
 "
 
-dnl *******************************************************************
-dnl * Platform-specific stuff.
-dnl *******************************************************************
+# *******************************************************************
+# * Platform-specific stuff.
+# *******************************************************************
 
 ac_coin_unknown_platform=yes
 
@@ -466,11 +466,9 @@ if test x"$sim_ac_linking_style" = xmswin; then
     echo
 fi
 
-dnl *******************************************************************
-dnl * Made it!
-dnl *******************************************************************
+# *******************************************************************
+# * Made it!
+# *******************************************************************
 
 echo
 echo "Now, run 'make install' to build and install Coin."
-
-dnl ************************************************************************
