@@ -536,6 +536,8 @@ SoNode::initClasses(void)
   SoGroup::initClass();
   SoSeparator::initClass();
   SoAnnotation::initClass();
+  SoAnnoText3::initClass();
+  SoAnnoText3Property::initClass();
   SoLocateHighlight::initClass();
   SoWWWAnchor::initClass();
   SoArray::initClass();
@@ -545,6 +547,7 @@ SoNode::initClasses(void)
   SoLevelOfDetail::initClass();
   SoMultipleCopy::initClass();
   SoPathSwitch::initClass();
+  SoPattern::initClass();
   SoTransformSeparator::initClass();
   SoTransformation::initClass();
   SoMatrixTransform::initClass();

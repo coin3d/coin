@@ -626,6 +626,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoShapeKit.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoWrapperKit.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoAnnotation.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoAnnoText3.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoAnnoText3Property.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoAntiSquish.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoArray.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoAsciiText.h \
@@ -684,6 +686,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoOrthographicCamera.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPackedColor.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPathSwitch.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPattern.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPendulum.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPerspectiveCamera.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoPickStyle.h \
@@ -1091,6 +1094,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/nodekits/SoShapeKit.cpp \
                          @path_tag@@coin_src_dir@/src/nodekits/SoWrapperKit.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoAnnotation.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoAnnoText3.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoAnnoText3Property.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoAntiSquish.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoArray.cpp \
                          @path_tag@@coin_src_dir@/src/shapenodes/SoAsciiText.cpp \
@@ -1149,6 +1154,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoOrthographicCamera.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoPackedColor.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoPathSwitch.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoPattern.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoPendulum.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoPerspectiveCamera.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoPickStyle.cpp \

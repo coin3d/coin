@@ -3,6 +3,8 @@
 
 RegularSources = \
 	SoAnnotation.cpp \
+	SoAnnoText3.cpp \
+	SoAnnoText3Property.cpp \
 	SoAntiSquish.cpp \
 	SoArray.cpp \
 	SoBaseColor.cpp \
@@ -48,6 +50,7 @@ RegularSources = \
 	SoOrthographicCamera.cpp \
 	SoPackedColor.cpp \
 	SoPathSwitch.cpp \
+	SoPattern.cpp \
 	SoPendulum.cpp \
 	SoPerspectiveCamera.cpp \
 	SoPickStyle.cpp \

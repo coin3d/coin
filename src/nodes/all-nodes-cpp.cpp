@@ -22,6 +22,8 @@
 \**************************************************************************/
 
 #include "SoAnnotation.cpp"
+#include "SoAnnoText3.cpp"
+#include "SoAnnoText3Property.cpp"
 #include "SoAntiSquish.cpp"
 #include "SoArray.cpp"
 #include "SoBaseColor.cpp"
@@ -67,6 +69,7 @@
 #include "SoOrthographicCamera.cpp"
 #include "SoPackedColor.cpp"
 #include "SoPathSwitch.cpp"
+#include "SoPattern.cpp"
 #include "SoPendulum.cpp"
 #include "SoPerspectiveCamera.cpp"
 #include "SoPickStyle.cpp"
