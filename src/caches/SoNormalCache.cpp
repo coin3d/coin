@@ -362,6 +362,7 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
   THIS->indices.truncate(0);
   THIS->normalArray.truncate(0, TRUE);
 
+  const int32_t * cstart = cind;
   const int32_t * endptr = cind + nv;
 
   SbVec3f tmpvec;
@@ -375,7 +376,8 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
 #if COIN_DEBUG
       SoDebugError::postInfo("SoNormalCache::generatePerFace",
                              "Polygon with less than three vertices detected. "
-                             "Aborting current shape.");
+                             "Aborting current shape (offset: %d, [%d %d %d])",
+                             cind - cstart, v0, v1, v2);
 #endif // COIN_DEBUG
       break;
     }
