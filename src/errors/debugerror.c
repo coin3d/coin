@@ -1,8 +1,6 @@
 #include <Inventor/C/errors/debugerror.h>
 #include <stdlib.h>
 
-extern void cc_error_default_handler_cb(const cc_error * err, void * data);
-
 /* FIXME: name clash with cc_error's static members, will cause
    all-c.c compilation to fail. 20020526 mortene. */
 static cc_error_cb * callback = cc_error_default_handler_cb;

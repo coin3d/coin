@@ -45,6 +45,7 @@ typedef void cc_error_cb(const cc_error * err, void * data);
 
 void cc_error_init(cc_error * me);
 void cc_error_clean(cc_error * me);
+void cc_error_copy(const cc_error * src, cc_error * dst);
 
   /*   const SbString & getDebugString(void) const; */
 const cc_string * cc_error_get_debug_string(const cc_error * me);
@@ -82,6 +83,10 @@ void cc_error_handle(cc_error * me);
   /* protected: */
   /*   virtual SoErrorCB * getHandler(void * & data) const; */
 cc_error_cb * cc_error_get_handler(void ** data);
+
+  /* protected: */
+  /*   static void defaultHandlerCB(const SoError * error, void * userdata); */
+void cc_error_default_handler_cb(const cc_error * err, void * data);
 
 /* ********************************************************************** */
 

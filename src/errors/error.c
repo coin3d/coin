@@ -53,6 +53,12 @@ cc_error_clean(cc_error * me)
 }
 
 void
+cc_error_copy(const cc_error * src, cc_error * dst)
+{
+  cc_string_set_string(&dst->debugstring, &src->debugstring);
+}
+
+void
 cc_error_set_debug_string(cc_error * me, const char * str)
 {
   cc_string_set_text(&(me->debugstring), str);
