@@ -610,3 +610,13 @@ THE WISH LIST
 
   (If #2 is heeded, "SbFile" should be just a wrapper C++ class around
   the C struct(s) and functions of the "real" implementation.)
+
+
+* SoField::setValidator(SoValidator *)
+  2001-12-05  Morten Eriksen & Peder Blekken
+  [upwards compatible extension]
+
+  A generic mechanism for controlling the valid range of a field would
+  be *very* useful. It could for instance help application programmers
+  better limit the end-users' freedom to do stupid things with the
+  dragger classes.
