@@ -305,11 +305,9 @@ fi
 # * Check compiler features, bugs, etc.
 # *******************************************************************
 
-SIM_COMPILE_DEBUG([
-  CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=1"
-], [
-  CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=0"
-])
+SIM_AC_COMPILE_DEBUG(
+  [CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=1"],
+  [CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=0"])
 
 SIM_AC_DEBUGSYMBOLS
 SIM_AC_RTTI_SUPPORT
