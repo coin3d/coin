@@ -413,7 +413,7 @@ SoSpotLightDragger::dragStart(void)
   SbVec3f apex = SO_GET_ANY_PART(this, "beamPlacement", SoTranslation)->translation.getValue();
   apex[2] += 1.0f; // FIXME: This should probably be handled another way. 20020814 kristian.
 
-  this->planeProj->setPlane(SbPlane(apex, apex+SbVec3f(0.0f, 0.0f, -1.0f),
+  this->planeProj->setPlane(SbPlane(apex, apex+SbVec3f(0.0f, 0.0f, -1.0f), 
                                     hitPt));
 }
 
@@ -462,4 +462,5 @@ SoSpotLightDragger::setBeamScaleFromAngle(float beamangle)
   scaleFactor[0] = scaleFactor[1] = (float)tan(beamangle);
   scaleFactor[2] = 1.0f;
   scale->scaleFactor = scaleFactor;
+  this->angle = beamangle;
 }
