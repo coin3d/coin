@@ -140,9 +140,10 @@ programmer. "More critical" is closer to the top of the list:
         1 File import
         2 Response time with draggers / manipulators
         3 Intersection testing
-        4 General traversal operations
-        5 Scene graph modifications
-        6 Basic math/geometry classes
-        7 File export
+        4 Application start-up time
+        5 General traversal operations
+        6 Scene graph modifications
+        7 Basic math/geometry classes
+        8 File export
 
 ============================================================================
