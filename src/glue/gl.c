@@ -192,12 +192,9 @@ glglue_prefer_glPolygonOffsetEXT(void)
   return (d > 0) ? 1 : 0;
 }
 
-/*
-  Returns address of the symbol (usually a function) named by
-  "symname".
- */
-static void *
-glglue_getprocaddress(const char * symname)
+/* doc in header file */
+void *
+cc_glglue_getprocaddress(const char * symname)
 {
   void * ptr = NULL;
 
@@ -217,7 +214,7 @@ glglue_getprocaddress(const char * symname)
 
 returnpoint:
   if (coin_glglue_debug()) {
-    cc_debugerror_postinfo("glglue_getprocaddress", "%s==%p", symname, ptr);
+    cc_debugerror_postinfo("cc_glglue_getprocaddress", "%s==%p", symname, ptr);
   }
   return ptr;
 }
@@ -456,7 +453,7 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 
 #ifdef COIN_OPENGL_DYNAMIC_BINDING
 
-#define PROC(_func_) glglue_getprocaddress(SO__QUOTE(_func_))
+#define PROC(_func_) cc_glglue_getprocaddress(SO__QUOTE(_func_))
 
 /* The OpenGL library which we dynamically pick up symbols from
    /could/ have all these defined. For the code below which tries to

@@ -37,6 +37,9 @@ extern "C" {
 
 typedef struct cc_glglue cc_glglue;
 
+
+/*** Singleton functions for getting hold of cc_glglue instance for context. */
+
 /*
   Returns the glue instance for the given context ID.
 
@@ -49,6 +52,9 @@ typedef struct cc_glglue cc_glglue;
 */
 COIN_DLL_API const cc_glglue * cc_glglue_instance(int contextid);
 COIN_DLL_API const cc_glglue * cc_glglue_instance_from_context_ptr(void * ctx);
+
+
+/*** General interface. ***********************************************/
 
 /*
   Fetch version number information for the underlying OpenGL
@@ -83,9 +89,23 @@ COIN_DLL_API SbBool cc_glglue_glxversion_matches_at_least(const cc_glglue * glue
 */
 COIN_DLL_API SbBool cc_glglue_glext_supported(const cc_glglue * glue, const char * extname);
 
+/*
+  Returns address of the symbol (usually a function) named by
+  "symname".
+
+  Note that you should also check that the extension(s) needed are
+  properly defined before using the symbol, as a symbol can be present
+  in a GL library without being implemented, or being partly
+  implemented, or being implemented but not active for your particular
+  hardware card (for "unified" drivers from vendors with many
+  different types or generations of graphics cards).
+ */
+COIN_DLL_API void * cc_glglue_getprocaddress(const char * symname);
+
 /* Returns TRUE if rendering is done directly on the display (ie not
    through any software indirection layer over GLX). */
 COIN_DLL_API SbBool cc_glglue_isdirect(const cc_glglue * w);
+
 
 /*** Wrapped OpenGL 1.1+ features and extensions. *********************/
 
