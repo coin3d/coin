@@ -44,6 +44,25 @@
     that. If my assumption is correct, that would affect what kind of
     fix to make for this. 20021031 mortene.
 
+    UPDATE: According to pederb this came from the assumed OIV-bug
+    where a dump of a scenegraph from OIV2.1 exports private elements
+    of the draggers to the file - Coin don't do that any more. The
+    scenegraph described abowe now writes out as:
+
+    --------------------
+    #Inventor V2.1 ascii
+
+
+    Separator {
+
+    TransformerDragger {
+    }}
+    --------------------
+
+    The message displayed could be more informative though, and
+    perhaps this kind of malformed input should be trapped earlier and
+    reported as a read-error. 20021104 rolvs
+
 =====================================================================
 
 003 There are seams in texturemaps on SGI Octane with "IMPACTSR"
