@@ -55,9 +55,8 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#if COIN_DEBUG
 #include <Inventor/system/gl.h> // glGetError
-#endif // COIN_DEBUG
+
 
 /*!
   \var uint32_t SoNode::uniqueId
@@ -591,39 +590,50 @@ SoNode::GLRenderS(SoAction * action, SoNode * node)
       node->GLRender((SoGLRenderAction*)action);
     }
   }
-#if COIN_DEBUG
-  int err = glGetError();
-  if (err != GL_NO_ERROR) {
-    const char * errorstring;
-    switch (err) {
-    case GL_INVALID_VALUE:
-      errorstring = "GL_INVALID_VALUE";
-      break;
-    case GL_INVALID_ENUM:
-      errorstring = "GL_INVALID_ENUM";
-      break;
-    case GL_INVALID_OPERATION:
-      errorstring = "GL_INVALID_OPERATION";
-      break;
-    case GL_STACK_OVERFLOW:
-      errorstring = "GL_STACK_OVERFLOW";
-      break;
-    case GL_STACK_UNDERFLOW:
-      errorstring = "GL_STACK_UNDERFLOW";
-      break;
-    case GL_OUT_OF_MEMORY:
-      errorstring = "GL_OUT_OF_MEMORY";
-      break;
-    default:
-      errorstring = "Unknown GL error";
-      break;
+
+  if (COIN_DEBUG) {
+    // Note: debugging code like this is also present in
+    // SoSeparator::GLRenderBelowPath() and SoState::lazyEvaluate(),
+    // but they are default disabled -- even when COIN_DEBUG=1 (due to
+    // performance reasons).
+    //
+    // If you're seeing notifications about GL-errors from here, the
+    // first thing to do is to enable those debugging checks too.  You
+    // might get lucky and have it pinpointed for you right away. Then
+    // again, you might not...
+
+    int err = glGetError();
+    if (err != GL_NO_ERROR) {
+      const char * errorstring;
+      switch (err) {
+      case GL_INVALID_VALUE:
+        errorstring = "GL_INVALID_VALUE";
+        break;
+      case GL_INVALID_ENUM:
+        errorstring = "GL_INVALID_ENUM";
+        break;
+      case GL_INVALID_OPERATION:
+        errorstring = "GL_INVALID_OPERATION";
+        break;
+      case GL_STACK_OVERFLOW:
+        errorstring = "GL_STACK_OVERFLOW";
+        break;
+      case GL_STACK_UNDERFLOW:
+        errorstring = "GL_STACK_UNDERFLOW";
+        break;
+      case GL_OUT_OF_MEMORY:
+        errorstring = "GL_OUT_OF_MEMORY";
+        break;
+      default:
+        errorstring = "Unknown GL error";
+        break;
+      }
+      SoDebugError::postWarning("SoNode::GLRenderS",
+                                "GL error: %s, nodetype: %s",
+                                errorstring,
+                                node->getTypeId().getName().getString());
     }
-    SoDebugError::postInfo("SoNode::GLRenderS",
-                           "GL error: %s, nodetype: %s",
-                           errorstring,
-                           node->getTypeId().getName().getString());
   }
-#endif // COIN_DEBUG
 }
 
 /*!

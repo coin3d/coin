@@ -41,10 +41,18 @@
   circumstances or strange side-effect will occur.
 */
 
-#include <Inventor/SbName.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/lists/SoTypeList.h>
+
+#include <Inventor/SbName.h>
 #include <Inventor/elements/SoElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SoTypeList.h>
+
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+#include <Inventor/system/gl.h> // for glGetError() debugging
+
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -341,7 +349,46 @@ SoState::lazyEvaluate(void) const
 {
   int n = THIS->lazylist.getLength();
   for (int i = 0; i < n; i++) {
-    this->stack[THIS->lazylist[i]]->lazyEvaluate();
+    SoElement * elm = this->stack[THIS->lazylist[i]];
+    elm->lazyEvaluate();
+
+    // The GL error test is disabled for this optimized path.  If you
+    // get a GL error during rendering, enable this code (flip "FALSE"
+    // to "TRUE") and it might be able to pinpoint the exact error
+    // location.
+    if (COIN_DEBUG && FALSE) {
+      int err = glGetError();
+      if (err != GL_NO_ERROR) {
+        const char * errorstring;
+        switch (err) {
+        case GL_INVALID_VALUE:
+          errorstring = "GL_INVALID_VALUE";
+          break;
+        case GL_INVALID_ENUM:
+          errorstring = "GL_INVALID_ENUM";
+          break;
+        case GL_INVALID_OPERATION:
+          errorstring = "GL_INVALID_OPERATION";
+          break;
+        case GL_STACK_OVERFLOW:
+          errorstring = "GL_STACK_OVERFLOW";
+          break;
+        case GL_STACK_UNDERFLOW:
+          errorstring = "GL_STACK_UNDERFLOW";
+          break;
+        case GL_OUT_OF_MEMORY:
+          errorstring = "GL_OUT_OF_MEMORY";
+          break;
+        default:
+          errorstring = "Unknown GL error";
+          break;
+        }
+        SoDebugError::postInfo("SoState::lazyEvaluate",
+                               "GL error: %s, elementtype: %s",
+                               errorstring,
+                               elm->getTypeId().getName().getString());
+      }
+    }
   }
 }
 
