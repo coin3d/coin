@@ -7,9 +7,7 @@ PrivateHeaders = \
 	GLUWrapper.h \
 	bzip2.h \
 	dlp.h \
-	flwfreetype.h \
 	flwwin32.h \
-	fontlib_wrapper.h \
 	freetype.h \
 	gl_agl.h \
 	gl_glx.h \
