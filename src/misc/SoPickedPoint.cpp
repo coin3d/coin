@@ -345,7 +345,7 @@ SoPickedPoint::applyMatrixAction(const SoNode * const node) const
     int idx = fullpath->findNode(node);
     assert(idx >= 0);
     SoTempPath subpath(idx+1);
-    subpath.ref(); // This is unnecessary, but kills a compiler warning.
+    subpath.ref(); // Avoid an internal Coin warning for SoAction::apply().
     for (int i = 0; i <= idx; i++) {
       subpath.append(fullpath->getNode(i));
     }
