@@ -1128,7 +1128,7 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   static int preciselighting = -1;
   if (preciselighting == -1) {
     const char * env = coin_getenv("COIN_QUADMESH_PRECISE_LIGHTING");
-    if (env) preciselighting = atoi(env) > 0 ? 1 : 0;
+    preciselighting = env && (atoi(env) > 0 ? 1 : 0);
   }
 
   // Even if precise lighting rendering is requested, we need to check
