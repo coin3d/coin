@@ -238,19 +238,19 @@ SoInputP::isNameStartChar(unsigned char c, SbBool validIdent)
   // below 128, it does not matter if they are signed or unsigned.
   const char invalid_vrml1[] = { 0x22, 0x23, 0x27, 0x2b, 0x2e, 
                                  0x5c, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
-                                // '"',  '#',  ''',  '+',  '.',
-                                // '\',  '{',  '}'
+                               // '"',  '#',  ''',  '+',  '.',
+                               // '\',  '{',  '}'
 
   const char invalid_vrml2[] = { 0x22, 0x23, 0x27, 0x2b, 0x2c, 0x2d, 0x2e, 
                                  0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
-                                 // '"',  '#',  ''',  '+',  ',',  '-',  '.',
-                                 // '[',  '\',  ']',  '{',  '}',   ''
+                               // '"',  '#',  ''',  '+',  ',',  '-',  '.',
+                               // '[',  '\',  ']',  '{',  '}',   ''
 
   // Differences from invalid_vrml1: '&' , '[', and ']' are now invalid
   const char valid_ident_invalid_vrml1[] = { 0x22, 0x23, 0x26, 0x27, 0x2b, 0x2e, 
                                              0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
-                                             // '"',  '#',   '&', ''',  '+',  '.',
-                                             // '[',  '\',   ']',  '{',  '}'
+                                           // '"',  '#',   '&', ''',  '+',  '.',
+                                           // '[',  '\',   ']',  '{',  '}'
 
   const char * valid_ident_invalid_vrml2 = invalid_vrml2;
 
@@ -276,6 +276,19 @@ SoInputP::isNameStartChar(unsigned char c, SbBool validIdent)
       return (strchr(valid_ident_invalid_vrml2, (int)c) == NULL ? TRUE : FALSE);
     }
     else {
+      // For Coin to be able to load VRML97 (invalid) files that have
+      // been generated with illegal names, '+' is considered a valid
+      // startcharacter.
+      static int non_strict = -1;
+      if (non_strict == -1) {
+        const char * env = coin_getenv("COIN_NOT_STRICT_VRML97");
+        non_strict = env && (atoi(env) > 0);
+      }
+
+      if (c == 0x2b && non_strict) { // '+' is considered valid
+        return TRUE;
+      }
+
       return (strchr(invalid_vrml2, (int)c) == NULL ? TRUE : FALSE);
     }
   }
@@ -300,21 +313,21 @@ SoInputP::isNameChar(unsigned char c, SbBool validIdent)
   // below 128, it does not matter if they are signed or unsigned.
   const char invalid_vrml1[] = { 0x22, 0x23, 0x27, 0x2b, 0x2e, 
                                  0x5c, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
-                                // '"',  '#',  ''',  '+',  '.',
-                                // '\',  '{',  '}'
+                               // '"',  '#',  ''',  '+',  '.',
+                               // '\',  '{',  '}'
 
   // Compared to isIdentStartChar, '+' and '-' have now become valid
   // characters.
   const char invalid_vrml2[] = { 0x22, 0x23, 0x27, 0x2c, 0x2e, 0x5b, 
                                  0x5c, 0x5d, 0x7b, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
-                                 // '"',  '#',  ''',  ',',  '.',  '[',
-                                 // '\',  ']',  '{',  '}',   ''
+                               // '"',  '#',  ''',  ',',  '.',  '[',
+                               // '\',  ']',  '{',  '}',   ''
 
   // Differences from invalid_vrml1: '&' , '[', and ']' are now invalid
   const char valid_ident_invalid_vrml1[] = { 0x22, 0x23, 0x26, 0x27, 0x2b, 0x2e, 
                                              0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
-                                             // '"',  '#',   '&', ''',  '+',  '.',
-                                             // '[',  '\',   ']',  '{',  '}'
+                                           // '"',  '#',   '&', ''',  '+',  '.',
+                                           // '[',  '\',   ']',  '{',  '}'
 
   const char * valid_ident_invalid_vrml2 = invalid_vrml2;
 

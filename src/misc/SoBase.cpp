@@ -1676,7 +1676,13 @@ SoBase::readBase(SoInput * in, SbName & classname, SoBase *& base)
 
   if (classname == DEF_KEYWORD) {
     if (!in->read(refname, FALSE) || !in->read(classname, TRUE)) {
-      SoReadError::post(in, "Premature end of file after %s", DEF_KEYWORD);
+      if (in->eof()) {
+        SoReadError::post(in, "Premature end of file after %s", DEF_KEYWORD);
+      }
+      else {
+        SoReadError::post(in, "Unable to read %s. Is the reference syntax "
+                          "correct for the fileformat?", DEF_KEYWORD);
+      }
       ret = FALSE;
     }
 
