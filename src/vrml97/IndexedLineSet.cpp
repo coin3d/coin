@@ -317,8 +317,6 @@ SoVRMLIndexedLineSet::generatePrimitives(SoAction * action)
   }
 
   int matnr = 0;
-  int normnr = 0;
-  int texidx = 0;
   int32_t i;
   const int32_t *end = cindices + numindices;
 

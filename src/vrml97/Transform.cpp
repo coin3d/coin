@@ -428,8 +428,6 @@ SoVRMLTransform::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoVRMLTransform::getMatrix(SoGetMatrixAction * action)
 {
-  int numindices;
-  const int * indices;
   SbMatrix m;
   m.setTransform(this->translation.getValue(),
                  this->rotation.getValue(),
