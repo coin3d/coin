@@ -220,6 +220,9 @@ void
 SoGLShapeHintsElement::updategl(const unsigned int flags) const
 {
   unsigned int changed = this->glflags ^ flags;
+
+  // cast away constness, since the GL state is not really a part of
+  // the element value.
   ((SoGLShapeHintsElement*)this)->glflags = flags;
 
   if (changed & SOSH_CCW) {

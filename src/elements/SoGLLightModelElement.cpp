@@ -135,6 +135,8 @@ SoGLLightModelElement::forceSend(SoState * const state,
 void
 SoGLLightModelElement::updategl(const Model model) const
 {
+  // cast away constness, since the GL state is not really a part of
+  // the element value.
   ((SoGLLightModelElement*)this)->current = model;
   if (model == PHONG) glEnable(GL_LIGHTING);
   else glDisable(GL_LIGHTING);
