@@ -18,20 +18,20 @@
 # ID      SbPList
 # ID          SoAuditorList 
 # ID          SoActionMethodList
-# I           SoBaseList
-# I               SoEngineList
-# I               SoNodeList
+# ID          SoBaseList
+# ID              SoEngineList
+# ID              SoNodeList
 #                     SoChildList
-#                 SoPathList
-#                 SoVRMLInterpList
+# ID              SoPathList
+# --              SoVRMLInterpList
 # I           SoDetailList
 # ID          SoEngineOutputList
 # ID          SoVRMLInterpOutputList
 # I           SoFieldList
 # I           SoPickedPointList
 #             SoRenderObjectList
-#             SoVRMLEXTERNPROTOFieldList 
-#             SoVRMLPROTOFieldList 
+# --          SoVRMLEXTERNPROTOFieldList 
+# --          SoVRMLPROTOFieldList 
 # I       SoTypeList
 # I   SoCallbackList
 #     SoEnabledElementsList
@@ -41,6 +41,13 @@
 #
 # COMMENTS
 #
+# These classes are not going to be implemented for Coin 1.0, as they
+# are not needed before VRML support is added:
+# <ul>
+# <li> SoVRMLInterpList
+# <li> SoVRMLEXTERNPROTOFieldList 
+# <li> SoVRMLPROTOFieldList 
+# </ul>
 #
 # END COMMENTS
 # 

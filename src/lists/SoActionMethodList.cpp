@@ -20,6 +20,7 @@
 /*!
   \class SoActionMethodList SoActionMethodList.h Inventor/lists/SoActionMethodList.h
   \brief The SoActionMethodList class contains function pointers for action methods.
+  \ingroup actions
 
   An SoActionMethodList contains one function pointer per node
   type. Each action contains an SoActioMethodList to know which

@@ -19,52 +19,59 @@
 
 /*!
   \class SoNodeList Inventor/lists/SoNodeList.h
-  \brief The SoNodeList class is a container class for arrays of pointers to
-  SoNode-derived objects.
+  \brief The SoNodeList class is a container for pointers to SoNode objects.
+  \ingroup nodes
 
-  FIXME: write doc.
+  As this class inherits SoBaseList, referencing and dereferencing
+  will default be done on the objects at append(), remove(), insert()
+  etc.
 */
 
 #include <Inventor/lists/SoNodeList.h>
 
-/*!
-  A constructor (default).
-*/
 
+/*!
+  Default constructor.
+*/
 SoNodeList::SoNodeList(void)
 {
 }
 
 /*!
-  A constructor.
-*/
+  Constructor with a hint about the number of elements the list will
+  hold.
 
+  \sa SoBaseList::SoBaseList(const int)
+*/
 SoNodeList::SoNodeList(const int size)
   : SoBaseList(size)
 {
 }
 
 /*!
-  A constructor (copy).
-*/
+  Copy constructor.
 
-SoNodeList::SoNodeList(const SoNodeList & l)
-  : SoBaseList(l)
+  \sa SoBaseList::SoBaseList(const SoBaseList &)
+*/
+SoNodeList::SoNodeList(const SoNodeList & nl)
+  : SoBaseList(nl)
 {
 }
 
 /*!
-  The destructor.
-*/
+  Destructor.
 
-SoNodeList::~SoNodeList(void)
+  \sa SoBaseList::~SoBaseList()
+*/
+SoNodeList::~SoNodeList()
 {
 }
 
 /*!
-  FIXME: write doc.
-*/
+  Append \a ptr to the list.
 
+  \sa SoBaseList::append()
+*/
 void
 SoNodeList::append(SoNode * const ptr)
 {
@@ -72,33 +79,24 @@ SoNodeList::append(SoNode * const ptr)
 }
 
 /*!
-  FIXME: write doc.
-*/
+  Return node pointer at index \a i.
 
-//$ EXPORT INLINE
+  \sa SoBaseList::operator[]()
+*/
 SoNode *
-SoNodeList::operator [](const int i) const
+SoNodeList::operator[](const int i) const
 {
   return (SoNode *)SoBaseList::operator[](i);
 }
 
 /*!
-  FIXME: write doc.
-*/
+  Copy contents of list \a nl to this list. 
 
+  \sa SoBaseList::operator=()
+*/
 SoNodeList &
-SoNodeList::operator =(const SoNodeList & l)
+SoNodeList::operator=(const SoNodeList & nl)
 {
-  this->copy(l);
+  this->copy(nl);
   return *this;
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-void
-SoNodeList::insert(SoNode * const ptr, const int addBefore)
-{
-  SoBaseList::insert((SoBase *)ptr, addBefore);
 }

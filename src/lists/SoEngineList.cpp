@@ -18,53 +18,60 @@
 \**************************************************************************/
 
 /*!
-  \class SoEngineList Inventor/lists/SoEngineList.h
-  \brief The SoEngineList class is a container class for arrays of
-  SoEngine-derived objects.
+  \class SoEngineList SoEngineList.h Inventor/lists/SoEngineList.h
+  \brief The SoEngineList class is a container for SoEngine objects.
+  \ingroup engines
 
-  FIXME: write doc.
+  As this class inherits SoBaseList, referencing and dereferencing
+  will default be done on the objects at append(), remove(), insert()
+  etc.
 */
 
 #include <Inventor/lists/SoEngineList.h>
 
-/*!
-  A constructor (default).
-*/
 
+/*!
+  Default constructor.
+*/
 SoEngineList::SoEngineList(void)
 {
 }
 
 /*!
-  A constructor.
-*/
+  Constructor with a hint about the number of elements the list will
+  hold.
 
+  \sa SoBaseList::SoBaseList(const int)
+*/
 SoEngineList::SoEngineList(const int size)
   : SoBaseList(size)
 {
 }
 
 /*!
-  A constructor (copy).
-*/
+  Copy constructor.
 
-SoEngineList::SoEngineList(const SoEngineList &l)
-  : SoBaseList(l)
+  \sa SoBaseList::SoBaseList(const SoBaseList &)
+*/
+SoEngineList::SoEngineList(const SoEngineList & el)
+  : SoBaseList(el)
 {
 }
 
 /*!
-  The destructor.
-*/
+  Destructor.
 
-SoEngineList::~SoEngineList(void)
+  \sa SoBaseList::~SoBaseList()
+*/
+SoEngineList::~SoEngineList()
 {
 }
 
 /*!
-  FIXME: write doc.
-*/
+  Append \a ptr to the list.
 
+  \sa SoBaseList::append()
+*/
 void
 SoEngineList::append(SoEngine * const ptr)
 {
@@ -72,23 +79,24 @@ SoEngineList::append(SoEngine * const ptr)
 }
 
 /*!
-  FIXME: write doc.
-*/
+  Return engine pointer at index \a i.
 
-//$ EXPORT INLINE
+  \sa SoBaseList::operator[]()
+*/
 SoEngine *
-SoEngineList::operator [](const int i) const
+SoEngineList::operator[](const int i) const
 {
   return (SoEngine *)SoBaseList::operator[](i);
 }
 
 /*!
-  FIXME: write doc.
-*/
+  Copy contents of list \a el to this list. 
 
+  \sa SoBaseList::operator=()
+*/
 SoEngineList &
-SoEngineList::operator =(const SoEngineList &l)
+SoEngineList::operator=(const SoEngineList & el)
 {
-  this->copy(l);
+  this->copy(el);
   return *this;
 }

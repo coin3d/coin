@@ -30,24 +30,21 @@ class SoBaseList : public SbPList {
 public:
   SoBaseList(void);
   SoBaseList(const int size);
-  SoBaseList(const SoBaseList &l);
-  ~SoBaseList(void);
-  void append(SoBase * const ptr);
-  void insert(SoBase * const ptr, const int addBefore);
-  void remove(const int which);
-  void truncate(const int start);
-  void copy(const SoBaseList &l);
-  SoBaseList &operator =(const SoBaseList &l);
-  SoBase *operator [](const int i) const;
+  SoBaseList(const SoBaseList & l);
+  ~SoBaseList();
+
+  void append(SoBase * ptr);
+  void insert(SoBase * ptr, const int addbefore);
+  void remove(const int index);
+  void truncate(const int length);
+  void copy(const SoBaseList & l);
+  SoBaseList & operator=(const SoBaseList & l);
+  SoBase * operator[](const int i) const;
   void set(const int i, SoBase * const ptr);
   void addReferences(const SbBool flag);
 
-protected:
-  SoBase *get(const int i) const;
-
 private:
-  SbBool doRef;
-
+  SbBool referencing;
 };
 
 #endif // !COIN_SOBASELIST_H

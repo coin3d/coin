@@ -192,6 +192,16 @@ INPUT                = \
 	$(top_srcdir)/include/Inventor/lists/SbStringList.h \
 	$(top_srcdir)/src/lists/SoAuditorList.cpp \
 	$(top_srcdir)/include/Inventor/lists/SoAuditorList.h \
+	$(top_srcdir)/src/lists/SoActionMethodList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoActionMethodList.h \
+	$(top_srcdir)/src/lists/SoBaseList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoBaseList.h \
+	$(top_srcdir)/src/lists/SoEngineList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoEngineList.h \
+	$(top_srcdir)/src/lists/SoNodeList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoNodeList.h \
+	$(top_srcdir)/src/lists/SoPathList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoPathList.h \
         \
 	$(top_srcdir)/src/misc/SoNotification.cpp \
 	$(top_srcdir)/include/Inventor/misc/SoNotification.h \
@@ -389,28 +399,18 @@ INPUT                = \
 #	$(top_srcdir)/src/SoType.cpp \
 #	$(top_srcdir)/include/Inventor/SoType.h \
 #	\
-#	$(top_srcdir)/src/lists/SoActionMethodList.cpp \
-#	$(top_srcdir)/include/Inventor/lists/SoActionMethodList.h \
-#	$(top_srcdir)/src/lists/SoBaseList.cpp \
-#	$(top_srcdir)/include/Inventor/lists/SoBaseList.h \
 #	$(top_srcdir)/src/lists/SoCallbackList.cpp \
 #	$(top_srcdir)/include/Inventor/lists/SoCallbackList.h \
 #	$(top_srcdir)/src/lists/SoDetailList.cpp \
 #	$(top_srcdir)/include/Inventor/lists/SoDetailList.h \
 #	$(top_srcdir)/src/lists/SoEnabledElementsList.cpp \
 #	$(top_srcdir)/include/Inventor/lists/SoEnabledElementsList.h \
-#	$(top_srcdir)/src/lists/SoEngineList.cpp \
-#	$(top_srcdir)/include/Inventor/lists/SoEngineList.h \
 #	$(top_srcdir)/src/lists/SoEngineOutputList.cpp \
 #	$(top_srcdir)/include/Inventor/lists/SoEngineOutputList.h \
 #	$(top_srcdir)/src/lists/SoVRMLInterpOutputList.cpp \
 #	$(top_srcdir)/include/Inventor/lists/SoVRMLInterpOutputList.h \
 #	$(top_srcdir)/src/lists/SoFieldList.cpp \
 #	$(top_srcdir)/include/Inventor/lists/SoFieldList.h \
-#	$(top_srcdir)/src/lists/SoNodeList.cpp \
-#	$(top_srcdir)/include/Inventor/lists/SoNodeList.h \
-#	$(top_srcdir)/src/lists/SoPathList.cpp \
-#	$(top_srcdir)/include/Inventor/lists/SoPathList.h \
 #	$(top_srcdir)/src/lists/SoPickedPointList.cpp \
 #	$(top_srcdir)/include/Inventor/lists/SoPickedPointList.h \
 #	$(top_srcdir)/src/lists/SoTypeList.cpp \

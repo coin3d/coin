@@ -27,21 +27,19 @@ class SoPath;
 
 class SoPathList : public SoBaseList {
   typedef SoBaseList inherited;
+
 public:
   SoPathList(void);
   SoPathList(const int size);
-  SoPathList(const SoPathList & l);
-  ~SoPathList(void);
+  SoPathList(const SoPathList & pl);
+  ~SoPathList();
+
   void append(SoPath * const path);
-  SoPath * operator [](const int i) const;
-  SoPathList & operator =(const SoPathList & l);
+  SoPath * operator[](const int i) const;
+  SoPathList & operator=(const SoPathList & pl);
   int findPath(const SoPath & path) const;
   void sort(void);
   void uniquify(void);
-
-private:
-  SoPath * get(const int index) const;
-  void set(const int index, SoPath * const path);
 };
 
 #endif // !COIN_SOPATHLIST_H

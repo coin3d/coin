@@ -24,19 +24,19 @@
 
 class SoNode;
 
+
 class SoNodeList : public SoBaseList {
   typedef SoBaseList inherited;
+
 public:
   SoNodeList(void);
   SoNodeList(const int size);
-  SoNodeList(const SoNodeList & l);
-  ~SoNodeList(void);
-  void append(SoNode * const ptr);
-  SoNode * operator [](const int i) const;
-  SoNodeList & operator =(const SoNodeList & l);
+  SoNodeList(const SoNodeList & nl);
+  ~SoNodeList();
 
-  //FIXME: Only used in SoChildList (non-OIV)
-  void insert(SoNode * const node, const int addBefore);
+  void append(SoNode * const ptr);
+  SoNode * operator[](const int i) const;
+  SoNodeList & operator=(const SoNodeList & nl);
 };
 
 #endif // !COIN_SONODELIST_H

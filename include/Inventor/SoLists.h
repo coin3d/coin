@@ -24,6 +24,9 @@
 #error "Do not include SoLists.h internally."
 #endif // COIN_INTERNAL
 
+// This file's sole purpose is to provide compatibility with the way
+// Open Inventor lays out its header files for the list classes.
+
 #include <Inventor/lists/SbIntList.h>
 #include <Inventor/lists/SbPList.h>
 #include <Inventor/lists/SoBaseList.h>

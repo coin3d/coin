@@ -29,7 +29,7 @@ public:
   SbVec3fList(void) : SbList<SbVec3f *>() { }
   SbVec3fList(const int sizehint) : SbList<SbVec3f *>(sizehint) { }
   SbVec3fList(const SbVec3fList & l) : SbList<SbVec3f *>(l) { }
-  
+
   void append(const SbVec3f * item) {
     SbVec3f * vec = new SbVec3f(*item);
     SbList<SbVec3f*>::append(vec);
@@ -39,7 +39,7 @@ public:
     SbVec3f * vec = new SbVec3f(*item);
     SbList<SbVec3f*>::insert(vec, insertbefore);
   }
-  
+
   SbVec3f * get(const int index) const { return (*this)[index]; }
   void set(const int index, SbVec3f * const item) { (*this)[index] = item; }
 };

@@ -27,14 +27,16 @@ class SoEngine;
 
 class SoEngineList : public SoBaseList {
   typedef SoBaseList inherited;
+
 public:
   SoEngineList(void);
   SoEngineList(const int size);
-  SoEngineList(const SoEngineList &l);
-  ~SoEngineList(void);
+  SoEngineList(const SoEngineList & el);
+  ~SoEngineList();
+
   void append(SoEngine * const ptr);
-  SoEngine *operator [](const int i) const;
-  SoEngineList &operator =(const SoEngineList &l);
+  SoEngine * operator[](const int i) const;
+  SoEngineList & operator=(const SoEngineList & el);
 };
 
 #endif // !COIN_SOENGINELIST_H
