@@ -212,9 +212,19 @@ SoFile::readNamedFile(SoInput * in)
   SbBool readok = TRUE;
   do {
     SoNode * n;
-    readok = SoDB::read(in, n);
-    if (!readok) { break; } // actual read error
-    if (n == NULL) { break; } // this is what happens on EOF
+    readok = SoDB::read(in, n); // Not using SoDB::readAll because it
+                                // may add an extra SoSeparator node if
+                                // more than one root-child is present
+                                // in the file
+
+    if (!readok) { // actual read error
+      break;
+    }
+    if (n == NULL) { // this is what happens on EOF, not valid
+                     // identifiers, or when children have been given
+                     // the NULL keyword
+      break; 
+    }
     cl.append(n);
   } while (TRUE);
 
@@ -223,6 +233,26 @@ SoFile::readNamedFile(SoInput * in)
 
   if (readok) {
     this->children->copy(cl); // (copy() implicitly truncates before copying)
+
+    // All characters may not have been read from the current stream.
+    // The reading stops when the last valid '}' is found, so we have
+    // to read until the current file on the stack is at the end.  All
+    // non-whitespace characters from now on are erroneous.
+    if (in->getCurFileName() == this->name.getValue()) {
+      static uint32_t fileerrors_termination = 0;
+
+      SbString dummy;
+      while (in->read(dummy)) { 
+        if (fileerrors_termination < 1) {
+          SoReadError::post(in, "Erroneous character(s) after end of scenegraph: \"%s\". "
+                            "This message will only be shown once for this file, "
+                            "but more errors might be present", dummy.getString());
+        }
+        fileerrors_termination++;
+      }
+      
+      assert(in->eof());
+    }
   }
   else {
     // Take care of popping the file off the stack. This is a bit
@@ -230,7 +260,7 @@ SoFile::readNamedFile(SoInput * in)
     // protection of SoInput::popFile().
     if (in->getCurFileName() == this->name.getValue()) {
       char dummy;
-      while (!in->eof()) in->get(dummy);
+      while (in->get(dummy));
     }
 
     // Note that we handle this differently than Inventor, which lets
