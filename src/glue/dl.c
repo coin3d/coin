@@ -122,8 +122,12 @@
 #ifdef HAVE_LIBGEN_H
 #include <libgen.h> /* dirname() */
 #endif /* HAVE_LIBGEN_H */
+#ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h> /* PATH_MAX */
+#endif /* HAVE_SYS_PARAM_H */
+#ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>  /* stat() */
+#endif /* HAVE_SYS_STAT_H */
 
 struct cc_libhandle_struct {
   void * nativehnd;
