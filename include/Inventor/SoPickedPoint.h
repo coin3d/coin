@@ -62,9 +62,9 @@ public:
 
 private:
 
-  SbVec3f point;
-  SbVec3f normal;
-  SbVec4f texCoords;
+  SbVec3f point, objPoint;
+  SbVec3f normal, objNormal;
+  SbVec4f texCoords, objTexCoords;
   int materialIndex;
   SoPath *path;
   SbBool onGeometry;

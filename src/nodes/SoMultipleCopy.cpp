@@ -167,6 +167,7 @@ SoMultipleCopy::GLRender(SoGLRenderAction * action)
 SbBool
 SoMultipleCopy::affectsState(void) const
 {
+  // FIXME: is this correct? 19991117 mortene.
   return FALSE;
 }
 
@@ -177,14 +178,10 @@ SoMultipleCopy::affectsState(void) const
 void
 SoMultipleCopy::doAction(SoAction *action)
 {
-  //
-  // FIXME: what about path-traversal for thie node???
-  //
-
   for (int i=0; i < matrix.getNum(); i++) {
     action->getState()->push();
     SoSwitchElement::set(action->getState(), i);
-    SoModelMatrixElement::mult(action->getState(), this, matrix[i]);
+    SoModelMatrixElement::mult(action->getState(), this, matrix[i]);    
     inherited::doAction(action);
     action->getState()->pop();
   }

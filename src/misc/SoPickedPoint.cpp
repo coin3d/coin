@@ -28,6 +28,8 @@
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoTextureMatrixElement.h>
 #include <Inventor/details/SoDetail.h>
 #include <assert.h>
 
@@ -63,8 +65,11 @@ SoPickedPoint::SoPickedPoint(const SoPickedPoint &pp)
   this->path->ref();
   this->state = pp.state;
   this->point = pp.point;
+  this->objPoint = pp.objPoint;
   this->normal = pp.normal;
+  this->objNormal = pp.objNormal;
   this->texCoords = pp.texCoords;
+  this->objTexCoords = pp.objTexCoords;
   this->materialIndex = pp.materialIndex;
   this->onGeometry = pp.onGeometry;
   this->viewport = pp.viewport;
@@ -80,16 +85,10 @@ SoPickedPoint::SoPickedPoint(const SoPath * const path, SoState * const state,
   this->path = path->copy();
   this->path->ref();
   this->state = state;
-  this->getObjectToWorld().multVecMatrix(objSpacePoint, this->point);
-#if COIN_DEBUG // debug
-  SoDebugError::postInfo("SoPickedPoint::SoPickedPoint",
-			 "%g %g %g -> %g %g %g",
-			 objSpacePoint[0], objSpacePoint[1], objSpacePoint[2],
-			 point[0], point[1], point[2]);
-#endif // debug
-
-  this->normal = SbVec3f(0,0,1);
-  this->texCoords = SbVec4f(0,0,0,1);
+  this->objPoint = objSpacePoint;
+  SoModelMatrixElement::get(state).multVecMatrix(objSpacePoint, this->point);
+  this->objNormal = this->normal = SbVec3f(0,0,1);
+  this->objTexCoords = this->texCoords = SbVec4f(0,0,0,1);
   this->materialIndex = 0;
   this->onGeometry = TRUE;
   this->viewport = SoViewportRegionElement::get(state);
@@ -107,7 +106,7 @@ SoPickedPoint::~SoPickedPoint()
 {
   assert(this->path);
   this->path->unref();
-
+  
   int n = this->detailList.getLength();
   for (int i = 0; i < n; i++) {
     delete this->detailList[i];
@@ -226,33 +225,45 @@ SoPickedPoint::getImageToObject(const SoNode * const node) const
   FIXME: write doc
  */
 SbVec3f
-SoPickedPoint::getObjectPoint(const SoNode * const node) const
+SoPickedPoint::getObjectPoint(const SoNode * const /*node*/) const
 {
+#if 0 // OBSOLETED 19991117, pederb (incorrect for SoArray, SoMultipleCopy scenes)
   SbVec3f ret;
   this->getWorldToObject(node).multVecMatrix(this->point, ret);
   return ret;
+#else // new code
+  return this->objPoint;
+#endif
 }
 
 /*!
   FIXME: write doc
  */
 SbVec3f
-SoPickedPoint::getObjectNormal(const SoNode * const node) const
+SoPickedPoint::getObjectNormal(const SoNode * const /*node*/) const
 {
+#if 0 // OBSOLETED 19991117, pederb (incorrect for SoArray, SoMultipleCopy scenes)
   SbVec3f ret;
   this->getWorldToObject(node).multDirMatrix(this->normal, ret);
   return ret;
+#else // new code
+  return this->objNormal;
+#endif // new code
 }
 
 /*!
   FIXME: write doc
  */
 SbVec4f
-SoPickedPoint::getObjectTextureCoords(const SoNode * const node) const
+SoPickedPoint::getObjectTextureCoords(const SoNode * const /*node*/) const
 {
+#if 0 // OBSOLETED 19991117, pederb (incorrect for SoArray, SoMultipleCopy scenes)
   SbVec4f ret;
   this->getImageToObject(node).multVecMatrix(this->texCoords, ret);
   return ret;
+#else // new code
+  return this->objTexCoords;
+#endif // new code
 }
 
 /*!
@@ -261,7 +272,8 @@ SoPickedPoint::getObjectTextureCoords(const SoNode * const node) const
 void
 SoPickedPoint::setObjectNormal(const SbVec3f &normal)
 {
-  this->getObjectToWorld().multVecMatrix(normal, this->normal);
+  this->objNormal = normal;
+  SoModelMatrixElement::get(this->state).multDirMatrix(normal, this->normal);
 }
 
 /*!
@@ -270,7 +282,8 @@ SoPickedPoint::setObjectNormal(const SbVec3f &normal)
 void
 SoPickedPoint::setObjectTextureCoords(const SbVec4f &texCoords)
 {
-  this->getObjectToImage().multVecMatrix(texCoords, this->texCoords);
+  this->objTexCoords = texCoords;
+  SoTextureMatrixElement::get(this->state).multVecMatrix(texCoords, this->texCoords);
 }
 
 /*!

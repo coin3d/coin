@@ -54,6 +54,9 @@
 #include <Inventor/elements/SoSwitchElement.h>
 #endif // !COIN_EXCLUDE_SOSWITCHELEMENT
 
+#include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/misc/SoChildList.h>
+
 /*!
   \enum SoArray::Origin
   FIXME: write documentation for enum
@@ -332,62 +335,7 @@ SoArray::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoArray::GLRender(SoGLRenderAction * action)
 {
-  int N = 0;
-  for (int i=0; i < numElements3.getValue(); i++) {
-    for (int j=0; j < numElements2.getValue(); j++) {
-      for (int k=0; k < numElements1.getValue(); k++) {
-
-	float multfactor_i = float(i);
-	float multfactor_j = float(j);
-	float multfactor_k = float(k);
-
-	switch (origin.getValue()) {
-	case SoArray::FIRST:
-	  break;
-	case SoArray::CENTER:
-	  multfactor_i = -float(numElements3.getValue()-1.0f)/2.0f + float(i);
-	  multfactor_j = -float(numElements2.getValue()-1.0f)/2.0f + float(j);
-	  multfactor_k = -float(numElements1.getValue()-1.0f)/2.0f + float(k);
-	  break;
-	case SoArray::LAST:
-	  multfactor_i = -multfactor_i;
-	  multfactor_j = -multfactor_j;
-	  multfactor_k = -multfactor_k;
-	  break;
-
-	  // FIXME: catch w/SoDebugError. 19990324 mortene.
-	default: assert(0); break;
-	}
-
-	SbVec3f instance_pos =
-	  separation3.getValue() * multfactor_i +
-	  separation2.getValue() * multfactor_j +
-	  separation1.getValue() * multfactor_k;
-
-	action->getState()->push();
-	
-	SoSwitchElement::set(action->getState(),
-			     ++N);
-
-	// set local matrix to identity
-	SoModelMatrixElement::translateBy(action->getState(), this,
-					  instance_pos);
-    
-#if 0 // debug
-	SoDebugError::postInfo("SoArray::GLRender",
-			       "instance_pos: <%f, %f, %f>",
-			       instance_pos[0],
-			       instance_pos[1],
-			       instance_pos[2]);
-#endif // debug
-
-	// render all children once in the given position
-	inherited::GLRender(action);
-    
-	action->getState()->pop();
-      }
-    }
-  }
+  SoArray::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -439,7 +387,7 @@ SoArray::doAction(SoAction *action)
 	  separation3.getValue() * multfactor_i +
 	  separation2.getValue() * multfactor_j +
 	  separation1.getValue() * multfactor_k;
-
+	
 	action->getState()->push();
 	
 	SoSwitchElement::set(action->getState(),
@@ -448,8 +396,8 @@ SoArray::doAction(SoAction *action)
 	// set local matrix to identity
 	SoModelMatrixElement::translateBy(action->getState(), this,
 					  instance_pos);
+	
 	inherited::doAction(action);
-    
 	action->getState()->pop();
       }
     }
@@ -497,8 +445,73 @@ SoArray::handleEvent(SoHandleEventAction *action)
 */
 void
 SoArray::getMatrix(SoGetMatrixAction *action)
-{
-  assert(0 && "FIXME: not implemented");
+{  
+  int N = 0;
+  for (int i=0; i < numElements3.getValue(); i++) {
+    for (int j=0; j < numElements2.getValue(); j++) {
+      for (int k=0; k < numElements1.getValue(); k++) {
+	
+	float multfactor_i = float(i);
+	float multfactor_j = float(j);
+	float multfactor_k = float(k);
+	
+	switch (origin.getValue()) {
+	case SoArray::FIRST:
+	  break;
+	case SoArray::CENTER:
+	  multfactor_i = -float(numElements3.getValue()-1.0f)/2.0f + float(i);
+	  multfactor_j = -float(numElements2.getValue()-1.0f)/2.0f + float(j);
+	  multfactor_k = -float(numElements1.getValue()-1.0f)/2.0f + float(k);
+	  break;
+	case SoArray::LAST:
+	  multfactor_i = -multfactor_i;
+	  multfactor_j = -multfactor_j;
+	  multfactor_k = -multfactor_k;
+	  break;
+	  
+	  // FIXME: catch w/SoDebugError. 19990324 mortene.
+	default: assert(0); break;
+	}
+
+	SbVec3f instance_pos =
+	  separation3.getValue() * multfactor_i +
+	  separation2.getValue() * multfactor_j +
+	  separation1.getValue() * multfactor_k;
+
+	action->getState()->push();	
+	SoSwitchElement::set(action->getState(),
+			     ++N);
+	action->translateBy(instance_pos);
+	
+	int numIndices;
+	const int * indices;
+	switch (action->getPathCode(numIndices, indices)) {
+	case SoAction::IN_PATH:     
+	  this->children->traverse(action, 0, indices[numIndices - 1]);
+	  break;
+	case SoAction::NO_PATH:
+	case SoAction::BELOW_PATH:
+	  this->children->traverse(action);
+	  break;
+	case SoAction::OFF_PATH:
+	  {
+	    int n = this->getNumChildren();
+	    for (int i = 0; i < n; i++) {
+	      if (this->getChild(i)->affectsState())
+		this->children->traverse(action, i);
+	    }
+	    break;
+	  }
+	default:
+	  assert(0 && "Unknown path code");
+	  break;
+	}
+	
+	action->translateBy(-instance_pos);
+	action->getState()->pop();
+      }
+    }
+  }
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
