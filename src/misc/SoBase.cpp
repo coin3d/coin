@@ -272,8 +272,14 @@ SoBase::unref(void) const
                            this, this->getTypeId().getName().getString(),
                            this->objdata.referencecount);
   }
-  if (this->objdata.referencecount < 0)
+  if (this->objdata.referencecount < 0) {
+    // Do the debug output in two calls, since the getTypeId() might
+    // cause a crash, and then there'd be no output at all with a
+    // single SoDebugError::postWarning() call.
     SoDebugError::postWarning("SoBase::unref", "ref count less than zero");
+    SoDebugError::postWarning("SoBase::unref", "...for %s instance at %p",
+                              this->getTypeId().getName().getString(), this);
+  }
 #endif // COIN_DEBUG
   if (this->objdata.referencecount == 0) base->destroy();
 }
