@@ -410,7 +410,7 @@ SoText2::rayPick(SoRayPickAction * action)
     short minx, miny, maxx, maxy;
     THIS->bbox.getBounds(minx, miny, maxx, maxy);
     float bbleft = minx;
-    float bbwidth = maxx - minx;
+    float bbwidth = (float)(maxx - minx);
     float strleft = (bbwidth - THIS->stringwidth[stringidx]) / bbwidth;
     float strright = 1.0;
     switch (this->justification.getValue()) {
@@ -422,7 +422,7 @@ SoText2::rayPick(SoRayPickAction * action)
       break;
     case CENTER:
       strleft /= 2.0;
-      strright = 1.0 - strleft;
+      strright = (float)1.0 - strleft;
       break;
     default:
       assert(0 && "SoText2::rayPick: unknown justification");
@@ -546,7 +546,7 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
   short xmin, ymin, xmax, ymax;
   float minx, miny, maxx, maxy;
   this->bbox.getBounds(xmin, ymin, xmax, ymax);
-  center = SbVec2f( (xmin+xmax)/2.0, (ymin+ymax)/2.0);
+  center = SbVec2f( (float)(xmin+xmax)/(float)2.0, (float)(ymin+ymax)/(float)2.0);
   minx = (xmin - center[0]) / vpsize[0];
   miny = (ymin - center[1]) / vpsize[1];
   maxx = (xmax - center[0]) / vpsize[0];
@@ -557,7 +557,7 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
   n3 = SbVec2f(screenpoint[0] + minx, screenpoint[1] + maxy);
   // fprintf(stderr,"computeBBox: bbox = %f %f - %f %f\n", n0[0], n0[1], n2[0], n2[1]);
   
-  float halfw = (maxx - minx) / 2.0;
+  float halfw = (maxx - minx) / (float)2.0;
   switch (this->textnode->justification.getValue()) {
   case SoText2::LEFT:
     n0[0] += halfw;
@@ -716,7 +716,7 @@ SoText2P::buildGlyphCache(SoState * state)
           // fprintf(stderr,"  advance=(%d,%d) kerning=(%d,%d)\n", (int)advance[0], (int)advance[1], (int)kerning[0], (int)kerning[1]);
         }
         this->stringwidth[i] = this->positions[i][len-1][0] + thissize[0];
-        penpos = SbVec2s(0, penpos[1] - this->prevfontsize * t->spacing.getValue());
+        penpos = SbVec2s(0, penpos[1] - (short)(this->prevfontsize * t->spacing.getValue()));
       }
     }
   }

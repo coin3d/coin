@@ -471,7 +471,7 @@ SoGlyph::getGlyph(SoState * state,
   }
   SbVec2s fontsize;
   if (size == SbVec2s(0,0))
-    fontsize = SbVec2s(state_size, state_size);
+    fontsize = SbVec2s((short)state_size, (short)state_size);
   else
     fontsize = size;
   
