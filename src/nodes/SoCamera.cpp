@@ -567,11 +567,11 @@ SoCamera::audioRender(SoAudioRenderAction *action)
 #if COIN_DEBUG && 0
   float x, y, z;
   worldpos.getValue(x, y, z);
-  fprintf(stderr, "camera::ar() : set listenerpos (%0.2f, %0.2f, %0.2f)\n", x, y, z);
+  SoDebugError::postInfo("SoCamera::audioRender","listenerpos (%0.2f, %0.2f, %0.2f)\n", x, y, z);
 #endif // debug
   } else {
 #if COIN_DEBUG && 0
-  fprintf(stderr, "camera::ar() : ignoring listenerpos\n");
+  SoDebugError::postInfo("SoCamera::audioRender","ignoring listenerpos\n");
 #endif // debug
   }
   setbylistener = SoListenerOrientationElement::isSetByListener(state);
