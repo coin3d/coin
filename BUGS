@@ -1,0 +1,29 @@
+000 Bounding box calculation is _very_ lousy when there are rotations
+    in the scenegraph (ouch!). To reproduce in a way that shows off
+    the bug well, load this scenegraph into the
+    SoGuiExamples/engines/computebbox example:
+
+    ---8<-------8<-------8<-------8<-------8<-------8<-------8<----
+    #Inventor V2.0 ascii
+    
+    Separator {
+       Separator {
+          Rotation {
+             rotation 0 0 1  1.23292
+          }
+          Cube { }
+       }
+       Separator {
+          Rotation {
+             rotation 0 0 1  -0.616023
+          }
+          Cube { }
+       }
+    }
+    ---8<-------8<-------8<-------8<-------8<-------8<-------8<----
+
+    This bug has very nasty implications for some types of models, as
+    the bbox calculation error tend to accumulate -- so one can
+    quickly end up with some horribly bad fitting bboxes.
+
+    Bug reported by Nigel Murry.
