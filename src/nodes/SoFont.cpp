@@ -218,6 +218,9 @@ SoFont::doAction(SoAction * action)
       pimpl->lastsize != this_size || 
       strcmp(pimpl->lastfontname.getString(), this_name)) {
     pimpl->lastfontname = this->name.getValue();
+    // FIXME: this is the wrong place to do this -- should do it as
+    // late as possible, on demand.  I.e. from the text shape nodes
+    // requesting glyphs from the font. 20030527 mortene.
     SoFontLib::createFont(this->name.getValue(), SbString(""), SbVec2s((short)this_size, (short)this_size));
     pimpl->lastsize = this_size;
     pimpl->firsttime = FALSE;
