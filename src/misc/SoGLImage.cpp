@@ -44,6 +44,13 @@
   \li COIN_TEX2_BUILD_MIPMAP_FAST: If this environment variable is set to 1, an
   internal and optimized function will be used to create mipmaps. Otherwise
   gluBuild2DMipmap() will be used. Default value is 0.
+
+  \li COIN_TEX2_USE_GLTEXSUBIMAGE: When set, and when the new texture data
+  has the same attributes as the old data, glTexSubImage() will be used
+  to copy new data into the texture instead of recreating the texture.
+  This is not enabled by default, since it seems to trigger a bug
+  in the Linux nVidia drivers. It just happens in some unreproducable cases.
+  It could be a bug in our glTexSubImage() code, of course :)
 */
 
 /*!
@@ -80,6 +87,7 @@ static float COIN_TEX2_LINEAR_LIMIT = -1.0f;
 static float COIN_TEX2_MIPMAP_LIMIT = -1.0f;
 static float COIN_TEX2_LINEAR_MIPMAP_LIMIT = -1.0f;
 static float COIN_TEX2_SCALEUP_LIMIT = -1.0f;
+static int COIN_TEX2_USE_GLTEXSUBIMAGE = -1;
 static int COIN_TEX2_BUILD_MIPMAP_FAST = -1;
 
 #define FLAG_TRANSPARENCY         0x01
@@ -277,6 +285,13 @@ SoGLImage::SoGLImage(void)
     }
     else COIN_TEX2_BUILD_MIPMAP_FAST = 0;
   }
+  if (COIN_TEX2_USE_GLTEXSUBIMAGE < 0) {
+    char * env = getenv("COIN_TEX2_USE_GLTEXSUBIMAGE");
+    if (env && atoi(env) == 1) {
+      COIN_TEX2_USE_GLTEXSUBIMAGE = 1;
+    }
+    else COIN_TEX2_USE_GLTEXSUBIMAGE = 0;
+  }
 }
 
 /*!
@@ -327,7 +342,8 @@ SoGLImage::setData(const unsigned char * bytes,
   // check for special case where glCopyTexImage can be used.
   // faster for most drivers.
   SoGLDisplayList * dl;
-  if (createinstate &&
+  if (COIN_TEX2_USE_GLTEXSUBIMAGE && 
+      createinstate &&
       size == THIS->size &&
       nc == THIS->numcomponents &&
       wraps == THIS->wraps &&
@@ -339,7 +355,7 @@ SoGLImage::setData(const unsigned char * bytes,
     THIS->unrefDLists(createinstate);
     THIS->dlists.append(dl);
     THIS->bytes = NULL; // data is temporary, and only for current context
-    dl->call(createinstate); // make this the current texture
+    SoGLImage::apply(createinstate, dl, quality);
     GLenum format;
     switch (nc) {
     default: // avoid compiler warnings
@@ -348,7 +364,7 @@ SoGLImage::setData(const unsigned char * bytes,
     case 3: format = GL_RGB; break;
     case 4: format = GL_RGBA; break;
     }
-    
+
     // scale image to valid GL size
     int xsize = size[0];
     int ysize = size[1];
