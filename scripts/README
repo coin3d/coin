@@ -11,3 +11,7 @@ metadon
 
 coin.el
     - Emacs Lisp functions to aid misc operations on the Coin code
+
+ChangeLog.sh
+    - automatically generate ChangeLog entries from cvs commit
+      log-messages
