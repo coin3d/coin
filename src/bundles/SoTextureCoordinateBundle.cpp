@@ -262,7 +262,7 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
   }
 
   // Map S,T,R to X,Y,Z for 3D texturing
-  if (SoGLTexture3EnabledElement::get(this->state)) {
+  if (!forRendering || SoGLTexture3EnabledElement::get(this->state)) {
     this->flags |= FLAG_3DTEXTURES;
     this->defaultdim0 = 0;
     this->defaultdim1 = 1;
