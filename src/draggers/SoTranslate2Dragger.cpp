@@ -26,6 +26,7 @@
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/events/SoKeyboardEvent.h>
+#include <math.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -71,7 +72,7 @@ SoTranslate2Dragger::SoTranslate2Dragger(void)
   this->setPartAsDefault("feedbackActive", "translate2FeedbackActive");
   this->setPartAsDefault("xAxisFeedback", "translate2XAxisFeedback");
   this->setPartAsDefault("yAxisFeedback", "translate2YAxisFeedback");
-  
+
   // initialize swich values
   SoSwitch *sw;
   sw = SO_GET_ANY_PART(this, "translatorSwitch", SoSwitch);
@@ -80,7 +81,7 @@ SoTranslate2Dragger::SoTranslate2Dragger(void)
   SoInteractionKit::setSwitchValue(sw, 0);
   sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
-  
+
   // setup projector
   this->planeProj = new SbPlaneProjector();
   this->addStartCallback(SoTranslate2Dragger::startCB);
@@ -88,12 +89,12 @@ SoTranslate2Dragger::SoTranslate2Dragger(void)
   this->addFinishCallback(SoTranslate2Dragger::finishCB);
   this->addOtherEventCallback(SoTranslate2Dragger::metaKeyChangeCB);
   this->addValueChangedCallback(SoTranslate2Dragger::valueChangedCB);
-  
+
   this->fieldSensor = new SoFieldSensor(SoTranslate2Dragger::fieldSensorCB, this);
   this->fieldSensor->setPriority(0);
 
   this->constraintState = CONSTRAINT_OFF;
- 
+
   this->setUpConnections(TRUE, TRUE);
 }
 
@@ -110,12 +111,12 @@ SoTranslate2Dragger::setUpConnections(SbBool onoff, SbBool doitalways)
   if (!doitalways && this->connectionsSetUp == onoff) return onoff;
 
   SbBool oldval = this->connectionsSetUp;
-  
+
   if (onoff) {
     inherited::setUpConnections(onoff, doitalways);
-    
+
     SoTranslate2Dragger::fieldSensorCB(this, NULL);
-    
+
     if (this->fieldSensor->getAttachedField() != &this->translation) {
       this->fieldSensor->attach(&this->translation);
     }
@@ -153,7 +154,7 @@ SoTranslate2Dragger::valueChangedCB(void *, SoDragger * d)
   t[0] = matrix[3][0];
   t[1] = matrix[3][1];
   t[2] = matrix[3][2];
-  
+
   thisp->fieldSensor->detach();
   if (thisp->translation.getValue() != t) {
     thisp->translation = t;
@@ -201,7 +202,7 @@ SoTranslate2Dragger::dragStart(void)
   this->planeProj->setPlane(SbPlane(SbVec3f(0.0f, 0.0f, 1.0f), hitPt));
   if (this->getEvent()->wasShiftDown()) {
     this->getLocalToWorldMatrix().multVecMatrix(hitPt, this->worldRestartPt);
-    this->constraintState = CONSTRAINT_WAIT; 
+    this->constraintState = CONSTRAINT_WAIT;
   }
 }
 
@@ -226,9 +227,9 @@ SoTranslate2Dragger::drag(void)
     SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
     this->constraintState = CONSTRAINT_OFF;
   }
-  
+
   SbVec3f startPt = this->getLocalStartingPoint();
-  SbVec3f motion = projPt - startPt;  
+  SbVec3f motion = projPt - startPt;
 
   switch(this->constraintState) {
   case CONSTRAINT_OFF:
@@ -258,7 +259,7 @@ SoTranslate2Dragger::drag(void)
   case CONSTRAINT_Y:
     motion[0] = 0.0f;
     break;
-  }  
+  }
   this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(), motion));
 }
 
