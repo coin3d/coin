@@ -640,7 +640,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   if(this->mustusesubscreens){
 
     //Allocate memory for subscreen
-    subscreen = new (unsigned char)[(subscreensize[0]*subscreensize[1]*this->master->getComponents())];
+    subscreen = new unsigned char [(subscreensize[0]*subscreensize[1]*this->master->getComponents())];
 
     
     // We have to grab cameras using this callback during rendering
