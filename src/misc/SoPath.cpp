@@ -809,20 +809,13 @@ SoPath::replaceIndex(SoNode * const parent, const int index,
   if (index == this->indices[pos]) {
     // The path below the replacement will not be correct -- so let's
     // truncate the path here. Truncating will also remove us as
-    // auditors from the SoChildList instances we're watching.
-    this->truncate(pos);
-
-    // Append replacement.
-    this->indices.append(index);
-    this->nodes.append(newchild);
-
-    // This is unnecessary and a bit silly, but it simplifies the code
-    // as we don't have to do anything special to check whether or not
-    // we're actually auditing SoChildList instances in the path. With
-    // this in place, we'll always be auditing all (or none, depending
-    // on the isauditing flag).
-    SoChildList * cl = newchild->getChildren();
-    if (cl && this->isauditing) cl->addPathAuditor(this);
+    // auditors from the SoChildList instances we're watching.  Don't
+    // notify when truncating as the append call will take care of
+    // that (we don't want to notify before the path is correct
+    // anyway).
+    this->truncate(pos, FALSE); // FALSE = don't notify
+    // append replacement node
+    this->append(newchild, index);
   }
 
 #if COIN_DEBUG && 0 // debug
