@@ -3736,46 +3736,6 @@ Separator {
 
 =====================================================================
 
-120 SoMaterialBinding::PER_FACE is buggy for at least some shapes.
-
-    According to documentation (see SoMaterialBinding::PER_FACE, which
-    is written according to information in the Inventor Mentor),
-    coloring should wrap around if too few colors are supplied for
-    PER_FACE material binding.
-
-    In Coin, this doesn't happen for at least SoCube (debug msg on
-    console, colors clamped to last one):
-
---------8<------------- [snip] --------------8<------------- [snip]
-#Inventor V2.1 ascii
-
-Material { diffuseColor [ 1 0 0, 1 1 0 ] }
-MaterialBinding { value PER_PART }
-Cube { }
---------8<------------- [snip] --------------8<------------- [snip]
-
-    ..or SoText3 (no debug msg, colors clamped to last):
-
---------8<------------- [snip] --------------8<------------- [snip]
-#Inventor V2.1 ascii
-
-Material { diffuseColor [ 1 0 0, 1 1 0 ] }
-MaterialBinding { value PER_PART }
-Text3 { parts ALL  string "hepp" }
---------8<------------- [snip] --------------8<------------- [snip]
-
-    ..and the behavior is probably not according to spec for many or
-    all the other shapes neither.
-
-    Needs to be audited and properly fixed.
-
-    20040702 mortene.
-
-    Update 20040702 pederb: Support for cycling of colors was disabled
-    in Open Inventor 2.1.
-
-=====================================================================
-
 121 Coloring goes bananas with Inventor Mentor example 06.2.Simple3DText.
 
     There is currently something very strange going on with the above

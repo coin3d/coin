@@ -102,15 +102,18 @@
   index into the material pool by 1 for each new part in the order
   defined by the particular shape type.
 
-  If too few colors are supplied versus the number of parts of the
-  subsequent shapes in the scene graph, the coloring will cycle
-  through the available colors.
-*/
-// Note: the last paragraph above is supported by what is written in
-// Chapter 5 of the «Inventor Mentor», section "Binding Nodes", middle
-// of page 128 on the paper-copy of the book, the 10th printing.
-// <mortene>
+  Important portability note: it was previously allowed with the SGI
+  Inventor library to supply too few colors versus the number of parts
+  of the subsequent shapes in the scene graph. Coloring would then
+  cycle through the available colors.
 
+  Since SGI Open Inventor v2.1, this was disallowed, though -- enough
+  colors for all parts must be supplied, or behavior will be
+  unspecified (likely to cause a crash, in fact).  Note that the
+  «Inventor Mentor» book contains a description of the old behavior in
+  Chapter 5, section "Binding Nodes" (middle of page 128 in the 10th
+  printing).
+*/
 /*!
   \var SoMaterialBinding::Binding SoMaterialBinding::PER_PART_INDEXED
 
