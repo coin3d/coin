@@ -319,6 +319,9 @@ SoDB::readAll(SoInput * in)
 {
 #if 1 // New code, designed to work better with binary files. 19990711 mortene.
 
+  // If this check wasn't present, we'd never return NULL.
+  if (!in->isValidFile()) return NULL;
+
 #if COIN_DEBUG // See comments below in next COIN_DEBUG block.
   int stackdepth = in->filestack.getLength();
 #endif // COIN_DEBUG

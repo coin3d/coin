@@ -74,7 +74,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #else // ! _WIN32
-#include <netinet/in.h> // ntohl() and ntohs() definitions
+#include <netinet/in.h> // ntohl(), ntohs()
 #include <ctype.h>
 #endif // ! _WIN32
 
@@ -465,15 +465,19 @@ SoInput::setFilePointer(FILE * newFP)
   Returns \a TRUE if file could be opened for reading, \a FALSE
   otherwise.
 
-  \sa setFilePointer(), pushFile(), closeFile()
- */
+  Note: even if your attempt at opening a file is unsuccessful,
+  the SoInput instance will \e not default to reading from stdin after
+  a call has been made to this method.
+
+  \sa setFilePointer(), pushFile(), closeFile() */
 SbBool
 SoInput::openFile(const char * fileName, SbBool okIfNotFound)
 {
+  this->closeFile();
+
   SbString fullname;
   FILE * fp = this->findFile(fileName, fullname);
   if (fp) {
-    this->closeFile();
     SoInput_FileInfo * newfile =
       new SoInput_FileInfo(fullname.getString(), fp);
     this->filestack.insert(newfile, 0);
@@ -482,9 +486,10 @@ SoInput::openFile(const char * fileName, SbBool okIfNotFound)
     return TRUE;
   }
   else {
-    if (!okIfNotFound)
+    if (!okIfNotFound) {
       SoReadError::post(this, "Couldn't open file '%s' for reading.",
                         fileName);
+    }
   }
 
   return FALSE;
@@ -629,7 +634,7 @@ SoInput::getHeader(void)
 float
 SoInput::getIVVersion(void)
 {
-  this->checkHeader();
+  if (!this->checkHeader()) return 0.0f;
   return this->getTopOfStack()->ivVersion();
 }
 
@@ -639,7 +644,7 @@ SoInput::getIVVersion(void)
 SbBool
 SoInput::isBinary(void)
 {
-  this->checkHeader();
+  if (!this->checkHeader()) return FALSE;
   return this->getTopOfStack()->isBinary();
 }
 
@@ -1152,6 +1157,11 @@ SoInput::eof(void) const
 void
 SoInput::getLocationString(SbString & str) const
 {
+  if (this->filestack.getLength() == 0) {
+    str = "";
+    return;
+  }
+
   // FIXME: hack to cast away constness. Ugly. 19990713 mortene.
   if (((SoInput *)this)->isBinary()) {
     str = "\tOccurred at position ";
@@ -1556,10 +1566,18 @@ SbBool
 SoInput::checkHeader(SbBool bValidateBufferHeader)
 {
   SoInput_FileInfo * fi = this->getTopOfStack();
-  if (!fi) return FALSE;
-  if (fi->isEndOfFile()) this->popFile(); // auto pop on EOF
-  fi = this->getTopOfStack();
-  return fi && fi->readHeader() && (!bValidateBufferHeader || fi->ivVersion() != 0.0f);
+  if (!fi) {
+#if COIN_DEBUG
+    SoDebugError::post("SoInput::checkHeader", "no files on the stack");
+#endif // COIN_DEBUG
+    return FALSE;
+  }
+  if (fi->isEndOfFile()) {
+    this->popFile(); // auto pop on EOF
+    fi = this->getTopOfStack();
+    if (!fi) return FALSE;
+  }
+  return fi->readHeader() && (!bValidateBufferHeader || fi->ivVersion() != 0.0f);
 }
 
 /*!
@@ -2049,6 +2067,12 @@ SoInput::setDirectories(SbStringList * dirs)
 SoInput_FileInfo *
 SoInput::getTopOfStack(void) const
 {
+  if (this->filestack.getLength() == 0) {
+#if COIN_DEBUG
+    SoDebugError::post("SoInput::getTopOfStack", "no files in stack");
+#endif // COIN_DEBUG
+    return NULL;
+  }
   return this->filestack[0];
 }
 
@@ -2064,12 +2088,12 @@ SoInput::getTopOfStack(void) const
 FILE *
 SoInput::findFile(const char * basename, SbString & fullname)
 {
-  int diridx = 0;
-  const SbStringList & sl = SoInput::getDirectories();
-
   // Try as absolute name first.
   FILE * fp = fopen(basename, "r");
   if (fp) fullname = basename;
+
+  int diridx = 0;
+  const SbStringList & sl = SoInput::getDirectories();
 
   while (!fp && (diridx < sl.getLength())) {
     fullname = * sl[diridx++];
