@@ -144,36 +144,53 @@ SoDB::init(void)
 {
   if (SoDB::isInitialized()) return;
 
-  // Sanity check: if anything here breaks,
-  // include/Inventor/system/inttypes.h needs fixing. Keep these
-  // asserts around.
+  // Sanity check: if anything here breaks, Inventor/system/inttypes.h
+  // needs fixing. Keep these tests around.
 
+#if 0
+  // TMP OBSOLETED asserts for 1.0 release. We should be 99% ok, I can
+  // only think of possibilities for problems in the binary .iv import
+  // and export code. 20010308 mortene.
   assert(sizeof(uint16_t) == 2);
   assert(sizeof(int16_t) == 2);
   assert(sizeof(uint32_t) == 4);
   assert(sizeof(int32_t) == 4);
+#else
+  SoDebugError::postWarning("SoDB::init",
+                            "fixed bitwidth types are not correct");
+#endif
+
 
   // Sanity check: if the int type is not equal to 32 bits everything
   // probably goes to hell. FIXME: remove this check when we are no
   // longer dependent on using native C types where we need to have a
   // particular bitwidth.
 
-  // TMP OBSOLETED for 1.0 release. We should be 99% ok, I can only
-  // think of possibilities for problems in the binary .iv import and
-  // export code. 20010308 mortene.
-
-//    assert(sizeof(int) == 4);
-
+#if 0
+  // TMP OBSOLETED assert for 1.0 release. We should be 99% ok, I can
+  // only think of possibilities for problems in the binary .iv import
+  // and export code. 20010308 mortene.
+  assert(sizeof(int) == 4);
+#else
+  SoDebugError::postWarning("SoDB::init",
+                            "sizeof(int) != 4 "
+                            "(Coin not tested on this platform)");
+#endif
 
   // Sanity check: if this breaks, the binary format import and export
   // routines will not work correctly. FIXME: the code should be fixed
   // to use the int16_t type, then we can remove this stoopid check.
 
-  // TMP OBSOLETED for 1.0 release. We should be 99% ok, I can only
-  // think of possibilities for problems in the binary .iv import and
-  // export code. 20010308 mortene.
-
-//    assert(sizeof(short) == 2);
+#if 0
+  // TMP OBSOLETED assert for 1.0 release. We should be 99% ok, I can
+  // only think of possibilities for problems in the binary .iv import
+  // and export code. 20010308 mortene.
+  assert(sizeof(short) == 2);
+#else
+  SoDebugError::postWarning("SoDB::init",
+                            "sizeof(short) != 2 "
+                            "(Coin not tested on this platform)");
+#endif
 
 
   // Sanity check: if the int type is unequal to the long type, things
@@ -181,11 +198,17 @@ SoDB::init(void)
   // fixed. Remove this check when we are no longer dependent on using
   // native C types where we need to have a particular bitwidth.
 
-  // TMP OBSOLETED for 1.0 release. We should be 99% ok, I can only
-  // think of possibilities for problems in the binary .iv import and
-  // export code. 20010308 mortene.
+  // TMP OBSOLETED assert for 1.0 release. We should be 99% ok, I can
+  // only think of possibilities for problems in the binary .iv import
+  // and export code. 20010308 mortene.
 
-//    assert(sizeof(int) == sizeof(long));
+#if 0
+  assert(sizeof(int) == sizeof(long));
+#else
+  SoDebugError::postWarning("SoDB::init",
+                            "sizeof(int) != sizeof(long) "
+                            "(Coin not tested on this platform)");
+#endif
 
 
   // Allocate our static members.
