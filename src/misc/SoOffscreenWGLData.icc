@@ -161,6 +161,10 @@ SoOffscreenWGLData::cleanupWGL(void)
 {
   // cleanup member variabler
   if(this->devicecontext != NULL) {
+    if (this->context) {
+      (void) wglDeleteContext(this->context);
+      this->context = NULL;
+    }
     if(this->oldbitmap != NULL) {
       SelectObject(this->devicecontext, this->oldbitmap);
       this->oldbitmap = NULL;
