@@ -163,7 +163,7 @@ SbDict::applyToAll(void (* rtn)(unsigned long key, void * value)) const
   \overload
 */
 void
-SbDict::applyToAll(void (* rtn)(unsigned long, void *, void *),
+SbDict::applyToAll(void (* rtn)(unsigned long key, void * value, void * data),
                    void * data) const
 {
   cc_hash_apply(this->hashtable, rtn, data);
