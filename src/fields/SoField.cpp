@@ -567,6 +567,15 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
 
   if (mastertype == thistype) { // Can do direct field-to-field link.
     if (!append) this->disconnect();
+    else if (this->storage->masterfields.find(master) >= 0) {
+      // detect and avoid multiple connections between the same fields
+      // (a common bug in VRML files created by 3ds max).
+#if COIN_DEBUG
+      SoDebugError::postWarning("SoField::connectFrom",
+                                "connection from %p already made", master);
+#endif // COIN_DEBUG
+      return FALSE;
+    }
     // Set up the auditor link from the master to the slave field.
     // (Note that the ``this'' slave field can also be an input field
     // of an SoFieldConverter instance.)
@@ -651,11 +660,25 @@ SoField::connectFrom(SoEngineOutput * master, SbBool notnotify, SbBool append)
 
   if (mastertype == thistype) { // Can do direct field-to-engineout link.
     if (!append) this->disconnect();
-
+    else {
+      // check if we're already connected
+      if (this->storage->masterengineouts.find(master) >= 0) {
+        // detect and avoid multiple connections between the same
+        // field and engine output (a common bug in VRML files
+        // created by 3ds max).
+#if COIN_DEBUG
+        SoDebugError::postWarning("SoField::connectFrom",
+                                  "connection from %p already made", master);
+#endif // COIN_DEBUG
+        // Match the ref() invocation.
+        if (masterengine) masterengine->unref();
+        return FALSE;
+      }
+    }
     // Set up the auditor link from the master engineout to the slave
     // field.  (Note that the ``this'' slave field can also be an
     // input field of an SoFieldConverter instance.)
-
+    
     // This is enough, the container SoEngine will automatically pick
     // up on it.
     master->addConnection(this);
@@ -691,7 +714,6 @@ SoField::connectFrom(SoEngineOutput * master, SbBool notnotify, SbBool append)
 
   // Common bookkeeping.
   this->storage->masterengineouts.append(master); // slave -> master link
-
 
   // Notification.  ///////////////////////////////////////////////
 
