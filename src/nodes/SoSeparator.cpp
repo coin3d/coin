@@ -764,7 +764,7 @@ SoSeparator::cullTestNoPush(SoState * state)
   if (THIS->bboxcache &&
       THIS->bboxcache->isValid(state)) {
     const SbBox3f & bbox = THIS->bboxcache->getProjectedBox();
-    if (bbox.isEmpty()) {
+    if (!bbox.isEmpty()) {
       outside = SoCullElement::cullTest(state, bbox);
     }
   }
