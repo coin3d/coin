@@ -274,6 +274,9 @@
 /* define if you have WGL Win32 OpenGL bindings */
 #undef HAVE_WGL
 
+/* Define if the Win32 API is available */
+#undef HAVE_WIN32_API
+
 /* define if the Win32 LoadLibrary method is available */
 #undef HAVE_WINDLL_RUNTIME_BINDING
 
@@ -294,6 +297,9 @@
 
 /* define if _snprintf() is available */
 #undef HAVE__SNPRINTF
+
+/* define if the system has _splitpath() */
+#undef HAVE__SPLITPATH
 
 /* define if _vsnprintf() is available */
 #undef HAVE__VSNPRINTF

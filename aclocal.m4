@@ -7753,6 +7753,89 @@ if test x"$with_pthread" != xno; then
 fi
 ]) # SIM_AC_CHECK_PTHREAD
 
+# **************************************************************************
+# SIM_AC_CHECK_HEADER_TLHELP32_H:
+#
+#   Check for tlhelp32.h.
+
+AC_DEFUN([SIM_AC_CHECK_HEADER_TLHELP32_H], [
+# At least with MSVC++, these headers needs windows.h to have been included first.
+AC_CHECK_HEADERS([tlhelp32.h], [], [], [
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif
+])
+]) # SIM_AC_CHECK_HEADER_TLHELP32_H
+
+
+# **************************************************************************
+# SIM_AC_CHECK_FUNC__SPLITPATH:
+#
+#   Check for the _splitpath() macro/function.
+
+AC_DEFUN([SIM_AC_CHECK_FUNC__SPLITPATH], [
+AC_MSG_CHECKING([for _splitpath()])
+AC_COMPILE_IFELSE(
+[AC_LANG_PROGRAM([
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif
+#include <stdlib.h>
+], [
+  char drive[100];
+  char dir[100];
+  _splitpath(filename, drive, dir, NULL, NULL);
+])], [
+  AC_DEFINE([HAVE__SPLITPATH], 1, [define if the system has _splitpath()])
+  AC_MSG_RESULT([found])
+], [
+  AC_MSG_RESULT([not found])
+])
+]) # SIM_AC_CHECK_FUNC__SPLITPATH
+
+
+# **************************************************************************
+# SIM_AC_CHECK_WIN32_API:
+#
+#   Check if the basic Win32 API is available.
+#
+#   Defines HAVE_WIN32_API, and sets sim_ac_have_win32_api to
+#   either true or false.
+
+AC_DEFUN([SIM_AC_CHECK_WIN32_API], [
+sim_ac_have_win32_api=false
+AC_MSG_CHECKING([if the Win32 API is available])
+AC_COMPILE_IFELSE(
+[AC_LANG_PROGRAM([
+#include <windows.h>
+],
+[
+  /* These need to be as basic as possible. I.e. they should be
+     available on all Windows versions. That means NT 3.1 and later,
+     Win95 and later, WinCE 1.0 and later), their definitions should
+     be available from windows.h, and should be linked in from kernel32.
+
+     The ones below are otherwise rather random picks.
+  */
+  (void)CreateDirectory(NULL, NULL);
+  (void)RemoveDirectory(NULL);
+  SetLastError(0);
+  (void)GetLastError();
+  (void)LocalAlloc(0, 1);
+  (void)LocalFree(NULL);
+  return 0;
+])],
+[sim_ac_have_win32_api=true])
+
+if $sim_ac_have_win32_api; then
+  AC_DEFINE([HAVE_WIN32_API], [1], [Define if the Win32 API is available])
+  AC_MSG_RESULT([yes])
+else
+  AC_MSG_RESULT([no])
+fi
+]) # SIM_AC_CHECK_WIN32_API
+
+
 # Usage:
 #  SIM_AC_DOXYGEN_TOOL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
@@ -9641,37 +9724,23 @@ for sim_ac_math_chk in "" -lm -lmw; do
   if test x"$sim_ac_mathlib_test" = xUNDEFINED; then
     sim_ac_store_libs=$LIBS
     LIBS="$sim_ac_store_libs $sim_ac_math_chk"
-    AC_TRY_LINK([#include <math.h>
-                #include <stdlib.h>
-                #include <stdio.h>],
-                [char s[16];
-                 /*
-                    SGI IRIX MIPSpro compilers may "fold" math
-                    functions with constant arguments already
-                    at compile time.
-                     It is also theoretically possible to do this
-                    for atof(), so to be _absolutely_ sure the
-                    math functions aren't replaced by constants at
-                    compile time, we get the arguments from a guaranteed
-                    non-constant source (stdin).
-                 */
-                fmod(atof(fgets(s,15,stdin)), atof(fgets(s,15,stdin)));
-                pow(atof(fgets(s,15,stdin)), atof(fgets(s,15,stdin)));
-                exp(atof(fgets(s,15,stdin)));
-                sin(atof(fgets(s,15,stdin)))],
-                [sim_ac_mathlib_test=$sim_ac_math_chk])
+    SIM_AC_MATHLIB_READY_IFELSE([sim_ac_mathlib_test=$sim_ac_math_chk])
     LIBS=$sim_ac_store_libs
   fi
 done
 
-AC_MSG_RESULT($sim_ac_mathlib_test)
-
 if test x"$sim_ac_mathlib_test" != xUNDEFINED; then
-  sim_ac_libm=$sim_ac_mathlib_test
-  LIBS="$sim_ac_libm $LIBS"
+  if test x"$sim_ac_mathlib_test" != x""; then
+    sim_ac_libm=$sim_ac_mathlib_test
+    LIBS="$sim_ac_libm $LIBS"
+    AC_MSG_RESULT($sim_ac_mathlib_test)
+  else
+    AC_MSG_RESULT([no explicit linkage necessary])
+  fi
   $1
 else
-  ifelse([$2], , :, [$2])
+  AC_MSG_RESULT([failed!])
+  $2
 fi
 ])# SIM_AC_CHECK_MATHLIB
 
@@ -9683,7 +9752,6 @@ AC_DEFUN([SIM_AC_MATHLIB_READY_IFELSE],
 # It is on purpose that we avoid caching, as this macro could be
 # run twice from the same configure-script: once for the C compiler,
 # once for the C++ compiler.
-AC_MSG_CHECKING(if mathlib linkage is ready)
 
 AC_TRY_LINK(
     [#include <math.h>
@@ -9707,8 +9775,6 @@ AC_TRY_LINK(
     printf("> %g\n",sin(atof(fgets(s,15,stdin))))],
     [sim_ac_mathlib_ready=true],
     [sim_ac_mathlib_ready=false])
-
-AC_MSG_RESULT($sim_ac_mathlib_ready)
 
 if ${sim_ac_mathlib_ready}; then
   ifelse([$1], , :, [$1])

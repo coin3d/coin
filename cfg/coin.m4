@@ -63,9 +63,9 @@ AC_HELP_STRING([--with-coin=DIR], [give prefix location of Coin]),
 if $sim_ac_coin_desired; then
   sim_ac_path=$PATH
   test -z "$sim_ac_coin_extrapath" || ## search in --with-coin path
-    sim_ac_path=$sim_ac_coin_extrapath/bin:$sim_ac_path
+    sim_ac_path="$sim_ac_coin_extrapath/bin${PATH_SEPARATOR}$sim_ac_path"
   test x"$prefix" = xNONE ||          ## search in --prefix path
-    sim_ac_path=$sim_ac_path:$prefix/bin
+    sim_ac_path="$sim_ac_path${PATH_SEPARATOR}$prefix/bin"
 
   AC_PATH_PROG(sim_ac_coin_configcmd, coin-config, false, $sim_ac_path)
 
@@ -110,7 +110,7 @@ if $sim_ac_coin_desired; then
     ])
     sim_ac_coin_avail=$sim_cv_coin_avail
   else
-    locations=`IFS=:; for p in $sim_ac_path; do echo " -> $p/coin-config"; done`
+    locations=`IFS="${PATH_SEPATATOR}"; for p in $sim_ac_path; do echo " -> $p/coin-config"; done`
     AC_MSG_WARN([cannot find 'coin-config' at any of these locations:
 $locations])
   fi

@@ -20416,6 +20416,7 @@ fi
 done
 
 
+
 # At least with MSVC++, these headers needs windows.h to have been included first.
 
 for ac_header in tlhelp32.h
@@ -20434,7 +20435,7 @@ cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
 
-#if HAVE_WINDOWS_H
+#ifdef HAVE_WINDOWS_H
 #include <windows.h>
 #endif
 
@@ -20473,6 +20474,144 @@ fi
 
 done
 
+
+
+echo "$as_me:$LINENO: checking for _splitpath()" >&5
+echo $ECHO_N "checking for _splitpath()... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif
+#include <stdlib.h>
+
+int
+main ()
+{
+
+  char drive100;
+  char dir100;
+  _splitpath(filename, drive, dir, NULL, NULL);
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE__SPLITPATH 1
+_ACEOF
+
+  echo "$as_me:$LINENO: result: found" >&5
+echo "${ECHO_T}found" >&6
+
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+  echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+
+
+
+sim_ac_have_win32_api=false
+echo "$as_me:$LINENO: checking if the Win32 API is available" >&5
+echo $ECHO_N "checking if the Win32 API is available... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#include <windows.h>
+
+int
+main ()
+{
+
+  /* These need to be as basic as possible. I.e. they should be
+     available on all Windows versions. That means NT 3.1 and later,
+     Win95 and later, WinCE 1.0 and later), their definitions should
+     be available from windows.h, and should be linked in from kernel32.
+
+     The ones below are otherwise rather random picks.
+  */
+  (void)CreateDirectory(NULL, NULL);
+  (void)RemoveDirectory(NULL);
+  SetLastError(0);
+  (void)GetLastError();
+  (void)LocalAlloc(0, 1);
+  (void)LocalFree(NULL);
+  return 0;
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_have_win32_api=true
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+
+if $sim_ac_have_win32_api; then
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_WIN32_API 1
+_ACEOF
+
+  echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+
+# Various systems (like MKS NuTCracker) needs explicit gdi32 linkage.
+if $sim_ac_have_win32_api; then
+  LIBS="$LIBS -lgdi32"
+  COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS -lgdi32"
+fi
 
 
 for ac_header in sys/unistd.h
@@ -28361,12 +28500,27 @@ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
+sim_ac_libm=
 
 # It is on purpose that we avoid caching, as this macro could be
 # run twice from the same configure-script: once for the C compiler,
 # once for the C++ compiler.
-echo "$as_me:$LINENO: checking if mathlib linkage is ready" >&5
-echo $ECHO_N "checking if mathlib linkage is ready... $ECHO_C" >&6
+
+echo "$as_me:$LINENO: checking for math functions library" >&5
+echo $ECHO_N "checking for math functions library... $ECHO_C" >&6
+
+sim_ac_mathlib_test=UNDEFINED
+# BeOS and MSWin platforms has implicit math library linking,
+# and ncr-sysv4.3 might use -lmw (according to AC_CHECK_LIBM in
+# libtool.m4).
+for sim_ac_math_chk in "" -lm -lmw; do
+  if test x"$sim_ac_mathlib_test" = xUNDEFINED; then
+    sim_ac_store_libs=$LIBS
+    LIBS="$sim_ac_store_libs $sim_ac_math_chk"
+
+# It is on purpose that we avoid caching, as this macro could be
+# run twice from the same configure-script: once for the C compiler,
+# once for the C++ compiler.
 
 cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
@@ -28422,93 +28576,30 @@ sim_ac_mathlib_ready=false
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 
-echo "$as_me:$LINENO: result: $sim_ac_mathlib_ready" >&5
-echo "${ECHO_T}$sim_ac_mathlib_ready" >&6
-
 if ${sim_ac_mathlib_ready}; then
-  :
-else
-
-  sim_ac_libm=
-
-# It is on purpose that we avoid caching, as this macro could be
-# run twice from the same configure-script: once for the C compiler,
-# once for the C++ compiler.
-
-echo "$as_me:$LINENO: checking for math functions library" >&5
-echo $ECHO_N "checking for math functions library... $ECHO_C" >&6
-
-sim_ac_mathlib_test=UNDEFINED
-# BeOS and MSWin platforms has implicit math library linking,
-# and ncr-sysv4.3 might use -lmw (according to AC_CHECK_LIBM in
-# libtool.m4).
-for sim_ac_math_chk in "" -lm -lmw; do
-  if test x"$sim_ac_mathlib_test" = xUNDEFINED; then
-    sim_ac_store_libs=$LIBS
-    LIBS="$sim_ac_store_libs $sim_ac_math_chk"
-    cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <math.h>
-                #include <stdlib.h>
-                #include <stdio.h>
-int
-main ()
-{
-char s[16];
-                 /*
-                    SGI IRIX MIPSpro compilers may "fold" math
-                    functions with constant arguments already
-                    at compile time.
-                     It is also theoretically possible to do this
-                    for atof(), so to be _absolutely_ sure the
-                    math functions aren't replaced by constants at
-                    compile time, we get the arguments from a guaranteed
-                    non-constant source (stdin).
-                 */
-                fmod(atof(fgets(s,15,stdin)), atof(fgets(s,15,stdin)));
-                pow(atof(fgets(s,15,stdin)), atof(fgets(s,15,stdin)));
-                exp(atof(fgets(s,15,stdin)));
-                sin(atof(fgets(s,15,stdin)))
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
   sim_ac_mathlib_test=$sim_ac_math_chk
 else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
+  :
 fi
-rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+
     LIBS=$sim_ac_store_libs
   fi
 done
 
-echo "$as_me:$LINENO: result: $sim_ac_mathlib_test" >&5
-echo "${ECHO_T}$sim_ac_mathlib_test" >&6
-
 if test x"$sim_ac_mathlib_test" != xUNDEFINED; then
-  sim_ac_libm=$sim_ac_mathlib_test
-  LIBS="$sim_ac_libm $LIBS"
+  if test x"$sim_ac_mathlib_test" != x""; then
+    sim_ac_libm=$sim_ac_mathlib_test
+    LIBS="$sim_ac_libm $LIBS"
+    echo "$as_me:$LINENO: result: $sim_ac_mathlib_test" >&5
+echo "${ECHO_T}$sim_ac_mathlib_test" >&6
+  else
+    echo "$as_me:$LINENO: result: no explicit linkage necessary" >&5
+echo "${ECHO_T}no explicit linkage necessary" >&6
+  fi
   COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_libm"
 else
+  echo "$as_me:$LINENO: result: failed!" >&5
+echo "${ECHO_T}failed!" >&6
 
 echo >&2 ""
 
@@ -28538,8 +28629,6 @@ echo "$as_me: error: aborting" >&2;}
 
 fi
 
-fi
-
 ac_ext=cc
 ac_cpp='$CXXCPP $CPPFLAGS'
 ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
@@ -28557,8 +28646,6 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 # It is on purpose that we avoid caching, as this macro could be
 # run twice from the same configure-script: once for the C compiler,
 # once for the C++ compiler.
-echo "$as_me:$LINENO: checking if mathlib linkage is ready" >&5
-echo $ECHO_N "checking if mathlib linkage is ready... $ECHO_C" >&6
 
 cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
@@ -28614,9 +28701,6 @@ sim_ac_mathlib_ready=false
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 
-echo "$as_me:$LINENO: result: $sim_ac_mathlib_ready" >&5
-echo "${ECHO_T}$sim_ac_mathlib_ready" >&6
-
 if ${sim_ac_mathlib_ready}; then
   :
 else
@@ -28638,7 +28722,12 @@ for sim_ac_math_chk in "" -lm -lmw; do
   if test x"$sim_ac_mathlib_test" = xUNDEFINED; then
     sim_ac_store_libs=$LIBS
     LIBS="$sim_ac_store_libs $sim_ac_math_chk"
-    cat >conftest.$ac_ext <<_ACEOF
+
+# It is on purpose that we avoid caching, as this macro could be
+# run twice from the same configure-script: once for the C compiler,
+# once for the C++ compiler.
+
+cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 /* confdefs.h.  */
 _ACEOF
@@ -28646,26 +28735,27 @@ cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
 #include <math.h>
-                #include <stdlib.h>
-                #include <stdio.h>
+    #include <stdlib.h>
+    #include <stdio.h>
 int
 main ()
 {
 char s[16];
-                 /*
-                    SGI IRIX MIPSpro compilers may "fold" math
-                    functions with constant arguments already
-                    at compile time.
-                     It is also theoretically possible to do this
-                    for atof(), so to be _absolutely_ sure the
-                    math functions aren't replaced by constants at
-                    compile time, we get the arguments from a guaranteed
-                    non-constant source (stdin).
-                 */
-                fmod(atof(fgets(s,15,stdin)), atof(fgets(s,15,stdin)));
-                pow(atof(fgets(s,15,stdin)), atof(fgets(s,15,stdin)));
-                exp(atof(fgets(s,15,stdin)));
-                sin(atof(fgets(s,15,stdin)))
+    /*
+    SGI IRIX MIPSpro compilers may "fold" math
+    functions with constant arguments already
+    at compile time.
+
+    It is also theoretically possible to do this
+    for atof(), so to be _absolutely_ sure the
+    math functions aren't replaced by constants at
+    compile time, we get the arguments from a guaranteed
+    non-constant source (stdin).
+    */
+    printf("> %g\n",fmod(atof(fgets(s,15,stdin)), atof(fgets(s,15,stdin))));
+    printf("> %g\n",pow(atof(fgets(s,15,stdin)), atof(fgets(s,15,stdin))));
+    printf("> %g\n",exp(atof(fgets(s,15,stdin))));
+    printf("> %g\n",sin(atof(fgets(s,15,stdin))))
   ;
   return 0;
 }
@@ -28682,25 +28772,39 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  sim_ac_mathlib_test=$sim_ac_math_chk
+  sim_ac_mathlib_ready=true
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
+sim_ac_mathlib_ready=false
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+
+if ${sim_ac_mathlib_ready}; then
+  sim_ac_mathlib_test=$sim_ac_math_chk
+else
+  :
+fi
+
     LIBS=$sim_ac_store_libs
   fi
 done
 
-echo "$as_me:$LINENO: result: $sim_ac_mathlib_test" >&5
-echo "${ECHO_T}$sim_ac_mathlib_test" >&6
-
 if test x"$sim_ac_mathlib_test" != xUNDEFINED; then
-  sim_ac_libm=$sim_ac_mathlib_test
-  LIBS="$sim_ac_libm $LIBS"
+  if test x"$sim_ac_mathlib_test" != x""; then
+    sim_ac_libm=$sim_ac_mathlib_test
+    LIBS="$sim_ac_libm $LIBS"
+    echo "$as_me:$LINENO: result: $sim_ac_mathlib_test" >&5
+echo "${ECHO_T}$sim_ac_mathlib_test" >&6
+  else
+    echo "$as_me:$LINENO: result: no explicit linkage necessary" >&5
+echo "${ECHO_T}no explicit linkage necessary" >&6
+  fi
   COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_libm"
 else
+  echo "$as_me:$LINENO: result: failed!" >&5
+echo "${ECHO_T}failed!" >&6
 
 echo >&2 ""
 
@@ -32791,7 +32895,7 @@ fi
 
   # -DHAVE_CONFIG_H is set up in $DEFS too late for us to use, and some
   # include directives are usually set up in the Makefile.am files
-  for arg in -DHAVE_CONFIG_H -I$coin_build_dir -I$coin_build_dir/include -I$coin_src_dir/include $CPPFLAGS $LDFLAGS $LIBS; do
+  for arg in -DHAVE_CONFIG_H -I$coin_build_dir -I$coin_build_dir/include -I$coin_src_dir/include -I$coin_src_dir/include/Inventor/annex $CPPFLAGS $LDFLAGS $LIBS; do
     case $arg in
     -L* )
       libdir=`echo $arg | cut -c3-`
