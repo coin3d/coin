@@ -20,6 +20,10 @@
 #ifndef COIN_SBTIME_H
 #define COIN_SBTIME_H
 
+// FIXME: the following system testing and conditional header file
+// inclusion is a mess. Sort it out properly (with configure checks,
+// probably). 20011019 mortene.
+
 // Usually you get all you need from time.h
 #include <time.h>
 #ifdef _WIN32
@@ -50,7 +54,7 @@ public:
 
   // "max" is a #define somewhere in the Win32 include hierarchy mess.
   // Believe it or not. Is there no end to the stupidity?
-#ifndef _WIN32
+#ifndef _WIN32 // FIXME: #ifdef'ing on system is bad design. 20011019 mortene.
   static SbTime max(void);
 #endif // _WIN32
 
@@ -64,7 +68,7 @@ public:
   void getValue(struct timeval * tv) const;
   unsigned long getMsecValue(void) const;
   SbString format(const char * const fmt = "%S.%i") const;
-#ifndef _WIN32
+#ifndef _WIN32 // FIXME: #ifdef'ing on system is bad design. 20011019 mortene.
   SbString formatDate(const char * const fmt = "%A, %D %r") const;
 #else // _WIN32
   SbString formatDate(const char * const fmt = "%#c") const;
