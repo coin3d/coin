@@ -5066,6 +5066,17 @@ includedir="`eval echo $includedir`"
 libdir="`eval echo $libdir`"
 
 
+coin_current_dir=`pwd`
+
+eval "coin_build_dir=\"`echo $coin_current_dir | sed -e 's%\\/%\\\\%g'`\""
+
+
+
+
+eval "coin_src_dir=\"`echo $srcdir | sed -e 's%\\/%\\\\%g'`\""
+
+
+
 trap '' 1 2 15
 cat >confcache <<\EOF
 # This file is a shell script that caches the results of configure
@@ -5161,7 +5172,7 @@ config_files="\\
     tools/ivcat/Makefile tools/ivhierarchy/Makefile
     tools/ivNodeKitStructure/Makefile tools/renderos/Makefile
     examples/Makefile examples/advanced/Makefile
-    examples/advanced/elements/Makefile"
+    examples/advanced/elements/Makefile build/coin.dsp build/coin.mak"
 config_headers="\\
     config.h include/Inventor/SbBasic.h"
 
@@ -5241,6 +5252,8 @@ do
   'examples/Makefile' ) CONFIG_FILES="\$CONFIG_FILES examples/Makefile" ;;
   'examples/advanced/Makefile' ) CONFIG_FILES="\$CONFIG_FILES examples/advanced/Makefile" ;;
   'examples/advanced/elements/Makefile' ) CONFIG_FILES="\$CONFIG_FILES examples/advanced/elements/Makefile" ;;
+  'build/coin.dsp' ) CONFIG_FILES="\$CONFIG_FILES build/coin.dsp" ;;
+  'build/coin.mak' ) CONFIG_FILES="\$CONFIG_FILES build/coin.mak" ;;
   'config.h' ) CONFIG_HEADERS="\$CONFIG_HEADERS config.h" ;;
   'include/Inventor/SbBasic.h' ) CONFIG_HEADERS="\$CONFIG_HEADERS include/Inventor/SbBasic.h" ;;
   # This is an error.
@@ -5366,6 +5379,8 @@ s%@BUILD_TOOLS_TRUE@%$BUILD_TOOLS_TRUE%;t t
 s%@BUILD_TOOLS_FALSE@%$BUILD_TOOLS_FALSE%;t t
 s%@BUILD_EXAMPLES_TRUE@%$BUILD_EXAMPLES_TRUE%;t t
 s%@BUILD_EXAMPLES_FALSE@%$BUILD_EXAMPLES_FALSE%;t t
+s%@coin_build_dir@%$coin_build_dir%;t t
+s%@coin_src_dir@%$coin_src_dir%;t t
 CEOF
 
 EOF
@@ -5641,14 +5656,16 @@ for mf in $CONFIG_FILES; do
   grep '^DEP_FILES *= *[^ #]' < "$mf" > /dev/null || continue
   # Extract the definition of DEP_FILES from the Makefile without
   # running `make'.
-  DEPDIR=`sed -n -e '/^DEPDIR = / s///p' < "$mf"`
+  DEPDIR=`tr -d "
+" < "$mf" | sed -n -e '/^DEPDIR = / s///p'`
   test -z "$DEPDIR" && continue
   # When using ansi2knr, U may be empty or an underscore; expand it
   U=`sed -n -e '/^U = / s///p' < "$mf"`
   test -d "$dirpart/$DEPDIR" || mkdir "$dirpart/$DEPDIR"
   # We invoke sed twice because it is the simplest approach to
   # changing $(DEPDIR) to its actual value in the expansion.
-  for file in `sed -n -e '
+  for file in `tr -d "
+" < "$mf" | sed -n -e '
     /^DEP_FILES = .*\\\\$/ {
       s/^DEP_FILES = //
       :loop
@@ -5658,7 +5675,7 @@ for mf in $CONFIG_FILES; do
 	/\\\\$/ b loop
       p
     }
-    /^DEP_FILES = / s/^DEP_FILES = //p' < "$mf" | \
+    /^DEP_FILES = / s/^DEP_FILES = //p' | \
        sed -e 's/\$(DEPDIR)/'"$DEPDIR"'/g' -e 's/\$U/'"$U"'/g'`; do
     # Make sure the directory exists.
     test -f "$dirpart/$file" && continue
@@ -5689,7 +5706,8 @@ trap 'exit 1' 1 2 15
 test "$no_create" = yes || $SHELL $CONFIG_STATUS || exit 1
 
 
-
+# echo "" | tr -d "
+"
 
 
 ac_coin_unknown_platform=yes
@@ -5754,6 +5772,17 @@ case "$host_os" in
     echo ;;
 esac
 
+if test x"$sim_ac_linking_style" = xmswin; then
+    echo ""
+    echo " Detected MSVC++. There are some hints regarding this compiler"
+    echo " in the file "
+    echo ""
+    echo "           ${srcdir}/README.MSVC"
+    echo ""
+    echo " Please take a look if this is your first time building with"
+    echo " MSVC++."
+    echo
+fi
 
 
 echo

@@ -1,0 +1,4970 @@
+# Microsoft Developer Studio Generated NMAKE File, Based on coin.dsp
+!IF "$(CFG)" == ""
+CFG=coin - Win32 Debug
+!MESSAGE No configuration specified. Defaulting to coin - Win32 Debug.
+!ENDIF 
+
+!IF "$(CFG)" != "coin - Win32 Release" && "$(CFG)" != "coin - Win32 Debug"
+!MESSAGE Invalid configuration "$(CFG)" specified.
+!MESSAGE You can specify a configuration when running NMAKE
+!MESSAGE by defining the macro CFG on the command line. For example:
+!MESSAGE 
+!MESSAGE NMAKE /f "coin.mak" CFG="coin - Win32 Debug"
+!MESSAGE 
+!MESSAGE Possible choices for configuration are:
+!MESSAGE 
+!MESSAGE "coin - Win32 Release" (based on "Win32 (x86) Static Library")
+!MESSAGE "coin - Win32 Debug" (based on "Win32 (x86) Static Library")
+!MESSAGE 
+!ERROR An invalid configuration is specified.
+!ENDIF 
+
+!IF "$(OS)" == "Windows_NT"
+NULL=
+!ELSE 
+NULL=nul
+!ENDIF 
+
+!IF  "$(CFG)" == "coin - Win32 Release"
+
+OUTDIR=C:\@libdir@
+INTDIR=.\Release
+# Begin Custom Macros
+OutDir=C:\@libdir@
+# End Custom Macros
+
+ALL : "$(OUTDIR)\coin.lib"
+
+
+CLEAN :
+	-@erase "$(INTDIR)\commoncode.obj"
+	-@erase "$(INTDIR)\default2dfont.obj"
+	-@erase "$(INTDIR)\default3dfont.obj"
+	-@erase "$(INTDIR)\evaluator.obj"
+	-@erase "$(INTDIR)\evaluator.tab.obj"
+	-@erase "$(INTDIR)\SbBox2f.obj"
+	-@erase "$(INTDIR)\SbBox2s.obj"
+	-@erase "$(INTDIR)\SbBox3f.obj"
+	-@erase "$(INTDIR)\SbBSPTree.obj"
+	-@erase "$(INTDIR)\SbColor.obj"
+	-@erase "$(INTDIR)\SbColor4f.obj"
+	-@erase "$(INTDIR)\SbCylinder.obj"
+	-@erase "$(INTDIR)\SbCylinderPlaneProjector.obj"
+	-@erase "$(INTDIR)\SbCylinderProjector.obj"
+	-@erase "$(INTDIR)\SbCylinderSectionProjector.obj"
+	-@erase "$(INTDIR)\SbCylinderSheetProjector.obj"
+	-@erase "$(INTDIR)\SbDict.obj"
+	-@erase "$(INTDIR)\SbHeap.obj"
+	-@erase "$(INTDIR)\SbIntList.obj"
+	-@erase "$(INTDIR)\SbLine.obj"
+	-@erase "$(INTDIR)\SbLineProjector.obj"
+	-@erase "$(INTDIR)\SbList.obj"
+	-@erase "$(INTDIR)\SbMatrix.obj"
+	-@erase "$(INTDIR)\SbName.obj"
+	-@erase "$(INTDIR)\SbOctTree.obj"
+	-@erase "$(INTDIR)\SbPlane.obj"
+	-@erase "$(INTDIR)\SbPlaneProjector.obj"
+	-@erase "$(INTDIR)\SbPList.obj"
+	-@erase "$(INTDIR)\SbProjector.obj"
+	-@erase "$(INTDIR)\SbRotation.obj"
+	-@erase "$(INTDIR)\SbSphere.obj"
+	-@erase "$(INTDIR)\SbSpherePlaneProjector.obj"
+	-@erase "$(INTDIR)\SbSphereProjector.obj"
+	-@erase "$(INTDIR)\SbSphereSectionProjector.obj"
+	-@erase "$(INTDIR)\SbSphereSheetProjector.obj"
+	-@erase "$(INTDIR)\SbString.obj"
+	-@erase "$(INTDIR)\SbStringList.obj"
+	-@erase "$(INTDIR)\SbTesselator.obj"
+	-@erase "$(INTDIR)\SbTime.obj"
+	-@erase "$(INTDIR)\SbVec2f.obj"
+	-@erase "$(INTDIR)\SbVec2s.obj"
+	-@erase "$(INTDIR)\SbVec3f.obj"
+	-@erase "$(INTDIR)\SbVec3fList.obj"
+	-@erase "$(INTDIR)\SbVec4f.obj"
+	-@erase "$(INTDIR)\SbViewportRegion.obj"
+	-@erase "$(INTDIR)\SbViewVolume.obj"
+	-@erase "$(INTDIR)\SbXfBox3f.obj"
+	-@erase "$(INTDIR)\snprintf.obj"
+	-@erase "$(INTDIR)\SoAccumulatedElement.obj"
+	-@erase "$(INTDIR)\SoAction.obj"
+	-@erase "$(INTDIR)\SoActionMethodList.obj"
+	-@erase "$(INTDIR)\SoAlarmSensor.obj"
+	-@erase "$(INTDIR)\SoAmbientColorElement.obj"
+	-@erase "$(INTDIR)\SoAnnotation.obj"
+	-@erase "$(INTDIR)\SoAnnoText3.obj"
+	-@erase "$(INTDIR)\SoAnnoText3CharOrientElement.obj"
+	-@erase "$(INTDIR)\SoAnnoText3FontSizeHintElement.obj"
+	-@erase "$(INTDIR)\SoAnnoText3Property.obj"
+	-@erase "$(INTDIR)\SoAnnoText3RenderPrintElement.obj"
+	-@erase "$(INTDIR)\SoAntiSquish.obj"
+	-@erase "$(INTDIR)\SoAppearanceKit.obj"
+	-@erase "$(INTDIR)\SoArray.obj"
+	-@erase "$(INTDIR)\SoAsciiText.obj"
+	-@erase "$(INTDIR)\SoAuditorList.obj"
+	-@erase "$(INTDIR)\SoBase.obj"
+	-@erase "$(INTDIR)\SoBaseColor.obj"
+	-@erase "$(INTDIR)\SoBaseKit.obj"
+	-@erase "$(INTDIR)\SoBaseList.obj"
+	-@erase "$(INTDIR)\SoBBoxModelMatrixElement.obj"
+	-@erase "$(INTDIR)\SoBlinker.obj"
+	-@erase "$(INTDIR)\SoBoolOperation.obj"
+	-@erase "$(INTDIR)\SoBoundingBoxCache.obj"
+	-@erase "$(INTDIR)\SoBoxHighlightRenderAction.obj"
+	-@erase "$(INTDIR)\SoBundle.obj"
+	-@erase "$(INTDIR)\SoButtonEvent.obj"
+	-@erase "$(INTDIR)\SoCache.obj"
+	-@erase "$(INTDIR)\SoCacheElement.obj"
+	-@erase "$(INTDIR)\SoCalculator.obj"
+	-@erase "$(INTDIR)\SoCallback.obj"
+	-@erase "$(INTDIR)\SoCallbackAction.obj"
+	-@erase "$(INTDIR)\SoCallbackList.obj"
+	-@erase "$(INTDIR)\SoCamera.obj"
+	-@erase "$(INTDIR)\SoCameraKit.obj"
+	-@erase "$(INTDIR)\SoCenterballDragger.obj"
+	-@erase "$(INTDIR)\SoCenterballManip.obj"
+	-@erase "$(INTDIR)\SoChildList.obj"
+	-@erase "$(INTDIR)\SoClipPlane.obj"
+	-@erase "$(INTDIR)\SoClipPlaneElement.obj"
+	-@erase "$(INTDIR)\SoClipPlaneManip.obj"
+	-@erase "$(INTDIR)\SoColorIndex.obj"
+	-@erase "$(INTDIR)\SoComplexity.obj"
+	-@erase "$(INTDIR)\SoComplexityElement.obj"
+	-@erase "$(INTDIR)\SoComplexityTypeElement.obj"
+	-@erase "$(INTDIR)\SoComposeMatrix.obj"
+	-@erase "$(INTDIR)\SoComposeRotation.obj"
+	-@erase "$(INTDIR)\SoComposeRotationFromTo.obj"
+	-@erase "$(INTDIR)\SoComposeVec2f.obj"
+	-@erase "$(INTDIR)\SoComposeVec3f.obj"
+	-@erase "$(INTDIR)\SoComposeVec4f.obj"
+	-@erase "$(INTDIR)\SoComputeBoundingBox.obj"
+	-@erase "$(INTDIR)\SoConcatenate.obj"
+	-@erase "$(INTDIR)\SoCone.obj"
+	-@erase "$(INTDIR)\SoConeDetail.obj"
+	-@erase "$(INTDIR)\SoConvertAll.obj"
+	-@erase "$(INTDIR)\SoConvexDataCache.obj"
+	-@erase "$(INTDIR)\SoCoordinate3.obj"
+	-@erase "$(INTDIR)\SoCoordinate4.obj"
+	-@erase "$(INTDIR)\SoCoordinateElement.obj"
+	-@erase "$(INTDIR)\SoCounter.obj"
+	-@erase "$(INTDIR)\SoCreaseAngleElement.obj"
+	-@erase "$(INTDIR)\SoCube.obj"
+	-@erase "$(INTDIR)\SoCubeDetail.obj"
+	-@erase "$(INTDIR)\SoCullElement.obj"
+	-@erase "$(INTDIR)\SoCylinder.obj"
+	-@erase "$(INTDIR)\SoCylinderDetail.obj"
+	-@erase "$(INTDIR)\SoDataSensor.obj"
+	-@erase "$(INTDIR)\SoDB.obj"
+	-@erase "$(INTDIR)\SoDebugError.obj"
+	-@erase "$(INTDIR)\SoDecimationPercentageElement.obj"
+	-@erase "$(INTDIR)\SoDecimationTypeElement.obj"
+	-@erase "$(INTDIR)\SoDecomposeMatrix.obj"
+	-@erase "$(INTDIR)\SoDecomposeRotation.obj"
+	-@erase "$(INTDIR)\SoDecomposeVec2f.obj"
+	-@erase "$(INTDIR)\SoDecomposeVec3f.obj"
+	-@erase "$(INTDIR)\SoDecomposeVec4f.obj"
+	-@erase "$(INTDIR)\SoDelayQueueSensor.obj"
+	-@erase "$(INTDIR)\SoDetail.obj"
+	-@erase "$(INTDIR)\SoDetailList.obj"
+	-@erase "$(INTDIR)\SoDiffuseColorElement.obj"
+	-@erase "$(INTDIR)\SoDirectionalLight.obj"
+	-@erase "$(INTDIR)\SoDirectionalLightDragger.obj"
+	-@erase "$(INTDIR)\SoDirectionalLightManip.obj"
+	-@erase "$(INTDIR)\SoDragger.obj"
+	-@erase "$(INTDIR)\SoDragPointDragger.obj"
+	-@erase "$(INTDIR)\SoDrawStyle.obj"
+	-@erase "$(INTDIR)\SoDrawStyleElement.obj"
+	-@erase "$(INTDIR)\SoElapsedTime.obj"
+	-@erase "$(INTDIR)\SoElement.obj"
+	-@erase "$(INTDIR)\SoEmissiveColorElement.obj"
+	-@erase "$(INTDIR)\SoEnabledElementsList.obj"
+	-@erase "$(INTDIR)\SoEngine.obj"
+	-@erase "$(INTDIR)\SoEngineList.obj"
+	-@erase "$(INTDIR)\SoEngineOutput.obj"
+	-@erase "$(INTDIR)\SoEngineOutputList.obj"
+	-@erase "$(INTDIR)\SoEnvironment.obj"
+	-@erase "$(INTDIR)\SoEnvironmentElement.obj"
+	-@erase "$(INTDIR)\SoError.obj"
+	-@erase "$(INTDIR)\SoEvent.obj"
+	-@erase "$(INTDIR)\SoEventCallback.obj"
+	-@erase "$(INTDIR)\SoExtSelection.obj"
+	-@erase "$(INTDIR)\SoFaceDetail.obj"
+	-@erase "$(INTDIR)\SoFaceSet.obj"
+	-@erase "$(INTDIR)\SoField.obj"
+	-@erase "$(INTDIR)\SoFieldContainer.obj"
+	-@erase "$(INTDIR)\SoFieldConverter.obj"
+	-@erase "$(INTDIR)\SoFieldData.obj"
+	-@erase "$(INTDIR)\SoFieldList.obj"
+	-@erase "$(INTDIR)\SoFieldSensor.obj"
+	-@erase "$(INTDIR)\SoFile.obj"
+	-@erase "$(INTDIR)\SoFloatElement.obj"
+	-@erase "$(INTDIR)\SoFocalDistanceElement.obj"
+	-@erase "$(INTDIR)\SoFont.obj"
+	-@erase "$(INTDIR)\SoFontNameElement.obj"
+	-@erase "$(INTDIR)\SoFontSizeElement.obj"
+	-@erase "$(INTDIR)\SoFontStyle.obj"
+	-@erase "$(INTDIR)\SoFullPath.obj"
+	-@erase "$(INTDIR)\SoGate.obj"
+	-@erase "$(INTDIR)\SoGenerate.obj"
+	-@erase "$(INTDIR)\SoGetBoundingBoxAction.obj"
+	-@erase "$(INTDIR)\SoGetMatrixAction.obj"
+	-@erase "$(INTDIR)\SoGetPrimitiveCountAction.obj"
+	-@erase "$(INTDIR)\SoGL.obj"
+	-@erase "$(INTDIR)\SoGLAmbientColorElement.obj"
+	-@erase "$(INTDIR)\SoGLClipPlaneElement.obj"
+	-@erase "$(INTDIR)\SoGLCoordinateElement.obj"
+	-@erase "$(INTDIR)\SoGLDiffuseColorElement.obj"
+	-@erase "$(INTDIR)\SoGLDrawStyleElement.obj"
+	-@erase "$(INTDIR)\SoGLEmissiveColorElement.obj"
+	-@erase "$(INTDIR)\SoGLEnvironmentElement.obj"
+	-@erase "$(INTDIR)\SoGLImage.obj"
+	-@erase "$(INTDIR)\SoGLLazyElement.obj"
+	-@erase "$(INTDIR)\SoGLLightIdElement.obj"
+	-@erase "$(INTDIR)\SoGLLightModelElement.obj"
+	-@erase "$(INTDIR)\SoGLLinePatternElement.obj"
+	-@erase "$(INTDIR)\SoGLLineWidthElement.obj"
+	-@erase "$(INTDIR)\SoGLModelMatrixElement.obj"
+	-@erase "$(INTDIR)\SoGLNormalElement.obj"
+	-@erase "$(INTDIR)\SoGLNormalizeElement.obj"
+	-@erase "$(INTDIR)\SoGlobalField.obj"
+	-@erase "$(INTDIR)\SoGlobalSimplifyAction.obj"
+	-@erase "$(INTDIR)\SoGLPointSizeElement.obj"
+	-@erase "$(INTDIR)\SoGLPolygonOffsetElement.obj"
+	-@erase "$(INTDIR)\SoGLPolygonStippleElement.obj"
+	-@erase "$(INTDIR)\SoGLProjectionMatrixElement.obj"
+	-@erase "$(INTDIR)\SoGLRenderAction.obj"
+	-@erase "$(INTDIR)\SoGLRenderPassElement.obj"
+	-@erase "$(INTDIR)\SoGLShadeModelElement.obj"
+	-@erase "$(INTDIR)\SoGLShapeHintsElement.obj"
+	-@erase "$(INTDIR)\SoGLShininessElement.obj"
+	-@erase "$(INTDIR)\SoGLSpecularColorElement.obj"
+	-@erase "$(INTDIR)\SoGLTextureCoordinateElement.obj"
+	-@erase "$(INTDIR)\SoGLTextureEnabledElement.obj"
+	-@erase "$(INTDIR)\SoGLTextureImageElement.obj"
+	-@erase "$(INTDIR)\SoGLTextureMatrixElement.obj"
+	-@erase "$(INTDIR)\SoGLUpdateAreaElement.obj"
+	-@erase "$(INTDIR)\SoGLViewingMatrixElement.obj"
+	-@erase "$(INTDIR)\SoGLViewportRegionElement.obj"
+	-@erase "$(INTDIR)\SoGlyph.obj"
+	-@erase "$(INTDIR)\SoGroup.obj"
+	-@erase "$(INTDIR)\SoHandleBoxDragger.obj"
+	-@erase "$(INTDIR)\SoHandleBoxManip.obj"
+	-@erase "$(INTDIR)\SoHandleEventAction.obj"
+	-@erase "$(INTDIR)\SoIdleSensor.obj"
+	-@erase "$(INTDIR)\SoImage.obj"
+	-@erase "$(INTDIR)\SoImageInterface.obj"
+	-@erase "$(INTDIR)\SoIndexedFaceSet.obj"
+	-@erase "$(INTDIR)\SoIndexedLineSet.obj"
+	-@erase "$(INTDIR)\SoIndexedNurbsCurve.obj"
+	-@erase "$(INTDIR)\SoIndexedNurbsSurface.obj"
+	-@erase "$(INTDIR)\SoIndexedShape.obj"
+	-@erase "$(INTDIR)\SoIndexedTriangleStripSet.obj"
+	-@erase "$(INTDIR)\SoInfo.obj"
+	-@erase "$(INTDIR)\SoInput.obj"
+	-@erase "$(INTDIR)\SoInt32Element.obj"
+	-@erase "$(INTDIR)\SoInteraction.obj"
+	-@erase "$(INTDIR)\SoInteractionKit.obj"
+	-@erase "$(INTDIR)\SoInterpolate.obj"
+	-@erase "$(INTDIR)\SoInterpolateFloat.obj"
+	-@erase "$(INTDIR)\SoInterpolateRotation.obj"
+	-@erase "$(INTDIR)\SoInterpolateVec2f.obj"
+	-@erase "$(INTDIR)\SoInterpolateVec3f.obj"
+	-@erase "$(INTDIR)\SoInterpolateVec4f.obj"
+	-@erase "$(INTDIR)\SoJackDragger.obj"
+	-@erase "$(INTDIR)\SoJackManip.obj"
+	-@erase "$(INTDIR)\SoKeyboardEvent.obj"
+	-@erase "$(INTDIR)\SoLabel.obj"
+	-@erase "$(INTDIR)\SoLazyElement.obj"
+	-@erase "$(INTDIR)\SoLevelOfDetail.obj"
+	-@erase "$(INTDIR)\SoLevelOfSimplification.obj"
+	-@erase "$(INTDIR)\SoLight.obj"
+	-@erase "$(INTDIR)\SoLightAttenuationElement.obj"
+	-@erase "$(INTDIR)\SoLightElement.obj"
+	-@erase "$(INTDIR)\SoLightKit.obj"
+	-@erase "$(INTDIR)\SoLightModel.obj"
+	-@erase "$(INTDIR)\SoLightModelElement.obj"
+	-@erase "$(INTDIR)\SoLightPath.obj"
+	-@erase "$(INTDIR)\SoLinearProfile.obj"
+	-@erase "$(INTDIR)\SoLineDetail.obj"
+	-@erase "$(INTDIR)\SoLineHighlightRenderAction.obj"
+	-@erase "$(INTDIR)\SoLinePatternElement.obj"
+	-@erase "$(INTDIR)\SoLineSet.obj"
+	-@erase "$(INTDIR)\SoLineWidthElement.obj"
+	-@erase "$(INTDIR)\SoLocalBBoxMatrixElement.obj"
+	-@erase "$(INTDIR)\SoLocateHighlight.obj"
+	-@erase "$(INTDIR)\SoLocation2Event.obj"
+	-@erase "$(INTDIR)\SoLockManager.obj"
+	-@erase "$(INTDIR)\SoLOD.obj"
+	-@erase "$(INTDIR)\SoMarkerSet.obj"
+	-@erase "$(INTDIR)\SoMaterial.obj"
+	-@erase "$(INTDIR)\SoMaterialBinding.obj"
+	-@erase "$(INTDIR)\SoMaterialBindingElement.obj"
+	-@erase "$(INTDIR)\SoMaterialBundle.obj"
+	-@erase "$(INTDIR)\SoMatrixTransform.obj"
+	-@erase "$(INTDIR)\SoMemoryError.obj"
+	-@erase "$(INTDIR)\SoMFBitMask.obj"
+	-@erase "$(INTDIR)\SoMFBool.obj"
+	-@erase "$(INTDIR)\SoMFColor.obj"
+	-@erase "$(INTDIR)\SoMFEngine.obj"
+	-@erase "$(INTDIR)\SoMFEnum.obj"
+	-@erase "$(INTDIR)\SoMFFloat.obj"
+	-@erase "$(INTDIR)\SoMField.obj"
+	-@erase "$(INTDIR)\SoMFInt32.obj"
+	-@erase "$(INTDIR)\SoMFMatrix.obj"
+	-@erase "$(INTDIR)\SoMFName.obj"
+	-@erase "$(INTDIR)\SoMFNode.obj"
+	-@erase "$(INTDIR)\SoMFPath.obj"
+	-@erase "$(INTDIR)\SoMFPlane.obj"
+	-@erase "$(INTDIR)\SoMFRotation.obj"
+	-@erase "$(INTDIR)\SoMFShort.obj"
+	-@erase "$(INTDIR)\SoMFString.obj"
+	-@erase "$(INTDIR)\SoMFTime.obj"
+	-@erase "$(INTDIR)\SoMFUInt32.obj"
+	-@erase "$(INTDIR)\SoMFUShort.obj"
+	-@erase "$(INTDIR)\SoMFVec2f.obj"
+	-@erase "$(INTDIR)\SoMFVec3f.obj"
+	-@erase "$(INTDIR)\SoMFVec4f.obj"
+	-@erase "$(INTDIR)\SoModelMatrixElement.obj"
+	-@erase "$(INTDIR)\SoMotion3Event.obj"
+	-@erase "$(INTDIR)\SoMouseButtonEvent.obj"
+	-@erase "$(INTDIR)\SoMultipleCopy.obj"
+	-@erase "$(INTDIR)\SoNode.obj"
+	-@erase "$(INTDIR)\SoNodeKit.obj"
+	-@erase "$(INTDIR)\SoNodekitCatalog.obj"
+	-@erase "$(INTDIR)\SoNodeKitDetail.obj"
+	-@erase "$(INTDIR)\SoNodeKitListPart.obj"
+	-@erase "$(INTDIR)\SoNodeKitPath.obj"
+	-@erase "$(INTDIR)\SoNodeList.obj"
+	-@erase "$(INTDIR)\SoNodeSensor.obj"
+	-@erase "$(INTDIR)\SoNonIndexedShape.obj"
+	-@erase "$(INTDIR)\SoNormal.obj"
+	-@erase "$(INTDIR)\SoNormalBinding.obj"
+	-@erase "$(INTDIR)\SoNormalBindingElement.obj"
+	-@erase "$(INTDIR)\SoNormalCache.obj"
+	-@erase "$(INTDIR)\SoNormalElement.obj"
+	-@erase "$(INTDIR)\SoNormalGenerator.obj"
+	-@erase "$(INTDIR)\SoNotification.obj"
+	-@erase "$(INTDIR)\SoNurbsCurve.obj"
+	-@erase "$(INTDIR)\SoNurbsProfile.obj"
+	-@erase "$(INTDIR)\SoNurbsSurface.obj"
+	-@erase "$(INTDIR)\SoOffscreenRenderer.obj"
+	-@erase "$(INTDIR)\SoOneShot.obj"
+	-@erase "$(INTDIR)\SoOneShotSensor.obj"
+	-@erase "$(INTDIR)\SoOnOff.obj"
+	-@erase "$(INTDIR)\SoOrthographicCamera.obj"
+	-@erase "$(INTDIR)\SoOutput.obj"
+	-@erase "$(INTDIR)\SoOutputData.obj"
+	-@erase "$(INTDIR)\SoOverrideElement.obj"
+	-@erase "$(INTDIR)\SoPackedColor.obj"
+	-@erase "$(INTDIR)\SoPath.obj"
+	-@erase "$(INTDIR)\SoPathList.obj"
+	-@erase "$(INTDIR)\SoPathSensor.obj"
+	-@erase "$(INTDIR)\SoPathSwitch.obj"
+	-@erase "$(INTDIR)\SoPendulum.obj"
+	-@erase "$(INTDIR)\SoPerspectiveCamera.obj"
+	-@erase "$(INTDIR)\SoPickAction.obj"
+	-@erase "$(INTDIR)\SoPickedPoint.obj"
+	-@erase "$(INTDIR)\SoPickedPointList.obj"
+	-@erase "$(INTDIR)\SoPickRayElement.obj"
+	-@erase "$(INTDIR)\SoPickStyle.obj"
+	-@erase "$(INTDIR)\SoPickStyleElement.obj"
+	-@erase "$(INTDIR)\SoPointDetail.obj"
+	-@erase "$(INTDIR)\SoPointLight.obj"
+	-@erase "$(INTDIR)\SoPointLightDragger.obj"
+	-@erase "$(INTDIR)\SoPointLightManip.obj"
+	-@erase "$(INTDIR)\SoPointSet.obj"
+	-@erase "$(INTDIR)\SoPointSizeElement.obj"
+	-@erase "$(INTDIR)\SoPolygonOffset.obj"
+	-@erase "$(INTDIR)\SoPolygonOffsetElement.obj"
+	-@erase "$(INTDIR)\SoPrimitiveVertex.obj"
+	-@erase "$(INTDIR)\SoProfile.obj"
+	-@erase "$(INTDIR)\SoProfileCoordinate2.obj"
+	-@erase "$(INTDIR)\SoProfileCoordinate3.obj"
+	-@erase "$(INTDIR)\SoProfileCoordinateElement.obj"
+	-@erase "$(INTDIR)\SoProfileElement.obj"
+	-@erase "$(INTDIR)\SoProjectionMatrixElement.obj"
+	-@erase "$(INTDIR)\SoPROTOElement.obj"
+	-@erase "$(INTDIR)\SoQuadMesh.obj"
+	-@erase "$(INTDIR)\SoRayPickAction.obj"
+	-@erase "$(INTDIR)\SoReadError.obj"
+	-@erase "$(INTDIR)\SoReorganizeAction.obj"
+	-@erase "$(INTDIR)\SoReplacedElement.obj"
+	-@erase "$(INTDIR)\SoResetTransform.obj"
+	-@erase "$(INTDIR)\SoRotateCylindricalDragger.obj"
+	-@erase "$(INTDIR)\SoRotateDiscDragger.obj"
+	-@erase "$(INTDIR)\SoRotateSphericalDragger.obj"
+	-@erase "$(INTDIR)\SoRotation.obj"
+	-@erase "$(INTDIR)\SoRotationXYZ.obj"
+	-@erase "$(INTDIR)\SoRotor.obj"
+	-@erase "$(INTDIR)\SoScale.obj"
+	-@erase "$(INTDIR)\SoScale1Dragger.obj"
+	-@erase "$(INTDIR)\SoScale2Dragger.obj"
+	-@erase "$(INTDIR)\SoScale2UniformDragger.obj"
+	-@erase "$(INTDIR)\SoScaleUniformDragger.obj"
+	-@erase "$(INTDIR)\SoSceneKit.obj"
+	-@erase "$(INTDIR)\SoSceneManager.obj"
+	-@erase "$(INTDIR)\SoSearchAction.obj"
+	-@erase "$(INTDIR)\SoSelection.obj"
+	-@erase "$(INTDIR)\SoSelectOne.obj"
+	-@erase "$(INTDIR)\SoSensor.obj"
+	-@erase "$(INTDIR)\SoSensorManager.obj"
+	-@erase "$(INTDIR)\SoSeparator.obj"
+	-@erase "$(INTDIR)\SoSeparatorKit.obj"
+	-@erase "$(INTDIR)\SoSFBitMask.obj"
+	-@erase "$(INTDIR)\SoSFBool.obj"
+	-@erase "$(INTDIR)\SoSFColor.obj"
+	-@erase "$(INTDIR)\SoSFEngine.obj"
+	-@erase "$(INTDIR)\SoSFEnum.obj"
+	-@erase "$(INTDIR)\SoSFFloat.obj"
+	-@erase "$(INTDIR)\SoSField.obj"
+	-@erase "$(INTDIR)\SoSFImage.obj"
+	-@erase "$(INTDIR)\SoSFInt32.obj"
+	-@erase "$(INTDIR)\SoSFMatrix.obj"
+	-@erase "$(INTDIR)\SoSFName.obj"
+	-@erase "$(INTDIR)\SoSFNode.obj"
+	-@erase "$(INTDIR)\SoSFPath.obj"
+	-@erase "$(INTDIR)\SoSFPlane.obj"
+	-@erase "$(INTDIR)\SoSFRotation.obj"
+	-@erase "$(INTDIR)\SoSFShort.obj"
+	-@erase "$(INTDIR)\SoSFString.obj"
+	-@erase "$(INTDIR)\SoSFTime.obj"
+	-@erase "$(INTDIR)\SoSFTrigger.obj"
+	-@erase "$(INTDIR)\SoSFUInt32.obj"
+	-@erase "$(INTDIR)\SoSFUShort.obj"
+	-@erase "$(INTDIR)\SoSFVec2f.obj"
+	-@erase "$(INTDIR)\SoSFVec3f.obj"
+	-@erase "$(INTDIR)\SoSFVec4f.obj"
+	-@erase "$(INTDIR)\SoShape.obj"
+	-@erase "$(INTDIR)\SoShapeHints.obj"
+	-@erase "$(INTDIR)\SoShapeHintsElement.obj"
+	-@erase "$(INTDIR)\SoShapeKit.obj"
+	-@erase "$(INTDIR)\SoShapeSimplifyAction.obj"
+	-@erase "$(INTDIR)\SoShapeStyleElement.obj"
+	-@erase "$(INTDIR)\SoShininessElement.obj"
+	-@erase "$(INTDIR)\SoShuttle.obj"
+	-@erase "$(INTDIR)\SoSimplifyAction.obj"
+	-@erase "$(INTDIR)\SoSpaceballButtonEvent.obj"
+	-@erase "$(INTDIR)\SoSpecularColorElement.obj"
+	-@erase "$(INTDIR)\SoSphere.obj"
+	-@erase "$(INTDIR)\SoSpotLight.obj"
+	-@erase "$(INTDIR)\SoSpotLightDragger.obj"
+	-@erase "$(INTDIR)\SoSpotLightManip.obj"
+	-@erase "$(INTDIR)\SoState.obj"
+	-@erase "$(INTDIR)\SoSurroundScale.obj"
+	-@erase "$(INTDIR)\SoSwitch.obj"
+	-@erase "$(INTDIR)\SoSwitchElement.obj"
+	-@erase "$(INTDIR)\SoTabBoxDragger.obj"
+	-@erase "$(INTDIR)\SoTabBoxManip.obj"
+	-@erase "$(INTDIR)\SoTabPlaneDragger.obj"
+	-@erase "$(INTDIR)\SoTempPath.obj"
+	-@erase "$(INTDIR)\SoText2.obj"
+	-@erase "$(INTDIR)\SoText3.obj"
+	-@erase "$(INTDIR)\SoTextDetail.obj"
+	-@erase "$(INTDIR)\SoTextOutlineEnabledElement.obj"
+	-@erase "$(INTDIR)\SoTexture2.obj"
+	-@erase "$(INTDIR)\SoTexture2Transform.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinate2.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinateBinding.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinateBindingElement.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinateBundle.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinateCache.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinateDefault.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinateElement.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinateEnvironment.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinateFunction.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinatePlane.obj"
+	-@erase "$(INTDIR)\SoTextureImageElement.obj"
+	-@erase "$(INTDIR)\SoTextureMatrixElement.obj"
+	-@erase "$(INTDIR)\SoTextureOverrideElement.obj"
+	-@erase "$(INTDIR)\SoTextureQualityElement.obj"
+	-@erase "$(INTDIR)\SoTimeCounter.obj"
+	-@erase "$(INTDIR)\SoTimerQueueSensor.obj"
+	-@erase "$(INTDIR)\SoTimerSensor.obj"
+	-@erase "$(INTDIR)\SoToVRML2Action.obj"
+	-@erase "$(INTDIR)\SoToVRMLAction.obj"
+	-@erase "$(INTDIR)\SoTrackballDragger.obj"
+	-@erase "$(INTDIR)\SoTrackballManip.obj"
+	-@erase "$(INTDIR)\SoTransform.obj"
+	-@erase "$(INTDIR)\SoTransformation.obj"
+	-@erase "$(INTDIR)\SoTransformBoxDragger.obj"
+	-@erase "$(INTDIR)\SoTransformBoxManip.obj"
+	-@erase "$(INTDIR)\SoTransformerDragger.obj"
+	-@erase "$(INTDIR)\SoTransformerManip.obj"
+	-@erase "$(INTDIR)\SoTransformManip.obj"
+	-@erase "$(INTDIR)\SoTransformSeparator.obj"
+	-@erase "$(INTDIR)\SoTransformVec3f.obj"
+	-@erase "$(INTDIR)\SoTranslate1Dragger.obj"
+	-@erase "$(INTDIR)\SoTranslate2Dragger.obj"
+	-@erase "$(INTDIR)\SoTranslation.obj"
+	-@erase "$(INTDIR)\SoTransparencyElement.obj"
+	-@erase "$(INTDIR)\SoTriangleStripSet.obj"
+	-@erase "$(INTDIR)\SoTriggerAny.obj"
+	-@erase "$(INTDIR)\SoType.obj"
+	-@erase "$(INTDIR)\SoTypeList.obj"
+	-@erase "$(INTDIR)\SoUnits.obj"
+	-@erase "$(INTDIR)\SoUnitsElement.obj"
+	-@erase "$(INTDIR)\SoUnknownNode.obj"
+	-@erase "$(INTDIR)\SoVertexProperty.obj"
+	-@erase "$(INTDIR)\SoVertexShape.obj"
+	-@erase "$(INTDIR)\SoViewingMatrixElement.obj"
+	-@erase "$(INTDIR)\SoViewportRegionElement.obj"
+	-@erase "$(INTDIR)\SoViewVolumeElement.obj"
+	-@erase "$(INTDIR)\SoVRMLInterpolator.obj"
+	-@erase "$(INTDIR)\SoVRMLInterpOutput.obj"
+	-@erase "$(INTDIR)\SoVRMLInterpOutputList.obj"
+	-@erase "$(INTDIR)\SoWindowElement.obj"
+	-@erase "$(INTDIR)\SoWrapperKit.obj"
+	-@erase "$(INTDIR)\SoWriteAction.obj"
+	-@erase "$(INTDIR)\SoWWWAnchor.obj"
+	-@erase "$(INTDIR)\SoWWWInline.obj"
+	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(OUTDIR)\coin.lib"
+
+"$(OUTDIR)" :
+    if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
+
+"$(INTDIR)" :
+    if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
+
+CPP=cl.exe
+CPP_PROJ=/nologo /ML /W3 /GX /O1 /I "@coin_build_dir@" /I "@coin_src_dir@" /I "@coin_src_dir@\include" /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "COIN_INTERNAL" /Fp"$(INTDIR)\coin.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
+
+.c{$(INTDIR)}.obj::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cpp{$(INTDIR)}.obj::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cxx{$(INTDIR)}.obj::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.c{$(INTDIR)}.sbr::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cpp{$(INTDIR)}.sbr::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cxx{$(INTDIR)}.sbr::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+RSC=rc.exe
+BSC32=bscmake.exe
+BSC32_FLAGS=/nologo /o"$(OUTDIR)\coin.bsc" 
+BSC32_SBRS= \
+	
+LIB32=link.exe -lib
+LIB32_FLAGS=/nologo /out:"$(OUTDIR)\coin.lib" 
+LIB32_OBJS= \
+	"$(INTDIR)\commoncode.obj" \
+	"$(INTDIR)\default2dfont.obj" \
+	"$(INTDIR)\default3dfont.obj" \
+	"$(INTDIR)\evaluator.obj" \
+	"$(INTDIR)\evaluator.tab.obj" \
+	"$(INTDIR)\SbBox2f.obj" \
+	"$(INTDIR)\SbBox2s.obj" \
+	"$(INTDIR)\SbBox3f.obj" \
+	"$(INTDIR)\SbBSPTree.obj" \
+	"$(INTDIR)\SbColor.obj" \
+	"$(INTDIR)\SbColor4f.obj" \
+	"$(INTDIR)\SbCylinder.obj" \
+	"$(INTDIR)\SbCylinderPlaneProjector.obj" \
+	"$(INTDIR)\SbCylinderProjector.obj" \
+	"$(INTDIR)\SbCylinderSectionProjector.obj" \
+	"$(INTDIR)\SbCylinderSheetProjector.obj" \
+	"$(INTDIR)\SbDict.obj" \
+	"$(INTDIR)\SbHeap.obj" \
+	"$(INTDIR)\SbIntList.obj" \
+	"$(INTDIR)\SbLine.obj" \
+	"$(INTDIR)\SbLineProjector.obj" \
+	"$(INTDIR)\SbList.obj" \
+	"$(INTDIR)\SbMatrix.obj" \
+	"$(INTDIR)\SbName.obj" \
+	"$(INTDIR)\SbOctTree.obj" \
+	"$(INTDIR)\SbPlane.obj" \
+	"$(INTDIR)\SbPlaneProjector.obj" \
+	"$(INTDIR)\SbPList.obj" \
+	"$(INTDIR)\SbProjector.obj" \
+	"$(INTDIR)\SbRotation.obj" \
+	"$(INTDIR)\SbSphere.obj" \
+	"$(INTDIR)\SbSpherePlaneProjector.obj" \
+	"$(INTDIR)\SbSphereProjector.obj" \
+	"$(INTDIR)\SbSphereSectionProjector.obj" \
+	"$(INTDIR)\SbSphereSheetProjector.obj" \
+	"$(INTDIR)\SbString.obj" \
+	"$(INTDIR)\SbStringList.obj" \
+	"$(INTDIR)\SbTesselator.obj" \
+	"$(INTDIR)\SbTime.obj" \
+	"$(INTDIR)\SbVec2f.obj" \
+	"$(INTDIR)\SbVec2s.obj" \
+	"$(INTDIR)\SbVec3f.obj" \
+	"$(INTDIR)\SbVec3fList.obj" \
+	"$(INTDIR)\SbVec4f.obj" \
+	"$(INTDIR)\SbViewportRegion.obj" \
+	"$(INTDIR)\SbViewVolume.obj" \
+	"$(INTDIR)\SbXfBox3f.obj" \
+	"$(INTDIR)\snprintf.obj" \
+	"$(INTDIR)\SoAccumulatedElement.obj" \
+	"$(INTDIR)\SoAction.obj" \
+	"$(INTDIR)\SoActionMethodList.obj" \
+	"$(INTDIR)\SoAlarmSensor.obj" \
+	"$(INTDIR)\SoAmbientColorElement.obj" \
+	"$(INTDIR)\SoAnnotation.obj" \
+	"$(INTDIR)\SoAnnoText3.obj" \
+	"$(INTDIR)\SoAnnoText3CharOrientElement.obj" \
+	"$(INTDIR)\SoAnnoText3FontSizeHintElement.obj" \
+	"$(INTDIR)\SoAnnoText3Property.obj" \
+	"$(INTDIR)\SoAnnoText3RenderPrintElement.obj" \
+	"$(INTDIR)\SoAntiSquish.obj" \
+	"$(INTDIR)\SoAppearanceKit.obj" \
+	"$(INTDIR)\SoArray.obj" \
+	"$(INTDIR)\SoAsciiText.obj" \
+	"$(INTDIR)\SoAuditorList.obj" \
+	"$(INTDIR)\SoBase.obj" \
+	"$(INTDIR)\SoBaseColor.obj" \
+	"$(INTDIR)\SoBaseKit.obj" \
+	"$(INTDIR)\SoBaseList.obj" \
+	"$(INTDIR)\SoBBoxModelMatrixElement.obj" \
+	"$(INTDIR)\SoBlinker.obj" \
+	"$(INTDIR)\SoBoolOperation.obj" \
+	"$(INTDIR)\SoBoundingBoxCache.obj" \
+	"$(INTDIR)\SoBoxHighlightRenderAction.obj" \
+	"$(INTDIR)\SoBundle.obj" \
+	"$(INTDIR)\SoButtonEvent.obj" \
+	"$(INTDIR)\SoCache.obj" \
+	"$(INTDIR)\SoCacheElement.obj" \
+	"$(INTDIR)\SoCalculator.obj" \
+	"$(INTDIR)\SoCallback.obj" \
+	"$(INTDIR)\SoCallbackAction.obj" \
+	"$(INTDIR)\SoCallbackList.obj" \
+	"$(INTDIR)\SoCamera.obj" \
+	"$(INTDIR)\SoCameraKit.obj" \
+	"$(INTDIR)\SoCenterballDragger.obj" \
+	"$(INTDIR)\SoCenterballManip.obj" \
+	"$(INTDIR)\SoChildList.obj" \
+	"$(INTDIR)\SoClipPlane.obj" \
+	"$(INTDIR)\SoClipPlaneElement.obj" \
+	"$(INTDIR)\SoClipPlaneManip.obj" \
+	"$(INTDIR)\SoColorIndex.obj" \
+	"$(INTDIR)\SoComplexity.obj" \
+	"$(INTDIR)\SoComplexityElement.obj" \
+	"$(INTDIR)\SoComplexityTypeElement.obj" \
+	"$(INTDIR)\SoComposeMatrix.obj" \
+	"$(INTDIR)\SoComposeRotation.obj" \
+	"$(INTDIR)\SoComposeRotationFromTo.obj" \
+	"$(INTDIR)\SoComposeVec2f.obj" \
+	"$(INTDIR)\SoComposeVec3f.obj" \
+	"$(INTDIR)\SoComposeVec4f.obj" \
+	"$(INTDIR)\SoComputeBoundingBox.obj" \
+	"$(INTDIR)\SoConcatenate.obj" \
+	"$(INTDIR)\SoCone.obj" \
+	"$(INTDIR)\SoConeDetail.obj" \
+	"$(INTDIR)\SoConvertAll.obj" \
+	"$(INTDIR)\SoConvexDataCache.obj" \
+	"$(INTDIR)\SoCoordinate3.obj" \
+	"$(INTDIR)\SoCoordinate4.obj" \
+	"$(INTDIR)\SoCoordinateElement.obj" \
+	"$(INTDIR)\SoCounter.obj" \
+	"$(INTDIR)\SoCreaseAngleElement.obj" \
+	"$(INTDIR)\SoCube.obj" \
+	"$(INTDIR)\SoCubeDetail.obj" \
+	"$(INTDIR)\SoCullElement.obj" \
+	"$(INTDIR)\SoCylinder.obj" \
+	"$(INTDIR)\SoCylinderDetail.obj" \
+	"$(INTDIR)\SoDataSensor.obj" \
+	"$(INTDIR)\SoDB.obj" \
+	"$(INTDIR)\SoDebugError.obj" \
+	"$(INTDIR)\SoDecimationPercentageElement.obj" \
+	"$(INTDIR)\SoDecimationTypeElement.obj" \
+	"$(INTDIR)\SoDecomposeMatrix.obj" \
+	"$(INTDIR)\SoDecomposeRotation.obj" \
+	"$(INTDIR)\SoDecomposeVec2f.obj" \
+	"$(INTDIR)\SoDecomposeVec3f.obj" \
+	"$(INTDIR)\SoDecomposeVec4f.obj" \
+	"$(INTDIR)\SoDelayQueueSensor.obj" \
+	"$(INTDIR)\SoDetail.obj" \
+	"$(INTDIR)\SoDetailList.obj" \
+	"$(INTDIR)\SoDiffuseColorElement.obj" \
+	"$(INTDIR)\SoDirectionalLight.obj" \
+	"$(INTDIR)\SoDirectionalLightDragger.obj" \
+	"$(INTDIR)\SoDirectionalLightManip.obj" \
+	"$(INTDIR)\SoDragger.obj" \
+	"$(INTDIR)\SoDragPointDragger.obj" \
+	"$(INTDIR)\SoDrawStyle.obj" \
+	"$(INTDIR)\SoDrawStyleElement.obj" \
+	"$(INTDIR)\SoElapsedTime.obj" \
+	"$(INTDIR)\SoElement.obj" \
+	"$(INTDIR)\SoEmissiveColorElement.obj" \
+	"$(INTDIR)\SoEnabledElementsList.obj" \
+	"$(INTDIR)\SoEngine.obj" \
+	"$(INTDIR)\SoEngineList.obj" \
+	"$(INTDIR)\SoEngineOutput.obj" \
+	"$(INTDIR)\SoEngineOutputList.obj" \
+	"$(INTDIR)\SoEnvironment.obj" \
+	"$(INTDIR)\SoEnvironmentElement.obj" \
+	"$(INTDIR)\SoError.obj" \
+	"$(INTDIR)\SoEvent.obj" \
+	"$(INTDIR)\SoEventCallback.obj" \
+	"$(INTDIR)\SoExtSelection.obj" \
+	"$(INTDIR)\SoFaceDetail.obj" \
+	"$(INTDIR)\SoFaceSet.obj" \
+	"$(INTDIR)\SoField.obj" \
+	"$(INTDIR)\SoFieldContainer.obj" \
+	"$(INTDIR)\SoFieldConverter.obj" \
+	"$(INTDIR)\SoFieldData.obj" \
+	"$(INTDIR)\SoFieldList.obj" \
+	"$(INTDIR)\SoFieldSensor.obj" \
+	"$(INTDIR)\SoFile.obj" \
+	"$(INTDIR)\SoFloatElement.obj" \
+	"$(INTDIR)\SoFocalDistanceElement.obj" \
+	"$(INTDIR)\SoFont.obj" \
+	"$(INTDIR)\SoFontNameElement.obj" \
+	"$(INTDIR)\SoFontSizeElement.obj" \
+	"$(INTDIR)\SoFontStyle.obj" \
+	"$(INTDIR)\SoFullPath.obj" \
+	"$(INTDIR)\SoGate.obj" \
+	"$(INTDIR)\SoGenerate.obj" \
+	"$(INTDIR)\SoGetBoundingBoxAction.obj" \
+	"$(INTDIR)\SoGetMatrixAction.obj" \
+	"$(INTDIR)\SoGetPrimitiveCountAction.obj" \
+	"$(INTDIR)\SoGL.obj" \
+	"$(INTDIR)\SoGLAmbientColorElement.obj" \
+	"$(INTDIR)\SoGLClipPlaneElement.obj" \
+	"$(INTDIR)\SoGLCoordinateElement.obj" \
+	"$(INTDIR)\SoGLDiffuseColorElement.obj" \
+	"$(INTDIR)\SoGLDrawStyleElement.obj" \
+	"$(INTDIR)\SoGLEmissiveColorElement.obj" \
+	"$(INTDIR)\SoGLEnvironmentElement.obj" \
+	"$(INTDIR)\SoGLImage.obj" \
+	"$(INTDIR)\SoGLLazyElement.obj" \
+	"$(INTDIR)\SoGLLightIdElement.obj" \
+	"$(INTDIR)\SoGLLightModelElement.obj" \
+	"$(INTDIR)\SoGLLinePatternElement.obj" \
+	"$(INTDIR)\SoGLLineWidthElement.obj" \
+	"$(INTDIR)\SoGLModelMatrixElement.obj" \
+	"$(INTDIR)\SoGLNormalElement.obj" \
+	"$(INTDIR)\SoGLNormalizeElement.obj" \
+	"$(INTDIR)\SoGlobalField.obj" \
+	"$(INTDIR)\SoGlobalSimplifyAction.obj" \
+	"$(INTDIR)\SoGLPointSizeElement.obj" \
+	"$(INTDIR)\SoGLPolygonOffsetElement.obj" \
+	"$(INTDIR)\SoGLPolygonStippleElement.obj" \
+	"$(INTDIR)\SoGLProjectionMatrixElement.obj" \
+	"$(INTDIR)\SoGLRenderAction.obj" \
+	"$(INTDIR)\SoGLRenderPassElement.obj" \
+	"$(INTDIR)\SoGLShadeModelElement.obj" \
+	"$(INTDIR)\SoGLShapeHintsElement.obj" \
+	"$(INTDIR)\SoGLShininessElement.obj" \
+	"$(INTDIR)\SoGLSpecularColorElement.obj" \
+	"$(INTDIR)\SoGLTextureCoordinateElement.obj" \
+	"$(INTDIR)\SoGLTextureEnabledElement.obj" \
+	"$(INTDIR)\SoGLTextureImageElement.obj" \
+	"$(INTDIR)\SoGLTextureMatrixElement.obj" \
+	"$(INTDIR)\SoGLUpdateAreaElement.obj" \
+	"$(INTDIR)\SoGLViewingMatrixElement.obj" \
+	"$(INTDIR)\SoGLViewportRegionElement.obj" \
+	"$(INTDIR)\SoGlyph.obj" \
+	"$(INTDIR)\SoGroup.obj" \
+	"$(INTDIR)\SoHandleBoxDragger.obj" \
+	"$(INTDIR)\SoHandleBoxManip.obj" \
+	"$(INTDIR)\SoHandleEventAction.obj" \
+	"$(INTDIR)\SoIdleSensor.obj" \
+	"$(INTDIR)\SoImage.obj" \
+	"$(INTDIR)\SoImageInterface.obj" \
+	"$(INTDIR)\SoIndexedFaceSet.obj" \
+	"$(INTDIR)\SoIndexedLineSet.obj" \
+	"$(INTDIR)\SoIndexedNurbsCurve.obj" \
+	"$(INTDIR)\SoIndexedNurbsSurface.obj" \
+	"$(INTDIR)\SoIndexedShape.obj" \
+	"$(INTDIR)\SoIndexedTriangleStripSet.obj" \
+	"$(INTDIR)\SoInfo.obj" \
+	"$(INTDIR)\SoInput.obj" \
+	"$(INTDIR)\SoInt32Element.obj" \
+	"$(INTDIR)\SoInteraction.obj" \
+	"$(INTDIR)\SoInteractionKit.obj" \
+	"$(INTDIR)\SoInterpolate.obj" \
+	"$(INTDIR)\SoInterpolateFloat.obj" \
+	"$(INTDIR)\SoInterpolateRotation.obj" \
+	"$(INTDIR)\SoInterpolateVec2f.obj" \
+	"$(INTDIR)\SoInterpolateVec3f.obj" \
+	"$(INTDIR)\SoInterpolateVec4f.obj" \
+	"$(INTDIR)\SoJackDragger.obj" \
+	"$(INTDIR)\SoJackManip.obj" \
+	"$(INTDIR)\SoKeyboardEvent.obj" \
+	"$(INTDIR)\SoLabel.obj" \
+	"$(INTDIR)\SoLazyElement.obj" \
+	"$(INTDIR)\SoLevelOfDetail.obj" \
+	"$(INTDIR)\SoLevelOfSimplification.obj" \
+	"$(INTDIR)\SoLight.obj" \
+	"$(INTDIR)\SoLightAttenuationElement.obj" \
+	"$(INTDIR)\SoLightElement.obj" \
+	"$(INTDIR)\SoLightKit.obj" \
+	"$(INTDIR)\SoLightModel.obj" \
+	"$(INTDIR)\SoLightModelElement.obj" \
+	"$(INTDIR)\SoLightPath.obj" \
+	"$(INTDIR)\SoLinearProfile.obj" \
+	"$(INTDIR)\SoLineDetail.obj" \
+	"$(INTDIR)\SoLineHighlightRenderAction.obj" \
+	"$(INTDIR)\SoLinePatternElement.obj" \
+	"$(INTDIR)\SoLineSet.obj" \
+	"$(INTDIR)\SoLineWidthElement.obj" \
+	"$(INTDIR)\SoLocalBBoxMatrixElement.obj" \
+	"$(INTDIR)\SoLocateHighlight.obj" \
+	"$(INTDIR)\SoLocation2Event.obj" \
+	"$(INTDIR)\SoLockManager.obj" \
+	"$(INTDIR)\SoLOD.obj" \
+	"$(INTDIR)\SoMarkerSet.obj" \
+	"$(INTDIR)\SoMaterial.obj" \
+	"$(INTDIR)\SoMaterialBinding.obj" \
+	"$(INTDIR)\SoMaterialBindingElement.obj" \
+	"$(INTDIR)\SoMaterialBundle.obj" \
+	"$(INTDIR)\SoMatrixTransform.obj" \
+	"$(INTDIR)\SoMemoryError.obj" \
+	"$(INTDIR)\SoMFBitMask.obj" \
+	"$(INTDIR)\SoMFBool.obj" \
+	"$(INTDIR)\SoMFColor.obj" \
+	"$(INTDIR)\SoMFEngine.obj" \
+	"$(INTDIR)\SoMFEnum.obj" \
+	"$(INTDIR)\SoMFFloat.obj" \
+	"$(INTDIR)\SoMField.obj" \
+	"$(INTDIR)\SoMFInt32.obj" \
+	"$(INTDIR)\SoMFMatrix.obj" \
+	"$(INTDIR)\SoMFName.obj" \
+	"$(INTDIR)\SoMFNode.obj" \
+	"$(INTDIR)\SoMFPath.obj" \
+	"$(INTDIR)\SoMFPlane.obj" \
+	"$(INTDIR)\SoMFRotation.obj" \
+	"$(INTDIR)\SoMFShort.obj" \
+	"$(INTDIR)\SoMFString.obj" \
+	"$(INTDIR)\SoMFTime.obj" \
+	"$(INTDIR)\SoMFUInt32.obj" \
+	"$(INTDIR)\SoMFUShort.obj" \
+	"$(INTDIR)\SoMFVec2f.obj" \
+	"$(INTDIR)\SoMFVec3f.obj" \
+	"$(INTDIR)\SoMFVec4f.obj" \
+	"$(INTDIR)\SoModelMatrixElement.obj" \
+	"$(INTDIR)\SoMotion3Event.obj" \
+	"$(INTDIR)\SoMouseButtonEvent.obj" \
+	"$(INTDIR)\SoMultipleCopy.obj" \
+	"$(INTDIR)\SoNode.obj" \
+	"$(INTDIR)\SoNodeKit.obj" \
+	"$(INTDIR)\SoNodekitCatalog.obj" \
+	"$(INTDIR)\SoNodeKitDetail.obj" \
+	"$(INTDIR)\SoNodeKitListPart.obj" \
+	"$(INTDIR)\SoNodeKitPath.obj" \
+	"$(INTDIR)\SoNodeList.obj" \
+	"$(INTDIR)\SoNodeSensor.obj" \
+	"$(INTDIR)\SoNonIndexedShape.obj" \
+	"$(INTDIR)\SoNormal.obj" \
+	"$(INTDIR)\SoNormalBinding.obj" \
+	"$(INTDIR)\SoNormalBindingElement.obj" \
+	"$(INTDIR)\SoNormalCache.obj" \
+	"$(INTDIR)\SoNormalElement.obj" \
+	"$(INTDIR)\SoNormalGenerator.obj" \
+	"$(INTDIR)\SoNotification.obj" \
+	"$(INTDIR)\SoNurbsCurve.obj" \
+	"$(INTDIR)\SoNurbsProfile.obj" \
+	"$(INTDIR)\SoNurbsSurface.obj" \
+	"$(INTDIR)\SoOffscreenRenderer.obj" \
+	"$(INTDIR)\SoOneShot.obj" \
+	"$(INTDIR)\SoOneShotSensor.obj" \
+	"$(INTDIR)\SoOnOff.obj" \
+	"$(INTDIR)\SoOrthographicCamera.obj" \
+	"$(INTDIR)\SoOutput.obj" \
+	"$(INTDIR)\SoOutputData.obj" \
+	"$(INTDIR)\SoOverrideElement.obj" \
+	"$(INTDIR)\SoPackedColor.obj" \
+	"$(INTDIR)\SoPath.obj" \
+	"$(INTDIR)\SoPathList.obj" \
+	"$(INTDIR)\SoPathSensor.obj" \
+	"$(INTDIR)\SoPathSwitch.obj" \
+	"$(INTDIR)\SoPendulum.obj" \
+	"$(INTDIR)\SoPerspectiveCamera.obj" \
+	"$(INTDIR)\SoPickAction.obj" \
+	"$(INTDIR)\SoPickedPoint.obj" \
+	"$(INTDIR)\SoPickedPointList.obj" \
+	"$(INTDIR)\SoPickRayElement.obj" \
+	"$(INTDIR)\SoPickStyle.obj" \
+	"$(INTDIR)\SoPickStyleElement.obj" \
+	"$(INTDIR)\SoPointDetail.obj" \
+	"$(INTDIR)\SoPointLight.obj" \
+	"$(INTDIR)\SoPointLightDragger.obj" \
+	"$(INTDIR)\SoPointLightManip.obj" \
+	"$(INTDIR)\SoPointSet.obj" \
+	"$(INTDIR)\SoPointSizeElement.obj" \
+	"$(INTDIR)\SoPolygonOffset.obj" \
+	"$(INTDIR)\SoPolygonOffsetElement.obj" \
+	"$(INTDIR)\SoPrimitiveVertex.obj" \
+	"$(INTDIR)\SoProfile.obj" \
+	"$(INTDIR)\SoProfileCoordinate2.obj" \
+	"$(INTDIR)\SoProfileCoordinate3.obj" \
+	"$(INTDIR)\SoProfileCoordinateElement.obj" \
+	"$(INTDIR)\SoProfileElement.obj" \
+	"$(INTDIR)\SoProjectionMatrixElement.obj" \
+	"$(INTDIR)\SoPROTOElement.obj" \
+	"$(INTDIR)\SoQuadMesh.obj" \
+	"$(INTDIR)\SoRayPickAction.obj" \
+	"$(INTDIR)\SoReadError.obj" \
+	"$(INTDIR)\SoReorganizeAction.obj" \
+	"$(INTDIR)\SoReplacedElement.obj" \
+	"$(INTDIR)\SoResetTransform.obj" \
+	"$(INTDIR)\SoRotateCylindricalDragger.obj" \
+	"$(INTDIR)\SoRotateDiscDragger.obj" \
+	"$(INTDIR)\SoRotateSphericalDragger.obj" \
+	"$(INTDIR)\SoRotation.obj" \
+	"$(INTDIR)\SoRotationXYZ.obj" \
+	"$(INTDIR)\SoRotor.obj" \
+	"$(INTDIR)\SoScale.obj" \
+	"$(INTDIR)\SoScale1Dragger.obj" \
+	"$(INTDIR)\SoScale2Dragger.obj" \
+	"$(INTDIR)\SoScale2UniformDragger.obj" \
+	"$(INTDIR)\SoScaleUniformDragger.obj" \
+	"$(INTDIR)\SoSceneKit.obj" \
+	"$(INTDIR)\SoSceneManager.obj" \
+	"$(INTDIR)\SoSearchAction.obj" \
+	"$(INTDIR)\SoSelection.obj" \
+	"$(INTDIR)\SoSelectOne.obj" \
+	"$(INTDIR)\SoSensor.obj" \
+	"$(INTDIR)\SoSensorManager.obj" \
+	"$(INTDIR)\SoSeparator.obj" \
+	"$(INTDIR)\SoSeparatorKit.obj" \
+	"$(INTDIR)\SoSFBitMask.obj" \
+	"$(INTDIR)\SoSFBool.obj" \
+	"$(INTDIR)\SoSFColor.obj" \
+	"$(INTDIR)\SoSFEngine.obj" \
+	"$(INTDIR)\SoSFEnum.obj" \
+	"$(INTDIR)\SoSFFloat.obj" \
+	"$(INTDIR)\SoSField.obj" \
+	"$(INTDIR)\SoSFImage.obj" \
+	"$(INTDIR)\SoSFInt32.obj" \
+	"$(INTDIR)\SoSFMatrix.obj" \
+	"$(INTDIR)\SoSFName.obj" \
+	"$(INTDIR)\SoSFNode.obj" \
+	"$(INTDIR)\SoSFPath.obj" \
+	"$(INTDIR)\SoSFPlane.obj" \
+	"$(INTDIR)\SoSFRotation.obj" \
+	"$(INTDIR)\SoSFShort.obj" \
+	"$(INTDIR)\SoSFString.obj" \
+	"$(INTDIR)\SoSFTime.obj" \
+	"$(INTDIR)\SoSFTrigger.obj" \
+	"$(INTDIR)\SoSFUInt32.obj" \
+	"$(INTDIR)\SoSFUShort.obj" \
+	"$(INTDIR)\SoSFVec2f.obj" \
+	"$(INTDIR)\SoSFVec3f.obj" \
+	"$(INTDIR)\SoSFVec4f.obj" \
+	"$(INTDIR)\SoShape.obj" \
+	"$(INTDIR)\SoShapeHints.obj" \
+	"$(INTDIR)\SoShapeHintsElement.obj" \
+	"$(INTDIR)\SoShapeKit.obj" \
+	"$(INTDIR)\SoShapeSimplifyAction.obj" \
+	"$(INTDIR)\SoShapeStyleElement.obj" \
+	"$(INTDIR)\SoShininessElement.obj" \
+	"$(INTDIR)\SoShuttle.obj" \
+	"$(INTDIR)\SoSimplifyAction.obj" \
+	"$(INTDIR)\SoSpaceballButtonEvent.obj" \
+	"$(INTDIR)\SoSpecularColorElement.obj" \
+	"$(INTDIR)\SoSphere.obj" \
+	"$(INTDIR)\SoSpotLight.obj" \
+	"$(INTDIR)\SoSpotLightDragger.obj" \
+	"$(INTDIR)\SoSpotLightManip.obj" \
+	"$(INTDIR)\SoState.obj" \
+	"$(INTDIR)\SoSurroundScale.obj" \
+	"$(INTDIR)\SoSwitch.obj" \
+	"$(INTDIR)\SoSwitchElement.obj" \
+	"$(INTDIR)\SoTabBoxDragger.obj" \
+	"$(INTDIR)\SoTabBoxManip.obj" \
+	"$(INTDIR)\SoTabPlaneDragger.obj" \
+	"$(INTDIR)\SoTempPath.obj" \
+	"$(INTDIR)\SoText2.obj" \
+	"$(INTDIR)\SoText3.obj" \
+	"$(INTDIR)\SoTextDetail.obj" \
+	"$(INTDIR)\SoTextOutlineEnabledElement.obj" \
+	"$(INTDIR)\SoTexture2.obj" \
+	"$(INTDIR)\SoTexture2Transform.obj" \
+	"$(INTDIR)\SoTextureCoordinate2.obj" \
+	"$(INTDIR)\SoTextureCoordinateBinding.obj" \
+	"$(INTDIR)\SoTextureCoordinateBindingElement.obj" \
+	"$(INTDIR)\SoTextureCoordinateBundle.obj" \
+	"$(INTDIR)\SoTextureCoordinateCache.obj" \
+	"$(INTDIR)\SoTextureCoordinateDefault.obj" \
+	"$(INTDIR)\SoTextureCoordinateElement.obj" \
+	"$(INTDIR)\SoTextureCoordinateEnvironment.obj" \
+	"$(INTDIR)\SoTextureCoordinateFunction.obj" \
+	"$(INTDIR)\SoTextureCoordinatePlane.obj" \
+	"$(INTDIR)\SoTextureImageElement.obj" \
+	"$(INTDIR)\SoTextureMatrixElement.obj" \
+	"$(INTDIR)\SoTextureOverrideElement.obj" \
+	"$(INTDIR)\SoTextureQualityElement.obj" \
+	"$(INTDIR)\SoTimeCounter.obj" \
+	"$(INTDIR)\SoTimerQueueSensor.obj" \
+	"$(INTDIR)\SoTimerSensor.obj" \
+	"$(INTDIR)\SoToVRML2Action.obj" \
+	"$(INTDIR)\SoToVRMLAction.obj" \
+	"$(INTDIR)\SoTrackballDragger.obj" \
+	"$(INTDIR)\SoTrackballManip.obj" \
+	"$(INTDIR)\SoTransform.obj" \
+	"$(INTDIR)\SoTransformation.obj" \
+	"$(INTDIR)\SoTransformBoxDragger.obj" \
+	"$(INTDIR)\SoTransformBoxManip.obj" \
+	"$(INTDIR)\SoTransformerDragger.obj" \
+	"$(INTDIR)\SoTransformerManip.obj" \
+	"$(INTDIR)\SoTransformManip.obj" \
+	"$(INTDIR)\SoTransformSeparator.obj" \
+	"$(INTDIR)\SoTransformVec3f.obj" \
+	"$(INTDIR)\SoTranslate1Dragger.obj" \
+	"$(INTDIR)\SoTranslate2Dragger.obj" \
+	"$(INTDIR)\SoTranslation.obj" \
+	"$(INTDIR)\SoTransparencyElement.obj" \
+	"$(INTDIR)\SoTriangleStripSet.obj" \
+	"$(INTDIR)\SoTriggerAny.obj" \
+	"$(INTDIR)\SoType.obj" \
+	"$(INTDIR)\SoTypeList.obj" \
+	"$(INTDIR)\SoUnits.obj" \
+	"$(INTDIR)\SoUnitsElement.obj" \
+	"$(INTDIR)\SoUnknownNode.obj" \
+	"$(INTDIR)\SoVertexProperty.obj" \
+	"$(INTDIR)\SoVertexShape.obj" \
+	"$(INTDIR)\SoViewingMatrixElement.obj" \
+	"$(INTDIR)\SoViewportRegionElement.obj" \
+	"$(INTDIR)\SoViewVolumeElement.obj" \
+	"$(INTDIR)\SoVRMLInterpolator.obj" \
+	"$(INTDIR)\SoVRMLInterpOutput.obj" \
+	"$(INTDIR)\SoVRMLInterpOutputList.obj" \
+	"$(INTDIR)\SoWindowElement.obj" \
+	"$(INTDIR)\SoWrapperKit.obj" \
+	"$(INTDIR)\SoWriteAction.obj" \
+	"$(INTDIR)\SoWWWAnchor.obj" \
+	"$(INTDIR)\SoWWWInline.obj"
+
+"$(OUTDIR)\coin.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+    $(LIB32) @<<
+  $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
+<<
+
+!ELSEIF  "$(CFG)" == "coin - Win32 Debug"
+
+OUTDIR=C:\@libdir@
+INTDIR=.\Debug
+# Begin Custom Macros
+OutDir=C:\@libdir@
+# End Custom Macros
+
+ALL : "$(OUTDIR)\coin.lib"
+
+
+CLEAN :
+	-@erase "$(INTDIR)\commoncode.obj"
+	-@erase "$(INTDIR)\default2dfont.obj"
+	-@erase "$(INTDIR)\default3dfont.obj"
+	-@erase "$(INTDIR)\evaluator.obj"
+	-@erase "$(INTDIR)\evaluator.tab.obj"
+	-@erase "$(INTDIR)\SbBox2f.obj"
+	-@erase "$(INTDIR)\SbBox2s.obj"
+	-@erase "$(INTDIR)\SbBox3f.obj"
+	-@erase "$(INTDIR)\SbBSPTree.obj"
+	-@erase "$(INTDIR)\SbColor.obj"
+	-@erase "$(INTDIR)\SbColor4f.obj"
+	-@erase "$(INTDIR)\SbCylinder.obj"
+	-@erase "$(INTDIR)\SbCylinderPlaneProjector.obj"
+	-@erase "$(INTDIR)\SbCylinderProjector.obj"
+	-@erase "$(INTDIR)\SbCylinderSectionProjector.obj"
+	-@erase "$(INTDIR)\SbCylinderSheetProjector.obj"
+	-@erase "$(INTDIR)\SbDict.obj"
+	-@erase "$(INTDIR)\SbHeap.obj"
+	-@erase "$(INTDIR)\SbIntList.obj"
+	-@erase "$(INTDIR)\SbLine.obj"
+	-@erase "$(INTDIR)\SbLineProjector.obj"
+	-@erase "$(INTDIR)\SbList.obj"
+	-@erase "$(INTDIR)\SbMatrix.obj"
+	-@erase "$(INTDIR)\SbName.obj"
+	-@erase "$(INTDIR)\SbOctTree.obj"
+	-@erase "$(INTDIR)\SbPlane.obj"
+	-@erase "$(INTDIR)\SbPlaneProjector.obj"
+	-@erase "$(INTDIR)\SbPList.obj"
+	-@erase "$(INTDIR)\SbProjector.obj"
+	-@erase "$(INTDIR)\SbRotation.obj"
+	-@erase "$(INTDIR)\SbSphere.obj"
+	-@erase "$(INTDIR)\SbSpherePlaneProjector.obj"
+	-@erase "$(INTDIR)\SbSphereProjector.obj"
+	-@erase "$(INTDIR)\SbSphereSectionProjector.obj"
+	-@erase "$(INTDIR)\SbSphereSheetProjector.obj"
+	-@erase "$(INTDIR)\SbString.obj"
+	-@erase "$(INTDIR)\SbStringList.obj"
+	-@erase "$(INTDIR)\SbTesselator.obj"
+	-@erase "$(INTDIR)\SbTime.obj"
+	-@erase "$(INTDIR)\SbVec2f.obj"
+	-@erase "$(INTDIR)\SbVec2s.obj"
+	-@erase "$(INTDIR)\SbVec3f.obj"
+	-@erase "$(INTDIR)\SbVec3fList.obj"
+	-@erase "$(INTDIR)\SbVec4f.obj"
+	-@erase "$(INTDIR)\SbViewportRegion.obj"
+	-@erase "$(INTDIR)\SbViewVolume.obj"
+	-@erase "$(INTDIR)\SbXfBox3f.obj"
+	-@erase "$(INTDIR)\snprintf.obj"
+	-@erase "$(INTDIR)\SoAccumulatedElement.obj"
+	-@erase "$(INTDIR)\SoAction.obj"
+	-@erase "$(INTDIR)\SoActionMethodList.obj"
+	-@erase "$(INTDIR)\SoAlarmSensor.obj"
+	-@erase "$(INTDIR)\SoAmbientColorElement.obj"
+	-@erase "$(INTDIR)\SoAnnotation.obj"
+	-@erase "$(INTDIR)\SoAnnoText3.obj"
+	-@erase "$(INTDIR)\SoAnnoText3CharOrientElement.obj"
+	-@erase "$(INTDIR)\SoAnnoText3FontSizeHintElement.obj"
+	-@erase "$(INTDIR)\SoAnnoText3Property.obj"
+	-@erase "$(INTDIR)\SoAnnoText3RenderPrintElement.obj"
+	-@erase "$(INTDIR)\SoAntiSquish.obj"
+	-@erase "$(INTDIR)\SoAppearanceKit.obj"
+	-@erase "$(INTDIR)\SoArray.obj"
+	-@erase "$(INTDIR)\SoAsciiText.obj"
+	-@erase "$(INTDIR)\SoAuditorList.obj"
+	-@erase "$(INTDIR)\SoBase.obj"
+	-@erase "$(INTDIR)\SoBaseColor.obj"
+	-@erase "$(INTDIR)\SoBaseKit.obj"
+	-@erase "$(INTDIR)\SoBaseList.obj"
+	-@erase "$(INTDIR)\SoBBoxModelMatrixElement.obj"
+	-@erase "$(INTDIR)\SoBlinker.obj"
+	-@erase "$(INTDIR)\SoBoolOperation.obj"
+	-@erase "$(INTDIR)\SoBoundingBoxCache.obj"
+	-@erase "$(INTDIR)\SoBoxHighlightRenderAction.obj"
+	-@erase "$(INTDIR)\SoBundle.obj"
+	-@erase "$(INTDIR)\SoButtonEvent.obj"
+	-@erase "$(INTDIR)\SoCache.obj"
+	-@erase "$(INTDIR)\SoCacheElement.obj"
+	-@erase "$(INTDIR)\SoCalculator.obj"
+	-@erase "$(INTDIR)\SoCallback.obj"
+	-@erase "$(INTDIR)\SoCallbackAction.obj"
+	-@erase "$(INTDIR)\SoCallbackList.obj"
+	-@erase "$(INTDIR)\SoCamera.obj"
+	-@erase "$(INTDIR)\SoCameraKit.obj"
+	-@erase "$(INTDIR)\SoCenterballDragger.obj"
+	-@erase "$(INTDIR)\SoCenterballManip.obj"
+	-@erase "$(INTDIR)\SoChildList.obj"
+	-@erase "$(INTDIR)\SoClipPlane.obj"
+	-@erase "$(INTDIR)\SoClipPlaneElement.obj"
+	-@erase "$(INTDIR)\SoClipPlaneManip.obj"
+	-@erase "$(INTDIR)\SoColorIndex.obj"
+	-@erase "$(INTDIR)\SoComplexity.obj"
+	-@erase "$(INTDIR)\SoComplexityElement.obj"
+	-@erase "$(INTDIR)\SoComplexityTypeElement.obj"
+	-@erase "$(INTDIR)\SoComposeMatrix.obj"
+	-@erase "$(INTDIR)\SoComposeRotation.obj"
+	-@erase "$(INTDIR)\SoComposeRotationFromTo.obj"
+	-@erase "$(INTDIR)\SoComposeVec2f.obj"
+	-@erase "$(INTDIR)\SoComposeVec3f.obj"
+	-@erase "$(INTDIR)\SoComposeVec4f.obj"
+	-@erase "$(INTDIR)\SoComputeBoundingBox.obj"
+	-@erase "$(INTDIR)\SoConcatenate.obj"
+	-@erase "$(INTDIR)\SoCone.obj"
+	-@erase "$(INTDIR)\SoConeDetail.obj"
+	-@erase "$(INTDIR)\SoConvertAll.obj"
+	-@erase "$(INTDIR)\SoConvexDataCache.obj"
+	-@erase "$(INTDIR)\SoCoordinate3.obj"
+	-@erase "$(INTDIR)\SoCoordinate4.obj"
+	-@erase "$(INTDIR)\SoCoordinateElement.obj"
+	-@erase "$(INTDIR)\SoCounter.obj"
+	-@erase "$(INTDIR)\SoCreaseAngleElement.obj"
+	-@erase "$(INTDIR)\SoCube.obj"
+	-@erase "$(INTDIR)\SoCubeDetail.obj"
+	-@erase "$(INTDIR)\SoCullElement.obj"
+	-@erase "$(INTDIR)\SoCylinder.obj"
+	-@erase "$(INTDIR)\SoCylinderDetail.obj"
+	-@erase "$(INTDIR)\SoDataSensor.obj"
+	-@erase "$(INTDIR)\SoDB.obj"
+	-@erase "$(INTDIR)\SoDebugError.obj"
+	-@erase "$(INTDIR)\SoDecimationPercentageElement.obj"
+	-@erase "$(INTDIR)\SoDecimationTypeElement.obj"
+	-@erase "$(INTDIR)\SoDecomposeMatrix.obj"
+	-@erase "$(INTDIR)\SoDecomposeRotation.obj"
+	-@erase "$(INTDIR)\SoDecomposeVec2f.obj"
+	-@erase "$(INTDIR)\SoDecomposeVec3f.obj"
+	-@erase "$(INTDIR)\SoDecomposeVec4f.obj"
+	-@erase "$(INTDIR)\SoDelayQueueSensor.obj"
+	-@erase "$(INTDIR)\SoDetail.obj"
+	-@erase "$(INTDIR)\SoDetailList.obj"
+	-@erase "$(INTDIR)\SoDiffuseColorElement.obj"
+	-@erase "$(INTDIR)\SoDirectionalLight.obj"
+	-@erase "$(INTDIR)\SoDirectionalLightDragger.obj"
+	-@erase "$(INTDIR)\SoDirectionalLightManip.obj"
+	-@erase "$(INTDIR)\SoDragger.obj"
+	-@erase "$(INTDIR)\SoDragPointDragger.obj"
+	-@erase "$(INTDIR)\SoDrawStyle.obj"
+	-@erase "$(INTDIR)\SoDrawStyleElement.obj"
+	-@erase "$(INTDIR)\SoElapsedTime.obj"
+	-@erase "$(INTDIR)\SoElement.obj"
+	-@erase "$(INTDIR)\SoEmissiveColorElement.obj"
+	-@erase "$(INTDIR)\SoEnabledElementsList.obj"
+	-@erase "$(INTDIR)\SoEngine.obj"
+	-@erase "$(INTDIR)\SoEngineList.obj"
+	-@erase "$(INTDIR)\SoEngineOutput.obj"
+	-@erase "$(INTDIR)\SoEngineOutputList.obj"
+	-@erase "$(INTDIR)\SoEnvironment.obj"
+	-@erase "$(INTDIR)\SoEnvironmentElement.obj"
+	-@erase "$(INTDIR)\SoError.obj"
+	-@erase "$(INTDIR)\SoEvent.obj"
+	-@erase "$(INTDIR)\SoEventCallback.obj"
+	-@erase "$(INTDIR)\SoExtSelection.obj"
+	-@erase "$(INTDIR)\SoFaceDetail.obj"
+	-@erase "$(INTDIR)\SoFaceSet.obj"
+	-@erase "$(INTDIR)\SoField.obj"
+	-@erase "$(INTDIR)\SoFieldContainer.obj"
+	-@erase "$(INTDIR)\SoFieldConverter.obj"
+	-@erase "$(INTDIR)\SoFieldData.obj"
+	-@erase "$(INTDIR)\SoFieldList.obj"
+	-@erase "$(INTDIR)\SoFieldSensor.obj"
+	-@erase "$(INTDIR)\SoFile.obj"
+	-@erase "$(INTDIR)\SoFloatElement.obj"
+	-@erase "$(INTDIR)\SoFocalDistanceElement.obj"
+	-@erase "$(INTDIR)\SoFont.obj"
+	-@erase "$(INTDIR)\SoFontNameElement.obj"
+	-@erase "$(INTDIR)\SoFontSizeElement.obj"
+	-@erase "$(INTDIR)\SoFontStyle.obj"
+	-@erase "$(INTDIR)\SoFullPath.obj"
+	-@erase "$(INTDIR)\SoGate.obj"
+	-@erase "$(INTDIR)\SoGenerate.obj"
+	-@erase "$(INTDIR)\SoGetBoundingBoxAction.obj"
+	-@erase "$(INTDIR)\SoGetMatrixAction.obj"
+	-@erase "$(INTDIR)\SoGetPrimitiveCountAction.obj"
+	-@erase "$(INTDIR)\SoGL.obj"
+	-@erase "$(INTDIR)\SoGLAmbientColorElement.obj"
+	-@erase "$(INTDIR)\SoGLClipPlaneElement.obj"
+	-@erase "$(INTDIR)\SoGLCoordinateElement.obj"
+	-@erase "$(INTDIR)\SoGLDiffuseColorElement.obj"
+	-@erase "$(INTDIR)\SoGLDrawStyleElement.obj"
+	-@erase "$(INTDIR)\SoGLEmissiveColorElement.obj"
+	-@erase "$(INTDIR)\SoGLEnvironmentElement.obj"
+	-@erase "$(INTDIR)\SoGLImage.obj"
+	-@erase "$(INTDIR)\SoGLLazyElement.obj"
+	-@erase "$(INTDIR)\SoGLLightIdElement.obj"
+	-@erase "$(INTDIR)\SoGLLightModelElement.obj"
+	-@erase "$(INTDIR)\SoGLLinePatternElement.obj"
+	-@erase "$(INTDIR)\SoGLLineWidthElement.obj"
+	-@erase "$(INTDIR)\SoGLModelMatrixElement.obj"
+	-@erase "$(INTDIR)\SoGLNormalElement.obj"
+	-@erase "$(INTDIR)\SoGLNormalizeElement.obj"
+	-@erase "$(INTDIR)\SoGlobalField.obj"
+	-@erase "$(INTDIR)\SoGlobalSimplifyAction.obj"
+	-@erase "$(INTDIR)\SoGLPointSizeElement.obj"
+	-@erase "$(INTDIR)\SoGLPolygonOffsetElement.obj"
+	-@erase "$(INTDIR)\SoGLPolygonStippleElement.obj"
+	-@erase "$(INTDIR)\SoGLProjectionMatrixElement.obj"
+	-@erase "$(INTDIR)\SoGLRenderAction.obj"
+	-@erase "$(INTDIR)\SoGLRenderPassElement.obj"
+	-@erase "$(INTDIR)\SoGLShadeModelElement.obj"
+	-@erase "$(INTDIR)\SoGLShapeHintsElement.obj"
+	-@erase "$(INTDIR)\SoGLShininessElement.obj"
+	-@erase "$(INTDIR)\SoGLSpecularColorElement.obj"
+	-@erase "$(INTDIR)\SoGLTextureCoordinateElement.obj"
+	-@erase "$(INTDIR)\SoGLTextureEnabledElement.obj"
+	-@erase "$(INTDIR)\SoGLTextureImageElement.obj"
+	-@erase "$(INTDIR)\SoGLTextureMatrixElement.obj"
+	-@erase "$(INTDIR)\SoGLUpdateAreaElement.obj"
+	-@erase "$(INTDIR)\SoGLViewingMatrixElement.obj"
+	-@erase "$(INTDIR)\SoGLViewportRegionElement.obj"
+	-@erase "$(INTDIR)\SoGlyph.obj"
+	-@erase "$(INTDIR)\SoGroup.obj"
+	-@erase "$(INTDIR)\SoHandleBoxDragger.obj"
+	-@erase "$(INTDIR)\SoHandleBoxManip.obj"
+	-@erase "$(INTDIR)\SoHandleEventAction.obj"
+	-@erase "$(INTDIR)\SoIdleSensor.obj"
+	-@erase "$(INTDIR)\SoImage.obj"
+	-@erase "$(INTDIR)\SoImageInterface.obj"
+	-@erase "$(INTDIR)\SoIndexedFaceSet.obj"
+	-@erase "$(INTDIR)\SoIndexedLineSet.obj"
+	-@erase "$(INTDIR)\SoIndexedNurbsCurve.obj"
+	-@erase "$(INTDIR)\SoIndexedNurbsSurface.obj"
+	-@erase "$(INTDIR)\SoIndexedShape.obj"
+	-@erase "$(INTDIR)\SoIndexedTriangleStripSet.obj"
+	-@erase "$(INTDIR)\SoInfo.obj"
+	-@erase "$(INTDIR)\SoInput.obj"
+	-@erase "$(INTDIR)\SoInt32Element.obj"
+	-@erase "$(INTDIR)\SoInteraction.obj"
+	-@erase "$(INTDIR)\SoInteractionKit.obj"
+	-@erase "$(INTDIR)\SoInterpolate.obj"
+	-@erase "$(INTDIR)\SoInterpolateFloat.obj"
+	-@erase "$(INTDIR)\SoInterpolateRotation.obj"
+	-@erase "$(INTDIR)\SoInterpolateVec2f.obj"
+	-@erase "$(INTDIR)\SoInterpolateVec3f.obj"
+	-@erase "$(INTDIR)\SoInterpolateVec4f.obj"
+	-@erase "$(INTDIR)\SoJackDragger.obj"
+	-@erase "$(INTDIR)\SoJackManip.obj"
+	-@erase "$(INTDIR)\SoKeyboardEvent.obj"
+	-@erase "$(INTDIR)\SoLabel.obj"
+	-@erase "$(INTDIR)\SoLazyElement.obj"
+	-@erase "$(INTDIR)\SoLevelOfDetail.obj"
+	-@erase "$(INTDIR)\SoLevelOfSimplification.obj"
+	-@erase "$(INTDIR)\SoLight.obj"
+	-@erase "$(INTDIR)\SoLightAttenuationElement.obj"
+	-@erase "$(INTDIR)\SoLightElement.obj"
+	-@erase "$(INTDIR)\SoLightKit.obj"
+	-@erase "$(INTDIR)\SoLightModel.obj"
+	-@erase "$(INTDIR)\SoLightModelElement.obj"
+	-@erase "$(INTDIR)\SoLightPath.obj"
+	-@erase "$(INTDIR)\SoLinearProfile.obj"
+	-@erase "$(INTDIR)\SoLineDetail.obj"
+	-@erase "$(INTDIR)\SoLineHighlightRenderAction.obj"
+	-@erase "$(INTDIR)\SoLinePatternElement.obj"
+	-@erase "$(INTDIR)\SoLineSet.obj"
+	-@erase "$(INTDIR)\SoLineWidthElement.obj"
+	-@erase "$(INTDIR)\SoLocalBBoxMatrixElement.obj"
+	-@erase "$(INTDIR)\SoLocateHighlight.obj"
+	-@erase "$(INTDIR)\SoLocation2Event.obj"
+	-@erase "$(INTDIR)\SoLockManager.obj"
+	-@erase "$(INTDIR)\SoLOD.obj"
+	-@erase "$(INTDIR)\SoMarkerSet.obj"
+	-@erase "$(INTDIR)\SoMaterial.obj"
+	-@erase "$(INTDIR)\SoMaterialBinding.obj"
+	-@erase "$(INTDIR)\SoMaterialBindingElement.obj"
+	-@erase "$(INTDIR)\SoMaterialBundle.obj"
+	-@erase "$(INTDIR)\SoMatrixTransform.obj"
+	-@erase "$(INTDIR)\SoMemoryError.obj"
+	-@erase "$(INTDIR)\SoMFBitMask.obj"
+	-@erase "$(INTDIR)\SoMFBool.obj"
+	-@erase "$(INTDIR)\SoMFColor.obj"
+	-@erase "$(INTDIR)\SoMFEngine.obj"
+	-@erase "$(INTDIR)\SoMFEnum.obj"
+	-@erase "$(INTDIR)\SoMFFloat.obj"
+	-@erase "$(INTDIR)\SoMField.obj"
+	-@erase "$(INTDIR)\SoMFInt32.obj"
+	-@erase "$(INTDIR)\SoMFMatrix.obj"
+	-@erase "$(INTDIR)\SoMFName.obj"
+	-@erase "$(INTDIR)\SoMFNode.obj"
+	-@erase "$(INTDIR)\SoMFPath.obj"
+	-@erase "$(INTDIR)\SoMFPlane.obj"
+	-@erase "$(INTDIR)\SoMFRotation.obj"
+	-@erase "$(INTDIR)\SoMFShort.obj"
+	-@erase "$(INTDIR)\SoMFString.obj"
+	-@erase "$(INTDIR)\SoMFTime.obj"
+	-@erase "$(INTDIR)\SoMFUInt32.obj"
+	-@erase "$(INTDIR)\SoMFUShort.obj"
+	-@erase "$(INTDIR)\SoMFVec2f.obj"
+	-@erase "$(INTDIR)\SoMFVec3f.obj"
+	-@erase "$(INTDIR)\SoMFVec4f.obj"
+	-@erase "$(INTDIR)\SoModelMatrixElement.obj"
+	-@erase "$(INTDIR)\SoMotion3Event.obj"
+	-@erase "$(INTDIR)\SoMouseButtonEvent.obj"
+	-@erase "$(INTDIR)\SoMultipleCopy.obj"
+	-@erase "$(INTDIR)\SoNode.obj"
+	-@erase "$(INTDIR)\SoNodeKit.obj"
+	-@erase "$(INTDIR)\SoNodekitCatalog.obj"
+	-@erase "$(INTDIR)\SoNodeKitDetail.obj"
+	-@erase "$(INTDIR)\SoNodeKitListPart.obj"
+	-@erase "$(INTDIR)\SoNodeKitPath.obj"
+	-@erase "$(INTDIR)\SoNodeList.obj"
+	-@erase "$(INTDIR)\SoNodeSensor.obj"
+	-@erase "$(INTDIR)\SoNonIndexedShape.obj"
+	-@erase "$(INTDIR)\SoNormal.obj"
+	-@erase "$(INTDIR)\SoNormalBinding.obj"
+	-@erase "$(INTDIR)\SoNormalBindingElement.obj"
+	-@erase "$(INTDIR)\SoNormalCache.obj"
+	-@erase "$(INTDIR)\SoNormalElement.obj"
+	-@erase "$(INTDIR)\SoNormalGenerator.obj"
+	-@erase "$(INTDIR)\SoNotification.obj"
+	-@erase "$(INTDIR)\SoNurbsCurve.obj"
+	-@erase "$(INTDIR)\SoNurbsProfile.obj"
+	-@erase "$(INTDIR)\SoNurbsSurface.obj"
+	-@erase "$(INTDIR)\SoOffscreenRenderer.obj"
+	-@erase "$(INTDIR)\SoOneShot.obj"
+	-@erase "$(INTDIR)\SoOneShotSensor.obj"
+	-@erase "$(INTDIR)\SoOnOff.obj"
+	-@erase "$(INTDIR)\SoOrthographicCamera.obj"
+	-@erase "$(INTDIR)\SoOutput.obj"
+	-@erase "$(INTDIR)\SoOutputData.obj"
+	-@erase "$(INTDIR)\SoOverrideElement.obj"
+	-@erase "$(INTDIR)\SoPackedColor.obj"
+	-@erase "$(INTDIR)\SoPath.obj"
+	-@erase "$(INTDIR)\SoPathList.obj"
+	-@erase "$(INTDIR)\SoPathSensor.obj"
+	-@erase "$(INTDIR)\SoPathSwitch.obj"
+	-@erase "$(INTDIR)\SoPendulum.obj"
+	-@erase "$(INTDIR)\SoPerspectiveCamera.obj"
+	-@erase "$(INTDIR)\SoPickAction.obj"
+	-@erase "$(INTDIR)\SoPickedPoint.obj"
+	-@erase "$(INTDIR)\SoPickedPointList.obj"
+	-@erase "$(INTDIR)\SoPickRayElement.obj"
+	-@erase "$(INTDIR)\SoPickStyle.obj"
+	-@erase "$(INTDIR)\SoPickStyleElement.obj"
+	-@erase "$(INTDIR)\SoPointDetail.obj"
+	-@erase "$(INTDIR)\SoPointLight.obj"
+	-@erase "$(INTDIR)\SoPointLightDragger.obj"
+	-@erase "$(INTDIR)\SoPointLightManip.obj"
+	-@erase "$(INTDIR)\SoPointSet.obj"
+	-@erase "$(INTDIR)\SoPointSizeElement.obj"
+	-@erase "$(INTDIR)\SoPolygonOffset.obj"
+	-@erase "$(INTDIR)\SoPolygonOffsetElement.obj"
+	-@erase "$(INTDIR)\SoPrimitiveVertex.obj"
+	-@erase "$(INTDIR)\SoProfile.obj"
+	-@erase "$(INTDIR)\SoProfileCoordinate2.obj"
+	-@erase "$(INTDIR)\SoProfileCoordinate3.obj"
+	-@erase "$(INTDIR)\SoProfileCoordinateElement.obj"
+	-@erase "$(INTDIR)\SoProfileElement.obj"
+	-@erase "$(INTDIR)\SoProjectionMatrixElement.obj"
+	-@erase "$(INTDIR)\SoPROTOElement.obj"
+	-@erase "$(INTDIR)\SoQuadMesh.obj"
+	-@erase "$(INTDIR)\SoRayPickAction.obj"
+	-@erase "$(INTDIR)\SoReadError.obj"
+	-@erase "$(INTDIR)\SoReorganizeAction.obj"
+	-@erase "$(INTDIR)\SoReplacedElement.obj"
+	-@erase "$(INTDIR)\SoResetTransform.obj"
+	-@erase "$(INTDIR)\SoRotateCylindricalDragger.obj"
+	-@erase "$(INTDIR)\SoRotateDiscDragger.obj"
+	-@erase "$(INTDIR)\SoRotateSphericalDragger.obj"
+	-@erase "$(INTDIR)\SoRotation.obj"
+	-@erase "$(INTDIR)\SoRotationXYZ.obj"
+	-@erase "$(INTDIR)\SoRotor.obj"
+	-@erase "$(INTDIR)\SoScale.obj"
+	-@erase "$(INTDIR)\SoScale1Dragger.obj"
+	-@erase "$(INTDIR)\SoScale2Dragger.obj"
+	-@erase "$(INTDIR)\SoScale2UniformDragger.obj"
+	-@erase "$(INTDIR)\SoScaleUniformDragger.obj"
+	-@erase "$(INTDIR)\SoSceneKit.obj"
+	-@erase "$(INTDIR)\SoSceneManager.obj"
+	-@erase "$(INTDIR)\SoSearchAction.obj"
+	-@erase "$(INTDIR)\SoSelection.obj"
+	-@erase "$(INTDIR)\SoSelectOne.obj"
+	-@erase "$(INTDIR)\SoSensor.obj"
+	-@erase "$(INTDIR)\SoSensorManager.obj"
+	-@erase "$(INTDIR)\SoSeparator.obj"
+	-@erase "$(INTDIR)\SoSeparatorKit.obj"
+	-@erase "$(INTDIR)\SoSFBitMask.obj"
+	-@erase "$(INTDIR)\SoSFBool.obj"
+	-@erase "$(INTDIR)\SoSFColor.obj"
+	-@erase "$(INTDIR)\SoSFEngine.obj"
+	-@erase "$(INTDIR)\SoSFEnum.obj"
+	-@erase "$(INTDIR)\SoSFFloat.obj"
+	-@erase "$(INTDIR)\SoSField.obj"
+	-@erase "$(INTDIR)\SoSFImage.obj"
+	-@erase "$(INTDIR)\SoSFInt32.obj"
+	-@erase "$(INTDIR)\SoSFMatrix.obj"
+	-@erase "$(INTDIR)\SoSFName.obj"
+	-@erase "$(INTDIR)\SoSFNode.obj"
+	-@erase "$(INTDIR)\SoSFPath.obj"
+	-@erase "$(INTDIR)\SoSFPlane.obj"
+	-@erase "$(INTDIR)\SoSFRotation.obj"
+	-@erase "$(INTDIR)\SoSFShort.obj"
+	-@erase "$(INTDIR)\SoSFString.obj"
+	-@erase "$(INTDIR)\SoSFTime.obj"
+	-@erase "$(INTDIR)\SoSFTrigger.obj"
+	-@erase "$(INTDIR)\SoSFUInt32.obj"
+	-@erase "$(INTDIR)\SoSFUShort.obj"
+	-@erase "$(INTDIR)\SoSFVec2f.obj"
+	-@erase "$(INTDIR)\SoSFVec3f.obj"
+	-@erase "$(INTDIR)\SoSFVec4f.obj"
+	-@erase "$(INTDIR)\SoShape.obj"
+	-@erase "$(INTDIR)\SoShapeHints.obj"
+	-@erase "$(INTDIR)\SoShapeHintsElement.obj"
+	-@erase "$(INTDIR)\SoShapeKit.obj"
+	-@erase "$(INTDIR)\SoShapeSimplifyAction.obj"
+	-@erase "$(INTDIR)\SoShapeStyleElement.obj"
+	-@erase "$(INTDIR)\SoShininessElement.obj"
+	-@erase "$(INTDIR)\SoShuttle.obj"
+	-@erase "$(INTDIR)\SoSimplifyAction.obj"
+	-@erase "$(INTDIR)\SoSpaceballButtonEvent.obj"
+	-@erase "$(INTDIR)\SoSpecularColorElement.obj"
+	-@erase "$(INTDIR)\SoSphere.obj"
+	-@erase "$(INTDIR)\SoSpotLight.obj"
+	-@erase "$(INTDIR)\SoSpotLightDragger.obj"
+	-@erase "$(INTDIR)\SoSpotLightManip.obj"
+	-@erase "$(INTDIR)\SoState.obj"
+	-@erase "$(INTDIR)\SoSurroundScale.obj"
+	-@erase "$(INTDIR)\SoSwitch.obj"
+	-@erase "$(INTDIR)\SoSwitchElement.obj"
+	-@erase "$(INTDIR)\SoTabBoxDragger.obj"
+	-@erase "$(INTDIR)\SoTabBoxManip.obj"
+	-@erase "$(INTDIR)\SoTabPlaneDragger.obj"
+	-@erase "$(INTDIR)\SoTempPath.obj"
+	-@erase "$(INTDIR)\SoText2.obj"
+	-@erase "$(INTDIR)\SoText3.obj"
+	-@erase "$(INTDIR)\SoTextDetail.obj"
+	-@erase "$(INTDIR)\SoTextOutlineEnabledElement.obj"
+	-@erase "$(INTDIR)\SoTexture2.obj"
+	-@erase "$(INTDIR)\SoTexture2Transform.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinate2.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinateBinding.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinateBindingElement.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinateBundle.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinateCache.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinateDefault.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinateElement.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinateEnvironment.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinateFunction.obj"
+	-@erase "$(INTDIR)\SoTextureCoordinatePlane.obj"
+	-@erase "$(INTDIR)\SoTextureImageElement.obj"
+	-@erase "$(INTDIR)\SoTextureMatrixElement.obj"
+	-@erase "$(INTDIR)\SoTextureOverrideElement.obj"
+	-@erase "$(INTDIR)\SoTextureQualityElement.obj"
+	-@erase "$(INTDIR)\SoTimeCounter.obj"
+	-@erase "$(INTDIR)\SoTimerQueueSensor.obj"
+	-@erase "$(INTDIR)\SoTimerSensor.obj"
+	-@erase "$(INTDIR)\SoToVRML2Action.obj"
+	-@erase "$(INTDIR)\SoToVRMLAction.obj"
+	-@erase "$(INTDIR)\SoTrackballDragger.obj"
+	-@erase "$(INTDIR)\SoTrackballManip.obj"
+	-@erase "$(INTDIR)\SoTransform.obj"
+	-@erase "$(INTDIR)\SoTransformation.obj"
+	-@erase "$(INTDIR)\SoTransformBoxDragger.obj"
+	-@erase "$(INTDIR)\SoTransformBoxManip.obj"
+	-@erase "$(INTDIR)\SoTransformerDragger.obj"
+	-@erase "$(INTDIR)\SoTransformerManip.obj"
+	-@erase "$(INTDIR)\SoTransformManip.obj"
+	-@erase "$(INTDIR)\SoTransformSeparator.obj"
+	-@erase "$(INTDIR)\SoTransformVec3f.obj"
+	-@erase "$(INTDIR)\SoTranslate1Dragger.obj"
+	-@erase "$(INTDIR)\SoTranslate2Dragger.obj"
+	-@erase "$(INTDIR)\SoTranslation.obj"
+	-@erase "$(INTDIR)\SoTransparencyElement.obj"
+	-@erase "$(INTDIR)\SoTriangleStripSet.obj"
+	-@erase "$(INTDIR)\SoTriggerAny.obj"
+	-@erase "$(INTDIR)\SoType.obj"
+	-@erase "$(INTDIR)\SoTypeList.obj"
+	-@erase "$(INTDIR)\SoUnits.obj"
+	-@erase "$(INTDIR)\SoUnitsElement.obj"
+	-@erase "$(INTDIR)\SoUnknownNode.obj"
+	-@erase "$(INTDIR)\SoVertexProperty.obj"
+	-@erase "$(INTDIR)\SoVertexShape.obj"
+	-@erase "$(INTDIR)\SoViewingMatrixElement.obj"
+	-@erase "$(INTDIR)\SoViewportRegionElement.obj"
+	-@erase "$(INTDIR)\SoViewVolumeElement.obj"
+	-@erase "$(INTDIR)\SoVRMLInterpolator.obj"
+	-@erase "$(INTDIR)\SoVRMLInterpOutput.obj"
+	-@erase "$(INTDIR)\SoVRMLInterpOutputList.obj"
+	-@erase "$(INTDIR)\SoWindowElement.obj"
+	-@erase "$(INTDIR)\SoWrapperKit.obj"
+	-@erase "$(INTDIR)\SoWriteAction.obj"
+	-@erase "$(INTDIR)\SoWWWAnchor.obj"
+	-@erase "$(INTDIR)\SoWWWInline.obj"
+	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\vc60.pdb"
+	-@erase "$(OUTDIR)\coin.lib"
+
+"$(OUTDIR)" :
+    if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
+
+"$(INTDIR)" :
+    if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
+
+CPP=cl.exe
+CPP_PROJ=/nologo /MLd /W3 /Gm /GX /ZI /Od /I "@coin_build_dir@" /I "@coin_src_dir@" /I "@coin_src_dir@\include" /D "_DEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "COIN_INTERNAL" /D "COIN_DEBUG" /Fp"$(INTDIR)\coin.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ /c 
+
+.c{$(INTDIR)}.obj::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cpp{$(INTDIR)}.obj::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cxx{$(INTDIR)}.obj::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.c{$(INTDIR)}.sbr::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cpp{$(INTDIR)}.sbr::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cxx{$(INTDIR)}.sbr::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+RSC=rc.exe
+BSC32=bscmake.exe
+BSC32_FLAGS=/nologo /o"$(OUTDIR)\coin.bsc" 
+BSC32_SBRS= \
+	
+LIB32=link.exe -lib
+LIB32_FLAGS=/nologo /out:"$(OUTDIR)\coin.lib" 
+LIB32_OBJS= \
+	"$(INTDIR)\commoncode.obj" \
+	"$(INTDIR)\default2dfont.obj" \
+	"$(INTDIR)\default3dfont.obj" \
+	"$(INTDIR)\evaluator.obj" \
+	"$(INTDIR)\evaluator.tab.obj" \
+	"$(INTDIR)\SbBox2f.obj" \
+	"$(INTDIR)\SbBox2s.obj" \
+	"$(INTDIR)\SbBox3f.obj" \
+	"$(INTDIR)\SbBSPTree.obj" \
+	"$(INTDIR)\SbColor.obj" \
+	"$(INTDIR)\SbColor4f.obj" \
+	"$(INTDIR)\SbCylinder.obj" \
+	"$(INTDIR)\SbCylinderPlaneProjector.obj" \
+	"$(INTDIR)\SbCylinderProjector.obj" \
+	"$(INTDIR)\SbCylinderSectionProjector.obj" \
+	"$(INTDIR)\SbCylinderSheetProjector.obj" \
+	"$(INTDIR)\SbDict.obj" \
+	"$(INTDIR)\SbHeap.obj" \
+	"$(INTDIR)\SbIntList.obj" \
+	"$(INTDIR)\SbLine.obj" \
+	"$(INTDIR)\SbLineProjector.obj" \
+	"$(INTDIR)\SbList.obj" \
+	"$(INTDIR)\SbMatrix.obj" \
+	"$(INTDIR)\SbName.obj" \
+	"$(INTDIR)\SbOctTree.obj" \
+	"$(INTDIR)\SbPlane.obj" \
+	"$(INTDIR)\SbPlaneProjector.obj" \
+	"$(INTDIR)\SbPList.obj" \
+	"$(INTDIR)\SbProjector.obj" \
+	"$(INTDIR)\SbRotation.obj" \
+	"$(INTDIR)\SbSphere.obj" \
+	"$(INTDIR)\SbSpherePlaneProjector.obj" \
+	"$(INTDIR)\SbSphereProjector.obj" \
+	"$(INTDIR)\SbSphereSectionProjector.obj" \
+	"$(INTDIR)\SbSphereSheetProjector.obj" \
+	"$(INTDIR)\SbString.obj" \
+	"$(INTDIR)\SbStringList.obj" \
+	"$(INTDIR)\SbTesselator.obj" \
+	"$(INTDIR)\SbTime.obj" \
+	"$(INTDIR)\SbVec2f.obj" \
+	"$(INTDIR)\SbVec2s.obj" \
+	"$(INTDIR)\SbVec3f.obj" \
+	"$(INTDIR)\SbVec3fList.obj" \
+	"$(INTDIR)\SbVec4f.obj" \
+	"$(INTDIR)\SbViewportRegion.obj" \
+	"$(INTDIR)\SbViewVolume.obj" \
+	"$(INTDIR)\SbXfBox3f.obj" \
+	"$(INTDIR)\snprintf.obj" \
+	"$(INTDIR)\SoAccumulatedElement.obj" \
+	"$(INTDIR)\SoAction.obj" \
+	"$(INTDIR)\SoActionMethodList.obj" \
+	"$(INTDIR)\SoAlarmSensor.obj" \
+	"$(INTDIR)\SoAmbientColorElement.obj" \
+	"$(INTDIR)\SoAnnotation.obj" \
+	"$(INTDIR)\SoAnnoText3.obj" \
+	"$(INTDIR)\SoAnnoText3CharOrientElement.obj" \
+	"$(INTDIR)\SoAnnoText3FontSizeHintElement.obj" \
+	"$(INTDIR)\SoAnnoText3Property.obj" \
+	"$(INTDIR)\SoAnnoText3RenderPrintElement.obj" \
+	"$(INTDIR)\SoAntiSquish.obj" \
+	"$(INTDIR)\SoAppearanceKit.obj" \
+	"$(INTDIR)\SoArray.obj" \
+	"$(INTDIR)\SoAsciiText.obj" \
+	"$(INTDIR)\SoAuditorList.obj" \
+	"$(INTDIR)\SoBase.obj" \
+	"$(INTDIR)\SoBaseColor.obj" \
+	"$(INTDIR)\SoBaseKit.obj" \
+	"$(INTDIR)\SoBaseList.obj" \
+	"$(INTDIR)\SoBBoxModelMatrixElement.obj" \
+	"$(INTDIR)\SoBlinker.obj" \
+	"$(INTDIR)\SoBoolOperation.obj" \
+	"$(INTDIR)\SoBoundingBoxCache.obj" \
+	"$(INTDIR)\SoBoxHighlightRenderAction.obj" \
+	"$(INTDIR)\SoBundle.obj" \
+	"$(INTDIR)\SoButtonEvent.obj" \
+	"$(INTDIR)\SoCache.obj" \
+	"$(INTDIR)\SoCacheElement.obj" \
+	"$(INTDIR)\SoCalculator.obj" \
+	"$(INTDIR)\SoCallback.obj" \
+	"$(INTDIR)\SoCallbackAction.obj" \
+	"$(INTDIR)\SoCallbackList.obj" \
+	"$(INTDIR)\SoCamera.obj" \
+	"$(INTDIR)\SoCameraKit.obj" \
+	"$(INTDIR)\SoCenterballDragger.obj" \
+	"$(INTDIR)\SoCenterballManip.obj" \
+	"$(INTDIR)\SoChildList.obj" \
+	"$(INTDIR)\SoClipPlane.obj" \
+	"$(INTDIR)\SoClipPlaneElement.obj" \
+	"$(INTDIR)\SoClipPlaneManip.obj" \
+	"$(INTDIR)\SoColorIndex.obj" \
+	"$(INTDIR)\SoComplexity.obj" \
+	"$(INTDIR)\SoComplexityElement.obj" \
+	"$(INTDIR)\SoComplexityTypeElement.obj" \
+	"$(INTDIR)\SoComposeMatrix.obj" \
+	"$(INTDIR)\SoComposeRotation.obj" \
+	"$(INTDIR)\SoComposeRotationFromTo.obj" \
+	"$(INTDIR)\SoComposeVec2f.obj" \
+	"$(INTDIR)\SoComposeVec3f.obj" \
+	"$(INTDIR)\SoComposeVec4f.obj" \
+	"$(INTDIR)\SoComputeBoundingBox.obj" \
+	"$(INTDIR)\SoConcatenate.obj" \
+	"$(INTDIR)\SoCone.obj" \
+	"$(INTDIR)\SoConeDetail.obj" \
+	"$(INTDIR)\SoConvertAll.obj" \
+	"$(INTDIR)\SoConvexDataCache.obj" \
+	"$(INTDIR)\SoCoordinate3.obj" \
+	"$(INTDIR)\SoCoordinate4.obj" \
+	"$(INTDIR)\SoCoordinateElement.obj" \
+	"$(INTDIR)\SoCounter.obj" \
+	"$(INTDIR)\SoCreaseAngleElement.obj" \
+	"$(INTDIR)\SoCube.obj" \
+	"$(INTDIR)\SoCubeDetail.obj" \
+	"$(INTDIR)\SoCullElement.obj" \
+	"$(INTDIR)\SoCylinder.obj" \
+	"$(INTDIR)\SoCylinderDetail.obj" \
+	"$(INTDIR)\SoDataSensor.obj" \
+	"$(INTDIR)\SoDB.obj" \
+	"$(INTDIR)\SoDebugError.obj" \
+	"$(INTDIR)\SoDecimationPercentageElement.obj" \
+	"$(INTDIR)\SoDecimationTypeElement.obj" \
+	"$(INTDIR)\SoDecomposeMatrix.obj" \
+	"$(INTDIR)\SoDecomposeRotation.obj" \
+	"$(INTDIR)\SoDecomposeVec2f.obj" \
+	"$(INTDIR)\SoDecomposeVec3f.obj" \
+	"$(INTDIR)\SoDecomposeVec4f.obj" \
+	"$(INTDIR)\SoDelayQueueSensor.obj" \
+	"$(INTDIR)\SoDetail.obj" \
+	"$(INTDIR)\SoDetailList.obj" \
+	"$(INTDIR)\SoDiffuseColorElement.obj" \
+	"$(INTDIR)\SoDirectionalLight.obj" \
+	"$(INTDIR)\SoDirectionalLightDragger.obj" \
+	"$(INTDIR)\SoDirectionalLightManip.obj" \
+	"$(INTDIR)\SoDragger.obj" \
+	"$(INTDIR)\SoDragPointDragger.obj" \
+	"$(INTDIR)\SoDrawStyle.obj" \
+	"$(INTDIR)\SoDrawStyleElement.obj" \
+	"$(INTDIR)\SoElapsedTime.obj" \
+	"$(INTDIR)\SoElement.obj" \
+	"$(INTDIR)\SoEmissiveColorElement.obj" \
+	"$(INTDIR)\SoEnabledElementsList.obj" \
+	"$(INTDIR)\SoEngine.obj" \
+	"$(INTDIR)\SoEngineList.obj" \
+	"$(INTDIR)\SoEngineOutput.obj" \
+	"$(INTDIR)\SoEngineOutputList.obj" \
+	"$(INTDIR)\SoEnvironment.obj" \
+	"$(INTDIR)\SoEnvironmentElement.obj" \
+	"$(INTDIR)\SoError.obj" \
+	"$(INTDIR)\SoEvent.obj" \
+	"$(INTDIR)\SoEventCallback.obj" \
+	"$(INTDIR)\SoExtSelection.obj" \
+	"$(INTDIR)\SoFaceDetail.obj" \
+	"$(INTDIR)\SoFaceSet.obj" \
+	"$(INTDIR)\SoField.obj" \
+	"$(INTDIR)\SoFieldContainer.obj" \
+	"$(INTDIR)\SoFieldConverter.obj" \
+	"$(INTDIR)\SoFieldData.obj" \
+	"$(INTDIR)\SoFieldList.obj" \
+	"$(INTDIR)\SoFieldSensor.obj" \
+	"$(INTDIR)\SoFile.obj" \
+	"$(INTDIR)\SoFloatElement.obj" \
+	"$(INTDIR)\SoFocalDistanceElement.obj" \
+	"$(INTDIR)\SoFont.obj" \
+	"$(INTDIR)\SoFontNameElement.obj" \
+	"$(INTDIR)\SoFontSizeElement.obj" \
+	"$(INTDIR)\SoFontStyle.obj" \
+	"$(INTDIR)\SoFullPath.obj" \
+	"$(INTDIR)\SoGate.obj" \
+	"$(INTDIR)\SoGenerate.obj" \
+	"$(INTDIR)\SoGetBoundingBoxAction.obj" \
+	"$(INTDIR)\SoGetMatrixAction.obj" \
+	"$(INTDIR)\SoGetPrimitiveCountAction.obj" \
+	"$(INTDIR)\SoGL.obj" \
+	"$(INTDIR)\SoGLAmbientColorElement.obj" \
+	"$(INTDIR)\SoGLClipPlaneElement.obj" \
+	"$(INTDIR)\SoGLCoordinateElement.obj" \
+	"$(INTDIR)\SoGLDiffuseColorElement.obj" \
+	"$(INTDIR)\SoGLDrawStyleElement.obj" \
+	"$(INTDIR)\SoGLEmissiveColorElement.obj" \
+	"$(INTDIR)\SoGLEnvironmentElement.obj" \
+	"$(INTDIR)\SoGLImage.obj" \
+	"$(INTDIR)\SoGLLazyElement.obj" \
+	"$(INTDIR)\SoGLLightIdElement.obj" \
+	"$(INTDIR)\SoGLLightModelElement.obj" \
+	"$(INTDIR)\SoGLLinePatternElement.obj" \
+	"$(INTDIR)\SoGLLineWidthElement.obj" \
+	"$(INTDIR)\SoGLModelMatrixElement.obj" \
+	"$(INTDIR)\SoGLNormalElement.obj" \
+	"$(INTDIR)\SoGLNormalizeElement.obj" \
+	"$(INTDIR)\SoGlobalField.obj" \
+	"$(INTDIR)\SoGlobalSimplifyAction.obj" \
+	"$(INTDIR)\SoGLPointSizeElement.obj" \
+	"$(INTDIR)\SoGLPolygonOffsetElement.obj" \
+	"$(INTDIR)\SoGLPolygonStippleElement.obj" \
+	"$(INTDIR)\SoGLProjectionMatrixElement.obj" \
+	"$(INTDIR)\SoGLRenderAction.obj" \
+	"$(INTDIR)\SoGLRenderPassElement.obj" \
+	"$(INTDIR)\SoGLShadeModelElement.obj" \
+	"$(INTDIR)\SoGLShapeHintsElement.obj" \
+	"$(INTDIR)\SoGLShininessElement.obj" \
+	"$(INTDIR)\SoGLSpecularColorElement.obj" \
+	"$(INTDIR)\SoGLTextureCoordinateElement.obj" \
+	"$(INTDIR)\SoGLTextureEnabledElement.obj" \
+	"$(INTDIR)\SoGLTextureImageElement.obj" \
+	"$(INTDIR)\SoGLTextureMatrixElement.obj" \
+	"$(INTDIR)\SoGLUpdateAreaElement.obj" \
+	"$(INTDIR)\SoGLViewingMatrixElement.obj" \
+	"$(INTDIR)\SoGLViewportRegionElement.obj" \
+	"$(INTDIR)\SoGlyph.obj" \
+	"$(INTDIR)\SoGroup.obj" \
+	"$(INTDIR)\SoHandleBoxDragger.obj" \
+	"$(INTDIR)\SoHandleBoxManip.obj" \
+	"$(INTDIR)\SoHandleEventAction.obj" \
+	"$(INTDIR)\SoIdleSensor.obj" \
+	"$(INTDIR)\SoImage.obj" \
+	"$(INTDIR)\SoImageInterface.obj" \
+	"$(INTDIR)\SoIndexedFaceSet.obj" \
+	"$(INTDIR)\SoIndexedLineSet.obj" \
+	"$(INTDIR)\SoIndexedNurbsCurve.obj" \
+	"$(INTDIR)\SoIndexedNurbsSurface.obj" \
+	"$(INTDIR)\SoIndexedShape.obj" \
+	"$(INTDIR)\SoIndexedTriangleStripSet.obj" \
+	"$(INTDIR)\SoInfo.obj" \
+	"$(INTDIR)\SoInput.obj" \
+	"$(INTDIR)\SoInt32Element.obj" \
+	"$(INTDIR)\SoInteraction.obj" \
+	"$(INTDIR)\SoInteractionKit.obj" \
+	"$(INTDIR)\SoInterpolate.obj" \
+	"$(INTDIR)\SoInterpolateFloat.obj" \
+	"$(INTDIR)\SoInterpolateRotation.obj" \
+	"$(INTDIR)\SoInterpolateVec2f.obj" \
+	"$(INTDIR)\SoInterpolateVec3f.obj" \
+	"$(INTDIR)\SoInterpolateVec4f.obj" \
+	"$(INTDIR)\SoJackDragger.obj" \
+	"$(INTDIR)\SoJackManip.obj" \
+	"$(INTDIR)\SoKeyboardEvent.obj" \
+	"$(INTDIR)\SoLabel.obj" \
+	"$(INTDIR)\SoLazyElement.obj" \
+	"$(INTDIR)\SoLevelOfDetail.obj" \
+	"$(INTDIR)\SoLevelOfSimplification.obj" \
+	"$(INTDIR)\SoLight.obj" \
+	"$(INTDIR)\SoLightAttenuationElement.obj" \
+	"$(INTDIR)\SoLightElement.obj" \
+	"$(INTDIR)\SoLightKit.obj" \
+	"$(INTDIR)\SoLightModel.obj" \
+	"$(INTDIR)\SoLightModelElement.obj" \
+	"$(INTDIR)\SoLightPath.obj" \
+	"$(INTDIR)\SoLinearProfile.obj" \
+	"$(INTDIR)\SoLineDetail.obj" \
+	"$(INTDIR)\SoLineHighlightRenderAction.obj" \
+	"$(INTDIR)\SoLinePatternElement.obj" \
+	"$(INTDIR)\SoLineSet.obj" \
+	"$(INTDIR)\SoLineWidthElement.obj" \
+	"$(INTDIR)\SoLocalBBoxMatrixElement.obj" \
+	"$(INTDIR)\SoLocateHighlight.obj" \
+	"$(INTDIR)\SoLocation2Event.obj" \
+	"$(INTDIR)\SoLockManager.obj" \
+	"$(INTDIR)\SoLOD.obj" \
+	"$(INTDIR)\SoMarkerSet.obj" \
+	"$(INTDIR)\SoMaterial.obj" \
+	"$(INTDIR)\SoMaterialBinding.obj" \
+	"$(INTDIR)\SoMaterialBindingElement.obj" \
+	"$(INTDIR)\SoMaterialBundle.obj" \
+	"$(INTDIR)\SoMatrixTransform.obj" \
+	"$(INTDIR)\SoMemoryError.obj" \
+	"$(INTDIR)\SoMFBitMask.obj" \
+	"$(INTDIR)\SoMFBool.obj" \
+	"$(INTDIR)\SoMFColor.obj" \
+	"$(INTDIR)\SoMFEngine.obj" \
+	"$(INTDIR)\SoMFEnum.obj" \
+	"$(INTDIR)\SoMFFloat.obj" \
+	"$(INTDIR)\SoMField.obj" \
+	"$(INTDIR)\SoMFInt32.obj" \
+	"$(INTDIR)\SoMFMatrix.obj" \
+	"$(INTDIR)\SoMFName.obj" \
+	"$(INTDIR)\SoMFNode.obj" \
+	"$(INTDIR)\SoMFPath.obj" \
+	"$(INTDIR)\SoMFPlane.obj" \
+	"$(INTDIR)\SoMFRotation.obj" \
+	"$(INTDIR)\SoMFShort.obj" \
+	"$(INTDIR)\SoMFString.obj" \
+	"$(INTDIR)\SoMFTime.obj" \
+	"$(INTDIR)\SoMFUInt32.obj" \
+	"$(INTDIR)\SoMFUShort.obj" \
+	"$(INTDIR)\SoMFVec2f.obj" \
+	"$(INTDIR)\SoMFVec3f.obj" \
+	"$(INTDIR)\SoMFVec4f.obj" \
+	"$(INTDIR)\SoModelMatrixElement.obj" \
+	"$(INTDIR)\SoMotion3Event.obj" \
+	"$(INTDIR)\SoMouseButtonEvent.obj" \
+	"$(INTDIR)\SoMultipleCopy.obj" \
+	"$(INTDIR)\SoNode.obj" \
+	"$(INTDIR)\SoNodeKit.obj" \
+	"$(INTDIR)\SoNodekitCatalog.obj" \
+	"$(INTDIR)\SoNodeKitDetail.obj" \
+	"$(INTDIR)\SoNodeKitListPart.obj" \
+	"$(INTDIR)\SoNodeKitPath.obj" \
+	"$(INTDIR)\SoNodeList.obj" \
+	"$(INTDIR)\SoNodeSensor.obj" \
+	"$(INTDIR)\SoNonIndexedShape.obj" \
+	"$(INTDIR)\SoNormal.obj" \
+	"$(INTDIR)\SoNormalBinding.obj" \
+	"$(INTDIR)\SoNormalBindingElement.obj" \
+	"$(INTDIR)\SoNormalCache.obj" \
+	"$(INTDIR)\SoNormalElement.obj" \
+	"$(INTDIR)\SoNormalGenerator.obj" \
+	"$(INTDIR)\SoNotification.obj" \
+	"$(INTDIR)\SoNurbsCurve.obj" \
+	"$(INTDIR)\SoNurbsProfile.obj" \
+	"$(INTDIR)\SoNurbsSurface.obj" \
+	"$(INTDIR)\SoOffscreenRenderer.obj" \
+	"$(INTDIR)\SoOneShot.obj" \
+	"$(INTDIR)\SoOneShotSensor.obj" \
+	"$(INTDIR)\SoOnOff.obj" \
+	"$(INTDIR)\SoOrthographicCamera.obj" \
+	"$(INTDIR)\SoOutput.obj" \
+	"$(INTDIR)\SoOutputData.obj" \
+	"$(INTDIR)\SoOverrideElement.obj" \
+	"$(INTDIR)\SoPackedColor.obj" \
+	"$(INTDIR)\SoPath.obj" \
+	"$(INTDIR)\SoPathList.obj" \
+	"$(INTDIR)\SoPathSensor.obj" \
+	"$(INTDIR)\SoPathSwitch.obj" \
+	"$(INTDIR)\SoPendulum.obj" \
+	"$(INTDIR)\SoPerspectiveCamera.obj" \
+	"$(INTDIR)\SoPickAction.obj" \
+	"$(INTDIR)\SoPickedPoint.obj" \
+	"$(INTDIR)\SoPickedPointList.obj" \
+	"$(INTDIR)\SoPickRayElement.obj" \
+	"$(INTDIR)\SoPickStyle.obj" \
+	"$(INTDIR)\SoPickStyleElement.obj" \
+	"$(INTDIR)\SoPointDetail.obj" \
+	"$(INTDIR)\SoPointLight.obj" \
+	"$(INTDIR)\SoPointLightDragger.obj" \
+	"$(INTDIR)\SoPointLightManip.obj" \
+	"$(INTDIR)\SoPointSet.obj" \
+	"$(INTDIR)\SoPointSizeElement.obj" \
+	"$(INTDIR)\SoPolygonOffset.obj" \
+	"$(INTDIR)\SoPolygonOffsetElement.obj" \
+	"$(INTDIR)\SoPrimitiveVertex.obj" \
+	"$(INTDIR)\SoProfile.obj" \
+	"$(INTDIR)\SoProfileCoordinate2.obj" \
+	"$(INTDIR)\SoProfileCoordinate3.obj" \
+	"$(INTDIR)\SoProfileCoordinateElement.obj" \
+	"$(INTDIR)\SoProfileElement.obj" \
+	"$(INTDIR)\SoProjectionMatrixElement.obj" \
+	"$(INTDIR)\SoPROTOElement.obj" \
+	"$(INTDIR)\SoQuadMesh.obj" \
+	"$(INTDIR)\SoRayPickAction.obj" \
+	"$(INTDIR)\SoReadError.obj" \
+	"$(INTDIR)\SoReorganizeAction.obj" \
+	"$(INTDIR)\SoReplacedElement.obj" \
+	"$(INTDIR)\SoResetTransform.obj" \
+	"$(INTDIR)\SoRotateCylindricalDragger.obj" \
+	"$(INTDIR)\SoRotateDiscDragger.obj" \
+	"$(INTDIR)\SoRotateSphericalDragger.obj" \
+	"$(INTDIR)\SoRotation.obj" \
+	"$(INTDIR)\SoRotationXYZ.obj" \
+	"$(INTDIR)\SoRotor.obj" \
+	"$(INTDIR)\SoScale.obj" \
+	"$(INTDIR)\SoScale1Dragger.obj" \
+	"$(INTDIR)\SoScale2Dragger.obj" \
+	"$(INTDIR)\SoScale2UniformDragger.obj" \
+	"$(INTDIR)\SoScaleUniformDragger.obj" \
+	"$(INTDIR)\SoSceneKit.obj" \
+	"$(INTDIR)\SoSceneManager.obj" \
+	"$(INTDIR)\SoSearchAction.obj" \
+	"$(INTDIR)\SoSelection.obj" \
+	"$(INTDIR)\SoSelectOne.obj" \
+	"$(INTDIR)\SoSensor.obj" \
+	"$(INTDIR)\SoSensorManager.obj" \
+	"$(INTDIR)\SoSeparator.obj" \
+	"$(INTDIR)\SoSeparatorKit.obj" \
+	"$(INTDIR)\SoSFBitMask.obj" \
+	"$(INTDIR)\SoSFBool.obj" \
+	"$(INTDIR)\SoSFColor.obj" \
+	"$(INTDIR)\SoSFEngine.obj" \
+	"$(INTDIR)\SoSFEnum.obj" \
+	"$(INTDIR)\SoSFFloat.obj" \
+	"$(INTDIR)\SoSField.obj" \
+	"$(INTDIR)\SoSFImage.obj" \
+	"$(INTDIR)\SoSFInt32.obj" \
+	"$(INTDIR)\SoSFMatrix.obj" \
+	"$(INTDIR)\SoSFName.obj" \
+	"$(INTDIR)\SoSFNode.obj" \
+	"$(INTDIR)\SoSFPath.obj" \
+	"$(INTDIR)\SoSFPlane.obj" \
+	"$(INTDIR)\SoSFRotation.obj" \
+	"$(INTDIR)\SoSFShort.obj" \
+	"$(INTDIR)\SoSFString.obj" \
+	"$(INTDIR)\SoSFTime.obj" \
+	"$(INTDIR)\SoSFTrigger.obj" \
+	"$(INTDIR)\SoSFUInt32.obj" \
+	"$(INTDIR)\SoSFUShort.obj" \
+	"$(INTDIR)\SoSFVec2f.obj" \
+	"$(INTDIR)\SoSFVec3f.obj" \
+	"$(INTDIR)\SoSFVec4f.obj" \
+	"$(INTDIR)\SoShape.obj" \
+	"$(INTDIR)\SoShapeHints.obj" \
+	"$(INTDIR)\SoShapeHintsElement.obj" \
+	"$(INTDIR)\SoShapeKit.obj" \
+	"$(INTDIR)\SoShapeSimplifyAction.obj" \
+	"$(INTDIR)\SoShapeStyleElement.obj" \
+	"$(INTDIR)\SoShininessElement.obj" \
+	"$(INTDIR)\SoShuttle.obj" \
+	"$(INTDIR)\SoSimplifyAction.obj" \
+	"$(INTDIR)\SoSpaceballButtonEvent.obj" \
+	"$(INTDIR)\SoSpecularColorElement.obj" \
+	"$(INTDIR)\SoSphere.obj" \
+	"$(INTDIR)\SoSpotLight.obj" \
+	"$(INTDIR)\SoSpotLightDragger.obj" \
+	"$(INTDIR)\SoSpotLightManip.obj" \
+	"$(INTDIR)\SoState.obj" \
+	"$(INTDIR)\SoSurroundScale.obj" \
+	"$(INTDIR)\SoSwitch.obj" \
+	"$(INTDIR)\SoSwitchElement.obj" \
+	"$(INTDIR)\SoTabBoxDragger.obj" \
+	"$(INTDIR)\SoTabBoxManip.obj" \
+	"$(INTDIR)\SoTabPlaneDragger.obj" \
+	"$(INTDIR)\SoTempPath.obj" \
+	"$(INTDIR)\SoText2.obj" \
+	"$(INTDIR)\SoText3.obj" \
+	"$(INTDIR)\SoTextDetail.obj" \
+	"$(INTDIR)\SoTextOutlineEnabledElement.obj" \
+	"$(INTDIR)\SoTexture2.obj" \
+	"$(INTDIR)\SoTexture2Transform.obj" \
+	"$(INTDIR)\SoTextureCoordinate2.obj" \
+	"$(INTDIR)\SoTextureCoordinateBinding.obj" \
+	"$(INTDIR)\SoTextureCoordinateBindingElement.obj" \
+	"$(INTDIR)\SoTextureCoordinateBundle.obj" \
+	"$(INTDIR)\SoTextureCoordinateCache.obj" \
+	"$(INTDIR)\SoTextureCoordinateDefault.obj" \
+	"$(INTDIR)\SoTextureCoordinateElement.obj" \
+	"$(INTDIR)\SoTextureCoordinateEnvironment.obj" \
+	"$(INTDIR)\SoTextureCoordinateFunction.obj" \
+	"$(INTDIR)\SoTextureCoordinatePlane.obj" \
+	"$(INTDIR)\SoTextureImageElement.obj" \
+	"$(INTDIR)\SoTextureMatrixElement.obj" \
+	"$(INTDIR)\SoTextureOverrideElement.obj" \
+	"$(INTDIR)\SoTextureQualityElement.obj" \
+	"$(INTDIR)\SoTimeCounter.obj" \
+	"$(INTDIR)\SoTimerQueueSensor.obj" \
+	"$(INTDIR)\SoTimerSensor.obj" \
+	"$(INTDIR)\SoToVRML2Action.obj" \
+	"$(INTDIR)\SoToVRMLAction.obj" \
+	"$(INTDIR)\SoTrackballDragger.obj" \
+	"$(INTDIR)\SoTrackballManip.obj" \
+	"$(INTDIR)\SoTransform.obj" \
+	"$(INTDIR)\SoTransformation.obj" \
+	"$(INTDIR)\SoTransformBoxDragger.obj" \
+	"$(INTDIR)\SoTransformBoxManip.obj" \
+	"$(INTDIR)\SoTransformerDragger.obj" \
+	"$(INTDIR)\SoTransformerManip.obj" \
+	"$(INTDIR)\SoTransformManip.obj" \
+	"$(INTDIR)\SoTransformSeparator.obj" \
+	"$(INTDIR)\SoTransformVec3f.obj" \
+	"$(INTDIR)\SoTranslate1Dragger.obj" \
+	"$(INTDIR)\SoTranslate2Dragger.obj" \
+	"$(INTDIR)\SoTranslation.obj" \
+	"$(INTDIR)\SoTransparencyElement.obj" \
+	"$(INTDIR)\SoTriangleStripSet.obj" \
+	"$(INTDIR)\SoTriggerAny.obj" \
+	"$(INTDIR)\SoType.obj" \
+	"$(INTDIR)\SoTypeList.obj" \
+	"$(INTDIR)\SoUnits.obj" \
+	"$(INTDIR)\SoUnitsElement.obj" \
+	"$(INTDIR)\SoUnknownNode.obj" \
+	"$(INTDIR)\SoVertexProperty.obj" \
+	"$(INTDIR)\SoVertexShape.obj" \
+	"$(INTDIR)\SoViewingMatrixElement.obj" \
+	"$(INTDIR)\SoViewportRegionElement.obj" \
+	"$(INTDIR)\SoViewVolumeElement.obj" \
+	"$(INTDIR)\SoVRMLInterpolator.obj" \
+	"$(INTDIR)\SoVRMLInterpOutput.obj" \
+	"$(INTDIR)\SoVRMLInterpOutputList.obj" \
+	"$(INTDIR)\SoWindowElement.obj" \
+	"$(INTDIR)\SoWrapperKit.obj" \
+	"$(INTDIR)\SoWriteAction.obj" \
+	"$(INTDIR)\SoWWWAnchor.obj" \
+	"$(INTDIR)\SoWWWInline.obj"
+
+"$(OUTDIR)\coin.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+    $(LIB32) @<<
+  $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
+<<
+
+!ENDIF 
+
+
+!IF "$(NO_EXTERNAL_DEPS)" != "1"
+!IF EXISTS("coin.dep")
+!INCLUDE "coin.dep"
+!ELSE 
+!MESSAGE Warning: cannot find "coin.dep"
+!ENDIF 
+!ENDIF 
+
+
+!IF "$(CFG)" == "coin - Win32 Release" || "$(CFG)" == "coin - Win32 Debug"
+SOURCE="@coin_src_dir@\src\manips\commoncode.cpp"
+
+"$(INTDIR)\commoncode.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\default2dfont.cpp"
+
+"$(INTDIR)\default2dfont.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\default3dfont.cpp"
+
+"$(INTDIR)\default3dfont.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\evaluator.c"
+
+"$(INTDIR)\evaluator.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\evaluator.tab.c"
+
+"$(INTDIR)\evaluator.tab.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbBox2f.cpp"
+
+"$(INTDIR)\SbBox2f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbBox2s.cpp"
+
+"$(INTDIR)\SbBox2s.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbBox3f.cpp"
+
+"$(INTDIR)\SbBox3f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbBSPTree.cpp"
+
+"$(INTDIR)\SbBSPTree.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbColor.cpp"
+
+"$(INTDIR)\SbColor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbColor4f.cpp"
+
+"$(INTDIR)\SbColor4f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbCylinder.cpp"
+
+"$(INTDIR)\SbCylinder.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\projectors\SbCylinderPlaneProjector.cpp"
+
+"$(INTDIR)\SbCylinderPlaneProjector.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\projectors\SbCylinderProjector.cpp"
+
+"$(INTDIR)\SbCylinderProjector.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\projectors\SbCylinderSectionProjector.cpp"
+
+"$(INTDIR)\SbCylinderSectionProjector.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\projectors\SbCylinderSheetProjector.cpp"
+
+"$(INTDIR)\SbCylinderSheetProjector.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbDict.cpp"
+
+"$(INTDIR)\SbDict.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbHeap.cpp"
+
+"$(INTDIR)\SbHeap.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SbIntList.cpp"
+
+"$(INTDIR)\SbIntList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbLine.cpp"
+
+"$(INTDIR)\SbLine.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\projectors\SbLineProjector.cpp"
+
+"$(INTDIR)\SbLineProjector.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SbList.cpp"
+
+"$(INTDIR)\SbList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbMatrix.cpp"
+
+"$(INTDIR)\SbMatrix.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbName.cpp"
+
+"$(INTDIR)\SbName.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbOctTree.cpp"
+
+"$(INTDIR)\SbOctTree.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbPlane.cpp"
+
+"$(INTDIR)\SbPlane.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\projectors\SbPlaneProjector.cpp"
+
+"$(INTDIR)\SbPlaneProjector.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SbPList.cpp"
+
+"$(INTDIR)\SbPList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\projectors\SbProjector.cpp"
+
+"$(INTDIR)\SbProjector.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbRotation.cpp"
+
+"$(INTDIR)\SbRotation.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbSphere.cpp"
+
+"$(INTDIR)\SbSphere.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\projectors\SbSpherePlaneProjector.cpp"
+
+"$(INTDIR)\SbSpherePlaneProjector.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\projectors\SbSphereProjector.cpp"
+
+"$(INTDIR)\SbSphereProjector.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\projectors\SbSphereSectionProjector.cpp"
+
+"$(INTDIR)\SbSphereSectionProjector.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\projectors\SbSphereSheetProjector.cpp"
+
+"$(INTDIR)\SbSphereSheetProjector.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbString.cpp"
+
+"$(INTDIR)\SbString.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SbStringList.cpp"
+
+"$(INTDIR)\SbStringList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbTesselator.cpp"
+
+"$(INTDIR)\SbTesselator.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbTime.cpp"
+
+"$(INTDIR)\SbTime.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbVec2f.cpp"
+
+"$(INTDIR)\SbVec2f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbVec2s.cpp"
+
+"$(INTDIR)\SbVec2s.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbVec3f.cpp"
+
+"$(INTDIR)\SbVec3f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SbVec3fList.cpp"
+
+"$(INTDIR)\SbVec3fList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbVec4f.cpp"
+
+"$(INTDIR)\SbVec4f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbViewportRegion.cpp"
+
+"$(INTDIR)\SbViewportRegion.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbViewVolume.cpp"
+
+"$(INTDIR)\SbViewVolume.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbXfBox3f.cpp"
+
+"$(INTDIR)\SbXfBox3f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\snprintf.c"
+
+"$(INTDIR)\snprintf.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoAccumulatedElement.cpp"
+
+"$(INTDIR)\SoAccumulatedElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoAction.cpp"
+
+"$(INTDIR)\SoAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SoActionMethodList.cpp"
+
+"$(INTDIR)\SoActionMethodList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\sensors\SoAlarmSensor.cpp"
+
+"$(INTDIR)\SoAlarmSensor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoAmbientColorElement.cpp"
+
+"$(INTDIR)\SoAmbientColorElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoAnnotation.cpp"
+
+"$(INTDIR)\SoAnnotation.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoAnnoText3.cpp"
+
+"$(INTDIR)\SoAnnoText3.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoAnnoText3CharOrientElement.cpp"
+
+"$(INTDIR)\SoAnnoText3CharOrientElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoAnnoText3FontSizeHintElement.cpp"
+
+"$(INTDIR)\SoAnnoText3FontSizeHintElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoAnnoText3Property.cpp"
+
+"$(INTDIR)\SoAnnoText3Property.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoAnnoText3RenderPrintElement.cpp"
+
+"$(INTDIR)\SoAnnoText3RenderPrintElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoAntiSquish.cpp"
+
+"$(INTDIR)\SoAntiSquish.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodekits\SoAppearanceKit.cpp"
+
+"$(INTDIR)\SoAppearanceKit.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoArray.cpp"
+
+"$(INTDIR)\SoArray.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoAsciiText.cpp"
+
+"$(INTDIR)\SoAsciiText.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SoAuditorList.cpp"
+
+"$(INTDIR)\SoAuditorList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoBase.cpp"
+
+"$(INTDIR)\SoBase.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoBaseColor.cpp"
+
+"$(INTDIR)\SoBaseColor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodekits\SoBaseKit.cpp"
+
+"$(INTDIR)\SoBaseKit.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SoBaseList.cpp"
+
+"$(INTDIR)\SoBaseList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoBBoxModelMatrixElement.cpp"
+
+"$(INTDIR)\SoBBoxModelMatrixElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoBlinker.cpp"
+
+"$(INTDIR)\SoBlinker.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoBoolOperation.cpp"
+
+"$(INTDIR)\SoBoolOperation.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\caches\SoBoundingBoxCache.cpp"
+
+"$(INTDIR)\SoBoundingBoxCache.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoBoxHighlightRenderAction.cpp"
+
+"$(INTDIR)\SoBoxHighlightRenderAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\bundles\SoBundle.cpp"
+
+"$(INTDIR)\SoBundle.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\events\SoButtonEvent.cpp"
+
+"$(INTDIR)\SoButtonEvent.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\caches\SoCache.cpp"
+
+"$(INTDIR)\SoCache.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoCacheElement.cpp"
+
+"$(INTDIR)\SoCacheElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoCalculator.cpp"
+
+"$(INTDIR)\SoCalculator.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoCallback.cpp"
+
+"$(INTDIR)\SoCallback.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoCallbackAction.cpp"
+
+"$(INTDIR)\SoCallbackAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SoCallbackList.cpp"
+
+"$(INTDIR)\SoCallbackList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoCamera.cpp"
+
+"$(INTDIR)\SoCamera.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodekits\SoCameraKit.cpp"
+
+"$(INTDIR)\SoCameraKit.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoCenterballDragger.cpp"
+
+"$(INTDIR)\SoCenterballDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\manips\SoCenterballManip.cpp"
+
+"$(INTDIR)\SoCenterballManip.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoChildList.cpp"
+
+"$(INTDIR)\SoChildList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoClipPlane.cpp"
+
+"$(INTDIR)\SoClipPlane.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoClipPlaneElement.cpp"
+
+"$(INTDIR)\SoClipPlaneElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\manips\SoClipPlaneManip.cpp"
+
+"$(INTDIR)\SoClipPlaneManip.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoColorIndex.cpp"
+
+"$(INTDIR)\SoColorIndex.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoComplexity.cpp"
+
+"$(INTDIR)\SoComplexity.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoComplexityElement.cpp"
+
+"$(INTDIR)\SoComplexityElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoComplexityTypeElement.cpp"
+
+"$(INTDIR)\SoComplexityTypeElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoComposeMatrix.cpp"
+
+"$(INTDIR)\SoComposeMatrix.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoComposeRotation.cpp"
+
+"$(INTDIR)\SoComposeRotation.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoComposeRotationFromTo.cpp"
+
+"$(INTDIR)\SoComposeRotationFromTo.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoComposeVec2f.cpp"
+
+"$(INTDIR)\SoComposeVec2f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoComposeVec3f.cpp"
+
+"$(INTDIR)\SoComposeVec3f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoComposeVec4f.cpp"
+
+"$(INTDIR)\SoComposeVec4f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoComputeBoundingBox.cpp"
+
+"$(INTDIR)\SoComputeBoundingBox.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoConcatenate.cpp"
+
+"$(INTDIR)\SoConcatenate.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoCone.cpp"
+
+"$(INTDIR)\SoCone.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\details\SoConeDetail.cpp"
+
+"$(INTDIR)\SoConeDetail.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoConvertAll.cpp"
+
+"$(INTDIR)\SoConvertAll.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\caches\SoConvexDataCache.cpp"
+
+"$(INTDIR)\SoConvexDataCache.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoCoordinate3.cpp"
+
+"$(INTDIR)\SoCoordinate3.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoCoordinate4.cpp"
+
+"$(INTDIR)\SoCoordinate4.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoCoordinateElement.cpp"
+
+"$(INTDIR)\SoCoordinateElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoCounter.cpp"
+
+"$(INTDIR)\SoCounter.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoCreaseAngleElement.cpp"
+
+"$(INTDIR)\SoCreaseAngleElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoCube.cpp"
+
+"$(INTDIR)\SoCube.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\details\SoCubeDetail.cpp"
+
+"$(INTDIR)\SoCubeDetail.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoCullElement.cpp"
+
+"$(INTDIR)\SoCullElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoCylinder.cpp"
+
+"$(INTDIR)\SoCylinder.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\details\SoCylinderDetail.cpp"
+
+"$(INTDIR)\SoCylinderDetail.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\sensors\SoDataSensor.cpp"
+
+"$(INTDIR)\SoDataSensor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoDB.cpp"
+
+"$(INTDIR)\SoDB.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\errors\SoDebugError.cpp"
+
+"$(INTDIR)\SoDebugError.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoDecimationPercentageElement.cpp"
+
+"$(INTDIR)\SoDecimationPercentageElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoDecimationTypeElement.cpp"
+
+"$(INTDIR)\SoDecimationTypeElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoDecomposeMatrix.cpp"
+
+"$(INTDIR)\SoDecomposeMatrix.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoDecomposeRotation.cpp"
+
+"$(INTDIR)\SoDecomposeRotation.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoDecomposeVec2f.cpp"
+
+"$(INTDIR)\SoDecomposeVec2f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoDecomposeVec3f.cpp"
+
+"$(INTDIR)\SoDecomposeVec3f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoDecomposeVec4f.cpp"
+
+"$(INTDIR)\SoDecomposeVec4f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\sensors\SoDelayQueueSensor.cpp"
+
+"$(INTDIR)\SoDelayQueueSensor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\details\SoDetail.cpp"
+
+"$(INTDIR)\SoDetail.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SoDetailList.cpp"
+
+"$(INTDIR)\SoDetailList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoDiffuseColorElement.cpp"
+
+"$(INTDIR)\SoDiffuseColorElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoDirectionalLight.cpp"
+
+"$(INTDIR)\SoDirectionalLight.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoDirectionalLightDragger.cpp"
+
+"$(INTDIR)\SoDirectionalLightDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\manips\SoDirectionalLightManip.cpp"
+
+"$(INTDIR)\SoDirectionalLightManip.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoDragger.cpp"
+
+"$(INTDIR)\SoDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoDragPointDragger.cpp"
+
+"$(INTDIR)\SoDragPointDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoDrawStyle.cpp"
+
+"$(INTDIR)\SoDrawStyle.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoDrawStyleElement.cpp"
+
+"$(INTDIR)\SoDrawStyleElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoElapsedTime.cpp"
+
+"$(INTDIR)\SoElapsedTime.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoElement.cpp"
+
+"$(INTDIR)\SoElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoEmissiveColorElement.cpp"
+
+"$(INTDIR)\SoEmissiveColorElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SoEnabledElementsList.cpp"
+
+"$(INTDIR)\SoEnabledElementsList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoEngine.cpp"
+
+"$(INTDIR)\SoEngine.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SoEngineList.cpp"
+
+"$(INTDIR)\SoEngineList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoEngineOutput.cpp"
+
+"$(INTDIR)\SoEngineOutput.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SoEngineOutputList.cpp"
+
+"$(INTDIR)\SoEngineOutputList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoEnvironment.cpp"
+
+"$(INTDIR)\SoEnvironment.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoEnvironmentElement.cpp"
+
+"$(INTDIR)\SoEnvironmentElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\errors\SoError.cpp"
+
+"$(INTDIR)\SoError.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\events\SoEvent.cpp"
+
+"$(INTDIR)\SoEvent.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoEventCallback.cpp"
+
+"$(INTDIR)\SoEventCallback.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoExtSelection.cpp"
+
+"$(INTDIR)\SoExtSelection.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\details\SoFaceDetail.cpp"
+
+"$(INTDIR)\SoFaceDetail.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoFaceSet.cpp"
+
+"$(INTDIR)\SoFaceSet.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoField.cpp"
+
+"$(INTDIR)\SoField.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoFieldContainer.cpp"
+
+"$(INTDIR)\SoFieldContainer.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoFieldConverter.cpp"
+
+"$(INTDIR)\SoFieldConverter.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoFieldData.cpp"
+
+"$(INTDIR)\SoFieldData.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SoFieldList.cpp"
+
+"$(INTDIR)\SoFieldList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\sensors\SoFieldSensor.cpp"
+
+"$(INTDIR)\SoFieldSensor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoFile.cpp"
+
+"$(INTDIR)\SoFile.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoFloatElement.cpp"
+
+"$(INTDIR)\SoFloatElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoFocalDistanceElement.cpp"
+
+"$(INTDIR)\SoFocalDistanceElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoFont.cpp"
+
+"$(INTDIR)\SoFont.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoFontNameElement.cpp"
+
+"$(INTDIR)\SoFontNameElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoFontSizeElement.cpp"
+
+"$(INTDIR)\SoFontSizeElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoFontStyle.cpp"
+
+"$(INTDIR)\SoFontStyle.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoFullPath.cpp"
+
+"$(INTDIR)\SoFullPath.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoGate.cpp"
+
+"$(INTDIR)\SoGate.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoGenerate.cpp"
+
+"$(INTDIR)\SoGenerate.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoGetBoundingBoxAction.cpp"
+
+"$(INTDIR)\SoGetBoundingBoxAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoGetMatrixAction.cpp"
+
+"$(INTDIR)\SoGetMatrixAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoGetPrimitiveCountAction.cpp"
+
+"$(INTDIR)\SoGetPrimitiveCountAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoGL.cpp"
+
+"$(INTDIR)\SoGL.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLAmbientColorElement.cpp"
+
+"$(INTDIR)\SoGLAmbientColorElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLClipPlaneElement.cpp"
+
+"$(INTDIR)\SoGLClipPlaneElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLCoordinateElement.cpp"
+
+"$(INTDIR)\SoGLCoordinateElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLDiffuseColorElement.cpp"
+
+"$(INTDIR)\SoGLDiffuseColorElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLDrawStyleElement.cpp"
+
+"$(INTDIR)\SoGLDrawStyleElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLEmissiveColorElement.cpp"
+
+"$(INTDIR)\SoGLEmissiveColorElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLEnvironmentElement.cpp"
+
+"$(INTDIR)\SoGLEnvironmentElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoGLImage.cpp"
+
+"$(INTDIR)\SoGLImage.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLLazyElement.cpp"
+
+"$(INTDIR)\SoGLLazyElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLLightIdElement.cpp"
+
+"$(INTDIR)\SoGLLightIdElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLLightModelElement.cpp"
+
+"$(INTDIR)\SoGLLightModelElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLLinePatternElement.cpp"
+
+"$(INTDIR)\SoGLLinePatternElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLLineWidthElement.cpp"
+
+"$(INTDIR)\SoGLLineWidthElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLModelMatrixElement.cpp"
+
+"$(INTDIR)\SoGLModelMatrixElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLNormalElement.cpp"
+
+"$(INTDIR)\SoGLNormalElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLNormalizeElement.cpp"
+
+"$(INTDIR)\SoGLNormalizeElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoGlobalField.cpp"
+
+"$(INTDIR)\SoGlobalField.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoGlobalSimplifyAction.cpp"
+
+"$(INTDIR)\SoGlobalSimplifyAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLPointSizeElement.cpp"
+
+"$(INTDIR)\SoGLPointSizeElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLPolygonOffsetElement.cpp"
+
+"$(INTDIR)\SoGLPolygonOffsetElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLPolygonStippleElement.cpp"
+
+"$(INTDIR)\SoGLPolygonStippleElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLProjectionMatrixElement.cpp"
+
+"$(INTDIR)\SoGLProjectionMatrixElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoGLRenderAction.cpp"
+
+"$(INTDIR)\SoGLRenderAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLRenderPassElement.cpp"
+
+"$(INTDIR)\SoGLRenderPassElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLShadeModelElement.cpp"
+
+"$(INTDIR)\SoGLShadeModelElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLShapeHintsElement.cpp"
+
+"$(INTDIR)\SoGLShapeHintsElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLShininessElement.cpp"
+
+"$(INTDIR)\SoGLShininessElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLSpecularColorElement.cpp"
+
+"$(INTDIR)\SoGLSpecularColorElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLTextureCoordinateElement.cpp"
+
+"$(INTDIR)\SoGLTextureCoordinateElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLTextureEnabledElement.cpp"
+
+"$(INTDIR)\SoGLTextureEnabledElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLTextureImageElement.cpp"
+
+"$(INTDIR)\SoGLTextureImageElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLTextureMatrixElement.cpp"
+
+"$(INTDIR)\SoGLTextureMatrixElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLUpdateAreaElement.cpp"
+
+"$(INTDIR)\SoGLUpdateAreaElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLViewingMatrixElement.cpp"
+
+"$(INTDIR)\SoGLViewingMatrixElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLViewportRegionElement.cpp"
+
+"$(INTDIR)\SoGLViewportRegionElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoGlyph.cpp"
+
+"$(INTDIR)\SoGlyph.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoGroup.cpp"
+
+"$(INTDIR)\SoGroup.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoHandleBoxDragger.cpp"
+
+"$(INTDIR)\SoHandleBoxDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\manips\SoHandleBoxManip.cpp"
+
+"$(INTDIR)\SoHandleBoxManip.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoHandleEventAction.cpp"
+
+"$(INTDIR)\SoHandleEventAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\sensors\SoIdleSensor.cpp"
+
+"$(INTDIR)\SoIdleSensor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoImage.cpp"
+
+"$(INTDIR)\SoImage.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoImageInterface.cpp"
+
+"$(INTDIR)\SoImageInterface.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoIndexedFaceSet.cpp"
+
+"$(INTDIR)\SoIndexedFaceSet.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoIndexedLineSet.cpp"
+
+"$(INTDIR)\SoIndexedLineSet.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoIndexedNurbsCurve.cpp"
+
+"$(INTDIR)\SoIndexedNurbsCurve.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoIndexedNurbsSurface.cpp"
+
+"$(INTDIR)\SoIndexedNurbsSurface.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoIndexedShape.cpp"
+
+"$(INTDIR)\SoIndexedShape.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoIndexedTriangleStripSet.cpp"
+
+"$(INTDIR)\SoIndexedTriangleStripSet.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoInfo.cpp"
+
+"$(INTDIR)\SoInfo.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoInput.cpp"
+
+"$(INTDIR)\SoInput.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoInt32Element.cpp"
+
+"$(INTDIR)\SoInt32Element.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoInteraction.cpp"
+
+"$(INTDIR)\SoInteraction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodekits\SoInteractionKit.cpp"
+
+"$(INTDIR)\SoInteractionKit.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoInterpolate.cpp"
+
+"$(INTDIR)\SoInterpolate.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoInterpolateFloat.cpp"
+
+"$(INTDIR)\SoInterpolateFloat.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoInterpolateRotation.cpp"
+
+"$(INTDIR)\SoInterpolateRotation.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoInterpolateVec2f.cpp"
+
+"$(INTDIR)\SoInterpolateVec2f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoInterpolateVec3f.cpp"
+
+"$(INTDIR)\SoInterpolateVec3f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoInterpolateVec4f.cpp"
+
+"$(INTDIR)\SoInterpolateVec4f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoJackDragger.cpp"
+
+"$(INTDIR)\SoJackDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\manips\SoJackManip.cpp"
+
+"$(INTDIR)\SoJackManip.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\events\SoKeyboardEvent.cpp"
+
+"$(INTDIR)\SoKeyboardEvent.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoLabel.cpp"
+
+"$(INTDIR)\SoLabel.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoLazyElement.cpp"
+
+"$(INTDIR)\SoLazyElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoLevelOfDetail.cpp"
+
+"$(INTDIR)\SoLevelOfDetail.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoLevelOfSimplification.cpp"
+
+"$(INTDIR)\SoLevelOfSimplification.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoLight.cpp"
+
+"$(INTDIR)\SoLight.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoLightAttenuationElement.cpp"
+
+"$(INTDIR)\SoLightAttenuationElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoLightElement.cpp"
+
+"$(INTDIR)\SoLightElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodekits\SoLightKit.cpp"
+
+"$(INTDIR)\SoLightKit.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoLightModel.cpp"
+
+"$(INTDIR)\SoLightModel.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoLightModelElement.cpp"
+
+"$(INTDIR)\SoLightModelElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoLightPath.cpp"
+
+"$(INTDIR)\SoLightPath.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoLinearProfile.cpp"
+
+"$(INTDIR)\SoLinearProfile.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\details\SoLineDetail.cpp"
+
+"$(INTDIR)\SoLineDetail.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoLineHighlightRenderAction.cpp"
+
+"$(INTDIR)\SoLineHighlightRenderAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoLinePatternElement.cpp"
+
+"$(INTDIR)\SoLinePatternElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoLineSet.cpp"
+
+"$(INTDIR)\SoLineSet.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoLineWidthElement.cpp"
+
+"$(INTDIR)\SoLineWidthElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoLocalBBoxMatrixElement.cpp"
+
+"$(INTDIR)\SoLocalBBoxMatrixElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoLocateHighlight.cpp"
+
+"$(INTDIR)\SoLocateHighlight.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\events\SoLocation2Event.cpp"
+
+"$(INTDIR)\SoLocation2Event.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoLockManager.cpp"
+
+"$(INTDIR)\SoLockManager.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoLOD.cpp"
+
+"$(INTDIR)\SoLOD.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoMarkerSet.cpp"
+
+"$(INTDIR)\SoMarkerSet.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoMaterial.cpp"
+
+"$(INTDIR)\SoMaterial.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoMaterialBinding.cpp"
+
+"$(INTDIR)\SoMaterialBinding.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoMaterialBindingElement.cpp"
+
+"$(INTDIR)\SoMaterialBindingElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\bundles\SoMaterialBundle.cpp"
+
+"$(INTDIR)\SoMaterialBundle.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoMatrixTransform.cpp"
+
+"$(INTDIR)\SoMatrixTransform.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\errors\SoMemoryError.cpp"
+
+"$(INTDIR)\SoMemoryError.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFBitMask.cpp"
+
+"$(INTDIR)\SoMFBitMask.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFBool.cpp"
+
+"$(INTDIR)\SoMFBool.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFColor.cpp"
+
+"$(INTDIR)\SoMFColor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFEngine.cpp"
+
+"$(INTDIR)\SoMFEngine.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFEnum.cpp"
+
+"$(INTDIR)\SoMFEnum.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFFloat.cpp"
+
+"$(INTDIR)\SoMFFloat.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMField.cpp"
+
+"$(INTDIR)\SoMField.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFInt32.cpp"
+
+"$(INTDIR)\SoMFInt32.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFMatrix.cpp"
+
+"$(INTDIR)\SoMFMatrix.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFName.cpp"
+
+"$(INTDIR)\SoMFName.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFNode.cpp"
+
+"$(INTDIR)\SoMFNode.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFPath.cpp"
+
+"$(INTDIR)\SoMFPath.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFPlane.cpp"
+
+"$(INTDIR)\SoMFPlane.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFRotation.cpp"
+
+"$(INTDIR)\SoMFRotation.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFShort.cpp"
+
+"$(INTDIR)\SoMFShort.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFString.cpp"
+
+"$(INTDIR)\SoMFString.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFTime.cpp"
+
+"$(INTDIR)\SoMFTime.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFUInt32.cpp"
+
+"$(INTDIR)\SoMFUInt32.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFUShort.cpp"
+
+"$(INTDIR)\SoMFUShort.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFVec2f.cpp"
+
+"$(INTDIR)\SoMFVec2f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFVec3f.cpp"
+
+"$(INTDIR)\SoMFVec3f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoMFVec4f.cpp"
+
+"$(INTDIR)\SoMFVec4f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoModelMatrixElement.cpp"
+
+"$(INTDIR)\SoModelMatrixElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\events\SoMotion3Event.cpp"
+
+"$(INTDIR)\SoMotion3Event.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\events\SoMouseButtonEvent.cpp"
+
+"$(INTDIR)\SoMouseButtonEvent.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoMultipleCopy.cpp"
+
+"$(INTDIR)\SoMultipleCopy.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoNode.cpp"
+
+"$(INTDIR)\SoNode.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodekits\SoNodeKit.cpp"
+
+"$(INTDIR)\SoNodeKit.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodekits\SoNodekitCatalog.cpp"
+
+"$(INTDIR)\SoNodekitCatalog.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\details\SoNodeKitDetail.cpp"
+
+"$(INTDIR)\SoNodeKitDetail.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodekits\SoNodeKitListPart.cpp"
+
+"$(INTDIR)\SoNodeKitListPart.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodekits\SoNodeKitPath.cpp"
+
+"$(INTDIR)\SoNodeKitPath.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SoNodeList.cpp"
+
+"$(INTDIR)\SoNodeList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\sensors\SoNodeSensor.cpp"
+
+"$(INTDIR)\SoNodeSensor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoNonIndexedShape.cpp"
+
+"$(INTDIR)\SoNonIndexedShape.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoNormal.cpp"
+
+"$(INTDIR)\SoNormal.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoNormalBinding.cpp"
+
+"$(INTDIR)\SoNormalBinding.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoNormalBindingElement.cpp"
+
+"$(INTDIR)\SoNormalBindingElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\caches\SoNormalCache.cpp"
+
+"$(INTDIR)\SoNormalCache.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoNormalElement.cpp"
+
+"$(INTDIR)\SoNormalElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoNormalGenerator.cpp"
+
+"$(INTDIR)\SoNormalGenerator.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoNotification.cpp"
+
+"$(INTDIR)\SoNotification.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoNurbsCurve.cpp"
+
+"$(INTDIR)\SoNurbsCurve.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoNurbsProfile.cpp"
+
+"$(INTDIR)\SoNurbsProfile.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoNurbsSurface.cpp"
+
+"$(INTDIR)\SoNurbsSurface.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoOffscreenRenderer.cpp"
+
+"$(INTDIR)\SoOffscreenRenderer.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoOneShot.cpp"
+
+"$(INTDIR)\SoOneShot.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\sensors\SoOneShotSensor.cpp"
+
+"$(INTDIR)\SoOneShotSensor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoOnOff.cpp"
+
+"$(INTDIR)\SoOnOff.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoOrthographicCamera.cpp"
+
+"$(INTDIR)\SoOrthographicCamera.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoOutput.cpp"
+
+"$(INTDIR)\SoOutput.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoOutputData.cpp"
+
+"$(INTDIR)\SoOutputData.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoOverrideElement.cpp"
+
+"$(INTDIR)\SoOverrideElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoPackedColor.cpp"
+
+"$(INTDIR)\SoPackedColor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoPath.cpp"
+
+"$(INTDIR)\SoPath.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SoPathList.cpp"
+
+"$(INTDIR)\SoPathList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\sensors\SoPathSensor.cpp"
+
+"$(INTDIR)\SoPathSensor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoPathSwitch.cpp"
+
+"$(INTDIR)\SoPathSwitch.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoPendulum.cpp"
+
+"$(INTDIR)\SoPendulum.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoPerspectiveCamera.cpp"
+
+"$(INTDIR)\SoPerspectiveCamera.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoPickAction.cpp"
+
+"$(INTDIR)\SoPickAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoPickedPoint.cpp"
+
+"$(INTDIR)\SoPickedPoint.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SoPickedPointList.cpp"
+
+"$(INTDIR)\SoPickedPointList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoPickRayElement.cpp"
+
+"$(INTDIR)\SoPickRayElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoPickStyle.cpp"
+
+"$(INTDIR)\SoPickStyle.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoPickStyleElement.cpp"
+
+"$(INTDIR)\SoPickStyleElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\details\SoPointDetail.cpp"
+
+"$(INTDIR)\SoPointDetail.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoPointLight.cpp"
+
+"$(INTDIR)\SoPointLight.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoPointLightDragger.cpp"
+
+"$(INTDIR)\SoPointLightDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\manips\SoPointLightManip.cpp"
+
+"$(INTDIR)\SoPointLightManip.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoPointSet.cpp"
+
+"$(INTDIR)\SoPointSet.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoPointSizeElement.cpp"
+
+"$(INTDIR)\SoPointSizeElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoPolygonOffset.cpp"
+
+"$(INTDIR)\SoPolygonOffset.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoPolygonOffsetElement.cpp"
+
+"$(INTDIR)\SoPolygonOffsetElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoPrimitiveVertex.cpp"
+
+"$(INTDIR)\SoPrimitiveVertex.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoProfile.cpp"
+
+"$(INTDIR)\SoProfile.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoProfileCoordinate2.cpp"
+
+"$(INTDIR)\SoProfileCoordinate2.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoProfileCoordinate3.cpp"
+
+"$(INTDIR)\SoProfileCoordinate3.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoProfileCoordinateElement.cpp"
+
+"$(INTDIR)\SoProfileCoordinateElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoProfileElement.cpp"
+
+"$(INTDIR)\SoProfileElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoProjectionMatrixElement.cpp"
+
+"$(INTDIR)\SoProjectionMatrixElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoPROTOElement.cpp"
+
+"$(INTDIR)\SoPROTOElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoQuadMesh.cpp"
+
+"$(INTDIR)\SoQuadMesh.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoRayPickAction.cpp"
+
+"$(INTDIR)\SoRayPickAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\errors\SoReadError.cpp"
+
+"$(INTDIR)\SoReadError.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoReorganizeAction.cpp"
+
+"$(INTDIR)\SoReorganizeAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoReplacedElement.cpp"
+
+"$(INTDIR)\SoReplacedElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoResetTransform.cpp"
+
+"$(INTDIR)\SoResetTransform.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoRotateCylindricalDragger.cpp"
+
+"$(INTDIR)\SoRotateCylindricalDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoRotateDiscDragger.cpp"
+
+"$(INTDIR)\SoRotateDiscDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoRotateSphericalDragger.cpp"
+
+"$(INTDIR)\SoRotateSphericalDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoRotation.cpp"
+
+"$(INTDIR)\SoRotation.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoRotationXYZ.cpp"
+
+"$(INTDIR)\SoRotationXYZ.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoRotor.cpp"
+
+"$(INTDIR)\SoRotor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoScale.cpp"
+
+"$(INTDIR)\SoScale.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoScale1Dragger.cpp"
+
+"$(INTDIR)\SoScale1Dragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoScale2Dragger.cpp"
+
+"$(INTDIR)\SoScale2Dragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoScale2UniformDragger.cpp"
+
+"$(INTDIR)\SoScale2UniformDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoScaleUniformDragger.cpp"
+
+"$(INTDIR)\SoScaleUniformDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodekits\SoSceneKit.cpp"
+
+"$(INTDIR)\SoSceneKit.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoSceneManager.cpp"
+
+"$(INTDIR)\SoSceneManager.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoSearchAction.cpp"
+
+"$(INTDIR)\SoSearchAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoSelection.cpp"
+
+"$(INTDIR)\SoSelection.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoSelectOne.cpp"
+
+"$(INTDIR)\SoSelectOne.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\sensors\SoSensor.cpp"
+
+"$(INTDIR)\SoSensor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\sensors\SoSensorManager.cpp"
+
+"$(INTDIR)\SoSensorManager.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoSeparator.cpp"
+
+"$(INTDIR)\SoSeparator.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodekits\SoSeparatorKit.cpp"
+
+"$(INTDIR)\SoSeparatorKit.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFBitMask.cpp"
+
+"$(INTDIR)\SoSFBitMask.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFBool.cpp"
+
+"$(INTDIR)\SoSFBool.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFColor.cpp"
+
+"$(INTDIR)\SoSFColor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFEngine.cpp"
+
+"$(INTDIR)\SoSFEngine.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFEnum.cpp"
+
+"$(INTDIR)\SoSFEnum.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFFloat.cpp"
+
+"$(INTDIR)\SoSFFloat.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSField.cpp"
+
+"$(INTDIR)\SoSField.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFImage.cpp"
+
+"$(INTDIR)\SoSFImage.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFInt32.cpp"
+
+"$(INTDIR)\SoSFInt32.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFMatrix.cpp"
+
+"$(INTDIR)\SoSFMatrix.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFName.cpp"
+
+"$(INTDIR)\SoSFName.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFNode.cpp"
+
+"$(INTDIR)\SoSFNode.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFPath.cpp"
+
+"$(INTDIR)\SoSFPath.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFPlane.cpp"
+
+"$(INTDIR)\SoSFPlane.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFRotation.cpp"
+
+"$(INTDIR)\SoSFRotation.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFShort.cpp"
+
+"$(INTDIR)\SoSFShort.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFString.cpp"
+
+"$(INTDIR)\SoSFString.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFTime.cpp"
+
+"$(INTDIR)\SoSFTime.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFTrigger.cpp"
+
+"$(INTDIR)\SoSFTrigger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFUInt32.cpp"
+
+"$(INTDIR)\SoSFUInt32.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFUShort.cpp"
+
+"$(INTDIR)\SoSFUShort.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFVec2f.cpp"
+
+"$(INTDIR)\SoSFVec2f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFVec3f.cpp"
+
+"$(INTDIR)\SoSFVec3f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\fields\SoSFVec4f.cpp"
+
+"$(INTDIR)\SoSFVec4f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoShape.cpp"
+
+"$(INTDIR)\SoShape.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoShapeHints.cpp"
+
+"$(INTDIR)\SoShapeHints.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoShapeHintsElement.cpp"
+
+"$(INTDIR)\SoShapeHintsElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodekits\SoShapeKit.cpp"
+
+"$(INTDIR)\SoShapeKit.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoShapeSimplifyAction.cpp"
+
+"$(INTDIR)\SoShapeSimplifyAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoShapeStyleElement.cpp"
+
+"$(INTDIR)\SoShapeStyleElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoShininessElement.cpp"
+
+"$(INTDIR)\SoShininessElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoShuttle.cpp"
+
+"$(INTDIR)\SoShuttle.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoSimplifyAction.cpp"
+
+"$(INTDIR)\SoSimplifyAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\events\SoSpaceballButtonEvent.cpp"
+
+"$(INTDIR)\SoSpaceballButtonEvent.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoSpecularColorElement.cpp"
+
+"$(INTDIR)\SoSpecularColorElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoSphere.cpp"
+
+"$(INTDIR)\SoSphere.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoSpotLight.cpp"
+
+"$(INTDIR)\SoSpotLight.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoSpotLightDragger.cpp"
+
+"$(INTDIR)\SoSpotLightDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\manips\SoSpotLightManip.cpp"
+
+"$(INTDIR)\SoSpotLightManip.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoState.cpp"
+
+"$(INTDIR)\SoState.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoSurroundScale.cpp"
+
+"$(INTDIR)\SoSurroundScale.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoSwitch.cpp"
+
+"$(INTDIR)\SoSwitch.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoSwitchElement.cpp"
+
+"$(INTDIR)\SoSwitchElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoTabBoxDragger.cpp"
+
+"$(INTDIR)\SoTabBoxDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\manips\SoTabBoxManip.cpp"
+
+"$(INTDIR)\SoTabBoxManip.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoTabPlaneDragger.cpp"
+
+"$(INTDIR)\SoTabPlaneDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoTempPath.cpp"
+
+"$(INTDIR)\SoTempPath.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoText2.cpp"
+
+"$(INTDIR)\SoText2.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoText3.cpp"
+
+"$(INTDIR)\SoText3.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\details\SoTextDetail.cpp"
+
+"$(INTDIR)\SoTextDetail.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoTextOutlineEnabledElement.cpp"
+
+"$(INTDIR)\SoTextOutlineEnabledElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoTexture2.cpp"
+
+"$(INTDIR)\SoTexture2.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoTexture2Transform.cpp"
+
+"$(INTDIR)\SoTexture2Transform.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoTextureCoordinate2.cpp"
+
+"$(INTDIR)\SoTextureCoordinate2.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoTextureCoordinateBinding.cpp"
+
+"$(INTDIR)\SoTextureCoordinateBinding.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoTextureCoordinateBindingElement.cpp"
+
+"$(INTDIR)\SoTextureCoordinateBindingElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\bundles\SoTextureCoordinateBundle.cpp"
+
+"$(INTDIR)\SoTextureCoordinateBundle.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\caches\SoTextureCoordinateCache.cpp"
+
+"$(INTDIR)\SoTextureCoordinateCache.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoTextureCoordinateDefault.cpp"
+
+"$(INTDIR)\SoTextureCoordinateDefault.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoTextureCoordinateElement.cpp"
+
+"$(INTDIR)\SoTextureCoordinateElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoTextureCoordinateEnvironment.cpp"
+
+"$(INTDIR)\SoTextureCoordinateEnvironment.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoTextureCoordinateFunction.cpp"
+
+"$(INTDIR)\SoTextureCoordinateFunction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoTextureCoordinatePlane.cpp"
+
+"$(INTDIR)\SoTextureCoordinatePlane.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoTextureImageElement.cpp"
+
+"$(INTDIR)\SoTextureImageElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoTextureMatrixElement.cpp"
+
+"$(INTDIR)\SoTextureMatrixElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoTextureOverrideElement.cpp"
+
+"$(INTDIR)\SoTextureOverrideElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoTextureQualityElement.cpp"
+
+"$(INTDIR)\SoTextureQualityElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoTimeCounter.cpp"
+
+"$(INTDIR)\SoTimeCounter.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\sensors\SoTimerQueueSensor.cpp"
+
+"$(INTDIR)\SoTimerQueueSensor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\sensors\SoTimerSensor.cpp"
+
+"$(INTDIR)\SoTimerSensor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoToVRML2Action.cpp"
+
+"$(INTDIR)\SoToVRML2Action.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoToVRMLAction.cpp"
+
+"$(INTDIR)\SoToVRMLAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoTrackballDragger.cpp"
+
+"$(INTDIR)\SoTrackballDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\manips\SoTrackballManip.cpp"
+
+"$(INTDIR)\SoTrackballManip.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoTransform.cpp"
+
+"$(INTDIR)\SoTransform.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoTransformation.cpp"
+
+"$(INTDIR)\SoTransformation.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoTransformBoxDragger.cpp"
+
+"$(INTDIR)\SoTransformBoxDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\manips\SoTransformBoxManip.cpp"
+
+"$(INTDIR)\SoTransformBoxManip.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoTransformerDragger.cpp"
+
+"$(INTDIR)\SoTransformerDragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\manips\SoTransformerManip.cpp"
+
+"$(INTDIR)\SoTransformerManip.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\manips\SoTransformManip.cpp"
+
+"$(INTDIR)\SoTransformManip.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoTransformSeparator.cpp"
+
+"$(INTDIR)\SoTransformSeparator.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoTransformVec3f.cpp"
+
+"$(INTDIR)\SoTransformVec3f.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoTranslate1Dragger.cpp"
+
+"$(INTDIR)\SoTranslate1Dragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\draggers\SoTranslate2Dragger.cpp"
+
+"$(INTDIR)\SoTranslate2Dragger.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoTranslation.cpp"
+
+"$(INTDIR)\SoTranslation.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoTransparencyElement.cpp"
+
+"$(INTDIR)\SoTransparencyElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoTriangleStripSet.cpp"
+
+"$(INTDIR)\SoTriangleStripSet.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\engines\SoTriggerAny.cpp"
+
+"$(INTDIR)\SoTriggerAny.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoType.cpp"
+
+"$(INTDIR)\SoType.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SoTypeList.cpp"
+
+"$(INTDIR)\SoTypeList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoUnits.cpp"
+
+"$(INTDIR)\SoUnits.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoUnitsElement.cpp"
+
+"$(INTDIR)\SoUnitsElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoUnknownNode.cpp"
+
+"$(INTDIR)\SoUnknownNode.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoVertexProperty.cpp"
+
+"$(INTDIR)\SoVertexProperty.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoVertexShape.cpp"
+
+"$(INTDIR)\SoVertexShape.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoViewingMatrixElement.cpp"
+
+"$(INTDIR)\SoViewingMatrixElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoViewportRegionElement.cpp"
+
+"$(INTDIR)\SoViewportRegionElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoViewVolumeElement.cpp"
+
+"$(INTDIR)\SoViewVolumeElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\VRMLnodes\SoVRMLInterpolator.cpp"
+
+"$(INTDIR)\SoVRMLInterpolator.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\VRMLnodes\SoVRMLInterpOutput.cpp"
+
+"$(INTDIR)\SoVRMLInterpOutput.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\lists\SoVRMLInterpOutputList.cpp"
+
+"$(INTDIR)\SoVRMLInterpOutputList.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoWindowElement.cpp"
+
+"$(INTDIR)\SoWindowElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodekits\SoWrapperKit.cpp"
+
+"$(INTDIR)\SoWrapperKit.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\actions\SoWriteAction.cpp"
+
+"$(INTDIR)\SoWriteAction.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoWWWAnchor.cpp"
+
+"$(INTDIR)\SoWWWAnchor.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\nodes\SoWWWInline.cpp"
+
+"$(INTDIR)\SoWWWInline.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+
+!ENDIF 
+

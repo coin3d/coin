@@ -334,6 +334,15 @@ dnl *******************************************************************
 
 SIM_EXPAND_DIR_VARS
 
+dnl Set coin_build_dir so we can change coin.dsp
+coin_current_dir=`pwd`
+SIM_AC_DOBACKSLASH(coin_build_dir,$coin_current_dir)
+AC_SUBST(coin_build_dir)
+
+dnl Set coin_src_dir so we can change coin.dsp
+SIM_AC_DOBACKSLASH(coin_src_dir,$srcdir)
+AC_SUBST(coin_src_dir)
+
 AC_OUTPUT([
         coin-config
         Makefile
@@ -371,10 +380,13 @@ AC_OUTPUT([
         examples/Makefile
         examples/advanced/Makefile
         examples/advanced/elements/Makefile
+        build/coin.dsp
+        build/coin.mak
         ],
         [chmod a+x coin-config])
 
-
+# echo "" | tr -d "
+"
 
 dnl *******************************************************************
 dnl * Platform-specific stuff.
@@ -442,6 +454,17 @@ case "$host_os" in
     echo ;;
 esac
 
+if test x"$sim_ac_linking_style" = xmswin; then
+    echo ""
+    echo " Detected MSVC++. There are some hints regarding this compiler"
+    echo " in the file "
+    echo ""
+    echo "           ${srcdir}/README.MSVC"
+    echo ""
+    echo " Please take a look if this is your first time building with"
+    echo " MSVC++."
+    echo
+fi
 
 dnl *******************************************************************
 dnl * Made it!

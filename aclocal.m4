@@ -357,14 +357,16 @@ for mf in $CONFIG_FILES; do
   grep '^DEP_FILES *= *[^ #]' < "$mf" > /dev/null || continue
   # Extract the definition of DEP_FILES from the Makefile without
   # running `make'.
-  DEPDIR=`sed -n -e '/^DEPDIR = / s///p' < "$mf"`
+  DEPDIR=`tr -d "
+" < "$mf" | sed -n -e '/^DEPDIR = / s///p'`
   test -z "$DEPDIR" && continue
   # When using ansi2knr, U may be empty or an underscore; expand it
   U=`sed -n -e '/^U = / s///p' < "$mf"`
   test -d "$dirpart/$DEPDIR" || mkdir "$dirpart/$DEPDIR"
   # We invoke sed twice because it is the simplest approach to
   # changing $(DEPDIR) to its actual value in the expansion.
-  for file in `sed -n -e '
+  for file in `tr -d "
+" < "$mf" | sed -n -e '
     /^DEP_FILES = .*\\\\$/ {
       s/^DEP_FILES = //
       :loop
@@ -374,7 +376,7 @@ for mf in $CONFIG_FILES; do
 	/\\\\$/ b loop
       p
     }
-    /^DEP_FILES = / s/^DEP_FILES = //p' < "$mf" | \
+    /^DEP_FILES = / s/^DEP_FILES = //p' | \
        sed -e 's/\$(DEPDIR)/'"$DEPDIR"'/g' -e 's/\$U/'"$U"'/g'`; do
     # Make sure the directory exists.
     test -f "$dirpart/$file" && continue
@@ -2270,4 +2272,26 @@ includedir="`eval echo $includedir`"
 libdir="`eval echo $libdir`"
 ])
 
+
+# Convenience macros SIM_AC_DEBACKSLASH and SIM_AC_DOBACKSLASH for
+# converting to and from MSWin/MS-DOS style paths.
+#
+# Example use:
+#
+#     SIM_AC_DEBACKSLASH(my_ac_reversed, "C:\\mydir\\bin")
+#
+# will give a shell variable $my_ac_reversed with the value "C:/mydir/bin").
+# Vice versa for SIM_AC_DOBACKSLASH.
+#
+# Author: Marius Bugge Monsen <mariusbu@sim.no>
+#         Lars Jørgen Aas <larsa@sim.no>
+#         Morten Eriksen <mortene@sim.no>
+
+AC_DEFUN([SIM_AC_DEBACKSLASH], [
+eval "$1=\"`echo $2 | sed -e 's%\\\\%\\/%g'`\""
+])
+
+AC_DEFUN([SIM_AC_DOBACKSLASH], [
+eval "$1=\"`echo $2 | sed -e 's%\\/%\\\\%g'`\""
+])
 
