@@ -46,7 +46,7 @@
 
     Cube {} # the enviromentally mapped object
   }
-  <\code>
+  </code>
 
 */
 
