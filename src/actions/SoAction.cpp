@@ -495,7 +495,9 @@ SoAction::getNodeAppliedTo(void) const
 }
 
 /*!
-  Returns a pointer to the path the action is being applied to.
+  Returns the pointer to the path the action is being applied to.
+  The path is managed by the action instance and should not be destroyed or
+  modified by the caller.
 
   If action is not being applied to a path (but a node or a pathlist),
   the method returns \c NULL.
@@ -507,8 +509,9 @@ SoAction::getPathAppliedTo(void) const
 }
 
 /*!
-  Returns a pointer to the path list the action is currently being
-  applied to.
+  Returns the pointer to the path list the action is currently being
+  applied to.  The path list is managed by the action instance and
+  should not be destroyed or modified by the caller.
 
   If action is not being applied to a path list (but a node or a
   path), the method returns \c NULL.
