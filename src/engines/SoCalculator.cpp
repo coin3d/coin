@@ -86,10 +86,7 @@ SoCalculator::SoCalculator(void)
 SoCalculator::~SoCalculator(void)
 {
   for (int i = 0; i < this->evaluatorList.getLength(); i++) {
-#if 0
-    // FIXME: tmp disabled to avoid crash. 20000411 mortene.
     so_eval_delete(this->evaluatorList[i]);
-#endif // tmp disabled
   }
 }
 
