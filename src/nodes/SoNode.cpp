@@ -166,7 +166,6 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/nodes/SoTextureScalePolicy.h> // possible part of public API in the future
-#include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/misc/SoProtoInstance.h>
@@ -1408,7 +1407,5 @@ init_action_methods(void)
   SoAudioRenderAction::addMethod(SoFile::getClassTypeId(),           
                                  SoAudioRenderAction::callDoAction);
   SoAudioRenderAction::addMethod(SoTransformation::getClassTypeId(), 
-                                 SoAudioRenderAction::callDoAction);
-  SoAudioRenderAction::addMethod(SoBaseKit::getClassTypeId(),        
                                  SoAudioRenderAction::callDoAction);
 }

@@ -517,6 +517,7 @@
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -676,6 +677,8 @@ SoBaseKit::initClass(void)
   // set rayPick method
   SoType type = SoBaseKit::getClassTypeId();
   SoRayPickAction::addMethod(type, SoNode::rayPickS);
+  SoAudioRenderAction::addMethod(type,        
+                                 SoAudioRenderAction::callDoAction);
 }
 
 /*!
