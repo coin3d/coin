@@ -113,8 +113,11 @@ SoDirectionalLight::GLRender(SoGLRenderAction * action)
   }
 
   GLenum light = (GLenum) (idx + GL_LIGHT0);
-
+  
   SbColor4f lightcolor(0.0f, 0.0f, 0.0f, 1.0f);
+  // disable ambient contribution from this light source
+  glLightfv(light, GL_AMBIENT, lightcolor.getValue()); 
+  
   lightcolor.setRGB(this->color.getValue());
   lightcolor *= this->intensity.getValue();
 

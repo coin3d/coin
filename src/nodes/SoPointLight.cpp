@@ -109,6 +109,9 @@ SoPointLight::GLRender(SoGLRenderAction * action)
   glLightf(light, GL_CONSTANT_ATTENUATION, attenuation[2]);
 
   SbColor4f lightcolor(0.0f, 0.0f, 0.0f, 1.0f);
+  // disable ambient contribution from this light source
+  glLightfv(light, GL_AMBIENT, lightcolor.getValue());
+
   lightcolor.setRGB(this->color.getValue());
   lightcolor *= this->intensity.getValue();
 
