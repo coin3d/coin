@@ -63,6 +63,8 @@
 
 typedef ALCenum (ALAPIENTRY * COIN_ALCMAKECONTEXTCURRENT)(void * handle);
 typedef ALCenum (ALAPIENTRY * COIN_ALCDESTROYCONTEXT)(void * handle);
+typedef void (ALAPIENTRY * COIN_ALCPROCESSCONTEXT)(void * handle);
+typedef void (ALAPIENTRY * COIN_ALCSUSPENDCONTEXT)(void * handle);
 
 #endif // HAVE_SOUND
 
@@ -81,11 +83,14 @@ public:
   ALCdevice *device;
   COIN_ALCMAKECONTEXTCURRENT alcMakeContextCurrent;
   COIN_ALCDESTROYCONTEXT alcDestroyContext;
+  COIN_ALCPROCESSCONTEXT alcProcessContext;
+  COIN_ALCSUSPENDCONTEXT alcSuspendContext;
 #endif // HAVE_SOUND
   SoAudioRenderAction *audioRenderAction;
 
   SbBool enabled;
   SbBool initOK;
+  float lastGain;
 
 };
 
@@ -120,6 +125,7 @@ SoAudioDevice::SoAudioDevice()
   PRIVATE(this)->audioRenderAction = NULL;
   PRIVATE(this)->enabled = FALSE;
   PRIVATE(this)->initOK = FALSE;
+  PRIVATE(this)->lastGain = 1.0f;
 
 #ifdef HAVE_SOUND
   PRIVATE(this)->device = NULL;
@@ -131,6 +137,8 @@ SoAudioDevice::SoAudioDevice()
   // function pointer of a safe "common" type.
   PRIVATE(this)->alcMakeContextCurrent = (COIN_ALCMAKECONTEXTCURRENT)alcMakeContextCurrent;
   PRIVATE(this)->alcDestroyContext = (COIN_ALCDESTROYCONTEXT)alcDestroyContext;
+  PRIVATE(this)->alcProcessContext = (COIN_ALCPROCESSCONTEXT)alcProcessContext;
+  PRIVATE(this)->alcSuspendContext = (COIN_ALCSUSPENDCONTEXT)alcSuspendContext;
 #endif // HAVE_SOUND
 
   PRIVATE(this)->audioRenderAction = new SoAudioRenderAction();
@@ -208,6 +216,49 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
   // Clear Error Code
   alGetError();
 
+  // Set listener parameters (position, orientation, velocity, gain)
+  // These will never change, since we're simulating listener movement by
+  // moving sounds instead of moving the listener. 2002-11-13 thammer.
+  ALint error;
+  ALfloat alfloat3[3] = { 0.0f, 0.0f, 0.0f };
+  ALfloat alfloat6[6] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+  float gain = 1.0f;
+
+  alListenerfv(AL_POSITION, alfloat3);
+  if ((error = alGetError()) != AL_NO_ERROR) {
+    SoDebugError::postWarning("SoAudioDevice::init",
+                              "alListenerfv(AL_POSITION,) failed. %s",
+                              coin_get_openal_error(error));
+    return FALSE;
+  }
+
+  alListenerfv(AL_VELOCITY, alfloat3);
+  if ((error = alGetError()) != AL_NO_ERROR) {
+    SoDebugError::postWarning("SoAudioDevice::init",
+                              "alListenerfv(AL_VELOCITY,) failed. %s",
+                              coin_get_openal_error(error));
+    return FALSE;
+  }
+  
+  alListenerfv(AL_ORIENTATION, alfloat6);
+  if ((error = alGetError()) != AL_NO_ERROR) {
+    SoDebugError::postWarning("SoAudioDevice::init",
+                              "alListenerfv(AL_ORIENTATION,) failed. %s",
+                              coin_get_openal_error(error));
+    return FALSE;
+  }
+
+  alListenerf(AL_GAIN, gain);
+  if ((error = alGetError()) != AL_NO_ERROR) {
+    SoDebugError::postWarning("SoAudioDevice::init",
+                              "alListenerf(AL_GAIN,) failed. %s",
+                              coin_get_openal_error(error));
+    return FALSE;
+  }
+
+  alDistanceModel(AL_INVERSE_DISTANCE_CLAMPED);
+
+  PRIVATE(this)->enabled = TRUE;
   PRIVATE(this)->initOK = TRUE;
 #endif // HAVE_SOUND
   return PRIVATE(this)->initOK;
@@ -236,6 +287,7 @@ void SoAudioDevice::cleanup()
   PRIVATE(this)->device = NULL;
 #endif // HAVE_SOUND
 
+  PRIVATE(this)->initOK = FALSE;
 }
   
 /*!
@@ -258,10 +310,7 @@ SbBool SoAudioDevice::enable()
 
   PRIVATE(this)->enabled = TRUE;
 
-  /*  FIXME: implement enable/disable (disable -> stop playing).
-      Remember to make it threadsafe!
-      2002-11-07 thammer
-  */
+  PRIVATE(this)->alcProcessContext(PRIVATE(this)->context);
 
   return TRUE;
 }
@@ -277,6 +326,7 @@ void SoAudioDevice::disable()
   
   PRIVATE(this)->enabled = FALSE;
 
+  PRIVATE(this)->alcSuspendContext(PRIVATE(this)->context);
 }
 
 /*!
@@ -289,5 +339,30 @@ SoAudioDevice::isEnabled()
   return PRIVATE(this)->enabled;
 }
 
+void 
+SoAudioDevice::setGain(float gain)
+{
+  ALint error;
+  gain = (gain < 0.0f) ? 0.0f : gain;
+  alListenerf(AL_GAIN, gain);
+  if ((error = alGetError()) != AL_NO_ERROR) {
+    SoDebugError::postWarning("SoAudioDevice::setGain",
+                              "alListenerf(AL_GAIN,) failed. %s",
+                              coin_get_openal_error(error));
+    return;
+  }
+  PRIVATE(this)->lastGain = gain;
+}
 
+void 
+SoAudioDevice::mute(SbBool mute)
+{
+  if (mute) {
+    float lastgain = PRIVATE(this)->lastGain;
+    this->setGain(0.0f);
+    PRIVATE(this)->lastGain = lastgain;
+  } else {
+    this->setGain(PRIVATE(this)->lastGain);
+  }
+}
 

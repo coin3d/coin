@@ -36,6 +36,8 @@ public:
   void disable();
   SbBool isEnabled();
   SbBool haveSound();
+  void setGain(float gain);
+  void mute(SbBool mute=TRUE);
   void cleanup();
   ~SoAudioDevice();
 
