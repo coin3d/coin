@@ -741,7 +741,7 @@ SbMatrix::getTransform(SbVec3f & translation,
 }
 
 /*!
-  FIXME: not implemented, not documented
+  This function is not implemented in Coin.
 
   \sa getTransform()
  */
@@ -749,6 +749,7 @@ SbBool
 SbMatrix::factor(SbMatrix & r, SbVec3f & s, SbMatrix & u, SbVec3f & t,
                  SbMatrix & proj)
 {
+  // FIXME: not implemented, not documented. 1998MMDD mortene.
   COIN_STUB();
   return FALSE;
 }
