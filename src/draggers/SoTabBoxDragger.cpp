@@ -23,10 +23,20 @@
 
 /*!
   \class SoTabBoxDragger SoTabBoxDragger.h Inventor/draggers/SoTabBoxDragger.h
-  \brief The SoTabBoxDragger class is a box dragger you can translate and scale.
+  \brief The SoTabBoxDragger wraps a box around geometry you can then translate and scale.
   \ingroup draggers
 
-  FIXME: write class doc
+  This dragger lets the end-user do translation and non-uniform
+  scaling of geometry with an easy to understand interface.
+
+  Click and drag any side of the box to translate (hold down a SHIFT
+  key to lock to one axis) and click and drag any of the tab markers
+  in the corners to scale. The way the different tabs influences the
+  scale operation should be straight-forward and intuitive to the
+  end-user.
+
+  The SoTabBoxDragger is a composite dragger, implemented with 6
+  SoTabPlaneDragger instances set up as the sides of a box.
 */
 
 #include <Inventor/draggers/SoTabBoxDragger.h>
@@ -38,6 +48,28 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include <data/draggerDefaults/tabBoxDragger.h>
+
+/*!
+  \var SoSFVec3f SoTabBoxDragger::translation
+
+  Continuously updated to contain the current translation from the
+  dragger's local origo position.
+*/
+/*!
+  \var SoSFVec3f SoTabBoxDragger::scaleFactor
+
+  Continuously updated to contain the current vector of scaling along
+  the X, Y and Z axes.
+*/
+
+/*!
+  \var SoFieldSensor * SoTabBoxDragger::translFieldSensor
+  \internal
+*/
+/*!
+  \var SoFieldSensor * SoTabBoxDragger::scaleFieldSensor
+  \internal
+*/
 
 SO_KIT_SOURCE(SoTabBoxDragger);
 
@@ -235,6 +267,7 @@ SoTabBoxDragger::invalidateSurroundScaleCB(void * d, SoDragger *)
   if (ss) ss->invalidate();
 }
 
+// private
 void
 SoTabBoxDragger::initTransformNodes(void)
 {
