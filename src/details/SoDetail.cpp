@@ -55,7 +55,7 @@ SoDetail::~SoDetail()
 SbBool
 SoDetail::isOfType(const SoType type) const
 {
-  return type.isDerivedFrom(SoDetail::classTypeId);
+  return this->getTypeId().isDerivedFrom(type);
 }
 
 /*!
