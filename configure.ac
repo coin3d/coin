@@ -828,8 +828,18 @@ AC_TRY_LINK([
 
 AC_MSG_CHECKING([for gettimeofday() function])
 AC_TRY_LINK([
+#ifdef HAVE_TIME_H
+#include <time.h>
+#endif /* HAVE_TIME_H */
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
+#endif /* HAVE_SYS_TIME_H */
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif /* HAVE_UNISTD_H */
+#ifdef HAVE_SYS_UNISTD_H
+#include <sys/unistd.h>
+#endif /* HAVE_SYS_UNISTD_H */
 ], [
   struct timeval tmp;
   (void)gettimeofday(&tmp, NULL);
