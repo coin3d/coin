@@ -71,7 +71,7 @@ SoCallbackList::removeCallback(SoCallbackListCB * f, void * userdata)
   int idx = this->getNumCallbacks() - 1;
 
   while (idx != -1) {
-    if ((this->funclist[idx] == f) && (this->datalist[idx] == userdata)) break;
+    if ((this->funclist[idx] == (void*)f) && (this->datalist[idx] == userdata)) break;
     idx--;
   }
 

@@ -88,7 +88,11 @@ SoTypeList::insert(const SoType type, const int insertbefore)
 SoType
 SoTypeList::operator[](const int idx) const
 {
-  return SoType::fromKey((int16_t) SbPList::operator[](idx));
+  // need a temporary variable since not all compilers will let you
+  // cast directly from a pointer to an int16.
+  int tmp = (int) SbPList::operator[](idx);
+  
+  return SoType::fromKey((int16_t) tmp);
 }
 
 /*!
