@@ -132,7 +132,7 @@ SoGLCacheList::call(SoGLRenderAction * action, uint32_t pushattribbits)
   GLCACHE_LOCK(this);
   int n = THIS->itemlist.getLength();
 
-  for (int i = 0; i < n; i++) {
+  for (i = 0; i < n; i++) {
     SoGLRenderCache * cache = THIS->itemlist[i];
     if (cache->getCacheContext() == context) {
       if (cache->isValid(state)) {
