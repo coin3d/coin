@@ -260,18 +260,10 @@ SoLineSet::GLRender(SoGLRenderAction * action)
   mb.sendFirst(); // make sure we have the correct material
 
   int32_t idx = startIndex.getValue();
+  int32_t dummyarray[1];
   const int32_t * ptr = numVertices.getValues(0);
   const int32_t * end = ptr + numVertices.getNum();
-
-  //
-  // fix to render default lineset (numVertices array = -1)
-  //
-  int32_t dummy_array[1];
-  if ((ptr + 1 == end) && (*ptr == -1)) {
-    dummy_array[0] = coords->getNum() - idx; // draw all available vertices
-    ptr = dummy_array;
-    end = ptr + 1;
-  }
+  this->fixNumVerticesPointers(state, ptr, end, dummyarray);
 
   int matnr = 0;
   int texnr = 0;
@@ -346,32 +338,20 @@ SoLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
 
-  if (this->numVertices.getNum() == 1 && this->numVertices[0] == -1) {
-    const SoCoordinateElement *coordelem =
-      SoCoordinateElement::getInstance(action->getState());
-    SoVertexProperty * vp = (SoVertexProperty *) this->vertexProperty.getValue();
-    assert(!vp ||
-           vp->getTypeId().isDerivedFrom(SoVertexProperty::getClassTypeId()));
-    SbBool vpvtx = vp && (vp->vertex.getNum() > 0);
-    
-    const int numCoords = vpvtx ?
-      vp->vertex.getNum() :
-      coordelem->getNum();
-    
-    action->addNumLines(numCoords - this->startIndex.getValue());
+  int32_t dummyarray[1];
+  const int32_t *ptr = this->numVertices.getValues(0);
+  const int32_t *end = ptr + this->numVertices.getNum();
+  this->fixNumVerticesPointers(action->getState(), ptr, end, dummyarray);
+  
+  if (action->canApproximateCount()) {
+    action->addNumLines(end-ptr);
   }
   else {
-    int n = this->numVertices.getNum();
-    if (action->canApproximateCount()) {
-      action->addNumLines(n);
+    int cnt = 0;
+    while (ptr < end) {
+      cnt += *ptr++ - 1;
     }
-    else {
-      int cnt = 0;
-      for (int i = 0; i < n; i++) {
-        cnt += this->numVertices[i]-1;
-      }
-      action->addNumLines(cnt);
-    }
+    action->addNumLines(cnt);
   }
 }
 
@@ -419,19 +399,11 @@ SoLineSet::generatePrimitives(SoAction *action)
     vertex.setNormal(*currnormal);
   }
 
-  int32_t idx = startIndex.getValue();
-  const int32_t * ptr = numVertices.getValues(0);
-  const int32_t * end = ptr + numVertices.getNum();
-
-  //
-  // fix to support default lineset (numVertices array = -1)
-  //
-  int32_t dummy_array[1];
-  if ((ptr + 1 == end) && (*ptr == -1)) {
-    dummy_array[0] = coords->getNum() - idx;
-    ptr = dummy_array;
-    end = ptr + 1;
-  }
+  int32_t idx = this->startIndex.getValue();
+  int32_t dummyarray[1];
+  const int32_t * ptr = this->numVertices.getValues(0);
+  const int32_t * end = ptr + this->numVertices.getNum();
+  this->fixNumVerticesPointers(state, ptr, end, dummyarray);
   
   int normnr = 0;
   int matnr = 0;

@@ -119,3 +119,36 @@ SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
 
   center /= float(lastidx + 1 - startidx);
 }
+
+/*!  
+  Convenience method that might adjust \a start and \a end
+  pointers, which should point at the start and end of the numVertices
+  array when calling this method. This takes care of the case where
+  numVertices contains a single -1, and all coordinates in the state
+  (or in the vertexProperty field) should be rendered as one
+  primitive.
+
+  \a dummyarray should be a temporary array, with room for one integer.
+
+  Not part of the OIV API.  
+*/
+void 
+SoNonIndexedShape::fixNumVerticesPointers(SoState *state, const int32_t *&start, const int32_t *&end,
+                                          int32_t *dummyarray) const
+{
+  if ((start + 1 == end) && (*start == -1)) {
+    const SoCoordinateElement *coordelem =
+      SoCoordinateElement::getInstance(state);
+    SoVertexProperty * vp = (SoVertexProperty *) this->vertexProperty.getValue();
+    SbBool vpvtx = vp && (vp->vertex.getNum() > 0);
+    
+    const int numCoords = vpvtx ?
+      vp->vertex.getNum() :
+      coordelem->getNum();
+
+    dummyarray[0] = numCoords - startIndex.getValue();
+    start = dummyarray;
+    end = start + 1;
+  }
+}
+

@@ -41,7 +41,12 @@ protected:
 
   void computeCoordBBox(SoAction * action, int numVertices,
                         SbBox3f & box, SbVec3f & center);
+
+  void fixNumVerticesPointers(SoState *state, const int32_t *&start, const int32_t *&end,
+                              int32_t *dummyarray) const;
+  
 };
+
 
 
 #endif // !__SONONINDEXEDSHAPE_H__

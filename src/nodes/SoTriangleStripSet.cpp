@@ -236,8 +236,8 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
   SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
   doTextures = tb.needCoordinates();
 
-  Binding mbind = findMaterialBinding(action->getState());
-  Binding nbind = findNormalBinding(action->getState());
+  Binding mbind = this->findMaterialBinding(action->getState());
+  Binding nbind = this->findNormalBinding(action->getState());
 
   if (!needNormals) nbind = OVERALL;
 
@@ -254,8 +254,10 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
   mb.sendFirst(); // make sure we have the correct material
 
   int32_t idx = startIndex.getValue();
+  int32_t dummyarray[1];
   const int32_t * ptr = numVertices.getValues(0);
   const int32_t * end = ptr + numVertices.getNum();
+  this->fixNumVerticesPointers(state, ptr, end, dummyarray);
 
   int matnr = 0;
   int texnr = 0;
@@ -340,8 +342,11 @@ SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
                             TRUE);
 
     int32_t idx = startIndex.getValue();
+    int32_t dummyarray[1];
     const int32_t * ptr = numVertices.getValues(0);
+    const int32_t * start = ptr;
     const int32_t * end = ptr + numVertices.getNum();
+    this->fixNumVerticesPointers(state, ptr, end, dummyarray);
 
     const SoCoordinateElement * coords =
       SoCoordinateElement::getInstance(state);
@@ -363,13 +368,11 @@ SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
         gen->triangle(striptri[0], striptri[1], striptri[2]);
       }
     }
-    gen->generate(SoCreaseAngleElement::get(state),
-                  numVertices.getValues(0),
-                  numVertices.getNum());
+    gen->generate(SoCreaseAngleElement::get(state), start, end-start);
     nc->set(gen);
   }
   else {
-    assert(0 && "Normals per face or per strip not implemented");
+    assert(0 && "FIXME: Normals per face or per strip not implemented (pederb)");
   }
   return TRUE;
 }
@@ -382,16 +385,19 @@ SoTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
 
-  int n = this->numVertices.getNum();
-  if (n == 1 && this->numVertices[0] == -1) return;
+  int32_t dummyarray[1];
+  const int32_t * ptr = numVertices.getValues(0);
+  const int32_t * end = ptr + numVertices.getNum();
+  this->fixNumVerticesPointers(action->getState(), ptr, end, dummyarray);
 
   if (action->canApproximateCount()) {
-    action->addNumTriangles(n*8); // this is a wild guess, disable?
+    // this is a wild guess, disable? pederb, 20000131
+    action->addNumTriangles((end-ptr)*8); 
   }
   else {
     int cnt = 0;
-    for (int i = 0; i < n; i++) {
-      cnt += this->numVertices[i]-2;
+    while (ptr < end) {
+      cnt += *ptr++ - 2;
     }
     action->addNumTriangles(cnt);
   }
@@ -432,11 +438,11 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
   SoTextureCoordinateBundle tb(action, FALSE, FALSE);
   doTextures = tb.needCoordinates();
 
-  Binding mbind = findMaterialBinding(action->getState());
-  Binding nbind = findNormalBinding(action->getState());
+  Binding mbind = this->findMaterialBinding(action->getState());
+  Binding nbind = this->findNormalBinding(action->getState());
 
   if (needNormals && normals == NULL) {
-    normals = getNormalCache()->getNormals();
+    normals = this->getNormalCache()->getNormals();
     if (normals == NULL) {
       // FIXME: temporary until normals can be generated per face
       //        and per strip

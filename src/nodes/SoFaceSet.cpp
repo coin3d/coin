@@ -220,7 +220,7 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);
 
-  SoVertexShape::getVertexData(action->getState(), tmp, normals,
+  SoVertexShape::getVertexData(state, tmp, normals,
                                needNormals);
 
   const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
@@ -228,21 +228,23 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
   SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
   doTextures = tb.needCoordinates();
 
-  Binding mbind = findMaterialBinding(action->getState());
-  Binding nbind = findNormalBinding(action->getState());
+  Binding mbind = this->findMaterialBinding(state);
+  Binding nbind = this->findNormalBinding(state);
 
   if (!needNormals) nbind = OVERALL;
 
   if (needNormals && normals == NULL) {
-    normals = getNormalCache()->getNormals();
+    normals = this->getNormalCache()->getNormals();
   }
 
   SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
 
   int32_t idx = startIndex.getValue();
-  const int32_t * ptr = numVertices.getValues(0);
-  const int32_t * end = ptr + numVertices.getNum();
+  int32_t dummyarray[1];
+  const int32_t *ptr = this->numVertices.getValues(0);
+  const int32_t *end = ptr + this->numVertices.getNum();
+  this->fixNumVerticesPointers(state, ptr, end, dummyarray);
 
   int matnr = 0;
   int texnr = 0;
@@ -326,12 +328,14 @@ SoFaceSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
                             TRUE);
 
     int32_t idx = startIndex.getValue();
-    const int32_t * ptr = numVertices.getValues(0);
-    const int32_t * end = ptr + numVertices.getNum();
+    int32_t dummyarray[1];
+    const int32_t *ptr = this->numVertices.getValues(0);
+    const int32_t *end = ptr + this->numVertices.getNum();
+    this->fixNumVerticesPointers(state, ptr, end, dummyarray);
 
     const SoCoordinateElement * coords =
       SoCoordinateElement::getInstance(state);
-
+    
     while (ptr < end) {
       int num = *ptr++;
       assert(num >= 3);
@@ -369,16 +373,18 @@ SoFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
 
-  int n = this->numVertices.getNum();
-  if (n == 1 && this->numVertices[0] == -1) return;
-
+  int32_t dummyarray[1];
+  const int32_t * ptr = numVertices.getValues(0);
+  const int32_t * end = ptr + numVertices.getNum();
+  this->fixNumVerticesPointers(action->getState(), ptr, end, dummyarray);
+  
   if (action->canApproximateCount()) {
-    action->addNumTriangles(n*3);
+    action->addNumTriangles((end-ptr)*3);
   }
   else {
     int cnt = 0;
-    for (int i = 0; i < n; i++) {
-      cnt += this->numVertices[i]-2;
+    while (ptr < end) {
+      cnt += *ptr++ - 2;
     }
     action->addNumTriangles(cnt);
   }
@@ -402,22 +408,24 @@ SoFaceSet::generatePrimitives(SoAction *action)
   SbBool doTextures;
   SbBool needNormals = TRUE;
 
-  SoVertexShape::getVertexData(action->getState(), coords, normals,
+  SoVertexShape::getVertexData(state, coords, normals,
                                needNormals);
 
   SoTextureCoordinateBundle tb(action, FALSE, FALSE);
   doTextures = tb.needCoordinates();
 
-  Binding mbind = findMaterialBinding(action->getState());
-  Binding nbind = findNormalBinding(action->getState());
+  Binding mbind = this->findMaterialBinding(state);
+  Binding nbind = this->findNormalBinding(state);
 
   if (needNormals && normals == NULL) {
-    normals = getNormalCache()->getNormals();
+    normals = this->getNormalCache()->getNormals();
   }
 
   int32_t idx = startIndex.getValue();
-  const int32_t * ptr = numVertices.getValues(0);
-  const int32_t * end = ptr + numVertices.getNum();
+  int32_t dummyarray[1];
+  const int32_t * ptr = this->numVertices.getValues(0);
+  const int32_t * end = ptr + this->numVertices.getNum();
+  this->fixNumVerticesPointers(state, ptr, end, dummyarray);
 
   int matnr = 0;
   int texnr = 0;
