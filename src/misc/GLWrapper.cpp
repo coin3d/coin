@@ -43,6 +43,32 @@
 #include <dlfcn.h>
 #endif /* HAVE_DLFCN_H */
 
+/* Our own enum definitions */
+#define GL_PACK_SKIP_IMAGES               0x806B
+#define GL_PACK_SKIP_IMAGES_EXT           0x806B
+#define GL_PACK_IMAGE_HEIGHT              0x806C
+#define GL_PACK_IMAGE_HEIGHT_EXT          0x806C
+#define GL_UNPACK_SKIP_IMAGES             0x806D
+#define GL_UNPACK_SKIP_IMAGES_EXT         0x806D
+#define GL_UNPACK_IMAGE_HEIGHT            0x806E
+#define GL_UNPACK_IMAGE_HEIGHT_EXT        0x806E
+#define GL_TEXTURE_3D                     0x806F
+#define GL_TEXTURE_3D_EXT                 0x806F
+#define GL_PROXY_TEXTURE_3D               0x8070
+#define GL_PROXY_TEXTURE_3D_EXT           0x8070
+#define GL_TEXTURE_DEPTH                  0x8071
+#define GL_TEXTURE_DEPTH_EXT              0x8071
+#define GL_TEXTURE_WRAP_R                 0x8072
+#define GL_TEXTURE_WRAP_R_EXT             0x8072
+#define GL_MAX_3D_TEXTURE_SIZE            0x8073
+#define GL_MAX_3D_TEXTURE_SIZE_EXT        0x8073
+#define GL_CLAMP_TO_EDGE                  0x812F
+#define GL_CLAMP_TO_EDGE_SGIS             0x812F
+//  #define GL_TEXTURE_GEN_R
+//  #define GL_TEXTURE_GEN_Q
+#define GL_PROXY_TEXTURE_2D               0x8064
+#define GL_PROXY_TEXTURE_2D_EXT           0x8064
+
 /*
   Define the GETPROCADDRESS macro.
  */
@@ -454,6 +480,13 @@ GLWrapper(int contextid)
 //        gi->COIN_GL_CLAMP_TO_EDGE = GL_CLAMP_TO_EDGE_EXT;
 //      }
 
+    if (GLWrapper_glVersionMatchesAtLeast(gi,1,1,0)) {
+      gi->COIN_GL_PROXY_TEXTURE_2D = GL_PROXY_TEXTURE_2D;
+    }
+    else if (GLWrapper_glEXTSupported(gi, "GL_EXT_texture")) {
+      gi->COIN_GL_PROXY_TEXTURE_2D = GL_PROXY_TEXTURE_2D_EXT;
+    }
+
     // Resolve our functions
 #ifdef COIN_OPENGL_DYNAMIC_BINDING
     if (GLWrapper_glVersionMatchesAtLeast(gi,1,2,0)) {
@@ -536,7 +569,7 @@ GLWrapper(int contextid)
     else if (GLWrapper_glVersionMatchesAtLeast(gi,1,1,0) &&
              GLWrapper_glEXTSupported(gi,"GL_EXT_texture3D")) {
       gi->glTexImage3D = (COIN_PFNGLTEXIMAGE3DPROC)&glTexImage3DEXT;
-      //FIXME: #ifdef these extensions as well? (kintel 20011123)
+      //FIXME: #ifdef these extensions as well or is that implicitly given? (kintel 20011123)
       if (GLWrapper_glEXTSupported(gi, "GL_EXT_copy_texture")) 
         gi->glCopyTexSubImage3D = (COIN_PFNGLCOPYTEXSUBIMAGE3DPROC)&glCopyTexSubImage3DEXT;
       if (GLWrapper_glEXTSupported(gi, "GL_EXT_subtexture"))
@@ -571,6 +604,14 @@ GLWrapper(int contextid)
       gi->glBindTexture =  &glBindTextureEXT;
       gi->glDeleteTextures = &glDeleteTexturesEXT;
       gi->glGenTextures = &glGenTexturesEXT;
+    }
+#endif
+
+#if GL_VERSION_1_1
+    gi->glTexSubImage2D = &glTexSubImage2D;
+#elif GL_EXT_subtexture
+    if (GLWrapper_glEXTSupported(gi, "GL_EXT_subtexture")) {
+      gi->glTexSubImage2D = &glTexSubImage2DEXT;
     }
 #endif
 

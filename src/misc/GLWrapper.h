@@ -59,30 +59,6 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/* Our own enum definitions */
-#define GL_PACK_SKIP_IMAGES               0x806B
-#define GL_PACK_SKIP_IMAGES_EXT           0x806B
-#define GL_PACK_IMAGE_HEIGHT              0x806C
-#define GL_PACK_IMAGE_HEIGHT_EXT          0x806C
-#define GL_UNPACK_SKIP_IMAGES             0x806D
-#define GL_UNPACK_SKIP_IMAGES_EXT         0x806D
-#define GL_UNPACK_IMAGE_HEIGHT            0x806E
-#define GL_UNPACK_IMAGE_HEIGHT_EXT        0x806E
-#define GL_TEXTURE_3D                     0x806F
-#define GL_TEXTURE_3D_EXT                 0x806F
-#define GL_PROXY_TEXTURE_3D               0x8070
-#define GL_PROXY_TEXTURE_3D_EXT           0x8070
-#define GL_TEXTURE_DEPTH                  0x8071
-#define GL_TEXTURE_DEPTH_EXT              0x8071
-#define GL_TEXTURE_WRAP_R                 0x8072
-#define GL_TEXTURE_WRAP_R_EXT             0x8072
-#define GL_MAX_3D_TEXTURE_SIZE            0x8073
-#define GL_MAX_3D_TEXTURE_SIZE_EXT        0x8073
-#define GL_CLAMP_TO_EDGE                  0x812F
-#define GL_CLAMP_TO_EDGE_SGIS             0x812F
-//  #define GL_TEXTURE_GEN_R
-//  #define GL_TEXTURE_GEN_Q
-
 /* Our own typedefs for OpenGL functions. These are copied from
    glext.h and prefixed with COIN_ to avoid namespace collisions. */
 typedef void (APIENTRY * COIN_PFNGLTEXIMAGE3DPROC) (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
@@ -124,11 +100,13 @@ typedef struct {
   GLenum COIN_GL_UNPACK_IMAGE_HEIGHT;
   GLenum COIN_GL_PACK_SKIP_IMAGES;
   GLenum COIN_GL_UNPACK_SKIP_IMAGES;
-  //FIXME: Check OpenGL 1.1 availability of these
+  //FIXME: Check OpenGL 1.0 availability of these (kintel 20011204)
   GLenum COIN_GL_TEXTURE_GEN_R;
   GLenum COIN_GL_TEXTURE_GEN_Q;
 
   GLenum COIN_GL_CLAMP_TO_EDGE;
+
+  GLenum COIN_GL_PROXY_TEXTURE_2D;
 
   /* OpenGL calls. Will be NULL if not available, otherwise they
      contain a valid function pointer into the OpenGL library. */
