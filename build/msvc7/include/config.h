@@ -2,6 +2,10 @@
 /* include/config.h.in.  Generated from configure.ac by autoheader.  */
 
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif
+
 #include <unconfig.h>
 
 
@@ -149,6 +153,9 @@
 /* define that the FreeType header is available */
 /* #undef HAVE_FREETYPE_H */
 
+/* define if fstat() is available */
+#define HAVE_FSTAT 1
+
 /* Define to use ftime() */
 #define HAVE_FTIME 1
 
@@ -209,7 +216,7 @@
 /* Define to 1 if you have the <io.h> header file. */
 #define HAVE_IO_H 1
 
-/* whether or not isinf() is available */
+/* define if isinf() is available */
 /* #undef HAVE_ISINF */
 
 /* whether or not isnan() is available */
@@ -256,9 +263,6 @@
 
 /* Define to use Win32 QueryPerformanceCounter() */
 #define HAVE_QUERYPERFORMANCECOUNTER 1
-
-/* define to enable shader support */
-/* #undef HAVE_SHADERS */
 
 /* define if single-precision math functions are avialable */
 /* #undef HAVE_SINGLEPRECISION_MATH */

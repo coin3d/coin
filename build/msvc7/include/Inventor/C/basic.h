@@ -180,7 +180,6 @@ typedef int SbBool;
 
 #endif /* !COIN_VERSION */ /* Ends configure-generated defines. */
 
-
 /* *********************************************************************** */
 
 #ifndef HAVE_SINGLEPRECISION_MATH
@@ -219,7 +218,6 @@ typedef int SbBool;
 #define atan2f(x, y) ((float)atan2(x, y))
 #endif /* !atan2f */
 #endif /* HAVE_SINGLEPRECISION_MATH */
-
 
 /* *********************************************************************** */
 
@@ -298,7 +296,7 @@ typedef int SbBool;
 #  else /* !COIN_DLL */
 #   ifndef COIN_NOT_DLL
 #    error Define either COIN_DLL or COIN_NOT_DLL as appropriate for your linkage! See Inventor/C/basic.h for further instructions.
-#   endif /* COIN_NOT_DLL */
+#   endif /* !COIN_NOT_DLL */
 #  endif /* !COIN_DLL */
 # endif /* !COIN_INTERNAL */
 #endif /* Microsoft Windows */
@@ -307,6 +305,5 @@ typedef int SbBool;
 #ifndef COIN_DLL_API
 # define COIN_DLL_API
 #endif /* !COIN_DLL_API */
-
 
 #endif /* !COIN_BASIC_H */

@@ -1327,6 +1327,51 @@
 #define GL_MAX_PROGRAM_MATRIX_STACK_DEPTH_ARB 0x862E
 #endif /* GL_MAX_PROGRAM_MATRIX_STACK_DEPTH_ARB */
 
+/* misc shaders */
+#ifndef GL_VERTEX_SHADER_ARB
+#define GL_VERTEX_SHADER_ARB 0x8B31
+#endif /* GL_VERTEX_SHADER_ARB */
+#ifndef GL_FRAGMENT_SHADER_ARB
+#define GL_FRAGMENT_SHADER_ARB 0x8B30
+#endif /* GL_FRAGMENT_SHADER_ARB */
+
+/* GL_ARB_shader_objects */
+#ifndef GL_FLOAT_VEC2_ARB
+#define GL_FLOAT_VEC2_ARB 0x8B50
+#endif /* GL_FLOAT_VEC2_ARB */
+#ifndef GL_FLOAT_VEC3_ARB
+#define GL_FLOAT_VEC3_ARB 0x8B51
+#endif /* GL_FLOAT_VEC3_ARB */
+#ifndef GL_FLOAT_VEC4_ARB
+#define GL_FLOAT_VEC4_ARB 0x8B52
+#endif /* GL_FLOAT_VEC4_ARB */
+#ifndef GL_FLOAT_MAT2_ARB
+#define GL_FLOAT_MAT2_ARB 0x8B5A
+#endif /* GL_FLOAT_MAT2_ARB */
+#ifndef GL_FLOAT_MAT3_ARB
+#define GL_FLOAT_MAT3_ARB 0x8B5B
+#endif /* GL_FLOAT_MAT3_ARB */
+#ifndef GL_FLOAT_MAT4_ARB
+#define GL_FLOAT_MAT4_ARB 0x8B5C
+#endif /* GL_FLOAT_MAT4_ARB */
+#ifndef GL_OBJECT_COMPILE_STATUS_ARB
+#define GL_OBJECT_COMPILE_STATUS_ARB 0x8B81
+#endif /* GL_OBJECT_COMPILE_STATUS_ARB */
+#ifndef GL_OBJECT_INFO_LOG_LENGTH_ARB
+#define GL_OBJECT_INFO_LOG_LENGTH_ARB 0x8B84
+#endif /* GL_OBJECT_INFO_LOG_LENGTH_ARB */
+#ifndef GL_OBJECT_LINK_STATUS_ARB
+#define GL_OBJECT_LINK_STATUS_ARB 0x8B82
+#endif /* GL_OBJECT_LINK_STATUS_ARB */
+
+/* GL_EXT_texture_filter_anisotropic */
+#ifndef GL_TEXTURE_MAX_ANISOTROPY_EXT
+#define GL_TEXTURE_MAX_ANISOTROPY_EXT 0x84FE
+#endif /* GL_TEXTURE_MAX_ANISOTROPY_EXT */
+
+#ifndef GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT
+#define GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT 0x84FF
+#endif /* GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT */
 
 /*** GL enums, end ****************************************************/
 /**********************************************************************/
