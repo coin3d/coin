@@ -1155,6 +1155,8 @@ SoDB::getSensorManager(void)
 }
 
 /*!
+  NOTE: THIS METHOD IS OBSOLETED. DON'T USE IT.
+
   This is a wrapper around the POSIX \c select() call. It is provided
   so you can do synchronous I/O while Coin continues to handle sensor
   events, rendering, etc. The parameters are the same as for \c
@@ -1163,48 +1165,15 @@ SoDB::getSensorManager(void)
   The void* arguments must be valid pointers to fd_set
   structures. We've changed this from the original SGI Inventor API to
   avoid messing up the header file with system-specific includes.
+
+  NOTE: THIS METHOD IS OBSOLETED. DON'T USE IT.
 */
 int
 SoDB::doSelect(int nfds, void * readfds, void * writefds,
                void * exceptfds, struct timeval * usertimeout)
 {
-  // FIXME: need to do eventhandling for sensors etc. Check
-  // SoSensorManager::doSelect(). Should we just call that method?
-  // 19990425 mortene.
-
-  // FIXME: use configure for these checks. 20000130 mortene.
-#ifdef __BEOS__
-  COIN_STUB();
+  assert(FALSE && "obsoleted method");
   return 0;
-#else // !__BEOS__
-  fd_set * rds = (fd_set *)readfds;
-  fd_set * wds = (fd_set *)writefds;
-  fd_set * eds = (fd_set *)exceptfds;
-  // FIXME: the winsock select() call is most likely incorrectly used
-  // here.  What should be done (on Win32) is for sockets to get
-  // waitable event handles by using WSAEventSelect, and for
-  // filehandles to get the handle (_get_osfhandle(fd)), and then use
-  // MsgWaitForMultipleObjectsEx() for waiting.  For fds that aren't
-  // sockets or filehandles; complain.
-  //
-  // Considering sockets at all should be determined on whether
-  // LoadLibrary finds the ws2_32.dll / wsock32.dll or not.
-  //
-  // Someone experienced in Win32-programming ought to check this out
-  // and do proper testing (write a test-case) - I just picked up this
-  // info from this discussion:
-  // http://archive.develooper.com/perl-loop@perl.org/msg00398.html
-  //
-  // 20011002 larsa.
-
-  // FIXME update: I think the SoDB::doSelect() and
-  // SoSensorManager::doSelect() calls are pretty lousy design anyway,
-  // so perhaps we should just obsolete them.  The application
-  // programmer should rather set up a timer himself and periodically
-  // call into the sensor processing queues of Coin, like what is done
-  // by the So* libraries. 20011115 mortene.
-  return select(nfds, rds, wds, eds, usertimeout);
-#endif // __BEOS__
 }
 
 /*!

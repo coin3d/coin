@@ -745,6 +745,8 @@ SoSensorManager::notifyChanged(void)
 }
 
 /*!
+  NOTE: THIS METHOD IS OBSOLETED. DON'T USE IT.
+
   This is a wrapper around the standard select(2) call, which will
   make sure the sensor queues are updated while waiting for any action
   to happen on the given file descriptors.
@@ -752,14 +754,14 @@ SoSensorManager::notifyChanged(void)
   The void* arguments must be valid pointers to fd_set
   structures. We've changed this from the original SGI Inventor API to
   avoid messing up the header file with system-specific includes.
+
+  NOTE: THIS METHOD IS OBSOLETED. DON'T USE IT.
 */
 int
 SoSensorManager::doSelect(int nfds, void * readfds, void * writefds,
                           void * exceptfds, struct timeval * usertimeout)
 {
-  // FIXME: implement. See SoDB::doSelect() (which should probably only
-  // be a wrapper around this call). 19990425 mortene.
-  COIN_STUB();
+  assert(FALSE && "obsoleted method");
   return 0;
 }
 
