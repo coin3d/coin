@@ -41,7 +41,6 @@
 #endif // COIN_DEBUG
 #include <stdio.h> // fprintf()
 
-
 // Private container class.
 class CatalogItem {
 public:
@@ -108,16 +107,9 @@ SoNodekitCatalog::getPartNumber(const SbName & name) const
 const SbName &
 SoNodekitCatalog::getName(int part) const
 {
-  assert(this->delayeditems.getLength() == 0);
-
-#if COIN_DEBUG
-  if (part < 0 || part >= this->getNumEntries()) {
-    SoDebugError::post("SoNodekitCatalog::getName",
-                       "invalid part number, %d", part);
-    static SbName * name = new SbName; // (Avoid static constructor.)
-    return *name;
-  }
-#endif // COIN_DEBUG
+  assert( this->delayeditems.getLength() == 0 );
+  assert( part >= 0 && part < this->getNumEntries() &&
+          "invalid part" );
 
   return this->items[part]->name;
 }
@@ -129,15 +121,8 @@ SoType
 SoNodekitCatalog::getType(int part) const
 {
   assert(this->delayeditems.getLength() == 0);
-
-#if COIN_DEBUG
-  if (part < 0 || part >= this->getNumEntries()) {
-    SoDebugError::post("SoNodekitCatalog::getType",
-                       "invalid part number, %d", part);
-    return SoType::badType();
-  }
-#endif // COIN_DEBUG
-
+  assert( part >= 0 && part < this->getNumEntries() &&
+          "invalid part" );
   return this->items[part]->type;
 }
 
@@ -148,16 +133,7 @@ SoType
 SoNodekitCatalog::getType(const SbName & name) const
 {
   assert(this->delayeditems.getLength() == 0);
-
-  int part = this->getPartNumber(name);
-#if COIN_DEBUG
-  if (part == SO_CATALOG_NAME_NOT_FOUND) {
-    SoDebugError::post("SoNodekitCatalog::getType",
-                       "invalid part name, \"%s\"", name.getString());
-    return SoType::badType();
-  }
-#endif // COIN_DEBUG
-  return this->items[part]->type;
+  return this->getType( this->getPartNumber( name ) );
 }
 
 /*!
@@ -167,14 +143,8 @@ SoType
 SoNodekitCatalog::getDefaultType(int part) const
 {
   assert(this->delayeditems.getLength() == 0);
-
-#if COIN_DEBUG
-  if (part < 0 || part >= this->getNumEntries()) {
-    SoDebugError::post("SoNodekitCatalog::getDefaultType",
-                       "invalid part number, %d", part);
-    return SoType::badType();
-  }
-#endif // COIN_DEBUG
+  assert( part >= 0 && part < this->getNumEntries() &&
+          "invalid part" );
 
   return this->items[part]->defaulttype;
 }
@@ -185,17 +155,8 @@ SoNodekitCatalog::getDefaultType(int part) const
 SoType
 SoNodekitCatalog::getDefaultType(const SbName & name) const
 {
-  assert(this->delayeditems.getLength() == 0);
-
-  int part = this->getPartNumber(name);
-#if COIN_DEBUG
-  if (part == SO_CATALOG_NAME_NOT_FOUND) {
-    SoDebugError::post("SoNodekitCatalog::getDefaultType",
-                       "invalid part name, \"%s\"", name.getString());
-    return SoType::badType();
-  }
-#endif // COIN_DEBUG
-  return this->items[part]->defaulttype;
+  assert( this->delayeditems.getLength() == 0 );
+  return this->getDefaultType( this->getPartNumber( name ) );
 }
 
 /*!
@@ -204,15 +165,9 @@ SoNodekitCatalog::getDefaultType(const SbName & name) const
 SbBool
 SoNodekitCatalog::isNullByDefault(int part) const
 {
-  assert(this->delayeditems.getLength() == 0);
-
-#if COIN_DEBUG
-  if (part < 0 || part >= this->getNumEntries()) {
-    SoDebugError::post("SoNodekitCatalog::isNullByDefault",
-                       "invalid part number, %d", part);
-    return TRUE;
-  }
-#endif // COIN_DEBUG
+  assert( this->delayeditems.getLength() == 0 );
+  assert( part != SO_CATALOG_NAME_NOT_FOUND &&
+          "invalid part");
 
   return this->items[part]->isdefaultnull;
 }
@@ -231,16 +186,7 @@ SbBool
 SoNodekitCatalog::isNullByDefault(const SbName & name) const
 {
   assert(this->delayeditems.getLength() == 0);
-
-  int part = this->getPartNumber(name);
-#if COIN_DEBUG
-  if (part == SO_CATALOG_NAME_NOT_FOUND) {
-    SoDebugError::post("SoNodekitCatalog::isNullByDefault",
-                       "invalid part name, \"%s\"", name.getString());
-    return TRUE;
-  }
-#endif // COIN_DEBUG
-  return this->items[part]->isdefaultnull;
+  return this->isNullByDefault( this->getPartNumber(name) );
 }
 
 /*!
@@ -250,15 +196,10 @@ SoNodekitCatalog::isNullByDefault(const SbName & name) const
 SbBool
 SoNodekitCatalog::isLeaf(int part) const
 {
-  assert(this->delayeditems.getLength() == 0);
+  assert( this->delayeditems.getLength() == 0);
+  assert( part >= 0 && part < this->getNumEntries() &&
+          "invalid part" );
 
-#if COIN_DEBUG
-  if (part < 0 || part >= this->getNumEntries()) {
-    SoDebugError::post("SoNodekitCatalog::isLeaf",
-                       "invalid part number, %d", part);
-    return TRUE;
-  }
-#endif // COIN_DEBUG
   for (int i=0; i < this->items.getLength(); i++) {
     if ((i != part) && (this->items[part]->name == this->items[i]->parentname))
       return FALSE;
@@ -274,16 +215,7 @@ SbBool
 SoNodekitCatalog::isLeaf(const SbName & name) const
 {
   assert(this->delayeditems.getLength() == 0);
-
-  int part = this->getPartNumber(name);
-#if COIN_DEBUG
-  if (part == SO_CATALOG_NAME_NOT_FOUND) {
-    SoDebugError::post("SoNodekitCatalog::isLeaf",
-                       "invalid part name, \"%s\"", name.getString());
-    return TRUE;
-  }
-#endif // COIN_DEBUG
-  return this->isLeaf(part);
+  return this->isLeaf( this->getPartNumber( name ));
 }
 
 /*!
@@ -293,16 +225,9 @@ SoNodekitCatalog::isLeaf(const SbName & name) const
 const SbName &
 SoNodekitCatalog::getParentName(int part) const
 {
-  assert(this->delayeditems.getLength() == 0);
-
-#if COIN_DEBUG
-  if (part < 0 || part >= this->getNumEntries()) {
-    SoDebugError::post("SoNodekitCatalog::getParentName",
-                       "invalid part number, %d", part);
-    static SbName * name = new SbName; // (Avoid static constructor.)
-    return *name;
-  }
-#endif // COIN_DEBUG
+  assert( this->delayeditems.getLength() == 0);
+  assert( part >= 0 && part < this->getNumEntries() &&
+          "invalid part" );
   return this->items[part]->parentname;
 }
 
@@ -314,17 +239,7 @@ const SbName &
 SoNodekitCatalog::getParentName(const SbName & name) const
 {
   assert(this->delayeditems.getLength() == 0);
-
-  int part = this->getPartNumber(name);
-#if COIN_DEBUG
-  if (part == SO_CATALOG_NAME_NOT_FOUND) {
-    SoDebugError::post("SoNodekitCatalog::getParentName",
-                       "invalid part name, \"%s\"", name.getString());
-    static SbName * name = new SbName; // (Avoid static constructor.)
-    return *name;
-  }
-#endif // COIN_DEBUG
-  return this->getParentName(part);
+  return this->getParentName( this->getPartNumber(name) );
 }
 
 /*!
@@ -334,15 +249,10 @@ SoNodekitCatalog::getParentName(const SbName & name) const
 int
 SoNodekitCatalog::getParentPartNumber(int part) const
 {
-  assert(this->delayeditems.getLength() == 0);
+  assert( this->delayeditems.getLength() == 0 );
+  assert( part >= 0 && part < this->getNumEntries() &&
+          "invalid part" );
 
-#if COIN_DEBUG
-  if (part < 0 || part >= this->getNumEntries()) {
-    SoDebugError::post("SoNodekitCatalog::getParentPartNumber",
-                       "invalid part number, %d", part);
-    return SO_CATALOG_NAME_NOT_FOUND;
-  }
-#endif // COIN_DEBUG
   return this->getPartNumber(this->items[part]->parentname);
 }
 
@@ -354,16 +264,7 @@ int
 SoNodekitCatalog::getParentPartNumber(const SbName & name) const
 {
   assert(this->delayeditems.getLength() == 0);
-
-  int part = this->getPartNumber(name);
-#if COIN_DEBUG
-  if (part == SO_CATALOG_NAME_NOT_FOUND) {
-    SoDebugError::post("SoNodekitCatalog::getParentPartNumber",
-                       "invalid part name, \"%s\"", name.getString());
-    return part;
-  }
-#endif // COIN_DEBUG
-  return this->getParentPartNumber(part);
+  return this->getParentPartNumber( this->getPartNumber(name) );  
 }
 
 /*!
@@ -374,17 +275,12 @@ const SbName &
 SoNodekitCatalog::getRightSiblingName(int part) const
 {
   assert(this->delayeditems.getLength() == 0);
+  assert( part >= 0 && part < this->getNumEntries() &&
+          "invalid part" );
 
-#if COIN_DEBUG
-  if (part < 0 || part >= this->getNumEntries()) {
-    SoDebugError::post("SoNodekitCatalog::getRightSiblingName",
-                       "invalid part number, %d", part);
-    static SbName * name = new SbName; // (Avoid static constructor.)
-    return *name;
-  }
-#endif // COIN_DEBUG
   return this->items[part]->siblingname;
 }
+
 
 /*!
   Returns name of sibling of the part. Returns the empty string if
@@ -394,17 +290,7 @@ const SbName &
 SoNodekitCatalog::getRightSiblingName(const SbName & name) const
 {
   assert(this->delayeditems.getLength() == 0);
-
-  int part = this->getPartNumber(name);
-#if COIN_DEBUG
-  if (part == SO_CATALOG_NAME_NOT_FOUND) {
-    SoDebugError::post("SoNodekitCatalog::getRightSiblingName",
-                       "invalid part name, \"%s\"", name.getString());
-    static SbName * name = new SbName; // (Avoid static constructor.)
-    return *name;
-  }
-#endif // COIN_DEBUG
-  return this->getRightSiblingName(part);
+  return this->getRightSiblingName( this->getPartNumber(name) );
 }
 
 /*!
@@ -415,14 +301,9 @@ int
 SoNodekitCatalog::getRightSiblingPartNumber(int part) const
 {
   assert(this->delayeditems.getLength() == 0);
+  assert( part >= 0 && part < this->getNumEntries() && 
+          "invalid part" );
 
-#if COIN_DEBUG
-  if (part < 0 || part >= this->getNumEntries()) {
-    SoDebugError::post("SoNodekitCatalog::getRightSiblingPartNumber",
-                       "invalid part number, %d", part);
-    return SO_CATALOG_NAME_NOT_FOUND;
-  }
-#endif // COIN_DEBUG
   return this->getPartNumber(this->items[part]->siblingname);
 }
 
@@ -435,15 +316,7 @@ SoNodekitCatalog::getRightSiblingPartNumber(const SbName & name) const
 {
   assert(this->delayeditems.getLength() == 0);
 
-  int part = this->getPartNumber(name);
-#if COIN_DEBUG
-  if (part == SO_CATALOG_NAME_NOT_FOUND) {
-    SoDebugError::post("SoNodekitCatalog::getRightSiblingPartNumber",
-                       "invalid part name, \"%s\"", name.getString());
-    return part;
-  }
-#endif // COIN_DEBUG
-  return this->getRightSiblingPartNumber(part);
+  return this->getRightSiblingPartNumber( this->getPartNumber(name) );
 }
 
 /*!
@@ -453,14 +326,9 @@ SbBool
 SoNodekitCatalog::isList(int part) const
 {
   assert(this->delayeditems.getLength() == 0);
+  assert( part >= 0 && part < this->getNumEntries() &&
+          "invalid part" );
 
-#if COIN_DEBUG
-  if (part < 0 || part >= this->getNumEntries()) {
-    SoDebugError::post("SoNodekitCatalog::isList",
-                       "invalid part number, %d", part);
-    return FALSE;
-  }
-#endif // COIN_DEBUG
   return this->items[part]->islist;
 }
 
@@ -471,16 +339,7 @@ SbBool
 SoNodekitCatalog::isList(const SbName & name) const
 {
   assert(this->delayeditems.getLength() == 0);
-
-  int part = this->getPartNumber(name);
-#if COIN_DEBUG
-  if (part == SO_CATALOG_NAME_NOT_FOUND) {
-    SoDebugError::post("SoNodekitCatalog::isList",
-                       "invalid part name, \"%s\"", name.getString());
-    return FALSE;
-  }
-#endif // COIN_DEBUG
-  return this->isList(part);
+  return this->isList( this->getPartNumber(name) );
 }
 
 /*!
@@ -490,20 +349,12 @@ SoNodekitCatalog::isList(const SbName & name) const
 SoType
 SoNodekitCatalog::getListContainerType(int part) const
 {
-  assert(this->delayeditems.getLength() == 0);
+  assert( this->delayeditems.getLength() == 0 );
+  assert( part >= 0 && part < this->getNumEntries() && 
+          "invalid part" );
+  assert( this->items[part]->islist && 
+          "not a list container" );
 
-#if COIN_DEBUG
-  if (part < 0 || part >= this->getNumEntries()) {
-    SoDebugError::post("SoNodekitCatalog::getListContainerType",
-                       "invalid part number, %d", part);
-    return SoType::badType();
-  }
-  else if (!this->items[part]->islist) {
-    SoDebugError::post("SoNodekitCatalog::getListContainerType",
-                       "part %d is not a list container", part);
-    return SoType::badType();
-  }
-#endif // COIN_DEBUG
   return this->items[part]->containertype;
 }
 
@@ -515,16 +366,7 @@ SoType
 SoNodekitCatalog::getListContainerType(const SbName & name) const
 {
   assert(this->delayeditems.getLength() == 0);
-
-  int part = this->getPartNumber(name);
-#if COIN_DEBUG
-  if (part == SO_CATALOG_NAME_NOT_FOUND) {
-    SoDebugError::post("SoNodekitCatalog::getListContainerType",
-                       "invalid part name, \"%s\"", name.getString());
-    return SoType::badType();
-  }
-#endif // COIN_DEBUG
-  return this->getListContainerType(part);
+  return this->getListContainerType( this->getPartNumber(name) );
 }
 
 /*!
@@ -534,22 +376,12 @@ SoNodekitCatalog::getListContainerType(const SbName & name) const
 const SoTypeList &
 SoNodekitCatalog::getListItemTypes(int part) const
 {
-  assert(this->delayeditems.getLength() == 0);
+  assert( this->delayeditems.getLength() == 0);
+  assert( (part < 0 && part <= this->getNumEntries()) &&
+          "invalid part");
+  assert( (this->items[part]->islist) && 
+          "part is not a list container" );
 
-#if COIN_DEBUG
-  if (part < 0 || part >= this->getNumEntries()) {
-    SoDebugError::post("SoNodekitCatalog::getListItemTypes",
-                       "invalid part number, %d", part);
-    static SoTypeList * l = new SoTypeList; // (Avoid static constructor.)
-    return *l;
-  }
-  else if (!this->items[part]->islist) {
-    SoDebugError::post("SoNodekitCatalog::getListItemTypes",
-                       "part %d is not a list container", part);
-    static SoTypeList * l = new SoTypeList; // (Avoid static constructor.)
-    return *l;
-  }
-#endif // COIN_DEBUG
   return this->items[part]->itemtypeslist;
 }
 
@@ -561,17 +393,7 @@ const SoTypeList &
 SoNodekitCatalog::getListItemTypes(const SbName & name) const
 {
   assert(this->delayeditems.getLength() == 0);
-
-  int part = this->getPartNumber(name);
-#if COIN_DEBUG
-  if (part == SO_CATALOG_NAME_NOT_FOUND) {
-    SoDebugError::post("SoNodekitCatalog::getListItemTypes",
-                       "invalid part name, \"%s\"", name.getString());
-    static SoTypeList * l = new SoTypeList; // (Avoid static constructor.)
-    return *l;
-  }
-#endif // COIN_DEBUG
-  return this->getListItemTypes(part);
+  return this->getListItemTypes( this->getPartNumber(name) );
 }
 
 /*!
@@ -581,15 +403,10 @@ SoNodekitCatalog::getListItemTypes(const SbName & name) const
 SbBool
 SoNodekitCatalog::isPublic(int part) const
 {
-  assert(this->delayeditems.getLength() == 0);
+  assert( this->delayeditems.getLength() == 0 );
+  assert( (part < 0 && part <= this->getNumEntries()) &&
+          "invalid part");
 
-#if COIN_DEBUG
-  if (part < 0 || part >= this->getNumEntries()) {
-    SoDebugError::post("SoNodekitCatalog::isPublic",
-                       "invalid part number, %d", part);
-    return FALSE;
-  }
-#endif // COIN_DEBUG
   return this->items[part]->ispublic;
 }
 
@@ -601,16 +418,7 @@ SbBool
 SoNodekitCatalog::isPublic(const SbName & name) const
 {
   assert(this->delayeditems.getLength() == 0);
-
-  int part = this->getPartNumber(name);
-#if COIN_DEBUG
-  if (part == SO_CATALOG_NAME_NOT_FOUND) {
-    SoDebugError::post("SoNodekitCatalog::isPublic",
-                       "invalid part name, \"%s\"", name.getString());
-    return FALSE;
-  }
-#endif // COIN_DEBUG
-  return this->isPublic(part);
+  return this->isPublic( this->getPartNumber(name) );
 }
 
 /*!
@@ -666,80 +474,32 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
   if (parent[0] == '\"' && parent[1] == '\"') parent = "";
   if (rightsibling[0] == '\"' && rightsibling[1] == '\"') rightsibling = "";
 
-
-  // FIXME: At several points down this function the debug defines
-  // causes the contract of this function to be changed for debug
-  // builds vs release builds. This is comparable to go to sleep with
-  // a loaded gun under your pillow.
-  // 
-  // I don't dear to change the defines to display the behavoior that
-  // we are testing (e.g. the debug behaviour), to be equal to the
-  // released version, because the full contract of this method is at
-  // best unclear, and changing behaviour in released code might cause
-  // some customer 'stir'. I recomend to document the contract of this
-  // function thoroughly in Flip by using unittests, and fix it so
-  // that it fulfills one contract, both for debug and release
-  // versions.
-  // 
-  // The areas I recognice as boobytraps is commented below. 
-  // 20021028 rolvs
-
-
-
-  // FIXME: Different behaviour in debug vs release
-  // version. See note on top. 20021028 rolvs
-#if COIN_DEBUG
-  if (name == "") {
-    SoDebugError::post("SoNodekitCatalog::addEntry", "empty name not allowed");
-    return FALSE;
-  }
-  else if (this->getPartNumber(this->items, name) != SO_CATALOG_NAME_NOT_FOUND ||
-           this->getPartNumber(this->delayeditems, name) != SO_CATALOG_NAME_NOT_FOUND) {
-    SoDebugError::post("SoNodekitCatalog::addEntry",
-                       "partname \"%s\" already in use", name.getString());
-    return FALSE;
-  }
-  else if (parent == "" && this->getNumEntries() > 0) {
-    SoDebugError::post("SoNodekitCatalog::addEntry", "we need a parent name");
-    return FALSE;
-  }
-  else if ((type == SoType::badType()) || (defaulttype == SoType::badType()) ||
-           (islist && ((listcontainertype == SoType::badType()) ||
-                       (listitemtype == SoType::badType())))) {
-    SoDebugError::post("SoNodekitCatalog::addEntry", "bad type");
-    return FALSE;
-  }
-#endif // COIN_DEBUG
-
+  assert( (name != "") && "Empty name not allowed");
+  assert( (this->getPartNumber( this->items, name ) == SO_CATALOG_NAME_NOT_FOUND ) &&
+          "partname already in use" );
+  assert( this->getPartNumber( this->delayeditems, name ) == SO_CATALOG_NAME_NOT_FOUND &&
+          "partname already in use" );
+  assert( (parent!="" || this->getNumEntries() == 0) && 
+          "need a parent name" );
+  assert( (type != SoType::badType()) && 
+          "bad type" );
+  assert( (defaulttype != SoType::badType()) && 
+          "bad default type" );
+  
+  // NOTE: !(A ^ B) <=> !A v !B
+  assert( (!islist || (listcontainertype != SoType::badType())) && 
+          "bad list container type");
+  assert( (!islist || (listitemtype != SoType::badType())) &&
+          "bad list item type" );
+  
   SbBool delay = FALSE;
   if (rightsibling != "" &&
       this->getPartNumber(this->items, rightsibling) == SO_CATALOG_NAME_NOT_FOUND) {
-    
-    // FIXME: Different behaviour in debug vs release
-    // version. See note on top. 20021028 rolvs
-
-#if 0 // obsoleted
-    SoDebugError::post("SoNodekitCatalog::addEntry",
-                       "right sibling \"%s\" for \"%s\" not found",
-                       rightsibling.getString(), name.getString());
-    return FALSE;
-#else // new code
     delay = TRUE;
-#endif // new code
   }
   else if (parent != "" &&
            this->getPartNumber(this->items, parent) == SO_CATALOG_NAME_NOT_FOUND) {
-
-    // FIXME: Different behaviour in debug vs release
-    // version. See note on top. 20021028 rolvs
-#if 0 // obsoleted
-    SoDebugError::post("SoNodekitCatalog::addEntry",
-                       "parent \"%s\" for \"%s\" not found",
-                       parent.getString(), name.getString());
-    return FALSE;
-#else // new code
     delay = TRUE;
-#endif // new code
   }
 
   
@@ -760,26 +520,29 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
   newitem->itemtypeslist.append(listitemtype);
   newitem->ispublic = ispublic;
 
-  if (delay)this->delayeditems.append(newitem);
-  else if (!this->reallyAddEntry(newitem)) return FALSE;
+  if (delay)
+    this->delayeditems.append(newitem);
+  else if (!this->reallyAddEntry(newitem)) 
+    return FALSE;
 
   // Move elements from list of delayed inserts to "real" catalog
   // list, if possible.
-  for (int i=0; i < this->delayeditems.getLength(); i++) {
-    const SbName & p = this->delayeditems[i]->parentname;
-    const SbName & r = this->delayeditems[i]->siblingname;
-    if (this->getPartNumber(this->items, p) != SO_CATALOG_NAME_NOT_FOUND &&
-        ((r == "") || (this->getPartNumber(this->items, r) != SO_CATALOG_NAME_NOT_FOUND))) {
-      if (!this->reallyAddEntry(this->delayeditems[i])) return FALSE;
-      this->delayeditems.remove(i);
-      i = -1; // restart scan
+  for (int i=0; i < this->delayeditems.getLength(); i++){
+      const SbName & p = this->delayeditems[i]->parentname;
+      const SbName & r = this->delayeditems[i]->siblingname;
+      if (this->getPartNumber(this->items, p) != SO_CATALOG_NAME_NOT_FOUND &&
+          ((r == "") || (this->getPartNumber(this->items, r) != SO_CATALOG_NAME_NOT_FOUND))) {
+        if (!this->reallyAddEntry(this->delayeditems[i])) return FALSE;
+        this->delayeditems.remove(i);
+        i = -1; // restart scan
+        
 #if COIN_DEBUG && 0 // debug
-      SoDebugError::postInfo("SoNodekitCatalog::addEntry",
-                             "fixed delayed item, %d item%s left",
-                             this->delayeditems.getLength(),
-                             this->delayeditems.getLength()==1 ? "" : "s");
+        SoDebugError::postInfo("SoNodekitCatalog::addEntry",
+                               "fixed delayed item, %d item%s left",
+                               this->delayeditems.getLength(),
+                               this->delayeditems.getLength()==1 ? "" : "s");
 #endif // debug
-    }
+      }
   }
 
   return TRUE;
@@ -794,16 +557,8 @@ SoNodekitCatalog::reallyAddEntry(CatalogItem * newitem)
   // First item in catalog?
   if (this->items.getLength() == 0) {
 
-    
-    // FIXME: Different behaviour in debug vs release
-    // version. See note on top. 20021028 rolvs
-#if COIN_DEBUG
-    if (newitem->parentname != "" || newitem->siblingname != "") {
-      SoDebugError::post("SoNodekitCatalog::addEntry",
-                         "first item must be the toplevel parent");
-      return FALSE;
-    }
-#endif // COIN_DEBUG
+    assert( newitem->parentname == "" && newitem->siblingname == "" );
+
     this->items.append(newitem);
     return TRUE;
   }
@@ -828,17 +583,17 @@ SoNodekitCatalog::reallyAddEntry(CatalogItem * newitem)
     CatalogItem * next = this->items[position];
     if (next->parentname != newitem->parentname) {
 
-      // FIXME: Different behaviour in debug vs release
-      // version. See note on top. 20021028 rolvs
-#if COIN_DEBUG
-      if (newitem->siblingname != "") {
-        SoDebugError::post("SoNodekitCatalog::addEntry",
-                           "%s is not a child of %s",
-                           newitem->siblingname.getString(),
-                           newitem->parentname.getString());
-        return FALSE;
-      }
-#endif // COIN_DEBUG
+      // FIXME: This assert is 'translated' from a piece of COIN_DEBUG
+      // code that changed the debug-vs-release contract, othervise it
+      // is equivalent behaviour. Find a better place for it: Asserts
+      // has nothing to do 'in the middle of nowhere'; they should be
+      // placed either at the start or termination of a method.
+      // 
+      // This method could do with some refactoring to accomodate this
+      // requirement. 20021029 rolvs
+      assert( newitem->siblingname == "" &&
+              "sibling don't have same parent as new item" );
+
       this->items.insert(newitem, position);
       return TRUE;
     }
@@ -883,6 +638,12 @@ SoNodekitCatalog::addListItemType(int part, SoType type)
 void
 SoNodekitCatalog::addListItemType(const SbName & name, SoType type)
 {
+  // FIXME: If a part name is invalid, this procedure bails out
+  // elsewhere on an assert. The check and debug comment should be
+  // superflous? If it isn't, it should be possible to find a way to
+  // write this that expresses the code intentions better. 
+  // 20021029 rolvs
+
   if (!this->addListItemType(this->items, name, type) &&
       !this->addListItemType(this->delayeditems, name, type)) {
 #if COIN_DEBUG
@@ -904,19 +665,14 @@ SoNodekitCatalog::narrowTypes(const SbName & name,
   assert(this->delayeditems.getLength() == 0);
 
   int part = this->getPartNumber(name);
-#if COIN_DEBUG
-  if (part == SO_CATALOG_NAME_NOT_FOUND) {
-    SoDebugError::post("SoNodekitCatalog::narrowTypes",
-                       "invalid part name, \"%s\"", name.getString());
-    return;
-  }
-  else if ((!newtype.isDerivedFrom(this->items[part]->type)) ||
-           (!newdefaulttype.isDerivedFrom(this->items[part]->defaulttype))) {
-    SoDebugError::post("SoNodekitCatalog::narrowTypes",
-                       "the new types are not derived from the old types");
-    return;
-  }
-#endif // COIN_DEBUG
+
+  assert( part != SO_CATALOG_NAME_NOT_FOUND &&
+          "invalid part name" );
+  assert( newtype.isDerivedFrom( this->items[part]->type ) &&
+          "new type should be derived of old type" );
+  assert( newdefaulttype.isDerivedFrom( this->items[part]->type ) &&
+          "new type should be derived of old type" );
+
   this->items[part]->type = newtype;
   this->items[part]->defaulttype = newdefaulttype;
 }
@@ -931,13 +687,9 @@ SoNodekitCatalog::setNullByDefault(const SbName & name, SbBool nullbydefault)
   assert(this->delayeditems.getLength() == 0);
 
   int part = this->getPartNumber(name);
-#if COIN_DEBUG
-  if (part == SO_CATALOG_NAME_NOT_FOUND) {
-    SoDebugError::post("SoNodekitCatalog::setNullByDefault",
-                       "invalid part name, \"%s\"", name.getString());
-    return;
-  }
-#endif // COIN_DEBUG
+  assert( part != SO_CATALOG_NAME_NOT_FOUND &&
+          "invalid part name" );
+
   this->items[part]->isdefaultnull = nullbydefault;
 }
 
@@ -952,15 +704,9 @@ SbBool
 SoNodekitCatalog::recursiveSearch(int part, const SbName & name,
                                   SoTypeList * checked) const
 {
-  assert(this->delayeditems.getLength() == 0);
-
-#if COIN_DEBUG
-  if ((part < 0) || (part >= this->getNumEntries())) {
-    SoDebugError::postInfo("SoNodekitCatalog::recursiveSearch",
-                           "part number %d out of bounds", part);
-    return FALSE;
-  }
-#endif // COIN_DEBUG
+  assert( this->delayeditems.getLength() == 0 );
+  assert( part >= 0 && part < this->getNumEntries() &&
+          "part index out of bounds");
 
   if ((part == 0) && (checked->find(this->getType(0)) == -1))
     checked->append(this->getType(0));
@@ -1038,29 +784,15 @@ void
 SoNodekitCatalog::addListItemType(const SbList<class CatalogItem *> & l,
                                   int part, SoType type)
 {
-#if COIN_DEBUG
-  if (part < 0 || part >= l.getLength()) {
-    SoDebugError::post("SoNodekitCatalog::addListItemType",
-                       "invalid part number, %d", part);
-    return;
-  }
-  else if (type == SoType::badType()) {
-    SoDebugError::post("SoNodekitCatalog::addListItemType",
-                       "tried to add SoType::badType()");
-    return;
-  }
-  else if (!l[part]->islist) {
-    SoDebugError::post("SoNodekitCatalog::addListItemType",
-                       "tried to add a listitemtype to non-list item");
-    return;
-  }
-  else if (l[part]->itemtypeslist.find(type) != -1) {
-    SoDebugError::post("SoNodekitCatalog::addListItemType",
-                       "type ``%s''already present in list",
-                       type.getName().getString());
-    return;
-  }
-#endif // COIN_DEBUG
+  assert( part >= 0 && part < l.getLength() && 
+          "invalid part number" );
+  assert( type != SoType::badType() &&
+          "dont add SoType::badType(), you stupid!");
+  assert( l[part]->islist &&
+          "type must be a list-item type" );
+  assert( l[part]->itemtypeslist.find( type ) == -1 &&
+          "trying to add item that allready exists" );
+
   l[part]->itemtypeslist.append(type);
 }
 
