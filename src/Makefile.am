@@ -200,5 +200,6 @@ uninstall-local:
 	    echo " rmdir" "$$dir"; \
 	    rmdir "$$dir"; \
 	  fi \
-	done;
+	done; \
+	:
 

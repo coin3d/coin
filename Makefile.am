@@ -1,9 +1,22 @@
 ## Process this file with automake to generate Makefile.in.
 
-SUBDIRS = . include data src build
+if BUILD_LIBRARY
+SRCDIRS = data src
+else
+endif
 
+if BUILD_HTMLPAGES
+HTMLDIRS = html
+else
+HTMLDIRS =
+endif
+
+SUBDIRS = . include $(SRCDIRS) man $(HTMLDIRS)
+
+if BUILD_LIBRARY
 dist_bin_SCRIPTS = \
 	coin-config
+endif
 
 BUILT_SOURCES = \
 	include/Inventor/SbBasic.h \
@@ -13,11 +26,13 @@ BUILT_SOURCES = \
 DISTCLEANFILES = \
 	coin-@CONFIG@.cfg
 
+if BUILD_LIBRARY
 m4datadir = $(datadir)/aclocal
 dist_m4data_DATA = cfg/m4/coin.m4
 
 cfgdatadir = $(datadir)/Coin/conf
 cfgdata_DATA = coin-@CONFIG@.cfg
+endif
 
 EXTRA_DIST = \
 	ChangeLog.1999 \
@@ -26,13 +41,28 @@ EXTRA_DIST = \
 	LICENSE.LGPL \
 	README.AIX \
 	README.IRIX \
+	README.MAC \
 	README.WIN32 \
 	coin.cfg.in \
 	docs/coin.doxygen.in \
 	cfg/doxy4win.pl \
+	cfg/errors.txt \
 	cfg/ltconfig \
 	cfg/m4/wrapmsvc.cpp \
-	cfg/m4/wrapmsvc.exe
+	cfg/m4/wrapmsvc.exe \
+	packaging/debian/changelog.in \
+	packaging/debian/control.in \
+	packaging/debian/copyright.in \
+	packaging/debian/rules.in \
+	packaging/debian/libcoin40.files.in \
+	packaging/debian/libcoin40.README.Debian.in \
+	packaging/debian/libcoin40-dev.files.in \
+	packaging/debian/libcoin40-dev.README.Debian.in \
+	packaging/debian/libcoin40-doc.files.in \
+	packaging/debian/libcoin40-doc.README.Debian.in \
+	packaging/debian/libcoin40-runtime.files.in \
+	packaging/debian/libcoin40-runtime.README.Debian.in \
+	packaging/redhat/coin.spec.in
 
 coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
 	@$(SHELL) config.status --file=$@:coin.cfg.in
@@ -64,6 +94,7 @@ doxygen-docs: built-sources
 	else :; fi
 	@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
 
+if BUILD_LIBRARY
 install-exec-local: $(srcdir)/cfg/m4/wrapmsvc.exe
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(bindir)
@@ -72,16 +103,17 @@ install-exec-local: $(srcdir)/cfg/m4/wrapmsvc.exe
 	  echo " $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p"; \
 	  $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p; \
 	fi
+endif
 
 # **************************************************************************
 # misc rules for automatic debian packaging.  main: `debian-packages'
 
-coin$(COIN_MAJOR_VERSION)-$(VERSION):
-	$(MAKE) distdir;
-	if test -d coin$(COIN_MAJOR_VERSION)-$(VERSION); then \
-	  rm -rf coin$(COIN_MAJOR_VERSION)-$(VERSION); \
+libcoin$(COIN_MAJOR_VERSION)-$(VERSION):
+	if test -d libcoin$(COIN_MAJOR_VERSION)-$(VERSION); then \
+	  rm -rf libcoin$(COIN_MAJOR_VERSION)-$(VERSION); \
 	else :; fi;
-	mv Coin-$(VERSION) coin$(COIN_MAJOR_VERSION)-$(VERSION)
+	$(MAKE) distdir;
+	mv Coin-$(VERSION) libcoin$(COIN_MAJOR_VERSION)-$(VERSION)
 
 debian-files: $(DEBIAN_DIST_DIR)
 	test -d $(DEBIAN_DIST_DIR)/debian || mkdir $(DEBIAN_DIST_DIR)/debian;
@@ -97,15 +129,15 @@ debian-files: $(DEBIAN_DIST_DIR)
 	done;
 
 debian-control:
-	distdir=coin$(COIN_MAJOR_VERSION)-$(VERSION); \
+	distdir=libcoin$(COIN_MAJOR_VERSION)-$(VERSION); \
 	$(MAKE) DEBIAN_DIST_DIR=$$distdir debian-files;
 
-debian-setup: coin$(COIN_MAJOR_VERSION)-$(VERSION) debian-control
+debian-setup: libcoin$(COIN_MAJOR_VERSION)-$(VERSION) debian-control
 
 debian-packages: debian-setup
-	cd coin1-$(VERSION); \
+	cd libcoin$(COIN_MAJOR_VERSION)-$(VERSION); \
 	./debian/rules source;
-	cd coin1-$(VERSION); \
+	cd libcoin$(COIN_MAJOR_VERSION)-$(VERSION); \
 	./debian/rules binary;
 
 # EOF ######################################################################

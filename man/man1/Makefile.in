@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4l from Makefile.am.
+# Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
@@ -111,17 +111,18 @@ coin_configure_date = @coin_configure_date@
 coin_html_dir = @coin_html_dir@
 coin_man_dir = @coin_man_dir@
 coin_src_dir = @coin_src_dir@
+htmldir = @htmldir@
 install_sh = @install_sh@
 path_tag = @path_tag@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
-man1_MANS = \
-	coin-config.man
-
-
 EXTRA_DIST = $(man1_MANS)
+
+@BUILD_LIBRARY_TRUE@man1_MANS = \
+@BUILD_LIBRARY_TRUE@	coin-config.man
+
 subdir = man/man1
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/config.h

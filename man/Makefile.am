@@ -1,15 +1,15 @@
 
-SUBDIRS = man1
+if BUILD_LIBRARY
+MAN1DIR = man1
+else
+MAN1DIR =
+endif
 
-# if WANT_MANPAGES
-# manpages:
-# 	@doxygen@ 
-# endif
-# 
-# install-man:
-# 	$(mkinstalldirs) $(DESTDIR)$mandir/man3;
-# 	list=''; for f in $$list; do \
-# 	  echo " $(INSTALL) $$f $(DESTDIR)$mandir/man3/$$f"; \
-# 	  $(INSTALL) $$f $(DESTDIR)$mandir/man3/$$f; \
-# 	done
+if BUILD_MANPAGES
+MAN3DIR = man3
+else
+MAN3DIR = 
+endif
+
+SUBDIRS = $(MAN1DIR) $(MAN3DIR)
 

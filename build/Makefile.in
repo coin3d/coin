@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4l from Makefile.am.
+# Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
@@ -97,6 +97,7 @@ OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
+RFC822_DATE = @RFC822_DATE@
 SUFFIX = @SUFFIX@
 VERSION = @VERSION@
 X_CFLAGS = @X_CFLAGS@

@@ -24,11 +24,7 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#if HAVE_WINDOWS_H
-#include <windows.h> /* for GL and for APIENTRY */
-#endif /* HAVE_WINDOWS_H */
-
-#include <GL/gl.h>
+#include <Inventor/system/gl.h>
 
 /* Under Win32, we need to make sure we use the correct calling method
    by using the APIENTRY define for the function signature types (or

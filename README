@@ -21,7 +21,7 @@ Release 2.0.0
 =============
 
 Release 2.0.0 is a figment of your imagination.  It is the next major
-release and is months (years?) away from a release.  This is the
+release and is months / years away from a release.  This is the
 experimental development sources that will eventually lead to the next
 major version of Coin.
 
@@ -29,7 +29,7 @@ See the file NEWS for the summary of changes, and the file ChangeLog for
 the detailed list.
 
 The section on source code and binary compatibility is not relevant (very
-likely misinformation) for the development up to Coin 2.0.
+likely misinformation) for the development up to Coin 2.0.0.
 
 
 Source Code and Binary Compatibility

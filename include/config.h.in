@@ -1,4 +1,4 @@
-/* include/config.h.in.  Generated automatically from configure.in by autoheader.  */
+/* include/config.h.in.  Generated from configure.in by autoheader.  */
 
 
 #include <unconfig.h>
@@ -70,6 +70,9 @@
 /* define if you have GLX X11 OpenGL bindings */
 #undef HAVE_GLX
 
+/* Define if you have the <GL/gl.h> header file. */
+#undef HAVE_GL_GL_H
+
 /* define if preprocessor can quote arguments with the hash symbol */
 #undef HAVE_HASH_QUOTING
 
@@ -94,11 +97,17 @@
 /* define if you have the simage library */
 #undef HAVE_LIBSIMAGE
 
+/* Define if you have the <memory.h> header file. */
+#undef HAVE_MEMORY_H
+
 /* Define if you have the <netinet/in.h> header file. */
 #undef HAVE_NETINET_IN_H
 
 /* define if you have OpenGL */
 #undef HAVE_OPENGL
+
+/* Define if you have the <OpenGL/gl.h> header file. */
+#undef HAVE_OPENGL_GL_H
 
 /* define if single-precision math functions are avialable */
 #undef HAVE_SINGLEPRECISION_MATH
@@ -109,8 +118,20 @@
 /* Define if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
 
+/* Define if you have the <stdlib.h> header file. */
+#undef HAVE_STDLIB_H
+
+/* Define if you have the <strings.h> header file. */
+#undef HAVE_STRINGS_H
+
+/* Define if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
 /* Define if you have the <sys/param.h> header file. */
 #undef HAVE_SYS_PARAM_H
+
+/* Define if you have the <sys/stat.h> header file. */
+#undef HAVE_SYS_STAT_H
 
 /* Define if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
@@ -174,6 +195,9 @@
 
 /* define for runtime linking with simage */
 #undef SIMAGE_RUNTIME_LINKING
+
+/* Define if you have the ANSI C header files. */
+#undef STDC_HEADERS
 
 /* Version number of package */
 #undef VERSION

@@ -1,182 +1,395 @@
-Basic Installation of Coin Beta version
-=======================================
 
-   These are generic installation instructions.
+                          Install Instructions
 
-   The `configure' shell script attempts to guess correct values for
-various system-dependent variables used during compilation.  It uses
-those values to create a `Makefile' in each directory of the package.
-It may also create one or more `.h' files containing system-dependent
-definitions.  Finally, it creates a shell script `config.status' that
-you can run in the future to recreate the current configuration, a file
-`config.cache' that saves the results of its tests to speed up
-reconfiguring, and a file `config.log' containing compiler output
-(useful mainly for debugging `configure').
+                   Copyright 2001   Systems in Motion
 
-   If you need to do unusual things to compile the package, please try
-to figure out how `configure' could check whether to do them, and mail
-diffs or instructions to the address given in the `README' so they can
-be considered for the next release.  If at some point `config.cache'
-contains results you don't want to keep, you may remove or edit it.
+                         http://www.coin3d.org/
 
-   The file `configure.in' is used to create `configure' by a program
-called `autoconf'.  You only need `configure.in' if you want to change
-it or regenerate `configure' using a newer version of `autoconf'.
 
-The simplest way to compile this package is:
+Introduction
+============
 
-  1. `cd' to the directory containing the package's source code and type
-     `./configure' to configure the package for your system.  If you're
-     using `csh' on an old version of System V, you might need to type
-     `sh ./configure' instead to prevent `csh' from trying to execute
-     `configure' itself.
+This document contains instructions for those who have downloaded the
+Coin source code and want to build the library and install it on their
+system.  It does not contain any information about installing binary
+distributions of Coin.
 
-     Running `configure' takes awhile.  While running, it prints some
-     messages telling which features it is checking for.
 
-  2. Type `make' to compile the package.
+Cookbook Procedure
+==================
 
-  3. Optionally, type `make check' to run any self-tests that come with
-     the package.
+If you are impatient and just want a standard installation, you can go
+ahead and run through the following cookbook procedure.  If you get into
+trouble following it, please read through the rest of this document
+before contacting The Coin Team for technical support.  Remember to
+substitute "1.0.0" with the version identifier for the Coin library you
+are building.
 
-  4. Type `make install' to install the programs and any data files and
-     documentation.
+  # 1. Unpack source code and make a build directory somewhere:
 
-  5. You can remove the program binaries and object files from the
-     source code directory by typing `make clean'.  To also remove the
-     files that `configure' created (so you can compile the package for
-     a different kind of computer), type `make distclean'.  There is
-     also a `make maintainer-clean' target, but that is intended mainly
-     for the package's developers.  If you use it, you may have to get
-     all sorts of other programs in order to regenerate files that came
-     with the distribution.
+    cd /tmp
+    gzip -cd Coin-1.0.0.tar.gz | tar xvf -
+    mkdir coin-build
 
-Compilers and Options
+  # 2. Run configure from the build directory:
+
+    cd coin-build
+    ../Coin-1.0.0/configure
+
+  # 3. Build library:
+
+    make
+
+  # 4. Install Coin:
+
+    make install
+
+  # 5. Remove source and object files when you don't need them anymore:
+
+    cd ..
+    rm -rf coin-build Coin-1.0.0
+
+
+The Build Environment
 =====================
 
-   Some systems require unusual options for compilation or linking that
-the `configure' script does not know about.  You can give `configure'
-initial values for variables by setting them in the environment.  Using
-a Bourne-compatible shell, you can do that on the command line like
-this:
-     CC=c89 CFLAGS=-O2 LIBS=-lposix ./configure
+Coin uses GNU Autoconf, Automake and Libtool for the configuration,
+compilation, and installation procedures.  This means you need a POSIX
+shell environment and a decent "make" implementation.  You also need a
+compiler for C/C++.
 
-Or on systems that have the `env' program, you can do it like this:
-     env CPPFLAGS=-I/usr/local/include LDFLAGS=-s ./configure
+All unixes have Bourne shells that are close enough to the POSIX
+standard to be usable, and in the odd case where the vendor shell does
+not cut it, you can install the GNU Bourne Again Shell (bash) as a
+replacement.  Many unixes have poor make implementations wihtout
+proper support for VPATH and other features that GNU Automake depend
+on.  If you experience problems during the build phase, you might want
+to try using GNU make instead of the vendor make program.  Make sure
+it is first in the PATH and that $MAKE is not set to another make
+implementation.
 
-Compiling For Multiple Architectures
-====================================
+On Microsoft Windows platforms, you need to install the Cygwin
+environment (www.cygwin.com) or something equivalent to get a POSIX
+shell and the extra utilities needed to get through the build procedure.
+For compilation, the Visual C++ compiler is used.  Using gcc may be
+fully possible but has not been tested yet, and disabling the VC++
+requirement needs special user intervention at configure time (see list
+of configure options below).
 
-   You can compile the package for more than one kind of computer at the
-same time, by placing the object files for each architecture in their
-own directory.  To do this, you must use a version of `make' that
-supports the `VPATH' variable, such as GNU `make'.  `cd' to the
-directory where you want the object files and executables to go and run
-the `configure' script.  `configure' automatically checks for the
-source code in the directory that `configure' is in and in `..'.
+On Mac OS X / Darwin systems, there are currently some problems with the
+configure script that occurs if you run configure inside the source
+directory.  Until those problems are fixed, do as the cookbook procedure
+outlines above which sets up a separate hierarchy for building the
+object files.  This is nevertheless the recommended build technique.
 
-   If you have to use a `make' that does not supports the `VPATH'
-variable, you have to compile the package for one architecture at a time
-in the source code directory.  After you have installed the package for
-one architecture, use `make distclean' before reconfiguring for another
-architecture.
+The file INSTALL.GNU contains the standard, generic, installation
+instructions for the GNU build environment.
 
-Installation Names
-==================
 
-   By default, `make install' will install the package's files in
-`/usr/local/bin', `/usr/local/man', etc.  You can specify an
-installation prefix other than `/usr/local' by giving `configure' the
-option `--prefix=PATH'.
+Configuration Options
+=====================
 
-   You can specify separate installation prefixes for
-architecture-specific files and architecture-independent files.  If you
-give `configure' the option `--exec-prefix=PATH', the package will use
-PATH as the prefix for installing programs and libraries.
-Documentation and other data files will still use the regular prefix.
+--help
 
-   In addition, if you use an unusual directory layout you can give
-options like `--bindir=PATH' to specify different values for particular
-kinds of files.  Run `configure --help' for a list of the directories
-you can set and what kinds of files go in them.
+  Specifying this option will cause configure to list all its command
+  line options and exit.
 
-   If the package supports it, you can cause programs to be installed
-with an extra prefix or suffix on their names by giving `configure' the
-option `--program-prefix=PREFIX' or `--program-suffix=SUFFIX'.
+--version
 
-Optional Features
-=================
+  This option will cause the configure script to display version
+  information about the package and the version of GNU Autoconf that
+  created the configure script.
 
-   Some packages pay attention to `--enable-FEATURE' options to
-`configure', where FEATURE indicates an optional part of the package.
-They may also pay attention to `--with-PACKAGE' options, where PACKAGE
-is something like `gnu-as' or `x' (for the X Window System).  The
-`README' should mention any `--enable-' and `--with-' options that the
-package recognizes.
+--cache-file=<FILE>
 
-   For packages that use the X Window System, `configure' can usually
-find the X include and library files automatically, but if it doesn't,
-you can use the `configure' options `--x-includes=DIR' and
-`--x-libraries=DIR' to specify their locations.
+  Configure tests can take a lot of time on some systems, so if you are
+  running configure multiple times it seems smart to cache the test
+  results in persistent storage so tests can be skipped on subsequent
+  configure runs.  Using this option will enable caching of test
+  results.  It is only useful for developers who develop on Coin while
+  working with old and slow hardware.
 
-Specifying the System Type
-==========================
+--prefix=<PATH>
 
-   There may be some features `configure' can not figure out
-automatically, but needs to determine by the type of host the package
-will run on.  Usually `configure' can figure that out, but if it prints
-a message saying it can not guess the host type, give it the
-`--host=TYPE' option.  TYPE can either be a short name for the system
-type, such as `sun4', or a canonical name with three fields:
-     CPU-COMPANY-SYSTEM
+  This option decides where the Coin library is going to be installed.
+  The default is usually /usr/local but can be set to something else
+  with this option.  Often used alternatives are /usr and /opt/Coin.
 
-See the file `config.sub' for the possible values of each field.  If
-`config.sub' isn't included in this package, then this package doesn't
-need to know the host type.
+--mandir=DIR
 
-   If you are building compiler tools for cross-compiling, you can also
-use the `--target=TYPE' option to select the type of system they will
-produce code for and the `--build=TYPE' option to select the type of
-system on which you are compiling the package.
+  If you enable manpage generation, you can specify where the manpages
+  should be installed with this option.  The default is ${prefix}/man,
+  but if you install to /usr you might prefer installing manpages to
+  /usr/share/man instead of /usr/man.
 
-Sharing Defaults
+--disable-dependency-tracking
+
+  Dependency tracking takes extra resources and slows down compilation
+  somewhat.  It is necessary to use dependency-tracking for users that
+  update the Coin source code between compilations without cleaning out
+  the object files in the build directory.  That means you either follow
+  update the Coin source code through CVS or are modifying the source
+  code yourself.
+
+  For single compilations in fresh/clean directories, dependency-
+  tracking is really a waste of resources and can make compilation take
+  about twice the time it takes without it.
+
+--disable-build
+
+  This option makes make skip the compilation of the source code.  It is
+  useful if you for instance only want to generate the documentation and
+  don't want to wait for the library to be built.
+
+--disable-msvc
+
+  Whe nusing the cygwin environment, the default is to search for the
+  Microsoft Visual C++ compiler.  The configure script aborts if it is
+  not found.  If you know what you are doing, and really want to use
+  gcc instead, you can then disable the search for VC++ and consequently
+  the abort by using this option.  Warning: This is untested/unsupported
+  ground, and we expect you to be able to get through this without
+  technical support if you decide to go for it.
+
+--enable-shared --disable-shared
+--disable-static --enable-static
+
+  On UNIX platforms, the default configuration is to create a shared
+  library of Coin.  The above options will change this behaviour.  It is
+  for most UNIX platforms possible to create both shared and static
+  libraries at the same time.
+
+  On Windows platforms, the default configuration is to create a dynamic
+  loadable library (DLL) of Coin.  It is *not* possible to create both
+  a DLL and a static library at the same time because the object files
+  are compiled differently in those two modes.  Enabling static will
+  automatically disable shared, but the -shared options has precedence
+  over the -static options.  Warning:  Do not first build one library
+  and then build the other in the same build directory - the object
+  files must the removed to avoid trouble.
+
+--enable-man
+
+  This option is used to enable the generation of manpages for the C++
+  classes Coin consist of.  See also the --mandir options listed above.
+
+  You need the "doxygen" utility to generate the manpages.
+
+--enable-html
+
+  This option is used to enable the generation of HTML documentation for
+  the C++ classes Coin consist of.
+  
+  There is no --htmldir option available for GNU autoconf scripts, but
+  you can specify the "htmldir" variable instead, like this:
+
+    configure --enable-html htmldir=doc/html
+
+  This will make HTML documentation be installed in ${prefix}/doc/html.
+  Absolute paths are also possible.
+
+  You need the "doxygen" utility to generate the HTML documentation.
+
+--disable-debug
+
+  This options turns off some run-time checking, warnings and asserts.
+  The default is to have them enabled.
+
+--disable-symbols
+
+  This option turns off debug symbols.  Debug symbols are needed to get
+  call stacks if the library crashes.  The default is to have debug
+  symbols enabled.
+
+--enable-rtti
+
+  This option enables C++ RTTI (Run-Time Type Information).  RTTI takes
+  extra space, and is not needed for type-information in Open Inventor,
+  which implements it's own type system.
+
+  Make sure the RTTI on/off setting is identical in both the library
+  and the application code using the library.  If they are not, the
+  library and application will expect objects passed back and forth to
+  have a different memory footprint than they have, which can cause
+  weird crashes.
+
+--enable-exceptions
+
+  The default is to disable C++ exceptions in Coin.  Coin does not throw
+  or catch exceptions, and does not need it enabled.  You can enable it
+  with this option nevertheless.
+
+--enable-profile
+
+  If you want to enable profiling with Coin, you can use this option.
+  It only works for gcc.
+
+--disable-warnings
+
+  This options will disable compiler warnings when building Coin.  It may
+  not work for all compilers.
+
+--disable-dl-simage
+
+  If you don't want Coin to load the simage library at run-time, but want
+  a link-time binding to simage instead, use this option.
+  
+--disable-dl-glu
+
+  If you don't want Coin to load the GLU library at run-time, but want a
+  link-time binding to GLU instead, use this option.
+  
+--enable-compact
+
+  On some architectures, the final library linkage is done by specifying
+  all the object files in the Coin library on the same linker command
+  line.  This line becomes quite long, and on certain architectures,
+  most notably IRIX and HPUX, the default maximum command line length is
+  too small.
+
+  This option will cause all the source code in each subdir of src/ to
+  be compiled as one gigantic object file, which solves this limitation.
+  It will slow down compilation a great deal though, but if you must,
+  you must.
+
+--enable-hacking
+
+  Normally, Coin is linked into one library, which is rather large.  For
+  developers working on Coin, the time to do the final link stage is
+  a problem - the turn-around time for Coin development is slowed down
+  because of it.
+
+  When you use this option, the Coin library will be configured as a set
+  of smaller library, each of which takes a lot less time to link.  This
+  option should not be used for anyone that do not do development on the
+  Coin library itself.
+
+--with-doxygen=<PATH>
+
+  With this option, you can specify where doxygen is installed, in case
+  the configure script can not find it by doing a path search.
+
+--with-dl=<DIR>
+
+  With this option, you can specify where the dl (dynamic loading)
+  library can be located, in case the counfigure script can not find it
+  on its own.
+
+--without-dl
+
+  This option will disable the use of the dl library.  No libraries will
+  get run-time bindings to Coin.
+
+--without-loadlibrary
+
+  The alternative to the dl library for Windows is called LoadLibrary.
+  To disable using LoadLibrary for loading simage and GLU, this option
+  can be used.
+
+--with-simage=DIR
+
+  This option can be used to specify where the simage library was
+  installed (prefix, not libdir), in case the configure script is not
+  able to locate it on its own.
+
+--with-x=DIR
+
+  This option can be used to specify where X is installed, in case the
+  configure script is not able to locate it on its own.
+
+--with-mesa=DIR
+
+  This option can be used to specify where the Mesa library is
+  installed, in case the configure script is not able to locate it on
+  its own.  This also indicates that linking should be done against
+  libMesa instead of GL.
+
+--with-opengl=DIR
+
+  This option can be used to specify where the OpenGL library is
+  installed, in case the configure script is not able to locate it on
+  its own.
+
+--with-pthread=DIR
+
+  This option can be used to specify where the POSIX threads library is
+  installed, in case the configure script is not able to locate it on
+  its own.
+
+--with-glu=DIR
+
+  This option can be used to specify where the GLU library is installed,
+  in case the configure script is not able to locate it on its own.
+
+--with-alternate=<string>
+
+  This option makes sure the given Coin library build gets configured
+  as an alternate configuration.  The default string is "default".  To
+  use an alternate configuration of Coin, you specify the option
+  "--alternate=<string>" on the coin-config command line.
+
+--with-suffix=<string>
+
+  This option appends a suffix to the filename of the Coin library.  It
+  can be used to e.g. append "_g" to a debug version of Coin.  It is
+  used together with the --with-alternate option to avoid installing
+  the new Coin library over the old one.  The default is the empty
+  string.
+
+
+Build Options
+=============
+
+Although you take care of setting most configurable things when you run
+the configure script, there are a couple of things you can specify at
+the build phase.
+
+Parallel Builds 
+
+  If your build system has much available memory and perhaps multiple
+  processors, you can speed up the compilation by getting "make" to
+  compile multiple files at the same time.  This is (for GNU make)
+  specified through the "-j" option.  If you want four concurrent jobs
+  managed by make at all times, try starting the build like this:
+
+    make -j 4
+
+
+Install Options
+===============
+
+When you have built Coin and want to install it, there are still a few
+options you can do.
+
+Installing onto mounted root file system
+
+  If you are making a special root disk that are mounted somewhere else
+  besides /, you can still configure it with root-relative paths and
+  install onto it when the disk is mounted somewhere else.  If the new
+  file system is mounted on /mnt/newrootfs, you only need to run the
+  installation step like this.
+
+    make DESTDIR=/mnt/newrootfs install
+
+
+When Things Fail
 ================
 
-   If you want to set default values for `configure' scripts to share,
-you can create a site shell script called `config.site' that gives
-default values for variables like `CC', `cache_file', and `prefix'.
-`configure' looks for `PREFIX/share/config.site' if it exists, then
-`PREFIX/etc/config.site' if it exists.  Or, you can set the
-`CONFIG_SITE' environment variable to the location of the site script.
-A warning: not all `configure' scripts look for a site script.
+If you experience configure/build/install problems beyond what can be
+resolved by following the instructions in this file and the relevant
+README files and the FAQ, you can ask for help on the mailing list
+<coin-discuss@coin3d.org> (subscribtion is needed for posting), or you
+can contact <coin-support@coin3d.org> for technical support.  Before
+asking, check that the subject hasn't been discussed and resolved
+already by looking through the coin-discuss web archive at
+http://auto.coin3d.org/coin-discuss/index.html
 
-Operation Controls
-==================
+If you decide to send mail about the problem, you need to include all
+the information that is relevant to the problem with your description.
+This includes the file 'config.log' and the terminal output from around
+where things fail (the compiler output for the compilation that fails or
+the last lines of output from the configure script).  A description of
+the build environment you use may also be helpful, e.g. the compiler
+suite and versions of libraries and any system customizations that may
+be relevant to the problem.
 
-   `configure' recognizes the following options to control how it
-operates.
-
-`--cache-file=FILE'
-     Use and save the results of the tests in FILE instead of
-     `./config.cache'.  Set FILE to `/dev/null' to disable caching, for
-     debugging `configure'.
-
-`--help'
-     Print a summary of the options to `configure', and exit.
-
-`--quiet'
-`--silent'
-`-q'
-     Do not print messages saying which checks are being made.  To
-     suppress all normal output, redirect it to `/dev/null' (any error
-     messages will still be shown).
-
-`--srcdir=DIR'
-     Look for the package's source code in directory DIR.  Usually
-     `configure' can determine that directory automatically.
-
-`--version'
-     Print the version of Autoconf used to generate the `configure'
-     script, and exit.
-
-`configure' also accepts some other, not widely useful, options.

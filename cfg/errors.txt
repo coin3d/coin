@@ -1,0 +1,33 @@
+This file contains the textual explanations for errors that can occur when
+configure is run.  The correct message is automatically extracted and dumped
+on the screen by the configure script.
+
+!no-msvc++
+You need to have the Microsoft Visual C++ compiler suite accessible in the
+Cygwin environment.  Look in README.WIN32.
+
+!c--
+This C++ compiler (\"$CXX\") is not capable of compiling Coin.
+
+!c--vdest
+This C++ compiler (\"$CXX\") is not capable of compiling Coin.
+If you are using the Sun CC compiler, try upgrading to a new version,
+or even downgrading to an older version.
+
+!no-network-conversion
+Could not find network conversion functions like htonl() and its variants.
+
+!no-doxygen
+Could not find the doxygen tool.
+See http://www.stack.nl/~dimitri/doxygen/ for download information.
+
+!no-opengl
+Could not find an OpenGL software development kit.
+
+!no-cpp-quoting
+Couldn't figure out how to quote strings in CPP macros.
+
+!no-math-library
+Could not find a way to use the math library.
+
+!end

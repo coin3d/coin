@@ -1,15 +1,10 @@
 # **************************************************************************
 
 # release version number info
-m4_define([COIN_MAJOR], [1])
+m4_define([COIN_MAJOR], [2])
 m4_define([COIN_MINOR], [0])
 m4_define([COIN_MICRO], [0])
-
-# this setup is incorrect, and must be fixed before Coin 1.0
-# libtool ABI version info (see HACKING for setup information)
-# m4_define([COIN_ABI_CURRENT], [COIN_MAJOR])
-# m4_define([COIN_ABI_REVISION], [m4_eval((COIN_MINOR*100)+COIN_MICRO)])
-# m4_define([COIN_ABI_AGE], [0])
+m4_define([COIN_BETA], [a])
 
 # This is probably a more correct setup, but will be harder to keep if
 # we want major and minor to grow slowly (but is that any point?)
@@ -20,11 +15,13 @@ m4_define([COIN_ABI_AGE], [COIN_MINOR])
 
 # **************************************************************************
 
-AC_INIT([Coin], [COIN_MAJOR.COIN_MINOR.COIN_MICRO])
+AC_INIT([Coin], [COIN_MAJOR.COIN_MINOR.COIN_MICRO[]COIN_BETA])
 AC_REVISION([$Revision$])
 
 AC_CONFIG_AUX_DIR(cfg)
 AC_CONFIG_SRCDIR(src/misc/SoDB.cpp)
+
+SIM_AC_ERROR_MESSAGE_FILE([$ac_aux_dir/errors.txt])
 
 SIM_AC_CVS_CHANGES([
   # the moving of "conf-macros" to "cfg/m4"
@@ -33,11 +30,6 @@ SIM_AC_CVS_CHANGES([
     cvs co CoinMacros
   ], [test -d cfg/m4/CVS], [test ! -d conf-macros])
 ])
-
-# if test -f coin-config; then
-#   echo "removing old coin-config script";
-#   rm -f coin-config;
-# fi
 
 AH_TOP([
 #include <unconfig.h>
@@ -50,26 +42,45 @@ AC_DEFINE_UNQUOTED(COIN_CONFIGURE_BUILD, SIM_AS_TR_CPP([$build]), [Build system.
 AC_DEFINE_UNQUOTED(COIN_CONFIGURE_HOST, SIM_AS_TR_CPP([$host]), [Build host system.])
 AC_DEFINE_UNQUOTED(COIN_CONFIGURE_TARGET, SIM_AS_TR_CPP([$target]), [Build target system.])
 
+# date used by debian setup
+SIM_AC_DATE_RFC822([RFC822_DATE])
+AC_SUBST([RFC822_DATE])
+
+# date used by redhat setup
+SIM_AC_ISO8601_DATE([coin_configure_date])
+AC_SUBST([coin_configure_date])
 
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
 # compiling with it and to generate an MSWindows .dll file.
 
-SIM_AC_SETUP_MSVC_IFELSE([
-], [
-  case $host in
-  *-cygwin)
-    AC_MSG_ERROR([You need Microsoft Visual C++ to build Coin on Cygwin])
-    ;;
-  esac
-])
+AC_ARG_ENABLE([msvc],
+  [AC_HELP_STRING([--disable-msvc], [don't require MS Visual C++ on Cygwin])],
+  [case $enableval in
+  no | false) sim_ac_try_msvc=false ;;
+  *)          sim_ac_try_msvc=true ;;
+  esac],
+  [sim_ac_try_msvc=true])
+
+if $sim_ac_try_msvc; then
+  SIM_AC_SETUP_MSVC_IFELSE([], [
+    case $host in
+    *-cygwin)
+      AC_MSG_ERROR([You need Microsoft Visual C++ to build Coin on Cygwin])
+      ;;
+    esac
+  ])
+fi
 
 # **************************************************************************
 
 COIN_MAJOR_VERSION=COIN_MAJOR
 COIN_MINOR_VERSION=COIN_MINOR
 COIN_MICRO_VERSION=COIN_MICRO
-COIN_VERSION=$COIN_MAJOR_VERSION.$COIN_MINOR_VERSION.$COIN_MICRO_VERSION
+COIN_BETA_VERSION=COIN_BETA
+COIN_VERSION=$COIN_MAJOR_VERSION.$COIN_MINOR_VERSION.$COIN_MICRO_VERSION$COIN_BETA_VERSION
 VERSION=$COIN_VERSION
+
+SIM_AC_CONFIGURATION_SETTING([Library version], [$COIN_VERSION])
 
 AC_SUBST(COIN_MAJOR_VERSION)
 AC_SUBST(COIN_MINOR_VERSION)
@@ -170,7 +181,7 @@ SIM_AC_CHECK_VAR_FUNCTIONNAME
 
 
 ## Headers we might want to use. #########################################
-AC_CHECK_HEADERS([unistd.h sys/types.h inttypes.h stdint.h sys/param.h io.h windows.h winsock2.h])
+AC_CHECK_HEADERS([unistd.h sys/types.h inttypes.h stdint.h sys/param.h io.h windows.h winsock2.h GL/gl.h OpenGL/gl.h])
 
 AC_CHECK_HEADERS(
   [sys/unistd.h],
@@ -201,9 +212,9 @@ fi
 # FIXME: should we make this into a general macro
 # SIM_AC_CHECK_DEPENDENT_HEADER(HEADER, DEPENDONHEADERS..)? 20001025 mortene.
 #
-# FIXME2: is this really necessary? AC_CHECK_HEADER(S) tests by using the
+# FIXME2: is this really necessary? AC _CHECK_HEADER(S) tests by using the
 # preprocessor, not by doing a compile, so we could probably just
-# include netinet/in.h in the above list to AC_CHECK_HEADERS. We wouldn't
+# include netinet/in.h in the above list to AC _CHECK_HEADERS. We wouldn't
 # catch problems quiet so early on, though. 20001025 mortene.
 
 AC_CACHE_CHECK([for netinet/in.h], sim_cv_netinet_in_h, [
@@ -245,31 +256,48 @@ AC_ARG_ENABLE(
   no | false) sim_ac_build_library=false ;;
   esac])
 
+AM_CONDITIONAL(BUILD_LIBRARY, $sim_ac_build_library)
+
 # *******************************************************************
 # * Do we want to build the documentation?
 # *******************************************************************
 
-AC_ARG_WITH(html,
-  AC_HELP_STRING([--with-html], [build and install Coin HTML documentation]),
-  [case "${withval}" in
-    yes) want_html=yes ;;
-    no)  want_html=no ;;
-    *) AC_MSG_ERROR(bad value "${withval}" for --with-html) ;;
+AC_ARG_VAR([htmldir],
+           [destination for HTML docs (default ${datadir}/Coin/html)])
+
+AC_ARG_ENABLE(html,
+  AC_HELP_STRING([--enable-html], [build and install Coin HTML documentation]),
+  [case $enableval in
+    yes | true) want_html=yes ;;
+    *)          want_html=no ;;
   esac],
   [want_html=no])
 
-coin_html_dir=`eval echo $datadir/Coin/html`
+coin_html_dir=`pwd`/html
 
-AC_ARG_WITH(man,
-  AC_HELP_STRING([--with-man], [build and install Coin man pages]),
-  [case "${withval}" in
-    yes) want_man=yes ;;
-    no)  want_man=no ;;
-    *) AC_MSG_ERROR(bad value "${withval}" for --with-man) ;;
+case $htmldir in
+"")
+  htmldir="$datadir/Coin/html"
+  ;;
+/*)
+  # do nothing - absolute path
+  ;;
+*)
+  htmldir="\${prefix}/$htmldir"
+  ;;
+esac
+
+AC_SUBST(htmldir)
+
+AC_ARG_ENABLE(man,
+  AC_HELP_STRING([--enable-man], [build and install Coin man pages]),
+  [case $enableval in
+    yes | true) want_man=yes ;;
+    *)          want_man=no ;;
   esac],
   [want_man=no])
 
-coin_man_dir=`eval echo $mandir`
+coin_man_dir=`pwd`/man
 
 # Used in the Doxygen parameter file.
 COIN_DOC_HTML=`echo $want_html | tr '[a-z]' '[A-Z]'`
@@ -278,6 +306,18 @@ AC_SUBST(COIN_DOC_HTML)
 AC_SUBST(coin_html_dir)
 AC_SUBST(COIN_DOC_MAN)
 AC_SUBST(coin_man_dir)
+
+AM_CONDITIONAL(BUILD_MANPAGES, test x"$want_man" = x"yes")
+AM_CONDITIONAL(BUILD_HTMLPAGES, test x"$want_html" = x"yes")
+
+if test x"$want_man" = x"yes"; then
+  SIM_AC_CONFIGURATION_SETTING([manpage installation], [$mandir])
+fi
+
+if test x"$want_html" = x"yes"; then
+  SIM_AC_CONFIGURATION_SETTING([HTML installation], [$htmldir])
+fi
+
 
 if test x"$want_html" != xno -o x"$want_man" != xno; then
   SIM_AC_DOXYGEN_TOOL(, AC_MSG_ERROR([Could not find the doxygen tool -- see http://www.stack.nl/~dimitri/doxygen/]))
@@ -348,13 +388,6 @@ SIM_COMPILER_WARNINGS
 #  "inefficient including" internally.
 
 CPPFLAGS="$CPPFLAGS -DCOIN_INTERNAL"
-
-# **************************************************************************
-# do not install unchanged headers
-
-INSTALL_HEADER="\
-INSTALL='\$(INSTALL_DATA)' \$(SHELL) \$(top_srcdir)/cfg/install-header"
-AC_SUBST(INSTALL_HEADER)
 
 # **************************************************************************
 
@@ -722,9 +755,6 @@ if $sim_ac_build_library; then
       COIN_EXTRA_LIBS="-lCoin${SUFFIX}"
     fi
 
-    # For the build/coin.spec RPM specification file.
-    SIM_AC_ISO8601_DATE(coin_configure_date)
-    AC_SUBST(coin_configure_date)
   fi
 
   COIN_COMPILER="$CXX"
@@ -734,6 +764,12 @@ if $sim_ac_build_library; then
     COIN_COMPILER="wrapmsvc"
   fi
   AC_SUBST(COIN_COMPILER)
+
+  if test x"$prefix" = x"NONE"; then
+    SIM_AC_CONFIGURATION_SETTING([Install prefix], [/usr/local])
+  else
+    SIM_AC_CONFIGURATION_SETTING([Install prefix], [$prefix])
+  fi
 else
   SIM_AC_CONFIGURATION_SETTING([Coin build type], [build disabled])
 fi
@@ -750,6 +786,10 @@ AC_CONFIG_FILES([
         include/Inventor/system/Makefile
         data/Makefile
         data/draggerDefaults/Makefile
+        man/Makefile
+        man/man1/Makefile
+        man/man3/Makefile
+        html/Makefile
         src/Makefile
         src/base/Makefile
         src/VRMLnodes/Makefile
@@ -771,8 +811,6 @@ AC_CONFIG_FILES([
         src/projectors/Makefile
         src/sensors/Makefile
         src/vrml97/Makefile
-        build/Makefile
-        build/coin.spec
         docs/coin.doxygen
 ])
 
@@ -862,9 +900,15 @@ fi
 SIM_AC_CONFIGURATION_SUMMARY
 
 if $sim_ac_build_library; then
-  echo ""
-  echo "Now, run 'make install' to build and install Coin."
-  echo ""
+  cat <<EOF
+
+Warning: You are now building the development version of the Coin library.
+  Unless you are working on development of Coin, you will probably want to
+  build the sources from the Coin-1.* release branch instead.  This
+  development branch may become ABI-incompatible with itself from time
+  to time, with all the headaches that follow...
+
+EOF
 else
   echo ""
 fi

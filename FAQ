@@ -61,7 +61,7 @@ A:	The viewers need different cache contexts.  Use two different
 	     the application programmer can get a unique cache context id. */
 	    uint32_t uniqcc = 19720408 + i;
 	#endif // SGI / TGS Inventor
-	    renderaction->setCacheContext(uniquecc);
+	    renderaction->setCacheContext(uniqcc);
 	    // set root node, etc...
 	  }
 

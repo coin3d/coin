@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4l from Makefile.am.
+# Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
@@ -97,6 +97,7 @@ OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
+RFC822_DATE = @RFC822_DATE@
 SUFFIX = @SUFFIX@
 VERSION = @VERSION@
 X_CFLAGS = @X_CFLAGS@
@@ -110,6 +111,7 @@ coin_configure_date = @coin_configure_date@
 coin_html_dir = @coin_html_dir@
 coin_man_dir = @coin_man_dir@
 coin_src_dir = @coin_src_dir@
+htmldir = @htmldir@
 install_sh = @install_sh@
 path_tag = @path_tag@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@

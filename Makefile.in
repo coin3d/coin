@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4l from Makefile.am.
+# Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
@@ -111,16 +111,22 @@ coin_configure_date = @coin_configure_date@
 coin_html_dir = @coin_html_dir@
 coin_man_dir = @coin_man_dir@
 coin_src_dir = @coin_src_dir@
+htmldir = @htmldir@
 install_sh = @install_sh@
 path_tag = @path_tag@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
-SUBDIRS = . include data src build
+@BUILD_LIBRARY_TRUE@SRCDIRS = data src
 
-dist_bin_SCRIPTS = \
-	coin-config
+@BUILD_HTMLPAGES_TRUE@HTMLDIRS = html
+@BUILD_HTMLPAGES_FALSE@HTMLDIRS = 
+
+SUBDIRS = . include $(SRCDIRS) man $(HTMLDIRS)
+
+@BUILD_LIBRARY_TRUE@dist_bin_SCRIPTS = \
+@BUILD_LIBRARY_TRUE@	coin-config
 
 
 BUILT_SOURCES = \
@@ -133,11 +139,11 @@ DISTCLEANFILES = \
 	coin-@CONFIG@.cfg
 
 
-m4datadir = $(datadir)/aclocal
-dist_m4data_DATA = cfg/m4/coin.m4
+@BUILD_LIBRARY_TRUE@m4datadir = $(datadir)/aclocal
+@BUILD_LIBRARY_TRUE@dist_m4data_DATA = cfg/m4/coin.m4
 
-cfgdatadir = $(datadir)/Coin/conf
-cfgdata_DATA = coin-@CONFIG@.cfg
+@BUILD_LIBRARY_TRUE@cfgdatadir = $(datadir)/Coin/conf
+@BUILD_LIBRARY_TRUE@cfgdata_DATA = coin-@CONFIG@.cfg
 
 EXTRA_DIST = \
 	ChangeLog.1999 \
@@ -146,13 +152,27 @@ EXTRA_DIST = \
 	LICENSE.LGPL \
 	README.AIX \
 	README.IRIX \
+	README.MAC \
 	README.WIN32 \
 	coin.cfg.in \
 	docs/coin.doxygen.in \
 	cfg/doxy4win.pl \
 	cfg/ltconfig \
 	cfg/m4/wrapmsvc.cpp \
-	cfg/m4/wrapmsvc.exe
+	cfg/m4/wrapmsvc.exe \
+	packaging/debian/changelog.in \
+	packaging/debian/control.in \
+	packaging/debian/copyright.in \
+	packaging/debian/rules.in \
+	packaging/debian/libcoin40.files.in \
+	packaging/debian/libcoin40.README.Debian.in \
+	packaging/debian/libcoin40-dev.files.in \
+	packaging/debian/libcoin40-dev.README.Debian.in \
+	packaging/debian/libcoin40-doc.files.in \
+	packaging/debian/libcoin40-doc.README.Debian.in \
+	packaging/debian/libcoin40-runtime.files.in \
+	packaging/debian/libcoin40-runtime.README.Debian.in \
+	packaging/redhat/coin.spec.in
 
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -174,7 +194,7 @@ DIST_COMMON = README $(dist_bin_SCRIPTS) $(dist_m4data_DATA) AUTHORS \
 	aclocal.m4 cfg/config.guess cfg/config.sub cfg/depcomp \
 	cfg/install-sh cfg/ltconfig cfg/ltmain.sh cfg/missing \
 	cfg/mkinstalldirs cfg/texinfo.tex configure configure.in
-DIST_SUBDIRS = $(SUBDIRS)
+DIST_SUBDIRS = . include data src man html
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -365,7 +385,7 @@ GZIP_ENV = --best
 distdir: $(DISTFILES)
 	-chmod -R a+w $(distdir) >/dev/null 2>&1; rm -rf $(distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/build $(distdir)/cfg $(distdir)/cfg/m4 $(distdir)/docs
+	$(mkinstalldirs) $(distdir)/cfg $(distdir)/cfg/m4 $(distdir)/docs $(distdir)/packaging/debian $(distdir)/packaging/redhat
 	@for file in $(DISTFILES); do \
 	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
 	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \
@@ -381,7 +401,7 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
-	for subdir in $(SUBDIRS); do \
+	for subdir in $(DIST_SUBDIRS); do \
 	  if test "$$subdir" = .; then :; else \
 	    test -d $(distdir)/$$subdir \
 	    || mkdir $(distdir)/$$subdir \
@@ -560,24 +580,24 @@ doxygen-docs: built-sources
 	else :; fi
 	@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
 
-install-exec-local: $(srcdir)/cfg/m4/wrapmsvc.exe
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(bindir)
-	@if @BUILD_WITH_MSVC@; then \
-	  p=wrapmsvc.exe; \
-	  echo " $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p"; \
-	  $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p; \
-	fi
+@BUILD_LIBRARY_TRUE@install-exec-local: $(srcdir)/cfg/m4/wrapmsvc.exe
+@BUILD_LIBRARY_TRUE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_TRUE@	$(mkinstalldirs) $(DESTDIR)$(bindir)
+@BUILD_LIBRARY_TRUE@	@if @BUILD_WITH_MSVC@; then \
+@BUILD_LIBRARY_TRUE@	  p=wrapmsvc.exe; \
+@BUILD_LIBRARY_TRUE@	  echo " $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p"; \
+@BUILD_LIBRARY_TRUE@	  $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p; \
+@BUILD_LIBRARY_TRUE@	fi
 
 # **************************************************************************
 # misc rules for automatic debian packaging.  main: `debian-packages'
 
-coin$(COIN_MAJOR_VERSION)-$(VERSION):
-	$(MAKE) distdir;
-	if test -d coin$(COIN_MAJOR_VERSION)-$(VERSION); then \
-	  rm -rf coin$(COIN_MAJOR_VERSION)-$(VERSION); \
+libcoin$(COIN_MAJOR_VERSION)-$(VERSION):
+	if test -d libcoin$(COIN_MAJOR_VERSION)-$(VERSION); then \
+	  rm -rf libcoin$(COIN_MAJOR_VERSION)-$(VERSION); \
 	else :; fi;
-	mv Coin-$(VERSION) coin$(COIN_MAJOR_VERSION)-$(VERSION)
+	$(MAKE) distdir;
+	mv Coin-$(VERSION) libcoin$(COIN_MAJOR_VERSION)-$(VERSION)
 
 debian-files: $(DEBIAN_DIST_DIR)
 	test -d $(DEBIAN_DIST_DIR)/debian || mkdir $(DEBIAN_DIST_DIR)/debian;
@@ -593,15 +613,15 @@ debian-files: $(DEBIAN_DIST_DIR)
 	done;
 
 debian-control:
-	distdir=coin$(COIN_MAJOR_VERSION)-$(VERSION); \
+	distdir=libcoin$(COIN_MAJOR_VERSION)-$(VERSION); \
 	$(MAKE) DEBIAN_DIST_DIR=$$distdir debian-files;
 
-debian-setup: coin$(COIN_MAJOR_VERSION)-$(VERSION) debian-control
+debian-setup: libcoin$(COIN_MAJOR_VERSION)-$(VERSION) debian-control
 
 debian-packages: debian-setup
-	cd coin1-$(VERSION); \
+	cd libcoin$(COIN_MAJOR_VERSION)-$(VERSION); \
 	./debian/rules source;
-	cd coin1-$(VERSION); \
+	cd libcoin$(COIN_MAJOR_VERSION)-$(VERSION); \
 	./debian/rules binary;
 
 # EOF ######################################################################

@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4l from Makefile.am.
+# Makefile.in generated automatically by automake 1.5 from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
@@ -111,13 +111,20 @@ coin_configure_date = @coin_configure_date@
 coin_html_dir = @coin_html_dir@
 coin_man_dir = @coin_man_dir@
 coin_src_dir = @coin_src_dir@
+htmldir = @htmldir@
 install_sh = @install_sh@
 path_tag = @path_tag@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
-SUBDIRS = man1
+@BUILD_LIBRARY_TRUE@MAN1DIR = man1
+@BUILD_LIBRARY_FALSE@MAN1DIR = 
+
+@BUILD_MANPAGES_TRUE@MAN3DIR = man3
+@BUILD_MANPAGES_FALSE@MAN3DIR = 
+
+SUBDIRS = $(MAN1DIR) $(MAN3DIR)
 subdir = man
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/config.h
@@ -129,7 +136,7 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
 DIST_COMMON = Makefile.am Makefile.in
-DIST_SUBDIRS = $(SUBDIRS)
+DIST_SUBDIRS = man1 man3
 all: all-recursive
 
 .SUFFIXES:
@@ -264,7 +271,7 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
-	for subdir in $(SUBDIRS); do \
+	for subdir in $(DIST_SUBDIRS); do \
 	  if test "$$subdir" = .; then :; else \
 	    test -d $(distdir)/$$subdir \
 	    || mkdir $(distdir)/$$subdir \
@@ -360,18 +367,6 @@ uninstall-info: uninstall-info-recursive
 	tags tags-recursive uninstall uninstall-am uninstall-info-am \
 	uninstall-info-recursive uninstall-recursive
 
-
-# if WANT_MANPAGES
-# manpages:
-# 	@doxygen@ 
-# endif
-# 
-# install-man:
-# 	$(mkinstalldirs) $(DESTDIR)$mandir/man3;
-# 	list=''; for f in $$list; do \
-# 	  echo " $(INSTALL) $$f $(DESTDIR)$mandir/man3/$$f"; \
-# 	  $(INSTALL) $$f $(DESTDIR)$mandir/man3/$$f; \
-# 	done
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
