@@ -46,6 +46,7 @@ public:
 
   virtual void notify(SoNotList * list);
   virtual void handleEvent(SoHandleEventAction * action);
+  virtual void write(SoWriteAction * action);
 
   SoEngineOutput cycleTime; // (SoSFTime)
   SoEngineOutput fraction_changed; // (SoSFFloat)
@@ -54,9 +55,6 @@ public:
 
 protected:
   virtual ~SoVRMLTimeSensor();
-
-
-  virtual void writeInstance(SoOutput * out);
   virtual void inputChanged(SoField * whichInput);
 
 private:

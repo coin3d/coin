@@ -298,7 +298,7 @@ SoVRMLTimeSensor::notify(SoNotList * list)
 // Documented in superclass. Overridden to not write connection to
 // realTime global field.
 void
-SoVRMLTimeSensor::writeInstance(SoOutput * out)
+SoVRMLTimeSensor::write(SoWriteAction * action)
 {
   // Note: the code in this method matches that of SoElapsedTime and
   // SoOneShot and SoTimeSensor, so if any bugs are found and
@@ -315,7 +315,7 @@ SoVRMLTimeSensor::writeInstance(SoOutput * out)
     this->timeIn.setDefault(TRUE);
   }
 
-  inherited::writeInstance(out);
+  inherited::write(action);
 
   // Re-connect to realTime field.
   if (connectfromrealTime) {
