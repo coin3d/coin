@@ -147,7 +147,7 @@ GLUWrapper_set_version(const GLubyte * versionstr)
 /*                        "Invalid GLU versionstring: \"%s\"\n", versionstr); */
   }
 
-  { // Run-time help for debugging GLU problems on remote sites.
+  { /* Run-time help for debugging GLU problems on remote sites. */
     int COIN_DEBUG_GLU_INFO = 0;
     const char * env = coin_getenv("COIN_DEBUG_GLU_INFO");
     if (env) { COIN_DEBUG_GLU_INFO = atoi(env); }
