@@ -211,8 +211,53 @@ SoChildList::set(const int index, SoNode * const node)
 void
 SoChildList::traverse(SoAction * const action, const int first, const int last)
 {
-  for (int i = first; i <= last && !action->hasTerminated(); i++)
-    action->traverse(SoNodeList::operator[](i));
+  int i;
+  int numindices;
+  const int * indices;
+  SoNode * node;
+  
+  // use a local array pointer for speed
+  SoNode ** childarray = (SoNode **) this->getArrayPtr();
+
+  switch (action->getPathCode(numindices, indices)) {
+  case SoAction::NO_PATH:
+  case SoAction::BELOW_PATH:
+    // always traverse all nodes.
+    for (i = first; i <= last && !action->hasTerminated(); i++) {
+      action->traverse(childarray[i]);
+    }
+    break;
+  case SoAction::OFF_PATH:
+    // only traverse nodes that affects state.
+    for (i = first; i <= last && !action->hasTerminated(); i++) {
+      node = childarray[i];
+      if (node->affectsState()) {
+        action->traverse(node);
+      }
+    }
+    break;
+  case SoAction::IN_PATH:
+    {
+      // only traverse nodes in path list, and nodes off path that
+      // affects state.
+      int childidx = 0;
+      for (i = 0; i < numindices; i++) {
+        int stop = indices[i];
+        for (; childidx < stop && !action->hasTerminated(); childidx++) {
+          // we are off path. Check if node affects state before traversing
+          node = childarray[i];
+          if (node->affectsState()) action->traverse(node);
+        }
+        // here we are in path. Always traverse
+        action->traverse(childarray[childidx]);
+        childidx++;
+      }
+    }
+    break;
+  default:
+    assert(0 && "unknown path code.");
+    break;
+  }
 }
 
 /*!
