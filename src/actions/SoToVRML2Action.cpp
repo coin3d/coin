@@ -51,7 +51,8 @@
 // FIXME: SoComplexity::BOUNDING_BOX are not supported. For
 // DrawStyle::LINES quads are not handled correctly (will always draw
 // triangles). SoArray and SoMultipleCopy are not supported.
-// 20020805 kristian.
+// Reusing of appearance and geometry nodes is not implemented.
+// 20020813 kristian.
 
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoToVRML2Action.h>
@@ -116,6 +117,49 @@ SoToVRML2Action::initClass(void)
   library.
 */
 
+/*!
+  \fn void SoToVRML2Action::reuseAppearanceNodes(SbBool appearance)
+
+  Set the flag deciding if appearance nodes should be reused if possible.
+  The default is TRUE.
+*/
+
+/*!
+  \fn SbBool SoToVRML2Action::doReuseAppearanceNodes(void) const
+
+  Get the flag deciding if appearance nodes should be reused if possible.
+  The default is TRUE.
+*/
+
+/*!
+  \fn void SoToVRML2Action::reusePropertyNodes(SbBool property)
+
+  Set the flag deciding if property nodes should be reused if possible.
+  The default is TRUE.
+*/
+
+/*!
+  \fn SbBool SoToVRML2Action::doReusePropertyNodes(void) const
+
+  Get the flag deciding if property nodes should be reused if possible.
+  The default is FALSE.
+*/
+
+/*!
+  \fn void SoToVRML2Action::reuseGeometryNodes(SbBool geometry)
+
+  Set the flag deciding if geometry nodes should be reused if possible.
+  The default is FALSE.
+*/
+
+/*!
+  \fn SbBool SoToVRML2Action::doReuseGeometryNodes(void) const
+
+  Get the flag deciding if geometry nodes should be reused if possible.
+  The default is FALSE.
+*/
+
+
 // *************************************************************************
 
 #ifndef HAVE_VRML97
@@ -149,6 +193,9 @@ public:
   {
     this->master = master;
     this->nodefuse = FALSE; // for optimizing bad scene graphs
+    this->reuseAppearanceNodes = FALSE;
+    this->reusePropertyNodes = FALSE;
+    this->reuseGeometryNodes = FALSE;
     this->vrml2path = NULL;
     this->vrml2root = NULL;
   }
@@ -187,6 +234,9 @@ public:
 
   SoToVRML2Action * master;
   SbBool nodefuse;
+  SbBool reuseAppearanceNodes;
+  SbBool reusePropertyNodes;
+  SbBool reuseGeometryNodes;
   SbDict dict;
   SoCallbackAction cbaction;
   SoSearchAction searchaction;
@@ -477,40 +527,44 @@ SoToVRML2ActionP::get_or_create_coordinate(const SbVec4f * coord4, int32_t num)
 SoVRMLCoordinate *
 SoToVRML2ActionP::get_or_create_coordinate(const SbVec3f * coord3, int32_t num)
 {
-  // Search for a matching VRMLCoordinate
-  int n = this->vrmlcoords->getLength();
-  while (--n >= 0) {
-    SoVRMLCoordinate * c = (*this->vrmlcoords)[n];
-    if (c->point.getNum() == num &&
-        memcmp(coord3, c->point.getValues(0), num*sizeof(SbVec3f)) == 0) {
-      return c;
+  if (this->reusePropertyNodes) {
+    // Search for a matching VRMLCoordinate
+    int n = this->vrmlcoords->getLength();
+    while (--n >= 0) {
+      SoVRMLCoordinate * c = (*this->vrmlcoords)[n];
+      if (c->point.getNum() == num &&
+          memcmp(coord3, c->point.getValues(0), num*sizeof(SbVec3f)) == 0) {
+        return c;
+      }
     }
   }
 
   // Create new
   SoVRMLCoordinate * c = new SoVRMLCoordinate;
   c->point.setValues(0, num, coord3);
-  this->vrmlcoords->append(c);
+  if (this->reusePropertyNodes) this->vrmlcoords->append(c);
   return c;
 }
 
 SoVRMLNormal *
 SoToVRML2ActionP::get_or_create_normal(const SbVec3f * normal, int32_t num)
 {
-  // Search for a matching VRMLNormal
-  int n = this->vrmlnormals->getLength();
-  while (--n >= 0) {
-    SoVRMLNormal * nor = (*this->vrmlnormals)[n];
-    if (nor->vector.getNum() == num &&
-        memcmp(normal, nor->vector.getValues(0), num*sizeof(SbVec3f)) == 0) {
-      return nor;
+  if (this->reusePropertyNodes) {
+    // Search for a matching VRMLNormal
+    int n = this->vrmlnormals->getLength();
+    while (--n >= 0) {
+      SoVRMLNormal * nor = (*this->vrmlnormals)[n];
+      if (nor->vector.getNum() == num &&
+          memcmp(normal, nor->vector.getValues(0), num*sizeof(SbVec3f)) == 0) {
+        return nor;
+      }
     }
   }
 
   // Create new
   SoVRMLNormal * nor = new SoVRMLNormal;
   nor->vector.setValues(0, num, normal);
-  this->vrmlnormals->append(nor);
+  if (this->reusePropertyNodes) this->vrmlnormals->append(nor);
   return nor;
 }
 
@@ -531,40 +585,44 @@ SoToVRML2ActionP::get_or_create_color(const uint32_t * packedColor, int32_t num)
 SoVRMLColor *
 SoToVRML2ActionP::get_or_create_color(const SbColor * color, int32_t num)
 {
-  // Search for a matching VRMLColor
-  int n = this->vrmlcolors->getLength();
-  while (--n >= 0) {
-    SoVRMLColor * c = (*this->vrmlcolors)[n];
-    if (c->color.getNum() == num &&
-        memcmp(color, c->color.getValues(0), num*sizeof(SbColor)) == 0) {
-      return c;
+  if (this->reusePropertyNodes) {
+    // Search for a matching VRMLColor
+    int n = this->vrmlcolors->getLength();
+    while (--n >= 0) {
+      SoVRMLColor * c = (*this->vrmlcolors)[n];
+      if (c->color.getNum() == num &&
+          memcmp(color, c->color.getValues(0), num*sizeof(SbColor)) == 0) {
+        return c;
+      }
     }
   }
 
   // Create new
   SoVRMLColor * c = new SoVRMLColor;
   c->color.setValues(0, num, color);
-  this->vrmlcolors->append(c);
+  if (this->reusePropertyNodes) this->vrmlcolors->append(c);
   return c;
 }
 
 SoVRMLTextureCoordinate *
 SoToVRML2ActionP::get_or_create_texcoordinate(const SbVec2f * texcoord2, int32_t num)
 {
-  // Search for a matching VRMLTextureCoordinate
-  int n = this->vrmltexcoords->getLength();
-  while (--n >= 0) {
-    SoVRMLTextureCoordinate * tc = (*this->vrmltexcoords)[n];
-    if (tc->point.getNum() == num &&
-        memcmp(texcoord2, tc->point.getValues(0), num*sizeof(SbVec2f)) == 0) {
-      return tc;
+  if (this->reusePropertyNodes) {
+    // Search for a matching VRMLTextureCoordinate
+    int n = this->vrmltexcoords->getLength();
+    while (--n >= 0) {
+      SoVRMLTextureCoordinate * tc = (*this->vrmltexcoords)[n];
+      if (tc->point.getNum() == num &&
+          memcmp(texcoord2, tc->point.getValues(0), num*sizeof(SbVec2f)) == 0) {
+        return tc;
+      }
     }
   }
 
   // Create new
   SoVRMLTextureCoordinate * tc = new SoVRMLTextureCoordinate;
   tc->point.setValues(0, num, texcoord2);
-  this->vrmltexcoords->append(tc);
+  if (this->reusePropertyNodes) this->vrmltexcoords->append(tc);
   return tc;
 }
 
