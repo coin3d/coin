@@ -457,3 +457,13 @@ THE WISH LIST
 
   Should be simple enough, see quateuler.cpp in this directory for the
   code we need for the getAsEuler() method.
+
+* SoTexture2::CLAMP_TO_EDGE
+  2001-07-17 <pederb@sim.no>
+
+  We should add a new wrap mode, CLAMP_TO_EDGE. Very useful and quite
+  frequently used. SoGLImage has support for this so it's very easy to
+  implement. Unlike CLAMP, pixel values will be clamped to the border
+  pixel instead of the texture border color when texture coordinates are
+  outside the [0,1] range.
+
