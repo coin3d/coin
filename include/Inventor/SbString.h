@@ -25,6 +25,7 @@
 #include <Inventor/SbName.h>
 
 #include <stdio.h>
+#include <stdarg.h>
 
 #define SB_STRING_STATIC_STORAGE_SIZE 32
 
@@ -60,6 +61,8 @@ public:
   static uint32_t hash(const char * s);
 
   SbString & operator += (const char c);
+  SbString & sprintf(const char * formatstr, ...);
+  SbString & vsprintf(const char * formatstr, va_list args);
 
   void print(FILE * file = stdout) const;
 

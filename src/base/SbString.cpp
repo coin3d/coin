@@ -20,10 +20,16 @@
 /*!
   \class SbString SbString.h Inventor/SbString.h
   \brief The SbString class is a string class with convenience functions for string operations.
-
   \ingroup base
 
-  FIXME: write doc.
+  Internally for the Coin library, this is the class used for storing
+  and working with character strings. It automatically takes care of
+  supporting all the "bookkeeping" tasks usually associated with
+  working with character strings, like memory allocation and
+  deallocation etc.
+
+  This class should also be well suited for use by the application
+  programmer throughout the application using the Coin library.
 
   \sa SbName
 */
@@ -33,8 +39,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include <../snprintf.h> // snprintf() and vsnprintf() definitions.
 #include <assert.h>
 #include <string.h>
+
 
 /*!
   This is the default constructor.  It initializes the string to be empty.
@@ -480,10 +488,7 @@ operator != (const SbString & str1, const SbString & str2)
   return (str1 != str2.sstring);
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Increase internal buffer size.
 void
 SbString::expand(int bySize)
 {
@@ -503,6 +508,43 @@ SbString::expand(int bySize)
     this->storageSize = newSize;
   }
 }
+
+/*!
+  Set SbString instance to the formatted string \a formatstr,
+  replacing the current contents.  The control characters within \a
+  formatstr and the remaining arguments should follow the conventions
+  of the printf() call.
+
+  Note that this function is not part of the original Open Inventor
+  API.
+*/
+SbString &
+SbString::sprintf(const char * formatstr, ...)
+{
+  va_list argptr;
+  va_start(argptr, formatstr);
+  this->vsprintf(formatstr, argptr);
+  va_end(argptr);
+  return *this;
+}
+
+/*!
+  Set SbString instance to the formatted string \a formatstr,
+  replacing the current contents.  The control characters within \a
+  formatstr and the arguments of the \a args argument list should
+  follow the conventions of the printf() call.
+
+  Note that this function is not part of the original Open Inventor
+  API.
+*/
+SbString &
+SbString::vsprintf(const char * formatstr, va_list args)
+{
+  while (vsnprintf(this->sstring, this->storageSize, formatstr, args) == -1)
+    this->expand(1024); // increase linearly in 1Kb intervals
+  return *this;
+}
+
 
 /*!
   Dump the state of this object to the \a file stream.  Only works in
