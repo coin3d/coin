@@ -38,6 +38,7 @@
 
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSubFieldP.h>
+#include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -175,8 +176,17 @@ SoSFEnum::findEnumName(int value, const SbName *& name) const
 SbBool
 SoSFEnum::readValue(SoInput * in)
 {
-  assert(this->legalValuesSet &&
-         "missing initialization of SoSFEnum mappings");
+  // FIXME: in this case, perhaps we should rather accept numeric
+  // values instead of demanding mnemonics? 20020630 mortene.
+  if (!this->legalValuesSet) {
+    SbName name;
+    SoFieldContainer * container = this->getContainer();
+    SbBool fname = container && container->getFieldName(this, name);
+    SoReadError::post(in,
+                      "no mappings available for SoSFEnum field %s",
+                      fname ? name.getString() : "");
+    return FALSE;
+  }
 
   SbName n;
   // Read mnemonic value as a character string identifier

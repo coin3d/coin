@@ -38,6 +38,7 @@
 
 #include <Inventor/fields/SoMFEnum.h>
 #include <Inventor/fields/SoSubFieldP.h>
+#include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SoInput.h>
@@ -108,7 +109,17 @@ SoMFEnum::initClass(void)
 SbBool
 SoMFEnum::read1Value(SoInput * in, int idx)
 {
-  assert(this->legalValuesSet);
+  // FIXME: in this case, perhaps we should rather accept numeric
+  // values instead of demanding mnemonics? 20020630 mortene.
+  if (!this->legalValuesSet) {
+    SbName name;
+    SoFieldContainer * container = this->getContainer();
+    SbBool fname = container && container->getFieldName(this, name);
+    SoReadError::post(in,
+                      "no mappings available for SoMFEnum field %s",
+                      fname ? name.getString() : "");
+    return FALSE;
+  }
 
   SbName n;
   // Read mnemonic value as a character string identifier

@@ -41,10 +41,9 @@
 
 #include <Inventor/fields/SoSFBitMask.h>
 #include <Inventor/fields/SoSubFieldP.h>
+#include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/errors/SoReadError.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 
@@ -68,8 +67,17 @@ SoSFBitMask::initClass(void)
 SbBool
 SoSFBitMask::readValue(SoInput * in)
 {
-  assert(this->legalValuesSet &&
-         "missing initialization of SoSFBitMask enum mappings");
+  // FIXME: in this case, perhaps we should rather accept numeric
+  // values instead of demanding mnemonics? 20020630 mortene.
+  if (!this->legalValuesSet) {
+    SbName name;
+    SoFieldContainer * container = this->getContainer();
+    SbBool fname = container && container->getFieldName(this, name);
+    SoReadError::post(in,
+                      "no mappings available for SoSFBitMask field %s",
+                      fname ? name.getString() : "");
+    return FALSE;
+  }
 
   if (in->isBinary()) {
     int bitmask = 0;
