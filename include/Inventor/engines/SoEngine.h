@@ -31,42 +31,41 @@ class SoEngine : public SoFieldContainer {
   typedef SoFieldContainer inherited;
 
 public:
-  void evaluateWrapper();
+  static void initClass(void);
+  static void initClasses(void);
+  static SoType getClassTypeId(void);
+
+  void evaluateWrapper(void);
+
+  virtual int getOutputs(SoEngineOutputList & l) const;
+  SoEngineOutput * getOutput(const SbName & outputname) const;
+  SbBool getOutputName(const SoEngineOutput * output, SbName & outputname) const;
+  virtual const SoEngineOutputData * getOutputData(void) const = 0;
+  static SoEngine * getByName(const SbName & name);
+  static int getByName(const SbName & name, SoEngineList & el);
+
+  SbBool isNotifying(void) const;
+  virtual void notify(SoNotList * nl);
+
+  SoEngine * copy(void) const;
+  virtual SoFieldContainer * copyThroughConnection(void) const;
+  SbBool shouldCopy(void) const;
+
+  virtual void writeInstance(SoOutput * out);
+
 
 protected:
-  SoEngine();
+  SoEngine(void);
   virtual ~SoEngine();
-  virtual void evaluate() = 0;
+  virtual void evaluate(void) = 0;
 
-protected:
-
-  virtual SbBool readInstance(SoInput *in, unsigned short flags);
+  virtual SbBool readInstance(SoInput * in, unsigned short flags);
   virtual void inputChanged(SoField * which);
 
   static const SoFieldData ** getInputDataPtr(void);
   static const SoEngineOutputData ** getOutputDataPtr(void);
 
-  void writeOutputTypes(SoOutput *out);
-
-public:
-  static SoType getClassTypeId(void);
-  virtual int getOutputs(SoEngineOutputList & l) const;
-
-  SoEngineOutput * getOutput(const SbName & outputname) const;
-  SbBool getOutputName(const SoEngineOutput * output, SbName & outputname) const;
-  SoEngine * copy(void) const;
-  static SoEngine * getByName(const SbName & name);
-  static int getByName(const SbName & name, SoEngineList & list);
-
-  static void initClass(void);
-  static void initClasses(void);
-
-  virtual void notify(SoNotList * list);
-  virtual void writeInstance(SoOutput *out);
-  virtual SoFieldContainer * copyThroughConnection(void) const;
-  virtual const SoEngineOutputData *getOutputData(void) const = 0;
-  SbBool shouldCopy(void) const;
-  SbBool isNotifying(void) const;
+  void writeOutputTypes(SoOutput * out);
 
 private:
   static SoType classTypeId;
