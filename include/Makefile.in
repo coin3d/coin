@@ -106,12 +106,21 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 
 SUBDIRS = Inventor
+
+thisincdir = $(includedir)
+
+thisinc_HEADERS = \
+	$(top_srcdir)/include/SoWinEnterScope.h \
+	$(top_srcdir)/include/SoWinLeaveScope.h
+
 subdir = include
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../config.h ../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 DIST_SOURCES = 
-DIST_COMMON =  Makefile.am Makefile.in
+HEADERS =  $(thisinc_HEADERS)
+
+DIST_COMMON =  $(thisinc_HEADERS) Makefile.am Makefile.in
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -126,6 +135,26 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
+
+install-thisincHEADERS: $(thisinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(thisincdir)
+	@list='$(thisinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if cmp -s $$d$$p $(DESTDIR)$(thisincdir)/$$f; then :; else \
+	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(thisincdir)/$$f"; \
+	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(thisincdir)/$$f; \
+	  fi; \
+	done
+
+uninstall-thisincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(thisinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(thisincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(thisincdir)/$$f; \
+	done
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run `make' without going through this Makefile.
@@ -222,6 +251,7 @@ maintainer-clean-tags:
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
 distdir: $(DISTFILES)
+	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -253,20 +283,21 @@ installcheck: installcheck-recursive
 install-exec-am:
 install-exec: install-exec-recursive
 
-install-data-am:
+install-data-am: install-thisincHEADERS
 install-data: install-data-recursive
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-recursive
-uninstall-am:
+uninstall-am: uninstall-thisincHEADERS
 uninstall: uninstall-recursive
-all-am: Makefile
+all-am: Makefile $(HEADERS)
 all-redirect: all-recursive
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
 installdirs: installdirs-recursive
 installdirs-am:
+	$(mkinstalldirs)  $(DESTDIR)$(thisincdir)
 
 
 mostlyclean-generic:
@@ -299,7 +330,8 @@ maintainer-clean-am:  maintainer-clean-tags maintainer-clean-generic \
 
 maintainer-clean: maintainer-clean-recursive
 
-.PHONY: install-recursive uninstall-recursive install-data-recursive \
+.PHONY: uninstall-thisincHEADERS install-thisincHEADERS \
+install-recursive uninstall-recursive install-data-recursive \
 uninstall-data-recursive install-exec-recursive \
 uninstall-exec-recursive installdirs-recursive uninstalldirs-recursive \
 all-recursive check-recursive installcheck-recursive info-recursive \
