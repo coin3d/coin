@@ -339,7 +339,7 @@ COIN_DLL_API void cc_glglue_glBlendEquation(const cc_glglue * glue, GLenum mode)
 
 /* OpenGL vertex array ***/
 
-COIN_DLL_API SbBool cc_glglue_has_vertex_array(const cc_glglue * glue);;
+COIN_DLL_API SbBool cc_glglue_has_vertex_array(const cc_glglue * glue);
 COIN_DLL_API void cc_glglue_glVertexPointer(const cc_glglue * glue,
                                             GLint size, GLenum type, GLsizei stride, const GLvoid * pointer);
 COIN_DLL_API void cc_glglue_glTexCoordPointer(const cc_glglue * glue,
