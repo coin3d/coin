@@ -33,7 +33,7 @@ class SbVec3d;
 
 class COIN_DLL_API SbVec3f {
 public:
-  SbVec3f(void);
+  SbVec3f(void) { }
   SbVec3f(const float v[3]);
   SbVec3f(const float x, const float y, const float z);
   SbVec3f(const SbPlane & p0, const SbPlane & p1, const SbPlane & p2);

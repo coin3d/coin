@@ -62,12 +62,11 @@
 #endif // COIN_DEBUG
 
 /*!
+  \fn SbVec3d::SbVec3d(void)
+
   The default constructor does nothing. The vector coordinates will be
   uninitialized until you do a setValue() call.
 */
-SbVec3d::SbVec3d(void)
-{
-}
 
 /*!
   Constructs an SbVec3d instance with initial values from \a v.
