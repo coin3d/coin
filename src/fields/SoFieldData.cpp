@@ -471,8 +471,7 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
     uint16_t fieldflags = 0x00;
     // FIXME: take care of setting flags for SoUnknownEngines and
     // group SoUnknownNodes. 20000102 mortene.
-    if (object->getTypeId().isDerivedFrom(SoUnknownNode::getClassTypeId()))
-      fieldflags |= 0x40;
+    if (!object->getIsBuiltIn()) fieldflags |= 0x40;
 
     uint32_t w = fieldflags;
     w <<= 8;
@@ -483,8 +482,7 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
 
   // FIXME: write descriptions for SoUnknownEngine, if
   // necessary. 20000102 mortene.
-  if (object->getTypeId().isDerivedFrom(SoUnknownNode::getClassTypeId()))
-    this->writeFieldDescriptions(out, object);
+  if (!object->getIsBuiltIn()) this->writeFieldDescriptions(out, object);
 
   for (i=0; i < this->getNumFields(); i++)
     this->getField(object, i)->write(out, this->getFieldName(i));
