@@ -277,7 +277,7 @@ SoState::pop(void)
   int n = THIS->pushstore->elements.getLength();
   if (n) {
     const int * array = THIS->pushstore->elements.getArrayPtr();
-    for (int i = 0; i < n; i++) {
+    for (int i = n-1; i >= 0; i--) {
       int idx = array[i];
       SoElement * elem = this->stack[idx];
       SoElement * prev = elem->nextdown;
