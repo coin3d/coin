@@ -154,8 +154,7 @@ PublicHeaders = \
 	../../include/Inventor/actions/SoToVRMLAction.h \
 	../../include/Inventor/actions/SoToVRML2Action.h \
 	../../include/Inventor/actions/SoWriteAction.h \
-	../../include/Inventor/actions/SoAudioRenderAction.h \
-	../../include/Inventor/actions/SoIntersectionDetectionAction.h
+	../../include/Inventor/actions/SoAudioRenderAction.h
 
 PrivateHeaders = \
 	../../include/Inventor/actions/SoSubActionP.h \
@@ -182,6 +181,14 @@ RegularSources = \
 	SoWriteAction.cpp \
 	SoAudioRenderAction.cpp \
 	SoIntersectionDetectionAction.cpp
+
+
+
+# The SoIntersectionDetectionAction header needs to be under
+# Inventor/collision/ for TGS compatibility.
+collisionincdir = $(includedir)/Inventor/collision
+collisioninc_HEADERS = \
+	../../include/Inventor/collision/SoIntersectionDetectionAction.h
 
 
 
@@ -361,9 +368,10 @@ DIST_SOURCES = $(actions_lst_SOURCES) $(EXTRA_actions_lst_SOURCES) \
 	$(libactions_la_SOURCES) $(EXTRA_libactions_la_SOURCES) \
 	$(libactions@SUFFIX@LINKHACK_la_SOURCES) \
 	$(EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES)
-HEADERS = $(libactionsinc_HEADERS)
+HEADERS = $(collisioninc_HEADERS) $(libactionsinc_HEADERS)
 
-DIST_COMMON = $(libactionsinc_HEADERS) Makefile.am Makefile.in
+DIST_COMMON = $(collisioninc_HEADERS) $(libactionsinc_HEADERS) \
+	Makefile.am Makefile.in
 SOURCES = $(actions_lst_SOURCES) $(EXTRA_actions_lst_SOURCES) $(libactions_la_SOURCES) $(EXTRA_libactions_la_SOURCES) $(libactions@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES)
 
 all: all-am
@@ -484,6 +492,14 @@ distclean-depend:
 CXXDEPMODE = @CXXDEPMODE@
 uninstall-info-am:
 
+uninstall-collisionincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(collisioninc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(collisionincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(collisionincdir)/$$f; \
+	done
+
 uninstall-libactionsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libactionsinc_HEADERS)'; for p in $$list; do \
@@ -530,7 +546,7 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/../../include/Inventor/actions
+	$(mkinstalldirs) $(distdir)/../../include/Inventor/actions $(distdir)/../../include/Inventor/collision
 	@for file in $(DISTFILES); do \
 	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
 	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \
@@ -551,7 +567,7 @@ check: check-am
 all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libactionsincdir)
+	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(collisionincdir) $(DESTDIR)$(libactionsincdir)
 
 install: install-am
 install-exec: install-exec-am
@@ -594,7 +610,8 @@ info: info-am
 
 info-am:
 
-install-data-am: install-libactionsincHEADERS
+install-data-am: install-collisionincHEADERS \
+	install-libactionsincHEADERS
 
 install-exec-am: install-libLTLIBRARIES
 
@@ -613,23 +630,37 @@ mostlyclean: mostlyclean-am
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
-uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
-	uninstall-libactionsincHEADERS
+uninstall-am: uninstall-collisionincHEADERS uninstall-info-am \
+	uninstall-libLTLIBRARIES uninstall-libactionsincHEADERS
 
 .PHONY: GTAGS all all-am check check-am clean clean-generic \
 	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
 	clean-noinstLTLIBRARIES distclean distclean-compile \
 	distclean-depend distclean-generic distclean-libtool \
 	distclean-tags distdir dvi dvi-am info info-am install \
-	install-am install-data install-data-am install-exec \
-	install-exec-am install-info install-info-am \
-	install-libLTLIBRARIES install-libactionsincHEADERS install-man \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	tags uninstall uninstall-am uninstall-info-am \
+	install-am install-collisionincHEADERS install-data \
+	install-data-am install-exec install-exec-am install-info \
+	install-info-am install-libLTLIBRARIES \
+	install-libactionsincHEADERS install-man install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool tags uninstall \
+	uninstall-am uninstall-collisionincHEADERS uninstall-info-am \
 	uninstall-libLTLIBRARIES uninstall-libactionsincHEADERS
 
+
+install-collisionincHEADERS: $(libcollisioninc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libcollisionincdir)
+	@list='$(libcollisioninc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libcollisionincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 # this rule causes a make warning, so we remove it when it is not in use
 actions.lst: Makefile $(actions_lst_OBJECTS)
