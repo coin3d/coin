@@ -25,8 +25,9 @@
 #endif /* HAVE_CONFIG_H */
 
 #if HAVE_WINDOWS_H
-#include <windows.h> // Needed for gl.h on Win32.
+#include <windows.h> /* for GL and for APIENTRY */
 #endif /* HAVE_WINDOWS_H */
+
 #include <GL/gl.h>
 
 /* Under Win32, we need to make sure we use the correct calling method
@@ -67,7 +68,7 @@ enum {
   GLU_W_NURBS_TEXTURE_COORD_DATA = 100174,
   GLU_W_NURBS_END_DATA = 100175,
 
- /* NurbsProperty */
+  /* NurbsProperty */
   GLU_W_AUTO_LOAD_MATRIX = 100200,
   GLU_W_CULLING = 100201,
   GLU_W_SAMPLING_TOLERANCE = 100203,
@@ -110,7 +111,7 @@ typedef GLint (APIENTRY *gluScaleImage_t)(GLenum, GLsizei, GLsizei, GLenum, cons
 /* The first argument for these methods is actually either GLUnurbs or
    GLUnurbsObj, depending on the GLU version (yes, they managed to
    change the API over version 1.x to 1.y, for some value of [0, 3]
-   for x and y). */
+   for x and y, where x < y). */
 typedef void * (APIENTRY *gluNewNurbsRenderer_t)(void);
 typedef void (APIENTRY *gluDeleteNurbsRenderer_t)(void *);
 typedef void (APIENTRY *gluNurbsProperty_t)(void *, GLenum, GLfloat);
