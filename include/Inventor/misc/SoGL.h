@@ -71,16 +71,6 @@ void sogl_render_cube(const float width,
                       SoMaterialBundle * const material,
                       const unsigned int flags);
 
-// convenience functions
-void sogl_polygon_offset(const int onoff, const float numpixels = 1.0f);
-unsigned int sogl_create_texture(const int wrapS, const int wrapT,
-                                 const unsigned char * const texture,
-                                 const int numComponents,
-                                 const int w, const int h,
-                                 const SbBool mipmap);
-void sogl_apply_texture(const unsigned int handle);
-void sogl_free_texture(unsigned int handle);
-
 // nurbs rendering and tesselation
 void sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                                void * nurbsrenderer,
