@@ -154,11 +154,8 @@ SoAsciiText::SoAsciiText(void)
 */
 SoAsciiText::~SoAsciiText()
 {
-  
-  if (PRIVATE(this)->fontspec != NULL) {
-    cc_fontspec_clean(PRIVATE(this)->fontspec);
-  }
-
+  cc_string_destruct(PRIVATE(this)->prevfontname);
+  cc_string_destruct(PRIVATE(this)->prevfontstyle);
   delete PRIVATE(this);
 }
 
@@ -295,7 +292,8 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
   if (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::OBJECT_SPACE) 
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
   
-  
+  cc_fontspec_clean(&fontspec);  
+
 }
 
 // Doc in parent.
@@ -359,6 +357,7 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   if(maxw == FLT_MIN) { // There is no text to bound. Returning.
     box.setBounds(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 0.0f, 0.0f));
     center = SbVec3f(0,0,0);
+    cc_fontspec_clean(&fontspec);
     return; 
   }
 
@@ -399,6 +398,8 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   box.extendBy(SbVec3f(0,PRIVATE(this)->maxglyphbbox.getMin()[1] - (n-1)*fontspec.size, 0));  
   box.extendBy(PRIVATE(this)->maxglyphbbox);
   center = box.getCenter();
+
+  cc_fontspec_clean(&fontspec);
 
 }
 
@@ -525,6 +526,9 @@ SoAsciiText::generatePrimitives(SoAction * action)
     ypos -= fontspec.size * this->spacing.getValue();
   }
   this->endShape();
+
+  cc_fontspec_clean(&fontspec);
+
 }
 
 // doc in parent
