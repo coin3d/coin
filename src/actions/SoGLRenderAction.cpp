@@ -686,7 +686,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
   if (COIN_DEBUG && ((err_before_init != GL_NO_ERROR) || (err_after_init != GL_NO_ERROR))) {
     int err = (err_before_init != GL_NO_ERROR) ? err_before_init : err_after_init;
     SoDebugError::postWarning("SoGLRenderAction::beginTraversal",
-                              "GL error %s initalization: %s",
+                              "GL error %s initialization: %s",
                               (err_before_init != GL_NO_ERROR) ? "before" : "after",
                               sogl_glerror_string(err).getString());
   }
