@@ -34,6 +34,11 @@
 #include <Inventor/nodes/SoCallback.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoActions.h> // SoCallback uses all of them.
+#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoDiffuseColorElement.h>
+#include <Inventor/elements/SoTransparencyElement.h>
 
 /*!
   \typedef void SoCallbackCB(void * userdata, SoAction * action)
@@ -96,7 +101,29 @@ SoCallback::callback(SoCallbackAction * action)
 void
 SoCallback::GLRender(SoGLRenderAction * action)
 {
-  action->getState()->lazyEvaluate();
+  if (this->cbfunc) {
+    SoState * state = action->getState();
+    state->lazyEvaluate();
+
+    SbBool transparent = SoTextureImageElement::containsTransparency(state);
+    if (!transparent) {
+      const SoDiffuseColorElement * diffelt =
+        SoDiffuseColorElement::getInstance(state);
+      if (diffelt->isPacked()) transparent = diffelt->hasPackedTransparency();
+      else {
+        const SoTransparencyElement * trans =
+          SoTransparencyElement::getInstance(state);
+        transparent = trans->getNum() > 1 ||
+          trans->get(0) > 0.0f;
+      }
+    }
+    // SoGLTextureImageElement is lazy, but needs some arguments.
+    // Update manually
+    const SoGLTextureImageElement * ti = (SoGLTextureImageElement *)
+      state->getConstElement(SoGLTextureImageElement::getClassStackIndex());
+    ti->evaluate(SoGLTextureEnabledElement::get(state),
+                 transparent && !SoShapeStyleElement::isScreenDoor(state));
+  }
   SoCallback::doAction(action);
 }
 
