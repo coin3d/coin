@@ -672,7 +672,6 @@ int coin_glglue_extension_available(const char * extensions, const char * ext);
 
 /* needed for bumpmap rendering */
 void coin_apply_normalization_cube_map(const cc_glglue * glue);
-void coin_apply_specular_lookup_texture(const cc_glglue * glue);
 
 #ifdef __cplusplus
 }
