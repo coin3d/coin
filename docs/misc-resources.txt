@@ -14,6 +14,13 @@ THE LINKS
 
   Contains discussions on several collision detection algorithms.
 
+* Optimized Collision Detection
+  2001-05-10 Peder Blekken <pederb@sim.no>
+  http://www.codercorner.com/Opcode.htm
+
+  Claims to be much faster than other implementations. Is free to use
+  in any commercail or non-commercial program.
+
 * nVIDIA GL_vertex_array_range and GL_NV_fence
   2000-12-14 Peder Blekken <pederb@sim.no>
   http://www.nvidia.com/Marketing/Developer/DevRel.nsf/pages/AEE3673F9B8DBC228825693B00619F9C
