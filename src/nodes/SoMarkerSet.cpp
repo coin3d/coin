@@ -36,7 +36,7 @@
 
   This node class is an extension versus the original SGI Inventor
   v2.1 API.  In addition to being a Coin extension, it is also present
-  in TGS' Inventor implementation (except TGS doesn't support the NONE 
+  in TGS' Inventor implementation (except TGS doesn't support the NONE
   markerIndex value).
 
   \since TGS Inventor 2.5
@@ -119,7 +119,7 @@ typedef struct {
   int height;
   int align;
   unsigned char *data;
-  bool deletedata;
+  SbBool deletedata;
 } so_marker;
 
 static SbList <so_marker> * markerlist;
@@ -1184,7 +1184,7 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
         continue;
       }
 #endif // COIN_DEBUG
-      
+
     if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
 
     if (this->markerIndex[midx]!=NONE) {
@@ -1196,16 +1196,16 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
       // change z range from [0,1] to [-1,1]
       point[2] *= 2.0f;
       point[2] -= 1.0f;
-      
+
       so_marker * tmp = &(*markerlist)[ this->markerIndex[midx] ];
-      
+
       // To have the exact center point of the marker drawn at the
       // projected 3D position.  (FIXME: I haven't actually checked that
       // this is what TGS' implementation of the SoMarkerSet node does
       // when rendering, but it seems likely. 20010823 mortene.)
       point[0] = point[0] - (tmp->width - 1) / 2;
       point[1] = point[1] - (tmp->height - 1) / 2;
-      
+
       glPixelStorei(GL_UNPACK_ALIGNMENT, tmp->align);
       glRasterPos3f(point[0], point[1], -point[2]);
       glBitmap(tmp->width, tmp->height, 0, 0, 0, 0, tmp->data);
