@@ -283,7 +283,14 @@ SoDebugError::commonPostHandling(Severity severity, const char * type,
   error.appendToDebugString(source);
   error.appendToDebugString("(): ");
   error.appendToDebugString(s.getString());
-  error.handleError();
+
+  if (SoDebugError::callback != SoError::defaultHandlerCB) {
+    SoDebugError::callback(&error, SoDebugError::callbackData);
+  }
+  else {
+    error.handleError();
+  }
+
   check_breakpoints(source);
 }
 
