@@ -1,9 +1,89 @@
-FIXME: write information here on how to do effective Coin
-development. 19990926 mortene.
+If you want to work _with_ the Coin sourcecode (not just writing
+applications _using_ the Coin library) -- for helping us fixing bugs,
+improve performance, or whatever reasons -- this file contains some
+hints and tips for you.
 
 ==============================================================================
 
-* How to use CVS
+1 The Bleeding Edge
+===================
+
+First of all, you should make sure you are building from the latest
+sources from the CVS branch you want to work with. This is done by
+using the Concurrent Versioning System for staying in sync with the
+sourcecode repository we at Systems in Motion are using. Follow the
+instructions on the webpages at <URL:http://www.coin3d.org>.
+
+If you are not familiar with CVS, check out the CVS homepages at
+<URL:http://cvshome.org>.
+
+
+2 Surviving a Large C++ Project
+===============================
+
+The main problem all large C or C++ projects bump into sooner or later
+is that the turn-around time for doing compile, link and run gets too
+long for development to be efficient. When we're talking re-linking of
+library files of >30MB (with debug information), its gonna get painful
+to do rapid incremental bugfixing / testing cycles.
+
+So I'm going to explain now how we at SIM have (more or less
+fundamentally) solved this problem. First of all: use a "UNIX-like"
+system. MSWindows systems are no good for working with the kind of
+setup we have, we do all new development on UNIX systems (mostly Linux
+and SGI IRIX) and so the build process have been tuned for these
+platforms.
+
+A typical set-up session for me for doing Coin development on a virgin
+machine looks like this (I'm using SoQt as the GUI library for
+demonstration purposes):
+
+  $ cd $HOME
+  $ mkdir code compile install
+  $ cd code
+  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot co -P simage
+  [cvs doing its thing]
+  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot co -P Coin
+  [cvs doing its thing]
+  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot co -P SoQt
+  [cvs doing its thing]
+
+[Note: you probably want to work with a particular branch from the
+CVS, so make sure you use the "-r" option to the "cvs checkout"s
+above.]
+
+  $ cd $HOME/compile
+  $ mkdir simage Coin SoQt
+  $ cd simage
+  $ $HOME/code/simage/configure --prefix=$HOME/install
+  [configure running]
+  $ make install
+  [build should complete quickly]
+  $ cd ../Coin
+  $ $HOME/code/Coin/configure --prefix=$HOME/install --enable-hacking
+  [configure running]
+
+[Note the "--enable-hacking" option to configure. This is the
+brilliant part. What happens with this option is that instead of
+making one monolithic libCoin.so file, the Coin library will be linked
+into many shared libraries, one for each subdirectory under
+$HOME/code/Coin/src/. The brilliance of this little trick will be
+explained later in the walk-through.]
+
+  $ make install
+  [building will take quite some time, go for a coffee]
+
+  $ cd ../SoQt
+  $ $HOME/code/SoQt/configure --prefix=$HOME/install
+  [configure running]
+  $ make install
+  [build shouldn't take long]
+
+Ok, that's it. You should now have libsimage, libCoin and libSoQt
+built and installed under $HOME/install/lib/.
+
+
+XXX FIXME: complete doc. XXX
 
 * Building Coin for development (UNIX)
 	- discuss common C++ large project problems
@@ -30,5 +110,9 @@ development. 19990926 mortene.
 * Submitting patches
 	- technical walk-through
 	- legal aspects
+
+* come work for us
+        - interest in 3D visualization
+        - C++ expertise a definitive plus
 
 ==============================================================================

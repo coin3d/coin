@@ -35,34 +35,10 @@ TODO:
 
 * [mortene:1999????] Use float-versions of math-functions on platforms
   where they are supported (i.e. fcos(), fsqrt() etc instead of cos(),
-  sqrt(), ..). Use autoconf for testing availability.
+  sqrt(), ..).
 
 * [mortene:19990930] SbString.h is incompatible with the std::string
   STL definition? Look into this to see if it can be solved. (Reported
   by Jason Fritz on coin-devsupport.)
-
-* [larsa:20000712] Add build-options for linking with ElectricFence
-  and similar tools.
-
-*** SUPPORT ITEMS ***
-
-* [mortene:19991115] move WWW pages from public_www module into Coin
-  module and set up necessary mechanism on www.sim.no to extract and
-  publish pages automatically.
-
-* [mortene:19990807] make an overview list on the Coin WWW pages of
-  what's implemented and what's not -- separate list into "vs OI 2.1"
-  and "vs OI 2.5".
-
-* [mortene:19991016] convert documentation of functions to Doxygen's
-  \param + \return format (this is a _huge_ and boring job, but it can
-  be done gradually, of course).
-
-* [mortene:19990913] write non-generic instructions in the INSTALL
-  file.
-
-* [mortene:19990913] fill in the ``HACKING'' file with tips & tricks
-  for faster turn-around when doing development.
-
 
 ===============================================================================

@@ -11,7 +11,7 @@ Open Inventor[1].
 
 HOMEPAGE
 
-www.coin3d.org
+<URL:http://www.coin3d.org>
 
 
 LICENSE
@@ -24,12 +24,6 @@ Coin is compatible with this free, open source license.
 
 There are files in the distribution used in the build process which is
 covered under the GPL (see LICENSE.GPL).
-
-
-STATUS
-
-Beta as of 2000-06-28.  Note: So* GUI libraries still in alpha as of
-2000-06-28.
 
 
 MAIN DEVELOPERS

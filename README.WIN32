@@ -1,63 +1,24 @@
-//////////////////////////////////////////////////////
-//
-//	COMPILING COIN ON THE MS WINDOWS PLATFORM
-//
-//////////////////////////////////////////////////////
-//
-//  Author:    Marius B. Monsen
-//  E-mail:    mariusbu@sim.no
+You should be able to build the Coin library if you have these
+components installed on your system:
+
+        * Cygwin[1], latest release (we've at least tested with net
+          release v1.1.4)
+
+        * Microsoft Visual C++ v6.0
 
 
-* 1 Introduction *
+Configure and build the same way as you would on UNIX-based systems,
+i.e.
 
-Coin is a 3d retained-mode library, compatible with Open Inventor 2.1.
-
-CygWin is a Linux/Unix-like environment for Windows made by Cygnus Solutions.
-
-Microsoft Visual C++ (MSVC++) is the C/C++ compiler in Microsoft DeveloperStudio.
+        $ [srcdir]/configure
+        $ make install
 
 
-* 2 Environment *
+Note that if you encounter any problems when trying to build on
+MSWindows, it is expected that you are able to do a minimum of
+troubleshooting yourself before contacting us. If you are confident
+that configure and/or build fails due to a mistake on our part, we
+will be happy to assist.
 
-Throughout this file we assume using CygWin and MSVC++.
-
-Download CygWin from <URL:http://sourceware.cygnus.com/>.
-
-Install CygWin (instructions on the website).
-
-Make sure the environment variables INCLUDE and LIB are set.
-To check this, write the following in the command line (bash):
-
-  echo $INCLUDE
-  echo $LIB
-
-If they are not set, write the following in the command line (bash):
-
-  vcvars32.bat
-
-Throughout this file we assume that 'your_install_path/include'
-is in you include path and 'your_install_path/lib' is in your
-lib path.
-
-
-* 3 Compiling Coin *
-
-Coin does not contain any platform-spesific code.
-
-Write the following in the command line (bash):
-
-  CC=cl CXX=cl CFLAGS=/Tp /your_path_here/configure --prefix=your_install_path
-  cd data
-  make
-  [from here on, you can use build/coin.dsp instead of nmake]
-  cd ..
-  cd build
-  nmake coin.mak CFG="coin - Win32 Debug"
-  cd ..
-  make install-data
-  make install-exec-am
-
-NB! Note the difference between 'make' (the GNU make utility)
-and 'nmake' (the Microsoft make utility).
-
-Done!
+---
+[1] <URL:http://www.cygwin.com>
