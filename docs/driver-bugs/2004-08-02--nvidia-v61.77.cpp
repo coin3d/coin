@@ -10,12 +10,14 @@
 
   System information:
 
-  * Driver version 61.77 (also found same problem with 61.76 and
-    56.64).
+  * Driver versions found to crash: 52.16, 56.64, 56.72, 61.76, 61.77
+    (no others were tested).
 
-  * GeForce FX 5900
+  * GeForce4 Ti 4600, GeForce2 Ultra, GeForce FX 5900, GeForce FX
+    5900XT (all that were tested).
 
-  * Win XP Service Pack 1.
+  * Win XP Service Pack 1, Win 2000 Service Pack 4 (all tested
+    platforms).
 
   * Display settings: any resolution, any color depth.
 
