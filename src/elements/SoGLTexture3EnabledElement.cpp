@@ -71,9 +71,7 @@ SoGLTexture3EnabledElement::set(SoState * const state,
                                const SbBool enabled)
 {
   SoInt32Element::set(classStackIndex, state, node, (int32_t) enabled);
-#if 0 // FIXME: obsoleted 2001-11-26, pederb. Code seems to be missing in SoShapeStyleElement
-  //  SoShapeStyleElement::setTexture3Enabled(state, enabled);
-#endif // obsoleted
+  SoShapeStyleElement::setTexture3Enabled(state, enabled);
 }
 
 
