@@ -97,7 +97,9 @@ protected:
                       const unsigned char * bytes,
                       const Wrap wrapS, const Wrap wrapT,
                       const Model model, const SbColor & blendColor);
-
+  
+  virtual SbBool hasTransparency(void) const;
+  
   SbVec2s size;
   int numComponents;
   const unsigned char *bytes;

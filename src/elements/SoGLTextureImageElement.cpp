@@ -151,6 +151,16 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
   }
 }
 
+// doc from parent
+SbBool
+SoGLTextureImageElement::hasTransparency(void) const
+{
+  if (this->image) {
+    return this->image->hasTransparency();
+  }
+  return FALSE;
+}
+
 
 void 
 SoGLTextureImageElement::evaluate() const

@@ -228,9 +228,22 @@ SoTextureImageElement::containsTransparency(SoState * const state)
 {
   const SoTextureImageElement *elem = (SoTextureImageElement*)
     SoElement::getConstElement(state, classStackIndex);
+  
+  return elem->hasTransparency();
+}
 
-  // FIXME: should also check image data if components are 2 or 4?
-  return elem->numComponents == 2 || elem->numComponents == 4;
+/*!  
+  Called by containsTransparency(). Returns \e TRUE if image data
+  has transparency. Default method does a very poor job of detecting
+  this, since it returns \e TRUE when the number of components are 2
+  or 4. Overload whenever it is important to know this
+  (SoGLTextureImageElement overloads it to avoid transparency handling
+  where possible).  
+*/
+SbBool
+SoTextureImageElement::hasTransparency(void) const
+{
+  return this->numComponents == 2 || this->numComponents == 4;
 }
 
 //! FIXME: write doc.

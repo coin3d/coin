@@ -46,6 +46,9 @@ public:
 
   virtual void evaluate() const;
 
+protected:
+  virtual SbBool hasTransparency(void) const;
+
 private:
   SoGLImage *image;
   float quality;

@@ -30,6 +30,10 @@
 #include <simage.h>
 #endif // HAVE_LIBSIMAGE
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 //
 // TODO: write support for other image libraries
 //
@@ -321,13 +325,15 @@ void
 SoImageInterface::checkTransparency()
 {
   if (this->numComponents == 2 || this->numComponents == 4) {
+
     int n = this->size[0] * this->size[1];
     int nc = this->numComponents;
     unsigned char *ptr = (unsigned char *) this->dataPtr + nc - 1;
 
-    while (n--) {
+    while (n) {
       if (*ptr != 255) break;
       ptr += nc;
+      n--;
     }
     this->transparency = n > 0;
   }
