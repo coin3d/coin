@@ -107,9 +107,7 @@ SoBaseKit::SoBaseKit(void)
   }
 
 
-  // Note: we must use "" instead of , , to humour MS VisualC++ 6.
-
-  SO_KIT_ADD_CATALOG_LIST_ENTRY(callbackList, SoSeparator, TRUE, this, "", SoCallback, TRUE);
+  SO_KIT_ADD_CATALOG_LIST_ENTRY(callbackList, SoSeparator, TRUE, this, \x0, SoCallback, TRUE);
   SO_KIT_ADD_LIST_ITEM_TYPE(callbackList, SoEventCallback);
 
   // this could be created on demand, but will make it more complicated
@@ -159,25 +157,25 @@ SoBaseKit::getPart(const SbName & partname, SbBool makeifneeded)
   FIXME: write function documentation
 */
 SbString
-SoBaseKit::getPartString(const SoBase *part)
+SoBaseKit::getPartString(const SoBase * part)
 {
-  const SoNodekitCatalog *catalog = this->getNodekitCatalog();
+  const SoNodekitCatalog * catalog = this->getNodekitCatalog();
   if (part->isOfType(SoNode::getClassTypeId())) {
-    int idx = this->findNodeInThisKit((SoNode*)part);
+    int idx = this->findNodeInThisKit((SoNode *)part);
     if (idx >= 0) {
       return SbString(catalog->getName(idx).getString());
     }
     return SbString();
   }
   else if (part->isOfType(SoPath::getClassTypeId())) {
-    SoFullPath *path = (SoFullPath*)part;
+    SoFullPath * path = (SoFullPath *)part;
     int pathidx = path->findNode(this);
     if (pathidx < 0) return SbString();
-    SoBaseKit *kit = this;
+    SoBaseKit * kit = this;
     SbString partname;
     int parentnum = 0;
-    SoNode *tail = path->getTail();
-    SoNode *node = kit;
+    SoNode * tail = path->getTail();
+    SoNode * node = kit;
     while (node != tail) {
       node = path->getNode(++pathidx);
       int partnum = kit->findNodeInThisKit(node, parentnum);
@@ -196,7 +194,7 @@ SoBaseKit::getPartString(const SoBase *part)
       if (node->isOfType(SoNodeKitListPart::getClassTypeId())) {
         // no sense in using SoNodeKitListPart as a non-leaf node, right?
         assert(catalog->isLeaf(partnum));
-        SoNodeKitListPart *list = (SoNodeKitListPart*)node;
+        SoNodeKitListPart * list = (SoNodeKitListPart *)node;
         pathidx += 2; // // skip container node
         if (pathidx >= path->getLength()) {
 #if COIN_DEBUG
@@ -213,7 +211,7 @@ SoBaseKit::getPartString(const SoBase *part)
         partname += ']';
       }
       if (node->isOfType(SoBaseKit::getClassTypeId())) {
-        kit = (SoBaseKit*) node;
+        kit = (SoBaseKit *) node;
         catalog = kit->getNodekitCatalog();
         parentnum = 0;
       }
@@ -231,7 +229,7 @@ SoBaseKit::getPartString(const SoBase *part)
   FIXME: write function documentation
 */
 SoNodeKitPath *
-SoBaseKit::createPathToPart(const SbName &partname, SbBool makeifneeded, const SoPath *pathtoextend)
+SoBaseKit::createPathToPart(const SbName & partname, SbBool makeifneeded, const SoPath * pathtoextend)
 {
   return this->createPathToAnyPart(partname, makeifneeded, TRUE, TRUE, pathtoextend);
 }
@@ -240,20 +238,20 @@ SoBaseKit::createPathToPart(const SbName &partname, SbBool makeifneeded, const S
   FIXME: write function documentation
 */
 SbBool
-SoBaseKit::setPart(const SbName &partname, SoNode *from)
+SoBaseKit::setPart(const SbName & partname, SoNode * from)
 {
   return this->setAnyPart(partname, from, FALSE);
 }
 
 static const char *
-skip_spaces(const char *ptr)
+skip_spaces(const char * ptr)
 {
   while (isspace(*ptr)) ptr++;
   return ptr;
 }
 
 static int
-find_partname_length(const char *ptr)
+find_partname_length(const char * ptr)
 {
   int cnt = 0;
   while (ptr[cnt] && !isspace(ptr[cnt]) && ptr[cnt] != '{' && ptr[cnt] != '}') cnt++;
@@ -264,15 +262,15 @@ find_partname_length(const char *ptr)
   FIXME: write function documentation
 */
 SbBool
-SoBaseKit::set(const char *namevaluepairliststring)
+SoBaseKit::set(const char * namevaluepairliststring)
 {
   int stringlen = strlen(namevaluepairliststring); // cache this value
-  const char *currptr = skip_spaces(namevaluepairliststring);
+  const char * currptr = skip_spaces(namevaluepairliststring);
   SoInput memInput;
 
   while (*currptr) {
     int partnamelen = find_partname_length(currptr);
-    const char *start = skip_spaces(currptr + partnamelen);
+    const char * start = skip_spaces(currptr + partnamelen);
     if (*start != '{') { // first non-space after partname should be a {
 #if COIN_DEBUG
       SoDebugError::postWarning("SoBaseKit::set",
@@ -283,7 +281,7 @@ SoBaseKit::set(const char *namevaluepairliststring)
     }
     start++; // skip {
     SbString partname(currptr, 0, partnamelen-1);
-    SoBaseKit *kit = this;
+    SoBaseKit * kit = this;
     int partNum;
     SbBool isList;
     int listIdx;
@@ -296,9 +294,9 @@ SoBaseKit::set(const char *namevaluepairliststring)
       return FALSE;
     }
 
-    SoNode *node = kit->fieldList[partNum]->getValue();
+    SoNode * node = kit->fieldList[partNum]->getValue();
     if (isList) {
-      SoNodeKitListPart *list = (SoNodeKitListPart*)node;
+      SoNodeKitListPart * list = (SoNodeKitListPart *)node;
       if (listIdx < 0 || listIdx > list->getNumChildren()) {
 #if COIN_DEBUG
         SoDebugError::postWarning("SoBaseKit::set",
@@ -322,7 +320,7 @@ SoBaseKit::set(const char *namevaluepairliststring)
         node = list->getChild(listIdx);
       }
     }
-    memInput.setBuffer((void*)start, stringlen - (start-namevaluepairliststring));
+    memInput.setBuffer((void *)start, stringlen - (start-namevaluepairliststring));
     SbBool dummy;
     if (!node->getFieldData()->read(&memInput, node, TRUE, dummy)) {
 #if COIN_DEBUG
@@ -344,19 +342,19 @@ SoBaseKit::set(const char *namevaluepairliststring)
   FIXME: write function documentation
 */
 SbBool
-SoBaseKit::set(const char *partnamestring, const char * parameterstring)
+SoBaseKit::set(const char * partnamestring, const char * parameterstring)
 {
   SbString partname(partnamestring);
   int partNum;
   SbBool isList;
   int listIdx;
-  SoBaseKit *kit = this;
+  SoBaseKit * kit = this;
   if (SoBaseKit::findPart(partname, kit, partNum, isList, listIdx, TRUE, NULL, TRUE)) {
-    SoNode *node = kit->fieldList[partNum]->getValue();
+    SoNode * node = kit->fieldList[partNum]->getValue();
     assert(node != NULL); // makeifneeded was TRUE in findPart call
     if (isList) {
       assert(node->isOfType(SoNodeKitListPart::getClassTypeId()));
-      SoNodeKitListPart *list = (SoNodeKitListPart*) node;
+      SoNodeKitListPart * list = (SoNodeKitListPart *) node;
       if (listIdx < 0 || listIdx > list->getNumChildren()) {
 #if COIN_DEBUG
         SoDebugError::postWarning("SoBaseKit::set",
@@ -383,8 +381,8 @@ SoBaseKit::set(const char *partnamestring, const char * parameterstring)
     if (node) {
       SoInput memInput;
       SbBool dummy;
-      memInput.setBuffer((void*)parameterstring, strlen(parameterstring));
-      const SoFieldData *fielddata = node->getFieldData();
+      memInput.setBuffer((void *)parameterstring, strlen(parameterstring));
+      const SoFieldData * fielddata = node->getFieldData();
       return fielddata->read(&memInput, node, TRUE, dummy);
     }
   }
@@ -395,7 +393,7 @@ SoBaseKit::set(const char *partnamestring, const char * parameterstring)
   FIXME: write function documentation
 */
 void
-SoBaseKit::doAction(SoAction *action)
+SoBaseKit::doAction(SoAction * action)
 {
   int numIndices;
   const int * indices;
@@ -409,7 +407,7 @@ SoBaseKit::doAction(SoAction *action)
     break;
   case SoAction::OFF_PATH:
     {
-      SoChildList *children = this->getChildren();
+      SoChildList * children = this->getChildren();
       int n = children->getLength();
       for (int i = 0; i < n; i++) {
         if ((*children)[i]->affectsState())
@@ -427,34 +425,34 @@ SoBaseKit::doAction(SoAction *action)
   FIXME: write function documentation
 */
 void
-SoBaseKit::callback(SoCallbackAction *action)
+SoBaseKit::callback(SoCallbackAction * action)
 {
-  SoBaseKit::doAction((SoAction*)action);
+  SoBaseKit::doAction((SoAction *)action);
 }
 
 /*!
   FIXME: write function documentation
 */
 void
-SoBaseKit::GLRender(SoGLRenderAction *action)
+SoBaseKit::GLRender(SoGLRenderAction * action)
 {
-  SoBaseKit::doAction((SoAction*)action);
+  SoBaseKit::doAction((SoAction *)action);
 }
 
 /*!
   FIXME: write function documentation
 */
 void
-SoBaseKit::getBoundingBox(SoGetBoundingBoxAction *action)
+SoBaseKit::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoBaseKit::doAction((SoAction*)action);
+  SoBaseKit::doAction((SoAction *)action);
 }
 
 /*!
   FIXME: write function documentation
 */
 void
-SoBaseKit::getMatrix(SoGetMatrixAction *action)
+SoBaseKit::getMatrix(SoGetMatrixAction * action)
 {
   int numIndices;
   const int * indices;
@@ -467,36 +465,74 @@ SoBaseKit::getMatrix(SoGetMatrixAction *action)
   FIXME: write function documentation
 */
 void
-SoBaseKit::handleEvent(SoHandleEventAction *action)
+SoBaseKit::handleEvent(SoHandleEventAction * action)
 {
-  SoBaseKit::doAction((SoAction*)action);
+  SoBaseKit::doAction((SoAction *)action);
 }
 
 /*!
   FIXME: write function documentation
 */
 void
-SoBaseKit::rayPick(SoRayPickAction *action)
+SoBaseKit::rayPick(SoRayPickAction * action)
 {
-  SoBaseKit::doAction((SoAction*)action);
+  SoBaseKit::doAction((SoAction *)action);
 }
 
 /*!
   FIXME: write function documentation
 */
 void
-SoBaseKit::search(SoSearchAction *action)
+SoBaseKit::search(SoSearchAction * action)
 {
   inherited::search(action);
   if (action->isFound() || !this->searchchildren) return;
-  SoBaseKit::doAction((SoAction*)action);
+  SoBaseKit::doAction((SoAction *)action);
+}
+
+// documented in superclass
+void
+SoBaseKit::write(SoWriteAction * action)
+{
+#if 0
+  SoOutput * out = action->getOutput();
+  if (out->getStage() == SoOutput::COUNT_REFS) {
+    this->addWriteReference(out, FALSE);
+  }
+  else if (out->getStage() == SoOutput::WRITE) {
+    if (this->writeHeader(out, FALSE, FALSE)) return;
+
+    // XXX
+
+    this->writeFooter(out);
+  }
+  else assert(0 && "unknown stage");
+#else
+  COIN_STUB();
+#endif
+}
+
+// documented in superclass
+void
+SoBaseKit::addWriteReference(SoOutput * out, SbBool isfromfield)
+{
+  // Handles reference counting for the nodekit instance itself (in
+  // SoBase::addWriteReference()) and for the "ordinary" fields (in
+  // SoFieldContainer::addWriteReference()).
+  inherited::addWriteReference(out, isfromfield);
+
+  // If first invocation during the reference counting pass, check
+  // nodes in our catalog.
+  if (this->hasMultipleWriteRefs()==FALSE && isfromfield==FALSE) {
+    this->countMyFields(out);
+  }
 }
 
 /*!
-  FIXME: write function documentation
+  Reference count connections to nodes in the catalog.
 */
 void
-SoBaseKit::write(SoWriteAction * /*action*/)
+SoBaseKit::countMyFields(SoOutput * out)
 {
   COIN_STUB();
 }
@@ -505,9 +541,29 @@ SoBaseKit::write(SoWriteAction * /*action*/)
   FIXME: write function documentation
 */
 void
-SoBaseKit::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoBaseKit::setDefaultOnNonWritingFields(void)
 {
-  SoBaseKit::doAction((SoAction*)action);
+  COIN_STUB();
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SbBool
+SoBaseKit::forceChildDrivenWriteRefs(SoOutput * out)
+{
+  COIN_STUB();
+  return FALSE;
+}
+
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+{
+  SoBaseKit::doAction((SoAction *)action);
 }
 
 /*!
@@ -603,25 +659,6 @@ SoBaseKit::printTable(void)
 /*!
   FIXME: write function documentation
 */
-void
-SoBaseKit::addWriteReference(SoOutput * /*out*/, SbBool /*isfromfield*/)
-{
-  COIN_STUB();
-}
-
-/*!
-  FIXME: write function documentation
-*/
-SbBool
-SoBaseKit::forceChildDrivenWriteRefs(SoOutput * /*out*/)
-{
-  COIN_STUB();
-  return FALSE;
-}
-
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoBaseKit::isSearchingChildren(void)
 {
@@ -641,7 +678,7 @@ SoBaseKit::setSearchingChildren(const SbBool newval)
   FIXME: write function documentation
 */
 SoNode *
-SoBaseKit::typeCheck(const SbName & /*partname*/, const SoType & parttype, SoNode *node)
+SoBaseKit::typeCheck(const SbName & /*partname*/, const SoType & parttype, SoNode * node)
 {
   if (node == NULL) {
 #if COIN_DEBUG && 1 // debug
@@ -683,18 +720,18 @@ SoBaseKit::copyContents(const SoFieldContainer * /*fromfc*/, SbBool /*copyconnec
   FIXME: write function documentation
 */
 SoGroup *
-SoBaseKit::getContainerNode(const SbName &listname, SbBool makeifneeded)
+SoBaseKit::getContainerNode(const SbName & listname, SbBool makeifneeded)
 {
-  SoBaseKit *kit = this;
+  SoBaseKit * kit = this;
   int partNum;
   SbBool isList;
   int listIdx;
   if (SoBaseKit::findPart(SbString(listname.getString()), kit, partNum,
                           isList, listIdx, makeifneeded, NULL, TRUE)) {
-    SoNode *node = kit->fieldList[partNum]->getValue();
+    SoNode * node = kit->fieldList[partNum]->getValue();
     if (node == NULL) return NULL;
     assert(node->isOfType(SoNodeKitListPart::getClassTypeId()));
-    SoNodeKitListPart *list = (SoNodeKitListPart*)node;
+    SoNodeKitListPart * list = (SoNodeKitListPart *)node;
     return list->getContainerNode();
   }
   return NULL;
@@ -704,10 +741,10 @@ SoBaseKit::getContainerNode(const SbName &listname, SbBool makeifneeded)
   FIXME: write function documentation
 */
 SoNode *
-SoBaseKit::getAnyPart(const SbName &partname, SbBool makeifneeded, SbBool leafcheck, SbBool publiccheck)
+SoBaseKit::getAnyPart(const SbName & partname, SbBool makeifneeded, SbBool leafcheck, SbBool publiccheck)
 {
 
-  SoBaseKit *kit = this;
+  SoBaseKit * kit = this;
   int partNum;
   SbBool isList;
   int listIdx;
@@ -719,10 +756,10 @@ SoBaseKit::getAnyPart(const SbName &partname, SbBool makeifneeded, SbBool leafch
     if (!publiccheck || kit->getNodekitCatalog()->isPublic(partNum)) {
       if (!leafcheck || kit->getNodekitCatalog()->isLeaf(partNum)) {
         if (isList) {
-          SoNode *partnode = kit->fieldList[partNum]->getValue();
+          SoNode * partnode = kit->fieldList[partNum]->getValue();
           if (partnode == NULL) return NULL;
           assert(partnode->isOfType(SoNodeKitListPart::getClassTypeId()));
-          SoNodeKitListPart *list = (SoNodeKitListPart*) partnode;
+          SoNodeKitListPart * list = (SoNodeKitListPart *) partnode;
           if (listIdx >= 0 && listIdx < list->getNumChildren()) {
             return list->getChild(listIdx);
           }
@@ -760,17 +797,17 @@ SoBaseKit::getAnyPart(const SbName &partname, SbBool makeifneeded, SbBool leafch
   FIXME: write function documentation
 */
 SoNodeKitPath *
-SoBaseKit::createPathToAnyPart(const SbName &partname, SbBool makeifneeded, SbBool /*leafcheck*/, SbBool /*publiccheck*/, const SoPath *pathtoextend)
+SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded, SbBool /*leafcheck*/, SbBool /*publiccheck*/, const SoPath * pathtoextend)
 {
   // FIXME: leafcheck and publiccheck support, pederb 2000-01-07
 
-  SoFullPath *path;
+  SoFullPath * path;
   if (pathtoextend) {
-    path = (SoFullPath*)pathtoextend->copy();
+    path = (SoFullPath *)pathtoextend->copy();
     // pop off nodes beyond this kit node
     if (path->containsNode(this)) while (path->getTail() != this && path->getLength()) path->pop();
     else if (path->getLength()) {
-      SoNode *node = path->getTail();
+      SoNode * node = path->getTail();
       if (!node->getChildren() || node->getChildren()->find(this) < 0) {
 #if COIN_DEBUG
         SoDebugError::postWarning("SoBaseKit::createPathToAnyPart",
@@ -782,22 +819,22 @@ SoBaseKit::createPathToAnyPart(const SbName &partname, SbBool makeifneeded, SbBo
     }
   }
   else {
-    path = (SoFullPath*)new SoPath(this);
+    path = (SoFullPath *)new SoPath(this);
   }
   path->ref();
 
-  SoBaseKit *kit = this;
+  SoBaseKit * kit = this;
   int partNum;
   SbBool isList;
   int listIdx;
 
   if (SoBaseKit::findPart(SbString(partname.getString()), kit, partNum,
                           isList, listIdx, makeifneeded, path)) {
-    SoNode *node = kit->fieldList[partNum]->getValue();
+    SoNode * node = kit->fieldList[partNum]->getValue();
     if (node) {
       path->append(node);
       if (isList) {
-        SoNodeKitListPart *list = (SoNodeKitListPart*)node;
+        SoNodeKitListPart * list = (SoNodeKitListPart *)node;
         int numlistchildren = list->getNumChildren();
         if (listIdx < 0 || listIdx > numlistchildren || (!makeifneeded && listIdx == numlistchildren)) {
 #if COIN_DEBUG
@@ -829,7 +866,7 @@ SoBaseKit::createPathToAnyPart(const SbName &partname, SbBool makeifneeded, SbBo
         }
       }
       path->unrefNoDelete();
-      return (SoNodeKitPath*)path;
+      return (SoNodeKitPath *)path;
     }
   }
   path->unref();
@@ -840,9 +877,9 @@ SoBaseKit::createPathToAnyPart(const SbName &partname, SbBool makeifneeded, SbBo
   FIXME: write function documentation
 */
 SbBool
-SoBaseKit::setAnyPart(const SbName &partname, SoNode *from, SbBool anypart)
+SoBaseKit::setAnyPart(const SbName & partname, SoNode * from, SbBool anypart)
 {
-  SoBaseKit *kit = this;
+  SoBaseKit * kit = this;
   int partNum;
   SbBool isList;
   int listIdx;
@@ -852,10 +889,10 @@ SoBaseKit::setAnyPart(const SbName &partname, SoNode *from, SbBool anypart)
   if (SoBaseKit::findPart(partstring, kit, partNum, isList, listIdx, TRUE, NULL, TRUE)) {
     if (anypart || kit->getNodekitCatalog()->isPublic(partNum)) {
       if (isList) {
-        SoNode *partnode = kit->fieldList[partNum]->getValue();
+        SoNode * partnode = kit->fieldList[partNum]->getValue();
         if (partnode) {
           assert(partnode->isOfType(SoNodeKitListPart::getClassTypeId()));
-          SoNodeKitListPart *list = (SoNodeKitListPart*) partnode;
+          SoNodeKitListPart * list = (SoNodeKitListPart *) partnode;
           if (listIdx >= 0 && listIdx <= list->getNumChildren()) {
             if (listIdx == list->getNumChildren())
               list->addChild(from);
@@ -897,8 +934,10 @@ SoBaseKit::createNodekitPartsList(void)
 }
 
 /*!
-  Replaces the createNodekitPartsList() method. Sets up the information
-  needed to quickly determine which parts are created.
+  Replaces the createNodekitPartsList() method.
+
+  Sets up the list of SoSFNode fields with node pointers to the
+  instances in our catalog.
 */
 void
 SoBaseKit::createFieldList(void)
@@ -907,7 +946,7 @@ SoBaseKit::createFieldList(void)
   // is there any way to make sure this code is only run once, and in
   // the top level constructor. pederb, 2000-01-06
   //
-  const SoNodekitCatalog *catalog = this->getNodekitCatalog();
+  const SoNodekitCatalog * catalog = this->getNodekitCatalog();
   // only do this if the catalog has been created
   if (catalog) {
     delete [] this->fieldList;
@@ -916,7 +955,7 @@ SoBaseKit::createFieldList(void)
     this->fieldList = new SoSFNode*[this->numCatalogEntries];
     this->fieldList[0] = NULL; // first catalog entry is "this"
     for (int i = 1; i < this->numCatalogEntries; i++) {
-      this->fieldList[i] = (SoSFNode*)this->getField(catalog->getName(i));
+      this->fieldList[i] = (SoSFNode *)this->getField(catalog->getName(i));
       assert(this->fieldList[i] != NULL);
     }
   }
@@ -932,7 +971,7 @@ SoBaseKit::createDefaultParts(void)
   // is there any way to make sure this code is only run once, and in
   // the top level constructor. pederb, 2000-01-06
   //
-  const SoNodekitCatalog *catalog = this->getNodekitCatalog();
+  const SoNodekitCatalog * catalog = this->getNodekitCatalog();
   // only do this if the catalog has been created
   if (catalog) {
     assert(this->fieldList != NULL);
@@ -985,7 +1024,7 @@ SoBaseKit::setUpConnections(SbBool /*onoff*/, SbBool /*doitalways*/)
   FIXME: write function documentation
 */
 SbBool
-SoBaseKit::readInstance(SoInput *in, unsigned short flags)
+SoBaseKit::readInstance(SoInput * in, unsigned short flags)
 {
   int i;
 
@@ -998,7 +1037,7 @@ SoBaseKit::readInstance(SoInput *in, unsigned short flags)
   SbBool ret = inherited::readInstance(in, flags);
   if (ret) {
     for (i = 1; i < this->numCatalogEntries; i++) {
-      SoNode *partnode = this->fieldList[i]->getValue();
+      SoNode * partnode = this->fieldList[i]->getValue();
       if (partnode != nodelist[i]) {
         partnode->ref(); // ref to make sure node is not deleted
         this->fieldList[i]->setValue(nodelist[i]); // restore old value
@@ -1017,24 +1056,6 @@ SoBaseKit::readInstance(SoInput *in, unsigned short flags)
   return ret;
 }
 
-/*!
-  FIXME: write function documentation
-*/
-void
-SoBaseKit::setDefaultOnNonWritingFields(void)
-{
-  COIN_STUB();
-}
-
-/*!
-  FIXME: write function documentation
-*/
-void
-SoBaseKit::countMyFields(SoOutput * /*out*/)
-{
-  COIN_STUB();
-}
-
 //
 // recurse until not possible to split string any more, and return information
 // about part and the kit the part is found in.
@@ -1050,9 +1071,9 @@ SoBaseKit::countMyFields(SoOutput * /*out*/)
 // be set to the kit-node performing the search.
 //
 SbBool
-SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partnum,
-                    SbBool &islist, int &listidx, const SbBool makeifneeded,
-                    SoPath *path, const SbBool recsearch)
+SoBaseKit::findPart(const SbString & partname, SoBaseKit *& kit, int & partnum,
+                    SbBool & islist, int & listidx, const SbBool makeifneeded,
+                    SoPath * path, const SbBool recsearch)
 {
   // BNF:
   //
@@ -1071,9 +1092,9 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partnum,
     return TRUE;
   }
 
-  const char *stringptr = partname.getString();
-  const char *periodptr = strchr(stringptr, '.'); // find first period
-  const char *startbracket = strchr(stringptr, '[');
+  const char * stringptr = partname.getString();
+  const char * periodptr = strchr(stringptr, '.'); // find first period
+  const char * startbracket = strchr(stringptr, '[');
 
   if (periodptr && (startbracket > periodptr))
     startbracket = NULL; // will handle later
@@ -1101,17 +1122,17 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partnum,
   partnum = kit->getNodekitCatalog()->getPartNumber(firstpartname);
   if (partnum == SO_CATALOG_NAME_NOT_FOUND) {
     if (recsearch) { // search leaf nodekits for this part?
-      SoBaseKit *orgkit = kit;
+      SoBaseKit * orgkit = kit;
       assert(path == NULL); // should not do recsearch when creating path
-      const SoNodekitCatalog *catalog = orgkit->getNodekitCatalog();
+      const SoNodekitCatalog * catalog = orgkit->getNodekitCatalog();
       for (int i = 1; i < orgkit->numCatalogEntries; i++) {
         if (catalog->isLeaf(i) &&
             catalog->getType(i).isDerivedFrom(SoBaseKit::getClassTypeId())) {
-          kit = (SoBaseKit*) orgkit->fieldList[i]->getValue();
+          kit = (SoBaseKit *) orgkit->fieldList[i]->getValue();
           SbBool didexist = kit != NULL;
           if (!didexist) {
             orgkit->makePart(i);
-            kit = (SoBaseKit*) orgkit->fieldList[i]->getValue();
+            kit = (SoBaseKit *) orgkit->fieldList[i]->getValue();
           }
           if (SoBaseKit::findPart(partname, kit, partnum, islist, listidx,
                                   makeifneeded, path, recsearch)) {
@@ -1133,7 +1154,7 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partnum,
   }
 
   assert(partnum < kit->numCatalogEntries);
-  SoSFNode *nodefield = kit->fieldList[partnum];
+  SoSFNode * nodefield = kit->fieldList[partnum];
   assert(nodefield);
 
   if (makeifneeded && nodefield->getValue() == NULL) {
@@ -1141,11 +1162,11 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partnum,
   }
 
   if (path) {
-    const SoNodekitCatalog *catalog = kit->getNodekitCatalog();
+    const SoNodekitCatalog * catalog = kit->getNodekitCatalog();
     SbList <SoNode*> nodestopart;
     int parent = catalog->getParentPartNumber(partnum);
     while (parent > 0) {
-      SoNode *node = kit->fieldList[parent]->getValue();
+      SoNode * node = kit->fieldList[parent]->getValue();
       if (node == NULL) {
         assert(makeifneeded == FALSE);
         break;
@@ -1155,7 +1176,7 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partnum,
     }
     assert(parent == 0 || !makeifneeded);
     while (nodestopart.getLength()) {
-      SoNode *node = nodestopart.pop();
+      SoNode * node = nodestopart.pop();
       path->append(node);
     }
   }
@@ -1165,11 +1186,11 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partnum,
     return TRUE; // all info has been found, just return TRUE
   }
   else { // recurse
-    SoNode *node = nodefield->getValue();
+    SoNode * node = nodefield->getValue();
     if (node == NULL) return FALSE;
     SbString newpartname = partname.getSubString(periodptr-stringptr+1);
     if (islist) {
-      SoNodeKitListPart *list = (SoNodeKitListPart*) node;
+      SoNodeKitListPart * list = (SoNodeKitListPart *) node;
       int numlistchildren = list->getNumChildren();
       if (listidx < 0 || listidx > numlistchildren || (!makeifneeded && listidx == numlistchildren)) {
 #if COIN_DEBUG
@@ -1183,9 +1204,9 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partnum,
       else { // listidx == numlistchildren && makeifneeded
         (void) list->createAndAddDefaultChild();
       }
-      SoNode *partnode = list->getChild(listidx);
+      SoNode * partnode = list->getChild(listidx);
       assert(partnode && partnode->isOfType(SoBaseKit::getClassTypeId()));
-      kit = (SoBaseKit*)partnode;
+      kit = (SoBaseKit *)partnode;
 
       if (path) {
         path->append(list);
@@ -1195,7 +1216,7 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partnum,
     else {
       // FIXME: replace with test and debug message? pederb, 2000-01-04
       assert(node->isOfType(SoBaseKit::getClassTypeId()));
-      kit = (SoBaseKit*)node;
+      kit = (SoBaseKit *)node;
     }
     if (path) path->append(kit);
     return SoBaseKit::findPart(newpartname, kit, partnum, islist,
@@ -1210,11 +1231,11 @@ SbBool
 SoBaseKit::makePart(const int partnum)
 {
   assert(partnum > 0 && partnum < this->numCatalogEntries);
-  const SoNodekitCatalog *catalog = this->getNodekitCatalog();
+  const SoNodekitCatalog * catalog = this->getNodekitCatalog();
   assert(catalog);
   assert(this->fieldList[partnum]->getValue() == NULL);
 
-  SoNode *node = (SoNode*)catalog->getDefaultType(partnum).createInstance();
+  SoNode * node = (SoNode *)catalog->getDefaultType(partnum).createInstance();
   if (catalog->isList(partnum)) {
     SoNodeKitListPart * list = (SoNodeKitListPart *) node;
     if (catalog->getListContainerType(partnum) != SoGroup::getClassTypeId()) {
@@ -1238,15 +1259,15 @@ SoBaseKit::makePart(const int partnum)
   This method is not part of the OIV API.
 */
 SbBool
-SoBaseKit::setPart(const int partnum, SoNode *node)
+SoBaseKit::setPart(const int partnum, SoNode * node)
 {
   assert(partnum > 0 && partnum < this->numCatalogEntries);
-  const SoNodekitCatalog *catalog = this->getNodekitCatalog();
+  const SoNodekitCatalog * catalog = this->getNodekitCatalog();
   assert(catalog);
 
   int parentIdx = catalog->getParentPartNumber(partnum);
   assert(parentIdx >= 0 && parentIdx < this->numCatalogEntries);
-  SoNode *parent = NULL;
+  SoNode * parent = NULL;
   if (parentIdx == 0) parent = this;
   else parent = this->fieldList[parentIdx]->getValue();
   if (parent == NULL) {
@@ -1254,10 +1275,10 @@ SoBaseKit::setPart(const int partnum, SoNode *node)
     parent = this->fieldList[parentIdx]->getValue();
   }
   assert(parent != NULL);
-  SoChildList *childlist = parent->getChildren();
+  SoChildList * childlist = parent->getChildren();
   assert(childlist != NULL);
 
-  SoNode *oldnode = this->fieldList[partnum]->getValue();
+  SoNode * oldnode = this->fieldList[partnum]->getValue();
 
   if (oldnode != NULL) { // part exists, replace
     int oldIdx = childlist->find(oldnode);
@@ -1287,7 +1308,7 @@ int
 SoBaseKit::getRightSiblingIndex(const int partnum)
 {
   assert(partnum > 0 && partnum < this->numCatalogEntries);
-  const SoNodekitCatalog *catalog = this->getNodekitCatalog();
+  const SoNodekitCatalog * catalog = this->getNodekitCatalog();
 
   int sibling = catalog->getRightSiblingPartNumber(partnum);
 
@@ -1305,10 +1326,10 @@ SoBaseKit::getRightSiblingIndex(const int partnum)
 // parentnum is checked if >= 0
 //
 int
-SoBaseKit::findNodeInThisKit(SoNode *node, const int parentnum) const
+SoBaseKit::findNodeInThisKit(SoNode * node, const int parentnum) const
 {
-  const SoNodekitCatalog *catalog = this->getNodekitCatalog();
-  if (node == (SoNode*)this) return 0;
+  const SoNodekitCatalog * catalog = this->getNodekitCatalog();
+  if (node == (SoNode *)this) return 0;
   int n = this->numCatalogEntries;
   for (int i = 1; i < n; i++) {
     if (this->fieldList[i]->getValue() == node &&
