@@ -106,6 +106,7 @@ make doxygen-doc
 @includedir@/Inventor/SbVec2f.h
 @includedir@/Inventor/SbVec2s.h
 @includedir@/Inventor/SbVec3f.h
+@includedir@/Inventor/SbVec3s.h
 @includedir@/Inventor/SbVec4f.h
 @includedir@/Inventor/SbViewVolume.h
 @includedir@/Inventor/SbViewportRegion.h
@@ -620,6 +621,7 @@ make doxygen-doc
 @mandir@/man3/SbVec2f.3
 @mandir@/man3/SbVec2s.3
 @mandir@/man3/SbVec3f.3
+@mandir@/man3/SbVec3s.3
 @mandir@/man3/SbVec3fList.3
 @mandir@/man3/SbVec4f.3
 @mandir@/man3/SbViewVolume.3
@@ -883,7 +885,7 @@ rm SbIntList.3 SbLine.3 SbLineProjector.3 SbList.3 SbMatrix.3 SbName.3
 rm SbPList.3 SbPlane.3 SbPlaneProjector.3 SbProjector.3 SbRotation.3 SbSphere.3
 rm SbSpherePlaneProjector.3 SbSphereProjector.3 SbSphereSectionProjector.3
 rm SbSphereSheetProjector.3 SbString.3 SbStringList.3 SbTime.3 SbVec2f.3
-rm SbVec2s.3 SbVec3f.3 SbVec3fList.3 SbVec4f.3 SbViewVolume.3 SbViewportRegion.3
+rm SbVec2s.3 SbVec3f.3 SbVec3s.3 SbVec3fList.3 SbVec4f.3 SbViewVolume.3 SbViewportRegion.3
 rm SbXfBox3f.3 SoAction.3 SoActionMethodList.3 SoAlarmSensor.3 SoAnnoText3.3
 rm SoAnnoText3Property.3 SoAnnotation.3 SoAntiSquish.3 SoArray.3 SoAsciiText.3
 rm SoAuditorList.3 SoBase.3 SoBaseColor.3 SoBaseList.3 SoBlinker.3

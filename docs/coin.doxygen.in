@@ -285,6 +285,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec2s.h \
                          @path_tag@@coin_src_dir@/src/base/SbVec3f.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec3f.h \
+                         @path_tag@@coin_src_dir@/src/base/SbVec3s.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbVec3s.h \
                          @path_tag@@coin_src_dir@/src/base/SbVec4f.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/SbVec4f.h \
                          @path_tag@@coin_src_dir@/src/base/SbViewVolume.cpp \
