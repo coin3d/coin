@@ -1363,7 +1363,16 @@ SoField::write(SoOutput * out, const SbName & name) const
   // Ok, we've passed the first write stage and is _really_ writing.
 
 
-  if(!this->shouldWrite()) return;
+  if (!this->shouldWrite()) return;
+
+  // Check connection (this is common code for ASCII and binary
+  // write).
+  SbBool writeconnection = FALSE;
+  SbName dummy;
+  SoFieldContainer * fc = this->resolveWriteConnection(dummy);
+  if (fc && (fc->shouldWrite() || fc->isOfType(SoEngine::getClassTypeId())))
+    writeconnection = TRUE;
+
 
   // ASCII write.
   if (!out->isBinary()) {
@@ -1379,9 +1388,7 @@ SoField::write(SoOutput * out, const SbName & name) const
       out->write(IGNOREDCHAR);
     }
 
-    SbName dummy;
-    SoFieldContainer * fc = this->resolveWriteConnection(dummy);
-    if (fc && fc->shouldWrite()) this->writeConnection(out);
+    if (writeconnection) this->writeConnection(out);
 
     out->write('\n');
   }
@@ -1393,14 +1400,12 @@ SoField::write(SoOutput * out, const SbName & name) const
 
     unsigned int flags = 0;
     if (this->isIgnored()) flags |= SoField::IGNORED;
-    SbName dummy;
-    SoFieldContainer * fc = this->resolveWriteConnection(dummy);
-    if (fc && fc->shouldWrite()) flags |= SoField::CONNECTED;
+    if (writeconnection) flags |= SoField::CONNECTED;
     if (this->isDefault()) flags |= SoField::DEFAULT;
 
     out->write(flags);
 
-    if (fc && fc->shouldWrite()) this->writeConnection(out);
+    if (writeconnection) this->writeConnection(out);
   }
 }
 
@@ -1413,8 +1418,6 @@ SoField::write(SoOutput * out, const SbName & name) const
 void
 SoField::countWriteRefs(SoOutput * out) const
 {
-  // FIXME: call the "writereference" method of _all_ connected
-  // fields, engine outputs (?) and VRML interpolators? 20000130 mortene.
   SbName dummy;
   SoFieldContainer * fc = this->resolveWriteConnection(dummy);
   if (fc) fc->addWriteReference(out, TRUE);
