@@ -102,3 +102,7 @@ THE LINKS
 * Recommended book for learning about threads programming:
   "Programming With Threads", Kleiman / Shah / Smaalders, ISBN
   0131723898
+
+* Miscellaneous C++ libraries: <URL:http://www.boost.org>. If the
+  licenses are liberal, we might be able to avoid re-inventing wheels
+  for some of the libraries provided.
