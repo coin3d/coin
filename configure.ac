@@ -759,6 +759,18 @@ AC_TRY_LINK([
   AC_MSG_RESULT([no])
 ])
 
+AC_MSG_CHECKING([for _logb() function])
+AC_TRY_LINK([
+#include <math.h>
+#include <float.h>
+], [
+  (void)_logb(1.0);
+], [
+  AC_MSG_RESULT([yes])
+  AC_DEFINE([HAVE__LOGB],1, [Define to use Win32 _logb()])
+], [
+  AC_MSG_RESULT([no])
+])
 
 
 # *******************************************************************
@@ -867,6 +879,24 @@ AC_CACHE_CHECK([whether single-precision math functions are available],
 $sim_cv_func_singleprec_avail &&
   AC_DEFINE([HAVE_SINGLEPRECISION_MATH],1,
     [define if single-precision math functions are avialable])
+
+
+
+# *******************************************************************
+# * Check for ilogb() after mathlib test
+# *******************************************************************
+AC_MSG_CHECKING([for ilogb() function])
+AC_TRY_LINK([
+#include <math.h>
+], [
+  (void)ilogb(1.0);
+], [
+  AC_MSG_RESULT([yes])
+  AC_DEFINE([HAVE_ILOGB],1, [Define to use ilogb()])
+], [
+  AC_MSG_RESULT([no])
+])
+
 
 # *******************************************************************
 # * Handle the detection and inclusion of X11 libraries.

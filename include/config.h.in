@@ -106,6 +106,9 @@
 /* define if preprocessor can quote arguments with the hash symbol */
 #undef HAVE_HASH_QUOTING
 
+/* Define to use ilogb() */
+#undef HAVE_ILOGB
+
 /* define this if the type is available on the system */
 #undef HAVE_INT16_T
 
@@ -258,6 +261,9 @@
 
 /* Define to use Win32 _ftime() */
 #undef HAVE__FTIME
+
+/* Define to use Win32 _logb() */
+#undef HAVE__LOGB
 
 /* define if _snprintf() is available */
 #undef HAVE__SNPRINTF
