@@ -64,11 +64,11 @@ cc_storage_struct_init(cc_storage * storage_struct, unsigned int size,
     goto error;
   }
 #endif /* USE_PTHREAD */
-  storage_struct->type == CC_STORAGE_TYPE;
+  storage_struct->type = CC_STORAGE_TYPE;
   return;
 
 error:
-  storage_struct->type == CC_INVALID_TYPE;
+  storage_struct->type = CC_INVALID_TYPE;
 } /* cc_storage_struct_init() */
 
 /*
