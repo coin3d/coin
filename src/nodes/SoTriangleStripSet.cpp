@@ -276,15 +276,15 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
     assert(n > 0);
 
     glBegin(GL_TRIANGLE_STRIP);
-
-    if (nbind != OVERALL) {
+    
+    if ((nbind == PER_VERTEX) || (nbind == PER_STRIP)) {
       currnormal = normals++;
       glNormal3fv((const GLfloat *)currnormal);
     }
-    if (mbind != OVERALL) mb.send(matnr++, TRUE);
+    if ((mbind == PER_STRIP) || (mbind == PER_VERTEX)) mb.send(matnr++, TRUE);
     if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
     coords->send(idx++);
-
+    
     if (nbind == PER_VERTEX) {
       currnormal = normals++;
       glNormal3fv((const GLfloat *)currnormal);
