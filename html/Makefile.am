@@ -11,8 +11,8 @@ $(top_builddir)/docs/coin.doxygen: $(top_srcdir)/docs/coin.doxygen.in $(top_buil
 
 index.html: $(top_builddir)/docs/coin.doxygen
 	@( cd ..; \
-	echo " @sim_ac_doxygen_exe@ docs/coin.doxygen"; \
-	@sim_ac_doxygen_exe@ docs/coin.doxygen )
+	echo " $(sim_ac_doxygen_exe) docs/coin.doxygen"; \
+	"$(sim_ac_doxygen_exe)" docs/coin.doxygen )
 
 filelist.txt: index.html
 	@ls -1 | egrep '(\.html|\.png|\.gif|\.css)$$' >filelist.txt

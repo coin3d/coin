@@ -1,8 +1,4 @@
 
-EXTRA_DIST = $(man1_MANS)
-
-if BUILD_LIBRARY
-man1_MANS = \
-	coin-config.man
-endif
+man_MANS = coin-config.1
+EXTRA_DIST = coin-config.1
 
