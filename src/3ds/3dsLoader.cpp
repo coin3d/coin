@@ -461,17 +461,17 @@ CHUNK_DECL(LoadMapVOffset);
 
 SbBool is3dsFile(SoInput *in)
 {
-  if (in->getHeader().getLength() > 0)  return false;
+  if (in->getHeader().getLength() > 0)  return FALSE;
 
   char c1,c2;
-  if (!in->get(c1))  return false;
-  if (!in->get(c2)) { in->putBack(c1); return false; }
+  if (!in->get(c1))  return FALSE;
+  if (!in->get(c2)) { in->putBack(c1); return FALSE; }
   in->putBack(c2);
   in->putBack(c1);
-  if (c1 != 0x4d)  return false;
-  if (c2 != 0x4d)  return false;
+  if (c1 != 0x4d)  return FALSE;
+  if (c2 != 0x4d)  return FALSE;
 
-  return true;
+  return TRUE;
 }
 
 
@@ -479,20 +479,20 @@ SbBool is3dsFile(SoInput *in)
 // forward declaration
 SbBool read3dsFile(SoStream *in, SoSeparator *&root,
                  int appendNormals = 2, float creaseAngle = 25.f/180.f*M_PI,
-                 SbBool loadMaterials = true, SbBool loadTextures = true,
-                 SbBool loadObjNames = false, SbBool indexedTriSet = false,
-                 SbBool centerModel = true, float modelSize = 10.f);
+                 SbBool loadMaterials = TRUE, SbBool loadTextures = TRUE,
+                 SbBool loadObjNames = FALSE, SbBool indexedTriSet = FALSE,
+                 SbBool centerModel = TRUE, float modelSize = 10.f);
 
 
 
 SbBool read3dsFile(SoInput *in, SoSeparator *&root,
                  int appendNormals = 2, float creaseAngle = 25.f/180.f*M_PI,
-                 SbBool loadMaterials = true, SbBool loadTextures = true,
-                 SbBool loadObjNames = false, SbBool indexedTriSet = false,
-                 SbBool centerModel = true, float modelSize = 10.f)
+                 SbBool loadMaterials = TRUE, SbBool loadTextures = TRUE,
+                 SbBool loadObjNames = FALSE, SbBool indexedTriSet = FALSE,
+                 SbBool centerModel = TRUE, float modelSize = 10.f)
 {
   SoStream s;
-  s.setBinary(true);
+  s.setBinary(TRUE);
   s.setEndianOrdering(SoStream::LITTLE_ENDIAN_STREAM);
   s.wrapSoInput(in);
 
@@ -513,14 +513,14 @@ SbBool read3dsFile(SoStream *in, SoSeparator *&root,
   uint16_t header;
   *in >> header;
   if (header != M3DMAGIC)
-    return false;
+    return FALSE;
 
   // prepare Context structure
   Context con(*in);
   con.stopPos = 0;
   con.root = new SoSeparator;
   con.root->ref();
-  con.minMaxValid = false;
+  con.minMaxValid = FALSE;
 
   // customize loader
   if (appendNormals >= 2)  appendNormals = 1; // per-vertex normals are
@@ -593,7 +593,7 @@ SbBool read3dsFile(SoStream *in, SoSeparator *&root,
   if (con.s.isBad()) {
     con.root->unref();
     con.root = NULL;
-    return false;
+    return FALSE;
   }
 
   if (con.centerModel || modelSize != 0.f) {
@@ -621,7 +621,7 @@ SbBool read3dsFile(SoStream *in, SoSeparator *&root,
   con.root->unrefNoDelete();
   root = con.root;
   con.root = NULL;
-  return true;
+  return TRUE;
 }
 
 
@@ -752,7 +752,7 @@ CHUNK(LoadNTriObject)
   con->numVertices = 0;
   con->numFaces = 0;
   con->numDefaultDegFaces = 0;
-  con->textureCoordsFound = false;
+  con->textureCoordsFound = FALSE;
 
   READ_SUBCHUNKS(
     case POINT_ARRAY:       LoadPointArray(con); break;
@@ -806,8 +806,8 @@ CHUNK(LoadNTriObject)
   }
 
   // create nodes with different materials
-  SbBool textureActive = false;
-  SbBool textureTransformActive = false;
+  SbBool textureActive = FALSE;
+  SbBool textureTransformActive = FALSE;
   for (int i=0; i<con->faceGroupList.getLength(); i++) {
     FaceGroup *fg = con->faceGroupList[i];
 
@@ -822,22 +822,20 @@ CHUNK(LoadNTriObject)
       // texture
       if (fg->hasTexture2(con)) {
         con->cObj->addChild(fg->getSoTexture2(con));
-        textureActive = true;
+        textureActive = TRUE;
       } else
         if (textureActive) {
           con->cObj->addChild(new SoTexture2);
-          textureActive = false;
+          textureActive = FALSE;
         }
       // texture transform
       if (fg->hasTexture2Transform(con)) {
         con->cObj->addChild(fg->getSoTexture2Transform(con));
-        // FIXME mortene: don't use "true"
-        textureTransformActive = true;
+        textureTransformActive = TRUE;
       } else
         if (textureTransformActive) {
           con->cObj->addChild(new SoTexture2Transform);
-          // FIXME mortene: don't use "false"
-          textureTransformActive = false;
+          textureTransformActive = FALSE;
         }
     }
 
@@ -916,7 +914,7 @@ CHUNK(LoadFaceArray)
   // make sure vertices are present yet
   if (num > 0) {
     if (con->vertexList == NULL) {
-      assert(false && "Vertex list not present.");
+      assert(FALSE && "Vertex list not present.");
       con->s.setBadBit();
       return;
     }
@@ -934,7 +932,7 @@ CHUNK(LoadFaceArray)
     con->faceList[i].init(con, a,b,c,flags);
 
     if (!con->minMaxValid) {
-      con->minMaxValid = true;
+      con->minMaxValid = TRUE;
       con->minX = con->maxX = con->vertexList[a].point[0];
       con->minY = con->maxY = con->vertexList[a].point[1];
       con->minZ = con->maxZ = con->vertexList[a].point[2];
@@ -986,7 +984,7 @@ CHUNK(LoadMshMatGroup)
       break;
   }
   if (matIndex == con->matList.getLength()) {
-    assert(false && "Wrong material name in the file.");
+    assert(FALSE && "Wrong material name in the file.");
     con->s.setBadBit();
     return;
   }
@@ -1004,7 +1002,7 @@ CHUNK(LoadMshMatGroup)
   // make sure faces are present yet
   if (num > 0) {
     if (con->faceList == NULL) {
-      assert(false && "Face list not present.");
+      assert(FALSE && "Face list not present.");
       con->s.setBadBit();
       return;
     }
@@ -1024,7 +1022,7 @@ CHUNK(LoadMshMatGroup)
         con->numDefaultDegFaces--;
       }
     } else {
-      assert(false && "Wrong face material index.");
+      assert(FALSE && "Wrong face material index.");
       con->s.setBadBit();
       return;
     }
@@ -1036,7 +1034,7 @@ CHUNK(LoadMshMatGroup)
 CHUNK(LoadTexVerts)
 {
   HEADER;
-  con->textureCoordsFound = true;
+  con->textureCoordsFound = TRUE;
 
   // number of faces
   uint16_t num;
@@ -1045,7 +1043,7 @@ CHUNK(LoadTexVerts)
   // make sure vertices are present yet
   if (num > 0) {
     if (con->vertexList == NULL) {
-      assert(false && "Vertex list not present.");
+      assert(FALSE && "Vertex list not present.");
       con->s.setBadBit();
       return;
     }
@@ -1584,8 +1582,8 @@ SbBool DefaultFaceGroup::isEmpty(Context *con)
 {
   int num = con->numFaces;
   for (int i=0; i<num; i++)
-    if (con->faceList[i].faceGroup == NULL) return false;
-  return true;
+    if (con->faceList[i].faceGroup == NULL) return FALSE;
+  return TRUE;
 }
 
 
@@ -1615,7 +1613,7 @@ SoNormal* DefaultFaceGroup::createSoNormal(tagContext *con)
     normals->vector.finishEditing();
     normals->vector.setNum(j);
   } else {
-    assert(false);
+    assert(FALSE);
   }
   return normals;
 }
@@ -1724,7 +1722,7 @@ SoMaterial* Material::getSoMaterial(Context *con)
 
 
 SbBool Material::hasTexture2(tagContext *con)
-{ return texture2Cache; }
+{ return (texture2Cache != NULL); }
 
 
 
@@ -1734,7 +1732,7 @@ SoTexture2* Material::getSoTexture2(tagContext *con)
 
 
 SbBool Material::hasTexture2Transform(tagContext *con)
-{ return texture2TransformCache; }
+{ return (texture2TransformCache != NULL); }
 
 
 
