@@ -29,6 +29,7 @@
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/SbString.h>
+#include <Inventor/errors/SoReadError.h>
 #include <assert.h>
 
 /*!
@@ -65,7 +66,7 @@ SoGate::commonConstructor(void)
   this->enable.setValue(FALSE);
   this->enable.setContainer(this);
   this->trigger.setContainer(this);
-  this->typeField.setValue(SbName("badType"));
+  this->typeField.setValue(SbName(""));
   this->typeField.setContainer(this);
   this->gateInputData->addField(this, "enable", &this->enable);
   this->gateInputData->addField(this, "trigger", &this->trigger);
@@ -130,14 +131,23 @@ SoGate::inputChanged(SoField *which)
 SbBool 
 SoGate::readInstance(SoInput *in, unsigned short flags)
 {
-  this->typeField.setValue(SbName("badType"));
+  this->typeField.setValue(SbName(""));
   SbBool ret = inherited::readInstance(in, flags);
   if (ret) {
-    SoType type = SoType::fromName(this->typeField.getValue());
-    if (type.isDerivedFrom(SoMField::getClassTypeId())) {
-      this->initInputOutput(type);
+    if (this->typeField.getValue() != SbName("")) {
+      SoType type = SoType::fromName(this->typeField.getValue());
+      if (type.isDerivedFrom(SoMField::getClassTypeId())) {
+        this->initInputOutput(type);
+      }
+      else if (type != SoType::badType()) {
+        SoReadError::post(in,  "The type ``%s'' is not a type of MField", type.getName().getString());
+        ret = FALSE;
+      }
     }
-    else ret = FALSE;
+    else {
+      SoReadError::post(in, "SoGate is missing type field");
+      ret = FALSE;
+    }
   }
   return ret;
 }
