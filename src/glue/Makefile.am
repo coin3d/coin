@@ -2,10 +2,9 @@
 ## 19990904 mortene.
 
 RegularSources = \
-	gl.c \
-	gl_wgl.c gl_wgl.h gl_nsgl.c gl_nsgl.h \
-	gl_glx.c gl_glx.h \
 	dl.c \
+	gl.c \
+	gl_wgl.c gl_nsgl.c gl_glx.c \
 	GLUWrapper.c \
 	simage_wrapper.c \
 	openal_wrapper.c
@@ -16,9 +15,12 @@ LinkHackSources = \
 # Header installation is controlled from include/Inventor/C/glue/Makefile.am.
 PublicHeaders =
 PrivateHeaders = \
-	GLUWrapper.h \
-	simage_wrapper.h \
-	openal_wrapper.h
+	../../include/Inventor/C/glue/gl_wgl.h \
+	../../include/Inventor/C/glue/gl_glx.h \
+	../../include/Inventor/C/glue/gl_nsgl.h \
+	../../include/Inventor/C/glue/GLUWrapper.h \
+	../../include/Inventor/C/glue/simage_wrapper.h \
+	../../include/Inventor/C/glue/openal_wrapper.h
 
 
 ##$ BEGIN TEMPLATE Make-Common(glue, glue)
