@@ -1,12 +1,15 @@
-This is Coin-@VERSION@ by Systems in Motion. Double-click
-on Coin.pkg to start installation. If you do not want to
-use an installer, you can find a package containing
-only the framework itself (called Coin-@VERSION@-Jaguar-no_inst.dmg) at
-ftp://ftp.sim.no/pub/coin/bin/macosx.
+This is Coin-@VERSION@ by Systems in Motion. Double-click on Coin.pkg
+to start installation. If you do not want to use an installer, you can
+find a package containing only the framework itself (called
+Coin-@VERSION@-Jaguar-no_inst.dmg) at ftp://ftp.sim.no/pub/coin/bin/macosx.
 
-Note that this Coin framework has been built with gcc 3.1
-and will not work with gcc 3.3. It is primarily meant for
-use on Mac OS 10.2 "Jaguar" and will only work on Mac OS
-10.3 "Panther" if you manually select the 3.1 compiler.
-Please make sure to also read the relevant FAQ entry
-at http://www.coin3d.org/mac/faq.html#gcc_abi
+Note that this Coin framework has been built with gcc 3.1 and will not
+work with gcc 3.3. It is primarily meant for use on Mac OS 10.2
+"Jaguar" and will only work on Mac OS 10.3 "Panther" if you manually
+select the 3.1 compiler.  Please make sure to also read the relevant
+FAQ entry at http://www.coin3d.org/mac/faq.html#gcc_abi
+
+Check out http://www.coin3d.org/mac for information on how to get
+started using Coin.
+
+Enjoy!
