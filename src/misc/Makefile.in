@@ -143,6 +143,8 @@ RegularSources = \
 	SoPick.cpp \
 	SoPickedPoint.cpp \
 	SoPrimitiveVertex.cpp \
+	SoProto.cpp \
+	SoProtoInstance.cpp \
 	SoSceneManager.cpp \
 	SoType.cpp \
 	SoOffscreenRenderer.cpp \
@@ -182,6 +184,8 @@ PrivateHeaders = \
 	../../include/Inventor/misc/SoGlyph.h \
 	../../include/Inventor/misc/SoGenerate.h \
 	../../include/Inventor/misc/SoPick.h \
+	../../include/Inventor/misc/SoProto.h \
+	../../include/Inventor/misc/SoProtoInstance.h \
 	GLUWrapper.h \
 	simage_wrapper.h \
 	SoGLFaceSetTemplate.cpp \
@@ -252,6 +256,8 @@ misc_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoPath.$(OBJEXT) SoPick.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickedPoint.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoPrimitiveVertex.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoProto.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoProtoInstance.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoSceneManager.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoType.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoOffscreenRenderer.$(OBJEXT) \
@@ -280,7 +286,8 @@ libmisc_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoInput.lo SoInteraction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoOutput.lo SoPath.lo SoPick.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickedPoint.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoPrimitiveVertex.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoPrimitiveVertex.lo SoProto.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoProtoInstance.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoSceneManager.lo SoType.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoOffscreenRenderer.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGenerate.lo SoLockManager.lo \
@@ -303,7 +310,8 @@ libmisc@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoInput.lo SoInteraction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoOutput.lo SoPath.lo SoPick.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickedPoint.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoPrimitiveVertex.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoPrimitiveVertex.lo SoProto.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoProtoInstance.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoSceneManager.lo SoType.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoOffscreenRenderer.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGenerate.lo SoLockManager.lo \
@@ -364,6 +372,9 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoPickedPoint.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoPrimitiveVertex.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoPrimitiveVertex.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoProto.Plo $(DEPDIR)/SoProto.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoProtoInstance.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoProtoInstance.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoSceneManager.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoSceneManager.Po $(DEPDIR)/SoState.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoState.Po $(DEPDIR)/SoTempPath.Plo \
@@ -523,6 +534,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPickedPoint.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPrimitiveVertex.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPrimitiveVertex.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoProto.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoProto.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoProtoInstance.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoProtoInstance.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSceneManager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSceneManager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoState.Plo@am__quote@

@@ -126,12 +126,11 @@ public:
   enum {
     // FIXME: we might not need all these. Investigate before the next
     // Coin version.  pederb, 2001-10-12
-    NORMAL_FIELD,
-    VRML97_EVENTIN_FIELD,
-    VRML97_EVENTOUT_FIELD,
+    NORMAL_FIELD = 0,
     EVENTIN_FIELD,
+    EVENTOUT_FIELD,
     INTERNAL_FIELD,
-    VRML97_EXPOSED_FIELD
+    EXPOSED_FIELD
   };
 
   void setFieldType(int type);
@@ -139,6 +138,8 @@ public:
 
   SbBool getDirty(void) const;
   void setDirty(SbBool dirty);
+
+  SbBool checkISReference(SoInput * in, SbBool & readok);
 
 protected:
   SoField(void);

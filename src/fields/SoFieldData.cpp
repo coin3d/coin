@@ -55,6 +55,7 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/SbName.h>
+#include <Inventor/misc/SoProto.h>
 #include <coindefs.h> // COIN_STUB()
 #include <ctype.h>
 
@@ -77,23 +78,23 @@ public:
   SoFieldEntry(const SoFieldEntry * fe) { this->copy(fe); }
   SoFieldEntry(const SoFieldEntry & fe) { this->copy(&fe); }
 
-  int operator==(const SoFieldEntry * fe) const
-    {
-      return ((this->name == fe->name) && (this->ptroffset == fe->ptroffset));
-    }
-  int operator!=(const SoFieldEntry * fe) const { return ! operator==(fe); }
-  int operator==(const SoFieldEntry & fe) const { return operator==(&fe); }
-  int operator!=(const SoFieldEntry & fe) const { return ! operator==(&fe); }
+  int operator==(const SoFieldEntry & fe) const {
+    // don't consider ptroffset here, since this will not be equal
+    // for fields containers with dynamic fields.
+    return (this->name == fe.name);
+  }
+  int operator!=(const SoFieldEntry & fe) const { 
+    return ! operator==(&fe); 
+  }
 
   SbName name;
   int ptroffset;
 
 private:
-  void copy(const SoFieldEntry * fe)
-    {
-      this->name = fe->name;
-      this->ptroffset = fe->ptroffset;
-    }
+  void copy(const SoFieldEntry * fe) {
+    this->name = fe->name;
+    this->ptroffset = fe->ptroffset;
+  }
 };
 
 class SoEnumEntry {
@@ -102,28 +103,23 @@ public:
   // Copy constructors.
   SoEnumEntry(const SoEnumEntry * ee) { this->copy(ee); }
   SoEnumEntry(const SoEnumEntry & ee) { this->copy(&ee); }
-
-  int operator==(const SoEnumEntry * ee) const
-    {
-      return ((this->nameoftype == ee->nameoftype) &&
-              (this->names == ee->names) && (this->values == ee->values));
-    }
-  int operator!=(const SoEnumEntry * ee) const { return ! operator==(ee); }
-  int operator==(const SoEnumEntry & ee) const { return operator==(&ee); }
+  
+  int operator==(const SoEnumEntry & ee) const {
+    return ((this->nameoftype == ee.nameoftype) &&
+            (this->names == ee.names) && (this->values == ee.values));
+  }
   int operator!=(const SoEnumEntry & ee) const { return ! operator==(&ee); }
-
 
   SbName nameoftype;
   SbList<SbName> names;
   SbList<int> values;
 
 private:
-  void copy(const SoEnumEntry * ee)
-    {
-      this->nameoftype = ee->nameoftype;
-      this->names = ee->names;
-      this->values = ee->values;
-    }
+  void copy(const SoEnumEntry * ee) {
+    this->nameoftype = ee->nameoftype;
+    this->names = ee->names;
+    this->values = ee->values;
+  }
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -653,6 +649,12 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
       return FALSE; \
     }
 
+  const SbName EVENTIN("eventIn");
+  const SbName EVENTOUT("eventOut");
+  const SbName FIELD("field");
+  const SbName EXPOSEDFIELD("exposedField");
+  const SbName IS("IS");
+  
   char c;
   if (!in->isBinary()) {
     READ_CHAR(c);
@@ -662,7 +664,6 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
     }
   }
 
-
   for (int j=0; !in->isBinary() || (j < numdescriptionsexpected); j++) {
 
     if (!in->isBinary()) {
@@ -671,25 +672,37 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
       else in->putBack(c);
     }
 
-
-    SbName fieldtype;
-    if (!in->read(fieldtype, TRUE)) {
+    SbName fieldtypename;
+    
+    if (!in->read(fieldtypename, TRUE)) {
       SoReadError::post(in, "Couldn't read name of field type");
       return FALSE;
     }
 
-    SoType type = SoType::fromName(fieldtype.getString());
+    SbName fieldtype("");
+    if (fieldtypename == EVENTIN ||
+        fieldtypename == EVENTOUT ||
+        fieldtypename == FIELD ||
+        fieldtypename == EXPOSEDFIELD) { 
+      fieldtype = fieldtypename;
+      if (!in->read(fieldtypename, TRUE)) {
+        SoReadError::post(in, "Couldn't read name of field type");
+        return FALSE;
+      }
+    }
+    
+    SoType type = SoType::fromName(fieldtypename.getString());
     if ((type == SoType::badType()) ||
         !type.isDerivedFrom(SoField::getClassTypeId())) {
       SoReadError::post(in, "Unknown field type '%s'",
-                        fieldtype.getString());
+                        fieldtypename.getString());
       return FALSE;
     }
     else if (!type.canCreateInstance()) {
-      SoReadError::post(in, "Abstract class type '%s'", fieldtype.getString());
+      SoReadError::post(in, "Abstract class type '%s'", fieldtypename.getString());
       return FALSE;
     }
-
+    
     SbName fieldname;
     if (!in->read(fieldname, TRUE)) {
       SoReadError::post(in, "Couldn't read name of field");
@@ -700,22 +713,71 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
 #if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoFieldData::readFieldDescriptions",
                            "type: ``%s'', name: ``%s''",
-                           fieldtype.getString(), fieldname.getString());
+                           fieldtypename.getString(), fieldname.getString());
 #endif // debug
 
-    SbBool found = FALSE;
-    for (int i=0; !found && (i < this->fields.getLength()); i++) {
-      if (this->fields[i]->name == fieldname) found = TRUE;
+    SoField * newfield = NULL;
+    for (int i=0; !newfield && (i < this->fields.getLength()); i++) {
+      if (this->fields[i]->name == fieldname) {
+        newfield = this->getField(object, i);
+      }
     }
-    if (!found) {
+    if (!newfield) {
       // Cast away const -- ugly.
       SoFieldData * thisp = (SoFieldData *)this;
-      SoField * newfield = (SoField *)type.createInstance();
+      newfield = (SoField *)type.createInstance();
       newfield->setContainer(object);
       newfield->setDefault(TRUE);
       thisp->addField(object, fieldname.getString(), newfield);
     }
 
+    if (fieldtype == EVENTIN || fieldtype == EVENTOUT) {
+      if (fieldtype == EVENTIN) {
+        newfield->setFieldType(SoField::EVENTIN_FIELD);
+      }
+      else {
+        newfield->setFieldType(SoField::EVENTOUT_FIELD);        
+      }
+      SbBool readok;
+      (void) newfield->checkISReference(in, readok);
+      if (!readok) {
+        SoReadError::post(in, "Error while searching for IS keyword for field '%s'",
+                          fieldname.getString());
+        return FALSE;
+      }
+    }
+    else if (fieldtype == FIELD || fieldtype == EXPOSEDFIELD) {
+      if (fieldtype == EXPOSEDFIELD) {
+        newfield->setFieldType(SoField::EXPOSED_FIELD);
+      }
+      if (!newfield->read(in, fieldname)) {
+        SoReadError::post(in, "Unable to read value for field '%s'",
+                          fieldname.getString());
+        return FALSE;
+      }
+    }
+
+    SoProto * proto = in->getCurrentProto();
+    if (proto) {
+      READ_CHAR(c);
+      in->putBack(c);
+      if (c == 'I') {
+        SbName is;
+        if (!in->read(is, TRUE)) {
+          SoReadError::post(in, "Unable to search for IS keyword");
+          return FALSE;
+        }
+        if (is == IS) {
+          SbName iname;
+          if (!in->read(iname, TRUE)) {
+            SoReadError::post(in, "Unable to read IS reference field");
+            return FALSE;
+          }
+          proto->addISReference(newfield, iname);
+        }
+        else in->putBack(is.getString());
+      }
+    } 
     if (!in->isBinary()) {
       READ_CHAR(c);
       if (c != VALUE_SEPARATOR_CHAR) in->putBack(c);
@@ -762,5 +824,18 @@ SoFieldData::writeFieldDescriptions(SoOutput * out,
 int
 SoFieldData::operator==(const SoFieldData * fd) const
 {
-  return ((this->enums == fd->enums) && (this->fields == fd->fields));
+  int i, n;
+  n = this->enums.getLength();
+  if (n != fd->enums.getLength()) return FALSE;
+  for (i = 0; i < n; i++) {
+    if (*(this->enums[i]) != *(fd->enums[i])) return FALSE;
+  }
+
+  n = this->fields.getLength();
+  if (n != fd->fields.getLength()) return FALSE;
+  for (i = 0; i < n; i++) {
+    if (*(this->fields[i]) != *(fd->fields[i])) return FALSE;
+  }
+
+  return TRUE;
 }

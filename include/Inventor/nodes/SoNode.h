@@ -53,9 +53,11 @@ public:
 
   enum NodeType {
     INVENTOR = 0,
-    VRML1 = 1
+    VRML1,
+    VRML2,
+    PROTO_INSTANCE_ROOT
   };
-  
+
   void setNodeType(const NodeType type);
   NodeType getNodeType(void) const;
 

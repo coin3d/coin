@@ -87,6 +87,15 @@
   Spcifies VRML V1.0 node type.
 */
 
+/*!
+  \var SoNode::NodeType SoNode::VRML2
+  Spcifies VRML V2.0 node type.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::PROTO_INSTANCE_ROOT
+  Spcifies a Proto instance root node.
+*/
 
 uint32_t SoNode::nextUniqueId = 0;
 int SoNode::nextActionMethodIndex = 0;
@@ -869,6 +878,10 @@ SoNode::writeS(SoAction * action, SoNode * node)
   assert(action && node);
   assert(action->getTypeId().isDerivedFrom(SoWriteAction::getClassTypeId()));
   SoWriteAction * const writeAction = (SoWriteAction *)(action);
+
+  if (node->getNodeType() == PROTO_INSTANCE_ROOT) {
+    assert(0 && "FIXME: PROTO export not supported.");
+  }
   node->write(writeAction);
 }
 
@@ -1019,6 +1032,7 @@ SoNode::readInstance(SoInput * in, unsigned short flags)
   SbBool ret = inherited::readInstance(in, flags);
   if (ret) {
     if (in->isFileVRML1()) this->setNodeType(SoNode::VRML1);
+    else if (in->isFileVRML2()) this->setNodeType(SoNode::VRML2);
   }
   return ret;
 }

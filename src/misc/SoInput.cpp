@@ -84,6 +84,7 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/SbName.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/misc/SoProto.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -186,7 +187,25 @@ public:
     this->routelist.append(tonode);
     this->routelist.append(tofield);
   }
+
+  void addProto(SoProto * proto) {
+    this->protolist.append(proto);
+  }
+
+  void pushProto(SoProto * proto) {
+    this->protostack.push(proto);
+  }
+  void popProto(void) {
+    this->protostack.pop();
+  }
+  SoProto * getCurrentProto(void) {
+    const int n = this->protostack.getLength();
+    if (n) return this->protostack[n-1];
+    return NULL;
+  }
+
   void connectRoutes(void);
+  void unrefProtos(void);
 
 private:
   SbString filename;
@@ -213,6 +232,8 @@ private:
   SbBool vrml2file;
 
   SbList <SbName> routelist;
+  SbList <SoProto*> protolist;
+  SbList <SoProto*> protostack;
 };
 
 SbStringList * SoInput::dirsearchlist = NULL;
@@ -275,6 +296,56 @@ SoInput::addRoute(const SbName & fromnode, const SbName & fromfield,
     info->addRoute(fromnode, fromfield,
                    tonode, tofield);
   }
+}
+
+/*!
+  Adds a Proto which should be active in the current scope.
+
+  This method was not part of the Inventor v2.1 API, and is an
+  extension specific to Coin.
+
+  \since 2001-10-15
+*/
+void 
+SoInput::addProto(SoProto * proto)
+{
+  proto->ref(); // the PROTO is unref'ed when the file is popped
+  SoInput_FileInfo * info = this->getTopOfStack();
+  assert(info);
+  if (info) {
+    info->addProto(proto);
+  }
+}
+
+void 
+SoInput::pushProto(SoProto * proto)
+{
+  SoInput_FileInfo * info = this->getTopOfStack();
+  assert(info);
+  if (info) {
+    info->pushProto(proto);
+  }
+}
+
+void 
+SoInput::popProto(void)
+{
+  SoInput_FileInfo * info = this->getTopOfStack();
+  assert(info);
+  if (info) {
+    info->popProto();
+  }
+}
+
+SoProto * 
+SoInput::getCurrentProto(void) const
+{
+  SoInput_FileInfo * info = this->getTopOfStack();
+  assert(info);
+  if (info) {
+    return info->getCurrentProto();
+  }
+  return NULL;
 }
 
 /*!
@@ -1074,7 +1145,13 @@ void
 SoInput::addReference(const SbName & name, SoBase * base,
                       SbBool /* addToGlobalDict */) // FIXME: why the unused arg? 20001024 mortene.
 {
-  this->refdict.enter((unsigned long)name.getString(), (void *) base);
+  SoProto * proto = this->getCurrentProto();
+  if (proto) {
+    proto->addReference(name, base);
+  }
+  else {
+    this->refdict.enter((unsigned long)name.getString(), (void *) base);
+  }
 }
 
 /*!
@@ -1085,7 +1162,13 @@ SoInput::addReference(const SbName & name, SoBase * base,
 void
 SoInput::removeReference(const SbName & name)
 {
-  this->refdict.remove((unsigned long)name.getString());
+  SoProto * proto = this->getCurrentProto();
+  if (proto) {
+    proto->removeReference(name);
+  }
+  else {
+    this->refdict.remove((unsigned long)name.getString());
+  }
 }
 
 /*!
@@ -1097,20 +1180,26 @@ SoInput::removeReference(const SbName & name)
 SoBase *
 SoInput::findReference(const SbName & name) const
 {
-  void * base;
-
-  if (this->refdict.find((unsigned long)name.getString(), base))
-    return (SoBase *) base;
-
-  static int COIN_SOINPUT_SEARCH_GLOBAL_DICT = -1;
-  if (COIN_SOINPUT_SEARCH_GLOBAL_DICT < 0) {
-    const char * env = coin_getenv("COIN_SOINPUT_SEARCH_GLOBAL_DICT");
-    if (env) COIN_SOINPUT_SEARCH_GLOBAL_DICT = atoi(env);
-    else COIN_SOINPUT_SEARCH_GLOBAL_DICT = 0;
+  SoProto * proto = this->getCurrentProto();
+  if (proto) {
+    return proto->findReference(name);
   }
-
-  if (COIN_SOINPUT_SEARCH_GLOBAL_DICT) {
-    return SoBase::getNamedBase(name, SoNode::getClassTypeId());
+  else {
+    void * base;
+    
+    if (this->refdict.find((unsigned long)name.getString(), base))
+      return (SoBase *) base;
+    
+    static int COIN_SOINPUT_SEARCH_GLOBAL_DICT = -1;
+    if (COIN_SOINPUT_SEARCH_GLOBAL_DICT < 0) {
+      const char * env = coin_getenv("COIN_SOINPUT_SEARCH_GLOBAL_DICT");
+      if (env) COIN_SOINPUT_SEARCH_GLOBAL_DICT = atoi(env);
+      else COIN_SOINPUT_SEARCH_GLOBAL_DICT = 0;
+  }
+    
+    if (COIN_SOINPUT_SEARCH_GLOBAL_DICT) {
+      return SoBase::getNamedBase(name, SoNode::getClassTypeId());
+    }
   }
   return NULL;
 }
@@ -1604,6 +1693,9 @@ SoInput::popFile(void)
 
   // connect routes before applying post callbacks
   topofstack->connectRoutes();
+
+  // unreference Proto definitions
+  topofstack->unrefProtos();
 
   // apply post callback, even if we're not going to pop
   topofstack->applyPostCallback(this);
@@ -2375,7 +2467,7 @@ SoInput_FileInfo::skipWhiteSpace(void)
     char c;
     SbBool gotchar;
     while ((gotchar = this->get(c)) && (isspace(c) || (this->isFileVRML2() && c == ',')));
-    
+
     if (!gotchar) return FALSE;
 
     if (c == COMMENT_CHAR) {
@@ -2462,5 +2554,15 @@ SoInput_FileInfo::connectRoutes(void)
   }
 }
 
+// Unrefernce all protos
+void
+SoInput_FileInfo::unrefProtos(void)
+{
+  const int n = this->protolist.getLength();
+  for (int i = 0; i < n; i++) {
+    this->protolist[i]->unref();
+  }
+  this->protolist.truncate(0);
+}
 
 #endif // DOXYGEN_SKIP_THIS

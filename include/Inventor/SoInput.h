@@ -36,13 +36,20 @@ class SbTime;
 class SbName;
 class SbStringList;
 class SoInput_FileInfo;
-
+class SoProto;
+class SoField;
 
 class COIN_DLL_API SoInput {
 public:
   SoInput(void);
   SoInput(SoInput * dictIn);
 
+  void addProto(SoProto * proto);
+
+  void pushProto(SoProto * proto);
+  SoProto * getCurrentProto(void) const;
+  void popProto(void);
+  
   void addRoute(const SbName & fromnode, const SbName & fromfield,
                 const SbName & tonode, const SbName & tofield);
 

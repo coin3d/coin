@@ -22,6 +22,8 @@ RegularSources = \
 	SoPick.cpp \
 	SoPickedPoint.cpp \
 	SoPrimitiveVertex.cpp \
+	SoProto.cpp \
+	SoProtoInstance.cpp \
 	SoSceneManager.cpp \
 	SoType.cpp \
 	SoOffscreenRenderer.cpp \
@@ -58,6 +60,8 @@ PrivateHeaders = \
 	../../include/Inventor/misc/SoGlyph.h \
 	../../include/Inventor/misc/SoGenerate.h \
 	../../include/Inventor/misc/SoPick.h \
+	../../include/Inventor/misc/SoProto.h \
+	../../include/Inventor/misc/SoProtoInstance.h \
 	GLUWrapper.h \
 	simage_wrapper.h \
 	SoGLFaceSetTemplate.cpp \

@@ -111,6 +111,8 @@
 #include <Inventor/fields/SoSFTime.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/sensors/SoTimerSensor.h>
+#include <Inventor/misc/SoProto.h>
+#include <Inventor/misc/SoProtoInstance.h>
 #include <coindefs.h> // COIN_STUB()
 #include <stdlib.h>
 
@@ -294,6 +296,9 @@ SoDB::init(void)
   SoEngine::initClass();
   SoEvent::initClass();
   SoSensor::initClass();
+
+  SoProto::initClass();
+  SoProtoInstance::initClass();
 
   // Register all valid file format headers.
   SoDB::registerHeader(SbString("#Inventor V2.1 ascii   "), FALSE, 2.1f,
