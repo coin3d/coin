@@ -30,6 +30,7 @@
 #include <Inventor/fields/SoSFEnum.h>
 
 class SoWWWAnchor;
+class SoWWWAnchorP;
 
 typedef void SoWWWAnchorCB(const SbString & url, void * data,
                            SoWWWAnchor * node);
@@ -65,6 +66,13 @@ protected:
   virtual ~SoWWWAnchor();
 
   virtual void redrawHighlighted(SoAction * act, SbBool isNowHighlighting);
+
+private:
+  SoWWWAnchorP * pimpl;
+  static SoWWWAnchorCB * fetchfunc;
+  static void * fetchdata;
+  static SoWWWAnchorCB * highlightfunc;
+  static void * highlightdata;
 };
 
 #endif // !COIN_SOWWWANCHOR_H
