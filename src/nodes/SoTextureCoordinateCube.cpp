@@ -27,6 +27,8 @@
   \ingroup nodes
 
   The cube used for reference when mapping is the boundingbox for the shape.
+
+  \since Coin 2.3
 */
 // FIXME: Add a better class description (20040123 handegar)
 
@@ -142,8 +144,7 @@ SoTextureCoordinateCube::~SoTextureCoordinateCube()
 void
 SoTextureCoordinateCube::initClass(void)
 {
-  // FIXME: This should actually be COIN_2_2_3 (20040122 handegar)
-  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateCube, SO_FROM_COIN_2_2);
+  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateCube, SO_FROM_COIN_2_3);
 
   SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
   SO_ENABLE(SoCallbackAction, SoTextureCoordinateElement);
