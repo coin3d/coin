@@ -912,7 +912,11 @@ SoText3P::setUpGlyphs(SoState * state, SoText3 * textnode)
     const SbString & s = textnode->string[i];
     int strlen = s.getLength();
 
-    const char * ptr = s.getString();
+    // Note that the "unsigned char" cast is needed to avoid 8-bit
+    // chars using the highest bit (i.e. characters above the ASCII
+    // set up to 127) be expanded to huge int numbers that turn
+    // negative when casted to integer size.
+    const unsigned char * ptr = (const unsigned char *)s.getString();
     float width = 0.0f;
     for (int j = 0; j < strlen; j++) {
       const SoGlyph * glyph = SoGlyph::getGlyph(ptr[j], SbName("default"));

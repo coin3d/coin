@@ -647,7 +647,11 @@ SoText2P::buildGlyphCache(SoState * state)
     SbVec2s advance(0, 0);
 
     for (int j = 0; j < strlength; j++) {
-      const unsigned int idx = this->laststring[i][j];
+      // Note that the "unsigned char" cast is needed to avoid 8-bit
+      // chars using the highest bit (i.e. characters above the ASCII
+      // set up to 127) be expanded to huge int numbers that turn
+      // negative when casted to integer size.
+      const unsigned int idx = (unsigned char)this->laststring[i][j];
       this->glyphs[i].append(SoGlyph::getGlyph(state, idx, SbVec2s(0,0), 0.0));
       // Should _always_ be able to get hold of a glyph -- if no
       // glyph is available for a specific character, a default
