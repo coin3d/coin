@@ -2,96 +2,98 @@
 Frequently Asked Questions for Coin
 
 Last Updated:
-Mon, 27 Aug 2001 20:54:00 +0200
+Tue, 11 Sep 2001 12:36:30 +0200
+
+
+For answers to common Open Inventor programming issues not covered in this
+FAQ, take a look at the FAQs directory in the SoGuiExamples archive.
 
 
 Section 1. Extensions and Ports
 ===============================
 
-Q1.1:	Are there any free extensions for doing volume rendering with Coin?
+Q1.1:   Are there any free extensions for doing volume rendering with Coin?
 
-A:	There are no free Open Inventor extensions for doing volume
-	rendering that we know of.
+A:      There are no free Open Inventor extensions for doing volume
+        rendering that we know of.
 
-	Implementing such an extension is high on our list of things we
-	want to do, but there is not yet any shedule for when it will happen.
-
-
-Q1.2:	Are there plans for making Coin multi-thread safe?
-
-A:	Yes.  The wheels are in motion on this one.  
+        Implementing such an extension is high on our list of things we
+        want to do, but there is not yet any schedule for when it will happen.
 
 
-Q1.3:	Can Coin do multi-pipe rendering?
+Q1.2:   Are there plans for making Coin multi-thread safe?
 
-A:	Not yet.  We certainly want to support this.  Note that this feature
-	depends on having achieved multi-thread safety for Coin first.
+A:      Yes.  The wheels are in motion on this one.  
 
 
-Q1.4:	Is there a Coin port for OS X/Darwin?
+Q1.3:   Can Coin do multi-pipe rendering?
 
-A:	We have not verified that Coin builds on OS X/Darwin.  We have not
-	verified that it is not doable either.  Anyone who feels up for the
-	task of configuring and building Coin on OS X/Darwin will get
-	excellent technical support from us :)
+A:      Not yet.  We certainly want to support this.  Note that this feature
+        depends on having achieved multi-thread safety for Coin first.
+
+
+Q1.4:   Is there a Coin port for Mac OS X/Darwin?
+
+A:      Coin configures and compiles on Mac OS X, but there is currently no
+        SoMac library available.  For a window binding, use Coin with
+        GLUT or manage the GL context manually.
 
 
 Section 2. Common Problems
 ==========================
 
 
-Q2.1:	Why doesn't it work to render the same scene graph in two viewers?
+Q2.1:   Why doesn't it work properly to render the same scene graph in two
+        different windows?
 
-A:	The viewers need different cache contexts.  Use two different
-	values with SoGLRenderAction::setCacheContext() for the two
-	viewers' render actions.  Example follows:
+A:      The reason is probably that the two windows do not share the same
+        GL context, but the render actions are not set up with different
+        cache contexts.  Use two different values with
+        SoGLRenderAction::setCacheContext() for the two windows' render
+        actions.  Example follows:
 
-	  for (int i=0; i < NR_VIEWERS; i++) {
-	    So@Gui@RenderArea * viewer = make_viewer();
-	    SoGLRenderAction * renderaction = viewer->getGLRenderAction();
-	#ifdef __COIN__
-	  /* In Coin, we have added an extension to SoGLCacheContextElement
-	     for getting a _guaranteed_ unique number for the cache contexts.
-	     That the original Inventor API is missing a function like this
-	     should be considered an ugly flaw in the design. */
-	    uint32_t uniqcc = SoGLCacheContextElement::getUniqueCacheContext();
-	#else // SGI or TGS Inventor
-	  /* Use a "pseudo-random" number and cross your fingers that it's
-	     unique, since there's no decent method in the API from which
-	     the application programmer can get a unique cache context id. */
-	    uint32_t uniqcc = 19720408 + i;
-	#endif // SGI / TGS Inventor
-	    renderaction->setCacheContext(uniqcc);
-	    // set root node, etc...
-	  }
-
-
-Q2.2:	Why does my Visual C++ program using Coin work for debug builds but
-	not for release builds?
-
-A:	The MS Visual C++ compiler changes behaviour when you change between
-	DEBUG and RELEASE mode.  Initialization of variables is one thing
-	in particular you should look at - debug compilation will cause
-	all variables to be initialized to zero, while they will have random
-	values for release builds.
-
-	There are of course other possible causes as well.
+          for (int i=0; i < NR_VIEWERS; i++) {
+            SoGLRenderAction * renderaction = window[i]->getGLRenderAction();
+        #ifdef __COIN__
+          /* In Coin, we have added an extension to SoGLCacheContextElement
+             for getting a _guaranteed_ unique number for the cache contexts.
+             That the original Inventor API is missing a function like this
+             should be considered an ugly flaw in the design. */
+            uint32_t uniqcc = SoGLCacheContextElement::getUniqueCacheContext();
+        #else // SGI or TGS Inventor
+          /* Use a "pseudo-random" number and cross your fingers that it's
+             unique, since there's no decent method in the API from which
+             the application programmer can get a unique cache context id. */
+            uint32_t uniqcc = 19720408 + i;
+        #endif // SGI / TGS Inventor
+            renderaction->setCacheContext(uniqcc);
+          }
 
 
-Q2.3:	I try to change the SoText2/SoText3 font, but nothing happens.
-	Why, oh why?
+Q2.2:   Why does my Visual C++ program using Coin work for debug builds but
+        not for release builds?
 
-A:	The font support is currently limited to a hardcoded font for both
-	Text2 and Text3.  Better to have one font than none at all.
+A:      The MS Visual C++ compiler changes behaviour when you change between
+        DEBUG and RELEASE mode.  Initialization of variables is one thing
+        in particular you should look at - debug compilation will cause
+        all variables to be initialized to zero, while they will have random
+        values for release builds.
 
-	Implementing support for the FreeType library for this is on our
-	TODO list.
-
-
-Q2.4:	Where does the SoGuiExamples module install the programs?
-
-A:	They are not installed.  The programs are just examples, and do not
-	belong with the installed executables on a system.  They are built
-	in the build dir, and are intended to be run from there.
+        There are of course other possible causes as well.
 
 
+Q2.3:   I try to change the SoText2/SoText3 font, but nothing happens.
+        Why, oh why?
+
+A:      The font support is currently limited to a hardcoded font for both
+        Text2 and Text3.  Better to have one font than none at all.
+
+        Implementing support for the FreeType library for this is on our
+        TODO list.
+
+
+Q2.4:   Where does the SoGuiExamples module install the programs?
+
+A:      They are not installed.  The programs are just examples, and do not
+        belong with the installed executables on a system.  They are built
+        in the build dir, and are intended to be run from there.

@@ -162,7 +162,7 @@ and explains the principles applied fairly well.
 XXX FIXME: complete doc. XXX
 
 * Building Coin for development (UNIX)
-	- solutions applied in Coin
+        - solutions applied in Coin
                 o make install-data
                 o make *-am
 
@@ -171,11 +171,11 @@ XXX FIXME: complete doc. XXX
 * Build hacking, autogen.sh/Autoconf/Automake/Libtool
 
 * Styleguide for code
-	- rip out the text from Metadon.conf
+        - rip out the text from Metadon.conf
 
 * Submitting patches
-	- technical walk-through
-	- legal aspects
+        - technical walk-through
+        - legal aspects
 
 ==============================================================================
 
