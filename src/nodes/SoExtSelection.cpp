@@ -370,6 +370,7 @@ public:
   SbBool applyonlyonselectedtriangles;
 
   unsigned int maximumcolorcounter;
+
   SbBool has3DTextures;
 
   unsigned char *visibletrianglesbitarray;
@@ -1477,6 +1478,9 @@ SoExtSelectionP::testPrimitives(SoCallbackAction * action,
 
 
 // triangle callback from SoCallbackAction
+//
+// FIXME: much code of the triangleCB, lineSegmentCB and pointCB
+// functions is common. Try to contract this code by sharing. 20041028 mortene.
 void
 SoExtSelectionP::triangleCB(void * userData,
                             SoCallbackAction * action,
@@ -1517,8 +1521,11 @@ SoExtSelectionP::triangleCB(void * userData,
   }
 
   // Shall we skip a certain amount of triangles before we start processing?
-  if(!thisp->primcbdata.allshapes){
-    if(thisp->offscreenskipcounter < (thisp->maximumcolorcounter*thisp->offscreencolorcounterpasses-1)){
+  if (!thisp->primcbdata.allshapes){
+    // FIXME: what does this value actually represent? (And what's up
+    // with the "-1"?) Please explain. 20041028 mortene.
+    const double v = double(thisp->maximumcolorcounter) * thisp->offscreencolorcounterpasses - 1;
+    if (thisp->offscreenskipcounter < v) {
       ++thisp->offscreenskipcounter;
       return;
     }
@@ -1526,7 +1533,6 @@ SoExtSelectionP::triangleCB(void * userData,
 
   // Increase draw counter. Used below.
   thisp->drawcounter++;
-
 
   if(thisp->primcbdata.abort){
     return;
@@ -1718,6 +1724,9 @@ SoExtSelectionP::addTriangleToOffscreenBuffer(SoCallbackAction * action,
 
 
 // line segment callback from SoCallbackAction
+//
+// FIXME: much code of the triangleCB, lineSegmentCB and pointCB
+// functions is common. Try to contract this code by sharing. 20041028 mortene.
 void
 SoExtSelectionP::lineSegmentCB(void *userData,
                                SoCallbackAction * action,
@@ -1733,7 +1742,10 @@ SoExtSelectionP::lineSegmentCB(void *userData,
 
   // Shall we skip a certain amount of lines before we start processing?
   if(!thisp->primcbdata.allshapes){
-    if(thisp->offscreenskipcounter < (thisp->maximumcolorcounter*thisp->offscreencolorcounterpasses-1)){
+    // FIXME: what does this value actually represent? (And what's up
+    // with the "-1"?) Please explain. 20041028 mortene.
+    const double v = double(thisp->maximumcolorcounter) * thisp->offscreencolorcounterpasses - 1;
+    if (thisp->offscreenskipcounter < v) {
       ++thisp->offscreenskipcounter;
       return;
     }
@@ -1883,13 +1895,15 @@ SoExtSelectionP::addLineToOffscreenBuffer(SoCallbackAction * action,
 
 
 
-// line segment callback from SoCallbackAction
+// point data callback from SoCallbackAction
+//
+// FIXME: much code of the triangleCB, lineSegmentCB and pointCB
+// functions is common. Try to contract this code by sharing. 20041028 mortene.
 void
 SoExtSelectionP::pointCB(void *userData,
                          SoCallbackAction *action,
                          const SoPrimitiveVertex * v)
 {
-
   SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
   thisp->drawcallbackcounter++;
 
@@ -1898,7 +1912,10 @@ SoExtSelectionP::pointCB(void *userData,
   }
   // Shall we skip a certain amount of lines before we start processing?
   if(!thisp->primcbdata.allshapes){
-    if(thisp->offscreenskipcounter < (thisp->maximumcolorcounter*thisp->offscreencolorcounterpasses-1)){
+    // FIXME: what does this value actually represent? (And what's up
+    // with the "-1"?) Please explain. 20041028 mortene.
+    const double v = double(thisp->maximumcolorcounter) * thisp->offscreencolorcounterpasses - 1;
+    if (thisp->offscreenskipcounter < v) {
       ++thisp->offscreenskipcounter;
       return;
     }
@@ -2252,7 +2269,16 @@ SoExtSelectionP::checkOffscreenRendererCapabilities()
   const double maxcols = pow(2, COLORBITS);
 #endif
 
-  this->maximumcolorcounter = (maxcols > UINT_MAX) ? UINT_MAX : (unsigned int)maxcols;
+  // We do not want to use too many bits, as we later need to allocate
+  // an array which is (maximumcolorcounter / 8) bytes large, using 1
+  // bit for each primitive in the scene to detect whether visible or
+  // not. So we set a limit at ~4 million, which should be enough to
+  // do even really heavy scenes in a single pass, while this will
+  // allocate a buffer of not more than ~0.5 MB.
+  const unsigned int threshold = (unsigned int)pow(2, 22);
+
+  this->maximumcolorcounter =
+    (maxcols > threshold) ? threshold : (unsigned int)maxcols;
 
   if (SoExtSelectionP::debug()) {
     SoDebugError::postInfo("SoExtSelectionP::checkOffscreenRendererCapabilities",
@@ -2290,9 +2316,9 @@ SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
   int flag = 0;
   SbBool hitflag = FALSE;
 
-  // Clear entire 'visibletrianglesbitarray' table
-  for(unsigned int i=0;i<((this->maximumcolorcounter >> 3)+1);i++)
-    this->visibletrianglesbitarray[i] = 0;
+  // Clear entire table.
+  (void)memset(this->visibletrianglesbitarray, 0,
+               (this->maximumcolorcounter + 7) / 8);
   
   SbBox2s rectbbox;
   for (int k = 0; k < this->coords.getLength(); k++)
@@ -2403,7 +2429,8 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
     // checkOffscreenRendererCapabilities().
     if (!setupok) { return; }
 
-    this->visibletrianglesbitarray = new unsigned char[((this->maximumcolorcounter) >> 3)+1];
+    this->visibletrianglesbitarray =
+      new unsigned char[(this->maximumcolorcounter + 7) / 8];
  
     // --- Do this procedure several times if colorcounter overflows
     this->offscreencolorcounterpasses = 0;
@@ -2509,14 +2536,13 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
       }
       ++this->offscreencolorcounterpasses;
 
-    } while(this->offscreencolorcounterpasses*this->maximumcolorcounter < this->drawcallbackcounter);
+    } while (this->offscreencolorcounterpasses * double(this->maximumcolorcounter) < this->drawcallbackcounter);
 
     // Release allocated stuff
     cbnode->unref();
     delete [] this->visibletrianglesbitarray;
     delete this->renderer;
     delete this->lassorenderer;
-
   }
 
   // Send signal to client that we are finished searching for tris
@@ -2525,4 +2551,3 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
   this->selectPaths(); // Execute a 'doSelect' on all stored paths.
 }
-
