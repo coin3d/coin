@@ -168,7 +168,9 @@ BUILT_SOURCES = \
 
 
 DISTCLEANFILES = \
-	coin-@CONFIG@.cfg
+	coin-@CONFIG@.cfg \
+	docs/coin.doxygen \
+	docs/coin.doxygen.bak
 
 
 @BUILD_LIBRARY_TRUE@m4datadir = $(datadir)/aclocal

@@ -36,7 +36,9 @@ BUILT_SOURCES = \
 	coin-@CONFIG@.cfg
 
 DISTCLEANFILES = \
-	coin-@CONFIG@.cfg
+	coin-@CONFIG@.cfg \
+	docs/coin.doxygen \
+	docs/coin.doxygen.bak
 
 if BUILD_LIBRARY
 m4datadir = $(datadir)/aclocal
