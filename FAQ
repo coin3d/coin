@@ -34,6 +34,8 @@ Index
 
   Q6: Is there a Coin port for Mac OS X/Darwin?
 
+  Q7: Is Coin compatible with .NET?
+
 2: Common Problems
   Q1: <Node>::classTypeId != SoType::badType() && "You forgot init()"?
 
@@ -134,7 +136,24 @@ A:      Yes, there is full support for Coin, SoQt and SoXt on Mac OS
         build instructions, download links and tutorials.
 
 
-Section 2. Common Problems
+Q1.7:   Is Coin compatible with .NET?
+
+A:      The Coin3D libraries are written in C and C++. The supported
+        compilers in the Visual Studio family are VisualC++ v6, 
+        VisualC++ .NET and VisualC++.NET 2003. In-house, we mostly
+        use VC++ v6 and VC++.NET 2003.
+
+        Coin3D is currently not a .NET assembly or component, so if
+        you'd like to use Coin3D from other languages in the
+        VisualStudio family (C#, VB, J#), you will need to do some
+        C++ coding first (basically add support for Managed
+        Extensions directly, or add some new (managed) classes that
+        act as external interfaces to Coin3D). We are probably going
+        to make a .NET assembly of Coin3D some time, but we
+        haven't had sufficient customer demand for it yet.
+
+
+Section 2. Common Problems 
 ==========================
 
 Q2.1:   <Node>::classTypeId != SoType::badType() && "You forgot init()"?
