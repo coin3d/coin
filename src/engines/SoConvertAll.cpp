@@ -1118,6 +1118,9 @@ SoConvertAll::~SoConvertAll()
   SoDebugError::postInfo("SoConvertAll::~SoConvertAll", "%p", this);
 #endif // debug
   delete this->input;
+
+  delete this->inputdata_instance;
+  delete this->outputdata_instance;
 }
 
 SoField *
