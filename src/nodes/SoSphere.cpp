@@ -72,6 +72,7 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGenerate.h>
@@ -126,7 +127,10 @@ SoSphere::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-  SbBool doTextures = SoGLTextureEnabledElement::get(state);
+  SbBool doTextures = FALSE;
+  SbBool do3DTextures = FALSE;
+  if (SoGLTextureEnabledElement::get(state)) doTextures = TRUE;
+  else if (SoGLTexture3EnabledElement::get(state)) do3DTextures = TRUE;
 
   SbBool sendNormals =
     (SoLightModelElement::get(state) !=
@@ -139,6 +143,7 @@ SoSphere::GLRender(SoGLRenderAction * action)
   unsigned int flags = 0;
   if (sendNormals) flags |= SOGL_NEED_NORMALS;
   if (doTextures) flags |= SOGL_NEED_TEXCOORDS;
+  else if (do3DTextures) flags |= SOGL_NEED_3DTEXCOORDS;
 
   sogl_render_sphere(this->radius.getValue(),
                      (int)(SPHERE_NUM_SLICES * complexity),

@@ -72,6 +72,7 @@
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGenerate.h>
@@ -191,9 +192,11 @@ SoCylinder::GLRender(SoGLRenderAction * action)
   unsigned int flags = 0;
   if (SoLightModelElement::get(state) != SoLightModelElement::BASE_COLOR)
     flags |= SOGL_NEED_NORMALS;
-  if (SoGLTextureEnabledElement::get(state) &&
-      SoTextureCoordinateElement::getType(state) != SoTextureCoordinateElement::TEXGEN)
+  if (SoGLTextureEnabledElement::get(state))
     flags |= SOGL_NEED_TEXCOORDS;
+  else if (SoGLTexture3EnabledElement::get(state))
+    flags |= SOGL_NEED_3DTEXCOORDS;
+  
   if (p & SIDES) flags |= SOGL_RENDER_SIDE;
   if (p & TOP) flags |= SOGL_RENDER_TOP;
   if (p & BOTTOM) flags |= SOGL_RENDER_BOTTOM;

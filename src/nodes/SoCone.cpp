@@ -66,6 +66,8 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/details/SoConeDetail.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGenerate.h>
 #include <Inventor/misc/SoPick.h>
@@ -175,8 +177,16 @@ SoCone::GLRender(SoGLRenderAction * action)
 
   SoState * state = action->getState();
 
+  SbBool doTextures = FALSE;
+  SbBool do3DTextures = FALSE;
+  if (SoGLTextureEnabledElement::get(state)) doTextures = TRUE;
+  else if (SoGLTexture3EnabledElement::get(state)) do3DTextures = TRUE;
+
   SoCone::Part p = (SoCone::Part) this->parts.getValue();
-  unsigned int flags = SOGL_NEED_NORMALS | SOGL_NEED_TEXCOORDS;
+  unsigned int flags = SOGL_NEED_NORMALS;
+  if (doTextures) flags |= SOGL_NEED_TEXCOORDS;
+  else if (do3DTextures) flags |= SOGL_NEED_3DTEXCOORDS;
+
   if (p & SoCone::SIDES) flags |= SOGL_RENDER_SIDE;
   if (p & SoCone::BOTTOM) flags |= SOGL_RENDER_BOTTOM;
 

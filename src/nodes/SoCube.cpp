@@ -60,6 +60,7 @@
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
@@ -126,7 +127,10 @@ SoCube::GLRender(SoGLRenderAction * action)
     (binding == SoMaterialBindingElement::PER_PART ||
      binding == SoMaterialBindingElement::PER_PART_INDEXED);
 
-  SbBool doTextures = SoGLTextureEnabledElement::get(state);
+  SbBool doTextures = FALSE;
+  SbBool do3DTextures = FALSE;
+  if (SoGLTextureEnabledElement::get(state)) doTextures = TRUE;
+  else if (SoGLTexture3EnabledElement::get(state)) do3DTextures = TRUE;
 
   SbBool sendNormals =
     (SoLightModelElement::get(state) !=
@@ -140,6 +144,7 @@ SoCube::GLRender(SoGLRenderAction * action)
   unsigned int flags = 0;
   if (materialPerPart) flags |= SOGL_MATERIAL_PER_PART;
   if (doTextures) flags |= SOGL_NEED_TEXCOORDS;
+  else if (do3DTextures) flags |= SOGL_NEED_3DTEXCOORDS;
   if (sendNormals) flags |= SOGL_NEED_NORMALS;
 
   sogl_render_cube(width.getValue(),
