@@ -200,6 +200,19 @@ public:
     if (this->glxpixmap) glXDestroyGLXPixmap(this->display, this->glxpixmap);
     if (this->pixmap) XFreePixmap(this->display, this->pixmap);
     if (this->visinfo) XFree(this->visinfo);
+    // The following XCloseDisplay() call has been known to crash the
+    // application when running remotely from some old Mesa version on
+    // Red Hat Linux 6.2 onto an IRIX6.5 display. It seems likely that
+    // this was caused by a bug in that particular old Mesa
+    // version. Since the leak caused by _not_ freeing up the Display
+    // resource is a showstopper for applications doing lots of
+    // offscreen rendering, we leave this in.
+    //
+    // If you see crashes, feel free to report the particulars about
+    // your system to us (OpenGL implementation & version, X11 server
+    // and client implementations and versions, etc).
+    //
+    // mortene@sim.no
     if (this->display) XCloseDisplay(this->display);
 
     delete[] this->buffer;
