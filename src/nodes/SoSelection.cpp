@@ -401,7 +401,8 @@ SoSelection::isSelected(SoNode * node) const
 void
 SoSelection::deselectAll(void)
 {
-  this->selectionList.truncate(0);
+  while (this->getNumSelected())
+    this->removePath(this->getNumSelected()-1);
 }
 
 /*!
