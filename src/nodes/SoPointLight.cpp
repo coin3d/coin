@@ -41,6 +41,9 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoEnvironmentElement.h>
 #include <Inventor/elements/SoGLLightIdElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoLightElement.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -102,6 +105,9 @@ SoPointLight::GLRender(SoGLRenderAction * action)
 
   SoState * state = action->getState();
 
+  SoLightElement::add(state, this, SoModelMatrixElement::get(state) *
+                      SoViewingMatrixElement::get(state));
+  
   GLenum light = (GLenum) (idx + GL_LIGHT0);
 
   SbVec3f attenuation = SoEnvironmentElement::getLightAttenuation(state);
