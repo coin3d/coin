@@ -32,64 +32,64 @@
 */
 
 
-#include <Inventor/misc/SoState.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <coindefs.h> // COIN_OBSOLETED()
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-#include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/nodes/SoShape.h>
-#include <Inventor/nodes/SoVertexShape.h>
-#include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/caches/SoBoundingBoxCache.h>
-#include <Inventor/caches/SoPrimitiveVertexCache.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoGLShapeHintsElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoTextureQualityElement.h>
-#include <Inventor/elements/SoCullElement.h>
-#include <Inventor/elements/SoGLLazyElement.h>
-#include <Inventor/elements/SoBumpMapElement.h>
-#include <Inventor/elements/SoNormalElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
-#include <Inventor/elements/SoLightElement.h>
-#include <Inventor/elements/SoGLMultiTextureImageElement.h>
-#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoLightElement.h>
-#include <Inventor/nodes/SoLight.h>
 
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/misc/SoGLBigImage.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/details/SoFaceDetail.h>
-#include <Inventor/details/SoLineDetail.h>
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
-#include <Inventor/elements/SoComplexityElement.h>
-#include <Inventor/C/threads/threadsutilp.h>
-#include <Inventor/SbPlane.h>
-#include <Inventor/SbBox2f.h>
-#include <Inventor/SbClip.h>
-#include <Inventor/SbTime.h>
-#include <Inventor/C/tidbitsp.h>
-#include <Inventor/C/tidbits.h>
+#include <string.h>
+#include <stdlib.h>
+
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
+#include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
+#include <Inventor/SbBox2f.h>
+#include <Inventor/SbClip.h>
+#include <Inventor/SbPlane.h>
+#include <Inventor/SbTime.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/caches/SoPrimitiveVertexCache.h>
+#include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/details/SoLineDetail.h>
+#include <Inventor/elements/SoBumpMapElement.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoComplexityElement.h>
+#include <Inventor/elements/SoCullElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureImageElement.h>
+#include <Inventor/elements/SoGLShapeHintsElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoLightElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoNormalElement.h>
+#include <Inventor/elements/SoProjectionMatrixElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoGLBigImage.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoLight.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/nodes/SoVertexShape.h>
+#include <Inventor/threads/SbStorage.h>
+#include <coindefs.h> // COIN_OBSOLETED()
 
 // SoShape.cpp grew too big, so I had to move some code into new
 // files. pederb, 2001-07-18
@@ -109,11 +109,8 @@
 #endif // HAVE_VRML97
 
 #include <Inventor/system/gl.h>
-#include <string.h>
-#include <stdlib.h>
 
 #ifdef COIN_THREADSAFE
-#include <Inventor/threads/SbStorage.h>
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
 
@@ -283,38 +280,26 @@ soshape_destruct_staticdata(void * closure)
   delete data->trianglesort;
 }
 
-#ifdef COIN_THREADSAFE
 static SbStorage * soshape_staticstorage;
-#else // COIN_THREADSAFE
-static soshape_staticdata * soshape_single_staticdata;
-#endif // ! COIN_THREADSAFE
 
 static soshape_staticdata *
 soshape_get_staticdata(void)
 {
-#ifdef COIN_THREADSAFE
   return (soshape_staticdata*) soshape_staticstorage->get();
-#else // COIN_THREADSAFE
-  return soshape_single_staticdata;
-#endif // !COIN_THREADSAFE
 }
 
 // called by atexit
 static void
 soshape_cleanup(void)
 {
-#ifdef COIN_THREADSAFE
   delete soshape_staticstorage;
-#else // COIN_THREADSAFE
-  soshape_destruct_staticdata(soshape_single_staticdata);
-  delete soshape_single_staticdata;
-#endif // ! COIN_THREADSAFE
 }
 
 // *************************************************************************
 
 SO_NODE_ABSTRACT_SOURCE(SoShape);
 
+// *************************************************************************
 
 /*!
   Constructor.
@@ -341,15 +326,10 @@ SoShape::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoShape, SO_FROM_INVENTOR_1);
 
-#ifdef COIN_THREADSAFE
   soshape_staticstorage =
     new SbStorage(sizeof(soshape_staticdata),
                   soshape_construct_staticdata,
                   soshape_destruct_staticdata);
-#else // COIN_THREADSAFE
-  soshape_single_staticdata = new soshape_staticdata;
-  soshape_construct_staticdata((void*) soshape_single_staticdata);
-#endif // ! COIN_THREADSAFE
 
   const char * env = coin_getenv("COIN_USE_GL_VERTEX_ARRAYS");
   if (env) {

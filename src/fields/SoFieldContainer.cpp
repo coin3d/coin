@@ -36,36 +36,28 @@
   \sa SoField
 */
 
+#include <string.h>
+#include <assert.h>
 
 #include <Inventor/fields/SoFieldContainer.h>
-
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
-#include <Inventor/fields/SoField.h>
-#include <Inventor/fields/SoFieldData.h>
-#include <Inventor/lists/SoFieldList.h>
-#include <Inventor/misc/SoProtoInstance.h>
-#include <Inventor/misc/SoProto.h>
-#include <Inventor/C/base/hash.h>
-#include <Inventor/SbName.h>
-#include <coindefs.h> // COIN_STUB()
-#include <Inventor/C/tidbitsp.h>
-#include <assert.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#ifdef COIN_THREADSAFE
-#include <Inventor/threads/SbStorage.h>
-#include <Inventor/threads/SbMutex.h>
-#endif // COIN_THREADSAFE
-
-#if COIN_DEBUG
+#include <Inventor/C/base/hash.h>
+#include <Inventor/C/tidbitsp.h>
+#include <Inventor/SbName.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-
-#include <string.h>
+#include <Inventor/fields/SoField.h>
+#include <Inventor/fields/SoFieldData.h>
+#include <Inventor/lists/SoFieldList.h>
+#include <Inventor/misc/SoProto.h>
+#include <Inventor/misc/SoProtoInstance.h>
+#include <Inventor/threads/SbStorage.h>
+#include <coindefs.h> // COIN_STUB()
 
 /*!
   \var SbBool SoFieldContainer::isBuiltIn
@@ -139,31 +131,18 @@ sofieldcontainer_destruct_copydict(void * closure)
 
 // use thread local storage to store copydict in threadsafe version of
 // Coin
-#ifdef COIN_THREADSAFE
 static SbStorage * sofieldcontainer_copydictstorage;
-#else // COIN_THREADSAFE
-static sofieldcontainer_copydict * sofieldcontainer_staticcopydict;
-#endif // ! COIN_THREADSAFE
 
 static void 
 sofieldcontainer_copydict_cleanup(void)
 {
-#ifdef COIN_THREADSAFE
   delete sofieldcontainer_copydictstorage; 
-#else // COIN_THREADSAFE
-  sofieldcontainer_destruct_copydict((void*)sofieldcontainer_staticcopydict);
-  delete sofieldcontainer_staticcopydict;
-#endif // ! COIN_THREADSAFE
 }
 
 static sofieldcontainer_copydict *
 sofieldcontainer_get_copydict(void)
 {
-#ifdef COIN_THREADSAFE
   return (sofieldcontainer_copydict*) sofieldcontainer_copydictstorage->get();
-#else // COIN_THREADSAFE
-  return sofieldcontainer_staticcopydict;
-#endif // !COIN_THREADSAFE
 }
 
 
@@ -182,15 +161,11 @@ SoFieldContainer::initClass(void)
   sofieldcontainer_userdata_dict = cc_hash_construct(64, 0.75f);
   coin_atexit((coin_atexit_f*) sofieldcontainer_userdata_cleanup, 0);
 
-#ifdef COIN_THREADSAFE
   sofieldcontainer_copydictstorage = 
     new SbStorage(sizeof(sofieldcontainer_copydict),
                   sofieldcontainer_construct_copydict,
                   sofieldcontainer_destruct_copydict);                 
-#else // COIN_THREADSAFE
-  sofieldcontainer_staticcopydict = new sofieldcontainer_copydict;
-  sofieldcontainer_construct_copydict((void*)sofieldcontainer_staticcopydict);
-#endif // !COIN_THREADSAFE
+
   coin_atexit((coin_atexit_f*) sofieldcontainer_copydict_cleanup, 0);
 }
 

@@ -31,19 +31,20 @@
 */
 
 #include <Inventor/nodes/SoLinearProfile.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/elements/SoProfileCoordinateElement.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/C/tidbitsp.h>
+
 #include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#ifdef COIN_THREADSAFE
+#include <Inventor/C/tidbitsp.h>
+#include <Inventor/elements/SoProfileCoordinateElement.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/threads/SbStorage.h>
-#endif // COIN_THREADSAFE
+
+// *************************************************************************
 
 typedef struct {
   SbList <float> * coordlist;
@@ -63,32 +64,19 @@ so_linearprofile_destruct_data(void * closure)
   delete data->coordlist;
 }
 
-#ifdef COIN_THREADSAFE
 static SbStorage * so_linearprofile_storage;
-#else // COIN_THREADSAFE
-static so_linearprofile_data * so_linearprofile_single_data;
-#endif // ! COIN_THREADSAFE
 
 static void
 so_linearprofile_cleanup(void)
 {
-#ifdef COIN_THREADSAFE
   delete so_linearprofile_storage;
-#else // COIN_THREADSAFE
-  so_linearprofile_destruct_data((void*) so_linearprofile_single_data);
-  delete so_linearprofile_single_data;
-#endif // ! COIN_THREADSAFE
 }
 
 static SbList <float> *
 so_linearprofile_get_coordlist(void)
 {
   so_linearprofile_data * data = NULL;
-#ifdef COIN_THREADSAFE
   data = (so_linearprofile_data*) so_linearprofile_storage->get();
-#else // COIN_THREADSAFE
-  data = so_linearprofile_single_data;
-#endif // ! COIN_THREADSAFE
   if (data->coordlist == NULL) {
     data->coordlist = new SbList<float>;
   }
@@ -98,6 +86,8 @@ so_linearprofile_get_coordlist(void)
 // *************************************************************************
 
 SO_NODE_SOURCE(SoLinearProfile);
+
+// *************************************************************************
 
 /*!
   Constructor.
@@ -120,14 +110,9 @@ SoLinearProfile::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoLinearProfile, SO_FROM_INVENTOR_1);
 
-#ifdef COIN_THREADSAFE
   so_linearprofile_storage = new SbStorage(sizeof(so_linearprofile_data),
                                            so_linearprofile_construct_data,
                                            so_linearprofile_destruct_data);
-#else // COIN_THREADSAFE
-  so_linearprofile_single_data = new so_linearprofile_data;
-  so_linearprofile_construct_data((void*) so_linearprofile_single_data);
-#endif // ! COIN_THREADSAFE
   coin_atexit((coin_atexit_f*) so_linearprofile_cleanup, 0);
 }
 

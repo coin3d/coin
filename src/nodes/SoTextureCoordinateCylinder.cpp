@@ -21,38 +21,39 @@
  *
 \**************************************************************************/
 
-#include <Inventor/nodes/SoTextureCoordinateCylinder.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
-#include <Inventor/elements/SoTextureUnitElement.h>
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoPickAction.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/nodes/SoShape.h>
-#include <Inventor/SbBox3f.h>
-#include <Inventor/SoFullPath.h>
-#include <Inventor/caches/SoBoundingBoxCache.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/C/glue/gl.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG
-
-#ifdef COIN_THREADSAFE
-#include <Inventor/threads/SbStorage.h>
-#endif // COIN_THREADSAFE
-
 /*!
   \class SoTextureCoordinateCylinder include/Inventor/nodes/SoTextureCoordinateCylinder.h
   \brief The SoTextureCoordinateCylinder class autogenerates cylinder mapped texture coordinated for shapes.
   \ingroup nodes
 */
 // FIXME: Add a better class description (20040123 handegar)
+
+// *************************************************************************
+
+#include <Inventor/nodes/SoTextureCoordinateCylinder.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG
+
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/SbBox3f.h>
+#include <Inventor/SoFullPath.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoPickAction.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoTextureUnitElement.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoShape.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/threads/SbStorage.h>
+
+// *************************************************************************
 
 typedef struct {
   SbVec3f origo;
@@ -76,8 +77,7 @@ so_texcoordcylinder_destruct_data(void * closure)
 { 
 }
 
-
-SO_NODE_SOURCE(SoTextureCoordinateCylinder);
+// *************************************************************************
 
 class SoTextureCoordinateCylinderP {
 
@@ -89,20 +89,12 @@ public:
   
   so_texcoordcylinder_data * so_texcoord_get_data() {
     so_texcoordcylinder_data * data = NULL;
-#ifdef COIN_THREADSAFE
     data = (so_texcoordcylinder_data *) this->so_texcoord_storage->get();
     assert(data && "Error retrieving thread data.");
-#else // COIN_THREADSAFE
-    data = this->so_texcoord_single_data;
-#endif // ! COIN_THREADSAFE    
     return data;
   }
     
-#ifdef COIN_THREADSAFE
   SbStorage * so_texcoord_storage;
-#else // COIN_THREADSAFE
-  so_texcoordcylinder_data * so_texcoord_single_data;
-#endif // ! COIN_THREADSAFE
 
 private:
   SoTextureCoordinateCylinder * master;
@@ -116,6 +108,11 @@ static const SbVec4f & textureCoordinateCylinderCallback(void * userdata, const 
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->master)
 
+// *************************************************************************
+
+SO_NODE_SOURCE(SoTextureCoordinateCylinder);
+
+// *************************************************************************
 
 /*!
   Constructor.
@@ -126,15 +123,9 @@ SoTextureCoordinateCylinder::SoTextureCoordinateCylinder(void)
   PRIVATE(this) = new SoTextureCoordinateCylinderP(this);
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCoordinateCylinder);
 
-#ifdef COIN_THREADSAFE
   pimpl->so_texcoord_storage = new SbStorage(sizeof(so_texcoordcylinder_data),
                                              so_texcoordcylinder_construct_data, 
                                              so_texcoordcylinder_destruct_data);
-#else // COIN_THREADSAFE
-  pimpl->so_texcoord_single_data = new so_texcoordcylinder_data;
-  so_texcoordcylinder_construct_data((void*) pimpl->so_texcoord_single_data);
-#endif // COIN_THREADSAFE
-
 }
 
 /*!
@@ -142,11 +133,7 @@ SoTextureCoordinateCylinder::SoTextureCoordinateCylinder(void)
 */
 SoTextureCoordinateCylinder::~SoTextureCoordinateCylinder()
 {
-#ifdef COIN_THREADSAFE
   delete pimpl->so_texcoord_storage;
-#else // COIN_THREADSAFE
-  delete pimpl->so_texcoord_single_data;
-#endif // COIN_THREADSAFE
   delete PRIVATE(this);
 }
 

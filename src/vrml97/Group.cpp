@@ -89,20 +89,21 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoActions.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/misc/SoChildList.h>
-#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/caches/SoGLCacheList.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 #include <Inventor/elements/SoSoundElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoChildList.h>
 #include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/threads/SbStorage.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -112,10 +113,10 @@
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
-#include <Inventor/threads/SbStorage.h>
 #endif // COIN_THREADSAFE
 
-#ifdef COIN_THREADSAFE
+// *************************************************************************
+
 // when doing threadsafe rendering, each thread needs its own
 // glcachelist
 typedef struct {
@@ -135,7 +136,8 @@ sovrmlgroup_storage_destruct(void * data)
   sovrmlgroup_storage * ptr = (sovrmlgroup_storage*) data;
   delete ptr->glcachelist;
 }
-#endif // COIN_THREADSAFE
+
+// *************************************************************************
 
 int SoVRMLGroup::numRenderCaches = 2;
 
@@ -143,26 +145,20 @@ class SoVRMLGroupP {
 public:
   // lots of ifdefs here but it can't be helped...
   SoVRMLGroupP(void) {
-#ifdef COIN_THREADSAFE
     this->glcachestorage = 
       new SbStorage(sizeof(sovrmlgroup_storage),
                     sovrmlgroup_storage_construct,
                     sovrmlgroup_storage_destruct);
-#else // COIN_THREADSAFE
-    this->glcachelist = NULL;
-#endif // !COIN_THREADSAFE
   }
+
   ~SoVRMLGroupP() {
-#ifdef COIN_THREADSAFE
     delete this->glcachestorage;
-#else // COIN_THREADSAFE
-    delete this->glcachelist;
-#endif // COIN_THREADSAFE
   }
 
   SoBoundingBoxCache * bboxcache;
 #ifdef COIN_THREADSAFE
   SbMutex mutex;
+#endif // !COIN_THREADSAFE
   SbStorage * glcachestorage;
   static void invalidate_gl_cache(void * tls, void *) {
     sovrmlgroup_storage * ptr = (sovrmlgroup_storage*) tls;
@@ -170,10 +166,6 @@ public:
       ptr->glcachelist->invalidateAll();
     }
   }
-#else // COIN_THREADSAFE
-private:
-  SoGLCacheList * glcachelist;
-#endif // !COIN_THREADSAFE
 
 public:
   enum { YES, NO, MAYBE } hassoundchild;
@@ -181,14 +173,9 @@ public:
   SoGLCacheList * getGLCacheList(const SbBool createifnull);
 
   void invalidateGLCaches(void) {
-#ifdef COIN_THREADSAFE
     glcachestorage->applyToAll(invalidate_gl_cache, NULL);
-#else // COIN_THREADSAFE
-    if (this->glcachelist) {
-      this->glcachelist->invalidateAll(); 
-    }
-#endif // !COIN_THREADSAFE
   }
+
   void lock(void) {
 #ifdef COIN_THREADSAFE
     this->mutex.lock();
@@ -201,7 +188,6 @@ public:
   }
 };
 
-#ifdef COIN_THREADSAFE
 SoGLCacheList *
 SoVRMLGroupP::getGLCacheList(const SbBool createifnull)
 {
@@ -212,20 +198,14 @@ SoVRMLGroupP::getGLCacheList(const SbBool createifnull)
   }
   return ptr->glcachelist;
 }
-#else // COIN_THREADSAFE
-SoGLCacheList *
-SoVRMLGroupP::getGLCacheList(const SbBool createifnull)
-{
-  if (createifnull && this->glcachelist == NULL) {
-    this->glcachelist = new SoGLCacheList(SoVRMLGroup::getNumRenderCaches());
-  }
-  return this->glcachelist;
-}
-#endif // !COIN_THREADSAFE
 
 #define PRIVATE(obj) ((obj)->pimpl)
 
+// *************************************************************************
+
 SO_NODE_SOURCE(SoVRMLGroup);
+
+// *************************************************************************
 
 // Doc in parent
 void

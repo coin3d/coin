@@ -68,10 +68,10 @@
 
 #include <Inventor/system/gl.h>
 #include <coindefs.h> // COIN_OBSOLETED()
+#include <Inventor/threads/SbStorage.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
-#include <Inventor/threads/SbStorage.h>
 #endif // COIN_THREADSAFE
 
 #if COIN_DEBUG
@@ -243,7 +243,8 @@ int SoSeparator::numrendercaches = 2;
   See documentation for SoSeparator::renderCulling.
 */
 
-#ifdef COIN_THREADSAFE
+// *************************************************************************
+
 // when doing threadsafe rendering, each thread needs its own
 // glcachelist
 typedef struct {
@@ -263,31 +264,26 @@ soseparator_storage_destruct(void * data)
   soseparator_storage * ptr = (soseparator_storage*) data;
   delete ptr->glcachelist;
 }
-#endif // COIN_THREADSAFE
+
+// *************************************************************************
 
 class SoSeparatorP {
 public:
   // lots of ifdefs here but it can't be helped...
   SoSeparatorP(void) {
-#ifdef COIN_THREADSAFE
     this->glcachestorage =
       new SbStorage(sizeof(soseparator_storage),
                     soseparator_storage_construct,
                     soseparator_storage_destruct);
-#else // COIN_THREADSAFE
-    this->glcachelist = NULL;
-#endif // !COIN_THREADSAFE
   }
   ~SoSeparatorP() {
-#ifdef COIN_THREADSAFE
     delete this->glcachestorage;
-#else // COIN_THREADSAFE
-    delete this->glcachelist;
-#endif // COIN_THREADSAFE
   }
+
   SoBoundingBoxCache * bboxcache;
 #ifdef COIN_THREADSAFE
   SbMutex mutex;
+#endif // !COIN_THREADSAFE
   SbStorage * glcachestorage;
   static void invalidate_gl_cache(void * tls, void *) {
     soseparator_storage * ptr = (soseparator_storage*) tls;
@@ -295,9 +291,6 @@ public:
       ptr->glcachelist->invalidateAll();
     }
   }
-#else // COIN_THREADSAFE
-  SoGLCacheList * glcachelist;
-#endif // !COIN_THREADSAFE
 
   enum { YES, NO, MAYBE } hassoundchild;
 
@@ -305,13 +298,7 @@ public:
   SoGLCacheList * getGLCacheList(SbBool createifnull);
 
   void invalidateGLCaches(void) {
-#ifdef COIN_THREADSAFE
     glcachestorage->applyToAll(invalidate_gl_cache, NULL);
-#else // COIN_THREADSAFE
-    if (this->glcachelist) {
-      this->glcachelist->invalidateAll();
-    }
-#endif // !COIN_THREADSAFE
   }
 
   void lock(void) {
@@ -326,7 +313,6 @@ public:
   }
 };
 
-#ifdef COIN_THREADSAFE
 SoGLCacheList *
 SoSeparatorP::getGLCacheList(SbBool createifnull)
 {
@@ -337,16 +323,6 @@ SoSeparatorP::getGLCacheList(SbBool createifnull)
   }
   return ptr->glcachelist;
 }
-#else // COIN_THREADSAFE
-SoGLCacheList *
-SoSeparatorP::getGLCacheList(SbBool createifnull)
-{
-  if (createifnull && this->glcachelist == NULL) {
-    this->glcachelist = new SoGLCacheList(SoSeparator::getNumRenderCaches());
-  }
-  return this->glcachelist;
-}
-#endif // !COIN_THREADSAFE
 
 // *************************************************************************
 

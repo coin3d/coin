@@ -21,33 +21,6 @@
  *
 \**************************************************************************/
 
-#include <Inventor/nodes/SoTextureCoordinateCube.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
-#include <Inventor/elements/SoTextureUnitElement.h>
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoPickAction.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/nodes/SoShape.h>
-#include <Inventor/SbBox3f.h>
-#include <Inventor/SoFullPath.h>
-#include <Inventor/caches/SoBoundingBoxCache.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/C/glue/gl.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG
-
-#ifdef COIN_THREADSAFE
-#include <Inventor/threads/SbStorage.h>
-#endif // COIN_THREADSAFE
-
-
 /*!
   \class SoTextureCoordinateCube include/Inventor/nodes/SoTextureCoordinateCube.h
   \brief The SoTextureCoordinateCube class autogenerates cubemapped texture coordinated for shapes.
@@ -57,6 +30,32 @@
 */
 // FIXME: Add a better class description (20040123 handegar)
 
+// *************************************************************************
+
+#include <Inventor/nodes/SoTextureCoordinateCube.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG
+
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/SbBox3f.h>
+#include <Inventor/SoFullPath.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoPickAction.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoTextureUnitElement.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoShape.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/threads/SbStorage.h>
+
+// *************************************************************************
 
 typedef struct {
   SbVec3f origo;
@@ -80,7 +79,11 @@ so_texcoordcube_destruct_data(void * closure)
 {
 }
 
+// *************************************************************************
+
 SO_NODE_SOURCE(SoTextureCoordinateCube);
+
+// *************************************************************************
 
 class SoTextureCoordinateCubeP {
 
@@ -92,26 +95,17 @@ public:
 
   so_texcoordcube_data * so_texcoord_get_data() {
     so_texcoordcube_data * data = NULL;
-#ifdef COIN_THREADSAFE
     data = (so_texcoordcube_data *) this->so_texcoord_storage->get();
     assert(data && "Error retrieving thread data.");
-#else // COIN_THREADSAFE
-    data = this->so_texcoord_single_data;
-#endif // ! COIN_THREADSAFE
     return data;
   }
 
-#ifdef COIN_THREADSAFE
   SbStorage * so_texcoord_storage;
-#else // COIN_THREADSAFE
-  so_texcoordcube_data * so_texcoord_single_data;
-#endif // ! COIN_THREADSAFE
 
 private:
   SoTextureCoordinateCube * master;
 
 };
-
 
 static const SbVec4f & textureCoordinateCubeCallback(void * userdata, const SbVec3f & point, const SbVec3f & normal);
 
@@ -120,6 +114,7 @@ static const SbVec4f & textureCoordinateCubeCallback(void * userdata, const SbVe
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->master)
 
+// *************************************************************************
 
 /*!
   Constructor.
@@ -129,14 +124,9 @@ SoTextureCoordinateCube::SoTextureCoordinateCube(void)
   PRIVATE(this) = new SoTextureCoordinateCubeP(this);
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCoordinateCube);
 
-#ifdef COIN_THREADSAFE
   pimpl->so_texcoord_storage = new SbStorage(sizeof(so_texcoordcube_data),
                                              so_texcoordcube_construct_data,
                                              so_texcoordcube_destruct_data);
-#else // COIN_THREADSAFE
-  pimpl->so_texcoord_single_data = new so_texcoordcube_data;
-  so_texcoordcube_construct_data((void*) pimpl->so_texcoord_single_data);
-#endif // COIN_THREADSAFE
 }
 
 /*!
@@ -144,11 +134,7 @@ SoTextureCoordinateCube::SoTextureCoordinateCube(void)
 */
 SoTextureCoordinateCube::~SoTextureCoordinateCube()
 {
-#ifdef COIN_THREADSAFE
   delete pimpl->so_texcoord_storage;
-#else // COIN_THREADSAFE
-  delete pimpl->so_texcoord_single_data;
-#endif // COIN_THREADSAFE
   delete PRIVATE(this);
 }
 
@@ -162,7 +148,6 @@ SoTextureCoordinateCube::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
   SO_ENABLE(SoCallbackAction, SoTextureCoordinateElement);
   SO_ENABLE(SoPickAction, SoTextureCoordinateElement);
-
 }
 
 const SbVec4f &
