@@ -1261,6 +1261,14 @@ SoField::notify(SoNotList * nlist)
   // before/after progagating the notification.
   if (this->getStatus(FLAG_ISNOTIFIED)) return;
 
+  // needed because of the So[SF|MF]Node fields. When a node inside
+  // such a field is changed we must mark the field as not default so
+  // that SoWriteAction will export it. We can safely call
+  // setDefault(FALSE) for other field types as well, since the only
+  // other reason for entering here is if the field is connected from
+  // an engine output or from another field.
+  this->setDefault(FALSE);
+
 #if COIN_DEBUG && 0 // debug
   if (this != SoDB::getGlobalField("realTime")) {
     SoDebugError::postInfo("SoField::notify", "%p (%s (%s '%s')) -- start",
