@@ -259,11 +259,15 @@ if test x"$sourcefile" = x""; then :; else
   echo "" >>"$studiofile"
   sourcefile=`CYGWIN= cygpath -w "$sourcefile" 2>/dev/null || echo "$sourcefile"`
   echo "SOURCE=$sourcefile" >>"$studiofile"
-  targetdir=`echo "$sourcefile" | sed -e "s/[^\]*\.cpp//"`
+  sourcefileunixname=`CYGWIN= cygpath -u "$sourcefile"`
+  sourcefiledir=`dirname "$sourcefileunixname"`
+  sourcefiledirdir=`dirname "$sourcefiledir"`
+  targetdir=`echo $sourcefiledir | sed "s%^$sourcefiledirdir%%" | sed s%/%%g`
+  targetdir=`CYGWIN= cygpath -w "$targetdir"`
   echo '!IF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 Release"' >>"$studiofile"
-  echo "# PROP Intermediate_Dir \"replaceme_releasedir/$targetdir\"" >>"$studiofile"
+  echo "# PROP Intermediate_Dir \"Release\\$targetdir\"" >>"$studiofile"
   echo '!ELSEIF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 Debug"' >>"$studiofile"
-  echo "# PROP Intermediate_Dir \"replaceme_debugdir/$targetdir\"" >>"$studiofile"
+  echo "# PROP Intermediate_Dir \"Debug\\$targetdir\"" >>"$studiofile"
   echo '!ENDIF ' >>"$studiofile"
 
   echo "# End Source File" >>"$studiofile"
@@ -372,16 +376,11 @@ case "$outputfile" in
   # build files are going to be installed...
   # The first two rules are for individual source files, the next two are for
   # the include directive settings.
-  # The next four rules are for target directories
 
   sed -e "s%^SOURCE=.:.*\\(${Library}-[0-9]\\.[^/\\\\]*\\)%SOURCE=..\\\\source\\\\\\1%" \
       -e 's%^SOURCE=.:.*build-files%SOURCE=.%' \
       -e "s%.:[^ ]*\\(${Library}-[0-9]\\.[^/\\\\\"]*\\)%..\\\\source\\\\\\1%" \
       -e 's%.:[^ ]*build-files\([^"]*\)%.\1%g' \
-      -e 's%replaceme_debugdir/\.\\%Debug\\%g' \
-      -e 's%replaceme_releasedir/\.\\%Release\\%g' \
-      -e 's%replaceme_debugdir/\.\.\\%Debug\\%g' \
-      -e 's%replaceme_releasedir/\.\.\\%Release\\%g' \
       <"$studiofile.in" >"$studiofile.txt2"
 
   sourcedirregexp=`echo "$sourcedir" | sed -e 's%\\\\%\\\\\\\\%g'`
