@@ -217,7 +217,7 @@ static void
 fontstruct_rmglyph(struct cc_flw_font * fs, unsigned int glyph)
 {
   struct cc_flw_glyph * gs = flw_glyphidx2glyphptr(fs, glyph);
-  if (gs->bitmap) { // might be NULL for 3D fonts
+  if (gs->bitmap) { /* might be NULL for 3D fonts */
     /* workaround so that flw_done_bitmap() doesn't free our static data */
     if (gs->fromdefaultfont) gs->bitmap->buffer = NULL;
     flw_done_bitmap(gs->bitmap);
