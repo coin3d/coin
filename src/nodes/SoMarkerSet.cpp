@@ -1259,7 +1259,7 @@ swap_leftright(unsigned char *data, int width, int height)
   unsigned char t;
 
   int y;
-  int linewidth = (int)ceil((double) (width / 8));
+  int linewidth = (width + 7) / 8;
   for (y=0; y<height; y++) {
     for (int x=0; x < (int) floor((double)(linewidth/2)); x++) {
       int tmp = data[y*linewidth+x];
@@ -1286,7 +1286,7 @@ swap_leftright(unsigned char *data, int width, int height)
 static void
 swap_updown(unsigned char *data, int width, int height)
 {
-  int linewidth = (int)ceil((double)(width / 8));
+  int linewidth = (width + 7) / 8;
   for (int y = 0; y < (height>>1); y++) {
     for (int x = 0; x < linewidth; x++) {
       int tmp = data[y*linewidth+x];
@@ -1331,7 +1331,8 @@ SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
   temp->width = size[0];
   temp->height = size[1];
   temp->align = 1;
-  int datasize = (int)ceil((double)(size[0] / 8)) * size[1];
+
+  int datasize = ((size[0] + 7) / 8) * size[1];
   if (temp->deletedata) delete temp->data;
   temp->deletedata = true;
   temp->data = new unsigned char[ datasize ];
