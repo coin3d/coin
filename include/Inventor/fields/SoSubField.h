@@ -258,7 +258,7 @@ public: \
 
 #define SO_MFIELD_SETVALUESPOINTER_HEADER(_valtype_) \
   void setValuesPointer(const int num, const _valtype_ * userdata); \
-  void setValuesPointer(const int num, _valtype_ * userdata);
+  void setValuesPointer(const int num, _valtype_ * userdata)
 
    
 /**************************************************************************
