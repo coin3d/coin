@@ -25,10 +25,11 @@
   This switch node cycles its children SoBlinker::speed number of
   times per second. If the node has only one child, it will be cycled
   on and off. Cycling can be turned off using the SoBlinker::on
-  field, and the node then behaves like a normal SoSwitch node.  
+  field, and the node then behaves like a normal SoSwitch node.
 */
 
 #include <Inventor/nodes/SoBlinker.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/engines/SoTimeCounter.h>
@@ -59,7 +60,7 @@ SoBlinker::SoBlinker()
 
   SO_NODE_ADD_FIELD(speed, (1));
   SO_NODE_ADD_FIELD(on, (TRUE));
-  
+
   // OneShot sensors needed to avoid recursive notify
   this->childrenSensor = new SoOneShotSensor(SoBlinker::childrenCB, this);
   this->whichSensor = new SoOneShotSensor(SoBlinker::whichCB, this);
@@ -113,7 +114,7 @@ SoBlinker::write(SoWriteAction *action)
 /*!
   Overloaded to detect field/children changes.
 */
-void 
+void
 SoBlinker::notify(SoNotList *list)
 {
   SoField *f = list->getLastField();
@@ -125,7 +126,7 @@ SoBlinker::notify(SoNotList *list)
 }
 
 // sets the counter min/max values
-void 
+void
 SoBlinker::setCounterLimits(void)
 {
   int lastchild = this->getChildren()->getLength() - 1;
@@ -134,20 +135,18 @@ SoBlinker::setCounterLimits(void)
 }
 
 // OneShot callback when children change
-void 
+void
 SoBlinker::childrenCB(void *d, SoSensor *s)
 {
   ((SoBlinker*)d)->setCounterLimits();
 }
 
 // OneShot callback when whichChild is manually set
-void 
+void
 SoBlinker::whichCB(void *d, SoSensor *s)
 {
-  SoBlinker *thisp = (SoBlinker*)d;  
+  SoBlinker *thisp = (SoBlinker*)d;
   thisp->counter->reset.setValue(thisp->whichChild.getValue());
   thisp->whichChild.touch(); // notify scene graph
   thisp->whichChild.setDirty(TRUE); // force engine to evaluate
 }
-
-

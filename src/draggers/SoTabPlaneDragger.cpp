@@ -21,12 +21,13 @@
   \class SoTabPlaneDragger SoTabPlaneDragger.h Inventor/draggers/SoTabPlaneDragger.h
   \brief The SoTabPlaneDragger class is a dragger you can translate and scale within a plane.
   \ingroup draggers
-  
+
   FIXME: write class doc
 */
 
 
 #include <Inventor/draggers/SoTabPlaneDragger.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoMaterial.h>
@@ -116,12 +117,12 @@ SoTabPlaneDragger::SoTabPlaneDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("tabPlaneDragger.iv", NULL, 0);
   }
-  
+
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
 
   SO_KIT_INIT_INSTANCE();
-  
+
   this->setPartAsDefault("translator", "tabPlaneTranslator");
   this->setPartAsDefault("scaleTabMaterial", "tabPlaneScaleTabMaterial");
   this->setPartAsDefault("scaleTabHints", "tabPlaneScaleTabHints");
@@ -173,7 +174,7 @@ SoTabPlaneDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
   if (onoff) {
     inherited::setUpConnections(onoff, doitalways);
-    
+
     SoTabPlaneDragger::fieldSensorCB(this, NULL);
 
     if (this->translFieldSensor->getAttachedField() != &this->translation) {
@@ -235,7 +236,7 @@ SoTabPlaneDragger::valueChangedCB(void *, SoDragger * d)
 
 /*!
   Adjusts tabs and renders dragger geometry.
-*/ 
+*/
 void
 SoTabPlaneDragger::GLRender(SoGLRenderAction * action)
 {
@@ -268,7 +269,7 @@ SoTabPlaneDragger::adjustScaleTabSize(void)
   the current viewport, the current model matrix and the current scale
   factor. If \a action == \e NULL, a default size will be used.
 */
-void 
+void
 SoTabPlaneDragger::reallyAdjustScaleTabSize(SoGLRenderAction *action)
 {
   int i;
@@ -284,9 +285,9 @@ SoTabPlaneDragger::reallyAdjustScaleTabSize(SoGLRenderAction *action)
     const SbViewportRegion &vp = SoViewportRegionElement::get(state);
     SbVec3f center(0.0f, 0.0f, 0.0f);
     toworld.multVecMatrix(center, center);
-    sizex = sizey = 
+    sizex = sizey =
       vv.getWorldToScreenScale(center, TABSIZE/float(vp.getViewportSizePixels()[0]));
-    
+
     SbVec3f scale;
     {
       SbRotation r, so;
@@ -296,7 +297,7 @@ SoTabPlaneDragger::reallyAdjustScaleTabSize(SoGLRenderAction *action)
     sizex /= scale[0];
     sizey /= scale[1];
   }
-  
+
   if (sizex == this->prevsizex && this->prevsizey == sizey) return;
   this->prevsizex = sizex;
   this->prevsizey = sizey;
@@ -368,9 +369,9 @@ SoTabPlaneDragger::dragStart(void)
 
   SbBool found = FALSE;
   SbVec3f startpt = this->getLocalStartingPoint();
-  
+
   this->constraintState = CONSTRAINT_OFF;
-  
+
   SbString str;
   if (!found) {
     for (i = 0; i < 4; i++) {
@@ -425,16 +426,16 @@ SoTabPlaneDragger::drag(void)
     this->lineProj->setViewVolume(this->getViewVolume());
     this->lineProj->setWorkingSpace(this->getLocalToWorldMatrix());
     SbVec3f projpt = this->lineProj->project(this->getNormalizedLocaterPosition());
-    
+
     SbVec3f center = this->scaleCenter;
-    
+
     float orglen = (startpt-center).length();
     float currlen = (projpt-center).length();
     float scale = 0.0f;
-    
+
     if (orglen > 0.0f) scale = currlen / orglen;
     if (scale > 0.0f && (startpt-center).dot(projpt-center) <= 0.0f) scale = 0.0f;
-    
+
     SbVec3f scalevec(scale, scale, 1.0f);
     if (this->constraintState == CONSTRAINT_X) {
       scalevec[1] = 1.0f;
@@ -445,14 +446,14 @@ SoTabPlaneDragger::drag(void)
     this->setMotionMatrix(this->appendScale(this->getStartMotionMatrix(),
                                             scalevec,
                                             center));
-    
+
   }
   else { // translate
-    SbVec3f startpt = this->getLocalStartingPoint();  
+    SbVec3f startpt = this->getLocalStartingPoint();
     this->planeProj->setViewVolume(this->getViewVolume());
     this->planeProj->setWorkingSpace(this->getLocalToWorldMatrix());
     SbVec3f projpt = this->planeProj->project(this->getNormalizedLocaterPosition());
-    
+
     const SoEvent *event = this->getEvent();
     SbBool reset = FALSE;
     if (event->wasShiftDown() && this->constraintState == CONSTRAINT_OFF) {
@@ -547,7 +548,7 @@ SoTabPlaneDragger::metaKeyChangeCB(void *, SoDragger * d)
   SoTabPlaneDragger *thisp = (SoTabPlaneDragger*)d;
   if (!thisp->isActive.getValue()) return;
   if (!thisp->whatkind == WHATKIND_TRANSLATE) return;
-  
+
   const SoEvent *event = thisp->getEvent();
   if (event->wasShiftDown() && thisp->constraintState == CONSTRAINT_OFF) {
     thisp->drag();
@@ -562,12 +563,12 @@ SoTabPlaneDragger::metaKeyChangeCB(void *, SoDragger * d)
 // this method is not as naughty as it sounds :-) It simply creates the parts
 // it is not possible to configure through the dragger defaults file.
 //
-void 
+void
 SoTabPlaneDragger::createPrivateParts(void)
-{  
+{
   SoMaterialBinding *mb = SO_GET_ANY_PART(this, "scaleTabMaterialBinding", SoMaterialBinding);
   mb->value = SoMaterialBinding::OVERALL;
-  
+
   SoNormalBinding *nb = SO_GET_ANY_PART(this, "scaleTabNormalBinding", SoNormalBinding);
   nb->value = SoNormalBinding::OVERALL;
 
@@ -579,9 +580,9 @@ SoTabPlaneDragger::createPrivateParts(void)
   int idx = 0;
   int i, j;
   int32_t *ptr;
-  
+
   for (i = 0; i < 8; i++) {
-    if (i == 0 || i == 4) idx = 0; 
+    if (i == 0 || i == 4) idx = 0;
     if (i < 4)
       str.sprintf("edgeScaleTab%d", i);
     else
@@ -598,7 +599,7 @@ SoTabPlaneDragger::createPrivateParts(void)
     fs->materialIndex.setValue(0);
   }
 
-  // turn off render caching since the geometry below this node might 
+  // turn off render caching since the geometry below this node might
   // change very often.
   SoSeparator *sep = SO_GET_ANY_PART(this, "scaleTabs", SoSeparator);
   sep->renderCaching = SoSeparator::OFF;
@@ -616,4 +617,3 @@ SoTabPlaneDragger::getNodeFieldNode(const char *fieldname)
   assert(((SoSFNode*)field)->getValue() != NULL);
   return ((SoSFNode*)field)->getValue();
 }
-

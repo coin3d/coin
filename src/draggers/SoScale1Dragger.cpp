@@ -18,6 +18,7 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoScale1Dragger.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/SbRotation.h>

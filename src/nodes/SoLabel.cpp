@@ -30,6 +30,7 @@
 */
 
 #include <Inventor/nodes/SoLabel.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 
 /*!

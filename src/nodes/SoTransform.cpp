@@ -33,6 +33,7 @@
 */
 
 #include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>

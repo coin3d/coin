@@ -27,6 +27,7 @@
 */
 
 #include <Inventor/nodes/SoCube.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGLRenderAction.h>

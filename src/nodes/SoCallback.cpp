@@ -32,6 +32,7 @@
 */
 
 #include <Inventor/nodes/SoCallback.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoActions.h> // SoCallback uses all of them.
 
 /*!

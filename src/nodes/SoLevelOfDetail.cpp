@@ -27,6 +27,7 @@
 
 
 #include <Inventor/nodes/SoLevelOfDetail.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoComplexityElement.h>

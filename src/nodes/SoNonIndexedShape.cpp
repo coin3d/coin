@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoNonIndexedShape.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/actions/SoAction.h>
@@ -120,7 +121,7 @@ SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
   center /= float(lastidx + 1 - startidx);
 }
 
-/*!  
+/*!
   Convenience method that might adjust \a start and \a end
   pointers, which should point at the start and end of the numVertices
   array when calling this method. This takes care of the case where
@@ -130,9 +131,9 @@ SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
 
   \a dummyarray should be a temporary array, with room for one integer.
 
-  Not part of the OIV API.  
+  Not part of the OIV API.
 */
-void 
+void
 SoNonIndexedShape::fixNumVerticesPointers(SoState *state, const int32_t *&start, const int32_t *&end,
                                           int32_t *dummyarray) const
 {
@@ -141,7 +142,7 @@ SoNonIndexedShape::fixNumVerticesPointers(SoState *state, const int32_t *&start,
       SoCoordinateElement::getInstance(state);
     SoVertexProperty * vp = (SoVertexProperty *) this->vertexProperty.getValue();
     SbBool vpvtx = vp && (vp->vertex.getNum() > 0);
-    
+
     const int numCoords = vpvtx ?
       vp->vertex.getNum() :
       coordelem->getNum();
@@ -151,4 +152,3 @@ SoNonIndexedShape::fixNumVerticesPointers(SoState *state, const int32_t *&start,
     end = start + 1;
   }
 }
-

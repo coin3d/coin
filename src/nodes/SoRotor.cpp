@@ -29,6 +29,7 @@
 */
 
 #include <Inventor/nodes/SoRotor.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/SbVec3f.h>
@@ -147,7 +148,7 @@ SoRotor::setRotation(void)
   float diffangle = (float)
     (difftime.getValue() *
      ((double)this->speed.getValue()) * M_PI * 2.0);
-  
+
   float angle = this->startangle + diffangle;
 
   if (angle > M_PI * 2.0f) {

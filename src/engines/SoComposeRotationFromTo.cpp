@@ -28,6 +28,7 @@
 #include <Inventor/engines/SoComposeRotationFromTo.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/fields/SoMFRotation.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 SO_ENGINE_SOURCE(SoComposeRotationFromTo);
 
@@ -63,7 +64,7 @@ SoComposeRotationFromTo::evaluate()
   int numFrom = from.getNum();
   int numTo = to.getNum();
   int numOut = SbMax(numFrom, numTo);
-  
+
   SO_ENGINE_OUTPUT(rotation, SoMFRotation, setNum(numOut));
 
   for (int i = 0; i < numOut; i++) {

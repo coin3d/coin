@@ -27,6 +27,7 @@
 */
 
 #include <Inventor/nodes/SoNurbsProfile.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <coindefs.h> // COIN_STUB()
 
 

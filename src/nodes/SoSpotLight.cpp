@@ -33,6 +33,7 @@
 
 
 #include <Inventor/nodes/SoSpotLight.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/SbColor4f.h>
 #include <Inventor/SbVec4f.h>
@@ -151,7 +152,7 @@ SoSpotLight::GLRender(SoGLRenderAction * action)
 
   float cutoff = this->cutOffAngle.getValue() * float(M_PI)/180.0f;
   float dropoff = this->dropOffRate.getValue() * 128.0f;
-  
+
   glLightf(light, GL_SPOT_EXPONENT, dropoff);
   glLightf(light, GL_SPOT_CUTOFF, cutoff);
 }

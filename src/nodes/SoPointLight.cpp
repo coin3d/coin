@@ -30,6 +30,7 @@
 */
 
 #include <Inventor/nodes/SoPointLight.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/SbColor4f.h>
 #include <Inventor/SbVec4f.h>

@@ -14,7 +14,8 @@ ALLSOURCES = \
 	SoSceneKit.cpp SoSceneKit.h \
 	SoSeparatorKit.cpp SoSeparatorKit.h \
 	SoShapeKit.cpp SoShapeKit.h \
-	SoWrapperKit.cpp SoWrapperKit.h
+	SoWrapperKit.cpp SoWrapperKit.h \
+	SoSubKit.h SoSubKitP.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/nodekits/SoSubKit.h \

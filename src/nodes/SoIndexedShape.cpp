@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoIndexedShape.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoCoordinateElement.h>

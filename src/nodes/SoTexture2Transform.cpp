@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoTexture2Transform.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureMatrixElement.h>

@@ -1,6 +1,14 @@
 dnl  This can be any file in the package.
 AC_INIT(src/misc/SoDB.cpp)
 
+dnl  Used for the SoCalculator expression parser.
+dnl AC_PROG_LEX
+dnl AC_PROG_YACC
+dnl FIXME: tmp disabled -- I'm not sure how fond Automake is of the
+dnl mixing and matching of lex and yacc sources, and the pre-generated
+dnl C-files. 20000416 mortene.
+
+
 dnl  Locate C++ compiler and set C++ as the default language to use
 dnl  in tests. The configure script will automatically terminate if
 dnl  it doesn't find a C++ compiler.

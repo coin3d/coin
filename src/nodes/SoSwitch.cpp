@@ -27,6 +27,7 @@
 
 
 #include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/misc/SoChildList.h>
 #include <coindefs.h> // COIN_STUB()
 

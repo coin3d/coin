@@ -29,6 +29,7 @@
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/fields/SoFields.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 SO_ENGINE_SOURCE(SoSelectOne);
 

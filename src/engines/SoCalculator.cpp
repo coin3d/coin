@@ -20,8 +20,9 @@
 
 #include <Inventor/engines/SoCalculator.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include "evaluator.h"
+#include <evaluator.h>
 #include <assert.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

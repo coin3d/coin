@@ -17,16 +17,20 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSUBFIELDPRIVATE_H
-#define COIN_SOSUBFIELDPRIVATE_H
+#ifndef COIN_SOSUBFIELDP_H
+#define COIN_SOSUBFIELDP_H
+
+// The macro definitions in this file is used internally by Coin
+// classes, and mirrors some of the public macros available in
+// SoSubField.h with a few modifications so they are suited for the
+// builtin classes.
+//
+// The macros in this file are not made visible for use by the
+// application programmer.
 
 #ifndef COIN_INTERNAL
 #error Only used during library build.
 #endif // !COIN_INTERNAL
-
-
-// This file contains macros used when building the field classes
-// which should not be visible to the application programmer.
 
 
 #define SO_SFIELD_INTERNAL_INIT_CLASS(_class_) \
@@ -40,4 +44,4 @@
   SO_SFIELD_INTERNAL_INIT_CLASS(_class_)
 
 
-#endif // !COIN_SOSUBFIELDPRIVATE_H
+#endif // !COIN_SOSUBFIELDP_H

@@ -37,6 +37,7 @@
 */
 
 #include <Inventor/nodes/SoText3.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -113,7 +114,7 @@
 */
 /*!
   \var SoSFEnum SoText3::justification
-  Horizontal justification. 
+  Horizontal justification.
 */
 /*!
   \var SoSFBitMask SoText3::parts
@@ -154,7 +155,7 @@ SoText3::SoText3(void)
   SO_NODE_DEFINE_ENUM_VALUE(Part, BACK);
   SO_NODE_DEFINE_ENUM_VALUE(Part, ALL);
   SO_NODE_SET_SF_ENUM_TYPE(parts, Part);
-  
+
   this->stringsensor = new SoFieldSensor(SoText3::fieldSensorCB, this);
   this->stringsensor->attach(&this->string);
 
@@ -195,10 +196,10 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     float tmp = this->widths[i];
     if (tmp > maxw) maxw = tmp;
   }
-  
+
   float maxy = size * 0.7f; // this is an approximation
   float miny = maxy - (size + (n-1) * size * this->spacing.getValue());
-  
+
   float minx, maxx;
   switch (this->justification.getValue()) {
   case SoText3::LEFT:
@@ -255,7 +256,7 @@ SoText3::GLRender(SoGLRenderAction * action)
     SoMaterialBindingElement::get(state);
 
   SbBool matperpart = binding != SoMaterialBindingElement::OVERALL;
-  
+
   unsigned int parts = this->parts.getValue();
 
   SoMaterialBundle mb(action);
@@ -308,10 +309,10 @@ void
 SoText3::generatePrimitives(SoAction * action)
 {
   this->setUpGlyphs(action->getState());
-    
+
   unsigned int parts = this->parts.getValue();
   unsigned int prts = this->parts.getValue();
-  
+
   if (prts & SoText3::FRONT) {
     this->generate(action, SoText3::FRONT);
   }
@@ -324,14 +325,14 @@ SoText3::generatePrimitives(SoAction * action)
 }
 
 // doc in parent
-SbBool 
+SbBool
 SoText3::willSetShapeHints(void) const
 {
   return TRUE;
 }
 
 // doc in parent
-SbBool 
+SbBool
 SoText3::willUpdateNormalizeElement(SoState *) const
 {
   return TRUE;
@@ -352,14 +353,14 @@ SoText3::createTriangleDetail(SoRayPickAction * action,
 
 
 // recalculate glyphs
-void 
+void
 SoText3::setUpGlyphs(SoState * state)
 {
   if (!this->needsetup) return;
   this->needsetup = FALSE;
 
   // store old glyphs to avoid freeing glyphs too soon
-  SbList <const SoGlyph *> oldglyphs; 
+  SbList <const SoGlyph *> oldglyphs;
   int i;
   int n = this->glyphs.getLength();
   for (i = 0; i < n; i++) {
@@ -389,20 +390,20 @@ SoText3::setUpGlyphs(SoState * state)
 }
 
 // render text geometry
-void 
+void
 SoText3::render(SoState * state, unsigned int part)
 {
   float size = SoFontSizeElement::get(state);
   SbBool doTextures = SoGLTextureEnabledElement::get(state);
 
   int i, n = this->widths.getLength();
-  
-  if (part == SoText3::SIDES) glBegin(GL_QUADS); 
+
+  if (part == SoText3::SIDES) glBegin(GL_QUADS);
   else {
     glBegin(GL_TRIANGLES);
     if (part == SoText3::FRONT)
       glNormal3f(0.0f, 0.0f, 1.0f);
-    else 
+    else
       glNormal3f(0.0f, 0.0f, -1.0f);
   }
 
@@ -421,13 +422,13 @@ SoText3::render(SoState * state, unsigned int part)
     }
 
     const char * str = this->string[i].getString();
-    
+
     while (*str++) {
       const SoGlyph * glyph = this->glyphs[glyphidx++];
       const SbVec2f * coords = glyph->getCoords();
       if (part != SoText3::SIDES) {
         const int * ptr = glyph->getFaceIndices();
-        while (*ptr >= 0) {          
+        while (*ptr >= 0) {
           SbVec2f v0, v1, v2;
           float zval;
           if (part == SoText3::FRONT) {
@@ -450,7 +451,7 @@ SoText3::render(SoState * state, unsigned int part)
       else { // SIDES
         const int * ptr = glyph->getEdgeIndices();
         SbVec2f v0, v1;
-        while (*ptr >= 0) {          
+        while (*ptr >= 0) {
           v0 = coords[*ptr++];
           v1 = coords[*ptr++];
           SbVec3f tmp(v1[0]-v0[0], v1[1] - v0[1], 0.0f);
@@ -475,13 +476,13 @@ SoText3::render(SoState * state, unsigned int part)
 }
 
 // generate text geometry
-void 
+void
 SoText3::generate(SoAction * action, unsigned int part)
 {
   float size = SoFontSizeElement::get(action->getState());
-  
+
   int i, n = this->widths.getLength();
-  
+
   int matidx = 0;
   if (part == SoText3::SIDES) matidx = 1;
   else if (part == SoText3::BACK) matidx = 2;
@@ -492,7 +493,7 @@ SoText3::generate(SoAction * action, unsigned int part)
   vertex.setDetail(&detail);
   vertex.setMaterialIndex(matidx);
 
-  if (part == SoText3::SIDES) this->beginShape(action, SoShape::QUADS, NULL); 
+  if (part == SoText3::SIDES) this->beginShape(action, SoShape::QUADS, NULL);
   else {
     this->beginShape(action, SoShape::TRIANGLES, NULL);
     if (part == SoText3::FRONT) {
@@ -502,7 +503,7 @@ SoText3::generate(SoAction * action, unsigned int part)
       vertex.setNormal(SbVec3f(0.0f, 0.0f, -1.0f));
     }
   }
-    
+
   int glyphidx = 0;
   float ypos = 0.0f;
 
@@ -519,7 +520,7 @@ SoText3::generate(SoAction * action, unsigned int part)
     }
 
     const char * str = this->string[i].getString();
-    
+
     int charidx = 0;
 
     while (*str++) {
@@ -528,7 +529,7 @@ SoText3::generate(SoAction * action, unsigned int part)
       const SbVec2f * coords = glyph->getCoords();
       if (part != SoText3::SIDES) {
         const int * ptr = glyph->getFaceIndices();
-        while (*ptr >= 0) {          
+        while (*ptr >= 0) {
           SbVec2f v0, v1, v2;
           float zval;
           if (part == SoText3::FRONT) {
@@ -554,7 +555,7 @@ SoText3::generate(SoAction * action, unsigned int part)
       else { // SIDES
         const int * ptr = glyph->getEdgeIndices();
         SbVec2f v0, v1;
-        while (*ptr >= 0) {          
+        while (*ptr >= 0) {
           v0 = coords[*ptr++];
           v1 = coords[*ptr++];
           SbVec3f tmp(v1[0]-v0[0], v1[1] - v0[1], 0.0f);
@@ -582,12 +583,10 @@ SoText3::generate(SoAction * action, unsigned int part)
   this->endShape();
 }
 
-// called whenever SoText3::string is edited 
-void 
+// called whenever SoText3::string is edited
+void
 SoText3::fieldSensorCB(void * d, SoSensor *)
 {
   SoText3 * thisp = (SoText3 *)d;
   thisp->needsetup = TRUE;
 }
-
-

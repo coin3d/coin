@@ -30,6 +30,7 @@
 */
 
 #include <Inventor/nodes/SoShuttle.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/engines/SoCalculator.h>
 #include <Inventor/engines/SoElapsedTime.h>
 #include <Inventor/engines/SoInterpolateVec3f.h>

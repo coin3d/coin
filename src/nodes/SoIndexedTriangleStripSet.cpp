@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoIndexedTriangleStripSet.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <coindefs.h> // COIN_STUB()
 
 #include <Inventor/errors/SoDebugError.h>

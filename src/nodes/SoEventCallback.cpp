@@ -27,6 +27,7 @@
 */
 
 #include <Inventor/nodes/SoEventCallback.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/SoPath.h>
@@ -268,7 +269,7 @@ SoEventCallback::handleEvent(SoHandleEventAction * action)
   this->heaction = action;
 
   SoType eventtype = this->heaction->getEvent()->getTypeId();
-  
+
   // Invoke callbacks.
   for (int i = 0; i < this->callbacks.getLength(); i++) {
     if (eventtype.isDerivedFrom(this->callbacks[i].eventtype)) {

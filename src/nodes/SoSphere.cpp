@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoSphere.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SbSphere.h>
 
 #include <Inventor/bundles/SoMaterialBundle.h>

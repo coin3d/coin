@@ -29,6 +29,7 @@
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoMFRotation.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 SO_ENGINE_SOURCE(SoDecomposeMatrix);
 

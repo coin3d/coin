@@ -32,6 +32,7 @@
 */
 
 #include <Inventor/nodes/SoInfo.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 /*!
   \var SoSFString SoInfo::string

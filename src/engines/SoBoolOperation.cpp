@@ -27,6 +27,7 @@
 
 #include <Inventor/engines/SoBoolOperation.h>
 #include <Inventor/lists/SoEngineOutputList.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -45,11 +46,11 @@ SoBoolOperation::SoBoolOperation()
   SO_ENGINE_ADD_INPUT(b,(FALSE));
   SO_ENGINE_ADD_INPUT(operation,(SoBoolOperation::A));
 
-  SO_ENGINE_DEFINE_ENUM_VALUE(Operation, CLEAR); 
+  SO_ENGINE_DEFINE_ENUM_VALUE(Operation, CLEAR);
   SO_ENGINE_DEFINE_ENUM_VALUE(Operation, SET);
   SO_ENGINE_DEFINE_ENUM_VALUE(Operation, A);
   SO_ENGINE_DEFINE_ENUM_VALUE(Operation, NOT_A);
-  SO_ENGINE_DEFINE_ENUM_VALUE(Operation, B); 
+  SO_ENGINE_DEFINE_ENUM_VALUE(Operation, B);
   SO_ENGINE_DEFINE_ENUM_VALUE(Operation, NOT_B);
   SO_ENGINE_DEFINE_ENUM_VALUE(Operation, A_OR_B);
   SO_ENGINE_DEFINE_ENUM_VALUE(Operation, NOT_A_OR_B);
@@ -57,9 +58,9 @@ SoBoolOperation::SoBoolOperation()
   SO_ENGINE_DEFINE_ENUM_VALUE(Operation, NOT_A_OR_NOT_B);
   SO_ENGINE_DEFINE_ENUM_VALUE(Operation, A_AND_B);
   SO_ENGINE_DEFINE_ENUM_VALUE(Operation, NOT_A_AND_B);
-  SO_ENGINE_DEFINE_ENUM_VALUE(Operation, A_AND_NOT_B); 
+  SO_ENGINE_DEFINE_ENUM_VALUE(Operation, A_AND_NOT_B);
   SO_ENGINE_DEFINE_ENUM_VALUE(Operation, NOT_A_AND_NOT_B);
-  SO_ENGINE_DEFINE_ENUM_VALUE(Operation, A_EQUALS_B); 
+  SO_ENGINE_DEFINE_ENUM_VALUE(Operation, A_EQUALS_B);
   SO_ENGINE_DEFINE_ENUM_VALUE(Operation, A_NOT_EQUALS_B);
 
   SO_ENGINE_ADD_OUTPUT(output, SoMFBool);
@@ -90,7 +91,7 @@ SoBoolOperation::evaluate()
   int numOp = this->operation.getNum();
 
   int numOut = SbMax(SbMax(numA, numB), numOp);
-  
+
   SO_ENGINE_OUTPUT(output,SoMFBool,setNum(numOut));
   SO_ENGINE_OUTPUT(inverse,SoMFBool,setNum(numOut));
 
@@ -156,7 +157,7 @@ SoBoolOperation::evaluate()
       val = TRUE; // avoid compiler warning
       break;
     }
-    
+
     SO_ENGINE_OUTPUT(output, SoMFBool, set1Value(i, val));
     SO_ENGINE_OUTPUT(inverse, SoMFBool, set1Value(i, !val));
   }

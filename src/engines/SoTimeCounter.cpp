@@ -30,12 +30,12 @@
   Running time. Connected to the \e realTime field by default.
 */
 
-/*! 
+/*!
   \var SoSFShort SoTimeCounter::min
   Minimum counter value.
 */
 
-/*!  
+/*!
   \var SoSFShort SoTimeCounter::max
   Maximum counter value.
 */
@@ -45,7 +45,7 @@
   Counter step.
 */
 
-/*!  
+/*!
   \var SoSFBool SoTimeCounter::on
   Set to \e OFF to pause the counter.
 */
@@ -55,27 +55,27 @@
   Number of cycles per second.
 */
 
-/*!  
+/*!
   \var SoMFFloat SoTimeCounter::duty
   Used to weight step times. Supply one weight value per step.
 */
 
-/*! 
+/*!
   \var SoSFShort SoTimeCounter::reset
   Manually set the counter value to some value.
 */
 
-/*!  
+/*!
   \var SoSFTrigger SoTimeCounter::syncIn
   Restart counter at the minimum value.
 */
 
-/*!  
+/*!
   \var SoEngineOutput SoTimeCounter::output
   (SoSFShort) The counter value.
 */
 
-/*!  
+/*!
   \var SoEngineOutput SoTimeCounter::syncOut
   (SoSFTrigger) Triggers every cycle start.
 */
@@ -83,6 +83,7 @@
 #include <Inventor/engines/SoTimeCounter.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/SoDB.h>
+#include <Inventor/engines/SoSubEngineP.h>
 #include <coindefs.h>
 
 #if COIN_DEBUG
@@ -97,7 +98,7 @@ SO_ENGINE_SOURCE(SoTimeCounter);
 SoTimeCounter::SoTimeCounter()
 {
   SO_ENGINE_CONSTRUCTOR(SoTimeCounter);
-  
+
   SO_ENGINE_ADD_INPUT(timeIn, (SbTime::zero()));
   SO_ENGINE_ADD_INPUT(min, (0));
   SO_ENGINE_ADD_INPUT(max, (1));
@@ -122,7 +123,7 @@ SoTimeCounter::SoTimeCounter()
   this->stepnum = 0;
   this->prevon = TRUE;
   this->ispaused = FALSE;
-  
+
   this->timeIn.connectFrom(realtime);
 }
 
@@ -157,10 +158,10 @@ SoTimeCounter::inputChanged(SoField *which)
 {
   if (which == &this->timeIn) {
     if (this->ispaused) return;
-    
+
     double currtime = this->timeIn.getValue().getValue();
     double difftime = currtime - this->starttime;
-    
+
     if (difftime > this->cyclelen) {
       this->syncOut.enable(TRUE);
       SO_ENGINE_OUTPUT(syncOut, SoSFTrigger, setValue());
@@ -176,11 +177,11 @@ SoTimeCounter::inputChanged(SoField *which)
       if (this->on.getValue() == FALSE) {
         this->ispaused = TRUE;
         this->output.enable(FALSE);
-        this->pausetimeincycle = 
+        this->pausetimeincycle =
           this->timeIn.getValue().getValue() - this->starttime;
       }
       else {
-        this->starttime = 
+        this->starttime =
           this->timeIn.getValue().getValue() - this->pausetimeincycle;
         this->ispaused = FALSE;
         this->inputChanged(&this->timeIn); // fake it
@@ -198,7 +199,7 @@ SoTimeCounter::inputChanged(SoField *which)
   else if (which == &this->reset) {
     short minval = this->min.getValue();
     short val = SbClamp(this->reset.getValue(),
-                      minval, 
+                      minval,
                       this->max.getValue());
     short offset = val - minval;
     short stepval = this->step.getValue();
@@ -292,12 +293,12 @@ short
 SoTimeCounter::findOutputValue(double timeincycle) const
 {
   assert(timeincycle <= cyclelen);
-  
+
   short val;
   short minval = this->min.getValue();
   short maxval = this->max.getValue();
   short stepval = this->step.getValue();
-  
+
   if (this->dutylimits.getLength()) {
     // FIXME: use binary search if > 64 or something values
     int i = 0;

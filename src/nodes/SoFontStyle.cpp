@@ -38,6 +38,7 @@
  */
 
 #include <Inventor/nodes/SoFontStyle.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>

@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoQuadMesh.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/misc/SoState.h>

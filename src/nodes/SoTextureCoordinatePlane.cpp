@@ -29,6 +29,7 @@
 */
 
 #include <Inventor/nodes/SoTextureCoordinatePlane.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
@@ -43,7 +44,7 @@
 */
 /*!
   \var SoSFVec3f SoTextureCoordinatePlane::directionT
-  The T texture coordinate plane direction. 
+  The T texture coordinate plane direction.
 */
 
 // *************************************************************************
@@ -81,9 +82,9 @@ SoTextureCoordinatePlane::generate(void * userdata,
                                    const SbVec3f &p,
                                    const SbVec3f & /* n */)
 {
-  SoTextureCoordinatePlane *thisp = 
+  SoTextureCoordinatePlane *thisp =
     (SoTextureCoordinatePlane*) userdata;
-  
+
   thisp->gencache.ret.setValue(thisp->gencache.s.dot(p) * thisp->gencache.mul_s,
                                thisp->gencache.t.dot(p) * thisp->gencache.mul_t,
                                0.0f, 1.0f);
@@ -115,8 +116,8 @@ SoTextureCoordinatePlane::GLRender(SoGLRenderAction * action)
   this->gencache.t /= lent;
 
   SoGLTextureCoordinateElement::setTexGen(action->getState(),
-                                          this, 
-                                          SoTextureCoordinatePlane::handleTexgen, 
+                                          this,
+                                          SoTextureCoordinatePlane::handleTexgen,
                                           this);
 }
 

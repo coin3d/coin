@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoImage.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <coindefs.h> // COIN_STUB()
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>

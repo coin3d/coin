@@ -31,6 +31,7 @@
  */
 
 #include <Inventor/nodes/SoAnnoText3.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <coindefs.h> // COIN_STUB()
 
 

@@ -27,6 +27,7 @@
 */
 
 #include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SbSphere.h>
 #include <assert.h>
 
@@ -89,16 +90,16 @@ SoPerspectiveCamera::getViewVolume(float useaspectratio) const
   if (useaspectratio == 0.0f) useaspectratio = this->aspectRatio.getValue();
   else if (useaspectratio < 1.0f) {
     // FIXME: simplify? pederb, 20000402
-    
+
     // use fovx = angle, and calculate fovy again
     float nearval = this->nearDistance.getValue();
     float xsize = nearval * float(tan(angle/2.0f));
     float ysize = xsize / useaspectratio;
-    
+
     // now we can find the new fovy, and mortene owes me a beer, yay! :-)
     angle = 2.0f * float(atan(ysize / nearval));
   }
-  
+
   SbViewVolume volume;
   volume.perspective(angle, useaspectratio,
                      this->nearDistance.getValue(),

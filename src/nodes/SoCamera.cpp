@@ -45,6 +45,7 @@
  */
 
 #include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -335,11 +336,11 @@ SoCamera::handleEvent(SoHandleEventAction * action)
   float aspectratio = vp.getViewportAspectRatio();
   int vpm = this->viewportMapping.getValue();
 
-  SbViewVolume vv = 
+  SbViewVolume vv =
     this->getViewVolume(vpm == ADJUST_CAMERA ? aspectratio : 0.0f);
-  
+
   SbBool adjustvp = FALSE;
-  
+
   switch (vpm) {
   case CROP_VIEWPORT_FILL_FRAME:
   case CROP_VIEWPORT_LINE_FRAME:
@@ -355,8 +356,8 @@ SoCamera::handleEvent(SoHandleEventAction * action)
   }
 
   if (adjustvp) {
-    float cameraratio = this->aspectRatio.getValue(); 
-    if (aspectratio != cameraratio) {      
+    float cameraratio = this->aspectRatio.getValue();
+    if (aspectratio != cameraratio) {
       if (aspectratio < cameraratio) {
         vp.scaleHeight(aspectratio/cameraratio);
       }
@@ -392,10 +393,10 @@ SoCamera::doAction(SoAction * action)
   SbViewportRegion vp = SoViewportRegionElement::get(state);
   float aspectratio = vp.getViewportAspectRatio();
   int vpm = this->viewportMapping.getValue();
-  
-  SbViewVolume vv = 
+
+  SbViewVolume vv =
     this->getViewVolume(vpm == ADJUST_CAMERA ? aspectratio : 0.0f);
-  
+
   SbBool adjustvp = FALSE;
 
   switch (vpm) {
@@ -413,7 +414,7 @@ SoCamera::doAction(SoAction * action)
   }
 
   if (adjustvp) {
-    float cameraratio = this->aspectRatio.getValue(); 
+    float cameraratio = this->aspectRatio.getValue();
     if (aspectratio != cameraratio) {
       SbViewportRegion newvp = vp;
 
@@ -485,20 +486,20 @@ SoCamera::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   SoCamera::doAction(action);
 }
 
-void 
+void
 SoCamera::drawCroppedFrame(SoGLRenderAction *action,
                            const int viewportmapping,
                            const SbViewportRegion & oldvp,
                            const SbViewportRegion & newvp)
 {
   if (viewportmapping == SoCamera::CROP_VIEWPORT_NO_FRAME) return;
-  
+
   if (action->handleTransparency(FALSE))
     return;
 
   SoState *state = action->getState();
   state->push();
-  
+
   if (viewportmapping == SoCamera::CROP_VIEWPORT_LINE_FRAME) {
     SoLineWidthElement::set(state, this, 1.0f);
     const SoGLLineWidthElement * lw = (SoGLLineWidthElement *)
@@ -541,7 +542,7 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
   SbVec2s origin = newvp.getViewportOriginPixels();
   SbVec2s size = newvp.getViewportSizePixels();
   SbVec2s orgsize = oldvp.getViewportSizePixels();
-  
+
   if (size[0] < orgsize[0]) {
     short minpos = origin[0] - 1;
     short maxpos = origin[0] + size[0];
@@ -598,4 +599,3 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
 
   state->pop();
 }
-

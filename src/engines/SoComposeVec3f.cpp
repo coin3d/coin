@@ -27,6 +27,7 @@
 
 #include <Inventor/engines/SoComposeVec3f.h>
 #include <Inventor/lists/SoEngineOutputList.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 SO_ENGINE_SOURCE(SoComposeVec3f);
 

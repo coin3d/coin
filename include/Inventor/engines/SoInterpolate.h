@@ -107,16 +107,6 @@ _class_::initClass(void) \
   SO_ENGINE_INIT_CLASS(_class_, SoInterpolate, "SoInterpolate"); \
 }
 
-#if defined(COIN_INTERNAL)
-#define SO_INTERPOLATE_INTERNAL_INIT_CLASS(_class_) \
- \
-void \
-_class_::initClass(void) \
-{ \
-  SO_ENGINE_INTERNAL_INIT_CLASS(_class_); \
-}
-#endif // COIN_INTERNAL
-
 
 //// End macros //////////////////////////////////////////////////////////
 

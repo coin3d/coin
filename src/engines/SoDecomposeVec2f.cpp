@@ -27,6 +27,7 @@
 
 #include <Inventor/engines/SoDecomposeVec2f.h>
 #include <Inventor/lists/SoEngineOutputList.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 SO_ENGINE_SOURCE(SoDecomposeVec2f);
 

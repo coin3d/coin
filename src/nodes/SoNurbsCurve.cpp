@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoNurbsCurve.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoGLRenderAction.h>
 #ifdef _WIN32

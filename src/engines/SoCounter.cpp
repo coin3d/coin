@@ -40,12 +40,12 @@
   Counter step value.
 */
 
-/*!  
+/*!
   \var SoSFTrigger SoCounter::trigger
   Increment counter (using step).
 */
 
-/*!  
+/*!
   \var SoSFShort SoCounter::reset
   Reset counter to this value. The value will be clamped between min and max,
   and step will be accounted for.
@@ -64,6 +64,7 @@
 
 #include <Inventor/engines/SoCounter.h>
 #include <Inventor/lists/SoEngineOutputList.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 SO_ENGINE_SOURCE(SoCounter);
 

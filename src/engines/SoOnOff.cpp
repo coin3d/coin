@@ -28,6 +28,7 @@
 #include <Inventor/engines/SoOnOff.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/fields/SoSFBool.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 SO_ENGINE_SOURCE(SoOnOff);
 

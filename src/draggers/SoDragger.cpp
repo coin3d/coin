@@ -28,6 +28,7 @@
 */
 
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoCenterballDragger.h>
 #include <Inventor/draggers/SoDirectionalLightDragger.h>
 #include <Inventor/draggers/SoDragPointDragger.h>

@@ -18,6 +18,7 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDirectionalLightDragger.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoDragPointDragger.h>
 #include <Inventor/draggers/SoRotateSphericalDragger.h>
 #include <Inventor/nodes/SoMaterial.h>

@@ -31,6 +31,7 @@
 #include <Inventor/SbString.h>
 #include <Inventor/errors/SoReadError.h>
 #include <assert.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 /*!
   Default constructor. Used when reading engine from file.
@@ -84,9 +85,9 @@ SoGate::initInputOutput(const SoType type)
   this->input = (SoMField *) type.createInstance();
   this->input->setNum(0);
   this->input->setContainer(this);
-  
+
   this->gateInputData->addField(this, "input", this->input);
-  this->gateOutputData->addOutput(this, "output", this->output, type); 
+  this->gateOutputData->addOutput(this, "output", this->output, type);
 }
 
 /*!
@@ -128,7 +129,7 @@ SoGate::inputChanged(SoField *which)
 /*!
   Overloaded to initialize type of gate after reading.
 */
-SbBool 
+SbBool
 SoGate::readInstance(SoInput *in, unsigned short flags)
 {
   this->typeField.setValue(SbName(""));
@@ -165,7 +166,7 @@ SoGate::writeInstance(SoOutput *out)
 /*
  * We cannot use the SO_ENGINE_SOURCE macro, since we need to make
  * an instance of SoFieldData and SoEngineOutputData for every
- * SoGate instance, since the input and output is allocated in the 
+ * SoGate instance, since the input and output is allocated in the
  * constructor. This makes it impossible to inherit this class,
  * but I guess that is the case in OIV too. pederb, 20000331
  */

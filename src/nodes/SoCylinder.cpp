@@ -24,6 +24,7 @@
 */
 
 #include <Inventor/nodes/SoCylinder.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG

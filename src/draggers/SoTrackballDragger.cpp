@@ -18,6 +18,7 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoTrackballDragger.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoSeparator.h>

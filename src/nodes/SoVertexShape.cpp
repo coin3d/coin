@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoVertexShape.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoVertexProperty.h>

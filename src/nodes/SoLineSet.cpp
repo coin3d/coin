@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 
 #include <Inventor/misc/SoState.h>
@@ -335,7 +336,7 @@ SoLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   const int32_t *ptr = this->numVertices.getValues(0);
   const int32_t *end = ptr + this->numVertices.getNum();
   this->fixNumVerticesPointers(action->getState(), ptr, end, dummyarray);
-  
+
   if (action->canApproximateCount()) {
     action->addNumLines(end-ptr);
   }
@@ -397,7 +398,7 @@ SoLineSet::generatePrimitives(SoAction *action)
   const int32_t * ptr = this->numVertices.getValues(0);
   const int32_t * end = ptr + this->numVertices.getNum();
   this->fixNumVerticesPointers(state, ptr, end, dummyarray);
-  
+
   int normnr = 0;
   int matnr = 0;
   int texnr = 0;
@@ -465,4 +466,3 @@ SoLineSet::generatePrimitives(SoAction *action)
   if (this->vertexProperty.getValue())
     state->pop();
 }
-

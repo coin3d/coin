@@ -18,6 +18,7 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoRotateCylindricalDragger.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/projectors/SbCylinderPlaneProjector.h>

@@ -21,11 +21,12 @@
   \class SoJackDragger SoJackDragger.h Inventor/draggers/SoJackDragger.h
   \brief The SoJackDragger class is a dragger you can translate, rotate and scale.
   \ingroup draggers
-  
+
   FIXME: write class doc
 */
 
 #include <Inventor/draggers/SoJackDragger.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoDragPointDragger.h>
 #include <Inventor/draggers/SoRotateSphericalDragger.h>
 #include <Inventor/draggers/SoScaleUniformDragger.h>
@@ -229,7 +230,7 @@ SoJackDragger::invalidateSurroundScaleCB(void * f, SoDragger * d)
 //
 // convenience method that takes care of callbacks before registering child
 //
-void 
+void
 SoJackDragger::addChildDragger(SoDragger *child)
 {
   child->addStartCallback(SoJackDragger::invalidateSurroundScaleCB, this);
@@ -240,7 +241,7 @@ SoJackDragger::addChildDragger(SoDragger *child)
 //
 // convenience method that removes callbacks before unregistering child
 //
-void 
+void
 SoJackDragger::removeChildDragger(const char *childname)
 {
   SoDragger *child = (SoDragger*) this->getAnyPart(childname, FALSE);

@@ -26,7 +26,7 @@
 */
 
 #include <Inventor/fields/SoMFPath.h>
-#include <SoSubFieldPrivate.h>
+#include <Inventor/fields/SoSubFieldP.h>
 #include <coindefs.h> // COIN_STUB()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

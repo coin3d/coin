@@ -21,12 +21,13 @@
   \class SoTransformVec3f SoTransformVec3f.h Inventor/engines/SoTransformVec3f.h
   \brief The SoTransformVec3f class can be used to trasnform 3D vectors by a matrix.
   \ingroup engines
-  
+
   FIXME: doc
 */
 
 #include <Inventor/engines/SoTransformVec3f.h>
 #include <Inventor/lists/SoEngineOutputList.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 
 SO_ENGINE_SOURCE(SoTransformVec3f);
@@ -66,7 +67,7 @@ SoTransformVec3f::evaluate()
   int numMatrix = this->matrix.getNum();
 
   int numOut = SbMax(numVec, numMatrix);
-  
+
   SO_ENGINE_OUTPUT(point, SoMFVec3f, setNum(numOut));
   SO_ENGINE_OUTPUT(direction, SoMFVec3f, setNum(numOut));
   SO_ENGINE_OUTPUT(normalDirection, SoMFVec3f, setNum(numOut));

@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoWWWInline.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/SbColor.h>

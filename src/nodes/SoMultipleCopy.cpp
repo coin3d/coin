@@ -27,6 +27,7 @@
 
 
 #include <Inventor/nodes/SoMultipleCopy.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/misc/SoState.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>

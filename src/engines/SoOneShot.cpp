@@ -30,6 +30,7 @@
 #include <Inventor/SoDB.h>
 
 #include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 
 SO_ENGINE_SOURCE(SoOneShot);

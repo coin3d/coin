@@ -18,6 +18,7 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoTransformerDragger.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoLocateHighlight.h>
 #include <Inventor/nodes/SoRotation.h>

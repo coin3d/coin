@@ -27,6 +27,7 @@
 
 
 #include <Inventor/nodes/SoTextureCoordinate2.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 
 #include <Inventor/actions/SoGLRenderAction.h>

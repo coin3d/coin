@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoIndexedLineSet.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/caches/SoNormalCache.h>

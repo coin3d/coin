@@ -29,6 +29,7 @@
 */
 
 #include <Inventor/nodes/SoPendulum.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/engines/SoCalculator.h>
 #include <Inventor/engines/SoElapsedTime.h>

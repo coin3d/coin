@@ -38,6 +38,7 @@
  */
 
 #include <Inventor/nodekits/SoNodeKitListPart.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/actions/SoSearchAction.h>

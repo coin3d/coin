@@ -95,7 +95,8 @@ ALLSOURCES = \
 	SoViewVolumeElement.cpp SoViewVolumeElement.h \
 	SoViewingMatrixElement.cpp SoViewingMatrixElement.h \
 	SoViewportRegionElement.cpp SoViewportRegionElement.h \
-	SoWindowElement.cpp SoWindowElement.h
+	SoWindowElement.cpp SoWindowElement.h \
+	SoSubElement.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoSubElement.h \

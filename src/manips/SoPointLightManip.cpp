@@ -28,6 +28,7 @@
 */
 
 #include <Inventor/manips/SoPointLightManip.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/draggers/SoPointLightDragger.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>

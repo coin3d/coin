@@ -18,6 +18,7 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoTranslate2Dragger.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
@@ -184,7 +185,7 @@ SoTranslate2Dragger::metaKeyChangeCB(void *, SoDragger *d)
 {
   SoTranslate2Dragger *thisp = (SoTranslate2Dragger*)d;
   if (!thisp->isActive.getValue()) return;
-  
+
   const SoEvent *event = thisp->getEvent();
   if (thisp->constraintState == CONSTRAINT_OFF &&
       event->wasShiftDown()) thisp->drag();
@@ -231,7 +232,7 @@ SoTranslate2Dragger::drag(void)
     this->constraintState = CONSTRAINT_OFF;
   }
 
-  SbVec3f startPt = this->getLocalStartingPoint();    
+  SbVec3f startPt = this->getLocalStartingPoint();
   SbVec3f motion;
   SbVec3f localrestartpt;
 

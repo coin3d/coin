@@ -44,6 +44,7 @@
 */
 
 #include <Inventor/nodes/SoComplexity.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>

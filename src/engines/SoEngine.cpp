@@ -311,14 +311,20 @@ SoEngine::notify(SoNotList * nl)
       int numoutputs = outputs->getNumOutputs();
       int numconnections;
 
+#if COIN_DEBUG && 0 // debug
+      if (this->getTypeId().isDerivedFrom(SoFieldConverter::getClassTypeId()))
+        SoDebugError::postInfo("SoEngine::notify", "numoutputs: %d", numoutputs);
+#endif // debug
+
       for (int i = 0; i < numoutputs; i++) {
         output = outputs->getOutput(this, i);
         if (output->isEnabled()) {
           numconnections = output->getNumConnections();
 #if COIN_DEBUG && 0 // debug
-          SoDebugError::postInfo("SoEngine::notify",
-                                 "numconnections: %d",
-                                 numconnections);
+          if (this->getTypeId().isDerivedFrom(SoFieldConverter::getClassTypeId()))
+            SoDebugError::postInfo("SoEngine::notify",
+                                   "numconnections: %d",
+                                   numconnections);
 #endif // debug
           for (int j = 0; j < numconnections; j++) {
             field = (*output)[j];

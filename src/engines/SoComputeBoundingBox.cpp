@@ -30,6 +30,7 @@
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/SbViewportRegion.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 SO_ENGINE_SOURCE(SoComputeBoundingBox);
 
@@ -39,15 +40,15 @@ SO_ENGINE_SOURCE(SoComputeBoundingBox);
 SoComputeBoundingBox::SoComputeBoundingBox()
 {
   SO_ENGINE_CONSTRUCTOR(SoComputeBoundingBox);
-  
+
   SO_ENGINE_ADD_INPUT(node,(NULL));
   SO_ENGINE_ADD_INPUT(path,(NULL));
-  
+
   SO_ENGINE_ADD_OUTPUT(min, SoSFVec3f);
   SO_ENGINE_ADD_OUTPUT(max, SoSFVec3f);
   SO_ENGINE_ADD_OUTPUT(boxCenter, SoSFVec3f);
   SO_ENGINE_ADD_OUTPUT(objectCenter, SoSFVec3f);
-  
+
   // just set some viewport
   this->bboxaction = new SoGetBoundingBoxAction(SbViewportRegion(100,100));
 }
@@ -80,10 +81,9 @@ SoComputeBoundingBox::evaluate()
   }
   SbBox3f box = this->bboxaction->getBoundingBox();
   const SbVec3f &center = this->bboxaction->getCenter();
-  
+
   SO_ENGINE_OUTPUT(min, SoSFVec3f, setValue(box.getMin()));
   SO_ENGINE_OUTPUT(max, SoSFVec3f, setValue(box.getMax()));
   SO_ENGINE_OUTPUT(boxCenter, SoSFVec3f, setValue(box.getCenter()));
   SO_ENGINE_OUTPUT(objectCenter, SoSFVec3f, setValue(center));
 }
-

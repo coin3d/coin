@@ -41,6 +41,7 @@
 
   \code
       #include <Inventor/elements/SoGLLightIdElement.h>
+#include <Inventor/nodes/SoSubNodeP.h>
       // ...[snip]...
       int nrlights = SoGLLightIdElement::getMaxGLSources();
   \endcode

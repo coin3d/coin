@@ -28,6 +28,7 @@
 */
 
 #include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SbSphere.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

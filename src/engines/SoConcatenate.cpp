@@ -28,6 +28,7 @@
 #include <Inventor/engines/SoConcatenate.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/SbString.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 SO_ENGINE_SOURCE(SoConcatenate);
 

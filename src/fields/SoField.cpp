@@ -1168,6 +1168,10 @@ SoField::connectionStatusChanged(int numconnections)
 /*!
   Returns \c TRUE if this field should not be written into at the
   moment the method is called.
+
+  This method is used internally in Coin during notification and
+  evaluation processes, and should normally not be of interest to the
+  application programmer.
 */
 SbBool
 SoField::isReadOnly(void) const

@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoFaceSet.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <coindefs.h> // COIN_STUB()

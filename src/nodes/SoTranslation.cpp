@@ -27,6 +27,7 @@
 */
 
 #include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>

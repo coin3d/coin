@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <coindefs.h> // COIN_STUB()
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLInterpolator);

@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #ifdef _WIN32

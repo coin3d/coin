@@ -52,7 +52,7 @@ ALLSOURCES = \
 	SoSFVec4f.cpp SoSFVec4f.h \
 	SoSField.cpp SoSField.h \
 	SoGlobalField.cpp SoGlobalField.h \
-	SoSubFieldPrivate.h
+	SoSubField.h SoSubFieldP.h
 
 
 ALLINSTHEADERS = \

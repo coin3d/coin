@@ -18,6 +18,7 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoTransformManip.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
@@ -75,13 +76,13 @@ SoTransformManip::SoTransformManip(void)
 SoTransformManip::~SoTransformManip()
 {
   this->setDragger(NULL);
-  
+
   delete this->rotateFieldSensor;
   delete this->translFieldSensor;
   delete this->scaleFieldSensor;
   delete this->centerFieldSensor;
   delete this->scaleOrientFieldSensor;
-  
+
   delete this->children;
 }
 
@@ -377,11 +378,11 @@ SoTransformManip::valueChangedCB(void * m, SoDragger * dragger)
   SoTransformManip * thisp = (SoTransformManip*)m;
 
   SbMatrix matrix = dragger->getMotionMatrix();
-  
+
   SbVec3f t, s, c = thisp->center.getValue();
   SbRotation r, so;
   matrix.getTransform(t, r, s, so, c);
-  
+
   thisp->attachSensors(FALSE);
   if (thisp->translation.getValue() != t) {
     thisp->translation = t;
@@ -410,7 +411,7 @@ SoTransformManip::fieldSensorCB(void * m, SoSensor *)
   SoTransformManip *thisp = (SoTransformManip*)m;
   SoDragger *dragger = thisp->getDragger();
   if (dragger != NULL) {
-    SbMatrix matrix;    
+    SbMatrix matrix;
     matrix.setTransform(thisp->translation.getValue(),
                         thisp->rotation.getValue(),
                         thisp->scaleFactor.getValue(),
@@ -463,4 +464,3 @@ SoTransformManip::attachSensors(const SbBool onoff)
     this->scaleOrientFieldSensor->detach();
   }
 }
-

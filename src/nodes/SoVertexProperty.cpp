@@ -33,6 +33,7 @@
 //
 
 #include <Inventor/nodes/SoVertexProperty.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -226,9 +227,9 @@ SoVertexProperty::GLRender(SoGLRenderAction * action)
                                      binding == PER_VERTEX ||
                                      binding == PER_VERTEX_INDEXED);
   }
-  if (this->orderedRGBA.getNum() && 
+  if (this->orderedRGBA.getNum() &&
       !materialbindoverride && !this->materialBinding.isIgnored()) {
-    Binding binding = (Binding) this->materialBinding.getValue();  
+    Binding binding = (Binding) this->materialBinding.getValue();
     SoGLShadeModelElement::setMaterial(state,
                                        binding == PER_VERTEX ||
                                        binding == PER_VERTEX_INDEXED);
@@ -250,7 +251,7 @@ SoVertexProperty::doAction(SoAction *action)
         this->transparent = TRUE;
         break;
       }
-    } 
+    }
   }
 
   SoState * state = action->getState();
@@ -272,7 +273,7 @@ SoVertexProperty::doAction(SoAction *action)
                                 this->normalBinding.getValue());
   }
   if (this->orderedRGBA.getNum() > 0
-      && !SoOverrideElement::getDiffuseColorOverride(state)) {    
+      && !SoOverrideElement::getDiffuseColorOverride(state)) {
     SoDiffuseColorElement::set(state, this, this->orderedRGBA.getNum(),
                                this->orderedRGBA.getValues(0),
                                this->transparent);
@@ -321,7 +322,7 @@ SoVertexProperty::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 /*!
   Overloaded to check for transparency when orderedRGBA changes
 */
-void 
+void
 SoVertexProperty::notify(SoNotList *list)
 {
   SoField *f = list->getLastField();

@@ -14,7 +14,8 @@ ALLSOURCES = \
 	SoPickAction.cpp SoPickAction.h \
 	SoRayPickAction.cpp SoRayPickAction.h \
 	SoSearchAction.cpp SoSearchAction.h \
-	SoWriteAction.cpp SoWriteAction.h
+	SoWriteAction.cpp SoWriteAction.h \
+	SoSubAction.h SoSubActionP.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/actions/SoSubAction.h \

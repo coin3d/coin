@@ -21,13 +21,14 @@
   \class SoCenterballDragger SoCenterballDragger.h Inventor/draggers/SoCenterballDragger.h
   \brief The SoCenterballDragger class is a dragger you can rotate and translate.
   \ingroup draggers
-  
-  When translating, instead of modifying the translation part of the motion 
+
+  When translating, instead of modifying the translation part of the motion
   matrix, a \e center field is updated, and the geometry is moved using
   an internal transformation node. FIXME: more doc.
 */
 
 #include <Inventor/draggers/SoCenterballDragger.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoRotateCylindricalDragger.h>
 #include <Inventor/draggers/SoRotateSphericalDragger.h>
 #include <Inventor/draggers/SoTranslate2Dragger.h>
@@ -115,7 +116,7 @@ SoCenterballDragger::SoCenterballDragger(void)
 
   SoMatrixTransform *mt = SO_GET_ANY_PART(this, "translateToCenter", SoMatrixTransform);
   mt->matrix = SbMatrix::identity();
-  
+
   this->addValueChangedCallback(SoCenterballDragger::valueChangedCB);
 
   this->rotFieldSensor = new SoFieldSensor(SoCenterballDragger::fieldSensorCB, this);
@@ -134,7 +135,7 @@ SoCenterballDragger::~SoCenterballDragger()
 
 /*!
   overloaded to save some information necessary to move center correctly.
-*/ 
+*/
 void
 SoCenterballDragger::saveStartParameters(void)
 {
@@ -157,13 +158,13 @@ SoCenterballDragger::transferCenterDraggerMotion(SoDragger * childdragger)
       (SoNode*)childdragger == ZCenterChanger.getValue()) {
     // translate part of matrix should not change. Move motion
     // into center instead.
-    
+
     SbVec3f transl;
     SbMatrix matrix = this->getMotionMatrix();
     transl[0] = matrix[3][0];
     transl[1] = matrix[3][1];
     transl[2] = matrix[3][2];
-    
+
     SbVec3f difftransl = transl - this->savedtransl;
     { // consider rotation before translating
       SbRotation rot = this->rotation.getValue();
@@ -175,15 +176,15 @@ SoCenterballDragger::transferCenterDraggerMotion(SoDragger * childdragger)
     this->centerFieldSensor->detach();
     this->center = difftransl + this->savedcenter;
     this->centerFieldSensor->attach(&this->center);
-    
+
     matrix[3][0] = this->savedtransl[0];
     matrix[3][1] = this->savedtransl[1];
     matrix[3][2] = this->savedtransl[2];
-    
+
     SbBool oldval = this->enableValueChangedCallbacks(FALSE);
     this->setMotionMatrix(matrix);
     this->enableValueChangedCallbacks(oldval);
-    
+
     SoMatrixTransform *mt = SO_GET_ANY_PART(this, "translateToCenter", SoMatrixTransform);
     matrix.setTranslate(this->center.getValue());
     mt->matrix = matrix;
@@ -191,7 +192,7 @@ SoCenterballDragger::transferCenterDraggerMotion(SoDragger * childdragger)
 }
 
 /*!
-  Sets values for the internal SoSwitch parts. If \a activechild == NULL, 
+  Sets values for the internal SoSwitch parts. If \a activechild == NULL,
   all feedback is deactivated.
 */
 void
@@ -199,7 +200,7 @@ SoCenterballDragger::setSwitches(SoDragger * activechild)
 {
   SoSwitch *sw;
 
-  if (activechild == NULL || (SoNode*)activechild == rotator.getValue()) { 
+  if (activechild == NULL || (SoNode*)activechild == rotator.getValue()) {
     // special feedback when rotator is activated/deactiveated
     int switchval = activechild != NULL ? 1 : 0;
     sw = SO_GET_ANY_PART(this, "XCenterChanger.translatorSwitch", SoSwitch);
@@ -221,17 +222,17 @@ SoCenterballDragger::setSwitches(SoDragger * activechild)
 
   if ((SoNode*)activechild == XRotator.getValue()) {
     vals[0] = 0;
-  } 
+  }
   else if ((SoNode*)activechild == YRotator.getValue()) {
     vals[1] = 0;
-  } 
+  }
   else if ((SoNode*)activechild == ZRotator.getValue()) {
     vals[2] = 0;
-  } 
+  }
   else if (activechild != NULL) {
     vals[0] = vals[1] = vals[2] = 0;
   }
-  
+
   sw = SO_GET_ANY_PART(this, "XAxisSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, vals[0]);
   sw = SO_GET_ANY_PART(this, "YAxisSwitch", SoSwitch);
@@ -274,7 +275,7 @@ SoCenterballDragger::setUpConnections(SbBool onoff, SbBool doitalways)
       child->setPartAsDefault("feedbackActive", emptysep);
       this->addChildDragger(child);
     }
-    
+
     for (i = 0; i < 3; i++) {
       str.sprintf("%cCenterChanger", 'X' + i);
       child = (SoDragger*) this->getAnyPart(str.getString(), FALSE);
@@ -288,7 +289,7 @@ SoCenterballDragger::setUpConnections(SbBool onoff, SbBool doitalways)
                               "centerballCenterYAxisFeedback");
       this->addChildDragger(child);
     }
-    
+
     if (this->rotFieldSensor->getAttachedField() != &this->rotation) {
       this->rotFieldSensor->attach(&this->rotation);
     }
@@ -304,7 +305,7 @@ SoCenterballDragger::setUpConnections(SbBool onoff, SbBool doitalways)
     this->removeChildDragger("XCenterChanger");
     this->removeChildDragger("YCenterChanger");
     this->removeChildDragger("ZCenterChanger");
-    
+
     if (this->rotFieldSensor->getAttachedField() != NULL) {
       this->rotFieldSensor->detach();
     }
@@ -340,7 +341,7 @@ SoCenterballDragger::valueChangedCB(void *, SoDragger * d)
   SbVec3f t, s;
   SbRotation r, so;
   matrix.getTransform(t, r, s, so, thisp->center.getValue());
-  
+
   thisp->rotFieldSensor->detach();
   if (thisp->rotation.getValue() != r) {
     thisp->rotation = r;
@@ -372,7 +373,7 @@ SoCenterballDragger::kidFinishCB(void * d, SoDragger * child)
 //
 // convenience method that takes care of callbacks before registering child
 //
-void 
+void
 SoCenterballDragger::addChildDragger(SoDragger *child)
 {
   child->addStartCallback(SoCenterballDragger::kidStartCB, this);
@@ -383,7 +384,7 @@ SoCenterballDragger::addChildDragger(SoDragger *child)
 //
 // convenience method that removes callbacks before unregistering child
 //
-void 
+void
 SoCenterballDragger::removeChildDragger(const char *childname)
 {
   SoDragger *child = (SoDragger*) this->getAnyPart(childname, FALSE);
@@ -391,5 +392,3 @@ SoCenterballDragger::removeChildDragger(const char *childname)
   child->removeFinishCallback(SoCenterballDragger::kidFinishCB, this);
   this->unregisterChildDragger(child);
 }
-
-

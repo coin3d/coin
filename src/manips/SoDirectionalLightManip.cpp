@@ -28,6 +28,7 @@
 */
 
 #include <Inventor/manips/SoDirectionalLightManip.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/draggers/SoDirectionalLightDragger.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoCallbackAction.h>

@@ -27,6 +27,7 @@
 
 
 #include <Inventor/nodes/SoSelection.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/lists/SoCallbackList.h>

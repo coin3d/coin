@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoAnnoText3Property.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>

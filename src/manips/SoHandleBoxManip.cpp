@@ -18,6 +18,7 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoHandleBoxManip.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/draggers/SoHandleBoxDragger.h>
 

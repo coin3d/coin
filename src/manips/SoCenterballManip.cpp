@@ -18,6 +18,7 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoCenterballManip.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/draggers/SoCenterballDragger.h>
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <coindefs.h>
@@ -68,4 +69,3 @@ SoCenterballManip::valueChangedCB(void * f, SoDragger * d)
 {
   COIN_STUB();
 }
-

@@ -24,6 +24,7 @@
 */
 
 #include <Inventor/nodes/SoCone.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoState.h>

@@ -28,6 +28,7 @@
 */
 
 #include <Inventor/nodes/SoResetTransform.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLNormalizeElement.h>

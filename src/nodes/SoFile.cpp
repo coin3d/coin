@@ -35,6 +35,7 @@
 */
 
 #include <Inventor/nodes/SoFile.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>

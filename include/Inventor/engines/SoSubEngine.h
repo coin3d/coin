@@ -130,16 +130,6 @@ _class_::createInstance(void) \
   } while (0)
 
 
-#if defined(COIN_INTERNAL)
-#define SO_ENGINE_INTERNAL_CONSTRUCTOR(_class_) \
-  do { \
-    SO_ENGINE_CONSTRUCTOR(_class_); \
-    /* Restore value of isBuiltIn flag (which is set to FALSE */ \
-    /* in the SO_ENGINE_CONSTRUCTOR() macro. */ \
-    this->isBuiltIn = TRUE; \
-  } while (0)
-#endif // INTERNAL macro definition
-
 #define PRIVATE_COMMON_ENGINE_INIT_CODE(_class_, _classname_, _createfunc_, _parentclass_) \
   do { \
     /* Make sure we only initialize once. */ \
@@ -166,28 +156,12 @@ _class_::createInstance(void) \
   } while (0)
 
 
-#if defined(COIN_INTERNAL)
-#define SO_ENGINE_INTERNAL_INIT_CLASS(_class_) \
-  do { \
-    const char * classname = SO__QUOTE(_class_); \
-    PRIVATE_COMMON_ENGINE_INIT_CODE(_class_, &classname[2], &_class_::createInstance, inherited); \
-  } while (0)
-#endif // INTERNAL macro definition
-
 #define SO_ENGINE_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_COMMON_ENGINE_INIT_CODE(_class_, classname, NULL, _parentclass_); \
   } while (0)
 
-
-#if defined(COIN_INTERNAL)
-#define SO_ENGINE_INTERNAL_INIT_ABSTRACT_CLASS(_class_) \
-  do { \
-    const char * classname = SO__QUOTE(_class_); \
-    PRIVATE_COMMON_ENGINE_INIT_CODE(_class_, &classname[2], NULL, inherited); \
-  } while (0)
-#endif // INTERNAL macro definition
 
 #define SO_ENGINE_ADD_INPUT(_input_, _defaultval_) \
   do { \

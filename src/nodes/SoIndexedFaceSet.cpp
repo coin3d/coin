@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/caches/SoConvexDataCache.h>

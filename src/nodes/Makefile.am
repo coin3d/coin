@@ -106,7 +106,8 @@ ALLSOURCES = \
 	SoVertexProperty.cpp SoVertexProperty.h \
 	SoVertexShape.cpp SoVertexShape.h \
 	SoWWWAnchor.cpp SoWWWAnchor.h \
-	SoWWWInline.cpp SoWWWInline.h
+	SoWWWInline.cpp SoWWWInline.h \
+	SoSubNode.h SoSubNodeP.h
 
 
 ALLINSTHEADERS = \

@@ -52,6 +52,7 @@
 #include <Inventor/engines/SoConvertAll.h>
 #include <Inventor/lists/SoTypeList.h>
 #include <assert.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

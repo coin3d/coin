@@ -32,6 +32,7 @@
 */
 
 #include <Inventor/nodes/SoRotationXYZ.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>

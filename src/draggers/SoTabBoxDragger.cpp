@@ -19,13 +19,14 @@
 
 /*!
   \class SoTabBoxDragger SoTabBoxDragger.h Inventor/draggers/SoTabBoxDragger.h
-  \brief The SoTabBoxDragger class is a box dragger you can translate and scale. 
+  \brief The SoTabBoxDragger class is a box dragger you can translate and scale.
   \ingroup draggers
-  
+
   FIXME: write class doc
 */
 
 #include <Inventor/draggers/SoTabBoxDragger.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoTabPlaneDragger.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSurroundScale.h>
@@ -88,9 +89,9 @@ SoTabBoxDragger::SoTabBoxDragger(void)
   this->setPartAsDefault("boxGeom", "tabBoxBoxGeom");
 
   this->initTransformNodes();
-  
+
   this->addValueChangedCallback(SoTabBoxDragger::valueChangedCB);
-  
+
   this->scaleFieldSensor = new SoFieldSensor(SoTabBoxDragger::fieldSensorCB, this);
   this->translFieldSensor = new SoFieldSensor(SoTabBoxDragger::fieldSensorCB, this);
   this->setUpConnections(TRUE, TRUE);
@@ -122,8 +123,8 @@ SoTabBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
       child->addStartCallback(SoTabBoxDragger::invalidateSurroundScaleCB, this);
       child->addFinishCallback(SoTabBoxDragger::invalidateSurroundScaleCB, this);
       this->registerChildDragger(child);
-    } 
-    
+    }
+
     if (this->translFieldSensor->getAttachedField() != &this->translation) {
       this->translFieldSensor->attach(&this->translation);
     }
@@ -138,7 +139,7 @@ SoTabBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
       child = (SoDragger*)this->getAnyPart(str.getString(), FALSE);
       child->removeStartCallback(SoTabBoxDragger::invalidateSurroundScaleCB, this);
       child->removeFinishCallback(SoTabBoxDragger::invalidateSurroundScaleCB, this);
-      this->unregisterChildDragger(child);      
+      this->unregisterChildDragger(child);
     }
 
     if (this->translFieldSensor->getAttachedField() != NULL) {
@@ -172,18 +173,18 @@ void
 SoTabBoxDragger::valueChangedCB(void *, SoDragger *d)
 {
   SoTabBoxDragger *thisp = (SoTabBoxDragger*)d;
-  
+
   const SbMatrix &matrix = thisp->getMotionMatrix();
   SbVec3f t, s;
   SbRotation r, so;
   matrix.getTransform(t, r, s, so);
-  
+
   thisp->translFieldSensor->detach();
   if (thisp->translation.getValue() != t) {
     thisp->translation = t;
   }
   thisp->translFieldSensor->attach(&thisp->translation);
-  
+
   thisp->scaleFieldSensor->detach();
   if (thisp->scaleFactor.getValue() != s) {
     thisp->scaleFactor = s;
@@ -192,7 +193,7 @@ SoTabBoxDragger::valueChangedCB(void *, SoDragger *d)
 }
 
 /*!
-  \e surroundScale is invalidated every time a child dragger is 
+  \e surroundScale is invalidated every time a child dragger is
   activated/deactivated using this callback
 */
 void
@@ -203,7 +204,7 @@ SoTabBoxDragger::invalidateSurroundScaleCB(void * d, SoDragger *)
   if (ss) ss->invalidate();
 }
 
-void 
+void
 SoTabBoxDragger::initTransformNodes(void)
 {
   SoTransform *tf;
@@ -225,4 +226,3 @@ SoTabBoxDragger::initTransformNodes(void)
   tf->translation = SbVec3f(0.0f, -1.0f, 0.0f);
   tf->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), M_PI*0.5f);
 }
-

@@ -42,6 +42,7 @@
 
 
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoPickAction.h>
@@ -64,12 +65,12 @@
 /*!
   \var SoShapeHints::VertexOrdering SoShapeHints::CLOCKWISE
 
-  Vertices are specified in a clockwise order. 
+  Vertices are specified in a clockwise order.
 */
 /*!
   \var SoShapeHints::VertexOrdering SoShapeHints::COUNTERCLOCKWISE
 
-  Vertices are specified in a counter-clockwise order. 
+  Vertices are specified in a counter-clockwise order.
 */
 
 /*!

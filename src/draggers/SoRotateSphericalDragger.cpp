@@ -18,6 +18,7 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoRotateSphericalDragger.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/projectors/SbSpherePlaneProjector.h>
@@ -209,7 +210,7 @@ SoRotateSphericalDragger::dragStart(void)
 
   this->sphereProj->setViewVolume(this->getViewVolume());
   this->sphereProj->setWorkingSpace(this->getLocalToWorldMatrix());
-  
+
   SbVec3f projPt = this->sphereProj->project(this->getNormalizedLocaterPosition());
   this->getLocalToWorldMatrix().multVecMatrix(projPt, this->prevWorldHitPt);
   this->prevMotionMatrix = this->getMotionMatrix();
@@ -220,15 +221,15 @@ SoRotateSphericalDragger::drag(void)
 {
   this->sphereProj->setViewVolume(this->getViewVolume());
   this->sphereProj->setWorkingSpace(this->getLocalToWorldMatrix());
-  
+
   SbVec3f startPt;
   this->getWorldToLocalMatrix().multVecMatrix(this->prevWorldHitPt, startPt);
   SbVec3f projPt = this->sphereProj->project(this->getNormalizedLocaterPosition());
   this->getLocalToWorldMatrix().multVecMatrix(projPt, this->prevWorldHitPt);
 
   SbRotation rot = this->sphereProj->getRotation(startPt, projPt);
-  
-  this->prevMotionMatrix = this->appendRotation(this->prevMotionMatrix, rot, 
+
+  this->prevMotionMatrix = this->appendRotation(this->prevMotionMatrix, rot,
                                                 SbVec3f(0.0f, 0.0f, 0.0f));
   this->setMotionMatrix(this->prevMotionMatrix);
 }

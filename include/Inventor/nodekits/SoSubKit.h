@@ -81,16 +81,6 @@ _class_::getClassNodekitCatalogPtr(void) \
   } while (0)
 
 
-#if defined(COIN_INTERNAL)
-// Internal note for developers: match changes to this macro with the
-// same changes to SoBaseKit::initClass().
-#define SO_KIT_INTERNAL_INIT_CLASS(_class_) \
-  do { \
-    SO_NODE_INTERNAL_INIT_CLASS(_class_); \
-    _class_::parentcatalogptr = inherited::getClassNodekitCatalogPtr(); \
-  } while (0)
-#endif // INTERNAL macro definition
-
 
 #define SO_KIT_CONSTRUCTOR(_class_) \
   do { \
@@ -100,21 +90,6 @@ _class_::getClassNodekitCatalogPtr(void) \
       _class_::classcatalog = (*_class_::parentcatalogptr)->clone(mytype); \
     } \
   } while (0)
-
-
-#if defined(COIN_INTERNAL)
-#define SO_KIT_INTERNAL_CONSTRUCTOR(_class_) \
-  do { \
-    SO_NODE_INTERNAL_CONSTRUCTOR(_class_); \
-    if (SO_KIT_IS_FIRST_INSTANCE()) { \
-      SoType mytype = SoType::fromName(SO__QUOTE(_class_)); \
-      if (_class_::parentcatalogptr) \
-        _class_::classcatalog = (*_class_::parentcatalogptr)->clone(mytype); \
-      else \
-        _class_::classcatalog = new SoNodekitCatalog; \
-    } \
-  } while (0)
-#endif // INTERNAL macro definition
 
 
 

@@ -29,6 +29,7 @@
 */
 
 #include <Inventor/nodes/SoPackedColor.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -93,7 +94,7 @@ void
 SoPackedColor::doAction(SoAction * action)
 {
   this->isTransparent(); // update cached value
-  
+
   SoState * state = action->getState();
   if (!this->orderedRGBA.isIgnored() &&
       !SoOverrideElement::getDiffuseColorOverride(state)) {
@@ -131,7 +132,7 @@ SoPackedColor::isTransparent(void)
         this->transparent = TRUE;
         break;
       }
-    } 
+    }
   }
   return this->transparent;
 }
@@ -139,7 +140,7 @@ SoPackedColor::isTransparent(void)
 /*!
   Overloaded to check for transparency when orderedRGBA changes
 */
-void 
+void
 SoPackedColor::notify(SoNotList *list)
 {
   SoField *f = list->getLastField();

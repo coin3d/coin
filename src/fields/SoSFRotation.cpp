@@ -32,7 +32,7 @@
 */
 
 #include <Inventor/fields/SoSFRotation.h>
-#include <SoSubFieldPrivate.h>
+#include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbVec3f.h>

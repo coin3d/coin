@@ -18,6 +18,7 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoJackManip.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/draggers/SoJackDragger.h>
 

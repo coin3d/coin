@@ -42,6 +42,7 @@ ALLSOURCES = \
 	SoTimeCounter.cpp SoTimeCounter.h \
 	SoTransformVec3f.cpp SoTransformVec3f.h \
 	SoTriggerAny.cpp SoTriggerAny.h \
+	SoSubEngine.h SoSubEngineP.h \
 	evaluator.c evaluator.h \
 	evaluator.tab.c
 

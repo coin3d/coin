@@ -28,6 +28,7 @@
 #include <Inventor/engines/SoElapsedTime.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/SoDB.h>
+#include <Inventor/engines/SoSubEngineP.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

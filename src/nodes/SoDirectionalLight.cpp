@@ -39,6 +39,7 @@
 */
 
 #include <Inventor/nodes/SoDirectionalLight.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/SbColor4f.h>
 #include <Inventor/SbVec4f.h>
@@ -113,7 +114,7 @@ SoDirectionalLight::GLRender(SoGLRenderAction * action)
   SbColor4f lightcolor(0.0f, 0.0f, 0.0f, 1.0f);
   lightcolor.setRGB(this->color.getValue());
   lightcolor *= this->intensity.getValue();
-  
+
   glLightfv(light, GL_DIFFUSE, lightcolor.getValue());
   glLightfv(light, GL_SPECULAR, lightcolor.getValue());
 

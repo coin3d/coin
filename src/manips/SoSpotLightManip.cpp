@@ -28,6 +28,7 @@
 */
 
 #include <Inventor/manips/SoSpotLightManip.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/draggers/SoSpotLightDragger.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
@@ -69,10 +70,10 @@ SoSpotLightManip::SoSpotLightManip(void)
 
   this->directionFieldSensor = new SoFieldSensor(SoSpotLightManip::fieldSensorCB, this);
   this->directionFieldSensor->setPriority(0);
-  
+
   this->angleFieldSensor = new SoFieldSensor(SoSpotLightManip::fieldSensorCB, this);
   this->angleFieldSensor->setPriority(0);
-  
+
   this->attachSensors(TRUE);
   this->setDragger(new SoSpotLightDragger);
 }
@@ -86,7 +87,7 @@ SoSpotLightManip::~SoSpotLightManip()
   delete this->locationFieldSensor;
   delete this->directionFieldSensor;
   delete this->angleFieldSensor;
-  
+
   delete this->children;
 }
 
@@ -106,7 +107,7 @@ SoSpotLightManip::setDragger(SoDragger * newdragger)
       this->children->append(newdragger);
       SoSpotLightManip::fieldSensorCB(this, NULL);
       newdragger->addValueChangedCallback(SoSpotLightManip::valueChangedCB, this);
-    } 
+    }
   }
 }
 
@@ -128,7 +129,7 @@ SoSpotLightManip::getDragger(void)
 }
 
 /*!
-  Replaces the node specified by \a path with this manipulator. 
+  Replaces the node specified by \a path with this manipulator.
   The manipulator will copy the field data from the node, to make
   it affect the state in the same way as the node.
 */
@@ -183,7 +184,7 @@ SoSpotLightManip::replaceNode(SoPath * path)
   this->transferFieldValues((SoSpotLight*)fulltail, this);
   this->attachSensors(TRUE);
   SoSpotLightManip::fieldSensorCB(this, NULL);
-  
+
   ((SoGroup*)parent)->replaceChild(fulltail, this);
   this->unrefNoDelete();
   return TRUE;
@@ -269,7 +270,7 @@ void
 SoSpotLightManip::GLRender(SoGLRenderAction * action)
 {
   SoSpotLightManip::doAction(action);
-  SoSpotLight::GLRender(action);  
+  SoSpotLight::GLRender(action);
 }
 
 /*!
@@ -282,7 +283,7 @@ SoSpotLightManip::getBoundingBox(SoGetBoundingBoxAction * action)
   int lastchild;
   SbVec3f center(0.0f, 0.0f, 0.0f);
   int numcenters = 0;
-  
+
   if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
     lastchild  = indices[numindices-1];
   }
@@ -337,7 +338,7 @@ void
 SoSpotLightManip::handleEvent(SoHandleEventAction * action)
 {
   SoSpotLightManip::doAction(action);
-  SoSpotLight::handleEvent(action);  
+  SoSpotLight::handleEvent(action);
 }
 
 /*!
@@ -346,7 +347,7 @@ void
 SoSpotLightManip::pick(SoPickAction * action)
 {
   SoSpotLightManip::doAction(action);
-  SoSpotLight::pick(action);  
+  SoSpotLight::pick(action);
 }
 
 /*!
@@ -360,9 +361,9 @@ SoSpotLightManip::search(SoSearchAction * action)
 }
 
 /*!
-  Returns the children of this node. This node only has the dragger 
+  Returns the children of this node. This node only has the dragger
   as a child.
-*/ 
+*/
 SoChildList *
 SoSpotLightManip::getChildren(void) const
 {
@@ -376,12 +377,12 @@ void
 SoSpotLightManip::valueChangedCB(void * m, SoDragger * dragger)
 {
   SoSpotLightManip * thisp = (SoSpotLightManip*)m;
-  
+
   SbMatrix matrix = dragger->getMotionMatrix();
   SbVec3f t, s;
   SbRotation r, so;
   matrix.getTransform(t, r, s, so);
-  
+
   SbVec3f direction(0.0f, 0.0f, -1.0f);
   matrix.multDirMatrix(direction, direction);
   direction.normalize();
@@ -417,12 +418,12 @@ SoSpotLightManip::fieldSensorCB(void * m, SoSensor *)
     matrix.getTransform(t, r, s, so);
     r.setValue(SbVec3f(0.0f, 0.0f, -1.0f), direction);
     t = thisp->location.getValue();
-    
+
     matrix.setTransform(t, r, s, so);
     if (dragger->isOfType(SoSpotLightDragger::getClassTypeId()))
       ((SoSpotLightDragger*)dragger)->angle = thisp->cutOffAngle.getValue();
     dragger->setMotionMatrix(matrix);
-    
+
     SoMaterial *material = (SoMaterial*)dragger->getPart("material", TRUE);
     material->diffuseColor = SbColor(0.0f, 0.0f, 0.0f);
     material->emissiveColor = thisp->color.getValue();

@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoTextureCoordinateFunction.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 
 

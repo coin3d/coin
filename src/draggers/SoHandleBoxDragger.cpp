@@ -18,6 +18,7 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoHandleBoxDragger.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSurroundScale.h>
@@ -512,10 +513,10 @@ SoHandleBoxDragger::drag(void)
     float orglen = (startPt-center).length();
     float currlen = (projPt-center).length();
     float scale = 0.0f;
-    
+
     if (orglen > 0.0f) scale = currlen / orglen;
     if (scale > 0.0f && (startPt-center).dot(projPt-center) <= 0.0f) scale = 0.0f;
-    
+
     SbVec3f scalevec(scale, scale, scale);
     if (this->whatkind == WHATKIND_EXTRUDER) {
       if (this->whatnum <= 2) scalevec[0] = scalevec[2] = 1.0f;
@@ -685,7 +686,7 @@ SoHandleBoxDragger::getSurroundScaleMatrices(SbMatrix &mat, SbMatrix &inv)
   }
 }
 
-SbVec3f 
+SbVec3f
 SoHandleBoxDragger::getDraggerCenter()
 {
   SbMatrix mat, inv;
@@ -693,13 +694,13 @@ SoHandleBoxDragger::getDraggerCenter()
   return SbVec3f(mat[3][0], mat[3][1], mat[3][2]);
 }
 
-SbVec3f 
+SbVec3f
 SoHandleBoxDragger::calcCtrlOffset(const SbVec3f startpt)
 {
   SbMatrix m, inv;
   this->getSurroundScaleMatrices(m, inv);
   SbVec3f v = SbVec3f(m[3][0], m[3][1], m[3][2]) - startpt;
-  
+
   for (int i = 0; i < 3; i++) {
     v[i] *= inv[i][i];
     if (v[i] < -0.95) v[i] = -1.0f;
@@ -709,6 +710,3 @@ SoHandleBoxDragger::calcCtrlOffset(const SbVec3f startpt)
   }
   return v;
 }
-
-
-

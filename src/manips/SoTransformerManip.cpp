@@ -18,6 +18,7 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoTransformerManip.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/draggers/SoTransformerDragger.h>
 
@@ -40,7 +41,7 @@ SoTransformerManip::SoTransformerManip(void)
 
   SoTransformerDragger *dragger = new SoTransformerDragger;
   this->setDragger(dragger);
-  
+
   SoSurroundScale *ss = (SoSurroundScale*) dragger->getPart("surroundScale", TRUE);
   ss->numNodesUpToContainer = 4;
   ss->numNodesUpToReset = 3;

@@ -28,6 +28,7 @@
 
 
 #include <Inventor/nodes/SoArray.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 
 #include <Inventor/misc/SoState.h>

@@ -29,6 +29,7 @@
 */
 
 #include <Inventor/nodes/SoRotation.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
 
 #include <Inventor/actions/SoGetMatrixAction.h>
