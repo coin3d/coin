@@ -19,15 +19,22 @@
 
 /*!
   \class SoAntiSquish SoAntiSquish.h Inventor/nodes/SoAntiSquish.h
-  \brief The SoAntiSquish class ...
+  \brief The SoAntiSquish class is used to make scaling uniform.
   \ingroup nodes
 
-  FIXME: write class doc
+  It is used by draggers and manipulators to retain the shape of their
+  geometry, even if the current transformation matrix contains a nonuniform
+  scale. When traversed, this node replaces the scale vector of the matrix
+  with uniform values, bases on one of the Sizing strategies.
 */
 
 #include <Inventor/nodes/SoAntiSquish.h>
-
-
+#include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/SbBox3f.h>
+#include <math.h>
 
 /*!
   \enum SoAntiSquish::Sizing
@@ -95,6 +102,9 @@ SoAntiSquish::SoAntiSquish()
   SO_NODE_DEFINE_ENUM_VALUE(Sizing, SMALLEST_DIMENSION);
   SO_NODE_DEFINE_ENUM_VALUE(Sizing, LONGEST_DIAGONAL);
   SO_NODE_SET_SF_ENUM_TYPE(sizing, Sizing);
+
+  this->matrixValid = FALSE;
+  this->inverseValid = FALSE;
 }
 
 /*!
@@ -119,9 +129,9 @@ SoAntiSquish::initClass(void)
   FIXME: write function documentation
 */
 void
-SoAntiSquish::getBoundingBox(SoGetBoundingBoxAction * /* action */)
+SoAntiSquish::getBoundingBox(SoGetBoundingBoxAction *action)
 {
-  COIN_STUB();
+  SoAntiSquish::doAction((SoAction*) action);
 }
 
 /*!
@@ -130,60 +140,142 @@ SoAntiSquish::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 void
 SoAntiSquish::recalc(void)
 {
-  COIN_STUB();
+  this->matrixValid = FALSE;
 }
 
 /*!
   FIXME: write doc
 */
 void
-SoAntiSquish::doAction(SoAction * /* action */)
+SoAntiSquish::doAction(SoAction *action)
 {
-  COIN_STUB();
+  SoState *state = action->getState();
+  if (!this->matrixValid || this->recalcAlways.getValue()) {
+    this->matrixValid = TRUE;
+    this->inverseValid = FALSE;
+    this->unsquishedMatrix =
+      this->getUnsquishingMatrix(SoModelMatrixElement::get(state),
+                                 FALSE, this->inverseMatrix);
+  }
+  SoModelMatrixElement::set(action->getState(), this, this->unsquishedMatrix);
 }
 /*!
   FIXME: write doc
 */
 void
-SoAntiSquish::callback(SoCallbackAction * /* action */)
+SoAntiSquish::callback(SoCallbackAction *action)
 {
-  COIN_STUB();
+  SoAntiSquish::doAction((SoAction*)action);
 }
 /*!
   FIXME: write doc
 */
 void
-SoAntiSquish::GLRender(SoGLRenderAction * /* action */)
+SoAntiSquish::GLRender(SoGLRenderAction *action)
 {
-  COIN_STUB();
+  SoAntiSquish::doAction((SoAction*) action);
 }
 
 /*!
   FIXME: write doc
 */
 void
-SoAntiSquish::getMatrix(SoGetMatrixAction * /* action */)
+SoAntiSquish::getMatrix(SoGetMatrixAction *action)
 {
-  COIN_STUB();
+  if (!this->matrixValid || !this->inverseValid ||
+      this->recalcAlways.getValue()) {
+    this->matrixValid = TRUE;
+    this->inverseValid = TRUE;
+    this->unsquishedMatrix =
+      this->getUnsquishingMatrix(action->getMatrix(),
+                                 TRUE, action->getInverse());
+
+  }
+#if _WIN32 // fix for stupid m$ vc6 compiler
+  action->getMatrix() = this->unsquishedMatrix;
+  action->getInverse() = this->inverseMatrix;
+#else // normal compilers use this code
+  action->getMatrix().setValue(this->unsquishedMatrix);
+  action->getInverse().setValue(this->inverseMatrix);
+#endif // fix for vc6 compiler
 }
 
 /*!
   FIXME: write doc
 */
 void
-SoAntiSquish::pick(SoPickAction * /* action */)
+SoAntiSquish::pick(SoPickAction *action)
 {
-  COIN_STUB();
+  SoAntiSquish::doAction((SoAction*) action);
 }
 
 /*!
   FIXME: write doc
 */
 SbMatrix
-SoAntiSquish::getUnsquishingMatrix(SbMatrix /* squishedMatrix */,
-                                   SbBool /* doInverse */,
-                                   SbMatrix & /* inverseAnswer */)
+SoAntiSquish::getUnsquishingMatrix(const SbMatrix &squishedmatrix,
+                                   const SbBool calcinverse,
+                                   SbMatrix &inversematrix)
 {
-  COIN_STUB();
-  return SbMatrix::identity();
+  SbRotation r, so;
+  SbVec3f t, scale;
+
+  float val;
+
+  squishedmatrix.getTransform(t, r, scale, so);
+  switch (this->sizing.getValue()) {
+  case X:
+    val = scale[0];
+    break;
+  case Y:
+    val = scale[1];
+    break;
+  case Z:
+    val = scale[2];
+    break;
+  case AVERAGE_DIMENSION:
+    val = (scale[0] + scale[1] + scale[2]) / 3.0f;
+    break;
+  case BIGGEST_DIMENSION:
+    val = scale[0];
+    if (scale[1] > val) val = scale[1];
+    if (scale[2] > val) val = scale[2];
+    break;
+  case SMALLEST_DIMENSION:
+    val = scale[0];
+    if (scale[1] < val) val = scale[1];
+    if (scale[2] < val) val = scale[2];
+    break;
+  case LONGEST_DIAGONAL:
+    {
+      SbVec3f unitcube[8];
+      for (int i = 0; i < 8; i++) {
+        unitcube[i][0] = i & 1 ? 1.0f : -1.0f;
+        unitcube[i][1] = i & 2 ? 1.0f : -1.0f;
+        unitcube[i][2] = i & 4 ? 1.0f : -1.0f;
+        squishedmatrix.multVecMatrix(unitcube[i], unitcube[i]);
+      }
+
+      val = (unitcube[1] - unitcube[6]).sqrLength();
+      float tmp = (unitcube[5] - unitcube[2]).sqrLength();
+      if (tmp > val) val = tmp;
+      tmp = (unitcube[3] - unitcube[4]).sqrLength();
+      if (tmp > val) val = tmp;
+      tmp = (unitcube[0] - unitcube[7]).sqrLength();
+      if (tmp > val) val = tmp;
+
+      val = (float) sqrt(val);
+      val *= 0.5f;
+      break;
+    }
+  default:
+    assert(0 && "unknown sizing parameter");
+    val = (scale[0] + scale[1] + scale[2]) / 3.0f; // use avarage
+    break;
+  }
+  scale[0] = scale[1] = scale[2] = val;
+  SbMatrix matrix;
+  matrix.setTransform(t, r, scale, so);
+  if (calcinverse) inversematrix = matrix.inverse();
+  return matrix;
 }
