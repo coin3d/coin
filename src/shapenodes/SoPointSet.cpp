@@ -39,7 +39,7 @@
 
   \verbatim
   #Inventor V2.1 ascii
-  
+
   Separator {
      Material {
         diffuseColor [
@@ -47,15 +47,15 @@
         ]
      }
      MaterialBinding { value PER_PART }
-  
+
      Coordinate3 {
         point [
          -1 1 0, -1 -1 0, 1 -1 0, 1 1 0, 0 2 -1, -2 0 -1, 0 -2 -1, 2 0 -1
         ]
      }
-  
+
      DrawStyle { pointSize 3 }
-  
+
      PointSet { }
   }
   \endverbatim
@@ -235,13 +235,13 @@ SoPointSet::GLRender(SoGLRenderAction * action)
                        mbind != OVERALL ? &mb : NULL,
                        doTextures ? &tb : NULL,
                        numpts, idx);
-  
+
   if (didpush)
     state->pop();
 
-  // send approx number of points for autocache handling. Multiply
+  // send approx number of points for autocache handling. Divide
   // by three so that three points is the same as one triangle.
-  sogl_autocache_update(state, numpts*3);
+  sogl_autocache_update(state, numpts/3);
 }
 
 // Documented in superclass.
