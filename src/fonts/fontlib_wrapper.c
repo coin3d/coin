@@ -250,8 +250,13 @@ fontstruct_rmfont(unsigned int font)
   if (fs->requestname) cc_string_destruct(fs->requestname);
 
   n = cc_dynarray_length(fs->glypharray);
-  for (i = 0; i < n; i++) { fontstruct_rmglyph(fs, i); }
-
+  for (i = 0; i < n; i++) { 
+    struct cc_flw_glyph * gs = flw_glyphidx2glyphptr(fs, i);
+    fontstruct_rmglyph(fs, i); 
+    /* needed since fontstruct_rmglyph() doesn't deallocate the
+       glyph struct. pederb, 2004-06-04 */
+    free(gs); 
+  }
   cc_dynarray_destruct(fs->glypharray);
   free(fs);
   cc_dynarray_remove_idx(fontarray, font);
