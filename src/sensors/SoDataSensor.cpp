@@ -33,7 +33,6 @@
 
 #include <Inventor/sensors/SoDataSensor.h>
 #include <Inventor/SoPath.h>
-#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/misc/SoNotification.h>
 #include <Inventor/nodes/SoNode.h>
 
@@ -209,24 +208,28 @@ SoDataSensor::trigger(void)
 void
 SoDataSensor::notify(SoNotList * l)
 {
+  if (this->triggerpath != NULL) {
+    this->triggerpath->unref();
+    this->triggerpath = NULL;
+  }
   if (this->getPriority() == 0) {
     this->triggerfield = l->getLastField();
     SoNotRec * record = l->getFirstRecAtNode();
     this->triggernode = (SoNode *) (record ? record->getBase() : NULL);
 
     if (this->findpath && this->triggernode) {
-      SoNotRec * lastrec = l->getLastRec();
-      SoType t = lastrec->getBase()->getTypeId();
-      if (t.isDerivedFrom(SoNode::getClassTypeId())) {
-        SoSearchAction search;
-        search.setNode(this->triggernode);
-        search.setSearchingAll(TRUE);
-        search.setInterest(SoSearchAction::FIRST);
-        search.apply((SoNode *)lastrec->getBase());
-        if (search.getPath() != NULL) {
-          this->triggerpath = search.getPath();
-          this->triggerpath->ref();
-        }
+      const SoNotRec * record = l->getLastRec();
+      // find last record with node base (we know there's at least one
+      // because of triggernode)
+      while (!record->getBase()->isOfType(SoNode::getClassTypeId())) {
+        record = record->getPrevious();
+      }
+      // create path down to triggernode
+      this->triggerpath = new SoPath((SoNode*)record->getBase());
+      this->triggerpath->ref();
+      while (record->getBase() != this->triggernode) {
+        record = record->getPrevious();
+        this->triggerpath->append((SoNode*) record->getBase());
       }
     }
   }
