@@ -253,7 +253,7 @@ SoDB::getVersion(void)
   // Dynamically allocated to avoid problems on systems which doesn't
   // handle static constructors.
   static SbString * s = new SbString; // FIXME: should deallocate on exit. 20000406 mortene.
-  
+
   *s = "SIM Coin ";
   *s += COIN_VERSION;
   return s->getString();
@@ -303,7 +303,7 @@ SoDB::read(SoInput * in, SoBase *& base)
 {
   // Header is only required when reading from a stream, if reading from
   // memory no header is required
-  if (in->getCurFile() && !in->isValidFile()) return FALSE;
+  if (!in->isValidFile()) return FALSE;
   return SoBase::read(in, base, SoBase::getClassTypeId());
 }
 
