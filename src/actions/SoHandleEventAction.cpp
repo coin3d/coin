@@ -325,6 +325,7 @@ SoHandleEventAction::beginTraversal(SoNode * node)
   
   // clear the picked point list
   THIS->getPickAction()->reset();
+  THIS->pickvalid = FALSE;
 }
 
 //////// Hidden private methods for //////////////////////////////////////
