@@ -523,7 +523,7 @@ public:
                            const SbBool mipmap,
                            const int border);
   void resizeImage(SoState * state, unsigned char *&imageptr,
-                   int &xsize, int &ysize, int &zsize);
+                   uint32_t &xsize, uint32_t &ysize, uint32_t &zsize);
   SbBool shouldCreateMipmap(void);
   void applyFilter(const SbBool ismipmap);
 
@@ -1124,47 +1124,21 @@ SoGLImageP::init(void)
   this->glimageid = 0; // glimageid 0 is an empty image
 }
 
-// returns the number of bits set, and xsets highbit to
-// the highest bit set.
-static int
-cnt_bits(unsigned long val, int & highbit)
-{
-  int cnt = 0;
-  highbit = 0;
-  while (val) {
-    if (val & 1) cnt++;
-    val>>=1;
-    highbit++;
-  }
-  return cnt;
-}
-
-// returns the next power of two greater or equal to val
-static unsigned long
-nearest_power_of_two(unsigned long val)
-{
-  int highbit;
-  if (cnt_bits(val, highbit) > 1) {
-    return 1<<highbit;
-  }
-  return val;
-}
-
 //
 // resize image if necessary. Returns pointer to temporary
 // buffer if that happens, and the new size in xsize, ysize.
 //
 void
 SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
-                        int & xsize, int & ysize, int & zsize)
+                        uint32_t & xsize, uint32_t & ysize, uint32_t & zsize)
 {
   SbVec3s size;
   int numcomponents;
   unsigned char *bytes = this->image->getValue(size, numcomponents);
 
-  unsigned int newx = (unsigned int)nearest_power_of_two(xsize-2*this->border);
-  unsigned int newy = (unsigned int)nearest_power_of_two(ysize-2*this->border);
-  unsigned int newz = (unsigned int)nearest_power_of_two(zsize-2*this->border);
+  uint32_t newx = coin_next_power_of_two(xsize - 1 - 2*this->border);
+  uint32_t newy = coin_next_power_of_two(ysize - 1 - 2*this->border);
+  uint32_t newz = coin_next_power_of_two(zsize - 1 - 2*this->border);
 
   // if >= 256 and low quality, don't scale up unless size is
   // close to an above power of two. This saves a lot of texture memory
@@ -1180,9 +1154,9 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
   }
   else if (this->flags & SoGLImage::SCALE_DOWN) {
     // no use scaling down for very small images
-    if (newx > (unsigned int)xsize && newx > 16) newx >>= 1;
-    if (newy > (unsigned int)ysize && newy > 16) newy >>= 1;
-    if (newz > (unsigned int)zsize && newz > 16) newz >>= 1;
+    if (newx > xsize && newx > 16) newx >>= 1;
+    if (newy > ysize && newy > 16) newy >>= 1;
+    if (newz > zsize && newz > 16) newz >>= 1;
   }
 
   // downscale to legal GL size (implementation dependent)
@@ -1190,7 +1164,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
     state->getConstElement(SoGLTextureImageElement::getClassStackIndex());
   SbBool sizeok = FALSE;
 #if COIN_DEBUG
-  SbVec3s orgsize(newx, newy, newz);
+  uint32_t orgsize[3] = { newx, newy, newz };
 #endif // COIN_DEBUG
   while (!sizeok) {
     sizeok = elem->isTextureSizeLegal(newx, newy, newz, numcomponents);
@@ -1211,9 +1185,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
   }
 
 #if COIN_DEBUG
-  if ((unsigned int) orgsize[0] != newx ||
-      (unsigned int) orgsize[1] != newy ||
-      (unsigned int) orgsize[2] != newz) {
+  if (orgsize[0] != newx || orgsize[1] != newy || orgsize[2] != newz) {
     if (orgsize[2] != 0) {
       SoDebugError::postWarning("SoGLImageP::resizeImage",
                                 "Original 3D texture too large for "
@@ -1238,9 +1210,9 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
   newy += 2 * this->border;
   newz = (zsize==0)?0:newz + (2 * this->border);
 
-  if ((newx != (unsigned long) xsize) ||
-      (newy != (unsigned long) ysize) ||
-      (newz != (unsigned long) zsize)) { // We need to resize
+  if ((newx != xsize) || (newy != ysize) || (newz != zsize)) {
+    // We need to resize.
+
     int numbytes = newx * newy * ((newz==0)?1:newz) * numcomponents;
     unsigned char * glimage_tmpimagebuffer = glimage_get_buffer(numbytes, FALSE);
 
@@ -1332,9 +1304,9 @@ SoGLImageP::createGLDisplayList(SoState *state)
 
   if (!bytes) return NULL;
 
-  int xsize = size[0];
-  int ysize = size[1];
-  int zsize = size[2];
+  uint32_t xsize = size[0];
+  uint32_t ysize = size[1];
+  uint32_t zsize = size[2];
 
   // these might change if image is resized
   unsigned char *imageptr = (unsigned char *) bytes;
