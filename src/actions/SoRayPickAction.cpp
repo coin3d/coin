@@ -330,9 +330,9 @@ SoRayPickAction::intersect(const SbVec3f & v0,
   else front = FALSE;
 
   // create some more intuitive barycentric coordinate names
-  float & u = barycentric[0];
-  float & v = barycentric[1];
-  float & w = barycentric[2];
+  float & u = barycentric[1];
+  float & v = barycentric[2];
+  float & w = barycentric[0];
 
   float inv_det = 1.0f / det;
 
