@@ -301,6 +301,15 @@ SbViewportRegion::getViewportOrigin(void) const
   return this->vporigin;
 }
 
+/*
+  Rounds of the given fractional number to the nearest integer.
+*/
+inline int round(float a)
+{
+  if (a == (float) (int(a))) return int(a);
+  else return (a>0.0f) ? int(a+0.5f) : -int(0.5f-a);
+}
+
 /*!
   Return viewport origin coordinates in pixel values.
 
@@ -311,8 +320,8 @@ SbViewportRegion::getViewportOriginPixels(void) const
 {
   // Cast away constness. Ugly.
   SbViewportRegion * thisp = (SbViewportRegion *)this;
-  thisp->vporigin_s.setValue((short)(this->winsize[0] * this->vporigin[0]),
-                             (short)(this->winsize[1] * this->vporigin[1]));
+  thisp->vporigin_s.setValue((short) round(this->winsize[0] * this->vporigin[0]),
+                             (short) round(this->winsize[1] * this->vporigin[1]));
   return this->vporigin_s;
 }
 
@@ -337,8 +346,8 @@ SbViewportRegion::getViewportSizePixels(void) const
 {
   // Cast away constness. Ugly.
   SbViewportRegion * thisp = (SbViewportRegion *)this;
-  thisp->vpsize_s = SbVec2s((short)(this->winsize[0] * this->vpsize[0]),
-                            (short)(this->winsize[1] * this->vpsize[1]));
+  thisp->vpsize_s = SbVec2s((short) round(this->winsize[0] * this->vpsize[0]),
+                            (short) round(this->winsize[1] * this->vpsize[1]));
   return this->vpsize_s;
 }
 
