@@ -57,6 +57,8 @@ simage_wrapper_cleanup(void)
   free(simage_instance);
 }
 
+/* backup-functions. More robust when simage is an old version, or not available */ 
+
 static int
 simage_wrapper_versionMatchesAtLeast(int major,
                                      int minor,
@@ -69,25 +71,25 @@ simage_wrapper_versionMatchesAtLeast(int major,
   return 1;
 }
 
-static int 
+static int
 simage_wrapper_get_num_savers(void)
 {
   return 0;
 }
 
-static const struct simage_save_plugin * 
-simage_wrapper_get_saver_info(int jada)
+static void *
+simage_wrapper_get_saver_handle(int jada)
 {
   return NULL;
 }
 
-static int 
+static int
 simage_wrapper_check_save_supported(const char * jada)
 {
   return 0;
 }
 
-static int 
+static int
 simage_wrapper_save_image(const char * jada,
                           const unsigned char * jada2,
                           int jada3, int jada4, int jada5,
@@ -96,6 +98,23 @@ simage_wrapper_save_image(const char * jada,
   return 0;
 }
 
+const char * 
+simage_wrapper_get_saver_extensions(void * handle)
+{
+  return "";
+}
+
+const char * 
+simage_wrapper_get_saver_fullname(void * handle)
+{
+  return NULL;
+}
+
+const char * 
+simage_wrapper_get_saver_description(void * handle)
+{
+  return NULL;
+}
 
 /* Implemented by using the singleton pattern. */
 const simage_wrapper_t *
@@ -105,9 +124,9 @@ simage_wrapper(void)
     /* First invocation, do initializations. */
     simage_instance = (simage_wrapper_t *)malloc(sizeof(simage_wrapper_t));
     (void)atexit(simage_wrapper_cleanup);
-    
+
     simage_instance->versionMatchesAtLeast = simage_wrapper_versionMatchesAtLeast;
-    
+
     /* The common case is that simage is either available from the
        linking process or we're successfully going to link it in. */
     simage_instance->available = 1;
@@ -187,25 +206,31 @@ simage_wrapper(void)
                                       &simage_instance->version.minor,
                                       &simage_instance->version.micro);
     }
-    
+
     SIMAGEWRAPPER_REGISTER_FUNC(simage_check_supported, simage_check_supported_t);
     SIMAGEWRAPPER_REGISTER_FUNC(simage_read_image, simage_read_image_t);
     SIMAGEWRAPPER_REGISTER_FUNC(simage_get_last_error, simage_get_last_error_t);
     SIMAGEWRAPPER_REGISTER_FUNC(simage_resize, simage_resize_t);
     SIMAGEWRAPPER_REGISTER_FUNC(simage_free_image, simage_free_image_t);
     SIMAGEWRAPPER_REGISTER_FUNC(simage_next_power_of_two, simage_next_power_of_two_t);
-    
+
     if (simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
       SIMAGEWRAPPER_REGISTER_FUNC(simage_get_num_savers, simage_get_num_savers_t);
-      SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_info, simage_get_saver_info_t);
+      SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_handle, simage_get_saver_handle_t);
       SIMAGEWRAPPER_REGISTER_FUNC(simage_check_save_supported, simage_check_save_supported_t);
       SIMAGEWRAPPER_REGISTER_FUNC(simage_save_image, simage_save_image_t);
+      SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_extensions, simage_get_saver_extensions_t);
+      SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_fullname, simage_get_saver_fullname_t);
+      SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_description, simage_get_saver_description_t);
     }
     else {
-      simage_instance->simage_get_saver_info = simage_wrapper_get_saver_info;
+      simage_instance->simage_get_saver_handle = simage_wrapper_get_saver_handle;
       simage_instance->simage_get_num_savers = simage_wrapper_get_num_savers;
       simage_instance->simage_check_save_supported = simage_wrapper_check_save_supported;
       simage_instance->simage_save_image = simage_wrapper_save_image;
+      simage_instance->simage_get_saver_extensions = simage_wrapper_get_saver_extensions;   
+      simage_instance->simage_get_saver_fullname = simage_wrapper_get_saver_fullname;
+      simage_instance->simage_get_saver_description = simage_wrapper_get_saver_description;   
     }
   }
   return simage_instance;

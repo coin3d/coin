@@ -58,15 +58,15 @@ extern "C" {
   typedef int (APIENTRY *simage_next_power_of_two_t)(int val);
 
   typedef int (APIENTRY *simage_get_num_savers_t)(void);
-  typedef const struct simage_save_plugin * (APIENTRY *simage_get_saver_info_t)(int idx);
-
-
-  
+  typedef void * (APIENTRY *simage_get_saver_handle_t)(int idx);
+  typedef const char * (APIENTRY *simage_get_saver_extensions_t)(void * handle);
+  typedef const char * (APIENTRY *simage_get_saver_fullname_t)(void * handle);
+  typedef const char * (APIENTRY *simage_get_saver_description_t)(void * handle);
 
   typedef struct {
     /* Is the simage library at all available? */
     int available;
-    
+
     /* simage versioning. */
     struct {
       int major, minor, micro;
@@ -74,7 +74,7 @@ extern "C" {
     int (*versionMatchesAtLeast)(int major,
                                  int minor,
                                  int micro);
-    
+
     simage_version_t simage_version;
     simage_check_supported_t simage_check_supported;
     simage_read_image_t simage_read_image;
@@ -85,11 +85,14 @@ extern "C" {
     simage_free_image_t simage_free_image;
     simage_next_power_of_two_t simage_next_power_of_two;
     simage_get_num_savers_t simage_get_num_savers;
-    simage_get_saver_info_t simage_get_saver_info;
+    simage_get_saver_handle_t simage_get_saver_handle;
+    simage_get_saver_extensions_t simage_get_saver_extensions;
+    simage_get_saver_fullname_t simage_get_saver_fullname;
+    simage_get_saver_description_t simage_get_saver_description;
   } simage_wrapper_t;
-  
+
   const simage_wrapper_t * simage_wrapper(void);
-  
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
