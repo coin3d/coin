@@ -218,6 +218,7 @@ SoFieldData::getFieldName(int index) const
 SoField *
 SoFieldData::getField(const SoFieldContainer * object, int index) const
 {
+  assert(index >= 0 && index < this->fields.getLength());
   char * fieldptr = (char *)object;
   fieldptr += this->fields[index]->ptroffset;
   return (SoField *)fieldptr;
@@ -342,6 +343,10 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
     if (fieldflags & 0x40) {
       if (!this->readFieldDescriptions(in, object, numfields)) return FALSE;
     }
+    else if (fieldflags != 0x00) {
+      // FIXME: check for other fieldflags. 20000103 mortene.
+      COIN_STUB();
+    }
 
 #if COIN_DEBUG    
     if (numfields > this->fields.getLength())
@@ -445,16 +450,27 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
 void
 SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
 {
-  // FIXME: the uint16_t types should be uint8_t. 20000102 mortene.
-
-  uint16_t numfields = this->getNumFields();
-
+  // Make sure all fields get written on SoUnknownNode nodes, even if
+  // they have their default flags set to TRUE.
+  SbList<SbBool> defaultflags(this->getNumFields() ? this->getNumFields() : 1);
+  uint16_t i;
+  if (object->getTypeId().isDerivedFrom(SoUnknownNode::getClassTypeId())) {
+    for (i=0; i < this->getNumFields(); i++) {
+      SoField * f = this->getField(object, i);
+      defaultflags.append(f->isDefault());
+      f->setDefault(FALSE);
+    }
+  }
+  
   // FIXME: is this really the best place to write the flags +
   // numfields value? 20000102 mortene.
+
   if (out->isBinary()) {
+    // FIXME: the uint16_t types should be uint8_t. 20000102 mortene.
+    uint16_t numfields = this->getNumFields();
     uint16_t fieldflags = 0x00;
-    // FIXME: take care of SoUnknownEngines and group
-    // SoUnknownNodes. 20000102 mortene.
+    // FIXME: take care of setting flags for SoUnknownEngines and
+    // group SoUnknownNodes. 20000102 mortene.
     if (object->getTypeId().isDerivedFrom(SoUnknownNode::getClassTypeId()))
       fieldflags |= 0x40;
 
@@ -465,15 +481,27 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
     out->write(w);
   }
 
-  for (uint16_t i=0; i < numfields; i++)
+  // FIXME: write descriptions for SoUnknownEngine, if
+  // necessary. 20000102 mortene.
+  if (object->getTypeId().isDerivedFrom(SoUnknownNode::getClassTypeId()))
+    this->writeFieldDescriptions(out, object);
+
+  for (i=0; i < this->getNumFields(); i++)
     this->getField(object, i)->write(out, this->getFieldName(i));
+
+  // Reset the default flags if we're writing an SoUnknownNode.
+  if (object->getTypeId().isDerivedFrom(SoUnknownNode::getClassTypeId())) {
+    for (i=0; i < this->getNumFields(); i++) {
+      this->getField(object, i)->setDefault(defaultflags[i]);
+    }
+  }
 }
 
 /*!
   Copy contents of \a src into this instance.
 
   If there was any data set up in this instance before the method was
-  called, the old data is removed.
+  called, the old data is removed first.
  */
 void
 SoFieldData::copy(const SoFieldData * src)
@@ -528,97 +556,54 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
     }
 
 
-  // FIXME: unify code for binary and ASCII formats. 20000102 mortene.
-
-  // Binary format.
-  if (in->isBinary()) {
-    for (int j=0; j < numdescriptionsexpected; j++) {
-      SbName fieldtype;
-      READ_NAME(fieldtype);
-
-      SoType type = SoType::fromName(fieldtype.getString());
-      if ((type == SoType::badType()) ||
-          !type.isDerivedFrom(SoField::getClassTypeId())) {
-        SoReadError::post(in, "Unknown field type '%s'",
-                          fieldtype.getString());
-        return FALSE;
-      }
-      else if (!type.canCreateInstance()) {
-        SoReadError::post(in, "Abstract class type '%s'",
-                          fieldtype.getString());
-        return FALSE;
-      }
-
-      SbName fieldname;
-      READ_NAME(fieldname);
-
-#if COIN_DEBUG && 0 // debug
-      SoDebugError::postInfo("SoFieldData::readFieldDescriptions",
-                             "type: ``%s'', name: ``%s''",
-                             fieldtype.getString(), fieldname.getString());
-#endif // debug
-
-      SbBool found = FALSE;
-      for (int i=0; !found && (i < this->fields.getLength()); i++) {
-        if (this->fields[i]->name == fieldname) found = TRUE;
-      }
-      if (!found) {
-        // Cast away const -- ugly.
-        SoFieldData * thisp = (SoFieldData *)this;
-        SoField * newfield = (SoField *)type.createInstance();
-        newfield->setContainer(object);
-        newfield->setDefault(TRUE);
-        thisp->addField(object, fieldname.getString(), newfield);
-      }
-    }
-  }
-  // ASCII format.
-  else {
-    char c;
+  char c;
+  if (!in->isBinary()) {
     READ_CHAR(c);
     if (c != OPEN_BRACE_CHAR) {
       SoReadError::post(in, "Expected '%c', got '%c'", OPEN_BRACE_CHAR, c);
       return FALSE;
     }
+  }
 
-    while (TRUE) {
-      SbName fieldtype;
-      READ_NAME(fieldtype);
+  for (int j=0; !in->isBinary() || (j < numdescriptionsexpected); j++) {
+    SbName fieldtype;
+    READ_NAME(fieldtype);
 
-      SoType type = SoType::fromName(fieldtype.getString());
-      if ((type == SoType::badType()) ||
-          !type.isDerivedFrom(SoField::getClassTypeId())) {
-        SoReadError::post(in, "Unknown field type '%s'",
-                          fieldtype.getString());
-        return FALSE;
-      }
-      else if (!type.canCreateInstance()) {
-        SoReadError::post(in, "Abstract class type '%s'", fieldtype.getString());
-        return FALSE;
-      }
+    SoType type = SoType::fromName(fieldtype.getString());
+    if ((type == SoType::badType()) ||
+        !type.isDerivedFrom(SoField::getClassTypeId())) {
+      SoReadError::post(in, "Unknown field type '%s'",
+                        fieldtype.getString());
+      return FALSE;
+    }
+    else if (!type.canCreateInstance()) {
+      SoReadError::post(in, "Abstract class type '%s'", fieldtype.getString());
+      return FALSE;
+    }
 
-      SbName fieldname;
-      READ_NAME(fieldname);
+    SbName fieldname;
+    READ_NAME(fieldname);
 
 #if COIN_DEBUG && 0 // debug
-      SoDebugError::postInfo("SoFieldData::readFieldDescriptions",
-                             "type: ``%s'', name: ``%s''",
-                             fieldtype.getString(), fieldname.getString());
+    SoDebugError::postInfo("SoFieldData::readFieldDescriptions",
+                           "type: ``%s'', name: ``%s''",
+                           fieldtype.getString(), fieldname.getString());
 #endif // debug
 
-      SbBool found = FALSE;
-      for (int i=0; !found && (i < this->fields.getLength()); i++) {
-        if (this->fields[i]->name == fieldname) found = TRUE;
-      }
-      if (!found) {
-        // Cast away const -- ugly.
-        SoFieldData * thisp = (SoFieldData *)this;
-        SoField * newfield = (SoField *)type.createInstance();
-        newfield->setContainer(object);
-        newfield->setDefault(TRUE);
-        thisp->addField(object, fieldname.getString(), newfield);
-      }
+    SbBool found = FALSE;
+    for (int i=0; !found && (i < this->fields.getLength()); i++) {
+      if (this->fields[i]->name == fieldname) found = TRUE;
+    }
+    if (!found) {
+      // Cast away const -- ugly.
+      SoFieldData * thisp = (SoFieldData *)this;
+      SoField * newfield = (SoField *)type.createInstance();
+      newfield->setContainer(object);
+      newfield->setDefault(TRUE);
+      thisp->addField(object, fieldname.getString(), newfield);
+    }
 
+    if (!in->isBinary()) {
       READ_CHAR(c);
 
       if (c == VALUE_SEPARATOR_CHAR) {
@@ -634,8 +619,13 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
       }
     }
   }
+
   return TRUE;
 }
+
+#undef READ_CHAR
+#undef READ_NAME
+
 
 /*!
   Write a set of field specifications to \a out for an unknown nodeclass type,
@@ -645,22 +635,22 @@ void
 SoFieldData::writeFieldDescriptions(SoOutput * out,
                                     const SoFieldContainer * object) const
 {
-  // Binary format.
-  if (out->isBinary()) {
-    COIN_STUB();
-  }
-  // ASCII format.
-  else {
+  if (!out->isBinary()) {
     out->indent();
     out->write("fields [ ");
-
-    for (int i=0; i < this->getNumFields(); i++) {
-      out->write((const char *)(this->getField(object, i)->getTypeId().getName()));
-      out->write(' ');
-      out->write((const char *)(this->getFieldName(i)));
-      out->write(", ");
-    }
-
-    out->write(" ]\n");
   }
+
+  SbBool atleastonewritten = FALSE;
+  for (int i=0; i < this->getNumFields(); i++) {
+    const SoField * f = this->getField(object, i);
+    if (f->shouldWrite()) {
+      if (!out->isBinary() && atleastonewritten) out->write(", ");
+      out->write((const char *)(f->getTypeId().getName()));
+      if (!out->isBinary()) out->write(' ');
+      out->write((const char *)(this->getFieldName(i)));
+      atleastonewritten = TRUE;
+    }
+  }
+
+  if (!out->isBinary()) out->write(" ]\n");
 }
