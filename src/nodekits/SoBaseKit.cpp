@@ -1182,7 +1182,9 @@ SoBaseKit::findPart(const SbString & partname, SoBaseKit *& kit, int & partnum,
     }
 #if COIN_DEBUG
     SoDebugError::postWarning("SoBaseKit::findPart",
-                              "part ``%s'' not found", firstpartname.getString());
+                              "part ``%s'' not found in %s", 
+                              firstpartname.getString(),
+                              kit->getTypeId().getName().getString());
 #endif // COIN_DEBUG
     return FALSE;
   }
@@ -1254,7 +1256,7 @@ SoBaseKit::findPart(const SbString & partname, SoBaseKit *& kit, int & partnum,
     }
     if (path) path->append(kit);
     return SoBaseKit::findPart(newpartname, kit, partnum, islist,
-                               listidx, makeifneeded);
+                               listidx, makeifneeded, path, recsearch);
   }
 }
 
