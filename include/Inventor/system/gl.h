@@ -47,11 +47,15 @@
 #endif /* !HAVE_GL_GL_H */
 #endif /* !HAVE_OPENGL_GL_H */
 
+#ifdef HAVE_SUPERGLU
+#include <superglu/include/superglu.h>
+#else
 #ifdef HAVE_GL_GLU_H
 #include <GL/glu.h>
 #else
 #ifdef HAVE_OPENGL_GLU_H
 #include <OpenGL/glu.h>
+#endif
 #endif
 #endif
 
