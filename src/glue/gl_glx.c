@@ -59,6 +59,40 @@ void glxglue_context_destruct(void * ctx) { assert(FALSE); }
 
 #else /* HAVE_GLX */
 
+/*
+ * GL/glx.h includes X11/Xmd.h which contains typedefs for BOOL and
+ * INT32 that conflict with the definitions in windef.h (which is
+ * included from windows.h, which may be included from
+ * Inventor/system/gl.h).  To avoid this conflict, we rename the
+ * typedefs done in X11/Xmd.h to use other names (tempbool and
+ * tempint32), and try to clean up the hack after the header has been
+ * parsed.  2003-06-25 larsa
+ */
+#ifndef BOOL
+#define BOOL tempbool
+#define COIN_DEFINED_BOOL
+#endif /* !BOOL */
+#ifndef INT32
+#define INT32 tempint32
+#define COIN_DEFINED_INT32
+#endif /* !INT32 */
+
+#include <GL/glx.h>
+
+/*
+ * This is the cleanup part of the X11/Xmd.h conflict fix hack set up
+ * above.  2003-06-25 larsa
+ */
+#ifdef COIN_DEFINED_BOOL
+#undef BOOL
+#undef COIN_DEFINED_BOOL
+#endif /* COIN_DEFINED_BOOL */
+#ifdef COIN_DEFINED_INT32
+#undef INT32
+#undef COIN_DEFINED_INT32
+#endif /* COIN_DEFINED_INT32 */
+
+
 static int glxglue_screen = -1;
 typedef void *(APIENTRY * COIN_PFNGLXGETPROCADDRESS)(const GLubyte *);
 static COIN_PFNGLXGETPROCADDRESS glxglue_glXGetProcAddress = NULL;

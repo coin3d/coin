@@ -36,10 +36,6 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#ifdef HAVE_GLX
-#include <GL/glx.h>
-#endif /* HAVE_GLX */
-
 #include <Inventor/system/gl.h>
 
 #ifdef __cplusplus
