@@ -32,6 +32,9 @@ RegularSources = \
 	SoSceneManager.cpp \
 	SoType.cpp \
 	SoOffscreenRenderer.cpp \
+	SoOffscreenAGLData.cpp \
+	SoOffscreenGLXData.cpp \
+	SoOffscreenWGLData.cpp \
 	SoGenerate.cpp \
 	SoLockManager.cpp \
 	SoByteStream.cpp \
@@ -83,9 +86,10 @@ PrivateHeaders = \
 	SoGLqmeshpreciselightingTemplate.icc \
 	SoInput_FileInfo.h \
 	SoInput_Reader.h \
-	SoOffscreenAGLData.icc \
-	SoOffscreenGLXData.icc \
-	SoOffscreenWGLData.icc \
+	SoOffscreenInternalData.h \
+	SoOffscreenAGLData.h \
+	SoOffscreenGLXData.h \
+	SoOffscreenWGLData.h \
 	SoOutput_Writer.h \
 	cppmangle.icc \
 	defaultfonts.h \

@@ -177,6 +177,9 @@ RegularSources = \
 	SoSceneManager.cpp \
 	SoType.cpp \
 	SoOffscreenRenderer.cpp \
+	SoOffscreenAGLData.cpp \
+	SoOffscreenGLXData.cpp \
+	SoOffscreenWGLData.cpp \
 	SoGenerate.cpp \
 	SoLockManager.cpp \
 	SoByteStream.cpp \
@@ -231,9 +234,10 @@ PrivateHeaders = \
 	SoGLqmeshpreciselightingTemplate.icc \
 	SoInput_FileInfo.h \
 	SoInput_Reader.h \
-	SoOffscreenAGLData.icc \
-	SoOffscreenGLXData.icc \
-	SoOffscreenWGLData.icc \
+	SoOffscreenInternalData.h \
+	SoOffscreenAGLData.h \
+	SoOffscreenGLXData.h \
+	SoOffscreenWGLData.h \
 	SoOutput_Writer.h \
 	cppmangle.icc \
 	defaultfonts.h \
@@ -331,6 +335,9 @@ misc_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoSceneManager.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoType.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoOffscreenRenderer.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoOffscreenAGLData.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoOffscreenGLXData.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoOffscreenWGLData.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGenerate.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoLockManager.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoByteStream.$(OBJEXT) \
@@ -364,6 +371,9 @@ libmisc_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoProtoInstance.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoSceneManager.lo SoType.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoOffscreenRenderer.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoOffscreenAGLData.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoOffscreenGLXData.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoOffscreenWGLData.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGenerate.lo SoLockManager.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoByteStream.lo SoTranSender.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTranReceiver.lo default3dfont.lo \
@@ -391,6 +401,9 @@ libmisc@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoProtoInstance.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoSceneManager.lo SoType.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoOffscreenRenderer.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoOffscreenAGLData.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoOffscreenGLXData.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoOffscreenWGLData.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGenerate.lo SoLockManager.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoByteStream.lo SoTranSender.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTranReceiver.lo default3dfont.lo \
@@ -433,8 +446,14 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoNotRec.Plo $(DEPDIR)/SoNotRec.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoNotification.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoNotification.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoOffscreenAGLData.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoOffscreenAGLData.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoOffscreenGLXData.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoOffscreenGLXData.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoOffscreenRenderer.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoOffscreenRenderer.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoOffscreenWGLData.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoOffscreenWGLData.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoOutput.Plo $(DEPDIR)/SoOutput.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoOutput_Writer.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoOutput_Writer.Po $(DEPDIR)/SoPath.Plo \
@@ -590,8 +609,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNotRec.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNotification.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNotification.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOffscreenAGLData.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOffscreenAGLData.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOffscreenGLXData.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOffscreenGLXData.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOffscreenRenderer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOffscreenRenderer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOffscreenWGLData.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOffscreenWGLData.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOutput.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOutput.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOutput_Writer.Plo@am__quote@
