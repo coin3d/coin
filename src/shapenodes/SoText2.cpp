@@ -222,6 +222,16 @@ SoText2::SoText2(void)
 */
 SoText2::~SoText2()
 {
+  
+ if (PRIVATE(this)->fontspec != NULL) {
+    cc_string_destruct(PRIVATE(this)->fontspec->name);
+    if (PRIVATE(this)->fontspec->family != NULL)
+      cc_string_destruct(PRIVATE(this)->fontspec->family);
+    if (PRIVATE(this)->fontspec->style != NULL)
+      cc_string_destruct(PRIVATE(this)->fontspec->style);
+    delete PRIVATE(this)->fontspec;
+  }
+
   PRIVATE(this)->flushGlyphCache(TRUE);
   delete PRIVATE(this);
 }
@@ -309,15 +319,14 @@ SoText2::GLRender(SoGLRenderAction * action)
       charcnt = PRIVATE(this)->laststring[i].getLength();
 
       for (int i2 = 0; i2 < charcnt; i2++) {
-
-        const cc_glyph2d * glyph = cc_glyph2d_getglyph((int) PRIVATE(this)->laststring[i][i2], 
-                                                       PRIVATE(this)->fontspec, 0.0f);
-
+        
+        const cc_glyph2d * glyph = cc_glyph2d_getglyph((int) PRIVATE(this)->laststring[i][i2], PRIVATE(this)->fontspec, 0.0f);
+        
         buffer = cc_glyph2d_getbitmap(glyph, thissize, thispos);
-
+        
         ix = thissize[0];
         iy = thissize[1];
-
+        
         int charwidth = (int) cc_glyph2d_getwidth(glyph);
       
         rasterx = xpos + thispos[0]; 
