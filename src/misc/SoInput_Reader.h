@@ -45,7 +45,7 @@ public:
   // must be overloaded to read data
   virtual int readBuffer(char * buf, const size_t readlen) = 0;
 
-  // should be overloader to return filename. Default method returns
+  // should be overloaded to return filename. Default method returns
   // an empty string.
   virtual const SbString & getFilename(void);
 
