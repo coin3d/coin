@@ -533,7 +533,7 @@ AC_ARG_ENABLE([dl-simage],
 if $enable_dl_simage && $coin_can_do_runtime_linking; then
   AC_DEFINE_UNQUOTED([SIMAGE_RUNTIME_LINKING],,
     [define for runtime linking with simage])
-  SIM_AC_CONFIGURATION_SETTING([simage linkage], [runtime])
+  SIM_AC_CONFIGURATION_SETTING([simage linkage], [run-time binding])
 else
   SIM_AC_HAVE_SIMAGE_IFELSE([
     AC_DEFINE([HAVE_LIBSIMAGE],,
@@ -544,7 +544,7 @@ else
     COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_simage_cppflags"
     COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_simage_ldflags"
     COIN_EXTRA_LIBS="$sim_ac_simage_libs $COIN_EXTRA_LIBS"
-    SIM_AC_CONFIGURATION_SETTING([simage linkage], [static])
+    SIM_AC_CONFIGURATION_SETTING([simage linkage], [link-time binding])
   ], [
     if $sim_ac_simage_desired; then
       AC_MSG_WARN(simage development system not found);
@@ -644,7 +644,7 @@ if test x"$sim_ac_gl_avail" = xyes; then
     ], [
       AC_DEFINE_UNQUOTED([GLU_RUNTIME_LINKING],,
         [define for runtime linking with GLU])
-      SIM_AC_CONFIGURATION_SETTING([GLU linkage], [runtime])
+      SIM_AC_CONFIGURATION_SETTING([GLU linkage], [run-time binding])
     ])
   else
     # *******************************************************************
@@ -655,7 +655,7 @@ if test x"$sim_ac_gl_avail" = xyes; then
       COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_glu_cppflags"
       COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_glu_ldflags"
       COIN_EXTRA_LIBS="$sim_ac_glu_libs $COIN_EXTRA_LIBS"
-      SIM_AC_CONFIGURATION_SETTING([GLU linkage], [static])
+      SIM_AC_CONFIGURATION_SETTING([GLU linkage], [link-time binding])
     ], [
       SIM_AC_CONFIGURATION_SETTING([GLU linkage], [no GLU support])
     ])
