@@ -46,8 +46,8 @@
 #include <Inventor/fields/SoSFTrigger.h>
 #include <Inventor/fields/SoSFUInt32.h>
 #include <Inventor/fields/SoSFUShort.h>
-#include <Inventor/fields/SoSFVec2f.h>
 #include <Inventor/fields/SoSFVec3d.h>
+#include <Inventor/fields/SoSFVec2f.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFVec4f.h>
 #include <Inventor/fields/SoSFEngine.h>
@@ -72,6 +72,7 @@
 #include <Inventor/fields/SoMFUInt32.h>
 #include <Inventor/fields/SoMFUShort.h>
 #include <Inventor/fields/SoMFVec2f.h>
+#include <Inventor/fields/SoMFVec3d.h>
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoMFVec4f.h>
 

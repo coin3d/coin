@@ -25,6 +25,7 @@ RegularSources = \
 	SoMFUShort.cpp \
 	SoMFVec2f.cpp \
 	SoMFVec3f.cpp \
+	SoMFVec3d.cpp \
 	SoMFVec4f.cpp \
 	SoMField.cpp \
 	SoSFBitMask.cpp \
@@ -84,6 +85,7 @@ PublicHeaders = \
 	../../include/Inventor/fields/SoMFUShort.h \
 	../../include/Inventor/fields/SoMFVec2f.h \
 	../../include/Inventor/fields/SoMFVec3f.h \
+	../../include/Inventor/fields/SoMFVec3d.h \
 	../../include/Inventor/fields/SoMFVec4f.h \
 	../../include/Inventor/fields/SoMField.h \
 	../../include/Inventor/fields/SoSFBitMask.h \

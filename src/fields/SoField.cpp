@@ -1940,6 +1940,7 @@ SoField::initClasses(void)
 
   // double precision
   SoSFVec3d::initClass();
+  SoMFVec3d::initClass();
 
   // Create these obsoleted types for backwards compatibility. They
   // are typedef'ed to the types which obsoleted them, but this is
