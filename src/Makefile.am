@@ -2,6 +2,9 @@
 # Process this file with automake to generate Makefile.in.
 # **************************************************************************
 
+CLEANFILES = \
+  coin@COIN_MAJOR_VERSION@@SUFFIX@.pdb coin@COIN_MAJOR_VERSION@@SUFFIX@.dll
+
 # **************************************************************************
 # Extensions which might be present.
 
