@@ -527,8 +527,13 @@ SoDBP::clean(void)
   SoDBP::sensormanager->setChangedCallback(NULL, NULL);
 
   delete SoDBP::globaltimersensor;
-
   delete SoDBP::converters;
+
+  // Must be done /before/ killing off the SoSensorManager instance,
+  // in case there is an SoFieldSensor attached to the realTime global
+  // field.
+  SoDB::renameGlobalField("realTime", "");
+
   delete SoDBP::sensormanager;
 
   for (int i = 0; i < SoDBP::headerlist->getLength(); i++)
@@ -677,7 +682,7 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
   // avoid premature destruction.
   root->ref();
 
-  // [do your thing here -- rendering of the scene, whatever]
+  // [do your thing here -- attach the scene to a viewer or whatever]
 
   // Bring ref-count of root-node back to zero to cause the
   // destruction of the scene.
@@ -686,11 +691,18 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
   // it's children nodes, so they also self-destruct, and so on
   // recursively down the scenegraph hierarchy until the complete
   // scenegraph has self-destructed and thereby returned all
-  // memory resources it was using up.)
+  // memory resources it was using.)
   \endcode
 
   Returns \c NULL on any error.
- */
+
+  Tip: a common operation to do after importing a scene graph is to
+  pick out the memory pointers to one or more of the imported nodes
+  for further handling. This can be accomplished by using either the
+  SoNode::getByName() function (which is the easier approach) or by
+  using an instance of the SoSearchAction class (which is the more
+  complex but also more flexible approach).
+*/
 SoSeparator *
 SoDB::readAll(SoInput * in)
 {
@@ -923,11 +935,17 @@ SoDB::getHeaderString(const int i)
   If a global field with the same name but a different type exists,
   returns \c NULL.
 
+  A global field can be deallocated by calling
+  SoDB::renameGlobalField(), with the second argument set to an empty
+  string.
+
   \sa getGlobalField(), renameGlobalField()
  */
 SoField *
 SoDB::createGlobalField(const SbName & name, SoType type)
 {
+  assert(name != "" && "invalid name for a global field");
+
   SoField * f = SoDB::getGlobalField(name);
   if (f) {
     if (f->getTypeId() == type) return f;
