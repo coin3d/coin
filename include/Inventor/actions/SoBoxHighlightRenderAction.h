@@ -23,7 +23,6 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/SbColor.h>
 
-class SoTempPath;
 class SoPathList;
 
 
@@ -64,9 +63,11 @@ private:
   class SoSearchAction * searchaction;
   void init(void);
   void drawBoxes(SoPath * pathtothis, const SoPathList * pathlist);
+
   SbColor color;
   unsigned short linepattern;
   float linewidth;
+  SoTempPath * postprocpath;
 };
 
 #endif // !COIN_SOBOXHIGHLIGHTRENDERACTION_H

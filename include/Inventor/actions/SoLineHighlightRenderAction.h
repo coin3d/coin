@@ -66,6 +66,7 @@ private:
   SbColor color;
   unsigned short linepattern;
   float linewidth;
+  SoTempPath * postprocpath;
 };
 
 #endif // !COIN_SOLINEHIGHLIGHTRENDERACTION_H

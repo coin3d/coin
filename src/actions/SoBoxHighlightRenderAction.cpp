@@ -107,6 +107,10 @@ SoBoxHighlightRenderAction::init(void)
   this->linepattern = 0xffff;
   this->linewidth = 3.0f;
   this->searchaction = NULL;
+
+  // SoBase-derived objects should be dynamically allocated.
+  this->postprocpath = new SoTempPath(32);
+  this->postprocpath->ref();
 }
 
 
@@ -115,6 +119,7 @@ SoBoxHighlightRenderAction::init(void)
 */
 SoBoxHighlightRenderAction::~SoBoxHighlightRenderAction(void)
 {
+  this->postprocpath->unref();
   delete this->searchaction;
 }
 
@@ -227,10 +232,10 @@ SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
   int i;
   int thispos = ((SoFullPath *)pathtothis)->getLength()-1;
   assert(thispos >= 0);
-  SoTempPath temppath(32);
-  temppath.ref(); // to avoid having refcount == 0
+  this->postprocpath->truncate(0); // reset
 
-  for (i = 0; i < thispos; i++) temppath.append(pathtothis->getNode(i));
+  for (i = 0; i < thispos; i++)
+    this->postprocpath->append(pathtothis->getNode(i));
 
   SoState * state = this->getState();
   state->push();
@@ -253,11 +258,11 @@ SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
     SoFullPath * path = (SoFullPath *)(*pathlist)[i];
 
     for (int j = 0; j < path->getLength(); j++) {
-      temppath.append(path->getNode(j));
+      this->postprocpath->append(path->getNode(j));
     }
 
-    SoGLRenderAction::apply(&temppath);
-    temppath.truncate(thispos);
+    SoGLRenderAction::apply(this->postprocpath);
+    this->postprocpath->truncate(thispos);
   }
   state->pop();
 }
