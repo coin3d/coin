@@ -34,9 +34,9 @@
   typically quite small (256x256 or smaller).  Each triangle is
   clipped, based on the texture coordinates, into several smaller
   triangles. The triangles will then be guaranteed to use only one
-  subtexture. Then I project the triangles onto the screen, and
-  calculate the maximum projected size for the
-  subtextures. Subtextures outside the viewport will be culled. Each
+  subtexture. Then the triangles are projected onto the screen, and
+  the maximum projected size for each subtexture is
+  calculated. Subtextures outside the viewport will be culled. Each
   subtexture is then sampled down to a 2^n value close to the
   projected size, and a GL texture is created with this size. This GL
   texture is used when rendering triangles that are clipped into that
@@ -46,7 +46,7 @@
   occur because the projected size of the texture is calculated on the
   fly.  When mipmapping is enabled, the amount of texture memory used
   is doubled, and creating the texture object is much slower, so we
-  avoid this for SoGLBigImage.
+  avoid this for SoGLBigImage.  
 */
 
 #include <Inventor/misc/SoGLBigImage.h>
@@ -69,7 +69,7 @@
 // the number of subtextures that can be changed (resized) each frame.
 // By keeping this number small, we avoid slow updates when zooming in
 // on an image, as only few textures are changed each frame.
-#define CHANGELIMIT 2
+#define CHANGELIMIT 4
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -85,7 +85,10 @@ public:
     glimagearray(NULL),
     glimagediv(NULL),
     glimageage(NULL),
-    averagebuf(NULL)  { }
+    averagebuf(NULL),
+    cache(NULL),
+    cachesize(NULL),
+    numcachelevels(0) { }
 
   ~SoGLBigImageP() {
     assert(this->glimagearray == NULL);
@@ -110,13 +113,17 @@ public:
   int changecnt;
   SbImage myimage;
   unsigned int * averagebuf;
+  unsigned char ** cache;
+  SbVec2s * cachesize;
+  int numcachelevels;
 
   void copySubImage(const int idx,
                     const unsigned char * src,
                     const SbVec2s & fullsize,
                     const int nc,
                     unsigned char * dst,
-                    const int div);
+                    const int div,
+                    const int level);
 
   void copyResizeSubImage(const int idx,
                           const unsigned char * src,
@@ -125,6 +132,16 @@ public:
                           unsigned char * dst,
                           const SbVec2s & targetsize);
 
+  void resetCache(void) {
+    for (int i = 0; i < this->numcachelevels; i++) {
+      delete[] this->cache[i];
+    }
+    delete[] this->cache;
+    delete[] this->cachesize;
+    this->cache = NULL;
+    this->cachesize = NULL;
+    this->numcachelevels = 0;
+  }
 
   void reset(SoState * state = NULL) {
     const int n = this->currentdim[0] * this->currentdim[1];
@@ -144,6 +161,7 @@ public:
     this->averagebuf = NULL;
     this->currentdim.setValue(0,0);
   }
+  void createCache(const unsigned char * bytes, const SbVec2s size, const int nc);
 };
 
 SoType SoGLBigImageP::classTypeId;
@@ -208,6 +226,7 @@ SoGLBigImage::setData(const SbImage * image,
                               "createinstate must be NULL for SoGLBigImage");
   }
   THIS->reset(NULL);
+  THIS->resetCache();
   inherited::setData(image, wraps, wrapt, quality, border, NULL);
 }
 
@@ -225,6 +244,7 @@ SoGLBigImage::setData(const SbImage * image,
                               "createinstate must be NULL for SoGLBigImage");
   }
   THIS->reset(NULL);
+  THIS->resetCache();
   inherited::setData(image, wraps, wrapt, wrapr, quality, border, NULL);
 }
 
@@ -350,11 +370,19 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
     int numbytes = THIS->imagesize[0] * THIS->imagesize[1] * numcomponents;
     THIS->averagebuf = 
       new unsigned int[numbytes ? numbytes : 1];
+
+    if (THIS->cache == NULL) {
+      THIS->createCache(bytes, size, numcomponents);
+    }
   }
 
+  int level = 0;
   int div = 2;
   while ((THIS->imagesize[0]/div > projsize[0]) &&
-         (THIS->imagesize[1]/div > projsize[1])) div <<= 1;
+         (THIS->imagesize[1]/div > projsize[1])) {
+    div <<= 1;
+    level++;
+  }
   div >>= 1;
   
   if (THIS->glimagearray[idx] == NULL ||
@@ -394,7 +422,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
                            bytes,
                            size,
                            numcomponents,
-                           THIS->tmpbuf, div);
+                           THIS->tmpbuf, div, level);
       }
       else {
         THIS->copyResizeSubImage(idx,
@@ -436,7 +464,7 @@ SoGLBigImage::exceededChangeLimit(void)
 void
 SoGLBigImage::unrefOldDL(SoState * state, const uint32_t maxage)
 {
-  const int numimages = THIS->dim[0] * THIS->dim[1];
+  const int numimages = THIS->currentdim[0] * THIS->currentdim[1];
   for (int i = 0; i < numimages; i++) {
     if (THIS->glimagearray[i]) {
       if (THIS->glimageage[i] >= maxage) {
@@ -465,9 +493,9 @@ SoGLBigImageP::copySubImage(const int idx,
                             const SbVec2s & fsize,
                             const int nc,
                             unsigned char * dst,
-                            const int div)
-{
-
+                            const int div,
+                            const int level)
+{  
   if (div == 1) {
     SbVec2s pos(idx % this->dim[0], idx / this->dim[0]);
     
@@ -482,16 +510,52 @@ SoGLBigImageP::copySubImage(const int idx,
     int fullsize[2];
     fullsize[0] = fsize[0];
     fullsize[1] = fsize[1];
-
+    
     const int w = this->imagesize[0];
     const int h = this->imagesize[1];
     
-    for (int y = 0; y < h; y += div) {
+    for (int y = 0; y < h; y++) {
       int tmpyadd = fullsize[0] * (origin[1]+y);
-      for (int x = 0; x < w; x += div) {
+      for (int x = 0; x < w; x++) {
         if ((origin[0] + x) < fullsize[0] && (origin[1] + y) < fullsize[1]) {
           const unsigned char * srcptr =
             src + nc * (tmpyadd + origin[0]+x);
+          for (int c = 0; c < nc; c++) {
+            *dst++ = srcptr[c];
+          }
+        }
+        else {
+          for (int c = 0; c < nc; c++) *dst++ = 0xff;
+        }
+      }
+    }
+  }
+  else if (this->cache && level < this->numcachelevels && this->cache[level]) {
+    SbVec2s pos(idx % this->dim[0], idx / this->dim[0]);
+    
+    // FIXME: investigate if it's possible to set the pixel transfer
+    // mode so that we don't have to copy the data into a temporary
+    // image. This is probably fast enough though.
+    
+    int origin[2];
+    origin[0] = pos[0] * (this->imagesize[0] >> level);
+    origin[1] = pos[1] * (this->imagesize[1] >> level);
+    
+    int fullsize[2];
+    fullsize[0] = this->cachesize[level][0];
+    fullsize[1] = this->cachesize[level][1];
+
+    const int w = this->imagesize[0] >> level;
+    const int h = this->imagesize[1] >> level;
+
+    unsigned char * cachesrc = this->cache[level];
+    
+    for (int y = 0; y < h; y++) {
+      int tmpyadd = fullsize[0] * (origin[1]+y);
+      for (int x = 0; x < w; x++) {
+        if ((origin[0] + x) < fullsize[0] && (origin[1] + y) < fullsize[1]) {
+          const unsigned char * srcptr =
+            cachesrc + nc * (tmpyadd + origin[0]+x);
           for (int c = 0; c < nc; c++) {
             *dst++ = srcptr[c];
           }
@@ -606,6 +670,139 @@ SoGLBigImageP::copyResizeSubImage(const int idx,
   }
 }
 
+// create a lower resolution image by averaging all pixels in a block
+// (from the full resolution image) into a new pixel. This is pretty
+// slow, but yields a higher quality result compared to when each
+// level is calculated based on the previous level.
+static  unsigned char *
+image_downsample(const unsigned char * bytes, const SbVec2s fullsize, 
+                 const int nc, const SbVec2s subsize, const int div)
+{
+  unsigned char * dst = new unsigned char[subsize[0]*subsize[1]*nc];
+  unsigned char * dstptr = dst;
+
+  int starty = 0;
+  int stopy = div;
+  for (int y = 0; y < subsize[1]; y++) {
+    assert(starty < fullsize[1]);
+
+    int startx = 0;
+    int stopx = div;
+
+    for (int x = 0; x < subsize[0]; x++) {
+      assert(startx < fullsize[0]);
+
+      int avg[4] = {0};
+      int numavg = 0;
+      
+      for (int y2 = starty; y2 < stopy; y2++) {
+        for (int x2 = startx; x2 < stopx; x2++) {
+          const unsigned char * src = bytes + (fullsize[0]*y2 + x2) * nc;
+          for (int c = 0; c < nc; c++) {
+            avg[c] += src[c]; 
+          }
+          numavg++;
+        }
+      }
+      assert(numavg > 0);
+      for (int c = 0; c < nc; c++) {
+        *dstptr++ = avg[c] / numavg;
+      }
+      startx += div;
+      if (startx >= fullsize[0]) startx = fullsize[0] - 1;
+      stopx += div;
+      if (stopx > fullsize[0]) stopx = fullsize[0];
+    }
+    starty += div;
+    if (starty >= fullsize[1]) starty = fullsize[1]-1;
+    stopy += div;
+    if (stopy > fullsize[1]) stopy = fullsize[1];
+  }
+  
+  return dst;
+}
+
+// create a lower resolution image by averaging four and four pixels
+// into a new pixel. This is the same technique as the one usually
+// used when creating OpenGL mipmaps. Each level is calculated based
+// on the previous level, not on the full-resolution image.
+static void
+image_downsample_fast(const int width, const int height, const int nc,
+                      const unsigned char * datain, unsigned char * dataout)
+{
+  assert(width > 1 || height > 1);
+
+  int nextrow = width * nc;
+  if (width & 1) nextrow += nc; // in case original image has odd size
+  int newwidth = width >> 1;
+  int newheight = height >> 1;
+  unsigned char * dst = dataout;
+  const unsigned char * src = datain;
+
+  // check for 1D images
+  if (width == 1 || height == 1) {
+    int n = SbMax(newwidth, newheight);
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < nc; j++) {
+        *dst = (src[0] + src[nc]) >> 1;
+        dst++; src++;
+      }
+      src += nc; // skip to next pixel
+    }
+  }
+  else {
+    for (int i = 0; i < newheight; i++) {
+      for (int j = 0; j < newwidth; j++) {
+        for (int c = 0; c < nc; c++) {
+          *dst = (src[0] + src[nc] + src[nextrow] + src[nextrow+nc] + 2) >> 2;
+          dst++; src++;
+        }
+        src += nc; // skip to next pixel
+      }
+      src += nextrow;
+    }
+  }
+}
+
+void 
+SoGLBigImageP::createCache(const unsigned char * bytes, const SbVec2s size, const int nc)
+{
+  int levels = 0;
+  
+  while (((size[0]>>levels) > 0) || ((size[1]>>levels) > 0)) {
+    levels++;
+  }
+  if (levels == 0) return;
+  this->numcachelevels = levels;
+
+  this->cache = new unsigned char*[levels];
+  this->cachesize = new SbVec2s[levels];
+  // temporarily set first cache to simplify code below
+  this->cache[0] = (unsigned char*) bytes;
+  this->cachesize[0] = size;
+            
+  for (int l = 1; l < levels; l++) {
+#if 0 // high-quality downsample is too slow, currently disabled
+    int sx = size[0] >> l;
+    if (sx == 0) sx = 1;
+    int sy = size[1] >> l;
+    if (sy == 0) sy = 1;
+    
+    this->cachesize[l] = SbVec2s((short)sx, (short)sy);
+    this->cache[l] = image_downsample(bytes, size, nc, this->cachesize[l], 1<<l);
+#else // end of high quality downsample
+    short w = size[0]>>l;
+    short h = size[1]>>l;
+    this->cachesize[l] = SbVec2s(w, h);
+    this->cache[l] = new unsigned char[w*h*nc];
+    image_downsample_fast(this->cachesize[l-1][0], this->cachesize[l-1][1], nc,
+                          this->cache[l-1], this->cache[l]); 
+#endif // end of low quality downsample
+  }
+  this->cache[0] = NULL;
+  this->cachesize[0] = SbVec2s(0, 0);
+}
 
 
 #endif // DOXYGEN_SKIP_THIS
+
