@@ -108,6 +108,7 @@ PrivateHeaders = \
 	../../include/Inventor/C/base/heapp.h \
 	../../include/Inventor/C/base/dynarray.h \
 	../../include/Inventor/C/base/namemap.h
+ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(base, base)
 # **************************************************************************
@@ -191,7 +192,7 @@ install-libbaseincHEADERS: $(libbaseinc_HEADERS)
 	  src="$$d$$p"; dst="$(DESTDIR)$(libbaseincdir)/$$f"; \
 	  if cmp -s "$$src" "$$dst"; then :; else \
 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
-	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst" || exit 1; \
 	  fi \
 	done
 	@list='$(ObsoletedHeaders)'; for f in $$list; do \
@@ -200,6 +201,7 @@ install-libbaseincHEADERS: $(libbaseinc_HEADERS)
 	    echo " rm -f $$file"; \
 	    rm -f "$$file"; \
 	  fi \
-	done
+	done; \
+	:
 
 ##$ END TEMPLATE Make-Common

@@ -20,7 +20,7 @@ VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
-top_builddir = ../../../..
+top_builddir = ../../..
 
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 INSTALL = @INSTALL@
@@ -238,17 +238,72 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 
 PublicHeaders = \
-	hash.h \
-	heap.h \
-	memalloc.h \
-	rbptree.h \
-	time.h \
-	string.h \
-	list.h
+	SoSubField.h \
+	SoFields.h \
+	SoField.h \
+	SoFieldContainer.h \
+	SoFieldData.h \
+	SoMFBitMask.h \
+	SoMFBool.h \
+	SoMFColor.h \
+	SoMFEngine.h \
+	SoMFEnum.h \
+	SoMFFloat.h \
+	SoMFInt32.h \
+	SoMFLong.h \
+	SoMFMatrix.h \
+	SoMFName.h \
+	SoMFNode.h \
+	SoMFPath.h \
+	SoMFPlane.h \
+	SoMFRotation.h \
+	SoMFShort.h \
+	SoMFString.h \
+	SoMFTime.h \
+	SoMFUInt32.h \
+	SoMFULong.h \
+	SoMFUShort.h \
+	SoMFVec2f.h \
+	SoMFVec3f.h \
+	SoMFVec3d.h \
+	SoMFVec4f.h \
+	SoMField.h \
+	SoSFBitMask.h \
+	SoSFBool.h \
+	SoSFBox3s.h \
+	SoSFColor.h \
+	SoSFEngine.h \
+	SoSFEnum.h \
+	SoSFFloat.h \
+	SoSFImage.h \
+	SoSFImage3.h \
+	SoSFInt32.h \
+	SoSFLong.h \
+	SoSFMatrix.h \
+	SoSFName.h \
+	SoSFNode.h \
+	SoSFPath.h \
+	SoSFPlane.h \
+	SoSFRotation.h \
+	SoSFShort.h \
+	SoSFString.h \
+	SoSFTime.h \
+	SoSFTrigger.h \
+	SoSFUInt32.h \
+	SoSFULong.h \
+	SoSFUShort.h \
+	SoSFVec2s.h \
+	SoSFVec2f.h \
+	SoSFVec3s.h \
+	SoSFVec3f.h \
+	SoSFVec3d.h \
+	SoSFVec4f.h \
+	SoSField.h
 
 PrivateHeaders = \
-	hashp.h \
-	heapp.h
+	SoSubFieldP.h \
+	SoGlobalField.h
+
 
 ObsoleteHeaders = 
 
@@ -266,26 +321,26 @@ ObsoleteHeaders =
 # within the Makefile.am itself. 19991201 mortene.
 EXTRA_DIST = $(PrivateHeaders)
 
-@MAC_FRAMEWORK_TRUE@libcbaseincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/C/base
-@MAC_FRAMEWORK_FALSE@libcbaseincdir = $(includedir)/Inventor/C/base
+@MAC_FRAMEWORK_TRUE@libfieldsincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/fields
+@MAC_FRAMEWORK_FALSE@libfieldsincdir = $(includedir)/Inventor/fields
 # hack to change libdir value when installing Mac OS X compiler framework
 @MAC_FRAMEWORK_TRUE@lib@nop@dir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Libraries
-libcbaseinc_HEADERS = $(PublicHeaders)
-subdir = include/Inventor/C/base
+libfieldsinc_HEADERS = $(PublicHeaders)
+subdir = include/Inventor/fields
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 DIST_SOURCES =
-HEADERS = $(libcbaseinc_HEADERS)
+HEADERS = $(libfieldsinc_HEADERS)
 
-DIST_COMMON = $(libcbaseinc_HEADERS) Makefile.am Makefile.in
+DIST_COMMON = $(libfieldsinc_HEADERS) Makefile.am Makefile.in
 all: all-am
 
 .SUFFIXES:
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  include/Inventor/C/base/Makefile
+	  $(AUTOMAKE) --gnu  include/Inventor/fields/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 
@@ -298,14 +353,14 @@ clean-libtool:
 distclean-libtool:
 	-rm -f libtool
 uninstall-info-am:
-libcbaseincHEADERS_INSTALL = $(INSTALL_HEADER)
+libfieldsincHEADERS_INSTALL = $(INSTALL_HEADER)
 
-uninstall-libcbaseincHEADERS:
+uninstall-libfieldsincHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(libcbaseinc_HEADERS)'; for p in $$list; do \
+	@list='$(libfieldsinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libcbaseincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libcbaseincdir)/$$f; \
+	  echo " rm -f $(DESTDIR)$(libfieldsincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libfieldsincdir)/$$f; \
 	done
 
 ETAGS = etags
@@ -363,7 +418,7 @@ distclean-tags:
 	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
-top_distdir = ../../../..
+top_distdir = ../../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
@@ -398,7 +453,7 @@ check: check-am
 all-am: Makefile $(HEADERS)
 
 installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(libcbaseincdir)
+	$(mkinstalldirs) $(DESTDIR)$(libfieldsincdir)
 install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
@@ -440,7 +495,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-libcbaseincHEADERS
+install-data-am: install-libfieldsincHEADERS
 
 install-exec-am:
 
@@ -466,37 +521,37 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-info-am uninstall-libcbaseincHEADERS
+uninstall-am: uninstall-info-am uninstall-libfieldsincHEADERS
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
 	clean-libtool ctags distclean distclean-generic \
 	distclean-libtool distclean-tags distdir dvi dvi-am info \
 	info-am install install-am install-data install-data-am \
 	install-exec install-exec-am install-info install-info-am \
-	install-libcbaseincHEADERS install-man install-strip \
+	install-libfieldsincHEADERS install-man install-strip \
 	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic \
 	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
-	uninstall-am uninstall-info-am uninstall-libcbaseincHEADERS
+	uninstall-am uninstall-info-am uninstall-libfieldsincHEADERS
 
 
-install-libcbaseincHEADERS: $(libcbaseinc_HEADERS)
+install-libfieldsincHEADERS: $(libfieldsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	@if test x"$(libcbaseinc_HEADERS)" = x""; then :; else \
-	  echo " $(mkinstalldirs) $(DESTDIR)$(libcbaseincdir)"; \
-	  $(mkinstalldirs) $(DESTDIR)$(libcbaseincdir); \
+	@if test x"$(libfieldsinc_HEADERS)" = x""; then :; else \
+	  echo " $(mkinstalldirs) $(DESTDIR)$(libfieldsincdir)"; \
+	  $(mkinstalldirs) $(DESTDIR)$(libfieldsincdir); \
 	fi
-	@list='$(libcbaseinc_HEADERS)'; for p in $$list; do \
+	@list='$(libfieldsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(libcbaseincdir)/$$f"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libfieldsincdir)/$$f"; \
 	  if cmp -s "$$src" "$$dst"; then :; else \
 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
 	    $(INSTALL_HEADER) "$$src" "$$dst" || exit 1; \
 	  fi \
 	done
 	@list='$(ObsoletedHeaders)'; for f in $$list; do \
-	  file="$(DESTDIR)$(libcbaseincdir)/$$f"; \
+	  file="$(DESTDIR)$(libfieldsincdir)/$$f"; \
 	  if test -x "$$file"; then \
 	    echo " rm -f $$file"; \
 	    rm -f "$$file"; \

@@ -1,33 +1,22 @@
 
 PublicHeaders = \
-	common.h \
-	thread.h \
-	mutex.h \
-	condvar.h \
-	rwmutex.h \
-	storage.h \
-	worker.h \
-	wpool.h \
-	sched.h \
-	sync.h \
-	fifo.h \
-	barrier.h
-PrivateHeaders = \
-	barrierp.h \
-	condvarp.h \
-	fifop.h \
-	mutexp.h \
-	rwmutexp.h \
-	schedp.h \
-	storagep.h \
-	syncp.h \
-	threadp.h \
-	threadsutilp.h \
-	workerp.h \
-	wpoolp.h
+	SoSensors.h \
+	SoAlarmSensor.h \
+	SoDataSensor.h \
+	SoDelayQueueSensor.h \
+	SoFieldSensor.h \
+	SoIdleSensor.h \
+	SoNodeSensor.h \
+	SoOneShotSensor.h \
+	SoPathSensor.h \
+	SoSensor.h \
+	SoSensorManager.h \
+	SoTimerQueueSensor.h \
+	SoTimerSensor.h
+PrivateHeaders =
 ObsoleteHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(cthreads, C/threads)
+##$ BEGIN TEMPLATE Make-Common(sensors, sensors)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -43,31 +32,31 @@ ObsoleteHeaders =
 EXTRA_DIST = $(PrivateHeaders)
 
 if MAC_FRAMEWORK
-libcthreadsincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/C/threads
+libsensorsincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/sensors
 # hack to change libdir value when installing Mac OS X compiler framework
 lib@nop@dir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Libraries
 else
-libcthreadsincdir = $(includedir)/Inventor/C/threads
+libsensorsincdir = $(includedir)/Inventor/sensors
 endif
-libcthreadsinc_HEADERS = $(PublicHeaders)
+libsensorsinc_HEADERS = $(PublicHeaders)
 
-install-libcthreadsincHEADERS: $(libcthreadsinc_HEADERS)
+install-libsensorsincHEADERS: $(libsensorsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	@if test x"$(libcthreadsinc_HEADERS)" = x""; then :; else \
-	  echo " $(mkinstalldirs) $(DESTDIR)$(libcthreadsincdir)"; \
-	  $(mkinstalldirs) $(DESTDIR)$(libcthreadsincdir); \
+	@if test x"$(libsensorsinc_HEADERS)" = x""; then :; else \
+	  echo " $(mkinstalldirs) $(DESTDIR)$(libsensorsincdir)"; \
+	  $(mkinstalldirs) $(DESTDIR)$(libsensorsincdir); \
 	fi
-	@list='$(libcthreadsinc_HEADERS)'; for p in $$list; do \
+	@list='$(libsensorsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(libcthreadsincdir)/$$f"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libsensorsincdir)/$$f"; \
 	  if cmp -s "$$src" "$$dst"; then :; else \
 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
 	    $(INSTALL_HEADER) "$$src" "$$dst" || exit 1; \
 	  fi \
 	done
 	@list='$(ObsoletedHeaders)'; for f in $$list; do \
-	  file="$(DESTDIR)$(libcthreadsincdir)/$$f"; \
+	  file="$(DESTDIR)$(libsensorsincdir)/$$f"; \
 	  if test -x "$$file"; then \
 	    echo " rm -f $$file"; \
 	    rm -f "$$file"; \
