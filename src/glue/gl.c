@@ -95,7 +95,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-#include <limits.h> // SHRT_MAX
+#include <limits.h> /* SHRT_MAX */
 
 #ifdef HAVE_AGL
 #include <AGL/AGL.h>
