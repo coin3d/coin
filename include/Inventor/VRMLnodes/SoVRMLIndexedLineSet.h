@@ -44,8 +44,9 @@ protected:
   virtual void generatePrimitives( SoAction * action );
 
 private:
-
   enum Binding {
+    // Needs to be these specific values to match the rendering code
+    // in SoGL.cpp.  FIXME: bad dependency. 20020805 mortene.
     OVERALL = 0,
     PER_LINE = 3,
     PER_LINE_INDEXED = 4,
