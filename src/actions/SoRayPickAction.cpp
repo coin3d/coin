@@ -56,6 +56,9 @@
 #if !defined(COIN_EXCLUDE_SOLEVELOFDETAIL)
 #include <Inventor/nodes/SoLevelOfDetail.h>
 #endif // !COIN_EXCLUDE_SOLEVELOFDETAIL
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+#include <Inventor/elements/SoOverrideElement.h>
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
 /*
  * Use bit-flags to hide implementation details.
@@ -216,6 +219,9 @@ SoRayPickAction::SoRayPickAction(const SbViewportRegion & viewportRegion)
 #if !defined(COIN_EXCLUDE_SOLEVELOFDETAIL)
     SO_ACTION_ADD_METHOD(SoLevelOfDetail, SoNode::rayPickS);
 #endif //!COIN_EXCLUDE_SOLEVELOFDETAIL
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+  ENABLE_ELEMENT(SoOverrideElement);
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
   }
 
   methods->setUp(); // FIXME: not sure if this should be called here...
