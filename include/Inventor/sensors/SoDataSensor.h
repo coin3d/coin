@@ -54,6 +54,8 @@ private:
   SoSensorCB * cbfunc;
   void * cbdata;
   SbBool findpath;
+  SoField * triggerfield;
+  SoNode * triggernode;
 };
 
 #endif // !COIN_SODATASENSOR_H

@@ -27,6 +27,7 @@
  */
 
 #include <Inventor/sensors/SoDataSensor.h>
+#include <Inventor/misc/SoNotification.h>
 #include <coindefs.h> // COIN_STUB()
 #include <stdlib.h> // NULL
 #include <assert.h>
@@ -45,6 +46,8 @@ SoDataSensor::SoDataSensor(void)
   this->cbfunc = NULL;
   this->cbdata = NULL;
   this->findpath = FALSE;
+  this->triggerfield = NULL;
+  this->triggernode = NULL;
 }
 
 /*!
@@ -85,9 +88,7 @@ SoDataSensor::setDeleteCallback(SoSensorCB * function, void * data)
 SoNode *
 SoDataSensor::getTriggerNode(void) const
 {
-  // TODO: implement
-  assert(0);
-  return NULL;
+  return this->triggernode;
 }
 
 /*!
@@ -96,9 +97,7 @@ SoDataSensor::getTriggerNode(void) const
 SoField *
 SoDataSensor::getTriggerField(void) const
 {
-  // TODO: implement
-  assert(0);
-  return NULL;
+  return this->triggerfield;
 }
 
 /*!
@@ -143,9 +142,12 @@ SoDataSensor::getTriggerPathFlag(void) const
   FIXME: write doc
  */
 void
-SoDataSensor::notify(SoNotList * /* list */)
+SoDataSensor::notify(SoNotList * l)
 {
-  COIN_STUB();
+  this->triggerfield = l->getLastField();
+  this->triggernode = (SoNode *) l->getFirstRecAtNode()->getBase();
+  // FIXME: store path if triggerpathflag==TRUE and
+  // priority==0. 20000401 mortene.
 }
 
 /*!

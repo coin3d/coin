@@ -31,6 +31,10 @@
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/sensors/SoDataSensor.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 
 
 /*!
@@ -164,6 +168,11 @@ SoAuditorList::notify(SoNotList * l)
       case SoNotRec::SENSOR:
         {
           SoDataSensor * obj = (SoDataSensor *)auditor;
+#if COIN_DEBUG && 0 // debug
+          SoDebugError::postInfo("SoAuditorList::notify",
+                                 "notify and schedule sensor: %p", obj);
+#endif // debug
+          obj->notify(l);
           obj->schedule();
         }
         break;

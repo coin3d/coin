@@ -938,6 +938,9 @@ SoField::touch(void)
 
 /*!
   Trigger a notification sequence.
+
+  At the end of a notification sequence, all "immediate" sensors
+  (i.e. sensors set up with a zero priority) are triggered.
 */
 void
 SoField::startNotify(void)
@@ -947,9 +950,15 @@ SoField::startNotify(void)
   SoDebugError::postInfo("SoField::startNotify", "field %p (%s), list %p",
                          this, this->getTypeId().getName().getString(), &l);
 #endif // debug
+
   this->notify(&l);
+
+  // Process zero-priority sensors after notification has been done.
+  SoSensorManager * sm = SoDB::getSensorManager();
+  if (sm->isDelaySensorPending()) sm->processImmediateQueue();
+
 #if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoField::startNotify", "DONE");
+  SoDebugError::postInfo("SoField::startNotify", "DONE\n\n");
 #endif // debug
 }
 

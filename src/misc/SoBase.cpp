@@ -37,6 +37,7 @@
   SoUnknownEngine instead of SoUnknownNode.
 */
 
+#include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
@@ -405,6 +406,9 @@ SoBase::removeName(SoBase * const b, const char * const name)
 /*!
   This is the method which starts the notification sequence
   after changes.
+
+  At the end of a notification sequence, all "immediate" sensors
+  (i.e. sensors set up with a zero priority) are triggered.
 */
 void
 SoBase::startNotify(void)
@@ -414,6 +418,10 @@ SoBase::startNotify(void)
   l.append(&rec);
   l.setLastType(SoNotRec::CONTAINER);
   this->notify(&l);
+
+  // Process zero-priority sensors after notification has been done.
+  SoSensorManager * sm = SoDB::getSensorManager();
+  if (sm->isDelaySensorPending()) sm->processImmediateQueue();
 }
 
 /*!
@@ -1014,6 +1022,11 @@ SoBase::createInstance(SoInput * in, const SbName & classname)
     SoUnknownNode * unknownnode = new SoUnknownNode;
     unknownnode->setNodeClassName(classname);
     instance = unknownnode;
+#if COIN_DEBUG && 0 // debug
+    SoDebugError::postInfo("SoBase::createInstance",
+                           "created SoUnknownNode for '%s'",
+                           classname.getString());
+#endif // debug
   }
   else if (!type.canCreateInstance()) {
     SoReadError::post(in, "Class \"%s\" is abstract", classname.getString());
