@@ -24,6 +24,7 @@
 #include <Inventor/C/threads/sync.h>
 #include <Inventor/C/threads/syncp.h>
 #include <Inventor/C/threads/mutex.h>
+#include <Inventor/C/threads/mutexp.h>
 #include <Inventor/C/base/hash.h>
 #include <stddef.h>
 #include <Inventor/C/tidbitsp.h>
@@ -34,7 +35,6 @@
 extern "C" {
 #endif /* __cplusplus */
 
-static cc_mutex * sync_global_mutex = NULL;
 static cc_hash * sync_hash_table = NULL;
 
 static void
@@ -48,7 +48,6 @@ sync_cleanup(void)
 {
   cc_hash_apply(sync_hash_table, sync_hash_cb, NULL);
   cc_hash_destruct(sync_hash_table);
-  cc_mutex_destruct(sync_global_mutex);
 }
 
 /*
@@ -57,11 +56,9 @@ sync_cleanup(void)
 void
 cc_sync_init(void)
 {
-  if (sync_global_mutex == NULL) {
+  if (sync_hash_table == NULL) {
     coin_atexit((coin_atexit_f*) sync_cleanup, 0);
-
     sync_hash_table = cc_hash_construct(256, 0.75f);    
-    sync_global_mutex = cc_mutex_construct();
   }
 }
 
@@ -77,22 +74,18 @@ cc_sync_begin(void * id)
 {
   void * mutex;
 
-  /* check sync_global_mutex in case somebody needs to synchronize
-     before SoDB::init() is called. */
-  if (sync_global_mutex == NULL) {
+  cc_mutex_global_lock();
+  if (sync_hash_table == NULL) {
     cc_sync_init();
   }
-
-  cc_mutex_lock(sync_global_mutex);
-
   if (!cc_hash_get(sync_hash_table, (unsigned long) id, &mutex)) {
     mutex = (void*) cc_mutex_construct();
     (void) cc_hash_put(sync_hash_table, (unsigned long) id, mutex);
   }
 
-  cc_mutex_unlock(sync_global_mutex);
+  cc_mutex_global_unlock();
   cc_mutex_lock((cc_mutex*) mutex);
-
+  
   return mutex;
 }
 
@@ -103,6 +96,29 @@ void
 cc_sync_end(void * key)
 {
   cc_mutex_unlock((cc_mutex*) key);
+}
+
+/*!
+  Free sync item. This can be called from the destructor of objects
+  that use a sync item so that the sync-mutex is freed when the object
+  is destructed.
+
+  \since Coin 2.3
+*/
+void 
+cc_sync_free(void * id)
+{
+  void * mutex;
+
+  cc_mutex_global_lock();
+  if (sync_hash_table == NULL) {
+    cc_sync_init();
+  }
+  if (cc_hash_get(sync_hash_table, (unsigned long) id, &mutex)) {
+    cc_mutex_destruct((cc_mutex*) mutex);
+    cc_hash_remove(sync_hash_table, (unsigned long) id);
+  }
+  cc_mutex_global_unlock();
 }
 
 #ifdef __cplusplus

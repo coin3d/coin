@@ -34,6 +34,7 @@ extern "C" {
 
   COIN_DLL_API void * cc_sync_begin(void * id);
   COIN_DLL_API void cc_sync_end(void * key);
+  COIN_DLL_API void cc_sync_free(void * id);
   
 #ifdef __cplusplus
 } /* extern "C" */
