@@ -66,6 +66,7 @@
 // trivial to perform than in fully flexible 3D space.  Especially the
 // case of triangles in the same plane...
 
+#define SBTRI_DEBUG 0
 
 // *************************************************************************
 
@@ -73,43 +74,15 @@ class SbTri3fP {
 public:
   SbTri3fP(void) {}
   SbTri3fP(SbTri3fP * t)
-    : a(t->a), b(t->b), c(t->c), p(t->a, t->b, t->c) {}
+    : a(t->a), b(t->b), c(t->c) {}
   SbTri3fP(const SbVec3f & na, const SbVec3f & nb, const SbVec3f & nc)
-    : a(na), b(nb), c(nc), p(na, nb, nc)
+    : a(na), b(nb), c(nc)
   { assert(a != b && a != c && b != c); }
-
-  SbBool planarIntersection(SbTri3fP * t);
-  SbBool planarIntersection(SbTri3fP * t, float eps);
 
   SbVec3f a;
   SbVec3f b;
   SbVec3f c;
-  SbPlane p;
 };
-
-SbBool
-SbTri3fP::planarIntersection(SbTri3fP * t)
-{
-  static SbBool once = TRUE;
-  if ( COIN_DEBUG && once ) {
-    SoDebugError::postInfo("SbTri3fP::planarIntersection",
-                           "special planar case not implemented\n");
-    once = FALSE;
-  }
-  return FALSE;
-}
-
-SbBool
-SbTri3fP::planarIntersection(SbTri3fP * t, float e)
-{
-  static SbBool once = TRUE;
-  if ( COIN_DEBUG && once ) {
-    SoDebugError::postInfo("SbTri3fP::planarIntersection",
-                           "special planar with epsilon case not implemented\n");
-    once = FALSE;
-  }
-  return FALSE;
-}
 
 // *************************************************************************
 
@@ -142,7 +115,6 @@ SbTri3f::setValue(const SbTri3f & t)
   PRIVATE(this)->b = PRIVATE(&t)->b;
   PRIVATE(this)->c = PRIVATE(&t)->c;
   assert(PRIVATE(this)->a != PRIVATE(this)->b && PRIVATE(this)->a != PRIVATE(this)->c && PRIVATE(this)->b != PRIVATE(this)->c);
-  PRIVATE(this)->p = PRIVATE(&t)->p;
   return *this;
 }
 
@@ -153,7 +125,6 @@ SbTri3f::setValue(const SbVec3f & a, const SbVec3f & b, const SbVec3f & c)
   PRIVATE(this)->a = a;
   PRIVATE(this)->b = b;
   PRIVATE(this)->c = c;
-  PRIVATE(this)->p = SbPlane(a, b, c);
   return *this;
 }
 
@@ -163,7 +134,6 @@ SbTri3f::getValue(SbTri3f & t) const
   PRIVATE(&t)->a = PRIVATE(this)->a;
   PRIVATE(&t)->b = PRIVATE(this)->b;
   PRIVATE(&t)->c = PRIVATE(this)->c;
-  PRIVATE(&t)->p = PRIVATE(this)->p;
 }
 
 void
@@ -180,7 +150,6 @@ SbTri3f::operator = (const SbTri3f & t)
   PRIVATE(this)->a = PRIVATE(&t)->a;
   PRIVATE(this)->b = PRIVATE(&t)->b;
   PRIVATE(this)->c = PRIVATE(&t)->c;
-  PRIVATE(this)->p = PRIVATE(&t)->p;
   return *this;
 }
 
@@ -191,92 +160,190 @@ SbTri3f::intersect(const SbTri3f & t) const
 {
   // FIXME: remove all "programming logic" error messages and asserts from
   // this function when it's verified that those paths can't be taken.
-  if ( PRIVATE(this)->p == PRIVATE(&t)->p )
-    return PRIVATE(this)->planarIntersection(PRIVATE(&t));
 
-  // find line intersection between planes
-  SbLine iline;
-  if ( !PRIVATE(this)->p.intersect(PRIVATE(&t)->p, iline) ) return FALSE;
+  SbVec3f a1(PRIVATE(this)->a);
+  SbVec3f b1(PRIVATE(this)->b);
+  SbVec3f c1(PRIVATE(this)->c);
+  SbPlane plane1(a1, b1, c1);
 
-  const SbPlane & plane1 = PRIVATE(this)->p;
-  const SbPlane & plane2 = PRIVATE(&t)->p;
+  SbVec3f a2(PRIVATE(&t)->a);
+  SbVec3f b2(PRIVATE(&t)->b);
+  SbVec3f c2(PRIVATE(&t)->c);
+  SbPlane plane2(a2, b2, c2);
 
-  // ensure triangles cross plane intersection line
-  SbBool a1hs = plane2.isInHalfSpace(PRIVATE(this)->a);
-  SbBool b1hs = plane2.isInHalfSpace(PRIVATE(this)->b);
-  SbBool c1hs = plane2.isInHalfSpace(PRIVATE(this)->c);
-  if ( (a1hs == b1hs) && (a1hs == c1hs) ) return FALSE;
-  SbBool a2hs = plane1.isInHalfSpace(PRIVATE(&t)->a);
-  SbBool b2hs = plane1.isInHalfSpace(PRIVATE(&t)->b);
-  SbBool c2hs = plane1.isInHalfSpace(PRIVATE(&t)->c);
-  if ( (a2hs == b2hs) && (a2hs == c2hs) ) return FALSE;
+  // FIXME: can ((n1 == -n2) && (d1 == -d2)) really happen?
+  if ( SBTRI_DEBUG &&
+       (plane1.getNormal() == -plane2.getNormal()) &&
+       (plane1.getDistanceFromOrigin() == -plane2.getDistanceFromOrigin()) ) {
+    SoDebugError::post("SbTri3f::intersect", "The (n1 == -n2 && d1 == -d2) case happened");
+  }
+  if ( plane1.getNormal() == plane2.getNormal() ) {
+    // fprintf(stderr, "normals are equal\n");
+    if ( plane1.getDistanceFromOrigin() != plane2.getDistanceFromOrigin() )
+      return FALSE; // parallel planes
+    // we work around coplanar intersection testing by making it a case of
+    // biplanar intersection testing.
 
-  // find triangle-intersecting line segments
-  // set up a points on one side, and b and c on the other
-  SbVec3f a1, b1, c1;
-  if ( b1hs == c1hs ) { // a is in other halfspace
-    a1 = PRIVATE(this)->a;
-    b1 = PRIVATE(this)->b;
-    c1 = PRIVATE(this)->c;
-  } else if ( a1hs == c1hs ) { // b is in other halfspace
-    a1 = PRIVATE(this)->b;
-    b1 = PRIVATE(this)->c;
-    c1 = PRIVATE(this)->a;
-  } else if ( a1hs == b1hs ) { // c is in other halfspace
-    a1 = PRIVATE(this)->c;
-    b1 = PRIVATE(this)->a;
-    c1 = PRIVATE(this)->b;
+    int vertex = 1;
+    float distance = a1.sqrLength();
+    float d;
+    if ( (d = b1.sqrLength()) > distance ) {
+      distance = d;
+      vertex = 2;
+    } else if ( (d = c1.sqrLength()) > distance ) {
+      distance = d;
+      vertex = 3;
+    } else if ( (d = a2.sqrLength()) > distance ) {
+      distance = d;
+      vertex = 4;
+    } else if ( (d = b2.sqrLength()) > distance ) {
+      distance = d;
+      vertex = 5;
+    } else if ( (d = c2.sqrLength()) > distance ) {
+      distance = d;
+      vertex = 6;
+    }
+    switch ( vertex ) {
+    case 1:
+      break;
+    case 2:
+      do { SbVec3f temp(a1); a1 = b1; b1 = c1; c1 = temp; } while ( FALSE );
+      break;
+    case 3:
+      do { SbVec3f temp(a1); a1 = c1; c1 = b1; b1 = temp; } while ( FALSE );
+      break;
+    case 4:
+      do { SbVec3f temp(a1); a1 = a2; a2 = temp; } while ( FALSE );
+      do { SbVec3f temp(b1); b1 = b2; b2 = temp; } while ( FALSE );
+      do { SbVec3f temp(c1); c1 = c2; c2 = temp; } while ( FALSE );
+      break;
+    case 5:
+      do { SbVec3f temp(a1); a1 = b2; b2 = temp; } while ( FALSE );
+      do { SbVec3f temp(b1); b1 = c2; c2 = temp; } while ( FALSE );
+      do { SbVec3f temp(c1); c1 = a2; a2 = temp; } while ( FALSE );
+      break;
+    case 6:
+      do { SbVec3f temp(a1); a1 = c2; c2 = temp; } while ( FALSE );
+      do { SbVec3f temp(b1); b1 = a2; a2 = temp; } while ( FALSE );
+      do { SbVec3f temp(c1); c1 = b2; b2 = temp; } while ( FALSE );
+      break;
+    }
+    vertex = 1;
+    distance = (a2-a1).sqrLength();
+    if ( (d = (b2-a1).sqrLength()) > distance ) {
+      distance = d;
+      vertex = 2;
+    } else if ( (d = (c2-a1).sqrLength()) > distance ) {
+      distance = d;
+      vertex = 3;
+    }
+    switch ( vertex ) {
+    case 1:
+      break;
+    case 2:
+      do { SbVec3f temp(a2); a2 = b2; b2 = b2; c2 = temp; } while ( FALSE );
+      break;
+    case 3:
+      do { SbVec3f temp(a2); a2 = c2; c2 = b2; b2 = temp; } while ( FALSE );
+      break;
+    }
+
+    a1 = a1 + plane1.getNormal();
+    a2 = a2 + plane1.getNormal();
+    // regenerate planes
+    plane1 = SbPlane(a1, b1, c1);
+    plane2 = SbPlane(a2, b2, c2);
   } else {
-    assert(0);
+    // fprintf(stderr, "normals are different\n");
+  }
+
+  // set up point a on one side, and b and c on the other
+
+  const SbBool a1hs = plane2.isInHalfSpace(a1);
+  const SbBool b1hs = plane2.isInHalfSpace(b1);
+  const SbBool c1hs = plane2.isInHalfSpace(c1);
+  if ( (a1hs == b1hs) && (a1hs == c1hs) ) {
+    // no intersection
+    return FALSE;
+  } else if ( a1hs == c1hs ) { // b is in other halfspace
+    SbVec3f temp(a1); a1 = b1; b1 = c1; c1 = temp;
+  } else if ( a1hs == b1hs ) { // c is in other halfspace
+    SbVec3f temp(a1); a1 = c1; c1 = b1; b1 = temp;
+  }
+
+  const SbBool a2hs = plane1.isInHalfSpace(a2);
+  const SbBool b2hs = plane1.isInHalfSpace(b2);
+  const SbBool c2hs = plane1.isInHalfSpace(c2);
+  if ( (a2hs == b2hs) && (a2hs == c2hs) ) {
+    // no intersection
+    return FALSE;
+  } else if ( a2hs == c2hs ) { // b is in other halfspace
+    SbVec3f temp(a2); a2 = b2; b2 = c2; c2 = temp;
+  } else if ( a2hs == b2hs ) { // c is in other halfspace
+    SbVec3f temp(a2); a2 = c2; c2 = b2; b2 = temp;
   }
 
   // find intersection points on line for triangles
   SbVec3f p11, p12;
   if ( !plane2.intersect(SbLine(a1, b1), p11) ) {
-    // should never happen
-    if ( COIN_DEBUG )
-      SoDebugError::post("SbTri3f::intersect", "programming logic error 1\n");
-    assert(0);
+    // should really never happen
+    if ( COIN_DEBUG && SBTRI_DEBUG ) {
+      SoDebugError::post("SbTri3f::intersect", "programming logic error 1");
+      SoDebugError::post("-", "SbVec3f a1(%g, %g, %g);", a1[0], a1[1], a1[2]);
+      SoDebugError::post("-", "SbVec3f b1(%g, %g, %g);", b1[0], b1[1], b1[2]);
+      SoDebugError::post("-", "SbVec3f c1(%g, %g, %g);", c1[0], c1[1], c1[2]);
+      SoDebugError::post("-", "SbVec3f a2(%g, %g, %g);", a2[0], a2[1], a2[2]);
+      SoDebugError::post("-", "SbVec3f b2(%g, %g, %g);", b2[0], b2[1], b2[2]);
+      SoDebugError::post("-", "SbVec3f c2(%g, %g, %g);", c2[0], c2[1], c2[2]);
+      assert(0);
+    }
     return FALSE;
   }
   if ( !plane2.intersect(SbLine(a1, c1), p12) ) {
     // should never happen
-    if ( COIN_DEBUG )
-      SoDebugError::post("SbTri3f::intersect", "programming logic error 2\n");
-    assert(0);
+    if ( COIN_DEBUG && SBTRI_DEBUG ) {
+      SoDebugError::post("SbTri3f::intersect", "programming logic error 2");
+      SoDebugError::post("-", "SbVec3f a1(%g, %g, %g);", a1[0], a1[1], a1[2]);
+      SoDebugError::post("-", "SbVec3f b1(%g, %g, %g);", b1[0], b1[1], b1[2]);
+      SoDebugError::post("-", "SbVec3f c1(%g, %g, %g);", c1[0], c1[1], c1[2]);
+      SoDebugError::post("-", "SbVec3f a2(%g, %g, %g);", a2[0], a2[1], a2[2]);
+      SoDebugError::post("-", "SbVec3f b2(%g, %g, %g);", b2[0], b2[1], b2[2]);
+      SoDebugError::post("-", "SbVec3f c2(%g, %g, %g);", c2[0], c2[1], c2[2]);
+      assert(0);
+    }
     return FALSE;
-  }
-
-  SbVec3f a2, b2, c2;
-  if ( b2hs == c2hs ) { // a is in other halfspace
-    a2 = PRIVATE(&t)->a;
-    b2 = PRIVATE(&t)->b;
-    c2 = PRIVATE(&t)->c;
-  } else if ( a2hs == c2hs ) { // b is in other halfspace
-    a2 = PRIVATE(&t)->b;
-    b2 = PRIVATE(&t)->c;
-    c2 = PRIVATE(&t)->a;
-  } else if ( a2hs == b2hs ) { // c is in other halfspace
-    a2 = PRIVATE(&t)->c;
-    b2 = PRIVATE(&t)->a;
-    c2 = PRIVATE(&t)->b;
-  } else {
-    assert(0);
   }
 
   SbVec3f p21, p22;
   if ( !plane1.intersect(SbLine(a2, b2), p21) ) {
     // should never happen
-    if ( COIN_DEBUG )
-      SoDebugError::post("SbTri3f::intersect", "programming logic error 3\n");
-    assert(0);
+    // but since it does, it means something
+    // possibly that a2 and b2 are in plane1, and halfspace values were wrong in
+    // some way.  we should either return FALSE or set p21 to something
+    if ( COIN_DEBUG && SBTRI_DEBUG ) {
+      SoDebugError::post("SbTri3f::intersect", "programming logic error 3");
+      SoDebugError::post("-", "SbVec3f a1(%g, %g, %g);", a1[0], a1[1], a1[2]);
+      SoDebugError::post("-", "SbVec3f b1(%g, %g, %g);", b1[0], b1[1], b1[2]);
+      SoDebugError::post("-", "SbVec3f c1(%g, %g, %g);", c1[0], c1[1], c1[2]);
+      SoDebugError::post("-", "SbVec3f a2(%g, %g, %g);", a2[0], a2[1], a2[2]);
+      SoDebugError::post("-", "SbVec3f b2(%g, %g, %g);", b2[0], b2[1], b2[2]);
+      SoDebugError::post("-", "SbVec3f c2(%g, %g, %g);", c2[0], c2[1], c2[2]);
+      assert(0);
+    }
     return FALSE;
   }
   if ( !plane1.intersect(SbLine(a2, c2), p22) ) {
     // should never happen
-    if ( COIN_DEBUG )
+    if ( COIN_DEBUG && SBTRI_DEBUG ) {
       SoDebugError::post("SbTri3f::intersect", "programming logic error 4\n");
-    assert(0);
+      SoDebugError::post("-", "SbVec3f a1(%g, %g, %g);", a1[0], a1[1], a1[2]);
+      SoDebugError::post("-", "SbVec3f b1(%g, %g, %g);", b1[0], b1[1], b1[2]);
+      SoDebugError::post("-", "SbVec3f c1(%g, %g, %g);", c1[0], c1[1], c1[2]);
+      SoDebugError::post("-", "SbVec3f a2(%g, %g, %g);", a2[0], a2[1], a2[2]);
+      SoDebugError::post("-", "SbVec3f b2(%g, %g, %g);", b2[0], b2[1], b2[2]);
+      SoDebugError::post("-", "SbVec3f c2(%g, %g, %g);", c2[0], c2[1], c2[2]);
+      assert(0);
+    }
     return FALSE;
   }
 
