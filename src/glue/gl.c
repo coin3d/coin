@@ -644,7 +644,6 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GL_EXT_texture3D */
 
-
   /* Appeared in OpenGL v1.3. */
   w->glActiveTexture = NULL;
   w->glMultiTexCoord2f = NULL;
@@ -680,6 +679,12 @@ glglue_resolve_symbols(cc_glglue * w)
                                 "glActiveTexture found, but one or more of the other "
                                 "multitexture functions were not found");
     }
+  }
+  w->maxtextureunits = 1; // when multitexturing is not available
+  if (w->glActiveTexture) {
+    GLint tmp;
+    glGetIntegerv(GL_MAX_TEXTURE_UNITS, &tmp);
+    w->maxtextureunits = (int) tmp;
   }
   
   w->glCompressedTexImage1D = NULL;
@@ -1610,6 +1615,13 @@ cc_glglue_has_multitexture(const cc_glglue * w)
   if (!glglue_allow_newer_opengl(w)) return FALSE;
   return w->glActiveTexture != NULL;
 }
+
+int 
+cc_glglue_max_texture_units(const cc_glglue * w)
+{
+  return w->maxtextureunits; // will be 1 when multitexturing is not available
+}
+
 
 void
 cc_glglue_glTexImage3D(const cc_glglue * w,
