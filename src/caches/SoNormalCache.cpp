@@ -277,8 +277,8 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
     // add a face if last index != -1
     if (numvi >= 3 && vindex[numvi-1] != -1) numfaces++;
   }
-
-  float threshold = (float)cos(crease_angle);
+  
+  float threshold = (float)cos(SbClamp(crease_angle, 0.0f, (float) M_PI));
   SbBool found;
   int currindex = 0; // current normal index
   int nindex = 0;
