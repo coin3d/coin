@@ -52,7 +52,9 @@ public:
   SoSFNode alternateRep;
 
   enum BboxVisibility {
-    NEVER, UNTIL_LOADED, ALWAYS
+    NEVER, 
+    UNTIL_LOADED, 
+    ALWAYS
   };
 
   void setFullURLName(const SbString & url);
@@ -65,12 +67,12 @@ public:
   SbBool isURLDataHere(void) const;
   void cancelURLDataRequest(void);
 
-  void setChildData(SoNode * urlData);
+  void setChildData(SoNode * urldata);
   SoNode * getChildData(void) const;
 
   virtual SoChildList * getChildren(void) const;
 
-  static void setFetchURLCallBack(SoWWWInlineFetchURLCB * f, void * userData);
+  static void setFetchURLCallBack(SoWWWInlineFetchURLCB * f, void * userdata);
 
   static void setBoundingBoxVisibility(BboxVisibility b);
   static BboxVisibility getBoundingBoxVisibility(void);
@@ -78,7 +80,7 @@ public:
   static void setBoundingBoxColor(SbColor & c);
   static const SbColor & getBoundingBoxColor(void);
 
-  static void setReadAsSoFile(SbBool onOff);
+  static void setReadAsSoFile(SbBool onoff);
   static SbBool getReadAsSoFile(void);
 
   virtual void doAction(SoAction * action);
@@ -97,8 +99,18 @@ protected:
 
   virtual void addBoundingBoxChild(SbVec3f center, SbVec3f size);
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
-  virtual void copyContents(const SoFieldContainer * fromFC,
-                            SbBool copyConnections);
+  virtual void copyContents(const SoFieldContainer * fromfC,
+                            SbBool copyconnections);
+
+private:
+  friend class SoWWWInlineP;
+  static SoWWWInlineFetchURLCB * fetchurlcb;
+  static void * fetchurlcbdata;
+  static SbBool readassofile;
+  static SbColor * bboxcolor;
+  static BboxVisibility bboxvisibility;
+  
+  static void cleanup(void);
 };
 
 #endif // !COIN_SOWWWINLINE_H

@@ -19,7 +19,7 @@
 
 /*!
   \class SoWWWInline SoWWWInline.h Inventor/nodes/SoWWWInline.h
-  \brief The SoWWWInline class ...
+  \brief The SoWWWInline class is a VRML1 node used to include data from an url.
   \ingroup nodes
 
   FIXME: write class doc
@@ -28,11 +28,27 @@
 #include <Inventor/nodes/SoWWWInline.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
-#include <coindefs.h> // COIN_STUB()
+#include <coindefs.h> // COIN_OBSOLETED()
 #include <Inventor/SbColor.h>
 
-
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoDiffuseColorElement.h>
+#include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/misc/SoChildList.h>
+#include <Inventor/SbColor.h>
+#include <Inventor/SbDict.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SoDB.h>
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <stdio.h>
+
 #ifdef HAVE_WINDOWS_H
 #include <windows.h>
 #endif // HAVE_WINDOWS_H
@@ -40,43 +56,109 @@
 
 /*!
   \enum SoWWWInline::BboxVisibility
-  FIXME: write documentation for enum
+  Used to enumerate bbox rendering strategies.
 */
 /*!
   \var SoWWWInline::BboxVisibility SoWWWInline::NEVER
-  FIXME: write documentation for enum definition
+  Never render bounding box.
 */
 /*!
   \var SoWWWInline::BboxVisibility SoWWWInline::UNTIL_LOADED
-  FIXME: write documentation for enum definition
+  Render bounding box until children are loaded.
 */
 /*!
   \var SoWWWInline::BboxVisibility SoWWWInline::ALWAYS
-  FIXME: write documentation for enum definition
+  Always render bounding box, event when children are loaded.
 */
-
 
 /*!
   \var SoSFString SoWWWInline::name
-  FIXME: write documentation for field
+  Name of file/url where children should be read.
 */
+
 /*!
   \var SoSFVec3f SoWWWInline::bboxCenter
-  FIXME: write documentation for field
+  Center of bounding box.
 */
 /*!
   \var SoSFVec3f SoWWWInline::bboxSize
-  FIXME: write documentation for field
+  Size of bounding box.
 */
 /*!
   \var SoSFNode SoWWWInline::alternateRep
-  FIXME: write documentation for field
+  ALternate representation. Used when children can't be read from name.
 */
 
+// static members
+SoWWWInlineFetchURLCB * SoWWWInline::fetchurlcb;
+void * SoWWWInline::fetchurlcbdata;
+SbBool SoWWWInline::readassofile;
+SbColor * SoWWWInline::bboxcolor;
+SoWWWInline::BboxVisibility SoWWWInline::bboxvisibility = SoWWWInline::UNTIL_LOADED;
+
+void
+SoWWWInline::cleanup(void)
+{
+  delete SoWWWInline::bboxcolor;
+}
 
 // *************************************************************************
 
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoWWWInlineP {
+ public:
+  SoWWWInlineP(SoWWWInline * owner) {
+    this->owner = owner;
+  }
+  SoWWWInline * owner;
+  SoChildList * children;
+  SbBool readNamedFile(SoInput * in);
+  SbBool readChildren(SoInput * in = NULL);
+  SbString fullname;
+  SbBool didrequest;
+};
+
+// FIXME: this is temporary code. We forgot about this class before
+// locking the Coin 1.0 ABI, so we had to use an SbDict to store
+// per-instance data members for this class. This should be
+// reimplemented when it's ok to break ABI-compatibility again
+// (probably at Coin 2.0).  pederb 2001-08-03
+
+static SbDict * private_data_dict = NULL;
+
+static void
+private_data_cleanup(void)
+{
+  delete private_data_dict;
+  private_data_dict = NULL;
+}
+
+SoWWWInlineP *
+get_private_data(const SoWWWInline * thisp)
+{
+  if (private_data_dict == NULL) {
+    private_data_dict = new SbDict;
+    atexit(private_data_cleanup);
+  }
+  void * pimpl;
+  if (!private_data_dict->find((unsigned long) thisp, pimpl)) {
+    pimpl = (void*) new SoWWWInlineP((SoWWWInline*) thisp);
+    (void) private_data_dict->enter((unsigned long) thisp, pimpl);
+  }
+  return (SoWWWInlineP*) pimpl;
+}
+
+#endif // DOXYGEN_SKIP_THIS
+
 SO_NODE_SOURCE(SoWWWInline);
+
+#undef THIS
+// WARNING: Slow! Don't use this macro if you need speed
+#define THIS (get_private_data(this))
+
+
+static const char UNDEFINED_FILE[] = "<Undefined file>";
 
 /*!
   Constructor.
@@ -85,10 +167,20 @@ SoWWWInline::SoWWWInline()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoWWWInline);
 
-  SO_NODE_ADD_FIELD(name, ("<Undefined file>"));
+  //  THIS = new SoWWWInlineP;
+  THIS->children = new SoChildList(this);
+  THIS->didrequest = FALSE;
+
+  SO_NODE_ADD_FIELD(name, (UNDEFINED_FILE));
   SO_NODE_ADD_FIELD(bboxCenter, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(bboxSize, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(alternateRep, (NULL));
+
+
+  if (SoWWWInline::bboxcolor == NULL) {
+    SoWWWInline::bboxcolor = new SbColor(0.8f, 0.8f, 0.8f);
+    atexit(SoWWWInline::cleanup);
+  }
 }
 
 /*!
@@ -96,6 +188,10 @@ SoWWWInline::SoWWWInline()
 */
 SoWWWInline::~SoWWWInline()
 {
+  delete THIS->children;
+
+  //  delete THIS;
+  private_data_dict->remove((unsigned long) this);
 }
 
 /*!
@@ -113,9 +209,9 @@ SoWWWInline::initClass(void)
   FIXME: write function documentation
 */
 void
-SoWWWInline::setFullURLName(const SbString & /* url */)
+SoWWWInline::setFullURLName(const SbString & url)
 {
-  COIN_STUB();
+  THIS->fullname = url;
 }
 
 /*!
@@ -124,9 +220,7 @@ SoWWWInline::setFullURLName(const SbString & /* url */)
 const SbString &
 SoWWWInline::getFullURLName(void)
 {
-  COIN_STUB();
-  static SbString s;
-  return s;
+  return THIS->fullname;
 }
 
 /*!
@@ -135,55 +229,72 @@ SoWWWInline::getFullURLName(void)
 SoGroup *
 SoWWWInline::copyChildren(void) const
 {
-  COIN_STUB();
-  return NULL;
+  SoChildList * children = this->getChildren();
+
+  if (children->getLength() == 0) return NULL;
+  assert(children->getLength() == 1);
+  SoNode * rootcopy = (*children)[0]->copy();
+  assert(rootcopy->isOfType(SoGroup::getClassTypeId()));
+  return (SoGroup *) rootcopy;
 }
 
 /*!
-  FIXME: write function documentation
+  Start requesting URL data. This might trigger a callback to
+  the callback set in setFetchURLCallBack.
 */
 void
 SoWWWInline::requestURLData(void)
 {
-  COIN_STUB();
+  if (!THIS->didrequest) {
+    THIS->didrequest = TRUE;
+    SoInput in;
+    (void) THIS->readChildren(&in);
+  }
 }
 
 /*!
-  FIXME: write function documentation
+  Returns \a TRUE if requestURLData() has been called without
+  being canceled by cancelURLData().
 */
 SbBool
 SoWWWInline::isURLDataRequested(void) const
 {
-  COIN_STUB();
-  return FALSE;
+  return THIS->didrequest;
 }
 
 /*!
-  FIXME: write function documentation
+  Return \a TRUE if the current child data has been read
+  from file an url.
 */
 SbBool
 SoWWWInline::isURLDataHere(void) const
 {
-  COIN_STUB();
+  SoChildList * children = this->getChildren();
+  if (children->getLength() == 0 ||
+      (*children)[0] == this->alternateRep.getValue()) return FALSE;
   return FALSE;
 }
 
-/*!
-  FIXME: write function documentation
+/*!  
+  Can be used to signal that URL loading has been canceled.  You
+  should use this method if you intend to request URL data more than
+  once.  
 */
 void
 SoWWWInline::cancelURLDataRequest(void)
 {
-  COIN_STUB();
+  THIS->didrequest = FALSE;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns the child data for this node. This can be data read from a 
+  file, from an url or the contents of alternateRep.
 */
 void
-SoWWWInline::setChildData(SoNode * /* urlData */)
+SoWWWInline::setChildData(SoNode * urldata)
 {
-  COIN_STUB();
+  THIS->children->truncate(0);
+  THIS->children->append(urldata);
 }
 
 /*!
@@ -192,90 +303,108 @@ SoWWWInline::setChildData(SoNode * /* urlData */)
 SoNode *
 SoWWWInline::getChildData(void) const
 {
-  COIN_STUB();
+  if (THIS->children->getLength())
+    return (*THIS->children)[0];
   return NULL;
 }
 
 /*!
-  FIXME: write function documentation
+  Sets the URL fetch callback. This will be used in readInstance()
+  or when the user calls requestURLData().
 */
 void
-SoWWWInline::setFetchURLCallBack(SoWWWInlineFetchURLCB * /* f */,
-                                 void * /* userData */)
+SoWWWInline::setFetchURLCallBack(SoWWWInlineFetchURLCB * f,
+                                 void * userdata)
 {
-  COIN_STUB();
+  SoWWWInline::fetchurlcb = f;
+  SoWWWInline::fetchurlcbdata = userdata;
 }
 
 /*!
-  FIXME: write function documentation
+  Sets the boundinb box visibility strategy.
 */
 void
-SoWWWInline::setBoundingBoxVisibility(BboxVisibility /* b */)
+SoWWWInline::setBoundingBoxVisibility(BboxVisibility b)
 {
-  COIN_STUB();
+  SoWWWInline::bboxvisibility = b;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns the bounding box visibility.
 */
 SoWWWInline::BboxVisibility
 SoWWWInline::getBoundingBoxVisibility(void)
 {
-  COIN_STUB();
-  return NEVER;
+  return SoWWWInline::bboxvisibility;
 }
 
 /*!
-  FIXME: write function documentation
+  Sets the bounding box color.
 */
 void
-SoWWWInline::setBoundingBoxColor(SbColor & /* c */)
+SoWWWInline::setBoundingBoxColor(SbColor & c)
 {
-  COIN_STUB();
+  *SoWWWInline::bboxcolor = c;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns the bounding box color.
 */
 const SbColor &
 SoWWWInline::getBoundingBoxColor(void)
 {
-  COIN_STUB();
-  static SbColor col;
-  return col;
+  return *SoWWWInline::bboxcolor;
 }
 
 /*!
-  FIXME: write function documentation
+  Sets whether children should be read from a local file, 
+  in the same manner as SoFile children are read.
 */
 void
-SoWWWInline::setReadAsSoFile(SbBool /* onOff */)
+SoWWWInline::setReadAsSoFile(SbBool onoff)
 {
-  COIN_STUB();
+  SoWWWInline::readassofile = onoff;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns if children should be read as a SoFile.
+
+  \sa setReadAsSoFile()
 */
 SbBool
 SoWWWInline::getReadAsSoFile(void)
 {
-  COIN_STUB();
-  return FALSE;
+  return SoWWWInline::readassofile;
 }
 
 
 /*!
-  FIXME: write function documentation
+  Overloaded to render children and/or bounding box.
 */
 void
-SoWWWInline::GLRender(SoGLRenderAction * /* action */)
+SoWWWInline::GLRender(SoGLRenderAction * action)
 {
-  // FIXME: quick hack implementation until someone does it 100%
-  // correct. NB: loadsofstuff missing. 19990404 mortene.
+  if (this->getChildData()) {
+    SoWWWInline::doAction(action);
+    if (SoWWWInline::bboxvisibility == UNTIL_LOADED) return;
+  }
+  if (SoWWWInline::bboxvisibility == NEVER) return;
 
-  GLboolean lightenabled = glIsEnabled(GL_LIGHTING);
-  glDisable(GL_LIGHTING);
+  SoState * state = action->getState();
+  state->push();
+
+  SoDiffuseColorElement::set(state, this, 1, SoWWWInline::bboxcolor);
+
+  // disable lighting
+  SoLightModelElement::set(state, this, SoLightModelElement::BASE_COLOR);
+  // disable texture mapping
+  SoGLTextureEnabledElement::set(state, this, FALSE);
+
+  // update GL state
+  state->lazyEvaluate();
+
+  SoMaterialBundle mb(action);
+  mb.sendFirst(); // set current color
 
   float cx, cy, cz;
   this->bboxCenter.getValue().getValue(cx, cy, cz);
@@ -315,12 +444,10 @@ SoWWWInline::GLRender(SoGLRenderAction * /* action */)
   glVertex3f(x1, y1, z1);
   glEnd();
 
-  if (lightenabled) glEnable(GL_LIGHTING);
+  state->pop(); // restore state
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoWWWInline::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -339,112 +466,204 @@ SoWWWInline::getBoundingBox(SoGetBoundingBoxAction * action)
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the child list with the child data for this node.
+*/
 SoChildList *
 SoWWWInline::getChildren(void) const
 {
-  COIN_STUB();
-  return NULL;
+  return THIS->children;
 }
 
-/*!
-  FIXME: write doc
- */
 void
-SoWWWInline::doAction(SoAction * /* action */)
+SoWWWInline::doAction(SoAction * action)
 {
-  COIN_STUB();
+  int numindices;
+  const int * indices;
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    this->getChildren()->traverseInPath(action, numindices, indices);
+  }
+  else {
+    this->getChildren()->traverse((SoAction *)action);
+  }
 }
 
-/*!
-  FIXME: write doc
- */
+/*!  
+  This method should probably have been private in OIV. It is
+  obsoleted in Coin. Let us know if you need it.  
+*/
 void
 SoWWWInline::doActionOnKidsOrBox(SoAction * /* action */)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
-SoWWWInline::callback(SoCallbackAction * /* action */)
+SoWWWInline::callback(SoCallbackAction * action)
 {
-  COIN_STUB();
+  SoWWWInline::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
-SoWWWInline::getMatrix(SoGetMatrixAction * /* action */)
+SoWWWInline::getMatrix(SoGetMatrixAction * action)
 {
-  COIN_STUB();
+  SoWWWInline::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
-SoWWWInline::handleEvent(SoHandleEventAction * /* action */)
+SoWWWInline::handleEvent(SoHandleEventAction * action)
 {
-  COIN_STUB();
+  SoWWWInline::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
-SoWWWInline::search(SoSearchAction * /* action */)
+SoWWWInline::search(SoSearchAction * action)
 {
-  COIN_STUB();
+  // mayby search subgraph???
+  inherited::search(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
-SoWWWInline::pick(SoPickAction * /* action */)
+SoWWWInline::pick(SoPickAction * action)
 {
-  COIN_STUB();
+  SoWWWInline::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
-SoWWWInline::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoWWWInline::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  COIN_STUB();
+  SoWWWInline::doAction((SoAction *)action);
 }
 
 /*!
-  FIXME: write doc
- */
+  Convenience method that extends the current bounding box to
+  include the box specified by \a center and \a size.
+*/
 void
-SoWWWInline::addBoundingBoxChild(SbVec3f /* center */, SbVec3f /* size */)
+SoWWWInline::addBoundingBoxChild(SbVec3f center, SbVec3f size)
 {
-  COIN_STUB();
+  SbVec3f orgsize = this->bboxSize.getValue();
+  SbVec3f orgcenter = this->bboxCenter.getValue();
+
+  orgsize *= 0.5f;
+  SbBox3f bbox(orgcenter-orgsize, orgcenter+orgsize);
+  
+  size *= 0.5f;
+  SbBox3f newbox(center-size, center+size);
+  
+  bbox.extendBy(newbox);
+  this->bboxCenter = bbox.getCenter();
+  bbox.getSize(size[0], size[1], size[2]);
+  this->bboxSize = size;
 }
 
 /*!
-  FIXME: write doc
- */
+  Overloaded to fetch/read child data.
+*/
 SbBool
-SoWWWInline::readInstance(SoInput * in, unsigned short /* flags */)
+SoWWWInline::readInstance(SoInput * in, unsigned short flags)
 {
-  COIN_STUB();
-  return FALSE;
+  SbBool ret = inherited::readInstance(in, flags);
+  if (ret) {
+    ret = THIS->readChildren(in);
+  }
+  return ret;
 }
 
 /*!
-  FIXME: write doc
- */
+  Overloaded to copy children.
+*/
 void
-SoWWWInline::copyContents(const SoFieldContainer * /* fromFC */,
-                          SbBool /* copyConnections */)
+SoWWWInline::copyContents(const SoFieldContainer * fromfc,
+                          SbBool copyconnections)
 {
-  COIN_STUB();
+  this->getChildren()->truncate(0);
+  inherited::copyContents(fromfc, copyconnections);
+
+  SoWWWInline * inlinenode = (SoWWWInline *) fromfc;
+
+  if (inlinenode->getChildren()->getLength() == 0) return;
+
+  assert(inlinenode->getChildren()->getLength() == 1);
+
+  SoNode * cp = (SoNode *)
+    SoFieldContainer::findCopy((*(inlinenode->getChildren()))[0], copyconnections);
+  this->getChildren()->append(cp);
 }
+
+#undef THIS
+
+#ifndef DOXYGEN_SKIP_THIS
+
+// Read the file named in the name field. Based on SoFile::readNamedFile
+SbBool
+SoWWWInlineP::readNamedFile(SoInput * in)
+{
+  // If we can't find file, ignore it. Note that this does not match
+  // the way Inventor works, which will make the whole read process
+  // exit with a failure code.
+  SbString name = this->fullname.getLength() ? 
+    this->fullname : this->owner->name.getValue();
+  
+  if (!in->pushFile(name.getString())) return TRUE;
+
+  SoSeparator * node = SoDB::readAll(in);
+  // Popping the file off the stack again is done implicit in SoInput
+  // upon hitting EOF (unless the read fails, see below).
+
+  if (node) {
+    this->children->truncate(0);
+    this->children->append((SoNode *)node);
+  }
+  else {
+    // Take care of popping the file off the stack. This is a bit
+    // "hack-ish", but its done this way instead of loosening the
+    // protection of SoInput::popFile().
+    if (in->getCurFileName() == name) {
+      char dummy;
+      while (!in->eof()) in->get(dummy);
+    }
+
+    // Note that we handle this differently than Inventor, which lets
+    // the whole import fail.
+    SoReadError::post(in, "Unable to read subfile: ``%s''",
+                      name.getString());
+  }
+  return TRUE;
+}
+
+// read children, either using the URL callback or by reading from
+// local file directly.
+SbBool
+SoWWWInlineP::readChildren(SoInput * in)
+{
+  if (in && SoWWWInline::readassofile && 
+      this->owner->name.getValue() != UNDEFINED_FILE) {
+    if (!this->readNamedFile(in)) {
+      if (this->owner->alternateRep.getValue()) {
+#if COIN_DEBUG
+        SoDebugError::postInfo("SoWWWInline::readInstance",
+                               "Using alternate representation");
+#endif // COIN_INSTANCE
+        this->owner->setChildData(this->owner->alternateRep.getValue());
+      }
+    }
+  }
+  else if (!SoWWWInline::readassofile) {
+    if (SoWWWInline::fetchurlcb) {
+      SoWWWInline::fetchurlcb(this->fullname.getLength() ?
+                              this->fullname : this->owner->name.getValue(), 
+                              SoWWWInline::fetchurlcbdata,
+                              this->owner);
+    }
+  }
+  return TRUE; // always return TRUE
+}
+
+#endif // DOXYGEN_SKIP_THIS
+
