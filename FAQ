@@ -249,6 +249,14 @@ A:      If you get this assert, it means the run-time type system in
           your application or the Coin library and the application or some
           other library are using different C library instances.
 
+        In the case of not calling SoDB::init(), it is clearly stated on
+        page 36 of The Inventor Mentor that "SoDB::init() must be the first
+        Inventor call you make.".
+
+        "But this works with SGI Inventor", I hear you say...  Actually,
+        that is just pure luck.  Try e.g. creating a new SoBlinker node,
+        and you will see your application going down in flames.
+
 
 Q2.2:   Why doesn't it work properly to render the same scene graph in two
         different windows?
