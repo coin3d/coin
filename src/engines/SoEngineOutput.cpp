@@ -97,11 +97,11 @@ SoEngineOutput::~SoEngineOutput()
 SoType
 SoEngineOutput::getConnectionType(void) const
 {
-  assert(this->getContainer() != NULL);
+  assert(this->container != NULL);
   const SoEngineOutputData * outputs = 
     this->isNodeEngineOutput() ? 
-    this->getContainer()->getOutputData() :
-    this->getNodeContainer()->getOutputData();
+    this->getNodeContainer()->getOutputData() : 
+    this->getContainer()->getOutputData();
   assert(outputs);
   int idx = outputs->getIndex(this->container, this);
   assert(idx >= 0 && "an engine should have at least one output");
@@ -205,7 +205,8 @@ SoEngineOutput::getNodeContainer(void) const
 SbBool 
 SoEngineOutput::isNodeEngineOutput(void) const
 {
-  return this->container->getTypeId().isDerivedFrom(SoEngine::getClassTypeId());
+  assert(this->container);
+  return this->container->getTypeId().isDerivedFrom(SoNodeEngine::getClassTypeId());
 }
 
 /*!
