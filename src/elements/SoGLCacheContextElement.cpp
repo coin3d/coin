@@ -28,6 +28,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbName.h>
 #include <Inventor/misc/SoState.h>
+#include "../misc/GLWrapper.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -52,16 +53,23 @@ typedef struct {
   int context;
   int major;
   int minor;
+  int revision;
 } so_glversion_info;
+
+typedef struct {
+  int context;
+  GLWrapper *wrapper;
+} so_glwrapper_info;
 
 typedef struct {
   int context;
   int handle;
 } so_gltexhandle_info;
 
-static SbList <so_glext_info *> * extsupportlist;
-static SbList <so_glversion_info> * glversionlist;
-static SbList <SoGLDisplayList*> * scheduledeletelist;
+static SbList <so_glext_info *> *extsupportlist;
+static SbList <so_glversion_info> *glversionlist;
+static SbList <so_glwrapper_info> *glwrapperlist;
+static SbList <SoGLDisplayList*> *scheduledeletelist;
 
 static void soglcachecontext_cleanup(void)
 {
@@ -69,9 +77,14 @@ static void soglcachecontext_cleanup(void)
   for (int i = 0; i < n; i++) {
     delete (*extsupportlist)[i];
   }
+  n = glwrapperlist->getLength();
+  for (int i = 0; i < n; i++) {
+    delete (*glwrapperlist)[i].wrapper;
+  }
   delete extsupportlist;
   delete glversionlist;
   delete scheduledeletelist;
+  delete glwrapperlist;
 }
 
 
@@ -118,6 +131,7 @@ SoGLCacheContextElement::initClass(void)
   extsupportlist = new SbList <so_glext_info *>;
   glversionlist = new SbList <so_glversion_info>;
   scheduledeletelist = new SbList <SoGLDisplayList*>;
+  glwrapperlist = new SbList <so_glwrapper_info>;
   atexit(soglcachecontext_cleanup);
 }
 
@@ -254,7 +268,22 @@ SoGLCacheContextElement::extSupported(SoState * state, int extid)
   is an extension versus the Open Inventor API.
 */
 void
-SoGLCacheContextElement::getOpenGLVersion(SoState * state, int & major, int & minor)
+SoGLCacheContextElement::getOpenGLVersion(SoState *state, 
+                                          int &major, int &minor)
+{
+  int revision;
+  SoGLCacheContextElement::getOpenGLVersion(state,major,minor,revision);
+}
+
+/*!
+  Returns the OpenGL version for the current context. This method
+  is an extension versus the Open Inventor API.
+*/
+void
+SoGLCacheContextElement::getOpenGLVersion(SoState *state, 
+                                          int &major, 
+                                          int &minor, 
+                                          int &revision)
 {
   int currcontext = SoGLCacheContextElement::get(state);
 
@@ -263,47 +292,61 @@ SoGLCacheContextElement::getOpenGLVersion(SoState * state, int & major, int & mi
     if ((*glversionlist)[i].context == currcontext) {
       major = (*glversionlist)[i].major;
       minor = (*glversionlist)[i].minor;
+      revision = (*glversionlist)[i].revision;
       return;
     }
   }
 
-  // based on GLUWrapper_set_version() so if you find a bug (either in
-  // GLUWrapper or here) you should make sure it is fixed in both files.
-  // pederb, 20001003
-  char buffer[256];
-  const GLubyte * versionstr = glGetString(GL_VERSION);
-  (void)strncpy(buffer, (const char *)versionstr, 255);
-  buffer[255] = '\0';
-  char * dotptr = strchr(buffer, '.');
-  if (dotptr) {
-    char * spaceptr;
-    char * start = buffer;
-    *dotptr = '\0';
-    major = atoi(start);
-    start = ++dotptr;
+  const char *versionstr = (const char *)glGetString(GL_VERSION);
+  int maj,min,rev;
+  SoGLCacheContextElement::glVersionStringToNumeric(versionstr, maj, min, rev);
 
-    dotptr = strchr(start, '.');
-    spaceptr = strchr(start, ' ');
-    if (!dotptr && spaceptr) dotptr = spaceptr;
-    if (dotptr && spaceptr && spaceptr < dotptr) dotptr = spaceptr;
-    if (dotptr) {
-      *dotptr = '\0';
-      minor = atoi(start);
-    }
-    else {
-      minor = atoi(start);
-    }
-  }
-  else {
-    major = 1;
-    minor = 0;
-  }
   so_glversion_info info;
   info.context = currcontext;
-  info.major = major;
-  info.minor = minor;
+  info.major = major = maj;
+  info.minor = minor = min;
+  info.revision = revision = rev;
 
   glversionlist->append(info);
+}
+
+SbBool
+SoGLCacheContextElement::openGLVersionMatchesAtLeast(SoState *state,
+                                                     int major,
+                                                     int minor,
+                                                     int revision)
+{
+  int maj,min,rev;
+  SoGLCacheContextElement::getOpenGLVersion(state,maj,min,rev);
+  if (maj < major) return false;
+  else if (maj > major) return true;
+  if (min < minor) return false;
+  else if (min > minor) return true;
+  if (rev < revision) return false;
+  return true;
+}
+
+/*!
+  Returns a GLWrapper instance that is valid for the context defined by
+  /e state. This method is an extension versus the Open Inventor API.
+*/
+GLWrapper *
+SoGLCacheContextElement::getGLWrapper(SoState *state)
+{
+  int currcontext = SoGLCacheContextElement::get(state);
+
+  int i, n = glwrapperlist->getLength();
+  for (i = 0; i < n; i++) {
+    if ((*glwrapperlist)[i].context == currcontext) {
+      return (*glwrapperlist)[i].wrapper;
+    }
+  }
+
+  so_glwrapper_info info;
+  info.context = currcontext;
+  info.wrapper = new GLWrapper;
+  glwrapperlist->append(info);
+  return info.wrapper;
 }
 
 /*!
@@ -389,4 +432,53 @@ uint32_t
 SoGLCacheContextElement::getUniqueCacheContext(void)
 {
   return (uint32_t) ++biggest_cache_context_id;
+}
+
+/*!
+  \internal
+
+  FIXME: Reinsert Peder's comment about this being ripped from GLUWrapper.
+*/
+void
+SoGLCacheContextElement::glVersionStringToNumeric(const char *versionstr,
+                                                  int &major,
+                                                  int &minor,
+                                                  int &revision)
+{
+  char buffer[256];
+  char *dotptr;
+
+  major = 0;
+  minor = 0;
+  revision = 0;
+
+  (void)strncpy(buffer, (const char *)versionstr, 255);
+  buffer[255] = '\0'; /* strncpy() will not null-terminate if strlen > 255 */
+  dotptr = strchr(buffer, '.');
+  if (dotptr) {
+    char * spaceptr;
+    char * start = buffer;
+    *dotptr = '\0';
+    major = atoi(start);
+    start = ++dotptr;
+
+    dotptr = strchr(start, '.');
+    spaceptr = strchr(start, ' ');
+    if (!dotptr && spaceptr) dotptr = spaceptr;
+    if (dotptr && spaceptr && spaceptr < dotptr) dotptr = spaceptr;
+    if (dotptr) {
+      int terminate = *dotptr == ' ';
+      *dotptr = '\0';
+      minor = atoi(start);
+      if (!terminate) {
+        start = ++dotptr;
+        dotptr = strchr(start, ' ');
+        if (dotptr) *dotptr = '\0';
+        revision = atoi(start);
+      }
+    }
+    else {
+      minor = atoi(start);
+    }
+  }
 }
