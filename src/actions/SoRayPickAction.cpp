@@ -282,16 +282,9 @@ SoRayPickAction::setRay(const SbVec3f &start,
     farDistance = nearDistance + 1.0f;
   }
 
-#if 0 // must not be here!
-  const SbViewVolume &vv = SoViewVolumeElement::get(this->state);
-
-  this->rayRadiusStart = 
-    vv.getWorldToScreenScale(start, this->calcRayRadius(this->radiusInPixels));
-  this->rayRadiusFar = this->rayRadiusStart; // FIXME: calc from vv
-#else
-  this->rayRadiusStart = 1.0f;
-  this->rayRadiusFar = 1.0f;
-#endif
+  // FIXME: when do I calculate these?
+  this->rayRadiusStart = 0.01f;
+  this->rayRadiusDelta = 0.0f;
 
   this->rayStart = start;
   this->rayDirection = direction;
@@ -379,23 +372,28 @@ SoRayPickAction::computeWorldSpaceRay()
     this->rayDirection = line.getDirection();
 #endif
 
-#if COIN_DEBUG // debug
-    SoDebugError::postInfo("SoRayPickAction::computeWorldSpaceRay",
-			   "%g %g %g (%g %g %g) %g %g %g",
-			   rayStart[0], rayStart[1], rayStart[2],
-			   rayDirection[0], rayDirection[1], rayDirection[2],
-			   rayStart[0]+rayDirection[0]*vv.getDepth(),
-			   rayStart[1]+rayDirection[1]*vv.getDepth(),
-			   rayStart[2]+rayDirection[2]*vv.getDepth());
-#endif // debug
-
     this->rayDirection.normalize();
-    this->rayRadiusStart = 
-      vv.getWorldToScreenScale(rayStart, this->calcRayRadius(this->radiusInPixels));
-    this->rayRadiusFar = this->rayRadiusStart; // FIXME: calc from vv
     this->rayNear = vv.getNearDist();
     this->rayFar = vv.getNearDist() + vv.getDepth();
+    
+    // radius of ray for start and far positions
+    this->rayRadiusStart = 
+      vv.getWorldToScreenScale(rayStart, 
+			       this->calcRayRadius(this->radiusInPixels));
+    this->rayRadiusDelta = 
+      vv.getWorldToScreenScale(this->rayStart + this->rayDirection,
+			       this->calcRayRadius(this->radiusInPixels));
+    this->rayRadiusDelta -= rayRadiusStart;
 
+#if 1 // debug
+    SoDebugError::postInfo("SoRayPickAction::computeWorldSpaceRay",
+			   "%f %f %f",
+			   radiusInPixels,
+			   rayRadiusStart,
+			   rayRadiusDelta);
+#endif // debug
+    
+    
     // shortest distance from origin to plane
     const float D = this->rayDirection.dot(this->rayStart); 
     this->nearPlane = SbPlane(rayDirection, D + this->rayNear);
@@ -482,10 +480,29 @@ SoRayPickAction::intersect(const SbVec3f &v0,
 }
 
 SbBool 
-SoRayPickAction::intersect(const SbVec3f &/*v0*/, const SbVec3f &/*v1*/,
-			   SbVec3f &/*intersection*/) const
+SoRayPickAction::intersect(const SbVec3f &v0, const SbVec3f &v1,
+			   SbVec3f &intersection) const
 {
-  assert(0 && "FIXME: not implemented");
+  SbLine line(v0,v1);
+  SbVec3f op0, op1; // object space
+  SbVec3f p0,p1; // world space
+
+  this->osLine.getClosestPoints(line, op0, op1);
+  this->obj2World.multVecMatrix(op0, p0);
+  this->obj2World.multVecMatrix(op1, p1);
+
+  // distance between points
+  float distance = (p1-p0).length();
+  
+  float raypos = (p0 - this->rayStart).length();
+  
+  float radius = this->rayRadiusStart + 
+    this->rayRadiusDelta*raypos/this->rayFar;
+  
+  if (radius >= distance) {
+    intersection = op1;
+    return TRUE;
+  }
   return FALSE;
 }
 

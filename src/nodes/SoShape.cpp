@@ -276,6 +276,19 @@ public:
 	this->counter = 2;
       }
       break;
+    case SoShape::POINTS:
+      this->shape->invokePointCallbacks(this->action, v);
+      break;
+    case SoShape::LINE_STRIP:
+      this->vertsArray[this->counter++] = *v;
+      if (this->counter == 2) {
+	this->shape->invokeLineSegmentCallbacks(this->action,
+						&vertsArray[0],
+						&vertsArray[1]);
+	this->vertsArray[0] = this->vertsArray[1];
+	this->counter = 1;
+      }
+      break;
     default:
       assert(0 && "Unknown shape type");
     }
@@ -690,11 +703,27 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
   FIXME: write function documentation
 */
 void 
-SoShape::invokeLineSegmentCallbacks(SoAction * const /* action */,
-				    const SoPrimitiveVertex * const /* v1 */,
-				    const SoPrimitiveVertex * const /* v2 */)
+SoShape::invokeLineSegmentCallbacks(SoAction * const action,
+				    const SoPrimitiveVertex * const v1,
+				    const SoPrimitiveVertex * const v2)
 {
-  assert(0 && "FIXME: not implemented yet");
+  if (action->getTypeId().isDerivedFrom(SoRayPickAction::getClassTypeId())) {
+    SoRayPickAction *ra = (SoRayPickAction*) action;
+    
+    SbVec3f intersection;
+    if (ra->intersect(v1->getPoint(), v2->getPoint(), intersection)) {
+      if (ra->isBetweenPlanes(intersection)) {
+	SoPickedPoint * pp = ra->addIntersection(intersection);
+	if (pp) {
+	  // FIXME: add line detail
+	}   
+      }
+    }
+  }
+  else {
+    assert(0 && "FIXME: not implemented");
+  }
+
 }
 
 /*!

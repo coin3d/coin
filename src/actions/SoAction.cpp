@@ -600,9 +600,9 @@ SoAction::getCurPathCode() const
 */
 
 void
-SoAction::pushCurPath(const int /* childIndex */)
+SoAction::pushCurPath(const int childIndex)
 {
-  assert(0 && "FIXME: Not implemented");
+  this->currentPath.push(childIndex);
 }
 
 /*!
@@ -610,9 +610,10 @@ SoAction::pushCurPath(const int /* childIndex */)
 */
 
 void
-SoAction::popCurPath(const PathCode /* prevPathCode */)
+SoAction::popCurPath(const PathCode prevPathCode)
 {
-  assert(0 && "FIXME: Not implemented");
+  this->currentPath.pop();
+  this->currentPathCode = prevPathCode;
 }
 
 /*!
@@ -622,8 +623,7 @@ SoAction::popCurPath(const PathCode /* prevPathCode */)
 SoNode *
 SoAction::getCurPathTail()
 {
-  assert(0 && "FIXME: not implemented");
-  return NULL;
+  return this->currentPath.getTail();
 }
 
 /*!
@@ -639,7 +639,11 @@ SoAction::usePathCode(int & numIndices, const int * & indices)
   //
 
   numIndices = 1;
+#if 0 // OBSOLETED 19991108, code won't work for SoArray and SoMultipleCopy
   dummyArray[0] = this->nextInPathChildIndex;
+#else // new, more flexible code
+  dummyArray[0] = this->appliedData.path->getIndex(this->currentPath.getLength());
+#endif // end of new code
   indices = dummyArray;
 }
 
@@ -649,7 +653,7 @@ SoAction::usePathCode(int & numIndices, const int * & indices)
 
 void 
 SoAction::pushCurPath()
-{ 
+{
   assert(0 && "FIXME: not implemented");
 }
 
@@ -658,9 +662,10 @@ SoAction::pushCurPath()
 */
 
 void 
-SoAction::popPushCurPath(const int /* childIndex */)
+SoAction::popPushCurPath(const int childIndex)
 {
-  assert(0 && "FIXME: not implemented"); 
+  this->currentPath.pop();
+  this->currentPath.push(childIndex);
 }
 
 /*!
@@ -670,7 +675,7 @@ SoAction::popPushCurPath(const int /* childIndex */)
 void 
 SoAction::popCurPath()
 { 
-  assert(0 && "FIXME: not implemented");
+  this->currentPath.pop();
 }
 
 // *************************************************************************

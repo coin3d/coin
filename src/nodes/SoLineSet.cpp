@@ -32,6 +32,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/caches/SoNormalCache.h>
+#include <Inventor/SoPrimitiveVertex.h>
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -381,9 +382,103 @@ SoLineSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
   FIXME: write doc
  */
 void
-SoLineSet::generatePrimitives(SoAction * /* action */)
+SoLineSet::generatePrimitives(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoState * state = action->getState();
+
+  if (this->vertexProperty.getValue()) {
+    state->push();
+    this->vertexProperty.getValue()->doAction(action);
+  }
+
+  const SoCoordinateElement *coords;
+  const SbVec3f * normals;
+  SbBool doTextures;
+  SbBool needNormals = TRUE;
+  
+  SoVertexShape::getVertexData(action->getState(), coords, normals,
+			       needNormals);
+  
+  if (normals == NULL) needNormals = FALSE;
+  
+  SoTextureCoordinateBundle tb(action, FALSE, FALSE);
+  doTextures = tb.needCoordinates();
+  
+  Binding mbind = findMaterialBinding(action->getState());
+  Binding nbind = findNormalBinding(action->getState());
+
+  if (!needNormals) nbind = OVERALL;
+  
+  SoPrimitiveVertex vertex;
+  SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
+  const SbVec3f * currnormal = &dummynormal;
+  if (normals) currnormal = normals;
+  if (nbind == OVERALL && needNormals) {
+    vertex.setNormal(*currnormal);
+  } 
+
+  int32_t idx = startIndex.getValue();
+  const int32_t * ptr = numVertices.getValues(0);
+  const int32_t * end = ptr + numVertices.getNum();
+
+  int matnr = 0;
+  int texnr = 0;
+
+  SbBool drawPoints = FALSE;
+#if !defined(COIN_EXCLUDE_SODRAWSTYLEELEMENT)
+  drawPoints = SoDrawStyleElement::get(state) ==
+    SoDrawStyleElement::POINTS;
+#endif
+
+  if (drawPoints) this->beginShape(action, SoShape::POINTS);
+				   
+  if (nbind == PER_SEGMENT || mbind == PER_SEGMENT) {
+    assert(0);
+  }
+  else {
+    while (ptr < end) {
+      int n = *ptr++;
+      if (n < 2) {
+	idx += n; // FIXME: is this correct?
+	continue;
+      }
+      n -= 2;
+      if (!drawPoints) this->beginShape(action, SoShape::LINE_STRIP);
+      if (nbind != OVERALL) {
+	currnormal = normals++;
+	vertex.setNormal(*currnormal);
+      }
+      if (mbind != OVERALL) vertex.setMaterialIndex(matnr++);
+      if (doTextures) {
+	if (tb.isFunction())
+	  vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+	else
+	  vertex.setTextureCoords(tb.get(texnr++));
+      }
+      vertex.setPoint(coords->get3(idx++));
+      this->shapeVertex(&vertex);
+      do {
+	if (nbind == PER_VERTEX) {
+	  currnormal = normals++;
+	  vertex.setNormal(*currnormal);
+	}
+	if (mbind == PER_VERTEX) vertex.setMaterialIndex(matnr++);
+	if (doTextures) {
+	  if (tb.isFunction())
+	    vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+	  else
+	    vertex.setTextureCoords(tb.get(texnr++));
+	}
+	vertex.setPoint(coords->get3(idx++));
+	this->shapeVertex(&vertex);
+      } while (n--);
+      if (!drawPoints) this->endShape();
+    }
+  }
+  if (drawPoints) this->endShape();
+
+  if (this->vertexProperty.getValue())
+    state->pop();
 }
 #endif // !COIN_EXCLUDE_SOACTION
 

@@ -120,7 +120,7 @@ private:
   SbVec3f rayStart;
   SbVec3f rayDirection;
   float rayRadiusStart;
-  float rayRadiusFar;
+  float rayRadiusDelta;
   float rayNear;
   float rayFar;
   float radiusInPixels;

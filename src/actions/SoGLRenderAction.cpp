@@ -636,10 +636,6 @@ SoGLRenderAction::beginTraversal(SoNode * node)
       SbBool usedepthbuffer = glIsEnabled(GL_DEPTH_TEST);
       if (usedepthbuffer) glDisable(GL_DEPTH_TEST);
       this->delayedRender = TRUE;
-#if 0 // debug
-      fprintf(stderr, "rendering delayed paths: %d\n", 
-	      this->delayedPaths.getLength());
-#endif
       this->apply(this->delayedPaths, TRUE);
       if (usedepthbuffer) glEnable(GL_DEPTH_TEST);
     }

@@ -660,11 +660,11 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
   FIXME: write function documentation
 */
 SoDetail *
-SoIndexedFaceSet::createTriangleDetail(SoRayPickAction *action,
-				       const SoPrimitiveVertex *v1,
-				       const SoPrimitiveVertex *v2,
-				       const SoPrimitiveVertex *v3,
-				       SoPickedPoint *pp)
+SoIndexedFaceSet::createTriangleDetail(SoRayPickAction */*action*/,
+				       const SoPrimitiveVertex */*v1*/,
+				       const SoPrimitiveVertex */*v2*/,
+				       const SoPrimitiveVertex */*v3*/,
+				       SoPickedPoint */*pp*/)
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
