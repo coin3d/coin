@@ -39,7 +39,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#include <../snprintf.h> // snprintf() and vsnprintf() definitions.
+#include "../snprintf.h" // snprintf() and vsnprintf() definitions.
 #include <assert.h>
 #include <string.h>
 
