@@ -194,7 +194,7 @@ SoText2::SoText2(void)
   THIS->useglyphcache = TRUE;
   THIS->prevfontname = SbName("");
   THIS->prevfontsize = 0.0;
-  THIS->hasbuiltglyphcache = SbBool(FALSE);
+  THIS->hasbuiltglyphcache = FALSE;
   
   SO_NODE_INTERNAL_CONSTRUCTOR(SoText2);
 
@@ -294,7 +294,7 @@ SoText2::GLRender(SoGLRenderAction * action)
         }
         charcnt = THIS->laststring[i]->getLength();
         for (int i2 = 0; i2 < charcnt; i2++) {
-          buffer = THIS->glyphs[i][i2]->getBitmap(thissize, thispos, SbBool(FALSE));
+          buffer = THIS->glyphs[i][i2]->getBitmap(thissize, thispos, FALSE);
           ix = thissize[0];
           iy = thissize[1];
           position = THIS->positions[i][i2];
@@ -609,9 +609,9 @@ SbBool
 SoText2P::shouldBuildGlyphCache(SoState * state)
 {
   if (!this->hasbuiltglyphcache)
-    return SbBool(TRUE);
+    return TRUE;
   if (!this->useglyphcache)
-    return SbBool(FALSE);
+    return FALSE;
   SbName curfontname = SoFontNameElement::get(state);
   float curfontsize = SoFontSizeElement::get(state);
   SbBool fonthaschanged = (this->prevfontname != curfontname 
@@ -620,12 +620,12 @@ SoText2P::shouldBuildGlyphCache(SoState * state)
     return fonthaschanged;
   // FIXME: Use notify() mechanism to detect field changes. For Coin3. preng, 2003-03-10.
   if (this->linecnt != this->textnode->string.getNum())
-    return SbBool(TRUE);
+    return TRUE;
   for (int i=0; i<this->linecnt; i++) {
     if (strcmp(laststring[i]->getString(), this->textnode->string[i].getString()) != 0)
-      return SbBool(TRUE);
+      return TRUE;
   }
-  return SbBool(FALSE);
+  return FALSE;
 }
 
 int
@@ -645,7 +645,7 @@ SoText2P::buildGlyphCache(SoState * state)
     this->prevfontname = curfontname;
     this->prevfontsize = curfontsize;
     this->flushGlyphCache(FALSE);
-    this->hasbuiltglyphcache = SbBool(TRUE);
+    this->hasbuiltglyphcache = TRUE;
     this->linecnt = t->string.getNum();
     this->validarraydims = 0;
     this->glyphs = (SoGlyph ***)malloc(this->linecnt*sizeof(SoGlyph*));
@@ -691,7 +691,7 @@ SoText2P::buildGlyphCache(SoState * state)
 #endif
             return -1;
           }
-          this->glyphs[i][j]->getBitmap(thissize, thispos, SbBool(FALSE));
+          this->glyphs[i][j]->getBitmap(thissize, thispos, FALSE);
           if (j > 0) {
             kerning = this->glyphs[i][j-1]->getKerning((const SoGlyph &)*this->glyphs[i][j]);
             advance = this->glyphs[i][j-1]->getAdvance();
