@@ -683,7 +683,14 @@ STUFF TO FIX IN COIN
      * One important aspect of the implementation is to get the
        internal class abstraction for handling glyphs correctly. The
        current SoGlyph class probably leaves a lot to be wanted.
-       
+
+     * We should try to get hold of one or more full-featured TrueType
+       font(s) to embed as a binary file into Coin -- as a fallback in
+       case no TT fonts can be found on the run-time system.
+
+       See the Coin/docs/misc-resources.txt file for URLs to free font
+       resources.
+
 
 
 OTHER COIN-RELATED STUFF TO FIX
