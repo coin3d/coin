@@ -730,12 +730,9 @@ SoPrimitiveVertexCache::fit(void)
 
 
   // sort triangles based on vertex indices to get more hits in the
-  // GPU vertex cache. Not the optimal solution, but should work pretty
-  // well
-
-  // disabled until we can do some performance testing 
-  // pederb, 2004-10-08
-#if 0
+  // GPU vertex cache. Not the optimal solution, but should work
+  // pretty well. Example: bunny.iv (~70000 triangles) went from 238
+  // fps with no sorting to 380 fps with sorting.
   if (PRIVATE(this)->indices.getLength()) {
     qsort((void*) PRIVATE(this)->indices.getArrayPtr(),
           PRIVATE(this)->indices.getLength() / 3,
@@ -750,7 +747,6 @@ SoPrimitiveVertexCache::fit(void)
           sizeof(int32_t) * 2,
           compare_line_segment);
   }
-#endif // disabled
 }
 
 #undef PRIVATE
