@@ -145,37 +145,6 @@ class SoInputP {
 };
 
 // *************************************************************************
-// This is the hack that makes it possible for SoInput to have a
-// private class. The problem has been fixed for Coin 3.
-
-static SbDict * soinput_private_data_dict = NULL;
-
-static void
-soinput_private_data_cleanup(void)
-{
-  delete soinput_private_data_dict;
-  soinput_private_data_dict = NULL;
-}
-
-SoInputP *
-soinput_get_private_data(const SoInput * thisp)
-{
-  if (soinput_private_data_dict == NULL) {
-    soinput_private_data_dict = new SbDict;
-    atexit(soinput_private_data_cleanup);
-  }
-  void * pimpl;
-  if (!soinput_private_data_dict->find((unsigned long) thisp, pimpl)) {
-    pimpl = (void*) new SoInputP((SoInput*) thisp);
-    (void) soinput_private_data_dict->enter((unsigned long) thisp, pimpl);
-  }
-  return (SoInputP*) pimpl;
-}
-
-#undef THIS
-#define THIS (soinput_get_private_data(this))
-
-// *************************************************************************
 
 SbStringList * SoInput::dirsearchlist = NULL;
 
@@ -229,6 +198,11 @@ SoInputP::getTopOfStackPopOnEOF(void)
 
 // *************************************************************************
 
+#undef PRIVATE
+#define PRIVATE(obj) (obj->pimpl)
+
+// *************************************************************************
+
 /*!
   Constructor. If no filepointer is set, input will be read from stdin.
  */
@@ -254,6 +228,8 @@ SoInput::SoInput(SoInput * dictIn)
 void
 SoInput::constructorsCommon(void)
 {
+  PRIVATE(this) = new SoInputP(this);
+
   /* It is not possible to "pass" C library data from the application
      to a MSWin .DLL, so this is necessary to get hold of the stderr
      FILE*. Just using fprintf(stderr, ...) or fprintf(stdout, ...)
@@ -286,6 +262,8 @@ SoInput::~SoInput(void)
     }
     data->searchlist->truncate(0);
   }
+
+  delete PRIVATE(this);
 }
 
 /*!
@@ -557,7 +535,7 @@ SoInput::pushFile(const char * filename)
   // the pushed file should end up on the stack.
   if (this->filestack.getLength() == 1 &&
       this->filestack[0]->ivFilePointer() == coin_get_stdin() &&
-      !THIS->usingstdin) { 
+      !PRIVATE(this)->usingstdin) { 
 
     this->closeFile();
   }
@@ -843,7 +821,7 @@ SoInput::get(char & c)
 {
   // It is essential that this method pops on EOF, because this
   // feature is used in e.g SoFile::readNamedFile
-  SoInput_FileInfo * fi = THIS->getTopOfStackPopOnEOF();
+  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
   return (this->checkHeader() && // Strip off file header, if any.
           fi->get(c));
 }
@@ -908,7 +886,7 @@ SoInput::readHex(uint32_t & l)
 SbBool
 SoInput::read(char & c)
 {
-  SoInput_FileInfo * fi = THIS->getTopOfStackPopOnEOF();
+  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
 
   if (!this->checkHeader()) return FALSE;
 
@@ -923,7 +901,7 @@ SoInput::read(char & c)
 SbBool
 SoInput::read(char & c, SbBool skip)
 {
-  SoInput_FileInfo * fi = THIS->getTopOfStackPopOnEOF();
+  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
 
   if (!this->checkHeader()) return FALSE;
 
@@ -958,7 +936,7 @@ SoInput::read(char & c, SbBool skip)
 SbBool
 SoInput::read(SbString & s)
 {
-  SoInput_FileInfo * fi = THIS->getTopOfStackPopOnEOF();
+  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
 
   if (!this->checkHeader()) return FALSE;
 
@@ -1159,7 +1137,7 @@ soinput_is_ident_char(SoInput * in, char c)
 SbBool
 SoInput::read(SbName & n, SbBool validIdent)
 {
-  SoInput_FileInfo * fi = THIS->getTopOfStackPopOnEOF();  
+  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();  
 
   if (!this->checkHeader()) return FALSE;
 
@@ -2105,9 +2083,9 @@ SoInput::checkHeader(SbBool bValidateBufferHeader)
   // a new file is pushed on the stack.
   if (this->filestack.getLength() == 1 && 
       fi->ivFilePointer() == coin_get_stdin() && 
-      !THIS->usingstdin) {
+      !PRIVATE(this)->usingstdin) {
 
-    THIS->usingstdin = TRUE;
+    PRIVATE(this)->usingstdin = TRUE;
   }
 
   return fi->readHeader(this) && (!bValidateBufferHeader || fi->ivVersion() != 0.0f);
@@ -2753,3 +2731,5 @@ SoInput::findFile(const char * basename, SbString & fullname)
 
   return NULL;
 }
+
+#undef PRIVATE

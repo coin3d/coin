@@ -43,6 +43,7 @@ class SoInput_FileInfo;
 class SoProto;
 class SoField;
 class SoFieldContainer;
+class SoInputP;
 
 class COIN_DLL_API SoInput {
 public:
@@ -180,6 +181,7 @@ private:
   SoInput_FileInfo * getTopOfStack(void) const;
 
   SbDict refdict;
+  SoInputP * pimpl;
 };
 
 #endif // !COIN_SOINPUT_H
