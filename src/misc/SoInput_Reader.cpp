@@ -22,8 +22,17 @@
 \**************************************************************************/
 
 #include "SoInput_Reader.h"
+#include <Inventor/errors/SoDebugError.h>
+
 #include <string.h>
 #include <assert.h>
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h> // dup()
+#endif // HAVE_UNISTD_H
 
 //
 // abstract class
@@ -63,6 +72,7 @@ SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
   long offset = ftell(fp);
   int siz = fread(header, 1, 4, fp);
   (void) fseek(fp, offset, SEEK_SET);
+  fflush(fp); // needed since we fetch the file descriptor later
 
 #ifdef HAVE_BZIP2
   if (header[0] == 'B' && header[1] == 'Z') {
@@ -74,11 +84,18 @@ SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
   }
 #endif // HAVE_BZIP2
 #ifdef HAVE_ZLIB
-  if (fullname.getLength() && (reader == NULL) && (header[0] == 0x1f) && (header[1] == 0x8b)) {
-    gzFile gzfp = gzopen(fullname.getString(), "rb");
-    if (gzfp) {
-      fclose(fp); // close original file handle
-      reader = new SoInput_GZFileReader(fullname.getString(), gzfp);
+  if ((reader == NULL) && (header[0] == 0x1f) && (header[1] == 0x8b)) {
+    int fd = fileno(fp);
+    if (fd >= 0) {
+      // need to use dup(), since gzdclose() will close the original file
+      gzFile gzfp = gzdopen(dup(fd), "rb");
+      if (gzfp) {
+        reader = new SoInput_GZFileReader(fullname.getString(), gzfp);
+      }
+    }
+    else {
+      SoDebugError::postWarning("SoInput_Reader::createReader", 
+                                "Unable to create file descriptor from stream.");
     }
   }
 #endif // HAVE_ZLIB
@@ -196,7 +213,7 @@ SoInput_GZFileReader::getType(void) const
 int
 SoInput_GZFileReader::readBuffer(char * buf, const size_t readlen)
 {
-  return gzread(this->gzfp, (void*) buf, readlen);
+  return gzread(this->gzfp, (void*) buf, readlen); 
 }
 
 const SbString &
