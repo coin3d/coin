@@ -69,8 +69,7 @@ SoScale2UniformDragger::SoScale2UniformDragger(void)
   SoInteractionKit::setSwitchValue(sw, 0);
 
   // setup projector
-  this->lineProjX = new SbLineProjector();
-  this->lineProjY = new SbLineProjector();
+  this->lineProj = new SbLineProjector();
 
   this->addStartCallback(SoScale2UniformDragger::startCB);
   this->addMotionCallback(SoScale2UniformDragger::motionCB);
@@ -87,8 +86,7 @@ SoScale2UniformDragger::SoScale2UniformDragger(void)
 
 SoScale2UniformDragger::~SoScale2UniformDragger()
 {
-  delete this->lineProjX;
-  delete this->lineProjY;
+  delete this->lineProj;
   delete this->fieldSensor;
 }
 
@@ -178,41 +176,28 @@ SoScale2UniformDragger::dragStart(void)
   SoInteractionKit::setSwitchValue(sw, 1);
   sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 1);
-
-  SbVec3f hitPt = this->getLocalStartingPoint();
-  this->lineProjX->setLine(SbLine(hitPt, hitPt + SbVec3f(1.0f, 0.0f, 0.0f)));
-  this->lineProjY->setLine(SbLine(hitPt, hitPt + SbVec3f(0.0f, 1.0f, 0.0f)));
 }
 
 void
 SoScale2UniformDragger::drag(void)
 {
-  this->lineProjX->setViewVolume(this->getViewVolume());
-  this->lineProjX->setWorkingSpace(this->getLocalToWorldMatrix());
-  this->lineProjY->setViewVolume(this->getViewVolume());
-  this->lineProjY->setWorkingSpace(this->getLocalToWorldMatrix());
-
-
-  SbVec3f projPtX = lineProjX->project(this->getNormalizedLocaterPosition());
-  SbVec3f projPtY = lineProjY->project(this->getNormalizedLocaterPosition());
+  this->lineProj->setViewVolume(this->getViewVolume());
+  this->lineProj->setWorkingSpace(this->getLocalToWorldMatrix());
   SbVec3f startPt = this->getLocalStartingPoint();
+  this->lineProj->setLine(SbLine(startPt, startPt + SbVec3f(1.0f, 0.0f, 0.0f)));
+  SbVec3f projPtX = lineProj->project(this->getNormalizedLocaterPosition());
+  this->lineProj->setLine(SbLine(startPt, startPt + SbVec3f(0.0f, 1.0f, 0.0f)));
+  SbVec3f projPtY = lineProj->project(this->getNormalizedLocaterPosition());
 
-  float motionx = projPtX[0];
-  if (startPt[0] != 0.0f)
-    motionx /= startPt[0];
-  else
-    motionx = 0.0f;
-
-  float motiony = projPtY[1];
-  if (startPt[1] != 0.0f)
-    motiony /= startPt[1];
-  else
-    motiony = 0.0f;
-
-  float motion = SbMax(fabs(motionx), fabs(motiony));
-
+  float div = SbMax(fabs(startPt[0]), fabs(startPt[1]));
+  float scale = 0.0f;
+  if (div > 0.0f) {
+    float scalex = fabs(projPtX[0] / div);
+    float scaley = fabs(projPtY[1] / div);
+    scale = SbMax(scalex, scaley);
+  }
   this->setMotionMatrix(this->appendScale(this->getStartMotionMatrix(),
-                                          SbVec3f(motion, motion, 1.0f),
+                                          SbVec3f(scale, scale, 1.0f),
                                           SbVec3f(0.0f, 0.0f, 0.0f)));
 }
 
