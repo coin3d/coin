@@ -1096,10 +1096,11 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
 
   error = cc_ftglue_FT_Load_Glyph(face, glyphindex, FT_LOAD_DEFAULT);
   if (error != 0) {
-    if (cc_flw_debug())
+    if (cc_flw_debug()) {
       cc_debugerror_post("cc_flwft_get_vector_glyph",
                          "Error loading glyph (glyphindex==%d). "
                          "(FT_Load_Glyph() error => %d)", glyphindex, error);
+    }
     return NULL;
   }
 
@@ -1108,6 +1109,23 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
     cc_debugerror_post("cc_flwft_get_vector_glyph",
                        "Error fetching glyph. Font is not properly initialized. "
                        "(FT_Get_Glyph() error => %d)", error);
+    return NULL;
+  }
+
+  /* FIXME: investigate if there is a simple way to gather the outline
+     from a bitmapped font? 20040925 tamer. */
+  /* in case of a bitmap font fall back to the default font. commonly
+     it will already fail and return NULL due to not being able to set
+     another character size for fixed sized fonts. still, rather be
+     robust and catch the unprobable case where the provided bitmap
+     font could match the flwt_3dfontsize. */
+  if (tmp->format == FT_GLYPH_FORMAT_BITMAP) {
+    if (cc_flw_debug()) {
+      cc_debugerror_post("cc_flwft_get_vector_glyph",
+                         "Glyph is a bitmap. Falling back to the default font!");
+    }
+    /* cleanup temporary glyph */
+    cc_ftglue_FT_Done_Glyph(tmp);
     return NULL;
   }
 
