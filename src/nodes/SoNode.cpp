@@ -30,7 +30,12 @@
 #include <Inventor/SbString.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoActions.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/fields/SoField.h>
+#include <Inventor/nodes/SoNodes.h>
+#include <Inventor/nodes/SoUnknownNode.h>
+#include <assert.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -39,14 +44,6 @@
 #ifndef NDEBUG
 #include <GL/gl.h> // assert glGetError
 #endif
-
-#include <Inventor/nodes/SoNodes.h>
-
-#include <Inventor/actions/SoActions.h>
-#include <Inventor/errors/SoDebugError.h>
-
-#include <assert.h>
-
 
 /*!
   \enum SoNode::Stage
@@ -111,6 +108,8 @@ SoNode::SoNode()
 */
 SoNode::~SoNode()
 {
+  // FIXME: detach any node sensor(s) to avoid references to free'd
+  // memory. 19981027 mortene.
 }
 
 /*!
@@ -275,6 +274,7 @@ SoNode::initClasses(void)
   SoTextureCoordinateDefault::initClass();
   SoTextureCoordinateEnvironment::initClass();
   SoTextureCoordinatePlane::initClass();
+  SoUnknownNode::initClass();
   SoVertexProperty::initClass();
   SoWWWInline::initClass();
 }
