@@ -132,6 +132,11 @@ int SoElement::getClassStackIndex(void) { return SoElement::classStackIndex; }
 void
 SoElement::initElements(void)
 {
+  // SoGLCacheContextElement is initialized first because it is needed by
+  // any code that accesses OpenGL using GLWrapper (which is dependant upon
+  // a valid SoGLCacheContextElement to get the OpenGL context id).
+  SoGLCacheContextElement::initClass();
+
   SoAccumulatedElement::initClass();
   SoClipPlaneElement::initClass();
   SoGLClipPlaneElement::initClass();
@@ -228,7 +233,6 @@ SoElement::initElements(void)
   SoGLNormalizeElement::initClass();
   SoLazyElement::initClass();
   SoCullElement::initClass();
-  SoGLCacheContextElement::initClass();
 
   SoTextureScalePolicyElement::initClass();
 }
