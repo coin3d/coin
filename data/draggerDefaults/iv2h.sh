@@ -10,7 +10,7 @@
 #   Lars J. Aas <larsa@sim.no>
 #
 
-UPCASEBASE=`basename $1 .iv | tr a-z A-Z`
+UPCASEBASE=`basename $1 .iv | tr '[a-z]' '[A-Z]'`
 
 cat <<HERE_DOC_END
 /**************************************************************************
