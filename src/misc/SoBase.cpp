@@ -1146,14 +1146,14 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
   }
 #endif // COIN_DEBUG
 
-  //.read all (vrml97) routes
-  if (in->isFileVRML2()) {
-    while (result && name == ROUTE_KEYWORD) {
-      result = SoBase::readRoute(in);
-      // read next ROUTE keyword
-      if (result ) result = in->read(name, TRUE);
-      else return FALSE; // error while reading ROUTE
-    }
+  // read all (vrml97) routes. Do this also for non-vrml97 files,
+  // since in Coin we can have a mix of Inventor and VRML97 nodes in
+  // the same file.
+  while (result && name == ROUTE_KEYWORD) {
+    result = SoBase::readRoute(in);
+    // read next ROUTE keyword
+    if (result ) result = in->read(name, TRUE);
+    else return FALSE; // error while reading ROUTE
   }
 
   // The SoInput stream does not start with a valid base name. Return
