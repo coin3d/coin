@@ -1493,9 +1493,59 @@ SoTransformerDragger::dragScale()
   this->unsquishKnobs();
 }
 
+// The dragRotate method has been implemented somewhat differently
+// than the other drag functions. This is because of the unfortunate
+// effect that happens when a non-uniform scale has been applied to
+// the motion-matrix, and rotation is attempted to be done before the
+// scale. Both operations are perfectly valid, but the end result is
+// not what you'd expect; the transformation comes out sheared. To
+// prevent this from happening, the rotation matrices are applied in
+// world space, that is after all other transformations have been
+// applied (scale and translation are applied in local
+// space). What is basically done is this:
+//
+// Calculates the matrix (as done in SoDragger::appendRotation()):
+// 
+// C := conversion
+// P := rotcenter
+// R := rot
+// M := new motion matrix
+// Mold := previous motionmatrix including surroundscale
+// 
+// M = C^-1 * P^-1 * R * P * C * Mold
+// 
+// What essentially happens is that we transform into C's coordinate
+// system, then we move the rotation center to origo and apply the
+// new rotation.  The rotation has now been applied, but we are in
+// the wrong coordinate system, so we reapply the rotation center
+// and the conversion. Finally we transform the matrix by the old
+// transformation, which gives us the new rotated transformation.
+// 
+// The rotation happens in the local coordinate system of the object
+// if C = P = I, but if P is specified, then the rotation center
+// will be adjusted before the rotation is applied. If the
+// conversion matrix has been specified to be e.g:
+// 
+// C = (Mold * W)^-1
+// 
+// Then the resulting matrix looks something like this:
+// 
+// M = ((Mold * W)^-1)^-1 * P^-1 * R * P * (Mold * W)^-1 * Mold
+//   = Mold * W * P^-1 * R * P * W^-1 * Mold^-1 * Mold
+//   = Mold * W * P^-1 * R * P * W^-1
+//
+// Take a closer look at the resulting matrix: It basically reverses
+// the transformation. Instead of having the rotation applied before
+// the old transformation, the rotation is applied after the old
+// transformation. The rotation also happens in world space - that is
+// the coordinate system is transformed to the world coordinate system
+// before the rotation is applied around rotationcenter. Finally the
+// matrix is transformed back to the local coordinate system.
 void
 SoTransformerDragger::dragRotate(void)
 {
+  // Update the sphere projector to the current view so that it
+  // accurately can react to events.
   this->sphereProj->setViewVolume(this->getViewVolume());
   this->sphereProj->setWorkingSpace(this->getWorkingToWorldMatrix());
 
@@ -1523,20 +1573,37 @@ SoTransformerDragger::dragRotate(void)
 
   SbVec3f center(0.0f, 0.0f, 0.0f);
   if (THIS->ctrlDown) {
+    // Adjust the center to be on the other side of the bounding box
+    // when the control key has been pressed.
     center -= THIS->ctrlOffset * KNOB_DISTANCE;
   }
 
+  // Show the necessary feedback geometry for rotation.
   this->setDynamicRotatorSwitches(event);
 
   if (THIS->constraintState == CONSTRAINT_OFF) {
-    this->getWorldToWorkingMatrix().multVecMatrix(THIS->prevWorldHitPt, startpt);
+    SbVec3f worldcenter = this->getBoxPointInWorldSpace(center);
+    SbVec3f prevprojpt = THIS->prevWorldHitPt;
+    SbVec3f worldprojpt;
+
+    // Find locater position in world space
     projpt = this->sphereProj->project(this->getNormalizedLocaterPosition());
-    this->getWorkingToWorldMatrix().multVecMatrix(projpt, THIS->prevWorldHitPt);
-    SbRotation rot = this->sphereProj->getRotation(startpt, projpt);
-    SbMatrix mat, inv;
-    this->getSurroundScaleMatrices(mat, inv);
+    this->getWorkingToWorldMatrix().multVecMatrix(projpt, worldprojpt);
+    THIS->prevWorldHitPt = worldprojpt;
+
+    // Find the projection vectors from the box center in world space.
+    worldprojpt -= worldcenter;
+    prevprojpt -= worldcenter;
+
+    // Calculate the rotation from previous prevprojpt to worldprojpt
+    SbRotation rot(prevprojpt, worldprojpt);
+
+    // Calculate new motionmatrix by rotating in world space to
+    // prevent shearing with non-uniform scale.
+    SbMatrix mat = this->getWorldToLocalMatrix();
     THIS->prevMotionMatrix = this->appendRotation(THIS->prevMotionMatrix, rot,
-                                                  center, &mat);
+                                                  worldcenter, &mat);
+
     this->setMotionMatrix(THIS->prevMotionMatrix);
   }
   else if (THIS->constraintState == CONSTRAINT_WAIT && this->isAdequateConstraintMotion()) {
@@ -1562,25 +1629,41 @@ SoTransformerDragger::dragRotate(void)
     // set plane to do disc-rotate in
     this->planeProj->setPlane(SbPlane(SbVec3f(0.0f, 0.0f, 0.0f), dim, dim+n));
     this->setDynamicRotatorSwitches(event);
+
+    // Initialize prevWorldHitPt and prevMotionMatrix
+    projpt = this->planeProj->project(this->getNormalizedLocaterPosition());
+    this->getWorkingToWorldMatrix().multVecMatrix(projpt, THIS->prevWorldHitPt);
+    THIS->prevMotionMatrix = this->getMotionMatrix();
   }
   if (THIS->constraintState >= CONSTRAINT_X) {
-    // project startpt into plane to get nicer disc-rotation
-    // SbPlane really should have had a getClosestPoint() method.
-    const SbPlane &plane = this->planeProj->getPlane();
-    startpt -= plane.getNormal() * plane.getDistance(startpt);
-
     this->planeProj->setViewVolume(this->getViewVolume());
     this->planeProj->setWorkingSpace(this->getWorkingToWorldMatrix());
 
+    SbVec3f worldcenter = this->getBoxPointInWorldSpace(center);
+    SbVec3f prevprojpt = THIS->prevWorldHitPt;
+    SbVec3f worldprojpt;
+
+    // Find current locater position projected onto the plane in world
+    // space.
     projpt = this->planeProj->project(this->getNormalizedLocaterPosition());
-    startpt -= center;
-    projpt -= center;
-    SbRotation rot(startpt, projpt);
-    SbMatrix mat, inv;
-    this->getSurroundScaleMatrices(mat, inv);
-    this->setMotionMatrix(this->appendRotation(this->getStartMotionMatrix(),
-                                               rot,
-                                               center, &mat));
+    this->getWorkingToWorldMatrix().multVecMatrix(projpt, worldprojpt);
+    THIS->prevWorldHitPt = worldprojpt;
+
+    // Adjust the center of the points to match the center of the
+    // dragger in worldspace.
+    prevprojpt -= worldcenter;
+    worldprojpt -= worldcenter;
+
+    // Rotate between the two points in the plane
+    SbRotation rot(prevprojpt, worldprojpt);
+
+    // Rotate in world space to prevent shearing when having
+    // non-uniform scale.
+    SbMatrix mat = this->getWorldToLocalMatrix();
+    THIS->prevMotionMatrix = (this->appendRotation(THIS->prevMotionMatrix, rot,
+                                                   worldcenter, &mat));
+
+    this->setMotionMatrix(THIS->prevMotionMatrix);
   }
   this->unsquishKnobs();
 }
@@ -1625,6 +1708,7 @@ SoTransformerDragger::dragFinish(void)
   this->setSwitchValue("zAxisFeedbackSwitch", SO_SWITCH_NONE);
 
 #if COIN_DEBUG && 0 // used to debug motion matrix (pederb, 20000225)
+  SbMatrix m = this->getMotionMatrix();
   SbRotation r,so;
   SbVec3f t,s;
 
