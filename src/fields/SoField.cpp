@@ -915,6 +915,19 @@ SoField::set(const char * valueString)
   return TRUE;
 }
 
+// Overload SoOutput to make sure no header is written to the buffer.
+// NB: this class is only used by the SoField::get() method below.
+class DerivedSoOutput : public SoOutput {
+  // FIXME: I tried to move this class definition inside the
+  // SoField::get() scope, but this resulted in an "unresolved symbol"
+  // error at link time when compiling with certain versions of the
+  // egcs/gcc compiler (at least with egcs-2.91.66 and gcc
+  // 2.95). 19990929 mortene.
+public:
+  DerivedSoOutput(void) { this->wroteHeader = TRUE; }
+  virtual void reset(void) { SoOutput::reset(); this->wroteHeader = TRUE; }
+};
+
 /*!
   Returns the field's value as an ASCII string in the export data format
   for Coin (and Open Inventor) files.
@@ -924,13 +937,6 @@ SoField::set(const char * valueString)
 void
 SoField::get(SbString & valueString)
 {
-  // Overload SoOutput to make sure no header is written to the buffer.
-  class DerivedSoOutput : public SoOutput {
-  public:
-    DerivedSoOutput(void) { this->wroteHeader = TRUE; }
-    virtual void reset(void) { SoOutput::reset(); this->wroteHeader = TRUE; }
-  };
-
   DerivedSoOutput out;
   const size_t STARTSIZE = 32;
   void * buffer = malloc(STARTSIZE);
