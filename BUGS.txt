@@ -1769,3 +1769,27 @@
     20030513 mortene, reported by Leopold Avellaneda.
 
 =====================================================================
+
+068 Calling SoFieldContainer::set() on an SoSFNode field with a "DEF"
+    leads to a crash.
+
+    This causes a segfault:
+
+    ------8<----- [snip] ----------------8<----- [snip] ----------
+    #include <Inventor/nodes/SoIndexedFaceSet.h>
+    
+    int
+    main(int argc, char ** argv)
+    {
+      SoDB::init();
+    
+      SoIndexedFaceSet * ifs = new SoIndexedFaceSet;
+      ifs->set("vertexProperty DEF MyVP VertexProperty { }");
+    
+      return 0;
+    }
+    ------8<----- [snip] ----------------8<----- [snip] ----------
+
+    20030513 mortene, reported by Tamer Fahmy.
+
+=====================================================================
