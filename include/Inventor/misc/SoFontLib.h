@@ -41,6 +41,7 @@ public:
   static int getNumCharmaps(const int font);
   static SbString getCharmapName(const int font, const int charmap);
   static void setCharmap(const int font, const int charmap);
+  static void setDefaultCharmap(const int font);
   static void setCharSize(const int font, const SbVec2s & size);
   static void setFontRotation(const int font, const float angle);
   static int getGlyph(const int font, const int charidx);
