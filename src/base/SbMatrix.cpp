@@ -356,9 +356,9 @@ SbMatrix::det3(void) const
 float
 SbMatrix::det4(void) const
 {
-  // TODO: erraneous? this code gives the same results in the regression
+  // FIXME: erraneous? this code gives the same results in the regression
   // test as described in Kreyszig, but OI returns other values (except
-  // for 1 of the testmatrices!).
+  // for 1 of the testmatrices!). 1998???? mortene.
 
   float det = 0.0f;
   det += this->matrix[0][0] * det3(1,2,3,1,2,3);
