@@ -773,8 +773,9 @@ SIM_AC_DETECT_COMMON_COMPILER_FLAGS
 # (Like at least SoQt, since the Qt headers defines the bool type, which
 # will then cause a compiler error when q[whatever].h is included.)
 
-SIM_AC_CC_COMPILER_OPTION([/noBool], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /noBool"])
-SIM_AC_CXX_COMPILER_OPTION([/noBool], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /noBool"])
+SIM_AC_COMPILER_NOBOOL([
+  sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS $sim_ac_nobool_CXXFLAGS"
+])
 
 #  Yep, this is important in case we want to add code to make
 #  the API interface "Open Inventor strict", meaning the user must
