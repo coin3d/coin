@@ -476,6 +476,9 @@ SbBool intersect_box_edges(const SbVec3f &min,
     SbVec3f l2 = points[lines[i*2+1]];
     // possible optimization: reuse directional vectors
     SbVec3f dir = l2 - l1;
+    // if the direction is a nil-vector, this means that the bounding
+    // box is flat (2D or 1D) or empty and we can just skip this vector.
+    if (dir == SbVec3f(0.0f, 0.0f, 0.0f)) continue;
     dir.normalize();
     SbVec3f lmin(SbMin(l1[0], l2[0]),
                  SbMin(l1[1], l2[1]),
