@@ -144,7 +144,7 @@ public:
   SbDict refdict;
   SbList <SbName> routelist;
   SoMFString * externurl;
-  SoNode * extprotonode;
+  SoProto * extprotonode;
 };
 
 // doc in parent
@@ -247,6 +247,9 @@ SoProto::findProto(const SbName & name)
 SoProtoInstance *
 SoProto::createProtoInstance(void)
 {
+  if (PRIVATE(this)->extprotonode) {
+    return PRIVATE(this)->extprotonode->createProtoInstance();
+  }
   SoProtoInstance * inst = new SoProtoInstance(this,
                                                PRIVATE(this)->fielddata);
   inst->ref();
@@ -636,11 +639,15 @@ SoProto::readDefinition(SoInput * in)
 SoNode *
 SoProto::createInstanceRoot(SoProtoInstance * inst) const
 {
+  if (PRIVATE(this)->extprotonode) {
+    return PRIVATE(this)->extprotonode->createInstanceRoot(inst);
+  }
+  
   SoNode * root;
   if (PRIVATE(this)->defroot->getNumChildren() == 1)
     root = PRIVATE(this)->defroot->getChild(0);
   else root = PRIVATE(this)->defroot;
-
+  
   SoNode * cpy;
   cpy = root->copy(FALSE);
   cpy->ref();
@@ -765,7 +772,9 @@ SbBool
 SoProto::setupExtern(SoInput * in, SoProto * externproto)
 {
   assert(externproto);  
-  return FALSE;
+  PRIVATE(this)->extprotonode = externproto;
+  PRIVATE(this)->extprotonode->ref();
+  return TRUE;
 }
 
 #undef PRIVATE
