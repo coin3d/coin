@@ -39,7 +39,7 @@ SoDecomposeRotation::SoDecomposeRotation()
 {
   SO_ENGINE_CONSTRUCTOR(SoDecomposeRotation);
 
-  SO_ENGINE_ADD_INPUT(rotation,(0,0,0,0));
+  SO_ENGINE_ADD_INPUT(rotation,(0.0f, 0.0f, 1.0f, 0.0f));
 
   SO_ENGINE_ADD_OUTPUT(axis,SoMFVec3f);
   SO_ENGINE_ADD_OUTPUT(angle,SoMFFloat);
