@@ -125,9 +125,9 @@ _class_::createInstance(void) \
         new SoEngineOutputData(_class_::parentoutputdata ? \
                                *_class_::parentoutputdata : NULL); \
     } \
-    /* Extension classes from the application programmers should not be \
-       considered native. This is important to get the export code to do \
-       the Right Thing. */ \
+    /* Extension classes from the application programmers should not be */ \
+    /* considered native. This is important to get the export code to do */ \
+    /* the Right Thing. */ \
     this->isBuiltIn = FALSE; \
   } while (0)
 
@@ -192,16 +192,18 @@ _class_::createInstance(void) \
                               SO__QUOTE(_enumval_), _enumval_); \
   } while (0)
 
-#define SO_ENGINE_OUTPUT(_outmember_,_outtype_,_outval_) \
+#define SO_ENGINE_OUTPUT(_engineout_, _fieldtype_, _writeop_) \
   do { \
-    if (_outmember_.isEnabled()) \
-      for (int SO_ENGINE_OUTPUT_i = 0; \
-           SO_ENGINE_OUTPUT_i < _outmember_.getNumConnections(); \
-           SO_ENGINE_OUTPUT_i++) { \
-        _outtype_ * field = (_outtype_*) _outmember_[SO_ENGINE_OUTPUT_i]; \
-        if (!field->isReadOnly()) \
-           ((_outtype_ *)_outmember_[SO_ENGINE_OUTPUT_i])->_outval_; \
+    if (_engineout_.isEnabled()) { \
+      /* No fields can be added or removed during this loop, as it */ \
+      /* is a "closed" operation. (The fields are disabled for */ \
+      /* notification while the loop runs). */ \
+      int numconnections = _engineout_.getNumConnections(); \
+      for (int i = 0; i < numconnections; i++) { \
+        _fieldtype_ * field = (_fieldtype_*) _engineout_[i]; \
+        if (!field->isReadOnly()) { field->_writeop_; } \
       } \
+    } \
   } while (0)
 
 #define SO_COMPOSE__HEADER(_name_) \
