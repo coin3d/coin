@@ -763,7 +763,6 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
     // Remember the connection from the slave field to the
     // SoFieldConverter by setting up a dict entry.
     this->storage->addConverter(master, conv);
-    notnotify = FALSE; // since converter never has a default value
   }
 
   // Common bookkeeping.
@@ -879,7 +878,6 @@ SoField::connectFrom(SoEngineOutput * master, SbBool notnotify, SbBool append)
     // Remember the connection from the slave field to the
     // SoFieldConverter by setting up a dict entry.
     this->storage->addConverter(master, conv);
-    notnotify = FALSE; // since converter never has a default value
   }
 
   // Match the ref() invocation.
