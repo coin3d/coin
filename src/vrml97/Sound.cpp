@@ -873,7 +873,7 @@ stereo2mono(short int *buffer, int length)
 {
   // assumes that buffersize = length * sizeof(short int) * 2
   for (int i=0; i<length; i++) {
-    buffer[i] = ((long int)buffer[i*2] + (long int)buffer[i*2+1]) / 2;
+    buffer[i] = (buffer[i*2] + buffer[i*2+1]) / 2;
   }
 }
 
