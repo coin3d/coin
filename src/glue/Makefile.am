@@ -1,13 +1,23 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+if HAVE_FREETYPE
+        FREETYPEHEADERS = ../../include/Inventor/C/glue/flwfreetype.h
+        FREETYPESOURCE = flwfreetype.c
+else
+        FREETYPEHEADERS = 
+        FREETYPESOURCE = 
+endif
+
 RegularSources = \
+        $(FREETYPESOURCE) \
 	dl.c \
 	gl.c \
 	gl_wgl.c gl_agl.c gl_glx.c \
 	GLUWrapper.c \
 	simage_wrapper.c \
-	openal_wrapper.c
+	openal_wrapper.c \
+        fontlib_wrapper.c
 
 LinkHackSources = \
 	all-c.c
@@ -15,13 +25,15 @@ LinkHackSources = \
 # Header installation is controlled from include/Inventor/C/glue/Makefile.am.
 PublicHeaders =
 PrivateHeaders = \
+        $(FREETYPEHEADERS) \
 	../../include/Inventor/C/glue/glp.h \
 	../../include/Inventor/C/glue/gl_wgl.h \
 	../../include/Inventor/C/glue/gl_glx.h \
 	../../include/Inventor/C/glue/gl_agl.h \
 	../../include/Inventor/C/glue/GLUWrapper.h \
 	../../include/Inventor/C/glue/simage_wrapper.h \
-	../../include/Inventor/C/glue/openal_wrapper.h
+	../../include/Inventor/C/glue/openal_wrapper.h \
+        ../../include/Inventor/C/glue/fontlib_wrapper.h
 
 ##$ BEGIN TEMPLATE Make-Common(glue, glue)
 # **************************************************************************
