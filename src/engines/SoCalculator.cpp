@@ -167,15 +167,13 @@
   
   \code
   
-  DEF mycamera Camera {
+  DEF mycamera PerspectiveCamera {
     orientation 1 0 0 1.57
   }
 
   DEF headlight DirectionalLight {
     intensity 0.8
-    direction 0 0 1 = Rot2Heading {
-      rotation 0 0 1 0 = USE mycamera . orientation
-    } . heading
+    direction 0 0 1
   }
 
   Separator {
