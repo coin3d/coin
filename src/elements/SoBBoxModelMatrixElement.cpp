@@ -90,10 +90,11 @@ SoBBoxModelMatrixElement::push(SoState * state)
 */
 
 void
-SoBBoxModelMatrixElement::reset(SoState * const /* state */,
-                                SoNode * const /* node */)
+SoBBoxModelMatrixElement::reset(SoState * const state,
+                                SoNode * const node)
 {
-  COIN_STUB();
+  SoModelMatrixElement::makeIdentity(state, node);
+  SoLocalBBoxMatrixElement::resetAll(state);
 }
 
 /*!

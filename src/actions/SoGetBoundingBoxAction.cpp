@@ -28,10 +28,12 @@
 #include <Inventor/lists/SoEnabledElementsList.h>
 
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
+#include <Inventor/elements/SoBBoxModelMatrixElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/SoFullPath.h>
 
 #include <Inventor/nodes/SoNode.h>
 
@@ -278,7 +280,7 @@ SoGetBoundingBoxAction::setResetPath(const SoPath *path,
                                      const SbBool resetBefore,
                                      const ResetType what)
 {
-  this->resetPath = (SoPath*)path; // force this cast :-(
+  this->resetPath = path;
   this->resetType = what;
   if (resetBefore)
     this->flags |= FLAG_RESET_BEFORE;
@@ -358,7 +360,19 @@ void
 SoGetBoundingBoxAction::checkResetBefore()
 {
   if (this->resetPath && this->isResetBefore()) {
-    // FIXME: do something
+    const SoFullPath *curpath = (const SoFullPath*) this->getCurPath();
+    const SoFullPath *resetpath = (const SoFullPath*) this->resetPath;
+    if ((curpath->getTail() == resetpath->getTail()) &&
+        curpath->containsPath(resetpath)) {
+      if (this->resetType & SoGetBoundingBoxAction::TRANSFORM) {
+        SoBBoxModelMatrixElement::reset(this->getState(), curpath->getTail());
+      }
+      if (this->resetType & SoGetBoundingBoxAction::BBOX) {
+        this->bbox.makeEmpty();
+        this->bbox.setTransform(SbMatrix::identity());
+        this->resetCenter();
+      }
+    }
   }
 }
 
@@ -370,7 +384,19 @@ void
 SoGetBoundingBoxAction::checkResetAfter()
 {
   if (this->resetPath && !this->isResetBefore()) {
-    // FIXME: do something
+    const SoFullPath *curpath = (const SoFullPath*) this->getCurPath();
+    const SoFullPath *resetpath = (const SoFullPath*) this->resetPath;
+    if ((curpath->getTail() == resetpath->getTail()) &&
+        curpath->containsPath(resetpath)) {
+      if (this->resetType & SoGetBoundingBoxAction::TRANSFORM) {
+        SoBBoxModelMatrixElement::reset(this->getState(), curpath->getTail());
+      }
+      if (this->resetType & SoGetBoundingBoxAction::BBOX) {
+        this->bbox.makeEmpty();
+        this->bbox.setTransform(SbMatrix::identity());
+        this->resetCenter();
+      }
+    }
   }
 }
 

@@ -23,6 +23,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTransformation.h>
 #include <Inventor/fields/SoSFInt32.h>
+#include <Inventor/SbVec3f.h>
 
 class SbMatrix;
 
@@ -41,7 +42,7 @@ public:
 
   void invalidate(void);
   void doAction(SoAction * action);
-  void setDoingTranslations(SbBool doEm);
+  void setDoingTranslations(const SbBool val);
   SbBool isDoingTranslations(void);
 
 protected:
@@ -53,8 +54,18 @@ protected:
   virtual void getMatrix(SoGetMatrixAction * action);
   virtual void pick(SoPickAction * action);
   void updateMySurroundParams(SoAction * action, const SbMatrix & inv);
-  void setIgnoreInBbox(SbBool newVal);
+  void setIgnoreInBbox(const SbBool val);
   SbBool isIgnoreInBbox(void);
+
+protected:
+  SbVec3f cachedScale;
+  SbVec3f cachedInvScale;
+  SbVec3f cachedTranslation;
+  SbBool cacheOK;
+  SbBool doTranslations;
+
+private:
+  SbBool ignoreInBBox;
 };
 
 #endif // !COIN_SOSURROUNDSCALE_H

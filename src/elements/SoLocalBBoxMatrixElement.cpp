@@ -224,9 +224,17 @@ SoLocalBBoxMatrixElement::popMatrix(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoLocalBBoxMatrixElement::resetAll(SoState * const /* state */)
+SoLocalBBoxMatrixElement::resetAll(SoState * const state)
 {
-  COIN_STUB();
+  // get const element to avoid push. Since this method is called only
+  // from SoBBoxModelMatrixElement::reset(), it should be safe.
+  SoLocalBBoxMatrixElement * element = 
+    (SoLocalBBoxMatrixElement *) SoElement::getConstElement(state, getClassStackIndex());
+  
+  while (element) {
+    element->localMatrix.makeIdentity();
+    element = (SoLocalBBoxMatrixElement*) element->prev;
+  }
 }
 
 //! FIXME: write doc.

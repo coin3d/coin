@@ -54,7 +54,9 @@ public:
 public:
 
   enum ResetType {
-    TRANSFORM, BBOX, ALL
+    TRANSFORM = 0x1, 
+    BBOX      = 0x2, 
+    ALL       = TRANSFORM | BBOX
   };
 
   SoGetBoundingBoxAction(const SbViewportRegion & viewportRegion);
@@ -93,7 +95,7 @@ private:
   SbVec3f center;
   SbViewportRegion vpRegion;
   ResetType resetType;
-  SoPath * resetPath;
+  const SoPath * resetPath;
   unsigned int flags;
 };
 
