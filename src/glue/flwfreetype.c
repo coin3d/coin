@@ -268,7 +268,11 @@ FLWglyph
 flwftGetGlyph(FLWfont font, unsigned int charidx)
 {
   FT_Face face = (FT_Face)font;
-  assert(face != NULL);
+
+  /* disabled 2003-03-17, pederb. Triggers too often for my taste. The
+   documentation states that NULL should be returned if glyph is not
+   found */
+  /*  assert(face != NULL); */
 
   return FT_Get_Char_Index(face, charidx);
 }
