@@ -2820,6 +2820,15 @@ cc_glglue_glArrayElement(const cc_glglue * glue, GLint i)
 }
 
 SbBool
+cc_glglue_has_multidraw_vertex_arrays(const cc_glglue * glue)
+{
+  return glue->glMultiDrawArrays && glue->glMultiDrawElements;
+}
+
+// this function is named
+// incorrectly. glMultiDrawArrays/glMultiDrawElements has nothing to
+// do with multitexturing
+SbBool
 cc_glglue_has_multitexture_vertex_array(const cc_glglue * glue)
 {
   return glue->glMultiDrawArrays && glue->glMultiDrawElements;
