@@ -45,17 +45,17 @@ void cc_flww32_done_font(void * font) { assert(FALSE); }
 
 int cc_flww32_get_num_charmaps(void * font) { assert(FALSE); return 0; }
 const char * cc_flww32_get_charmap_name(void * font, int charmap) { assert(FALSE); return NULL; }
-int cc_flww32_set_charmap(void * font, int charmap) { assert(FALSE); return 0; }
+void cc_flww32_set_charmap(void * font, int charmap) { assert(FALSE); }
 
-int cc_flww32_set_char_size(void * font, int width, int height) { assert(FALSE); return 0; }
-int cc_flww32_set_font_rotation(void * font, float angle) { assert(FALSE); return 0; }
+void cc_flww32_set_char_size(void * font, int width, int height) { assert(FALSE); }
+void cc_flww32_set_font_rotation(void * font, float angle) { assert(FALSE); }
   
 int cc_flww32_get_glyph(void * font, unsigned int charidx) { assert(FALSE); return 0; }
 int cc_flww32_get_advance(void * font, int glyph, float *x, float *y) { assert(FALSE); return 0; }
 int cc_flww32_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y) { assert(FALSE); return 0; }
 void cc_flww32_done_glyph(void * font, int glyph) { assert(FALSE); }
   
-struct cc_FLWbitmap * cc_flww32_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
+struct cc_flw_bitmap * cc_flww32_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
 int cc_flww32_get_outline(void * font, int glyph) { assert(FALSE); return 0; }
 
 #else /* HAVE_WIN32_API */
@@ -118,7 +118,7 @@ void *
 cc_flww32_get_font(const char * fontname)
 {
   /* FIXME: unimplemented. 20030515 mortene. */
-  return NULL;
+  return (void *)0xdeadbeef;
 }
 
 /* Allocates a cc_string and returns with name of given font id. */
@@ -130,7 +130,7 @@ cc_flww32_get_font_name(void * font)
   /* FIXME: fix interface silliness of allocating a string -- that
      should be done on the client side. 20030515 mortene. */
   cc_string * str = cc_string_construct_new();
-  cc_string_sprintf(str, "hupp");
+  cc_string_sprintf(str, "0xdeadbeef-fontname");
   return str;
 }
 
@@ -143,7 +143,7 @@ cc_flww32_get_font_style(void * font)
   /* FIXME: fix interface silliness of allocating a string -- that
      should be done on the client side. 20030515 mortene. */
   cc_string * str = cc_string_construct_new();
-  cc_string_set_text(str, "hopp");
+  cc_string_set_text(str, "0xdeadbeef-fontstyle");
   return str;
 }
 
@@ -174,28 +174,25 @@ cc_flww32_get_charmap_name(void * font, int charmapidx)
 }
 
 /* Set the current character translation map. */
-int
+void
 cc_flww32_set_charmap(void * font, int charmap)
 {
   /* FIXME: unimplemented. 20030515 mortene. */
-  return -1;
 }
 
 /* Set the character dimensions of the given font. */
-int
+void
 cc_flww32_set_char_size(void * font, int width, int height)
 {
   /* FIXME: unimplemented. 20030515 mortene. */
-  return 0;
 }
 
 /* Set a transformation on the font characters that rotates them the
    given angle. Angle specified in radians. */
-int
+void
 cc_flww32_set_font_rotation(void * font, float angle)
 {
   /* FIXME: unimplemented. 20030515 mortene. */
-  return 0;
 }
 
 /* Returns the glyph index for the given character code. If the
@@ -204,7 +201,7 @@ int
 cc_flww32_get_glyph(void * font, unsigned int charidx)
 {
   /* FIXME: unimplemented. 20030515 mortene. */
-  return 0;
+  return charidx;
 }
 
 /* Returns, in x and y input arguments, how much to advance cursor
@@ -213,7 +210,7 @@ int
 cc_flww32_get_advance(void * font, int glyph, float * x, float * y)
 {
   /* FIXME: unimplemented. 20030515 mortene. */
-  *x = 0.0f;
+  *x = 10.0f;
   *y = 0.0f;
   return 0;
 }
@@ -238,11 +235,27 @@ cc_flww32_done_glyph(void * font, int glyph)
 }
 
 /* Draws a bitmap for the given glyph. */
-struct cc_FLWbitmap *
+struct cc_flw_bitmap *
 cc_flww32_get_bitmap(void * font, int glyph)
 {
   /* FIXME: unimplemented. 20030515 mortene. */
-  return NULL;
+
+  struct cc_flw_bitmap * bm = (struct cc_flw_bitmap *)malloc(sizeof(struct cc_flw_bitmap));
+  bm->bearingX = 0;
+  bm->bearingY = 0;
+  bm->rows = 12;
+  bm->width = 12;
+  bm->pitch = 2;
+  bm->buffer = (unsigned char *)malloc(bm->rows * bm->pitch);
+
+  {
+    int i;
+    for (i = 0; i < bm->pitch * bm->rows; i++) {
+      bm->buffer[i] = 0x55;
+    }
+  }
+
+  return bm;
 }
 
 /* Extract a vector outline of the glyph. */

@@ -45,7 +45,7 @@ extern "C" {
   */
   
   
-  struct cc_FLWbitmap {
+  struct cc_flw_bitmap {
     int bearingX; /* left side of bitmap relative to pen */
     int bearingY; /* top of bitmap relative to pen */
     unsigned int rows; /* height of bitmap */
@@ -65,19 +65,19 @@ extern "C" {
 
   int cc_flw_get_num_charmaps(int font);
   const char * cc_flw_get_charmap_name(int font, int charmap);
-  int cc_flw_set_charmap(int font, int charmap);
+  void cc_flw_set_charmap(int font, int charmap);
 
-  int cc_flw_set_char_size(int font, int width, int height);
+  void cc_flw_set_char_size(int font, int width, int height);
   const char * cc_flw_get_font_name(int font);
-  int cc_flw_set_font_rotation(int font, float angle);
+  void cc_flw_set_font_rotation(int font, float angle);
 
   int cc_flw_get_glyph(int font, int charidx);
-  int cc_flw_get_advance(int font, int glyph, float *x, float *y);
-  int cc_flw_get_kerning(int font, int glyph1, int glyph2, float *x, float *y);
+  int cc_flw_get_advance(int font, int glyph, float * x, float * y);
+  int cc_flw_get_kerning(int font, int glyph1, int glyph2, float * x, float * y);
   void cc_flw_done_glyph(int font, int glyph);
 
-  struct cc_FLWbitmap * cc_flw_get_bitmap(int font, int glyph);
-  void cc_flw_done_bitmap(struct cc_FLWbitmap * bitmap);
+  struct cc_flw_bitmap * cc_flw_get_bitmap(int font, int glyph);
+  void cc_flw_done_bitmap(struct cc_flw_bitmap * bitmap);
   
   int cc_flw_get_outline(int font, int glyph);
   

@@ -42,7 +42,7 @@
 
 struct cc_glyphstruct {
   int glyph;
-  struct cc_FLWbitmap * bitmap;
+  struct cc_flw_bitmap * bitmap;
   int defaultglyph;
 };
 
@@ -75,16 +75,16 @@ static SbBool win32api = FALSE;
 /* ********************************************************************** */
 /* BEGIN Internal functions */
 
-static struct cc_FLWbitmap *
+static struct cc_flw_bitmap *
 get_default_bitmap(unsigned int character)
 {
-  struct cc_FLWbitmap * bm;
+  struct cc_flw_bitmap * bm;
   if (character < 256) {
     const int fontsize = coin_default2dfont_get_size();
     const int * isomapping = coin_default2dfont_get_isolatin1_mapping();
     const unsigned char * fontdata = coin_default2dfont_get_data();
 
-    bm = (struct cc_FLWbitmap *)malloc(sizeof(struct cc_FLWbitmap));
+    bm = (struct cc_flw_bitmap *)malloc(sizeof(struct cc_flw_bitmap));
     bm->buffer = (unsigned char *) fontdata + 
       fontsize * isomapping[character];
     bm->bearingX = 0;
@@ -306,6 +306,7 @@ void
 cc_flw_initialize(void)
 {
   int i;
+  const char * env;
 
   assert(wrapper_initialized == FALSE && "init only once");
   wrapper_initialized = TRUE;
@@ -316,37 +317,38 @@ cc_flw_initialize(void)
   fontmax = 10;
   for (i = 0; i < fontmax; i++) { fonts[i] = NULL; }
 
-  freetypelib = cc_flwft_initialize();
+  freetypelib = !((env = coin_getenv("COIN_FORCE_FREETYPE_OFF")) && (atoi(env) > 0));
+  freetypelib = freetypelib && cc_flwft_initialize();
   if (cc_flw_debug()) {
     cc_debugerror_postinfo("cc_flw_initialize",
                            "FreeType library %s",
                            freetypelib ? "can be used" : "can not be used");
   }
 
-  win32api = cc_flww32_initialize();
+  win32api = !((env = coin_getenv("COIN_FORCE_WIN32FONTS_OFF")) && (atoi(env) > 0));
+  win32api = win32api && cc_flww32_initialize();
   if (cc_flw_debug()) {
     cc_debugerror_postinfo("cc_flw_initialize",
                            "Win32 API %s for font support",
                            win32api ? "can be used" : "can not be used");
-    if (freetypelib) {
-      cc_debugerror_postinfo("cc_flw_initialize",
-                             "Win32 API will take precedence over FreeType");
-    }
   }
 
   /* Allow only one of the availability flags to be set, as it's too
      easy to get bugs in our code in this file if we depend on always
      checking one particular flag before the other.
 
-     We prefer to consistently use the Win32 API if available, over
-     the FreeType library.
-
-     FIXME: I'm not sure that is the best strategy -- are there any
-     particular advantages to using FreeType instead? 20030526 mortene.
+     We prefer to consistently use the FreeType library over the Win32
+     API if available -- assuming that FreeType has been installed for
+     a good reason on the Windows machine in question.
   */
-  if (win32api) {
-    if (freetypelib) { cc_flwft_exit(); }
-    freetypelib = FALSE;
+  if (win32api && freetypelib) {
+    if (cc_flw_debug()) {
+      cc_debugerror_postinfo("cc_flw_initialize",
+                             "FreeType library will take precedence "
+                             "over Win32 API");
+    }
+    cc_flww32_exit();
+    win32api = FALSE;
   }
 }
 
@@ -360,11 +362,19 @@ cc_flw_exit(void)
 }
 
 /*!
-  Create one font. \a fontname is the name & style \e requested, \a
-  outname will hold the name of the font actually created - these will
-  typically be different.  If a font has already been created for this
-  \a fontname, the function will not create a duplicate, but simply
-  return that font.
+  Set up an internal representation of a font from the \a fontname,
+  and returns a font id >= 0 to be used in successive calls.
+
+  \a fontname is the name and style \e requested. The actual font
+  created will typically differ slightly, depending on what is
+  available on the run-time system.  If a font has already been
+  created for this \a fontname and size, the function will not create
+  a duplicate, but simply return that font.
+
+  If no font could sensibly be made from the given \a fontname, the
+  internal, hard-coded default font will be used. One is therefore
+  guaranteed that this function will execute and return without
+  needing any error checking on behalf of the client code.
 */
 int
 cc_flw_create_font(const char * fontname, const int sizex, const int sizey)
@@ -442,14 +452,16 @@ int
 cc_flw_get_font(const char * fontname, const int sizex, const int sizey)
 {
   int i;
+
   for (i = 0; i < fontcnt; i++) {
     if ((fonts[i]->defaultfont ||
          (fonts[i]->sizex == sizex && fonts[i]->sizey == sizey)) &&
-        !strcmp(fontname, cc_string_get_text(fonts[i]->requestname)))
-      break;
+        (strcmp(fontname, cc_string_get_text(fonts[i]->requestname))==0)) {
+      return i;
+    }
   }
 
-  return (i == fontcnt) ? -1 : i;
+  return -1;
 }
 
 void
@@ -501,20 +513,18 @@ cc_flw_get_font_name(int font)
   return cc_string_get_text(fonts[font]->fontname);
 }
 
-int
+void
 cc_flw_set_charmap(int font, int charmap)
 {
   assert(font >= 0 && font < fontcnt && fonts[font]);
 
   if (win32api && !fonts[font]->defaultfont)
-    return cc_flww32_set_charmap(fonts[font]->font, charmap);
+    cc_flww32_set_charmap(fonts[font]->font, charmap);
   else if (freetypelib && !fonts[font]->defaultfont)
-    return cc_flwft_set_charmap(fonts[font]->font, charmap);
-
-  return -1;
+    cc_flwft_set_charmap(fonts[font]->font, charmap);
 }
 
-int
+void
 cc_flw_set_char_size(int font, int width, int height)
 {
   assert(font >= 0 && font < fontcnt && fonts[font]);
@@ -522,24 +532,20 @@ cc_flw_set_char_size(int font, int width, int height)
   fonts[font]->sizey = height;
 
   if (win32api && !fonts[font]->defaultfont)
-    return cc_flww32_set_char_size(fonts[font]->font, width, height);
+    cc_flww32_set_char_size(fonts[font]->font, width, height);
   else if (freetypelib && !fonts[font]->defaultfont)
-    return cc_flwft_set_char_size(fonts[font]->font, width, height);
-
-  return -1;
+    cc_flwft_set_char_size(fonts[font]->font, width, height);
 }
 
-int
+void
 cc_flw_set_font_rotation(int font, float angle)
 {
   assert(font >= 0 && font < fontcnt && fonts[font]);
 
   if (win32api && !fonts[font]->defaultfont)
-    return cc_flww32_set_font_rotation(fonts[font]->font, angle);
+    cc_flww32_set_font_rotation(fonts[font]->font, angle);
   else if (freetypelib && !fonts[font]->defaultfont)
-    return cc_flwft_set_font_rotation(fonts[font]->font, angle);
-
-  return -1;
+    cc_flwft_set_font_rotation(fonts[font]->font, angle);
 }
 
 int
@@ -567,12 +573,12 @@ cc_flw_get_glyph(int font, int charidx)
          least scale the defaultfont glyph to the correct size.
          20030317 mortene. */
       
-      /* Correct fix is to make an empty rectangle. Using a char from 
-         the default font only gives a blank since most fonts contain a superset 
-         of the chars in the default font. (The default font characters being
-         rendered was due to a bug in the character mapping, causing failure
-         to find special chars such as 'ØÆÅ'. The bug has since been fixed).
-         20030327 preng */
+      /* Correct fix is to make an empty rectangle. Using a char from
+         the default font only gives a blank since most fonts contain
+         a superset of the chars in the default font. (The default
+         font characters being rendered was due to a bug in the
+         character mapping, causing failure to find special chars such
+         as 'ØÆÅ'. The bug has since been fixed).  20030327 preng */
       
       if (cc_flw_debug()) {
         cc_debugerror_postwarning("cc_flw_get_glyph",
@@ -650,12 +656,12 @@ cc_flw_done_glyph(int font, int glyph)
   }
 }
 
-struct cc_FLWbitmap *
+struct cc_flw_bitmap *
 cc_flw_get_bitmap(int font, int glyph)
 {
   unsigned char * buf;
   struct cc_fontstruct * fs;
-  struct cc_FLWbitmap * bm;
+  struct cc_flw_bitmap * bm;
   int i, defaultglyph;
   defaultglyph = 0;
   bm = NULL;
@@ -702,7 +708,7 @@ cc_flw_get_outline(int font, int glyph)
 }
 
 void
-cc_flw_done_bitmap(struct cc_FLWbitmap * bitmap)
+cc_flw_done_bitmap(struct cc_flw_bitmap * bitmap)
 {
   assert(bitmap);
   if (bitmap->buffer)

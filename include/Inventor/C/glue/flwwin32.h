@@ -44,17 +44,17 @@ extern "C" {
 
   int cc_flww32_get_num_charmaps(void * font);
   const char * cc_flww32_get_charmap_name(void * font, int charmap);
-  int cc_flww32_set_charmap(void * font, int charmap);
+  void cc_flww32_set_charmap(void * font, int charmap);
 
-  int cc_flww32_set_char_size(void * font, int width, int height);
-  int cc_flww32_set_font_rotation(void * font, float angle);
+  void cc_flww32_set_char_size(void * font, int width, int height);
+  void cc_flww32_set_font_rotation(void * font, float angle);
   
   int cc_flww32_get_glyph(void * font, unsigned int charidx);
   int cc_flww32_get_advance(void * font, int glyph, float * x, float * y);
   int cc_flww32_get_kerning(void * font, int glyph1, int glyph2, float * x, float * y);
   void cc_flww32_done_glyph(void * font, int glyph);
   
-  struct cc_FLWbitmap * cc_flww32_get_bitmap(void * font, int glyph);
+  struct cc_flw_bitmap * cc_flww32_get_bitmap(void * font, int glyph);
   int cc_flww32_get_outline(void * font, int glyph);
   
 #ifdef __cplusplus

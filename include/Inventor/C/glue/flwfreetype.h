@@ -49,17 +49,17 @@ extern "C" {
 
   int cc_flwft_get_num_charmaps(void * font);
   const char * cc_flwft_get_charmap_name(void * font, int charmap);
-  int cc_flwft_set_charmap(void * font, int charmap);
+  void cc_flwft_set_charmap(void * font, int charmap);
 
-  int cc_flwft_set_char_size(void * font, int width, int height);
-  int cc_flwft_set_font_rotation(void * font, float angle);
+  void cc_flwft_set_char_size(void * font, int width, int height);
+  void cc_flwft_set_font_rotation(void * font, float angle);
   
   int cc_flwft_get_glyph(void * font, unsigned int charidx);
   int cc_flwft_get_advance(void * font, int glyph, float * x, float * y);
   int cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float * x, float * y);
   void cc_flwft_done_glyph(void * font, int glyph);
   
-  struct cc_FLWbitmap * cc_flwft_get_bitmap(void * font, int glyph);
+  struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, int glyph);
   int cc_flwft_get_outline(void * font, int glyph);
   
 #ifdef __cplusplus

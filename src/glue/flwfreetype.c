@@ -40,17 +40,17 @@ void cc_flwft_done_font(void * font) { assert(FALSE); }
 
 int cc_flwft_get_num_charmaps(void * font) { assert(FALSE); return 0; }
 const char * cc_flwft_get_charmap_name(void * font, int charmap) { assert(FALSE); return NULL; }
-int cc_flwft_set_charmap(void * font, int charmap) { assert(FALSE); return 0; }
+void cc_flwft_set_charmap(void * font, int charmap) { assert(FALSE); }
 
-int cc_flwft_set_char_size(void * font, int width, int height) { assert(FALSE); return 0; }
-int cc_flwft_set_font_rotation(void * font, float angle) { assert(FALSE); return 0; }
+void cc_flwft_set_char_size(void * font, int width, int height) { assert(FALSE); }
+void cc_flwft_set_font_rotation(void * font, float angle) { assert(FALSE); }
   
 int cc_flwft_get_glyph(void * font, unsigned int charidx) { assert(FALSE); return 0; }
 int cc_flwft_get_advance(void * font, int glyph, float *x, float *y) { assert(FALSE); return 0; }
 int cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y) { assert(FALSE); return 0; }
 void cc_flwft_done_glyph(void * font, int glyph) { assert(FALSE); }
   
-struct cc_FLWbitmap * cc_flwft_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
+struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
 int cc_flwft_get_outline(void * font, int glyph) { assert(FALSE); return 0; }
 
 #else /* HAVE_FREETYPE */
@@ -75,34 +75,34 @@ int cc_flwft_get_outline(void * font, int glyph) { assert(FALSE); return 0; }
 #if FREETYPE_MAJOR == 2 && FREETYPE_MINOR < 1
 
 #ifndef FT_ENC_TAG
-#define FT_ENC_TAG( value, a, b, c, d )         \
-          value = ( ( (FT_UInt32)(a) << 24 ) |  \
-                    ( (FT_UInt32)(b) << 16 ) |  \
-                    ( (FT_UInt32)(c) <<  8 ) |  \
-                      (FT_UInt32)(d)         )
+#define FT_ENC_TAG(value, a, b, c, d)         \
+          value = (((FT_UInt32)(a) << 24) |  \
+                    ((FT_UInt32)(b) << 16) |  \
+                    ((FT_UInt32)(c) <<  8) |  \
+                      (FT_UInt32)(d)        )
 
 #endif /* FT_ENC_TAG */
 
 enum Coin_FT_Encoding {
-  FT_ENC_TAG( FT_ENCODING_NONE, 0, 0, 0, 0 ),
+  FT_ENC_TAG(FT_ENCODING_NONE, 0, 0, 0, 0),
   
-  FT_ENC_TAG( FT_ENCODING_MS_SYMBOL,  's', 'y', 'm', 'b' ),
-  FT_ENC_TAG( FT_ENCODING_UNICODE,    'u', 'n', 'i', 'c' ),
+  FT_ENC_TAG(FT_ENCODING_MS_SYMBOL,  's', 'y', 'm', 'b'),
+  FT_ENC_TAG(FT_ENCODING_UNICODE,    'u', 'n', 'i', 'c'),
   
-  FT_ENC_TAG( FT_ENCODING_MS_SJIS,    's', 'j', 'i', 's' ),
-  FT_ENC_TAG( FT_ENCODING_MS_GB2312,  'g', 'b', ' ', ' ' ),
-  FT_ENC_TAG( FT_ENCODING_MS_BIG5,    'b', 'i', 'g', '5' ),
-  FT_ENC_TAG( FT_ENCODING_MS_WANSUNG, 'w', 'a', 'n', 's' ),
-  FT_ENC_TAG( FT_ENCODING_MS_JOHAB,   'j', 'o', 'h', 'a' ),
+  FT_ENC_TAG(FT_ENCODING_MS_SJIS,    's', 'j', 'i', 's'),
+  FT_ENC_TAG(FT_ENCODING_MS_GB2312,  'g', 'b', ' ', ' '),
+  FT_ENC_TAG(FT_ENCODING_MS_BIG5,    'b', 'i', 'g', '5'),
+  FT_ENC_TAG(FT_ENCODING_MS_WANSUNG, 'w', 'a', 'n', 's'),
+  FT_ENC_TAG(FT_ENCODING_MS_JOHAB,   'j', 'o', 'h', 'a'),
 
-  FT_ENC_TAG( FT_ENCODING_ADOBE_STANDARD, 'A', 'D', 'O', 'B' ),
-  FT_ENC_TAG( FT_ENCODING_ADOBE_EXPERT,   'A', 'D', 'B', 'E' ),
-  FT_ENC_TAG( FT_ENCODING_ADOBE_CUSTOM,   'A', 'D', 'B', 'C' ),
-  FT_ENC_TAG( FT_ENCODING_ADOBE_LATIN_1,  'l', 'a', 't', '1' ),
+  FT_ENC_TAG(FT_ENCODING_ADOBE_STANDARD, 'A', 'D', 'O', 'B'),
+  FT_ENC_TAG(FT_ENCODING_ADOBE_EXPERT,   'A', 'D', 'B', 'E'),
+  FT_ENC_TAG(FT_ENCODING_ADOBE_CUSTOM,   'A', 'D', 'B', 'C'),
+  FT_ENC_TAG(FT_ENCODING_ADOBE_LATIN_1,  'l', 'a', 't', '1'),
   
-  FT_ENC_TAG( FT_ENCODING_LATIN_2, 'l', 'a', 't', '2' ),
+  FT_ENC_TAG(FT_ENCODING_LATIN_2, 'l', 'a', 't', '2'),
   
-  FT_ENC_TAG( FT_ENCODING_APPLE_ROMAN, 'a', 'r', 'm', 'n' )
+  FT_ENC_TAG(FT_ENCODING_APPLE_ROMAN, 'a', 'r', 'm', 'n')
   
 };
 
@@ -196,7 +196,7 @@ cc_flwft_done_font(void * font)
   assert(font);
   face = (FT_Face)font;
   error = FT_Done_Face(face);
-  if ( error ) {
+  if (error) {
     if (cc_freetype_debug()) cc_debugerror_postinfo("cc_flwft_done_font", "Error %d\n", error);
   }
 }
@@ -256,23 +256,24 @@ cc_flwft_get_charmap_name(void * font, int charmap)
   return name;
 }
 
-int
+void
 cc_flwft_set_charmap(void * font, int charmap)
 {
   FT_Error error;
   FT_Face face;
   assert(font);
   face = (FT_Face)font;
-  if ( charmap < face->num_charmaps) {
+  if (charmap < face->num_charmaps) {
     error = FT_Select_Charmap(face, face->charmaps[charmap]->encoding);
-    if (error)
-      if (cc_freetype_debug()) cc_debugerror_postwarning("cc_flwft_set_charmap", "ERROR: set charmap %d returned error %d\n", charmap, error);
-    return error;
+    if (error) {
+      cc_debugerror_post("cc_flwft_set_charmap",
+                         "FT_Select_Charmap(.., %d) returned error %d",
+                         charmap, error);
+    }
   }
-  return -1;
 }
 
-int
+void
 cc_flwft_set_char_size(void * font, int width, int height)
 {
   FT_Error error;
@@ -281,27 +282,28 @@ cc_flwft_set_char_size(void * font, int width, int height)
   face = (FT_Face)font;
   /* FIXME: the input arguments for width and height looks
      bogus. Check against the FreeType API doc. 20030515 mortene. */
-  error = FT_Set_Char_Size(face, width << 6, height << 6, 72, 72);
+  width <<= 6;
+  height <<= 6;
+  error = FT_Set_Char_Size(face, width, height, 72, 72);
   if (error) {
-    if (cc_freetype_debug()) cc_debugerror_postwarning("cc_flwft_set_char_size" ,"ERROR %d\n", error);
-    return error;
+    cc_debugerror_post("cc_flwft_set_char_size",
+                       "FT_Set_Char_Size(.., %d, %d, ..) returned error code %d",
+                       width, height, error);
   }
-  return 0;
 }
 
-int
+void
 cc_flwft_set_font_rotation(void * font, float angle)
 {
   FT_Matrix matrix;
   FT_Face face;
   assert(font);
   face = (FT_Face)font;
-  matrix.xx = (FT_Fixed)( cos(angle)*0x10000);
+  matrix.xx = (FT_Fixed)(cos(angle)*0x10000);
   matrix.xy = (FT_Fixed)(-sin(angle)*0x10000);
-  matrix.yx = (FT_Fixed)( sin(angle)*0x10000);
-  matrix.yy = (FT_Fixed)( cos(angle)*0x10000);
+  matrix.yx = (FT_Fixed)(sin(angle)*0x10000);
+  matrix.yy = (FT_Fixed)(cos(angle)*0x10000);
   FT_Set_Transform(face, &matrix, 0);
-  return 0;
 }
 
 /*
@@ -358,7 +360,7 @@ cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y)
   FT_Face face;
   assert(font);
   face = (FT_Face)font;
-  if ( FT_HAS_KERNING(face) ) {
+  if (FT_HAS_KERNING(face)) {
     error = FT_Get_Kerning(face, glyph1, glyph2, ft_kerning_default, &kerning);
     if (error) {
       if (cc_freetype_debug()) cc_debugerror_postwarning("cc_flwft_get_kerning", "ERROR %d\n", error);
@@ -380,11 +382,11 @@ cc_flwft_done_glyph(void * font, int glyph)
   /* No action, since an int is just an index. */
 }
 
-struct cc_FLWbitmap *
+struct cc_flw_bitmap *
 cc_flwft_get_bitmap(void * font, int glyph)
 {
   FT_Error error;
-  struct cc_FLWbitmap * bm;
+  struct cc_flw_bitmap * bm;
   FT_Face face;
   FT_Glyph g;
   FT_BitmapGlyph tfbmg;
@@ -394,22 +396,29 @@ cc_flwft_get_bitmap(void * font, int glyph)
   face = (FT_Face)font;
   error = FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
   if (error) {
-    if (cc_freetype_debug()) cc_debugerror_postwarning("cc_flwft_get_bitmap", "ERROR in FT_Load_Glyph %d\n", error);
+    if (cc_freetype_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
+                                                "FT_Load_Glyph() => error %d",
+                                                error);
     return NULL;
   }
   error = FT_Get_Glyph(face->glyph, &g);
   if (error) {
-    if (cc_freetype_debug()) cc_debugerror_postwarning("cc_flwft_get_bitmap", "ERROR in FT_Get_Glyph %d\n", error);
+    if (cc_freetype_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
+                                                "FT_Get_Glyph() => error %d",
+                                                error);
     return NULL;
   }
   error = FT_Glyph_To_Bitmap(&g, ft_render_mode_mono, 0, 1);
   if (error) {
-    if (cc_freetype_debug()) cc_debugerror_postwarning("cc_flwft_get_bitmap", "ERROR in FT_Glyph_To_Bitmap %d\n", error);
+    if (cc_freetype_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
+                                                "FT_Glyph_To_Bitmap() => error %d",
+                                                error);
     return NULL;
   }
   tfbmg = (FT_BitmapGlyph)g;
   tfbm = &tfbmg->bitmap;
-  bm = (struct cc_FLWbitmap *)malloc(sizeof(struct cc_FLWbitmap));
+  /* FIXME: allocating the structure here is bad design. 20030528 mortene. */
+  bm = (struct cc_flw_bitmap *)malloc(sizeof(struct cc_flw_bitmap));
   bm->buffer = (unsigned char *)malloc(tfbm->rows * tfbm->pitch);
   bm->bearingX = tfbmg->left;
   bm->bearingY = tfbmg->top;
