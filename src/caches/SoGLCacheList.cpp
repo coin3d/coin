@@ -46,7 +46,7 @@ static int COIN_AUTO_CACHING = -1;
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
-#include <../tidbits.h> // coin_getenv()
+#include <Inventor/C/tidbits.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>

@@ -100,7 +100,7 @@
 #include <config.h>
 #endif
 
-#include <../tidbits.h> // coin_getenv()
+#include <Inventor/C/tidbits.h> // coin_getenv()
 #include <float.h>
 #include <math.h>
 

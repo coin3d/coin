@@ -28,21 +28,17 @@
 */
 
 #include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/SbName.h>
-#include <Inventor/misc/SoState.h>
-#include <../tidbits.h> // coin_atexit()
-#include <Inventor/misc/SoGL.h>
-#include <string.h>
-#include <stdlib.h>
 
-#if HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
-#include <Inventor/system/gl.h>
 #include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/SbName.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/system/gl.h>
+#include <stdlib.h>
+#include <string.h>
 
 static int biggest_cache_context_id = 0;
 

@@ -157,22 +157,23 @@
   \TOOLMAKER_REF
 */
 
+#include <Inventor/nodes/SoNodes.h>
+
+#include <Inventor/C/tidbits.h>
+#include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoActions.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/misc/SoGL.h>
-#include <Inventor/nodes/SoNodes.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/nodes/SoUnknownNode.h>
-#include <Inventor/nodes/SoTextureScalePolicy.h> // possible part of public API in the future
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/misc/SoProto.h>
+#include <Inventor/misc/SoProtoInstance.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/nodes/SoTextureScalePolicy.h> // possible part of public API in the future
+#include <Inventor/nodes/SoUnknownNode.h>
 #include <assert.h>
 #include <stdlib.h>
-#include "../tidbits.h" // coin_atexit()
 
 #if HAVE_CONFIG_H
 #include <config.h>

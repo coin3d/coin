@@ -34,7 +34,7 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/elements/SoProfileCoordinateElement.h>
 #include <Inventor/lists/SbList.h>
-#include <../tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h> // coin_atexit()
 #include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H

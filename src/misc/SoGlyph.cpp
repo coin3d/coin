@@ -29,13 +29,14 @@
 */
 
 #include <Inventor/misc/SoGlyph.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/SbVec2f.h>
-#include <Inventor/SbName.h>
+
 #include <Inventor/C/threads/threadsutilp.h>
-#include <../tidbits.h> // coin_atexit()
-#include <string.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/SbName.h>
+#include <Inventor/SbVec2f.h>
+#include <Inventor/lists/SbList.h>
 #include <stdlib.h>
+#include <string.h>
 
 #if !defined(COIN_NO_DEFAULT_3DFONT)
 // our default font (misc/default3dfont.cpp)

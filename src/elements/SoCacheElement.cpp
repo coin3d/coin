@@ -30,7 +30,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/caches/SoCache.h>
-#include "../tidbits.h" // coin_atexit()
+#include <Inventor/C/tidbits.h>
 #include <assert.h>
 #include <stdlib.h>
 

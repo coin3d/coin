@@ -33,6 +33,8 @@
 */
 
 #include <Inventor/SoOutput.h>
+
+#include <Inventor/C/tidbits.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbDict.h>
 #include <Inventor/SbName.h>
@@ -46,8 +48,6 @@
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
-
-#include "../tidbits.h"
 
 #if HAVE_WINDOWS_H
 #include <windows.h>

@@ -40,7 +40,7 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoTextureMatrixElement.h>
 #include <Inventor/details/SoDetail.h>
-#include <../tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h> // coin_atexit()
 #include <assert.h>
 
 

@@ -38,7 +38,6 @@
 #include <limits.h>
 #include <errno.h>
 #include <math.h>
-#include "../tidbits.h" // coin_strncasecmp()
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -50,6 +49,7 @@
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/base/time.h>
+#include <Inventor/C/tidbits.h>
 
 
 static const double SMALLEST_DOUBLE_TIMEUNIT  = 1.0/1000000.0;

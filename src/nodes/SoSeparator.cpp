@@ -56,7 +56,7 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/errors/SoDebugError.h>
 
-#include <../tidbits.h> // coin_getenv()
+#include <Inventor/C/tidbits.h> // coin_getenv()
 #include <stdlib.h> // strtol(), rand()
 #include <limits.h> // LONG_MIN, LONG_MAX
 
@@ -564,12 +564,12 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
       // node caused the error.
       static SbBool chkglerr = sogl_glerror_debugging();
       if (chkglerr) {
-        int err = glGetError();
+        GLenum err = glGetError();
         if (err != GL_NO_ERROR) {
-          SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
-                                 "GL error: %s, nodetype: %s",
-                                 sogl_glerror_string(err).getString(),
-                                 (*this->children)[i]->getTypeId().getName().getString());
+          SoDebugError::post("SoSeparator::GLRenderBelowPath",
+                             "GL error: %s, nodetype: %s",
+                             sogl_glerror_string(err).getString(),
+                             (*this->children)[i]->getTypeId().getName().getString());
         }
       }
 #endif // COIN_DEBUG

@@ -125,7 +125,7 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include "../tidbits.h" // coin_atexit()
+#include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 
 

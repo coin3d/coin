@@ -267,7 +267,7 @@
 #include <Inventor/elements/SoTextureScalePolicyElement.h> // future element
 #include <Inventor/misc/SoState.h>
 #include <Inventor/lists/SoTypeList.h>
-#include <../tidbits.h>
+#include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 #include <assert.h>
 

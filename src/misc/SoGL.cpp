@@ -24,28 +24,28 @@
 // This is an internal class with utility functions we use when
 // playing around with OpenGL.
 
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoGL.h>
+#include <Inventor/C/tidbits.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
-#include <Inventor/elements/SoProfileElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/nodes/SoShape.h>
-#include <Inventor/nodes/SoProfile.h>
+#include <Inventor/elements/SoGLCoordinateElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoProfileElement.h>
+#include <Inventor/elements/SoProjectionMatrixElement.h>
+#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
-#include <../tidbits.h> // coin_atexit()
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/nodes/SoProfile.h>
+#include <Inventor/nodes/SoShape.h>
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>

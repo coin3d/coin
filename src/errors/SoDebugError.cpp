@@ -62,16 +62,15 @@
 
 #include <Inventor/errors/SoDebugError.h>
 
-#include <Inventor/SoType.h>
-#include <Inventor/SbName.h>
-#include <Inventor/lists/SbList.h>
 #include <Inventor/C/errors/debugerror.h>
-#include "../tidbits.h" // coin_getenv(), coin_atexit()
-
+#include <Inventor/C/tidbits.h>
+#include <Inventor/SbName.h>
+#include <Inventor/SoType.h>
+#include <Inventor/lists/SbList.h>
+#include <assert.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 #include <string.h>
 
 SoType SoDebugError::classTypeId;

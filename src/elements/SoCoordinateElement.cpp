@@ -32,7 +32,7 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoNode.h>
-#include <../tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h>
 #include <assert.h>
 
 // static variables

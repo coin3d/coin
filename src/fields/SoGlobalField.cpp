@@ -39,18 +39,16 @@
 
 
 #include <Inventor/fields/SoGlobalField.h>
+
+#include <Inventor/C/tidbits.h>
+#include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/lists/SoBaseList.h>
-#include <Inventor/SbName.h>
-#include <../tidbits.h> // coin_atexit()
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 // Don't set value explicitly to SoType::badType(), to avoid a bug in
 // Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).

@@ -98,13 +98,9 @@
 */
 
 
-#include <assert.h>
-#include <string.h>
-#include <coindefs.h> // COIN_STUB()
-#include <../tidbits.h> // coin_atexit()
-
+#include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/C/tidbits.h>
 #include <Inventor/SoDB.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
@@ -115,8 +111,11 @@
 #include <Inventor/fields/SoFields.h>
 #include <Inventor/lists/SoEngineList.h>
 #include <Inventor/lists/SoEngineOutputList.h>
+#include <Inventor/nodes/SoNode.h>
 #include <Inventor/sensors/SoDataSensor.h>
-#include <Inventor/C/threads/threadsutilp.h>
+#include <assert.h>
+#include <coindefs.h> // COIN_STUB()
+#include <string.h>
 
 // flags for this->statusbits
 

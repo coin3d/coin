@@ -62,25 +62,24 @@
   \NODEKIT_POST_TABLE
 */
 
+#include <Inventor/nodekits/SoInteractionKit.h>
+
+#include <Inventor/C/tidbits.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoChildList.h>
-#include <Inventor/nodekits/SoInteractionKit.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <coindefs.h> // COIN_OBSOLETED()
-
 #include <stdlib.h>
-#include "../tidbits.h" // coin_getenv(), coin_atexit()
-
-#include <Inventor/errors/SoDebugError.h>
 
 /*!
   \enum SoInteractionKit::CacheEnabled

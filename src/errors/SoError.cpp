@@ -42,16 +42,19 @@
 
 #include <Inventor/errors/SoErrors.h>
 
-#include <Inventor/nodes/SoNode.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/SbName.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/engines/SoEngine.h>
-#include <Inventor/SbName.h>
-
-#include <../tidbits.h> // coin_atexit()
-#include <stdarg.h>
-#include <stdlib.h>
+#include <Inventor/nodes/SoNode.h>
 #include <assert.h>
+#include <stdarg.h>
 #include <stdio.h>
+#include <stdlib.h>
+
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h> // STDERR_FILENO

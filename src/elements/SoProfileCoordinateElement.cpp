@@ -30,8 +30,9 @@
 */
 
 #include <Inventor/elements/SoProfileCoordinateElement.h>
+
+#include <Inventor/C/tidbits.h>
 #include <Inventor/nodes/SoNode.h>
-#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 
 SbVec2f * SoProfileCoordinateElement::initdefaultcoords = NULL;

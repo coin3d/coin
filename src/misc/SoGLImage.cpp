@@ -97,10 +97,10 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include "../tidbits.h" // coin_getenv(), coin_atexit()
 #include <GLUWrapper.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/C/tidbits.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>

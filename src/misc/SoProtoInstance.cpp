@@ -38,7 +38,7 @@
 #include <Inventor/SbDict.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
-#include "../tidbits.h"
+#include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 #include <assert.h>
 

@@ -71,7 +71,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
 
-#include <../tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h> // coin_atexit()
 #include <assert.h>
 #include <stdlib.h> // NULL
 #include <string.h> // strcmp()

@@ -105,7 +105,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/SoInput.h>
-#include "../tidbits.h" // coin_atexit()
+#include <Inventor/C/tidbits.h>
 #include <assert.h>
 #include "../misc/simage_wrapper.h"
 

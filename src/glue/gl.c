@@ -98,12 +98,11 @@
 #endif
 
 #include <Inventor/C/base/hash.h>
-
-#include <../tidbits.h> /*  coin_atexit() */
+#include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/C/tidbits.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-#include <Inventor/C/threads/threadsutilp.h>
 
 #include "gl_wgl.h"
 #include "gl_glx.h"

@@ -236,19 +236,17 @@
 */
 
 #include <Inventor/fields/SoMField.h>
+
+#include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/C/tidbits.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSubField.h>
-#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-#include <Inventor/C/threads/threadsutilp.h>
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 /*!
   \var int SoMField::num

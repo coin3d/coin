@@ -124,6 +124,7 @@
 
 #include <Inventor/SoDB.h>
 
+#include <Inventor/C/tidbits.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/details/SoDetail.h>
@@ -133,13 +134,12 @@
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/fields/SoGlobalField.h>
 #include <Inventor/fields/SoSFTime.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/sensors/SoTimerSensor.h>
+#include <Inventor/misc/SoGLBigImage.h>
+#include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/misc/SoProtoInstance.h>
-#include <Inventor/misc/SoGLImage.h>
-#include <Inventor/misc/SoGLBigImage.h>
-#include <../tidbits.h> // coin_atexit()
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/sensors/SoTimerSensor.h>
 #include <coindefs.h> // COIN_STUB()
 #include <stdlib.h>
 

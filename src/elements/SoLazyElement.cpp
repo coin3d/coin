@@ -29,13 +29,14 @@
 */
 
 #include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
+
+#include <Inventor/C/tidbits.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/fields/SoMFFloat.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/fields/SoMFColor.h>
-#include "../tidbits.h"
+#include <Inventor/fields/SoMFFloat.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoNode.h>
 #include <assert.h>
 #include <string.h>
 

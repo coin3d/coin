@@ -38,9 +38,10 @@
 
 #include <Inventor/elements/SoOverrideElement.h>
 
-#include <stdlib.h>
+#include <Inventor/C/tidbits.h>
 #include <assert.h>
-#include "../tidbits.h" // coin_getenv()
+#include <stdlib.h>
+
 
 #define SO_GET_OVERRIDE(flag) \
 const SoOverrideElement * const element = \

@@ -30,17 +30,12 @@
 */
 
 #include <Inventor/elements/SoGLPolygonOffsetElement.h>
+
+#include <Inventor/C/tidbits.h>
 #include <Inventor/errors/SoDebugError.h>
-
-#if HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
 #include <Inventor/misc/SoGL.h>
-
 #include <assert.h>
 #include <stdlib.h>
-#include "../tidbits.h"
 
 SO_ELEMENT_SOURCE(SoGLPolygonOffsetElement);
 

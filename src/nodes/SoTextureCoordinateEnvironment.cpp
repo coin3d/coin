@@ -58,7 +58,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
-#include <../tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h> // coin_atexit()
 #include <stdlib.h>
 
 #if HAVE_CONFIG_H

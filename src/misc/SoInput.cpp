@@ -89,7 +89,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/misc/SoProto.h>
-#include <../tidbits.h> // coin_atexit(), coin_isspace()
+#include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -109,7 +109,6 @@
 #include <sys/types.h>
 #endif // HAVE_SYS_TYPES_H
 #include <ctype.h>
-#include "../tidbits.h" // coin_getenv() & coin_ntoh*()
 
 // This (POSIX-compliant) macro is missing from the Win32 API header
 // files for MSVC++ 6.0.

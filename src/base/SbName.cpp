@@ -36,7 +36,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
 #include <Inventor/C/threads/threadsutilp.h>
-#include "../tidbits.h" // coin_isascii()
+#include <Inventor/C/tidbits.h>
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -277,7 +277,17 @@ SbName::getLength(void) const
 SbBool
 SbName::isIdentStartChar(const char c)
 {
-  if (isdigit(c) ) return FALSE;
+  // There is an important reason why the cast below is necessary:
+  // isdigit() et al takes an "int" as input argument. A _signed_ char
+  // value for any character above the 127-value ASCII character set
+  // will be promoted to a negative integer, which can cause the
+  // function to make an array reference that's out of bounds.
+  //
+  // FIXME: this needs to be fixed other places isdigit() is used,
+  // aswell as for other is*() function. 20021124 mortene.
+  const unsigned char uc = (const unsigned char)c;
+
+  if (isdigit(uc)) return FALSE;
   return SbName::isIdentChar(c);
 }
 

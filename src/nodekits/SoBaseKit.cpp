@@ -531,7 +531,7 @@
 #include <limits.h>
 #include <ctype.h>
 #include <string.h>
-#include <../tidbits.h> // coin_isspace()
+#include <Inventor/C/tidbits.h> // coin_isspace()
 #include <coindefs.h> // COIN_OBSOLETED()
 #include <Inventor/errors/SoDebugError.h>
 

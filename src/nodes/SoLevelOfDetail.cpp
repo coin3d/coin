@@ -150,7 +150,7 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoChildList.h>
-#include <../tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h> // coin_atexit()
 #include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H

@@ -30,7 +30,8 @@
 */
 
 #include <Inventor/elements/SoLightAttenuationElement.h>
-#include <../tidbits.h> // coin_atexit()
+
+#include <Inventor/C/tidbits.h>
 #include <assert.h>
 #include <stdlib.h>
 

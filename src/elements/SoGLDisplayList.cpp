@@ -113,7 +113,7 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
 
   // Reserve displaylist IDs.
 
-  if (type == TEXTURE_OBJECT) {
+  if (this->type == TEXTURE_OBJECT) {
     assert(allocnum == 1 && "it is only possible to create one texture object at a time");
     const cc_glglue * glw = cc_glglue_instance(this->context);
     if (cc_glglue_has_texture_objects(glw)) {

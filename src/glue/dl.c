@@ -33,12 +33,12 @@
 #include <windows.h>
 #endif /* HAVE_WINDOWS_H */
 
+#include <Inventor/C/errors/debugerror.h>
+#include <Inventor/C/glue/dl.h>
+#include <Inventor/C/tidbits.h>
+#include <assert.h>
 #include <stddef.h> /* NULL definition. */
 #include <stdlib.h> /* atoi() */
-#include <assert.h>
-#include <Inventor/C/glue/dl.h>
-#include <Inventor/C/errors/debugerror.h>
-#include <../tidbits.h>
 
 struct cc_libhandle_struct {
   void * nativehnd;

@@ -27,7 +27,7 @@
 
 #include "AudioTools.h"
 #include <Inventor/SbString.h>
-#include <../tidbits.h>
+#include <Inventor/C/tidbits.h>
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>

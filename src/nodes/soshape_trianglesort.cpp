@@ -31,7 +31,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/SbPlane.h>
-#include <../tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h> // coin_atexit()
 #include <stdlib.h>
 #include <assert.h>
 

@@ -36,7 +36,7 @@
 #include <Inventor/SoNodeKitPath.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/actions/SoSearchAction.h>
-#include <../tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h> // coin_atexit()
 #include <stdlib.h>
 
 #if COIN_DEBUG

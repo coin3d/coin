@@ -27,11 +27,11 @@
   Coin portable.
 */
 
+#include <Inventor/C/tidbits.h>
+
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
-
-#include <tidbits.h>
 
 #include <assert.h>
 #include <string.h> /* strncasecmp() */

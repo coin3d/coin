@@ -35,10 +35,11 @@
   \sa SoEventCallback, SoHandleEventAction */
 
 #include <Inventor/events/SoKeyboardEvent.h>
-#include <Inventor/SbName.h>
+
+#include <Inventor/C/tidbits.h>
 #include <Inventor/SbDict.h>
+#include <Inventor/SbName.h>
 #include <assert.h>
-#include <../tidbits.h> // coin_atexit()
 
 // Avoid problem with Microsoft Win32 API headers (yes, they actually
 // #define DELETE somewhere in their header files).

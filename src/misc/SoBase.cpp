@@ -40,25 +40,24 @@
 // FIXME: One more thing missing: detect cases where we should
 // instantiate SoUnknownEngine instead of SoUnknownNode.
 
+#include "../upgraders/SoUpgrader.h"
+#include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/SbDict.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbDict.h>
+#include <Inventor/engines/SoEngineOutput.h>
+#include <Inventor/engines/SoNodeEngine.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
+#include <Inventor/fields/SoField.h>
 #include <Inventor/lists/SoBaseList.h>
 #include <Inventor/lists/SoFieldList.h>
-#include <Inventor/nodes/SoUnknownNode.h>
-#include <Inventor/sensors/SoDataSensor.h>
-#include <Inventor/fields/SoField.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/misc/SoProtoInstance.h>
-#include <Inventor/engines/SoNodeEngine.h>
-#include <Inventor/engines/SoEngineOutput.h>
-#include <Inventor/C/threads/threadsutilp.h>
-#include <Inventor/errors/SoDebugError.h>
-
-#include "../upgraders/SoUpgrader.h"
-#include <../tidbits.h> // coin_atexit()
+#include <Inventor/nodes/SoUnknownNode.h>
+#include <Inventor/sensors/SoDataSensor.h>
 #include <assert.h>
 #include <string.h>
 

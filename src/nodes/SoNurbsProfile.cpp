@@ -37,7 +37,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbViewVolume.h>
-#include <../tidbits.h> // coin_atexit()
+#include <Inventor/C/tidbits.h> // coin_atexit()
 #include <stdlib.h>
 
 #if HAVE_CONFIG_H

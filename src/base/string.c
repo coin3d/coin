@@ -24,18 +24,16 @@
 #include <Inventor/C/base/string.h>
 
 #include <Inventor/C/errors/debugerror.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
-#include "../tidbits.h" /* coin_vsnprintf() */
-
+#include <Inventor/C/tidbits.h>
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
 
 /* ********************************************************************** */
 
