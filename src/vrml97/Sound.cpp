@@ -203,6 +203,10 @@
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoListenerPositionElement.h>
+#include <Inventor/elements/SoListenerOrientationElement.h>
+#include <Inventor/elements/SoListenerVelocityElement.h>
+#include <Inventor/elements/SoListenerGainElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
@@ -265,7 +269,7 @@ public:
   SoTimerSensor * timersensor;
 #ifdef HAVE_THREADS
   cc_thread *workerThread;
-  static SbMutex *syncmutex;
+  SbMutex syncmutex;
 #endif
   volatile SbBool exitthread;
   volatile SbBool errorInThread;
@@ -290,10 +294,6 @@ public:
 #undef PUBLIC
 #define PUBLIC(p) ((p)->master)
 
-// fixme 20021006 thammer: should really do individual synchronization instead of global
-#ifdef HAVE_THREADS
-SbMutex *SoVRMLSoundP::syncmutex = NULL;
-#endif
 int SoVRMLSoundP::defaultBufferLength = 44100/10;
 int SoVRMLSoundP::defaultNumBuffers = 5;
 SbTime SoVRMLSoundP::defaultSleepTime = 0.100; // 100ms
@@ -307,9 +307,6 @@ SoVRMLSound::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLSound, SO_VRML97_NODE_TYPE);
   SoAudioRenderAction::addMethod(SoVRMLSound::getClassTypeId(),
                                  SoNode::audioRenderS);
-#ifdef HAVE_THREADS
-  SoVRMLSoundP::syncmutex = new SbMutex;
-#endif
 }
 
 /*!
@@ -406,6 +403,14 @@ SoVRMLSound::~SoVRMLSound(void)
   delete PRIVATE(this);
 }
 
+/*
+  Note: Calling setDefaultBufferingProperties or 
+  setBufferingProperties while a sound was playing might mess
+  up quite a bit. This should be made more robust, or at the
+  very least documented properly.
+  2002-11-15 thammer.
+ */
+
 void SoVRMLSound::setDefaultBufferingProperties(int bufferLength, int numBuffers, SbTime sleepTime)
 {
   SoVRMLSoundP::defaultBufferLength = bufferLength;
@@ -416,7 +421,7 @@ void SoVRMLSound::setDefaultBufferingProperties(int bufferLength, int numBuffers
 void SoVRMLSound::setBufferingProperties(int bufferLength, int numBuffers, SbTime sleepTime)
 {
 #ifdef HAVE_THREADS
-  SbThreadAutoLock autoLock(SoVRMLSoundP::syncmutex);
+  SbThreadAutoLock autoLock(&PRIVATE(this)->syncmutex);
 #endif 
   PRIVATE(this)->numBuffers = numBuffers;
   PRIVATE(this)->sleepTime = sleepTime;
@@ -432,7 +437,7 @@ void SoVRMLSound::setBufferingProperties(int bufferLength, int numBuffers, SbTim
 void SoVRMLSound::getBufferingProperties(int &bufferLength, int &numBuffers, SbTime &sleepTime)
 {
 #ifdef HAVE_THREADS
-  SbThreadAutoLock autoLock(SoVRMLSoundP::syncmutex);
+  SbThreadAutoLock autoLock(&PRIVATE(this)->syncmutex);
 #endif
   bufferLength = PRIVATE(this)->bufferLength;
   numBuffers = PRIVATE(this)->numBuffers;
@@ -451,7 +456,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 {
 #ifdef HAVE_SOUND
 #ifdef HAVE_THREADS
-  SbThreadAutoLock autoLock(SoVRMLSoundP::syncmutex);
+  SbThreadAutoLock autoLock(&PRIVATE(this)->syncmutex);
 #endif
   if (!SoAudioDevice::instance()->haveSound())
     return;
@@ -467,30 +472,42 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 
   if (PRIVATE(this)->errorInThread) {
 #ifdef HAVE_THREADS
-    SoVRMLSoundP::syncmutex->unlock();
+    PRIVATE(this)->syncmutex.unlock();
 #endif
     PRIVATE(this)->stopPlaying();
 #ifdef HAVE_THREADS
-    SoVRMLSoundP::syncmutex->lock();
+    PRIVATE(this)->syncmutex.lock();
 #endif
     return;
   }
 
   if ( PRIVATE(this)->playing && (!isactive) ) {
-    if (coin_debug_audio())
-      SoDebugError::postInfo("SoVRMLSound::audioRender",
-                             "PRIVATE(this)->playing && (!isactive). Calling stopPlaying()");
 #ifdef HAVE_THREADS
-      SoVRMLSoundP::syncmutex->unlock();
+      PRIVATE(this)->syncmutex.unlock();
 #endif
       PRIVATE(this)->stopPlaying();
 #ifdef HAVE_THREADS
-      SoVRMLSoundP::syncmutex->lock();
+      PRIVATE(this)->syncmutex.lock();
 #endif
     return;
   }
 
   // if we got here then we're either allready playing, or we should be
+
+  // get listener stuff
+  SoState * state = action->getState();
+
+  const SbVec3f &listenerpos = SoListenerPositionElement::get(state);
+  const SbRotation &listenerorientation = SoListenerOrientationElement::get(state);
+  const SbVec3f &listenervelocity = SoListenerVelocityElement::get(state);
+  float listenergain = SoListenerGainElement::get(state);
+  
+
+#if COIN_DEBUG && 0 // debug
+  float x, y, z;
+  listenerpos.getValue(x, y, z);
+  SoDebugError::postInfo("SoVRMLSound::audioRender", "listenerpos = (%0.2f, %0.2f, %0.2f)\n", x, y, z);
+#endif // debug
 
   ALint error;
   SbVec3f pos, worldpos;
@@ -498,11 +515,11 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 
   pos = this->location.getValue();
   SoModelMatrixElement::get(action->getState()).multVecMatrix(pos, worldpos); 
-
+  worldpos -= listenerpos;
+  listenerorientation.inverse().multVec(worldpos, worldpos);
 #if COIN_DEBUG && 0 // debug
-  float x, y, z;
   worldpos.getValue(x, y, z);
-  fprintf(stderr, "(%0.2f, %0.2f, %0.2f)-----------------------\n", x, y, z);
+  SoDebugError::postInfo("SoVRMLSound::audioRender", "rotated (inversed) : (%0.2f, %0.2f, %0.2f)\n", x, y, z);
 #endif // debug
 
   SbVec3f2ALfloat3(alfloat3, worldpos);
@@ -517,8 +534,8 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   }
 
 #if 0
-  // 20021007 thammer note: if we ever want to implement velocity (supported by OpenAL)
-  // then this is how it should be done
+  // 20021007 thammer note: if we ever want to implement velocity 
+  // (supported by OpenAL) then this is how it should be done
   // get alfloat3 from PRIVATE(this)->velocity
   SbVec3f2ALfloat3(alfloat3, velocity.getValue());
 
@@ -533,6 +550,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 
   // Gain / intensity
   float gain = this->intensity.getValue();
+  gain *= listenergain;
   gain = (gain > 0.0f) ? ((gain < 1.0f) ? gain : 1.0f) : 0.0f;
   alSourcef(PRIVATE(this)->sourceId,AL_GAIN, gain);
   if ((error = alGetError()) != AL_NO_ERROR) {
@@ -550,7 +568,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   // Distance attenuation
   /* FIXME: If minFront = maxFront = 0.0f, we interpret this as no distance attenuation.
      This is a violation of the VRML97 spec, but we keep it like this because it is
-     so very very useful. It is very strange that the VRML97 spec doesn't specify a 
+     so very very useful. It is strange that the VRML97 spec doesn't specify a 
      way to bypass distance attenuation. 
      If the user was able to specify some kind of MAX_FLOAT value as a parameter, we
      wouldn't have to make this a special case, and we wouldn't have to violate the
@@ -607,11 +625,11 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   if (PRIVATE(this)->channels != newchannels) {
     if (PRIVATE(this)->playing) {
 #ifdef HAVE_THREADS
-      SoVRMLSoundP::syncmutex->unlock();
+      PRIVATE(this)->syncmutex.unlock();
 #endif
       PRIVATE(this)->stopPlaying();
 #ifdef HAVE_THREADS
-      SoVRMLSoundP::syncmutex->lock();
+      PRIVATE(this)->syncmutex.lock();
 #endif
     }
 
@@ -619,9 +637,6 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   }
 
   if ( (!PRIVATE(this)->playing) && isactive )  {
-    if (coin_debug_audio())
-      SoDebugError::postInfo("SoVRMLSound::audioRender",
-                             "(!PRIVATE(this)->playing) && isactive. Calling startPlaying()");
     PRIVATE(this)->startPlaying();
   }
 #endif // HAVE_SOUND
@@ -667,12 +682,17 @@ getALSampleFormat(int channels, int bitspersample)
 void SoVRMLSoundP::deleteAlBuffers()
 {
 #ifdef HAVE_SOUND
+  ALint error;
   if (SoAudioDevice::instance()->haveSound()) {
-    while (this->alBuffers.getLength() > 0) 
-      {
+    while (this->alBuffers.getLength() > 0) {
         ALuint bufferid = this->alBuffers.pop();
         alDeleteBuffers(1, &bufferid);
-      }
+        if ((error = alGetError()) != AL_NO_ERROR) {
+          SoDebugError::postWarning("SoVRMLSound::deleteAlBuffers",
+                                    "alDeleteBuffers failed. %s",
+                                    coin_get_openal_error(error));
+        }
+    }
   }
 #endif
 }
@@ -688,8 +708,7 @@ void *SoVRMLSoundP::threadCallback()
   /* FIXME: An application using Coin might crash when shutdown because
      a SoAudioClip node might have been deleted (even though it is ref'ed).
      Using this->currentAudioClip in the fillThread is then undefined...
-     20021104 thammer
-
+     Investigate this further. 20021104 thammer
   */
   while (!this->exitthread) {
     this->fillBuffers();
@@ -711,7 +730,7 @@ SbBool SoVRMLSoundP::stopPlaying()
 {
 #ifdef HAVE_SOUND
   #if COIN_DEBUG && DEBUG_AUDIO // debug
-    fprintf(stderr, "sound:stop[.");
+  SoDebugError::postInfo("SoVRMLSound::stopPlaying", "stop");
   #endif // debug
 
   if (!SoAudioDevice::instance()->haveSound())
@@ -719,10 +738,6 @@ SbBool SoVRMLSoundP::stopPlaying()
 
   if (!this->playing)
     return TRUE;
-
-  #if COIN_DEBUG && DEBUG_AUDIO // debug
-    fprintf(stderr, ".");
-  #endif // debug
 
   ALint error;
 
@@ -748,10 +763,6 @@ SbBool SoVRMLSoundP::stopPlaying()
     this->workerThread = NULL;
   }
 #endif // HAVE_THREADS
-
-  #if COIN_DEBUG && DEBUG_AUDIO // debug
-    fprintf(stderr, ".");
-  #endif // debug
 
   this->errorInThread = FALSE;
 
@@ -780,7 +791,8 @@ SbBool SoVRMLSoundP::stopPlaying()
     retval= FALSE;
   }
 
-  /* FIXME: improve use of alGetSourcei[v] to avoid the #ifdef _WIN32. Look at how it is done in SoAudioRender.
+  /* FIXME: improve use of alGetSourcei[v] to avoid the #ifdef _WIN32. 
+     Look at how it is done in SoAudioRender.
      20021106 thammer.
    */
   ALint      processed;
@@ -804,28 +816,56 @@ SbBool SoVRMLSoundP::stopPlaying()
      20021106 thammer
     
   */
-  if (coin_debug_audio())
-    SoDebugError::postInfo("SoVRMLSound::stopPlaying",
-                           "Queued: %d, Processed: %d.",
-                           queued, processed);
+#if COIN_DEBUG && DEBUG_AUDIO // debug
+  SoDebugError::postInfo("SoVRMLSound::stopPlaying",
+                         "Queued: %d, Processed: %d.",
+                         queued, processed);
+#endif // debug  
 
-  ALuint *removedBuffers = new ALuint[processed];
-  alSourceUnqueueBuffers(this->sourceId, processed, removedBuffers);
-  delete[] removedBuffers;
+  if (processed >0) {
+    ALuint *removedBuffers = new ALuint[processed];
+    alSourceUnqueueBuffers(this->sourceId, processed, removedBuffers);
+    delete[] removedBuffers;
+    if ((error = alGetError()) != AL_NO_ERROR) {
+      SoDebugError::postWarning("SoVRMLSoundP::stopPlaying",
+                                "alSourceUnqueueBuffers failed. %s",
+                                coin_get_openal_error(error));
+      retval = FALSE;
+    }
+  }
+
+  /* Note: The OpenAL manual states that when a source is stopped, "the entire
+     queue is considered processed" (see documentation for "Unqueueing command".
+     However, sometimes (encountered on Win32 using OpenAL from CVS) after
+     stopping, processed==0 and queued != 0, which means that the above 
+     unqueueing would fail (because it unqueues only processed buffers).
+
+     So, we try explisitly setting the AL_BUFFER source attribute to NULL,
+     which is legal according to the OpenAL documentation (and also redundant,
+     wrt alSourceUnqueueBuffers according to the same documentation).
+
+     To be absolutely sure the queue is empty, we verify this with an assert.
+  */
+
+  alSourcei(this->sourceId, AL_BUFFER, AL_NONE);
   if ((error = alGetError()) != AL_NO_ERROR) {
     SoDebugError::postWarning("SoVRMLSoundP::stopPlaying",
-                              "alSourceUnqueueBuffers failed. %s",
+                              "alSourcei(,AL_BUFFER, AL_NONE) failed. %s",
                               coin_get_openal_error(error));
-    retval = FALSE;
+    return FALSE;
   }
+
+#ifdef _WIN32
+  alGetSourcei(this->sourceId, AL_BUFFERS_QUEUED, &queued);
+#else
+  alGetSourceiv(this->sourceId, AL_BUFFERS_QUEUED, &queued);
+#endif
+
+  assert(queued == 0);
 
   this->deleteAlBuffers();
 
   this->playing = FALSE;
-
-  #if COIN_DEBUG && DEBUG_AUDIO
-    printf(".]\n");
-  #endif // debug
 
   return retval;
 #else
@@ -837,7 +877,7 @@ SbBool SoVRMLSoundP::startPlaying()
 {
 #ifdef HAVE_SOUND
   #if COIN_DEBUG && DEBUG_AUDIO
-    printf("sound:start[.");
+    SoDebugError::postInfo("SoVRMLSound::startPlaying", "start");
   #endif // debug
 
   if (!SoAudioDevice::instance()->haveSound())
@@ -845,10 +885,6 @@ SbBool SoVRMLSoundP::startPlaying()
 
   if (this->playing)
     return TRUE;
-
-  #if COIN_DEBUG && DEBUG_AUDIO
-    printf(".");
-  #endif // debug
 
   ALint error;
 
@@ -899,10 +935,6 @@ SbBool SoVRMLSoundP::startPlaying()
 #endif // HAVE_THREADS
   }
 
-  #if COIN_DEBUG && DEBUG_AUDIO
-    printf(".]\n");
-  #endif // debug
-
   return TRUE;
 #else
   return FALSE;
@@ -913,13 +945,14 @@ void SoVRMLSoundP::fillBuffers()
 {
 #ifdef HAVE_SOUND
 #ifdef HAVE_THREADS
-  SbThreadAutoLock autoLock(SoVRMLSoundP::syncmutex);
+  SbThreadAutoLock autoLock(&this->syncmutex);
 #endif
 
   if (this->waitingForAudioClipToFinish) {
-    if (coin_debug_audio())
-      SoDebugError::postInfo("SoVRMLSound::fillBuffers",
-                             "this->waitingForAudioClipToFinish == TRUE, returning.");
+#if COIN_DEBUG && DEBUG_AUDIO // debug
+    SoDebugError::postInfo("SoVRMLSound::fillBuffers",
+                           "this->waitingForAudioClipToFinish == TRUE, returning.");
+#endif // debug
     return;
   }
 
@@ -939,8 +972,9 @@ void SoVRMLSoundP::fillBuffers()
   alGetSourceiv(this->sourceId, AL_BUFFERS_QUEUED, &queued);
 #endif
 
-#if COIN_DEBUG && DEBUG_AUDIO // debug
-  fprintf(stderr, "Processed: %d, Queued: %d\n", processed, queued);
+#if COIN_DEBUG && DEBUG_AUDIO
+  SoDebugError::postInfo("SoVRMLSound::fillBuffers",
+                         "Processed: %d, Queued: %d", processed, queued);
 #endif // debug
 
   ALuint bufferid = 0;
@@ -953,29 +987,22 @@ void SoVRMLSoundP::fillBuffers()
     // no buffers were queued, so there's nothing to do
     // this should only happen after audioclip::fillBuffer() returns NULL to indicate an EOF,
     // and sound::fillBuffers() does not queue new buffers after that
-    #if COIN_DEBUG && 1 // debug
-      fprintf(stderr, "No more buffers queued (we're probably stopping soon)\n");
+    #if COIN_DEBUG && DEBUG_AUDIO // debug
+            SoDebugError::postInfo("SoVRMLSound::fillBuffers",
+                                   "No more buffers queued (we're "
+                                   "probably stopping soon)");
     #endif // debug
     return; 
   }
 #endif
 
   if (this->endoffile) {
-#if COIN_DEBUG && DEBUG_AUDIO
-    fprintf(stderr, "sound, eof\n");
-#endif
     if (processed > 0) {
-#if COIN_DEBUG && DEBUG_AUDIO
-      fprintf(stderr, "sound, processed = %d\n", processed);
-#endif
       assert(queued > 0);
       ALuint *removedBuffers = new ALuint[processed];
       alSourceUnqueueBuffers(this->sourceId, processed, removedBuffers);
       delete[] removedBuffers;
     } else if (queued == 0) {
-#if COIN_DEBUG && DEBUG_AUDIO
-      fprintf(stderr, "sound, queued = %d\n", queued);
-#endif
       this->waitingForAudioClipToFinish = TRUE;
       // inform currentAudioClip() that the last buffer has been played,
       // so it can decide if it would like to stop playing
@@ -1016,6 +1043,38 @@ void SoVRMLSoundP::fillBuffers()
 
       int frameoffset, channels;
       frameoffset=0;
+      /* Notes (mainly kept for future debugging of deadlock issues): 
+         Unlocking syncmutex here might open up a can of worms. I have
+         looked at the variables used in this thread, and it looks like it's
+         ok to unlock at this point, but it's very easy to overlook something!
+         The reason I had to look into doing more finegrained 
+         synchronization was because
+         I stumbled across a deadlock. Description of the deadlock:
+         - sound::fillbuffers locks sound::syncmutex and calls clip::fillbuffer,
+           which tries to lock clip::syncmutex
+         - clip::timerCB locks clip::syncmutex and calls stopPlaying, which 
+           changes isActive, which triggers sound::sourceSensorCB, which tries 
+           to lock sound::syncmutex
+         ==> deadlock
+         A nice way to test for deadlocks is to do a lot of 
+         audioDevice::enable() and audioDevice::disable() calls fast, while
+         a sound is / should be playing.
+         First, I implemented buffer sync'ing and unlocked syncmutex here.
+
+         After implementing buffer synchronization, I stumbled across another
+         deadlock:
+         - ac:timer lock ac:sync-> isActive -> sound:sourceCB 
+           -> sound:stopPlaying -> thread_join (lock-wait for thread to finish)
+         - sound:fillbuffers -> ac:fillbuffer-> tries to lock ac:sync
+         ==> deadlock
+         This deadlock was removed by making sure ac:sync wasn't locked while
+         changing ac:isActive.
+
+         This also fixes the first deadlock described above, so I'll probably
+         get away with not unlocking syncmutex here afterall.
+
+         2002-11-18 thammer
+       */
       ret = this->currentAudioClip->fillBuffer(frameoffset, this->audioBuffer, 
                                                this->bufferLength, channels);
 
@@ -1063,9 +1122,6 @@ void SoVRMLSoundP::fillBuffers()
 
       if (ret == NULL) {
         this->endoffile = true; // AudioClip has reached EOF (or an error), so we shouldn't fill any more buffers
-#if COIN_DEBUG && DEBUG_AUDIO
-        fprintf(stderr, "sound, ret == true\n");
-#endif
       }
 
       // Check to see if we're still playing
@@ -1100,7 +1156,8 @@ void SoVRMLSoundP::fillBuffers()
                                       "and/or decreasing sleeptime (current: %0.3fs)", 
                                       queued, processed,
                                       this->bufferLength, this->numBuffers, this->sleepTime.getValue());
-          else if (coin_debug_audio())
+          else {
+#if COIN_DEBUG && DEBUG_AUDIO // debug
             SoDebugError::postInfo("SoVRMLSoundP::fillBuffers",
                                    "Source had not been started (state==AL_INITIAL). "
                                    "The audio source has been started. "
@@ -1110,7 +1167,8 @@ void SoVRMLSoundP::fillBuffers()
                                    "current sleeptime: %0.3fs", 
                                    queued, processed,
                                    this->bufferLength, this->numBuffers, this->sleepTime.getValue());
-        
+#endif // debug
+          }
         }
         else {
           char statestr[20];
@@ -1123,7 +1181,9 @@ void SoVRMLSoundP::fillBuffers()
           };
           // 20021007 thammer fixme: deal with this properly!
 #if COIN_DEBUG && DEBUG_AUDIO // debug
-          fprintf(stderr, "state == %s. Don't know what to do about it...\n", statestr);
+          SoDebugError::postWarning("SoVRMLSound::fillBuffers", 
+                                    "state == %s. Don't know what "
+                                    "to do about it...\n", statestr);
 #endif
         }
       }
@@ -1154,12 +1214,8 @@ SoVRMLSoundP::sourceSensorCB(SoSensor *)
 {
 #ifdef HAVE_SOUND
 
-  #if COIN_DEBUG && DEBUG_AUDIO // debug
-    fprintf(stderr, "(S)");
-  #endif // debug
-
 #ifdef HAVE_THREADS
-  SbThreadAutoLock autoLock(SoVRMLSoundP::syncmutex);
+  SbThreadAutoLock autoLock(&this->syncmutex);
 #endif
   if (!SoAudioDevice::instance()->haveSound())
     return;
@@ -1172,11 +1228,11 @@ SoVRMLSoundP::sourceSensorCB(SoSensor *)
     if (this->currentAudioClip != NULL) {
       this->currentAudioClip->unref();
 #ifdef HAVE_THREADS
-      SoVRMLSoundP::syncmutex->unlock();
+      this->syncmutex.unlock();
 #endif
       this->stopPlaying();
 #ifdef HAVE_THREADS
-      SoVRMLSoundP::syncmutex->lock();
+      this->syncmutex.lock();
 #endif
     }
     this->currentAudioClip = NULL;
@@ -1188,15 +1244,12 @@ SoVRMLSoundP::sourceSensorCB(SoSensor *)
     if (this->currentAudioClip != NULL) {
       this->currentAudioClip->unref();
       this->currentAudioClip = NULL;
-      if (coin_debug_audio())
-        SoDebugError::postInfo("SoVRMLSound::sourceSensorCB",
-                               "audioClip != this->currentAudioClip. Calling stopPlaying()");
 #ifdef HAVE_THREADS
-      SoVRMLSoundP::syncmutex->unlock();
+      this->syncmutex.unlock();
 #endif
       this->stopPlaying();
 #ifdef HAVE_THREADS
-      SoVRMLSoundP::syncmutex->lock();
+      this->syncmutex.lock();
 #endif
     }
     if (audioClip!=NULL)
@@ -1206,6 +1259,9 @@ SoVRMLSoundP::sourceSensorCB(SoSensor *)
 
   if (this->currentAudioClip == NULL)
     return;
+
+  SoSFBool * isActiveField = (SoSFBool *)this->currentAudioClip->getField("isActive");
+  SbBool isactive = isActiveField->getValue();
 
   /* Note: According to the OpenAL 1.0 spec, the legal range for pitch is [0, 1].
      However, both the Win32 implementation and the linux implementation supports
@@ -1220,6 +1276,7 @@ SoVRMLSoundP::sourceSensorCB(SoSensor *)
      crash if pitch == 0.0. For that reason, we will clamp at 0.01. The range
      supported is thus [0.01..2.0]. 2002-11-07 thammer.
   */
+
   ALint error;
   float pitch = this->currentAudioClip->pitch.getValue();
   pitch = (pitch >= 0.01f) ? ( (pitch<=2.0f) ? pitch : 2.0f ) : 0.01f;
@@ -1229,22 +1286,21 @@ SoVRMLSoundP::sourceSensorCB(SoSensor *)
     SoDebugError::postWarning("SoVRMLSoundP::sourceSensorCB",
                               "alSourcef(,AL_PITCH,) failed. %s",
                               coin_get_openal_error(error));
-    return;
+    // return;
   }
 
-  SoSFBool * isActiveField = (SoSFBool *)this->currentAudioClip->getField("isActive");
-  SbBool isactive = isActiveField->getValue();
   if ( this->playing && (!isactive) ) {
-    /* FIXME: #ifdef COIN_EXTRA_DEBUG all these debugging messages */
-    if (coin_debug_audio())
-      SoDebugError::postInfo("SoVRMLSound::sourceSensorCB",
-                             "this->playing && (!isactive). Calling stopPlaying()");
+#if COIN_DEBUG && DEBUG_AUDIO // debug
+    SoDebugError::postInfo("SoVRMLSound::sourceSensorCB",
+                           "this->playing && (!isactive). "
+                           "Calling stopPlaying()");
+#endif // debug
 #ifdef HAVE_THREADS
-      SoVRMLSoundP::syncmutex->unlock();
+      this->syncmutex.unlock();
 #endif
       this->stopPlaying();
 #ifdef HAVE_THREADS
-      SoVRMLSoundP::syncmutex->lock();
+      this->syncmutex.lock();
 #endif
   }
 #endif // HAVE_SOUND

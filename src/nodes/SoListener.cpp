@@ -31,6 +31,10 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoAudioDevice.h>
+#include <Inventor/elements/SoListenerPositionElement.h>
+#include <Inventor/elements/SoListenerOrientationElement.h>
+#include <Inventor/elements/SoListenerVelocityElement.h>
+#include <Inventor/elements/SoListenerGainElement.h>
 
 #include "../misc/AudioTools.h"
 
@@ -44,6 +48,11 @@ SO_NODE_SOURCE(SoListener);
 void SoListener::initClass()
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoListener, SO_FROM_COIN_2_0);
+
+  SO_ENABLE(SoAudioRenderAction, SoListenerPositionElement);
+  SO_ENABLE(SoAudioRenderAction, SoListenerOrientationElement);
+  SO_ENABLE(SoAudioRenderAction, SoListenerVelocityElement);
+  SO_ENABLE(SoAudioRenderAction, SoListenerGainElement);
 }
 
 SoListener::SoListener()
@@ -60,83 +69,35 @@ SoListener::~SoListener()
 {
 }
 
-#ifdef HAVE_SOUND
-inline void
-SbVec3f2ALfloat3(ALfloat *dest, const SbVec3f &source)
+void
+SoListener::audioRender(SoAudioRenderAction *action)
 {
-  source.getValue(dest[0], dest[1], dest[2]);
-}
-#endif // HAVE_SOUND
+  SoState * state = action->getState();
 
-void SoListener::audioRender(SoAudioRenderAction *action)
-{
-#ifdef HAVE_SOUND
-  if (!SoAudioDevice::instance()->haveSound())
-    return;
-  ALint error;
-  SbVec3f pos, worldpos;
-  SbVec3f viewdir;
-  SbVec3f viewup;
-  ALfloat alfloat3[3];
-  ALfloat alfloat6[6];
-
-  pos = position.getValue();
-  SoModelMatrixElement::get(action->getState()).multVecMatrix(pos, worldpos); 
-
+  if (! this->position.isIgnored()) {
+    SbVec3f pos, worldpos;
+    pos = this->position.getValue();
+    SoModelMatrixElement::get(state).multVecMatrix(pos, worldpos); 
+    SoListenerPositionElement::set(state, this, worldpos, TRUE);
 #if COIN_DEBUG && 0
-  // 20011206 thammer, kept for debugging purposes
-//  float x, y, z;
-//  worldpos.getValue(x, y, z);
-//  printf("(%0.2f, %0.2f, %0.2f)\n", x, y, z);
+    float x, y, z;
+    worldpos.getValue(x, y, z);
+    SoDebugError::postInfo("SoListener::audioRender", "listenerpos "
+            "(%0.2f, %0.2f, %0.2f)", x, y, z);
 #endif // debug
-
-  SbVec3f2ALfloat3(alfloat3, worldpos);
-
-  // Position ...
-  alListenerfv(AL_POSITION, alfloat3);
-  if ((error = alGetError()) != AL_NO_ERROR) {
-    SoDebugError::postWarning("SoListener::audioRender",
-                              "alListenerfv(AL_POSITION,) failed. %s",
-                              coin_get_openal_error(error));
-    return;
   }
-
-  // Velocity ...
-  SbVec3f2ALfloat3(alfloat3, velocity.getValue());
-
-  alListenerfv(AL_VELOCITY, alfloat3);
-  if ((error = alGetError()) != AL_NO_ERROR) {
-    SoDebugError::postWarning("SoListener::audioRender",
-                              "alListenerfv(AL_VELOCITY,) failed. %s",
-                              coin_get_openal_error(error));
-    return;
+  if (! this->orientation.isIgnored()) {
+    SbVec3f t;
+    SbRotation r;
+    SbVec3f s;
+    SbRotation so;
+    SoModelMatrixElement::get(state).getTransform(t, r, s, so);
+    r *= this->orientation.getValue();
+    SoListenerOrientationElement::set(state, this, r, TRUE);
   }
-
-  // Orientation ...
-  this->orientation.getValue().multVec(SbVec3f(0,0,-1), viewdir);
-  SbVec3f2ALfloat3(alfloat6, viewdir);
-
-  this->orientation.getValue().multVec(SbVec3f(0,1,0), viewup);
-  SbVec3f2ALfloat3(alfloat6+3, viewup);
-
-  alListenerfv(AL_ORIENTATION,alfloat6);
-  if ((error = alGetError()) != AL_NO_ERROR) {
-    SoDebugError::postWarning("SoListener::audioRender",
-                              "alListenerfv(AL_ORIENTATION,) failed. %s",
-                              coin_get_openal_error(error));
-    return;
-  }
-
-  // Gain
-  float gain = this->gain.getValue();
-  gain = gain<0.0f ? 0.0f : ( gain>1.0f ? 1.0f : gain );  // clamp to [0.0f, 1.0f];
-  alListenerf(AL_GAIN, gain);
-  if ((error = alGetError()) != AL_NO_ERROR) {
-    SoDebugError::postWarning("SoListener::audioRender",
-                              "alListenerf(AL_GAIN,) failed. %s",
-                              coin_get_openal_error(error));
-    return;
-  }
-#endif // HAVE_SOUND
+  if (! this->velocity.isIgnored())
+    SoListenerVelocityElement::set(state, this, this->velocity.getValue());
+  if (! this->gain.isIgnored())
+    SoListenerGainElement::set(state, this, this->gain.getValue());
 }
 
