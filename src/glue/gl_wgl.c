@@ -473,15 +473,6 @@ wglglue_context_create_context(struct wglglue_contextdata * ctx, DWORD bitWin)
     return FALSE;
   }
 
-  context->wglcontext = wglCreateContext(context->memorydc);
-  if (context->wglcontext == NULL) {
-    DWORD dwError = GetLastError();
-    cc_debugerror_postwarning("wglglue_context_create_context",
-                              "wglCreateContext() failed with error code %d.",
-                              dwError);
-    return FALSE;
-  }
-
   return TRUE;
 }
 
