@@ -1,3 +1,9 @@
+New in Coin v1.0 (2001-08-13):
+* speedy Cygwin builds with new, simpler wrapmsvc.exe compiler wrapper
+* SoOffscreenRenderer::writeToPostscript(fp, pagesize)
+* minor bugfixes
+* minor documentation updates
+
 New in Coin 1.0 final beta (2001-07-22):
 - beta release made for the Web3D SDK CD, for SIGGRAPH 2001 distribution
 * full Open Inventor 2.1 source code compatibility
