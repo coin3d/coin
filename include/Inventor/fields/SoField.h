@@ -140,8 +140,6 @@ protected:
   virtual SbBool readConnection(SoInput * in);
   virtual void writeConnection(SoOutput * out) const;
 
-  static void * reallocOutputBuf(void * buffer, size_t newsize);
-
 private:
   void doConnect(SoField * master, SbBool notify);
   void doConnect(SoVRMLInterpOutput * master, SbBool notify);
@@ -149,7 +147,7 @@ private:
   SbBool createConverter(SoType from, SoType to, SoFieldConverter *& conv);
   SoFieldContainer * resolveWriteConnection(SbName & mastername) const;
 
-  void notifyAuditors(SoNotList * list);
+  void notifyAuditors(SoNotList * l);
 
   static SoType classTypeId;
 
@@ -161,6 +159,12 @@ private:
     ALLFILEFLAGS = IGNORED|CONNECTED|DEFAULT
   };
 
+  // FIXME: the ifndef wrapper is a workaround for a bug in Doxygen
+  // 1.0.0, where private members in a structure doesn't "inherit" the
+  // private status of their "parent". (This has been confirmed to be
+  // a bug by Dimitri.) Remove the workaround when a fixed Doxygen
+  // appears. 20000201 mortene.
+#ifndef DOXYGEN_SKIP_THIS
   struct {
     unsigned int isdefault      : 1;
     unsigned int ignore         : 1;
@@ -169,12 +173,14 @@ private:
     unsigned int needevaluation : 1;
     unsigned int isevaluating   : 1;
     unsigned int type           : 3; // Needs to hold values in range [0-5]
+    unsigned int readonly       : 1;
   } statusflags;
 
   union {
     SoFieldContainer * container;
     class SoConnectStorage * storage;
   };
+#endif // DOXYGEN_SKIP_THIS
 
   SbBool hasExtendedStorage(void) const
     { return this->statusflags.extstorage; }

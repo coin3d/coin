@@ -18,29 +18,41 @@
 \**************************************************************************/
 
 /*!
-  \class SoSField SoField.h Inventor/fields/SoField.h
-  \brief The SoSField class is the abstract base class for fields which contains only a single value.
+  \class SoSField SoSField.h Inventor/fields/SoSField.h
+  \brief The SoSField class is the base class for fields which contains
+  only a single value.
   \ingroup fields
 
-  FIXME: write class doc
+  All field types which should always contain only a single member
+  value inherits this class. SoSField is an abstract class.
 
-  \sa SoField, SoMField
+  \sa SoMField
 */
 
+
+// Metadon doc:
+/*¡
+  Document the SO_SFIELD_HEADER, SO_SFIELD_SOURCE and
+  SO_SFIELD_INIT_CLASS macros. Also write a note (with link to an
+  online bookstore?) about the Inventor Toolmaker, if the application
+  programmer should need to extend Coin with new single-value fields.
+ */
+
 #include <Inventor/fields/SoSField.h>
+
 #include <Inventor/SbName.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/fields/SoSubField.h>
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 
 SoType SoSField::classTypeId = SoType::badType();
 
-/*!
-  Returns a unique type identifier for the SoSField class.
-
-  \sa getTypeId(), SoType
- */
+// Overridden from parent class.
 SoType
 SoSField::getClassTypeId(void)
 {
@@ -48,36 +60,37 @@ SoSField::getClassTypeId(void)
 }
 
 /*!
-  Constructor.
+  The SoSField constructor is protected, as this is an abstract
+  class.
 */
 SoSField::SoSField(void)
 {
 }
 
 /*!
-  Destructor.
+  The SoSField destructor is empty, and is only defined so we could
+  make it virtual.
 */
 SoSField::~SoSField()
 {
 }
 
-/*!
-  Must be called upon initialization of the library to set up
-  the type system.
-*/
+// Overridden from parent class.
 void
 SoSField::initClass(void)
 {
   PRIVATE_FIELD_INIT_CLASS(SoSField, "SField", inherited, NULL);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// If there's any single value fields without converter-functionality,
+// calls to convertTo() will end up here.
 void
-SoSField::convertTo(SoField * /* dest */) const
+SoSField::convertTo(SoField * dest) const
 {
-  // Should never be called, all subclasses with conversion
-  // functionality need to reimplement this method.
-  assert(0);
+#if COIN_DEBUG
+  SoDebugError::postWarning("SoSFBool::convertTo",
+                            "Can't convert from %s to %s",
+                            this->getTypeId().getName().getString(),
+                            dest->getTypeId().getName().getString());
+#endif // COIN_DEBUG
 }

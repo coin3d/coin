@@ -33,32 +33,46 @@
   the value of a field in a scene graph node is that there'll automatically
   be a rendering update.
 
+  Note: there are some field classes which has been obsoleted from the
+  Open Inventor API. They are: SoSFLong, SoSFULong, SoMFLong and
+  SoMFULong. You should use these classes instead (respectively):
+  SoSFInt32, SoSFUInt32, SoMFInt32 and SoMFUInt32.
 
-  \sa SoSField, SoMField, SoFieldContainer, SoFieldData
+  
+  \sa SoFieldContainer, SoFieldData
 */
+
+
+// Metadon doc:
+/*¡
+  Some code for various handling of connections to/from VRML
+  interpolators and engines is not tested or is missing. Do a "grep"
+  for FIXME and COIN_STUB to find and fix these cases.
+ */
 
 #include <assert.h>
 
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
+#include <Inventor/fields/SoField.h>
 
 #include <Inventor/SbName.h>
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
 #include <Inventor/VRMLnodes/SoVRMLInterpOutput.h>
 #include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
+#include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/engines/SoEngine.h>
+#include <Inventor/engines/SoEngineOutput.h>
+#include <Inventor/engines/SoFieldConverter.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
-#include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/fields/SoFields.h>
 #include <Inventor/lists/SoAuditorList.h>
+#include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/lists/SoVRMLInterpOutputList.h>
-#include <Inventor/engines/SoEngine.h>
-#include <Inventor/engines/SoEngineOutput.h>
-#include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/SoDB.h>
-#include <Inventor/engines/SoFieldConverter.h>
-#include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 
 static const char IGNOREDCHAR = '~';
 static const char CONNECTIONCHAR = '=';
@@ -305,6 +319,7 @@ SoField::SoField(void)
   this->statusflags.needevaluation = FALSE;
   this->statusflags.isevaluating = FALSE;
   this->statusflags.type = 0;
+  this->statusflags.readonly = 0;
 }
 
 /*!
@@ -317,35 +332,33 @@ SoField::~SoField()
   SoDebugError::postInfo("SoField::~SoField", "destructing %p", this);
 #endif // debug
 
-  // Disconnect ourself from all connections where we are the slave.
+  // Disconnect ourself from all connections where this field is the
+  // slave.
   this->disconnect();
 
+  // Disconnect slaves using us as a master.
   if (this->hasExtendedStorage()) {
-    // Disconnect all connections using us as master.
     while (this->storage->getNumAuditors()) {
       SoNotRec::Type type;
       void * obj = this->storage->getAuditor(0, type);
 
       switch (type) {
       case SoNotRec::FIELD:
+      case SoNotRec::ENGINE:
+      case SoNotRec::INTERP:
         ((SoField *)obj)->disconnect(this);
         break;
 
       case SoNotRec::CONTAINER:
         this->storage->removeAuditor(0);
-        // FIXME: anything else to do here? 19990622 mortene.
         break;
 
-      case SoNotRec::ENGINE:
       case SoNotRec::SENSOR:
-      case SoNotRec::INTERP:
-        COIN_STUB();
+        ((SoFieldSensor *)obj)->detach();
         break;
 
-      case SoNotRec::PARENT:
       default:
-        // Not supposed to happen, of course.
-        assert(0);
+        assert(FALSE); // no other allowed slave types.
         break;
       }
     }
@@ -424,7 +437,7 @@ SoField::isDefault(void) const
 }
 
 /*!
-  Returns a unique type identifier for the field class.
+  Returns a unique type identifier for this field class.
 
   \sa getTypeId(), SoType
  */
@@ -901,7 +914,7 @@ SoField::get(SbString & valuestring)
   const size_t STARTSIZE = 32;
   void * buffer = malloc(STARTSIZE);
 
-  out.setBuffer(buffer, STARTSIZE, SoField::reallocOutputBuf);
+  out.setBuffer(buffer, STARTSIZE, realloc);
   this->writeValue(&out);
 
   size_t size;
@@ -1001,7 +1014,7 @@ SoField::addAuditor(void * f, SoNotRec::Type type)
   }
 
   this->storage->addAuditor(f, type);
-  if (type == SoNotRec::FIELD) this->connectionStatusChanged(+1);
+  if (type != SoNotRec::CONTAINER) this->connectionStatusChanged(+1);
 }
 
 /*!
@@ -1017,7 +1030,7 @@ SoField::removeAuditor(void * f, SoNotRec::Type type)
 
   assert(this->hasExtendedStorage());
   this->storage->removeAuditor(f, type);
-  if (type == SoNotRec::FIELD) this->connectionStatusChanged(-1);
+  if (type != SoNotRec::CONTAINER) this->connectionStatusChanged(-1);
 }
 
 /*!
@@ -1048,7 +1061,6 @@ SoField::shouldWrite(void) const
 {
   if (!this->isDefault()) return TRUE;
   if (this->isIgnored()) return TRUE;
-  // FIXME: ..more here?..yes: connections.. 20000124 mortene.
   return FALSE;
 }
 
@@ -1057,34 +1069,23 @@ SoField::shouldWrite(void) const
   \a numconnections is the difference in number of connections
   made (i.e. if stuff is \e disconnected, \a numconnections will be
   a negative number).
+
+  The default method is empty. Overload in subclasses if you
+  want do something special on connections/deconnections.
  */
 void
-SoField::connectionStatusChanged(int /* numconnections */)
+SoField::connectionStatusChanged(int numconnections)
 {
-  // FIXME: not sure if this is correct or not. Looks like it could
-  // have unwanted side effects (premature destruction). 19990711
-  // mortene.
-#if 0
-  while (numconnections > 0) {
-    this->ref();
-    numconnections--;
-  }
-
-  while (numconnections < 0) {
-    this->unref();
-    numconnections++;
-  }
-#endif // disabled
 }
 
 /*!
-  FIXME: write doc
+  Returns \c TRUE if this field should not be written into at the
+  moment the method is called.
  */
 SbBool
 SoField::isReadOnly(void) const
 {
-  COIN_STUB();
-  return FALSE;
+  return this->statusflags.readonly;
 }
 
 /*!
@@ -1244,7 +1245,6 @@ SoField::read(SoInput * in, const SbName & name)
 
 #undef READ_VAL
 
-  // FIXME: call touch() or valueChanged()? Probably not. 19990406 mortene.
   return TRUE;
 }
 
@@ -1316,7 +1316,7 @@ void
 SoField::countWriteRefs(SoOutput * out) const
 {
   // FIXME: call the "writereference" method of all connected fields
-  // etc. 20000130 mortene.
+  // etc? 20000130 mortene.
   SbName dummy;
   SoFieldContainer * fc = this->resolveWriteConnection(dummy);
   if (fc) fc->addWriteReference(out, TRUE);
@@ -1398,9 +1398,7 @@ SoField::appendConnection(SoVRMLInterpOutput * master, SbBool notnotify)
   return this->connectFrom(master, notnotify, TRUE);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Make a converter between the two given field types.
 SbBool
 SoField::createConverter(SoType from, SoType to, SoFieldConverter *& conv)
 {
@@ -1411,9 +1409,7 @@ SoField::createConverter(SoType from, SoType to, SoFieldConverter *& conv)
   else return FALSE;
 }
 
-/*!
-  \internal
-*/
+// Connect us to the master source.
 void
 SoField::doConnect(SoField * master, SbBool notify)
 {
@@ -1434,9 +1430,7 @@ SoField::doConnect(SoField * master, SbBool notify)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Connect us to the master source.
 void
 SoField::doConnect(SoEngineOutput * master, SbBool notify)
 {
@@ -1458,9 +1452,7 @@ SoField::doConnect(SoEngineOutput * master, SbBool notify)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Connect us to the master source.
 void
 SoField::doConnect(SoVRMLInterpOutput * master, SbBool notify)
 {
@@ -1480,15 +1472,6 @@ SoField::doConnect(SoVRMLInterpOutput * master, SbBool notify)
       this->startNotify();
     }
   }
-}
-
-/*!
-  FIXME: write function documentation
-*/
-void *
-SoField::reallocOutputBuf(void * buffer, size_t newsize)
-{
-  return realloc(buffer, newsize);
 }
 
 /*!
@@ -1602,10 +1585,7 @@ SoField::resolveWriteConnection(SbName & mastername) const
 
   if (this->getConnectedField(fieldmaster)) {
     fc = fieldmaster->getContainer();
-    // FIXME: won't this fail with global fields? Check and
-    // fix. 19990707 mortene.
     assert(fc);
-
     SbBool ok = fc->getFieldName(fieldmaster, mastername);
     assert(ok);
   }
@@ -1630,9 +1610,8 @@ SoField::resolveWriteConnection(SbName & mastername) const
 
 
 /*!
-  \internal
-
-  If we're connected to a field/engine/interpolator, copy the value.
+  If we're connected to a field/engine/interpolator, copy the value
+  from the master source.
  */
 void
 SoField::evaluateConnection(void) const
@@ -1657,40 +1636,40 @@ SoField::evaluateConnection(void) const
 }
 
 /*!
-  \internal
-
   This method is always called whenever the field's value has been
-  changed by direct invocation of setValue() or somesuch. You should
+  changed by direct invocation of setValue() or some such. You should
   \e never call this method from anywhere in the code where the field
   value is being set through an evaluation of its connections.
 
-  If \a resetDefault is \c TRUE, the flag marking whether or not the
+  If \a resetdefault is \c TRUE, the flag marking whether or not the
   field has its default value will be set to \c FALSE.
 
-  The method will also notify any auditors that its value has changed.
+  The method will also notify any auditors that the field's value has
+  changed.
  */
 void
 SoField::valueChanged(SbBool resetdefault)
 {
+  if (this->statusflags.readonly) return;
+  this->statusflags.readonly = 1;
+
   this->setDirty(FALSE);
   if (resetdefault) this->setDefault(FALSE);
   if (this->container) this->startNotify();
+
+  this->statusflags.readonly = 0;
 }
 
-/*!
-  \internal
-
-  Notify any auditors by marking them dirty - i.e. ready for re-evaluation.
-  Auditors include connected fields, sensors, container (node/engine),
-  (TODO: more here)
- */
+// Notify any auditors by marking them dirty - i.e. ready for
+// re-evaluation.  Auditors include connected fields, sensors,
+// containers (nodes/engines), ...
 void
-SoField::notifyAuditors(SoNotList * list)
+SoField::notifyAuditors(SoNotList * l)
 {
   if (!this->hasExtendedStorage() && this->container)
-    this->container->notify(list);
+    this->container->notify(l);
   else if (this->storage->getNumAuditors())
-    this->storage->getAuditors().notify(list);
+    this->storage->getAuditors().notify(l);
 }
 
 /*!

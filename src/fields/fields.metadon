@@ -12,8 +12,8 @@
 # ID
 # ==
 # HIERARCHY
-# id SoField
-# i      SoSField
+# ID SoField
+# ID     SoSField
 # i          SoSFBool
 # i          SoSFColor
 #            SoSFEngine
@@ -61,7 +61,7 @@
 # i          SoMFVec4f
 # ID SoFieldContainer
 # ID SoFieldData
-#    SoGlobalField
+# I- SoGlobalField
 #
 ############################################################################
 #
@@ -74,15 +74,6 @@
 # <LI>valueChanged() called from everywhere it should be called?</LI>
 # </UL>
 # 
-# Write test code:
-# <UL>
-# <LI>Test set() and get() (same as readValue() and writeValue())</LI>
-# </UL>
-#
-# These classes has been obsoleted: SoSFLong, SoSFULong, SoMFLong, SoMFULong.
-# This should be documented, best place for this would be in the SoField class
-# documentation.
-#
 # END COMMENTS
 # 
 ############################################################################

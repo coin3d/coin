@@ -151,7 +151,7 @@ SoMField::get1(const int index, SbString & valueString)
   size_t size;
 
   out.setHeaderString("");
-  out.setBuffer(buffer, 10, SoField::reallocOutputBuf);
+  out.setBuffer(buffer, 10, realloc);
 
   this->evaluate();
   this->write1Value(&out, index);

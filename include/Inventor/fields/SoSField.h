@@ -22,9 +22,6 @@
 
 #include <Inventor/fields/SoField.h>
 
-class SoOutput;
-class SoInput;
-
 
 class SoSField : public SoField {
   typedef SoField inherited;
@@ -32,9 +29,8 @@ class SoSField : public SoField {
 public:
   virtual ~SoSField();
 
-  static SoType getClassTypeId(void);
-
   static void initClass(void);
+  static SoType getClassTypeId(void);
 
 protected:
   SoSField(void);

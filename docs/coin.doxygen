@@ -196,6 +196,11 @@ INPUT                = \
 	$(top_srcdir)/include/Inventor/fields/SoFieldData.h \
 	$(top_srcdir)/src/fields/SoFieldContainer.cpp \
 	$(top_srcdir)/include/Inventor/fields/SoFieldContainer.h \
+        \
+	$(top_srcdir)/src/fields/SoField.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoField.h \
+	$(top_srcdir)/src/fields/SoSField.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSField.h \
 
 #	$(top_srcdir)/src/base/SbBSPTree.cpp \	
 #	$(top_srcdir)/include/Inventor/SbBSPTree.h \
@@ -270,9 +275,6 @@ INPUT                = \
 #	\
 #	$(top_srcdir)/src/SoType.cpp \
 #	$(top_srcdir)/include/Inventor/SoType.h \
-#	\
-#	$(top_srcdir)/src/misc/SoBase.cpp \
-#	$(top_srcdir)/include/Inventor/misc/SoBase.h \
 #	\
 #	$(top_srcdir)/src/lists/SbPList.cpp \
 #	$(top_srcdir)/include/Inventor/lists/SbPList.h \
@@ -629,10 +631,6 @@ INPUT                = \
 #	$(top_srcdir)/src/elements/SoWindowElement.cpp \
 #	$(top_srcdir)/include/Inventor/elements/SoWindowElement.h \
 #	\
-#	$(top_srcdir)/src/fields/SoField.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoField.h \
-#	$(top_srcdir)/src/fields/SoSField.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoSField.h \
 #	$(top_srcdir)/src/fields/SoSFBitMask.cpp \
 #	$(top_srcdir)/include/Inventor/fields/SoSFBitMask.h \
 #	$(top_srcdir)/src/fields/SoSFBool.cpp \
