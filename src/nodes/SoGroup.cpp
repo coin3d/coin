@@ -96,9 +96,9 @@ SoGroup::~SoGroup()
 SoNode *
 SoGroup::getChild(const int index) const
 {
-  assert((index >= 0) && (index < getNumChildren()));
-
-  return (*this->children)[index];
+  assert((index >= 0) && (index < this->getNumChildren()));
+  
+  return (SoNode*) this->getChildren()->getArrayPtr()[index];
 }
 
 /*!
@@ -107,7 +107,7 @@ SoGroup::getChild(const int index) const
 int
 SoGroup::getNumChildren(void) const
 {
-  return this->children->getLength();
+  return this->getChildren()->getLength();
 }
 
 // Doc from superclass.
@@ -209,7 +209,7 @@ void
 SoGroup::addChild(SoNode * const node)
 {
   assert(node != NULL);
-  this->children->append(node);
+  this->getChildren()->append(node);
 }
 
 /*!
@@ -226,7 +226,7 @@ SoGroup::insertChild(SoNode * const child, const int newchildindex)
     return;
   }
 #endif // COIN_DEBUG
-  this->children->insert(child, newchildindex);
+  this->getChildren()->insert(child, newchildindex);
 }
 
 /*!
@@ -243,7 +243,7 @@ SoGroup::removeChild(const int childindex)
     return;
   }
 #endif // COIN_DEBUG
-  this->children->remove(childindex);
+  this->getChildren()->remove(childindex);
 }
 
 /*!
@@ -253,7 +253,7 @@ SoGroup::removeChild(const int childindex)
 int
 SoGroup::findChild(const SoNode * const node) const
 {
-  return this->children->find((SoNode *) node);
+  return this->getChildren()->find((SoNode *) node);
 }
 
 // Doc from superclass.
@@ -271,10 +271,10 @@ SoGroup::doAction(SoAction * action)
   int numindices;
   const int * indices;
   if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
-    this->children->traverseInPath(action, numindices, indices);
+    this->getChildren()->traverseInPath(action, numindices, indices);
   }
   else {
-    this->children->traverse(action); // traverse all children
+    this->getChildren()->traverse(action); // traverse all children
   }
 }
 
@@ -296,7 +296,7 @@ SoGroup::getBoundingBox(SoGetBoundingBoxAction * action)
   int numcenters = 0;
 
   for (int i = 0; i <= lastchildindex; i++) {
-    this->children->traverse(action, i);
+    this->getChildren()->traverse(action, i);
 
     // If center point is set, accumulate.
     if (action->isCenterSet()) {
@@ -318,7 +318,7 @@ SoGroup::GLRender(SoGLRenderAction * action)
   const int * indices;
   SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
 
-  SoNode ** childarray = (SoNode**) this->children->getArrayPtr();
+  SoNode ** childarray = (SoNode**) this->getChildren()->getArrayPtr();
   SoState * state = action->getState();
 
   if (pathcode == SoAction::IN_PATH) {
@@ -340,7 +340,7 @@ SoGroup::GLRender(SoGLRenderAction * action)
   }
   else {
     action->pushCurPath();
-    int n = this->children->getLength();
+    int n = this->getChildren()->getLength();
     for (int i = 0; i < n && !action->hasTerminated(); i++) {
       if (action->abortNow()) {
         // only cache if we do a full traversal
@@ -461,7 +461,7 @@ SoGroup::removeChild(SoNode * const child)
 void
 SoGroup::removeAllChildren(void)
 {
-  this->children->truncate(0);
+  this->getChildren()->truncate(0);
 }
 
 /*!
@@ -476,7 +476,7 @@ SoGroup::replaceChild(const int index, SoNode * const newchild)
   // Note: its imperative that we use set() here, and not a
   // remove+insert pair of calls as that would puck up SoChildList
   // auditing from SoPath instances.
-  this->children->set(index, newchild);
+  this->getChildren()->set(index, newchild);
 }
 
 /*!
