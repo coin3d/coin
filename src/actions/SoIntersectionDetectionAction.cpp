@@ -1,9 +1,31 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2002 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See <URL:http://www.coin3d.org> for  more information.
+ *
+ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY.
+ *  <URL:http://www.sim.no>.
+ *
+\**************************************************************************/
 
 #include <Inventor/SbXfBox3f.h>
 #include <Inventor/SoPath.h>
+#include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/lists/SbPList.h>
-
-#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/manips/SoTransformManip.h>
@@ -11,10 +33,16 @@
 #include <Inventor/manips/SoDirectionalLightManip.h>
 #include <Inventor/manips/SoPointLightManip.h>
 #include <Inventor/manips/SoSpotLightManip.h>
-
+#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoIntersectionDetectionAction.h>
 
+#include "SbTri3f.ih"
+#include "SbTri3f.icc"
+
 // *************************************************************************
+
+struct ShapeData;
+struct PrimitiveData;
 
 class SoIntersectionDetectionActionP {
 public:
@@ -24,11 +52,11 @@ public:
   static float staticepsilon;
   float epsilon;
   SbBool epsilonset;
+  float getEpsilon(void) const;
 
   SbBool draggersenabled;
   SbBool manipsenabled;
-
-  float getEpsilon(void) const;
+  SbBool internalsenabled;
 
   SoIntersectionDetectionAction::SoIntersectionFilterCB * filtercb;
   void * filterclosure;
@@ -43,8 +71,13 @@ public:
   static SoCallbackAction::Response draggerCB(void * closure, SoCallbackAction * action, const SoNode * node);
   static SoCallbackAction::Response pruneCB(void * closure, SoCallbackAction * action, const SoNode * node);
 
+  static void triangleCB(void * closure, SoCallbackAction * action, const SoPrimitiveVertex * v1, const SoPrimitiveVertex * v2, const SoPrimitiveVertex * v3);
+  static PrimitiveData * generatePrimitives(ShapeData * shape);
+  static void deletePrimitives(PrimitiveData * primitives);
+
   void reset(void);
   void doIntersectionTesting(void);
+  SbBool doPrimitiveIntersectionTesting(PrimitiveData * primitives1, PrimitiveData * primitives2);
 
   SoTypeList * prunetypes;
 
@@ -62,6 +95,7 @@ SoIntersectionDetectionActionP::SoIntersectionDetectionActionP(void)
   this->epsilonset = FALSE;
   this->draggersenabled = TRUE;
   this->manipsenabled = TRUE;
+  this->internalsenabled = FALSE;
   this->filtercb = NULL;
   this->filterclosure = NULL;
   this->callbacks = new SbPList;
@@ -99,6 +133,15 @@ SoIntersectionDetectionActionP::getEpsilon(void) const
 
 SO_ACTION_SOURCE(SoIntersectionDetectionAction);
 
+/*!
+  \class SoIntersectionDetectionAction Inventor/actions/SoIntersectionDetectionAction.h
+  \brief The SoIntersectionDetectionAction class is for detecting intersecting
+  primitives in a scene.
+  \ingroup actions
+
+  Note that the epsilon setting is not supported and that only intersection
+  testing between triangles are supported yet.
+*/
 
 void
 SoIntersectionDetectionAction::initClass(void)
@@ -120,6 +163,10 @@ SoIntersectionDetectionAction::~SoIntersectionDetectionAction(void)
   Sets the global intersection detection distance epsilon value.
   This will affect all intersection detection action objects in use that
   don't have a locally set value.
+
+  The epsilon value is a worldspace value.
+
+  Epsilon is not supported yet.
 */
 
 void
@@ -129,7 +176,7 @@ SoIntersectionDetectionAction::setIntersectionEpsilon(float epsilon) // static
 }
 
 /*!
-  Returns the global intersection detection distance epsilon value.
+  Returns the globally set intersection detection distance epsilon value.
 */
 
 float
@@ -141,6 +188,10 @@ SoIntersectionDetectionAction::getIntersectionEpsilon(void) // static
 /*!
   Sets the intersection detection distance epsilon value for the action object.
   This overrides the global value.
+
+  The epsilon value is a worldspace value.
+
+  Epsilon is not supported yet.
 */
 
 void
@@ -151,7 +202,7 @@ SoIntersectionDetectionAction::setIntersectionDetectionEpsilon(float epsilon)
 }
 
 /*!
-  Returns the intersection detection distance epsilon value for the action object.
+  Returns the set intersection detection distance epsilon value for the action object.
 */
 
 float
@@ -159,6 +210,13 @@ SoIntersectionDetectionAction::getIntersectionDetectionEpsilon(void) const
 {
   return PRIVATE(this)->getEpsilon();
 }
+
+/*!
+  Sets whether nodes of specific types (including derived objects) should be tested
+  for intersection or not.
+
+  \sa isTypeEnabled(), setManipsEnabled(), setDraggersEnabled()
+*/
 
 void
 SoIntersectionDetectionAction::setTypeEnabled(SoType type, SbBool enable)
@@ -171,10 +229,24 @@ SoIntersectionDetectionAction::setTypeEnabled(SoType type, SbBool enable)
   }
 }
 
+/*!
+  Returns whether nodes of specific types are enabled or not.  The \a checkgroups
+  argument can be set to TRUE if you wan't the return value to reflect whether
+  the node will be implicit enabled/disabled through the settings controlled by the
+  setManipsEnabled() and setDraggersEnabled() functions.
+
+  The default is that all node types are enabled.
+
+  Note that derivation checks are not performed - the type needs to be the exact
+  same type as has been disabled with setTypeEnabled()
+
+  \sa setTypeEnabled()
+*/
+
 SbBool
 SoIntersectionDetectionAction::isTypeEnabled(SoType type, SbBool checkgroups) const
 {
-  if ( PRIVATE(this)->prunetypes->find(type) ) return FALSE;
+  if ( PRIVATE(this)->prunetypes->find(type) != -1 ) return FALSE;
   if ( checkgroups ) {
     // is type a dragger?
     if ( !PRIVATE(this)->draggersenabled &&
@@ -191,11 +263,34 @@ SoIntersectionDetectionAction::isTypeEnabled(SoType type, SbBool checkgroups) co
   return TRUE;
 }
 
+/*!
+  Sets whether manipulators in the scene graph should be tested for intersection
+  with other geometry or not.
+  
+  Note that when draggers are disabled with setDraggersEnabled(), this setting
+  has no effect - manipulators are disabled too.
+
+  \sa isManipsEnabled(), setDraggersEnabled(), setTypeEnabled()
+*/
+
 void
 SoIntersectionDetectionAction::setManipsEnabled(SbBool enable)
 {
   PRIVATE(this)->manipsenabled = enable;
 }
+
+/*!
+  Returns whether the actions is set up to test intersection on manipulators
+  in the scene or not.
+
+  Note that when draggers are disabled with setDraggersEnabled(), this setting
+  has no effect - manipulators are disabled too.
+
+  The default is that manipulators are enabled for intersection testing with
+  other geometry in the scene.
+
+  \sa setManipsEnabled()
+*/
 
 SbBool
 SoIntersectionDetectionAction::isManipsEnabled(void) const
@@ -203,17 +298,75 @@ SoIntersectionDetectionAction::isManipsEnabled(void) const
   return PRIVATE(this)->manipsenabled;
 }
 
+/*!
+  Sets whether draggers in the scene graph should be tested for intersection
+  with other geometry or not.
+
+  Note that when you disable draggers, manipulators are also automatically
+  disabled, although the isManipsDisabled() setting might reflect otherwise.
+
+  \sa isDraggersEnabled(), setManipsEnabled(), setTypeEnabled()
+*/
+
 void
 SoIntersectionDetectionAction::setDraggersEnabled(SbBool enable)
 {
   PRIVATE(this)->draggersenabled = enable;
 }
 
+/*!
+  Returns whether the actions is set up to test intersection on draggers
+  in the scene or not.
+
+  The default is that draggers are enabled for intersection testing with
+  other geometry in the scene.
+
+  \sa setDraggersEnabled()
+*/
+
 SbBool
 SoIntersectionDetectionAction::isDraggersEnabled(void) const
 {
   return PRIVATE(this)->draggersenabled;
 }
+
+/*!
+  Sets whether nodes in the scene graph should be checked for intersecting
+  primitives within themselves.
+
+  This setting is not supported yet.
+
+  \sa isShapeInternalsEnabled()
+*/
+
+void
+SoIntersectionDetectionAction::setShapeInternalsEnabled(SbBool enable)
+{
+  PRIVATE(this)->internalsenabled = enable;
+}
+
+/*!
+  Returns whether nodes in the scene graph will be checked for
+  intersecting primitives within themselves.
+
+  The default value for this setting is FALSE.
+
+  \sa setShapeInternalsEnabled()
+*/
+
+SbBool
+SoIntersectionDetectionAction::isShapeInternalsEnabled(void) const
+{
+  return PRIVATE(this)->internalsenabled;
+}
+
+/*!
+  The scene graph traversal can be controlled with callbacks which
+  you set with this method.  Use just like you would use
+  SoCallbackAction::addPreCallback().
+
+  \sa SoCallbackAction::addPreCallback()
+*/
 
 void
 SoIntersectionDetectionAction::addVisitationCallback(SoType type, SoIntersectionVisitationCB * cb, void * closure)
@@ -222,6 +375,14 @@ SoIntersectionDetectionAction::addVisitationCallback(SoType type, SoIntersection
   PRIVATE(this)->traversalcallbacks->append((void *) cb);
   PRIVATE(this)->traversalcallbacks->append(closure);
 }
+
+/*!
+  The scene graph traversal can be controlled with callbacks which
+  you remove with this method.  Use just like you would use
+  SoCallbackAction::removePreCallback().
+ 
+  \sa SoCallbackAction::removePreCallback()
+*/
 
 void
 SoIntersectionDetectionAction::removeVisitationCallback(SoType type, SoIntersectionVisitationCB * cb, void * closure)
@@ -247,9 +408,15 @@ SoIntersectionDetectionAction::removeVisitationCallback(SoType type, SoIntersect
   This callback is called when two shapes are found to have intersecting
   bounding boxes, and are about to be checked for real intersection between
   their primitives.
-  
+
+  When intersection epsilon values are in use, bounding box intersection
+  testing is done approximately and will trigger the filter callback on
+  boxes that are further from each other than the epsilon length.
+
   If the callback returns TRUE, the intersection test will be performed.
   If the callback returns FALSE, the intersection testing will be skipped.
+
+  The API allows only one filter callback.
 */
 
 void
@@ -259,12 +426,31 @@ SoIntersectionDetectionAction::setFilterCallback(SoIntersectionFilterCB * cb, vo
   PRIVATE(this)->filterclosure = closure;
 }
 
+/*!
+  Adds a callback to be called when two intersecting primitives are found in
+  the scene.
+
+  If the callback returns ABORT, the intersection detection is aborted.  If
+  the callback returns NEXT_SHAPE, the intersection detection between these
+  two shapes are aborted and the action continues checking other shapes.
+  If the callback returns NEXT_PRIMITIVE, the intersection detection testing
+  continues checking the other primitives in these two shapes.
+
+  \sa removeIntersectionCallback()
+*/
+
 void
 SoIntersectionDetectionAction::addIntersectionCallback(SoIntersectionCB * cb, void * closure)
 {
   PRIVATE(this)->callbacks->append((void *) cb);
   PRIVATE(this)->callbacks->append(closure);
 }
+
+/*!
+  Removes a callback set with addIntersectionCallback().
+
+  \sa addIntersectionCallback()
+*/
 
 void
 SoIntersectionDetectionAction::removeIntersectionCallback(SoIntersectionCB * cb, void * closure)
@@ -312,6 +498,55 @@ struct ShapeData {
   SbXfBox3f bbox;
 };
 
+struct PrimitiveData {
+  SbPList * triangles;
+  SoPath * path;
+  SbMatrix transform;
+  SbMatrix invtransform;
+};
+
+void
+SoIntersectionDetectionActionP::triangleCB(void * closure, SoCallbackAction * action, const SoPrimitiveVertex * v1, const SoPrimitiveVertex * v2, const SoPrimitiveVertex * v3)
+{
+  PrimitiveData * primitives = (PrimitiveData *) closure;
+  const SbVec3f & oa =  v1->getPoint();
+  const SbVec3f & ob =  v2->getPoint();
+  const SbVec3f & oc =  v3->getPoint();
+  SbVec3f wa, wb, wc;
+  primitives->transform.multVecMatrix(oa, wa);
+  primitives->transform.multVecMatrix(ob, wb);
+  primitives->transform.multVecMatrix(oc, wc);
+  SbTri3f * triangle = new SbTri3f(wa, wb, wc);
+  primitives->triangles->append(triangle);
+}
+
+PrimitiveData *
+SoIntersectionDetectionActionP::generatePrimitives(ShapeData * shape)
+{
+  PrimitiveData * primitives = new PrimitiveData;
+  primitives->triangles = new SbPList;
+  primitives->path = shape->path;
+  primitives->transform = shape->bbox.getTransform();
+  primitives->invtransform = primitives->transform.inverse();
+  SoCallbackAction generator;
+  generator.addTriangleCallback(SoShape::getClassTypeId(), triangleCB, primitives);
+  generator.apply(shape->path);
+  return primitives;
+}
+
+void
+SoIntersectionDetectionActionP::deletePrimitives(PrimitiveData * primitives)
+{
+  if ( !primitives ) return;
+  int i;
+  for ( i = 0; i < primitives->triangles->getLength(); i++ ) {
+    SbTri3f * triangle = (SbTri3f *) (*(primitives->triangles))[i];
+    delete triangle;
+  }
+  delete primitives->triangles;
+  delete primitives;
+}
+
 SoCallbackAction::Response
 SoIntersectionDetectionActionP::shape(SoCallbackAction * action, SoShape * shape)
 {
@@ -342,8 +577,8 @@ SoIntersectionDetectionActionP::traverse(SoCallbackAction * action, const SoNode
   for ( i = 0; i < this->traversaltypes->getLength(); i++ ) {
     if ( node->getTypeId().isDerivedFrom((*(this->traversaltypes))[i]) ) {
       SoIntersectionDetectionAction::SoIntersectionVisitationCB * cb =
-	(SoIntersectionDetectionAction::SoIntersectionVisitationCB *)
-	(*(this->traversalcallbacks))[i*2];
+        (SoIntersectionDetectionAction::SoIntersectionVisitationCB *)
+        (*(this->traversalcallbacks))[i*2];
       SoCallbackAction::Response response = cb((*(this->traversalcallbacks))[i*2+1], curpath);
       if ( response != SoCallbackAction::CONTINUE ) return response;
     }
@@ -409,32 +644,92 @@ SoIntersectionDetectionActionP::reset(void)
 void
 SoIntersectionDetectionActionP::doIntersectionTesting(void)
 {
+  if ( this->callbacks->getLength() == 0 ) return;
   const float epsilon = this->getEpsilon();
   delete this->traverser;
   this->traverser = NULL;
-  fprintf(stderr, "checking bbox intersection between %d shapes\n", this->shapedata->getLength());
   int i, j;
   for ( i = 0; i < this->shapedata->getLength(); i++ ) {
+    ShapeData * shape1 = (ShapeData *) (*(this->shapedata))[i];
+    PrimitiveData * primitives1 = NULL;
     for ( j = i + 1; j < this->shapedata->getLength(); j++ ) {
-      ShapeData * shape1 = (ShapeData *) (*(this->shapedata))[i];
       ShapeData * shape2 = (ShapeData *) (*(this->shapedata))[j];
       // support for negative epsilons can be added here
-      if ( shape1->bbox.intersect(shape2->bbox) ) {
-        if ( this->filtercb != NULL ) {
-	  if ( this->filtercb(this->filterclosure, shape1->path, shape2->path) ) {
-	    // shapely testing
-	    // fprintf(stderr, "intersection\n");
-          }
-	}
-      } else
+      // note that if support is added for this, negative bounding box volumes must be filtered
+      /*
       if ( epsilon > 0.0f ) {
-	SbVec3f border(epsilon, epsilon, epsilon);
-	SbBox3f shape2box(shape2->bbox);
-	shape2->bbox.getTransform().multVecMatrix(border, border); // move border to object space
-	shape2box.getMin() -= border;
-	shape2box.getMax() += border;
-        SbXfBox3f shape2xfbox(shape2box);
-        shape2xfbox.setTransform(shape2->bbox.getTransform());
+        SbVec3f epsilonvec(epsilon, epsilon, epsilon);
+        SbBox3f shape2box(shape2->bbox);
+        shape2->bbox.getTransform().multDirMatrix(epsilonvec, epsilonvec); // move epsilon to object space
+        float localepsilon = epsilonvec.length(); // yes, it's a bit large...
+        shape2box.getMin() -= SbVec3f(localepsilon, localepsilon, localepsilon);
+        shape2box.getMax() += SbVec3f(localepsilon, localepsilon, localepsilon);
+        SbXfBox3f shape2xfbbox(shape2box);
+        shape2xfbbox.setTransform(shape2->bbox.getTransform());
+        if ( shape1->bbox.intersect(shape2xfbbox) ) {
+          if ( !this->filtercb || this->filtercb(this->filterclosure, shape1->path, shape2->path) ) {
+            fprintf(stderr, "FIXME: primitive testing\n");
+            // do primitive testing
+          }
+        }
+      }
+      else
+      */
+      if ( shape1->bbox.intersect(shape2->bbox) ) {
+        if ( !this->filtercb || this->filtercb(this->filterclosure, shape1->path, shape2->path) ) {
+          if ( primitives1 == NULL ) primitives1 = SoIntersectionDetectionActionP::generatePrimitives(shape1);
+          PrimitiveData * primitives2 = SoIntersectionDetectionActionP::generatePrimitives(shape2);
+          SbBool cont = this->doPrimitiveIntersectionTesting(primitives1, primitives2);
+          SoIntersectionDetectionActionP::deletePrimitives(primitives2);
+          if ( !cont ) {
+	    SoIntersectionDetectionActionP::deletePrimitives(primitives1);
+            return;
+          }
+        }
+      }
+    }
+    SoIntersectionDetectionActionP::deletePrimitives(primitives1);
+  }
+}
+
+SbBool
+SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * primitives1, PrimitiveData * primitives2)
+{
+  int i, j;
+  for ( i = 0; i < primitives1->triangles->getLength(); i++ ) {
+    SbTri3f * t1 = (SbTri3f *) (*(primitives1->triangles))[i];
+    for ( j = 0; j < primitives2->triangles->getLength(); j++ ) {
+      SbTri3f * t2 = (SbTri3f *) (*(primitives2->triangles))[j];
+      if ( t1->intersect(*t2) ) {
+        SoIntersectingPrimitive p1;
+        p1.path = primitives1->path;
+        p1.type = SoIntersectingPrimitive::TRIANGLE;
+        t1->getValue(p1.xf_vertex[0], p1.xf_vertex[1], p1.xf_vertex[2]);
+        primitives1->invtransform.multVecMatrix(p1.xf_vertex[0], p1.vertex[0]);
+        primitives1->invtransform.multVecMatrix(p1.xf_vertex[1], p1.vertex[1]);
+        primitives1->invtransform.multVecMatrix(p1.xf_vertex[2], p1.vertex[2]);
+        SoIntersectingPrimitive p2;
+        p2.path = primitives2->path;
+        p2.type = SoIntersectingPrimitive::TRIANGLE;
+        t2->getValue(p2.xf_vertex[0], p2.xf_vertex[1], p2.xf_vertex[2]);
+        primitives2->invtransform.multVecMatrix(p2.xf_vertex[0], p2.vertex[0]);
+        primitives2->invtransform.multVecMatrix(p2.xf_vertex[1], p2.vertex[1]);
+        primitives2->invtransform.multVecMatrix(p2.xf_vertex[2], p2.vertex[2]);
+	int c;
+        for ( c = 0; c < this->callbacks->getLength(); c += 2 ) {
+          SoIntersectionDetectionAction::SoIntersectionCB * cb =
+            (SoIntersectionDetectionAction::SoIntersectionCB *) (*(this->callbacks))[c];
+          switch ( cb((*(this->callbacks))[c+1], &p1, &p2) ) {
+          case SoIntersectionDetectionAction::NEXT_PRIMITIVE:
+            break;
+          case SoIntersectionDetectionAction::NEXT_SHAPE:
+            return TRUE;
+          case SoIntersectionDetectionAction::ABORT:
+            return FALSE;
+	  default:
+	    assert(0);
+          }
+        }
       }
     }
   }
