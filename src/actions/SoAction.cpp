@@ -51,6 +51,10 @@
 
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 // *************************************************************************
 
 SoEnabledElementsList * SoAction::enabledElements = NULL;
@@ -211,7 +215,14 @@ SoAction::apply(SoNode * root)
   this->currentpathcode = SoAction::NO_PATH;
   this->applieddata.node = root;
   this->appliedcode = SoAction::NODE;
+
   if (root) {
+#if COIN_DEBUG
+    if (root->getRefCount() == 0) {
+      SoDebugError::postWarning("SoAction::apply",
+                                "root node has reference count equal to zero");
+    }
+#endif // COIN_DEBUG
     // So the graph is not deallocated during traversal.
     root->ref();
     // make sure state is created before traversing
@@ -235,6 +246,13 @@ SoAction::apply(SoPath * path)
   assert(this->traversalMethods);
   this->traversalMethods->setUp();
   this->terminated = FALSE;
+
+#if COIN_DEBUG
+  if (path->getRefCount() == 0) {
+    SoDebugError::postWarning("SoAction::apply",
+                              "path has reference count equal to zero");
+  }
+#endif // COIN_DEBUG
 
   // So the path is not deallocated during traversal.
   path->ref();
