@@ -24,7 +24,6 @@
 #error "Do not include SbCompose.h internally."
 #endif // COIN_INTERNAL
 
-#define COIN_INCLUDED_FROM_SOCOMPOSE_H
 #include <Inventor/engines/SoComposeVec2f.h>
 #include <Inventor/engines/SoComposeVec3f.h>
 #include <Inventor/engines/SoComposeVec4f.h>
@@ -35,6 +34,6 @@
 #include <Inventor/engines/SoDecomposeRotation.h>
 #include <Inventor/engines/SoComposeMatrix.h>
 #include <Inventor/engines/SoDecomposeMatrix.h>
-#undef  COIN_INCLUDED_FROM_SOCOMPOSE_H
+#include <Inventor/engines/SoComposeRotationFromTo.h>
 
 #endif // !COIN_SOCOMPOSE_H
