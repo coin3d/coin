@@ -225,24 +225,29 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   this->setUpGlyphs(action->getState());
 
-  // FIXME: the below calculations are just very crude
-  // approximations. This is bugzilla #104. 20000707 mortene.
-
   float size = SoFontSizeElement::get(action->getState());
   int i, n = this->string.getNum();
-  if (n == 0) {
+  if (n == 0 || this->glyphs.getLength() == 0) {
     center = SbVec3f(0.0f, 0.0f, 0.0f);
     box.setBounds(center, center);
     return;
   }
+
   float maxw = this->getWidth(0, size);
   for (i = 1; i < n; i++) {
     float tmp = this->getWidth(i, size);
     if (tmp > maxw) maxw = tmp;
   }
 
-  float maxy = size * 0.7f; // this is an approximation
-  float miny = maxy - (size + (n-1) * size * this->spacing.getValue());
+  SbBox2f maxbox;
+  int numglyphs = this->glyphs.getLength();
+  for (i = 0; i < numglyphs; i++) {
+    maxbox.extendBy(this->glyphs[i]->getBoundingBox());
+  }
+  float maxglyphsize = maxbox.getMax()[1] - maxbox.getMin()[1];
+
+  float maxy = size * maxbox.getMax()[1];
+  float miny = maxy - (maxglyphsize*size + (n-1) * size * this->spacing.getValue());
 
   float minx, maxx;
   switch (this->justification.getValue()) {
