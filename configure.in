@@ -1024,55 +1024,83 @@ AC_OUTPUT
 # *******************************************************************
 
 if $sim_ac_build_library; then
-  ac_coin_unknown_platform=yes
+  ac_coin_untested_platform=true
+  ac_coin_not_sim_platform=true
 else
-  ac_coin_unknown_platform=no
+  ac_coin_untested_platform=false
+  ac_coin_not_sim_platform=false
 fi
 
 case "$host_os" in
   irix6.2)
-    if test "$CXX" = CC; then ac_coin_unknown_platform=no; fi
+    case $CXX in
+    CC | */CC ) ac_coin_untested_platform=false ;;
+    esac
     ;;
   irix6.5)
-    if test "$CXX" = CC; then ac_coin_unknown_platform=no; fi
+    case $CXX in
+    CC | */CC )
+      ac_coin_untested_platform=false
+      ac_coin_not_sim_platform=false
+      ;;
+    esac
     ;;
   aix*)
-    if test "$CXX" = xlC; then ac_coin_unknown_platform=no; fi
+    case $CXX in
+    xlC | */xlC ) ac_coin_untested_platform=false ;;
+    esac
     ;;
   hpux10.20)
-    if test "$CXX" = aCC; then ac_coin_unknown_platform=no; fi
+    case $CXX in
+    aCC | */aCC ) ac_coin_untested_platform=false ;;
+    esac
     ;;
   linux-gnu)
     case "$host_cpu" in
-      i?86)
-        ac_coin_unknown_platform=no ;;
+    i?86)
+      ac_coin_untested_platform=false
+      ac_coin_not_sim_platform=false
+    ;;
     esac
     ;;
   cygwin*)
     case "$CXX" in
-      *msvccc) ac_coin_unknown_platform=no ;;
-      *wrapmsvc*) ac_coin_unknown_platform=no ;;
+    *wrapmsvc*)
+      ac_coin_untested_platform=false
+      ac_coin_not_sim_platform=false
+    ;;
     esac
+    ;;
+  darwin*)
+    if test "$CXX" = c++; then ac_coin_unknown_platform=false; fi
     ;;
   beos)
     case "$host_cpu" in
       i?86)
-        if test "$CXX" = c++; then ac_coin_unknown_platform=no; fi
+        if test "$CXX" = c++; then ac_coin_untested_platform=false; fi
         ;;
     esac
     ;;
 esac
 
-if test $ac_coin_unknown_platform = yes; then
+if $ac_coin_untested_platform; then
   echo
   echo "************************* WARNING ****************************"
   echo "*"
   echo "* We have not tested Coin on the $host_os $host_cpu"
   echo "* platform with the $CXX C++ compiler. Please report"
-  echo "* back to us at <coin-support@sim.no> how it works out."
+  echo "* back to us at <coin-support@coin3d.org> how it works out."
   echo "*"
   echo "**************************************************************"
   echo
+else
+  if $ac_coin_not_sim_platform; then
+    echo
+    echo "NOTE: This platform ($host_os $host_cpu with the $CXX C++ compiler)"
+    echo "      is not among our internal development systems. Please let us"
+    echo "      know at <coin-support@coin3d.org> if you run into any problems."
+    echo
+  fi
 fi
 
 if $sim_ac_build_library; then
