@@ -25,6 +25,7 @@
 #define COIN_SBIMAGE_H
 
 #include <Inventor/SbVec2s.h>
+#include <Inventor/SbVec3s.h>
 #include <Inventor/SbString.h>
 #include <stddef.h> // for NULL
 
@@ -37,13 +38,21 @@ public:
   SbImage(void);
   SbImage(const unsigned char * bytes,
           const SbVec2s & size, const int bytesperpixel);
-  ~SbImage(void);
+  SbImage(const unsigned char * bytes,
+          const SbVec3s & size, const int bytesperpixel);
+  ~SbImage();
 
   void setValue(const SbVec2s & size, const int bytesperpixel,
                 const unsigned char * bytes);
+  void setValue(const SbVec3s & size, const int bytesperpixel,
+                const unsigned char * bytes);
   void setValuePtr(const SbVec2s & size, const int bytesperpixel,
                    const unsigned char * bytes);
+  void setValuePtr(const SbVec3s & size, const int bytesperpixel,
+                   const unsigned char * bytes);
   unsigned char * getValue(SbVec2s & size, int & bytesperpixel) const;
+  unsigned char * getValue(SbVec3s & size, int & bytesperpixel) const;
+  SbVec3s getSize(void) const;
 
   SbBool readFile(const SbString & filename,
                   const SbString * const * searchdirectories = NULL,

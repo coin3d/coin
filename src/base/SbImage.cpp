@@ -23,7 +23,7 @@
 
 /*!
   \class SbImage SbImage.h Inventor/SbImage.h
-  \brief The SbImage class is an abstract datatype for 2D images.
+  \brief The SbImage class is an abstract datatype for 2D and 3D images.
   \ingroup base
 
   This class is a Coin extension to the original Open Inventor API.
@@ -34,9 +34,9 @@
 // and for different contexts. The API should stay the same though.
 // 20001026 mortene (original comment by pederb).
 
-
 #include <Inventor/SbImage.h>
 #include <Inventor/SbVec2s.h>
+#include <Inventor/SbVec3s.h>
 #include <Inventor/SbString.h>
 #include <string.h>
 #include <stdlib.h>
@@ -63,7 +63,7 @@ public:
   SbImageP(void)
     : bytes(NULL),
       didalloc(FALSE),
-      size(0,0),
+      size(0,0,0),
       bpp(0),
       schedulecb(NULL)
 #ifdef HAVE_THREADS
@@ -72,7 +72,7 @@ public:
   { }
   unsigned char * bytes;
   SbBool didalloc;
-  SbVec2s size;
+  SbVec3s size;
   int bpp;
   SbString schedulename;
   SbImageScheduleReadCB * schedulecb;
@@ -110,9 +110,6 @@ public:
 
 //////////////////////////////////////////////////////////////////////////
 
-
-// FIXME HACK: We use bytes to store the SbImageP pointer to avoid
-// breaking the ABI compatibility. pederb, 2001-11-06
 #undef THIS
 #define THIS (this->pimpl)
 #define PRIVATE(image) ((image)->pimpl)
@@ -126,11 +123,24 @@ SbImage::SbImage(void)
 }
 
 /*!
-  Constructor which sets the data using setValue().
+  Constructor which sets 2D data using setValue().
   \sa setValue()
 */
 SbImage::SbImage(const unsigned char * bytes,
                  const SbVec2s & size, const int bytesperpixel)
+{
+  THIS = new SbImageP;
+  this->setValue(size, bytesperpixel, bytes);
+}
+
+/*!
+  Constructor which sets 3D data using setValue().
+  \sa setValue()
+
+  \since 2001-11-19
+*/
+SbImage::SbImage(const unsigned char * bytes,
+                 const SbVec3s & size, const int bytesperpixel)
 {
   THIS = new SbImageP;
   this->setValue(size, bytesperpixel, bytes);
@@ -180,9 +190,7 @@ SbImage::readUnlock(void) const
 }
 
 /*!
-  Sets the image data without copying the data. \a bytes will be used
-  directly, and the data will not be freed when the image instance is
-  destructed.
+  Convenience 2D version of setValuePtr.
 
   \sa setValue()
 
@@ -190,6 +198,26 @@ SbImage::readUnlock(void) const
 */
 void
 SbImage::setValuePtr(const SbVec2s & size, const int bytesperpixel,
+                     const unsigned char * bytes)
+{
+  SbVec3s tmpsize(size[0], size[1], 0);
+  this->setValuePtr(tmpsize, bytesperpixel, bytes);
+}
+
+/*!
+  Sets the image data without copying the data. \a bytes will be used
+  directly, and the data will not be freed when the image instance is
+  destructed.
+
+  If the depth of the image (size[2]) is zero, the image is considered
+  a 2D image.
+
+  \sa setValue()
+
+  \since 2001-11-19
+*/
+void
+SbImage::setValuePtr(const SbVec3s & size, const int bytesperpixel,
                      const unsigned char * bytes)
 {
   THIS->writeLock();
@@ -204,18 +232,34 @@ SbImage::setValuePtr(const SbVec2s & size, const int bytesperpixel,
 }
 
 /*!
+  Convenience 2D version of setValue.
+*/
+void
+SbImage::setValue(const SbVec2s & size, const int bytesperpixel,
+                  const unsigned char * bytes)
+{
+  SbVec3s tmpsize(size[0], size[1], 0);
+  this->setValue(tmpsize, bytesperpixel, bytes);
+}
+
+/*!
   Sets the image to \a size and \a bytesperpixel. If \a bytes !=
   NULL, data is copied from \a bytes into this class' image data. If
   \a bytes == NULL, the image data is left uninitialized.
 
   The image data will always be allocated in multiples of four. This
-  means that if you set an image with size == (1,1) and bytesperpixel
+  means that if you set an image with size == (1,1,1) and bytesperpixel
   == 1, four bytes will be allocated to hold the data. This is mainly
   done to simplify the export code in SoSFImage and normally you'll
   not have to worry about this feature.
+
+  If the depth of the image (size[2]) is zero, the image is considered
+  a 2D image.
+
+  \since 2001-11-19
 */
 void
-SbImage::setValue(const SbVec2s & size, const int bytesperpixel,
+SbImage::setValue(const SbVec3s & size, const int bytesperpixel,
                   const unsigned char * bytes)
 {
   THIS->writeLock();
@@ -224,7 +268,9 @@ SbImage::setValue(const SbVec2s & size, const int bytesperpixel,
   if (THIS->bytes && THIS->didalloc) {
     // check for special case where we don't have to reallocate
     if (bytes && (size == THIS->size) && (bytesperpixel == THIS->bpp)) {
-      memcpy(THIS->bytes, bytes, int(size[0])*int(size[1])*bytesperpixel);
+      memcpy(THIS->bytes, bytes, 
+             int(size[0]) * int(size[1]) * int(size[2]==0?1:size[2]) *
+             bytesperpixel);
       THIS->writeUnlock();
       return;
     }
@@ -233,7 +279,8 @@ SbImage::setValue(const SbVec2s & size, const int bytesperpixel,
   THIS->bytes = NULL;
   THIS->size = size;
   THIS->bpp = bytesperpixel;
-  int buffersize = int(size[0]) * int(size[1]) * bytesperpixel;
+  int buffersize = int(size[0]) * int(size[1]) * int(size[2]==0?1:size[2]) * 
+    bytesperpixel;
   if (buffersize) {
     // Align buffers because the binary file format has the data aligned
     // (simplifies export code in SoSFImage).
@@ -244,23 +291,39 @@ SbImage::setValue(const SbVec2s & size, const int bytesperpixel,
     if (bytes) {
       // Important: don't copy buffersize num bytes here!
       (void)memcpy(THIS->bytes, bytes,
-                   int(size[0]) * int(size[1]) * bytesperpixel);
+                   int(size[0]) * int(size[1]) * int(size[2]==0?1:size[2]) * 
+                   bytesperpixel);
     }
   }
   THIS->writeUnlock();
 }
 
 /*!
-  Returns the image data.
+  Returns the 2D image data.
 */
 unsigned char *
 SbImage::getValue(SbVec2s & size, int & bytesperpixel) const
+{
+  SbVec3s tmpsize;
+  unsigned char *bytes = this->getValue(tmpsize, bytesperpixel);
+  size.setValue(tmpsize[0], tmpsize[1]);
+  return bytes;
+}
+
+/*!
+  Returns the 3D image data.
+
+  \since 2001-11-19
+*/
+unsigned char *
+SbImage::getValue(SbVec3s & size, int & bytesperpixel) const
 {
   THIS->readLock();
   if (THIS->schedulecb) {
     SbImage * thisp = (SbImage*) this;
     // start a thread to read the image.
-    SbBool scheduled = THIS->schedulecb(THIS->schedulename, thisp, THIS->scheduleclosure);
+    SbBool scheduled = THIS->schedulecb(THIS->schedulename, thisp, 
+                                        THIS->scheduleclosure);
     if (scheduled) {
       THIS->schedulecb = NULL;
     }
@@ -325,6 +388,7 @@ SbImage::readFile(const SbString & filename,
                   const SbString * const * searchdirectories,
                   const int numdirectories)
 {
+  // FIXME: Add 3D image support when that is added to simage (kintel 20011118)
   SbString finalname = SbImage::searchForFile(filename, searchdirectories,
                                               numdirectories);
   if (finalname.getLength()) {
@@ -332,7 +396,8 @@ SbImage::readFile(const SbString & filename,
     unsigned char * simagedata = NULL;
 
     if (simage_wrapper()->available && simage_wrapper()->simage_read_image) {
-      simagedata = simage_wrapper()->simage_read_image(finalname.getString(), &w, &h, &nc);
+      simagedata = simage_wrapper()->simage_read_image(finalname.getString(), 
+                                                       &w, &h, &nc);
 #if COIN_DEBUG
       if (!simagedata) {
         SoDebugError::post("SbImage::readFile", "(%s) %s",
@@ -345,7 +410,8 @@ SbImage::readFile(const SbString & filename,
     }
 
     if (simagedata) {
-      this->setValue(SbVec2s((short)w, (short)h), nc, simagedata);
+      //FIXME: Add 3'rd dimension (kintel 20011110)
+      this->setValue(SbVec3s((short)w, (short)h, (short)0), nc, simagedata);
       if (simage_wrapper()->simage_free_image) {
         simage_wrapper()->simage_free_image(simagedata);
       }
@@ -359,7 +425,7 @@ SbImage::readFile(const SbString & filename,
     }
   }
 
-  this->setValue(SbVec2s(0,0), 0, NULL);
+  this->setValue(SbVec3s(0,0,0), 0, NULL);
   return FALSE;
 }
 
@@ -386,7 +452,10 @@ SbImage::operator==(const SbImage & image) const
       return (THIS->bytes == PRIVATE(&image)->bytes);
     }
     SbBool ret = memcmp(THIS->bytes, PRIVATE(&image)->bytes,
-                        int(THIS->size[0])*int(THIS->size[1])*THIS->bpp) == 0;
+                        int(THIS->size[0]) *
+                        int(THIS->size[1]) *
+                        int(THIS->size[2]==0?1:THIS->size[2]) * 
+                        THIS->bpp) == 0;
   }
   this->readUnlock();
   return ret;
@@ -399,7 +468,7 @@ SbImage::operator==(const SbImage & image) const
   callback, as this will lock up the application.
 
   \sa readFile()
-  \since 2001-11-xx
+  \since 2001-11-07
 */
 SbBool
 SbImage::scheduleReadFile(SbImageScheduleReadCB * cb,
@@ -408,7 +477,7 @@ SbImage::scheduleReadFile(SbImageScheduleReadCB * cb,
                           const SbString * const * searchdirectories,
                           const int numdirectories)
 {
-  this->setValue(SbVec2s(0,0), 0, NULL);
+  this->setValue(SbVec3s(0,0,0), 0, NULL);
   THIS->writeLock();
   THIS->schedulecb = NULL;
   THIS->schedulename =
@@ -439,6 +508,18 @@ SbImage::hasData(void) const
   return ret;
 }
 
+/*!
+  Returns the size of the image. If this is a 2D image, the
+  z component is zero. If this is a 3D image, the z component is
+  >= 1.
+
+  \since 2001-11-19
+ */
+SbVec3s
+SbImage::getSize(void) const
+{
+  return THIS->size;
+}
 
 #undef THIS
 #undef PRIVATE
