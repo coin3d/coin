@@ -312,11 +312,10 @@ SoInteractionKit::readDefaultParts(const char *fileName,
   SbBool foundsrc = FALSE;
   SoInput input;
 
-  if (fileName) {
-    char * draggerdir = getenv("SO_DRAGGER_DIR");
+  char * draggerdir = getenv("SO_DRAGGER_DIR");
 
-    if (input.openFile(fileName, TRUE)) foundsrc = TRUE;
-    else if (draggerdir) {
+  if (fileName) {
+    if (draggerdir) {
       SbString fullname = draggerdir;
       // FIXME: use configure to check this. 20000129 mortene.
 #ifdef _WIN32
@@ -331,6 +330,7 @@ SoInteractionKit::readDefaultParts(const char *fileName,
       fullname += fileName;
       if (input.openFile(fullname.getString(), TRUE)) foundsrc = TRUE;
     }
+    else if (input.openFile(fileName, TRUE)) foundsrc = TRUE;
   }
 
   if (!foundsrc && defaultBuffer) {
@@ -342,8 +342,10 @@ SoInteractionKit::readDefaultParts(const char *fileName,
 #if COIN_DEBUG
     SoDebugError::post("SoInteractionKit::readDefaultParts",
                        "Could not find %s for the dragger "
-                       "default parts. Have you forgotten to set the "
-                       "SO_DRAGGER_DIR environment variable?", fileName);
+                       "default parts.%s",
+                       fileName,
+                       draggerdir ? "" :
+                       " (SO_DRAGGER_DIR environment variable is not set.)");
     exit(1);
 #endif // COIN_DEBUG
     return;
