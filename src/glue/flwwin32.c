@@ -433,9 +433,8 @@ cc_flww32_get_bitmap(void * font, int glyph)
   struct cc_flww32_glyph * glyphstruct;
 
   /* See if we can just return the bitmap from cached glyph. */
-  if (glyphstruct = get_glyph_struct(font, glyph)) {
-    return glyphstruct->bitmap;
-  }
+  glyphstruct = get_glyph_struct(font, glyph);
+  if (NULL != glyphstruct) { return glyphstruct->bitmap; }
 
   /* Connect device context to font. */
   previousfont = SelectObject(cc_flww32_globals.devctx, (HFONT)font);
@@ -479,7 +478,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
     goto done;
   }
 
-  assert((ret >= 0) && (ret < 1024*1024) && "bogus buffer size");
+  assert((ret < 1024*1024) && "bogus buffer size");
   size = ret;
 
   /* "size" can be equal to zero, it is for instance known to happen
