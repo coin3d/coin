@@ -311,6 +311,12 @@ cc_string_get_text(const cc_string * me)
   return me->pointer;
 } /* cc_string_get_text() */
 
+void
+cc_string_get_substring(cc_string * me, int start, int end, cc_string * dst)
+{
+  cc_string_set_subtext(dst, me->pointer, start, end);
+} /* cc_string_get_substring() */
+
 /* ********************************************************************** */
 
 int
