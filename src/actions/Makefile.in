@@ -272,7 +272,7 @@ RegularSources = \
 	SoRayPickAction.cpp \
 	SoReorganizeAction.cpp \
 	SoSearchAction.cpp \
-	SoSimplifyAction.cpp \\
+	SoSimplifyAction.cpp \
 	SoToVRMLAction.cpp \
 	SoToVRML2Action.cpp \
 	SoWriteAction.cpp \
@@ -344,7 +344,7 @@ am__actions_lst_SOURCES_DIST = SoAction.cpp \
 	SoGetMatrixAction.cpp SoGetPrimitiveCountAction.cpp \
 	SoHandleEventAction.cpp SoLineHighlightRenderAction.cpp \
 	SoPickAction.cpp SoRayPickAction.cpp SoReorganizeAction.cpp \
-	SoSearchAction.cpp SoSimplifyAction.cpp \ SoToVRMLAction.cpp \
+	SoSearchAction.cpp SoSimplifyAction.cpp SoToVRMLAction.cpp \
 	SoToVRML2Action.cpp SoWriteAction.cpp SoAudioRenderAction.cpp \
 	all-actions-cpp.cpp
 am__objects_1 = all-actions-cpp.$(OBJEXT)
@@ -367,7 +367,7 @@ am__EXTRA_actions_lst_SOURCES_DIST = all-actions-cpp.cpp SoAction.cpp \
 	SoGetMatrixAction.cpp SoGetPrimitiveCountAction.cpp \
 	SoHandleEventAction.cpp SoLineHighlightRenderAction.cpp \
 	SoPickAction.cpp SoRayPickAction.cpp SoReorganizeAction.cpp \
-	SoSearchAction.cpp SoSimplifyAction.cpp \ SoToVRMLAction.cpp \
+	SoSearchAction.cpp SoSimplifyAction.cpp SoToVRMLAction.cpp \
 	SoToVRML2Action.cpp SoWriteAction.cpp SoAudioRenderAction.cpp
 actions_lst_OBJECTS = $(am_actions_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -380,7 +380,7 @@ am__libactions_la_SOURCES_DIST = SoAction.cpp \
 	SoGetMatrixAction.cpp SoGetPrimitiveCountAction.cpp \
 	SoHandleEventAction.cpp SoLineHighlightRenderAction.cpp \
 	SoPickAction.cpp SoRayPickAction.cpp SoReorganizeAction.cpp \
-	SoSearchAction.cpp SoSimplifyAction.cpp \ SoToVRMLAction.cpp \
+	SoSearchAction.cpp SoSimplifyAction.cpp SoToVRMLAction.cpp \
 	SoToVRML2Action.cpp SoWriteAction.cpp SoAudioRenderAction.cpp \
 	all-actions-cpp.cpp
 am__objects_6 = all-actions-cpp.lo
@@ -401,7 +401,7 @@ am__EXTRA_libactions_la_SOURCES_DIST = all-actions-cpp.cpp SoAction.cpp \
 	SoGetMatrixAction.cpp SoGetPrimitiveCountAction.cpp \
 	SoHandleEventAction.cpp SoLineHighlightRenderAction.cpp \
 	SoPickAction.cpp SoRayPickAction.cpp SoReorganizeAction.cpp \
-	SoSearchAction.cpp SoSimplifyAction.cpp \ SoToVRMLAction.cpp \
+	SoSearchAction.cpp SoSimplifyAction.cpp SoToVRMLAction.cpp \
 	SoToVRML2Action.cpp SoWriteAction.cpp SoAudioRenderAction.cpp
 libactions_la_OBJECTS = $(am_libactions_la_OBJECTS)
 libactions@SUFFIX@LINKHACK_la_LDFLAGS =
@@ -412,7 +412,7 @@ am__libactions@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAction.cpp \
 	SoGetMatrixAction.cpp SoGetPrimitiveCountAction.cpp \
 	SoHandleEventAction.cpp SoLineHighlightRenderAction.cpp \
 	SoPickAction.cpp SoRayPickAction.cpp SoReorganizeAction.cpp \
-	SoSearchAction.cpp SoSimplifyAction.cpp \ SoToVRMLAction.cpp \
+	SoSearchAction.cpp SoSimplifyAction.cpp SoToVRMLAction.cpp \
 	SoToVRML2Action.cpp SoWriteAction.cpp SoAudioRenderAction.cpp \
 	all-actions-cpp.cpp
 am_libactions@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
@@ -423,7 +423,7 @@ am__EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoGetPrimitiveCountAction.cpp SoHandleEventAction.cpp \
 	SoLineHighlightRenderAction.cpp SoPickAction.cpp \
 	SoRayPickAction.cpp SoReorganizeAction.cpp SoSearchAction.cpp \
-	SoSimplifyAction.cpp \ SoToVRMLAction.cpp SoToVRML2Action.cpp \
+	SoSimplifyAction.cpp SoToVRMLAction.cpp SoToVRML2Action.cpp \
 	SoWriteAction.cpp SoAudioRenderAction.cpp
 libactions@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libactions@SUFFIX@LINKHACK_la_OBJECTS)

@@ -19,7 +19,7 @@ RegularSources = \
 	SoRayPickAction.cpp \
 	SoReorganizeAction.cpp \
 	SoSearchAction.cpp \
-	SoSimplifyAction.cpp \\
+	SoSimplifyAction.cpp \
 	SoToVRMLAction.cpp \
 	SoToVRML2Action.cpp \
 	SoWriteAction.cpp \
