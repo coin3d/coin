@@ -443,12 +443,13 @@ SoMField::setNum(const int num)
 void
 SoMField::deleteValues(int start, int num)
 {
-  if (num == -1) num = this->getNum() - start;
+  int oldnum = this->getNum();
+  if (num == -1) num = oldnum - start;
   if (num == 0) return;
   int end = start + num; // First element behind the delete block.
 
 #if COIN_DEBUG
-  if (start < 0 || start >= this->getNum() || end > this->getNum() || num < -1) {
+  if (start < 0 || start >= oldnum || end > oldnum || num < -1) {
     SoDebugError::post("SoMField::deleteValues",
                        "invalid indices [%d, %d] for array of size %d",
                        start, end - 1, this->getNum());
@@ -457,19 +458,11 @@ SoMField::deleteValues(int start, int num)
 #endif // COIN_DEBUG
 
   // Move elements downward to fill the gap.
-  if (end != this->getNum()) {
-    int fsize = this->fieldSizeof();
-    char * move_to = ((char *)this->valuesPtr()) + start * fsize;
-    char * move_from = ((char *)this->valuesPtr()) + end * fsize;
-    int elements = this->getNum() - end;
-
-    // FIXME: this seems rather unsafe, should probably use copy
-    // operator instead. 20000915 mortene.
-    (void)memmove(move_to, move_from, fsize * elements);
-  }
+  for (int i = 0; i < oldnum-(start+num); i++)
+    this->copyValue(start+i, start+num+i);
 
   // Truncate array.
-  this->allocValues(this->getNum() - num);
+  this->allocValues(oldnum - num);
 
   // Send notification.
   this->valueChanged();
@@ -485,26 +478,22 @@ SoMField::insertSpace(int start, int num)
 {
   if (num == 0) return;
 
+  int oldnum = this->getNum();
 #if COIN_DEBUG
-  if (start < 0 || start > this->getNum() || num < 0) {
+  if (start < 0 || start > oldnum || num < 0) {
     SoDebugError::post("SoMField::insertSpace",
                        "invalid indices [%d, %d] for array of size %d",
-                       start, start + num, this->getNum());
+                       start, start + num, oldnum);
     return;
   }
 #endif // COIN_DEBUG
 
   // Expand array.
-  this->allocValues(this->getNum() + num);
+  this->allocValues(oldnum + num);
 
   // Copy values upward.
-  if (start < this->getNum()) {
-    int fsize = this->fieldSizeof();
-    char * move_from = ((char *)this->valuesPtr()) + start * fsize;
-    char * move_to = ((char *)this->valuesPtr()) + (start + num) * fsize;
-    // FIXME: this seems rather unsafe, should probably use copy
-    // operator instead. 20000915 mortene.
-    (void)memcpy(move_to, move_from, fsize * num);
+  for (int i = 0; i < oldnum-start; i++) {
+    this->copyValue(start+num+i, start+i);
   }
 
   // Send notification.
