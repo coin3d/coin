@@ -29,10 +29,10 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
 #include <Inventor/C/threads/mutex.h>
 #include <Inventor/C/threads/mutexp.h>
-#endif /* HAVE_THREADS */
+#endif /* COIN_THREADSAFE */
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h> /* STDERR_FILENO */
@@ -46,10 +46,10 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
 static cc_mutex * cc_error_mutex = NULL;
 static void cc_error_mutex_cleanup(void) { if (cc_error_mutex) { cc_mutex_destruct(cc_error_mutex); cc_error_mutex = NULL; } }
-#endif /* HAVE_THREADS */
+#endif /* COIN_THREADSAFE */
 
 /* FIXME: should be hidden from public API, and only visible to
    subclasses. 20020526 mortene. */
@@ -113,7 +113,7 @@ cc_error_handle(cc_error * me)
   cc_error_cb * function = cc_error_get_handler(&arg);
   assert(function != NULL);
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
   if (!cc_error_mutex) {
     /* extra locking to avoid that two threads create the mutex */
     cc_mutex_global_lock();
@@ -124,13 +124,13 @@ cc_error_handle(cc_error * me)
     cc_mutex_global_unlock();
   }
   cc_mutex_lock(cc_error_mutex);
-#endif /* HAVE_THREADS */
+#endif /* COIN_THREADSAFE */
 
   (*function)(me, arg);
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
   cc_mutex_unlock(cc_error_mutex);
-#endif /* HAVE_THREADS */
+#endif /* COIN_THREADSAFE */
 }
 
 void

@@ -52,9 +52,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/glue/simage_wrapper.h>
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbRWMutex.h>
-#endif // HAVE_THREADS
+#endif // COIN_THREADSAFE
 
 class SbImageP {
 public:
@@ -70,9 +70,9 @@ public:
       size(0,0,0),
       bpp(0),
       schedulecb(NULL)
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
     , rwmutex(SbRWMutex::READ_PRECEDENCE)
-#endif // HAVE_THREADS
+#endif // COIN_THREADSAFE
   { }
   void freeData(void) {
     if (this->bytes) {
@@ -104,7 +104,7 @@ public:
   SbImageScheduleReadCB * schedulecb;
   void * scheduleclosure;
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
   SbRWMutex rwmutex;
   void readLock(void) {
     //    fprintf(stderr,"readlock: %p\n", this);
@@ -124,12 +124,12 @@ public:
     //fprintf(stderr,"writeUnlock: %p\n", this);
     this->rwmutex.writeUnlock();
   }
-#else // HAVE_THREADS
+#else // COIN_THREADSAFE
   void readLock(void) { }
   void readUnlock(void) { }
   void writeLock(void) { }
   void writeUnlock(void) { }
-#endif // ! HAVE_THREADS
+#endif // ! COIN_THREADSAFE
 };
 
 //////////////////////////////////////////////////////////////////////////
