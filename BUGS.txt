@@ -2733,6 +2733,11 @@ Separator { }
 
     20031201 mortene.
 
+    UPDATE 20040510 mortene: this may also cause other problems. oso
+    stumbled into a hard to find bug in one of his iv-files for
+    View'EM that was due to our iv-importer not "following through" on
+    the input files and reading until a file pops off the stack.
+
 =====================================================================
 
 094 Negative scaling results in faulty bbox-calculations.
@@ -4017,5 +4022,40 @@ diff -u -r1.9 selection.cpp.in
     does something stupid.
 
     20040506 mortene.
+
+=====================================================================
+
+113 SoBlinker import bug.
+
+    The scene graph with the SoBlinker below will not behave as
+    expected when read into a viewer: child 1 (the SoCube) should be
+    visible, but instead there will be no visible child, which is
+    bogus.
+
+-------------8<---------------- [snip] --------------------------
+#Inventor V2.1 ascii
+
+Separator {
+        Blinker {
+                whichChild 1
+                on FALSE
+                Sphere {}
+                Cube {}
+                Cylinder {}
+        }
+}
+-------------8<---------------- [snip] --------------------------
+
+    I've investigated a bit, and found that SoBlinker's internal
+    SoTimeCounter engine seems to trigger while loading, while the
+    SoTimeCounter::min and SoTimeCounter::max fields are set up for no
+    children. This will then force whichChild to -1 some time after it
+    was set by the readInstance() import code.
+
+    One possible resolution is to override the virtual readInstance()
+    and disable the internal SoTimeCounter while reading. This breaks
+    the ABI, though, which is uncool while we're on the 2.x branch.
+
+    20040518 mortene.
 
 =====================================================================
