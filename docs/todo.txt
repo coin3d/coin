@@ -731,6 +731,9 @@ STUFF TO FIX IN COIN
 
        We should implement the same functionality in these regards.
 
+     * On Mac OS X and MSWin, we should avoid the dependency on the
+       FreeType library, and use the native APIs directly.
+
 
 030 Offscreen context support functions.
     2003-01-31  Morten Eriksen  <mortene@sim.no>
@@ -805,6 +808,18 @@ STUFF TO FIX IN COIN
         If the -o option is not used to specify the output filename, the
         converted file is written to standard output
 
+
+034 Image loading under MSWin through DirectX.
+    2003-05-07  Morten Eriksen  <mortene@sim.no>
+
+    According to someone Kyrah knows, DirectX has import routines for
+    a bunch of image formats (BMP, DDS, DIB, JPG, PNG, PPM, TGA) and
+    export routines for a few (BMP, DDS, DIB).
+
+    So we should add dynamic binding to the relevant DirectX library
+    from within Coin, and thereby avoid the simage dependency. (Either
+    that, or add DirectX import / export support to simage.)
+    
 
 
 OTHER COIN-RELATED STUFF TO FIX
