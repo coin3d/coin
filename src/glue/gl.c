@@ -1451,6 +1451,25 @@ glglue_resolve_symbols(cc_glglue * w)
 #endif /* GL_ARB_vertex_program */
 
 
+  w->glGetUniformLocationARB = NULL;
+  w->glGetActiveUniformARB = NULL;
+  w->glUniform1fARB = NULL;
+  w->glUniform2fARB = NULL;
+  w->glUniform3fARB = NULL;
+  w->glUniform4fARB = NULL;
+  w->glCreateShaderObjectARB = NULL;
+  w->glShaderSourceARB = NULL;
+  w->glCompileShaderARB = NULL;
+  w->glGetObjectParameterivARB = NULL;
+  w->glDeleteObjectARB = NULL;
+  w->glAttachObjectARB = NULL;
+  w->glDetachObjectARB = NULL;
+  w->glGetInfoLogARB = NULL;
+  w->glLinkProgramARB = NULL;
+  w->glUseProgramObjectARB = NULL;
+  w->glCreateProgramObjectARB = NULL;
+  w->has_arb_shader_objects = FALSE;
+
 #ifdef GL_ARB_shader_objects
 
   if (cc_glglue_glext_supported(w, "GL_ARB_shader_objects")) {
