@@ -135,9 +135,11 @@ SoGLTextureCoordinateElement::send(const int index) const
 {
   assert(this->whatKind == EXPLICIT);
   assert(index < this->numCoords);
-  if (this->coordsAre2D)
+  if (this->coordsDimension==2)
     glTexCoord2fv(coords2[index].getValue());
-  else
+  else if (this->coordsDimension==3)
+    glTexCoord3fv(coords3[index].getValue());
+  else // this->coordsDimension==4
     glTexCoord4fv(coords4[index].getValue());
 }
 
@@ -162,9 +164,11 @@ SoGLTextureCoordinateElement::send(const int index,
     //
     if (index < 0) return;
     if (index >= this->numCoords) return;
-    if (this->coordsAre2D)
+    if (this->coordsDimension==2)
       glTexCoord2fv(coords2[index].getValue());
-    else
+    else if (this->coordsDimension==3)
+      glTexCoord3fv(coords3[index].getValue());
+    else // this->coordsDimension==4
       glTexCoord4fv(coords4[index].getValue());
   }
 }
@@ -188,5 +192,7 @@ SoGLTextureCoordinateElement::doCallback() const
   else {
     glDisable(GL_TEXTURE_GEN_S);
     glDisable(GL_TEXTURE_GEN_T);
+    glDisable(GL_TEXTURE_GEN_R);
+    glDisable(GL_TEXTURE_GEN_Q);
   }
 }
