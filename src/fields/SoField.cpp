@@ -1571,21 +1571,42 @@ SoField::readConnection(SoInput * in)
   }
 
 
-  // Find container for master field.
-  // FIXME: does this also work for connections to engines and VRML
+  // Get pointer to master field or engine output and connect.
+
+  // FIXME: does this also work for connections to VRML
   // interpolators? 20000129 mortene.
   SoField * masterfield = fc->getField(mastername);
   if (!masterfield) {
-    SoReadError::post(in, "no field ``%s'' in ``%s''",
-                      mastername.getString(),
-                      fc->getTypeId().getName().getString());
-    return FALSE;
+    if (fc->isOfType(SoEngine::getClassTypeId())) {
+      SoEngine * fcengine = (SoEngine *)fc;
+      SoEngineOutput * masteroutput = fcengine->getOutput(mastername);
+      if (!masteroutput) {
+        SoReadError::post(in, "no field or output ``%s'' in ``%s''",
+                          mastername.getString(),
+                          fc->getTypeId().getName().getString());
+        return FALSE;
+      }
+      else {
+        // Make connection.
+        if (!this->connectFrom(masteroutput)) {
+          SoReadError::post(in, "couldn't connect to ``%s''",
+                            mastername.getString());
+        }
+      }
+    }
+    else {
+      SoReadError::post(in, "no field ``%s'' in ``%s''",
+                        mastername.getString(),
+                        fc->getTypeId().getName().getString());
+      return FALSE;
+    }
   }
-
-  // Finally, make connection.
-  if (!this->connectFrom(masterfield)) {
-    SoReadError::post(in, "couldn't connect to ``%s''",
-                      mastername.getString());
+  else {
+    // Make connection.
+    if (!this->connectFrom(masterfield)) {
+      SoReadError::post(in, "couldn't connect to ``%s''",
+                        mastername.getString());
+    }
   }
 
   return TRUE;
