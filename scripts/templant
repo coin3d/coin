@@ -40,7 +40,12 @@
 #      //$ BEGIN EXPORT INLINE
 #      //$ END EXPORT INLINE
 #
-#  /*$ EVAL( expr ) */
+#  /*$ EVAL( perl-expr ) */
+#
+#  //$ IF perl-expr
+#  //$ ELSIF perl-expr
+#  //$ ELSE
+#  //$ ENDIF
 #
 #  Alternately, //$ ... can be replaced with
 #
@@ -52,6 +57,9 @@
 #  $Id$
 #
 #  $Log$
+#  Revision 1.6  2002/03/19 14:00:19  larsa
+#  support conditionals in templates, much like a C preprocessor
+#
 #  Revision 1.5  2002/03/08 15:32:43  larsa
 #  Support C comments around commands.
 #  New command "/*$ EVAL(expr) */".
@@ -223,9 +231,6 @@ foreach $file ( @files ) {
         &FoldInliningSource();
     }
 
-    # eval expressions?
-    &DoEvaluations() if ( $evaluations == 1 );
-
     # strip trailing whitespace
     &FixSpacing() if ( $spacing == 1 );
 
@@ -291,11 +296,72 @@ sub UnfoldTemplates { ######################################################
     local( @template, @arguments, @templatevariables );
     local( $templates ); # for template, not file
     local( $arg );
+    local( @conditionals ) = ();
 
     $level = $_[0] if ( @_ > 0 );
 
     $templates = 0;
     for ( $line = 0; $line < @lines; $line++ ) {
+        $lines[$line] =~ s|/\*\$ *EVAL\((.*)\) *\*/|eval "$1"|eg;
+        $ifdirective = 0;
+
+        ## we try to handle IF, ELSIF, ELSE, and ENDIF here
+        if ( $lines[$line] =~ m|^$prefix +IF +|o ) {
+            $condstring = $lines[$line];
+            $condstring =~ s|^$prefix +IF +||o;
+            $conditional = eval("if ( $condstring ) { 1; } else { 0; }");
+            push(@conditionals, $conditional);
+            # print STDERR "opening conditional ".scalar(@conditionals)."\n";
+            # print STDERR "  => $conditional ($condstring)\n";
+            $ifdirective = 1;
+        } elsif ( $lines[$line] =~ m|^$prefix +ELSIF +|o ) {
+            $condstring = $lines[$line];
+            $condstring =~ s|^$prefix +ELSIF +||o;
+            $oldconditional = pop(@conditionals);
+            # print STDERR "modifying conditional ".scalar(@conditionals)."\n";
+            if ( $oldconditional == 0 ) {
+                $conditional = eval("if ( $condstring ) { 1; } else { 0; }");
+                # print STDERR "  => $conditional ($condstring)\n";
+            } else {
+                $conditional = -1;
+                # print STDERR "  => $conditional\n";
+            }
+            push(@conditionals, $conditional);
+            $ifdirective = 1;
+        } elsif ( $lines[$line] =~ m|^$prefix +ELSE *$|o ) {
+            # print STDERR "toggling conditional ".scalar(@conditionals)."\n";
+            $oldconditional = pop(@conditionals);
+            if ( $oldconditional == 0 ) {
+                $conditional = 1;
+            } else {
+                $conditional = -1;
+            }
+            push(@conditionals, $conditional);
+            # print STDERR "  => $conditional\n";
+            $ifdirective = 1;
+        } elsif ( $lines[$line] =~ m|^$prefix +ENDIF *$|o ) {
+            # print STDERR "closing conditional ".scalar(@conditionals)."\n";
+            $oldconditional = pop(@conditionals);
+            $ifdirective = 1;
+        }
+
+        if ( $ifdirective == 1 ) {
+            splice(@lines, $line, 1);
+            $line--;
+            next;
+        }
+        if ( scalar(@conditionals) > 0 ) {
+            $skip = 0;
+            for ( $c = 0; $c < scalar(@conditionals) && !$skip; $c++ ) {
+                $skip = 1 if $conditionals[$c] != 1;
+            }
+            if ( $skip == 1 ) {
+                splice(@lines, $line, 1);
+                $line--;
+                next;
+            }
+        }
+
         if ( $lines[$line] =~ m|^$prefix +INSERT +TEMPLATE +|o ) {
             chop( $proto = $lines[$line] );
             $proto =~ s|^$prefix +INSERT +TEMPLATE +||o;
@@ -645,7 +711,7 @@ sub SplitArgs { ############################################################
 # evaluates expressions
 sub DoEvaluations { ########################################################
     foreach $line ( @lines ) {
-        $line =~ s|/\*\$ +EVAL\((.*)\) +\*/|eval "$1"|eg;
+        $line =~ s|/\*\$ *EVAL\((.*)\) *\*/|eval "$1"|eg;
     }
 }
 
@@ -682,7 +748,8 @@ Directives:
     [PREFIXSTR] IMPORT INLINE FilePath
     [PREFIXSTR] EXPORT INLINE
 
-    ([PREFIXSTR] can be either ``##\$'' or ``//\$'').
+    ([PREFIXSTR] can be either ``##\$'' or ``//\$'' or you can envelope the
+    command with /*$ and */).
 END_OF_USAGE
 }
 
