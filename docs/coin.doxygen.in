@@ -609,6 +609,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/misc/SoBase.h \
                          @path_tag@@coin_src_dir@/include/Inventor/misc/SoChildList.h \
                          @path_tag@@coin_src_dir@/include/Inventor/misc/SoNotification.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoNotRec.h \
                          @path_tag@@coin_src_dir@/include/Inventor/misc/SoState.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoAppearanceKit.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoBaseKit.h \
@@ -1059,7 +1060,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/misc/SoInput.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoInteraction.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoLockManager.cpp \
-                         @path_tag@@coin_src_dir@/src/misc/SoNotification.cpp \
+                         @path_tag@@coin_src_dir@/src/misc/SoNotRec.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoOffscreenRenderer.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoOutput.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoPath.cpp \
