@@ -445,17 +445,17 @@ SoText3::render(SoState *state, unsigned int part)
           v0 = coords[*ptr++];
           v1 = coords[*ptr++];
           SbVec3f tmp(v1[0]-v0[0], v1[1] - v0[1], 0.0f);
-          SbVec3f normal = tmp.cross(SbVec3f(0.0f, 0.0f, -1.0f));
+          SbVec3f normal = tmp.cross(SbVec3f(0.0f, 0.0f, 1.0f));
           normal.normalize();
           v0[0] = v0[0] * size + xpos;
           v0[1] = v0[1] * size + ypos;
           v1[0] = v1[0] * size + xpos;
           v1[1] = v1[1] * size + ypos;
           glNormal3fv(normal.getValue());
-          glVertex3f(v0[0], v0[1], 0.0f);
           glVertex3f(v1[0], v1[1], 0.0f);
-          glVertex3f(v1[0], v1[1], -1.0f);
+          glVertex3f(v0[0], v0[1], 0.0f);
           glVertex3f(v0[0], v0[1], -1.0f);
+          glVertex3f(v1[0], v1[1], -1.0f);
         }
       }
       xpos += glyph->getWidth() * size;
@@ -549,20 +549,20 @@ SoText3::generate(SoAction *action, unsigned int part)
           v0 = coords[*ptr++];
           v1 = coords[*ptr++];
           SbVec3f tmp(v1[0]-v0[0], v1[1] - v0[1], 0.0f);
-          SbVec3f normal = tmp.cross(SbVec3f(0.0f, 0.0f, -1.0f));
+          SbVec3f normal = tmp.cross(SbVec3f(0.0f, 0.0f, 1.0f));
           normal.normalize();
           v0[0] = v0[0] * size + xpos;
           v0[1] = v0[1] * size + ypos;
           v1[0] = v1[0] * size + xpos;
           v1[1] = v1[1] * size + ypos;
           vertex.setNormal(normal);
-          vertex.setPoint(SbVec3f(v0[0], v0[1], 0.0f));
-          this->shapeVertex(&vertex);
           vertex.setPoint(SbVec3f(v1[0], v1[1], 0.0f));
           this->shapeVertex(&vertex);
-          vertex.setPoint(SbVec3f(v1[0], v1[1], -1.0f));
+          vertex.setPoint(SbVec3f(v0[0], v0[1], 0.0f));
           this->shapeVertex(&vertex);
           vertex.setPoint(SbVec3f(v0[0], v0[1], -1.0f));
+          this->shapeVertex(&vertex);
+          vertex.setPoint(SbVec3f(v1[0], v1[1], -1.0f));
           this->shapeVertex(&vertex);
         }
       }
