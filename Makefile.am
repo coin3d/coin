@@ -19,14 +19,12 @@ HTMLDIRS =
 endif
 
 if MAC_FRAMEWORK
-BINDIR =
 MANDIR =
 else
-BINDIR = bin
 MANDIR = man
 endif
 
-SUBDIRS = . $(BINDIR) include $(SRCDIRS) $(MANDIR) $(HTMLDIRS)
+SUBDIRS = . bin include $(SRCDIRS) $(MANDIR) $(HTMLDIRS)
 
 BUILT_SOURCES = \
 	include/Inventor/C/basic.h \
