@@ -122,7 +122,15 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/SbRotation.h>
+#include <Inventor/misc/SoGL.h>
 #include <math.h>
+#include <Inventor/errors/SoDebugError.h>
+
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#include <Inventor/system/gl.h>
 
 SO_NODE_SOURCE(SoVRMLBillboard);
 
@@ -246,44 +254,24 @@ SoVRMLBillboard::GLRenderBelowPath(SoGLRenderAction * action)
     }
     action->popPushCurPath(i, childarray[i]);
     childarray[i]->GLRenderBelowPath(action);
-    // The GL error test is disabled for this optimized path.
-    // If you get a GL error reporting an error in the Separator node,
-    // enable this code to see exactly which node caused the error.
-    //  pederb, 20000916
 
-#if 0 // enable to debug GL errors
-    int err = glGetError();
-    if (err != GL_NO_ERROR) {
-      const char * errorstring;
-      switch (err) {
-      case GL_INVALID_VALUE:
-        errorstring = "GL_INVALID_VALUE";
-        break;
-      case GL_INVALID_ENUM:
-        errorstring = "GL_INVALID_ENUM";
-        break;
-      case GL_INVALID_OPERATION:
-        errorstring = "GL_INVALID_OPERATION";
-        break;
-      case GL_STACK_OVERFLOW:
-        errorstring = "GL_STACK_OVERFLOW";
-        break;
-      case GL_STACK_UNDERFLOW:
-        errorstring = "GL_STACK_UNDERFLOW";
-        break;
-      case GL_OUT_OF_MEMORY:
-        errorstring = "GL_OUT_OF_MEMORY";
-        break;
-      default:
-        errorstring = "Unknown GL error";
-        break;
+#if COIN_DEBUG
+    // The GL error test is default disabled for this optimized
+    // path.  If you get a GL error reporting an error in the
+    // Separator node, enable this code by setting the environment
+    // variable COIN_GLERROR_DEBUGGING to "1" to see exactly which
+    // node caused the error.
+    static SbBool chkglerr = sogl_glerror_debugging();
+    if (chkglerr) {
+      int err = glGetError();
+      if (err != GL_NO_ERROR) {
+        SoDebugError::postInfo("SoVRMLBillboard::GLRenderBelowPath",
+                               "GL error: %s, nodetype: %s",
+                               sogl_glerror_string(err).getString(),
+                               (*this->getChildren())[i]->getTypeId().getName().getString());
       }
-      SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
-                             "GL error: %s, nodetype: %s",
-                             errorstring,
-                             (*this->children)[i]->getTypeId().getName().getString());
     }
-#endif // GL debug
+#endif // COIN_DEBUG
   }
   action->popCurPath();
   state->pop();

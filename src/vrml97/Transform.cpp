@@ -21,7 +21,7 @@
   \class SoVRMLTransform SoVRMLTransform.h Inventor/VRMLnodes/SoVRMLTransform.h
   \brief The SoVRMLTransform class is a grouping node that defines a transformation for its children.
   \ingroup VRMLnodes
-  
+
   \WEB3DCOPYRIGHT
 
   \verbatim
@@ -51,7 +51,7 @@
   (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5),
   provides a description of the children, addChildren, and removeChildren
   fields and eventIns.
-   
+
   The bboxCenter and bboxSize fields specify a bounding box that
   encloses the children of the Transform node. This is a hint that may
   be used for optimization purposes. The results are undefined if the
@@ -91,7 +91,7 @@
   transformations. In matrix transformation notation, where C
   (center), SR (scaleOrientation), T (translation), R (rotation), and
   S (scale) are the equivalent transformation matrices,
-  
+
   \verbatim
   P' = T × C × R × SR × S × -SR × -C × P
   \endverbatim

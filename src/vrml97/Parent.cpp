@@ -233,7 +233,7 @@ SoVRMLParent::search(SoSearchAction * action)
   inherited::search(action);
 }
 
-void 
+void
 SoVRMLParent::write(SoWriteAction * action)
 {
   SoOutput * out = action->getOutput();
@@ -396,7 +396,7 @@ SoVRMLParent::field_sensor_cb(void * data, SoSensor * sensor)
 
 // Reorganize field order so that the "children" field is written
 // last.
-SoFieldData * 
+SoFieldData *
 SoVRMLParent::makeWriteData(void)
 {
   SoFieldData * newfd = new SoFieldData;

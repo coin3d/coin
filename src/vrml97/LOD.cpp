@@ -116,6 +116,14 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SbMatrix.h>
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/errors/SoDebugError.h>
+
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#include <Inventor/system/gl.h>
 
 SO_NODE_SOURCE(SoVRMLLOD);
 
@@ -354,6 +362,24 @@ SoVRMLLOD::GLRenderBelowPath(SoGLRenderAction * action)
       SoNode * child = (SoNode*) this->getChildren()->get(idx);
       action->pushCurPath(idx, child);
       child->GLRenderBelowPath(action);
+
+#if COIN_DEBUG
+      // The GL error test is default disabled for this optimized
+      // path.  If you get a GL error reporting an error in the
+      // Separator node, enable this code by setting the environment
+      // variable COIN_GLERROR_DEBUGGING to "1" to see exactly which
+      // node caused the error.
+      static SbBool chkglerr = sogl_glerror_debugging();
+      if (chkglerr) {
+        int err = glGetError();
+        if (err != GL_NO_ERROR) {
+          SoDebugError::postInfo("SoVRMLLOD::GLRenderBelowPath",
+                                 "GL error: %s, nodetype: %s",
+                                 sogl_glerror_string(err).getString(),
+                                 (*this->getChildren())[idx]->getTypeId().getName().getString());
+        }
+      }
+#endif // COIN_DEBUG
       action->popCurPath();
     }
   }

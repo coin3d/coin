@@ -481,7 +481,7 @@ SoVRMLGroup::GLRenderBelowPath(SoGLRenderAction * action)
       if (chkglerr) {
         int err = glGetError();
         if (err != GL_NO_ERROR) {
-          SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
+          SoDebugError::postInfo("SoVRMLGroup::GLRenderBelowPath",
                                  "GL error: %s, nodetype: %s",
                                  sogl_glerror_string(err).getString(),
                                  (*this->getChildren())[i]->getTypeId().getName().getString());
