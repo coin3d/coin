@@ -216,6 +216,9 @@ SoProto::write(SoWriteAction * action)
 
   if (out->getStage() == SoOutput::COUNT_REFS) {
     this->addWriteReference(out, FALSE);
+    if (THIS->defroot) {
+      this->writeDefinition(action);
+    }
   }
   else if (out->getStage() == SoOutput::WRITE) {
     out->indent();
@@ -233,8 +236,9 @@ SoProto::write(SoWriteAction * action)
     out->write("{\n");
     out->incrementIndent();
 
-    this->writeDefinition(out);
-
+    if (THIS->defroot) {
+      this->writeDefinition(action);
+    }
     out->decrementIndent();
     out->indent();
     out->write("}\n");
@@ -290,8 +294,22 @@ SoProto::writeInterface(SoOutput * out)
 // Writes the PROTO definition
 //
 SbBool
-SoProto::writeDefinition(SoOutput * out)
+SoProto::writeDefinition(SoWriteAction * action)
 {
+  SoOutput * out = action->getOutput();
+  SoGroup * def = THIS->defroot;
+
+  if (out->getStage() == SoOutput::COUNT_REFS) {
+    for (int i = 0; i < def->getNumChildren(); i++) {
+      def->getChild(i)->write(action);
+    }
+  }
+  else if (out->getStage() == SoOutput::WRITE) {
+    for (int i = 0; i < def->getNumChildren(); i++) {
+      def->getChild(i)->write(action);
+    }
+  }
+  else assert(0 && "unknown stage");
   return TRUE;
 }
 
@@ -308,6 +326,24 @@ SoProto::addISReference(SoNode * container,
   THIS->isfieldlist.append(fieldname);
   THIS->isnamelist.append(interfacename);
 }
+
+/*!
+  If \a container is a PROTO definition node with an IS interface
+  field named \a fieldname, return the interface name, otherwise
+  return an empty SbName.
+*/
+SbName
+SoProto::findISReference(const SoFieldContainer * container,
+                         const SbName & fieldname)
+{
+  const int n = THIS->isnodelist.getLength();
+  for (int i = 0; i < n; i++) {
+    if (THIS->isnodelist[i] == container &&
+        THIS->isfieldlist[i] == fieldname) return THIS->isnamelist[i];
+  }
+  return SbName("");
+}
+
 
 /*!
   Adds a reference for this PROTO definition.

@@ -49,6 +49,8 @@ public:
   void addISReference(SoNode * container,
                       const SbName & fieldname,
                       const SbName & interfacename);
+  SbName findISReference(const SoFieldContainer * container,
+                         const SbName & fieldname);
 
   void addReference(const SbName & name, SoBase * base);
   void removeReference(const SbName & name);
@@ -69,7 +71,7 @@ protected:
 
 private:
   SbBool writeInterface(SoOutput * out);
-  SbBool writeDefinition(SoOutput * out);
+  SbBool writeDefinition(SoWriteAction * action);
 
   SbBool readInterface(SoInput * in);
   SbBool readDefinition(SoInput * in);

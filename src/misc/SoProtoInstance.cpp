@@ -36,6 +36,7 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/SbDict.h>
+#include <Inventor/SoOutput.h>
 #include <stdlib.h>
 #include <assert.h>
 
@@ -193,10 +194,20 @@ SoProtoInstance::getRootNode(void)
 void
 SoProtoInstance::writeInstance(SoOutput * out)
 {
-#if COIN_DEBUG && 1 // debug
-  SoDebugError::postInfo("SoProtoInstance::write",
-                         "Not implemented");
-#endif // debug
+  if (out->getStage() == SoOutput::COUNT_REFS) {
+    this->addWriteReference(out, FALSE);
+  }
+  else if (out->getStage() == SoOutput::WRITE) {
+    
+  }
+  else assert(0 && "unknown stage");
+}
+
+// Doc in parent
+const char * 
+SoProtoInstance::getFileFormatName(void) const
+{
+  return THIS->protodef->getProtoName().getString();
 }
 
 /*!
