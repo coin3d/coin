@@ -1508,6 +1508,10 @@ SIM_AC_CHECK_OPENGL(
         SIM_AC_HAVE_AGL_IFELSE([
           AC_DEFINE([HAVE_AGL], 1, [define if you have AGL OpenGL bindings])
           LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
+          # indirect linking is not supported in static libs
+          if $COIN_STATIC; then
+            COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
+          fi
           SIM_AC_HAVE_AGL_PBUFFER([
             AC_DEFINE_UNQUOTED([HAVE_AGL_PBUFFER],1,
                                [define if AGL pBuffers are available on the system])
