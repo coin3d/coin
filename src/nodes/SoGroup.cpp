@@ -331,7 +331,7 @@ SoGroup::getBoundingBox(SoGetBoundingBoxAction * action)
   else
     lastchildindex = this->getNumChildren() - 1;
 
-  assert((lastchildindex >= 0) && (lastchildindex < this->getNumChildren()));
+  assert(lastchildindex < this->getNumChildren());
 
   // Initialize accumulation variables.
   SbVec3f acccenter(0.0f, 0.0f, 0.0f);
