@@ -204,7 +204,7 @@ SoSFImage3::readValue(SoInput * in)
     int byte = 0;
     int numpixels = int(size[0]) * int(size[1]) * int(size[2]);
     for (int i = 0; i < numpixels; i++) {
-      uint32_t l;
+      unsigned int l;
       if (!in->read(l)) {
         SoReadError::post(in, "Premature end of file reading images data");
         return FALSE;
@@ -252,10 +252,10 @@ SoSFImage3::writeValue(SoOutput * out) const
 
     int numpixels = int(size[0]) * int(size[1]) * int(size[2]);
     for (int i = 0; i < numpixels; i++) {
-      uint32_t data = 0;
+      unsigned int data = 0;
       for (int j = 0; j < nc; j++) {
         if (j) data <<= 8;
-        data |= (uint32_t)(pixblock[i * nc + j]);
+        data |= (unsigned int)(pixblock[i * nc + j]);
       }
       out->write(data);
       if (((i+1)%8 == 0) && (i+1 != numpixels)) {

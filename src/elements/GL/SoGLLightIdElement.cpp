@@ -39,7 +39,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
 
-int SoGLLightIdElement::maxGLSources = -1;
+int32_t SoGLLightIdElement::maxGLSources = -1;
 
 /*!
   \fn SoGLLightIdElement::maxGLSources

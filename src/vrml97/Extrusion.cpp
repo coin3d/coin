@@ -371,7 +371,7 @@ public:
   SoVRMLExtrusion * master;
   SbList <SbVec3f> coord;
   SbList <SbVec2f> tcoord;
-  SbList <int> idx;
+  SbList <int32_t> idx;
   SoNormalGenerator gen;
   SbTesselator tess;
   static void tess_callback(void *, void *, void *, void *);

@@ -1060,7 +1060,7 @@ SoInput::read(short & s)
   if (this->isBinary()) {
     int32_t tmp;
     if (!this->readBinaryArray(&tmp, 1)) return FALSE;
-    s = tmp;
+    s = (short) tmp;
     return TRUE;
   }
   else {
@@ -1078,7 +1078,7 @@ SoInput::read(unsigned short & s)
   if (this->isBinary()) {
     int32_t tmp;
     if (!this->readBinaryArray(&tmp, 1)) return FALSE;
-    s = tmp;
+    s = (unsigned short) tmp;
     return TRUE;
   }
   else {

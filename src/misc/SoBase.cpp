@@ -1418,7 +1418,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
       out->write(this->getFileFormatName());
     }
     if (out->isBinary()) {
-      uint32_t flags = 0x0;
+      unsigned int flags = 0x0;
       if (isgroup) flags |= SoBase::IS_GROUP;
       if (isengine) flags |= SoBase::IS_ENGINE;
       out->write(flags);

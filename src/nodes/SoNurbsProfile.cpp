@@ -215,7 +215,7 @@ SoNurbsProfile::getVertices(SoState * state, int32_t & numvertices,
 {
   // FIXME: optimize by detecting when the previously calculated
   // vertices can be returned. pederb, 20000922
-  int numpoints;
+  int32_t numpoints;
   float * points;
   int floatspervec;
   int32_t numknots;

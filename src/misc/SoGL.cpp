@@ -1965,9 +1965,9 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   if (n) {
     for (i = 0; i < n; i++) {
       float * points;
-      int numpoints;
+      int32_t numpoints;
       int floatspervec;
-      int numknots;
+      int32_t numknots;
       float * knotvector;
 
       SoProfile * profile = (SoProfile*) profilelist[i];

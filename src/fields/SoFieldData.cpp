@@ -385,14 +385,14 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
   notbuiltin = FALSE;
 
   if (in->isBinary()) {
-    uint32_t fieldsval;
+    unsigned int fieldsval;
     if (!in->read(fieldsval)) {
       SoReadError::post(in, "Premature EOF");
       return FALSE;
     }
 
-    uint8_t numfields = fieldsval & 0xff;
-    uint8_t fieldflags = fieldsval >> 8;
+    uint8_t numfields = (uint8_t) (fieldsval & 0xff);
+    uint8_t fieldflags = (uint8_t) (fieldsval >> 8);
 
 #if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoFieldData::read", "0x%08x => 0x%02x 0x%02x",
@@ -599,7 +599,8 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
     // necessary. 20000102 mortene.
     if (!object->getIsBuiltIn()) fieldflags |= SoFieldData::NOTBUILTIN;
     
-    uint32_t w = fieldflags;
+    // use unsigned int to match an SoOutput::write method
+    unsigned int w = (unsigned int) fieldflags;
     w <<= 8;
     w |= numfields;
 

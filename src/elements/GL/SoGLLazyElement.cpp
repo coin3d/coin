@@ -65,14 +65,14 @@
 // Some data and functions to create Bayer dither matrices (used for
 // screen door transparency)
 static unsigned char stipple_patterns[64 + 1][32 * 4];
-static unsigned int two_by_two[] = {0, 2, 3, 1};
+static uint32_t two_by_two[] = {0, 2, 3, 1};
 
 //
 // Used to generate a matrix twice the size of the input
 //
 static void
-generate_next_matrix(unsigned int * old, int oldsize,
-                     unsigned int * matrix)
+generate_next_matrix(uint32_t * old, int oldsize,
+                     uint32_t * matrix)
 {
   int i,j;
   int newsize = oldsize << 1;
@@ -92,8 +92,8 @@ make_dither_matrix(uint32_t * ptr, int size)
 {
   int currsize = 2;
 
-  unsigned int * currmatrix = two_by_two;
-  unsigned int * nextmatrix = NULL;
+  uint32_t * currmatrix = two_by_two;
+  uint32_t * nextmatrix = NULL;
   int nextsize;
 
   while (currsize < size) {
@@ -131,7 +131,7 @@ set_bit(int bitnr, unsigned char * ptr)
 //
 static void
 create_matrix_bitmap(int intensity, unsigned char * bitmap,
-                     uint32_t *matrix, int size)
+                     uint32_t * matrix, int size)
 {
   int cnt = 0;
   int i,j;
@@ -161,12 +161,12 @@ SoGLLazyElement::initClass()
 
   // create stipple patterns
   int i;
-  unsigned int matrix[32*32];
-  make_dither_matrix(matrix, 32);
+  uint32_t matrix[32*32];
+  make_dither_matrix((uint32_t*)matrix, 32);
   for (i = 0; i <= 64; i++) {
     int intensity = (32 * 32 * i) / 64 - 1;
     create_matrix_bitmap((intensity >= 0) ? intensity : 0,
-                         stipple_patterns[i], matrix, 32);
+                         stipple_patterns[i], (uint32_t*) matrix, 32);
   }
 }
 
@@ -187,7 +187,10 @@ SoGLLazyElement::getInstance(const SoState *state)
 inline void
 SoGLLazyElement::sendPackedDiffuse(const uint32_t col) const
 {
-  glColor4ub((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff, col&0xff);
+  glColor4ub((unsigned char)((col>>24)&0xff),
+             (unsigned char)((col>>16)&0xff), 
+             (unsigned char)((col>>8)&0xff), 
+             (unsigned char)(col&0xff));
   ((SoGLLazyElement*)this)->glstate.diffuse = col;
   ((SoGLLazyElement*)this)->cachebitmask |= DIFFUSE_MASK;
 }

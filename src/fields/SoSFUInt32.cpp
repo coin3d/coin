@@ -63,10 +63,12 @@ SoSFUInt32::initClass(void)
 SbBool
 sosfuint32_read_value(SoInput * in, uint32_t & val)
 {
-  if (!in->read(val)) {
+  unsigned int tmp;
+  if (!in->read(tmp)) {
     SoReadError::post(in, "Premature end of file");
     return FALSE;
   }
+  val = (uint32_t) tmp;
   return TRUE;
 }
 
@@ -84,7 +86,8 @@ SoSFUInt32::readValue(SoInput * in)
 void
 sosfuint32_write_value(SoOutput * out, uint32_t val)
 {
-  out->write(val);
+  unsigned int tmp = (unsigned int) val;
+  out->write(tmp);
 }
 
 void

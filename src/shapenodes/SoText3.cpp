@@ -262,9 +262,9 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
         // would need our own NURBS library.    pederb, 20000926
         SoNurbsProfile * np = (SoNurbsProfile*) pn;
         float * knots;
-        int numknots;
+        int32_t numknots;
         int dim;
-        int numpts;
+        int32_t numpts;
         float * points;
         np->getTrimCurve(state, numpts, points, dim,
                          numknots, knots);
@@ -275,7 +275,7 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
         }
       }
       else {
-        int num;
+        int32_t num;
         SbVec2f *coords;
         pn->getVertices(state, num, coords);
         for (int j = 0; j < num; j++) {
@@ -404,7 +404,7 @@ SoText3::render(SoState * state, unsigned int part)
   int i, n = THIS->widths.getLength();
 
   int firstprofile = -1;
-  int profnum;
+  int32_t profnum;
   SbVec2f *profcoords;
   float nearz =  FLT_MAX;
   float farz  = -FLT_MAX;
@@ -640,7 +640,7 @@ SoText3::generate(SoAction * action, unsigned int part)
   int i, n = THIS->widths.getLength();
 
   int firstprofile = -1;
-  int profnum;
+  int32_t profnum;
   SbVec2f *profcoords;
   float nearz =  FLT_MAX;
   float farz  = -FLT_MAX;

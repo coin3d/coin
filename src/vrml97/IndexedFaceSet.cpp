@@ -435,7 +435,7 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
   const SoCoordinateElement * coords;
   const SbVec3f * normals;
   const int32_t * cindices;
-  int32_t numindices;
+  int numindices;
   const int32_t * nindices;
   const int32_t * tindices;
   const int32_t * mindices;
@@ -610,7 +610,7 @@ SoVRMLIndexedFaceSet::generatePrimitives(SoAction * action)
   const SoCoordinateElement * coords;
   const SbVec3f * normals;
   const int32_t * cindices;
-  int32_t numindices;
+  int numindices;
   const int32_t * nindices;
   const int32_t * tindices;
   const int32_t * mindices;
@@ -879,7 +879,7 @@ SoVRMLIndexedFaceSet::useConvexCache(SoAction * action,
   const SoCoordinateElement * coords;
   const int32_t * cindices;
   const SbVec3f * dummynormals;
-  int32_t numindices;
+  int numindices;
   const int32_t * dummynindices;
   const int32_t * tindices;
   const int32_t * mindices;

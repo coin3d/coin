@@ -206,7 +206,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   const SoCoordinateElement * coords;
   const SbVec3f * normals;
   const int32_t * cindices;
-  int32_t numindices;
+  int numindices;
   const int32_t * nindices;
   const int32_t * tindices;
   const int32_t * mindices;
@@ -369,7 +369,7 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
   const SoCoordinateElement * coords;
   const SbVec3f * normals;
   const int32_t * cindices;
-  int32_t numindices;
+  int numindices;
   const int32_t * normindices;
   const int32_t * texindices;
   const int32_t * matindices;
