@@ -23,25 +23,32 @@
   It organizes reference counting to make it possible to share
   cache instances. It also organizes a list of elements that
   will affect the cache. If any of the elements have changed
-  since the cache was created, the cache is invalidated.
+  since the cache was created, the cache is invalid.
 */
 
 #include <Inventor/caches/SoCache.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/elements/SoElement.h>
+#include <string.h>
 #include <assert.h>
 
 /*!
   Constructor with \a state being the current state.
 */
 SoCache::SoCache(SoState * const state)
+  : elements(), 
+  elementflags(NULL), 
+  refcount(0), 
+  invalidated(FALSE), 
+  statedepth(state ? state->getDepth() : 0)
 {
-  this->elementFlags = NULL;
-  this->refCount = 0;
-  this->invalidated = FALSE;
-  if (state)
-    this->stateDepth = state->getDepth();
-  else
-    this->stateDepth = 0;
+  assert(state != NULL);
+  int numidx = SoElement::getNumStackIndices();
+  int numbytes = (numidx >> 3) + 1;
+  // one bit per element is used to quickly determine whether an 
+  // element of a given type already has been added.
+  this->elementflags = new unsigned char[numbytes];
+  memset(this->elementflags, 0, numbytes);
 }
 
 /*!
@@ -49,16 +56,16 @@ SoCache::SoCache(SoState * const state)
 */
 SoCache::~SoCache()
 {
-  delete [] this->elementFlags;
+  delete [] this->elementflags;
 }
 
 /*!
   Increases the reference count by one.
 */
 void
-SoCache::ref()
+SoCache::ref(void)
 {
-  this->refCount++;
+  this->refcount++;
 }
 
 /*!
@@ -69,11 +76,11 @@ SoCache::ref()
 void
 SoCache::unref(SoState *state)
 {
-  if (--this->refCount == 0) {
-    destroy(state);
+  if (--this->refcount == 0) {
+    this->destroy(state);
     delete this;
   }
-  assert(this->refCount > 0);
+  assert(this->refcount > 0);
 }
 
 /*!
@@ -82,28 +89,42 @@ SoCache::unref(SoState *state)
 void
 SoCache::addElement(const SoElement * const elem)
 {
-  this->elements.append((void*)elem);
-  // FIXME: what to do with elementsFlags
+  if (elem->getDepth() == this->statedepth) {
+    int idx = elem->getStackIndex();
+    int flag = 0x1 << (idx & 0x7);
+    idx >>= 3; // get byte number
+    if (!(this->elementflags[idx] & flag)) {
+      SoElement * copy = elem->copyMatchInfo();
+      if (copy) this->elements.append(copy);
+      this->elementflags[idx] |= flag;
+    }
+  }
 }
 
 /*!
   Adds dependencies from \a cache to this cache.
 */
 void
-SoCache::addCacheDependency(const SoState * /* state */, SoCache * /* cache */)
+SoCache::addCacheDependency(const SoState * state, SoCache * cache)
 {
-  assert(0);
+  if (cache == this) return;
+
+  // local variables for speed
+  int n = cache->elements.getLength();
+  const SoElement * const * ptr = cache->elements.getArrayPtr();
+  for (int i = 0; i < n; i++) {
+    this->addElement(ptr[i]);
+  }
 }
 
 /*!
   Return \e TRUE if this cache is valid, \e FALSE otherwise.
 */
 SbBool
-SoCache::isValid(const SoState * /* state */) const
+SoCache::isValid(const SoState * state) const
 {
   if (this->invalidated) return FALSE;
-  // FIXME:
-  return TRUE;
+  return this->getInvalidElement(state) == NULL;
 }
 
 /*!
@@ -114,17 +135,24 @@ SoCache::isValid(const SoState * /* state */) const
 const SoElement *
 SoCache::getInvalidElement(const SoState * const state) const
 {
-  if (this->isValid(state) || this->invalidated) return NULL;
-
-  // FIXME: find element that caused the invlidation
+  if (this->invalidated) return NULL;
+  
+  // use local variables for speed
+  int n = this->elements.getLength();
+  const SoElement * const * ptr = this->elements.getArrayPtr();
+  const SoElement * elem;
+  for (int i = 0; i < n; i++) {
+    elem = ptr[i];
+    if (!elem->matches(state->getConstElement(elem->getStackIndex()))) return elem;
+  }
   return NULL;
 }
 
 /*!
-  Forces an cache to be invalid.
+  Forces a cache to be invalid.
 */
 void
-SoCache::invalidate()
+SoCache::invalidate(void)
 {
   this->invalidated = TRUE;
 }

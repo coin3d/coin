@@ -24,33 +24,34 @@ class SoState;
 class SoElement;
 
 #include <Inventor/SbBasic.h>
-#include <Inventor/lists/SbPList.h>
+#include <Inventor/lists/SbList.h>
 
 class SoCache {
 public:
   SoCache(SoState * const state);
 
-  void ref();
-  void unref(SoState *state = NULL);
-
+  void ref(void);
+  void unref(SoState * state = NULL);
+  
   void addElement(const SoElement * const elem);
-
-  virtual void addCacheDependency(const SoState *state,
-                                  SoCache *cache);
-  virtual SbBool isValid(const SoState *state) const;
-  const SoElement *getInvalidElement(const SoState * const state) const;
-  void invalidate();
-
+  
+  virtual void addCacheDependency(const SoState * state,
+                                  SoCache * cache);
+  virtual SbBool isValid(const SoState * state) const;
+  const SoElement * getInvalidElement(const SoState * const state) const;
+  void invalidate(void);
+  
 protected:
-  virtual void destroy(SoState *state);
+  virtual void destroy(SoState * state);
   virtual ~SoCache();
-
+  
 private:
-  SbPList elements;
-  unsigned char *elementFlags;
-  int refCount;
+  
+  SbList <SoElement *> elements;
+  unsigned char * elementflags;
+  int refcount;
   SbBool invalidated;
-  int stateDepth;
+  int statedepth;
 };
 
 #endif // !COIN_SOCACHE_H
