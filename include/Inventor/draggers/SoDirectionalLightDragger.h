@@ -45,18 +45,18 @@ public:
   SoDirectionalLightDragger(void);
 
   SoSFRotation rotation;
-  SoSFVec3f center;
+  SoSFVec3f translation;
 
 protected:
   ~SoDirectionalLightDragger();
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
   virtual void setDefaultOnNonWritingFields(void);
-  
+
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);
-  
+
   SoFieldSensor * rotFieldSensor;
-  SoFieldSensor * centerFieldSensor;
+  SoFieldSensor * translFieldSensor;
 };
 
 #endif // !COIN_SODIRECTIONALLIGHTDRAGGER_H
