@@ -65,7 +65,7 @@ public:
   SbBool savedinvalid;
   int autocachebits;
   int numused;
-  int numinvalidated;
+  int numdiscarded;
   SbBool needclose;
   SoElement * invalidelement;
   int numframesok;
@@ -86,7 +86,7 @@ SoGLCacheList::SoGLCacheList(int numcaches)
   THIS->opencache = NULL;
   THIS->autocachebits = 0;
   THIS->numused = 0;
-  THIS->numinvalidated = 0;
+  THIS->numdiscarded = 0;
   THIS->needclose = FALSE;
   THIS->invalidelement = NULL;
   THIS->numframesok = 0;
@@ -95,7 +95,7 @@ SoGLCacheList::SoGLCacheList(int numcaches)
   if (COIN_AUTO_CACHING < 0) {
     const char * env = coin_getenv("COIN_AUTO_CACHING");
     if (env) COIN_AUTO_CACHING = atoi(env);
-    else COIN_AUTO_CACHING = 0;
+    else COIN_AUTO_CACHING = 1;
   }
 #if COIN_DEBUG
   if (COIN_DEBUG_CACHING < 0) {
@@ -134,7 +134,6 @@ SoGLCacheList::call(SoGLRenderAction * action)
   SoState * state = action->getState();
   int context = SoGLCacheContextElement::get(state);
 
-
   for (i = 0; i < n; i++) {
     SoGLRenderCache * cache = THIS->itemlist[i];
     if (cache->getCacheContext() == context) {
@@ -160,8 +159,23 @@ SoGLCacheList::call(SoGLRenderAction * action)
 #if COIN_DEBUG
   if (COIN_DEBUG_CACHING) {
     SoDebugError::postInfo("SoGLCacheList::call",
-                           "no valid cache found for %p. Node has %d caches\n",
+                           "no valid cache found for %p. Node has %d caches",
                            this, n);
+    for (i = 0; i < n; i++) {
+      SoGLRenderCache * cache = THIS->itemlist[i];
+      if (cache->getCacheContext() == context) {
+        SoDebugError::postInfo("SoGLCacheList::call",
+                               "cache %d isValid()? %s", i, cache->isValid(state) ? "TRUE" : "FALSE");        
+        if (!cache->isValid(state)) {
+          const SoElement * elem = cache->getInvalidElement(state);
+          if (elem) {
+            SoDebugError::postInfo("SoGLCacheList::call",
+                                   "cache: %p, invalid element: %s", this,
+                                   elem->getTypeId().getName().getString());
+          }
+        }
+      }
+    }
   }
 #endif // debug
   return FALSE;
@@ -181,6 +195,7 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
     THIS->needclose = FALSE;
     return;
   }
+
   THIS->needclose = TRUE;
 
   assert(THIS->opencache == NULL);
@@ -199,7 +214,26 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
     if (THIS->numframesok >= 2 && 
         (THIS->autocachebits == SoGLCacheContextElement::DO_AUTO_CACHE)) {
       shouldcreate = TRUE;
+
+#if COIN_DEBUG
+      if (COIN_DEBUG_CACHING && THIS->numframesok >= 2) {
+        SoDebugError::postInfo("SoGLCacheList::open",
+                               "consider cache create: %p. numframesok: %d, numused: %d, numdiscarded: %d",
+                               this, THIS->numframesok, THIS->numused, THIS->numdiscarded);
+      }
+#endif // debug
+
     }
+  }
+
+  if (shouldcreate) {
+    // determine if we really should create a new cache, based on numused and numdiscarded
+    double docreate = (double) (THIS->numframesok + THIS->numused);
+    double dontcreate = (THIS->numdiscarded);
+    dontcreate *= dontcreate;
+    dontcreate *= dontcreate;
+
+    if (dontcreate >= docreate) shouldcreate = FALSE;
   }
 
   if (shouldcreate) {
@@ -208,6 +242,7 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
       SoGLRenderCache * cache = THIS->itemlist[0];
       cache->unref(state);
       THIS->itemlist.remove(0);
+      THIS->numdiscarded++;
     }
     THIS->opencache = new SoGLRenderCache(state);
     THIS->opencache->ref();
@@ -282,13 +317,16 @@ SoGLCacheList::invalidateAll(void)
 {
   int n = THIS->itemlist.getLength();
 #if COIN_DEBUG
-  if (n && COIN_DEBUG_CACHING) {
+  if (n && COIN_DEBUG_CACHING && 0) {
     SoDebugError::postInfo("SoGLCacheList::invalidateAll",
                            "invalidate all: %p (num caches = %d)", this, n);
   }
 #endif // debug
+
   for (int i = 0; i < n; i++) {
-    THIS->itemlist[i]->invalidate();
+    THIS->itemlist[i]->unref();
   }
+  THIS->itemlist.truncate(0);
+  THIS->numdiscarded += n;
   THIS->numframesok = 0;
 }
