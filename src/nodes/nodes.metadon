@@ -63,7 +63,7 @@
 #        --                               SoValueOrdering
 # I TBGMP-CS              SoArray
 # I TBGMP-CS              SoSwitch
-# I TB!!!-!S                      SoBlinker
+# IDTB!!!-!S                      SoBlinker
 # I TBG!-RC!              SoLOD
 #    ! !-!!                       SoLevelOfSimplification
 # I T!G!-RC!              SoLevelOfDetail
