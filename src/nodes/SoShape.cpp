@@ -336,6 +336,13 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
   SoState * state = action->getState();
 
+  // if we have a valid bbox cache, do a view volume cull test here.
+  if (THIS && 
+      THIS->bboxcache && 
+      THIS->bboxcache->isValid(state)) {
+    if (SoCullElement::cullTest(state, THIS->bboxcache->getProjectedBox())) return FALSE;
+  }
+
   SbBool needNormals =
     SoLightModelElement::get(state) == SoLightModelElement::PHONG;
 
@@ -1002,7 +1009,7 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
       shouldcache = TRUE;
     }
   }
-
+  
   if (isvalid) {
     box = THIS->bboxcache->getProjectedBox();
     // we know center will be set, so just fetch it from the cache
