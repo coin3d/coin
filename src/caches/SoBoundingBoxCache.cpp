@@ -27,11 +27,12 @@
   \ingroup caches
 */
 
+// *************************************************************************
+
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 
-
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
 
 class SoBoundingBoxCacheP {
 public:
@@ -42,10 +43,10 @@ public:
   unsigned int linesorpoints : 1;
 };
 
-#endif // DOXYGEN_SKIP_THIS
+#undef PRIVATE
+#define PRIVATE(p) ((p)->pimpl)
 
-#undef THIS
-#define THIS this->pimpl
+// *************************************************************************
 
 /*!
   Constructor with \a state being the current state.
@@ -53,9 +54,9 @@ public:
 SoBoundingBoxCache::SoBoundingBoxCache(SoState *state)
   : SoCache(state)
 {
-  THIS = new SoBoundingBoxCacheP;
-  THIS->centerset = 0;
-  THIS->linesorpoints = 0;
+  PRIVATE(this) = new SoBoundingBoxCacheP;
+  PRIVATE(this)->centerset = 0;
+  PRIVATE(this)->linesorpoints = 0;
 }
 
 /*!
@@ -63,7 +64,7 @@ SoBoundingBoxCache::SoBoundingBoxCache(SoState *state)
 */
 SoBoundingBoxCache::~SoBoundingBoxCache()
 {
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 /*!
@@ -76,10 +77,10 @@ SoBoundingBoxCache::set(const SbXfBox3f & boundingbox,
                         SbBool centerset,
                         const SbVec3f & centerpoint)
 {
-  THIS->bbox = boundingbox;
-  THIS->localbbox = boundingbox.project();
-  THIS->centerset = centerset ? 1 : 0;
-  THIS->centerpoint = centerpoint;
+  PRIVATE(this)->bbox = boundingbox;
+  PRIVATE(this)->localbbox = boundingbox.project();
+  PRIVATE(this)->centerset = centerset ? 1 : 0;
+  PRIVATE(this)->centerpoint = centerpoint;
 }
 
 /*!
@@ -88,7 +89,7 @@ SoBoundingBoxCache::set(const SbXfBox3f & boundingbox,
 const SbXfBox3f &
 SoBoundingBoxCache::getBox(void) const
 {
-  return THIS->bbox;
+  return PRIVATE(this)->bbox;
 }
 
 /*!
@@ -97,7 +98,7 @@ SoBoundingBoxCache::getBox(void) const
 const SbBox3f &
 SoBoundingBoxCache::getProjectedBox(void) const
 {
-  return THIS->localbbox;
+  return PRIVATE(this)->localbbox;
 }
 
 /*!
@@ -109,7 +110,7 @@ SoBoundingBoxCache::getProjectedBox(void) const
 SbBool
 SoBoundingBoxCache::isCenterSet(void) const
 {
-  return THIS->centerset == 1;
+  return PRIVATE(this)->centerset == 1;
 }
 
 /*!
@@ -119,7 +120,7 @@ SoBoundingBoxCache::isCenterSet(void) const
 const SbVec3f &
 SoBoundingBoxCache::getCenter(void) const
 {
-  return THIS->centerpoint;
+  return PRIVATE(this)->centerpoint;
 }
 
 /*!
@@ -151,7 +152,7 @@ SoBoundingBoxCache::setHasLinesOrPoints(SoState * state)
 
   while (elem) {
     SoBoundingBoxCache * cache = (SoBoundingBoxCache*) elem->getCache();
-    if (cache) cache->pimpl->linesorpoints = TRUE;
+    if (cache) { PRIVATE(cache)->linesorpoints = TRUE; }
     elem = elem->getNextCacheElement();
   }
 }
@@ -164,5 +165,5 @@ SoBoundingBoxCache::setHasLinesOrPoints(SoState * state)
 SbBool
 SoBoundingBoxCache::hasLinesOrPoints(void) const
 {
-  return THIS->linesorpoints == 1;
+  return PRIVATE(this)->linesorpoints == 1;
 }
