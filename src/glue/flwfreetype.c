@@ -237,6 +237,8 @@ SbBool
 cc_flwft_initialize(void)
 {
   FT_Error error;
+  FT_Int major, minor, patch;
+
   if (!cc_ftglue_available()) {
     return FALSE;
   }
@@ -247,17 +249,21 @@ cc_flwft_initialize(void)
     return FALSE;
   }
 
+  cc_ftglue_FT_Library_Version(library, &major, &minor, &patch);
   if (cc_flw_debug()) {
-    FT_Int major, minor, patch;
-    cc_ftglue_FT_Library_Version(library, &major, &minor, &patch);
     cc_debugerror_postinfo("cc_flwft_initialize",
                            "FreeType library version is %d.%d.%d",
                            major, minor, patch);
   }
-  
-  /* FIXME: test major and minor version to decide whether library is
-     ok. peder, 2003-07-09
-  */
+  if (major < 2) {
+    /* FIXME: should we test minor version also? peder, 2003-07-09 */
+    cc_debugerror_post("cc_flwft_initialize", 
+                       "Version of Freetype 2 library is < 2. "
+                       "Font rendering is disabled.");
+    cc_ftglue_FT_Done_FreeType(library);
+    library = NULL;
+    return FALSE;
+  }
   assert((fontname2filename == NULL) && "call cc_flwft_initialize only once!");
 
   /* Set up hash of font name to array of file name mappings. */

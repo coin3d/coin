@@ -133,7 +133,7 @@ ftglue_init(void)
         "libfreetype.dylib",
         NULL
       };
-      possiblelibnames[0] = coin_getenv("COIN_FREETYPE_LIBNAME");
+      possiblelibnames[0] = coin_getenv("COIN_FREETYPE2_LIBNAME");
       idx = possiblelibnames[0] ? 0 : 1;
       while (!freetype_libhandle && possiblelibnames[idx]) {
         freetype_libhandle = cc_dl_open(possiblelibnames[idx]);
