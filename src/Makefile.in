@@ -201,7 +201,8 @@ INCLUDES = -I$(top_srcdir)/include
 
 
 libCoin@SUFFIX@_la_SOURCES = \
-	tidbits.c dummy.cpp
+	tidbits.c tidbitsp.h \
+	dummy.cpp
 
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
@@ -217,7 +218,8 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
-	tidbits.c dummy.cpp
+	tidbits.c tidbitsp.h \
+	dummy.cpp
 
 
 libCoin@SUFFIX@_la_LDFLAGS = \

@@ -27,9 +27,6 @@
   Coin portable.
 */
 
-#include <Inventor/C/tidbits.h>
-#include <Inventor/C/base/string.h>
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
@@ -43,6 +40,9 @@
 #include <windows.h> /* GetEnvironmentVariable() */
 #endif /* HAVE_WINDOWS_H */
 
+#include <Inventor/C/tidbits.h>
+#include "tidbitsp.h"
+#include <Inventor/C/base/string.h>
 
 /**************************************************************************/
 
@@ -956,6 +956,59 @@ void
 coin_atexit(coin_atexit_f * f)
 {
   (void)atexit((atexit_func_type)f);
+}
+
+/**************************************************************************/
+
+/*
+  It is not possible to "pass" C library data from the application
+  to a MSWin .DLL, so this is necessary to get hold of the stderr
+  FILE*.  Just using fprintf(stderr, ...) or fprintf(stdout, ...)
+  directly will result in a crash when Coin has been compiled as a
+  .DLL.
+*/
+
+/* These constants are fixed according to POSIX */
+#ifndef STDIN_FILENO
+#define STDIN_FILENO 0
+#endif
+#ifndef STDOUT_FILENO
+#define STDOUT_FILENO 1
+#endif
+#ifndef STDERR_FILENO
+#define STDERR_FILENO 2
+#endif
+
+/*
+  FIXME: if Coin does an fclose() on one of these, what happens when the
+  cached variable is used later on?  We should make sure Coin doesn't
+  fclose() one of these...  Or we should open a new FILE pointer each time
+  it is called?  Would it be safe to check if the FILE * is closed and
+  then open a new one?  20030217 larsa
+*/
+
+FILE *
+coin_get_stdin(void)
+{
+  static FILE * coin_stdin = NULL;
+  if ( ! coin_stdin ) coin_stdin = fdopen(STDIN_FILENO, "r");
+  return coin_stdin;
+}
+
+FILE *
+coin_get_stdout(void)
+{
+  static FILE * coin_stdout = NULL;
+  if ( ! coin_stdout ) coin_stdout = fdopen(STDOUT_FILENO, "w");
+  return coin_stdout;
+}
+
+FILE *
+coin_get_stderr(void)
+{
+  static FILE * coin_stderr = NULL;
+  if ( ! coin_stderr ) coin_stderr = fdopen(STDERR_FILENO, "w");
+  return coin_stderr;
 }
 
 /**************************************************************************/
