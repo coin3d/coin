@@ -46,11 +46,23 @@ include/Inventor/SbBasic.h: $(srcdir)/include/Inventor/SbBasic.h.in
 include/Inventor/system/inttypes.h: $(srcdir)/include/Inventor/system/inttypes.h.in
 	@./config.status --header=$@
 
-doxygen-doc:
-	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
+doxygen-doc: built-sources
+	if test x"@COIN_DOC_HTML@" = x"YES"; then \
+	  mkdir -p "@coin_html_dir@"; \
+	else :; fi
+	if test x"@COIN_DOC_MAN@" = x"YES"; then \
+	  mkdir -p "@coin_man_dir@"; \
+	else :; fi
+	@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
 
-doxygen-docs:
-	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
+doxygen-docs: built-sources
+	if test x"@COIN_DOC_HTML@" = x"YES"; then \
+	  mkdir -p "@coin_html_dir@"; \
+	else :; fi
+	if test x"@COIN_DOC_MAN@" = x"YES"; then \
+	  mkdir -p "@coin_man_dir@"; \
+	else :; fi
+	@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
 
 install-exec-local: $(srcdir)/cfg/m4/wrapmsvc.exe
 	@$(NORMAL_INSTALL)
@@ -62,20 +74,16 @@ install-exec-local: $(srcdir)/cfg/m4/wrapmsvc.exe
 	fi
 
 # **************************************************************************
+# misc rules for automatic debian packaging.  main: `debian-packages'
 
-coin$(COIN_MAJOR_VERSION)_$(VERSION): distdir
-	cp -p -R Coin-$(VERSION) coin$(COIN_MAJOR_VERSION)_$(VERSION)
+coin$(COIN_MAJOR_VERSION)-$(VERSION):
+	$(MAKE) distdir;
+	if test -d coin$(COIN_MAJOR_VERSION)-$(VERSION); then \
+	  rm -rf coin$(COIN_MAJOR_VERSION)-$(VERSION); \
+	else :; fi;
+	mv Coin-$(VERSION) coin$(COIN_MAJOR_VERSION)-$(VERSION)
 
-coin$(COIN_MAJOR_VERSION)-lib_$(VERSION): distdir
-	cp -p -R Coin-$(VERSION) coin$(COIN_MAJOR_VERSION)-lib_$(VERSION)
-
-coin$(COIN_MAJOR_VERSION)-dev_$(VERSION): distdir
-	cp -p -R Coin-$(VERSION) coin$(COIN_MAJOR_VERSION)-dev_$(VERSION)
-
-coin$(COIN_MAJOR_VERSION)-doc_$(VERSION): distdir
-	cp -p -R Coin-$(VERSION) coin$(COIN_MAJOR_VERSION)-doc_$(VERSION)
-
-debian-control:
+debian-files: $(DEBIAN_DIST_DIR)
 	test -d $(DEBIAN_DIST_DIR)/debian || mkdir $(DEBIAN_DIST_DIR)/debian;
 	for f in packaging/debian/*.in; do \
 	  file=`echo $$f | sed 's/.*\///g; s/\.in$$//g'`; \
@@ -88,40 +96,16 @@ debian-control:
 	  fi; \
 	done;
 
-debian-src-control: coin$(COIN_MAJOR_VERSION)_$(VERSION)
-	distdir=coin$(COIN_MAJOR_VERSION)_$(VERSION); \
-	$(MAKE) DEBIAN_DIST_DIR=$$distdir debian-control; \
-	rm -f $distdir/debian/postinst;
+debian-control:
+	distdir=coin$(COIN_MAJOR_VERSION)-$(VERSION); \
+	$(MAKE) DEBIAN_DIST_DIR=$$distdir debian-files;
 
-debian-lib-control: coin$(COIN_MAJOR_VERSION)_$(VERSION)
-	distdir=coin$(COIN_MAJOR_VERSION)-lib_$(VERSION); \
-	$(MAKE) DEBIAN_DIST_DIR=$$distdir debian-control; \
-	rm -f $distdir/debian/postinst;
-
-debian-dev-control: coin$(COIN_MAJOR_VERSION)-dev_$(VERSION)
-	distdir=coin$(COIN_MAJOR_VERSION)-dev_$(VERSION); \
-	$(MAKE) DEBIAN_DIST_DIR=$$distdir debian-control;
-
-debian-doc-control: coin$(COIN_MAJOR_VERSION)-doc_$(VERSION)
-	distdir=coin$(COIN_MAJOR_VERSION)-doc_$(VERSION); \
-	$(MAKE) DEBIAN_DIST_DIR=$$distdir debian-control; \
-	rm -f $distdir/debian/postinst;
-
-debian-src: coin$(COIN_MAJOR_VERSION)_$(VERSION) debian-src-control
-debian-lib: coin$(COIN_MAJOR_VERSION)-lib_$(VERSION) debian-lib-control
-debian-dev: coin$(COIN_MAJOR_VERSION)-dev_$(VERSION) debian-dev-control
-debian-doc: coin$(COIN_MAJOR_VERSION)-doc_$(VERSION) debian-doc-control
-
-debian-setup: debian-src debian-lib debian-dev debian-doc
+debian-setup: coin$(COIN_MAJOR_VERSION)-$(VERSION) debian-control
 
 debian-packages: debian-setup
-	cd coin1_$(VERSION); \
-	dpkg-buildpackage -S -uc -us;
-	cd coin1-lib_$(VERSION); \
-	dpkg-buildpackage -b -uc;
-	cd coin1-dev_$(VERSION); \
-	dpkg-buildpackage -b -uc;
-	cd coin1-doc_$(VERSION); \
-	dpkg-buildpackage -b -uc;
+	cd coin1-$(VERSION); \
+	./debian/rules source;
+	cd coin1-$(VERSION); \
+	./debian/rules binary;
 
 # EOF ######################################################################
