@@ -250,20 +250,22 @@ SoMField::writeValue(SoOutput * out) const
 
   SbBool indented = FALSE;
 
-  const int num=this->getNum();
-  if (num>1) out->write("[ ");
+  const int num = this->getNum();
+  if (num > 1) out->write("[ ");
 
   for (int i=0; i < num; i++) {
     this->write1Value(out, i);
 
     if (i != num-1) {
       if (((i+1) % this->getNumValuesPerLine()) == 0) {
-	out->write(", \n");
+	out->write(",\n");
 	if (!indented) {
 	  out->incrementIndent();
 	  indented = TRUE;
 	}
 	out->indent();
+	// for alignment
+	out->write("  ");
       }
       else {
 	out->write(", ");

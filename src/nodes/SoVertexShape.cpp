@@ -329,8 +329,9 @@ SoVertexShape::getGLData(SoState * state,
   FIXME: write doc
  */
 void
-SoVertexShape::write(SoWriteAction * /* writeAction */)
+SoVertexShape::write(SoWriteAction * writeAction)
 {
-  assert(0 && "FIXME: not implemented");
+  // FIXME: something missing here? 19991009 mortene.
+  inherited::write(writeAction);
 }
 #endif // !COIN_EXCLUDE_SOWRITEACTION
