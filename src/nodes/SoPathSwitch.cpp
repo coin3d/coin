@@ -19,21 +19,29 @@
 
 /*!
   \class SoPathSwitch SoPathSwitch.h Inventor/nodes/SoPathSwitch.h
-  \brief The SoPathSwitch class ...
+  \brief The SoPathSwitch class traverses only when current path matches a configurable path.
   \ingroup nodes
 
-  FIXME: write class doc
 */
 
 
 #include <Inventor/nodes/SoPathSwitch.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoPickAction.h>
+#include <Inventor/actions/SoSearchAction.h>
 
 
 /*!
   \var SoSFPath SoPathSwitch::path
-  FIXME: write documentation for field
+  The path that must match the current action path. A NULL path will
+  never match. An empty path will always match. The path should go
+  up to (not including) the SoPathSwitch node, but need not go all
+  the way back to the root node.
 */
 
 // *************************************************************************
@@ -47,6 +55,38 @@ SoPathSwitch::SoPathSwitch(void)
 {
   this->commonConstructor();
 }
+
+
+static SbBool 
+is_matching_paths(const SoPath * currentpath, const SoPath * pathswitchpath)
+{
+  if (pathswitchpath == NULL) return FALSE;
+
+  const SoFullPath * current = (const SoFullPath*) currentpath;
+  const SoFullPath * swpath = (const SoFullPath *) pathswitchpath;
+  
+  int swidx = swpath->getLength() - 1;
+  if (swidx < 0) return TRUE; // an empty path will always match
+
+  int curidx = current->getLength() - 2; // last node is this node. Skip it.
+  
+  // test if swpath is a valid path. Return FALSE if not.
+  if (swidx > curidx) return FALSE;
+
+  // we know curidx >= swidx
+  while (swidx > 0) {
+    if ((swpath->getNode(swidx) != current->getNode(curidx)) ||
+        (swpath->getIndex(swidx) != current->getIndex(curidx))) break;
+    swidx--;
+    curidx--;
+  }
+  
+  if (swidx == 0) { // don't test index for head node
+    return swpath->getHead() == current->getNode(curidx);
+  }
+  return FALSE;
+}
+
 
 /*!
   Specify the expected number of children this node will have, to make
@@ -73,85 +113,85 @@ SoPathSwitch::~SoPathSwitch()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoPathSwitch class. This includes setting up the
-  type system, among other things.
-*/
+// doc in parent
 void
 SoPathSwitch::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoPathSwitch);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc in parent
 void
-SoPathSwitch::getBoundingBox(SoGetBoundingBoxAction * /* action */)
+SoPathSwitch::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  COIN_STUB();
+  if (is_matching_paths(action->getCurPath(), this->path.getValue())) {
+    inherited::getBoundingBox(action);
+  }
 }
 
-/*!
-  FIXME: write doc
- */
+// doc in parent
 void
-SoPathSwitch::doAction(SoAction * /* action */)
+SoPathSwitch::doAction(SoAction * action)
 {
-  COIN_STUB();
+  if (is_matching_paths(action->getCurPath(), this->path.getValue())) {
+    inherited::doAction(action);
+  }
 }
 
-/*!
-  FIXME: write doc
- */
+// doc in parent
 void
-SoPathSwitch::GLRender(SoGLRenderAction * /* action */)
+SoPathSwitch::GLRender(SoGLRenderAction * action)
 {
-  COIN_STUB();
+  if (is_matching_paths(action->getCurPath(), this->path.getValue())) {
+    inherited::GLRender(action);
+  }
 }
 
-/*!
-  FIXME: write doc
- */
+// doc in parent
 void
-SoPathSwitch::pick(SoPickAction * /* action */)
+SoPathSwitch::pick(SoPickAction * action)
 {
-  COIN_STUB();
+  if (is_matching_paths(action->getCurPath(), this->path.getValue())) {
+    inherited::pick(action);
+  }
 }
 
-/*!
-  FIXME: write doc
- */
+// doc in parent
 void
-SoPathSwitch::handleEvent(SoHandleEventAction * /* action */)
+SoPathSwitch::handleEvent(SoHandleEventAction * action)
 {
-  COIN_STUB();
+  if (is_matching_paths(action->getCurPath(), this->path.getValue())) {
+    inherited::handleEvent(action);
+  }
 }
 
-/*!
-  FIXME: write doc
- */
+// doc in parent
 void
-SoPathSwitch::getMatrix(SoGetMatrixAction * /* action */)
+SoPathSwitch::getMatrix(SoGetMatrixAction * action)
 {
-  COIN_STUB();
+  if (is_matching_paths(action->getCurPath(), this->path.getValue())) {
+    inherited::getMatrix(action);
+  }
 }
 
-/*!
-  FIXME: write doc
- */
+// doc in parent
 void
-SoPathSwitch::search(SoSearchAction * /* action */)
+SoPathSwitch::search(SoSearchAction * action)
 {
-  COIN_STUB();
+  if (action->isSearchingAll()) inherited::search(action);
+  else {
+    SoNode::search(action);
+    if (!action->isFound()) {
+      SoPathSwitch::doAction(action);
+    }
+  }
 }
 
-/*!
-  FIXME: write doc
- */
+// doc in parent
 void
-SoPathSwitch::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoPathSwitch::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  COIN_STUB();
+  if (is_matching_paths(action->getCurPath(), this->path.getValue())) {
+    inherited::getPrimitiveCount(action);
+  }
 }
