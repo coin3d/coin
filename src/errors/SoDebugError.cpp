@@ -128,15 +128,16 @@ SoDebugError::initClass(void)
       char * cpy = new char[strlen(env)+1];
       (void)strcpy(cpy, env);
       ptr = cpy;
-      char * end = strchr(ptr, ' ');
-      char * tst = strchr(ptr, ',');
+      const char * end = strchr(ptr, ' ');
+      const char * tst = strchr(ptr, ',');
       if (end == NULL || (tst && tst < end)) end = tst;
       if (end == NULL) end = strchr(ptr, 0);
       int i = 0;
       while (end && i < num_breakpoints) {
-        *end = 0;
-        breakpoints[i] = new char[strlen(ptr)+1];
-        (void)strcpy(breakpoints[i], ptr);
+        int len = end - ptr;
+        breakpoints[i] = new char[len + 1];
+        (void)memcpy(breakpoints[i], ptr, len);
+        breakpoints[i][len] = '\0';
         i++;
         ptr = end+1;
         end = strchr(ptr, ' ');
