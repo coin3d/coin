@@ -449,13 +449,20 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
   // to cache or not upon renderCaching==AUTO later.  pederb, 20001005
 
   SoState * state = action->getState();
+  state->push();
+  SbBool didcull = FALSE;
+
   SoGLCacheList * createcache = NULL;
-  if ((this->renderCaching.getValue() == ON) &&
+  if ((this->renderCaching.getValue() != OFF) &&
       (SoSeparator::getNumRenderCaches() > 0)) {
 
     // test if bbox is outside view-volume
-    if (!state->isCacheOpen() && this->cullTestNoPush(state)) {
-      return;
+    if (!state->isCacheOpen()) {
+      didcull = TRUE;
+      if (this->cullTest(state)) {
+        state->pop();
+        return;
+      }
     }
     if (!THIS->glcachelist) {
       THIS->glcachelist = new SoGLCacheList(SoSeparator::getNumRenderCaches());
@@ -466,10 +473,11 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
         SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
                                "Executing GL cache: %p", this);
 #endif // debug
+        state->pop();
         return;
       }
     }
-    if (!SoCacheElement::anyOpen(state)) { // nested GL caches not supported yet
+    if (!SoCacheElement::anyOpen(state)) {
 #if GLCACHE_DEBUG // debug
       SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
                              "Creating GL cache: %p", this);
@@ -478,10 +486,11 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
     }
   }
 
-  state->push();
-  if (createcache) createcache->open(action);
+  if (createcache) createcache->open(action, this->renderCaching.getValue() == AUTO);
   
-  SbBool outsidefrustum = createcache || state->isCacheOpen() ? FALSE : this->cullTest(state);
+  SbBool outsidefrustum = 
+    (createcache || state->isCacheOpen() || didcull) ? 
+    FALSE : this->cullTest(state);
   if (createcache || !outsidefrustum) {
     int n = this->children->getLength();
     SoNode ** childarray = (SoNode**) this->children->getArrayPtr();
