@@ -31,6 +31,7 @@
 #if HAVE_DLFCN_H
 #include <dlfcn.h>
 #endif /* HAVE_DLFCN_H */
+
 #ifdef HAVE_LIBSIMAGE /* In case we're _not_ doing runtime linking. */
 #define SIMAGEWRAPPER_ASSUME_SIMAGE 1
 #endif /* HAVE_LIBSIMAGE */
@@ -40,8 +41,27 @@
 #endif /* SIMAGEWRAPPER_ASSUME_SIMAGE */
 
 
+/* This should work on Linux and IRIX platforms, at least. Probably
+   some other UNIX-based systems aswell. */
+#ifdef HAVE_DL_LIB
+#define LIBHANDLE_T void *
+#define OPEN_RUNTIME_BINDING(LIBNAME) dlopen(LIBNAME, RTLD_LAZY)
+#define CLOSE_RUNTIME_BINDING(RBHANDLE)  (void)dlclose(RBHANDLE)
+#define GET_RUNTIME_SYMBOL(RBHANDLE, FUNCNAME) dlsym(RBHANDLE, FUNCNAME)
+#endif  /* HAVE_DL_LIB */
+
+/* FIXME: MSWin DLL runtime_binding not tested yet. 20010626 mortene. */
+#ifdef HAVE_WINDLL_RUNTIME_BINDING
+#define LIBHANDLE_T HINSTANCE
+#define OPEN_RUNTIME_BINDING(LIBNAME) LoadLibrary(LIBNAME)
+#define CLOSE_RUNTIME_BINDING(RBHANDLE)  (void)FreeLibrary(RBHANDLE)
+#define GET_RUNTIME_SYMBOL(RBHANDLE, FUNCNAME) GetProcAddress(RBHANDLE, FUNCNAME)
+#endif  /* HAVE_WINDLL_RUNTIME_BINDING */
+
+/* FIXME: support HP-UX? (Doesn't have dlopen().) 20010626 mortene. */
+
 static simage_wrapper_t * simage_instance = NULL;
-static void * simage_libhandle = NULL;
+static LIBHANDLE_T simage_libhandle = NULL;
 static int simage_failed_to_load = 0;
 
 
@@ -50,14 +70,15 @@ static void
 simage_wrapper_cleanup(void)
 {
 #ifdef SIMAGE_RUNTIME_LINKING
-  if (simage_libhandle) (void)dlclose(simage_libhandle);
+  if (simage_libhandle) { CLOSE_RUNTIME_BINDING(simage_libhandle); }
 #endif /* SIMAGE_RUNTIME_LINKING */
 
   assert(simage_instance);
   free(simage_instance);
 }
 
-/* backup-functions. More robust when simage is an old version, or not available */
+/* backup-functions. More robust when simage is an old version, or not
+   available */
 
 static int
 simage_wrapper_versionMatchesAtLeast(int major,
@@ -73,25 +94,25 @@ simage_wrapper_versionMatchesAtLeast(int major,
   return 1;
 }
 
-static int
+static int APIENTRY
 simage_wrapper_get_num_savers(void)
 {
   return 0;
 }
 
-static void *
+static void * APIENTRY
 simage_wrapper_get_saver_handle(int jada)
 {
   return NULL;
 }
 
-static int
+static int APIENTRY
 simage_wrapper_check_save_supported(const char * jada)
 {
   return 0;
 }
 
-static int
+static int APIENTRY
 simage_wrapper_save_image(const char * jada,
                           const unsigned char * jada2,
                           int jada3, int jada4, int jada5,
@@ -100,19 +121,19 @@ simage_wrapper_save_image(const char * jada,
   return 0;
 }
 
-const char *
+const char * APIENTRY
 simage_wrapper_get_saver_extensions(void * handle)
 {
   return "";
 }
 
-const char *
+const char * APIENTRY
 simage_wrapper_get_saver_fullname(void * handle)
 {
   return NULL;
 }
 
-const char *
+const char * APIENTRY
 simage_wrapper_get_saver_description(void * handle)
 {
   return NULL;
@@ -135,31 +156,26 @@ simage_wrapper(void)
 
 #ifdef SIMAGE_RUNTIME_LINKING
     {
+      /* FIXME: should we get the system shared library name from an
+         Autoconf check? 20000930 mortene. */
       const char * possiblelibnames[] = {
-        /* FIXME: should we get the system shared library name from an
-           Autoconf check? 20000930 mortene. */
         "simage", "libsimage", "libsimage.so",
-        /* FIXME: this hits on HP-UX? 20000930 mortene. */
-        "libsimage.sl",
+
+        /* MSWindows DLL names for the simage library */
+        /* FIXME: a bit of a hack this, but it looks difficult to find
+           a better strategy. 20010626 mortene. */
+        "simage1", "simage2", "simage3", "simage4", "simage5", "simage6",
         NULL
       };
-      /* FIXME: implement same functionality on MSWindows. 20000930 mortene. */
+
       int idx = 0;
       while (!simage_libhandle && possiblelibnames[idx]) {
         /*
-         *  FIXME: Purify complains about Bad Function Parameter here.
-         * Everything seems to work ok though.  pederb, 2001-02-07
+         *  FIXME: Purify complains about Bad Function Parameter here
+         *  for dlopen().  Everything seems to work ok though?
+         *  pederb, 2001-02-07
          */
-        simage_libhandle = dlopen(possiblelibnames[idx], RTLD_LAZY);
-#if 0 /* debug */
-        if (!simage_libhandle) {
-          (void)fprintf(stderr,
-                        "simage wrapper debug: couldn't open '%s': '%s'\n",
-                        possiblelibnames[idx],
-                        dlerror());
-          (void)fflush(stderr);
-        }
-#endif /* debug */
+        simage_libhandle = OPEN_RUNTIME_BINDING(possiblelibnames[idx]);
         idx++;
       }
 
@@ -172,10 +188,10 @@ simage_wrapper(void)
        necessary for this file to be compatible with C++ compilers. */
 #ifdef HAVE_HASH_QUOTING
 #define SIMAGEWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-    simage_instance->_funcname_ = (_funcsig_)dlsym(simage_libhandle, #_funcname_)
+    simage_instance->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(simage_libhandle, #_funcname_)
 #elif defined(HAVE_APOSTROPHES_QUOTING)
 #define SIMAGEWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-    simage_instance->_funcname_ = (_funcsig_)dlsym(simage_libhandle, "_funcname_")
+    simage_instance->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(simage_libhandle, "_funcname_")
 #else
 #error Unknown quoting.
 #endif
