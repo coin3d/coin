@@ -763,7 +763,13 @@ INPUT                 = @coin_build_dir@/include/Inventor/SbBasic.h \
                         @coin_src_dir@/src/engines/SoSelectOne.cpp \
                         @coin_src_dir@/include/Inventor/engines/SoSelectOne.h \
                         @coin_src_dir@/src/engines/SoTimeCounter.cpp \
-                        @coin_src_dir@/include/Inventor/engines/SoTimeCounter.h
+                        @coin_src_dir@/include/Inventor/engines/SoTimeCounter.h \
+                        @coin_src_dir@/src/nodekits/SoNodeKit.cpp \
+                        @coin_src_dir@/include/Inventor/nodekits/SoNodeKit.h \
+                        @coin_src_dir@/src/draggers/SoDragger.cpp \
+                        @coin_src_dir@/include/Inventor/draggers/SoDragger.h \
+                        @coin_src_dir@/src/manips/SoDirectionalLightManip.cpp \
+                        @coin_src_dir@/include/Inventor/manips/SoDirectionalLightManip.h
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
