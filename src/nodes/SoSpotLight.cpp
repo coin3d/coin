@@ -149,8 +149,9 @@ SoSpotLight::GLRender(SoGLRenderAction * action)
   // point (or spot) light when w = 1.0
   SbVec4f posvec(loc[0], loc[1], loc[2], 1.0f);
   glLightfv(light, GL_POSITION, posvec.getValue());
+  glLightfv(light, GL_SPOT_DIRECTION, this->direction.getValue().getValue());
 
-  float cutoff = this->cutOffAngle.getValue() * float(M_PI)/180.0f;
+  float cutoff = this->cutOffAngle.getValue() * 180.0f / float(M_PI);
   float dropoff = this->dropOffRate.getValue() * 128.0f;
 
   glLightf(light, GL_SPOT_EXPONENT, dropoff);
