@@ -19,8 +19,7 @@ RegularSources = \
 	SoNodeList.cpp \
 	SoPathList.cpp \
 	SoPickedPointList.cpp \
-	SoTypeList.cpp \
-	SoVRMLInterpOutputList.cpp
+	SoTypeList.cpp
 LinkHackSources = \
 	all.cpp
 PublicHeaders = \
@@ -41,8 +40,7 @@ PublicHeaders = \
 	../../include/Inventor/lists/SoNodeList.h \
 	../../include/Inventor/lists/SoPathList.h \
 	../../include/Inventor/lists/SoPickedPointList.h \
-	../../include/Inventor/lists/SoTypeList.h \
-	../../include/Inventor/lists/SoVRMLInterpOutputList.h
+	../../include/Inventor/lists/SoTypeList.h
 PrivateHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(lists)
