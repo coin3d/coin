@@ -551,7 +551,11 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
     shapedata->bigtexture->beginShape(state, big, SoTextureQualityElement::get(state));
     this->generatePrimitives(action);
-    shapedata->bigtexture->endShape(state, this, mb);
+    // endShape() returns whether more/less detailed textures need to be
+    // fetched. We force a redraw if this is needed.
+    if (shapedata->bigtexture->endShape(state, this, mb) == FALSE) {
+      action->getCurPath()->getHead()->touch();
+    }
     shapedata->is_doing_bigtexture_rendering = FALSE;
 
     return FALSE;

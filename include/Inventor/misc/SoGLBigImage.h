@@ -67,6 +67,7 @@ public:
                       SbVec2f & tcmul);
   void applySubImage(SoState * state, const int idx, const float quality,
                      const SbVec2s & projsize);
+  SbBool exceededChangeLimit(void);
 
   // will return NULL to avoid that SoGLTextureImageElement will
   // update the texture state.

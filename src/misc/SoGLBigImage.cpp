@@ -415,6 +415,17 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
   dl->call(state);
 }
 
+/*!
+  To avoid doing too much work in one frame, there is a limit on the
+  number of subtextures that can be changed each frame. If this limit
+  is exceeded, this function will return TRUE, otherwise FALSE.
+*/
+SbBool 
+SoGLBigImage::exceededChangeLimit(void)
+{
+  return THIS->changecnt > CHANGELIMIT;
+}
+
 // Documented in superclass. Overridden to handle age on subimages.
 void
 SoGLBigImage::unrefOldDL(SoState * state, const uint32_t maxage)

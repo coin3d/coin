@@ -104,7 +104,7 @@ soshape_bigtexture::beginShape(SoState * state,
   }
 }
 
-void
+SbBool
 soshape_bigtexture::endShape(SoState * state,
                              SoShape * shape,
                              SoMaterialBundle & mb)
@@ -143,7 +143,9 @@ soshape_bigtexture::endShape(SoState * state,
       }
       glEnd();
     }
-  }
+  }  
+  // return TRUE if all textures were created in the correct resolution
+  return ! this->image->exceededChangeLimit();
 }
 
 void
