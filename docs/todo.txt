@@ -49,18 +49,9 @@ these categories:
 007. (Modules) [1999????] Complete the implementation of sensors. Its
      nearly there.
 
-008. (Build) [1999????] Convert simage build to an autoconf-based
-     process.
-
 009. (Build) [1999????] Make simage build under MSWindows.
 
-010. (Build) [1999????] Convert SoQt build to an autoconf-based
-     process.
-
 011. (Build) [1999????] Make SoQt build under MSWindows.
-
-012. (Build) [1999????] Convert Coin build to an autoconf-based
-     process.
 
 013. (Build) [1999????] Make Coin build under MSWindows.
 
@@ -125,5 +116,19 @@ these categories:
 033. (Support) [19990807] Make an overview list on the Coin WWW pages
      of what's implemented and what's not -- separate list into "vs OI
      2.1" and "vs OI 2.5".
+
+******************************************************************************
+
+Done
+====
+
+008. (Build) [1999????] Convert simage build to an autoconf-based
+     process.
+
+010. (Build) [1999????] Convert SoQt build to an autoconf-based
+     process.
+
+012. (Build) [1999????] Convert Coin build to an autoconf-based
+     process.
 
 ******************************************************************************

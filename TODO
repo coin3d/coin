@@ -47,6 +47,9 @@ Done
 
 (format is: "* [author:conceived-date][implementer:finished-date] item")
 
+* [mortene:19990918][mortene:19990918] use the GL_CFLAGS and GL_LIBS
+  from the OpenGL detection macro.
+
 * [mortene:19990912][mortene:19990916] add configure options for
   turning compilation with profiling information on or off.
 

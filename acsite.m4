@@ -46,8 +46,10 @@ AC_DEFUN(MDL_HAVE_OPENGL,
   AC_REQUIRE([AC_PATH_X])
   AC_REQUIRE([AC_PATH_XTRA])
 
-  AC_CACHE_CHECK([for OpenGL], mdl_cv_have_OpenGL,
-  [
+dnl FIXME: there's _way_ too many sideeffects in this macro!
+dnl 19990918 mortene.
+dnl  AC_CACHE_CHECK([for OpenGL], mdl_cv_have_OpenGL,
+dnl  [
 dnl FIXME: needs CVS version of autoconf to use AC_HELP_STRING.
 dnl 19990916 mortene.
 dnl Check for Mesa first, unless we were asked not to.
@@ -119,5 +121,6 @@ dnl and we don't want to be global namespace polluters.
     CPPFLAGS="$GL_save_CPPFLAGS"
 
     AC_LANG_RESTORE
-  ])
+dnl FIXME: AC_CACHE_CHECK ends here. 19990918 mortene.
+dnl  ])
 ])

@@ -1,4 +1,4 @@
-This directory contains the files used for building Coin with a
+This directory contained the files used for building Coin with a
 tmake-based process. It is currently being phased out in favor of an
 autoconf based scheme, so don't do any further development on the
 files in this directory or in any of the subdirectories.

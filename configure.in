@@ -1,8 +1,10 @@
 dnl  This can be any file in the package.
 AC_INIT(src/SoDB.cpp)
 
-dnl  Locate C++ compiler.
+dnl  Locate C++ compiler and set C++ as the default compiler to run
+dnl  in tests.
 AC_PROG_CXX
+AC_LANG_CPLUSPLUS
 
 dnl *******************************************************************
 dnl * Library version control.
@@ -56,7 +58,6 @@ dnl *******************************************************************
 AM_INIT_AUTOMAKE(libCoin, $VERSION)
 
 dnl  File to cram results from the configure tests into.
-dnl AM_CONFIG_HEADER(config.h)
 AM_CONFIG_HEADER(config.h include/Inventor/SbBasic.h)
 
 dnl  Default to not building a static library.
@@ -96,6 +97,9 @@ if test "x$mdl_cv_have_OpenGL" = "xno"; then
   AC_MSG_ERROR([
 *** Needs an OpenGL-compatible development installation to compile!])
 fi
+
+CXXFLAGS="$CXXFLAGS $GL_CFLAGS"
+LIBS="$LIBS $GL_LIBS"
 
 
 dnl *******************************************************************
