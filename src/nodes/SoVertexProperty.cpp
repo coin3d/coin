@@ -272,11 +272,14 @@ SoVertexProperty::doAction(SoAction *action)
 {
   SoState * state = action->getState();
 
+  uint32_t overrideflags = SoOverrideElement::getFlags(state);
+#define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & overrideflags) != 0)
+
   SbBool glrender = action->isOfType(SoGLRenderAction::getClassTypeId());
   if (glrender &&
       SoShapeStyleElement::isScreenDoor(state) &&
       this->orderedRGBA.getNum() &&
-      ! SoOverrideElement::getTransparencyOverride(state)) {
+      ! TEST_OVERRIDE(TRANSPARENCY)) {
     float t = (255 - (this->orderedRGBA[0] & 0xff)) / 255.0f;
     SoGLPolygonStippleElement::setTransparency(state, t);
     SoGLPolygonStippleElement::set(state, t >= 1.0f/255.0f);
@@ -319,17 +322,22 @@ SoVertexProperty::doAction(SoAction *action)
     }
   }
 
-  if (this->normal.getNum() > 0) {
+  if (this->normal.getNum() > 0 && !TEST_OVERRIDE(NORMAL_VECTOR)) {
     SoNormalElement::set(state, this, this->normal.getNum(),
                          this->normal.getValues(0));
+    if (this->isOverride()) {
+      SoOverrideElement::setNormalVectorOverride(state, this, TRUE);
+    }
   }
-  if (this->normal.getNum()) {
+  if (this->normal.getNum() > 0 && !TEST_OVERRIDE(NORMAL_BINDING)) {
     SoNormalBindingElement::set(state, this,
                                 (SoNormalBindingElement::Binding)
                                 this->normalBinding.getValue());
+    if (this->isOverride()) {
+      SoOverrideElement::setNormalBindingOverride(state, this, TRUE);
+    }
   }
-  if (this->orderedRGBA.getNum() > 0
-      && !SoOverrideElement::getDiffuseColorOverride(state)) {
+  if (this->orderedRGBA.getNum() > 0 && !TEST_OVERRIDE(DIFFUSE_COLOR)) {
     SoDiffuseColorElement::set(state, this, this->orderedRGBA.getNum(),
                                this->orderedRGBA.getValues(0),
                                this->transparent);
@@ -337,8 +345,7 @@ SoVertexProperty::doAction(SoAction *action)
       SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     }
   }
-  if (this->orderedRGBA.getNum() && 
-      !SoOverrideElement::getMaterialBindingOverride(state)) {
+  if (this->orderedRGBA.getNum() && !TEST_OVERRIDE(MATERIAL_BINDING)) {
     SoMaterialBindingElement::set(state, this,
                                   (SoMaterialBindingElement::Binding)
                                   this->materialBinding.getValue());
@@ -346,6 +353,7 @@ SoVertexProperty::doAction(SoAction *action)
       SoOverrideElement::setMaterialBindingOverride(state, this, TRUE);
     }
   }
+#undef TEST_OVERRIDE
 }
 
 // Documented in superclass.
