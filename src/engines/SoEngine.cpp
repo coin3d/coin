@@ -213,9 +213,19 @@ SoEngine::inputChanged(SoField * /* which */)
 void
 SoEngine::notify(SoNotList *list)
 {
-  if (this->stateflags.dirty) return;
-  this->stateflags.dirty = 1;
+  if (this->stateflags.dirty) {
+    if (!this->isNotifying()) {
+      // "notify" engine about the changed field
+      this->stateflags.isnotifying = 1;
+      this->inputChanged(list->getLastField());
+      this->stateflags.isnotifying = 0;
+    }
+    // just return, output connections have been notified earlier
+    return;
+  }
 
+  this->stateflags.dirty = 1;
+  
   if (!this->isNotifying() && this->isNotifyEnabled()) {
     this->stateflags.isnotifying = 1;
     this->inputChanged(list->getLastField());
