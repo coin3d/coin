@@ -45,7 +45,21 @@ SO_ENGINE_ABSTRACT_SOURCE(SoInterpolate);
 */
 SoInterpolate::SoInterpolate(void)
 {
-  SO_ENGINE_CONSTRUCTOR(SoInterpolate);
+  // Don't use standard SO_ENGINE_CONSTRUCTOR.
+
+  // Catch attempts to use an engine class which has not been
+  // initialized.
+  assert(SoInterpolate::classTypeId != SoType::badType());
+  // Initialize a inputdata container for the class only once.
+  if (!SoInterpolate::inputdata) {
+    // FIXME: is this really necessary for SoInterpolate? 20000505 mortene.
+    SoInterpolate::inputdata =
+      new SoFieldData(SoInterpolate::parentinputdata ?
+                      *SoInterpolate::parentinputdata : NULL);
+    SoInterpolate::outputdata =
+      new SoEngineOutputData(SoInterpolate::parentoutputdata ?
+                             *SoInterpolate::parentoutputdata : NULL);
+  }
 
   SO_ENGINE_ADD_INPUT(alpha, (0.0f));
 }
