@@ -127,13 +127,11 @@ A:      Yes.  We have now developed a system that uses the Autoconf/Automake
 
 Q1.6:   Is there a Coin port for Mac OS X/Darwin?
 
-A:      Coin configures and compiles on Mac OS X, but there is currently no
-        SoMac library available.
-
-        For a window binding, there are still at least three options:
-        1) use Coin with GLUT, 2) manage the GL context manually, 3)
-        use the port of the Qt multiplatform library -- see
-        <URL:http://www.trolltech.com>.
+A:      Yes, there is full support for Coin, SoQt and SoXt on Mac OS
+        X. You can also integrate Coin into Cocoa applications
+        directly by using the Sc21 framework. See
+        http://www.coin3d.org/mac/ for Mac-specific information,
+        build instructions, download links and tutorials.
 
 
 Section 2. Common Problems
