@@ -313,7 +313,7 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
   int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*(SbMax(depth>>1,1))*nc;
   if (memreq > mipmap_buffer_size) {
     if (mipmap_buffer == NULL) {
-      coin_atexit(fast_mipmap_cleanup);
+      coin_atexit((coin_atexit_f *)fast_mipmap_cleanup);
     }
     else delete [] mipmap_buffer;
     mipmap_buffer = new unsigned char[memreq];
