@@ -3,7 +3,7 @@ Frequently Asked Questions for Coin
 ===================================
 
 Last Updated:
-Tue, 11 Sep 2001 12:36:30 +0200
+Wed, 31 Oct 2001 16:08:09 +0100
 
 For answers to common Open Inventor programming issues not covered in this
 FAQ, take a look at the FAQs directory in the SoGuiExamples archive.
@@ -26,6 +26,9 @@ Index
   Q3: I try to change the SoText2/SoText3 font, but nothing happens.
       Why, oh why?
   Q4: Where does the SoGuiExamples module install the programs?
+
+3: More Whys
+  Q1: Why is the .so-version 20 for Coin 1.0?
 
 
 Section 1. Extensions and Ports
@@ -64,7 +67,6 @@ A:      Coin configures and compiles on Mac OS X, but there is currently no
 
 Section 2. Common Problems
 ==========================
-
 
 Q2.1:   Why doesn't it work properly to render the same scene graph in two
         different windows?
@@ -120,5 +122,42 @@ Q2.4:   Where does the SoGuiExamples module install the programs?
 A:      They are not installed.  The programs are just examples, and do not
         belong with the installed executables on a system.  They are built
         in the build dir, and are intended to be run from there.
+
+
+Section 3. Other Whys
+=====================
+
+Q3.1:   Why is the .so-version 20 for Coin 1.0?
+
+A:      This was done to keep the artificial mapping we have constructed
+        between the release version number and ABI interface version of Coin
+        as simple as possible.  We have this mapping because we plan to
+        do parallell development of Coin 1.0 and Coin 2.0 at the same time
+        because Coin 1.0 has special status as the Open Inventor 2.1
+        compatibility release.
+
+        Keep in mind that .so-version numbers and release version numbers
+        really do not have anything to do with each other in the first place.
+
+        When you release a new major version of a library, you usually
+        break compatibility with earlier versions of the library.  When you
+        change the API/ABI of a library, you increment the interface number
+        to indicate that the library has a new interface.  Since we want to
+        continue development of Coin 1.0 after Coin 2.0 is released, we need
+        to reserve space for future Coin 1.x releases, and set the Coin 2.0
+        interface number after the reserved space.  We decided 20 interface-
+        numbers would suffice for each major version of the Coin library,
+        and the simplest equation for finding the interface number became
+        major*20+minor.
+
+        Incidentally, a lot of platforms (Linux included) calculate the
+        .so-number by taking the interface number and subtracting the age,
+        and the age is the same as the minor release version number for
+        Coin.  This will make the .so-number stay at 20 for the whole 1.x
+        series and similarly stay at 40 for the whole 2.x series, which of
+        course looks silly, but that's the way it is.
+
+        See also the Libtool manual, section about Versioning.  It's the
+        same system, except that we have added reserved space in our scheme.
 
 --
