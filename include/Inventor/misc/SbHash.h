@@ -161,7 +161,7 @@ public:
     }
   }
 
-  unsigned int getnumElements(void) const { return this->elements; }
+  unsigned int getNumElements(void) const { return this->elements; }
 
   void setHashFunc(SbHashFunc * func) { this->hashfunc = func; }
 
