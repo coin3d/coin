@@ -248,9 +248,13 @@ SbList<Type>::operator [] (const int index) const
 template <class Type> inline Type &
 SbList<Type>::operator [] (const int index)
 {
+#if 0 // OBSOLETED: dangerous. 19991025 mortene.
   assert(index >= 0);
   while (index >= this->itemBufferSize) this->growList();
   if (index >= this->numItems) this->numItems = index+1;
+#else // new code
+  assert(index >= 0 && index < this->numItems);
+#endif // new code
   return this->itemBuffer[index];
 }
 

@@ -66,11 +66,11 @@ template class SbList<SoTypeData *>;
 #endif // ! DONT_NEED_TEMPLATE_DEFINITION
 #endif //NEED_TEMPLATE_DEFINITION
 
-SoTypeList             SoType::typeList;
-SbList<SoTypeData *>   SoType::typeDataList;
-SbDict                 SoType::typeDict(512); //increase if necessary
+SoTypeList SoType::typeList;
+SbList<SoTypeData *> SoType::typeDataList;
+SbDict SoType::typeDict(512); //increase if necessary
 
-/*!
+/*! 
   \typedef SoType::instantiationMethod
 
   FIXME: write doc.

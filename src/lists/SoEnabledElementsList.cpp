@@ -34,30 +34,6 @@
 
 #include <assert.h>
 
-/*!
-  \var SoEnabledElementsList::setUpCounter
-
-  FIXME: write doc.
-*/
-
-/*!
-  \var SoEnabledElementsList::elements
-
-  FIXME: write doc.
-*/
-
-/*!
-  \var SoEnabledElementsList::parent
-
-  FIXME: write doc.
-*/
-
-/*!
-  \var SoEnabledElementsList::counter
-
-  FIXME: write doc.
-*/
-
 int SoEnabledElementsList::counter;
 
 /*!
@@ -67,9 +43,6 @@ int SoEnabledElementsList::counter;
 SoEnabledElementsList::SoEnabledElementsList(SoEnabledElementsList * const parentList)
   : setUpCounter(counter), parent(parentList)
 {
-  // set default element as badType. badType in the element list
-  // means that this stackIndex is not enabled.
-  this->elements.setDefault(SoType::badType());
 }
 
 #include <Inventor/SbName.h>
@@ -108,7 +81,9 @@ SoEnabledElementsList::enable(const SoType elementType,
 			 this, &(this->elements), elements.getLength());
 #endif // debug
 
-  // FIXME: assumes list will grow if stackIndex >= # elements in list
+  while (stackIndex >= this->elements.getLength()) 
+    this->elements.append(SoType::badType());
+
   this->elements[stackIndex] = elementType;
 }
 
@@ -123,7 +98,7 @@ SoEnabledElementsList::merge(const SoEnabledElementsList & list)
   SoType bad = SoType::badType();
   const int num = list.elements.getLength();
   for (int i = 0; i < num; i++) {
-    if (list.elements.get(i) != bad) this->elements[i] = list.elements.get(i);
+    if (list.elements.get(i) != bad) this->enable(list.elements.get(i), i);
   }
 }
 

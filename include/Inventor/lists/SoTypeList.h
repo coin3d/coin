@@ -20,25 +20,11 @@
 #ifndef __SOTYPELIST_H__
 #define __SOTYPELIST_H__
 
-#include <Inventor/lists/SbPList.h>
+#include <Inventor/lists/SbList.h>
 
 class SoType;
 
-class SoTypeList : public SbPList {
-  typedef SbPList inherited;
-public:
-  SoTypeList(void);
-  SoTypeList(const int size);
-  SoTypeList(const SoTypeList &l);
-  ~SoTypeList(void);
-  void append(SoType type);
-  void insert(SoType type, const int addBefore);
-  void set(const int i, SoType type);
-  int find(SoType typeId) const;
-  SoType &operator [](const int i) const;
-
-  void setDefault(SoType type);
-  SoType get(const int i) const;
+class SoTypeList : public SbList <SoType> {
 };
 
 #endif // !__SOTYPELIST_H__

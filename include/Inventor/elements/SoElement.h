@@ -192,7 +192,6 @@ protected:
   SoType typeId;
   int stackIndex;
 
-  static int nextStackIndex;
   static int createStackIndex(const SoType id);
   static SoTypeList * stackToType;
 

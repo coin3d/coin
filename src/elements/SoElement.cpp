@@ -787,7 +787,7 @@ SoElement::matches(const SoElement * /* element */) const
 int
 SoElement::getNumStackIndices()
 {
-  return nextStackIndex;
+  return SoElement::stackToType->getLength();
 }
 
 /*!
@@ -798,7 +798,7 @@ SoElement::getNumStackIndices()
 SoType
 SoElement::getIdFromStackIndex(const int stackIndex)
 {
-  assert(SoElement::stackToType->getLength() >= stackIndex);
+  assert(SoElement::stackToType->getLength() > stackIndex);
   return (*SoElement::stackToType)[ stackIndex ];
 }
 
@@ -923,14 +923,6 @@ SoElement::setStackIndex(const int stackIndex)
 }
 
 /*!
-  \fn SoElement::nextStackIndex
-
-  FIXME: write doc.
-*/
-
-int SoElement::nextStackIndex;
-
-/*!
   \fn SoElement::stackToType
 
   FIXME: write doc.
@@ -946,8 +938,8 @@ int
 SoElement::createStackIndex(const SoType typeId)
 {
   if (typeId.canCreateInstance()) {
-    (*SoElement::stackToType)[nextStackIndex] = typeId;
-    return SoElement::nextStackIndex++;
+    SoElement::stackToType->append(typeId);
+    return SoElement::stackToType->getLength() - 1;
   }
   return -1;
 }
