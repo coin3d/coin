@@ -1,0 +1,23 @@
+WHAT'S THIS?
+============
+
+This document contains a list of various deficiencies in Coin that are
+not "large enough" to warrant them being listed as full projects in
+the docs/projects.txt file, and probably not "small enough" to be
+fixed within an hour or two.
+
+See also the api-wish-list.txt file for other "mini" projects.
+
+
+STUFF TO FIX IN COIN
+====================
+
+* Bounding box rendering, major performance optimization
+  2001-11-23  Morten Eriksen  <mortene@sim.no>
+
+  Bounding boxes are now always recalculated when used for
+  rendering. See the relevant code in SoShape::shouldGLRender().
+
+  A huge speed-up when rendering bboxes instead of geometry could be
+  had if SoShape nodes kept a bounding box cache in the same manner as
+  SoSeparator nodes.
