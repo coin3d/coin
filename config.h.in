@@ -81,6 +81,9 @@
 /* define this if the type is available on the system */
 #undef HAVE_INT8_T
 
+/* Define if you have the <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
+
 /* Define if you have the <io.h> header file. */
 #undef HAVE_IO_H
 

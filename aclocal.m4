@@ -1310,9 +1310,13 @@ do
   if $sim_ac_searching; then
     SIM_AC_CHECK_SIZEOF($sim_ac_type, [
 #include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* ! HAVE_INTTYPES_H */
 #ifdef HAVE_STDINT_H
 #include <stdint.h>
 #endif /* HAVE_STDINT_H */
+#endif /* ! HAVE_INTTYPES_H */
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */

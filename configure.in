@@ -290,7 +290,7 @@ SIM_AC_CHECK_VAR_FUNCTIONNAME
 
 
 ## Headers we might want to use. #########################################
-AC_CHECK_HEADERS([unistd.h sys/types.h stdint.h sys/param.h io.h windows.h winsock2.h])
+AC_CHECK_HEADERS([unistd.h sys/types.h inttypes.h stdint.h sys/param.h io.h windows.h winsock2.h])
 
 AC_CHECK_HEADERS(
   [sys/unistd.h],

@@ -61,6 +61,8 @@
    with defines in application code in a project using Autoconf
    configure?  20010711 mortene. */
 
+/* The <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
 /* The <stdint.h> header file. */
 #undef HAVE_STDINT_H
 /* The <sys/types.h> header file. */
@@ -93,10 +95,16 @@
 
 
 /* The header files should be listed in the same order as they are in
-   the SIM_AC_DEFINE_BYTESIZE_TYPES detection macro. */
+   the SIM_AC_DEFINE_BYTESIZE_TYPES detection macro. This is the same
+   order as the one Autoconf (currently upcoming 2.51) is using for its
+   standard includes.  20010711 larsa */
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* ! HAVE_INTTYPES_H */
 #ifdef HAVE_STDINT_H
 #include <stdint.h>
 #endif /* HAVE_STDINT_H */
+#endif /* ! HAVE_INTTYPES_H */
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
