@@ -21,7 +21,6 @@
  *
 \**************************************************************************/
 
-#include <simage_wrapper.h>
 #include <Inventor/C/basic.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/glue/dl.h>
@@ -39,6 +38,12 @@
 #ifdef HAVE_LIBSIMAGE /* In case we're _not_ doing runtime linking. */
 #define SIMAGEWRAPPER_ASSUME_SIMAGE 1
 #endif /* HAVE_LIBSIMAGE */
+
+#if SIMAGEWRAPPER_ASSUME_SIMAGE
+#include <simage.h>
+#endif /* SIMAGEWRAPPER_ASSUME_SIMAGE */
+
+#include <simage_wrapper.h>
 
 static simage_wrapper_t * simage_instance = NULL;
 static cc_libhandle simage_libhandle = NULL;

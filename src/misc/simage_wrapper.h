@@ -77,6 +77,7 @@ extern "C" {
   typedef const char * (APIENTRY *simage_get_saver_fullname_t)(void * handle);
   typedef const char * (APIENTRY *simage_get_saver_description_t)(void * handle);
 
+#if !SIMAGEWRAPPER_ASSUME_SIMAGE
   enum {
     S_INTEGER_PARAM_TYPE,
     S_BOOL_PARAM_TYPE = S_INTEGER_PARAM_TYPE,
@@ -88,10 +89,12 @@ extern "C" {
   };
 
   typedef struct simage_parameters_s s_params;
+  typedef struct simage_stream_s s_stream;
+#endif
+
   typedef void (APIENTRY *s_params_set_t)(s_params * params, ...);
   typedef int (APIENTRY *s_params_get_t)(s_params * params, ...);
 
-  typedef struct simage_stream_s s_stream;
   typedef s_stream * (APIENTRY *s_stream_open_t)(const char * filename, 
                                           s_params * params /* | NULL */);
   typedef void * (APIENTRY *s_stream_get_buffer_t)(s_stream * stream, 
