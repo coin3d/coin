@@ -1,3 +1,6 @@
+#ifndef COIN_SOSENSOR_H
+#define COIN_SOSENSOR_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOSENSOR_H
-#define COIN_SOSENSOR_H
 
 #include <Inventor/SbBasic.h>
 

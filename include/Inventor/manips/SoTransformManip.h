@@ -1,3 +1,6 @@
+#ifndef COIN_SOTRANSFORMMANIP_H
+#define COIN_SOTRANSFORMMANIP_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOTRANSFORMMANIP_H
-#define COIN_SOTRANSFORMMANIP_H
 
 #include <Inventor/nodes/SoTransform.h>
 #ifndef COIN_INTERNAL
@@ -81,7 +81,6 @@ protected:
 
   void attachSensors(const SbBool onoff);
 
-private:
 };
 
 #endif // !COIN_SOTRANSFORMMANIP_H

@@ -1,3 +1,6 @@
+#ifndef COIN_SOSUBACTIONP_H
+#define COIN_SOSUBACTIONP_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSUBACTIONP_H
-#define COIN_SOSUBACTIONP_H
-
 // This file contains macros which are private to the
 // implementation. The header file is not installed for the Coin
 // development system.
@@ -40,7 +40,5 @@
   do { \
     SO_ACTION_ADD_METHOD(nodeclass, method); \
   } while (0)
-
-
 
 #endif // !COIN_SOSUBACTIONP_H

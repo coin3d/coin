@@ -24,8 +24,6 @@
 
 #include <Inventor/C/threads/rwmutex.h>
 
-// *************************************************************************
-
 class SbRWMutex {
 public:
   enum Precedence {
@@ -51,6 +49,4 @@ private:
   cc_rwmutex * rwmutex;
 };
 
-// *************************************************************************
-
-#endif // ! COIN_SBRWMUTEX_H
+#endif // !COIN_SBRWMUTEX_H

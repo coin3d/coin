@@ -1,3 +1,6 @@
+#ifndef COIN_SOKEYBOARDEVENT_H
+#define COIN_SOKEYBOARDEVENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOKEYBOARDEVENT_H
-#define COIN_SOKEYBOARDEVENT_H
-
 #include <Inventor/events/SoButtonEvent.h>
-
 
 // Avoid problem with Microsoft Win32 API headers (yes, they actually
 // #define DELETE somewhere in their header files).
@@ -119,6 +118,5 @@ private:
 #define DELETE SOKEYBOARDEVENT_STORE_DELETE_DEF
 #undef SOKEYBOARDEVENT_STORE_DELETE_DEF
 #endif /* SOKEYBOARDEVENT_STORE_DELETE_DEF */
-
 
 #endif // !COIN_SOKEYBOARDEVENT_H

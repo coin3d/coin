@@ -1,3 +1,6 @@
+#ifndef COIN_INTTYPES_H
+#define COIN_INTTYPES_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_INTTYPES_H
-#define COIN_INTTYPES_H
 
 /*
   This file defines the following types:
@@ -154,5 +154,4 @@ typedef COIN_UINT64_T uint64_t;
 #define HAVE_UINT64_T 1
 #endif /* !HAVE_UINT64_T && COIN_UINT64_T */
 
-
-#endif /* ! COIN_INTTYPES_H */
+#endif /* !COIN_INTTYPES_H */

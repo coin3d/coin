@@ -1,3 +1,6 @@
+#ifndef COIN_SOMEMORYERROR_H
+#define COIN_SOMEMORYERROR_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOMEMORYERROR_H
-#define COIN_SOMEMORYERROR_H
-
 #include <Inventor/errors/SoError.h>
-
 
 class COIN_DLL_API SoMemoryError : public SoError {
   typedef SoError inherited;

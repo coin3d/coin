@@ -24,8 +24,6 @@
 
 #include <Inventor/C/threads/storage.h>
 
-// *************************************************************************
-
 class SbStorage {
 public:
   SbStorage(unsigned int size) { this->storage = cc_storage_construct(size); }
@@ -39,6 +37,4 @@ private:
   cc_storage * storage;
 };
 
-// *************************************************************************
-
-#endif // ! COIN_SBSTORAGE_H
+#endif // !COIN_SBSTORAGE_H

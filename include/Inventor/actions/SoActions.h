@@ -1,3 +1,6 @@
+#ifndef COIN_SOACTIONS_H
+#define COIN_SOACTIONS_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOACTIONS_H
-#define COIN_SOACTIONS_H
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>

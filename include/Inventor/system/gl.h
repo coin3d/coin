@@ -1,3 +1,6 @@
+#ifndef COIN_GL_H
+#define COIN_GL_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_GL_H
-#define COIN_GL_H
 
 /* This header file is supposed to take care of all operating system
  * dependent anomalies connected to the gl.h include file.  It is only

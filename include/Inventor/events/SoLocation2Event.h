@@ -1,3 +1,6 @@
+#ifndef COIN_SOLOCATION2EVENT_H
+#define COIN_SOLOCATION2EVENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOLOCATION2EVENT_H
-#define COIN_SOLOCATION2EVENT_H
-
 #include <Inventor/events/SoSubEvent.h>
-
 
 class COIN_DLL_API SoLocation2Event : public SoEvent {
   typedef SoEvent inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SBPROJECTORS_H
+#define COIN_SBPROJECTORS_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SBPROJECTORS_H
-#define COIN_SBPROJECTORS_H
-
 #include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
 #include <Inventor/projectors/SbSphereSheetProjector.h>
@@ -33,4 +33,4 @@
 #include <Inventor/projectors/SbCylinderSectionProjector.h>
 #include <Inventor/projectors/SbCylinderPlaneProjector.h>
 
-#endif // COIN_SBPROJECTORS_H
+#endif // !COIN_SBPROJECTORS_H

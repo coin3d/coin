@@ -1,3 +1,6 @@
+#ifndef COIN_SONODEKIT_H
+#define COIN_SONODEKIT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SONODEKIT_H
-#define COIN_SONODEKIT_H
-
 #include <Inventor/SbBasic.h> // for SbBool type
-
 
 class COIN_DLL_API SoNodeKit {
 public:

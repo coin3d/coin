@@ -1,3 +1,6 @@
+#ifndef COIN_SOSPOTLIGHTMANIP_H
+#define COIN_SOSPOTLIGHTMANIP_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOSPOTLIGHTMANIP_H
-#define COIN_SOSPOTLIGHTMANIP_H
 
 #include <Inventor/nodes/SoSpotLight.h>
 #ifndef COIN_INTERNAL

@@ -1,3 +1,6 @@
+#ifndef COIN_SOMOTION3EVENT_H
+#define COIN_SOMOTION3EVENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOMOTION3EVENT_H
-#define COIN_SOMOTION3EVENT_H
-
 #include <Inventor/events/SoSubEvent.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbRotation.h>
-
 
 class COIN_DLL_API SoMotion3Event : public SoEvent {
   typedef SoEvent inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOIDLESENSOR_H
+#define COIN_SOIDLESENSOR_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOIDLESENSOR_H
-#define COIN_SOIDLESENSOR_H
-
 #include <Inventor/sensors/SoDelayQueueSensor.h>
-
 
 class COIN_DLL_API SoIdleSensor : public SoDelayQueueSensor {
   typedef SoDelayQueueSensor inherited;

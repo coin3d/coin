@@ -24,8 +24,6 @@
 
 #include <Inventor/C/threads/barrier.h>
 
-// *************************************************************************
-
 class SbBarrier {
 public:
   SbBarrier(unsigned int count) { this->barrier = cc_barrier_construct(count); }
@@ -37,6 +35,4 @@ private:
   cc_barrier * barrier;
 };
 
-// *************************************************************************
-
-#endif // ! COIN_SBBARRIER_H
+#endif // !COIN_SBBARRIER_H

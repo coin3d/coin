@@ -1,3 +1,6 @@
+#ifndef COIN_SOLINEHIGHLIGHTRENDERACTION_H
+#define COIN_SOLINEHIGHLIGHTRENDERACTION_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOLINEHIGHLIGHTRENDERACTION_H
-#define COIN_SOLINEHIGHLIGHTRENDERACTION_H
-
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/SbColor.h>
-
 
 class COIN_DLL_API SoLineHighlightRenderAction : public SoGLRenderAction {
   typedef SoGLRenderAction inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOINTERACTIONKIT_H
+#define COIN_SOINTERACTIONKIT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOINTERACTIONKIT_H
-#define COIN_SOINTERACTIONKIT_H
-
 #include <Inventor/nodekits/SoSubKit.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/fields/SoSFEnum.h>
@@ -37,7 +37,6 @@ class SoFieldSensor;
 
 class SoSensor;
 class SoSeparator;
-
 
 class COIN_DLL_API SoInteractionKit : public SoBaseKit {
   typedef SoBaseKit inherited;

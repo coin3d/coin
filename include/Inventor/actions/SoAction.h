@@ -1,3 +1,6 @@
+#ifndef COIN_SOACTION_H
+#define COIN_SOACTION_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOACTION_H
-#define COIN_SOACTION_H
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SoType.h>
@@ -177,6 +177,5 @@ SoAction::popCurPath(const PathCode prevpathcode)
   this->currentpath.pop();
   this->currentpathcode = prevpathcode;
 }
-
 
 #endif // !COIN_SOACTION_H

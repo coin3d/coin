@@ -25,8 +25,6 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/C/threads/thread.h>
 
-// *************************************************************************
-
 class SbThread {
 public:
   static SbThread * create(void *(*func)(void *), void * closure) {
@@ -52,6 +50,4 @@ private:
   cc_thread * thread;
 };
 
-// *************************************************************************
-
-#endif // ! COIN_SBTHREAD_H
+#endif // !COIN_SBTHREAD_H

@@ -1,3 +1,6 @@
+#ifndef COIN_SOEVENT_H
+#define COIN_SOEVENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,16 +24,12 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOEVENT_H
-#define COIN_SOEVENT_H
-
 #include <Inventor/SoType.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbTime.h>
 
 class SbViewportRegion;
 class SbVec2f;
-
 
 class COIN_DLL_API SoEvent {
 

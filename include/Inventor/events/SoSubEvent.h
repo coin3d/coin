@@ -1,3 +1,6 @@
+#ifndef COIN_SOSUBEVENT_H
+#define COIN_SOSUBEVENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSUBEVENT_H
-#define COIN_SOSUBEVENT_H
-
 #include <Inventor/events/SoEvent.h>
-
 
 #define SO_EVENT_HEADER() \
 private: \
@@ -53,6 +52,5 @@ SoType _class_::classTypeId
     _class_::classTypeId = \
       SoType::createType(_parentclass_::getClassTypeId(), SO__QUOTE(_class_)); \
   } while (0)
-
 
 #endif // !COIN_SOSUBEVENT_H

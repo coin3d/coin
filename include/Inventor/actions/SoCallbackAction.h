@@ -1,3 +1,6 @@
+#ifndef COIN_SOCALLBACKACTION_H
+#define COIN_SOCALLBACKACTION_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOCALLBACKACTION_H
-#define COIN_SOCALLBACKACTION_H
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
@@ -173,7 +173,5 @@ private:
   class SoCallbackActionP * pimpl;
   friend class SoCallbackActionP;
 };
-
-
 
 #endif // !COIN_SOCALLBACKACTION_H

@@ -1,3 +1,6 @@
+#ifndef COIN_SOFACEDETAIL_H
+#define COIN_SOFACEDETAIL_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOFACEDETAIL_H
-#define COIN_SOFACEDETAIL_H
-
 #include <Inventor/details/SoPointDetail.h>
-
 
 class COIN_DLL_API SoFaceDetail : public SoDetail {
   typedef SoDetail inherited;
@@ -61,4 +60,4 @@ private:
   int partindex;
 };
 
-#endif // COIN_SOFACEDETAIL_H
+#endif // !COIN_SOFACEDETAIL_H

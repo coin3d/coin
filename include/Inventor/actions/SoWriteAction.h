@@ -1,3 +1,6 @@
+#ifndef COIN_SOWRITEACTION_H
+#define COIN_SOWRITEACTION_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,15 +24,11 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOWRITEACTION_H
-#define COIN_SOWRITEACTION_H
-
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
 
 class SoVRMLPROTODef;
 class SoVRMLEXTERNPROTODef;
-
 
 class COIN_DLL_API SoWriteAction : public SoAction {
   typedef SoAction inherited;

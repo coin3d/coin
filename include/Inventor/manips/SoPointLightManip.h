@@ -1,3 +1,6 @@
+#ifndef COIN_SOPOINTLIGHTMANIP_H
+#define COIN_SOPOINTLIGHTMANIP_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOPOINTLIGHTMANIP_H
-#define COIN_SOPOINTLIGHTMANIP_H
 
 #include <Inventor/nodes/SoPointLight.h>
 #ifndef COIN_INTERNAL
@@ -76,7 +76,6 @@ protected:
   SoChildList * children;
 
 private:
-
   void attachSensors(const SbBool onoff);
 
 };

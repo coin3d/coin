@@ -25,8 +25,6 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/C/threads/mutex.h>
 
-// *************************************************************************
-
 class SbMutex {
 public:
   SbMutex(void) { this->mutex = cc_mutex_construct(); }
@@ -40,6 +38,4 @@ private:
   cc_mutex * mutex;
 };
 
-// *************************************************************************
-
-#endif // ! COIN_SBMUTEX_H
+#endif // !COIN_SBMUTEX_H

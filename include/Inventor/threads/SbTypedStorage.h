@@ -24,8 +24,6 @@
 
 #include <Inventor/C/threads/storage.h>
 
-// *************************************************************************
-
 template <class Type>
 class SbTypedStorage {
 public:
@@ -40,6 +38,4 @@ private:
   cc_storage * storage;
 };
 
-// *************************************************************************
-
-#endif // ! COIN_SBTYPEDSTORAGE_H
+#endif // !COIN_SBTYPEDSTORAGE_H

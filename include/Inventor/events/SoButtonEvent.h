@@ -1,3 +1,6 @@
+#ifndef COIN_SOBUTTONEVENT_H
+#define COIN_SOBUTTONEVENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOBUTTONEVENT_H
-#define COIN_SOBUTTONEVENT_H
-
 #include <Inventor/events/SoSubEvent.h>
-
 
 class COIN_DLL_API SoButtonEvent : public SoEvent {
   typedef SoEvent inherited;

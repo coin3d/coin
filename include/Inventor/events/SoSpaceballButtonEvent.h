@@ -1,3 +1,6 @@
+#ifndef COIN_SOSPACEBALLBUTTONEVENT_H
+#define COIN_SOSPACEBALLBUTTONEVENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOSPACEBALLBUTTONEVENT_H
-#define COIN_SOSPACEBALLBUTTONEVENT_H
 
 #include <Inventor/events/SoButtonEvent.h>
 

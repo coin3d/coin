@@ -1,3 +1,6 @@
+#ifndef COIN_SOCENTERBALLMANIP_H
+#define COIN_SOCENTERBALLMANIP_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOCENTERBALLMANIP_H
-#define COIN_SOCENTERBALLMANIP_H
-
 #include <Inventor/manips/SoTransformManip.h>
-
 
 class COIN_DLL_API SoCenterballManip : public SoTransformManip {
   typedef SoTransformManip inherited;

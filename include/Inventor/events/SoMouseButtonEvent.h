@@ -1,3 +1,6 @@
+#ifndef COIN_SOMOUSEBUTTONEVENT_H
+#define COIN_SOMOUSEBUTTONEVENT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOMOUSEBUTTONEVENT_H
-#define COIN_SOMOUSEBUTTONEVENT_H
-
 #include <Inventor/events/SoButtonEvent.h>
 
 #define SO_MOUSE_PRESS_EVENT(EVENT, BUTTON) \
@@ -31,7 +31,6 @@
 
 #define SO_MOUSE_RELEASE_EVENT(EVENT, BUTTON) \
  (SoMouseButtonEvent::isButtonReleaseEvent(EVENT, SoMouseButtonEvent::BUTTON))
-
 
 class COIN_DLL_API SoMouseButtonEvent : public SoButtonEvent {
   typedef SoButtonEvent inherited;
@@ -42,7 +41,6 @@ public:
   enum Button {
     ANY, BUTTON1, BUTTON2, BUTTON3, BUTTON4, BUTTON5
   };
-
 
   SoMouseButtonEvent(void);
   virtual ~SoMouseButtonEvent();

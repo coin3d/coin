@@ -1,3 +1,6 @@
+#ifndef COIN_SOSUBKIT_H
+#define COIN_SOSUBKIT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOSUBKIT_H
-#define COIN_SOSUBKIT_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFNode.h>
@@ -205,7 +205,5 @@ _class_::getClassNodekitCatalogPtr(void) \
      classcatalog->setNullByDefault(SO__QUOTE(_part_), _newnullbydefault_); \
    } \
   } while (0)
-
-
 
 #endif // !COIN_SOSUBKIT_H

@@ -1,3 +1,6 @@
+#ifndef COIN_SODIRECTIONALLIGHTMANIP_H
+#define COIN_SODIRECTIONALLIGHTMANIP_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SODIRECTIONALLIGHTMANIP_H
-#define COIN_SODIRECTIONALLIGHTMANIP_H
 
 #include <Inventor/nodes/SoDirectionalLight.h>
 #ifndef COIN_INTERNAL
@@ -77,7 +77,6 @@ protected:
   SoChildList * children;
 
 private:
-
   void attachSensors(const SbBool onoff);
 
 };

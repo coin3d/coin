@@ -1,3 +1,6 @@
+#ifndef COIN_SOCLIPPLANEMANIP_H
+#define COIN_SOCLIPPLANEMANIP_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOCLIPPLANEMANIP_H
-#define COIN_SOCLIPPLANEMANIP_H
 
 #include <Inventor/nodes/SoClipPlane.h>
 #include <Inventor/fields/SoSFVec3f.h>

@@ -1,3 +1,6 @@
+#ifndef COIN_SORAYPICKACTION_H
+#define COIN_SORAYPICKACTION_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SORAYPICKACTION_H
-#define COIN_SORAYPICKACTION_H
-
 #include <Inventor/actions/SoPickAction.h>
 
 class SbBox3f;
@@ -36,7 +36,6 @@ class SbViewVolume;
 class SbViewportRegion;
 class SoPickedPoint;
 class SoPickedPointList;
-
 
 class COIN_DLL_API SoRayPickAction : public SoPickAction {
   typedef SoPickAction inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOTOVRML2ACTION_H
+#define COIN_SOTOVRML2ACTION_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOTOVRML2ACTION_H
-#define COIN_SOTOVRML2ACTION_H
-
 #include <Inventor/actions/SoToVRMLAction.h>
-
 
 class COIN_DLL_API SoToVRML2Action : public SoToVRMLAction {
   typedef SoToVRMLAction inherited;

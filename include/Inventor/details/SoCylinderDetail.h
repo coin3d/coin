@@ -1,3 +1,6 @@
+#ifndef COIN_SOCYLINDERDETAIL_H
+#define COIN_SOCYLINDERDETAIL_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOCYLINDERDETAIL_H
-#define COIN_SOCYLINDERDETAIL_H
-
 #include <Inventor/details/SoSubDetail.h>
-
 
 class COIN_DLL_API SoCylinderDetail : public SoDetail {
   typedef SoDetail inherited;
@@ -46,4 +45,4 @@ protected:
   int part;
 };
 
-#endif // COIN_SOCYLINDERDETAIL_H
+#endif // !COIN_SOCYLINDERDETAIL_H

@@ -1,3 +1,6 @@
+#ifndef COIN_SOJACKMANIP_H
+#define COIN_SOJACKMANIP_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOJACKMANIP_H
-#define COIN_SOJACKMANIP_H
-
 #include <Inventor/manips/SoTransformManip.h>
-
 
 class COIN_DLL_API SoJackManip : public SoTransformManip {
   typedef SoTransformManip inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOEVENTS_H
+#define COIN_SOEVENTS_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOEVENTS_H
-#define COIN_SOEVENTS_H
 
 // Includes the definitions of all event classes. This includefile is
 // provided for convenience. Try to use it as little as possible,

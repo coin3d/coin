@@ -1,3 +1,6 @@
+#ifndef COIN_SODETAIL_H
+#define COIN_SODETAIL_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SODETAIL_H
-#define COIN_SODETAIL_H
 
 #include <Inventor/SoType.h>
 
@@ -49,4 +49,4 @@ private:
   static SoType classTypeId;
 };
 
-#endif // COIN_SODETAIL_H
+#endif // !COIN_SODETAIL_H

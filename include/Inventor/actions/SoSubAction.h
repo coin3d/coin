@@ -1,3 +1,6 @@
+#ifndef COIN_SOSUBACTION_H
+#define COIN_SOSUBACTION_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOSUBACTION_H
-#define COIN_SOSUBACTION_H
 
 #ifndef COIN_INTERNAL
 // Added to be Inventor compliant.
@@ -107,6 +107,5 @@ _classname_::enableElement(const SoType type, const int stackindex) \
     _classname_::enabledElements = new SoEnabledElementsList(_parentclassname_::getClassEnabledElements()); \
     _classname_::methods = new SoActionMethodList(_parentclassname_::getClassActionMethods()); \
   } while (0)
-
 
 #endif // !COIN_SOSUBACTION_H

@@ -1,3 +1,6 @@
+#ifndef COIN_SOSEARCHACTION_H
+#define COIN_SOSEARCHACTION_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,14 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSEARCHACTION_H
-#define COIN_SOSEARCHACTION_H
-
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
 #include <Inventor/SbName.h>
 #include <Inventor/lists/SoPathList.h>
-
 
 class COIN_DLL_API SoSearchAction : public SoAction {
   typedef SoAction inherited;

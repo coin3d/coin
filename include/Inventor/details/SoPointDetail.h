@@ -1,3 +1,6 @@
+#ifndef COIN_SOPOINTDETAIL_H
+#define COIN_SOPOINTDETAIL_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOPOINTDETAIL_H
-#define COIN_SOPOINTDETAIL_H
-
 #include <Inventor/details/SoSubDetail.h>
-
 
 class COIN_DLL_API SoPointDetail : public SoDetail {
   typedef SoDetail inherited;
@@ -55,4 +54,4 @@ private:
   int texcoordindex;
 };
 
-#endif // COIN_SOPOINTDETAIL_H
+#endif // !COIN_SOPOINTDETAIL_H

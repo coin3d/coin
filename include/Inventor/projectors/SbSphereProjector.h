@@ -1,3 +1,6 @@
+#ifndef COIN_SBSPHEREPROJECTOR_H
+#define COIN_SBSPHEREPROJECTOR_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SBSPHEREPROJECTOR_H
-#define COIN_SBSPHEREPROJECTOR_H
-
 #include <Inventor/projectors/SbProjector.h>
 #include <Inventor/SbSphere.h>
 #include <Inventor/SbRotation.h>
-
 
 class COIN_DLL_API SbSphereProjector : public SbProjector {
   typedef SbProjector inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOSUBKITP_H
+#define COIN_SOSUBKITP_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SOSUBKITP_H
-#define COIN_SOSUBKITP_H
 
 // The macro definitions in this file is used internally by Coin
 // classes, and mirrors some of the public macros available in
@@ -61,6 +61,5 @@
         _class_::classcatalog = new SoNodekitCatalog; \
     } \
   } while (0)
-
 
 #endif // !COIN_SOSUBKITP_H

@@ -1,3 +1,6 @@
+#ifndef COIN_SODETAILS_H
+#define COIN_SODETAILS_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,6 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SODETAILS_H
-#define COIN_SODETAILS_H
-
 #include <Inventor/details/SoConeDetail.h>
 #include <Inventor/details/SoCubeDetail.h>
 #include <Inventor/details/SoCylinderDetail.h>
@@ -33,4 +33,4 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/details/SoTextDetail.h>
 
-#endif // COIN_SODETAILS_H
+#endif // !COIN_SODETAILS_H

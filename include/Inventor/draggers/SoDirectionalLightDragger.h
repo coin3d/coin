@@ -1,3 +1,6 @@
+#ifndef COIN_SODIRECTIONALLIGHTDRAGGER_H
+#define COIN_SODIRECTIONALLIGHTDRAGGER_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -20,9 +23,6 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
-
-#ifndef COIN_SODIRECTIONALLIGHTDRAGGER_H
-#define COIN_SODIRECTIONALLIGHTDRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/fields/SoSFRotation.h>

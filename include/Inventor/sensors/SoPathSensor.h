@@ -1,3 +1,6 @@
+#ifndef COIN_SOPATHSENSOR_H
+#define COIN_SOPATHSENSOR_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOPATHSENSOR_H
-#define COIN_SOPATHSENSOR_H
-
 #include <Inventor/sensors/SoDataSensor.h>
-
 
 class COIN_DLL_API SoPathSensor : public SoDataSensor {
   typedef SoDataSensor inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SOSIMPLIFYACTION_H
+#define COIN_SOSIMPLIFYACTION_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSIMPLIFYACTION_H
-#define COIN_SOSIMPLIFYACTION_H
-
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
-
 
 class COIN_DLL_API SoSimplifyAction : public SoAction {
   typedef SoAction inherited;

@@ -1,3 +1,6 @@
+#ifndef COIN_SBCYLINDERPLANEPROJECTOR_H
+#define COIN_SBCYLINDERPLANEPROJECTOR_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SBCYLINDERPLANEPROJECTOR_H
-#define COIN_SBCYLINDERPLANEPROJECTOR_H
-
 #include <Inventor/projectors/SbCylinderSectionProjector.h>
-
 
 class COIN_DLL_API SbCylinderPlaneProjector : public SbCylinderSectionProjector {
   typedef SbCylinderSectionProjector inherited;

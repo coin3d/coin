@@ -26,8 +26,6 @@
 #include <Inventor/SbTime.h>
 #include <Inventor/C/threads/condvar.h>
 
-// *************************************************************************
-
 class SbCondVar {
 public:
   SbCondVar(void) { this->condvar = cc_condvar_construct(); }
@@ -45,6 +43,4 @@ private:
   cc_condvar * condvar;
 };
 
-// *************************************************************************
-
-#endif // ! COIN_SBCONDVAR_H
+#endif // !COIN_SBCONDVAR_H

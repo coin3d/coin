@@ -1,3 +1,6 @@
+#ifndef COIN_LOCKMGR_H
+#define COIN_LOCKMGR_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_LOCKMGR_H
-#define COIN_LOCKMGR_H
-
 #include <Inventor/SbBasic.h>
-
 
 class COIN_DLL_API SoLockManager {
 public:

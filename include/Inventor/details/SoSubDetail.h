@@ -1,3 +1,6 @@
+#ifndef COIN_SOSUBDETAIL_H
+#define COIN_SOSUBDETAIL_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOSUBDETAIL_H
-#define COIN_SOSUBDETAIL_H
-
 #include <Inventor/details/SoDetail.h>
 #include <assert.h>
-
 
 #define SO_DETAIL_HEADER(_class_) \
 public: \

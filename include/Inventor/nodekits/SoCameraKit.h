@@ -1,3 +1,6 @@
+#ifndef COIN_SOCAMERAKIT_H
+#define COIN_SOCAMERAKIT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOCAMERAKIT_H
-#define COIN_SOCAMERAKIT_H
-
 #include <Inventor/nodekits/SoSubKit.h>
 #include <Inventor/nodekits/SoBaseKit.h>
-
 
 class COIN_DLL_API SoCameraKit : public SoBaseKit {
   typedef SoBaseKit inherited;

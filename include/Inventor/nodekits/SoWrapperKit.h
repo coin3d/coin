@@ -1,3 +1,6 @@
+#ifndef COIN_SOWRAPPERKIT_H
+#define COIN_SOWRAPPERKIT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,11 +24,7 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOWRAPPERKIT_H
-#define COIN_SOWRAPPERKIT_H
-
 #include <Inventor/nodekits/SoSeparatorKit.h>
-
 
 class COIN_DLL_API SoWrapperKit : public SoSeparatorKit {
   typedef SoSeparatorKit inherited;
