@@ -210,24 +210,21 @@ AM_CONDITIONAL(BUILD_VRML97, $enable_vrml97)
 
 enable_superglu=false
 
-if test -d ${srcdir}/src/extensions/superglu; then
+if test -x ${srcdir}/src/extensions/superglu/configure; then
   enable_superglu=true
   AC_DEFINE(HAVE_SUPERGLU,, [*EXPERIMENTAL* to use the GLU we've "appropriated" from SGI])
   HAVE_SUPERGLU=1
-  AC_CONFIG_SUBDIRS(src/extensions/superglu)
+  AC_CONFIG_SUBDIRS([src/extensions/superglu])
 else
   enable_superglu=false
   HAVE_SUPERGLU=0
 fi
-AC_SUBST(HAVE_SUPERGLU)
+AC_SUBST([HAVE_SUPERGLU])
 
-# FIXME: set this to "Super" when we find out how to call
-# superglu/configure with option "--with-libname-prefix=Super".
-# 20011014 mortene.
-AC_SUBST([SUPERGLUPREFIX], [])
+AC_SUBST([SUPERGLUPREFIX], [Super])
+export SUPERGLUPREFIX
 
 AM_CONDITIONAL(BUILD_WITH_SUPERGLU, $enable_superglu)
-
 
 # *******************************************************************
 # Headers we might want to use
