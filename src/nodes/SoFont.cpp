@@ -44,19 +44,17 @@
 
   </ol>
 
-  Font files are searched for in SoInput::getDirectories(), and in
-  COIN_FONT_PATH if that environment variable is
-  defined. COIN_FONT_PATH can contain multiple directories, using the
-  ':' character as separator.
+  Font files are searched for in COIN_FONT_PATH if that environment
+  variable is defined.
 
-  On Win32 systems the c:/WINDOWS/Fonts directory will also be
-  searched. FIXME: update this doc when the Windows PATH has been
-  corrected to use WINDIR or some such. 20030316 mortene.
+  On Win32 systems the $WINDIR/Fonts directory will also be searched.
 
   Currently, font files in the TrueType format (.ttf) are supported.
   
   \sa SoFontStyle, SoGlyph, SoText2, SoText3, SoAsciiText
 */
+
+#include <string.h>
 
 #include <Inventor/nodes/SoFont.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -71,9 +69,10 @@
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/misc/SoFontLib.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/C/glue/fontlib_wrapper.h>
 
-#include <string.h>
+// *************************************************************************
 
 /*!
   \var SoSFName SoFont::name
@@ -93,6 +92,7 @@
   \e hint to the font rendering engines of Coin, and do \e not base
   your models on a particular font being available.
 */
+
 /*!
   \var SoSFFloat SoFont::size
 
@@ -105,9 +105,6 @@
 */
 
 // *************************************************************************
-
-
-#ifndef DOXYGEN_SKIP_THIS
 
 class SoFontP {
  public:
@@ -155,13 +152,10 @@ sofont_get_private_data(const SoFont * thisp)
   return (SoFontP*) pimpl;
 }
 
-#endif // DOXYGEN_SKIP_THIS
-
 SO_NODE_SOURCE(SoFont);
 
-#undef THIS
-// WARNING: Slow! Don't use this macro if you need speed
-#define THIS (sofont_get_private_data(this))
+#undef PRIVATE
+#define PRIVATE(p) (sofont_get_private_data(p))
 
 /*!
   Constructor.
@@ -211,19 +205,34 @@ SoFont::doAction(SoAction * action)
   // plain wrong (and it makes us incompatible with SGI
   // Inventor). 20030317 mortene.
 
-  SoFontP * pimpl = THIS;
   const char * this_name = this->name.getValue().getString();
-  const float this_size = this->size.getValue();
-  if (pimpl->firsttime || 
-      pimpl->lastsize != this_size || 
-      strcmp(pimpl->lastfontname.getString(), this_name)) {
-    pimpl->lastfontname = this->name.getValue();
+  const int this_size = (int) this->size.getValue();
+  if (PRIVATE(this)->firsttime || 
+      PRIVATE(this)->lastsize != this_size || 
+      strcmp(PRIVATE(this)->lastfontname.getString(), this_name)) {
+    PRIVATE(this)->lastfontname = this->name.getValue();
+
     // FIXME: this is the wrong place to do this -- should do it as
     // late as possible, on demand.  I.e. from the text shape nodes
     // requesting glyphs from the font. 20030527 mortene.
-    SoFontLib::createFont(this->name.getValue(), SbString(""), SbVec2s((short)this_size, (short)this_size));
-    pimpl->lastsize = this_size;
-    pimpl->firsttime = FALSE;
+
+    int font = cc_flw_create_font(this->name.getValue().getString(),
+                                  this_size, this_size);
+    // 'font' should _always_ be >= 0, due to our fall-back on the
+    // default font.
+    assert((font >= 0) && "could not create font");
+
+    if (cc_flw_debug()) {
+      const char * createdfontname = cc_flw_get_font_name(font);
+      SoDebugError::postInfo("SoFont::doAction",
+                             "attempt at creating font from '%s', "
+                             "actual font name is '%s'",
+                             this->name.getValue().getString(),
+                             createdfontname);
+    }
+
+    PRIVATE(this)->lastsize = this_size;
+    PRIVATE(this)->firsttime = FALSE;
   }
   
 #define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)

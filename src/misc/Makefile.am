@@ -44,7 +44,6 @@ RegularSources = \
 	default2dfont.cpp \
 	SoAudioDevice.cpp \
 	AudioTools.cpp \
-        SoFontLib.cpp \
 	gzmemio.c
 LinkHackSources = \
 	all-cpp.cpp \
@@ -94,7 +93,6 @@ PrivateHeaders = \
 	SoOutput_Writer.h \
 	cppmangle.icc \
 	defaultfonts.h \
-	../../include/Inventor/misc/SoFontLib.h \
 	gzmemio.h
 
 ##$ BEGIN TEMPLATE Make-Common(misc, misc)

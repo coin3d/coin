@@ -350,6 +350,14 @@ cc_flw_initialize(void)
     cc_flww32_exit();
     win32api = FALSE;
   }
+
+  /* Create default font.
+   
+     FIXME: this is a hack, I don't like it. 20030527 mortene. */
+  {
+    int font = cc_flw_create_font("defaultFont", 12, 12);
+    assert(font >= 0);
+  }
 }
 
 void

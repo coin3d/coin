@@ -44,8 +44,8 @@
   \sa SoText2, SoText3, SoAsciiText
 */
 
-// SoGlyph uses the private SoFontLib class to provide bitmaps and
-// outlines.
+// SoGlyph uses the Coin-internal font lib wrapper functions
+// (cc_flw_*()) to provide bitmaps and outlines.
 //
 // FIXME: font support for outline glyphs. 200303?? preng.
   
@@ -61,7 +61,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
-#include <Inventor/misc/SoFontLib.h>
+#include <Inventor/C/glue/fontlib_wrapper.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -500,14 +500,14 @@ SoGlyph::getGlyph(SoState * state,
 
   // FIXME: use font style in addition to font name. preng 2003-03-03
   SbString fontname = state_name.getString();
-  const int font = SoFontLib::getFont(fontname, fontsize);
-  // Should _always_ be able to get hold of a font, as we have an
-  // embedded default font to use if nothing is found in the
-  // environment.  -mortene.
+  const int font =
+    cc_flw_get_font(fontname.getString(), fontsize[0], fontsize[1]);
+  // Should _always_ be able to get hold of the font, as
+  // cc_flw_create_font() should have been called in advance.
   assert(font >= 0);
 
-  SoFontLib::setFontRotation(font, angle);
-  const int glyphidx = SoFontLib::getGlyph(font, character);
+  cc_flw_set_font_rotation(font, angle);
+  const int glyphidx = cc_flw_get_glyph(font, character);
   // Should _always_ be able to get hold of a glyph -- if no glyph is
   // available for a specific character, a default empty rectangle
   // should be used.  -mortene.
@@ -531,8 +531,15 @@ SoGlyph::getGlyph(SoState * state,
 SbVec2s
 SoGlyph::getAdvance(void) const
 {
+  // FIXME: code here seems excessively robust in several
+  // places. Investigate. 20030606 mortene.
+
   if (PRIVATE(this)->fontidx >= 0 && PRIVATE(this)->glyphidx >= 0) {
-    return SoFontLib::getAdvance(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx);
+    float x, y;
+    int result = cc_flw_get_advance(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx, &x, &y);
+    if (result == 0) {
+      return SbVec2s((short)x, (short)y);
+    }
   }
   return SbVec2s(0,0);
 }
@@ -541,9 +548,16 @@ SoGlyph::getAdvance(void) const
 SbVec2s
 SoGlyph::getKerning(const SoGlyph & rightglyph) const
 {
+  // FIXME: code here seems excessively robust in several
+  // places. Investigate. 20030606 mortene.
+
   if (PRIVATE(this)->fontidx >= 0 && PRIVATE(this)->glyphidx >= 0 &&
       PRIVATE(&rightglyph)->fontidx >= 0 && PRIVATE(&rightglyph)->glyphidx >= 0) {
-    return SoFontLib::getKerning(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx, PRIVATE(&rightglyph)->glyphidx);
+    float x, y;
+    int result = cc_flw_get_kerning(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx, PRIVATE(&rightglyph)->glyphidx, &x, &y);
+    if (result == 0) {
+      return SbVec2s((short)x, (short)y);
+    }
   }
   return SbVec2s(0,0);
 }
@@ -555,10 +569,15 @@ SoGlyph::getKerning(const SoGlyph & rightglyph) const
 unsigned char *
 SoGlyph::getBitmap(SbVec2s & size, SbVec2s & pos, const SbBool antialiased) const
 {
-  if (PRIVATE(this)->fontidx >= 0 && PRIVATE(this)->glyphidx >= 0) {
-    return SoFontLib::getBitmap(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx, size, pos, antialiased);
-  }
-  return NULL;
+  struct cc_flw_bitmap * bm =
+    cc_flw_get_bitmap(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx);
+  assert(bm);
+
+  size[0] = bm->pitch * 8;
+  size[1] = bm->rows;
+  pos[0] = bm->bearingX;
+  pos[1] = bm->bearingY;
+  return bm->buffer;
 }
 
 // should handle platform-specific font loading

@@ -113,6 +113,9 @@
 #endif // HAVE_SYS_TYPES_H
 #include <ctype.h>
 
+/* FIXME: the following snippet also duplicated in flwfreetype.c --
+   should collect common code. 20030604 mortene. */
+
 // This (POSIX-compliant) macro is missing from the Win32 API header
 // files for MSVC++ 6.0.
 #ifndef S_ISDIR
