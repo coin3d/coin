@@ -12,23 +12,116 @@ FAQ, take a look at the FAQs directory in the SoGuiExamples archive.
 Index
 =====
 
+0: Legal Issues
+  Q1: Coin is under the GNU Lesser General Public License ("LGPL").
+      That means I can use it in my proprietary, commercially sold
+      application, right?
+
+  Q2: Is it possible to use the Coin library without the restrictions
+      of the GNU LGPL?
+
+  Q3: How can you sell a "Professional Edition License" when the
+      library is released under the GNU LGPL? Wouldn't that be
+      disallowed by the GNU LGPL?
+
 1: Extensions and Ports
   Q1: Are there any free extensions for doing volume rendering with Coin?
+
   Q2: Are there plans for making Coin multi-thread safe?
+
   Q3: Can Coin do multi-pipe rendering?
+
   Q4: Is there a Coin port for Mac OS X/Darwin?
 
 2: Common Problems
   Q1: Why doesn't it work properly to render the same scene graph in two
       different windows?
+
   Q2: Why does my Visual C++ program using Coin work for debug builds but
       not for release builds?
+
   Q3: I try to change the SoText2/SoText3 font, but nothing happens.
       Why, oh why?
+
   Q4: Where does the SoGuiExamples module install the programs?
 
 3: More Whys
   Q1: Why is the .so-version 20 for Coin 1.0?
+
+
+Section 0. Legal Issues
+=======================
+
+Q0.1: Coin is under the GNU Lesser General Public License ("LGPL").
+      That means I can use it in my proprietary, commercially sold
+      application, right?
+
+A:    Yes, given that the rules of the GNU LGPL is followed, of course.
+
+      You should for instance be aware that the GNU LGPL places
+      certain restrictions on how you can distribute your application
+      executable. Static linking against the library is difficult to
+      do while still heeding the LGPL: the software end-user can
+      demand that the vendor provides him with the means to re-link
+      the application against new versions of the library.
+
+      In practical terms, that would probably mean distributing the
+      compiler-generated object-files to the user -- which is likely
+      to cause a maintenance nightmare.
+
+      Another restriction set up by the GNU LGPL is that you or your
+      company also implicitly takes on the responsibility of making
+      the full Coin sourcecode available for any user who requests it.
+
+      For these reasons, the distribution and availability of the Coin
+      library under the GNU LGPL is primarily meant to be a service
+      for those who write other Free Software libraries or
+      applications. If you write proprietary software and would like
+      to use the Coin library, see the next question.
+
+      Important note: from version 2.0.0 and onwards, the Coin library
+      will no longer be released under the GNU LGPL. Future Free
+      Software releases will be done under the GNU GPL.
+
+
+Q0.2: Is it possible to use the Coin library without the restrictions
+      of the GNU LGPL?
+
+A:    Yes, as a service for those who would like to use the Coin library
+      in proprietary software, we at Systems in Motion offer the "Coin
+      Professional Edition License" which buys developers that are
+      license holders the option to use the library with no strings
+      attached.
+
+      By "no strings attached", we of course mean that you as a
+      proprietary software developer would not have to obey the
+      restrictions of the GNU LGPL, as you would use the Coin library
+      under our "Professional Edition" license instead.
+
+      Prioritized support services is also part of the package -- your
+      support requests will be sent straight to the top of the
+      todo-stack of our developers. The developers used as first-tier
+      support for our Coin Professional Edition License holders are
+      the same people who have written all the sourcecode of the
+      library in the first place, so you will be in very good hands.
+
+      We take pride in giving our customers excellent support, and
+      since the Coin library is what our developers love to work with,
+      it's given with a smile.  :-)
+
+
+Q0.3: How can you sell a "Professional Edition License" when the
+      library is released under the GNU LGPL? Wouldn't that be
+      disallowed by the GNU LGPL?
+
+A:    Systems in Motion can do this dual licensing "trick" with Coin
+      because we are full copyright holders -- ie we own every single
+      line of code written for the Coin library. Therefore we are able
+      to license the Coin library both as Free Software aswell as
+      under a special purpose license for proprietary software
+      vendors. (If you are familiar with TrollTech's "Qt" library,
+      they use the same strategy.)
+
 
 
 Section 1. Extensions and Ports
@@ -39,8 +132,9 @@ Q1.1:   Are there any free extensions for doing volume rendering with Coin?
 A:      There are no free Open Inventor extensions for doing volume
         rendering that we know of.
 
-        Implementing such an extension is high on our list of things we
-        want to do, but there is not yet any schedule for when it will happen.
+        Implementing such an extension is high on our list of things
+        we want to do, but there is not yet any schedule for when it
+        will happen.
 
 
 Q1.2:   Are there plans for making Coin multi-thread safe?
@@ -50,8 +144,9 @@ A:      Yes.  The wheels are in motion on this one.
 
 Q1.3:   Can Coin do multi-pipe rendering?
 
-A:      Not yet.  We certainly want to support this.  Note that this feature
-        depends on having achieved multi-thread safety for Coin first.
+A:      Not yet.  We certainly want to support this.  Note that this
+        feature depends on having achieved multi-thread safety for
+        Coin first.
 
 
 Q1.4:   Is there a Coin port for Mac OS X/Darwin?
