@@ -48,6 +48,7 @@ RegularSources = \
 	SoSFUInt32.cpp \
 	SoSFUShort.cpp \
 	SoSFVec2f.cpp \
+	SoSFVec3d.cpp \
 	SoSFVec3f.cpp \
 	SoSFVec4f.cpp \
 	SoSField.cpp \
@@ -108,6 +109,7 @@ PublicHeaders = \
 	../../include/Inventor/fields/SoSFUShort.h \
 	../../include/Inventor/fields/SoSFVec2f.h \
 	../../include/Inventor/fields/SoSFVec3f.h \
+	../../include/Inventor/fields/SoSFVec3d.h \
 	../../include/Inventor/fields/SoSFVec4f.h \
 	../../include/Inventor/fields/SoSField.h
 PrivateHeaders = \

@@ -26,6 +26,7 @@ RegularSources = \
 	SbVec2f.cpp \
 	SbVec2s.cpp \
 	SbVec3f.cpp \
+	SbVec3d.cpp \
 	SbVec4f.cpp \
 	SbViewVolume.cpp \
 	SbViewportRegion.cpp \
@@ -57,6 +58,7 @@ PrivateHeaders = \
 	../../include/Inventor/SbTime.h \
 	../../include/Inventor/SbVec2f.h \
 	../../include/Inventor/SbVec2s.h \
+	../../include/Inventor/SbVec3d.h \
 	../../include/Inventor/SbVec3f.h \
 	../../include/Inventor/SbVec4f.h \
 	../../include/Inventor/SbViewVolume.h \

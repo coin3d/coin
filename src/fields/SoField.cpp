@@ -1779,7 +1779,7 @@ SoField::evaluateConnection(void) const
       master->getNodeContainer()->evaluateWrapper();
     }
     else {
-      master->getContainer()->evaluateWrapper();      
+      master->getContainer()->evaluateWrapper();
     }
   }
   else {
@@ -1913,6 +1913,9 @@ SoField::initClasses(void)
   SoMFVec3f::initClass();
   SoMFVec4f::initClass();
 
+  // double precision
+  SoSFVec3d::initClass();
+
   // Create these obsoleted types for backwards compatibility. They
   // are typedef'ed to the types which obsoleted them, but this is
   // needed so it will also be possible to use SoType::fromName() with
@@ -1936,7 +1939,7 @@ SoField::initClasses(void)
 /*!
   Obsoleted 2001-10-18
 */
-SbBool 
+SbBool
 SoField::connectFrom(SoVRMLInterpOutput * master,
                      SbBool notnotify, SbBool append)
 {
@@ -1947,7 +1950,7 @@ SoField::connectFrom(SoVRMLInterpOutput * master,
 /*!
   Obsoleted 2001-10-18
 */
-SbBool 
+SbBool
 SoField::appendConnection(SoVRMLInterpOutput * master,
                           SbBool notnotify)
 {
@@ -1958,7 +1961,7 @@ SoField::appendConnection(SoVRMLInterpOutput * master,
 /*!
   Obsoleted 2001-10-18
 */
-void 
+void
 SoField::disconnect(SoVRMLInterpOutput * interpoutput)
 {
   COIN_OBSOLETED();
@@ -1967,7 +1970,7 @@ SoField::disconnect(SoVRMLInterpOutput * interpoutput)
 /*!
   Obsoleted 2001-10-18
 */
-SbBool 
+SbBool
 SoField::isConnectedFromVRMLInterp(void) const
 {
   COIN_OBSOLETED();
@@ -1977,7 +1980,7 @@ SoField::isConnectedFromVRMLInterp(void) const
 /*!
   Obsoleted 2001-10-18
 */
-SbBool 
+SbBool
 SoField::getConnectedVRMLInterp(SoVRMLInterpOutput *& master) const
 {
   COIN_OBSOLETED();
