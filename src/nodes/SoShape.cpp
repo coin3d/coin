@@ -103,13 +103,30 @@
 /*!
   \fn void SoShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 
-  FIXME: should be documented properly. 20020523 mortene.
+  Implemented by SoShape subclasses to let the SoShape superclass know
+  the exact size and weighted center point of the shape's bounding box.
+
+  The bounding box and center point should be calculated and returned
+  in the local coordinate system.
+
+  The method implements action behavior for shape nodes for
+  SoGetBoundingBoxAction. It is invoked from
+  SoShape::getBoundingBox(). (Subclasses should \e not override
+  SoNode::getBoundingBox().)
 */
 
 /*!
   \fn void SoShape::generatePrimitives(SoAction * action)
 
-  FIXME: should be documented properly. 20020523 mortene.
+  The method implements action behavior for shape nodes for
+  SoCallbackAction. It is invoked from
+  SoShape::callback(). (Subclasses should \e not override
+  SoNode::callback().)
+
+  The subclass implementations uses the convenience methods
+  SoShape::beginShape(), SoShape::shapeVertex(), and
+  SoShape::endShape(), with SoDetail instances, to pass the primitives
+  making up the shape back to the caller.
 */
 
 // *************************************************************************
