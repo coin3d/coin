@@ -233,7 +233,7 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
   SoState * state = action->getState();
 
   // if we have a valid bbox cache, do a view volume cull test here.
-  if (THIS->bboxcache && 
+  if (THIS->bboxcache &&
       THIS->bboxcache->isValid(state)) {
     if (SoCullElement::cullTest(state, THIS->bboxcache->getProjectedBox())) {
       return;
@@ -411,6 +411,16 @@ SoVRMLShape::rayPick(SoRayPickAction * action)
       vrmlshape_ray_intersect(action, THIS->bboxcache->getProjectedBox())) {
     SoVRMLShape::doAction(action);
   }
+}
+
+// Doc in parent
+void
+SoVRMLShape::write(SoWriteAction * action)
+{
+  // do not call inherited::write() or SoGroup::write()
+  this->boundingBoxCaching.setDefault(TRUE);
+  this->renderCaching.setDefault(TRUE);
+  inherited::write(action);
 }
 
 void

@@ -57,6 +57,7 @@ public:
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
   virtual void rayPick(SoRayPickAction * action);
   virtual void search(SoSearchAction * action);
+  virtual void write(SoWriteAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
   virtual SoChildList * getChildren(void) const;
