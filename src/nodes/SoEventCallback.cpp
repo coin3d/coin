@@ -33,7 +33,7 @@
   This is how event handling works in Coin: when the user interacts
   with the render canvas, for instance by using the mouse pointer or
   by hitting the keyboard, the GUI interface toolkit (ie SoQt, SoWin,
-  SoXt, ...) will catch the event and translate it from a
+  SoXt, Sc21 ...) will catch the event and translate it from a
   windowsystem-specific event to a generic Coin event. (For the types
   of generic Coin events, see the classes derived from SoEvent.)  This
   event will then be wrapped inside a SoHandleEventAction and applied

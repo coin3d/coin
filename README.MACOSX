@@ -28,8 +28,8 @@ Using Coin
 If you want to use Coin on the Mac, you need a user interface binding. 
 At the moment you have four basic options for this:
                                     
-  0. Use the native Cocoa binding, SC21. See
-     http://www.coin3d.org/mac/SC21 for more information.
+  0. Use the native Cocoa binding, Sc21. See
+     http://www.coin3d.org/mac/Sc21 for more information.
                                             
   1. Use Qt/Mac. This requires Trolltech's Qt toolkit, which you can
      get from [1]. After downloading and installing Qt, you can

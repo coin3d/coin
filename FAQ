@@ -8,7 +8,7 @@ $Date$
 For answers to common Open Inventor programming issues not covered in this
 FAQ, take a look at the FAQs directory in the SoGuiExamples archive.
 
-For answers to common qquestions regarding the SoQt library, see the FAQ
+For answers to common questions regarding the SoQt library, see the FAQ
 in the SoQt source archive.
 
 For answers to common questions regarding licensing, see the FAQ.legal
@@ -184,9 +184,9 @@ A:      The reason is probably that the two windows do not share the same
           }
 
         This is taken care of automatically by Systems in Motion's
-        SoQt / SoGtk / SoXt / SoWin libraries, so you shouldn't have
-        to worry about it unless you are making your own GUI binding
-        to Coin from scratch.
+        SoQt / SoGtk / SoXt / SoWin / Sc21 libraries, so you shouldn't
+        have to worry about it unless you are making your own GUI
+        binding to Coin from scratch.
 
 
 Q2.3:   Why does my Visual C++ program using Coin work for debug builds but

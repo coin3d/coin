@@ -77,8 +77,8 @@ SbBool SoInteraction::isinitialized = FALSE;
   method directly from application code, as it is indirectly called
   from the GUI-binding libraries' init()-functions.  Only if you are
   using your own GUI-binding (and not one of Systems in Motion's SoQt,
-  SoGtk, SoXt, SoWin, etc libraries) do you have to explicitly call
-  SoInteraction::init().
+  SoGtk, SoXt, SoWin, Sc21 etc. libraries) do you have to explicitly
+  call SoInteraction::init().
 
   \code
   int main(int argc, char ** argv )

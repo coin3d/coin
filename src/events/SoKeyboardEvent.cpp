@@ -306,7 +306,7 @@ SoKeyboardEvent::setPrintableCharacter(const char c)
 
   NB! If setPrintableCharacter() hasn't been called, this function
   does not always work as expected, particularly not on non-US
-  keyboards. The Coin GUI toolkits (SoGtk/SoQt/SoWin/SoXt) will
+  keyboards. The Coin GUI toolkits (SoGtk/SoQt/SoWin/SoXt/Sc21) will
   set the printable character correctly.
 
   \sa getKey(), wasShiftDown(), wasCtrlDown(), wasAltDown(), setPrintableCharacter()
