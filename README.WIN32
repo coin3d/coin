@@ -80,8 +80,24 @@ Section 02 -- Building non-default configurations.
   versions of the Microsoft C libraries than the default one. 20011019 mortene.
 
 
+Section 03 -- Static versus dynamic libraries
+=============================================
 
-Section 03 -- What is this ``configure'' thing?
+  Note that MS Visual C++ and other MSWin compilers / linkers are a
+  bit peculiar in that building a library as a DLL leaves you with
+  both a .dll-file and a .lib-file. When you link against the library,
+  you do it against the .lib-file, but when the system loads the
+  executable it will of course link against the .dll.
+
+  Using a library in a solely "static" fashion leaves you with just a
+  .lib-file.
+
+  To build SoWin for use as a static library, you need to add the
+  options "--enable-static" and "--disable-shared" when invoking the
+  configure script.
+
+
+Section 04 -- What is this ``configure'' thing?
 ===============================================
 
   The configure script is a script that first determines what kind of
