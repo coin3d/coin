@@ -721,6 +721,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateFunction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinatePlane.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureScalePolicy.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureUnit.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTransform.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTransformSeparator.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTransformation.h \
