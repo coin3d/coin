@@ -57,11 +57,12 @@ public:
   void removeAllNodes(void);
   void replaceNode(int idx, SoNode * newnode);
   void replaceNode(SoNode * oldnode, SoNode * newnode);
+  
+  virtual void deleteValues(int start, int num = -1);
+  virtual void insertSpace(int start, int num);
 
 private:
   virtual void countWriteRefs(SoOutput * out) const;
-  virtual void deleteValues(int start, int num = -1);
-  virtual void insertSpace(int start, int num);
 };
 
 #endif // !COIN_SOMFNODE_H

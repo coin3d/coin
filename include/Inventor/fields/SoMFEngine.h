@@ -42,10 +42,11 @@ public:
   virtual void fixCopy(SbBool copyconnections);
   virtual SbBool referencesCopy(void) const;
 
-private:
-  virtual void countWriteRefs(SoOutput * out) const;
   virtual void deleteValues(int start, int num = -1);
   virtual void insertSpace(int start, int num);
+
+private:
+  virtual void countWriteRefs(SoOutput * out) const;
 };
 
 #endif // !COIN_SOMFENGINE_H
