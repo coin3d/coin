@@ -168,6 +168,8 @@ SoOffscreenGLXData::buildGLAttrs(int * attrs, int trynum)
     attrs[pos++] = 4;
     attrs[pos++] = GLX_BLUE_SIZE;
     attrs[pos++] = 4;
+    // FIXME: won't get an alpha channel in the context unless we also
+    // request a particular ALPHA bitsize. 20020605 mortene.
   }
   attrs[pos++] = None;
   return pos;
