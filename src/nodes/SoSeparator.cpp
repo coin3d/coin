@@ -72,7 +72,7 @@
 #endif
 
 // environment variable
-static int COIN_RENDER_CACHING = -1;
+static int COIN_RANDOMIZE_RENDER_CACHING = -1;
 
 // Maximum number of caches available for allocation for the
 // rendercaching.
@@ -116,11 +116,6 @@ int SoSeparator::numrendercaches = 2;
   scene will change a lot (like for every redraw), it will be
   beneficial to set this field to SoSeparator::OFF for the top-level
   separator node of this (sub)graph.
-
-  For now, render caching is in the beta stage. You can enable render
-  caching by setting the environment variable COIN_RENDER_CACHING to
-  1.  Separators will then use caching if the renderCaching field is
-  set to ON.
 */
 
 /*!
@@ -216,6 +211,22 @@ SoSeparator::commonConstructor(void)
 
   this->bboxcache = NULL;
   this->glcachelist = NULL;
+
+
+  // This environment variable used for local stability / robustness /
+  // correctness testing of the render caching. If set >= 1,
+  // renderCaching will be set to "ON" with a probability of 0.5 for
+  // every SoSeparator instantiated.
+  if (COIN_RANDOMIZE_RENDER_CACHING < 0) {
+    const char * env = coin_getenv("COIN_RANDOMIZE_RENDER_CACHING");
+    if (env) COIN_RANDOMIZE_RENDER_CACHING = atoi(env);
+    else COIN_RANDOMIZE_RENDER_CACHING = 0;
+  }
+  if (COIN_RANDOMIZE_RENDER_CACHING > 0) {
+    static SbBool nexton = FALSE;
+    if (nexton) { this->renderCaching = SoSeparator::ON; }
+    nexton = !nexton;
+  }
 }
 
 /*!
@@ -387,20 +398,14 @@ SoSeparator::GLRender(SoGLRenderAction * action)
 void
 SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
 {
-  // FIXME: temporary caching code. For now we just cache if the
-  // renderCaching field is ON. We'll develop an auto-caching scheme
-  // for auto-caching later.  pederb, 20001005
-
-  if (COIN_RENDER_CACHING < 0) {
-    const char * env = coin_getenv("COIN_RENDER_CACHING");
-    if (env) COIN_RENDER_CACHING = atoi(env);
-    else COIN_RENDER_CACHING = 0;
-  }
+  // FIXME: for now we just cache if the renderCaching field is
+  // ON. We'll develop the heuristics for automatically deciding when
+  // to cache or not upon renderCaching==AUTO later.  pederb, 20001005
 
   SbBool didlazyeval = FALSE;
   SoState * state = action->getState();
   SoGLCacheList * createcache = NULL;
-  if ((this->renderCaching.getValue() == ON) && COIN_RENDER_CACHING) {
+  if (this->renderCaching.getValue() == ON) {
     // test if bbox is outside view-volume
     if (this->cullTestNoPush(state)) {
       return;
