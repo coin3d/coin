@@ -1,0 +1,81 @@
+// This file is included from SoDB.cpp, but really has no relation to the
+// implementation of SoDB - it just contains some system sanitizion code.
+//
+// DO NOT DISABLE CODE IN THIS FILE IF IT DOES NOT COMPILE OR BREAKS THE
+// EXECUTION OF YOUR COIN APPLICATION - THE CONSEQUENCES OF SOME OF THESE
+// TESTS FAILING IS THAT COIN WOULD OPERATE WITH SERIOUS PROBLEMS / BUGS
+// ANYWAYS.  These tests just expose symptoms of a build environment that
+// can not be used to build a working Coin.
+
+// *************************************************************************
+// this code should just make sure we can't compile this file (compilation
+// will fail) if the compilation environment is not set up correctly - it
+// does not need to be run from anywhere...
+
+static
+void
+SoDB_compileTimeAsserts(void)
+{
+  COIN_CT_ASSERT(sizeof(uint8_t) == 1);
+  COIN_CT_ASSERT(sizeof(int8_t) == 1);
+  COIN_CT_ASSERT(sizeof(uint16_t) == 2);
+  COIN_CT_ASSERT(sizeof(int16_t) == 2);
+  COIN_CT_ASSERT(sizeof(uint32_t) == 4);
+  COIN_CT_ASSERT(sizeof(int32_t) == 4);
+#ifdef HAVE_UINT64_T
+  COIN_CT_ASSERT(sizeof(uint64_t) == 8);
+#endif // HAVE_UINT64_T
+#ifdef HAVE_INT64_T
+  COIN_CT_ASSERT(sizeof(int64_t) == 8);
+#endif // HAVE_INT64_T
+
+  // Sanity check: if the unsigned long type is less than the pointer
+  // size (which could in theory happen on 64-bits machines), SbDict
+  // usage will fail all over the place where we cast pointers to
+  // SbDict keys. FIXME: remove this check when we are no longer
+  // dependent on using native C types where we need to have a
+  // particular bitwidth. 20020225 mortene.
+  COIN_CT_ASSERT(sizeof(unsigned long) >= sizeof(void *));
+}
+
+// *************************************************************************
+// GCC 3.3.* (up to 3.3.3) contains a bug in builtin_expect() which makes
+// the assert macro fail
+
+struct GCCAssertBomber {
+  GCCAssertBomber () : _y(0) { }
+  int _y;
+};                                                                              
+
+static SbBool GCCAssertBomberFunc1() { return TRUE; }
+static GCCAssertBomber GCCAssertBomberFunc2() { return GCCAssertBomber(); }
+
+static
+void
+SoDB_checkGCCBuiltinExpectSanity(void)
+{
+#ifdef HAVE___BUILTIN_EXPECT
+  SbBool bogus_assert = FALSE;
+
+  if ( __builtin_expect(!!(GCCAssertBomberFunc2()._y==0), 1) ? FALSE : TRUE ) {
+    bogus_assert = TRUE;
+  }
+
+  if ( __builtin_expect(!!(GCCAssertBomberFunc1() &&
+                          (GCCAssertBomberFunc2()._y)==0), 1) ? FALSE : TRUE ) {
+    bogus_assert = TRUE;
+  }
+
+  if ( bogus_assert ) {
+    SoDebugError::post("SoDB::init",
+      "Sanity checking has revealed that Coin has been built with a version "
+      "of GCC that comes with a buggy assert() macro that gives false "
+      "positives.  "
+      "To fix this problem, you need to fix the header file or upgrade GCC, "
+      "and then rebuild the Coin library (and other libraries you have built "
+      "with this faulty compiler.");
+    exit(-1);
+  }
+#endif // HAVE___BUILTIN_EXPECT
+}
+

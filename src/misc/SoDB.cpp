@@ -279,6 +279,8 @@ static SbStorage * sodb_notificationcounter_storage = NULL;
 #include "../3ds/3dsLoader.h"
 #endif // HAVE_3DS_IMPORT_CAPABILITIES
 
+#include "systemsanity.icc"
+
 static SbString * coin_versionstring = NULL;
 
 // atexit callback
@@ -361,37 +363,6 @@ sodb_clear_counter(void * ptr)
 #endif // COIN_THREADSAFE
 
 // *************************************************************************
-// this code should just make sure we can't compile this file (compilation
-// will fail) if the compilation environment is not set up correctly - it
-// does not need to be run from anywhere...
-
-static
-void
-SoDB_compileTimeAsserts(void)
-{
-  COIN_CT_ASSERT(sizeof(uint8_t) == 1);
-  COIN_CT_ASSERT(sizeof(int8_t) == 1);
-  COIN_CT_ASSERT(sizeof(uint16_t) == 2);
-  COIN_CT_ASSERT(sizeof(int16_t) == 2);
-  COIN_CT_ASSERT(sizeof(uint32_t) == 4);
-  COIN_CT_ASSERT(sizeof(int32_t) == 4);
-#ifdef HAVE_UINT64_T
-  COIN_CT_ASSERT(sizeof(uint64_t) == 8);
-#endif // HAVE_UINT64_T
-#ifdef HAVE_INT64_T
-  COIN_CT_ASSERT(sizeof(int64_t) == 8);
-#endif // HAVE_INT64_T
-
-  // Sanity check: if the unsigned long type is less than the pointer
-  // size (which could in theory happen on 64-bits machines), SbDict
-  // usage will fail all over the place where we cast pointers to
-  // SbDict keys. FIXME: remove this check when we are no longer
-  // dependent on using native C types where we need to have a
-  // particular bitwidth. 20020225 mortene.
-  COIN_CT_ASSERT(sizeof(unsigned long) >= sizeof(void *));
-}
-
-// *************************************************************************
 
 /*!
   Initialize the Coin system. This needs to be done as the first
@@ -402,6 +373,9 @@ void
 SoDB::init(void)
 {
   if (SoDB::isInitialized()) return;
+
+  // See systemsanity.icc
+  SoDB_checkGCCBuiltinExpectSanity();
 
   // Sanity check: if anything here breaks, either
   // include/Inventor/system/inttypes.h.in or the bitwidth define

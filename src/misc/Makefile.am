@@ -48,7 +48,8 @@ PrivateHeaders = \
 	SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h \
 	SoOffscreenWGLData.h \
-	cppmangle.icc
+	cppmangle.icc \
+	systemsanity.icc
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(misc, misc)
