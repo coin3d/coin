@@ -224,11 +224,6 @@ fcglue_init(void)
 
       /* Do this late, so we can detect recursive calls to this function. */
       fontconfig_instance = fi;
-
-      if (!fi->available) {
-        cc_debugerror_post("fcglue_init",
-                           "Failed to initialize fontconfig glue.");
-      }
     }
   }
   CC_SYNC_END(fcglue_init);
