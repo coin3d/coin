@@ -30,10 +30,14 @@
 #include <Inventor/lists/SbIntList.h>
 #include <Inventor/lists/SbPList.h>
 #include <Inventor/lists/SoBaseList.h>
+#include <Inventor/lists/SoDetailList.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/lists/SoEngineOutputList.h>
+#include <Inventor/lists/SoEngineList.h>
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/lists/SoNodeList.h>
+#include <Inventor/lists/SoPathList.h>
+#include <Inventor/lists/SoPickedPointList.h>
 #include <Inventor/lists/SoTypeList.h>
 
 #endif // !COIN_SOLISTS_H
