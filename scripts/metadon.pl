@@ -68,7 +68,7 @@ for ( $mod = 0; $mod < @configfiles; $mod++ ) {
     }
 
     @commenttext = ();
-    next if ! &ReadConfig( "$coindir/$configfile" );
+    next if ! &ReadConfig( $configfile );
 
     $path = $configfile;
     $path =~ s#/[^/]+$##;
@@ -289,7 +289,7 @@ sub LoadConfig {
     @moduleweights = ();
     $globalname = "";
 
-    open( CONFIG, "$coindir/Metadon.conf" ) ||
+    open( CONFIG, "Metadon.conf" ) ||
         die "Metadon.conf: could not open file.\n";
     chop( @config = <CONFIG> );
     close( CONFIG );
