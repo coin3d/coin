@@ -149,7 +149,6 @@ private:
   ProjectorFrontSetting frontOnProjector;
   SbBool valueChangedCBEnabled;
   SbBool ignoreInBBox;
-  SbBool isGrabbing;
   const SoEvent *currentEvent;
   SoPath *pickedPath;
   class SoDraggerCache *draggerCache;

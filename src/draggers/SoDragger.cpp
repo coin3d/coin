@@ -54,6 +54,7 @@
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/events/SoLocation2Event.h>
+#include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 
@@ -93,8 +94,16 @@ public:
       }
       if (i <= draggeridx) this->update(newpath, draggeridx);
     }
+    this->updateMatrix();
   }
-
+  
+  void updateMatrix() {
+    SoGetMatrixAction action(this->dragger->getViewportRegion());
+    action.apply(&this->path);
+    this->draggerToWorld = action.getMatrix();
+    this->worldToDragger = action.getInverse();
+  }
+  
   SoTempPath path;
   SoDragger *dragger;
   SbMatrix draggerToWorld;
@@ -110,10 +119,6 @@ private:
     for (int i = 1; i <= draggeridx; i++) {
       this->path.append(newpath->getNode(i));
     }
-    SoGetMatrixAction action(dragger->getViewportRegion());
-    action.apply(&this->path);
-    this->draggerToWorld = action.getMatrix();
-    this->worldToDragger = action.getInverse();
   }
 };
 
@@ -141,7 +146,6 @@ SoDragger::SoDragger(void)
   this->frontOnProjector = FRONT; // FIXME: ??
   this->valueChangedCBEnabled = TRUE;
   this->ignoreInBBox = FALSE;
-  this->isGrabbing = FALSE;
   this->currentEvent = NULL;
   this->pickedPath = NULL;
   this->draggerCache = NULL;
@@ -350,7 +354,11 @@ SoDragger::removeOtherEventCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::registerChildDragger(SoDragger * child)
 {
-  COIN_STUB();
+  child->addStartCallback(SoDragger::childStartCB, this);
+  child->addMotionCallback(SoDragger::childMotionCB, this);
+  child->addFinishCallback(SoDragger::childFinishCB, this);
+  child->addOtherEventCallback(SoDragger::childOtherEventCB, this);
+  child->addValueChangedCallback(SoDragger::childTransferMotionAndValueChangedCB, this);
 }
 
 /*!
@@ -359,7 +367,11 @@ SoDragger::registerChildDragger(SoDragger * child)
 void
 SoDragger::unregisterChildDragger(SoDragger * child)
 {
-  COIN_STUB();
+  child->removeStartCallback(SoDragger::childStartCB, this);
+  child->removeMotionCallback(SoDragger::childMotionCB, this);
+  child->removeFinishCallback(SoDragger::childFinishCB, this);
+  child->removeOtherEventCallback(SoDragger::childOtherEventCB, this);
+  child->removeValueChangedCallback(SoDragger::childTransferMotionAndValueChangedCB, this);
 }
 
 /*!
@@ -369,7 +381,11 @@ SoDragger::unregisterChildDragger(SoDragger * child)
 void
 SoDragger::registerChildDraggerMovingIndependently(SoDragger * child)
 {
-  COIN_STUB();
+  child->addStartCallback(SoDragger::childStartCB, this);
+  child->addMotionCallback(SoDragger::childMotionCB, this);
+  child->addFinishCallback(SoDragger::childFinishCB, this);
+  child->addOtherEventCallback(SoDragger::childOtherEventCB, this);
+  child->addValueChangedCallback(SoDragger::childValueChangedCB, this);
 }
 
 /*!
@@ -379,7 +395,11 @@ SoDragger::registerChildDraggerMovingIndependently(SoDragger * child)
 void
 SoDragger::unregisterChildDraggerMovingIndependently(SoDragger * child)
 {
-  COIN_STUB();
+  child->removeStartCallback(SoDragger::childStartCB, this);
+  child->removeMotionCallback(SoDragger::childMotionCB, this);
+  child->removeFinishCallback(SoDragger::childFinishCB, this);
+  child->removeOtherEventCallback(SoDragger::childOtherEventCB, this);
+  child->removeValueChangedCallback(SoDragger::childValueChangedCB, this);
 }
 
 /*!
@@ -389,18 +409,23 @@ SbMatrix
 SoDragger::getLocalToWorldMatrix(void)
 {
   assert(this->draggerCache);
-  return this->draggerCache->draggerToWorld;
+  SbMatrix m = this->draggerCache->draggerToWorld;
+  m.multLeft(this->getMotionMatrix());
+  return m;
 }
 
 
 /*!
-  Returns a matrix that converts form world to local space.
+  Returns a matrix that converts from world to local space.
 */
 SbMatrix
 SoDragger::getWorldToLocalMatrix(void)
 {
+  // FIXME: cache the inverse motion matrix
   assert(this->draggerCache);
-  return this->draggerCache->worldToDragger;
+  SbMatrix m = this->draggerCache->worldToDragger;
+  m.multRight(this->getMotionMatrix().inverse());
+  return m;
 }
 
 /*!
@@ -430,7 +455,14 @@ SoDragger::getWorldStartingPoint(void)
 void
 SoDragger::getPartToLocalMatrix(const SbName & partname, SbMatrix & parttolocalmatrix, SbMatrix & localtopartmatrix)
 {
-  COIN_STUB();
+  SoPath *path = (SoPath*)this->createPathToAnyPart(partname, FALSE, FALSE, FALSE, NULL);
+  assert(path);
+  path->ref();
+  SoGetMatrixAction action(this->viewport);
+  action.apply(path);
+  parttolocalmatrix = action.getMatrix();
+  localtopartmatrix = action.getInverse();
+  path->unref();
 }
 
 /*!
@@ -440,8 +472,9 @@ SoDragger::getPartToLocalMatrix(const SbName & partname, SbMatrix & parttolocalm
 void
 SoDragger::transformMatrixLocalToWorld(const SbMatrix & frommatrix, SbMatrix & tomatrix)
 {
-  tomatrix = frommatrix;
-  tomatrix.multLeft(this->getLocalToWorldMatrix());
+  if (&tomatrix != &frommatrix) tomatrix = frommatrix;
+  tomatrix.multRight(this->getLocalToWorldMatrix());
+  tomatrix.multLeft(this->getWorldToLocalMatrix());
 }
 
 /*!
@@ -451,8 +484,9 @@ SoDragger::transformMatrixLocalToWorld(const SbMatrix & frommatrix, SbMatrix & t
 void
 SoDragger::transformMatrixWorldToLocal(const SbMatrix & frommatrix, SbMatrix & tomatrix)
 {
-  tomatrix = frommatrix;
-  tomatrix.multLeft(this->getWorldToLocalMatrix());
+  if (&tomatrix != &frommatrix) tomatrix = frommatrix;
+  tomatrix.multRight(this->getWorldToLocalMatrix());
+  tomatrix.multLeft(this->getLocalToWorldMatrix());
 }
 
 /*!
@@ -462,10 +496,11 @@ SoDragger::transformMatrixWorldToLocal(const SbMatrix & frommatrix, SbMatrix & t
 void
 SoDragger::transformMatrixToLocalSpace(const SbMatrix & frommatrix, SbMatrix & tomatrix, const SbName & fromspacepartname)
 {
-  tomatrix = frommatrix;
-  SbMatrix frompart, topart;
-  this->getPartToLocalMatrix(fromspacepartname, frompart, topart);
-  tomatrix.multLeft(frompart);
+  if (&tomatrix != &frommatrix) tomatrix = frommatrix;
+  SbMatrix parttolocal, localtopart;
+  this->getPartToLocalMatrix(fromspacepartname, parttolocal, localtopart);
+  tomatrix.multRight(parttolocal);
+  tomatrix.multLeft(localtopart);
 }
 
 /*!
@@ -543,8 +578,6 @@ SoDragger::createPathToThis(void)
   if (this->draggerCache == NULL) return NULL; // should not happen
   SoPath *orgpath = (SoPath*)&this->draggerCache->path;
   return new SoPath(*orgpath);
-  COIN_STUB();
-  return NULL;
 }
 
 /*!
@@ -672,7 +705,6 @@ SoDragger::grabEventsSetup(void)
 {
   assert(this->eventAction);
   this->eventAction->setGrabber(this);
-  this->isGrabbing = TRUE;
 
   this->updateDraggerCache(this->eventAction->getCurPath());
 }
@@ -686,7 +718,6 @@ SoDragger::grabEventsCleanup(void)
 {
   assert(this->eventAction);
   this->eventAction->releaseGrabber();
-  this->isGrabbing = FALSE;
 }
 
 /*!
@@ -957,7 +988,22 @@ SoDragger::handleEvent(SoHandleEventAction * action)
 {
   const SoEvent *event = action->getEvent();
 
-  if (SO_MOUSE_PRESS_EVENT(event, BUTTON1)) {
+  //
+  // this is a special case, to be able to detect when somebody
+  // clicks ctrl over a dragger. This has a special meaning for
+  // some draggers, and it's the only time the otherEvent callbacks
+  // are called when the dragger is not active.
+  //
+  if (!this->isActive.getValue() &&
+      (SO_KEY_PRESS_EVENT(event, LEFT_CONTROL) || 
+       SO_KEY_PRESS_EVENT(event, RIGHT_CONTROL))) {
+    const SoPickedPoint *pp = action->getPickedPoint();
+    if (pp && this->isPicked(pp->getPath())) {
+      this->eventHandled(event, action);
+      this->otherEventCB.invokeCallbacks(this);
+    }
+  }
+  else if (SO_MOUSE_PRESS_EVENT(event, BUTTON1)) {
     const SoPickedPoint *pp = action->getPickedPoint();
 
     if (pp && this->isPicked(pp->getPath())) {
@@ -975,7 +1021,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
       this->startCB.invokeCallbacks(this);
     }
   }
-  else if (this->isGrabbing && SO_MOUSE_RELEASE_EVENT(event, BUTTON1)) {
+  else if (this->isActive.getValue() && SO_MOUSE_RELEASE_EVENT(event, BUTTON1)) {
     this->isActive = FALSE;
     this->eventHandled(event, action);
     this->grabEventsCleanup();
@@ -985,8 +1031,9 @@ SoDragger::handleEvent(SoHandleEventAction * action)
     }
     this->finishCB.invokeCallbacks(this);
   }
-  else if (this->isGrabbing && event->isOfType(SoLocation2Event::getClassTypeId())) {
+  else if (this->isActive.getValue() && event->isOfType(SoLocation2Event::getClassTypeId())) {
     this->eventHandled(event, action);
+    this->updateDraggerCache(NULL);
     this->motionCB.invokeCallbacks(this);
   }
   else if (this->isActive.getValue()) {
@@ -994,6 +1041,9 @@ SoDragger::handleEvent(SoHandleEventAction * action)
     this->currentEvent = event;
     this->otherEventCB.invokeCallbacks(this);
   }
+
+  if (!action->isHandled())
+    inherited::handleEvent(action);
 }
 
 /*!
@@ -1001,7 +1051,16 @@ SoDragger::handleEvent(SoHandleEventAction * action)
 void
 SoDragger::transferMotion(SoDragger * child)
 {
-  COIN_STUB();
+  // FIXME: maybe I should use the picked path to get partname instead?
+  SbString partname = this->getPartString(child);
+  SbMatrix childmatrix = child->getMotionMatrix();
+  SbMatrix parttolocal, localtopart;
+
+  this->transformMatrixToLocalSpace(childmatrix, childmatrix, SbName(partname.getString()));
+  SbMatrix mat = this->startMotionMatrix;
+  mat.multLeft(childmatrix);
+  this->setMotionMatrix(mat);
+  child->setMotionMatrix(SbMatrix::identity());
 }
 
 /*!
@@ -1052,39 +1111,54 @@ SoDragger::setDefaultOnNonWritingFields(void)
 }
 
 void
-SoDragger::childTransferMotionAndValueChangedCB(void *, SoDragger *)
+SoDragger::childTransferMotionAndValueChangedCB(void *data, SoDragger *child)
 {
-  COIN_STUB();
+  SoDragger *thisp = (SoDragger*)data;
+  child->removeValueChangedCallback(SoDragger::childTransferMotionAndValueChangedCB, thisp);
+  thisp->transferMotion(child);
+  child->addValueChangedCallback(SoDragger::childTransferMotionAndValueChangedCB, thisp);
+  thisp->valueChangedCB.invokeCallbacks(thisp);
+}
+
+
+void
+SoDragger::childValueChangedCB(void *data, SoDragger *child)
+{
+  SoDragger *thisp = (SoDragger*)data;
+  thisp->valueChangedCB.invokeCallbacks(thisp);
 }
 
 void
-SoDragger::childValueChangedCB(void *, SoDragger *)
+SoDragger::childStartCB(void *data, SoDragger *child)
 {
-  COIN_STUB();
+  SoDragger *thisp = (SoDragger*)data;
+  thisp->saveStartParameters();
+  thisp->setActiveChildDragger(child);
+  thisp->startCB.invokeCallbacks(thisp);
 }
 
 void
-SoDragger::childStartCB(void *, SoDragger *)
+SoDragger::childMotionCB(void *data, SoDragger *child)
 {
-  COIN_STUB();
+  SoDragger *thisp = (SoDragger*)data;
+  thisp->motionCB.invokeCallbacks(thisp);
 }
 
 void
-SoDragger::childMotionCB(void *, SoDragger *)
+SoDragger::childFinishCB(void *data, SoDragger *child)
 {
-  COIN_STUB();
+  SoDragger *thisp = (SoDragger*)data;
+  thisp->finishCB.invokeCallbacks(thisp);  
+  thisp->setActiveChildDragger(NULL);
 }
 
 void
-SoDragger::childFinishCB(void *, SoDragger *)
+SoDragger::childOtherEventCB(void *data, SoDragger *child)
 {
-  COIN_STUB();
-}
-
-void
-SoDragger::childOtherEventCB(void *, SoDragger *)
-{
-  COIN_STUB();
+  SoDragger *thisp = (SoDragger*)data;
+  thisp->currentEvent = child->currentEvent; 
+  thisp->eventAction = child->eventAction;
+  thisp->otherEventCB.invokeCallbacks(thisp);  
 }
 
 //
@@ -1093,8 +1167,18 @@ SoDragger::childOtherEventCB(void *, SoDragger *)
 SbBool
 SoDragger::isPicked(SoPath *path)
 {
-  int idx = path->findNode(this);
-  return idx >= 0;
+  // last dragger in path must be this one
+  SoFullPath *fullpath = (SoFullPath*)path;
+  
+  int i = fullpath->findNode(this);
+  if (i < 0) return FALSE;
+  
+  int n = fullpath->getLength();
+  for (++i; i < n; i++) {
+    SoNode *node = fullpath->getNode(i);
+    if (node->isOfType(SoDragger::getClassTypeId())) return FALSE;
+  }
+  return TRUE;
 }
 
 void
@@ -1109,5 +1193,6 @@ void
 SoDragger::updateDraggerCache(const SoPath *path)
 {
   if (this->draggerCache == NULL) this->draggerCache = new SoDraggerCache(this);
-  this->draggerCache->checkUpdate((const SoFullPath*)path, path->findNode(this));
+  if (path) this->draggerCache->checkUpdate((const SoFullPath*)path, path->findNode(this));
+  else this->draggerCache->updateMatrix();
 }
