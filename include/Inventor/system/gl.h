@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -80,5 +80,9 @@
 #ifndef GL_CLAMP_TO_EDGE_SGIS
 #define GL_CLAMP_TO_EDGE_SGIS    0x812F
 #endif /* GL_CLAMP_TO_EDGE_SGIS */
+
+#ifndef GL_TEXTURE_WRAP_R
+#define GL_TEXTURE_WRAP_R 0x8072
+#endif /* GL_TEXTURE_WRAP_R */
 
 #endif /* ! COIN_GL_H */
