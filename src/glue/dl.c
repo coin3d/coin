@@ -126,9 +126,6 @@
 #include <stdio.h>  /* snprintf() */
 #ifdef HAVE_LIBGEN_H
 #include <libgen.h> /* dirname() */
-#else
-/* Mac OS 10.1 has dirname in libc, but libgen.h is missing */
-char * dirname (const char *); 
 #endif /* HAVE_LIBGEN_H */
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h> /* PATH_MAX */
@@ -186,6 +183,53 @@ cc_dl_get_win32_err(DWORD * lasterr, cc_string * str)
 
 
 #if defined (HAVE_DYLD_RUNTIME_BINDING)
+
+
+static char *
+cc_dirname(const char *path) {
+
+#ifdef HAVE_LIBGEN_H
+
+  // Mac OS 10.2 and later have dirname()
+  return dirname(path);
+
+#else
+
+  static char dirpath [MAXPATHLEN];
+  const char * ptr;
+
+  if (path == NULL || *path == '\0') return NULL;
+
+  /* Get rid of trailing '/'s */ 
+  ptr = path + strlen(path) - 1;
+  while (*ptr == '/' && path <= ptr) ptr--;
+
+  /* Skip last element in path */
+  while (*ptr != '/' && path <= ptr) ptr--;
+
+  /* Path is only '/' */
+  if (ptr == path && *ptr == '/') {
+    strcpy(dirpath, "/");
+    return(dirpath);
+  }
+
+  /* No slashes in path... */
+  if (ptr == path) {
+    strcpy(dirpath, ".");
+    return(dirpath);
+  }
+
+  if ((unsigned int)(ptr - path + 1) > sizeof(dirpath)) {
+    return(NULL);
+  }
+
+  strncpy(dirpath, path, ptr - path + 1);
+  dirpath[ptr - path + 1] = '\0';
+  return(dirpath);
+
+#endif // libgen.h
+}
+
 
 /* Returns a string containing the search directories for
    dynamic libraries, separated by ':'. Needed since Mac OS X
@@ -250,7 +294,7 @@ cc_build_search_list(const char * libname)
       if (strstr(p, "Inventor.framework")) {
         /* We get /path/to/Foo.framework/Versions/A/Libraries/foo.dylib
            but want /path/to/Foo.framework/Versions/A/Resources */
-        char * path_to_version_dir = dirname(dirname(p));
+        char * path_to_version_dir = cc_dirname(cc_dirname(p));
         size_t l = strlen(path_to_version_dir) + strlen("/Resources") + 1;
         res_path = malloc(l);
         snprintf(res_path, l, "%s%s", path_to_version_dir, "/Resources");
@@ -323,7 +367,7 @@ cc_find_file(const char * file, const char ** fullpath)
   return 0;
 }
 
-#endif /* HAVE_DYLD_RUNTIME_BINDING */
+//#endif /* HAVE_DYLD_RUNTIME_BINDING */
 
 
 cc_libhandle
