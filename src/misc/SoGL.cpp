@@ -484,15 +484,15 @@ sogl_render_cube(const float width,
 #if !defined(NO_LINESET_RENDER)
 
 typedef void sogl_render_ils_func ( const SoGLCoordinateElement * /*const*/ coords,
-				    const int32_t *indices,
-				    int num_vertexindices,
-				    const SbVec3f *normals,
-				    const int32_t *normindices,
-				    SoMaterialBundle *const materials,
-				    const int32_t *matindices,
-				    const SoTextureCoordinateBundle * const texcoords,
-				    const int32_t *texindices,
-				    const int drawAsPoints);
+                                    const int32_t *indices,
+                                    int num_vertexindices,
+                                    const SbVec3f *normals,
+                                    const int32_t *normindices,
+                                    SoMaterialBundle *const materials,
+                                    const int32_t *matindices,
+                                    const SoTextureCoordinateBundle * const texcoords,
+                                    const int32_t *texindices,
+                                    const int drawAsPoints);
 
 
 #define OVERALL             0

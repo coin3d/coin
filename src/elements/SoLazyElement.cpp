@@ -101,9 +101,9 @@ SoLazyElement::matches(const SoElement * element) const
   return TRUE;
 }
 
-/*!  
+/*!
   Just returns NULL in Coin. We don't care about matches() for this
-  element as it's just a wrapper class.  
+  element as it's just a wrapper class.
 */
 SoElement *
 SoLazyElement::copyMatchInfo(void) const
@@ -382,7 +382,7 @@ SoLazyElement::getDefaultAmbientIntensity(void)
 }
 
 // ! FIXME: write doc
-	
+
 SbColor
 SoLazyElement::getDefaultDiffuse(void)
 {

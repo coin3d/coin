@@ -67,11 +67,11 @@
 enum QuatPart {X, Y, Z, W};
 typedef float HMatrix[4][4]; /* Right-handed, for column vectors */
 typedef struct {
-  SbVec4f t;	/* Translation components */
-  SbRotation  q;	/* Essential rotation	  */
-  SbRotation  u;	/* Stretch rotation	  */
-  SbVec4f k;	/* Stretch factors	  */
-  float f;	/* Sign of determinant	  */
+  SbVec4f t;    /* Translation components */
+  SbRotation  q;        /* Essential rotation     */
+  SbRotation  u;        /* Stretch rotation       */
+  SbVec4f k;    /* Stretch factors        */
+  float f;      /* Sign of determinant    */
 } AffineParts;
 static float polar_decomp(HMatrix M, HMatrix Q, HMatrix S);
 static SbVec4f spect_decomp(HMatrix S, HMatrix U);
@@ -242,7 +242,7 @@ SbMatrix::det3(int r1, int r2, int r3,
   if (r1<0 || r1>3 || r2<0 || r2>3 || r3<0 || r3>3 ||
       c1<0 || c1>3 || c2<0 || c2>3 || c3<0 || c3>3) {
     SoDebugError::post("SbMatrix::det3",
-		       "At least one idx out of bounds [0, 3]. ");
+                       "At least one idx out of bounds [0, 3]. ");
   }
   if (r1==r2 || r1==r3 || r2==r3 ||
       c1==c2 || c1==c3 || c2==c3)
@@ -1283,7 +1283,7 @@ polar_decomp(HMatrix M, HMatrix Q, HMatrix S)
     M_one = norm_one(Mk);  M_inf = norm_inf(Mk);
   } while (E_one>(M_one*TOL));
   mat_tpose(Q, =, Mk, 3); mat_pad(Q);
-  mat_mult(Mk, M, S);	 mat_pad(S);
+  mat_mult(Mk, M, S);    mat_pad(S);
   for (i=0; i<3; i++) for (j=i; j<3; j++)
     S[i][j] = S[j][i] = 0.5f*(S[i][j]+S[j][i]);
   return (det);
@@ -1361,7 +1361,7 @@ snuggle(SbRotation q, SbVec4f & k)
 #define sgn(n, v)    ((n)?-(v):(v))
 #define swap(a, i, j) {a[3]=a[i]; a[i]=a[j]; a[j]=a[3];}
 #define cycle(a, p)  if (p) {a[3]=a[0]; a[0]=a[1]; a[1]=a[2]; a[2]=a[3];}\
-		    else   {a[3]=a[2]; a[2]=a[1]; a[1]=a[0]; a[0]=a[3];}
+                    else   {a[3]=a[2]; a[2]=a[1]; a[1]=a[0]; a[0]=a[3];}
   SbRotation p;
   float ka[4];
   int i, turn = -1;

@@ -464,9 +464,9 @@ SoText2::GLRender(SoGLRenderAction * action)
     glLoadIdentity();
     glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
     glPixelStorei(GL_UNPACK_ALIGNMENT,1);
-		
+
     int xpos,ypos,width;
-		
+
     xpos = (int)nilpoint[0];      // to get rid of compiler warning..
     ypos = (int)nilpoint[1];
     for (int i = 0; i < this->string.getNum(); i++) {
@@ -494,7 +494,7 @@ SoText2::GLRender(SoGLRenderAction * action)
       // - instead of + because of OpenGL's "inverted" y coordinate...
       ypos -= ( 12 * (int)this->spacing.getValue() );
     }
-		
+
     glPixelStorei(GL_UNPACK_ALIGNMENT,4);
     // Pop old GL state.
     glMatrixMode(GL_PROJECTION);

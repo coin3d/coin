@@ -44,7 +44,7 @@ public:
 protected:
   ~SoLazyElement();
 public:
-  enum cases {	
+  enum cases {
     LIGHT_MODEL_CASE = 0,
     COLOR_MATERIAL_CASE,
     DIFFUSE_CASE,
@@ -58,7 +58,7 @@ public:
   };
   enum masks{
     LIGHT_MODEL_MASK = 1 << LIGHT_MODEL_CASE,
-    COLOR_MATERIAL_MASK	= 1 << COLOR_MATERIAL_CASE,
+    COLOR_MATERIAL_MASK = 1 << COLOR_MATERIAL_CASE,
     DIFFUSE_MASK = 1 << DIFFUSE_CASE,
     AMBIENT_MASK = 1 << AMBIENT_CASE,
     EMISSIVE_MASK = 1<<EMISSIVE_CASE,
@@ -80,7 +80,7 @@ public:
   virtual SoElement *copyMatchInfo(void) const;
 
   static void setDiffuse(SoState *state, SoNode *node, int32_t numcolors,
-                         const SbColor *colors, SoColorPacker *packer);		
+                         const SbColor *colors, SoColorPacker *packer);
   static void setTransparency(SoState *state, SoNode *node, int32_t numvalues,
                               const float *transparency, SoColorPacker *packer);
   static void setPacked(SoState *state, SoNode *node,
@@ -96,8 +96,8 @@ public:
   static void setLightModel(SoState *state, const int32_t model);
   static const SbColor &getDiffuse(SoState* state, int index);
   static float getTransparency(SoState*, int index);
-  static const uint32_t	*getPackedColors(SoState*);
-  static const int32_t	*getColorIndices(SoState*);
+  static const uint32_t *getPackedColors(SoState*);
+  static const int32_t  *getColorIndices(SoState*);
   static int32_t getColorIndex(SoState*, int num);
   static const SbColor &getAmbient(SoState*);
   static const SbColor &getEmissive(SoState*);
@@ -114,7 +114,7 @@ public:
   SbBool isTransparent(void) const;
   static SoLazyElement *getInstance(SoState *state);
   static float getDefaultAmbientIntensity(void);
-	
+
   static SbColor getDefaultDiffuse(void);
   static SbColor getDefaultAmbient(void);
   static SbColor getDefaultSpecular(void);
@@ -130,7 +130,7 @@ public:
                            const SoMFColor& diffuse, const SoMFFloat& transp,
                            const SoMFColor& ambient, const SoMFColor& emissive,
                            const SoMFColor& specular, const SoMFFloat& shininess);
-			
+
   static void setMaterials(SoState *state, SoNode *node, uint32_t bitmask,
                            SoColorPacker *cPacker,
                            SoMFColor *diffuse, SoMFFloat *transp,
@@ -142,7 +142,7 @@ public:
 
   const uint32_t *getPackedPointer(void) const;
   const SbColor* getDiffusePointer(void) const;
-  const int32_t	*getColorIndexPointer(void) const;
+  const int32_t *getColorIndexPointer(void) const;
 
   const float *getTransparencyPointer(void) const;
   static void setTransparencyType(SoState *state, int32_t type);

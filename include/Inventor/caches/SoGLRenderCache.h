@@ -42,7 +42,7 @@ public:
   virtual void addNestedCache(SoGLDisplayList * child);
 
 protected:
-  virtual void	destroy(SoState *state);
+  virtual void  destroy(SoState *state);
 
 private:
   SoGLDisplayList * displaylist;

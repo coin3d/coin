@@ -137,8 +137,8 @@ typedef struct {
     unsigned int major, minor, release;
   } version;
   int (*versionMatchesAtLeast)(unsigned int major,
-			       unsigned int minor,
-			       unsigned int release);
+                               unsigned int minor,
+                               unsigned int release);
 
   /* GLU calls which might be used. */
   gluGetString_t gluGetString;

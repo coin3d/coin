@@ -161,7 +161,7 @@ SoMFNode::set1Value(const int idx, SoNode * newval)
     // The path should be audited by us at all times. So don't use
     // SoMFPath to wrap SoTempPath or SoLightPath, for instance.
     assert(h==this->pathheads[idx] &&
-	   "Path head changed without notification!");
+           "Path head changed without notification!");
     if (h) {
       h->removeAuditor(this, SoNotRec::FIELD);
       h->unref();
@@ -349,16 +349,16 @@ SoMFNode::referencesCopy(void) const
     SoNode * n = (*this)[i];
     if (n) {
       if (n->isOfType(SoNode::getClassTypeId()) ||
-	  n->isOfType(SoEngine::getClassTypeId())) {
-	if (SoFieldContainer::checkCopy((SoFieldContainer *)n)) return TRUE;
+          n->isOfType(SoEngine::getClassTypeId())) {
+        if (SoFieldContainer::checkCopy((SoFieldContainer *)n)) return TRUE;
       }
       else if (n->isOfType(SoPath::getClassTypeId())) {
-	SoPath * p = (SoPath *)n;
-	if (p->getHead() && SoFieldContainer::checkCopy(p->getHead()))
-	  return TRUE;
+        SoPath * p = (SoPath *)n;
+        if (p->getHead() && SoFieldContainer::checkCopy(p->getHead()))
+          return TRUE;
       }
       else {
-	assert(0 && "strange internal error");
+        assert(0 && "strange internal error");
       }
     }
   }
