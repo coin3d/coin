@@ -66,7 +66,7 @@ private:
 };
 
 
-const SbVec4f & textureCoordinateCallback(void * userdata, const SbVec3f & point, const SbVec3f & normal);
+const SbVec4f & textureCoordinateCubeCallback(void * userdata, const SbVec3f & point, const SbVec3f & normal);
 
 #undef PRIVATE
 #undef PUBLIC
@@ -111,7 +111,7 @@ SoTextureCoordinateCube::initClass(void)
 }
 
 const SbVec4f &
-textureCoordinateCallback(void * userdata, 
+textureCoordinateCubeCallback(void * userdata, 
                           const SbVec3f & point, 
                           const SbVec3f & normal)
 {
@@ -217,7 +217,8 @@ SoTextureCoordinateCube::GLRender(SoGLRenderAction * action)
   PRIVATE(this)->currentshape = NULL;  
 
   SoTextureCoordinateElement::setFunction(PRIVATE(this)->currentstate, 
-                                          this, textureCoordinateCallback, PRIVATE(this));
+                                          this, textureCoordinateCubeCallback,
+                                          PRIVATE(this));
 }
 
 // Documented in superclass.
@@ -233,4 +234,5 @@ SoTextureCoordinateCube::pick(SoPickAction * action)
 {
   SoTextureCoordinateCube::doAction((SoAction *)action);
 }
+
 
