@@ -220,7 +220,6 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/misc/SoGL.h>
-#include "../caches/normalcache_numcoords_hack.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -806,12 +805,13 @@ SoVRMLIndexedFaceSet::generateDefaultNormals(SoState * state,
 
   const SbVec3f * coords = node->point.getValues(0);
 
-  normalcache_set_num_coords_hack(nc, SoCoordinateElement::getInstance(state)->getNum());
+  int numcoords = SoCoordinateElement::getInstance(state)->getNum();
 
   switch (this->findNormalBinding(state)) {
   case PER_VERTEX:
   case PER_VERTEX_INDEXED:
     nc->generatePerVertex(coords,
+                          numcoords,
                           coordIndex.getValues(0),
                           coordIndex.getNum(),
                           this->creaseAngle.getValue(),
@@ -821,6 +821,7 @@ SoVRMLIndexedFaceSet::generateDefaultNormals(SoState * state,
   case PER_FACE:
   case PER_FACE_INDEXED:
     nc->generatePerFace(coords,
+                        numcoords,
                         coordIndex.getValues(0),
                         coordIndex.getNum(),
                         this->ccw.getValue());

@@ -30,4 +30,3 @@
 #include "SoTextureCoordinateCache.cpp"
 #include "SoPrimitiveVertexCache.cpp"
 #include "SoGlyphCache.cpp"
-#include "normalcache_numcoords_hack.cpp"

@@ -46,8 +46,6 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/errors/SoDebugError.h>
 
-#include "normalcache_numcoords_hack.h"
-
 // *************************************************************************
 
 #ifndef DOXYGEN_SKIP_THIS
@@ -218,23 +216,18 @@ calc_normal_vec(const SbVec3f * facenormals, const int facenum,
 */
 void
 SoNormalCache::generatePerVertex(const SbVec3f * const coords,
+                                 const unsigned int numcoords,
                                  const int32_t * vindex,
                                  const int numvi,
                                  const float crease_angle,
                                  const SbVec3f * facenormals,
-                                 // FIXME: also supply the number of normals
-                                 // for more robustness, jornskaa 20040624
+                                 const int numfacenormals,
                                  const SbBool ccw,
                                  const SbBool tristrip)
 {
 #if NORMALCACHE_DEBUG && COIN_DEBUG
   SoDebugError::postInfo("SoNormalCache::generatePerVertex", "generating normals");
 #endif
-
-  // FIXME: numcoords should really be given as an argument
-  // 
-  // jornskaa 20040624
-  const unsigned int numcoords = normalcache_get_num_coords_hack(this);
 
   this->clearGenerator();
   THIS->indices.truncate(0);
@@ -249,18 +242,16 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
 #endif // debug
 
 
+  int numfacenorm = numfacenormals;
   SoNormalCache tempcache(NULL);
-  normalcache_set_num_coords_hack(&tempcache, numcoords);
-
-  int numfacenorm = -1; // -1 means any number of facenorms.
   const SbVec3f * facenorm = (SbVec3f *) facenormals;
   if (facenorm == NULL) {
     // use a SoNormalCache to store temporary data
     if (tristrip) {
-      tempcache.generatePerFaceStrip(coords, vindex, numvi, ccw);
+      tempcache.generatePerFaceStrip(coords, numcoords, vindex, numvi, ccw);
     }
     else {
-      tempcache.generatePerFace(coords, vindex, numvi, ccw);
+      tempcache.generatePerFace(coords, numcoords, vindex, numvi, ccw);
     }
 
     facenorm = tempcache.getNormals();
@@ -431,6 +422,7 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
 */
 void
 SoNormalCache::generatePerFace(const SbVec3f * const coords,
+                               const unsigned int numcoords,
                                const int32_t * cind,
                                const int nv,
                                const SbBool ccw)
@@ -438,11 +430,6 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
 #if NORMALCACHE_DEBUG && COIN_DEBUG
     SoDebugError::postInfo("SoNormalCache::generatePerFace", "generating normals");
 #endif
-
-  // FIXME: numcoords should really be given as an argument 
-  //
-  // jornskaa 20040624
-  const unsigned int numcoords = normalcache_get_num_coords_hack(this);
 
   this->clearGenerator();
   THIS->indices.truncate(0);
@@ -596,6 +583,7 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
 */
 void
 SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
+                                    const unsigned int numcoords,
                                     const int32_t * cind,
                                     const int nv,
                                     const SbBool ccw)
@@ -603,11 +591,6 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
 #if NORMALCACHE_DEBUG && COIN_DEBUG
   SoDebugError::postInfo("SoNormalCache::generatePerFaceStrip", "generating normals");
 #endif
-
-  // FIXME: numcoords should really be given as an argument 
-  //
-  // jornskaa 20040624
-  const unsigned int numcoords = normalcache_get_num_coords_hack(this);
 
   this->clearGenerator();
   THIS->indices.truncate(0);
@@ -766,6 +749,7 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
 */
 void
 SoNormalCache::generatePerStrip(const SbVec3f * const coords,
+                                const unsigned int numcoords,
                                 const int32_t * cind,
                                 const int nv,
                                 const SbBool ccw)
@@ -773,11 +757,6 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
 #if NORMALCACHE_DEBUG && COIN_DEBUG
   SoDebugError::postInfo("SoNormalCache::generatePerStrip", "generating normals");
 #endif
-
-  // FIXME: numcoords should really be given as an argument 
-  //
-  // jornskaa 20040624
-  const unsigned int numcoords = normalcache_get_num_coords_hack(this);
 
   this->clearGenerator();
   THIS->indices.truncate(0);
@@ -909,6 +888,7 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
 */
 void
 SoNormalCache::generatePerVertexQuad(const SbVec3f * const coords,
+                                     const unsigned int numcoords,
                                      const int vPerRow,
                                      const int vPerColumn,
                                      const SbBool ccw)
@@ -917,18 +897,11 @@ SoNormalCache::generatePerVertexQuad(const SbVec3f * const coords,
   SoDebugError::postInfo("SoNormalCache::generatePerVertexQuad", "generating normals");
 #endif
 
-  // FIXME: numcoords should really be given as an argument 
-  //
-  // jornskaa 20040624
-  const unsigned int numcoords = normalcache_get_num_coords_hack(this);
-
   this->clearGenerator();
   THIS->normalArray.truncate(0, TRUE);
 
   SoNormalCache tempcache(NULL);
-  normalcache_set_num_coords_hack(&tempcache, numcoords);
-
-  tempcache.generatePerFaceQuad(coords, vPerRow, vPerColumn, ccw);
+  tempcache.generatePerFaceQuad(coords, numcoords, vPerRow, vPerColumn, ccw);
   const SbVec3f * facenormals = tempcache.getNormals();
   int numfacenormals = tempcache.getNum(); // Used for extra robustness
 
@@ -986,6 +959,7 @@ SoNormalCache::generatePerVertexQuad(const SbVec3f * const coords,
 */
 void
 SoNormalCache::generatePerFaceQuad(const SbVec3f * const coords,
+                                   const unsigned int numcoords,
                                    const int vPerRow,
                                    const int vPerColumn,
                                    const SbBool ccw)
@@ -993,11 +967,6 @@ SoNormalCache::generatePerFaceQuad(const SbVec3f * const coords,
 #if NORMALCACHE_DEBUG && COIN_DEBUG
   SoDebugError::postInfo("SoNormalCache::generatePerFaceQuad", "generating normals");
 #endif
-
-  // FIXME: numcoords should really be given as an argument 
-  //
-  // jornskaa 20040624
-  const unsigned int numcoords = normalcache_get_num_coords_hack(this);
 
   this->clearGenerator();
   THIS->normalArray.truncate(0, TRUE);
@@ -1076,6 +1045,7 @@ SoNormalCache::generatePerFaceQuad(const SbVec3f * const coords,
 */
 void
 SoNormalCache::generatePerRowQuad(const SbVec3f * const coords,
+                                  const unsigned int numcoords,
                                   const int vPerRow,
                                   const int vPerColumn,
                                   const SbBool ccw)
@@ -1083,11 +1053,6 @@ SoNormalCache::generatePerRowQuad(const SbVec3f * const coords,
 #if NORMALCACHE_DEBUG && COIN_DEBUG
   SoDebugError::postInfo("SoNormalCache::generatePerRowQuad", "generating normals");
 #endif
-
-  // FIXME: numcoords should really be given as an argument 
-  //
-  // jornskaa 20040624
-  const unsigned int numcoords = normalcache_get_num_coords_hack(this);
 
   this->clearGenerator();
   THIS->normalArray.truncate(0, TRUE);

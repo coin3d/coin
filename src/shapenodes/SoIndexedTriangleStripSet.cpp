@@ -85,7 +85,6 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
-#include "../caches/normalcache_numcoords_hack.h"
 
 #include <assert.h>
 
@@ -341,7 +340,7 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
     coordelem->getArrayPtr3();
   assert(coords);
 
-  normalcache_set_num_coords_hack(nc, SoCoordinateElement::getInstance(state)->getNum());
+  int numcoords = SoCoordinateElement::getInstance(state)->getNum();
 
   SoNormalBindingElement::Binding normbind = vpnorm ?
     (SoNormalBindingElement::Binding) vp->normalBinding.getValue() :
@@ -352,16 +351,19 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
   case SoNormalBindingElement::PER_VERTEX:
   case SoNormalBindingElement::PER_VERTEX_INDEXED:
     nc->generatePerVertex(coords,
+                          numcoords,
                           this->coordIndex.getValues(0),
                           this->coordIndex.getNum(),
                           SoCreaseAngleElement::get(state),
                           NULL,
+                          -1,
                           ccw,
                           TRUE);
     break;
   case SoNormalBindingElement::PER_FACE:
   case SoNormalBindingElement::PER_FACE_INDEXED:
     nc->generatePerFaceStrip(coords,
+                             numcoords,
                              this->coordIndex.getValues(0),
                              this->coordIndex.getNum(),
                              ccw);
@@ -370,6 +372,7 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
   case SoNormalBindingElement::PER_PART:
   case SoNormalBindingElement::PER_PART_INDEXED:
     nc->generatePerStrip(coords,
+                         numcoords,
                          this->coordIndex.getValues(0),
                          this->coordIndex.getNum(),
                          ccw);

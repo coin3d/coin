@@ -255,8 +255,7 @@ RegularSources = \
 	SoNormalCache.cpp \
 	SoTextureCoordinateCache.cpp \
 	SoPrimitiveVertexCache.cpp \
-	SoGlyphCache.cpp \
-	normalcache_numcoords_hack.cpp
+	SoGlyphCache.cpp
 
 LinkHackSources = \
 	all-caches-cpp.cpp
@@ -327,15 +326,13 @@ caches_lst_LIBADD =
 am__caches_lst_SOURCES_DIST = SoBoundingBoxCache.cpp SoCache.cpp \
 	SoConvexDataCache.cpp SoGLCacheList.cpp SoGLRenderCache.cpp \
 	SoNormalCache.cpp SoTextureCoordinateCache.cpp \
-	SoPrimitiveVertexCache.cpp SoGlyphCache.cpp \
-	normalcache_numcoords_hack.cpp all-caches-cpp.cpp
+	SoPrimitiveVertexCache.cpp SoGlyphCache.cpp all-caches-cpp.cpp
 am__objects_1 = all-caches-cpp.$(OBJEXT)
 am__objects_2 = SoBoundingBoxCache.$(OBJEXT) SoCache.$(OBJEXT) \
 	SoConvexDataCache.$(OBJEXT) SoGLCacheList.$(OBJEXT) \
 	SoGLRenderCache.$(OBJEXT) SoNormalCache.$(OBJEXT) \
 	SoTextureCoordinateCache.$(OBJEXT) \
-	SoPrimitiveVertexCache.$(OBJEXT) SoGlyphCache.$(OBJEXT) \
-	normalcache_numcoords_hack.$(OBJEXT)
+	SoPrimitiveVertexCache.$(OBJEXT) SoGlyphCache.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_caches_lst_OBJECTS = $(am__objects_3)
@@ -343,7 +340,7 @@ am__EXTRA_caches_lst_SOURCES_DIST = all-caches-cpp.cpp \
 	SoBoundingBoxCache.cpp SoCache.cpp SoConvexDataCache.cpp \
 	SoGLCacheList.cpp SoGLRenderCache.cpp SoNormalCache.cpp \
 	SoTextureCoordinateCache.cpp SoPrimitiveVertexCache.cpp \
-	SoGlyphCache.cpp normalcache_numcoords_hack.cpp
+	SoGlyphCache.cpp
 caches_lst_OBJECTS = $(am_caches_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -352,13 +349,12 @@ libcaches_la_LIBADD =
 am__libcaches_la_SOURCES_DIST = SoBoundingBoxCache.cpp SoCache.cpp \
 	SoConvexDataCache.cpp SoGLCacheList.cpp SoGLRenderCache.cpp \
 	SoNormalCache.cpp SoTextureCoordinateCache.cpp \
-	SoPrimitiveVertexCache.cpp SoGlyphCache.cpp \
-	normalcache_numcoords_hack.cpp all-caches-cpp.cpp
+	SoPrimitiveVertexCache.cpp SoGlyphCache.cpp all-caches-cpp.cpp
 am__objects_6 = all-caches-cpp.lo
 am__objects_7 = SoBoundingBoxCache.lo SoCache.lo SoConvexDataCache.lo \
 	SoGLCacheList.lo SoGLRenderCache.lo SoNormalCache.lo \
 	SoTextureCoordinateCache.lo SoPrimitiveVertexCache.lo \
-	SoGlyphCache.lo normalcache_numcoords_hack.lo
+	SoGlyphCache.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libcaches_la_OBJECTS = $(am__objects_8)
@@ -366,7 +362,7 @@ am__EXTRA_libcaches_la_SOURCES_DIST = all-caches-cpp.cpp \
 	SoBoundingBoxCache.cpp SoCache.cpp SoConvexDataCache.cpp \
 	SoGLCacheList.cpp SoGLRenderCache.cpp SoNormalCache.cpp \
 	SoTextureCoordinateCache.cpp SoPrimitiveVertexCache.cpp \
-	SoGlyphCache.cpp normalcache_numcoords_hack.cpp
+	SoGlyphCache.cpp
 libcaches_la_OBJECTS = $(am_libcaches_la_OBJECTS)
 libcaches@SUFFIX@LINKHACK_la_LDFLAGS =
 libcaches@SUFFIX@LINKHACK_la_LIBADD =
@@ -374,14 +370,13 @@ am__libcaches@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBoundingBoxCache.cpp \
 	SoCache.cpp SoConvexDataCache.cpp SoGLCacheList.cpp \
 	SoGLRenderCache.cpp SoNormalCache.cpp \
 	SoTextureCoordinateCache.cpp SoPrimitiveVertexCache.cpp \
-	SoGlyphCache.cpp normalcache_numcoords_hack.cpp \
-	all-caches-cpp.cpp
+	SoGlyphCache.cpp all-caches-cpp.cpp
 am_libcaches@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES_DIST = all-caches-cpp.cpp \
 	SoBoundingBoxCache.cpp SoCache.cpp SoConvexDataCache.cpp \
 	SoGLCacheList.cpp SoGLRenderCache.cpp SoNormalCache.cpp \
 	SoTextureCoordinateCache.cpp SoPrimitiveVertexCache.cpp \
-	SoGlyphCache.cpp normalcache_numcoords_hack.cpp
+	SoGlyphCache.cpp
 libcaches@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libcaches@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -404,9 +399,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateCache.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateCache.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-caches-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-caches-cpp.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/normalcache_numcoords_hack.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/normalcache_numcoords_hack.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-caches-cpp.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -506,8 +499,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateCache.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-caches-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-caches-cpp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/normalcache_numcoords_hack.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/normalcache_numcoords_hack.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

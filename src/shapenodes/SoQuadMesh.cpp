@@ -171,7 +171,6 @@
 #include <Inventor/system/gl.h>
 #include <math.h> // ilogb
 #include <float.h> // _logb
-#include "../caches/normalcache_numcoords_hack.h"
 
 /*!
   \var SoSFInt32 SoQuadMesh::verticesPerColumn
@@ -1218,25 +1217,28 @@ SoQuadMesh::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   const SbVec3f * coords = SoCoordinateElement::getInstance(state)->getArrayPtr3();
   assert(coords);
 
-  normalcache_set_num_coords_hack(nc, SoCoordinateElement::getInstance(state)->getNum() - startIndex.getValue());
+  int numcoords = SoCoordinateElement::getInstance(state)->getNum() - startIndex.getValue();
 
   Binding binding = findNormalBinding(state);
 
   switch (binding) {
   case PER_VERTEX:
     nc->generatePerVertexQuad(coords + startIndex.getValue(),
+                              numcoords,
                               verticesPerRow.getValue(),
                               verticesPerColumn.getValue(),
                               ccw);
     break;
   case PER_FACE:
     nc->generatePerFaceQuad(coords + startIndex.getValue(),
+                            numcoords,
                             verticesPerRow.getValue(),
                             verticesPerColumn.getValue(),
                             ccw);
     break;
   case PER_ROW:
     nc->generatePerRowQuad(coords + startIndex.getValue(),
+                           numcoords,
                            verticesPerRow.getValue(),
                            verticesPerColumn.getValue(),
                            ccw);

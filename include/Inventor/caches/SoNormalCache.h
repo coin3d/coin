@@ -41,50 +41,58 @@ public:
   void set(const int num, const SbVec3f * const normals);
   void set(SoNormalGenerator *generator);
 
-  void generatePerVertex(const SbVec3f * const coords,
-                         const int32_t *coordindices,
-                         const int numcoordindices,
-                         const float crease_angle,
-                         const SbVec3f *facenormals = NULL,
-                         const SbBool ccw = TRUE,
-                         const SbBool tristrip = FALSE);
-
-
-  void generatePerFace(const SbVec3f * const coords,
-                       const int32_t *coordindices,
-                       const int numcoorindices,
-                       const SbBool ccw);
-
-  void generatePerFaceStrip(const SbVec3f * const coords,
-                            const int32_t *coordindices,
-                            const int numcoorindices,
-                            const SbBool ccw);
-
-  void generatePerStrip(const SbVec3f * const coords,
-                        const int32_t *coordindices,
-                        const int numcoorindices,
-                        const SbBool ccw);
-
-  void generatePerVertexQuad(const SbVec3f * const coords,
-                             const int vPerRow,
-                             const int vPerColumn,
-                             const SbBool ccw);
-
-  void generatePerFaceQuad(const SbVec3f * const coords,
-                           const int vPerRow,
-                           const int vPerColumn,
-                           const SbBool ccw);
-
-  void generatePerRowQuad(const SbVec3f * const coords,
-                          const int vPerRow,
-                          const int vPerColumn,
-                          const SbBool ccw);
-
   int getNum(void) const;
   const SbVec3f *getNormals(void) const;
 
   int getNumIndices(void) const;
   const int32_t *getIndices(void) const;
+
+  void generatePerVertex(const SbVec3f * const coords,
+                         const unsigned int numcoords,
+                         const int32_t *coordindices,
+                         const int numcoordindices,
+                         const float crease_angle,
+                         const SbVec3f *facenormals = NULL,
+                         const int numfacenormals = -1,
+                         const SbBool ccw = TRUE,
+                         const SbBool tristrip = FALSE);
+
+
+  void generatePerFace(const SbVec3f * const coords,
+                       const unsigned int numcoords,
+                       const int32_t *coordindices,
+                       const int numcoorindices,
+                       const SbBool ccw);
+
+  void generatePerFaceStrip(const SbVec3f * const coords,
+                            const unsigned int numcoords,
+                            const int32_t *coordindices,
+                            const int numcoorindices,
+                            const SbBool ccw);
+
+  void generatePerStrip(const SbVec3f * const coords,
+                        const unsigned int numcoords,
+                        const int32_t *coordindices,
+                        const int numcoorindices,
+                        const SbBool ccw);
+
+  void generatePerVertexQuad(const SbVec3f * const coords,
+                             const unsigned int numcoords,
+                             const int vPerRow,
+                             const int vPerColumn,
+                             const SbBool ccw);
+
+  void generatePerFaceQuad(const SbVec3f * const coords,
+                           const unsigned int numcoords,
+                           const int vPerRow,
+                           const int vPerColumn,
+                           const SbBool ccw);
+
+  void generatePerRowQuad(const SbVec3f * const coords,
+                          const unsigned int numcoords,
+                          const int vPerRow,
+                          const int vPerColumn,
+                          const SbBool ccw);
 
 private:
   SoNormalCacheP * pimpl;

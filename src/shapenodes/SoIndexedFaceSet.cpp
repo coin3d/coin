@@ -157,7 +157,6 @@
 #include <assert.h>
 
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
-#include "../caches/normalcache_numcoords_hack.h"
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbRWMutex.h>
@@ -891,7 +890,7 @@ SoIndexedFaceSet::generateDefaultNormals(SoState * state,
   const SbVec3f * coords = SoCoordinateElement::getInstance(state)->getArrayPtr3();
   assert(coords);
 
-  normalcache_set_num_coords_hack(nc, SoCoordinateElement::getInstance(state)->getNum());
+  int numcoords = SoCoordinateElement::getInstance(state)->getNum();
 
   SoNormalBindingElement::Binding normbind =
     SoNormalBindingElement::get(state);
@@ -900,10 +899,12 @@ SoIndexedFaceSet::generateDefaultNormals(SoState * state,
   case SoNormalBindingElement::PER_VERTEX:
   case SoNormalBindingElement::PER_VERTEX_INDEXED:
     nc->generatePerVertex(coords,
+                          numcoords,
                           coordIndex.getValues(0),
                           coordIndex.getNum(),
                           SoCreaseAngleElement::get(state, this->getNodeType() == SoNode::VRML1),
                           NULL,
+                          -1,
                           ccw);
     break;
   case SoNormalBindingElement::PER_FACE:
@@ -911,6 +912,7 @@ SoIndexedFaceSet::generateDefaultNormals(SoState * state,
   case SoNormalBindingElement::PER_PART:
   case SoNormalBindingElement::PER_PART_INDEXED:
     nc->generatePerFace(coords,
+                        numcoords,
                         coordIndex.getValues(0),
                         coordIndex.getNum(),
                         ccw);
