@@ -1707,40 +1707,48 @@ SoBaseKit::getAnyPart(const SbName & partname, SbBool makeifneeded,
 
   if (SoBaseKit::findPart(partstring, kit, partNum, isList, listIdx,
                           makeifneeded, NULL, TRUE)) {
-    if (!publiccheck || kit->getNodekitCatalog()->isPublic(partNum)) {
-      if (!leafcheck || kit->getNodekitCatalog()->isLeaf(partNum)) {
-        if (isList) {
-          SoNode * partnode = PRIVATE(kit)->instancelist[partNum]->getValue();
-          if (partnode == NULL) return NULL;
-          assert(partnode->isOfType(SoNodeKitListPart::getClassTypeId()));
-          SoNodeKitListPart * list = (SoNodeKitListPart *) partnode;
-          if (listIdx >= 0 && listIdx < list->getNumChildren()) {
-            return list->getChild(listIdx);
-          }
-          else if (makeifneeded && (listIdx == list->getNumChildren())) {
-            if (!list->canCreateDefaultChild()) {
-#if COIN_DEBUG
-              SoDebugError::postWarning("SoBaseKit::getAnyPart",
-                                        "Unable to create default child for list-part ``%s''",
-                                        partname.getString());
-#endif // COIN_DEBUG
-            }
-            return list->createAndAddDefaultChild();
-          }
-          else {
+
+    if (publiccheck && !kit->getNodekitCatalog()->isPublic(partNum)) {
+      SoDebugError::postWarning("SoBaseKit::getAnyPart",
+                                "Part ``%s'' found in %s, but access is private.",
+                                partname.getString(),
+                                this->getTypeId().getName().getString());
+      return NULL;
+    }
+
+    if (!leafcheck || kit->getNodekitCatalog()->isLeaf(partNum)) {
+      if (isList) {
+        SoNode * partnode = PRIVATE(kit)->instancelist[partNum]->getValue();
+        if (partnode == NULL) return NULL;
+        assert(partnode->isOfType(SoNodeKitListPart::getClassTypeId()));
+        SoNodeKitListPart * list = (SoNodeKitListPart *) partnode;
+        if (listIdx >= 0 && listIdx < list->getNumChildren()) {
+          return list->getChild(listIdx);
+        }
+        else if (makeifneeded && (listIdx == list->getNumChildren())) {
+          if (!list->canCreateDefaultChild()) {
 #if COIN_DEBUG
             SoDebugError::postWarning("SoBaseKit::getAnyPart",
-                                      "index %d out of bounds for part ``%s''",
-                                      listIdx, partname.getString());
+                                      "Unable to create default child for list-part ``%s''",
+                                      partname.getString());
 #endif // COIN_DEBUG
           }
+          return list->createAndAddDefaultChild();
         }
         else {
-          return PRIVATE(kit)->instancelist[partNum]->getValue();
+#if COIN_DEBUG
+          SoDebugError::postWarning("SoBaseKit::getAnyPart",
+                                    "index %d out of bounds for part ``%s''",
+                                    listIdx, partname.getString());
+#endif // COIN_DEBUG
         }
+      }
+      else {
+        return PRIVATE(kit)->instancelist[partNum]->getValue();
       }
     }
   }
+
   // FIXME:
   // run cleanup?, in case some node has been temporarily created while
   // searching for the part?? pederb, 2000-01-05
