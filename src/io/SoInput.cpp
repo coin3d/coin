@@ -136,7 +136,7 @@ SbStringList * SoInput::dirsearchlist = NULL;
 
 static SbStorage * soinput_tls = NULL;
 
-typedef struct soinput_tls_data {
+struct soinput_tls_data {
   SbStringList * searchlist;
   int instancecount;
 };
