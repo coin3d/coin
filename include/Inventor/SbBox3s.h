@@ -49,8 +49,8 @@ public:
   void getOrigin(short & originX, short & originY, short & originZ) const;
   void getSize(short & sizeX, short & sizeY, short & sizeZ) const;
   void makeEmpty(void);
-  friend int operator ==(const SbBox3s & b1, const SbBox3s & b2);
-  friend int operator !=(const SbBox3s & b1, const SbBox3s & b2);
+  friend COIN_DLL_API int operator ==(const SbBox3s & b1, const SbBox3s & b2);
+  friend COIN_DLL_API int operator !=(const SbBox3s & b1, const SbBox3s & b2);
 
 private:
   SbVec3s minpt, maxpt;
@@ -61,7 +61,7 @@ private:
   SbBool hasArea(void) const;
 };
 
-int operator ==(const SbBox3s & b1, const SbBox3s & b2);
-int operator !=(const SbBox3s & b1, const SbBox3s & b2);
+COIN_DLL_API int operator ==(const SbBox3s & b1, const SbBox3s & b2);
+COIN_DLL_API int operator !=(const SbBox3s & b1, const SbBox3s & b2);
 
 #endif // !COIN_SBBOX3S_H
