@@ -110,7 +110,7 @@ if $sim_ac_have_have_bytesize_types; then
   AC_DEFINE_UNQUOTED([HAVE_UINT8_T], [1], [define this if the type is available on the system])
   AC_DEFINE(SIM_AC_DEF_PREFIX[]_UINT8_T, [uint8_t], [define this to a type of the indicated bitwidth])
   AC_DEFINE_UNQUOTED([HAVE_INT16_T], [1], [define this if the type is available on the system])
-dnl  AC_DEFINE(SIM_AC_DEF_PREFIX[]_INT16_T, [int16_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE(SIM_AC_DEF_PREFIX[]_INT16_T, [int16_t], [define this to a type of the indicated bitwidth])
   AC_DEFINE_UNQUOTED([HAVE_UINT16_T], [1], [define this if the type is available on the system])
   AC_DEFINE(SIM_AC_DEF_PREFIX[]_UINT16_T, [uint16_t], [define this to a type of the indicated bitwidth])
   AC_DEFINE_UNQUOTED([HAVE_INT32_T], [1], [define this if the type is available on the system])
@@ -231,6 +231,7 @@ SIM_AC_HAVE_BYTESIZE_TYPES_IFELSE([
   SIM_AC_BYTESIZE_TYPE(uintptr_t, sizeof(void *), [u_intptr_t "_W64 unsigned int" "unsigned int" "unsigned long" u_int64_t "unsigned long long" "unsigned __int64"], [], AC_MSG_WARN([could not find unsigned int-pointer type]), $1)
 ], [$1])
 ])# SIM_AC_DEFINE_BYTESIZE_TYPES
+
 
 # Usage:
 #  SIM_AC_DATE_ISO8601([variable])
@@ -7452,12 +7453,70 @@ fi
 #
 
 AC_DEFUN([SIM_AC_COMPILER_CPLUSPLUS_FATAL_ERRORS], [
+  SIM_AC_COMPILER_CPLUSPLUS_ENV_OK
   SIM_AC_COMPILER_INLINE_FOR
   SIM_AC_COMPILER_SWITCH_IN_VIRTUAL_DESTRUCTOR
   SIM_AC_COMPILER_CRAZY_GCC296_BUG
   SIM_AC_COMPILER_BUILTIN_EXPECT
 ])
 
+
+# Usage:
+#     SIM_AC_COMPILER_CPLUSPLUS_ENV_OK
+#
+# Description:
+#   Checks that the C++ compiler environment can compile, link and run an
+#   executable. We do this before the other checks, so we can smoke out
+#   a fubar environment before trying anything else, because otherwise the
+#   error message from the failing check would be bogus.
+#
+#   (I.e. we've had reports from people that the GCC 2.96 crazy-bug checks
+#   hits, even though they didn't have GCC 2.96. Upon closer inspection,
+#   the reason for failure was simply that some other part of the compiler
+#   environment was fubar.)
+
+AC_DEFUN([SIM_AC_COMPILER_CPLUSPLUS_ENV_OK], [
+AC_LANG_PUSH(C++)
+
+AC_CACHE_CHECK(
+  [if the C++ compiler environment is ok],
+  sim_cv_c_compiler_env_ok,
+  [AC_TRY_RUN([
+// Just any old C++ source code. It might be useful
+// to try to add in more standard C++ features that
+// we depend on, like classes using templates (or
+// even multiple templates), etc etc.  -mortene.
+
+#include <stdio.h>
+
+class myclass {
+public:
+  myclass(void) { value = 0.0f; }
+  float value;
+};
+
+int
+main(void)
+{
+  myclass proj;
+  proj.value = 42;
+  return 0;
+}
+],
+  [sim_cv_c_compiler_env_ok=true],
+  [sim_cv_c_compiler_env_ok=false],
+  [sim_cv_c_compiler_env_ok=true
+   AC_MSG_WARN([can't check for fully working C++ environment when cross-compiling, assuming it's ok])])
+])
+
+AC_LANG_POP
+
+if $sim_cv_c_compiler_env_ok; then
+  :
+else
+  SIM_AC_ERROR(c--fubarenvironment)
+fi
+])
 
 
 # Usage:
@@ -8318,8 +8377,6 @@ if test x"$enable_warnings" = x"yes"; then
     ## 1174: "The function was declared but never referenced."
     ## 1209: "The controlling expression is constant." (kill warning on
     ##       if (0), assert(FALSE), etc).
-    ## 1355: Kill warnings on extra semicolons (which happens with some
-    ##       of the Coin macros).
     ## 1375: Non-virtual destructors in base classes.
     ## 3201: Unused argument to a function.
     ## 1110: "Statement is not reachable" (the Lex/Flex generated code in
@@ -8331,7 +8388,7 @@ if test x"$enable_warnings" = x"yes"; then
     ## 1169: External/internal linkage conflicts with a previous declaration.
     ##       We get this for the "friend operators" in SbString.h
 
-    sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1355,1375,3201,1110,1506,1169,1210"
+    sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1375,3201,1110,1506,1169,1210"
 
     case $CC in
     cc | "cc "* | CC | "CC "* )

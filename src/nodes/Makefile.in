@@ -248,6 +248,8 @@ target_vendor = @target_vendor@
 
 RegularSources = \
 	SoAnnotation.cpp \
+	SoAnnoText3.cpp \
+	SoAnnoText3Property.cpp \
 	SoAntiSquish.cpp \
 	SoArray.cpp \
 	SoBaseColor.cpp \
@@ -293,6 +295,7 @@ RegularSources = \
 	SoOrthographicCamera.cpp \
 	SoPackedColor.cpp \
 	SoPathSwitch.cpp \
+	SoPattern.cpp \
 	SoPendulum.cpp \
 	SoPerspectiveCamera.cpp \
 	SoPickStyle.cpp \
@@ -411,8 +414,9 @@ LIBRARIES = $(noinst_LIBRARIES)
 
 nodes_lst_AR = $(AR) cru
 nodes_lst_LIBADD =
-am__nodes_lst_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
-	SoArray.cpp SoBaseColor.cpp SoBlinker.cpp SoBumpMap.cpp \
+am__nodes_lst_SOURCES_DIST = SoAnnotation.cpp SoAnnoText3.cpp \
+	SoAnnoText3Property.cpp SoAntiSquish.cpp SoArray.cpp \
+	SoBaseColor.cpp SoBlinker.cpp SoBumpMap.cpp \
 	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
 	SoBumpMappingProperty.cpp SoCallback.cpp SoCacheHint.cpp \
 	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
@@ -425,14 +429,14 @@ am__nodes_lst_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
 	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
 	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
-	SoPathSwitch.cpp SoPendulum.cpp SoPerspectiveCamera.cpp \
-	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
-	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
-	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp SoSelection.cpp \
-	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
-	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
-	SoTexture2Transform.cpp SoTexture3Transform.cpp \
+	SoPathSwitch.cpp SoPattern.cpp SoPendulum.cpp \
+	SoPerspectiveCamera.cpp SoPickStyle.cpp SoPointLight.cpp \
+	SoPolygonOffset.cpp SoProfile.cpp SoProfileCoordinate2.cpp \
+	SoProfileCoordinate3.cpp SoResetTransform.cpp SoRotation.cpp \
+	SoRotationXYZ.cpp SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
+	SoSelection.cpp SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp \
+	SoSpotLight.cpp SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp \
+	SoTexture3.cpp SoTexture2Transform.cpp SoTexture3Transform.cpp \
 	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
 	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
 	SoTextureCoordinateCube.cpp SoTextureCoordinateCylinder.cpp \
@@ -445,7 +449,8 @@ am__nodes_lst_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
 	SoUnknownNode.cpp SoVertexProperty.cpp SoWWWAnchor.cpp \
 	SoWWWInline.cpp all-nodes-cpp.cpp
 am__objects_1 = all-nodes-cpp.$(OBJEXT)
-am__objects_2 = SoAnnotation.$(OBJEXT) SoAntiSquish.$(OBJEXT) \
+am__objects_2 = SoAnnotation.$(OBJEXT) SoAnnoText3.$(OBJEXT) \
+	SoAnnoText3Property.$(OBJEXT) SoAntiSquish.$(OBJEXT) \
 	SoArray.$(OBJEXT) SoBaseColor.$(OBJEXT) SoBlinker.$(OBJEXT) \
 	SoBumpMap.$(OBJEXT) SoBumpMapCoordinate.$(OBJEXT) \
 	SoBumpMapTransform.$(OBJEXT) SoBumpMappingProperty.$(OBJEXT) \
@@ -465,17 +470,17 @@ am__objects_2 = SoAnnotation.$(OBJEXT) SoAntiSquish.$(OBJEXT) \
 	SoNode.$(OBJEXT) SoNormal.$(OBJEXT) SoNormalBinding.$(OBJEXT) \
 	SoNurbsProfile.$(OBJEXT) SoOrthographicCamera.$(OBJEXT) \
 	SoPackedColor.$(OBJEXT) SoPathSwitch.$(OBJEXT) \
-	SoPendulum.$(OBJEXT) SoPerspectiveCamera.$(OBJEXT) \
-	SoPickStyle.$(OBJEXT) SoPointLight.$(OBJEXT) \
-	SoPolygonOffset.$(OBJEXT) SoProfile.$(OBJEXT) \
-	SoProfileCoordinate2.$(OBJEXT) SoProfileCoordinate3.$(OBJEXT) \
-	SoResetTransform.$(OBJEXT) SoRotation.$(OBJEXT) \
-	SoRotationXYZ.$(OBJEXT) SoRotor.$(OBJEXT) SoScale.$(OBJEXT) \
-	SoSceneTexture2.$(OBJEXT) SoSelection.$(OBJEXT) \
-	SoSeparator.$(OBJEXT) SoShapeHints.$(OBJEXT) \
-	SoShuttle.$(OBJEXT) SoSpotLight.$(OBJEXT) \
-	SoSurroundScale.$(OBJEXT) SoSwitch.$(OBJEXT) \
-	SoTexture2.$(OBJEXT) SoTexture3.$(OBJEXT) \
+	SoPattern.$(OBJEXT) SoPendulum.$(OBJEXT) \
+	SoPerspectiveCamera.$(OBJEXT) SoPickStyle.$(OBJEXT) \
+	SoPointLight.$(OBJEXT) SoPolygonOffset.$(OBJEXT) \
+	SoProfile.$(OBJEXT) SoProfileCoordinate2.$(OBJEXT) \
+	SoProfileCoordinate3.$(OBJEXT) SoResetTransform.$(OBJEXT) \
+	SoRotation.$(OBJEXT) SoRotationXYZ.$(OBJEXT) SoRotor.$(OBJEXT) \
+	SoScale.$(OBJEXT) SoSceneTexture2.$(OBJEXT) \
+	SoSelection.$(OBJEXT) SoSeparator.$(OBJEXT) \
+	SoShapeHints.$(OBJEXT) SoShuttle.$(OBJEXT) \
+	SoSpotLight.$(OBJEXT) SoSurroundScale.$(OBJEXT) \
+	SoSwitch.$(OBJEXT) SoTexture2.$(OBJEXT) SoTexture3.$(OBJEXT) \
 	SoTexture2Transform.$(OBJEXT) SoTexture3Transform.$(OBJEXT) \
 	SoTextureCombine.$(OBJEXT) SoTextureCoordinate2.$(OBJEXT) \
 	SoTextureCoordinate3.$(OBJEXT) \
@@ -497,7 +502,8 @@ am__objects_2 = SoAnnotation.$(OBJEXT) SoAntiSquish.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_nodes_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_nodes_lst_SOURCES_DIST = SoSoundElementHelper.h \
-	all-nodes-cpp.cpp SoAnnotation.cpp SoAntiSquish.cpp SoArray.cpp \
+	all-nodes-cpp.cpp SoAnnotation.cpp SoAnnoText3.cpp \
+	SoAnnoText3Property.cpp SoAntiSquish.cpp SoArray.cpp \
 	SoBaseColor.cpp SoBlinker.cpp SoBumpMap.cpp \
 	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
 	SoBumpMappingProperty.cpp SoCallback.cpp SoCacheHint.cpp \
@@ -511,14 +517,14 @@ am__EXTRA_nodes_lst_SOURCES_DIST = SoSoundElementHelper.h \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
 	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
 	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
-	SoPathSwitch.cpp SoPendulum.cpp SoPerspectiveCamera.cpp \
-	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
-	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
-	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp SoSelection.cpp \
-	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
-	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
-	SoTexture2Transform.cpp SoTexture3Transform.cpp \
+	SoPathSwitch.cpp SoPattern.cpp SoPendulum.cpp \
+	SoPerspectiveCamera.cpp SoPickStyle.cpp SoPointLight.cpp \
+	SoPolygonOffset.cpp SoProfile.cpp SoProfileCoordinate2.cpp \
+	SoProfileCoordinate3.cpp SoResetTransform.cpp SoRotation.cpp \
+	SoRotationXYZ.cpp SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
+	SoSelection.cpp SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp \
+	SoSpotLight.cpp SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp \
+	SoTexture3.cpp SoTexture2Transform.cpp SoTexture3Transform.cpp \
 	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
 	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
 	SoTextureCoordinateCube.cpp SoTextureCoordinateCylinder.cpp \
@@ -535,76 +541,8 @@ LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libnodes_la_LDFLAGS =
 libnodes_la_LIBADD =
-am__libnodes_la_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
-	SoArray.cpp SoBaseColor.cpp SoBlinker.cpp SoBumpMap.cpp \
-	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
-	SoBumpMappingProperty.cpp SoCallback.cpp SoCacheHint.cpp \
-	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
-	SoCoordinate3.cpp SoCoordinate4.cpp SoDirectionalLight.cpp \
-	SoDrawStyle.cpp SoEnvironment.cpp SoEventCallback.cpp \
-	SoExtSelection.cpp SoFile.cpp SoFont.cpp SoFontStyle.cpp \
-	SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
-	SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
-	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
-	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
-	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
-	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
-	SoPathSwitch.cpp SoPendulum.cpp SoPerspectiveCamera.cpp \
-	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
-	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
-	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp SoSelection.cpp \
-	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
-	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
-	SoTexture2Transform.cpp SoTexture3Transform.cpp \
-	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
-	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
-	SoTextureCoordinateCube.cpp SoTextureCoordinateCylinder.cpp \
-	SoTextureCoordinateSphere.cpp SoTextureCoordinateDefault.cpp \
-	SoTextureCoordinateEnvironment.cpp \
-	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
-	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
-	SoTransparencyType.cpp SoTransformSeparator.cpp \
-	SoTransformation.cpp SoTranslation.cpp SoUnits.cpp \
-	SoUnknownNode.cpp SoVertexProperty.cpp SoWWWAnchor.cpp \
-	SoWWWInline.cpp all-nodes-cpp.cpp
-am__objects_6 = all-nodes-cpp.lo
-am__objects_7 = SoAnnotation.lo SoAntiSquish.lo SoArray.lo \
-	SoBaseColor.lo SoBlinker.lo SoBumpMap.lo SoBumpMapCoordinate.lo \
-	SoBumpMapTransform.lo SoBumpMappingProperty.lo SoCallback.lo \
-	SoCacheHint.lo SoCamera.lo SoClipPlane.lo SoColorIndex.lo \
-	SoComplexity.lo SoCoordinate3.lo SoCoordinate4.lo \
-	SoDirectionalLight.lo SoDrawStyle.lo SoEnvironment.lo \
-	SoEventCallback.lo SoExtSelection.lo SoFile.lo SoFont.lo \
-	SoFontStyle.lo SoGroup.lo SoInfo.lo SoLOD.lo SoLabel.lo \
-	SoLevelOfDetail.lo SoLight.lo SoLightModel.lo \
-	SoLinearProfile.lo SoListener.lo SoLocateHighlight.lo \
-	SoMaterial.lo SoMaterialBinding.lo SoMatrixTransform.lo \
-	SoMultipleCopy.lo SoNode.lo SoNormal.lo SoNormalBinding.lo \
-	SoNurbsProfile.lo SoOrthographicCamera.lo SoPackedColor.lo \
-	SoPathSwitch.lo SoPendulum.lo SoPerspectiveCamera.lo \
-	SoPickStyle.lo SoPointLight.lo SoPolygonOffset.lo SoProfile.lo \
-	SoProfileCoordinate2.lo SoProfileCoordinate3.lo \
-	SoResetTransform.lo SoRotation.lo SoRotationXYZ.lo SoRotor.lo \
-	SoScale.lo SoSceneTexture2.lo SoSelection.lo SoSeparator.lo \
-	SoShapeHints.lo SoShuttle.lo SoSpotLight.lo SoSurroundScale.lo \
-	SoSwitch.lo SoTexture2.lo SoTexture3.lo SoTexture2Transform.lo \
-	SoTexture3Transform.lo SoTextureCombine.lo \
-	SoTextureCoordinate2.lo SoTextureCoordinate3.lo \
-	SoTextureCoordinateBinding.lo SoTextureCoordinateCube.lo \
-	SoTextureCoordinateCylinder.lo SoTextureCoordinateSphere.lo \
-	SoTextureCoordinateDefault.lo SoTextureCoordinateEnvironment.lo \
-	SoTextureCoordinateFunction.lo SoTextureCoordinatePlane.lo \
-	SoTextureScalePolicy.lo SoTextureUnit.lo SoTransform.lo \
-	SoTransparencyType.lo SoTransformSeparator.lo \
-	SoTransformation.lo SoTranslation.lo SoUnits.lo \
-	SoUnknownNode.lo SoVertexProperty.lo SoWWWAnchor.lo \
-	SoWWWInline.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
-am_libnodes_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libnodes_la_SOURCES_DIST = SoSoundElementHelper.h \
-	all-nodes-cpp.cpp SoAnnotation.cpp SoAntiSquish.cpp SoArray.cpp \
+am__libnodes_la_SOURCES_DIST = SoAnnotation.cpp SoAnnoText3.cpp \
+	SoAnnoText3Property.cpp SoAntiSquish.cpp SoArray.cpp \
 	SoBaseColor.cpp SoBlinker.cpp SoBumpMap.cpp \
 	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
 	SoBumpMappingProperty.cpp SoCallback.cpp SoCacheHint.cpp \
@@ -618,14 +556,85 @@ am__EXTRA_libnodes_la_SOURCES_DIST = SoSoundElementHelper.h \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
 	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
 	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
-	SoPathSwitch.cpp SoPendulum.cpp SoPerspectiveCamera.cpp \
-	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
-	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
-	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp SoSelection.cpp \
-	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
-	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
-	SoTexture2Transform.cpp SoTexture3Transform.cpp \
+	SoPathSwitch.cpp SoPattern.cpp SoPendulum.cpp \
+	SoPerspectiveCamera.cpp SoPickStyle.cpp SoPointLight.cpp \
+	SoPolygonOffset.cpp SoProfile.cpp SoProfileCoordinate2.cpp \
+	SoProfileCoordinate3.cpp SoResetTransform.cpp SoRotation.cpp \
+	SoRotationXYZ.cpp SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
+	SoSelection.cpp SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp \
+	SoSpotLight.cpp SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp \
+	SoTexture3.cpp SoTexture2Transform.cpp SoTexture3Transform.cpp \
+	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
+	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
+	SoTextureCoordinateCube.cpp SoTextureCoordinateCylinder.cpp \
+	SoTextureCoordinateSphere.cpp SoTextureCoordinateDefault.cpp \
+	SoTextureCoordinateEnvironment.cpp \
+	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
+	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
+	SoTransparencyType.cpp SoTransformSeparator.cpp \
+	SoTransformation.cpp SoTranslation.cpp SoUnits.cpp \
+	SoUnknownNode.cpp SoVertexProperty.cpp SoWWWAnchor.cpp \
+	SoWWWInline.cpp all-nodes-cpp.cpp
+am__objects_6 = all-nodes-cpp.lo
+am__objects_7 = SoAnnotation.lo SoAnnoText3.lo SoAnnoText3Property.lo \
+	SoAntiSquish.lo SoArray.lo SoBaseColor.lo SoBlinker.lo \
+	SoBumpMap.lo SoBumpMapCoordinate.lo SoBumpMapTransform.lo \
+	SoBumpMappingProperty.lo SoCallback.lo SoCacheHint.lo \
+	SoCamera.lo SoClipPlane.lo SoColorIndex.lo SoComplexity.lo \
+	SoCoordinate3.lo SoCoordinate4.lo SoDirectionalLight.lo \
+	SoDrawStyle.lo SoEnvironment.lo SoEventCallback.lo \
+	SoExtSelection.lo SoFile.lo SoFont.lo SoFontStyle.lo SoGroup.lo \
+	SoInfo.lo SoLOD.lo SoLabel.lo SoLevelOfDetail.lo SoLight.lo \
+	SoLightModel.lo SoLinearProfile.lo SoListener.lo \
+	SoLocateHighlight.lo SoMaterial.lo SoMaterialBinding.lo \
+	SoMatrixTransform.lo SoMultipleCopy.lo SoNode.lo SoNormal.lo \
+	SoNormalBinding.lo SoNurbsProfile.lo SoOrthographicCamera.lo \
+	SoPackedColor.lo SoPathSwitch.lo SoPattern.lo SoPendulum.lo \
+	SoPerspectiveCamera.lo SoPickStyle.lo SoPointLight.lo \
+	SoPolygonOffset.lo SoProfile.lo SoProfileCoordinate2.lo \
+	SoProfileCoordinate3.lo SoResetTransform.lo SoRotation.lo \
+	SoRotationXYZ.lo SoRotor.lo SoScale.lo SoSceneTexture2.lo \
+	SoSelection.lo SoSeparator.lo SoShapeHints.lo SoShuttle.lo \
+	SoSpotLight.lo SoSurroundScale.lo SoSwitch.lo SoTexture2.lo \
+	SoTexture3.lo SoTexture2Transform.lo SoTexture3Transform.lo \
+	SoTextureCombine.lo SoTextureCoordinate2.lo \
+	SoTextureCoordinate3.lo SoTextureCoordinateBinding.lo \
+	SoTextureCoordinateCube.lo SoTextureCoordinateCylinder.lo \
+	SoTextureCoordinateSphere.lo SoTextureCoordinateDefault.lo \
+	SoTextureCoordinateEnvironment.lo \
+	SoTextureCoordinateFunction.lo SoTextureCoordinatePlane.lo \
+	SoTextureScalePolicy.lo SoTextureUnit.lo SoTransform.lo \
+	SoTransparencyType.lo SoTransformSeparator.lo \
+	SoTransformation.lo SoTranslation.lo SoUnits.lo \
+	SoUnknownNode.lo SoVertexProperty.lo SoWWWAnchor.lo \
+	SoWWWInline.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
+am_libnodes_la_OBJECTS = $(am__objects_8)
+am__EXTRA_libnodes_la_SOURCES_DIST = SoSoundElementHelper.h \
+	all-nodes-cpp.cpp SoAnnotation.cpp SoAnnoText3.cpp \
+	SoAnnoText3Property.cpp SoAntiSquish.cpp SoArray.cpp \
+	SoBaseColor.cpp SoBlinker.cpp SoBumpMap.cpp \
+	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
+	SoBumpMappingProperty.cpp SoCallback.cpp SoCacheHint.cpp \
+	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
+	SoCoordinate3.cpp SoCoordinate4.cpp SoDirectionalLight.cpp \
+	SoDrawStyle.cpp SoEnvironment.cpp SoEventCallback.cpp \
+	SoExtSelection.cpp SoFile.cpp SoFont.cpp SoFontStyle.cpp \
+	SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
+	SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
+	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
+	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
+	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
+	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
+	SoPathSwitch.cpp SoPattern.cpp SoPendulum.cpp \
+	SoPerspectiveCamera.cpp SoPickStyle.cpp SoPointLight.cpp \
+	SoPolygonOffset.cpp SoProfile.cpp SoProfileCoordinate2.cpp \
+	SoProfileCoordinate3.cpp SoResetTransform.cpp SoRotation.cpp \
+	SoRotationXYZ.cpp SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
+	SoSelection.cpp SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp \
+	SoSpotLight.cpp SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp \
+	SoTexture3.cpp SoTexture2Transform.cpp SoTexture3Transform.cpp \
 	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
 	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
 	SoTextureCoordinateCube.cpp SoTextureCoordinateCylinder.cpp \
@@ -641,8 +650,9 @@ libnodes_la_OBJECTS = $(am_libnodes_la_OBJECTS)
 libnodes@SUFFIX@LINKHACK_la_LDFLAGS =
 libnodes@SUFFIX@LINKHACK_la_LIBADD =
 am__libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAnnotation.cpp \
-	SoAntiSquish.cpp SoArray.cpp SoBaseColor.cpp SoBlinker.cpp \
-	SoBumpMap.cpp SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
+	SoAnnoText3.cpp SoAnnoText3Property.cpp SoAntiSquish.cpp \
+	SoArray.cpp SoBaseColor.cpp SoBlinker.cpp SoBumpMap.cpp \
+	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
 	SoBumpMappingProperty.cpp SoCallback.cpp SoCacheHint.cpp \
 	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
 	SoCoordinate3.cpp SoCoordinate4.cpp SoDirectionalLight.cpp \
@@ -654,14 +664,14 @@ am__libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAnnotation.cpp \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
 	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
 	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
-	SoPathSwitch.cpp SoPendulum.cpp SoPerspectiveCamera.cpp \
-	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
-	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
-	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp SoSelection.cpp \
-	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
-	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
-	SoTexture2Transform.cpp SoTexture3Transform.cpp \
+	SoPathSwitch.cpp SoPattern.cpp SoPendulum.cpp \
+	SoPerspectiveCamera.cpp SoPickStyle.cpp SoPointLight.cpp \
+	SoPolygonOffset.cpp SoProfile.cpp SoProfileCoordinate2.cpp \
+	SoProfileCoordinate3.cpp SoResetTransform.cpp SoRotation.cpp \
+	SoRotationXYZ.cpp SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
+	SoSelection.cpp SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp \
+	SoSpotLight.cpp SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp \
+	SoTexture3.cpp SoTexture2Transform.cpp SoTexture3Transform.cpp \
 	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
 	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
 	SoTextureCoordinateCube.cpp SoTextureCoordinateCylinder.cpp \
@@ -676,8 +686,9 @@ am__libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAnnotation.cpp \
 am_libnodes@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoSoundElementHelper.h all-nodes-cpp.cpp SoAnnotation.cpp \
-	SoAntiSquish.cpp SoArray.cpp SoBaseColor.cpp SoBlinker.cpp \
-	SoBumpMap.cpp SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
+	SoAnnoText3.cpp SoAnnoText3Property.cpp SoAntiSquish.cpp \
+	SoArray.cpp SoBaseColor.cpp SoBlinker.cpp SoBumpMap.cpp \
+	SoBumpMapCoordinate.cpp SoBumpMapTransform.cpp \
 	SoBumpMappingProperty.cpp SoCallback.cpp SoCacheHint.cpp \
 	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
 	SoCoordinate3.cpp SoCoordinate4.cpp SoDirectionalLight.cpp \
@@ -689,14 +700,14 @@ am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
 	SoMultipleCopy.cpp SoNode.cpp SoNormal.cpp SoNormalBinding.cpp \
 	SoNurbsProfile.cpp SoOrthographicCamera.cpp SoPackedColor.cpp \
-	SoPathSwitch.cpp SoPendulum.cpp SoPerspectiveCamera.cpp \
-	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
-	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
-	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp SoSelection.cpp \
-	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
-	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
-	SoTexture2Transform.cpp SoTexture3Transform.cpp \
+	SoPathSwitch.cpp SoPattern.cpp SoPendulum.cpp \
+	SoPerspectiveCamera.cpp SoPickStyle.cpp SoPointLight.cpp \
+	SoPolygonOffset.cpp SoProfile.cpp SoProfileCoordinate2.cpp \
+	SoProfileCoordinate3.cpp SoResetTransform.cpp SoRotation.cpp \
+	SoRotationXYZ.cpp SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp \
+	SoSelection.cpp SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp \
+	SoSpotLight.cpp SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp \
+	SoTexture3.cpp SoTexture2Transform.cpp SoTexture3Transform.cpp \
 	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
 	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
 	SoTextureCoordinateCube.cpp SoTextureCoordinateCylinder.cpp \
@@ -712,7 +723,11 @@ libnodes@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libnodes@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoAnnotation.Plo \
+@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoAnnoText3.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoAnnoText3.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoAnnoText3Property.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoAnnoText3Property.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoAnnotation.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoAnnotation.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoAntiSquish.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoAntiSquish.Po ./$(DEPDIR)/SoArray.Plo \
@@ -789,6 +804,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoPackedColor.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPathSwitch.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPathSwitch.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoPattern.Plo ./$(DEPDIR)/SoPattern.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPendulum.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPendulum.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoPerspectiveCamera.Plo \
@@ -967,6 +983,10 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAnnoText3.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAnnoText3.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAnnoText3Property.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAnnoText3Property.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAnnotation.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAnnotation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAntiSquish.Plo@am__quote@
@@ -1059,6 +1079,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPackedColor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPathSwitch.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPathSwitch.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPattern.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPattern.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPendulum.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPendulum.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPerspectiveCamera.Plo@am__quote@

@@ -18917,6 +18917,120 @@ fi
 ## Smoke out some known defunct compilers.
 
 
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+
+echo "$as_me:$LINENO: checking if the C++ compiler environment is ok" >&5
+echo $ECHO_N "checking if the C++ compiler environment is ok... $ECHO_C" >&6
+if test "${sim_cv_c_compiler_env_ok+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  if test "$cross_compiling" = yes; then
+  sim_cv_c_compiler_env_ok=true
+   { echo "$as_me:$LINENO: WARNING: can't check for fully working C++ environment when cross-compiling, assuming it's ok" >&5
+echo "$as_me: WARNING: can't check for fully working C++ environment when cross-compiling, assuming it's ok" >&2;}
+else
+  cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+// Just any old C++ source code. It might be useful
+// to try to add in more standard C++ features that
+// we depend on, like classes using templates (or
+// even multiple templates), etc etc.  -mortene.
+
+#include <stdio.h>
+
+class myclass {
+public:
+  myclass(void) { value = 0.0f; }
+  float value;
+};
+
+int
+main(void)
+{
+  myclass proj;
+  proj.value = 42;
+  return 0;
+}
+
+_ACEOF
+rm -f conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_cv_c_compiler_env_ok=true
+else
+  echo "$as_me: program exited with status $ac_status" >&5
+echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+( exit $ac_status )
+sim_cv_c_compiler_env_ok=false
+fi
+rm -f core core.* *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+fi
+
+fi
+echo "$as_me:$LINENO: result: $sim_cv_c_compiler_env_ok" >&5
+echo "${ECHO_T}$sim_cv_c_compiler_env_ok" >&6
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
+if $sim_cv_c_compiler_env_ok; then
+  :
+else
+
+echo >&2 ""
+
+
+: ${sim_ac_message_file=$ac_aux_dir/errors.txt}
+if test -f $sim_ac_message_file; then
+  sim_ac_message="`sed -n -e '/^!c--fubarenvironment$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
+  if test x"$sim_ac_message" = x""; then
+    { { echo "$as_me:$LINENO: error: no message named 'c--fubarenvironment' in '$sim_ac_message_file' - notify the $PACKAGE_NAME maintainer(s)" >&5
+echo "$as_me: error: no message named 'c--fubarenvironment' in '$sim_ac_message_file' - notify the $PACKAGE_NAME maintainer(s)" >&2;}
+   { (exit 1); exit 1; }; }
+  else
+    eval "echo >&2 \"$sim_ac_message\""
+  fi
+else
+  { { echo "$as_me:$LINENO: error: file '$sim_ac_message_file' not found - notify the $PACKAGE_NAME maintainer(s)" >&5
+echo "$as_me: error: file '$sim_ac_message_file' not found - notify the $PACKAGE_NAME maintainer(s)" >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
+
+
+echo >&2 ""
+{ { echo "$as_me:$LINENO: error: aborting" >&5
+echo "$as_me: error: aborting" >&2;}
+   { (exit 1); exit 1; }; }
+
+fi
+
+
 
 ac_ext=cc
 ac_cpp='$CXXCPP $CPPFLAGS'
@@ -20782,6 +20896,11 @@ _ACEOF
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_INT16_T 1
+_ACEOF
+
+
+cat >>confdefs.h <<\_ACEOF
+#define COIN_INT16_T int16_t
 _ACEOF
 
 
@@ -23785,8 +23904,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
     ## 1174: "The function was declared but never referenced."
     ## 1209: "The controlling expression is constant." (kill warning on
     ##       if (0), assert(FALSE), etc).
-    ## 1355: Kill warnings on extra semicolons (which happens with some
-    ##       of the Coin macros).
     ## 1375: Non-virtual destructors in base classes.
     ## 3201: Unused argument to a function.
     ## 1110: "Statement is not reachable" (the Lex/Flex generated code in
@@ -23798,7 +23915,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
     ## 1169: External/internal linkage conflicts with a previous declaration.
     ##       We get this for the "friend operators" in SbString.h
 
-    sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1355,1375,3201,1110,1506,1169,1210"
+    sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1375,3201,1110,1506,1169,1210"
 
     case $CC in
     cc | "cc "* | CC | "CC "* )
@@ -27817,10 +27934,19 @@ else
 fi
 
 
-# *******************************************************************
-# * Set us up for using the FreeType font library (if wanted, and if
-# * available).
-# *******************************************************************
+# **************************************************************************
+# Set us up for using TrueType fonts. Through the FreeType library (if
+# wanted, and if available), and / or the Win32 API.
+
+if $sim_ac_have_win32_api; then
+
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|Win32 TrueType fonts:Yes"
+else
+  sim_ac_configuration_settings="Win32 TrueType fonts:Yes"
+fi
+
+fi
 
 # Check whether --enable-dl-freetype or --disable-dl-freetype was given.
 if test "${enable_dl_freetype+set}" = set; then
@@ -27839,8 +27965,8 @@ else
 fi;
 
 sim_ac_have_freetype=false
-if test x"$sim_ac_have_win32_api" = x"false"; then
-  if $enable_dl_freetype && $coin_can_do_runtime_linking; then
+
+if $enable_dl_freetype && $coin_can_do_runtime_linking; then
 
 cat >>confdefs.h <<_ACEOF
 #define FREETYPE_RUNTIME_LINKING 1
@@ -27848,13 +27974,13 @@ _ACEOF
 
 
 if test x"${sim_ac_configuration_settings+set}" = x"set"; then
-  sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType support:Yes, run-time binding"
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType library:If available, run-time linking"
 else
-  sim_ac_configuration_settings="FreeType support:Yes, run-time binding"
+  sim_ac_configuration_settings="FreeType library:If available, run-time linking"
 fi
 
-  else
-    : ${sim_ac_have_freetype=false}
+else
+  : ${sim_ac_have_freetype=false}
 
 # Check whether --with-freetype or --without-freetype was given.
 if test "${with_freetype+set}" = set; then
@@ -28057,17 +28183,17 @@ cat >>confdefs.h <<\_ACEOF
 #define HAVE_FREETYPE 1
 _ACEOF
 
-      CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"
-      LDFLAGS="$LDFLAGS $sim_ac_freetype_ldflags"
-      LIBS="$sim_ac_freetype_libs $LIBS"
-      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_freetype_cppflags"
-      COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_freetype_ldflags"
-      COIN_EXTRA_LIBS="$sim_ac_freetype_libs $COIN_EXTRA_LIBS"
+    CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"
+    LDFLAGS="$LDFLAGS $sim_ac_freetype_ldflags"
+    LIBS="$sim_ac_freetype_libs $LIBS"
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_freetype_cppflags"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_freetype_ldflags"
+    COIN_EXTRA_LIBS="$sim_ac_freetype_libs $COIN_EXTRA_LIBS"
 
 if test x"${sim_ac_configuration_settings+set}" = x"set"; then
-  sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType support:Yes, link-time binding"
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType library:Yes, link-time binding"
 else
-  sim_ac_configuration_settings="FreeType support:Yes, link-time binding"
+  sim_ac_configuration_settings="FreeType library:Yes, link-time binding"
 fi
 
 
@@ -28075,44 +28201,33 @@ fi
     echo "$as_me:$LINENO: result: failure" >&5
 echo "${ECHO_T}failure" >&6
 
-      if $sim_ac_freetype_desired; then
+    if $sim_ac_freetype_desired; then
 
 if test x"${sim_ac_configuration_settings+set}" = x"set"; then
-  sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType support:No"
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType library:No"
 else
-  sim_ac_configuration_settings="FreeType support:No"
+  sim_ac_configuration_settings="FreeType library:No"
 fi
 
-      fi
+    fi
 
   fi
 else
   echo "$as_me:$LINENO: result: disabled" >&5
 echo "${ECHO_T}disabled" >&6
 
-      if $sim_ac_freetype_desired; then
+    if $sim_ac_freetype_desired; then
 
 if test x"${sim_ac_configuration_settings+set}" = x"set"; then
-  sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType support:No"
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType library:No"
 else
-  sim_ac_configuration_settings="FreeType support:No"
+  sim_ac_configuration_settings="FreeType library:No"
 fi
 
-      fi
+    fi
 
 fi
 # unset sim_ac_want_freetype
-
-  fi
-else
-  # It should be made possible to enable freetype on cygwin/mks too if
-  # needed, but for now we override use of freetype with the win32 api.
-
-if test x"${sim_ac_configuration_settings+set}" = x"set"; then
-  sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType support:No, using Win32 API instead"
-else
-  sim_ac_configuration_settings="FreeType support:No, using Win32 API instead"
-fi
 
 fi
 
