@@ -40,7 +40,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-SoSearchAction *SoNodeKitPath::searchAction;
+SoSearchAction * SoNodeKitPath::searchAction;
 
 /*!
   A constructor.
@@ -48,7 +48,7 @@ SoSearchAction *SoNodeKitPath::searchAction;
 SoNodeKitPath::SoNodeKitPath(const int approxLength)
   : SoPath(approxLength)
 {
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
   int n = this->nodes.getLength();
   for (int i = 0; i < n; i++) {
     if (this->nodes[i]->isOfType(SoBaseKit::getClassTypeId()))
@@ -56,7 +56,7 @@ SoNodeKitPath::SoNodeKitPath(const int approxLength)
   }
   SoDebugError::postInfo("SoNodeKitPath::SoNodeKitPath",
                          "no nodekits in path");
-#endif // debug
+#endif // COIN_DEBUG
 }
 
 /*!
@@ -110,10 +110,10 @@ SoNodeKitPath::getNode(const int idx) const
       if (cnt++ == idx) return this->nodes[i];
     }
   }
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
   SoDebugError::postInfo("SoNodeKitPath::getNode",
                          "index %d out of bounds", idx);
-#endif // debug
+#endif // COIN_DEBUG
 
   return NULL;
 }
@@ -130,10 +130,10 @@ SoNodeKitPath::getNodeFromTail(const int idx) const
       if (cnt++ == idx) return this->nodes[i];
     }
   }
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
   SoDebugError::postInfo("SoNodeKitPath::getNodeFromTail",
                          "index %d out of bounds", idx);
-#endif // debug
+#endif // COIN_DEBUG
   return NULL;
 }
 
@@ -151,12 +151,12 @@ SoNodeKitPath::truncate(const int length)
     }
   }
   if (i < n) SoPath::truncate(i);
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
   else {
     SoDebugError::postInfo("SoNodeKitPath::truncate",
                            "illegal length: %d", length);
   }
-#endif // debug
+#endif // COIN_DEBUG
 }
 
 /*!
@@ -170,10 +170,10 @@ SoNodeKitPath::pop(void)
     if (this->nodes[i]->isOfType(SoBaseKit::getClassTypeId())) break;
   }
   if (i < 0) {
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
     SoDebugError::postInfo("SoNodeKitPath::pop",
                            "no nodekits in path");
-#endif // debug
+#endif // COIN_DEBUG
     return;
   }
   SoPath::truncate(i);
@@ -185,25 +185,25 @@ SoNodeKitPath::pop(void)
   occurrance of \a childKit will be appended to the path.
 */
 void
-SoNodeKitPath::append(SoBaseKit *childKit)
+SoNodeKitPath::append(SoBaseKit * childKit)
 {
   if (this->getLength() == 0) this->setHead(childKit);
   else {
-    SoBaseKit *tail = (SoBaseKit*) this->getTail();
+    SoBaseKit * tail = (SoBaseKit *) this->getTail();
     assert(tail != NULL);
-    SoSearchAction *sa = this->getSearchAction();
+    SoSearchAction * sa = this->getSearchAction();
     sa->setNode(childKit);
     SbBool oldSearch = tail->isSearchingChildren();
     tail->setSearchingChildren(TRUE);
     sa->apply(tail);
     tail->setSearchingChildren(oldSearch);
-    SoPath *path = sa->getPath();
+    SoPath * path = sa->getPath();
     if (path) SoPath::append(path);
     else {
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
       SoDebugError::postInfo("SoNodeKitPath::append",
                              "childKit not found as part of tail");
-#endif // debug
+#endif // COIN_DEBUG
     }
   }
 }
@@ -213,21 +213,21 @@ SoNodeKitPath::append(SoBaseKit *childKit)
   be a part in the current tail.
 */
 void
-SoNodeKitPath::append(const SoNodeKitPath *fromPath)
+SoNodeKitPath::append(const SoNodeKitPath * fromPath)
 {
   int n = fromPath->getLength();
   for (int i = 0; i < n; i++) {
-    this->append((SoBaseKit*)fromPath->getNode(i));
+    this->append((SoBaseKit *)fromPath->getNode(i));
   }
 }
 
 /*!
-  Returns \e TRUE if \a node is in this path.
+  Returns \c TRUE if \a node is in this path.
 */
 SbBool
-SoNodeKitPath::containsNode(SoBaseKit *node) const
+SoNodeKitPath::containsNode(SoBaseKit * node) const
 {
-  return SoPath::containsNode((SoNode*)node);
+  return SoPath::containsNode((SoNode *)node);
 }
 
 /*!
@@ -235,7 +235,7 @@ SoNodeKitPath::containsNode(SoBaseKit *node) const
   node differs.
 */
 int
-SoNodeKitPath::findFork(const SoNodeKitPath *path) const
+SoNodeKitPath::findFork(const SoNodeKitPath * path) const
 {
   int i, n = SbMin(this->getLength(), path->getLength());
   for (i = 0; i < n; i++) {
@@ -245,10 +245,10 @@ SoNodeKitPath::findFork(const SoNodeKitPath *path) const
 }
 
 /*!
-  Returns \e TRUE if paths are equal, \e FALSE otherwise.
+  Returns \c TRUE if paths are equal, \c FALSE otherwise.
 */
 int
-operator==(const SoNodeKitPath &p1, const SoNodeKitPath &p2)
+operator==(const SoNodeKitPath & p1, const SoNodeKitPath & p2)
 {
   if (&p1 == &p2) return TRUE;
   int n = p1.getLength();

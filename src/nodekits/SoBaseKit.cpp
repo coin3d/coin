@@ -130,11 +130,7 @@ SoBaseKit::~SoBaseKit()
   delete this->children;
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoBaseKit class. This includes setting up the
-  type system, among other things.
-*/
+// Doc in superclass
 void
 SoBaseKit::initClass(void)
 {
@@ -144,12 +140,12 @@ SoBaseKit::initClass(void)
 /*!
   Returns a pointer to the node part with \a partname.
 
-  If the part is not in the nodekit's catalog, return NULL.
+  If the part is not in the nodekit's catalog, return \c NULL.
 
   If the part is in the catalog, has not been made and \a makeifneeded
-  is TRUE, construct the part and all it's parents, and return the
+  is \c TRUE, construct the part and all it's parents, and return the
   node pointer. If the node part has not been made and \a makeifneeded
-  is FALSE, return NULL.
+  is \c FALSE, return \c NULL.
 
   FIXME: describe syntax for specifiying "paths". 19991205 mortene.
 */
@@ -315,7 +311,7 @@ SoBaseKit::set(const char *namevaluepairliststring)
         if (!list->canCreateDefaultChild()) {
 #if COIN_DEBUG
           SoDebugError::postWarning("SoBaseKit::set",
-                                    "Unable to create default child for list-part ``%s''", 
+                                    "Unable to create default child for list-part ``%s''",
                                     partname.getString());
 #endif // COIN_DEBUG
           return FALSE;
@@ -373,7 +369,7 @@ SoBaseKit::set(const char *partnamestring, const char * parameterstring)
         if (!list->canCreateDefaultChild()) {
 #if COIN_DEBUG
           SoDebugError::postWarning("SoBaseKit::set",
-                                    "Unable to create default child for list-part ``%s''", 
+                                    "Unable to create default child for list-part ``%s''",
                                     partname.getString());
 #endif // COIN_DEBUG
           return FALSE;

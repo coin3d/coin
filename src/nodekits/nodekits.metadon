@@ -7,7 +7,7 @@
 # ID
 # ==
 # HIERARCHY
-# I  SoNodeKit
+# ID SoNodeKit
 # i  SoBaseKit
 # i          SoAppearanceKit
 # i          SoCameraKit
@@ -18,7 +18,7 @@
 # i                  SoShapeKit
 # i                  SoWrapperKit
 # ID SoNodeKitListPart
-#    SoNodeKitPath
+# ID SoNodeKitPath
 # ID SoNodekitCatalog
 #
 ############################################################################

@@ -534,7 +534,7 @@ SoNodeKitListPart::syncInternalData(void)
 }
 
 // TRUE if default child can be created
-SbBool 
+SbBool
 SoNodeKitListPart::canCreateDefaultChild(void) const
 {
   return this->getDefaultChildType() != SoType::badType();
@@ -542,7 +542,7 @@ SoNodeKitListPart::canCreateDefaultChild(void) const
 
 // create, add and return a new default child. Should not be called if default
 // child can not be created.
-SoNode * 
+SoNode *
 SoNodeKitListPart::createAndAddDefaultChild(void)
 {
   SoType type = this->getDefaultChildType();
@@ -553,7 +553,7 @@ SoNodeKitListPart::createAndAddDefaultChild(void)
 }
 
 // return the first non abstract child type, or SoType::badType if none exists
-SoType 
+SoType
 SoNodeKitListPart::getDefaultChildType(void) const
 {
   const SoTypeList & typelist = this->getChildTypes();
