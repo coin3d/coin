@@ -52,15 +52,9 @@
 
 */
 
-/*¡
-  potensial buffer overflow errors, should be fixed - 990610 larsa
-*/
-
 #include <Inventor/errors/SoMemoryError.h>
-
 #include <Inventor/SoType.h>
 #include <Inventor/SbName.h>
-
 #include <stdio.h>
 
 
@@ -123,10 +117,10 @@ SoMemoryError::getHandlerData(void)
 void
 SoMemoryError::post(const char * const whatWasAllocated)
 {
-  char buffer[ 128 ]; // FIXME: possible overflow, 990610 larsa
-  sprintf(buffer, "ERROR allocating '%s'.", whatWasAllocated);
   SoMemoryError error;
-  error.setDebugString(buffer);
+  error.setDebugString("ERROR allocating '");
+  error.appendToDebugString(whatWasAllocated);
+  error.appendToDebugString("'.");
   error.handleError();
 }
 

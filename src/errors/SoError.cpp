@@ -64,10 +64,6 @@ void coin_stub(const char *, unsigned int, const char *) { }
 
 */
 
-/*¡
-  Potensial buffer overflow errors, should be fixed - 19990610 larsa
-*/
-
 #include <Inventor/errors/SoErrors.h>
 
 #include <Inventor/SoType.h>
@@ -77,7 +73,20 @@ void coin_stub(const char *, unsigned int, const char *) { }
 #include <Inventor/engines/SoEngine.h>
 
 #include <stdarg.h>
+#include <stdlib.h>
 #include <assert.h>
+
+#include <../snprintf.h> // snprintf() and vsnprintf() definitions.
+
+
+SoType SoError::classTypeId;
+SoErrorCB * SoError::callback = SoError::defaultHandlerCB;
+void * SoError::callbackData = NULL;
+char * SoError::strbuffer = NULL;
+size_t SoError::strbuffersize = 0;
+
+static const size_t buffer_inc = 512;
+
 
 /*!
   \fn SoError::~SoError()
@@ -85,9 +94,6 @@ void coin_stub(const char *, unsigned int, const char *) { }
   The default destructor does nothing.
 */
 
-SoType SoError::classTypeId;
-SoErrorCB * SoError::callback = SoError::defaultHandlerCB;
-void * SoError::callbackData = NULL;
 
 /*!
   This method takes care of initializing all static data for the class.
@@ -95,10 +101,22 @@ void * SoError::callbackData = NULL;
 void
 SoError::initClass(void)
 {
+  (void)atexit(SoError::cleanClass);
+
   SoError::callback = defaultHandlerCB;
   SoError::callbackData = NULL;
   SoError::classTypeId =
     SoType::createType(SoType::badType(), SbName("Error"));
+}
+
+/*!
+  \internal
+  Free resources used by this class.
+ */
+void
+SoError::cleanClass(void)
+{
+  delete SoError::strbuffer;
 }
 
 /*!
@@ -190,20 +208,28 @@ SoError::getDebugString(void) const
 }
 
 /*!
-  This method posts an error message.  The \a format argument and all the
-  trailing aguments follows the printf() standard.
+  This method posts an error message.  The \a format string and the
+  trailing aguments should follow the printf() standard.
 */
 void
 SoError::post(const char * const format, ...)
 {
   va_list args;
   va_start(args, format);
-  char buffer[ 256 ]; // FIXME: buffer overrun alert. 19980906 mortene.
-  vsprintf(buffer, format, args);
-  SoError error;
-  error.setDebugString(buffer);
-  error.handleError();
+
+  while (!SoError::strbuffersize || vsnprintf(SoError::strbuffer,
+                                              SoError::strbuffersize,
+                                              format, args) == -1) {
+    delete SoError::strbuffer;
+    SoError::strbuffersize += buffer_inc;
+    SoError::strbuffer = new char[SoError::strbuffersize];
+  }
+
   va_end(args);
+
+  SoError error;
+  error.setDebugString(SoError::strbuffer);
+  error.handleError();
 }
 
 /*!
@@ -306,8 +332,15 @@ SoError::generateBaseString(SbString & str,
                             const SoBase * const base,
                             const char * const what)
 {
-  char buffer[120]; // FIXME: buffer overflow?  990610 larsa
-  sprintf(buffer, "%s named \"%s\" at address %p",
-          what, base->getName().getString(), base);
-  str = buffer;
+  while (!SoError::strbuffersize ||
+         snprintf(SoError::strbuffer,
+                  SoError::strbuffersize,
+                  "%s named \"%s\" at address %p",
+                  what, base->getName().getString(), base) == -1) {
+    delete SoError::strbuffer;
+    SoError::strbuffersize += buffer_inc;
+    SoError::strbuffer = new char[SoError::strbuffersize];
+  }
+
+  str = SoError::strbuffer;
 }

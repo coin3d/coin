@@ -28,10 +28,6 @@
   callbacks for SoReadError might be a good idea.
 */
 
-/*¡
-  Potential buffer overflow errors, should be fixed - 990610 larsa
-*/
-
 #include <Inventor/errors/SoReadError.h>
 
 #include <Inventor/SbName.h>
@@ -40,21 +36,39 @@
 
 #include <stdarg.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <../snprintf.h> // snprintf() and vsnprintf() definitions.
 
 
 SoType SoReadError::classTypeId;
 SoErrorCB * SoReadError::callback = SoError::defaultHandlerCB;
 void * SoReadError::callbackData = NULL;
+char * SoReadError::strbuffer = NULL;
+size_t SoReadError::strbuffersize = 0;
+
+static const size_t buffer_inc = 512;
 
 
 // Documented for parent class. 
 void
 SoReadError::initClass(void)
 {
+  (void)atexit(SoReadError::cleanClass);
+
   SoReadError::callback = SoError::defaultHandlerCB;
   SoReadError::callbackData = NULL;
   SoReadError::classTypeId =
     SoType::createType(SoError::getClassTypeId(), "ReadError");
+}
+
+/*!
+  \internal
+  Free resources used by this class.
+ */
+void
+SoReadError::cleanClass(void)
+{
+  delete SoReadError::strbuffer;
 }
 
 // Documented for parent class. 
@@ -103,14 +117,22 @@ SoReadError::getHandlerData(void)
 void
 SoReadError::post(const SoInput * const in, const char * const format, ...)
 {
-  SoReadError error;
-  error.setDebugString("Coin read error: ");
   va_list args;
   va_start(args, format);
-  char buffer[ 512 ]; // FIXME: possible overflow, 990610 larsa
-  vsprintf(buffer, format, args);
+
+  while (!SoReadError::strbuffersize || vsnprintf(SoReadError::strbuffer,
+                                                  SoReadError::strbuffersize,
+                                                  format, args) == -1) {
+    delete SoReadError::strbuffer;
+    SoReadError::strbuffersize += buffer_inc;
+    SoReadError::strbuffer = new char[SoReadError::strbuffersize];
+  }
+
   va_end(args);
-  error.appendToDebugString(buffer);
+
+  SoReadError error;
+  error.setDebugString("Coin read error: ");
+  error.appendToDebugString(SoReadError::strbuffer);
   error.appendToDebugString("\n");
   SbString s;
   in->getLocationString(s);

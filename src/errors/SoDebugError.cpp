@@ -43,10 +43,6 @@
 
 */
 
-/*¡
-  potensial buffer overflow errors, should be fixed - 990610 larsa
-*/
-
 #include <Inventor/errors/SoDebugError.h>
 
 #include <Inventor/SbString.h>
@@ -55,10 +51,18 @@
 
 #include <stdarg.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <../snprintf.h> // snprintf() and vsnprintf() definitions.
+
 
 SoType SoDebugError::classTypeId;
 SoErrorCB * SoDebugError::callback = SoError::defaultHandlerCB;
 void * SoDebugError::callbackData = NULL;
+char * SoDebugError::strbuffer = NULL;
+size_t SoDebugError::strbuffersize = 0;
+
+static const size_t buffer_inc = 512;
+
 
 /*!
   \enum SoDebugError::Severity
@@ -75,6 +79,16 @@ SoDebugError::initClass(void)
   SoDebugError::callbackData = NULL;
   SoDebugError::classTypeId =
     SoType::createType(SoError::getClassTypeId(), "DebugError");
+}
+
+/*!
+  \internal
+  Free resources used by this class.
+ */
+void
+SoDebugError::cleanClass(void)
+{
+  delete SoDebugError::strbuffer;
 }
 
 // Documented for parent class. 
@@ -128,64 +142,61 @@ SoDebugError::getSeverity(void) const
   return this->severity;
 }
 
+
+#define SODEBUGERROR_POST(SEVERITY, TYPE) \
+  va_list args; \
+  va_start(args, format); \
+ \
+  while (!SoDebugError::strbuffersize || \
+         vsnprintf(SoDebugError::strbuffer, \
+                   SoDebugError::strbuffersize, \
+                   format, args) == -1) { \
+    delete SoDebugError::strbuffer; \
+    SoDebugError::strbuffersize += buffer_inc; \
+    SoDebugError::strbuffer = new char[SoDebugError::strbuffersize]; \
+  } \
+ \
+  va_end(args); \
+ \
+  SoDebugError error; \
+  error.severity = SEVERITY; \
+  error.setDebugString("Coin "); \
+  error.setDebugString(TYPE); \
+  error.setDebugString(" in "); \
+  error.appendToDebugString(source); \
+  error.appendToDebugString("(): "); \
+  error.appendToDebugString(SoDebugError::strbuffer); \
+  error.handleError()
+
+
 /*!
-  This method posts a message with severity level "ERROR".
+  This method posts a message with severity level "ERROR". \a source should
+  be the name of the calling function.
 */
 void
-SoDebugError::post(const char * const methodName,
-                   const char * const formatString, ...)
+SoDebugError::post(const char * const source, const char * const format, ...)
 {
-  va_list args;
-  va_start(args, formatString);
-  char buffer[ 512 ]; // FIXME: possible overflow, 990610 larsa
-  vsprintf(buffer, formatString, args);
-  va_end(args);
-  char string[ 512 ]; // FIXME: possible overflow, 990610 larsa
-  sprintf(string, "Coin error in %s(): %s", methodName, buffer);
-  SoDebugError error;
-  error.severity = ERROR;
-  error.setDebugString(string);
-  error.handleError();
+  SODEBUGERROR_POST(ERROR, "error");
 }
 
 /*!
-  This method posts a message with severity level "WARNING".
+  This method posts a message with severity level "WARNING". \a source should
+  be the name of the calling function.
 */
 void
-SoDebugError::postWarning(const char * const methodName,
-                          const char * const formatString, ...)
+SoDebugError::postWarning(const char * const source, const char * const format, ...)
 {
-  va_list args;
-  va_start(args, formatString);
-  char buffer[ 512 ]; // FIXME: possible overflow?  990610 larsa
-  vsprintf(buffer, formatString, args);
-  va_end(args);
-  char string[ 512 ]; // FIXME: possible overflow?  990610 larsa
-  sprintf(string, "Coin warning in %s(): %s", methodName, buffer);
-  SoDebugError error;
-  error.severity = WARNING;
-  error.setDebugString(string);
-  error.handleError();
+  SODEBUGERROR_POST(WARNING, "warning");
 }
 
 /*!
-  This method posts a message with severity level "INFO".
+  This method posts a message with severity level "INFO". \a source should
+  be the name of the calling function.
 */
 void
-SoDebugError::postInfo(const char * const methodName,
-                       const char * const formatString, ...)
+SoDebugError::postInfo(const char * const source, const char * const format, ...)
 {
-  va_list args;
-  va_start(args, formatString);
-  char buffer[ 512 ]; // FIXME: possible overflow?  990610 larsa
-  vsprintf(buffer, formatString, args);
-  va_end(args);
-  char string[ 512 ]; // FIXME: possible overflow?  990610 larsa
-  sprintf(string, "Coin info from %s(): %s", methodName, buffer);
-  SoDebugError error;
-  error.severity = INFO;
-  error.setDebugString(string);
-  error.handleError();
+  SODEBUGERROR_POST(INFO, "info");
 }
 
 // Documented for parent class. 

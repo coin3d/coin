@@ -53,12 +53,9 @@ public:
 
   SoDebugError::Severity getSeverity(void) const;
 
-  static void post(const char * const methodName,
-                   const char * const formatString, ...);
-  static void postWarning(const char * const methodName,
-                          const char * const formatString, ...);
-  static void postInfo(const char * const methodName,
-                       const char * const formatString, ...);
+  static void post(const char * const type, const char * const format, ...);
+  static void postWarning(const char * const type, const char * const format, ...);
+  static void postInfo(const char * const type, const char * const format, ...);
 
   static void initClass(void);
 
@@ -66,10 +63,13 @@ protected:
   virtual SoErrorCB * getHandler(void * & data) const;
 
 private:
+  static void cleanClass(void);
+
   static SoType classTypeId;
   static SoErrorCB * callback;
   static void * callbackData;
-
+  static char * strbuffer;
+  static size_t strbuffersize;
   Severity severity;
 };
 
