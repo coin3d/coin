@@ -30,7 +30,6 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 #ifdef HAVE_DLFCN_H
 #include <dlfcn.h>
@@ -372,8 +371,6 @@ GLWrapper(int contextid)
 #endif
 #endif
 
-    printf("GLWrapper: Using %s\n\n",GLWrapper_getProcAddressMethod(gi));
-    
     // Initialize everything to zero.
     gi->COIN_GL_TEXTURE_3D = 0;
     gi->COIN_GL_PROXY_TEXTURE_3D = 0;
