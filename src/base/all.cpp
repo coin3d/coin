@@ -26,6 +26,7 @@
 #include "SbCylinder.cpp"
 #include "SbDict.cpp"
 #include "SbHeap.cpp"
+#include "SbImage.cpp"
 #include "SbLine.cpp"
 #include "SbMatrix.cpp"
 #include "SbName.cpp"
