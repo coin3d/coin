@@ -27,9 +27,13 @@
 
 class COIN_DLL_EXPORT SoOnOff : public SoEngine {
   typedef SoEngine inherited;
+
   SO_ENGINE_HEADER(SoOnOff);
 
 public:
+  static void initClass(void);
+  SoOnOff(void);
+
   SoSFTrigger on;
   SoSFTrigger off;
   SoSFTrigger toggle;
@@ -37,15 +41,11 @@ public:
   SoEngineOutput isOn; // SoSFBool
   SoEngineOutput isOff; // SoSFBool
 
-  SoOnOff();
-
-  static void initClass();
-
 protected:
  ~SoOnOff();
 
 private:
-  virtual void evaluate();
+  virtual void evaluate(void);
   virtual void inputChanged(SoField * which);
 
   SbBool state;
