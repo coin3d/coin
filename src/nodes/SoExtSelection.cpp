@@ -885,6 +885,8 @@ SoExtSelection::isOverlayLassoAnimated(void)
 void
 SoExtSelection::handleEvent(SoHandleEventAction * action)
 {
+  PRIVATE(this)->wasshiftdown = action->getEvent()->wasShiftDown();
+
   // Overridden to handle lasso selection.
 
   if (this->lassoType.getValue() == NOLASSO) {
@@ -2357,7 +2359,6 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
   this->curvp = SoViewportRegionElement::get(action->getState());
   this->cbaction->setViewportRegion(this->curvp);
 
-  this->wasshiftdown = action->getEvent()->wasShiftDown();
   switch (PUBLIC(this)->policy.getValue()) {
   case SoSelection::SINGLE:
     PUBLIC(this)->deselectAll();
