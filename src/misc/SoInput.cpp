@@ -139,6 +139,12 @@ public:
       assert(this->readbufidx == this->readbuflen);
 
       if (this->ismembuffer) {
+        // Input memory buffers are statically sized entities, so no
+        // further reading can be done.
+        //
+        // (Note that it is still convenient to call doBufferRead()
+        // for memory buffer streams, as it provides a "common lowest
+        // denominator" for the character reading interface.)
         this->eof = TRUE;
         return FALSE;
       }
@@ -194,6 +200,8 @@ public:
         c = this->backBuf[this->backbufidx--];
       }
       else if (this->readbufidx >= this->readbuflen) {
+        // doBufferRead() also does the right thing (i.e. sets the EOF
+        // flag for the stream) if we're reading from memory.
         if (!this->doBufferRead()) {
           c = (char) EOF;
           return FALSE;
