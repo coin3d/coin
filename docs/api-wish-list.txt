@@ -688,3 +688,15 @@ THE WISH LIST
   just disables the type.  To be able to properly save the current state
   you need to be able to get the current pointer for the instantiation
   method.
+
+
+* SoMField::setValuesPointer()
+  2002-01-22  Lars J. Aas  <larsa@sim.no>
+  [upwards compatible extension]
+
+  If memory has to be managed externally in the application, this function
+  would avoid making Coin duplicate the array (- which takes time -) into
+  its own duplicate memory block (- and wastes memory -).  TGS has implemented
+  this (as "setValuePointer").
+
+
