@@ -311,9 +311,10 @@ SoSwitch::getMatrix(SoGetMatrixAction *action)
   FIXME: write doc
  */
 void
-SoSwitch::write(SoWriteAction * /* action */)
+SoSwitch::write(SoWriteAction * action)
 {
-  assert(0 && "FIXME: not implemented");
+  // FIXME: anything missing? 19991112 mortene.
+  inherited::write(action);
 }
 #endif // !COIN_EXCLUDE_SOWRITEACTION
 
