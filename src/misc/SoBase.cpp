@@ -44,6 +44,7 @@
 #include <Inventor/lists/SoBaseList.h>
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/sensors/SoDataSensor.h>
+#include <Inventor/fields/SoField.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -51,8 +52,12 @@
 #include <assert.h>
 #include <string.h>
 
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 // Note: the following documentation for getTypeId() will also be
+
 // visible for subclasses, so keep it general.
 /*!
   \fn SoType SoBase::getTypeId(void) const
@@ -126,7 +131,10 @@ static const char END_OF_LINE[] = "\n";
 static const char DEF_KEYWORD[] = "DEF";
 static const char USE_KEYWORD[] = "USE";
 static const char NULL_KEYWORD[] = "NULL";
+static const char ROUTE_KEYWORD[] = "ROUTE";
 
+static const char VRML97_PROTO_KEYWORD[] = "PROTO";
+static const char VRML97_EXTERNPROTO_KEYWORD[] = "EXTERNPROTO";
 
 // Only a small number of SoBase derived objects will under usual
 // conditions have designated names, so we use a couple of static
@@ -718,7 +726,6 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
   3. A child was given as the "NULL" keyword. This can happen when
   reading the contents of SoSFNode or SoMFNode fields.
 
-
   If \c TRUE is returned and \a base is non-NULL upon return,
   the instance was allocated and initialized according the what
   was read from the \a in stream.
@@ -732,15 +739,26 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
 
   SbName name;
   SbBool result = in->read(name, TRUE);
-  // The SoInput stream does not start with a valid base name. Return
-  // TRUE with base==NULL.
-  if (!result) return TRUE;
 
 #if COIN_DEBUG && 0 // debug
   // This debug statement is extremely useful when debugging the
   // import code, so keep it around.
   SoDebugError::postInfo("SoBase::read", "name: '%s'", name.getString());
 #endif // debug
+
+  //.read all (vrml97) routes
+  if (in->isFileVRML2()) {
+    while (result && name == ROUTE_KEYWORD) {
+      result = SoBase::readRoute(in);
+      // read next ROUTE keyword
+      if (result ) result = in->read(name, TRUE);
+      else return FALSE; // error while reading ROUTE
+    }
+  }
+
+  // The SoInput stream does not start with a valid base name. Return
+  // TRUE with base==NULL.
+  if (!result) return TRUE;
 
   if (name == USE_KEYWORD) result = SoBase::readReference(in, base);
   else if (name == NULL_KEYWORD) return TRUE;
@@ -1024,6 +1042,17 @@ SoBase::readBase(SoInput * in, SbName & classname, SoBase *& base)
 
   SbName refname;
 
+  if (in->isFileVRML2()) {
+    if (classname == VRML97_PROTO_KEYWORD) {
+      SoReadError::post(in, "VRML97 PROTO is not yet supported");
+      ret = FALSE;
+    }
+    if (classname == VRML97_EXTERNPROTO_KEYWORD) {
+      SoReadError::post(in, "VRML97 EXTERNPROTO is not yet supported");
+      ret = FALSE;
+    }
+  }
+
   if (classname == DEF_KEYWORD) {
     if (!in->read(refname, FALSE) || !in->read(classname, TRUE)) {
       SoReadError::post(in, "Premature end of file after %s", DEF_KEYWORD);
@@ -1125,7 +1154,21 @@ SoBase::readBaseInstance(SoInput * in, const SbName & classname,
 SoBase *
 SoBase::createInstance(SoInput * in, const SbName & classname)
 {
-  SoType type = SoType::fromName(classname);
+  SoType type = SoType::badType();
+  if (in->isFileVRML2()) {
+    SbString newname;
+    newname.sprintf("VRML%s", classname.getString());
+    type = SoType::fromName(SbName(newname.getString()));
+#if COIN_DEBUG && 0 // debug
+    if (type != SoType::badType()) {
+      SoDebugError::postInfo("SoBase::createInstance",
+                             "Created VRML V2.0 type: %s",
+                             type.getName().getString());
+#endif // debug
+    }
+  }
+  if (type == SoType::badType())
+    type = SoType::fromName(classname);
 
   SoBase * instance = NULL;
 
@@ -1164,4 +1207,134 @@ SoBase::flushInput(SoInput * in)
     if (c == CLOSE_BRACE) nestlevel--;
     else if (c == OPEN_BRACE) nestlevel++;
   }
+}
+
+/*! 
+
+  Connect a route from the node named \a fromnodename's field \a
+  fromfieldname to the node named \a tonodename's field \a
+  tofieldname. This method will consider the fields types (event in,
+  event out, etc) when connecting. 
+
+  This method was not part of the Inventor v2.1 API, and is an
+  extension specific to Coin.
+
+  \since 2001-10-12
+*/
+SbBool 
+SoBase::connectRoute(const SbName & fromnodename, const SbName & fromfieldname,
+                     const SbName & tonodename, const SbName & tofieldname)
+{
+  SoNode * fromnode = SoNode::getByName(fromnodename);
+  SoNode * tonode = SoNode::getByName(tonodename);
+  if (fromnode && tonode) {
+    SoField * from = fromnode->getField(fromfieldname);
+    SoField * to = tonode->getField(tofieldname);
+    
+    if (!from) {
+      if (strncmp(fromfieldname.getString(), "set_", 4) == 0) {
+        SbName newname = fromfieldname.getString() + 4; 
+        from = fromnode->getField(newname);
+      }
+    }
+    
+    int tofieldtype = SoField::VRML97_EVENTIN_FIELD;
+    if (to) tofieldtype = to->getFieldType();
+
+    if (!to) {
+      if (strncmp(tofieldname.getString(), "set_", 4) == 0) {
+        SbName newname = tofieldname.getString() + 4; 
+        to = tonode->getField(newname);
+        tofieldtype = SoField::VRML97_EVENTIN_FIELD;
+      }
+    }
+    
+    if (from && to) {
+      SbBool notnotify = FALSE;
+      SbBool append = FALSE;
+      if (from->getFieldType() == SoField::VRML97_EVENTOUT_FIELD) {
+        notnotify = TRUE;
+      }
+      if (tofieldtype == SoField::VRML97_EVENTIN_FIELD) append = TRUE;
+      to->connectFrom(from, notnotify, append);
+    }
+    else {
+      SoDebugError::postWarning("SoBase::connectRoute",
+                                "Unable to create route from %s.%s to %s.%s",
+                                fromnodename.getString(),
+                                fromfieldname.getString(),
+                                tonodename.getString(),
+                                tofieldname.getString());
+    }
+    return TRUE;
+  }
+  return FALSE;
+}
+
+
+// Reads a (VRML97) ROUTE. We decided to also add support for routes
+// in Coin, as a generic feature, since we think it is nicer than
+// setting up field connections inside the nodes.
+SbBool 
+SoBase::readRoute(SoInput * in)
+{
+  SbString fromstring, tostring;
+
+  SbName fromnodename;
+  SbName fromfieldname;
+  SbName toname;
+  SbName tonodename;
+  SbName tofieldname;
+  SbBool ok;
+
+  ok = 
+    in->read(fromstring) && 
+    in->read(toname) &&
+    in->read(tostring);
+
+  if (ok) ok = (toname == SbName("TO"));
+
+  if (ok) {
+    ok = FALSE;
+
+    // parse from-string
+    char * str1 = (char*) fromstring.getString();
+    char * str2 = str1 ? (char*) strchr(str1, '.') : NULL;
+    if (str1 && str2) {
+      *str2++ = 0;
+      
+      // now parse to-string
+      fromnodename = str1;
+      fromfieldname = str2;
+      str1 = (char*) tostring.getString();
+      str2 = str1 ? strchr(str1, '.') : NULL;
+      if (str1 && str2) {
+        *str2++ = 0;
+        tonodename = str1;
+        tofieldname = str2;
+        
+        ok = TRUE;
+      }
+    }
+  }
+
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoBase::readRoute",
+                         "%s.%s %s %s.%s",
+                         fromnodename.getString(),
+                         fromfieldname.getString(),
+                         toname.getString(),
+                         tonodename.getString(),
+                         tofieldname.getString());
+#endif // debug
+
+  if (!ok) SoReadError::post(in, "Error parsing ROUTE keyword");
+  else {
+    if (!SoBase::connectRoute(fromnodename, fromfieldname,
+                              tonodename, tofieldname)) {
+      in->addRoute(fromnodename, fromfieldname,
+                   tonodename, tofieldname);
+    }
+  }
+  return ok;
 }

@@ -73,6 +73,9 @@ public:
   static void setTraceRefs(SbBool trace);
   static SbBool getTraceRefs(void);
 
+  static SbBool connectRoute(const SbName & fromnodename, const SbName & fromfieldname,
+                             const SbName & tonodename, const SbName & tofieldname);
+  
 
 protected:
   // Note: these are bitflags.
@@ -94,6 +97,8 @@ protected:
 
 
 private:
+  static SbBool readRoute(SoInput * in);
+
   static SbBool readReference(SoInput * in, SoBase *& base);
   static SbBool readBase(SoInput * in, SbName & classname, SoBase *& base);
   static SbBool readBaseInstance(SoInput * in, const SbName & classname,
