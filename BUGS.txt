@@ -498,15 +498,17 @@
     #Inventor V2.1 ascii
     
     Separator {
+       LightModel { model BASE_COLOR }
+       
        Cube { height 5 }
     
        Separator {
-          Rotation { rotation 1 0 0  2.51 }
+          Rotation { rotation 1 0 0  0.7854 }
           Cube { }
        }
     
-       Rotation { rotation 2 3 9  1.9 }
-       Cube { height 5 }
+       Rotation { rotation 2 3 9  1.5708 }
+       Cube { height 4 }
     }
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
 
