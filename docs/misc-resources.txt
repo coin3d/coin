@@ -171,6 +171,9 @@ THE LINKS
 
 * Driver for input device spaceball: http://www.3dconnexion.com/software/sdk/
 
+* Using a spaceball with Qt, info for interfacing with both X11 and
+  Win32: <URL:http://lists.trolltech.com/qt-interest/2002-03/thread00214-0.html>.
+
 * OpenGL FAQ and Troubleshooting Guide:
      <URL:http://www.frii.com/~martz/oglfaq/>
 
