@@ -878,6 +878,21 @@ cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph, float complexity)
 
 }
 
+void
+cc_flw_scale_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph, float factor)
+{
+  if (freetypelib)
+    cc_flwft_scale_vector_glyph_coords(vecglyph, factor);
+  else if (win32api) {
+    cc_flww32_scale_vector_glyph_coords(vecglyph, factor);
+  } else {
+    if (cc_flw_debug()) {
+      cc_debugerror_postwarning("cc_flw_scale_vector_glyph_coords",
+                                "To font API present!");
+    }
+  }
+}
+
 const float *
 cc_flw_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
 {

@@ -66,6 +66,10 @@ static SbBool glyph3d_initialized = FALSE;
 /* Mutex lock for the static ang global font hash */
 static void * glyph3d_fonthash_lock = NULL;
 
+/* Minimum size for 3D glyphs to prevent windows 
+   from aligning small glyphs to screen pixel positions */
+static float glyph3d_minimumfontsize = 20.0f;
+
 /* Set '#if 1' to enable debug info to stderr when tracking mutex locking. */
 #if 0
 #define GLYPH3D_MUTEX_LOCK(m) \
@@ -163,7 +167,9 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
     cc_string_append_string(fonttoload, &spec->style);
   }
 
-  fontidx = cc_flw_get_font(cc_string_get_text(fonttoload), (int)(newspec->size), (int)(newspec->size));
+  fontidx = cc_flw_get_font(cc_string_get_text(fonttoload), 
+                            (int)(newspec->size + glyph3d_minimumfontsize), 
+                            (int)(newspec->size + glyph3d_minimumfontsize));
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);
 
@@ -178,12 +184,10 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   glyph->fontidx = fontidx;
   glyph->bbox = (float *) malloc(sizeof(float) * 4);
 
-
-  if (fontidx != 0)
+  if (fontidx != 0) 
     glyph->vectorglyph = cc_flw_get_vector_glyph(fontidx, character, newspec->complexity);
   else
     glyph->vectorglyph = NULL;
-
 
   /* Setup buildin default font if no character was found */
   if (glyph->vectorglyph == NULL) {

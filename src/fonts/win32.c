@@ -75,6 +75,7 @@ void cc_flww32_get_vector_advance(void * font, int glyph, float *x, float *y) { 
 void cc_flww32_get_bitmap_kerning(void * font, int glyph1, int glyph2, int *x, int *y) { assert(FALSE); }
 void cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float *x, float *y) { assert(FALSE); }
 void cc_flww32_done_glyph(void * font, int glyph) { assert(FALSE); }
+void cc_flww32_scale_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph, float factor){ assert(FALSE); };
   
 struct cc_flw_bitmap * cc_flww32_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
 struct cc_flw_vector_glyph * cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity){ assert(FALSE); return NULL; }
@@ -1064,9 +1065,12 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   flww32_buildEdgeIndexList(new_vector_glyph);
 
   /* Remove allocated DCs */
-  DeleteObject(membmp);
-  DeleteObject(screendc);
-  DeleteObject(memdc);
+  if (!DeleteObject(membmp)) 
+    cc_win32_print_error("cc_flww32_get_vector_glyph","DeleteObject(). Error deleting bitmap device context.", GetLastError());
+  if (!DeleteObject(screendc))
+    cc_win32_print_error("cc_flww32_get_vector_glyph","DeleteObject(). Error deleting screen device context.", GetLastError());
+  if (!DeleteObject(memdc))
+    cc_win32_print_error("cc_flww32_get_vector_glyph","DeleteObject(). Error deleting memory device context.", GetLastError());
   return new_vector_glyph; 
 
 }
@@ -1238,6 +1242,16 @@ cc_flww32_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
   assert(vecglyph->vertices && "Vertices not initialized properly");
   return vecglyph->vertices;
 } 
+
+void
+cc_flww32_scale_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph, float factor)
+{
+  int i;
+  for(i=0;i < vecglyph->numvertices;i++) {
+    vecglyph->vertices[i*2] = vecglyph->vertices[i*2] * factor;
+    vecglyph->vertices[i*2 + 1] = vecglyph->vertices[i*2 + 1] * factor;
+  }
+}
 
 
 static void
