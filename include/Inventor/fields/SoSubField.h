@@ -379,15 +379,14 @@ _class_::operator==(const _class_ & field) const \
   return TRUE; \
 } \
  \
+/*! \COININTERNAL */ \
 void \
 _class_::deleteAllValues(void) \
 { \
   this->setNum(0); \
 } \
  \
-/* This method is used for moving values around internally within */ \
-/* a multivalue field. It needs to be overridden in each field so it */ \
-/* automatically takes care of running copy contructors where necessary. */ \
+/*! This method is used for moving values around internally within a multivalue field. It needs to be overridden in each field so it automatically takes care of running copy contructors where necessary. */ \
 void \
 _class_::copyValue(int to, int from) \
 { \

@@ -521,6 +521,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/events/SoMotion3Event.h \
                          @path_tag@@coin_src_dir@/include/Inventor/events/SoMouseButtonEvent.h \
                          @path_tag@@coin_src_dir@/include/Inventor/events/SoSpaceballButtonEvent.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSubField.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoField.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoFieldContainer.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoFieldData.h \
@@ -1356,7 +1357,7 @@ IMAGE_PATH             =
 # input file. Doxygen will then use the output that the filter program writes 
 # to standard output.
 
-INPUT_FILTER           = 
+INPUT_FILTER           =
 
 # If the FILTER_SOURCE_FILES tag is set to YES, the input filter (if set using 
 # INPUT_FILTER) will be used to filter the input files when producing source 
@@ -1722,7 +1723,7 @@ MACRO_EXPANSION        = YES
 # then the macro expansion is limited to the macros specified with the 
 # PREDEFINED and EXPAND_AS_PREDEFINED tags.
 
-EXPAND_ONLY_PREDEF     = YES
+EXPAND_ONLY_PREDEF     = NO
 
 # If the SEARCH_INCLUDES tag is set to YES (the default) the includes files 
 # in the INCLUDE_PATH (see below) will be search if a #include is found.
@@ -1733,7 +1734,10 @@ SEARCH_INCLUDES        = YES
 # contain include files that are not input files but should be processed by 
 # the preprocessor.
 
-INCLUDE_PATH           = @path_tag@@coin_src_dir@/include/Inventor
+INCLUDE_PATH           = @path_tag@@coin_build_dir@/include \
+                         @path_tag@@coin_build_dir@ \
+                         @path_tag@@coin_src_dir@/include \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex
 
 # You can use the INCLUDE_FILE_PATTERNS tag to specify one or more wildcard 
 # patterns (like *.h and *.hpp) to filter out the header-files in the 
@@ -1757,7 +1761,20 @@ PREDEFINED             = DOXYGEN_SKIP_THIS=1 \
 # The macro definition that is found in the sources will be used. 
 # Use the PREDEFINED tag if you want to use a different macro definition.
 
-EXPAND_AS_DEFINED      = SO_COMPOSE__HEADER
+EXPAND_AS_DEFINED      = SO_COMPOSE__HEADER \
+                         SO_SFIELD_HEADER \
+                         SO_MFIELD_HEADER \
+                         SO_SFIELD_DERIVED_HEADER \
+                         SO_MFIELD_DERIVED_HEADER \
+                         SO_SFIELD_CONSTRUCTOR_HEADER \
+                         SO_SFIELD_REQUIRED_HEADER \
+                         SO_SFIELD_IO_HEADER \
+                         SO_MFIELD_IO_HEADER \
+                         SO_SFIELD_VALUE_HEADER \
+                         SO_MFIELD_VALUE_HEADER \
+                         SO_SFIELD_DERIVED_VALUE_HEADER \
+                         SO_MFIELD_DERIVED_VALUE_HEADER \
+                         SO_MFIELD_SETVALUESPOINTER_HEADER
 
 # If the SKIP_FUNCTION_MACROS tag is set to YES (the default) then 
 # doxygen's preprocessor will remove all function-like macros that are alone 
@@ -1765,7 +1782,7 @@ EXPAND_AS_DEFINED      = SO_COMPOSE__HEADER
 # function macros are typically used for boiler-plate code, and will confuse the 
 # parser if not removed.
 
-SKIP_FUNCTION_MACROS   = YES
+SKIP_FUNCTION_MACROS   = NO
 
 #---------------------------------------------------------------------------
 # Configuration::addtions related to external references   
