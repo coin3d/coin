@@ -1,0 +1,122 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License version 2 as
+ *  published by the Free Software Foundation.  See the file LICENSE.GPL
+ *  at the root directory of this source distribution for more details.
+ *
+ *  If you desire to use Coin with software that is incompatible
+ *  licensewise with the GPL, and / or you would like to take
+ *  advantage of the additional benefits with regard to our support
+ *  services, please contact Systems in Motion about acquiring a Coin
+ *  Professional Edition License.
+ *
+ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
+ *  www.sim.no, support@sim.no, Voice: +47 22114160, Fax: +47 22207097
+ *
+\**************************************************************************/
+
+/* this file should only be included from mutex.c */
+
+static int
+internal_struct_init(cc_mutex * mutex_struct)
+{
+  mutex_struct->w32thread.mutexhandle = CreateMutex(NULL, FALSE, NULL);
+  if (mutex_struct->w32thread.mutexhandle == NULL) {
+    if (COIN_DEBUG) {
+      DWORD err;
+      char *errstr;
+      err = GetLastError();
+      errstr = cc_internal_w32_getlasterrorstring(err);
+      cc_fprintf(stderr, "CreateMutex() error: %d, \"%s\"\n",
+        err, errstr);
+      cc_internal_w32_freelasterrorstring(errstr);
+    }
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_struct_clean(cc_mutex * mutex_struct)
+{
+  BOOL status = CloseHandle(mutex_struct->w32thread.mutexhandle);
+  if (status == FALSE) {
+    if (COIN_DEBUG) {
+      DWORD err;
+      char *errstr;
+      err = GetLastError();
+      errstr = cc_internal_w32_getlasterrorstring(err);
+      cc_fprintf(stderr, "CloseHandle() error: %d, \"%s\"\n",
+        err, errstr);
+      cc_internal_w32_freelasterrorstring(errstr);
+    }
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_lock(cc_mutex * mutex)
+{
+  DWORD status;
+  status = WaitForSingleObject(mutex->w32thread.mutexhandle, INFINITE);
+  if (status == WAIT_FAILED) {
+    if (COIN_DEBUG) {
+      DWORD err;
+      char *errstr;
+      err = GetLastError();
+      errstr = cc_internal_w32_getlasterrorstring(err);
+      cc_fprintf(stderr, "WaitSingleObject() error: %d, \"%s\"\n",
+        err, errstr);
+      cc_internal_w32_freelasterrorstring(errstr);
+    }
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_try_lock(cc_mutex * mutex)
+{
+  DWORD status;
+  status = WaitForSingleObject(mutex->w32thread.mutexhandle, 0);
+  if (status == WAIT_TIMEOUT)
+    return CC_BUSY;
+  else if ((status == WAIT_OBJECT_0) || (status == WAIT_ABANDONED))
+    return CC_OK;
+
+  /* if we get here there was an error */
+  if (COIN_DEBUG) {
+    DWORD err;
+    char *errstr;
+    err = GetLastError();
+    errstr = cc_internal_w32_getlasterrorstring(err);
+    cc_fprintf(stderr, "WaitSingleObject() error: %d, \"%s\"\n",
+               err, errstr);
+    cc_internal_w32_freelasterrorstring(errstr);
+  }
+  return CC_ERROR;
+}
+
+static int
+internal_unlock(cc_mutex * mutex)
+{
+  BOOL status = ReleaseMutex(mutex->w32thread.mutexhandle);
+  if (status == FALSE) {
+    if (COIN_DEBUG) {
+      DWORD err;
+      char *errstr;
+      err = GetLastError();
+      errstr = cc_internal_w32_getlasterrorstring(err);
+      cc_fprintf(stderr, "ReleaseMutex() error: %d, \"%s\"\n",
+        err, errstr);
+      cc_internal_w32_freelasterrorstring(errstr);
+    }
+    return CC_ERROR;
+  }
+  return CC_OK;
+}

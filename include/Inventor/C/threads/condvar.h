@@ -32,14 +32,15 @@ extern "C" {
 
 /* ********************************************************************** */
 
-COIN_DLL_API cc_condvar * cc_condvar_construct(void);
-COIN_DLL_API void cc_condvar_destruct(cc_condvar * condvar);
-
-COIN_DLL_API int cc_condvar_wait(cc_condvar * condvar);
-COIN_DLL_API int cc_condvar_timed_wait(cc_condvar * condvar, cc_time period);
-
-COIN_DLL_API void cc_condvar_wake_one(cc_condvar * condvar);
-COIN_DLL_API void cc_condvar_wake_all(cc_condvar * condvar);
+  COIN_DLL_API cc_condvar * cc_condvar_construct(void);
+  COIN_DLL_API void cc_condvar_destruct(cc_condvar * condvar);
+  
+  COIN_DLL_API int cc_condvar_wait(cc_condvar * condvar, cc_mutex * mutex);
+  COIN_DLL_API int cc_condvar_timed_wait(cc_condvar * condvar, cc_mutex * mutex,
+                                         cc_time period);
+  
+  COIN_DLL_API void cc_condvar_wake_one(cc_condvar * condvar);
+  COIN_DLL_API void cc_condvar_wake_all(cc_condvar * condvar);
 
 /* ********************************************************************** */
 

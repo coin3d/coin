@@ -45,7 +45,6 @@ extern "C" {
 #endif /* USE_PTHREAD */
 
 struct cc_storage {
-  unsigned int type;
   unsigned int size;
   void (*constructor)(void *);
   void (*destructor)(void *);

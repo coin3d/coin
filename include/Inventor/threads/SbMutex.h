@@ -41,6 +41,10 @@ public:
   }
 
 private:
+  // FIXME: we need access to C mutex structur. Should we use friend,
+  // or should we add a new public method to get to this structure?
+  // pederb, 2002-06-26
+  friend class SbCondVar;
   cc_mutex * mutex;
 };
 

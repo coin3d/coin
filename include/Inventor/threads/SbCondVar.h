@@ -26,14 +26,18 @@
 #include <Inventor/SbTime.h>
 #include <Inventor/C/threads/condvar.h>
 
+class SbMutex;
+
 class SbCondVar {
 public:
   SbCondVar(void) { this->condvar = cc_condvar_construct(); }
   ~SbCondVar(void) { cc_condvar_destruct(this->condvar); }
 
-  SbBool wait(void) { return cc_condvar_wait(this->condvar) == CC_OK; }
-  SbBool timedWait(SbTime period) {
-    return cc_condvar_timed_wait(this->condvar, period.getValue()) == CC_OK;
+  SbBool wait(SbMutex & mutex) { 
+    return cc_condvar_wait(this->condvar, mutex.mutex) == CC_OK; 
+  }
+  SbBool timedWait(SbMutex & mutex, SbTime period) {
+    return cc_condvar_timed_wait(this->condvar, mutex.mutex, period.getValue()) == CC_OK;
   }
   
   void wakeOne(void) { cc_condvar_wake_one(this->condvar); }

@@ -43,8 +43,6 @@ extern "C" {
 /* #define CC_BARRIER_VALID 0xdbcafe */
 
 struct cc_barrier {
-  unsigned int type;
-/*  int valid; */
   int threshold;
   int counter;
   int cycle;

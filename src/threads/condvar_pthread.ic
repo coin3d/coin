@@ -1,0 +1,134 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License version 2 as
+ *  published by the Free Software Foundation.  See the file LICENSE.GPL
+ *  at the root directory of this source distribution for more details.
+ *
+ *  If you desire to use Coin with software that is incompatible
+ *  licensewise with the GPL, and / or you would like to take
+ *  advantage of the additional benefits with regard to our support
+ *  services, please contact Systems in Motion about acquiring a Coin
+ *  Professional Edition License.
+ *
+ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
+ *  www.sim.no, support@sim.no, Voice: +47 22114160, Fax: +47 22207097
+ *
+\**************************************************************************/
+
+/* This file should only be included from condvar.c */
+
+#include <Inventor/C/threads/mutexp.h>
+
+static int
+internal_struct_init(cc_condvar * condvar_struct)
+{
+  int status = pthread_cond_init(&(condvar_struct->pthread.condid), NULL);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_fprintf(stderr, "pthread_cond_init() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_struct_clean(cc_condvar * condvar_struct)
+{
+  int status;
+  int ret = CC_OK;
+  status = pthread_cond_destroy(&(condvar_struct->pthread.condid));
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_fprintf(stderr, "pthread_cond_destroy() error: %d\n", status);
+    ret = CC_ERROR;
+  }
+  return ret;
+}
+
+static int
+internal_wait(cc_condvar * condvar, cc_mutex * mutex)
+{
+  int status;
+
+  status = pthread_cond_wait(&condvar->pthread.condid,
+                             &mutex->pthread.mutexid);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_fprintf(stderr, "pthread_cond_wait() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_timed_wait(cc_condvar * condvar, cc_mutex * mutex, cc_time period)
+{
+  struct timespec timeout;
+  int status, ret;
+#ifdef HAVE_GETTIMEOFDAY
+  struct timeval now;
+  struct timezone zone;
+#else /* HAVE_GETTIMEOFDAY */
+  unsigned long int now;
+#endif /* ! HAVE_GETTIMEOFDAY */
+
+#ifdef HAVE_GETTIMEOFDAY
+  gettimeofday(&now, &zone);
+  timeout.tv_sec = now.tv_sec + (int) floor(period);
+  timeout.tv_nsec = now.tv_usec + (int) ((period - floor(period)) * 1000000.0f);
+#else /* HAVE_GETTIMEODDAY */
+  /*FIXME: write a configure macro to test for existence of timeGetTime */
+  now = timeGetTime(); /* in milliseconds */
+  timeout.tv_sec = (int) floor(now/1000.0) + (int) floor(period);
+  timeout.tv_nsec = (now-timeout.tv_sec*1000.0)*1000.0;
+#endif /* ! HAVE_GETTIMEOFDAY */
+  status = pthread_cond_timedwait(&condvar->pthread.condid,
+                                  &mutex->pthread.mutexid, &timeout);
+  ret = CC_OK;
+  if (status != 0) {
+    if (status == ETIMEDOUT) ret = CC_TIMEOUT;
+    else {
+      ret = CC_ERROR;
+      if (COIN_DEBUG) {
+        cc_fprintf_lock();
+        cc_fprintf_locked(stderr, "pthread_cond_timedwait() error: %d", status);
+        switch (status) {
+        case EINTR: cc_fprintf_locked(stderr, "EINTR\n"); break;
+        case EBUSY: cc_fprintf_locked(stderr, "EBUSY\n"); break;
+        default: cc_fprintf_locked(stderr, "default\n"); break;
+        }
+        cc_fprintf_unlock();
+      }
+    }
+  }
+  return ret;
+}
+
+static int
+internal_wake_one(cc_condvar * condvar)
+{
+  int status;
+  status = pthread_cond_signal(&condvar->pthread.condid);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_fprintf(stderr, "pthread_cond_signal() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_wake_all(cc_condvar * condvar)
+{
+  int status = pthread_cond_broadcast(&condvar->pthread.condid);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_fprintf(stderr, "pthread_cond_broadcast() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}

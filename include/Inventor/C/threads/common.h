@@ -30,55 +30,42 @@ extern "C" {
 
 /* ********************************************************************** */
 
-typedef  struct cc_thread   cc_thread;
-typedef  struct cc_mutex    cc_mutex;
-typedef  struct cc_rwmutex  cc_rwmutex;
-typedef  struct cc_condvar  cc_condvar;
-typedef  struct cc_barrier  cc_barrier;
-typedef  struct cc_storage  cc_storage;
+  typedef  struct cc_thread cc_thread;
+  typedef  struct cc_mutex cc_mutex;
+  typedef  struct cc_rwmutex cc_rwmutex;
+  typedef  struct cc_condvar cc_condvar;
+  typedef  struct cc_barrier cc_barrier;
+  typedef  struct cc_storage cc_storage;
+  
+  /* used by rwmutex - read_precedence is default */
+  enum cc_precedence {
+    CC_READ_PRECEDENCE,
+    CC_WRITE_PRECEDENCE
+  };
 
-enum cc_type {
-  CC_INVALID_TYPE,
-  CC_THREAD_TYPE,
-  CC_MUTEX_TYPE,
-  CC_RWMUTEX_TYPE,
-  CC_CONDVAR_TYPE,
-  CC_BARRIER_TYPE,
-  CC_STORAGE_TYPE,
-  /* internal types: */
-  CC_STORAGE_ENV_TYPE
-};
+  enum cc_threads_implementation {
+    CC_NO_THREADS = -1,
+    CC_PTHREAD    = 0,
+    CC_W32THREAD
+  };
 
-/* used by rwmutex - read_precedence is default */
-enum cc_precedence {
-  CC_READ_PRECEDENCE,
-  CC_WRITE_PRECEDENCE
-};
-
-enum cc_threads_implementation {
-  CC_NO_THREADS = -1,
-  CC_PTHREAD    = 0,
-  CC_W32THREAD
-};
-
-enum cc_retval {
-  CC_ERROR = 0,
-  CC_OK = 1,
-  CC_TIMEOUT,
-  CC_BUSY
-};
-
-typedef  enum cc_type  cc_type;
-typedef  enum cc_precedence  cc_precedence;
-typedef  enum cc_threads_implementation  cc_threads_implementation;
-typedef  enum cc_retval  cc_retval;
-
-/* ********************************************************************** */
-
-COIN_DLL_API int cc_thread_implementation(void);
-
-/* ********************************************************************** */
-
+  enum cc_retval {
+    CC_ERROR = 0,
+    CC_OK = 1,
+    CC_TIMEOUT,
+    CC_BUSY
+  };
+  
+  typedef enum cc_precedence cc_precedence;
+  typedef enum cc_threads_implementation cc_threads_implementation;
+  typedef enum cc_retval cc_retval;
+  
+  /* ********************************************************************** */
+  
+  COIN_DLL_API int cc_thread_implementation(void);
+  
+  /* ********************************************************************** */
+  
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */

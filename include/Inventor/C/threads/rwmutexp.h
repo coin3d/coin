@@ -41,7 +41,6 @@ extern "C" {
 /* ********************************************************************** */
 
 struct cc_rwmutex {
-  unsigned int type;
   cc_precedence policy;
   int readers;
   int writers;

@@ -1,0 +1,84 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License version 2 as
+ *  published by the Free Software Foundation.  See the file LICENSE.GPL
+ *  at the root directory of this source distribution for more details.
+ *
+ *  If you desire to use Coin with software that is incompatible
+ *  licensewise with the GPL, and / or you would like to take
+ *  advantage of the additional benefits with regard to our support
+ *  services, please contact Systems in Motion about acquiring a Coin
+ *  Professional Edition License.
+ *
+ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
+ *  www.sim.no, support@sim.no, Voice: +47 22114160, Fax: +47 22207097
+ *
+\**************************************************************************/
+
+/* this file should only be included from mutex.c */
+
+static int
+internal_struct_init(cc_mutex * mutex_struct)
+{
+  int status = pthread_mutex_init(&mutex_struct->pthread.mutexid, NULL);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_fprintf(stderr, "pthread_mutex_init() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_struct_clean(cc_mutex * mutex_struct)
+{
+  int status = pthread_mutex_destroy(&mutex_struct->pthread.mutexid);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_fprintf(stderr, "pthread_mutex_destroy() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_lock(cc_mutex * mutex)
+{
+  int status = pthread_mutex_lock(&mutex->pthread.mutexid);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_fprintf(stderr, "pthread_mutex_lock() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_try_lock(cc_mutex * mutex)
+{
+  int status = pthread_mutex_trylock(&mutex->pthread.mutexid);
+  if (status == EBUSY) return CC_BUSY;
+  else if (status != 0) {
+    if (COIN_DEBUG)
+      cc_fprintf(stderr, "pthread_mutex_trylock() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_unlock(cc_mutex * mutex)
+{
+  int status = pthread_mutex_unlock(&mutex->pthread.mutexid);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_fprintf(stderr, "pthread_mutex_unlock() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+

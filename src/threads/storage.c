@@ -32,7 +32,6 @@
 
 typedef
 struct cc_storage_env {
-  unsigned int type;
   void (*destructor)(void *);
   /* userdata follows here */
 } cc_storage_env;
@@ -53,23 +52,18 @@ void
 cc_storage_struct_init(cc_storage * storage_struct, unsigned int size,
                         void (*constr)(void *), void (*destr)(void *))
 {
-  assert(storage_struct != NULL && storage_struct->type == CC_INVALID_TYPE);
+  assert(storage_struct != NULL);
 
   storage_struct->size = size;
   storage_struct->constructor = constr;
   storage_struct->destructor = destr;
 #ifdef USE_PTHREAD
-  if ( pthread_key_create(&(storage_struct->pthread.key),
-                          cc_storage_internal_destructor) != 0 ) {
-    goto error;
+  if (pthread_key_create(&storage_struct->pthread.key,
+                         cc_storage_internal_destructor) != 0 ) {
+    assert(0 && "unable to create key");
   }
 #endif /* USE_PTHREAD */
-  storage_struct->type = CC_STORAGE_TYPE;
-  return;
-
-error:
-  storage_struct->type = CC_INVALID_TYPE;
-} /* cc_storage_struct_init() */
+}
 
 /*
 */
@@ -77,10 +71,8 @@ error:
 void
 cc_storage_struct_clean(cc_storage * storage_struct)
 {
-  assert(storage_struct != NULL && storage_struct->type == CC_STORAGE_TYPE);
-
-  storage_struct->type = CC_INVALID_TYPE;
-} /* cc_storage_struct_clean() */
+  assert(storage_struct != NULL);
+}
 
 /* ********************************************************************** */
 
@@ -92,50 +84,35 @@ cc_storage_construct(unsigned int size)
 {
   cc_storage * storage = (cc_storage *) malloc(sizeof(cc_storage));
   assert(storage != NULL);
-  storage->type = CC_INVALID_TYPE;
   cc_storage_struct_init(storage, size, NULL, NULL);
-  if ( storage->type != CC_STORAGE_TYPE ) goto error;
   return storage;
-
-error:
-  free(storage);
-  return NULL;
-} /* cc_storage_construct() */
+}
 
 cc_storage *
-cc_storage_construct_etc(
-  unsigned int size,
-  void (*constructor)(void *),
-  void (*destructor)(void *) )
+cc_storage_construct_etc(unsigned int size,
+                         void (*constructor)(void *),
+                         void (*destructor)(void *))
 {
   cc_storage * storage = (cc_storage *) malloc(sizeof(cc_storage));
   assert(storage != NULL);
-  storage->type = CC_INVALID_TYPE;
   cc_storage_struct_init(storage, size, constructor, destructor);
-  if ( storage->type != CC_STORAGE_TYPE ) goto error;
   return storage;
+}
 
-error:
-  free(storage);
-  return NULL;
-} /* cc_storage_construct() */
 /*
 */
-
 void
-cc_storage_destruct(
-  cc_storage * storage )
+cc_storage_destruct(cc_storage * storage)
 {
-  assert((storage != NULL) && (storage->type == CC_STORAGE_TYPE));
+  assert(storage != NULL);
 
 #ifdef USE_PTHREAD
-  if ( pthread_key_delete(storage->pthread.key) != 0 ) {
+  if (pthread_key_delete(storage->pthread.key) != 0) {
+    assert(0 && "error while deleting key");
   }
 #endif /* USE_PTHREAD */
-
-  storage->type = CC_INVALID_TYPE;
   free(storage);
-} /* cc_storage_destruct() */
+}
 
 /* ********************************************************************** */
 
@@ -143,30 +120,28 @@ cc_storage_destruct(
 */
 
 void *
-cc_storage_get(
-  cc_storage * storage )
+cc_storage_get(cc_storage * storage)
 {
   cc_storage_env * envelope;
   void * user;
-  assert((storage != NULL) && (storage->type == CC_STORAGE_TYPE));
+  assert(storage != NULL);
 
 #ifdef USE_PTHREAD
   envelope = (cc_storage_env *) pthread_getspecific(storage->pthread.key);
-  if ( envelope == NULL ) {
+  if (envelope == NULL) {
     envelope =
       (cc_storage_env *) malloc(sizeof(cc_storage_env)+storage->size);
     assert( envelope != NULL );
-    envelope->type = CC_STORAGE_ENV_TYPE;
     envelope->destructor = storage->destructor;
     pthread_setspecific(storage->pthread.key, envelope);
     user = (void *) (((char *) envelope) + sizeof(cc_storage_env));
-    if ( storage->constructor != NULL )
+    if (storage->constructor != NULL)
       (*storage->constructor)(user);
   }
 #endif /* USE_PTHREAD */
-
+  
   return (void *) (((char *) envelope) + sizeof(cc_storage_env));
-} /* cc_storage_get() */
+}
 
 /* ********************************************************************** */
 
@@ -174,25 +149,22 @@ cc_storage_get(
 */
 
 void
-cc_storage_set_constructor(
-  cc_storage * storage,
-  void (*constructor)(void *) )
+cc_storage_set_constructor(cc_storage * storage, void (*constructor)(void *))
 {
-  assert((storage != NULL) && (storage->type == CC_STORAGE_TYPE));
+  assert(storage != NULL);
   storage->constructor = constructor;
-} /* cc_storage_set_destructor() */
+}
 
 /*
 */
 
 void
-cc_storage_set_destructor(
-  cc_storage * storage,
-  void (*destructor)(void *) )
+cc_storage_set_destructor(cc_storage * storage,
+                          void (*destructor)(void *))
 {
-  assert((storage != NULL) && (storage->type == CC_STORAGE_TYPE));
+  assert(storage != NULL);
   storage->destructor = destructor;
-} /* cc_storage_set_destructor() */
+}
 
 /* ********************************************************************** */
 
@@ -200,19 +172,18 @@ cc_storage_set_destructor(
 */
 
 void
-cc_storage_internal_destructor(
-  void * env )
+cc_storage_internal_destructor(void * env)
 {
   cc_storage_env * envelope;
   void * user;
   envelope = (cc_storage_env *) env;
-  assert((envelope != NULL) && (envelope->type == CC_STORAGE_ENV_TYPE));
-  if ( envelope->destructor != NULL ) {
+  assert(envelope != NULL);
+  if (envelope->destructor != NULL) {
     user = (void *) (((char *) envelope) + sizeof(cc_storage_env));
     (*envelope->destructor)(user);
   }
   free(env);
-} /* cc_storage_internal_destructor() */
+}
 
 /* ********************************************************************** */
 

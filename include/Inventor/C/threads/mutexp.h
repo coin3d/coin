@@ -37,28 +37,17 @@ extern "C" {
 /* ********************************************************************** */
 
 #define NO_IMPLEMENTATION
-#ifndef CC_PTHREAD
-#define CC_PTHREAD(stmt)   /* nop */
-#endif /* ! CC_PTHREAD */
-#ifndef CC_W32THREAD
-#define CC_W32THREAD(stmt) /* nop */
-#endif /* ! CC_W32THREAD */
-
 #ifdef USE_PTHREAD
 #include <pthread.h>
-#undef CC_PTHREAD
-#define CC_PTHREAD(stmt) stmt
+#undef NO_IMPLEMENTATION
 #endif /* USE_PTHREAD */
 
 #ifdef USE_W32THREAD
 #include <windows.h>
-#undef CC_W32THREAD
-#define CC_W32THREAD(stmt) stmt
+#undef NO_IMPLEMENTATION
 #endif /* USE_W32THREAD */
 
 struct cc_mutex {
-  unsigned int type;
-
 #ifdef USE_PTHREAD
   struct cc_pthread_mutex_data {
     pthread_mutex_t mutexid;

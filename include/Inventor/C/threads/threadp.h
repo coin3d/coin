@@ -36,31 +36,22 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/* macro to wrap one-line thread-implementation-specific statements in */
-#define CC_PTHREAD(stmt)   /* nop */
-#define CC_W32THREAD(stmt) /* nop */
+#define NO_IMPLEMENTATION
 
 #ifdef USE_PTHREAD
 #include <pthread.h>
+#undef NO_IMPLEMENTATION
 #ifdef HAVE_SCHED_H
 #include <sched.h>
 #endif /* HAVE_SCHED_H */
-#undef CC_PTHREAD
-#define CC_PTHREAD(stmt) stmt
 #endif /* USE_PTHREAD */
 
 #ifdef USE_W32THREAD
-
 #include <windows.h>
-
-#undef CC_W32THREAD
-#define CC_W32THREAD(stmt) stmt
-
+#undef NO_IMPLEMENTATION
 #endif /* USE_W32THREAD */
 
-
 struct cc_thread {
-  unsigned int type;
   void * (*func)(void *);
   void * closure;
 

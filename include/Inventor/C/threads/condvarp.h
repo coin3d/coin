@@ -37,24 +37,14 @@ extern "C" {
 /* ********************************************************************** */
 
 #define NO_IMPLEMENTATION
-#ifndef CC_PTHREAD
-#define CC_PTHREAD(stmt)    /* nop */
-#endif /* ! CC_PTHREAD */
-#ifndef CC_W32THREAD
-#define CC_W32THREAD(stmt)  /* nop */
-#endif /* ! CC_W32THREAD */
 
 #ifdef USE_PTHREAD
-#undef CC_PTHREAD
-#define CC_PTHREAD(stmt) stmt
 #include <pthread.h>
 #endif /* USE_PTHREAD */
 
 #ifdef USE_W32THREAD
 #include <windows.h>
 #include <Inventor/C/threads/threadp.h>
-#undef CC_W32THREAD
-#define CC_W32THREAD(copy) copy
 #endif /* USE_W32THREAD */
 
 struct cc_condvar {
@@ -62,7 +52,6 @@ struct cc_condvar {
 
 #ifdef USE_PTHREAD
   struct cc_pthread_condvar_data {
-    pthread_mutex_t mutexid;
     pthread_cond_t condid;
   } pthread;
 #undef NO_IMPLEMENTATION
@@ -75,7 +64,6 @@ struct cc_condvar {
   } w32thread;
 #undef NO_IMPLEMENTATION
 #endif /* USE_W32THREAD */
-
 };
 
 #ifdef NO_IMPLEMENTATION
