@@ -118,7 +118,7 @@ SbPlaneProjector::isOrientToEye(void) const
 void
 SbPlaneProjector::setPlane(const SbPlane &plane)
 {
-  this->plane = plane;
+  this->nonOrientPlane = this->plane = plane;
   this->needSetup = TRUE;
 }
 
