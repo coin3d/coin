@@ -4058,4 +4058,9 @@ Separator {
 
     20040518 mortene.
 
+    UPDATE 20040518 mortene: according to the reported on
+    coin-discuss, the same problem can also manifest itself when the
+    fields of an SoBlinker is set programmatically. This means the
+    readInstance() solution outlined above is not good enough.
+
 =====================================================================
