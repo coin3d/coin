@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -34,7 +34,7 @@
 #error Only for internal use during library build.
 #endif /* !COIN_INTERNAL */
 
-#if HAVE_CONFIG_H
+#ifdef HAVE_CONFIG_H
 #include <config.h> /* for HAVE_* defines */
 #endif /* HAVE_CONFIG_H */
 
@@ -68,7 +68,7 @@
   COIN_OBSOLETED: this is the method which prints out obsoleted
   information. Used where there is an obsoleted or unsupported
   function. Typically a function that we feel should have been private
-  in Open Inventor.  
+  in Open Inventor.
 */
 
 #if COIN_DEBUG
