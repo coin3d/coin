@@ -42,7 +42,60 @@
 
   If you have a matrix in row-order from some other source, it can be
   "converted" to column-order by transposing it with
-  SbMatrix::transpose().
+  SbMatrix::transpose(). A simple example will help to explain
+  this.
+
+  With row-order matrices, a transformation matrix with position,
+  rotation and scale looks like this:
+
+  \code
+  M = T * R * S
+  \endcode
+
+  Where T is translation, R is rotation and S is the scale. What this
+  means is that scale is applied first. The scaled matrix is then
+  rotated, and finally the scaled and rotated matrix is
+  translated. When using column-order matrices, as done in Coin,
+  matrices are represented slightly differently; the order of
+  multiplication is reversed:
+
+  \code
+  M = S * R * T
+  \endcode
+
+  The transformation is just the same as the row-order matrix. The
+  only difference being the order of multiplication. To understand why
+  this is so, consider the sample transformation:
+
+  \code
+  M = T * R * S
+  \endcode
+
+  Converting M from a row-order matrix to a column-order matrix is
+  done as follows:
+
+  \code
+  M^t = (T * R * S)^t
+  M^t = ((T * R) * S)^t
+  M^t = S^t * (T * R)^t
+  M^t = S^t * R^t * T^t
+  \endcode
+
+  All left to be done is to remove the transpose symbols, and the
+  matrices have been converted to column-order matrices:
+
+  \code
+  M = S * R * T
+  \endcode
+
+  This was done using the fact that:
+
+  \code
+  A^t = (B * C)^t = C^t * B^t
+  \endcode
+
+  Converting from column-order to row-order is done using the same
+  principle.
 */
 
 // FIXME:
