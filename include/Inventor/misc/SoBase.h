@@ -127,8 +127,6 @@ private:
   static void flushInput(SoInput * in);
 
   static void freeLists(unsigned long, void * value);
-
-  friend class SoSFNode; // For access to writeHeader() and writeFooter().
 };
 
 #endif // !__SOBASE_H__

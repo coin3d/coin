@@ -25,6 +25,7 @@
   FIXME: write class doc
 */
 
+#include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/fields/SoSFNode.h>
 #if !defined(COIN_EXCLUDE_SOMFNODE)
 #include <Inventor/fields/SoMFNode.h>
@@ -216,6 +217,7 @@ SoSFNode::referencesCopy(void) const
 void
 SoSFNode::writeValue(SoOutput * out) const
 {
+#if 0 // OBSOLETED: inelegant. 19991113 mortene.
   // Note: make sure this code is in sync with the code in
   // SoNode::write(). Any changes here might need to be propagated to
   // that method.
@@ -224,11 +226,12 @@ SoSFNode::writeValue(SoOutput * out) const
   // need a "friend SoSFNode" definition in SoBase (writeHeader() and
   // writeFooter() are protected members). 19991112 mortene.
 
+  SoNode * node = this->getValue();
+
   if (out->getStage() == SoOutput::COUNT_REFS) {
-    this->addWriteReference(out, FALSE);
+    node->addWriteReference(out, FALSE);
   }
   else if (out->getStage() == SoOutput::WRITE) {
-    SoNode * node = this->getValue();
     if (node) {
       if (node->writeHeader(out, FALSE, FALSE)) return;
       node->writeInstance(out);
@@ -239,6 +242,16 @@ SoSFNode::writeValue(SoOutput * out) const
     }
   }
   else assert(0 && "unknown stage");
+#else // new code
+  SoNode * node = this->getValue();
+  if (node) {
+    SoWriteAction wa(out);
+    wa.continueToApply(node);
+  }
+  else {
+    assert(0 && "FIXME: handling NULL value in SoSFNode is not implemented yet");
+  }
+#endif // new code
 }
 
 void
