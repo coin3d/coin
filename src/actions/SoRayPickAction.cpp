@@ -126,6 +126,7 @@
 #include <Inventor/elements/SoClipPlaneElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoPickRayElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
@@ -225,6 +226,7 @@ SoRayPickAction::initClass(void)
   SO_ENABLE(SoRayPickAction, SoPickRayElement);
   SO_ENABLE(SoRayPickAction, SoViewportRegionElement);
   SO_ENABLE(SoRayPickAction, SoOverrideElement);
+  SO_ENABLE(SoRayPickAction, SoTextureOverrideElement);
 }
 
 
