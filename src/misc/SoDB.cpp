@@ -770,8 +770,17 @@ void
 SoDB::addConverter(SoType from, SoType to, SoType converter)
 {
   uint32_t val = (((uint32_t)from.getKey()) << 16) + to.getKey();
-  SbBool existed = SoDB::converters->enter(val, (void *)converter.getKey());
-  assert(!existed);
+  SbBool nonexist = SoDB::converters->enter(val, (void *)converter.getKey());
+  if (!nonexist) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoDB::addConverter",
+                              "Conversion from ``%s'' to ``%s'' is already "
+                              "handled by instances of ``%s''",
+                              from.getName().getString(),
+                              to.getName().getString(),
+                              converter.getName().getString());
+#endif // COIN_DEBUG
+  }
 }
 
 /*!
