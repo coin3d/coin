@@ -78,6 +78,32 @@ static SbVec4f spect_decomp(HMatrix S, HMatrix U);
 static SbRotation snuggle(SbRotation q, SbVec4f & k);
 static void decomp_affine(HMatrix A, AffineParts * parts);
 
+static const SbMat IDENTITYMATRIX = {
+  { 1.0f, 0.0f, 0.0f, 0.0f },
+  { 0.0f, 1.0f, 0.0f, 0.0f },
+  { 0.0f, 0.0f, 1.0f, 0.0f },
+  { 0.0f, 0.0f, 0.0f, 1.0f }
+};
+
+static inline
+SbBool SbMatrix_isIdentity(const float fm[][4])
+{
+#if 0 // I would assume that the memcmp() version is faster..? Should run some profile checks.
+  return ((fm[0][0] == 1.0f) && (fm[0][1] == 0.0f) && (fm[0][2] == 0.0f) && (fm[0][3] == 0.0f) &&
+          (fm[1][0] == 0.0f) && (fm[1][1] == 1.0f) && (fm[1][2] == 0.0f) && (fm[1][3] == 0.0f) &&
+          (fm[2][0] == 0.0f) && (fm[2][1] == 0.0f) && (fm[2][2] == 1.0f) && (fm[2][3] == 0.0f) &&
+          (fm[3][0] == 0.0f) && (fm[3][1] == 0.0f) && (fm[3][2] == 0.0f) && (fm[3][3] == 1.0f));
+#else
+  // Note: as far as I know, memcmp() only compares bytes until
+  // there's a mismatch (and does *not* run over the full array and
+  // adds up a total, as it sometimes seems from documentation). So
+  // this should be very quick for non-identity matrices.
+  //
+  // Also, we check the first value on it's own, to avoid the function
+  // call for the most common case.
+  return (fm[0][0]==1.0f) && memcmp(&fm[0][1], &IDENTITYMATRIX[0][1], (4 * 3 + 3) * sizeof(float)) == 0;
+#endif
+}
 
 /*!
   The default constructor does nothing. The matrix will be uninitialized.
@@ -503,10 +529,7 @@ SbMatrix::getValue(SbMat & m) const
 SbMatrix
 SbMatrix::identity(void)
 {
-  return SbMatrix(1.0f, 0.0f, 0.0f, 0.0f,
-                  0.0f, 1.0f, 0.0f, 0.0f,
-                  0.0f, 0.0f, 1.0f, 0.0f,
-                  0.0f, 0.0f, 0.0f, 1.0f);
+  return SbMatrix(IDENTITYMATRIX);
 }
 
 /*!
@@ -907,21 +930,29 @@ SbMatrix::transpose(void) const
 SbMatrix &
 SbMatrix::multRight(const SbMatrix & m)
 {
-  // FIXME: should check if one or the other matrix is the
-  // identity-matrix first. (Because it's major optimization if one of
-  // them _is_, and the check should be very quick in the common case
-  // where none of them are.)  20010919 mortene.
+  // Checks if one or the other matrix is equal to the identity matrix
+  // before multiplying them. We do this because it's a major
+  // optimization if one of them _is_, and the isIdentity() check
+  // should be very quick in the common case where a matrix is not the
+  // identity matrix.
+  const SbMat & mfm = m.matrix;
+  if (SbMatrix_isIdentity(mfm)) { return *this; }
+  SbMat & tfm = this->matrix;
+  if (SbMatrix_isIdentity(tfm)) { *this = m; return *this; }
 
-  SbMatrix tmp(*this);
+  SbMat tmp;
+  (void)memcpy(tmp, tfm, 4*4*sizeof(float));
+
   for (int i=0; i < 4; i++) {
     for (int j=0; j < 4; j++) {
-      this->matrix[i][j] =
-        tmp.matrix[i][0] * m.matrix[0][j] +
-        tmp.matrix[i][1] * m.matrix[1][j] +
-        tmp.matrix[i][2] * m.matrix[2][j] +
-        tmp.matrix[i][3] * m.matrix[3][j];
+      tfm[i][j] =
+        tmp[i][0] * mfm[0][j] +
+        tmp[i][1] * mfm[1][j] +
+        tmp[i][2] * mfm[2][j] +
+        tmp[i][3] * mfm[3][j];
     }
   }
+
   return *this;
 }
 
@@ -934,19 +965,24 @@ SbMatrix::multRight(const SbMatrix & m)
 SbMatrix&
 SbMatrix::multLeft(const SbMatrix & m)
 {
-  // FIXME: should check if one or the other matrix is the
-  // identity-matrix first. (Because it's major optimization if one of
-  // them _is_, and the check should be very quick in the common case
-  // where none of them are.)  20010919 mortene.
+  // Checks if one or the other matrix is equal to the identity
+  // matrix.  See also code comments at the start of
+  // SbMatrix::multRight().
+  const SbMat & mfm = m.matrix;
+  if (SbMatrix_isIdentity(mfm)) { return *this; }
+  SbMat & tfm = this->matrix;
+  if (SbMatrix_isIdentity(tfm)) { *this = m; return *this; }
 
-  SbMatrix tmp(*this);
+  SbMat tmp;
+  (void)memcpy(tmp, tfm, 4*4*sizeof(float));
+
   for (int i=0; i < 4; i++) {
     for (int j=0; j < 4; j++) {
-      this->matrix[i][j] =
-        tmp.matrix[0][j] * m.matrix[i][0] +
-        tmp.matrix[1][j] * m.matrix[i][1] +
-        tmp.matrix[2][j] * m.matrix[i][2] +
-        tmp.matrix[3][j] * m.matrix[i][3];
+      tfm[i][j] =
+        tmp[0][j] * mfm[i][0] +
+        tmp[1][j] * mfm[i][1] +
+        tmp[2][j] * mfm[i][2] +
+        tmp[3][j] * mfm[i][3];
     }
   }
   return *this;
@@ -962,7 +998,9 @@ SbMatrix::multLeft(const SbMatrix & m)
 void
 SbMatrix::multMatrixVec(const SbVec3f & src, SbVec3f & dst) const
 {
-  // FIXME: should check if we're the identity matrix? 20010919 mortene.
+  // Checks if the "this" matrix is equal to the identity matrix.  See
+  // also code comments at the start of SbMatrix::multRight().
+  if (SbMatrix_isIdentity(this->matrix)) { dst = src; return; }
 
   const float * t0 = (*this)[0];
   const float * t1 = (*this)[1];
@@ -990,7 +1028,9 @@ SbMatrix::multMatrixVec(const SbVec3f & src, SbVec3f & dst) const
 void
 SbMatrix::multVecMatrix(const SbVec3f & src, SbVec3f & dst) const
 {
-  // FIXME: should check if we're the identity matrix? 20010919 mortene.
+  // Checks if the "this" matrix is equal to the identity matrix.  See
+  // also code comments at the start of SbMatrix::multRight().
+  if (SbMatrix_isIdentity(this->matrix)) { dst = src; return; }
 
   const float * t0 = this->matrix[0];
   const float * t1 = this->matrix[1];
@@ -1012,7 +1052,9 @@ SbMatrix::multVecMatrix(const SbVec3f & src, SbVec3f & dst) const
 void
 SbMatrix::multVecMatrix(const SbVec4f & src, SbVec4f & dst) const
 {
-  // FIXME: should check if we're the identity matrix? 20010919 mortene.
+  // Checks if the "this" matrix is equal to the identity matrix.  See
+  // also code comments at the start of SbMatrix::multRight().
+  if (SbMatrix_isIdentity(this->matrix)) { dst = src; return; }
 
   const float * t0 = (*this)[0];
   const float * t1 = (*this)[1];
@@ -1040,7 +1082,9 @@ SbMatrix::multVecMatrix(const SbVec4f & src, SbVec4f & dst) const
 void
 SbMatrix::multDirMatrix(const SbVec3f & src, SbVec3f & dst) const
 {
-  // FIXME: should check if we're the identity matrix? 20010919 mortene.
+  // Checks if the "this" matrix is equal to the identity matrix.  See
+  // also code comments at the start of SbMatrix::multRight().
+  if (SbMatrix_isIdentity(this->matrix)) { dst = src; return; }
 
   const float * t0 = (*this)[0];
   const float * t1 = (*this)[1];
@@ -1062,8 +1106,6 @@ SbMatrix::multDirMatrix(const SbVec3f & src, SbVec3f & dst) const
 void
 SbMatrix::multLineMatrix(const SbLine & src, SbLine & dst) const
 {
-  // FIXME: should check if we're the identity matrix? 20010919 mortene.
-
   SbVec3f newpt, newdir;
   this->multVecMatrix(src.getPosition(), newpt);
   this->multDirMatrix(src.getDirection(), newdir);
