@@ -40,14 +40,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/C/threads/threadsutilp.h>
 
 #ifdef HAVE_DLFCN_H
 #include <dlfcn.h>
 #endif /* HAVE_DLFCN_H */
-
-#ifdef HAVE_THREADS
-#include <Inventor/threads/SbMutex.h>
-#endif // HAVE_THREADS
 
 /*
   Define the GETPROCADDRESS macro.
@@ -130,10 +127,6 @@ GLWrapper_getProcAddressMethod(GLWrapper_t *gi)
 
 static GLWrapper_t * GL_instance = NULL;
 static SbDict * gldict = NULL;
-#ifdef HAVE_THREADS
-static SbMutex * glwrapper_mutex = NULL;
-#endif // HAVE_THREADS
-
 
 static void
 free_GLWrapper_instance(unsigned long key, void * value)
@@ -149,10 +142,6 @@ GLWrapper_cleanup(void)
   // if (GL_libhandle) { CLOSE_RUNTIME_BINDING(GL_libhandle); }
   gldict->applyToAll(free_GLWrapper_instance);
   delete gldict;
-
-#ifdef HAVE_THREADS
-  delete glwrapper_mutex;
-#endif // HAVE_THREADS
 }
 
 /*
@@ -323,16 +312,11 @@ GLWrapper_glxEXTSupported(GLWrapper_t * wrapper, const char * extension)
 const GLWrapper_t *
 GLWrapper(int contextid)
 {
-#ifdef HAVE_THREADS
-  if (!glwrapper_mutex) {
-    glwrapper_mutex = new SbMutex;
-  }
-  glwrapper_mutex->lock(); // unlocked at the bottom of this function
-#endif // HAVE_THREADS
+  CC_SYNC_BEGIN(GLWrapper);
 
   if (!gldict) {  /* First invocation, do initializations. */
-    coin_atexit((coin_atexit_f *)GLWrapper_cleanup);
     gldict = new SbDict;
+    coin_atexit((coin_atexit_f *)GLWrapper_cleanup);
   }
 
   int found;
@@ -626,9 +610,6 @@ GLWrapper(int contextid)
     gi = (GLWrapper_t *)ptr;
   }
 
-#ifdef HAVE_THREADS
-  glwrapper_mutex->unlock();
-#endif // HAVE_THREADS
-
+  CC_SYNC_END(GLWrapper);
   return gi;
 }
