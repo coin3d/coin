@@ -189,8 +189,8 @@ foreach (@SUBDIRS) {
 
 print "
 [Sequence]
-DestinationLocationDir=<ProgramFilesDir>\\SIM\\Coin
-SelectProgramFolderName=Coin
+DestinationLocationDir=<ProgramFilesDir>\\SIM\\Coin$VERSION
+SelectProgramFolderName=Coin$VERSION
 DestinationLocation=1
 ProgressBar=1
 
