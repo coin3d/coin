@@ -44,9 +44,9 @@
 
 
 /*!
-  An SbPlane instantiated with the default constructor will have undefined
-  behavior.
- */
+  An SbPlane instantiated with the default constructor will be
+  uninitialized.
+*/
 SbPlane::SbPlane(void)
 {
 }
@@ -57,7 +57,7 @@ SbPlane::SbPlane(void)
   coordinate system to a point in the plane.
 
   \a normal must not be a null vector.
- */
+*/
 SbPlane::SbPlane(const SbVec3f& normal, const float D)
 {
 #if COIN_DEBUG
@@ -72,10 +72,10 @@ SbPlane::SbPlane(const SbVec3f& normal, const float D)
 }
 
 /*!
-  Construct an SbPlane with three points lying in the plane.
-  Make sure \a p0, \a p1 and \a p2 are actually three distinct points
-  when using this constructor.
- */
+  Construct an SbPlane with three points laying in the plane.  Make
+  sure \a p0, \a p1 and \a p2 are actually three distinct points when
+  using this constructor.
+*/
 SbPlane::SbPlane(const SbVec3f& p0, const SbVec3f& p1, const SbVec3f& p2)
 {
 #if COIN_DEBUG
@@ -96,10 +96,10 @@ SbPlane::SbPlane(const SbVec3f& p0, const SbVec3f& p1, const SbVec3f& p2)
 }
 
 /*!
-  Construct an SbPlane from a normal and a point lying in the plane.
+  Construct an SbPlane from a normal and a point laying in the plane.
 
   \a normal must not be a null vector.
- */
+*/
 SbPlane::SbPlane(const SbVec3f& normal, const SbVec3f& point)
 {
 #if COIN_DEBUG
@@ -121,7 +121,7 @@ SbPlane::SbPlane(const SbVec3f& normal, const SbVec3f& point)
 
 /*!
   Add the given offset \a d to the plane distance from the origin.
- */
+*/
 void
 SbPlane::offset(const float d)
 {
@@ -131,11 +131,11 @@ SbPlane::offset(const float d)
 /*!
   Find the point on given line \a l intersecting the plane and return
   it in \a intersection. If the line is parallel to the plane,
-  we return \a FALSE, otherwise \a TRUE.
+  we return \c FALSE, otherwise \c TRUE.
 
   Do not pass an invalid line for the \a l parameter (i.e. with a
   null direction vector).
- */
+*/
 SbBool
 SbPlane::intersect(const SbLine& l, SbVec3f& intersection) const
 {
@@ -180,7 +180,7 @@ SbPlane::intersect(const SbLine& l, SbVec3f& intersection) const
   Transform the plane by \a matrix.
 
   \sa offset()
- */
+*/
 void
 SbPlane::transform(const SbMatrix& matrix)
 {
@@ -201,7 +201,7 @@ SbPlane::transform(const SbMatrix& matrix)
 /*!
   Check if the given point lies in the halfspace of the plane which the
   plane normal vector is pointing.
- */
+*/
 SbBool
 SbPlane::isInHalfSpace(const SbVec3f& point) const
 {
@@ -239,7 +239,7 @@ SbPlane::getDistance(const SbVec3f &point) const
   is oriented.
 
   \sa getDistanceFromOrigin().
- */
+*/
 const SbVec3f&
 SbPlane::getNormal(void) const
 {
@@ -251,7 +251,7 @@ SbPlane::getNormal(void) const
   which is closest to the origin.
 
   \sa getNormal().
- */
+*/
 float
 SbPlane::getDistanceFromOrigin(void) const
 {
@@ -260,13 +260,13 @@ SbPlane::getDistanceFromOrigin(void) const
 
 /*!
   Intersect this plane with \a pl, and return the resulting line in \a
-  line. Returns \e TRUE if an intersection line can be found, and \a
+  line. Returns \c TRUE if an intersection line can be found, and \c
   FALSE if the planes are parallel.
 
   This method was not part of the Inventor v2.1 API, and is an
   extension specific to Coin.
 
-  \since 1.1.0 
+  \since 2001-10-11 pederb
 */
 SbBool
 SbPlane::intersect(const SbPlane & pl, SbLine & line)
@@ -323,7 +323,7 @@ SbPlane::intersect(const SbPlane & pl, SbLine & line)
   \relates SbPlane
 
   Check the two given planes for equality.
- */
+*/
 int
 operator ==(const SbPlane& p1, const SbPlane& p2)
 {
@@ -336,7 +336,7 @@ operator ==(const SbPlane& p1, const SbPlane& p2)
   \relates SbPlane
 
   Check the two given planes for unequality.
- */
+*/
 int
 operator !=(const SbPlane& p1, const SbPlane& p2)
 {
@@ -345,13 +345,13 @@ operator !=(const SbPlane& p1, const SbPlane& p2)
 
 /*!
   Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized compile.
- */
+  debug version of library, method does nothing in an optimized build.
+*/
 void
 SbPlane::print(FILE * fp) const
 {
 #if COIN_DEBUG
   this->getNormal().print(fp);
-  fprintf( fp, "  %f", this->getDistanceFromOrigin() );
+  (void)fprintf(fp, "  %f", this->getDistanceFromOrigin());
 #endif // COIN_DEBUG
 }

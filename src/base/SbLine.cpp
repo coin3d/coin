@@ -174,9 +174,9 @@ SbLine::getClosestPoints(const SbLine& line2,
   //      + D0N[i]*D0[z]*P0[z])² ,
   // where i=[x|y|z].
   //
-  // Deriving this by using the chain rule (i.e. g(t)² = 2*g(t)*g'(t)), we'll
-  // get this equation for finding the t yielding the minimum distance
-  // between two points Q0 and Q1 on the lines:
+  // Derivating this by using the chain rule (i.e. g(t)² =
+  // 2*g(t)*g'(t)), we'll get this equation for finding the t yielding
+  // the minimum distance between two points Q0 and Q1 on the lines:
   //
   //      -(cx*dx+cy*dy+cz*dz)
   //  t = --------------------
