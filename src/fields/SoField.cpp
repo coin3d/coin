@@ -1438,27 +1438,21 @@ SoField::evaluate(void) const
 {
   if (this->getDirty() == FALSE) return;
   if (this->isConnected() == FALSE) return;
-  // FIXME: should this perhaps be an assert()? It seems bogus that
-  // evaluate() should be allowed to be called recursively -- won't
-  // that lead to erraneous return values from the recursive
-  // inquiries?
-  //
-  // And on a related note: shouldn't notification be disabled while
-  // we're evaluating? We're calling setDirty(FALSE) at the end of
-  // this function anyway, so... :^/
-  //
-  // 20000915 mortene.
-  if (this->statusflags.isevaluating == 1) return;
+
+  // Recursive calls to SoField::evalute() shouldn't happen, as the
+  // state of the field variables might not be consistent while
+  // evaluating.
+  assert(this->statusflags.isevaluating == 0);
 
   // Cast away the const. (evaluate() must be const, since we're using
   // evaluate() from getValue().)
-  SoField * f = (SoField *)this;
+  SoField * that = (SoField *)this;
 
-  f->statusflags.isevaluating = TRUE;
-  f->evaluateConnection();
-  f->statusflags.isevaluating = FALSE;
+  that->statusflags.isevaluating = 1;
+  this->evaluateConnection();
+  that->statusflags.isevaluating = 0;
 
-  f->setDirty(FALSE);
+  that->setDirty(FALSE);
 }
 
 /*!
