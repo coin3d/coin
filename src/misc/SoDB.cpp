@@ -162,6 +162,11 @@
 #include <Inventor/C/threads/mutexp.h>
 #endif // HAVE_THREADS
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbStorage.h>
+static SbStorage * sodb_notificationcounter_storage = NULL;
+#endif // COIN_THREADSAFE
+
 static SbString * coin_versionstring = NULL;
 
 // atexit callback
@@ -208,8 +213,14 @@ SoSensorManager * SoDB::sensormanager = NULL;
 SbTime * SoDB::realtimeinterval = NULL;
 SoTimerSensor * SoDB::globaltimersensor = NULL;
 SbDict * SoDB::converters = NULL;
-int SoDB::notificationcounter = 0;
 SbBool SoDB::isinitialized = FALSE;
+int SoDB::notificationcounter = 0;
+
+#ifdef COIN_THREADSAFE
+#define SODB_NOTIFICATIONCOUNTER *(((int*) sodb_notificationcounter_storage->get()))
+#else // COIN_THREADSAFE
+#define SODB_NOTIFICATIONCOUNTER SoDB::notificationcounter
+#endif // ! COIN_THREADSAFE
 
 // *************************************************************************
 
@@ -309,6 +320,10 @@ SoDB::init(void)
   // functions need them.
   cc_mutex_init();
   cc_sync_init();
+
+#ifdef COIN_THREADSAFE
+  sodb_notificationcounter_storage = new SbStorage(sizeof(int));
+#endif // COIN_THREADSAFE
 #endif // HAVE_THREADS
 
   // Allocate our static members.
@@ -439,6 +454,10 @@ SoDB::clean(void)
   for (int i = 0; i < SoDB::headerlist->getLength(); i++)
     delete (*SoDB::headerlist)[i];
   delete SoDB::headerlist;
+  
+#ifdef COIN_THREADSAFE
+  delete sodb_notificationcounter_storage;
+#endif // COIN_THREADSAFE
 #endif // COIN_DEBUG
 }
 
@@ -1087,7 +1106,8 @@ SoDB::isInitialized(void)
 void
 SoDB::startNotify(void)
 {
-  SoDB::notificationcounter++;
+  int & counter = SODB_NOTIFICATIONCOUNTER;
+  counter++;
 }
 
 /*!
@@ -1096,7 +1116,8 @@ SoDB::startNotify(void)
 SbBool
 SoDB::isNotifying(void)
 {
-  return SoDB::notificationcounter > 0;
+  int & counter = SODB_NOTIFICATIONCOUNTER;
+  return counter > 0;
 }
 
 /*!
@@ -1105,9 +1126,10 @@ SoDB::isNotifying(void)
 void
 SoDB::endNotify(void)
 {
-  SoDB::notificationcounter--;
-  assert(SoDB::notificationcounter >= 0);
-  if (SoDB::notificationcounter == 0) {
+  int & counter = SODB_NOTIFICATIONCOUNTER;
+  counter--;
+  assert(counter >= 0);
+  if (counter == 0) {
     // Process zero-priority sensors after notification has been done.
     SoSensorManager * sm = SoDB::getSensorManager();
     if (sm->isDelaySensorPending()) sm->processImmediateQueue();
