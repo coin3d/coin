@@ -6,6 +6,7 @@ DEF SCALE2UNIFORM_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveCol
 DEF SCALE2UNIFORM_FEEDBACK_MATERIAL Material { diffuseColor 0.5 0 0.5  emissiveColor 0.5 0 0.5 }
 
 DEF SCALE2UNIFORM_MARKER Group {
+   PickStyle { style SHAPE }
    Translation { translation -0.025 0 0 }
    Cube { width 0.05  height 0.10  depth 0.05 }
    Translation { translation 0.05 -0.025 0 }
@@ -42,6 +43,7 @@ DEF SCALE2UNIFORM_FRAME Separator {
    # FIXME: maybe it'd be better to use an IndexedFaceSet here (with
    # DrawStyle style LINES)? Then we'd be able to pick anywhere in the
    # frame. 20000510 mortene.
+   PickStyle { style SHAPE }
    IndexedLineSet { coordIndex [ 0, 1, 2, 3, 0, -1 ] }
 }
 
@@ -58,12 +60,14 @@ DEF scale2UniformScalerActive Separator {
    USE SCALE2UNIFORM_MARKERS
 
    DrawStyle { style LINES  lineWidth 1 }
+   PickStyle { style UNPICKABLE }
    Cube { width 2.2  height 2.2  depth 2.2 }
 }
 
 DEF SCALE2UNIFORM_FEEDBACK Group {
    USE SCALE2UNIFORM_FEEDBACK_MATERIAL
    DrawStyle { lineWidth 2 }
+   PickStyle { style UNPICKABLE }
    Coordinate3 { point [ 1.2 0 0, -1.2 0 0, 0 1.2 0, 0 -1.2 0, 0 0 1.2, 0 0 -1.2 ] }
    IndexedLineSet { coordIndex [ 0, 1, -1, 2, 3, -1, 4, 5, -1 ] }
 }

@@ -7,6 +7,7 @@ DEF SCALE2_FEEDBACK_MATERIAL Material { diffuseColor 0.5 0 0.5  emissiveColor 0.
 
 
 DEF SCALE2_MARKER Group {
+   PickStyle { style SHAPE }
    Translation { translation -0.025 0 0 }
    Cube { width 0.05  height 0.10  depth 0.05 }
    Translation { translation 0.05 -0.025 0 }
@@ -48,11 +49,13 @@ DEF scale2ScalerActive Separator {
    USE SCALE2_SCALING_MARKERS
 
    DrawStyle { style LINES  lineWidth 1 }
+   PickStyle { style UNPICKABLE }
    Cube { width 2.2  height 2.2  depth 2.2 }
 }
 
 DEF SCALE2_FEEDBACK Group {
    USE SCALE2_FEEDBACK_MATERIAL
+   PickStyle { style UNPICKABLE }
    DrawStyle { lineWidth 2 }
    Coordinate3 { point [ 1.2 0 0, -1.2 0 0, 0 1.2 0, 0 -1.2 0, 0 0 1.2, 0 0 -1.2 ] }
    IndexedLineSet { coordIndex [ 0, 1, -1, 2, 3, -1, 4, 5, -1 ] }
