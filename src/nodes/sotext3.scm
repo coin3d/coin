@@ -22,6 +22,8 @@
 (-> (-> text3 'parts) 'setvalue SoText3::FRONT)
 (-> (-> text3 'parts) 'setvalue SoText3::SIDES)
 (-> (-> text3 'parts) 'setvalue SoText3::BACK)
+(-> (-> text3 'parts) 'setvalue (+ SoText3::BACK SoText3::FRONT))
+(-> (-> text3 'parts) 'setvalue (+ SoText3::SIDES SoText3::FRONT))
 (-> (-> text3 'parts) 'setvalue SoText3::ALL)
 
 ;; SoText3::string
@@ -35,7 +37,7 @@
 
 ;; SoText3::spacing
 (begin
-  (-> (-> text3 'spacing) 'setvalue 0.85)
+  (-> (-> text3 'spacing) 'setvalue 0.7)
   (-> viewer 'viewall))
 
 
@@ -102,11 +104,31 @@
 (-> root 'insertchild linearprofile2 2)
 (set-mfield-values! (-> linearprofile2 'index) 0 '(5 6 7 8 9))
 
-;; Use only the second SoLinearProfile. FIXME: bugs
-(-> (-> linearprofile2 'linkage) 'setvalue SoProfile::START_NEW)
+;; Use only the second SoLinearProfile.
+(-> (-> linearprofile2 'linkage) 'setvalue SoProfile::START_FIRST)
 
 ;; Remove second SoLinearProfile.
 (-> root 'removechild linearprofile2)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; Change font settings ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(define font (new-sofont))
+(-> root 'insertchild font 0)
+(-> (-> font 'size) 'setvalue 5)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; Change complexity settings ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(define complexity (new-socomplexity))
+(-> root 'insertchild complexity 0)
+(-> (-> complexity 'value) 'setvalue 1.0)
+
+(define shapehints (new-soshapehints))
+(-> root 'insertchild shapehints 0)
+(-> (-> shapehints 'creaseangle) 'setvalue 0.8)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Misc operations on the graph with the SoText3 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
