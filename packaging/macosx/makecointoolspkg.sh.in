@@ -42,6 +42,7 @@ rm -rf pkgroot pkgresources
 ditto $ROOT pkgroot
 ditto -rsrcFork @top_srcdir@/packaging/macosx/License.rtf pkgresources/License.rtf
 ditto -rsrcFork @top_srcdir@/packaging/macosx/CoinTools_Welcome.rtf pkgresources/Welcome.rtf
+ditto -rsrcFork @top_srcdir@/packaging/macosx/background.tiff pkgresources/background.tiff
 
 # Package creation using PackageMaker
 if test x$VERBOSE = x; then

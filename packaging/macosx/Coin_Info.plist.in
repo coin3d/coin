@@ -5,7 +5,7 @@
 	<key>CFBundleGetInfoString</key>
 	<string>Coin @VERSION@</string>
 	<key>CFBundleIdentifier</key>
-	<string>no.sim.coin</string>
+	<string>org.coin3d.Coin.pkg</string>
 	<key>CFBundleName</key>
 	<string>Coin</string>
 	<key>CFBundleShortVersionString</key>
@@ -14,28 +14,14 @@
 	<integer>@COIN_MAJOR_VERSION@</integer>
 	<key>IFMinorVersion</key>
 	<integer>@COIN_MINOR_VERSION@</integer>
-	<key>IFPkgFlagAllowBackRev</key>
-	<false/>
+        <key>IFPkgFlagBackgroundAlignment</key>
+        <string>left</string>
+        <key>IFPkgFlagBackgroundScaling</key>
+        <string>proportional</string>
 	<key>IFPkgFlagAuthorizationAction</key>
 	<string>RootAuthorization</string>
 	<key>IFPkgFlagDefaultLocation</key>
 	<string>/Library/Frameworks</string>
-	<key>IFPkgFlagInstallFat</key>
-	<false/>
-	<key>IFPkgFlagIsRequired</key>
-	<false/>
-	<key>IFPkgFlagOverwritePermissions</key>
-	<integer>0</integer>
-	<key>IFPkgFlagRelocatable</key>
-	<false/>
-	<key>IFPkgFlagRestartAction</key>
-	<string>NoRestart</string>
-	<key>IFPkgFlagRootVolumeOnly</key>
-	<false/>
-	<key>IFPkgFlagUpdateInstalledLanguages</key>
-	<false/>
-	<key>IFPkgFlagUseUserMask</key>
-	<integer>0</integer>
 	<key>IFPkgFormatVersion</key>
 	<real>0.10000000149011612</real>
 </dict>
