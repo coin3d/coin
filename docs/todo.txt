@@ -146,28 +146,28 @@ STUFF TO FIX IN COIN
     during read, and then converted to an >= Inventor v2.1 format
     SoPackedColor node.
 
-    Update 2002-06-17 mortene: pederb has laid out the foundations
+    UPDATE 2002-06-17 mortene: pederb has laid out the foundations
     necessary by setting up bitmasks and API methods on
     SoNode. Inventor2.0 import should be ok. Export "compability
     detection" has not been done yet, though.
 
-    Update 2002-10-29 mortene: one additional word of warning from
+    UPDATE 2002-10-29 mortene: one additional word of warning from
     kintel is that '+' is not allowed to be used as the 1st character
     of a node name identifier under VRML97. Coin's scheme for
     auto-prefixing node names with a '+' character when there are
     multiple references to them (i.e. there are DEF/USE pairs) makes
     us write invalid VRML97 files!
 
-    Update 2002-11-05 mortene: estimate made at our November 2002 SIM
+    UPDATE 2002-11-05 mortene: estimate made at our November 2002 SIM
     Coin summit; "1 man-week should be more than sufficient".
 
-    Update 2003-03-12 mortene: additional tidbit to think about; if
+    UPDATE 2003-03-12 mortene: additional tidbit to think about; if
     the app programmer uses SoOutput::setHeaderString() to explicitly
     force a particular file format, we should heed that (and spit out
     warnings in debug mode if the scene graph to be written contains
     non-compatible nodes).
 
-    Update 2003-03-14 kyrah, based on input from mortene: While we are
+    UPDATE 2003-03-14 kyrah, based on input from mortene: While we are
     at it, we should definitely sort out what file formats in what
     versions we support, and handle the cases where somebody tries to
     read an unsupported file.
@@ -208,6 +208,25 @@ STUFF TO FIX IN COIN
 
     Morten estimates that it will probably be "a few days work to get 
     this into lines of code".                         
+
+
+    UPDATE 2003-05-19 mortene: there's an additional complication,
+    recently pointed out to me by pederb. The SoVertexPropery *field*
+    "texCoord3" was added to TGS Inventor between version 2.5 and 2.6,
+    and to Coin between 1.0 and 2.0. This means that an
+    SoVertexProperty node can be compatible with different lowest
+    common denominator file format versions depending on whether or
+    not it contains a non-default value for the texCoord3 field (or
+    for import: whether or not the field is explicitly listed within
+    the file).
+
+    Adding or removing fields from nodes will in general do nasty
+    things with file compatibilities, and we try to avoid it. But
+    since TGS has already set a precedence (there are more nodes than
+    just SoVertexProperty where this is done, see for instance their
+    detailed release notes for Inventor 4.0), we need to be able to
+    handle this. Ouch.
+
 
 004 Re-design the public API for handling textures
     2001-11-28  Peder Blekken  <pederb@sim.no>, write-down by mortene@sim.no

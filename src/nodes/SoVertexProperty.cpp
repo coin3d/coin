@@ -117,6 +117,12 @@
 
   \sa SoTextureCoordinate2
 */
+
+// FIXME: this field was added between TGS Inventor 2.5 and 2.6, and
+// between Coin 1.0 and Coin 2.0. This means it must get special
+// handling when exporting .iv-files, with regard to what header we
+// can put on the output. See also item #003 in the Coin/docs/todo.txt
+// file. 20030519 mortene.
 /*!
   \var SoMFVec3f SoVertexProperty::texCoord3
 
@@ -127,6 +133,7 @@
   \since Coin 2.0
   \since TGS Inventor 2.6
 */
+
 /*!
   \var SoMFVec3f SoVertexProperty::normal
 
