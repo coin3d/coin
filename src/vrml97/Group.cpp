@@ -94,6 +94,11 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/caches/SoGLCacheList.h>
+#include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoCullElement.h>
+#include <Inventor/elements/SoLocalBBoxMatrixElement.h>
+#include <Inventor/misc/SoGL.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -108,7 +113,7 @@ int SoVRMLGroup::numRenderCaches = 2;
 class SoVRMLGroupP {
 public:
   SoBoundingBoxCache * bboxcache;
-  SoGLCacheList * cachelist;
+  SoGLCacheList * glcachelist;
 };
 
 #endif // DOXYGEN_SKIP_THIS 
@@ -120,6 +125,9 @@ void
 SoVRMLGroup::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLGroup, SO_VRML97_NODE_TYPE);
+
+  SoType type = SoVRMLGroup::getClassTypeId();
+  SoRayPickAction::addMethod(type, SoNode::rayPickS);
 }
 
 #undef THIS
@@ -146,7 +154,7 @@ SoVRMLGroup::commonConstructor(void)
 {
   THIS = new SoVRMLGroupP;
   THIS->bboxcache = NULL;
-  THIS->cachelist = NULL;
+  THIS->glcachelist = NULL;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLGroup);
 
@@ -173,6 +181,8 @@ SoVRMLGroup::commonConstructor(void)
 */
 SoVRMLGroup::~SoVRMLGroup()
 {
+  if (THIS->bboxcache) THIS->bboxcache->unref();
+  delete THIS->glcachelist;
   delete THIS;
 }
 
@@ -210,7 +220,10 @@ SoVRMLGroup::callback(SoCallbackAction * action)
 {
   SoState * state = action->getState();
   state->push();
-  inherited::callback(action);
+  // culling planes should normally not be set, but can be set
+  // manually by the application programmer to optimize callback
+  // action traversal.
+  if (!this->cullTest(state)) { inherited::callback(action); }
   state->pop();
 }
 
@@ -237,26 +250,125 @@ void
 SoVRMLGroup::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoState * state = action->getState();
-  state->push();
-  SoGroup::getBoundingBox(action);
-  state->pop();
+
+  SbXfBox3f childrenbbox;
+  SbBool childrencenterset;
+  SbVec3f childrencenter;
+
+  // FIXME: AUTO is interpreted as ON for the boundingBoxCaching
+  // field, but we should trigger some heuristics based on scene graph
+  // "behavior" in the children subgraphs if the value is set to
+  // AUTO. 19990513 mortene.
+  SbBool iscaching = this->boundingBoxCaching.getValue() != OFF;
+
+  switch (action->getCurPathCode()) {
+  case SoAction::IN_PATH:
+    // can't cache if we're not traversing all children
+    iscaching = FALSE;
+    break;
+  case SoAction::OFF_PATH:
+    return; // no need to do any more work
+  case SoAction::BELOW_PATH:
+  case SoAction::NO_PATH:
+    // check if this is a normal traversal
+    if (action->isInCameraSpace() || action->isResetPath()) iscaching = FALSE;
+    break;
+  default:
+    iscaching = FALSE;
+    assert(0 && "unknown path code");
+    break;
+  }
+
+  SbBool validcache = THIS->bboxcache && THIS->bboxcache->isValid(state);
+
+  if (iscaching && validcache) {
+    SoCacheElement::addCacheDependency(state, THIS->bboxcache);
+    childrenbbox = THIS->bboxcache->getBox();
+    childrencenterset = THIS->bboxcache->isCenterSet();
+    childrencenter = THIS->bboxcache->getCenter();
+    if (THIS->bboxcache->hasLinesOrPoints()) {
+      SoBoundingBoxCache::setHasLinesOrPoints(state);
+    }
+  }
+  else {
+    SbXfBox3f abox = action->getXfBoundingBox();
+
+    SbBool storedinvalid = FALSE;
+    if (iscaching) {
+      storedinvalid = SoCacheElement::setInvalid(FALSE);
+    }
+    state->push();
+
+    if (iscaching) {
+      // if we get here, we know bbox cache is not created or is invalid
+      if (THIS->bboxcache) THIS->bboxcache->unref();
+      THIS->bboxcache = new SoBoundingBoxCache(state);
+      THIS->bboxcache->ref();
+      // set active cache to record cache dependencies
+      SoCacheElement::set(state, THIS->bboxcache);
+    }
+
+    SoLocalBBoxMatrixElement::makeIdentity(state);
+    action->getXfBoundingBox().makeEmpty();
+    inherited::getBoundingBox(action);
+
+    childrenbbox = action->getXfBoundingBox();
+    childrencenterset = action->isCenterSet();
+    if (childrencenterset) childrencenter = action->getCenter();
+
+    action->getXfBoundingBox() = abox; // reset action bbox
+
+    if (iscaching) {
+      THIS->bboxcache->set(childrenbbox, childrencenterset, childrencenter);
+    }
+    state->pop();
+    if (iscaching) SoCacheElement::setInvalid(storedinvalid);
+  }
+
+  if (!childrenbbox.isEmpty()) {
+    action->extendBy(childrenbbox);
+    if (childrencenterset) {
+      // FIXME: shouldn't this assert() hold up? Investigate. 19990422 mortene.
+#if 0 // disabled
+      assert(!action->isCenterSet());
+#else
+      action->resetCenter();
+#endif
+      action->setCenter(childrencenter, TRUE);
+    }
+  }
 }
 
 // Doc in parent
 void
 SoVRMLGroup::getMatrix(SoGetMatrixAction * action)
 {
-  SoGroup::getMatrix(action);
+  int numindices;
+  const int * indices;
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    this->getChildren()->traverseInPath(action, numindices, indices);
+  }
+}
+
+// compute object space ray and test for intersection
+static SbBool
+ray_intersect(SoRayPickAction * action, const SbBox3f & box)
+{
+  if (box.isEmpty()) return FALSE;
+  action->setObjectSpace();
+  return action->intersect(box, TRUE);
 }
 
 // Doc in parent
 void
-SoVRMLGroup::pick(SoPickAction * action)
+SoVRMLGroup::rayPick(SoRayPickAction * action)
 {
-  SoState * state = action->getState();
-  state->push();
-  SoGroup::pick(action);
-  state->pop();
+  if (this->pickCulling.getValue() == OFF ||
+      !THIS->bboxcache || !THIS->bboxcache->isValid(action->getState()) ||
+      !action->hasWorldSpaceRay() ||
+      ray_intersect(action, THIS->bboxcache->getProjectedBox())) {
+    SoVRMLGroup::doAction(action);
+  }
 }
 
 // Doc in parent
@@ -297,62 +409,94 @@ SoVRMLGroup::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 void
 SoVRMLGroup::GLRenderBelowPath(SoGLRenderAction * action)
 {
+  // FIXME: for now we just cache if the renderCaching field is
+  // ON. We'll develop the heuristics for automatically deciding when
+  // to cache or not upon renderCaching==AUTO later.  pederb, 20001005
+  SbBool didlazyeval = FALSE;
   SoState * state = action->getState();
-  state->push();
-
-  int n = this->getChildren()->getLength();
-  SoNode ** childarray = (SoNode**) this->getChildren()->getArrayPtr();
-
-  action->pushCurPath();
-  for (int i = 0; i < n && !action->hasTerminated(); i++) {
-    if (action->abortNow()) {
-      // only cache if we do a full traversal
-      SoCacheElement::invalidate(state);
-      break;
+  SoGLCacheList * createcache = NULL;
+  if (this->renderCaching.getValue() == ON) {
+    // test if bbox is outside view-volume
+    if (this->cullTestNoPush(state)) {
+      return;
     }
-    action->popPushCurPath(i, childarray[i]);
-    childarray[i]->GLRenderBelowPath(action);
-    // The GL error test is disabled for this optimized path.
-    // If you get a GL error reporting an error in the Separator node,
-    // enable this code to see exactly which node caused the error.
-    //  pederb, 20000916
 
-#if 0 // enable to debug GL errors
-    int err = glGetError();
-    if (err != GL_NO_ERROR) {
-      const char * errorstring;
-      switch (err) {
-      case GL_INVALID_VALUE:
-        errorstring = "GL_INVALID_VALUE";
-        break;
-      case GL_INVALID_ENUM:
-        errorstring = "GL_INVALID_ENUM";
-        break;
-      case GL_INVALID_OPERATION:
-        errorstring = "GL_INVALID_OPERATION";
-        break;
-      case GL_STACK_OVERFLOW:
-        errorstring = "GL_STACK_OVERFLOW";
-        break;
-      case GL_STACK_UNDERFLOW:
-        errorstring = "GL_STACK_UNDERFLOW";
-        break;
-      case GL_OUT_OF_MEMORY:
-        errorstring = "GL_OUT_OF_MEMORY";
-        break;
-      default:
-        errorstring = "Unknown GL error";
+    if (!THIS->glcachelist) {
+      THIS->glcachelist = new SoGLCacheList(SoVRMLGroup::getNumRenderCaches());
+    }
+    else {
+      SoMaterialBundle mb(action);
+      mb.sendFirst();
+
+      // update lazy elements
+      state->lazyEvaluate();
+
+      if (THIS->glcachelist->call(action, GL_ALL_ATTRIB_BITS)) {
+#if GLCACHE_DEBUG && 1 // debug
+        SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
+                               "Executing GL cache: %p", this);
+#endif // debug
+        return;
+      }
+    }
+    if (!SoCacheElement::anyOpen(state)) { // nested GL caches not supported yet
+#if GLCACHE_DEBUG // debug
+      SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
+                             "Creating GL cache: %p", this);
+#endif // debug
+      createcache = THIS->glcachelist;
+    }
+  }
+
+  state->push();
+  if (createcache) {
+    if (!didlazyeval) {
+      state->lazyEvaluate();
+      SoMaterialBundle mb(action);
+      mb.sendFirst();
+    }
+    createcache->open(action);
+  }
+
+  SbBool outsidefrustum = this->cullTest(state);
+
+  if (createcache || !outsidefrustum) {
+    int n = this->getChildren()->getLength();
+    SoNode ** childarray = (SoNode**) this->getChildren()->getArrayPtr();
+    action->pushCurPath();
+    for (int i = 0; i < n && !action->hasTerminated(); i++) {
+      action->popPushCurPath(i, childarray[i]);
+      if (action->abortNow()) {
+        // only cache if we do a full traversal
+        SoCacheElement::invalidate(state);
         break;
       }
-      SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
-                             "GL error: %s, nodetype: %s",
-                             errorstring,
-                             (*this->children)[i]->getTypeId().getName().getString());
+      childarray[i]->GLRenderBelowPath(action);
+
+#if COIN_DEBUG
+      // The GL error test is default disabled for this optimized
+      // path.  If you get a GL error reporting an error in the
+      // Separator node, enable this code by setting the environment
+      // variable COIN_GLERROR_DEBUGGING to "1" to see exactly which
+      // node caused the error.
+      static SbBool chkglerr = sogl_glerror_debugging();
+      if (chkglerr) {
+        int err = glGetError();
+        if (err != GL_NO_ERROR) {
+          SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
+                                 "GL error: %s, nodetype: %s",
+                                 sogl_glerror_string(err).getString(),
+                                 (*this->getChildren())[i]->getTypeId().getName().getString());
+        }
+      }
+#endif // COIN_DEBUG
     }
-#endif // GL debug
+    action->popCurPath();
   }
-  action->popCurPath();
   state->pop();
+  if (createcache) {
+    createcache->close(action);
+  }
 }
 
 // Doc in parent
@@ -413,6 +557,15 @@ void
 SoVRMLGroup::notify(SoNotList * list)
 {
   inherited::notify(list);
+
+  if (THIS->bboxcache) THIS->bboxcache->invalidate();
+  if (THIS->glcachelist) {
+#if GLCACHE_DEBUG && 0 // debug
+    SoDebugError::postInfo("SoVRMLGroup::notify",
+                           "Invalidating GL cache: %p", this);
+#endif // debug
+    THIS->glcachelist->invalidateAll();
+  }
 }
 
 /*!
@@ -421,7 +574,17 @@ SoVRMLGroup::notify(SoNotList * list)
 SbBool
 SoVRMLGroup::cullTest(SoState * state)
 {
-  return FALSE;
+  if (this->renderCulling.getValue() == SoVRMLGroup::OFF) return FALSE;
+  if (!THIS->bboxcache ||
+      !THIS->bboxcache->isValid(state) ||
+      THIS->bboxcache->getProjectedBox().isEmpty()) return FALSE;
+  if (SoCullElement::completelyInside(state)) return FALSE;
+  
+  SbBox3f box = THIS->bboxcache->getProjectedBox();
+  SbVec3f minv = box.getMin();
+  SbVec3f maxv = box.getMax();
+  
+  return SoCullElement::cullBox(state, THIS->bboxcache->getProjectedBox());
 }
 
 //
@@ -430,7 +593,12 @@ SoVRMLGroup::cullTest(SoState * state)
 SbBool
 SoVRMLGroup::cullTestNoPush(SoState * state)
 {
-  return FALSE;
+  if (this->renderCulling.getValue() == SoVRMLGroup::OFF) return FALSE;
+  if (!THIS->bboxcache ||
+      !THIS->bboxcache->isValid(state) ||
+      THIS->bboxcache->getProjectedBox().isEmpty()) return FALSE;
+  if (SoCullElement::completelyInside(state)) return FALSE;
+  return SoCullElement::cullBox(state, THIS->bboxcache->getProjectedBox());
 }
 
 #undef THIS

@@ -36,7 +36,7 @@ class COIN_DLL_API SoVRMLGroup : public SoVRMLParent
 public:
   static void initClass(void);
   SoVRMLGroup(void);
-  SoVRMLGroup( int numChildren );
+  SoVRMLGroup(int numChildren);
 
   enum CacheEnabled {
     OFF,
@@ -51,24 +51,24 @@ public:
   SoSFVec3f bboxCenter;
   SoSFVec3f bboxSize;
 
-  static void setNumRenderCaches( int num );
+  static void setNumRenderCaches(int num);
   static int getNumRenderCaches(void);
 
-  virtual void doAction( SoAction * action );
-  virtual void callback( SoCallbackAction * action );
-  virtual void GLRender( SoGLRenderAction * action );
-  virtual void getBoundingBox( SoGetBoundingBoxAction * action );
-  virtual void getMatrix( SoGetMatrixAction * action );
-  virtual void pick( SoPickAction * action );
-  virtual void search( SoSearchAction * action );
-  virtual void write( SoWriteAction * action );
-  virtual void getPrimitiveCount( SoGetPrimitiveCountAction * action );
+  virtual void doAction(SoAction * action);
+  virtual void callback(SoCallbackAction * action);
+  virtual void GLRender(SoGLRenderAction * action);
+  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+  virtual void getMatrix(SoGetMatrixAction * action);
+  virtual void rayPick(SoRayPickAction * action);
+  virtual void search(SoSearchAction * action);
+  virtual void write(SoWriteAction * action);
+  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
-  virtual void GLRenderBelowPath( SoGLRenderAction * action );
-  virtual void GLRenderInPath( SoGLRenderAction * action );
-  virtual void GLRenderOffPath( SoGLRenderAction * action );
+  virtual void GLRenderBelowPath(SoGLRenderAction * action);
+  virtual void GLRenderInPath(SoGLRenderAction * action);
+  virtual void GLRenderOffPath(SoGLRenderAction * action);
 
-  virtual void notify( SoNotList * list );
+  virtual void notify(SoNotList * list);
 
 protected:
   virtual ~SoVRMLGroup();

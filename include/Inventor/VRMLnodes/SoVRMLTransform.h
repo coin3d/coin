@@ -60,7 +60,7 @@ public:
   virtual void callback(SoCallbackAction * action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
   virtual void getMatrix(SoGetMatrixAction * action);
-  virtual void pick(SoPickAction * action);
+  virtual void rayPick(SoRayPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
   virtual void GLRenderBelowPath(SoGLRenderAction * action);

@@ -294,7 +294,7 @@ SoVRMLTransform::callback(SoCallbackAction * action)
   SoState * state = action->getState();
   state->push();
   this->applyMatrix(state);
-  SoGroup::callback(action);
+  inherited::callback(action);
   state->pop();
 }
 
@@ -305,7 +305,7 @@ SoVRMLTransform::getBoundingBox(SoGetBoundingBoxAction * action)
   SoState * state = action->getState();
   state->push();
   this->applyMatrix(state);
-  SoGroup::getBoundingBox(action);
+  inherited::getBoundingBox(action);
   state->pop();
 }
 
@@ -330,12 +330,12 @@ SoVRMLTransform::getMatrix(SoGetMatrixAction * action)
 
 // Doc in parent
 void
-SoVRMLTransform::pick(SoPickAction * action)
+SoVRMLTransform::rayPick(SoRayPickAction * action)
 {
   SoState * state = action->getState();
   state->push();
   this->applyMatrix(state);
-  SoGroup::pick(action);
+  inherited::rayPick(action);
   state->pop();
 }
 
