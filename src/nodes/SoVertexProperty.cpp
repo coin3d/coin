@@ -56,6 +56,7 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoGLPolygonStippleElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 
 /*!
   \enum SoVertexProperty::Binding
