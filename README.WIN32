@@ -1,8 +1,15 @@
 Section 01 -- Basic build instructions.
 =======================================
 
-  You should be able to build the library if you have these components
-  installed on your system:
+  We've worked hard to get the configure and build process to be as
+  straight forward and failsafe on as many platforms as possible, but
+  since it uses some typical UNIX tools unfamiliar to most MSWindows
+  developers our policy on the MSWindows platform is to provide
+  pre-built binary SDKs -- and officially state that building on the
+  Windows platform is not completely trivial.
+
+  Anyway, you should be able to build the library if you have these
+  components installed on your system:
 
         * Cygwin[1], latest release
         * Microsoft Visual C++ v6.x
