@@ -125,7 +125,7 @@ struct aglglue_contextdata;
 static SbBool (* aglglue_context_create)(struct aglglue_contextdata * ctx) = NULL;
 
 static cc_libhandle glhnd = NULL;
-static SbBool tried_handle = FALSE;
+static SbBool tried_fetching_handle = FALSE;
 
 /* 
  * Since AGL does not have an aglGetProcAddress() as such, this is
