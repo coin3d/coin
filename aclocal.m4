@@ -13,7 +13,7 @@
 
 # **************************************************************************
 # SIM_AC_ERROR_MESSAGE_FILE( FILENAME )
-#   Sets the error message file.  Default is $ac_aux_dir/errors.txt.
+#   Sets the error message file.  Default is $ac_aux_dir/m4/errors.txt.
 #
 # SIM_AC_ERROR( ERROR [, ERROR ...] )
 #   Fetches the error messages from the error message file and displays
@@ -35,7 +35,7 @@ sim_ac_message_file=$1
 ]) # SIM_AC_ERROR_MESSAGE_FILE
 
 AC_DEFUN([SIM_AC_ONE_MESSAGE], [
-: ${sim_ac_message_file=$ac_aux_dir/errors.txt}
+: ${sim_ac_message_file=$ac_aux_dir/m4/errors.txt}
 if test -f $sim_ac_message_file; then
   sim_ac_message="`sed -n -e '/^!$1$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
   if test x"$sim_ac_message" = x""; then
@@ -4454,6 +4454,24 @@ AC_DEFUN([AM_MAINTAINER_MODE],
 )
 
 # Usage:
+#   SIM_AC_COMPILER_CPLUSPLUS_FATAL_ERRORS
+#
+# Description:
+#   Check for the known causes that would make the current C++ compiler
+#   unusable for building Coin or Coin-related projects.
+#
+#   Exits the configure script if any of them fail.
+#
+
+AC_DEFUN([SIM_AC_COMPILER_CPLUSPLUS_FATAL_ERRORS], [
+  SIM_AC_COMPILER_INLINE_FOR
+  SIM_AC_COMPILER_SWITCH_IN_VIRTUAL_DESTRUCTOR
+  SIM_AC_COMPILER_CRAZY_GCC296_BUG
+])
+
+
+
+# Usage:
 #   SIM_AC_COMPILER_INLINE_FOR( [ACTION-IF-OK [, ACTION-IF-FAILS ] ] )
 #
 # Description:
@@ -4468,26 +4486,23 @@ AC_DEFUN([SIM_AC_COMPILER_INLINE_FOR], [
 AC_CACHE_CHECK(
   [if the compiler handles for() loops in inlined constructors],
   sim_cv_c_inlinefor,
-  [cat > sim_ac_test.h <<EOF
+  [AC_TRY_COMPILE([
 class TestClass {
 public:
   TestClass(int);
 };
 
 inline TestClass::TestClass(int) { for (int i=0; i<1; i++) i=0; }
-EOF
-  AC_TRY_COMPILE([#include "sim_ac_test.h"],
+],
                  [TestClass t(0);],
                  [sim_cv_c_inlinefor=yes],
                  [sim_cv_c_inlinefor=no])
 ])
 
-rm -f sim_ac_test.h
-
 if test x"$sim_cv_c_inlinefor" = x"yes"; then
   ifelse([$1], , :, [$1])
 else
-  AC_MSG_WARN(Could not compile testcase.)
+  SIM_AC_ERROR([c--])
   $2
 fi
 ])
@@ -4520,8 +4535,72 @@ hepp::~hepp() { switch(0) { } }
 if test x"$sim_cv_c_virtualdestrswitch" = x"yes"; then
   ifelse([$1], , :, [$1])
 else
-  AC_MSG_WARN(Could not compile testcase.)
+  SIM_AC_ERROR([c--vdest])
   $2
+fi
+])
+
+
+# Usage:
+#     SIM_AC_COMPILER_CRAZY_GCC296_BUG([ACTION-IF-OK [, ACTION-IF-FAILS ]])
+#
+# Description:
+#   Tries to smoke out some completely fubar bug in g++ of GCC 2.96
+#   (at least) when -O2 (or higher, probably) optimization on. The reason
+#   we check specifically for this bug is because this compiler version
+#   is pretty well spread because it was part of a Red Hat Linux release.
+#
+
+AC_DEFUN([SIM_AC_COMPILER_CRAZY_GCC296_BUG], [
+
+AC_CACHE_CHECK(
+  [if this is a version of GCC with a known nasty optimization bug],
+  sim_cv_c_gcctwonightysixbug,
+  [AC_TRY_RUN([
+#include <stdio.h>
+
+class myclass {
+public:
+  float value;
+  float & ref();
+};
+
+myclass
+hepp(const float v0, const float v1)
+{
+  myclass proj;
+
+  proj.ref() = 0.0f;
+  proj.ref() = -(v1+v0);
+
+  return proj;
+}
+
+float &
+myclass::ref()
+{
+  return this->value;
+}
+
+int
+main(void)
+{
+  myclass proj = hepp(2.0f, 4.0f);
+  return (proj.ref() == -6) ? 0 : 1;
+}
+],
+  [sim_cv_c_gcctwonightysixbug=false],
+  [sim_cv_c_gcctwonightysixbug=true],
+  [sim_cv_c_gcctwonightysixbug=false
+   AC_MSG_WARN([can't check for GCC bug when cross-compiling, assuming it's ok])])
+])
+
+
+if $sim_cv_c_gcctwonightysixbug; then
+  SIM_AC_ERROR(c--gcc296bug)
+  $2
+else
+  ifelse([$1], , :, [$1])
 fi
 ])
 
@@ -4589,7 +4668,10 @@ fi
 # **************************************************************************
 # SIM_AC_MAC_CPP_ADJUSTMENTS
 #
-# Add --no-cpp-precomp if necessary.
+# Add --no-cpp-precomp if necessary. Without this option, the
+# Apple preprocessor is used on Mac OS X platforms, and it is
+# known to be very buggy.  It's better to use this option, so
+# the GNU preprocessor is preferred.
 
 AC_DEFUN([SIM_AC_MAC_CPP_ADJUSTMENTS],
 [

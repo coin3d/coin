@@ -171,9 +171,7 @@ AC_SUBST(COIN_EXTRA_LIBS)
 
 ## Smoke out some known defunct compilers. ###############################
 
-SIM_AC_COMPILER_INLINE_FOR([], [SIM_AC_ERROR([c--])])
-
-SIM_AC_COMPILER_SWITCH_IN_VIRTUAL_DESTRUCTOR([], [SIM_AC_ERROR([c--vdest])])
+SIM_AC_COMPILER_CPLUSPLUS_FATAL_ERRORS
 
 ## See which way the compiler knows the name of the current function. ####
 SIM_AC_CHECK_VAR_FUNCTIONNAME
