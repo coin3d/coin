@@ -63,7 +63,16 @@ void *
 GLWrapper_getProcAddress(GLWrapper_t *gi, const char *fname)
 {
 #ifdef HAVE_WGL
-  return wglGetProcAddress(fname);
+  void * ptr = wglGetProcAddress(fname);
+  if (ptr == NULL) {
+    // check for function in opengl32.dll. 
+    // FIXME: Is it sufficient to just check opengl32.dll? pederb, 2002-07-12
+    HINSTANCE h = GetModuleHandle("opengl32.dll");
+    if (h) {
+      ptr = (void*) GetProcAddress(h, fname);
+    }
+  }
+  return ptr;
 #else
   if (0) {
   }
