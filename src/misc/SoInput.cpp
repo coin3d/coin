@@ -205,6 +205,20 @@ public:
     return NULL;
   }
 
+  SbBool isSpace(const char c) {
+    // For vrml97, comma is treated as whitespace. Added this function
+    // and converted isspace() calls to calls to this function.
+    // 2001-10-24, pederb.
+    //
+    // From the VRML97 specification:
+    //   The carriage return (0x0d), linefeed (0x0a), space (0x20), tab
+    //   (0x09), and comma (0x2c) characters are whitespace characters
+    //   wherever they appear outside of quoted SFString or MFString
+    //   fields. Any number of whitespace characters and comments may be
+    //   used to separate the syntactic entities of a VRML file.
+    return isspace(c) || (this->vrml2file && c == ',');
+  }
+
   void connectRoutes(void);
   void unrefProtos(void);
 
@@ -409,7 +423,7 @@ SoInput::checkISReference(SoFieldContainer * container, const SbName & fieldname
           if (is == SbName(IS_KEYWORD)) {
             foundis = TRUE;
             SbName iname;
-            readok = this->read(iname);
+            readok = this->read(iname, TRUE);
             if (readok) {
               assert(container->isOfType(SoNode::getClassTypeId()));
               proto->addISReference((SoNode*) container, fieldname, iname);
@@ -834,7 +848,7 @@ SoInput::read(SbString & s)
           else fi->putBack(c);
         }
       }
-      else if (isspace(*buf)) {
+      else if (fi->isSpace(*buf)) {
         fi->putBack(*buf);
         break;
       }
@@ -2541,10 +2555,10 @@ SoInput_FileInfo::skipWhiteSpace(void)
   while (TRUE) {
     char c;
     SbBool gotchar;
-    while ((gotchar = this->get(c)) && (isspace(c) || (this->isFileVRML2() && c == ',')));
+    while ((gotchar = this->get(c)) && this->isSpace(c));
 
     if (!gotchar) return FALSE;
-
+    
     if (c == COMMENT_CHAR) {
       while ((gotchar = this->get(c)) && (c != '\n') && (c != '\r'));
       if (!gotchar) return FALSE;
