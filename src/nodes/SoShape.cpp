@@ -677,9 +677,8 @@ SoShape::shouldRayPick(SoRayPickAction * const action)
   case SoPickStyleElement::SHAPE:
     return TRUE;
   case SoPickStyleElement::BOUNDING_BOX:
-    // FIXME: test against bounding box instead, pederb, 2000-01-27
-    COIN_STUB();
-    return TRUE;
+    this->rayPickBoundingBox(action);
+    return FALSE;
   case SoPickStyleElement::UNPICKABLE:
     return FALSE;
   default:
@@ -1107,3 +1106,23 @@ SoShape::shouldPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   return TRUE; // FIXME: what to do here? pederb 1999-11-25
 }
+
+//
+// used when pickStyle == BOUNDING_BOX
+//
+void 
+SoShape::rayPickBoundingBox(SoRayPickAction * action)
+{
+  SbBox3f box;
+  SbVec3f center;
+  this->computeBBox(action, box, center);
+  if (box.isEmpty()) return;
+  this->computeObjectSpaceRay(action);
+  SbVec3f isect;
+  if (action->intersect(box, isect, FALSE)) {
+    if (action->isBetweenPlanes(isect)) {
+      action->addIntersection(isect);
+    }
+  }
+}
+

@@ -119,6 +119,7 @@ protected:
                       const SbVec3f & normal);
 
 private:
+  void rayPickBoundingBox(SoRayPickAction * action);
   friend class shapePrimitiveData;         // internal class
   friend class so_generate_prim_private;   // a very private class
 };
