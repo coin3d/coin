@@ -167,6 +167,10 @@ BUILT_SOURCES = \
 	coin-@CONFIG@.cfg
 
 
+CLEANFILES = \
+	coin@COIN_MAJOR_VERSION@.dsp
+
+
 DISTCLEANFILES = \
 	coin-@CONFIG@.cfg \
 	docs/coin.doxygen \
@@ -488,6 +492,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES) stamp-h stamp-h[0-9]*

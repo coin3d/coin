@@ -35,6 +35,9 @@ BUILT_SOURCES = \
 	include/Inventor/system/inttypes.h \
 	coin-@CONFIG@.cfg
 
+CLEANFILES = \
+	coin@COIN_MAJOR_VERSION@.dsp
+
 DISTCLEANFILES = \
 	coin-@CONFIG@.cfg \
 	docs/coin.doxygen \
