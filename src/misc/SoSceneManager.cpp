@@ -97,6 +97,8 @@ void
 SoSceneManager::render(const SbBool clearWindow,
                        const SbBool clearZbuffer)
 {
+#if 0 // OBSOLETED: doesn't seem like this code is needed anymore. 20000229 mortene.
+
   // FIXME: this probably only needs to be done at the first
   // invocation, since the viewport will later always be
   // up-to-date. (?)  The division of initialization work between
@@ -107,8 +109,14 @@ SoSceneManager::render(const SbBool clearWindow,
   SbViewportRegion vp = this->glAction->getViewportRegion();
   SbVec2s origin = vp.getViewportOriginPixels();
   SbVec2s size = vp.getViewportSizePixels();
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoSceneManager::render",
+                         "glViewport(%d, %d, %d, %d)",
+                         origin[0], origin[1], size[0], size[1]);
+#endif // debug
   glViewport(origin[0], origin[1], size[0], size[1]);
 
+#endif // OBSOLETED
 
   GLbitfield mask = 0;
   if (clearWindow) mask |= GL_COLOR_BUFFER_BIT;
