@@ -47,7 +47,15 @@
 
 /*!
   \var SoSFInt32 SoSwitch::whichChild
-  FIXME: write documentation for field
+
+  Selects which child to traverse during rendering (and some other)
+  actions.
+
+  The value should be either \c SO_SWITCH_NONE (for traversing no
+  children, like it was an empty SoGroup node), \c SO_SWITCH_ALL (for
+  traversing like if we were an SoGroup node), \c SO_SWITCH_INHERIT
+  (for traversing the same child as the last SoSwitch node to parent
+  this in the graph), or an index value for a child.
 */
 
 // *************************************************************************
@@ -55,7 +63,7 @@
 SO_NODE_SOURCE(SoSwitch);
 
 /*!
-  Constructor.
+  Default constructor.
 */
 SoSwitch::SoSwitch()
 {
