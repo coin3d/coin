@@ -158,6 +158,25 @@ article is available at
 
 and explains the principles applied fairly well.
 
+3 Debugging Tricks
+==================
+
+* COIN_DEBUG_BREAK
+
+  All calls to SoDebugError::post*() have the first argument (the
+  function name) compared to the $COIN_DEBUG_BREAK environment variable.
+  If they match, an assert will be thrown, and you can inspect the
+  stack backtrace if symbol information was built into the library.
+  This can be very useful, and is not limited to Coin usage - all client
+  programs can take advantage of this functionality too.
+
+  Example:
+
+    $ env COIN_DEBUG_BREAK="SoAction::apply" ./mytestprogram
+
+  (using 'env var=val prog ...' is the most portable syntax for this kind
+  of thing, so that's why we use it instead of the Bourne shell method)
+
 =======================================================================
 XXX FIXME: complete doc. XXX
 
@@ -168,10 +187,7 @@ XXX FIXME: complete doc. XXX
 
 * Differences, MSWin
 
-* Build hacking, autogen.sh/Autoconf/Automake/Libtool
-
-* Styleguide for code
-        - rip out the text from Metadon.conf
+* Build hacking, bootstrap/Autoconf/Automake/Libtool
 
 * Submitting patches
         - technical walk-through
