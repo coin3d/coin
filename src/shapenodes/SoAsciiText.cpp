@@ -28,6 +28,11 @@
 
   The text is rendered using 3D polygon geometry.
 
+  The complexity of the glyphs is controlled by a preceding
+  SoComplexity node with \e Type set to OBJECT_SPACE. Please note
+  that the default builtin 3D font will not be affected by the
+  SoComplexity node.
+
   This node is different from the SoText2 node in that it rotates,
   scales, translates etc just like other geometry in the scene. It is
   different from the SoText3 node in that it renders the text "flat",
