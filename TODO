@@ -60,6 +60,13 @@ TODO:
 * [kintel:19990928] test and fix problems with running on 64-bit
   platforms.
 
+* [mortene:1999????] Use float-versions of math-functions on platforms
+  where they are supported (i.e. fcos(), fsqrt() etc instead of cos(),
+  sqrt(), ..). Use autoconf for testing availability.
+
+* [mortene:1999????] Make a better dict class than SbDict. Something
+  based on templates?
+
 ===============================================================================
 DONE:
 =====

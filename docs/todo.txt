@@ -17,8 +17,6 @@ these categories:
 
 * Network: tasks in the vein of making Coin "network-friendly".
 
-* Generic: general improvements to the sourcecode.
-
 * Support: tasks not directly related to the Coin source, but to the
   development process or whatever else.
 
@@ -54,14 +52,6 @@ these categories:
 011. (Build) [1999????] Make SoQt build under MSWindows.
 
 013. (Build) [1999????] Make Coin build under MSWindows.
-
-014. (Generic) [1999????] Use float-versions of math-functions on
-     platforms where they are supported (i.e. fcos(), fsqrt() etc
-     instead of cos(), sqrt(), ..). This would probably best be done
-     after the autoconf build-process is in place.
-
-015. (Generic) [1999????] Make a better dict class than
-     SbDict. Something based on templates.
 
 016. (VRML) [1999????] Add VRML2 classes.
 
@@ -116,19 +106,3 @@ these categories:
 033. (Support) [19990807] Make an overview list on the Coin WWW pages
      of what's implemented and what's not -- separate list into "vs OI
      2.1" and "vs OI 2.5".
-
-******************************************************************************
-
-Done
-====
-
-008. (Build) [1999????] Convert simage build to an autoconf-based
-     process.
-
-010. (Build) [1999????] Convert SoQt build to an autoconf-based
-     process.
-
-012. (Build) [1999????] Convert Coin build to an autoconf-based
-     process.
-
-******************************************************************************
