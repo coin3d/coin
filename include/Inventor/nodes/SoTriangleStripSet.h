@@ -34,13 +34,6 @@ public:
   static void initClass(void);
   SoTriangleStripSet(void);
 
-  enum Binding {
-    OVERALL = 0,
-    PER_STRIP,
-    PER_FACE,
-    PER_VERTEX
-  };
-
   SoMFInt32 numVertices;
 
   virtual void GLRender(SoGLRenderAction * action);
@@ -57,6 +50,13 @@ protected:
   virtual SbBool generateDefaultNormals(SoState *, SoNormalCache *);
 
 private:
+  enum Binding {
+    OVERALL = 0,
+    PER_STRIP,
+    PER_FACE,
+    PER_VERTEX
+  };
+
   Binding findMaterialBinding(SoState * const state) const;
   Binding findNormalBinding(SoState * const state) const;
 };

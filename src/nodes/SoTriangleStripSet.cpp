@@ -19,16 +19,26 @@
 
 /*!
   \class SoTriangleStripSet SoTriangleStripSet.h Inventor/nodes/SoTriangleStripSet.h
-  \brief The SoTriangleStripSet class ...
+  \brief The SoTriangleStripSet class is used to render and control non-indexed triangle strips.
   \ingroup nodes
 
-  FIXME: write class doc
+  Triangle strips are specified using the numVertices field. Coordinates,
+  normals, materials and texture coordinates are fetched in order from
+  the current state or from the vertexProperty node if set. For
+  example, if numVertices is set to [3, 4, 5, 3], this node would
+  specify a tringle from coordinates 0, 1 and 2, a triangle strip from
+  coordinates 3, 4, 5 and 6, a triangle strip from coordinates 7, 8, 9, 10
+  and 11 and finally a triangle from coordinates 12, 13, 14.
+
+  Strips are converted into triangles the way OpenGL does it, of course.
+
+  Binding PER_PART (per strip), PER_VERTEX, PER_FACE or OVERALL can be
+  set for material, and normals. The default material binding is
+  OVERALL. The default normal binding is PER_VERTEX.
 */
 
 #include <Inventor/nodes/SoTriangleStripSet.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
@@ -57,28 +67,6 @@
 #include <Inventor/details/SoPointDetail.h>
 
 /*!
-  \enum SoTriangleStripSet::Binding
-  Used internally to specify material and normal binding.
-*/
-/*!
-  \var SoTriangleStripSet::Binding SoTriangleStripSet::OVERALL
-  Specifies Overall material or normal binding.
-*/
-/*!
-  \var SoTriangleStripSet::Binding SoTriangleStripSet::PER_STRIP
-  Specifies one normal or color per triangle strip.
-*/
-/*!
-  \var SoTriangleStripSet::Binding SoTriangleStripSet::PER_FACE
-  Specifies one normal or color per triangle.
-*/
-/*!
-  \var SoTriangleStripSet::Binding SoTriangleStripSet::PER_VERTEX
-  Specifies one normal or color per vertex.
-*/
-
-
-/*!
   \var SoMFInt32 SoTriangleStripSet::numVertices
 
   Specifies the number of vertices in each triangle strip. The
@@ -86,7 +74,6 @@
   vertexProperty field if present.
 */
 
-// *************************************************************************
 SO_NODE_SOURCE(SoTriangleStripSet);
 
 /*!
@@ -204,7 +191,7 @@ SoTriangleStripSet::findNormalBinding(SoState * const state) const
 void
 SoTriangleStripSet::GLRender(SoGLRenderAction * action)
 {
-  // TODO: make several optimized functions to render this Shape.
+  // TODO: make several optimized functions to render this Shape, pederb 20000809
 
   SoState * state = action->getState();
 
@@ -364,9 +351,7 @@ SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   return TRUE;
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
 SoTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
@@ -390,19 +375,25 @@ SoTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   }
 }
 
-// doc from parent
+/*!
+  Overloaded to set shade model to flat if normals or materials are
+  bound PER_FACE.  Please note that binding normals or materials
+  PER_FACE might lead to incorrect rendering for point or spot light
+  sources (since all vertices will be evaluated to the same color).
+*/
 SbBool
 SoTriangleStripSet::willSetShadeModel(void) const
 {
   return TRUE;
 }
 
-// doc from parent
+/*!
+  Overloaded to return FALSE. Normals are generated in normal cache,
+*/
 SbBool
 SoTriangleStripSet::generateDefaultNormals(SoState * /* state */,
                                            SoNormalBundle * /* nb */)
 {
-  COIN_STUB();
   return FALSE;
 }
 
