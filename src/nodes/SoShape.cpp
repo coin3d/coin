@@ -678,9 +678,11 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
         if (pp) {
           pp->setDetail(this->createLineSegmentDetail(ra, v1, v2, pp), this);
           float total = (v2->getPoint()-v1->getPoint()).length();
-          float len1 = (intersection-v1->getPoint()).length();
-          float len2 = (intersection-v2->getPoint()).length();
-          if (total > 0.0f) {
+          float len1 = 1.0f;
+          float len2 = 0.0f;
+          if (total >= 0.0f) {            
+            len1 = (intersection-v1->getPoint()).length();
+            len2 = (intersection-v2->getPoint()).length();
             len1 /= total;
             len2 /= total;
           }
@@ -697,7 +699,7 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
           pp->setMaterialIndex(len1 >= len2 ?
                                v1->getMaterialIndex() :
                                v2->getMaterialIndex());
-
+          
         }
       }
     }
