@@ -69,28 +69,43 @@
 
 #if COIN_DEBUG
 
-#include <stdio.h> /* fprintf() */
+#include <Inventor/errors/SoDebugError.h>
 
 #define COIN_STUB() \
   do { \
-    (void)fprintf(stderr, "STUB: functionality not yet completed"); \
-    if (COIN_STUB_FILE) { \
-      (void)fprintf(stderr, " at %s", COIN_STUB_FILE); \
-      if (COIN_STUB_LINE > 0) (void)fprintf(stderr, ":line %u", COIN_STUB_LINE); \
-      if (COIN_STUB_FUNC) (void)fprintf(stderr, ":[%s]", COIN_STUB_FUNC); \
+    SbString s; \
+    s.sprintf("%s:%u:%s", \
+              COIN_STUB_FILE ? COIN_STUB_FILE : "<>", \
+              COIN_STUB_LINE, \
+              COIN_STUB_FUNC ? COIN_STUB_FUNC : "<>"); \
+    SoDebugError::postWarning(s.getString(), \
+                              "STUB: functionality not yet completed"); \
+  } while (0)
+
+#define COIN_STUB_ONCE() \
+  do { \
+    static int first = 1; \
+    if (first) { \
+      SbString s; \
+      s.sprintf("%s:%u:%s", \
+                COIN_STUB_FILE ? COIN_STUB_FILE : "<>", \
+                COIN_STUB_LINE, \
+                COIN_STUB_FUNC ? COIN_STUB_FUNC : "<>"); \
+      SoDebugError::postWarning(s.getString(), \
+                                "STUB: functionality not yet completed"); \
+      first = 0; \
     } \
-    (void)fprintf(stderr, "\n"); \
   } while (0)
 
 #define COIN_OBSOLETED() \
   do { \
-    (void)fprintf(stderr, "OBSOLETED: functionality not supported (any more)"); \
-    if (COIN_STUB_FILE) { \
-      (void)fprintf(stderr, " at %s", COIN_STUB_FILE); \
-      if (COIN_STUB_LINE > 0) (void)fprintf(stderr, ":line %u", COIN_STUB_LINE); \
-      if (COIN_STUB_FUNC) (void)fprintf(stderr, ":[%s]", COIN_STUB_FUNC); \
-    } \
-    (void)fprintf(stderr, "\n"); \
+    SbString s; \
+    s.sprintf("%s:%u:%s", \
+              COIN_STUB_FILE ? COIN_STUB_FILE : "<>", \
+              COIN_STUB_LINE, \
+              COIN_STUB_FUNC ? COIN_STUB_FUNC : "<>"); \
+    SoDebugError::post(s.getString(), \
+                       "OBSOLETED: functionality not supported (any more)"); \
   } while (0)
 
 #else /* !COIN_DEBUG */
