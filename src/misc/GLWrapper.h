@@ -1,9 +1,6 @@
 #ifndef COIN_GLWRAPPER_H
 #define COIN_GLWRAPPER_H
 
-// FIXME: sooffscreenrenderer
-// FIXME: soglpolygonoffsetelement
-
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
