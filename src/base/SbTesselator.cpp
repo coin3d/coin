@@ -172,8 +172,8 @@ SbTesselator::SbTesselator(void (*callback)(void * v0, void * v1, void * v2,
   this->setCallback(callback, userdata);
   this->headV = this->tailV = NULL;
   this->currVertex = 0;  
-  
-  PRIVATE(this) = new SbTesselatorP;
+
+  this->heap = (SbHeap*) new SbTesselatorP;
   PRIVATE(this)->heap = cc_heap_construct(256, heap_compare, TRUE);
   PRIVATE(this)->epsilon = FLT_EPSILON;
 }
