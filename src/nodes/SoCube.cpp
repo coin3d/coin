@@ -38,7 +38,6 @@
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoGLShadeModelElement.h>
-#include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
@@ -115,11 +114,6 @@ SoCube::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-  const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
-    action->getState()->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
-  sh->forceSend(TRUE,
-                SoDrawStyleElement::get(state) == SoDrawStyleElement::FILLED ? TRUE : FALSE);
-
   const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
     state->getConstElement(SoGLShadeModelElement::getClassStackIndex());
   sm->forceSend(TRUE);
@@ -166,13 +160,6 @@ SoCube::generatePrimitives(SoAction * action)
 // Doc in parent.
 SbBool
 SoCube::willSetShadeModel(void) const
-{
-  return TRUE;
-}
-
-// Doc in parent.
-SbBool
-SoCube::willSetShapeHints(void) const
 {
   return TRUE;
 }

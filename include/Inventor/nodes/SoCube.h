@@ -42,7 +42,6 @@ public:
 
   virtual void GLRender(SoGLRenderAction * action);
   virtual SbBool willSetShadeModel() const;
-  virtual SbBool willSetShapeHints() const;
   virtual SbBool willUpdateNormalizeElement(SoState *) const;
   virtual void rayPick(SoRayPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
