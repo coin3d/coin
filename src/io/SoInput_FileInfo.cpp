@@ -216,17 +216,11 @@ SoInput_FileInfo::get(char & c)
 {
   if (this->backbuffer.getLength() > 0) {
     c = this->backbuffer.pop();
-    // backbuffer contains elements pushed back into the stream. These
-    // should never be anything else than what came out of the stream
-    // in the first place, and the '\0' character is never outputted.
-    assert(c != '\0');
   }
   else {
     if (this->readbufidx >= this->readbuflen) {
       // doBufferRead() sets the EOF flag for the stream if there is
-      // nothing left of the buffer to read. But does not check if the
-      // returned characters are '\0' characters. This has to be done
-      // manually. See further down.
+      // nothing left of the buffer to read.
       if (!this->doBufferRead()) {
         c = (char) EOF;
         return FALSE;

@@ -216,6 +216,15 @@ SoInputP::getTopOfStackPopOnEOF(void)
 //  brackets [], single ' or double " quotes, sharp #, backslash
 //  \\ plus +, period . or ampersand &.
 //
+//  In addition to this, we found ',' to be an invalid character in
+//  VRML 1.0 names. This was made apparent when reading the following
+//  fields on an unknown node:
+//
+//   fields [SFString test, SFFloat length]
+//
+//  If ',' is to be a valid character in a name, then the name
+//  of the first field would become 'test,', and not just 'test'
+//
 // The grammar for VRML2 identifiers is:
 //
 //  nodeNameId ::= Id ; 
@@ -236,9 +245,9 @@ SoInputP::isNameStartChar(unsigned char c, SbBool validIdent)
 {
   // Cannot be unsigned when using strchr, but since all values are
   // below 128, it does not matter if they are signed or unsigned.
-  const char invalid_vrml1[] = { 0x22, 0x23, 0x27, 0x2b, 0x2e, 
+  const char invalid_vrml1[] = { 0x22, 0x23, 0x27, 0x2b, 0x2c, 0x2e, 
                                  0x5c, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
-                               // '"',  '#',  ''',  '+',  '.',
+                               // '"',  '#',  ''',  '+',  ',',  '.',
                                // '\',  '{',  '}'
 
   const char invalid_vrml2[] = { 0x22, 0x23, 0x27, 0x2b, 0x2c, 0x2d, 0x2e, 
@@ -247,9 +256,9 @@ SoInputP::isNameStartChar(unsigned char c, SbBool validIdent)
                                // '[',  '\',  ']',  '{',  '}',   ''
 
   // Differences from invalid_vrml1: '&' , '[', and ']' are now invalid
-  const char valid_ident_invalid_vrml1[] = { 0x22, 0x23, 0x26, 0x27, 0x2b, 0x2e, 
+  const char valid_ident_invalid_vrml1[] = { 0x22, 0x23, 0x26, 0x27, 0x2b, 0x2c, 0x2e, 
                                              0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
-                                           // '"',  '#',   '&', ''',  '+',  '.',
+                                           // '"',  '#',   '&', ''',  '+',  ',',  '.',
                                            // '[',  '\',   ']',  '{',  '}'
 
   const char * valid_ident_invalid_vrml2 = invalid_vrml2;
@@ -311,9 +320,9 @@ SoInputP::isNameChar(unsigned char c, SbBool validIdent)
 {
   // Cannot be unsigned when using strchr, but since all values are
   // below 128, it does not matter if they are signed or unsigned.
-  const char invalid_vrml1[] = { 0x22, 0x23, 0x27, 0x2b, 0x2e, 
+  const char invalid_vrml1[] = { 0x22, 0x23, 0x27, 0x2b, 0x2c, 0x2e, 
                                  0x5c, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
-                               // '"',  '#',  ''',  '+',  '.',
+                               // '"',  '#',  ''',  '+',  ',',  '.',
                                // '\',  '{',  '}'
 
   // Compared to isIdentStartChar, '+' and '-' have now become valid
@@ -324,9 +333,9 @@ SoInputP::isNameChar(unsigned char c, SbBool validIdent)
                                // '\',  ']',  '{',  '}',   ''
 
   // Differences from invalid_vrml1: '&' , '[', and ']' are now invalid
-  const char valid_ident_invalid_vrml1[] = { 0x22, 0x23, 0x26, 0x27, 0x2b, 0x2e, 
+  const char valid_ident_invalid_vrml1[] = { 0x22, 0x23, 0x26, 0x27, 0x2b, 0x2c, 0x2e, 
                                              0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
-                                           // '"',  '#',   '&', ''',  '+',  '.',
+                                           // '"',  '#',   '&', ''',  '+',  ',',  '.',
                                            // '[',  '\',   ']',  '{',  '}'
 
   const char * valid_ident_invalid_vrml2 = invalid_vrml2;
