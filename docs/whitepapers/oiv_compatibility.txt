@@ -15,33 +15,13 @@ that are set aside for now.
 Incompatibilities
 =================
 
-* SoLazyElement
-    The SoLazyElement element is an ugly hack that was introduced late in the
-    Open Inventor development history.  It is actually a collection of other
-    elements (that now are deprecated).
+* SoType should be able to load user-extension types contained in
+  dynamic libraries if the type can not be found in libCoin (Bugzilla
+  #246)
 
-    We have chosen not to implement the SoLazyElement element and instead
-    implement the deprecated elements instead at this time.
-    The lack of the SoLazyElement element should not be noticeable for the
-    most common Open Inventor usage.  For advanced users (users that create
-    actions and such), some code may need to be modified because of this.
+* SoByteStream class not implemented (Bugzilla #173)
 
-    There are several reasons for staying away from the SoLazyElement element.
+* SoTranSender and SoTranReceiver classes not implemented (Bugzilla
+  #174)
 
-    - The name is moronic.  It does not tell you what data it manages, just
-      in which manner it is managed.
-
-    - Bundling elements in the SoLazyElement way messes with the structure and
-      design of Open Inventor, it makes it harder to get to know the code and
-      it also makes it harder to maintain the code.
-
-    - Lazy evaluation can be implemented in any element (and we have done that
-      in a lot of them).
-
-    In the future, we might implement some structured element bundling system,
-    which we might use to support the SoLazyElement element.  For now we use
-    the atomic approach with each element separate.
-
-* SoGLLazyElement
-    See SoLazyElement.
-
+* no support for the Inventor v1 file format (Bugzilla #152)
