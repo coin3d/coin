@@ -15,11 +15,12 @@ Coin satellite libraries, extensions and example programs at:
         SoGuiExamples/BUGS.txt
         SmallChange/BUGS.txt
         SoGtk/BUGS.txt
+        Cute/BUGS.txt
 
 Now, for the list of known bugs in the core Coin library:
 
 
- =====================================================================
+=====================================================================
 
 003 There are seams in texturemaps on SGI Octane with "IMPACTSR"
     graphics hardware.
@@ -3216,8 +3217,8 @@ Separator {
     20040722 larsa
 
     UPDATE 20040909 mortene: the relevant draggers should react to
-    SoMotion3Event whether the interaction was started with a
-    SoSpaceballButtonEvent::PICK or not.
+    SoMotion3Event events after any type of pick that started the
+    dragger interaction, not just of the spaceball-variety, methinks.
 
     For convenience, should perhaps SoDragger::handleEvent() react to
     SoMotion3Event and invoke the motion callbacks in the same manner
@@ -3791,5 +3792,21 @@ incremented during the copy, but never decremented :(
     Consider this medium-to-high priority.
 
     20040908 mortene.
+
+=====================================================================
+
+141 OpenGL context store/restore "stacking" for
+    e.g. SoOffscreenRenderer will fail if different window system GL
+    bindings are used in libCoin vs the main windows system binding.
+
+    We run into this on Mac OS X, where Sc21 uses NSOpenGLContext, and
+    libCoin attempts to check (and restore) the current context with
+    aglGetCurrentContext().
+
+    We can in theory also get the same problem for other combinations,
+    e.g. SoXt for a X11/GLX binding for the application on a Windows
+    system where libCoin will use WGL internally.
+
+    20040915 mortene, reported by kyrah.
 
 =====================================================================
