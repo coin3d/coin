@@ -31,6 +31,7 @@
 #include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -415,10 +416,16 @@ SoHandleBoxDragger::dragStart(void)
       else {
         n = SbVec3f(0.0f, 0.0f, 1.0f);
       }
+      SbVec3f localPt;
+      {
+        SbMatrix mat, inv;
+        this->getSurroundScaleMatrices(mat, inv);
+        inv.multVecMatrix(startPt, localPt);
+      }
       this->planeProj->setPlane(SbPlane(n, startPt));
       SbLine myline(SbVec3f(0.0f, 0.0f, 0.0f), n);
       SoTranslation *t = SO_GET_ANY_PART(this, "arrowTranslation", SoTranslation);
-      t->translation = myline.getClosestPoint(startPt);
+      t->translation = myline.getClosestPoint(localPt);
       if (this->getEvent()->wasShiftDown()) {
         this->getLocalToWorldMatrix().multVecMatrix(startPt, this->worldRestartPt);
         this->constraintState = CONSTRAINT_WAIT;
@@ -426,10 +433,10 @@ SoHandleBoxDragger::dragStart(void)
     }
     break;
   case WHATKIND_EXTRUDER:
-    this->lineProj->setLine(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), startPt));
+    this->lineProj->setLine(SbLine(this->getDraggerCenter(), startPt));
     break;
   case WHATKIND_UNIFORM:
-    this->lineProj->setLine(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), startPt));
+    this->lineProj->setLine(SbLine(this->getDraggerCenter(), startPt));
     break;
   }
   this->ctrlDown = this->getEvent()->wasCtrlDown();
@@ -502,8 +509,13 @@ SoHandleBoxDragger::drag(void)
     this->lineProj->setViewVolume(this->getViewVolume());
     this->lineProj->setWorkingSpace(this->getLocalToWorldMatrix());
     SbVec3f projPt = this->lineProj->project(this->getNormalizedLocaterPosition());
-    SbVec3f center(0.0f, 0.0f, 0.0f);
-    if (this->getEvent()->wasCtrlDown()) center -= projPt;
+    SbVec3f center = this->getDraggerCenter();
+    if (this->getEvent()->wasCtrlDown()) {
+      //
+      // FIXME: need to figure out what to do here... pederb, 20000222
+      //
+      COIN_STUB();
+    }
 
     float orglen = (startPt-center).length();
     float currlen = (projPt-center).length();
@@ -662,4 +674,28 @@ SoHandleBoxDragger::updateArrows()
       SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
     }
   }
+}
+
+void
+SoHandleBoxDragger::getSurroundScaleMatrices(SbMatrix &mat, SbMatrix &inv)
+{
+  SoSurroundScale *ss = SO_CHECK_ANY_PART(this, "surroundScale", SoSurroundScale);
+  if (ss) {
+    SoGetMatrixAction ma(this->getViewportRegion());
+    ma.apply(ss);
+    mat = ma.getMatrix();
+    inv = ma.getInverse();
+  }
+  else {
+    mat = SbMatrix::identity();
+    inv = SbMatrix::identity();
+  }
+}
+
+SbVec3f 
+SoHandleBoxDragger::getDraggerCenter()
+{
+  SbMatrix mat, inv;
+  this->getSurroundScaleMatrices(mat, inv);
+  return SbVec3f(mat[3][0], mat[3][1], mat[3][2]);
 }
