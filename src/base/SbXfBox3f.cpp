@@ -37,6 +37,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+// this value is used to signal an invalid inverse matrix
+#define INVALID_TAG FLT_MAX
+
 /*!
   The default constructor makes an empty box and identity matrix.
  */
@@ -94,27 +97,8 @@ SbXfBox3f::transform(const SbMatrix & m)
 void
 SbXfBox3f::setTransform(const SbMatrix &m)
 {
-#if COIN_DEBUG && 0 // debug
-  if (this->matrix.det4() == 0.0f) {
-    SoDebugError::postWarning("SbXfBox3f::setTransform",
-                              "invalid matrix (can't be inverted)");
-    SoDebugError::postWarning("SbXfBox3f::setTransform",
-                              "%f %f %f %f",
-                              m[0][0], m[0][1], m[0][2], m[0][3]);
-    SoDebugError::postWarning("SbXfBox3f::setTransform",
-                              "%f %f %f %f",
-                              m[1][0], m[1][1], m[1][2], m[1][3]);
-    SoDebugError::postWarning("SbXfBox3f::setTransform",
-                              "%f %f %f %f",
-                              m[2][0], m[2][1], m[2][2], m[2][3]);
-    SoDebugError::postWarning("SbXfBox3f::setTransform",
-                              "%f %f %f %f",
-                              m[3][0], m[3][1], m[3][2], m[3][3]);
-  }
-#endif // debug
-
   this->matrix = m;
-  this->makeInvInvalid(); //Invalidate current inverse
+  this->makeInvInvalid(); // invalidate current inverse
 }
 
 /*!
@@ -157,24 +141,9 @@ SbXfBox3f::getCenter() const
 void
 SbXfBox3f::extendBy(const SbVec3f &pt)
 {
-  SbMatrix im = this->getInverse();
-#if 0 // debug
-  SoDebugError::postInfo("SbXfBox3f::extendBy",
-                         "\n\t%.3f %.3f %.3f %.3f\n"
-                         "\t%.3f %.3f %.3f %.3f\n"
-                         "\t%.3f %.3f %.3f %.3f\n"
-                         "\t%.3f %.3f %.3f %.3f",
-                         im[0][0], im[0][1], im[0][2], im[0][3],
-                         im[1][0], im[1][1], im[1][2], im[1][3],
-                         im[2][0], im[2][1], im[2][2], im[2][3],
-                         im[3][0], im[3][1], im[3][2], im[3][3]);
-#endif // debug
+  const SbMatrix & im = this->getInverse();
   SbVec3f trans;
   im.multVecMatrix(pt, trans);
-#if 0 // debug
-  SoDebugError::postInfo("SbXfBox3f::extendBy", "trans pt: <%f, %f, %f>",
-                         trans[0], trans[1], trans[2]);
-#endif // debug
   SbBox3f::extendBy(trans);
 }
 
@@ -670,12 +639,47 @@ SbXfBox3f::print(FILE * fp) const
 void
 SbXfBox3f::calcInverse(void) const
 {
-  if (this->invertedmatrix[0][0] == FLT_MAX)
-    ((SbXfBox3f *)this)->invertedmatrix = this->matrix.inverse();
+  // det4() is checked against VALID_LIMIT to determine if the inverse
+  // matrix can be calculated.
+  const float VALID_LIMIT = 1.0e-12f;
+  
+  if (this->invertedmatrix[0][0] == INVALID_TAG) {
+    if (SbAbs(this->matrix.det4()) > VALID_LIMIT) {
+      ((SbXfBox3f *)this)->invertedmatrix = this->matrix.inverse();
+    }
+    else {
+#if COIN_DEBUG && 0 // disabled
+      const SbMatrix & m = this->matrix;
+      SoDebugError::postWarning("SbXfBox3f::setTransform",
+                                "invalid matrix (can't be inverted)");
+      SoDebugError::postWarning("SbXfBox3f::setTransform",
+                                "%f %f %f %f",
+                                m[0][0], m[0][1], m[0][2], m[0][3]);
+      SoDebugError::postWarning("SbXfBox3f::setTransform",
+                                "%f %f %f %f",
+                                m[1][0], m[1][1], m[1][2], m[1][3]);
+      SoDebugError::postWarning("SbXfBox3f::setTransform",
+                                "%f %f %f %f",
+                                m[2][0], m[2][1], m[2][2], m[2][3]);
+      SoDebugError::postWarning("SbXfBox3f::setTransform",
+                                "%f %f %f %f",
+                                m[3][0], m[3][1], m[3][2], m[3][3]);
+#endif // COIN_DEBUG
+
+      // Degenerate transforms are fixed by projecting box. This will
+      // transform the min and max points (using the normal matrix,
+      // not the inverse), and leave us with an identity transform.
+      SbXfBox3f * thisp = (SbXfBox3f*) this; // cast away constness
+      *thisp = SbXfBox3f(this->project());
+    }
+  }
 }
 
 void
 SbXfBox3f::makeInvInvalid(void)
 {
-  this->invertedmatrix[0][0] = FLT_MAX;
+  this->invertedmatrix[0][0] = INVALID_TAG;
 }
+
+#undef INVALID_TAG
+

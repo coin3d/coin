@@ -100,6 +100,7 @@ public:
   SbList <float> ppdistance;
 
   unsigned int flags;
+  SbBool objectspacevalid;
 
   enum {
     WS_RAY_SET =        0x0001, // ray set by setRay()
@@ -148,6 +149,7 @@ SoRayPickAction::SoRayPickAction(const SbViewportRegion & viewportregion)
   THIS = new SoRayPickActionP(this);
   THIS->radiusinpixels = 5.0f;
   THIS->flags = 0;
+  THIS->objectspacevalid = TRUE;
 
 
   SO_ACTION_CONSTRUCTOR(SoRayPickAction);
@@ -458,6 +460,12 @@ SoRayPickAction::intersect(const SbVec3f & v0,
                            SbVec3f & intersection, SbVec3f & barycentric,
                            SbBool & front) const
 {
+  // Calculating intersections when we have a degenerate transform
+  // makes no sense. We could do the intersection calculations in
+  // world space, but it is impossible to calculate the object space
+  // intersection point, so we just return FALSE.
+  if (!THIS->objectspacevalid) return FALSE;
+
   const SbVec3f & orig = THIS->osline.getPosition();
   const SbVec3f & dir = THIS->osline.getDirection();
 
@@ -514,6 +522,12 @@ SbBool
 SoRayPickAction::intersect(const SbVec3f & v0, const SbVec3f & v1,
                            SbVec3f & intersection) const
 {
+  // Calculating intersections when we have a degenerate transform
+  // makes no sense. We could do the intersection calculations in
+  // world space, but it is impossible to calculate the object space
+  // intersection point, so we just return FALSE.
+  if (!THIS->objectspacevalid) return FALSE;
+
   SbLine line(v0, v1);
   SbVec3f op0, op1; // object space
   SbVec3f p0, p1; // world space
@@ -632,6 +646,12 @@ SbBool
 SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
                            const SbBool usefullviewvolume)
 {
+  // Calculating intersections when we have a degenerate transform
+  // makes no sense. We could do the intersection calculations in
+  // world space, but it is impossible to calculate the object space
+  // intersection point, so we just return FALSE.
+  if (!THIS->objectspacevalid) return FALSE;
+
   const SbLine & line = THIS->osline;
   SbVec3f bounds[2];
   bounds[0] = box.getMin();
@@ -736,7 +756,8 @@ SoRayPickAction::intersect(const SbBox3f & box, const SbBool usefullviewvolume)
 const SbViewVolume &
 SoRayPickAction::getViewVolume(void)
 {
-  if (THIS->isFlagSet(SoRayPickActionP::OSVOLUME_DIRTY)) {
+  if (THIS->objectspacevalid &&
+      THIS->isFlagSet(SoRayPickActionP::OSVOLUME_DIRTY)) {
     // we pick on a real cone, but calculate pick view volume
     // to be compatible with OIV.
     THIS->osvolume = SoPickRayElement::get(this->getState());
@@ -877,18 +898,26 @@ SoRayPickActionP::calcObjectSpaceData(SoState * ownerstate)
   this->calcMatrices(ownerstate);
 
   SbVec3f start, dir;
-
-  this->world2obj.multVecMatrix(this->raystart, start);
-  this->world2obj.multDirMatrix(this->raydirection, dir);
-  this->osline = SbLine(start, start + dir);
+  
+  if (this->objectspacevalid) {
+    this->world2obj.multVecMatrix(this->raystart, start);
+    this->world2obj.multDirMatrix(this->raydirection, dir);
+    this->osline = SbLine(start, start + dir);
+  }
 }
 
 void
 SoRayPickActionP::calcMatrices(SoState * state)
 {
+  const float VALID_LIMIT = 1.0e-12f;
   this->obj2world = SoModelMatrixElement::get(state);
   if (this->isFlagSet(EXTRA_MATRIX)) {
     this->obj2world.multLeft(this->extramatrix);
   }
-  this->world2obj = this->obj2world.inverse();
+  this->objectspacevalid = FALSE;
+  float det = this->obj2world.det4();
+  if (SbAbs(det) > VALID_LIMIT) {
+    this->world2obj = this->obj2world.inverse();
+    this->objectspacevalid = TRUE;
+  }
 }
