@@ -170,7 +170,7 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
   // space. NB: getting this code in general to cooperate with an
   // SoGetBoundingBoxAction with the isInCameraSpace() flag set is
   // non-trivial. 19990513 mortene.
-  assert (!action->isInCameraSpace());
+  //  assert (!action->isInCameraSpace());
 
   if (iscaching && validcache) {
     childrenbbox = this->bboxCache->getBox();
@@ -303,6 +303,10 @@ SoSeparator::rayPick(SoRayPickAction * action)
 void
 SoSeparator::search(SoSearchAction * action)
 {
+  // Include this node in the search.
+  inherited::search(action);
+  if (action->isFound()) return;
+  
   SoSeparator::doAction(action);
 }
 
