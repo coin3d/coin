@@ -81,8 +81,8 @@ dot                             { return LEX_DOT; }
 length                          { return LEX_LEN; }
 normalize                       { return LEX_NORMALIZE; }
 vec3f                           { return LEX_VEC3F; }
-[+-]?{Digit}+"."{Digit}*{Exp}?  { yylval.value = atof(yytext); return LEX_VALUE; }
-[+-]?{Digit}+{Exp}?             { yylval.value = atof(yytext); return LEX_VALUE; }
+{Digit}*"."{Digit}*{Exp}?  { yylval.value = atof(yytext); return LEX_VALUE; }
+{Digit}+{Exp}?             { yylval.value = atof(yytext); return LEX_VALUE; }
 t[a-h]                          { yylval.reg = yytext[1]; return LEX_TMP_FLT_REG; }
 o[a-d]                          { yylval.reg = yytext[1]; return LEX_OUT_FLT_REG; }
 [a-h]                           { yylval.reg = yytext[0]; return LEX_IN_FLT_REG; } 
