@@ -38,7 +38,8 @@
 #ifdef USE_W32THREAD
 /* we test if Win32 TryEnterCriticalSection exists, and use Win32
    critical section if it does, and Win32 mutex if it doesn't */
-cc_mutex_try_enter_critical_section_func * cc_mutex_try_enter_critical_section = NULL; 
+typedef BOOL cc_mutex_try_enter_critical_section_func(LPCRITICAL_SECTION);
+static cc_mutex_try_enter_critical_section_func * cc_mutex_try_enter_critical_section = NULL; 
 #include "mutex_win32mutex.ic" 
 #include "mutex_win32cs.ic" 
 #endif /* USE_W32THREAD */
@@ -124,9 +125,9 @@ cc_mutex_lock(cc_mutex * mutex)
 
 #ifdef USE_W32THREAD
   if (cc_mutex_try_enter_critical_section)
-    ok = win32_cs_lock(mutex_struct);
+    ok = win32_cs_lock(mutex);
   else 
-    ok = win32_mutex_lock(mutex_struct);
+    ok = win32_mutex_lock(mutex);
 #else /* USE_W32THREAD */  
   ok = internal_lock(mutex);
 #endif /* USE_W32THREAD */
@@ -144,9 +145,9 @@ cc_mutex_try_lock(cc_mutex * mutex)
   assert(mutex != NULL);
 #ifdef USE_W32THREAD
   if (cc_mutex_try_enter_critical_section)
-    ok = win32_cs_try_lock(mutex_struct);
+    ok = win32_cs_try_lock(mutex);
   else 
-    ok = win32_mutex_try_lock(mutex_struct);
+    ok = win32_mutex_try_lock(mutex);
 #else /* USE_W32THREAD */  
   ok = internal_try_lock(mutex);
 #endif /* ! USE_W32THREAD */
@@ -164,9 +165,9 @@ cc_mutex_unlock(cc_mutex * mutex)
   assert(mutex != NULL);
 #ifdef USE_W32THREAD
   if (cc_mutex_try_enter_critical_section)
-    ok = win32_cs_unlock(mutex_struct);
+    ok = win32_cs_unlock(mutex);
   else 
-    ok = win32_mutex_unlock(mutex_struct);
+    ok = win32_mutex_unlock(mutex);
 #else /* USE_W32THREAD */  
   ok = internal_unlock(mutex);
 #endif /* USE_W32THREAD */
@@ -191,7 +192,8 @@ cc_mutex_init(void)
   HINSTANCE h = GetModuleHandle("kernel32.dll");
   if (h) {
     /* this function is unsupported in Win95/98/Me and NT <=3.51 */
-    cc_mutex_try_enter_critical_section = (TryEnterFunc*)
+    cc_mutex_try_enter_critical_section = 
+      (cc_mutex_try_enter_critical_section_func*)
       GetProcAddress(h, "TryEnterCriticalSection");
   }
 #endif /* USE_W32THREAD */

@@ -44,8 +44,6 @@ extern "C" {
 
 #ifdef USE_W32THREAD
 #include <windows.h>
-typedef BOOL cc_mutex_try_enter_critical_section_func(LPCRITICAL_SECTION);
-cc_mutex_try_enter_critical_section_func * cc_mutex_try_enter_critical_section;
 #undef NO_IMPLEMENTATION
 #endif /* USE_W32THREAD */
 
@@ -59,7 +57,7 @@ struct cc_mutex {
   union cc_w32thread_mutex_data {
     HANDLE mutexhandle;
     CRITICAL_SECTION critical_section;
-  }
+  } w32thread;
 #endif /* USE_W32THREAD */
 };
 
