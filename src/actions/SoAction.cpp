@@ -778,8 +778,11 @@ SoAction::getPathCode(int & numindices, const int * & indices)
 void
 SoAction::traverse(SoNode * const node)
 {
-  (*this->traversalMethods)
-    [SoNode::getActionMethodIndex(node->getTypeId())](this, node);
+  SoType t = node->getTypeId();
+  int idx = SoNode::getActionMethodIndex(t);
+  SoActionMethod func = (*this->traversalMethods)[idx];
+
+  func(this, node);
 }
 
 /*!
