@@ -26,18 +26,12 @@
 
 (-> (-> timecounter 'min) 'setValue 0)
 (-> (-> timecounter 'max) 'setValue 20)
-(-> (-> timecounter 'frequency) 'setValue 0.3)
+(-> (-> timecounter 'frequency) 'setValue 0.1)
 (-> (-> timecounter 'step) 'setValue 1)
 (-> (-> timecounter 'syncIn) 'setValue) ; trigger restart at min value
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; Confirmed and potential bugs. ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Demonstrate Bugzilla #192 by first turning the engine off, then
-;; back on.
-(-> (-> timecounter 'on) 'setValue 0) ; off
-(-> (-> timecounter 'on) 'setValue 1) ; on
-
 
 ;; Reproduce Bugzilla #194 by setting the value of
 ;; SoTimeCounter::reset outside the min-max range.
@@ -65,7 +59,7 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;; False alarms (ex-possible bugs) ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; False alarms (ex-possible bugs) and ex-bugs ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; The counter doesn't restart at the modulo value of the step, but at
 ;; 0. This is confirmed to match the behavior of SGI Open Inventor.
@@ -74,6 +68,12 @@
   (-> (-> timecounter 'max) 'setValue 7)
   (-> (-> timecounter 'frequency) 'setValue 0.4)
   (-> (-> timecounter 'step) 'setValue 2))
+
+
+;; Bugzilla #192: first turning the engine off, then back on -- engine
+;; stops.
+(-> (-> timecounter 'on) 'setValue 0) ; off
+(-> (-> timecounter 'on) 'setValue 1) ; on
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -47,12 +47,13 @@
 
 /*!
   \var SoSFBool SoTimeCounter::on
-  Set to \e OFF to pause the counter.
+  Set to \c FALSE to pause the counter.
 */
 
 /*!
   \var SoSFFloat SoTimeCounter::frequency
-  Number of cycles per second.
+  Number of complete cycles from the min value to the max value per
+  second.
 */
 
 /*!
@@ -62,7 +63,7 @@
 
 /*!
   \var SoSFShort SoTimeCounter::reset
-  Manually set the counter value to some value.
+  Manually set the counter to some value.
 */
 
 /*!
@@ -185,11 +186,13 @@ SoTimeCounter::inputChanged(SoField * which)
         this->output.enable(FALSE);
         this->pausetimeincycle =
           this->timeIn.getValue().getValue() - this->starttime;
+        this->prevon = FALSE;
       }
       else {
         this->starttime =
           this->timeIn.getValue().getValue() - this->pausetimeincycle;
         this->ispaused = FALSE;
+        this->prevon = TRUE;
         this->inputChanged(&this->timeIn); // fake it
       }
     }
@@ -226,7 +229,7 @@ SoTimeCounter::inputChanged(SoField * which)
   // if you try to set first min=0, then max=1 you end up with min=-1
   // and max=1). It seems bogus to me that we doesn't handle this any
   // better.
-  // 
+  //
   // Wouldn't it be better if we just reversed the sign of the step
   // value if min > max? Or just "freeze" the engine?
   //
