@@ -303,7 +303,7 @@ public:
   void buildGeometry();
   void modifyCubeFace(SoMFString & urls, SoSeparator * facesep, int * vindices);
   SoSeparator * createCubeFace(SoMFString & urls, SoSeparator * sep, int * vindices);
-  void buildIndexList(SoIndexedTriangleStripSet * sphere, int len, int matlength);
+  void buildIndexList(SoIndexedTriangleStripSet * sphere, int len, int slices, int matlength);
 
 
 };
@@ -461,7 +461,7 @@ SoVRMLBackgroundP::buildGeometry()
   lightmodel->model.setValue(SoLightModel::BASE_COLOR);
   this->rootnode->addChild(lightmodel);
 
-
+  
   
   //
   // Sky sphere
@@ -503,8 +503,10 @@ SoVRMLBackgroundP::buildGeometry()
 
         
     int len = angles.getLength();
-    
-    SbVec3f * skyvertexarray = new SbVec3f[len * len];    
+    int slices = len;
+    if (slices < 30) slices = 30;
+
+    SbVec3f * skyvertexarray = new SbVec3f[len * slices]; 
     SoIndexedTriangleStripSet * sky = new SoIndexedTriangleStripSet;
     SoVertexProperty * skyproperties = new SoVertexProperty;    
     skyproperties->normalBinding.setValue(SoVertexProperty::PER_VERTEX_INDEXED);
@@ -513,15 +515,15 @@ SoVRMLBackgroundP::buildGeometry()
     // Calculate vertices and normals
     double x, y, z;
     int counter = 0;
-    for (int i=0;i<len;++i) {
+    for (int i=0;i<slices;++i) {
       for (int j=0;j<len;++j) {
-        x = sphereradius * cos(i * ((2 * M_PI) / len)) * sin(angles[j]);
+        x = sphereradius * cos(i * ((2 * M_PI) / slices)) * sin(angles[j]);
         y = sphereradius * cos(angles[j]);
-        z = sphereradius * sin(i * ((2 * M_PI) / len)) * sin(angles[j]);
+        z = sphereradius * sin(i * ((2 * M_PI) / slices)) * sin(angles[j]);
         skyvertexarray[counter++] = SbVec3f((float) x, (float) y, (float) z);
       }
     }
-    for (i=0;i<len*len;++i) {
+    for (i=0;i<len*slices;++i) {
       skyproperties->vertex.set1Value(i, skyvertexarray[i]);
       SbVec3f normal = -skyvertexarray[i];
       normal.normalize();
@@ -542,18 +544,13 @@ SoVRMLBackgroundP::buildGeometry()
     }
 
 
-    buildIndexList(sky, len, PUBLIC(this)->skyColor.getNum());
+    buildIndexList(sky, len, slices, PUBLIC(this)->skyColor.getNum());
 
 
     SoShapeHints * shapehintssky = new SoShapeHints;
     shapehintssky->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
     shapehintssky->shapeType = SoShapeHints::SOLID;
     shapehintssky->faceType = SoShapeHints::CONVEX;
-
-    SoScale * scale = new SoScale;
-    SbVec3f factor(3, 3, 3);
-    scale->scaleFactor.setValue(factor);
-    this->rootnode->addChild(scale);
 
     this->rootnode->addChild(shapehintssky);
     this->rootnode->addChild(sky);  
@@ -583,6 +580,7 @@ SoVRMLBackgroundP::buildGeometry()
         angle = PUBLIC(this)->groundAngle[k];
         if (angle > M_PI/2) {
           SoDebugError::postWarning("buildGeometry","groundAngle > PI/2 not allowed.");
+
           angle = M_PI / 2;
         } else if (angle < 0) {
           SoDebugError::postWarning("buildGeometry","groundAngle < 0 not allowed.");
@@ -604,8 +602,10 @@ SoVRMLBackgroundP::buildGeometry()
 
 
     int len = angles.getLength();
+    int slices = len;
+    if (slices < 30) slices = 30;
 
-    SbVec3f * groundvertexarray = new SbVec3f[len * len];
+    SbVec3f * groundvertexarray = new SbVec3f[len * slices];
     SoIndexedTriangleStripSet * ground = new SoIndexedTriangleStripSet;
     SoVertexProperty * groundproperties = new SoVertexProperty;
     groundproperties->normalBinding.setValue(SoVertexProperty::PER_VERTEX_INDEXED);
@@ -613,15 +613,15 @@ SoVRMLBackgroundP::buildGeometry()
     // Calculate vertices and normals
     int counter = 0;
     double x,y,z;
-    for (int i=0;i<len;++i) {
+    for (int i=0;i<slices;++i) {
       for (int j=0;j<len;++j) {
-        x = sphereradius * cos(i * ((2 * M_PI) / len)) * sin(angles[j]);
+        x = sphereradius * cos(i * ((2 * M_PI) / slices)) * sin(angles[j]);
         y = -sphereradius * cos(angles[j]);
-        z = sphereradius * sin(i * ((2 * M_PI) / len)) * sin(angles[j]);
+        z = sphereradius * sin(i * ((2 * M_PI) / slices)) * sin(angles[j]);
         groundvertexarray[counter++] = SbVec3f((float) x, (float) y, (float) z);
       }
     }
-    for (i=0;i<len*len;++i) {
+    for (i=0;i<len*slices;++i) {
       groundproperties->vertex.set1Value(i, groundvertexarray[i]);
       SbVec3f normal = -groundvertexarray[i];
       normal.normalize();
@@ -642,18 +642,12 @@ SoVRMLBackgroundP::buildGeometry()
     }
 
     // Build vertex and normal indices
-    buildIndexList(ground, len, PUBLIC(this)->groundColor.getNum());
+    buildIndexList(ground, len, slices, PUBLIC(this)->groundColor.getNum());
       
     SoShapeHints * shapehintsground = new SoShapeHints;
     shapehintsground->vertexOrdering = SoShapeHints::CLOCKWISE;
     shapehintsground->shapeType = SoShapeHints::SOLID;
     shapehintsground->faceType = SoShapeHints::CONVEX;
-
-    SoScale * scale = new SoScale;
-    SbVec3f factor(2, 2, 2);
-    scale->scaleFactor.setValue(factor);
-    this->rootnode->addChild(scale);
-
 
     this->rootnode->addChild(shapehintsground);
     this->rootnode->addChild(ground);
@@ -671,11 +665,16 @@ SoVRMLBackgroundP::buildGeometry()
   in.setBuffer(scenery_data, sizeof(scenery_data));
   SoSeparator * cubedata = SoDB::readAll(&in);
 
+  SoShapeHints * shapehintscube = new SoShapeHints;
+  shapehintscube->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+  shapehintscube->shapeType = SoShapeHints::SOLID;
+  shapehintscube->faceType = SoShapeHints::CONVEX;
+  this->rootnode->addChild(shapehintscube);
+
   SoScale * scale = new SoScale;
   SbVec3f factor(2, 2, 2);
   scale->scaleFactor.setValue(factor);
   this->rootnode->addChild(scale);
-
   this->rootnode->addChild(cubedata);
   
   int tindices[] = {1, 2, 3, 0, -1};
@@ -733,13 +732,13 @@ SoVRMLBackgroundP::buildGeometry()
 
 
 void
-SoVRMLBackgroundP::buildIndexList(SoIndexedTriangleStripSet * sphere, int len, int matlength)
+SoVRMLBackgroundP::buildIndexList(SoIndexedTriangleStripSet * sphere, int len, int slices, int matlength)
 {
 
   // Build vertex and normal indices for triangle strips
   int matindex = 0;
   int counter = 0;
-  for (int i=0;i<len - 1;++i) {
+  for (int i=0;i<slices - 1;++i) {
     for (int j=0;j<len;++j) {
       
       sphere->materialIndex.set1Value(counter,matindex);
@@ -760,7 +759,7 @@ SoVRMLBackgroundP::buildIndexList(SoIndexedTriangleStripSet * sphere, int len, i
     matindex = 0;
   }
   
-  i = len - 1;
+  i = slices - 1;
   for (int j=0;j<len;++j) {
     
     sphere->materialIndex.set1Value(counter, matindex);
@@ -903,7 +902,6 @@ geometrychangeCB(void * data, SoSensor * sensor)
 
   pimpl->rootnode->removeAllChildren(); // Remove everything incase this was called earlier
   pimpl->rootnode->unref();
-
   pimpl->buildGeometry();
 
 }
