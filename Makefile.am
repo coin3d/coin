@@ -29,6 +29,7 @@ endif
 SUBDIRS = . $(BINDIR) include $(SRCDIRS) $(MANDIR) $(HTMLDIRS)
 
 BUILT_SOURCES = \
+	include/Inventor/C/basic.h \
 	include/Inventor/SbBasic.h \
 	include/Inventor/system/inttypes.h \
 	coin-@CONFIG@.cfg
@@ -79,6 +80,9 @@ coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
 
 # sources needed to generate docs must be created by this rule
 built-sources: $(BUILT_SOURCES)
+
+include/Inventor/C/basic.h: $(srcdir)/include/Inventor/C/basic.h.in config.status
+	@./config.status --header=$@
 
 include/Inventor/SbBasic.h: $(srcdir)/include/Inventor/SbBasic.h.in config.status
 	@./config.status --header=$@

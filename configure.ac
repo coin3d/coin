@@ -119,7 +119,7 @@ AC_SUBST([LT_CURRENT], [COIN_ABI_CURRENT])
 AC_SUBST([LT_REVISION], [COIN_ABI_REVISION])
 AC_SUBST([LT_AGE], [COIN_ABI_AGE])
 
-#  These are for include/Inventor/SbBasic.h.
+#  These are for include/Inventor/C/basic.h.
 
 AC_DEFINE_UNQUOTED([COIN_MAJOR_VERSION], [$COIN_MAJOR_VERSION],
   [define this to the libCoin major version number])

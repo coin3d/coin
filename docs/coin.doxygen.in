@@ -247,7 +247,8 @@ WARN_FORMAT            = "$file:$line: $text"
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces. 
 
-INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
+INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
+                         @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBSPTree.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox2f.h \
