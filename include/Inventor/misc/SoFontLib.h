@@ -35,7 +35,7 @@ class SoFontLib {
 public:
   static void initialize(void);
   static void exit(void);
-  static const SbString createFont(const SbName & fontname, const SbName & stylename, const SbVec2s & size);
+  static SbString createFont(const SbName & fontname, const SbName & stylename, const SbVec2s & size);
   static int getFont(const SbName & fontname, const SbVec2s & size);
   static void doneFont(const int font);
   static int getNumCharmaps(const int font);
@@ -53,7 +53,7 @@ public:
 protected:
   SoFontLib(void);
   ~SoFontLib();
-  
+
 private:
   SoFontLibP * pimpl;
 };

@@ -130,7 +130,7 @@ SoFontLib::exit()
     CC_MUTEX_DESTRUCT(SoFontLibP::apimutex);
 }
 
-const SbString
+SbString
 SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbVec2s &size)
 {
   CC_MUTEX_LOCK(SoFontLibP::apimutex);
