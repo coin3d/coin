@@ -95,7 +95,7 @@ SO_ENGINE_SOURCE(SoTimeCounter);
 /*!
   Default constructor.
 */
-SoTimeCounter::SoTimeCounter()
+SoTimeCounter::SoTimeCounter(void)
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoTimeCounter);
 
@@ -114,9 +114,9 @@ SoTimeCounter::SoTimeCounter()
 
   this->syncOut.enable(FALSE);
 
-  SoField *realtime = SoDB::getGlobalField("realTime");
+  SoField * realtime = SoDB::getGlobalField("realTime");
   this->starttime = ((SoSFTime *)realtime)->getValue().getValue();
-  this->lastoutput = 65537; // bigger than any short can hold
+  this->firstoutputenable = TRUE;
   this->outputvalue = 0;
   this->cyclelen = 1.0;
   this->numsteps = 2;
@@ -129,7 +129,7 @@ SoTimeCounter::SoTimeCounter()
 
 // overloaded from parent
 void
-SoTimeCounter::initClass()
+SoTimeCounter::initClass(void)
 {
   SO_ENGINE_INTERNAL_INIT_CLASS(SoTimeCounter);
 }
@@ -145,7 +145,6 @@ void
 SoTimeCounter::evaluate(void)
 {
   if (this->output.isEnabled()) {
-    this->lastoutput = (int)this->outputvalue;
     SO_ENGINE_OUTPUT(output, SoSFShort, setValue(this->outputvalue));
     // disable until new value is available in outputvalue
     this->output.enable(FALSE);
@@ -154,8 +153,15 @@ SoTimeCounter::evaluate(void)
 
 // doc in parent
 void
-SoTimeCounter::inputChanged(SoField *which)
+SoTimeCounter::inputChanged(SoField * which)
 {
+#if COIN_DEBUG && 0 // debug
+  SbName fieldname;
+  which->getContainer()->getFieldName(which, fieldname);
+  SoDebugError::postInfo("SoTimeCounter::inputChanged", "field=%p, \"%s\"",
+                         which, fieldname.getString());
+#endif // debug
+
   if (which == &this->timeIn) {
     if (this->ispaused) return;
 
@@ -289,7 +295,7 @@ SoTimeCounter::calcDutySteps(void)
     dutylimits.truncate(0);
     for (i = 0; i < numsteps; i++) {
       currsum += (double) this->duty[i];
-      this->dutylimits.append(currsum/dutysum*this->cyclelen);
+      this->dutylimits.append(currsum/dutysum * this->cyclelen);
     }
   }
   else {
@@ -331,16 +337,20 @@ void
 SoTimeCounter::setOutputValue(short value)
 {
   if (value != this->outputvalue) {
-    if (value == this->outputvalue + step.getValue()) { // common case
+    if (value == this->outputvalue + this->step.getValue()) { // common case
       this->stepnum++;
     }
     else { // either reset, wrap-around or a delay somewhere
       short offset = value - this->min.getValue();
       this->stepnum = offset / this->step.getValue();
     }
-    this->outputvalue = (short) value;
+    this->outputvalue = value;
+    this->output.enable(TRUE);
   }
-  if ((int) this->outputvalue  != this->lastoutput) {
+  // FIXME: is this really necessary? Can't we just set
+  // this->output.enable(TRUE) in the constructor instead? 20000907 mortene.
+  else if (this->firstoutputenable) {
+    this->firstoutputenable = FALSE;
     this->output.enable(TRUE);
   }
 }

@@ -61,7 +61,7 @@ private:
   SbBool prevon;
   SbBool ispaused;
   double pausetimeincycle;
-  int lastoutput;
+  SbBool firstoutputenable;
   short outputvalue;
   int numsteps;
   int stepnum;
