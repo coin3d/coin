@@ -21,58 +21,49 @@
 #define COIN_SOSTATE_H
 
 #include <Inventor/SbBasic.h>
-#include <Inventor/lists/SbList.h>
 #include <stdio.h>
 
 class SoAction;
 class SoTypeList;
 class SoElement;
 
-
 class COIN_DLL_API SoState {
 public:
-  SoState(SoAction * const action,
-          const SoTypeList & enabledElements);
+  SoState(SoAction * action,
+          const SoTypeList & enabledelements);
   ~SoState(void);
 
   SoAction * getAction(void) const;
 
-  SoElement * getElement(const int stackIndex);
-  const SoElement * getConstElement(const int stackIndex) const;
+  SoElement * getElement(const int stackindex);
+  const SoElement * getConstElement(const int stackindex) const;
 
   void push(void);
   void pop(void);
 
   void print(FILE * const file = stdout) const;
 
-  SbBool isElementEnabled(const int stackIndex) const;
+  SbBool isElementEnabled(const int stackindex) const;
 
-  int getDepth() const;
+  int getDepth(void) const;
 
   void setCacheOpen(const SbBool flag);
   SbBool isCacheOpen(void) const;
 
   void lazyEvaluate(void) const;
 
-  SoElement * getElementNoPush(const int stackIndex) const;
+  SoElement * getElementNoPush(const int stackindex) const;
 
 private:
-  SoAction * const action;
   SoElement ** stack;
-  SoElement ** initial;
-  int numStacks;
-  int depth;
-  SbBool cacheopen;
-  class sostate_pushstore * pushstore;
-  SbList <int> lazylist;
+  class SoStateP * pimpl;  
 };
 
-// inlined methods
-
+// used very often, and is therefore inlined
 inline const SoElement *
-SoState::getConstElement(const int stackIndex) const
+SoState::getConstElement(const int stackindex) const
 {
-  return stack[stackIndex];
+  return this->stack[stackindex];
 }
 
 #endif // !COIN_SOSTATE_H

@@ -255,27 +255,6 @@ protected:
   SoNodeList antiSquishList;
 
 private:
-  class SbPlaneProjector *planeProj;
-  class SbLineProjector *lineProj;
-  class SbSphereProjector *sphereProj;
-  class SbCylinderProjector *cylProj;
-
-  SbMatrix prevMotionMatrix;
-  SbVec3f prevWorldHitPt;
-  SbVec3f ctrlOffset;
-  SbBool ctrlDown;
-  SbBool shiftDown;
-
-  State state;
-  SbBool locateHighlighting;
-  static int colinearThreshold;
-  int constraintState;
-  SbVec3f worldRestartPt;
-
-  int whatkind;
-  int whatnum;
-  int dimension;
-
   void getSurroundScaleMatrices(SbMatrix &matrix, SbMatrix &inv);
   SoNode *getNodeFieldNode(const char *fieldname);
 
@@ -300,6 +279,16 @@ private:
   void dragTranslate();
   void dragScale();
   void dragRotate();
+
+  class SbPlaneProjector *planeProj;
+  class SbLineProjector *lineProj;
+  class SbSphereProjector *sphereProj;
+  class SbCylinderProjector *cylProj;
+
+  State state;
+
+  class SoTransformerDraggerP * pimpl;
+  friend class SoTransformerDraggerP;
 };
 
 #endif // !COIN_SOTRANSFORMERDRAGGER_H

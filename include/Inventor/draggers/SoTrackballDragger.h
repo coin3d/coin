@@ -92,26 +92,12 @@ protected:
   SoFieldSensor * scaleFieldSensor;
 
 private:
-  SoNode *getNodeFieldNode(const char *fieldname);
+  SoNode * getNodeFieldNode(const char *fieldname);
   void updateUserAxisSwitches(const SbBool setactive = FALSE);
-
-  SbSphereProjector *sphereProj;
-  SbCylinderProjector *cylProj;
-  SbLineProjector *lineProj;
-
-  int whatkind;
-  SbBool animationEnabled;
-  SbVec2f prevMousePos;
-  SbTime prevTime;
-  SbTime animTime;
-  SbVec3f animAxis;
-  float animAngle;
-  SbBool hasDragged;
-  SbMatrix prevMotionMatrix;
-  SbVec3f prevWorldHitPt;
-
-  SoTimerSensor *timerSensor;
   static void timerSensorCB(void *, SoSensor *);
+
+  class SoTrackballDraggerP * pimpl;
+  friend class SoTrackballDraggerP;
 };
 
 #endif // !COIN_SOTRACKBALLDRAGGER_H

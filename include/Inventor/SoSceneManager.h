@@ -84,27 +84,8 @@ protected:
   void redraw(void);
 
 private:
-  static void nodesensorCB(void * data, SoSensor * sensor);
-  static void redrawshotTriggeredCB(void * data, SoSensor * sensor);
-
-  SoSceneManagerRenderCB * rendercb;
-  void * rendercbdata;
-
-  SoGLRenderAction * glaction;
-  SbBool deleteglaction;
-  SoHandleEventAction * handleeventaction;
-  SbBool deletehandleeventaction;
-
-  SoNode * scene;
-  SoNodeSensor * rootsensor;
-  SoOneShotSensor * redrawshot;
-
-  SbColor backgroundcolor;
-  int backgroundindex;
-  uint32_t flags;
-  static SbBool touchtimer;
-
-  uint32_t redrawpri;
+  class SoSceneManagerP * pimpl;
+  friend class SoSceneManagerP;
 };
 
 #endif // !COIN_SOSCENEMANAGER_H

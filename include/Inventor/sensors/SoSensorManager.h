@@ -20,8 +20,7 @@
 #ifndef COIN_SOSENSORMANAGER_H
 #define COIN_SOSENSORMANAGER_H
 
-#include <Inventor/lists/SbList.h>
-#include <Inventor/SbTime.h>
+#include <Inventor/SbBasic.h>
 
 // FIXME: do this properly through something configure based.
 // 19991214 mortene.
@@ -68,17 +67,9 @@ private:
 
   int mergeTimerQueues(void);
   int mergeDelayQueues(void);
-
-  SbBool processingtimerqueue, processingdelayqueue;
-
-  SbList<SoDelayQueueSensor *> delayqueue, delaywaitqueue;
-  SbList<SoTimerQueueSensor *> timerqueue, timerwaitqueue;
-  SbList<SoTimerSensor*> reschedulelist;
-
-  void (*queueChangedCB)(void *);
-  void * queueChangedCBData;
-
-  SbTime delaysensortimeout;
+  
+  class SoSensorManagerP * pimpl;
+  friend class SoSensorManagerP;
 };
 
 #endif // !COIN_SOSENSORMANAGER_H

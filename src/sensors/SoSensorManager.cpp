@@ -48,6 +48,8 @@
 #include <Inventor/sensors/SoSensorManager.h>
 #include <Inventor/sensors/SoDelayQueueSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/SbTime.h>
 #include <coindefs.h> // COIN_STUB()
 
 #if COIN_DEBUG
@@ -64,19 +66,42 @@
 #define DEBUG_DELAY_SENSORHANDLING 0
 #define DEBUG_TIMER_SENSORHANDLING 0
 
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoSensorManagerP {
+public:
+
+  SbBool processingtimerqueue, processingdelayqueue;
+
+  SbList <SoDelayQueueSensor *> delayqueue, delaywaitqueue;
+  SbList <SoTimerQueueSensor *> timerqueue, timerwaitqueue;
+  SbList <SoTimerSensor*> reschedulelist;
+
+  void (*queueChangedCB)(void *);
+  void * queueChangedCBData;
+
+  SbTime delaysensortimeout;
+};
+
+#endif // DOXYGEN_SKIP_THIS 
+
+#undef THIS
+#define THIS this->pimpl
 
 /*!
   Constructor.
  */
 SoSensorManager::SoSensorManager(void)
 {
-  this->queueChangedCB = NULL;
-  this->queueChangedCBData = NULL;
+  THIS = new SoSensorManagerP;
 
-  this->processingtimerqueue = FALSE;
-  this->processingdelayqueue = FALSE;
+  THIS->queueChangedCB = NULL;
+  THIS->queueChangedCBData = NULL;
 
-  this->delaysensortimeout.setValue(1.0/12.0);
+  THIS->processingtimerqueue = FALSE;
+  THIS->processingdelayqueue = FALSE;
+
+  THIS->delaysensortimeout.setValue(1.0/12.0);
 }
 
 /*!
@@ -85,8 +110,10 @@ SoSensorManager::SoSensorManager(void)
 SoSensorManager::~SoSensorManager()
 {
   // FIXME: remove entries. 19990225 mortene.
-  if(this->delayqueue.getLength() != 0) {}
-  if(this->timerqueue.getLength() != 0) {}
+  if(THIS->delayqueue.getLength() != 0) {}
+  if(THIS->timerqueue.getLength() != 0) {}
+
+  delete THIS;
 }
 
 /*!
@@ -101,8 +128,8 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
 
   SbList<SoDelayQueueSensor *> * activedelayqueue;
 
-  if (this->processingdelayqueue) activedelayqueue = & this->delaywaitqueue;
-  else activedelayqueue = & this->delayqueue;
+  if (THIS->processingdelayqueue) activedelayqueue = & THIS->delaywaitqueue;
+  else activedelayqueue = & THIS->delayqueue;
 
   int pos = 0;
   while((pos < activedelayqueue->getLength()) &&
@@ -116,13 +143,13 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
     SoDebugError::postInfo("SoSensorManager::insertDelaySensor",
                            "inserted delay sensor #%d -- %p -- "
                            "%sprocessing queue",
-                           this->delayqueue.getLength() +
-                           this->delaywaitqueue.getLength() - 1,
+                           THIS->delayqueue.getLength() +
+                           THIS->delaywaitqueue.getLength() - 1,
                            newentry,
-                           this->processingdelayqueue ? "" : "not ");
+                           THIS->processingdelayqueue ? "" : "not ");
 #endif // debug
 
-  if (!this->processingdelayqueue) {
+  if (!THIS->processingdelayqueue) {
     this->notifyChanged();
   }
 }
@@ -140,10 +167,10 @@ SoSensorManager::insertTimerSensor(SoTimerQueueSensor * newentry)
 
   SbList<SoTimerQueueSensor *> * activequeue;
 
-  if (this->processingtimerqueue)
-    activequeue = & this->timerwaitqueue;
+  if (THIS->processingtimerqueue)
+    activequeue = & THIS->timerwaitqueue;
   else
-    activequeue = & this->timerqueue;
+    activequeue = & THIS->timerqueue;
 
   int i=0;
   while (i < activequeue->getLength() &&
@@ -156,13 +183,13 @@ SoSensorManager::insertTimerSensor(SoTimerQueueSensor * newentry)
                            "inserted timer sensor #%d -- %p "
                            "(triggertime %f) -- "
                            "%sprocessing queue",
-                           this->timerqueue.getLength() +
-                           this->timerwaitqueue.getLength() - 1,
+                           THIS->timerqueue.getLength() +
+                           THIS->timerwaitqueue.getLength() - 1,
                            newentry, newentry->getTriggerTime().getValue(),
-                           this->processingtimerqueue ? "" : "not ");
+                           THIS->processingtimerqueue ? "" : "not ");
 #endif // debug
 
-  if (!this->processingtimerqueue) {
+  if (!THIS->processingtimerqueue) {
     this->notifyChanged();
   }
 }
@@ -176,16 +203,16 @@ void
 SoSensorManager::removeDelaySensor(SoDelayQueueSensor * entry)
 {
   // Check "real" queue first..
-  int idx = this->delayqueue.find(entry);
-  if (idx != -1) this->delayqueue.remove(idx);
+  int idx = THIS->delayqueue.find(entry);
+  if (idx != -1) THIS->delayqueue.remove(idx);
 
   // ..then the wait queue.
   if (idx == -1) {
-    idx = this->delaywaitqueue.find(entry);
-    if (idx != -1) this->delaywaitqueue.remove(idx);
+    idx = THIS->delaywaitqueue.find(entry);
+    if (idx != -1) THIS->delaywaitqueue.remove(idx);
   }
 
-  if (!this->processingdelayqueue && idx != -1) this->notifyChanged();
+  if (!THIS->processingdelayqueue && idx != -1) this->notifyChanged();
 
 #if COIN_DEBUG
   if (idx == -1) {
@@ -202,16 +229,16 @@ void
 SoSensorManager::removeTimerSensor(SoTimerQueueSensor * entry)
 {
   // Check "real" queue first..
-  int idx = this->timerqueue.find(entry);
-  if (idx != -1) this->timerqueue.remove(idx);
+  int idx = THIS->timerqueue.find(entry);
+  if (idx != -1) THIS->timerqueue.remove(idx);
 
   // ..then the wait queue.
   if (idx == -1) {
-    idx = this->timerwaitqueue.find(entry);
-    if (idx != -1) this->timerwaitqueue.remove(idx);
+    idx = THIS->timerwaitqueue.find(entry);
+    if (idx != -1) THIS->timerwaitqueue.remove(idx);
   }
 
-  if (!this->processingtimerqueue && idx != -1) this->notifyChanged();
+  if (!THIS->processingtimerqueue && idx != -1) this->notifyChanged();
 
 #if COIN_DEBUG
   if (idx == -1) {
@@ -227,53 +254,53 @@ SoSensorManager::removeTimerSensor(SoTimerQueueSensor * entry)
 void
 SoSensorManager::processTimerQueue(void)
 {
-  if (this->processingtimerqueue || this->timerqueue.getLength() == 0)
+  if (THIS->processingtimerqueue || THIS->timerqueue.getLength() == 0)
     return;
 
 #if DEBUG_TIMER_SENSORHANDLING // debug
   SoDebugError::postInfo("SoSensorManager::processTimerQueue",
-                         "start: %d elements", this->timerqueue.getLength());
+                         "start: %d elements", THIS->timerqueue.getLength());
 #endif // debug
 
-  assert(this->reschedulelist.getLength() == 0);
-  this->processingtimerqueue = TRUE;
+  assert(THIS->reschedulelist.getLength() == 0);
+  THIS->processingtimerqueue = TRUE;
 
   SbTime currenttime = SbTime::getTimeOfDay();
-  while (this->timerqueue.getLength() > 0 &&
-         this->timerqueue[0]->getTriggerTime() <= currenttime) {
+  while (THIS->timerqueue.getLength() > 0 &&
+         THIS->timerqueue[0]->getTriggerTime() <= currenttime) {
 #if DEBUG_TIMER_SENSORHANDLING // debug
     SoDebugError::postInfo("SoSensorManager::processTimerQueue",
                            "process element with triggertime %s",
-                           this->timerqueue[0]->getTriggerTime().format().getString());
+                           THIS->timerqueue[0]->getTriggerTime().format().getString());
 #endif // debug
-    SoSensor * sensor = this->timerqueue[0];
-    this->timerqueue.remove(0);
+    SoSensor * sensor = THIS->timerqueue[0];
+    THIS->timerqueue.remove(0);
     sensor->trigger();
   }
 
-  this->processingtimerqueue = FALSE;
+  THIS->processingtimerqueue = FALSE;
 
 #if DEBUG_TIMER_SENSORHANDLING // debug
   SoDebugError::postInfo("SoSensorManager::processTimerQueue",
                          "end, before merge: %d elements",
-                         this->timerqueue.getLength());
+                         THIS->timerqueue.getLength());
 #endif // debug
 
   this->mergeTimerQueues();
 
-  int n = this->reschedulelist.getLength();
+  int n = THIS->reschedulelist.getLength();
   if (n) {
     SbTime time = SbTime::getTimeOfDay();
     for (int i = 0; i < n; i++) {
-      this->reschedulelist[i]->reschedule(time);
+      THIS->reschedulelist[i]->reschedule(time);
     }
-    this->reschedulelist.truncate(0);
+    THIS->reschedulelist.truncate(0);
   }
 
 #if DEBUG_TIMER_SENSORHANDLING // debug
   SoDebugError::postInfo("SoSensorManager::processTimerQueue",
                          "end, after merge: %d elements",
-                         this->timerqueue.getLength());
+                         THIS->timerqueue.getLength());
 #endif // debug
 
   // Should I do this?. 19990207 mortene.
@@ -292,28 +319,28 @@ SoSensorManager::processTimerQueue(void)
 void
 SoSensorManager::processDelayQueue(SbBool isidle)
 {
-  if (this->processingdelayqueue || this->delayqueue.getLength() == 0)
+  if (THIS->processingdelayqueue || THIS->delayqueue.getLength() == 0)
     return;
 
 #if DEBUG_DELAY_SENSORHANDLING // debug
   SoDebugError::postInfo("SoSensorManager::processDelayQueue",
-                         "start: %d elements", this->delayqueue.getLength());
+                         "start: %d elements", THIS->delayqueue.getLength());
 #endif // debug
 
-  this->processingdelayqueue = TRUE;
+  THIS->processingdelayqueue = TRUE;
 
   // Sensors with higher priorities are triggered first.
-  while (this->delayqueue.getLength()) {
+  while (THIS->delayqueue.getLength()) {
 #if DEBUG_DELAY_SENSORHANDLING // debug
     SoDebugError::postInfo("SoSensorManager::processDelayQueue",
                            "treat element with pri %d",
-                           this->delayqueue[i]->getPriority());
+                           THIS->delayqueue[i]->getPriority());
 #endif // debug
 
-    if (!isidle && this->delayqueue[0]->isIdleOnly()) {
+    if (!isidle && THIS->delayqueue[0]->isIdleOnly()) {
       // Remove from current queue without using unschedule().
-      SoDelayQueueSensor * tmpptr = this->delayqueue[0];
-      this->delayqueue.remove(0);
+      SoDelayQueueSensor * tmpptr = THIS->delayqueue[0];
+      THIS->delayqueue.remove(0);
 
       // Will automatically put sensor in "processing wait-queue", and
       // merge back into the "real" queue after processing has
@@ -321,18 +348,18 @@ SoSensorManager::processDelayQueue(SbBool isidle)
       this->insertDelaySensor(tmpptr);
     }
     else {
-      SoSensor * sensor = this->delayqueue[0];
-      this->delayqueue.remove(0);
+      SoSensor * sensor = THIS->delayqueue[0];
+      THIS->delayqueue.remove(0);
       sensor->trigger();
     }
   }
 
-  this->processingdelayqueue = FALSE;
+  THIS->processingdelayqueue = FALSE;
 
 #if DEBUG_DELAY_SENSORHANDLING // debug
   SoDebugError::postInfo("SoSensorManager::processDelayQueue",
                          "end, before merge: %d elements",
-                         this->delayqueue.getLength());
+                         THIS->delayqueue.getLength());
 #endif // debug
 
   this->mergeDelayQueues();
@@ -340,7 +367,7 @@ SoSensorManager::processDelayQueue(SbBool isidle)
 #if DEBUG_DELAY_SENSORHANDLING // debug
   SoDebugError::postInfo("SoSensorManager::processDelayQueue",
                          "end, after merge: %d elements",
-                         this->delayqueue.getLength());
+                         THIS->delayqueue.getLength());
 #endif // debug
 
   // Should I do this?. 19990207 mortene.
@@ -353,35 +380,35 @@ SoSensorManager::processDelayQueue(SbBool isidle)
 void
 SoSensorManager::processImmediateQueue(void)
 {
-  if (this->processingdelayqueue || this->delayqueue.getLength() == 0 ||
-      this->delayqueue[this->delayqueue.getLength()-1]->getPriority() != 0)
+  if (THIS->processingdelayqueue || THIS->delayqueue.getLength() == 0 ||
+      THIS->delayqueue[THIS->delayqueue.getLength()-1]->getPriority() != 0)
     return;
 
 #if DEBUG_DELAY_SENSORHANDLING || 0 // debug
   SoDebugError::postInfo("SoSensorManager::processImmediateQueue",
                          "start: %d elements in full delay queue",
-                         this->delayqueue.getLength());
+                         THIS->delayqueue.getLength());
 #endif // debug
 
-  this->processingdelayqueue = TRUE;
+  THIS->processingdelayqueue = TRUE;
 
-  while (this->delayqueue.getLength() &&
-         this->delayqueue[this->delayqueue.getLength()-1]->getPriority() == 0)
+  while (THIS->delayqueue.getLength() &&
+         THIS->delayqueue[THIS->delayqueue.getLength()-1]->getPriority() == 0)
     {
 #if DEBUG_DELAY_SENSORHANDLING || 0 // debug
       SoDebugError::postInfo("SoSensorManager::processImmediateQueue",
                              "trigger element");
 #endif // debug
-      SoSensor * sensor = this->delayqueue.pop();
+      SoSensor * sensor = THIS->delayqueue.pop();
       sensor->trigger();
     }
 
-  this->processingdelayqueue = FALSE;
+  THIS->processingdelayqueue = FALSE;
 
 #if DEBUG_DELAY_SENSORHANDLING || 0 // debug
   SoDebugError::postInfo("SoSensorManager::processImmediateQueue",
                          "end, before merge: %d elements in full delay queue",
-                         this->delayqueue.getLength());
+                         THIS->delayqueue.getLength());
 #endif // debug
 
   this->mergeDelayQueues();
@@ -389,7 +416,7 @@ SoSensorManager::processImmediateQueue(void)
 #if DEBUG_DELAY_SENSORHANDLING || 0 // debug
   SoDebugError::postInfo("SoSensorManager::processImmediateQueue",
                          "end, after merge: %d elements in full delay queue",
-                         this->delayqueue.getLength());
+                         THIS->delayqueue.getLength());
 #endif // debug
 
   // Should I do this? 19990207 mortene.
@@ -407,15 +434,15 @@ SoSensorManager::processImmediateQueue(void)
 int
 SoSensorManager::mergeTimerQueues(void)
 {
-  int i=0, merged=this->timerwaitqueue.getLength();
-  while (this->timerwaitqueue.getLength() > 0) {
-    SoTimerQueueSensor * ts = this->timerwaitqueue[0];
-    this->timerwaitqueue.remove(0);
+  int i=0, merged=THIS->timerwaitqueue.getLength();
+  while (THIS->timerwaitqueue.getLength() > 0) {
+    SoTimerQueueSensor * ts = THIS->timerwaitqueue[0];
+    THIS->timerwaitqueue.remove(0);
     SbTime triggertime = ts->getTriggerTime();
-    
-    while (i < this->timerqueue.getLength() &&
-           this->timerqueue[i]->getTriggerTime() < triggertime) i++;
-    this->timerqueue.insert(ts, i);
+
+    while (i < THIS->timerqueue.getLength() &&
+           THIS->timerqueue[i]->getTriggerTime() < triggertime) i++;
+    THIS->timerqueue.insert(ts, i);
   }
   return merged;
 }
@@ -432,15 +459,15 @@ int
 SoSensorManager::mergeDelayQueues(void)
 {
   int i=0;
-  int merged=this->delaywaitqueue.getLength();
-  while (this->delaywaitqueue.getLength() > 0) {
-    SoDelayQueueSensor * ds = this->delaywaitqueue[0];
-    this->delaywaitqueue.remove(0);
+  int merged=THIS->delaywaitqueue.getLength();
+  while (THIS->delaywaitqueue.getLength() > 0) {
+    SoDelayQueueSensor * ds = THIS->delaywaitqueue[0];
+    THIS->delaywaitqueue.remove(0);
     unsigned int pri = ds->getPriority();
 
-    while (i < this->delayqueue.getLength() &&
-           pri > this->delayqueue[i]->getPriority()) i++;
-    this->delayqueue.insert(ds, i);
+    while (i < THIS->delayqueue.getLength() &&
+           pri > THIS->delayqueue[i]->getPriority()) i++;
+    THIS->delayqueue.insert(ds, i);
   }
 
   return merged;
@@ -452,7 +479,7 @@ SoSensorManager::mergeDelayQueues(void)
 void
 SoSensorManager::rescheduleTimer(SoTimerSensor * s)
 {
-  this->reschedulelist.append(s);
+  THIS->reschedulelist.append(s);
 }
 
 /*!
@@ -461,9 +488,9 @@ SoSensorManager::rescheduleTimer(SoTimerSensor * s)
 void
 SoSensorManager::removeRescheduledTimer(SoTimerQueueSensor * s)
 {
-  int idx = this->reschedulelist.find((SoTimerSensor*)s);
+  int idx = THIS->reschedulelist.find((SoTimerSensor*)s);
   if (idx >= 0) {
-    this->reschedulelist.remove(idx);
+    THIS->reschedulelist.remove(idx);
   }
   else {
     this->removeTimerSensor(s);
@@ -476,7 +503,7 @@ SoSensorManager::removeRescheduledTimer(SoTimerQueueSensor * s)
 SbBool
 SoSensorManager::isDelaySensorPending(void)
 {
-  return (this->delayqueue.getLength() > 0) ? TRUE : FALSE;
+  return (THIS->delayqueue.getLength() > 0) ? TRUE : FALSE;
 }
 
 /*!
@@ -489,8 +516,8 @@ SoSensorManager::isDelaySensorPending(void)
 SbBool
 SoSensorManager::isTimerSensorPending(SbTime & tm)
 {
-  if (this->timerqueue.getLength() > 0) {
-    tm = this->timerqueue[0]->getTriggerTime();
+  if (THIS->timerqueue.getLength() > 0) {
+    tm = THIS->timerqueue[0]->getTriggerTime();
     return TRUE;
   }
 
@@ -521,7 +548,7 @@ SoSensorManager::setDelaySensorTimeout(const SbTime & t)
   }
 #endif // COIN_DEBUG
 
-  this->delaysensortimeout = t;
+  THIS->delaysensortimeout = t;
 }
 
 /*!
@@ -532,7 +559,7 @@ SoSensorManager::setDelaySensorTimeout(const SbTime & t)
 const SbTime &
 SoSensorManager::getDelaySensorTimeout(void)
 {
-  return this->delaysensortimeout;
+  return THIS->delaysensortimeout;
 }
 
 /*!
@@ -541,14 +568,14 @@ SoSensorManager::getDelaySensorTimeout(void)
 void
 SoSensorManager::setChangedCallback(void (*func)(void *), void * data)
 {
-  this->queueChangedCB = func;
-  this->queueChangedCBData = data;
+  THIS->queueChangedCB = func;
+  THIS->queueChangedCBData = data;
 }
 
 void
 SoSensorManager::notifyChanged(void)
 {
-  if(this->queueChangedCB) this->queueChangedCB(this->queueChangedCBData);
+  if(THIS->queueChangedCB) THIS->queueChangedCB(THIS->queueChangedCBData);
 }
 
 /*!
@@ -565,3 +592,5 @@ SoSensorManager::doSelect(int /* nfds */, fd_set * /* readfds */, fd_set * /* wr
   COIN_STUB();
   return 0;
 }
+
+#undef THIS

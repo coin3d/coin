@@ -51,10 +51,41 @@
 #include <GL/gl.h>
 #include <assert.h>
 
+#ifndef DOXYGEN_SKIP_THIS
+
 // defines for the flags member
 #define FLAG_RGBMODE 0x0001
 #define FLAG_ACTIVE  0x0002
 #define FLAG_SENDVP  0x0004
+
+class SoSceneManagerP {
+public:
+  static void nodesensorCB(void * data, SoSensor * sensor);
+  static void redrawshotTriggeredCB(void * data, SoSensor * sensor);
+
+  SoSceneManagerRenderCB * rendercb;
+  void * rendercbdata;
+
+  SoGLRenderAction * glaction;
+  SbBool deleteglaction;
+  SoHandleEventAction * handleeventaction;
+  SbBool deletehandleeventaction;
+
+  SoNode * scene;
+  SoNodeSensor * rootsensor;
+  SoOneShotSensor * redrawshot;
+
+  SbColor backgroundcolor;
+  int backgroundindex;
+  uint32_t flags;
+  static SbBool touchtimer;
+
+  uint32_t redrawpri;
+};
+
+SbBool SoSceneManagerP::touchtimer = TRUE;
+
+#endif // DOXYGEN_SKIP_THIS
 
 /*!
   \typedef SoSceneManagerRenderCB(void * userdata, SoSceneManager * mgr)
@@ -62,9 +93,8 @@
   Render callback function must have this signature.
 */
 
-
-SbBool SoSceneManager::touchtimer = TRUE;
-
+#undef THIS
+#define THIS this->pimpl
 
 /*!
   Constructor. Sets up default SoGLRenderAction and
@@ -72,25 +102,27 @@ SbBool SoSceneManager::touchtimer = TRUE;
  */
 SoSceneManager::SoSceneManager(void)
 {
-  this->glaction = new SoGLRenderAction(SbViewportRegion(400, 400));
-  this->deleteglaction = TRUE;
+  THIS = new SoSceneManagerP;
 
-  this->handleeventaction =
+  THIS->glaction = new SoGLRenderAction(SbViewportRegion(400, 400));
+  THIS->deleteglaction = TRUE;
+
+  THIS->handleeventaction =
     new SoHandleEventAction(SbViewportRegion(400, 400));
-  this->deletehandleeventaction = TRUE;
+  THIS->deletehandleeventaction = TRUE;
 
-  this->scene = NULL;
-  this->rootsensor = NULL;
-  this->redrawshot = NULL;
+  THIS->scene = NULL;
+  THIS->rootsensor = NULL;
+  THIS->redrawshot = NULL;
 
-  this->backgroundindex = 0;
-  this->backgroundcolor.setValue(0.0f, 0.0f, 0.0f);
+  THIS->backgroundindex = 0;
+  THIS->backgroundcolor.setValue(0.0f, 0.0f, 0.0f);
   // rgbmode by default, and send vp to GL on first render
-  this->flags = FLAG_RGBMODE|FLAG_SENDVP;
-  this->redrawpri = SoSceneManager::getDefaultRedrawPriority();
+  THIS->flags = FLAG_RGBMODE|FLAG_SENDVP;
+  THIS->redrawpri = SoSceneManager::getDefaultRedrawPriority();
 
-  this->rendercb = NULL;
-  this->rendercbdata = NULL;
+  THIS->rendercb = NULL;
+  THIS->rendercbdata = NULL;
 }
 
 /*!
@@ -98,12 +130,14 @@ SoSceneManager::SoSceneManager(void)
  */
 SoSceneManager::~SoSceneManager()
 {
-  if (this->deleteglaction) delete this->glaction;
-  if (this->deletehandleeventaction) delete this->handleeventaction;
+  if (THIS->deleteglaction) delete THIS->glaction;
+  if (THIS->deletehandleeventaction) delete THIS->handleeventaction;
 
   this->setSceneGraph(NULL);
-  delete this->rootsensor;
-  delete this->redrawshot;
+  delete THIS->rootsensor;
+  delete THIS->redrawshot;
+
+  delete THIS;
 }
 
 /*!
@@ -124,21 +158,21 @@ SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
   if (clearzbuffer) mask |= GL_DEPTH_BUFFER_BIT;
 
   if (mask) {
-    if (this->flags & FLAG_RGBMODE) {
-      glClearColor(this->backgroundcolor[0],
-                   this->backgroundcolor[1],
-                   this->backgroundcolor[2],
+    if (THIS->flags & FLAG_RGBMODE) {
+      glClearColor(THIS->backgroundcolor[0],
+                   THIS->backgroundcolor[1],
+                   THIS->backgroundcolor[2],
                    0.0f);
     }
     else {
-      glClearIndex(backgroundindex);
+      glClearIndex(THIS->backgroundindex);
     }
     // some (most) GL drivers need to have the viewport set correctly
     // before clearing. If the window size changes, the
     // SoGLViewportRegionElement will not set the GL viewport until the
     // glaction is applied, which is too late.  FIXME: bad design
-    if (this->flags & FLAG_SENDVP) {
-      this->flags &= ~FLAG_SENDVP;
+    if (THIS->flags & FLAG_SENDVP) {
+      THIS->flags &= ~FLAG_SENDVP;
       const SbViewportRegion & vp = this->getViewportRegion();
       SbVec2s origin = vp.getViewportOriginPixels();
       SbVec2s size = vp.getViewportSizePixels();
@@ -160,15 +194,15 @@ SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
   // in the case of scenegraph modifications between a nodesensor
   // trigger and SoSceneManager::render() actually being called. It
   // will also help us avoid "double redraws" at expose events.
-  if (this->rootsensor && this->rootsensor->isScheduled()) {
+  if (THIS->rootsensor && THIS->rootsensor->isScheduled()) {
 #if 0 // debug
     SoDebugError::postInfo("SoSceneManager::render",
                            "rootsensor unschedule");
 #endif // debug
-    this->rootsensor->unschedule();
+    THIS->rootsensor->unschedule();
   }
   // Apply the SoGLRenderAction to the scenegraph root.
-  if (this->scene) this->glaction->apply(this->scene);
+  if (THIS->scene) THIS->glaction->apply(THIS->scene);
 }
 
 /*!
@@ -178,11 +212,11 @@ SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 SbBool
 SoSceneManager::processEvent(const SoEvent * const event)
 {
-  assert(this->handleeventaction);
+  assert(THIS->handleeventaction);
 
-  this->handleeventaction->setEvent(event);
-  if (this->scene) this->handleeventaction->apply(this->scene);
-  return this->handleeventaction->isHandled();
+  THIS->handleeventaction->setEvent(event);
+  if (THIS->scene) THIS->handleeventaction->apply(THIS->scene);
+  return THIS->handleeventaction->isHandled();
 }
 
 /*!
@@ -192,7 +226,7 @@ SoSceneManager::processEvent(const SoEvent * const event)
 void
 SoSceneManager::reinitialize(void)
 {
-  this->glaction->invalidateState();
+  THIS->glaction->invalidateState();
 }
 
 /*!
@@ -204,19 +238,19 @@ SoSceneManager::reinitialize(void)
 void
 SoSceneManager::scheduleRedraw(void)
 {
-  if ((this->flags & FLAG_ACTIVE) && this->rendercb) {
-    if (!this->redrawshot) {
-      this->redrawshot =
-        new SoOneShotSensor(SoSceneManager::redrawshotTriggeredCB, this);
-      this->redrawshot->setPriority(this->getRedrawPriority());
+  if ((THIS->flags & FLAG_ACTIVE) && THIS->rendercb) {
+    if (!THIS->redrawshot) {
+      THIS->redrawshot =
+        new SoOneShotSensor(SoSceneManagerP::redrawshotTriggeredCB, this);
+      THIS->redrawshot->setPriority(this->getRedrawPriority());
     }
 
 #if 0 // debug
     SoDebugError::postInfo("SoSceneManager::scheduleRedraw",
                            "scheduling redrawshot (oneshotsensor) %p",
-                           this->redrawshot);
+                           THIS->redrawshot);
 #endif // debug
-    this->redrawshot->schedule();
+    THIS->redrawshot->schedule();
   }
 }
 
@@ -226,7 +260,7 @@ SoSceneManager::scheduleRedraw(void)
 int
 SoSceneManager::isActive(void) const
 {
-  return (this->flags & FLAG_ACTIVE) != 0;
+  return (THIS->flags & FLAG_ACTIVE) != 0;
 }
 
 /*!
@@ -235,12 +269,12 @@ SoSceneManager::isActive(void) const
 void
 SoSceneManager::redraw(void)
 {
-  if (this->rendercb) {
-    this->rendercb(this->rendercbdata, this);
+  if (THIS->rendercb) {
+    THIS->rendercb(THIS->rendercbdata, this);
 
     // Automatically re-triggers rendering if any animation stuff is
     // connected to the realTime field.
-    if (this->touchtimer) {
+    if (SoSceneManagerP::touchtimer) {
       // FIXME: it would be more elegant to use a private field class
       // inheriting SoSFTime ("SFRealTime") which could just be
       // touch()'ed, and which would do lazy reading of time-of-day on
@@ -251,32 +285,6 @@ SoSceneManager::redraw(void)
       }
     }
   }
-}
-
-// Internal callback.
-void
-SoSceneManager::redrawshotTriggeredCB(void * data, SoSensor * /* sensor */)
-{
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoSceneManager::redrawshotTriggeredCB", "start");
-#endif // debug
-
-  ((SoSceneManager *)data)->redraw();
-
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoSceneManager::redrawshotTriggeredCB", "done\n\n");
-#endif // debug
-}
-
-// Internal callback.
-void
-SoSceneManager::nodesensorCB(void * data, SoSensor * /* sensor */)
-{
-#if 0 // debug
-  SoDebugError::postInfo("SoSceneManager::nodesensorCB",
-                         "detected change in scene graph");
-#endif // debug
-  ((SoSceneManager *)data)->scheduleRedraw();
 }
 
 /*!
@@ -290,20 +298,20 @@ SoSceneManager::nodesensorCB(void * data, SoSensor * /* sensor */)
 void
 SoSceneManager::setSceneGraph(SoNode * const sceneroot)
 {
-  if (this->rootsensor) this->rootsensor->detach();
+  if (THIS->rootsensor) THIS->rootsensor->detach();
   // Don't unref() until after we've set up the new root, in case the
   // old root == the new sceneroot. (Just to be that bit more robust.)
-  SoNode * oldroot = this->scene;
+  SoNode * oldroot = THIS->scene;
 
-  this->scene = sceneroot;
+  THIS->scene = sceneroot;
 
-  if (this->scene) {
-    this->scene->ref();
+  if (THIS->scene) {
+    THIS->scene->ref();
 
-    if (!this->rootsensor)
-      this->rootsensor = new SoNodeSensor(SoSceneManager::nodesensorCB, this);
+    if (!THIS->rootsensor)
+      THIS->rootsensor = new SoNodeSensor(SoSceneManagerP::nodesensorCB, this);
 
-    this->rootsensor->attach(sceneroot);
+    THIS->rootsensor->attach(sceneroot);
   }
 
   if (oldroot) oldroot->unref();
@@ -315,7 +323,7 @@ SoSceneManager::setSceneGraph(SoNode * const sceneroot)
 SoNode *
 SoSceneManager::getSceneGraph(void) const
 {
-  return this->scene;
+  return THIS->scene;
 }
 
 /*!
@@ -330,14 +338,14 @@ SoSceneManager::setWindowSize(const SbVec2s & newsize)
                          "(%d, %d)", newsize[0], newsize[1]);
 #endif // debug
 
-  SbViewportRegion region = this->glaction->getViewportRegion();
+  SbViewportRegion region = THIS->glaction->getViewportRegion();
   region.setWindowSize(newsize[0], newsize[1]);
-  this->glaction->setViewportRegion(region);
+  THIS->glaction->setViewportRegion(region);
 
-  region = this->handleeventaction->getViewportRegion();
+  region = THIS->handleeventaction->getViewportRegion();
   region.setWindowSize(newsize[0], newsize[1]);
-  this->handleeventaction->setViewportRegion(region);
-  this->flags |= FLAG_SENDVP;
+  THIS->handleeventaction->setViewportRegion(region);
+  THIS->flags |= FLAG_SENDVP;
 }
 
 /*!
@@ -346,7 +354,7 @@ SoSceneManager::setWindowSize(const SbVec2s & newsize)
 const SbVec2s &
 SoSceneManager::getWindowSize(void) const
 {
-  return this->glaction->getViewportRegion().getWindowSize();
+  return THIS->glaction->getViewportRegion().getWindowSize();
 }
 
 /*!
@@ -361,16 +369,16 @@ SoSceneManager::setSize(const SbVec2s & newsize)
                          "(%d, %d)", newsize[0], newsize[1]);
 #endif // debug
 
-  SbViewportRegion region = this->glaction->getViewportRegion();
+  SbViewportRegion region = THIS->glaction->getViewportRegion();
   SbVec2s origin = region.getViewportOriginPixels();
   region.setViewportPixels(origin, newsize);
-  this->glaction->setViewportRegion(region);
+  THIS->glaction->setViewportRegion(region);
 
-  region = this->handleeventaction->getViewportRegion();
+  region = THIS->handleeventaction->getViewportRegion();
   origin = region.getViewportOriginPixels();
   region.setViewportPixels(origin, newsize);
-  this->handleeventaction->setViewportRegion(region);
-  this->flags |= FLAG_SENDVP;
+  THIS->handleeventaction->setViewportRegion(region);
+  THIS->flags |= FLAG_SENDVP;
 }
 
 /*!
@@ -379,7 +387,7 @@ SoSceneManager::setSize(const SbVec2s & newsize)
 const SbVec2s &
 SoSceneManager::getSize(void) const
 {
-  return this->glaction->getViewportRegion().getViewportSizePixels();
+  return THIS->glaction->getViewportRegion().getViewportSizePixels();
 }
 
 /*!
@@ -389,16 +397,16 @@ SoSceneManager::getSize(void) const
 void
 SoSceneManager::setOrigin(const SbVec2s & newOrigin)
 {
-  SbViewportRegion region = this->glaction->getViewportRegion();
+  SbViewportRegion region = THIS->glaction->getViewportRegion();
   SbVec2s size = region.getViewportSizePixels();
   region.setViewportPixels(newOrigin, size);
-  this->glaction->setViewportRegion(region);
+  THIS->glaction->setViewportRegion(region);
 
-  region = this->handleeventaction->getViewportRegion();
+  region = THIS->handleeventaction->getViewportRegion();
   size = region.getViewportSizePixels();
   region.setViewportPixels(newOrigin, size);
-  this->handleeventaction->setViewportRegion(region);
-  this->flags |= FLAG_SENDVP;
+  THIS->handleeventaction->setViewportRegion(region);
+  THIS->flags |= FLAG_SENDVP;
 }
 
 /*!
@@ -407,7 +415,7 @@ SoSceneManager::setOrigin(const SbVec2s & newOrigin)
 const SbVec2s &
 SoSceneManager::getOrigin(void) const
 {
-  return this->glaction->getViewportRegion().getViewportOriginPixels();
+  return THIS->glaction->getViewportRegion().getViewportOriginPixels();
 }
 
 /*!
@@ -416,9 +424,9 @@ SoSceneManager::getOrigin(void) const
 void
 SoSceneManager::setViewportRegion(const SbViewportRegion & newregion)
 {
-  this->glaction->setViewportRegion(newregion);
-  this->handleeventaction->setViewportRegion(newregion);
-  this->flags |= FLAG_SENDVP;
+  THIS->glaction->setViewportRegion(newregion);
+  THIS->handleeventaction->setViewportRegion(newregion);
+  THIS->flags |= FLAG_SENDVP;
 }
 
 /*!
@@ -428,7 +436,7 @@ SoSceneManager::setViewportRegion(const SbViewportRegion & newregion)
 const SbViewportRegion &
 SoSceneManager::getViewportRegion(void) const
 {
-  return this->glaction->getViewportRegion();
+  return THIS->glaction->getViewportRegion();
 }
 
 /*!
@@ -437,7 +445,7 @@ SoSceneManager::getViewportRegion(void) const
 void
 SoSceneManager::setBackgroundColor(const SbColor & color)
 {
-  this->backgroundcolor = color;
+  THIS->backgroundcolor = color;
 }
 
 /*!
@@ -447,7 +455,7 @@ SoSceneManager::setBackgroundColor(const SbColor & color)
 const SbColor &
 SoSceneManager::getBackgroundColor(void) const
 {
-  return this->backgroundcolor;
+  return THIS->backgroundcolor;
 }
 
 /*!
@@ -459,7 +467,7 @@ SoSceneManager::getBackgroundColor(void) const
 void
 SoSceneManager::setBackgroundIndex(const int index)
 {
-  this->backgroundindex = index;
+  THIS->backgroundindex = index;
 }
 
 /*!
@@ -470,7 +478,7 @@ SoSceneManager::setBackgroundIndex(const int index)
 int
 SoSceneManager::getBackgroundIndex(void) const
 {
-  return this->backgroundindex;
+  return THIS->backgroundindex;
 }
 
 /*!
@@ -481,10 +489,10 @@ void
 SoSceneManager::setRGBMode(const SbBool flag)
 {
   if (flag) {
-    this->flags |= FLAG_RGBMODE;
+    THIS->flags |= FLAG_RGBMODE;
   }
   else {
-    this->flags &= ~FLAG_RGBMODE;
+    THIS->flags &= ~FLAG_RGBMODE;
   }
 }
 
@@ -494,7 +502,7 @@ SoSceneManager::setRGBMode(const SbBool flag)
 SbBool
 SoSceneManager::isRGBMode(void) const
 {
-  return (this->flags & FLAG_RGBMODE) != 0;
+  return (THIS->flags & FLAG_RGBMODE) != 0;
 }
 
 /*!
@@ -503,7 +511,7 @@ SoSceneManager::isRGBMode(void) const
 void
 SoSceneManager::activate(void)
 {
-  this->flags |= FLAG_ACTIVE;
+  THIS->flags |= FLAG_ACTIVE;
 }
 
 /*!
@@ -512,7 +520,7 @@ SoSceneManager::activate(void)
 void
 SoSceneManager::deactivate(void)
 {
-  this->flags &= ~FLAG_ACTIVE;
+  THIS->flags &= ~FLAG_ACTIVE;
 }
 
 /*!
@@ -524,8 +532,8 @@ void
 SoSceneManager::setRenderCallback(SoSceneManagerRenderCB * f,
                                   void * const userdata)
 {
-  this->rendercb = f;
-  this->rendercbdata = userdata;
+  THIS->rendercb = f;
+  THIS->rendercbdata = userdata;
 }
 
 /*!
@@ -538,7 +546,7 @@ SoSceneManager::setRenderCallback(SoSceneManagerRenderCB * f,
 SbBool
 SoSceneManager::isAutoRedraw(void) const
 {
-  return this->rendercb != NULL;
+  return THIS->rendercb != NULL;
 }
 
 /*!
@@ -551,9 +559,9 @@ SoSceneManager::isAutoRedraw(void) const
 void
 SoSceneManager::setRedrawPriority(const uint32_t priority)
 {
-  this->redrawpri = priority;
+  THIS->redrawpri = priority;
 
-  if (this->redrawshot) this->redrawshot->setPriority(priority);
+  if (THIS->redrawshot) THIS->redrawshot->setPriority(priority);
 }
 
 /*!
@@ -562,7 +570,7 @@ SoSceneManager::setRedrawPriority(const uint32_t priority)
 uint32_t
 SoSceneManager::getRedrawPriority(void) const
 {
-  return this->redrawpri;
+  return THIS->redrawpri;
 }
 
 /*!
@@ -574,8 +582,8 @@ SoSceneManager::getRedrawPriority(void) const
 void
 SoSceneManager::setAntialiasing(const SbBool smoothing, const int numpasses)
 {
-  this->glaction->setSmoothing(smoothing);
-  this->glaction->setNumPasses(numpasses);
+  THIS->glaction->setSmoothing(smoothing);
+  THIS->glaction->setNumPasses(numpasses);
 }
 
 /*!
@@ -586,8 +594,8 @@ SoSceneManager::setAntialiasing(const SbBool smoothing, const int numpasses)
 void
 SoSceneManager::getAntialiasing(SbBool & smoothing, int & numpasses) const
 {
-  smoothing = this->glaction->isSmoothing();
-  numpasses = this->glaction->getNumPasses();
+  smoothing = THIS->glaction->isSmoothing();
+  numpasses = THIS->glaction->getNumPasses();
 }
 
 /*!
@@ -597,9 +605,9 @@ SoSceneManager::getAntialiasing(SbBool & smoothing, int & numpasses) const
 void
 SoSceneManager::setGLRenderAction(SoGLRenderAction * const action)
 {
-  if (this->deleteglaction) {
-    delete this->glaction;
-    this->glaction = NULL;
+  if (THIS->deleteglaction) {
+    delete THIS->glaction;
+    THIS->glaction = NULL;
   }
 
   // If action change, we need to invalidate state to enable lazy GL
@@ -607,9 +615,9 @@ SoSceneManager::setGLRenderAction(SoGLRenderAction * const action)
   //
   // Note that the SGI and TGS Inventor implementations doesn't do
   // this -- which smells of a bug.
-  if (action && action != this->glaction) action->invalidateState();
-  this->glaction = action;
-  this->deleteglaction = FALSE;
+  if (action && action != THIS->glaction) action->invalidateState();
+  THIS->glaction = action;
+  THIS->deleteglaction = FALSE;
 }
 
 /*!
@@ -618,7 +626,7 @@ SoSceneManager::setGLRenderAction(SoGLRenderAction * const action)
 SoGLRenderAction *
 SoSceneManager::getGLRenderAction(void) const
 {
-  return this->glaction;
+  return THIS->glaction;
 }
 
 /*!
@@ -628,9 +636,9 @@ SoSceneManager::getGLRenderAction(void) const
 void
 SoSceneManager::setHandleEventAction(SoHandleEventAction * hea)
 {
-  if (this->deletehandleeventaction) delete this->handleeventaction;
-  this->handleeventaction = hea;
-  this->deletehandleeventaction = FALSE;
+  if (THIS->deletehandleeventaction) delete THIS->handleeventaction;
+  THIS->handleeventaction = hea;
+  THIS->deletehandleeventaction = FALSE;
 }
 
 /*!
@@ -639,7 +647,7 @@ SoSceneManager::setHandleEventAction(SoHandleEventAction * hea)
 SoHandleEventAction *
 SoSceneManager::getHandleEventAction(void) const
 {
-  return this->handleeventaction;
+  return THIS->handleeventaction;
 }
 
 /*!
@@ -664,7 +672,7 @@ SoSceneManager::getDefaultRedrawPriority(void)
 void
 SoSceneManager::enableRealTimeUpdate(const SbBool flag)
 {
-  SoSceneManager::touchtimer = flag;
+  SoSceneManagerP::touchtimer = flag;
 }
 
 /*!
@@ -674,10 +682,40 @@ SoSceneManager::enableRealTimeUpdate(const SbBool flag)
 SbBool
 SoSceneManager::isRealTimeUpdateEnabled(void)
 {
-  return SoSceneManager::touchtimer;
+  return SoSceneManagerP::touchtimer;
 }
 
+#undef THIS
 #undef FLAG_RGBMODE
 #undef FLAG_ACTIVE
 #undef FLAG_SENDVP
 
+#ifndef DOXYGEN_SKIP_THIS
+
+// Internal callback.
+void
+SoSceneManagerP::redrawshotTriggeredCB(void * data, SoSensor * /* sensor */)
+{
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoSceneManager::redrawshotTriggeredCB", "start");
+#endif // debug
+
+  ((SoSceneManager *)data)->redraw();
+
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoSceneManager::redrawshotTriggeredCB", "done\n\n");
+#endif // debug
+}
+
+// Internal callback.
+void
+SoSceneManagerP::nodesensorCB(void * data, SoSensor * /* sensor */)
+{
+#if 0 // debug
+  SoDebugError::postInfo("SoSceneManager::nodesensorCB",
+                         "detected change in scene graph");
+#endif // debug
+  ((SoSceneManager *)data)->scheduleRedraw();
+}
+
+#endif // DOXYGEN_SKIP_THIS

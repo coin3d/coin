@@ -66,13 +66,14 @@
 // Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
 SoType SoEngine::classTypeId;
 
+#define FLAG_ISNOTIFYING 0x1
 
 /*!
   Default constructor.
 */
 SoEngine::SoEngine(void)
 {
-  this->stateflags.isnotifying = 0;
+  this->flags = 0;
 }
 
 /*!
@@ -273,7 +274,7 @@ SoEngine::notify(SoNotList * nl)
 
   // Avoid recursive notification calls.
   if (this->isNotifying()) return;
-  this->stateflags.isnotifying = 1;
+  this->flags |= FLAG_ISNOTIFYING;
 
   // FIXME: we don't add ourselves to the notification list. This
   // should probably be done, but I've postponed it until we see the
@@ -290,7 +291,7 @@ SoEngine::notify(SoNotList * nl)
   for (int i = 0; i < numoutputs; i++)
     outputs->getOutput(this, i)->touchSlaves(nl, this->isNotifyEnabled());
 
-  this->stateflags.isnotifying = 0;
+  this->flags &= ~FLAG_ISNOTIFYING;
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoEngine::notify", "%p - %s, done",
@@ -449,5 +450,5 @@ SoEngine::shouldCopy(void) const
 SbBool
 SoEngine::isNotifying(void) const
 {
-  return this->stateflags.isnotifying == 1;
+  return (this->flags & FLAG_ISNOTIFYING) != 0;
 }

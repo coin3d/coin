@@ -54,7 +54,22 @@ public:
   sostate_pushstore * prev;
 };
 
+// class to store private data members
+class SoStateP {
+public:
+  SoAction * action;
+  SoElement ** initial;
+  int numstacks;
+  int depth;
+  SbBool cacheopen;
+  class sostate_pushstore * pushstore;
+  SbList <int> lazylist;
+};
+
 #endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
 
 /*!
   The constructor.  The \a theAction argument is the action object the state
@@ -66,40 +81,47 @@ public:
   elements in the SoState stacks, but SoElement::init() is.
 */
 
-SoState::SoState(SoAction * const theAction,
-                 const SoTypeList & enabledElements)
-  : action(theAction), depth(0), cacheopen(FALSE)
+SoState::SoState(SoAction * theAction,
+                 const SoTypeList & enabledelements)
 {
+  THIS = new SoStateP;
+
+  THIS->action = theAction;
+  THIS->depth = 0;
+  THIS->cacheopen = FALSE;
+
   int i;
 
-  this->numStacks = SoElement::getNumStackIndices() ;
+  THIS->numstacks = SoElement::getNumStackIndices() ;
 
-  this->stack = new SoElement * [this->numStacks];
-  this->initial = new SoElement * [this->numStacks];
+  // the stack member can be accessed from inline methods, and is
+  // therefore not moved to the private class.
+  this->stack = new SoElement * [THIS->numstacks];
+  THIS->initial = new SoElement * [THIS->numstacks];
 
-  for (i = 0; i < this->numStacks; i++) {
-    this->initial[i] = NULL;
+  for (i = 0; i < THIS->numstacks; i++) {
+    THIS->initial[i] = NULL;
     this->stack[i] = NULL;
   }
 
-  const int numElements = enabledElements.getLength();
-  for (i = 0; i < numElements; i++) {
-    SoType type = enabledElements[ i ];
+  const int numelements = enabledelements.getLength();
+  for (i = 0; i < numelements; i++) {
+    SoType type = enabledelements[i];
     assert(type.isBad() || type.canCreateInstance());
     if (!type.isBad()) {
       SoElement * const element = (SoElement *) type.createInstance();
-      element->setDepth(this->depth);
-      const int stackIndex = element->getStackIndex();
-      this->stack[ stackIndex ] = element;
-      this->initial[ stackIndex ] = element;
+      element->setDepth(THIS->depth);
+      const int stackindex = element->getStackIndex();
+      this->stack[stackindex] = element;
+      THIS->initial[stackindex] = element;
       element->init(this); // called for first element in state stack
 
       if (element->isLazy()) {
-        this->lazylist.append(stackIndex);
+        THIS->lazylist.append(stackindex);
       }
     }
   }
-  this->pushstore = new sostate_pushstore;
+  THIS->pushstore = new sostate_pushstore;
 }
 
 /*!
@@ -111,8 +133,8 @@ SoState::SoState(SoAction * const theAction,
 
 SoState::~SoState(void)
 {
-  for (int i = 0; i < this->numStacks; i++) {
-    SoElement * elem = this->initial[i];
+  for (int i = 0; i < THIS->numstacks; i++) {
+    SoElement * elem = THIS->initial[i];
     SoElement * next;
     while (elem) {
       next = elem->nextup;
@@ -121,16 +143,17 @@ SoState::~SoState(void)
     }
   }
 
-  delete[] this->initial;
+  delete[] THIS->initial;
   delete[] this->stack;
 
-  sostate_pushstore * item = this->pushstore;
+  sostate_pushstore * item = THIS->pushstore;
   while (item->prev) item = item->prev; // go to first item
   while (item) {
     sostate_pushstore * next = item->next;
     delete item;
     item = next;
   }
+  delete THIS;
 }
 
 /*!
@@ -141,47 +164,47 @@ SoState::~SoState(void)
 SoAction *
 SoState::getAction(void) const
 {
-  return this->action;
+  return THIS->action;
 }
 
 /*!
   This method returns a modifyable instance of the element on the top of
-  the stack with the given stackIndex.  Because of lazy programming,
+  the stack with the given stackindex.  Because of lazy programming,
   this function may need to do some work, so SoState::getConstElement()
   should be used instead whenever possible.
 */
 
 SoElement *
-SoState::getElement(const int stackIndex)
+SoState::getElement(const int stackindex)
 {
-  SoElement * element = this->stack[ stackIndex ];
+  SoElement * element = this->stack[stackindex];
 #ifdef COIN_EXTRA_DEBUG
   assert(element);
 #endif // COIN_EXTRA_DEBUG
 
 #if 0 // debug
   SoDebugError::postInfo("SoState::getElement",
-                         "stackIndex: %d, element: %p ('%s'), "
+                         "stackindex: %d, element: %p ('%s'), "
                          "stackdepth: %d, pushstack: %s",
-                         stackIndex, element,
+                         stackindex, element,
                          element->getTypeId().getName().getString(),
                          element->getDepth(),
-                         (element->getDepth() < this->depth) ?
+                         (element->getDepth() < THIS->depth) ?
                          "yes" : "no");
 #endif // debug
 
-  if (element->getDepth() < this->depth) { // create elt of correct depth
+  if (element->getDepth() < THIS->depth) { // create elt of correct depth
     SoElement * next = element->nextup;
     if (! next) { // allocate new element
       next = (SoElement *) element->getTypeId().createInstance();
       next->nextdown = element;
       element->nextup = next;
     }
-    next->setDepth(this->depth);
+    next->setDepth(THIS->depth);
     next->push(this);
-    this->stack[ stackIndex ] = next;
+    this->stack[stackindex] = next;
     element = next;
-    this->pushstore->elements.append(stackIndex);
+    THIS->pushstore->elements.append(stackindex);
   }
   assert(element != NULL);
   return element;
@@ -199,14 +222,14 @@ SoState::getElement(const int stackIndex)
 void
 SoState::push(void)
 {
-  if (this->pushstore->next == NULL) {
+  if (THIS->pushstore->next == NULL) {
     sostate_pushstore * store = new sostate_pushstore;
-    store->prev = this->pushstore;
-    this->pushstore->next = store;
+    store->prev = THIS->pushstore;
+    THIS->pushstore->next = store;
   }
-  this->pushstore = this->pushstore->next;
-  this->pushstore->elements.truncate(0);
-  this->depth++;
+  THIS->pushstore = THIS->pushstore->next;
+  THIS->pushstore->elements.truncate(0);
+  THIS->depth++;
 }
 
 /*!
@@ -218,10 +241,10 @@ SoState::push(void)
 void
 SoState::pop(void)
 {
-  this->depth--;
-  int n = this->pushstore->elements.getLength();
+  THIS->depth--;
+  int n = THIS->pushstore->elements.getLength();
   if (n) {
-    const int * array = this->pushstore->elements.getArrayPtr();
+    const int * array = THIS->pushstore->elements.getArrayPtr();
     for (int i = 0; i < n; i++) {
       int idx = array[i];
       SoElement * elem = this->stack[idx];
@@ -231,8 +254,8 @@ SoState::pop(void)
       this->stack[idx] = prev;
     }
   }
-  this->pushstore->elements.truncate(0);
-  this->pushstore = this->pushstore->prev;
+  THIS->pushstore->elements.truncate(0);
+  THIS->pushstore = THIS->pushstore->prev;
 }
 
 /*!
@@ -242,9 +265,9 @@ SoState::pop(void)
 void
 SoState::print(FILE * const file) const
 {
-  fprintf(file, "SoState[%p]: depth = %d\n", this, this->depth);
+  fprintf(file, "SoState[%p]: depth = %d\n", this, THIS->depth);
   fprintf(file, "  enabled elements {\n");
-  for (int i = 0; i < this->numStacks; i++) {
+  for (int i = 0; i < THIS->numstacks; i++) {
     SoElement * element;
     if ((element = this->stack[i]) != NULL)
       fprintf(file, "    %s\n",
@@ -259,9 +282,9 @@ SoState::print(FILE * const file) const
 */
 
 SbBool
-SoState::isElementEnabled(const int stackIndex) const
+SoState::isElementEnabled(const int stackindex) const
 {
-  return (this->stack[ stackIndex ] != NULL);
+  return (this->stack[stackindex] != NULL);
 }
 
 /*!
@@ -273,7 +296,7 @@ SoState::isElementEnabled(const int stackIndex) const
 int
 SoState::getDepth(void) const
 {
-  return this->depth;
+  return THIS->depth;
 }
 
 /*!
@@ -282,7 +305,7 @@ SoState::getDepth(void) const
 void
 SoState::setCacheOpen(const SbBool open)
 {
-  this->cacheopen = open;
+  THIS->cacheopen = open;
 }
 
 /*!
@@ -291,7 +314,7 @@ SoState::setCacheOpen(const SbBool open)
 SbBool
 SoState::isCacheOpen(void) const
 {
-  return this->cacheopen;
+  return THIS->cacheopen;
 }
 
 /*!
@@ -300,20 +323,22 @@ SoState::isCacheOpen(void) const
 */
 
 SoElement *
-SoState::getElementNoPush(const int stackIndex) const
+SoState::getElementNoPush(const int stackindex) const
 {
-  return this->stack[ stackIndex ];
+  return this->stack[stackindex];
 }
 
 /*!
   Evaluates (calls the virtual function lazyEvaluate()) for all
   lazy elements (isLazy() returns TRUE).
 */
-void 
+void
 SoState::lazyEvaluate(void) const
 {
-  int n = this->lazylist.getLength();
+  int n = THIS->lazylist.getLength();
   for (int i = 0; i < n; i++) {
-    this->stack[this->lazylist[i]]->lazyEvaluate();
+    this->stack[THIS->lazylist[i]]->lazyEvaluate();
   }
 }
+
+#undef THIS

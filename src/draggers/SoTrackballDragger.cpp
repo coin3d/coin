@@ -46,6 +46,28 @@
 
 #define USER_AXIS_DISAPPEAR_LIMIT 0.98f
 
+#ifndef DOXYGEN_SKIP_THIS
+class SoTrackballDraggerP {
+public:
+  SbSphereProjector * sphereProj;
+  SbCylinderProjector * cylProj;
+  SbLineProjector * lineProj;
+
+  int whatkind;
+  SbBool animationEnabled;
+  SbVec2f prevMousePos;
+  SbTime prevTime;
+  SbTime animTime;
+  SbVec3f animAxis;
+  float animAngle;
+  SbBool hasDragged;
+  SbMatrix prevMotionMatrix;
+  SbVec3f prevWorldHitPt;
+  SoTimerSensor * timerSensor;
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
 SO_KIT_SOURCE(SoTrackballDragger);
 
 void
@@ -54,8 +76,15 @@ SoTrackballDragger::initClass(void)
   SO_KIT_INTERNAL_INIT_CLASS(SoTrackballDragger);
 }
 
+#undef THIS
+#define THIS this->pimpl
+#undef THISP
+#define THISP thisp->pimpl
+
 SoTrackballDragger::SoTrackballDragger(void)
 {
+  THIS = new SoTrackballDraggerP;
+
   SO_KIT_INTERNAL_CONSTRUCTOR(SoTrackballDragger);
 
   SO_KIT_ADD_CATALOG_ENTRY(surroundScale, SoSurroundScale, TRUE, topSeparator, antiSquish, TRUE);
@@ -107,11 +136,11 @@ SoTrackballDragger::SoTrackballDragger(void)
   SoAntiSquish *squish = SO_GET_ANY_PART(this, "antiSquish", SoAntiSquish);
   squish->sizing = SoAntiSquish::LONGEST_DIAGONAL;
 
-  this->animationEnabled = TRUE;
-  this->whatkind = WHATKIND_NONE;
-  this->sphereProj = new SbSpherePlaneProjector;
-  this->cylProj = new SbCylinderPlaneProjector;
-  this->lineProj = new SbLineProjector();
+  THIS->animationEnabled = TRUE;
+  THIS->whatkind = WHATKIND_NONE;
+  THIS->sphereProj = new SbSpherePlaneProjector;
+  THIS->cylProj = new SbCylinderPlaneProjector;
+  THIS->lineProj = new SbLineProjector();
 
   this->setAllPartsActive(FALSE);
   this->updateUserAxisSwitches();
@@ -128,7 +157,7 @@ SoTrackballDragger::SoTrackballDragger(void)
   this->scaleFieldSensor = new SoFieldSensor(SoTrackballDragger::fieldSensorCB, this);
   this->scaleFieldSensor->setPriority(0);
 
-  this->timerSensor = new SoTimerSensor(SoTrackballDragger::timerSensorCB, this);
+  THIS->timerSensor = new SoTimerSensor(SoTrackballDragger::timerSensorCB, this);
 
   this->setUpConnections(TRUE, TRUE);
 }
@@ -138,9 +167,11 @@ SoTrackballDragger::~SoTrackballDragger()
 {
   delete this->rotFieldSensor;
   delete this->scaleFieldSensor;
-  delete this->sphereProj;
-  delete this->cylProj;
-  delete this->lineProj;
+  delete THIS->sphereProj;
+  delete THIS->cylProj;
+  delete THIS->lineProj;
+
+  delete THIS;
 }
 
 SbBool
@@ -177,11 +208,11 @@ SoTrackballDragger::setDefaultOnNonWritingFields(void)
 {
   this->antiSquish.setDefault(TRUE);
   this->surroundScale.setDefault(TRUE);
-  
+
   SoSwitch * sw = (SoSwitch*) this->userAxisSwitch.getValue();
-  if (sw && sw->whichChild.getValue() == SO_SWITCH_NONE) 
+  if (sw && sw->whichChild.getValue() == SO_SWITCH_NONE)
     this->userAxisSwitch.setDefault(TRUE);
- 
+
   inherited::setDefaultOnNonWritingFields();
 }
 
@@ -217,20 +248,20 @@ SoTrackballDragger::valueChangedCB(void *, SoDragger * d)
 SbBool
 SoTrackballDragger::isAnimationEnabled(void)
 {
-  return this->animationEnabled;
+  return THIS->animationEnabled;
 }
 
 void
 SoTrackballDragger::setAnimationEnabled(SbBool newval)
 {
-  this->animationEnabled = FALSE;
+  THIS->animationEnabled = FALSE;
 }
 
 // invalidate surround scale node, if it exists
-static void 
+static void
 invalidate_surroundscale(SoBaseKit * kit)
 {
-  SoSurroundScale * ss = (SoSurroundScale*) 
+  SoSurroundScale * ss = (SoSurroundScale*)
     kit->getPart("surroundScale", FALSE);
   if (ss) ss->invalidate();
 }
@@ -239,49 +270,49 @@ void
 SoTrackballDragger::dragStart(void)
 {
   invalidate_surroundscale(this);
-  
-  if (this->timerSensor->isScheduled()) {
-    this->timerSensor->unschedule();
+
+  if (THIS->timerSensor->isScheduled()) {
+    THIS->timerSensor->unschedule();
   }
   const SoPath *pickpath = this->getPickPath();
   const SoEvent *event = this->getEvent();
-  this->whatkind = WHATKIND_NONE;
+  THIS->whatkind = WHATKIND_NONE;
   SoSwitch *sw;
 
   if (event->wasCtrlDown()) {
-    this->whatkind = WHATKIND_SCALE;
+    THIS->whatkind = WHATKIND_SCALE;
     this->setAllPartsActive(TRUE);
   }
   else if (event->wasShiftDown()) {
-    this->whatkind = WHATKIND_USERAXIS;
+    THIS->whatkind = WHATKIND_USERAXIS;
     this->updateUserAxisSwitches(TRUE);
   }
 
   SbVec3f axis(0.0f, 1.0f, 0.0f);
-  if (!this->whatkind && pickpath->findNode(this->getNodeFieldNode("rotator")) >= 0) {
-    this->whatkind = WHATKIND_ROTATOR;
+  if (!THIS->whatkind && pickpath->findNode(this->getNodeFieldNode("rotator")) >= 0) {
+    THIS->whatkind = WHATKIND_ROTATOR;
     this->setAllPartsActive(TRUE);
   }
-  if (!this->whatkind && pickpath->findNode(this->getNodeFieldNode("XRotator")) >= 0) {
-    this->whatkind = WHATKIND_XROTATOR;
+  if (!THIS->whatkind && pickpath->findNode(this->getNodeFieldNode("XRotator")) >= 0) {
+    THIS->whatkind = WHATKIND_XROTATOR;
     sw = SO_GET_ANY_PART(this, "XRotatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, 1);
     axis.setValue(1.0f, 0.0f, 0.0f);
   }
-  if (!this->whatkind && pickpath->findNode(this->getNodeFieldNode("YRotator")) >= 0) {
-    this->whatkind = WHATKIND_YROTATOR;
+  if (!THIS->whatkind && pickpath->findNode(this->getNodeFieldNode("YRotator")) >= 0) {
+    THIS->whatkind = WHATKIND_YROTATOR;
     sw = SO_GET_ANY_PART(this, "YRotatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, 1);
     axis.setValue(0.0f, 1.0f, 0.0f);
   }
-  if (!this->whatkind && pickpath->findNode(this->getNodeFieldNode("ZRotator")) >= 0) {
-    this->whatkind = WHATKIND_ZROTATOR;
+  if (!THIS->whatkind && pickpath->findNode(this->getNodeFieldNode("ZRotator")) >= 0) {
+    THIS->whatkind = WHATKIND_ZROTATOR;
     sw = SO_GET_ANY_PART(this, "ZRotatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, 1);
     axis.setValue(0.0f, 0.0f, 1.0f);
   }
-  if (!this->whatkind && pickpath->findNode(this->getNodeFieldNode("userRotator")) >= 0) {
-    this->whatkind = WHATKIND_USERROTATOR;
+  if (!THIS->whatkind && pickpath->findNode(this->getNodeFieldNode("userRotator")) >= 0) {
+    THIS->whatkind = WHATKIND_USERROTATOR;
     sw = SO_GET_ANY_PART(this, "userRotatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, 1);
     axis.setValue(0.0f, 1.0f, 0.0f);
@@ -292,98 +323,98 @@ SoTrackballDragger::dragStart(void)
 
   SbVec3f hitPt = this->getLocalStartingPoint();
 
-  if (this->whatkind == WHATKIND_ROTATOR || this->whatkind == WHATKIND_USERAXIS) {
-    this->sphereProj->setSphere(SbSphere(SbVec3f(0.0f, 0.0f, 0.0f),
+  if (THIS->whatkind == WHATKIND_ROTATOR || THIS->whatkind == WHATKIND_USERAXIS) {
+    THIS->sphereProj->setSphere(SbSphere(SbVec3f(0.0f, 0.0f, 0.0f),
                                          hitPt.length()));
 
-    if (this->whatkind == WHATKIND_USERAXIS) {
+    if (THIS->whatkind == WHATKIND_USERAXIS) {
       hitPt.normalize();
       SO_GET_ANY_PART(this, "userAxisRotation", SoRotation)->rotation =
         SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), hitPt);
     }
     else {
-      this->sphereProj->setViewVolume(this->getViewVolume());
-      this->sphereProj->setWorkingSpace(this->getLocalToWorldMatrix());
+      THIS->sphereProj->setViewVolume(this->getViewVolume());
+      THIS->sphereProj->setWorkingSpace(this->getLocalToWorldMatrix());
       switch (this->getFrontOnProjector()) {
       case FRONT:
-        this->sphereProj->setFront(TRUE);
+        THIS->sphereProj->setFront(TRUE);
         break;
       case BACK:
-        this->sphereProj->setFront(TRUE);
+        THIS->sphereProj->setFront(TRUE);
         break;
       default: // avoid warnings
       case USE_PICK:
-        this->sphereProj->setFront(this->sphereProj->isPointInFront(hitPt));
+        THIS->sphereProj->setFront(THIS->sphereProj->isPointInFront(hitPt));
         break;
       }
-      SbVec3f projPt = this->sphereProj->project(this->getNormalizedLocaterPosition());
-      this->getLocalToWorldMatrix().multVecMatrix(projPt, this->prevWorldHitPt);
-      this->prevMotionMatrix = this->getMotionMatrix();
+      SbVec3f projPt = THIS->sphereProj->project(this->getNormalizedLocaterPosition());
+      this->getLocalToWorldMatrix().multVecMatrix(projPt, THIS->prevWorldHitPt);
+      THIS->prevMotionMatrix = this->getMotionMatrix();
     }
   }
-  else if (this->whatkind == WHATKIND_XROTATOR ||
-           this->whatkind == WHATKIND_YROTATOR ||
-           this->whatkind == WHATKIND_ZROTATOR ||
-           this->whatkind == WHATKIND_USERROTATOR) {
-    this->cylProj->setCylinder(SbCylinder(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), axis),
+  else if (THIS->whatkind == WHATKIND_XROTATOR ||
+           THIS->whatkind == WHATKIND_YROTATOR ||
+           THIS->whatkind == WHATKIND_ZROTATOR ||
+           THIS->whatkind == WHATKIND_USERROTATOR) {
+    THIS->cylProj->setCylinder(SbCylinder(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), axis),
                                           hitPt.length()));
-    this->cylProj->setViewVolume(this->getViewVolume());
-    this->cylProj->setWorkingSpace(this->getLocalToWorldMatrix());
-    hitPt = this->cylProj->project(this->getNormalizedLocaterPosition());
+    THIS->cylProj->setViewVolume(this->getViewVolume());
+    THIS->cylProj->setWorkingSpace(this->getLocalToWorldMatrix());
+    hitPt = THIS->cylProj->project(this->getNormalizedLocaterPosition());
     SbVec3f worldPt;
     this->getLocalToWorldMatrix().multVecMatrix(hitPt, worldPt);
     this->setStartingPoint(worldPt);
   }
-  else if (this->whatkind == WHATKIND_SCALE) {
-    this->lineProj->setLine(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), hitPt));
+  else if (THIS->whatkind == WHATKIND_SCALE) {
+    THIS->lineProj->setLine(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), hitPt));
   }
-  this->prevTime = SbTime::getTimeOfDay();
-  this->prevMousePos = this->getNormalizedLocaterPosition();
-  this->hasDragged = FALSE;
+  THIS->prevTime = SbTime::getTimeOfDay();
+  THIS->prevMousePos = this->getNormalizedLocaterPosition();
+  THIS->hasDragged = FALSE;
 }
 
 void
 SoTrackballDragger::drag(void)
 {
-  this->hasDragged = TRUE;
+  THIS->hasDragged = TRUE;
   SbVec3f startPt = this->getLocalStartingPoint();
 
-  if (this->whatkind == WHATKIND_USERAXIS) {
-    this->sphereProj->setViewVolume(this->getViewVolume());
-    this->sphereProj->setWorkingSpace(this->getLocalToWorldMatrix());
-    SbVec3f vec = this->sphereProj->project(this->getNormalizedLocaterPosition());
+  if (THIS->whatkind == WHATKIND_USERAXIS) {
+    THIS->sphereProj->setViewVolume(this->getViewVolume());
+    THIS->sphereProj->setWorkingSpace(this->getLocalToWorldMatrix());
+    SbVec3f vec = THIS->sphereProj->project(this->getNormalizedLocaterPosition());
     vec.normalize();
     SO_GET_ANY_PART(this, "userAxisRotation", SoRotation)->rotation =
       SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), vec);
   }
 
-  else if (this->whatkind == WHATKIND_ROTATOR) {
-    this->sphereProj->setViewVolume(this->getViewVolume());
-    this->sphereProj->setWorkingSpace(this->getLocalToWorldMatrix());
-    this->getWorldToLocalMatrix().multVecMatrix(this->prevWorldHitPt, startPt);
-    SbVec3f projPt = this->sphereProj->project(this->getNormalizedLocaterPosition());
-    this->getLocalToWorldMatrix().multVecMatrix(projPt, this->prevWorldHitPt);
-    SbRotation rot = this->sphereProj->getRotation(startPt, projPt);
-    this->prevMotionMatrix = this->appendRotation(this->prevMotionMatrix, rot,
+  else if (THIS->whatkind == WHATKIND_ROTATOR) {
+    THIS->sphereProj->setViewVolume(this->getViewVolume());
+    THIS->sphereProj->setWorkingSpace(this->getLocalToWorldMatrix());
+    this->getWorldToLocalMatrix().multVecMatrix(THIS->prevWorldHitPt, startPt);
+    SbVec3f projPt = THIS->sphereProj->project(this->getNormalizedLocaterPosition());
+    this->getLocalToWorldMatrix().multVecMatrix(projPt, THIS->prevWorldHitPt);
+    SbRotation rot = THIS->sphereProj->getRotation(startPt, projPt);
+    THIS->prevMotionMatrix = this->appendRotation(THIS->prevMotionMatrix, rot,
                                                   SbVec3f(0.0f, 0.0f, 0.0f));
-    this->setMotionMatrix(this->prevMotionMatrix);
+    this->setMotionMatrix(THIS->prevMotionMatrix);
   }
-  else if (this->whatkind == WHATKIND_XROTATOR ||
-           this->whatkind == WHATKIND_YROTATOR ||
-           this->whatkind == WHATKIND_ZROTATOR ||
-           this->whatkind == WHATKIND_USERROTATOR) {
-    this->cylProj->setViewVolume(this->getViewVolume());
-    this->cylProj->setWorkingSpace(this->getLocalToWorldMatrix());
-    SbVec3f projPt = this->cylProj->project(this->getNormalizedLocaterPosition());
-    SbRotation rot = this->cylProj->getRotation(startPt, projPt);
+  else if (THIS->whatkind == WHATKIND_XROTATOR ||
+           THIS->whatkind == WHATKIND_YROTATOR ||
+           THIS->whatkind == WHATKIND_ZROTATOR ||
+           THIS->whatkind == WHATKIND_USERROTATOR) {
+    THIS->cylProj->setViewVolume(this->getViewVolume());
+    THIS->cylProj->setWorkingSpace(this->getLocalToWorldMatrix());
+    SbVec3f projPt = THIS->cylProj->project(this->getNormalizedLocaterPosition());
+    SbRotation rot = THIS->cylProj->getRotation(startPt, projPt);
     this->setMotionMatrix(this->appendRotation(this->getStartMotionMatrix(),
                                                rot, SbVec3f(0.0f, 0.0f, 0.0f)));
   }
-  else if (this->whatkind == WHATKIND_SCALE) {
-    this->lineProj->setViewVolume(this->getViewVolume());
-    this->lineProj->setWorkingSpace(this->getLocalToWorldMatrix());
+  else if (THIS->whatkind == WHATKIND_SCALE) {
+    THIS->lineProj->setViewVolume(this->getViewVolume());
+    THIS->lineProj->setWorkingSpace(this->getLocalToWorldMatrix());
     SbVec3f startPt = this->getLocalStartingPoint();
-    SbVec3f projPt = lineProj->project(this->getNormalizedLocaterPosition());
+    SbVec3f projPt = THIS->lineProj->project(this->getNormalizedLocaterPosition());
 
     float orglen = startPt.length();
     float currlen = projPt.length();
@@ -396,24 +427,24 @@ SoTrackballDragger::drag(void)
                                             SbVec3f(scale, scale, scale),
                                             SbVec3f(0.0f, 0.0f, 0.0f)));
   }
-  this->prevTime = SbTime::getTimeOfDay();
-  this->prevMousePos = this->getNormalizedLocaterPosition();
+  THIS->prevTime = SbTime::getTimeOfDay();
+  THIS->prevMousePos = this->getNormalizedLocaterPosition();
 }
 
 void
 SoTrackballDragger::dragFinish(void)
 {
-  this->whatkind = WHATKIND_NONE;
+  THIS->whatkind = WHATKIND_NONE;
   this->setAllPartsActive(FALSE);
   this->updateUserAxisSwitches();
 
-  if (this->hasDragged &&
-      this->animationEnabled &&
-      this->whatkind != WHATKIND_SCALE &&
-      this->whatkind != WHATKIND_USERAXIS) {
+  if (THIS->hasDragged &&
+      THIS->animationEnabled &&
+      THIS->whatkind != WHATKIND_SCALE &&
+      THIS->whatkind != WHATKIND_USERAXIS) {
     SbVec2f pos = this->getNormalizedLocaterPosition();
 
-    if (pos == this->prevMousePos) return;
+    if (pos == THIS->prevMousePos) return;
 
     //
     // FIXME: it might be better to calculate animAngle and animAxis in
@@ -421,30 +452,30 @@ SoTrackballDragger::dragFinish(void)
     //
 
     SbTime currtime = SbTime::getTimeOfDay();
-    this->animTime = currtime - this->prevTime;
+    THIS->animTime = currtime - THIS->prevTime;
 
-    if (this->whatkind == WHATKIND_ROTATOR) {
+    if (THIS->whatkind == WHATKIND_ROTATOR) {
       SbVec3f pt1, pt2;
-      pt1 = this->sphereProj->project(this->prevMousePos);
-      pt2 = this->sphereProj->project(pos);
+      pt1 = THIS->sphereProj->project(THIS->prevMousePos);
+      pt2 = THIS->sphereProj->project(pos);
       SbRotation rot(pt1, pt2);
-      rot.getValue(this->animAxis, this->animAngle);
+      rot.getValue(THIS->animAxis, THIS->animAngle);
     }
     else {
       SbVec3f pt1, pt2;
-      pt1 = this->cylProj->project(this->prevMousePos);
-      pt2 = this->cylProj->project(pos);
-      SbRotation rot = this->cylProj->getRotation(pt1, pt2);
-      rot.getValue(this->animAxis, this->animAngle);
+      pt1 = THIS->cylProj->project(THIS->prevMousePos);
+      pt2 = THIS->cylProj->project(pos);
+      SbRotation rot = THIS->cylProj->getRotation(pt1, pt2);
+      rot.getValue(THIS->animAxis, THIS->animAngle);
     }
     this->saveStartParameters(); // store new startMotionMatrix
     SoTrackballDragger::timerSensorCB(this, NULL);
-    this->prevTime = SbTime::getTimeOfDay();
-    this->timerSensor->setBaseTime(this->prevTime);
+    THIS->prevTime = SbTime::getTimeOfDay();
+    THIS->timerSensor->setBaseTime(THIS->prevTime);
     // FIXME: get animation frame rate from somewhere?
     // pederb, 20000210
-    this->timerSensor->setInterval(SbTime(1.0/50.0));
-    this->timerSensor->schedule();
+    THIS->timerSensor->setInterval(SbTime(1.0/50.0));
+    THIS->timerSensor->schedule();
   }
   invalidate_surroundscale(this);
 }
@@ -454,9 +485,11 @@ SoTrackballDragger::timerSensorCB(void *d, SoSensor *)
 {
   SoTrackballDragger *thisp = (SoTrackballDragger*)d;
 
-  SbTime difftime = SbTime::getTimeOfDay() - thisp->prevTime;
-  float angle = thisp->animAngle * float(difftime.getValue()/thisp->animTime.getValue());
-  SbRotation rot(thisp->animAxis, angle);
+  SbTime currtime = SbTime::getTimeOfDay();
+  SbTime difftime = currtime - THISP->prevTime;
+  THISP->prevTime = currtime;
+  float angle = THISP->animAngle * float(difftime.getValue()/THISP->animTime.getValue());
+  SbRotation rot(THISP->animAxis, angle);
   thisp->setMotionMatrix(thisp->appendRotation(thisp->getStartMotionMatrix(),
                                                rot, SbVec3f(0.0f, 0.0f, 0.0f)));
 }
@@ -554,3 +587,6 @@ SoTrackballDragger::updateUserAxisSwitches(const SbBool setactive)
 #undef WHATKIND_SCALE
 
 #undef USER_AXIS_DISAPPEAR_LIMIT
+#undef THIS
+#undef THISP
+
