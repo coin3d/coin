@@ -14,13 +14,14 @@ using the Concurrent Versioning System for staying in sync with the
 sourcecode repository we at Systems in Motion are using. Follow the
 instructions on the webpages at <URL:http://www.coin3d.org/>.
 
-Be aware that Coin has two source repositories.  "Coin" is the head
+Be aware that Coin has three source repositories.  "Coin" is the head
 development repository which is unstable and may contain unportable
 code and break binary compatibility from time to time.  "Coin-1" is
-the repository we release the Coin 1.* releases from and will always
-contain stable code that does not break upwards binary compatibility.
-You can hack on either, but for your application development efforts'
-sake you might want to follow Coin-1.
+the repository that contains the code for the latest Coin-1.* release.
+"Coin-2" is the repository we release the Coin 2.* releases from and
+will always contain stable code that does not break upwards binary
+compatibility. You can hack on either, but for your application
+development efforts' sake you might want to follow Coin-2.
 
 If you are not familiar with CVS, check out the CVS homepages at
 <URL:http://cvshome.org>.
