@@ -142,150 +142,21 @@ AC_LANG_RESTORE
 
 
 dnl *******************************************************************
-dnl * Enable/disable compilation with debug information.
+dnl * Compiler control.
 dnl *******************************************************************
 
-AC_ARG_ENABLE(debug,
-  [  --enable-debug          turn on Coin debugging [default=yes]],
-  [case "${enableval}" in
-    yes) enable_debug=yes ;;
-    no)  enable_debug=no ;;
-    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-debug) ;;
-  esac],
-  enable_debug=yes)
-
+SIM_COMPILE_DEBUG
 if test "x$enable_debug" = "xyes"; then
   CXXFLAGS="$CXXFLAGS -DCOIN_DEBUG=1"
 else
-  CXXFLAGS="$CXXFLAGS -DCOIN_DEBUG=0 -DNDEBUG"
+  CXXFLAGS="$CXXFLAGS -DCOIN_DEBUG=0"
 fi
 
-
-dnl *******************************************************************
-dnl * Enable/disable compilation with symbol information (g++ only).
-dnl *******************************************************************
-
-AC_ARG_ENABLE(symbols,
-  [  --enable-symbols        (g++ only) turn on symbol debug information
-                          [default=yes]],
-  [case "${enableval}" in
-    yes) enable_symbols=yes ;;
-    no)  enable_symbols=no ;;
-    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-symbols) ;;
-  esac],
-  enable_symbols=yes)
-
-if test "x$enable_symbols" = "xno"; then
-  if test "x$GXX" = "xyes"; then
-    CXXFLAGS="`echo $CXXFLAGS | sed 's/-g//'`"
-  else
-    AC_MSG_WARN(--disable-symbols only has effect when using GNU g++)
-  fi
-fi
-
-
-dnl *******************************************************************
-dnl * Enable/disable compilation with RTTI information (g++ only).
-dnl *******************************************************************
-
-AC_ARG_ENABLE(rtti,
-  [  --enable-rtti           (g++ only) compile with RTTI [default=no]],
-  [case "${enableval}" in
-    yes) enable_rtti=yes ;;
-    no)  enable_rtti=no ;;
-    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-rtti) ;;
-  esac],
-  enable_rtti=no)
-
-if test "x$enable_rtti" = "xno"; then
-  if test "x$GXX" = "xyes"; then
-    CXXFLAGS="$CXXFLAGS -fno-rtti"
-  fi
-else
-  if test "x$GXX" != "xyes"; then
-    AC_MSG_WARN(--enable-rtti only has effect when using GNU g++)
-  fi
-fi
-
-
-dnl *******************************************************************
-dnl * Enable/disable compilation with exception handling (g++ only).
-dnl *******************************************************************
-
-AC_ARG_ENABLE(exceptions,
-  [  --enable-exceptions     (g++ only) compile with exceptions [default=no]],
-  [case "${enableval}" in
-    yes) enable_exceptions=yes ;;
-    no)  enable_exceptions=no ;;
-    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-exceptions) ;;
-  esac],
-  enable_exceptions=no)
-
-if test "x$enable_exceptions" = "xno"; then
-  if test "x$GXX" = "xyes"; then
-    dnl FIXME: this option was called "-fno-handle-exceptions" before g++ 2.8.
-    dnl Should check for that. 19990924 mortene.
-    CXXFLAGS="$CXXFLAGS -fno-exceptions"
-  fi
-else
-  if test "x$GXX" != "xyes"; then
-    AC_MSG_WARN(--enable-exceptions only has effect when using GNU g++)
-  fi
-fi
-
-
-dnl *******************************************************************
-dnl * Enable/disable compilation with profiling information
-dnl * for parsing by gprof (this is a g++ only option).
-dnl *******************************************************************
-
-AC_ARG_ENABLE(profile,
-  [  --enable-profile        (g++ only) turn on inclusion of profiling code
-                          [default=no]],
-  [case "${enableval}" in
-    yes) enable_profile=yes ;;
-    no)  enable_profile=no ;;
-    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-profile) ;;
-  esac],
-  enable_profile=no)
-
-if test "x$enable_profile" = "xyes"; then
-  if test "x$GXX" = "xyes"; then
-    CXXFLAGS="$CXXFLAGS -pg"
-    LDFLAGS="$LDFLAGS -pg"
-  else
-    AC_MSG_WARN(--enable-profile only has effect when using GNU g++)
-  fi
-fi
-
-
-dnl *******************************************************************
-dnl * Enable/disable compilation with warnings turned on (g++ only).
-dnl *******************************************************************
-
-AC_ARG_ENABLE(warnings,
-  [  --enable-warnings       (g++ only) turn on warnings when compiling
-                          [default=yes]],
-  [case "${enableval}" in
-    yes) enable_warnings=yes ;;
-    no)  enable_warnings=no ;;
-    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-warnings) ;;
-  esac],
-  enable_warnings=yes)
-
-if test "x$enable_warnings" = "xyes"; then
-  if test "x$GXX" = "xyes"; then
-dnl FIXME: -Werror-implicit-function-declaration doesn't seem to work
-dnl under egcs-1.0.2, so we need to check for availability. 19991106 mortene.
-dnl    CXXFLAGS="$CXXFLAGS -W -Wall -Werror-implicit-function-declaration"
-    CXXFLAGS="$CXXFLAGS -W -Wall"
-  fi
-else
-  if test "x$GXX" != "xyes"; then
-    AC_MSG_WARN(--enable-warnings only has effect when using GNU g++)
-  fi
-fi
-
+SIM_DEBUGSYMBOLS
+SIM_RTTI_SUPPORT
+SIM_EXCEPTION_HANDLING
+SIM_PROFILING_SUPPORT
+SIM_COMPILER_WARNINGS
 
 dnl *******************************************************************
 dnl * Enable/disable compilation with the "incremental linking through

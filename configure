@@ -30,19 +30,19 @@ ac_help="$ac_help
   --enable-Mesa           prefer Mesa (if found) over native OpenGL
                           [default=yes]"
 ac_help="$ac_help
-  --enable-debug          turn on Coin debugging [default=yes]"
+  --enable-debug          compile in debug mode [default=yes]"
 ac_help="$ac_help
-  --enable-symbols        (g++ only) turn on symbol debug information
+  --enable-symbols        (GCC only) include symbol debug information
                           [default=yes]"
 ac_help="$ac_help
   --enable-rtti           (g++ only) compile with RTTI [default=no]"
 ac_help="$ac_help
   --enable-exceptions     (g++ only) compile with exceptions [default=no]"
 ac_help="$ac_help
-  --enable-profile        (g++ only) turn on inclusion of profiling code
+  --enable-profile        (GCC only) turn on inclusion of profiling code
                           [default=no]"
 ac_help="$ac_help
-  --enable-warnings       (g++ only) turn on warnings when compiling
+  --enable-warnings       (GCC only) turn on warnings when compiling
                           [default=yes]"
 ac_help="$ac_help
   --enable-hacking        enable hacks for quick turn-around [default=no]"
@@ -3197,6 +3197,8 @@ cross_compiling=$ac_cv_prog_cxx_cross
 
 
 
+
+
 # Check whether --enable-debug or --disable-debug was given.
 if test "${enable_debug+set}" = set; then
   enableval="$enable_debug"
@@ -3210,10 +3212,15 @@ else
 fi
 
 
+if test "x$enable_debug" = "xno"; then
+  CFLAGS="$CFLAGS -DNDEBUG"
+  CXXFLAGS="$CXXFLAGS -DNDEBUG"
+fi
+
 if test "x$enable_debug" = "xyes"; then
   CXXFLAGS="$CXXFLAGS -DCOIN_DEBUG=1"
 else
-  CXXFLAGS="$CXXFLAGS -DCOIN_DEBUG=0 -DNDEBUG"
+  CXXFLAGS="$CXXFLAGS -DCOIN_DEBUG=0"
 fi
 
 
@@ -3232,10 +3239,11 @@ fi
 
 
 if test "x$enable_symbols" = "xno"; then
-  if test "x$GXX" = "xyes"; then
+  if test "x$GXX" = "xyes" || "x$GCC" = "xyes"; then
+    CFLAGS="`echo $CFLAGS | sed 's/-g//'`"
     CXXFLAGS="`echo $CXXFLAGS | sed 's/-g//'`"
   else
-    echo "configure: warning: --disable-symbols only has effect when using GNU g++" 1>&2
+    echo "configure: warning: --disable-symbols only has effect when using GNU gcc or g++" 1>&2
   fi
 fi
 
@@ -3305,11 +3313,12 @@ fi
 
 
 if test "x$enable_profile" = "xyes"; then
-  if test "x$GXX" = "xyes"; then
+  if test "x$GXX" = "xyes" || test "x$GCC" = "xyes"; then
+    CFLAGS="$CFLAGS -pg"
     CXXFLAGS="$CXXFLAGS -pg"
     LDFLAGS="$LDFLAGS -pg"
   else
-    echo "configure: warning: --enable-profile only has effect when using GNU g++" 1>&2
+    echo "configure: warning: --enable-profile only has effect when using GNU gcc or g++" 1>&2
   fi
 fi
 
@@ -3329,12 +3338,13 @@ fi
 
 
 if test "x$enable_warnings" = "xyes"; then
-  if test "x$GXX" = "xyes"; then
+  if test "x$GXX" = "xyes" || test "x$GCC" = "xyes"; then
+    CFLAGS="$CFLAGS -W -Wall"
     CXXFLAGS="$CXXFLAGS -W -Wall"
   fi
 else
   if test "x$GXX" != "xyes"; then
-    echo "configure: warning: --enable-warnings only has effect when using GNU g++" 1>&2
+    echo "configure: warning: --enable-warnings only has effect when using GNU gcc or g++" 1>&2
   fi
 fi
 
@@ -3381,15 +3391,15 @@ fi
 
 if test "x$want_simage" = "xyes"; then
   echo $ac_n "checking for simage header file""... $ac_c" 1>&6
-echo "configure:3385: checking for simage header file" >&5
+echo "configure:3395: checking for simage header file" >&5
 
     cat > conftest.$ac_ext <<EOF
-#line 3388 "configure"
+#line 3398 "configure"
 #include "confdefs.h"
 #include <simage.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:3393: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:3403: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -3411,12 +3421,12 @@ rm -f conftest*
     _SAVECPPFLAGS=$CPPFLAGS
     CPPFLAGS="-I$_COINPREFIX/include $CPPFLAGS"
     cat > conftest.$ac_ext <<EOF
-#line 3415 "configure"
+#line 3425 "configure"
 #include "confdefs.h"
 #include <simage.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:3420: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:3430: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -3440,7 +3450,7 @@ rm -f conftest*
 
   if test "x$simage_dev" = "xyes"; then
     echo $ac_n "checking for simage_read_image in -lsimage""... $ac_c" 1>&6
-echo "configure:3444: checking for simage_read_image in -lsimage" >&5
+echo "configure:3454: checking for simage_read_image in -lsimage" >&5
 ac_lib_var=`echo simage'_'simage_read_image | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -3448,7 +3458,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lsimage -lz $MATHLIB $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 3452 "configure"
+#line 3462 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 #ifdef __cplusplus
@@ -3462,7 +3472,7 @@ int main() {
 simage_read_image()
 ; return 0; }
 EOF
-if { (eval echo configure:3466: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3476: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else

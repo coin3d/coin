@@ -796,3 +796,231 @@ if test $mathlib = yes; then
 fi
 ])
 
+dnl  Let the user decide if compilation should be done in "debug mode".
+dnl  If compilation is not done in debug mode, all assert()'s in the code
+dnl  will be disabled.
+dnl
+dnl  Also sets enable_debug variable to either "yes" or "no", so the
+dnl  configure.in writer can add package-specific actions. Default is "yes".
+dnl
+dnl  Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+dnl  in the configure.in script.
+dnl
+dnl  Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+
+AC_DEFUN(SIM_COMPILE_DEBUG,
+[
+dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_PREREQ([2.13])
+AC_ARG_ENABLE(debug,
+  [  --enable-debug          compile in debug mode [default=yes]],
+  [case "${enableval}" in
+    yes) enable_debug=yes ;;
+    no)  enable_debug=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-debug) ;;
+  esac],
+  enable_debug=yes)
+
+if test "x$enable_debug" = "xno"; then
+  CFLAGS="$CFLAGS -DNDEBUG"
+  CXXFLAGS="$CXXFLAGS -DNDEBUG"
+fi
+])
+
+dnl  Let the user decide if debug symbol information should be compiled
+dnl  in. The compiled libraries/executables will use a lot less space
+dnl  if stripped for their symbol information.
+dnl
+dnl  Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+dnl  in the configure.in script.
+dnl
+dnl  Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+dnl  TODO:
+dnl    * [mortene:19991114] make this work with compilers other than gcc/g++
+dnl
+
+AC_DEFUN(SIM_DEBUGSYMBOLS,
+[
+dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_PREREQ([2.13])
+AC_ARG_ENABLE(symbols,
+  [  --enable-symbols        (GCC only) include symbol debug information
+                          [default=yes]],
+  [case "${enableval}" in
+    yes) enable_symbols=yes ;;
+    no)  enable_symbols=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-symbols) ;;
+  esac],
+  enable_symbols=yes)
+
+if test "x$enable_symbols" = "xno"; then
+  if test "x$GXX" = "xyes" || "x$GCC" = "xyes"; then
+    CFLAGS="`echo $CFLAGS | sed 's/-g//'`"
+    CXXFLAGS="`echo $CXXFLAGS | sed 's/-g//'`"
+  else
+    AC_MSG_WARN(--disable-symbols only has effect when using GNU gcc or g++)
+  fi
+fi
+])
+
+dnl  Let the user decide if RTTI should be compiled in. The compiled
+dnl  libraries/executables will use a lot less space if they don't
+dnl  contain RTTI.
+dnl
+dnl  Note: this macro must be placed after AC_PROG_CXX in the
+dnl  configure.in script.
+dnl
+dnl  Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+dnl  TODO:
+dnl    * [mortene:19991114] make this work with compilers other than gcc/g++
+dnl
+
+AC_DEFUN(SIM_RTTI_SUPPORT,
+[
+dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_PREREQ([2.13])
+AC_ARG_ENABLE(rtti,
+  [  --enable-rtti           (g++ only) compile with RTTI [default=no]],
+  [case "${enableval}" in
+    yes) enable_rtti=yes ;;
+    no)  enable_rtti=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-rtti) ;;
+  esac],
+  enable_rtti=no)
+
+if test "x$enable_rtti" = "xno"; then
+  if test "x$GXX" = "xyes"; then
+    CXXFLAGS="$CXXFLAGS -fno-rtti"
+  fi
+else
+  if test "x$GXX" != "xyes"; then
+    AC_MSG_WARN(--enable-rtti only has effect when using GNU g++)
+  fi
+fi
+])
+
+dnl  Let the user decide if C++ exception handling should be compiled
+dnl  in. The compiled libraries/executables will use a lot less space
+dnl  if they have exception handling support.
+dnl
+dnl  Note: this macro must be placed after AC_PROG_CXX in the
+dnl  configure.in script.
+dnl
+dnl  Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+dnl  TODO:
+dnl    * [mortene:19991114] make this work with compilers other than gcc/g++
+dnl    * [mortene:19991114] handle g++ versions < 2.8 (see FIXME below)
+dnl
+
+AC_DEFUN(SIM_EXCEPTION_HANDLING,
+[
+dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_PREREQ([2.13])
+AC_ARG_ENABLE(exceptions,
+  [  --enable-exceptions     (g++ only) compile with exceptions [default=no]],
+  [case "${enableval}" in
+    yes) enable_exceptions=yes ;;
+    no)  enable_exceptions=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-exceptions) ;;
+  esac],
+  enable_exceptions=no)
+
+if test "x$enable_exceptions" = "xno"; then
+  if test "x$GXX" = "xyes"; then
+    dnl FIXME: this option was called "-fno-handle-exceptions" before g++ 2.8.
+    dnl Should check for that. 19990924 mortene.
+    CXXFLAGS="$CXXFLAGS -fno-exceptions"
+  fi
+else
+  if test "x$GXX" != "xyes"; then
+    AC_MSG_WARN(--enable-exceptions only has effect when using GNU g++)
+  fi
+fi
+])
+
+dnl  Let the user decide if profiling code should be compiled
+dnl  in. The compiled libraries/executables will use a lot less space
+dnl  if they don't contain profiling code information, and they will also
+dnl  execute faster.
+dnl
+dnl  Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+dnl  in the configure.in script.
+dnl
+dnl  Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+dnl  TODO:
+dnl    * [mortene:19991114] make this work with compilers other than gcc/g++
+dnl
+
+AC_DEFUN(SIM_PROFILING_SUPPORT,
+[
+dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_PREREQ([2.13])
+AC_ARG_ENABLE(profile,
+  [  --enable-profile        (GCC only) turn on inclusion of profiling code
+                          [default=no]],
+  [case "${enableval}" in
+    yes) enable_profile=yes ;;
+    no)  enable_profile=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-profile) ;;
+  esac],
+  enable_profile=no)
+
+if test "x$enable_profile" = "xyes"; then
+  if test "x$GXX" = "xyes" || test "x$GCC" = "xyes"; then
+    CFLAGS="$CFLAGS -pg"
+    CXXFLAGS="$CXXFLAGS -pg"
+    LDFLAGS="$LDFLAGS -pg"
+  else
+    AC_MSG_WARN(--enable-profile only has effect when using GNU gcc or g++)
+  fi
+fi
+])
+
+dnl  Let the user decide if compilation should be done with all compiler
+dnl  warnings turned on.
+dnl
+dnl  Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+dnl  in the configure.in script.
+dnl
+dnl  Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+dnl  TODO:
+dnl    * [mortene:19991114] make this work with compilers other than gcc/g++
+dnl    * [mortene:19991114] find out how to get GCC's
+dnl      -Werror-implicit-function-declaration option to work as expected
+dnl
+
+AC_DEFUN(SIM_COMPILER_WARNINGS,
+[
+dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_PREREQ([2.13])
+AC_ARG_ENABLE(warnings,
+  [  --enable-warnings       (GCC only) turn on warnings when compiling
+                          [default=yes]],
+  [case "${enableval}" in
+    yes) enable_warnings=yes ;;
+    no)  enable_warnings=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-warnings) ;;
+  esac],
+  enable_warnings=yes)
+
+if test "x$enable_warnings" = "xyes"; then
+  if test "x$GXX" = "xyes" || test "x$GCC" = "xyes"; then
+dnl FIXME: -Werror-implicit-function-declaration doesn't seem to work
+dnl under egcs-1.0.2, so we need to check for availability. 19991106 mortene.
+dnl    CXXFLAGS="$CXXFLAGS -W -Wall -Werror-implicit-function-declaration"
+    CFLAGS="$CFLAGS -W -Wall"
+    CXXFLAGS="$CXXFLAGS -W -Wall"
+  fi
+else
+  if test "x$GXX" != "xyes"; then
+    AC_MSG_WARN(--enable-warnings only has effect when using GNU gcc or g++)
+  fi
+fi
+])
+
