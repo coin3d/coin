@@ -1307,8 +1307,8 @@ flww32_calcfontsize(float complexity)
   const int sizes[] = {
     10, 25, 50, 100, 500, 1000, 2500, 4000, 6000, 8000, 10000
   };
-  unsigned int index = (unsigned int)(10 * complexity);
   const unsigned int lastidx = sizeof(sizes) / sizeof(sizes[0]) - 1;
+  unsigned int index = (unsigned int)(lastidx * complexity);
   if (index > lastidx) index = lastidx;	
 
   return sizes[index];
