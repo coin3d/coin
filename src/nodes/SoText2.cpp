@@ -32,6 +32,12 @@
   rules with regard to the depthbuffer, so it \e will be obscured by
   graphics laying in front of it.
 
+  The text will be \e positioned according to the current transformation.
+  The x origin of the text is the first pixel of the leftmost character
+  of the text. The y origin of the text is the baseline of the first line
+  of text (the baseline being the imaginary line on which all upper case
+  characters are standing).
+
   \sa SoFont, SoFontStyle, SoText3, SoAsciiText
 */
 
