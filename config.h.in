@@ -17,9 +17,9 @@
 #undef HAVE_HASH_QUOTING
 #undef HAVE_APOSTROPHES_QUOTING
 #undef HAVE_SINGLEPRECISION_MATH
-
-/* Define if you have the <io.h> header file. */
+#undef HAVE_UNISTD_H
 #undef HAVE_IO_H
+#undef HAVE_WINDOWS_H
 
 /* Define if you have the `dnet' library (-ldnet). */
 #undef HAVE_LIBDNET
@@ -41,9 +41,6 @@
 
 /* Define if you have the `socket' library (-lsocket). */
 #undef HAVE_LIBSOCKET
-
-/* Define if you have the <unistd.h> header file. */
-#undef HAVE_UNISTD_H
 
 /* Define this to true if the __FUNCTION__ variable contains the current
    function name */

@@ -130,7 +130,14 @@ SIM_COMPILER_WARNINGS
 CPPFLAGS="$CPPFLAGS -DCOIN_INTERNAL"
 
 
-AC_CHECK_HEADERS(unistd.h io.h)
+# Do not use AC_CHECK_HEADERS, as we can get false positives and/or
+# false negatives when running under Cygwin, using the Microsoft
+# VisualC++ compiler (the configure script will pick the GCC
+# preprocessor, and AC_CHECK_HEADERS uses AC_TRY_CPP).
+AC_TRY_COMPILE([#include <unistd.h>], [], AC_DEFINE(HAVE_UNISTD_H))
+AC_TRY_COMPILE([#include <io.h>], [], AC_DEFINE(HAVE_IO_H))
+AC_TRY_COMPILE([#include <windows.h>], [], AC_DEFINE(HAVE_WINDOWS_H))
+
 SIM_CHECK_NPRINTF
 
 SIM_AC_CHECK_MACRO_QUOTE( , AC_MSG_ERROR(couldn't figure out how to quote strings in macros))
