@@ -354,6 +354,15 @@ glglue_sanity_check_enums(void)
 #ifdef GL_UNPACK_SKIP_IMAGES_EXT
   enumsok = enumsok && (GL_UNPACK_SKIP_IMAGES == GL_UNPACK_SKIP_IMAGES_EXT);
 #endif /* GL_UNPACK_SKIP_IMAGES_EXT */
+#ifdef GL_FUNC_ADD_EXT
+  enumsok = enumsok && (GL_FUNC_ADD == GL_FUNC_ADD_EXT);
+#endif /* GL_FUNC_ADD_EXT */
+#ifdef GL_MIN_EXT
+  enumsok = enumsok && (GL_MIN == GL_MIN_EXT);
+#endif /* GL_MIN_EXT */
+#ifdef GL_MAX_EXT
+  enumsok = enumsok && (GL_MAX == GL_MAX_EXT);
+#endif /* GL_MAX_EXT */
 
   assert(enumsok && "OpenGL enum value assumption(s) failed!");
 }
@@ -414,6 +423,8 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 #define GL_ARB_multitexture 1
 #define GL_ARB_texture_compression 1
 #define GL_EXT_paletted_texture 1
+#define GL_ARB_imaging 1
+#define GL_EXT_blend_minmax 1
 
 #define GLX_VERSION_1_1 1
 #define GLX_VERSION_1_2 1
@@ -559,6 +570,19 @@ glglue_resolve_symbols(cc_glglue * w)
     w->glGetColorTableParameterfvEXT = (COIN_PFNGLGETCOLORTABLEPARAMETERFVEXTPROC)PROC(glGetColorTableParameterfvEXT);
   }
 #endif /* GL_EXT_paletted_texture */
+
+#if defined(GL_VERSION_1_2) && defined(GL_ARB_imaging)
+  if (cc_glglue_glversion_matches_at_least(w, 1, 2, 0) &&
+      cc_glglue_glext_supported(w, "GL_ARB_imaging")) {
+    w->glBlendEquation = (COIN_PFNGLBLENDEQUATIONPROC)PROC(glBlendEquation);
+  }
+#endif /* GL_VERSION_1_2 && GL_ARB_imaging */
+
+#ifdef GL_EXT_blend_minmax
+  if (cc_glglue_glext_supported(w, "GL_EXT_blend_minmax")) {
+    w->glBlendEquationEXT = (COIN_PFNGLBLENDEQUATIONPROC)PROC(glBlendEquationEXT);
+  }
+#endif /* GL_EXT_blend_minmax */
 }
 
 #undef PROC
@@ -1297,6 +1321,23 @@ cc_glglue_glGetColorTableParameterfvEXT(const cc_glglue * glue,
   glue->glGetColorTableParameterfvEXT(target,
                                       pname,
                                       params);
+}
+
+SbBool
+cc_glglue_has_blendequation(const cc_glglue * glue)
+{
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
+
+  return glue->glBlendEquation || glue->glBlendEquationEXT;
+}
+
+void
+cc_glglue_glBlendEquation(const cc_glglue * glue, GLenum mode)
+{
+  assert(glue->glBlendEquation || glue->glBlendEquationEXT);
+
+  if (glBlendEquation) glue->glBlendEquation(mode);
+  else glue->glBlendEquationEXT(mode);
 }
 
 /*!

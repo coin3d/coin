@@ -198,6 +198,9 @@ typedef void (APIENTRY * COIN_PFNGLGETCOLORTABLEPARAMETERFVEXTPROC)(GLenum targe
                                                                     GLenum pname, 
                                                                     GLfloat * params);
 
+/* Typedefs for glBlendEquation[EXT]. */
+typedef void *(APIENTRY * COIN_PFNGLBLENDEQUATIONPROC)(GLenum);
+
 
 /* Typedefs for GLX functions. */
 typedef void *(APIENTRY * COIN_PFNGLXGETCURRENTDISPLAYPROC)(void);
@@ -261,6 +264,9 @@ struct cc_glglue {
   COIN_PFNGLCOMPRESSEDTEXSUBIMAGE1DARBPROC glCompressedTexSubImage1DARB;
   COIN_PFNGLGETCOMPRESSEDTEXIMAGEARBPROC glGetCompressedTexImageARB;
   
+  COIN_PFNGLBLENDEQUATIONPROC glBlendEquation;
+  COIN_PFNGLBLENDEQUATIONPROC glBlendEquationEXT;
+
   COIN_PFNGLXGETCURRENTDISPLAYPROC glXGetCurrentDisplay;
 
   const char * vendorstr;

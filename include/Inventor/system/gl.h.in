@@ -219,6 +219,26 @@
 #define GL_COMPRESSED_TEXTURE_FORMATS_ARB 0x86A3
 #endif /* !GL_COMPRESSED_TEXTURE_FORMATS_ARB */
 
+
+/* glBlendEquation defines */
+
+#ifndef GL_MIN
+#define GL_MIN 0x8007
+#endif /* GL_MIN */
+#ifndef GL_MAX
+#define GL_MAX 0x8008
+#endif /* GL_MAX */
+#ifndef GL_FUNC_ADD
+#define GL_FUNC_ADD 0x8006
+#endif /* GL_FUNC_ADD */
+#ifndef GL_FUNC_SUBTRACT
+#define GL_FUNC_SUBTRACT 0x800A
+#endif /* GL_FUNC_SUBTRACT */
+#ifndef GL_FUNC_REVERSE_SUBTRACT
+#define GL_FUNC_REVERSE_SUBTRACT 0x800B
+#endif /* GL_FUNC_REVERSE_SUBTRACT */
+
+
 /*** GL enums, end ****************************************************/
 /**********************************************************************/
 
