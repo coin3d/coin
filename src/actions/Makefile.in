@@ -169,9 +169,8 @@ PublicHeaders = \
 
 PrivateHeaders = \
 	../../include/Inventor/actions/SoSubActionP.h \
-	SoInterserctionDetectionAction.cpp \
-	../../include/Inventor/actions/SoInterserctionDetectionAction.h \
-	../../include/Inventor/collision/SoInterserctionDetectionAction.h \
+	SoIntersectionDetectionAction.cpp \
+	../../include/Inventor/collision/SoIntersectionDetectionAction.h \
 	SbTri3f.icc SbTri3f.ih
 
 LinkHackSources = \
@@ -367,8 +366,8 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoGetPrimitiveCountAction.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoHandleEventAction.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoHandleEventAction.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoInterserctionDetectionAction.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoInterserctionDetectionAction.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoIntersectionDetectionAction.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoIntersectionDetectionAction.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoLineHighlightRenderAction.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoLineHighlightRenderAction.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoPickAction.Plo \
@@ -486,8 +485,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGetPrimitiveCountAction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoHandleEventAction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoHandleEventAction.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoInterserctionDetectionAction.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoInterserctionDetectionAction.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIntersectionDetectionAction.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIntersectionDetectionAction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLineHighlightRenderAction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLineHighlightRenderAction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPickAction.Plo@am__quote@

@@ -22,9 +22,8 @@ PublicHeaders = \
 	../../include/Inventor/actions/SoAudioRenderAction.h
 PrivateHeaders = \
 	../../include/Inventor/actions/SoSubActionP.h \
-	SoInterserctionDetectionAction.cpp \
-	../../include/Inventor/actions/SoInterserctionDetectionAction.h \
-	../../include/Inventor/collision/SoInterserctionDetectionAction.h \
+	SoIntersectionDetectionAction.cpp \
+	../../include/Inventor/collision/SoIntersectionDetectionAction.h \
 	SbTri3f.icc SbTri3f.ih
 LinkHackSources = \
 	all.cpp
