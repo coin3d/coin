@@ -799,9 +799,12 @@ SoFieldContainer::readInstance(SoInput * in, unsigned short flags)
   const SoFieldData * fd = this->getFieldData();
   if (fd) {
     SbBool notbuiltin;
-    // The "error on unknown field" is FALSE, in case we are a group
-    // node with children specified in the file.
-    return fd->read(in, this, FALSE, notbuiltin);
+    return fd->read(in, this,
+                    // The "error on unknown field" is FALSE when
+                    // we're a group node, since fields can be
+                    // followed by children node specifications.
+                    (flags & SoBase::IS_GROUP) ? FALSE : TRUE,
+                    notbuiltin);
   }
   return TRUE;
 }

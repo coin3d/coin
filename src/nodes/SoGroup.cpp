@@ -139,6 +139,11 @@ SoGroup::readInstance(SoInput * in, unsigned short flags)
       this->getTypeId() == SoGroup::getClassTypeId())
     readfields = FALSE;
 
+  // This influences how SoFieldContainer::readInstance() handles
+  // unknown field names inside the node: if it's a group, ignore, as
+  // it can be the name of a node type.
+  flags |= SoBase::IS_GROUP;
+
   // For nodes with fields inheriting SoGroup, the fields must come
   // before the children, according to the file format specification.
   if (readfields && !inherited::readInstance(in, flags)) return FALSE;

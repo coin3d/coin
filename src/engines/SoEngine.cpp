@@ -348,6 +348,8 @@ SoEngine::readInstance(SoInput * in, unsigned short flags)
 {
   // FIXME: I believe there's code missing here for reading
   // SoUnknownEngine instances. 20000919 mortene.
+
+  flags |= SoBase::IS_ENGINE;
   return inherited::readInstance(in, flags);
 }
 
