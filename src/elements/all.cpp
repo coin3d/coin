@@ -10,6 +10,7 @@
 #include "SoComplexityTypeElement.cpp"
 #include "SoCoordinateElement.cpp"
 #include "SoCreaseAngleElement.cpp"
+#include "SoCullElement.cpp"
 #include "SoDecimationPercentageElement.cpp"
 #include "SoDecimationTypeElement.cpp"
 #include "SoDiffuseColorElement.cpp"
