@@ -222,6 +222,16 @@ int SoDB::notificationcounter = 0;
 #define SODB_NOTIFICATIONCOUNTER SoDB::notificationcounter
 #endif // ! COIN_THREADSAFE
 
+#ifdef COIN_THREADSAFE
+// callback from SbStorage that initializes the counter to 0
+static void 
+sodb_clear_counter(void * ptr)
+{
+  int * intptr = (int*) ptr;
+  *intptr = 0;
+}
+#endif // COIN_THREADSAFE
+
 // *************************************************************************
 
 /*!
@@ -322,7 +332,7 @@ SoDB::init(void)
   cc_sync_init();
 
 #ifdef COIN_THREADSAFE
-  sodb_notificationcounter_storage = new SbStorage(sizeof(int));
+  sodb_notificationcounter_storage = new SbStorage(sizeof(int), sodb_clear_counter, NULL);
 #endif // COIN_THREADSAFE
 #endif // HAVE_THREADS
 
