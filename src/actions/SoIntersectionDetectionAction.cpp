@@ -78,6 +78,7 @@ public:
   void reset(void);
   void doIntersectionTesting(void);
   SbBool doPrimitiveIntersectionTesting(PrimitiveData * primitives1, PrimitiveData * primitives2);
+  SbBool doInternalPrimitiveIntersectionTesting(PrimitiveData * primitives);
 
   SoTypeList * prunetypes;
 
@@ -126,9 +127,6 @@ SoIntersectionDetectionActionP::getEpsilon(void) const
 
 // *************************************************************************
 
-// typedef SbBool SoIntersectionFilterCB(void * closure, const SoPath * p1, const SoPath * p2);
-// typedef Response SoIntersectionCB(void * closure, const SoIntersectingPrimitive *, const SoIntersectingPrimitive *);
-
 #define PRIVATE(obj) ((obj)->pimpl)
 
 SO_ACTION_SOURCE(SoIntersectionDetectionAction);
@@ -140,8 +138,12 @@ SO_ACTION_SOURCE(SoIntersectionDetectionAction);
   \ingroup actions
   \ingroup collision
 
-  Note that the epsilon setting is not supported and that only intersection
-  testing between triangles are supported yet.
+  Note that the implementation is somewhat incomplete.  The epsilon setting is
+  not supported yet, only intersection testing between triangles is done, and
+  the algorithm used is O(N^2) - no significant optimizations is done at this
+  time.
+
+  \since 20021022
 */
 
 void
@@ -653,6 +655,14 @@ SoIntersectionDetectionActionP::doIntersectionTesting(void)
   for ( i = 0; i < this->shapedata->getLength(); i++ ) {
     ShapeData * shape1 = (ShapeData *) (*(this->shapedata))[i];
     PrimitiveData * primitives1 = NULL;
+    if ( this->internalsenabled ) {
+      primitives1 = SoIntersectionDetectionActionP::generatePrimitives(shape1);
+      SbBool cont = this->doInternalPrimitiveIntersectionTesting(primitives1);
+      if ( !cont ) {
+        SoIntersectionDetectionActionP::deletePrimitives(primitives1);
+        return;
+      }
+    }
     for ( j = i + 1; j < this->shapedata->getLength(); j++ ) {
       ShapeData * shape2 = (ShapeData *) (*(this->shapedata))[j];
       // support for negative epsilons can be added here
@@ -734,5 +744,51 @@ SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * p
       }
     }
   }
+  return TRUE;
+}
+
+SbBool
+SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting(PrimitiveData * primitives)
+{
+  int i, j;
+  const int numprimitives = primitives->triangles->getLength();
+  for ( i = 0; i < numprimitives; i++ ) {
+    SbTri3f * t1 = (SbTri3f *) (*(primitives->triangles))[i];
+    for ( j = i + 1; j < numprimitives; j++ ) {
+      SbTri3f * t2 = (SbTri3f *) (*(primitives->triangles))[j];
+      if ( t1->intersect(*t2) ) {
+        SoIntersectingPrimitive p1;
+        p1.path = primitives->path;
+        p1.type = SoIntersectingPrimitive::TRIANGLE;
+        t1->getValue(p1.xf_vertex[0], p1.xf_vertex[1], p1.xf_vertex[2]);
+        primitives->invtransform.multVecMatrix(p1.xf_vertex[0], p1.vertex[0]);
+        primitives->invtransform.multVecMatrix(p1.xf_vertex[1], p1.vertex[1]);
+        primitives->invtransform.multVecMatrix(p1.xf_vertex[2], p1.vertex[2]);
+        SoIntersectingPrimitive p2;
+        p2.path = primitives->path;
+        p2.type = SoIntersectingPrimitive::TRIANGLE;
+        t2->getValue(p2.xf_vertex[0], p2.xf_vertex[1], p2.xf_vertex[2]);
+        primitives->invtransform.multVecMatrix(p2.xf_vertex[0], p2.vertex[0]);
+        primitives->invtransform.multVecMatrix(p2.xf_vertex[1], p2.vertex[1]);
+        primitives->invtransform.multVecMatrix(p2.xf_vertex[2], p2.vertex[2]);
+	int c;
+        for ( c = 0; c < this->callbacks->getLength(); c += 2 ) {
+          SoIntersectionDetectionAction::SoIntersectionCB * cb =
+            (SoIntersectionDetectionAction::SoIntersectionCB *) (*(this->callbacks))[c];
+          switch ( cb((*(this->callbacks))[c+1], &p1, &p2) ) {
+          case SoIntersectionDetectionAction::NEXT_PRIMITIVE:
+            break;
+          case SoIntersectionDetectionAction::NEXT_SHAPE:
+            return TRUE;
+          case SoIntersectionDetectionAction::ABORT:
+            return FALSE;
+	  default:
+	    assert(0);
+          }
+        }
+      }
+    }
+  }
+  return TRUE;
 }
 
