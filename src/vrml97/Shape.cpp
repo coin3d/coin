@@ -345,10 +345,24 @@ SoVRMLShape::getBoundingBox(SoGetBoundingBoxAction * action)
   }
 }
 
+// compute object space ray and test for intersection
+static SbBool
+vrmlshape_ray_intersect(SoRayPickAction * action, const SbBox3f & box)
+{
+  if (box.isEmpty()) return FALSE;
+  action->setObjectSpace();
+  return action->intersect(box, TRUE);
+}
+
+
 void
 SoVRMLShape::rayPick(SoRayPickAction * action)
 {
-  SoVRMLShape::doAction((SoAction*) action);
+  if (!THIS->bboxcache || !THIS->bboxcache->isValid(action->getState()) ||
+      !action->hasWorldSpaceRay() ||
+      vrmlshape_ray_intersect(action, THIS->bboxcache->getProjectedBox())) {
+    SoVRMLShape::doAction(action);
+  }
 }
 
 void
