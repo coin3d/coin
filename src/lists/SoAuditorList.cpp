@@ -181,8 +181,14 @@ SoAuditorList::notify(SoNotList * l)
       case SoNotRec::ENGINE:
       case SoNotRec::INTERP:
         {
-          SoField * obj = (SoField *)auditor;
-          if (!obj->getDirty()) obj->notify(l);
+          // We used to check whether or not the fields was already
+          // dirty before we transmitted the notification
+          // message. This is _not_ correct (the dirty flag is
+          // conceptually only relevant for whether or not to do
+          // re-evaluation), so don't try to "optimize" the
+          // notification mechanism by re-introducing that "feature".
+          // :^/
+          ((SoField *)auditor)->notify(l);
         }
         break;
 
