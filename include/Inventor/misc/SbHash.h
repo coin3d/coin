@@ -65,7 +65,8 @@ public:
     this->elements = 0;
     this->threshold = (unsigned int) (s * loadfactor);
     this->loadfactor = loadfactor;
-    this->buckets = new SbHashEntry<Type, Key> * [size];
+    this->buckets = new SbHashEntry<Type, Key> * [this->size];
+    memset(this->buckets, 0, this->size * sizeof(SbHashEntry<Type, Key> *));
     this->hashfunc = default_hash_func;
   }
 
