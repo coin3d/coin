@@ -196,7 +196,7 @@ INCLUDES = -I$(top_srcdir)/include
 
 
 libCoin@SUFFIX@_la_SOURCES = \
-	tidbits.c tidbits.h
+	tidbits.c dummy.cpp
 
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
@@ -211,7 +211,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
-	tidbits.c tidbits.h
+	tidbits.c dummy.cpp
 
 
 libCoin@SUFFIX@_la_LDFLAGS = \
@@ -469,7 +469,8 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@BUILD_WITH_THREADS_FALSE@	upgraders/upgraders.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@BUILD_WITH_THREADS_FALSE@	$(VRML97DIR)/vrml97.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@BUILD_WITH_THREADS_FALSE@	$(SUPERGLUDIR)/${SUPERGLUPREFIX}GLU.lst
-am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = tidbits.$(OBJEXT)
+am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = tidbits.$(OBJEXT) \
+	dummy.$(OBJEXT)
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = \
 	$(am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES)
@@ -662,7 +663,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@BUILD_WITH_THREADS_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	threads/libthreads.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@BUILD_WITH_THREADS_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	$(VRML97DIR)/libvrml97.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@BUILD_WITH_THREADS_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	$(SUPERGLUDIR)/lib${SUPERGLUPREFIX}GLU.la
-am_libCoin@SUFFIX@_la_OBJECTS = tidbits.lo
+am_libCoin@SUFFIX@_la_OBJECTS = tidbits.lo dummy.lo
 libCoin@SUFFIX@_la_OBJECTS = $(am_libCoin@SUFFIX@_la_OBJECTS)
 
 DEFS = @DEFS@
@@ -671,7 +672,8 @@ CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/tidbits.Plo $(DEPDIR)/tidbits.Po
+@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/dummy.Plo $(DEPDIR)/dummy.Po \
+@AMDEP_TRUE@	$(DEPDIR)/tidbits.Plo $(DEPDIR)/tidbits.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
@@ -680,6 +682,15 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 CFLAGS = @CFLAGS@
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CXXFLAGS) $(CXXFLAGS)
+CXXLD = $(CXX)
+CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+CXXFLAGS = @CXXFLAGS@
 DIST_SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) \
 	$(libCoin@SUFFIX@_la_SOURCES)
 HEADERS = $(libCoininc_HEADERS)
@@ -698,7 +709,7 @@ SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(libCoin@SUFFIX@_la_S
 all: all-recursive
 
 .SUFFIXES:
-.SUFFIXES: .c .lo .o .obj
+.SUFFIXES: .c .cpp .lo .o .obj
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -763,7 +774,7 @@ uninstall-libLTLIBRARIES:
 clean-libLTLIBRARIES:
 	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
 libCoin@SUFFIX@.la: $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_DEPENDENCIES) 
-	$(LINK) -rpath $(libdir) $(libCoin@SUFFIX@_la_LDFLAGS) $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(libdir) $(libCoin@SUFFIX@_la_LDFLAGS) $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT) core *.core
@@ -771,6 +782,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/dummy.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/dummy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/tidbits.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/tidbits.Po@am__quote@
 
@@ -787,7 +800,7 @@ distclean-depend:
 @AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(COMPILE) -c `cygpath -w $<`
+	$(COMPILE) -c `( test -f $< || echo -n '$(srcdir)/'; echo -n $< ) | xargs cygpath -w`
 
 .c.lo:
 @AMDEP_TRUE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
@@ -795,6 +808,25 @@ distclean-depend:
 @AMDEP_TRUE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(LTCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
 CCDEPMODE = @CCDEPMODE@
+
+.cpp.o:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
+
+.cpp.obj:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXXCOMPILE) -c -o $@ `( test -f $< || echo -n '$(srcdir)/'; echo -n $< ) | xargs cygpath -w`
+
+.cpp.lo:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LTCXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
+CXXDEPMODE = @CXXDEPMODE@
 uninstall-info-am:
 
 uninstall-libCoinincHEADERS:

@@ -70,7 +70,7 @@ libCoin@SUFFIX@_la_LIBADD = \
 endif
 
 libCoin@SUFFIX@_la_SOURCES = \
-	tidbits.c tidbits.h
+	tidbits.c dummy.cpp
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	actions/actions.lst base/base.lst \
@@ -83,7 +83,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	$(VRML97LSTADD) $(SUPERGLULSTADD)
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
-	tidbits.c tidbits.h
+	tidbits.c dummy.cpp
 
 ## Installation information.
 
