@@ -18,8 +18,8 @@
 \**************************************************************************/
 
 /*!
-  \class SoBase SoOffscreenRenderer.h Inventor/SoOffscreenRenderer.h
-  \brief The SoOffscreenRenderer class is used for off screen rendering.
+  \class SoSoOffscreenRenderer SoOffscreenRenderer.h Inventor/SoOffscreenRenderer.h
+  \brief The SoOffscreenRenderer class is used for rendering scenes in offscreen buffers.
   \ingroup general
 
   If you want to render to a memory buffer instead of an on-screen
