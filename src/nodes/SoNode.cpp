@@ -170,6 +170,7 @@
 
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/nodes/SoTextureUnit.h>
+#include <Inventor/nodes/SoBumpMap.h>
 
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoInput.h>
@@ -598,6 +599,8 @@ SoNode::initClasses(void)
   SoTextureScalePolicy::initClass();
 
   SoTextureUnit::initClass();
+
+  SoBumpMap::initClass();
 }
 
 /*!
