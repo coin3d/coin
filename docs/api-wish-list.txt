@@ -391,3 +391,18 @@ THE WISH LIST
     SbListEqTester * setEqTester(SbListEqTester * neweqtester);
     [...]
   };
+
+* SoNode::setOverride() should be made persistent
+  2001-07-03  Marius Kintel <kintel@sim.no>
+  (write-up by mortene)
+
+  It is now not possible to store override information for nodes
+  permanently in scenegraph "dumps" to .iv-files.  Being able to make
+  this information persistance would be more convenient for the
+  application programmer.
+
+  Note that it is very probably that fixing this would force us to
+  break downward and "cross-over" compatibility with earlier Coin
+  versions and TGS / SGI Inventor versions of the file format, so it
+  is unlikely that we will do anything about this until we'd made our
+  own additional file export / import format from scratch.
