@@ -234,7 +234,7 @@ PrivateHeaders = \
 	SoSoundElementHelper.h
 
 
-##$ BEGIN TEMPLATE Make-Common(nodes)
+##$ BEGIN TEMPLATE Make-Common(nodes, nodes)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

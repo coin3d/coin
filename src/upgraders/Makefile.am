@@ -11,7 +11,7 @@ PrivateHeaders = \
         SoUpgrader.h \
         SoPackedColorV20.h
 
-##$ BEGIN TEMPLATE Make-Common(upgraders)
+##$ BEGIN TEMPLATE Make-Common(upgraders, upgraders)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

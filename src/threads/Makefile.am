@@ -44,7 +44,7 @@ else
 #wrappers_LDADD = libthreads.la
 endif
 
-##$ BEGIN TEMPLATE Make-Common(threads)
+##$ BEGIN TEMPLATE Make-Common(threads, threads)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

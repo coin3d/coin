@@ -21,7 +21,7 @@ PublicHeaders = \
 	../../include/Inventor/caches/SoTextureCoordinateCache.h
 PrivateHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(caches)
+##$ BEGIN TEMPLATE Make-Common(caches, caches)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

@@ -106,7 +106,7 @@ EXTRA_DIST = \
 #$(srcdir)/evaluator_tab.c: $(srcdir)/lex.so_eval.c $(srcdir)/evaluator.y
 #	bison -p so_eval -o $(srcdir)/evaluator_tab.c -l $(srcdir)/evaluator.y
 
-##$ BEGIN TEMPLATE Make-Common(engines)
+##$ BEGIN TEMPLATE Make-Common(engines, engines)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

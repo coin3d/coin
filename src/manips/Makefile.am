@@ -32,7 +32,7 @@ PublicHeaders = \
 	../../include/Inventor/manips/SoTransformerManip.h
 PrivateHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(manips)
+##$ BEGIN TEMPLATE Make-Common(manips, manips)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

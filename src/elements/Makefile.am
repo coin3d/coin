@@ -155,7 +155,7 @@ PrivateHeaders = \
 	../../include/Inventor/elements/SoTextureScalePolicyElement.h
 ObsoletedHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(elements)
+##$ BEGIN TEMPLATE Make-Common(elements, elements)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

@@ -23,7 +23,7 @@ PublicHeaders = \
 	../../include/Inventor/events/SoSpaceballButtonEvent.h
 PrivateHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(events)
+##$ BEGIN TEMPLATE Make-Common(events, events)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

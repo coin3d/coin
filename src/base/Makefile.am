@@ -104,7 +104,7 @@ PrivateHeaders = \
 	../../include/Inventor/SbViewportRegion.h \
 	../../include/Inventor/SbXfBox3f.h
 
-##$ BEGIN TEMPLATE Make-Common(base)
+##$ BEGIN TEMPLATE Make-Common(base, base)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

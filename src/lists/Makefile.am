@@ -43,7 +43,7 @@ PublicHeaders = \
 	../../include/Inventor/lists/SoTypeList.h
 PrivateHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(lists)
+##$ BEGIN TEMPLATE Make-Common(lists, lists)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

@@ -61,7 +61,7 @@ else
 libCoin@SUFFIX@_la_LIBADD = \
 	actions/libactions.la base/libbase.la \
 	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
-	elements/GL/libelements.la \
+	elements/GL/libglelements.la \
 	engines/libengines.la errors/liberrors.la events/libevents.la \
 	fields/libfields.la glue/libglue.la misc/libmisc.la lists/liblists.la \
 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la \
@@ -76,7 +76,7 @@ libCoin@SUFFIX@_la_SOURCES = \
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	actions/actions.lst base/base.lst \
 	bundles/bundles.lst caches/caches.lst elements/elements.lst \
-	elements/GL/elements.lst \
+	elements/GL/glelements.lst \
 	engines/engines.lst errors/errors.lst events/events.lst \
 	fields/fields.lst glue/glue.lst misc/misc.lst lists/lists.lst \
 	nodekits/nodekits.lst nodes/nodes.lst projectors/projectors.lst \

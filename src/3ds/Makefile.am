@@ -20,7 +20,7 @@ PublicHeaders =
 
 # Automake wasn't too supportive of having variables starting with numbers,
 # so "format" was prefixed here.  20030217 larsa
-##$ BEGIN TEMPLATE Make-Common(format3ds)
+##$ BEGIN TEMPLATE Make-Common(format3ds, 3ds)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -65,7 +65,7 @@ libformat3ds@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libformat3ds@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libformat3dsincdir = $(includedir)/Inventor/format3ds
+libformat3dsincdir = $(includedir)/Inventor/3ds
 libformat3dsinc_HEADERS = $(PublicHeaders)
 
 format3ds_lst_SOURCES = $(BuildSources)

@@ -21,7 +21,7 @@ PrivateHeaders = \
 	openal_wrapper.h
 
 
-##$ BEGIN TEMPLATE Make-Common(glue)
+##$ BEGIN TEMPLATE Make-Common(glue, glue)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

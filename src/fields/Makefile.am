@@ -126,7 +126,7 @@ PrivateHeaders = \
 	../../include/Inventor/fields/SoSubFieldP.h \
 	../../include/Inventor/fields/SoGlobalField.h
 
-##$ BEGIN TEMPLATE Make-Common(fields)
+##$ BEGIN TEMPLATE Make-Common(fields, fields)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

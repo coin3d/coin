@@ -79,7 +79,7 @@ PrivateHeaders = \
 	SoOffscreenGLXData.icc \
 	SoOffscreenWGLData.icc
 
-##$ BEGIN TEMPLATE Make-Common(misc)
+##$ BEGIN TEMPLATE Make-Common(misc, misc)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

@@ -64,7 +64,7 @@ install-libcollisionincHEADERS: $(libcollisioninc_HEADERS)
 	  fi \
 	done
 
-##$ BEGIN TEMPLATE Make-Common(actions)
+##$ BEGIN TEMPLATE Make-Common(actions, actions)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

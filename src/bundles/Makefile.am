@@ -15,7 +15,7 @@ PublicHeaders = \
 	../../include/Inventor/bundles/SoTextureCoordinateBundle.h
 PrivateHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(bundles)
+##$ BEGIN TEMPLATE Make-Common(bundles, bundles)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

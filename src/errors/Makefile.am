@@ -19,7 +19,7 @@ PublicHeaders = \
 	../../include/Inventor/errors/SoReadError.h
 PrivateHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(errors)
+##$ BEGIN TEMPLATE Make-Common(errors, errors)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

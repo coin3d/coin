@@ -146,7 +146,7 @@ RegularSources = \
 	VisibilitySensor.cpp \
 	WorldInfo.cpp
 
-##$ BEGIN TEMPLATE Make-Common(vrml97)
+##$ BEGIN TEMPLATE Make-Common(vrml97, VRMLnodes)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

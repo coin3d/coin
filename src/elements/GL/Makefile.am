@@ -61,7 +61,7 @@ PublicHeaders = \
 PrivateHeaders =
 ObsoletedHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(elements)
+##$ BEGIN TEMPLATE Make-Common(glelements, elements)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -83,12 +83,12 @@ BuildSources = $(RegularSources)
 endif
 
 if BUILD_WITH_MSVC
-noinst_LIBRARIES = elements.lst
+noinst_LIBRARIES = glelements.lst
 else
 if HACKING_DYNAMIC_MODULES
-lib_LTLIBRARIES = libelements@SUFFIX@LINKHACK.la
+lib_LTLIBRARIES = libglelements@SUFFIX@LINKHACK.la
 else
-noinst_LTLIBRARIES = libelements.la
+noinst_LTLIBRARIES = libglelements.la
 endif
 endif
 
@@ -98,41 +98,41 @@ LIBS =
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/src/extensions
 
-libelements_la_SOURCES = $(BuildSources)
-EXTRA_libelements_la_SOURCES = \
+libglelements_la_SOURCES = $(BuildSources)
+EXTRA_libglelements_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libelements@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
-EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES = \
+libglelements@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
+EXTRA_libglelements@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libelementsincdir = $(includedir)/Inventor/elements
-libelementsinc_HEADERS = $(PublicHeaders)
+libglelementsincdir = $(includedir)/Inventor/elements
+libglelementsinc_HEADERS = $(PublicHeaders)
 
-elements_lst_SOURCES = $(BuildSources)
-EXTRA_elements_lst_SOURCES = \
+glelements_lst_SOURCES = $(BuildSources)
+EXTRA_glelements_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 # this rule causes a make warning, so we remove it when it is not in use
-elements.lst: Makefile $(elements_lst_OBJECTS)
-	@echo "Linking elements.lst..."; \
+glelements.lst: Makefile $(glelements_lst_OBJECTS)
+	@echo "Linking glelements.lst..."; \
 	rm -f $@; touch $@; \
-	for i in $(elements_lst_OBJECTS); do echo $$i >>$@; done
+	for i in $(glelements_lst_OBJECTS); do echo $$i >>$@; done
 
-install-libelementsincHEADERS: $(libelementsinc_HEADERS)
+install-libglelementsincHEADERS: $(libglelementsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libelementsincdir)
-	@list='$(libelementsinc_HEADERS)'; for p in $$list; do \
+	$(mkinstalldirs) $(DESTDIR)$(libglelementsincdir)
+	@list='$(libglelementsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(libelementsincdir)/$$f"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libglelementsincdir)/$$f"; \
 	  if cmp -s "$$src" "$$dst"; then :; else \
 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
 	    $(INSTALL_HEADER) "$$src" "$$dst"; \
 	  fi \
 	done
 	@list='$(ObsoletedHeaders)'; for f in $$list; do \
-	  file="$(DESTDIR)$(libelementsincdir)/$$f"; \
+	  file="$(DESTDIR)$(libglelementsincdir)/$$f"; \
 	  if test -x "$$file"; then \
 	    echo " rm -f $$file"; \
 	    rm -f "$$file"; \

@@ -51,7 +51,7 @@ PublicHeaders = \
 	../../include/Inventor/draggers/SoTranslate2Dragger.h
 PrivateHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(draggers)
+##$ BEGIN TEMPLATE Make-Common(draggers, draggers)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

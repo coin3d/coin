@@ -27,7 +27,7 @@ PublicHeaders = \
 	../../include/Inventor/details/SoTextDetail.h
 PrivateHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(details)
+##$ BEGIN TEMPLATE Make-Common(details, details)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

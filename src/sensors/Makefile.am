@@ -32,7 +32,7 @@ PublicHeaders = \
 	../../include/Inventor/sensors/SoTimerSensor.h
 PrivateHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(sensors)
+##$ BEGIN TEMPLATE Make-Common(sensors, sensors)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

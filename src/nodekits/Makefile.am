@@ -34,7 +34,7 @@ PublicHeaders = \
 PrivateHeaders = \
 	../../include/Inventor/nodekits/SoSubKitP.h
 
-##$ BEGIN TEMPLATE Make-Common(nodekits)
+##$ BEGIN TEMPLATE Make-Common(nodekits, nodekits)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.

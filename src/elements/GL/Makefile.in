@@ -220,9 +220,9 @@ ObsoletedHeaders =
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
-@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = elements.lst
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libelements@SUFFIX@LINKHACK.la
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libelements.la
+@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = glelements.lst
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libglelements@SUFFIX@LINKHACK.la
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libglelements.la
 
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
@@ -230,21 +230,21 @@ LIBS =
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/src/extensions
 
-libelements_la_SOURCES = $(BuildSources)
-EXTRA_libelements_la_SOURCES = \
+libglelements_la_SOURCES = $(BuildSources)
+EXTRA_libglelements_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
-libelements@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
-EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES = \
+libglelements@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
+EXTRA_libglelements@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
-libelementsincdir = $(includedir)/Inventor/elements
-libelementsinc_HEADERS = $(PublicHeaders)
+libglelementsincdir = $(includedir)/Inventor/elements
+libglelementsinc_HEADERS = $(PublicHeaders)
 
-elements_lst_SOURCES = $(BuildSources)
-EXTRA_elements_lst_SOURCES = \
+glelements_lst_SOURCES = $(BuildSources)
+EXTRA_glelements_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 subdir = src/elements/GL
@@ -253,10 +253,11 @@ CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
 
-elements_lst_AR = $(AR) cru
-elements_lst_LIBADD =
-@HACKING_COMPACT_BUILD_TRUE@am_elements_lst_OBJECTS = all-cpp.$(OBJEXT)
-@HACKING_COMPACT_BUILD_FALSE@am_elements_lst_OBJECTS = \
+glelements_lst_AR = $(AR) cru
+glelements_lst_LIBADD =
+@HACKING_COMPACT_BUILD_TRUE@am_glelements_lst_OBJECTS = \
+@HACKING_COMPACT_BUILD_TRUE@	all-cpp.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_glelements_lst_OBJECTS = \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLCacheContextElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLClipPlaneElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLColorIndexElement.$(OBJEXT) \
@@ -283,13 +284,13 @@ elements_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGLViewingMatrixElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLViewportRegionElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLDisplayList.$(OBJEXT)
-elements_lst_OBJECTS = $(am_elements_lst_OBJECTS)
+glelements_lst_OBJECTS = $(am_glelements_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
-libelements_la_LDFLAGS =
-libelements_la_LIBADD =
-@HACKING_COMPACT_BUILD_TRUE@am_libelements_la_OBJECTS = all-cpp.lo
-@HACKING_COMPACT_BUILD_FALSE@am_libelements_la_OBJECTS = \
+libglelements_la_LDFLAGS =
+libglelements_la_LIBADD =
+@HACKING_COMPACT_BUILD_TRUE@am_libglelements_la_OBJECTS = all-cpp.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libglelements_la_OBJECTS = \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLCacheContextElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLClipPlaneElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLColorIndexElement.lo \
@@ -316,12 +317,12 @@ libelements_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGLViewingMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLViewportRegionElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLDisplayList.lo
-libelements_la_OBJECTS = $(am_libelements_la_OBJECTS)
-libelements@SUFFIX@LINKHACK_la_LDFLAGS =
-libelements@SUFFIX@LINKHACK_la_LIBADD =
-@HACKING_COMPACT_BUILD_TRUE@am_libelements@SUFFIX@LINKHACK_la_OBJECTS = \
+libglelements_la_OBJECTS = $(am_libglelements_la_OBJECTS)
+libglelements@SUFFIX@LINKHACK_la_LDFLAGS =
+libglelements@SUFFIX@LINKHACK_la_LIBADD =
+@HACKING_COMPACT_BUILD_TRUE@am_libglelements@SUFFIX@LINKHACK_la_OBJECTS = \
 @HACKING_COMPACT_BUILD_TRUE@	all-cpp.lo
-@HACKING_COMPACT_BUILD_FALSE@am_libelements@SUFFIX@LINKHACK_la_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@am_libglelements@SUFFIX@LINKHACK_la_OBJECTS = \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLCacheContextElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLClipPlaneElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLColorIndexElement.lo \
@@ -348,8 +349,8 @@ libelements@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGLViewingMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLViewportRegionElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLDisplayList.lo
-libelements@SUFFIX@LINKHACK_la_OBJECTS = \
-	$(am_libelements@SUFFIX@LINKHACK_la_OBJECTS)
+libglelements@SUFFIX@LINKHACK_la_OBJECTS = \
+	$(am_libglelements@SUFFIX@LINKHACK_la_OBJECTS)
 
 DEFS = @DEFS@
 DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)/include
@@ -426,14 +427,14 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(elements_lst_SOURCES) $(EXTRA_elements_lst_SOURCES) \
-	$(libelements_la_SOURCES) $(EXTRA_libelements_la_SOURCES) \
-	$(libelements@SUFFIX@LINKHACK_la_SOURCES) \
-	$(EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES)
-HEADERS = $(libelementsinc_HEADERS)
+DIST_SOURCES = $(glelements_lst_SOURCES) $(EXTRA_glelements_lst_SOURCES) \
+	$(libglelements_la_SOURCES) $(EXTRA_libglelements_la_SOURCES) \
+	$(libglelements@SUFFIX@LINKHACK_la_SOURCES) \
+	$(EXTRA_libglelements@SUFFIX@LINKHACK_la_SOURCES)
+HEADERS = $(libglelementsinc_HEADERS)
 
-DIST_COMMON = $(libelementsinc_HEADERS) Makefile.am Makefile.in
-SOURCES = $(elements_lst_SOURCES) $(EXTRA_elements_lst_SOURCES) $(libelements_la_SOURCES) $(EXTRA_libelements_la_SOURCES) $(libelements@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES)
+DIST_COMMON = $(libglelementsinc_HEADERS) Makefile.am Makefile.in
+SOURCES = $(glelements_lst_SOURCES) $(EXTRA_glelements_lst_SOURCES) $(libglelements_la_SOURCES) $(EXTRA_libglelements_la_SOURCES) $(libglelements@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libglelements@SUFFIX@LINKHACK_la_SOURCES)
 
 all: all-am
 
@@ -482,10 +483,10 @@ clean-libLTLIBRARIES:
 
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
-libelements.la: $(libelements_la_OBJECTS) $(libelements_la_DEPENDENCIES) 
-	$(CXXLINK)  $(libelements_la_LDFLAGS) $(libelements_la_OBJECTS) $(libelements_la_LIBADD) $(LIBS)
-libelements@SUFFIX@LINKHACK.la: $(libelements@SUFFIX@LINKHACK_la_OBJECTS) $(libelements@SUFFIX@LINKHACK_la_DEPENDENCIES) 
-	$(CXXLINK) -rpath $(libdir) $(libelements@SUFFIX@LINKHACK_la_LDFLAGS) $(libelements@SUFFIX@LINKHACK_la_OBJECTS) $(libelements@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
+libglelements.la: $(libglelements_la_OBJECTS) $(libglelements_la_DEPENDENCIES) 
+	$(CXXLINK)  $(libglelements_la_LDFLAGS) $(libglelements_la_OBJECTS) $(libglelements_la_LIBADD) $(LIBS)
+libglelements@SUFFIX@LINKHACK.la: $(libglelements@SUFFIX@LINKHACK_la_OBJECTS) $(libglelements@SUFFIX@LINKHACK_la_DEPENDENCIES) 
+	$(CXXLINK) -rpath $(libdir) $(libglelements@SUFFIX@LINKHACK_la_LDFLAGS) $(libglelements@SUFFIX@LINKHACK_la_OBJECTS) $(libglelements@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT) core *.core
@@ -571,12 +572,12 @@ distclean-depend:
 CXXDEPMODE = @CXXDEPMODE@
 uninstall-info-am:
 
-uninstall-libelementsincHEADERS:
+uninstall-libglelementsincHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(libelementsinc_HEADERS)'; for p in $$list; do \
+	@list='$(libglelementsinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libelementsincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libelementsincdir)/$$f; \
+	  echo " rm -f $(DESTDIR)$(libglelementsincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libglelementsincdir)/$$f; \
 	done
 
 tags: TAGS
@@ -638,7 +639,7 @@ check: check-am
 all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libelementsincdir)
+	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libglelementsincdir)
 
 install: install-am
 install-exec: install-exec-am
@@ -681,7 +682,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-libelementsincHEADERS
+install-data-am: install-libglelementsincHEADERS
 
 install-exec-am: install-libLTLIBRARIES
 
@@ -701,7 +702,7 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
 uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
-	uninstall-libelementsincHEADERS
+	uninstall-libglelementsincHEADERS
 
 .PHONY: GTAGS all all-am check check-am clean clean-generic \
 	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
@@ -710,35 +711,35 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	distclean-tags distdir dvi dvi-am info info-am install \
 	install-am install-data install-data-am install-exec \
 	install-exec-am install-info install-info-am \
-	install-libLTLIBRARIES install-libelementsincHEADERS \
+	install-libLTLIBRARIES install-libglelementsincHEADERS \
 	install-man install-strip installcheck installcheck-am \
 	installdirs maintainer-clean maintainer-clean-generic \
 	mostlyclean mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool tags uninstall uninstall-am \
 	uninstall-info-am uninstall-libLTLIBRARIES \
-	uninstall-libelementsincHEADERS
+	uninstall-libglelementsincHEADERS
 
 
 # this rule causes a make warning, so we remove it when it is not in use
-elements.lst: Makefile $(elements_lst_OBJECTS)
-	@echo "Linking elements.lst..."; \
+glelements.lst: Makefile $(glelements_lst_OBJECTS)
+	@echo "Linking glelements.lst..."; \
 	rm -f $@; touch $@; \
-	for i in $(elements_lst_OBJECTS); do echo $$i >>$@; done
+	for i in $(glelements_lst_OBJECTS); do echo $$i >>$@; done
 
-install-libelementsincHEADERS: $(libelementsinc_HEADERS)
+install-libglelementsincHEADERS: $(libglelementsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libelementsincdir)
-	@list='$(libelementsinc_HEADERS)'; for p in $$list; do \
+	$(mkinstalldirs) $(DESTDIR)$(libglelementsincdir)
+	@list='$(libglelementsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(libelementsincdir)/$$f"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libglelementsincdir)/$$f"; \
 	  if cmp -s "$$src" "$$dst"; then :; else \
 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
 	    $(INSTALL_HEADER) "$$src" "$$dst"; \
 	  fi \
 	done
 	@list='$(ObsoletedHeaders)'; for f in $$list; do \
-	  file="$(DESTDIR)$(libelementsincdir)/$$f"; \
+	  file="$(DESTDIR)$(libglelementsincdir)/$$f"; \
 	  if test -x "$$file"; then \
 	    echo " rm -f $$file"; \
 	    rm -f "$$file"; \

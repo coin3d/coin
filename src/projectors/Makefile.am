@@ -30,7 +30,7 @@ PublicHeaders = \
 	../../include/Inventor/projectors/SbSphereSheetProjector.h
 PrivateHeaders =
 
-##$ BEGIN TEMPLATE Make-Common(projectors)
+##$ BEGIN TEMPLATE Make-Common(projectors, projectors)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
