@@ -27,7 +27,7 @@
   vector (with the 4 components usually referred to as <x, y, z, w>)
   aswell as simple floating point arithmetic operations.
 
-  \sa SbVec2f, SbVec2s, SbVec3f.
+  \sa SbVec2f, SbVec2s, SbVec3f, SbVec3s.
 */
 
 

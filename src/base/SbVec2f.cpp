@@ -26,7 +26,7 @@
   Coin. It provides storage for a vector in 2 dimensions aswell
   as simple floating point arithmetic operations on this vector.
 
-  \sa SbVec2s, SbVec3f, SbVec4f
+  \sa SbVec2s, SbVec3s, SbVec3f, SbVec4f
 */
 
 #include <assert.h>

@@ -19,14 +19,15 @@
 
 /*!
   \class SbVec2s SbLinear.h Inventor/SbLinear.h
-  \brief The SbVec2s class is a 2 dimensional vector with short integer coordinates.
+  \brief The SbVec2s class is a 2 dimensional vector with short integer 
+  coordinates.
   \ingroup base
 
   This vector class is used by many other classes in
   Coin. It provides storage for a vector in 2 dimensions
-  aswell as simple fixed point arithmetic operations.
+  as well as simple integer arithmetic operations.
 
-  \sa SbVec2f, SbVec3f, SbVec4f.
+  \sa SbVec3s, SbVec2f, SbVec3f, SbVec4f.
 */
 
 
