@@ -387,73 +387,33 @@ SoInteractionKit::setAnyPartAsDefault(const SbName & partname,
                                       SbBool anypart,
                                       SbBool onlyifdefault)
 {
-  SoNode * oldpartnode =
-    this->getAnyPart(partname,
-                     FALSE, // don't make
-                     anypart ? FALSE : TRUE, // whether to check if leaf
-                     anypart ? FALSE : TRUE  // whether to check if private
-                     );
-  
-  SbList<SoSFNode*> catalognodes = this->getCatalogInstances();
-  SoSFNode * partfield = NULL;
-  if (oldpartnode) { // Find the field holding this node.
-    int i = 0;
-    do {
-      if (catalognodes[i] && oldpartnode == catalognodes[i]->getValue())
-        partfield = catalognodes[i];
-      i++;
-    } while (!partfield && (i < catalognodes.getLength()));
-#if COIN_DEBUG
-    // FIXME: we should add the capability to handle part paths down
-    // into nested nodekits and convert the !partfield test to an
-    // assert(). 20001004 mortene.
-    if (!partfield) {
-      COIN_STUB();
-      SoDebugError::postInfo("SoInteractionKit::setAnyPartAsDefault",
-                             "couldn't find partname in toplevel nodekit, "
-                             "and nested nodekits are not handled by "
-                             "this method");
-      return FALSE;
+  SoBaseKit * kit = this;
+  int partNum;
+  SbBool isList;
+  int listIdx;
+  if (SoBaseKit::findPart(SbString(partname.getString()), kit, partNum,
+                          isList, listIdx, TRUE)) {
+    SoSFNode * field = kit->getCatalogInstances()[partNum];
+    // FIXME: default check not working properly. pederb, 2000-01-21
+    if (1 || (!onlyifdefault || field->isDefault())) {
+      kit->setPart(partNum, node);
+      field->setDefault(TRUE);
     }
-#endif // COIN_DEBUG
-  }
-
-  if (onlyifdefault && partfield && partfield->isDefault()==FALSE)
-    return FALSE;
-
-  if (!this->setAnyPart(partname, node)) return FALSE;
-
-  if (!partfield) { // There was a NULL pointer for the catalog node.
-    SoNode * newpartnode =
-      this->getAnyPart(partname,
-                       FALSE, // don't make
-                       anypart ? FALSE : TRUE, // whether to check if leaf
-                       anypart ? FALSE : TRUE  // whether to check if private
-                       );
-    assert(newpartnode);
-    int i = 0;
-    do {
-      if (catalognodes[i] && newpartnode == catalognodes[i]->getValue())
-        partfield = catalognodes[i];
-      i++;
-    } while (!partfield && (i < catalognodes.getLength()));
+    else {
 #if COIN_DEBUG
-    // FIXME: we should add the capability to handle part paths down
-    // into nested nodekits and convert the !partfield test to an
-    // assert(). 20001004 mortene.
-    if (!partfield) {
-      COIN_STUB();
       SoDebugError::postInfo("SoInteractionKit::setAnyPartAsDefault",
-                             "couldn't find partname in toplevel nodekit, "
-                             "and nested nodekits are not handled by "
-                             "this method");
-      return FALSE;
-    }
+                             "no permission to set");
 #endif // COIN_DEBUG
+    }
   }
+#if COIN_DEBUG
+  else {
+    SoDebugError::postInfo("SoInteractionKit::setAnyPartAsDefault",
+                           "part %s not found", partname.getString());
+  }
+#endif // COIN_DEBUG
 
-  partfield->setDefault(TRUE);
-  return TRUE;
+  return FALSE;
 }
 
 /*!
