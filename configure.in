@@ -6,6 +6,11 @@ dnl  in tests.
 AC_PROG_CXX
 AC_LANG_CPLUSPLUS
 
+if test "x$GXX" != "xyes"; then
+  AC_MSG_WARN(You are not using the GNU compiler -- other compilers are not well supported at the moment)
+fi
+
+
 dnl *******************************************************************
 dnl * Library version control.
 dnl *******************************************************************
@@ -93,7 +98,8 @@ dnl echo "X_LIBS: $X_LIBS"
 dnl echo "X_EXTRA_LIBS: $X_EXTRA_LIBS"
 
 AC_ARG_ENABLE(Mesa,
-  [  --enable-Mesa          prefer Mesa (if found) over native OpenGL [default=yes]],
+  [  --enable-Mesa           prefer Mesa (if found) over native OpenGL
+                          [default=yes]],
   [case "${enableval}" in
     yes) enable_mesa=yes ;;
     no)  enable_mesa=no ;;
@@ -109,7 +115,7 @@ else
   GLU_search_list="GLU MesaGLU"
 fi
 
-if ! test "x$no_x" = "xyes"; then
+if test "x$no_x" != "xyes"; then
   dnl FIXME: -lXext is needed by -lSM. -lSM is added by AC_PATH_XTRA to
   dnl $X_PRE_LIBS, so -lXext _should_ be automatically added to $X_EXTRA_LIBS
   dnl by the AC_PATH_XTRA macro. This is not the case on my RedHat Linux
@@ -170,21 +176,24 @@ fi
 
 
 dnl *******************************************************************
-dnl * Enable/disable compilation with symbol information.
+dnl * Enable/disable compilation with symbol information (g++ only).
 dnl *******************************************************************
 
-if test "x$ac_cv_prog_cxx_g" = "xyes"; then
-  AC_ARG_ENABLE(symbols,
-    [  --enable-symbols        turn on symbol debug information [default=yes]],
-    [case "${enableval}" in
-      yes) enable_symbols=yes ;;
-      no)  enable_symbols=no ;;
-      *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-symbols) ;;
-    esac],
-    enable_symbols=yes)
+AC_ARG_ENABLE(symbols,
+  [  --enable-symbols        (g++ only) turn on symbol debug information
+                          [default=yes]],
+  [case "${enableval}" in
+    yes) enable_symbols=yes ;;
+    no)  enable_symbols=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-symbols) ;;
+  esac],
+  enable_symbols=yes)
 
-  if test "x$enable_symbols" = "xno"; then
+if test "x$enable_symbols" = "xno"; then
+  if test "x$GXX" = "xyes"; then
     CXXFLAGS="`echo $CXXFLAGS | sed 's/-g//'`"
+  else
+    AC_MSG_WARN(--disable-symbols only has effect when using GNU g++)
   fi
 fi
 
@@ -193,18 +202,22 @@ dnl *******************************************************************
 dnl * Enable/disable compilation with RTTI information (g++ only).
 dnl *******************************************************************
 
-if test "x$ac_cv_prog_cxx_g" = "xyes"; then
-  AC_ARG_ENABLE(rtti,
-    [  --enable-rtti           compile with RTTI [default=no]],
-    [case "${enableval}" in
-      yes) enable_rtti=yes ;;
-      no)  enable_rtti=no ;;
-      *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-rtti) ;;
-    esac],
-    enable_rtti=no)
+AC_ARG_ENABLE(rtti,
+  [  --enable-rtti           (g++ only) compile with RTTI [default=no]],
+  [case "${enableval}" in
+    yes) enable_rtti=yes ;;
+    no)  enable_rtti=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-rtti) ;;
+  esac],
+  enable_rtti=no)
 
-  if test "x$enable_rtti" = "xno"; then
+if test "x$enable_rtti" = "xno"; then
+  if test "x$GXX" = "xyes"; then
     CXXFLAGS="$CXXFLAGS -fno-rtti"
+  fi
+else
+  if test "x$GXX" != "xyes"; then
+    AC_MSG_WARN(--enable-rtti only has effect when using GNU g++)
   fi
 fi
 
@@ -213,20 +226,24 @@ dnl *******************************************************************
 dnl * Enable/disable compilation with exception handling (g++ only).
 dnl *******************************************************************
 
-if test "x$ac_cv_prog_cxx_g" = "xyes"; then
-  AC_ARG_ENABLE(exceptions,
-    [  --enable-exceptions     compile with exceptions [default=no]],
-    [case "${enableval}" in
-      yes) enable_exceptions=yes ;;
-      no)  enable_exceptions=no ;;
-      *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-exceptions) ;;
-    esac],
-    enable_exceptions=no)
+AC_ARG_ENABLE(exceptions,
+  [  --enable-exceptions     (g++ only) compile with exceptions [default=no]],
+  [case "${enableval}" in
+    yes) enable_exceptions=yes ;;
+    no)  enable_exceptions=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-exceptions) ;;
+  esac],
+  enable_exceptions=no)
 
-  if test "x$enable_exceptions" = "xno"; then
+if test "x$enable_exceptions" = "xno"; then
+  if test "x$GXX" = "xyes"; then
     dnl FIXME: this option was called "-fno-handle-exceptions" before g++ 2.8.
-    dnl 19990924 mortene.
+    dnl Should check for that. 19990924 mortene.
     CXXFLAGS="$CXXFLAGS -fno-exceptions"
+  fi
+else
+  if test "x$GXX" != "xyes"; then
+    AC_MSG_WARN(--enable-exceptions only has effect when using GNU g++)
   fi
 fi
 
@@ -236,19 +253,22 @@ dnl * Enable/disable compilation with profiling information
 dnl * for parsing by gprof (this is a g++ only option).
 dnl *******************************************************************
 
-if test "x$ac_cv_prog_cxx_g" = "xyes"; then
-  AC_ARG_ENABLE(profile,
-    [  --enable-profile        turn on inclusion of profiling code [default=no]],
-    [case "${enableval}" in
-      yes) enable_profile=yes ;;
-      no)  enable_profile=no ;;
-      *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-profile) ;;
-    esac],
-    enable_profile=no)
+AC_ARG_ENABLE(profile,
+  [  --enable-profile        (g++ only) turn on inclusion of profiling code
+                          [default=no]],
+  [case "${enableval}" in
+    yes) enable_profile=yes ;;
+    no)  enable_profile=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-profile) ;;
+  esac],
+  enable_profile=no)
 
-  if test "x$enable_profile" = "xyes"; then
+if test "x$enable_profile" = "xyes"; then
+  if test "x$GXX" = "xyes"; then
     CXXFLAGS="$CXXFLAGS -pg"
     LDFLAGS="$LDFLAGS -pg"
+  else
+    AC_MSG_WARN(--enable-profile only has effect when using GNU g++)
   fi
 fi
 
@@ -257,18 +277,23 @@ dnl *******************************************************************
 dnl * Enable/disable compilation with warnings turned on (g++ only).
 dnl *******************************************************************
 
-if test "x$ac_cv_prog_gxx" = "xyes"; then
-  AC_ARG_ENABLE(warnings,
-    [  --enable-warnings       turn on warnings when compiling [default=yes]],
-    [case "${enableval}" in
-      yes) enable_warnings=yes ;;
-      no)  enable_warnings=no ;;
-      *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-warnings) ;;
-    esac],
-    enable_warnings=yes)
+AC_ARG_ENABLE(warnings,
+  [  --enable-warnings       (g++ only) turn on warnings when compiling
+                          [default=yes]],
+  [case "${enableval}" in
+    yes) enable_warnings=yes ;;
+    no)  enable_warnings=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-warnings) ;;
+  esac],
+  enable_warnings=yes)
 
-  if test "x$enable_warnings" = "xyes"; then
+if test "x$enable_warnings" = "xyes"; then
+  if test "x$GXX" = "xyes"; then
     CXXFLAGS="$CXXFLAGS -W -Wall"
+  fi
+else
+  if test "x$GXX" != "xyes"; then
+    AC_MSG_WARN(--enable-warnings only has effect when using GNU g++)
   fi
 fi
 
