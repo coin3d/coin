@@ -1703,7 +1703,7 @@ SoOffscreenRendererP::getMaxTileSize(void)
 
   GLint temp[2] = {128, 128};
 
-#if HAVE_GLX
+#if defined(HAVE_GLX) || defined(HAVE_WGL)
   void * ctx = cc_glglue_context_create_offscreen(128, 128);
   if (ctx) {
     SbBool ok = cc_glglue_context_make_current(ctx);
@@ -1713,9 +1713,10 @@ SoOffscreenRendererP::getMaxTileSize(void)
     }
     cc_glglue_context_destruct(ctx);
   }
-#else // !HAVE_GLX
+#else // !HAVE_GLX && !HAVE_WGL
   // FIXME: remove this when the cc_glglue_context_*() functions are
-  // implemented for WGL and AGL aswell. 20030213 mortene.
+  // implemented for AGL aswell. Also: walk through the code and get
+  // rid of the other SoOffscreenRender+SoCallback hacks. 20030213 mortene.
   SoOffscreenRenderer * osr = new SoOffscreenRenderer(SbViewportRegion(128,128));
   SoCallback *cb = new SoCallback();
   cb->ref();
