@@ -75,6 +75,7 @@ SO_NODE_SOURCE(SoGroup);
 */
 SoGroup::SoGroup(void)
 {
+  this->pimpl = NULL; // just set to NULL for now
   SO_NODE_INTERNAL_CONSTRUCTOR(SoGroup);
 
   this->children = new SoChildList(this);

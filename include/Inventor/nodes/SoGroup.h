@@ -26,6 +26,8 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 
+class SoGroupP;
+
 class COIN_DLL_API SoGroup : public SoNode {
   typedef SoNode inherited;
 
@@ -74,6 +76,7 @@ protected:
 
 private:
   friend class SoUnknownNode; // Let SoUnknownNode access readChildren().
+  SoGroupP * pimpl;
 };
 
 #endif // !COIN_SOGROUP_H
