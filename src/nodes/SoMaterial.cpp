@@ -168,6 +168,10 @@ SoMaterial::doAction(SoAction * action)
     }
   }
   if (!diffuseColor.isIgnored() && !TEST_OVERRIDE(DIFFUSE_COLOR)) {
+    // Note: the override flag bit values for diffuseColor and
+    // transparency are equal (done like that to match SGI/TGS
+    // Inventor behavior), so overriding one will also override the
+    // other.
     SoDiffuseColorElement::set(action->getState(),
                                this,
                                diffuseColor.getNum(),
@@ -205,6 +209,10 @@ SoMaterial::doAction(SoAction * action)
     }
   }
   if (!transparency.isIgnored() && !TEST_OVERRIDE(TRANSPARENCY)) {
+    // Note: the override flag bit values for diffuseColor and
+    // transparency are equal (done like that to match SGI/TGS
+    // Inventor behavior), so overriding one will also override the
+    // other.
     SoTransparencyElement::set(action->getState(),
                                this,
                                transparency.getNum(),
