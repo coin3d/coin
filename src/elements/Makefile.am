@@ -31,6 +31,7 @@ ALLSOURCES = \
 	SoFontNameElement.cpp SoFontNameElement.h \
 	SoFontSizeElement.cpp SoFontSizeElement.h \
 	SoGLAmbientColorElement.cpp SoGLAmbientColorElement.h \
+	SoGLCacheContextElement.cpp SoGLCacheContextElement.h \
 	SoGLClipPlaneElement.cpp SoGLClipPlaneElement.h \
 	SoGLCoordinateElement.cpp SoGLCoordinateElement.h \
 	SoGLDiffuseColorElement.cpp SoGLDiffuseColorElement.h \
@@ -101,6 +102,7 @@ ALLSOURCES = \
 	SoViewingMatrixElement.cpp SoViewingMatrixElement.h \
 	SoViewportRegionElement.cpp SoViewportRegionElement.h \
 	SoWindowElement.cpp SoWindowElement.h \
+	SoGLDisplayList.cpp \
 	SoSubElement.h
 endif
 
@@ -133,6 +135,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoFontNameElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoFontSizeElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLAmbientColorElement.h \
+	$(top_srcdir)/include/Inventor/elements/SoGLCacheContextElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLClipPlaneElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLCoordinateElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLDiffuseColorElement.h \

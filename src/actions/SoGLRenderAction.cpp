@@ -84,6 +84,7 @@
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoWindowElement.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/misc/SoGL.h>
@@ -157,6 +158,7 @@ SoGLRenderAction::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoTextureOverrideElement);
   SO_ENABLE(SoGLRenderAction, SoWindowElement);
   SO_ENABLE(SoGLRenderAction, SoGLViewportRegionElement);
+  SO_ENABLE(SoGLRenderAction, SoGLCacheContextElement);
 }
 
 // *************************************************************************
@@ -366,7 +368,10 @@ SoGLRenderAction::setPassCallback(SoGLRenderPassCB * const func,
 void
 SoGLRenderAction::setCacheContext(const uint32_t context)
 {
-  this->cachecontext = context;
+  if (context != this->cachecontext) {
+    this->cachecontext = context;
+    this->invalidateState();
+  }
 }
 
 /*!
@@ -449,6 +454,9 @@ SoGLRenderAction::beginTraversal(SoNode * node)
   SoGLUpdateAreaElement::set(this->getState(),
                              SbVec2f(0.0f, 0.0f), SbVec2f(1.0f, 1.0f));
 
+  SoGLCacheContextElement::set(this->getState(), this->cachecontext,
+                               FALSE, this->renderingremote);
+
   inherited::beginTraversal(node);
 
   if (this->didhavetransparent && !this->sortrender) {
@@ -456,12 +464,16 @@ SoGLRenderAction::beginTraversal(SoNode * node)
         this->transparencytype == DELAYED_ADD) {
       this->currentpass = 1;
       SoGLRenderPassElement::set(this->getState(), 1);
+      SoGLCacheContextElement::set(this->getState(), this->cachecontext,
+                                   TRUE, this->renderingremote);
       this->enableBlend();
       inherited::beginTraversal(node);
       this->disableBlend();
     }
     else if (this->transparencytype == SORTED_OBJECT_BLEND ||
              this->transparencytype == SORTED_OBJECT_ADD) {
+      SoGLCacheContextElement::set(this->getState(), this->cachecontext,
+                                   TRUE, this->renderingremote);
       this->sortrender = TRUE;
       this->doPathSort();
       this->enableBlend();
@@ -601,7 +613,6 @@ SoGLRenderAction::abortNow(void)
 void
 SoGLRenderAction::setRenderingIsRemote(SbBool isremote)
 {
-  // FIXME: this setting is not used yet. 20000628 mortene.
   this->renderingremote = isremote;
 }
 

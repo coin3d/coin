@@ -1,0 +1,168 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2000 by Systems in Motion. All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public License
+ *  version 2.1 as published by the Free Software Foundation. See the
+ *  file LICENSE.LGPL at the root directory of the distribution for
+ *  more details.
+ *
+ *  If you want to use Coin for applications not compatible with the
+ *  LGPL, please contact SIM to acquire a Professional Edition license.
+ *
+ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
+ *  http://www.sim.no support@sim.no Voice: +47 22114160 Fax: +47 22207097
+ *
+\**************************************************************************/
+
+/*!
+  \class SoGLDisplayList Inventor/elements/SoGLCacheContextElement.h
+  \brief The SoGLDisplayList class stores and manages OpenGL display lists.
+
+  The TEXTURE_OBJECT type is not directly supported in Coin. We handle
+  textures differently in a more flexible class called SoGLImage,
+  which also stores some information about the texture used when
+  rendering. Old code which use this element should not stop
+  working though. The texture object extension will just not be used,
+  and the texture will be stored in a display list instead.
+*/
+
+// where this class is declared
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/misc/SoState.h>
+#include <assert.h>
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+#if HAVE_WINDOWS_H
+#include <windows.h>
+#endif // HAVE_WINDOWS_H
+#include <GL/gl.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
+
+/*!
+  Constructor.
+*/
+SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum)
+  : type(type),
+    numalloc(allocnum),
+    context(SoGLCacheContextElement::get(state)),
+    refcount(0)
+{
+  if (type == TEXTURE_OBJECT) {
+#if COIN_DEBUG && 1 // debug
+    SoDebugError::postInfo("SoGLDisplayList::SoGLDisplayList()",
+                           "TEXTURE_OBJECT not supported. Falling back to display list.");
+#endif // debug
+  }
+  this->firstindex = glGenLists(allocnum);
+}
+
+// private destructor. Use ref()/unref()
+SoGLDisplayList::~SoGLDisplayList()
+{
+  glDeleteLists(this->firstindex, this->numalloc);
+}
+
+/*!
+  Increase reference count for this display list/texture object.
+*/
+void
+SoGLDisplayList::ref(void)
+{
+  this->refcount++;
+}
+
+/*!
+  Decrease reference count for this instance. When reference count
+  reaches 0, the instence is deleted.
+*/
+void
+SoGLDisplayList::unref(SoState * state)
+{
+  if (--this->refcount == 0) {
+    // Let SoGLCacheContext delete this instance the next time context is current.
+    SoGLCacheContextElement::scheduleDelete(state, this);
+  }
+  assert(this->refcount > 0);
+}
+
+/*!
+  Open this display list/texture object.
+*/
+void
+SoGLDisplayList::open(SoState * state, int index)
+{
+  glNewList(this->firstindex+index, GL_COMPILE_AND_EXECUTE);
+}
+
+/*!
+  Close this display list/texture object.
+*/
+void
+SoGLDisplayList::close(SoState * state)
+{
+  glEndList();
+}
+
+/*!
+  Execute this display list/texture object.
+*/
+void
+SoGLDisplayList::call(SoState * state, int index)
+{
+  glCallList(this->firstindex + index);
+  this->addDependency(state);
+}
+
+/*!
+  Create a dependency on the displat list.
+*/
+void
+SoGLDisplayList::addDependency(SoState * state)
+{
+  // FIXME: when GL cache is implemented, add nested dependency on this cache
+  // pederb, 20000310
+}
+
+/*!
+  Return type. Display list or texture object.
+*/
+SoGLDisplayList::Type
+SoGLDisplayList::getType(void) const
+{
+  return this->type;
+}
+
+/*!
+  Return number of display lists/texture objects allocated.
+*/
+int
+SoGLDisplayList::getNumAllocated(void) const
+{
+  return this->numalloc;
+}
+
+/*!
+  Return first GL index for this display list.
+*/
+GLuint
+SoGLDisplayList::getFirstIndex(void) const
+{
+  return this->firstindex;
+}
+
+/*!
+  Return an id for the current context.
+*/
+int
+SoGLDisplayList::getContext(void) const
+{
+  return this->context;
+}

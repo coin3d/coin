@@ -801,6 +801,10 @@ SOURCE="@coin_src_dir@\src\elements\SoGLClipPlaneElement.cpp"
 # End Source File
 # Begin Source File
 
+SOURCE="@coin_src_dir@\src\elements\SoGLCacheContextElement.cpp"
+# End Source File
+# Begin Source File
+
 SOURCE="@coin_src_dir@\src\elements\SoGLCoordinateElement.cpp"
 # End Source File
 # Begin Source File

@@ -1,0 +1,359 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2000 by Systems in Motion. All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public License
+ *  version 2.1 as published by the Free Software Foundation. See the
+ *  file LICENSE.LGPL at the root directory of the distribution for
+ *  more details.
+ *
+ *  If you want to use Coin for applications not compatible with the
+ *  LGPL, please contact SIM to acquire a Professional Edition license.
+ *
+ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
+ *  http://www.sim.no support@sim.no Voice: +47 22114160 Fax: +47 22207097
+ *
+\**************************************************************************/
+
+/*!
+  \class SoGLCacheElement Inventor/elements/SoGLCacheElement.h
+  \brief The SoGLCacheElement class handles OpenGL caches for multiple contexts.
+*/
+
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/SbName.h>
+#include <coindefs.h> // COIN_STUB
+#include <string.h>
+#include <stdlib.h>
+
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+#if HAVE_WINDOWS_H
+#include <windows.h>
+#endif // HAVE_WINDOWS_H
+#include <GL/gl.h>
+
+SO_ELEMENT_SOURCE(SoGLCacheContextElement);
+
+typedef struct {
+  SbName extname;
+  SbList <int> context;
+  SbList <SbBool> supported;
+} so_glext_info;
+
+typedef struct {
+  int context;
+  int major;
+  int minor;
+} so_glversion_info;
+
+static SbList <so_glext_info *> * extsupportlist;
+static SbList <so_glversion_info> * glversionlist;
+static SbList <SoGLDisplayList*> * scheduledeletelist;
+
+static void soglcachecontext_cleanup(void)
+{
+  int n = extsupportlist->getLength();
+  for (int i = 0; i < n; i++) {
+    delete (*extsupportlist)[i];
+  }
+  delete extsupportlist;
+  delete glversionlist;
+  delete scheduledeletelist;
+}
+
+
+//
+// check if OpenGL extension is supported.
+//
+static SbBool
+extension_supported(const char * extension)
+{
+  static const GLubyte *extensions = NULL;
+  const GLubyte *start;
+  GLubyte *where, *terminator;
+
+  /* Extension names should not have spaces. */
+  where = (GLubyte *) strchr(extension, ' ');
+  if (where || *extension == '\0')
+    return FALSE;
+
+  if (!extensions)
+    extensions = glGetString(GL_EXTENSIONS);
+  start = extensions;
+  for (;;) {
+    where = (GLubyte *) strstr((const char *)start, extension);
+    if (!where)
+      break;
+    terminator = where + strlen(extension);
+    if (where == start || *(where - 1) == ' ') {
+      if (*terminator == ' ' || *terminator == '\0') {
+        return TRUE;
+      }
+    }
+    start = terminator;
+  }
+  return FALSE;
+}
+
+
+// doc from parent
+void
+SoGLCacheContextElement::initClass(void)
+{
+  SO_ELEMENT_INIT_CLASS(SoGLCacheContextElement, inherited);
+
+  extsupportlist = new SbList <so_glext_info *>;
+  glversionlist = new SbList <so_glversion_info>;
+  scheduledeletelist = new SbList <SoGLDisplayList*>;
+  atexit(soglcachecontext_cleanup);
+}
+
+/*!
+  Destructor.
+*/
+SoGLCacheContextElement::~SoGLCacheContextElement()
+{
+}
+
+// doc from parent
+void
+SoGLCacheContextElement::init(SoState * state)
+{
+  // these values will be set int set(), but initialize them anyway
+  this->context = 0;
+  this->twopass = FALSE;
+  this->remote = FALSE;
+}
+
+// doc from parent
+SbBool
+SoGLCacheContextElement::matches(const SoElement * elt) const
+{
+  const SoGLCacheContextElement * elem = (SoGLCacheContextElement*) elt;
+
+  return
+    this->context == elem->context &&
+    this->twopass == elem->twopass &&
+    this->remote == elem->remote;
+}
+
+// doc from parent
+SoElement *
+SoGLCacheContextElement::copyMatchInfo(void) const
+{
+  SoGLCacheContextElement * elem = (SoGLCacheContextElement*)
+    this->getTypeId().createInstance();
+  elem->context = this->context;
+  elem->twopass = this->twopass;
+  elem->remote = this->remote;
+  return elem;
+}
+
+/*!
+  Sets data for context.
+*/
+void
+SoGLCacheContextElement::set(SoState * state, int context,
+                             SbBool twopasstransparency,
+                             SbBool remoterendering)
+{
+  SoGLCacheContextElement * elem = (SoGLCacheContextElement *)
+    state->getElementNoPush(classStackIndex);
+  elem->twopass = twopasstransparency;
+  elem->remote = remoterendering;
+
+  int i = 0;
+  while (i < scheduledeletelist->getLength()) {
+    SoGLDisplayList * dl = (*scheduledeletelist)[i];
+    if (dl->getContext() == context) {
+      scheduledeletelist->removeFast(i);
+      delete dl;
+    }
+    else i++;
+  }
+}
+
+/*!
+  Returns context id.
+*/
+int
+SoGLCacheContextElement::get(SoState * state)
+{
+  const SoGLCacheContextElement * elem = (const SoGLCacheContextElement *)
+    SoElement::getConstElement(state, classStackIndex);
+  return elem->context;
+}
+
+/*!
+  Returns an extension id based on the GL extension string.
+  The extension id can be used to quickly test for the availability
+  of an extension later, using extSupported().
+*/
+int
+SoGLCacheContextElement::getExtID(const char * str)
+{
+  SbName extname(str);
+  int i, n = extsupportlist->getLength();
+  for (i = 0; i < n; i++) {
+    if ((*extsupportlist)[i]->extname == extname) break;
+  }
+  if (i == n) { // not found
+    so_glext_info * info = new so_glext_info;
+    info->extname = extname;
+    extsupportlist->append(info);
+  }
+  return i;
+}
+
+/*!
+  Returns TRUE if the extension is supported for the current context.
+  \a extid must be an id returned from getExtId(). The test result
+  is cached so this method is pretty fast and can be used run-time.
+*/
+SbBool
+SoGLCacheContextElement::extSupported(SoState * state, int extid)
+{
+  assert(extid >= 0 && extid < extsupportlist->getLength());
+
+  so_glext_info * info = (*extsupportlist)[extid];
+
+  int currcontext = SoGLCacheContextElement::get(state);
+  int n = info->context.getLength();
+  for (int i = 0; i < n; i++) {
+    if (info->context[i] == currcontext) return info->supported[i];
+  }
+  SbBool supported = extension_supported(info->extname.getString());
+  info->context.append(currcontext);
+  info->supported.append(supported);
+  return supported;
+}
+
+/*!
+  Returns the OpenGL version for the current context. This method
+  is an extension versus the Open Inventor API.
+*/
+void
+SoGLCacheContextElement::getOpenGLVersion(SoState * state, int & major, int & minor)
+{
+  int currcontext = SoGLCacheContextElement::get(state);
+
+  int i, n = glversionlist->getLength();
+  for (i = 0; i < n; i++) {
+    if ((*glversionlist)[i].context == currcontext) {
+      major = (*glversionlist)[i].major;
+      minor = (*glversionlist)[i].minor;
+      return;
+    }
+  }
+
+  // based on GLUWrapper_set_version() so if you find a bug (either in
+  // GLUWrapper or here) you should make sure it is fixed in both files.
+  // pederb, 20001003
+  char buffer[256];
+  const GLubyte * versionstr = glGetString(GL_VERSION);
+  (void)strncpy(buffer, (const char *)versionstr, 255);
+  buffer[255] = '\0';
+  char * dotptr = strchr(buffer, '.');
+  if (dotptr) {
+    char * spaceptr;
+    char * start = buffer;
+    *dotptr = '\0';
+    major = atoi(start);
+    start = ++dotptr;
+
+    dotptr = strchr(start, '.');
+    spaceptr = strchr(start, ' ');
+    if (!dotptr && spaceptr) dotptr = spaceptr;
+    if (dotptr && spaceptr && spaceptr < dotptr) dotptr = spaceptr;
+    if (dotptr) {
+      *dotptr = '\0';
+      minor = atoi(start);
+    }
+    else {
+      minor = atoi(start);
+    }
+  }
+  else {
+    major = 1;
+    minor = 0;
+  }
+  so_glversion_info info;
+  info.context = currcontext;
+  info.major = major;
+  info.minor = minor;
+
+  glversionlist->append(info);
+}
+
+/*!
+  Returns if mipmapped textures are fast for the current context.
+  In Coin, we just return TRUE for the moment.
+*/
+SbBool
+SoGLCacheContextElement::areMipMapsFast(SoState * state)
+{
+  return TRUE; // FIXME: how do we test this? pederb 20001003
+}
+
+/*!
+  This method is not supported in Coin. We will use our own
+  auto caching strategy.
+*/
+void
+SoGLCacheContextElement::shouldAutoCache(SoState * state, int bits)
+{
+  COIN_STUB();
+}
+
+/*!
+  This method is not supported in Coin. We will use our own 
+  auto caching strategy.
+*/
+void
+SoGLCacheContextElement::setAutoCacheBits(SoState * state, int bits)
+{
+  COIN_STUB();
+}
+
+/*!
+  This method is not supported in Coin. We will use our own 
+  auto caching strategy.
+*/
+int
+SoGLCacheContextElement::resetAutoCacheBits(SoState * state)
+{
+  COIN_STUB();
+  return 0;
+}
+
+/*!
+  Returns TRUE if rendering is remote.
+*/
+SbBool
+SoGLCacheContextElement::getIsRemoteRendering(SoState * state)
+{
+  const SoGLCacheContextElement *elem = (const SoGLCacheContextElement *)
+    state->getConstElement(classStackIndex);
+  return elem->remote;
+}
+
+//
+// internal method used by SoGLDisplayList to delete list as soon as
+// the display list context is current again.
+//
+void 
+SoGLCacheContextElement::scheduleDelete(SoState * state, class SoGLDisplayList * dl)
+{
+  if (state && dl->getContext() == SoGLCacheContextElement::get(state)) {
+    delete dl;
+  }
+  else {
+    scheduledeletelist->append(dl);
+  }
+}

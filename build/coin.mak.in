@@ -214,6 +214,7 @@ CLEAN :
 	-@erase "$(INTDIR)\SoGL.obj"
 	-@erase "$(INTDIR)\SoGLAmbientColorElement.obj"
 	-@erase "$(INTDIR)\SoGLClipPlaneElement.obj"
+	-@erase "$(INTDIR)\SoGLCacheContextElement.obj"
 	-@erase "$(INTDIR)\SoGLCoordinateElement.obj"
 	-@erase "$(INTDIR)\SoGLDiffuseColorElement.obj"
 	-@erase "$(INTDIR)\SoGLDrawStyleElement.obj"
@@ -750,6 +751,7 @@ LIB32_OBJS= \
 	"$(INTDIR)\SoGL.obj" \
 	"$(INTDIR)\SoGLAmbientColorElement.obj" \
 	"$(INTDIR)\SoGLClipPlaneElement.obj" \
+	"$(INTDIR)\SoGLCacheContextElement.obj" \
 	"$(INTDIR)\SoGLCoordinateElement.obj" \
 	"$(INTDIR)\SoGLDiffuseColorElement.obj" \
 	"$(INTDIR)\SoGLDrawStyleElement.obj" \
@@ -1250,6 +1252,7 @@ CLEAN :
 	-@erase "$(INTDIR)\SoGL.obj"
 	-@erase "$(INTDIR)\SoGLAmbientColorElement.obj"
 	-@erase "$(INTDIR)\SoGLClipPlaneElement.obj"
+	-@erase "$(INTDIR)\SoGLCacheContextElement.obj"
 	-@erase "$(INTDIR)\SoGLCoordinateElement.obj"
 	-@erase "$(INTDIR)\SoGLDiffuseColorElement.obj"
 	-@erase "$(INTDIR)\SoGLDrawStyleElement.obj"
@@ -1787,6 +1790,7 @@ LIB32_OBJS= \
 	"$(INTDIR)\SoGL.obj" \
 	"$(INTDIR)\SoGLAmbientColorElement.obj" \
 	"$(INTDIR)\SoGLClipPlaneElement.obj" \
+	"$(INTDIR)\SoGLCacheContextElement.obj" \
 	"$(INTDIR)\SoGLCoordinateElement.obj" \
 	"$(INTDIR)\SoGLDiffuseColorElement.obj" \
 	"$(INTDIR)\SoGLDrawStyleElement.obj" \
@@ -3170,6 +3174,12 @@ SOURCE="@coin_src_dir@\src\elements\SoGLAmbientColorElement.cpp"
 SOURCE="@coin_src_dir@\src\elements\SoGLClipPlaneElement.cpp"
 
 "$(INTDIR)\SoGLClipPlaneElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLCacheContextElement.cpp"
+
+"$(INTDIR)\SoGLCacheContextElement.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

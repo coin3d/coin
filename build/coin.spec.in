@@ -209,6 +209,7 @@ make doxygen-doc
 @includedir@/Inventor/elements/SoFontSizeElement.h
 @includedir@/Inventor/elements/SoGLAmbientColorElement.h
 @includedir@/Inventor/elements/SoGLClipPlaneElement.h
+@includedir@/Inventor/elements/SoGLCacheContextElement.h
 @includedir@/Inventor/elements/SoGLCoordinateElement.h
 @includedir@/Inventor/elements/SoGLDiffuseColorElement.h
 @includedir@/Inventor/elements/SoGLDrawStyleElement.h

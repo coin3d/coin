@@ -193,6 +193,7 @@ SoElement::initElements(void)
   SoGLNormalizeElement::initClass();
   SoLazyElement::initClass();
   SoCullElement::initClass();
+  SoGLCacheContextElement::initClass();
 }
 
 /*!

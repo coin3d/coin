@@ -136,6 +136,7 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 @HACKING_COMPACT_BUILD_FALSE@	SoFontNameElement.cpp SoFontNameElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoFontSizeElement.cpp SoFontSizeElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLAmbientColorElement.cpp SoGLAmbientColorElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLCacheContextElement.cpp SoGLCacheContextElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLClipPlaneElement.cpp SoGLClipPlaneElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLCoordinateElement.cpp SoGLCoordinateElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLDiffuseColorElement.cpp SoGLDiffuseColorElement.h \
@@ -206,6 +207,7 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 @HACKING_COMPACT_BUILD_FALSE@	SoViewingMatrixElement.cpp SoViewingMatrixElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoViewportRegionElement.cpp SoViewportRegionElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoWindowElement.cpp SoWindowElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLDisplayList.cpp \
 @HACKING_COMPACT_BUILD_FALSE@	SoSubElement.h
 
 ALLINSTHEADERS = \
@@ -237,6 +239,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoFontNameElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoFontSizeElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLAmbientColorElement.h \
+	$(top_srcdir)/include/Inventor/elements/SoGLCacheContextElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLClipPlaneElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLCoordinateElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLDiffuseColorElement.h \
@@ -366,6 +369,7 @@ libelements_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoFocalDistanceElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoFontNameElement.lo SoFontSizeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoGLAmbientColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLCacheContextElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoGLClipPlaneElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoGLCoordinateElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoGLDiffuseColorElement.lo \
@@ -429,7 +433,7 @@ libelements_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoViewVolumeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoViewingMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoViewportRegionElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoWindowElement.lo
+@HACKING_COMPACT_BUILD_FALSE@SoWindowElement.lo SoGLDisplayList.lo
 @HACKING_COMPACT_BUILD_TRUE@am_libelements_la_OBJECTS =  all.lo
 libelements_la_OBJECTS =  $(am_libelements_la_OBJECTS)
 libelementsLINKHACK_la_LDFLAGS = 
@@ -456,6 +460,7 @@ libelementsLINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoFocalDistanceElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoFontNameElement.lo SoFontSizeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoGLAmbientColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLCacheContextElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoGLClipPlaneElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoGLCoordinateElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoGLDiffuseColorElement.lo \
@@ -519,7 +524,7 @@ libelementsLINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoViewVolumeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoViewingMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoViewportRegionElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoWindowElement.lo
+@HACKING_COMPACT_BUILD_FALSE@SoWindowElement.lo SoGLDisplayList.lo
 @HACKING_COMPACT_BUILD_TRUE@am_libelementsLINKHACK_la_OBJECTS =  all.lo
 libelementsLINKHACK_la_OBJECTS =  $(am_libelementsLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -553,9 +558,10 @@ $(DEPDIR)/SoElement.Plo $(DEPDIR)/SoEmissiveColorElement.Plo \
 $(DEPDIR)/SoEnvironmentElement.Plo $(DEPDIR)/SoFloatElement.Plo \
 $(DEPDIR)/SoFocalDistanceElement.Plo $(DEPDIR)/SoFontNameElement.Plo \
 $(DEPDIR)/SoFontSizeElement.Plo $(DEPDIR)/SoGLAmbientColorElement.Plo \
+$(DEPDIR)/SoGLCacheContextElement.Plo \
 $(DEPDIR)/SoGLClipPlaneElement.Plo $(DEPDIR)/SoGLColorIndexElement.Plo \
 $(DEPDIR)/SoGLCoordinateElement.Plo \
-$(DEPDIR)/SoGLDiffuseColorElement.Plo \
+$(DEPDIR)/SoGLDiffuseColorElement.Plo $(DEPDIR)/SoGLDisplayList.Plo \
 $(DEPDIR)/SoGLDrawStyleElement.Plo \
 $(DEPDIR)/SoGLEmissiveColorElement.Plo \
 $(DEPDIR)/SoGLEnvironmentElement.Plo $(DEPDIR)/SoGLLazyElement.Plo \
@@ -748,10 +754,12 @@ maintainer-clean-tags:
 @AMDEP@include $(DEPDIR)/SoFontNameElement.Plo
 @AMDEP@include $(DEPDIR)/SoFontSizeElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLAmbientColorElement.Plo
+@AMDEP@include $(DEPDIR)/SoGLCacheContextElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLClipPlaneElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLColorIndexElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLCoordinateElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLDiffuseColorElement.Plo
+@AMDEP@include $(DEPDIR)/SoGLDisplayList.Plo
 @AMDEP@include $(DEPDIR)/SoGLDrawStyleElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLEmissiveColorElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLEnvironmentElement.Plo

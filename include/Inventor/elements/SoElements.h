@@ -111,6 +111,7 @@
 #include <Inventor/elements/SoGLShininessElement.h>
 #include <Inventor/elements/SoGLPolygonStippleElement.h>
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 
 // elements not found in OIV. Added to optimize rendering
 #include <Inventor/elements/SoGLShadeModelElement.h>
