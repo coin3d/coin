@@ -181,18 +181,18 @@ SoShapeHintsElement::print(FILE * /* file */) const
 //! FIXME: write doc.
 
 void
-SoShapeHintsElement::setElt(VertexOrdering vertexOrdering,
-                            ShapeType shapeType,
-                            FaceType faceType)
+SoShapeHintsElement::setElt(VertexOrdering vertexOrderingarg,
+                            ShapeType shapeTypearg,
+                            FaceType faceTypearg)
 {
-  if (vertexOrdering != ORDERING_AS_IS) {
-    this->vertexOrdering = vertexOrdering;
+  if (vertexOrderingarg != ORDERING_AS_IS) {
+    this->vertexOrdering = vertexOrderingarg;
   }
-  if (shapeType != SHAPE_TYPE_AS_IS) {
-    this->shapeType = shapeType;
+  if (shapeTypearg != SHAPE_TYPE_AS_IS) {
+    this->shapeType = shapeTypearg;
   }
-  if (faceType != FACE_TYPE_AS_IS) {
-    this->faceType = faceType;
+  if (faceTypearg != FACE_TYPE_AS_IS) {
+    this->faceType = faceTypearg;
   }
 }
 

@@ -144,29 +144,29 @@ SbDPMatrix::SbDPMatrix(const double a11, const double a12,
   Constructs a matrix instance with the initial elements from the
   \a matrix argument.
  */
-SbDPMatrix::SbDPMatrix(const SbDPMat & matrix)
+SbDPMatrix::SbDPMatrix(const SbDPMat & matrixref)
 {
-  this->setValue(matrix);
+  this->setValue(matrixref);
 }
 
 /*!
   This constructor is courtesy of the Microsoft Visual C++ compiler.
 */
-SbDPMatrix::SbDPMatrix(const SbDPMat * matrix)
+SbDPMatrix::SbDPMatrix(const SbDPMat * matrixptr)
 {
-  this->setValue(*matrix);
+  this->setValue(*matrixptr);
 }
 
 /*!
   This constructor converts a single-precision matrix to a double-precision matrix.
 */
-SbDPMatrix::SbDPMatrix(const SbMatrix & matrix)
+SbDPMatrix::SbDPMatrix(const SbMatrix & matrixref)
 {
   
-  const SbDPMat m = { { matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3] },
-                      { matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3] },
-                      { matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3] },
-                      { matrix[3][0], matrix[3][1], matrix[3][2], matrix[3][3] } };
+  const SbDPMat m = { { matrixref[0][0], matrixref[0][1], matrixref[0][2], matrixref[0][3] },
+                      { matrixref[1][0], matrixref[1][1], matrixref[1][2], matrixref[1][3] },
+                      { matrixref[2][0], matrixref[2][1], matrixref[2][2], matrixref[2][3] },
+                      { matrixref[3][0], matrixref[3][1], matrixref[3][2], matrixref[3][3] } };
   this->setValue(m);
 }
 

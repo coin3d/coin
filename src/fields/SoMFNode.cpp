@@ -125,7 +125,7 @@ SoMFNode::find(SoNode * value, SbBool addifnotfound)
 }
 
 void
-SoMFNode::setValues(const int start, const int num, const SoNode ** newvals)
+SoMFNode::setValues(const int start, const int numarg, const SoNode ** newvals)
 {
   // Disable temporarily, so we under any circumstances will not send
   // more than one notification about the changes.
@@ -135,14 +135,14 @@ SoMFNode::setValues(const int start, const int num, const SoNode ** newvals)
 
   // ref() new nodes before unref()-ing old ones, in case there are
   // common nodes (we don't want any premature destruction to happen).
-  { for (int i=0; i < num; i++) if (newvals[i]) newvals[i]->ref(); }
+  { for (int i=0; i < numarg; i++) if (newvals[i]) newvals[i]->ref(); }
 
   // We favor simplicity of code over performance here.
-  { for (int i=0; i < num; i++)
+  { for (int i=0; i < numarg; i++)
     this->set1Value(start+i, (SoNode *)newvals[i]); }
 
   // unref() to match the initial ref().
-  { for (int i=0; i < num; i++) if (newvals[i]) newvals[i]->unref(); }
+  { for (int i=0; i < numarg; i++) if (newvals[i]) newvals[i]->unref(); }
 
   // Finally, send notification.
   (void)this->enableNotify(notificstate);
@@ -245,13 +245,13 @@ SoMFNode::deleteAllValues(void)
 
 // Overridden to handle unref() and removeAuditor().
 void
-SoMFNode::deleteValues(int start, int num)
+SoMFNode::deleteValues(int start, int numarg)
 {
   // Note: this function overrides the one in SoMField, so if you do
   // any changes here, take a look at that method aswell.
 
-  if (num == -1) num = this->num - start;
-  for (int i=start; i < start+num; i++) {
+  if (numarg == -1) numarg = this->num - start;
+  for (int i=start; i < start+numarg; i++) {
     SoNode * n = this->values[i];
     if (n) {
       n->removeAuditor(this, SoNotRec::FIELD);
@@ -267,12 +267,12 @@ SoMFNode::deleteValues(int start, int num)
 #endif // COIN_INTERNAL_SOMFPATH
   }
 
-  inherited::deleteValues(start, num);
+  inherited::deleteValues(start, numarg);
 }
 
 // Overridden to insert NULL pointers in new array slots.
 void
-SoMFNode::insertSpace(int start, int num)
+SoMFNode::insertSpace(int start, int numarg)
 {
   // Disable temporarily so we don't send notification prematurely
   // from inherited::insertSpace().
@@ -280,8 +280,8 @@ SoMFNode::insertSpace(int start, int num)
   // Important note: the notification state is reset at the end, so
   // this function should *not* have multiple return-points.
 
-  inherited::insertSpace(start, num);
-  for (int i=start; i < start+num; i++) {
+  inherited::insertSpace(start, numarg);
+  for (int i=start; i < start+numarg; i++) {
 #ifdef COIN_INTERNAL_SOMFPATH
     this->pathheads.insert(NULL, start);
 #endif // COIN_INTERNAL_SOMFPATH

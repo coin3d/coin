@@ -29,8 +29,12 @@
 #include <stdlib.h>
 #include <assert.h>
 
-
 /* ********************************************************************** */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /* private functions */
 
 static cc_storage *
@@ -250,3 +254,7 @@ cc_storage_thread_cleanup(unsigned long threadid)
 */
 
 /* ********************************************************************** */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */

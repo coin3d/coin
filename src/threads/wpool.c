@@ -32,6 +32,11 @@
 #include <assert.h>
 
 /* ********************************************************************** */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /* private methods */
 
 static void
@@ -272,7 +277,7 @@ cc_wpool_begin(cc_wpool * pool, int numworkersneeded)
   \sa cc_wpool_begin() , cc_wpool_end()
 */
 void
-cc_wpool_start_worker(cc_wpool * pool, void (*workfunc)(void *), void * closure)
+cc_wpool_start_worker(cc_wpool * pool, cc_wpool_f * workfunc, void * closure)
 {
   cc_worker * worker = wpool_get_idle_worker(pool);
   assert(worker);
@@ -299,3 +304,7 @@ cc_wpool_end(cc_wpool * pool)
 }
 
 /* ********************************************************************** */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */

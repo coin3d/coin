@@ -76,29 +76,29 @@ SoGLTexture3EnabledElement::set(SoState * const state,
 
 // doc from parent
 void
-SoGLTexture3EnabledElement::init(SoState * state)
+SoGLTexture3EnabledElement::init(SoState * stateptr)
 {
-  inherited::init(state);
-  this->state = state;
+  inherited::init(stateptr);
+  this->state = stateptr;
   this->updategl();
 }
 
 // Documented in superclass. Overridden to track GL state.
 void
-SoGLTexture3EnabledElement::push(SoState * state)
+SoGLTexture3EnabledElement::push(SoState * stateptr)
 {
   SoGLTexture3EnabledElement * prev = (SoGLTexture3EnabledElement*) this->getNextInStack();
 
   this->data = prev->data;
-  this->state = state;
+  this->state = stateptr;
   // capture previous element since we might or might not change the
   // GL state in set/pop
-  prev->capture(state);
+  prev->capture(stateptr);
 }
 
 // Documented in superclass. Overridden to track GL state.
 void
-SoGLTexture3EnabledElement::pop(SoState * state,
+SoGLTexture3EnabledElement::pop(SoState * stateptr,
                                 const SoElement * prevTopElement)
 {
   SoGLTexture3EnabledElement * prev = (SoGLTexture3EnabledElement*) prevTopElement;

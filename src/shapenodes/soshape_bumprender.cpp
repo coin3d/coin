@@ -307,7 +307,7 @@ soshape_bumprender::calcTangentSpace(const SoPrimitiveVertexCache * cache)
 void
 soshape_bumprender::calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight * light)
 {
-  SbVec3f lightvec;
+  SbVec3f thelightvec;
   SbVec3f tlightvec;
 
   const SoPrimitiveVertexCache::Vertex * vptr =
@@ -319,8 +319,8 @@ soshape_bumprender::calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight 
     const SoPrimitiveVertexCache::Vertex & v = vptr[i];
     SbVec3f sTangent = this->tangentlist[i*2];
     SbVec3f tTangent = this->tangentlist[i*2+1];
-    lightvec = this->getLightVec(v.vertex);
-    tlightvec = lightvec;
+    thelightvec = this->getLightVec(v.vertex);
+    tlightvec = thelightvec;
 #if 0 // FIXME: I don't think it's necessary to do this test. pederb, 2003-11-20
     SbVec3f tcross = tTangent.cross(sTangent);
     if (tcross.dot(v.normal) < 0.0f) {
@@ -329,7 +329,7 @@ soshape_bumprender::calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight 
 #endif // disabled, probably not necessary
     this->cubemaplist.append(SbVec3f(sTangent.dot(tlightvec),
                                      tTangent.dot(tlightvec),
-                                     v.normal.dot(lightvec)));
+                                     v.normal.dot(thelightvec)));
 
   }
 }

@@ -172,17 +172,17 @@ SbMatrix::SbMatrix(const float a11, const float a12,
   Constructs a matrix instance with the initial elements from the
   \a matrix argument.
  */
-SbMatrix::SbMatrix(const SbMat & matrix)
+SbMatrix::SbMatrix(const SbMat & matrixref)
 {
-  this->setValue(matrix);
+  this->setValue(matrixref);
 }
 
 /*!
   This constructor is courtesy of the Microsoft Visual C++ compiler.
 */
-SbMatrix::SbMatrix(const SbMat * matrix)
+SbMatrix::SbMatrix(const SbMat * matrixptr)
 {
-  this->setValue(*matrix);
+  this->setValue(*matrixptr);
 }
 
 /*!

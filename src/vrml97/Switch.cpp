@@ -196,19 +196,19 @@ SoVRMLSwitch::affectsState(void) const // virtual
   Adds \a choice to the \a choice field.
 */
 void
-SoVRMLSwitch::addChoice(SoNode * choice)
+SoVRMLSwitch::addChoice(SoNode * choiceptr)
 {
-  this->addChild(choice);
+  this->addChild(choiceptr);
 }
 
 /*!
   Inserts \a choice at index \a idx.
 */
 void
-SoVRMLSwitch::insertChoice(SoNode * choice,
+SoVRMLSwitch::insertChoice(SoNode * choiceptr,
                            int idx)
 {
-  this->insertChild(choice, idx);
+  this->insertChild(choiceptr, idx);
 }
 
 /*!
@@ -224,9 +224,9 @@ SoVRMLSwitch::getChoice(int idx) const
   Finds the index for \a choice, or -1 if not found.
 */
 int
-SoVRMLSwitch::findChoice(SoNode * choice) const
+SoVRMLSwitch::findChoice(SoNode * choiceptr) const
 {
-  return this->findChild(choice);
+  return this->findChild(choiceptr);
 }
 
 /*!
@@ -251,9 +251,9 @@ SoVRMLSwitch::removeChoice(int idx)
   If \a choice is found, remove it.
 */
 void
-SoVRMLSwitch::removeChoice(SoNode * choice)
+SoVRMLSwitch::removeChoice(SoNode * choiceptr)
 {
-  this->removeChild(choice);
+  this->removeChild(choiceptr);
 }
 
 /*!
@@ -270,9 +270,9 @@ SoVRMLSwitch::removeAllChoices(void)
 */
 void
 SoVRMLSwitch::replaceChoice(int idx,
-                            SoNode * choice)
+                            SoNode * choiceptr)
 {
-  this->replaceChild(idx, choice);
+  this->replaceChild(idx, choiceptr);
 }
 
 /*!
@@ -280,9 +280,9 @@ SoVRMLSwitch::replaceChoice(int idx,
 */
 void
 SoVRMLSwitch::replaceChoice(SoNode * old,
-                            SoNode * choice)
+                            SoNode * choiceptr)
 {
-  this->replaceChild(old, choice);
+  this->replaceChild(old, choiceptr);
 }
 
 // Doc in parent

@@ -525,15 +525,15 @@ SoMField::writeValue(SoOutput * out) const
     return;
   }
 
-  const int num = this->getNum();
-  if ((num > 1) || (num == 0)) out->write("[ ");
+  const int count = this->getNum();
+  if ((count > 1) || (count == 0)) out->write("[ ");
 
   out->incrementIndent();
 
-  for (int i=0; i < num; i++) {
+  for (int i=0; i < count; i++) {
     this->write1Value(out, i);
 
-    if (i != num-1) {
+    if (i != count-1) {
       if (((i+1) % this->getNumValuesPerLine()) == 0) {
         out->write(",\n");
         out->indent();
@@ -545,7 +545,7 @@ SoMField::writeValue(SoOutput * out) const
       }
     }
   }
-  if ((num > 1) || (num == 0)) out->write(" ]");
+  if ((count > 1) || (count == 0)) out->write(" ]");
 
   out->decrementIndent();
 }
@@ -554,12 +554,12 @@ SoMField::writeValue(SoOutput * out) const
   Read \a num binary format values from \a in into this field.
 */
 SbBool
-SoMField::readBinaryValues(SoInput * in, int num)
+SoMField::readBinaryValues(SoInput * in, int numarg)
 {
   assert(in->isBinary());
-  assert(num >= 0);
+  assert(numarg >= 0);
 
-  for (int i=0; i < num; i++) if (!this->read1Value(in, i)) return FALSE;
+  for (int i=0; i < numarg; i++) if (!this->read1Value(in, i)) return FALSE;
   return TRUE;
 }
 
@@ -571,9 +571,9 @@ SoMField::writeBinaryValues(SoOutput * out) const
 {
   assert(out->isBinary());
 
-  const int num = this->getNum();
-  out->write(num);
-  for (int i=0; i < num; i++) this->write1Value(out, i);
+  const int count = this->getNum();
+  out->write(count);
+  for (int i=0; i < count; i++) this->write1Value(out, i);
 }
 
 // Number of values written to each line during export to ASCII format
@@ -593,7 +593,7 @@ SoMField::getNumValuesPerLine(void) const
   for the new array items).
  */
 void
-SoMField::setNum(const int num)
+SoMField::setNum(const int numarg)
 {
   // Don't use getNum(), as that could trigger evaluate(), which is
   // _not_ supposed to be called recursively (which means setNum()
@@ -605,12 +605,12 @@ SoMField::setNum(const int num)
   // (like SoMFNode and SoMFEngine) can also handle setNum() in a
   // correct way.
 
-  if (num < oldnum) {
-    this->deleteValues(num, -1);
+  if (numarg < oldnum) {
+    this->deleteValues(numarg, -1);
     // deleteValues() also handles notification.
   }
-  else if (num > oldnum) {
-    this->insertSpace(oldnum, num - oldnum);
+  else if (numarg > oldnum) {
+    this->insertSpace(oldnum, numarg - oldnum);
     // insertSpace() also handles notification.
   }
   // else no change.
@@ -627,7 +627,7 @@ SoMField::setNum(const int num)
   the array.
 */
 void
-SoMField::deleteValues(int start, int num)
+SoMField::deleteValues(int start, int numarg)
 {
   // Note: this function is overridden in SoMFNode, SoMFEngine and
   // SoMFPath, so if you do any changes here, take a look at those
@@ -637,12 +637,12 @@ SoMField::deleteValues(int start, int num)
   // Don't use getNum(), so we avoid recursive evaluate() calls.
   int oldnum = this->num;
 
-  if (num == -1) num = oldnum - start;
-  if (num == 0) return;
-  int end = start + num; // First element behind the delete block.
+  if (numarg == -1) numarg = oldnum - start;
+  if (numarg == 0) return;
+  int end = start + numarg; // First element behind the delete block.
 
 #if COIN_DEBUG
-  if (start < 0 || start >= oldnum || end > oldnum || num < -1) {
+  if (start < 0 || start >= oldnum || end > oldnum || numarg < -1) {
     SoDebugError::post("SoMField::deleteValues",
                        "invalid indices [%d, %d] for array of size %d",
                        start, end - 1, oldnum);
@@ -651,11 +651,11 @@ SoMField::deleteValues(int start, int num)
 #endif // COIN_DEBUG
 
   // Move elements downward to fill the gap.
-  for (int i = 0; i < oldnum-(start+num); i++)
-    this->copyValue(start+i, start+num+i);
+  for (int i = 0; i < oldnum-(start+numarg); i++)
+    this->copyValue(start+i, start+numarg+i);
 
   // Truncate array.
-  this->allocValues(oldnum - num);
+  this->allocValues(oldnum - numarg);
 
   // Send notification.
   this->valueChanged();
@@ -703,27 +703,27 @@ SoMField::isDeleteValuesEnabled(void)
   "upward" in the extended array.
 */
 void
-SoMField::insertSpace(int start, int num)
+SoMField::insertSpace(int start, int numarg)
 {
-  if (num == 0) return;
+  if (numarg == 0) return;
 
   // Don't use getNum(), so we avoid recursive evaluate() calls.
   int oldnum = this->num;
 #if COIN_DEBUG
-  if (start < 0 || start > oldnum || num < 0) {
+  if (start < 0 || start > oldnum || numarg < 0) {
     SoDebugError::post("SoMField::insertSpace",
                        "invalid indices [%d, %d] for array of size %d",
-                       start, start + num, oldnum);
+                       start, start + numarg, oldnum);
     return;
   }
 #endif // COIN_DEBUG
 
   // Expand array.
-  this->allocValues(oldnum + num);
+  this->allocValues(oldnum + numarg);
 
   // Copy values upward.
   for (int i = oldnum - start - 1; i >= 0; i--) {
-    this->copyValue(start+num+i, start+i);
+    this->copyValue(start+numarg+i, start+i);
   }
 
   // Send notification.

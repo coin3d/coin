@@ -212,11 +212,11 @@ SbBool
 SoVRMLCylinderSensor::dragStart(void)
 {
   // FIXME: heed the minAngle/maxAngle parameters.
-  SbVec3f hitpt = this->getLocalStartingPoint();
+  SbVec3f thehitpt = this->getLocalStartingPoint();
   SbLine line(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 1.0f, 0.0f));
-  SbVec3f ptonline = line.getClosestPoint(hitpt);
-  if (ptonline != hitpt) {
-    this->cylinderproj->setCylinder(SbCylinder(line, (ptonline-hitpt).length()));
+  SbVec3f ptonline = line.getClosestPoint(thehitpt);
+  if (ptonline != thehitpt) {
+    this->cylinderproj->setCylinder(SbCylinder(line, (ptonline-thehitpt).length()));
     this->rotation_changed = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), this->offset.getValue());
     return TRUE;
   }

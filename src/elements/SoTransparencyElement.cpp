@@ -58,9 +58,9 @@ SoTransparencyElement::~SoTransparencyElement()
 //! FIXME: write doc.
 
 void
-SoTransparencyElement::init(SoState * state)
+SoTransparencyElement::init(SoState * stateptr)
 {
-  this->state = state;
+  this->state = stateptr;
 }
 
 //! FIXME: write doc.

@@ -51,10 +51,10 @@ SoAmbientColorElement::initClass(void)
 //! FIXME: write doc.
 
 void
-SoAmbientColorElement::init(SoState * state)
+SoAmbientColorElement::init(SoState * stateptr)
 {
-  inherited::init(state);
-  this->state = state;
+  inherited::init(stateptr);
+  this->state = stateptr;
 }
 
 /*!

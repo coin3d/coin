@@ -87,12 +87,12 @@ SoMFVec4f::write1Value(SoOutput * out, int idx) const
   \a start.
 */
 void
-SoMFVec4f::setValues(const int start, const int num, const float xyzw[][4])
+SoMFVec4f::setValues(const int start, const int numarg, const float xyzw[][4])
 {
-  if(start+num > this->maxNum) this->allocValues(start+num);
-  else if(start+num > this->num) this->num = start+num;
+  if(start+numarg > this->maxNum) this->allocValues(start+numarg);
+  else if(start+numarg > this->num) this->num = start+numarg;
 
-  for(int i=0; i < num; i++) this->values[i+start].setValue(xyzw[i]);
+  for(int i=0; i < numarg; i++) this->values[i+start].setValue(xyzw[i]);
   this->valueChanged();
 }
 

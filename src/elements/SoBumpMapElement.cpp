@@ -106,7 +106,7 @@ SoBumpMapElement::get(SoState * const state)
 //! FIXME: write doc.
 
 void
-SoBumpMapElement::setElt(SoGLImage * image)
+SoBumpMapElement::setElt(SoGLImage * imageptr)
 {
-  this->image = image;
+  this->image = imageptr;
 }

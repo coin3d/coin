@@ -137,9 +137,9 @@ SoPrimitiveVertex::getDetail(void) const
   SoPrimitiveVertex instance.
 */
 void
-SoPrimitiveVertex::setPoint(const SbVec3f & point)
+SoPrimitiveVertex::setPoint(const SbVec3f & pointref)
 {
-  this->point = point;
+  this->point = pointref;
 }
 
 /*!
@@ -147,9 +147,9 @@ SoPrimitiveVertex::setPoint(const SbVec3f & point)
   SoPrimitiveVertex instance.
 */
 void
-SoPrimitiveVertex::setNormal(const SbVec3f & normal)
+SoPrimitiveVertex::setNormal(const SbVec3f & normalref)
 {
-  this->normal = normal;
+  this->normal = normalref;
 }
 
 /*!
@@ -208,7 +208,7 @@ SoPrimitiveVertex::setMaterialIndex(const int index)
   out of scope.
 */
 void
-SoPrimitiveVertex::setDetail(SoDetail * const detail)
+SoPrimitiveVertex::setDetail(SoDetail * const detailptr)
 {
-  this->detail = detail;
+  this->detail = detailptr;
 }

@@ -64,27 +64,27 @@ SoGLViewingMatrixElement::~SoGLViewingMatrixElement(void)
 
 // doc in parent
 void
-SoGLViewingMatrixElement::init(SoState * state)
+SoGLViewingMatrixElement::init(SoState * stateptr)
 {
-  inherited::init(state);
-  this->state = state;
+  inherited::init(stateptr);
+  this->state = stateptr;
   this->mmidentity = TRUE;
 }
 
 // doc in parent
 void
-SoGLViewingMatrixElement::push(SoState * state)
+SoGLViewingMatrixElement::push(SoState * stateptr)
 {
-  inherited::push(state);
-  this->state = state;
+  inherited::push(stateptr);
+  this->state = stateptr;
 }
 
 // doc in parent
 void
-SoGLViewingMatrixElement::pop(SoState * state,
+SoGLViewingMatrixElement::pop(SoState * stateptr,
                               const SoElement * prevTopElement)
 {
-  this->capture(state);
+  this->capture(stateptr);
   // we can't simply use updategl() since we need the reset matrix
   SbMatrix mat = this->viewingMatrix;
   if (!this->mmidentity) {

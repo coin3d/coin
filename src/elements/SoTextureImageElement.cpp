@@ -377,19 +377,19 @@ SoTextureImageElement::getDefault(SbVec3s & size, int & numComponents)
 //! FIXME: write doc.
 
 void
-SoTextureImageElement::setElt(const SbVec2s &size, const int numComponents,
-                              const unsigned char * bytes, const Wrap wrapS,
-                              const Wrap wrapT, const Model model,
-                              const SbColor &blendColor)
+SoTextureImageElement::setElt(const SbVec2s &sizearg, const int numComponentsarg,
+                              const unsigned char * bytesarg, const Wrap wrapSarg,
+                              const Wrap wrapTarg, const Model modelarg,
+                              const SbColor &blendColorarg)
 {
-  this->size.setValue(size[0],size[1],1);
-  this->numComponents = numComponents;
-  this->bytes = bytes;
-  this->wrapS = wrapS;
-  this->wrapT = wrapT;
+  this->size.setValue(sizearg[0],sizearg[1],1);
+  this->numComponents = numComponentsarg;
+  this->bytes = bytesarg;
+  this->wrapS = wrapSarg;
+  this->wrapT = wrapTarg;
   this->wrapR = REPEAT;
-  this->model = model;
-  this->blendColor = blendColor;
+  this->model = modelarg;
+  this->blendColor = blendColorarg;
 }
 
 /*!
@@ -400,20 +400,20 @@ SoTextureImageElement::setElt(const SbVec2s &size, const int numComponents,
   \since Coin 2.0
 */
 void
-SoTextureImageElement::setElt(const SbVec3s &size, const int numComponents,
-                              const unsigned char * bytes, const Wrap wrapS,
-                              const Wrap wrapT, const Wrap wrapR, 
-                              const Model model,
-                              const SbColor &blendColor)
+SoTextureImageElement::setElt(const SbVec3s &sizearg, const int numComponentsarg,
+                              const unsigned char * bytesarg, const Wrap wrapSarg,
+                              const Wrap wrapTarg, const Wrap wrapRarg, 
+                              const Model modelarg,
+                              const SbColor &blendColorarg)
 {
-  this->size = size;
-  this->numComponents = numComponents;
-  this->bytes = bytes;
-  this->wrapS = wrapS;
-  this->wrapT = wrapT;
-  this->wrapR = wrapR;
-  this->model = model;
-  this->blendColor = blendColor;
+  this->size = sizearg;
+  this->numComponents = numComponentsarg;
+  this->bytes = bytesarg;
+  this->wrapS = wrapSarg;
+  this->wrapT = wrapTarg;
+  this->wrapR = wrapRarg;
+  this->model = modelarg;
+  this->blendColor = blendColorarg;
 }
 
 const SbColor &

@@ -57,14 +57,14 @@ public:
   typedef void SbHashApplyFunc(const Key & key, const Type & obj, void * closure);
 
 public:
-  SbHash(unsigned int size = 256, float loadfactor = 0.0f) {
-    if ( loadfactor <= 0.0f ) { loadfactor = 0.75f; }
+  SbHash(unsigned int sizearg = 256, float loadfactorarg = 0.0f) {
+    if ( loadfactorarg <= 0.0f ) { loadfactorarg = 0.75f; }
     unsigned int s = 1;
-    while ( s < size ) { s <<= 1; } // power-of-two size
+    while ( s < sizearg ) { s <<= 1; } // power-of-two size
     this->size = s;
     this->elements = 0;
-    this->threshold = (unsigned int) (s * loadfactor);
-    this->loadfactor = loadfactor;
+    this->threshold = (unsigned int) (s * loadfactorarg);
+    this->loadfactor = loadfactorarg;
     this->buckets = new SbHashEntry<Type, Key> * [this->size];
     memset(this->buckets, 0, this->size * sizeof(SbHashEntry<Type, Key> *));
     this->hashfunc = default_hash_func;

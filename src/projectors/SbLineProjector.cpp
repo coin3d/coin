@@ -128,9 +128,9 @@ SbLineProjector::project(const SbVec2f & point)
   line.
  */
 void
-SbLineProjector::setLine(const SbLine & line)
+SbLineProjector::setLine(const SbLine & lineref)
 {
-  this->line = line;
+  this->line = lineref;
 }
 
 /*!

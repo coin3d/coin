@@ -63,14 +63,14 @@ soshape_bigtexture::~soshape_bigtexture()
 }
 
 void
-soshape_bigtexture::beginShape(SoGLBigImage * image,
-                               const float quality)
+soshape_bigtexture::beginShape(SoGLBigImage * imageptr,
+                               const float qualityarg)
 {
-  this->image = image;
-  this->quality = quality;
+  this->image = imageptr;
+  this->quality = qualityarg;
   this->pvlistcnt = 0;
 
-  int num = image->initSubImages(SbVec2s(256, 256));
+  int num = imageptr->initSubImages(SbVec2s(256, 256));
   this->numregions = num;
 
   if (this->clipper == NULL) {

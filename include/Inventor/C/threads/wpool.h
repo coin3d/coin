@@ -33,6 +33,8 @@ extern "C" {
 
 /* ********************************************************************** */
 
+typedef void cc_wpool_f(void *);
+
   COIN_DLL_API cc_wpool * cc_wpool_construct(int numworkers);
   COIN_DLL_API void cc_wpool_destruct(cc_wpool * pool);
 
@@ -43,7 +45,7 @@ extern "C" {
   COIN_DLL_API SbBool cc_wpool_try_begin(cc_wpool * pool, int numworkersneeded);
   COIN_DLL_API void cc_wpool_begin(cc_wpool * pool, int numworkersneeded);
   COIN_DLL_API void cc_wpool_start_worker(cc_wpool * pool,
-                                          void (*workfunc)(void *), void * closure);
+                                          cc_wpool_f * workfunc, void * closure);
   COIN_DLL_API void cc_wpool_end(cc_wpool * pool);
 
 /* ********************************************************************** */

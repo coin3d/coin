@@ -33,8 +33,11 @@
 #include <Inventor/C/glue/freetype.h>
 #include <Inventor/C/glue/GLUWrapper.h>
 
-
 /* ************************************************************************* */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /*
   Implementation note: no part of the code has to be reentrant, as the
@@ -1377,3 +1380,7 @@ flwft_calctessellatorsteps(float complexity)
 }
 
 #endif /* HAVE_FREETYPE */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */

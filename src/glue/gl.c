@@ -200,6 +200,12 @@
 #include <Inventor/C/glue/gl_glx.h>
 #include <Inventor/C/glue/gl_agl.h>
 
+/* ********************************************************************** */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 static cc_libhandle glglue_self_handle = NULL;
 static SbBool glglue_tried_open_self = FALSE;
 
@@ -3135,5 +3141,8 @@ cc_glglue_context_pbuffer_is_bound(void * ctx)
 #endif
 }
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
 
 /*** </Offscreen buffer handling.> ******************************************/

@@ -60,9 +60,9 @@ SoShininessElement::~SoShininessElement()
 //! FIXME: write doc.
 
 void
-SoShininessElement::init(SoState * state)
+SoShininessElement::init(SoState * stateptr)
 {
-  this->state = state;
+  this->state = stateptr;
 }
 
 //! FIXME: write doc.

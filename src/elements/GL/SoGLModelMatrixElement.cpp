@@ -68,18 +68,18 @@ SoGLModelMatrixElement::~SoGLModelMatrixElement(void)
 //! FIXME: write doc.
 
 void
-SoGLModelMatrixElement::init(SoState * state)
+SoGLModelMatrixElement::init(SoState * stateptr)
 {
-  this->state = state;
+  this->state = stateptr;
   this->viewEltNodeId = 0;
   this->stackoverflow = FALSE;
-  inherited::init(state);
+  inherited::init(stateptr);
 }
 
 //! FIXME: write doc.
 
 void
-SoGLModelMatrixElement::push(SoState * state)
+SoGLModelMatrixElement::push(SoState * stateptr)
 {
   SoGLModelMatrixElement * prev = (SoGLModelMatrixElement*)
     this->getNextInStack();
@@ -99,16 +99,16 @@ SoGLModelMatrixElement::push(SoState * state)
       this->stackoverflow = TRUE;
     }
   }
-  inherited::push(state);
+  inherited::push(stateptr);
 }
 
 //! FIXME: write doc.
 
 void
-SoGLModelMatrixElement::pop(SoState * state,
+SoGLModelMatrixElement::pop(SoState * stateptr,
                             const SoElement * prevTopElement)
 {
-  inherited::pop(state, prevTopElement);
+  inherited::pop(stateptr, prevTopElement);
 
   SoGLModelMatrixElement * prev = (SoGLModelMatrixElement*)
     prevTopElement;

@@ -131,8 +131,8 @@ SoWWWInline::cleanup(void)
 
 class SoWWWInlineP {
  public:
-  SoWWWInlineP(SoWWWInline * owner) {
-    this->owner = owner;
+  SoWWWInlineP(SoWWWInline * ownerptr) {
+    this->owner = ownerptr;
   }
   SoWWWInline * owner;
   SoChildList * children;

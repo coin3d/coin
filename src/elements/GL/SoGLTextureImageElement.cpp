@@ -76,11 +76,11 @@ SoGLTextureImageElement::~SoGLTextureImageElement(void)
 
 // doc from parent
 void
-SoGLTextureImageElement::init(SoState * state)
+SoGLTextureImageElement::init(SoState * stateptr)
 {
-  inherited::init(state);
+  inherited::init(stateptr);
   this->glimage = NULL;
-  this->state = state;
+  this->state = stateptr;
 
   // check environment variables
   if (COIN_MAXIMUM_TEXTURE2_SIZE == 0) {
@@ -99,23 +99,23 @@ SoGLTextureImageElement::init(SoState * state)
 // Documented in superclass. Overridden to pass GL state to the next
 // element.
 void
-SoGLTextureImageElement::push(SoState * state)
+SoGLTextureImageElement::push(SoState * stateptr)
 {
-  inherited::push(state);
+  inherited::push(stateptr);
   SoGLTextureImageElement * prev = (SoGLTextureImageElement*)
     this->getNextInStack();
   this->glimage = NULL;
-  this->state = state;
+  this->state = stateptr;
 }
 
 
 // Documented in superclass. Overridden to pass GL state to the
 // previous element.
 void
-SoGLTextureImageElement::pop(SoState * state,
+SoGLTextureImageElement::pop(SoState * stateptr,
                              const SoElement * prevTopElement)
 {
-  inherited::pop(state, prevTopElement);
+  inherited::pop(stateptr, prevTopElement);
   SoGLTextureImageElement * prev = (SoGLTextureImageElement*)
     prevTopElement;
   
@@ -135,18 +135,18 @@ translateWrap(const SoGLImage::Wrap wrap)
   use this feature unless you know what you're doing.
 */
 void
-SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
+SoGLTextureImageElement::set(SoState * const stateptr, SoNode * const node,
                              SoGLImage * image, const Model model,
                              const SbColor & blendColor)
 {
   SoGLTextureImageElement * elem = (SoGLTextureImageElement*)
-    state->getElement(classStackIndex);
+    stateptr->getElement(classStackIndex);
   if (!elem) return;
 
   if (elem->glimage && elem->glimage->getImage()) elem->glimage->getImage()->readUnlock();
   if (image) {
     // keep SoTextureImageElement "up-to-date"
-    inherited::set(state, node,
+    inherited::set(stateptr, node,
                    SbVec3s(0,0,0),
                    0,
                    NULL,
@@ -161,7 +161,7 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
   }
   else {
     elem->glimage = NULL;
-    inherited::setDefault(state, node);
+    inherited::setDefault(stateptr, node);
   }
   elem->updateLazyElement();
 }

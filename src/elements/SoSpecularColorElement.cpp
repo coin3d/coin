@@ -61,10 +61,10 @@ SoSpecularColorElement::~SoSpecularColorElement()
 //! FIXME: write doc.
 
 void
-SoSpecularColorElement::init(SoState * state)
+SoSpecularColorElement::init(SoState * stateptr)
 {
-  inherited::init(state);
-  this->state = state;
+  inherited::init(stateptr);
+  this->state = stateptr;
 }
 
 //! FIXME: write doc.

@@ -61,10 +61,10 @@ SoEmissiveColorElement::~SoEmissiveColorElement()
 //! FIXME: write doc.
 
 void
-SoEmissiveColorElement::init(SoState * state)
+SoEmissiveColorElement::init(SoState * stateptr)
 {
-  inherited::init(state);
-  this->state = state;
+  inherited::init(stateptr);
+  this->state = stateptr;
 }
 
 //! FIXME: write doc.

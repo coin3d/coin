@@ -123,7 +123,7 @@ SoMFEngine::find(SoEngine * value, SbBool addifnotfound)
 }
 
 void
-SoMFEngine::setValues(const int start, const int num, const SoEngine ** newvals)
+SoMFEngine::setValues(const int start, const int numarg, const SoEngine ** newvals)
 {
   // Disable temporarily, so we under any circumstances will not send
   // more than one notification about the changes.
@@ -133,14 +133,14 @@ SoMFEngine::setValues(const int start, const int num, const SoEngine ** newvals)
 
   // ref() new engines before unref()-ing old ones, in case there are
   // common engines (we don't want any premature destruction to happen).
-  { for (int i=0; i < num; i++) if (newvals[i]) newvals[i]->ref(); }
+  { for (int i=0; i < numarg; i++) if (newvals[i]) newvals[i]->ref(); }
 
   // We favor simplicity of code over performance here.
-  { for (int i=0; i < num; i++)
+  { for (int i=0; i < numarg; i++)
     this->set1Value(start+i, (SoEngine *)newvals[i]); }
 
   // unref() to match the initial ref().
-  { for (int i=0; i < num; i++) if (newvals[i]) newvals[i]->unref(); }
+  { for (int i=0; i < numarg; i++) if (newvals[i]) newvals[i]->unref(); }
 
   // Finally, send notification.
   (void)this->enableNotify(notificstate);
@@ -224,7 +224,7 @@ SoMFEngine::operator==(const SoMFEngine & field) const
 
   const SoEngine ** const lhs = this->getValues(0);
   const SoEngine ** const rhs = field.getValues(0);
-  for (int i = 0; i < num; i++) if (lhs[i] != rhs[i]) return FALSE;
+  for (int i = 0; i < this->num; i++) if (lhs[i] != rhs[i]) return FALSE;
   return TRUE;
 }
 
@@ -243,13 +243,13 @@ SoMFEngine::deleteAllValues(void)
 
 // Overridden to handle unref() and removeAuditor().
 void
-SoMFEngine::deleteValues(int start, int num)
+SoMFEngine::deleteValues(int start, int numarg)
 {
   // Note: this function overrides the one in SoMField, so if you do
   // any changes here, take a look at that method aswell.
 
-  if (num == -1) num = this->num - start;
-  for (int i=start; i < start+num; i++) {
+  if (numarg == -1) numarg = this->num - start;
+  for (int i=start; i < start+numarg; i++) {
     SoEngine * n = this->values[i];
     if (n) {
       n->removeAuditor(this, SoNotRec::FIELD);
@@ -265,12 +265,12 @@ SoMFEngine::deleteValues(int start, int num)
 #endif // COIN_INTERNAL_SOMFPATH
   }
 
-  inherited::deleteValues(start, num);
+  inherited::deleteValues(start, numarg);
 }
 
 // Overridden to insert NULL pointers in new array slots.
 void
-SoMFEngine::insertSpace(int start, int num)
+SoMFEngine::insertSpace(int start, int numarg)
 {
   // Disable temporarily so we don't send notification prematurely
   // from inherited::insertSpace().
@@ -278,8 +278,8 @@ SoMFEngine::insertSpace(int start, int num)
   // Important note: the notification state is reset at the end, so
   // this function should *not* have multiple return-points.
 
-  inherited::insertSpace(start, num);
-  for (int i=start; i < start+num; i++) {
+  inherited::insertSpace(start, numarg);
+  for (int i=start; i < start+numarg; i++) {
 #ifdef COIN_INTERNAL_SOMFPATH
     this->pathheads.insert(NULL, start);
 #endif // COIN_INTERNAL_SOMFPATH

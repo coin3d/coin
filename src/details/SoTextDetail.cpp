@@ -134,7 +134,7 @@ SoTextDetail::setCharacterIndex(const int idx)
   SoTextDetail instance.
 */
 void
-SoTextDetail::setPart(const int part)
+SoTextDetail::setPart(const int partarg)
 {
-  this->part = part;
+  this->part = partarg;
 }

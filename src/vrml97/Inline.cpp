@@ -211,9 +211,9 @@ SoVRMLInline::~SoVRMLInline()
   Sets the full (non-relative) URL name.
 */
 void
-SoVRMLInline::setFullURLName(const SbString & url)
+SoVRMLInline::setFullURLName(const SbString & urlref)
 {
-  THIS->fullurlname = url;
+  THIS->fullurlname = urlref;
 }
 
 /*!

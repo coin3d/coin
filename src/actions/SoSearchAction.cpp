@@ -141,9 +141,9 @@ SoSearchAction::~SoSearchAction()
   SoSearchAction::setFind().
 */
 void
-SoSearchAction::setNode(SoNode * const node)
+SoSearchAction::setNode(SoNode * const nodeptr)
 {
-  this->node = node;
+  this->node = nodeptr;
   this->lookfor |= NODE;
 }
 
@@ -171,10 +171,10 @@ SoSearchAction::getNode(void) const
   SoSearchAction::setFind().
 */
 void
-SoSearchAction::setType(const SoType type, const SbBool chkderived)
+SoSearchAction::setType(const SoType typearg, const SbBool chkderivedarg)
 {
-  this->type = type;
-  this->chkderived = chkderived;
+  this->type = typearg;
+  this->chkderived = chkderivedarg;
   this->lookfor |= TYPE;
 }
 
@@ -183,9 +183,9 @@ SoSearchAction::setType(const SoType type, const SbBool chkderived)
   classes of that type also returns a match.
 */
 SoType
-SoSearchAction::getType(SbBool & chkderived) const
+SoSearchAction::getType(SbBool & chkderivedref) const
 {
-  chkderived = this->chkderived;
+  chkderivedref = this->chkderived;
   return this->type;
 }
 
@@ -198,9 +198,9 @@ SoSearchAction::getType(SbBool & chkderived) const
   SoSearchAction::setFind().
 */
 void
-SoSearchAction::setName(const SbName name)
+SoSearchAction::setName(const SbName namearg)
 {
-  this->name = name;
+  this->name = namearg;
   this->lookfor |= NAME;
 }
 
@@ -243,9 +243,9 @@ SoSearchAction::getFind(void) const
   matches are of interest.  Default configuration is \c FIRST.
 */
 void
-SoSearchAction::setInterest(const Interest interest)
+SoSearchAction::setInterest(const Interest interestarg)
 {
-  this->interest = interest;
+  this->interest = interestarg;
 }
 
 /*!
@@ -268,9 +268,9 @@ SoSearchAction::getInterest(void) const
   children of SoSwitch nodes).
 */
 void
-SoSearchAction::setSearchingAll(const SbBool searchall)
+SoSearchAction::setSearchingAll(const SbBool searchallarg)
 {
-  this->searchall = searchall;
+  this->searchall = searchallarg;
 }
 
 /*!
@@ -379,14 +379,14 @@ SoSearchAction::isFound(void) const
   modified after being added without side effects.
 */
 void
-SoSearchAction::addPath(SoPath * const path)
+SoSearchAction::addPath(SoPath * const pathptr)
 {
   assert(! this->isFound()); // shouldn't try to add path if found
 
   switch (this->interest) {
   case FIRST:
     assert(! this->path); // should be NULL
-    this->path = path;
+    this->path = pathptr;
     this->path->ref();
     this->setFound();
     break;
@@ -394,12 +394,12 @@ SoSearchAction::addPath(SoPath * const path)
   case LAST:
     if (this->path)
       this->path->unref(); // should delete it if possible
-    this->path = path;
+    this->path = pathptr;
     this->path->ref();
     break;
 
   case ALL:
-    this->paths.append(path);
+    this->paths.append(pathptr);
     break;
 
   default:
@@ -413,7 +413,7 @@ SoSearchAction::addPath(SoPath * const path)
 // Documented in superclass. Overridden from superclass to initialize
 // internal data.
 void
-SoSearchAction::beginTraversal(SoNode * node)
+SoSearchAction::beginTraversal(SoNode * nodeptr)
 {
   this->paths.truncate(0);
   if (this->path) this->path->unref();
@@ -423,7 +423,7 @@ SoSearchAction::beginTraversal(SoNode * node)
   // now obsoleted 'duringSearchAll' flag.
   SoSearchAction::duringSearchAll = this->isSearchingAll();
 
-  this->traverse(node); // begin traversal at root node
+  this->traverse(nodeptr); // begin traversal at root node
 
   SoSearchAction::duringSearchAll = FALSE;
 }

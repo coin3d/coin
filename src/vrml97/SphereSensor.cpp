@@ -162,14 +162,14 @@ SoVRMLSphereSensor::~SoVRMLSphereSensor()
 SbBool
 SoVRMLSphereSensor::dragStart(void)
 {
-  SbVec3f hitpt = this->getLocalStartingPoint();
-  float radius = hitpt.length();
+  SbVec3f thehitpt = this->getLocalStartingPoint();
+  float radius = thehitpt.length();
   if (radius == 0.0f) return FALSE;
 
   this->sphereproj->setSphere(SbSphere(SbVec3f(0.0f, 0.0f, 0.0f), radius));
   this->sphereproj->setViewVolume(this->getViewVolume());
   this->sphereproj->setWorkingSpace(this->getLocalToWorldMatrix());
-  this->getLocalToWorldMatrix().multVecMatrix(hitpt, this->prevworldhitpt);
+  this->getLocalToWorldMatrix().multVecMatrix(thehitpt, this->prevworldhitpt);
   this->prevrotation = SbRotation::identity();
   this->rotation_changed = this->offset.getValue();
 

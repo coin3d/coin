@@ -57,9 +57,9 @@ private:
       : vertex(v),
         data(data) {}
   public:
-    void get(SbVec3f &v, void *& data) {
+    void get(SbVec3f &v, void *& dataref) {
       v = this->vertex;
-      data = this->data;
+      dataref = this->data;
     }
 
     SbVec3f vertex;

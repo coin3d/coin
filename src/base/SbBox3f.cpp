@@ -69,10 +69,10 @@ SbBox3f::SbBox3f(const float minx, const float miny, const float minz,
   The coordinates of \a min should be less than the coordinates of
   \a max if you want to make a valid box.
  */
-SbBox3f::SbBox3f(const SbVec3f & min, const SbVec3f & max)
+SbBox3f::SbBox3f(const SbVec3f & minval, const SbVec3f & maxval)
 {
-  this->min = min;
-  this->max = max;
+  this->min = minval;
+  this->max = maxval;
 }
 
 /*!
@@ -252,19 +252,20 @@ SbBox3f::setBounds(const float minx, const float miny, const float minz,
   \sa getBounds().
  */
 void
-SbBox3f::setBounds(const SbVec3f & min, const SbVec3f & max)
+SbBox3f::setBounds(const SbVec3f & minval, const SbVec3f & maxval)
 {
 #if COIN_DEBUG
-  if (min[0]>max[0] || min[1]>max[1] || min[2]>max[2]) {
+  if (minval[0]>maxval[0] || minval[1]>maxval[1] || minval[2]>maxval[2]) {
     SoDebugError::postWarning("SbBox3f::setBounds",
                               "invalid box specification: "
                               "min==<%f, %f, %f> max==<%f, %f, %f>",
-                              min[0], min[1], min[2], max[0], max[1], max[2]);
+                              minval[0], minval[1], minval[2],
+                              maxval[0], maxval[1], maxval[2]);
   }
 #endif // COIN_DEBUG
 
-  this->min = min;
-  this->max = max;
+  this->min = minval;
+  this->max = maxval;
 }
 
 /*!
@@ -286,10 +287,10 @@ SbBox3f::getBounds(float & minx, float & miny, float & minz,
   \sa setBounds().
 */
 void
-SbBox3f::getBounds(SbVec3f & min, SbVec3f & max) const
+SbBox3f::getBounds(SbVec3f & minobj, SbVec3f & maxobj) const
 {
-  min = this->min;
-  max = this->max;
+  minobj = this->min;
+  maxobj = this->max;
 }
 
 /*!

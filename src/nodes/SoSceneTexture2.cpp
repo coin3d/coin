@@ -500,9 +500,9 @@ SoSceneTexture2::write(SoWriteAction * action)
 #undef PUBLIC
 #define PUBLIC(obj) obj->api
 
-SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * api)
+SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * apiptr)
 {
-  this->api = api;
+  this->api = apiptr;
   this->glcontext = NULL;
   this->pbuffervalid = FALSE;
   this->glimagevalid = FALSE;

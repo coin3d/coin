@@ -156,10 +156,10 @@ SoVectorizeActionP::reset(void)
 void 
 SoVectorizeActionP::add_point(vertexdata * vd, SoState * state)
 {
-  SbBool phong = this->phong;
+  SbBool dophong = this->phong;
   // if there are no normals on the state we fall back to BASE_COLOR
   // lighting model
-  if (phong) phong = SoNormalElement::getInstance(state)->getNum() > 0;
+  if (dophong) dophong = SoNormalElement::getInstance(state)->getNum() > 0;
   
   if (!this->completelyinside || this->clipplanes.getLength()) {
     int i;
@@ -185,7 +185,7 @@ SoVectorizeActionP::add_point(vertexdata * vd, SoState * state)
   c.setPackedValue(vd->diffuse);
   this->shapetoworldmatrix.multVecMatrix(vd->point, wv);
   point->vidx = this->bsp.addPoint(v);
-  if (phong) {
+  if (dophong) {
     point->col = this->shade_vertex(state, vd->point,
                                     c,
                                     vd->normal).getPackedValue();
@@ -210,10 +210,10 @@ SoVectorizeActionP::add_line(vertexdata * vd0, vertexdata * vd1, SoState * state
   vd[1] = vd1;
   SbVec3f v[2];
 
-  SbBool phong = this->phong;
+  SbBool dophong = this->phong;
   // if there are no normals on the state we fall back to BASE_COLOR
   // lighting model
-  if (phong) phong = SoNormalElement::getInstance(state)->getNum() > 0;
+  if (dophong) dophong = SoNormalElement::getInstance(state)->getNum() > 0;
   
   if (!this->completelyinside || this->clipplanes.getLength()) {
     if (!this->completelyinside) {
@@ -241,7 +241,7 @@ SoVectorizeActionP::add_line(vertexdata * vd0, vertexdata * vd1, SoState * state
     c.setPackedValue(vd[i]->diffuse);
     this->shapetoworldmatrix.multVecMatrix(vd[i]->point, wv[i]);
     line->vidx[i] = this->bsp.addPoint(v[i]);
-    if (phong) {
+    if (dophong) {
       line->col[i] = this->shade_vertex(state, vd[i]->point,
                                          c,
                                          vd[i]->normal).getPackedValue();
@@ -805,7 +805,7 @@ SoVectorizeActionP::shade_vertex(SoState * state,
   float dist, tmp, att, dot, dot_spot, dot_spec;
   float lR, lB, lG;
 
-  SbBool twoside = this->twoside;
+  SbBool dotwoside = this->twoside;
 
   if (vnormal == SbVec3f(0.0f, 0.0f, 0.0f)) return vcolor;
   this->shapetovrc.multDirMatrix(vnormal, n);
@@ -857,7 +857,7 @@ SoVectorizeActionP::shade_vertex(SoState * state,
     }
     dot = d.dot(n);
 
-    if (twoside && dot < 0) {
+    if (dotwoside && dot < 0) {
       dot = -dot;
     }
     if (dot > 0.0f) {
@@ -877,7 +877,7 @@ SoVectorizeActionP::shade_vertex(SoState * state,
         float spot_exp = sl->dropOffRate.getValue() * 128.0f;
 
         dot_spot = -d.dot(spot_direction);
-        if (twoside && dot_spot < 0) dot_spot = -dot_spot;
+        if (dotwoside && dot_spot < 0) dot_spot = -dot_spot;
         if (dot_spot < spot_cutoff) {
           // no contribution 
           continue;
@@ -896,7 +896,7 @@ SoVectorizeActionP::shade_vertex(SoState * state,
 
       dot_spec = n.dot(s);
 
-      if (twoside && dot_spec < 0) dot_spec = -dot_spec;
+      if (dotwoside && dot_spec < 0) dot_spec = -dot_spec;
       if (dot_spec > 0) {
         tmp=sqrtf(s[0]*s[0]+s[1]*s[1]+s[2]*s[2]);
         if (tmp > 1E-3) {

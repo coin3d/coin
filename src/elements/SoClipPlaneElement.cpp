@@ -34,9 +34,9 @@
 //
 // constructor for the internal class
 //
-so_plane_data::so_plane_data(const SbPlane &plane, const SbMatrix &matrix)
+so_plane_data::so_plane_data(const SbPlane &planeref, const SbMatrix &matrix)
 {
-  this->plane = this->wcPlane = plane;
+  this->plane = this->wcPlane = planeref;
   this->wcPlane.transform(matrix);
 }
 

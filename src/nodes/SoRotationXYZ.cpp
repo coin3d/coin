@@ -162,9 +162,9 @@ SoRotationXYZ::getVector(SbVec3f & rotvec) const
 SbRotation
 SoRotationXYZ::getRotation(void) const
 {
-  SbVec3f axis;
-  this->getVector(axis);
-  return SbRotation(axis, this->angle.getValue());
+  SbVec3f theaxis;
+  this->getVector(theaxis);
+  return SbRotation(theaxis, this->angle.getValue());
 }
 
 // Doc from superclass. Overrides the traversal method in this class for

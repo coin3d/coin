@@ -208,19 +208,19 @@ SoVRMLLOD::affectsState(void) const // virtual
   Adds a new level.
 */
 void
-SoVRMLLOD::addLevel(SoNode * level)
+SoVRMLLOD::addLevel(SoNode * levelptr)
 {
-  this->addChild(level);
+  this->addChild(levelptr);
 }
 
 /*!
   Inserts a new level.
 */
 void
-SoVRMLLOD::insertLevel(SoNode * level,
+SoVRMLLOD::insertLevel(SoNode * levelptr,
                        int idx)
 {
-  this->insertChild(level, idx);
+  this->insertChild(levelptr, idx);
 }
 
 /*!
@@ -263,9 +263,9 @@ SoVRMLLOD::removeLevel(int idx)
   Find \a level, and remove it if found.
 */
 void
-SoVRMLLOD::removeLevel(SoNode * level)
+SoVRMLLOD::removeLevel(SoNode * levelptr)
 {
-  this->removeChild(level);
+  this->removeChild(levelptr);
 }
 
 /*!

@@ -50,15 +50,15 @@ SbSphere::SbSphere(void)
 /*!
   Construct an SbSphere instance with the given center point and radius.
  */
-SbSphere::SbSphere(const SbVec3f &center, const float radius)
+SbSphere::SbSphere(const SbVec3f &centerarg, const float radiusarg)
 {
 #if COIN_DEBUG
-  if (radius<0.0f)
+  if (radiusarg<0.0f)
     SoDebugError::postWarning("SbSphere::SbSphere",
                               "Radius should be >= 0.0f.");
 #endif // COIN_DEBUG
 
-  this->setValue(center, radius);
+  this->setValue(centerarg, radiusarg);
 }
 
 /*!
@@ -67,15 +67,15 @@ SbSphere::SbSphere(const SbVec3f &center, const float radius)
   \sa getCenter(), getRadius().
  */
 void
-SbSphere::setValue(const SbVec3f &center, const float radius)
+SbSphere::setValue(const SbVec3f &centerarg, const float radiusarg)
 {
 #if COIN_DEBUG
-  if (radius<0.0f)
+  if (radiusarg<0.0f)
     SoDebugError::postWarning("SbSphere::setValue",
                               "Radius should be >= 0.0f.");
 #endif // COIN_DEBUG
-  this->setCenter(center);
-  this->setRadius(radius);
+  this->setCenter(centerarg);
+  this->setRadius(radiusarg);
 }
 
 /*!
@@ -84,9 +84,9 @@ SbSphere::setValue(const SbVec3f &center, const float radius)
   \sa setValue(), setRadius() and getCenter().
  */
 void
-SbSphere::setCenter(const SbVec3f &center)
+SbSphere::setCenter(const SbVec3f &centerarg)
 {
-  this->center = center;
+  this->center = centerarg;
 }
 
 /*!
@@ -95,14 +95,14 @@ SbSphere::setCenter(const SbVec3f &center)
   \sa setValue(), setCenter() and getRadius().
  */
 void
-SbSphere::setRadius(const float radius)
+SbSphere::setRadius(const float radiusarg)
 {
 #if COIN_DEBUG
-  if (radius<0.0f)
+  if (radiusarg<0.0f)
     SoDebugError::postWarning("SbSphere::setRadius",
                               "Radius should be >= 0.0f.");
 #endif // COIN_DEBUG
-  this->radius = radius;
+  this->radius = radiusarg;
 }
 
 /*!

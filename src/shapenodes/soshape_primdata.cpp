@@ -53,13 +53,13 @@ soshape_primdata::~soshape_primdata()
 }
 
 void
-soshape_primdata::beginShape(SoShape * shape, SoAction * action,
-                               SoShape::TriangleShape shapetype,
+soshape_primdata::beginShape(SoShape * shapeptr, SoAction * actionptr,
+                               SoShape::TriangleShape shapetypearg,
                                SoDetail * detail)
 {
-  this->shape = shape;
-  this->action = action;
-  this->shapetype = shapetype;
+  this->shape = shapeptr;
+  this->action = actionptr;
+  this->shapetype = shapetypearg;
   // this is a hack. Only one of these will be used, and the
   // other one is an illegal cast.
   this->faceDetail = (SoFaceDetail *)detail;

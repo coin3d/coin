@@ -72,22 +72,22 @@ compute_prefix_function(SbList <int> & pi, const SbString & str)
   \since Coin 2.0
 */
 int
-SbString::find(const SbString & str) const
+SbString::find(const SbString & strarg) const
 {
   int lenthis = this->getLength();
-  int lenstr = str.getLength();
+  int lenstr = strarg.getLength();
 
   if (!lenthis) return -1;
   if (lenstr > lenthis) return -1;
 
   SbList<int> pi;
-  compute_prefix_function(pi, str);
+  compute_prefix_function(pi, strarg);
   int q = 0;
 
   for (int i = 0; i < lenthis; i ++){
-    while (q > 0 && (str.operator[](q) != this->operator[](i)))
+    while (q > 0 && (strarg.operator[](q) != this->operator[](i)))
       q = pi.operator[](q - 1);
-    if (str.operator[](q) == this->operator[](i))
+    if (strarg.operator[](q) == this->operator[](i))
       q++;
     if (q == lenstr){
       return (i - (lenstr - 1));
@@ -109,24 +109,24 @@ SbString::find(const SbString & str) const
 */
 
 SbBool
-SbString::findAll(const SbString & str, SbIntList & found) const
+SbString::findAll(const SbString & strarg, SbIntList & found) const
 {
   // The KMP string matching algorithm is used for this method
   int lenthis = this->getLength();
-  int lenstr = str.getLength();
+  int lenstr = strarg.getLength();
   found.truncate(0);
 
   if (!lenthis) return FALSE;
   if (lenstr > lenthis) return FALSE;
 
   SbList<int> pi;
-  compute_prefix_function(pi, str);
+  compute_prefix_function(pi, strarg);
   int q = 0;
 
   for (int i = 0; i < lenthis; i ++){
-    while (q > 0 && (str.operator[](q) != this->operator[](i)))
+    while (q > 0 && (strarg.operator[](q) != this->operator[](i)))
       q = pi.operator[](q - 1);
-    if (str.operator[](q) == this->operator[](i))
+    if (strarg.operator[](q) == this->operator[](i))
       q++;
     if (q == lenstr){
       found.append(i - (lenstr - 1));

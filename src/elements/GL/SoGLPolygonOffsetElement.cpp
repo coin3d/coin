@@ -61,16 +61,16 @@ SoGLPolygonOffsetElement::~SoGLPolygonOffsetElement(void)
 //! FIXME: write doc.
 
 void
-SoGLPolygonOffsetElement::init(SoState * state)
+SoGLPolygonOffsetElement::init(SoState * stateptr)
 {
-  inherited::init(state);
-  this->state = state;
+  inherited::init(stateptr);
+  this->state = stateptr;
 }
 
 //! FIXME: write doc.
 
 void
-SoGLPolygonOffsetElement::push(SoState * state)
+SoGLPolygonOffsetElement::push(SoState * stateptr)
 {
   SoGLPolygonOffsetElement * prev = (SoGLPolygonOffsetElement*)this->getNextInStack();
 
@@ -78,16 +78,16 @@ SoGLPolygonOffsetElement::push(SoState * state)
   this->active = prev->active;
   this->offsetfactor = prev->offsetfactor;
   this->offsetunits = prev->offsetunits;
-  this->state = state;
+  this->state = stateptr;
   // capture previous element since we might or might not change the
   // GL state in set/pop
-  prev->capture(state);
+  prev->capture(stateptr);
 }
 
 //! FIXME: write doc.
 
 void
-SoGLPolygonOffsetElement::pop(SoState * state, const SoElement * prevTopElement)
+SoGLPolygonOffsetElement::pop(SoState * stateptr, const SoElement * prevTopElement)
 {
   const SoGLPolygonOffsetElement * prev =
     (const SoGLPolygonOffsetElement*)prevTopElement;

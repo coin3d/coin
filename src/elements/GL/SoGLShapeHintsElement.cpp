@@ -90,19 +90,19 @@ SoGLShapeHintsElement::~SoGLShapeHintsElement(void)
 //! FIXME: write doc.
 
 void
-SoGLShapeHintsElement::init(SoState * state)
+SoGLShapeHintsElement::init(SoState * stateptr)
 {
-  inherited::init(state);  
+  inherited::init(stateptr);  
   glCullFace(GL_BACK);
-  this->state = state;
+  this->state = stateptr;
 }
 
 //! FIXME: write doc.
 
 void
-SoGLShapeHintsElement::push(SoState * state)
+SoGLShapeHintsElement::push(SoState * stateptr)
 {
-  inherited::push(state);
+  inherited::push(stateptr);
   SoGLShapeHintsElement * prev =
     (SoGLShapeHintsElement *) this->getNextInStack();
   this->state = prev->state;
@@ -111,20 +111,20 @@ SoGLShapeHintsElement::push(SoState * state)
 //! FIXME: write doc.
 
 void
-SoGLShapeHintsElement::pop(SoState * state,
+SoGLShapeHintsElement::pop(SoState * stateptr,
                            const SoElement * prevTopElement)
 {
-  inherited::pop(state, prevTopElement);
+  inherited::pop(stateptr, prevTopElement);
 }
 
 //! FIXME: write doc.
 
 void
-SoGLShapeHintsElement::setElt(VertexOrdering vertexOrdering,
-                              ShapeType shapeType,
-                              FaceType faceType)
+SoGLShapeHintsElement::setElt(VertexOrdering vertexOrderingarg,
+                              ShapeType shapeTypearg,
+                              FaceType faceTypearg)
 {
-  inherited::setElt(vertexOrdering, shapeType, faceType);
+  inherited::setElt(vertexOrderingarg, shapeTypearg, faceTypearg);
   // do nothing since GL stuff is handled by SoGLLazyElement
 }
 

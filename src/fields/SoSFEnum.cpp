@@ -156,11 +156,11 @@ SoSFEnum::findEnumValue(const SbName & name, int & val)
   \c FALSE.
 */
 SbBool
-SoSFEnum::findEnumName(int value, const SbName *& name) const
+SoSFEnum::findEnumName(int valuearg, const SbName *& name) const
 {
   // Look through values table for one that matches
   for (int i = 0; i < this->numEnums; i++) {
-    if (value == this->enumValues[i]) {
+    if (valuearg == this->enumValues[i]) {
       name = &(this->enumNames[i]);
       return TRUE;
     }
@@ -180,8 +180,8 @@ SoSFEnum::readValue(SoInput * in)
   // values instead of demanding mnemonics? 20020630 mortene.
   if (!this->legalValuesSet) {
     SbName name;
-    SoFieldContainer * container = this->getContainer();
-    SbBool fname = container && container->getFieldName(this, name);
+    SoFieldContainer * thecontainer = this->getContainer();
+    SbBool fname = thecontainer && thecontainer->getFieldName(this, name);
     SoReadError::post(in,
                       "no mappings available for SoSFEnum field %s",
                       fname ? name.getString() : "");
@@ -222,8 +222,8 @@ SoSFEnum::writeValue(SoOutput * out) const
   // debugging.  mortene.
 
   SbName name;
-  const SoFieldContainer * container = this->getContainer();
-  const SbBool fname = container && container->getFieldName(this, name);
+  const SoFieldContainer * thecontainer = this->getContainer();
+  const SbBool fname = thecontainer && thecontainer->getFieldName(this, name);
   SbString s("");
   if (fname) { s.sprintf(" \"%s\"", name.getString()); }
   

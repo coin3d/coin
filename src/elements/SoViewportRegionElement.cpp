@@ -118,9 +118,9 @@ SoViewportRegionElement::get(SoState * const state)
 //! FIXME: write doc.
 
 void
-SoViewportRegionElement::setElt(const SbViewportRegion & viewportRegion)
+SoViewportRegionElement::setElt(const SbViewportRegion & viewportRegionarg)
 {
-  this->viewportRegion = viewportRegion;
+  this->viewportRegion = viewportRegionarg;
 }
 
 //! FIXME: write doc.

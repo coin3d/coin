@@ -28,6 +28,12 @@
 #include <stddef.h>
 #include <Inventor/C/tidbitsp.h>
 
+/* ********************************************************************** */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 static cc_mutex * sync_global_mutex = NULL;
 static cc_hash * sync_hash_table = NULL;
 
@@ -98,3 +104,7 @@ cc_sync_end(void * key)
 {
   cc_mutex_unlock((cc_mutex*) key);
 }
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */

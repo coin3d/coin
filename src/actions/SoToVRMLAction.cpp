@@ -82,9 +82,9 @@ SO_ACTION_SOURCE(SoToVRMLAction);
 
 class SoToVRMLActionP {
 public:
-  SoToVRMLActionP(SoToVRMLAction * master)
+  SoToVRMLActionP(SoToVRMLAction * masterptr)
   {
-    this->master = master;
+    this->master = masterptr;
     this->expandsofile = FALSE;
     this->urlname = "";
     this->writetexcoords = FALSE;

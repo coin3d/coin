@@ -124,7 +124,7 @@ SoMFPath::find(SoPath * value, SbBool addifnotfound)
 }
 
 void
-SoMFPath::setValues(const int start, const int num, const SoPath ** newvals)
+SoMFPath::setValues(const int start, const int numarg, const SoPath ** newvals)
 {
   // Disable temporarily, so we under any circumstances will not send
   // more than one notification about the changes.
@@ -134,14 +134,14 @@ SoMFPath::setValues(const int start, const int num, const SoPath ** newvals)
 
   // ref() new paths before unref()-ing old ones, in case there are
   // common paths (we don't want any premature destruction to happen).
-  { for (int i=0; i < num; i++) if (newvals[i]) newvals[i]->ref(); }
+  { for (int i=0; i < numarg; i++) if (newvals[i]) newvals[i]->ref(); }
 
   // We favor simplicity of code over performance here.
-  { for (int i=0; i < num; i++)
+  { for (int i=0; i < numarg; i++)
     this->set1Value(start+i, (SoPath *)newvals[i]); }
 
   // unref() to match the initial ref().
-  { for (int i=0; i < num; i++) if (newvals[i]) newvals[i]->unref(); }
+  { for (int i=0; i < numarg; i++) if (newvals[i]) newvals[i]->unref(); }
 
   // Finally, send notification.
   (void)this->enableNotify(notificstate);
@@ -225,7 +225,7 @@ SoMFPath::operator==(const SoMFPath & field) const
 
   const SoPath ** const lhs = this->getValues(0);
   const SoPath ** const rhs = field.getValues(0);
-  for (int i = 0; i < num; i++) if (lhs[i] != rhs[i]) return FALSE;
+  for (int i = 0; i < this->num; i++) if (lhs[i] != rhs[i]) return FALSE;
   return TRUE;
 }
 
@@ -244,13 +244,13 @@ SoMFPath::deleteAllValues(void)
 
 // Overridden to handle unref() and removeAuditor().
 void
-SoMFPath::deleteValues(int start, int num)
+SoMFPath::deleteValues(int start, int numarg)
 {
   // Note: this function overrides the one in SoMField, so if you do
   // any changes here, take a look at that method aswell.
 
-  if (num == -1) num = this->num - start;
-  for (int i=start; i < start+num; i++) {
+  if (numarg == -1) numarg = this->num - start;
+  for (int i=start; i < start+numarg; i++) {
     SoPath * n = this->values[i];
     if (n) {
       n->removeAuditor(this, SoNotRec::FIELD);
@@ -266,12 +266,12 @@ SoMFPath::deleteValues(int start, int num)
 #endif // COIN_INTERNAL_SOMFPATH
   }
 
-  inherited::deleteValues(start, num);
+  inherited::deleteValues(start, numarg);
 }
 
 // Overridden to insert NULL pointers in new array slots.
 void
-SoMFPath::insertSpace(int start, int num)
+SoMFPath::insertSpace(int start, int numarg)
 {
   // Disable temporarily so we don't send notification prematurely
   // from inherited::insertSpace().
@@ -279,8 +279,8 @@ SoMFPath::insertSpace(int start, int num)
   // Important note: the notification state is reset at the end, so
   // this function should *not* have multiple return-points.
 
-  inherited::insertSpace(start, num);
-  for (int i=start; i < start+num; i++) {
+  inherited::insertSpace(start, numarg);
+  for (int i=start; i < start+numarg; i++) {
 #ifdef COIN_INTERNAL_SOMFPATH
     this->pathheads.insert(NULL, start);
 #endif // COIN_INTERNAL_SOMFPATH

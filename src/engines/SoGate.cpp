@@ -219,7 +219,7 @@ SoGate::inputChanged(SoField * which)
 // Documented in superclass. Overridden to initialize type of gate
 // before reading.
 SbBool
-SoGate::readInstance(SoInput * in, unsigned short flags)
+SoGate::readInstance(SoInput * in, unsigned short flagsarg)
 {
   // This code is identical to readInstance() of SoSelectOne and
   // SoConcatenate, so migrate changes.
@@ -246,7 +246,7 @@ SoGate::readInstance(SoInput * in, unsigned short flags)
   }
 
   this->initialize(inputtype);
-  return SoEngine::readInstance(in, flags);
+  return SoEngine::readInstance(in, flagsarg);
 }
 
 // Documented in superclass. Overridden to write type of gate.

@@ -47,10 +47,10 @@
   Default constructor, sets parent container and initializes a minimal
   list.
 */
-SoChildList::SoChildList(SoNode * const parent)
+SoChildList::SoChildList(SoNode * const parentptr)
   : SoNodeList()
 {
-  this->parent = parent;
+  this->parent = parentptr;
 }
 
 /*!
@@ -58,10 +58,10 @@ SoChildList::SoChildList(SoNode * const parent)
 
   \sa SoNodeList::SoNodeList(const int)
 */
-SoChildList::SoChildList(SoNode * const parent, const int size)
+SoChildList::SoChildList(SoNode * const parentptr, const int size)
   : SoNodeList(size)
 {
-  this->parent = parent;
+  this->parent = parentptr;
 }
 
 /*!
@@ -69,10 +69,10 @@ SoChildList::SoChildList(SoNode * const parent, const int size)
 
   \sa SoNodeList::SoNodeList(const SoNodeList &)
 */
-SoChildList::SoChildList(SoNode * const parent, const SoChildList & cl)
+SoChildList::SoChildList(SoNode * const parentptr, const SoChildList & cl)
   : SoNodeList()
 {
-  this->parent = parent;
+  this->parent = parentptr;
   this->copy(cl);
 }
 

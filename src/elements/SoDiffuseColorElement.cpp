@@ -53,10 +53,10 @@ SoDiffuseColorElement::initClass(void)
 //! FIXME: write doc.
 
 void
-SoDiffuseColorElement::init(SoState * state)
+SoDiffuseColorElement::init(SoState * stateptr)
 {
-  inherited::init(state);
-  this->state = state;
+  inherited::init(stateptr);
+  this->state = stateptr;
 }
 
 /*!

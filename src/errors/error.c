@@ -40,6 +40,12 @@
 
 #include <Inventor/C/tidbitsp.h>
 
+/* ********************************************************************** */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 #ifdef HAVE_THREADS
 static cc_mutex * cc_error_mutex = NULL;
 static void cc_error_mutex_cleanup(void) { if (cc_error_mutex) { cc_mutex_destruct(cc_error_mutex); cc_error_mutex = NULL; } }
@@ -185,3 +191,7 @@ cc_error_post(const char * format, ...)
   cc_error_post_arglist(format, argptr);
   va_end(argptr);
 }
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */

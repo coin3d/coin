@@ -59,9 +59,9 @@ SoNotRec::SoNotRec(SoBase * const notifbase)
   Set the \a type of the notification source of this record.
 */
 void
-SoNotRec::setType(const SoNotRec::Type type)
+SoNotRec::setType(const SoNotRec::Type typearg)
 {
-  this->type = type;
+  this->type = typearg;
 }
 
 /*!
@@ -99,14 +99,14 @@ SoNotRec::getPrevious(void) const
   Set pointer to the previous notification record.
 */
 void
-SoNotRec::setPrevious(const SoNotRec * const prev)
+SoNotRec::setPrevious(const SoNotRec * const prevptr)
 {
 #if 0 // OBSOLETED: looks like this can be allowed (and need to be
       // allowed under the current circumstances, as it hits under certain
       // conditions). 20000304 mortene
-  assert(this != prev);
+  assert(this != prevptr);
 #endif // OBSOLETED
-  this->prev = prev;
+  this->prev = prevptr;
 }
 
 /*!

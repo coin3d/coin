@@ -38,9 +38,9 @@
 
 const unsigned int READBUFSIZE = 65536;
 
-SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * reader)
+SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * readerptr)
 {
-  this->reader = reader;
+  this->reader = readerptr;
   this->readbuf = new char[READBUFSIZE];
   this->readbuflen = 0;
   this->readbufidx = 0;

@@ -270,8 +270,8 @@ static void background_bindingchangeCB(void * data, SoSensor * sensor);
 class SoVRMLBackgroundP {
 
 public:
-  SoVRMLBackgroundP(SoVRMLBackground * master) {
-    this->master = master;
+  SoVRMLBackgroundP(SoVRMLBackground * masterptr) {
+    this->master = masterptr;
   };
 
   SoVRMLBackground * master;

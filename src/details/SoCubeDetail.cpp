@@ -82,9 +82,9 @@ SoCubeDetail::copy(void) const
   different conceptual parts -- it's sides.
   */
 void
-SoCubeDetail::setPart(const int part)
+SoCubeDetail::setPart(const int partarg)
 {
-  this->part = part;
+  this->part = partarg;
 }
 
 /*!

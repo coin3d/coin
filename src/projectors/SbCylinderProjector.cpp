@@ -117,9 +117,9 @@ SbCylinderProjector::projectAndGetRotation(const SbVec2f & point,
   Set \a cylinder to project onto.
 */
 void
-SbCylinderProjector::setCylinder(const SbCylinder & cylinder)
+SbCylinderProjector::setCylinder(const SbCylinder & cylinderref)
 {
-  this->cylinder = cylinder;
+  this->cylinder = cylinderref;
   this->needSetup = TRUE;
 }
 

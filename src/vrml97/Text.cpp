@@ -378,8 +378,8 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
      
     cc_glyph3d * prevglyph = NULL;
 
-    const unsigned int length = this->string[i].getLength();
-    for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
+    const unsigned int len = this->string[i].getLength();
+    for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
  
       // Note that the "unsigned char" cast is needed to avoid 8-bit
       // chars using the highest bit (i.e. characters above the ASCII
@@ -468,8 +468,8 @@ SoVRMLText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 
     for (int i = 0;i < lines; ++i) {
 
-      const unsigned int length = this->string[i].getLength();
-      for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
+      const unsigned int len = this->string[i].getLength();
+      for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
 
         // Note that the "unsigned char" cast is needed to avoid 8-bit
         // chars using the highest bit (i.e. characters above the ASCII
@@ -815,8 +815,8 @@ SoVRMLText::generatePrimitives(SoAction * action)
     
 
     cc_glyph3d * prevglyph = NULL;
-    const unsigned int length = this->string[i].getLength();
-    for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
+    const unsigned int len = this->string[i].getLength();
+    for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
 
       // Note that the "unsigned char" cast is needed to avoid 8-bit
       // chars using the highest bit (i.e. characters above the ASCII
@@ -941,7 +941,7 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
 
   for (int i = 0; i < textnode->string.getNum(); i++) {
     
-    const unsigned int length = textnode->string[i].getLength();
+    const unsigned int len = textnode->string[i].getLength();
     float stringwidth = 0.0f;
     float glyphwidth = 0.0f;
     const float * maxbbox;
@@ -952,7 +952,7 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
     cc_glyph3d * prevglyph = NULL;
     this->maxglyphbbox.makeEmpty();
 
-    for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
+    for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
       // Note that the "unsigned char" cast is needed to avoid 8-bit
       // chars using the highest bit (i.e. characters above the ASCII
       // set up to 127) be expanded to huge int numbers that turn

@@ -82,12 +82,12 @@ SoMFRotation::write1Value(SoOutput * out, int idx) const
   using the quaternion quadruples from \a q.
 */
 void
-SoMFRotation::setValues(const int start, const int num, const float q[][4])
+SoMFRotation::setValues(const int start, const int numarg, const float q[][4])
 {
-  if(start+num > this->maxNum) this->allocValues(start+num);
-  else if(start+num > this->num) this->num = start+num;
+  if(start+numarg > this->maxNum) this->allocValues(start+numarg);
+  else if(start+numarg > this->num) this->num = start+numarg;
 
-  for(int i=0; i < num; i++) this->values[i+start].setValue(q[i]);
+  for(int i=0; i < numarg; i++) this->values[i+start].setValue(q[i]);
   this->valueChanged();
 }
 

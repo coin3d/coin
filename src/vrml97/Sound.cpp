@@ -1287,8 +1287,8 @@ void SoVRMLSoundP::fillBuffers()
       this->waitingForAudioClipToFinish = TRUE;
       // inform currentAudioClip() that the last buffer has been played,
       // so it can decide if it would like to stop playing
-      int channels;
-      ret = this->currentAudioClip->read(this->cliphandle, NULL, 0, channels);
+      int numchannels;
+      ret = this->currentAudioClip->read(this->cliphandle, NULL, 0, numchannels);
       assert (ret == 0); // or else the AudioClip isn't performing as it should
     }
   } else {
@@ -1323,7 +1323,7 @@ void SoVRMLSoundP::fillBuffers()
       }
       // fill buffer
 
-      int channels;
+      int numchannels;
       /* Notes (mainly kept for future debugging of deadlock issues):
          Unlocking syncmutex here might open up a can of worms. I have
          looked at the variables used in this thread, and it looks
@@ -1359,11 +1359,11 @@ void SoVRMLSoundP::fillBuffers()
          2002-11-18 thammer */
       ret = this->currentAudioClip->read(this->cliphandle, 
                                          this->audioBuffer,
-                                         this->bufferLength, channels);
+                                         this->bufferLength, numchannels);
 
-      if ( (channels==1) && (this->channels==2) )
+      if ( (numchannels==1) && (this->channels==2) )
         mono2stereo(this->audioBuffer, this->bufferLength);
-      else if ( (channels==2) && (this->channels==1) )
+      else if ( (numchannels==2) && (this->channels==1) )
         stereo2mono(this->audioBuffer, this->bufferLength);
 
       // copy buffer data to the newly generated or unqueued openal buffer

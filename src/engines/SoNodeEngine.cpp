@@ -276,11 +276,11 @@ SoNodeEngine::getOutputDataPtr(void)
 
 // Documented in superclass.
 SbBool
-SoNodeEngine::readInstance(SoInput * in, unsigned short flags)
+SoNodeEngine::readInstance(SoInput * in, unsigned short flagsarg)
 {
   // FIXME: I believe there's code missing here for reading
   // SoUnknownEngine instances. 20000919 mortene.
-  return inherited::readInstance(in, flags);
+  return inherited::readInstance(in, flagsarg);
 }
 
 // Documented in superclass.

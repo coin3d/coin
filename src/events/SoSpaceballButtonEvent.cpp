@@ -89,9 +89,9 @@ SoSpaceballButtonEvent::~SoSpaceballButtonEvent()
   \sa getButton()
  */
 void
-SoSpaceballButtonEvent::setButton(SoSpaceballButtonEvent::Button button)
+SoSpaceballButtonEvent::setButton(SoSpaceballButtonEvent::Button buttonarg)
 {
-  this->button = button;
+  this->button = buttonarg;
 }
 
 /*!

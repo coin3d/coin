@@ -252,9 +252,9 @@ SbBool SoToVRML2Action::doReuseGeometryNodes(void) const { return FALSE; }
 
 class SoToVRML2ActionP {
 public:
-  SoToVRML2ActionP(SoToVRML2Action * master)
+  SoToVRML2ActionP(SoToVRML2Action * masterptr)
   {
-    this->master = master;
+    this->master = masterptr;
     this->nodefuse = FALSE; // for optimizing bad scene graphs
     this->reuseAppearanceNodes = FALSE;
     this->reusePropertyNodes = FALSE;

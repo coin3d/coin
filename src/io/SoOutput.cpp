@@ -232,9 +232,9 @@ public:
     }
     return this->writer;
   }
-  void setWriter(SoOutput_Writer * writer) {
+  void setWriter(SoOutput_Writer * writerptr) {
     if (this->writer) delete this->writer;
-    this->writer = writer;
+    this->writer = writerptr;
   }
 private:
   SoOutput_Writer * writer;

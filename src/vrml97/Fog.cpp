@@ -127,8 +127,8 @@ static void fog_bindingchangeCB(void * data, SoSensor * sensor);
 class SoVRMLFogP {
 
 public:
-  SoVRMLFogP(SoVRMLFog * master) {
-    this->master = master;
+  SoVRMLFogP(SoVRMLFog * masterptr) {
+    this->master = masterptr;
   };
 
   SoVRMLFog * master;

@@ -308,7 +308,7 @@ SoTransformManip::getBoundingBox(SoGetBoundingBoxAction * action)
   int numindices;
   const int *indices;
   int lastchild;
-  SbVec3f center(0.0f, 0.0f, 0.0f);
+  SbVec3f thecenter(0.0f, 0.0f, 0.0f);
   int numcenters = 0;
 
   if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
@@ -320,19 +320,19 @@ SoTransformManip::getBoundingBox(SoGetBoundingBoxAction * action)
   for (int i = 0; i <= lastchild; i++) {
     this->children->traverse(action, i, i);
     if (action->isCenterSet()) {
-      center += action->getCenter();
+      thecenter += action->getCenter();
       numcenters++;
       action->resetCenter();
     }
   }
   SoTransform::getBoundingBox(action);
   if (action->isCenterSet()) {
-    center += action->getCenter();
+    thecenter += action->getCenter();
     numcenters++;
     action->resetCenter();
   }
   if (numcenters != 0) {
-    action->setCenter(center / (float) numcenters, FALSE);
+    action->setCenter(thecenter / (float) numcenters, FALSE);
   }
 }
 

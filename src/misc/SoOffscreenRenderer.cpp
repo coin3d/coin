@@ -224,8 +224,8 @@
 
 class SoOffscreenRendererP {
 public:
-  SoOffscreenRendererP(SoOffscreenRenderer * master) {
-    this->master = master;
+  SoOffscreenRendererP(SoOffscreenRenderer * masterptr) {
+    this->master = masterptr;
 
     this->backgroundcolor.setValue(0,0,0);
     this->components = SoOffscreenRenderer::RGB;

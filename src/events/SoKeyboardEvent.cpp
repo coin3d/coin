@@ -222,9 +222,9 @@ SoKeyboardEvent::~SoKeyboardEvent()
   \sa getKey()
  */
 void
-SoKeyboardEvent::setKey(SoKeyboardEvent::Key key)
+SoKeyboardEvent::setKey(SoKeyboardEvent::Key keyarg)
 {
-  this->key = key;
+  this->key = keyarg;
   this->isprintableset = 0;
 }
 

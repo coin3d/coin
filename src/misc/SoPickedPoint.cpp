@@ -92,19 +92,19 @@ SoPickedPoint::SoPickedPoint(const SoPickedPoint &pp)
   Constructor. Uses the state to convert between world and object
   space for the data.
 */
-SoPickedPoint::SoPickedPoint(const SoPath * const path, SoState * const state,
+SoPickedPoint::SoPickedPoint(const SoPath * const pathptr, SoState * const stateptr,
                              const SbVec3f &objSpacePoint)
 {
-  this->path = path->copy();
+  this->path = pathptr->copy();
   this->path->ref();
-  this->state = state;
+  this->state = stateptr;
   this->objPoint = objSpacePoint;
   SoModelMatrixElement::get(state).multVecMatrix(objSpacePoint, this->point);
   this->objNormal = this->normal = SbVec3f(0,0,1);
   this->objTexCoords = this->texCoords = SbVec4f(0,0,0,1);
   this->materialIndex = 0;
   this->onGeometry = TRUE;
-  this->viewport = SoViewportRegionElement::get(state);
+  this->viewport = SoViewportRegionElement::get(stateptr);
 
   int pathlen = ((SoFullPath*)this->path)->getLength();
   for (int i = 0; i < pathlen; i++) {
@@ -305,20 +305,20 @@ SoPickedPoint::getObjectTextureCoords(const SoNode * const node) const
   Sets the picked point objects space normal vector.
 */
 void
-SoPickedPoint::setObjectNormal(const SbVec3f &normal)
+SoPickedPoint::setObjectNormal(const SbVec3f &normalref)
 {
-  this->objNormal = normal;
-  SoModelMatrixElement::get(this->state).multDirMatrix(normal, this->normal);
+  this->objNormal = normalref;
+  SoModelMatrixElement::get(this->state).multDirMatrix(normalref, this->normal);
 }
 
 /*!
   Sets the picked point object space texture coordinates.
 */
 void
-SoPickedPoint::setObjectTextureCoords(const SbVec4f &texCoords)
+SoPickedPoint::setObjectTextureCoords(const SbVec4f &texCoordsref)
 {
-  this->objTexCoords = texCoords;
-  SoTextureMatrixElement::get(this->state).multVecMatrix(texCoords, this->texCoords);
+  this->objTexCoords = texCoordsref;
+  SoTextureMatrixElement::get(this->state).multVecMatrix(texCoordsref, this->texCoords);
 }
 
 /*!

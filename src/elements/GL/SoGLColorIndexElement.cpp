@@ -62,9 +62,9 @@ SoGLColorIndexElement::initClass(void)
 
 // doc in parent
 void
-SoGLColorIndexElement::init(SoState * state)
+SoGLColorIndexElement::init(SoState * stateptr)
 {
-  this->state = state;
+  this->state = stateptr;
 }
 
 /*!

@@ -79,9 +79,9 @@ SoConeDetail::copy(void) const
   different conceptual parts; SoCone::SIDES or SoCone::BOTTOM.
  */
 void
-SoConeDetail::setPart(const int part)
+SoConeDetail::setPart(const int partarg)
 {
-  this->part = part;
+  this->part = partarg;
 }
 
 /*!

@@ -396,10 +396,10 @@ SoGLLazyElement::disableBlending(void) const
 }
 
 void
-SoGLLazyElement::init(SoState * state)
+SoGLLazyElement::init(SoState * stateptr)
 {
-  inherited::init(state);
-  this->state = state; // needed to send GL texture
+  inherited::init(stateptr);
+  this->state = stateptr; // needed to send GL texture
   this->colorindex = FALSE;
   this->glstate.ambient.setValue(-1.0f, -1.0f, -1.0f);
   this->glstate.emissive.setValue(-1.0f, -1.0f, -1.0f);
@@ -461,9 +461,9 @@ SoGLLazyElement::push(SoState * state)
 }
 
 void
-SoGLLazyElement::pop(SoState *state, const SoElement * prevtopelement)
+SoGLLazyElement::pop(SoState *stateptr, const SoElement * prevtopelement)
 {
-  inherited::pop(state, prevtopelement);
+  inherited::pop(stateptr, prevtopelement);
   SoGLLazyElement * prev = (SoGLLazyElement*) prevtopelement;
   this->glstate = prev->glstate;
   this->colorindex = prev->colorindex;
@@ -673,7 +673,7 @@ SoGLLazyElement::send(const SoState * state, uint32_t mask) const
 //! FIXME: write doc
 
 void
-SoGLLazyElement::sendVPPacked(SoState* state, const unsigned char* pcolor)
+SoGLLazyElement::sendVPPacked(SoState* stateptr, const unsigned char* pcolor)
 {
   assert(0 && "Not implemented yet. Provided for API compatibility.");
 }
@@ -684,11 +684,11 @@ SoGLLazyElement::sendVPPacked(SoState* state, const unsigned char* pcolor)
   OpenGL state.
 */
 void
-SoGLLazyElement::reset(SoState * state,  uint32_t mask) const
+SoGLLazyElement::reset(SoState * stateptr,  uint32_t mask) const
 {
-  SoGLLazyElement * elem = getInstance(state);
+  SoGLLazyElement * elem = getInstance(stateptr);
 
-  if (state->isCacheOpen()) {
+  if (stateptr->isCacheOpen()) {
     elem->cachebitmask |= mask;
   }
 
@@ -911,9 +911,9 @@ SoGLLazyElement::disableBlendingElt(void)
 }
 
 void
-SoGLLazyElement::setLightModelElt(SoState * state, int32_t model)
+SoGLLazyElement::setLightModelElt(SoState * stateptr, int32_t model)
 {
-  inherited::setLightModelElt(state, model);
+  inherited::setLightModelElt(stateptr, model);
 }
 
 void

@@ -133,6 +133,10 @@
    being used.
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
   coin_vsnprintf() wrapper. Returns -1 if resultant string will be
   longer than n.
@@ -1436,3 +1440,7 @@ coin_finite(double value)
 }
 
 /**************************************************************************/
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif

@@ -451,7 +451,7 @@ SoVRMLAudioClip::setCallbacks(open_func *opencb, read_func *readcb,
 /*!  Opens an audio source with the given \a url. Returns a handle to
   the datasource.  */
 void * 
-SoVRMLAudioClip::open(const SbStringList &url)
+SoVRMLAudioClip::open(const SbStringList &urlref)
 {
   if (PRIVATE(this)->open == NULL)
     return NULL;
@@ -459,7 +459,7 @@ SoVRMLAudioClip::open(const SbStringList &url)
 #ifdef HAVE_THREADS
   SbThreadAutoLock autoLock(&PRIVATE(this)->syncmutex);
 #endif
-  return PRIVATE(this)->open(url, this, PRIVATE(this)->callbackuserdataptr);
+  return PRIVATE(this)->open(urlref, this, PRIVATE(this)->callbackuserdataptr);
 }
 
 /*! Moves the "filepointer" in the \a datasource, returns -1L on error.  
@@ -682,7 +682,7 @@ SoVRMLAudioClipP::internal_open(const SbStringList &url,
 
 size_t
 SoVRMLAudioClipP::internal_read(void *datasource, void *buffer, int numframes,
-                                int &channels, SoVRMLAudioClip *clip)
+                                int &channelsref, SoVRMLAudioClip *clip)
 {
   // 20021007 thammer note: this method might be called from a thread
   // different from the thread which created the "main" Coin thread.
@@ -701,7 +701,7 @@ SoVRMLAudioClipP::internal_read(void *datasource, void *buffer, int numframes,
   if (!this->simageVersionOK("SoVRMLAudioClipP::internal_read")) {
     int outputsize = numframes * 1 * sizeof(int16_t);
     memset(buffer, 0, outputsize);
-    channels=1;
+    channelsref=1;
     return 0;
   }
 
@@ -728,7 +728,7 @@ SoVRMLAudioClipP::internal_read(void *datasource, void *buffer, int numframes,
       memset(((int16_t *)buffer) + framepos*channelsdelivered, 0, outputsize);
       this->currentPause -= (double)(numframes - framepos) / 
         (double)SoVRMLAudioClipP::defaultSampleRate;
-      channels = channelsdelivered;
+      channelsref = channelsdelivered;
 
       return numframes;
     }
@@ -767,7 +767,7 @@ SoVRMLAudioClipP::internal_read(void *datasource, void *buffer, int numframes,
           sizeof(int16_t);
         memset(((int16_t *)buffer) + framepos*channelsdelivered, 0, 
                outputsize);
-        channels = channelsdelivered;
+        channelsref = channelsdelivered;
         return 0;
       }
     }
@@ -787,7 +787,7 @@ SoVRMLAudioClipP::internal_read(void *datasource, void *buffer, int numframes,
                                           framepos*channelsdelivered,
                                           &numread, NULL);
 
-    channels = this->channels;
+    channelsref = this->channels;
 
     /* FIXME: If numread==0 and we've just opened the file, we should
        return with an error instead of doing an infinite loop (duh!).

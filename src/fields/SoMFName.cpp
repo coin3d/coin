@@ -84,12 +84,12 @@ SoMFName::write1Value(SoOutput * out, int idx) const
   field instance.
 */
 void
-SoMFName::setValues(const int start, const int num, const char * strings[])
+SoMFName::setValues(const int start, const int numarg, const char * strings[])
 {
-  if(start+num > this->maxNum) this->allocValues(start+num);
-  else if(start+num > this->num) this->num = start+num;
+  if(start+numarg > this->maxNum) this->allocValues(start+numarg);
+  else if(start+numarg > this->num) this->num = start+numarg;
 
-  for(int i=0; i < num; i++) this->values[i+start] = SbName(strings[i]);
+  for(int i=0; i < numarg; i++) this->values[i+start] = SbName(strings[i]);
   this->valueChanged();
 }
 

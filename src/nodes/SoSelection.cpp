@@ -604,9 +604,9 @@ SoSelection::setPickFilterCallback(SoSelectionPickCB * f,
   selected/deselected.
 */
 void
-SoSelection::setPickMatching(const SbBool pickMatching)
+SoSelection::setPickMatching(const SbBool pickMatchingarg)
 {
-  this->pickMatching = pickMatching;
+  this->pickMatching = pickMatchingarg;
 }
 
 /*!

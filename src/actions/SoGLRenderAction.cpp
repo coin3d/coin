@@ -918,29 +918,29 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
   // for the transparency render pass(es) we should always render when
   // we get here.
   if (THIS->transparencyrender) {
-    THIS->setupBlending(state, transptype);
+    THIS->setupBlending(thestate, transptype);
     return FALSE;
   }
   // check for special case when rendering delayed paths.  we don't
   // want to add these objects to the list of transparent objects, but
   // render right away.
   if (THIS->delayedpathrender) {
-    THIS->setupBlending(state, transptype);
+    THIS->setupBlending(thestate, transptype);
     return FALSE;
   }
   switch (transptype) {
   case SoGLRenderAction::ADD:
-    SoLazyElement::enableBlending(state, GL_SRC_ALPHA, GL_ONE);
+    SoLazyElement::enableBlending(thestate, GL_SRC_ALPHA, GL_ONE);
     return FALSE;
   case SoGLRenderAction::BLEND:
-    SoLazyElement::enableBlending(state, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    SoLazyElement::enableBlending(thestate, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     return FALSE;
   case SoGLRenderAction::DELAYED_ADD:
   case SoGLRenderAction::DELAYED_BLEND:
     this->addTransPath(this->getCurPath()->copy());
     SoCacheElement::setInvalid(TRUE);
-    if (state->isCacheOpen()) {
-      SoCacheElement::invalidate(state);
+    if (thestate->isCacheOpen()) {
+      SoCacheElement::invalidate(thestate);
     }
     return TRUE; // delay render
   case SoGLRenderAction::SORTED_OBJECT_ADD:
@@ -949,8 +949,8 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
   case SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND:
     this->addTransPath(this->getCurPath()->copy());
     SoCacheElement::setInvalid(TRUE);
-    if (state->isCacheOpen()) {
-      SoCacheElement::invalidate(state);
+    if (thestate->isCacheOpen()) {
+      SoCacheElement::invalidate(thestate);
     }
     return TRUE; // delay render  
   default:
@@ -1052,8 +1052,8 @@ SoGLRenderAction::getRenderingIsRemote(void) const
 void
 SoGLRenderAction::addDelayedPath(SoPath * path)
 {
-  SoState * state = this->getState();
-  SoCacheElement::invalidate(state);
+  SoState * thestate = this->getState();
+  SoCacheElement::invalidate(thestate);
   assert(!THIS->delayedpathrender);
   THIS->delayedpaths.append(path);
 }

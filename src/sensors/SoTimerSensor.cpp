@@ -91,9 +91,9 @@ SoTimerSensor::~SoTimerSensor(void)
   \sa getBaseTime()
  */
 void
-SoTimerSensor::setBaseTime(const SbTime & base)
+SoTimerSensor::setBaseTime(const SbTime & baseref)
 {
-  this->base = base;
+  this->base = baseref;
   this->setbasetime = TRUE;
 }
 
@@ -114,9 +114,9 @@ SoTimerSensor::getBaseTime(void) const
   \sa getInterval()
  */
 void
-SoTimerSensor::setInterval(const SbTime & interval)
+SoTimerSensor::setInterval(const SbTime & intervalref)
 {
-  this->interval = interval;
+  this->interval = intervalref;
 }
 
 /*!

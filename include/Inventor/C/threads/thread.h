@@ -33,7 +33,9 @@ extern "C" {
 
 /* ********************************************************************** */
 
-COIN_DLL_API cc_thread * cc_thread_construct(void * (*func)(void *), void * closure);
+typedef void * cc_thread_f(void *);
+
+COIN_DLL_API cc_thread * cc_thread_construct(cc_thread_f * func, void * closure);
 COIN_DLL_API void cc_thread_destruct(cc_thread * thread);
 
 COIN_DLL_API int cc_thread_join(cc_thread * thread, void ** retvalptr);

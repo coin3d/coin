@@ -214,8 +214,8 @@
 
 class SoExtSelectionP {
 public:
-  SoExtSelectionP(SoExtSelection * master) {
-    this->master = master;
+  SoExtSelectionP(SoExtSelection * masterptr) {
+    this->master = masterptr;
   }
   
   SbColor lassocolor;

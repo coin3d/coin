@@ -81,9 +81,9 @@ SoCylinderDetail::copy(void) const
   or SoCylinder::BOTTOM.
   */
 void
-SoCylinderDetail::setPart(const int part)
+SoCylinderDetail::setPart(const int partarg)
 {
-  this->part = part;
+  this->part = partarg;
 }
 
 /*!

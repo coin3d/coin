@@ -33,6 +33,11 @@
 #include <assert.h>
 
 /* ********************************************************************** */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /* private methods */
 
 static void sched_worker_entry_point(void * userdata);
@@ -182,3 +187,7 @@ cc_sched_wait_all(cc_sched * sched)
 }
 
 /* ********************************************************************** */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */

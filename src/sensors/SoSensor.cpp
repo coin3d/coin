@@ -115,10 +115,10 @@ SoSensor::SoSensor(void)
 
   \sa setFunction(), setData()
  */
-SoSensor::SoSensor(SoSensorCB * func, void * data)
+SoSensor::SoSensor(SoSensorCB * funcptr, void * data)
 {
   this->setData(data);
-  this->setFunction(func);
+  this->setFunction(funcptr);
 }
 
 /*!

@@ -29,6 +29,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /* ********************************************************************** */
 /* private functions */
 
@@ -313,3 +317,8 @@ cc_hash_print_stat(cc_hash * ht)
                          used_buckets, ht->size, ht->elements,
                          (float)ht->elements / used_buckets, max_chain_l);
 }
+
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */

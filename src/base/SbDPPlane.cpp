@@ -62,15 +62,15 @@ SbDPPlane::SbDPPlane(void)
 
   \a normal must not be a null vector.
 */
-SbDPPlane::SbDPPlane(const SbVec3d & normal, const double D)
+SbDPPlane::SbDPPlane(const SbVec3d & normalref, const double D)
 {
 #if COIN_DEBUG
-  if(!(normal.length() != 0.0f))
+  if(!(normalref.length() != 0.0f))
     SoDebugError::postWarning("SbDPPlane::SbDPPlane",
                               "Plane normal vector is a null vector.");
 #endif // COIN_DEBUG
 
-  this->normal = normal;
+  this->normal = normalref;
   this->normal.normalize();
   this->distance = D;
 }
@@ -104,15 +104,15 @@ SbDPPlane::SbDPPlane(const SbVec3d & p0, const SbVec3d & p1, const SbVec3d & p2)
 
   \a normal must not be a null vector.
 */
-SbDPPlane::SbDPPlane(const SbVec3d & normal, const SbVec3d & point)
+SbDPPlane::SbDPPlane(const SbVec3d & normalref, const SbVec3d & point)
 {
 #if COIN_DEBUG
-  if(!(normal.length() != 0.0f))
+  if(!(normalref.length() != 0.0f))
     SoDebugError::postWarning("SbDPPlane::SbDPPlane",
                               "Plane normal vector is a null vector.");
 #endif // COIN_DEBUG
 
-  this->normal = normal;
+  this->normal = normalref;
   this->normal.normalize();
 
   //     N·point

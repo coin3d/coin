@@ -96,8 +96,8 @@
 
 class SoWWWAnchorP {
  public:
-  SoWWWAnchorP(SoWWWAnchor * owner) {
-    this->owner = owner;
+  SoWWWAnchorP(SoWWWAnchor * ownerptr) {
+    this->owner = ownerptr;
     this->fullname = "";
   }
   SoWWWAnchor * owner;

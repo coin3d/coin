@@ -415,25 +415,25 @@ SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
   int oldnumpasses = this->getNumPasses();
   this->setNumPasses(1);
   
-  SoState * state = this->getState();
-  state->push();
+  SoState * thestate = this->getState();
+  thestate->push();
 
-  SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-  SoLazyElement::setDiffuse(state, pathtothis->getHead(), 1, &PRIVATE(this)->color, 
+  SoLazyElement::setLightModel(thestate, SoLazyElement::BASE_COLOR);
+  SoLazyElement::setDiffuse(thestate, pathtothis->getHead(), 1, &PRIVATE(this)->color, 
                             &PRIVATE(this)->colorpacker);
 
-  SoLineWidthElement::set(state, PRIVATE(this)->linewidth);
-  SoLinePatternElement::set(state, PRIVATE(this)->linepattern);
-  SoTextureQualityElement::set(state, 0.0f);
-  SoComplexityTypeElement::set(state, SoComplexityTypeElement::BOUNDING_BOX);
-  SoDrawStyleElement::set(state, SoDrawStyleElement::LINES);
-  SoOverrideElement::setLightModelOverride(state, NULL, TRUE);
-  SoOverrideElement::setDiffuseColorOverride(state, NULL, TRUE);
-  SoOverrideElement::setLineWidthOverride(state, NULL, TRUE);
-  SoOverrideElement::setLinePatternOverride(state, NULL, TRUE);
-  SoOverrideElement::setComplexityTypeOverride(state, NULL, TRUE);
-  SoOverrideElement::setDrawStyleOverride(state, NULL, TRUE);
-  SoTextureOverrideElement::setQualityOverride(state, TRUE);
+  SoLineWidthElement::set(thestate, PRIVATE(this)->linewidth);
+  SoLinePatternElement::set(thestate, PRIVATE(this)->linepattern);
+  SoTextureQualityElement::set(thestate, 0.0f);
+  SoComplexityTypeElement::set(thestate, SoComplexityTypeElement::BOUNDING_BOX);
+  SoDrawStyleElement::set(thestate, SoDrawStyleElement::LINES);
+  SoOverrideElement::setLightModelOverride(thestate, NULL, TRUE);
+  SoOverrideElement::setDiffuseColorOverride(thestate, NULL, TRUE);
+  SoOverrideElement::setLineWidthOverride(thestate, NULL, TRUE);
+  SoOverrideElement::setLinePatternOverride(thestate, NULL, TRUE);
+  SoOverrideElement::setComplexityTypeOverride(thestate, NULL, TRUE);
+  SoOverrideElement::setDrawStyleOverride(thestate, NULL, TRUE);
+  SoTextureOverrideElement::setQualityOverride(thestate, TRUE);
 
   for (i = 0; i < pathlist->getLength(); i++) {
     SoFullPath * path = (SoFullPath *)(*pathlist)[i];
@@ -451,7 +451,7 @@ SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
     PRIVATE(this)->postprocpath->truncate(thispos);
   }
   this->setNumPasses(oldnumpasses);
-  state->pop();
+  thestate->pop();
 }
 
 

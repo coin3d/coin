@@ -435,9 +435,9 @@ SoGetBoundingBoxAction::checkResetBefore(void)
 {
   if (this->resetpath && this->isResetBefore()) {
     const SoFullPath * curpath = (const SoFullPath *) this->getCurPath();
-    const SoFullPath * resetpath = (const SoFullPath *) this->resetpath;
-    if ((curpath->getTail() == resetpath->getTail()) &&
-        curpath->containsPath(resetpath)) {
+    const SoFullPath * theresetpath = (const SoFullPath *) this->resetpath;
+    if ((curpath->getTail() == theresetpath->getTail()) &&
+        curpath->containsPath(theresetpath)) {
       if (this->resettype & SoGetBoundingBoxAction::TRANSFORM) {
         SoBBoxModelMatrixElement::reset(this->getState(), curpath->getTail());
       }
@@ -459,9 +459,9 @@ SoGetBoundingBoxAction::checkResetAfter(void)
 {
   if (this->resetpath && !this->isResetBefore()) {
     const SoFullPath * curpath = (const SoFullPath *) this->getCurPath();
-    const SoFullPath * resetpath = (const SoFullPath *) this->resetpath;
-    if ((curpath->getTail() == resetpath->getTail()) &&
-        curpath->containsPath(resetpath)) {
+    const SoFullPath * theresetpath = (const SoFullPath *) this->resetpath;
+    if ((curpath->getTail() == theresetpath->getTail()) &&
+        curpath->containsPath(theresetpath)) {
       if (this->resettype & SoGetBoundingBoxAction::TRANSFORM) {
         SoBBoxModelMatrixElement::reset(this->getState(), curpath->getTail());
       }
@@ -526,7 +526,7 @@ SoGetBoundingBoxAction::extendBy(const SbXfBox3f & box)
   Set a new center point during traversal.
 */
 void
-SoGetBoundingBoxAction::setCenter(const SbVec3f & center,
+SoGetBoundingBoxAction::setCenter(const SbVec3f & centerarg,
                                   const SbBool transformcenter)
 {
   assert(!this->isCenterSet());
@@ -537,17 +537,17 @@ SoGetBoundingBoxAction::setCenter(const SbVec3f & center,
     if (this->isInCameraSpace()) {
       lmat.multRight(SoViewingMatrixElement::get(this->state));
     }
-    lmat.multVecMatrix(center, this->center);
+    lmat.multVecMatrix(centerarg, this->center);
   }
   else {
-    this->center = center;
+    this->center = centerarg;
   }
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoGetBoundingBoxAction::setCenter",
                          "center: <%f, %f, %f>, transformcenter: %s, "
                          "this->center: <%f, %f, %f>",
-                         center[0], center[1], center[2],
+                         centerarg[0], centerarg[1], centerarg[2],
                          transformcenter ? "TRUE" : "FALSE",
                          this->center[0], this->center[1], this->center[2]);
 #endif // debug

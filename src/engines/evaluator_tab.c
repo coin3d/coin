@@ -57,6 +57,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 typedef union
 {
   int id;
@@ -68,7 +72,7 @@ typedef union
   static char * get_regname(char reg, int regtype);
   enum { REGTYPE_IN, REGTYPE_OUT, REGTYPE_TMP };
   static so_eval_node *root_node;
-  static int so_evalerror(char *);
+  static int so_evalerror(const char *);
   static int so_evallex(void);
 #include <stdio.h>
 
@@ -1336,7 +1340,7 @@ so_eval_error(void)
  * Called by bison parser upon lexical/syntax error.
  */
 int
-so_evalerror(char *myerr)
+so_evalerror(const char *myerr)
 {
   strncpy(myerrorbuf, myerr, 512);
   myerrorbuf[511] = 0; /* just in case string was too long */
@@ -1345,3 +1349,7 @@ so_evalerror(char *myerr)
   root_node = NULL;
   return 0;
 }
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */

@@ -27,6 +27,12 @@
 #include <assert.h>
 #include <stdio.h>
 
+/* ********************************************************************** */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /* internal struct used to store a linked list of free'ed items */
 struct cc_memalloc_free {
   struct cc_memalloc_free * next;
@@ -220,3 +226,7 @@ cc_memalloc_set_strategy(cc_memalloc * allocator, cc_memalloc_strategy_cb * cb)
   if (cb == NULL) allocator->strategy = default_strategy;
   else allocator->strategy = cb;
 }
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */

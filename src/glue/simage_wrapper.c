@@ -45,6 +45,12 @@
 #include <Inventor/C/glue/simage_wrapper.h>
 #include <Inventor/C/tidbits.h>
 
+/* ********************************************************************** */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 static simage_wrapper_t * simage_instance = NULL;
 static cc_libhandle simage_libhandle = NULL;
 static int simage_failed_to_load = 0;
@@ -389,3 +395,7 @@ simage_wrapper(void)
   CC_SYNC_END(simage_wrapper);
   return simage_instance;
 }
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */

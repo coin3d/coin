@@ -71,8 +71,8 @@ SoSFBitMask::readValue(SoInput * in)
   // values instead of demanding mnemonics? 20020630 mortene.
   if (!this->legalValuesSet) {
     SbName name;
-    SoFieldContainer * container = this->getContainer();
-    SbBool fname = container && container->getFieldName(this, name);
+    SoFieldContainer * thecontainer = this->getContainer();
+    SbBool fname = thecontainer && thecontainer->getFieldName(this, name);
     SoReadError::post(in,
                       "no mappings available for SoSFBitMask field %s",
                       fname ? name.getString() : "");

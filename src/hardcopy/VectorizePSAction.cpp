@@ -422,18 +422,18 @@ SoVectorizePSActionP::printSetdash(uint16_t pattern) const
 // make sure we have the correct font
 //
 void
-SoVectorizePSActionP::updateFont(const SbString & fontname, const float fontsize)
+SoVectorizePSActionP::updateFont(const SbString & fontnameref, const float fontsizearg)
 {
   FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
 
-  if (fontname != this->fontname ||
-      fontsize != this->fontsize) {
-    fprintf(file, "/%s findfont\n", fontname.getString());
-    fprintf(file, "%g scalefont\n", fontsize);
+  if (fontnameref != this->fontname ||
+      fontsizearg != this->fontsize) {
+    fprintf(file, "/%s findfont\n", fontnameref.getString());
+    fprintf(file, "%g scalefont\n", fontsizearg);
     fprintf(file, "setfont\n");
 
-    this->fontname = fontname;
-    this->fontsize = fontsize;
+    this->fontname = fontnameref;
+    this->fontsize = fontsizearg;
   }
 }
 
@@ -724,16 +724,16 @@ SoVectorizePSActionP::printText(const SoVectorizeText * item)
   SbVec2f mul = this->convertToPS(PUBLIC(this)->getRotatedViewportSize());
   SbVec2f add = this->convertToPS(PUBLIC(this)->getRotatedViewportStartpos());
 
-  SbString fontname = item->fontname.getString();
-  if (fontname == "defaultFont") {
-    fontname = this->default2dfont;
+  SbString thefontname = item->fontname.getString();
+  if (thefontname == "defaultFont") {
+    thefontname = this->default2dfont;
   }
 
   SbColor c;
   float dummy;
   c.setPackedValue(item->col, dummy);
 
-  this->updateFont(fontname, item->fontsize * mul[1]);
+  this->updateFont(thefontname, item->fontsize * mul[1]);
 
   fprintf(file, "%g %g %g setrgbcolor\n",
           c[0], c[1], c[2]);

@@ -113,8 +113,8 @@ SoMFEnum::read1Value(SoInput * in, int idx)
   // values instead of demanding mnemonics? 20020630 mortene.
   if (!this->legalValuesSet) {
     SbName name;
-    SoFieldContainer * container = this->getContainer();
-    SbBool fname = container && container->getFieldName(this, name);
+    SoFieldContainer * thecontainer = this->getContainer();
+    SbBool fname = thecontainer && thecontainer->getFieldName(this, name);
     SoReadError::post(in,
                       "no mappings available for SoMFEnum field %s",
                       fname ? name.getString() : "");
@@ -200,15 +200,15 @@ SoMFEnum::set1Value(const int idx, const SbName name)
   Makes a set of \a num enumeration \a names map to \a vals.
 */
 void
-SoMFEnum::setEnums(const int num, const int * const vals,
+SoMFEnum::setEnums(const int numarg, const int * const vals,
                     const SbName * const names)
 {
   delete[] this->enumValues;
   delete[] this->enumNames;
 
-  this->enumValues = new int[num];
-  this->enumNames = new SbName[num];
-  this->numEnums = num;
+  this->enumValues = new int[numarg];
+  this->enumNames = new SbName[numarg];
+  this->numEnums = numarg;
   this->legalValuesSet = TRUE;
 
   for (int i = 0; i < this->numEnums; i++) {

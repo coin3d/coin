@@ -157,10 +157,10 @@ SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
 // standard FILE * class
 //
 
-SoInput_FileReader::SoInput_FileReader(const char * const filename, FILE * filepointer)
+SoInput_FileReader::SoInput_FileReader(const char * const filenamearg, FILE * filepointer)
 {
   this->fp = filepointer;
-  this->filename = filename;
+  this->filename = filenamearg;
 }
 
 SoInput_FileReader::~SoInput_FileReader()
@@ -222,12 +222,12 @@ SoInput_MemBufferReader::getType(void) const
 }
 
 int
-SoInput_MemBufferReader::readBuffer(char * buf, const size_t readlen)
+SoInput_MemBufferReader::readBuffer(char * buffer, const size_t readlen)
 {
   size_t len = this->buflen - this->bufpos;
   if (len > readlen) len = readlen;
 
-  memcpy(buf, this->buf + this->bufpos, len);
+  memcpy(buffer, this->buf + this->bufpos, len);
   this->bufpos += len;
 
   return len;
@@ -258,19 +258,19 @@ SoInput_GZMemBufferReader::getType(void) const
 }
 
 int
-SoInput_GZMemBufferReader::readBuffer(char * buf, const size_t readlen)
+SoInput_GZMemBufferReader::readBuffer(char * buffer, const size_t readlen)
 {
-  return cc_gzm_read(this->gzmfile, buf, readlen);
+  return cc_gzm_read(this->gzmfile, buffer, readlen);
 }
 
 //
 // gzFile class
 //
 
-SoInput_GZFileReader::SoInput_GZFileReader(const char * const filename, void * fp)
+SoInput_GZFileReader::SoInput_GZFileReader(const char * const filenamearg, void * fp)
 {
   this->gzfp = fp;
-  this->filename = filename;
+  this->filename = filenamearg;
 }
 
 SoInput_GZFileReader::~SoInput_GZFileReader()
@@ -301,10 +301,10 @@ SoInput_GZFileReader::getFilename(void)
 // bzFile class
 //
 
-SoInput_BZ2FileReader::SoInput_BZ2FileReader(const char * const filename, void * fp)
+SoInput_BZ2FileReader::SoInput_BZ2FileReader(const char * const filenamearg, void * fp)
 {
   this->bzfp = fp;
-  this->filename = filename;
+  this->filename = filenamearg;
 }
 
 SoInput_BZ2FileReader::~SoInput_BZ2FileReader()

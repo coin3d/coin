@@ -170,22 +170,22 @@ SbViewportRegion::SbViewportRegion(short width, short height)
   pixel value window dimensions. The viewport within this window will
   be set to cover the window completely.
 */
-SbViewportRegion::SbViewportRegion(SbVec2s winsize)
-  : winsize(winsize),
+SbViewportRegion::SbViewportRegion(SbVec2s winsizearg)
+  : winsize(winsizearg),
     vporigin(0,0),
     vpsize(1.0f, 1.0f)
 {
 #if COIN_DEBUG
-  if (winsize[0]<0) {
+  if (winsizearg[0]<0) {
     SoDebugError::postWarning("SbViewportRegion::SbViewportRegion",
                               "winsize[0] (%d) should be >=0. Clamped to 0.",
-                              winsize[0]);
+                              winsizearg[0]);
     this->winsize[0]=0;
   }
-  if (winsize[1]<0) {
+  if (winsizearg[1]<0) {
     SoDebugError::postWarning("SbViewportRegion::SbViewportRegion",
                               "winsize[1] (%d) should be >=0. Clamped to 0.",
-                              winsize[1]);
+                              winsizearg[1]);
     this->winsize[1]=0;
   }
 #endif // COIN_DEBUG
@@ -231,24 +231,24 @@ SbViewportRegion::setWindowSize(short width, short height)
   \overload
 */
 void
-SbViewportRegion::setWindowSize(SbVec2s winsize)
+SbViewportRegion::setWindowSize(SbVec2s winsizearg)
 {
 #if COIN_DEBUG
-  if (winsize[0]<0) {
+  if (winsizearg[0]<0) {
     SoDebugError::postWarning("SbViewportRegion::setWindowSize",
                               "winsize[0] (%d) should be >=0. Clamped to 0.",
-                              winsize[0]);
-    winsize[0]=0;
+                              winsizearg[0]);
+    winsizearg[0]=0;
   }
-  if (winsize[1]<0) {
+  if (winsizearg[1]<0) {
     SoDebugError::postWarning("SbViewportRegion::setWindowSize",
                               "winsize[1] (%d) should be >=0. Clamped to 0.",
-                              winsize[1]);
-    winsize[1]=0;
+                              winsizearg[1]);
+    winsizearg[1]=0;
   }
 #endif // COIN_DEBUG
 
-  this->setWindowSize(winsize[0], winsize[1]);
+  this->setWindowSize(winsizearg[0], winsizearg[1]);
 }
 
 /*!

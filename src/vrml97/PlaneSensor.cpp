@@ -191,8 +191,8 @@ SoVRMLPlaneSensor::~SoVRMLPlaneSensor()
 SbBool
 SoVRMLPlaneSensor::dragStart(void)
 {
-  SbVec3f hitpt = this->getLocalStartingPoint();
-  this->planeproj->setPlane(SbPlane(SbVec3f(0.0f, 0.0f, 1.0f), hitpt));
+  SbVec3f thehitpt = this->getLocalStartingPoint();
+  this->planeproj->setPlane(SbPlane(SbVec3f(0.0f, 0.0f, 1.0f), thehitpt));
   this->translation_changed = this->offset.getValue();
 
   return TRUE;

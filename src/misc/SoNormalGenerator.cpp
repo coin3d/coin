@@ -68,9 +68,9 @@ SoNormalGenerator::~SoNormalGenerator()
   \since Coin 2.0
 */
 void
-SoNormalGenerator::reset(const SbBool ccw)
+SoNormalGenerator::reset(const SbBool ccwarg)
 {
-  this->ccw = ccw;
+  this->ccw = ccwarg;
   this->bsp.clear();
   this->vertexList.truncate(0);
   this->vertexFace.truncate(0);

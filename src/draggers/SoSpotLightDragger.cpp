@@ -261,43 +261,43 @@ SoSpotLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
   if (onoff) {
     inherited::setUpConnections(onoff, doitalways);
-    SoDragger *rotator = (SoDragger*) this->getAnyPart("rotator", FALSE);
-    rotator->setPartAsDefault("rotator", "spotLightRotatorRotator");
-    rotator->setPartAsDefault("rotatorActive",
+    SoDragger *therotator = (SoDragger*) this->getAnyPart("rotator", FALSE);
+    therotator->setPartAsDefault("rotator", "spotLightRotatorRotator");
+    therotator->setPartAsDefault("rotatorActive",
                               "spotLightRotatorRotatorActive");
-    rotator->setPartAsDefault("feedback",
+    therotator->setPartAsDefault("feedback",
                               "spotLightRotatorFeedback");
-    rotator->setPartAsDefault("feedbackActive",
+    therotator->setPartAsDefault("feedbackActive",
                               "spotLightRotatorFeedbackActive");
 
-    SoDragger *translator = (SoDragger*) this->getAnyPart("translator", FALSE);
-    translator->setPartAsDefault("yzTranslator.translator",
+    SoDragger *thetranslator = (SoDragger*) this->getAnyPart("translator", FALSE);
+    thetranslator->setPartAsDefault("yzTranslator.translator",
                                  "spotLightTranslatorPlaneTranslator");
-    translator->setPartAsDefault("xzTranslator.translator",
+    thetranslator->setPartAsDefault("xzTranslator.translator",
                                  "spotLightTranslatorPlaneTranslator");
-    translator->setPartAsDefault("xyTranslator.translator",
+    thetranslator->setPartAsDefault("xyTranslator.translator",
                                  "spotLightTranslatorPlaneTranslator");
-    translator->setPartAsDefault("yzTranslator.translatorActive",
+    thetranslator->setPartAsDefault("yzTranslator.translatorActive",
                                  "spotLightTranslatorPlaneTranslatorActive");
-    translator->setPartAsDefault("xzTranslator.translatorActive",
+    thetranslator->setPartAsDefault("xzTranslator.translatorActive",
                                  "spotLightTranslatorPlaneTranslatorActive");
-    translator->setPartAsDefault("xyTranslator.translatorActive",
+    thetranslator->setPartAsDefault("xyTranslator.translatorActive",
                                  "spotLightTranslatorPlaneTranslatorActive");
-    translator->setPartAsDefault("xTranslator.translator",
+    thetranslator->setPartAsDefault("xTranslator.translator",
                                  "spotLightTranslatorLineTranslator");
-    translator->setPartAsDefault("yTranslator.translator",
+    thetranslator->setPartAsDefault("yTranslator.translator",
                                  "spotLightTranslatorLineTranslator");
-    translator->setPartAsDefault("zTranslator.translator",
+    thetranslator->setPartAsDefault("zTranslator.translator",
                                  "spotLightTranslatorLineTranslator");
-    translator->setPartAsDefault("xTranslator.translatorActive",
+    thetranslator->setPartAsDefault("xTranslator.translatorActive",
                                  "spotLightTranslatorLineTranslatorActive");
-    translator->setPartAsDefault("yTranslator.translatorActive",
+    thetranslator->setPartAsDefault("yTranslator.translatorActive",
                                  "spotLightTranslatorLineTranslatorActive");
-    translator->setPartAsDefault("zTranslator.translatorActive",
+    thetranslator->setPartAsDefault("zTranslator.translatorActive",
                                  "spotLightTranslatorLineTranslatorActive");
 
-    this->registerChildDragger(rotator);
-    this->registerChildDragger(translator);
+    this->registerChildDragger(therotator);
+    this->registerChildDragger(thetranslator);
 
     if (this->angleFieldSensor->getAttachedField() != &this->angle)
       this->angleFieldSensor->attach(&this->angle);
@@ -307,10 +307,10 @@ SoSpotLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
       this->rotFieldSensor->attach(&this->rotation);
   }
   else {
-    SoDragger *translator = (SoDragger*) this->getAnyPart("translator", FALSE);
-    this->unregisterChildDragger(translator);
-    SoDragger *rotator = (SoDragger*) this->getAnyPart("rotator", FALSE);
-    this->unregisterChildDragger(rotator);
+    SoDragger *thetranslator = (SoDragger*) this->getAnyPart("translator", FALSE);
+    this->unregisterChildDragger(thetranslator);
+    SoDragger *therotator = (SoDragger*) this->getAnyPart("rotator", FALSE);
+    this->unregisterChildDragger(therotator);
 
     if (this->angleFieldSensor->getAttachedField() != NULL)
       this->angleFieldSensor->detach();

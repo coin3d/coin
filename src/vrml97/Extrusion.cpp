@@ -946,8 +946,8 @@ SoVRMLExtrusionP::generateCoords(void)
       // let the tesselator create triangles
       this->tess.beginPolygon();
       for (i = (connected ? numcross-2 : numcross-1); i >= 0; i--) {
-        int idx = (numspine+1)*numcross + numcross - 1 - i;
-        this->tess.addVertex(this->coord[idx], (void*) ((uintptr_t) idx));
+        int theidx = (numspine+1)*numcross + numcross - 1 - i;
+        this->tess.addVertex(this->coord[theidx], (void*) ((uintptr_t) theidx));
       }
       this->tess.endPolygon();
     }
@@ -968,10 +968,10 @@ SoVRMLExtrusionP::generateNormals(void)
 
   while (iptr < endptr) {
     this->gen.beginPolygon();
-    int32_t idx = *iptr++;
-    while (idx >= 0) {
-      this->gen.polygonVertex(c[idx]);
-      idx = *iptr++;
+    int32_t theidx = *iptr++;
+    while (theidx >= 0) {
+      this->gen.polygonVertex(c[theidx]);
+      theidx = *iptr++;
     }
     this->gen.endPolygon();
   }

@@ -165,11 +165,11 @@ enum {OXY,OXZ,OYZ};
   vertex and the \a userdata pointer. The vertex pointers are
   specified in the SbTesselator::addVertex() method.
 */
-SbTesselator::SbTesselator(void (*callback)(void * v0, void * v1, void * v2,
-                                            void * data),
+SbTesselator::SbTesselator(void (*callbackptr)(void * v0, void * v1, void * v2,
+                                               void * data),
                            void * userdata)
 {
-  this->setCallback(callback, userdata);
+  this->setCallback(callbackptr, userdata);
   this->headV = this->tailV = NULL;
   this->currVertex = 0;  
 
@@ -391,13 +391,13 @@ SbTesselator::endPolygon()
   Sets the callback function for this tessellator.
 */
 void
-SbTesselator::setCallback(void (*callback)(void *v0,
-                                           void *v1,
-                                           void *v2,
-                                           void *data),
+SbTesselator::setCallback(void (*callbackptr)(void *v0,
+                                              void *v1,
+                                              void *v2,
+                                              void *data),
                           void *data)
 {
-  this->callback = callback;
+  this->callback = callbackptr;
   this->callbackData = data;
 }
 

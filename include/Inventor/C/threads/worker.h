@@ -33,15 +33,18 @@ extern "C" {
 
 /* ********************************************************************** */
 
+typedef void cc_worker_f(void *);
+typedef void cc_worker_idle_f(cc_worker *, void *);
+
   COIN_DLL_API cc_worker * cc_worker_construct(void);
   COIN_DLL_API void cc_worker_destruct(cc_worker * worker);
 
   COIN_DLL_API SbBool cc_worker_start(cc_worker * worker, 
-                                      void (*workfunc)(void *), void * closure);
+                                      cc_worker_f * workfunc, void * closure);
   COIN_DLL_API SbBool cc_worker_is_busy(cc_worker * worker);
   COIN_DLL_API void cc_worker_wait(cc_worker * worker);
   COIN_DLL_API void cc_worker_set_idle_callback(cc_worker * worker, 
-                                                void (*cb)(cc_worker *, void *), void * closure);
+                                                cc_worker_idle_f * idlefunc, void * closure);
 
 /* ********************************************************************** */
 

@@ -93,25 +93,25 @@ SoGLLineWidthElement::~SoGLLineWidthElement(void)
 
 // doc in super
 void
-SoGLLineWidthElement::init(SoState * state)
+SoGLLineWidthElement::init(SoState * stateptr)
 {
-  inherited::init(state);
+  inherited::init(stateptr);
 }
 
 // doc in super
 void
-SoGLLineWidthElement::push(SoState * state)
+SoGLLineWidthElement::push(SoState * stateptr)
 {
   SoGLLineWidthElement * prev = (SoGLLineWidthElement*)this->getNextInStack();
   this->data = prev->data;
   // capture previous element since we might or might not change the
   // GL state in set/pop
-  prev->capture(state);
+  prev->capture(stateptr);
 }
 
 // doc in super
 void
-SoGLLineWidthElement::pop(SoState * state, const SoElement * prevTopElement)
+SoGLLineWidthElement::pop(SoState * stateptr, const SoElement * prevTopElement)
 {
   SoGLLineWidthElement * prev = (SoGLLineWidthElement*)prevTopElement;
   if (this->data != prev->data) {

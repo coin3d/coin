@@ -1131,7 +1131,7 @@ SoIntersectionDetectionActionP::doIntersectionTesting(void)
   unsigned int nrshapeshapeisects = 0;
   unsigned int nrselfisects = 0;
 
-  const float epsilon = this->getEpsilon();
+  const float theepsilon = this->getEpsilon();
 
   for (int i = 0; i < this->shapedata.getLength(); i++) {
     ShapeData * shape1 = this->shapedata[i];
@@ -1154,8 +1154,8 @@ SoIntersectionDetectionActionP::doIntersectionTesting(void)
     }
 
     SbBox3f shapebbox = shape1->xfbbox.project();
-    if (epsilon > 0.0f) {
-      const SbVec3f e(epsilon, epsilon, epsilon);
+    if (theepsilon > 0.0f) {
+      const SbVec3f e(theepsilon, theepsilon, theepsilon);
       // Extend bbox in all 6 directions with the epsilon value.
       shapebbox.getMin() -= e;
       shapebbox.getMax() += e;
@@ -1196,7 +1196,7 @@ SoIntersectionDetectionActionP::doIntersectionTesting(void)
     }
 
     SbXfBox3f xfboxchk;
-    if (epsilon > 0.0f) { xfboxchk = expand_SbXfBox3f(shape1->xfbbox, epsilon); }
+    if (theepsilon > 0.0f) { xfboxchk = expand_SbXfBox3f(shape1->xfbbox, theepsilon); }
     else { xfboxchk = shape1->xfbbox; }
 
     for (int j = 0; j < candidateshapes.getLength(); j++) {
@@ -1260,14 +1260,14 @@ SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * p
 
   const SbOctTree * octtree = octtreeprims->getOctTree();
 
-  const float epsilon = this->getEpsilon();
-  const SbVec3f e(epsilon, epsilon, epsilon);
+  const float theepsilon = this->getEpsilon();
+  const SbVec3f e(theepsilon, theepsilon, theepsilon);
  
   for (unsigned int i = 0; i < iterationprims->numTriangles(); i++) {
     SbTri3f * t1 = (SbTri3f *) iterationprims->getTriangle(i);
 
     SbBox3f tribbox = t1->getBoundingBox();
-    if (epsilon > 0.0f) {
+    if (theepsilon > 0.0f) {
       // Extend bbox in all 6 directions with the epsilon value.
       tribbox.getMin() -= e;
       tribbox.getMax() += e;
@@ -1281,7 +1281,7 @@ SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * p
 
       nrisectchks++;
 
-      if (t1->intersect(*t2, epsilon)) {
+      if (t1->intersect(*t2, theepsilon)) {
         nrhits++;
 
         SoIntersectingPrimitive p1;

@@ -136,8 +136,8 @@ _class_::~_class_() { }
 
 #define SO_SFIELD_VALUE_SOURCE(_class_, _valtype_, _valref_) \
 void \
-_class_::setValue(_valref_ value) { \
-  this->value = value; \
+_class_::setValue(_valref_ valuearg) { \
+  this->value = valuearg; \
   this->valueChanged(); \
 } \
  \
@@ -340,12 +340,12 @@ _class_::find(_valref_ value, SbBool addifnotfound) \
 } \
  \
 void \
-_class_::setValues(const int start, const int num, const _valtype_ * newvals) \
+_class_::setValues(const int start, const int numarg, const _valtype_ * newvals) \
 { \
-  if (start+num > this->maxNum) this->allocValues(start+num); \
-  else if (start+num > this->num) this->num = start+num; \
+  if (start+numarg > this->maxNum) this->allocValues(start+numarg); \
+  else if (start+numarg > this->num) this->num = start+numarg; \
  \
-  for (int i=0; i < num; i++) \
+  for (int i=0; i < numarg; i++) \
     this->values[i+start] = (_valtype_) newvals[i]; \
   this->valueChanged(); \
 } \
@@ -375,7 +375,7 @@ _class_::operator==(const _class_ & field) const \
  \
   const _valtype_ * const lhs = this->getValues(0); \
   const _valtype_ * const rhs = field.getValues(0); \
-  for (int i = 0; i < num; i++) if (lhs[i] != rhs[i]) return FALSE; \
+  for (int i = 0; i < this->num; i++) if (lhs[i] != rhs[i]) return FALSE; \
   return TRUE; \
 } \
  \
@@ -478,20 +478,20 @@ _class_::allocValues(int number) \
 
 #define SO_MFIELD_SETVALUESPOINTER_SOURCE(_class_, _valtype_, _usertype_) \
 void \
-_class_::setValuesPointer(const int num, _usertype_ * userdata) \
+_class_::setValuesPointer(const int numarg, _usertype_ * userdata) \
 { \
   this->makeRoom(0); \
-  if (num > 0 && userdata) { \
+  if (numarg > 0 && userdata) { \
     this->values = (_valtype_*) userdata; \
     this->userDataIsUsed = TRUE; \
-    this->num = this->maxNum = num; \
+    this->num = this->maxNum = numarg; \
     this->valueChanged(); \
   } \
 } \
 void \
-_class_::setValuesPointer(const int num, const _usertype_ * userdata) \
+_class_::setValuesPointer(const int numarg, const _usertype_ * userdata) \
 { \
-  this->setValuesPointer(num, (_usertype_*) userdata); \
+  this->setValuesPointer(numarg, (_usertype_*) userdata); \
 }
 
 #endif // !COIN_SOSUBFIELD_H

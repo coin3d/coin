@@ -119,9 +119,9 @@ SoMouseButtonEvent::~SoMouseButtonEvent()
   \sa getButton()
  */
 void
-SoMouseButtonEvent::setButton(SoMouseButtonEvent::Button button)
+SoMouseButtonEvent::setButton(SoMouseButtonEvent::Button buttonarg)
 {
-  this->button = button;
+  this->button = buttonarg;
 }
 
 /*!

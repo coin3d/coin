@@ -1164,9 +1164,9 @@ SoDragger::getFrontOnProjector(void) const
   This is used in workFieldsIntoTransform(). The default value is 0.01
 */
 void
-SoDragger::setMinScale(float minscale)
+SoDragger::setMinScale(float minscalearg)
 {
-  SoDragger::minscale = minscale;
+  SoDragger::minscale = minscalearg;
 }
 
 /*!

@@ -56,18 +56,18 @@ SoBBoxModelMatrixElement::~SoBBoxModelMatrixElement()
 //! FIXME: write doc.
 
 void
-SoBBoxModelMatrixElement::init(SoState * state)
+SoBBoxModelMatrixElement::init(SoState * stateptr)
 {
-  inherited::init(state);
-  this->state = state;
+  inherited::init(stateptr);
+  this->state = stateptr;
 }
 
 //! FIXME: write doc.
 
 void
-SoBBoxModelMatrixElement::push(SoState * state)
+SoBBoxModelMatrixElement::push(SoState * stateptr)
 {
-  inherited::push(state);
+  inherited::push(stateptr);
 
   SoBBoxModelMatrixElement * const prev =
     (SoBBoxModelMatrixElement *)this->getNextInStack();

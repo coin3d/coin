@@ -90,12 +90,12 @@ SoMFColor::write1Value(SoOutput * out, int idx) const
   Set \a num RGB color values, starting at index \a start.
 */
 void
-SoMFColor::setValues(const int start, const int num, const float rgb[][3])
+SoMFColor::setValues(const int start, const int numarg, const float rgb[][3])
 {
-  if(start+num > this->maxNum) this->makeRoom(start+num);
-  else if(start+num > this->num) this->num = start+num;
+  if(start+numarg > this->maxNum) this->makeRoom(start+numarg);
+  else if(start+numarg > this->num) this->num = start+numarg;
 
-  for(int i=0; i < num; i++) this->values[i+start].setValue(rgb[i]);
+  for(int i=0; i < numarg; i++) this->values[i+start].setValue(rgb[i]);
   this->valueChanged();
 }
 
@@ -103,12 +103,12 @@ SoMFColor::setValues(const int start, const int num, const float rgb[][3])
   Set \a num HSV color values, starting at index \a start.
 */
 void
-SoMFColor::setHSVValues(const int start, const int num, const float hsv[][3])
+SoMFColor::setHSVValues(const int start, const int numarg, const float hsv[][3])
 {
-  if(start+num > this->maxNum) this->makeRoom(start+num);
-  else if(start+num > this->num) this->num = start+num;
+  if(start+numarg > this->maxNum) this->makeRoom(start+numarg);
+  else if(start+numarg > this->num) this->num = start+numarg;
 
-  for(int i=0; i < num; i++) this->values[i+start].setHSVValue(hsv[i]);
+  for(int i=0; i < numarg; i++) this->values[i+start].setHSVValue(hsv[i]);
   this->valueChanged();
 }
 

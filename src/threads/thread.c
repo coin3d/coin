@@ -61,7 +61,7 @@
 */
 
 cc_thread *
-cc_thread_construct(void * (*func)(void *), void * closure)
+cc_thread_construct(cc_thread_f * func, void * closure)
 {
   cc_thread * thread;
   int ok;

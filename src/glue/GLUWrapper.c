@@ -42,6 +42,12 @@
 #endif /* HAVE_SUPERGLU */
 #include <Inventor/C/glue/GLUWrapper.h>
 
+/* ********************************************************************** */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 #ifdef HAVE_GLU /* In case we're _not_ doing runtime linking. */
 #define GLUWRAPPER_ASSUME_GLU 1
 #endif /* HAVE_GLU */
@@ -327,3 +333,7 @@ wrapperexit:
   CC_SYNC_END(GLUWrapper);
   return GLU_instance;
 }
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */

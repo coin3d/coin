@@ -182,7 +182,7 @@ SoConcatenate::~SoConcatenate()
 // Documented in superclass. Overridden to initialize type of input
 // before reading.
 SbBool
-SoConcatenate::readInstance(SoInput * in, unsigned short flags)
+SoConcatenate::readInstance(SoInput * in, unsigned short flagsarg)
 {
   // This code is identical to readInstance() of SoSelectOne and
   // SoGate, so migrate changes.
@@ -209,7 +209,7 @@ SoConcatenate::readInstance(SoInput * in, unsigned short flags)
   }
 
   this->initialize(inputtype);
-  return SoEngine::readInstance(in, flags);
+  return SoEngine::readInstance(in, flagsarg);
 }
 
 // Documented in superclass. Overridden to write type of inputs.

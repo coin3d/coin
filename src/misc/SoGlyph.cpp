@@ -386,19 +386,19 @@ public:
     this->glyph = NULL;
     this->angle = 0.0;
   }
-  coin_glyph_info(const unsigned int character, const float size, const SbName &font, SoGlyph *glyph, const float angle)
+  coin_glyph_info(const unsigned int characterarg, const float sizearg, const SbName &fontarg, SoGlyph *glypharg, const float anglearg)
   {
-    this->character = character;
-    this->size = size;
-    this->font = font;
-    this->angle = angle;
-    this->glyph = glyph;
+    this->character = characterarg;
+    this->size = sizearg;
+    this->font = fontarg;
+    this->angle = anglearg;
+    this->glyph = glypharg;
   }
   
   // Note: bitmap glyphs have valid size, polygonal glyphs have size=-1.0
-  SbBool matches(const unsigned int character, const float size, 
-                 const SbName font, const float angle) {
-    return (this->character == character) && (this->size == size) && (this->font == font) && (this->angle == angle);
+  SbBool matches(const unsigned int characterarg, const float sizearg, 
+                 const SbName fontarg, const float anglearg) {
+    return (this->character == characterarg) && (this->size == sizearg) && (this->font == fontarg) && (this->angle == anglearg);
   }
   
   // AIX native compiler xlC needs equality and inequality operators

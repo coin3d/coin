@@ -101,9 +101,9 @@ SoGLViewportRegionElement::pop(SoState * state,
 //! FIXME: write doc.
 
 void
-SoGLViewportRegionElement::setElt(const SbViewportRegion & viewportRegion)
+SoGLViewportRegionElement::setElt(const SbViewportRegion & viewportRegionarg)
 {
-  this->viewportRegion = viewportRegion;
+  this->viewportRegion = viewportRegionarg;
   this->initialized = TRUE;
   this->updategl();
 }

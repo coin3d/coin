@@ -77,18 +77,19 @@ SoGLEnvironmentElement::pop(SoState * state,
 }
 
 void
-SoGLEnvironmentElement::setElt(SoState * const state,
-                               const float ambientIntensity,
-                               const SbColor & ambientColor,
-                               const SbVec3f & attenuation,
-                               const int32_t fogType,
-                               const SbColor & fogColor,
-                               const float fogVisibility,
-                               const float fogStart)
+SoGLEnvironmentElement::setElt(SoState * const stateptr,
+                               const float ambientIntensityarg,
+                               const SbColor & ambientColorarg,
+                               const SbVec3f & attenuationarg,
+                               const int32_t fogTypearg,
+                               const SbColor & fogColorarg,
+                               const float fogVisibilityarg,
+                               const float fogStartarg)
 {
-  inherited::setElt(state, ambientIntensity, ambientColor, attenuation,
-                    fogType, fogColor, fogVisibility, fogStart);
-  this->updategl(state);
+  inherited::setElt(stateptr, ambientIntensityarg, ambientColorarg,
+                    attenuationarg, fogTypearg, fogColorarg, fogVisibilityarg,
+                    fogStartarg);
+  this->updategl(stateptr);
 }
 
 

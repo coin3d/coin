@@ -36,11 +36,12 @@ extern "C" {
 #endif /* for emacs indentation */
 
 /* ********************************************************************** */
+typedef void cc_storage_f(void * closure);
 typedef void cc_storage_apply_func(void * dataptr, void * closure);
 COIN_DLL_API cc_storage * cc_storage_construct(unsigned int size);
 COIN_DLL_API cc_storage * cc_storage_construct_etc(unsigned int size, 
-                                                   void (*constructor)(void *), 
-                                                   void (*destructor)(void *));
+                                                   cc_storage_f * constructor,
+                                                   cc_storage_f * destructor);
 COIN_DLL_API void cc_storage_destruct(cc_storage * storage);
 
 COIN_DLL_API void * cc_storage_get(cc_storage * storage);

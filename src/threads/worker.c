@@ -31,6 +31,12 @@
 #include <stdlib.h>
 #include <assert.h>
 
+/* ********************************************************************** */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /*
  * this is the thread's main loop.
  */
@@ -155,7 +161,7 @@ cc_worker_destruct(cc_worker * worker)
 }
 
 SbBool 
-cc_worker_start(cc_worker * worker, void (*workfunc)(void *), void * closure)
+cc_worker_start(cc_worker * worker, cc_worker_f * workfunc, void * closure)
 {
   assert(workfunc);
 
@@ -197,8 +203,7 @@ cc_worker_wait(cc_worker * worker)
 }
 
 void 
-cc_worker_set_idle_callback(cc_worker * worker, 
-                            void (*cb)(cc_worker *, void *), void * closure)
+cc_worker_set_idle_callback(cc_worker * worker, cc_worker_idle_f * cb, void * closure)
 {
   cc_mutex_lock(worker->mutex);
   worker->idlecb = cb;
@@ -206,3 +211,6 @@ cc_worker_set_idle_callback(cc_worker * worker,
   cc_mutex_unlock(worker->mutex);
 }
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */

@@ -185,11 +185,11 @@ public:
 
   void deleteAll(void) {
     SoCallbackData * cbdata = this;
-    SoCallbackData * next;
+    SoCallbackData * nextptr;
     while (cbdata) {
-      next = cbdata->next;
+      nextptr = cbdata->next;
       delete cbdata;
-      cbdata = next;
+      cbdata = nextptr;
     }
   }
 

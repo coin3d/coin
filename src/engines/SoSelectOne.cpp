@@ -216,7 +216,7 @@ SoSelectOne::evaluate(void)
 
 // Documented in superclass.
 SbBool
-SoSelectOne::readInstance(SoInput * in, unsigned short flags)
+SoSelectOne::readInstance(SoInput * in, unsigned short flagsarg)
 {
   // This code is identical to readInstance() of SoGate and
   // SoConcatenate, so migrate changes.
@@ -243,7 +243,7 @@ SoSelectOne::readInstance(SoInput * in, unsigned short flags)
   }
 
   this->initialize(inputtype);
-  return SoEngine::readInstance(in, flags);
+  return SoEngine::readInstance(in, flagsarg);
 }
 
 // Documented in superclass.

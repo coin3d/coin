@@ -31,8 +31,8 @@ class SbThreadAutoLock
 protected:
   SbMutex *mutex;
 public:
-  SbThreadAutoLock(SbMutex *mutex) {
-    this->mutex = mutex;
+  SbThreadAutoLock(SbMutex *mutexptr) {
+    this->mutex = mutexptr;
     this->mutex->lock();
   }
   ~SbThreadAutoLock() {

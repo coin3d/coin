@@ -201,12 +201,12 @@ SoVRMLTextureTransform::makeMatrix(SbMatrix & mat) const
   mat[3][0] = -c[0];
   mat[3][1] = -c[1];
 
-  SbVec2f scale = this->scale.getValue();
+  SbVec2f thescale = this->scale.getValue();
   if (!this->scale.isIgnored() &&
-      scale != SbVec2f(1.0f, 1.0f)) {
+      thescale != SbVec2f(1.0f, 1.0f)) {
     tmp.makeIdentity();
-    tmp[0][0] = scale[0];
-    tmp[1][1] = scale[1];
+    tmp[0][0] = thescale[0];
+    tmp[1][1] = thescale[1];
     mat.multRight(tmp);
   }
   if (!this->rotation.isIgnored() && (this->rotation.getValue() != 0.0f)) {

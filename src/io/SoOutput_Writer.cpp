@@ -104,10 +104,10 @@ SoOutput_Writer::createWriter(FILE * fp,
 // standard stdio FILE writer
 //
 
-SoOutput_FileWriter::SoOutput_FileWriter(FILE * fp, const SbBool shouldclose)
+SoOutput_FileWriter::SoOutput_FileWriter(FILE * fptr, const SbBool shouldclosearg)
 {
-  this->fp = fp;
-  this->shouldclose = shouldclose;
+  this->fp = fptr;
+  this->shouldclose = shouldclosearg;
 }
 
 SoOutput_FileWriter::~SoOutput_FileWriter()
@@ -152,12 +152,12 @@ SoOutput_FileWriter::bytesInBuf(void)
 SoOutput_MemBufferWriter::SoOutput_MemBufferWriter(void * buffer,
                                                    const size_t len,
                                                    SoOutputReallocCB * reallocFunc,
-                                                   int32_t offset)
+                                                   int32_t offsetarg)
 {
   this->buf = (char*) buffer;
   this->bufsize = len;
   this->reallocfunc = reallocFunc;
-  this->startoffset = this->offset = offset;
+  this->startoffset = this->offset = offsetarg;
 }
 
 SoOutput_MemBufferWriter::~SoOutput_MemBufferWriter()
@@ -272,15 +272,15 @@ SoOutput_GZFileWriter::bytesInBuf(void)
 // bzip2 writer
 //
 
-SoOutput_BZ2FileWriter::SoOutput_BZ2FileWriter(FILE * fp, const SbBool shouldclose, const float level)
+SoOutput_BZ2FileWriter::SoOutput_BZ2FileWriter(FILE * fparg, const SbBool shouldclose, const float level)
 {
-  this->fp = shouldclose ? fp : NULL;
+  this->fp = shouldclose ? fparg : NULL;
   this->writecounter = 0;
 
   int bzerror = BZ_OK;
   int numblocks =  (int) SbClamp((level * 8.0f) + 1.0f, 1.0f, 9.0f);
   
-  this->bzfp = cc_bzglue_BZ2_bzWriteOpen(&bzerror, fp, numblocks, 0, 0);
+  this->bzfp = cc_bzglue_BZ2_bzWriteOpen(&bzerror, fparg, numblocks, 0, 0);
   if (this->bzfp && (bzerror != BZ_OK)) {
     SoDebugError::postWarning("SoOutput_BZ2FileWriter::SoOutput_BZF2ileWriter", 
                               "Unable to open file for writing.");    

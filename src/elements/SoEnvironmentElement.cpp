@@ -248,19 +248,19 @@ SoEnvironmentElement::init(SoState * state)
 //! FIXME: doc
 void
 SoEnvironmentElement::setElt(SoState * const,
-                             const float ambientIntensity,
-                             const SbColor & ambientColor,
-                             const SbVec3f & attenuation,
-                             const int32_t fogType,
-                             const SbColor & fogColor,
-                             const float fogVisibility,
-                             const float fogStart)
+                             const float ambientIntensityarg,
+                             const SbColor & ambientColorarg,
+                             const SbVec3f & attenuationarg,
+                             const int32_t fogTypearg,
+                             const SbColor & fogColorarg,
+                             const float fogVisibilityarg,
+                             const float fogStartarg)
 {
-  this->ambientIntensity = ambientIntensity;
-  this->ambientColor = ambientColor;
-  this->attenuation = attenuation;
-  this->fogType = fogType;
-  this->fogColor = fogColor;
-  this->fogVisibility = fogVisibility;
-  this->fogStart = fogStart;
+  this->ambientIntensity = ambientIntensityarg;
+  this->ambientColor = ambientColorarg;
+  this->attenuation = attenuationarg;
+  this->fogType = fogTypearg;
+  this->fogColor = fogColorarg;
+  this->fogVisibility = fogVisibilityarg;
+  this->fogStart = fogStartarg;
 }

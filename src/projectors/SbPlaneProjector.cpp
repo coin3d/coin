@@ -180,9 +180,9 @@ SbPlaneProjector::isOrientToEye(void) const
   Set a new projection \a plane.
 */
 void
-SbPlaneProjector::setPlane(const SbPlane & plane)
+SbPlaneProjector::setPlane(const SbPlane & planeref)
 {
-  this->nonOrientPlane = this->plane = plane;
+  this->nonOrientPlane = this->plane = planeref;
   this->needSetup = TRUE;
 }
 

@@ -570,7 +570,7 @@ SoAsciiText::getWidth(const int idx, const float fontsize)
 
 // recalculate glyphs
 void
-SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspec, SoAsciiText * textnode)
+SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspecptr, SoAsciiText * textnode)
 {
 
   // Note that this code is duplicated in SoText3::setUpGlyphs(), so
@@ -579,14 +579,14 @@ SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspe
   // We have to force a new setup if style, size or font has
   // changed. This must be done if boundingbox and text alignment
   // shall stay correct
-  if (cc_string_compare(&fontspec->name, this->prevfontname) != 0 ||
-      cc_string_compare(&fontspec->style, this->prevfontstyle)) {
+  if (cc_string_compare(&fontspecptr->name, this->prevfontname) != 0 ||
+      cc_string_compare(&fontspecptr->style, this->prevfontstyle)) {
     this->needsetup = TRUE; // Force new a setup
-    cc_string_set_text(this->prevfontname, cc_string_get_text(&fontspec->name));
-    cc_string_set_text(this->prevfontstyle, cc_string_get_text(&fontspec->style));
+    cc_string_set_text(this->prevfontname, cc_string_get_text(&fontspecptr->name));
+    cc_string_set_text(this->prevfontstyle, cc_string_get_text(&fontspecptr->style));
   }
-  if(fontspec->size != this->prevfontsize) {
-    this->prevfontsize = fontspec->size;
+  if(fontspecptr->size != this->prevfontsize) {
+    this->prevfontsize = fontspecptr->size;
     this->needsetup = TRUE;
   }
 
@@ -615,12 +615,12 @@ SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspe
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
       const uint32_t glyphidx = (const unsigned char) textnode->string[i][strcharidx];
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, fontspec);
+      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, fontspecptr);
       assert(glyph);
 
       maxbbox = cc_glyph3d_getboundingbox(glyph); // Get max height
-      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[0] * fontspec->size, 0));
-      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[1] * fontspec->size, 0));
+      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[0] * fontspecptr->size, 0));
+      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[1] * fontspecptr->size, 0));
 
       // FIXME: Shouldn't it be the 'advance' value be stored in this
       // list?  This data is only accessed via the public 'getWidth()'
@@ -631,14 +631,14 @@ SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspe
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);          
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
 
-      stringwidth += (advancex + kerningx) * fontspec->size;
+      stringwidth += (advancex + kerningx) * fontspecptr->size;
       prevglyph = glyph;
     }
     
     if (prevglyph != NULL) {
       // Italic font might cause last letter to be outside bbox. Add width if needed.
       if (advancex < cc_glyph3d_getwidth(prevglyph)) 
-        stringwidth += (cc_glyph3d_getwidth(prevglyph) - advancex) * fontspec->size;
+        stringwidth += (cc_glyph3d_getwidth(prevglyph) - advancex) * fontspecptr->size;
     }
 
     this->stringwidths.append(stringwidth);

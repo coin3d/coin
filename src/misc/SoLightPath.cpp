@@ -46,11 +46,11 @@
   A constructor. Supply the head node and the approximate length of
   the path.
 */
-SoLightPath::SoLightPath(SoNode *headnode, const int approxlength)
+SoLightPath::SoLightPath(SoNode *headnodeptr, const int approxlength)
   : headnode(NULL),
     indices(approxlength)
 {
-  this->setHead(headnode);
+  this->setHead(headnodeptr);
 }
 
 /*!
