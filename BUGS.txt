@@ -3546,39 +3546,6 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
 
 =====================================================================
 
-097 SoCalculator faulty parse error.
-
-    The following is a legal expression, but causes a parse error with
-    our SoCaluclator expression parsing:
-
------8<------ [snip] ------------8<------ [snip] -------
-#Inventor V2.1 ascii
-
-Cube {
-   width = Calculator { expression "oa=1.0;" }.oa
-}
------8<------ [snip] ------------8<------ [snip] -------
-
-    (Remove the semicolon, and it will pass through ok.)
-
-    SGI and TGS Inventor handles this correctly.
-
-    When fixing the bug, test also with this expression (which also
-    now fails, and the cause could be unrelated):
-
------8<------ [snip] ------------8<------ [snip] -------
-      expression "
-                  oa=1.0;
-                  ob=2.0;"
------8<------ [snip] ------------8<------ [snip] -------
-
-    (Needs to be written as code? I don't think we can represent
-    newlines in an Inventor file.)
-
-    20031210 mortene, reported by Volker Enderlein on coin-discuss.
-
-=====================================================================
-
 099 View frustum culling is not done unless there are cached bounding
     boxes available.
 
