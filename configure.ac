@@ -1234,7 +1234,21 @@ AC_SUBST([SIM_INCLUDE_GLEXT_H], [$sim_include_glext_h])
 
 AM_CONDITIONAL(BUILD_WITH_MSVC, $BUILD_WITH_MSVC)
 
-if $sim_ac_build_library; then
+if $sim_ac_make_dsp; then
+  SIM_AC_CONFIGURATION_SETTING([Coin build type], [msvc .dsp])
+  CC=$srcdir/cfg/m4/gendsp.sh
+  CXX=$srcdir/cfg/m4/gendsp.sh
+  CXXLD=$srcdir/cfg/m4/gendsp.sh
+  CPPFLAGS="$CPPFLAGS -Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
+  LDFLAGS="$LDFLAGS -Wl,-Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
+  # this can't be set up at the point the libtool script is generated
+  mv libtool libtool.bak
+  sed -e "s%^CC=\"gcc\"%CC=\"$coin_src_dir/cfg/m4/gendsp.sh\"%" \
+      -e "s%^CC=\".*/wrapmsvc.exe\"%CC=\"$coin_src_dir/cfg/m4/gendsp.sh\"%" \
+      <libtool.bak >libtool
+  rm -f libtool.bak
+  chmod 755 libtool
+elif $sim_ac_build_library; then
   if $BUILD_WITH_MSVC; then
     rm -f vc60.pdb
     LIBFLAGS="$LIBFLAGS $sim_ac_msvcrt_LIBLDFLAGS"
@@ -1311,21 +1325,6 @@ if $sim_ac_build_library; then
   fi
 else
   SIM_AC_CONFIGURATION_SETTING([Coin build type], [build disabled])
-fi
-
-if $sim_ac_make_dsp; then
-  CC=$srcdir/cfg/m4/gendsp.sh
-  CXX=$srcdir/cfg/m4/gendsp.sh
-  CXXLD=$srcdir/cfg/m4/gendsp.sh
-  CPPFLAGS="$CPPFLAGS -Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
-  LDFLAGS="$LDFLAGS -Wl,-Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
-  # this can't be set up at the point the libtool script is generated
-  mv libtool libtool.bak
-  sed -e "s%^CC=\"gcc\"%CC=\"$srcdir/cfg/m4/gendsp.sh\"%" \
-      -e "s%^CC=\".*/wrapmsvc.exe\"%CC=\"$srcdir/cfg/m4/gendsp.sh\"%" \
-      <libtool.bak >libtool
-  rm -f libtool.bak
-  chmod 755 libtool
 fi
 
 # **************************************************************************
