@@ -155,12 +155,29 @@ STUFF TO FIX IN COIN
   Scenegraphs exported through the SoWriteAction should have a correct
   header to reflect the actual contents. As it is now, everything is
   just written as Inventor v2.1, even if there are nodes from Inventor
-  >2.1, or nodes specific for Coin.
+  >2.1, or nodes specific for Coin, or even VRML-specific nodes.
 
   To make it possible to do this, it seems likely that we need some
   way of tagging API elements that can be exported to file -- ie
   primarily nodes and engines -- with some kind of versioning
   identification. So that's a prerequisite.
+
+  I believe we need both a dynamic flag on an SoNode to know which
+  specific file format version it was read from (if any, it could have
+  been new'ed from the application aswell), plus an OR-flag on each
+  class which specifies which formats it is valid for (to be used
+  during write).
+
+  As part of this setup, we'll also need to handle "upgrading" during
+  reads, as some nodes had their field specification changed from for
+  instance Inventor v2.0 to Inventor v2.1 (e.g. the SoPackedColor node
+  changed the name of it's one field from "rgb" to "orderedRGBA", and
+  also changed the semantics of the uint32_t word in the field).
+
+  This last problem should probably be solved by having e.g. an
+  alternate SoPackedColorV20 node-class, which would be instantiated
+  during read, and then converted to an >= Inventor v2.1 format
+  SoPackedColor node.
 
 
 * Re-design the public API for handling textures
