@@ -310,7 +310,6 @@ SoImage::GLRender(SoGLRenderAction * action)
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   glLoadIdentity();
-  // FIXME: push raster state? pederb, 20000509
   glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
 
   glRasterPos3f((float)xpos, (float)ypos, -nilpoint[2]);
@@ -318,6 +317,8 @@ SoImage::GLRender(SoGLRenderAction * action)
   glPixelStorei(GL_UNPACK_SKIP_PIXELS, skipx);
   glPixelStorei(GL_UNPACK_SKIP_ROWS, skipy);
   glPixelStorei(GL_PACK_ROW_LENGTH, vpsize[0]);
+  glPixelStorei(GL_PACK_ALIGNMENT, 1);
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
   glDrawPixels(srcw, srch, format, GL_UNSIGNED_BYTE,
                (const GLvoid*) dataptr);
@@ -326,10 +327,13 @@ SoImage::GLRender(SoGLRenderAction * action)
   glMatrixMode(GL_MODELVIEW);
   glPopMatrix();
 
+  // we always restore pixel store values to default after use
   glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
   glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
   glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
   glPixelStorei(GL_PACK_ROW_LENGTH, 0);
+  glPixelStorei(GL_PACK_ALIGNMENT, 4);
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 }
 
 // doc from parent
