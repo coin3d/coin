@@ -3771,6 +3771,9 @@ Text3 { parts ALL  string "hepp" }
 
     20040702 mortene.
 
+    Update 20040702 pederb: Support for cycling of colors was disabled
+    in Open Inventor 2.1.
+
 =====================================================================
 
 121 Coloring goes bananas with Inventor Mentor example 06.2.Simple3DText.
