@@ -35,6 +35,7 @@
 #include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/misc/SoState.h>
 
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <coindefs.h> // COIN_STUB
@@ -120,9 +121,11 @@ SoGLLazyElement::sendNoMaterial(SoState *state)
 //! FIXME: write doc
 
 void
-SoGLLazyElement::sendOnlyDiffuseColor(SoState *state)
+SoGLLazyElement::sendOnlyDiffuseColor(SoState * state)
 {
-  // SoGLDiffuseColorElement should be up-to-date. Do nothing.
+  SoGLDiffuseColorElement * diffuseElt = 
+    (SoGLDiffuseColorElement*) SoDiffuseColorElement::getInstance(state);
+  diffuseElt->send(0);
 }
 
 //! FIXME: write doc
@@ -149,16 +152,29 @@ SoGLLazyElement::isColorIndex(SoState *state)
 SoGLLazyElement *
 SoGLLazyElement::getInstance(const SoState *state)
 {
-  return (SoGLLazyElement*)SoElement::getConstElement((SoState*)state,
-                                                      classStackIndex);
+  // don't use SoElement::getConstElement() as this will cause
+  // cache dependencies.
+  return (SoGLLazyElement*) state->getConstElement(classStackIndex);
 }
 
 //! FIXME: write doc
 
 void
-SoGLLazyElement::send(const SoState *state, uint32_t mask) const
+SoGLLazyElement::send(const SoState * state, uint32_t mask) const
 {
-  // elements should be up=to-date. Do nothing.
+  // only test material flags, as other elements should be
+  // updated in SoShaphe::shouldGLRender()
+  if (mask == DIFFUSE_MASK) {
+    SoGLLazyElement::sendOnlyDiffuseColor((SoState*)state);
+  }
+  else if (mask & (DIFFUSE_MASK |
+                   AMBIENT_MASK |
+                   EMISSIVE_MASK |
+                   SPECULAR_MASK |
+                   SHININESS_MASK | 
+                   TRANSPARENCY_MASK)) {
+    SoGLLazyElement::sendAllMaterial((SoState*)state);
+  }
 }
 
 //! FIXME: write doc

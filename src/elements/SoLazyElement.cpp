@@ -35,6 +35,7 @@
 #include <Inventor/elements/SoShininessElement.h>
 #include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/misc/SoState.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoMFColor.h>
 #include <coindefs.h> // COIN_STUB()
@@ -96,28 +97,7 @@ SoLazyElement::push(SoState *state)
 SbBool
 SoLazyElement::matches(const SoElement *element) const
 {
-  SoLazyElement *elem = (SoLazyElement*) element;
-
-  // shininess is stored in element, don't check this value
-  if (elem->colorMaterial != this->colorMaterial) return FALSE;
-  if (elem->blending != this->blending) return FALSE;
-  if (elem->transparencyType != this->transparencyType) return FALSE;
-
-  if (!SoLightModelElement::getInstance(this->state)->matches(elem->lightModelMatchInfo))
-    return FALSE;
-  if (!SoDiffuseColorElement::getInstance(this->state)->matches(elem->diffuseMatchInfo))
-    return FALSE;
-  if (!SoAmbientColorElement::getInstance(this->state)->matches(elem->ambientMatchInfo))
-    return FALSE;
-  if (!SoEmissiveColorElement::getInstance(this->state)->matches(elem->emissiveMatchInfo))
-    return FALSE;
-  if (!SoSpecularColorElement::getInstance(this->state)->matches(elem->specularMatchInfo))
-    return FALSE;
-  if (!SoShininessElement::getInstance(this->state)->matches(elem->shininessMatchInfo))
-    return FALSE;
-  if (!SoTransparencyElement::getInstance(this->state)->matches(elem->transparencyMatchInfo))
-    return FALSE;
-
+  assert(0 && "should not get here");
   return TRUE;
 }
 
@@ -126,21 +106,8 @@ SoLazyElement::matches(const SoElement *element) const
 SoElement *
 SoLazyElement::copyMatchInfo(void) const
 {
-  SoLazyElement *element = (SoLazyElement*)this->getTypeId().createInstance();
-
-  element->lightModelMatchInfo = SoLightModelElement::getInstance(this->state)->copyMatchInfo();
-  element->diffuseMatchInfo = SoDiffuseColorElement::getInstance(this->state)->copyMatchInfo();
-  element->ambientMatchInfo = SoAmbientColorElement::getInstance(this->state)->copyMatchInfo();
-  element->emissiveMatchInfo = SoEmissiveColorElement::getInstance(this->state)->copyMatchInfo();
-  element->specularMatchInfo = SoSpecularColorElement::getInstance(this->state)->copyMatchInfo();
-  element->shininessMatchInfo = SoShininessElement::getInstance(this->state)->copyMatchInfo();
-  element->transparencyMatchInfo = SoTransparencyElement::getInstance(this->state)->copyMatchInfo();
-  element->colorMaterial = this->colorMaterial;
-  element->blending = this->blending;
-  element->shininess = this->shininess;
-  element->transparencyType = this->transparencyType;
-
-  return element;
+  assert(0 && "should not get here");
+  return NULL;
 }
 
 // ! FIXME: write doc
@@ -193,8 +160,7 @@ void
 SoLazyElement::setAmbient(SoState *state, const SbColor* color)
 {
   // must copy color into element since it might be on the stack
-  SoLazyElement *elem = (SoLazyElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoLazyElement *elem = SoLazyElement::getWInstance(state);
   elem->ambientColor = *color;
   SoAmbientColorElement::set(state, NULL, 1, &elem->ambientColor);
 }
@@ -205,8 +171,7 @@ void
 SoLazyElement::setEmissive(SoState *state, const SbColor* color)
 {
   // must copy color into element since it might be on the stack
-  SoLazyElement *elem = (SoLazyElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoLazyElement *elem = SoLazyElement::getWInstance(state);
   elem->emissiveColor = *color;
   SoEmissiveColorElement::set(state, NULL, 1, &elem->emissiveColor);
 }
@@ -217,8 +182,7 @@ void
 SoLazyElement::setSpecular(SoState *state, const SbColor* color)
 {
   // must copy color into element since it might be on the stack
-  SoLazyElement *elem = (SoLazyElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoLazyElement *elem = SoLazyElement::getWInstance(state);
   elem->specularColor = *color;
   SoSpecularColorElement::set(state, NULL, 1, &elem->specularColor);
 }
@@ -228,8 +192,7 @@ SoLazyElement::setSpecular(SoState *state, const SbColor* color)
 void
 SoLazyElement::setShininess(SoState *state, float value)
 {
-  SoLazyElement *elem = (SoLazyElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoLazyElement *elem = SoLazyElement::getWInstance(state);
   elem->shininess = value;
   SoShininessElement::set(state, NULL, 1, &elem->shininess);
 }
@@ -239,8 +202,7 @@ SoLazyElement::setShininess(SoState *state, float value)
 void
 SoLazyElement::setColorMaterial(SoState *state, SbBool value)
 {
-  SoLazyElement *elem = (SoLazyElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoLazyElement *elem = SoLazyElement::getWInstance(state);
   elem->colorMaterial = value;
 }
 
@@ -249,8 +211,7 @@ SoLazyElement::setColorMaterial(SoState *state, SbBool value)
 void
 SoLazyElement::setBlending(SoState *state,  SbBool value)
 {
-  SoLazyElement *elem = (SoLazyElement*)
-    SoElement::getElement(state, classStackIndex);
+  SoLazyElement *elem = SoLazyElement::getWInstance(state);
   elem->blending = value;
 }
 
@@ -413,7 +374,10 @@ SoLazyElement::isTransparent(void) const
 SoLazyElement *
 SoLazyElement::getInstance(SoState *state)
 {
-  return (SoLazyElement*) SoElement::getConstElement(state, classStackIndex);
+  // don't use SoElement::getConstElement() as this will cause
+  // cache dependencies.
+  return (SoLazyElement*)
+    state->getElementNoPush(classStackIndex);
 }
 
 // ! FIXME: write doc
@@ -533,7 +497,10 @@ SoLazyElement::setMaterials(SoState *state, SoNode *node, uint32_t bitmask,
 SoLazyElement *
 SoLazyElement::getWInstance(SoState *state)
 {
-  return (SoLazyElement*) SoElement::getElement(state, classStackIndex);
+  // don't use SoElement::getConstElement() as this will cause
+  // cache dependencies.
+  return (SoLazyElement*) 
+    state->getElement(classStackIndex);
 }
 
 // ! FIXME: write doc
