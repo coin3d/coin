@@ -245,7 +245,7 @@ SoIndexedFaceSet::notify(SoNotList * list)
   if (THIS->convexCache) THIS->convexCache->invalidate();
   SoField *f = list->getLastField();
   if (f == &this->coordIndex) THIS->concavestatus = STATUS_UNKNOWN;
-  SoNode::notify(list);
+  inherited::notify(list);
 }
 
 // doc from parent
