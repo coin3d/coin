@@ -29,6 +29,10 @@
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/SoDB.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 SO_ENGINE_SOURCE(SoElapsedTime);
 
 /*!
@@ -96,6 +100,7 @@ void
 SoElapsedTime::inputChanged(SoField *which)
 {
   if (which==&this->timeIn) return;
+
 //   if (which==&this->timeIn && this->firstTime) {
 //     this->lastTime=this->timeIn.getValue();
 //     this->firstTime=FALSE;

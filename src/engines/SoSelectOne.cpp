@@ -79,7 +79,9 @@ SoSelectOne::SoSelectOne(SoType inputType)
 
   //Instead of SO_ENGINE_ADD_OUTPUT()
   this->output=new SoEngineOutput;
+#if 0 // obsoleted. FIXME: reimplement, 20000309 pederb
   this->output->setType(outputType);
+#endif // obsoleted
   this->output->setContainer(this);
 
   // FIXME: ivestigate whether output should be added to outputdata somehow

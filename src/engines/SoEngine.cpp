@@ -130,7 +130,7 @@ SoEngine::getOutputs(SoEngineOutputList & list) const
   for (int i = 0; i < n; i++) {
     list.append(outputs->getOutput(this, i));
   }
-  return list.getLength();
+  return n;
 }
 
 /*!
@@ -218,21 +218,26 @@ SoEngine::inputChanged(SoField * /* which */)
 void
 SoEngine::notify(SoNotList *list)
 {
-  //  SoDebugError::postInfo("SoEngine::notify","");
+  this->stateflags.dirty = 1;
+
   if (!this->isNotifying() && this->isNotifyEnabled()) {
-    this->stateflags.isnotifying = TRUE;
+    this->stateflags.isnotifying = 1;
     this->inputChanged(list->getLastField());
     SoFieldList flist;
     SoEngineOutputList olist;
-    int numOutputs=this->getOutputs(olist);
-    if (numOutputs>0) {
-      for (int j=0;j<numOutputs;j++)
-        if (olist[j]->isEnabled()) olist[j]->getForwardConnections(flist);
-
-      for (int i=0;i<flist.getLength();i++)
+    int numOutputs = this->getOutputs(olist);
+    
+    if (numOutputs > 0) {
+      for (int j = 0; j < numOutputs; j++) {
+        if (olist[j]->isEnabled()) {
+          olist[j]->getForwardConnections(flist);
+        }
+      }
+      for (int i = 0; i < flist.getLength(); i++) {
         flist[i]->notify(list);
+      }
     }
-    this->stateflags.isnotifying = FALSE;
+    this->stateflags.isnotifying = 0;
   }
 }
 
@@ -240,9 +245,12 @@ SoEngine::notify(SoNotList *list)
   Simply calls the evaluate() method.
 */
 void
-SoEngine::evaluateWrapper()
+SoEngine::evaluateWrapper(void)
 {
-  this->evaluate();
+  if (this->stateflags.dirty) {
+    this->evaluate();
+    this->stateflags.dirty = 0;
+  }
 }
 
 /*!

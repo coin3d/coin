@@ -49,7 +49,7 @@ protected:
   ~SoElapsedTime();
 
 private:
-  virtual void evaluate();
+  virtual void evaluate(void);
   virtual void inputChanged(SoField * which);
 
   SbTime pauseTime;

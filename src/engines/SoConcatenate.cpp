@@ -44,7 +44,9 @@ SoConcatenate::SoConcatenate(SoType inputType)
 
   this->output = new SoEngineOutput;
   //FIXME: Use ADD_OUTPUT instead? (SoMField) kintel.
+#if 0 // this code is obsoleted. FIXME: pederb
   this->output->setType(inputType);
+#endif
   this->output->setContainer(this);
 
 #if 0 // old kintel code. will not work any more FIXME: reimplement

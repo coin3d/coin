@@ -34,7 +34,6 @@ public:
 
   SoEngineOutput(void);
   virtual ~SoEngineOutput();
-  void setType(SoType type);
   void setContainer(SoEngine * engine);
   void addConnection(SoField * f);
   void removeConnection(SoField * f);
@@ -45,7 +44,6 @@ public:
   void doneWriting(void) const;
 
 private:
-  SoType type;
   SbBool enabled;
   SoEngine * container;
   SoFieldList connections;

@@ -19,8 +19,13 @@
 
 #include <Inventor/engines/SoConvertAll.h>
 #include <Inventor/lists/SoEngineOutputList.h>
+#include <Inventor/lists/SoFieldList.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/fields/SoFields.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 #define SO_CONVERTALL_ADD_INPUT(memberName,defaultValue) \
 SO_ENGINE_ADD_INPUT(memberName,defaultValue) \
@@ -243,16 +248,20 @@ SoConvertAll::SoConvertAll(const SoType fType,const SoType tType)
 {
   SO_ENGINE_CONSTRUCTOR(SoConvertAll);
 
-  this->input=(SoField *)fType.createInstance();
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoConvertAll::SoConvertAll",
+                         "from: %s, to: %s",
+                         fType.getName().getString(),
+                         tType.getName().getString());
+#endif // debug
 
+  this->input=(SoField *)fType.createInstance();
+  
   //FIXME: ?
   //  this->input->setValue defaultValue;
   this->input->setContainer(this);
-  this->output.setType(tType);
   this->output.setContainer(this);
-
-  // FIXME: investigate if output should be added to the SoEngineOutputData list.
-  // pederb, 20000309
+  SoConvertAll::outputdata->addOutput(this, "output", &this->output, tType);
 
   this->fromType=fType;
   this->toType=tType;
@@ -278,7 +287,7 @@ SoConvertAll::getOutput(SoType /* type */)
 void
 SoConvertAll::evaluate()
 {
-  for (int i=0;i<this->output.getNumConnections();i++)
+  for (int i = 0 ; i < this->output.getNumConnections(); i++)
     this->input->convertTo(this->output[i]);
 
 

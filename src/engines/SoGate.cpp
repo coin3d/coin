@@ -46,7 +46,9 @@ SoGate::SoGate(SoType inputType)
 
   //Instead of SO_ENGINE_ADD_OUTPUT()
   this->output=new SoEngineOutput;
+#if 0 // obsoleted. FIXME: reimplement 20000309 pederb
   this->output->setType(inputType);
+#endif // obsolete
   this->output->setContainer(this);
 #if 0 // FIXME: old kintel code. reimplement. pederb, 20000309
   this->outputList->append(this->output);

@@ -28,6 +28,8 @@
  */
 
 #include <Inventor/engines/SoEngineOutput.h>
+#include <Inventor/engines/SoEngine.h>
+#include <Inventor/engines/SoOutputData.h>
 #include <coindefs.h> // COIN_STUB()
 
 /*!
@@ -36,7 +38,12 @@
 SoType
 SoEngineOutput::getConnectionType(void) const
 {
-  return this->type;
+  assert(this->container != NULL);
+  const SoEngineOutputData *outputs = this->container->getOutputData();
+  assert(outputs);
+  int idx = outputs->getIndex(this->container, this);
+  assert(idx >= 0);
+  return outputs->getType(idx);
 }
 
 /*!
@@ -45,11 +52,11 @@ SoEngineOutput::getConnectionType(void) const
 int
 SoEngineOutput::getForwardConnections(SoFieldList & list) const
 {
-  int l=this->connections.getLength();
-  for (int i=0;i<l;i++) {
+  int n = this->connections.getLength();
+  for (int i = 0; i < n; i++) {
     list.append(this->connections[i]);
   }
-  return l;
+  return n;
 }
 
 /*!
@@ -104,15 +111,6 @@ SoEngineOutput::~SoEngineOutput()
   FIXME
  */
 void
-SoEngineOutput::setType(SoType type)
-{
-  this->type=type;
-}
-
-/*!
-  FIXME
- */
-void
 SoEngineOutput::setContainer(SoEngine * engine)
 {
   this->container=engine;
@@ -124,8 +122,8 @@ SoEngineOutput::setContainer(SoEngine * engine)
 void
 SoEngineOutput::addConnection(SoField * f)
 {
-  int i=connections.find(f);
-  if (i<0) connections.append(f);
+  int i = connections.find(f);
+  if (i < 0) connections.append(f);
 }
 
 /*!
@@ -134,8 +132,8 @@ SoEngineOutput::addConnection(SoField * f)
 void
 SoEngineOutput::removeConnection(SoField * f)
 {
-  int i=connections.find(f);
-  if (i>=0) connections.remove(i);
+  int i = connections.find(f);
+  if (i >= 0) connections.remove(i);
 }
 
 /*!

@@ -45,8 +45,11 @@
   \sa SoDB::addConverter()
  */
 
+#include <Inventor/engines/SoFieldConverter.h>
+#include <Inventor/engines/SoOutputData.h>
 #include <Inventor/engines/SoConvertAll.h>
 #include <coindefs.h> // COIN_STUB()
+#include <assert.h>
 
 SO_ENGINE_ABSTRACT_SOURCE(SoFieldConverter);
 
@@ -82,6 +85,15 @@ SoFieldConverter::getConnectedInput(void)
 int
 SoFieldConverter::getForwardConnections(SoFieldList & l) const
 {
-  COIN_STUB();
-  return 0;
+  const SoEngineOutputData *outputs = this->getOutputData();
+  assert(outputs && outputs->getNumOutputs() == 1);
+  
+  SoEngineOutput *output = outputs->getOutput(this, 0);
+  assert(output);
+  
+  int n = output->getNumConnections();
+  for (int i = 0; i < n; i++) {
+    l.append((*output)[i]);
+  }
+  return n;
 }
