@@ -247,7 +247,8 @@ SoFieldContainer::getFields(SoFieldList & fields) const
 {
   const SoFieldData * fielddata = this->getFieldData();
   if ( fielddata == NULL ) return 0;
-  int numfields = fielddata->getNumFields();
+  const int numfields = fielddata->getNumFields();
+  int fieldsadded = 0;
   for ( int i = 0; i < numfields; i++ ) {
     SoField * field = fielddata->getField(this, i);
     assert(field != NULL);
@@ -255,14 +256,15 @@ SoFieldContainer::getFields(SoFieldList & fields) const
     // these field types are ignored
     case SoField::EVENTIN_FIELD:
     case SoField::EVENTOUT_FIELD:
-      numfields--;
       break;
+
     default:
       fields.append(field);
+      fieldsadded++;
       break;
     }
   }
-  return numfields;
+  return fieldsadded;
 }
 
 /*!
