@@ -53,6 +53,10 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbStorage.h>
+#endif // COIN_THREADSAFE
+
 #include <Inventor/system/gl.h>
 #include <GLUWrapper.h>
 
@@ -1495,7 +1499,6 @@ sogl_render_lineset(const SoGLCoordinateElement * const coords,
   static sogl_render_ils_func *ils_render_funcs[ 127 ];
   static int first = 1;
   if (first) {
-    first = 0;
     ils_render_funcs[  0] = sogl_ils_m0_n0_t0;
     ils_render_funcs[  1] = sogl_ils_m0_n0_t1;
     ils_render_funcs[  2] = sogl_ils_m0_n1_t0;
@@ -1600,6 +1603,7 @@ sogl_render_lineset(const SoGLCoordinateElement * const coords,
     ils_render_funcs[107] = sogl_ils_m6_n5_t1;
     ils_render_funcs[108] = sogl_ils_m6_n6_t0;
     ils_render_funcs[109] = sogl_ils_m6_n6_t1;
+    first = 0;
   }
 
   ils_render_funcs[ (mbind << 4) | (nbind << 1) | texture ](
@@ -1627,19 +1631,86 @@ sogl_render_lineset(const SoGLCoordinateElement * const coords,
 #endif // !NO_LINESET_RENDER
 
 
-static SbList <float> * tmpcoordlist = NULL;
-static SbList <float> * tmptexcoordlist = NULL;
+
+#ifdef COIN_THREADSAFE
+static SbStorage * sogl_coordstorage = NULL;
+static SbStorage * sogl_texcoordstorage = NULL;
+#else // COIN_THREADSAFE
+static SbList <float> * sogl_tmpcoordlist = NULL;
+static SbList <float> * sogl_tmptexcoordlist = NULL;
+#endif // ! COIN_THREADSAFE
 
 static void nurbs_coord_cleanup(void)
 {
-  delete tmpcoordlist;
+#ifdef COIN_THREADSAFE
+  delete sogl_coordstorage;
+  sogl_coordstorage = NULL;
+#else // COIN_THREADSAFE
+  delete sogl_tmpcoordlist;
+  sogl_tmpcoordlist = NULL;
+#endif // ! COIN_THREADSAFE
 }
 
 static void nurbs_texcoord_cleanup(void)
 {
-  delete tmptexcoordlist;
+#ifdef COIN_THREADSAFE
+  delete sogl_texcoordstorage;
+  sogl_texcoordstorage = NULL;
+#else // COIN_THREADSAFE
+  delete sogl_tmptexcoordlist;
+  sogl_tmptexcoordlist = NULL;
+#endif // ! COIN_THREADSAFE
 }
 
+static void sogl_alloc_coords(void * ptr)
+{
+  SbList <float> ** cptr = (SbList <float> **) ptr;
+  *cptr = new SbList <float>;
+}
+
+static void sogl_dealloc_coords(void * ptr)
+{
+  SbList <float> ** cptr = (SbList <float> **) ptr;
+  delete *cptr;
+}
+
+static SbList <float> * 
+sogl_get_tmpcoordlist(void)
+{
+#ifdef COIN_THREADSAFE
+  if (sogl_coordstorage == NULL) {
+    sogl_coordstorage = new SbStorage(sizeof(void*), sogl_alloc_coords, sogl_dealloc_coords);
+    coin_atexit((coin_atexit_f *)nurbs_coord_cleanup);
+  }
+  SbList <float> ** ptr = (SbList <float> **) sogl_coordstorage->get();
+  return *ptr;
+#else // COIN_THREADSAFE
+  if (sogl_tmpcoordlist == NULL) {
+    sogl_tmpcoordlist = new SbList <float>;
+    coin_atexit((coin_atexit_f *)nurbs_coord_cleanup);
+  }
+  return sogl_tmpcoordlist; 
+#endif // ! COIN_THREADSAFE
+}
+
+static SbList <float> *
+sogl_get_tmptexcoordlist(void)
+{
+#ifdef COIN_THREADSAFE
+  if (sogl_texcoordstorage == NULL) {
+    sogl_texcoordstorage = new SbStorage(sizeof(void*), sogl_alloc_coords, sogl_dealloc_coords);
+    coin_atexit((coin_atexit_f *)nurbs_texcoord_cleanup);
+  }
+  SbList <float> ** ptr = (SbList <float> **) sogl_texcoordstorage->get();
+  return *ptr;
+#else // COIN_THREADSAFE
+  if (sogl_tmptexcoordlist == NULL) {
+    sogl_tmpcoordlist = new SbList <float>;
+    coin_atexit((coin_atexit_f *)nurbs_texcoord_cleanup);
+  }
+  return sogl_tmptexcoordlist; 
+#endif // ! COIN_THREADSAFE
+}
 
 void
 sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
@@ -1725,13 +1796,10 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   GLfloat * ptr = coords->is3D() ?
     (GLfloat *)coordelem->getArrayPtr3() :
     (GLfloat *)coordelem->getArrayPtr4();
-
+  
   // just copy indexed control points into a linear array
   if (numcoordindex && coordindex) {
-    if (tmpcoordlist == NULL) {
-      tmpcoordlist = new SbList <float>;
-      coin_atexit((coin_atexit_f *)nurbs_coord_cleanup);
-    }
+    SbList <float> * tmpcoordlist = sogl_get_tmpcoordlist();
     tmpcoordlist->truncate(0);
     for (int i = 0; i < numcoordindex; i++) {
       for (int j = 0; j < dim; j++) {
@@ -1822,10 +1890,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
 
       // copy indexed texcoords into temporary array
       if (numtexcoordindex && texcoordindex) {
-        if (tmptexcoordlist == NULL) {
-          tmptexcoordlist = new SbList <float>;
-          coin_atexit((coin_atexit_f *)nurbs_texcoord_cleanup);
-        }
+        SbList <float> * tmptexcoordlist = sogl_get_tmptexcoordlist();
         tmptexcoordlist->truncate(0);
         for (int i = 0; i < numtexcoordindex; i++) {
           for (int j = 0; j < texdim; j++) {
@@ -2010,10 +2075,7 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
 
   // just copy indexed control points into a linear array
   if (numcoordindex && coordindex) {
-    if (tmpcoordlist == NULL) {
-      tmpcoordlist = new SbList <float>;
-      coin_atexit((coin_atexit_f *)nurbs_coord_cleanup);
-    }
+    SbList <float> * tmpcoordlist = sogl_get_tmpcoordlist();
     tmpcoordlist->truncate(0);
     for (int i = 0; i < numcoordindex; i++) {
       for (int j = 0; j < dim; j++) {
@@ -2630,7 +2692,6 @@ sogl_render_faceset(const SoGLCoordinateElement * const vertexlist,
 {
   static int first = 1;
   if (first) {
-    first = 0;
     render_funcs[0] = sogl_fs_n0_m0;
     render_funcs[1] = sogl_fs_n0_m0_tex;
     render_funcs[2] = sogl_fs_n0_m1;
@@ -2685,6 +2746,7 @@ sogl_render_faceset(const SoGLCoordinateElement * const vertexlist,
     render_funcs[71] = sogl_fs_n4_m3_tex;
     render_funcs[72] = sogl_fs_n4_m4;
     render_funcs[73] = sogl_fs_n4_m4_tex;
+    first = 0;
   }
 
   int idx = (nbind << 4) | (mbind << 1) | texture;
@@ -3594,7 +3656,6 @@ sogl_render_tristrip(const SoGLCoordinateElement * const vertexlist,
 {
   static int first = 1;
   if (first) {
-    first = 0;
     render_ts_funcs[0] = sogl_ts_n0_m0;
     render_ts_funcs[1] = sogl_ts_n0_m0_tex;
     render_ts_funcs[2] = sogl_ts_n0_m1;
@@ -3699,6 +3760,7 @@ sogl_render_tristrip(const SoGLCoordinateElement * const vertexlist,
     render_ts_funcs[107] = sogl_ts_n6_m5_tex;
     render_ts_funcs[108] = sogl_ts_n6_m6;
     render_ts_funcs[109] = sogl_ts_n6_m6_tex;
+    first = 0;
   }
 
   int idx = (nbind << 4) | (mbind << 1) | texture;
@@ -3929,7 +3991,6 @@ sogl_render_pointset(const SoGLCoordinateElement * coords,
 {
   static int first = 1;
   if (first) {
-    first = 0;
     sogl_render_pointset_funcs[0] = sogl_render_pointset_m0n0t0;
     sogl_render_pointset_funcs[1] = sogl_render_pointset_m0n0t1;
     sogl_render_pointset_funcs[2] = sogl_render_pointset_m0n1t0;
@@ -3938,6 +3999,7 @@ sogl_render_pointset(const SoGLCoordinateElement * coords,
     sogl_render_pointset_funcs[5] = sogl_render_pointset_m1n0t1;
     sogl_render_pointset_funcs[6] = sogl_render_pointset_m1n1t0;
     sogl_render_pointset_funcs[7] = sogl_render_pointset_m1n1t1;
+    first = 0;
   }
 
   int mat = mb ? 1 : 0;
