@@ -374,7 +374,7 @@ SoDragger::~SoDragger()
   Initializes type system for this dragger class.
 
   Application programmers should usually not have to invoke this
-  method, see documentation of SoInteraction::initClass().
+  method, see documentation of SoInteraction::init().
 */
 void
 SoDragger::initClass(void)

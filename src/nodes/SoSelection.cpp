@@ -104,9 +104,9 @@
 
   This node is not initialized in SoDB::init(), since it is part of
   the interaction kit "add-on". Before using this node, you should
-  therefore call SoInteraction::initClass(). If you're using one of
-  the standard GUI-toolkits (SoXt / SoQt / SoGtk / SoWin)
-  SoInteraction::initClass() will be called for you from the
+  therefore call SoInteraction::init(). If you're using one of the
+  standard GUI-toolkits (SoXt / SoQt / SoGtk / SoWin)
+  SoInteraction::init() will be called for you from the
   So[Xt|Qt|Gtk|Win]::init() method and you don't have to worry about
   it.
 */
