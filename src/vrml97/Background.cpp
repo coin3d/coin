@@ -301,10 +301,9 @@ public:
   SbBool geometrybuilt;
 
   void buildGeometry();
-  void modifyCubeFace(SoMFString & urls, SoSeparator * facesep, int * vindices);
-  SoSeparator * createCubeFace(SoMFString & urls, SoSeparator * sep, int * vindices);
+  void modifyCubeFace(SoMFString & urls, SoSeparator * facesep, const int * vindices);
+  SoSeparator * createCubeFace(SoMFString & urls, SoSeparator * sep, const int * vindices);
   void buildIndexList(SoIndexedTriangleStripSet * sphere, int len, int slices, int matlength);
-
 
 };
 
@@ -420,11 +419,11 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
   SbVec3f trans  = vv.getProjectionPoint();
 
   // FIXME: When trans[z] > 10000000, things start to act strange
-  // (geometry starts to bounce uncontrolled). This can be observed
-  // by zooming out in an examinerviewer. At first the background is
+  // (geometry starts to bounce uncontrolled). This can be observed by
+  // zooming out in an examinerviewer. At first the background is
   // still (as it should), then suddenly it starts to move as
-  // described. Might be caused by a variabel overflow/wrap somewhere
-  // (7Aug2003 handegar)
+  // described. This might be caused by a variabel overflow/wrap
+  // somewhere (7Aug2003 handegar)
   SoModelMatrixElement::translateBy(state, (SoNode *) this, trans);
  
   SbBool depthtest = glIsEnabled(GL_DEPTH_TEST);
@@ -453,6 +452,7 @@ SoVRMLBackgroundP::buildGeometry()
 
   float sphereradius = 1.5;
   SbList <float> angles;
+  const int slices = 30;
   
   this->rootnode = new SoSeparator;
   this->rootnode->ref();
@@ -475,15 +475,15 @@ SoVRMLBackgroundP::buildGeometry()
     if (PUBLIC(this)->skyAngle.getNum() > 0) {
       for (int k=0;k<PUBLIC(this)->skyAngle.getNum();++k) { 
         if (angle > PUBLIC(this)->skyAngle[k]) {
-          SoDebugError::postWarning("buildGeometry","skyAngle array must be non-decreasing.");
+          SoDebugError::postWarning("buildGeometry","skyAngle array values must be non-decreasing.");
           continue;
         }
         angle = PUBLIC(this)->skyAngle[k];
         if (angle > M_PI) {
-          SoDebugError::postWarning("buildGeometry","skyAngle > PI not allowed.");
+          SoDebugError::postWarning("buildGeometry","skyAngle=%f > PI not allowed.", angle);
           angle = M_PI;
         } else if (angle < 0) {
-          SoDebugError::postWarning("buildGeometry","skyAngle < 0 not allowed.");
+          SoDebugError::postWarning("buildGeometry","skyAngle=%f < 0 not allowed.", angle);
           angle = 0;
         } 
         angles.append(angle);
@@ -494,8 +494,7 @@ SoVRMLBackgroundP::buildGeometry()
     }
     else { // No angles specified. Creating list based on number of colors.
       int num = PUBLIC(this)->skyColor.getNum();
-      if(num == 1)
-        ++num;
+      if(num == 1) ++num; // Special case
       for (int i=0;i<=num;++i) 
         angles.append((M_PI/num)*i);
     }
@@ -503,8 +502,6 @@ SoVRMLBackgroundP::buildGeometry()
 
         
     int len = angles.getLength();
-    int slices = len;
-    if (slices < 30) slices = 30;
 
     SbVec3f * skyvertexarray = new SbVec3f[len * slices]; 
     SoIndexedTriangleStripSet * sky = new SoIndexedTriangleStripSet;
@@ -539,13 +536,12 @@ SoVRMLBackgroundP::buildGeometry()
         skyproperties->orderedRGBA.set1Value(i, PUBLIC(this)->skyColor[i].getPackedValue(0));
       skyproperties->materialBinding = SoMaterialBinding::PER_VERTEX_INDEXED;
     } else {
-      SoDebugError::postWarning("buildGeometry","No colors specified for sky");
+      SoDebugError::postWarning("buildGeometry","No colors specified for the sky.");
       return;
     }
 
 
     buildIndexList(sky, len, slices, PUBLIC(this)->skyColor.getNum());
-
 
     SoShapeHints * shapehintssky = new SoShapeHints;
     shapehintssky->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
@@ -574,36 +570,33 @@ SoVRMLBackgroundP::buildGeometry()
 
       for (int k=0;k<PUBLIC(this)->groundAngle.getNum();++k) { 
         if (angle > PUBLIC(this)->groundAngle[k]) {
-          SoDebugError::postWarning("buildGeometry","groundAngle array must be non-decreasing.");
+          SoDebugError::postWarning("buildGeometry","groundAngle array values must be non-decreasing.");
           continue;
         }
         angle = PUBLIC(this)->groundAngle[k];
         if (angle > M_PI/2) {
-          SoDebugError::postWarning("buildGeometry","groundAngle > PI/2 not allowed.");
+          SoDebugError::postWarning("buildGeometry","groundAngle=%f > PI/2 not allowed.", angle);
 
           angle = M_PI / 2;
         } else if (angle < 0) {
-          SoDebugError::postWarning("buildGeometry","groundAngle < 0 not allowed.");
+          SoDebugError::postWarning("buildGeometry","groundAngle=%f < 0 not allowed.", angle);
           angle = 0;
         } 
         angles.append(angle);
       }
-      if(angles.getLength() < 3)
+      if(angles.getLength() < 3) // A 'sphere' must have atleast 3 faces
         angles.append(angle);
 
     }
     else {
       int num = PUBLIC(this)->groundColor.getNum();
-      if(num == 1)
-        ++num;
+      if(num == 1) ++num;
       for (int i=0;i<num;++i)
         angles.append((M_PI/(num))*i);
     }
 
 
     int len = angles.getLength();
-    int slices = len;
-    if (slices < 30) slices = 30;
 
     SbVec3f * groundvertexarray = new SbVec3f[len * slices];
     SoIndexedTriangleStripSet * ground = new SoIndexedTriangleStripSet;
@@ -637,7 +630,7 @@ SoVRMLBackgroundP::buildGeometry()
         groundproperties->orderedRGBA.set1Value(i, PUBLIC(this)->groundColor[i].getPackedValue(0));
       groundproperties->materialBinding = SoMaterialBinding::PER_VERTEX_INDEXED;
     } else {
-      SoDebugError::postWarning("buildGeometry","No colors specified for ground");
+      SoDebugError::postWarning("buildGeometry","No colors specified for the ground.");
       return;
     }
 
@@ -677,7 +670,7 @@ SoVRMLBackgroundP::buildGeometry()
   this->rootnode->addChild(scale);
   this->rootnode->addChild(cubedata);
   
-  int tindices[] = {1, 2, 3, 0, -1};
+  const int tindices[] = {1, 2, 3, 0, -1};
   this->frontface = NULL;
   this->backface = NULL;
   this->leftface = NULL;
@@ -688,37 +681,37 @@ SoVRMLBackgroundP::buildGeometry()
   SoVRMLImageTexture * tex;
 
   if (PUBLIC(this)->backUrl.getNum() != 0) {     
-    int vindices[] = {3, 2, 1, 0, -1};
+    const int vindices[] = {3, 2, 1, 0, -1};
     SoSeparator * sep = this->createCubeFace(PUBLIC(this)->backUrl,this->backface, vindices);    
     cubedata->addChild(sep);
   }
   
   if (PUBLIC(this)->leftUrl.getNum() != 0) {
-    int vindices[] = {0, 1, 5, 4, -1};
+    const int vindices[] = {0, 1, 5, 4, -1};
     SoSeparator * sep = this->createCubeFace(PUBLIC(this)->leftUrl,this->leftface, vindices);    
     cubedata->addChild(sep);
   }
   
   if (PUBLIC(this)->frontUrl.getNum() != 0) {
-    int vindices[] = {4, 5, 6, 7, -1};
+    const int vindices[] = {4, 5, 6, 7, -1};
     SoSeparator * sep = this->createCubeFace(PUBLIC(this)->frontUrl,this->frontface, vindices);    
     cubedata->addChild(sep);
   }
 
   if (PUBLIC(this)->rightUrl.getNum() != 0) {
-    int vindices[] = {7, 6, 2, 3, -1};
+    const int vindices[] = {7, 6, 2, 3, -1};
     SoSeparator * sep = this->createCubeFace(PUBLIC(this)->rightUrl,this->rightface, vindices);    
     cubedata->addChild(sep);
   }
 
   if (PUBLIC(this)->bottomUrl.getNum() != 0) {
-    int vindices[] = {7, 3, 0, 4, -1};
+    const int vindices[] = {7, 3, 0, 4, -1};
     SoSeparator * sep = this->createCubeFace(PUBLIC(this)->bottomUrl,this->bottomface, vindices);    
     cubedata->addChild(sep);
   }
 
   if (PUBLIC(this)->topUrl.getNum() != 0) {
-    int vindices[] = {2, 6, 5, 1, -1};
+    const int vindices[] = {2, 6, 5, 1, -1};
     SoSeparator * sep = this->createCubeFace(PUBLIC(this)->topUrl,this->topface, vindices);    
     cubedata->addChild(sep);
   }
@@ -784,10 +777,10 @@ SoVRMLBackgroundP::buildIndexList(SoIndexedTriangleStripSet * sphere, int len, i
 
 
 SoSeparator * 
-SoVRMLBackgroundP::createCubeFace(SoMFString & urls, SoSeparator * sep, int * vindices)
+SoVRMLBackgroundP::createCubeFace(SoMFString & urls, SoSeparator * sep, const int * vindices)
 {
 
-  int tindices[] = {1, 2, 3, 0, -1};
+  const int tindices[] = {1, 2, 3, 0, -1};
   sep = new SoSeparator;
   sep->ref();
   SoVRMLImageTexture * tex = new SoVRMLImageTexture;
@@ -805,7 +798,7 @@ SoVRMLBackgroundP::createCubeFace(SoMFString & urls, SoSeparator * sep, int * vi
 }
 
 void
-SoVRMLBackgroundP::modifyCubeFace(SoMFString & urls, SoSeparator * sep, int * vindices)
+SoVRMLBackgroundP::modifyCubeFace(SoMFString & urls, SoSeparator * sep, const int * vindices)
 {
 
   SoVRMLImageTexture * tex;
@@ -825,7 +818,7 @@ SoVRMLBackgroundP::modifyCubeFace(SoMFString & urls, SoSeparator * sep, int * vi
     tex->ref();
     tex->repeatS.setValue(FALSE);
     tex->repeatT.setValue(FALSE);
-    int tindices[] = {1, 2, 3, 0, -1};
+    const int tindices[] = {1, 2, 3, 0, -1};
     SoIndexedFaceSet * faceset = new SoIndexedFaceSet;
     faceset->textureCoordIndex.setValues(0, 5, tindices);
 
@@ -855,37 +848,37 @@ vrmltexturechangeCB(void * data, SoSensor * sensor)
   tex->ref();
   tex->repeatS.setValue(FALSE);
   tex->repeatT.setValue(FALSE);
-  int tindices[] = {1, 2, 3, 0, -1};
+  const int tindices[] = {1, 2, 3, 0, -1};
   SoIndexedFaceSet * faceset = new SoIndexedFaceSet;
   faceset->textureCoordIndex.setValues(0, 5, tindices);
   
   if (sensor == pimpl->fronturlsensor) {
-    int vindices[] = {4, 5, 6, 7, -1};
+    const int vindices[] = {4, 5, 6, 7, -1};
     pimpl->modifyCubeFace(pimpl->master->frontUrl, pimpl->frontface, vindices);
   }
 
   else if (sensor == pimpl->backurlsensor) {
-    int vindices[] = {3, 2, 1, 0, -1};
+    const int vindices[] = {3, 2, 1, 0, -1};
     pimpl->modifyCubeFace(pimpl->master->backUrl, pimpl->backface, vindices);
   }
   
   else if (sensor == pimpl->lefturlsensor) {
-    int vindices[] = {0, 1, 5, 4, -1};
+    const int vindices[] = {0, 1, 5, 4, -1};
     pimpl->modifyCubeFace(pimpl->master->leftUrl, pimpl->leftface, vindices);
   }
 
   else if (sensor == pimpl->righturlsensor) {
-    int vindices[] = {7, 6, 2, 3, -1};
+    const int vindices[] = {7, 6, 2, 3, -1};
     pimpl->modifyCubeFace(pimpl->master->rightUrl, pimpl->rightface, vindices);
   }
 
   else if (sensor == pimpl->topurlsensor) {
-    int vindices[] = {2, 6, 5, 1, -1};
+    const int vindices[] = {2, 6, 5, 1, -1};
     pimpl->modifyCubeFace(pimpl->master->topUrl, pimpl->topface, vindices);
   }
 
   else if (sensor == pimpl->bottomurlsensor) {
-    int vindices[] = {7, 3, 0, 4, -1};
+    const int vindices[] = {7, 3, 0, 4, -1};
     pimpl->modifyCubeFace(pimpl->master->bottomUrl, pimpl->bottomface, vindices);
   }
   
@@ -914,10 +907,10 @@ bindingchangeCB(void * data, SoSensor * sensor)
   SoFieldSensor * setbindsensor;
   SoFieldSensor * isboundsensor;
 
-  // FIXME: Support for 'set_bind' and 'isBound' must be implemented,
-  // but first a Coin viewer must support this kind of special node
-  // treatment (This applies to 'Background', 'Fog', 'NavigationInfo'
-  // and 'Viewport' nodes aswell) (11Aug2003 handegar)
+  // FIXME: Support for 'set_bind' and 'isBound' must be implemented.
+  // But first, a Coin viewer must support this kind of special node
+  // treatment (this applies to 'Fog', 'NavigationInfo' and 'Viewport'
+  // nodes aswell) (11Aug2003 handegar)
 
   if (sensor == pimpl->setbindsensor) {
     SoDebugError::postWarning("bindingchangeCB", "'set_bind' event not implemented yet");
