@@ -662,6 +662,15 @@ THE WISH LIST
   functions too.  Might even consider putting it on the SoButtonEvent
   level.
 
+  Update 2002-01-20 mortene:
+
+    * See So*/src/Inventor/*/common/docs/api-wish-list.txt for
+      additional information.
+
+    * About the suggested config setting: the doubleclick rate should
+      preferably be extracted from the underlying OS or GUI-toolkit by
+      the So* library when converting a native event into an
+      SoMouseButtonEvent.
 
 * SbBigNum type
   2002-01-17  Lars J. Aas  <larsa@sim.no>
