@@ -25,6 +25,12 @@
   \class SoConeDetail SoConeDetail.h Inventor/details/SoConeDetail.h
   \brief The SoConeDetail class contains information about the parts of a SoCone shape.
   \ingroup details
+
+  Instances of this class are used for storing information about hit
+  points on cone geometry after pick operations, and for storing
+  information returned to tesselation callbacks.
+
+  \sa SoCone, SoRayPickAction, SoCallbackAction
 */
 
 /*!

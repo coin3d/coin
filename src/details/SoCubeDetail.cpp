@@ -26,10 +26,15 @@
   \brief The SoCubeDetail class contains information about the parts of a SoCube shape.
   \ingroup details
 
+  Instances of this class are used for storing information about hit
+  points on cone geometry after pick operations, and for storing
+  information returned to tesselation callbacks.
+
   The part indices are ordered from 0 to 5 as [ front, back, left,
   right, top, bottom ].
 
- */
+  \sa SoCube, SoRayPickAction, SoCallbackAction
+*/
 
 /*!
   \var int SoCubeDetail::part

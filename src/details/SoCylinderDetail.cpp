@@ -26,6 +26,11 @@
   \brief The SoCylinderDetail class contains information about the parts of a SoCylinder shape.
   \ingroup details
 
+  Instances of this class are used for storing information about hit
+  points on cylinder geometry after pick operations, and for storing
+  information returned to tesselation callbacks.
+
+  \sa SoCylinder, SoRayPickAction, SoCallbackAction
 */
 
 #include <Inventor/details/SoCylinderDetail.h>
