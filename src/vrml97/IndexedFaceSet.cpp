@@ -239,7 +239,6 @@
 #define STATUS_CONVEX  1
 #define STATUS_CONCAVE 2
 
-
 #ifndef DOXYGEN_SKIP_THIS
 class SoVRMLIndexedFaceSetP {
 public:
@@ -355,12 +354,14 @@ SoVRMLIndexedFaceSet::findMaterialBinding(SoState * state) const
   else {
     if (this->color.getValue()) {
       if (this->colorPerVertex.getValue()) {
-        binding = PER_VERTEX_INDEXED;
-        if (!this->colorIndex.getNum()) binding = PER_VERTEX;
+        binding = PER_VERTEX;
+        if (this->colorIndex.getNum() && this->colorIndex[0] >= 0) 
+          binding = PER_VERTEX_INDEXED;
       }
       else {
         binding = PER_FACE;
-        if (this->colorIndex.getNum()) binding = PER_FACE_INDEXED;
+        if (this->colorIndex.getNum() && this->colorIndex[0] >= 0) 
+          binding = PER_FACE_INDEXED;
       }
     }
   }
@@ -406,11 +407,13 @@ SoVRMLIndexedFaceSet::findNormalBinding(SoState * state) const
   else {
     if (this->normalPerVertex.getValue()) {
       binding = PER_VERTEX_INDEXED;
-      if (this->normal.getValue() && !this->normalIndex.getNum()) binding = PER_VERTEX;
+      if (this->normal.getValue() && 
+          (this->normalIndex.getNum() == 0 ||
+           this->normalIndex[0] < 0)) binding = PER_VERTEX;
     }
     else {
       binding = PER_FACE;
-      if (this->normalIndex.getNum()) binding = PER_FACE_INDEXED;
+      if (this->normalIndex.getNum() && this->normalIndex[0] >= 0) binding = PER_FACE_INDEXED;
     }
   }
   return binding;
@@ -451,7 +454,11 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
                       nindices, tindices, mindices, numindices,
                       sendNormals, normalCacheUsed);
 
-  if (!sendNormals) nbind = OVERALL;
+  if (!sendNormals) {
+    nbind = OVERALL;
+    normals = NULL;
+    nindices = NULL;
+  }
   else if (nbind == OVERALL) {
     if (normals) glNormal3fv(normals[0].getValue());
     else glNormal3f(0.0f, 0.0f, 1.0f);
@@ -465,11 +472,11 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
 
   if (mbind == PER_VERTEX) {
     mbind = PER_VERTEX_INDEXED;
-    mindices = tindices;
+    mindices = cindices;
   }
   if (nbind == PER_VERTEX) {
     nbind = PER_VERTEX_INDEXED;
-    tindices = cindices;
+    nindices = cindices;
   }
 
   Binding tbind = NONE;
@@ -483,6 +490,7 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
       if (tindices == NULL) tindices = cindices;
     }
   }
+  SbBool convexcacheused = FALSE;
 
   if (this->useConvexCache(action, normals, nindices, normalCacheUsed)) {
     cindices = THIS->convexCache->getCoordIndices();
@@ -497,6 +505,7 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
     else if (nbind == PER_FACE) nbind = PER_FACE_INDEXED;
 
     if (tbind != NONE) tbind = PER_VERTEX_INDEXED;
+    convexcacheused = TRUE;
   }
 
   mb.sendFirst(); // make sure we have the correct material
@@ -519,6 +528,11 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
   if (normalCacheUsed) {
     this->readUnlockNormalCache();
   }
+
+  if (convexcacheused) {
+    THIS->readUnlockConvexCache();
+  }
+
   // send approx number of triangles for autocache handling
   sogl_autocache_update(state, this->coordIndex.getNum() / 4);
 }
@@ -623,7 +637,11 @@ SoVRMLIndexedFaceSet::generatePrimitives(SoAction * action)
                       nindices, tindices, mindices, numindices,
                       sendNormals, normalCacheUsed);
 
-  if (!sendNormals) nbind = OVERALL;
+  if (!sendNormals) {
+    nbind = OVERALL;
+    normals = NULL;
+    nindices = NULL;
+  }
   else if (normalCacheUsed && nbind == PER_VERTEX) {
     nbind = PER_VERTEX_INDEXED;
   }
@@ -654,7 +672,7 @@ SoVRMLIndexedFaceSet::generatePrimitives(SoAction * action)
       if (tindices == NULL) tindices = cindices;
     }
   }
-
+  
   if (this->useConvexCache(action, normals, nindices, normalCacheUsed)) {
     cindices = THIS->convexCache->getCoordIndices();
     numindices = THIS->convexCache->getNumCoordIndices();
@@ -851,8 +869,13 @@ SoVRMLIndexedFaceSet::useConvexCache(SoAction * action,
 
   THIS->readLockConvexCache();
 
-  if (THIS->convexCache && THIS->convexCache->isValid(state))
-    return TRUE;
+  if (THIS->convexCache && THIS->convexCache->isValid(state)) {
+    // check if convex cache has normal indices. The convex cache
+    // might be generated without normals.
+    if (normals == NULL || THIS->convexCache->getNormalIndices()) {
+      return TRUE;
+    }
+  }
 
   THIS->readUnlockConvexCache();
   THIS->writeLockConvexCache();
@@ -889,8 +912,8 @@ SoVRMLIndexedFaceSet::useConvexCache(SoAction * action,
                       FALSE, dummy);
 
   Binding mbind = this->findMaterialBinding(state);
-  Binding nbind = this->findNormalBinding(state);
-
+  Binding nbind = normals ? this->findNormalBinding(state) : OVERALL;
+  
   if (normalsfromcache && nbind == PER_VERTEX) {
     nbind = PER_VERTEX_INDEXED;
   }
@@ -901,7 +924,7 @@ SoVRMLIndexedFaceSet::useConvexCache(SoAction * action,
   }
   if (nbind == PER_VERTEX) {
     nbind = PER_VERTEX_INDEXED;
-    tindices = cindices;
+    nindices = cindices;
   }
 
   Binding tbind = PER_VERTEX_INDEXED;
