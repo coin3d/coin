@@ -179,6 +179,14 @@ To be able to run the script, the <installdir>/bin/ installation
 directory for the So*-library must also be set up in the shell's PATH
 environment variable before invoking the configure script.
 
+!unable-to-run-soqt-config
+configure was not able to find or run the required soqt-config
+utility.
+
+To be able to run the script, the <installdir>/bin/ installation
+directory for the SoQt-library must be set up in the shell's PATH
+environment variable before invoking the configure script.
+
 !x11-qt-on-mac
 You are using the X11 version of the Qt toolkit, which requires the
 X11 SDK, available at http://www.apple.com/macosx/x11/. Since the

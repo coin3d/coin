@@ -216,7 +216,7 @@ SIM_AC_HAVE_BYTESIZE_TYPES_IFELSE([
   SIM_AC_BYTESIZE_TYPE(uint64_t, 8, [u_int64_t "unsigned long" "unsigned int" "unsigned long long" "unsigned __int64"], [], AC_MSG_WARN([could not find unsigned 64-bit type]))
 
   SIM_AC_BYTESIZE_TYPE(intptr_t, sizeof(void *), [int long "long long" __int64], [], AC_MSG_WARN([could not find int-pointer type]))
-  SIM_AC_BYTESIZE_TYPE(uintptr_t, sizeof(void *), [u_intptr_t "unsigned int" "unsigned long" u_int64_t "unsigned long long" "unsigned __int64"], [], AC_MSG_WARN([could not find unsigned int-pointer type]))
+  SIM_AC_BYTESIZE_TYPE(uintptr_t, sizeof(void *), [u_intptr_t "_W64 unsigned int" "unsigned int" "unsigned long" u_int64_t "unsigned long long" "unsigned __int64"], [], AC_MSG_WARN([could not find unsigned int-pointer type]))
 ])
 ])# SIM_AC_DEFINE_BYTESIZE_TYPES
 

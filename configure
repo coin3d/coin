@@ -22403,7 +22403,7 @@ fi
   sim_ac_searching=true
 echo "$as_me:$LINENO: checking for uintptr_t type or equivalent" >&5
 echo $ECHO_N "checking for uintptr_t type or equivalent... $ECHO_C" >&6
-for sim_ac_type in uintptr_t u_intptr_t "unsigned int" "unsigned long" u_int64_t "unsigned long long" "unsigned __int64"
+for sim_ac_type in uintptr_t u_intptr_t "_W64 unsigned int" "unsigned int" "unsigned long" u_int64_t "unsigned long long" "unsigned __int64"
 do
   if $sim_ac_searching; then
     cat >conftest.$ac_ext <<_ACEOF
