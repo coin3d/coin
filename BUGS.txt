@@ -413,6 +413,10 @@
     
     20020923 larsa.
 
+    UPDATE 20030709 larsa: changes has been made wrt handling of
+    double-quotes and backslashes a while ago, and I believe this
+    problem has been fixed now.
+
 =====================================================================
 
 029 SoSFEnum / SoMFEnum / SoSFBitMask / SoMFBitMask can't be used for
@@ -1562,6 +1566,8 @@
     to change for Coin-2. This is a known libtool problem, and is
     fixed in libtool-1.4.3 and libtool-1.5, according to Fink
     developer Peter O'Gorman.
+
+    Update 20030709 larsa: libtool was upgraded a while ago.
 
 =====================================================================
 
