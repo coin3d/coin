@@ -1306,24 +1306,67 @@ swap_updown(unsigned char *data, int width, int height)
   representation given by \a size dimensions with the bitmap data at
   \a bytes. \a isLSBFirst and \a isUpToDown indicates how the bitmap
   data is ordered. Does nothing if \a markerIndex is NONE.
+
+  Here's a complete usage example which demonstrates how to set up a
+  user-specified marker from a char-map:
+
+  \code
+  const int WIDTH = 18;
+  const int HEIGHT = 19;
+  const int BYTEWIDTH = (WIDTH + 7) / 2;
+
+  const char coin_marker[WIDTH * HEIGHT + 1] = {
+    ".+                "
+    "+@.+              "
+    " .@#.+            "
+    " +$@##.+          "
+    "  .%@&##.+        "
+    "  +$@&&*##.+      "
+    "   .%@&&*=##.+    "
+    "   +$@&&&&=-##.+  "
+    "    .%@&&&&&-;#&+ "
+    "    +$@&&&&&&=#.  "
+    "     .%@&&&&*#.   "
+    "     +$@&&&&#.    "
+    "      .%@&@%@#.   "
+    "      +$%@%.$@#.  "
+    "       .%%. .$@#. "
+    "       +$.   .$>#."
+    "        +     .$. "
+    "               .  "
+    "                  " };
+
+  int byteidx = 0;
+  unsigned char bitmapbytes[BYTEWIDTH * HEIGHT];
+  for (int h = 0; h < HEIGHT; h++) {
+    unsigned char bits = 0;
+    for (int w = 0; w < WIDTH; w++) {
+      if (coin_marker[(h * WIDTH) + w] != ' ') { bits |= (0x80 >> (w % 8)); }
+      if ((((w + 1) % 8) == 0) || (w == WIDTH - 1)) {
+        bitmapbytes[byteidx++] = bits;
+        bits = 0;
+      }
+    }
+  }
+
+  int MYAPP_ARROW_IDX = SoMarkerSet::getNumDefinedMarkers(); // add at end
+  SoMarkerSet::addMarker(MYAPP_ARROW_IDX, SbVec2s(WIDTH, HEIGHT),
+                         bitmapbytes, FALSE, TRUE);
+  \endcode
+
+  This will provide you with an index given by MYAPP_ARROW_IDX which
+  can be used in SoMarkerSet::markerIndex to display the new marker.
 */
 void
 SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
                        const unsigned char * bytes, SbBool isLSBFirst,
                        SbBool isUpToDown)
 {
-  // FIXME: implement support for isLSBFirst and isUpToDown. skei 20000905
-
-  // UPDATE: isn't the above FIXME completed now? From the code, it
-  // looks like it should be ok. 20010815 mortene.
-
-  so_marker tempmarker;
-  so_marker *temp;
-
   if (markerIndex == NONE) return;
 
   SbBool appendnew = markerIndex >= markerlist->getLength() ? TRUE : FALSE;
-  temp = &tempmarker;
+  so_marker tempmarker;
+  so_marker * temp = &tempmarker;
   if (appendnew) {
     tempmarker.width  = 0;
     tempmarker.height = 0;
@@ -1339,11 +1382,13 @@ SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
 
   int datasize = ((size[0] + 7) / 8) * size[1];
   if (temp->deletedata) delete temp->data;
-  temp->deletedata = true;
+  temp->deletedata = TRUE;
   temp->data = new unsigned char[ datasize ];
   memcpy(temp->data,bytes,datasize);
-  if (isLSBFirst) swap_leftright(temp->data,size[0],size[1]);
-  if (isUpToDown) swap_updown(temp->data,size[0],size[1]);
+  // FIXME: the swap_leftright() function seems
+  // buggy. Investigate. 20011120 mortene.
+  if (isLSBFirst) { swap_leftright(temp->data,size[0],size[1]); }
+  if (isUpToDown) { swap_updown(temp->data,size[0],size[1]); }
   if (appendnew) markerlist->append(tempmarker);
 }
 
