@@ -282,6 +282,8 @@ SoTranslate2Dragger::dragStart(void)
     this->getLocalToWorldMatrix().multVecMatrix(hitPt, this->worldRestartPt);
     this->constraintState = CONSTRAINT_WAIT;
   }
+
+  this->extramotion = SbVec3f(0, 0, 0);
 }
 
 /*! \COININTERNAL
@@ -302,6 +304,11 @@ SoTranslate2Dragger::drag(void)
     this->getLocalToWorldMatrix().multVecMatrix(projPt, this->worldRestartPt);
   }
   else if (!event->wasShiftDown() && this->constraintState != CONSTRAINT_OFF) {
+    SbVec3f worldProjPt;
+    this->getLocalToWorldMatrix().multVecMatrix(projPt, worldProjPt);
+    this->setStartingPoint(worldProjPt);
+    this->extramotion += this->lastmotion;
+    
     SoSwitch *sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
     this->constraintState = CONSTRAINT_OFF;
@@ -348,7 +355,9 @@ SoTranslate2Dragger::drag(void)
     motion[1] += projPt[1] - localrestartpt[1];
     break;
   }
-  this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(), motion));
+  this->lastmotion = motion;
+  this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(),
+                                                this->extramotion+motion));
 }
 
 /*! \COININTERNAL
