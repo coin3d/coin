@@ -221,8 +221,9 @@ SoDataSensor::notify(SoNotList * l)
         SoSearchAction search;
         search.setNode(this->triggernode);
         search.setSearchingAll(TRUE);
+        search.setInterest(SoSearchAction::FIRST);
         search.apply((SoNode *)lastrec->getBase());
-        if (search.isFound()) {
+        if (search.getPath() != NULL) {
           this->triggerpath = search.getPath();
           this->triggerpath->ref();
         }
