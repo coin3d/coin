@@ -174,90 +174,90 @@ COIN_DLL_API SbBool cc_glglue_has_texture_edge_clamp(const cc_glglue * glue);
 
 COIN_DLL_API SbBool cc_glue_has_texture_compression(const cc_glglue * glue);
 
-COIN_DLL_API void cc_glglue_glCompressedTexImage3DARB(const cc_glglue * glue,
+COIN_DLL_API void cc_glglue_glCompressedTexImage3D(const cc_glglue * glue,
+                                                   GLenum target, 
+                                                   GLint level, 
+                                                   GLenum internalformat, 
+                                                   GLsizei width, 
+                                                   GLsizei height, 
+                                                   GLsizei depth, 
+                                                   GLint border, 
+                                                   GLsizei imageSize, 
+                                                   const GLvoid * data);
+COIN_DLL_API void cc_glglue_glCompressedTexImage2D(const cc_glglue * glue,
+                                                   GLenum target, 
+                                                   GLint level, 
+                                                   GLenum internalformat, 
+                                                   GLsizei width, 
+                                                   GLsizei height, 
+                                                   GLint border, 
+                                                   GLsizei imageSize, 
+                                                   const GLvoid *data);
+COIN_DLL_API void cc_glglue_glCompressedTexImage1D(const cc_glglue * glue,
+                                                   GLenum target, 
+                                                   GLint level, 
+                                                   GLenum internalformat, 
+                                                   GLsizei width, 
+                                                   GLint border, 
+                                                   GLsizei imageSize, 
+                                                   const GLvoid *data);
+COIN_DLL_API void cc_glglue_glCompressedTexSubImage3D(const cc_glglue * glue,
                                                       GLenum target, 
                                                       GLint level, 
-                                                      GLenum internalformat, 
+                                                      GLint xoffset, 
+                                                      GLint yoffset, 
+                                                      GLint zoffset, 
                                                       GLsizei width, 
                                                       GLsizei height, 
                                                       GLsizei depth, 
-                                                      GLint border, 
+                                                      GLenum format, 
                                                       GLsizei imageSize, 
-                                                      const GLvoid * data);
-COIN_DLL_API void cc_glglue_glCompressedTexImage2DARB(const cc_glglue * glue,
+                                                      const GLvoid *data);
+COIN_DLL_API void cc_glglue_glCompressedTexSubImage2D(const cc_glglue * glue,
                                                       GLenum target, 
                                                       GLint level, 
-                                                      GLenum internalformat, 
+                                                      GLint xoffset, 
+                                                      GLint yoffset, 
                                                       GLsizei width, 
                                                       GLsizei height, 
-                                                      GLint border, 
+                                                      GLenum format, 
                                                       GLsizei imageSize, 
                                                       const GLvoid *data);
-COIN_DLL_API void cc_glglue_glCompressedTexImage1DARB(const cc_glglue * glue,
+COIN_DLL_API void cc_glglue_glCompressedTexSubImage1D(const cc_glglue * glue,
                                                       GLenum target, 
                                                       GLint level, 
-                                                      GLenum internalformat, 
+                                                      GLint xoffset, 
                                                       GLsizei width, 
-                                                      GLint border, 
+                                                      GLenum format, 
                                                       GLsizei imageSize, 
                                                       const GLvoid *data);
-COIN_DLL_API void cc_glglue_glCompressedTexSubImage3DARB(const cc_glglue * glue,
-                                                         GLenum target, 
-                                                         GLint level, 
-                                                         GLint xoffset, 
-                                                         GLint yoffset, 
-                                                         GLint zoffset, 
-                                                         GLsizei width, 
-                                                         GLsizei height, 
-                                                         GLsizei depth, 
-                                                         GLenum format, 
-                                                         GLsizei imageSize, 
-                                                         const GLvoid *data);
-COIN_DLL_API void cc_glglue_glCompressedTexSubImage2DARB(const cc_glglue * glue,
-                                                         GLenum target, 
-                                                         GLint level, 
-                                                         GLint xoffset, 
-                                                         GLint yoffset, 
-                                                         GLsizei width, 
-                                                         GLsizei height, 
-                                                         GLenum format, 
-                                                         GLsizei imageSize, 
-                                                         const GLvoid *data);
-COIN_DLL_API void cc_glglue_glCompressedTexSubImage1DARB(const cc_glglue * glue,
-                                                        GLenum target, 
-                                                        GLint level, 
-                                                        GLint xoffset, 
-                                                        GLsizei width, 
-                                                        GLenum format, 
-                                                        GLsizei imageSize, 
-                                                        const GLvoid *data);
-COIN_DLL_API void cc_glglue_glGetCompressedTexImageARB(const cc_glglue * glue,
-                                                       GLenum target, 
-                                                       GLint level, 
-                                                       void *img);
+COIN_DLL_API void cc_glglue_glGetCompressedTexImage(const cc_glglue * glue,
+                                                    GLenum target, 
+                                                    GLint level, 
+                                                    void *img);
 
 COIN_DLL_API SbBool cc_glglue_has_paletted_textures(const cc_glglue * glue);
 
-COIN_DLL_API void cc_glglue_glColorTableEXT(const cc_glglue * glue,
+COIN_DLL_API void cc_glglue_glColorTable(const cc_glglue * glue,
+                                         GLenum target, 
+                                         GLenum internalFormat, 
+                                         GLsizei width, 
+                                         GLenum format, 
+                                         GLenum type, 
+                                         const GLvoid *table);
+COIN_DLL_API void cc_glglue_glGetColorTable(const cc_glglue * glue,
                                             GLenum target, 
-                                            GLenum internalFormat, 
-                                            GLsizei width, 
                                             GLenum format, 
                                             GLenum type, 
-                                            const GLvoid *table);
-COIN_DLL_API void cc_glglue_glGetColorTableEXT(const cc_glglue * glue,
-                                               GLenum target, 
-                                               GLenum format, 
-                                               GLenum type, 
-                                               GLvoid *data);
-COIN_DLL_API void cc_glglue_glGetColorTableParameterivEXT(const cc_glglue * glue,
-                                                          GLenum target, 
-                                                          GLenum pname, 
-                                                          GLint *params);
-COIN_DLL_API void cc_glglue_glGetColorTableParameterfvEXT(const cc_glglue * glue,
-                                                          GLenum target, 
-                                                          GLenum pname, 
-                                                          GLfloat *params);
+                                            GLvoid *data);
+COIN_DLL_API void cc_glglue_glGetColorTableParameteriv(const cc_glglue * glue,
+                                                       GLenum target, 
+                                                       GLenum pname, 
+                                                       GLint *params);
+COIN_DLL_API void cc_glglue_glGetColorTableParameterfv(const cc_glglue * glue,
+                                                       GLenum target, 
+                                                       GLenum pname, 
+                                                       GLfloat *params);
 
 COIN_DLL_API SbBool cc_glglue_has_blendequation(const cc_glglue * glue);
 COIN_DLL_API void cc_glglue_glBlendEquation(const cc_glglue * glue, GLenum mode);

@@ -576,26 +576,53 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GLX_EXT_import_context */
 
-  /* FIXME: does this exist in OpenGL as a non-extension? 20021202 mortene. */
+#ifdef GL_VERSION_1_3
+  if (cc_glglue_glversion_matches_at_least(w, 1, 3, 0)) {
+    w->glCompressedTexImage3D = (COIN_PFNGLCOMPRESSEDTEXIMAGE3DPROC)PROC(glCompressedTexImage3D);
+    w->glCompressedTexImage2D = (COIN_PFNGLCOMPRESSEDTEXIMAGE2DPROC)PROC(glCompressedTexImage2D);
+    w->glCompressedTexImage1D = (COIN_PFNGLCOMPRESSEDTEXIMAGE1DPROC)PROC(glCompressedTexImage1D);
+    w->glCompressedTexSubImage3D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC)PROC(glCompressedTexSubImage3D);
+    w->glCompressedTexSubImage2D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC)PROC(glCompressedTexSubImage2D);
+    w->glCompressedTexSubImage1D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC)PROC(glCompressedTexSubImage1D);
+    w->glGetCompressedTexImage = (COIN_PFNGLGETCOMPRESSEDTEXIMAGEPROC)PROC(glGetCompressedTexImage);
+  }
+#endif /* GL_VERSION_1_3 */
+
 #ifdef GL_ARB_texture_compression
-  if (cc_glglue_glext_supported(w,"GL_ARB_texture_compression")) {
-    w->glCompressedTexImage3DARB = (COIN_PFNGLCOMPRESSEDTEXIMAGE3DARBPROC)PROC(glCompressedTexImage3DARB);
-    w->glCompressedTexImage2DARB = (COIN_PFNGLCOMPRESSEDTEXIMAGE2DARBPROC)PROC(glCompressedTexImage2DARB);
-    w->glCompressedTexImage1DARB = (COIN_PFNGLCOMPRESSEDTEXIMAGE1DARBPROC)PROC(glCompressedTexImage1DARB);
-    w->glCompressedTexSubImage3DARB = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE3DARBPROC)PROC(glCompressedTexSubImage3DARB);
-    w->glCompressedTexSubImage2DARB = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE2DARBPROC)PROC(glCompressedTexSubImage2DARB);
-    w->glCompressedTexSubImage1DARB = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE1DARBPROC)PROC(glCompressedTexSubImage1DARB);
-    w->glGetCompressedTexImageARB = (COIN_PFNGLGETCOMPRESSEDTEXIMAGEARBPROC)PROC(glGetCompressedTexImageARB);
+  if ((w->glCompressedTexImage1D == NULL) && 
+      cc_glglue_glext_supported(w, "GL_ARB_texture_compression")) {
+    w->glCompressedTexImage3D = (COIN_PFNGLCOMPRESSEDTEXIMAGE3DPROC)PROC(glCompressedTexImage3DARB);
+    w->glCompressedTexImage2D = (COIN_PFNGLCOMPRESSEDTEXIMAGE2DPROC)PROC(glCompressedTexImage2DARB);
+    w->glCompressedTexImage1D = (COIN_PFNGLCOMPRESSEDTEXIMAGE1DPROC)PROC(glCompressedTexImage1DARB);
+    w->glCompressedTexSubImage3D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC)PROC(glCompressedTexSubImage3DARB);
+    w->glCompressedTexSubImage2D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC)PROC(glCompressedTexSubImage2DARB);
+    w->glCompressedTexSubImage1D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC)PROC(glCompressedTexSubImage1DARB);
+    w->glGetCompressedTexImage = (COIN_PFNGLGETCOMPRESSEDTEXIMAGEPROC)PROC(glGetCompressedTexImageARB);
   }
 #endif /* GL_ARB_texture_compression */
 
-  /* FIXME: this exists in OpenGL as a non-extension. 20021202 mortene. */
+#if defined(GL_VERSION_1_2) && defined(GL_ARB_imaging)
+  if (cc_glglue_glversion_matches_at_least(w, 1, 2, 0) &&
+      cc_glglue_glext_supported(w, "GL_ARB_imaging")) {
+    w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(glColorTable);
+    w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(glGetColorTable);
+    w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(glGetColorTableParameteriv);
+    w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(glGetColorTableParameterfv);
+  }
+#endif /* GL_VERSION_1_2 && GL_ARB_imaging */
+
 #ifdef GL_EXT_paletted_texture
-  if (cc_glglue_glext_supported(w,"GL_EXT_paletted_texture")) {
-    w->glColorTableEXT = (COIN_PFNGLCOLORTABLEEXTPROC)PROC(glColorTableEXT);
-    w->glGetColorTableEXT = (COIN_PFNGLGETCOLORTABLEEXTPROC)PROC(glGetColorTableEXT);
-    w->glGetColorTableParameterivEXT = (COIN_PFNGLGETCOLORTABLEPARAMETERIVEXTPROC)PROC(glGetColorTableParameterivEXT);
-    w->glGetColorTableParameterfvEXT = (COIN_PFNGLGETCOLORTABLEPARAMETERFVEXTPROC)PROC(glGetColorTableParameterfvEXT);
+  /* FIXME: I don't think this is sufficient, we should also check for
+     EXT_color_table and/or SGI_texture_color_table and/or
+     SGI_color_table. 20030121 mortene. */
+  if ((w->glColorTable == NULL) &&
+      /* FIXME: is this at all the correct extension to check for?
+         20030123 mortene. */
+      cc_glglue_glext_supported(w,"GL_EXT_paletted_texture")) {
+    w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(glColorTableEXT);
+    w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(glGetColorTableEXT);
+    w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(glGetColorTableParameterivEXT);
+    w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(glGetColorTableParameterfvEXT);
   }
 #endif /* GL_EXT_paletted_texture */
 
@@ -1107,6 +1134,11 @@ cc_glglue_has_2d_proxy_textures(const cc_glglue * w)
 {
   if (!glglue_allow_newer_opengl(w)) return FALSE;
 
+  /* FIXME: there are differences between the 1.1 proxy mechanisms and
+     the GL_EXT_texture proxy extension; the 1.1 support considers
+     mipmaps. I think. Check documentation in the GL spec. If that is
+     correct, we can't really use them interchangeable versus each
+     other like we now do in Coin code. 20030121 mortene. */
   return
     cc_glglue_glversion_matches_at_least(w, 1, 1, 0) ||
     cc_glglue_glext_supported(w, "GL_EXT_texture");
@@ -1219,174 +1251,174 @@ cc_glue_has_texture_compression(const cc_glglue * glue)
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
 
   return 
-    glue->glCompressedTexImage1DARB && 
-    glue->glCompressedTexImage2DARB && 
-    glue->glCompressedTexImage3DARB && 
-    glue->glGetCompressedTexImageARB;
+    glue->glCompressedTexImage1D && 
+    glue->glCompressedTexImage2D && 
+    glue->glCompressedTexImage3D && 
+    glue->glGetCompressedTexImage;
 }
 
 SbBool
 cc_glue_has_texture_compression_2d(const cc_glglue * glue)
 {
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
-  return glue->glCompressedTexImage2DARB && glue->glGetCompressedTexImageARB;
+  return glue->glCompressedTexImage2D && glue->glGetCompressedTexImage;
 }
 
 SbBool
 cc_glue_has_texture_compression_3d(const cc_glglue * glue)
 {
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
-  return glue->glCompressedTexImage3DARB && glue->glGetCompressedTexImageARB;
+  return glue->glCompressedTexImage3D && glue->glGetCompressedTexImage;
 }
 
 void
-cc_glglue_glCompressedTexImage3DARB(const cc_glglue * glue,
+cc_glglue_glCompressedTexImage3D(const cc_glglue * glue,
+                                 GLenum target,
+                                 GLint level,
+                                 GLenum internalformat,
+                                 GLsizei width,
+                                 GLsizei height,
+                                 GLsizei depth,
+                                 GLint border,
+                                 GLsizei imageSize,
+                                 const GLvoid * data)
+{
+  assert(glue->glCompressedTexImage3D);
+  glue->glCompressedTexImage3D(target,
+                               level,
+                               internalformat,
+                               width,
+                               height,
+                               depth,
+                               border,
+                               imageSize,
+                               data);
+}
+
+void
+cc_glglue_glCompressedTexImage2D(const cc_glglue * glue,
+                                 GLenum target,
+                                 GLint level,
+                                 GLenum internalformat,
+                                 GLsizei width,
+                                 GLsizei height,
+                                 GLint border,
+                                 GLsizei imageSize,
+                                 const GLvoid *data)
+{
+  assert(glue->glCompressedTexImage2D);
+  glue->glCompressedTexImage2D(target,
+                               level,
+                               internalformat,
+                               width,
+                               height,
+                               border,
+                               imageSize,
+                               data);
+}
+
+void
+cc_glglue_glCompressedTexImage1D(const cc_glglue * glue,
+                                 GLenum target,
+                                 GLint level,
+                                 GLenum internalformat,
+                                 GLsizei width,
+                                 GLint border,
+                                 GLsizei imageSize,
+                                 const GLvoid *data)
+{
+  assert(glue->glCompressedTexImage1D);
+  glue->glCompressedTexImage1D(target,
+                               level,
+                               internalformat,
+                               width,
+                               border,
+                               imageSize,
+                               data);
+}
+
+void
+cc_glglue_glCompressedTexSubImage3D(const cc_glglue * glue,
                                     GLenum target,
                                     GLint level,
-                                    GLenum internalformat,
+                                    GLint xoffset,
+                                    GLint yoffset,
+                                    GLint zoffset,
                                     GLsizei width,
                                     GLsizei height,
                                     GLsizei depth,
-                                    GLint border,
+                                    GLenum format,
                                     GLsizei imageSize,
-                                    const GLvoid * data)
+                                    const GLvoid *data)
 {
-  assert(glue->glCompressedTexImage3DARB);
-  glue->glCompressedTexImage3DARB(target,
+  assert(glue->glCompressedTexSubImage3D);
+  glue->glCompressedTexSubImage3D(target,
                                   level,
-                                  internalformat,
+                                  xoffset,
+                                  yoffset,
+                                  zoffset,
                                   width,
                                   height,
                                   depth,
-                                  border,
+                                  format,
                                   imageSize,
                                   data);
 }
 
 void
-cc_glglue_glCompressedTexImage2DARB(const cc_glglue * glue,
+cc_glglue_glCompressedTexSubImage2D(const cc_glglue * glue,
                                     GLenum target,
                                     GLint level,
-                                    GLenum internalformat,
+                                    GLint xoffset,
+                                    GLint yoffset,
                                     GLsizei width,
                                     GLsizei height,
-                                    GLint border,
+                                    GLenum format,
                                     GLsizei imageSize,
                                     const GLvoid *data)
 {
-  assert(glue->glCompressedTexImage2DARB);
-  glue->glCompressedTexImage2DARB(target,
+  assert(glue->glCompressedTexSubImage2D);
+  glue->glCompressedTexSubImage2D(target,
                                   level,
-                                  internalformat,
+                                  xoffset,
+                                  yoffset,
                                   width,
                                   height,
-                                  border,
+                                  format,
                                   imageSize,
                                   data);
 }
 
 void
-cc_glglue_glCompressedTexImage1DARB(const cc_glglue * glue,
+cc_glglue_glCompressedTexSubImage1D(const cc_glglue * glue,
                                     GLenum target,
                                     GLint level,
-                                    GLenum internalformat,
+                                    GLint xoffset,
                                     GLsizei width,
-                                    GLint border,
+                                    GLenum format,
                                     GLsizei imageSize,
                                     const GLvoid *data)
 {
-  assert(glue->glCompressedTexImage1DARB);
-  glue->glCompressedTexImage1DARB(target,
+  assert(glue->glCompressedTexSubImage1D);
+  glue->glCompressedTexSubImage1D(target,
                                   level,
-                                  internalformat,
+                                  xoffset,
                                   width,
-                                  border,
+                                  format,
                                   imageSize,
                                   data);
 }
 
 void
-cc_glglue_glCompressedTexSubImage3DARB(const cc_glglue * glue,
-                                       GLenum target,
-                                       GLint level,
-                                       GLint xoffset,
-                                       GLint yoffset,
-                                       GLint zoffset,
-                                       GLsizei width,
-                                       GLsizei height,
-                                       GLsizei depth,
-                                       GLenum format,
-                                       GLsizei imageSize,
-                                       const GLvoid *data)
+cc_glglue_glGetCompressedTexImage(const cc_glglue * glue,
+                                  GLenum target,
+                                  GLint level,
+                                  void * img)
 {
-  assert(glue->glCompressedTexSubImage3DARB);
-  glue->glCompressedTexSubImage3DARB(target,
-                                     level,
-                                     xoffset,
-                                     yoffset,
-                                     zoffset,
-                                     width,
-                                     height,
-                                     depth,
-                                     format,
-                                     imageSize,
-                                     data);
-}
-
-void
-cc_glglue_glCompressedTexSubImage2DARB(const cc_glglue * glue,
-                                       GLenum target,
-                                       GLint level,
-                                       GLint xoffset,
-                                       GLint yoffset,
-                                       GLsizei width,
-                                       GLsizei height,
-                                       GLenum format,
-                                       GLsizei imageSize,
-                                       const GLvoid *data)
-{
-  assert(glue->glCompressedTexSubImage2DARB);
-  glue->glCompressedTexSubImage2DARB(target,
-                                     level,
-                                     xoffset,
-                                     yoffset,
-                                     width,
-                                     height,
-                                     format,
-                                     imageSize,
-                                     data);
-}
-
-void
-cc_glglue_glCompressedTexSubImage1DARB(const cc_glglue * glue,
-                                       GLenum target,
-                                       GLint level,
-                                       GLint xoffset,
-                                       GLsizei width,
-                                       GLenum format,
-                                       GLsizei imageSize,
-                                       const GLvoid *data)
-{
-  assert(glue->glCompressedTexSubImage1DARB);
-  glue->glCompressedTexSubImage1DARB(target,
-                                     level,
-                                     xoffset,
-                                     width,
-                                     format,
-                                     imageSize,
-                                     data);
-}
-
-void
-cc_glglue_glGetCompressedTexImageARB(const cc_glglue * glue,
-                                     GLenum target,
-                                     GLint level,
-                                     void * img)
-{
-  assert(glue->glGetCompressedTexImageARB);
-  glue->glGetCompressedTexImageARB(target,
-                                   level,
-                                   img);
+  assert(glue->glGetCompressedTexImage);
+  glue->glGetCompressedTexImage(target,
+                                level,
+                                img);
 }
 
 SbBool
@@ -1395,10 +1427,10 @@ cc_glglue_has_paletted_textures(const cc_glglue * glue)
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
 
   return 
-    glue->glColorTableEXT &&
-    glue->glGetColorTableEXT && 
-    glue->glGetColorTableParameterivEXT &&
-    glue->glGetColorTableParameterfvEXT;
+    glue->glColorTable &&
+    glue->glGetColorTable && 
+    glue->glGetColorTableParameteriv &&
+    glue->glGetColorTableParameterfv;
 }
 
 void
@@ -1410,51 +1442,51 @@ cc_glglue_glColorTableEXT(const cc_glglue * glue,
                           GLenum type,
                           const GLvoid *table)
 {
-  assert(glue->glColorTableEXT);
-  glue->glColorTableEXT(target,
-                        internalFormat,
-                        width,
+  assert(glue->glColorTable);
+  glue->glColorTable(target,
+                     internalFormat,
+                     width,
+                     format,
+                     type,
+                     table);
+}
+
+void
+cc_glglue_glGetColorTable(const cc_glglue * glue,
+                          GLenum target,
+                          GLenum format,
+                          GLenum type,
+                          GLvoid *data)
+{
+  assert(glue->glGetColorTable);
+  glue->glGetColorTable(target,
                         format,
                         type,
-                        table);
+                        data);
 }
 
 void
-cc_glglue_glGetColorTableEXT(const cc_glglue * glue,
-                             GLenum target,
-                             GLenum format,
-                             GLenum type,
-                             GLvoid *data)
+cc_glglue_glGetColorTableParameteriv(const cc_glglue * glue,
+                                     GLenum target,
+                                     GLenum pname,
+                                     GLint *params)
 {
-  assert(glue->glGetColorTableEXT);
-  glue->glGetColorTableEXT(target,
-                           format,
-                           type,
-                           data);
+  assert(glue->glGetColorTableParameteriv);
+  glue->glGetColorTableParameteriv(target,
+                                   pname,
+                                   params);
 }
 
 void
-cc_glglue_glGetColorTableParameterivEXT(const cc_glglue * glue,
-                                        GLenum target,
-                                        GLenum pname,
-                                        GLint *params)
+cc_glglue_glGetColorTableParameterfv(const cc_glglue * glue,
+                                     GLenum target,
+                                     GLenum pname,
+                                     GLfloat *params)
 {
-  assert(glue->glGetColorTableParameterivEXT);
-  glue->glGetColorTableParameterivEXT(target,
-                                      pname,
-                                      params);
-}
-
-void
-cc_glglue_glGetColorTableParameterfvEXT(const cc_glglue * glue,
-                                        GLenum target,
-                                        GLenum pname,
-                                        GLfloat *params)
-{
-  assert(glue->glGetColorTableParameterfvEXT);
-  glue->glGetColorTableParameterfvEXT(target,
-                                      pname,
-                                      params);
+  assert(glue->glGetColorTableParameterfv);
+  glue->glGetColorTableParameterfv(target,
+                                   pname,
+                                   params);
 }
 
 SbBool
