@@ -40,7 +40,7 @@
   recommended to use the SoFont node instead.
 
   \since Inventor 2.1
-  \sa SoFont, SoText2, SoText3, SoAsciiText, SoGlyph, SoFontLib
+  \sa SoFont, SoText2, SoText3, SoAsciiText, SoGlyph
 */
 
 // FIXME: this node will just be ignored yet due to capabilities
