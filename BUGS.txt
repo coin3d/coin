@@ -3855,3 +3855,36 @@ main(int argc, char ** argv)
 
 =====================================================================
 
+107 Use of SoVRMLBackground causes continuous re-rendering.
+
+    Even if no interaction with the camera is done, this scene will
+    not stop re-rendering in an examinerviewer:
+
+    ------8<------ [snip] --------------------------------------
+    #VRML V2.0 utf8
+    
+    Background { backUrl "image.jpg" }
+    ------8<------ [snip] --------------------------------------
+
+    20040427 mortene.
+
+=====================================================================
+
+108 SoVRMLBackground (and SoVRMLImageTexture?) texturing doesn't work
+    with SoOffscreenRenderer.
+
+    Most likely because SoVRMLBackground uses an SoVRMLImageTexture,
+    which loads textures in the background (if Coin is configured with
+    platform-independent mt-support, which is the default). So on the
+    first frame, which is what the SoOffscreenRenderer grabs, textures
+    will not have completed loading yet.
+
+    Should perhaps best be solved by using a new element
+    "SoSynchronizedElement", or some such, which tells traversal
+    operations whether or not they are allowed to run in parallel
+    threads. SoOffscreenRenderer should then add such an element
+    before invoking the SoGLRenderAction.
+
+    20040427 mortene.
+
+=====================================================================
