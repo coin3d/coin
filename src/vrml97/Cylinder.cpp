@@ -21,7 +21,7 @@
   \class SoVRMLCylinder SoVRMLCylinder.h Inventor/VRMLnodes/SoVRMLCylinder.h
   \brief The SoVRMLCylinder class is used to represent a cylinder object.
   \ingroup VRMLnodes
-  
+
   \WEB3DCOPYRIGHT
 
   \verbatim
@@ -33,7 +33,7 @@
     field    SFBool    top     TRUE
   }
   \endverbatim
-  
+
   The Cylinder node specifies a capped cylinder centred at (0,0,0) in
   the local coordinate system and with a central axis oriented along
   the local Y-axis. By default, the cylinder is sized at "-1" to "+1"
@@ -112,6 +112,7 @@
 #include <Inventor/misc/SoGenerate.h>
 #include <Inventor/misc/SoPick.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <math.h>
 
 #define CYL_SIDE_NUMTRIS 40.0f
@@ -168,6 +169,9 @@ SoVRMLCylinder::GLRender(SoGLRenderAction * action)
   if (this->bottom.getValue()) flags |= SOGL_RENDER_BOTTOM;
 
   float complexity = this->getComplexityValue(action);
+
+  // enable back face culling
+  SoGLShapeHintsElement::forceSend(state, TRUE, TRUE);
 
   sogl_render_cylinder(this->radius.getValue(),
                        this->height.getValue(),

@@ -73,6 +73,7 @@
 #include <Inventor/misc/SoPick.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/SoPickedPoint.h>
+#include <Inventor/elements/SoGLShapeHintsElement.h>
 
 #define SPHERE_NUM_SLICES 30.0f
 #define SPHERE_NUM_STACKS 30.0f
@@ -129,6 +130,9 @@ SoVRMLSphere::GLRender(SoGLRenderAction * action)
   unsigned int flags = 0;
   if (sendNormals) flags |= SOGL_NEED_NORMALS;
   if (doTextures) flags |= SOGL_NEED_TEXCOORDS;
+
+  // enable back face culling
+  SoGLShapeHintsElement::forceSend(state, TRUE, TRUE);
 
   sogl_render_sphere(this->radius.getValue(),
                      (int)(SPHERE_NUM_SLICES * complexity),

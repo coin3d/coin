@@ -23,7 +23,7 @@
   \ingroup VRMLnodes
 
   \WEB3DCOPYRIGHT
-  
+
   \verbatim
   Cone {
     field     SFFloat   bottomRadius 1        # (0, inf)
@@ -42,7 +42,7 @@
   height/2 and its bottom at y = -height/2.  Both bottomRadius and
   height shall be greater than zero. Figure 6.3 illustrates the Cone
   node.
-  
+
   <center>
   <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/cone.gif">
   Figure 6.3
@@ -62,7 +62,7 @@
   bottomRadius) by (2 × bottomRadius).  The bottom cap texture appears
   right side up when the top of the cone is rotated towards the
   -Z-axis. SoVRMLTextureTransform affects the texture coordinates of
-  the Cone.  
+  the Cone.
 
   The Cone geometry requires outside faces only. When viewed from the
   inside the results are undefined.
@@ -102,6 +102,7 @@
 #include <Inventor/misc/SoGenerate.h>
 #include <Inventor/misc/SoPick.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/elements/SoGLShapeHintsElement.h>
 
 SO_NODE_SOURCE(SoVRMLCone);
 
@@ -151,6 +152,9 @@ SoVRMLCone::GLRender(SoGLRenderAction * action)
   mb.sendFirst();
 
   float complexity = this->getComplexityValue(action);
+
+  // enable back face culling
+  SoGLShapeHintsElement::forceSend(state, TRUE, TRUE);
 
   sogl_render_cone(this->bottomRadius.getValue(),
                    this->height.getValue(),
