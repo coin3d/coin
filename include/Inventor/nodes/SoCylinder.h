@@ -54,7 +54,6 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
   virtual void GLRender(SoGLRenderAction * action);
-  virtual SbBool willSetShapeHints(void) const;
   virtual SbBool willSetShadeModel(void) const;
 
 protected:

@@ -38,7 +38,6 @@
 #include <Inventor/details/SoCylinderDetail.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoGLShadeModelElement.h>
-#include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGenerate.h>
@@ -165,11 +164,6 @@ SoCylinder::GLRender(SoGLRenderAction * action)
       bind == SoMaterialBindingElement::PER_PART_INDEXED)
     flags |= SOGL_MATERIAL_PER_PART;
 
-  const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
-    state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
-  if (p == ALL) sh->forceSend(TRUE, TRUE);
-  else sh->forceSend(TRUE, FALSE, TRUE);
-
   float complexity = this->getComplexityValue(action);
 
   const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
@@ -192,15 +186,6 @@ SoCylinder::willSetShadeModel(void) const
 {
   return TRUE;
 }
-
-// Doc in parent.
-SbBool
-SoCylinder::willSetShapeHints(void) const
-{
-  return TRUE;
-}
-
-
 
 /*!
   Add a \a part to the cylinder.
