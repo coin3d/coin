@@ -318,6 +318,7 @@ SoAction::~SoAction(void)
 void
 SoAction::apply(SoNode * rootNode)
 {
+#if 0 // FIXME: doesn't work with a rootNode == NULL. 19990819 mortene.
   assert(rootNode);
   rootNode->ref();
   this->currentPathCode = NO_PATH;
@@ -332,6 +333,23 @@ SoAction::apply(SoNode * rootNode)
   this->isTerminated = TRUE;
   // An action should not trigger node (or node tree) destruction.
   rootNode->unrefNoDelete();
+#else // Handles rootNode == NULL gracefully, not sure if that is a Good Thing, though. 19990819 mortene.
+  if (rootNode) rootNode->ref();
+  this->currentPathCode = NO_PATH;
+  this->appliedData.node = rootNode;
+  this->appliedCode = NODE;
+  if (rootNode) {
+    this->isTerminated = FALSE;
+    if (this->state == NULL)
+      this->state = new SoState(this, getEnabledElements().getElements());
+    this->beginTraversal(rootNode);
+    this->endTraversal(rootNode);
+    this->appliedData.node = NULL;
+  }
+  this->isTerminated = TRUE;
+  // An action should not trigger node (or node tree) destruction.
+  if (rootNode) rootNode->unrefNoDelete();
+#endif
 }
 
 /*!
