@@ -176,7 +176,8 @@
     libGLU: a rendered curve is different from a tesselated curve (!).
 
     Hard to solve this *properly* without implementing our own
-    nurbs-library. Are there any quick-fixes we could apply?
+    nurbs-library, thereby dropping GLU. Are there any quick-fixes we
+    could apply?
 
     <mortene@sim.no> 20020521.
 
@@ -498,6 +499,10 @@
     shift is removed, it works. If both are left in, it bugs.
 
     20020822 mortene. (discovered by kintel.)
+
+    UPDATE 20021015 mortene: see also bug #037, which might have the
+    same cause. The code that reproduces that problem is also simpler
+    than the code above.
 
 =====================================================================
 
@@ -914,5 +919,87 @@
     SoTrackballDragger bug, though.
 
     20021011 mortene.
+
+=====================================================================
+
+037 SoGetBoundingBoxAction fails on SoPath.
+
+    Reproduce with this stand-alone example code (hit 'esc' to go into
+    selection mode, then click the sphere):
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+    #include <Inventor/Qt/SoQt.h>
+    #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+    #include <Inventor/actions/SoBoxHighlightRenderAction.h>
+    #include <Inventor/actions/SoGetBoundingBoxAction.h>
+    #include <Inventor/nodes/SoSelection.h>
+    #include <Inventor/nodes/SoSeparator.h>
+    
+    SoSelection *selection = NULL;
+    SoQtExaminerViewer * examinerviewer =NULL;
+    
+    const char * scenetxt = "#Inventor V2.1 ascii\n\n"
+    "\n"
+    "Separator {\n"
+    "    Translation {\n"
+    "      translation 0 7 0\n"
+    "    }\n"
+    "    Material {\n"
+    "      diffuseColor 1 0 0\n"
+    "    }\n"
+    "    Sphere {\n"
+    "       radius 1\n"
+    "    }\n"
+    "}\n";
+    
+    
+    void made_selection(void *userdata, SoPath *path)
+    {
+      SoGetBoundingBoxAction bba(examinerviewer->getViewportRegion());
+      bba.apply(path);
+    
+      SbBox3f bbox = bba.getBoundingBox();
+      SbVec3f center = bba.getCenter();
+      printf("Object center: (%f %f %f)\n",center[0], center[1], center[2]);
+      float xs, ys, zs;
+      bbox.getSize(xs, ys, zs);
+      printf("Object size: (%f %f %f)\n", xs, ys, zs);
+    
+      selection->touch();
+    }
+    
+    int main(int argc, char *argv[])
+    {
+      QWidget * win = SoQt::init(argv[0]);
+    
+      SoInput in;
+      in.setBuffer((void *)scenetxt, strlen(scenetxt));
+      SoSeparator * root = SoDB::readAll(&in);
+    
+      selection = new SoSelection;
+      selection->ref();
+    
+      selection->addChild(root);
+      selection->addSelectionCallback(made_selection, NULL);
+    
+      examinerviewer = new SoQtExaminerViewer( win );
+      examinerviewer->setSceneGraph(selection);
+      SoBoxHighlightRenderAction *bhra = new SoBoxHighlightRenderAction;
+      examinerviewer->setGLRenderAction(bhra);
+      examinerviewer->show();
+    
+      SoQt::show(win);
+    
+      SoQt::mainLoop();
+    
+      selection->unref();
+      return 0;
+    }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+
+    The cause of this bug might be the same as for bug #021.
+
+    20021015 mortene. Found by a course student of Kintel & Kyrah in
+    Sri Lanka. :-}
 
 =====================================================================
