@@ -60,8 +60,8 @@ SoSFBox3s::initClass(void)
 SbBool
 SoSFBox3s::readValue(SoInput * in)
 {
-  float min[3];
-  float max[3];
+  short min[3];
+  short max[3];
   if (!in->read(min[0]) || 
       !in->read(min[1]) || 
       !in->read(min[2]) || 
