@@ -38,7 +38,7 @@ public:
   void append(SoPath * const path);
   SoPath * operator [](const int i) const;
   SoPathList & operator =(const SoPathList & l);
-  int findPath(const SoPath & path);
+  int findPath(const SoPath & path) const;
   void sort(void);
   void uniquify(void);
 
