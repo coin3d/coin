@@ -18,14 +18,15 @@
 \**************************************************************************/
 
 #include <Inventor/misc/SoImageInterface.h>
+
+#include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/lists/SbStringList.h>
-#include <stdlib.h>
-#include <stddef.h>
-#include <string.h>
-
 #include <config.h> // HAVE_LIBSIMAGE define
+#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
 
 #if HAVE_LIBSIMAGE
 #include <simage.h>
@@ -357,11 +358,6 @@ public:
 
 /****** static methods used to enable image reuse **************/
 
-// FIXME: get this value properly through configure or something. Or
-// just get rid of it completely by using the SbString class.
-// 19981024 mortene.
-#define MAXPATHLEN 4096
-
 
 #if COIN_DEBUG && 0 // flip 1<->0 to turn texture search trace on or off
 #define TRY_FILE_DEBUG(x, result) \
@@ -372,8 +368,8 @@ public:
 
 #define TRY_FILE(x) \
   do { \
-    FILE * fp = fopen(x, "rb"); \
-    TRY_FILE_DEBUG(x, fp ? "hit!" : "miss"); \
+    FILE * fp = fopen(x.getString(), "rb"); \
+    TRY_FILE_DEBUG(x.getString(), fp ? "hit!" : "miss"); \
     if (fp != NULL) { \
       fclose(fp); \
       return x; \
@@ -386,47 +382,34 @@ public:
 // good.. why not replace them with SbString arguments instead?
 // 19991215 mortene.
 
-static const char *
-search_for_image(const char * const orgname, char * const namebuf,
-                 const SbStringList & dirlist)
+static SbString
+search_for_image(const char * const orgname, const SbStringList & dirlist)
 {
-  // FIXME: use a configure check. 19991215 mortene.
+  // FIXME: use a configure check. Or remove completely, I believe
+  // MSWin can grok filenames with '/' path delimiters. 19991215 mortene.
 #if defined(_WIN32)
   const char dirsplit = '\\';
 #else
   const char dirsplit = '/';
 #endif
 
-  sprintf(namebuf, "%s", orgname);
-  TRY_FILE(namebuf);
+  SbString fullname = orgname;
+  TRY_FILE(fullname);
 
-  char basename[MAXPATHLEN];
-
-  // FIXME: implement platform-independent version. 1999xxxx pederb.
-  // FIXME: code for doing this is available as SoInput::getBaseName();. 19991215 mortene.
-#ifdef _WIN32
-  strcpy(basename, orgname);
-#else // !_WIN32
-  const char *ptr =  strrchr(orgname, '/');
-  if (ptr == NULL) ptr = orgname;
-  else {
-    ptr++;
-  }
-  strcpy(basename, ptr);
-#endif // !_WIN32
+  SbString basename = SoInput::getBasename(orgname);
 
   for (int i = 0; i < dirlist.getLength(); i++) {
-    sprintf(namebuf, "%s%c%s", dirlist[i]->getString(), dirsplit, basename);
-    TRY_FILE(namebuf);
+    fullname.sprintf("%s%c%s", dirlist[i]->getString(), dirsplit, basename.getString());
+    TRY_FILE(fullname);
 
-    sprintf(namebuf, "%s%ctexture%c%s", dirlist[i]->getString(), dirsplit, dirsplit, basename);
-    TRY_FILE(namebuf);
+    fullname.sprintf("%s%ctexture%c%s", dirlist[i]->getString(), dirsplit, dirsplit, basename.getString());
+    TRY_FILE(fullname);
 
-    sprintf(namebuf, "%s%ctextures%c%s", dirlist[i]->getString(), dirsplit, dirsplit, basename);
-    TRY_FILE(namebuf);
+    fullname.sprintf("%s%ctextures%c%s", dirlist[i]->getString(), dirsplit, dirsplit, basename.getString());
+    TRY_FILE(fullname);
   }
 
-  return namebuf; // not found, return org name
+  return fullname; // not found, return org name
 }
 
 #undef TRY_FILE_DEBUG
@@ -451,10 +434,9 @@ SoImageInterface::findOrCreateImage(const char * const filename,
     }
   }
 
-  char buf[MAXPATHLEN];
-  const char *fullname = search_for_image(filename, buf, dirlist);
-  if (fullname) {
-    SoImageInterface *image = new SoImageInterface(fullname);
+  SbString fullname = search_for_image(filename, dirlist);
+  if (fullname.getLength()) {
+    SoImageInterface *image = new SoImageInterface(fullname.getString());
     loadedFiles.append(new so_image_data(filename, image));
     image->ref();
     return image;
