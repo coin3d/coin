@@ -397,6 +397,10 @@ SoImage::generatePrimitives(SoAction * action)
   // SoCallbackAction to get all data it needs to render
   // this quad correctly. pederb 19991131
 
+  // FIXME: We may need to explicitly turn on 2D texturing and turn off 
+  // 3D texturing, but what is the correct way of doing that in this 
+  // case? (kintel 20011118)
+
   SbVec2s size;
   int nc;
   const unsigned char * dataptr = this->getImage(size, nc);
