@@ -30,6 +30,8 @@ public:
   SoFieldList(void) : SbList<SoField *>() { }
   SoFieldList(const int sizehint) : SbList<SoField *>(sizehint) { }
   SoFieldList(const SoFieldList & l) : SbList<SoField *>(l) { }
+
+  void set(const int index, SoField * item) { (*this)[index] = item; }
 };
 
 #endif // !COIN_SOFIELDLIST_H

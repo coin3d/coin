@@ -24,6 +24,13 @@
 #include <Inventor/SoType.h>
 
 class COIN_DLL_EXPORT SoTypeList : public SbList<SoType> {
+
+public:
+  SoTypeList(void) : SbList<SoType>() { }
+  SoTypeList(const int sizehint) : SbList<SoType>(sizehint) { }
+  SoTypeList(const SoTypeList & l) : SbList<SoType>(l) { }
+
+  void set(const int index, const SoType item) { (*this)[index] = item; }
 };
 
 #endif // !COIN_SOTYPELIST_H

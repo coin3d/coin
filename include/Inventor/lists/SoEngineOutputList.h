@@ -30,6 +30,8 @@ public:
   SoEngineOutputList(void) : SbList<SoEngineOutput *>() { }
   SoEngineOutputList(const int sizehint) : SbList<SoEngineOutput *>(sizehint) { }
   SoEngineOutputList(const SoEngineOutputList & l) : SbList<SoEngineOutput *>(l) { }
+
+  void set(const int index, SoEngineOutput * item) { (*this)[index] = item; }
 };
 
 #endif // !COIN_SOENGINEOUTPUTLIST_H

@@ -27,3 +27,35 @@
 // subclass of SbList. This removed the need to do lots of ugly casts
 // in overloaded methods, with the subsequent removal of all code in
 // this file. 20000228 mortene.
+
+/*!
+  \fn SoDetailList::SoDetailList(void)
+
+  Default constructor.
+*/
+
+/*!
+  \fn SoDetailList::SoDetailList(const int sizehint)
+
+  This constructor initializes the internal allocated size for the
+  list to \a sizehint. Note that the list will still initially contain
+  zero items.
+
+  \sa SbList::SbList(const int sizehint)
+*/
+
+/*!
+  \fn SoDetailList::SoDetailList(const SoDetailList & l)
+
+  Copy constructor.
+
+  \sa SbList::SbList(const SbList<Type> & l)
+*/
+
+/*!
+  \fn void SoDetailList::set(const int index, SoDetail * item)
+
+  This method sets the element at \a index to \a item. Does the same
+  thing as SbList::operator[](). This method is only present for
+  compatibility with the original Inventor API.
+*/

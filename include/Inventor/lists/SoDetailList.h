@@ -26,6 +26,13 @@ class SoDetail;
 
 
 class COIN_DLL_EXPORT SoDetailList : public SbList<SoDetail *> {
+
+public:
+  SoDetailList(void) : SbList<SoDetail *>() { }
+  SoDetailList(const int sizehint) : SbList<SoDetail *>(sizehint) { }
+  SoDetailList(const SoDetailList & l) : SbList<SoDetail *>(l) { }
+
+  void set(const int index, SoDetail * item) { (*this)[index] = item; }
 };
 
 #endif // !COIN_SODETAILLIST_H

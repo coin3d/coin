@@ -51,3 +51,11 @@
 
   \sa SbList::SbList(const SbList<Type> & l)
 */
+
+/*!
+  \fn void SoFieldList::set(const int index, SoField * item)
+
+  This method sets the element at \a index to \a item. Does the same
+  thing as SbList::operator[](). This method is only present for
+  compatibility with the original Inventor API.
+*/

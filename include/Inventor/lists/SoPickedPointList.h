@@ -26,6 +26,13 @@ class SoPickedPoint;
 
 
 class COIN_DLL_EXPORT SoPickedPointList : public SbList<SoPickedPoint *> {
+
+public:
+  SoPickedPointList(void) : SbList<SoPickedPoint *>() { }
+  SoPickedPointList(const int sizehint) : SbList<SoPickedPoint *>(sizehint) { }
+  SoPickedPointList(const SoPickedPointList & l) : SbList<SoPickedPoint *>(l) { }
+
+  void set(const int index, SoPickedPoint * item) { (*this)[index] = item; }
 };
 
 #endif // !COIN_SOPICKEDPOINTLIST_H
