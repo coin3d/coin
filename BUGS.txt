@@ -769,4 +769,21 @@
     this and related shapes should be implemented, and selected at
     run-time by the robust rendering method.
 
+    20020927 larsa.
+
+=====================================================================
+
+033 Some of the default geometry files for dragger geometries uses an
+    SoDrawStyle::lineWidth > 1.0. This can be outside the legal range
+    of the OpenGL implementation, which only guarantees that 1.0 can
+    be used. (We have indeed received at least one problem report due
+    to this.)
+
+    I'm working on a solution for this, which involves setting up some
+    new global fields which contains the legal ranges of glLineWidth()
+    and glPointSize(). From .iv-files, one can then connect to these
+    global fields.
+
+    20020930 mortene.
+
 =====================================================================
