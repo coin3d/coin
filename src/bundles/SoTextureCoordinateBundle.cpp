@@ -39,6 +39,7 @@
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoVertexProperty.h>
@@ -77,9 +78,19 @@ SoTextureCoordinateBundle(SoAction * const action,
   //
   // return immediately if there is no texture
   //
-  if (!SoTextureEnabledElement::get(this->state) &&
-      !SoTexture3EnabledElement::get(this->state))
-    return;
+  SbBool needinit = 
+    SoTextureEnabledElement::get(this->state) ||
+    SoTexture3EnabledElement::get(this->state);
+
+  const SbBool * multienabled = NULL;
+  int multimax = 0;
+  if (forRendering) {
+    multienabled = 
+      SoMultiTextureEnabledElement::getEnabledUnits(this->state, multimax);
+  }
+  
+  if (!needinit && !multienabled) return;
+  SbBool didinitdefault = FALSE;
 
   // It is safe to assume that shapenode is of type SoShape, so we
   // cast to SoShape before doing any operations on the node.
@@ -89,6 +100,7 @@ SoTextureCoordinateBundle(SoAction * const action,
   switch (this->coordElt->getType()) {
   case SoTextureCoordinateElement::DEFAULT:
     this->initDefault(action, forRendering);
+    didinitdefault = TRUE;
     break;
   case SoTextureCoordinateElement::EXPLICIT:
     if (this->coordElt->getNum() > 0) {
@@ -96,6 +108,7 @@ SoTextureCoordinateBundle(SoAction * const action,
     }
     else {
       this->initDefault(action, forRendering);
+      didinitdefault = TRUE;
     }
     break;
   case SoTextureCoordinateElement::FUNCTION:
@@ -121,6 +134,11 @@ SoTextureCoordinateBundle(SoAction * const action,
   if (forRendering) {
     this->glElt = (SoGLTextureCoordinateElement*) this->coordElt;
     this->glElt->initMulti(action->getState());
+    if (multienabled) {
+      for (int i = 1; i < multimax; i++) { 
+        // FIXME: setup default for units if texture coordinates are missing
+      }
+    }
   }
   if ((this->flags & FLAG_DEFAULT) && !setUpDefault) {
     // FIXME: I couldn't be bothered to support this yet. It is for picking

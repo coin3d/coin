@@ -30,7 +30,8 @@
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
-
+#include <Inventor/elements/SoTextureEnabledElement.h>
+#include <Inventor/elements/SoTexture3EnabledElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <assert.h>
 
@@ -42,6 +43,16 @@
 
 class SoGLTextureCoordinateElementP {
 public:
+  // switch/case table for faster rendering.
+  enum SendLookup {
+    NONE,
+    FUNCTION,
+    TEXCOORD2,
+    TEXCOORD3,
+    TEXCOORD4
+  };
+  SendLookup sendlookup;
+  
   void * texgenData;
   const SoGLMultiTextureCoordinateElement * multielem;
   const SbBool * multienabled;
@@ -93,6 +104,7 @@ SoGLTextureCoordinateElement::init(SoState * state)
   this->texgenCB = NULL;
   PRIVATE(this)->texgenData = NULL;
   PRIVATE(this)->multielem = NULL;
+  PRIVATE(this)->sendlookup = SoGLTextureCoordinateElementP::NONE;
 }
 
 //!  FIXME: write doc.
@@ -104,6 +116,7 @@ SoGLTextureCoordinateElement::push(SoState * state)
   this->texgenCB = prev->texgenCB;
   PRIVATE(this)->texgenData = PRIVATE(prev)->texgenData;
   PRIVATE(this)->multielem = NULL;
+  PRIVATE(this)->sendlookup = SoGLTextureCoordinateElementP::NONE;
   // capture previous element since we might or might not change the
   // GL state in set/pop
   prev->capture(state);
@@ -177,16 +190,22 @@ SoGLTextureCoordinateElement::getInstance(SoState * const state)
 void
 SoGLTextureCoordinateElement::send(const int index) const
 {
-  assert(this->whatKind == EXPLICIT);
-  assert(index < this->numCoords);
-  switch (this->coordsDimension) {
-  case 2:
+  switch (PRIVATE(this)->sendlookup) {
+  case SoGLTextureCoordinateElementP::NONE:
+    break;
+  case SoGLTextureCoordinateElementP::FUNCTION:
+    assert(0 && "should not happen");
+    break;
+  case SoGLTextureCoordinateElementP::TEXCOORD2:
+    assert(index < this->numCoords);
     glTexCoord2fv(coords2[index].getValue());
     break;
-  case 3:
+  case SoGLTextureCoordinateElementP::TEXCOORD3:
+    assert(index < this->numCoords);
     glTexCoord3fv(coords3[index].getValue());
     break;
-  case 4:
+  case SoGLTextureCoordinateElementP::TEXCOORD4:
+    assert(index < this->numCoords);
     glTexCoord4fv(coords4[index].getValue());
     break;
   default:
@@ -214,37 +233,32 @@ SoGLTextureCoordinateElement::send(const int index,
                                    const SbVec3f &c,
                                    const SbVec3f &n) const
 {
-  if (this->whatKind == FUNCTION) {
+  switch (PRIVATE(this)->sendlookup) {
+  case SoGLTextureCoordinateElementP::NONE:
+    break;
+  case SoGLTextureCoordinateElementP::FUNCTION:
     assert(this->funcCB);
-    const SbVec4f &tc = this->funcCB(this->funcCBData, c, n);
-    glTexCoord4fv(tc.getValue());
+    glTexCoord4fv(this->funcCB(this->funcCBData, c, n).getValue());
+    break;
+  case SoGLTextureCoordinateElementP::TEXCOORD2:
+    assert(index >= 0);
+    assert(index < this->numCoords);
+    glTexCoord2fv(coords2[index].getValue());
+    break;
+  case SoGLTextureCoordinateElementP::TEXCOORD3: 
+    assert(index >= 0);
+    assert(index < this->numCoords);
+    glTexCoord3fv(coords3[index].getValue());
+    break;
+  case SoGLTextureCoordinateElementP::TEXCOORD4: 
+    assert(index >= 0);
+    assert(index < this->numCoords);
+    glTexCoord4fv(coords4[index].getValue());
+    break;
+  default:
+    assert(0 && "should not happen");
+    break;
   }
-  else {
-    assert(this->whatKind == EXPLICIT);
-    //
-    // FIXME: these tests are just here to avoid crashes when illegal
-    // files are rendered. Will remove later, when we implement a
-    // SoVerifyGraphAction or something. pederb, 20000218
-    //
-    if (index < 0) return;
-    if (index >= this->numCoords) return;
-
-    switch (this->coordsDimension) {
-    case 2:
-      glTexCoord2fv(coords2[index].getValue());
-      break;
-    case 3:
-      glTexCoord3fv(coords3[index].getValue());
-      break;
-    case 4:
-      glTexCoord4fv(coords4[index].getValue());
-      break;
-    default:
-      assert(0 && "should not happen");
-      break;
-    }
-  }
-
   const SoGLMultiTextureCoordinateElement * multielem = 
     PRIVATE(this)->multielem;
   
@@ -265,6 +279,43 @@ SoGLTextureCoordinateElement::send(const int index,
 void 
 SoGLTextureCoordinateElement::initMulti(SoState * state) const
 {
+  PRIVATE(this)->sendlookup = SoGLTextureCoordinateElementP::NONE;
+  // init the sendloopup variable
+  if (SoTextureEnabledElement::get(state) ||
+      SoTexture3EnabledElement::get(state)) {
+    switch (this->whatKind) {
+    case SoTextureCoordinateElement::DEFAULT:
+      assert(0 && "should not happen");
+      break;
+    case SoTextureCoordinateElement::FUNCTION:
+      PRIVATE(this)->sendlookup = SoGLTextureCoordinateElementP::FUNCTION;
+      break;
+    case SoTextureCoordinateElement::NONE:
+      break;
+    case SoTextureCoordinateElement::EXPLICIT:
+      {
+        switch (this->coordsDimension) {
+        case 2:
+          PRIVATE(this)->sendlookup = SoGLTextureCoordinateElementP::TEXCOORD2;
+          break;
+        case 3:
+          PRIVATE(this)->sendlookup = SoGLTextureCoordinateElementP::TEXCOORD3;
+          break;
+        case 4:
+          PRIVATE(this)->sendlookup = SoGLTextureCoordinateElementP::TEXCOORD4;
+          break;
+        default:
+          assert(0 && "should not happen");
+          break;
+        }
+      }
+      break;
+    default:
+      assert(0 && "should not happen");
+      break;
+    }
+  }
+  
   PRIVATE(this)->multielem = NULL;
   PRIVATE(this)->multienabled = SoMultiTextureEnabledElement::getEnabledUnits(state, 
                                                                               PRIVATE(this)->multimax);
