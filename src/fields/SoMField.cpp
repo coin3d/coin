@@ -132,6 +132,7 @@
 #include <Inventor/fields/SoSubField.h>
 #include <assert.h>
 #include <malloc.h>
+#include <string.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

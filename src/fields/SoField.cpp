@@ -53,6 +53,7 @@
 */
 
 #include <assert.h>
+#include <string.h>
 #include <coindefs.h> // COIN_STUB()
 
 #include <Inventor/SoDB.h>
