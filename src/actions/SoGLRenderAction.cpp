@@ -854,6 +854,8 @@ SoGLRenderAction::getRenderingIsRemote(void) const
 void
 SoGLRenderAction::addDelayedPath(SoPath * path)
 {
+  SoState * state = this->getState();
+  SoCacheElement::invalidate(state);
   assert(!THIS->delayedpathrender);
   THIS->delayedpaths.append(path);
 }
