@@ -138,7 +138,7 @@ SbDict::clear(void)
 
   \e If \a key does not exist in the dictionary, a new entry
   is created and TRUE is returned. Otherwise, the generic user
-  data is chenged to \a value, and \e FALSE is returned.
+  data is changed to \a value, and \e FALSE is returned.
 */
 SbBool
 SbDict::enter(const unsigned long key, void * const value)
@@ -179,7 +179,7 @@ SbDict::find(const unsigned long key, void *& value) const
 
 /*!
   Removes the entry with key \a key. \e TRUE is returned if an entry
-  with this key existed, \e FALSE otherwise.
+  with this key was present, \e FALSE otherwise.
 */
 SbBool
 SbDict::remove(const unsigned long key)
