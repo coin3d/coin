@@ -1025,7 +1025,7 @@ SoDB::doSelect(int nfds, void * readfds, void * writefds,
   // sockets or filehandles; complain.
   //
   // Considering sockets at all should be determined on whether
-  // LoadLibrary finds the wsock32.dll or not.
+  // LoadLibrary finds the ws2_32.dll / wsock32.dll or not.
   //
   // Someone experienced in Win32-programming ought to check this out
   // and do proper testing (write a test-case) - I just picked up this
