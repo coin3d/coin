@@ -32,42 +32,54 @@
 /* ********************************************************************** */
 /* private methods */
 
-static void 
+static void
 wpool_lock(cc_wpool * pool)
 {
   cc_mutex_lock(pool->mutex);
 }
 
-static void 
+static void
 wpool_unlock(cc_wpool * pool)
 {
   cc_mutex_unlock(pool->mutex);
 }
 
-static void 
+static void
 wpool_idle_cb(cc_worker * worker, void * data)
 {
   SbBool iswaiting;
   int idx;
   cc_wpool * pool = (cc_wpool*) data;
-  
+
   wpool_lock(pool);
-  
+
   idx = cc_list_find(pool->busypool, worker);
   assert(idx >= 0);
   if (idx >= 0) {
     cc_list_remove_fast(pool->busypool, idx);
     cc_list_append(pool->idlepool, worker);
   }
-  
+
   iswaiting = pool->iswaiting;
   wpool_unlock(pool);
-  
+
   if (iswaiting) {
     cc_condvar_wake_one(pool->waitcond);
-  }  
+  }
 }
 
+static void
+wpool_wait(cc_wpool * pool, int num)
+{
+  pool->iswaiting = TRUE;
+  while (cc_list_get_length(pool->idlepool) < num) {
+    /* wait() will atomically unlock the mutex, and wait
+     * for signal. When signal arrived, the mutex will again be
+     * atomically locked. */
+    cc_condvar_wait(pool->waitcond, pool->mutex);
+  }
+  pool->iswaiting = FALSE;
+}
 
 static void
 wpool_add_workers(cc_wpool * pool, int num)
@@ -81,13 +93,13 @@ wpool_add_workers(cc_wpool * pool, int num)
   }
 }
 
-static cc_worker * 
+static cc_worker *
 wpool_get_idle_worker(cc_wpool * pool)
 {
   cc_worker * worker;
   /* assumes pool is locked (begin() has been called) */
   assert(cc_list_get_length(pool->idlepool));
-  
+
   worker = (cc_worker*) cc_list_pop(pool->idlepool);
   cc_list_append(pool->busypool, worker);
   return worker;
@@ -99,7 +111,7 @@ wpool_get_idle_worker(cc_wpool * pool)
 /*!
   Construct worker pool.
 */
-cc_wpool * 
+cc_wpool *
 cc_wpool_construct(int numworkers)
 {
   cc_wpool * pool = (cc_wpool*) malloc(sizeof(cc_wpool));
@@ -118,7 +130,7 @@ cc_wpool_construct(int numworkers)
 /*!
   Destruct worker pool.
 */
-void 
+void
 cc_wpool_destruct(cc_wpool * pool)
 {
   int i, n;
@@ -126,10 +138,10 @@ cc_wpool_destruct(cc_wpool * pool)
   cc_wpool_wait_all(pool);
   assert(cc_list_get_length(pool->busypool) == 0);
   n = cc_list_get_length(pool->idlepool);
-  
+
   workers = (cc_worker**)
     cc_list_get_array(pool->idlepool);
-  
+
   for (i = 0; i < n; i++) {
     cc_worker_destruct(workers[i]);
   }
@@ -144,7 +156,7 @@ cc_wpool_destruct(cc_wpool * pool)
 /*!
   Returns the number of workers in the pool.
 */
-int 
+int
 cc_wpool_get_num_workers(cc_wpool * pool)
 {
   return pool->numworkers;
@@ -153,14 +165,14 @@ cc_wpool_get_num_workers(cc_wpool * pool)
 /*!
   Sets the number of workers in the pool.
 */
-void 
+void
 cc_wpool_set_num_workers(cc_wpool * pool, int newnum)
 {
   if (newnum == pool->numworkers) return;
-  
+
   cc_wpool_wait_all(pool);
 
-  /* no need to call lock()/unlock(), since all threads 
+  /* no need to call lock()/unlock(), since all threads
    * are guaranteed to be idle */
 
   if (newnum > pool->numworkers) {
@@ -178,21 +190,14 @@ cc_wpool_set_num_workers(cc_wpool * pool, int newnum)
 /*!
   Wait for all pool workers to finish working and go into idle state.
   This method should only be called by the thread controlling the pool.
-  A pool thread should not call this method, since it will obviously
+  A pool worker should not call this method, since it will obviously
   never return from here (it will never go idle).
 */
-void 
+void
 cc_wpool_wait_all(cc_wpool * pool)
 {
   wpool_lock(pool);
-  pool->iswaiting = TRUE;
-  while (cc_list_get_length(pool->busypool)) {
-    /* wait() will atomically unlock the mutex, and wait
-     * for signal. When signal arrived, the mutex will again be
-     * atomically locked. */
-    cc_condvar_wait(pool->waitcond, pool->mutex);
-  }
-  pool->iswaiting = FALSE;
+  wpool_wait(pool, pool->numworkers); /* wait for all workers to become idle */
   wpool_unlock(pool);
 }
 
@@ -200,12 +205,14 @@ cc_wpool_wait_all(cc_wpool * pool)
 
   Locks the pool so that workers can be started using the
   cc_wpool_start_worker() method. \a numworkersneeded should contain
-  the minumum number of workers that is needed, and this method will
-  return the number of workers available, or 0 if too few threads are
-  available. Pseudocode:
+  the minumum number of workers that is needed. If \numworkersneeded
+  workers are available, the pool will be locked and TRUE is returned.
+  Otherwise FALSE is returned.
+
+  Usage pseudocode:
 
   \code
-  
+
   int numworkers = 5;
 
   if (cc_wpool_begin(pool, numworkers)) {
@@ -216,24 +223,43 @@ cc_wpool_wait_all(cc_wpool * pool)
   }
 
   \endcode
-  
+
   Important! If too few workers are available, the pool will not be
   locked and cc_wpool_end() should not be called.
 
   \sa cc_wpool_start_worker(), cc_wpool_end()
 */
-int 
+SbBool
+cc_wpool_try_begin(cc_wpool * pool, int numworkersneeded)
+{
+  int n;
+  wpool_lock(pool);
+
+  n = cc_list_get_length(pool->idlepool);
+  if (n < numworkersneeded) {
+    wpool_unlock(pool);
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/*!
+  Wait for \a numworkersneeded workers to become idle. When returning
+  from this call, the pool will be locked, and up to \a numworkersneeded
+  can be started using the cc_wpool_start_worker() method. Remember
+  to call cc_wpool_end() to unlock the pool again.
+
+  \sa cc_wpool_try_begin()
+*/
+void
 cc_wpool_begin(cc_wpool * pool, int numworkersneeded)
 {
   int n;
   wpool_lock(pool);
-  
   n = cc_list_get_length(pool->idlepool);
   if (n < numworkersneeded) {
-    wpool_unlock(pool);
-    return 0;
+    wpoll_wait(numworkersneeded);
   }
-  return n;
 }
 
 /*!
@@ -243,7 +269,7 @@ cc_wpool_begin(cc_wpool * pool, int numworkersneeded)
 
   \sa cc_wpool_begin() , cc_wpool_end()
 */
-void 
+void
 cc_wpool_start_worker(cc_wpool * pool, void (*workfunc)(void *), void * closure)
 {
   cc_worker * worker = wpool_get_idle_worker(pool);
@@ -264,7 +290,7 @@ cc_wpool_start_worker(cc_wpool * pool, void (*workfunc)(void *), void * closure)
   \sa cc_wpool_begin(), cc_wpool_start_worker()
 
 */
-void 
+void
 cc_wpool_end(cc_wpool * pool)
 {
   wpool_unlock(pool);
