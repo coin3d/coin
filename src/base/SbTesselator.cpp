@@ -26,12 +26,56 @@
   triangles. It handles concave polygons, does Delaunay triangulation
   and avoids generating self-intersecting triangles.
 
-  (Note that the tesselator of the GLU library have some other
-  features not part of SbTesselator (like handling hulls), but the GLU
-  library is known to have bugs in various implementations and doesn't
-  do Delaunay triangluation.)
+  Here's a simple example which shows how to tesselate a quad polygon
+  with corners in <0, 0, 0>, <1, 0, 0>, <1, 1, 0> and <0, 1, 0>.
+
+  \code
+// Callback function for the tesselator. Called once for each
+// generated triangle with the vertices.
+static void
+tess_cb(void * v0, void * v1, void * v2, void * cbdata)
+{
+  SbVec3f * vtx0 = (SbVec3f *)v0;
+  SbVec3f * vtx1 = (SbVec3f *)v1;
+  SbVec3f * vtx2 = (SbVec3f *)v2;
+  (void)fprintf(stdout, "triangle: <%f, %f, %f> <%f, %f, %f> <%f, %f, %f>\n",
+                (*vtx0)[0], (*vtx0)[1], (*vtx0)[2],
+                (*vtx1)[0], (*vtx1)[1], (*vtx1)[2],
+                (*vtx2)[0], (*vtx2)[1], (*vtx2)[2]);
+
+  // Do stuff with triangle here.
+}
+
+/// Testcode. ////////////////////////////
+
+static SbVec3f vertices[] = {
+  SbVec3f(1, 0, 0), SbVec3f(1, 1, 0),
+  SbVec3f(0, 1, 0), SbVec3f(0, 0, 0)
+};
+
+SbTesselator mytesselator(tess_cb, NULL);
+mytesselator.beginPolygon();
+for (int i=0; i < 4; i++)
+  mytesselator.addVertex(vertices[i], &vertices[i]);
+mytesselator.endPolygon();
+  \endcode
+
+  The call to SbTesselator::endPolygon() triggers the SbTesselator to
+  spring into action, calling the tess_cb() function for each triangle
+  it generates.
+
+  The reason we use 2 arguments to SbTesselator::addVertex() and passes
+  void pointers for the vertices to the callback function is to make it
+  possible to have more complex structures than just the coordinates
+  themselves (as in the example above), like material information,
+  lighting information or whatever other attributes your vertices have.
 
   This class is not part of the original Open Inventor API.
+
+  (Another option for tesselating polygons is the tesselator of the
+  GLU library. It has some features not part of SbTesselator (like
+  handling hulls), but the GLU library is known to have bugs in various
+  implementations and doesn't do Delaunay triangluation.)
 */
 
 
