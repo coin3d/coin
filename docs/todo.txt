@@ -726,6 +726,17 @@ STUFF TO FIX IN COIN
     systems: GLX (X11), WGL (MSWin) and AGL (Mac OS X).
 
 
+031 Handle POSIX paths under MSWin.
+    2003-02-10  Morten Eriksen  <mortene@sim.no>
+
+    Idea by larsa: we could handle POSIX-style paths under MSWin by
+    run-time binding to the cygwin.dll and it's
+    cygwin32_conv_to_win32_path() function.
+
+    This would presuppose that we implemented the SbFile / SbDirectory
+    abstraction(s) mentioned in the api-wish-list.txt file first.
+
+
 
 OTHER COIN-RELATED STUFF TO FIX
 ===============================
