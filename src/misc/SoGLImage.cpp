@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -95,6 +95,8 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -104,7 +106,6 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include "GLWrapper.h"
 #include <GLUWrapper.h>
 #include <Inventor/lists/SbList.h>
 #include "../tidbits.h" // coin_getenv(), coin_atexit()
@@ -189,7 +190,7 @@ glimage_get_buffer(const int buffersize, const SbBool mipmap)
     glimage_bufferstorage = new SbStorage(sizeof(soglimage_buffer),
                                           glimage_buffer_construct, glimage_buffer_destruct);
   }
-  buf = (soglimage_buffer*) 
+  buf = (soglimage_buffer*)
     glimage_bufferstorage->get();
 #else // COIN_THREADSAFE
   if (glimage_buffer == NULL) {
@@ -317,9 +318,9 @@ halve_image(const int width, const int height, const int depth, const int nc,
       for (int j = 0; j < newheight; j++) {
         for (int i = 0; i < newwidth; i++) {
           for (int c = 0; c < nc; c++) {
-            *dst = (src[0] + src[nc] + 
+            *dst = (src[0] + src[nc] +
                     src[rowsize] + src[rowsize+nc] +
-                    src[imagesize] + src[imagesize+nc] + 
+                    src[imagesize] + src[imagesize+nc] +
                     src[imagesize+rowsize] + src[imagesize+rowsize+nc] +
                     4) >> 3;
             dst++; src++;
@@ -340,14 +341,14 @@ fast_mipmap(SoState * state, int width, int height, const int nc,
             const unsigned char *data, GLenum format,
             const SbBool useglsubimage)
 {
-  const GLWrapper_t * glw = GLWRAPPER_FROM_STATE(state);
+  const cc_glglue * glw = GLGLUE_FROM_STATE(state);
   int levels = compute_log(width);
   int level = compute_log(height);
   if (level > levels) levels = level;
 
   int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*nc;
   unsigned char * mipmap_buffer = glimage_get_buffer(memreq, TRUE);
-  
+
   if (useglsubimage) {
     if (glw->glTexSubImage2D)
       glw->glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
@@ -384,12 +385,12 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
             const unsigned char *data, GLenum format,
             const SbBool useglsubimage)
 {
-  const GLWrapper_t * glw = GLWRAPPER_FROM_STATE(state);
+  const cc_glglue * glw = GLGLUE_FROM_STATE(state);
   int levels = compute_log(SbMax(SbMax(width, height), depth));
 
   int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*(SbMax(depth>>1,1))*nc;
   unsigned char * mipmap_buffer = glimage_get_buffer(memreq, TRUE);
-  
+
   // Send level 0 (original image) to OpenGL
   if (useglsubimage) {
     if (glw->glTexSubImage3D)
@@ -399,7 +400,7 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
   }
   else {
     if (glw->glTexImage3D)
-      glw->glTexImage3D(GL_TEXTURE_3D, 0, nc, width, height, depth, 
+      glw->glTexImage3D(GL_TEXTURE_3D, 0, nc, width, height, depth,
 			0, format, GL_UNSIGNED_BYTE, data);
   }
   unsigned char *src = (unsigned char *) data;
@@ -429,7 +430,7 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
 // nor GLU is available.
 //
 static void
-fast_image_resize(const unsigned char * src, 
+fast_image_resize(const unsigned char * src,
                   unsigned char * dest,
                   int width,
                   int height, int num_comp,
@@ -437,15 +438,15 @@ fast_image_resize(const unsigned char * src,
 {
   float sx, sy, dx, dy;
   int src_bpr, dest_bpr, xstop, ystop, x, y, offset, i;
-  
+
   dx = ((float)width)/((float)newwidth);
   dy = ((float)height)/((float)newheight);
   src_bpr = width * num_comp;
   dest_bpr = newwidth * num_comp;
-  
+
   sy = 0.0f;
   ystop = newheight * dest_bpr;
-  xstop = newwidth * num_comp;   
+  xstop = newwidth * num_comp;
   for (y = 0; y < ystop; y += dest_bpr) {
     sx = 0.0f;
     for (x = 0; x < xstop; x += num_comp) {
@@ -475,7 +476,7 @@ public:
                            const SbBool dlist,
                            const SbBool mipmap,
                            const int border);
-  void resizeImage(SoState * state, unsigned char *&imageptr, 
+  void resizeImage(SoState * state, unsigned char *&imageptr,
                    int &xsize, int &ysize, int &zsize);
   SbBool shouldCreateMipmap(void);
   void applyFilter(const SbBool ismipmap);
@@ -636,7 +637,7 @@ SoGLImage::isOfType(SoType type) const
   return this->getTypeId().isDerivedFrom(type);
 }
 
-/*!  
+/*!
   Convenience 2D wrapper function around the 3D setData().
 */
 void
@@ -648,7 +649,7 @@ SoGLImage::setData(const SbImage *image,
                    SoState *createinstate)
 
 {
-  this->setData(image, wraps, wrapt, (Wrap)THIS->wrapr, 
+  this->setData(image, wraps, wrapt, (Wrap)THIS->wrapr,
                 quality, border, createinstate);
 }
 
@@ -685,9 +686,9 @@ SoGLImage::setData(const SbImage *image,
   to insert the image data instead of creating a new texture object.
   This is much faster on most OpenGL drivers, and is very useful, for
   instance when doing animated textures.
-  
+
   If you supply NULL for \a image, the instance will be reset, causing
-  all display lists and memory to be freed. 
+  all display lists and memory to be freed.
 */
 void
 SoGLImage::setData(const SbImage *image,
@@ -715,18 +716,18 @@ SoGLImage::setData(const SbImage *image,
 
   // check for special case where glTexSubImage can be used.
   // faster for most drivers.
-  if (createinstate) { // We need the state for GLWrapper
-    const GLWrapper_t * glw = GLWRAPPER_FROM_STATE(createinstate);
+  if (createinstate) { // We need the state for cc_glglue
+    const cc_glglue * glw = GLGLUE_FROM_STATE(createinstate);
     SoGLDisplayList *dl = NULL;
-    
-    SbBool copyok = 
+
+    SbBool copyok =
       wraps == THIS->wraps &&
       wrapt == THIS->wrapt &&
       wrapr == THIS->wrapr &&
       border == THIS->border &&
       border == 0 && // haven't tested with borders yet. Play it safe.
       (dl = THIS->findDL(createinstate)) != NULL;
-    
+
     unsigned char *bytes = NULL;
     SbVec3s size;
     int nc;
@@ -734,11 +735,11 @@ SoGLImage::setData(const SbImage *image,
       bytes = image->getValue(size, nc);
       if (bytes && size != THIS->glsize || nc != THIS->glcomp) copyok = FALSE;
     }
-    
+
     SbBool is3D = (size[2]==0)?FALSE:TRUE;
     SbBool usesubimage = COIN_TEX2_USE_GLTEXSUBIMAGE &&
       (is3D && glw->glTexSubImage3D) || (!is3D && glw->glTexSubImage2D);
-    
+
     if (!usesubimage) copyok=FALSE;
 
     if (copyok) {
@@ -755,12 +756,12 @@ SoGLImage::setData(const SbImage *image,
       case 3: format = GL_RGB; break;
       case 4: format = GL_RGBA; break;
       }
-      
+
       if (dl->isMipMapTextureObject()) {
         if (is3D)
           fast_mipmap(createinstate, size[0], size[1], size[2], nc,
                       bytes, format, TRUE);
-        else 
+        else
           fast_mipmap(createinstate, size[0], size[1], nc,
                       bytes, format, TRUE);
       }
@@ -812,7 +813,7 @@ SoGLImage::setData(const SbImage *image,
   an SbImage. Creates a temporary image, then calls the read setData().
   \overload
 */
-void 
+void
 SoGLImage::setData(const unsigned char *bytes,
                    const SbVec2s & size,
                    const int numcomponents,
@@ -833,7 +834,7 @@ SoGLImage::setData(const unsigned char *bytes,
   an SbImage. Creates a temporary image, then calls the read setData().
   \overload
 */
-void 
+void
 SoGLImage::setData(const unsigned char *bytes,
                    const SbVec3s & size,
                    const int numcomponents,
@@ -845,7 +846,7 @@ SoGLImage::setData(const unsigned char *bytes,
                    SoState *createinstate)
 {
   THIS->dummyimage.setValuePtr(size, numcomponents, bytes);
-  this->setData(&THIS->dummyimage, 
+  this->setData(&THIS->dummyimage,
                 wraps, wrapt, wrapr, quality,
                 border, createinstate);
 }
@@ -1006,7 +1007,7 @@ SoGLImage::getWrapR(void) const
   should unref display lists that has an age bigger or equal to \a
   maxage, and increment the age for other display lists.
 */
-void 
+void
 SoGLImage::unrefOldDL(SoState *state, const uint32_t maxage)
 {
   THIS->unrefOldDL(state, maxage);
@@ -1066,7 +1067,7 @@ nearest_power_of_two(unsigned long val)
 // buffer if that happens, and the new size in xsize, ysize.
 //
 void
-SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr, 
+SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
                         int & xsize, int & ysize, int & zsize)
 {
   SbVec3s size;
@@ -1081,11 +1082,11 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
   // close to an above power of two. This saves a lot of texture memory
   if (this->flags & SoGLImage::USE_QUALITY_VALUE) {
     if (this->quality < COIN_TEX2_SCALEUP_LIMIT) {
-      if ((newx >= 256) && ((newx - (xsize-2*this->border)) > (newx>>3))) 
+      if ((newx >= 256) && ((newx - (xsize-2*this->border)) > (newx>>3)))
         newx >>= 1;
-      if ((newy >= 256) && ((newy - (ysize-2*this->border)) > (newy>>3))) 
+      if ((newy >= 256) && ((newy - (ysize-2*this->border)) > (newy>>3)))
         newy >>= 1;
-      if ((newz >= 256) && ((newz - (zsize-2*this->border)) > (newz>>3))) 
+      if ((newz >= 256) && ((newz - (zsize-2*this->border)) > (newz>>3)))
         newz >>= 1;
     }
   }
@@ -1113,15 +1114,15 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
     }
   }
 #if COIN_DEBUG
-  if ((unsigned int) orgsize[0] != newx || 
-      (unsigned int) orgsize[1] != newy || 
+  if ((unsigned int) orgsize[0] != newx ||
+      (unsigned int) orgsize[1] != newy ||
       (unsigned int) orgsize[2] != newz) {
     if (newz != 0) {
       SoDebugError::postWarning("SoGLImageP::resizeImage",
                                 "Original 3D texture too large for "
                                 "your graphics hardware and / or OpenGL "
                                 "driver. Rescaled from (%d x %d x %d) "
-                                "to (%d x %d x %d).", 
+                                "to (%d x %d x %d).",
                                 orgsize[0], orgsize[1], orgsize[2],
                                 newx, newy, newz);
     }
@@ -1130,7 +1131,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
                                 "Original 2D texture too large for "
                                 "your graphics hardware and / or OpenGL "
                                 "driver. Rescaled from (%d x %d) "
-                                "to (%d x %d).", 
+                                "to (%d x %d).",
                                 orgsize[0], orgsize[1], newx, newy);
     }
   }
@@ -1140,7 +1141,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
   newy += 2 * this->border;
   newz = (zsize==0)?0:newz + (2 * this->border);
 
-  if ((newx != (unsigned long) xsize) || 
+  if ((newx != (unsigned long) xsize) ||
       (newy != (unsigned long) ysize) ||
       (newz != (unsigned long) zsize)) { // We need to resize
     int numbytes = newx * newy * ((newz==0)?1:newz) * numcomponents;
@@ -1169,7 +1170,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
         case 3: format = GL_RGB; break;
         case 4: format = GL_RGBA; break;
         }
-        
+
         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
         glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
         glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
@@ -1178,7 +1179,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
         glPixelStorei(GL_PACK_SKIP_ROWS, 0);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glPixelStorei(GL_PACK_ALIGNMENT, 1);
-        
+
         // FIXME: ignoring the error code. Silly. 20000929 mortene.
         (void)GLUWrapper()->gluScaleImage(format, xsize, ysize,
                                           GL_UNSIGNED_BYTE, (void*) bytes,
@@ -1222,7 +1223,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
 
 //
 // private method that in addition to creating the display list,
-// tests the size of the image and performs a resize if the size is not 
+// tests the size of the image and performs a resize if the size is not
 // a power of two.
 // reallyCreateTexture is called (only) from here.
 //
@@ -1231,9 +1232,9 @@ SoGLImageP::createGLDisplayList(SoState *state)
 {
   SbVec3s size;
   int numcomponents;
-  unsigned char *bytes = 
+  unsigned char *bytes =
     this->image ? this->image->getValue(size, numcomponents) : NULL;
-  
+
   if (!bytes) return NULL;
 
   int xsize = size[0];
@@ -1262,7 +1263,7 @@ SoGLImageP::createGLDisplayList(SoState *state)
 
 //
 // Test image data for transparency by checking each texel.
-// 
+//
 void
 SoGLImageP::checkTransparency(void)
 {
@@ -1310,7 +1311,7 @@ translate_wrap(SoState *state, const SoGLImage::Wrap wrap)
 {
   if (wrap == SoGLImage::REPEAT) return (GLenum) GL_REPEAT;
   if (wrap == SoGLImage::CLAMP_TO_EDGE) {
-    const GLWrapper_t * glw = GLWRAPPER_FROM_STATE(state);
+    const cc_glglue * glw = GLGLUE_FROM_STATE(state);
     if (glw->hasTextureEdgeClamp) return GL_CLAMP_TO_EDGE;
   }
   return (GLenum) GL_CLAMP;
@@ -1325,7 +1326,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
                                 const SbBool mipmap,
                                 const int border)
 {
-  const GLWrapper_t * glw = GLWRAPPER_FROM_STATE(state);
+  const cc_glglue * glw = GLGLUE_FROM_STATE(state);
   this->glsize = SbVec3s((short) w, (short) h, (short) d);
   this->glcomp = numComponents;
 
@@ -1350,7 +1351,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
 
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-  //FIXME: Check GLWrapper capability as well? (kintel 20011129)
+  //FIXME: Check cc_glglue capability as well? (kintel 20011129)
   if (SoGLTexture3EnabledElement::get(state)) { // 3D textures
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S,
                     translate_wrap(state, this->wraps));
@@ -1371,7 +1372,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
     }
     else { // mipmaps
       //FIXME: TEX2->TEX3 ? (kintel 20011129)
-      if (COIN_TEX2_BUILD_MIPMAP_FAST == 1 || 
+      if (COIN_TEX2_BUILD_MIPMAP_FAST == 1 ||
           !GLUWrapper()->available ||
           !GLUWrapper()->gluBuild3DMipmaps) {
         // this should be very fast, but I guess it's possible
@@ -1381,8 +1382,8 @@ SoGLImageP::reallyCreateTexture(SoState *state,
       }
       else {
         // FIXME: ignoring the error code. Silly. 20000929 mortene.
-        (void)GLUWrapper()->gluBuild3DMipmaps(GL_TEXTURE_3D, numComponents, 
-                                              w, h, d, glformat, 
+        (void)GLUWrapper()->gluBuild3DMipmaps(GL_TEXTURE_3D, numComponents,
+                                              w, h, d, glformat,
                                               GL_UNSIGNED_BYTE, texture);
       }
     }
@@ -1392,12 +1393,12 @@ SoGLImageP::reallyCreateTexture(SoState *state,
                     translate_wrap(state, this->wraps));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
                     translate_wrap(state, this->wrapt));
-    
+
     // just initialize to a filter that is valid also for non mipmapped
     // images. Filter will be applied later by SoGLTextureImageElement
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    
+
     if (!mipmap) { // Create only level 0 texture.
       glTexImage2D(GL_TEXTURE_2D, 0, numComponents, w, h,
                    border, glformat, GL_UNSIGNED_BYTE, texture);
@@ -1411,8 +1412,8 @@ SoGLImageP::reallyCreateTexture(SoState *state,
       }
       else {
         // FIXME: ignoring the error code. Silly. 20000929 mortene.
-        (void)GLUWrapper()->gluBuild2DMipmaps(GL_TEXTURE_2D, numComponents, 
-                                              w, h, glformat, 
+        (void)GLUWrapper()->gluBuild2DMipmaps(GL_TEXTURE_2D, numComponents,
+                                              w, h, glformat,
                                               GL_UNSIGNED_BYTE, texture);
       }
     }
@@ -1462,13 +1463,13 @@ SoGLImageP::tagDL(SoState *state)
   }
 }
 
-void 
+void
 SoGLImage::incAge(void) const
 {
   THIS->imageage++;
 }
 
-void 
+void
 SoGLImage::resetAge(void) const
 {
   THIS->imageage = 0;
@@ -1521,7 +1522,7 @@ SoGLImageP::applyFilter(const SbBool ismipmap)
 
   // Casting away const
   const SbVec3s size = this->image ? this->image->getSize() : this->glsize;
-  
+
   if (size[2] >= 1) target = GL_TEXTURE_3D;
   else target = GL_TEXTURE_2D;
 
@@ -1546,15 +1547,15 @@ SoGLImageP::applyFilter(const SbBool ismipmap)
   else {
     if (this->flags & SoGLImage::NO_MIPMAP || !ismipmap) {
       glTexParameterf(target, GL_TEXTURE_MAG_FILTER,
-                      (this->flags & SoGLImage::LINEAR_MAG_FILTER) ? 
+                      (this->flags & SoGLImage::LINEAR_MAG_FILTER) ?
                       GL_LINEAR : GL_NEAREST);
       glTexParameterf(target, GL_TEXTURE_MIN_FILTER,
-                      (this->flags & SoGLImage::LINEAR_MIN_FILTER) ? 
+                      (this->flags & SoGLImage::LINEAR_MIN_FILTER) ?
                       GL_LINEAR : GL_NEAREST);
     }
     else {
       glTexParameterf(target, GL_TEXTURE_MAG_FILTER,
-                      (this->flags & SoGLImage::LINEAR_MAG_FILTER) ? 
+                      (this->flags & SoGLImage::LINEAR_MAG_FILTER) ?
                       GL_LINEAR : GL_NEAREST);
       GLenum minfilter = GL_NEAREST_MIPMAP_NEAREST;
       if (this->flags & SoGLImage::LINEAR_MIPMAP_FILTER) {
@@ -1637,21 +1638,21 @@ SoGLImage::endFrame(SoState *state)
     for (int i = 0; i < n; i++) {
       SoGLImage *img = (*glimage_reglist)[i];
       img->unrefOldDL(state, glimage_maxage);
-      if (img->pimpl->endframecb) 
+      if (img->pimpl->endframecb)
         img->pimpl->endframecb(img->pimpl->endframeclosure);
     }
     CC_MUTEX_UNLOCK(glimage_reglist_mutex);
   }
 }
 
-void 
+void
 SoGLImage::setEndFrameCallback(void (*cb)(void *), void *closure)
 {
   THIS->endframecb = cb;
   THIS->endframeclosure = closure;
 }
 
-int 
+int
 SoGLImage::getNumFramesSinceUsed(void) const
 {
   return THIS->imageage;
@@ -1665,7 +1666,7 @@ SoGLImage::getNumFramesSinceUsed(void) const
   be a good idea since it will release all the texture memory used by
   your application.
 */
-void 
+void
 SoGLImage::freeAllImages(SoState *state)
 {
   int oldmax = glimage_maxage;
@@ -1694,7 +1695,7 @@ SoGLImage::registerImage(SoGLImage *image)
   if (!glimage_reglist_mutex) {
     CC_MUTEX_CONSTRUCT(glimage_reglist_mutex);
   }
-  
+
   CC_MUTEX_LOCK(glimage_reglist_mutex);
   if (glimage_reglist == NULL) {
     coin_atexit((coin_atexit_f *)regimage_cleanup);

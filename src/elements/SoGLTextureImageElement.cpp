@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -35,12 +35,13 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/SbImage.h>
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include "../misc/GLWrapper.h"
 
 SO_ELEMENT_SOURCE(SoGLTextureImageElement);
 
@@ -113,7 +114,7 @@ SoGLTextureImageElement::pop(SoState * state,
   inherited::pop(state, prevTopElement);
   SoGLTextureImageElement * prev = (SoGLTextureImageElement*)
     prevTopElement;
-  
+
   if (prev->dlist) prev->dlist->unref(state); // unref dlist (ref'ed in set())
   if (prev->image && prev->image->getImage()) prev->image->getImage()->readUnlock();
 
@@ -132,7 +133,7 @@ translateWrap(const SoGLImage::Wrap wrap)
 }
 
 /*!
-  Sets the current texture. Id \a didapply is TRUE, it is assumed 
+  Sets the current texture. Id \a didapply is TRUE, it is assumed
   that the texture image already is the current GL texture. Do not
   use this feature unless you know what you're doing.
 */
@@ -145,7 +146,7 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
   SoGLTextureImageElement * elem = (SoGLTextureImageElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
   if (!elem) return;
-  
+
   if (elem->dlist) elem->dlist->unref();
   if (elem->image && elem->image->getImage()) elem->image->getImage()->readUnlock();
   if (image) {
@@ -162,7 +163,7 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
     elem->quality = -1.0f;
     elem->image = image;
     // make sure image isn't changed while this is the active texture
-    if (image->getImage()) image->getImage()->readLock(); 
+    if (image->getImage()) image->getImage()->readLock();
     elem->didapply = didapply;
     // FIXME: the next line causes a memory leak, according to
     // Purify. 20001102 mortene.
@@ -179,13 +180,13 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
   }
 }
 
-SoGLImage * 
+SoGLImage *
 SoGLTextureImageElement::get(SoState * state, Model & model,
                              SbColor & blendcolor)
 {
   const SoGLTextureImageElement * elem = (const SoGLTextureImageElement*)
     SoReplacedElement::getConstElement(state, classStackIndex);
-  
+
   model = elem->model;
   blendcolor = elem->blendColor;
   return elem->image;
@@ -300,13 +301,13 @@ SoGLTextureImageElement::getMaxGLTextureSize(void)
 
   This function uses PROXY textures and will fall back to getMaxGLTextureSize()
   if PROXY textures are not supported (OpenGL < 1.1 and GL_EXT_texture not
-  available). In the 3D case, 3D textures need to be supported (OpenGL >= 1.2 
+  available). In the 3D case, 3D textures need to be supported (OpenGL >= 1.2
   or GL_EXT_texture3D).
 
   \since 2001-12-04
 */
-SbBool 
-SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize, 
+SbBool
+SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
                                             int bytespertexel)
 {
   // FIXME: the technique we are using doesn't really match what is recommended at
@@ -317,7 +318,7 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
   // FIXME: mipmaps must be handled specifically, which we are not
   // doing. 20020701 mortene.
 
-  const GLWrapper_t * glw = GLWRAPPER_FROM_STATE(this->state);
+  const cc_glglue * glw = GLGLUE_FROM_STATE(this->state);
   if (zsize==0) { // 2D textures
     if (glw->has2DProxyTextures) {
       GLint w;
@@ -325,7 +326,7 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
                    xsize, ysize, 0,
                    GL_RGBA, GL_UNSIGNED_BYTE,
                    NULL);
-      glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0, 
+      glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0,
                                GL_TEXTURE_WIDTH, &w);
       if (w==0) return FALSE;
       return TRUE;
@@ -344,7 +345,7 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
                         xsize, ysize, zsize, 0,
                         GL_RGBA, GL_UNSIGNED_BYTE,
                         NULL);
-      glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, 0, 
+      glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, 0,
                                GL_TEXTURE_WIDTH, &w);
       if (w==0) return FALSE;
       return TRUE;

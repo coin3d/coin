@@ -35,7 +35,6 @@ RegularSources = \
 	SoTranReceiver.cpp \
 	default3dfont.cpp \
 	default2dfont.cpp \
-	GLWrapper.cpp \
 	GLUWrapper.c \
 	simage_wrapper.c
 LinkHackSources = \
@@ -67,7 +66,6 @@ PrivateHeaders = \
 	../../include/Inventor/misc/SoGenerate.h \
 	../../include/Inventor/misc/SoPick.h \
 	GLUWrapper.h \
-	GLWrapper.h \
 	simage_wrapper.h \
 	SoGLFaceSetTemplate.icc \
 	SoGLLineSetTemplate.icc \

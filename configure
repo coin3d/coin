@@ -20118,7 +20118,7 @@ fi
 
 # **************************************************************************
 
-ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/threads/Makefile include/Inventor/lock/Makefile include/Inventor/system/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile src/upgraders/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile docs/coin.doxygen"
+ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/glue/Makefile include/Inventor/C/threads/Makefile include/Inventor/lock/Makefile include/Inventor/system/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/glue/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile src/upgraders/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile docs/coin.doxygen"
 
 
 cat >confcache <<\_ACEOF
@@ -20610,6 +20610,7 @@ do
   "include/Inventor/C/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/C/Makefile" ;;
   "include/Inventor/C/base/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/C/base/Makefile" ;;
   "include/Inventor/C/errors/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/C/errors/Makefile" ;;
+  "include/Inventor/C/glue/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/C/glue/Makefile" ;;
   "include/Inventor/C/threads/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/C/threads/Makefile" ;;
   "include/Inventor/lock/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/lock/Makefile" ;;
   "include/Inventor/system/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/system/Makefile" ;;
@@ -20631,6 +20632,7 @@ do
   "src/errors/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/errors/Makefile" ;;
   "src/events/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/events/Makefile" ;;
   "src/fields/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/fields/Makefile" ;;
+  "src/glue/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/glue/Makefile" ;;
   "src/manips/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/manips/Makefile" ;;
   "src/misc/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/misc/Makefile" ;;
   "src/lists/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/lists/Makefile" ;;

@@ -169,7 +169,6 @@ RegularSources = \
 	SoTranReceiver.cpp \
 	default3dfont.cpp \
 	default2dfont.cpp \
-	GLWrapper.cpp \
 	GLUWrapper.c \
 	simage_wrapper.c
 
@@ -204,7 +203,6 @@ PrivateHeaders = \
 	../../include/Inventor/misc/SoGenerate.h \
 	../../include/Inventor/misc/SoPick.h \
 	GLUWrapper.h \
-	GLWrapper.h \
 	simage_wrapper.h \
 	SoGLFaceSetTemplate.icc \
 	SoGLLineSetTemplate.icc \
@@ -288,7 +286,6 @@ misc_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTranReceiver.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	default3dfont.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	default2dfont.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	GLWrapper.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	GLUWrapper.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.$(OBJEXT)
 misc_lst_OBJECTS = $(am_misc_lst_OBJECTS)
@@ -314,8 +311,8 @@ libmisc_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGenerate.lo SoLockManager.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoByteStream.lo SoTranSender.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTranReceiver.lo default3dfont.lo \
-@HACKING_COMPACT_BUILD_FALSE@	default2dfont.lo GLWrapper.lo \
-@HACKING_COMPACT_BUILD_FALSE@	GLUWrapper.lo simage_wrapper.lo
+@HACKING_COMPACT_BUILD_FALSE@	default2dfont.lo GLUWrapper.lo \
+@HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.lo
 libmisc_la_OBJECTS = $(am_libmisc_la_OBJECTS)
 libmisc@SUFFIX@LINKHACK_la_LDFLAGS =
 libmisc@SUFFIX@LINKHACK_la_LIBADD =
@@ -338,8 +335,8 @@ libmisc@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGenerate.lo SoLockManager.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoByteStream.lo SoTranSender.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTranReceiver.lo default3dfont.lo \
-@HACKING_COMPACT_BUILD_FALSE@	default2dfont.lo GLWrapper.lo \
-@HACKING_COMPACT_BUILD_FALSE@	GLUWrapper.lo simage_wrapper.lo
+@HACKING_COMPACT_BUILD_FALSE@	default2dfont.lo GLUWrapper.lo \
+@HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.lo
 libmisc@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libmisc@SUFFIX@LINKHACK_la_OBJECTS)
 
@@ -349,7 +346,6 @@ CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@DEP_FILES = $(DEPDIR)/GLUWrapper.Plo $(DEPDIR)/GLUWrapper.Po \
-@AMDEP_TRUE@	$(DEPDIR)/GLWrapper.Plo $(DEPDIR)/GLWrapper.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoBase.Plo $(DEPDIR)/SoBase.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoByteStream.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoByteStream.Po $(DEPDIR)/SoChildList.Plo \
@@ -485,8 +481,6 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/GLUWrapper.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/GLUWrapper.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/GLWrapper.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/GLWrapper.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoBase.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoBase.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoByteStream.Plo@am__quote@

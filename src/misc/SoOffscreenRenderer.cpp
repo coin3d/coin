@@ -147,7 +147,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <simage_wrapper.h>
-#include "../misc/GLWrapper.h"
 #include <math.h> // for ceil()
 
 #include <Inventor/nodes/SoCamera.h> 
@@ -159,6 +158,8 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoCullElement.h>
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
 
 /*!
   \enum SoOffscreenRenderer::Components

@@ -89,6 +89,8 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/nodes/SoVertexShape.h> 
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
 
 #include <Inventor/SoOffscreenRenderer.h> 
 #include <Inventor/SbTesselator.h> 
@@ -99,7 +101,6 @@
 #endif
 
 #include <../tidbits.h> // coin_getenv()
-#include "../misc/GLWrapper.h"
 #include <float.h>
 #include <math.h>
 
@@ -991,7 +992,7 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
 void
 SoExtSelection::draw(SoGLRenderAction *action)
 {
-  const GLWrapper_t * glw = GLWrapper(action->getCacheContext());
+  const cc_glglue * glw = cc_glglue_instance(action->getCacheContext());
 
   pimpl->has3DTextures = glw->has3DTextures;
 

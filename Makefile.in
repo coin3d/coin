@@ -216,11 +216,10 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
 DIST_COMMON = README $(dist_m4data_DATA) AUTHORS COPYING ChangeLog \
-	INSTALL Makefile.am Makefile.in NEWS THANKS TODO aclocal.m4 \
+	INSTALL Makefile.am Makefile.in NEWS THANKS aclocal.m4 \
 	cfg/config.guess cfg/config.sub cfg/depcomp cfg/install-sh \
 	cfg/ltconfig cfg/ltmain.sh cfg/missing cfg/mkinstalldirs \
-	cfg/texinfo.tex config.guess config.sub configure configure.ac \
-	ltmain.sh
+	cfg/texinfo.tex configure configure.ac
 DIST_SUBDIRS = . bin include data src man html
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive

@@ -63,13 +63,11 @@
 #include <Inventor/elements/SoGLRenderPassElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SbColor4f.h>
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
 #include <float.h> // for FLT_EPSILON
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
-#include "../misc/GLWrapper.h"
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -788,8 +786,8 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
 
   if (action->handleTransparency(FALSE))
     return;
-
-  const GLWrapper_t * glw = GLWrapper(action->getCacheContext());
+  
+  const cc_glglue * glw = cc_glglue_instance(action->getCacheContext());
 
   SoState *state = action->getState();
   state->push();

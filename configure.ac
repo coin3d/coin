@@ -1152,6 +1152,7 @@ AC_CONFIG_FILES([
 	include/Inventor/C/Makefile
 	include/Inventor/C/base/Makefile
 	include/Inventor/C/errors/Makefile
+	include/Inventor/C/glue/Makefile
 	include/Inventor/C/threads/Makefile
         include/Inventor/lock/Makefile
         include/Inventor/system/Makefile
@@ -1173,6 +1174,7 @@ AC_CONFIG_FILES([
         src/errors/Makefile
         src/events/Makefile
         src/fields/Makefile
+        src/glue/Makefile
         src/manips/Makefile
         src/misc/Makefile
         src/lists/Makefile

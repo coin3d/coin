@@ -248,9 +248,9 @@ SoOffscreenGLXData::makeContextCurrent(uint32_t contextid)
     this->storedcontext = glXGetCurrentContext();
     if (this->storedcontext) {
       // Must know for sure that there's a current context before
-      // instantiating a GLWrapper, or we'll get a crash due to the
+      // instantiating a glglue, or we'll get a crash due to the
       // OpenGL calls within GLWrapper().
-      const GLWrapper_t * glw = GLWrapper(contextid);
+      const cc_glglue * glw = cc_glglue_instance(contextid);
       this->storeddisplay =
         glw->glXGetCurrentDisplay ? glw->glXGetCurrentDisplay() : NULL;
       this->storeddrawable = glXGetCurrentDrawable();

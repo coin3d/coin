@@ -33,7 +33,8 @@
 #include <Inventor/SbName.h>
 #include <Inventor/misc/SoState.h>
 #include <../tidbits.h> // coin_atexit()
-#include "../misc/GLWrapper.h"
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -270,7 +271,7 @@ SoGLCacheContextElement::getOpenGLVersion(SoState * state,
                                           int & major, int & minor)
 {
   int currcontext = SoGLCacheContextElement::get(state);
-  const GLWrapper_t * w = GLWrapper(currcontext);
+  const cc_glglue * w = cc_glglue_instance(currcontext);
   major = w->glVersion.major;
   minor = w->glVersion.minor;
 }

@@ -44,7 +44,8 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include "../misc/GLWrapper.h"
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
 
 SO_ELEMENT_SOURCE(SoGLTexture3EnabledElement);
 
@@ -83,7 +84,7 @@ SoGLTexture3EnabledElement::init(SoState * state)
   this->state = state;
   this->data = SoGLTexture3EnabledElement::getDefault();
   this->glstate = 0;
-  const GLWrapper_t * glw = GLWRAPPER_FROM_STATE(state);
+  const cc_glglue * glw = GLGLUE_FROM_STATE(state);
   if (glw->has3DTextures) glDisable(GL_TEXTURE_3D);
 }
 
@@ -137,7 +138,7 @@ SoGLTexture3EnabledElement::forceSend(SoState * const state,
     SoElement::getConstElement(state, classStackIndex);
   if (te->glstate != onoff) {
     te->glstate = onoff;
-    const GLWrapper_t * glw = GLWRAPPER_FROM_STATE(state);
+    const cc_glglue * glw = GLGLUE_FROM_STATE(state);
     if (glw->has3DTextures) {
       if (onoff) glEnable(GL_TEXTURE_3D);
       else glDisable(GL_TEXTURE_3D);
@@ -183,7 +184,7 @@ void
 SoGLTexture3EnabledElement::updategl(void)
 {
   this->glstate = this->data;
-  const GLWrapper_t * glw = GLWRAPPER_FROM_STATE(this->state);
+  const cc_glglue * glw = GLGLUE_FROM_STATE(this->state);
   if (glw->has3DTextures) {
     if (this->data) glEnable(GL_TEXTURE_3D);
     else glDisable(GL_TEXTURE_3D);

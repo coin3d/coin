@@ -42,13 +42,10 @@
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
 
 #include <assert.h>
-#if HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
-#include "../misc/GLWrapper.h"
 
 /*!
   Constructor.
@@ -63,7 +60,7 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
 {
   if (type == TEXTURE_OBJECT) {
     assert(allocnum == 1 && "it is only possible to create one texture object at a time");
-    const GLWrapper_t * glw = GLWrapper(this->context);
+    const cc_glglue * glw = cc_glglue_instance(this->context);
     if (glw->glGenTextures) {
       // use temporary variable, in case GLuint is typedef'ed to
       // something other than unsigned int
@@ -106,7 +103,7 @@ SoGLDisplayList::~SoGLDisplayList()
     // only possible to create one texture objects at a time, so it's
     // safe just to copy and delete the first index.
     GLuint tmpindex = (GLuint) this->firstindex;
-    const GLWrapper_t * glw = GLWrapper(this->context);
+    const cc_glglue * glw = cc_glglue_instance(this->context);
     if (glw->glDeleteTextures)
       glw->glDeleteTextures(1, &tmpindex);
   }
@@ -245,7 +242,7 @@ SoGLDisplayList::getContext(void) const
 void
 SoGLDisplayList::bindTexture(SoState *state)
 {
-  const GLWrapper_t * glw = GLWrapper(this->context);
+  const cc_glglue * glw = cc_glglue_instance(this->context);
   if (glw->glBindTexture) {
     if (SoGLTexture3EnabledElement::get(state)) {
       if (glw->has3DTextures)
