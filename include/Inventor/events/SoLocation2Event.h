@@ -13,7 +13,7 @@
  *  Professional Edition license for Coin.
  *
  *  Systems in Motion AS, Prof. Brochs gate 6, N-7030 Trondheim, NORWAY
- *  http://www.sim.no/ sales@sim.no Voice: +47 73540378 Fax: +47 73943861
+ *  http://www.sim.no/ sales@sim.no Voice: +47 22114160 Fax: +47 67172912
  *
 \**************************************************************************/
 

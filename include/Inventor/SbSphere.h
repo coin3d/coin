@@ -13,7 +13,7 @@
  *  Professional Edition license for Coin.
  *
  *  Systems in Motion AS, Prof. Brochs gate 6, N-7030 Trondheim, NORWAY
- *  http://www.sim.no/ sales@sim.no Voice: +47 73540378 Fax: +47 73943861
+ *  http://www.sim.no/ sales@sim.no Voice: +47 22114160 Fax: +47 67172912
  *
 \**************************************************************************/
 
@@ -30,16 +30,16 @@ class ostream;
 class SbSphere {
 public:
   SbSphere(void);
-  SbSphere(const SbVec3f& center, const float radius);
-  void setValue(const SbVec3f& center, const float radius);
-  void setCenter(const SbVec3f& center);
+  SbSphere(const SbVec3f & center, const float radius);
+  void setValue(const SbVec3f & center, const float radius);
+  void setCenter(const SbVec3f & center);
   void setRadius(const float radius);
-  const SbVec3f&  getCenter(void) const;
+  const SbVec3f &  getCenter(void) const;
   float getRadius(void) const;
-  void circumscribe(const SbBox3f& box);
-  SbBool intersect(const SbLine& l, SbVec3f& intersection) const;
-  SbBool intersect(const SbLine& l, SbVec3f& enter, SbVec3f& exit) const;
-  SbBool pointInside(const SbVec3f &p) const;
+  void circumscribe(const SbBox3f & box);
+  SbBool intersect(const SbLine & l, SbVec3f & intersection) const;
+  SbBool intersect(const SbLine & l, SbVec3f & enter, SbVec3f & exit) const;
+  SbBool pointInside(const SbVec3f & p) const;
 
   void print(ostream & file) const;
 

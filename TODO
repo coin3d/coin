@@ -12,7 +12,11 @@ prioritized order)
 * [mortene:19990912] make version settings in SbBasic.h automatically
   follow the definitions made in configure.in.
 
-* [mortene:19990912] get rid of inttypes.h and kosher.h.
+* [mortene:19990912] get rid of Inventor/system/inttypes.h.
+
+* [mortene:19990912] get rid of Inventor/system/kosher.h. (Needs to
+  try compiling under g++ and SGI CC to check that we've covered the
+  functionality provided.)
 
 * [mortene:19990912] add configure options for turning compilation
   with debug information on or off.
@@ -22,6 +26,14 @@ prioritized order)
 
 * [mortene:19990912] add options in configure for compiling slimmed
   versions of Coin.
+
+* [mortene:19990913] move tasklist from docs/todo.txt into this file.
+
+* [mortene:19990913] write non-generic instructions in the INSTALL
+  file.
+
+* [mortene:19990913] write a file ``HACKING'' with tips & tricks for
+  faster turn-around when doing development.
 
 ===============================================================================
 Done
