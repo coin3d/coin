@@ -28,6 +28,31 @@
   graph, replacing the manipulator.
 */
 
+/*!
+  \var SoFieldSensor * SoSpotLightManip::locationFieldSensor
+  \internal
+*/
+
+/*!
+  \var SoFieldSensor * SoSpotLightManip::directionFieldSensor
+  \internal
+*/
+
+/*!
+  \var SoFieldSensor * SoSpotLightManip::angleFieldSensor
+  \internal
+*/
+
+/*!
+  \var SoFieldSensor * SoSpotLightManip::colorFieldSensor
+  \internal
+*/
+
+/*!
+  \var SoChildList * SoSpotLightManip::children
+  \internal
+*/
+
 #include <Inventor/manips/SoSpotLightManip.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/draggers/SoSpotLightDragger.h>

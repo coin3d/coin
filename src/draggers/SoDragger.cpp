@@ -27,6 +27,34 @@
   during traversal, and all draggers should update this during dragging.
 */
 
+/*!
+  \var SoSFBool SoDragger::isActive
+  Is TRUE whenever the user is interacting with the dragger.
+*/
+
+/*!
+  \enum SoDragger::ProjectorFrontSetting 
+  Holds various settings for projectors, which might affect cylindrical and spherical based draggers.
+  Specifies whether dragging should be based on the front or back of the 
+  sphere/cylinder, or if the picked point should be used to decide this.
+*/
+
+/*!
+  \var SoDragger::ProjectorFrontSetting SoDragger::FRONT
+  Always use front of projector.
+*/
+
+/*!
+  \var SoDragger::ProjectorFrontSetting SoDragger::BACK
+  Always use back of projector.
+*/
+
+/*!
+  \var SoDragger::ProjectorFrontSetting SoDragger::USE_PICK
+  Use picked point to decide front or back of projector.
+*/
+
+
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoCenterballDragger.h>
@@ -243,7 +271,7 @@ SoDragger::addStartCallback(SoDraggerCB * func, void * data)
   THIS->startCB.addCallback((SoCallbackListCB *)func, data);
 }
 
-/*
+/*!
   Removes a start callback,
   \sa addStartCallback()
 */
@@ -917,6 +945,11 @@ SoDragger::appendScale(const SbMatrix & matrix, const SbVec3f & scale, const SbV
   return res.multLeft(transform);
 }
 
+/*!  
+  Appends \a rot, around \a rotcenter, to \a matrix. If \a
+  conversion is != NULL, this is used to move the rotation into that
+  coordinate systems before appending the rotation.  
+*/
 SbMatrix
 SoDragger::appendRotation(const SbMatrix & matrix, const SbRotation & rot, const SbVec3f & rotcenter, const SbMatrix * conversion)
 {
@@ -1047,7 +1080,8 @@ SoDragger::setCameraInfo(SoAction * action)
 }
 
 /*!
- */
+  Overloaded to detect picks on dragger.
+*/
 void
 SoDragger::handleEvent(SoHandleEventAction * action)
 {
@@ -1140,7 +1174,8 @@ SoDragger::handleEvent(SoHandleEventAction * action)
 }
 
 /*!
- */
+  \internal
+*/
 void
 SoDragger::transferMotion(SoDragger * child)
 {
@@ -1177,6 +1212,10 @@ SoDragger::isIgnoreInBbox(void)
   return THIS->ignoreinbbox;
 }
 
+/*!  
+  Overloaded to ignore dragger bounding box if
+  SoDragger::isIgnoreInBbox() is TRUE.  
+*/
 void
 SoDragger::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -1185,7 +1224,7 @@ SoDragger::getBoundingBox(SoGetBoundingBoxAction * action)
 }
 
 /*!
-  FIXME: doc
+  \internal
 */
 void
 SoDragger::setActiveChildDragger(SoDragger * childdragger)
@@ -1193,12 +1232,20 @@ SoDragger::setActiveChildDragger(SoDragger * childdragger)
   THIS->activechilddragger = childdragger;
 }
 
+/*!
+  \internal
+*/
 SoDragger *
 SoDragger::getActiveChildDragger(void) const
 {
   return THIS->activechilddragger;
 }
 
+/*!  
+  Overloaded to set default on SoDragger::isActive,
+  SoDragger::motionMatrix and on common subdragger fields:
+  translation, center, scaleFactor and rotation.  
+*/
 void
 SoDragger::setDefaultOnNonWritingFields(void)
 {
@@ -1209,21 +1256,25 @@ SoDragger::setDefaultOnNonWritingFields(void)
   } \
   f = NULL
 
-  // check common fields
+  // check common subdragger fields
   SoField * f;
   CHECK_DEFAULT("translation", SoSFVec3f, SbVec3f(0.0f, 0.0f, 0.0f));
   CHECK_DEFAULT("center", SoSFVec3f, SbVec3f(0.0f, 0.0f, 0.0f));
   CHECK_DEFAULT("scaleFactor", SoSFVec3f, SbVec3f(1.0f, 1.0f, 1.0f));
   CHECK_DEFAULT("rotation", SoSFRotation, SbRotation::identity());
 
+  // check isActive
+  CHECK_DEFAULT("isActive", SoSFBool, FALSE);
 #undef CHECK_DEFAULT
-  
-  this->isActive.setDefault(TRUE);
+
   this->motionMatrix.setDefault(TRUE);
-  
+
   inherited::setDefaultOnNonWritingFields();
 }
 
+/*!
+  \internal
+*/
 void
 SoDragger::childTransferMotionAndValueChangedCB(void * data, SoDragger * child)
 {
@@ -1233,7 +1284,9 @@ SoDragger::childTransferMotionAndValueChangedCB(void * data, SoDragger * child)
   child->addValueChangedCallback(SoDragger::childTransferMotionAndValueChangedCB, thisp);
 }
 
-
+/*!
+  \internal
+*/
 void
 SoDragger::childValueChangedCB(void * data, SoDragger * child)
 {
@@ -1241,6 +1294,9 @@ SoDragger::childValueChangedCB(void * data, SoDragger * child)
   thisp->valueChanged();
 }
 
+/*!
+  \internal
+*/
 void
 SoDragger::childStartCB(void * data, SoDragger * child)
 {
@@ -1250,6 +1306,9 @@ SoDragger::childStartCB(void * data, SoDragger * child)
   THISP->startCB.invokeCallbacks(thisp);
 }
 
+/*!
+  \internal
+*/
 void
 SoDragger::childMotionCB(void * data, SoDragger * child)
 {
@@ -1257,6 +1316,9 @@ SoDragger::childMotionCB(void * data, SoDragger * child)
   THISP->motionCB.invokeCallbacks(thisp);
 }
 
+/*!
+  \internal
+*/
 void
 SoDragger::childFinishCB(void * data, SoDragger * child)
 {
@@ -1265,6 +1327,9 @@ SoDragger::childFinishCB(void * data, SoDragger * child)
   thisp->setActiveChildDragger(NULL);
 }
 
+/*!
+  \internal
+*/
 void
 SoDragger::childOtherEventCB(void * data, SoDragger * child)
 {

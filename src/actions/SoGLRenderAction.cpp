@@ -708,6 +708,7 @@ SoGLRenderAction::doPathSort(void)
 
 
 // methods in SoGLRenderActionP
+#ifndef DOXYGEN_SKIP_THIS
 
 // Enable OpenGL blending.
 void
@@ -865,3 +866,6 @@ SoGLRenderActionP::renderSingle(SoNode * node)
     this->delayedpaths.truncate(0);
   }
 }
+
+#endif // DOXYGEN_SKIP_THIS
+

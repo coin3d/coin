@@ -628,6 +628,8 @@ SoText2::generatePrimitives(SoAction * /* action */)
 // SoText2P methods below
 #undef THIS
 
+#ifndef DOXYGEN_SKIP_THIS
+
 // Calculates a quad around the text in 3D.
 void
 SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
@@ -713,3 +715,5 @@ SoText2P::getFontSize(SoState * /* state */)
   // FIXME: consider state when we support font loading
   return SbVec2f(8.0f, 12.0f);
 }
+
+#endif // DOXYGEN_SKIP_THIS

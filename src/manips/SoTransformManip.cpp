@@ -28,6 +28,36 @@
   graph, replacing the manipulator.
 */
 
+/*!
+  \var SoFieldSensor * SoTransformManip::rotateFieldSensor
+  \internal
+*/
+
+/*!
+  \var SoFieldSensor * SoTransformManip::translFieldSensor
+  \internal
+*/
+
+/*!
+  \var SoFieldSensor * SoTransformManip::scaleFieldSensor
+  \internal
+*/
+
+/*!
+  \var SoFieldSensor * SoTransformManip::centerFieldSensor
+  \internal
+*/
+
+/*!
+  \var SoFieldSensor * SoTransformManip::scaleOrientFieldSensor
+  \internal
+*/
+
+/*!
+  \var SoChildList * SoTransformManip::children
+  \internal
+*/
+
 #include <Inventor/manips/SoTransformManip.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/draggers/SoDragger.h>
@@ -274,7 +304,7 @@ SoTransformManip::getBoundingBox(SoGetBoundingBoxAction * action)
 // Documented in superclass
 void
 SoTransformManip::getMatrix(SoGetMatrixAction * action)
-{  
+{
   int numindices;
   const int *indices;
   switch (action->getPathCode(numindices, indices)) {

@@ -107,6 +107,16 @@ SoType SoAction::classTypeId;
   type.
 */
 
+/*!
+  \fn SoAction::PathCode SoAction::getCurPathCode(void) const
+  Returns the current traversal path code.
+*/
+
+/*!
+  \fn void SoAction::popCurPath(const PathCode prevpathcode)
+  Internal method used to optimize GLRender() traversal.
+*/
+
 // *************************************************************************
 
 /*!

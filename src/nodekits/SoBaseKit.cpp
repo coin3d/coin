@@ -105,11 +105,11 @@ SO_KIT_SOURCE(SoBaseKit);
 
 
 /*!
-  SoChildList * SoBaseKit::children
+  \var SoChildList * SoBaseKit::children
   \internal
 */
 /*!
-  SbBool SoBaseKit::connectionsSetUp
+  \var SbBool SoBaseKit::connectionsSetUp
   \internal
 */
 
@@ -550,6 +550,7 @@ static SbBool
 is_default_node(SoNode * node, const SoType & typecheck)
 {
   if (node->getTypeId() != typecheck) return FALSE;
+  if (node->getChildren() && node->getChildren()->getLength()) return FALSE;
 
   SoNode * definstance = NULL;
   const SoFieldData * fielddata = node->getFieldData();
@@ -1706,6 +1707,12 @@ SoBaseKit::findNodeInThisKit(SoNode * node, const int parentnum) const
   return -1;
 }
 
+#undef THIS
+
+// methods in SoBaseKitP are below
+
+#ifndef DOXYGEN_SKIP_THIS
+
 //
 // copy the fields in kit into a new fielddata. This is done to get
 // the correct write order: non-part fields first, then leaf parts,
@@ -1877,4 +1884,4 @@ SoBaseKitP::addKitDetail(SoFullPath * path, SoPickedPoint * pp)
   }
 }
 
-#undef THIS
+#endif // DOXYGEN_SKIP_THIS
