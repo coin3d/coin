@@ -203,10 +203,10 @@ SoGLRenderAction::~SoGLRenderAction()
 void
 SoGLRenderAction::setViewportRegion(const SbViewportRegion & newregion)
 {
-  if (this->getState()) {
-    SoViewportRegionElement::set(this->getState(), newregion);
-  }
   this->viewport = newregion;
+
+  // The SoViewportRegionElement is not set here, as it is always
+  // initialized before redraw in beginTraversal().
 }
 
 /*!
@@ -500,7 +500,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
   SoShapeStyleElement::setTransparencyType(this->getState(),
                                            this->transparencytype);
 
-  SoGLViewportRegionElement::set(this->getState(), this->viewport);
+  SoViewportRegionElement::set(this->getState(), this->viewport);
   SoLazyElement::setTransparencyType(this->getState(),
                                      (int32_t)this->transparencytype);
   SoLazyElement::setBlending(this->getState(), FALSE);
