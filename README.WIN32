@@ -317,3 +317,19 @@ Section 06 -- What is this ``configure'' thing?
   library in some temporary location that can be scrapped after you
   have built and installed the library.
 
+
+Sectioon  07 -- Library Dependencies
+====================================
+
+  To find out which dynamically loadable libraries an application loads
+  (depends on), the following commands might be of help:
+
+  MSVC 6:
+
+    depends <app.exe>
+
+  MSVC 7:
+  
+    dumpbin /dependents <app.exe>
+
+
