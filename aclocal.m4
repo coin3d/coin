@@ -1397,8 +1397,6 @@ dnl      Cygwin installation)
 dnl
 
 AC_DEFUN(SIM_CHECK_OPENGL,[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
-AC_PREREQ([2.14.1])
 
 AC_ARG_WITH(opengl, AC_HELP_STRING([--with-opengl=DIR], [OpenGL/Mesa installation directory]), , [with_opengl=yes])
 
@@ -1429,13 +1427,13 @@ if test x"$with_opengl" != xno; then
   AC_CACHE_CHECK([whether OpenGL libraries are available], sim_cv_lib_gl, [
     sim_cv_lib_gl=UNRESOLVED
     # Some platforms (like BeOS) have the GLU functionality in the GL library.
-    for i in -lMesaGL -lGL "-lMesaGLU -lMesaGL" "-lGLU -lGL"; do
+    for sim_ac_gl_libcheck in -lMesaGL -lGL "-lMesaGLU -lMesaGL" "-lGLU -lGL"; do
       if test "x$sim_cv_lib_gl" = "xUNRESOLVED"; then
-        LIBS="$i $sim_ac_save_libs"
+        LIBS="$sim_ac_gl_libcheck $sim_ac_save_libs"
         AC_TRY_LINK([#include <GL/gl.h>
                      #include <GL/glu.h>],
                     [glPointSize(1.0f); gluSphere(0L, 1.0, 1, 1);],
-                    sim_cv_lib_gl="$i")
+                    sim_cv_lib_gl="$sim_ac_gl_libcheck")
       fi
     done
   ])
@@ -1447,22 +1445,23 @@ if test x"$with_opengl" != xno; then
     sim_ac_gl_avail=yes
     AC_CACHE_CHECK([whether OpenGL libraries are the Mesa libraries],
       sim_cv_lib_gl_ismesa,
+      # (The "choke me" to prevent compilation was suggested by Akim Demaille.)
       [AC_TRY_LINK([#include <GL/gl.h>],
                    [#ifndef MESA
-                    #error not mesa
-                    #endif],
+choke me
+#endif],
                    sim_cv_lib_gl_ismesa=yes,
                    sim_cv_lib_gl_ismesa=no)])
     if test x"$sim_cv_lib_gl_ismesa" = xyes; then
       sim_ac_gl_is_mesa=yes
     fi
 
-    ifelse($1, , :, $1)
+    ifelse([$1], , :, [$1])
   else
     CPPFLAGS=$sim_ac_save_cppflags
     LDFLAGS=$sim_ac_save_ldflags
     LIBS=$sim_ac_save_libs
-    ifelse($2, , :, $2)
+    ifelse([$2], , :, [$2])
   fi
 fi
 ])
