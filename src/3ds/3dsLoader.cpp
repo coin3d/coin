@@ -46,20 +46,22 @@
 //  - incomplete texture implementation - in 3ds files there is possible to
 //    make materials with about 20 textures (diffuse color texture, specular
 //    texture, bump-map texture,... Also texture coordinates are not always
-//    loaded right, probably we should read more chunks to get this working
-//    right.
+//    loaded right, because 3ds uses many strange mapping modes. Probably,
+//    we should parse more chunks to get this working right.
 //
 //  - unimplemented lights
 //
 //  - per-vertex normals generation
 //
-//  - investigate the color of material-less objects
+//  - investigate the color of the default material objects
 //
 //  - ?environment? (ambient light, fog,...)
 //
 //  - ?emissiveColor? (I am really confused how to get this from 3ds.)
 //
 //  - maybe some animations?
+//
+//  - public API to control the loading
 //
 //
 
@@ -80,7 +82,9 @@
 #include <Inventor/nodes/SoTextureCoordinateBinding.h>
 #include <Inventor/nodes/SoTexture2Transform.h>
 #include <Inventor/nodes/SoTriangleStripSet.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/C/tidbits.h>
 #include <string.h>
 #include "SoStream.h"
 
@@ -290,7 +294,6 @@ typedef struct tagFace {
   uint16_t flags;
   tagFaceGroup *faceGroup;
   uint32_t e12,e23,e31;
-  // FIXME mortene: don't use "bool"
   SbBool isDegenerated;
 
   SbVec3f getNormal(tagContext *con) const;
@@ -349,6 +352,7 @@ typedef struct tagMaterial {
   float vscale;
   float uoffset;
   float voffset;
+  SbBool twoSided;
 
   SoMaterial *matCache;
   SoTexture2 *texture2Cache;
@@ -361,7 +365,7 @@ typedef struct tagMaterial {
   SbBool hasTexture2Transform(tagContext *con);
   SoTexture2Transform* getSoTexture2Transform(tagContext *con);
 
-  tagMaterial() : matCache(NULL), texture2Cache(NULL),
+  tagMaterial() : twoSided(FALSE), matCache(NULL), texture2Cache(NULL),
                   texture2TransformCache(NULL)  {}
   ~tagMaterial()  {
     if (matCache) matCache->unref();
@@ -390,6 +394,10 @@ typedef struct tagContext {
   float minX,maxX;
   float minY,maxY;
   float minZ,maxZ;
+  char objectName[11]; // inconsistence with documentation,
+                       // object name must be 11 chars (3ds doc says 10)
+  int totalVertices;
+  int totalFaces;
 
   // material stuff
   SbList<FaceGroup*> faceGroupList;
@@ -409,18 +417,43 @@ typedef struct tagContext {
   Edge *edgeList;
   uint32_t numEdges;
 
+  // scene graph generator stuff
+  SoTexture2 *genCurrentTexture;
+  SoMaterial *genCurrentMaterial;
+  SoTexture2Transform *genCurrentTexTransform;
+  SbBool genIsTwoSided;
+  // multiple-time used nodes
+  SoTexture2 *genEmptyTexture;
+  SoTexture2Transform *genEmptyTexTransform;
+  SoShapeHints *genOneSidedHints;
+  SoShapeHints *genTwoSidedHints;
+
 
   SoCoordinate3* createSoCoordinate3_i(tagContext *con) const;
   SoTextureCoordinate2* createSoTextureCoordinate2_i(tagContext *con) const;
 
+  SoTexture2* genGetEmptyTexture();
+  SoTexture2Transform* genGetEmptyTexTransform();
+  SoShapeHints* genGetOneSidedHints();
+  SoShapeHints* genGetTwoSidedHints();
+
   tagContext(SoStream &stream) : s(stream), root(NULL), cObj(NULL),
-      vertexList(NULL), faceList(NULL)  {}
+      totalVertices(0), totalFaces(0),
+      vertexList(NULL), faceList(NULL), genCurrentTexture(NULL),
+      genCurrentMaterial(NULL), genCurrentTexTransform(NULL),
+      genEmptyTexture(NULL), genEmptyTexTransform(NULL),
+      genOneSidedHints(NULL), genTwoSidedHints(NULL)  {}
   ~tagContext() {
-    for (int i=matList.getLength()-1; i>=1; i--) {
-      delete matList[i];
-    }
-    assert(!root && !cObj && !vertexList && !faceList &&
-        "Forgot to free some memory.");
+      for (int i=matList.getLength()-1; i>=1; i--)
+        delete matList[i];
+
+      if (genEmptyTexture)  genEmptyTexture->unref();
+      if (genEmptyTexTransform)  genEmptyTexTransform->unref();
+      if (genOneSidedHints)  genOneSidedHints->unref();
+      if (genTwoSidedHints)  genTwoSidedHints->unref();
+
+      assert(!root && !cObj && !vertexList && !faceList &&
+          "You forgot to free some memory.");
   }
 } Context;
 
@@ -442,6 +475,7 @@ CHUNK_DECL(LoadMatDiffuse);
 CHUNK_DECL(LoadMatSpecular);
 CHUNK_DECL(LoadShininess);
 CHUNK_DECL(LoadTransparency);
+CHUNK_DECL(LoadMatTwoSide);
 CHUNK_DECL(LoadColor24);
 CHUNK_DECL(LoadLinColor24);
 CHUNK_DECL(LoadIntPercentage);
@@ -455,6 +489,7 @@ CHUNK_DECL(LoadMapUScale);
 CHUNK_DECL(LoadMapVScale);
 CHUNK_DECL(LoadMapUOffset);
 CHUNK_DECL(LoadMapVOffset);
+static int coin_debug_3ds();
 
 
 
@@ -512,8 +547,12 @@ SbBool read3dsFile(SoStream *in, SoSeparator *&root,
   // read the stream header
   uint16_t header;
   *in >> header;
-  if (header != M3DMAGIC)
+  if (header != M3DMAGIC) {
+    if (coin_debug_3ds())
+      SoDebugError::postInfo("read3dsFile",
+                             "Bad 3ds stream: invalid header.");
     return FALSE;
+  }
 
   // prepare Context structure
   Context con(*in);
@@ -534,27 +573,34 @@ SbBool read3dsFile(SoStream *in, SoSeparator *&root,
 
   // initialize materials and prepare default one
   con.matList.append(&con.defaultMat);
-  // FIXME: values for the default material are probably completely wrong
+  // FIXME: the values for the default material are guessed one (maybe completely wrong)
   con.defaultMat.ambient = SbColor(0.6f, 0.6f, 0.6f);
   con.defaultMat.diffuse = SbColor(0.8f, 0.8f, 0.8f);
   con.defaultMat.specular = SbColor(0.f, 0.f, 0.f);
   con.defaultMat.shininess = 20;
   con.defaultMat.transparency = 0;
+  con.defaultMat.twoSided = TRUE;  // FIXME: is default material double sided?
+  con.defaultMat.matCache = new SoMaterial;
+  con.defaultMat.matCache->ref();
+  con.defaultMat.updateSoMaterial(0, con.defaultMat.matCache);
   con.cMat = 0;
 
   // build base scene graph
 
+#if 0 // OBSOLETE: single x double sided information is now read from the
+      // 3ds file, and we need no longer to set double facing globally
   // shape hints
   // we need to switch backface culling off and
   // turn double side lighting on
   // FIXME: optimization: double sided geometry is probably
   // specified by materials with MAT_TWO_SIDE chunk
-
-  // see doc why COUNTERCLOCKWISE and no UNKNOWN
   SoShapeHints *sh = new SoShapeHints;
   sh->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
   sh->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
   con.root->addChild(sh);
+#endif
+
+  // center model and scale it
   SoMatrixTransform *matrix = NULL;
   if (con.centerModel || modelSize != 0.f) {
     matrix = new SoMatrixTransform;
@@ -595,6 +641,10 @@ SbBool read3dsFile(SoStream *in, SoSeparator *&root,
   if (con.s.isBad()) {
     con.root->unref();
     con.root = NULL;
+    
+    if (coin_debug_3ds())
+      SoDebugError::postInfo("read3dsFile",
+                             "3ds loading failed.");
     return FALSE;
   }
 
@@ -623,6 +673,13 @@ SbBool read3dsFile(SoStream *in, SoSeparator *&root,
   con.root->unrefNoDelete();
   root = con.root;
   con.root = NULL;
+
+  // debug info
+  if (coin_debug_3ds())
+    SoDebugError::postInfo("read3dsFile",
+                           "File loading ok. Loaded %i vertices and %i faces.",
+                           con.totalVertices, con.totalFaces);
+
   return TRUE;
 }
 
@@ -674,6 +731,10 @@ CHUNK(LoadM3DMagic)
   HEADER;
   con->stopPos = con->s.getPos() + size - 6;
 
+  if (coin_debug_3ds())
+    SoDebugError::postInfo("LoadM3DMagic",
+                           "Loading 3ds stream (stream size: %i).", size);
+
   READ_SUBCHUNKS(
     case M3D_VERSION: LoadM3DVersion(con); break;
     case MDATA:       LoadMData(con); break;
@@ -712,6 +773,10 @@ CHUNK(LoadMeshVersion)
 
   int32_t version;
   con->s >> version;
+
+  if (coin_debug_3ds())
+    SoDebugError::postInfo("LoadMeshVersion",
+                           "The 3ds file version: %i.", version);
 }
 
 
@@ -723,9 +788,13 @@ CHUNK(LoadNamedObject)
   assert(!con->cObj && "Forgot to free the current object.");
 
   // read object name
+#if 0 // objectName moved to global structure Context
   char objectName[11]; // inconsistence with documentation,
-                       // object name can be 11 chars (doc says 10)
+                       // object name must be 11 chars (3ds doc says 10)
   con->s.readZString(objectName, 11);
+#else
+  con->s.readZString(con->objectName, 11);
+#endif
 
   READ_SUBCHUNKS(
     case N_TRI_OBJECT:  LoadNTriObject(con); break;
@@ -733,8 +802,8 @@ CHUNK(LoadNamedObject)
 
   if (con->cObj) {
     // set object name
-    if (con->loadObjNames && strlen(objectName) > 0)
-      con->cObj->setName(objectName);
+    if (con->loadObjNames && strlen(con->objectName) > 0)
+      con->cObj->setName(con->objectName);
 
     // add cObj to the main scene graph
     if (con->cObj->getNumChildren() > 0)
@@ -769,6 +838,13 @@ CHUNK(LoadNTriObject)
     case PROC_DATA:         SkipChunk(con); break;
   )
 
+  // debug info
+  if (coin_debug_3ds() >= 3)
+    SoDebugError::postInfo("LoadNTriObject",
+                           "Object %s parsed - vertices: %i, faces %i.", &con->objectName, con->numVertices, con->numFaces);
+  con->totalVertices += con->numVertices;
+  con->totalFaces += con->numFaces;
+
   // create object separator
   con->cObj = new SoSeparator;
   con->cObj->ref();
@@ -782,18 +858,53 @@ CHUNK(LoadNTriObject)
       con->cObj->addChild(con->createSoTextureCoordinate2_i(con));
   }
 
-  // create nodes from "default material"
+  // create "default material" scene
   if (!DefaultFaceGroup::isEmpty(con)) {
 
-    // default material have not a texture => switch it off
+    // default material has not a texture => switch it off
+#if 0 // non-optimized version
     if (con->loadTextures)
       con->cObj->addChild(new SoTexture2);
+#else
+    if (con->loadTextures) {
+      SoTexture2 *t = con->genGetEmptyTexture();
+      if (t != con->genCurrentTexture) {
+        con->genCurrentTexture = t;
+        con->cObj->addChild(t);
+      }
+      SoTexture2Transform *tt = con->genGetEmptyTexTransform();
+      if (tt != con->genCurrentTexTransform) {
+        con->genCurrentTexTransform = tt;
+        con->cObj->addChild(tt);
+      }
+    }
+#endif
+
     // materials
+#if 0 // non-optimized version
     if (con->loadMaterials)
       con->cObj->addChild(DefaultFaceGroup::getSoMaterial(con));
+#else
+    if (con->loadMaterials) {
+      SoMaterial *m = DefaultFaceGroup::getSoMaterial(con);
+      if (m != con->genCurrentMaterial) {
+        con->genCurrentMaterial = m;
+        con->cObj->addChild(con->genCurrentMaterial);
+      }
+    }
+#endif
+
     // normals
     if (con->appendNormals)
       con->cObj->addChild(DefaultFaceGroup::createSoNormal(con));
+
+    // single x double faces
+    if (DefaultFaceGroup::getMaterial(con)->twoSided != con->genIsTwoSided ||
+       (!con->genOneSidedHints && !con->genTwoSidedHints)) {
+      con->genIsTwoSided = DefaultFaceGroup::getMaterial(con)->twoSided;
+      con->cObj->addChild((con->genIsTwoSided) ?
+          con->genGetTwoSidedHints() : con->genGetOneSidedHints());
+    }
 
     // load default material geometry
     if (con->useIndexedTriSet) {
@@ -807,38 +918,65 @@ CHUNK(LoadNTriObject)
     }
   }
 
-  // create nodes with different materials
-  SbBool textureActive = FALSE;
-  SbBool textureTransformActive = FALSE;
+  // create non-default materials scene
   for (int i=0; i<con->faceGroupList.getLength(); i++) {
     FaceGroup *fg = con->faceGroupList[i];
 
     // materials
+#if 0 // non-optimized version
     if (con->loadMaterials)
       con->cObj->addChild(fg->getSoMaterial(con));
+#else
+    if (con->loadMaterials) {
+      SoMaterial *m = fg->getSoMaterial(con);
+      if (m != con->genCurrentMaterial) {
+        con->genCurrentMaterial = m;
+        con->cObj->addChild(m);
+      }
+    }
+#endif
+
     // normals
     if (con->appendNormals)
       con->cObj->addChild(fg->createSoNormal(con));
 
+    // textures - optimized code
     if (con->loadTextures) {
-      // texture
       if (fg->hasTexture2(con)) {
-        con->cObj->addChild(fg->getSoTexture2(con));
-        textureActive = TRUE;
-      } else
-        if (textureActive) {
-          con->cObj->addChild(new SoTexture2);
-          textureActive = FALSE;
+        SoTexture2 *t = fg->getSoTexture2(con);
+        if (t != con->genCurrentTexture) {
+          con->genCurrentTexture = t;
+          con->cObj->addChild(t);
         }
-      // texture transform
+      } else {
+        SoTexture2 *t = con->genGetEmptyTexture();
+        if (t != con->genCurrentTexture) {
+          con->genCurrentTexture = t;
+          con->cObj->addChild(t);
+        }
+      }
+      // texture transform - optimized code
       if (fg->hasTexture2Transform(con)) {
-        con->cObj->addChild(fg->getSoTexture2Transform(con));
-        textureTransformActive = TRUE;
-      } else
-        if (textureTransformActive) {
-          con->cObj->addChild(new SoTexture2Transform);
-          textureTransformActive = FALSE;
+        SoTexture2Transform *tt = fg->getSoTexture2Transform(con);
+        if (tt != con->genCurrentTexTransform) {
+          con->genCurrentTexTransform = tt;
+          con->cObj->addChild(tt);
         }
+      } else {
+        SoTexture2Transform *tt = con->genGetEmptyTexTransform();
+        if (tt != con->genCurrentTexTransform) {
+          con->genCurrentTexTransform = tt;
+          con->cObj->addChild(tt);
+        }
+      }
+    }
+
+    // single x double faces
+    if (fg->mat->twoSided != con->genIsTwoSided ||
+       (!con->genOneSidedHints && !con->genTwoSidedHints)) {
+      con->genIsTwoSided = fg->mat->twoSided;
+      con->cObj->addChild((con->genIsTwoSided) ?
+          con->genGetTwoSidedHints() : con->genGetOneSidedHints());
     }
 
     if (con->useIndexedTriSet) {
@@ -957,6 +1095,12 @@ CHUNK(LoadFaceArray)
     PROCESS_VERTEX(c, Z, 2);
     #undef PROCESS_VERTEX
   }
+
+  // report degenerated faces
+  if (con->numDefaultDegFaces > 0 && coin_debug_3ds() >= 2)
+    SoDebugError::postWarning("LoadFaceArray",
+                              "There are %i degenerated faces in the object named \"%s\" - removing them.",
+                              con->numDefaultDegFaces, &con->objectName);
 
   READ_SUBCHUNKS(
     case MSH_MAT_GROUP: LoadMshMatGroup(con); break;
@@ -1085,6 +1229,7 @@ CHUNK(LoadMatEntry)
     case MAT_SPECULAR: LoadMatSpecular(con); break;
     case MAT_SHININESS: LoadShininess(con); break;
     case MAT_TRANSPARENCY: LoadTransparency(con); break;
+    case MAT_TWO_SIDE: LoadMatTwoSide(con); break;
     case MAT_TEXMAP:   LoadTexMap(con); break;
   )
 
@@ -1159,6 +1304,15 @@ CHUNK(LoadShininess)
   // FIXME: should we combine shininess chunk with shin2pct
   // to get right shininess value?
   con->cMat->shininess = con->cColorInt;
+}
+
+
+
+CHUNK(LoadMatTwoSide)
+{
+  HEADER;
+
+  con->cMat->twoSided = TRUE;
 }
 
 
@@ -1441,7 +1595,7 @@ SoNormal* FaceGroup::createSoNormal(tagContext *con)
     }
     normals->vector.finishEditing();
   } else {
-/*  FIXME: This is incomplete implementation of per-vertex generator.
+/*  FIXME: This is incomplete implementation of per-vertex normal generator.
 
     normals->vector.setNum(num*3);
     SbVec3f *v = normals->vector.startEditing();
@@ -1769,4 +1923,67 @@ SoTextureCoordinate2* Context::createSoTextureCoordinate2_i(tagContext *con) con
     c[i] = con->vertexList[i].texturePoint;
   tCoords->point.finishEditing();
   return tCoords;
+}
+
+
+
+SoTexture2* Context::genGetEmptyTexture()
+{
+  if (!genEmptyTexture) {
+    genEmptyTexture = new SoTexture2;
+    genEmptyTexture->ref();
+  }
+  return genEmptyTexture;
+}
+
+
+
+SoTexture2Transform* Context::genGetEmptyTexTransform()
+{
+  if (!genEmptyTexTransform) {
+    genEmptyTexTransform = new SoTexture2Transform;
+    genEmptyTexTransform->ref();
+  }
+  return genEmptyTexTransform;
+}
+
+
+
+SoShapeHints* Context::genGetOneSidedHints()
+{
+  if (!genOneSidedHints) {
+    genOneSidedHints = new SoShapeHints;
+    genOneSidedHints->ref();
+    // backface culling on, one-sided lighting
+    genOneSidedHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    genOneSidedHints->shapeType = SoShapeHints::SOLID;
+  }
+  return genOneSidedHints;
+}
+
+
+
+SoShapeHints* Context::genGetTwoSidedHints()
+{
+  if (!genTwoSidedHints) {
+    genTwoSidedHints = new SoShapeHints;
+    genTwoSidedHints->ref();
+    // backface culling off, two-sided lighting
+    genTwoSidedHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    genTwoSidedHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+  }
+  return genTwoSidedHints;
+}
+
+
+
+/* Return value of COIN_DEBUG_3DS environment variable. */
+static int coin_debug_3ds()
+{
+  static int d = -1;
+  if (d == -1) {
+    const char * val = coin_getenv("COIN_DEBUG_3DS");
+    d = val ? atoi(val) : 0;
+  }
+  return d;
 }
