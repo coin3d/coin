@@ -207,6 +207,17 @@ and explains the principles applied fairly well.
   of thing, which is why the example uses it instead of the Bourne syntax]
 
 
+* Make yourself familiar with the Valgrind tool, which is *extremely*
+  useful for tracking down memory corruption problems. A link to
+  Valgrind can be found on <URL:http://freshmeat.net>.
+
+  Note that Valgrind, with a few patches to the current version (1.0.3
+  as of this writing), can also be used for profiling code _without_
+  having to re-compile everything (like what is necessary for gprof,
+  for instance).
+
+
+
 4 Misc Configurations
 =====================
 
@@ -480,12 +491,13 @@ created from the source release tarball.
 Correcting Erroneous Log Messages
 =================================
 
-Sometimes commits end up with incorrect log messages.  It can be fixed with
-this command:
+Sometimes commits ends up with incorrect log messages due to the
+committer being a bit too trigger-happy.  It can be fixed with this
+command:
 
   $ cvs admin -m<rev>:<new log message> <file>
 
-Do this instead of reversing and reapplying or other roundabout and
+Do this instead of reversing and reapplying, or other round-about and
 confusing techniques...
 
 
