@@ -43,18 +43,6 @@ SoAnnoText3CharOrientElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoAnnoText3CharOrientElement::createInstance()
-*/
-
-SoAnnoText3CharOrientElement::SoAnnoText3CharOrientElement(void)
-{
-    setTypeId(SoAnnoText3CharOrientElement::classTypeId);
-    setStackIndex(SoAnnoText3CharOrientElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

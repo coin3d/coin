@@ -51,17 +51,6 @@ SoReplacedElement::initClass(void)
 }
 
 /*!
-  The constructor.  Can't be used directly.  This is an abstract base class.
-*/
-
-SoReplacedElement::SoReplacedElement(void)
-  : nodeId(0)
-{
-  setTypeId(SoReplacedElement::classTypeId);
-  setStackIndex(SoReplacedElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 
@@ -75,6 +64,7 @@ void
 SoReplacedElement::init(SoState * state)
 {
   inherited::init(state);
+  this->nodeId = 0;
 }
 
 //! FIXME: write doc.

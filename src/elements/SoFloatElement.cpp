@@ -46,18 +46,6 @@ SoFloatElement::initClass(void)
 }
 
 /*!
-  The constructor initialized the float to 0.0, and sets the class type
-  identifier and stack index.
-*/
-
-SoFloatElement::SoFloatElement(void)
-  : data(0.0f)
-{
-    setTypeId(SoFloatElement::classTypeId);
-    setStackIndex(SoFloatElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

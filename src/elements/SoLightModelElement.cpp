@@ -51,18 +51,6 @@ SoLightModelElement::initClass()
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoLightModelElement::createInstance(void)
-*/
-
-SoLightModelElement::SoLightModelElement()
-{
-  setTypeId(classTypeId);
-  setStackIndex(classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

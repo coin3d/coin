@@ -78,7 +78,11 @@
   This static method returns the state stack index for the class.
 */
 
-SO_ELEMENT_ABSTRACT_SOURCE(SoElement);
+
+int SoElement::classStackIndex;
+SoType SoElement::classTypeId = SoType::badType();
+SoType SoElement::getClassTypeId(void) { return SoElement::classTypeId; }
+int SoElement::getClassStackIndex(void) { return SoElement::classStackIndex; }
 
 
 

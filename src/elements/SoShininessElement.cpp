@@ -58,18 +58,6 @@ SoShininessElement::initClass()
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoShininessElement::createInstance(void)
-*/
-
-SoShininessElement::SoShininessElement()
-{
-  setTypeId(classTypeId);
-  setStackIndex(classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

@@ -71,20 +71,6 @@ SoClipPlaneElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoClipPlaneElement::createInstance()
-*/
-
-SoClipPlaneElement::SoClipPlaneElement()
-  : startIndex(0),
-    planes(1)
-{
-  setTypeId(SoClipPlaneElement::classTypeId);
-  setStackIndex(SoClipPlaneElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

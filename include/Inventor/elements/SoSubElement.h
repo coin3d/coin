@@ -50,34 +50,41 @@ public: \
   static void * createInstance(void)
 
 
-#define SO_ELEMENT_ABSTRACT_SOURCE(_class_) \
+#define PRIVATE_SOELEMENT_VARIABLES(_class_) \
 int _class_::classStackIndex; \
 SoType _class_::classTypeId = SoType::badType(); \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
 int _class_::getClassStackIndex(void) { return _class_::classStackIndex; }
 
+
+#define SO_ELEMENT_ABSTRACT_SOURCE(_class_) \
+PRIVATE_SOELEMENT_VARIABLES(_class_) \
+_class_::_class_(void) { }
+
 #define SO_ELEMENT_SOURCE(_class_) \
-SO_ELEMENT_ABSTRACT_SOURCE(_class_); \
+PRIVATE_SOELEMENT_VARIABLES(_class_) \
+_class_::_class_(void) { this->setTypeId(_class_::classTypeId); \
+                         this->setStackIndex(_class_::classStackIndex); } \
 void * _class_::createInstance(void) { return (void *) new _class_; }
 
 
-#define SO_ELEMENT_INIT_ABSTRACT_CLASS(_class_, _parent_) \
+#define PRIVATE_SOELEMENT_INIT(_class_, _parent_, _instantiate_) \
   do { \
     assert(_class_::classTypeId == SoType::badType()); \
     assert(_parent_::getClassTypeId() != SoType::badType()); \
-    _class_::classTypeId = SoType::createType(_parent_::getClassTypeId(), SO__QUOTE(_class_), NULL); \
+    _class_::classTypeId = SoType::createType(_parent_::getClassTypeId(), \
+                                              SO__QUOTE(_class_), \
+                                              _instantiate_); \
     if (_parent_::classStackIndex < 0) _class_::classStackIndex = _class_::createStackIndex(_class_::classTypeId); \
     else _class_::classStackIndex = _parent_::classStackIndex; \
   } while (0)
 
+
+#define SO_ELEMENT_INIT_ABSTRACT_CLASS(_class_, _parent_) \
+  PRIVATE_SOELEMENT_INIT(_class_, _parent_, NULL)
+
 #define SO_ELEMENT_INIT_CLASS(_class_, _parent_) \
-  do { \
-    assert(_class_::classTypeId == SoType::badType()); \
-    assert(_parent_::getClassTypeId() != SoType::badType()); \
-    _class_::classTypeId = SoType::createType(_parent_::getClassTypeId(), SO__QUOTE(_class_), &_class_::createInstance); \
-    if (_parent_::classStackIndex < 0) _class_::classStackIndex = _class_::createStackIndex(_class_::classTypeId); \
-    else _class_::classStackIndex = _parent_::classStackIndex; \
-  } while(0)
+  PRIVATE_SOELEMENT_INIT(_class_, _parent_, &_class_::createInstance)
 
 
 #endif // !COIN_SOSUBELEMENT_H

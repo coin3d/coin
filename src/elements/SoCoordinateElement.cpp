@@ -88,22 +88,6 @@ SoCoordinateElement::clean(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoCoordinateElement::createInstance(void)
-*/
-
-SoCoordinateElement::SoCoordinateElement(void)
-  : numCoords(1),
-    coords3D(SoCoordinateElement::initialdefaultcoords),
-    coords4D(NULL),
-    areCoords3D(TRUE)
-{
-  setTypeId(SoCoordinateElement::classTypeId);
-  setStackIndex(SoCoordinateElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

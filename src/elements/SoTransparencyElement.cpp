@@ -56,18 +56,6 @@ SoTransparencyElement::initClass()
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoTransparencyElement::createInstance(void)
-*/
-
-SoTransparencyElement::SoTransparencyElement()
-{
-  setTypeId(classTypeId);
-  setStackIndex(classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

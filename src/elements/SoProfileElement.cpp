@@ -55,19 +55,6 @@ SoProfileElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoProfileElement::createInstance(void)
-*/
-
-SoProfileElement::SoProfileElement(void)
-  : profiles()
-{
-    setTypeId(SoProfileElement::classTypeId);
-    setStackIndex(SoProfileElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

@@ -73,19 +73,6 @@ SoModelMatrixElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa SoModelMatrixElement::createInstance(void)
-*/
-
-SoModelMatrixElement::SoModelMatrixElement(void)
-  : modelMatrix(), cullMatrix(), combinedMatrix(), flags(0)
-{
-  setTypeId(SoModelMatrixElement::classTypeId);
-  setStackIndex(SoModelMatrixElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

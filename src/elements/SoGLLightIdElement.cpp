@@ -65,19 +65,6 @@ SoGLLightIdElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLLightIdElement::createInstance(void)
-*/
-
-SoGLLightIdElement::SoGLLightIdElement()
-{
-    setTypeId(SoGLLightIdElement::classTypeId);
-    setStackIndex(SoGLLightIdElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

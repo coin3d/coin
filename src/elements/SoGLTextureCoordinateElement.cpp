@@ -50,18 +50,6 @@ SoGLTextureCoordinateElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLTextureCoordinateElement::createInstance(void)
-*/
-
-SoGLTextureCoordinateElement::SoGLTextureCoordinateElement()
-{
-    setTypeId(SoGLTextureCoordinateElement::classTypeId);
-    setStackIndex(SoGLTextureCoordinateElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 
@@ -157,7 +145,7 @@ SoGLTextureCoordinateElement::send(const int index,
                                    const SbVec3f &c,
                                    const SbVec3f &n) const
 {
-  if (this->whatKind == FUNCTION) {    
+  if (this->whatKind == FUNCTION) {
     assert(this->funcCB);
     const SbVec4f &tc = this->funcCB(this->funcCBData, c, n);
     glTexCoord4fv(tc.getValue());
@@ -166,7 +154,7 @@ SoGLTextureCoordinateElement::send(const int index,
     assert(this->whatKind == EXPLICIT);
     //
     // FIXME: these tests are just here to avoid crashes when illagal
-    // files are rendered. Will remove later, when we implement a 
+    // files are rendered. Will remove later, when we implement a
     // SoVerifyGraphAction or something. pederb, 20000218
     //
     if (index < 0) return;

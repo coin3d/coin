@@ -42,19 +42,6 @@ SoSwitchElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoSwitchElement::createInstance(void)
-*/
-
-SoSwitchElement::SoSwitchElement(void)
-{
-    setTypeId(SoSwitchElement::classTypeId);
-    setStackIndex(SoSwitchElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

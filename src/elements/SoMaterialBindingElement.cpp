@@ -49,19 +49,6 @@ SoMaterialBindingElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoMaterialBindingElement::createInstance(void)
-*/
-
-SoMaterialBindingElement::SoMaterialBindingElement(void)
-{
-    setTypeId(SoMaterialBindingElement::classTypeId);
-    setStackIndex(SoMaterialBindingElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

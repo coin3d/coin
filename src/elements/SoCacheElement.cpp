@@ -45,19 +45,6 @@ SoCacheElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoCacheElement::createInstance()
-*/
-
-SoCacheElement::SoCacheElement(void)
-  : cache(NULL)
-{
-    setTypeId(SoCacheElement::classTypeId);
-    setStackIndex(SoCacheElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 
@@ -73,6 +60,7 @@ void
 SoCacheElement::init(SoState * state)
 {
     inherited::init(state);
+    this->cache = NULL;
 }
 
 //! FIXME: write doc.

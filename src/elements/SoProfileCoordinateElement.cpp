@@ -86,22 +86,6 @@ SoProfileCoordinateElement::clean(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoProfileCoordinateElement::createInstance(void)
-*/
-
-SoProfileCoordinateElement::SoProfileCoordinateElement(void)
-  : numCoords(1),
-    coords2(SoProfileCoordinateElement::initdefaultcoords),
-    coords3(NULL),
-    coordsAre2D(TRUE)
-{
-    setTypeId(SoProfileCoordinateElement::classTypeId);
-    setStackIndex(SoProfileCoordinateElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

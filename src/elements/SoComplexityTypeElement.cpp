@@ -51,19 +51,6 @@ SoComplexityTypeElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoComplexityElement::createInstance(void)
-*/
-
-SoComplexityTypeElement::SoComplexityTypeElement(void)
-{
-    setTypeId(SoComplexityTypeElement::classTypeId);
-    setStackIndex(SoComplexityTypeElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 
@@ -91,7 +78,7 @@ void
 SoComplexityTypeElement::init(SoState * state)
 {
   inherited::init(state);
-  this->data = OBJECT_SPACE;
+  this->data = getDefault();
 }
 
 //! FIXME: write doc.

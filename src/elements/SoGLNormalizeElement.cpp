@@ -60,18 +60,6 @@ SoGLNormalizeElement::initClass()
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLNormalizeElement::createInstance(void)
-*/
-
-SoGLNormalizeElement::SoGLNormalizeElement()
-{
-  setTypeId(SoGLNormalizeElement::classTypeId);
-  setStackIndex(SoGLNormalizeElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

@@ -56,18 +56,6 @@ SoGLUpdateAreaElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLUpdateAreaElement::createInstance(void)
-*/
-
-SoGLUpdateAreaElement::SoGLUpdateAreaElement(void)
-{
-    setTypeId(SoGLUpdateAreaElement::classTypeId);
-    setStackIndex(SoGLUpdateAreaElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

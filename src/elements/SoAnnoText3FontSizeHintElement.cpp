@@ -49,19 +49,6 @@ SoAnnoText3FontSizeHintElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoAnnoText3FontSizeHintElement::createInstance()
-*/
-
-SoAnnoText3FontSizeHintElement::SoAnnoText3FontSizeHintElement(void)
-{
-    setTypeId(SoAnnoText3FontSizeHintElement::classTypeId);
-    setStackIndex(SoAnnoText3FontSizeHintElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

@@ -50,19 +50,6 @@ SoDecimationTypeElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoDecimationTypeElement::createInstance(void)
-*/
-
-SoDecimationTypeElement::SoDecimationTypeElement(void)
-{
-    setTypeId(SoDecimationTypeElement::classTypeId);
-    setStackIndex(SoDecimationTypeElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 
@@ -87,6 +74,7 @@ void
 SoDecimationTypeElement::init(SoState * state)
 {
     inherited::init(state);
+    this->data = getDefault();
 }
 
 //! FIXME: write doc.

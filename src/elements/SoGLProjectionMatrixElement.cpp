@@ -48,18 +48,6 @@ SoGLProjectionMatrixElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLProjectionMatrixElement::createInstance(void)
-*/
-
-SoGLProjectionMatrixElement::SoGLProjectionMatrixElement(void)
-{
-    setTypeId(SoGLProjectionMatrixElement::classTypeId);
-    setStackIndex(SoGLProjectionMatrixElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

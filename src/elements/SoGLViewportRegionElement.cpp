@@ -52,18 +52,6 @@ SoGLViewportRegionElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLViewportRegionElement::createInstance(void)
-*/
-
-SoGLViewportRegionElement::SoGLViewportRegionElement()
-{
-  setTypeId(SoGLViewportRegionElement::classTypeId);
-  setStackIndex(SoGLViewportRegionElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

@@ -52,18 +52,6 @@ SoNormalElement::initClass()
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoNormalElement::createInstance(void)
-*/
-
-SoNormalElement::SoNormalElement()
-{
-  this->setTypeId(SoNormalElement::classTypeId);
-  this->setStackIndex(SoNormalElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

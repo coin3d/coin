@@ -49,20 +49,6 @@ SoAccumulatedElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.  This is an abstract base class.
-*/
-
-SoAccumulatedElement::SoAccumulatedElement()
-{
-  setTypeId(SoAccumulatedElement::classTypeId);
-  setStackIndex(SoAccumulatedElement::classStackIndex);
-
-  // FIXME: there's no init method which cleans out the nodeIds
-  // SbPList, won't this result in a memory leak? Or is this taken
-  // care of through the use of setNodeId()? 19990418 mortene.
-}
-
-/*!
   The destructor.
 */
 

@@ -43,19 +43,6 @@ SoFontSizeElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoFontSizeElement::createInstance(void)
-*/
-
-SoFontSizeElement::SoFontSizeElement(void)
-{
-    setTypeId(SoFontSizeElement::classTypeId);
-    setStackIndex(SoFontSizeElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

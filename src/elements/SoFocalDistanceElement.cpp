@@ -43,19 +43,6 @@ SoFocalDistanceElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoFocalDistanceElement::createInstance(void)
-*/
-
-SoFocalDistanceElement::SoFocalDistanceElement(void)
-{
-    setTypeId(SoFocalDistanceElement::classTypeId);
-    setStackIndex(SoFocalDistanceElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

@@ -59,18 +59,6 @@ SoShapeStyleElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoShapeStyleElement::createInstance(void)
-*/
-
-SoShapeStyleElement::SoShapeStyleElement()
-{
-  setTypeId(SoShapeStyleElement::classTypeId);
-  setStackIndex(SoShapeStyleElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

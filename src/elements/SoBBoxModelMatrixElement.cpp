@@ -43,19 +43,6 @@ SoBBoxModelMatrixElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoBBoxModelMatrixElement::createInstance()
-*/
-
-SoBBoxModelMatrixElement::SoBBoxModelMatrixElement()
-  : state(NULL)
-{
-  setTypeId(SoBBoxModelMatrixElement::classTypeId);
-  setStackIndex(SoBBoxModelMatrixElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

@@ -20,7 +20,7 @@
 /*!
   \class SoTextureOverrideElement Inventor/elements/SoTextureOverrideElement.h
   \brief The SoTextureOverrideElement makes it possible to override texture elements.
-  
+
 */
 
 
@@ -29,27 +29,15 @@
 
 SO_ELEMENT_SOURCE(SoTextureOverrideElement);
 
-/*! 
+/*!
 This static method initializes static data for the
-SoTextureOverrideElement class. 
+SoTextureOverrideElement class.
 */
 
 void
 SoTextureOverrideElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoTextureOverrideElement, inherited);
-}
-
-/*! 
-A constructor.  Can't be used directly. 
-
-\sa void * SoOverrideElement::createInstance(void)
-*/
-
-SoTextureOverrideElement::SoTextureOverrideElement(void)
-{
-  setTypeId(SoTextureOverrideElement::classTypeId);
-  setStackIndex(SoTextureOverrideElement::classStackIndex);
 }
 
 /*!
@@ -62,7 +50,7 @@ SoTextureOverrideElement::~SoTextureOverrideElement(void)
 
 //!
 
-SbBool 
+SbBool
 SoTextureOverrideElement::matches(const SoElement *element) const
 {
   return ((SoTextureOverrideElement*)element)->flags == this->flags;
@@ -73,7 +61,7 @@ SoTextureOverrideElement::matches(const SoElement *element) const
 SoElement *
 SoTextureOverrideElement::copyMatchInfo() const
 {
-  SoTextureOverrideElement *elem = 
+  SoTextureOverrideElement *elem =
     (SoTextureOverrideElement*) this->getTypeId().createInstance();
   elem->flags = this->flags;
   return elem;
@@ -81,7 +69,7 @@ SoTextureOverrideElement::copyMatchInfo() const
 
 //!
 
-void 
+void
 SoTextureOverrideElement::init(SoState *state)
 {
   this->flags = 0;
@@ -89,7 +77,7 @@ SoTextureOverrideElement::init(SoState *state)
 
 //!
 
-void 
+void
 SoTextureOverrideElement::push(SoState *state)
 {
   inherited::push(state);
@@ -97,9 +85,9 @@ SoTextureOverrideElement::push(SoState *state)
   next->flags = this->flags;
 }
 
-//! 
+//!
 
-SbBool 
+SbBool
 SoTextureOverrideElement::getQualityOverride(SoState *state)
 {
   const SoTextureOverrideElement * const element =
@@ -109,7 +97,7 @@ SoTextureOverrideElement::getQualityOverride(SoState *state)
 
 //!
 
-SbBool 
+SbBool
 SoTextureOverrideElement::getImageOverride(SoState *state)
 {
   const SoTextureOverrideElement * const element =
@@ -118,8 +106,8 @@ SoTextureOverrideElement::getImageOverride(SoState *state)
 }
 
 //!
-  
-void 
+
+void
 SoTextureOverrideElement::setQualityOverride(SoState *state, const SbBool value)
 {
   SoTextureOverrideElement * const element =
@@ -132,7 +120,7 @@ SoTextureOverrideElement::setQualityOverride(SoState *state, const SbBool value)
 
 //!
 
-void 
+void
 SoTextureOverrideElement::setImageOverride(SoState *state, const SbBool value)
 {
   SoTextureOverrideElement * const element =
@@ -144,10 +132,8 @@ SoTextureOverrideElement::setImageOverride(SoState *state, const SbBool value)
 }
 
 //!
-void 
+void
 SoTextureOverrideElement::print(FILE *fp) const
 {
   fprintf(fp, "SoTextureOverrideElement::flags: 0x%x\n", this->flags);
 }
-
-

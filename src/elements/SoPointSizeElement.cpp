@@ -42,19 +42,6 @@ SoPointSizeElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa SoPointSizeElement::createInstance(void)
-*/
-
-SoPointSizeElement::SoPointSizeElement(void)
-{
-    setTypeId(SoPointSizeElement::classTypeId);
-    setStackIndex(SoPointSizeElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

@@ -53,19 +53,6 @@ SoGLModelMatrixElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLModelMatrixElement::createInstance(void)
-*/
-
-SoGLModelMatrixElement::SoGLModelMatrixElement(void)
-  : state(NULL), viewEltNodeId( 0 )
-{
-    setTypeId(SoGLModelMatrixElement::classTypeId);
-    setStackIndex(SoGLModelMatrixElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 
@@ -79,6 +66,7 @@ void
 SoGLModelMatrixElement::init(SoState * state)
 {
   this->state = state;
+  this->viewEltNodeId = 0;
   inherited::init(state);
 }
 
@@ -184,4 +172,3 @@ SoGLModelMatrixElement::popMatrixElt(const SbMatrix &matrix)
     this->setElt(matrix);
   }
 }
-

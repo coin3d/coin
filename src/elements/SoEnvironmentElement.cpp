@@ -85,18 +85,6 @@ SoEnvironmentElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoEnvironmentElement::createInstance(void)
-*/
-
-SoEnvironmentElement::SoEnvironmentElement(void)
-{
-  setTypeId(SoEnvironmentElement::classTypeId);
-  setStackIndex(SoEnvironmentElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

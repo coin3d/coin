@@ -48,19 +48,6 @@ SoNormalBindingElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoNormalBindingElement::createInstance(void)
-*/
-
-SoNormalBindingElement::SoNormalBindingElement(void)
-{
-    setTypeId(SoNormalBindingElement::classTypeId);
-    setStackIndex(SoNormalBindingElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

@@ -47,18 +47,6 @@ SoInt32Element::initClass(void)
 }
 
 /*!
-  The constructor initialized the int32_t to 0, and sets the class type
-  identifier and stack index of the element.
-*/
-
-SoInt32Element::SoInt32Element(void)
-  : data(0)
-{
-  setTypeId(SoInt32Element::classTypeId);
-  setStackIndex(SoInt32Element::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

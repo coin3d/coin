@@ -41,19 +41,6 @@ SoTextureQualityElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoTextureQualityElement::createInstance(void)
-*/
-
-SoTextureQualityElement::SoTextureQualityElement(void)
-{
-  setTypeId(SoTextureQualityElement::classTypeId);
-  setStackIndex(SoTextureQualityElement::classStackIndex);
-  this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

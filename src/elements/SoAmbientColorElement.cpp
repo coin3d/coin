@@ -68,18 +68,6 @@ SoAmbientColorElement::init(SoState * /* state */)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoAmbientColorElement::createInstance()
-*/
-
-SoAmbientColorElement::SoAmbientColorElement()
-{
-  this->setTypeId(SoAmbientColorElement::classTypeId);
-  this->setStackIndex(SoAmbientColorElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

@@ -48,18 +48,6 @@ SoGLAmbientColorElement::initClass()
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLAmbientColorElement::createInstance(void)
-*/
-
-SoGLAmbientColorElement::SoGLAmbientColorElement()
-{
-  setTypeId(classTypeId);
-  setStackIndex(classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

@@ -21,7 +21,7 @@
   \class SoGLLazyElement Inventor/elements/SoGLLazyElement.h
   \brief The SoGLLazyElement class is meant to optimize GL rendering.
 
-  This is just a wrap-around implementation for compatibility. It should 
+  This is just a wrap-around implementation for compatibility. It should
   (hopefully) work in the same way as the Inventor class though.
 */
 
@@ -45,21 +45,13 @@ SoGLLazyElement::initClass()
 
 // ! FIXME: write doc
 
-SoGLLazyElement::SoGLLazyElement()
-{
-  setTypeId(SoGLLazyElement::classTypeId);
-  setStackIndex(SoGLLazyElement::classStackIndex);
-}
-
-// ! FIXME: write doc
-
 SoGLLazyElement::~SoGLLazyElement()
 {
 }
 
 //! FIXME: write doc
 
-void 
+void
 SoGLLazyElement::sendAllMaterial(SoState */*state*/)
 {
   // elements should be up-to-date. Do nothing.
@@ -67,7 +59,7 @@ SoGLLazyElement::sendAllMaterial(SoState */*state*/)
 
 //! FIXME: write doc
 
-void 
+void
 SoGLLazyElement::sendNoMaterial(SoState *state)
 {
   // elements should be up-to-date. Do nothing.
@@ -75,7 +67,7 @@ SoGLLazyElement::sendNoMaterial(SoState *state)
 
 //! FIXME: write doc
 
-void 
+void
 SoGLLazyElement::sendOnlyDiffuseColor(SoState *state)
 {
   // SoGLDiffuseColorElement should be up-to-date. Do nothing.
@@ -83,7 +75,7 @@ SoGLLazyElement::sendOnlyDiffuseColor(SoState *state)
 
 //! FIXME: write doc
 
-void 
+void
 SoGLLazyElement::sendDiffuseByIndex(int index) const
 {
   SoGLDiffuseColorElement * elem = (SoGLDiffuseColorElement*)
@@ -93,7 +85,7 @@ SoGLLazyElement::sendDiffuseByIndex(int index) const
 
 //! FIXME: write doc
 
-SbBool 
+SbBool
 SoGLLazyElement::isColorIndex(SoState *state)
 {
   COIN_STUB();
@@ -105,13 +97,13 @@ SoGLLazyElement::isColorIndex(SoState *state)
 SoGLLazyElement *
 SoGLLazyElement::getInstance(const SoState *state)
 {
-  return (SoGLLazyElement*)SoElement::getConstElement((SoState*)state, 
+  return (SoGLLazyElement*)SoElement::getConstElement((SoState*)state,
                                                       classStackIndex);
 }
 
 //! FIXME: write doc
 
-void 
+void
 SoGLLazyElement::send(const SoState *state, uint32_t mask) const
 {
   // elements should be up=to-date. Do nothing.
@@ -119,17 +111,17 @@ SoGLLazyElement::send(const SoState *state, uint32_t mask) const
 
 //! FIXME: write doc
 
-void 
+void
 SoGLLazyElement::sendVPPacked(SoState* state, const unsigned char* pcolor)
 {
   SoGLDiffuseColorElement * elem = (SoGLDiffuseColorElement*)
     SoElement::getConstElement(state, classStackIndex);
-  const uint32_t rgba = 
+  const uint32_t rgba =
     (pcolor[0] << 24) | (pcolor[1] << 16) | (pcolor[2] << 8) | pcolor[3];
-  elem->sendOnePacked(rgba); 
+  elem->sendOnePacked(rgba);
 
-  // FIXME: I couldn't be bothered to support polygon stipples for 
-  // transparency here. Let me know if anybody needs it, and I'll implement it. 
+  // FIXME: I couldn't be bothered to support polygon stipples for
+  // transparency here. Let me know if anybody needs it, and I'll implement it.
   // I don't think polygons stipples will be used for transparency much longer,
   // as it looks darn ugly, and often is slower than blending on PCs
   // with a 3D accelerator. pederb, 20000214
@@ -137,14 +129,14 @@ SoGLLazyElement::sendVPPacked(SoState* state, const unsigned char* pcolor)
 
 //! FIXME: write doc
 
-void 
+void
 SoGLLazyElement::reset(SoState * /*state*/,  uint32_t /*mask*/) const
 {
 }
 
 //! FIXME: write doc
 
-SbBool 
+SbBool
 SoGLLazyElement::lazyMatches(uint32_t /*checkGLFlag*/, uint32_t /*checkIVFlag*/,
                              const SoGLLazyElement * /*eltInState*/)
 {
@@ -154,7 +146,7 @@ SoGLLazyElement::lazyMatches(uint32_t /*checkGLFlag*/, uint32_t /*checkIVFlag*/,
 
 //! FIXME: write doc
 
-SoGLLazyElement * 
+SoGLLazyElement *
 SoGLLazyElement::copyLazyMatchInfo(SoState* /*state*/)
 {
   COIN_STUB();
@@ -162,9 +154,9 @@ SoGLLazyElement::copyLazyMatchInfo(SoState* /*state*/)
 }
 
 //! FIXME: write doc
-  
-void 
-SoGLLazyElement::getCopyGL(SoGLLazyElement * /*cacheLazyElement*/, 
+
+void
+SoGLLazyElement::getCopyGL(SoGLLazyElement * /*cacheLazyElement*/,
                            SoGLLazyElement::GLLazyState & /*cacheGLState*/)
 {
   COIN_STUB();
@@ -172,8 +164,8 @@ SoGLLazyElement::getCopyGL(SoGLLazyElement * /*cacheLazyElement*/,
 
 //! FIXME: write doc
 
-void 
-SoGLLazyElement::copyBackGL(SoGLLazyElement * /*cacheLazyElement*/, 
+void
+SoGLLazyElement::copyBackGL(SoGLLazyElement * /*cacheLazyElement*/,
                             SoGLLazyElement::GLLazyState & /*cacheGLState*/)
 {
   COIN_STUB();
@@ -181,11 +173,11 @@ SoGLLazyElement::copyBackGL(SoGLLazyElement * /*cacheLazyElement*/,
 
 //! FIXME: write doc
 
-void 
-SoGLLazyElement::mergeCacheInfo(SoGLRenderCache * /*childCache*/, 
-                                SoGLRenderCache* /*parentCache*/, 
-                                uint32_t /*doSendFlag*/, 
-                                uint32_t /*checkIVFlag*/, 
+void
+SoGLLazyElement::mergeCacheInfo(SoGLRenderCache * /*childCache*/,
+                                SoGLRenderCache* /*parentCache*/,
+                                uint32_t /*doSendFlag*/,
+                                uint32_t /*checkIVFlag*/,
                                 uint32_t /*checkGLFlag*/)
 {
   COIN_STUB();

@@ -74,18 +74,6 @@ SoPolygonOffsetElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoPolygonOffsetElement::createInstance(void)
-*/
-
-SoPolygonOffsetElement::SoPolygonOffsetElement(void)
-{
-    setTypeId(SoPolygonOffsetElement::classTypeId);
-    setStackIndex(SoPolygonOffsetElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

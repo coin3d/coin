@@ -59,14 +59,6 @@ SoLazyElement::initClass()
 
 // ! FIXME: write doc
 
-SoLazyElement::SoLazyElement()
-{
-  setTypeId(SoLazyElement::classTypeId);
-  setStackIndex(SoLazyElement::classStackIndex);
-}
-
-// ! FIXME: write doc
-
 SoLazyElement::~SoLazyElement()
 {
 }

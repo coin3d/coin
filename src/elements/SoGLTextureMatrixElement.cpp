@@ -47,18 +47,6 @@ SoGLTextureMatrixElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa SoGLTextureMatrixElement::createInstance(void)
-*/
-
-SoGLTextureMatrixElement::SoGLTextureMatrixElement(void)
-{
-    setTypeId(SoGLTextureMatrixElement::classTypeId);
-    setStackIndex(SoGLTextureMatrixElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

@@ -50,19 +50,6 @@ SoTextureMatrixElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoTextureMatrixElement::createInstance(void)
-*/
-
-SoTextureMatrixElement::SoTextureMatrixElement(void)
-  : textureMatrix()
-{
-    setTypeId(SoTextureMatrixElement::classTypeId);
-    setStackIndex(SoTextureMatrixElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

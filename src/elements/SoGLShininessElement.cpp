@@ -48,18 +48,6 @@ SoGLShininessElement::initClass()
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLShininessElement::createInstance(void)
-*/
-
-SoGLShininessElement::SoGLShininessElement()
-{
-  setTypeId(classTypeId);
-  setStackIndex(classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

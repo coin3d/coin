@@ -43,19 +43,6 @@ SoLinePatternElement::initClass(void)
 }
 
 /*!
-  A constructor.  Canæt be used directly.
-
-  \sa void * SoLinePatternElement::createInstance(void)
-*/
-
-SoLinePatternElement::SoLinePatternElement(void)
-{
-    setTypeId(SoLinePatternElement::classTypeId);
-    setStackIndex(SoLinePatternElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

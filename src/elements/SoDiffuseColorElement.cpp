@@ -77,18 +77,6 @@ SoDiffuseColorElement::init(SoState * /* state */)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoDiffuseColorElement::createInstance(void)
-*/
-
-SoDiffuseColorElement::SoDiffuseColorElement()
-{
-  this->setTypeId(SoDiffuseColorElement::classTypeId);
-  this->setStackIndex(SoDiffuseColorElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

@@ -51,18 +51,6 @@ SoDrawStyleElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoDrawStyleElement::createInstance(void)
-*/
-
-SoDrawStyleElement::SoDrawStyleElement(void)
-{
-  setTypeId(SoDrawStyleElement::classTypeId);
-  setStackIndex(SoDrawStyleElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

@@ -48,18 +48,6 @@ SoGLPolygonOffsetElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLPolygonOffsetElement::createInstance(void)
-*/
-
-SoGLPolygonOffsetElement::SoGLPolygonOffsetElement(void)
-{
-  setTypeId(SoGLPolygonOffsetElement::classTypeId);
-  setStackIndex(SoGLPolygonOffsetElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

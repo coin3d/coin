@@ -42,35 +42,23 @@ else \
   element->flags &= ~flag
 
 
-/*! 
+/*!
 \enum SoOverrideElement::FlagBits
 
-FIXME: write doc. 
+FIXME: write doc.
 */
 
 SO_ELEMENT_SOURCE(SoOverrideElement);
 
-/*! 
+/*!
 This static method initializes static data for the
-SoOverrideElement class. 
+SoOverrideElement class.
 */
 
 void
 SoOverrideElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoOverrideElement, inherited);
-}
-
-/*! 
-A constructor.  Can't be used directly. 
-
-\sa void * SoOverrideElement::createInstance(void)
-*/
-
-SoOverrideElement::SoOverrideElement(void)
-{
-  setTypeId(SoOverrideElement::classTypeId);
-  setStackIndex(SoOverrideElement::classStackIndex);
 }
 
 /*!

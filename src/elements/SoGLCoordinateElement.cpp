@@ -48,18 +48,6 @@ SoGLCoordinateElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLCoordinateElement::createInstance(void)
-*/
-
-SoGLCoordinateElement::SoGLCoordinateElement(void)
-{
-    setTypeId(SoGLCoordinateElement::classTypeId);
-    setStackIndex(SoGLCoordinateElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

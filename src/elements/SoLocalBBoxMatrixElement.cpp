@@ -48,19 +48,6 @@ SoLocalBBoxMatrixElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoLocalBBoxMatrixElement::createInstance(void)
-*/
-
-SoLocalBBoxMatrixElement::SoLocalBBoxMatrixElement()
-  : localMatrix(), modelInverseMatrix()
-{
-  setTypeId(SoLocalBBoxMatrixElement::classTypeId);
-  setStackIndex(SoLocalBBoxMatrixElement:: classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

@@ -53,18 +53,6 @@ SoLightAttenuationElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoLightAttenationElement::createInstance(void)
-*/
-
-SoLightAttenuationElement::SoLightAttenuationElement(void)
-{
-  this->setTypeId(SoLightAttenuationElement::classTypeId);
-  this->setStackIndex(SoLightAttenuationElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

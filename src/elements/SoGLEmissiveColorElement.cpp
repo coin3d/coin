@@ -48,18 +48,6 @@ SoGLEmissiveColorElement::initClass()
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLEmissiveColorElement::createInstance(void)
-*/
-
-SoGLEmissiveColorElement::SoGLEmissiveColorElement()
-{
-  setTypeId(classTypeId);
-  setStackIndex(classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

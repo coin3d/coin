@@ -43,20 +43,6 @@ SoShapeHintsElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoShapeHintsElement::createInstance(void)
-*/
-
-SoShapeHintsElement::SoShapeHintsElement(void)
-  : vertexOrdering(UNKNOWN_ORDERING),
-    shapeType(UNKNOWN_SHAPE_TYPE), faceType( CONVEX )
-{
-    setTypeId(SoShapeHintsElement::classTypeId);
-    setStackIndex(SoShapeHintsElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

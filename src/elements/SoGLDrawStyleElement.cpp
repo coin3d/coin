@@ -46,18 +46,6 @@ SoGLDrawStyleElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLDrawStyleElement::createInstance(void)
-*/
-
-SoGLDrawStyleElement::SoGLDrawStyleElement(void)
-{
-    setTypeId(SoGLDrawStyleElement::classTypeId);
-    setStackIndex(SoGLDrawStyleElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

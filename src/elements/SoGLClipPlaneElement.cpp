@@ -50,18 +50,6 @@ SoGLClipPlaneElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLClipPlaneElement::createInstance(void)
-*/
-
-SoGLClipPlaneElement::SoGLClipPlaneElement()
-{
-    setTypeId(SoGLClipPlaneElement::classTypeId);
-    setStackIndex(SoGLClipPlaneElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

@@ -42,19 +42,6 @@ SoCreaseAngleElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoCreaseAngleElement::createInstance(void)
-*/
-
-SoCreaseAngleElement::SoCreaseAngleElement(void)
-{
-    setTypeId(SoCreaseAngleElement::classTypeId);
-    setStackIndex(SoCreaseAngleElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

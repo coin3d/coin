@@ -52,19 +52,6 @@ SoViewportRegionElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoViewportRegionElement::createInstance(void)
-*/
-
-SoViewportRegionElement::SoViewportRegionElement(void)
-  : viewportRegion()
-{
-    setTypeId(SoViewportRegionElement::classTypeId);
-    setStackIndex(SoViewportRegionElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

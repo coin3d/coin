@@ -52,18 +52,6 @@ SoGLEnvironmentElement::initClass()
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLEnvironmentElement::createInstance(void)
-*/
-
-SoGLEnvironmentElement::SoGLEnvironmentElement()
-{
-  setTypeId(SoGLEnvironmentElement::classTypeId);
-  setStackIndex(SoGLEnvironmentElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

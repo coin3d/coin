@@ -52,18 +52,6 @@ SoGLDiffuseColorElement::initClass()
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLDiffuseColorElement::createInstance(void)
-*/
-
-SoGLDiffuseColorElement::SoGLDiffuseColorElement()
-{
-  setTypeId(classTypeId);
-  setStackIndex(classStackIndex);
-}
-
-/*!
   The destructor.
 */
 
@@ -151,7 +139,7 @@ SoGLDiffuseColorElement::send(const int index, const float alpha)
       this->updategl();
     }
   }
-  else if (this->packedColors && 
+  else if (this->packedColors &&
            this->packedColors[realindex] != this->currentPacked) {
     this->currentPacked = this->packedColors[realindex];
     convert_packed(this->currentPacked, current);
@@ -171,7 +159,7 @@ SoGLDiffuseColorElement::send(const int index)
 /*!
   Do not use. Provided only to support SoGLLazyElement.
 */
-void 
+void
 SoGLDiffuseColorElement::sendOnePacked(const uint32_t packedcol)
 {
   SoGLDiffuseColorElement *thisp = (SoGLDiffuseColorElement*)this;

@@ -51,19 +51,6 @@ SoGLViewingMatrixElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLViewingMatrixElement::createInstance(void)
-*/
-
-SoGLViewingMatrixElement::SoGLViewingMatrixElement(void)
-  : state(NULL)
-{
-  this->setTypeId(SoGLViewingMatrixElement::classTypeId);
-  this->setStackIndex(SoGLViewingMatrixElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

@@ -50,18 +50,6 @@ SoPROTOElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoPROTOElement::createInstance(void)
-*/
-
-SoPROTOElement::SoPROTOElement(void)
-{
-    setTypeId(SoPROTOElement::classTypeId);
-    setStackIndex(SoPROTOElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

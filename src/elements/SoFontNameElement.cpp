@@ -68,19 +68,6 @@ SoFontNameElement::clean(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoFontNameElement::createInstance(void)
-*/
-
-SoFontNameElement::SoFontNameElement(void)
-  : fontName(*defaultfontname)
-{
-  setTypeId(SoFontNameElement::classTypeId);
-  setStackIndex(SoFontNameElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

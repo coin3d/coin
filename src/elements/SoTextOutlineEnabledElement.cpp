@@ -42,19 +42,6 @@ SoTextOutlineEnabledElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoTextOutlineEnabledElement::createInstance(void)
-*/
-
-SoTextOutlineEnabledElement::SoTextOutlineEnabledElement(void)
-{
-    setTypeId(SoTextOutlineEnabledElement::classTypeId);
-    setStackIndex(SoTextOutlineEnabledElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 
@@ -108,6 +95,7 @@ void
 SoTextOutlineEnabledElement::init(SoState * state)
 {
     inherited::init(state);
+    this->data = getDefault();
 }
 
 //! FIXME: write doc.

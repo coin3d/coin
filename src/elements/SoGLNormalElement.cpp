@@ -47,18 +47,6 @@ SoGLNormalElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLNormalElement::createInstance(void)
-*/
-
-SoGLNormalElement::SoGLNormalElement(void)
-{
-    setTypeId(SoGLNormalElement::classTypeId);
-    setStackIndex(SoGLNormalElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

@@ -52,18 +52,6 @@ SoGLTextureImageElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLTextureImageElement::createInstance(void)
-*/
-
-SoGLTextureImageElement::SoGLTextureImageElement()
-{
-  setTypeId(SoGLTextureImageElement::classTypeId);
-  setStackIndex(SoGLTextureImageElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 
@@ -80,10 +68,10 @@ SoGLTextureImageElement::init(SoState * state)
   this->quality = SoTextureQualityElement::getDefault();
   this->image = NULL;   // the image stored in this element
   this->glimage = NULL; // the image currently sent to GL
- 
+
   // set these to illegal values to make sure things are initialized
   // the first time.
-  this->glmodel = -1; 
+  this->glmodel = -1;
   this->glquality = -1.0f;
   this->glblendcolor.setValue(-1.0f, -1.0f, -1.0f);
 }
@@ -93,7 +81,7 @@ SoGLTextureImageElement::init(SoState * state)
 void
 SoGLTextureImageElement::push(SoState * state)
 {
-  inherited::push(state);  
+  inherited::push(state);
   ((SoGLTextureImageElement*)this->next)->glimage = this->glimage;
   ((SoGLTextureImageElement*)this->next)->glquality = this->glquality;
   ((SoGLTextureImageElement*)this->next)->glmodel = this->glmodel;
@@ -162,12 +150,12 @@ SoGLTextureImageElement::hasTransparency(void) const
 }
 
 
-void 
+void
 SoGLTextureImageElement::evaluate() const
 {
   // cast away constness
   SoGLTextureImageElement *elem = (SoGLTextureImageElement*) this;
-  
+
   if (elem->image) {
     if (elem->image != elem->glimage) {
       elem->glimage = elem->image;
@@ -178,12 +166,12 @@ SoGLTextureImageElement::evaluate() const
       elem->glquality = elem->quality;
       elem->image->apply(elem->quality);
     }
-    
+
     if (int(elem->model) != elem->glmodel ||
         (elem->model == BLEND && elem->blendColor != elem->glblendcolor)) {
       elem->glmodel = (int) elem->model;
       elem->glblendcolor = elem->blendColor;
-      
+
       if (model == DECAL) {
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
       }

@@ -44,19 +44,6 @@ SoComplexityElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoComplexityElement::createInstance(void)
-*/
-
-SoComplexityElement::SoComplexityElement(void)
-{
-    setTypeId(SoComplexityElement::classTypeId);
-    setStackIndex(SoComplexityElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

@@ -50,18 +50,6 @@ SoGLPointSizeElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLPointSizeElement::createInstance(void)
-*/
-
-SoGLPointSizeElement::SoGLPointSizeElement()
-{
-  setTypeId(SoGLPointSizeElement::classTypeId);
-  setStackIndex(SoGLPointSizeElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

@@ -62,18 +62,6 @@ SoEmissiveColorElement::initClass()
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoEmissiveColorElement::createInstance(void)
-*/
-
-SoEmissiveColorElement::SoEmissiveColorElement()
-{
-  this->setTypeId(classTypeId);
-  this->setStackIndex(classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

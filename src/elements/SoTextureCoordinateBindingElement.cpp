@@ -49,19 +49,6 @@ SoTextureCoordinateBindingElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoTextureCoordinateBindingElement::createInstance(void)
-*/
-
-SoTextureCoordinateBindingElement::SoTextureCoordinateBindingElement(void)
-{
-    setTypeId(SoTextureCoordinateBindingElement::classTypeId);
-    setStackIndex(SoTextureCoordinateBindingElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

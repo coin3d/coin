@@ -43,19 +43,6 @@ SoLineWidthElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoLineWidthElement::createInstance(void)
-*/
-
-SoLineWidthElement::SoLineWidthElement(void)
-{
-    setTypeId(SoLineWidthElement::classTypeId);
-    setStackIndex(SoLineWidthElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

@@ -48,22 +48,6 @@ SoViewVolumeElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoViewVolumeElement::createInstance(void)
-*/
-
-SoViewVolumeElement::SoViewVolumeElement(void)
-{
-  setTypeId(SoViewVolumeElement::classTypeId);
-  setStackIndex(SoViewVolumeElement::classStackIndex);
-
-  SbViewVolume v;
-  v.ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
-  this->viewVolume = v;
-}
-
-/*!
   The destructor.
 */
 
@@ -99,8 +83,5 @@ void
 SoViewVolumeElement::init(SoState * state)
 {
   inherited::init(state);
-
-  SbViewVolume v;
-  v.ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
-  this->viewVolume = v;
+  this->viewVolume.ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
 }

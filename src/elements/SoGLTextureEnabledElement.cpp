@@ -50,19 +50,6 @@ SoGLTextureEnabledElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLTextureEnabledElement::createInstance(void)
-*/
-
-SoGLTextureEnabledElement::SoGLTextureEnabledElement(void)
-{
-    setTypeId(SoGLTextureEnabledElement::classTypeId);
-    setStackIndex(SoGLTextureEnabledElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

@@ -61,19 +61,6 @@ SoLightElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoLightElement::createInstance(void)
-*/
-
-SoLightElement::SoLightElement(void)
-  : startIndex(-1)
-{
-    setTypeId(SoLightElement::classTypeId);
-    setStackIndex(SoLightElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 
@@ -124,6 +111,7 @@ void
 SoLightElement::init(SoState * state)
 {
     inherited::init(state);
+    this->startIndex = -1;
 }
 
 //! FIXME: write doc.

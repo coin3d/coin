@@ -48,19 +48,6 @@ SoPickStyleElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoPickStyleElement::createInstance(void)
-*/
-
-SoPickStyleElement::SoPickStyleElement(void)
-{
-    setTypeId(SoPickStyleElement::classTypeId);
-    setStackIndex(SoPickStyleElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

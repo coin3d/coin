@@ -49,19 +49,6 @@ SoAnnoText3RenderPrintElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoAnnoText3RenderPrintElement::createInstance()
-*/
-
-SoAnnoText3RenderPrintElement::SoAnnoText3RenderPrintElement(void)
-{
-    setTypeId(SoAnnoText3RenderPrintElement::classTypeId);
-    setStackIndex(SoAnnoText3RenderPrintElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

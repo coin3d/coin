@@ -67,20 +67,6 @@ SoWindowElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoWindowElement::createInstance(void)
-*/
-
-SoWindowElement::SoWindowElement(void)
-  : // window(), context(),
-  display(NULL), glRenderAction( NULL )
-{
-    setTypeId(SoWindowElement::classTypeId);
-    setStackIndex(SoWindowElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

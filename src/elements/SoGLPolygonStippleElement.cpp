@@ -140,18 +140,6 @@ SoGLPolygonStippleElement::initClass()
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLPolygonStippleElement::createInstance(void)
-*/
-
-SoGLPolygonStippleElement::SoGLPolygonStippleElement()
-{
-  setTypeId(classTypeId);
-  setStackIndex(classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

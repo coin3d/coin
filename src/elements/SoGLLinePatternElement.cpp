@@ -48,18 +48,6 @@ SoGLLinePatternElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLLinePatternElement::createInstance(void)
-*/
-
-SoGLLinePatternElement::SoGLLinePatternElement(void)
-{
-    setTypeId(SoGLLinePatternElement::classTypeId);
-    setStackIndex(SoGLLinePatternElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

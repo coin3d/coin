@@ -50,18 +50,6 @@ SoGLLineWidthElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLLineWidthElement::createInstance(void)
-*/
-
-SoGLLineWidthElement::SoGLLineWidthElement()
-{
-  setTypeId(SoGLLineWidthElement::classTypeId);
-  setStackIndex(SoGLLineWidthElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

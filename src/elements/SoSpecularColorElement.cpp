@@ -61,18 +61,6 @@ SoSpecularColorElement::initClass()
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoSpecularColorElement::createInstance(void)
-*/
-
-SoSpecularColorElement::SoSpecularColorElement()
-{
-  this->setTypeId(classTypeId);
-  this->setStackIndex(classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

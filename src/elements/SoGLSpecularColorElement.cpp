@@ -48,18 +48,6 @@ SoGLSpecularColorElement::initClass()
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLSpecularColorElement::createInstance(void)
-*/
-
-SoGLSpecularColorElement::SoGLSpecularColorElement()
-{
-  setTypeId(classTypeId);
-  setStackIndex(classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

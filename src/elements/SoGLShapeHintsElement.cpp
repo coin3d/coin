@@ -76,18 +76,6 @@ SoGLShapeHintsElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLShapeHintsElement::createInstance(void)
-*/
-
-SoGLShapeHintsElement::SoGLShapeHintsElement()
-{
-    setTypeId(SoGLShapeHintsElement::classTypeId);
-    setStackIndex(SoGLShapeHintsElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

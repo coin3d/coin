@@ -49,19 +49,6 @@ SoPickRayElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoPickRayElement::createInstance(void)
-*/
-
-SoPickRayElement::SoPickRayElement(void)
-  : volume()
-{
-    setTypeId(SoPickRayElement::classTypeId);
-    setStackIndex(SoPickRayElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

@@ -50,19 +50,6 @@ SoViewingMatrixElement::initClass(void)
 }
 
 /*!
-  The constructor.  Can't be used directly.
-
-  \sa void * SoViewingMatrixElement::createInstance(void)
-*/
-
-SoViewingMatrixElement::SoViewingMatrixElement(void)
-  : viewingMatrix()
-{
-    setTypeId(SoViewingMatrixElement::classTypeId);
-    setStackIndex(SoViewingMatrixElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

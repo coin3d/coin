@@ -52,18 +52,6 @@ SoGLShadeModelElement::initClass()
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLShadeModelElement::createInstance(void)
-*/
-
-SoGLShadeModelElement::SoGLShadeModelElement()
-{
-  setTypeId(SoGLShadeModelElement::classTypeId);
-  setStackIndex(SoGLShadeModelElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

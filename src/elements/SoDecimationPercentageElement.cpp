@@ -43,19 +43,6 @@ SoDecimationPercentageElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoDecimationPercentageElement::createInstance(void)
-*/
-
-SoDecimationPercentageElement::SoDecimationPercentageElement(void)
-{
-    setTypeId(SoDecimationPercentageElement::classTypeId);
-    setStackIndex(SoDecimationPercentageElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 

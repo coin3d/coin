@@ -48,19 +48,6 @@ SoUnitsElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoUnitsElement::createInstance(void)
-*/
-
-SoUnitsElement::SoUnitsElement(void)
-{
-    setTypeId(SoUnitsElement::classTypeId);
-    setStackIndex(SoUnitsElement::classStackIndex);
-    this->data = getDefault();
-}
-
-/*!
   The destructor.
 */
 
@@ -85,6 +72,7 @@ void
 SoUnitsElement::init(SoState * state)
 {
     inherited::init(state);
+    this->data = getDefault();
 }
 
 //! FIXME: write doc.

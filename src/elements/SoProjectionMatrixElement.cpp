@@ -43,19 +43,6 @@ SoProjectionMatrixElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoProjectionMatrixElement::createInstance(void)
-*/
-
-SoProjectionMatrixElement::SoProjectionMatrixElement(void)
-  : projectionMatrix()
-{
-    setTypeId(SoProjectionMatrixElement::classTypeId);
-    setStackIndex(SoProjectionMatrixElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

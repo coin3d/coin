@@ -103,19 +103,6 @@ SoTextureCoordinateElement::initClass()
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoTextureCoordinateElement::createInstance(void)
-*/
-
-SoTextureCoordinateElement::SoTextureCoordinateElement()
-  : coordsAre2D(TRUE)
-{
-  setTypeId(SoTextureCoordinateElement::classTypeId);
-  setStackIndex(SoTextureCoordinateElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 

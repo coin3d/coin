@@ -50,19 +50,6 @@ SoGLRenderPassElement::initClass(void)
 }
 
 /*!
-  A constructor.  Can't be used directly.
-
-  \sa void * SoGLRenderPassElement::createInstance(void)
-*/
-
-SoGLRenderPassElement::SoGLRenderPassElement(void)
-  : passnr(0)
-{
-  setTypeId(SoGLRenderPassElement::classTypeId);
-  setStackIndex(SoGLRenderPassElement::classStackIndex);
-}
-
-/*!
   The destructor.
 */
 
