@@ -68,6 +68,8 @@ AC_DEFINE_UNQUOTED(COIN_VERSION, "$COIN_VERSION")
 # * Miscellaneous options and initializations.
 # *******************************************************************
 
+coin_build_dir=`pwd`
+
 AM_INIT_AUTOMAKE(libCoin, $VERSION)
 
 #  Files to cram results from the configure tests into.
@@ -111,6 +113,48 @@ AC_SUBST(COIN_LIBNAME)
 
 
 # *******************************************************************
+# * Do we want to build the documentation?
+# *******************************************************************
+
+AC_ARG_WITH(html,
+  AC_HELP_STRING([--with-html], [build and install Coin HTML documentation]),
+  [case "${withval}" in
+    yes) want_html=yes ;;
+    no)  want_html=no ;;
+    *) AC_MSG_ERROR(bad value \"${withval}\" for --with-html) ;;
+  esac],
+  [want_html=NO])
+
+AC_ARG_WITH(man,
+  AC_HELP_STRING([--with-man], [build and install Coin man pages]),
+  [case "${withval}" in
+    yes) want_man=yes ;;
+    no)  want_man=no ;;
+    *) AC_MSG_ERROR(bad value \"${withval}\" for --with-man) ;;
+  esac],
+  [want_man=no])
+
+# Used in the Doxygen parameter file.
+COIN_DOC_HTML=`echo $want_html | tr a-z A-Z`
+COIN_DOC_MAN=`echo $want_man | tr a-z A-Z`
+AC_SUBST(COIN_DOC_HTML)
+AC_SUBST(COIN_DOC_MAN)
+
+if test x"$want_html" != xno -o x"$want_man" != xno; then
+  SIM_AC_DOXYGEN_TOOL(, AC_MSG_ERROR([Could not find the doxygen tool -- see http://www.stack.nl/~dimitri/doxygen/]))
+  sim_ac_doxygen_our_version=1.1.5
+  if test x"$sim_ac_doxygen_avail" != x"$sim_ac_doxygen_our_version"; then
+    AC_MSG_WARN(You are not using Doxygen version $sim_ac_doxygen_our_version)
+  fi
+
+  AC_PATH_PROG(sim_ac_perl_exe, perl, false, $PATH)
+  if test x"$sim_ac_perl_exe" = xfalse; then
+    AC_MSG_WARN(Could not find the Perl executable)
+  fi
+fi
+
+
+# *******************************************************************
 # * Check compiler features, bugs, etc.
 # *******************************************************************
 
@@ -127,6 +171,9 @@ SIM_COMPILER_WARNINGS
 #  use the exact same include files as under "real" Open Inventor.
 #  We would then need to know that we are actually allowed to include
 #  any file during internal build.
+#
+#  The COIN_INTERNAL define is also in use to detect
+# "inefficient including"  internally.
 CPPFLAGS="$CPPFLAGS -DCOIN_INTERNAL"
 
 
@@ -221,64 +268,75 @@ fi
 SIM_AC_CHECK_OPENGL([AC_DEFINE(HAVE_OPENGL)
                     COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_gl_cppflags"
                     COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_gl_ldflags"
-                    COIN_EXTRA_LIBS="$sim_ac_gl_libs $COIN_EXTRA_LIBS"],
-                    AC_MSG_ERROR(needs an OpenGL-compatible development system installation to compile Coin))
+                    COIN_EXTRA_LIBS="$sim_ac_gl_libs $COIN_EXTRA_LIBS"])
 
-# FIXME: should be able to handle systems where OpenGL is not available,
-# as it would be handy for making e.g. import/export-only versions of the
-# library. 20000123 mortene.
+if test x"$sim_ac_gl_avail" = xyes; then
 
-# *******************************************************************
-# ** Check if the Mesa offscreen rendering interface is available.
-# *******************************************************************
+  # *******************************************************************
+  # ** Check if the Mesa offscreen rendering interface is available.
+  # *******************************************************************
 
-AC_CACHE_CHECK([whether Mesa offscreen rendering is available],
-  sim_cv_func_osmesacreatecontext_avail,
-  [AC_TRY_LINK([#include <GL/osmesa.h>],
-               [(void)OSMesaCreateContext(OSMESA_RGB, 0L);],
-               sim_cv_func_osmesacreatecontext_avail=yes,
-               sim_cv_func_osmesacreatecontext_avail=no)])
-
-if test x"$sim_cv_func_osmesacreatecontext_avail" = xyes; then
-  AC_DEFINE(HAVE_OSMESACREATECONTEXT)
-
-  AC_CACHE_CHECK([whether Mesa pixelstore format should be set],
-    sim_cv_func_osmesapixelstore_avail,
+  AC_CACHE_CHECK([whether Mesa offscreen rendering is available],
+    sim_cv_func_osmesacreatecontext_avail,
     [AC_TRY_LINK([#include <GL/osmesa.h>],
-                 [OSMesaPixelStore(OSMESA_Y_UP, 0);],
-                 sim_cv_func_osmesapixelstore_avail=yes,
-                 sim_cv_func_osmesapixelstore_avail=no)])
+                 [(void)OSMesaCreateContext(OSMESA_RGB, 0L);],
+                 sim_cv_func_osmesacreatecontext_avail=yes,
+                 sim_cv_func_osmesacreatecontext_avail=no)])
 
-  if test x"$sim_cv_func_osmesapixelstore_avail" = xyes; then
-    AC_DEFINE(HAVE_OSMESAPIXELSTORE)
+  if test x"$sim_cv_func_osmesacreatecontext_avail" = xyes; then
+    AC_DEFINE(HAVE_OSMESACREATECONTEXT)
+
+    AC_CACHE_CHECK([whether Mesa pixelstore format should be set],
+      sim_cv_func_osmesapixelstore_avail,
+      [AC_TRY_LINK([#include <GL/osmesa.h>],
+                   [OSMesaPixelStore(OSMESA_Y_UP, 0);],
+                   sim_cv_func_osmesapixelstore_avail=yes,
+                   sim_cv_func_osmesapixelstore_avail=no)])
+
+    if test x"$sim_cv_func_osmesapixelstore_avail" = xyes; then
+      AC_DEFINE(HAVE_OSMESAPIXELSTORE)
+    fi
   fi
+
+
+  # *******************************************************************
+  # ** Check if GLX is available.
+  # *******************************************************************
+
+  AC_CACHE_CHECK([whether GLX is available],
+    sim_cv_func_glx_avail,
+    [AC_TRY_LINK([#include <GL/glx.h>],
+                 [(void)glXChooseVisual(0L, 0, 0L);],
+                 sim_cv_func_glx_avail=yes,
+                 sim_cv_func_glx_avail=no)])
+
+  if test x"$sim_cv_func_glx_avail" = xyes; then
+    AC_DEFINE(HAVE_GLX)
+  fi
+
+
+  # *******************************************************************
+  # ** Find out if GLU uses GLUnurbs or GLUnurbsObj as the name
+  # ** of the interface structure to the NURBS-related functions.
+  # *******************************************************************
+
+  SIM_AC_GLU_NURBSOBJECT(AC_DEFINE_UNQUOTED(HAVE_GLU_NURBSOBJECT, $sim_ac_glu_nurbsobject),
+                         AC_MSG_WARN(no suitable GLU Nurbs interface found))
+
+else # couldn't link with OpenGL
+  # Don't stop the configure process if we seem to be configuring to build
+  # the documentation (I don't care to install an OpenGL development system
+  # on our webserver). 20000703 mortene.
+  if test x"$want_html" = xno -a x"$want_man" = xno; then
+    # FIXME: should be able to handle systems where OpenGL is not available,
+    # as it would be handy for making e.g. import/export-only versions of the
+    # library. 20000123 mortene.
+    AC_MSG_ERROR(needs an OpenGL-compatible development system installed to compile Coin)
+  else
+    AC_MSG_WARN(needs an OpenGL-compatible development system installed to compile Coin)
+  fi
+
 fi
-
-
-# *******************************************************************
-# ** Check if GLX is available.
-# *******************************************************************
-
-AC_CACHE_CHECK([whether GLX is available],
-  sim_cv_func_glx_avail,
-  [AC_TRY_LINK([#include <GL/glx.h>],
-               [(void)glXChooseVisual(0L, 0, 0L);],
-               sim_cv_func_glx_avail=yes,
-               sim_cv_func_glx_avail=no)])
-
-if test x"$sim_cv_func_glx_avail" = xyes; then
-  AC_DEFINE(HAVE_GLX)
-fi
-
-
-# *******************************************************************
-# ** Find out if GLU uses GLUnurbs or GLUnurbsObj as the name
-# ** of the interface structure to the NURBS-related functions.
-# *******************************************************************
-
-SIM_AC_GLU_NURBSOBJECT(AC_DEFINE_UNQUOTED(HAVE_GLU_NURBSOBJECT, $sim_ac_glu_nurbsobject),
-                       AC_MSG_WARN(no suitable GLU Nurbs interface found))
-
 
 # *******************************************************************
 # * Provide this nasty hack to help building Coin on platforms
@@ -318,7 +376,6 @@ AM_CONDITIONAL(HACKING_DYNAMIC_MODULES, test x"$enable_hacking" = x"yes")
 
 COIN_HACKING_LIBDIRS=
 if test x"$enable_hacking" = x"yes"; then
-  coin_build_dir=`pwd`
   COIN_HACKING_LIBDIRS="-L${coin_build_dir}/src/base/.libs -L${coin_build_dir}/src/VRMLnodes/.libs -L${coin_build_dir}/src/actions/.libs -L${coin_build_dir}/src/bundles/.libs -L${coin_build_dir}/src/caches/.libs -L${coin_build_dir}/src/details/.libs -L${coin_build_dir}/src/draggers/.libs -L${coin_build_dir}/src/elements/.libs -L${coin_build_dir}/src/engines/.libs -L${coin_build_dir}/src/errors/.libs -L${coin_build_dir}/src/events/.libs -L${coin_build_dir}/src/fields/.libs -L${coin_build_dir}/src/manips/.libs -L${coin_build_dir}/src/misc/.libs -L${coin_build_dir}/src/lists/.libs -L${coin_build_dir}/src/nodekits/.libs -L${coin_build_dir}/src/nodes/.libs -L${coin_build_dir}/src/projectors/.libs -L${coin_build_dir}/src/sensors/.libs"
   COIN_EXTRA_LIBS="-lbaseLINKHACK -lVRMLnodesLINKHACK -lactionsLINKHACK -lbundlesLINKHACK -lcachesLINKHACK -ldetailsLINKHACK -ldraggersLINKHACK -lelementsLINKHACK -lenginesLINKHACK -lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -lmanipsLINKHACK -lmiscLINKHACK -llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK -lprojectorsLINKHACK -lsensorsLINKHACK $COIN_EXTRA_LIBS"
 fi
@@ -377,22 +434,24 @@ AM_CONDITIONAL(BUILD_EXAMPLES, test x"$want_examples" = xyes)
 
 SIM_EXPAND_DIR_VARS
 
-# Set coin_build_dir so we can change coin.dsp
-coin_current_dir=`pwd`
-SIM_AC_DOBACKSLASH(coin_build_dir,$coin_current_dir)
+coin_src_dir=$srcdir
+coin_include_dir=$includedir
+coin_lib_dir=$libdir
+
+if test x"$sim_ac_linking_style" = xmswin; then
+  # Slashes need to be '\' in project files and makefiles to humour
+  # the Microsoft VisualC++ environment.
+  SIM_AC_DOBACKSLASH(coin_build_dir, $coin_build_dir)
+  SIM_AC_DOBACKSLASH(coin_src_dir, $srcdir)
+  SIM_AC_DOBACKSLASH(coin_include_dir, $includedir)
+  SIM_AC_DOBACKSLASH(coin_lib_dir, $libdir)
+fi
+
 AC_SUBST(coin_build_dir)
-
-# Set coin_src_dir so we can change coin.dsp
-SIM_AC_DOBACKSLASH(coin_src_dir,$srcdir)
 AC_SUBST(coin_src_dir)
-
-# Set coin_include_dir so we can change CoinSDK.iwz
-SIM_AC_DOBACKSLASH(coin_include_dir,$includedir)
 AC_SUBST(coin_include_dir)
-
-# Set coin_lib_dir so we can change CoinSDK.iwz
-SIM_AC_DOBACKSLASH(coin_lib_dir,$libdir)
 AC_SUBST(coin_lib_dir)
+
 
 AC_OUTPUT([
         coin-config
@@ -438,6 +497,7 @@ AC_OUTPUT([
         build/coin_dll.mak
         build/CoinSDK.iwz
         build/SoCoinSDK.iwz.in
+        docs/coin.doxygen
         ],
         [chmod a+x coin-config])
 

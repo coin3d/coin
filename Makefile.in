@@ -65,6 +65,8 @@ AS = @AS@
 AWK = @AWK@
 CC = @CC@
 COIN_BINARY_AGE = @COIN_BINARY_AGE@
+COIN_DOC_HTML = @COIN_DOC_HTML@
+COIN_DOC_MAN = @COIN_DOC_MAN@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
 COIN_EXTRA_LDFLAGS = @COIN_EXTRA_LDFLAGS@
 COIN_EXTRA_LIBS = @COIN_EXTRA_LIBS@
@@ -93,10 +95,14 @@ PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 VERSION = @VERSION@
 coin_build_dir = @coin_build_dir@
+coin_data_dir = @coin_data_dir@
 coin_include_dir = @coin_include_dir@
 coin_lib_dir = @coin_lib_dir@
+coin_man_dir = @coin_man_dir@
 coin_src_dir = @coin_src_dir@
 install_sh = @install_sh@
+sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
+sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_conf_cmd = @sim_ac_simage_conf_cmd@
 
 @BUILD_EXAMPLES_TRUE@EXAMPLEDIR = @BUILD_EXAMPLES_TRUE@examples
@@ -472,8 +478,7 @@ maintainer-clean
 coin-config: coin-config.in
 
 doxygen-doc:
-	top_builddir=$(top_builddir) top_srcdir=$(top_srcdir) \
-	doxygen $(top_srcdir)/docs/coin.doxygen
+	@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -26,5 +26,4 @@ m4data_DATA = conf-macros/coin.m4
 
 
 doxygen-doc:
-	top_builddir=$(top_builddir) top_srcdir=$(top_srcdir) \
-	doxygen $(top_srcdir)/docs/coin.doxygen
+	@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
