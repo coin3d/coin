@@ -148,7 +148,7 @@
 #define GL_COLOR_INDEX8_EXT               0x80E5
 #endif /* !GL_COLOR_INDEX8_EXT */
 
-#ifndef GL_COLOR_INDEX12_EXT 
+#ifndef GL_COLOR_INDEX12_EXT
 #define GL_COLOR_INDEX12_EXT              0x80E6
 #endif /* !GL_COLOR_INDEX12_EXT */
 
@@ -159,7 +159,7 @@
 #ifndef GL_COLOR_TABLE_FORMAT_EXT
 #define GL_COLOR_TABLE_FORMAT_EXT         0x80D8
 #endif /* !GL_COLOR_TABLE_FORMAT_EXT */
- 
+
 #ifndef GL_COLOR_TABLE_RED_SIZE_EXT
 #define GL_COLOR_TABLE_RED_SIZE_EXT       0x80DA
 #endif /* !GL_COLOR_TABLE_RED_SIZE_EXT */
@@ -253,6 +253,80 @@
 #define GL_FUNC_REVERSE_SUBTRACT 0x800B
 #endif /* GL_FUNC_REVERSE_SUBTRACT */
 
+/* glVertexArray defines */ 
+#ifndef GL_VERTEX_ARRAY
+#define GL_VERTEX_ARRAY 0x8074
+#endif /* GL_VERTEX_ARRAY */ 
+#ifndef GL_NORMAL_ARRAY
+#define GL_NORMAL_ARRAY 0x8075
+#endif /* GL_NORMAL_ARRAY */
+#ifndef GL_COLOR_ARRAY
+#define GL_COLOR_ARRAY 0x8076
+#endif /* GL_COLOR_ARRAY */ 
+#ifndef GL_INDEX_ARRAY
+#define GL_INDEX_ARRAY 0x8077
+#endif /* GL_INDEX_ARRAY */ 
+#ifndef GL_TEXTURE_COORD_ARRAY
+#define GL_TEXTURE_COORD_ARRAY 0x8078
+#endif /* GL_TEXTURE_COORD_ARRAY */
+#ifndef GL_V3F 
+#define GL_V3F 0x2A21
+#endif /* GL_V3F */
+#ifndef GL_C4UB_V3F
+#define GL_C4UB_V3F 0x2A23
+#endif /* GL_C4UB_V3F */
+#ifndef GL_C3F_V3F
+#define GL_C3F_V3F 0x2A24
+#endif /* GL_C3F_V3F */
+#ifndef GL_N3F_V3F
+#define GL_N3F_V3F 0x2A25
+#endif /* GL_N3F_V3F */
+#ifndef GL_C4F_N3F_V3F
+#define GL_C4F_N3F_V3F 0x2A26
+#endif /* GL_C4F_N3F_V3F */ 
+#ifndef GL_T2F_V3F
+#define GL_T2F_V3F 0x2A27
+#endif /* GL_T2F_V3F */
+#ifndef GL_T2F_C4UB_V3F
+#define GL_T2F_C4UB_V3F 0x2A29
+#endif /* GL_T2F_C4UB_V3F */
+#ifndef GL_T2F_C3F_V3F
+#define GL_T2F_C3F_V3F 0x2A2A
+#endif /* GL_T2F_C3F_V3F */ 
+#ifndef GL_T2F_N3F_V3F
+#define GL_T2F_N3F_V3F 0x2A2B
+#endif /* GL_T2F_N3F_V3F */
+#ifndef GL_T2F_C4F_N3F_V3F
+#define GL_T2F_C4F_N3F_V3F 0x2A2C
+#endif /* GL_T2F_C4F_N3F_V3F */
+
+/* glVertexArrayRangeNV defines */
+#ifndef GL_VERTEX_ARRAY_RANGE_NV
+#define GL_VERTEX_ARRAY_RANGE_NV 0x851D
+#endif /* GL_VERTEX_ARRAY_RANGE_NV */
+#ifndef GL_VERTEX_ARRAY_RANGE_LENGTH_NV
+#define GL_VERTEX_ARRAY_RANGE_LENGTH_NV 0x851E
+#endif /* GL_VERTEX_ARRAY_RANGE_LENGTH_NV */
+#ifndef GL_VERTEX_ARRAY_RANGE_VALID_NV
+#define GL_VERTEX_ARRAY_RANGE_VALID_NV 0x851F
+#endif /* GL_VERTEX_ARRAY_RANGE_VALID_NV */
+#ifndef GL_MAX_VERTEX_ARRAY_RANGE_ELEMENT_NV
+#define GL_MAX_VERTEX_ARRAY_RANGE_ELEMENT_NV 0x8520
+#endif /* GL_MAX_VERTEX_ARRAY_RANGE_ELEMENT_NV */
+#ifndef GL_VERTEX_ARRAY_RANGE_POINTER_NV
+#define GL_VERTEX_ARRAY_RANGE_POINTER_NV 0x8521
+#endif /* GL_VERTEX_ARRAY_RANGE_POINTER_NV */
+
+/* some glVertexBufferObject defines */
+#ifndef GL_ARRAY_BUFFER
+#define GL_ARRAY_BUFFER 0x8892
+#endif /* GL_ARRAY_BUFFER_ARB */
+#ifndef GL_ELEMENT_ARRAY_BUFFER
+#define GL_ELEMENT_ARRAY_BUFFER 0x8893
+#endif /* GL_ELEMENT_ARRAY_BUFFER_ARB */
+#ifndef GL_STATIC_DRAW
+#define GL_STATIC_DRAW 0x88E4
+#endif /* GL_STATIC_DRAW_ARB */
 
 /*** GL enums, end ****************************************************/
 /**********************************************************************/

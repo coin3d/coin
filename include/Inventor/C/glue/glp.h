@@ -58,59 +58,59 @@ extern "C" {
 
 /* Our own typedefs for OpenGL functions. Prefixed with COIN_ to avoid
    namespace collisions. */
-typedef void (APIENTRY * COIN_PFNGLTEXIMAGE3DPROC)(GLenum target, 
-                                                   GLint level, 
-                                                   GLenum internalformat, 
-                                                   GLsizei width, 
-                                                   GLsizei height, 
-                                                   GLsizei depth, 
-                                                   GLint border, 
-                                                   GLenum format, 
-                                                   GLenum type, 
+typedef void (APIENTRY * COIN_PFNGLTEXIMAGE3DPROC)(GLenum target,
+                                                   GLint level,
+                                                   GLenum internalformat,
+                                                   GLsizei width,
+                                                   GLsizei height,
+                                                   GLsizei depth,
+                                                   GLint border,
+                                                   GLenum format,
+                                                   GLenum type,
                                                    const GLvoid * pixels);
 
-typedef void (APIENTRY * COIN_PFNGLTEXSUBIMAGE3DPROC)(GLenum target, 
-                                                      GLint level, 
-                                                      GLint xoffset, 
-                                                      GLint yoffset, 
-                                                      GLint zoffset, 
-                                                      GLsizei width, 
-                                                      GLsizei height, 
-                                                      GLsizei depth, 
-                                                      GLenum format, 
-                                                      GLenum type, 
+typedef void (APIENTRY * COIN_PFNGLTEXSUBIMAGE3DPROC)(GLenum target,
+                                                      GLint level,
+                                                      GLint xoffset,
+                                                      GLint yoffset,
+                                                      GLint zoffset,
+                                                      GLsizei width,
+                                                      GLsizei height,
+                                                      GLsizei depth,
+                                                      GLenum format,
+                                                      GLenum type,
                                                       const GLvoid * pixels);
 
-typedef void (APIENTRY * COIN_PFNGLCOPYTEXSUBIMAGE3DPROC)(GLenum target, 
-                                                          GLint level, 
-                                                          GLint xoffset, 
-                                                          GLint yoffset, 
-                                                          GLint zoffset, 
-                                                          GLint x, 
-                                                          GLint y, 
-                                                          GLsizei width, 
+typedef void (APIENTRY * COIN_PFNGLCOPYTEXSUBIMAGE3DPROC)(GLenum target,
+                                                          GLint level,
+                                                          GLint xoffset,
+                                                          GLint yoffset,
+                                                          GLint zoffset,
+                                                          GLint x,
+                                                          GLint y,
+                                                          GLsizei width,
                                                           GLsizei height);
 
-typedef void (APIENTRY * COIN_PFNGLPOLYGONOFFSETPROC)(GLfloat factor, 
+typedef void (APIENTRY * COIN_PFNGLPOLYGONOFFSETPROC)(GLfloat factor,
                                                       GLfloat bias);
 
-typedef void (APIENTRY * COIN_PFNGLBINDTEXTUREPROC)(GLenum target, 
+typedef void (APIENTRY * COIN_PFNGLBINDTEXTUREPROC)(GLenum target,
                                                     GLuint texture);
 
-typedef void (APIENTRY * COIN_PFNGLDELETETEXTURESPROC)(GLsizei n, 
+typedef void (APIENTRY * COIN_PFNGLDELETETEXTURESPROC)(GLsizei n,
                                                        const GLuint * textures);
 
-typedef void (APIENTRY * COIN_PFNGLGENTEXTURESPROC)(GLsizei n, 
+typedef void (APIENTRY * COIN_PFNGLGENTEXTURESPROC)(GLsizei n,
                                                     GLuint *textures);
 
-typedef void (APIENTRY * COIN_PFNGLTEXSUBIMAGE2DPROC)(GLenum target, 
-                                                      GLint level, 
-                                                      GLint xoffset, 
-                                                      GLint yoffset, 
-                                                      GLsizei width, 
-                                                      GLsizei height, 
-                                                      GLenum format, 
-                                                      GLenum type, 
+typedef void (APIENTRY * COIN_PFNGLTEXSUBIMAGE2DPROC)(GLenum target,
+                                                      GLint level,
+                                                      GLint xoffset,
+                                                      GLint yoffset,
+                                                      GLsizei width,
+                                                      GLsizei height,
+                                                      GLenum format,
+                                                      GLenum type,
                                                       const GLvoid * pixels);
 
 typedef void (APIENTRY * COIN_PFNGLACTIVETEXTUREPROC)(GLenum texture);
@@ -120,68 +120,68 @@ typedef void (APIENTRY * COIN_PFNGLMULTITEXCOORD2FPROC)(GLenum target,
 
 /* typedefs for texture compression */
 
-typedef void (APIENTRY * COIN_PFNGLCOMPRESSEDTEXIMAGE3DPROC)(GLenum target, 
-                                                             GLint level, 
-                                                             GLenum internalformat, 
-                                                             GLsizei width, 
-                                                             GLsizei height, 
-                                                             GLsizei depth, 
-                                                             GLint border, 
-                                                             GLsizei imageSize, 
+typedef void (APIENTRY * COIN_PFNGLCOMPRESSEDTEXIMAGE3DPROC)(GLenum target,
+                                                             GLint level,
+                                                             GLenum internalformat,
+                                                             GLsizei width,
+                                                             GLsizei height,
+                                                             GLsizei depth,
+                                                             GLint border,
+                                                             GLsizei imageSize,
                                                              const GLvoid * data);
-typedef void (APIENTRY * COIN_PFNGLCOMPRESSEDTEXIMAGE2DPROC)(GLenum target, 
-                                                             GLint level, 
-                                                             GLenum internalformat, 
-                                                             GLsizei width, 
-                                                             GLsizei height, 
-                                                             GLint border, 
-                                                             GLsizei imageSize, 
+typedef void (APIENTRY * COIN_PFNGLCOMPRESSEDTEXIMAGE2DPROC)(GLenum target,
+                                                             GLint level,
+                                                             GLenum internalformat,
+                                                             GLsizei width,
+                                                             GLsizei height,
+                                                             GLint border,
+                                                             GLsizei imageSize,
                                                              const GLvoid * data);
-typedef void (APIENTRY * COIN_PFNGLCOMPRESSEDTEXIMAGE1DPROC)(GLenum target, 
-                                                             GLint level, 
-                                                             GLenum internalformat, 
-                                                             GLsizei width, 
-                                                             GLint border, 
-                                                             GLsizei imageSize, 
+typedef void (APIENTRY * COIN_PFNGLCOMPRESSEDTEXIMAGE1DPROC)(GLenum target,
+                                                             GLint level,
+                                                             GLenum internalformat,
+                                                             GLsizei width,
+                                                             GLint border,
+                                                             GLsizei imageSize,
                                                              const GLvoid * data);
-typedef void (APIENTRY * COIN_PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC)(GLenum target, 
-                                                                GLint level, 
-                                                                GLint xoffset, 
-                                                                GLint yoffset, 
-                                                                GLint zoffset, 
-                                                                GLsizei width, 
-                                                                GLsizei height, 
-                                                                GLsizei depth, 
-                                                                GLenum format, 
-                                                                GLsizei imageSize, 
+typedef void (APIENTRY * COIN_PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC)(GLenum target,
+                                                                GLint level,
+                                                                GLint xoffset,
+                                                                GLint yoffset,
+                                                                GLint zoffset,
+                                                                GLsizei width,
+                                                                GLsizei height,
+                                                                GLsizei depth,
+                                                                GLenum format,
+                                                                GLsizei imageSize,
                                                                 const GLvoid * data);
-typedef void (APIENTRY * COIN_PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC)(GLenum target, 
-                                                                GLint level, 
-                                                                GLint xoffset, 
-                                                                GLint yoffset, 
-                                                                GLsizei width, 
-                                                                GLsizei height, 
-                                                                GLenum format, 
-                                                                GLsizei imageSize, 
+typedef void (APIENTRY * COIN_PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC)(GLenum target,
+                                                                GLint level,
+                                                                GLint xoffset,
+                                                                GLint yoffset,
+                                                                GLsizei width,
+                                                                GLsizei height,
+                                                                GLenum format,
+                                                                GLsizei imageSize,
                                                                 const GLvoid * data);
-typedef void (APIENTRY * COIN_PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC)(GLenum target, 
-                                                                GLint level, 
-                                                                GLint xoffset, 
-                                                                GLsizei width, 
-                                                                GLenum format, 
-                                                                GLsizei imageSize, 
+typedef void (APIENTRY * COIN_PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC)(GLenum target,
+                                                                GLint level,
+                                                                GLint xoffset,
+                                                                GLsizei width,
+                                                                GLenum format,
+                                                                GLsizei imageSize,
                                                                 const GLvoid *data);
-typedef void (APIENTRY * COIN_PFNGLGETCOMPRESSEDTEXIMAGEPROC)(GLenum target, 
-                                                              GLint level, 
+typedef void (APIENTRY * COIN_PFNGLGETCOMPRESSEDTEXIMAGEPROC)(GLenum target,
+                                                              GLint level,
                                                               void * img);
 
 
 /* typedefs for palette tetures */
-typedef void (APIENTRY * COIN_PFNGLCOLORTABLEPROC)(GLenum target, 
-                                                   GLenum internalFormat, 
-                                                   GLsizei width, 
-                                                   GLenum format, 
-                                                   GLenum type, 
+typedef void (APIENTRY * COIN_PFNGLCOLORTABLEPROC)(GLenum target,
+                                                   GLenum internalFormat,
+                                                   GLsizei width,
+                                                   GLenum format,
+                                                   GLenum type,
                                                    const GLvoid * table);
 typedef void (APIENTRY * COIN_PFNGLCOLORSUBTABLEPROC)(GLenum target,
                                                       GLsizei start,
@@ -189,20 +189,71 @@ typedef void (APIENTRY * COIN_PFNGLCOLORSUBTABLEPROC)(GLenum target,
                                                       GLenum format,
                                                       GLenum type,
                                                       const GLvoid * data);
-typedef void (APIENTRY * COIN_PFNGLGETCOLORTABLEPROC)(GLenum target, 
-                                                      GLenum format, 
-                                                      GLenum type, 
+typedef void (APIENTRY * COIN_PFNGLGETCOLORTABLEPROC)(GLenum target,
+                                                      GLenum format,
+                                                      GLenum type,
                                                       GLvoid * data);
-typedef void (APIENTRY * COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)(GLenum target, 
-                                                                 GLenum pname, 
+typedef void (APIENTRY * COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)(GLenum target,
+                                                                 GLenum pname,
                                                                  GLint *params);
-typedef void (APIENTRY * COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)(GLenum target, 
-                                                                 GLenum pname, 
+typedef void (APIENTRY * COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)(GLenum target,
+                                                                 GLenum pname,
                                                                  GLfloat * params);
 
 /* Typedefs for glBlendEquation[EXT]. */
 typedef void *(APIENTRY * COIN_PFNGLBLENDEQUATIONPROC)(GLenum);
 
+/* typedefs for OpenGL vertex arrays */
+typedef void (APIENTRY * COIN_PFNGLVERTEXPOINTERPROC)(GLint size, GLenum type, GLsizei stride, const GLvoid * pointer);
+typedef void (APIENTRY * COIN_PFNGLTEXCOORDPOINTERPROC)(GLint size, GLenum type, GLsizei stride, const GLvoid * pointer);
+typedef void (APIENTRY * COIN_PFNGLNORMALPOINTERPROC)(GLenum type, GLsizei stride, const GLvoid *pointer);
+typedef void (APIENTRY * COIN_PNFGLCOLORPOINTERPROC)(GLint size, GLenum type, GLsizei stride, const GLvoid * pointer);
+typedef void (APIENTRY * COIN_PFNGLINDEXPOINTERPROC)(GLenum type, GLsizei stride, const GLvoid * pointer);
+typedef void (APIENTRY * COIN_PFNGLENABLECLIENTSTATEPROC)(GLenum array);
+typedef void (APIENTRY * COIN_PFNGLDISABLECLIENTSTATEPROC)(GLenum array);
+typedef void (APIENTRY * COIN_PFNGLINTERLEAVEDARRAYSPROC)(GLenum format, GLsizei stride, const GLvoid * pointer);
+typedef void (APIENTRY * COIN_PFNGLDRAWARRAYSPROC)(GLenum mode, GLint first, GLsizei count);
+typedef void (APIENTRY * COIN_PFNGLDRAWELEMENTSPROC)(GLenum mode, GLsizei count, GLenum type, const GLvoid * indices);
+typedef void (APIENTRY * COIN_PFNGLARRAYELEMENTPROC)(GLint i);
+
+typedef void (APIENTRY * COIN_PFNGLMULTIDRAWARRAYSPROC)(GLenum mode, const GLint * first, 
+                                                        const GLsizei * count, GLsizei primcount);
+typedef void (APIENTRY * COIN_PFNGLMULTIDRAWELEMENTSPROC)(GLenum mode, const GLsizei * count, 
+                                                          GLenum type, const GLvoid ** indices, GLsizei primcount);
+
+/* Typedefs for NV_vertex_array_range */
+typedef void (APIENTRY * COIN_PFNGLFLUSHVERTEXARRAYRANGENVPROC)(void);
+typedef void (APIENTRY * COIN_PFNGLVERTEXARRAYRANGENVPROC)(GLsizei size, const GLvoid * pointer);
+typedef void * (APIENTRY * COIN_PFNGLALLOCATEMEMORYNVPROC)(GLsizei size, GLfloat readfreq,
+                                                           GLfloat writefreq, GLfloat priority);
+typedef void (APIENTRY * COIN_PFNGLFREEMEMORYNVPROC)(GLvoid * buffer);
+
+
+/* typedefs for GL_ARB_vertex_buffer_object */
+typedef void (APIENTRY * COIN_PFNGLBINDBUFFERPROC)(GLenum target, GLuint buffer);
+typedef void (APIENTRY * COIN_PFNGLDELETEBUFFERSPROC)(GLsizei n, const GLuint * buffers);
+typedef void (APIENTRY * COIN_PFNGLGENBUFFERSPROC)(GLsizei n, GLuint *buffers);
+typedef GLboolean (APIENTRY * COIN_PFNGLISBUFFERPROC)(GLuint buffer);
+typedef void (APIENTRY * COIN_PFNGLBUFFERDATAPROC)(GLenum target,
+                                                   intptr_t size, /* 64 bit on 64 bit systems */
+                                                   const GLvoid *data,
+                                                   GLenum usage);
+typedef void (APIENTRY * COIN_PFNGLBUFFERSUBDATAPROC)(GLenum target,
+                                                      intptr_t offset, /* 64 bit */
+                                                      intptr_t size, /* 64 bit */
+                                                      const GLvoid * data);
+typedef void (APIENTRY * COIN_PFNGLGETBUFFERSUBDATAPROC)(GLenum target,
+                                                         intptr_t offset, /* 64 bit */
+                                                         intptr_t size, /* 64 bit */
+                                                         GLvoid *data);
+typedef GLvoid * (APIENTRY * COIN_PNFGLMAPBUFFERPROC)(GLenum target, GLenum access);
+typedef GLboolean (APIENTRY * COIN_PFNGLUNMAPBUFFERPROC)(GLenum target);
+typedef void (APIENTRY * COIN_PFNGLGETBUFFERPARAMETERIVPROC)(GLenum target,
+                                                             GLenum pname,
+                                                             GLint * params);
+typedef void (APIENTRY * COIN_PFNGLGETBUFFERPOINTERVPROC)(GLenum target,
+                                                          GLenum pname,
+                                                          GLvoid ** params);
 
 /* Typedefs for GLX functions. */
 typedef void *(APIENTRY * COIN_PFNGLXGETCURRENTDISPLAYPROC)(void);
@@ -232,7 +283,7 @@ struct cc_glxglue {
 /* GL info storage structure. An instance will be allocated and
    initialized for each new GL context id. */
 struct cc_glglue {
-  
+
   struct { /* OpenGL versioning. */
     unsigned int major, minor, release;
   } version;
@@ -269,9 +320,41 @@ struct cc_glglue {
   COIN_PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC glCompressedTexSubImage2D;
   COIN_PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC glCompressedTexSubImage1D;
   COIN_PFNGLGETCOMPRESSEDTEXIMAGEPROC glGetCompressedTexImage;
-  
+
   COIN_PFNGLBLENDEQUATIONPROC glBlendEquation;
   COIN_PFNGLBLENDEQUATIONPROC glBlendEquationEXT;
+
+  COIN_PFNGLVERTEXPOINTERPROC glVertexPointer;
+  COIN_PFNGLTEXCOORDPOINTERPROC glTexCoordPointer;
+  COIN_PFNGLNORMALPOINTERPROC glNormalPointer;
+  COIN_PNFGLCOLORPOINTERPROC glColorPointer;
+  COIN_PFNGLINDEXPOINTERPROC glIndexPointer;
+  COIN_PFNGLENABLECLIENTSTATEPROC glEnableClientState;
+  COIN_PFNGLDISABLECLIENTSTATEPROC glDisableClientState;
+  COIN_PFNGLINTERLEAVEDARRAYSPROC glInterleavedArrays;
+  COIN_PFNGLDRAWARRAYSPROC glDrawArrays;
+  COIN_PFNGLDRAWELEMENTSPROC glDrawElements;
+  COIN_PFNGLARRAYELEMENTPROC glArrayElement;
+  
+  COIN_PFNGLMULTIDRAWARRAYSPROC glMultiDrawArrays;
+  COIN_PFNGLMULTIDRAWELEMENTSPROC glMultiDrawElements;
+  
+  COIN_PFNGLVERTEXARRAYRANGENVPROC glVertexArrayRangeNV;
+  COIN_PFNGLFLUSHVERTEXARRAYRANGENVPROC glFlushVertexArrayRangeNV;
+  COIN_PFNGLALLOCATEMEMORYNVPROC glAllocateMemoryNV;
+  COIN_PFNGLFREEMEMORYNVPROC glFreeMemoryNV;
+
+  COIN_PFNGLBINDBUFFERPROC glBindBuffer;
+  COIN_PFNGLDELETEBUFFERSPROC glDeleteBuffers;
+  COIN_PFNGLGENBUFFERSPROC glGenBuffers;
+  COIN_PFNGLISBUFFERPROC glIsBuffer;
+  COIN_PFNGLBUFFERDATAPROC glBufferData;
+  COIN_PFNGLBUFFERSUBDATAPROC glBufferSubData;
+  COIN_PFNGLGETBUFFERSUBDATAPROC glGetBufferSubData;
+  COIN_PNFGLMAPBUFFERPROC glMapBuffer;
+  COIN_PFNGLUNMAPBUFFERPROC glUnmapBuffer;
+  COIN_PFNGLGETBUFFERPARAMETERIVPROC glGetBufferParameteriv;
+  COIN_PFNGLGETBUFFERPOINTERVPROC glGetBufferPointerv;
 
   const char * versionstr;
   const char * vendorstr;

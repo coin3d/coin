@@ -304,6 +304,80 @@ COIN_DLL_API SbBool cc_glglue_context_make_current(void * ctx);
 COIN_DLL_API void cc_glglue_context_reinstate_previous(void * ctx);
 COIN_DLL_API void cc_glglue_context_destruct(void * ctx);
 
+/* OpenGL vertex array */
+COIN_DLL_API SbBool cc_glglue_has_vertex_array(const cc_glglue * glue);;
+COIN_DLL_API void cc_glglue_glVertexPointer(const cc_glglue * glue,
+                                            GLint size, GLenum type, GLsizei stride, const GLvoid * pointer);
+COIN_DLL_API void cc_glglue_glTexCoordPointer(const cc_glglue * glue,
+                                              GLint size, GLenum type, GLsizei stride, const GLvoid * pointer);
+COIN_DLL_API void cc_glglue_glNormalPointer(const cc_glglue * glue,
+                                            GLenum type, GLsizei stride, const GLvoid *pointer);
+COIN_DLL_API void cc_glglue_glColorPointer(const cc_glglue * glue,
+                                           GLint size, GLenum type, GLsizei stride, const GLvoid * pointer);
+COIN_DLL_API void cc_glglue_glIndexPointer (const cc_glglue * glue,
+                                            GLenum type, GLsizei stride, const GLvoid * pointer);
+COIN_DLL_API void cc_glglue_glEnableClientState(const cc_glglue * glue, GLenum array);
+COIN_DLL_API void cc_glglue_glDisableClientState(const cc_glglue * glue, GLenum array);
+COIN_DLL_API void cc_glglue_glInterleavedArrays(const cc_glglue * glue, 
+                                                GLenum format, GLsizei stride, const GLvoid * pointer);
+COIN_DLL_API void cc_glglue_glDrawArrays(const cc_glglue * glue, 
+                                         GLenum mode, GLint first, GLsizei count);
+COIN_DLL_API void cc_glglue_glDrawElements(const cc_glglue * glue, 
+                                           GLenum mode, GLsizei count, GLenum type, const GLvoid * indices);
+COIN_DLL_API void cc_glglue_glArrayElement(const cc_glglue * glue, GLint i);
+
+/* OpenGL vertex array with multitexture */
+COIN_DLL_API SbBool cc_glglue_has_multitexture_vertex_array(const cc_glglue * glue);
+COIN_DLL_API void cc_glglue_glMultiDrawArrays(const cc_glglue * glue, GLenum mode, const GLint * first, 
+                                              const GLsizei * count, GLsizei primcount);
+COIN_DLL_API void cc_glglue_glMultiDrawElements(const cc_glglue * glue, GLenum mode, const GLsizei * count, 
+                                                GLenum type, const GLvoid ** indices, GLsizei primcount);
+
+/* NV_vertex_array_range */
+COIN_DLL_API SbBool cc_glglue_has_nv_vertex_array_range(const cc_glglue * glue);
+COIN_DLL_API void cc_glglue_glFlushVertexArrayRangeNV(const cc_glglue * glue);
+COIN_DLL_API void cc_glglue_glVertexArrayRangeNV(const cc_glglue * glue, GLsizei size, const GLvoid * pointer);
+COIN_DLL_API void * cc_glglue_glAllocateMemoryNV(const cc_glglue * glue,
+                                                 GLsizei size, GLfloat readfreq,
+                                                 GLfloat writefreq, GLfloat priority);
+COIN_DLL_API void cc_glglue_glFreeMemoryNV(const cc_glglue * glue, GLvoid * buffer);
+
+/* ARB_vertex_buffer_object */
+COIN_DLL_API SbBool cc_glglue_has_vertex_buffer_object(const cc_glglue * glue);
+COIN_DLL_API void cc_glglue_glBindBuffer(const cc_glglue * glue, GLenum target, GLuint buffer);
+COIN_DLL_API void cc_glglue_glDeleteBuffers(const cc_glglue * glue, GLsizei n, const GLuint *buffers);
+COIN_DLL_API void cc_glglue_glGenBuffers(const cc_glglue * glue, GLsizei n, GLuint *buffers);
+COIN_DLL_API GLboolean cc_glglue_glIsBuffer(const cc_glglue * glue, GLuint buffer);
+COIN_DLL_API void cc_glglue_glBufferData(const cc_glglue * glue,
+                                         GLenum target, 
+                                         intptr_t size, /* 64 bit on 64 bit systems */ 
+                                         const GLvoid *data, 
+                                         GLenum usage);
+COIN_DLL_API void cc_glglue_glBufferSubData(const cc_glglue * glue,
+                                            GLenum target, 
+                                            intptr_t offset, /* 64 bit */ 
+                                            intptr_t size, /* 64 bit */ 
+                                            const GLvoid * data);
+COIN_DLL_API void cc_glglue_glGetBufferSubData(const cc_glglue * glue,
+                                               GLenum target, 
+                                               intptr_t offset, /* 64 bit */ 
+                                               intptr_t size, /* 64 bit */ 
+                                               GLvoid *data);
+COIN_DLL_API GLvoid * cc_glglue_glMapBuffer(const cc_glglue * glue,
+                                            GLenum target, GLenum access);
+COIN_DLL_API GLboolean cc_glglue_glUnmapBuffer(const cc_glglue * glue,
+                                               GLenum target);
+COIN_DLL_API void cc_glglue_glGetBufferParameteriv(const cc_glglue * glue,
+                                                   GLenum target, 
+                                                   GLenum pname, 
+                                                   GLint * params);
+COIN_DLL_API void cc_glglue_glGetBufferPointerv(const cc_glglue * glue,
+                                                GLenum target, 
+                                                GLenum pname, 
+                                                GLvoid ** params);
+
+/* GL_NV_vertex_array_range */
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

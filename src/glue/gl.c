@@ -517,6 +517,7 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 #define GL_EXT_color_subtable 1
 #define GL_SGI_color_table 1
 #define GL_SGI_texture_color_table 1
+#define GL_ARB_vertex_buffer_object 1
 
 #else /* static binding */
 
@@ -789,6 +790,129 @@ glglue_resolve_symbols(cc_glglue * w)
     w->glBlendEquationEXT = (COIN_PFNGLBLENDEQUATIONPROC)PROC(glBlendEquationEXT);
   }
 #endif /* GL_EXT_blend_minmax */
+
+  w->glVertexPointer = NULL; /* for cc_glglue_has_vertex_array() */
+#if defined(GL_VERSION_1_1)
+  if (cc_glglue_glversion_matches_at_least(w, 1, 1, 0)) {
+    w->glVertexPointer = (COIN_PFNGLVERTEXPOINTERPROC) PROC(glVertexPointer);
+    w->glTexCoordPointer = (COIN_PFNGLTEXCOORDPOINTERPROC) PROC(glTexCoordPointer);
+    w->glNormalPointer = (COIN_PFNGLNORMALPOINTERPROC) PROC(glNormalPointer);
+    w->glColorPointer = (COIN_PNFGLCOLORPOINTERPROC) PROC(glColorPointer);
+    w->glIndexPointer = (COIN_PFNGLINDEXPOINTERPROC) PROC(glIndexPointer);
+    w->glEnableClientState = (COIN_PFNGLENABLECLIENTSTATEPROC) PROC(glEnableClientState);
+    w->glDisableClientState = (COIN_PFNGLDISABLECLIENTSTATEPROC) PROC(glDisableClientState);
+    w->glInterleavedArrays = (COIN_PFNGLINTERLEAVEDARRAYSPROC) PROC(glInterleavedArrays);
+    w->glDrawArrays = (COIN_PFNGLDRAWARRAYSPROC) PROC(glDrawArrays);
+    w->glDrawElements = (COIN_PFNGLDRAWELEMENTSPROC) PROC(glDrawElements);
+    w->glArrayElement = (COIN_PFNGLARRAYELEMENTPROC) PROC(glArrayElement);
+  }
+  if (w->glVertexPointer) {
+    if (!w->glTexCoordPointer ||
+        !w->glNormalPointer ||
+        !w->glColorPointer ||
+        !w->glIndexPointer ||
+        !w->glEnableClientState ||
+        !w->glDisableClientState ||
+        !w->glInterleavedArrays ||
+        !w->glDrawArrays ||
+        !w->glDrawElements ||
+        !w->glArrayElement) {
+      w->glVertexPointer = NULL; /* cc_glglue_has_vertex_array() will return FALSE */
+      cc_debugerror_postwarning("glglue_init",
+                                "glVertexPointer found, but one or more of the other "
+                                "vertex array functions were not found");
+    }
+  }
+#endif /* GL_VERSION_1_1 */
+
+  /* Appeared in OpenGL v1.4 (but also in GL_EXT_multi_draw_array extension */
+  w->glMultiDrawArrays = NULL;
+  w->glMultiDrawElements = NULL;
+#if defined(GL_VERSION_1_4) || defined(GL_EXT_multi_draw_arrays)
+  if (cc_glglue_glversion_matches_at_least(w, 1, 4, 0)) {
+    w->glMultiDrawArrays = (COIN_PFNGLMULTIDRAWARRAYSPROC) PROC(glMultiDrawArrays);
+    w->glMultiDrawElements = (COIN_PFNGLMULTIDRAWELEMENTSPROC) PROC(glMultiDrawElements);
+  }
+  else if (cc_glglue_glext_supported(w, "GL_EXT_multi_draw_arrays")) {
+    w->glMultiDrawArrays = (COIN_PFNGLMULTIDRAWARRAYSPROC) PROC(glMultiDrawArraysEXT);
+    w->glMultiDrawElements = (COIN_PFNGLMULTIDRAWELEMENTSPROC) PROC(glMultiDrawElementsEXT);    
+  }
+#endif /* GL_VERSION_1_4 || GL_EXT_multi_draw_arrays */
+
+  w->glBindBuffer = NULL; /* so that cc_glglue_has_vertex_buffer_objects() works  */
+#if defined(GL_ARB_vertex_buffer_object) || defined(GL_VERSION_1_5) 
+  if (cc_glglue_glversion_matches_at_least(w, 1, 5, 0)) {
+    w->glBindBuffer = (COIN_PFNGLBINDBUFFERPROC) PROC(glBindBuffer);
+    w->glDeleteBuffers = (COIN_PFNGLDELETEBUFFERSPROC) PROC(glDeleteBuffers);
+    w->glGenBuffers = (COIN_PFNGLGENBUFFERSPROC) PROC(glGenBuffers);
+    w->glIsBuffer = (COIN_PFNGLISBUFFERPROC) PROC(glIsBuffer);
+    w->glBufferData = (COIN_PFNGLBUFFERDATAPROC) PROC(glBufferData);
+    w->glBufferSubData = (COIN_PFNGLBUFFERSUBDATAPROC) PROC(glBufferSubData);
+    w->glGetBufferSubData = (COIN_PFNGLGETBUFFERSUBDATAPROC) PROC(glGetBufferSubData);
+    w->glMapBuffer = (COIN_PNFGLMAPBUFFERPROC) PROC(glMapBuffer);
+    w->glUnmapBuffer = (COIN_PFNGLUNMAPBUFFERPROC) PROC(glUnmapBuffer);
+    w->glGetBufferParameteriv = (COIN_PFNGLGETBUFFERPARAMETERIVPROC) PROC(glGetBufferParameteriv);
+    w->glGetBufferPointerv = (COIN_PFNGLGETBUFFERPOINTERVPROC) PROC(glGetBufferPointerv);    
+  }
+  else if (cc_glglue_glext_supported(w, "GL_ARB_vertex_buffer_object")) {
+    w->glBindBuffer = (COIN_PFNGLBINDBUFFERPROC) PROC(glBindBufferARB);
+    w->glDeleteBuffers = (COIN_PFNGLDELETEBUFFERSPROC) PROC(glDeleteBuffersARB);
+    w->glGenBuffers = (COIN_PFNGLGENBUFFERSPROC) PROC(glGenBuffersARB);
+    w->glIsBuffer = (COIN_PFNGLISBUFFERPROC) PROC(glIsBufferARB);
+    w->glBufferData = (COIN_PFNGLBUFFERDATAPROC) PROC(glBufferDataARB);
+    w->glBufferSubData = (COIN_PFNGLBUFFERSUBDATAPROC) PROC(glBufferSubDataARB);
+    w->glGetBufferSubData = (COIN_PFNGLGETBUFFERSUBDATAPROC) PROC(glGetBufferSubDataARB);
+    w->glMapBuffer = (COIN_PNFGLMAPBUFFERPROC) PROC(glMapBufferARB);
+    w->glUnmapBuffer = (COIN_PFNGLUNMAPBUFFERPROC) PROC(glUnmapBufferARB);
+    w->glGetBufferParameteriv = (COIN_PFNGLGETBUFFERPARAMETERIVPROC) PROC(glGetBufferParameterivARB);
+    w->glGetBufferPointerv = (COIN_PFNGLGETBUFFERPOINTERVPROC) PROC(glGetBufferPointervARB);
+  }
+  if (w->glBindBuffer) {
+    if (!w->glDeleteBuffers ||
+        !w->glGenBuffers ||
+        !w->glIsBuffer ||
+        !w->glBufferData ||
+        !w->glBufferSubData ||
+        !w->glGetBufferSubData ||
+        !w->glMapBuffer ||
+        !w->glUnmapBuffer ||
+        !w->glGetBufferParameteriv ||
+        !w->glGetBufferPointerv) {      
+      w->glBindBuffer = NULL; /* so that cc_glglue_has_vertex_buffer_object() will return FALSE */
+      cc_debugerror_postwarning("glglue_init",
+                                "glBindBuffer found, but one or more of the other "
+                                "vertex buffer object functions were not found");
+    }
+  }
+#endif /* GL_ARB_vertex_buffer_object || GL_VERSION_1_5 */
+  
+  w->glVertexArrayRangeNV = NULL;
+#if defined(HAVE_GLX) || defined(HAVE_WGL)
+  if (cc_glglue_glext_supported(w, "GL_NV_vertex_array_range")) {
+    w->glVertexArrayRangeNV = (COIN_PFNGLVERTEXARRAYRANGENVPROC) PROC(glVertexArrayRangeNV);
+    w->glFlushVertexArrayRangeNV = (COIN_PFNGLFLUSHVERTEXARRAYRANGENVPROC) PROC(glFlushVertexArrayRangeNV);
+#ifdef HAVE_GLX
+    w->glAllocateMemoryNV = (COIN_PFNGLALLOCATEMEMORYNVPROC) PROC(glXAllocateMemoryNV);
+    w->glFreeMemoryNV = (COIN_PFNGLFREEMEMORYNVPROC) PROC(glXFreeMemoryNV);
+#endif /* HAVE_GLX */
+#ifdef HAVE_WGL
+    w->glAllocateMemoryNV = (COIN_PFNGLALLOCATEMEMORYNVPROC) PROC(wglAllocateMemoryNV);
+    w->glFreeMemoryNV = (COIN_PFNGLFREEMEMORYNVPROC) PROC(wglFreeMemoryNV);
+#endif /* HAVE_WGL */
+
+    if (w->glVertexArrayRangeNV) {
+      if (!w->glFlushVertexArrayRangeNV ||
+          !w->glAllocateMemoryNV ||
+          !w->glFreeMemoryNV) {
+        w->glVertexArrayRangeNV = NULL;
+        cc_debugerror_postwarning("glglue_init",
+                                  "glVertexArrayRangeNV found, but one or more of the other "
+                                  "vertex array functions were not found");
+        
+      }
+    }
+  }
+#endif /* HAVE_GLX || HAVE_WGL */
 }
 
 #undef PROC
@@ -997,6 +1121,8 @@ cc_glglue_instance(int contextid)
 #endif /* HAVE_AGL */
 
     gi = (cc_glglue*)malloc(sizeof(cc_glglue));
+    /* clear to set all pointers to NULL */
+    memset(gi, 0, sizeof(cc_glglue));
     /* FIXME: handle out-of-memory on malloc(). 20000928 mortene. */
 
     ptr = gi;
@@ -1748,6 +1874,267 @@ cc_glglue_glBlendEquation(const cc_glglue * glue, GLenum mode)
 
   if (glue->glBlendEquation) glue->glBlendEquation(mode);
   else glue->glBlendEquationEXT(mode);
+}
+
+SbBool 
+cc_glglue_has_vertex_array(const cc_glglue * glue)
+{
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
+  return glue->glVertexPointer != NULL;
+}
+
+void 
+cc_glglue_glVertexPointer(const cc_glglue * glue,
+                          GLint size, GLenum type, GLsizei stride, const GLvoid * pointer)
+{
+  assert(glue->glVertexPointer);
+  glue->glVertexPointer(size, type, stride, pointer);
+}
+
+void 
+cc_glglue_glTexCoordPointer(const cc_glglue * glue,
+                            GLint size, GLenum type, 
+                            GLsizei stride, const GLvoid * pointer)
+{
+  assert(glue->glTexCoordPointer);
+  glue->glTexCoordPointer(size, type, stride, pointer);
+}
+
+void 
+cc_glglue_glNormalPointer(const cc_glglue * glue,
+                          GLenum type, GLsizei stride, const GLvoid *pointer)
+{
+  assert(glue->glNormalPointer); 
+  glue->glNormalPointer(type, stride, pointer);
+}
+
+void 
+cc_glglue_glColorPointer(const cc_glglue * glue,
+                         GLint size, GLenum type, 
+                         GLsizei stride, const GLvoid * pointer)
+{
+  assert(glue->glColorPointer);
+  glue->glColorPointer(size, type, stride, pointer);
+}
+
+void 
+cc_glglue_glIndexPointer (const cc_glglue * glue,
+                          GLenum type, GLsizei stride, const GLvoid * pointer)
+{
+  assert(glue->glIndexPointer);
+  glue->glIndexPointer(type, stride, pointer);
+}
+
+void 
+cc_glglue_glEnableClientState(const cc_glglue * glue, GLenum array)
+{
+  assert(glue->glEnableClientState);
+  glue->glEnableClientState(array);
+}
+
+void 
+cc_glglue_glDisableClientState(const cc_glglue * glue, GLenum array)
+{
+  assert(glue->glDisableClientState);
+  glue->glDisableClientState(array);
+}
+
+void 
+cc_glglue_glInterleavedArrays(const cc_glglue * glue, 
+                              GLenum format, GLsizei stride, const GLvoid * pointer)
+{
+  assert(glue->glInterleavedArrays);
+  glue->glInterleavedArrays(format, stride, pointer);
+}
+
+void
+cc_glglue_glDrawArrays(const cc_glglue * glue, 
+                       GLenum mode, GLint first, GLsizei count)
+{
+  assert(glue->glDrawArrays);
+  glue->glDrawArrays(mode, first, count);
+}
+
+void 
+cc_glglue_glDrawElements(const cc_glglue * glue, 
+                         GLenum mode, GLsizei count, GLenum type, 
+                         const GLvoid * indices)
+{
+  assert(glue->glDrawElements);
+  glue->glDrawElements(mode, count, type, indices);
+}
+
+void
+cc_glglue_glArrayElement(const cc_glglue * glue, GLint i)
+{
+  assert(glue->glArrayElement);
+  glue->glArrayElement(i);
+}
+
+SbBool 
+cc_glglue_has_multitexture_vertex_array(const cc_glglue * glue)
+{
+  return glue->glMultiDrawArrays && glue->glMultiDrawElements;
+}
+
+void 
+cc_glglue_glMultiDrawArrays(const cc_glglue * glue, GLenum mode, const GLint * first, 
+                            const GLsizei * count, GLsizei primcount)
+{
+  assert(glue->glMultiDrawArrays);
+  glue->glMultiDrawArrays(mode, first, count, primcount);
+}
+
+void 
+cc_glglue_glMultiDrawElements(const cc_glglue * glue, GLenum mode, const GLsizei * count, 
+                              GLenum type, const GLvoid ** indices, GLsizei primcount)
+{
+  assert(glue->glMultiDrawElements);
+  glue->glMultiDrawElements(mode, count, type, indices, primcount);
+}
+
+SbBool 
+cc_glglue_has_nv_vertex_array_range(const cc_glglue * glue)
+{
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
+  return glue->glVertexArrayRangeNV != NULL;
+}
+
+void 
+cc_glglue_glFlushVertexArrayRangeNV(const cc_glglue * glue)
+{
+  assert(glue->glFlushVertexArrayRangeNV);
+  glue->glFlushVertexArrayRangeNV();
+}
+
+void 
+cc_glglue_glVertexArrayRangeNV(const cc_glglue * glue, GLsizei size, const GLvoid * pointer)
+{
+  assert(glue->glVertexArrayRangeNV);
+  glue->glVertexArrayRangeNV(size, pointer);
+}
+
+void * 
+cc_glglue_glAllocateMemoryNV(const cc_glglue * glue,
+                             GLsizei size, GLfloat readfreq,
+                             GLfloat writefreq, GLfloat priority)
+{
+  assert(glue->glAllocateMemoryNV);
+  return glue->glAllocateMemoryNV(size, readfreq, writefreq, priority);
+}
+
+void 
+cc_glglue_glFreeMemoryNV(const cc_glglue * glue, GLvoid * buffer)
+{
+  assert(glue->glFreeMemoryNV);
+  glue->glFreeMemoryNV(buffer);
+}
+
+SbBool 
+cc_glglue_has_vertex_buffer_object(const cc_glglue * glue)
+{
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
+ 
+  /* check only one function for speed. It's set to NULL when
+     initializing if one of the other functions wasn't found */
+  return glue->glBindBuffer != NULL;
+}
+
+void 
+cc_glglue_glBindBuffer(const cc_glglue * glue, GLenum target, GLuint buffer)
+{
+  assert(glue->glBindBuffer);
+  glue->glBindBuffer(target, buffer);
+}
+
+void 
+cc_glglue_glDeleteBuffers(const cc_glglue * glue, GLsizei n, const GLuint *buffers)
+{
+  assert(glue->glDeleteBuffers);
+  glue->glDeleteBuffers(n, buffers);
+}
+
+void 
+cc_glglue_glGenBuffers(const cc_glglue * glue, GLsizei n, GLuint *buffers)
+{
+  assert(glue->glGenBuffers);
+  glue->glGenBuffers(n, buffers);
+}
+
+GLboolean 
+cc_glglue_glIsBuffer(const cc_glglue * glue, GLuint buffer)
+{
+  assert(glue->glIsBuffer);
+  return glue->glIsBuffer(buffer);
+}
+
+void 
+cc_glglue_glBufferData(const cc_glglue * glue,
+                       GLenum target, 
+                       intptr_t size, /* 64 bit on 64 bit systems */ 
+                       const GLvoid *data, 
+                       GLenum usage)
+{
+  assert(glue->glBufferData);
+  glue->glBufferData(target, size, data, usage);
+}
+
+void 
+cc_glglue_glBufferSubData(const cc_glglue * glue,
+                          GLenum target, 
+                          intptr_t offset, /* 64 bit */ 
+                          intptr_t size, /* 64 bit */ 
+                          const GLvoid * data)
+{
+  assert(glue->glBufferSubData);
+  glue->glBufferSubData(target, offset, size, data);
+}
+
+void 
+cc_glglue_glGetBufferSubData(const cc_glglue * glue,
+                             GLenum target, 
+                             intptr_t offset, /* 64 bit */ 
+                             intptr_t size, /* 64 bit */ 
+                             GLvoid *data)
+{
+  assert(glue->glGetBufferSubData);
+  glue->glGetBufferSubData(target, offset, size, data);
+}
+
+GLvoid * 
+cc_glglue_glMapBuffer(const cc_glglue * glue,
+                      GLenum target, GLenum access)
+{
+  assert(glue->glMapBuffer);
+  return glue->glMapBuffer(target, access);
+}
+
+GLboolean 
+cc_glglue_glUnmapBuffer(const cc_glglue * glue,
+                        GLenum target)
+{
+  assert(glue->glUnmapBuffer);
+  return glue->glUnmapBuffer(target);
+}
+
+void 
+cc_glglue_glGetBufferParameteriv(const cc_glglue * glue,
+                                 GLenum target, 
+                                 GLenum pname, 
+                                 GLint * params)
+{
+  assert(glue->glGetBufferParameteriv);
+  glue->glGetBufferParameteriv(target, pname, params);
+}
+
+void 
+cc_glglue_glGetBufferPointerv(const cc_glglue * glue,
+                              GLenum target, 
+                              GLenum pname, 
+                              GLvoid ** params)
+{
+  assert(glue->glGetBufferPointerv);
+  glue->glGetBufferPointerv(target, pname, params);
 }
 
 /*!
