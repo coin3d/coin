@@ -1999,7 +1999,7 @@ if test x"$with_dl" != xno; then
 #include <dlfcn.h>
 #endif /* HAVE_DLFCN_H */
 ],
-                 [(void)dlopen(0L, 0);],
+                 [(void)dlopen(0L, 0); (void)dlsym(0L, "Gunners!"); (void)dlclose(0L);],
                  [sim_cv_lib_dl_avail=yes],
                  [sim_cv_lib_dl_avail=no])])
 
@@ -2981,6 +2981,9 @@ if test x"$with_glu" != xno; then
 ],
                     [
 gluSphere(0L, 1.0, 1, 1);
+/* Defect JAGad01283 of HP's aCC compiler causes a link failure unless
+   there is at least one "pure" OpenGL call along with GLU calls. */
+glEnd();
 ],
                     [sim_cv_lib_glu="$sim_ac_glu_libcheck"])
       fi
@@ -3021,6 +3024,9 @@ AC_DEFUN([SIM_AC_GLU_READY_IFELSE],
 ],
     [
 gluSphere(0L, 1.0, 1, 1);
+/* Defect JAGad01283 of HP's aCC compiler causes a link failure unless
+   there is at least one "pure" OpenGL call along with GLU calls. */
+glEnd();
 ],
     [sim_cv_glu_ready=true],
     [sim_cv_glu_ready=false])])
@@ -3058,8 +3064,13 @@ AC_CACHE_CHECK(
 #endif /* HAVE_WINDOWS_H */
 #include <GL/gl.h>
 #include <GL/glu.h>],
-                  [$sim_ac_glu_structname * hepp = gluNewNurbsRenderer();
-                   gluDeleteNurbsRenderer(hepp)],
+                  [
+$sim_ac_glu_structname * hepp = gluNewNurbsRenderer();
+gluDeleteNurbsRenderer(hepp);
+/* Defect JAGad01283 of HP's aCC compiler causes a link failure unless
+   there is at least one "pure" OpenGL call along with GLU calls. */
+glEnd();
+],
                   [sim_cv_func_glu_nurbsobject=$sim_ac_glu_structname])
     fi
   done
@@ -3084,8 +3095,16 @@ AC_CACHE_CHECK(
   [whether GLX is on the system],
   sim_cv_have_glx,
   AC_TRY_LINK(
-    [#include <GL/glx.h>],
-    [(void)glXChooseVisual(0L, 0, 0L);],
+    [
+#include <GL/glx.h>
+#include <GL/gl.h>
+],
+    [
+(void)glXChooseVisual(0L, 0, 0L);
+/* Defect JAGad01283 of HP's aCC compiler causes a link failure unless
+   there is at least one "pure" OpenGL call along with GLU calls. */
+glEnd();
+],
     [sim_cv_have_glx=true],
     [sim_cv_have_glx=false]))
 
