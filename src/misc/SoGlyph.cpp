@@ -112,7 +112,6 @@ public:
 */
 SoGlyph::SoGlyph()
 {
-  // fprintf(stderr,"SoGlyph constructor called.\n"); // DEBUG
   THIS = new SoGlyphP();
   THIS->refcount = 0;
   THIS->flags.didalloccoords = 0;
@@ -529,7 +528,6 @@ SoGlyph::getAdvance(void) const
   if (this->pimpl->fontidx >= 0 && this->pimpl->glyphidx >= 0) {
     return SoFontLib::getAdvance(this->pimpl->fontidx, this->pimpl->glyphidx);
   }
-  fprintf(stderr,"SoGlyph::getAdvance error: fontidx=%d glyphidx=%d\n", this->pimpl->fontidx, this->pimpl->glyphidx);
   return SbVec2s(0,0);
 }
 
@@ -541,7 +539,6 @@ SoGlyph::getKerning(const SoGlyph & rightglyph) const
       rightglyph.pimpl->fontidx >= 0 && rightglyph.pimpl->glyphidx >= 0) {
     return SoFontLib::getKerning(this->pimpl->fontidx, this->pimpl->glyphidx, rightglyph.pimpl->glyphidx);
   }
-  fprintf(stderr,"SoGlyph::getKerning error: fontidx=%d glyphidx=%d\n", this->pimpl->fontidx, this->pimpl->glyphidx);
   return SbVec2s(0,0);
 }
 

@@ -502,6 +502,7 @@ SoText2P::flushGlyphCache(const SbBool unrefglyphs)
 void
 SoText2P::dumpGlyphCache()
 {
+  // FIXME: pure debug method, remove. preng 2003-03-18.
   fprintf(stderr,"dumpGlyphCache: validarraydims=%d\n", validarraydims);
   if (this->glyphs && validarraydims > 0) {
     for (int i=0; i<this->linecnt; i++) {
@@ -592,6 +593,7 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
 void
 SoText2P::dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos)
 {
+  // FIXME: pure debug method, remove. preng 2003-03-18.
   if (!buffer) {
     fprintf(stderr,"bitmap error: buffer pointer NULL.\n");
   } else {
@@ -689,7 +691,9 @@ SoText2P::buildGlyphCache(SoState * state)
           if (!this->glyphs[i][j]) {
             this->flushGlyphCache(FALSE);
             this->useglyphcache = FALSE;
-            fprintf(stderr,"SoText2 ERROR: unable to build glyph cache.\n");  // DEBUG
+#if COIN_DEBUG
+            SoDebugError::postWarning("SoText2::buildGlyphCache", "unable to build glyph cache for '%s'", s);
+#endif
             return -1;
           }
           this->glyphs[i][j]->getBitmap(thissize, thispos, SbBool(FALSE));
