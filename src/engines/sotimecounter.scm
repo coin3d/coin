@@ -27,10 +27,23 @@
 (-> (-> timecounter 'step) 'setValue 1)
 (-> (-> timecounter 'syncIn) 'setValue) ; trigger restart at min value
 
+;; This is for testing the syncOut engine output.
+
+(define (syncout-callback user-data sensor)
+  (format #t "You called, Master?~%"))
+
+(let* ((cb-info (new-schemesocbinfo))
+       (triggerfield (new-sosftrigger))
+       (syncoutsensor (new-sofieldsensor (get-scheme-sensor-cb)
+                                         (void-cast cb-info))))
+  (-> cb-info 'ref)
+  (-> (-> cb-info 'callbackname) 'setvalue "syncout-callback")
+  (-> triggerfield 'connectfrom (-> timecounter 'syncout))
+  (-> syncoutsensor 'attach triggerfield))
+
+
 ;; FIXME: should have code for playing around with the
 ;; SoTimeCounter::duty field. 20000911 mortene.
-
-;; FIXME: should have code for testing the syncOut output. 20000919 mortene.
 
 
 ;; Copy the scenegraph.
