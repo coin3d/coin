@@ -102,6 +102,12 @@ SoFieldContainer::SoFieldContainer(void)
 */
 SoFieldContainer::~SoFieldContainer()
 {
+  // "Dangling" userdata can cause bugs if new objects derived from
+  // SoFieldContainer are subsequently fitted into the same memory
+  // area that this destructed instance is placed at. So we must
+  // remove our entry (if any -- we can just ignore the return value,
+  // no harm is done if no data was set for this instance).
+  (void)cc_hash_remove(sofieldcontainer_userdata_dict, (unsigned long)this);
 }
 
 // Use a stack of dictionaries when copying nodes to allow recursive
