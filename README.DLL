@@ -1,3 +1,0 @@
-When Coin is compiled as a DLL and you try to link against it, make sure
-you define COIN_DLL for your project.  Things will seems to work without
-it for a while, before you suddenly get strange exceptions and heap errors.
