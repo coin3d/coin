@@ -110,6 +110,15 @@ void sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                                const int numcoordindex = 0, const int32_t * coordindex = NULL,
                                const int numtexcoordindex = 0, const int32_t * texcoordindex = NULL);
 
+void sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
+                             void * nurbsrenderer,
+                             const int numctrlpts, 
+                             const float * knotvec,
+                             const int numknots,
+                             const SbBool glrender,
+                             const SbBool drawaspoints = FALSE,
+                             const int numcoordindex = 0, const int32_t * coordindex = NULL);
+
 //
 // optimized faceset rendering functions.
 // the functions are automagically generated based on a template function.
