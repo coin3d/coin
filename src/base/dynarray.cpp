@@ -112,7 +112,7 @@ cc_dynarray_length(const cc_dynarray * arr)
 void
 cc_dynarray_truncate(cc_dynarray * arr, unsigned int len)
 {
-  return arr->plist.truncate(len);
+  arr->plist.truncate(len);
 }
 
 void **
