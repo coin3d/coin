@@ -109,6 +109,12 @@
   }
   \endcode
 
+  Note that an SoImage node in the scene graph will have it's
+  positioning / rendering influenced by the current viewport and
+  camera. This has important implications for how to layout your scene
+  graph for the best possible rendering performance. See the note
+  about this issue in the SoText2 class documentation.
+
   \since TGS Inventor 2.5
   \since Coin 1.0
 */

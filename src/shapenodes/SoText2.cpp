@@ -42,6 +42,24 @@
   of text (the baseline being the imaginary line on which all upper case
   characters are standing).
 
+  One important issue about rendering performance: since the
+  positioning and rendering of an SoText2 node depends on the current
+  viewport and camera, having SoText2 nodes in the scene graph will
+  lead to a cache dependency on the previously encountered
+  SoCamera-node. This can have severe influence on the rendering
+  performance, since if the camera is above the SoText2's nearest
+  parent SoSeparator, the SoSeparator will not be able to cache the
+  geometry under it.
+
+  (Even worse rendering performance will be forced if the
+  SoSeparator::renderCaching flag is explicitly set to \c ON, as the
+  SoSeparator node will then continuously generate and destruct the
+  same cache as the camera moves.)
+
+  SoText2 nodes are therefore best positioned under their own
+  SoSeparator node, outside areas in the scene graph that otherwise
+  contains static geometry.
+
   \sa SoFont, SoFontStyle, SoText3, SoAsciiText
 */
 
