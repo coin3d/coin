@@ -8,3 +8,4 @@ ldflags="@COIN_EXTRA_LDFLAGS@"
 libs="@COIN_EXTRA_LIBS@"
 datadir="@datadir@"
 compiler="@CXX@"
+have_vrml97=@HAVE_VRML97@

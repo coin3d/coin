@@ -61,7 +61,7 @@ do
     --datadir)         echo "$datadir"  ;;
     --have-feature)
       exitcode=1
-      eval "test x\${have_$2+set} = xset && exitcode=0"
+      eval "test x\${have_$2} = x1 && exitcode=0"
       exit $exitcode
       ;;
     --compile)

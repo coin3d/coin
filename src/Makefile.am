@@ -1,10 +1,20 @@
 # **************************************************************************
 # Process this file with automake to generate Makefile.in.
 
+if BUILD_VRML97
+VRML97DIR = vrml97
+VRML97LIBADD = $(VRML97DIR)/libvrml97.la
+VRML97LSTADD = $(VRML97DIR)/vrml97.lst
+else
+VRML97DIR =
+VRML97LIBADD =
+VRML97LSTADD =
+endif
+
 SUBDIRS = \
 	VRMLnodes actions base bundles caches details draggers elements \
 	engines errors events fields manips misc lists nodekits nodes \
-	projectors sensors .
+	projectors sensors $(VRML97DIR) .
 
 if BUILD_WITH_MSVC
 lib_LIBRARIES = coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
@@ -22,7 +32,7 @@ libCoin@SUFFIX@_la_LIBADD = \
 	fields/libfields.la misc/libmisc.la lists/liblists.la \
 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la \
 	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
-	manips/libmanips.la
+	manips/libmanips.la $(VRML97LIBADD)
 endif
 
 libCoin@SUFFIX@_la_SOURCES = \
@@ -35,7 +45,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	fields/fields.lst misc/misc.lst lists/lists.lst \
 	nodekits/nodekits.lst nodes/nodes.lst projectors/projectors.lst \
 	sensors/sensors.lst details/details.lst draggers/draggers.lst \
-	manips/manips.lst
+	manips/manips.lst $(VRML97LSTADD)
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
 	snprintf.c snprintf.h
