@@ -837,6 +837,48 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoBaseKit.h \
                          @path_tag@@coin_src_dir@/src/draggers/SoDragger.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/draggers/SoDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoCenterballDragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoCenterballDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoDirectionalLightDragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoDirectionalLightDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoDragPointDragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoDragPointDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoHandleBoxDragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoHandleBoxDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoJackDragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoJackDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoPointLightDragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoPointLightDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoRotateCylindricalDragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoRotateCylindricalDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoRotateDiscDragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoRotateDiscDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoRotateSphericalDragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoRotateSphericalDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoScale1Dragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoScale1Dragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoScale2Dragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoScale2Dragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoScale2UniformDragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoScale2UniformDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoScaleUniformDragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoScaleUniformDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoSpotLightDragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoSpotLightDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoTabBoxDragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTabBoxDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoTabPlaneDragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTabPlaneDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoTrackballDragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTrackballDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoTransformBoxDragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTransformBoxDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoTransformerDragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTransformerDragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoTranslate1Dragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTranslate1Dragger.h \
+                         @path_tag@@coin_src_dir@/src/draggers/SoTranslate2Dragger.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/draggers/SoTranslate2Dragger.h \
                          @path_tag@@coin_src_dir@/src/manips/commoncode.cpp \
                          @path_tag@@coin_src_dir@/src/manips/SoDirectionalLightManip.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/manips/SoDirectionalLightManip.h \
