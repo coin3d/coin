@@ -36,7 +36,7 @@ public:
   float length(void) const;
   void negate(void);
   float normalize(void);
-  SbVec2f & setValue(const float v[ 2 ]);
+  SbVec2f & setValue(const float v[2]);
   SbVec2f & setValue(const float x, const float y);
   float & operator [] (const int i);
   const float & operator [] (const int i) const;
