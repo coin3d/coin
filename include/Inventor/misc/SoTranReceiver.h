@@ -17,32 +17,28 @@
  *
 \**************************************************************************/
 
-#include "SoBase.cpp"
-#include "SoByteStream.cpp"
-#include "SoChildList.cpp"
-#include "SoGL.cpp"
-#include "SoGLImage.cpp"
-#include "SoGlyph.cpp"
-#include "SoNormalGenerator.cpp"
-#include "SoNotification.cpp"
-#include "SoState.cpp"
-#include "SoDB.cpp"
-#include "SoFullPath.cpp"
-#include "SoTempPath.cpp"
-#include "SoLightPath.cpp"
-#include "SoImageInterface.cpp"
-#include "SoInput.cpp"
-#include "SoInteraction.cpp"
-#include "SoOutput.cpp"
-#include "SoPath.cpp"
-#include "SoPickedPoint.cpp"
-#include "SoPrimitiveVertex.cpp"
-#include "SoSceneManager.cpp"
-#include "SoType.cpp"
-#include "SoOffscreenRenderer.cpp"
-#include "SoGenerate.cpp"
-#include "SoLockManager.cpp"
-#include "SoTranReceiver.cpp"
-#include "SoTranSender.cpp"
-#include "default3dfont.cpp"
-#include "default2dfont.cpp"
+#ifndef COIN_SOTRANRECEIVER_H
+#define COIN_SOTRANRECEIVER_H
+
+#include <Inventor/SbBasic.h>
+
+class SoGroup;
+class SoInput;
+
+
+class COIN_DLL_EXPORT SoTranReceiver {
+
+public:
+  SoTranReceiver(SoGroup * root);
+  ~SoTranReceiver();
+
+  SbBool interpret(SoInput * in);
+
+private:
+  // Placeholder for any data for the instance. Just added for the
+  // sake of making it possible to implement this class after release
+  // without breaking ABI compatibility.
+  void * pimpl;
+};
+
+#endif // COIN_SOTRANRECEIVER_H

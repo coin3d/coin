@@ -17,32 +17,25 @@
  *
 \**************************************************************************/
 
-#include "SoBase.cpp"
-#include "SoByteStream.cpp"
-#include "SoChildList.cpp"
-#include "SoGL.cpp"
-#include "SoGLImage.cpp"
-#include "SoGlyph.cpp"
-#include "SoNormalGenerator.cpp"
-#include "SoNotification.cpp"
-#include "SoState.cpp"
-#include "SoDB.cpp"
-#include "SoFullPath.cpp"
-#include "SoTempPath.cpp"
-#include "SoLightPath.cpp"
-#include "SoImageInterface.cpp"
-#include "SoInput.cpp"
-#include "SoInteraction.cpp"
-#include "SoOutput.cpp"
-#include "SoPath.cpp"
-#include "SoPickedPoint.cpp"
-#include "SoPrimitiveVertex.cpp"
-#include "SoSceneManager.cpp"
-#include "SoType.cpp"
-#include "SoOffscreenRenderer.cpp"
-#include "SoGenerate.cpp"
-#include "SoLockManager.cpp"
-#include "SoTranReceiver.cpp"
-#include "SoTranSender.cpp"
-#include "default3dfont.cpp"
-#include "default2dfont.cpp"
+// FIXME: this class has not been implemented yet. 20000627 mortene.
+
+#include <Inventor/misc/SoTranReceiver.h>
+#include <coindefs.h> // COIN_STUB
+
+
+SoTranReceiver::SoTranReceiver(SoGroup * root)
+{
+  COIN_STUB();
+}
+
+SoTranReceiver::~SoTranReceiver()
+{
+  COIN_STUB();
+}
+
+SbBool
+SoTranReceiver::interpret(SoInput * in)
+{
+  COIN_STUB();
+  return FALSE;
+}

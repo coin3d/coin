@@ -125,6 +125,9 @@ sim_ac_simage_conf_cmd = @sim_ac_simage_conf_cmd@
 @HACKING_COMPACT_BUILD_FALSE@	SoOffscreenRenderer.cpp SoOffscreenRenderer.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoGenerate.cpp SoGenerate.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoLockManager.cpp SoLockMgr.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoByteStream.cpp SoByteStream.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTranSender.cpp SoTranSender.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTranReceiver.cpp SoTranReceiver.h \
 @HACKING_COMPACT_BUILD_FALSE@	default3dfont.cpp \
 @HACKING_COMPACT_BUILD_FALSE@	default2dfont.cpp
 
@@ -132,11 +135,15 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/misc/SoAuditorList.h \
 	$(top_srcdir)/include/Inventor/misc/SoBase.h \
 	$(top_srcdir)/include/Inventor/misc/SoBasic.h \
+	$(top_srcdir)/include/Inventor/misc/SoByteStream.h \
 	$(top_srcdir)/include/Inventor/misc/SoCallbackList.h \
 	$(top_srcdir)/include/Inventor/misc/SoChildList.h \
 	$(top_srcdir)/include/Inventor/misc/SoNormalGenerator.h \
 	$(top_srcdir)/include/Inventor/misc/SoNotification.h \
+	$(top_srcdir)/include/Inventor/misc/SoTranReceiver.h \
 	$(top_srcdir)/include/Inventor/misc/SoState.h \
+	$(top_srcdir)/include/Inventor/misc/SoTranscribe.h \
+	$(top_srcdir)/include/Inventor/misc/SoTranSender.h \
 	$(top_srcdir)/include/Inventor/misc/SoLightPath.h \
 	$(top_srcdir)/include/Inventor/misc/SoTempPath.h
 
@@ -185,8 +192,9 @@ libmisc_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoPickedPoint.lo SoPrimitiveVertex.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoSceneManager.lo SoType.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoOffscreenRenderer.lo SoGenerate.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoLockManager.lo default3dfont.lo \
-@HACKING_COMPACT_BUILD_FALSE@default2dfont.lo
+@HACKING_COMPACT_BUILD_FALSE@SoLockManager.lo SoByteStream.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTranSender.lo SoTranReceiver.lo \
+@HACKING_COMPACT_BUILD_FALSE@default3dfont.lo default2dfont.lo
 @HACKING_COMPACT_BUILD_TRUE@am_libmisc_la_OBJECTS =  all.lo
 libmisc_la_OBJECTS =  $(am_libmisc_la_OBJECTS)
 libmiscLINKHACK_la_LDFLAGS = 
@@ -201,8 +209,9 @@ libmiscLINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoPickedPoint.lo SoPrimitiveVertex.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoSceneManager.lo SoType.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoOffscreenRenderer.lo SoGenerate.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoLockManager.lo default3dfont.lo \
-@HACKING_COMPACT_BUILD_FALSE@default2dfont.lo
+@HACKING_COMPACT_BUILD_FALSE@SoLockManager.lo SoByteStream.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTranSender.lo SoTranReceiver.lo \
+@HACKING_COMPACT_BUILD_FALSE@default3dfont.lo default2dfont.lo
 @HACKING_COMPACT_BUILD_TRUE@am_libmiscLINKHACK_la_OBJECTS =  all.lo
 libmiscLINKHACK_la_OBJECTS =  $(am_libmiscLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -219,17 +228,19 @@ DIST_SOURCES =  $(libmisc_la_SOURCES) $(libmiscLINKHACK_la_SOURCES)
 HEADERS =  $(libmiscinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/depcomp
-DEP_FILES =  @AMDEP@ $(DEPDIR)/SoBase.Plo $(DEPDIR)/SoChildList.Plo \
-$(DEPDIR)/SoDB.Plo $(DEPDIR)/SoFullPath.Plo $(DEPDIR)/SoGL.Plo \
-$(DEPDIR)/SoGLImage.Plo $(DEPDIR)/SoGenerate.Plo $(DEPDIR)/SoGlyph.Plo \
-$(DEPDIR)/SoImageInterface.Plo $(DEPDIR)/SoInput.Plo \
-$(DEPDIR)/SoInteraction.Plo $(DEPDIR)/SoLightPath.Plo \
-$(DEPDIR)/SoLockManager.Plo $(DEPDIR)/SoNormalGenerator.Plo \
-$(DEPDIR)/SoNotification.Plo $(DEPDIR)/SoOffscreenRenderer.Plo \
-$(DEPDIR)/SoOutput.Plo $(DEPDIR)/SoPath.Plo $(DEPDIR)/SoPickedPoint.Plo \
+DEP_FILES =  @AMDEP@ $(DEPDIR)/SoBase.Plo $(DEPDIR)/SoByteStream.Plo \
+$(DEPDIR)/SoChildList.Plo $(DEPDIR)/SoDB.Plo $(DEPDIR)/SoFullPath.Plo \
+$(DEPDIR)/SoGL.Plo $(DEPDIR)/SoGLImage.Plo $(DEPDIR)/SoGenerate.Plo \
+$(DEPDIR)/SoGlyph.Plo $(DEPDIR)/SoImageInterface.Plo \
+$(DEPDIR)/SoInput.Plo $(DEPDIR)/SoInteraction.Plo \
+$(DEPDIR)/SoLightPath.Plo $(DEPDIR)/SoLockManager.Plo \
+$(DEPDIR)/SoNormalGenerator.Plo $(DEPDIR)/SoNotification.Plo \
+$(DEPDIR)/SoOffscreenRenderer.Plo $(DEPDIR)/SoOutput.Plo \
+$(DEPDIR)/SoPath.Plo $(DEPDIR)/SoPickedPoint.Plo \
 $(DEPDIR)/SoPrimitiveVertex.Plo $(DEPDIR)/SoSceneManager.Plo \
-$(DEPDIR)/SoState.Plo $(DEPDIR)/SoTempPath.Plo $(DEPDIR)/SoType.Plo \
-$(DEPDIR)/all.Plo $(DEPDIR)/default2dfont.Plo \
+$(DEPDIR)/SoState.Plo $(DEPDIR)/SoTempPath.Plo \
+$(DEPDIR)/SoTranReceiver.Plo $(DEPDIR)/SoTranSender.Plo \
+$(DEPDIR)/SoType.Plo $(DEPDIR)/all.Plo $(DEPDIR)/default2dfont.Plo \
 $(DEPDIR)/default3dfont.Plo
 DIST_COMMON =  $(libmiscinc_HEADERS) Makefile.am Makefile.in
 
@@ -354,6 +365,7 @@ distclean-tags:
 maintainer-clean-tags:
 
 @AMDEP@include $(DEPDIR)/SoBase.Plo
+@AMDEP@include $(DEPDIR)/SoByteStream.Plo
 @AMDEP@include $(DEPDIR)/SoChildList.Plo
 @AMDEP@include $(DEPDIR)/SoDB.Plo
 @AMDEP@include $(DEPDIR)/SoFullPath.Plo
@@ -376,6 +388,8 @@ maintainer-clean-tags:
 @AMDEP@include $(DEPDIR)/SoSceneManager.Plo
 @AMDEP@include $(DEPDIR)/SoState.Plo
 @AMDEP@include $(DEPDIR)/SoTempPath.Plo
+@AMDEP@include $(DEPDIR)/SoTranReceiver.Plo
+@AMDEP@include $(DEPDIR)/SoTranSender.Plo
 @AMDEP@include $(DEPDIR)/SoType.Plo
 @AMDEP@include $(DEPDIR)/all.Plo
 @AMDEP@include $(DEPDIR)/default2dfont.Plo

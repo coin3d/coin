@@ -29,6 +29,9 @@ ALLSOURCES = \
 	SoOffscreenRenderer.cpp SoOffscreenRenderer.h \
 	SoGenerate.cpp SoGenerate.h \
 	SoLockManager.cpp SoLockMgr.h \
+	SoByteStream.cpp SoByteStream.h \
+	SoTranSender.cpp SoTranSender.h \
+	SoTranReceiver.cpp SoTranReceiver.h \
 	default3dfont.cpp \
 	default2dfont.cpp
 endif
@@ -37,11 +40,15 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/misc/SoAuditorList.h \
 	$(top_srcdir)/include/Inventor/misc/SoBase.h \
 	$(top_srcdir)/include/Inventor/misc/SoBasic.h \
+	$(top_srcdir)/include/Inventor/misc/SoByteStream.h \
 	$(top_srcdir)/include/Inventor/misc/SoCallbackList.h \
 	$(top_srcdir)/include/Inventor/misc/SoChildList.h \
 	$(top_srcdir)/include/Inventor/misc/SoNormalGenerator.h \
 	$(top_srcdir)/include/Inventor/misc/SoNotification.h \
+	$(top_srcdir)/include/Inventor/misc/SoTranReceiver.h \
 	$(top_srcdir)/include/Inventor/misc/SoState.h \
+	$(top_srcdir)/include/Inventor/misc/SoTranscribe.h \
+	$(top_srcdir)/include/Inventor/misc/SoTranSender.h \
 	$(top_srcdir)/include/Inventor/misc/SoLightPath.h \
 	$(top_srcdir)/include/Inventor/misc/SoTempPath.h
 

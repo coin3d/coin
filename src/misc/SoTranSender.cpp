@@ -17,32 +17,60 @@
  *
 \**************************************************************************/
 
-#include "SoBase.cpp"
-#include "SoByteStream.cpp"
-#include "SoChildList.cpp"
-#include "SoGL.cpp"
-#include "SoGLImage.cpp"
-#include "SoGlyph.cpp"
-#include "SoNormalGenerator.cpp"
-#include "SoNotification.cpp"
-#include "SoState.cpp"
-#include "SoDB.cpp"
-#include "SoFullPath.cpp"
-#include "SoTempPath.cpp"
-#include "SoLightPath.cpp"
-#include "SoImageInterface.cpp"
-#include "SoInput.cpp"
-#include "SoInteraction.cpp"
-#include "SoOutput.cpp"
-#include "SoPath.cpp"
-#include "SoPickedPoint.cpp"
-#include "SoPrimitiveVertex.cpp"
-#include "SoSceneManager.cpp"
-#include "SoType.cpp"
-#include "SoOffscreenRenderer.cpp"
-#include "SoGenerate.cpp"
-#include "SoLockManager.cpp"
-#include "SoTranReceiver.cpp"
-#include "SoTranSender.cpp"
-#include "default3dfont.cpp"
-#include "default2dfont.cpp"
+// FIXME: this class has not been implemented yet. 20000627 mortene.
+
+#include <Inventor/misc/SoTranSender.h>
+#include <coindefs.h> // COIN_STUB
+
+SoTranSender::SoTranSender(SoOutput * output)
+{
+  COIN_STUB();
+}
+
+SoTranSender::~SoTranSender()
+{
+  COIN_STUB();
+}
+
+SoOutput *
+SoTranSender::getOutput(void) const
+{
+  COIN_STUB();
+  return NULL;
+}
+
+void
+SoTranSender::insert(SoNode * node)
+{
+  COIN_STUB();
+}
+
+void
+SoTranSender::insert(SoNode * node, SoNode * parent, int n)
+{
+  COIN_STUB();
+}
+
+void
+SoTranSender::remove(SoNode * parent, int n)
+{
+  COIN_STUB();
+}
+
+void
+SoTranSender::replace(SoNode * parent, int n, SoNode * newnode)
+{
+  COIN_STUB();
+}
+
+void
+SoTranSender::modify(SoNode * node)
+{
+  COIN_STUB();
+}
+
+void
+SoTranSender::prepareToSend(void)
+{
+  COIN_STUB();
+}
