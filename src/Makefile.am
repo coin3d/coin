@@ -74,7 +74,7 @@ SUBDIRS = $(TESTLIBDIR) \
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-libCoin_la_SOURCES = vsnprintf.c
+libCoin_la_SOURCES = snprintf.c snprintf.h
 
 ## Installation information.
 

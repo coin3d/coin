@@ -8,8 +8,14 @@
 #undef COIN_MICRO_VERSION
 #undef COIN_VERSION
 
+/* Define if you have the _snprintf function.  */
+#undef HAVE__SNPRINTF
+
 /* Define if you have the _vsnprintf function.  */
 #undef HAVE__VSNPRINTF
+
+/* Define if you have the snprintf function.  */
+#undef HAVE_SNPRINTF
 
 /* Define if you have the vsnprintf function.  */
 #undef HAVE_VSNPRINTF

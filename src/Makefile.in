@@ -115,7 +115,7 @@ SUBDIRS = $(TESTLIBDIR) 	VRMLnodes actions base bundles caches details elements 
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-libCoin_la_SOURCES = vsnprintf.c
+libCoin_la_SOURCES = snprintf.c snprintf.h
 
 libCoinincdir = $(includedir)/Inventor
 
@@ -154,7 +154,7 @@ X_PRE_LIBS = @X_PRE_LIBS@
 @HACKING_DYNAMIC_MODULES_FALSE@projectors/libprojectors.la \
 @HACKING_DYNAMIC_MODULES_FALSE@sensors/libsensors.la \
 @HACKING_DYNAMIC_MODULES_FALSE@details/libdetails.la
-libCoin_la_OBJECTS =  vsnprintf.lo
+libCoin_la_OBJECTS =  snprintf.lo
 CFLAGS = @CFLAGS@
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -172,7 +172,7 @@ GZIP_ENV = --best
 DIST_SUBDIRS =  coindev VRMLnodes actions base bundles caches details \
 elements engines errors events fields misc lists nodekits nodes \
 projectors sensors system .
-DEP_FILES =  .deps/vsnprintf.P
+DEP_FILES =  .deps/snprintf.P
 SOURCES = $(libCoin_la_SOURCES)
 OBJECTS = $(libCoin_la_OBJECTS)
 
