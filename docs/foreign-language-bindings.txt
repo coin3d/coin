@@ -1,4 +1,12 @@
 ========================================================================
+C# / .NET
+=========
+
+  * A paper on how to use SWIG to generate a C++-binding for .NET:
+
+    <URL:http://people.cs.uchicago.edu/~songyanf/code/papers/mspaper.htm>
+
+========================================================================
 Java
 ====
 
