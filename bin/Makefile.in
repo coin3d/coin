@@ -148,7 +148,7 @@ sim_ac_makensis_exe = @sim_ac_makensis_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
-@MAC_FRAMEWORK_FALSE@dist_bin_SCRIPTS = coin-config
+dist_bin_SCRIPTS = coin-config
 subdir = bin
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/config.h
