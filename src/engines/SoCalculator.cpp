@@ -70,6 +70,13 @@ SoCalculator::SoCalculator(void)
   SO_ENGINE_ADD_OUTPUT(oB, SoMFVec3f);
   SO_ENGINE_ADD_OUTPUT(oC, SoMFVec3f);
   SO_ENGINE_ADD_OUTPUT(oD, SoMFVec3f);
+
+  // initialize temporary registers (ta-th, tA-tH)
+  int i;
+  for (i = 0; i < 8; i++) {
+    ta_th[i] = 0.0f;
+    tA_tH[i].setValue(0.0f, 0.0f, 0.0f);
+  }
 }
 
 /*!
@@ -141,13 +148,7 @@ SoCalculator::evaluate(void)
       maxnum = SbMax(maxnum, field->getNum());
     }
   }
-  if (maxnum == 0) {
-#if COIN_DEBUG && 1 // debug
-    SoDebugError::postInfo("SoCalculator::evaluate",
-                           "There were no values in any of the input fields!");
-#endif // debug
-    return;
-  }
+  if (maxnum == 0) maxnum = 1; // in case only temporary registers were used
 
   if (outused[0]) { SO_ENGINE_OUTPUT(oa, SoMFFloat, setNum(maxnum)); }
   if (outused[1]) { SO_ENGINE_OUTPUT(ob, SoMFFloat, setNum(maxnum)); }
