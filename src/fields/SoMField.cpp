@@ -426,7 +426,7 @@ SoMField::readValue(SoInput * in)
     return FALSE; \
   }
 
-
+  // ** Binary format ******************************************************
   if (in->isBinary()) {
     int numtoread;
     READ_VAL(numtoread);
@@ -449,52 +449,67 @@ SoMField::readValue(SoInput * in)
 #endif // disabled
 
     this->makeRoom(numtoread);
-    return this->readBinaryValues(in, numtoread);
+    if (!this->readBinaryValues(in, numtoread)) { return FALSE; }
   }
 
-  char c;
-  READ_VAL(c);
-  if (c == '[') {
-    int currentidx = 0;
-
+  // ** ASCII format *******************************************************
+  else {
+    char c;
     READ_VAL(c);
-    if (c == ']') {
-      // Zero values -- done. :^)
+    if (c == '[') {
+      int currentidx = 0;
+
+      READ_VAL(c);
+      if (c == ']') {
+        // Zero values -- done. :^)
+        this->makeRoom(0);
+      }
+      else {
+        in->putBack(c);
+
+        while (TRUE) {
+          // makeRoom() makes sure the allocation strategy is decent.
+          if (currentidx >= this->num) this->makeRoom(currentidx + 1);
+
+          if (!this->read1Value(in, currentidx++)) return FALSE;
+
+          READ_VAL(c);
+          if (c == ',') { READ_VAL(c); } // Treat trailing comma as whitespace.
+
+          // That was the last array element, we're done.
+          if (c == ']') { break; }
+
+          if (c == '}') {
+            SoReadError::post(in, "Premature end of array, got '%c'", c);
+            return FALSE;
+          }
+
+          in->putBack(c);
+        }
+      }
+
+      // Fit array to number of items.
+      this->makeRoom(currentidx);
     }
     else {
       in->putBack(c);
-
-      while (TRUE) {
-        // makeRoom() makes sure the allocation strategy is decent.
-        if (currentidx >= this->num) this->makeRoom(currentidx + 1);
-
-        if (!this->read1Value(in, currentidx++)) return FALSE;
-
-        READ_VAL(c);
-        if (c == ',') { READ_VAL(c); } // Treat trailing comma as whitespace.
-
-        // That was the last array element, we're done.
-        if (c == ']') { break; }
-
-        if (c == '}') {
-          SoReadError::post(in, "Premature end of array, got '%c'", c);
-          return FALSE;
-        }
-
-        in->putBack(c);
-      }
+      this->makeRoom(1);
+      if (!this->read1Value(in, 0)) return FALSE;
     }
-
-    // Fit array to number of items.
-    this->makeRoom(currentidx);
-  }
-  else {
-    in->putBack(c);
-    this->makeRoom(1);
-    if (!this->read1Value(in, 0)) return FALSE;
   }
 
 #undef READ_VAL
+
+  // We need to trigger the notification chain here, as this function
+  // can be used on a node in a scene graph in any state -- not only
+  // during initial scene graph import.
+  //
+  // FIXME: this might cause major slowdowns at import, and we should
+  // probably disable notification at the container level during full
+  // scene graph import operations (probably best done from somewhere
+  // in SoBase::readInstance() or some such). Should investigate.
+  // 20031203 mortene.
+  this->touch();
 
   return TRUE;
 }
