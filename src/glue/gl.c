@@ -3726,25 +3726,28 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
   SbBool ok;
   const char * vendor;
   GLint size[2];
+  static SbBool cached = FALSE;
   static unsigned int dim[2] = { 0, 0 };
 
-  if (dim[0] > 0) { /* value cached */
     *width = dim[0];
     *height = dim[1];
-    return;
-  }
 
+  if (cached) { /* value cached */ return; }
 
-  /* FIXME: the below calls *can* fail, due to e.g. lack of resources,
-     or no usable visual for the GL context. Should handle
-     gracefully. (Which is straightforward to do here, simply return
-     dimensions of [0,0], but we also need to handle the exception in
-     the callers.) 20031202 mortene. */
+  cached = TRUE; /* Flip flag on first run. Note: it doesn't matter
+                    that the detection below might fail -- as we
+                    should report <0,0> on consecutive runs. */
+
+  /* The below calls *can* fail, due to e.g. lack of resources, or no
+     usable visual for the GL context. We try to handle gracefully.
+     This is straightforward to do here, simply returning dimensions
+     of <0,0>, but note that we also need to handle the exception in
+     the callers. */
 
   ctx = cc_glglue_context_create_offscreen(32, 32);
-  assert(ctx);
+  if (!ctx) { return; }
   ok = cc_glglue_context_make_current(ctx);
-  assert(ok);
+  if (!ok) { cc_glglue_context_destruct(ctx); return; }
 
   glGetIntegerv(GL_MAX_VIEWPORT_DIMS, size);
 

@@ -445,7 +445,15 @@ wglglue_context_create_context(struct wglglue_contextdata * ctx, DWORD bitWin)
     0, 0, 0                /* layer masks ignored */
   };
   
-  /* get the best available match of pixel format for the device context */
+  /* get the best available match of pixel format for the device
+     context: */
+
+  /* FIXME: instead of ChoosePixelFormat(), we should use the code
+     from SoWin which runs through the available formats and weights
+     them according to our own rules. Simplifies debugging immensely
+     when something goes wrong, and provides ways to override parts of
+     the selection process. 20040608 mortene. */
+
   pixelformat = ChoosePixelFormat(context->memorydc, &pfd);
   if (pixelformat == 0) {
     DWORD dwError = GetLastError();
@@ -455,21 +463,29 @@ wglglue_context_create_context(struct wglglue_contextdata * ctx, DWORD bitWin)
     return FALSE;
   }
   
-  /* make that the pixel format of the device context */
+  /* make that the pixel format of the device context: */
+
+  SetLastError(0); /* I've seen a driver where SetPixelFormat() failed
+                      but didn't set GetLastError(), resulting in a
+                      nonsensical error message, so we reset this
+                      first. mortene. */
+
   if (!SetPixelFormat(context->memorydc, pixelformat, &pfd)) {
     DWORD dwError = GetLastError();
-    cc_debugerror_postwarning("wglglue_context_create_context",
-                              "SetPixelFormat() failed with error code %d.",
-                              dwError);
+    cc_string str;
+
+    cc_string_construct(&str);
+    cc_string_sprintf(&str, "SetPixelFormat(%p, %d, ...)", context->memorydc, pixelformat);
+    cc_win32_print_error("wglglue_context_create_context", cc_string_get_text(&str), dwError);
+    cc_string_clean(&str);
     return FALSE;
   }
 
   context->wglcontext = wglCreateContext(context->memorydc);
   if (context->wglcontext == NULL) {
     DWORD dwError = GetLastError();
-    cc_debugerror_postwarning("wglglue_context_create_context",
-                              "wglCreateContext() failed with error code %d.",
-                              dwError);
+    cc_win32_print_error("wglglue_context_create_context",
+                         "wglCreateContext()", dwError);
     return FALSE;
   }
 
