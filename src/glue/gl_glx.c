@@ -512,7 +512,8 @@ glxglue_build_GL_attrs(int * attrs, int trynum)
     attrs[pos++] = 1;
   }
   if (! (trynum & 0x02)) {
-    attrs[pos++] = GLX_DOUBLEBUFFER;
+    attrs[pos++] = GLX_ALPHA_SIZE;
+    attrs[pos++] = 4;
   }
   if (! (trynum & 0x01)) {
     attrs[pos++] = GLX_RED_SIZE;
@@ -521,8 +522,6 @@ glxglue_build_GL_attrs(int * attrs, int trynum)
     attrs[pos++] = 4;
     attrs[pos++] = GLX_BLUE_SIZE;
     attrs[pos++] = 4;
-    /* FIXME: won't get an alpha channel in the context unless we also
-       request a particular ALPHA bitsize. 20020605 mortene. */
   }
   attrs[pos++] = None;
   return pos;

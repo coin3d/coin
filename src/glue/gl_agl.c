@@ -224,6 +224,7 @@ aglglue_context_create_software(struct aglglue_contextdata * ctx)
     AGL_RED_SIZE, 8,
     AGL_GREEN_SIZE, 8,
     AGL_BLUE_SIZE, 8,
+    AGL_ALPHA_SIZE, 8,
     AGL_DEPTH_SIZE, 24,
     AGL_STENCIL_SIZE, 1,
     AGL_NONE
