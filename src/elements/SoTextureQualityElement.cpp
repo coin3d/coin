@@ -25,9 +25,7 @@
 */
 
 #include <Inventor/elements/SoTextureQualityElement.h>
-
 #include <Inventor/SbName.h>
-
 #include <assert.h>
 
 SO_ELEMENT_SOURCE(SoTextureQualityElement);
@@ -51,17 +49,16 @@ SoTextureQualityElement::initClass(void)
 
 SoTextureQualityElement::SoTextureQualityElement(void)
 {
-    setTypeId(SoTextureQualityElement::classTypeId);
-    setStackIndex(SoTextureQualityElement::classStackIndex);
-    this->data = getDefault();
+  setTypeId(SoTextureQualityElement::classTypeId);
+  setStackIndex(SoTextureQualityElement::classStackIndex);
+  this->data = getDefault();
 }
 
 /*!
   The destructor.
 */
 
-SoTextureQualityElement::~SoTextureQualityElement(// virtual protected
-    void)
+SoTextureQualityElement::~SoTextureQualityElement()
 {
 }
 
@@ -71,31 +68,12 @@ void
 SoTextureQualityElement::init(SoState * state)
 {
   inherited::init(state);
-
   this->data = SoTextureQualityElement::getDefault();
-}
-
-//! FIXME: write doc.
-
-void
-SoTextureQualityElement::push(SoState * state)
-{
-    inherited::push(state);
-}
-
-//! FIXME: write doc.
-
-void
-SoTextureQualityElement::pop(SoState * state,
-                             const SoElement * prevTopElement)
-{
-    inherited::pop(state, prevTopElement);
 }
 
 /*!
   FIXME: write doc.
 */
-
 void
 SoTextureQualityElement::set(SoState * const state, SoNode * const node,
                              const float quality)
@@ -106,18 +84,15 @@ SoTextureQualityElement::set(SoState * const state, SoNode * const node,
 /*!
   FIXME: write doc.
 */
-
 void
 SoTextureQualityElement::set(SoState * const state, const float quality)
 {
   set(state, NULL, quality);
 }
 
-
 /*!
   FIXME: write doc.
 */
-
 float
 SoTextureQualityElement::get(SoState * const state)
 {
@@ -127,7 +102,6 @@ SoTextureQualityElement::get(SoState * const state)
 /*!
   FIXME: write doc.
 */
-
 float
 SoTextureQualityElement::getDefault(void)
 {

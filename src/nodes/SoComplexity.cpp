@@ -37,6 +37,8 @@
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoTextureOverrideElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
 
 /*!
   \enum SoComplexity::Type
@@ -147,9 +149,15 @@ void
 SoComplexity::GLRender(SoGLRenderAction * action)
 {
   SoComplexity::doAction(action);
-  if (!textureQuality.isIgnored()) {
-    SoTextureQualityElement::set(action->getState(), this,
+
+  SoState *state = action->getState();
+  if (!textureQuality.isIgnored() && 
+      !SoTextureOverrideElement::getQualityOverride(state)) {
+    SoTextureQualityElement::set(state, this,
                                  textureQuality.getValue());
+    if (this->isOverride()) {
+      SoTextureOverrideElement::setQualityOverride(state, TRUE);
+    }
   }
 }
 

@@ -656,7 +656,7 @@ sogl_vertex_array_ext()
 void
 sogl_free_texture(unsigned int index)
 {
-  SoDebugError::postInfo("sogl_free_texture", "Free texture: %d\n", index);
+  SoDebugError::postInfo("sogl_free_texture", "Free texture: %d", index);
 #if GL_VERSION_1_1
   glDeleteTextures(1, (const GLuint*)&index);
 #elif GL_EXT_texture_object
@@ -672,11 +672,11 @@ sogl_free_texture(unsigned int index)
 //
 static void
 really_create_texture(const int wrapS, const int wrapT,
-                      const float quality,
                       const unsigned char * const texture,
                       const int numComponents,
                       const int w, const int h,
-                      const SbBool dlist)
+                      const SbBool dlist,
+                      const SbBool mipmap)
 {
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
@@ -684,25 +684,10 @@ really_create_texture(const int wrapS, const int wrapT,
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
                   wrapT ? GL_CLAMP : GL_REPEAT);
 
-  //
-  // for now, if quality >= 0.5, we create mipmaps. The texture quality
-  // should probably be based on detected hardware though.
-  //
-  if (quality < 0.1f) {
+  if (0 && !dlist) {
+    // FIXME: test if these lines need to be here, pederb, 20000217
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  }
-  else if (quality < 0.5f) {
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  }
-  else if (quality < 0.8f) {
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-  }
-  else { // max quality
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
   }
 
   GLenum glformat;
@@ -720,11 +705,11 @@ really_create_texture(const int wrapS, const int wrapT,
     glformat = GL_RGBA;
     break;
   default:
-    assert(0);
+    assert(0 && "illegal numComonents");
     glformat = GL_RGB; // Unnecessary, but kills a compiler warning.
   }
 
-  if (quality < 0.5f) {
+  if (!mipmap) {
     glTexImage2D(GL_TEXTURE_2D, 0, numComponents, w, h,
                  0, glformat, GL_UNSIGNED_BYTE, texture);
   }
@@ -737,10 +722,10 @@ really_create_texture(const int wrapS, const int wrapT,
 
 unsigned int
 sogl_create_texture(const int wrapS, const int wrapT,
-                    const float quality,
                     const unsigned char * const texture,
                     const int numComponents,
-                    const int w, const int h)
+                    const int w, const int h,
+                    const SbBool mipmap)
 {
   GLuint index;
   SbBool dlist = FALSE;
@@ -774,8 +759,8 @@ sogl_create_texture(const int wrapS, const int wrapT,
 #endif
   }
 
-  really_create_texture(wrapS, wrapT, quality, texture,
-                        numComponents, w, h, dlist);
+  really_create_texture(wrapS, wrapT, texture,
+                        numComponents, w, h, dlist, mipmap);
 
   if (dlist)
     glEndList();

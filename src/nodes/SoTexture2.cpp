@@ -34,6 +34,7 @@
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/elements/SoTextureOverrideElement.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -195,33 +196,35 @@ SoTexture2::GLRender(SoGLRenderAction * action)
 {
   // FIXME: consider context, pederb
   SoState *state = action->getState();
-  this->getImage();
-
-  if (this->imageData) {
+  
+  if (!this->getImage()) return;
+  
+  if (this->imageData) {    
     float quality = SoTextureQualityElement::get(state);
     SbBool clamps = this->wrapS.getValue() == SoTexture2::CLAMP;
     SbBool clampt = this->wrapT.getValue() == SoTexture2::CLAMP;
-
-    if (this->glImage && !this->glImage->matches(clamps, clampt, quality)) {
-      this->imageData->ref();
+    
+    if (this->glImage && !this->glImage->matches(clamps, clampt)) {
       this->glImage->unref();
       this->glImage = NULL;
     }
-
+    
     if (this->glImage == NULL) {
       this->glImage =
         SoGLImage::findOrCreateGLImage(this->imageData,
                                        clamps, clampt, quality, NULL);
-
     }
   }
-
   SoGLTextureImageElement::set(state, this,
                                this->glImage,
                                (SoTextureImageElement::Model) model.getValue(),
                                this->blendColor.getValue());
   SoGLTextureEnabledElement::set(state,
                                  this, this->glImage != NULL);
+  
+  if (this->isOverride()) {
+    SoTextureOverrideElement::setImageOverride(state, TRUE);
+  }
 }
 
 /*!
@@ -230,9 +233,15 @@ SoTexture2::GLRender(SoGLRenderAction * action)
 void
 SoTexture2::doAction(SoAction *action)
 {
-  this->getImage();
+  SoState *state = action->getState();
+
+  if (SoTextureOverrideElement::getImageOverride(state))
+    return;
+
+  if (!this->getImage()) return;
+
   if (this->imageData) {
-    SoTextureImageElement::set(action->getState(), this,
+    SoTextureImageElement::set(state, this,
                                imageData->getSize(),
                                imageData->getNumComponents(),
                                imageData->getDataPtr(),
@@ -242,14 +251,7 @@ SoTexture2::doAction(SoAction *action)
                                this->blendColor.getValue());
   }
   else {
-    SoTextureImageElement::set(action->getState(), this,
-                               SbVec2s(0,0),
-                               0,
-                               NULL,
-                               (int)this->wrapT.getValue(),
-                               (int)this->wrapS.getValue(),
-                               (SoTextureImageElement::Model) model.getValue(),
-                               this->blendColor.getValue());
+    SoTextureImageElement::setDefault(state, this);
   }
 }
 
@@ -298,24 +300,41 @@ SoTexture2::setReadStatus(int /* s */)
 // provides a common interface, whether the texture is loaded from a
 // file or the image data is supplied inside the node.
 //
-void
+// returns TRUE if texture image element should be updated,
+// FALSE if not.
+//
+SbBool
 SoTexture2::getImage(void)
 {
-  if (this->imageData) return;
-
+  if (this->filename.isIgnored() && this->image.isIgnored())
+    return FALSE;
+  
   SbVec2s size;
   int nc;
   const unsigned char * bytes = this->image.getValue(size, nc);
-
-  if (bytes && size[0] > 0 && size[1] > 0 && nc > 0) {
+  SbBool validinline =
+    (!this->image.isIgnored()) && 
+    (bytes != NULL) && 
+    (size[0] > 0) && 
+    (size[1] > 0) &&
+    (nc > 0 && nc <= 4);
+  
+  // FIXME: investigate when to return TRUE or FALSE 
+  if (this->filename.isIgnored() && !validinline) return FALSE;
+  
+  // FIXME: set up field sensors to detect when texture change
+  if (this->imageData) return TRUE;
+  
+  if (validinline) {
     this->imageData = new SoImageInterface(size, nc, bytes);
     this->imageData->ref();
   }
   else {
-    if (this->filename.getValue().getLength()) {
+    if (!this->filename.isIgnored() && this->filename.getValue().getLength()) {
       const SbStringList & dirlist = SoInput::getDirectories();
       const char * texname = this->filename.getValue().getString();
       this->imageData = SoImageInterface::findOrCreateImage(texname, dirlist);
     }
   }
+  return TRUE;
 }

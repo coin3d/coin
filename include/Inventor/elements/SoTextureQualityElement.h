@@ -34,16 +34,15 @@ protected:
 
 public:
   virtual void init(SoState * state);
-
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state, const SoElement * prevTopElement);
-
   static void set(SoState * const state, SoNode * const node,
-                   const float quality);
+                  const float quality);
   static void set(SoState * const state, const float quality);
   static float get(SoState * const state);
   static float getDefault(void);
-
 };
+
+#ifndef COIN_INTERNAL
+#include <Inventor/elements/SoTextureOverrideElement.h>
+#endif // COIN_INTERNAL
 
 #endif // !COIN_SOTEXTUREQUALITYELEMENT_H

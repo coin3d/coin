@@ -26,6 +26,7 @@
 
 #include <Inventor/elements/SoGLTextureImageElement.h>
 
+#include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/SbName.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoImageInterface.h>
@@ -80,8 +81,29 @@ void
 SoGLTextureImageElement::init(SoState * state)
 {
   inherited::init(state);
-  this->glimage = NULL;
+  this->quality = SoTextureQualityElement::getDefault();
+  this->image = NULL;   // the image stored in this element
+  this->glimage = NULL; // the image currently sent to GL
+ 
+  // set these to illegal values to make sure things are initialized
+  // the first time.
+  this->glmodel = -1; 
+  this->glquality = -1.0f;
+  this->glblendcolor.setValue(-1.0f, -1.0f, -1.0f);
 }
+
+
+//! FIXME: write doc
+void
+SoGLTextureImageElement::push(SoState * state)
+{
+  inherited::push(state);  
+  ((SoGLTextureImageElement*)this->next)->glimage = this->glimage;
+  ((SoGLTextureImageElement*)this->next)->glquality = this->glquality;
+  ((SoGLTextureImageElement*)this->next)->glmodel = this->glmodel;
+  ((SoGLTextureImageElement*)this->next)->glblendcolor = this->glblendcolor;
+}
+
 
 //! FIXME: write doc.
 
@@ -93,61 +115,79 @@ SoGLTextureImageElement::pop(SoState * state,
   SoGLTextureImageElement *prev = (SoGLTextureImageElement*)
     prevTopElement;
 
-  if (prev->glimage != NULL) {
-    prev->glimage->apply();
-    if (prev->model == DECAL) {
-      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-    }
-    else if (prev->model == MODULATE) {
-      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    }
-    else {
-      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
-      glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, prev->blendColor.getValue());
-    }
-  }
+  prev->glimage = this->glimage;
+  prev->glmodel = this->glmodel;
+  prev->glquality = this->glquality;
+  prev->glblendcolor = this->glblendcolor;
 }
 
 //! FIXME: write doc.
 
 void
 SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
-                             SoGLImage *glimage, const Model model,
+                             SoGLImage *image, const Model model,
                              const SbColor &blendColor)
 {
   SoGLTextureImageElement *elem = (SoGLTextureImageElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  if (glimage) {
-    const SoImageInterface *image = glimage->getImage();
+  if (image) {
+    const SoImageInterface *imagedata = image->getImage();
     // keep SoTextureImageElement "up-to-date"
     inherited::set(state, node,
-                   image->getSize(),
-                   image->getNumComponents(),
-                   image->getDataPtr(),
-                   glimage->shouldClampS() ?
+                   imagedata->getSize(),
+                   imagedata->getNumComponents(),
+                   imagedata->getDataPtr(),
+                   image->shouldClampS() ?
                    SoTextureImageElement::CLAMP :
                    SoTextureImageElement::REPEAT,
-                   glimage->shouldClampT() ?
+                   image->shouldClampT() ?
                    SoTextureImageElement::CLAMP :
                    SoTextureImageElement::REPEAT,
                    model,
                    blendColor);
-
-    elem->glimage = glimage;
-    glimage->apply();
-    if (model == DECAL) {
-      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-    }
-    else if (model == MODULATE) {
-      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    }
-    else {
-      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
-      glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, blendColor.getValue());
-    }
+    elem->image = image;
+    elem->quality = SoTextureQualityElement::get(state);
   }
   else {
-    elem->glimage = NULL;
+    elem->image = NULL;
+    elem->quality = SoTextureQualityElement::get(state);
     inherited::setDefault(state, node);
+  }
+}
+
+
+void 
+SoGLTextureImageElement::evaluate() const
+{
+  // cast away constness
+  SoGLTextureImageElement *elem = (SoGLTextureImageElement*) this;
+  
+  if (elem->image) {
+    if (elem->image != elem->glimage) {
+      elem->glimage = elem->image;
+      elem->glquality = elem->quality;
+      elem->image->apply(elem->quality);
+    }
+    else if (elem->quality != elem->glquality) {
+      elem->glquality = elem->quality;
+      elem->image->apply(elem->quality);
+    }
+    
+    if (int(elem->model) != elem->glmodel ||
+        (elem->model == BLEND && elem->blendColor != elem->glblendcolor)) {
+      elem->glmodel = (int) elem->model;
+      elem->glblendcolor = elem->blendColor;
+      
+      if (model == DECAL) {
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+      }
+      else if (model == MODULATE) {
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+      }
+      else {
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+        glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, blendColor.getValue());
+      }
+    }
   }
 }

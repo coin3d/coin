@@ -36,6 +36,7 @@ protected:
 
 public:
   virtual void init(SoState * state);
+  virtual void push(SoState * state);
   virtual void pop(SoState * state,
                    const SoElement * prevTopElement);
 
@@ -43,9 +44,16 @@ public:
                   SoGLImage *image, const Model model,
                   const SbColor &blendColor);
 
-private:
-  SoGLImage *glimage;
+  virtual void evaluate() const;
 
+private:
+  SoGLImage *image;
+  float quality;
+  
+  SoGLImage *glimage;
+  float glquality;  
+  int glmodel;
+  SbColor glblendcolor;
 };
 
 #endif // !COIN_SOGLTEXTUREIMAGEELEMENT_H

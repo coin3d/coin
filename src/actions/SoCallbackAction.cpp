@@ -69,6 +69,7 @@
 #include <Inventor/elements/SoDecimationTypeElement.h>
 #include <Inventor/elements/SoDecimationPercentageElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 
 #include <Inventor/SoPath.h>
@@ -220,6 +221,7 @@ SoCallbackAction::initClass(void)
   ENABLE_ELEMENT(SoDecimationTypeElement);
   ENABLE_ELEMENT(SoDecimationPercentageElement);
   ENABLE_ELEMENT(SoOverrideElement);
+  ENABLE_ELEMENT(SoTextureOverrideElement);
   ENABLE_ELEMENT(SoViewportRegionElement);
   ENABLE_ELEMENT(SoLazyElement);
 }

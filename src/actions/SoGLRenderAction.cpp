@@ -49,6 +49,7 @@
 #include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 
 #include <Inventor/elements/SoViewVolumeElement.h>
@@ -196,6 +197,7 @@ SoGLRenderAction::initClass(void)
   ENABLE_ELEMENT(SoGLNormalizeElement);
 
   ENABLE_ELEMENT(SoOverrideElement);
+  ENABLE_ELEMENT(SoTextureOverrideElement);
   ENABLE_ELEMENT(SoLazyElement);
 
   // FIXME: see comment on SoGLViewportRegionElement::set in

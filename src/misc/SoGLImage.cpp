@@ -34,6 +34,9 @@
 #include <GL/gl.h>
 #include <Inventor/lists/SbList.h>
 
+// if textureQuality is equal or greater than this, create mipmap
+#define MIPMAP_LIMIT 0.5f
+
 //
 // private constructor
 //
@@ -45,8 +48,8 @@ SoGLImage::SoGLImage(SoImageInterface * const img,
 {
   this->image = img;
   this->handle = 0;
-  this->clampS = FALSE;
-  this->clampT = FALSE;
+  this->clampS = clamps;
+  this->clampT = clampt;
   this->quality = quality;
   this->refCount = 0;
   this->context = context;
@@ -70,13 +73,11 @@ SoGLImage::~SoGLImage()
   that should not change very often.
 */
 SbBool
-SoGLImage::matches(const SbBool clamps, const SbBool clampt,
-                   const float quality) const
+SoGLImage::matches(const SbBool clamps, const SbBool clampt) const
 {
   return
     this->clampS == clamps &&
-    this->clampT == clampt &&
-    this->quality == quality;
+    this->clampT == clampt;
 }
 
 /*!
@@ -98,10 +99,25 @@ SoGLImage::unref()
   Makes this texture the current OpenGL texture.
 */
 void
-SoGLImage::apply() const
+SoGLImage::apply(const float quality) const
 {
-  //  assert(this->handle);
   sogl_apply_texture(this->handle);
+  if (quality < 0.1f) {
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  }
+  else if ((quality < MIPMAP_LIMIT) || (this->quality < MIPMAP_LIMIT)) {
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  }
+  else if (quality < 0.8f) {
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+  }
+  else { // max quality
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  }
 }
 
 /*!
@@ -154,8 +170,14 @@ SoGLImage::getImage() const
   return this->image;
 }
 
-/*!
-  Returns texture quality for this GL image.
+/*!  
+  Returns texture quality for this GL image. For now, if quality >
+  0.5 when created, we create mipmaps, otherwise a normal texture is
+  created.  Be aware, if you for instance create a texture with
+  texture quality 0.4, and then later try to apply the texture with a
+  texture quality greater than 0.5, you will not get a mipmap
+  texture. If you suspect you might need a mipmap texture, it should
+  be created with a texture quality greater than 0.5.  
 */
 float
 SoGLImage::getQuality() const
@@ -171,13 +193,13 @@ SoGLImage::GLinit()
 {
   if (this->handle) return TRUE;
   if (this->image && this->image->load()) {
-    checkResize(); // resize if necessary
+    this->checkResize(); // resize if necessary
     SbVec2s size = image->getSize();
     int format = image->getNumComponents();
     this->handle = sogl_create_texture(this->clampS, this->clampT,
-                                       this->quality,
                                        this->image->getDataPtr(),
-                                       format, size[0], size[1]);
+                                       format, size[0], size[1],
+                                       this->quality >= MIPMAP_LIMIT);
     return this->handle != 0;
   }
   return FALSE;

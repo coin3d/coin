@@ -64,7 +64,7 @@
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-
+#include <Inventor/elements/SoGLTextureImageElement.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -612,6 +612,13 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     const SoGLLightModelElement * lm = (SoGLLightModelElement *)
       state->getConstElement(SoGLLightModelElement::getClassStackIndex());
     lm->evaluate();
+  }
+
+  // only evaluate texture image if texturing is enabled 
+  if (SoGLTextureEnabledElement::get(state)) {
+    const SoGLTextureImageElement * ti = (SoGLTextureImageElement *)
+      state->getConstElement(SoGLTextureImageElement::getClassStackIndex());
+    ti->evaluate();
   }
 
   {

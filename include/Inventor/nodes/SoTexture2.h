@@ -74,7 +74,7 @@ protected:
   void setReadStatus(int s);
 
 private:
-  void getImage();
+  SbBool getImage();
   class SoImageInterface *imageData;
   class SoGLImage * glImage;
 };

@@ -24,10 +24,6 @@
   FIXME: write doc.
 */
 
-//
-// FIXME: this should be made a lazy element (pederb, 990624)
-//
-
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 
 #include <Inventor/elements/SoShapeStyleElement.h>

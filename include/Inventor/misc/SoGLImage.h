@@ -38,10 +38,9 @@ public:
 
   void unref(); // use this to delete
 
-  SbBool matches(const SbBool clamps, const SbBool clampt,
-                 const float quality) const;
-
-  void apply() const;
+  SbBool matches(const SbBool clamps, const SbBool clampt) const;
+  
+  void apply(const float quality) const;
   int getHandle() const;
   SbBool hasTransparency() const;
   const SoImageInterface *getImage() const;
