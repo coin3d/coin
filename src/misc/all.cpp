@@ -46,3 +46,5 @@
 #include "default3dfont.cpp"
 #include "default2dfont.cpp"
 #include "GLUWrapper.c"
+// FIXME: what about simage_wrapper.c? (If so, also "#undef" the dllib
+// abstraction defines at the top of the wrapper sources). 20010629 mortene.
