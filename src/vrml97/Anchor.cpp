@@ -168,8 +168,13 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <stdlib.h>
+
+// static members
+SoVRMLAnchorCB * SoVRMLAnchor::fetchurlcb;
+void * SoVRMLAnchor::userdata;
 
 SO_NODE_SOURCE(SoVRMLAnchor);
 
@@ -207,9 +212,10 @@ SoVRMLAnchor::~SoVRMLAnchor()
   Sets the callback that will be called when the node is selected.
 */
 void
-SoVRMLAnchor::setFetchURLCallBack(SoVRMLAnchorCB *, void * closure)
+SoVRMLAnchor::setFetchURLCallBack(SoVRMLAnchorCB * f, void * closure)
 {
-  // FIXME: store callback, and call it when a pick is detected.
+  SoVRMLAnchor::fetchurlcb = f;
+  SoVRMLAnchor::userdata = closure;
 }
 
 // doc in parent
@@ -218,7 +224,25 @@ SoVRMLAnchor::handleEvent(SoHandleEventAction * action)
 {
   SoState * state = action->getState();
   state->push();
-  // FIXME: detect picks
+  const SoEvent * event = action->getEvent();
+  if (event->isOfType(SoMouseButtonEvent::getClassTypeId()) &&
+      SoVRMLAnchor::fetchurlcb) {
+    const SoMouseButtonEvent * mbevent = (SoMouseButtonEvent*)event;
+    if (SoMouseButtonEvent::isButtonPressEvent(mbevent, 
+                                               SoMouseButtonEvent::BUTTON1)) {
+      int urls = this->url.getNum();
+      SbString s = "";
+      for (int i = 0; i < urls; i++) {
+        this->url.get1(i, s);
+        if (s.getLength() > 0) {
+          break;
+        }
+      }
+      if (s.getLength() > 0) {
+        SoVRMLAnchor::fetchurlcb(s, SoVRMLAnchor::userdata, this);
+      }
+    }
+  }
   inherited::handleEvent(action);
   state->pop();
 }

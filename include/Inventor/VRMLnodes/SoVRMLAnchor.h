@@ -53,6 +53,10 @@ public:
 protected:
   virtual ~SoVRMLAnchor();
 
+private:
+  static SoVRMLAnchorCB * fetchurlcb;
+  static void * userdata;
+
 }; // class SoVRMLAnchor
 
 #endif // ! COIN_SOVRMLANCHOR_H
