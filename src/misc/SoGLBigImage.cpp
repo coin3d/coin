@@ -299,6 +299,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
   }
 
   SoGLDisplayList * dl = THIS->glimagearray[idx]->getGLDisplayList(state);
+  assert(dl);
   THIS->glimageage[idx] = 0;
   SoGLImage::tagImage(state, THIS->glimagearray[idx]);
   dl->call(state);
