@@ -5811,9 +5811,8 @@ AS_VAR_POPDEF([ac_Header])
 # SIM_AC_CHECK_HEADER_AL([IF-FOUND], [IF-NOT-FOUND])
 #
 # This macro detects how to include the AL header file, and gives you
-# the
-# necessary CPPFLAGS in $sim_ac_al_cppflags, and also sets the config.h
-# defines HAVE_AL_AL_H or HAVE_OPENAL_AL_H if one of them is found.
+# the necessary CPPFLAGS in $sim_ac_al_cppflags, and also sets the 
+# config.h defines HAVE_AL_AL_H or HAVE_OPENAL_AL_H if one of them is found.
 
 AC_DEFUN([SIM_AC_CHECK_HEADER_AL],
 [sim_ac_al_header_avail=false
@@ -5930,7 +5929,6 @@ darwin*)
     sim_ac_openal_ldflags="-L$sim_ac_openal_path/lib"
     LDFLAGS="$LDFLAGS $sim_ac_openal_ldflags"
     sim_ac_openal_libs="-l$sim_ac_openal_name"
-    sim_ac_openal_extra_libs="-l$sim_ac_openal_name"
     # unset sim_ac_openal_candidate
     # unset sim_ac_openal_path
   fi
@@ -6601,7 +6599,7 @@ if test x"$with_opengl" != x"no"; then
     sim_ac_glu_header=GL/glu.h
     AC_DEFINE([HAVE_GL_GLU_H], 1, [define if the GLU header should be included as GL/glu.h])
   ], [
-    SIM_AC_CHECK_HEADER_SILENT([OpenGL/gl.h], [
+    SIM_AC_CHECK_HEADER_SILENT([OpenGL/glu.h], [
       sim_ac_glu_header_avail=true
       sim_ac_glu_header=OpenGL/glu.h
       AC_DEFINE([HAVE_OPENGL_GLU_H], 1, [define if the GLU header should be included as OpenGL/glu.h])

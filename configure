@@ -16454,7 +16454,6 @@ darwin*)
     sim_ac_openal_ldflags="-L$sim_ac_openal_path/lib"
     LDFLAGS="$LDFLAGS $sim_ac_openal_ldflags"
     sim_ac_openal_libs="-l$sim_ac_openal_name"
-    sim_ac_openal_extra_libs="-l$sim_ac_openal_name"
     # unset sim_ac_openal_candidate
     # unset sim_ac_openal_path
   fi
@@ -19624,7 +19623,7 @@ else
 cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 #include "confdefs.h"
-#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
 _ACEOF
 if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
   (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
@@ -19643,14 +19642,14 @@ else
   ac_cpp_err=yes
 fi
 if test -z "$ac_cpp_err"; then
-  ac_cv_header_OpenGL_gl_h=yes
+  ac_cv_header_OpenGL_glu_h=yes
 else
   echo "$as_me: failed program was:" >&5
   cat conftest.$ac_ext >&5
-  ac_cv_header_OpenGL_gl_h=no
+  ac_cv_header_OpenGL_glu_h=no
 fi
 rm -f conftest.err conftest.$ac_ext
-if test $ac_cv_header_OpenGL_gl_h = yes; then
+if test $ac_cv_header_OpenGL_glu_h = yes; then
 
       sim_ac_glu_header_avail=true
       sim_ac_glu_header=OpenGL/glu.h
@@ -19867,7 +19866,7 @@ else
 cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 #include "confdefs.h"
-#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
 _ACEOF
 if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
   (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
@@ -19886,14 +19885,14 @@ else
   ac_cpp_err=yes
 fi
 if test -z "$ac_cpp_err"; then
-  ac_cv_header_OpenGL_gl_h=yes
+  ac_cv_header_OpenGL_glu_h=yes
 else
   echo "$as_me: failed program was:" >&5
   cat conftest.$ac_ext >&5
-  ac_cv_header_OpenGL_gl_h=no
+  ac_cv_header_OpenGL_glu_h=no
 fi
 rm -f conftest.err conftest.$ac_ext
-if test $ac_cv_header_OpenGL_gl_h = yes; then
+if test $ac_cv_header_OpenGL_glu_h = yes; then
 
       sim_ac_glu_header_avail=true
       sim_ac_glu_header=OpenGL/glu.h
