@@ -129,12 +129,18 @@
 
 #include <Inventor/misc/SoGLImage.h>
 
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/C/glue/GLUWrapper.h>
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/simage_wrapper.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
@@ -149,14 +155,9 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/system/gl.h>
-#include <assert.h>
-#include <Inventor/C/glue/simage_wrapper.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <Inventor/threads/SbStorage.h>
 
 #ifdef COIN_THREADSAFE
-#include <Inventor/threads/SbStorage.h>
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
 
@@ -202,30 +203,19 @@ glimage_buffer_destruct(void * buffer)
 }
 
 
-#ifdef COIN_THREADSAFE
 static SbStorage * glimage_bufferstorage = NULL;
-#else // COIN_THREADSAFE
-static soglimage_buffer * glimage_buffer = NULL;
-#endif // ! COIN_THREADSAFE
 
 static void
 glimage_buffer_cleanup(void)
 {
-#ifdef COIN_THREADSAFE
   delete glimage_bufferstorage;
   glimage_bufferstorage = NULL;
-#else // COIN_THREADSAFE
-  glimage_buffer_destruct((void*) glimage_buffer);
-  delete glimage_buffer;
-  glimage_buffer = NULL;
-#endif // ! COIN_THREADSAFE
 }
 
 static unsigned char *
 glimage_get_buffer(const int buffersize, const SbBool mipmap)
 {
   soglimage_buffer * buf = NULL;
-#ifdef COIN_THREADSAFE
   if (glimage_bufferstorage == NULL) {
     coin_atexit((coin_atexit_f*) glimage_buffer_cleanup, 0);
     glimage_bufferstorage = new SbStorage(sizeof(soglimage_buffer),
@@ -233,14 +223,6 @@ glimage_get_buffer(const int buffersize, const SbBool mipmap)
   }
   buf = (soglimage_buffer*)
     glimage_bufferstorage->get();
-#else // COIN_THREADSAFE
-  if (glimage_buffer == NULL) {
-    glimage_buffer = new soglimage_buffer;
-    glimage_buffer_construct((void*) glimage_buffer);
-    coin_atexit((coin_atexit_f*) glimage_buffer_cleanup, 0);
-  }
-  buf = glimage_buffer;
-#endif // ! COIN_THREADSAFE
   if (mipmap) {
     if (buf->mipmapbuffersize < buffersize) {
       delete[] buf->mipmapbuffer;

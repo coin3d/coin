@@ -52,12 +52,6 @@
   \since Coin 2.0
 */
 
-#include <Inventor/misc/SoGLBigImage.h>
-#include <Inventor/SbImage.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -67,13 +61,19 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <Inventor/C/threads/storage.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/SbImage.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoGLBigImage.h>
+#include <Inventor/system/gl.h>
+
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
-#include <Inventor/C/threads/storage.h>
 #endif // COIN_THREADSAFE
-
-#include <Inventor/system/gl.h>
-#include <Inventor/errors/SoDebugError.h>
 
 // the number of subtextures that can be changed (resized) each frame.
 // By keeping this number small, we avoid slow updates when zooming in
@@ -108,11 +108,9 @@ public:
 
   static SoType classTypeId;
 
-#ifdef COIN_THREADSAFE
   cc_storage * storage;
+#ifdef COIN_THREADSAFE
   SbMutex mutex;
-#else // COIN_THREADSAFE
-  SoGLBigImageTls storagedata;
 #endif // !COIN_THREADSAFE
   unsigned char ** cache;
   SbVec2s * cachesize;
@@ -120,11 +118,7 @@ public:
 
   // inline for speed
   inline SoGLBigImageTls * getTls(void) {
-#ifdef COIN_THREADSAFE
     return (SoGLBigImageTls*) cc_storage_get(this->storage);
-#else
-    return &this->storagedata;
-#endif // !COIN_THREADSAFE
   }
 
   inline void lock(void) {
@@ -518,14 +512,11 @@ soglbigimage_unrefolddl_cb(void * tls, void * closure)
 void
 SoGLBigImage::unrefOldDL(SoState * state, const uint32_t maxage)
 {
-#ifdef COIN_THREADSAFE
   soglbigimage_unrefolddl_data data;
   data.maxage = maxage;
   data.state = state;
   cc_storage_apply_to_all(PRIVATE(this)->storage, soglbigimage_unrefolddl_cb, &data);
-#else // COIN_THREADSAFE
-  SoGLBigImageP::unrefOldDL(&PRIVATE(this)->storagedata, state, maxage);
-#endif // ! COIN_THREADSAFE
+
   this->incAge();
 }
 
@@ -538,23 +529,15 @@ SoGLBigImageP::SoGLBigImageP(void) :
   cachesize(NULL),
   numcachelevels(0)
 {
-#ifdef COIN_THREADSAFE
   this->storage = cc_storage_construct_etc(sizeof(SoGLBigImageTls),
                                            soglbigimagetls_construct,
                                            soglbigimagetls_destruct);
-#else // COIN_THREADSAFE
-  soglbigimagetls_construct(&this->storagedata);
-#endif // !COIN_THREADSAFE
 }
 
 SoGLBigImageP::~SoGLBigImageP()
 {
   this->resetCache();
-#ifdef COIN_THREADSAFE
   cc_storage_destruct(this->storage);
-#else // COIN_THREADSAFE
-  soglbigimagetls_destruct(&this->storagedata);
-#endif // !COIN_THREADSAFE
 }
 
 //  The method copySubImage() handles the downsampling. It averages
@@ -937,11 +920,7 @@ soglbigimage_resetall_cb(void * tls, void * closure)
 void
 SoGLBigImageP::resetAllTls(SoState * state)
 {
-#ifdef COIN_THREADSAFE
   cc_storage_apply_to_all(this->storage, soglbigimage_resetall_cb, state);
-#else // COIN_THREADSAFE
-  SoGLBigImageP::reset(&this->storagedata, state);
-#endif // ! COIN_THREADSAFE
 }
 
 #endif // DOXYGEN_SKIP_THIS

@@ -370,7 +370,6 @@
 #endif // HAVE_THREADS
 
 #ifdef COIN_THREADSAFE
-#include <Inventor/threads/SbStorage.h>
 #include <Inventor/threads/SbRWMutex.h>
 #include <Inventor/C/threads/recmutexp.h>
 static SbRWMutex * sodb_globalmutex = NULL;
@@ -1695,8 +1694,8 @@ SoDB::removeProgressCallback(ProgressCallbackType * func, void * userdata)
 }
 
 /*!  
-  Returns \e TRUE if this is a thread safe version of Coin is
-  (compiled with --enable-threadsafe).
+  Returns \c TRUE if this is a thread safe version of Coin
+  (i.e. it was configured and built with --enable-threadsafe).
 */
 SbBool 
 SoDB::isMultiThread(void)

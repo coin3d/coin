@@ -24,34 +24,8 @@
 // This is an internal class with utility functions we use when
 // playing around with OpenGL.
 
-#include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/bundles/SoTextureCoordinateBundle.h>
-#include <Inventor/elements/SoComplexityElement.h>
-#include <Inventor/elements/SoComplexityTypeElement.h>
-#include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoProfileElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/nodes/SoProfile.h>
-#include <Inventor/nodes/SoShape.h>
-#include <Inventor/SoOffscreenRenderer.h>
-#include <Inventor/nodes/SoCallback.h>
-#include <Inventor/C/tidbits.h>
-#include <Inventor/elements/SoCacheElement.h>
+// *************************************************************************
+
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -60,12 +34,38 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#ifdef COIN_THREADSAFE
-#include <Inventor/threads/SbStorage.h>
-#endif // COIN_THREADSAFE
-
-#include <Inventor/system/gl.h>
 #include <Inventor/C/glue/GLUWrapper.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
+#include <Inventor/SoOffscreenRenderer.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/bundles/SoTextureCoordinateBundle.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoComplexityElement.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
+#include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLCoordinateElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoProfileElement.h>
+#include <Inventor/elements/SoProjectionMatrixElement.h>
+#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/nodes/SoCallback.h>
+#include <Inventor/nodes/SoProfile.h>
+#include <Inventor/nodes/SoShape.h>
+#include <Inventor/system/gl.h>
+#include <Inventor/threads/SbStorage.h>
+
+// *************************************************************************
 
 // Convenience function for access to OpenGL wrapper from an SoState
 // pointer.
@@ -1869,35 +1869,20 @@ sogl_render_lineset(const SoGLCoordinateElement * const coords,
 #endif // !NO_LINESET_RENDER
 
 
-
-#ifdef COIN_THREADSAFE
 static SbStorage * sogl_coordstorage = NULL;
 static SbStorage * sogl_texcoordstorage = NULL;
-#else // COIN_THREADSAFE
-static SbList <float> * sogl_tmpcoordlist = NULL;
-static SbList <float> * sogl_tmptexcoordlist = NULL;
-#endif // ! COIN_THREADSAFE
+
 
 static void nurbs_coord_cleanup(void)
 {
-#ifdef COIN_THREADSAFE
   delete sogl_coordstorage;
   sogl_coordstorage = NULL;
-#else // COIN_THREADSAFE
-  delete sogl_tmpcoordlist;
-  sogl_tmpcoordlist = NULL;
-#endif // ! COIN_THREADSAFE
 }
 
 static void nurbs_texcoord_cleanup(void)
 {
-#ifdef COIN_THREADSAFE
   delete sogl_texcoordstorage;
   sogl_texcoordstorage = NULL;
-#else // COIN_THREADSAFE
-  delete sogl_tmptexcoordlist;
-  sogl_tmptexcoordlist = NULL;
-#endif // ! COIN_THREADSAFE
 }
 
 static void sogl_alloc_coords(void * ptr)
@@ -1915,39 +1900,23 @@ static void sogl_dealloc_coords(void * ptr)
 static SbList <float> * 
 sogl_get_tmpcoordlist(void)
 {
-#ifdef COIN_THREADSAFE
   if (sogl_coordstorage == NULL) {
     sogl_coordstorage = new SbStorage(sizeof(void*), sogl_alloc_coords, sogl_dealloc_coords);
     coin_atexit((coin_atexit_f *)nurbs_coord_cleanup, 0);
   }
   SbList <float> ** ptr = (SbList <float> **) sogl_coordstorage->get();
   return *ptr;
-#else // COIN_THREADSAFE
-  if (sogl_tmpcoordlist == NULL) {
-    sogl_tmpcoordlist = new SbList <float>;
-    coin_atexit((coin_atexit_f *)nurbs_coord_cleanup, 0);
-  }
-  return sogl_tmpcoordlist; 
-#endif // ! COIN_THREADSAFE
 }
 
 static SbList <float> *
 sogl_get_tmptexcoordlist(void)
 {
-#ifdef COIN_THREADSAFE
   if (sogl_texcoordstorage == NULL) {
     sogl_texcoordstorage = new SbStorage(sizeof(void*), sogl_alloc_coords, sogl_dealloc_coords);
     coin_atexit((coin_atexit_f *)nurbs_texcoord_cleanup, 0);
   }
   SbList <float> ** ptr = (SbList <float> **) sogl_texcoordstorage->get();
   return *ptr;
-#else // COIN_THREADSAFE
-  if (sogl_tmptexcoordlist == NULL) {
-    sogl_tmpcoordlist = new SbList <float>;
-    coin_atexit((coin_atexit_f *)nurbs_texcoord_cleanup, 0);
-  }
-  return sogl_tmptexcoordlist; 
-#endif // ! COIN_THREADSAFE
 }
 
 
