@@ -264,7 +264,7 @@ soshape_bigtexture::clip_triangles(SoState * state)
     }
   }
   
-  for (int i = 0; i < n; i += 3) {
+  for (i = 0; i < n; i += 3) {
     this->handle_triangle(state, 
                           this->vertexlist[i],
                           this->vertexlist[i+1],
