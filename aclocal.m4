@@ -1094,10 +1094,16 @@ fi
 
 AC_DEFUN([SIM_AC_COMPILER_OPTION], [
 sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS [$1]"
-AC_TRY_COMPILE([], [], [sim_ac_accept_result=yes $2], [sim_ac_accept_result=no $3])
+CPPFLAGS="$CPPFLAGS $1"
+AC_TRY_COMPILE([], [], [sim_ac_accept_result=yes], [sim_ac_accept_result=no])
 AC_MSG_RESULT([$sim_ac_accept_result])
 CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in $2 or $3.
+if test $sim_ac_accept_result = yes; then
+  ifelse($2, , :, $2)
+else
+  ifelse($3, , :, $3)
+fi
 ])
 
 AC_DEFUN([SIM_AC_CC_COMPILER_OPTION], [
@@ -1217,7 +1223,7 @@ if test x"$enable_warnings" = x"yes"; then
         _warn_flags=
         _woffs=""
         ### Turn on all warnings ######################################
-        SIM_AC_CC_COMPILER_OPTION([-fullwarn], [CPPFLAGS="$CPPFLAGS -fullwarn"])
+        SIM_AC_CC_COMPILER_OPTION(-fullwarn, CPPFLAGS="$CPPFLAGS -fullwarn")
 
         ### Turn off specific (bogus) warnings ########################
 
@@ -1238,8 +1244,8 @@ if test x"$enable_warnings" = x"yes"; then
         #       Coin/src/engines has lots of shitty code which needs this).
 
         sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1355,1375,3201,3303,1110"
-        SIM_AC_CC_COMPILER_OPTION([$sim_ac_bogus_warnings],
-                                  [CPPFLAGS="$CPPFLAGS $sim_ac_bogus_warnings"])
+        SIM_AC_CC_COMPILER_OPTION($sim_ac_bogus_warnings,
+                                  CPPFLAGS="$CPPFLAGS $sim_ac_bogus_warnings")
       fi
     ;;
     esac
