@@ -5472,6 +5472,9 @@ case "$host_os" in
   irix6.2)
     if test "$CXX" = CC; then ac_coin_unknown_platform=no; fi
     ;;
+  irix6.5)
+    if test "$CXX" = CC; then ac_coin_unknown_platform=no; fi
+    ;;
   aix*)
     if test "$CXX" = xlC; then ac_coin_unknown_platform=no; fi
     ;;
