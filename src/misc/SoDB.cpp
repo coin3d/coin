@@ -778,7 +778,7 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
   SoInput in;
   if (!in.openFile(filename)) { exit(1); }
 
-  SoSeparator * root = SoDB::readAll(&input);
+  SoSeparator * root = SoDB::readAll(&in);
   if (!root) { exit(1); }
 
   // root-node returned from SoDB::readAll() has initial zero
