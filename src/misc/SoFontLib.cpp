@@ -248,8 +248,8 @@ SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbV
       SoFontLibP::openfonts.enter((unsigned long)fontname.getString(), (void *)newfont);
     }
   }
-  SoFontLib::setDefaultCharmap(font);
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
+  SoFontLib::setDefaultCharmap(font);
   return font;
 }
 
