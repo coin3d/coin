@@ -33,7 +33,7 @@
    use "false" and "true" instead of "0" and "1" for the FALSE and
    TRUE defines below.) 20010810 mortene. */
 
-// Documented for Doxygen in SoDB.cpp.
+/* Documented for Doxygen in SoDB.cpp. */
 typedef int SbBool;
 
 #ifndef FALSE
