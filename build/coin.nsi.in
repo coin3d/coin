@@ -6,13 +6,13 @@
 #   Lars J. Aas <larsa@sim.no>
 
 Name "Coin @COIN_VERSION@"
-OutFile "coin-installer.exe"
+OutFile "debug\coin-installer.exe"
 SilentInstall "normal"
 CRCCheck "on"
 UninstallExeName "coin-uninstaller.exe"
 
 LicenseText "GNU Lesser General Public License"
-LicenseData COPYING.DOS
+LicenseData debug\COPYING.DOS
 
 ComponentText "coin library"
 InstType "Binary SDK"
@@ -21,7 +21,7 @@ InstType "Full"
 
 DirText "Where to install Coin"
 InstallDir "D:\Coin3D"
-# InstallDirRegKey coin3d coin path
+InstallDirRegKey HKEY_LOCAL_MACHINE SOFTWARE\Coin3D InstallPath
 
 # **************************************************************************
 Section "Run-Time Library"
@@ -31,7 +31,7 @@ SetCompress auto
 SetOverwrite on
 
 SetOutPath $INSTDIR\lib
-File src\coin@COIN_MAJOR_VERSION@.dll
+File release\src\coin@COIN_MAJOR_VERSION@.dll
 
 # **************************************************************************
 Section "Binary SDK"
@@ -41,18 +41,20 @@ SetCompress auto
 SetOverwrite on
 
 SetOutPath $INSTDIR\bin
-File coin-config
+File release\coin-config
 
 SetOutPath $INSTDIR\lib
-File src\coin@COIN_MAJOR_VERSION@.dll
-File src\coin@COIN_MAJOR_VERSION@.lib
-# File src\coin@COIN_MAJOR_VERSION@.pdb
+File release\src\coin@COIN_MAJOR_VERSION@.dll
+File release\src\coin@COIN_MAJOR_VERSION@.lib
+File debug\src\coin@COIN_MAJOR_VERSION@d.dll
+File debug\src\coin@COIN_MAJOR_VERSION@d.lib
+File debug\src\coin@COIN_MAJOR_VERSION@d.pdb
 # File src\coin@COIN_MAJOR_VERSION@.tds
 
 SetOutPath $INSTDIR\include
 File @win_srcdir@\include\*.h
 SetOutPath $INSTDIR\include\Inventor
-File include\Inventor\SbBasic.h
+File release\include\Inventor\SbBasic.h
 File @win_srcdir@\include\Inventor\*.h
 SetOutPath $INSTDIR\include\Inventor\actions
 File @win_srcdir@\include\Inventor\actions\*.h
@@ -250,6 +252,7 @@ SetOutPath $INSTDIR\source\coin-@COIN_VERSION@\src
 # **************************************************************************
 Section -post
 
+WriteRegStr HKEY_LOCAL_MACHINE SOFTWARE\Coin3D InstallPath "$INSTDIR"
 Exec '"explorer" "$INSTDIR\"'
 
 # **************************************************************************
@@ -258,9 +261,13 @@ Section Uninstall
 Delete $INSTDIR\bin\coin-config
 RMDir  $INSTDIR\bin
 Delete $INSTDIR\lib\coin@COIN_MAJOR_VERSION@.dll
+Delete $INSTDIR\lib\coin@COIN_MAJOR_VERSION@d.dll
 Delete $INSTDIR\lib\coin@COIN_MAJOR_VERSION@.lib
+Delete $INSTDIR\lib\coin@COIN_MAJOR_VERSION@d.lib
 Delete $INSTDIR\lib\coin@COIN_MAJOR_VERSION@.pdb
+Delete $INSTDIR\lib\coin@COIN_MAJOR_VERSION@d.pdb
 Delete $INSTDIR\lib\coin@COIN_MAJOR_VERSION@.tds
+Delete $INSTDIR\lib\coin@COIN_MAJOR_VERSION@d.tds
 RMDir  $INSTDIR\lib
 Delete $INSTDIR\include\Inventor\actions\*.h
 RMDir  $INSTDIR\include\Inventor\actions
