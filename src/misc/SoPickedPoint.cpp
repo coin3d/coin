@@ -19,11 +19,13 @@
 
 /*!
   \class SoPickedPoint SoPickedPoint.h Inventor/SoPickedPoint.h
-  \brief The SoPickedPoint class ... blablabla ...
+  \brief The SoPickedPoint class is used for specifying picked points.
 
-  FIXME: write doc
- */
-
+  It holds miscellaneous information about the picked point, such
+  as position, normal, texture coordinate and material index in the
+  current material. It might also hold detail information (an SoDetail
+  subclass) for every node in the picked path.
+*/
 
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
@@ -31,6 +33,9 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoTextureMatrixElement.h>
 #include <Inventor/details/SoDetail.h>
+#include <Inventor/misc/SoTempPath.h>
+#include <Inventor/SbMatrix.h>
+#include <stdlib.h> // atexit
 #include <assert.h>
 
 #if COIN_DEBUG
@@ -43,22 +48,19 @@
 //
 static SoGetMatrixAction *matrixAction = NULL;
 
-#if 0 // FIXME: re-code to be run automatically upon exit. 19991106 mortene.
-/*!
-  Will be called at the end of your program to free static memory
-  used by this class.
-*/
-void
-SoPickedPoint::cleanClass()
+//
+//  Will be called at the end of program to free static memory
+//  used by this class.
+//
+static void clean_class()
 {
   delete matrixAction;
   matrixAction = NULL;
 }
-#endif // re-code
 
 /*!
-  FIXME: write doc
- */
+  Copy constructor.
+*/
 SoPickedPoint::SoPickedPoint(const SoPickedPoint &pp)
 {
   this->path = pp.path;
@@ -73,11 +75,19 @@ SoPickedPoint::SoPickedPoint(const SoPickedPoint &pp)
   this->materialIndex = pp.materialIndex;
   this->onGeometry = pp.onGeometry;
   this->viewport = pp.viewport;
-  this->detailList = pp.detailList;
+
+  int n = pp.detailList.getLength();
+  for (int i = 0; i < n; i++) {
+    if (pp.detailList[i]) 
+      this->detailList.append(pp.detailList[i]->copy());
+    else
+      this->detailList.append(NULL);
+  }
 }
 
 /*!
-  FIXME: write doc
+  Constructor. Uses the state to convert between world and object
+  space for the data.
 */
 SoPickedPoint::SoPickedPoint(const SoPath * const path, SoState * const state,
                              const SbVec3f &objSpacePoint)
@@ -93,14 +103,14 @@ SoPickedPoint::SoPickedPoint(const SoPath * const path, SoState * const state,
   this->onGeometry = TRUE;
   this->viewport = SoViewportRegionElement::get(state);
 
-  int pathlen = this->path->getLength();
+  int pathlen = ((SoFullPath*)this->path)->getLength();
   for (int i = 0; i < pathlen; i++) {
     this->detailList.append(NULL);
   }
 }
 
 /*!
-  FIXME: write doc
+  Destructor.
  */
 SoPickedPoint::~SoPickedPoint()
 {
@@ -114,8 +124,8 @@ SoPickedPoint::~SoPickedPoint()
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns a copy of this picked point.
+*/
 SoPickedPoint *
 SoPickedPoint::copy() const
 {
@@ -123,8 +133,8 @@ SoPickedPoint::copy() const
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the world space point.
+*/
 const SbVec3f &
 SoPickedPoint::getPoint() const
 {
@@ -132,8 +142,8 @@ SoPickedPoint::getPoint() const
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the world space normal.
+*/
 const SbVec3f &
 SoPickedPoint::getNormal() const
 {
@@ -141,8 +151,8 @@ SoPickedPoint::getNormal() const
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the image space texture coordinates.
+*/
 const SbVec4f &
 SoPickedPoint::getTextureCoords() const
 {
@@ -150,8 +160,8 @@ SoPickedPoint::getTextureCoords() const
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the material index.
+*/
 int
 SoPickedPoint::getMaterialIndex() const
 {
@@ -159,18 +169,19 @@ SoPickedPoint::getMaterialIndex() const
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the path to the picked object.
+*/
 SoPath *
 SoPickedPoint::getPath() const
 {
-  // FIXME: return copy?
   return (SoPath*)this->path;
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns TRUE if this picked point is on the actual geometry of the
+  picked object, or FALSE if not (it might for instance be on the 
+  bounding box if picking was done on bounding boxes).
+*/
 SbBool
 SoPickedPoint::isOnGeometry() const
 {
@@ -178,15 +189,22 @@ SoPickedPoint::isOnGeometry() const
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns detail for \a node. If \a node equals NULL, the detail
+  for the picked object is returned.
+*/
 const SoDetail *
 SoPickedPoint::getDetail(const SoNode * const node) const
 {
-  int idx = node ? this->path->findNode(node) : this->path->getLength() - 1;
+  int idx = node ? this->path->findNode(node) : 
+    ((SoFullPath*)this->path)->getLength() - 1;
   return idx >= 0 ? this->detailList[idx] : NULL;
 }
 
+/*!
+  Returns the matrix which converts from object (specified by \a node)
+  to world space. If \a node equals NULL, the object space of the
+  picked object will used.
+*/
 const SbMatrix &
 SoPickedPoint::getObjectToWorld(const SoNode * const node) const
 {
@@ -194,6 +212,11 @@ SoPickedPoint::getObjectToWorld(const SoNode * const node) const
   return getMatrixAction()->getMatrix();
 }
 
+/*!
+  Returns the matrix which converts from world to object (specified
+  by \a node) space. If \a node equals NULL, the object space of the
+  picked object will used.
+*/
 const SbMatrix &
 SoPickedPoint::getWorldToObject(const SoNode * const node) const
 {
@@ -202,8 +225,10 @@ SoPickedPoint::getWorldToObject(const SoNode * const node) const
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the matrix which converts from object (specified by \a node)
+  to image space. If \a node equals NULL, the object space of the
+  picked object will used.
+*/
 const SbMatrix &
 SoPickedPoint::getObjectToImage(const SoNode * const node) const
 {
@@ -212,8 +237,10 @@ SoPickedPoint::getObjectToImage(const SoNode * const node) const
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the matrix which converts from image to object (specified
+  by \a node) space. If \a node equals NULL, the object space of the
+  picked object will used.
+*/
 const SbMatrix &
 SoPickedPoint::getImageToObject(const SoNode * const node) const
 {
@@ -222,53 +249,55 @@ SoPickedPoint::getImageToObject(const SoNode * const node) const
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the object space (specified by \a node) point. If
+  \a node equals NULL, the picked point object space will
+  be used.
+*/
 SbVec3f
-SoPickedPoint::getObjectPoint(const SoNode * const /*node*/) const
+SoPickedPoint::getObjectPoint(const SoNode * const node) const
 {
-#if 0 // OBSOLETED 19991117, pederb (incorrect for SoArray, SoMultipleCopy scenes)
-  SbVec3f ret;
-  this->getWorldToObject(node).multVecMatrix(this->point, ret);
-  return ret;
-#else // new code
+  if (node && node != ((SoFullPath*)this->path)->getTail()) {
+    SbVec3f ret;
+    this->getWorldToObject(node).multVecMatrix(this->point, ret);
+    return ret;
+  }
   return this->objPoint;
-#endif
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the object space (specified by \a node) normal. If
+  \a node equals NULL, the picked point object space will
+  be used.
+*/
 SbVec3f
-SoPickedPoint::getObjectNormal(const SoNode * const /*node*/) const
+SoPickedPoint::getObjectNormal(const SoNode * const node) const
 {
-#if 0 // OBSOLETED 19991117, pederb (incorrect for SoArray, SoMultipleCopy scenes)
-  SbVec3f ret;
-  this->getWorldToObject(node).multDirMatrix(this->normal, ret);
-  return ret;
-#else // new code
+  if (node && node != ((SoFullPath*)this->path)->getTail()) {
+    SbVec3f ret;
+    this->getWorldToObject(node).multDirMatrix(this->normal, ret);
+    return ret;
+  }
   return this->objNormal;
-#endif // new code
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the object space (specified by \a node) texture coordinates. 
+  If \a node equals NULL, the picked point object space will be used.
+*/
 SbVec4f
-SoPickedPoint::getObjectTextureCoords(const SoNode * const /*node*/) const
+SoPickedPoint::getObjectTextureCoords(const SoNode * const node) const
 {
-#if 0 // OBSOLETED 19991117, pederb (incorrect for SoArray, SoMultipleCopy scenes)
-  SbVec4f ret;
-  this->getImageToObject(node).multVecMatrix(this->texCoords, ret);
-  return ret;
-#else // new code
+  if (node && node != ((SoFullPath*)this->path)->getTail()) {
+    SbVec4f ret;
+    this->getImageToObject(node).multVecMatrix(this->texCoords, ret);
+    return ret;
+  }
   return this->objTexCoords;
-#endif // new code
 }
 
 /*!
-  FIXME: write doc
- */
+  Sets the picked point objects space normal vector.
+*/
 void
 SoPickedPoint::setObjectNormal(const SbVec3f &normal)
 {
@@ -277,8 +306,8 @@ SoPickedPoint::setObjectNormal(const SbVec3f &normal)
 }
 
 /*!
-  FIXME: write doc
- */
+  Sets the picked point object space texture coordinates.
+*/
 void
 SoPickedPoint::setObjectTextureCoords(const SbVec4f &texCoords)
 {
@@ -287,8 +316,8 @@ SoPickedPoint::setObjectTextureCoords(const SbVec4f &texCoords)
 }
 
 /*!
-  FIXME: write doc
- */
+  Sets the material index.
+*/
 void
 SoPickedPoint::setMaterialIndex(const int index)
 {
@@ -296,45 +325,50 @@ SoPickedPoint::setMaterialIndex(const int index)
 }
 
 /*!
-  FIXME: write doc
- */
+  Sets the detail for \a node. \a node must be in the picked
+  path, of course. Set to NULL if you want to remove a detail
+  for a node.
+*/
 void
 SoPickedPoint::setDetail(SoDetail *detail, SoNode *node)
 {
   int idx = this->path->findNode(node);
   if (idx >= 0) {
     delete this->detailList[idx];
-    this->detailList.set(idx, detail);
+    this->detailList[idx] = detail;
   }
 }
 
+//
+// applies a matrix action to the path. Stops at node if != NULL
+//
 void
 SoPickedPoint::applyMatrixAction(const SoNode * const node) const
 {
   if (node) {
-    // FIXME: it should be possible to optimize this by
-    // avoiding to create
-    int idx = this->path->findNode(node);
+    SoFullPath *fullpath = (SoFullPath*) this->path;
+    int idx = fullpath->findNode(node);
     assert(idx >= 0);
-    SoPath *subpath = this->path->copy(idx+1);
-    assert(subpath);
-    subpath->ref();
-    getMatrixAction()->apply(subpath);
-    subpath->unref();
+    SoTempPath subpath(idx+1);
+    for (int i = 0; i <= idx; i++) {
+      subpath.append(fullpath->getNode(i));
+    }
+    this->getMatrixAction()->apply(&subpath);
   }
   else {
-    getMatrixAction()->apply(this->path);
+    this->getMatrixAction()->apply(this->path);
   }
 }
 
-/*!
-  Used to return a matrix action to be used to find scene matrices.
-*/
+//
+// creates or returns a matrix action.
+//
 SoGetMatrixAction *
 SoPickedPoint::getMatrixAction() const
 {
   if (matrixAction == NULL) {
     matrixAction = new SoGetMatrixAction(this->viewport);
+    atexit(clean_class);
   }
   else {
     matrixAction->setViewportRegion(this->viewport);

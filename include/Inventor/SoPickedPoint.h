@@ -21,7 +21,6 @@
 #define COIN_SO_PICKED_POINT_H
 
 #include <Inventor/SbBasic.h>
-#include <Inventor/SbMatrix.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbVec4f.h>
 #include <Inventor/lists/SoDetailList.h>
@@ -31,6 +30,7 @@ class SoPath;
 class SoDetail;
 class SoNode;
 class SoState;
+class SbMatrix;
 
 class SoPickedPoint
 {
@@ -54,7 +54,7 @@ public:
   SbVec3f getObjectPoint(const SoNode * const node = NULL) const;
   SbVec3f getObjectNormal(const SoNode * const node = NULL) const;
   SbVec4f getObjectTextureCoords(const SoNode * const node = NULL) const;
-
+  
   void setObjectNormal(const SbVec3f &normal);
   void setObjectTextureCoords(const SbVec4f &texCoords);
   void setMaterialIndex(const int index);
