@@ -236,6 +236,7 @@
 #include <Inventor/elements/SoCreaseAngleElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
+#include <Inventor/nodes/SoCamera.h>
 
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/nodes/SoMatrixTransform.h>
@@ -315,6 +316,8 @@ public:
   SbName surrogatename;
   SoPath * surrogateownerpath;
   SoPath * surrogatepath;
+
+  SoCallbackAction * cbaction;
 };
 
 
@@ -352,6 +355,7 @@ SoDragger::SoDragger(void)
   THIS->activechilddragger = NULL;
   THIS->surrogateownerpath = NULL;
   THIS->surrogatepath = NULL;
+  THIS->cbaction = NULL;
 }
 
 /*!
@@ -1403,6 +1407,18 @@ SoDragger::shouldGrabBasedOnSurrogate(const SoPath * pickpath, const SoPath * su
   return FALSE;
 }
 
+typedef struct {
+  SbViewVolume vv;
+} sodragger_vv_data;
+
+static SoCallbackAction::Response 
+sodragger_vv_cb(void * userdata, SoCallbackAction * action, const SoNode * node)
+{
+  sodragger_vv_data * data = (sodragger_vv_data*) userdata;
+  data->vv = SoViewVolumeElement::get(action->getState());
+  return SoCallbackAction::CONTINUE;
+}
+
 /*!
   Store data about the current camera in the given action.
 */
@@ -1410,8 +1426,26 @@ void
 SoDragger::setCameraInfo(SoAction * action)
 {
   SoState * state = action->getState();
-  THIS->viewvolume = SoViewVolumeElement::get(state);
   THIS->viewport = SoViewportRegionElement::get(state);;
+  THIS->viewvolume = SoViewVolumeElement::get(state);
+
+  // FIXME: this is a temporary fix. We should really make
+  // SoHandleEventAction support transformations so that the correct
+  // view volume can be found directly. pederb, 2002-10-30
+
+  if (THIS->draggercache && THIS->draggercache->path) {
+    static sodragger_vv_data * vvdata;
+    if (vvdata == NULL) {
+      vvdata = new sodragger_vv_data;
+    }
+    if (THIS->cbaction == NULL) {
+      THIS->cbaction = new SoCallbackAction;
+      THIS->cbaction->addPostCallback(SoCamera::getClassTypeId(), sodragger_vv_cb, vvdata);
+    }
+    THIS->cbaction->setViewportRegion(THIS->viewport);
+    THIS->cbaction->apply(THIS->draggercache->path);
+    THIS->viewvolume = vvdata->vv;
+  }
 }
 
 // Documented in superclass. Overridden to detect picks on dragger.
