@@ -67,20 +67,11 @@
 /* define if you have the dl library */
 #undef HAVE_DL_LIB
 
-/* Define to use Win32 _ftime() */
-#undef HAVE__FTIME
-
 /* Define to use GetEnvironmentVariable() instead of getenv() */
 #undef HAVE_GETENVIRONMENTVARIABLE
 
 /* Define to use SVr4 / BSD4.3 gettimeofday() */
 #undef HAVE_GETTIMEOFDAY
-
-/* define if the GL header should be included as GL/gl.h */
-#undef HAVE_GL_GL_H
-
-/* define if the GLU header should be included as GL/glu.h */
-#undef HAVE_GL_GLU_H
 
 /* define if you have GLU */
 #undef HAVE_GLU
@@ -90,6 +81,12 @@
 
 /* define if glXGetProcAddressARB() is available */
 #undef HAVE_GLXGETPROCADDRESSARB
+
+/* define if the GLU header should be included as GL/glu.h */
+#undef HAVE_GL_GLU_H
+
+/* define if the GL header should be included as GL/gl.h */
+#undef HAVE_GL_GL_H
 
 /* define if preprocessor can quote arguments with the hash symbol */
 #undef HAVE_HASH_QUOTING
@@ -121,11 +118,11 @@
 /* define if you have OpenGL */
 #undef HAVE_OPENGL
 
-/* define if the GL header should be included as OpenGL/gl.h */
-#undef HAVE_OPENGL_GL_H
-
 /* define if the GLU header should be included as OpenGL/glu.h */
 #undef HAVE_OPENGL_GLU_H
+
+/* define if the GL header should be included as OpenGL/gl.h */
+#undef HAVE_OPENGL_GL_H
 
 /* Define to use Win32 QueryPerformanceCounter() */
 #undef HAVE_QUERYPERFORMANCECOUNTER
@@ -135,9 +132,6 @@
 
 /* define if snprintf() is available */
 #undef HAVE_SNPRINTF
-
-/* define if _snprintf() is available */
-#undef HAVE__SNPRINTF
 
 /* Define if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
@@ -184,10 +178,6 @@
 /* Define if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
-/* Define this to true if the __func__ variable contains the current function
-   name */
-#undef HAVE_VAR___func__
-
 /* Define this to true if the __FUNCTION__ variable contains the current
    function name */
 #undef HAVE_VAR___FUNCTION__
@@ -196,14 +186,15 @@
    current function name */
 #undef HAVE_VAR___PRETTY_FUNCTION__
 
+/* Define this to true if the __func__ variable contains the current function
+   name */
+#undef HAVE_VAR___func__
+
 /* *EXPERIMENTAL* to enable vrml97 support code */
 #undef HAVE_VRML97
 
 /* define if vsnprintf() is available */
 #undef HAVE_VSNPRINTF
-
-/* define if _vsnprintf() is available */
-#undef HAVE__VSNPRINTF
 
 /* define if you have WGL Win32 OpenGL bindings */
 #undef HAVE_WGL
@@ -219,6 +210,15 @@
 
 /* define if it is possible to build against X11 */
 #undef HAVE_X11_AVAILABLE
+
+/* Define to use Win32 _ftime() */
+#undef HAVE__FTIME
+
+/* define if _snprintf() is available */
+#undef HAVE__SNPRINTF
+
+/* define if _vsnprintf() is available */
+#undef HAVE__VSNPRINTF
 
 /* Name of package */
 #undef PACKAGE
