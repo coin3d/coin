@@ -179,7 +179,7 @@ public:
   void flushGlyphCache();
   void buildGlyphCache(SoState * state);
   SbBool shouldBuildGlyphCache(SoState * state);
-  void dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos);
+  void dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos, SbBool mono);
   void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
 
 
@@ -269,7 +269,6 @@ SoText2::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoText2, SO_FROM_INVENTOR_2_1);
 }
-
 
 // **************************************************************************
 
@@ -380,11 +379,63 @@ SoText2::GLRender(SoGLRenderAction * action)
         rpy = rastery>= 0 ? rastery : 0;
         offvp = offvp || rastery < 0 ? 1 : 0;
         offsety = rastery >= 0 ? 0 : rastery;
-       				
+
         glRasterPos3f(rpx, rpy, -nilpoint[2]);
-	
+
         if (offvp) { glBitmap(0,0,0,0,offsetx,offsety,NULL); }
-        if (buffer) { glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer); }
+
+        if (buffer) {
+           if (cc_glyph2d_getmono(glyph)) {
+            glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer);
+          } else {
+            glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
+            glPushClientAttrib(GL_CLIENT_PIXEL_STORE_BIT);
+          
+            glEnable(GL_ALPHA_TEST);
+            glAlphaFunc(GL_GREATER, 0.3f);
+          
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+          
+            glDisable(GL_TEXTURE_2D);
+
+            glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+        
+            // get the current glColor
+            float ftglColor[4];
+            glGetFloatv(GL_CURRENT_COLOR, ftglColor);
+
+            unsigned char red   = (unsigned char) (ftglColor[0] * 255.0f);
+            unsigned char green = (unsigned char) (ftglColor[1] * 255.0f);
+            unsigned char blue  = (unsigned char) (ftglColor[2] * 255.0f);
+
+            int numpixels = ix * iy;
+            unsigned char * data = (unsigned char *) malloc(numpixels * 4);
+            unsigned char * dst = data;
+            const unsigned char * src = buffer;
+
+            if (ftglColor[3] == 1.0f) {
+              for (int i = 0; i < numpixels; i++) {
+                *dst++ = red; *dst++ = green; *dst++ = blue;
+                // alpha from the gray level pixel value
+                *dst++ = *src++;
+              }
+            } else {
+              for (int i = 0; i < numpixels; i++) {
+                *dst++ = red; *dst++ = green; *dst++ = blue;
+                // alpha from the gray level pixel value
+                *dst++ = (((unsigned int)(ftglColor[3] * 256.0f)) * *src++) >> 8;
+              }
+            }
+
+            glDrawPixels(ix,iy,GL_RGBA,GL_UNSIGNED_BYTE,(const GLubyte *)data);
+
+            free(data);
+
+            glPopClientAttrib();
+            glPopAttrib();
+          }
+        }
 
         xpos += (advancex + kerningx);
 
@@ -397,7 +448,6 @@ SoText2::GLRender(SoGLRenderAction * action)
       }
       
       ypos -= (((int) fontsize) * this->spacing.getValue());
-      
     }
 
     if (prevglyph) {
@@ -646,19 +696,21 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
 
 // Debug convenience method.
 void
-SoText2P::dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos)
+SoText2P::dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos, SbBool mono)
 {
   // FIXME: pure debug method, remove. preng 2003-03-18.
   if (!buffer) {
     fprintf(stderr,"bitmap error: buffer pointer NULL.\n");
   } else {
     int rows = size[1];
-    int bytes = size[0] >> 3;
-    fprintf(stderr,"bitmap dump %d * %d bytes at %d, %d:\n", rows, bytes, pos[0], pos[1]);
+    int bytes = mono ? size[0] >> 3 : size[0];
+    fprintf(stderr, "%s bitmap dump %d * %d bytes at %d, %d:\n",
+            mono ? "mono": "gray level", rows, bytes, pos[0], pos[1]);
     for (int y=rows-1; y>=0; y--) {
       for (int byte=0; byte<bytes; byte++) {
-        for (int bit=0; bit<8; bit++)
-          fprintf(stderr,"%d", buffer[y*bytes + byte] & 0x80>>bit ? 1 : 0);
+        for (int bit=0; bit<8; bit++) {
+          fprintf(stderr, "%d", buffer[y*bytes + byte] & 0x80>>bit ? 1 : 0);
+        }
       }
       fprintf(stderr,"\n");
     }
