@@ -300,6 +300,10 @@ SoRayPickAction::setRay(const SbVec3f &start,
   this->rayFar = farDistance;
   this->wsLine = SbLine(start, start + direction);
 
+  // D = shortest distance from origin to plane
+  const float D = this->rayDirection.dot(this->rayStart); 
+  this->nearPlane = SbPlane(rayDirection, D + this->rayNear);
+
   this->setFlag(FLAG_WS_RAY_SET);
 }
 
@@ -391,6 +395,10 @@ SoRayPickAction::computeWorldSpaceRay()
     this->rayRadiusFar = this->rayRadiusStart; // FIXME: calc from vv
     this->rayNear = vv.getNearDist();
     this->rayFar = vv.getNearDist() + vv.getDepth();
+
+    // shortest distance from origin to plane
+    const float D = this->rayDirection.dot(this->rayStart); 
+    this->nearPlane = SbPlane(rayDirection, D + this->rayNear);
     
     this->setFlag(FLAG_WS_RAY_COMPUTED);
   }
@@ -474,23 +482,23 @@ SoRayPickAction::intersect(const SbVec3f &v0,
 }
 
 SbBool 
-SoRayPickAction::intersect(const SbVec3f &v0, const SbVec3f &v1,
-			   SbVec3f &intersection) const
+SoRayPickAction::intersect(const SbVec3f &/*v0*/, const SbVec3f &/*v1*/,
+			   SbVec3f &/*intersection*/) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
 }
 
 SbBool 
-SoRayPickAction::intersect(const SbVec3f &point) const
+SoRayPickAction::intersect(const SbVec3f &/*point*/) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
 }
 
 SbBool 
-SoRayPickAction::intersect(const SbBox3f &box,
-			   const SbBool useFullViewVolume)
+SoRayPickAction::intersect(const SbBox3f &/*box*/,
+			   const SbBool /*useFullViewVolume*/)
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -512,7 +520,9 @@ SoRayPickAction::getLine()
 SbBool 
 SoRayPickAction::isBetweenPlanes(const SbVec3f &intersection) const
 {
-  float dist = this->nearPlane.getDistance(intersection);
+  SbVec3f worldPt;
+  this->obj2World.multVecMatrix(intersection, worldPt);
+  float dist = this->nearPlane.getDistance(worldPt);
   if (this->isFlagSet(FLAG_CLIP_NEAR)) {
     if (dist < 0) return FALSE;
   }
@@ -533,10 +543,12 @@ SoRayPickAction::addIntersection(const SbVec3f &objectSpacePoint)
 			 objectSpacePoint[2]);
 #endif // debug
 
+  SbVec3f worldPt;
+  this->obj2World.multVecMatrix(objectSpacePoint, worldPt);  
+
   if (this->pickedPointList.getLength() && !this->isFlagSet(FLAG_PICK_ALL)) {
     // got to test if new candidate is closer than old one   
-    float dist = this->nearPlane.getDistance(objectSpacePoint);
-    fprintf(stderr,"dist: %g (%g)\n", dist, this->currentPickDistance);
+    float dist = this->nearPlane.getDistance(worldPt);
     if (dist >= this->currentPickDistance) return NULL; // farther 
 
     // remove old point
@@ -545,8 +557,7 @@ SoRayPickAction::addIntersection(const SbVec3f &objectSpacePoint)
   }
   
   if (!this->isFlagSet(FLAG_PICK_ALL)) {
-    this->currentPickDistance = this->nearPlane.getDistance(objectSpacePoint);
-    fprintf(stderr,"dist: %g\n", this->currentPickDistance);
+    this->currentPickDistance = this->nearPlane.getDistance(worldPt);
   }
   // create the new picked point
   SoPickedPoint * pp = new SoPickedPoint(this->getCurPath(),
@@ -592,9 +603,6 @@ SoRayPickAction::calcObjectSpaceData()
   this->world2Obj.multVecMatrix(this->rayStart, start);
   this->world2Obj.multDirMatrix(this->rayDirection, dir);
   this->osLine = SbLine(start, start + dir);
-
-  const float D = dir.dot(start); // shortest distance from origin to plane
-  this->nearPlane = SbPlane(dir, D + this->rayNear);
   
   // FIXME: calc osVolume
 }
