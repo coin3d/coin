@@ -77,6 +77,7 @@ CXX = @CXX@
 CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
+LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
 LT_CURRENT = @LT_CURRENT@
@@ -314,11 +315,6 @@ ALLINSTHEADERS = \
 @HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_TRUE@libnodesLINKHACK.la
 @HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_FALSE@libnodes.la
 
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-LIBTOOL = @LIBTOOL@ --silent
-
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
@@ -329,10 +325,8 @@ libnodes_la_SOURCES = $(ALLSOURCES)
 libnodesLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libnodesincdir = $(includedir)/Inventor/nodes
-libnodesLINKHACKincdir = $(includedir)/Inventor/nodes
 
 libnodesinc_HEADERS = $(ALLINSTHEADERS)
-libnodesLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/nodes
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
@@ -422,10 +416,9 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES =  $(libnodes_la_SOURCES) $(libnodesLINKHACK_la_SOURCES)
-HEADERS =  $(libnodesLINKHACKinc_HEADERS) $(libnodesinc_HEADERS)
+HEADERS =  $(libnodesinc_HEADERS)
 
-DIST_COMMON =  $(libnodesLINKHACKinc_HEADERS) $(libnodesinc_HEADERS) \
-Makefile.am Makefile.in
+DIST_COMMON =  $(libnodesinc_HEADERS) Makefile.am Makefile.in
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -554,23 +547,11 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
-install-libnodesLINKHACKincHEADERS: $(libnodesLINKHACKinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libnodesLINKHACKincdir)
-	@list='$(libnodesLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodesLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodesLINKHACKincdir)/$$f; \
-	done
+libnodes.la: $(libnodes_la_OBJECTS) $(libnodes_la_DEPENDENCIES)
+	$(CXXLINK)  $(libnodes_la_LDFLAGS) $(libnodes_la_OBJECTS) $(libnodes_la_LIBADD) $(LIBS)
 
-uninstall-libnodesLINKHACKincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libnodesLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libnodesLINKHACKincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libnodesLINKHACKincdir)/$$f; \
-	done
+libnodesLINKHACK.la: $(libnodesLINKHACK_la_OBJECTS) $(libnodesLINKHACK_la_DEPENDENCIES)
+	$(CXXLINK) -rpath $(libdir) $(libnodesLINKHACK_la_LDFLAGS) $(libnodesLINKHACK_la_OBJECTS) $(libnodesLINKHACK_la_LIBADD) $(LIBS)
 
 install-libnodesincHEADERS: $(libnodesinc_HEADERS)
 	@$(NORMAL_INSTALL)
@@ -778,25 +759,20 @@ installcheck: installcheck-am
 install-exec-am: install-libLTLIBRARIES
 install-exec: install-exec-am
 
-install-data-am: install-libnodesLINKHACKincHEADERS \
-		install-libnodesincHEADERS
+install-data-am: install-libnodesincHEADERS
 install-data: install-data-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-am
-uninstall-am: uninstall-libLTLIBRARIES \
-		uninstall-libnodesLINKHACKincHEADERS \
-		uninstall-libnodesincHEADERS
+uninstall-am: uninstall-libLTLIBRARIES uninstall-libnodesincHEADERS
 uninstall: uninstall-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 all-redirect: all-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
 installdirs:
-	$(mkinstalldirs)  $(DESTDIR)$(libdir) \
-		$(DESTDIR)$(libnodesLINKHACKincdir) \
-		$(DESTDIR)$(libnodesincdir)
+	$(mkinstalldirs)  $(DESTDIR)$(libdir) $(DESTDIR)$(libnodesincdir)
 
 
 mostlyclean-generic:
@@ -846,63 +822,16 @@ mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
 clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
 mostlyclean-compile distclean-compile clean-compile \
 maintainer-clean-compile mostlyclean-libtool distclean-libtool \
-clean-libtool maintainer-clean-libtool \
-uninstall-libnodesLINKHACKincHEADERS install-libnodesLINKHACKincHEADERS \
-uninstall-libnodesincHEADERS install-libnodesincHEADERS tags \
-mostlyclean-tags distclean-tags clean-tags maintainer-clean-tags \
-distdir mostlyclean-depend distclean-depend clean-depend \
-maintainer-clean-depend info-am info dvi-am dvi check check-am \
-installcheck-am installcheck install-exec-am install-exec \
-install-data-am install-data install-am install uninstall-am uninstall \
-all-redirect all-am all install-strip installdirs mostlyclean-generic \
-distclean-generic clean-generic maintainer-clean-generic clean \
-mostlyclean distclean maintainer-clean
+clean-libtool maintainer-clean-libtool uninstall-libnodesincHEADERS \
+install-libnodesincHEADERS tags mostlyclean-tags distclean-tags \
+clean-tags maintainer-clean-tags distdir mostlyclean-depend \
+distclean-depend clean-depend maintainer-clean-depend info-am info \
+dvi-am dvi check check-am installcheck-am installcheck install-exec-am \
+install-exec install-data-am install-data install-am install \
+uninstall-am uninstall all-redirect all-am all install-strip \
+installdirs mostlyclean-generic distclean-generic clean-generic \
+maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-libnodesLINKHACK.la: $(libnodesLINKHACK_la_OBJECTS) $(libnodesLINKHACK_la_DEPENDENCIES)
-	@echo Linking libnodesLINKHACK.la
-	@$(CXXLINK) -rpath $(libdir) $(libnodesLINKHACK_la_LDFLAGS) $(libnodesLINKHACK_la_OBJECTS) $(libnodesLINKHACK_la_LIBADD) $(LIBS)
-
-libnodes.la: $(libnodes_la_OBJECTS) $(libnodes_la_DEPENDENCIES)
-	@echo Linking libnodes.la
-	@$(CXXLINK)  $(libnodes_la_LDFLAGS) $(libnodes_la_OBJECTS) $(libnodes_la_LIBADD) $(LIBS)
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-# FIXME: the non-dependency rules won't be overridden without make
-# emitting ugly warnings. 19991201 mortene.
-
-#.cpp.o:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(CXXCOMPILE) -c $<
-#
-#.cpp.lo:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(LTCXXCOMPILE) -c $<
-#
-
-%.o: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(CXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
-
-%.lo: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(LTCXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

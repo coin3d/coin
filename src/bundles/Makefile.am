@@ -25,59 +25,6 @@ else
 noinst_LTLIBRARIES = libbundles.la
 endif
 
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-LIBTOOL = @LIBTOOL@ --silent
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-libbundlesLINKHACK.la: $(libbundlesLINKHACK_la_OBJECTS) $(libbundlesLINKHACK_la_DEPENDENCIES)
-	@echo Linking libbundlesLINKHACK.la
-	@$(CXXLINK) -rpath $(libdir) $(libbundlesLINKHACK_la_LDFLAGS) $(libbundlesLINKHACK_la_OBJECTS) $(libbundlesLINKHACK_la_LIBADD) $(LIBS)
-
-libbundles.la: $(libbundles_la_OBJECTS) $(libbundles_la_DEPENDENCIES)
-	@echo Linking libbundles.la
-	@$(CXXLINK)  $(libbundles_la_LDFLAGS) $(libbundles_la_OBJECTS) $(libbundles_la_LIBADD) $(LIBS)
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-
-# FIXME: the non-dependency rules won't be overridden without make
-# emitting ugly warnings. 19991201 mortene.
-
-#.cpp.o:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(CXXCOMPILE) -c $<
-#
-#.cpp.lo:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(LTCXXCOMPILE) -c $<
-#
-
-%.o: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(CXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
-
-%.lo: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(LTCXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
-
-
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
@@ -88,8 +35,6 @@ libbundles_la_SOURCES = $(ALLSOURCES)
 libbundlesLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libbundlesincdir = $(includedir)/Inventor/bundles
-libbundlesLINKHACKincdir = $(includedir)/Inventor/bundles
 
 libbundlesinc_HEADERS = $(ALLINSTHEADERS)
-libbundlesLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 ##$ END TEMPLATE Make-Common

@@ -39,59 +39,6 @@ else
 noinst_LTLIBRARIES = libevents.la
 endif
 
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-LIBTOOL = @LIBTOOL@ --silent
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-libeventsLINKHACK.la: $(libeventsLINKHACK_la_OBJECTS) $(libeventsLINKHACK_la_DEPENDENCIES)
-	@echo Linking libeventsLINKHACK.la
-	@$(CXXLINK) -rpath $(libdir) $(libeventsLINKHACK_la_LDFLAGS) $(libeventsLINKHACK_la_OBJECTS) $(libeventsLINKHACK_la_LIBADD) $(LIBS)
-
-libevents.la: $(libevents_la_OBJECTS) $(libevents_la_DEPENDENCIES)
-	@echo Linking libevents.la
-	@$(CXXLINK)  $(libevents_la_LDFLAGS) $(libevents_la_OBJECTS) $(libevents_la_LIBADD) $(LIBS)
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-
-# FIXME: the non-dependency rules won't be overridden without make
-# emitting ugly warnings. 19991201 mortene.
-
-#.cpp.o:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(CXXCOMPILE) -c $<
-#
-#.cpp.lo:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(LTCXXCOMPILE) -c $<
-#
-
-%.o: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(CXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
-
-%.lo: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(LTCXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
-
-
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
@@ -102,8 +49,6 @@ libevents_la_SOURCES = $(ALLSOURCES)
 libeventsLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libeventsincdir = $(includedir)/Inventor/events
-libeventsLINKHACKincdir = $(includedir)/Inventor/events
 
 libeventsinc_HEADERS = $(ALLINSTHEADERS)
-libeventsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 ##$ END TEMPLATE Make-Common

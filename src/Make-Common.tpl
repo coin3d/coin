@@ -9,10 +9,6 @@ else
 noinst_LTLIBRARIES = lib-xxx-.la
 endif
 
-##$ INSERT TEMPLATE Make-LibtoolSilent()
-##$ INSERT TEMPLATE Make-LinkSilent(-xxx-)
-##$ INSERT TEMPLATE Make-CompileSilent()
-
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
@@ -23,7 +19,5 @@ lib-xxx-_la_SOURCES = $(ALLSOURCES)
 lib-xxx-LINKHACK_la_SOURCES = $(ALLSOURCES)
 
 lib-xxx-incdir = $(includedir)/Inventor/-xxx-
-lib-xxx-LINKHACKincdir = $(includedir)/Inventor/-xxx-
 
 lib-xxx-inc_HEADERS = $(ALLINSTHEADERS)
-lib-xxx-LINKHACKinc_HEADERS = $(ALLINSTHEADERS)

@@ -112,59 +112,6 @@ else
 noinst_LTLIBRARIES = libengines.la
 endif
 
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-LIBTOOL = @LIBTOOL@ --silent
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-libenginesLINKHACK.la: $(libenginesLINKHACK_la_OBJECTS) $(libenginesLINKHACK_la_DEPENDENCIES)
-	@echo Linking libenginesLINKHACK.la
-	@$(CXXLINK) -rpath $(libdir) $(libenginesLINKHACK_la_LDFLAGS) $(libenginesLINKHACK_la_OBJECTS) $(libenginesLINKHACK_la_LIBADD) $(LIBS)
-
-libengines.la: $(libengines_la_OBJECTS) $(libengines_la_DEPENDENCIES)
-	@echo Linking libengines.la
-	@$(CXXLINK)  $(libengines_la_LDFLAGS) $(libengines_la_OBJECTS) $(libengines_la_LIBADD) $(LIBS)
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-
-# FIXME: the non-dependency rules won't be overridden without make
-# emitting ugly warnings. 19991201 mortene.
-
-#.cpp.o:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(CXXCOMPILE) -c $<
-#
-#.cpp.lo:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(LTCXXCOMPILE) -c $<
-#
-
-%.o: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(CXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
-
-%.lo: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(LTCXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
-
-
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
@@ -175,8 +122,6 @@ libengines_la_SOURCES = $(ALLSOURCES)
 libenginesLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libenginesincdir = $(includedir)/Inventor/engines
-libenginesLINKHACKincdir = $(includedir)/Inventor/engines
 
 libenginesinc_HEADERS = $(ALLINSTHEADERS)
-libenginesLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 ##$ END TEMPLATE Make-Common

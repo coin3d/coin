@@ -68,59 +68,6 @@ else
 noinst_LTLIBRARIES = libbase.la
 endif
 
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-LIBTOOL = @LIBTOOL@ --silent
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-libbaseLINKHACK.la: $(libbaseLINKHACK_la_OBJECTS) $(libbaseLINKHACK_la_DEPENDENCIES)
-	@echo Linking libbaseLINKHACK.la
-	@$(CXXLINK) -rpath $(libdir) $(libbaseLINKHACK_la_LDFLAGS) $(libbaseLINKHACK_la_OBJECTS) $(libbaseLINKHACK_la_LIBADD) $(LIBS)
-
-libbase.la: $(libbase_la_OBJECTS) $(libbase_la_DEPENDENCIES)
-	@echo Linking libbase.la
-	@$(CXXLINK)  $(libbase_la_LDFLAGS) $(libbase_la_OBJECTS) $(libbase_la_LIBADD) $(LIBS)
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-
-# FIXME: the non-dependency rules won't be overridden without make
-# emitting ugly warnings. 19991201 mortene.
-
-#.cpp.o:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(CXXCOMPILE) -c $<
-#
-#.cpp.lo:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(LTCXXCOMPILE) -c $<
-#
-
-%.o: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(CXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
-
-%.lo: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(LTCXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
-
-
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
@@ -131,8 +78,6 @@ libbase_la_SOURCES = $(ALLSOURCES)
 libbaseLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libbaseincdir = $(includedir)/Inventor/base
-libbaseLINKHACKincdir = $(includedir)/Inventor/base
 
 libbaseinc_HEADERS = $(ALLINSTHEADERS)
-libbaseLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 ##$ END TEMPLATE Make-Common

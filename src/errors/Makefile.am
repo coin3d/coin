@@ -29,59 +29,6 @@ else
 noinst_LTLIBRARIES = liberrors.la
 endif
 
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-LIBTOOL = @LIBTOOL@ --silent
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-liberrorsLINKHACK.la: $(liberrorsLINKHACK_la_OBJECTS) $(liberrorsLINKHACK_la_DEPENDENCIES)
-	@echo Linking liberrorsLINKHACK.la
-	@$(CXXLINK) -rpath $(libdir) $(liberrorsLINKHACK_la_LDFLAGS) $(liberrorsLINKHACK_la_OBJECTS) $(liberrorsLINKHACK_la_LIBADD) $(LIBS)
-
-liberrors.la: $(liberrors_la_OBJECTS) $(liberrors_la_DEPENDENCIES)
-	@echo Linking liberrors.la
-	@$(CXXLINK)  $(liberrors_la_LDFLAGS) $(liberrors_la_OBJECTS) $(liberrors_la_LIBADD) $(LIBS)
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-
-# FIXME: the non-dependency rules won't be overridden without make
-# emitting ugly warnings. 19991201 mortene.
-
-#.cpp.o:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(CXXCOMPILE) -c $<
-#
-#.cpp.lo:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(LTCXXCOMPILE) -c $<
-#
-
-%.o: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(CXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
-
-%.lo: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(LTCXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
-
-
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
@@ -92,8 +39,6 @@ liberrors_la_SOURCES = $(ALLSOURCES)
 liberrorsLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 liberrorsincdir = $(includedir)/Inventor/errors
-liberrorsLINKHACKincdir = $(includedir)/Inventor/errors
 
 liberrorsinc_HEADERS = $(ALLINSTHEADERS)
-liberrorsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 ##$ END TEMPLATE Make-Common

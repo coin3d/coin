@@ -77,6 +77,7 @@ CXX = @CXX@
 CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
+LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
 LT_CURRENT = @LT_CURRENT@
@@ -118,11 +119,6 @@ ALLINSTHEADERS = \
 @HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_TRUE@libcachesLINKHACK.la
 @HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_FALSE@libcaches.la
 
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-LIBTOOL = @LIBTOOL@ --silent
-
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
@@ -133,10 +129,8 @@ libcaches_la_SOURCES = $(ALLSOURCES)
 libcachesLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libcachesincdir = $(includedir)/Inventor/caches
-libcachesLINKHACKincdir = $(includedir)/Inventor/caches
 
 libcachesinc_HEADERS = $(ALLINSTHEADERS)
-libcachesLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/caches
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
@@ -172,10 +166,9 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES =  $(libcaches_la_SOURCES) $(libcachesLINKHACK_la_SOURCES)
-HEADERS =  $(libcachesLINKHACKinc_HEADERS) $(libcachesinc_HEADERS)
+HEADERS =  $(libcachesinc_HEADERS)
 
-DIST_COMMON =  $(libcachesLINKHACKinc_HEADERS) $(libcachesinc_HEADERS) \
-Makefile.am Makefile.in
+DIST_COMMON =  $(libcachesinc_HEADERS) Makefile.am Makefile.in
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -254,23 +247,11 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
-install-libcachesLINKHACKincHEADERS: $(libcachesLINKHACKinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libcachesLINKHACKincdir)
-	@list='$(libcachesLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesLINKHACKincdir)/$$f; \
-	done
+libcaches.la: $(libcaches_la_OBJECTS) $(libcaches_la_DEPENDENCIES)
+	$(CXXLINK)  $(libcaches_la_LDFLAGS) $(libcaches_la_OBJECTS) $(libcaches_la_LIBADD) $(LIBS)
 
-uninstall-libcachesLINKHACKincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libcachesLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libcachesLINKHACKincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libcachesLINKHACKincdir)/$$f; \
-	done
+libcachesLINKHACK.la: $(libcachesLINKHACK_la_OBJECTS) $(libcachesLINKHACK_la_DEPENDENCIES)
+	$(CXXLINK) -rpath $(libdir) $(libcachesLINKHACK_la_LDFLAGS) $(libcachesLINKHACK_la_OBJECTS) $(libcachesLINKHACK_la_LIBADD) $(LIBS)
 
 install-libcachesincHEADERS: $(libcachesinc_HEADERS)
 	@$(NORMAL_INSTALL)
@@ -378,25 +359,20 @@ installcheck: installcheck-am
 install-exec-am: install-libLTLIBRARIES
 install-exec: install-exec-am
 
-install-data-am: install-libcachesLINKHACKincHEADERS \
-		install-libcachesincHEADERS
+install-data-am: install-libcachesincHEADERS
 install-data: install-data-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-am
-uninstall-am: uninstall-libLTLIBRARIES \
-		uninstall-libcachesLINKHACKincHEADERS \
-		uninstall-libcachesincHEADERS
+uninstall-am: uninstall-libLTLIBRARIES uninstall-libcachesincHEADERS
 uninstall: uninstall-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 all-redirect: all-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
 installdirs:
-	$(mkinstalldirs)  $(DESTDIR)$(libdir) \
-		$(DESTDIR)$(libcachesLINKHACKincdir) \
-		$(DESTDIR)$(libcachesincdir)
+	$(mkinstalldirs)  $(DESTDIR)$(libdir) $(DESTDIR)$(libcachesincdir)
 
 
 mostlyclean-generic:
@@ -446,9 +422,7 @@ mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
 clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
 mostlyclean-compile distclean-compile clean-compile \
 maintainer-clean-compile mostlyclean-libtool distclean-libtool \
-clean-libtool maintainer-clean-libtool \
-uninstall-libcachesLINKHACKincHEADERS \
-install-libcachesLINKHACKincHEADERS uninstall-libcachesincHEADERS \
+clean-libtool maintainer-clean-libtool uninstall-libcachesincHEADERS \
 install-libcachesincHEADERS tags mostlyclean-tags distclean-tags \
 clean-tags maintainer-clean-tags distdir mostlyclean-depend \
 distclean-depend clean-depend maintainer-clean-depend info-am info \
@@ -458,51 +432,6 @@ uninstall-am uninstall all-redirect all-am all install-strip \
 installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-libcachesLINKHACK.la: $(libcachesLINKHACK_la_OBJECTS) $(libcachesLINKHACK_la_DEPENDENCIES)
-	@echo Linking libcachesLINKHACK.la
-	@$(CXXLINK) -rpath $(libdir) $(libcachesLINKHACK_la_LDFLAGS) $(libcachesLINKHACK_la_OBJECTS) $(libcachesLINKHACK_la_LIBADD) $(LIBS)
-
-libcaches.la: $(libcaches_la_OBJECTS) $(libcaches_la_DEPENDENCIES)
-	@echo Linking libcaches.la
-	@$(CXXLINK)  $(libcaches_la_LDFLAGS) $(libcaches_la_OBJECTS) $(libcaches_la_LIBADD) $(LIBS)
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-# FIXME: the non-dependency rules won't be overridden without make
-# emitting ugly warnings. 19991201 mortene.
-
-#.cpp.o:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(CXXCOMPILE) -c $<
-#
-#.cpp.lo:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(LTCXXCOMPILE) -c $<
-#
-
-%.o: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(CXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
-
-%.lo: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(LTCXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -77,6 +77,7 @@ CXX = @CXX@
 CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
+LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
 LT_CURRENT = @LT_CURRENT@
@@ -116,11 +117,6 @@ ALLINSTHEADERS = \
 @HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_TRUE@liberrorsLINKHACK.la
 @HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_FALSE@liberrors.la
 
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-LIBTOOL = @LIBTOOL@ --silent
-
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
@@ -131,10 +127,8 @@ liberrors_la_SOURCES = $(ALLSOURCES)
 liberrorsLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 liberrorsincdir = $(includedir)/Inventor/errors
-liberrorsLINKHACKincdir = $(includedir)/Inventor/errors
 
 liberrorsinc_HEADERS = $(ALLINSTHEADERS)
-liberrorsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/errors
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
@@ -170,10 +164,9 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES =  $(liberrors_la_SOURCES) $(liberrorsLINKHACK_la_SOURCES)
-HEADERS =  $(liberrorsLINKHACKinc_HEADERS) $(liberrorsinc_HEADERS)
+HEADERS =  $(liberrorsinc_HEADERS)
 
-DIST_COMMON =  $(liberrorsLINKHACKinc_HEADERS) $(liberrorsinc_HEADERS) \
-Makefile.am Makefile.in
+DIST_COMMON =  $(liberrorsinc_HEADERS) Makefile.am Makefile.in
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -251,23 +244,11 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
-install-liberrorsLINKHACKincHEADERS: $(liberrorsLINKHACKinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(liberrorsLINKHACKincdir)
-	@list='$(liberrorsLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liberrorsLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liberrorsLINKHACKincdir)/$$f; \
-	done
+liberrors.la: $(liberrors_la_OBJECTS) $(liberrors_la_DEPENDENCIES)
+	$(CXXLINK)  $(liberrors_la_LDFLAGS) $(liberrors_la_OBJECTS) $(liberrors_la_LIBADD) $(LIBS)
 
-uninstall-liberrorsLINKHACKincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(liberrorsLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(liberrorsLINKHACKincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(liberrorsLINKHACKincdir)/$$f; \
-	done
+liberrorsLINKHACK.la: $(liberrorsLINKHACK_la_OBJECTS) $(liberrorsLINKHACK_la_DEPENDENCIES)
+	$(CXXLINK) -rpath $(libdir) $(liberrorsLINKHACK_la_LDFLAGS) $(liberrorsLINKHACK_la_OBJECTS) $(liberrorsLINKHACK_la_LIBADD) $(LIBS)
 
 install-liberrorsincHEADERS: $(liberrorsinc_HEADERS)
 	@$(NORMAL_INSTALL)
@@ -374,25 +355,20 @@ installcheck: installcheck-am
 install-exec-am: install-libLTLIBRARIES
 install-exec: install-exec-am
 
-install-data-am: install-liberrorsLINKHACKincHEADERS \
-		install-liberrorsincHEADERS
+install-data-am: install-liberrorsincHEADERS
 install-data: install-data-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-am
-uninstall-am: uninstall-libLTLIBRARIES \
-		uninstall-liberrorsLINKHACKincHEADERS \
-		uninstall-liberrorsincHEADERS
+uninstall-am: uninstall-libLTLIBRARIES uninstall-liberrorsincHEADERS
 uninstall: uninstall-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 all-redirect: all-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
 installdirs:
-	$(mkinstalldirs)  $(DESTDIR)$(libdir) \
-		$(DESTDIR)$(liberrorsLINKHACKincdir) \
-		$(DESTDIR)$(liberrorsincdir)
+	$(mkinstalldirs)  $(DESTDIR)$(libdir) $(DESTDIR)$(liberrorsincdir)
 
 
 mostlyclean-generic:
@@ -442,9 +418,7 @@ mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
 clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
 mostlyclean-compile distclean-compile clean-compile \
 maintainer-clean-compile mostlyclean-libtool distclean-libtool \
-clean-libtool maintainer-clean-libtool \
-uninstall-liberrorsLINKHACKincHEADERS \
-install-liberrorsLINKHACKincHEADERS uninstall-liberrorsincHEADERS \
+clean-libtool maintainer-clean-libtool uninstall-liberrorsincHEADERS \
 install-liberrorsincHEADERS tags mostlyclean-tags distclean-tags \
 clean-tags maintainer-clean-tags distdir mostlyclean-depend \
 distclean-depend clean-depend maintainer-clean-depend info-am info \
@@ -454,51 +428,6 @@ uninstall-am uninstall all-redirect all-am all install-strip \
 installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-liberrorsLINKHACK.la: $(liberrorsLINKHACK_la_OBJECTS) $(liberrorsLINKHACK_la_DEPENDENCIES)
-	@echo Linking liberrorsLINKHACK.la
-	@$(CXXLINK) -rpath $(libdir) $(liberrorsLINKHACK_la_LDFLAGS) $(liberrorsLINKHACK_la_OBJECTS) $(liberrorsLINKHACK_la_LIBADD) $(LIBS)
-
-liberrors.la: $(liberrors_la_OBJECTS) $(liberrors_la_DEPENDENCIES)
-	@echo Linking liberrors.la
-	@$(CXXLINK)  $(liberrors_la_LDFLAGS) $(liberrors_la_OBJECTS) $(liberrors_la_LIBADD) $(LIBS)
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-# FIXME: the non-dependency rules won't be overridden without make
-# emitting ugly warnings. 19991201 mortene.
-
-#.cpp.o:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(CXXCOMPILE) -c $<
-#
-#.cpp.lo:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(LTCXXCOMPILE) -c $<
-#
-
-%.o: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(CXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
-
-%.lo: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(LTCXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -40,59 +40,6 @@ else
 noinst_LTLIBRARIES = libmanips.la
 endif
 
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-LIBTOOL = @LIBTOOL@ --silent
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-libmanipsLINKHACK.la: $(libmanipsLINKHACK_la_OBJECTS) $(libmanipsLINKHACK_la_DEPENDENCIES)
-	@echo Linking libmanipsLINKHACK.la
-	@$(CXXLINK) -rpath $(libdir) $(libmanipsLINKHACK_la_LDFLAGS) $(libmanipsLINKHACK_la_OBJECTS) $(libmanipsLINKHACK_la_LIBADD) $(LIBS)
-
-libmanips.la: $(libmanips_la_OBJECTS) $(libmanips_la_DEPENDENCIES)
-	@echo Linking libmanips.la
-	@$(CXXLINK)  $(libmanips_la_LDFLAGS) $(libmanips_la_OBJECTS) $(libmanips_la_LIBADD) $(LIBS)
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-
-# FIXME: the non-dependency rules won't be overridden without make
-# emitting ugly warnings. 19991201 mortene.
-
-#.cpp.o:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(CXXCOMPILE) -c $<
-#
-#.cpp.lo:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(LTCXXCOMPILE) -c $<
-#
-
-%.o: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(CXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
-
-%.lo: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(LTCXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
-
-
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
@@ -103,8 +50,6 @@ libmanips_la_SOURCES = $(ALLSOURCES)
 libmanipsLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libmanipsincdir = $(includedir)/Inventor/manips
-libmanipsLINKHACKincdir = $(includedir)/Inventor/manips
 
 libmanipsinc_HEADERS = $(ALLINSTHEADERS)
-libmanipsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 ##$ END TEMPLATE Make-Common

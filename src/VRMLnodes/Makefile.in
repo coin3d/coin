@@ -77,6 +77,7 @@ CXX = @CXX@
 CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
+LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
 LT_CURRENT = @LT_CURRENT@
@@ -109,11 +110,6 @@ ALLINSTHEADERS = \
 @HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_TRUE@libVRMLnodesLINKHACK.la
 @HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_FALSE@libVRMLnodes.la
 
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-LIBTOOL = @LIBTOOL@ --silent
-
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
@@ -124,10 +120,8 @@ libVRMLnodes_la_SOURCES = $(ALLSOURCES)
 libVRMLnodesLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libVRMLnodesincdir = $(includedir)/Inventor/VRMLnodes
-libVRMLnodesLINKHACKincdir = $(includedir)/Inventor/VRMLnodes
 
 libVRMLnodesinc_HEADERS = $(ALLINSTHEADERS)
-libVRMLnodesLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/VRMLnodes
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
@@ -164,10 +158,9 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES =  $(libVRMLnodes_la_SOURCES) \
 $(libVRMLnodesLINKHACK_la_SOURCES)
-HEADERS =  $(libVRMLnodesLINKHACKinc_HEADERS) $(libVRMLnodesinc_HEADERS)
+HEADERS =  $(libVRMLnodesinc_HEADERS)
 
-DIST_COMMON =  $(libVRMLnodesLINKHACKinc_HEADERS) \
-$(libVRMLnodesinc_HEADERS) Makefile.am Makefile.in
+DIST_COMMON =  $(libVRMLnodesinc_HEADERS) Makefile.am Makefile.in
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -245,23 +238,11 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
-install-libVRMLnodesLINKHACKincHEADERS: $(libVRMLnodesLINKHACKinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libVRMLnodesLINKHACKincdir)
-	@list='$(libVRMLnodesLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libVRMLnodesLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libVRMLnodesLINKHACKincdir)/$$f; \
-	done
+libVRMLnodes.la: $(libVRMLnodes_la_OBJECTS) $(libVRMLnodes_la_DEPENDENCIES)
+	$(CXXLINK)  $(libVRMLnodes_la_LDFLAGS) $(libVRMLnodes_la_OBJECTS) $(libVRMLnodes_la_LIBADD) $(LIBS)
 
-uninstall-libVRMLnodesLINKHACKincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libVRMLnodesLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libVRMLnodesLINKHACKincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libVRMLnodesLINKHACKincdir)/$$f; \
-	done
+libVRMLnodesLINKHACK.la: $(libVRMLnodesLINKHACK_la_OBJECTS) $(libVRMLnodesLINKHACK_la_DEPENDENCIES)
+	$(CXXLINK) -rpath $(libdir) $(libVRMLnodesLINKHACK_la_LDFLAGS) $(libVRMLnodesLINKHACK_la_OBJECTS) $(libVRMLnodesLINKHACK_la_LIBADD) $(LIBS)
 
 install-libVRMLnodesincHEADERS: $(libVRMLnodesinc_HEADERS)
 	@$(NORMAL_INSTALL)
@@ -366,25 +347,20 @@ installcheck: installcheck-am
 install-exec-am: install-libLTLIBRARIES
 install-exec: install-exec-am
 
-install-data-am: install-libVRMLnodesLINKHACKincHEADERS \
-		install-libVRMLnodesincHEADERS
+install-data-am: install-libVRMLnodesincHEADERS
 install-data: install-data-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-am
-uninstall-am: uninstall-libLTLIBRARIES \
-		uninstall-libVRMLnodesLINKHACKincHEADERS \
-		uninstall-libVRMLnodesincHEADERS
+uninstall-am: uninstall-libLTLIBRARIES uninstall-libVRMLnodesincHEADERS
 uninstall: uninstall-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 all-redirect: all-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
 installdirs:
-	$(mkinstalldirs)  $(DESTDIR)$(libdir) \
-		$(DESTDIR)$(libVRMLnodesLINKHACKincdir) \
-		$(DESTDIR)$(libVRMLnodesincdir)
+	$(mkinstalldirs)  $(DESTDIR)$(libdir) $(DESTDIR)$(libVRMLnodesincdir)
 
 
 mostlyclean-generic:
@@ -434,9 +410,7 @@ mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
 clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
 mostlyclean-compile distclean-compile clean-compile \
 maintainer-clean-compile mostlyclean-libtool distclean-libtool \
-clean-libtool maintainer-clean-libtool \
-uninstall-libVRMLnodesLINKHACKincHEADERS \
-install-libVRMLnodesLINKHACKincHEADERS uninstall-libVRMLnodesincHEADERS \
+clean-libtool maintainer-clean-libtool uninstall-libVRMLnodesincHEADERS \
 install-libVRMLnodesincHEADERS tags mostlyclean-tags distclean-tags \
 clean-tags maintainer-clean-tags distdir mostlyclean-depend \
 distclean-depend clean-depend maintainer-clean-depend info-am info \
@@ -446,51 +420,6 @@ uninstall-am uninstall all-redirect all-am all install-strip \
 installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-libVRMLnodesLINKHACK.la: $(libVRMLnodesLINKHACK_la_OBJECTS) $(libVRMLnodesLINKHACK_la_DEPENDENCIES)
-	@echo Linking libVRMLnodesLINKHACK.la
-	@$(CXXLINK) -rpath $(libdir) $(libVRMLnodesLINKHACK_la_LDFLAGS) $(libVRMLnodesLINKHACK_la_OBJECTS) $(libVRMLnodesLINKHACK_la_LIBADD) $(LIBS)
-
-libVRMLnodes.la: $(libVRMLnodes_la_OBJECTS) $(libVRMLnodes_la_DEPENDENCIES)
-	@echo Linking libVRMLnodes.la
-	@$(CXXLINK)  $(libVRMLnodes_la_LDFLAGS) $(libVRMLnodes_la_OBJECTS) $(libVRMLnodes_la_LIBADD) $(LIBS)
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-# FIXME: the non-dependency rules won't be overridden without make
-# emitting ugly warnings. 19991201 mortene.
-
-#.cpp.o:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(CXXCOMPILE) -c $<
-#
-#.cpp.lo:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(LTCXXCOMPILE) -c $<
-#
-
-%.o: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(CXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
-
-%.lo: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(LTCXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

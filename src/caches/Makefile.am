@@ -31,59 +31,6 @@ else
 noinst_LTLIBRARIES = libcaches.la
 endif
 
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-LIBTOOL = @LIBTOOL@ --silent
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-libcachesLINKHACK.la: $(libcachesLINKHACK_la_OBJECTS) $(libcachesLINKHACK_la_DEPENDENCIES)
-	@echo Linking libcachesLINKHACK.la
-	@$(CXXLINK) -rpath $(libdir) $(libcachesLINKHACK_la_LDFLAGS) $(libcachesLINKHACK_la_OBJECTS) $(libcachesLINKHACK_la_LIBADD) $(LIBS)
-
-libcaches.la: $(libcaches_la_OBJECTS) $(libcaches_la_DEPENDENCIES)
-	@echo Linking libcaches.la
-	@$(CXXLINK)  $(libcaches_la_LDFLAGS) $(libcaches_la_OBJECTS) $(libcaches_la_LIBADD) $(LIBS)
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-
-# FIXME: the non-dependency rules won't be overridden without make
-# emitting ugly warnings. 19991201 mortene.
-
-#.cpp.o:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(CXXCOMPILE) -c $<
-#
-#.cpp.lo:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(LTCXXCOMPILE) -c $<
-#
-
-%.o: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(CXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
-
-%.lo: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(LTCXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
-
-
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
@@ -94,8 +41,6 @@ libcaches_la_SOURCES = $(ALLSOURCES)
 libcachesLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libcachesincdir = $(includedir)/Inventor/caches
-libcachesLINKHACKincdir = $(includedir)/Inventor/caches
 
 libcachesinc_HEADERS = $(ALLINSTHEADERS)
-libcachesLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 ##$ END TEMPLATE Make-Common

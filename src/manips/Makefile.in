@@ -77,6 +77,7 @@ CXX = @CXX@
 CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
+LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
 LT_CURRENT = @LT_CURRENT@
@@ -120,11 +121,6 @@ ALLINSTHEADERS = \
 @HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_TRUE@libmanipsLINKHACK.la
 @HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_FALSE@libmanips.la
 
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-LIBTOOL = @LIBTOOL@ --silent
-
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
@@ -135,10 +131,8 @@ libmanips_la_SOURCES = $(ALLSOURCES)
 libmanipsLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libmanipsincdir = $(includedir)/Inventor/manips
-libmanipsLINKHACKincdir = $(includedir)/Inventor/manips
 
 libmanipsinc_HEADERS = $(ALLINSTHEADERS)
-libmanipsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/manips
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
@@ -180,10 +174,9 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES =  $(libmanips_la_SOURCES) $(libmanipsLINKHACK_la_SOURCES)
-HEADERS =  $(libmanipsLINKHACKinc_HEADERS) $(libmanipsinc_HEADERS)
+HEADERS =  $(libmanipsinc_HEADERS)
 
-DIST_COMMON =  $(libmanipsLINKHACKinc_HEADERS) $(libmanipsinc_HEADERS) \
-Makefile.am Makefile.in
+DIST_COMMON =  $(libmanipsinc_HEADERS) Makefile.am Makefile.in
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -266,23 +259,11 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
-install-libmanipsLINKHACKincHEADERS: $(libmanipsLINKHACKinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libmanipsLINKHACKincdir)
-	@list='$(libmanipsLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmanipsLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmanipsLINKHACKincdir)/$$f; \
-	done
+libmanips.la: $(libmanips_la_OBJECTS) $(libmanips_la_DEPENDENCIES)
+	$(CXXLINK)  $(libmanips_la_LDFLAGS) $(libmanips_la_OBJECTS) $(libmanips_la_LIBADD) $(LIBS)
 
-uninstall-libmanipsLINKHACKincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libmanipsLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libmanipsLINKHACKincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libmanipsLINKHACKincdir)/$$f; \
-	done
+libmanipsLINKHACK.la: $(libmanipsLINKHACK_la_OBJECTS) $(libmanipsLINKHACK_la_DEPENDENCIES)
+	$(CXXLINK) -rpath $(libdir) $(libmanipsLINKHACK_la_LDFLAGS) $(libmanipsLINKHACK_la_OBJECTS) $(libmanipsLINKHACK_la_LIBADD) $(LIBS)
 
 install-libmanipsincHEADERS: $(libmanipsinc_HEADERS)
 	@$(NORMAL_INSTALL)
@@ -397,25 +378,20 @@ installcheck: installcheck-am
 install-exec-am: install-libLTLIBRARIES
 install-exec: install-exec-am
 
-install-data-am: install-libmanipsLINKHACKincHEADERS \
-		install-libmanipsincHEADERS
+install-data-am: install-libmanipsincHEADERS
 install-data: install-data-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-am
-uninstall-am: uninstall-libLTLIBRARIES \
-		uninstall-libmanipsLINKHACKincHEADERS \
-		uninstall-libmanipsincHEADERS
+uninstall-am: uninstall-libLTLIBRARIES uninstall-libmanipsincHEADERS
 uninstall: uninstall-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 all-redirect: all-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
 installdirs:
-	$(mkinstalldirs)  $(DESTDIR)$(libdir) \
-		$(DESTDIR)$(libmanipsLINKHACKincdir) \
-		$(DESTDIR)$(libmanipsincdir)
+	$(mkinstalldirs)  $(DESTDIR)$(libdir) $(DESTDIR)$(libmanipsincdir)
 
 
 mostlyclean-generic:
@@ -465,9 +441,7 @@ mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
 clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
 mostlyclean-compile distclean-compile clean-compile \
 maintainer-clean-compile mostlyclean-libtool distclean-libtool \
-clean-libtool maintainer-clean-libtool \
-uninstall-libmanipsLINKHACKincHEADERS \
-install-libmanipsLINKHACKincHEADERS uninstall-libmanipsincHEADERS \
+clean-libtool maintainer-clean-libtool uninstall-libmanipsincHEADERS \
 install-libmanipsincHEADERS tags mostlyclean-tags distclean-tags \
 clean-tags maintainer-clean-tags distdir mostlyclean-depend \
 distclean-depend clean-depend maintainer-clean-depend info-am info \
@@ -484,51 +458,6 @@ maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 	$(top_srcdir)/include/Inventor/manips/SoTrackballManip.h \
 	$(top_srcdir)/include/Inventor/manips/SoTransformBoxManip.h \
 	$(top_srcdir)/include/Inventor/manips/SoTransformerManip.h
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-libmanipsLINKHACK.la: $(libmanipsLINKHACK_la_OBJECTS) $(libmanipsLINKHACK_la_DEPENDENCIES)
-	@echo Linking libmanipsLINKHACK.la
-	@$(CXXLINK) -rpath $(libdir) $(libmanipsLINKHACK_la_LDFLAGS) $(libmanipsLINKHACK_la_OBJECTS) $(libmanipsLINKHACK_la_LIBADD) $(LIBS)
-
-libmanips.la: $(libmanips_la_OBJECTS) $(libmanips_la_DEPENDENCIES)
-	@echo Linking libmanips.la
-	@$(CXXLINK)  $(libmanips_la_LDFLAGS) $(libmanips_la_OBJECTS) $(libmanips_la_LIBADD) $(LIBS)
-
-# This macro contains fixes to avoid the default flush of output from
-# the automake generated rules. 19991201 mortene. 
-
-# FIXME: the non-dependency rules won't be overridden without make
-# emitting ugly warnings. 19991201 mortene.
-
-#.cpp.o:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(CXXCOMPILE) -c $<
-#
-#.cpp.lo:
-#	@echo Compiling $< | sed -e 's/\/.*\///'
-#	@$(LTCXXCOMPILE) -c $<
-#
-
-%.o: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(CXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
-
-%.lo: %.cpp
-	@echo Compiling $< | sed -e 's/\/.*\///'; \
-	$(LTCXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
