@@ -335,6 +335,13 @@ SoTexture2::getImage(void)
                                   "Image not found: %s", texname);
 #endif
       }
+      else {
+        size = this->imagedata->getSize();
+        nc = this->imagedata->getNumComponents();
+        this->image.setValue(size, nc, this->imagedata->getDataPtr());
+        this->filename = "";
+        this->filename.setDefault(TRUE);
+      }
     }
   }
   this->imagedatavalid = TRUE; // imagedata should be valid (or NULL) now
