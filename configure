@@ -1871,6 +1871,9 @@ LT_REVISION=0
 LT_AGE=0
 
 
+COIN_SO_VERSION=40
+
+
 #  These are for include/Inventor/C/basic.h.
 
 
@@ -5102,7 +5105,7 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5105 "configure"' > conftest.$ac_ext
+  echo '#line 5108 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5638,7 +5641,7 @@ chmod -w .
 save_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:5641: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+if { (eval echo configure:5644: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -7431,7 +7434,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7434 "configure"
+#line 7437 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -7529,7 +7532,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7532 "configure"
+#line 7535 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -21638,6 +21641,7 @@ s,@COIN_VERSION@,$COIN_VERSION,;t t
 s,@LT_CURRENT@,$LT_CURRENT,;t t
 s,@LT_REVISION@,$LT_REVISION,;t t
 s,@LT_AGE@,$LT_AGE,;t t
+s,@COIN_SO_VERSION@,$COIN_SO_VERSION,;t t
 s,@CC@,$CC,;t t
 s,@CFLAGS@,$CFLAGS,;t t
 s,@LDFLAGS@,$LDFLAGS,;t t

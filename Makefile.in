@@ -85,6 +85,7 @@ COIN_MAJOR_VERSION = @COIN_MAJOR_VERSION@
 COIN_MICRO_VERSION = @COIN_MICRO_VERSION@
 COIN_MINOR_VERSION = @COIN_MINOR_VERSION@
 COIN_MSVC_LIBC = @COIN_MSVC_LIBC@
+COIN_SO_VERSION = @COIN_SO_VERSION@
 COIN_VERSION = @COIN_VERSION@
 CONFIG = @CONFIG@
 CXX = @CXX@
@@ -703,37 +704,38 @@ cvs-update:
 # **************************************************************************
 # misc rules for automatic debian packaging.  main: `debian-packages'
 
-libcoin$(COIN_MAJOR_VERSION)-$(VERSION):
-	if test -d libcoin$(COIN_MAJOR_VERSION)-$(VERSION); then \
-	  rm -rf libcoin$(COIN_MAJOR_VERSION)-$(VERSION); \
-	else :; fi;
-	$(MAKE) distdir;
-	mv Coin-$(VERSION) libcoin$(COIN_MAJOR_VERSION)-$(VERSION)
+@DEB_PACKAGEABLE_TRUE@coin-$(VERSION):
+@DEB_PACKAGEABLE_TRUE@	if test -d coin-$(VERSION); then \
+@DEB_PACKAGEABLE_TRUE@	  rm -rf coin-$(VERSION); \
+@DEB_PACKAGEABLE_TRUE@	else :; fi;
+@DEB_PACKAGEABLE_TRUE@	$(MAKE) distdir;
+@DEB_PACKAGEABLE_TRUE@	mv Coin-$(VERSION) coin-$(VERSION)
 
-debian-files: $(DEBIAN_DIST_DIR)
-	test -d $(DEBIAN_DIST_DIR)/debian || mkdir $(DEBIAN_DIST_DIR)/debian;
-	for f in packaging/debian/*.in; do \
-	  file=`echo $$f | sed 's/.*\///g; s/\.in$$//g'`; \
-	  ./config.status --file=$(DEBIAN_DIST_DIR)/debian/$$file:$$f; \
-	done;
-	for f in rules preinst prerm postinst postrm; do \
-	  if test -f $(DEBIAN_DIST_DIR)/debian/$$f; then \
-	    echo " chmod +x $(DEBIAN_DIST_DIR)/debian/$$f"; \
-	    chmod +x $(DEBIAN_DIST_DIR)/debian/$$f; \
-	  fi; \
-	done;
+@DEB_PACKAGEABLE_TRUE@coin_$(VERSION).orig.tar.gz:
+@DEB_PACKAGEABLE_TRUE@	$(MAKE) dist
+@DEB_PACKAGEABLE_TRUE@	mv Coin-$(VERSION).tar.gz coin_$(VERSION).orig.tar.gz
 
-debian-control:
-	distdir=libcoin$(COIN_MAJOR_VERSION)-$(VERSION); \
-	$(MAKE) DEBIAN_DIST_DIR=$$distdir debian-files;
+@DEB_PACKAGEABLE_TRUE@debian-files: $(DEBIAN_DIST_DIR)
+@DEB_PACKAGEABLE_TRUE@	test -d $(DEBIAN_DIST_DIR)/debian || mkdir $(DEBIAN_DIST_DIR)/debian;
+@DEB_PACKAGEABLE_TRUE@	for f in packaging/debian/*.in; do \
+@DEB_PACKAGEABLE_TRUE@	  file=`echo $$f | sed 's/.*\///g; s/\.in$$//g'`; \
+@DEB_PACKAGEABLE_TRUE@	  ./config.status --file=$(DEBIAN_DIST_DIR)/debian/$$file:$$f; \
+@DEB_PACKAGEABLE_TRUE@	done;
+@DEB_PACKAGEABLE_TRUE@	for f in rules preinst prerm postinst postrm; do \
+@DEB_PACKAGEABLE_TRUE@	  if test -f $(DEBIAN_DIST_DIR)/debian/$$f; then \
+@DEB_PACKAGEABLE_TRUE@	    echo " chmod +x $(DEBIAN_DIST_DIR)/debian/$$f"; \
+@DEB_PACKAGEABLE_TRUE@	    chmod +x $(DEBIAN_DIST_DIR)/debian/$$f; \
+@DEB_PACKAGEABLE_TRUE@	  fi; \
+@DEB_PACKAGEABLE_TRUE@	done;
 
-debian-setup: libcoin$(COIN_MAJOR_VERSION)-$(VERSION) debian-control
+@DEB_PACKAGEABLE_TRUE@debian-control:
+@DEB_PACKAGEABLE_TRUE@	distdir=coin-$(VERSION); \
+@DEB_PACKAGEABLE_TRUE@	$(MAKE) DEBIAN_DIST_DIR=$$distdir debian-files;
 
-debian-packages: debian-setup
-	cd libcoin$(COIN_MAJOR_VERSION)-$(VERSION); \
-	./debian/rules source;
-	cd libcoin$(COIN_MAJOR_VERSION)-$(VERSION); \
-	./debian/rules binary;
+@DEB_PACKAGEABLE_TRUE@debian-setup: coin-$(VERSION) debian-control
+
+@DEB_PACKAGEABLE_TRUE@debian-packages: debian-setup coin_$(VERSION).orig.tar.gz
+@DEB_PACKAGEABLE_TRUE@	@( cd coin-$(VERSION); dpkg-buildpackage )
 
 # **************************************************************************
 # misc rules for automatic Microsoft Windows packaging.
