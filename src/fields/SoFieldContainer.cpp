@@ -150,7 +150,7 @@ SoFieldContainer::fieldsAreEqual(const SoFieldContainer * container) const
     if (container->getFieldData() == NULL) return TRUE;
     return FALSE;
   }
-  
+
   return fd0->isSame(this, container);
 }
 
@@ -355,8 +355,7 @@ SoFieldContainer::isNotifyEnabled(void) const
   The fields must be in the same format as the Open Inventor file
   format.  \c TRUE is returned upon success, and \c FALSE otherwise.
 
-  If \a in is specified, we use the reference dictionary provided
-  within that object.
+  We use the reference dictionary provided by \a in.
 
   \sa get()
 */
@@ -364,24 +363,86 @@ SbBool
 SoFieldContainer::set(const char * fielddata, SoInput * in)
 {
   const SoFieldData * fields = this->getFieldData();
-  assert(fields);
+  if (!fields) {
+#if COIN_DEBUG
+    SoDebugError::postInfo("SoFieldContainer::set",
+                           "tried to set values of non-existant fields");
+#endif // COIN_DEBUG
+    // Return TRUE here might seem strange, but I think its correct to
+    // do it like this -- we're just supposed to read field values until
+    // we can't do that anymore. mortene.
+    return TRUE;
+  }
+    
+  SoInput * readbuf;
+  if (in) {
+    SoInput inbuf(in);
+    readbuf = &inbuf;
+  }
+  else {
+    SoInput inbuf;
+    readbuf = &inbuf;
+  }
 
-  COIN_STUB();
-  return FALSE;
+  readbuf->setBuffer((void *)fielddata, strlen(fielddata));
+  SbBool dummy;
+  return fields->read(readbuf, this, FALSE, dummy);
+}
+
+// Used from get()'s SoOutput if the initial buffer is too small.
+void *
+realloc_buffer(void * buffer, size_t newsize)
+{
+  return realloc(buffer, newsize);
 }
 
 /*!
-  FIXME: write doc
+  Put names and values of fields from this instance in the \a fielddata
+  string. Fields will be separated in the returned string by end-of-line
+  characters.
+
+  We use the reference dictionary provided by \a out.
+
+  \sa set()
  */
 void
 SoFieldContainer::get(SbString & fielddata, SoOutput * out)
 {
   const SoFieldData * fields = this->getFieldData();
-  assert(fields);
+  if (!fields) {
+    fielddata = "";
+    return;
+  }
 
-  COIN_STUB();
+  SoOutput * output;
+  if (out) {
+    SoOutput o(out);
+    output = &o;
+  }
+  else {
+    SoOutput o;
+    output = &o;
+  }
+
+  const size_t STARTSIZE = 256;
+  void * buffer = malloc(STARTSIZE);
+
+  output->setBuffer(buffer, STARTSIZE, realloc_buffer);
+  fields->write(output, this);
+
+  size_t size;
+  output->getBuffer(buffer, size);
+  // Strip off header.
+  char * start = strstr((char *)buffer, "\n\n");
+  if (start != NULL) {
+    start += 2;
+    fielddata = start;
+  }
+  else {
+    fielddata = "";
+  }
+  free(buffer);
 }
-
 
 /*!
   FIXME: write doc
