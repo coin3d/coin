@@ -26,7 +26,7 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 
-class SoChildList;
+class SoUnknownNodeP;
 
 class COIN_DLL_API SoUnknownNode : public SoNode {
   typedef SoNode inherited;
@@ -63,8 +63,8 @@ protected:
   virtual const char * getFileFormatName(void) const;
 
 private:
-  SbName classname;
-  SoChildList * privatechildren, * alternate;
+  
+  SoUnknownNodeP * pimpl;
 };
 
 #endif // !COIN_SOUNKNOWNNODE_H

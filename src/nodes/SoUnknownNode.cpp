@@ -43,6 +43,15 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
 
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoUnknownNodeP {
+public:
+  SbName classname;
+  SoChildList * privatechildren, * alternate;
+};
+
+#endif // DOXYGEN_SKIP_THIS
 
 
 // The following code is used instead of SO_NODE_SOURCE() to let
@@ -61,20 +70,23 @@ SoUnknownNode::createInstance(void)
   return new SoUnknownNode;
 }
 
+#undef THIS
+#define THIS this->pimpl
 
 // Node implementation starts "proper".
 
-
 SoUnknownNode::SoUnknownNode(void)
 {
+  THIS = new SoUnknownNodeP;
+
   /* Catch attempts to use a node class which has not been initialized. */
   assert(SoUnknownNode::classTypeId != SoType::badType());
   /* Initialize a fielddata container for the instance. */
   this->classfielddata = new SoFieldData;
 
   this->isBuiltIn = FALSE;
-  this->privatechildren = NULL;
-  this->alternate = new SoChildList(this, 1);
+  THIS->privatechildren = NULL;
+  THIS->alternate = new SoChildList(this, 1);
 }
 
 SoUnknownNode::~SoUnknownNode()
@@ -83,8 +95,9 @@ SoUnknownNode::~SoUnknownNode()
     delete this->classfielddata->getField(this, i);
 
   delete this->classfielddata;
-  delete this->privatechildren;
-  delete this->alternate;
+  delete THIS->privatechildren;
+  delete THIS->alternate;
+  delete THIS;
 }
 
 // doc in super
@@ -114,7 +127,7 @@ SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
 
   if (notbuiltin == FALSE) {
     SoReadError::post(in, "Node type ``%s'' not recognized.",
-                      this->classname.getString());
+                      THIS->classname.getString());
     return FALSE;
   }
 
@@ -129,8 +142,8 @@ SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
         SoDebugError::postInfo("SoUnknownNode::readInstance",
                                "found alternate representation");
 #endif // debug
-        this->alternate->truncate(0);
-        this->alternate->append(f->getValue());
+        THIS->alternate->truncate(0);
+        THIS->alternate->append(f->getValue());
       }
       break;
     }
@@ -151,8 +164,8 @@ SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
                            g->getNumChildren());
 #endif // debug
 
-    delete this->privatechildren;
-    this->privatechildren = new SoChildList(this, * g->getChildren());
+    delete THIS->privatechildren;
+    THIS->privatechildren = new SoChildList(this, * g->getChildren());
     g->unref();
   }
 
@@ -176,14 +189,14 @@ SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
 void
 SoUnknownNode::setNodeClassName(const SbName & name)
 {
-  this->classname = name;
+  THIS->classname = name;
 }
 
 // Overridden from SoBase.
 const char *
 SoUnknownNode::getFileFormatName(void) const
 {
-  return this->classname.getString();
+  return THIS->classname.getString();
 }
 
 // Overridden from SoNode. SoChildList contains either 0 or 1
@@ -192,7 +205,7 @@ SoUnknownNode::getFileFormatName(void) const
 SoChildList *
 SoUnknownNode::getChildren(void) const
 {
-  return this->alternate;
+  return THIS->alternate;
 }
 
 // Write action method is overridden from SoNode to handle children.
@@ -205,15 +218,15 @@ SoUnknownNode::write(SoWriteAction * action)
     // Only increase number of writereferences to the top level node
     // in a tree which is used multiple times.
     if (!this->hasMultipleWriteRefs())
-      if (this->privatechildren) this->privatechildren->traverse(action);
+      if (THIS->privatechildren) THIS->privatechildren->traverse(action);
   }
   else if (out->getStage() == SoOutput::WRITE) {
-    if (this->writeHeader(out, this->privatechildren ? TRUE : FALSE, FALSE))
+    if (this->writeHeader(out, THIS->privatechildren ? TRUE : FALSE, FALSE))
       return;
     this->getFieldData()->write(out, this);
     if (out->isBinary())
-      if (this->privatechildren) out->write(this->privatechildren->getLength());
-    if (this->privatechildren) this->privatechildren->traverse(action);
+      if (THIS->privatechildren) out->write(THIS->privatechildren->getLength());
+    if (THIS->privatechildren) THIS->privatechildren->traverse(action);
     this->writeFooter(out);
   }
   else assert(0 && "unknown stage");
@@ -227,23 +240,25 @@ SoUnknownNode::search(SoSearchAction * action)
 {
   inherited::search(action);
   if (action->isFound()) return;
-  this->alternate->traverse(action);
+  THIS->alternate->traverse(action);
 }
 
 void
 SoUnknownNode::GLRender(SoGLRenderAction * action)
 {
-  this->alternate->traverse(action);
+  THIS->alternate->traverse(action);
 }
 
 void
 SoUnknownNode::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  this->alternate->traverse(action);
+  THIS->alternate->traverse(action);
 }
 
 void
 SoUnknownNode::pick(SoPickAction * action)
 {
-  this->alternate->traverse(action);
+  THIS->alternate->traverse(action);
 }
+
+#undef THIS
