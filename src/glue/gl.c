@@ -270,8 +270,8 @@ cc_glglue_glversion_matches_at_least(const cc_glglue * w,
   return TRUE;
 }
 
-int
-cc_glglue_gxlversion_matches_at_least(const cc_glglue * w,
+SbBool
+cc_glglue_glxversion_matches_at_least(const cc_glglue * w,
                                       int major,
                                       int minor)
 {
@@ -420,6 +420,7 @@ cc_glglue_instance(int contextid)
     gi->has2DProxyTextures = FALSE;
     gi->has3DProxyTextures = FALSE;
     gi->hasTextureEdgeClamp = FALSE;
+    gi->hasMultitexture = FALSE;
 
     gi->glTexImage3D = NULL;
     gi->glCopyTexSubImage3D = NULL;
@@ -428,6 +429,8 @@ cc_glglue_instance(int contextid)
     gi->glDeleteTextures = NULL;
     gi->glGenTextures = NULL;
     gi->glTexSubImage2D = NULL;
+    gi->glActiveTexture = NULL;
+    gi->glMultiTexCoord2f = NULL;
 
 #ifdef HAVE_GLX
     gi->glXGetCurrentDisplay = NULL;
@@ -513,6 +516,13 @@ cc_glglue_instance(int contextid)
     else if (cc_glglue_glext_supported(gi, "GL_EXT_texture")) {
       gi->has2DProxyTextures = TRUE;
     }
+    
+    if (cc_glglue_glversion_matches_at_least(gi,1,3,0)) {
+      gi->hasMultitexture = TRUE;
+    }
+    else if (cc_glglue_glext_supported(gi, "GL_ARB_multitexture")) {
+      gi->hasMultitexture = TRUE;
+    }
 
     /* Resolve our functions */
 #ifdef COIN_OPENGL_DYNAMIC_BINDING
@@ -580,7 +590,18 @@ cc_glglue_instance(int contextid)
       GLGLUE_REGISTER_FUNC(glTexSubImage2D, glTexSubImage2DEXT,
                            COIN_PFNGLTEXSUBIMAGE2DPROC);
     }
-
+    if (cc_glglue_glversion_matches_at_least(gi,1,3,0)) {
+      GLGLUE_REGISTER_FUNC(glActiveTexture, glActiveTexture,
+                           COIN_PFNGLACTIVETEXTUREPROC);
+      GLGLUE_REGISTER_FUNC(glMultiTexCoord2f, glMultiTexCoord2f,
+                           COIN_PFNGLMULTITEXCOORD2FPROC);
+    }
+    else if (cc_glglue_glext_supported(gi, "GL_ARB_multitexture")) {
+      GLGLUE_REGISTER_FUNC(glActiveTexture, glActiveTextureARB,
+                           COIN_PFNGLACTIVETEXTUREPROC);
+      GLGLUE_REGISTER_FUNC(glMultiTexCoord2f, glMultiTexCoord2fARB,
+                           COIN_PFNGLMULTITEXCOORD2FPROC);
+    }
 #else /* Static binding */
     if (0) {
     }
@@ -642,6 +663,14 @@ cc_glglue_instance(int contextid)
     }
 #endif /* !GL_VERSION_1_1 */
 
+#if GL_VERSION_1_3
+    gi->glActiveTexture = &glActiveTexture;
+    gi->glMultiTexCoord2f = &glMultiTexCoord2f;
+#elif GL_ARB_multitexture
+    gi->glActiveTexture = &glActiveTextureARB;
+    gi->glMultiTexCoord2f = &glMultiTexCoord2fARB;    
+#endif /* !GL_VERSION_1_3 */
+
 #endif /* !COIN_OPENGL_DYNAMIC_BINDING */
 
 #ifdef HAVE_GLX
@@ -656,7 +685,7 @@ cc_glglue_instance(int contextid)
     gi = (cc_glglue *)ptr;
   }
 
-  CC_SYNC_END(GLWrapper);
+  CC_SYNC_END(cc_glglue_instance);
   return gi;
 }
 
@@ -682,6 +711,12 @@ SbBool
 cc_glglue_has_texture_edge_clamp(const cc_glglue * glue)
 {
   return glue->hasTextureEdgeClamp;
+}
+
+SbBool 
+cc_glglue_has_multitexture(const cc_glglue * glue)
+{
+  return glue->hasMultitexture;
 }
 
 void 
@@ -814,3 +849,26 @@ cc_glglue_glTexSubImage2D(const cc_glglue * glue,
                           width, height, format, type, pixels);
   }
 }
+
+void 
+cc_glglue_glActiveTexture(const cc_glglue * glue,
+                          GLenum texture)
+{
+  assert(glue->glActiveTexture);
+  if (glue->glActiveTexture) {
+    glue->glActiveTexture(texture);
+  }
+}
+
+void 
+cc_glglue_glMultiTexCoord2f(const cc_glglue * glue,
+                            GLenum target,
+                            GLfloat s,
+                            GLfloat t)
+{
+  assert(glue->glMultiTexCoord2f);
+  if (glue->glMultiTexCoord2f) {
+    glue->glMultiTexCoord2f(target, s, t);
+  }
+}
+

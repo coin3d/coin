@@ -116,6 +116,9 @@ typedef void (APIENTRY * COIN_PFNGLTEXSUBIMAGE2DPROC)(GLenum target,
                                                       GLenum type, 
                                                       const GLvoid * pixels);
 
+typedef void (APIENTRY * COIN_PFNGLACTIVETEXTUREPROC)(GLenum texture);
+typedef void (APIENTRY * COIN_PFNGLMULTITEXCOORD2FPROC)(GLenum target, GLfloat s, GLfloat t);
+
 #ifdef HAVE_GLX
 /* GLX functions */
 typedef void *(APIENTRY * COIN_PFNGLXGETPROCADDRESSARB) (const GLubyte * procName);
@@ -139,6 +142,7 @@ struct cc_glglue {
   SbBool has2DProxyTextures;
   SbBool has3DProxyTextures;
   SbBool hasTextureEdgeClamp;
+  SbBool hasMultitexture;
 
   /* OpenGL calls. Will be NULL if not available, otherwise they
      contain a valid function pointer into the OpenGL library. */
@@ -150,6 +154,8 @@ struct cc_glglue {
   COIN_PFNGLDELETETEXTURESPROC glDeleteTextures;
   COIN_PFNGLGENTEXTURESPROC glGenTextures;
   COIN_PFNGLTEXSUBIMAGE2DPROC glTexSubImage2D;
+  COIN_PFNGLACTIVETEXTUREPROC glActiveTexture;
+  COIN_PFNGLMULTITEXCOORD2FPROC glMultiTexCoord2f;
 
 #ifdef HAVE_GLX
   COIN_PFNGLXGETPROCADDRESSARB glXGetProcAddressARB;
