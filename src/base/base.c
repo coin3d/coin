@@ -25,11 +25,11 @@
 
 #include <stddef.h>
 
-#ifdef USE_W32THREAD
+#ifdef _WIN32 /* FIXME: use a proper check for the basic Win32 API. 20020502 mortene. */
 #define HAVE_WINDOWS_H 1
 #define HAVE_WIN32_FORMATMESSAGE 1
 #define HAVE_WIN32_LOCALFREE 1
-#endif /* USE_W32THREAD */
+#endif /* _WIN32 */
 
 #if HAVE_WINDOWS_H
 #include <windows.h>
