@@ -147,6 +147,11 @@ protected:
   static void childFinishCB(void *, SoDragger *);
   static void childOtherEventCB(void *, SoDragger *);
 
+  // This method is not present in Open Inventor. It was moved from
+  // being a private method to a protected method in Coin to make it
+  // possible to construct draggers which can handle Motion3 events.
+  void updateDraggerCache(const SoPath * path);
+
 private:
   static float minScale;
   int minGesture;
@@ -173,8 +178,6 @@ private:
 
   SbBool isPicked(SoPath *path);
   void eventHandled(const SoEvent *event, SoHandleEventAction *action);
-  void updateDraggerCache(const SoPath *path);
-
 };
 
 #endif // !COIN_SODRAGGER_H
