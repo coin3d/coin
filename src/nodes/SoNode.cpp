@@ -612,6 +612,7 @@ SoNode::initClasses(void)
 
   SoTextureCoordinateCube::initClass();
   SoTextureCoordinateSphere::initClass();
+  SoTextureCoordinateCylinder::initClass();
 
   SoTextureCombine::initClass();
 }
