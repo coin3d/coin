@@ -108,6 +108,8 @@
   (Think of the ambient contribution in the context that there's
   always photons fizzing around everywhere -- even in a black,
   lightsource-less room, for instance).
+
+  \sa SoEnvironment::ambientIntensity
 */
 /*!
   \var SoMFColor SoMaterial::diffuseColor

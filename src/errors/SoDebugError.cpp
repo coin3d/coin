@@ -282,6 +282,9 @@ SoDebugError::postInfo(const char * const source, const char * const format, ...
 SoErrorCB *
 SoDebugError::getHandler(void * & data) const
 {
+  // FIXME: why the heck isn't this a static method? Looks to me like
+  // an API bug. 20020526 mortene.
+
   data = SoDebugError::callbackData;
   return SoDebugError::callback;
 }

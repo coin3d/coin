@@ -30,6 +30,20 @@
   programmer can set callbacks. It is possible to set one callback for
   picking, the fetch callback, and one callback for highlighting.
 
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  WWWAnchor {
+     name "http://www.coin3d.org/Coin/egg.iv"
+     description "Easter Egg"
+  
+     Separator {
+        Transform { scaleFactor 0.8 1.2 0.8 }
+        Sphere { }
+     }
+  }
+  \endverbatim
+
   \since Inventor 2.1
 */
 

@@ -51,6 +51,9 @@
   unrefNoDelete(). Another solution would be to call reset() before
   calling unrefNoDelete() on your object, since reset() truncates
   the path list.
+
+  See the documentation of SoTexture2 for a full usage example of
+  SoSearchAction.
 */
 
 #include <Inventor/actions/SoSearchAction.h>
@@ -128,10 +131,9 @@ SoSearchAction::~SoSearchAction()
 /*!
   Sets the \a node pointer to search for.
 
-  The action is also automatically configured to set the search
-  "interest" to LookFor \c NODE, so there is no need to call
-  SoSearchAction::setFind() in anything but special cases. This is
-  also the case for the setType() and setName() calls.
+  The action will be configured to set the search "interest" to
+  LookFor \c NODE, so there is no need to call
+  SoSearchAction::setFind().
 */
 void
 SoSearchAction::setNode(SoNode * const node)
@@ -154,6 +156,10 @@ SoSearchAction::getNode(void) const
   Configures the SoSearchAction instance to search for nodes of the
   given \a type, and nodes of classes derived from the given \a type
   if \a chkderived is \c TRUE.
+
+  The action will be configured to set the search "interest" to
+  LookFor \c TYPE, so there is no need to call
+  SoSearchAction::setFind().
 */
 void
 SoSearchAction::setType(const SoType type, const SbBool chkderived)
@@ -177,6 +183,10 @@ SoSearchAction::getType(SbBool & chkderived) const
 /*!
   Configures the SoSearchAction instance to search for nodes with the
   given \a name.
+
+  The action will be configured to set the search "interest" to
+  LookFor \c NAME, so there is no need to call
+  SoSearchAction::setFind().
 */
 void
 SoSearchAction::setName(const SbName name)
@@ -241,7 +251,7 @@ SoSearchAction::getInterest(void) const
 
 /*!
   Specifies whether normal graph traversal should be done (\a
-  searchall is \c FALSE) (which is the default setting), or if every
+  searchall is \c FALSE, which is the default setting), or if every
   single node should be searched (\a searchall is \c TRUE).
 
   If the \a searchall flag is \c TRUE, even nodes considered "hidden"

@@ -102,14 +102,14 @@
 
 /*!
   \fn void SoShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
-  \COININTERNAL
+
+  FIXME: should be documented properly. 20020523 mortene.
 */
 
-// FIXME: should be documented properly. See also FIXME above
-// beingShape() doc. 20020523 mortene.
 /*!
   \fn void SoShape::generatePrimitives(SoAction * action)
-  \COININTERNAL
+
+  FIXME: should be documented properly. 20020523 mortene.
 */
 
 // *************************************************************************
@@ -891,12 +891,13 @@ SoShape::invokePointCallbacks(SoAction * const action,
   }
 }
 
-// FIXME: document this method properly. It's a must for app
-// programmers extending the library with new SoShape-derived
-// nodes. One item for the doc when it's written: mention that
-// beginShape() and endShape() can be called several times during
-// generatePrimitives() (seems to be a FAQ). 20020523 mortene.
 /*!
+  FIXME: document this method properly. It's a must for app
+  programmers extending the library with new SoShape-derived
+  nodes. One item for the doc when it's written: mention that
+  beginShape() and endShape() can be called several times during
+  generatePrimitives() (seems to be a FAQ). 20020523 mortene.
+
   This method is slightly different from its counterpart from the
   original Open Inventor library, as this method has an SoDetail as
   the last argument, and not an SoFaceDetail. This is because we

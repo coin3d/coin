@@ -59,6 +59,34 @@
   even when nothing has changed in the data structures or with the
   camera viewport.)
 
+  Storing data members as fields also provides other conveniences for
+  the application prgrammer:
+
+  \li Fields can be connected to other fields. This makes it for
+      instance possible to have "self-updating" scenes, ie you can set
+      up scenes where entities \e automatically react to changes in
+      other entities. This also provides a necessary mechanism for
+      having "auto-animating" scenes, as it is possible to connect any
+      field to the global field named \c realTime, providing a
+      wall-clock timer.
+
+  \li When connecting fields to each other, Coin has built-in
+      mechanisms for automatically converting between different field
+      types.
+
+  \li Fields provide persistance for scenegraph import (and export)
+      operations. This includes animating entities, so animations can
+      be stored within ordinary Inventor format files.
+
+  \li Fields provides features for introspection: they have a
+      type-system, just like for nodes and actions, they are named,
+      and it is also possible to find out which node, engine or other
+      entity owns a field.
+
+  \li Fields can hold multiple values. Multi-value fields comes with a
+      much higher level interface abstraction than standard C/C++
+      arrays.
+
   Note: there are some field classes which has been obsoleted from the
   Open Inventor API. They are: SoSFLong, SoSFULong, SoMFLong and
   SoMFULong. You should use these classes instead (respectively):
@@ -1359,9 +1387,9 @@ SoField::isReadOnly(void) const
 }
 
 /*!
-  This method is internally called after copyFrom() during scene graph
-  copies, and should do the operations necessary for fixing up the
-  field instance after it has gotten a new value.
+  This method is internally called after SoField::copyFrom() during
+  scene graph copies, and should do the operations necessary for
+  fixing up the field instance after it has gotten a new value.
 
   The default method in the SoField superclass does nothing.
 

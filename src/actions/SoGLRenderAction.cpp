@@ -824,10 +824,15 @@ SoGLRenderAction::abortNow(void)
   local machine or if the rendering instructions are sent over the
   network.
 
-  This call has no effect in Coin for now, but eventually it will be
-  used to optimize rendering (the displaylist caching strategy should
-  be influenced by this flag to be more aggressive with the caching
-  when rendering instructions are passed over the network).
+  The flag is used to optimize rendering. For instance should the
+  displaylist caching strategy be influenced by this flag to be more
+  aggressive with the caching when rendering instructions are passed
+  over the network.
+
+  Default value is \c FALSE. The value of the flag will not be changed
+  internally from the Coin library code, as it is meant to be
+  controlled from client code -- typically from the SoQt / SoXt /
+  SoWin / SoGtk libraries.
 
   \sa getRenderingIsRemote()
  */

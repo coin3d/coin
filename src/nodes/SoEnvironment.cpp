@@ -81,7 +81,10 @@
   \var SoSFColor SoEnvironment::ambientColor
 
   The color of the global ambient light. Defaults to full intensity
-  white.
+  white, ie <1.0, 1.0, 1.0>.
+
+  Each component of this RGB vector is multiplied with the scalar
+  value of SoEnvironment::ambientIntensity.
 */
 /*!
   \var SoSFVec3f SoEnvironment::attenuation

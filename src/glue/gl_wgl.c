@@ -35,6 +35,11 @@ coin_wgl_getprocaddress(const char * fname)
 {
 #ifdef HAVE_WGL
   void * ptr = wglGetProcAddress(fname);
+
+  /* wglGetProcAddress() seems to only be able to fetch
+     function-addresses for *extension* functions, not "proper" OpenGL
+     (1.1+) functions. */
+
   if (ptr == NULL) {
     /* check for function in opengl32.dll.
      *
