@@ -90,7 +90,7 @@ static void flww32_addTessVertex(double x, double y);
 static void flww32_buildVertexList(struct cc_flw_vector_glyph * newglyph, int size);
 static void flww32_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph);
 static void flww32_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph);
-
+static void flww32_cleanupMallocList(void);
 static int flww32_calcfontsize(float complexity);
 
 
@@ -131,6 +131,7 @@ typedef struct flww32_tessellator_t {
   cc_list * vertexlist;
   cc_list * faceindexlist;
   cc_list * edgeindexlist;
+  cc_list * malloclist; /* to free temporary integers/memory */
 } flww32_tessellator_t;
 
 static flww32_tessellator_t flww32_tessellator;
@@ -267,6 +268,7 @@ cc_flww32_initialize(void)
   flww32_tessellator.vertexlist = NULL;
   flww32_tessellator.faceindexlist = NULL;
   flww32_tessellator.edgeindexlist = NULL;
+  flww32_tessellator.malloclist = NULL;
 
   /* Are we running Windows 95/98/Me? */
   ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
@@ -1041,7 +1043,9 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
     flww32_tessellator.faceindexlist = cc_list_construct();
   if (flww32_tessellator.edgeindexlist == NULL)
     flww32_tessellator.edgeindexlist = cc_list_construct();
-  
+  if (flww32_tessellator.malloclist == NULL)
+    flww32_tessellator.malloclist = cc_list_construct();
+
   flww32_tessellator.tessellator_object = GLUWrapper()->gluNewTess();
   flww32_tessellator.contour_open = FALSE;
   flww32_tessellator.vertex_scale = 1.0f;
@@ -1087,6 +1091,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   flww32_buildVertexList(new_vector_glyph, size);
   flww32_buildFaceIndexList(new_vector_glyph);
   flww32_buildEdgeIndexList(new_vector_glyph);
+  flww32_cleanupMallocList();
 
   /* Remove allocated DCs */
   if (!DeleteObject(membmp)) 
@@ -1121,6 +1126,7 @@ flww32_addTessVertex(double x, double y)
   cc_list_append(flww32_tessellator.edgeindexlist, (void *) (flww32_tessellator.vertex_counter));
 
   counter[0] = flww32_tessellator.vertex_counter++;
+  cc_list_append(flww32_tessellator.malloclist, counter);
   {
     GLdouble v[3] = { x, y, 0 };
     GLUWrapper()->gluTessVertex(flww32_tessellator.tessellator_object, v, counter);
@@ -1227,6 +1233,7 @@ flww32_combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[
   point[1] = flww32_tessellator.vertex_scale * ((float) coords[1]);
 
   cc_list_append(flww32_tessellator.vertexlist, point);
+  cc_list_append(flww32_tessellator.malloclist, ret);
 
   ret[0] = flww32_tessellator.vertex_counter++;
   
@@ -1264,7 +1271,20 @@ flww32_buildVertexList(struct cc_flw_vector_glyph * newglyph, int size)
 
   cc_list_destruct(flww32_tessellator.vertexlist);
   flww32_tessellator.vertexlist = NULL;
+}
 
+static void
+flww32_cleanupMallocList(void)
+{
+  int i, n;
+  if (flww32_tessellator.malloclist) {
+    n = cc_list_get_length(flww32_tessellator.malloclist);
+    for (i = 0; i < n; i++) {
+      free(cc_list_get(flww32_tessellator.malloclist, i));
+    }
+    cc_list_destruct(flww32_tessellator.malloclist);
+    flww32_tessellator.malloclist = NULL;
+  }
 }
 
 const float *
