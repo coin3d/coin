@@ -38,7 +38,20 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/C/threads/recmutexp.h>
+// we need this lock to avoid that auditors are added/removed by one
+// thread while another thread is notifying
+#define NOTIFY_LOCK (void) cc_recmutex_internal_notify_lock()
+#define NOTIFY_UNLOCK (void) cc_recmutex_internal_notify_unlock()
+#else // COIN_THREADSAFE
+#define NOTIFY_LOCK
+#define NOTIFY_UNLOCK
+#endif // !COIN_THREADSAFE
 
 /*!
   Default constructor.
@@ -61,8 +74,10 @@ SoAuditorList::~SoAuditorList()
 void
 SoAuditorList::append(void * const auditor, const SoNotRec::Type type)
 {
+  NOTIFY_LOCK;
   SbPList::append(auditor);
   SbPList::append((void *)type);
+  NOTIFY_UNLOCK;
 }
 
 /*!
@@ -72,10 +87,12 @@ void
 SoAuditorList::set(const int index,
                    void * const auditor, const SoNotRec::Type type)
 {
+  NOTIFY_LOCK;
   assert(index >= 0 && index < this->getLength());
 
   SbPList::set(index * 2, auditor);
   SbPList::set(index * 2 + 1, (void *)type);
+  NOTIFY_UNLOCK;
 }
 
 /*!
@@ -134,9 +151,11 @@ SoAuditorList::getType(const int index) const
 void
 SoAuditorList::remove(const int index)
 {
+  NOTIFY_LOCK;
   assert(index >= 0 && index < this->getLength());
   SbPList::remove(index * 2); // ptr
   SbPList::remove(index * 2); // type
+  NOTIFY_UNLOCK;
 }
 
 /*!
@@ -236,3 +255,6 @@ SoAuditorList::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Typ
     assert(0 && "Unknown auditor type");
   }
 }
+
+#undef NOTIFY_LOCK
+#undef NOTIFY_UNLOCK
