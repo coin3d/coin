@@ -38,9 +38,10 @@
 // *************************************************************************
 
 /*!
-  Constructor with \a entries specifying the number of buckets
-  in the hash list -- so it need to be larger than 0. For best
-  performance during dictionary look-ups, \a entries should be a prime.
+  Constructor with \a entries specifying the initial number of buckets
+  in the hash list -- so it need to be larger than 0. Other than
+	this, no special care needs to be taken in choosing the value since it is
+	always rounded up to the nearest power of two.
 */
 SbDict::SbDict(const int entries)
 {
@@ -66,7 +67,7 @@ SbDict::~SbDict()
 }
 
 /*!
-  Make a deep copy of the contents of dictionary \a from into this dictionary.
+  Make a shallow copy of the contents of dictionary \a from into this dictionary.
 */
 SbDict &
 SbDict::operator=(const SbDict & from)
