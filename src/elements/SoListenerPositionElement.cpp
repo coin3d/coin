@@ -26,15 +26,17 @@
   \brief The SoListenerPositionElement holds the position of the current listener.
   \ingroup elements
 
-This position is set by SoListener nodes and SoCamera Nodes during audio 
-rendering. When a SoListener is visited by the SoAudioRenderAction, 
-it will add a new SoListenerPositionElement to the state, holding it's position
-and with the setbylistener flag set. When a SoCamera is visited by 
-SoAudioRenderAction, it will add a new SoListenerPositionElement only if there 
-are no previous elements with the setbylistener flag set. 
+  This position is set by SoListener nodes and SoCamera Nodes during audio 
+  rendering. When a SoListener is visited by the SoAudioRenderAction, 
+  it will add a new SoListenerPositionElement to the state, holding it's 
+  position and with the setbylistener flag set. When a SoCamera is visited
+  by SoAudioRenderAction, it will add a new SoListenerPositionElement only
+  if there are no previous elements with the setbylistener flag set. 
 
-The SoListenerPositionElement is used when the SoVRMLSound nodes render 
-themselves. 
+  The SoListenerPositionElement is used when the SoVRMLSound nodes render 
+  themselves. 
+
+  \since 2002-11-12
 */
 
 #include <Inventor/elements/SoListenerPositionElement.h>
