@@ -26,7 +26,7 @@
 
 #include <config.h> // HAVE_LIBSIMAGE define
 
-#if defined(HAVE_LIBSIMAGE)
+#if HAVE_LIBSIMAGE
 #include <simage.h>
 #endif // HAVE_LIBSIMAGE
 
@@ -200,7 +200,7 @@ SoImageInterface::load(const SbBool forceTry)
     // should be inserted here.
     //
 
-#if defined(HAVE_LIBSIMAGE)
+#if HAVE_LIBSIMAGE
     int w, h, nc;
     this->dataPtr = simage_read_image(this->filename.getString(),
                                       &w, &h, &nc);
@@ -292,10 +292,10 @@ SoImageInterface::hasTransparency() const
 }
 
 /*!
-  Convenience method that creates an SoImageInterface which is a copy 
+  Convenience method that creates an SoImageInterface which is a copy
   of this image. Only the image data will be copied, not attributes
   like filename.
-  
+
   You should call ref() on the copied image after receiving it, and
   unref() to delete it.
 */
