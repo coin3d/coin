@@ -31,6 +31,8 @@
 #include <Inventor/nodes/SoPendulum.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SbVec3f.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/engines/SoCalculator.h>
 #include <Inventor/engines/SoElapsedTime.h>
 #include <Inventor/engines/SoInterpolateRotation.h>
@@ -108,7 +110,42 @@ SoPendulum::initClass(void)
 void
 SoPendulum::write(SoWriteAction * action)
 {
-  // Decouple connections to/from internal engine to avoid it being
+  SoOutput * out = action->getOutput();
+
+  // Decouple connections to/from internal engines to avoid them being
+  // written. (Only done at first pass.)
+  if (out->getStage() == SoOutput::COUNT_REFS)
+    this->deconnectInternalEngine();
+
+  inherited::write(action);
+
+  // Reenable all connections to/from internal engine. (Only done at
+  // last pass.)
+  if (out->getStage() == SoOutput::WRITE)
+    this->reconnectInternalEngine();
+}
+
+// Overloaded to decouple and reconnect engine around copy operation.
+SoNode *
+SoPendulum::copy(SbBool copyconnections) const
+{
+  // Decouple connections to/from internal engines to avoid them being
+  // copied.
+  ((SoPendulum *)this)->deconnectInternalEngine();
+
+  SoPendulum * cp = (SoPendulum *)inherited::copy(copyconnections);
+
+  // Reenable all connections to/from internal engines.
+  ((SoPendulum *)this)->reconnectInternalEngine();
+
+  return cp;
+}
+
+// Remove connections to and from internal engine.
+void
+SoPendulum::deconnectInternalEngine(void)
+{
+  // Decouple connections to/from internal engine to avoid them being
   // written.
   this->timer->on.disconnect(&this->on);
   this->timer->on = FALSE;
@@ -116,9 +153,13 @@ SoPendulum::write(SoWriteAction * action)
   this->interpolator->input0.disconnect(&this->rotation0);
   this->interpolator->input1.disconnect(&this->rotation1);
   this->rotation.disconnect(&this->interpolator->output);
+}
 
-  inherited::write(action);
 
+// Reset connections to and from internal engine.
+void
+SoPendulum::reconnectInternalEngine(void)
+{
   // Reenable all connections to/from internal engine.
   this->timer->on.connectFrom(&this->on);
   this->calculator->b.connectFrom(&this->speed);
@@ -126,8 +167,4 @@ SoPendulum::write(SoWriteAction * action)
   this->interpolator->input1.connectFrom(&this->rotation1);
   this->interpolator->alpha.connectFrom(&this->calculator->oa);
   this->rotation.connectFrom(&this->interpolator->output);
-
-  // Make sure "on" field of the timer engine get synchronized with
-  // the "on" field of the pendulum.
-  this->on.touch();
 }

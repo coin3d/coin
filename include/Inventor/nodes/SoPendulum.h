@@ -50,6 +50,10 @@ protected:
   virtual ~SoPendulum();
 
 private:
+  virtual SoNode * copy(SbBool copyconnections = FALSE) const;
+  void deconnectInternalEngine(void);
+  void reconnectInternalEngine(void);
+
   SoInterpolateRotation * interpolator;
   SoCalculator * calculator;
   SoElapsedTime * timer;
