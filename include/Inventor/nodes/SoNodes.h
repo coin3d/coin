@@ -136,5 +136,6 @@
 #include <Inventor/nodes/SoTextureCoordinateCube.h>
 #include <Inventor/nodes/SoTextureCoordinateSphere.h>
 #include <Inventor/nodes/SoTextureCoordinateCylinder.h>
+#include <Inventor/nodes/SoTextureCubeMap.h>
 
 #endif // !COIN_SONODES_H
