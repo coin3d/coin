@@ -1154,7 +1154,7 @@ SoField::get(SbString & valuestring)
 
   // Write field..
   out.setStage(SoOutput::COUNT_REFS);
-  this->writeValue(&out);
+  this->countWriteRefs(&out);
   out.setStage(SoOutput::WRITE);
   this->writeValue(&out);
 

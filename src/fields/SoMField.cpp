@@ -392,7 +392,7 @@ SoMField::get1(const int index, SbString & valuestring)
 
   // Write field..
   out.setStage(SoOutput::COUNT_REFS);
-  this->write1Value(&out, index);
+  this->countWriteRefs(&out);
   out.setStage(SoOutput::WRITE);
   this->write1Value(&out, index);
 
