@@ -203,7 +203,7 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/C/tidbitsp.h>
+#include <Inventor/C/tidbits.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <coindefs.h> // COIN_OBSOLETED
@@ -390,7 +390,7 @@ SoAction::initClass(void)
                                     SoOverrideElement::getClassStackIndex());
 
   SoAction::initClasses();
-  coin_atexit((coin_atexit_f*) SoAction::atexit_cleanup, 0);
+  cc_coin_atexit((coin_atexit_f*) SoAction::atexit_cleanup);
 }
 
 // private cleanup method
@@ -401,6 +401,7 @@ SoAction::atexit_cleanup(void)
   SoAction::enabledElements = NULL;
   delete SoAction::methods;
   SoAction::methods = NULL;
+  SoAction::classTypeId STATIC_SOTYPE_INIT;
 }
 
 /*!

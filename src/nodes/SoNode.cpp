@@ -1474,6 +1474,7 @@ void
 SoNode::cleanupClass(void)
 {
   delete SoNode::compatibilitydict;
+  SoNode::classTypeId STATIC_SOTYPE_INIT;
   CC_MUTEX_DESTRUCT(sonode_mutex);
 }
 

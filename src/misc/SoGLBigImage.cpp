@@ -226,6 +226,16 @@ SoGLBigImage::initClass(void)
   assert(SoGLBigImageP::classTypeId.isBad());
   SoGLBigImageP::classTypeId =
     SoType::createType(SoGLImage::getClassTypeId(), SbName("GLBigImage"));
+  cc_coin_atexit((coin_atexit_f*)SoGLBigImage::cleanupClass);
+}
+
+//
+// called by atexit()
+//
+void
+SoGLBigImage::cleanupClass(void)
+{
+  SoGLBigImageP::classTypeId STATIC_SOTYPE_INIT;
 }
 
 // Doc in superclass.

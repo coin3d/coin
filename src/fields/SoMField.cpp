@@ -297,6 +297,7 @@ SoMField::initClass(void)
 
   CC_MUTEX_CONSTRUCT(somfield_mutex);
   coin_atexit((coin_atexit_f*) somfield_mutex_cleanup, 0);
+  coin_atexit((coin_atexit_f*) cleanupClass, 0);
 }
 
 /*!

@@ -65,6 +65,7 @@ private:
   SbVec2s positionofevent;
 
   static void initEvents(void);
+  static void cleanupClass(void);
 
   struct {
     unsigned int shiftdown : 1;

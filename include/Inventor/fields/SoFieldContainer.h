@@ -38,6 +38,7 @@ class COIN_DLL_API SoFieldContainer : public SoBase {
 public:
   static void initClass(void);
   static SoType getClassTypeId(void);
+  static void cleanupClass(void);
 
   void setToDefaults(void);
   SbBool hasDefaultValues(void) const;

@@ -38,6 +38,7 @@
 
 #include <Inventor/SbBasic.h> // for SO__QUOTE() definition
 #include <Inventor/SbName.h>
+#include <Inventor/C/tidbits.h>
 #include <assert.h>
 // Include SoElement.h to be Open Inventor compatible at compile-time.
 #include <Inventor/elements/SoElement.h>
@@ -56,7 +57,8 @@ private: \
   /* there is a getClassStackIndex() access method, it seems more */ \
   /* sensible to keep it private.  20000808 mortene. */ \
   static int classStackIndex; \
-  static SoType classTypeId
+  static SoType classTypeId; \
+  static void cleanupClass(void) { _class_::classTypeId STATIC_SOTYPE_INIT; }
 
 // *************************************************************************
 
@@ -104,6 +106,7 @@ void * _class_::createInstance(void) { return (void *) new _class_; }
                                               _instantiate_); \
     if (_parent_::getClassStackIndex() < 0) _class_::classStackIndex = _class_::createStackIndex(_class_::classTypeId); \
     else _class_::classStackIndex = _parent_::getClassStackIndex(); \
+    cc_coin_atexit((coin_atexit_f*)_class_::cleanupClass); \
   } while (0)
 
 

@@ -62,10 +62,12 @@ simage_wrapper_cleanup(void)
 {
 #ifdef SIMAGE_RUNTIME_LINKING
   if (simage_libhandle) { cc_dl_close(simage_libhandle); }
+  simage_libhandle = NULL;
 #endif /* SIMAGE_RUNTIME_LINKING */
 
   assert(simage_instance);
   free(simage_instance);
+  simage_instance = NULL;
 }
 
 /* backup-functions. More robust when simage is an old version, or not
@@ -231,11 +233,9 @@ simage_wrapper(void)
     (void)coin_atexit((coin_atexit_f *)simage_wrapper_cleanup, 0);
 
     /* Detect recursive calls. */
-    {
-      static int is_initializing = 0;
-      assert(is_initializing == 0);
-      is_initializing = 1;
-    }
+    static int is_initializing = 0;
+    assert(is_initializing == 0);
+    is_initializing = 1;
 
     si->versionMatchesAtLeast = simage_wrapper_versionMatchesAtLeast;
 
@@ -391,6 +391,7 @@ simage_wrapper(void)
         si->s_stream_params = NULL;
       }
     }
+    is_initializing = 0;
   }
   CC_SYNC_END(simage_wrapper);
   return simage_instance;

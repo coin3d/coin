@@ -99,6 +99,7 @@ SoProtoInstance::cleanupClass(void)
 {
   delete protoinstance_dict;
   CC_MUTEX_DESTRUCT(protoinstance_mutex);
+  SoProtoInstance::classTypeId STATIC_SOTYPE_INIT;
 }
 
 #undef THIS

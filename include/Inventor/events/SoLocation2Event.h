@@ -29,7 +29,7 @@
 class COIN_DLL_API SoLocation2Event : public SoEvent {
   typedef SoEvent inherited;
 
-  SO_EVENT_HEADER();
+  SO_EVENT_HEADER(SoLocation2Event);
 
 public:
   virtual ~SoLocation2Event();

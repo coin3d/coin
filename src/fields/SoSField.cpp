@@ -86,6 +86,7 @@
 
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/C/tidbitsp.h>
 
 // *************************************************************************
 
@@ -121,4 +122,5 @@ void
 SoSField::initClass(void)
 {
   PRIVATE_FIELD_INIT_CLASS(SoSField, "SField", inherited, NULL);
+  coin_atexit((coin_atexit_f*) cleanupClass, 0);
 }

@@ -171,15 +171,23 @@ SoFieldContainer::initClass(void)
     SoType::createType(inherited::getClassTypeId(), "FieldContainer", NULL);
 
   sofieldcontainer_userdata_dict = cc_hash_construct(64, 0.75f);
-  coin_atexit((coin_atexit_f*) sofieldcontainer_userdata_cleanup, 0);
+  cc_coin_atexit((coin_atexit_f*) sofieldcontainer_userdata_cleanup);
 
   sofieldcontainer_copydictstorage = 
     new SbStorage(sizeof(sofieldcontainer_copydict),
                   sofieldcontainer_construct_copydict,
                   sofieldcontainer_destruct_copydict);                 
 
-  coin_atexit((coin_atexit_f*) sofieldcontainer_copydict_cleanup, 0);
+  cc_coin_atexit((coin_atexit_f*) sofieldcontainer_copydict_cleanup);
+  cc_coin_atexit((coin_atexit_f*) cleanupClass);
 }
+
+void
+SoFieldContainer::cleanupClass(void)
+{
+  SoFieldContainer::classTypeId STATIC_SOTYPE_INIT;
+}
+
 
 // Overridden from parent class.
 SoType

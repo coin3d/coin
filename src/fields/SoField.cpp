@@ -578,6 +578,13 @@ SoField::initClass(void)
 
   SoField::classTypeId = SoType::createType(SoType::badType(), "Field");
   SoField::initClasses();
+  coin_atexit((coin_atexit_f*) cleanupClass, 0);
+}
+
+void
+SoField::cleanupClass(void)
+{
+  SoField::classTypeId STATIC_SOTYPE_INIT;
 }
 
 /*!

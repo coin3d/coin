@@ -50,6 +50,7 @@
 #include <Inventor/SoType.h>
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/C/tidbits.h>
 
 // *************************************************************************
 
@@ -114,6 +115,7 @@ _class_::atexit_cleanup(void) \
 { \
   delete _class_::fieldData; \
   _class_::fieldData = NULL; \
+  _class_::classTypeId STATIC_SOTYPE_INIT; \
 }
 
 // FIXME: document. 20000103 mortene.
@@ -189,6 +191,7 @@ _class_::createInstance(void) \
  \
     /* Store parent's fielddata pointer for later use in the constructor. */ \
     _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \
+    cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleanup); \
   } while (0)
 
 

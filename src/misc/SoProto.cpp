@@ -90,6 +90,7 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/C/tidbits.h>
 #include <string.h>
 
 static SoType soproto_type;
@@ -232,7 +233,7 @@ SoProto::initClass(void)
                                     SbName("SoProto"), NULL,
                                     SoNode::nextActionMethodIndex++);
   protolist = new SbList<SoProto*>;
-  coin_atexit((coin_atexit_f*) soproto_cleanup, 0);
+  cc_coin_atexit((coin_atexit_f*) soproto_cleanup);
   // this will set a default callback
   SoProto::setFetchExternProtoCallback(NULL, NULL);
 }

@@ -497,6 +497,7 @@ SoBase::cleanClass(void)
   delete SoBase::obj2name; SoBase::obj2name = NULL;
 
   delete SoBase::refwriteprefix;
+  SoBase::classTypeId STATIC_SOTYPE_INIT;
 
   CC_MUTEX_DESTRUCT(SoBaseP::mutex);
   CC_MUTEX_DESTRUCT(SoBaseP::obj2name_mutex);

@@ -151,6 +151,7 @@ SoGlobalField::clean(void)
 
   delete SoGlobalField::allcontainers;
   SoGlobalField::allcontainers = NULL;
+  SoGlobalField::classTypeId STATIC_SOTYPE_INIT;
 }
 
 // Return index in list of global fields of the global field with the

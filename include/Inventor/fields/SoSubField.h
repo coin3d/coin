@@ -26,6 +26,7 @@
 
 #include <Inventor/SbBasic.h> // for SO__QUOTE() definition
 #include <Inventor/SbName.h> // SoType::createType() needs to know SbName.
+#include <Inventor/C/tidbits.h>
 #include <assert.h>
 
 #ifndef COIN_INTERNAL
@@ -51,6 +52,7 @@ public: \
 private: \
   static SoType classTypeId; \
 public: \
+  static void cleanupClass(void) { _class_::classTypeId STATIC_SOTYPE_INIT; } \
   static void * createInstance(void); \
   static SoType getClassTypeId(void); \
   virtual SoType getTypeId(void) const; \
@@ -116,6 +118,7 @@ public: \
     assert(_class_::classTypeId == SoType::badType()); \
     _class_::classTypeId = \
       SoType::createType(_parent_::getClassTypeId(), _classname_, _createfunc_); \
+    cc_coin_atexit((coin_atexit_f*)_class_::cleanupClass); \
   } while (0)
 
 

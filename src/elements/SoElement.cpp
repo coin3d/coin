@@ -1,3 +1,4 @@
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -501,6 +502,7 @@ void
 SoElement::cleanup(void)
 {
   delete SoElement::stackToType;
+  SoElement::classTypeId STATIC_SOTYPE_INIT;
 }
 
 /*!

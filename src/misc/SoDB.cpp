@@ -819,6 +819,7 @@ void
 SoDB::cleanup(void)
 {
   coin_atexit_cleanup();
+  SoDBP::isinitialized = FALSE;
 }
 
 /*!

@@ -83,6 +83,7 @@ socontexthandler_cleanup(void)
   }
 #endif // COIN_DEBUG  
   delete socontexthandler_cblist;
+  socontexthandler_cblist = NULL;
 }
 
 // *************************************************************************

@@ -26,6 +26,7 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/engines/SoSubEngine.h>
+#include <Inventor/C/tidbits.h>
 
 #define SO_NODEENGINE_ABSTRACT_HEADER(_class_) \
   SO_NODE_ABSTRACT_HEADER(_class_); \
@@ -34,6 +35,7 @@ protected: \
 public: \
   virtual const SoEngineOutputData * getOutputData(void) const; \
 private: \
+  static void cleanupClass(void) { _class_::classTypeId STATIC_SOTYPE_INIT; }; \
   static SoEngineOutputData * outputdata; \
   static const SoEngineOutputData ** parentoutputdata
 
@@ -108,6 +110,7 @@ _class_::createInstance(void) \
     /* Store parent's fielddata pointer for later use in the constructor. */ \
     _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \
     _class_::parentoutputdata = _parentclass_::getOutputDataPtr(); \
+    cc_coin_atexit((coin_atexit_f*)_class_::cleanupClass); \
   } while (0)
 
 #define SO_NODEENGINE_INIT_CLASS(_class_, _parentclass_, _parentname_) \

@@ -42,6 +42,7 @@ public:
 
   static void initClass(void);
   static void initClasses(void);
+  static void cleanupClass(void);
 
   void setIgnored(SbBool ignore);
   SbBool isIgnored(void) const;

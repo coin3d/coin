@@ -79,6 +79,7 @@ private:
 
   class SoGLBigImageP * pimpl;
   friend class SoGLBigImageP;
+  static void cleanupClass(void);
 };
 
 #endif // !COIN_SOGLBIGIMAGE_H

@@ -138,6 +138,7 @@
 #include <Inventor/lists/SoCallbackList.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/C/tidbits.h>
 
 // *************************************************************************
 
@@ -889,7 +890,7 @@ SoSelection::searchNode(SoNode * node) const
   if (soselection_searchAction == NULL) {
     soselection_searchAction = new SoSearchAction;
     soselection_searchAction->setInterest(SoSearchAction::FIRST);
-    coin_atexit((coin_atexit_f*) soselection_cleanup, 0);
+    cc_coin_atexit((coin_atexit_f*) soselection_cleanup);
   }
   soselection_searchAction->setNode(node);
   soselection_searchAction->apply((SoNode *)this);

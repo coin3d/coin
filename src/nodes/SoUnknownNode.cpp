@@ -42,6 +42,7 @@
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
+#include <Inventor/C/tidbits.h>
 #include "../io/SoWriterefCounter.h"
 
 #ifndef DOXYGEN_SKIP_THIS
@@ -116,6 +117,13 @@ SoUnknownNode::initClass(void)
                        "UnknownNode",
                        &SoUnknownNode::createInstance,
                        SoNode::nextActionMethodIndex++);
+  cc_coin_atexit((coin_atexit_f*)SoUnknownNode::atexit_cleanup);
+}
+
+void
+SoUnknownNode::atexit_cleanup(void)
+{
+  SoUnknownNode::classTypeId STATIC_SOTYPE_INIT;
 }
 
 SbBool

@@ -31,6 +31,7 @@
 #else // !COIN_INTERNAL
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoSubActionP.h>
+#include <Inventor/C/tidbits.h>
 #endif // COIN_INTERNAL
 
 // *************************************************************************
@@ -110,6 +111,7 @@ _classname_::atexit_cleanup(void) \
   _classname_::enabledElements = NULL; \
   delete _classname_::methods; \
   _classname_::methods = NULL; \
+  _classname_::classTypeId STATIC_SOTYPE_INIT; \
 }
 
 // *************************************************************************
@@ -121,6 +123,7 @@ _classname_::atexit_cleanup(void) \
     _classname_::classTypeId = SoType::createType(_parentclassname_::getClassTypeId(), SO__QUOTE(_classname_)); \
     _classname_::enabledElements = new SoEnabledElementsList(_parentclassname_::getClassEnabledElements()); \
     _classname_::methods = new SoActionMethodList(_parentclassname_::getClassActionMethods()); \
+     cc_coin_atexit((coin_atexit_f*) _classname_::atexit_cleanup); \
   } while (0)
 
 // *************************************************************************

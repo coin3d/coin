@@ -36,8 +36,6 @@
 #error this is a private header file
 #endif // !COIN_INTERNAL
 
-#include <Inventor/C/tidbitsp.h>
-
 // only internal nodes can use this macro and pass "inherited" as arg #4
 #define PRIVATE_INTERNAL_COMMON_INIT_CODE(_class_, _classname_, _createfunc_, _parentclass_) \
   do { \
@@ -56,6 +54,7 @@
  \
     /* Store parent's fielddata pointer for later use in the constructor. */ \
     _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \
+    cc_coin_atexit((coin_atexit_f*)_class_::atexit_cleanup); \
   } while (0)
 
 #define SO_NODE_INTERNAL_CONSTRUCTOR(_class_) \
@@ -65,9 +64,6 @@
     /* Restore value of isBuiltIn flag (which is set to FALSE */ \
     /* in the SO_NODE_CONSTRUCTOR() macro. */ \
     this->isBuiltIn = TRUE; \
-    if (SO_NODE_IS_FIRST_INSTANCE()) { \
-      coin_atexit((coin_atexit_f*)_class_::atexit_cleanup, 0); \
-    } \
     SoBase::staticDataUnlock(); \
   } while (0)
 

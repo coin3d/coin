@@ -718,6 +718,16 @@ SoGLImage::initClass(void)
   assert(SoGLImageP::classTypeId.isBad());
   SoGLImageP::classTypeId = SoType::createType(SoType::badType(),
                                                SbName("GLImage"));
+  cc_coin_atexit((coin_atexit_f*)SoGLImage::cleanupClass);
+}
+
+//
+// called by atexit()
+//
+void
+SoGLImage::cleanupClass(void)
+{
+  SoGLImageP::classTypeId STATIC_SOTYPE_INIT;
 }
 
 /*!

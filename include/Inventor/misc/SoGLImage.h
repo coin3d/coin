@@ -147,6 +147,7 @@ private:
 
   class SoGLImageP * pimpl;
   friend class SoGLImageP;
+  static void cleanupClass(void);
   
 public:
   // internal methods for texture resource management

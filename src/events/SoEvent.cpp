@@ -50,6 +50,7 @@
 #include <Inventor/events/SoMotion3Event.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/SbName.h>
+#include <Inventor/C/tidbits.h>
 #include <assert.h>
 
 SO_EVENT_SOURCE(SoEvent);
@@ -85,8 +86,15 @@ SoEvent::initClass(void)
   assert(SoEvent::classTypeId == SoType::badType());
 
   SoEvent::classTypeId = SoType::createType(SoType::badType(), "SoEvent");
+  cc_coin_atexit((coin_atexit_f*)cleanupClass);
 
   SoEvent::initEvents();
+}
+
+void
+SoEvent::cleanupClass(void)
+{
+  SoEvent::classTypeId STATIC_SOTYPE_INIT;
 }
 
 /*!
