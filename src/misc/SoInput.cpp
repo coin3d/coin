@@ -590,6 +590,11 @@ SbBool
 SoInput::isValidFile(void)
 {
   if (this->getTopOfStack() == NULL) return FALSE;
+
+  // Abstract away the stupidity of providing both isValidFile() and
+  // isValidBuffer().
+  if (this->getTopOfStack()->isMemBuffer()) return this->isValidBuffer();
+
   float ver = this->getIVVersion();
   if (ver != 0.0f) return TRUE;
   return FALSE;
@@ -602,10 +607,15 @@ SoInput::isValidFile(void)
 SbBool
 SoInput::isValidBuffer(void)
 {
-  // This method should be obsoleted or something.. the point being
-  // that SoInput is supposed to be an abstraction layer _above_ the
-  // "are we using a file or a memory buffer?" inquiries.
-  return this->isValidFile();
+  if (this->getTopOfStack() == NULL) return FALSE;
+
+  // Abstract away the stupidity of providing both isValidFile() and
+  // isValidBuffer().
+  if (!this->getTopOfStack()->isMemBuffer()) return this->isValidFile();
+
+  // Set "validate header" argument to FALSE, as memory buffers should
+  // be possible to read even with no header.
+  return this->checkHeader(FALSE);
 }
 
 /*!
