@@ -1011,4 +1011,25 @@ coin_get_stderr(void)
   return coin_stderr;
 }
 
+SbBool
+coin_is_file_valid(FILE * fp)
+{
+#if 0
+  HANDLE win32file = (HANDLE) _fileno(fp);
+  DWORD type = GetFileType(win32file);
+  if ( type == FILE_TYPE_UNKNOWN ) {
+    // file may or may not be valid (sockets are of type unknown)
+    HANDLE duplicate;
+    BOOL result = DuplicateHandle(GetCurrentProcess(), win32file,
+                                  GetCurrentProcess(), &duplicate,
+                                  0, FALSE, DUPLICATE_SAME_ACCESS);
+    if ( result == 0 ) // can't be a valid file
+      return FALSE;
+    // FIXME: this can potentially throw EXCEPTION_INVALID_HANDLE
+    CloseHandle(duplicate);
+  }
+#endif
+  return TRUE;
+}
+
 /**************************************************************************/

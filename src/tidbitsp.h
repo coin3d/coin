@@ -31,6 +31,7 @@ extern "C" {
 FILE * coin_get_stdin(void);
 FILE * coin_get_stdout(void);
 FILE * coin_get_stderr(void);
+SbBool coin_is_file_valid(FILE * fp);
 
 /* ********************************************************************** */
 
