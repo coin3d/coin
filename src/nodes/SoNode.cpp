@@ -172,6 +172,7 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/misc/SoProtoInstance.h>
+#include <Inventor/misc/SoProto.h>
 #include <assert.h>
 #include <stdlib.h>
 
@@ -1166,15 +1167,27 @@ SoNode::addToCopyDict(void) const
 
   SoNode * cp = (SoNode *)SoFieldContainer::checkCopy(this);
   if (!cp) {
-    cp = (SoNode *)this->getTypeId().createInstance();
-    assert(cp);
-    SoFieldContainer::addCopy(this, cp);
+    // We need to do some extra work when copying nodes that are
+    // ProtoInstance root nodes. We create a new ProtoInstance node,
+    // and register its root node as the copy. pederb, 2002-06-17
+    SoProtoInstance * inst = SoProtoInstance::findProtoInstance(this);
+    if (inst) {
+      SoProto * proto = inst->getPROTODefinition();
+      SoProtoInstance * newinst = proto->createProtoInstance();
+      cp = newinst->getRootNode();
+      assert(cp);      
+      SoFieldContainer::addCopy(this, cp);
+    }
+    else {
+      cp = (SoNode *)this->getTypeId().createInstance();
+      assert(cp);
+      SoFieldContainer::addCopy(this, cp);
 
-    SoChildList * l = this->getChildren();
-    for (int i=0; l && (i < l->getLength()); i++)
-      (void)(*l)[i]->addToCopyDict();
+      SoChildList * l = this->getChildren();
+      for (int i=0; l && (i < l->getLength()); i++)
+        (void)(*l)[i]->addToCopyDict();
+    }
   }
-
   return cp;
 }
 

@@ -561,9 +561,10 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
   SoSearchAction sa;
   for (int i = 0; i < n; i++) {
     SoNode * node = THIS->isnodelist[i];
-
+    
     SbName fieldname = THIS->isfieldlist[i];
     SoField * dstfield = node->getField(fieldname);
+
     SoEngineOutput * eventout = NULL;
 
     if (!dstfield) {
@@ -580,7 +581,12 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
         continue; // skip to next field
       }
     }
-
+    
+    SbBool isprotoinstance = FALSE;
+    if (node->isOfType(SoProtoInstance::getClassTypeId())) {
+      node = ((SoProtoInstance*) node)->getRootNode();
+      isprotoinstance = TRUE;
+    }
     SbName iname = THIS->isnamelist[i];
     sa.setNode(node);
     sa.setInterest(SoSearchAction::FIRST);
@@ -601,14 +607,20 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
       int idx = path->getIndex(k);
       node = (*(node->getChildren()))[idx];
     }
-    if (dstfield) dstfield = node->getField(fieldname);
+    if (dstfield) {
+      if (isprotoinstance) {
+        node = SoProtoInstance::findProtoInstance(node);
+        assert(node);
+      }
+      dstfield = node->getField(fieldname);
+    }
     else {
       assert(node->isOfType(SoNodeEngine::getClassTypeId()));
       eventout = ((SoNodeEngine*)node)->getOutput(fieldname);
     }
     assert(dstfield || eventout);
     SoField * srcfield = inst->getField(iname);
-    if (srcfield) {
+    if (srcfield) {      
       // if destination field is an eventOut field, or an EngineOutput,
       // reverse the connection, since we then just need to route the
       // events to the srcfield.

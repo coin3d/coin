@@ -44,6 +44,8 @@
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/lists/SoFieldList.h>
+#include <Inventor/misc/SoProtoInstance.h>
+#include <Inventor/misc/SoProto.h>
 #include <Inventor/SbName.h>
 #include <coindefs.h> // COIN_STUB()
 
@@ -700,24 +702,40 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
   assert(copiedinstances);
   assert(contentscopied);
 
+  SoProtoInstance * protoinst = SoProtoInstance::findProtoInstance((SoNode*) orig);
+  
   SoFieldContainer * cp = SoFieldContainer::checkCopy(orig);
   if (!cp) {
-    cp = (SoFieldContainer *)orig->getTypeId().createInstance();
-    assert(cp);
-    SoFieldContainer::addCopy(orig, cp);
+    if (protoinst) {
+      // We need to do some extra work when copying nodes that are
+      // ProtoInstance root nodes. We create a new ProtoInstance node,
+      // and register its root node as the copy. pederb, 2002-06-17
+      SoProto * proto = protoinst->getPROTODefinition();
+      SoProtoInstance * newinst = proto->createProtoInstance();
+      cp = newinst->getRootNode();
+      SoFieldContainer::addCopy(orig, cp); 
+    }
+    else {
+      cp = (SoFieldContainer *)orig->getTypeId().createInstance();
+      assert(cp);
+      SoFieldContainer::addCopy(orig, cp);
+    }
   }
 
-  void * tmp;
-  SbBool chk = contentscopied->find((unsigned long)orig, tmp);
-  assert(chk);
-  SbBool copied = tmp ? TRUE : FALSE;
-
-  if (!copied) {
-    cp->copyContents(orig, copyconnections);
-    chk = contentscopied->enter((unsigned long)orig, (void *)TRUE);
-    assert(!chk && "the key already exists");
+  // Don't call copyContents for the proto instance root node, since
+  // this is handled by the Proto node.
+  if (!protoinst) {
+    void * tmp;
+    SbBool chk = contentscopied->find((unsigned long)orig, tmp);
+    assert(chk);
+    SbBool copied = tmp ? TRUE : FALSE;
+    
+    if (!copied) {
+      cp->copyContents(orig, copyconnections);
+      chk = contentscopied->enter((unsigned long)orig, (void *)TRUE);
+      assert(!chk && "the key already exists");
+    }
   }
-
   return cp;
 }
 
