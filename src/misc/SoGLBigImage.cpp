@@ -585,6 +585,8 @@ SoGLBigImageP::copySubImage(SoGLBigImageTls * tls,
       datasrc = this->cache[level];
     }
 
+    assert(fullsize[0] > 0 && fullsize[1] > 0);
+
     // check for fast loop (common case)
     if ((origin[0] + w) < fullsize[0] && (origin[1] + h) < fullsize[1]) {
       for (int y = 0; y < h; y++) {
@@ -839,9 +841,9 @@ SoGLBigImageP::createCache(const unsigned char * bytes, const SbVec2s size, cons
 #else // end of high quality downsample
     short w = size[0]>>l;
     short h = size[1]>>l;
-    this->cachesize[l] = SbVec2s(w, h);
     if (w == 0) w = 1;
     if (h == 0) h = 1;
+    this->cachesize[l] = SbVec2s(w, h);
     this->cache[l] = new unsigned char[w*h*nc];
     image_downsample_fast(this->cachesize[l-1][0], this->cachesize[l-1][1], nc,
                           this->cache[l-1], this->cache[l]);
