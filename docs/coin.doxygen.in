@@ -700,6 +700,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoMFVec4f.h \
                          @path_tag@@coin_src_dir@/src/fields/SoSFImage.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFImage.h \
+                         @path_tag@@coin_src_dir@/src/fields/SoSFImage3.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFImage3.h \
                          @path_tag@@coin_src_dir@/src/fields/SoSFEnum.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/fields/SoSFEnum.h \
                          @path_tag@@coin_src_dir@/src/fields/SoMFEnum.cpp \
