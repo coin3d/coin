@@ -193,7 +193,7 @@ SoScale1Dragger::drag(void)
   SbVec3f startPt = this->getLocalStartingPoint();
 
   float motion = projPt[0];
-  if (startPt[0] != 0.0f)
+  if (motion > 0.0f && startPt[0] != 0.0f)
     motion /= startPt[0];
   else
     motion = 0.0f;
