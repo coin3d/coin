@@ -29,7 +29,14 @@
 #include <Inventor/C/basic.h>
 
 /* *********************************************************************** */
+/* Trap people trying to use Inventor headers while compiling C source code.
+ * (we get support mail about this from time to time)
+ */
+#ifndef __cplusplus
+#error You are not compiling C++ - maybe your source file is named <file>.c
+#endif
 
+/* *********************************************************************** */
 /* Include these for Open Inventor compatibility reasons (they are not
  * actually used in Coin.)
  */
