@@ -28,6 +28,18 @@
 #include <Inventor/misc/SoProto.h>
 #include <string.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_ZLIB
+#include <zlib.h>
+#endif // HAVE_ZLIB
+
+#ifdef HAVE_BZIP2
+#include <bzlib.h>
+#endif // HAVE_BZIP2
+
 const unsigned int READBUFSIZE = 65536;
 
 SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * reader)
@@ -320,4 +332,33 @@ SoInput_FileInfo::unrefProtos(void)
     this->protolist[i]->unref();
   }
   this->protolist.truncate(0);
+}
+
+//
+// tests fp and/or fullname, and opens the correct reader
+//
+SoInput_Reader * 
+SoInput_FileInfo::getReader(FILE * fp, const SbString & fullname)
+{
+  SoInput_Reader * reader = NULL;
+#ifdef HAVE_BZIP2
+  int bzerror = BZ_OK;
+  BZFILE * bzfp = BZ2_bzReadOpen(&bzerror,  fp, 0, 0, NULL, 0);
+  if ((bzerror == BZ_OK) && (bzfp != NULL)) {
+    reader = new SoInput_BZFileReader(fullname.getString(), (void*) bzfp);
+  }
+#endif // HAVE_BZIP2
+#ifdef HAVE_ZLIB
+  if (reader == NULL) {
+    gzFile gzfp = gzopen(fullname.getString(), "rb");
+    if (gzfp) {
+      fclose(fp); // close original file handle
+      reader = new SoInput_GZFileReader(fullname.getString(), (void*)gzfp);
+    }
+  }
+#endif // HAVE_ZLIB
+  if (reader == NULL) {
+    reader = new SoInput_FileReader(fullname.getString(), fp);
+  }
+  return reader;
 }

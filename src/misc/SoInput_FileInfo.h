@@ -138,6 +138,8 @@ public:
   void connectRoutes(class SoInput * in);
   void unrefProtos(void);
 
+  static SoInput_Reader * getReader(FILE * fp, const SbString & fullname);
+
 private:
   SoInput_Reader * reader;
 

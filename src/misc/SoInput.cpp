@@ -100,14 +100,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef HAVE_ZLIB
-#include <zlib.h>
-#endif // HAVE_ZLIB
-
-#ifdef HAVE_BZIP2
-#include <bzlib.h>
-#endif // HAVE_BZIP2
-
 #include <sys/stat.h>
 #if HAVE_UNISTD_H
 #include <unistd.h>
@@ -393,27 +385,8 @@ SoInput::openFile(const char * fileName, SbBool okIfNotFound)
   SbString fullname;
   FILE * fp = this->findFile(fileName, fullname);
   if (fp) {
-    SoInput_Reader * reader = NULL;
-#ifdef HAVE_BZIP2
-    int bzerror = BZ_OK;
-    BZFILE * bzfp = BZ2_bzReadOpen(&bzerror,  fp, 0, 0, NULL, 0);
-    if ((bzerror == BZ_OK) && (bzfp != NULL)) {
-      reader = new SoInput_BZFileReader(fullname.getString(), (void*) bzfp);
-    }
-#endif // HAVE_BZIP2
-#ifdef HAVE_ZLIB
-    if (reader == NULL) {
-      gzFile gzfp = gzopen(fullname.getString(), "rb");
-      if (gzfp) {
-        fclose(fp); // close original file handle
-        reader = new SoInput_GZFileReader(fullname.getString(), (void*)gzfp);
-      }
-    }
-#endif // HAVE_ZLIB
-    if (reader == NULL) {
-      reader = new SoInput_FileReader(fullname.getString(), fp);
-    }
-    assert(reader != NULL);
+    SoInput_Reader * reader = SoInput_FileInfo::getReader(fp, fullname);
+    assert(reader);
     SoInput_FileInfo * newfile = new SoInput_FileInfo(reader);
     this->filestack.insert(newfile, 0);
 
@@ -447,27 +420,7 @@ SoInput::pushFile(const char * filename)
   SbString fullname;
   FILE * fp = this->findFile(filename, fullname);
   if (fp) {
-    SoInput_Reader * reader = NULL;
-#ifdef HAVE_BZIP2
-    int bzerror = BZ_OK;
-    BZFILE * bzfp = BZ2_bzReadOpen(&bzerror,  fp, 0, 0, NULL, 0);
-    if ((bzerror == BZ_OK) && (bzfp != NULL)) {
-      reader = new SoInput_BZFileReader(fullname.getString(), (void*) bzfp);
-    }
-#endif // HAVE_BZIP2
-#ifdef HAVE_ZLIB
-    if (reader == NULL) {
-      gzFile gzfp = gzopen(fullname.getString(), "rb");
-      if (gzfp) {
-        fclose(fp); // close original file handle
-        reader = new SoInput_GZFileReader(fullname.getString(), (void*)gzfp);
-      }
-    }
-#endif // HAVE_ZLIB
-    if (reader == NULL) {
-      reader = new SoInput_FileReader(fullname.getString(), fp);
-    }
-    assert(reader != NULL);
+    SoInput_Reader * reader = SoInput_FileInfo::getReader(fp, fullname);
     SoInput_FileInfo * newfile = new SoInput_FileInfo(reader);
     this->filestack.insert(newfile, 0);
 
