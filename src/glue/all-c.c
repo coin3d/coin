@@ -28,6 +28,12 @@
 
 #include "dl.c"
 
+#include "win32api.c"
+
 #include "GLUWrapper.c"
 #include "simage_wrapper.c"
 #include "openal_wrapper.c"
+
+#include "fontlib_wrapper.c"
+#include "flwwin32.c"
+#include "flwfreetype.c"
