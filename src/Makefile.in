@@ -1,6 +1,6 @@
 # Makefile.in generated automatically by automake 1.4c from Makefile.am
 
-# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000
+# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -66,7 +66,6 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
-AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
 AS = @AS@
 AWK = @AWK@
@@ -88,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+INSTALL_HEADER = @INSTALL_HEADER@
 LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
@@ -101,6 +101,7 @@ PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 SUFFIX = @SUFFIX@
 VERSION = @VERSION@
+_am_include = @_am_include@
 coin_build_dir = @coin_build_dir@
 coin_configure_date = @coin_configure_date@
 coin_src_dir = @coin_src_dir@
@@ -255,15 +256,12 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 
 mostlyclean-libLTLIBRARIES:
 
-
 clean-libLTLIBRARIES:
 	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
 
 distclean-libLTLIBRARIES:
 
-
 maintainer-clean-libLTLIBRARIES:
-
 
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
@@ -306,10 +304,8 @@ install-libCoin@SUFFIX@incHEADERS: $(libCoin@SUFFIX@inc_HEADERS)
 	@list='$(libCoin@SUFFIX@inc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libCoin@SUFFIX@incdir)/$$f; then :; else \
-	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoin@SUFFIX@incdir)/$$f"; \
-	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoin@SUFFIX@incdir)/$$f; \
-	  fi \
+	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoin@SUFFIX@incdir)/$$f"; \
+	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoin@SUFFIX@incdir)/$$f; \
 	done
 
 uninstall-libCoin@SUFFIX@incHEADERS:
@@ -379,7 +375,6 @@ tags-recursive:
 
 tags: TAGS
 
-
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
@@ -415,7 +410,7 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/snprintf.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/snprintf.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -492,9 +487,7 @@ installdirs-am:
 
 mostlyclean-generic:
 
-
 clean-generic:
-
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
@@ -548,16 +541,22 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 
 #### Additional "native" Make rules #########################################
 
-coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_DEPENDENCIES)
+coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_DEPENDENCIES)
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
 	rm -f "$$basename.dll" "$$basename.lib"; \
 	if @BUILD_WITH_MSVC@; then \
-	  $(CC) $(LDFLAGS) @LIBFLAGS@ \
+	  echo "Linking $$basename.lib..."; \
+	  echo $(CC) $(LDFLAGS) $(LIBFLAGS) \
+	    `echo $(libCoin@SUFFIX@_la_OBJECTS) | sed 's%\.lo%.obj%g'` \
+	    $(libCoin@SUFFIX@_la_LIBADD) $(LIBS); \
+	  $(CC) $(LDFLAGS) $(LIBFLAGS) \
 	    `echo $(libCoin@SUFFIX@_la_OBJECTS) | sed 's%\.lo%.obj%g'` \
 	    $(libCoin@SUFFIX@_la_LIBADD) $(LIBS); \
 	else \
 	  touch "$$basename.dll" "$$basename.lib"; \
 	fi
+
+# **************************************************************************
 
 all-local: coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
 
@@ -565,6 +564,7 @@ install-exec-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
 	if test -s "$$basename.dll"; then \
 	  $(mkinstalldirs) "$(DESTDIR)$(bindir)"; \
+	  echo " $(INSTALL_PROGRAM)" "$$basename.dll" "$(DESTDIR)$(bindir)/$$basename.dll"; \
 	  $(INSTALL_PROGRAM) "$$basename.dll" "$(DESTDIR)$(bindir)/$$basename.dll"; \
 	fi
 
@@ -572,6 +572,7 @@ install-data-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
 	if test -s "$$basename.lib"; then \
 	  $(mkinstalldirs) "$(DESTDIR)$(libdir)"; \
+	  echo " $(INSTALL_DATA)" "$$basename.lib" "$(DESTDIR)$(libdir)/$$basename.lib"; \
 	  $(INSTALL_DATA) "$$basename.lib" "$(DESTDIR)$(libdir)/$$basename.lib"; \
 	fi
 
@@ -580,12 +581,12 @@ uninstall-local:
 	for file in \
 	  "$(DESTDIR)$(bindir)/$$basename.dll" \
 	  "$(DESTDIR)$(libdir)/$$basename.lib"; do \
-	  if test -f $$file; then \
-	    echo rm -f $$file && rm -f $$file; \
+	  if test -f "$$file"; then \
+	    echo " rm -f" "$$file"; \
+	    rm -f "$$file"; \
 	  fi \
 	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
-

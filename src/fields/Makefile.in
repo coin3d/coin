@@ -1,6 +1,6 @@
 # Makefile.in generated automatically by automake 1.4c from Makefile.am
 
-# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000
+# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -66,7 +66,6 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
-AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
 AS = @AS@
 AWK = @AWK@
@@ -88,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+INSTALL_HEADER = @INSTALL_HEADER@
 LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
@@ -101,6 +101,7 @@ PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 SUFFIX = @SUFFIX@
 VERSION = @VERSION@
+_am_include = @_am_include@
 coin_build_dir = @coin_build_dir@
 coin_configure_date = @coin_configure_date@
 coin_src_dir = @coin_src_dir@
@@ -360,15 +361,12 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 
 mostlyclean-libLTLIBRARIES:
 
-
 clean-libLTLIBRARIES:
 	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
 
 distclean-libLTLIBRARIES:
 
-
 maintainer-clean-libLTLIBRARIES:
-
 
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
@@ -389,15 +387,12 @@ uninstall-libLTLIBRARIES:
 
 mostlyclean-noinstLTLIBRARIES:
 
-
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
 
 distclean-noinstLTLIBRARIES:
 
-
 maintainer-clean-noinstLTLIBRARIES:
-
 
 mostlyclean-compile:
 	-rm -f *.o core *.core
@@ -426,10 +421,8 @@ install-libfieldsincHEADERS: $(libfieldsinc_HEADERS)
 	@list='$(libfieldsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libfieldsincdir)/$$f; then :; else \
-	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libfieldsincdir)/$$f"; \
-	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libfieldsincdir)/$$f; \
-	  fi \
+	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libfieldsincdir)/$$f"; \
+	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libfieldsincdir)/$$f; \
 	done
 
 uninstall-libfieldsincHEADERS:
@@ -441,7 +434,6 @@ uninstall-libfieldsincHEADERS:
 	done
 
 tags: TAGS
-
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
@@ -473,57 +465,57 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoField.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoFieldContainer.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoFieldData.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGlobalField.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFBitMask.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFBool.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFColor.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFEngine.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFEnum.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFFloat.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFInt32.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFMatrix.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFName.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFNode.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFPath.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFPlane.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFRotation.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFShort.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFString.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFTime.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFUInt32.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFUShort.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFVec2f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFVec3f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMFVec4f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMField.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFBitMask.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFBool.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFColor.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFEngine.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFEnum.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFFloat.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFImage.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFInt32.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFMatrix.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFName.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFNode.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFPath.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFPlane.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFRotation.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFShort.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFString.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFTime.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFTrigger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFUInt32.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFUShort.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFVec2f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFVec3f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSFVec4f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSField.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/all.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoField.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoFieldContainer.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoFieldData.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGlobalField.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFBitMask.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFBool.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFColor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFEngine.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFEnum.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFFloat.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFInt32.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFMatrix.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFName.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFNode.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFPath.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFPlane.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFRotation.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFShort.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFString.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFTime.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFUInt32.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFUShort.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFVec2f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFVec3f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMFVec4f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoMField.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFBitMask.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFBool.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFColor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFEngine.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFEnum.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFFloat.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFImage.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFInt32.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFMatrix.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFName.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFNode.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFPath.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFPlane.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFRotation.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFShort.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFString.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFTime.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFTrigger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFUInt32.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFUShort.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFVec2f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFVec3f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSFVec4f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSField.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/all.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -588,9 +580,7 @@ installdirs:
 
 mostlyclean-generic:
 
-
 clean-generic:
-
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
@@ -643,4 +633,3 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
-

@@ -378,9 +378,18 @@ SIM_COMPILER_WARNINGS
 #  any file during internal build.
 #
 #  The COIN_INTERNAL define is also in use to detect
-# "inefficient including"  internally.
+#  "inefficient including" internally.
 
 CPPFLAGS="$CPPFLAGS -DCOIN_INTERNAL"
+
+# **************************************************************************
+# do not install unchanged headers
+
+INSTALL_HEADER="\
+INSTALL='\$(INSTALL_DATA)' \$(SHELL) \$(top_srcdir)/cfg/install-header"
+AC_SUBST(INSTALL_HEADER)
+
+# **************************************************************************
 
 # Try to find snprintf() and vsnprintf() on the system.
 SIM_CHECK_NPRINTF
@@ -664,6 +673,9 @@ if $BUILD_WITH_MSVC; then
   if $COIN_STATIC; then
     LIBFLAGS="-LIB"
     LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.lib"
+    COIN_EXTRA_CPPFLAGS="-I$includedir"
+    COIN_EXTRA_LDFLAGS="-L$libdir"
+    COIN_EXTRA_LIBS=
   else
     LIBFLAGS="-DLL /INCREMENTAL:NO"
     if test x"$enable_debug" = xno; then

@@ -1,6 +1,6 @@
 # Makefile.in generated automatically by automake 1.4c from Makefile.am
 
-# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000
+# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -66,7 +66,6 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
-AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
 AS = @AS@
 AWK = @AWK@
@@ -88,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+INSTALL_HEADER = @INSTALL_HEADER@
 LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
@@ -101,6 +101,7 @@ PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 SUFFIX = @SUFFIX@
 VERSION = @VERSION@
+_am_include = @_am_include@
 coin_build_dir = @coin_build_dir@
 coin_configure_date = @coin_configure_date@
 coin_src_dir = @coin_src_dir@
@@ -348,15 +349,12 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 
 mostlyclean-libLTLIBRARIES:
 
-
 clean-libLTLIBRARIES:
 	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
 
 distclean-libLTLIBRARIES:
 
-
 maintainer-clean-libLTLIBRARIES:
-
 
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
@@ -377,15 +375,12 @@ uninstall-libLTLIBRARIES:
 
 mostlyclean-noinstLTLIBRARIES:
 
-
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
 
 distclean-noinstLTLIBRARIES:
 
-
 maintainer-clean-noinstLTLIBRARIES:
-
 
 mostlyclean-compile:
 	-rm -f *.o core *.core
@@ -414,10 +409,8 @@ install-libenginesincHEADERS: $(libenginesinc_HEADERS)
 	@list='$(libenginesinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; then :; else \
-	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f"; \
-	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; \
-	  fi \
+	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f"; \
+	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; \
 	done
 
 uninstall-libenginesincHEADERS:
@@ -429,7 +422,6 @@ uninstall-libenginesincHEADERS:
 	done
 
 tags: TAGS
-
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
@@ -461,44 +453,44 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoBoolOperation.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCalculator.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoComposeMatrix.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoComposeRotation.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoComposeRotationFromTo.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoComposeVec2f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoComposeVec3f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoComposeVec4f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoComputeBoundingBox.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoConcatenate.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoConvertAll.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCounter.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDecomposeMatrix.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDecomposeRotation.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDecomposeVec2f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDecomposeVec3f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDecomposeVec4f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoElapsedTime.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoEngine.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoEngineOutput.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoFieldConverter.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGate.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInterpolate.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInterpolateFloat.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInterpolateRotation.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInterpolateVec2f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInterpolateVec3f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInterpolateVec4f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoOnOff.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoOneShot.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoOutputData.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSelectOne.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTimeCounter.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTransformVec3f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTriggerAny.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/all.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/evaluator.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/evaluator_tab.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoBoolOperation.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoCalculator.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoComposeMatrix.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoComposeRotation.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoComposeRotationFromTo.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoComposeVec2f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoComposeVec3f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoComposeVec4f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoComputeBoundingBox.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoConcatenate.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoConvertAll.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoCounter.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDecomposeMatrix.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDecomposeRotation.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDecomposeVec2f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDecomposeVec3f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDecomposeVec4f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoElapsedTime.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoEngine.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoEngineOutput.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoFieldConverter.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGate.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoInterpolate.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoInterpolateFloat.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoInterpolateRotation.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoInterpolateVec2f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoInterpolateVec3f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoInterpolateVec4f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoOnOff.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoOneShot.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoOutputData.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSelectOne.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTimeCounter.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTransformVec3f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTriggerAny.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/all.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/evaluator.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/evaluator_tab.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -578,9 +570,7 @@ installdirs:
 
 mostlyclean-generic:
 
-
 clean-generic:
-
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
@@ -633,4 +623,3 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
-

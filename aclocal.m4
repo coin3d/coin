@@ -228,7 +228,7 @@ AC_DEFUN([AM_INIT_AUTOMAKE],
 # test to see if srcdir already configured
 if test "`CDPATH=:; cd $srcdir && pwd`" != "`pwd`" &&
    test -f $srcdir/config.status; then
-  AC_MSG_ERROR([source directory already configured; run "make distclean" there first])
+  AC_MSG_ERROR([source directory already configured; run \"make distclean\" there first])
 fi
 
 # Define the identity of the package.
@@ -557,16 +557,16 @@ doit:
 END
 # If we don't find an include directive, just comment out the code.
 AC_MSG_CHECKING([for style of include used by $am_make])
-AMINCLUDE='#'
+_am_include='#'
 for am_inc in include .include; do
    echo "$am_inc confinc" > confmf
    if test "`$am_make -f confmf 2> /dev/null`" = "done"; then
-      AMINCLUDE=$am_inc
+      _am_include=$am_inc
       break
    fi
 done
-AC_SUBST(AMINCLUDE)
-AC_MSG_RESULT($AMINCLUDE)
+AC_SUBST(_am_include)
+AC_MSG_RESULT($_am_include)
 rm -f confinc confmf
 ])
 

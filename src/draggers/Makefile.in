@@ -1,6 +1,6 @@
 # Makefile.in generated automatically by automake 1.4c from Makefile.am
 
-# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000
+# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -66,7 +66,6 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
-AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
 AS = @AS@
 AWK = @AWK@
@@ -88,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+INSTALL_HEADER = @INSTALL_HEADER@
 LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
@@ -101,6 +101,7 @@ PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 SUFFIX = @SUFFIX@
 VERSION = @VERSION@
+_am_include = @_am_include@
 coin_build_dir = @coin_build_dir@
 coin_configure_date = @coin_configure_date@
 coin_src_dir = @coin_src_dir@
@@ -290,15 +291,12 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 
 mostlyclean-libLTLIBRARIES:
 
-
 clean-libLTLIBRARIES:
 	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
 
 distclean-libLTLIBRARIES:
 
-
 maintainer-clean-libLTLIBRARIES:
-
 
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
@@ -319,15 +317,12 @@ uninstall-libLTLIBRARIES:
 
 mostlyclean-noinstLTLIBRARIES:
 
-
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
 
 distclean-noinstLTLIBRARIES:
 
-
 maintainer-clean-noinstLTLIBRARIES:
-
 
 mostlyclean-compile:
 	-rm -f *.o core *.core
@@ -356,10 +351,8 @@ install-libdraggersincHEADERS: $(libdraggersinc_HEADERS)
 	@list='$(libdraggersinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libdraggersincdir)/$$f; then :; else \
-	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libdraggersincdir)/$$f"; \
-	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libdraggersincdir)/$$f; \
-	  fi \
+	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libdraggersincdir)/$$f"; \
+	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libdraggersincdir)/$$f; \
 	done
 
 uninstall-libdraggersincHEADERS:
@@ -371,7 +364,6 @@ uninstall-libdraggersincHEADERS:
 	done
 
 tags: TAGS
-
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
@@ -403,29 +395,29 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCenterballDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDirectionalLightDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDragPointDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoHandleBoxDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoJackDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPointLightDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoRotateCylindricalDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoRotateDiscDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoRotateSphericalDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoScale1Dragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoScale2Dragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoScale2UniformDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoScaleUniformDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSpotLightDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTabBoxDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTabPlaneDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTrackballDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTransformBoxDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTransformerDragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTranslate1Dragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTranslate2Dragger.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/all.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoCenterballDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDirectionalLightDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDragPointDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoHandleBoxDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoJackDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoPointLightDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoRotateCylindricalDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoRotateDiscDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoRotateSphericalDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoScale1Dragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoScale2Dragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoScale2UniformDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoScaleUniformDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSpotLightDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTabBoxDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTabPlaneDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTrackballDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTransformBoxDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTransformerDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTranslate1Dragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTranslate2Dragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/all.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -490,9 +482,7 @@ installdirs:
 
 mostlyclean-generic:
 
-
 clean-generic:
-
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
@@ -545,4 +535,3 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
-

@@ -85,16 +85,22 @@ libCoin@SUFFIX@inc_HEADERS = \
 
 ## Rule for creating a Windows library.
 
-coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_DEPENDENCIES)
+coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_DEPENDENCIES)
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
 	rm -f "$$basename.dll" "$$basename.lib"; \
 	if @BUILD_WITH_MSVC@; then \
-	  $(CC) $(LDFLAGS) @LIBFLAGS@ \
+	  echo "Linking $$basename.lib..."; \
+	  echo $(CC) $(LDFLAGS) $(LIBFLAGS) \
+	    `echo $(libCoin@SUFFIX@_la_OBJECTS) | sed 's%\.lo%.obj%g'` \
+	    $(libCoin@SUFFIX@_la_LIBADD) $(LIBS); \
+	  $(CC) $(LDFLAGS) $(LIBFLAGS) \
 	    `echo $(libCoin@SUFFIX@_la_OBJECTS) | sed 's%\.lo%.obj%g'` \
 	    $(libCoin@SUFFIX@_la_LIBADD) $(LIBS); \
 	else \
 	  touch "$$basename.dll" "$$basename.lib"; \
 	fi
+
+# **************************************************************************
 
 all-local: coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
 
@@ -102,6 +108,7 @@ install-exec-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
 	if test -s "$$basename.dll"; then \
 	  $(mkinstalldirs) "$(DESTDIR)$(bindir)"; \
+	  echo " $(INSTALL_PROGRAM)" "$$basename.dll" "$(DESTDIR)$(bindir)/$$basename.dll"; \
 	  $(INSTALL_PROGRAM) "$$basename.dll" "$(DESTDIR)$(bindir)/$$basename.dll"; \
 	fi
 
@@ -109,6 +116,7 @@ install-data-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
 	if test -s "$$basename.lib"; then \
 	  $(mkinstalldirs) "$(DESTDIR)$(libdir)"; \
+	  echo " $(INSTALL_DATA)" "$$basename.lib" "$(DESTDIR)$(libdir)/$$basename.lib"; \
 	  $(INSTALL_DATA) "$$basename.lib" "$(DESTDIR)$(libdir)/$$basename.lib"; \
 	fi
 
@@ -117,8 +125,9 @@ uninstall-local:
 	for file in \
 	  "$(DESTDIR)$(bindir)/$$basename.dll" \
 	  "$(DESTDIR)$(libdir)/$$basename.lib"; do \
-	  if test -f $$file; then \
-	    echo rm -f $$file && rm -f $$file; \
+	  if test -f "$$file"; then \
+	    echo " rm -f" "$$file"; \
+	    rm -f "$$file"; \
 	  fi \
 	done
 

@@ -1,6 +1,6 @@
 # Makefile.in generated automatically by automake 1.4c from Makefile.am
 
-# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000
+# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -66,7 +66,6 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
-AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
 AS = @AS@
 AWK = @AWK@
@@ -88,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+INSTALL_HEADER = @INSTALL_HEADER@
 LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
@@ -101,6 +101,7 @@ PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 SUFFIX = @SUFFIX@
 VERSION = @VERSION@
+_am_include = @_am_include@
 coin_build_dir = @coin_build_dir@
 coin_configure_date = @coin_configure_date@
 coin_src_dir = @coin_src_dir@
@@ -256,15 +257,12 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 
 mostlyclean-libLTLIBRARIES:
 
-
 clean-libLTLIBRARIES:
 	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
 
 distclean-libLTLIBRARIES:
 
-
 maintainer-clean-libLTLIBRARIES:
-
 
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
@@ -285,15 +283,12 @@ uninstall-libLTLIBRARIES:
 
 mostlyclean-noinstLTLIBRARIES:
 
-
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
 
 distclean-noinstLTLIBRARIES:
 
-
 maintainer-clean-noinstLTLIBRARIES:
-
 
 mostlyclean-compile:
 	-rm -f *.o core *.core
@@ -322,10 +317,8 @@ install-libprojectorsincHEADERS: $(libprojectorsinc_HEADERS)
 	@list='$(libprojectorsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f; then :; else \
-	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f"; \
-	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f; \
-	  fi \
+	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f"; \
+	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f; \
 	done
 
 uninstall-libprojectorsincHEADERS:
@@ -337,7 +330,6 @@ uninstall-libprojectorsincHEADERS:
 	done
 
 tags: TAGS
-
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
@@ -369,18 +361,18 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbCylinderPlaneProjector.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbCylinderProjector.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbCylinderSectionProjector.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbCylinderSheetProjector.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbLineProjector.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbPlaneProjector.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbProjector.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbSpherePlaneProjector.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbSphereProjector.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbSphereSectionProjector.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbSphereSheetProjector.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/all.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbCylinderPlaneProjector.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbCylinderProjector.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbCylinderSectionProjector.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbCylinderSheetProjector.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbLineProjector.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbPlaneProjector.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbProjector.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbSpherePlaneProjector.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbSphereProjector.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbSphereSectionProjector.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbSphereSheetProjector.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/all.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -445,9 +437,7 @@ installdirs:
 
 mostlyclean-generic:
 
-
 clean-generic:
-
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
@@ -500,4 +490,3 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
-

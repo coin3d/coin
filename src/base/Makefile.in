@@ -1,6 +1,6 @@
 # Makefile.in generated automatically by automake 1.4c from Makefile.am
 
-# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000
+# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -66,7 +66,6 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
-AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
 AS = @AS@
 AWK = @AWK@
@@ -88,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+INSTALL_HEADER = @INSTALL_HEADER@
 LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
@@ -101,6 +101,7 @@ PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 SUFFIX = @SUFFIX@
 VERSION = @VERSION@
+_am_include = @_am_include@
 coin_build_dir = @coin_build_dir@
 coin_configure_date = @coin_configure_date@
 coin_src_dir = @coin_src_dir@
@@ -252,15 +253,12 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 
 mostlyclean-libLTLIBRARIES:
 
-
 clean-libLTLIBRARIES:
 	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
 
 distclean-libLTLIBRARIES:
 
-
 maintainer-clean-libLTLIBRARIES:
-
 
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
@@ -281,15 +279,12 @@ uninstall-libLTLIBRARIES:
 
 mostlyclean-noinstLTLIBRARIES:
 
-
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
 
 distclean-noinstLTLIBRARIES:
 
-
 maintainer-clean-noinstLTLIBRARIES:
-
 
 mostlyclean-compile:
 	-rm -f *.o core *.core
@@ -318,10 +313,8 @@ install-libbaseincHEADERS: $(libbaseinc_HEADERS)
 	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; then :; else \
-	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f"; \
-	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; \
-	  fi \
+	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f"; \
+	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; \
 	done
 
 uninstall-libbaseincHEADERS:
@@ -333,7 +326,6 @@ uninstall-libbaseincHEADERS:
 	done
 
 tags: TAGS
-
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
@@ -365,34 +357,34 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbBSPTree.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbBox2f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbBox2s.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbBox3f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbColor.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbColor4f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbCylinder.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbDict.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbHeap.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbImage.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbLine.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbMatrix.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbName.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbOctTree.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbPlane.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbRotation.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbSphere.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbString.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbTesselator.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbTime.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbVec2f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbVec2s.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbVec3f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbVec4f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbViewVolume.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbViewportRegion.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbXfBox3f.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/all.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbBSPTree.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbBox2f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbBox2s.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbBox3f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbColor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbColor4f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbCylinder.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbDict.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbHeap.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbImage.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbLine.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbMatrix.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbName.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbOctTree.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbPlane.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbRotation.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbSphere.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbString.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbTesselator.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbTime.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbVec2f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbVec2s.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbVec3f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbVec4f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbViewVolume.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbViewportRegion.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbXfBox3f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/all.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -456,9 +448,7 @@ installdirs:
 
 mostlyclean-generic:
 
-
 clean-generic:
-
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
@@ -511,4 +501,3 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
-

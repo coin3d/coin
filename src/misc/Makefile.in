@@ -1,6 +1,6 @@
 # Makefile.in generated automatically by automake 1.4c from Makefile.am
 
-# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000
+# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -66,7 +66,6 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
-AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
 AS = @AS@
 AWK = @AWK@
@@ -88,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+INSTALL_HEADER = @INSTALL_HEADER@
 LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
@@ -101,6 +101,7 @@ PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 SUFFIX = @SUFFIX@
 VERSION = @VERSION@
+_am_include = @_am_include@
 coin_build_dir = @coin_build_dir@
 coin_configure_date = @coin_configure_date@
 coin_src_dir = @coin_src_dir@
@@ -280,15 +281,12 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 
 mostlyclean-libLTLIBRARIES:
 
-
 clean-libLTLIBRARIES:
 	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
 
 distclean-libLTLIBRARIES:
 
-
 maintainer-clean-libLTLIBRARIES:
-
 
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
@@ -309,15 +307,12 @@ uninstall-libLTLIBRARIES:
 
 mostlyclean-noinstLTLIBRARIES:
 
-
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
 
 distclean-noinstLTLIBRARIES:
 
-
 maintainer-clean-noinstLTLIBRARIES:
-
 
 mostlyclean-compile:
 	-rm -f *.o core *.core
@@ -346,10 +341,8 @@ install-libmiscincHEADERS: $(libmiscinc_HEADERS)
 	@list='$(libmiscinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libmiscincdir)/$$f; then :; else \
-	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f"; \
-	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f; \
-	  fi \
+	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f"; \
+	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f; \
 	done
 
 uninstall-libmiscincHEADERS:
@@ -361,7 +354,6 @@ uninstall-libmiscincHEADERS:
 	done
 
 tags: TAGS
-
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
@@ -393,37 +385,37 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/GLUWrapper.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoBase.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoByteStream.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoChildList.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDB.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoFullPath.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGL.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLImage.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGenerate.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGlyph.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInput.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInteraction.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLightPath.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLockManager.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNormalGenerator.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNotification.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoOffscreenRenderer.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoOutput.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPath.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPickedPoint.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPrimitiveVertex.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSceneManager.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoState.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTempPath.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTranReceiver.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTranSender.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoType.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/all.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/default2dfont.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/default3dfont.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/simage_wrapper.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/GLUWrapper.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoBase.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoByteStream.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoChildList.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDB.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoFullPath.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGL.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGLImage.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGenerate.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGlyph.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoInput.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoInteraction.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoLightPath.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoLockManager.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoNormalGenerator.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoNotification.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoOffscreenRenderer.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoOutput.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoPath.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoPickedPoint.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoPrimitiveVertex.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSceneManager.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoState.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTempPath.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTranReceiver.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTranSender.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoType.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/all.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/default2dfont.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/default3dfont.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/simage_wrapper.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -503,9 +495,7 @@ installdirs:
 
 mostlyclean-generic:
 
-
 clean-generic:
-
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
@@ -558,4 +548,3 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
-

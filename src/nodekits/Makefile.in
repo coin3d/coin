@@ -1,6 +1,6 @@
 # Makefile.in generated automatically by automake 1.4c from Makefile.am
 
-# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000
+# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -66,7 +66,6 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
-AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
 AS = @AS@
 AWK = @AWK@
@@ -88,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+INSTALL_HEADER = @INSTALL_HEADER@
 LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
@@ -101,6 +101,7 @@ PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 SUFFIX = @SUFFIX@
 VERSION = @VERSION@
+_am_include = @_am_include@
 coin_build_dir = @coin_build_dir@
 coin_configure_date = @coin_configure_date@
 coin_src_dir = @coin_src_dir@
@@ -243,15 +244,12 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 
 mostlyclean-libLTLIBRARIES:
 
-
 clean-libLTLIBRARIES:
 	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
 
 distclean-libLTLIBRARIES:
 
-
 maintainer-clean-libLTLIBRARIES:
-
 
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
@@ -272,15 +270,12 @@ uninstall-libLTLIBRARIES:
 
 mostlyclean-noinstLTLIBRARIES:
 
-
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
 
 distclean-noinstLTLIBRARIES:
 
-
 maintainer-clean-noinstLTLIBRARIES:
-
 
 mostlyclean-compile:
 	-rm -f *.o core *.core
@@ -309,10 +304,8 @@ install-libnodekitsincHEADERS: $(libnodekitsinc_HEADERS)
 	@list='$(libnodekitsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; then :; else \
-	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f"; \
-	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; \
-	  fi \
+	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f"; \
+	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; \
 	done
 
 uninstall-libnodekitsincHEADERS:
@@ -324,7 +317,6 @@ uninstall-libnodekitsincHEADERS:
 	done
 
 tags: TAGS
-
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
@@ -356,20 +348,20 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoAppearanceKit.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoBaseKit.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCameraKit.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInteractionKit.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLightKit.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNodeKit.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNodeKitListPart.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNodeKitPath.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNodekitCatalog.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSceneKit.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSeparatorKit.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoShapeKit.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoWrapperKit.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/all.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoAppearanceKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoBaseKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoCameraKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoInteractionKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoLightKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoNodeKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoNodeKitListPart.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoNodeKitPath.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoNodekitCatalog.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSceneKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSeparatorKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoShapeKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoWrapperKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/all.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -434,9 +426,7 @@ installdirs:
 
 mostlyclean-generic:
 
-
 clean-generic:
-
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
@@ -489,4 +479,3 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
-

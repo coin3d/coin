@@ -1,6 +1,6 @@
 # Makefile.in generated automatically by automake 1.4c from Makefile.am
 
-# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000
+# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -66,7 +66,6 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
-AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
 AS = @AS@
 AWK = @AWK@
@@ -88,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+INSTALL_HEADER = @INSTALL_HEADER@
 LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
@@ -101,6 +101,7 @@ PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 SUFFIX = @SUFFIX@
 VERSION = @VERSION@
+_am_include = @_am_include@
 coin_build_dir = @coin_build_dir@
 coin_configure_date = @coin_configure_date@
 coin_src_dir = @coin_src_dir@
@@ -123,7 +124,7 @@ subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = config.h ./include/Inventor/SbBasic.h
-CONFIG_CLEAN_FILES = 
+CONFIG_CLEAN_FILES =  docs/coin.doxygen
 SCRIPTS =  $(bin_SCRIPTS)
 
 DIST_SOURCES = 
@@ -181,6 +182,8 @@ $(srcdir)/./stamp-h1.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) acconfig.h
 
 distclean-hdr:
 	-rm -f config.h
+docs/coin.doxygen: $(top_builddir)/config.status $(top_srcdir)/docs/coin.doxygen.in
+	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= CONFIG_LINKS= CONFIG_COMMANDS= $(SHELL) ./config.status
 
 install-binSCRIPTS: $(bin_SCRIPTS)
 	@$(NORMAL_INSTALL)
@@ -208,7 +211,7 @@ install-cfgdataDATA: $(cfgdata_DATA)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(cfgdatadir)
 	@list='$(cfgdata_DATA)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(cfgdatadir)/$$f"; \
 	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(cfgdatadir)/$$f; \
@@ -226,7 +229,7 @@ install-m4dataDATA: $(m4data_DATA)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(m4datadir)
 	@list='$(m4data_DATA)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(m4datadir)/$$f"; \
 	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(m4datadir)/$$f; \
@@ -298,7 +301,6 @@ tags-recursive:
 	done
 
 tags: TAGS
-
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
@@ -389,7 +391,7 @@ dist-all: distdir
 distdir: $(DISTFILES)
 	-chmod -R a+w $(distdir) > /dev/null 2>&1; rm -rf $(distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/. $(distdir)/cfg . cfg
+	$(mkinstalldirs) $(distdir)/build $(distdir)/cfg $(distdir)/docs build cfg docs
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -446,9 +448,7 @@ installdirs-am:
 
 mostlyclean-generic:
 
-
 clean-generic:
-
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
@@ -502,4 +502,3 @@ doxygen-doc:
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
-

@@ -1,6 +1,6 @@
 # Makefile.in generated automatically by automake 1.4c from Makefile.am
 
-# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000
+# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -66,7 +66,6 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
-AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
 AS = @AS@
 AWK = @AWK@
@@ -88,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+INSTALL_HEADER = @INSTALL_HEADER@
 LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
@@ -101,6 +101,7 @@ PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 SUFFIX = @SUFFIX@
 VERSION = @VERSION@
+_am_include = @_am_include@
 coin_build_dir = @coin_build_dir@
 coin_configure_date = @coin_configure_date@
 coin_src_dir = @coin_src_dir@
@@ -239,15 +240,12 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 
 mostlyclean-libLTLIBRARIES:
 
-
 clean-libLTLIBRARIES:
 	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
 
 distclean-libLTLIBRARIES:
 
-
 maintainer-clean-libLTLIBRARIES:
-
 
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
@@ -268,15 +266,12 @@ uninstall-libLTLIBRARIES:
 
 mostlyclean-noinstLTLIBRARIES:
 
-
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
 
 distclean-noinstLTLIBRARIES:
 
-
 maintainer-clean-noinstLTLIBRARIES:
-
 
 mostlyclean-compile:
 	-rm -f *.o core *.core
@@ -305,10 +300,8 @@ install-libsensorsincHEADERS: $(libsensorsinc_HEADERS)
 	@list='$(libsensorsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; then :; else \
-	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f"; \
-	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; \
-	  fi \
+	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f"; \
+	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; \
 	done
 
 uninstall-libsensorsincHEADERS:
@@ -320,7 +313,6 @@ uninstall-libsensorsincHEADERS:
 	done
 
 tags: TAGS
-
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
@@ -352,19 +344,19 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoAlarmSensor.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDataSensor.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDelayQueueSensor.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoFieldSensor.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoIdleSensor.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNodeSensor.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoOneShotSensor.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPathSensor.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSensor.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSensorManager.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTimerQueueSensor.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTimerSensor.Plo
-@AMDEP@@AMINCLUDE@ $(DEPDIR)/all.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoAlarmSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDataSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDelayQueueSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoFieldSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoIdleSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoNodeSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoOneShotSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoPathSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSensorManager.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTimerQueueSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTimerSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/all.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -429,9 +421,7 @@ installdirs:
 
 mostlyclean-generic:
 
-
 clean-generic:
-
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
@@ -484,4 +474,3 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
-

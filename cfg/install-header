@@ -1,0 +1,15 @@
+#! /bin/sh
+
+if test $# -ne 2; then
+  echo >&2 $0: invalid number of arguments.
+  exit 1
+fi
+
+if cmp -s "$1" "$2"; then
+  # equal files - don't install
+  :
+else
+  echo " $INSTALL" $1 $2
+  $INSTALL $1 $2
+fi
+
