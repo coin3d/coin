@@ -4580,3 +4580,19 @@ Transform {
     20050310 mortene.
 
 =====================================================================
+
+189 SoWWWInline::alternateRep not working.
+
+    Setting up the alternateRep field doesn't seem to work as expected
+    (or at all, actually). This simple scene graph shown in an
+    examiner viewer will not display the alternateRep for Coin, while
+    SGI Inventor ivview will correctly show the Cone:
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#Inventor V2.1 ascii
+
+WWWInline { alternateRep Group { BaseColor { rgb .2 .4 .6 } Cone { } } }
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    20050315 mortene.
+=====================================================================
