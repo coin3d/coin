@@ -254,7 +254,7 @@ coin_bspnode::split()
 //   }
 
 
-#ifdef COIN_DEBUG
+#if COIN_DEBUG
   if (!this->left->indices.getLength() ||
       !this->right->indices.getLength()) {
     fprintf(stderr,"Left:\n");

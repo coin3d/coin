@@ -64,9 +64,7 @@
 */
 
 
-#ifdef COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #include <Inventor/lists/SoTypeList.h>
 // MSVC++ needs 'SbName.h' and 'SbString.h' to compile
@@ -176,7 +174,7 @@ SoType::createType(const SoType parent, const SbName name,
                    const instantiationMethod method,
                    const uint16_t data)
 {
-#ifdef COIN_DEBUG
+#if COIN_DEBUG
   if (SoType::fromName(name.getString()) != SoType::badType()) {
     SoDebugError::post("SoType::createType",
                        "a type with name ``%s'' already created",
