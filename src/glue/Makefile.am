@@ -1,16 +1,8 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
-if HAVE_FREETYPE
-        FREETYPEHEADERS = ../../include/Inventor/C/glue/flwfreetype.h
-        FREETYPESOURCE = flwfreetype.c
-else
-        FREETYPEHEADERS = 
-        FREETYPESOURCE = 
-endif
-
 RegularSources = \
-        $(FREETYPESOURCE) \
+        flwfreetype.c \
 	dl.c \
 	gl.c \
 	gl_wgl.c gl_agl.c gl_glx.c \
@@ -25,7 +17,7 @@ LinkHackSources = \
 # Header installation is controlled from include/Inventor/C/glue/Makefile.am.
 PublicHeaders =
 PrivateHeaders = \
-        $(FREETYPEHEADERS) \
+        ../../include/Inventor/C/glue/flwfreetype.h \
 	../../include/Inventor/C/glue/glp.h \
 	../../include/Inventor/C/glue/gl_wgl.h \
 	../../include/Inventor/C/glue/gl_glx.h \
