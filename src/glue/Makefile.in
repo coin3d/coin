@@ -139,7 +139,7 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 RegularSources = \
 	gl.c \
-	gl_wgl.c gl_wgl.h \
+	gl_wgl.c gl_wgl.h gl_nsgl.c gl_nsgl.h\
 	gl_glx.c gl_glx.h \
 	dl.c
 
@@ -206,8 +206,8 @@ glue_lst_AR = $(AR) cru
 glue_lst_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_glue_lst_OBJECTS = all-c.$(OBJEXT)
 @HACKING_COMPACT_BUILD_FALSE@am_glue_lst_OBJECTS = gl.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	gl_wgl.$(OBJEXT) gl_glx.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	dl.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@	gl_wgl.$(OBJEXT) gl_nsgl.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	gl_glx.$(OBJEXT) dl.$(OBJEXT)
 glue_lst_OBJECTS = $(am_glue_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -215,14 +215,15 @@ libglue_la_LDFLAGS =
 libglue_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_libglue_la_OBJECTS = all-c.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libglue_la_OBJECTS = gl.lo gl_wgl.lo \
-@HACKING_COMPACT_BUILD_FALSE@	gl_glx.lo dl.lo
+@HACKING_COMPACT_BUILD_FALSE@	gl_nsgl.lo gl_glx.lo dl.lo
 libglue_la_OBJECTS = $(am_libglue_la_OBJECTS)
 libglue@SUFFIX@LINKHACK_la_LDFLAGS =
 libglue@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_libglue@SUFFIX@LINKHACK_la_OBJECTS = \
 @HACKING_COMPACT_BUILD_TRUE@	all-c.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libglue@SUFFIX@LINKHACK_la_OBJECTS = \
-@HACKING_COMPACT_BUILD_FALSE@	gl.lo gl_wgl.lo gl_glx.lo dl.lo
+@HACKING_COMPACT_BUILD_FALSE@	gl.lo gl_wgl.lo gl_nsgl.lo \
+@HACKING_COMPACT_BUILD_FALSE@	gl_glx.lo dl.lo
 libglue@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libglue@SUFFIX@LINKHACK_la_OBJECTS)
 
@@ -234,7 +235,8 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@DEP_FILES = $(DEPDIR)/all-c.Plo $(DEPDIR)/all-c.Po \
 @AMDEP_TRUE@	$(DEPDIR)/dl.Plo $(DEPDIR)/dl.Po $(DEPDIR)/gl.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/gl.Po $(DEPDIR)/gl_glx.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/gl_glx.Po $(DEPDIR)/gl_wgl.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/gl_glx.Po $(DEPDIR)/gl_nsgl.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/gl_nsgl.Po $(DEPDIR)/gl_wgl.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/gl_wgl.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -319,6 +321,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl_glx.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl_glx.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl_nsgl.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl_nsgl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl_wgl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl_wgl.Po@am__quote@
 
@@ -494,7 +498,7 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 # this rule causes a make warning, so we remove it when it is not in use
 glue.lst: Makefile $(glue_lst_OBJECTS)
 	@echo "Linking glue.lst..."; \
-	rm -f $@; \
+	rm -f $@; touch $@; \
 	for i in $(glue_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libglueincHEADERS: $(libglueinc_HEADERS)

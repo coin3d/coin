@@ -3,7 +3,7 @@
 
 RegularSources = \
 	gl.c \
-	gl_wgl.c gl_wgl.h \
+	gl_wgl.c gl_wgl.h gl_nsgl.c gl_nsgl.h \
 	gl_glx.c gl_glx.h \
 	dl.c
 

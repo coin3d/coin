@@ -1,3 +1,6 @@
+#ifndef COIN_GLUE_INTERNAL_NSGL_H
+#define COIN_GLUE_INTERNAL_NSGL_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,9 +24,22 @@
  *
 \**************************************************************************/
 
-#include "gl.c"
-#include "gl_wgl.c"
-#include "gl_glx.c"
-#include "gl_nsgl.c"
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
-#include "dl.c"
+#if 0 /* to get proper auto-indentation in emacs */
+}
+#endif /* emacs indentation */
+
+
+
+void * coin_nsgl_getprocaddress(const char * fname);
+
+
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif /* !COIN_GLUE_INTERNAL_WGL_H */

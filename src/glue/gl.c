@@ -109,9 +109,7 @@
    UPDATE: fetch the define from include/Inventor/C/glue/dl.h (or
    dlp.h). 20020919 mortene.
 */
-#ifndef __APPLE__
 #define COIN_OPENGL_DYNAMIC_BINDING
-#endif
 
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/threads/threadsutilp.h>
@@ -122,6 +120,7 @@
 
 #include "gl_wgl.h"
 #include "gl_glx.h"
+#include "gl_nsgl.h"
 
 static cc_libhandle glglue_self_handle = NULL;
 static SbBool glglue_tried_open_self = FALSE;
@@ -195,6 +194,9 @@ glglue_getprocaddress(const char * symname)
   if (ptr) goto returnpoint;
 
   ptr = glxglue_getprocaddress(symname);
+  if (ptr) goto returnpoint;
+
+  ptr = coin_nsgl_getprocaddress(symname);
   if (ptr) goto returnpoint;
 
   if (glglue_self_handle) {
