@@ -444,10 +444,6 @@ SoSeparator::GLRender(SoGLRenderAction * action)
 void
 SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
 {
-  // FIXME: for now we just cache if the renderCaching field is
-  // ON. We'll develop the heuristics for automatically deciding when
-  // to cache or not upon renderCaching==AUTO later.  pederb, 20001005
-
   SoState * state = action->getState();
   state->push();
   SbBool didcull = FALSE;
