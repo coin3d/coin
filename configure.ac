@@ -475,7 +475,7 @@ AC_SUBST([HAVE_THREADSAFE])
 # Headers we might want to use
 
 # We expect these to include their dependencies.
-AC_CHECK_HEADERS([unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h time.h io.h windows.h libgen.h])
+AC_CHECK_HEADERS([unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h time.h io.h windows.h libgen.h direct.h])
 
 SIM_AC_CHECK_HEADER_TLHELP32_H
 SIM_AC_CHECK_FUNC__SPLITPATH
@@ -826,6 +826,45 @@ AC_TRY_LINK([
 ], [
   AC_MSG_RESULT([yes])
   AC_DEFINE([HAVE__FTIME],1, [Define to use Win32 _ftime()])
+], [
+  AC_MSG_RESULT([no])
+])
+
+AC_MSG_CHECKING([for ftime() function])
+AC_TRY_LINK([
+#include <sys/timeb.h>
+], [
+  struct timeb timebuffer;
+  ftime(&timebuffer);
+], [
+  AC_MSG_RESULT([yes])
+  AC_DEFINE([HAVE_FTIME],1, [Define to use ftime()])
+], [
+  AC_MSG_RESULT([no])
+])
+
+AC_MSG_CHECKING([for _getcwd() function])
+AC_TRY_LINK([
+#include <direct.h>
+], [
+  char buf[512];
+  _getcwd(buf, 512);
+], [
+  AC_MSG_RESULT([yes])
+  AC_DEFINE([HAVE__GETCWD],1, [Define to use Win32 _getcwd()])
+], [
+  AC_MSG_RESULT([no])
+])
+
+AC_MSG_CHECKING([for getcwd() function])
+AC_TRY_LINK([
+#include <unistd.h>
+], [
+  char buf[512];
+  getcwd(buf, 512);
+], [
+  AC_MSG_RESULT([yes])
+  AC_DEFINE([HAVE_GETCWD],1, [Define to use getcwd()])
 ], [
   AC_MSG_RESULT([no])
 ])

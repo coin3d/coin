@@ -8420,7 +8420,7 @@ if test x"$with_dl" != xno; then
     if ! $sim_ac_dl_avail; then
       LIBS="$sim_ac_dl_libcheck $sim_ac_save_libs"
       AC_TRY_LINK([
-#if HAVE_DLFCN_H
+#ifdef HAVE_DLFCN_H
 #include <dlfcn.h>
 #endif /* HAVE_DLFCN_H */
 ],
@@ -8478,7 +8478,7 @@ if $sim_ac_win32_loadlibrary; then
   AC_CACHE_CHECK([whether the Win32 LoadLibrary() method is available],
     sim_cv_lib_loadlibrary_avail,
     [AC_TRY_LINK([
-#if HAVE_WINDOWS_H
+#ifdef HAVE_WINDOWS_H
 #include <windows.h>
 #endif /* HAVE_WINDOWS_H */
 ],
@@ -8554,7 +8554,7 @@ if $sim_ac_dyld; then
   AC_CACHE_CHECK([whether we can use Mach-O dyld],
     sim_cv_dyld_avail,
     [AC_TRY_LINK([
-#if HAVE_MACH_O_DYLD_H
+#ifdef HAVE_MACH_O_DYLD_H
 #include <mach-o/dyld.h>
 #endif /* HAVE_MACH_O_DYLD_H */
 ],
