@@ -354,18 +354,16 @@ CPPFLAGS="<string>"
 CFLAGS="<string>"
 CXXFLAGS="<string>"
 LDFLAGS="<string>"
+LIBS="<string>"
 
   If you need to add command line flags to respectively the source code
   preprocessor, the C compiler, the C++ compiler, and the linker, invoke
-  configure with an argument like one of the above.  For instance,
-  with MS Visual C++, you would typically set the CRT to link with like
-  the following:
+  configure with an argument like one of the above.
 
-    [coin]/configure CFLAGS=/MDd CXXFLAGS=/MDd [...]
+    [coin]/configure CFLAGS="-ansi -pedantic" CXXFLAGS="-ansi -pedantic" [...]
 
   This would cause compilation of both C and C++ files to be done with
-  the /MDd option which is for compiling/linking with the debug version
-  of the multi-thread CRT (run-time library).
+  the "-ansi" and "-pedantic" options.
 
 
 Build Options
