@@ -38,10 +38,11 @@ if test -z "$VOLNAME" -o -z "$OUTNAME" -o -z "$ROOT"; then
 fi
 
 # Use sparse image to let it grow on demand
-hdiutil create $OUTNAME.tmp -quiet -size 100m -ov -volname "$VOLNAME" -type SPARSE -fs HFS+
-# First word returned is the real device (e.g. /dev/disk2)
-DEVINFO=$(hdiutil attach $OUTNAME.tmp.sparseimage)
-DEVICE=`echo $DEVINFO| awk '{ print $1 }'` 
+hdiutil create $OUTNAME.tmp -quiet -size 100m -ov -layout NONE -volname "$VOLNAME" -type SPARSE -fs HFS+
+
+# Mount image and get the corresponding device
+DEVICE=`hdiutil attach $OUTNAME.tmp.sparseimage | sed -ne 's|.*/dev/\([^ ]*\).*|\1|p'`
+
 # Use ditto instead of cp to preserve file attributes (e.g. hidden files)
 ditto -rsrcFork $ROOT /Volumes/$VOLNAME
 echo "--"
@@ -60,5 +61,6 @@ read
 
 # Convert to a compressed, read-only image
 hdiutil detach $DEVICE -quiet
+hdiutil resize -sectors min $OUTNAME.tmp.sparseimage
 hdiutil convert $OUTNAME.tmp.sparseimage -quiet -format UDZO -o $OUTNAME
 rm $OUTNAME.tmp.sparseimage
