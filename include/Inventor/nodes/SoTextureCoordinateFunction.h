@@ -31,8 +31,12 @@ class COIN_DLL_EXPORT SoTextureCoordinateFunction : public SoNode {
 public:
   static void initClass(void);
 
-protected:
+  // The constructor for this class is public in Inventor. Should
+  // _probably_ have been protected, but we mimic Inventor for the
+  // sake of compatibility.
   SoTextureCoordinateFunction(void);
+
+protected:
   virtual ~SoTextureCoordinateFunction();
 };
 
