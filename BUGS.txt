@@ -182,48 +182,6 @@
 
 =====================================================================
 
-008 Bounding box calculations for SoMultipleCopy is not correct. To
-    reproduce, load the following model into an examinerviewer and do
-    "view all":
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-
-    #Inventor V2.5 ascii
-
-    Group {
-       MultipleCopy {
-          matrix [
-           1 0 0 0
-           0 1 0 0
-           0 0 1 0
-           0 0 0 1,
-
-           1 0 0 0
-           0 1 0 0
-           0 0 1 0
-           4 0 0 1,
-
-           1 0 0 0
-           0 1 0 0
-           0 0 1 0
-           -4 0 0 1,
-          ]
-
-          Cube {
-          }
-       }
-    }
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-
-    One additional hint for debugging this (or other problems related
-    to bbox calculations): use the SoGuiExamples/engines/computexfbox
-    example to see the exact boundaries of the bbox for a scene.
-
-    mortene 20020604.
-
-=====================================================================
-
 012 Buglet: the SoMaterial::shininess field is not clamped if it's >
     1.0. This causes OpenGL errors, at least with some drivers.
 
