@@ -108,9 +108,9 @@ else
 # later (e.g. to include the library in an app bundle).On Mac OS 10.2
 # or later, also create two-level namespace binaries and use prebinding.
 if MACOSX_10_2FF
-LibtoolLinkArgs = -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000 -headerpad_max_install_names 
+LibtoolLinkArgs = -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
 else
-LibtoolLinkArgs = -headerpad_max_install_names 
+LibtoolLinkArgs = -Wl,-headerpad_max_install_names 
 endif
 endif 
 
