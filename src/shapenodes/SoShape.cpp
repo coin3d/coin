@@ -170,7 +170,8 @@ public:
   }
   enum Flags {
     SHOULD_BBOX_CACHE = 0x1,
-    NEED_SETUP_SHAPE_HINTS = 0x2
+    NEED_SETUP_SHAPE_HINTS = 0x2,
+    DISABLE_VERTEX_ARRAY_CACHE = 0x4,
   };
 
   static void calibrateBBoxCache(void);
@@ -725,14 +726,20 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     }
   }
 
-  if (soshape_use_gl_vertex_arrays) {
+  if (soshape_use_gl_vertex_arrays && ((PRIVATE(this)->flags & SoShapeP::DISABLE_VERTEX_ARRAY_CACHE) == 0)) {
     soshape_staticdata * shapedata = soshape_get_staticdata();
     // lock mutex since pvcache is shared among all threads
     PRIVATE(this)->lock();
     if (PRIVATE(this)->pvcache == NULL ||
         !PRIVATE(this)->pvcache->isValid(state)) {
       if (PRIVATE(this)->pvcache) {
+        // invalid cache. Don't try to create it again
+        PRIVATE(this)->flags |= SoShapeP::DISABLE_VERTEX_ARRAY_CACHE;
         PRIVATE(this)->pvcache->unref();
+        PRIVATE(this)->pvcache = NULL;
+        PRIVATE(this)->unlock();
+        // let shape render
+        return TRUE;
       }
       SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
       // must push state to make cache dependencies work
@@ -749,11 +756,14 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       PRIVATE(this)->pvcache->fit();
       PRIVATE(this)->testSetupShapeHints(this);
     }
-
-    if ((PRIVATE(this)->pvcache->getNumIndices() == 0) &&
-        (PRIVATE(this)->pvcache->getNumLineIndices() == 0) &&
-        (PRIVATE(this)->pvcache->getNumPointIndices() == 0)) {
-      // empty cache, probably text or markers or something
+    
+    if ((PRIVATE(this)->pvcache->getNumIndices() < 100) &&
+        (PRIVATE(this)->pvcache->getNumLineIndices() < 100) &&
+        (PRIVATE(this)->pvcache->getNumPointIndices() < 100)) {
+      PRIVATE(this)->pvcache->unref();
+      PRIVATE(this)->pvcache = NULL;
+      // don't try to create this cache again
+      PRIVATE(this)->flags |= SoShapeP::DISABLE_VERTEX_ARRAY_CACHE;
       PRIVATE(this)->unlock();
       // let shape render
       return TRUE;
@@ -1389,6 +1399,7 @@ SoShape::notify(SoNotList * nl)
     PRIVATE(this)->pvcache->invalidate();
   }
   PRIVATE(this)->flags &= ~SoShapeP::SHOULD_BBOX_CACHE;
+  PRIVATE(this)->flags |= SoShapeP::DISABLE_VERTEX_ARRAY_CACHE;
   PRIVATE(this)->unlock();
 }
 
