@@ -236,6 +236,10 @@ COIN_DLL_API void cc_glglue_glGetCompressedTexImage(const cc_glglue * glue,
                                                     GLint level, 
                                                     void *img);
 
+COIN_DLL_API SbBool cc_glglue_has_color_tables(const cc_glglue * glue);
+COIN_DLL_API SbBool cc_glglue_has_color_subtables(const cc_glglue * glue);
+/* TRUE from the next check also guarantees that the two color table
+   checks above returns TRUE. */
 COIN_DLL_API SbBool cc_glglue_has_paletted_textures(const cc_glglue * glue);
 
 COIN_DLL_API void cc_glglue_glColorTable(const cc_glglue * glue,
@@ -245,6 +249,13 @@ COIN_DLL_API void cc_glglue_glColorTable(const cc_glglue * glue,
                                          GLenum format, 
                                          GLenum type, 
                                          const GLvoid *table);
+COIN_DLL_API void cc_glglue_glColorSubTable(const cc_glglue * glue,
+                                            GLenum target,
+                                            GLsizei start,
+                                            GLsizei count,
+                                            GLenum format,
+                                            GLenum type,
+                                            const GLvoid * data);
 COIN_DLL_API void cc_glglue_glGetColorTable(const cc_glglue * glue,
                                             GLenum target, 
                                             GLenum format, 

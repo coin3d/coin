@@ -187,6 +187,12 @@ typedef void (APIENTRY * COIN_PFNGLCOLORTABLEPROC)(GLenum target,
                                                    GLenum format, 
                                                    GLenum type, 
                                                    const GLvoid * table);
+typedef void (APIENTRY * COIN_PFNGLCOLORSUBTABLEPROC)(GLenum target,
+                                                      GLsizei start,
+                                                      GLsizei count,
+                                                      GLenum format,
+                                                      GLenum type,
+                                                      const GLvoid * data);
 typedef void (APIENTRY * COIN_PFNGLGETCOLORTABLEPROC)(GLenum target, 
                                                       GLenum format, 
                                                       GLenum type, 
@@ -252,6 +258,7 @@ struct cc_glglue {
   COIN_PFNGLMULTITEXCOORD2FPROC glMultiTexCoord2f;
 
   COIN_PFNGLCOLORTABLEPROC glColorTable;
+  COIN_PFNGLCOLORSUBTABLEPROC glColorSubTable;
   COIN_PFNGLGETCOLORTABLEPROC glGetColorTable;
   COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC glGetColorTableParameteriv;
   COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC glGetColorTableParameterfv;

@@ -398,6 +398,9 @@ glglue_sanity_check_enums(void)
 #ifdef GL_MAX_EXT
   enumsok = enumsok && (GL_MAX == GL_MAX_EXT);
 #endif /* GL_MAX_EXT */
+#ifdef GL_COLOR_TABLE_WIDTH_EXT
+  enumsok = enumsok && (GL_COLOR_TABLE_WIDTH == GL_COLOR_TABLE_WIDTH_EXT);
+#endif /* GL_COLOR_TABLE_WIDTH_EXT */
 
   assert(enumsok && "OpenGL enum value assumption(s) failed!");
 }
@@ -474,6 +477,7 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 #define GL_ARB_imaging 1
 #define GL_EXT_blend_minmax 1
 #define GL_EXT_color_table 1
+#define GL_EXT_color_subtable 1
 #define GL_SGI_color_table 1
 #define GL_SGI_texture_color_table 1
 
@@ -635,6 +639,7 @@ glglue_resolve_symbols(cc_glglue * w)
 #endif /* GL_ARB_texture_compression */
 
   w->glColorTable = NULL;
+  w->glColorSubTable = NULL;
   w->glGetColorTable = NULL;
   w->glGetColorTableParameteriv = NULL;
   w->glGetColorTableParameterfv = NULL;
@@ -643,6 +648,7 @@ glglue_resolve_symbols(cc_glglue * w)
   if (cc_glglue_glversion_matches_at_least(w, 1, 2, 0) &&
       cc_glglue_glext_supported(w, "GL_ARB_imaging")) {
     w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(glColorTable);
+    w->glColorSubTable = (COIN_PFNGLCOLORSUBTABLEPROC)PROC(glColorSubTable);
     w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(glGetColorTable);
     w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(glGetColorTableParameteriv);
     w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(glGetColorTableParameterfv);
@@ -669,6 +675,13 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GL_SGI_color_table */
 
+#if defined(GL_EXT_color_subtable)
+  if ((w->glColorSubTable == NULL) &&
+      cc_glglue_glext_supported(w, "GL_EXT_color_subtable")) {
+    w->glColorSubTable = (COIN_PFNGLCOLORSUBTABLEPROC)PROC(glColorSubTableEXT);
+  }
+#endif /* GL_EXT_color_subtable */
+
   w->supportsPalettedTextures =
     cc_glglue_glext_supported(w, "GL_EXT_paletted_texture");
 
@@ -681,6 +694,7 @@ glglue_resolve_symbols(cc_glglue * w)
   if ((w->glColorTable == NULL) && 
       cc_glglue_glext_supported(w, "GL_EXT_paletted_texture")) {
     w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(glColorTableEXT);
+    w->glColorSubTable = (COIN_PFNGLCOLORSUBTABLEPROC)PROC(glColorSubTableEXT);
     w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(glGetColorTableEXT);
     w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(glGetColorTableParameterivEXT);
     w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(glGetColorTableParameterfvEXT);
@@ -740,7 +754,7 @@ glglue_resolve_symbols(cc_glglue * w)
   if (cc_glglue_glversion_matches_at_least(w, 1, 4, 0)) {
     w->glBlendEquation = (COIN_PFNGLBLENDEQUATIONPROC)PROC(glBlendEquation);
   }
-#endif /* GL_VERSION_1_2 && GL_ARB_imaging */
+#endif /* GL_VERSION_1_4 */
 
   if (w->glBlendEquation == NULL) {
 #if defined(GL_VERSION_1_2) && defined(GL_ARB_imaging)
@@ -1580,6 +1594,20 @@ cc_glglue_has_paletted_textures(const cc_glglue * glue)
   return glue->supportsPalettedTextures;
 }
 
+SbBool
+cc_glglue_has_color_tables(const cc_glglue * glue)
+{
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
+  return glue->glColorTable != NULL;
+}
+
+SbBool
+cc_glglue_has_color_subtables(const cc_glglue * glue)
+{
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
+  return glue->glColorSubTable != NULL;
+}
+
 void
 cc_glglue_glColorTable(const cc_glglue * glue,
                        GLenum target,
@@ -1596,6 +1624,24 @@ cc_glglue_glColorTable(const cc_glglue * glue,
                      format,
                      type,
                      table);
+}
+
+void
+cc_glglue_glColorSubTable(const cc_glglue * glue,
+                          GLenum target,
+                          GLsizei start,
+                          GLsizei count,
+                          GLenum format,
+                          GLenum type,
+                          const GLvoid * data)
+{
+  assert(glue->glColorSubTable);
+  glue->glColorSubTable(target,
+                        start,
+                        count,
+                        format,
+                        type,
+                        data);
 }
 
 void
