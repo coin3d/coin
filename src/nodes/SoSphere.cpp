@@ -165,6 +165,10 @@ void
 SoSphere::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
 {
   float r = this->radius.getValue();
+
+  // Allow negative values.
+  if (r < 0.0f) r = -r;
+
   box.setBounds(SbVec3f(-r, -r, -r), SbVec3f(r, r, r));
   center.setValue(0.0f, 0.0f, 0.0f);
 }
