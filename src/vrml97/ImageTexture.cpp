@@ -28,10 +28,10 @@
   ImageTexture {
     exposedField MFString url     []
     field        SFBool   repeatS TRUE
-    field        SFBool   repeatT TRUE 
+    field        SFBool   repeatT TRUE
   }
   \endverbatim
-  
+
   The ImageTexture node defines a texture map by specifying an image
   file and general parameters for mapping to geometry. Texture maps
   are defined in a 2D coordinate system (s, t) that ranges from [0.0,
@@ -52,10 +52,10 @@
   disabled. Browsers shall support the JPEG and PNG image file
   formats. In addition, browsers may support other image formats
   (e.g. CGM) which can be rendered into a 2D image. Support for the
-  GIF format is also recommended (including transparency). 
+  GIF format is also recommended (including transparency).
 
   Details on the url field can be found in 4.5, VRML and the World
-  Wide Web.  
+  Wide Web.
 
   See 4.6.11, Texture maps
   (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.11),
@@ -336,7 +336,7 @@ SoVRMLImageTexture::loadUrl(void)
   THIS->glimagevalid = FALSE; // recreate GL image in next GLRender()
 
   SbBool retval = FALSE;
-  if (this->url[0].getLength()) {
+  if (this->url.getNum() && this->url[0].getLength()) {
     const SbStringList & sl = SoInput::getDirectories();
 #ifdef HAVE_THREADS
     if (THIS->image.scheduleReadFile(image_read_cb, this,
@@ -439,7 +439,7 @@ SoVRMLImageTexture::urlSensorCB(void * data, SoSensor *)
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) data;
 
   thisp->setReadStatus(1);
-  if (thisp->url[0].getLength() &&
+  if (thisp->url.getNum() && thisp->url[0].getLength() &&
       !thisp->loadUrl()) {
     SoDebugError::postWarning("SoVRMLImageTexture::urlSensorCB",
                               "Image file could not be read: %s",
