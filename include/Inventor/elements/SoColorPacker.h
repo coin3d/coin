@@ -47,6 +47,6 @@ private:
   uint32_t *packedColors;
   int32_t packedArraySize;
   
-}; // class SoColorPacker
+};
 
 #endif // ! _SO_COLOR_PACKER_H_

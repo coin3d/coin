@@ -80,6 +80,6 @@ protected:
 private:
   SbMatrix modelInverseMatrix;
 
-}; // class SoLocalBBoxMatrixElement
+};
 
 #endif // ! _SO_LOCAL_BOUNDING_BOX_MATRIX_ELEMENT_H_

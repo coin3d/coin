@@ -72,6 +72,6 @@ protected:
   SbPList WCToVRCMatrices; // World Coords -> View Reference Coords
   int startIndex;
 
-}; // class SoLightElement
+};
 
 #endif // !__SOLIGHTELEMENT_H__

@@ -60,6 +60,6 @@ public:
   static void set(SoState * const state, SoNode * const node,
 		  const FontSizeHint hint);
 
-}; // class SoAnnoText3FontSizeHintElement
+};
 
 #endif // ! _SO_ANNO_TEXT3_FONT_SIZE_HINT_ELEMENT_H_

@@ -62,6 +62,6 @@ private:
   void updategl();
   SbColor current;
 
-}; // class SoGLAmbientColorElement
+};
 
 #endif // ! _SO_GL_AMBIENT_COLOR_ELEMENT_H_

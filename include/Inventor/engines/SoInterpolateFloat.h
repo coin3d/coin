@@ -45,7 +45,7 @@ private:
   virtual ~SoInterpolateFloat();
   virtual void evaluate();
 
-}; // class SoInterpolateFloat
+};
 //$ END TEMPLATE InterpolateHeader
 
 #endif // !__SOINTERPOLATEFLOAT_H__

@@ -56,6 +56,6 @@ public:
   static  int32_t get(SoState * const state);
   static  int32_t getDefault();
 
-}; // class SoSwitchElement
+};
 
 #endif // ! _SO_SWITCH_ELEMENT_H_

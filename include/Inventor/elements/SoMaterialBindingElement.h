@@ -69,6 +69,6 @@ public:
   static  Binding get(SoState * const state);
   static  Binding getDefault();
 
-}; // class SoMaterialBindingElement
+};
 
 #endif // ! _SO_MATERIAL_BINDING_ELEMENT_H_

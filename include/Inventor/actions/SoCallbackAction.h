@@ -56,6 +56,6 @@ public:
 public:
   SoCallbackAction(void);
 
-}; // class SoCallbackAction
+};
 
 #endif // ! _SO_CALLBACK_ACTION_H_

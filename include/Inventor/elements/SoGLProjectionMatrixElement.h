@@ -57,6 +57,6 @@ protected:
 private:
   void updategl();
 
-}; // class SoGLProjectionMatrixElement
+};
 
 #endif // ! _SO_GL_PROJECTION_MATRIX_ELEMENT_H_

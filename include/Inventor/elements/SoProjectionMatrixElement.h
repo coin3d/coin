@@ -59,6 +59,6 @@ protected:
   SbMatrix projectionMatrix;
   virtual void setElt(SbMatrix const & matrix);
 
-}; // class SoProjectionMatrixElement
+};
 
 #endif // !__SOPROJECTIONMATRIXELEMENT_H__

@@ -65,6 +65,6 @@ public:
 protected:
   int passnr;
 
-}; // class SoGLRenderPassElement
+};
 
 #endif // ! _SO_GL_RENDER_PASS_ELEMENT_H_

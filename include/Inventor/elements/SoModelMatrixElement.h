@@ -93,6 +93,6 @@ protected:
   SbMatrix combinedMatrix;
   uint32_t flags;
 
-}; // class SoModelMatrixElement
+};
 
 #endif // !__SOMODELMATRIXELEMENT_H__

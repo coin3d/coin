@@ -59,6 +59,6 @@ public:
 protected:
   virtual void beginTraversal( SoNode * node );
 
-}; // class SoToVRMLAction
+};
 
 #endif // ! _SO_TO_VRML_ACTION_H_

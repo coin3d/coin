@@ -60,6 +60,6 @@ public:
 
   virtual void print(FILE *fp) const;
 
-}; // class SoDecimationTypeElement
+};
 
 #endif // ! _SO_DECIMATION_TYPE_ELEMENT_H_

@@ -66,6 +66,6 @@ public:
 private:
   void updategl() const;
 
-}; // class SoGLTextureMatrixElement
+};
 
 #endif // ! _SO_GL_TEXTURE_MATRIX_ELEMENT_H_

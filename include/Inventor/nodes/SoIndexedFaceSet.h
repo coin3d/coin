@@ -100,6 +100,6 @@ private:
   
   SoConvexDataCache *convexCache;
 
-}; // class SoIndexedFaceSet
+};
 
 #endif // !__SOINDEXEDFACESET_H__

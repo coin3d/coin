@@ -65,6 +65,6 @@ protected:
   SbVec3f lightAttenuation;
   static const SbVec3f defaultAttenuation;
 
-}; // class SoLightAttenuationElement
+};
 
 #endif // !__SOLIGHTATTENUATIONELEMENT_H__

@@ -69,6 +69,6 @@ private:
   SoState * state;
   uint32_t viewEltNodeId;
 
-}; // class SoGLModelMatrixElement
+};
 
 #endif // ! _SO_GL_MODEL_MATRIX_ELEMENT_H_

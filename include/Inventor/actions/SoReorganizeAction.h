@@ -59,6 +59,6 @@ public:
 protected:
   virtual void beginTraversal( SoNode * node );
 
-}; // class SoReorganizeAction
+};
 
 #endif // ! _SO_REORGANIZE_ACTION_H_

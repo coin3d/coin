@@ -69,6 +69,6 @@ private:
   unsigned int glflags;
   void updategl(const unsigned int flags);
 
-}; // class SoGLShapeHintsElement
+};
 
 #endif // ! _SO_GL_SHAPE_HINTS_ELEMENT_H_

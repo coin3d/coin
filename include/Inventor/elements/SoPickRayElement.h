@@ -62,6 +62,6 @@ public:
 protected:
   SbViewVolume volume;
 
-}; // class SoPickRayElement
+};
 
 #endif // ! _SO_PICK_RAY_ELEMENT_H_

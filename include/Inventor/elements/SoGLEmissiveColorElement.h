@@ -62,6 +62,6 @@ private:
   void updategl();
   SbColor current;
 
-}; // class SoGLEmissiveColorElement
+};
 
 #endif // ! _SO_GL_EMISSIVE_COLOR_ELEMENT_H_

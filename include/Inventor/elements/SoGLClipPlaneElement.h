@@ -60,6 +60,6 @@ protected:
 private:
   static int maxGLPlanes;
 
-}; // class SoGLClipPlaneElement
+};
 
 #endif // ! _SO_GL_CLIP_PLANE_ELEMENT_H_

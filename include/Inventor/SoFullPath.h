@@ -42,6 +42,6 @@ public:
   int getIndexFromTail( const int index ) const;
   int getLength( void ) const;
 
-}; // class SoFullPath
+};
 
 #endif // ! _SO_FULL_PATH_H_

@@ -59,6 +59,6 @@ protected:
   
   SbPList nodeIds;
 
-}; // class SoAccumulatedElement
+};
 
 #endif // ! _SO_ACCUMULATED_ELEMENT_H_

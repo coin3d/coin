@@ -96,6 +96,6 @@ private:
   SbList <SbVec3f> normalArray;
 
   void clearGenerator();
-}; // class SoNormalCache
+};
 
 #endif // ! _SO_NORMAL_CACHE_H_

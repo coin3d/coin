@@ -52,6 +52,6 @@ public:
   const SbVec4f *getPtr4() const;
   void send(const int index) const;
 
-}; // class SoGLCoordinateElement
+};
 
 #endif // ! _SO_GL_COORDINATE_ELEMENT_H_

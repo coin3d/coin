@@ -61,6 +61,6 @@ private:
   void updategl();
   float current;
 
-}; // class SoGLShininessElement
+};
 
 #endif // ! _SO_GL_SHININESS_ELEMENT_H_

@@ -56,6 +56,6 @@ public:
   static  float get( SoState * const state );
   static  float getDefault( void );
 
-}; // class SoCreaseAngleElement
+};
 
 #endif // ! _SO_CREASE_ANGLE_ELEMENT_H_

@@ -61,6 +61,6 @@ protected:
   int numValues;
   const float *values;
 
-}; // class SoTransparencyElement
+};
 
 #endif // ! _SO_TRANSPARENCY_ELEMENT_H_

@@ -58,6 +58,6 @@ public:
 
   static  float getDefault( void );
 
-}; // class SoComplexityElement
+};
 
 #endif // ! _SO_COMPLEXITY_ELEMENT_H_

@@ -49,6 +49,6 @@ public:
 //$ END TEMPLATE ActionHeader
 public:
 
-}; // class SoGraphVerifyAction
+};
 
 #endif // ! _SO_GRAPH_VERIFY_ACTION_H_

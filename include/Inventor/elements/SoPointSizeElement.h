@@ -56,6 +56,6 @@ public:
   static  float get(SoState * const state);
   static  float getDefault();
 
-}; // class SoPointSizeElement
+};
 
 #endif // ! _SO_POINT_SIZE_ELEMENT_H_

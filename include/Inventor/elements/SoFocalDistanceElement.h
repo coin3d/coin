@@ -56,6 +56,6 @@ public:
     static  float get( SoState * const state );
     static  float getDefault();
 
-}; // class SoFocalDistanceElement
+};
 
 #endif // ! _SO_FOCAL_DISTANCE_ELEMENT_H_

@@ -63,6 +63,6 @@ public:
   static Style get(SoState * const state);
   static Style getDefault();
 
-}; // class SoDrawStyleElement
+};
 
 #endif // ! _SO_DRAW_STYLE_ELEMENT_H_

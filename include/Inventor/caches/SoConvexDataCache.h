@@ -68,6 +68,6 @@ private:
   SbList <int32_t> normalIndices;
   SbList <int32_t> materialIndices;
   SbList <int32_t> texIndices; 
-}; // class SoConvexDataCache
+};
 
 #endif // ! _SO_CONVEX_DATA_CACHE_H_

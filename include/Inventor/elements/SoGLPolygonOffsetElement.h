@@ -66,6 +66,6 @@ private:
 
   void updategl();
 
-}; // class SoGLPolygonOffsetElement
+};
 
 #endif // ! _SO_GL_POLYGON_OFFSET_ELEMENT_H_

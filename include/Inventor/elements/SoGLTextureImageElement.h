@@ -61,6 +61,6 @@ public:
 private:
   SoGLImage *glimage;
 
-}; // class SoGLTextureImageElement
+};
 
 #endif // ! _SO_GL_TEXTURE_IMAGE_ELEMENT_H_

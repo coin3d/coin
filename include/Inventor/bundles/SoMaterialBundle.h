@@ -89,6 +89,6 @@ private:
   const uint32_t *packedColors;
   int numPacked;
   int currPacked;
-}; // class SoMaterialBundle
+};
 
 #endif // ! _SO_MATERIAL_BUNDLE_H_

@@ -59,6 +59,6 @@ public:
   static float get( SoState * const state );
   static float getDefault( void );
 
-}; // class SoTextureQualityElement
+};
 
 #endif // ! _SO_TEXTURE_QUALITY_ELEMENT_H_

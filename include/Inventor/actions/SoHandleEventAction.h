@@ -84,6 +84,6 @@ private:
   const SoEvent * event;
   SoNode * grabbernode;
 
-}; // class SoHandleEventAction
+};
 
 #endif // ! _SO_HANDLE_EVENT_ACTION_H_

@@ -61,6 +61,6 @@ public:
   static  int32_t get(SoState * const state);
   static  int32_t getDefault();
   
-}; // class SoLinePatternElement
+};
 
 #endif // ! _SO_LINE_PATTERN_ELEMENT_H_

@@ -75,6 +75,6 @@ private:
     SoCache * cache;
     static  SbBool invalidated;
 
-}; // class SoCacheElement
+};
 
 #endif // ! _SO_CACHE_ELEMENT_H_

@@ -34,6 +34,6 @@ protected:
   ~SoBundle();
   
   SoState *state;
-}; // class SoBundle
+};
 
 #endif // ! _SO_BUNDLE_H_

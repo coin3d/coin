@@ -139,6 +139,6 @@ private:
 #endif // !COIN_EXCLUDE_SOPATH
   SbBool delayedRender;
 
-}; // class SoGLRenderAction
+};
 
 #endif // ! _SO_GL_RENDER_ACTION_H_

@@ -51,6 +51,6 @@ private:
   int refCount;
   SbBool invalidated;
   int stateDepth;
-}; // class SoCache
+};
 
 #endif // ! _SO_CACHE_H_

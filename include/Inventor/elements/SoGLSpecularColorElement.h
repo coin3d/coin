@@ -62,6 +62,6 @@ private:
   void updategl();
   SbColor current;
 
-}; // class SoGLSpecularColorElement
+};
 
 #endif // ! _SO_GL_SPECULAR_COLOR_ELEMENT_H_

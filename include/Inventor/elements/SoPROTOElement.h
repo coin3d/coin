@@ -57,6 +57,6 @@ public:
   // larsa: SoElement got dataNode member for this :(
   // - might fix this later
 
-}; // class SoPROTOElement
+};
 
 #endif // ! _SO_PROTO_ELEMENT_H_

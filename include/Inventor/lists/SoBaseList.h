@@ -46,6 +46,6 @@ protected:
 private:
   SbBool doRef;
 
-}; // class SoBaseList
+};
 
 #endif // ! _SO_BASE_LIST_H_

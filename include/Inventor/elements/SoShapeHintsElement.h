@@ -100,6 +100,6 @@ protected:
   ShapeType shapeType;
   FaceType faceType;
 
-}; // class SoShapeHintsElement
+};
 
 #endif // ! _SO_SHAPE_HINTS_ELEMENT_H_

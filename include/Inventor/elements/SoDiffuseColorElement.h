@@ -74,6 +74,6 @@ protected:
   const SbColor *colors;
   const uint32_t *packedColors;
 
-}; // class SoDiffuseColorElement
+};
 
 #endif // ! _SO_DIFFUSE_COLOR_ELEMENT_H_

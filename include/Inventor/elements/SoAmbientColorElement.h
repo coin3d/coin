@@ -65,6 +65,6 @@ protected:
   int numColors;
   const SbColor *colors;
 
-}; // class SoAmbientColorElement
+};
 
 #endif // ! _SO_AMBIENT_COLOR_ELEMENT_H_

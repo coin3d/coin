@@ -38,6 +38,6 @@ public:
   SoDetailList &operator =(const SoDetailList &l);
   SoDetail *operator [](const int i) const;
   void set(const int i, SoDetail * const ptr);
-}; // class SoDetailList
+};
 
 #endif // ! _SO_DETAIL_LIST_H_

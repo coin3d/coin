@@ -78,6 +78,6 @@ private:
   void *texgenData;
 
   void doCallback() const;
-}; // class SoGLTextureCoordinateElement
+};
 
 #endif // ! _SO_GL_TEXTURE_COORDINATE_ELEMENT_H_

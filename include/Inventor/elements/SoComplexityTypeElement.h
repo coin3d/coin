@@ -63,6 +63,6 @@ public:
   static  Type get(SoState * const state);
   static  Type getDefault();
 
-}; // class SoComplexityTypeElement
+};
 
 #endif // ! _SO_COMPLEXITY_TYPE_ELEMENT_H_

@@ -51,6 +51,6 @@ public:
   virtual void init(SoState * state);
   void send(const int index) const;
 
-}; // class SoGLNormalElement
+};
 
 #endif // ! _SO_GL_NORMAL_ELEMENT_H_

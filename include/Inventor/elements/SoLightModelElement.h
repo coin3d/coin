@@ -60,6 +60,6 @@ public:
   static Model get(SoState * const state);
   static Model getDefault();
 
-}; // class SoLightModelElement
+};
 
 #endif // ! _SO_LIGHT_MODEL_ELEMENT_H_

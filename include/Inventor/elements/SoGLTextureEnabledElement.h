@@ -66,6 +66,6 @@ public:
 private:
   void updategl();
 
-}; // class SoGLTextureEnabledElement
+};
 
 #endif // ! _SO_GL_TEXTURE_ENABLED_ELEMENT_H_

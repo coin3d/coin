@@ -57,6 +57,6 @@ public:
   SoBoxHighlightRenderAction(void);
   SoBoxHighlightRenderAction(const SbViewportRegion & viewportRegion);
 
-}; // class SoBoxHighlightRenderAction
+};
 
 #endif // ! _SO_BOX_HIGHLIGHT_RENDER_ACTION_H_

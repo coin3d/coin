@@ -68,6 +68,6 @@ public:
   static  Binding get(SoState * const state);
   static  Binding getDefault();
 
-}; // class SoNormalBindingElement
+};
 
 #endif // ! _SO_NORMAL_BINDING_ELEMENT_H_

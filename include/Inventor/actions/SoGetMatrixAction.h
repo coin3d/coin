@@ -90,6 +90,6 @@ private:
   SbMatrix texMatrix;
   SbMatrix invTexMatrix;
   SbViewportRegion viewportRegion;
-}; // class SoGetMatrixAction
+};
 
 #endif // ! _SO_GET_MATRIX_ACTION_H_

@@ -69,6 +69,6 @@ protected:
   const SbVec3f *normals;
   SbBool unitLength;
 
-}; // class SoNormalElement
+};
 
 #endif // !__SONORMALELEMENT_H__

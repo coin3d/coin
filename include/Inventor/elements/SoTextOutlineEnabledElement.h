@@ -59,6 +59,6 @@ public:
   static  SbBool get( SoState * const state );
   static  SbBool getDefault( void );
 
-}; // class SoTextOutlineEnabledElement
+};
 
 #endif // ! _SO_TEXT_OUTLINE_ENABLED_ELEMENT_H_

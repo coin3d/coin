@@ -64,6 +64,6 @@ protected:
   int numColors;
   const SbColor *colors;
 
-}; // class SoEmissiveColorElement
+};
 
 #endif // ! _SO_EMISSIVE_COLOR_ELEMENT_H_

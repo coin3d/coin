@@ -59,6 +59,6 @@ public:
 
 protected:
   SoPickAction(const SbViewportRegion & viewportRegion);
-}; // class SoPickAction
+};
 
 #endif // ! _SO_PICK_ACTION_H_

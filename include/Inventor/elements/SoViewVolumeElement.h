@@ -59,6 +59,6 @@ public:
 protected:
   SbViewVolume viewVolume;
 
-}; // class SoViewVolumeElement
+};
 
 #endif // !__SOVIEWVOLUMEELEMENT_H__

@@ -56,6 +56,6 @@ public:
   static  float get( SoState * const state );
   static  float getDefault();
 
-}; // class SoLineWidthElement
+};
 
 #endif // ! _SO_LINE_WIDTH_ELEMENT_H_

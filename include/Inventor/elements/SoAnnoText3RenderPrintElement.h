@@ -60,6 +60,6 @@ public:
   static void set(SoState * const state, SoNode * const node,
 		  const RenderPrintType type);
 
-}; // class SoAnnoText3RenderPrintElement
+};
 
 #endif // ! _SO_ANNO_TEXT3_RENDER_PRINT_ELEMENT_H_

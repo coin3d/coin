@@ -60,6 +60,6 @@ protected:
 private:
   void updategl();
   
-}; // class SoGLDrawStyleElement
+};
 
 #endif // ! _SO_GL_DRAW_STYLE_ELEMENT_H_

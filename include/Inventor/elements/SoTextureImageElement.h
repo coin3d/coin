@@ -111,6 +111,6 @@ protected:
   Model model;
   SbColor blendColor;
 
-}; // class SoTextureImageElement
+};
 
 #endif // ! _SO_TEXTURE_IMAGE_ELEMENT_H_

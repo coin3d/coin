@@ -60,6 +60,6 @@ protected:
 private:
   void updategl();
 
-}; // class SoGLLinePatternElement
+};
 
 #endif // ! _SO_GL_LINE_PATTERN_ELEMENT_H_

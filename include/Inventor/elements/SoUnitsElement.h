@@ -76,6 +76,6 @@ public:
   static Units get(SoState * const state);
   static Units getDefault();
 
-}; // class SoUnitsElement
+};
 
 #endif // ! _SO_UNITS_ELEMENT_H_

@@ -106,6 +106,6 @@ private:
   ResetType resetType;
   SoPath *resetPath;
   unsigned int flags;
-}; // class SoGetBoundingBoxAction
+};
 
 #endif // ! _SO_GET_BOUNDING_BOX_ACTION_H_

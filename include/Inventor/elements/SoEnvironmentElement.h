@@ -99,6 +99,6 @@ protected:
   SbColor fogColor;
   float fogVisibility;
 
-}; // class SoEnvironmentElement
+};
 
 #endif // !__SOENVIRONMENTELEMENT_H__

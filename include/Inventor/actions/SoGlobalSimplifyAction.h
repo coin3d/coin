@@ -59,6 +59,6 @@ public:
 protected:
   virtual void beginTraversal( SoNode * node );
 
-}; // class SoGlobalSimplifyAction
+};
 
 #endif // ! _SO_GLOBAL_SIMPLIFY_ACTION_H_

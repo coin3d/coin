@@ -100,6 +100,6 @@ private:
   SoPath * path;
   SoPathList paths;
 
-}; // class SoSearchAction
+};
 
 #endif // ! _SO_SEARCH_ACTION_H_

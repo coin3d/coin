@@ -59,6 +59,6 @@ protected:
 private:
   SbBool initialized;
   void updategl() const;
-}; // class SoGLViewportRegionElement
+};
 
 #endif // ! _SO_GL_VIEWPORT_REGION_ELEMENT_H_

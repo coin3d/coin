@@ -56,6 +56,6 @@ public:
   static float get( SoState * const state );
   static float getDefault();
 
-}; // class SoFontSizeElement
+};
 
 #endif // ! _SO_FONT_SIZE_ELEMENT_H_

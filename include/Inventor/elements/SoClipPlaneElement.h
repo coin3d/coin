@@ -77,6 +77,6 @@ protected:
   virtual void addToElt(const SbPlane & plane,
 			const SbMatrix & modelMatrix);
 
-}; // class SoClipPlaneElement
+};
 
 #endif // !__SOCLIPPLANEELEMENT_H__

@@ -77,6 +77,6 @@ private:
   SbBool currentEnabled;
   int currentPattern;
 
-}; // class SoGLPolygonStippleElement
+};
 
 #endif // ! _SO_GL_POLYGON_STIPPLE_ELEMENT_H_ 

@@ -63,6 +63,6 @@ private:
   SoState * state;
   void updategl();
 
-}; // class SoGLViewingMatrixElement
+};
 
 #endif // ! _SO_GL_VIEWING_MATRIX_ELEMENT_H_

@@ -57,6 +57,6 @@ public:
   SoLineHighlightRenderAction(void);
   SoLineHighlightRenderAction(const SbViewportRegion & viewportRegion);
 
-}; // class SoLineHighlightRenderAction
+};
 
 #endif // ! _SO_LINE_HIGHLIGHT_RENDER_ACTION_H_

@@ -65,6 +65,6 @@ protected:
   SbName fontName;
   static const SbName defaultFontName;
 
-}; // class SoFontNameElement
+};
 
 #endif // ! _SO_FONT_NAME_ELEMENT_H_

@@ -67,6 +67,6 @@ private:
   void updategl();
   Model current;
 
-}; // class SoGLLightModelElement
+};
 
 #endif // ! _SO_GL_LIGHT_MODEL_ELEMENT_H_

@@ -55,6 +55,6 @@ public:
   static float get( SoState * const state );
   static float getDefault( void );
 
-}; // class SoDecimationPercentageElement
+};
 
 #endif // ! _SO_DECIMATION_PERCENTAGE_ELEMENT_H_

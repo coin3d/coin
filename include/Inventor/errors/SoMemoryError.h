@@ -47,6 +47,6 @@ private:
   static  SoErrorCB * callback;
   static  void * callbackData;
 
-}; // class SoMemoryError
+};
 
 #endif // ! _SO_MEMORY_ERROR_H_

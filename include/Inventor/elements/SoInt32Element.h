@@ -65,6 +65,6 @@ public: // constructor / destructor / etc.
 protected:
   int32_t data;
 
-}; // class SoInt32Element
+};
 
 #endif // ! _SO_INT32_ELEMENT_H_

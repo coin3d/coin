@@ -64,6 +64,6 @@ public:
 
   static  Binding getDefault( void );
 
-}; // class SoTextureCoordinateBindingElement
+};
 
 #endif // ! _SO_TEXTURE_COORDINATE_BINDING_ELEMENT_H_

@@ -104,6 +104,6 @@ protected:
   SbVec2f convert2;
   SbVec4f convert4;
 
-}; // class SoTextureCoordinateElement
+};
 
 #endif // !__SOTEXTURECOORDINATEELEMENT_H__

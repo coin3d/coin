@@ -68,6 +68,6 @@ private:
   const SoTextureCoordinateElement *coordElt;
   const SoGLTextureCoordinateElement *glElt;
   SoTextureCoordinateCache *defaultCache;
-}; // class SoTextureCoordinateBundle
+};
 
 #endif // !__SOTEXTURECOORDINATEBUNDLE_H__

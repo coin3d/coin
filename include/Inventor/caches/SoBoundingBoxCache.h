@@ -48,7 +48,7 @@ private:
   SbVec3f centerPoint;
   unsigned int centerSet : 1;
   unsigned int linesOrPoints : 1;
-}; // class SoBoundingBoxCache
+};
 
 #endif // ! _SO_BOUNDING_BOX_CACHE_H_
 

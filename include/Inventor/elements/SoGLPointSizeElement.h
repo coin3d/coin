@@ -64,6 +64,6 @@ private:
   float current;
   void updategl();
 
-}; // class SoGLPointSizeElement
+};
 
 #endif // ! _SO_GL_POINT_SIZE_ELEMENT_H_

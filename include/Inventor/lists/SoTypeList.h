@@ -39,6 +39,6 @@ public:
 
   void setDefault(SoType type);
   SoType get(const int i) const;
-}; // class SoTypeList
+};
 
 #endif // ! _SO_TYPE_LIST_H_

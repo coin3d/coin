@@ -39,6 +39,6 @@ public:
   void append(SoEngine * const ptr);
   SoEngine *operator [](const int i) const;
   SoEngineList &operator =(const SoEngineList &l);
-}; // class SoEngineList
+};
 
 #endif // ! _SO_ENGINE_LIST_H_

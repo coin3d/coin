@@ -62,6 +62,6 @@ protected:
   int numValues;
   const float *values;
 
-}; // class SoShininessElement
+};
 
 #endif // ! _SO_SHININESS_ELEMENT_H_

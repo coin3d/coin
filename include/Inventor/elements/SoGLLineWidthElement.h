@@ -63,6 +63,6 @@ private:
   float current;
   void updategl();
 
-}; // class SoGLLineWidthElement
+};
 
 #endif // ! _SO_GL_LINE_WIDTH_ELEMENT_H_

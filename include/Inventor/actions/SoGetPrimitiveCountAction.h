@@ -60,6 +60,6 @@ protected:
   virtual void beginTraversal(SoNode * node);
 
 private:
-}; // class SoGetPrimitiveCountAction
+};
 
 #endif // ! _SO_GET_PRIMITIVE_COUNT_ACTION_H_

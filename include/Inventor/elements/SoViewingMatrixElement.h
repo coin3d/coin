@@ -60,6 +60,6 @@ protected:
   virtual void setElt(const SbMatrix &matrix);
   SbMatrix viewingMatrix;
 
-}; // class SoViewingMatrixElement
+};
 
 #endif // !__SOVIEWINGMATRIXELEMENT_H__

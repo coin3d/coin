@@ -45,7 +45,7 @@ private:
   virtual ~SoInterpolateRotation();
   virtual void evaluate();
 
-}; // class SoInterpolateRotation
+};
 //$ END TEMPLATE InterpolateHeader
 
 #endif // !__SOINTERPOLATEROTATION_H__

@@ -41,6 +41,6 @@ public:
 
 private:
   SbList <SbVec2f> texCoords;
-}; // class SoTextureCoordinateCache
+};
 
 #endif // ! _SO_TEXTURE_COORDINATE_CACHE_H_

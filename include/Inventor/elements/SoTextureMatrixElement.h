@@ -81,6 +81,6 @@ protected:
 
   SbMatrix textureMatrix;
 
-}; // class SoTextureMatrixElement
+};
 
 #endif // !__SOTEXTUREMATRIXELEMENT_H__

@@ -53,6 +53,6 @@ public:
   static SbBool get(SoState * state);
   static SbBool getDefault(void);
 
-}; // class SoAnnoText3CharOrientElement
+};
 
 #endif // ! _SO_ANNO_TEXT3_CHAR_ORIENT_ELEMENT_H_

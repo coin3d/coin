@@ -74,6 +74,6 @@ public:
   const SoPickedPointList & getPickedPointList(void) const;
   SoPickedPoint * getPickedPoint(int index = 0) const;
 
-}; // class SoRayPickAction
+};
 
 #endif // ! _SO_RAY_PICK_ACTION_H_

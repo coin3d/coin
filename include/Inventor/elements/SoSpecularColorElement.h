@@ -64,6 +64,6 @@ protected:
   int numColors;
   const SbColor *colors;
 
-}; // class SoSpecularColorElement
+};
 
 #endif // ! _SO_SPECULAR_COLOR_ELEMENT_H_

@@ -71,6 +71,6 @@ public:
 protected:
   SoNodeList profiles;
 
-}; // class SoProfileElement
+};
 
 #endif // ! _SO_PROFILE_ELEMENT_H_

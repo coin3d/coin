@@ -63,6 +63,6 @@ private:
   SbVec4f current;
   uint32_t currentPacked; // for fast comparing
 
-}; // class SoGLDiffuseColorElement
+};
 
 #endif // ! _SO_GL_DIFFUSE_COLOR_ELEMENT_H_

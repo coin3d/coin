@@ -66,6 +66,6 @@ public:
 protected:
           float data;
 
-}; // class SoFloatElement
+};
 
 #endif // ! _SO_FLOAT_ELEMENT_H_

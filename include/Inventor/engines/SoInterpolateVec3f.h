@@ -45,7 +45,7 @@ private:
   virtual ~SoInterpolateVec3f();
   virtual void evaluate();
 
-}; // class SoInterpolateVec3f
+};
 //$ END TEMPLATE InterpolateHeader
 
 #endif // !__SOINTERPOLATEVEC3F_H__

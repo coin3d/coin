@@ -73,6 +73,6 @@ protected:
 
   virtual void setElt(float factor, float units, Style styles, SbBool on);
 
-}; // class SoPolygonOffsetElement
+};
 
 #endif // ! _SO_POLYGON_OFFSET_ELEMENT_H_

@@ -49,6 +49,6 @@ private:
   
   float creaseAngle;
   SbBool flipNormals;
-}; // class SoGenerateNormalsAction
+};
 
 #endif // ! _SO_GENERATE_NORMALS_ACTION_H_

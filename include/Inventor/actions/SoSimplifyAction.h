@@ -58,6 +58,6 @@ public:
 
 protected:
   virtual void beginTraversal( SoNode * node );
-}; // class SoSimplifyAction
+};
 
 #endif // ! _SO_SIMPLIFY_ACTION_H_

@@ -87,6 +87,6 @@ protected:
 
   static SbVec2f initdefaultcoords;
 
-}; // class SoProfileCoordinateElement
+};
 
 #endif // !__SOPROFILECOORDINATEELEMENT_H__

@@ -64,6 +64,6 @@ public:
 protected:
   static int32_t maxGLSources;
 
-}; // class SoGLLightIdElement
+};
 
 #endif // ! _SO_GL_LIGHT_ID_ELEMENT_H_

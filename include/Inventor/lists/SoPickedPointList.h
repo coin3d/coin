@@ -36,6 +36,6 @@ public:
   void truncate(int start);
   SoPickedPoint *operator [](const int i) const;
   void set(const int i, SoPickedPoint * const ptr);
-}; // class SoPickedPointList
+};
 
 #endif // ! _SO_PICKED_POINT_LIST_H_

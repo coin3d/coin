@@ -76,6 +76,6 @@ private:
   SoLocalBBoxMatrixElement *getLocal();
   
   SoState *state;
-}; // class SoBBoxModelMatrixElement
+};
 
 #endif // ! _SO_BOUNDING_BOX_MODEL_MATRIX_ELEMENT_H_

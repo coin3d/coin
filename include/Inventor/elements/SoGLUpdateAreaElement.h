@@ -75,6 +75,6 @@ public:
 protected:
   SbVec2f origin;
   SbVec2f size;
-}; // class SoGLUpdateAreaElement
+};
 
 #endif // ! _SO_GL_UPDATE_AREA_ELEMENT_H_

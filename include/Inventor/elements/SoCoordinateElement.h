@@ -81,6 +81,6 @@ private:
   SbVec4f dummy4D;
   static SbVec3f initialdefaultcoords;
 
-}; // class SoCoordinateElement
+};
 
 #endif // !__SOCOORDINATEELEMENT_H__

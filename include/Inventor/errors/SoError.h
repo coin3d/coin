@@ -79,7 +79,7 @@ private:
 
   static void generateBaseString(
       SbString & string, const SoBase * const base, const char * const what );
-}; // class SoError
+};
 
 //$ IMPORT INLINE ../../../src/errors/SoError.cpp
 
