@@ -109,12 +109,6 @@ void cc_fcglue_FcPatternPrint(const FcPattern * pattern);
 
 #define FT_HAS_KERNING(face) (face->face_flags & FT_FACE_FLAG_KERNING)
 
-#define FT_GLYPH_FORMAT_BITMAP \
-         ( ( (unsigned long)'b' << 24 ) | \
-           ( (unsigned long)'i' << 16 ) | \
-           ( (unsigned long)'t' << 8  ) | \
-             (unsigned long)'s'       )
-
 /* ...and lots of typedefs */
 typedef void * FT_Library;
 typedef int FT_Error;

@@ -184,11 +184,10 @@ static flwft_tessellator_t flwft_tessellator;
 
 #ifndef FT_ENC_TAG
 #define FT_ENC_TAG(value, a, b, c, d) \
-          value = (((FT_UInt32)(a) << 24) | \
+          value = ( ((FT_UInt32)(a) << 24) | \
                     ((FT_UInt32)(b) << 16) | \
                     ((FT_UInt32)(c) <<  8) | \
-                      (FT_UInt32)(d) )
-
+                     (FT_UInt32)(d) )
 #endif /* FT_ENC_TAG */
 
 enum Coin_FT_Encoding {
@@ -213,6 +212,25 @@ enum Coin_FT_Encoding {
   FT_ENC_TAG(FT_ENCODING_APPLE_ROMAN, 'a', 'r', 'm', 'n')
   
 };
+
+#ifndef FT_IMAGE_TAG
+#define FT_IMAGE_TAG( value, _x1, _x2, _x3, _x4 ) \
+          value = (((unsigned long)_x1 << 24 ) | \
+                   ((unsigned long)_x2 << 16 ) | \
+                   ((unsigned long)_x3 << 8  ) | \
+                    (unsigned long)_x4 )
+#endif /* FT_IMAGE_TAG */
+
+enum  Coin_FT_Glyph_Format {
+  FT_IMAGE_TAG( FT_GLYPH_FORMAT_NONE, 0, 0, 0, 0 ),
+
+  FT_IMAGE_TAG( FT_GLYPH_FORMAT_COMPOSITE, 'c', 'o', 'm', 'p' ),
+  FT_IMAGE_TAG( FT_GLYPH_FORMAT_BITMAP,    'b', 'i', 't', 's' ),
+  FT_IMAGE_TAG( FT_GLYPH_FORMAT_OUTLINE,   'o', 'u', 't', 'l' ),
+  FT_IMAGE_TAG( FT_GLYPH_FORMAT_PLOTTER,   'p', 'l', 'o', 't' )
+  
+};
+
 #endif /* FREETYPE_RUNTIME_LINKING */
 
 /* ************************************************************************* */
