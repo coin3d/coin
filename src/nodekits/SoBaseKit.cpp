@@ -42,6 +42,7 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -480,12 +481,28 @@ SoBaseKit::GLRender(SoGLRenderAction * action)
 }
 
 /*!
-  FIXME: write function documentation
+  Overloaded to calculate bounding box center.
 */
 void
 SoBaseKit::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoBaseKit::doAction((SoAction *)action);
+  int numindices;
+  const int * indices;
+  int last = action->getPathCode(numindices, indices) == SoAction::IN_PATH ?
+    indices[numindices-1] : this->children->getLength() - 1;
+
+  SbVec3f acccenter(0.0f, 0.0f, 0.0f);
+  int numacc = 0;
+  
+  for (int i = 0; i <= last; i++) {
+    children->traverse(action, i, i);
+    if (action->isCenterSet()) {
+      acccenter += action->getCenter();
+      numacc++;
+      action->resetCenter();
+    }
+  }
+  if (numacc) action->setCenter(acccenter / float(numacc), FALSE);
 }
 
 /*!
