@@ -26,14 +26,15 @@
 
 class SoEngineOutput {
 public:
+  SoEngineOutput(void);
+  virtual ~SoEngineOutput();
+
   SoType getConnectionType(void) const;
-  int getForwardConnections(SoFieldList & list) const;
+  int getForwardConnections(SoFieldList & fl) const;
   void enable(const SbBool flag);
   SbBool isEnabled(void) const;
   class SoEngine * getContainer(void) const;
 
-  SoEngineOutput(void);
-  virtual ~SoEngineOutput();
   void setContainer(SoEngine * engine);
   void addConnection(SoField * f);
   void removeConnection(SoField * f);
@@ -46,7 +47,7 @@ public:
 private:
   SbBool enabled;
   SoEngine * container;
-  SoFieldList connections;
+  SoFieldList slaves;
 };
 
 #endif // !COIN_SOENGINEOUTPUT_H

@@ -38,6 +38,43 @@
 #endif // COIN_DEBUG
 
 /*!
+  Constructor. The SoEngineOutput will initially not be contained
+  within an SoEngine nor will it have any slave fields attached.
+
+  \sa setContainer()
+*/
+SoEngineOutput::SoEngineOutput(void)
+{
+  this->enabled = TRUE;
+  this->container = NULL;
+}
+
+/*!
+  Destructor.
+*/
+SoEngineOutput::~SoEngineOutput()
+{
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoEngineOutput::~SoEngineOutput", "start %p", this);
+#endif // debug
+
+  // Avoids evaluation from the fields in SoField::disconnect() (which
+  // would again lead to problems with the pure virtual
+  // SoEngine::evaluate() function during destruction of our
+  // container).
+  this->enabled = FALSE;
+
+  // Disconnect all fields.
+  SoFieldList fl;
+  int nr = this->getForwardConnections(fl);
+  for (int i=0; i < nr; i++) fl[0]->disconnect(this);
+
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoEngineOutput::~SoEngineOutput", "done %p", this);
+#endif // debug
+}
+
+/*!
   Returns the type of the engine output.
 */
 SoType
@@ -52,19 +89,17 @@ SoEngineOutput::getConnectionType(void) const
 }
 
 /*!
-  Adds all slave fields connected to this output to \a list.  Returns
+  Adds all slave fields connected to this output to \a fl.  Returns
   the number of slaves.
 
   \sa addConnection()
   \sa removeConnection()
 */
 int
-SoEngineOutput::getForwardConnections(SoFieldList & list) const
+SoEngineOutput::getForwardConnections(SoFieldList & fl) const
 {
-  int n = this->connections.getLength();
-  for (int i = 0; i < n; i++) {
-    list.append(this->connections[i]);
-  }
+  int n = this->slaves.getLength();
+  for (int i = 0; i < n; i++) fl.append(this->slaves[i]);
   return n;
 }
 
@@ -107,43 +142,6 @@ SoEngineOutput::getContainer(void) const
 }
 
 /*!
-  Constructor. The SoEngineOutput will initially not be contained
-  within an SoEngine nor will it have any slave fields attached.
-
-  \sa setContainer()
-*/
-SoEngineOutput::SoEngineOutput(void)
-{
-  this->enabled = TRUE;
-  this->container = NULL;
-}
-
-/*!
-  Destructor.
-*/
-SoEngineOutput::~SoEngineOutput()
-{
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoEngineOutput::~SoEngineOutput", "start %p", this);
-#endif // debug
-
-  // Avoids evaluation from the fields in SoField::disconnect() (which
-  // would again lead to problems with the pure virtual
-  // SoEngine::evaluate() function during destruction of our
-  // container).
-  this->enabled = FALSE;
-
-  // Disconnect all fields.
-  SoFieldList fl;
-  int nr = this->getForwardConnections(fl);
-  for (int i=0; i < nr; i++) fl[0]->disconnect(this);
-
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoEngineOutput::~SoEngineOutput", "done %p", this);
-#endif // debug
-}
-
-/*!
   Sets the engine containing this output.
 
   \sa getContainer()
@@ -162,8 +160,8 @@ SoEngineOutput::setContainer(SoEngine * engine)
 void
 SoEngineOutput::addConnection(SoField * f)
 {
-  int i = this->connections.find(f);
-  if (i < 0) this->connections.append(f);
+  int i = this->slaves.find(f);
+  if (i < 0) this->slaves.append(f);
 }
 
 /*!
@@ -174,8 +172,8 @@ SoEngineOutput::addConnection(SoField * f)
 void
 SoEngineOutput::removeConnection(SoField * f)
 {
-  int i = this->connections.find(f);
-  if (i >= 0) this->connections.remove(i);
+  int i = this->slaves.find(f);
+  if (i >= 0) this->slaves.remove(i);
 }
 
 /*!
@@ -186,7 +184,7 @@ SoEngineOutput::removeConnection(SoField * f)
 int
 SoEngineOutput::getNumConnections(void) const
 {
-  return this->connections.getLength();
+  return this->slaves.getLength();
 }
 
 /*!
@@ -197,7 +195,7 @@ SoEngineOutput::getNumConnections(void) const
 SoField *
 SoEngineOutput::operator[](int i) const
 {
-  return this->connections[i];
+  return this->slaves[i];
 }
 
 /*!
@@ -210,9 +208,9 @@ SoEngineOutput::operator[](int i) const
 void
 SoEngineOutput::prepareToWrite(void) const
 {
-  int n = this->connections.getLength();
+  int n = this->slaves.getLength();
   for (int i = 0; i < n; i++) {
-    this->connections[i]->enableNotify(FALSE);
+    this->slaves[i]->enableNotify(FALSE);
   }
 }
 
@@ -225,8 +223,8 @@ SoEngineOutput::prepareToWrite(void) const
 void
 SoEngineOutput::doneWriting(void) const
 {
-  int n = this->connections.getLength();
+  int n = this->slaves.getLength();
   for (int i = 0; i < n; i++) {
-    this->connections[i]->enableNotify(TRUE);
+    this->slaves[i]->enableNotify(TRUE);
   }
 }
