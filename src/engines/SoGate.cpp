@@ -79,12 +79,15 @@ SoGate::commonConstructor(void)
   this->output = new SoEngineOutput;
   this->output->enable(this->enable.getValue());
   this->output->setContainer(this);
+
+  this->input = NULL;
 }
 
 // called from constructor or readInstance() to init input/output
 void
 SoGate::initInputOutput(const SoType type)
 {
+  assert(this->input == NULL);
   this->input = (SoMField *) type.createInstance();
   this->input->setNum(0);
   this->input->setContainer(this);
@@ -135,6 +138,8 @@ SoGate::inputChanged(SoField *which)
 SbBool
 SoGate::readInstance(SoInput *in, unsigned short flags)
 {
+  // FIXME: check binary format read vs Inventor. 20000505 mortene.
+
   this->typeField.setValue(SbName(""));
   SbBool ret = inherited::readInstance(in, flags);
   if (ret) {
@@ -162,6 +167,8 @@ SoGate::readInstance(SoInput *in, unsigned short flags)
 void
 SoGate::writeInstance(SoOutput *out)
 {
+  // FIXME: check binary format write vs Inventor. 20000505 mortene.
+
   this->typeField.setValue(this->input->getTypeId().getName());
   inherited::writeInstance(out);
 }
