@@ -1338,3 +1338,15 @@
     20021029 mortene, problem reported by kintel.
 
 =====================================================================
+
+044 Release builds on Cygwin/MSVC++ doesn't heed all configure
+    options.
+
+    Specifically, "--disable-symbols" should remove the "/Zi" option
+    to cl.exe, and "--enable-optimization" should add "/O2" (or some
+    such).
+
+    20021118 mortene, problem reported by Michael Wimmer on
+    coin-discuss.
+
+=====================================================================
