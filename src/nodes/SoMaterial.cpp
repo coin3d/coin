@@ -312,6 +312,7 @@ SoMaterial::doAction(SoAction * action)
       // we now know whether material is transparent or not
       THIS->transparencyflag = (int) istransparent;
     }
+    istransparent = (SbBool) THIS->transparencyflag;
   }
 #undef TEST_OVERRIDE
 
