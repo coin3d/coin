@@ -1,7 +1,11 @@
 # CONFIG "The Manipulators"
 # FLAGS
-# C - Source File Created [0.1]
+# I = implementation complete, or nearly so
+# D = fully documented for Doxygen generation of html/man
 #
+# ************************************************************************
+# ID
+# ==
 # HIERARCHY
 #       SoClipPlaneManip
 #       SoTransformManip

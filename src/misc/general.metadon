@@ -20,7 +20,7 @@
 # ID  SoInput
 # ID  SoOutput
 #     SoOffscreenRenderer
-# i   SoInteraction
+# I   SoInteraction
 # id  SoPath
 # id      SoFullPath
 #     SoPickedPoint

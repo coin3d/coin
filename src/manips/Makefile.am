@@ -2,10 +2,32 @@
 ## 19991229 mortene.
 
 ALLSOURCES = \
-	SoClipPlaneManip.cpp SoClipPlaneManip.h
+	SoClipPlaneManip.cpp SoClipPlaneManip.h \
+	SoDirectionalLightManip.cpp SoDirectionalLightManip.h \
+	SoPointLightManip.cpp SoPointLightManip.h \
+	SoSpotLightManip.cpp SoSpotLightManip.h \
+	SoTransformManip.cpp SoTransformManip.h \
+	SoCenterballManip.cpp SoCenterballManip.h \
+	SoHandleBoxManip.cpp SoHandleBoxManip.h \
+	SoJackManip.cpp SoJackManip.h \
+	SoTabBoxManip.cpp SoTabBoxManip.h \
+	SoTrackballManip.cpp SoTrackballManip.h \
+	SoTransformBoxManip.cpp SoTransformBoxManip.h \
+	SoTransformerManip.cpp SoTransformerManip.h
 
 ALLINSTHEADERS = \
-	$(top_srcdir)/include/Inventor/manips/SoClipPlaneManip.h
+	$(top_srcdir)/include/Inventor/manips/SoClipPlaneManip.h \
+	$(top_srcdir)/include/Inventor/manips/SoDirectionalLightManip.h \
+	$(top_srcdir)/include/Inventor/manips/SoPointLightManip.h \
+	$(top_srcdir)/include/Inventor/manips/SoSpotLightManip.h \
+	$(top_srcdir)/include/Inventor/manips/SoTransformManip.h
+	$(top_srcdir)/include/Inventor/manips/SoCenterballManip.h \
+	$(top_srcdir)/include/Inventor/manips/SoHandleBoxManip.h \
+	$(top_srcdir)/include/Inventor/manips/SoJackManip.h \
+	$(top_srcdir)/include/Inventor/manips/SoTabBoxManip.h \
+	$(top_srcdir)/include/Inventor/manips/SoTrackballManip.h \
+	$(top_srcdir)/include/Inventor/manips/SoTransformBoxManip.h \
+	$(top_srcdir)/include/Inventor/manips/SoTransformerManip.h
 
 ##$ BEGIN TEMPLATE Make-Common(manips)
 

@@ -27,6 +27,17 @@
 #include <Inventor/SoInteraction.h>
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/manips/SoClipPlaneManip.h>
+#include <Inventor/manips/SoDirectionalLightManip.h>
+#include <Inventor/manips/SoPointLightManip.h>
+#include <Inventor/manips/SoSpotLightManip.h>
+#include <Inventor/manips/SoTransformManip.h>
+#include <Inventor/manips/SoCenterballManip.h>
+#include <Inventor/manips/SoHandleBoxManip.h>
+#include <Inventor/manips/SoJackManip.h>
+#include <Inventor/manips/SoTabBoxManip.h>
+#include <Inventor/manips/SoTrackballManip.h>
+#include <Inventor/manips/SoTransformBoxManip.h>
+#include <Inventor/manips/SoTransformerManip.h>
 #include <Inventor/nodekits/SoInteractionKit.h>
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoExtSelection.h>
@@ -50,6 +61,15 @@ SoInteraction::init(void)
   SoDragger::initClass();
 
   SoClipPlaneManip::initClass();
-  // FIXME: add init()-calls for the rest of manipulator classes here
-  // when they are added to Coin. 20000107 mortene.
+  SoDirectionalLightManip::initClass();
+  SoPointLightManip::initClass();
+  SoSpotLightManip::initClass();
+  SoTransformManip::initClass();
+  SoCenterballManip::initClass();
+  SoHandleBoxManip::initClass();
+  SoJackManip::initClass();
+  SoTabBoxManip::initClass();
+  SoTrackballManip::initClass();
+  SoTransformBoxManip::initClass();
+  SoTransformerManip::initClass();
 }
