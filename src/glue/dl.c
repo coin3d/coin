@@ -139,10 +139,13 @@ cc_dl_open(const char * filename)
 
   /* FIXME: if filename==NULL, could we use Module32First() and
      Module32Next() to cycle through the loaded modules, to "fake"
-     what happens on dlopen(NULL) on UNIX-systems? That would still
-     not work on NT4, which is missing the Tool Help API. Check in a
-     Win32-API related Usenet group if there is any other way to
-     resolve symbols in the current process image. 20021015 mortene. */
+     what happens on dlopen(NULL) on UNIX-systems?
+
+     That would still not work on NT4, which is missing the Tool Help
+     API. Check in a Win32-API related Usenet group if there is any
+     other way to resolve symbols in the current process
+     image. 20021015 mortene. */
+
 
   /* Don't use GetModuleHandle(): LoadLibrary() will *not* load a new
      image if the module is already loaded, it will only inc the
