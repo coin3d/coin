@@ -224,6 +224,8 @@ SbPlane::isInHalfSpace(const SbVec3f& point) const
 /*!
   Return the distance from \a point to plane. Positive distance means
   the point is in the plane's half space.
+
+  This method is an extension versus the Open Inventor API.
 */
 float
 SbPlane::getDistance(const SbVec3f &point) const
