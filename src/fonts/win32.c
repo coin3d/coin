@@ -276,10 +276,15 @@ cc_flww32_exit(void)
 /* ************************************************************************* */
 
 /* Allocates and returns a new font id matching the exact fontname.
-   Returns NULL on error. */
+   Returns NULL on error.
+*/
 void *
 cc_flww32_get_font(const char * fontname, int sizex, int sizey)
 {
+  /* FIXME: an idea about sizex / width specification for fonts: let
+     sizex==0 indicate "don't care". Should update API and API doc
+     upstream to that effect. 20030911 mortene.
+   */
   cc_hash * glyphhash;
 
   HFONT wfont = CreateFont(-sizey, /* Using a negative
@@ -288,9 +293,6 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey)
                                       systems tries to 'quantize' the
                                       glyph to match the pixels of the
                                       choosen resolution. */
-                           /* FIXME: should we let width==0 instead of
-                              sizex for better chance of getting a
-                              match? 20030610 mortene. */
                            0, /* really sizex, but let Win32 choose to
                                  get correct aspect ratio */
                            0, /* escapement */
