@@ -204,6 +204,7 @@ SoAction::SoAction(void)
     terminated(FALSE),
     currentpathcode(NO_PATH)
 {
+  this->currentpath.ref(); // to avoid having a zero refcount instance
   this->applieddata.node = NULL;
 }
 
