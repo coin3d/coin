@@ -310,6 +310,7 @@
 //        - Add GL_[NV/HP]_occlusion_test support making the number of passes adaptive.
 //        - Maybe pbuffer support to eliminate the slow glCopyTexSubImage2D calls.
 //        - Support texturing in every pass (will probably need fragment programming).
+//        - Support EXT_texture_rectangle instead of NV_texture_rectangle if available.
 // (20031128 handegar)
 //
 
@@ -1488,44 +1489,44 @@ SoGLRenderActionP::setupNVRegisterCombiners()
     //  out.rgb = col0;                                              
     //  out.a = spare0.b; 
     //
-    cc_glglue_glCombinerParameteriNV(glue, GL_NUM_GENERAL_COMBINERS_NV, 1);
-    cc_glglue_glCombinerInputNV(glue, GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_A_NV, GL_TEXTURE3, 
-                                GL_UNSIGNED_INVERT_NV, GL_RGB);
-    cc_glglue_glCombinerInputNV(glue, GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_B_NV, 
-                                GL_PRIMARY_COLOR_NV, GL_SIGNED_IDENTITY_NV, GL_ALPHA);
-    cc_glglue_glCombinerInputNV(glue, GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_C_NV, GL_ZERO, 
-                                GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-    cc_glglue_glCombinerInputNV(glue, GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_D_NV, GL_ZERO, 
-                                GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-    cc_glglue_glCombinerOutputNV(glue, GL_COMBINER0_NV, GL_RGB, GL_SPARE0_NV, GL_DISCARD_NV, 
-                                 GL_DISCARD_NV, GL_ZERO, GL_ZERO, GL_FALSE, GL_FALSE, GL_FALSE);
-    cc_glglue_glCombinerInputNV(glue, GL_COMBINER0_NV, GL_ALPHA, GL_VARIABLE_A_NV, GL_ZERO,
-                                GL_UNSIGNED_IDENTITY_NV, GL_BLUE);
-    cc_glglue_glCombinerInputNV(glue, GL_COMBINER0_NV, GL_ALPHA, GL_VARIABLE_B_NV, GL_ZERO, 
-                                GL_UNSIGNED_IDENTITY_NV, GL_BLUE);
-    cc_glglue_glCombinerInputNV(glue, GL_COMBINER0_NV, GL_ALPHA, GL_VARIABLE_C_NV, GL_ZERO,
-                                GL_UNSIGNED_IDENTITY_NV, GL_BLUE);
-    cc_glglue_glCombinerInputNV(glue, GL_COMBINER0_NV, GL_ALPHA, GL_VARIABLE_D_NV, GL_ZERO,
-                                GL_UNSIGNED_IDENTITY_NV, GL_BLUE);
-    cc_glglue_glCombinerOutputNV(glue, GL_COMBINER0_NV, GL_ALPHA, GL_DISCARD_NV, GL_DISCARD_NV, 
-                                 GL_DISCARD_NV, GL_ZERO, GL_ZERO, GL_FALSE, GL_FALSE, GL_FALSE);
+    glue->glCombinerParameteriNV(GL_NUM_GENERAL_COMBINERS_NV, 1);
+    glue->glCombinerInputNV(GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_A_NV, GL_TEXTURE3, 
+                            GL_UNSIGNED_INVERT_NV, GL_RGB);
+    glue->glCombinerInputNV(GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_B_NV, 
+                            GL_PRIMARY_COLOR_NV, GL_SIGNED_IDENTITY_NV, GL_ALPHA);
+    glue->glCombinerInputNV(GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_C_NV, GL_ZERO, 
+                            GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+    glue->glCombinerInputNV(GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_D_NV, GL_ZERO, 
+                            GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+    glue->glCombinerOutputNV(GL_COMBINER0_NV, GL_RGB, GL_SPARE0_NV, GL_DISCARD_NV, 
+                             GL_DISCARD_NV, GL_ZERO, GL_ZERO, GL_FALSE, GL_FALSE, GL_FALSE);
+    glue->glCombinerInputNV(GL_COMBINER0_NV, GL_ALPHA, GL_VARIABLE_A_NV, GL_ZERO,
+                            GL_UNSIGNED_IDENTITY_NV, GL_BLUE);
+    glue->glCombinerInputNV(GL_COMBINER0_NV, GL_ALPHA, GL_VARIABLE_B_NV, GL_ZERO, 
+                            GL_UNSIGNED_IDENTITY_NV, GL_BLUE);
+    glue->glCombinerInputNV(GL_COMBINER0_NV, GL_ALPHA, GL_VARIABLE_C_NV, GL_ZERO,
+                            GL_UNSIGNED_IDENTITY_NV, GL_BLUE);
+    glue->glCombinerInputNV(GL_COMBINER0_NV, GL_ALPHA, GL_VARIABLE_D_NV, GL_ZERO,
+                            GL_UNSIGNED_IDENTITY_NV, GL_BLUE);
+    glue->glCombinerOutputNV(GL_COMBINER0_NV, GL_ALPHA, GL_DISCARD_NV, GL_DISCARD_NV, 
+                             GL_DISCARD_NV, GL_ZERO, GL_ZERO, GL_FALSE, GL_FALSE, GL_FALSE);
     
-    cc_glglue_glCombinerParameteriNV(glue, GL_COLOR_SUM_CLAMP_NV, 0);
-    cc_glglue_glFinalCombinerInputNV(glue, GL_VARIABLE_A_NV, GL_ZERO, 
-                                     GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-    cc_glglue_glFinalCombinerInputNV(glue, GL_VARIABLE_B_NV, GL_ZERO, 
-                                     GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-    cc_glglue_glFinalCombinerInputNV(glue, GL_VARIABLE_C_NV, GL_ZERO, 
-                                     GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-    cc_glglue_glFinalCombinerInputNV(glue, GL_VARIABLE_D_NV, GL_PRIMARY_COLOR_NV, 
-                                     GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-    cc_glglue_glFinalCombinerInputNV(glue, GL_VARIABLE_E_NV, GL_ZERO, 
-                                     GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-    cc_glglue_glFinalCombinerInputNV(glue, GL_VARIABLE_F_NV, GL_ZERO, 
-                                     GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-    cc_glglue_glFinalCombinerInputNV(glue, GL_VARIABLE_G_NV, GL_SPARE0_NV, 
-                                     GL_UNSIGNED_IDENTITY_NV, GL_BLUE);
-      
+    glue->glCombinerParameteriNV(GL_COLOR_SUM_CLAMP_NV, 0);
+    glue->glFinalCombinerInputNV(GL_VARIABLE_A_NV, GL_ZERO, 
+                                 GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+    glue->glFinalCombinerInputNV(GL_VARIABLE_B_NV, GL_ZERO, 
+                                 GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+    glue->glFinalCombinerInputNV(GL_VARIABLE_C_NV, GL_ZERO, 
+                                 GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+    glue->glFinalCombinerInputNV(GL_VARIABLE_D_NV, GL_PRIMARY_COLOR_NV, 
+                                 GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+    glue->glFinalCombinerInputNV(GL_VARIABLE_E_NV, GL_ZERO, 
+                                 GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+    glue->glFinalCombinerInputNV(GL_VARIABLE_F_NV, GL_ZERO, 
+                                 GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+    glue->glFinalCombinerInputNV(GL_VARIABLE_G_NV, GL_SPARE0_NV, 
+                                 GL_UNSIGNED_IDENTITY_NV, GL_BLUE);
+    
     glEnable(GL_REGISTER_COMBINERS_NV);
     
     glAlphaFunc(GL_GREATER, 0);
@@ -1709,42 +1710,43 @@ SoGLRenderActionP::renderSortedLayers(SoState * state)
   //   rgb.out = tex0;
   //   rgb.a = tex0;
   //  
-  cc_glglue_glCombinerParameteriNV(glue, GL_NUM_GENERAL_COMBINERS_NV, 1);
-  cc_glglue_glCombinerInputNV(glue, GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_A_NV, GL_ZERO, 
-                    GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-  cc_glglue_glCombinerInputNV(glue, GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_B_NV, GL_ZERO, 
-                    GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-  cc_glglue_glCombinerInputNV(glue, GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_C_NV, GL_ZERO, 
-                    GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-  cc_glglue_glCombinerInputNV(glue, GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_D_NV, GL_ZERO, 
-                    GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-  cc_glglue_glCombinerOutputNV(glue, GL_COMBINER0_NV, GL_RGB, GL_DISCARD_NV, GL_DISCARD_NV, 
-                     GL_DISCARD_NV, GL_ZERO, GL_ZERO, GL_FALSE, GL_FALSE, GL_FALSE);
-  cc_glglue_glCombinerInputNV(glue, GL_COMBINER0_NV, GL_ALPHA, GL_VARIABLE_A_NV, GL_ZERO, 
-                    GL_UNSIGNED_IDENTITY_NV, GL_ALPHA);
-  cc_glglue_glCombinerInputNV(glue, GL_COMBINER0_NV, GL_ALPHA, GL_VARIABLE_B_NV, GL_ZERO, 
-                    GL_UNSIGNED_IDENTITY_NV, GL_ALPHA);
-  cc_glglue_glCombinerInputNV(glue, GL_COMBINER0_NV, GL_ALPHA, GL_VARIABLE_C_NV, GL_ZERO, 
-                    GL_UNSIGNED_IDENTITY_NV, GL_ALPHA);
-  cc_glglue_glCombinerInputNV(glue, GL_COMBINER0_NV, GL_ALPHA, GL_VARIABLE_D_NV, GL_ZERO, 
-                    GL_UNSIGNED_IDENTITY_NV, GL_ALPHA);
-  cc_glglue_glCombinerOutputNV(glue, GL_COMBINER0_NV, GL_ALPHA, GL_DISCARD_NV, GL_DISCARD_NV, 
-                     GL_DISCARD_NV, GL_ZERO, GL_ZERO, GL_FALSE, GL_FALSE, GL_FALSE);  
-  cc_glglue_glCombinerParameteriNV(glue, GL_COLOR_SUM_CLAMP_NV, 0);
-  cc_glglue_glFinalCombinerInputNV(glue, GL_VARIABLE_A_NV, GL_ZERO, 
-                                   GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-  cc_glglue_glFinalCombinerInputNV(glue, GL_VARIABLE_B_NV, GL_ZERO, 
-                                   GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-  cc_glglue_glFinalCombinerInputNV(glue, GL_VARIABLE_C_NV, GL_ZERO, 
-                                   GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-  cc_glglue_glFinalCombinerInputNV(glue, GL_VARIABLE_D_NV, GL_TEXTURE0, 
-                                   GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-  cc_glglue_glFinalCombinerInputNV(glue, GL_VARIABLE_E_NV, GL_ZERO,
-                                   GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-  cc_glglue_glFinalCombinerInputNV(glue, GL_VARIABLE_F_NV, GL_ZERO, 
-                                   GL_UNSIGNED_IDENTITY_NV, GL_RGB);
-  cc_glglue_glFinalCombinerInputNV(glue, GL_VARIABLE_G_NV, GL_TEXTURE0, 
-                                   GL_UNSIGNED_IDENTITY_NV, GL_ALPHA);
+  glue->glCombinerParameteriNV(GL_NUM_GENERAL_COMBINERS_NV, 1);
+  glue->glCombinerInputNV(GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_A_NV, GL_ZERO, 
+                          GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+  glue->glCombinerInputNV(GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_B_NV, GL_ZERO, 
+                          GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+  glue->glCombinerInputNV(GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_C_NV, GL_ZERO, 
+                          GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+  glue->glCombinerInputNV(GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_D_NV, GL_ZERO, 
+                          GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+  glue->glCombinerOutputNV(GL_COMBINER0_NV, GL_RGB, GL_DISCARD_NV, GL_DISCARD_NV, 
+                           GL_DISCARD_NV, GL_ZERO, GL_ZERO, GL_FALSE, GL_FALSE, GL_FALSE);
+  glue->glCombinerInputNV(GL_COMBINER0_NV, GL_ALPHA, GL_VARIABLE_A_NV, GL_ZERO, 
+                          GL_UNSIGNED_IDENTITY_NV, GL_ALPHA);
+  glue->glCombinerInputNV(GL_COMBINER0_NV, GL_ALPHA, GL_VARIABLE_B_NV, GL_ZERO, 
+                          GL_UNSIGNED_IDENTITY_NV, GL_ALPHA);
+  glue->glCombinerInputNV(GL_COMBINER0_NV, GL_ALPHA, GL_VARIABLE_C_NV, GL_ZERO, 
+                          GL_UNSIGNED_IDENTITY_NV, GL_ALPHA);
+  glue->glCombinerInputNV(GL_COMBINER0_NV, GL_ALPHA, GL_VARIABLE_D_NV, GL_ZERO, 
+                          GL_UNSIGNED_IDENTITY_NV, GL_ALPHA);
+  glue->glCombinerOutputNV(GL_COMBINER0_NV, GL_ALPHA, GL_DISCARD_NV, GL_DISCARD_NV, 
+                           GL_DISCARD_NV, GL_ZERO, GL_ZERO, GL_FALSE, GL_FALSE, GL_FALSE);  
+
+  glue->glCombinerParameteriNV(GL_COLOR_SUM_CLAMP_NV, 0);
+  glue->glFinalCombinerInputNV(GL_VARIABLE_A_NV, GL_ZERO, 
+                               GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+  glue->glFinalCombinerInputNV(GL_VARIABLE_B_NV, GL_ZERO, 
+                               GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+  glue->glFinalCombinerInputNV(GL_VARIABLE_C_NV, GL_ZERO, 
+                               GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+  glue->glFinalCombinerInputNV(GL_VARIABLE_D_NV, GL_TEXTURE0, 
+                               GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+  glue->glFinalCombinerInputNV(GL_VARIABLE_E_NV, GL_ZERO,
+                               GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+  glue->glFinalCombinerInputNV(GL_VARIABLE_F_NV, GL_ZERO, 
+                               GL_UNSIGNED_IDENTITY_NV, GL_RGB);
+  glue->glFinalCombinerInputNV(GL_VARIABLE_G_NV, GL_TEXTURE0, 
+                               GL_UNSIGNED_IDENTITY_NV, GL_ALPHA);
   
   glEnable(GL_REGISTER_COMBINERS_NV);  
   glEnable(GL_TEXTURE_RECTANGLE_NV);  
