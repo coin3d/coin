@@ -133,7 +133,9 @@ GLUWrapper_versionMatchesAtLeast(unsigned int major,
 {
   if (GLUWrapper()->available == 0) return 0;
   if (GLUWrapper()->version.major < major) return 0;
+  else if (GLUWrapper()->version.major > major) return 1;
   if (GLUWrapper()->version.minor < minor) return 0;
+  else if (GLUWrapper()->version.minor > minor) return 1;
   if (GLUWrapper()->version.release < release) return 0;
   return 1;
 }
@@ -200,7 +202,7 @@ GLUWrapper(void)
       /* FIXME: implement same functionality on MSWindows. 20000930 mortene. */
       int idx = 0;
       while (!GLU_libhandle && possiblelibnames[idx]) {
-        /* 
+        /*
          *  FIXME: Purify complains about Bad Function Parameter here.
          * Everything seems to work ok though.  pederb, 2001-02-07
          */

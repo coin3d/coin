@@ -66,7 +66,9 @@ simage_wrapper_versionMatchesAtLeast(int major,
 {
   if (simage_wrapper()->available == 0) return 0;
   if (simage_wrapper()->version.major < major) return 0;
+  else if (simage_wrapper()->version.major > major) return 1;
   if (simage_wrapper()->version.minor < minor) return 0;
+  else if (simage_wrapper()->version.minor > minor) return 1;
   if (simage_wrapper()->version.micro < micro) return 0;
   return 1;
 }
@@ -144,7 +146,7 @@ simage_wrapper(void)
       /* FIXME: implement same functionality on MSWindows. 20000930 mortene. */
       int idx = 0;
       while (!simage_libhandle && possiblelibnames[idx]) {
-        /* 
+        /*
          *  FIXME: Purify complains about Bad Function Parameter here.
          * Everything seems to work ok though.  pederb, 2001-02-07
          */
