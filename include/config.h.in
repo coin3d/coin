@@ -148,6 +148,9 @@
 /* Define if you have the <sys/unistd.h> header file. */
 #undef HAVE_SYS_UNISTD_H
 
+/* *EXPERIMENTAL* to use the threads extension */
+#undef HAVE_THREADS
+
 /* define this if the type is available on the system */
 #undef HAVE_UINT16_T
 

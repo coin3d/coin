@@ -298,13 +298,17 @@ if test -z "$CC" -a -z "$CXX" && $sim_ac_wrapmsvc >/dev/null 2>&1; then
   BUILD_WITH_MSVC=true
 fi
 AC_SUBST(BUILD_WITH_MSVC)
-if $BUILD_WITH_MSVC; then
-  :
+
+case $CXX in
+*wrapmsvc.exe)
+  BUILD_WITH_MSVC=true
   $1
-else
-  :
+  ;;
+*)
+  BUILD_WITH_MSVC=false
   $2
-fi
+  ;;
+esac
 ]) # SIM_AC_SETUP_MSVC_IFELSE
 
 # **************************************************************************
