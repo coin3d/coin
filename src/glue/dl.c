@@ -21,6 +21,67 @@
  *
 \**************************************************************************/
 
+// Here's a posting I made on Usenet 2003-02-19 with queries about
+// increasing the robustness of the symbol binding process on MSWin
+// DLLs. I'm keeping it here for reference, just so we remember that
+// there are potential problems:
+//
+// ------8<------[snip]------8<------[snip]------8<------[snip]----
+//    Newsgroups: comp.os.ms-windows.programmer.win32
+//    Subject: Possible to do calling convention query?
+//    Gcc: nnfolder+archive:out-news
+//    From: Morten Eriksen <mortene@sim.no>
+//    Organization: The Underpant Gnomes
+//    --text follows this line--
+//    Hi,
+//    
+//    I have a delicate problem with robustness which I would like to try to
+//    solve. The outline of my problem is as follows:
+//    
+//      * I'm using LoadLibrary() to bind to the symbols of a DLL at
+//        run-time.
+//    
+//      * This DLL was generated outside of my control.
+//    
+//      * I bind to function pointer symbols of the DLL with something like
+//        the following snippet of code:
+//    
+//          typedef void (__stdcall * nurbsProperty_t)(void *, int, float);
+//          nurbsProperty_t nurbsProperty =
+//               (nurbsProperty_t)GetProcAddress(<dllhnd>, "nurbsProperty");
+//    
+//          // Now the function can be used like any other, e.g. like this:
+//          //
+//          // nurbsProperty(NULL, 0, 0.0f);
+//    
+//      * Now, notice the "__stdcall" part of the function signature
+//        typedef. As you all probably know, this specifies the _assumed_
+//        calling convention of the function, i.e. how arguments are pushed
+//        on the stack, and if it's the caller's or the callee's
+//        responsibility to clean up the stack afterwards.
+//    
+//    Now here's the problem I would like to solve: if the "nurbsProperty()"
+//    function of the DLL was built with a different calling convention than
+//    __stdcall (say, __cdecl), my subsequent invocation of the method will
+//    lead to either a corrupted set of input arguments, a corrupted stack
+//    upon return, or both. Therefore, I would like to *detect* whether the
+//    DLL function symbols actually matches the calling convention I expect.
+//    
+//    Can this be done through the Win32 API somehow? I.e. getting to know
+//    what calling convention an exported function in a DLL was built with?
+//    
+//    (I guess it can be done by loading the DLL file into memory "raw", and
+//    parsing it's structures of the DLL / PE file, but that is _really_ the
+//    last resort.)
+//    
+//    Regards,
+//    Morten
+//    -- 
+//    Ees a sad an' beautiful world
+// ------8<------[snip]------8<------[snip]------8<------[snip]----
+//
+// 20030219 mortene.
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
