@@ -1,4 +1,4 @@
-##$ TEMPLATE Make-Common(-xxx-)
+##$ TEMPLATE Make-Common(-xxx-, -incdir-)
 # **************************************************************************
 # This template depends on the following variables having been set up before
 # its invokation.
@@ -43,11 +43,7 @@ lib-xxx-@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_lib-xxx-@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-//$ IF "-xxx-" eq "vrml97"
-lib-xxx-incdir = $(includedir)/Inventor/VRMLnodes
-//$ ELSE
-lib-xxx-incdir = $(includedir)/Inventor/-xxx-
-//$ ENDIF
+lib-xxx-incdir = $(includedir)/Inventor/-incdir-
 lib-xxx-inc_HEADERS = $(PublicHeaders)
 
 -xxx-_lst_SOURCES = $(BuildSources)
