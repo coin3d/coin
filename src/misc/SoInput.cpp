@@ -84,7 +84,7 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/fields/SoField.h>
-#include <coindefs.h> // COIN_STUB()
+#include <coindefs.h> // COIN_STUB(), COIN_OBSOLETED()
 #include <Inventor/SoDB.h>
 #include <Inventor/SbName.h>
 #include <Inventor/nodes/SoNode.h>
@@ -1747,19 +1747,14 @@ SoInput::setIVVersion(float version)
 }
 
 /*!
-  FIXME: write doc
-
-  Important note: do \e not use this method when the Coin library has
-  been compiled as an MSWindows DLL, as passing FILE* instances back
-  or forth to DLLs is dangerous and will most likely cause a
-  crash. This is an intrinsic limitation for MSWindows DLLs.
+  This function has been obsoleted in Coin.
 */
 void
 SoInput::initFile(FILE * /* newFP */, const char * /* fileName */,
                   SbString * /* fullName */,
                   SbBool /* openedHere */, SbDict * /* refDict */)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
 /*!
@@ -1847,12 +1842,12 @@ SoInput::popFile(void)
 }
 
 /*!
-  FIXME: write doc
+  This function has been obsoleted in Coin.
  */
 size_t
 SoInput::freeBytesInBuf(void) const
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
   return 0;
 }
 
@@ -2088,12 +2083,12 @@ SoInput::readChar(char * s, char charToRead)
 }
 
 /*!
-  FIXME: write doc
+  This function has been obsoleted in Coin.
  */
 SbBool
 SoInput::makeRoomInBuf(size_t /* nBytes */)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
   return FALSE;
 }
 
@@ -2238,7 +2233,8 @@ SoInput::isFileVRML1(void)
   and will always return the same as isFileVRML97(), which
   we prefer that you use.
 
-  `This method is an extension versus the Open Inventor API.
+  This method is an extension versus the original SGI Open Inventor
+  API.
 */
 SbBool
 SoInput::isFileVRML2(void)
@@ -2250,22 +2246,18 @@ SoInput::isFileVRML2(void)
 }
 
 /*!
-  FIXME: write function documentation
-
-  Important note: do \e not use this method when the Coin library has
-  been compiled as an MSWindows DLL, as passing FILE* instances back
-  or forth to DLLs is dangerous and will most likely cause a
-  crash. This is an intrinsic limitation for MSWindows DLLs.
+  This function has been obsoleted in Coin.
 */
 void
 SoInput::resetFilePointer(FILE * /* fptr */)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
 /*!
-  FIXME: write doc
- */
+  This function is part of the TGS Inventor API, but is not
+  implemented in Coin.
+*/
 SbBool
 SoInput::isFileURL(const char * /* url */)
 {
@@ -2274,8 +2266,9 @@ SoInput::isFileURL(const char * /* url */)
 }
 
 /*!
-  FIXME: write doc
- */
+  This function is part of the TGS Inventor API, but is not
+  implemented in Coin.
+*/
 char *
 SoInput::URLToFile(char * /* out_buf */, const char * /* in_buf */)
 {
@@ -2284,8 +2277,9 @@ SoInput::URLToFile(char * /* out_buf */, const char * /* in_buf */)
 }
 
 /*!
-  FIXME: write doc
- */
+  This function is part of the TGS Inventor API, but is not
+  implemented in Coin.
+*/
 SbBool
 SoInput::IsURL(const char * /* c_strng */)
 {
