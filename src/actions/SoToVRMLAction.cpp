@@ -552,10 +552,10 @@ SoToVRMLActionP::init_gen(const SbBool color)
   if (dotex) this->bsptreetex = new SbBSPTree;
   this->bsptreenormal = new SbBSPTree;
 
-  this->coordidx = new SbList <int>;
-  this->normalidx = new SbList <int>;
-  if (dotex) this->texidx = new SbList <int>;
-  if (color) this->coloridx = new SbList <int>;
+  this->coordidx = new SbList <int32_t>;
+  this->normalidx = new SbList <int32_t>;
+  if (dotex) this->texidx = new SbList <int32_t>;
+  if (color) this->coloridx = new SbList <int32_t>;
 }
 
 SoCallbackAction::Response
