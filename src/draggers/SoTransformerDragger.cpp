@@ -55,8 +55,8 @@
 
 
   For the application programmer's convenience, the Coin library also
-  provides a manipulator class called SoTransformBoxManip, which wraps
-  the SoTransformBoxDragger into the necessary mechanisms for making
+  provides a manipulator class called SoTransformerManip, which wraps
+  the SoTransformerDragger into the necessary mechanisms for making
   direct insertion of this dragger into a scenegraph possible with
   very little effort.
 
