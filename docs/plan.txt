@@ -95,7 +95,7 @@ State of library when milestone is met:
 * all error classes fully implemented according to what Open Inventor
   provides.
 
-  [Almost done.]
+  [Done.]
 
 * all event classes fully implemented according to what Open Inventor
   provides.
