@@ -88,7 +88,6 @@ expose_cb(void)
   (void)memset(pixels, 0x55, 256*256*4);
   glTexImage2D(GL_TEXTURE_2D,0,0x0003,2,2,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
   glTexImage2D(GL_TEXTURE_2D,1,0x0003,1,1,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
-  glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,8448);
 
   glBindTexture(GL_TEXTURE_2D,textures[0]);
   glDisable(GL_ALPHA_TEST);
@@ -102,15 +101,14 @@ expose_cb(void)
   glEnd();
 
   glBindTexture(GL_TEXTURE_2D,textures[1]);
-  glTexImage2D(GL_TEXTURE_2D,0,0x0003,256,256,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
-  glTexImage2D(GL_TEXTURE_2D,1,0x0003,128,128,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
-  glTexImage2D(GL_TEXTURE_2D,2,0x0003,64,64,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
-  glTexImage2D(GL_TEXTURE_2D,3,0x0003,32,32,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
-  glTexImage2D(GL_TEXTURE_2D,4,0x0003,16,16,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
-  glTexImage2D(GL_TEXTURE_2D,5,0x0003,8,8,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
-  glTexImage2D(GL_TEXTURE_2D,6,0x0003,4,4,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
-  glTexImage2D(GL_TEXTURE_2D,7,0x0003,2,2,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
-  glTexImage2D(GL_TEXTURE_2D,8,0x0003,1,1,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
+
+  int dim = 256;
+  int level = 0;
+  while (dim > 0) {
+    glTexImage2D(GL_TEXTURE_2D,level++,0x0003,dim,dim,
+		 0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
+    dim >>= 1;
+  }
 
   // *************************************************************************
 
