@@ -109,6 +109,14 @@ SoTextureOverrideElement::getImageOverride(SoState *state)
   return (element->flags & TEXTURE_IMAGE) != 0;
 }
 
+SbBool
+SoTextureOverrideElement::getBumpMapOverride(SoState *state)
+{
+  const SoTextureOverrideElement * const element =
+    (const SoTextureOverrideElement *) getConstElement(state, classStackIndex);
+  return (element->flags & BUMP_MAP) != 0;
+}
+
 //!
 
 void
@@ -136,6 +144,21 @@ SoTextureOverrideElement::setImageOverride(SoState *state, const SbBool value)
       element->flags |= TEXTURE_IMAGE;
     else
       element->flags &= ~TEXTURE_IMAGE;
+  }
+}
+
+//!
+
+void
+SoTextureOverrideElement::setBumpMapOverride(SoState *state, const SbBool value)
+{
+  SoTextureOverrideElement * const element =
+    (SoTextureOverrideElement *) getElement(state, classStackIndex);
+  if (element) {
+    if (value)
+      element->flags |= BUMP_MAP;
+    else
+      element->flags &= ~BUMP_MAP;
   }
 }
 

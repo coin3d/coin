@@ -38,7 +38,8 @@ protected:
 
   enum {
     TEXTURE_QUALITY = 0x1,
-    TEXTURE_IMAGE   = 0x2
+    TEXTURE_IMAGE   = 0x2,
+    BUMP_MAP        = 0x4
   };
 public:
   virtual SbBool matches(const SoElement *element) const;
@@ -48,9 +49,11 @@ public:
   virtual void push(SoState *state);
   static SbBool getQualityOverride(SoState *state);
   static SbBool getImageOverride(SoState *state);
+  static SbBool getBumpMapOverride(SoState * state);
 
   static void setQualityOverride(SoState *state, const SbBool value);
   static void setImageOverride(SoState *state, const SbBool value);
+  static void setBumpMapOverride(SoState *state, const SbBool value);
 
   virtual void print(FILE *fp) const;
 
