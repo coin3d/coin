@@ -64,7 +64,8 @@ SoSFBitMask::initClass(void)
 SbBool
 SoSFBitMask::readValue(SoInput * in)
 {
-  assert(this->legalValuesSet);
+  assert(this->legalValuesSet &&
+         "missing initialization of SoSFBitMask enum mappings");
 
   if (in->isBinary()) {
     int bitmask = 0;

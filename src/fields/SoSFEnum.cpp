@@ -173,7 +173,8 @@ SoSFEnum::findEnumName(int value, const SbName *& name) const
 SbBool
 SoSFEnum::readValue(SoInput * in)
 {
-  assert(this->legalValuesSet);
+  assert(this->legalValuesSet &&
+         "missing initialization of SoSFEnum mappings");
 
   SbName n;
   // Read mnemonic value as a character string identifier
