@@ -49,10 +49,29 @@ msvc6_initClassMangling(const char * classname)
   return mangling;
 }
 
+/*
+  This function returns a string that corresponds to how IRIX MIPSpro
+  CC 7.30 mangles "static void <classname>::initClass(void)".
+*/
+
+static
+SbString
+MIPSpro_CC_initClassMangling(const char * classname)
+{
+  assert(classname != NULL);
+  int len = strlen(classname);
+  SbString mangling;
+  mangling.sprintf("initClass__%d%sSGv", len, classname);
+  return mangling;
+}
+
+/* ********************************************************************** */
+
 static mangleFunc * manglefunctions[] = {
   gcc2_initClassMangling,
   gcc3_initClassMangling,
   msvc6_initClassMangling,
+  MIPSpro_CC_initClassMangling,
   (mangleFunc *) NULL
 };
 
@@ -83,6 +102,11 @@ getManglingFunction(void)
       }
     }
     cc_dl_close(handle);
+#ifdef _MSC_VER
+    if ( manglefunc == NULL )
+      // dang, dlopen(NULL) on win32 didn't work, so we fall back to this...
+      manglefunc = msvc6_initClassMangling;
+#endif
     initialized = TRUE;
   }
   return manglefunc;
