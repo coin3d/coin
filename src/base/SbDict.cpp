@@ -141,6 +141,7 @@ SbDict::remove(const unsigned long key)
 // function pointer is supplied as the closure pointer, and we just
 // call that function from our dummy callback. This is needed since
 // cc_hash only supports one apply function type.
+extern "C" {
 typedef void sbdict_dummy_apply_func(unsigned long, void *);
 
 static void
@@ -149,7 +150,7 @@ sbdict_dummy_apply(unsigned long key, void * value, void * closure)
   sbdict_dummy_apply_func * func = (sbdict_dummy_apply_func*) closure;
   func(key, value);
 }
-
+}
 /*!
   Applies \a rtn to all entries in the dictionary.
 */
@@ -166,13 +167,14 @@ void
 SbDict::applyToAll(void (* rtn)(unsigned long key, void * value, void * data),
                    void * data) const
 {
-  cc_hash_apply(this->hashtable, rtn, data);
+  cc_hash_apply(this->hashtable, (cc_hash_apply_func*)rtn, data);
 }
 
 typedef struct {
   SbPList * keys;
   SbPList * values;
 } sbdict_makeplist_data;
+
 
 static void
 sbdict_makeplist_cb(unsigned long key, void * value, void * closure)
@@ -192,7 +194,7 @@ SbDict::makePList(SbPList & keys, SbPList & values)
   applydata.keys = &keys;
   applydata.values = &values;
 
-  cc_hash_apply(this->hashtable, sbdict_makeplist_cb, &applydata);
+  cc_hash_apply(this->hashtable, (cc_hash_apply_func*)sbdict_makeplist_cb, &applydata);
 }
 
 /*!
@@ -210,6 +212,6 @@ SbDict::makePList(SbPList & keys, SbPList & values)
 void
 SbDict::setHashingFunction(unsigned long (*func)(const unsigned long key))
 {
-  cc_hash_set_hash_func(this->hashtable, func);
+  cc_hash_set_hash_func(this->hashtable, (cc_hash_func *)func);
 }
 

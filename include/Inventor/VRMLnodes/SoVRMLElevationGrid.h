@@ -36,6 +36,8 @@
 
 class SoChildList;
 
+class SoVRMLElevationGridP;
+
 class COIN_DLL_API SoVRMLElevationGrid : public SoVRMLGeometry
 {
   typedef SoVRMLGeometry inherited;
@@ -85,7 +87,7 @@ private:
 
   const SbVec3f * updateNormalCache(Binding & nbind);
 
-  class SoVRMLElevationGridP * pimpl;
+  SoVRMLElevationGridP * pimpl;
 
 }; // class SoVRMLElevationGrid
 

@@ -2239,9 +2239,9 @@ SoExtSelectionP::checkOffscreenRendererCapabilities()
 
 
   // Calculate maximum colorcounter from RGB bit depth.
-  this->maximumcolorcounter = ((int) pow(2,this->colorbitsred) - 1) << (this->colorbitsgreen + this->colorbitsblue);
-  this->maximumcolorcounter += ((int) pow(2,this->colorbitsgreen) - 1) << (this->colorbitsblue);
-  this->maximumcolorcounter += ((int) pow(2,this->colorbitsblue));
+  this->maximumcolorcounter = ((int) pow(2.0, this->colorbitsred) - 1) << (this->colorbitsgreen + this->colorbitsblue);
+  this->maximumcolorcounter += ((int) pow(2.0, this->colorbitsgreen) - 1) << (this->colorbitsblue);
+  this->maximumcolorcounter += ((int) pow(2.0, this->colorbitsblue));
 
   if (this->maximumcolorcounter < 2) {
     SoDebugError::post("SoExtSelectionP::checkOffscreenRendererCapabilities",

@@ -362,7 +362,7 @@ SoBase::destroy(void)
   // Find all auditors that they need to cut off their link to this
   // object. I believe this is necessary only for sensors.
   SbList<SoDataSensor *> auditingsensors;
-  cc_rbptree_traverse(&this->auditortree, sobase_sensor_add_cb, &auditingsensors);
+  cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb *)sobase_sensor_add_cb, &auditingsensors);
 
   // Notify sensors that we're dying.
   for (int j = 0; j < auditingsensors.getLength(); j++)
@@ -813,7 +813,7 @@ SoBase::notify(SoNotList * l)
   notdata.list = l;
   notdata.thisp = this;
   
-  cc_rbptree_traverse(&this->auditortree, SoBase::rbptree_notify_cb, &notdata);  
+  cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb *)SoBase::rbptree_notify_cb, &notdata);  
   assert(notdata.cnt == 0);
 }
 
@@ -880,7 +880,7 @@ SoBase::getAuditors(void) const
     list = new SoAuditorList;
     sobase_auditordict->enter((unsigned long) this, (void*) list);
   }
-  cc_rbptree_traverse(&this->auditortree, sobase_audlist_add, (void*) list);
+  cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb*)sobase_audlist_add, (void*) list);
 
   CC_MUTEX_UNLOCK(sobase_mutex);
 

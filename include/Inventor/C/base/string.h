@@ -46,6 +46,8 @@ struct cc_string {
 
 typedef  struct cc_string  cc_string;
 
+typedef char (*cc_apply_f)(char);
+
 /* ********************************************************************** */
 
 COIN_DLL_API void cc_string_construct(cc_string * me);

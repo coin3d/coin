@@ -102,7 +102,7 @@ public:
   SbString & vsprintf(const char * formatstr, va_list args)
   { cc_string_vsprintf(&this->str, formatstr, args); return *this; }
 
-  void apply(char (*func)(char input)) { cc_string_apply(&this->str, func); }
+  void apply(char (*func)(char input)) { cc_string_apply(&this->str, (cc_apply_f)func); }
 
   int find(const SbString & str) const;
   SbBool findAll(const SbString & str, SbIntList & found) const;

@@ -172,7 +172,7 @@ SoError::setHandlerCallback(SoErrorCB * const function, void * const data)
     // "converter" callback function that makes an SoError out of an
     // cc_error and forwards control to the callback function given as
     // an argument to setHandlerCallback().
-    cc_error_set_handler_callback(SoError::callbackForwarder, NULL);
+    cc_error_set_handler_callback((cc_error_cb*)SoError::callbackForwarder, NULL);
   }
 
   SoError::callback = function;

@@ -532,7 +532,7 @@ SbMatrix::getValue(SbMat & m) const
 SbMatrix
 SbMatrix::identity(void)
 {
-  return SbMatrix(IDENTITYMATRIX);
+  return SbMatrix(&IDENTITYMATRIX);
 }
 
 /*!

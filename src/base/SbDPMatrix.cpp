@@ -552,7 +552,7 @@ SbDPMatrix::getValue(SbDPMat & m) const
 SbDPMatrix
 SbDPMatrix::identity(void)
 {
-  return SbDPMatrix(IDENTITYMATRIX);
+  return SbDPMatrix(&IDENTITYMATRIX);
 }
 
 /*!
