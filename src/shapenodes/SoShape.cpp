@@ -637,28 +637,34 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       mb.sendFirst();      
       PRIVATE(this)->bumprender->renderNormal(state, PRIVATE(this)->pvcache);
       
-     
-      // Can the hardware do specular bump maps?
-      const cc_glglue * glue = sogl_glue_instance(state);
-      if (glue->has_arb_fragment_program && 
-          glue->has_arb_vertex_program) {
-        
-        SoGLLazyElement::getInstance(state)->reset(state, 
-                                                   SoLazyElement::DIFFUSE_MASK|
-                                                   SoLazyElement::GLIMAGE_MASK);     
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_ONE, GL_ONE);
-        
-        for (int i = 0; i < numlights; i++) {      
-          SbMatrix lm = SoLightElement::getMatrix(state, i);
-          SbMatrix m = SoModelMatrixElement::get(state) *
-            SoViewingMatrixElement::get(state);
-          m = m.inverse();
-          m.multLeft(lm);                   
-          PRIVATE(this)->bumprender->renderBumpSpecular(state, PRIVATE(this)->pvcache, 
-                                                        (SoLight*) lights[i], m);          
+         
+      const SbColor spec = SoLazyElement::getSpecular(state); 
+      if (spec[0] != 0 || spec[1] != 0 || spec[2] != 0) { // Is the spec. color black?
+
+        const cc_glglue * glue = sogl_glue_instance(state);
+        // Can the hardware do specular bump maps?
+        if (glue->has_arb_fragment_program && 
+            glue->has_arb_vertex_program) {
+          
+          SoGLLazyElement::getInstance(state)->reset(state, 
+                                                     SoLazyElement::DIFFUSE_MASK |
+                                                     SoLazyElement::GLIMAGE_MASK);     
+          glEnable(GL_BLEND);
+          glBlendFunc(GL_ONE, GL_ONE);
+          
+          for (int i = 0; i < numlights; i++) {      
+            SbMatrix lm = SoLightElement::getMatrix(state, i);
+            SbMatrix m = SoModelMatrixElement::get(state) *
+              SoViewingMatrixElement::get(state);
+            m = m.inverse();
+            m.multLeft(lm);                   
+            PRIVATE(this)->bumprender->renderBumpSpecular(state, PRIVATE(this)->pvcache, 
+                                                          (SoLight*) lights[i], m);          
+          }
         }
-      }
+        
+      }     
+      
       
       PRIVATE(this)->unlock();
       

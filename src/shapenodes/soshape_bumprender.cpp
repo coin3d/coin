@@ -231,10 +231,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   //
 
   const cc_glglue * glue = sogl_glue_instance(state);
-
-  const SbColor spec = SoLazyElement::getSpecular(state);
-  if (spec[0] == 0 && spec[1] == 0 && spec[2] == 0) 
-    return; // No specular color defined.
+  const SbColor spec = SoLazyElement::getSpecular(state); 
   float shininess = SoLazyElement::getShininess(state);
 
   if (!this->programsinitialized)
@@ -346,12 +343,12 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT, 
                            (const GLvoid*) cache->getIndices());
 
-  // FIXME: A GL error appear here (INVALID_OPERATION) when converted
-  // heightmaps are used as normal maps. A removal of the 'delete []
-  // dststore' line in the converting routine in nodes/SoBumpMap.cpp
-  // eliminates the problem (but I havent got a clue why...). Must
-  // investigate further! Regular normalmaps works perfectly
-  // though. (20040204 handegar)
+  // FIXME: A GL error is triggered here (INVALID_OPERATION) by the
+  // vertex and fragment program when converted heightmaps are used as
+  // normal maps. A removal of the 'delete [] dststore' line in the
+  // converting routine in nodes/SoBumpMap.cpp eliminates the problem
+  // (but I havent got a clue why...). Must investigate further!
+  // Regular normalmaps works perfectly though. (20040204 handegar)
 
   cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
   cc_glglue_glClientActiveTexture(glue, GL_TEXTURE1);
