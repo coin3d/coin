@@ -44,6 +44,7 @@
 #include <assert.h>
 
 #include <Inventor/C/base/time.h>
+#include <Inventor/C/errors/debugerror.h>
 
 /* ********************************************************************** */
 
@@ -93,13 +94,11 @@ cc_internal_gettimeofday(cc_time * t)
 #ifdef HAVE_GETTIMEOFDAY
   struct timeval tv;
   int result = gettimeofday(&tv, NULL);
-#if 0 /* FIXME: tmp disabled, SoDebugError not yet ported to C. 20011218 mortene. */
   if (COIN_DEBUG && (result < 0)) {
-    SoDebugError::postWarning("SbTime_gettimeofday",
+    cc_debugerror_postwarning("SbTime_gettimeofday",
                               "Something went wrong (invalid timezone "
                               "setting?). Result is undefined.");
   }
-#endif /* tmp disabled */
   *t = tv.tv_sec;
   *t += ((double)(tv.tv_usec))/1000000.0;
   return TRUE;
@@ -125,25 +124,14 @@ cc_internal_ftime(cc_time * t)
 /* ********************************************************************** */
 
 cc_time
-cc_time_interval(int secs, int msecs)
-{
-  return (cc_time) secs + ((cc_time) msecs / (cc_time) 1000000);
-} /* cc_time_interval() */
-
-/* ********************************************************************** */
-
-/* FIXME: doc available in SbTime::getTimeOfDay(). 20011218 mortene. */
-cc_time
 cc_time_gettimeofday(void)
 {
   cc_time t;
   if (cc_internal_queryperformancecounter(&t)) { return t; }
   if (cc_internal_gettimeofday(&t)) { return t; }
   if (cc_internal_ftime(&t)) { return t; }
-#if 0 /* FIXME: waiting for SoDebugError ported to C. 20011218 mortene. */
   /* FIXME: write better debug output. 20011218 mortene. */
-  SoDebugError::post("cc_time_gettimeofday", "unable to find current time");
-#endif /* tmp disabled */
+  cc_debugerror_post("cc_time_gettimeofday", "unable to find current time");
   return 0.0;
 }
 

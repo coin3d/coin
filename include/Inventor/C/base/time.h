@@ -32,7 +32,6 @@ extern "C" {
 
 typedef double cc_time;
 
-COIN_DLL_API cc_time cc_time_interval(int secs, int msecs);
 COIN_DLL_API cc_time cc_time_gettimeofday(void);
 
 /* ********************************************************************** */
