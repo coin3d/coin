@@ -220,8 +220,10 @@ AC_ARG_ENABLE(
     *) ;;
   esac])
 
+HAVE_VRML97=1
+
 if $sim_ac_enable_vrml97 ; then
-  HAVE_VRML97=1
+  AC_DEFINE([HAVE_VRML97],, [define to use the VRML97 extension])
   VRML97MAKEFILE=src/vrml97/Makefile
   SIM_AC_CONFIGURATION_SETTING([VRML97 support], [Yes])
 else

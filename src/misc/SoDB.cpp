@@ -88,6 +88,7 @@
 /*! \defgroup nodes Nodes */
 /*! \defgroup projectors Projector classes (mostly for internal use) */
 /*! \defgroup sensors Sensor classes */
+/*! \defgroup VRMLnodes VRML97 classes */
 
 /*!
   \class SbBool SbBasic.h Inventor/SbBasic.h
@@ -151,6 +152,10 @@
 #if HAVE_UNISTD_H
 #include <unistd.h> // fd_set (?)
 #endif // HAVE_UNISTD_H
+
+#ifdef HAVE_VRML97
+#include <Inventor/VRMLnodes/SoVRML.h>
+#endif // HAVE_VRML97
 
 
 static SbString * coin_versionstring = NULL;
@@ -330,13 +335,16 @@ SoDB::init(void)
   SoProto::initClass();
   SoProtoInstance::initClass();
 
+#ifdef HAVE_VRML97
+  so_vrml_init();
+#endif // HAVE_VRML97
+
   // Register all valid file format headers.
   SoDB::registerHeader(SbString("#Inventor V2.1 ascii   "), FALSE, 2.1f,
                        NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V2.1 binary  "), TRUE, 2.1f,
                        NULL, NULL, NULL);
 
-  // FIXME: wrong, not really supported yet.  20010925 mortene.
   SoDB::registerHeader(SbString("#VRML V2.0 utf8"), FALSE, 2.1f,
                        NULL, NULL, NULL);
 

@@ -8758,8 +8758,14 @@ if test "${enable_vrml97+set}" = set; then
   esac
 fi;
 
+HAVE_VRML97=1
+
 if $sim_ac_enable_vrml97 ; then
-  HAVE_VRML97=1
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_VRML97
+_ACEOF
+
   VRML97MAKEFILE=src/vrml97/Makefile
   if test x${sim_ac_configuration_settings+set} != xset; then
   sim_ac_configuration_settings="VRML97 support:Yes"

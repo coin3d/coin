@@ -1,7 +1,8 @@
 Unsupported features
 ====================
 
-- AudioClip
+- Anchor
+- AudioClip/Sound
 - MovieTexture
 - EXTERNPROTO (passthrough)
 - bindable nodes (Fog, Background, Viewpoint etc).
@@ -14,8 +15,8 @@ Unsupported features
 - PixelTexture SoCallbackAction support.
 - ProximitySensor
 - Script (currently only passthrough).
-- Sound
 - Radius in PointLight is not supported
 - Radius or beamWidth in SpotLight is not supported.
 - The Text node
+- ROUTE is not supported by SoWriteAction/SoOutput
 
