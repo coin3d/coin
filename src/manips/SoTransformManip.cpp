@@ -491,11 +491,22 @@ SoTransformManip::copyContents(const SoFieldContainer * fromfc, SbBool copyconne
 void
 SoTransformManip::transferFieldValues(const SoTransform * from, SoTransform * to)
 {
-  to->translation = from->translation;
-  to->rotation = from->rotation;
-  to->scaleFactor = from->scaleFactor;
-  to->scaleOrientation = from->scaleOrientation;
-  to->center = from->center;
+  SoTransformManip * tomanip = 
+    to->isOfType(SoTransformManip::getClassTypeId()) ?
+    (SoTransformManip*) to : NULL;
+  
+  if (tomanip) tomanip->attachSensors(FALSE);    
+  
+  to->translation = from->translation.getValue();
+  to->rotation = from->rotation.getValue();
+  to->scaleFactor = from->scaleFactor.getValue();
+  to->scaleOrientation = from->scaleOrientation.getValue();
+  to->center = from->center.getValue();
+
+  if (tomanip) {
+    SoTransformManip::fieldSensorCB(tomanip, NULL);
+    tomanip->attachSensors(TRUE);
+  }
 }
 
 /*!
