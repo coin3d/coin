@@ -28,3 +28,10 @@ THE LINKS
   nVIDIA extensions for optimized rendering without using display lists.
   Link has example program, source code and documentation.
 
+* Interactive Order-Independent Transparency
+  2001-05-18 Peder Blekken <pederb@sim.no>
+
+  Uses shadow mapping hardware and alpha test. Can be implemented in
+  OpenGL using Nvidia extensions for GeForce3.
+
+
