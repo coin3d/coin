@@ -158,7 +158,7 @@ cc_error_get_debug_string(const cc_error * me)
 }
 
 void
-cc_error_post(const char * format, va_list args)
+cc_error_post_arglist(const char * format, va_list args)
 {
   cc_string s;
   cc_error err;
@@ -173,4 +173,13 @@ cc_error_post(const char * format, va_list args)
   cc_error_clean(&err);
 
   cc_string_clean(&s);
+}
+
+void
+cc_error_post(const char * format, ...)
+{
+  va_list argptr;
+  va_start(argptr, format);
+  cc_error_post_arglist(format, argptr);
+  va_end(argptr);
 }
