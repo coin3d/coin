@@ -49,6 +49,10 @@ AC_CONFIG_SRCDIR(src/misc/SoDB.cpp)
 
 
 AH_TOP([
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif
+
 #include <unconfig.h>
 ])
 
