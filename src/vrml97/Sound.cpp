@@ -207,9 +207,7 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
-#include <Inventor/threads/SbMutex.h>
 #include <Inventor/misc/SoAudioDevice.h>
-#include <Inventor/C/threads/thread.h>
 #include <Inventor/SbTime.h>
 #include <stddef.h>
 
@@ -217,6 +215,12 @@
 
 #if HAVE_CONFIG_H
 #include <config.h>
+#endif
+
+#ifdef HAVE_THREADS
+#include <Inventor/threads/SbMutex.h>
+#include <Inventor/threads/SbThreadAutoLock.h>
+#include <Inventor/C/threads/thread.h>
 #endif
 
 #ifdef HAVE_SOUND
@@ -254,11 +258,13 @@ public:
   SbBool useTimerCallback;
 
   SoTimerSensor * timersensor;
+#ifdef HAVE_THREADS
   cc_thread *workerThread;
+  static SbMutex *syncmutex;
+#endif
   volatile SbBool exitthread;
   volatile SbBool errorInThread;
 
-  static SbMutex *syncmutex;
 
   int16_t *audioBuffer;
   int channels;
@@ -280,7 +286,9 @@ public:
 #define PUBLIC(p) ((p)->master)
 
 // fixme 20021006 thammer: should really do individual synchronization instead of global
+#ifdef HAVE_THREADS
 SbMutex *SoVRMLSoundP::syncmutex = NULL;
+#endif
 int SoVRMLSoundP::defaultBufferLength = 44100/10;
 int SoVRMLSoundP::defaultNumBuffers = 5;
 SbTime SoVRMLSoundP::defaultSleepTime = 0.100; // 100ms
@@ -294,7 +302,9 @@ SoVRMLSound::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLSound, SO_VRML97_NODE_TYPE);
   SoAudioRenderAction::addMethod(SoVRMLSound::getClassTypeId(),
                                  SoNode::audioRenderS);
+#ifdef HAVE_THREADS
   SoVRMLSoundP::syncmutex = new SbMutex;
+#endif
 }
 
 /*!
@@ -324,7 +334,11 @@ SoVRMLSound::SoVRMLSound(void)
   PRIVATE(this)->playing = FALSE;
 
   PRIVATE(this)->timersensor = NULL;
-  PRIVATE(this)->useTimerCallback = TRUE; // fixme 20021021 thammer: this should be false if thread support is available
+#ifdef HAVE_THREADS
+  PRIVATE(this)->useTimerCallback = FALSE;
+#else
+  PRIVATE(this)->useTimerCallback = TRUE;
+#endif // HAVE_THREADS
 
 #ifdef HAVE_SOUND
   ALint  error;
@@ -343,7 +357,9 @@ SoVRMLSound::SoVRMLSound(void)
   PRIVATE(this)->sourcesensor->setPriority(0);
   PRIVATE(this)->sourcesensor->attach(&this->source);
 
+#ifdef HAVE_THREADS
   PRIVATE(this)->workerThread = NULL;
+#endif
   PRIVATE(this)->exitthread = FALSE;
   PRIVATE(this)->errorInThread = FALSE;
   PRIVATE(this)->audioBuffer = NULL;
@@ -390,8 +406,9 @@ void SoVRMLSound::setDefaultBufferingProperties(int bufferLength, int numBuffers
 
 void SoVRMLSound::setBufferingProperties(int bufferLength, int numBuffers, SbTime sleepTime)
 {
-  SbMutexAutoLock autoLock(SoVRMLSoundP::syncmutex);
- 
+#ifdef HAVE_THREADS
+  SbThreadAutoLock autoLock(SoVRMLSoundP::syncmutex);
+#endif 
   PRIVATE(this)->numBuffers = numBuffers;
   PRIVATE(this)->sleepTime = sleepTime;
 
@@ -405,8 +422,9 @@ void SoVRMLSound::setBufferingProperties(int bufferLength, int numBuffers, SbTim
 
 void SoVRMLSound::getBufferingProperties(int &bufferLength, int &numBuffers, SbTime &sleepTime)
 {
-  SbMutexAutoLock autoLock(SoVRMLSoundP::syncmutex);
-
+#ifdef HAVE_THREADS
+  SbThreadAutoLock autoLock(SoVRMLSoundP::syncmutex);
+#endif
   bufferLength = PRIVATE(this)->bufferLength;
   numBuffers = PRIVATE(this)->numBuffers;
   sleepTime = PRIVATE(this)->sleepTime;
@@ -423,8 +441,9 @@ void SbVec3f2ALfloat3(ALfloat *dest, const SbVec3f &source)
 void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 {
 #ifdef HAVE_SOUND
-  SbMutexAutoLock autoLock(SoVRMLSoundP::syncmutex);
-
+#ifdef HAVE_THREADS
+  SbThreadAutoLock autoLock(SoVRMLSoundP::syncmutex);
+#endif
   if (!SoAudioDevice::instance()->haveSound())
     return;
 
@@ -568,7 +587,9 @@ void *SoVRMLSoundP::threadCallback()
 {
   while (!this->exitthread) {
     this->fillBuffers();
+#ifdef HAVE_THREADS
     cc_sleep(this->workerThreadSleepTime.getValue());
+#endif
   }
   return NULL;
 }
@@ -605,6 +626,7 @@ SbBool SoVRMLSoundP::stopPlaying()
   }
 
   // stop thread
+#ifdef HAVE_THREADS
   if (this->workerThread!=NULL) {
     this->exitthread = TRUE;
     void *retval = NULL;
@@ -612,6 +634,7 @@ SbBool SoVRMLSoundP::stopPlaying()
     cc_thread_destruct(this->workerThread);
     this->workerThread = NULL;
   }
+#endif // HAVE_THREADS
 
   #if COIN_DEBUG && DEBUG_AUDIO // debug
     printf(".");
@@ -655,7 +678,10 @@ SbBool SoVRMLSoundP::stopPlaying()
 
     // if (state == AL_PLAYING)
     if (processed<queued)
-      cc_sleep(this->workerThreadSleepTime.getValue());
+#ifdef HAVE_THREADS
+      cc_sleep(this->workerThreadSleepTime.getValue())
+#endif
+      ;
     else
       done = TRUE;
   }
@@ -798,6 +824,7 @@ SbBool SoVRMLSoundP::startPlaying()
       delete this->timersensor;
       this->timersensor = NULL;
     }
+    this->errorInThread = FALSE;
     // start new timer
     this->timersensor = new SoTimerSensor(timercb, this);
     this->timersensor->setInterval(this->sleepTime);
@@ -805,6 +832,7 @@ SbBool SoVRMLSoundP::startPlaying()
   }
   else {
     // stop existing thread, start new thread
+#ifdef HAVE_THREADS
     if (this->workerThread!=NULL) {
       this->exitthread = TRUE;
       void *retval = NULL;
@@ -817,6 +845,7 @@ SbBool SoVRMLSoundP::startPlaying()
     this->errorInThread = FALSE;
     this->exitthread = FALSE;
     this->workerThread = cc_thread_construct(this->threadCallbackWrapper, this);
+#endif // HAVE_THREADS
   }
 
   alSourcePlay(this->sourceId);
@@ -843,8 +872,9 @@ SbBool SoVRMLSoundP::startPlaying()
 void SoVRMLSoundP::fillBuffers()
 {
 #ifdef HAVE_SOUND
-  SbMutexAutoLock autoLock(SoVRMLSoundP::syncmutex);
-
+#ifdef HAVE_THREADS
+  SbThreadAutoLock autoLock(SoVRMLSoundP::syncmutex);
+#endif
   ALint      processed;
 
   // Get status
@@ -1027,8 +1057,9 @@ SoVRMLSoundP::sourceSensorCB(SoSensor *)
     printf("(S)");
   #endif // debug
 
-  SbMutexAutoLock autoLock(SoVRMLSoundP::syncmutex);
-
+#ifdef HAVE_THREADS
+  SbThreadAutoLock autoLock(SoVRMLSoundP::syncmutex);
+#endif
   SoNode *node = (SoNode *)PUBLIC(this)->source.getValue();
 
   if (!node->isOfType(SoVRMLAudioClip::getClassTypeId())) {

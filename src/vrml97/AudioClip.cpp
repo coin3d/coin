@@ -144,13 +144,17 @@
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/threads/SbMutex.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SoInput.h>
 #include <string.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
+#endif
+
+#ifdef HAVE_THREADS
+#include <Inventor/threads/SbMutex.h>
+#include <Inventor/threads/SbThreadAutoLock.h>
 #endif
 
 #include <../misc/simage_wrapper.h>
@@ -222,7 +226,9 @@ public:
   SbBool loop;
   SbBool endOfFile;
 
+#ifdef HAVE_THREADS
   SbMutex syncmutex;
+#endif
 
   SbTime actualStartTime;
   int totalNumberOfFramesToPlay;
@@ -370,7 +376,9 @@ SoVRMLAudioClip::fillBuffer(int frameoffset, void *buffer, int numframes, int &c
 {
   assert (PRIVATE(this)->fillBufferCallback != NULL);
 
-  SbMutexAutoLock autoLock(&PRIVATE(this)->syncmutex);
+#ifdef HAVE_THREADS
+  SbThreadAutoLock autoLock(&PRIVATE(this)->syncmutex);
+#endif
   if (PRIVATE(this)->actualStartTime == 0.0f)
     PRIVATE(this)->actualStartTime = SbTime::getTimeOfDay();
   void *ret;
@@ -404,8 +412,9 @@ SoVRMLAudioClip::getSubdirectories()
 void 
 SoVRMLAudioClip::audioRender(SoAudioRenderAction *action)
 {
-  SbMutexAutoLock autoLock(&PRIVATE(this)->syncmutex);
-
+#ifdef HAVE_THREADS
+  SbThreadAutoLock autoLock(&PRIVATE(this)->syncmutex);
+#endif
   SbTime now = SbTime::getTimeOfDay();
   SbTime start = this->startTime.getValue();
   SbTime stop = this->stopTime.getValue();
@@ -600,8 +609,9 @@ SoVRMLAudioClipP::internalFillBuffer(int frameoffset, void *buffer, int numframe
 void 
 SoVRMLAudioClipP::loadUrl()
 {
-  SbMutexAutoLock autoLock(&this->syncmutex);
-
+#ifdef HAVE_THREADS
+  SbThreadAutoLock autoLock(&this->syncmutex);
+#endif
   this->unloadUrl();
 
   for (int i=0; i<PUBLIC(this)->url.getNum(); i++) {
@@ -667,7 +677,9 @@ SoVRMLAudioClipP::loopSensorCBWrapper(void * data, SoSensor *)
 void
 SoVRMLAudioClipP::loopSensorCB(SoSensor *)
 {
-  SbMutexAutoLock autoLock(&this->syncmutex);
+#ifdef HAVE_THREADS
+  SbThreadAutoLock autoLock(&this->syncmutex);
+#endif
   this->loop = PUBLIC(this)->loop.getValue();
 }
 
@@ -687,8 +699,9 @@ SoVRMLAudioClipP::startTimeSensorCBWrapper(void * data, SoSensor *)
 void
 SoVRMLAudioClipP::startTimeSensorCB(SoSensor *)
 {
-  SbMutexAutoLock autoLock(&this->syncmutex);
-
+#ifdef HAVE_THREADS
+  SbThreadAutoLock autoLock(&this->syncmutex);
+#endif
   SbTime now = SbTime::getTimeOfDay();
   SbTime start = PUBLIC(this)->startTime.getValue();
 
@@ -714,8 +727,9 @@ SoVRMLAudioClipP::stopTimeSensorCBWrapper(void * data, SoSensor *)
 void
 SoVRMLAudioClipP::stopTimeSensorCB(SoSensor *)
 {
-  SbMutexAutoLock autoLock(&this->syncmutex);
-
+#ifdef HAVE_THREADS
+  SbThreadAutoLock autoLock(&this->syncmutex);
+#endif
   SbTime now = SbTime::getTimeOfDay();
   SbTime start = PUBLIC(this)->startTime.getValue();
   SbTime stop = PUBLIC(this)->stopTime.getValue();
