@@ -395,7 +395,7 @@ SoNode::GLRenderS(SoAction * const action,
                   SoNode * const node)
 {
   assert(action && node);
-  assert(action->getTypeId() == SoGLRenderAction::getClassTypeId());
+  assert(action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId()));
   SoGLRenderAction * const renderAction =
     (SoGLRenderAction *)(action);
 
