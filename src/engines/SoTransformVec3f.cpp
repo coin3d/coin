@@ -105,7 +105,7 @@ SoTransformVec3f::evaluate(void)
     m.multVecMatrix(v, pt);
     m.multDirMatrix(v, dir);
     ndir = dir;
-    ndir.normalize();
+    if (ndir.length() > 0.0f) { ndir.normalize(); }
     SO_ENGINE_OUTPUT(point, SoMFVec3f, set1Value(i, pt));
     SO_ENGINE_OUTPUT(direction, SoMFVec3f, set1Value(i, dir));
     SO_ENGINE_OUTPUT(normalDirection, SoMFVec3f, set1Value(i, ndir));
