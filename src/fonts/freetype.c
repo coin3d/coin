@@ -57,11 +57,13 @@ void * cc_flwft_get_font(const char * fontname) { assert(FALSE); return NULL; }
 void cc_flwft_get_font_name(void * font, cc_string * str) { assert(FALSE); }
 void cc_flwft_done_font(void * font) { assert(FALSE); }
 
+
 int cc_flwft_get_num_charmaps(void * font) { assert(FALSE); return 0; }
 const char * cc_flwft_get_charmap_name(void * font, int charmap) { assert(FALSE); return NULL; }
 void cc_flwft_set_charmap(void * font, int charmap) { assert(FALSE); }
-
 void cc_flwft_set_char_size(void * font, int width, int height) { assert(FALSE); }
+
+
 void cc_flwft_set_font_rotation(void * font, float angle) { assert(FALSE); }
   
 int cc_flwft_get_glyph(void * font, unsigned int charidx) { assert(FALSE); return 0; }
@@ -553,6 +555,7 @@ cc_flwft_done_font(void * font)
   }
 }
 
+
 int
 cc_flwft_get_num_charmaps(void * font)
 {
@@ -600,13 +603,14 @@ cc_flwft_get_charmap_name(void * font, int charmap)
                                   "unknown encoding: 0x%x",
                                   face->charmaps[charmap]->encoding);
       }
-      /* name will be set to unknown */
+
       break;
     }
   }
 
   return name;
 }
+
 
 void
 cc_flwft_set_charmap(void * font, int charmap)
@@ -624,6 +628,7 @@ cc_flwft_set_charmap(void * font, int charmap)
     }
   }
 }
+
 
 void
 cc_flwft_set_char_size(void * font, int width, int height)
@@ -645,6 +650,7 @@ cc_flwft_set_char_size(void * font, int width, int height)
                        width, height, error);
   }
 }
+
 
 void
 cc_flwft_set_font_rotation(void * font, float angle)
@@ -790,7 +796,7 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   assert(font);
   
   face = (FT_Face)font;
-  error = cc_ftglue_FT_Load_Glyph(face, glyph, FT_LOAD_RENDER | FT_LOAD_MONOCHROME);
+  error = cc_ftglue_FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
   if (error) {
     if (cc_flw_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
                                            "FT_Load_Glyph() => error %d",
