@@ -91,7 +91,7 @@ SoBoundingBoxCache::isCenterSet() const
 
 /*!
   Returns the center of the bounding box. Should only be used if
-  SoBoundingBoxCache::isCenterSet() returns \e TRUE.
+  SoBoundingBoxCache::isCenterSet() returns \c TRUE.
 */
 const SbVec3f &
 SoBoundingBoxCache::getCenter() const
@@ -101,19 +101,24 @@ SoBoundingBoxCache::getCenter() const
 
 /*!
   Sets the hasLinesOrPoints flag for all open bounding box caches.
-  Not used for the moment. Provided for OIV comliance.
+
+  Ignored for now, but still provided for Open Inventor compliance.
 
   \sa SoBoundingBoxCache::hasLinesOrPoints()
 */
 void
 SoBoundingBoxCache::setHasLinesOrPoints(SoState *state)
 {
-  if (state) {}
-  COIN_STUB();
+  // FIXME: as far as I can tell, the idea is that bounding boxes
+  // should be given a little bit of slack if they contain lines
+  // and/or points (as those primitives doesn't really have any
+  // volume). 20000424 mortene.
+
+  if (state) { }
 }
 
 /*!
-  Return \e TRUE if the hasLinesOrPoints flag has been set.
+  Return \c TRUE if the hasLinesOrPoints flag has been set.
   Not used for the moment. Provided for OIV compliance.
 */
 SbBool
