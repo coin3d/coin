@@ -76,7 +76,7 @@ SoUnknownNode::~SoUnknownNode()
 {
   for (int i=0; i < this->classfielddata->getNumFields(); i++)
     delete this->classfielddata->getField(this, i);
-  
+
   delete this->classfielddata;
   delete this->privatechildren;
   delete this->alternate;
@@ -107,7 +107,8 @@ SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
 
   // Set pointer to alternateRep node, if SoSFNode field with this
   // name is present.
-  for (int i=0; i < this->classfielddata->getNumFields(); i++) {
+  int i;
+  for (i=0; i < this->classfielddata->getNumFields(); i++) {
     if (this->classfielddata->getFieldName(i) == "alternateRep") {
       SoSFNode * f = (SoSFNode *)this->classfielddata->getField(this, i);
       if (f->isOfType(SoSFNode::getClassTypeId())) {
@@ -147,7 +148,7 @@ SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
   // subsequent write operations, information will be lost, and 2) the
   // field value will probably be completely random because we're
   // reading from uninitialized memory.
-  for (int i=0; i < this->classfielddata->getNumFields(); i++) {
+  for (i=0; i < this->classfielddata->getNumFields(); i++) {
     const SoField * f = this->classfielddata->getField(this, i);
     if (f->isDefault()) {
       SoReadError::post(in, "Field ``%s'' in extension node not given any value.",
