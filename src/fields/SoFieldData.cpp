@@ -52,21 +52,18 @@
  * heavily based on this class.
  */
 
-#include <Inventor/fields/SoFieldData.h>
-#include <Inventor/fields/SoFieldContainer.h>
+#include <ctype.h>
+#include <coindefs.h> // COIN_STUB()
+#include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
+#include <Inventor/fields/SoFieldContainer.h>
+#include <Inventor/fields/SoFieldData.h>
 #include <Inventor/lists/SoFieldList.h>
-#include <Inventor/SbName.h>
 #include <Inventor/misc/SoProto.h>
-#include <coindefs.h> // COIN_STUB()
-#include <ctype.h>
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 static const char OPEN_BRACE_CHAR = '[';
 static const char CLOSE_BRACE_CHAR = ']';
@@ -415,11 +412,16 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
                         fieldflags);
     }
 
-#if COIN_DEBUG
-    if (numfields > this->fields.getLength())
+    if (numfields > this->fields.getLength()) {
       SoDebugError::postWarning("SoFieldData::read",
-                                "Suspicious number of fields: %d", numfields);
-#endif // COIN_DEBUG
+                                "The number of fields to read for a %s "
+                                "node in this binary file is given as %d. "
+                                "This is suspicious as this node type "
+                                "doesn't have more than %d distinct fields. "
+                                "The file is likely to be corrupt.",
+                                object->getTypeId().getName().getString(),
+                                numfields, this->fields.getLength());
+    }
 
     if (numfields == 0) return TRUE;
 
