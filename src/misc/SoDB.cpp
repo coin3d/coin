@@ -439,6 +439,14 @@ SoDB::init(void)
   // FIXME: it would be better to not schedule unless something
   // actually attaches itself to the realtime field, or does this muck
   // up the code too much? 19990225 mortene.
+  // FIXME: the globaltimersensor triggers will drift, and animations
+  // will update slower (or less regular - not that we're talking
+  // framerate, not animation motion speed) since we don't do a
+  // setBaseTime() call on globaltimersensor.  Investigate if this is
+  // the correct behaviour (what the SGI "reference" implementation
+  // does), correct the behaviour if needed, and mark this spot with
+  // info on that the sensor setup is intentional.  Do the same for
+  // the Coin 1.* branch.  20021016 larsa
   SoDBP::globaltimersensor->schedule();
 
   // Force correct time on first getValue() from "realTime" field.
