@@ -788,14 +788,21 @@ SoSelection::handleEvent(SoHandleEventAction * action)
     }
   }
   else if (SO_MOUSE_RELEASE_EVENT(event, BUTTON1)) {
-    // only process the release event if it has not been handled by a
-    // child node
-    if (!action->isHandled()) {
-      SbBool ignorepick = FALSE;
-      SoPath * selpath = this->getSelectionPath(action, ignorepick, haltaction);
-      
+    SbBool ignorepick = FALSE;
+    // call pick filter callback (called from getSelectionPath()) even
+    // if the event was handled by a child node.
+    SoPath * selpath = this->getSelectionPath(action, ignorepick, haltaction);
+    if (action->isHandled()) {
+      // if the event was handled by a child node we should not invoke
+      // the selection policy
+      if (selpath) {
+        selpath->ref();
+        selpath->unref();
+      }
+    }
+    else {
       if (haltaction) action->setHandled();
-
+      
       if (!ignorepick) {
         if (selpath) selpath->ref();
         this->startCBList->invokeCallbacks(this);
