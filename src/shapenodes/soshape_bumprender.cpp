@@ -34,12 +34,17 @@
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/caches/SoPrimitiveVertexCache.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureImageElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/C/glue/glp.h>
+#include <assert.h>
 
 soshape_bumprender::soshape_bumprender(void)
 {
@@ -70,11 +75,21 @@ soshape_bumprender::renderBump(SoState * state,
   this->calcTSBCoords(cache, light);
 
   const cc_glglue * glue = sogl_glue_instance(state);
-
+  int i, lastenabled = -1;
+  const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+  
+  // disable texture units 1-n
+  for (i = 1; i <= lastenabled; i++) {
+    if (enabled[i]) {
+      cc_glglue_glActiveTexture(glue, GL_TEXTURE0+i);
+      glDisable(GL_TEXTURE_2D);
+    }
+  }
   SoGLImage * bumpimage = SoBumpMapElement::get(state);
   assert(bumpimage);
 
   // set up textures
+  cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
   glEnable(GL_TEXTURE_2D);
   bumpimage->getGLDisplayList(state)->call(state);
   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
@@ -83,7 +98,6 @@ soshape_bumprender::renderBump(SoState * state,
 
   cc_glglue_glActiveTexture(glue, GL_TEXTURE1);
   coin_apply_normalization_cube_map(glue);
-  glDisable(GL_TEXTURE_2D);
   glEnable(GL_TEXTURE_CUBE_MAP);
   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
   glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_TEXTURE);
@@ -115,11 +129,25 @@ soshape_bumprender::renderBump(SoState * state,
   cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
   cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
 
-  glDisable(GL_TEXTURE_CUBE_MAP);
-  cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
-  glDisable(GL_TEXTURE_2D);
-}
+  glDisable(GL_TEXTURE_CUBE_MAP); // unit 1
+  
+  // reenable texture units 1-n if enabled  
+  for (i = 1; i <= lastenabled; i++) {
+    if (enabled[i]) {
+      cc_glglue_glActiveTexture(glue, GL_TEXTURE0+i);
+      glEnable(GL_TEXTURE_2D);
+    }
+  }
 
+  if (lastenabled >= 1 && enabled[1]) {
+    // restore blend mode for texture unit 1
+    SoGLMultiTextureImageElement::restore(state, 1);
+  }
+  cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
+  // disable texturing for unit 0 if not enabled
+  if (!SoGLTextureEnabledElement::get(state)) glDisable(GL_TEXTURE_2D);
+}
+  
 void
 soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache * cache)
 {
@@ -128,6 +156,10 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
   const SoPrimitiveVertexCache::Vertex * vptr =
     cache->getVertices();
   const int n = cache->getNumIndices();
+
+  int lastenabled = -1;
+  const SbBool * enabled = 
+    SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
   
   SbBool colorpervertex = cache->colorPerVertex();
 
@@ -149,8 +181,29 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
                              (GLvoid*) &vptr->rgba);
     cc_glglue_glEnableClientState(glue, GL_COLOR_ARRAY);
   }
+
+  for (int i = 1; i <= lastenabled; i++) {
+    if (enabled[i]) {
+      glClientActiveTexture(GL_TEXTURE0 + i);
+      cc_glglue_glTexCoordPointer(glue, 4, GL_FLOAT, 0,
+                                  (GLvoid*) cache->getMultiTextureCoordinateArray(i));
+      cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+    }
+  }
+  
   cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT,
                            (const GLvoid*) cache->getIndices());
+  
+  for (int i = 1; i <= lastenabled; i++) {
+    if (enabled[i]) {
+      glClientActiveTexture(GL_TEXTURE0 + i);
+      cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+    }
+  }
+  if (lastenabled >= 1) {
+    // reset to default
+    glClientActiveTexture(GL_TEXTURE0); 
+  }
 
   cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
   cc_glglue_glDisableClientState(glue, GL_NORMAL_ARRAY);

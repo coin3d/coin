@@ -621,10 +621,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       glEnable(GL_BLEND);
       glBlendFunc(GL_DST_COLOR, GL_ZERO);
       glDisable(GL_LIGHTING);
-      
-      if (SoGLTextureEnabledElement::get(state)) glEnable(GL_TEXTURE_2D);
-      // FIXME: enable multi-texture units 1-n (if active)
-      
+            
       PRIVATE(this)->bumprender->renderNormal(state, PRIVATE(this)->pvcache);
       glPopAttrib();
       glDisable(GL_BLEND); // FIXME: temporary for FPS-counter
