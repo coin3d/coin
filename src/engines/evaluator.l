@@ -46,7 +46,7 @@
 %option prefix="so_eval"
 
 Digit                           [0-9]
-Space                           [ \t]
+Space                           [ \t\n]
 Exp                             [eE][+-]?{Digit}+
 
 %%

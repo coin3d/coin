@@ -71,20 +71,14 @@
 %}
 
 %%
-/*
- * FIXME: it might be legal to write an expression like this:
- *     oa = ob = oc = 1.0
- *
- * this is not supported yet, but it shouldn't be too difficult to support it if
- * it is a legal expression (I don't think it is). pederb, 20000307
- */
 
 expression    : expression ';' subexpression
               { root_node = so_eval_create_binary(ID_SEPARATOR, $1, $3); $$ = root_node; }
               | subexpression { root_node = $1; $$ = $1; }
               ;
 
-subexpression : fltlhs '=' fltstatement { $$ = so_eval_create_binary(ID_ASSIGN_FLT, $1, $3); }
+subexpression : { $$ = NULL }
+              | fltlhs '=' fltstatement { $$ = so_eval_create_binary(ID_ASSIGN_FLT, $1, $3); }
               | veclhs '=' vecstatement { $$ = so_eval_create_binary(ID_ASSIGN_VEC, $1, $3); }
               ;
 
