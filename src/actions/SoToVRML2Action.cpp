@@ -473,12 +473,14 @@ SoVRMLColor *
 SoToVRML2ActionP::get_or_create_color(const uint32_t * packedColor, int32_t num)
 {
   // Convert to SbColors
-  SbColor color[num];
+  SbList <SbColor> color;
   float f;
-  for (int i=num-1; i >= 0; i--) {
-    color[i].setPackedValue(packedColor[i], f);
+  for (int i = 0; i < num; i++) {
+    SbColor tmp;
+    tmp.setPackedValue(packedColor[i], f);
+    color.append(tmp);
   }
-  return get_or_create_color(color, num);
+  return this->get_or_create_color(color.getArrayPtr(), num);
 }
 
 SoVRMLColor *
