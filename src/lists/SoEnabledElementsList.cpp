@@ -37,6 +37,13 @@
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <assert.h>
 
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#if COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -45,6 +52,19 @@ public:
   int prevmerge;
   SoTypeList elements;
   SoEnabledElementsList * parent;
+#ifdef COIN_THREADSAFE
+  SbMutex mutex;
+#endif // COIN_THREADSAFE
+  void lock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.lock();
+#endif
+  }
+  void unlock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.unlock();
+#endif
+  }
 };
 
 static int enable_counter = 0;
@@ -79,6 +99,7 @@ SoEnabledElementsList::~SoEnabledElementsList()
 const SoTypeList &
 SoEnabledElementsList::getElements(void) const
 {
+  THIS->lock();
   // check if we need a new merge
   if (THIS->prevmerge != enable_counter) {
     int storedcounter = enable_counter;
@@ -91,6 +112,7 @@ SoEnabledElementsList::getElements(void) const
     ((SoEnabledElementsList*)this)->pimpl->prevmerge =
       enable_counter = storedcounter;
   }
+  THIS->unlock();
   return THIS->elements;
 }
 

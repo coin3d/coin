@@ -38,6 +38,14 @@
 #include <Inventor/nodes/SoNode.h>
 #include <assert.h>
 
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#if COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
+
 #ifndef DOXYGEN_SKIP_THIS
 
 class SoActionMethodListP {
@@ -46,6 +54,20 @@ public:
   int setupnumtypes;
   SbList <SoType> addedtypes;
   SbList <SoActionMethod> addedmethods;
+
+#ifdef COIN_THREADSAFE
+  SbMutex mutex;
+#endif // COIN_THREADSAFE
+  void lock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.lock();
+#endif
+  }
+  void unlock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.unlock();
+#endif
+  }
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -88,10 +110,11 @@ void
 SoActionMethodList::addMethod(const SoType node, const SoActionMethod method)
 {
   assert(node != SoType::badType());
-
+  THIS->lock();
   THIS->addedtypes.append(node);
   THIS->addedmethods.append(method);
   THIS->setupnumtypes = 0; // force a new setUp
+  THIS->unlock();
 }
 
 /*!
@@ -102,6 +125,7 @@ SoActionMethodList::addMethod(const SoType node, const SoActionMethod method)
 void
 SoActionMethodList::setUp(void)
 {
+  THIS->lock();
   if (THIS->setupnumtypes != SoType::getNumTypes()) {
     THIS->setupnumtypes = SoType::getNumTypes();
     this->truncate(0);
@@ -142,6 +166,7 @@ SoActionMethodList::setUp(void)
       }
     }
   }
+  THIS->unlock();
 }
 
 #undef THIS
