@@ -313,6 +313,7 @@ RegularSources = \
 	SoTexture3.cpp \
 	SoTexture2Transform.cpp \
 	SoTexture3Transform.cpp \
+	SoTextureCombine.cpp \
 	SoTextureCoordinate2.cpp \
 	SoTextureCoordinate3.cpp \
 	SoTextureCoordinateBinding.cpp \
@@ -425,9 +426,9 @@ am__nodes_lst_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
 	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
-	SoTextureCoordinate2.cpp SoTextureCoordinate3.cpp \
-	SoTextureCoordinateBinding.cpp SoTextureCoordinateCube.cpp \
-	SoTextureCoordinateDefault.cpp \
+	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
+	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
+	SoTextureCoordinateCube.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
 	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
@@ -467,7 +468,8 @@ am__objects_2 = SoAnnotation.$(OBJEXT) SoAntiSquish.$(OBJEXT) \
 	SoSpotLight.$(OBJEXT) SoSurroundScale.$(OBJEXT) \
 	SoSwitch.$(OBJEXT) SoTexture2.$(OBJEXT) SoTexture3.$(OBJEXT) \
 	SoTexture2Transform.$(OBJEXT) SoTexture3Transform.$(OBJEXT) \
-	SoTextureCoordinate2.$(OBJEXT) SoTextureCoordinate3.$(OBJEXT) \
+	SoTextureCombine.$(OBJEXT) SoTextureCoordinate2.$(OBJEXT) \
+	SoTextureCoordinate3.$(OBJEXT) \
 	SoTextureCoordinateBinding.$(OBJEXT) \
 	SoTextureCoordinateCube.$(OBJEXT) \
 	SoTextureCoordinateDefault.$(OBJEXT) \
@@ -506,9 +508,9 @@ am__EXTRA_nodes_lst_SOURCES_DIST = SoSoundElementHelper.h \
 	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
-	SoTextureCoordinate2.cpp SoTextureCoordinate3.cpp \
-	SoTextureCoordinateBinding.cpp SoTextureCoordinateCube.cpp \
-	SoTextureCoordinateDefault.cpp \
+	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
+	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
+	SoTextureCoordinateCube.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
 	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
@@ -543,9 +545,9 @@ am__libnodes_la_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
 	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
-	SoTextureCoordinate2.cpp SoTextureCoordinate3.cpp \
-	SoTextureCoordinateBinding.cpp SoTextureCoordinateCube.cpp \
-	SoTextureCoordinateDefault.cpp \
+	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
+	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
+	SoTextureCoordinateCube.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
 	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
@@ -574,9 +576,10 @@ am__objects_7 = SoAnnotation.lo SoAntiSquish.lo SoArray.lo \
 	SoSelection.lo SoSeparator.lo SoShapeHints.lo SoShuttle.lo \
 	SoSpotLight.lo SoSurroundScale.lo SoSwitch.lo SoTexture2.lo \
 	SoTexture3.lo SoTexture2Transform.lo SoTexture3Transform.lo \
-	SoTextureCoordinate2.lo SoTextureCoordinate3.lo \
-	SoTextureCoordinateBinding.lo SoTextureCoordinateCube.lo \
-	SoTextureCoordinateDefault.lo SoTextureCoordinateEnvironment.lo \
+	SoTextureCombine.lo SoTextureCoordinate2.lo \
+	SoTextureCoordinate3.lo SoTextureCoordinateBinding.lo \
+	SoTextureCoordinateCube.lo SoTextureCoordinateDefault.lo \
+	SoTextureCoordinateEnvironment.lo \
 	SoTextureCoordinateFunction.lo SoTextureCoordinatePlane.lo \
 	SoTextureScalePolicy.lo SoTextureUnit.lo SoTransform.lo \
 	SoTransparencyType.lo SoTransformSeparator.lo \
@@ -609,9 +612,9 @@ am__EXTRA_libnodes_la_SOURCES_DIST = SoSoundElementHelper.h \
 	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
-	SoTextureCoordinate2.cpp SoTextureCoordinate3.cpp \
-	SoTextureCoordinateBinding.cpp SoTextureCoordinateCube.cpp \
-	SoTextureCoordinateDefault.cpp \
+	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
+	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
+	SoTextureCoordinateCube.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
 	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
@@ -644,9 +647,9 @@ am__libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAnnotation.cpp \
 	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
-	SoTextureCoordinate2.cpp SoTextureCoordinate3.cpp \
-	SoTextureCoordinateBinding.cpp SoTextureCoordinateCube.cpp \
-	SoTextureCoordinateDefault.cpp \
+	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
+	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
+	SoTextureCoordinateCube.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
 	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
@@ -678,9 +681,9 @@ am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
-	SoTextureCoordinate2.cpp SoTextureCoordinate3.cpp \
-	SoTextureCoordinateBinding.cpp SoTextureCoordinateCube.cpp \
-	SoTextureCoordinateDefault.cpp \
+	SoTextureCombine.cpp SoTextureCoordinate2.cpp \
+	SoTextureCoordinate3.cpp SoTextureCoordinateBinding.cpp \
+	SoTextureCoordinateCube.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
 	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
@@ -812,6 +815,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoTexture3.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTexture3Transform.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTexture3Transform.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoTextureCombine.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoTextureCombine.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinate2.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinate2.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinate3.Plo \
@@ -1079,6 +1084,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTexture3.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTexture3Transform.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTexture3Transform.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCombine.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCombine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinate2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinate2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinate3.Plo@am__quote@

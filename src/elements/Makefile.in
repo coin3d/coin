@@ -304,6 +304,7 @@ RegularSources = \
 	SoSpecularColorElement.cpp \
 	SoSwitchElement.cpp \
 	SoTextOutlineEnabledElement.cpp \
+	SoTextureCombineElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
 	SoTextureCoordinateElement.cpp \
 	SoTextureEnabledElement.cpp \
@@ -423,7 +424,7 @@ am__elements_lst_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoReplacedElement.cpp SoShapeHintsElement.cpp \
 	SoShapeStyleElement.cpp SoShininessElement.cpp \
 	SoSpecularColorElement.cpp SoSwitchElement.cpp \
-	SoTextOutlineEnabledElement.cpp \
+	SoTextOutlineEnabledElement.cpp SoTextureCombineElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
 	SoTextureCoordinateElement.cpp SoTextureEnabledElement.cpp \
 	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
@@ -475,6 +476,7 @@ am__objects_2 = SoAccumulatedElement.$(OBJEXT) \
 	SoShapeHintsElement.$(OBJEXT) SoShapeStyleElement.$(OBJEXT) \
 	SoShininessElement.$(OBJEXT) SoSpecularColorElement.$(OBJEXT) \
 	SoSwitchElement.$(OBJEXT) SoTextOutlineEnabledElement.$(OBJEXT) \
+	SoTextureCombineElement.$(OBJEXT) \
 	SoTextureCoordinateBindingElement.$(OBJEXT) \
 	SoTextureCoordinateElement.$(OBJEXT) \
 	SoTextureEnabledElement.$(OBJEXT) \
@@ -527,7 +529,7 @@ am__EXTRA_elements_lst_SOURCES_DIST = all-elements-cpp.cpp \
 	SoReplacedElement.cpp SoShapeHintsElement.cpp \
 	SoShapeStyleElement.cpp SoShininessElement.cpp \
 	SoSpecularColorElement.cpp SoSwitchElement.cpp \
-	SoTextOutlineEnabledElement.cpp \
+	SoTextOutlineEnabledElement.cpp SoTextureCombineElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
 	SoTextureCoordinateElement.cpp SoTextureEnabledElement.cpp \
 	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
@@ -575,7 +577,7 @@ am__libelements_la_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoReplacedElement.cpp SoShapeHintsElement.cpp \
 	SoShapeStyleElement.cpp SoShininessElement.cpp \
 	SoSpecularColorElement.cpp SoSwitchElement.cpp \
-	SoTextOutlineEnabledElement.cpp \
+	SoTextOutlineEnabledElement.cpp SoTextureCombineElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
 	SoTextureCoordinateElement.cpp SoTextureEnabledElement.cpp \
 	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
@@ -618,7 +620,7 @@ am__objects_7 = SoAccumulatedElement.lo SoAmbientColorElement.lo \
 	SoShapeHintsElement.lo SoShapeStyleElement.lo \
 	SoShininessElement.lo SoSpecularColorElement.lo \
 	SoSwitchElement.lo SoTextOutlineEnabledElement.lo \
-	SoTextureCoordinateBindingElement.lo \
+	SoTextureCombineElement.lo SoTextureCoordinateBindingElement.lo \
 	SoTextureCoordinateElement.lo SoTextureEnabledElement.lo \
 	SoTexture3EnabledElement.lo SoTextureImageElement.lo \
 	SoTextureMatrixElement.lo SoTextureOverrideElement.lo \
@@ -664,7 +666,7 @@ am__EXTRA_libelements_la_SOURCES_DIST = all-elements-cpp.cpp \
 	SoReplacedElement.cpp SoShapeHintsElement.cpp \
 	SoShapeStyleElement.cpp SoShininessElement.cpp \
 	SoSpecularColorElement.cpp SoSwitchElement.cpp \
-	SoTextOutlineEnabledElement.cpp \
+	SoTextOutlineEnabledElement.cpp SoTextureCombineElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
 	SoTextureCoordinateElement.cpp SoTextureEnabledElement.cpp \
 	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
@@ -711,7 +713,7 @@ am__libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoReplacedElement.cpp SoShapeHintsElement.cpp \
 	SoShapeStyleElement.cpp SoShininessElement.cpp \
 	SoSpecularColorElement.cpp SoSwitchElement.cpp \
-	SoTextOutlineEnabledElement.cpp \
+	SoTextOutlineEnabledElement.cpp SoTextureCombineElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
 	SoTextureCoordinateElement.cpp SoTextureEnabledElement.cpp \
 	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
@@ -757,7 +759,7 @@ am__EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoReplacedElement.cpp SoShapeHintsElement.cpp \
 	SoShapeStyleElement.cpp SoShininessElement.cpp \
 	SoSpecularColorElement.cpp SoSwitchElement.cpp \
-	SoTextOutlineEnabledElement.cpp \
+	SoTextOutlineEnabledElement.cpp SoTextureCombineElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
 	SoTextureCoordinateElement.cpp SoTextureEnabledElement.cpp \
 	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
@@ -903,6 +905,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextOutlineEnabledElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTexture3EnabledElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTexture3EnabledElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoTextureCombineElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoTextureCombineElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateBindingElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateBindingElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateElement.Plo \
@@ -1153,6 +1157,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextOutlineEnabledElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTexture3EnabledElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTexture3EnabledElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCombineElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCombineElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateBindingElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateBindingElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateElement.Plo@am__quote@

@@ -92,6 +92,7 @@ PublicHeaders = \
 	SoSpecularColorElement.h \
 	SoSwitchElement.h \
 	SoTextOutlineEnabledElement.h \
+	SoTextureCombineElement.h \
 	SoTextureCoordinateBindingElement.h \
 	SoTextureCoordinateElement.h \
 	SoTextureEnabledElement.h \

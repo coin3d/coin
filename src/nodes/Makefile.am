@@ -72,6 +72,7 @@ RegularSources = \
 	SoTexture3.cpp \
 	SoTexture2Transform.cpp \
 	SoTexture3Transform.cpp \
+	SoTextureCombine.cpp \
 	SoTextureCoordinate2.cpp \
 	SoTextureCoordinate3.cpp \
 	SoTextureCoordinateBinding.cpp \

@@ -86,6 +86,7 @@
 #include "SoSwitchElement.cpp"
 #include "SoTextOutlineEnabledElement.cpp"
 #include "SoTexture3EnabledElement.cpp"
+#include "SoTextureCombineElement.cpp"
 #include "SoTextureCoordinateBindingElement.cpp"
 #include "SoTextureCoordinateElement.cpp"
 #include "SoTextureEnabledElement.cpp"

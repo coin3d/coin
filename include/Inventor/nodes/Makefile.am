@@ -97,6 +97,7 @@ PublicHeaders = \
 	SoTexture2Transform.h \
 	SoTexture3.h \
 	SoTexture3Transform.h \
+	SoTextureCombine.h \
 	SoTextureCoordinate2.h \
 	SoTextureCoordinate3.h \
 	SoTextureCoordinateBinding.h \

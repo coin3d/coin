@@ -63,6 +63,7 @@ RegularSources = \
 	SoSpecularColorElement.cpp \
 	SoSwitchElement.cpp \
 	SoTextOutlineEnabledElement.cpp \
+	SoTextureCombineElement.cpp \
 	SoTextureCoordinateBindingElement.cpp \
 	SoTextureCoordinateElement.cpp \
 	SoTextureEnabledElement.cpp \
