@@ -1821,6 +1821,7 @@ SoBase::readBaseInstance(SoInput * in, const SbName & classname,
       // Remove newly made SoGlobalField, use the existing one instead:
       base->ref(); base->unref();
       base = container;
+      container->getFieldData()->getField(container, 0)->touch();
     }
     else {
       // The global field was first removed to check the existence
