@@ -139,7 +139,7 @@ GLUWrapper_versionMatchesAtLeast(unsigned int major,
 }
 
 /* Replacement function for gluGetString(). */
-static const GLubyte *
+static const GLubyte * APIENTRY
 GLUWrapper_gluGetString(GLenum name)
 {
   static const GLubyte versionstring[] = "1.0.0";
@@ -148,7 +148,7 @@ GLUWrapper_gluGetString(GLenum name)
 }
 
 /* Replacement function for gluScaleImage(). */
-static GLint
+static GLint APIENTRY
 GLUWrapper_gluScaleImage(GLenum a, GLsizei b, GLsizei c, GLenum d, const void * e, GLsizei f, GLsizei g, GLenum h, GLvoid * i)
 {
   /* Just a void function (gluScaleImage() should normally be
@@ -159,7 +159,7 @@ GLUWrapper_gluScaleImage(GLenum a, GLsizei b, GLsizei c, GLenum d, const void * 
 }
 
 /* Replacement function for gluBuild2DMipmaps(). */
-static GLint
+static GLint APIENTRY
 GLUWrapper_gluBuild2DMipmaps(GLenum a, GLint b, GLsizei c, GLsizei d, GLenum e, GLenum f, const void * g)
 {
   /* Just a void function (gluBuild2DMipmaps() should normally be

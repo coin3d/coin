@@ -29,6 +29,14 @@
 #endif /* HAVE_WINDOWS_H */
 #include <GL/gl.h>
 
+/* Under Win32, we need to make sure we use the correct calling method
+   by using the APIENTRY define for the function signature types (or
+   else we'll get weird stack errors). On other platforms, just define
+   APIENTRY empty. */
+#ifndef APIENTRY
+#define APIENTRY
+#endif /* !APIENTRY */
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -91,31 +99,33 @@ enum {
 };
 
 
+/* Callback func type. */
+typedef void (*gluNurbsCallback_cb_t)(void *, ...);
+
 /* Typedefinitions of function signatures for GLU calls we use. We
    need these for casting from the void-pointer return of dlsym().*/
-typedef const GLubyte * (*gluGetString_t)(GLenum);
-typedef GLint (*gluBuild2DMipmaps_t)(GLenum, GLint, GLsizei, GLsizei, GLenum, GLenum, const void *);
-typedef GLint (*gluScaleImage_t)(GLenum, GLsizei, GLsizei, GLenum, const void *, GLsizei, GLsizei, GLenum, GLvoid *);
+typedef const GLubyte * (APIENTRY *gluGetString_t)(GLenum);
+typedef GLint (APIENTRY *gluBuild2DMipmaps_t)(GLenum, GLint, GLsizei, GLsizei, GLenum, GLenum, const void *);
+typedef GLint (APIENTRY *gluScaleImage_t)(GLenum, GLsizei, GLsizei, GLenum, const void *, GLsizei, GLsizei, GLenum, GLvoid *);
 /* The first argument for these methods is actually either GLUnurbs or
    GLUnurbsObj, depending on the GLU version (yes, they managed to
    change the API over version 1.x to 1.y, for some value of [0, 3]
    for x and y). */
-typedef void * (*gluNewNurbsRenderer_t)(void);
-typedef void (*gluDeleteNurbsRenderer_t)(void *);
-typedef void (*gluNurbsProperty_t)(void *, GLenum, GLfloat);
-typedef void (*gluLoadSamplingMatrices_t)(void *, const GLfloat *, const GLfloat *, const GLint *);
-typedef void (*gluBeginSurface_t)(void *);
-typedef void (*gluEndSurface_t)(void *);
-typedef void (*gluNurbsSurface_t)(void *, GLint, GLfloat *, GLint, GLfloat *, GLint, GLint, GLfloat *, GLint, GLint, GLenum);
-typedef void (*gluBeginTrim_t)(void *);
-typedef void (*gluEndTrim_t)(void *);
-typedef void (*gluBeginCurve_t)(void *);
-typedef void (*gluEndCurve_t)(void *);
-typedef void (*gluNurbsCurve_t)(void *, GLint, GLfloat *, GLint, GLfloat *, GLint, GLenum);
-typedef void (*gluPwlCurve_t)(void *, GLint, GLfloat *, GLint, GLenum);
-typedef void (*gluNurbsCallback_cb_t)(void *, ...); /* Callback func type. */
-typedef void (*gluNurbsCallback_t)(void *, GLenum, gluNurbsCallback_cb_t);
-typedef void (*gluNurbsCallbackData_t)(void *, GLvoid *);
+typedef void * (APIENTRY *gluNewNurbsRenderer_t)(void);
+typedef void (APIENTRY *gluDeleteNurbsRenderer_t)(void *);
+typedef void (APIENTRY *gluNurbsProperty_t)(void *, GLenum, GLfloat);
+typedef void (APIENTRY *gluLoadSamplingMatrices_t)(void *, const GLfloat *, const GLfloat *, const GLint *);
+typedef void (APIENTRY *gluBeginSurface_t)(void *);
+typedef void (APIENTRY *gluEndSurface_t)(void *);
+typedef void (APIENTRY *gluNurbsSurface_t)(void *, GLint, GLfloat *, GLint, GLfloat *, GLint, GLint, GLfloat *, GLint, GLint, GLenum);
+typedef void (APIENTRY *gluBeginTrim_t)(void *);
+typedef void (APIENTRY *gluEndTrim_t)(void *);
+typedef void (APIENTRY *gluBeginCurve_t)(void *);
+typedef void (APIENTRY *gluEndCurve_t)(void *);
+typedef void (APIENTRY *gluNurbsCurve_t)(void *, GLint, GLfloat *, GLint, GLfloat *, GLint, GLenum);
+typedef void (APIENTRY *gluPwlCurve_t)(void *, GLint, GLfloat *, GLint, GLenum);
+typedef void (APIENTRY *gluNurbsCallback_t)(void *, GLenum, gluNurbsCallback_cb_t);
+typedef void (APIENTRY *gluNurbsCallbackData_t)(void *, GLvoid *);
 
 
 typedef struct {
