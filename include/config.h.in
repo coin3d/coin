@@ -106,6 +106,9 @@
 /* should be defined if there is some way of doing dynamic linking */
 #undef HAVE_DYNAMIC_LINKING
 
+/* whether or not finite() is available */
+#undef HAVE_FINITE
+
 /* define if you have the freetype library */
 #undef HAVE_FREETYPE
 
@@ -165,6 +168,12 @@
 
 /* Define to 1 if you have the <io.h> header file. */
 #undef HAVE_IO_H
+
+/* whether or not isinf() is available */
+#undef HAVE_ISINF
+
+/* whether or not isnan() is available */
+#undef HAVE_ISNAN
 
 /* Define to 1 if you have the <libgen.h> header file. */
 #undef HAVE_LIBGEN_H
@@ -319,11 +328,20 @@
 /* Define to use zlib */
 #undef HAVE_ZLIB
 
+/* whether or not _finite() is available */
+#undef HAVE__FINITE
+
+/* whether or not _fpclass() is available */
+#undef HAVE__FPCLASS
+
 /* Define to use Win32 _ftime() */
 #undef HAVE__FTIME
 
 /* Define to use Win32 _getcwd() */
 #undef HAVE__GETCWD
+
+/* whether or not _isnan() is available */
+#undef HAVE__ISNAN
 
 /* Define to use Win32 _logb() */
 #undef HAVE__LOGB
