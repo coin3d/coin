@@ -768,6 +768,7 @@ INPUT                 = @coin_build_dir@/include/Inventor/SbBasic.h \
                         @coin_src_dir@/include/Inventor/nodekits/SoNodeKit.h \
                         @coin_src_dir@/src/draggers/SoDragger.cpp \
                         @coin_src_dir@/include/Inventor/draggers/SoDragger.h \
+                        @coin_src_dir@/src/manips/commoncode.cpp \
                         @coin_src_dir@/src/manips/SoDirectionalLightManip.cpp \
                         @coin_src_dir@/include/Inventor/manips/SoDirectionalLightManip.h
 
