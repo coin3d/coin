@@ -101,6 +101,12 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#ifdef HAVE_VRML97
+#include <Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h>
+#include <Inventor/VRMLnodes/SoVRMLExtrusion.h>
+#include <Inventor/VRMLnodes/SoVRMLElevationGrid.h>
+#endif // HAVE_VRML97
+
 #include <Inventor/system/gl.h>
 #include <string.h>
 #include <stdlib.h>
@@ -155,23 +161,49 @@ public:
     this->bboxcache = NULL;
     this->pvcache = NULL;
     this->bumprender = NULL;
-    this->shouldcache = FALSE;
+    this->flags = 0;
   }
   ~SoShapeP() {
     if (this->bboxcache) { this->bboxcache->unref(); }
     if (this->pvcache) { this->pvcache->unref(); }
     delete this->bumprender;
   }
+  enum Flags {
+    SHOULD_BBOX_CACHE = 0x1,
+    NEED_SETUP_SHAPE_HINTS = 0x2
+  };
+
   static void calibrateBBoxCache(void);
   static double bboxcachetimelimit;
   SoBoundingBoxCache * bboxcache;
   SoPrimitiveVertexCache * pvcache;
   soshape_bumprender * bumprender;
-  SbBool shouldcache;
+  uint32_t flags;
 #ifdef COIN_THREADSAFE
   SbMutex mutex;
 #endif // COIN_THREADSAFE
-
+  
+  // needed since some VRML97 nodes change the GL state inside the node
+  void testSetupShapeHints(SoShape * shape) {
+#ifdef HAVE_VRML97
+    if ((this->flags & SoShapeP::NEED_SETUP_SHAPE_HINTS) == 0) {
+      if (shape->isOfType(SoVRMLIndexedFaceSet::getClassTypeId()) ||
+          shape->isOfType(SoVRMLExtrusion::getClassTypeId()) ||
+          shape->isOfType(SoVRMLElevationGrid::getClassTypeId())) {
+        this->flags |= SoShapeP::NEED_SETUP_SHAPE_HINTS;
+      }
+    }
+#endif // HAVE_VRML97
+  }
+  void setupShapeHints(SoShape * shape, SoState * state) {
+#ifdef HAVE_VRML97
+    if (this->flags & SoShapeP::NEED_SETUP_SHAPE_HINTS) {
+      SbBool ccw = ((SoSFBool*)(shape->getField("ccw")))->getValue();
+      SbBool solid = ((SoSFBool*)(shape->getField("solid")))->getValue();
+      SoGLShapeHintsElement::forceSend(state, ccw, solid, !solid);
+    }
+#endif // HAVE_VRML97
+  }
   void lock(void) {
 #ifdef COIN_THREADSAFE
     this->mutex.lock();
@@ -600,6 +632,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
         state->pop();
         SoCacheElement::setInvalid(storedinvalid);
         PRIVATE(this)->pvcache->fit();
+        PRIVATE(this)->testSetupShapeHints(this);
       }
       if (PRIVATE(this)->pvcache->getNumIndices() == 0) {
         PRIVATE(this)->unlock();
@@ -612,8 +645,8 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       glDepthFunc(GL_LEQUAL);
       glDisable(GL_LIGHTING);
       
-      glColor3f(1.0f, 1.0f, 1.0f);
-      
+      glColor3f(1.0f, 1.0f, 1.0f);      
+      PRIVATE(this)->setupShapeHints(this, state);
       const int numlights = lights.getLength();      
       for (int i = 0; i < numlights; i++) {      
         // fetch matrix that convert the light from its object space
@@ -647,10 +680,10 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
                                                  SoLazyElement::DIFFUSE_MASK |
                                                  SoLazyElement::GLIMAGE_MASK);
       SoMaterialBundle mb(action);
-      mb.sendFirst();      
+      mb.sendFirst();
+      PRIVATE(this)->setupShapeHints(this, state);
       PRIVATE(this)->bumprender->renderNormal(state, PRIVATE(this)->pvcache);
-      
-         
+               
       const SbColor spec = SoLazyElement::getSpecular(state); 
       if (spec[0] != 0 || spec[1] != 0 || spec[2] != 0) { // Is the spec. color black?
 
@@ -714,6 +747,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       state->pop();
       SoCacheElement::setInvalid(storedinvalid);
       PRIVATE(this)->pvcache->fit();
+      PRIVATE(this)->testSetupShapeHints(this);
     }
 
     if ((PRIVATE(this)->pvcache->getNumIndices() == 0) &&
@@ -724,11 +758,13 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       // let shape render
       return TRUE;
     }
-    PRIVATE(this)->unlock();
+    PRIVATE(this)->unlock();    
+
     int arrays = SoPrimitiveVertexCache::NORMAL|SoPrimitiveVertexCache::COLOR;
     if (glimage) arrays |= SoPrimitiveVertexCache::TEXCOORD;
     SoMaterialBundle mb(action);
     mb.sendFirst();
+    PRIVATE(this)->setupShapeHints(this, state);
     PRIVATE(this)->pvcache->renderTriangles(state, arrays);
     if (PRIVATE(this)->pvcache->getNumLineIndices() ||
         PRIVATE(this)->pvcache->getNumPointIndices()) {
@@ -1352,7 +1388,7 @@ SoShape::notify(SoNotList * nl)
   if (PRIVATE(this)->pvcache) {
     PRIVATE(this)->pvcache->invalidate();
   }
-  PRIVATE(this)->shouldcache = FALSE;
+  PRIVATE(this)->flags &= ~SoShapeP::SHOULD_BBOX_CACHE;
   PRIVATE(this)->unlock();
 }
 
@@ -1395,8 +1431,8 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     PRIVATE(this)->bboxcache = NULL;
     PRIVATE(this)->unlock();
   }
-
-  SbBool shouldcache = PRIVATE(this)->shouldcache;
+  
+  SbBool shouldcache = (PRIVATE(this)->flags & SoShapeP::SHOULD_BBOX_CACHE) != 0;
   SbBool storedinvalid = FALSE;
   if (shouldcache) {
     // must push state to make cache dependencies work
@@ -1420,7 +1456,7 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   }
   // only create cache if calculating it took longer than the limit
   else if ((end.getValue() - begin.getValue()) >= SoShapeP::bboxcachetimelimit) {
-    PRIVATE(this)->shouldcache = TRUE;
+    PRIVATE(this)->flags |= SoShapeP::SHOULD_BBOX_CACHE;
     if (action->isOfType(SoGetBoundingBoxAction::getClassTypeId())) {
       // just recalculate the bbox so that the cache is created at
       // once. SoGLRenderAction and SoRayPickAction might need it.
