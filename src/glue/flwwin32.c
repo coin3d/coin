@@ -27,6 +27,15 @@
 
 /* ************************************************************************* */
 
+/*
+  Implementation note: no part of the code has to be reentrant, as the
+  complete interface is protected from multiple threads accessing it
+  at the same time by locking in the cc_flw_* functions (which should
+  be the only callers).
+*/
+
+/* ************************************************************************* */
+
 /* FIXME: should be based on a configure check. 20030515 mortene. */
 #ifdef _WIN32
 #define HAVE_WIN32_API
@@ -77,6 +86,7 @@ int cc_flww32_get_outline(void * font, int glyph) { assert(FALSE); return 0; }
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/glue/win32api.h>
+#include <Inventor/C/glue/fontlib_wrapper.h>
 
 /* ************************************************************************* */
 
@@ -170,6 +180,9 @@ cc_flww32_initialize(void)
     logfont.lfFaceName[0] = '\0';
     logfont.lfPitchAndFamily = 0;
 
+    /* FIXME: for some peculiar reason, this has stopped working --
+       font_enum_proc() is never called. It used to work..?
+       Investigate what is going on. 20030610 mortene. */
     (void)EnumFontFamiliesEx(cc_flww32_globals.devctx,
                              (LPLOGFONT)&logfont,
                              (FONTENUMPROC)font_enum_proc,
@@ -259,12 +272,30 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey)
 void
 cc_flww32_get_font_name(void * font, cc_string * str)
 {
-  const int size = cc_win32()->GetTextFace(cc_flww32_globals.devctx, 0, NULL);
-  char * s = (char *)malloc(size);
+  int size;
+  char * s;
+
+  /* Connect device context to font. */
+  HFONT previousfont = SelectObject(cc_flww32_globals.devctx, (HFONT)font);
+  if (previousfont == NULL) {
+    cc_string_set_text(str, "<unknown>");
+    cc_win32_print_error("cc_flww32_get_font_name", "SelectObject()", GetLastError());
+    return;
+  }
+
+  size = cc_win32()->GetTextFace(cc_flww32_globals.devctx, 0, NULL);
+  s = (char *)malloc(size);
   assert(s); /* FIXME: handle alloc problem better. 20030530 mortene. */
+
   (void)cc_win32()->GetTextFace(cc_flww32_globals.devctx, size, s);
   cc_string_set_text(str, s);
+
   free(s);
+
+  /* Reconnect device context to default font. */
+  if (SelectObject(cc_flww32_globals.devctx, previousfont) != (HFONT)font) {
+    cc_win32_print_error("cc_flww32_get_font_name", "SelectObject()", GetLastError());
+  }
 }
 
 /* Deallocates the resources connected with the given font id. Assumes
@@ -280,8 +311,8 @@ cc_flww32_done_font(void * font)
 
   found = cc_hash_remove(cc_flww32_globals.font2glyphhash,
                          (unsigned long)font);
-  /* FIXME: needs mt-safeness for this assert() to guarantee this
-     assert to never hit.. 20030610 mortene. */
+  /* FIXME: needs mt-safeness for this assert() to guarantee it'll
+     never hit.. 20030610 mortene. */
   assert(found && "huh?");
 
   /* FIXME: the hash should really be checked to see if it's empty or
