@@ -1773,7 +1773,6 @@ else
   MAC_FRAMEWORK_FALSE=
 fi
 
-
 MAC_FRAMEWORK=$sim_ac_framework
 
 MAC_FRAMEWORK_NAME=$sim_ac_framework_name
@@ -3048,7 +3047,6 @@ fi
 
 # **************************************************************************
 
-am__api_version="1.6"
 # Find a good install program.  We prefer a C program (faster),
 # so one script is as good as another.  But avoid the broken or
 # incompatible versions:
@@ -3186,6 +3184,9 @@ rm conftest.sed
 
 
 # expand $ac_aux_dir to an absolute path
+if test "${CDPATH+set}" = set; then
+  CDPATH=${ZSH_VERSION+.}:   # as recommended in autoconf.texi
+fi
 am_aux_dir=`cd $ac_aux_dir && pwd`
 
 test x"${MISSING+set}" = xset || MISSING="\${SHELL} $am_aux_dir/missing"
@@ -3194,8 +3195,9 @@ if eval "$MISSING --run true"; then
   am_missing_run="$MISSING --run "
 else
   am_missing_run=
-  { echo "$as_me:$LINENO: WARNING: \`missing' script is too old or missing" >&5
-echo "$as_me: WARNING: \`missing' script is too old or missing" >&2;}
+  am_backtick='`'
+  { echo "$as_me:$LINENO: WARNING: ${am_backtick}missing' script is too old or missing" >&5
+echo "$as_me: WARNING: ${am_backtick}missing' script is too old or missing" >&2;}
 fi
 
 for ac_prog in gawk mawk nawk awk
@@ -3267,58 +3269,6 @@ echo "${ECHO_T}no" >&6
   SET_MAKE="MAKE=${MAKE-make}"
 fi
 
-rm -f .deps 2>/dev/null
-mkdir .deps 2>/dev/null
-if test -d .deps; then
-  DEPDIR=.deps
-else
-  # MS-DOS does not allow filenames that begin with a dot.
-  DEPDIR=_deps
-fi
-rmdir .deps 2>/dev/null
-
-
-ac_config_commands="$ac_config_commands depfiles"
-
-
-am_make=${MAKE-make}
-cat > confinc << 'END'
-doit:
-	@echo done
-END
-# If we don't find an include directive, just comment out the code.
-echo "$as_me:$LINENO: checking for style of include used by $am_make" >&5
-echo $ECHO_N "checking for style of include used by $am_make... $ECHO_C" >&6
-am__include="#"
-am__quote=
-_am_result=none
-# First try GNU make style include.
-echo "include confinc" > confmf
-# We grep out `Entering directory' and `Leaving directory'
-# messages which can occur if `w' ends up in MAKEFLAGS.
-# In particular we don't look at `^make:' because GNU make might
-# be invoked under some other name (usually "gmake"), in which
-# case it prints its new name instead of `make'.
-if test "`$am_make -s -f confmf 2> /dev/null | fgrep -v 'ing directory'`" = "done"; then
-   am__include=include
-   am__quote=
-   _am_result=GNU
-fi
-# Now try BSD make style include.
-if test "$am__include" = "#"; then
-   echo '.include "confinc"' > confmf
-   if test "`$am_make -s -f confmf 2> /dev/null`" = "done"; then
-      am__include=.include
-      am__quote="\""
-      _am_result=BSD
-   fi
-fi
-
-
-echo "$as_me:$LINENO: result: $_am_result" >&5
-echo "${ECHO_T}$_am_result" >&6
-rm -f confinc confmf
-
 # Check whether --enable-dependency-tracking or --disable-dependency-tracking was given.
 if test "${enable_dependency_tracking+set}" = set; then
   enableval="$enable_dependency_tracking"
@@ -3340,8 +3290,61 @@ fi
 
 
 
- # test to see if srcdir already configured
-if test "`cd $srcdir && pwd`" != "`pwd`" &&
+
+rm -f .deps 2>/dev/null
+mkdir .deps 2>/dev/null
+if test -d .deps; then
+  DEPDIR=.deps
+else
+  # MS-DOS does not allow filenames that begin with a dot.
+  DEPDIR=_deps
+fi
+rmdir .deps 2>/dev/null
+
+
+
+ac_config_commands="$ac_config_commands default-1"
+
+am_make=${MAKE-make}
+cat > confinc << 'END'
+doit:
+	@echo done
+END
+# If we don't find an include directive, just comment out the code.
+echo "$as_me:$LINENO: checking for style of include used by $am_make" >&5
+echo $ECHO_N "checking for style of include used by $am_make... $ECHO_C" >&6
+am__include='#'
+am__quote=
+_am_result=none
+# First try GNU make style include.
+echo "include confinc" > confmf
+# We grep out `Entering directory' and `Leaving directory'
+# messages which can occur if `w' ends up in MAKEFLAGS.
+# In particular we don't look at `^make:' because GNU make might
+# be invoked under some other name (usually "gmake"), in which
+# case it prints its new name instead of `make'.
+if test "`$am_make -s -f confmf 2> /dev/null | fgrep -v 'ing directory'`" = "done"; then
+   am__include=include
+   am__quote=
+   _am_result=GNU
+fi
+# Now try BSD make style include.
+if test "$am__include" = "#"; then
+   echo '.include "confinc"' > confmf
+   if test "`$am_make -s -f confmf 2> /dev/null`" = "done"; then
+      am__include=.include
+      am__quote='"'
+      _am_result=BSD
+   fi
+fi
+
+
+echo "$as_me:$LINENO: result: $_am_result" >&5
+echo "${ECHO_T}$_am_result" >&6
+rm -f confinc confmf
+
+# test to see if srcdir already configured
+if test "`CDPATH=:; cd $srcdir && pwd`" != "`pwd`" &&
    test -f $srcdir/config.status; then
   { { echo "$as_me:$LINENO: error: source directory already configured; run \"make distclean\" there first" >&5
 echo "$as_me: error: source directory already configured; run \"make distclean\" there first" >&2;}
@@ -3349,9 +3352,8 @@ echo "$as_me: error: source directory already configured; run \"make distclean\"
 fi
 
 # Define the identity of the package.
- PACKAGE=Coin
- VERSION=$VERSION
-
+PACKAGE=Coin
+VERSION=$VERSION
 
 cat >>confdefs.h <<_ACEOF
 #define PACKAGE "$PACKAGE"
@@ -3362,15 +3364,28 @@ cat >>confdefs.h <<_ACEOF
 #define VERSION "$VERSION"
 _ACEOF
 
+
+# Autoconf 2.50 wants to disallow AM_ names.  We explicitly allow
+# the ones we care about.
+
+# Autoconf 2.50 always computes EXEEXT.  However we need to be
+# compatible with 2.13, for now.  So we always define EXEEXT, but we
+# don't compute it.
+
+# Similar for OBJEXT -- only we only use OBJEXT if the user actually
+# requests that it be used.  This is a bit dumb.
+: ${OBJEXT=o}
+
+
 # Some tools Automake needs.
 
-ACLOCAL=${ACLOCAL-"${am_missing_run}aclocal-${am__api_version}"}
+ACLOCAL=${ACLOCAL-"${am_missing_run}aclocal"}
 
 
 AUTOCONF=${AUTOCONF-"${am_missing_run}autoconf"}
 
 
-AUTOMAKE=${AUTOMAKE-"${am_missing_run}automake-${am__api_version}"}
+AUTOMAKE=${AUTOMAKE-"${am_missing_run}automake"}
 
 
 AUTOHEADER=${AUTOHEADER-"${am_missing_run}autoheader"}
@@ -3383,97 +3398,10 @@ AMTAR=${AMTAR-"${am_missing_run}tar"}
 
 install_sh=${install_sh-"$am_aux_dir/install-sh"}
 
-# Installed binaries are usually stripped using `strip' when the user
-# run `make install-strip'.  However `strip' might not be the right
-# tool to use in cross-compilation environments, therefore Automake
-# will honor the `STRIP' environment variable to overrule this program.
-if test "$cross_compiling" != no; then
-  if test -n "$ac_tool_prefix"; then
-  # Extract the first word of "${ac_tool_prefix}strip", so it can be a program name with args.
-set dummy ${ac_tool_prefix}strip; ac_word=$2
-echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
-if test "${ac_cv_prog_STRIP+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  if test -n "$STRIP"; then
-  ac_cv_prog_STRIP="$STRIP" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_prog_STRIP="${ac_tool_prefix}strip"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-
-fi
-fi
-STRIP=$ac_cv_prog_STRIP
-if test -n "$STRIP"; then
-  echo "$as_me:$LINENO: result: $STRIP" >&5
-echo "${ECHO_T}$STRIP" >&6
-else
-  echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-fi
-
-fi
-if test -z "$ac_cv_prog_STRIP"; then
-  ac_ct_STRIP=$STRIP
-  # Extract the first word of "strip", so it can be a program name with args.
-set dummy strip; ac_word=$2
-echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
-if test "${ac_cv_prog_ac_ct_STRIP+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  if test -n "$ac_ct_STRIP"; then
-  ac_cv_prog_ac_ct_STRIP="$ac_ct_STRIP" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_prog_ac_ct_STRIP="strip"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-
-  test -z "$ac_cv_prog_ac_ct_STRIP" && ac_cv_prog_ac_ct_STRIP=":"
-fi
-fi
-ac_ct_STRIP=$ac_cv_prog_ac_ct_STRIP
-if test -n "$ac_ct_STRIP"; then
-  echo "$as_me:$LINENO: result: $ac_ct_STRIP" >&5
-echo "${ECHO_T}$ac_ct_STRIP" >&6
-else
-  echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-fi
-
-  STRIP=$ac_ct_STRIP
-else
-  STRIP="$ac_cv_prog_STRIP"
-fi
-
-fi
 INSTALL_STRIP_PROGRAM="\${SHELL} \$(install_sh) -c -s"
 
 # We need awk for the "check" target.  The system "awk" is bad on
 # some platforms.
-
 
 depcc="$CC"   am_compiler_list=
 
@@ -3541,7 +3469,7 @@ fi
 fi
 echo "$as_me:$LINENO: result: $am_cv_CC_dependencies_compiler_type" >&5
 echo "${ECHO_T}$am_cv_CC_dependencies_compiler_type" >&6
-CCDEPMODE=depmode=$am_cv_CC_dependencies_compiler_type
+CCDEPMODE="depmode=$am_cv_CC_dependencies_compiler_type"
 
 
 depcc="$CXX"  am_compiler_list=
@@ -3610,8 +3538,7 @@ fi
 fi
 echo "$as_me:$LINENO: result: $am_cv_CXX_dependencies_compiler_type" >&5
 echo "${ECHO_T}$am_cv_CXX_dependencies_compiler_type" >&6
-CXXDEPMODE=depmode=$am_cv_CXX_dependencies_compiler_type
-
+CXXDEPMODE="depmode=$am_cv_CXX_dependencies_compiler_type"
 
 
 
@@ -3661,7 +3588,6 @@ else
   MAINTAINER_MODE_TRUE='#'
   MAINTAINER_MODE_FALSE=
 fi
-
   MAINT=$MAINTAINER_MODE_TRUE
 
 
@@ -5102,7 +5028,7 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5105 "configure"' > conftest.$ac_ext
+  echo '#line 5031 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5638,7 +5564,7 @@ chmod -w .
 save_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:5641: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+if { (eval echo configure:5567: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -7431,7 +7357,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7434 "configure"
+#line 7360 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -7529,7 +7455,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7532 "configure"
+#line 7458 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -8849,7 +8775,6 @@ fi
 
 
 
-
 if false; then
   MAC_FRAMEWORK_TRUE=
   MAC_FRAMEWORK_FALSE='#'
@@ -8857,7 +8782,6 @@ else
   MAC_FRAMEWORK_TRUE='#'
   MAC_FRAMEWORK_FALSE=
 fi
-
 
 # *******************************************************************
 # Search for the "local GLU" extension
@@ -8896,7 +8820,6 @@ else
   BUILD_WITH_SUPERGLU_TRUE='#'
   BUILD_WITH_SUPERGLU_FALSE=
 fi
-
 
 # *******************************************************************
 
@@ -9121,7 +9044,6 @@ else
   BUILD_WITH_THREADS_TRUE='#'
   BUILD_WITH_THREADS_FALSE=
 fi
-
 
 # *******************************************************************
 # Headers we might want to use
@@ -13505,7 +13427,6 @@ else
   BUILD_LIBRARY_FALSE=
 fi
 
-
 # *******************************************************************
 # * Do we want to build the documentation?
 # *******************************************************************
@@ -13571,7 +13492,6 @@ else
 fi
 
 
-
 if test x"$want_html" = x"yes"; then
   BUILD_HTMLPAGES_TRUE=
   BUILD_HTMLPAGES_FALSE='#'
@@ -13579,7 +13499,6 @@ else
   BUILD_HTMLPAGES_TRUE='#'
   BUILD_HTMLPAGES_FALSE=
 fi
-
 
 if test x"$want_man" = x"yes"; then
   if test x${sim_ac_configuration_settings+set} != xset; then
@@ -19584,7 +19503,6 @@ else
   HACKING_COMPACT_BUILD_FALSE=
 fi
 
-
 # *******************************************************************
 # * Enable/disable compilation with the "incremental linking through
 # * the use of dynamic libraries"-hack.
@@ -19615,7 +19533,6 @@ else
   HACKING_DYNAMIC_MODULES_TRUE='#'
   HACKING_DYNAMIC_MODULES_FALSE=
 fi
-
 
 if test x"$enable_hacking" = x"yes"; then
   for dir in \
@@ -19859,7 +19776,6 @@ else
   BUILD_WITH_MSVC_FALSE=
 fi
 
-
 if $sim_ac_build_library; then
   if $BUILD_WITH_MSVC; then
     rm -f vc60.pdb
@@ -19974,11 +19890,10 @@ fi
 
 # **************************************************************************
 
-# Add the stamp file to the list of files AC keeps track of,
-# along with our hook.
-ac_config_headers="$ac_config_headers include/config.h"
 
 
+
+		    		    		    ac_config_headers="$ac_config_headers include/config.h"
 
 
 # **************************************************************************
@@ -20072,97 +19987,6 @@ fi
 
 DEFS=-DHAVE_CONFIG_H
 
-if test -z "${MAC_FRAMEWORK_TRUE}" && test -z "${MAC_FRAMEWORK_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"MAC_FRAMEWORK\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"MAC_FRAMEWORK\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
-if test -z "${AMDEP_TRUE}" && test -z "${AMDEP_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"AMDEP\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"AMDEP\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
-if test -z "${MAINTAINER_MODE_TRUE}" && test -z "${MAINTAINER_MODE_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"MAINTAINER_MODE\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"MAINTAINER_MODE\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
-if test -z "${BUILD_VRML97_TRUE}" && test -z "${BUILD_VRML97_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"BUILD_VRML97\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"BUILD_VRML97\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
-if test -z "${MAC_FRAMEWORK_TRUE}" && test -z "${MAC_FRAMEWORK_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"MAC_FRAMEWORK\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"MAC_FRAMEWORK\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
-if test -z "${BUILD_WITH_SUPERGLU_TRUE}" && test -z "${BUILD_WITH_SUPERGLU_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"BUILD_WITH_SUPERGLU\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"BUILD_WITH_SUPERGLU\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
-if test -z "${BUILD_WITH_THREADS_TRUE}" && test -z "${BUILD_WITH_THREADS_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"BUILD_WITH_THREADS\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"BUILD_WITH_THREADS\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
-if test -z "${BUILD_LIBRARY_TRUE}" && test -z "${BUILD_LIBRARY_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"BUILD_LIBRARY\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"BUILD_LIBRARY\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
-if test -z "${BUILD_MANPAGES_TRUE}" && test -z "${BUILD_MANPAGES_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"BUILD_MANPAGES\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"BUILD_MANPAGES\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
-if test -z "${BUILD_HTMLPAGES_TRUE}" && test -z "${BUILD_HTMLPAGES_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"BUILD_HTMLPAGES\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"BUILD_HTMLPAGES\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
-if test -z "${HACKING_COMPACT_BUILD_TRUE}" && test -z "${HACKING_COMPACT_BUILD_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"HACKING_COMPACT_BUILD\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"HACKING_COMPACT_BUILD\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
-if test -z "${HACKING_DYNAMIC_MODULES_TRUE}" && test -z "${HACKING_DYNAMIC_MODULES_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"HACKING_DYNAMIC_MODULES\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"HACKING_DYNAMIC_MODULES\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
-if test -z "${BUILD_WITH_MSVC_TRUE}" && test -z "${BUILD_WITH_MSVC_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"BUILD_WITH_MSVC\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"BUILD_WITH_MSVC\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
 
 : ${CONFIG_STATUS=./config.status}
 ac_clean_files_save=$ac_clean_files
@@ -20557,7 +20381,8 @@ cat >>$CONFIG_STATUS <<_ACEOF
 # INIT-COMMANDS section.
 #
 
-AMDEP_TRUE="$AMDEP_TRUE" ac_aux_dir="$ac_aux_dir"
+AMDEP_TRUE="$AMDEP_TRUE"
+ac_aux_dir="$ac_aux_dir"
 
 _ACEOF
 
@@ -20607,7 +20432,7 @@ do
   "src/extensions/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/extensions/Makefile" ;;
   "$vrml97makefile" ) CONFIG_FILES="$CONFIG_FILES $vrml97makefile" ;;
   "docs/coin.doxygen" ) CONFIG_FILES="$CONFIG_FILES docs/coin.doxygen" ;;
-  "depfiles" ) CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
+  "default-1" ) CONFIG_COMMANDS="$CONFIG_COMMANDS default-1" ;;
   "include/config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS include/config.h" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
@@ -20744,17 +20569,15 @@ s,@AUTOHEADER@,$AUTOHEADER,;t t
 s,@MAKEINFO@,$MAKEINFO,;t t
 s,@AMTAR@,$AMTAR,;t t
 s,@install_sh@,$install_sh,;t t
-s,@STRIP@,$STRIP,;t t
-s,@ac_ct_STRIP@,$ac_ct_STRIP,;t t
 s,@INSTALL_STRIP_PROGRAM@,$INSTALL_STRIP_PROGRAM,;t t
 s,@AWK@,$AWK,;t t
 s,@SET_MAKE@,$SET_MAKE,;t t
-s,@DEPDIR@,$DEPDIR,;t t
-s,@am__include@,$am__include,;t t
-s,@am__quote@,$am__quote,;t t
 s,@AMDEP_TRUE@,$AMDEP_TRUE,;t t
 s,@AMDEP_FALSE@,$AMDEP_FALSE,;t t
 s,@AMDEPBACKSLASH@,$AMDEPBACKSLASH,;t t
+s,@DEPDIR@,$DEPDIR,;t t
+s,@am__include@,$am__include,;t t
+s,@am__quote@,$am__quote,;t t
 s,@CCDEPMODE@,$CCDEPMODE,;t t
 s,@CXXDEPMODE@,$CXXDEPMODE,;t t
 s,@MAINTAINER_MODE_TRUE@,$MAINTAINER_MODE_TRUE,;t t
@@ -20764,6 +20587,8 @@ s,@LN_S@,$LN_S,;t t
 s,@ECHO@,$ECHO,;t t
 s,@RANLIB@,$RANLIB,;t t
 s,@ac_ct_RANLIB@,$ac_ct_RANLIB,;t t
+s,@STRIP@,$STRIP,;t t
+s,@ac_ct_STRIP@,$ac_ct_STRIP,;t t
 s,@CXXCPP@,$CXXCPP,;t t
 s,@LIBTOOL@,$LIBTOOL,;t t
 s,@COIN_EXTRA_CPPFLAGS@,$COIN_EXTRA_CPPFLAGS,;t t
@@ -21233,7 +21058,7 @@ done; }
   # Run the commands associated with the file.
   case $ac_file in
     include/config.h ) # update the timestamp
-echo 'timestamp for include/config.h' >"include/stamp-h1"
+echo timestamp >"include/stamp-h1"
  ;;
   esac
 done
@@ -21294,25 +21119,14 @@ ac_abs_top_srcdir=`cd "$ac_dir" && cd $ac_top_srcdir && pwd`
   { echo "$as_me:$LINENO: executing $ac_dest commands" >&5
 echo "$as_me: executing $ac_dest commands" >&6;}
   case $ac_dest in
-    depfiles ) test x"$AMDEP_TRUE" != x"" || for mf in $CONFIG_FILES; do
-  # Strip MF so we end up with the name of the file.
-  mf=`echo "$mf" | sed -e 's/:.*$//'`
-  if (sed 1q $mf | fgrep 'generated by automake') > /dev/null 2>&1; then
-    dirpart=`(dirname "$mf") 2>/dev/null ||
-$as_expr X"$mf" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-         X"$mf" : 'X\(//\)[^/]' \| \
-         X"$mf" : 'X\(//\)$' \| \
-         X"$mf" : 'X\(/\)' \| \
-         .     : '\(.\)' 2>/dev/null ||
-echo X"$mf" |
-    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
-  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
-  	  /^X\(\/\/\)$/{ s//\1/; q; }
-  	  /^X\(\/\).*/{ s//\1/; q; }
-  	  s/.*/./; q'`
-  else
-    continue
-  fi
+    default-1 )
+test x"$AMDEP_TRUE" != x"" ||
+for mf in $CONFIG_FILES; do
+  case "$mf" in
+  Makefile) dirpart=.;;
+  */Makefile) dirpart=`echo "$mf" | sed -e 's|/[^/]*$||'`;;
+  *) continue;;
+  esac
   grep '^DEP_FILES *= *[^ #]' < "$mf" > /dev/null || continue
   # Extract the definition of DEP_FILES from the Makefile without
   # running `make'.
@@ -21337,38 +21151,8 @@ echo X"$mf" |
        sed -e 's/\$(DEPDIR)/'"$DEPDIR"'/g' -e 's/\$U/'"$U"'/g'`; do
     # Make sure the directory exists.
     test -f "$dirpart/$file" && continue
-    fdir=`(dirname "$file") 2>/dev/null ||
-$as_expr X"$file" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-         X"$file" : 'X\(//\)[^/]' \| \
-         X"$file" : 'X\(//\)$' \| \
-         X"$file" : 'X\(/\)' \| \
-         .     : '\(.\)' 2>/dev/null ||
-echo X"$file" |
-    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
-  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
-  	  /^X\(\/\/\)$/{ s//\1/; q; }
-  	  /^X\(\/\).*/{ s//\1/; q; }
-  	  s/.*/./; q'`
-    { case $dirpart/$fdir in
-  [\\/]* | ?:[\\/]* ) as_incr_dir=;;
-  *)                      as_incr_dir=.;;
-esac
-as_dummy=$dirpart/$fdir
-for as_mkdir_dir in `IFS='/\\'; set X $as_dummy; shift; echo "$@"`; do
-  case $as_mkdir_dir in
-    # Skip DOS drivespec
-    ?:) as_incr_dir=$as_mkdir_dir ;;
-    *)
-      as_incr_dir=$as_incr_dir/$as_mkdir_dir
-      test -d "$as_incr_dir" ||
-        mkdir "$as_incr_dir" ||
-	{ { echo "$as_me:$LINENO: error: cannot create $dirpart/$fdir" >&5
-echo "$as_me: error: cannot create $dirpart/$fdir" >&2;}
-   { (exit 1); exit 1; }; }
-    ;;
-  esac
-done; }
-
+    fdir=`echo "$file" | sed -e 's|/[^/]*$||'`
+    $ac_aux_dir/mkinstalldirs "$dirpart/$fdir" > /dev/null 2>&1
     # echo "creating $dirpart/$file"
     echo '# dummy' > "$dirpart/$file"
   done
