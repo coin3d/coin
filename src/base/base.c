@@ -50,7 +50,7 @@ cc_internal_w32_getlasterrorstring(int32_t lasterror)
                   (DWORD)lasterror,
                   /* Default language */
                   MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                  &lpMsgBuf,
+                  (LPSTR)&lpMsgBuf,
                   0,
                   NULL);
 #endif /* HAVE_WIN32_FORMATMESSAGE */
@@ -64,4 +64,3 @@ cc_internal_w32_freelasterrorstring(char * str)
   LocalFree((LPVOID)str);
 #endif /* HAVE_WIN32_LOCALFREE */
 }
-
