@@ -293,11 +293,11 @@ void
 SoSeparator::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
+  state->push();
   if (!this->cullTest(state)) {
-    state->push();
     this->children->traverse(action);
-    state->pop();
   }
+  state->pop();
 }
 
 // Doc from superclass.
@@ -305,11 +305,11 @@ void
 SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
+  state->push();
   if (!this->cullTest(state)) {
-    state->push();
     this->children->traverse(action);
-    state->pop();
   }
+  state->pop();
 }
 
 // Doc from superclass.
