@@ -1297,11 +1297,14 @@ SoOffscreenRenderer::isWriteSupported(const SbName & filetypeextension) const
 }
 
 /*!
-  Returns the number of available exporters. Information about
-  exporters can be found using getNumWriteFiletypes().
+  Returns the number of available exporters. Detailed information
+  about the exporters can then be found using getWriteFiletypeInfo().
 
   See SoOffscreenRenderer::isWriteSupported() for information about
   which file formats you can expect to be present.
+
+  Note that the two built-in export formats (SGI RGB and Adobe
+  Postscript) are not counted.
 
   This method is an extension versus the original SGI Open Inventor
   API.
