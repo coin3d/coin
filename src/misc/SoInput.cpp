@@ -309,10 +309,10 @@ SoInput::addRoute(const SbName & fromnode, const SbName & fromfield,
 void 
 SoInput::addProto(SoProto * proto)
 {
-  proto->ref(); // the PROTO is unref'ed when the file is popped
   SoInput_FileInfo * info = this->getTopOfStack();
   assert(info);
   if (info) {
+    proto->ref(); // the PROTO is unref'ed when the file is popped
     info->addProto(proto);
   }
 }
