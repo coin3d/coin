@@ -10,6 +10,7 @@ RegularSources = \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp \
 	SoBBoxModelMatrixElement.cpp \
+	SoBumpMappingPropertyElement.cpp \
 	SoCacheElement.cpp \
 	SoClipPlaneElement.cpp \
 	SoComplexityElement.cpp \
@@ -92,6 +93,7 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoAnnoText3FontSizeHintElement.h \
 	../../include/Inventor/elements/SoAnnoText3RenderPrintElement.h \
 	../../include/Inventor/elements/SoBBoxModelMatrixElement.h \
+	../../include/Inventor/elements/SoBumpMappingPropertyElement.h \
 	../../include/Inventor/elements/SoCacheElement.h \
 	../../include/Inventor/elements/SoClipPlaneElement.h \
 	../../include/Inventor/elements/SoComplexityElement.h \
