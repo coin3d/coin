@@ -1102,15 +1102,16 @@ SoToVRML2ActionP::soifs_cb(void * closure, SoCallbackAction * action, const SoNo
   
   ifs->coordIndex.setValues(0, oldifs->coordIndex.getNum(),
                             oldifs->coordIndex.getValues(0));
-  if (oldifs->textureCoordIndex.getNum()) {
+  if (!oldifs->textureCoordIndex.isDefault() &&
+      oldifs->textureCoordIndex.getNum()) {
     ifs->texCoordIndex.setValues(0, oldifs->textureCoordIndex.getNum(),
                                  oldifs->textureCoordIndex.getValues(0));
   }
-  if (oldifs->materialIndex.getNum()) {
+  if (!oldifs->materialIndex.isDefault() && oldifs->materialIndex.getNum()) {
     ifs->colorIndex.setValues(0, oldifs->materialIndex.getNum(),
                               oldifs->materialIndex.getValues(0));
   }
-  if (oldifs->normalIndex.getNum()) {
+  if (!oldifs->normalIndex.isDefault() && oldifs->normalIndex.getNum()) {
     ifs->normalIndex.setValues(0, oldifs->normalIndex.getNum(),
                                oldifs->normalIndex.getValues(0));
   }
