@@ -304,14 +304,22 @@
   based on depth-peeling which strips away depth layers with each
   successive pass. The number of passes is therefore an indication on
   how deep into the scene transparent surfaces will be rendered with
-  transparency. The default number of passes is '4'. This number can be
-  specified using the SoGLRenderAction::setSortedLayersNumPasses() or
-  by letting the environment variable \c COIN_NUM_SORTED_LAYERS_PASSES
-  or \c OIV_NUM_SORTED_LAYERS_PASSES specify the number of passes.
+  transparency. A higher number will lead to a lower framerate but
+  higher quality for scenes with a lot of transparent surfaces. The
+  default number of passes is '4'. This number can be specified using
+  the SoGLRenderAction::setSortedLayersNumPasses() or by letting the
+  environment variable \c COIN_NUM_SORTED_LAYERS_PASSES or \c
+  OIV_NUM_SORTED_LAYERS_PASSES specify the number of passes.
+
+  A more detailed presentation of the algorithm is written by Cass
+  Everitt at NVIDIA;
+
+  "Interactive Order-Independent Transparency"
+  http:://developer.nvidia.com/object/order_independent_transparency.html
 
   Please note that this transparency type occupy all four texture
   units on the NVIDIA card for all the rendering passes, except the
-  first one. Textured surfaces will therefore only be textured if they
+  first. Textured surfaces will therefore only be textured if they
   are not occluded by another transparent surface.
 
   \since Coin 2.2
@@ -324,8 +332,9 @@
 //        - Maybe pbuffer support to eliminate the slow glCopyTexSubImage2D calls.
 //        - Support texturing in every pass (will probably need fragment programming).
 //        - Support EXT_texture_rectangle instead of NV_texture_rectangle if available.
-//        - Investigate if the TGS method using only EXT_texture_env_combine is a feasible 
-//          method (especially when it comes to speed and number of required texture units).
+//        - Investigate whether the TGS method using only EXT_texture_env_combine is a 
+//          feasible method (especially when it comes to speed and number of required 
+//          texture units). 
 // (20031128 handegar)
 //
 
@@ -727,6 +736,29 @@ SoGLRenderAction::getCacheContext(void) const
   return THIS->cachecontext;
 }
 
+/*!
+  Sets the number of passes to render in SoGLRenderAction::SORTED_LAYERS_BLEND
+  mode. Default number of passes is 4. This number can also be
+  adjusted by setting the \c COIN_NUM_SORTED_LAYERS_PASSES or
+  \c OIV_NUM_SORTED_LAYERS_PASSES environment variable.
+*/
+void 
+SoGLRenderAction::setSortedLayersNumPasses(int num)
+{
+  THIS->sortedlayersblendpasses = num;
+}
+ 
+/*!
+  Returns the number of passes to render when in SoGLRenderAction::SORTED_LAYERS_BLEND
+  mode.
+*/
+int 
+SoGLRenderAction::getSortedLayersNumPasses() const
+{
+  return THIS->sortedlayersblendpasses;
+}
+
+
 // Documented in superclass. Overridden from parent class to
 // initialize the OpenGL state.
 void
@@ -777,18 +809,6 @@ void
 SoGLRenderAction::endTraversal(SoNode * node)
 {
   inherited::endTraversal(node);
-}
-
-void 
-SoGLRenderAction::setSortedLayersNumPasses(int num)
-{
-  THIS->sortedlayersblendpasses = num;
-}
- 
-int 
-SoGLRenderAction::getSortedLayersNumPasses() const
-{
-  return THIS->sortedlayersblendpasses;
 }
 
 
@@ -1658,8 +1678,8 @@ SoGLRenderActionP::setupSortedLayersBlendTextures()
     glTexParameteri(GL_TEXTURE_RECTANGLE_NV, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_RECTANGLE_NV, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_RECTANGLE_NV, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_RECTANGLE_NV, GL_TEXTURE_COMPARE_MODE_ARB, GL_COMPARE_R_TO_TEXTURE_ARB);
-    glTexParameteri(GL_TEXTURE_RECTANGLE_NV, GL_TEXTURE_COMPARE_FUNC_ARB, GL_LEQUAL);
+    glTexParameteri(GL_TEXTURE_RECTANGLE_NV, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
+    glTexParameteri(GL_TEXTURE_RECTANGLE_NV, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
     
     // HILO texture setup
     GLushort HILOtexture[] = {0, 0};
