@@ -204,7 +204,7 @@ public:
                            const SbBool dlist,
                            const SbBool mipmap,
                            const int border);
-  void resizeImage(const unsigned char * imageptr, int & xsize, int & ysize,
+  void resizeImage(unsigned char *& imageptr, int & xsize, int & ysize,
                    const float quality);
   const unsigned char * bytes;
   SbVec2s size;
@@ -333,6 +333,7 @@ SoGLImage::setData(const unsigned char * bytes,
       wraps == THIS->wraps &&
       wrapt == THIS->wrapt &&
       border == THIS->border &&
+      border == 0 && // haven't tested with borders yet. Play it safe.
       (dl = THIS->findDL(createinstate)) != NULL) {
     dl->ref();
     THIS->unrefDLists(createinstate);
@@ -347,15 +348,22 @@ SoGLImage::setData(const unsigned char * bytes,
     case 3: format = GL_RGB; break;
     case 4: format = GL_RGBA; break;
     }
+    
+    // scale image to valid GL size
+    int xsize = size[0];
+    int ysize = size[1];
+    unsigned char * imageptr = (unsigned char*) bytes;
+    THIS->resizeImage(imageptr, xsize, ysize, quality);
+
     if (dl->isMipMapTextureObject()) {
-      fast_mipmap(int(size[0]), int(size[1]), nc,
-                  bytes, format, TRUE);
+      fast_mipmap(xsize, ysize, nc,
+                  imageptr, format, TRUE);
     }
     else {
       glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
-                      int(size[0]), int(size[1]),
+                      xsize, ysize,
                       format, GL_UNSIGNED_BYTE,
-                      (void*) bytes);
+                      (void*) imageptr);
     }
   }
   else {
@@ -437,7 +445,7 @@ SoGLDisplayList *
 SoGLImage::getGLDisplayList(SoState * state, const float quality)
 {
   SoGLDisplayList * dl = THIS->findDL(state);
-  
+
   if (dl == NULL) {
     dl = THIS->createGLDisplayList(state, quality);
     if (dl) THIS->dlists.append(dl);
@@ -556,8 +564,13 @@ void cleanup_tmpimage(void)
   delete [] glimage_tmpimagebuffer;
 }
 
-void 
-SoGLImageP::resizeImage(const unsigned char * imageptr, int & xsize, int & ysize, const float quality)
+//
+// resize image if necessary. Returns pointer to temporary 
+// buffer if that happens, and the new size in xsize, ysize.
+//
+void
+SoGLImageP::resizeImage(unsigned char *& imageptr, int & xsize, int & ysize, 
+                        const float quality)
 {
   unsigned int newx = (unsigned int)nearest_power_of_two(xsize-2*this->border);
   unsigned int newy = (unsigned int)nearest_power_of_two(ysize-2*this->border);
@@ -584,7 +597,8 @@ SoGLImageP::resizeImage(const unsigned char * imageptr, int & xsize, int & ysize
   if ((newx != (unsigned long) xsize) || (newy != (unsigned long) ysize)) {
     int numbytes = newx * newy * this->numcomponents;
     if (numbytes > glimage_tmpimagebuffersize) {
-      delete [] glimage_tmpimagebuffer;
+      if (glimage_tmpimagebuffer == NULL) atexit(cleanup_tmpimage);
+      else delete [] glimage_tmpimagebuffer;
       glimage_tmpimagebuffer = new unsigned char[numbytes];
       glimage_tmpimagebuffersize = numbytes;
     }
@@ -605,7 +619,7 @@ SoGLImageP::resizeImage(const unsigned char * imageptr, int & xsize, int & ysize
     glPixelStorei(GL_PACK_SKIP_ROWS, 0);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
-
+    
     // FIXME: ignoring the error code. Silly. 20000929 mortene.
     (void)GLUWrapper()->gluScaleImage(format, xsize, ysize,
                                       GL_UNSIGNED_BYTE, (void*) this->bytes,
@@ -632,7 +646,7 @@ SoGLImageP::createGLDisplayList(SoState * state, const float quality)
   int ysize = this->size[1];
 
   // these might change if image is resized
-  const unsigned char * imageptr = this->bytes;
+  unsigned char * imageptr = (unsigned char *)this->bytes;
   this->resizeImage(imageptr, xsize, ysize, quality);
 
   SoGLDisplayList * dl =
