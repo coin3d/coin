@@ -260,6 +260,11 @@ and explains the principles applied fairly well.
     set tabstop=2
     set shiftwidth=2
 
+* MS Visual Studio
+  
+  Under tools -> options, choose the Tabs group and check the radio button
+  that says "insert spaces" and choose tab size 2.
+  
 
 5 The Build Environment
 =======================
