@@ -42,7 +42,7 @@ ALLSOURCES = \
 	SoTriggerAny.cpp SoTriggerAny.h \
 	SoSubEngine.h SoSubEngineP.h \
 	evaluator.c evaluator.h \
-	evaluator.tab.c
+	evaluator_tab.c
 endif
 
 ALLINSTHEADERS = \
@@ -95,8 +95,8 @@ ALLINSTHEADERS = \
 #$(top_srcdir)/src/engines/lex.so_eval.c: $(top_srcdir)/src/engines/evaluator.l
 #	flex -o$(top_srcdir)/src/engines/lex.so_eval.c -L $(top_srcdir)/src/engines/evaluator.l
 
-#$(top_srcdir)/src/engines/evaluator.tab.c: $(top_srcdir)/src/engines/lex.so_eval.c $(top_srcdir)/src/engines/evaluator.y
-#	bison -p so_eval -o $(top_srcdir)/src/engines/evaluator.tab.c -l $(top_srcdir)/src/engines/evaluator.y
+#$(top_srcdir)/src/engines/evaluator_tab.c: $(top_srcdir)/src/engines/lex.so_eval.c $(top_srcdir)/src/engines/evaluator.y
+#	bison -p so_eval -o $(top_srcdir)/src/engines/evaluator_tab.c -l $(top_srcdir)/src/engines/evaluator.y
 
 
 

@@ -1,7 +1,7 @@
 %{
 /*
  * Syntax analyzer for SoCalculator expressions.
- * compile with 'bison -p so_eval -l evaluator.y'
+ * compile with 'bison -p so_eval -o evaluator_tab.c -l evaluator.y
  */
 
 #include <Inventor/SbBasic.h>
