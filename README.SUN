@@ -27,6 +27,17 @@ Sun Solaris platforms:
 
 ========================================================================
 
+2 When building with gcc, (we've tested with gcc 3.3) configuring and
+  building Coin is a breeze. You just need to have /opt/csw/gcc3/bin
+  in your PATH environment variable, and /opt/csw/gcc3/lib in your
+  LD_LIBRARY_PATH environment variable (needed for libstdc++). In
+  addition, you must set the AR environment variable to /usr/ccs/bin/ar
+  This can be done when configuring.
+
+  pederb, 2003-07-04
+
+========================================================================
+
 These are so far the only problems we are aware of on Sun Solaris
 platforms when trying to configure and build Coin. If you bump into
 any other problems, please let us know.
