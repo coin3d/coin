@@ -62,6 +62,7 @@
 #include "SoLightModel.cpp"
 #include "SoLineSet.cpp"
 #include "SoLinearProfile.cpp"
+#include "SoListener.cpp"
 #include "SoLocateHighlight.cpp"
 #include "SoMarkerSet.cpp"
 #include "SoMaterial.cpp"

@@ -21,6 +21,17 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoAudioRenderAction SoAudioRenderAction.h Inventor/actions/SoAudioRenderAction.h
+  \brief The SoAudioRenderAction class renders the aural parts of the scene graph.
+  \ingroup actions
+
+  Applying this method at a root node for a scene graph, path or
+  pathlist will render all sound-related nodes contained within that instance to
+  the current SoAudioDevice.
+ */
+
+
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -30,6 +41,10 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/elements/SoUnitsElement.h>
+#include <Inventor/elements/SoFocalDistanceElement.h>
+#include <Inventor/elements/SoProjectionMatrixElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoCoordinate4.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -52,6 +67,11 @@ void SoAudioRenderAction::initClass()
   SO_ENABLE(SoAudioRenderAction, SoModelMatrixElement);
   SO_ENABLE(SoAudioRenderAction, SoSwitchElement);
   SO_ENABLE(SoAudioRenderAction, SoUnitsElement);
+
+  SO_ENABLE(SoAudioRenderAction, SoFocalDistanceElement);
+  SO_ENABLE(SoAudioRenderAction, SoProjectionMatrixElement);
+  SO_ENABLE(SoAudioRenderAction, SoViewVolumeElement);
+  SO_ENABLE(SoAudioRenderAction, SoViewingMatrixElement);
 }
 
 SoAudioRenderAction::SoAudioRenderAction()

@@ -1408,4 +1408,6 @@ init_action_methods(void)
                                  SoAudioRenderAction::callDoAction);
   SoAudioRenderAction::addMethod(SoTransformation::getClassTypeId(), 
                                  SoAudioRenderAction::callDoAction);
+  SoAudioRenderAction::addMethod(SoCamera::getClassTypeId(), 
+                                 SoAudioRenderAction::callDoAction);
 }

@@ -389,6 +389,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/actions/SoBoxHighlightRenderAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/actions/SoCallbackAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/actions/SoGLRenderAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/actions/SoAudioRenderAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/actions/SoGetBoundingBoxAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/actions/SoGetMatrixAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/actions/SoGetPrimitiveCountAction.h \
@@ -568,6 +569,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/manips/SoTransformBoxManip.h \
                          @path_tag@@coin_src_dir@/include/Inventor/manips/SoTransformManip.h \
                          @path_tag@@coin_src_dir@/include/Inventor/manips/SoTransformerManip.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoAudioDevice.h \
                          @path_tag@@coin_src_dir@/include/Inventor/misc/SoBase.h \
                          @path_tag@@coin_src_dir@/include/Inventor/misc/SoChildList.h \
                          @path_tag@@coin_src_dir@/include/Inventor/misc/SoNotification.h \
@@ -625,6 +627,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLightModel.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLineSet.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLinearProfile.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoListener.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoLocateHighlight.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoMarkerSet.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoMaterial.h \
