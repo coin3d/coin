@@ -18,84 +18,93 @@
 \**************************************************************************/
 
 /*!
-  \class SoAuditorList Inventor/lists/SoAuditorList.h
-  \brief The SoAuditorList class is yet to be documented.
+  \class SoAuditorList SoAuditorList.h Inventor/lists/SoAuditorList.h
+  \brief The SoAuditorList class is used to keep track of auditors for certain object classes.
+  \ingroup general
 
-  FIXME: write doc.
+  This class is mainly for internal use (from SoBase) and it should
+  not be necessary to be familiar with it for "ordinary" Coin use.
 */
 
 #include <Inventor/lists/SoAuditorList.h>
 
-#include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/fields/SoField.h>
-#include <Inventor/sensors/SoDataSensor.h>
+#include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/nodes/SoNode.h>
-#include <assert.h>
+#include <Inventor/sensors/SoDataSensor.h>
+
+
+// Metadon doc
+/*¡
+  FIXME: there's some code missing within notify() -- we don't set the
+  type of the SoNotRec item.
+ */
+
+
 
 /*!
-  A constructor.
+  Default constructor.
 */
-
-SoAuditorList::SoAuditorList()
-  : SbPList(8) // instead of 4
+SoAuditorList::SoAuditorList(void)
+  : SbPList(8)
 {
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoAuditorList::~SoAuditorList()
 {
-  while (this->getLength()) this->remove(0);
 }
 
 /*!
-  FIXME: write doc.
+  Append an \a auditor of \a type to the list.
 */
-
 void
 SoAuditorList::append(void * const auditor, const SoNotRec::Type type)
 {
   SbPList::append(auditor);
-  SbPList::append((void *) type);
+  SbPList::append((void *)type);
 }
 
 /*!
-  FIXME: write doc.
+  Set \a auditor pointer and auditor \a type in list at \a index.
 */
-
 void
 SoAuditorList::set(const int index,
-                   void * const auditor,
-                   const SoNotRec::Type type)
+                   void * const auditor, const SoNotRec::Type type)
 {
   assert(index >= 0 && index < this->getLength());
+
   SbPList::set(index * 2, auditor);
-  SbPList::set(index * 2+1, (void *)type);
+  SbPList::set(index * 2 + 1, (void *)type);
+}
+
+// Override from parent class.
+int
+SoAuditorList::getLength(void) const
+{
+  return SbPList::getLength() / 2;
 }
 
 /*!
-  FIXME: write doc.
+  Find \a auditor of \a type in list and return index. Returns -1 if
+  \a auditor is not in the list.
 */
-
 int
-SoAuditorList::find(void * const auditor,
-                    const SoNotRec::Type type) const
+SoAuditorList::find(void * const auditor, const SoNotRec::Type type) const
 {
-  const int num = SbPList::getLength();
-  for (int i = 0; i < num; i += 2) {
-    if (SbPList::get(i) == auditor &&
-        SbPList::get(i+1) == (void *) type) {
-      return i / 2;
-    }
+  const int num = this->getLength();
+  for (int i = 0; i < num; i++) {
+    if (this->getObject(i) == auditor && this->getType(i) == type)
+      return i;
   }
   return -1;
 }
 
 /*!
-  FIXME: write doc.
+  Returns auditor pointer at \a index.
 */
-
 void *
 SoAuditorList::getObject(const int index) const
 {
@@ -103,37 +112,28 @@ SoAuditorList::getObject(const int index) const
 }
 
 /*!
-  FIXME: write doc.
+  Returns auditor type at \a index.
 */
-
 SoNotRec::Type
 SoAuditorList::getType(const int index) const
 {
-  return (SoNotRec::Type) (int)SbPList::operator[](index*2+1);
+  return (SoNotRec::Type)(SbPList::operator[](index * 2 + 1));
 }
 
 /*!
-  FIXME: write doc.
+  Remove auditor at \a index.
 */
-
 void
 SoAuditorList::remove(const int index)
 {
   assert(index >= 0 && index < this->getLength());
-
-  // FIXME: isn't this "copy functionality" part of SbPList::remove()?
-  // 19990622 mortene.
-  // Remove item.
-  const int num = SbPList::getLength();
-  for (int i = index * 2; i < num - 2; i++)
-    SbPList::set(i, this->get(i + 2));
-  this->truncate(num-2);
+  SbPList::remove(index * 2);
+  SbPList::remove(index * 2);
 }
 
 /*!
-  FIXME: write doc.
+  Remove \a auditor of \a type from list.
 */
-
 void
 SoAuditorList::remove(void * const auditor, const SoNotRec::Type type)
 {
@@ -141,52 +141,45 @@ SoAuditorList::remove(void * const auditor, const SoNotRec::Type type)
 }
 
 /*!
-  FIXME: write doc.
+  Send notification to all our auditors.
 */
-
-int
-SoAuditorList::getLength() const
-{
-  return SbPList::getLength() / 2;
-}
-
-/*!
-  FIXME: write doc.
-*/
-
 void
-SoAuditorList::notify(SoNotList * list)
+SoAuditorList::notify(SoNotList * l)
 {
-  const int max = this->getLength();
-  for (int i=0;i<max;i++) {
-    SoNotRec::Type type=this->getType(i);
+  const int num = this->getLength();
+  for (int i = 0; i < num; i++) {
+    SoNotRec::Type type = this->getType(i);
     switch (type) {
+
     case SoNotRec::CONTAINER:
       {
         SoFieldContainer * obj = (SoFieldContainer *)this->getObject(i);
         // FIXME: this leads to a failed assertion in SoNotification
         // (because of a missing call to
         // SoNotification::append()?). 19990205 mortene.
-//        list->setLastType(SoNotRec::CONTAINER);
-        obj->notify(list);
+//        l->setLastType(SoNotRec::CONTAINER);
+        obj->notify(l);
       }
       break;
+
     case SoNotRec::PARENT:
       {
         SoNode * obj = (SoNode *)this->getObject(i);
       // FIXME: this leads to a failed assertion in SoNotification
       // (because of a missing call to
       // SoNotification::append()?). 19990205 mortene.
-//        list->setLastType(SoNotRec::PARENT);
-        obj->notify(list);
+//        l->setLastType(SoNotRec::PARENT);
+        obj->notify(l);
       }
       break;
+
     case SoNotRec::SENSOR:
       {
         SoDataSensor * obj = (SoDataSensor *)this->getObject(i);
         obj->schedule();
       }
       break;
+
     case SoNotRec::FIELD:
     case SoNotRec::ENGINE:
     case SoNotRec::INTERP:
@@ -194,13 +187,14 @@ SoAuditorList::notify(SoNotList * list)
         // FIXME: this leads to a failed assertion in SoNotification
         // (because of a missing call to
         // SoNotification::append()?). 19990205 mortene.
-//        list->setLastType(type);
+//        l->setLastType(type);
         SoField * obj = (SoField *)this->getObject(i);
-        if (!obj->getDirty()) obj->notify(list);
+        if (!obj->getDirty()) obj->notify(l);
       }
       break;
+
     default:
-      assert(0);
+      assert(0 && "Unknown auditor type");
     }
   }
 }

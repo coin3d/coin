@@ -190,6 +190,11 @@ INPUT                = \
 	$(top_srcdir)/include/Inventor/lists/SbVec3fList.h \
 	$(top_srcdir)/src/lists/SbStringList.cpp \
 	$(top_srcdir)/include/Inventor/lists/SbStringList.h \
+	$(top_srcdir)/src/lists/SoAuditorList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoAuditorList.h \
+        \
+	$(top_srcdir)/src/misc/SoNotification.cpp \
+	$(top_srcdir)/include/Inventor/misc/SoNotification.h \
 
 #        \
 #	$(top_srcdir)/src/misc/SoBase.cpp \
@@ -386,8 +391,6 @@ INPUT                = \
 #	\
 #	$(top_srcdir)/src/lists/SoActionMethodList.cpp \
 #	$(top_srcdir)/include/Inventor/lists/SoActionMethodList.h \
-#	$(top_srcdir)/src/lists/SoAuditorList.cpp \
-#	$(top_srcdir)/include/Inventor/lists/SoAuditorList.h \
 #	$(top_srcdir)/src/lists/SoBaseList.cpp \
 #	$(top_srcdir)/include/Inventor/lists/SoBaseList.h \
 #	$(top_srcdir)/src/lists/SoCallbackList.cpp \
@@ -437,10 +440,8 @@ INPUT                = \
 #	$(top_srcdir)/include/Inventor/caches/SoTextureCoordinateCache.h \
 #	\
 #	$(top_srcdir)/src/misc/SoNormalGenerator.cpp \
-#	$(top_srcdir)/src/misc/SoNotification.cpp \
 #	$(top_srcdir)/src/misc/SoTessellator.cpp \
 #	$(top_srcdir)/include/Inventor/misc/SoNormalGenerator.h \
-#	$(top_srcdir)/include/Inventor/misc/SoNotification.h \
 #	$(top_srcdir)/include/Inventor/misc/SoTessellator.h \
 #	$(top_srcdir)/include/Inventor/misc/SoGLImage.h \
 #	$(top_srcdir)/src/misc/SoGLImage.cpp \

@@ -16,7 +16,7 @@
 # ID      SbStringList
 # ID      SbVec3fList 
 # ID      SbPList
-#             SoAuditorList 
+# ID          SoAuditorList 
 #             SoActionMethodList
 # I           SoBaseList
 # I               SoEngineList
