@@ -1,0 +1,456 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
+ *  
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  version 2 as published by the Free Software Foundation.  See the
+ *  file LICENSE.GPL at the root directory of this source distribution
+ *  for more details.
+ *
+ *  If you desire to use Coin with software that is incompatible
+ *  licensewise with the GPL, and / or you would like to take
+ *  advantage of the additional benefits with regard to our support
+ *  services, please contact Systems in Motion about acquiring a Coin
+ *  Professional Edition License.  See <URL:http://www.coin3d.org> for
+ *  more information.
+ *
+ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
+ *  <URL:http://www.sim.no>, <mailto:support@sim.no>
+ *
+\**************************************************************************/
+
+/*!
+  \class SoTexture3 SoTexture3.h Inventor/nodes/SoTexture3.h
+  \brief The SoTexture3 class is used to map a 3D texture onto geometry.
+  \ingroup nodes
+
+  Shape nodes within the scope of SoTexture3 nodes in the scenegraph
+  (ie below the same SoSeparator and to the righthand side of the
+  SoTexture3) will have the texture applied according to each shape
+  type's individual characteristics.  See the documentation of the
+  various shape types (SoFaceSet, SoCube, SoSphere, etc etc) for
+  information about the specifics of how the textures will be applied.
+
+  \since 2001-MM-DD
+*/
+
+#include <Inventor/SoInput.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/nodes/SoTexture3.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/elements/SoTextureOverrideElement.h>
+#include <Inventor/elements/SoTextureScalePolicyElement.h>
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/misc/SoGLBigImage.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/lists/SbStringList.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/SbImage.h>
+#include <assert.h>
+#include <string.h>
+
+/*!
+  \enum SoTexture3::Model
+  Texture mapping model.
+*/
+/*!
+  \var SoTexture3::Model SoTexture3::MODULATE
+  Texture image is modulated with polygon.
+*/
+/*!
+  \var SoTexture3::Model SoTexture3::DECAL
+  Texture image overwrites polygon color.
+*/
+/*!
+  \var SoTexture3::Model SoTexture3::BLEND
+  Blend image using blendColor.
+*/
+
+/*!
+  \enum SoTexture3::Wrap
+  Enum used to specify wrapping strategy.
+*/
+/*!
+  \var SoTexture3::Wrap SoTexture3::REPEAT
+  Repeat texture when coordinate is not between 0 and 1.
+*/
+/*!
+  \var SoTexture3::Wrap SoTexture3::CLAMP
+  Clamp coordinate between 0 and 1.
+*/
+
+
+/*!
+  \var SoMFString SoTexture3::filenames
+  Texture filename(s). Specify either this or use SoTexture3::images, not both.
+  The depth of the volume is specifies by the number of filenames specified.
+  All images must have the same dimensions and number of components.
+*/
+/*!
+  \var SoMFImage SoTexture3::images
+  Inline image data.
+*/
+/*!
+  \var SoSFEnum SoTexture3::wrapR
+  Wrapping strategy for the R coordinate (depth).
+*/
+/*!
+  \var SoSFEnum SoTexture3::wrapS
+  Wrapping strategy for the S coordinate.
+*/
+/*!
+  \var SoSFEnum SoTexture3::wrapT
+  Wrapping strategy for the T coordinate.
+*/
+/*!
+  \var SoSFEnum SoTexture3::model
+  Texture model.
+*/
+/*!
+  \var SoSFColor SoTexture3::blendColor
+  Blend color. Used when SoTexture3::model is SoTexture3::BLEND.
+*/
+
+// *************************************************************************
+
+SO_NODE_SOURCE(SoTexture3);
+
+/*!
+  Constructor.
+*/
+SoTexture3::SoTexture3(void)
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoTexture3);
+
+  SO_NODE_ADD_FIELD(filenames, (""));
+  SO_NODE_ADD_FIELD(images, (SbVec3s(0, 0, 0), 0, NULL));
+  SO_NODE_ADD_FIELD(wrapR, (REPEAT));
+  SO_NODE_ADD_FIELD(wrapS, (REPEAT));
+  SO_NODE_ADD_FIELD(wrapT, (REPEAT));
+  SO_NODE_ADD_FIELD(model, (MODULATE));
+  SO_NODE_ADD_FIELD(blendColor, (0.0f, 0.0f, 0.0f));
+
+  SO_NODE_DEFINE_ENUM_VALUE(Wrap, REPEAT);
+  SO_NODE_DEFINE_ENUM_VALUE(Wrap, CLAMP);
+
+  SO_NODE_SET_SF_ENUM_TYPE(wrapS, Wrap);
+  SO_NODE_SET_SF_ENUM_TYPE(wrapT, Wrap);
+
+  SO_NODE_DEFINE_ENUM_VALUE(Model, MODULATE);
+  SO_NODE_DEFINE_ENUM_VALUE(Model, DECAL);
+  SO_NODE_DEFINE_ENUM_VALUE(Model, BLEND);
+  SO_NODE_SET_SF_ENUM_TYPE(model, Model);
+
+  this->glimage = NULL;
+  this->glimagevalid = FALSE;
+  this->readstatus = 1;
+
+  // use field sensor for filename since we will load an image if
+  // filename changes. This is a time-consuming task which should
+  // not be done in notify().
+  this->filenamesensor = new SoFieldSensor(filenameSensorCB, this);
+  this->filenamesensor->setPriority(0);
+  this->filenamesensor->attach(&this->filenames);
+}
+
+/*!
+  Destructor.
+*/
+SoTexture3::~SoTexture3()
+{
+  if (this->glimage) this->glimage->unref(NULL);
+  delete this->filenamesensor;
+}
+
+// doc from parent
+void
+SoTexture3::initClass(void)
+{
+  SO_NODE_INTERNAL_INIT_CLASS(SoTexture3);
+
+  SO_ENABLE(SoGLRenderAction, SoGLTextureImageElement);
+  SO_ENABLE(SoGLRenderAction, SoGLTexture3EnabledElement);
+
+  SO_ENABLE(SoCallbackAction, SoTextureImageElement);
+}
+
+
+/*!
+  Overloaded to check if texture files (if any) can be found
+  and loaded.
+*/
+SbBool
+SoTexture3::readInstance(SoInput * in, unsigned short flags)
+{
+  this->filenamesensor->detach();
+  SbBool readOK = inherited::readInstance(in, flags);
+  this->setReadStatus((int) readOK);
+  if (readOK && !filenames.isDefault() && filenames.getNum()>0) {
+    if (!this->loadFilenames()) {
+      this->setReadStatus(FALSE);
+    }
+  }
+  //FIXME: Sensor for all filenames (kintel 20011203)
+//    this->filenamesensor->attach(&this->filename);
+  return readOK;
+}
+
+static SoGLImage::Wrap
+translateWrap(const SoTexture3::Wrap wrap)
+{
+  if (wrap == SoTexture3::REPEAT) return SoGLImage::REPEAT;
+  return SoGLImage::CLAMP;
+}
+
+// doc from parent
+void
+SoTexture3::GLRender(SoGLRenderAction * action)
+{
+  // FIXME: consider sharing textures among contexts, pederb
+  SoState * state = action->getState();
+
+  if (SoTextureOverrideElement::getImageOverride(state))
+    return;
+
+  float quality = SoTextureQualityElement::get(state);
+  if (!this->glimagevalid) {
+    int nc;
+    SbVec3s size;
+    const unsigned char *bytes = this->images.getValue(size, nc);
+    //FIXME: 3D support in SoGLBigImage (kintel 20011113)
+//      SbBool needbig =
+//        SoTextureScalePolicyElement::get(state) ==
+//        SoTextureScalePolicyElement::DONT_SCALE;
+
+//      if (needbig &&
+//          (this->glimage == NULL ||
+//           this->glimage->getTypeId() != SoGLBigImage::getClassTypeId())) {
+//        if (this->glimage) this->glimage->unref(state);
+//        this->glimage = new SoGLBigImage();
+//      }
+//      else if (!needbig &&
+//               (this->glimage == NULL ||
+//                this->glimage->getTypeId() != SoGLImage::getClassTypeId())) {
+//        if (this->glimage) this->glimage->unref(state);
+//        this->glimage = new SoGLImage();
+//      }
+    if (this->glimage) this->glimage->unref(state);
+    this->glimage = new SoGLImage();
+
+    if (bytes && size != SbVec3s(0,0,0)) {
+      this->glimage->setData(bytes, size, nc,
+                             translateWrap((Wrap)this->wrapS.getValue()),
+                             translateWrap((Wrap)this->wrapT.getValue()),
+                             translateWrap((Wrap)this->wrapR.getValue()),
+                             quality);
+      this->glimagevalid = TRUE;
+    }
+  }
+
+  // FIXME: We had to switch these lines. If not, TEXTURE_2D was bound. Is that correct? (kintel 20011116)
+  SoGLTexture3EnabledElement::set(state,
+                                  this, this->glimagevalid &&
+                                  quality > 0.0f);
+  SoGLTextureImageElement::set(state, this,
+                               this->glimagevalid ? this->glimage : NULL,
+                               (SoTextureImageElement::Model) model.getValue(),
+                               this->blendColor.getValue());
+
+
+  if (this->isOverride()) {
+    SoTextureOverrideElement::setImageOverride(state, TRUE);
+  }
+}
+
+// doc from parent
+void
+SoTexture3::doAction(SoAction *action)
+{
+  SoState *state = action->getState();
+
+  if (SoTextureOverrideElement::getImageOverride(state))
+    return;
+
+  int nc;
+  SbVec3s size;
+  const unsigned char *bytes = this->images.getValue(size, nc);
+
+  if (size != SbVec3s(0,0,0)) {
+    SoTextureImageElement::set(state, this,
+                               size, nc, bytes,
+                               (int)this->wrapT.getValue(),
+                               (int)this->wrapS.getValue(),
+                               (int)this->wrapR.getValue(),
+                               (SoTextureImageElement::Model) model.getValue(),
+                               this->blendColor.getValue());
+  }
+  // if a filename has been set, but the file has not been loaded, supply
+  // a dummy texture image to make sure texture coordinates are generated.
+  else if (this->images.isDefault() && 
+           this->filenames.getNum()>0 &&
+           this->filenames[0].getLength()) {
+    static const unsigned char dummytex[] = {0xff,0xff,0xff,0xff,
+                                             0xff,0xff,0xff,0xff};
+    SoTextureImageElement::set(state, this,
+                               SbVec3s(2,2,2), 1, dummytex,
+                               (int)this->wrapT.getValue(),
+                               (int)this->wrapS.getValue(),
+                               (int)this->wrapR.getValue(),
+                               (SoTextureImageElement::Model) model.getValue(),
+                               this->blendColor.getValue());
+  }
+  else {
+    SoTextureImageElement::setDefault(state, this);
+  }
+  if (this->isOverride()) {
+    SoTextureOverrideElement::setImageOverride(state, TRUE);
+  }
+}
+
+// doc from parent
+void
+SoTexture3::callback(SoCallbackAction * action)
+{
+  SoTexture3::doAction(action);
+}
+
+/*!
+  Returns read status. 1 for success, 0 for failure.
+*/
+int
+SoTexture3::getReadStatus(void)
+{
+  return this->readstatus;
+}
+
+/*!
+  Sets read status.
+  \sa getReadStatus()
+ */
+void
+SoTexture3::setReadStatus(int s)
+{
+  this->readstatus = s;
+}
+
+/*!
+  Overloaded to detect when fields change.
+*/
+void
+SoTexture3::notify(SoNotList *list)
+{
+  SoField *f = list->getLastField();
+  if (f == &this->images) {
+    this->glimagevalid = FALSE;
+    this->filenames.setDefault(TRUE); // write image, not filename
+  }
+  else if (f == &this->wrapS || f == &this->wrapT || f == &this->wrapR) {
+    this->glimagevalid = FALSE;
+  }
+  SoNode::notify(list);
+}
+
+//
+// Called from readInstance() or when user changes the
+// filenames field.
+//
+//FIXME: Recalc so all images have same w, h and nc (kintel 20011201)
+//FIXME: Rescale depth to be n^2 ? (kintel 20011201)
+//FIXME: This function is called each time a filename is added to the
+//       'filenames' field. That is far from optimal (20011201)
+SbBool
+SoTexture3::loadFilenames()
+{
+  SbBool retval = FALSE;
+  SbVec3s volumeSize(0,0,0);
+  int volumenc;
+  int numImages = this->filenames.getNum();
+  bool sizeError = FALSE;
+  int i;
+
+  for (i=0;i<numImages;i++)
+    if (this->filenames[i].getLength()==0) break;
+  if (i==numImages) { // All filenames valid
+    for (int n=0 ; n<numImages && !sizeError ; n++) {
+      SbString filename = this->filenames[n];
+      SbImage tmpimage;
+      const SbStringList &sl = SoInput::getDirectories();
+      if (tmpimage.readFile(filename, sl.getArrayPtr(), sl.getLength())) {
+        int nc;
+        SbVec3s size;
+        unsigned char *imgbytes = tmpimage.getValue(size, nc);
+        if (size[2]==0) size[2]=1;
+        if (this->images.isDefault()) { // First time => allocate memory
+          volumeSize.setValue(size[0], 
+                              size[1], 
+                              size[2]*numImages);
+          volumenc = nc;
+          this->images.setValue(volumeSize, nc, NULL);
+        }
+        else { // Verify size & components
+          if (size[0] != volumeSize[0] || 
+              size[1] != volumeSize[1] || 
+              size[2] != (volumeSize[2]/numImages) || 
+              nc != volumenc) {
+            sizeError = TRUE;
+            retval = FALSE;
+            //FIXME: Move error to some place "in" is defined (kintel 2001113)
+//              SoReadError::post(in, 
+//                                "Texture file #%d (%s) has wrong size:"
+//                                "Expected (%d,%d,%d,%d) got (%d,%d,%d,%d)\n",
+//                                n, filename.getString(), 
+//                                volumeSize[0],volumeSize[1],volumeSize[2],
+//                                volumeNc,
+//                                size[0],size[1],size[2],nc);
+          }
+        }
+        if (!sizeError) {
+          // disable notification on images while setting data from the 
+          // filenames as a notify will cause a filenames.setDefault(TRUE).
+          SbBool oldnotify = this->images.enableNotify(FALSE);
+          unsigned char *volbytes = this->images.startEditing(volumeSize, 
+                                                              volumenc);
+          memcpy(volbytes+int(size[0])*int(size[1])*int(size[2])*nc*n,
+                 imgbytes, int(size[0])*int(size[1])*int(size[2])*nc);
+          this->images.finishEditing();
+          this->images.enableNotify(oldnotify);
+          this->glimagevalid = FALSE; // recreate GL images in next GLRender()
+          retval = TRUE;
+        }
+      }
+      else {
+            //FIXME: Move error to some place "in" is defined (kintel 20011113)
+//          SoReadError::post(in, "Could not read texture file #%d: %s",
+//                            n, filename.getString());
+        retval = FALSE;
+      }
+    }
+  }
+  //FIXME: If sizeError, invalidate texture? (kintel 20011113)
+  this->images.setDefault(TRUE); // write filenames, not images
+  return retval;
+}
+
+//
+// called when \e filenames changes
+//
+void
+SoTexture3::filenameSensorCB(void * data, SoSensor *)
+{
+  SoTexture3 *thisp = (SoTexture3 *)data;
+
+  thisp->setReadStatus(TRUE);
+  if (thisp->filenames.getNum()<0 ||
+      thisp->filenames[0].getLength() &&
+      !thisp->loadFilenames()) {
+    SoDebugError::postWarning("SoTexture3::filenameSensorCB",
+                              "Image volume could not be read");
+    thisp->setReadStatus(FALSE);
+  }
+}
