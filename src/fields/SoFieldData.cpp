@@ -447,14 +447,33 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
   else { // ASCII format.
     SbBool firstidentifier = TRUE;
     SbName ROUTE_KEYWORD("ROUTE");
+    SbName PROTO_KEYWORD("PROTO");
+    SbName EXTERNPROTO_KEYWORD("EXTERNPROTO");
     while (TRUE) {
       SbName fieldname;
       if (!in->read(fieldname, TRUE)) return TRUE; // Terminates loop on "}"
       
-      // test for the VRML97 ROUTE keyword
-      if (in->isFileVRML2() && fieldname == ROUTE_KEYWORD) {
-        if (!SoBase::readRoute(in)) return FALSE;
-        continue; // skip to next field/route
+      if (in->isFileVRML2()) {
+        // test for the VRML97 ROUTE keyword
+        if (fieldname == ROUTE_KEYWORD) {
+          if (!SoBase::readRoute(in)) return FALSE;
+          continue; // skip to next field/route
+        }
+        // test for the VRML97 PROTO/EXTERNPROTO keyword
+        if (fieldname == PROTO_KEYWORD || fieldname == EXTERNPROTO_KEYWORD) {
+          SoProto * proto = new SoProto(fieldname == EXTERNPROTO_KEYWORD);
+          proto->ref();
+          if (proto->readInstance(in, 0)) {
+            proto->unrefNoDelete();
+            in->addProto(proto);
+          }
+          else {
+            proto->unref();
+            SoReadError::post(in, "Error while parsing PROTO definition inside node");
+            return FALSE;
+          }
+          continue;  // skip to next field/route 
+        }
       }
 
       SbBool readok;
