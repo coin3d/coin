@@ -128,3 +128,39 @@ STUFF TO FIX IN COIN
   way of tagging API elements that can be exported to file -- ie
   primarily nodes and engines -- with some kind of versioning
   identification. So that's a prerequisite.
+
+
+* Re-design the public API for handling textures
+  2001-11-28  Peder Blekken  <pederb@sim.no>, write-down by mortene@sim.no
+
+  The available public API for handling textures from SGI / TGS
+  Inventor (ie SoTexture2 with friends) is seriously under-developed,
+  and contains many flaws.
+
+  Our work on a project where we developed a very advanced
+  terrain-visualization extension has resulted in lots of extra
+  functionality in Coin (SoGLImage, SoGLBigImage, delayed, parallel
+  loading of textures in SbImage, etc etc) which will strengthen the
+  support for texture handling immensely. Because of the limitations
+  of the basic SoTexture2 (et al) design, it seems hard to retrofit
+  this into the current design in a pretty way, though.
+
+  So what should be done is to make a new design where all of this is
+
+        a) fitted into the *basic* Inventor API design principles, but
+           in new classes
+
+        b) still hide as much complexity as possible for the
+           application programmer, while still retaining the necessary
+           level of flexibility
+
+        c) if possible, layer the present public API classes and
+            methods (ie SoTexture2 et al again) on top of the new,
+            good design
+
+        d) make sure we keep the old API functioning as before for the
+           sake of compatibility with external client applications
+
+  All this should _absolutely_ be done before we close up on the v2
+  release, as after v2 it will likely be a while until we get the
+  chance to do larger API / design changes again.
