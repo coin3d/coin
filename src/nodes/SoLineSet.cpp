@@ -727,7 +727,6 @@ SoLineSet::generatePrimitives(SoAction *action)
     this->beginShape(action, SoShape::LINES, &lineDetail);
 
     while (ptr < end) {
-      lineDetail.setLineIndex(0);
       int n = *ptr++;
       if (n < 2) {
         idx += n;
@@ -784,10 +783,10 @@ SoLineSet::generatePrimitives(SoAction *action)
         pointDetail.setCoordinateIndex(idx);
         vertex.setPoint(coords->get3(idx));
         this->shapeVertex(&vertex);
-        lineDetail.incLineIndex();
+        lineDetail.incPartIndex();
       }
+      lineDetail.incLineIndex();
       idx++; // next (poly)line should use the next index
-      lineDetail.incPartIndex();
     }
     this->endShape();
   }
@@ -842,10 +841,10 @@ SoLineSet::generatePrimitives(SoAction *action)
         pointDetail.setCoordinateIndex(idx);
         vertex.setPoint(coords->get3(idx++));
         this->shapeVertex(&vertex);
-        lineDetail.incLineIndex();
+        lineDetail.incPartIndex();
       } while (n--);
       this->endShape();
-      lineDetail.incPartIndex();
+      lineDetail.incLineIndex();
     }
   }
   if (this->vertexProperty.getValue())

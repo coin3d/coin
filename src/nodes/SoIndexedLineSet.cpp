@@ -458,7 +458,6 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
     this->beginShape(action, SoShape::LINES, &lineDetail);
 
     while (cindices < end) {
-      lineDetail.setLineIndex(0);
       previ = *cindices++;
 
       if (matPerPolyline || mbind >= PER_VERTEX) {
@@ -537,11 +536,11 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
         pointDetail.setCoordinateIndex(i);
         vertex.setPoint(coords->get3(i));
         this->shapeVertex(&vertex);
-        lineDetail.incLineIndex();
+        lineDetail.incPartIndex();
         previ = i;
         i = *cindices++;
       }
-      lineDetail.incPartIndex();
+      lineDetail.incLineIndex();
       if (mbind == PER_VERTEX_INDEXED) matindices++;
       if (nbind == PER_VERTEX_INDEXED) normindices++;
       if (doTextures && texindices) texindices++;
@@ -552,7 +551,6 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
 
   while (cindices < end) {
     this->beginShape(action, LINE_STRIP, &lineDetail);
-    lineDetail.setLineIndex(0);
     i = *cindices++;
     assert(i >= 0);
     if (matindices) {
@@ -615,6 +613,7 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
     pointDetail.setCoordinateIndex(i);
     vertex.setPoint(coords->get3(i));
     this->shapeVertex(&vertex);
+    lineDetail.incPartIndex();
 
     i = *cindices++;
     while (i >= 0) {
@@ -646,15 +645,15 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
       }
       pointDetail.setCoordinateIndex(i);
       vertex.setPoint(coords->get3(i));
-      lineDetail.incLineIndex();
       this->shapeVertex(&vertex);
+      lineDetail.incPartIndex();
       i = *cindices++;
     }
-    lineDetail.incPartIndex();
     this->endShape(); // end of line strip
     if (mbind == PER_VERTEX_INDEXED) matindices++;
     if (nbind == PER_VERTEX_INDEXED) normindices++;
     if (doTextures && texindices) texindices++;
+    lineDetail.incLineIndex();
   }
 
   if (this->vertexProperty.getValue()) {
