@@ -90,7 +90,7 @@ SbImage::setValue(const SbVec2s & size, const int bytesperpixel,
 {
   if (this->bytes) {
     // check for special case where we don't have to reallocate
-    if ((size == this->size) && (bytesperpixel == this->bpp)) {
+    if (bytes && (size == this->size) && (bytesperpixel == this->bpp)) {
       memcpy(this->bytes, bytes, int(size[0])*int(size[1])*bytesperpixel);
       return;
     }
