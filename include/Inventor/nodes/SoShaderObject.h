@@ -30,12 +30,16 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoMFNode.h>
+#include <Inventor/C/glue/gl.h>
 
 class SoGLShaderObject;
 class SoGLShaderProgram;
 
 // *************************************************************************
 
+// FIXME: in TGS Inventor, this node inherits an SoNode. Consider
+// whether it could cause trouble to not be 100% compatible in that
+// regard. 20050120 mortene.
 class COIN_DLL_API SoShaderObject : public SoGroup {
 
   SO_NODE_ABSTRACT_HEADER(SoShaderObject);
@@ -58,17 +62,10 @@ public:
 
   void GLRender(SoGLRenderAction * action);
 
-  // Really send the parameters from start to start + num to the shaders. 
   void updateParameters(int start, int num);
-
-  // Really send all the parameters to the shaders. 
   void updateAllParameters(void);
-
-  // Update state matrix paramaters
   void updateStateMatrixParameters(void);
 
-  // Returns TRUE if at least one parameter is of 
-  // SoShaderStateMatrixParameter type
   SbBool containStateMatrixParameters(void) const;
 
   SoGLShaderObject * getGLShaderObject(void) const;
@@ -78,8 +75,8 @@ public:
   SourceType getSourceType(void) const;
   SbString getSourceProgram(void) const;
 
-  // additional non TGS API:
-  void removeGLShaderFromGLProgram(SoGLShaderProgram* glProgram);
+  // additional non TGS API:  (FIXME: do we need this? 20050120 mortene.)
+  void removeGLShaderFromGLProgram(SoGLShaderProgram * glProgram);
 
 protected:
   SoShaderObject(void);
