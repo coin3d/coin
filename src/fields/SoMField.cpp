@@ -548,9 +548,10 @@ SoMField::getNumValuesPerLine(void) const
 /*!
   Set number of values to \a num.
 
-  If the current number of values is less than \a num, the array of
-  values will be truncated from the end, if \a num is larger than the
-  current number of values, random values will be appended.
+  If the current number of values is larger than \a num, the array of
+  values will be truncated from the end. But if \a num is larger, the
+  array will automatically be expanded (and random values will be set
+  for the new array items).
  */
 void
 SoMField::setNum(const int num)
