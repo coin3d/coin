@@ -210,18 +210,20 @@ SoGLLazyElement::sendFlatshading(const SbBool onoff) const
 void
 SoGLLazyElement::sendGLImage(const uint32_t glimageid) const
 {
+  // sentimageid is set to 0 if texturing isn't enabled
+  uint32_t sentimageid = glimageid;
+
   if (glimageid != 0) {
+    sentimageid = 0;
+
     SoTextureImageElement::Model model;
     SbColor blendcolor;
     SoGLImage * glimage = SoGLTextureImageElement::get(this->state, model, blendcolor);
     
     if (glimage) {
-      SoGLDisplayList * dl = glimage->getGLDisplayList(this->state);
-      
       SbBool enabled = 
         SoGLTextureEnabledElement::get(this->state) ||
         SoGLTexture3EnabledElement::get(this->state);
-      
 #ifdef HAVE_THREADS
       // if threads is enabled, the image is loaded on demand, and we
       // should trigger an image load by just attempting to fetch the
@@ -232,27 +234,31 @@ SoGLLazyElement::sendGLImage(const uint32_t glimageid) const
         (void) glimage->getImage()->getValue(size, nc);
       }
 #endif // HAVE_THREADS
-      if (enabled && dl) {
-        // tag image (for GLImage LRU cache).
-        SoGLImage::tagImage(this->state, glimage);
-        switch (model) {
-        case SoTextureImageElement::DECAL:
-          glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-          break;
-        case SoTextureImageElement::MODULATE:
-          glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-          break;
-        case SoTextureImageElement::BLEND:
-          glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
-          glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, blendcolor.getValue());
-          break;
+      if (enabled) {
+        SoGLDisplayList * dl = glimage->getGLDisplayList(this->state);
+        if (dl) {
+          // tag image (for GLImage LRU cache).
+          SoGLImage::tagImage(this->state, glimage);
+          switch (model) {
+          case SoTextureImageElement::DECAL:
+            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+            break;
+          case SoTextureImageElement::MODULATE:
+            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+            break;
+          case SoTextureImageElement::BLEND:
+            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+            glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, blendcolor.getValue());
+            break;
+          }
+          dl->call(this->state);
+          sentimageid = glimageid;
         }
-        dl->call(this->state);
       }
     }
   }
   ((SoGLLazyElement*)this)->cachebitmask |= GLIMAGE_MASK;
-  ((SoGLLazyElement*)this)->glstate.glimageid = (int32_t) glimageid;
+  ((SoGLLazyElement*)this)->glstate.glimageid = (int32_t) sentimageid;
 }
 
 inline void 
