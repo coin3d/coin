@@ -28,6 +28,52 @@
 
   Render text as 3D geometry.
 
+  This node will create 3D geometry from a specified font defined by a
+  preceding SoFont node. The complexity of the glyphs is controlled by
+  a preceding SoComplexity node with \e Type set to OBJECT_SPACE.
+  Please note that the default builtin 3D font will not be affected by
+  the SoComplexity node.
+
+  This is a simple example of an extruded SoText3 string:
+
+  \verbatim  
+   #Inventor V2.1 ascii
+
+   Separator {
+     renderCaching ON
+     Font {  
+        name "Arial"
+        size 2
+     }
+     ProfileCoordinate2 {
+       point [ 0 0,
+               0.05 0.05,
+               0.25 0.05,
+               0.3 0 ]
+     }
+     LinearProfile {
+       index [ 0, 1, 2, 3 ]
+     }
+     Complexity {
+       type OBJECT_SPACE
+       value 1
+     }
+     ShapeHints {
+       creaseAngle 1.5 
+       shapeType SOLID
+       vertexOrdering CLOCKWISE
+     }       
+     Material {
+       diffuseColor 0.6 0.6 0.8
+       specularColor 1 1 1
+     }
+     Text3 {
+       string ["Coin"]
+       parts ALL
+     } 
+   } 
+  \endverbatim
+
   Beware that using a lot of SoText3 text characters in a scene will
   usually have severe impact on the rendering performance, as each and
   every character of the text contributes a lot of polygon primitives
