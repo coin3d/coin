@@ -527,6 +527,7 @@
 #include <Inventor/details/SoNodeKitDetail.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/lists/SoPickedPointList.h>
+#include <Inventor/errors/SoReadError.h>
 #include <stdlib.h>
 #include <limits.h>
 #include <ctype.h>
@@ -2011,11 +2012,27 @@ SoBaseKit::readInstance(SoInput * in, unsigned short flags)
       }
       else nodelist[i] = NULL;
     }
+    
+    const SoNodekitCatalog * cat = this->getNodekitCatalog();
+    
     for (i = 1; i < THIS->instancelist.getLength(); i++) {
       if (nodelist[i]) { // part has changed
+        if (!cat->isPublic(i)) break; // private part => error, break out
         this->setPart(i, nodelist[i]);
         nodelist[i]->unrefNoDelete(); // should be safe to unref now
+        nodelist[i] = NULL;
       }
+    }
+    if (i < THIS->instancelist.getLength()) {
+      // if we broke out prematurely from the loop, this error occurred
+      SoReadError::post(in,"Attempted to set private part '%s'",
+                        cat->getName(i).getString());
+
+      // unref remaining nodes
+      for (; i < THIS->instancelist.getLength(); i++) {
+        if (nodelist[i]) nodelist[i]->unref();
+      }
+      return FALSE;
     }
   }
 
