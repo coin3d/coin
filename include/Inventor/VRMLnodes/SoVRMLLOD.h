@@ -90,7 +90,7 @@ protected:
 private:
   void commonConstructor(void);
   SbBool childlistvalid;
-  
+
 }; // class SoVRMLLOD
 
 #endif // ! COIN_SOVRMLLOD_H

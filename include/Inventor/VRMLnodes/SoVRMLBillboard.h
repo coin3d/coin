@@ -48,7 +48,6 @@ public:
   virtual void getMatrix(SoGetMatrixAction * action);
   virtual void pick(SoPickAction * action);
   virtual void search(SoSearchAction * action);
-  virtual void write(SoWriteAction * action);
 
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
   virtual void GLRenderInPath(SoGLRenderAction * action);

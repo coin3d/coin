@@ -222,14 +222,3 @@ SoVRMLAnchor::handleEvent(SoHandleEventAction * action)
   inherited::handleEvent(action);
   state->pop();
 }
-
-// doc in parent
-void
-SoVRMLAnchor::write(SoWriteAction * action)
-{
-  SoState * state = action->getState();
-  state->push();
-  // do not call inherited::write() or SoGroup::write()
-  SoNode::write(action);
-  state->pop();
-}

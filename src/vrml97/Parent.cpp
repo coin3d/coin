@@ -28,6 +28,9 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/fields/SoFieldData.h>
+#include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/SoOutput.h>
 
 /*!
   \var SoMFNode SoVRMLParent::children
@@ -230,6 +233,27 @@ SoVRMLParent::search(SoSearchAction * action)
   inherited::search(action);
 }
 
+void 
+SoVRMLParent::write(SoWriteAction * action)
+{
+  SoOutput * out = action->getOutput();
+
+  if (out->getStage() == SoOutput::COUNT_REFS) {
+    this->addWriteReference(out, FALSE);
+  }
+  else if (out->getStage() == SoOutput::WRITE) {
+    if (this->writeHeader(out, FALSE, FALSE)) return;
+    // don't use the standard SoFieldData, since we want the children
+    // field to be written last.
+    SoFieldData * fd = this->makeWriteData();
+    fd->write(out, this);
+    delete fd;
+    this->writeFooter(out);
+  }
+  else assert(0 && "unknown stage");
+}
+
+
 // Doc in parent
 void
 SoVRMLParent::getPrimitiveCount(SoGetPrimitiveCountAction * action)
@@ -368,6 +392,27 @@ SoVRMLParent::field_sensor_cb(void * data, SoSensor * sensor)
     assert(sensor == THISP->removesensor);
     thisp->processRemoveChildren();
   }
+}
+
+// Reorganize field order so that the "children" field is written
+// last.
+SoFieldData * 
+SoVRMLParent::makeWriteData(void)
+{
+  SoFieldData * newfd = new SoFieldData;
+  const SoFieldData * fd = this->getFieldData();
+
+  SoField * delay = &this->children;
+  const int n = fd->getNumFields();
+
+  for (int i = 0; i < n; i++) {
+    SoField * f = fd->getField(this, i);
+    if (f != delay) {
+      newfd->addField(this, fd->getFieldName(i).getString(), f);
+    }
+  }
+  newfd->addField(this, "children", delay);
+  return newfd;
 }
 
 #undef THIS

@@ -388,10 +388,9 @@ SoVRMLGroup::search(SoSearchAction * action)
 void
 SoVRMLGroup::write(SoWriteAction * action)
 {
-  // do not call inherited::write() or SoGroup::write()
   this->boundingBoxCaching.setDefault(TRUE);
   this->renderCaching.setDefault(TRUE);
-  SoNode::write(action);
+  inherited::write(action);
 }
 
 // Doc in parent

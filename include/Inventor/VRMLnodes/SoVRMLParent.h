@@ -52,6 +52,7 @@ public:
 
   virtual void doAction(SoAction * action);
   virtual void search(SoSearchAction * action);
+  virtual void write(SoWriteAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
   static void updateChildList(const SoNode * const * nodes, const int numnodes,
@@ -76,6 +77,7 @@ private:
   void commonConstructor(void);
   void processAddChildren(void);
   void processRemoveChildren(void);
+  SoFieldData * makeWriteData(void);
   
   SoVRMLParentP * pimpl;
 }; // class SoVRMLParent

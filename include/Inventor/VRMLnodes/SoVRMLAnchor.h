@@ -49,7 +49,6 @@ public:
   static void setFetchURLCallBack(SoVRMLAnchorCB *, void * closure);
 
   virtual void handleEvent(SoHandleEventAction * action);
-  virtual void write(SoWriteAction * action);
 
 protected:
   virtual ~SoVRMLAnchor();

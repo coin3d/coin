@@ -118,8 +118,8 @@ SoVRMLSwitch::commonConstructor(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLSwitch);
 
-  SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(choice);
   SO_VRMLNODE_ADD_EXPOSED_FIELD(whichChoice, (SO_SWITCH_NONE));
+  SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(choice);
   this->childlistvalid = FALSE;
 }
 

@@ -228,17 +228,6 @@ SoVRMLBillboard::search(SoSearchAction * action)
 
 // Doc in parent
 void
-SoVRMLBillboard::write(SoWriteAction * action)
-{
-  SoState * state = action->getState();
-  state->push();
-  // do not call inherited::write() or SoGroup::write()
-  SoNode::write(action);
-  state->pop();
-}
-
-// Doc in parent
-void
 SoVRMLBillboard::GLRenderBelowPath(SoGLRenderAction * action)
 {
   SoState * state = action->getState();

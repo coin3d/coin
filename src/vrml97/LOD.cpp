@@ -31,7 +31,7 @@
     field        MFFloat range    []       # (0,)
   }
   \endverbatim
-  
+
   The LOD node specifies various levels of detail or complexity for a
   given object, and provides hints allowing browsers to automatically
   choose the appropriate version of the object based on the distance
@@ -41,13 +41,13 @@
   detail. The range field specifies the ideal distances at which to
   switch between the levels. Subclause 4.6.5, Grouping and children
   nodes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5), 
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5),
   contains details on the types of nodes that are legal values
-  for level.  
+  for level.
 
   The center field is a translation offset in the local coordinate
   system that specifies the centre of the LOD node for distance
-  calculations.  
+  calculations.
 
   The number of nodes in the level field shall exceed the number of
   values in the range field by one (i.e., N+1 level values for N range
@@ -63,11 +63,11 @@
   into n+1 subintervals given by (0, R0), [R0, R1)...  , [Rn-1,
   +infinity). Also, let n levels L0, L1, L2, ..., Ln-1 be the values
   of the step function function L(d). The level node, L(d), for a
-  given distance d is defined as follows: 
+  given distance d is defined as follows:
 
   \verbatim
-    L(d) = L0,   if d < R0, 
-         = Li+1, if Ri <= d < Ri+1, for -1 < i < n-1, 
+    L(d) = L0,   if d < R0,
+         = Li+1, if Ri <= d < Ri+1, for -1 < i < n-1,
          = Ln-1, if d >= Rn-1.
   \endverbatim
 
@@ -77,7 +77,7 @@
   field is an exception to this rule. This case is a hint to the
   browser that it may choose a level automatically to maintain a
   constant display rate. Each value in the range field shall be
-  greater than the previous value.  
+  greater than the previous value.
 
   LOD nodes are evaluated top-down in the scene graph. Only the
   descendants of the currently selected level are rendered. All nodes
@@ -85,7 +85,7 @@
   which LOD node's level is active. For example, if an active
   TimeSensor node is contained within an inactive level of an LOD
   node, the TimeSensor node sends events regardless of the LOD node's
-  state.  
+  state.
 */
 
 /*!
@@ -155,8 +155,8 @@ SoVRMLLOD::commonConstructor(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLLOD);
 
-  SO_VRMLNODE_ADD_EMPTY_MFIELD(range);
   SO_VRMLNODE_ADD_FIELD(center, (0.0f, 0.0f, 0.0f));
+  SO_VRMLNODE_ADD_EMPTY_MFIELD(range);
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(level);
   this->childlistvalid = FALSE;
 }
@@ -521,7 +521,7 @@ int
 SoVRMLLOD::whichToTraverse(SoAction * action)
 {
   // FIXME: according to the spec, if range is empty, we should decide
-  // a level to try to maintain a constant/high frame rate... 
+  // a level to try to maintain a constant/high frame rate...
   // pederb, 2002-06-10
   SoState * state = action->getState();
   const SbMatrix & mat = SoModelMatrixElement::get(state);
