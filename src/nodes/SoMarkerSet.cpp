@@ -26,16 +26,17 @@
   vertexProperty field) in order. The numPoints field specifies the
   number of points in the set.
 
-  In addition to supplying the user with a set standard markers to
+  In addition to supplying the user with a set of standard markers to
   choose from, it is also possible to specify one's own bitmaps for
   markers.
 
   This node class is an extension versus the original SGI Inventor
   v2.1 API.  In addition to being a Coin extension, it is also present
-  in TGS' Inventor implementation (with the same API).
+  in TGS' Inventor implementation (except TGS doesn't support the NONE 
+  markerIndex value).
 */
 
-// TODO: Skei: Clean up everything.... it's quite messy at the moment... :-/
+// FIXME: clean up everything.... it's quite messy at the moment... :-/ skei
 // FIXME: change standard markers to use GL_UNPACK_ALIGNMENT 1, instead of 4, as it is now... skei 200009005
 
 #include <Inventor/nodes/SoMarkerSet.h>
@@ -79,7 +80,8 @@
 
 /*!
   \var SoMFInt32 SoMarkerSet::markerIndex
-  Contains the set of index markers to display.
+  Contains the set of index markers to display, defaults to 0 (CROSS_5_5).
+  The special value NONE renders nothing for that marker.
 */
 
 // *************************************************************************
@@ -1157,42 +1159,45 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
   glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
 
   for (int i = 0; i < numpts; i++) {
-    if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
-    SbVec3f point = coords->get3(idx++);
-    mat.multVecMatrix(point, point);  // wcs
-    vv.projectToScreen(point, point); // normalized screen coordinates
-    point[0] = point[0] * float(vpsize[0]); // screen pixel position
-    point[1] = point[1] * float(vpsize[1]);
-
     int midx = SbMin(i, this->markerIndex.getNum() - 1);
-
 #if COIN_DEBUG
-    if (midx < 0 || (this->markerIndex[midx] >= markerlist->getLength())) {
-      static SbBool firsterror = TRUE;
-      if (firsterror) {
-        SoDebugError::postWarning("SoMarkerSet::GLRender",
-                                  "markerIndex %d out of bound",
-                                  markerIndex[i]);
-        firsterror = FALSE;
+      if (midx < 0 || (this->markerIndex[midx] >= markerlist->getLength())) {
+        static SbBool firsterror = TRUE;
+        if (firsterror) {
+          SoDebugError::postWarning("SoMarkerSet::GLRender",
+                                    "markerIndex %d out of bound",
+                                    markerIndex[i]);
+          firsterror = FALSE;
+        }
+        // Don't render, jump back to top of for-loop and continue with
+        // next index.
+        continue;
       }
-      // Don't render, jump back to top of for-loop and continue with
-      // next index.
-      continue;
-    }
 #endif // COIN_DEBUG
+      
+    if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
 
-    so_marker * tmp = &(*markerlist)[ this->markerIndex[midx] ];
-
-    // To have the exact center point of the marker drawn at the
-    // projected 3D position.  (FIXME: I haven't actually checked that
-    // this is what TGS' implementation of the SoMarkerSet node does
-    // when rendering, but it seems likely. 20010823 mortene.)
-    point[0] = point[0] - (tmp->width - 1) / 2;
-    point[1] = point[1] - (tmp->height - 1) / 2;
-
-    glPixelStorei(GL_UNPACK_ALIGNMENT, tmp->align);
-    glRasterPos3f(point[0], point[1], -point[2]);
-    glBitmap(tmp->width, tmp->height, 0, 0, 0, 0, tmp->data);
+    if (this->markerIndex[midx]!=NONE) {
+      SbVec3f point = coords->get3(idx);
+      mat.multVecMatrix(point, point);  // wcs
+      vv.projectToScreen(point, point); // normalized screen coordinates
+      point[0] = point[0] * float(vpsize[0]); // screen pixel position
+      point[1] = point[1] * float(vpsize[1]);
+      
+      so_marker * tmp = &(*markerlist)[ this->markerIndex[midx] ];
+      
+      // To have the exact center point of the marker drawn at the
+      // projected 3D position.  (FIXME: I haven't actually checked that
+      // this is what TGS' implementation of the SoMarkerSet node does
+      // when rendering, but it seems likely. 20010823 mortene.)
+      point[0] = point[0] - (tmp->width - 1) / 2;
+      point[1] = point[1] - (tmp->height - 1) / 2;
+      
+      glPixelStorei(GL_UNPACK_ALIGNMENT, tmp->align);
+      glRasterPos3f(point[0], point[1], -point[2]);
+      glBitmap(tmp->width, tmp->height, 0, 0, 0, 0, tmp->data);
+    }
+    idx++;
   }
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // restore default value
   glMatrixMode(GL_PROJECTION);
@@ -1295,7 +1300,7 @@ swap_updown(unsigned char *data, int width, int height)
   Replace the bitmap for the marker at \a markerIndex with the
   representation given by \a size dimensions with the bitmap data at
   \a bytes. \a isLSBFirst and \a isUpToDown indicates how the bitmap
-  data is ordered.
+  data is ordered. Does nothing if \a markerIndex is NONE.
 */
 void
 SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
@@ -1309,6 +1314,8 @@ SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
 
   so_marker tempmarker;
   so_marker *temp;
+
+  if (markerIndex == NONE) return;
 
   SbBool appendnew = markerIndex >= markerlist->getLength() ? TRUE : FALSE;
   temp = &tempmarker;
@@ -1335,14 +1342,20 @@ SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
 }
 
 /*!
-  Returns data for marker at \a markerIndex.
+  Returns data for marker at \a markerIndex in the \a size, \a bytes and
+  \a isLSBFirst parameters.
+
+  \retval false No marker defined for given \a markerIndex, or markerIndex is 
+  NONE (not removable).
+  \retval true  OK.
 */
 SbBool
 SoMarkerSet::getMarker(int markerIndex, SbVec2s & size,
                        const unsigned char *& bytes, SbBool & isLSBFirst)
 {
   // FIXME: handle isLSBFirst. skei 20000905
-  if (markerIndex >= markerlist->getLength()) return FALSE;
+  if (markerIndex == NONE ||
+      markerIndex >= markerlist->getLength()) return FALSE;
   so_marker * temp = &(*markerlist)[markerIndex];
   size[0] = temp->width;
   size[1] = temp->height;
@@ -1353,11 +1366,16 @@ SoMarkerSet::getMarker(int markerIndex, SbVec2s & size,
 
 /*!
   Removes marker at \a markerIndex.
+
+  \retval false No marker defined for given \a markerIndex, or markerIndex is 
+  NONE (not removable).
+  \retval true  OK.
 */
 SbBool
 SoMarkerSet::removeMarker(int markerIndex)
 {
-  if (markerIndex >= markerlist->getLength()) return FALSE;
+  if (markerIndex == NONE ||
+      markerIndex >= markerlist->getLength()) return FALSE;
   so_marker * tmp = &(*markerlist)[markerIndex];
   if (tmp->deletedata) delete tmp->data;
   markerlist->remove(markerIndex);

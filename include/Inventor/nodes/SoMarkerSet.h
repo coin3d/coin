@@ -35,6 +35,7 @@ public:
   SoMarkerSet(void);
 
   enum MarkerType {
+    NONE = -1,
     CROSS_5_5, PLUS_5_5, MINUS_5_5, SLASH_5_5, BACKSLASH_5_5, BAR_5_5,
     STAR_5_5, Y_5_5, LIGHTNING_5_5, WELL_5_5,
 
