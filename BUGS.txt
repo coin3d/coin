@@ -487,3 +487,52 @@
     20020822 mortene. (discovered by kintel.)
 
 =====================================================================
+
+022 Suboptimal bounding box calculations.
+
+    The fairly simple scenegraph below results in a rather sub-optimal
+    bounding box being calculated. For a good view of how it is, use
+    the SoGuiExamples/engines/computexfbbox example.
+
+    The really weird thing is that if the SoSeparator node
+    specifically marked is removed, the bounding box calculation
+    becomes ok?! This should not be possible, so there's something
+    really fishy going on with how bboxes are handled in SoSeparator
+    nodes.
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #Inventor V2.1 ascii
+
+    Separator {
+       Separator {
+          Rotation {
+             rotation 0.44864982 0.77406949 -0.44668761  3.6485116
+          }
+          Cylinder { radius 3  height 20 }
+       }
+       Separator {
+          Rotation {
+             rotation 0.99967092 -0.024352582 -0.0080625946  2.5147841
+          }
+          Cylinder { radius 3  height 8 }
+       }
+       Separator {  # <---- REMOVE THIS NODE TO FIX BBOX CALCULATION
+          Separator {
+             Rotation {
+                rotation 0.23557165 0.30955184 0.92124027  1.919216
+             }
+             Cylinder { radius 3  height 20 }
+          }
+          Separator {
+             Rotation {
+                rotation 0.93191862 -0.36266607 -0.0010225408  3.1366739
+             }
+             Cylinder { radius 3  height 8 }
+          }
+       }
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    20020826 mortene.
+
+=====================================================================
