@@ -172,8 +172,8 @@ cc_thread_init(void)
 #if 0 /* disabled 2002-08-30, pederb */
   /* don't free this in atexit, since other cleanup functions might
    * need win32_threadid_idx */
-#endif /* disabled */
   coin_atexit(win32_threadid_idx_cleanup);
+#endif /* disabled */
 #endif /* USE_WIN32THREAD */ 
 }
 
