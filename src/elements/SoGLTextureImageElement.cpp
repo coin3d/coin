@@ -206,10 +206,10 @@ SoGLTextureImageElement::evaluate(const SbBool enabled, const SbBool transparenc
   // cast away constness
   SoGLTextureImageElement *elem = (SoGLTextureImageElement*) this;
 
+  if (enabled && elem->image) SoGLImage::tagImage(elem->state, elem->image);
   if (enabled && elem->dlist) {
     // notify the texture resource handler that this image/dl has been
     // recently used
-    SoGLImage::tagImage(elem->state, elem->image);
     if (!elem->didapply) {
       elem->dlist->call(elem->state);
       elem->didapply = TRUE;
