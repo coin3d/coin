@@ -563,6 +563,7 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
 
   if ((nbind == PER_FACE) || (mbind == PER_FACE)) {
     if (!didpush) {
+      didpush = TRUE;
       state->push();
     }
     SoGLShadeModelElement::set(state, TRUE);
