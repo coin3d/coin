@@ -98,9 +98,16 @@ SoUnknownNode::initClass(void)
 SbBool
 SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
 {
-  // Read fields.
-  SbBool ok = inherited::readInstance(in, flags);
-  if (!ok) return FALSE;
+  SbBool notbuiltin;
+  // The "error on unknown field" is FALSE, in case we are a group
+  // node with children specified in the file.
+  if (!this->classfielddata->read(in, this, FALSE, notbuiltin)) return FALSE;
+
+  if (notbuiltin == FALSE) {
+    SoReadError::post(in, "Node type ``%s'' not recognized.",
+                      this->classname.getString());
+    return FALSE;
+  }
 
   // Set pointer to alternateRep node, if SoSFNode field with this
   // name is present.
