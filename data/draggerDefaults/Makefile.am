@@ -27,7 +27,8 @@ BUILT_SOURCES = \
 	transformBoxDragger.h
 
 DISTCLEANFILES = \
-	$(BUILT_SOURCES)
+	$(BUILT_SOURCES) \
+	iv2h.sh
 
 draggerdefdatadir = $(datadir)/Coin/draggerDefaults
 dist_draggerdefdata_DATA = \
