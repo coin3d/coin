@@ -34,6 +34,8 @@
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/details/SoPointDetail.h>
 
 #if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 #include <Inventor/actions/SoRayPickAction.h>
@@ -437,26 +439,32 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
   // this define actually makes the code below more readable  :-)
 #define DO_VERTEX(idx) \
   if (mbind == PER_VERTEX) {                  \
+    pointDetail.setMaterialIndex(matnr);      \
     vertex.setMaterialIndex(matnr++);         \
   }                                           \
   else if (mbind == PER_VERTEX_INDEXED) {     \
+    pointDetail.setMaterialIndex(*mindices); \
     vertex.setMaterialIndex(*mindices++); \
   }                                         \
   if (nbind == PER_VERTEX) {                \
-    currnormal = normals++;                 \
+    pointDetail.setNormalIndex(normnr);     \
+    currnormal = &normals[normnr++];        \
     vertex.setNormal(*currnormal);          \
   }                                         \
   else if (nbind == PER_VERTEX_INDEXED) {   \
+    pointDetail.setNormalIndex(*nindices);  \
     currnormal = &normals[*nindices++];     \
     vertex.setNormal(*currnormal);          \
   }                                         \
   if (tbind != NONE) {                      \
+    pointDetail.setTextureCoordIndex(tindices ? *tindices : texidx); \
     vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++)); \
   }                                         \
   else if (tb.isFunction()) {               \
     vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal)); \
   }                                         \
   vertex.setPoint(coords->get3(idx));        \
+  pointDetail.setCoordinateIndex(idx);      \
   this->shapeVertex(&vertex);
 
 /*!
@@ -566,6 +574,10 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
   int32_t v1, v2, v3, v4, v5;
 
   SoPrimitiveVertex vertex;
+  SoPointDetail pointDetail;
+  SoFaceDetail faceDetail;
+
+  vertex.setDetail(&pointDetail);
 
 #ifndef NDEBUG
   v5 = 0; // to avoid warnings
@@ -577,6 +589,7 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
   vertex.setNormal(*currnormal);
 
   int matnr = 0;
+  int normnr = 0;
   
   while (viptr < viendptr) {
     v1 = *viptr++;
@@ -593,38 +606,44 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
     if (newmode != mode) {
       if (mode != POLYGON) this->endShape();
       mode = newmode;
-      this->beginShape(action, mode);
+      this->beginShape(action, mode, &faceDetail);
     }
-    else if (mode == POLYGON) this->beginShape(action, POLYGON);
+    else if (mode == POLYGON) this->beginShape(action, POLYGON, &faceDetail);
     
     // vertex 1 can't use DO_VERTEX
     if (mbind == PER_VERTEX || mbind == PER_FACE) {
+      pointDetail.setMaterialIndex(matnr);
       vertex.setMaterialIndex(matnr++);
     }
     else if (mbind == PER_VERTEX_INDEXED || mbind == PER_FACE_INDEXED) {
+      pointDetail.setMaterialIndex(*mindices);
       vertex.setMaterialIndex(*mindices++);
     }
     if (nbind == PER_VERTEX || nbind == PER_VERTEX_INDEXED) {
-      currnormal = normals++;
+      pointDetail.setNormalIndex(normnr);
+      currnormal = &normals[normnr++];
       vertex.setNormal(*currnormal);
     }
     else if (nbind == PER_VERTEX_INDEXED || nbind == PER_FACE_INDEXED) {
+      pointDetail.setNormalIndex(*nindices);
       currnormal = &normals[*nindices++];
       vertex.setNormal(*currnormal);
     }
     
     if (tbind != NONE) {
+      pointDetail.setTextureCoordIndex(tindices ? *tindices : texidx);
       vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++));
     }
     else if (tb.isFunction()) {
       vertex.setTextureCoords(tb.get(coords->get3(v1), *currnormal));
     }
+    pointDetail.setCoordinateIndex(v1);
     vertex.setPoint(coords->get3(v1));
     this->shapeVertex(&vertex);
 
     DO_VERTEX(v2);
     DO_VERTEX(v3);
-
+    
     if (mode != TRIANGLES) {
       DO_VERTEX(v4);
       if (mode == POLYGON) {
@@ -637,6 +656,7 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
 	this->endShape();
       }
     }
+    faceDetail.incFaceIndex();
     if (mbind == PER_VERTEX_INDEXED) {
       mindices++;
     }

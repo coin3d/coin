@@ -57,9 +57,10 @@ SoFaceDetail::initClass(void)
 
 SoFaceDetail::SoFaceDetail()
   : pointsArray(NULL),
+    numAllocated(0),
     numPoints(0),
-    faceIndex(-1),
-    partIndex(-1)
+    faceIndex(0),
+    partIndex(0)
 {
 }
 
@@ -117,12 +118,11 @@ SoFaceDetail::getPartIndex() const
 void 
 SoFaceDetail::setNumPoints(const int num)
 {
+  if (num > this->numAllocated) {
+    delete [] this->pointsArray;
+    this->pointsArray = new SoPointDetail[this->numAllocated];
+  }
   this->numPoints = num;
-  delete [] this->pointsArray;
-  if (this->numPoints)
-    this->pointsArray = new SoPointDetail[num];
-  else
-    this->pointsArray = NULL;
 }
 
 void 
@@ -143,3 +143,18 @@ SoFaceDetail::setPartIndex(const int idx)
 {
   this->partIndex = idx;
 }
+
+void 
+SoFaceDetail::incFaceIndex()
+{
+  this->faceIndex++;
+}
+
+void 
+SoFaceDetail::incPartIndex()
+{
+  this->partIndex++;
+}
+
+
+

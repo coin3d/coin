@@ -54,8 +54,8 @@ SoLineDetail::initClass(void)
 //$ END TEMPLATE DetailSource
 
 SoLineDetail::SoLineDetail()
-  : lineIndex(-1),
-    partIndex(-1)
+  : lineIndex(0),
+    partIndex(0)
 {
 }
 
@@ -118,5 +118,17 @@ void
 SoLineDetail::setPartIndex(const int idx)
 {
   this->partIndex = idx;
+}
+
+void 
+SoLineDetail::incLineIndex()
+{
+  this->lineIndex++;
+}
+
+void 
+SoLineDetail::incPartIndex()
+{
+  this->partIndex++;
 }
 

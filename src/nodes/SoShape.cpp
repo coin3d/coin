@@ -96,6 +96,10 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/SbTesselator.h>
+#include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/details/SoPointDetail.h>
+#include <Inventor/details/SoLineDetail.h>
+#include <Inventor/SoPickedPoint.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -167,21 +171,31 @@ public:
     this->counter = 0;
     this->action = NULL;
     this->shape = NULL;
+    this->faceCounter = 0;
     this->arraySize = 4;
     this->vertsArray = new SoPrimitiveVertex[this->arraySize];
+    this->pointDetails = new SoPointDetail[this->arraySize];
     this->tess = new SbTesselator();
+    this->faceDetail = NULL;
+    this->lineDetail = NULL;
   }
   ~shapePrimitiveData() {
     delete [] this->vertsArray;
+    delete [] this->pointDetails;
     delete this->tess;
   }
 
   void beginShape(SoShape *shape, SoAction *action,
-		  SoShape::TriangleShape shapeType) {
+		  SoShape::TriangleShape shapeType,
+		  SoDetail *detail) {
     this->shape = shape;
     this->action = action;
     this->shapeType = shapeType;
-    this->counter = 0;
+    // this is a trick. Only onw of these will be used, and the
+    // other one is an illegal cast.
+    this->faceDetail = (SoFaceDetail*)detail;
+    this->lineDetail = (SoLineDetail*)detail;
+    this->counter = 0; 
   }
   void endShape() {
     if (this->shapeType == SoShape::POLYGON) {
@@ -208,17 +222,13 @@ public:
   void shapeVertex(const SoPrimitiveVertex * const v) {
     switch (shapeType) {
     case SoShape::TRIANGLE_STRIP:
-      if (counter >= 3) {
-	if (counter & 1) {
-	  vertsArray[0] = vertsArray[2];
-	}
-	else {
-	  vertsArray[1] = vertsArray[2];
-	}
+      if (this->counter >= 3) {
+	if (this->counter & 1) this->copyVertex(2, 0);
+	else this->copyVertex(2, 1);
       }
-      this->vertsArray[counter%3] = *v;
-      counter++;
-      if (counter >= 3) {
+      this->setVertex(this->counter%3, v);
+      this->counter++;
+      if (this->counter >= 3) {
 	this->shape->invokeTriangleCallbacks(this->action,
 					     &vertsArray[0],
 					     &vertsArray[1],
@@ -226,14 +236,14 @@ public:
       }
       break;
     case SoShape::TRIANGLE_FAN:
-      if (counter == 3) {
-	vertsArray[1] = vertsArray[2];
-	vertsArray[2] = *v;
+      if (this->counter == 3) {
+	this->copyVertex(2, 1);
+	this->setVertex(2, v);
       }
       else {
-	vertsArray[counter++] = *v;
+	this->setVertex(this->counter++, v);
       }
-      if (counter == 3) {
+      if (this->counter == 3) {
 	this->shape->invokeTriangleCallbacks(this->action,
 					     &vertsArray[0],
 					     &vertsArray[1],
@@ -241,7 +251,7 @@ public:
       }
       break;
     case SoShape::TRIANGLES:
-      this->vertsArray[this->counter++] = *v;
+      this->setVertex(counter++, v);
       if (this->counter == 3) {
 	this->shape->invokeTriangleCallbacks(this->action,
 					     &vertsArray[0],
@@ -254,14 +264,27 @@ public:
       if (this->counter >= this->arraySize) {
 	this->arraySize <<= 1;
 	SoPrimitiveVertex *newArray = new SoPrimitiveVertex[this->arraySize];
-	memcpy(newArray, this->vertsArray, sizeof(SoPrimitiveVertex)*counter);
+	memcpy(newArray, this->vertsArray, 
+	       sizeof(SoPrimitiveVertex)*this->counter);
 	delete [] this->vertsArray;
 	this->vertsArray = newArray;
+	
+	SoPointDetail *newparray = new SoPointDetail[this->arraySize];
+	memcpy(newparray, this->pointDetails, 
+	       sizeof(SoPointDetail)*this->counter);
+	delete [] this->pointDetails;
+	this->pointDetails = newparray;
+	
+	if (this->faceDetail) {
+	  for (int i = 0; i < this->counter; i++) {
+	    this->vertsArray[i].setDetail(&this->pointDetails[i]);
+	  }
+	}
       }
-      this->vertsArray[this->counter++] = *v;
+      this->setVertex(this->counter++, v);
       break;
     case SoShape::QUADS:
-      this->vertsArray[this->counter++] = *v;
+      this->setVertex(this->counter++, v);
       if (this->counter == 4) {
 	this->shape->invokeTriangleCallbacks(this->action,
 					     &vertsArray[0],
@@ -275,7 +298,7 @@ public:
       }
       break;
     case SoShape::QUAD_STRIP:
-      this->vertsArray[counter++] = *v;
+      this->setVertex(this->counter++, v);
       if (counter == 4) {
 	this->shape->invokeTriangleCallbacks(this->action,
 					     &vertsArray[0],
@@ -285,8 +308,8 @@ public:
 					     &vertsArray[0],
 					     &vertsArray[3],
 					     &vertsArray[2]);
-	this->vertsArray[0] = this->vertsArray[2];
-	this->vertsArray[1] = this->vertsArray[3];
+	this->copyVertex(2, 0);
+	this->copyVertex(3, 1);
 	this->counter = 2;
       }
       break;
@@ -294,21 +317,21 @@ public:
       this->shape->invokePointCallbacks(this->action, v);
       break;
     case SoShape::LINES:
-      this->vertsArray[this->counter++] = *v;
-      if (counter == 2) {
+      this->setVertex(this->counter++, v);
+      if (this->counter == 2) {
 	this->shape->invokeLineSegmentCallbacks(this->action,
 						&vertsArray[0],
 						&vertsArray[1]);	
-	counter = 0;
+	this->counter = 0;
       }
       break;
     case SoShape::LINE_STRIP:
-      this->vertsArray[this->counter++] = *v;
+      this->setVertex(this->counter++, v);
       if (this->counter == 2) {
 	this->shape->invokeLineSegmentCallbacks(this->action,
 						&vertsArray[0],
 						&vertsArray[1]);
-	this->vertsArray[0] = this->vertsArray[1];
+	this->copyVertex(1, 0);
 	this->counter = 1;
       }
       break;
@@ -322,10 +345,58 @@ public:
   SoAction *action;
   SoShape *shape;
   SoPrimitiveVertex *vertsArray;
+  SoPointDetail *pointDetails;
+  SoFaceDetail *faceDetail;
+  SoLineDetail *lineDetail;
   int arraySize;
   int counter;
   SbTesselator *tess;
+  int faceCounter;
 
+  void copyVertex(const int src, const int dest) {
+    this->vertsArray[dest] = this->vertsArray[src];
+    if (this->faceDetail) {
+      this->pointDetails[dest] = this->pointDetails[src];
+      this->vertsArray[dest].setDetail(&this->pointDetails[dest]);
+    }
+  }
+  void setVertex(const int idx, const SoPrimitiveVertex * const v) {
+    this->vertsArray[idx] = *v;
+    if (this->faceDetail) {
+      SoPointDetail *pd = (SoPointDetail*)v->getDetail();
+      assert(pd);
+      this->pointDetails[idx] = *pd;
+      this->vertsArray[idx].setDetail(&this->pointDetails[idx]);
+    }
+  }
+
+  void doTriangleCB(const int i0, const int i1, const int i2) {
+    if (this->faceDetail) {
+      this->faceDetail->setNumPoints(3);
+      this->faceDetail->setPoint(0, &this->pointDetails[i0]);
+      this->faceDetail->setPoint(1, &this->pointDetails[i0]);
+      this->faceDetail->setPoint(2, &this->pointDetails[i0]);
+      this->vertsArray[i0].setDetail(this->faceDetail);
+      this->vertsArray[i1].setDetail(this->faceDetail);
+      this->vertsArray[i2].setDetail(this->faceDetail);
+    }
+    this->shape->invokeTriangleCallbacks(this->action,
+					 &this->vertsArray[i0],
+					 &this->vertsArray[i1],
+					 &this->vertsArray[i2]);
+  }
+  void doLineSegmentCB(const int i0, const int i1) {
+    if (this->lineDetail) {
+      this->lineDetail->setPoint0(&this->pointDetails[i0]);
+      this->lineDetail->setPoint1(&this->pointDetails[i1]);
+      this->vertsArray[i0].setDetail(this->lineDetail);
+      this->vertsArray[i1].setDetail(this->lineDetail);
+    }
+    this->shape->invokeLineSegmentCallbacks(this->action,
+					    &this->vertsArray[i0],
+					    &this->vertsArray[i1]);
+  }
+  
   static void tess_callback(void *v0, void *v1, void *v2, void *data) {
     shapePrimitiveData *thisp = (shapePrimitiveData*) data;
     thisp->shape->invokeTriangleCallbacks(thisp->action,
@@ -394,6 +465,7 @@ void
 SoShape::callback(SoCallbackAction * action)
 {
   if (action->shouldGeneratePrimitives(this)) {
+    if (primData) primData->faceCounter = 0;
     this->generatePrimitives(action); 
   }
 }
@@ -712,25 +784,27 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
 {
   if (action->getTypeId().isDerivedFrom(SoRayPickAction::getClassTypeId())) {
     SoRayPickAction *ra = (SoRayPickAction*) action;
-
+    
     SbVec3f intersection;
     SbVec3f barycentric;
     SbBool front;
-
+    
     if (ra->intersect(v1->getPoint(), v2->getPoint(), v3->getPoint(),
 		      intersection, barycentric, front)) {
       
       if (ra->isBetweenPlanes(intersection)) {
 	SoPickedPoint * pp = ra->addIntersection(intersection);
 	if (pp) {
-	  // FIXME: add face detail
+	  // FIXME: add face detail using createTriangleDetail()
+	  // this is temporary code, pederb 1999-11-23
+	  if (primData && primData->faceDetail) 
+	    pp->setDetail(primData->faceDetail->copy(), this); 
 	}
       }
     }
   }
   else if (action->getTypeId().isDerivedFrom(SoCallbackAction::getClassTypeId())) {
-    SoCallbackAction *ca = (SoCallbackAction*) action;
-    
+    SoCallbackAction *ca = (SoCallbackAction*) action;    
     ca->invokeTriangleCallbacks(this, v1, v2, v3);
   }
   else {
@@ -754,8 +828,11 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
       if (ra->isBetweenPlanes(intersection)) {
 	SoPickedPoint * pp = ra->addIntersection(intersection);
 	if (pp) {
-	  // FIXME: add line detail
-	}   
+	  // FIXME: add line detail using createLineSegementDetail()
+	  // This is temporary code, pederb 1999-11-23
+	  if (primData && primData->lineDetail)
+	    pp->setDetail(primData->lineDetail->copy(), this);
+	}
       }
     }
   }
@@ -784,8 +861,11 @@ SoShape::invokePointCallbacks(SoAction * const action,
       if (ra->isBetweenPlanes(intersection)) {
 	SoPickedPoint * pp = ra->addIntersection(intersection);
 	if (pp) {
-	  // FIXME: add point detail
-	}   
+	  // FIXME: add point detail using createPointDetail()
+	  // this is temporary code, pederb 1999-11-23
+	  if (v->getDetail()) 
+	    pp->setDetail(v->getDetail()->copy(), this);
+	}
       }
     }
   }
@@ -799,18 +879,22 @@ SoShape::invokePointCallbacks(SoAction * const action,
 }
 
 /*!
-  FIXME: write function documentation
+  This method is slightly different from its OIV counterpart, as this method
+  has an SoDetail as the last argument, and not an SoFaceDetail. This is
+  because we accept more TriangleShape types, and the detail might be
+  a SoFaceDetail or a SoLineDetail. There is no use sending in a
+  SoPointDetail, as nothing will be done with it.
 */
 void 
 SoShape::beginShape(SoAction * const action, const TriangleShape shapeType,
-		    SoFaceDetail * const faceDetail)
+		    SoDetail * const detail)
 {
-  assert(faceDetail == NULL && "FIXME: not implemented");
   if (primData == NULL) {
     primData = new shapePrimitiveData();
   }
-  primData->beginShape(this, action, shapeType);
+  primData->beginShape(this, action, shapeType, detail);
 }
+
 
 /*!
   FIXME: write function documentation

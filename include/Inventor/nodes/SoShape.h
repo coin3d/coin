@@ -145,7 +145,7 @@ protected:
   void invokePointCallbacks(SoAction * const action,
 			    const SoPrimitiveVertex * const v);
   void beginShape(SoAction * const action, const TriangleShape shapeType,
-		  SoFaceDetail * const faceDetail = NULL);
+		  SoDetail * const detail = NULL);
   void shapeVertex(const SoPrimitiveVertex * const v);
   void endShape();
 #endif // !COIN_EXCLUDE_SOACTION

@@ -73,6 +73,9 @@
 #include <Inventor/elements/SoGLLightModelElement.h>
 #endif // !COIN_EXCLUDE_SOGLLIGHTMODELELEMENT
 
+#include <Inventor/details/SoPointDetail.h>
+#include <Inventor/details/SoLineDetail.h>
+
 /*!
   \enum SoLineSet::Binding
   FIXME: write documentation for enum
@@ -410,6 +413,11 @@ SoLineSet::generatePrimitives(SoAction *action)
   if (!needNormals) nbind = OVERALL;
   
   SoPrimitiveVertex vertex;
+  SoLineDetail lineDetail;
+  SoPointDetail pointDetail;
+  
+  vertex.setDetail(&pointDetail);
+
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
   const SbVec3f * currnormal = &dummynormal;
   if (normals) currnormal = normals;
@@ -421,62 +429,70 @@ SoLineSet::generatePrimitives(SoAction *action)
   const int32_t * ptr = numVertices.getValues(0);
   const int32_t * end = ptr + numVertices.getNum();
 
+  int normnr = 0;
   int matnr = 0;
   int texnr = 0;
-
-  SbBool drawPoints = FALSE;
-#if !defined(COIN_EXCLUDE_SODRAWSTYLEELEMENT)
-  drawPoints = SoDrawStyleElement::get(state) ==
-    SoDrawStyleElement::POINTS;
-#endif
-
-  if (drawPoints) this->beginShape(action, SoShape::POINTS);
 				   
   if (nbind == PER_SEGMENT || mbind == PER_SEGMENT) {
     assert(0);
   }
   else {
     while (ptr < end) {
+      lineDetail.setLineIndex(0);
       int n = *ptr++;
       if (n < 2) {
 	idx += n; // FIXME: is this correct?
 	continue;
       }
       n -= 2;
-      if (!drawPoints) this->beginShape(action, SoShape::LINE_STRIP);
+      this->beginShape(action, SoShape::LINE_STRIP, &lineDetail);
       if (nbind != OVERALL) {
-	currnormal = normals++;
+	pointDetail.setNormalIndex(normnr);
+	currnormal = &normals[normnr++];
 	vertex.setNormal(*currnormal);
       }
-      if (mbind != OVERALL) vertex.setMaterialIndex(matnr++);
+      if (mbind != OVERALL) {
+	pointDetail.setMaterialIndex(matnr);
+	vertex.setMaterialIndex(matnr++);
+      }
       if (doTextures) {
 	if (tb.isFunction())
 	  vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
-	else
+	else {
+	  pointDetail.setTextureCoordIndex(texnr);
 	  vertex.setTextureCoords(tb.get(texnr++));
+	}
       }
+      pointDetail.setCoordinateIndex(idx);
       vertex.setPoint(coords->get3(idx++));
       this->shapeVertex(&vertex);
       do {
 	if (nbind == PER_VERTEX) {
-	  currnormal = normals++;
+	  pointDetail.setNormalIndex(normnr);
+	  currnormal = &normals[normnr++];
 	  vertex.setNormal(*currnormal);
 	}
-	if (mbind == PER_VERTEX) vertex.setMaterialIndex(matnr++);
+	if (mbind == PER_VERTEX) {
+	  pointDetail.setMaterialIndex(matnr);
+	  vertex.setMaterialIndex(matnr++);
+	}
 	if (doTextures) {
 	  if (tb.isFunction())
 	    vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
-	  else
+	  else {
+	    pointDetail.setTextureCoordIndex(texnr);
 	    vertex.setTextureCoords(tb.get(texnr++));
+	  }
 	}
+	pointDetail.setCoordinateIndex(idx);
 	vertex.setPoint(coords->get3(idx++));
 	this->shapeVertex(&vertex);
+	lineDetail.incLineIndex();
       } while (n--);
-      if (!drawPoints) this->endShape();
+      this->endShape();
+      lineDetail.incPartIndex();
     }
   }
-  if (drawPoints) this->endShape();
-
   if (this->vertexProperty.getValue())
     state->pop();
 }

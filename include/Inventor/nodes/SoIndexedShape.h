@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -55,7 +55,7 @@ protected:
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
   int getNumVerts(const int startCoord);
   void setupIndices(const int numParts, const int numFaces,
-		    const SbBool needNormals, const SbBool needTexCoords);
+                    const SbBool needNormals, const SbBool needTexCoords);
 
   const int32_t * getNormalIndices(void);
   const int32_t * getColorIndices(void);
@@ -66,24 +66,24 @@ protected:
 #if !defined(COIN_EXCLUDE_SOACTION)
   static SbBool areTexCoordsIndexed(SoAction * action);
 #endif // !COIN_EXCLUDE_SOACTION
-  
+
   SbBool getVertexData(SoState * state,
-		       const SoCoordinateElement *& coords, 
-		       const SbVec3f *& normals,
-		       const int32_t *& cindices,
-		       const int32_t *& nindices,
-		       const int32_t *& tindices,
-		       const int32_t *& mindices,
-		       int & numcindices,
-		       const SbBool needNormals,
-		       SbBool & normalCacheUsed);
- 
+                       const SoCoordinateElement *& coords,
+                       const SbVec3f *& normals,
+                       const int32_t *& cindices,
+                       const int32_t *& nindices,
+                       const int32_t *& tindices,
+                       const int32_t *& mindices,
+                       int & numcindices,
+                       const SbBool needNormals,
+                       SbBool & normalCacheUsed);
+
 private:
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual SbBool generateDefaultNormals(SoState * state,
-					SoNormalCache * cache);
+                                        SoNormalCache * cache);
 #endif // !COIN_EXCLUDE_SOACTION
-  
+
   int32_t * tIndices;
   int32_t * nIndices;
   int32_t * mIndices;

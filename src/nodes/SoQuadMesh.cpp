@@ -63,6 +63,9 @@
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <GL/gl.h>
 
+#include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/details/SoPointDetail.h>
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif
@@ -466,6 +469,9 @@ SoQuadMesh::generatePrimitives(SoAction *action)
   if (normals) currnormal = normals;
 
   SoPrimitiveVertex vertex;
+  SoFaceDetail faceDetail;
+  SoPointDetail pointDetail;
+  vertex.setDetail(&pointDetail);
 
   if (nbind == OVERALL && needNormals) {
     vertex.setNormal(*currnormal);
@@ -475,53 +481,80 @@ SoQuadMesh::generatePrimitives(SoAction *action)
   
 #define IDX(r,c) ((r)*rowsize+(c))
 
+  int normnr = 0;
   int midx = 0;
   for (int i = 0; i < colsize-1; i++) {
     int j = 0;
-    this->beginShape(action, QUAD_STRIP);
+    this->beginShape(action, QUAD_STRIP, &faceDetail);
     if (nbind == PER_ROW) {
-      currnormal = normals++;
+      pointDetail.setNormalIndex(normnr);
+      currnormal = &normals[normnr++];
       vertex.setNormal(*currnormal);
     }
-    if (mbind == PER_ROW) vertex.setMaterialIndex(midx++);
-    
+    if (mbind == PER_ROW) {
+      pointDetail.setMaterialIndex(midx);
+      vertex.setMaterialIndex(midx++);
+    }
+    SbBool first = TRUE;
+    faceDetail.setFaceIndex(0);
     for (j = 0; j < rowsize; j++) {
       curridx = IDX(i,j);
       if (nbind == PER_VERTEX) {
+	pointDetail.setNormalIndex(curridx);
 	currnormal = &normals[curridx];
 	vertex.setNormal(*currnormal);
       }
       else if (nbind == PER_FACE) {
-	currnormal = normals++;
+	pointDetail.setNormalIndex(normnr);
+	currnormal = &normals[normnr++];
 	vertex.setNormal(*currnormal);
       }
-      if (mbind == PER_VERTEX) vertex.setMaterialIndex(curridx);
-      else if (mbind == PER_FACE) vertex.setMaterialIndex(midx++);
-      
+      if (mbind == PER_VERTEX) {
+	pointDetail.setMaterialIndex(curridx);
+	vertex.setMaterialIndex(curridx);
+      }
+      else if (mbind == PER_FACE) {
+	pointDetail.setMaterialIndex(midx);
+	vertex.setMaterialIndex(midx++);
+      }      
       if (doTextures) {
 	if (tb.isFunction())
 	  vertex.setTextureCoords(tb.get(coords->get3(start+curridx), *currnormal));
-	else
+	else {
+	  pointDetail.setTextureCoordIndex(curridx);
 	  vertex.setTextureCoords(tb.get(curridx));
+	}
       }
+      pointDetail.setCoordinateIndex(start + curridx);
       vertex.setPoint(coords->get3(start + curridx));
       this->shapeVertex(&vertex);
+
       curridx = IDX(i+1,j);
       if (nbind == PER_VERTEX) {
+	pointDetail.setNormalIndex(curridx);
 	currnormal = &normals[curridx];
 	vertex.setNormal(*currnormal);
       }
-      if (mbind == PER_VERTEX) vertex.setMaterialIndex(curridx);
+      if (mbind == PER_VERTEX) {
+	pointDetail.setMaterialIndex(curridx);
+	vertex.setMaterialIndex(curridx);
+      }
       if (doTextures) {
 	if (tb.isFunction())
 	  vertex.setTextureCoords(tb.get(coords->get3(start+curridx), *currnormal));
-	else
+	else {
+	  pointDetail.setTextureCoordIndex(curridx);
 	  vertex.setTextureCoords(tb.get(curridx));
+	}
       }
+      pointDetail.setCoordinateIndex(start + curridx);
       vertex.setPoint(coords->get3(start + curridx));
       this->shapeVertex(&vertex);
+      if (first) first = FALSE;
+      else faceDetail.incFaceIndex();
     }
     this->endShape();
+    faceDetail.incPartIndex();
   }
 #undef IDX
   

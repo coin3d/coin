@@ -64,6 +64,8 @@
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoNormalGenerator.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
+#include <Inventor/details/SoPointDetail.h>
+#include <Inventor/details/SoFaceDetail.h>
 
 /*!
   \enum SoFaceSet::Binding
@@ -440,6 +442,7 @@ SoFaceSet::generatePrimitives(SoAction *action)
   
   int matnr = 0;
   int texnr = 0;
+  int normnr = 0;
   TriangleShape mode = POLYGON;
   TriangleShape newmode;
   int n;
@@ -449,7 +452,11 @@ SoFaceSet::generatePrimitives(SoAction *action)
   if (normals) currnormal = normals;
 
   SoPrimitiveVertex vertex;
-
+  SoFaceDetail faceDetail;
+  SoPointDetail pointDetail;
+  
+  vertex.setDetail(&pointDetail);
+  
   while (ptr < end) {
     n = *ptr++;
     if (n == 3) newmode = TRIANGLES;
@@ -458,38 +465,54 @@ SoFaceSet::generatePrimitives(SoAction *action)
     if (newmode != mode) {
       if (mode != POLYGON) this->endShape();
       mode = newmode;
-      this->beginShape(action, mode);
+      this->beginShape(action, mode, &faceDetail);
     }
-    else if (mode == POLYGON) this->beginShape(action, mode);
+    else if (mode == POLYGON) this->beginShape(action, mode, &faceDetail);
     if (nbind != OVERALL) {
-      currnormal = normals++;
+      pointDetail.setNormalIndex(normnr);
+      currnormal = &normals[normnr++];
       vertex.setNormal(*currnormal);
     }
-    if (mbind != OVERALL) vertex.setMaterialIndex(matnr++);
+    if (mbind != OVERALL) {
+      pointDetail.setMaterialIndex(matnr);
+      vertex.setMaterialIndex(matnr++);
+    }
     if (doTextures) {
       if (tb.isFunction()) 
 	vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
-      else
+      else {
+	pointDetail.setTextureCoordIndex(texnr);
 	vertex.setTextureCoords(tb.get(texnr++));
+      }
     }
+    pointDetail.setCoordinateIndex(idx);
     vertex.setPoint(coords->get3(idx++));
     this->shapeVertex(&vertex);
+    
     while (--n) {
       if (nbind == PER_VERTEX) {
-	currnormal = normals++;
+	pointDetail.setNormalIndex(normnr);
+	currnormal = &normals[normnr++];
 	vertex.setNormal(*currnormal);
       }
-      if (mbind == PER_VERTEX) vertex.setMaterialIndex(matnr++);
+      if (mbind == PER_VERTEX) {
+	pointDetail.setMaterialIndex(matnr);
+	vertex.setMaterialIndex(matnr++);
+      }
       if (doTextures) {
 	if (tb.isFunction()) 
 	  vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
-	else
+	else {
+	  pointDetail.setTextureCoordIndex(texnr);
 	  vertex.setTextureCoords(tb.get(texnr++));
+	}
       }
+      pointDetail.setCoordinateIndex(idx);
       vertex.setPoint(coords->get3(idx++));
       this->shapeVertex(&vertex);
     }
     if (mode == POLYGON) this->endShape();
+    faceDetail.incFaceIndex();
   }
   if (mode != POLYGON) this->endShape();
   if (this->vertexProperty.getValue())

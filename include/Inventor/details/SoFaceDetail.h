@@ -48,9 +48,13 @@ public:
   void setPoint(const int idx, const SoPointDetail * const detail);
   void setFaceIndex(const int idx);
   void setPartIndex(const int idx);
+
+  void incFaceIndex();
+  void incPartIndex();
   
 private:
   SoPointDetail *pointsArray;
+  int numAllocated;
   int numPoints;
   int faceIndex;
   int partIndex;

@@ -70,6 +70,7 @@
 #endif // !COIN_EXCLUDE_SOGLLIGHTMODELELEMENT
 
 #include <Inventor/caches/SoNormalCache.h>
+#include <Inventor/details/SoPointDetail.h>
 
 /*!
   \enum SoPointSet::Binding
@@ -319,6 +320,9 @@ SoPointSet::generatePrimitives(SoAction *action)
   if (!needNormals) nbind = OVERALL;
 
   SoPrimitiveVertex vertex;
+  SoPointDetail pointDetail;
+  vertex.setDetail(&pointDetail);
+  
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
   const SbVec3f * currnormal = &dummynormal;
   if (normals) currnormal = normals;
@@ -330,22 +334,29 @@ SoPointSet::generatePrimitives(SoAction *action)
 
   int matnr = 0;
   int texnr = 0;
+  int normnr = 0;
 
   this->beginShape(action, SoShape::POINTS);
   for (int i = 0; i < numpts; i++) {
     if (nbind == PER_VERTEX) {
-      currnormal = normals++;
+      pointDetail.setNormalIndex(normnr);
+      currnormal = &normals[normnr++];
       vertex.setNormal(*currnormal);
     }
-    if (mbind == PER_VERTEX) vertex.setMaterialIndex(matnr++);
+    if (mbind == PER_VERTEX) {
+      pointDetail.setMaterialIndex(matnr);
+      vertex.setMaterialIndex(matnr++);
+    }
     if (doTextures) {
       if (tb.isFunction()) {
 	vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
       }
       else {
+	pointDetail.setTextureCoordIndex(texnr);
 	vertex.setTextureCoords(tb.get(texnr++));
       }
     }
+    pointDetail.setCoordinateIndex(idx);
     vertex.setPoint(coords->get3(idx++));
     this->shapeVertex(&vertex);
   }

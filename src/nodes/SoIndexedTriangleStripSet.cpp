@@ -78,6 +78,8 @@
 #endif // !COIN_EXCLUDE_SOTEXTURECOORDINATEBINDINGELEMENT
 
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
+#include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/details/SoPointDetail.h>
 
 #include <assert.h>
 
@@ -548,36 +550,47 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction *action)
  
   int texidx = 0;
   int matnr = 0;
+  int normnr = 0;
 
   const int32_t *viptr = cindices;
   const int32_t *viendptr = viptr + numindices;
   int32_t v1, v2, v3;
 
   SoPrimitiveVertex vertex;
+  SoPointDetail pointDetail;
+  SoFaceDetail faceDetail;
+
   vertex.setNormal(*currnormal);
+  vertex.setDetail(&pointDetail);
 
   while (viptr < viendptr) {
+    faceDetail.setFaceIndex(0);
+
     v1 = *viptr++;
     v2 = *viptr++;
     v3 = *viptr++;
     assert(v1 >= 0 && v2 >= 0 && v3 >= 0);
 
-    this->beginShape(action, TRIANGLE_STRIP);
+    this->beginShape(action, TRIANGLE_STRIP, &faceDetail);
     
     // vertex 1
     // FIXME: optimize bindings test below
     if (mbind == PER_VERTEX || mbind == PER_TRIANGLE || mbind == PER_STRIP) {
+      pointDetail.setMaterialIndex(matnr);
       vertex.setMaterialIndex(matnr++);
     }
     else if (mbind == PER_VERTEX_INDEXED || mbind == PER_STRIP_INDEXED ||
 	     mbind == PER_TRIANGLE_INDEXED) {
+      pointDetail.setMaterialIndex(*mindices);
       vertex.setMaterialIndex(*mindices++);
     }
     if (nbind == PER_VERTEX || nbind == PER_TRIANGLE || nbind == PER_STRIP) {
-      currnormal = normals++;
+      pointDetail.setNormalIndex(normnr);
+      currnormal = &normals[normnr++];
       vertex.setNormal(*currnormal);
     }
     else if (nbind == PER_VERTEX || nbind == PER_TRIANGLE || nbind == PER_STRIP) {
+      pointDetail.setNormalIndex(*nindices++);
       currnormal = &normals[*nindices++];
       vertex.setNormal(*currnormal);
     }
@@ -586,24 +599,30 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction *action)
 	vertex.setTextureCoords(tb.get(coords->get3(v1), *currnormal));
       }
       else {
+	pointDetail.setTextureCoordIndex(tindices ? *tindices : texidx);
 	vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++));
       }
     }
+    pointDetail.setCoordinateIndex(v1);
     vertex.setPoint(coords->get3(v1));
     this->shapeVertex(&vertex);
     
     /* vertex 2 *********************************************************/
     if (mbind == PER_VERTEX) {
+      pointDetail.setMaterialIndex(matnr);
       vertex.setMaterialIndex(matnr++);
     }
     else if (mbind == PER_VERTEX_INDEXED) {
+      pointDetail.setMaterialIndex(*mindices);
       vertex.setMaterialIndex(*mindices++);
     }
     if (nbind == PER_VERTEX) {
-      currnormal = normals++;
+      pointDetail.setNormalIndex(normnr);
+      currnormal = &normals[normnr++];
       vertex.setNormal(*currnormal);
     }
     else if (nbind == PER_VERTEX_INDEXED) {
+      pointDetail.setNormalIndex(*nindices);
       currnormal = &normals[*nindices++];
       vertex.setNormal(*currnormal);
     }
@@ -613,24 +632,30 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction *action)
 	vertex.setTextureCoords(tb.get(coords->get3(v2), *currnormal));
       }
       else {
+	pointDetail.setTextureCoordIndex(tindices?*tindices:texidx);
 	vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++));
       }
     }
+    pointDetail.setCoordinateIndex(v2);
     vertex.setPoint(coords->get3(v2));
     this->shapeVertex(&vertex);
 
     // vertex 3
     if (mbind == PER_VERTEX) {
+      pointDetail.setMaterialIndex(matnr);
       vertex.setMaterialIndex(matnr++);
     }
     else if (mbind == PER_VERTEX_INDEXED) {
+      pointDetail.setMaterialIndex(*mindices);
       vertex.setMaterialIndex(*mindices++);
     }
     if (nbind == PER_VERTEX) {
-      currnormal = normals++;
+      pointDetail.setNormalIndex(normnr);
+      currnormal = &normals[normnr++];
       vertex.setNormal(*currnormal);
     }
     else if (nbind == PER_VERTEX_INDEXED) {
+      pointDetail.setNormalIndex(*nindices);
       currnormal = &normals[*nindices++];
       vertex.setNormal(*currnormal);
     }
@@ -640,25 +665,32 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction *action)
 	vertex.setTextureCoords(tb.get(coords->get3(v3), *currnormal));
       }
       else {
+	pointDetail.setTextureCoordIndex(tindices?*tindices:texidx);
 	vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++));
       }
     }
+    pointDetail.setCoordinateIndex(v3);
     vertex.setPoint(coords->get3(v3));
     this->shapeVertex(&vertex);
-    
+    faceDetail.incFaceIndex();
+
     v1 = *viptr++;
     while (v1 >= 0) {
       if (mbind == PER_VERTEX || mbind == PER_TRIANGLE) {
+	pointDetail.setMaterialIndex(matnr);
 	vertex.setMaterialIndex(matnr++);
       }
       else if (mbind == PER_VERTEX_INDEXED || mbind == PER_TRIANGLE_INDEXED) {
+	pointDetail.setMaterialIndex(*mindices);
 	vertex.setMaterialIndex(*mindices++);
       }
       if (nbind == PER_VERTEX || nbind == PER_TRIANGLE) {
-	currnormal = normals++;
+	pointDetail.setNormalIndex(normnr);
+	currnormal = &normals[normnr++];
 	vertex.setNormal(*currnormal);
       }
       else if (nbind == PER_VERTEX_INDEXED || nbind == PER_TRIANGLE_INDEXED) {
+	pointDetail.setNormalIndex(*nindices);
 	currnormal = &normals[*nindices++];
 	vertex.setNormal(*currnormal);
       }
@@ -668,15 +700,19 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction *action)
 	  vertex.setTextureCoords(tb.get(coords->get3(v1), *currnormal));
 	}
 	else {
+	  pointDetail.setTextureCoordIndex(tindices?*tindices:texidx);
 	  vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++));
 	}
       }
+      pointDetail.setCoordinateIndex(v1);
       vertex.setPoint(coords->get3(v1));
       this->shapeVertex(&vertex);
+      faceDetail.incFaceIndex();
       
       v1 = *viptr++;
     }
     this->endShape();
+    faceDetail.incPartIndex();
 
     //
     // PER_TRIANGLE binding for strips is really stupid, so I'm not quite

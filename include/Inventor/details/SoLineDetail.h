@@ -48,6 +48,9 @@ public:
   void setPoint1(const SoPointDetail * const detail);
   void setLineIndex(const int idx);
   void setPartIndex(const int idx);
+
+  void incLineIndex();
+  void incPartIndex();
   
 private:
   SoPointDetail points[2];

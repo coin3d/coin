@@ -63,11 +63,11 @@
 #include <Inventor/elements/SoLightModelElement.h>
 #endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
 
-
-
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoNormalGenerator.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
+#include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/details/SoPointDetail.h>
 
 /*!
   \enum SoTriangleStripSet::Binding
@@ -466,6 +466,7 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
   
   int matnr = 0;
   int texnr = 0;
+  int normnr = 0;
   int n;
 
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
@@ -473,58 +474,86 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
   if (normals) currnormal = normals;
 
   SoPrimitiveVertex vertex;
+  SoFaceDetail faceDetail;
+  SoPointDetail pointDetail;
+
   vertex.setNormal(*currnormal);
+  vertex.setDetail(&pointDetail);
   
   while (ptr < end) {
     n = *ptr++ - 2;
     assert(n > 0);
     
-    this->beginShape(action, TRIANGLE_STRIP);
+    faceDetail.setFaceIndex(0);
+    this->beginShape(action, TRIANGLE_STRIP, &faceDetail);
 
     if (nbind != OVERALL) {
-      currnormal = normals++;
+      pointDetail.setNormalIndex(normnr);
+      currnormal = &normals[normnr++];
       vertex.setNormal(*currnormal);
     }
-    if (mbind != OVERALL) vertex.setMaterialIndex(matnr++);
+    if (mbind != OVERALL) {
+      pointDetail.setMaterialIndex(matnr);
+      vertex.setMaterialIndex(matnr++);
+    }
     if (doTextures) {
       if (tb.isFunction())
 	vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
-      else
+      else {
+	pointDetail.setTextureCoordIndex(texnr);
 	vertex.setTextureCoords(tb.get(texnr++));
+      }
     }
+    pointDetail.setCoordinateIndex(idx);
     vertex.setPoint(coords->get3(idx++));
     this->shapeVertex(&vertex);
 
     if (nbind == PER_VERTEX) {
-      currnormal = normals++;
+      pointDetail.setNormalIndex(normnr);
+      currnormal = &normals[normnr++];
       vertex.setNormal(*currnormal);
     }
-    if (mbind == PER_VERTEX) vertex.setMaterialIndex(matnr++);
+    if (mbind == PER_VERTEX) {
+      pointDetail.setMaterialIndex(matnr);
+      vertex.setMaterialIndex(matnr++);
+    }
     if (doTextures) {
       if (tb.isFunction())
 	vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
-      else
+      else {
+	pointDetail.setTextureCoordIndex(texnr);
 	vertex.setTextureCoords(tb.get(texnr++));
+      }
     }
+    pointDetail.setCoordinateIndex(idx);
     vertex.setPoint(coords->get3(idx++));
     this->shapeVertex(&vertex);
 		    
     while (n--) {
       if (nbind >= PER_FACE) {
-	currnormal = normals++;
+	pointDetail.setNormalIndex(normnr);
+	currnormal = &normals[normnr++];
 	vertex.setNormal(*currnormal);
       }
-      if (mbind >= PER_FACE) vertex.setMaterialIndex(matnr++);
+      if (mbind >= PER_FACE) {
+	pointDetail.setMaterialIndex(matnr);
+	vertex.setMaterialIndex(matnr++);
+      }
       if (doTextures) {
 	if (tb.isFunction())
 	  vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
-	else
+	else {
+	  pointDetail.setCoordinateIndex(texnr);
 	  vertex.setTextureCoords(tb.get(texnr++));
+	}
       }
+      pointDetail.setCoordinateIndex(idx);
       vertex.setPoint(coords->get3(idx));
       this->shapeVertex(&vertex);
+      faceDetail.incFaceIndex();
     }
     this->endShape();
+    faceDetail.incPartIndex();
   }
   if (this->vertexProperty.getValue())
     state->pop();
