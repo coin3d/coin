@@ -20,6 +20,9 @@ TODO:
 
 *** BUILD ITEMS ***
 
+* [mortene:19991107] example programs shouldn't be compiled with the
+  __SOLIB_INTERNAL__ define set.
+
 * [mortene:19990926] add configure option to enable crash (and
   subsequent core dump, of course) on SoDebugError::postWarning() and
   SoDebugError::post().

@@ -3607,7 +3607,8 @@ trap 'rm -fr `echo "include/Makefile include/Inventor/Makefile \
 	src/misc/Makefile src/lists/Makefile src/nodekits/Makefile \
 	src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile \
 	src/system/Makefile src/details/Makefile \
-	examples/Makefile examples/ivcat/Makefile config.h include/Inventor/SbBasic.h" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
+	examples/Makefile examples/ivcat/Makefile \
+	examples/ivhierarchy/Makefile config.h include/Inventor/SbBasic.h" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
 EOF
 cat >> $CONFIG_STATUS <<EOF
 
@@ -3740,7 +3741,8 @@ CONFIG_FILES=\${CONFIG_FILES-"include/Makefile include/Inventor/Makefile \
 	src/misc/Makefile src/lists/Makefile src/nodekits/Makefile \
 	src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile \
 	src/system/Makefile src/details/Makefile \
-	examples/Makefile examples/ivcat/Makefile"}
+	examples/Makefile examples/ivcat/Makefile \
+	examples/ivhierarchy/Makefile"}
 EOF
 cat >> $CONFIG_STATUS <<\EOF
 for ac_file in .. $CONFIG_FILES; do if test "x$ac_file" != x..; then
