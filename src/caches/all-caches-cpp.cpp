@@ -28,3 +28,4 @@
 #include "SoGLRenderCache.cpp"
 #include "SoNormalCache.cpp"
 #include "SoTextureCoordinateCache.cpp"
+#include "SoPrimitiveVertexCache.cpp"
