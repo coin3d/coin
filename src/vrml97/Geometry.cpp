@@ -35,11 +35,32 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/actions/SoSearchAction.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
+
 #ifndef DOXYGEN_SKIP_THIS
 class SoVRMLGeometryP {
 public:  
   SoChildList * childlist;
   SbBool childlistvalid;
+#ifdef COIN_THREADSAFE
+  SbMutex childlistmutex;
+#endif // COIN_THREADSAFE
+  void lockChildList(void) {
+#ifdef COIN_THREADSAFE
+    this->childlistmutex.lock();
+#endif // COIN_THREADSAFE
+  }
+  void unlockChildList(void) {
+#ifdef COIN_THREADSAFE
+    this->childlistmutex.unlock();
+#endif // COIN_THREADSAFE
+  }
 };
 #endif // DOXYGEN_SKIP_THIS
 
@@ -95,9 +116,17 @@ SoChildList *
 SoVRMLGeometry::getChildren(void) const
 {
   if (!PRIVATE(this)->childlistvalid) {
-    SoVRMLGeometry * thisp = (SoVRMLGeometry*) this;
-    SoVRMLParent::updateChildList(thisp, *(PRIVATE(thisp)->childlist));
-    PRIVATE(thisp)->childlistvalid = TRUE;
+    // this is not 100% thread safe. The assumption is that no nodes
+    // will be added or removed while a scene graph is being
+    // traversed. For Coin, this is an ok assumption.
+    PRIVATE(this)->lockChildList();
+    // test again after we've locked
+    if (!PRIVATE(this)->childlistvalid) {
+      SoVRMLGeometry * thisp = (SoVRMLGeometry*) this;
+      SoVRMLParent::updateChildList(thisp, *(PRIVATE(thisp)->childlist));
+      PRIVATE(thisp)->childlistvalid = TRUE;
+    }
+    PRIVATE(this)->unlockChildList();
   }
   return PRIVATE(this)->childlist;
 }

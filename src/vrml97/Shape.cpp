@@ -142,7 +142,18 @@ public:
   SbBool childlistvalid;
 #ifdef COIN_THREADSAFE
   SbMutex bboxmutex;
+  SbMutex childlistmutex;
 #endif // COIN_THREADSAFE
+  void lockChildList(void) {
+#ifdef COIN_THREADSAFE
+    this->childlistmutex.lock();
+#endif // COIN_THREADSAFE
+  }
+  void unlockChildList(void) {
+#ifdef COIN_THREADSAFE
+    this->childlistmutex.unlock();
+#endif // COIN_THREADSAFE
+  }
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -161,10 +172,7 @@ SoVRMLShape::initClass(void) // static
   SoRayPickAction::addMethod(type, SoNode::rayPickS);
 }
 
-#undef THIS
-#define THIS this->pimpl
-#undef THISP
-#define THISP thisp->pimpl
+#define PRIVATE(thisp) ((thisp)->pimpl)
 
 #ifdef COIN_THREADSAFE
 #define TRY_LOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.tryLock()
@@ -178,7 +186,7 @@ SoVRMLShape::initClass(void) // static
 
 SoVRMLShape::SoVRMLShape(void)
 {
-  THIS = new SoVRMLShapeP;
+  PRIVATE(this) = new SoVRMLShapeP;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLShape);
 
@@ -195,18 +203,18 @@ SoVRMLShape::SoVRMLShape(void)
   SO_NODE_SET_SF_ENUM_TYPE(renderCaching, CacheEnabled);
   SO_NODE_SET_SF_ENUM_TYPE(boundingBoxCaching, CacheEnabled);
 
-  THIS->childlist = new SoChildList(this);
-  THIS->childlistvalid = FALSE;
-  THIS->bboxcache = NULL;
-  THIS->cachelist = NULL;
+  PRIVATE(this)->childlist = new SoChildList(this);
+  PRIVATE(this)->childlistvalid = FALSE;
+  PRIVATE(this)->bboxcache = NULL;
+  PRIVATE(this)->cachelist = NULL;
 }
 
 SoVRMLShape::~SoVRMLShape()
 {
-  delete THIS->childlist;
-  if (THIS->bboxcache) THIS->bboxcache->unref();
-  delete THIS->cachelist;
-  delete THIS;
+  delete PRIVATE(this)->childlist;
+  if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->unref();
+  delete PRIVATE(this)->cachelist;
+  delete PRIVATE(this);
 }
 
 void
@@ -267,10 +275,10 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
   if (SoComplexityTypeElement::get(state) ==
       SoComplexityTypeElement::BOUNDING_BOX) {
     
-    SbBool validcache = THIS->bboxcache && THIS->bboxcache->isValid(state);
+    SbBool validcache = PRIVATE(this)->bboxcache && PRIVATE(this)->bboxcache->isValid(state);
     if (validcache) {
       state->push();
-      SbBox3f box = THIS->bboxcache->getProjectedBox();      
+      SbBox3f box = PRIVATE(this)->bboxcache->getProjectedBox();      
       SbVec3f center = (box.getMin() + box.getMax()) * 0.5f;
       SbVec3f size = box.getMax()  - box.getMin();
       
@@ -303,10 +311,10 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
   }
 
   // if we have a valid bbox cache, do a view volume cull test here.
-  if (!state->isCacheOpen() && THIS->bboxcache &&
-      THIS->bboxcache->isValid(state)) {
+  if (!state->isCacheOpen() && PRIVATE(this)->bboxcache &&
+      PRIVATE(this)->bboxcache->isValid(state)) {
     if (!SoCullElement::completelyInside(state)) {
-      if (SoCullElement::cullTest(state, THIS->bboxcache->getProjectedBox())) {
+      if (SoCullElement::cullTest(state, PRIVATE(this)->bboxcache->getProjectedBox())) {
         UNLOCK_BBOX(this);
         return;
       }
@@ -397,14 +405,14 @@ SoVRMLShape::getBoundingBox(SoGetBoundingBoxAction * action)
   
   if (iscaching) iscaching = TRY_LOCK_BBOX(this);
 
-  SbBool validcache = iscaching && THIS->bboxcache && THIS->bboxcache->isValid(state);
+  SbBool validcache = iscaching && PRIVATE(this)->bboxcache && PRIVATE(this)->bboxcache->isValid(state);
 
   if (iscaching && validcache) {
-    SoCacheElement::addCacheDependency(state, THIS->bboxcache);
-    childrenbbox = THIS->bboxcache->getBox();
-    childrencenterset = THIS->bboxcache->isCenterSet();
-    childrencenter = THIS->bboxcache->getCenter();
-    if (THIS->bboxcache->hasLinesOrPoints()) {
+    SoCacheElement::addCacheDependency(state, PRIVATE(this)->bboxcache);
+    childrenbbox = PRIVATE(this)->bboxcache->getBox();
+    childrencenterset = PRIVATE(this)->bboxcache->isCenterSet();
+    childrencenter = PRIVATE(this)->bboxcache->getCenter();
+    if (PRIVATE(this)->bboxcache->hasLinesOrPoints()) {
       SoBoundingBoxCache::setHasLinesOrPoints(state);
     }
   }
@@ -419,11 +427,11 @@ SoVRMLShape::getBoundingBox(SoGetBoundingBoxAction * action)
 
     if (iscaching) {
       // if we get here, we know bbox cache is not created or is invalid
-      if (THIS->bboxcache) THIS->bboxcache->unref();
-      THIS->bboxcache = new SoBoundingBoxCache(state);
-      THIS->bboxcache->ref();
+      if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->unref();
+      PRIVATE(this)->bboxcache = new SoBoundingBoxCache(state);
+      PRIVATE(this)->bboxcache->ref();
       // set active cache to record cache dependencies
-      SoCacheElement::set(state, THIS->bboxcache);
+      SoCacheElement::set(state, PRIVATE(this)->bboxcache);
     }
 
     SoLocalBBoxMatrixElement::makeIdentity(state);
@@ -439,7 +447,7 @@ SoVRMLShape::getBoundingBox(SoGetBoundingBoxAction * action)
     action->getXfBoundingBox() = abox; // reset action bbox
 
     if (iscaching) {
-      THIS->bboxcache->set(childrenbbox, childrencenterset, childrencenter);
+      PRIVATE(this)->bboxcache->set(childrenbbox, childrencenterset, childrencenter);
     }
     state->pop();
     if (iscaching) SoCacheElement::setInvalid(storedinvalid);
@@ -475,9 +483,9 @@ void
 SoVRMLShape::rayPick(SoRayPickAction * action)
 {
   LOCK_BBOX(this);
-  if (!THIS->bboxcache || !THIS->bboxcache->isValid(action->getState()) ||
+  if (!PRIVATE(this)->bboxcache || !PRIVATE(this)->bboxcache->isValid(action->getState()) ||
       !action->hasWorldSpaceRay() ||
-      vrmlshape_ray_intersect(action, THIS->bboxcache->getProjectedBox())) {
+      vrmlshape_ray_intersect(action, PRIVATE(this)->bboxcache->getProjectedBox())) {
     UNLOCK_BBOX(this);
     SoVRMLShape::doAction(action);
   }
@@ -515,12 +523,20 @@ SoVRMLShape::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 SoChildList *
 SoVRMLShape::getChildren(void) const
 {
-  if (!THIS->childlistvalid) {
-    SoVRMLShape * thisp = (SoVRMLShape*) this;
-    SoVRMLParent::updateChildList(thisp, *(THISP->childlist));
-    THISP->childlistvalid = TRUE;
+  if (!PRIVATE(this)->childlistvalid) {
+    // this is not 100% thread safe. The assumption is that no nodes
+    // will be added or removed while a scene graph is being
+    // traversed. For Coin, this is an ok assumption.
+    PRIVATE(this)->lockChildList();
+    // test again after we've locked
+    if (!PRIVATE(this)->childlistvalid) {
+      SoVRMLShape * thisp = (SoVRMLShape*) this;
+      SoVRMLParent::updateChildList(thisp, *(PRIVATE(thisp)->childlist));
+      PRIVATE(thisp)->childlistvalid = TRUE;
+    }
+    PRIVATE(this)->unlockChildList();
   }
-  return THIS->childlist;
+  return PRIVATE(this)->childlist;
 }
 
 void
@@ -528,9 +544,9 @@ SoVRMLShape::notify(SoNotList * list)
 {
   SoField * f = list->getLastField();
   if (f && f->getTypeId() == SoSFNode::getClassTypeId()) {
-    THIS->childlistvalid = FALSE;
+    PRIVATE(this)->childlistvalid = FALSE;
   }
-  if (THIS->bboxcache) THIS->bboxcache->invalidate();
+  if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->invalidate();
   inherited::notify(list);
 }
 
@@ -539,6 +555,9 @@ SoVRMLShape::copyContents(const SoFieldContainer * from,
                           SbBool copyConn)
 {
   inherited::copyContents(from, copyConn);
-  THIS->childlistvalid = FALSE;
-  THIS->childlist->truncate(0);
+  PRIVATE(this)->childlistvalid = FALSE;
+  PRIVATE(this)->childlist->truncate(0);
 }
+
+#undef PRIVATE
+

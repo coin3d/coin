@@ -89,10 +89,31 @@
 #endif // COIN_DEBUG
 #include <stddef.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
+
 #ifndef DOXYGEN_SKIP_THIS
 class SoVRMLSwitchP {
 public:
   SbBool childlistvalid;
+#ifdef COIN_THREADSAFE
+  SbMutex childlistmutex;
+#endif // COIN_THREADSAFE
+  void lockChildList(void) {
+#ifdef COIN_THREADSAFE
+    this->childlistmutex.lock();
+#endif // COIN_THREADSAFE
+  }
+  void unlockChildList(void) {
+#ifdef COIN_THREADSAFE
+    this->childlistmutex.unlock();
+#endif // COIN_THREADSAFE
+  }
 };
 #endif // DOXYGEN_SKIP_THIS
 
@@ -523,10 +544,18 @@ SoChildList *
 SoVRMLSwitch::getChildren(void) const
 {
   if (!PRIVATE(this)->childlistvalid) {
-    SoVRMLParent::updateChildList(this->choice.getValues(0),
-                                  this->choice.getNum(),
-                                  *SoGroup::children);
-    PRIVATE(this)->childlistvalid = TRUE;
+    // this is not 100% thread safe. The assumption is that no nodes
+    // will be added or removed while a scene graph is being
+    // traversed. For Coin, this is an ok assumption.
+    PRIVATE(this)->lockChildList();
+    // test again after we've locked
+    if (!PRIVATE(this)->childlistvalid) {
+      SoVRMLParent::updateChildList(this->choice.getValues(0),
+                                    this->choice.getNum(),
+                                    *SoGroup::children);
+      PRIVATE(this)->childlistvalid = TRUE;
+    }
+    PRIVATE(this)->unlockChildList();
   }
   return SoGroup::children;
 }

@@ -36,6 +36,14 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/SoOutput.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
+
 /*!
   \var SoMFNode SoVRMLParent::children
   The children nodes.
@@ -58,9 +66,23 @@ public:
   SbBool childlistvalid;
   SoFieldSensor * addsensor;
   SoFieldSensor * removesensor;
+
+#ifdef COIN_THREADSAFE
+  SbMutex childlistmutex;
+#endif // COIN_THREADSAFE
+  void lockChildList(void) {
+#ifdef COIN_THREADSAFE
+    this->childlistmutex.lock();
+#endif // COIN_THREADSAFE
+  }
+  void unlockChildList(void) {
+#ifdef COIN_THREADSAFE
+    this->childlistmutex.unlock();
+#endif // COIN_THREADSAFE
+  }
 };
 
-#endif // DOXYGEN_SKIP_THIS
+#endif // DOXYGEN_SKIP_PRIVATE(this)
 
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLParent);
@@ -72,10 +94,7 @@ SoVRMLParent::initClass(void)
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoVRMLParent, SO_VRML97_NODE_TYPE);
 }
 
-#undef THIS
-#undef THISP
-#define THIS this->pimpl
-#define THISP thisp->pimpl
+#define PRIVATE(thisp) ((thisp)->pimpl)
 
 /*!
   Constructor.
@@ -97,8 +116,8 @@ SoVRMLParent::SoVRMLParent(int numchildren)
 void
 SoVRMLParent::commonConstructor(void)
 {
-  THIS = new SoVRMLParentP;
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this) = new SoVRMLParentP;
+  PRIVATE(this)->childlistvalid = FALSE;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLParent);
 
@@ -106,10 +125,10 @@ SoVRMLParent::commonConstructor(void)
   SO_VRMLNODE_ADD_EVENT_IN(addChildren);
   SO_VRMLNODE_ADD_EVENT_IN(removeChildren);
 
-  THIS->addsensor = new SoFieldSensor(field_sensor_cb, this);
-  THIS->removesensor = new SoFieldSensor(field_sensor_cb, this);
-  THIS->addsensor->attach(&this->addChildren);
-  THIS->removesensor->attach(&this->removeChildren);
+  PRIVATE(this)->addsensor = new SoFieldSensor(field_sensor_cb, this);
+  PRIVATE(this)->removesensor = new SoFieldSensor(field_sensor_cb, this);
+  PRIVATE(this)->addsensor->attach(&this->addChildren);
+  PRIVATE(this)->removesensor->attach(&this->removeChildren);
 }
 
 /*!
@@ -117,11 +136,11 @@ SoVRMLParent::commonConstructor(void)
 */
 SoVRMLParent::~SoVRMLParent()
 {
-  THIS->addsensor->detach();
-  THIS->removesensor->detach();
-  delete THIS->addsensor;
-  delete THIS->removesensor;
-  delete THIS;
+  PRIVATE(this)->addsensor->detach();
+  PRIVATE(this)->removesensor->detach();
+  delete PRIVATE(this)->addsensor;
+  delete PRIVATE(this)->removesensor;
+  delete PRIVATE(this);
 }
 
 // Doc in parent
@@ -136,7 +155,7 @@ void
 SoVRMLParent::addChild(SoNode * child)
 {
   this->children.addNode(child);
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -144,7 +163,7 @@ void
 SoVRMLParent::insertChild(SoNode * child, int idx)
 {
   this->children.insertNode(child, idx);
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -173,7 +192,7 @@ void
 SoVRMLParent::removeChild(int idx)
 {
   this->children.removeNode(idx);
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -181,7 +200,7 @@ void
 SoVRMLParent::removeChild(SoNode * child)
 {
   this->children.removeNode(child);
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -190,7 +209,7 @@ SoVRMLParent::removeAllChildren(void)
 {
   this->children.removeAllNodes();
   SoGroup::children->truncate(0);
-  THIS->childlistvalid = TRUE;
+  PRIVATE(this)->childlistvalid = TRUE;
 }
 
 // Doc in parent
@@ -198,7 +217,7 @@ void
 SoVRMLParent::replaceChild(int idx, SoNode * child)
 {
   this->children.replaceNode(idx, child);
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -207,18 +226,27 @@ SoVRMLParent::replaceChild(SoNode * old,
                            SoNode * child)
 {
   this->children.replaceNode(old, child);
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
 SoChildList *
 SoVRMLParent::getChildren(void) const
 {
-  if (!THIS->childlistvalid) {
-    SoVRMLParent::updateChildList(this->children.getValues(0),
-                                  this->children.getNum(),
-                                  *SoGroup::children);
-    ((SoVRMLParent*)this)->pimpl->childlistvalid = TRUE;
+  if (!PRIVATE(this)->childlistvalid) {
+    // this is not 100% thread safe. The assumption is that no nodes
+    // will be added or removed while a scene graph is being
+    // traversed. For Coin, this is an ok assumption.
+    PRIVATE(this)->lockChildList();
+    // test again after we've locked
+    if (!PRIVATE(this)->childlistvalid) {
+      
+      SoVRMLParent::updateChildList(this->children.getValues(0),
+                                    this->children.getNum(),
+                                    *SoGroup::children);
+      PRIVATE((SoVRMLParent*)this)->childlistvalid = TRUE;
+    }
+    PRIVATE(this)->unlockChildList();    
   }
   return SoGroup::children;
 }
@@ -271,7 +299,7 @@ SoVRMLParent::notify(SoNotList * list)
 {
   SoField * f = list->getLastField();
   if (f == &this->children) {
-    THIS->childlistvalid = FALSE;
+    PRIVATE(this)->childlistvalid = FALSE;
   }
   inherited::notify(list);
 }
@@ -284,7 +312,7 @@ SoVRMLParent::readInstance(SoInput * in,
   SbBool oldnot = this->children.enableNotify(FALSE);
   SbBool ret = inherited::readInstance(in, flags);
   if (oldnot) this->children.enableNotify(TRUE);
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
   return ret;
 }
 
@@ -295,7 +323,7 @@ SoVRMLParent::copyContents(const SoFieldContainer * from,
 {
   SoGroup::children->truncate(0);
   SoNode::copyContents(from, copyConn);
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 /*!
@@ -389,11 +417,11 @@ void
 SoVRMLParent::field_sensor_cb(void * data, SoSensor * sensor)
 {
   SoVRMLParent * thisp = (SoVRMLParent*) data;
-  if (sensor == THISP->addsensor) {
+  if (sensor == PRIVATE(thisp)->addsensor) {
     thisp->processAddChildren();
   }
   else {
-    assert(sensor == THISP->removesensor);
+    assert(sensor == PRIVATE(thisp)->removesensor);
     thisp->processRemoveChildren();
   }
 }
@@ -419,5 +447,4 @@ SoVRMLParent::makeWriteData(void)
   return newfd;
 }
 
-#undef THIS
-#undef THISP
+#undef PRIVATE
