@@ -12,6 +12,7 @@ New in Coin v2.0.0a (so far):
 * verified support for Mac OS X / Darwin platforms
 * new SoTransparencyType node, with support for setting SoTransparencyType
   in the scene graph.
+* exports base class SbClip for general polygon clipping routines
 
 New in Coin v1.0 (2001-08-13):
 * speedy Cygwin builds with new, simpler wrapmsvc.exe compiler wrapper

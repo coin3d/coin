@@ -111,6 +111,7 @@ libCoininc_HEADERS = \
 	../include/Inventor/SbBox2f.h \
 	../include/Inventor/SbBox2s.h \
 	../include/Inventor/SbBox3f.h \
+	../include/Inventor/SbClip.h \
 	../include/Inventor/SbColor.h \
 	../include/Inventor/SbColor4f.h \
 	../include/Inventor/SbCylinder.h \

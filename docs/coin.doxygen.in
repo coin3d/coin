@@ -257,6 +257,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox2s.h \
                          @path_tag@@coin_src_dir@/src/base/SbBox3f.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/SbBox3f.h \
+                         @path_tag@@coin_src_dir@/src/base/SbClip.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/SbClip.h \
                          @path_tag@@coin_src_dir@/src/base/SbColor.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/SbColor.h \
                          @path_tag@@coin_src_dir@/src/base/SbColor4f.cpp \

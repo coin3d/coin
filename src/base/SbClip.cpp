@@ -45,7 +45,11 @@
 
   Be aware that this class is an extension for Coin, and it is not
   available in the original SGI Open Inventor v2.1 API.
+
+  \since 2002-01-20
 */
+// FIXME: a small usage example would do wonders for the class
+// doc. 20020120 mortene.
 
 /*!
   A constructor. Supply a callback if you need to handle additional
