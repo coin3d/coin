@@ -145,38 +145,46 @@ void
 SoAuditorList::notify(SoNotList * l)
 {
   const int num = this->getLength();
+  // FIXME: should perhaps use a more general mechanism to detect when
+  // to ignore notification? (In SoFieldContainer::notify() -- based
+  // on SoNotList::getTimeStamp()?) 20000304 mortene.
+  SbList<void *> notified(num);
+
   for (int i = 0; i < num; i++) {
     void * auditor = this->getObject(i);
-    SoNotRec::Type type = this->getType(i);
 
-    switch (type) {
+    if (notified.find(auditor) == -1) {
+      SoNotRec::Type type = this->getType(i);
+      switch (type) {
+      case SoNotRec::CONTAINER:
+      case SoNotRec::PARENT:
+        {
+          SoFieldContainer * obj = (SoFieldContainer *)auditor;
+          obj->notify(l);
+        }
+        break;
 
-    case SoNotRec::CONTAINER:
-    case SoNotRec::PARENT:
-      {
-        SoFieldContainer * obj = (SoFieldContainer *)auditor;
-        obj->notify(l);
+      case SoNotRec::SENSOR:
+        {
+          SoDataSensor * obj = (SoDataSensor *)auditor;
+          obj->schedule();
+        }
+        break;
+
+      case SoNotRec::FIELD:
+      case SoNotRec::ENGINE:
+      case SoNotRec::INTERP:
+        {
+          SoField * obj = (SoField *)auditor;
+          if (!obj->getDirty()) obj->notify(l);
+        }
+        break;
+
+      default:
+        assert(0 && "Unknown auditor type");
       }
-      break;
 
-    case SoNotRec::SENSOR:
-      {
-        SoDataSensor * obj = (SoDataSensor *)auditor;
-        obj->schedule();
-      }
-      break;
-
-    case SoNotRec::FIELD:
-    case SoNotRec::ENGINE:
-    case SoNotRec::INTERP:
-      {
-        SoField * obj = (SoField *)auditor;
-        if (!obj->getDirty()) obj->notify(l);
-      }
-      break;
-
-    default:
-      assert(0 && "Unknown auditor type");
+      notified.append(auditor);
     }
   }
 }
