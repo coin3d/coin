@@ -220,7 +220,7 @@ SoDataSensor::notify(SoNotList * l)
       if (t.isDerivedFrom(SoNode::getClassTypeId())) {
         SoSearchAction search;
         search.setNode(this->triggernode);
-        search.setSearchingAll(true);
+        search.setSearchingAll(TRUE);
         search.apply((SoNode *)lastrec->getBase());
         if (search.isFound()) {
           this->triggerpath = search.getPath();
