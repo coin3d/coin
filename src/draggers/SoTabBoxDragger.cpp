@@ -34,6 +34,7 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <coindefs.h> // COIN_STUB()
 
+#include <data/draggerDefaults/tabBoxDragger.h>
 
 SO_KIT_SOURCE(SoTabBoxDragger);
 
@@ -70,7 +71,9 @@ SoTabBoxDragger::SoTabBoxDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(boxGeom, SoSeparator, TRUE, geomSeparator, "", TRUE);
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("tabBoxDragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("tabBoxDragger.iv",
+                                       TABBOXDRAGGER_draggergeometry,
+                                       sizeof(TABBOXDRAGGER_draggergeometry));
   }
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));

@@ -49,6 +49,9 @@
 #include <coindefs.h> // COIN_STUB()
 #include <assert.h>
 
+#include <data/draggerDefaults/tabPlaneDragger.h>
+
+
 #define WHATKIND_NONE      0
 #define WHATKIND_SCALE     1
 #define WHATKIND_TRANSLATE 2
@@ -115,7 +118,9 @@ SoTabPlaneDragger::SoTabPlaneDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(cornerScaleTab3, SoIndexedFaceSet, TRUE, scaleTabs, "", FALSE);
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("tabPlaneDragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("tabPlaneDragger.iv",
+                                       TABPLANEDRAGGER_draggergeometry,
+                                       sizeof(TABPLANEDRAGGER_draggergeometry));
   }
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
