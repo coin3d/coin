@@ -52,8 +52,8 @@ public:
                 const SoPrimitiveVertex * v1,
                 const SoPrimitiveVertex * v2,
                 const SoPrimitiveVertex * v3);
-  void endShape(SoState * state, SoShape * shape,
-                SoMaterialBundle & mb);
+  SbBool endShape(SoState * state, SoShape * shape,
+                  SoMaterialBundle & mb);
 
 private:
   class bt_region {
