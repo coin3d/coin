@@ -44,6 +44,11 @@ public:
 
 protected:
   virtual ~SoPackedColor();
+  virtual void notify(SoNotList *list);
+ 
+private:
+  SbBool transparent;
+  SbBool checktransparent;
 };
 
 #endif // !COIN_SOPACKEDCOLOR_H

@@ -144,6 +144,9 @@ SoVertexProperty::SoVertexProperty()
 
   SO_NODE_SET_SF_ENUM_TYPE(normalBinding, Binding);
   SO_NODE_SET_SF_ENUM_TYPE(materialBinding, Binding);
+
+  this->checktransparent = FALSE;
+  this->transparent = FALSE;
 }
 
 /*!
@@ -237,6 +240,18 @@ SoVertexProperty::GLRender(SoGLRenderAction * action)
 void
 SoVertexProperty::doAction(SoAction *action)
 {
+  if (this->checktransparent) {
+    this->checktransparent = FALSE;
+    this->transparent = FALSE;
+    int n = this->orderedRGBA.getNum();
+    for (int i = 0; i < n; i++) {
+      if ((this->orderedRGBA[i] & 0xff) != 0xff) {
+        this->transparent = TRUE;
+        break;
+      }
+    } 
+  }
+
   SoState * state = action->getState();
   if (this->vertex.getNum() > 0)
     SoCoordinateElement::set3(state, this, this->vertex.getNum(),
@@ -256,9 +271,10 @@ SoVertexProperty::doAction(SoAction *action)
                                 this->normalBinding.getValue());
   }
   if (this->orderedRGBA.getNum() > 0
-      && !SoOverrideElement::getDiffuseColorOverride(state)) {
+      && !SoOverrideElement::getDiffuseColorOverride(state)) {    
     SoDiffuseColorElement::set(state, this, this->orderedRGBA.getNum(),
-                               this->orderedRGBA.getValues(0));
+                               this->orderedRGBA.getValues(0),
+                               this->transparent);
     if (this->isOverride()) {
       SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     }
@@ -299,4 +315,17 @@ void
 SoVertexProperty::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoVertexProperty::doAction((SoAction*)action);
+}
+
+/*!
+  Overloaded to check for transparency when orderedRGBA changes
+*/
+void 
+SoVertexProperty::notify(SoNotList *list)
+{
+  SoField *f = list->getLastField();
+  if (f == &this->orderedRGBA) {
+    this->checktransparent = TRUE;
+  }
+  SoNode::notify(list);
 }

@@ -59,6 +59,9 @@ SoPackedColor::SoPackedColor()
   SO_NODE_INTERNAL_CONSTRUCTOR(SoPackedColor);
 
   SO_NODE_ADD_FIELD(orderedRGBA, (0xccccccff));
+
+  this->checktransparent = FALSE;
+  this->transparent = FALSE;
 }
 
 /*!
@@ -89,13 +92,16 @@ SoPackedColor::GLRender(SoGLRenderAction * action)
 void
 SoPackedColor::doAction(SoAction * action)
 {
+  this->isTransparent(); // update cached value
+  
   SoState * state = action->getState();
   if (!this->orderedRGBA.isIgnored() &&
       !SoOverrideElement::getDiffuseColorOverride(state)) {
     SoDiffuseColorElement::set(state,
                                this,
                                this->orderedRGBA.getNum(),
-                               this->orderedRGBA.getValues(0));
+                               this->orderedRGBA.getValues(0),
+                               this->transparent);
     if (this->isOverride()) {
       SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     }
@@ -116,8 +122,29 @@ SoPackedColor::callback(SoCallbackAction * action)
 SbBool
 SoPackedColor::isTransparent(void)
 {
-  for (int i=0; i < this->orderedRGBA.getNum(); i++) {
-    if ((this->orderedRGBA[i] & 0x000000ff) != 0x000000ff) return TRUE;
+  if (this->checktransparent) {
+    this->checktransparent = FALSE;
+    this->transparent = FALSE;
+    int n = this->orderedRGBA.getNum();
+    for (int i = 0; i < n; i++) {
+      if ((this->orderedRGBA[i] & 0xff) != 0xff) {
+        this->transparent = TRUE;
+        break;
+      }
+    } 
   }
-  return FALSE;
+  return this->transparent;
+}
+
+/*!
+  Overloaded to check for transparency when orderedRGBA changes
+*/
+void 
+SoPackedColor::notify(SoNotList *list)
+{
+  SoField *f = list->getLastField();
+  if (f == &this->orderedRGBA) {
+    this->checktransparent = TRUE;
+  }
+  SoNode::notify(list);
 }

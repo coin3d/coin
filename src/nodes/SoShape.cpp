@@ -50,6 +50,7 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/elements/SoDiffuseColorElement.h>
 
 // Lazy GL-elements not handled by SoMaterialBundle
 #include <Inventor/elements/SoGLPointSizeElement.h>
@@ -546,12 +547,18 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   SbBool needNormals =
     SoLightModelElement::get(state) == SoLightModelElement::PHONG;
 
-  const SoTransparencyElement * trans =
-    SoTransparencyElement::getInstance(state);
-
-  SbBool transparent =
-    (trans->getNum() && trans->get(0) > 0.0f) ||
-    SoTextureImageElement::containsTransparency(state);
+  SbBool transparent = SoTextureImageElement::containsTransparency(state);
+  if (!transparent) {
+    const SoDiffuseColorElement * diffelt =
+      SoDiffuseColorElement::getInstance(state);
+    if (diffelt->isPacked()) transparent = diffelt->hasPackedTransparency();
+    else {
+      const SoTransparencyElement * trans =
+        SoTransparencyElement::getInstance(state);
+      transparent = trans->getNum() > 1 ||
+        trans->get(0) > 0.0f;
+    }
+  }
 
   if (action->handleTransparency(transparent))
     return FALSE;

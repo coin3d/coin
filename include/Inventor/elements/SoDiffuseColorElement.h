@@ -41,13 +41,16 @@ public:
                   const int32_t numColors, const SbColor * const colors);
 
   static void set(SoState * const state, SoNode * const node,
-                  const int32_t numColors, const uint32_t * const colors);
+                  const int32_t numColors, const uint32_t * const colors,
+                  const SbBool packedtransparency = FALSE);
 
   static const SoDiffuseColorElement * getInstance(SoState *state);
 
-  int32_t getNum() const;
+  int32_t getNum(void) const;
   const SbColor &get(const int index) const;
-  SbBool isPacked() const;
+
+  SbBool isPacked(void) const;
+  SbBool hasPackedTransparency(void) const;
 
   const SbColor *getColorArrayPtr() const;
   const uint32_t *getPackedArrayPtr() const;
@@ -56,12 +59,13 @@ protected:
   friend class SoMaterialBundle;
   virtual void setElt(const int32_t numColors, const SbColor * const colors);
   virtual void setElt(const int32_t numColors,
-                      const uint32_t * const packedcolors);
+                      const uint32_t * const packedcolors,
+                      const SbBool packedtransparency);
 
   int numColors;
   const SbColor *colors;
   const uint32_t *packedColors;
-
+  SbBool packedTransparency;
 };
 
 #endif // !COIN_SODIFFUSECOLORELEMENT_H

@@ -64,6 +64,11 @@ public:
 
 protected:
   virtual ~SoVertexProperty();
+  virtual void notify(SoNotList *list);
+
+private:
+  SbBool transparent;
+  SbBool checktransparent;
 };
 
 #endif // !COIN_SOVERTEXPROPERTY_H

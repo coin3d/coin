@@ -113,11 +113,12 @@ SoDiffuseColorElement::set(SoState * const state, SoNode * const node,
 void
 SoDiffuseColorElement::set(SoState * const state, SoNode * const node,
                            const int32_t numColors,
-                           const uint32_t * const colors)
+                           const uint32_t * const colors,
+                           const SbBool packedtransparency)
 {
   SoDiffuseColorElement *elem = (SoDiffuseColorElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  elem->setElt(numColors, colors);
+  elem->setElt(numColors, colors, packedtransparency);
 }
 
 //! FIXME: write doc.
@@ -135,11 +136,13 @@ SoDiffuseColorElement::setElt(const int32_t numColors,
 
 void
 SoDiffuseColorElement::setElt(const int32_t numColors,
-                              const uint32_t * const packedcolors)
+                              const uint32_t * const packedcolors,
+                              const SbBool packedtransparency)
 {
   this->packedColors = packedcolors;
   this->numColors = numColors;
   this->colors = NULL;
+  this->packedTransparency = packedtransparency;
 }
 
 //! FIXME: write doc.
@@ -184,7 +187,14 @@ const SbColor &
 SoDiffuseColorElement::get(const int index) const
 {
   assert(index >= 0 && index <= this->numColors);
+  assert(this->colors != NULL);
   return this->colors[index];
+}
+
+SbBool 
+SoDiffuseColorElement::hasPackedTransparency(void) const
+{
+  return this->packedTransparency;
 }
 
 //! FIXME: write doc.
