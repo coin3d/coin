@@ -153,8 +153,8 @@ EXTRA_DIST = \
 	rwmutexp.h \
 	storagep.h \
 	workerp.h \
-	schedp.h \
 	wpoolp.h \
+	schedp.h \
 	fifop.h
 
 subdir = include/Inventor/C/threads
