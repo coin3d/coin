@@ -557,7 +557,7 @@ SoGLBigImageP::copySubImage(const int idx,
         dst += nc;
         aptr += nc;
       }
-      dst += lineadd;
+      dst += lineadd*nc;
     } 
   }
 }
