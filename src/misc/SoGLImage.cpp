@@ -78,7 +78,7 @@
 #include <GLUWrapper.h>
 #include <Inventor/lists/SbList.h>
 
-#include <src/misc/simage_wrapper.h>
+#include <simage_wrapper.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

@@ -43,7 +43,7 @@
 #include <windows.h>
 #endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
-#include <src/misc/GLUWrapper.h>
+#include <../misc/GLUWrapper.h>
 
 
 

@@ -839,13 +839,14 @@ fi
 
 # **************************************************************************
 
-AM_CONFIG_HEADER(config.h include/Inventor/SbBasic.h include/Inventor/system/inttypes.h)
+AM_CONFIG_HEADER(include/config.h)
 
 AC_CONFIG_FILES([
         Makefile
         include/Makefile
         include/Inventor/Makefile
         include/Inventor/lock/Makefile
+        include/Inventor/system/Makefile
         data/Makefile
         data/draggerDefaults/Makefile
         src/Makefile
@@ -868,7 +869,6 @@ AC_CONFIG_FILES([
         src/nodes/Makefile
         src/projectors/Makefile
         src/sensors/Makefile
-        src/system/Makefile
         build/Makefile
         build/coin.spec
         docs/coin.doxygen

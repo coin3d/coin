@@ -48,7 +48,7 @@
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
-#include <src/misc/simage_wrapper.h>
+#include <simage_wrapper.h>
 
 
 /*!

@@ -51,7 +51,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
-#include <src/misc/simage_wrapper.h>
+#include <../misc/simage_wrapper.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -61,7 +61,7 @@
 #include <windows.h> // sigh...
 #endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
-#include <src/misc/GLUWrapper.h>
+#include <../misc/GLUWrapper.h>
 
 /*!
   \enum SoImage::VertAlignment

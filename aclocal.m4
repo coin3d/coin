@@ -1312,11 +1312,11 @@ do
 #include <stdio.h>
 #ifdef HAVE_INTTYPES_H
 #include <inttypes.h>
-#else /* ! HAVE_INTTYPES_H */
+#else
 #ifdef HAVE_STDINT_H
 #include <stdint.h>
 #endif /* HAVE_STDINT_H */
-#endif /* ! HAVE_INTTYPES_H */
+#endif
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */

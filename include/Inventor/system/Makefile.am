@@ -7,10 +7,15 @@
 ## publicly, with the danger of making it "override" the inttypes.h
 ## file on the system. 19990912 mortene.
 
-## Installation information.
+BUILT_SOURCES = \
+	inttypes.h
+
+inttypes.h: $(srcdir)/inttypes.h.in
+	@( cd $top_builddir; $(MAKE) include/Inventor/system/inttypes.h )
+
+# header installation information
 
 systemincdir = $(includedir)/Inventor/system
-
 systeminc_HEADERS = \
-	$(top_builddir)/include/Inventor/system/inttypes.h
+        $(top_builddir)/include/Inventor/system/inttypes.h
 

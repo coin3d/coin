@@ -1,4 +1,4 @@
-/* config.h.in.  Generated automatically from configure.in by autoheader.  */
+/* include/config.h.in.  Generated automatically from configure.in by autoheader.  */
 
 /* Build system. */
 #undef COIN_CONFIGURE_BUILD

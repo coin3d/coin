@@ -173,7 +173,7 @@ noinst_SCRIPTS = \
 
 subdir = data/draggerDefaults
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
+CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 SCRIPTS = $(noinst_SCRIPTS)
 

@@ -17,7 +17,7 @@
  *
 \**************************************************************************/
 
-#include "simage_wrapper.h"
+#include <simage_wrapper.h>
 
 #include <assert.h>
 #include <stdlib.h>

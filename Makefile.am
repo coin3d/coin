@@ -1,6 +1,6 @@
 ## Process this file with automake to generate Makefile.in.
 
-SUBDIRS = include data src build
+SUBDIRS = . include data src build
 
 dist_bin_SCRIPTS = \
 	coin-config
@@ -8,14 +8,15 @@ dist_bin_SCRIPTS = \
 noinst_SCRIPTS = \
 	cfg/m4/msvccc
 
+BUILT_SOURCES = \
+	include/Inventor/SbBasic.h \
+	include/Inventor/system/inttypes.h
+
 m4datadir = $(datadir)/aclocal
 dist_m4data_DATA = cfg/m4/coin.m4
 
 cfgdatadir = $(datadir)/Coin/conf
 dist_cfgdata_DATA = coin-@CONFIG@.cfg
-
-noinst_HEADERS = \
-	coindefs.h
 
 coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
 	@$(SHELL) config.status --file=$@:coin.cfg.in
@@ -37,5 +38,12 @@ doxygen-doc:
 	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
 
 # sources needed to generate docs must be created by this rule
-built-sources:
+built-sources: $(BUILT_SOURCES)
+
+
+include/Inventor/SbBasic.h: $(srcdir)/include/Inventor/SbBasic.h.in
+	./config.status --header=$@
+
+include/Inventor/system/inttypes.h: $(srcdir)/include/Inventor/system/inttypes.h.in
+	./config.status --header=$@
 

@@ -2,6 +2,9 @@
 
 SUBDIRS = Inventor
 
+noinst_HEADERS = \
+	coindefs.h
+
 thisincdir = $(includedir)
 
 thisinc_HEADERS = \

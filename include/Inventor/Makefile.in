@@ -118,16 +118,20 @@ sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 
-SUBDIRS = lock
+BUILT_SOURCES = \
+	SbBasic.h
+
+
+SUBDIRS = lock system
 subdir = include/Inventor
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = $(top_builddir)/config.h SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
+CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 DIST_SOURCES =
-DIST_COMMON = ./stamp-h2.in Makefile.am Makefile.in SbBasic.h.in
+DIST_COMMON = Makefile.am Makefile.in
 
 DIST_SUBDIRS = $(SUBDIRS)
-all: SbBasic.h
+all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
 .SUFFIXES:
@@ -140,32 +144,6 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
-
-SbBasic.h: stamp-h2
-	@if test ! -f $@; then \
-		rm -f stamp-h2; \
-		$(MAKE) stamp-h2; \
-	else :; fi
-stamp-h2: $(srcdir)/SbBasic.h.in $(top_builddir)/config.status
-	@rm -f stamp-h2 stamp-h2T
-	@echo timestamp > stamp-h2T 2> /dev/null
-	cd $(top_builddir) \
-	  && CONFIG_FILES= CONFIG_HEADERS=include/Inventor/SbBasic.h \
-	     $(SHELL) ./config.status
-	@mv stamp-h2T stamp-h2
-$(srcdir)/SbBasic.h.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/./stamp-h2.in
-	@if test ! -f $@; then \
-		rm -f $(srcdir)/./stamp-h2.in; \
-		$(MAKE) $(srcdir)/./stamp-h2.in; \
-	else :; fi
-$(srcdir)/./stamp-h2.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	@rm -f $(srcdir)/./stamp-h2.in $(srcdir)/./stamp-h2.inT
-	@echo timestamp > $(srcdir)/./stamp-h2.inT 2> /dev/null
-	cd $(top_srcdir) && $(AUTOHEADER)
-	@mv $(srcdir)/./stamp-h2.inT $(srcdir)/./stamp-h2.in
-
-distclean-hdr:
-	-rm -f SbBasic.h
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run `make' without going through this Makefile.
@@ -236,7 +214,7 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	       END { for (i in files) print i; }'`; \
 	mkid -fID $$unique $(LISP)
 
-TAGS: tags-recursive $(HEADERS) $(SOURCES) SbBasic.h.in $(TAGS_DEPENDENCIES) \
+TAGS: tags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	tags=; \
 	here=`pwd`; \
@@ -251,8 +229,8 @@ TAGS: tags-recursive $(HEADERS) $(SOURCES) SbBasic.h.in $(TAGS_DEPENDENCIES) \
 	  done | \
 	  $(AWK) '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
-	test -z "$(ETAGS_ARGS)SbBasic.h.in$$unique$(LISP)$$tags" \
-	  || etags $(ETAGS_ARGS) $$tags SbBasic.h.in $$unique $(LISP)
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || etags $(ETAGS_ARGS) $$tags  $$unique $(LISP)
 
 GTAGS:
 	here=`CDPATH=: && cd $(top_builddir) && pwd` \
@@ -294,7 +272,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-recursive
-all-am: Makefile SbBasic.h
+all-am: Makefile
 
 installdirs: installdirs-recursive
 installdirs-am:
@@ -325,13 +303,14 @@ maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
 	-rm -f Makefile.in
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-recursive
 
 clean-am: clean-generic mostlyclean-am
 
 distclean: distclean-recursive
 
-distclean-am: clean-am distclean-generic distclean-hdr distclean-tags
+distclean-am: clean-am distclean-generic distclean-tags
 
 dvi:
 
@@ -361,9 +340,9 @@ mostlyclean-am: mostlyclean-generic
 
 .PHONY: all all-am all-recursive check check-am check-recursive clean \
 	clean-generic clean-recursive distclean distclean-generic \
-	distclean-hdr distclean-recursive distclean-tags distdir dvi \
-	dvi-am dvi-recursive info info-am info-recursive install \
-	install-am install-data install-data-am install-data-recursive \
+	distclean-recursive distclean-tags distdir dvi dvi-am \
+	dvi-recursive info info-am info-recursive install install-am \
+	install-data install-data-am install-data-recursive \
 	install-exec install-exec-am install-exec-recursive \
 	install-info install-info-recursive install-man \
 	install-recursive install-strip installcheck installcheck-am \
@@ -373,6 +352,9 @@ mostlyclean-am: mostlyclean-generic
 	mostlyclean-recursive tags tags-recursive uninstall \
 	uninstall-am uninstall-info-recursive uninstall-recursive
 
+
+SbBasic.h: $(srcdir)/SbBasic.h.in
+	@( cd $top_builddir; $(MAKE) include/Inventor/SbBasic.h )
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

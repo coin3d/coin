@@ -144,10 +144,8 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 SUBDIRS = \
 	VRMLnodes actions base bundles caches details draggers elements \
 	engines errors events fields manips misc lists nodekits nodes \
-	projectors sensors system .
+	projectors sensors .
 
-
-INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
 @BUILD_WITH_MSVC_TRUE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
 @BUILD_WITH_MSVC_TRUE@	snprintf.c snprintf.h
@@ -214,12 +212,12 @@ libCoin@SUFFIX@inc_HEADERS = \
 
 subdir = src
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
+CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 LIBRARIES = $(lib_LIBRARIES)
 
 
-DEFS = @DEFS@ -I. -I$(srcdir) -I$(top_builddir) -I$(top_builddir)/include/Inventor -I$(top_builddir)/include/Inventor/system
+DEFS = @DEFS@ -I. -I$(srcdir) -I$(top_builddir)/include
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@

@@ -36,7 +36,7 @@ pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
 
-top_builddir = ../..
+top_builddir = ../../..
 
 ACLOCAL = @ACLOCAL@
 AUTOCONF = @AUTOCONF@
@@ -118,27 +118,33 @@ sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 
+BUILT_SOURCES = \
+	inttypes.h
+
+
+# header installation information
+
 systemincdir = $(includedir)/Inventor/system
-
 systeminc_HEADERS = \
-	$(top_builddir)/include/Inventor/system/inttypes.h
+        $(top_builddir)/include/Inventor/system/inttypes.h
 
-subdir = src/system
+subdir = include/Inventor/system
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
+CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 DIST_SOURCES =
 HEADERS = $(systeminc_HEADERS)
 
 DIST_COMMON = $(systeminc_HEADERS) Makefile.am Makefile.in
 
-all: all-am
+all: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
 
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  src/system/Makefile
+	  $(AUTOMAKE) --gnu  include/Inventor/system/Makefile
 
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && \
@@ -196,7 +202,7 @@ distclean-tags:
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
-top_distdir = ../..
+top_distdir = ../../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
@@ -245,6 +251,7 @@ maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
 	-rm -f Makefile.in
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 
 clean-am: clean-generic mostlyclean-am
@@ -290,6 +297,9 @@ uninstall-am: uninstall-systemincHEADERS
 	maintainer-clean-generic mostlyclean mostlyclean-generic tags \
 	uninstall uninstall-am uninstall-systemincHEADERS
 
+
+inttypes.h: $(srcdir)/inttypes.h.in
+	@( cd $top_builddir; $(MAKE) include/Inventor/system/inttypes.h )
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

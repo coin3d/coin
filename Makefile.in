@@ -118,7 +118,7 @@ sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 
-SUBDIRS = include data src build
+SUBDIRS = . include data src build
 
 dist_bin_SCRIPTS = \
 	coin-config
@@ -128,15 +128,16 @@ noinst_SCRIPTS = \
 	cfg/m4/msvccc
 
 
+BUILT_SOURCES = \
+	include/Inventor/SbBasic.h \
+	include/Inventor/system/inttypes.h
+
+
 m4datadir = $(datadir)/aclocal
 dist_m4data_DATA = cfg/m4/coin.m4
 
 cfgdatadir = $(datadir)/Coin/conf
 dist_cfgdata_DATA = coin-@CONFIG@.cfg
-
-noinst_HEADERS = \
-	coindefs.h
-
 
 EXTRA_DIST = \
 	ChangeLog.1999 \
@@ -154,25 +155,21 @@ EXTRA_DIST = \
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
+CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES = docs/coin.doxygen
 SCRIPTS = $(dist_bin_SCRIPTS) $(noinst_SCRIPTS)
 
 DIST_SOURCES =
 DATA = $(dist_cfgdata_DATA) $(dist_m4data_DATA)
 
-HEADERS = $(noinst_HEADERS)
-
 DIST_COMMON = README $(dist_bin_SCRIPTS) $(dist_cfgdata_DATA) \
-$(dist_m4data_DATA) $(noinst_HEADERS) \
-./include/Inventor/system/inttypes.h.in \
-./include/Inventor/system/stamp-h3.in ./stamp-h1.in AUTHORS COPYING \
-ChangeLog INSTALL Makefile.am Makefile.in NEWS THANKS aclocal.m4 \
-cfg/config.guess cfg/config.sub cfg/install-sh cfg/ltmain.sh \
-cfg/missing cfg/mkinstalldirs config.h.in configure configure.in
+$(dist_m4data_DATA) AUTHORS COPYING ChangeLog INSTALL Makefile.am \
+Makefile.in NEWS THANKS aclocal.m4 cfg/config.guess cfg/config.sub \
+cfg/install-sh cfg/ltmain.sh cfg/missing cfg/mkinstalldirs configure \
+configure.in
 
 DIST_SUBDIRS = $(SUBDIRS)
-all: config.h
+all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
 .SUFFIXES:
@@ -192,55 +189,6 @@ config.status: $(srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	$(SHELL) ./config.status --recheck
 $(srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(srcdir)/configure.in $(ACLOCAL_M4) $(CONFIGURE_DEPENDENCIES)
 	cd $(srcdir) && $(AUTOCONF)
-
-config.h: stamp-h1
-	@if test ! -f $@; then \
-		rm -f stamp-h1; \
-		$(MAKE) stamp-h1; \
-	else :; fi
-stamp-h1: $(srcdir)/config.h.in $(top_builddir)/config.status
-	@rm -f stamp-h1 stamp-h1T
-	@echo timestamp > stamp-h1T 2> /dev/null
-	cd $(top_builddir) \
-	  && CONFIG_FILES= CONFIG_HEADERS=config.h \
-	     $(SHELL) ./config.status
-	@mv stamp-h1T stamp-h1
-$(srcdir)/config.h.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/./stamp-h1.in
-	@if test ! -f $@; then \
-		rm -f $(srcdir)/./stamp-h1.in; \
-		$(MAKE) $(srcdir)/./stamp-h1.in; \
-	else :; fi
-$(srcdir)/./stamp-h1.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	@rm -f $(srcdir)/./stamp-h1.in $(srcdir)/./stamp-h1.inT
-	@echo timestamp > $(srcdir)/./stamp-h1.inT 2> /dev/null
-	cd $(top_srcdir) && $(AUTOHEADER)
-	@mv $(srcdir)/./stamp-h1.inT $(srcdir)/./stamp-h1.in
-
-include/Inventor/system/inttypes.h: include/Inventor/system/stamp-h3
-	@if test ! -f $@; then \
-		rm -f include/Inventor/system/stamp-h3; \
-		$(MAKE) include/Inventor/system/stamp-h3; \
-	else :; fi
-include/Inventor/system/stamp-h3: $(srcdir)/./include/Inventor/system/inttypes.h.in $(top_builddir)/config.status
-	@rm -f include/Inventor/system/stamp-h3 include/Inventor/system/stamp-h3T
-	@echo timestamp > include/Inventor/system/stamp-h3T 2> /dev/null
-	cd $(top_builddir) \
-	  && CONFIG_FILES= CONFIG_HEADERS=include/Inventor/system/inttypes.h \
-	     $(SHELL) ./config.status
-	@mv include/Inventor/system/stamp-h3T include/Inventor/system/stamp-h3
-$(srcdir)/./include/Inventor/system/inttypes.h.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/./include/Inventor/system/stamp-h3.in
-	@if test ! -f $@; then \
-		rm -f $(srcdir)/./include/Inventor/system/stamp-h3.in; \
-		$(MAKE) $(srcdir)/./include/Inventor/system/stamp-h3.in; \
-	else :; fi
-$(srcdir)/./include/Inventor/system/stamp-h3.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	@rm -f $(srcdir)/./include/Inventor/system/stamp-h3.in $(srcdir)/./include/Inventor/system/stamp-h3.inT
-	@echo timestamp > $(srcdir)/./include/Inventor/system/stamp-h3.inT 2> /dev/null
-	cd $(top_srcdir) && $(AUTOHEADER)
-	@mv $(srcdir)/./include/Inventor/system/stamp-h3.inT $(srcdir)/./include/Inventor/system/stamp-h3.in
-
-distclean-hdr:
-	-rm -f config.h include/Inventor/system/inttypes.h
 docs/coin.doxygen: $(top_builddir)/config.status $(top_srcdir)/docs/coin.doxygen.in
 	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
 install-dist_binSCRIPTS: $(dist_bin_SCRIPTS)
@@ -368,7 +316,7 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	       END { for (i in files) print i; }'`; \
 	mkid -fID $$unique $(LISP)
 
-TAGS: tags-recursive $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) \
+TAGS: tags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	tags=; \
 	here=`pwd`; \
@@ -383,8 +331,8 @@ TAGS: tags-recursive $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) \
 	  done | \
 	  $(AWK) '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
-	test -z "$(ETAGS_ARGS)config.h.in$$unique$(LISP)$$tags" \
-	  || etags $(ETAGS_ARGS) $$tags config.h.in $$unique $(LISP)
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || etags $(ETAGS_ARGS) $$tags  $$unique $(LISP)
 
 GTAGS:
 	here=`CDPATH=: && cd $(top_builddir) && pwd` \
@@ -404,7 +352,7 @@ GZIP_ENV = --best
 distdir: $(DISTFILES)
 	-chmod -R a+w $(distdir) >/dev/null 2>&1; rm -rf $(distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/./include/Inventor/system $(distdir)/build $(distdir)/cfg $(distdir)/cfg/m4 $(distdir)/docs
+	$(mkinstalldirs) $(distdir)/build $(distdir)/cfg $(distdir)/cfg/m4 $(distdir)/docs
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -468,7 +416,7 @@ distcheck: dist
 	  sed 'h;s/./=/g;p;x;p;x'
 check-am: all-am
 check: check-recursive
-all-am: Makefile $(SCRIPTS) $(DATA) $(HEADERS) config.h
+all-am: Makefile $(SCRIPTS) $(DATA)
 
 installdirs: installdirs-recursive
 installdirs-am:
@@ -500,6 +448,7 @@ maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
 	-rm -f Makefile.in
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-recursive
 
 clean-am: clean-generic mostlyclean-am
@@ -509,7 +458,7 @@ dist-all: dist
 distclean: distclean-recursive
 	-rm -f config.status
 
-distclean-am: clean-am distclean-generic distclean-hdr distclean-tags
+distclean-am: clean-am distclean-generic distclean-tags
 
 dvi:
 
@@ -544,19 +493,18 @@ uninstall-am: uninstall-dist_binSCRIPTS uninstall-dist_cfgdataDATA \
 
 .PHONY: all all-am all-recursive check check-am check-recursive clean \
 	clean-generic clean-recursive dist dist-all distcheck distclean \
-	distclean-generic distclean-hdr distclean-recursive \
-	distclean-tags distdir dvi dvi-am dvi-recursive info info-am \
-	info-recursive install install-am install-data install-data-am \
-	install-data-recursive install-dist_binSCRIPTS \
-	install-dist_cfgdataDATA install-dist_m4dataDATA install-exec \
-	install-exec-am install-exec-recursive install-info \
-	install-info-recursive install-man install-recursive \
-	install-strip installcheck installcheck-am \
-	installcheck-recursive installdirs installdirs-am \
-	installdirs-recursive maintainer-clean maintainer-clean-generic \
-	maintainer-clean-recursive mostlyclean mostlyclean-generic \
-	mostlyclean-recursive tags tags-recursive uninstall \
-	uninstall-am uninstall-dist_binSCRIPTS \
+	distclean-generic distclean-recursive distclean-tags distdir \
+	dvi dvi-am dvi-recursive info info-am info-recursive install \
+	install-am install-data install-data-am install-data-recursive \
+	install-dist_binSCRIPTS install-dist_cfgdataDATA \
+	install-dist_m4dataDATA install-exec install-exec-am \
+	install-exec-recursive install-info install-info-recursive \
+	install-man install-recursive install-strip installcheck \
+	installcheck-am installcheck-recursive installdirs \
+	installdirs-am installdirs-recursive maintainer-clean \
+	maintainer-clean-generic maintainer-clean-recursive mostlyclean \
+	mostlyclean-generic mostlyclean-recursive tags tags-recursive \
+	uninstall uninstall-am uninstall-dist_binSCRIPTS \
 	uninstall-dist_cfgdataDATA uninstall-dist_m4dataDATA \
 	uninstall-info-recursive uninstall-recursive
 
@@ -568,7 +516,13 @@ doxygen-doc:
 	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
 
 # sources needed to generate docs must be created by this rule
-built-sources:
+built-sources: $(BUILT_SOURCES)
+
+include/Inventor/SbBasic.h: $(srcdir)/include/Inventor/SbBasic.h.in
+	./config.status --header=$@
+
+include/Inventor/system/inttypes.h: $(srcdir)/include/Inventor/system/inttypes.h.in
+	./config.status --header=$@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

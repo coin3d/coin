@@ -34,9 +34,7 @@ endif
 SUBDIRS = \
 	VRMLnodes actions base bundles caches details draggers elements \
 	engines errors events fields manips misc lists nodekits nodes \
-	projectors sensors system .
-
-INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
+	projectors sensors .
 
 if BUILD_WITH_MSVC
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
