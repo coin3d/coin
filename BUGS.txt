@@ -4111,3 +4111,29 @@ Separator {
     20040609 kintel
 
 =====================================================================
+
+117 SetPixelFormat() returns ERROR_INVALID_PARAMETER (error code 87).
+
+    We've had an external bug report of SetPixelFormat() in
+    wglglue_context_create_context() (src/glue/gl_wgl.c) returning an
+    error (error code 87) when trying to set up an offscreen GL
+    context.
+
+    Google'ing, I found this problem mentioned for some other software
+    package. The cause was said to be using a non-truecolor display
+    under Win NT 4 or Win 98.
+
+    Should try to duplicate (ASK in the Trondheim office is an NT 4
+    installation), then see if it is possible to solve or avoid this
+    problem. It could e.g. be that it fails due to the PFD_TYPE_RGBA
+    flag in the pixelformat descriptor struct.
+
+    20040616 mortene.
+
+    UPDATE 20040616 mortene: ASK SetPixelFormat() does indeed fail,
+    but does so with error code "0" -- which really means "no
+    error". *grmpf* Should try again, with other display settings, and
+    perhaps with other (more slack) values for the pixelformat
+    descriptor.
+
+=====================================================================
