@@ -68,6 +68,7 @@
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbTime.h>
+#include <Inventor/SbDict.h>
 #include <coindefs.h> // COIN_STUB()
 
 #if COIN_DEBUG
@@ -99,20 +100,18 @@ public:
   SbBool processingimmediatequeue;
 
   // immediatequeue - stores SoDelayQueueSensors with priority 0. FIFO.
-  // reinsertlist - temporary storage for idle sensors during processing
   // delayqueue   - stores SoDelayQueueSensor's in sorted order.
   // timerqueue - stores SoTimerSensors in sorted order.
-  // triggerlist - stores sensors that have been triggered in processDelayQueue().
 
-  // FIXME: replace reinsertlist and triggerlist by SbDict instances
-  // as soon as the SbDict has been reimplemented to avoid continuous
-  // memory allocation/deallocation.  pederb, 2002-01-29
   SbList <SoDelayQueueSensor *> immediatequeue;
-  SbList <SoDelayQueueSensor *> reinsertlist;
   SbList <SoDelayQueueSensor *> delayqueue;
   SbList <SoTimerQueueSensor *> timerqueue;
-  SbList <SoDelayQueueSensor *> triggerlist;
   SbList <SoTimerSensor*> reschedulelist;
+
+  // triggerdict - stores sensors that has been triggered in processDelayQueue().
+  // reinsertdict - temporary storage for idle sensors during processing
+  SbDict triggerdict;
+  SbDict reinsertdict;
 
   void (*queueChangedCB)(void *);
   void * queueChangedCBData;
@@ -238,7 +237,7 @@ SoSensorManager::removeDelaySensor(SoDelayQueueSensor * entry)
   // Check "real" queue first..
   int idx = THIS->delayqueue.find(entry);
   if (idx != -1) THIS->delayqueue.remove(idx);
-
+  
   // ..then the immediate queue.
   if (idx == -1) {
     idx = THIS->immediatequeue.find(entry);
@@ -246,12 +245,13 @@ SoSensorManager::removeDelaySensor(SoDelayQueueSensor * entry)
   }
   // ..then the reinsert list
   if (idx == -1) {
-    idx = THIS->reinsertlist.find(entry);
-    if (idx != -1) THIS->reinsertlist.remove(idx);
+    if (THIS->reinsertdict.remove((unsigned long) entry)) {
+      idx = 0; // make sure notifyChanged() is called.
+    }
   }
   
   if (idx != -1) this->notifyChanged();
-
+  
 #if COIN_DEBUG
   if (idx == -1) {
     SoDebugError::postWarning("SoSensorManager::removeDelaySensor",
@@ -267,10 +267,10 @@ void
 SoSensorManager::removeTimerSensor(SoTimerQueueSensor * entry)
 {
   int idx = THIS->timerqueue.find(entry);
-  if (idx != -1) THIS->timerqueue.remove(idx);
-
-  if (idx != -1) this->notifyChanged();
-
+  if (idx != -1) {
+    THIS->timerqueue.remove(idx);
+    this->notifyChanged();
+  }
 #if COIN_DEBUG
   if (idx == -1) {
     SoDebugError::postWarning("SoSensorManager::removeTimerSensor",
@@ -333,6 +333,16 @@ SoSensorManager::processTimerQueue(void)
 #endif // debug
 }
 
+//
+// callback from reinsertdict which will reinsert the sensor
+//
+static void 
+reinsert_dict_cb(unsigned long, void * sensor, void * sensormanager) 
+{
+  SoSensorManager * thisp = (SoSensorManager*) sensormanager;
+  thisp->insertDelaySensor((SoDelayQueueSensor*) sensor);
+}
+
 /*!
   Trigger all delay queue entries in priority order.
 
@@ -366,14 +376,14 @@ SoSensorManager::processDelayQueue(SbBool isidle)
 
   THIS->processingdelayqueue = TRUE;
 
-  // triggerlist is used to store sensors that has already been
-  // triggered.  a sensor should only be triggered once during a call
+  // triggerdict is used to store sensors that has already been
+  // triggered. A sensor should only be triggered once during a call
   // to processDelayQueue(), otherwise we might risk never returning
   // from this function. E.g. SoSceneManager::scheduleRedraw()
   // triggers a delay sensor, which again triggers a redraw. During
   // the redraw, SoSceneManager::scheduleRedraw() might be called
   // again, etc...
-  THIS->triggerlist.truncate(0);
+  THIS->triggerdict.clear();
 
   // Sensors with higher priorities are triggered first.
   while (THIS->delayqueue.getLength()) {
@@ -390,31 +400,25 @@ SoSensorManager::processDelayQueue(SbBool isidle)
       // at the end of this function. We do this to be able to always
       // remove the first list element. We avoid searching for the
       // first non-idle sensor.
-      THIS->reinsertlist.append(sensor);
+      (void) THIS->reinsertdict.enter((unsigned long) sensor, (void*) sensor);
     }
     else {
       // only trigger sensor once per processing loop
-      if (THIS->triggerlist.find(sensor) < 0) {
+      if (THIS->triggerdict.enter((unsigned long) sensor, (void*) sensor)) {
         sensor->trigger();
-        THIS->triggerlist.append(sensor);
       }
       else {
         // Reuse the "reinsert" list to store the sensor. It will be
         // reinserted at the end of this function.
-        if (THIS->reinsertlist.find(sensor) < 0) {
-          THIS->reinsertlist.append(sensor);
-        }
+        (void) THIS->reinsertdict.enter((unsigned long) sensor, (void*) sensor);
       }
     }
   }
   // reinsert sensors that couldn't be triggered, either because it
   // was an idle sensor, or because the sensor had already been
   // triggered
-  for (int i = 0; i < THIS->reinsertlist.getLength(); i++) {
-    this->insertDelaySensor(THIS->reinsertlist[i]);
-  }
-  THIS->reinsertlist.truncate(0);
-  THIS->triggerlist.truncate(0);
+  THIS->reinsertdict.applyToAll(reinsert_dict_cb, (void*) this);
+  THIS->reinsertdict.clear();
   THIS->processingdelayqueue = FALSE;
 }
 
