@@ -34,7 +34,7 @@ RSC=rc.exe
 OUTDIR=C:@libdir@
 INTDIR=.\Release
 
-ALL : ".\Release\coin.dll"
+ALL : ".\Release\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.dll"
 
 
 CLEAN :
@@ -518,9 +518,9 @@ CLEAN :
 	-@erase "$(INTDIR)\SoWWWAnchor.obj"
 	-@erase "$(INTDIR)\SoWWWInline.obj"
 	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(OUTDIR)\coin.exp"
-	-@erase "$(OUTDIR)\coin.lib"
-	-@erase ".\Release\coin.dll"
+	-@erase "$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.exp"
+	-@erase "$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.lib"
+	-@erase ".\Release\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.dll"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
@@ -528,14 +528,14 @@ CLEAN :
 "$(INTDIR)" :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
-CPP_PROJ=/nologo /MT /W3 /GX /O2 /I "C:@coin_build_dir@" /I "C:@coin_build_dir@/include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "COIN_DLL_EXPORTS" /D "COIN_INTERNAL" /D "_DLL" /Fp"$(INTDIR)\coin_dll.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
+CPP_PROJ=/nologo /MT /W3 /GX /O2 /I "C:@coin_build_dir@" /I "C:@coin_build_dir@\include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@\include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "COIN_DLL_EXPORTS" /D "COIN_INTERNAL" /D "_DLL" /Fp"$(INTDIR)\coin_dll.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
 MTL_PROJ=/nologo /D "NDEBUG" /mktyplib203 /win32 
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\coin_dll.bsc" 
 BSC32_SBRS= \
 	
 LINK32=link.exe
-LINK32_FLAGS=Msvcrt.lib Oldnames.lib @LIBS@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:no /pdb:"$(OUTDIR)\coin.pdb" /machine:I386 /out:"Release/coin.dll" /implib:"$(OUTDIR)\coin.lib" 
+LINK32_FLAGS=Msvcrt.lib Oldnames.lib @LIBS@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:no /pdb:"$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.pdb" /machine:I386 /out:"Release/coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.dll" /implib:"$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.lib" 
 LINK32_OBJS= \
 	"$(INTDIR)\commoncode.obj" \
 	"$(INTDIR)\default2dfont.obj" \
@@ -1017,7 +1017,7 @@ LINK32_OBJS= \
 	"$(INTDIR)\SoWWWAnchor.obj" \
 	"$(INTDIR)\SoWWWInline.obj"
 
-".\Release\coin.dll" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
+".\Release\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.dll" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
   $(LINK32_FLAGS) $(LINK32_OBJS)
 <<
@@ -1027,7 +1027,7 @@ LINK32_OBJS= \
 OUTDIR=C:@libdir@
 INTDIR=.\Debug
 
-ALL : ".\Debug\coind.dll"
+ALL : ".\Debug\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.dll"
 
 
 CLEAN :
@@ -1512,11 +1512,11 @@ CLEAN :
 	-@erase "$(INTDIR)\SoWWWInline.obj"
 	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(INTDIR)\vc60.pdb"
-	-@erase "$(OUTDIR)\coind.exp"
-	-@erase "$(OUTDIR)\coind.lib"
-	-@erase "$(OUTDIR)\coind.pdb"
-	-@erase ".\Debug\coind.dll"
-	-@erase ".\Debug\coind.ilk"
+	-@erase "$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.exp"
+	-@erase "$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.lib"
+	-@erase "$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.pdb"
+	-@erase ".\Debug\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.dll"
+	-@erase ".\Debug\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.ilk"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
@@ -1524,14 +1524,14 @@ CLEAN :
 "$(INTDIR)" :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
-CPP_PROJ=/nologo /MTd /W3 /Gm /GX /ZI /Od /I "C:@coin_build_dir@" /I "C:@coin_build_dir@/include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@/include" /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "COIN_DLL_EXPORTS" /D "COIN_INTERNAL" /D "COIN_MAKE_DLL" /Fp"$(INTDIR)\coin_dll.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ /c 
+CPP_PROJ=/nologo /MTd /W3 /Gm /GX /ZI /Od /I "C:@coin_build_dir@" /I "C:@coin_build_dir@\include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@\include" /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "COIN_DLL_EXPORTS" /D "COIN_INTERNAL" /D "COIN_MAKE_DLL" /Fp"$(INTDIR)\coin_dll.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ /c 
 MTL_PROJ=/nologo /D "_DEBUG" /mktyplib203 /win32 
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\coin_dll.bsc" 
 BSC32_SBRS= \
 	
 LINK32=link.exe
-LINK32_FLAGS=Msvcrtd.lib Oldnames.lib @LIBS@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:yes /pdb:"$(OUTDIR)\coind.pdb" /debug /machine:I386 /nodefaultlib /out:"Debug/coind.dll" /implib:"$(OUTDIR)\coind.lib" /pdbtype:sept 
+LINK32_FLAGS=Msvcrt.lib Oldnames.lib @LIBS@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:yes /pdb:"$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.pdb" /debug /machine:I386 /nodefaultlib /out:"Debug/coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.dll" /implib:"$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.lib" /pdbtype:sept 
 LINK32_OBJS= \
 	"$(INTDIR)\commoncode.obj" \
 	"$(INTDIR)\default2dfont.obj" \
@@ -2013,7 +2013,7 @@ LINK32_OBJS= \
 	"$(INTDIR)\SoWWWAnchor.obj" \
 	"$(INTDIR)\SoWWWInline.obj"
 
-".\Debug\coind.dll" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
+".\Debug\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.dll" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
   $(LINK32_FLAGS) $(LINK32_OBJS)
 <<
