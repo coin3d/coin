@@ -875,7 +875,7 @@ SoVectorizeActionP::shade_vertex(SoState * state,
         SbVec3f spot_direction = sl->direction.getValue();
         lighttoworld.multDirMatrix(spot_direction, spot_direction);
 
-        float spot_cutoff = cos(sl->cutOffAngle.getValue());
+        float spot_cutoff = cosf(sl->cutOffAngle.getValue());
         float spot_exp = sl->dropOffRate.getValue() * 128.0f;
 
         dot_spot = -d.dot(spot_direction);
@@ -886,7 +886,7 @@ SoVectorizeActionP::shade_vertex(SoState * state,
         } else {
           // TODO: optimize
           if (spot_exp > 0.0f) {
-            att = att * pow(dot_spot, spot_exp);
+            att = att * powf(dot_spot, spot_exp);
           }
         }
       }
@@ -900,7 +900,7 @@ SoVectorizeActionP::shade_vertex(SoState * state,
 
       if (twoside && dot_spec < 0) dot_spec = -dot_spec;
       if (dot_spec > 0) {
-        tmp=sqrt(s[0]*s[0]+s[1]*s[1]+s[2]*s[2]);
+        tmp=sqrtf(s[0]*s[0]+s[1]*s[1]+s[2]*s[2]);
         if (tmp > 1E-3) {
           dot_spec=dot_spec / tmp;
         }

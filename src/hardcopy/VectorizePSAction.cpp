@@ -310,7 +310,6 @@ SoVectorizePSAction::printHeader(void) const
   FILE * file = this->getOutput()->getFilePointer();
 
   float viewport[4];
-  int i;
 
   viewport[0] = this->convertToPS(this->getPageStartpos())[0];
   viewport[1] = this->convertToPS(this->getPageStartpos())[1];
@@ -569,7 +568,6 @@ SoVectorizePSAction::printPoint(const SoVectorizePoint * item) const
   SbVec2f mul = this->convertToPS(this->getRotatedViewportSize());
   SbVec2f add = this->convertToPS(this->getRotatedViewportStartpos());
 
-  int i;
   const SbBSPTree & bsp = this->getBSPTree();
 
   SbVec3f v;
