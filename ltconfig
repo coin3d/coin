@@ -1070,7 +1070,7 @@ EOF
 
   beos*)
     if $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
-      archive_cmds='$CC -nostart $libobjs $deplibs $linkopts ${wl}-soname $wl$soname -o $lib -lbe'
+      archive_cmds='$CC -nostart $libobjs $deplibs $linkopts ${wl}-soname $wl$soname -o $lib -lGL'
     else
       ld_shlibs=no
     fi
