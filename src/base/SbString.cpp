@@ -165,6 +165,98 @@ SbString::addIntString(const int value)
   *this += s;
 }
 
+// Helper function for find() and findAll().
+static void
+compute_prefix_function(SbIntList & pi, const SbString & str)
+{
+  int len = str.getLength();
+  pi.append(0);
+  int k = 0;
+  
+  for (int q = 1; q < len; q++){
+    while(k > 0 && (str.operator[](k) != str.operator[](q)))
+      k = pi.get(k);
+    if (str.operator[](k) == str.operator[](q))
+      k++;
+    pi.append(k);
+  }
+}
+ 
+ /*!
+  If \a s is found, the method returns the first index where \a s
+  starts. Otherwise it returns -1.
+
+  Note: SbString::find() is a Coin specific extension to the original
+  Open Inventor API.
+
+  \sa SbString::findAll()
+  \since 2002-02-19
+*/
+int
+SbString::find(const SbString & str) const
+{
+  int lenthis = this->getLength();
+  int lenstr = str.getLength();
+  
+  if (!lenthis) return -1;
+  if (lenstr > lenthis) return -1;
+
+  SbIntList pi;
+  compute_prefix_function(pi, str);
+  int q = 0;
+
+  for (int i = 0; i < lenthis; i ++){
+    while (q > 0 && (str.operator[](q) != this->operator[](i)))
+      q = pi.operator[](q - 1);
+    if (str.operator[](q) == this->operator[](i))
+      q++;
+    if (q == lenstr){
+      return (i - (lenstr - 1));
+    }
+  }
+  return -1;
+}
+ 
+ /*!
+  All occurences of \a str is represented in \a found as indices to
+  the characters where \a str starts. If 1 or more is found, \c TRUE
+  is returned, else \c FALSE is returned.
+
+  Note: SbString::findAll() is an extension to the original Open
+  Inventor API.
+
+  \sa SbString::find()
+  \since 2002-02-19
+ */
+SbBool
+SbString::findAll(const SbString & str, SbIntList & found) const
+{
+  // The KMP string matching algorithm is used for this method
+  int lenthis = this->getLength();
+  int lenstr = str.getLength();
+  found.truncate(0);
+
+  if (!lenthis) return FALSE;
+  if (lenstr > lenthis) return FALSE;
+
+  SbIntList pi;
+  compute_prefix_function(pi, str);
+  int q = 0;
+
+  for (int i = 0; i < lenthis; i ++){
+    while (q > 0 && (str.operator[](q) != this->operator[](i)))
+      q = pi.operator[](q - 1);
+    if (str.operator[](q) == this->operator[](i))
+      q++;
+    if (q == lenstr){
+      found.append(i - (lenstr - 1));
+      q = pi.operator[](q - 1);
+    }
+  }
+  if (!found.getLength()) return FALSE;
+  return TRUE;
+}
+
 /*!
   This method returns a new string which contains a substring defined by the
   given indices \a startidx and \a endChar (inclusive).

@@ -26,6 +26,7 @@
 
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbBasic.h>
+#include <Inventor/lists/SbIntList.h>
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -50,6 +51,9 @@ public:
   void deleteSubString(int startidx, int endidx = -1);
 
   void addIntString(const int value);
+
+  int find(const SbString & str) const;
+  SbBool findAll(const SbString & str, SbIntList & found) const;
 
   char operator [](int index) const;
   SbString & operator = (const char * str);
