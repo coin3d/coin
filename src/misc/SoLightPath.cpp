@@ -69,7 +69,7 @@ SoLightPath::~SoLightPath()
   Sets head of path. Truncates path to length 1.
 */
 void
-SoLightPath::setHead(SoNode * node)
+SoLightPath::setHead(SoNode * const node)
 {
   if (this->headnode) this->headnode->unref();
   this->headnode = node;
