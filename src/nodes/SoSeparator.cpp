@@ -62,6 +62,11 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#ifdef _WIN32
+#include <windows.h> // needed for gl.h
+#endif // WIN32
+#include <GL/gl.h>
+
 // Maximum number of caches available for allocation for the
 // rendercaching (FIXME: which is not implemented yet.. 20000426 mortene).
 int SoSeparator::numrendercaches = 2;
@@ -321,17 +326,56 @@ void
 SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
+  state->push();
   if (!this->cullTest(state)) {
-    state->push();
     int n = this->children->getLength();
     SoAction::PathCode pathcode = action->getCurPathCode();
     for (int i = 0; i < n; i++) {
       action->pushCurPath(i);
       (*this->children)[i]->GLRenderBelowPath(action);
+
+      // The GL error test is disabled for this optimized path.
+      // If you get a GL error reporting an error in the Separator node,
+      // enable this code to see exactly which node caused the error.
+      //  pederb, 20000916
+
+#if 0 // enable to debug GL errors 
+      int err = glGetError();
+      if (err != GL_NO_ERROR) {
+        const char * errorstring;
+        switch (err) {
+        case GL_INVALID_VALUE:
+          errorstring = "GL_INVALID_VALUE";
+          break;
+        case GL_INVALID_ENUM:
+          errorstring = "GL_INVALID_ENUM";
+          break;
+        case GL_INVALID_OPERATION:
+          errorstring = "GL_INVALID_OPERATION";
+          break;
+        case GL_STACK_OVERFLOW:
+          errorstring = "GL_STACK_OVERFLOW";
+          break;
+        case GL_STACK_UNDERFLOW:
+          errorstring = "GL_STACK_UNDERFLOW";
+          break;
+        case GL_OUT_OF_MEMORY:
+          errorstring = "GL_OUT_OF_MEMORY";
+          break;
+        default:
+          errorstring = "Unknown GL error";
+          break;
+        }
+        SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
+                               "GL error: %s, nodetype: %s",
+                               errorstring,
+                               (*this->children)[i]->getTypeId().getName().getString());
+      }
+#endif // GL debug
       action->popCurPath(pathcode);
     }
-    state->pop();
   }
+  state->pop();
 }
 
 // Doc from superclass.
