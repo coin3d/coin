@@ -487,7 +487,7 @@ SbTime::parsedate(const char * const date)
   while (*dateptr != ' ' && *dateptr != '\t')
     dateptr++; // we don't give a shit if it's wednesday
   dateptr -= 2; // step back
-  if (dateptr[0] != 'y' && dateptr[1] == ', ') { // RFC 822 / RFC 1123 format
+  if (dateptr[0] != 'y' && dateptr[1] == ',') { // RFC 822 / RFC 1123 format
     // FORMAT: Wkd, DD Mnth YYYY HH:MM:SS GMT
 //     fprintf(stdout, "date format: RFC 822\n");
 
@@ -527,7 +527,7 @@ SbTime::parsedate(const char * const date)
     time.tm_wday = 0;
     time.tm_yday = 0;
     time.tm_isdst = 0;
-  } else if (dateptr[1] == ', ') { // RFC 850 / RFC 1036 format
+  } else if (dateptr[1] == ',') { // RFC 850 / RFC 1036 format
     // FORMAT: Weekday, DD-Mnth-YY HH:MM:SS GMT
 //     fprintf(stdout, "date format: RFC 850\n");
 
