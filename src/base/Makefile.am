@@ -13,6 +13,7 @@ RegularSources = \
 	debug.c \
 	memalloc.c \
 	time.c \
+	string.c \
 	SbBSPTree.cpp \
 	SbBox2s.cpp \
 	SbBox2f.cpp \
