@@ -143,6 +143,7 @@ SoNode::notify(SoNotList * l)
                          this, this->getTypeId().getName().getString(),
                          this->getName().getString(), l);
 #endif // debug
+  this->uniqueId = SoNode::nextUniqueId++;
   inherited::notify(l);
 }
 
