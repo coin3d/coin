@@ -30,11 +30,11 @@
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/engines/SoOutputData.h>
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/fields/SoField.h>
 
 /*!
-  Returns the type of the connection.
- */
+  Returns the type of the engine output.
+*/
 SoType
 SoEngineOutput::getConnectionType(void) const
 {
@@ -47,8 +47,12 @@ SoEngineOutput::getConnectionType(void) const
 }
 
 /*!
-  FIXME
- */
+  Adds all fields connected to this output to \a list.
+  Returns the number of fields added to the list.
+  
+  \sa addConnection()
+  \sa removeConnection()
+*/
 int
 SoEngineOutput::getForwardConnections(SoFieldList & list) const
 {
@@ -60,11 +64,11 @@ SoEngineOutput::getForwardConnections(SoFieldList & list) const
 }
 
 /*!
-  Set the enabled flag.
-  TODO: doc on what the enabled flag does..
-
+  Sets the enabled flag. If output is disabled, the fields connected
+  to this output will not be changed when the engine is evaluated.
+  
   \sa isEnabled().
- */
+*/
 void
 SoEngineOutput::enable(const SbBool flag)
 {
@@ -73,9 +77,9 @@ SoEngineOutput::enable(const SbBool flag)
 
 /*!
   Returns status of the enabled flag.
-
+  
   \sa enable().
- */
+*/
 SbBool
 SoEngineOutput::isEnabled(void) const
 {
@@ -83,8 +87,9 @@ SoEngineOutput::isEnabled(void) const
 }
 
 /*!
-  FIXME
- */
+  Returns the engine containing this output.
+  \sa setContainer()
+*/
 SoEngine*
 SoEngineOutput::getContainer(void) const
 {
@@ -93,32 +98,35 @@ SoEngineOutput::getContainer(void) const
 
 /*!
   Constructor.
- */
+*/
 SoEngineOutput::SoEngineOutput()
 {
-  this->enabled=TRUE;
-  this->container=NULL;
+  this->enabled = TRUE;
+  this->container = NULL;
 }
 
 /*!
-  FIXME
- */
+  Destructor.
+*/
 SoEngineOutput::~SoEngineOutput()
 {
 }
 
 /*!
-  FIXME
- */
+  Sets the engine containing this output.
+  \sa getContainer()
+*/
 void
 SoEngineOutput::setContainer(SoEngine * engine)
 {
-  this->container=engine;
+  this->container = engine;
 }
 
 /*!
-  FIXME
- */
+  Adds \a f to the list of connections from this output.
+  \sa removeConnection()
+  \sa getForwardConnections()
+*/
 void
 SoEngineOutput::addConnection(SoField * f)
 {
@@ -127,8 +135,10 @@ SoEngineOutput::addConnection(SoField * f)
 }
 
 /*!
-  FIXME
- */
+  Removes \a f from the list of connections from this output.
+  \sa addConnection()
+  \sa getForwardConnections()
+*/
 void
 SoEngineOutput::removeConnection(SoField * f)
 {
@@ -137,8 +147,10 @@ SoEngineOutput::removeConnection(SoField * f)
 }
 
 /*!
-  FIXME
- */
+  Returns the number of fields in the list of connections.
+  \sa operator[]
+  \sa addConnection()
+*/
 int
 SoEngineOutput::getNumConnections() const
 {
@@ -146,8 +158,9 @@ SoEngineOutput::getNumConnections() const
 }
 
 /*!
-  FIXME
- */
+  Returns the fields at index \a i in the list of connections.
+  \sa getNumConnections()
+*/
 SoField *
 SoEngineOutput::operator[](int i) const
 {
@@ -155,19 +168,30 @@ SoEngineOutput::operator[](int i) const
 }
 
 /*!
-  FIXME: write function documentation
+  Disables notifications on fields connected to this output.
+  This is done before the engine is evaulated, since the fields we
+  are going to write into have already been notified.
+  \sa doneWriting()
 */
 void
 SoEngineOutput::prepareToWrite(void) const
 {
-  COIN_STUB();
+  int n = this->connections.getLength();
+  for (int i = 0; i < n; i++) {
+    this->connections[i]->enableNotify(FALSE);
+  }
 }
 
 /*!
-  FIXME: write function documentation
+  Enables notification on fields connected to this output.
+  Use this method to restore the notification flags after evaluating.
+  \sa prepareToWrite()
 */
 void
 SoEngineOutput::doneWriting(void) const
 {
-  COIN_STUB();
+  int n = this->connections.getLength();
+  for (int i = 0; i < n; i++) {
+    this->connections[i]->enableNotify(TRUE);
+  }
 }
