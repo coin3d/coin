@@ -431,12 +431,15 @@ SoEngine::copy(void) const
 SoFieldContainer *
 SoEngine::copyThroughConnection(void) const
 {
-  // Important note: _don't_ switch checkCopy() here with findCopy(),
-  // as we're not supposed to create copies of containers "outside"
-  // the part of the scene graph which is involved in the copy
-  // operation.
+  // Important note: _don't_ try to optimize by skipping the
+  // checkCopy() call, as we're not supposed to create copies of
+  // containers "outside" the part of the scene graph which is
+  // involved in the copy operation.
   SoFieldContainer * connfc = SoFieldContainer::checkCopy(this);
-  if (connfc) return connfc;
+  // if a copy has been made, return the findCopy instance (findCopy
+  // will run copyContents() the first time it's called on an
+  // instance).
+  if (connfc) return SoFieldContainer::findCopy(this, TRUE);
 
   // If we're outside the scenegraph.
   if (this->shouldCopy() == FALSE) return (SoFieldContainer *)this;
