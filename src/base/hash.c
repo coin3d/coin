@@ -228,7 +228,7 @@ cc_hash_get(cc_hash * ht, unsigned long key, void ** val)
   Attempt to remove the element with key value \a key. Returns
   TRUE if found, FALSE otherwise.
 */
-int
+SbBool
 cc_hash_remove(cc_hash * ht, unsigned long key)
 {
   cc_hash_entry * he, *next, * prev;
