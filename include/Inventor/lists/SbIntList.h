@@ -32,13 +32,13 @@ public:
   SbIntList(const int sizehint) : SbPList(sizehint) { }
   
   void append(const int item) {
-    ((SbPList*)this)->append((void*) item);
+    ((SbPList*)this)->append((void*)((unsigned long)item));
   }
   int find(const int item) {
-    return ((SbPList*)this)->find((void*)item);
+    return ((SbPList*)this)->find((void *)((unsigned long)item));
   }
   void insert(const int item, const int addbefore) {
-    ((SbPList*)this)->insert((void*)item, addbefore);
+    ((SbPList*)this)->insert((void *)((unsigned long)item), addbefore);
   }
   int & operator[](const int idx) const {
     return (int&) ((*(const SbPList*)this)[idx]);
