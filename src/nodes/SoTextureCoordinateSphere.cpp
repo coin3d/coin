@@ -238,9 +238,19 @@ SoTextureCoordinateSphere::GLRender(SoGLRenderAction * action)
  
   data->currentstate = action->getState();    
   data->currentshape = NULL;  
-  SoTextureCoordinateElement::setFunction(data->currentstate, 
-                                          this, textureCoordinateSphereCallback, 
-                                          PRIVATE(this));
+ 
+  int unit = SoTextureUnitElement::get(data->currentstate);
+  if (unit == 0) {
+    SoTextureCoordinateElement::setFunction(data->currentstate, 
+                                            this, textureCoordinateSphereCallback, 
+                                            PRIVATE(this));
+  } 
+  else {
+    SoMultiTextureCoordinateElement::setFunction(data->currentstate, this,
+                                                 unit, textureCoordinateSphereCallback,
+                                                 PRIVATE(this));
+  }
+
 }
 
 // Documented in superclass.

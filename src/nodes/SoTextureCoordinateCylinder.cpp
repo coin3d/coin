@@ -267,9 +267,19 @@ SoTextureCoordinateCylinder::GLRender(SoGLRenderAction * action)
 
   data->currentstate = action->getState();      
   data->currentshape = NULL;  
-  SoTextureCoordinateElement::setFunction(data->currentstate, 
-                                          this, textureCoordinateCylinderCallback, 
-                                          PRIVATE(this));
+  
+  int unit = SoTextureUnitElement::get(data->currentstate);
+  if (unit == 0) {
+    SoTextureCoordinateElement::setFunction(data->currentstate, 
+                                            this, textureCoordinateCylinderCallback, 
+                                            PRIVATE(this));
+  } 
+  else {
+    SoMultiTextureCoordinateElement::setFunction(data->currentstate, this,
+                                                 unit, textureCoordinateCylinderCallback,
+                                                 PRIVATE(this));
+  }
+
 }
 
 // Documented in superclass.

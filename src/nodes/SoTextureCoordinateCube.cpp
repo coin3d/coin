@@ -280,9 +280,19 @@ SoTextureCoordinateCube::GLRender(SoGLRenderAction * action)
 
   data->currentstate = action->getState();    
   data->currentshape = NULL;  
-  SoTextureCoordinateElement::setFunction(data->currentstate, 
-                                          this, textureCoordinateCubeCallback,
-                                          PRIVATE(this));
+
+  int unit = SoTextureUnitElement::get(data->currentstate);
+  if (unit == 0) {
+    SoTextureCoordinateElement::setFunction(data->currentstate, 
+                                            this, textureCoordinateCubeCallback, 
+                                            PRIVATE(this));
+  } 
+  else {
+    SoMultiTextureCoordinateElement::setFunction(data->currentstate, this,
+                                                 unit, textureCoordinateCubeCallback,
+                                                 PRIVATE(this));
+  }
+
 }
 
 // Documented in superclass.
