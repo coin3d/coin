@@ -2390,8 +2390,7 @@ SoBaseKitP::testParentWrite(void)
           SoNode * parentnode = this->instancelist[parent]->getValue();
           // we must write if parent is going to write
           if (parentnode &&
-              !this->instancelist[parent]->isDefault() &&
-              this->writedata->getIndex(node, this->instancelist[parent]) >= 0) {            
+              !this->instancelist[parent]->isDefault()) {
             field->setDefault(FALSE);
           }
         }
