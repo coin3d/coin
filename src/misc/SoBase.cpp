@@ -571,10 +571,20 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
   expectedtype, or if there are attempts at referencing (through the
   \c USE keyword) unknown instances.
 
-  If we return \c TRUE with \a base equal to \c NULL, there was either
-  end-of-file or \a in didn't have a valid identifier name at the
-  stream for us to read. Use SoInput::eof() after calling this method
-  to detect end-of-file conditions.
+  If we return \c TRUE with \a base equal to \c NULL, three things
+  might have happened:
+
+  1. End-of-file. Use SoInput::eof() after calling this method to
+  detect end-of-file conditions.
+
+  2. \a in didn't have a valid identifier name at the stream for us to
+  read. This happens either in the case of errors, or when all child
+  nodes of a group has been read. Check if the next character in the
+  stream is a '}' to detect the latter case.
+
+  3. A child was given as the "NULL" keyword. This can happen when
+  reading the contents of SoSFNode or SoMFNode fields.
+  
 
   If \c TRUE is returned and \a base is non-NULL upon return,
   the instance was allocated and initialized according the what
@@ -600,6 +610,7 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
 #endif // debug
 
   if (name == USE_KEYWORD) result = SoBase::readReference(in, base);
+  else if (name == NULL_KEYWORD) return TRUE;
   else result = SoBase::readBase(in, name, base);
 
   // Check type correctness.
