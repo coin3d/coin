@@ -3822,5 +3822,37 @@ main(int argc, char* argv[])
 
 =====================================================================
 
+132 SoExtSelection::select()
 
+    Apparently doesn't work as expected.  One should be able to
+    programmatically manage the selection through e.g. this piece of
+    code:
+
+      // get selected node
+      SoNode *pNode = pViewer->getSceneManager()->getSceneGraph();
+   
+      // m_pSel is a local SoExtSelection node
+      m_pSel->enableNotify( false );
+      m_pSel->addChild( pNode );
+      m_pSel->setPointFilterCallback(  _pointSelCB, this );
+      m_pSel->select ( m_pSel, 4, normPos, m_vpRegion, false );
+      m_pSel->setPointFilterCallback(  0, this );
+      m_pSel->removeChild( pNode );
+      m_pSel->enableNotify( true );
+
+
+=====================================================================
+
+133 SoExtSelection selection area rendering bug
+
+    SoGui toolkits needs to set the window id element so the
+    SoExtSelection node can know which window id it is being
+    manipulated in, so it doesn't render the selection area rectangle
+    in all available views.
+
+    You probably also have canvas refresh issues related to this -
+    make sure the inactive views does not refresh their displays
+    during interaction.
+
+=====================================================================
 
