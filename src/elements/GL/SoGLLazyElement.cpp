@@ -443,11 +443,11 @@ SoGLLazyElement::init(SoState * stateptr)
 }
 
 void
-SoGLLazyElement::push(SoState * state)
+SoGLLazyElement::push(SoState * stateptr)
 {
-  inherited::push(state);
+  inherited::push(stateptr);;
   SoGLLazyElement * prev = (SoGLLazyElement*) this->getNextInStack();
-  this->state = state; // needed to send GL texture
+  this->state = stateptr; // needed to send GL texture
   this->glstate = prev->glstate;
   this->colorindex = prev->colorindex;
   this->transpmask = prev->transpmask;
@@ -544,7 +544,7 @@ SoGLLazyElement::isColorIndex(SoState * state)
 //! FIXME: write doc
 
 void
-SoGLLazyElement::send(const SoState * state, uint32_t mask) const
+SoGLLazyElement::send(const SoState * stateptr, uint32_t mask) const
 {
   if (this->colorpacker) {
     if (!this->colorpacker->diffuseMatch(this->coinstate.diffusenodeid) ||
