@@ -601,7 +601,11 @@ versus the code "layout" (to make it more easily readable):
     cause mysterious crashes), and besides it's bloody irritating to
     walk through the code later to remove them.
 
- 5) Code formatting rules. The default is to use Kernighan and Ritchie style.
+ 5) Don't use any variablename, classname, define, functionname or any
+    other identifier that starts with an underscore. That namespace is
+    per the C and C++ specs fully reserved for the compiler.
+
+ 6) Code formatting rules. The default is to use Kernighan and Ritchie style.
 
    a) Braces: keep opening braces on the end of the line, and closing
       braces at the start. Like this:
