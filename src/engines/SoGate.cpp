@@ -30,6 +30,9 @@
 #include <Inventor/engines/SoSubEngineP.h>
 
 #include <Inventor/SbString.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SoEngineOutputList.h>
@@ -187,8 +190,27 @@ SoGate::inputChanged(SoField * which)
 SbBool
 SoGate::readInstance(SoInput * in, unsigned short flags)
 {
-  // COIN_STUB();
-  return FALSE;
+  // This code is identical to SoSelectOne::readInstance(), so migrate
+  // changes.
+
+  SbName tmp;
+  if (!in->read(tmp) || tmp != "type") {
+    SoReadError::post(in, "\"type\" keyword is missing.");
+    return FALSE;
+  }
+  SbName fieldname;
+  if (!in->read(fieldname)) {
+    SoReadError::post(in, "Couldn't read input type for engine.");
+    return FALSE;
+  }
+  SoType inputtype = SoType::fromName(fieldname);
+  if (!this->initialize(inputtype)) {
+    SoReadError::post(in, "Type \"%s\" for input field is not valid.",
+                      fieldname.getString());
+    return FALSE;
+  }
+
+  return SoEngine::readInstance(in, flags);
 }
 
 /*!
@@ -197,5 +219,28 @@ SoGate::readInstance(SoInput * in, unsigned short flags)
 void
 SoGate::writeInstance(SoOutput * out)
 {
-  // COIN_STUB();
+  // This code is identical to SoSelectOne::writeInstance(), so
+  // migrate changes.
+
+  if (this->writeHeader(out, FALSE, TRUE)) return;
+
+  SbBool binarywrite = out->isBinary();
+
+  if (!binarywrite) out->indent();
+  out->write("type");
+  if (!binarywrite) out->write(' ');
+  out->write(this->input->getTypeId().getName());
+  if (binarywrite) out->write((unsigned int)0);
+  else out->write('\n');
+
+  this->getFieldData()->write(out, this);
+  this->writeFooter(out);
+}
+
+// overloaded from parent
+void
+SoGate::copyContents(const SoFieldContainer * from, SbBool copyconnections)
+{
+  this->initialize(((SoGate *)from)->input->getTypeId());
+  inherited::copyContents(from, copyconnections);
 }

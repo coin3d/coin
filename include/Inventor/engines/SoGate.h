@@ -59,13 +59,14 @@ private:
 
   SbBool initialize(const SoType inputfieldtype);
 
+  virtual void copyContents(const SoFieldContainer * from,
+                            SbBool copyconnections);
+
   // SoSelectOne instances uses a dynamic set of inputs and outputs,
   // as they are not common for all instances of the class (like for
   // most of the other engines).
   SoFieldData * dynamicinput;
   SoEngineOutputData * dynamicoutput;
-
-  SoSFName typeField;
 
   // Avoid a g++/egcs warning due to the private default constructor.
   friend class dummy;
