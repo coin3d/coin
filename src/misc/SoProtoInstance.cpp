@@ -39,6 +39,7 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/C/threads/threadsutilp.h>
 #include <stdlib.h>
 #include <assert.h>
 
@@ -72,6 +73,7 @@ public:
 PRIVATE_NODE_TYPESYSTEM_SOURCE(SoProtoInstance);
 
 static SbDict * protoinstance_dict;
+static void * protoinstance_mutex;
 
 // doc in parent
 void
@@ -90,6 +92,7 @@ SoProtoInstance::initClass(void)
                        SoNode::nextActionMethodIndex++);
 
   protoinstance_dict = new SbDict;
+  CC_MUTEX_CONSTRUCT(protoinstance_mutex);
   coin_atexit((coin_atexit_f*) SoProtoInstance::cleanupClass, 0);
 }
 
@@ -97,6 +100,7 @@ void
 SoProtoInstance::cleanupClass(void)
 {
   delete protoinstance_dict;
+  CC_MUTEX_DESTRUCT(protoinstance_mutex);
 }
 
 #undef THIS
@@ -172,8 +176,9 @@ SoProtoInstance::readInstance(SoInput * in, unsigned short flags)
 void
 SoProtoInstance::setRootNode(SoNode * root)
 {
+  CC_MUTEX_LOCK(protoinstance_mutex);
   if (THIS->root) {
-    protoinstance_dict->remove((unsigned long) root);
+    protoinstance_dict->remove((unsigned long) THIS->root);
     THIS->rootsensor->detach();
   }
   THIS->root = root;
@@ -181,6 +186,7 @@ SoProtoInstance::setRootNode(SoNode * root)
     THIS->rootsensor->attach(root);
     protoinstance_dict->enter((unsigned long) root, (void*) this);
   }
+  CC_MUTEX_UNLOCK(protoinstance_mutex);
 }
 
 /*!
@@ -223,11 +229,14 @@ SoProtoInstance::getFileFormatName(void) const
 SoProtoInstance *
 SoProtoInstance::findProtoInstance(const SoNode * rootnode)
 {
+  SoProtoInstance * ret = NULL;
   void * tmp;
+  CC_MUTEX_LOCK(protoinstance_mutex);
   if (protoinstance_dict->find((unsigned long) rootnode, tmp)) {
-    return (SoProtoInstance*) tmp;
+    ret = (SoProtoInstance*) tmp;
   }
-  return NULL;
+  CC_MUTEX_UNLOCK(protoinstance_mutex);
+  return ret;
 }
 
 // Doc in parent
@@ -258,7 +267,6 @@ void
 SoProtoInstance::sensorCB(void * data, SoSensor *)
 {
   SoProtoInstance * thisp = (SoProtoInstance*) data;
-  thisp->pimpl->rootsensor->detach();
-  thisp->pimpl->root = NULL;
+  thisp->setRootNode(NULL);
   thisp->unref();
 }
