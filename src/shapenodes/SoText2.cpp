@@ -169,7 +169,6 @@ public:
   void flushGlyphCache(const SbBool unrefglyphs);
   void buildGlyphCache(SoState * state);
   SbBool shouldBuildGlyphCache(SoState * state);
-  void dumpGlyphCache();
   void dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos);
 
   cc_font_specification * fontspec;
@@ -517,29 +516,6 @@ SoText2P::flushGlyphCache(const SbBool unrefglyphs)
   this->bbox.makeEmpty();
 }
 
-// Debug convenience method.
-void
-SoText2P::dumpGlyphCache()
-{
-
-  // FIXME: Must re-implement using new glyph2d.c functions. Unless it
-  // can be discarded as obsolete. (1Sep2003 handegar)
-
-  /*
-  // FIXME: pure debug method, remove. preng 2003-03-18.
-  fprintf(stderr,"dumpGlyphCache\n");
-  const int nrlines = this->glyphs.getLength();
-  for (int i=0; i < nrlines; i++) {
-    fprintf(stderr,"  stringwidth[%d]=%d\n", i, this->stringwidth[i]);
-    fprintf(stderr,"  laststring[%d]=%s\n", i, this->laststring[i].getString());
-    for (int j = 0; j < this->laststring[i].getLength(); j++) {
-      fprintf(stderr,"    glyph[%d][%d]=%p\n", i, j, this->glyphs[i][j]);
-      fprintf(stderr,"    position[%d][%d]=(%d, %d)\n", i, j, this->positions[i][j][0], this->positions[i][j][1]);
-    }
-  }
-  */
-
-}
 
 // Calculates a quad around the text in 3D.
 void
