@@ -319,13 +319,14 @@ public:
     this->character = 0;
     this->size = 0.0;
     this->glyph = NULL;
+    this->angle = 0.0;
   }
-  coin_glyph_info(const unsigned int character, const float size, const SbName &font, SoGlyph *glyph)
-    : character(character), size(size), font(font), glyph(glyph) {}
+  coin_glyph_info(const unsigned int character, const float size, const SbName &font, SoGlyph *glyph, const float angle)
+    : character(character), size(size), font(font), glyph(glyph), angle(angle) {}
   
   // Note: bitmap glyphs have valid size, polygonal glyphs have size=-1.0
-  SbBool matches(const unsigned int character, const float size, const SbName font) {
-    return (this->character == character) && (this->size == size) && (this->font == font);
+  SbBool matches(const unsigned int character, const float size, const SbName font, const float angle) {
+    return (this->character == character) && (this->size == size) && (this->font == font) && (this->angle == angle);
   }
   
   // AIX native compiler xlC needs equality and inequality operators
@@ -333,7 +334,7 @@ public:
   // if they are actually never used).
   
   SbBool operator==(const coin_glyph_info & gi) {
-    return this->matches(gi.character, gi.size, gi.font) && this->glyph == gi.glyph;
+    return this->matches(gi.character, gi.size, gi.font, gi.angle) && this->glyph == gi.glyph;
   }
   SbBool operator!=(const coin_glyph_info & gi) {
     return !(*this == gi);
@@ -342,6 +343,7 @@ public:
   unsigned int character;
   float size;
   SbName font;
+  float angle;
   SoGlyph *glyph;
 };
 
@@ -381,7 +383,7 @@ SoGlyph::getGlyph(const char character, const SbName & font)
   int i, n = activeGlyphs->getLength();
   for (i = 0; i < n; i++) {
     // Search for fontsize -1 to avoid getting a bitmap glyph.
-    if ((*activeGlyphs)[i].matches(character, -1.0, font)) break;
+    if ((*activeGlyphs)[i].matches(character, -1.0, font, 0.0)) break;
   }
   if (i < n) {
     SoGlyph *glyph = (*activeGlyphs)[i].glyph;
@@ -421,7 +423,7 @@ SoGlyph::getGlyph(const char character, const SbName & font)
 #endif // COIN_NO_DEFAULT_3DFONT
   }
   // Use impossible font size to avoid mixing polygonal & bitmap glyphs.
-  coin_glyph_info info(character, -1.0, font, glyph);
+  coin_glyph_info info(character, -1.0, font, glyph, 0.0);
   glyph->pimpl->refcount++;
   activeGlyphs->append(info);
   CC_MUTEX_UNLOCK(SoGlyph_mutex);
@@ -486,7 +488,7 @@ SoGlyph::getGlyph(SoState * state,
 
   int i, n = activeGlyphs->getLength();
   for (i = 0; i < n; i++) {
-    if ((*activeGlyphs)[i].matches(character, fontsize[0], state_name)) break;
+    if ((*activeGlyphs)[i].matches(character, fontsize[0], state_name, angle)) break;
   }
   if (i < n) {
     SoGlyph *glyph = (*activeGlyphs)[i].glyph;
@@ -499,7 +501,7 @@ SoGlyph::getGlyph(SoState * state,
   SbString fontname = state_name.getString();
   int font = SoFontLib::getFont( fontname, fontsize);
   if (font >= 0) {
-    // FIXME: use rotation angle. preng 2003-03-03
+    SoFontLib::setFontRotation(font, angle);
     int glyphidx = SoFontLib::getGlyph(font, character);
     if (glyphidx >= 0) {
       SoGlyph * g = new SoGlyph();
@@ -508,7 +510,7 @@ SoGlyph::getGlyph(SoState * state,
       g->pimpl->size = fontsize;
       g->pimpl->angle = angle;
       g->pimpl->character = character;
-      coin_glyph_info info(character, fontsize[0], state_name, g);
+      coin_glyph_info info(character, fontsize[0], state_name, g, angle);
       g->pimpl->refcount++;
       activeGlyphs->append(info);
       CC_MUTEX_UNLOCK(SoGlyph_mutex);
