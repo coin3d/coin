@@ -148,7 +148,9 @@ SoContextHandler::addContextDestructionCallback(ContextDestructionCB * func,
 {
   if (socontexthandler_cblist == NULL) {
     socontexthandler_cblist = new SbList <socontexthandler_cbitem>;
-    coin_atexit((coin_atexit_f *)socontexthandler_cleanup, 0);
+    // make this callback trigger after the SoGLCacheContext cleanup function
+    // by setting priority to -1
+    coin_atexit((coin_atexit_f *)socontexthandler_cleanup, -1);
   }
 
   socontexthandler_cbitem item;

@@ -76,6 +76,10 @@ static SbList <SoGLDisplayList*> * scheduledeletelist;
 static SbList <so_scheduledeletecb_info*> * scheduledeletecblist;
 static void * glcache_mutex;
 
+// needed to be able to remove the callback in the cleanup function
+// (SoGLCacheContextElement::cleanupContext() is private)
+static SoContextHandler::ContextDestructionCB * soglcache_contextdestructioncb;
+
 static void soglcachecontext_cleanup(void)
 {
   int i,n = extsupportlist->getLength();
@@ -92,6 +96,11 @@ static void soglcachecontext_cleanup(void)
   delete scheduledeletelist;
   delete scheduledeletecblist;
   CC_MUTEX_DESTRUCT(glcache_mutex);
+
+  if (soglcache_contextdestructioncb) {
+    SoContextHandler::removeContextDestructionCallback(soglcache_contextdestructioncb, NULL);
+    soglcache_contextdestructioncb = NULL;
+  }
 }
 
 //
@@ -149,8 +158,13 @@ SoGLCacheContextElement::initClass(void)
   CC_MUTEX_CONSTRUCT(glcache_mutex);
   coin_atexit((coin_atexit_f *)soglcachecontext_cleanup, 0);
 
-  // add a callback which is called every time a GL-context is destructed
+  // add a callback which is called every time a GL-context is
+  // destructed.  it's important that this callback is added in
+  // initClass() to make it work properly when destructing a
+  // context. See comments in SoContextHandler.cpp for more
+  // information.
   SoContextHandler::addContextDestructionCallback(cleanupContext, NULL);
+  soglcache_contextdestructioncb = cleanupContext;
 }
 
 /*!
