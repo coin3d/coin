@@ -25,7 +25,8 @@ ALLSOURCES = \
 	SoType.cpp SoType.h \
 	SoOffscreenRenderer.cpp SoOffscreenRenderer.h \
 	SoGenerate.cpp SoGenerate.h \
-	default3dfont.cpp
+	default3dfont.cpp \
+	default2dfont.cpp
 
 
 ALLINSTHEADERS = \
