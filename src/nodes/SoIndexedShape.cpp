@@ -96,12 +96,14 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   SoState * state = action->getState();
 
-  const SoCoordinateElement *coordelem = SoCoordinateElement::getInstance(state);
+  const SoCoordinateElement * coordelem = NULL;
   SoVertexProperty * vp = (SoVertexProperty *) this->vertexProperty.getValue();
   assert(!vp ||
          vp->getTypeId().isDerivedFrom(SoVertexProperty::getClassTypeId()));
   SbBool vpvtx = vp && (vp->vertex.getNum() > 0);
-
+  if (!vpvtx) {
+    coordelem = SoCoordinateElement::getInstance(state);
+  }
   int numCoords = vpvtx ?
     vp->vertex.getNum() :
     coordelem->getNum();
