@@ -76,13 +76,13 @@ SoElapsedTime::SoElapsedTime(void)
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoElapsedTime);
 
-  SO_ENGINE_ADD_INPUT(timeIn,(SbTime::zero()));
-  SO_ENGINE_ADD_INPUT(speed,(1));
-  SO_ENGINE_ADD_INPUT(on,(TRUE));
-  SO_ENGINE_ADD_INPUT(pause,(FALSE));
+  SO_ENGINE_ADD_INPUT(timeIn, (SbTime::zero()));
+  SO_ENGINE_ADD_INPUT(speed, (1));
+  SO_ENGINE_ADD_INPUT(on, (TRUE));
+  SO_ENGINE_ADD_INPUT(pause, (FALSE));
   SO_ENGINE_ADD_INPUT(reset, ());
 
-  SO_ENGINE_ADD_OUTPUT(timeOut,SoSFTime);
+  SO_ENGINE_ADD_OUTPUT(timeOut, SoSFTime);
 
   SoField * realtime = SoDB::getGlobalField("realTime");
   this->timeIn.connectFrom(realtime);
@@ -106,17 +106,17 @@ SoElapsedTime::evaluate(void)
 {
   //  if (this->firsttime) return;
   if (this->status == SoElapsedTime::STOPPED) {
-    SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(this->currtime));
+    SO_ENGINE_OUTPUT(timeOut, SoSFTime, setValue(this->currtime));
   }
   else {
     SbTime now = this->timeIn.getValue();
     this->currtime += (now-this->lasttime) * this->speed.getValue();
     this->lasttime = now;
     if (this->status == SoElapsedTime::PAUSED) {
-      SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(this->pausetime));
+      SO_ENGINE_OUTPUT(timeOut, SoSFTime, setValue(this->pausetime));
     }
     else {
-      SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(this->currtime));
+      SO_ENGINE_OUTPUT(timeOut, SoSFTime, setValue(this->currtime));
     }
   }
 }
