@@ -2,11 +2,8 @@
 ############################################################################
 
 module=Coin
-cvs2cl=/home/sigma/larsa/store/cvs/cvs2cl/cvs2cl.pl
-moduledir=$HOME/code/$module
+cvs2cl=./scripts/cvs2cl.pl
 headerfile=/tmp/$module.header
-
-cd $moduledir
 
 ############################################################################
 cat > $headerfile <<ENDOFHEADER
