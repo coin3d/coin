@@ -50,7 +50,6 @@ public:
                                           int major, 
                                           int minor, 
                                           int revision);
-  static class GLWrapper *getGLWrapper(SoState * state);
   static SbBool extSupported(SoState * state, int extid);
   static SbBool areMipMapsFast(SoState * state);
   enum {

@@ -28,7 +28,6 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbName.h>
 #include <Inventor/misc/SoState.h>
-#include "../misc/GLWrapper.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -58,17 +57,11 @@ typedef struct {
 
 typedef struct {
   int context;
-  GLWrapper *wrapper;
-} so_glwrapper_info;
-
-typedef struct {
-  int context;
   int handle;
 } so_gltexhandle_info;
 
 static SbList <so_glext_info *> *extsupportlist;
 static SbList <so_glversion_info> *glversionlist;
-static SbList <so_glwrapper_info> *glwrapperlist;
 static SbList <SoGLDisplayList*> *scheduledeletelist;
 
 static void soglcachecontext_cleanup(void)
@@ -77,14 +70,9 @@ static void soglcachecontext_cleanup(void)
   for (i = 0; i < n; i++) {
     delete (*extsupportlist)[i];
   }
-  n = glwrapperlist->getLength();
-  for (i = 0; i < n; i++) {
-    delete (*glwrapperlist)[i].wrapper;
-  }
   delete extsupportlist;
   delete glversionlist;
   delete scheduledeletelist;
-  delete glwrapperlist;
 }
 
 
@@ -131,8 +119,7 @@ SoGLCacheContextElement::initClass(void)
   extsupportlist = new SbList <so_glext_info *>;
   glversionlist = new SbList <so_glversion_info>;
   scheduledeletelist = new SbList <SoGLDisplayList*>;
-  glwrapperlist = new SbList <so_glwrapper_info>;
-  atexit(soglcachecontext_cleanup);
+  (void)atexit(soglcachecontext_cleanup);
 }
 
 /*!
@@ -333,34 +320,6 @@ SoGLCacheContextElement::openGLVersionMatchesAtLeast(SoState *state,
   else if (min > minor) return true;
   if (rev < revision) return false;
   return true;
-}
-
-/*!
-  \internal
-
-  Returns a GLWrapper instance that is valid for the context defined by
-  /e state. This method is an extension versus the Open Inventor API.
-  FIXME: Make GLWrapper publicly available?
-
-  \since 2001-11-08
-*/
-GLWrapper *
-SoGLCacheContextElement::getGLWrapper(SoState *state)
-{
-  int currcontext = SoGLCacheContextElement::get(state);
-
-  int i, n = glwrapperlist->getLength();
-  for (i = 0; i < n; i++) {
-    if ((*glwrapperlist)[i].context == currcontext) {
-      return (*glwrapperlist)[i].wrapper;
-    }
-  }
-
-  so_glwrapper_info info;
-  info.context = currcontext;
-  info.wrapper = new GLWrapper;
-  glwrapperlist->append(info);
-  return info.wrapper;
 }
 
 /*!

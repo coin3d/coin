@@ -19,6 +19,8 @@
 
 #include "GLWrapper.h"
 
+#include <Inventor/SbDict.h>
+
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
@@ -33,7 +35,7 @@
 
 #ifdef HAVE_GLX
 #include <GL/glx.h>
-#endif
+#endif /* HAVE_GLX */
 
 #if   defined(HAVE_WGL)
   #define LIBHANDLE_T void*
@@ -59,42 +61,66 @@
 
 /* FIXME: support HP-UX? (Doesn't have dlopen().) 20010626 mortene. */
 
-/*!
-  Constructor.
- */
-GLWrapper::GLWrapper()
+
+LIBHANDLE_T GL_libhandle = NULL;
+static GLWrapper_t * GL_instance = NULL;
+static SbDict * gldict = NULL;
+
+
+static void
+free_GLWrapper_instance(unsigned long key, void * value)
 {
-  LIBHANDLE_T GL_libhandle = OPEN_RUNTIME_BINDING(NULL);
-  
-  if (!GL_libhandle) {
-    //FIXME: Error handling
+  free(value);
+}
+
+/* Cleans up at exit. */
+static void
+GLWrapper_cleanup(void)
+{
+  // FIXME: clean up. 20011115 mortene.
+  // if (GL_libhandle) { CLOSE_RUNTIME_BINDING(GL_libhandle); }
+
+  gldict->applyToAll(free_GLWrapper_instance);
+  delete gldict;
+}
+
+const GLWrapper_t *
+GLWrapper(int contextid)
+{
+  if (!gldict) {  /* First invocation, do initializations. */
+    (void)atexit(GLWrapper_cleanup);
+
+    gldict = new SbDict;
+
+    GL_libhandle = OPEN_RUNTIME_BINDING(NULL);
+    if (!GL_libhandle) { } // FIXME: Error handling. 200111xx kintel.
   }
-  
-  // Define GLWRAPPER_REGISTER_FUNC macro. Casting the type is
-  // necessary for this file to be compatible with C++ compilers. 
+
+  void * ptr;
+  SbBool found = gldict->find(contextid, ptr);
+
+  if (!found) {
+    GLWrapper_t * gi = (GLWrapper_t *)malloc(sizeof(GLWrapper_t));
+    /* FIXME: handle out-of-memory on malloc(). 20000928 mortene. */
+    ptr = gi;
+    gldict->enter(contextid, ptr);
+
+    // Define GLWRAPPER_REGISTER_FUNC macro. Casting the type is
+    // necessary for this file to be compatible with C++ compilers. 
 #ifdef HAVE_HASH_QUOTING
   #define GLWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-  this->_funcname_ = (_funcsig_)GETPROCADDRESS(GL_libhandle, #_funcname_)
+  gi->_funcname_ = (_funcsig_)GETPROCADDRESS(GL_libhandle, #_funcname_)
 #elif defined(HAVE_APOSTROPHES_QUOTING)
   #define GLWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-  this->_funcname_ = (_funcsig_)GETPROCADDRESS(GL_libhandle, "_funcname_")
+  gi->_funcname_ = (_funcsig_)GETPROCADDRESS(GL_libhandle, "_funcname_")
 #else
   #error Unknown quoting.
 #endif
 
-  // Resolve our functions 
-  GLWRAPPER_REGISTER_FUNC(glTexImage3D, COIN_PFNGLTEXIMAGE3DPROC);
-  GLWRAPPER_REGISTER_FUNC(glTexImage3DEXT, COIN_PFNGLTEXIMAGE3DEXTPROC);
-};
+    // Resolve our functions 
+    GLWRAPPER_REGISTER_FUNC(glTexImage3D, COIN_PFNGLTEXIMAGE3DPROC);
+    GLWRAPPER_REGISTER_FUNC(glTexImage3DEXT, COIN_PFNGLTEXIMAGE3DEXTPROC);
+  }
 
-/*!
-  Destructor.
- */
-GLWrapper::~GLWrapper()
-{
-#ifdef CLOSE_RUNTIME_BINDING
-  if (GL_libhandle) CLOSE_RUNTIME_BINDING(GL_libhandle);
-#endif
+  return (GLWrapper_t *)ptr;
 }
-
-
