@@ -812,6 +812,14 @@ versus the code "layout" (to make it more easily readable):
       because it's ugly and unusual. So for consistency, _please_
       stick with the space-on-both-sides convention in Coin code.
 
+   f) Use
+                   return x;
+      and not
+                   return (x);
+
+      (Since "return" is not a function with arguments, the latter
+      just looks plain wrong.)
+
 ==============================================================================
 
 API Documentation Guidelines
