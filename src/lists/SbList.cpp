@@ -150,7 +150,7 @@
 
 
 /*!
-  \fn void SbList<Type>::remove(const Type item)
+  \fn void SbList<Type>::removeItem(const Type item)
 
   Removes an \a item from the list. If there are several items with
   the same value, removes the \a item with the lowest index.

@@ -42,9 +42,12 @@ public:
   void append(const Type item);
   int find(const Type item) const;
   void insert(const Type item, const int insertbefore);
-  void remove(const Type item);
   void remove(const int index);
   void removeFast(const int index);
+  // Need to name this something else than remove(), to avoid
+  // ambiguity when Type is "int".
+  void removeItem(const Type item);
+
   int getLength(void) const;
   void truncate(const int length, const int fit = 0);
 
@@ -193,7 +196,7 @@ SbList<Type>::insert(const Type item, const int insertbefore)
 }
 
 template <class Type> inline void
-SbList<Type>::remove(const Type item)
+SbList<Type>::removeItem(const Type item)
 {
   int idx = this->find(item);
   assert(idx != -1);

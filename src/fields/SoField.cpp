@@ -597,8 +597,8 @@ SoField::disconnect(SoField * master)
   // Decouple links. ///////////////////////////////////////////////////
 
   // Remove bookkeeping material.
-  if (!containerisconverter) master->storage->slaves.remove(this);
-  this->storage->masterfields.remove(master);
+  if (!containerisconverter) master->storage->slaves.removeItem(this);
+  this->storage->masterfields.removeItem(master);
 
   SoFieldConverter * converter = this->storage->findConverter(master);
   if (converter) { // There's a converter engine between the fields.
@@ -634,7 +634,7 @@ SoField::disconnect(SoEngineOutput * master)
   // Decouple links. ///////////////////////////////////////////////////
 
   // Remove bookkeeping material.
-  this->storage->masterengineouts.remove(master);
+  this->storage->masterengineouts.removeItem(master);
 
   SoFieldConverter * converter = this->storage->findConverter(master);
   if (converter) { // There's a converter engine between the fields.
