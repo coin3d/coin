@@ -102,14 +102,14 @@ fontstruct_new(FLWfont font)
 }
 
 int
-fontstruct_set_fontname(struct fontstruct * fs, const char * new)
+fontstruct_set_fontname(struct fontstruct * fs, const char * newname)
 {
   if (fs) {
     if (fs->fontname)
       free(fs->fontname);
-    fs->fontname = (char *)malloc(strlen(new) + 1);
+    fs->fontname = (char *)malloc(strlen(newname) + 1);
     if (fs->fontname) {
-      strcpy(fs->fontname, new);
+      strcpy(fs->fontname, newname);
       return 0;
     }
   }
@@ -117,14 +117,14 @@ fontstruct_set_fontname(struct fontstruct * fs, const char * new)
 }
 
 int
-fontstruct_set_requestname(struct fontstruct * fs, const char * new)
+fontstruct_set_requestname(struct fontstruct * fs, const char * newname)
 {
   if (fs) {
     if (fs->requestname)
       free(fs->requestname);
-    fs->requestname = (char *)malloc(strlen(new) + 1);
+    fs->requestname = (char *)malloc(strlen(newname) + 1);
     if (fs->requestname) {
-      strcpy(fs->requestname, new);
+      strcpy(fs->requestname, newname);
       return 0;
     }
   }
