@@ -716,7 +716,7 @@ SbBool SoVRMLAudioClipP::openFile(const char *filename)
     return FALSE;
   }
 
-  this->stream = s_stream_open(filename, NULL);
+  this->stream = simage_wrapper()->s_stream_open(filename, NULL);
   if (this->stream == NULL) {
     SoDebugError::postWarning("SoVRMLAudioClipP::openFile",
                               "Couldn't open file '%s'",
@@ -725,15 +725,15 @@ SbBool SoVRMLAudioClipP::openFile(const char *filename)
   }
 
   s_params * params;
-  params = s_stream_params(stream);
+  params = simage_wrapper()->s_stream_params(stream);
 
   this->channels = 0;
   this->bitspersample = 16;
   this->samplerate = 0;
   if (params != NULL) {
-    s_params_get(params,
+    simage_wrapper()->s_params_get(params,
                  "channels", S_INTEGER_PARAM_TYPE, &this->channels, NULL);
-    s_params_get(params,
+    simage_wrapper()->s_params_get(params,
                  "samplerate", S_INTEGER_PARAM_TYPE, &this->samplerate, NULL);
   }
 
@@ -749,12 +749,12 @@ void SoVRMLAudioClipP::closeFile()
   if (this->stream != NULL) {
     if (! (simage_wrapper()->available &&
            simage_wrapper()->versionMatchesAtLeast(1,4,0) &&
-           simage_wrapper()->s_close &&
-           simage_wrapper()->s_destroy) ) {
+           simage_wrapper()->s_stream_close &&
+           simage_wrapper()->s_stream_destroy) ) {
       return;
     } else {
-      s_stream_close(this->stream);
-      s_stream_destroy(this->stream);
+      simage_wrapper()->s_stream_close(this->stream);
+      simage_wrapper()->s_stream_destroy(this->stream);
     }
     this->stream = NULL;
   }

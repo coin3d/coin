@@ -77,6 +77,16 @@ extern "C" {
   typedef const char * (APIENTRY *simage_get_saver_fullname_t)(void * handle);
   typedef const char * (APIENTRY *simage_get_saver_description_t)(void * handle);
 
+  enum {
+    S_INTEGER_PARAM_TYPE,
+    S_BOOL_PARAM_TYPE = S_INTEGER_PARAM_TYPE,
+    S_FLOAT_PARAM_TYPE,
+    S_DOUBLE_PARAM_TYPE,
+    S_STRING_PARAM_TYPE,
+    S_POINTER_PARAM_TYPE,
+    S_FUNCTION_PARAM_TYPE
+  };
+
   typedef struct simage_parameters_s s_params;
   typedef void (APIENTRY *s_params_set_t)(s_params * params, ...);
   typedef int (APIENTRY *s_params_get_t)(s_params * params, ...);
