@@ -919,10 +919,6 @@ SoText3P::setUpGlyphs(SoState * state, SoText3 * textnode)
     const unsigned char * ptr = (const unsigned char *)s.getString();
     float width = 0.0f;
     for (int j = 0; j < strlen; j++) {
-      // FIXME: The other 'getGlyph' method should be called if
-      // FreeType is to be utilized. Currently it doesn't work, but it
-      // will later. (25Aug2003 handegar)
-      //const SoGlyph * glyph = SoGlyph::getGlyph(ptr[j], SbName("default"));
       const SoGlyph * glyph = SoGlyph::getGlyph(state, ptr[j], SbVec2s(0,0), 0);
       glyph->setFontType(SoGlyph::FONT3D);
 
