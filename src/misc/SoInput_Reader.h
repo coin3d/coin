@@ -37,7 +37,7 @@ public:
     REGULAR_FILE,
     MEMBUFFER,
     GZFILE,
-    BZFILE
+    BZ2FILE
   };
 
   // must be overloaded to return type
@@ -54,6 +54,8 @@ public:
   // default method returns NULL. Should only be overloaded if the
   // reader uses FILE * to read data.
   virtual FILE * getFilePointer(void);
+
+  static SoInput_Reader * createReader(FILE * fp, const SbString & fullname);
 
 public:
   SbString dummyname;

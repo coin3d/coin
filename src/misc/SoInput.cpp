@@ -359,7 +359,7 @@ SoInput::setFilePointer(FILE * newFP)
 
   const char * name = (newFP == coin_get_stdin()) ? "<stdin>" : "";
 
-  SoInput_FileReader * reader = new SoInput_FileReader(name, newFP);
+  SoInput_Reader * reader = SoInput_Reader::createReader(newFP, SbString(name));
   SoInput_FileInfo * newfile = new SoInput_FileInfo(reader);
   if (newfile) this->filestack.insert(newfile, 0);
 }
@@ -385,7 +385,7 @@ SoInput::openFile(const char * fileName, SbBool okIfNotFound)
   SbString fullname;
   FILE * fp = this->findFile(fileName, fullname);
   if (fp) {
-    SoInput_Reader * reader = SoInput_FileInfo::getReader(fp, fullname);
+    SoInput_Reader * reader = SoInput_Reader::createReader(fp, fullname);
     assert(reader);
     SoInput_FileInfo * newfile = new SoInput_FileInfo(reader);
     this->filestack.insert(newfile, 0);
@@ -420,7 +420,7 @@ SoInput::pushFile(const char * filename)
   SbString fullname;
   FILE * fp = this->findFile(filename, fullname);
   if (fp) {
-    SoInput_Reader * reader = SoInput_FileInfo::getReader(fp, fullname);
+    SoInput_Reader * reader = SoInput_Reader::createReader(fp, fullname);
     SoInput_FileInfo * newfile = new SoInput_FileInfo(reader);
     this->filestack.insert(newfile, 0);
 

@@ -62,6 +62,45 @@ SoInput_Reader::getFilePointer(void)
   return NULL;
 }
 
+// creates the correct reader based on the file type in fp (will
+// examine the file header). If fullname is empty, it's assumed that
+// file FILE pointer is passed from the user, and that we cannot
+// necessarily find the file handle.
+SoInput_Reader * 
+SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
+{
+  SoInput_Reader * reader = NULL;
+
+  unsigned char header[4];
+  long offset = ftell(fp);
+  int siz = fread(header, 1, 4, fp);
+  (void) fseek(fp, offset, SEEK_SET);
+
+#ifdef HAVE_BZIP2
+  if (header[0] == 'B' && header[1] == 'Z') {
+    int bzerror = BZ_OK;
+    BZFILE * bzfp = BZ2_bzReadOpen(&bzerror,  fp, 0, 0, NULL, 0);
+    if ((bzerror == BZ_OK) && (bzfp != NULL)) {
+      reader = new SoInput_BZFileReader(fullname.getString(), (void*) bzfp);
+    }
+  }
+#endif // HAVE_BZIP2
+#ifdef HAVE_ZLIB
+  if (fullname.getLength() && (reader == NULL) && (header[0] == 0x1f) && (header[1] == 0x8b)) {
+    gzFile gzfp = gzopen(fullname.getString(), "rb");
+    if (gzfp) {
+      fclose(fp); // close original file handle
+      reader = new SoInput_GZFileReader(fullname.getString(), (void*)gzfp);
+    }
+  }
+#endif // HAVE_ZLIB
+  if (reader == NULL) {
+    reader = new SoInput_FileReader(fullname.getString(), fp);
+  }
+  return reader;
+}
+
+
 
 //
 // standard FILE * class
@@ -98,13 +137,13 @@ SoInput_FileReader::readBuffer(char * buf, const size_t readlen)
   return fread(buf, 1, readlen, this->fp);
 }
 
-const SbString & 
+const SbString &
 SoInput_FileReader::getFilename(void)
 {
   return this->filename;
 }
 
-FILE * 
+FILE *
 SoInput_FileReader::getFilePointer(void)
 {
   return this->fp;
@@ -178,7 +217,7 @@ SoInput_GZFileReader::readBuffer(char * buf, const size_t readlen)
 #endif // ! HAVE_ZLIB
 }
 
-const SbString & 
+const SbString &
 SoInput_GZFileReader::getFilename(void)
 {
   return this->filename;
@@ -208,7 +247,7 @@ SoInput_BZFileReader::~SoInput_BZFileReader()
 SoInput_Reader::ReaderType
 SoInput_BZFileReader::getType(void) const
 {
-  return BZFILE;
+  return BZ2FILE;
 }
 
 int
@@ -218,7 +257,7 @@ SoInput_BZFileReader::readBuffer(char * buf, const size_t readlen)
   if (this->bzfp == NULL) return -1;
 
   int bzerror = BZ_OK;
-  int ret = BZ2_bzRead(&bzerror, this->bzfp, 
+  int ret = BZ2_bzRead(&bzerror, this->bzfp,
                        buf, readlen);
   if ((bzerror != BZ_OK) && (bzerror != BZ_STREAM_END)) {
     ret = -1;
@@ -232,10 +271,8 @@ SoInput_BZFileReader::readBuffer(char * buf, const size_t readlen)
 #endif // ! HAVE_BZIP2
 }
 
-const SbString & 
+const SbString &
 SoInput_BZFileReader::getFilename(void)
 {
   return this->filename;
 }
-
-
