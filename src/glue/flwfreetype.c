@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <Inventor/C/glue/flwfreetype.h>
+#include <Inventor/C/glue/freetype.h>
 
 /* ************************************************************************* */
 
@@ -40,7 +41,7 @@
 
 /* ************************************************************************* */
 
-#ifndef HAVE_FREETYPE
+#if !defined(HAVE_FREETYPE) && !defined(FREETYPE_RUNTIME_LINKING)
 
 /* Dummy versions of all functions. Only cc_flwft_initialize() will be
    used from generic wrapper. */
@@ -66,7 +67,7 @@ void cc_flwft_done_glyph(void * font, int glyph) { assert(FALSE); }
   
 struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
 
-#else /* HAVE_FREETYPE ***************************************************** */
+#else /* HAVE_FREETYPE || FREETYPE_RUNTIME_LINKING */
 
 #include <string.h>
 #include <math.h>
@@ -84,14 +85,6 @@ struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, int glyph) { assert(FALS
    dependency exists on that platform aswell. */
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
-
-
-#include <ft2build.h>
-/* FIXME: FT build macros don't work for MSVC dsp builds. preng 2003-03-11
- * #include FT_FREETYPE_H
- * #include FT_GLYPH_H */
-#include <freetype/freetype.h>
-#include <freetype/ftglyph.h>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/errors/debugerror.h>
@@ -119,9 +112,6 @@ struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, int glyph) { assert(FALS
 #endif /* !S_ISDIR */
 
 /* ************************************************************************* */
-
-/* workaround for freetype < 2.1 */
-#if FREETYPE_MAJOR == 2 && FREETYPE_MINOR < 1
 
 #ifndef FT_ENC_TAG
 #define FT_ENC_TAG(value, a, b, c, d)         \
@@ -154,8 +144,6 @@ enum Coin_FT_Encoding {
   FT_ENC_TAG(FT_ENCODING_APPLE_ROMAN, 'a', 'r', 'm', 'n')
   
 };
-
-#endif /* FREETYPE_VERSION < 2.1 */
 
 /* ************************************************************************* */
 
@@ -248,7 +236,11 @@ static cc_dynarray * fontfiledirs = NULL;
 SbBool
 cc_flwft_initialize(void)
 {
-  FT_Error error = FT_Init_FreeType(&library);
+  FT_Error error;
+  if (!cc_ftglue_available()) {
+    return FALSE;
+  }
+  error = cc_ftglue_FT_Init_FreeType(&library);
   if (error) {
     if (cc_flw_debug()) cc_debugerror_post("cc_flwft_initialize", "error %d", error);
     library = NULL;
@@ -257,12 +249,15 @@ cc_flwft_initialize(void)
 
   if (cc_flw_debug()) {
     FT_Int major, minor, patch;
-    FT_Library_Version(library, &major, &minor, &patch);
+    cc_ftglue_FT_Library_Version(library, &major, &minor, &patch);
     cc_debugerror_postinfo("cc_flwft_initialize",
                            "FreeType library version is %d.%d.%d",
                            major, minor, patch);
   }
-
+  
+  /* FIXME: test major and minor version to decide whether library is
+     ok. peder, 2003-07-09
+  */
   assert((fontname2filename == NULL) && "call cc_flwft_initialize only once!");
 
   /* Set up hash of font name to array of file name mappings. */
@@ -353,7 +348,7 @@ cc_flwft_exit(void)
   cc_hash_apply(fontname2filename, clean_fontmap_hash, NULL);
   cc_hash_destruct(fontname2filename);
 
-  FT_Done_FreeType(library);
+  cc_ftglue_FT_Done_FreeType(library);
 }
 
 static const char *
@@ -422,7 +417,7 @@ cc_flwft_get_font(const char * fontname)
   FT_Face face;
   const char * fontfilename = find_font_file(fontname);
   FT_Error error =
-    FT_New_Face(library, fontfilename ? fontfilename : fontname, 0, &face);
+    cc_ftglue_FT_New_Face(library, fontfilename ? fontfilename : fontname, 0, &face);
 
   if (error) {
     if (cc_flw_debug()) {
@@ -460,7 +455,7 @@ cc_flwft_done_font(void * font)
   FT_Face face;
   assert(font);
   face = (FT_Face)font;
-  error = FT_Done_Face(face);
+  error = cc_ftglue_FT_Done_Face(face);
   if (error) {
     if (cc_flw_debug()) cc_debugerror_postinfo("cc_flwft_done_font", "Error %d\n", error);
   }
@@ -529,7 +524,7 @@ cc_flwft_set_charmap(void * font, int charmap)
   assert(font);
   face = (FT_Face)font;
   if (charmap < face->num_charmaps) {
-    error = FT_Select_Charmap(face, face->charmaps[charmap]->encoding);
+    error = cc_ftglue_FT_Select_Charmap(face, face->charmaps[charmap]->encoding);
     if (error) {
       cc_debugerror_post("cc_flwft_set_charmap",
                          "FT_Select_Charmap(.., %d) returned error %d",
@@ -549,7 +544,7 @@ cc_flwft_set_char_size(void * font, int width, int height)
      bogus. Check against the FreeType API doc. 20030515 mortene. */
   width <<= 6;
   height <<= 6;
-  error = FT_Set_Char_Size(face, width, height, 72, 72);
+  error = cc_ftglue_FT_Set_Char_Size(face, width, height, 72, 72);
   if (error) {
     cc_debugerror_post("cc_flwft_set_char_size",
                        "FT_Set_Char_Size(.., %d, %d, ..) returned error code %d",
@@ -568,7 +563,7 @@ cc_flwft_set_font_rotation(void * font, float angle)
   matrix.xy = (FT_Fixed)(-sin(angle)*0x10000);
   matrix.yx = (FT_Fixed)(sin(angle)*0x10000);
   matrix.yy = (FT_Fixed)(cos(angle)*0x10000);
-  FT_Set_Transform(face, &matrix, 0);
+  cc_ftglue_FT_Set_Transform(face, &matrix, 0);
 }
 
 /*
@@ -594,7 +589,7 @@ cc_flwft_get_glyph(void * font, unsigned int charidx)
   
   if (face == NULL) { return 0; }
 
-  return FT_Get_Char_Index(face, charidx);
+  return cc_ftglue_FT_Get_Char_Index(face, charidx);
 }
 
 void
@@ -605,7 +600,7 @@ cc_flwft_get_advance(void * font, int glyph, float *x, float *y)
   int tmp;
   assert(font);
   face = (FT_Face)font;
-  error = FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
+  error = cc_ftglue_FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
   assert(error == 0 && "FT_Load_Glyph() unexpected failure, investigate");
 
   tmp = face->glyph->advance.x;
@@ -623,7 +618,7 @@ cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y)
   assert(font);
   face = (FT_Face)font;
   if (FT_HAS_KERNING(face)) {
-    error = FT_Get_Kerning(face, glyph1, glyph2, ft_kerning_default, &kerning);
+    error = cc_ftglue_FT_Get_Kerning(face, glyph1, glyph2, ft_kerning_default, &kerning);
     if (error) {
       cc_debugerror_post("cc_flwft_get_kerning", "FT_Get_Kerning() => %d", error);
     }
@@ -654,21 +649,21 @@ cc_flwft_get_bitmap(void * font, int glyph)
   assert(font);
   
   face = (FT_Face)font;
-  error = FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
+  error = cc_ftglue_FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
   if (error) {
     if (cc_flw_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
                                                 "FT_Load_Glyph() => error %d",
                                                 error);
     return NULL;
   }
-  error = FT_Get_Glyph(face->glyph, &g);
+  error = cc_ftglue_FT_Get_Glyph(face->glyph, &g);
   if (error) {
     if (cc_flw_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
                                                 "FT_Get_Glyph() => error %d",
                                                 error);
     return NULL;
   }
-  error = FT_Glyph_To_Bitmap(&g, ft_render_mode_mono, 0, 1);
+  error = cc_ftglue_FT_Glyph_To_Bitmap(&g, ft_render_mode_mono, 0, 1);
   if (error) {
     if (cc_flw_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
                                                 "FT_Glyph_To_Bitmap() => error %d",
@@ -686,7 +681,7 @@ cc_flwft_get_bitmap(void * font, int glyph)
   bm->width = tfbm->width;
   bm->pitch = tfbm->pitch;
   memcpy(bm->buffer, tfbm->buffer, tfbm->rows * tfbm->pitch);
-  FT_Done_Glyph(g);
+  cc_ftglue_FT_Done_Glyph(g);
   return bm;
 }
 
