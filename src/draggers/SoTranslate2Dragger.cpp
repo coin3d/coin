@@ -80,8 +80,18 @@
   \COININTERNAL
 */
 
+#ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
+
+class SoTranslate2DraggerP {
+public:
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
 SO_KIT_SOURCE(SoTranslate2Dragger);
 
+#define THIS this->pimpl
+#define THISP thisp->pimpl
 
 // doc in superclass
 void
@@ -97,6 +107,7 @@ SoTranslate2Dragger::initClass(void)
   interaction and feedback geometry.
  */
 SoTranslate2Dragger::SoTranslate2Dragger(void)
+  : pimpl(new SoTranslate2DraggerP)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoTranslate2Dragger);
 

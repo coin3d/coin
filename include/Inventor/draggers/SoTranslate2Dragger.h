@@ -78,6 +78,8 @@ private:
 
   SbVec3f lastmotion;
   SbVec3f extramotion;
+
+  class SoTranslate2DraggerP * pimpl;
 };
 
 #endif // !COIN_SOTRANSLATE2DRAGGER_H
