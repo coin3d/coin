@@ -302,8 +302,10 @@ SoSearchAction::setFound(void)
   \internal
 
   Returns whether the search action was terminated.
-*/
 
+  Note that this value does not reflect whether the node(s) that
+  was searched for was found or not.
+*/
 SbBool
 SoSearchAction::isFound(void) const
 {
