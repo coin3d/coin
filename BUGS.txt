@@ -236,95 +236,11 @@
     }
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
 
-    A good strategy for investigating the bug is using the
+    A good opening gambit for investigating the bug is using the
     SoGuiExamples/engines/computexfbox example code to load the scene
     and view the resulting bbox.
 
     mortene 20020729.
-
-=====================================================================
-
-014 SoExtSelection with ALL_SHAPES selection doesn't always work
-    properly with SoArray.
-
-    Reproduce by running the SoGuiExamples/nodes/extselection example
-    on the following scene:
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-    #Inventor V2.1 ascii
-
-    Array {
-       numElements1 2
-       separation1 3 0 0
-
-       Cube { }
-    }
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-
-    ..if you select any _one_ of the cubes, I believe it works
-    correctly: the SoArray with both cubes are selected. (Or does it
-    -- should perhaps the correct policy be to select only that cube?
-    Unlikely, but ask Peder about his opinion.)
-
-    But if you draw up a lasso to select _both_ cubes, _none_ are
-    actually selected.
-
-    Note that it *does* work correctly for VISIBLE_SHAPES selection.
-
-    mortene 20020806.
-
-=====================================================================
-
-015 SoExtSelection doesn't always work properly with SoMultipleCopy.
-
-    Reproduce with the following scenegraph in the
-    SoGuiExamples/nodes/extselection example:
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-
-    #Inventor V2.5 ascii
-
-    Group {
-       MultipleCopy {
-          matrix [
-           1 0 0 0
-           0 1 0 0
-           0 0 1 0
-           0 0 0 1,
-
-           1 0 0 0
-           0 1 0 0
-           0 0 1 0
-           4 0 0 1,
-
-           1 0 0 0
-           0 1 0 0
-           0 0 1 0
-           -4 0 0 1,
-          ]
-
-          Cube {
-          }
-       }
-    }
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-
-    With ALL_SHAPES selection, you need to select either the middle
-    cube by itself, or all three cubes at the same time to get the
-    correct result. Selecting any two cubes, or the side cubes by
-    themselves, will _not_ make the SoMultipleCopy get selected.
-
-    With VISIBLE_SHAPES everything works.
-
-    Update (after investigation by handegar): this is probably because
-    shapes are toggled, so if any shape has multiple references in the
-    selected area, it will first be selected, then un-selected, then
-    selected, etc. If it's referenced an even number of times, it will
-    finally end up un-selected. This is probably the reason for bug
-    #014 aswell.
-
-    mortene 20020806.
 
 =====================================================================
 
@@ -364,7 +280,9 @@
     Here's a simple way of reproducing the bug: click and drag the
     middle front rotation point after loading the following scene (and
     changing the viewpoint slightly, so the camera direction is not
-    normal to it)
+    normal to it). Upon releasing the rotation invokation, the
+    geometry of the Text3 will be slightly sheared, indicating a
+    faulty transform matrix somewhere:
 
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
     #Inventor V2.1 ascii
@@ -410,7 +328,7 @@
 
 =====================================================================
 
-020 There is a a crash bug when changing the parts of an
+020 There is a crash bug when changing the parts of an
     SoTransformBoxDragger. It can be reproduced with this stand-alone
     example:
 
