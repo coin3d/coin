@@ -21,8 +21,6 @@
   \class SoElapsedTime SoElapsedTime.h Inventor/engines/SoElapsedTime.h
   \brief The SoElapsedTime class is a controllable time source engine.
   \ingroup engines
-
-  FIXME: doc
 */
 
 #include <Inventor/engines/SoElapsedTime.h>
@@ -36,28 +34,36 @@
 
 /*!
   \var SoSFTime SoElapsedTime::timeIn
-  FIXME
+  Input time value. Default connected to the global realTime field.
 */
 /*!
   \var SoSFFloat SoElapsedTime::speed
-  FIXME
+
+  Decides how fast the timer should run, measured versus "real time"
+  from the timeIn field. Default value is 1.0.
+
+  A negative value makes the time go backward.
 */
 /*!
   \var SoSFBool SoElapsedTime::on
-  FIXME
+
+  Shuts timer on and off. Will restart at the same position.
 */
 /*!
   \var SoSFBool SoElapsedTime::pause
-  FIXME
+  
+  Shuts timer on and off. Will restart at the position it would have
+  been if not paused (i.e. doesn't "lose time").
 */
 /*!
   \var SoSFTrigger SoElapsedTime::reset
-  FIXME
+
+  Restart timer at 0.
 */
 
 /*!
   SoEngineOutput SoElapsedTime::timeOut
-  (SoSFTime) FIXME
+  (SoSFTime) Output time value. Starts at 0.
 */
 
 SO_ENGINE_SOURCE(SoElapsedTime);
