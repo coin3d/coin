@@ -73,13 +73,13 @@
 #include <Inventor/lists/SbList.h>
 
 #include <Inventor/C/tidbits.h>
-#include <../tidbitsp.h>
+#include "../tidbitsp.h"
 #include <Inventor/C/glue/dl.h>
 #include <assert.h>
 #include <stdlib.h> // NULL
 #include <string.h> // strcmp()
 
-#include <cppmangle.icc>
+#include "cppmangle.icc"
 
 struct SoTypeData {
   SoTypeData(const SbName theName,
