@@ -20,6 +20,7 @@
 #include <Inventor/misc/SoImageInterface.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/lists/SbStringList.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include <string.h>
@@ -55,8 +56,9 @@
 
 /*!
   Constructor with \a file_name specifying the path and name of the
-  image file. This constructor is private. Use
-  SoImageInterface::findOrCreateImage
+  image file. This constructor is private. Use the
+  SoImageInterface::findOrCreateImage() method to interface against
+  the "fetch data from external source" mechanism.
 */
 SoImageInterface::SoImageInterface(const char * const file_name)
   : filename(file_name),
@@ -137,12 +139,12 @@ SbBool
 SoImageInterface::resize(const SbVec2s newsize)
 {
   if (newsize != size) {
-#if COIN_DEBUG
+#if 1 // debug
     SoDebugError::postInfo("SoImageInterface::resize",
                            "(%d): %d %d --> %d %d",
                            numComponents,
                            size[0], size[1], newsize[0], newsize[1]);
-#endif // COIN_DEBUG
+#endif // debug
     int num_comp = this->numComponents;
     unsigned char *dest =
       (unsigned char *)malloc(newsize[0]*newsize[1]*num_comp);
@@ -355,34 +357,53 @@ public:
 
 /****** static methods used to enable image reuse **************/
 
-#define MAXPATHLEN 4096 // FIXME: get this properly. 19981024 mortene.
+// FIXME: get this value properly through configure or something. Or
+// just get rid of it completely by using the SbString class.
+// 19981024 mortene.
+#define MAXPATHLEN 4096
 
-#define TEST_FILE(x) \
-   if (0) SoDebugError::postInfo("TEST_FILE", "texture search: %s", x); \
-   fp = fopen(x, "rb"); \
-   if (fp != NULL) { \
-     fclose(fp); \
-     return x;}
 
+#if COIN_DEBUG && 0 // flip 1<->0 to turn texture search trace on or off
+#define TRY_FILE_DEBUG(x, result) \
+  SoDebugError::postInfo("TRY_FILE", "texture search: %s (%s)", (x), (result))
+#else // !COIN_DEBUG
+#define TRY_FILE_DEBUG(x, result)
+#endif // !COIN_DEBUG
+
+#define TRY_FILE(x) \
+  do { \
+    FILE * fp = fopen(x, "rb"); \
+    TRY_FILE_DEBUG(x, fp ? "hit!" : "miss"); \
+    if (fp != NULL) { \
+      fclose(fp); \
+      return x; \
+    } \
+  } while (0)
+
+
+// FIXME: I'm not too fond of the API design for this function;
+// passing character buffers of unknown size seldom did anyone any
+// good.. why not replace them with SbString arguments instead?
+// 19991215 mortene.
 
 static const char *
-searchForImage(const char * const orgname,
-               char * const namebuf)
+search_for_image(const char * const orgname, char * const namebuf,
+                 const SbStringList & dirlist)
 {
-
+  // FIXME: use a configure check. 19991215 mortene.
 #if defined(_WIN32)
-  char dirsplit = '\\';
+  const char dirsplit = '\\';
 #else
-  char dirsplit = '/';
+  const char dirsplit = '/';
 #endif
 
-  FILE *fp;
-  strcpy(namebuf, orgname);
-  TEST_FILE(namebuf);
+  sprintf(namebuf, "%s", orgname);
+  TRY_FILE(namebuf);
 
   char basename[MAXPATHLEN];
 
-  // FIXME: implement platform-independent version
+  // FIXME: implement platform-independent version. 1999xxxx pederb.
+  // FIXME: code for doing this is available as SoInput::getBaseName();. 19991215 mortene.
 #ifdef _WIN32
   strcpy(basename, orgname);
 #else // !_WIN32
@@ -394,22 +415,22 @@ searchForImage(const char * const orgname,
   strcpy(basename, ptr);
 #endif // !_WIN32
 
-  strcpy(namebuf, basename);
-  TEST_FILE(namebuf);
+  for (int i = 0; i < dirlist.getLength(); i++) {
+    sprintf(namebuf, "%s%c%s", dirlist[i]->getString(), dirsplit, basename);
+    TRY_FILE(namebuf);
 
-  sprintf(namebuf,"textures%c%s", dirsplit, basename);
-  TEST_FILE(namebuf);
+    sprintf(namebuf, "%s%ctexture%c%s", dirlist[i]->getString(), dirsplit, dirsplit, basename);
+    TRY_FILE(namebuf);
 
-  sprintf(namebuf,"texture%c%s", dirsplit, basename);
-  TEST_FILE(namebuf);
-
-  // FIXME: search more paths. Most important is probably the
-  // model path.
+    sprintf(namebuf, "%s%ctextures%c%s", dirlist[i]->getString(), dirsplit, dirsplit, basename);
+    TRY_FILE(namebuf);
+  }
 
   return namebuf; // not found, return org name
 }
 
-#undef TEST_FILE
+#undef TRY_FILE_DEBUG
+#undef TRY_FILE
 
 static SbList <so_image_data*> loadedFiles;
 
@@ -419,7 +440,8 @@ static SbList <so_image_data*> loadedFiles;
   call ref() after you have received an image from this method.
 */
 SoImageInterface *
-SoImageInterface::findOrCreateImage(const char * const filename)
+SoImageInterface::findOrCreateImage(const char * const filename,
+                                    const SbStringList & dirlist)
 {
   int n = loadedFiles.getLength();
   for (int i = 0; i < n; i++) {
@@ -430,7 +452,7 @@ SoImageInterface::findOrCreateImage(const char * const filename)
   }
 
   char buf[MAXPATHLEN];
-  const char *fullname = searchForImage(filename, buf);
+  const char *fullname = search_for_image(filename, buf, dirlist);
   if (fullname) {
     SoImageInterface *image = new SoImageInterface(fullname);
     loadedFiles.append(new so_image_data(filename, image));

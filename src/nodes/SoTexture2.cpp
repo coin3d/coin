@@ -28,14 +28,17 @@
 #include <Inventor/nodes/SoTexture2.h>
 
 #include <Inventor/SoInput.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/misc/SoGLImage.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoImageInterface.h>
 
 #include <assert.h>
@@ -161,11 +164,20 @@ SoTexture2::initClass(void)
 SbBool
 SoTexture2::readInstance(SoInput * in, unsigned short flags)
 {
-  assert(!in->isBinary() && "FIXME: not implemented yet");
-
   SbBool readOK = inherited::readInstance(in, flags);
 
-  if (readOK && ! filename.isDefault()) readImage();
+  if (in->isBinary()) {
+    COIN_STUB();
+    return readOK;
+  }
+
+  if (readOK && !filename.isDefault()) {
+    if (!this->readImage()) {
+      SoReadError::post(in, "Could not read texture file %s",
+                        filename.getValue().getString());
+    }
+  }
+
   return readOK;
 }
 
@@ -263,7 +275,7 @@ SoTexture2::readImage(const SbString & /* fname */,
                       int & /* w */, int & /* h */, int & /* nc */,
                       unsigned char *& /* bytes */)
 {
-  //  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return TRUE;
 }
 
@@ -273,7 +285,7 @@ SoTexture2::readImage(const SbString & /* fname */,
 int
 SoTexture2::getReadStatus(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return 0;
 }
 
@@ -283,16 +295,16 @@ SoTexture2::getReadStatus(void)
 void
 SoTexture2::setReadStatus(int /* s */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 //
-// private method that creates a SoImageInterface object. This creates
-// a common interface, whether the file is loaded from a file or the
-// image data is supplied inside the node.
+// Private method that creates an SoImageInterface object. This
+// provides a common interface, whether the file is loaded from a file
+// or the image data is supplied inside the node.
 //
 void
-SoTexture2::getImage()
+SoTexture2::getImage(void)
 {
   if (this->imageData) return;
 
@@ -306,9 +318,9 @@ SoTexture2::getImage()
   }
   else {
     if (this->filename.getValue().getLength()) {
-      this->imageData =
-        SoImageInterface::findOrCreateImage(this->filename.
-                                            getValue().getString());
+      const SbStringList & dirlist = SoInput::getDirectories();
+      const char * texname = this->filename.getValue().getString();
+      this->imageData = SoImageInterface::findOrCreateImage(texname, dirlist);
     }
   }
 }

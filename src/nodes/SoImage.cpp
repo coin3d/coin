@@ -437,9 +437,10 @@ SoImage::getImage()
       this->orgImageData->ref();
     }
     else if (this->filename.getValue().getLength()) {
+      const SbStringList & dirlist = SoInput::getDirectories();
+      const char * imgname = this->filename. getValue().getString();
       this->orgImageData =
-        SoImageInterface::findOrCreateImage(this->filename.
-                                            getValue().getString());
+        SoImageInterface::findOrCreateImage(imgname, dirlist);
       this->orgImageData->load();
     }
   }

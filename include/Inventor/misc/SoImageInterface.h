@@ -24,6 +24,9 @@
 #include <Inventor/SbString.h>
 #include <Inventor/SbVec2s.h>
 
+class SbStringList;
+
+
 class SoImageInterface {
 public:
   SoImageInterface(const SbVec2s size,
@@ -45,7 +48,8 @@ public:
   void unref(); // use this to delete
 
   SoImageInterface *imageCopy() const;
-  static SoImageInterface *findOrCreateImage(const char * const filename);
+  static SoImageInterface * findOrCreateImage(const char * const filename,
+                                              const SbStringList & dirlist);
 
 private:
   friend class dummyClass; // avoid warnings on stupid compilers
