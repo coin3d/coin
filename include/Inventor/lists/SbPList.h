@@ -35,79 +35,36 @@ class SbPList {
   enum { DEFAULTSIZE = 4 };
 
 public:
-
-  SbPList(const int sizehint = DEFAULTSIZE)
-    : itembuffersize(DEFAULTSIZE), numitems(0), itembuffer(builtinbuffer) {
-    if (sizehint > DEFAULTSIZE) this->grow(sizehint);
-  }
-
-  SbPList(const SbPList & l)
-    : itembuffersize(DEFAULTSIZE), numitems(0), itembuffer(builtinbuffer) {
-    this->copy(l);
-  }
-
+  
+  SbPList(const int sizehint = DEFAULTSIZE);
+  SbPList(const SbPList & l);
   ~SbPList();
 
   void copy(const SbPList & l);
   SbPList & operator=(const SbPList & l);
   void fit(void);
 
-  void append(void * item) {
-    if (this->numitems == this->itembuffersize) this->grow();
-    this->itembuffer[this->numitems++] = item;
-  }
-
+  void append(void * item);
   int find(void * item) const;
   void insert(void * item, const int insertbefore);
   void removeItem(void * item);
   void remove(const int index);
-  void removeFast(const int index) {
-#ifdef COIN_EXTRA_DEBUG
-    assert(index >= 0 && index < this->numitems);
-#endif // COIN_EXTRA_DEBUG
-    this->itembuffer[index] = this->itembuffer[--this->numitems];
-  }
-  int getLength(void) const {
-    return this->numitems;
-  }
+  void removeFast(const int index);
+  int getLength(void) const;
+  void truncate(const int length, const int fit = 0);
 
-  void truncate(const int length, const int fit = 0) {
-#ifdef COIN_EXTRA_DEBUG
-    assert(length <= this->numitems);
-#endif // COIN_EXTRA_DEBUG
-    this->numitems = length;
-    if (fit) this->fit();
-  }
-
-  void ** getArrayPtr(const int start = 0) const {
-    return &this->itembuffer[start];
-  }
-
-  void *& operator[](const int index) const {
-#ifdef COIN_EXTRA_DEBUG
-    assert(index >= 0);
-#endif // COIN_EXTRA_DEBUG
-    if (index >= this->getLength()) this->expandlist(index + 1);
-    return this->itembuffer[index];
-  }
+  void ** getArrayPtr(const int start = 0) const;
+  void *& operator[](const int index) const;
 
   int operator==(const SbPList & l) const;
-  int operator!=(const SbPList & l) const {
-    return !(*this == l);
-  }
-  
-  void * get(const int index) const { return this->itembuffer[index]; }
-  void set(const int index, void * item) { this->itembuffer[index] = item; }
+  int operator!=(const SbPList & l) const;  
+  void * get(const int index) const;
+  void set(const int index, void * item);
   
 protected:
 
-  void expand(const int size) {
-    this->grow(size);
-    this->numitems = size;
-  }
-  int getArraySize(void) const {
-    return this->itembuffersize;
-  }
+  void expand(const int size);
+  int getArraySize(void) const;
 
 private:
   void expandlist(const int size) const; 
@@ -118,5 +75,90 @@ private:
   void ** itembuffer;
   void * builtinbuffer[DEFAULTSIZE];
 };
+
+/* inlined methods ********************************************************/
+
+inline void 
+SbPList::append(void * item) 
+{
+  if (this->numitems == this->itembuffersize) this->grow();
+  this->itembuffer[this->numitems++] = item;
+}
+
+inline void 
+SbPList::removeFast(const int index) 
+{
+#ifdef COIN_EXTRA_DEBUG
+  assert(index >= 0 && index < this->numitems);
+#endif // COIN_EXTRA_DEBUG
+  this->itembuffer[index] = this->itembuffer[--this->numitems];
+}
+
+inline int 
+SbPList::getLength(void) const 
+{
+  return this->numitems;
+}
+
+inline void 
+SbPList::truncate(const int length, const int fit ) 
+{
+#ifdef COIN_EXTRA_DEBUG
+  assert(length <= this->numitems);
+#endif // COIN_EXTRA_DEBUG
+  this->numitems = length;
+  if (fit) this->fit();
+}
+
+inline void ** 
+SbPList::getArrayPtr(const int start) const 
+{
+#ifdef COIN_EXTRA_DEBUG
+  assert(index >= 0 && index < this->numitems);
+#endif // COIN_EXTRA_DEBUG
+  return &this->itembuffer[start];
+}
+
+inline void *& 
+SbPList::operator[](const int index) const 
+{
+#ifdef COIN_EXTRA_DEBUG
+  assert(index >= 0);
+#endif // COIN_EXTRA_DEBUG
+  if (index >= this->getLength()) this->expandlist(index + 1);
+  return this->itembuffer[index];
+}
+
+inline int 
+SbPList::operator!=(const SbPList & l) const 
+{
+  return !(*this == l);
+}
+
+inline void * 
+SbPList::get(const int index) const 
+{ 
+  return this->itembuffer[index]; 
+}
+
+inline void 
+SbPList::set(const int index, void * item) 
+{ 
+  this->itembuffer[index] = item; 
+}
+
+inline void 
+SbPList::expand(const int size) 
+{
+  this->grow(size);
+  this->numitems = size;
+}
+
+inline int 
+SbPList::getArraySize(void) const 
+{
+  return this->itembuffersize;
+}
+
 
 #endif // !COIN_LISTS_SBPLIST_H

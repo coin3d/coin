@@ -47,12 +47,6 @@
 */
 
 /*!
-  \fn SbPList::SbPList(const SbPList & l)
-  Copy constructor.
-
-*/
-
-/*!
   \fn void * SbPList::get(const int index) const
 
   Returns element at \a index. Does \e not expand array bounds if \a
@@ -131,6 +125,24 @@
 
   \sa getLength()
 */
+
+/*!
+  Default constructor.
+*/
+SbPList::SbPList(const int sizehint)
+  : itembuffersize(DEFAULTSIZE), numitems(0), itembuffer(builtinbuffer) 
+{
+  if (sizehint > DEFAULTSIZE) this->grow(sizehint);
+}
+
+/*!
+  Copy constructor.
+*/
+SbPList::SbPList(const SbPList & l)
+  : itembuffersize(DEFAULTSIZE), numitems(0), itembuffer(builtinbuffer) 
+{
+  this->copy(l);
+}
 
 /*!
   Destructor.
