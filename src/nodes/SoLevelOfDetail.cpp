@@ -408,6 +408,13 @@ SoLevelOfDetail::rayPick(SoRayPickAction *action)
   SoLevelOfDetail::doAction((SoAction*)action);
 }
 
+// Documented in superclass.
+void
+SoLevelOfDetail::audioRender(SoAudioRenderAction * action)
+{
+  SoLevelOfDetail::doAction((SoAction*)action);
+}
+
 void 
 SoLevelOfDetail::getBoundingBox(SoGetBoundingBoxAction * action)
 {

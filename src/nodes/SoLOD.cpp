@@ -176,6 +176,13 @@ SoLOD::callback(SoCallbackAction *action)
 
 // Documented in superclass.
 void
+SoLOD::audioRender(SoAudioRenderAction * action)
+{
+  SoLOD::doAction((SoAction*)action);
+}
+
+// Documented in superclass.
+void
 SoLOD::GLRender(SoGLRenderAction * action)
 {
   switch (action->getCurPathCode()) {

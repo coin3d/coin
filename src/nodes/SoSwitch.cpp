@@ -297,6 +297,13 @@ SoSwitch::callback(SoCallbackAction *action)
 
 // Documented in superclass.
 void
+SoSwitch::audioRender(SoAudioRenderAction * action)
+{
+  SoSwitch::doAction((SoAction*)action);
+}
+
+// Documented in superclass.
+void
 SoSwitch::pick(SoPickAction *action)
 {
   SoSwitch::doAction((SoAction*)action);

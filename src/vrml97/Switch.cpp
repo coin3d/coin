@@ -391,6 +391,13 @@ SoVRMLSwitch::handleEvent(SoHandleEventAction * action)
 
 // Doc in parent
 void
+SoVRMLSwitch::audioRender(SoAudioRenderAction * action)
+{
+  SoVRMLSwitch::doAction((SoAction*)action);
+}
+
+// Doc in parent
+void
 SoVRMLSwitch::getMatrix(SoGetMatrixAction * action)
 {
   switch (action->getCurPathCode()) {

@@ -44,6 +44,7 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoPickAction.h>
+#include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
 #include <Inventor/misc/SoChildList.h>
 
@@ -156,4 +157,13 @@ SoTransformSeparator::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   // SoGroup::getPrimitiveCount() here? If so, that shouldn't be
   // necessary. Ask pederb. 20020107 mortene.
   SoTransformSeparator::doAction((SoAction *)action);
+}
+
+// Documented in superclass.
+void
+SoTransformSeparator::audioRender(SoAudioRenderAction * action)
+{
+  SbMatrix matrix = SoModelMatrixElement::pushMatrix(action->getState());
+  inherited::audioRender(action);
+  SoModelMatrixElement::popMatrix(action->getState(), matrix);
 }

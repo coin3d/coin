@@ -52,6 +52,7 @@ public:
   virtual void rayPick(SoRayPickAction * action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+  virtual void audioRender(SoAudioRenderAction * action);
 
 protected:
   virtual ~SoLOD();

@@ -371,6 +371,13 @@ SoVRMLLOD::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 
 // Doc in parent
 void
+SoVRMLLOD::audioRender(SoAudioRenderAction * action)
+{
+  SoVRMLLOD::doAction((SoAction*) action);
+}
+
+// Doc in parent
+void
 SoVRMLLOD::GLRenderBelowPath(SoGLRenderAction * action)
 {
   int idx = this->whichToTraverse(action);

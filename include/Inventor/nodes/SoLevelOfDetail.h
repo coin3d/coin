@@ -48,6 +48,7 @@ public:
   virtual void GLRender(SoGLRenderAction * action);
   virtual void rayPick(SoRayPickAction * action);
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+  virtual void audioRender(SoAudioRenderAction * action);
 
   virtual void notify(SoNotList * nl);
 

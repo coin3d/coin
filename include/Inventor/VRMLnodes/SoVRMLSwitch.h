@@ -75,6 +75,7 @@ public:
   virtual void getMatrix(SoGetMatrixAction * action);
   virtual void search(SoSearchAction * action);
   virtual void write(SoWriteAction * action);
+  virtual void audioRender(SoAudioRenderAction * action);
 
   void addChild(SoNode * child);
   void insertChild(SoNode * child, int idx);
