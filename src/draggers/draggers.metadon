@@ -23,7 +23,7 @@
 # I        SoScale2Dragger
 # I        SoScale2UniformDragger
 # I        SoScaleUniformDragger
-#          SoSpotLightDragger
+# I        SoSpotLightDragger
 #          SoTabBoxDragger
 #          SoTabPlaneDragger
 #          SoTrackballDragger
