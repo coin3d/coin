@@ -27,6 +27,14 @@
 /* This header file is supposed to take care of all operating system
  * dependent anomalies connected to the gl.h include file. */
 
+/**********************************************************************/
+
+/* This define is at least needed before inclusion of the header files
+   that are part of NVidia's Linux drivers v41.91. Without it, none of
+   the extension and OpenGL 1.1+ function prototypes will be set
+   up. */
+#define GL_GLEXT_PROTOTYPES 1
+
 @SIM_INCLUDE_WINDOWS_H@
 @SIM_INCLUDE_GL_H@
 @SIM_INCLUDE_GLU_H@
