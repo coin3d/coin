@@ -148,6 +148,11 @@ SoVertexShape::shouldGLRender(SoGLRenderAction * action)
           !this->normalCache->isValid(state)) {
         generateNormals(state);
       }
+#if 0 // OIV doesn't do this, so it's disabled in Coin also.
+      // how it's possible to generate correct normals when vertexordering
+      // is unknown is a big mystery to me. But I guess when vertexordering
+      // is unknown, it defaults to counterclockwise. pederb, 20000404
+
       // if normals are automatically generated, and vertexordering
       // is unknown, force tow-side lighting
       if (SoShapeHintsElement::getVertexOrdering(state) ==
@@ -156,6 +161,7 @@ SoVertexShape::shouldGLRender(SoGLRenderAction * action)
           state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
         sh->forceSend(TRUE);
       }
+#endif // disabled code
     }
 
     /* will supply unit normals when normal cache is used */
