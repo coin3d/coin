@@ -38,6 +38,34 @@
   will then be used by the rendering subsystem to avoid certain costly
   operations. Significant gains in rendering speed could be seen as a
   result.
+
+
+  Be aware that the way backface culling and two-sided lighting is
+  decided by the rendering system is not at all intuitive.  Here are
+  the common rules of how primitive shapes will render themselves with
+  regard to how the SoShapeHints::vertexOrdering and
+  SoShapeHints::shapeType fields are set:
+
+  <ul>
+
+  <li>vertexOrdering == CLOCKWISE | COUNTERCLOCKWISE, shapeType ==
+      SOLID: causes primitives to be backface culled and rendered with
+      one-sided lighting.
+  
+  <li>vertexOrdering == CLOCKWISE | COUNTERCLOCKWISE, shapeType ==
+      UNKNOWN_SHAPE_TYPE: primitives are \e not backface culled and
+      rendered with two-sided lighting.
+  
+  <li>vertexOrdering == UNKNOWN_ORDERING, any shapeType: primitives
+      are \e not backface culled and rendered with one-sided lighting.
+  
+  </ul>
+
+  (We find this strategy quite odd. It seems more sensible behavior
+  that when vertexordering is unknown, two-sided lighting should be
+  enabled, since it will be difficult to know if a normal points in or
+  out of a polygon.  But for compatibility reasons we are of course
+  sticking to the same behavior as the Inventor library.)
 */
 
 

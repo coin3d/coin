@@ -32,6 +32,8 @@
 // 2) ordered, ! solid : ! backface culling,   twoside lighting
 // 3) ! ordered        : ! backface culling, ! twoside lighting
 //
+// (this table of rendering rules is duplicated in the SoShapeHints
+// classdoc)
 
 //
 // I find this strategy quite odd. My gut-feeling says that
