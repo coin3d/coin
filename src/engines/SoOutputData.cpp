@@ -247,8 +247,8 @@ SoEngineOutputData::addOutputInternal(const SoFieldContainer * base, const char 
 #if COIN_DEBUG
   // FIXME: this is an ugly design flaw, which doesn't seem easily
   // resolvable while still keeping compatibility. 20000915 mortene.
-  if (type.isDerivedFrom(SoType::fromName("SoSFEnum")) ||
-      type.isDerivedFrom(SoType::fromName("SoMFEnum"))) {
+  if (type.isDerivedFrom(SoType::fromName("SFEnum")) ||
+      type.isDerivedFrom(SoType::fromName("MFEnum"))) {
     static SbBool warn = TRUE;
     if (warn) {
       warn = FALSE; // Warn only once.
