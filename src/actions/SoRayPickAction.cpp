@@ -30,11 +30,23 @@
   able to do intersection testing for rays. This functionality is
   provided by the SoRayPickAction class.
 
-  Note that one common mistake when using a raypick action is that one
-  tries to apply it to a scenegraph that does not contain a camera \e
-  explicitly set up by the application programmer. Without a camera as
-  part of the traversal, the raypick action does not know which view
-  volume to send the ray through.
+  SoRayPickAction can be used to pass arbitrary rays through the scene
+  for intersection detections, by using the setRay() method.
+
+  Because a very common operation is to check for intersections along
+  the ray from the mousecursor upon mouseclicks, it also contains
+  convenience methods for setting up a ray from the near plane to the
+  far plane from the 2D mousecursor coordinates. See the setPoint()
+  and setNormalizedPoint() methods. A simple usage example for this
+  case is presented below.
+
+
+  Note that one common mistake when using a raypick action to
+  intersect from a point under the mousecursor after a mouseclick is
+  that one tries to apply it to a scenegraph that does not contain a
+  camera \e explicitly set up by the application programmer. Without a
+  camera as part of the traversal, the raypick action does not know
+  which view volume to send the ray through.
 
   In this regard, be aware that the getSceneGraph() call in the
   So*-libraries' viewer classes will return the root of the
@@ -95,7 +107,7 @@
 
   Or if you do want the convenience of having the viewer set up a
   camera for you implicitly, you can get hold of the root-node of the
-  "complete" scenegraph by simply doing
+  "complete" scenegraph by simply calling:
 
   \code
   SoNode * realroot = viewer->getSceneManager()->getSceneGraph();
@@ -289,7 +301,11 @@ SoRayPickAction::setRadius(const float radiusinpixels)
 }
 
 /*!
-  Sets the ray in world-space coordinates.
+  Sets the intersection ray in world-space coordinates.
+
+  Use this method if you want to send any ray through the scene to
+  detect intersections, independently of mouseposition and
+  mouseclicks.
 */
 void
 SoRayPickAction::setRay(const SbVec3f & start, const SbVec3f & direction,

@@ -23,7 +23,7 @@
 
 /*!
   \class SoTexture2 SoTexture2.h Inventor/nodes/SoTexture2.h
-  \brief The SoTexture2 class is used to map a 2D texture onto geometry.
+  \brief The SoTexture2 class is used to map a 2D texture onto subsequent geometry in the scenegraph.
   \ingroup nodes
 
   Shape nodes within the scope of SoTexture2 nodes in the scenegraph
@@ -32,6 +32,8 @@
   type's individual characteristics.  See the documentation of the
   various shape types (SoFaceSet, SoCube, SoSphere, etc etc) for
   information about the specifics of how the textures will be applied.
+
+  For a simple usage example, see the class documentation for SoSFImage.
 */
 
 #include <coindefs.h> // COIN_OBSOLETED()
@@ -55,24 +57,32 @@
 
 /*!
   \enum SoTexture2::Model
-  Texture mapping model.
+
+  Texture mapping model, for deciding how to "merge" the texturemap
+  with the object it is mapped unto.
 */
 /*!
   \var SoTexture2::Model SoTexture2::MODULATE
-  Texture image is modulated with polygon.
+
+  Texture image is modulated with polygon shading.
 */
 /*!
   \var SoTexture2::Model SoTexture2::DECAL
-  Texture image overwrites polygon color.
+
+  Texture image overwrites polygon colors.
 */
 /*!
   \var SoTexture2::Model SoTexture2::BLEND
-  Blend image using blendColor.
+
+  Blend texturemap image on polygons using the color stored in the
+  SoTexture2::blendColor field.
 */
 
 /*!
   \enum SoTexture2::Wrap
-  Enum used to specify wrapping strategy.
+
+  Enumeration of wrapping strategies which can be used when the
+  texturemap doesn't cover the full extent of the geometry.
 */
 /*!
   \var SoTexture2::Wrap SoTexture2::REPEAT
@@ -86,27 +96,55 @@
 
 /*!
   \var SoSFString SoTexture2::filename
-  Texture filename. Specify either this or use SoTexture2::image, not both.
+
+  Texture filename, referring to a file on disk in a supported image
+  bitmap format.
+
+  By default contains an empty string, which means the texture will be
+  fetched from SoTexture2::image and not from disk. (Specify either
+  this field or use SoTexture2::image, not both.)
 */
 /*!
   \var SoSFImage SoTexture2::image
-  Inline image data.
+
+  Inline image data. Defaults to contain an empty image.
+
+  See documentation of the SoSFImage class for a very detailed
+  description of how the format specification for the image data is
+  layed out, and what different image formats for color textures,
+  semi-transparent textures, grayscale textures, etc etc, are
+  supported.
 */
 /*!
   \var SoSFEnum SoTexture2::wrapS
-  Wrapping strategy for the S coordinate.
+
+  Wrapping strategy for the S coordinate when the texturemap is
+  narrower than the object to map unto.
+
+  Default value is SoTexture2::REPEAT.
 */
 /*!
   \var SoSFEnum SoTexture2::wrapT
-  Wrapping strategy for the T coordinate.
+
+  Wrapping strategy for the T coordinate when the texturemap is
+  shorter than the object to map unto.
+
+  Default value is SoTexture2::REPEAT.
 */
 /*!
   \var SoSFEnum SoTexture2::model
-  Texture model.
+
+  Texturemapping model for how the texturemap is "merged" with the
+  polygon primitives it is applied to. Default value is
+  SoTexture2::MODULATE.
 */
 /*!
   \var SoSFColor SoTexture2::blendColor
+
   Blend color. Used when SoTexture2::model is SoTexture2::BLEND.
+
+  Default color value is [0, 0, 0], black, which means no contribution
+  to the blending is made.
 */
 
 // *************************************************************************
@@ -151,7 +189,8 @@ SoTexture2::SoTexture2(void)
 }
 
 /*!
-  Destructor.
+  Destructor. Frees up internal resources used to store texture image
+  data.
 */
 SoTexture2::~SoTexture2()
 {
@@ -159,7 +198,7 @@ SoTexture2::~SoTexture2()
   delete this->filenamesensor;
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoTexture2::initClass(void)
 {
@@ -173,10 +212,8 @@ SoTexture2::initClass(void)
 }
 
 
-/*!
-  Overloaded to check if texture file (if any) can be found
-  and loaded.
-*/
+// Documented in superclass. Overridden to check if texture file (if
+// any) can be found and loaded.
 SbBool
 SoTexture2::readInstance(SoInput * in, unsigned short flags)
 {
@@ -201,7 +238,7 @@ translateWrap(const SoTexture2::Wrap wrap)
   return SoGLImage::CLAMP;
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoTexture2::GLRender(SoGLRenderAction * action)
 {
@@ -258,7 +295,7 @@ SoTexture2::GLRender(SoGLRenderAction * action)
   }
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoTexture2::doAction(SoAction * action)
 {
@@ -307,7 +344,8 @@ SoTexture2::callback(SoCallbackAction * action)
 
 /*!
   Not implemented in Coin; should probably not have been public in the
-  Open Inventor API.  We'll consider to implement it if requested.
+  original SGI Open Inventor API.  We'll consider to implement it if
+  requested.
 */
 SbBool
 SoTexture2::readImage(const SbString & fname, int & w, int & h, int & nc,
@@ -336,13 +374,11 @@ SoTexture2::setReadStatus(int s)
   this->readstatus = s;
 }
 
-/*!
-  Overloaded to detect when fields change.
-*/
+// Documented in superclass. Overridden to detect when fields change.
 void
-SoTexture2::notify(SoNotList *list)
+SoTexture2::notify(SoNotList * l)
 {
-  SoField *f = list->getLastField();
+  SoField * f = l->getLastField();
   if (f == &this->image) {
     this->glimagevalid = FALSE;
     this->filename.setDefault(TRUE); // write image, not filename
@@ -350,7 +386,7 @@ SoTexture2::notify(SoNotList *list)
   else if (f == &this->wrapS || f == &this->wrapT) {
     this->glimagevalid = FALSE;
   }
-  SoNode::notify(list);
+  SoNode::notify(l);
 }
 
 //
