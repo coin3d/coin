@@ -187,6 +187,7 @@ SoGetMatrixAction::beginTraversal(SoNode * node)
 {
   assert(this->traversalMethods);
 
+  SoViewportRegionElement::set(state, this->viewportregion);
   this->matrix.makeIdentity();
   this->invmatrix.makeIdentity();
   this->texmatrix.makeIdentity();
