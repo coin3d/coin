@@ -62,6 +62,7 @@
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoBumpMapElement.h>
+#include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoLightElement.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
@@ -85,6 +86,7 @@
 #include <Inventor/SbClip.h>
 #include <Inventor/SbTime.h>
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/C/tidbits.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
 
@@ -297,6 +299,8 @@ SoShape::~SoShape()
   delete PRIVATE(this);
 }
 
+static int soshape_use_gl_vertex_arrays = 0;
+
 // Doc in parent.
 void
 SoShape::initClass(void)
@@ -313,6 +317,10 @@ SoShape::initClass(void)
   soshape_construct_staticdata((void*) soshape_single_staticdata);
 #endif // ! COIN_THREADSAFE
 
+  const char * env = coin_getenv("COIN_USE_GL_VERTEX_ARRAYS");
+  if (env) {
+    soshape_use_gl_vertex_arrays = atoi(env);
+  }
   SoShapeP::calibrateBBoxCache();
   coin_atexit((coin_atexit_f*) soshape_cleanup, 0);
 }
@@ -591,6 +599,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
         PRIVATE(this)->bumprender->calcTangentSpace(PRIVATE(this)->pvcache);
         state->pop();
         SoCacheElement::setInvalid(storedinvalid);
+        PRIVATE(this)->pvcache->fit();
       }
       if (PRIVATE(this)->pvcache->getNumIndices() == 0) {
         PRIVATE(this)->unlock();
@@ -682,6 +691,64 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       return FALSE;
     }
   }
+
+  if (soshape_use_gl_vertex_arrays) {
+    soshape_staticdata * shapedata = soshape_get_staticdata();
+    // lock mutex since pvcache is shared among all threads
+    PRIVATE(this)->lock();
+    if (PRIVATE(this)->pvcache == NULL ||
+        !PRIVATE(this)->pvcache->isValid(state)) {
+      if (PRIVATE(this)->pvcache) {
+        PRIVATE(this)->pvcache->unref();
+      }
+      SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
+      // must push state to make cache dependencies work
+      state->push();
+      PRIVATE(this)->pvcache = new SoPrimitiveVertexCache(state);
+      PRIVATE(this)->pvcache->ref();
+      SoCacheElement::set(state, PRIVATE(this)->pvcache);
+      shapedata->is_doing_pvcache_rendering = TRUE;
+      this->generatePrimitives(action);
+      shapedata->is_doing_pvcache_rendering = FALSE;
+      // this _must_ be called after creating the pvcache
+      state->pop();
+      SoCacheElement::setInvalid(storedinvalid);
+      PRIVATE(this)->pvcache->fit();
+    }
+
+    if ((PRIVATE(this)->pvcache->getNumIndices() == 0) &&
+        (PRIVATE(this)->pvcache->getNumLineIndices() == 0) &&
+        (PRIVATE(this)->pvcache->getNumPointIndices() == 0)) {
+      // empty cache, probably text or markers or something
+      PRIVATE(this)->unlock();
+      // let shape render
+      return TRUE;
+    }
+    PRIVATE(this)->unlock();
+    int arrays = SoPrimitiveVertexCache::NORMAL|SoPrimitiveVertexCache::COLOR;
+    if (glimage) arrays |= SoPrimitiveVertexCache::TEXCOORD;
+    SoMaterialBundle mb(action);
+    mb.sendFirst();
+    PRIVATE(this)->pvcache->renderTriangles(state, arrays);
+    if (PRIVATE(this)->pvcache->getNumLineIndices() ||
+        PRIVATE(this)->pvcache->getNumPointIndices()) {
+      const SoNormalElement * nelem = SoNormalElement::getInstance(state);
+      if (nelem->getNum() == 0) {
+        glPushAttrib(GL_LIGHTING_BIT);
+        glDisable(GL_LIGHTING);
+        arrays &= SoPrimitiveVertexCache::NORMAL;
+      }
+      PRIVATE(this)->pvcache->renderLines(state, arrays);
+      PRIVATE(this)->pvcache->renderPoints(state, arrays);
+
+      if (nelem->getNum() == 0) {
+        glPopAttrib();
+      }
+    }
+    // we have rendered, return FALSE
+    return FALSE;
+  }
+
 #if COIN_DEBUG && 0 // enable this to test generatePrimitives() rendering
   SoMaterialBundle mb(action);
   mb.sendFirst();
