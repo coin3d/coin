@@ -54,6 +54,7 @@
   
 #include <Inventor/misc/SoGlyph.h>
 
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
@@ -64,10 +65,11 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
-#include <Inventor/C/glue/fontlib_wrapper.h>
 #include <stdlib.h>
 #include <string.h>
 
+
+#include "../fonts/fontlib_wrapper.h"
 // FIXME: when is this defined? Looks bogus -- default 2D and 3D fonts
 // should always be present. 20030526 mortene.
 #if !defined(COIN_NO_DEFAULT_3DFONT)
@@ -76,6 +78,10 @@
 
 class SoGlyphP {
 public:
+  SoGlyphP(SoGlyph * master) : master(master) { }
+  SoGlyph * master;
+
+
   SbVec2f * coords;
   SbBox2f bbox;
   int * faceidx;
@@ -88,7 +94,12 @@ public:
   float angle;
   SbVec2s size;
   unsigned int character;
-  
+  SbBool fonttypeis3d;
+  SbBool coordsinstalled;
+
+  int bitmapwidth;
+  int bitmapheight;
+
   struct {
     unsigned int didalloccoords : 1;
     unsigned int didallocfaceidx : 1;
@@ -96,8 +107,10 @@ public:
     unsigned int didcalcbbox : 1;
   } flags;
 
+  void setup3DFontData();
+
   static SoGlyph * createSystemGlyph(const char character, const SbName & font);
-  static SoGlyph * createSystemGlyph(const unsigned int character, SoState * state) {return NULL;};
+  static SoGlyph * createSystemGlyph(const unsigned int character, SoState * state) {return NULL;};  static SoGlyph * createSystemGlyph(const char character, int fontid);
 };
 
 #define PRIVATE(p) ((p)->pimpl)
@@ -107,7 +120,7 @@ public:
 */
 SoGlyph::SoGlyph(void)
 {
-  PRIVATE(this) = new SoGlyphP();
+  PRIVATE(this) = new SoGlyphP(this);
   PRIVATE(this)->refcount = 0;
   PRIVATE(this)->flags.didalloccoords = 0;
   PRIVATE(this)->flags.didallocfaceidx  = 0;
@@ -118,6 +131,13 @@ SoGlyph::SoGlyph(void)
   PRIVATE(this)->edgeidx = NULL;
   PRIVATE(this)->ymin = 0.0f;
   PRIVATE(this)->ymax = 0.0f;
+  PRIVATE(this)->fonttypeis3d = FALSE;
+  PRIVATE(this)->fontidx = 0;
+  PRIVATE(this)->coordsinstalled = FALSE;
+
+  PRIVATE(this)->bitmapwidth = 0;
+  PRIVATE(this)->bitmapheight = 0;
+
 }
 
 /*!
@@ -141,12 +161,33 @@ SoGlyph::unref(void) const
   SoGlyph::unrefGlyph((SoGlyph*)this);
 }
 
+/*!  
+  Used to indicate how the glyph should be treated. This is needed if
+  correct bounding box shall be calculated etc. As default, glyphs are
+  treated as a part of a 2D font.
+*/
+void 
+SoGlyph::setFontType(Fonttype type) const
+{
+  if (type == SoGlyph::FONT3D) {
+    PRIVATE(this)->fonttypeis3d = TRUE;
+  }
+  else {
+    PRIVATE(this)->fonttypeis3d = FALSE;
+  }  
+}
+
+
 /*!
   Returns coordinates for this glyph.
 */
 const SbVec2f *
 SoGlyph::getCoords(void) const
 {
+  if (!PRIVATE(this)->coordsinstalled) {
+    PRIVATE(this)->setup3DFontData();
+    PRIVATE(this)->coordsinstalled = TRUE;
+  }
   return PRIVATE(this)->coords;
 }
 
@@ -156,6 +197,11 @@ SoGlyph::getCoords(void) const
 const int *
 SoGlyph::getFaceIndices(void) const
 {
+  if (!PRIVATE(this)->coordsinstalled) {
+    PRIVATE(this)->setup3DFontData();
+    PRIVATE(this)->coordsinstalled = TRUE;
+  }
+
   return PRIVATE(this)->faceidx;
 }
 
@@ -165,6 +211,11 @@ SoGlyph::getFaceIndices(void) const
 const int *
 SoGlyph::getEdgeIndices(void) const
 {
+  if (!PRIVATE(this)->coordsinstalled) {
+    PRIVATE(this)->setup3DFontData();
+    PRIVATE(this)->coordsinstalled = TRUE;
+  }
+  
   return PRIVATE(this)->edgeidx;
 }
 
@@ -218,6 +269,10 @@ SoGlyph::getNextCCWEdge(const int edgeidx) const
 float
 SoGlyph::getWidth(void) const
 {
+
+  if (!PRIVATE(this)->fonttypeis3d)
+    return (float) PRIVATE(this)->bitmapwidth;
+
   const SbBox2f & box = this->getBoundingBox();
   return box.getMax()[0] - box.getMin()[0];
 }
@@ -231,15 +286,31 @@ SoGlyph::getBoundingBox(void) const
   // this method needs to be const, so cast away constness
   SoGlyph * thisp = (SoGlyph*) this;
   if (!PRIVATE(this)->flags.didcalcbbox) {
+
+    if (!PRIVATE(this)->coordsinstalled) {
+      PRIVATE(this)->setup3DFontData();
+      PRIVATE(this)->coordsinstalled = TRUE;
+    }
+
     PRIVATE(thisp)->bbox.makeEmpty();
     int *ptr = PRIVATE(this)->edgeidx;
     int idx = *ptr++;
+
     while (idx >= 0) {
       PRIVATE(thisp)->bbox.extendBy(PRIVATE(this)->coords[idx]);
       idx = *ptr++;
     }
+
+    float advancex, advancey, width, height;
+    cc_flw_get_advance(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx, &advancex, &advancey);
+    SbVec2f max = PRIVATE(this)->bbox.getMax();
+    
+    PRIVATE(this)->bbox.extendBy(SbVec2f(advancex, advancey));
+   
     PRIVATE(thisp)->flags.didcalcbbox = 1;
   }
+
+
   return PRIVATE(this)->bbox;
 }
 
@@ -368,7 +439,7 @@ SoGlyph::getGlyph(const char character, const SbName & font)
   // signed, other places unsigned. Should audit and fix as much as
   // possible without breaking API and ABI compatibility. *sigh*
   // 20030611 mortene.
-
+  
   // Similar code in start of getGlyph(..., state) - keep in sync.
   if (SoGlyph_mutex == NULL) {
     CC_MUTEX_CONSTRUCT(SoGlyph_mutex);
@@ -400,7 +471,7 @@ SoGlyph::getGlyph(const char character, const SbName & font)
   }
 
   SoGlyph * glyph = SoGlyphP::createSystemGlyph(character, font);
-
+  
   // FIXME: don't think this is necessary, we should _always_ get a
   // glyph. If none exist in the font, we should eventually fall back
   // on making a square in the code we're calling into. Move the code
@@ -440,6 +511,10 @@ SoGlyph::getGlyph(const char character, const SbName & font)
   activeGlyphs->append(info);
   CC_MUTEX_UNLOCK(SoGlyph_mutex);
   return glyph;
+  
+
+  return NULL;
+
 }
 
 // private method that removed glyph from active list when deleted
@@ -474,13 +549,24 @@ SoGlyph::getGlyph(SoState * state,
                   const float angle)
 {
   assert(state);
-
+  
   SbName state_name = SoFontNameElement::get(state);
   float state_size = SoFontSizeElement::get(state);
+  
   if (state_name == SbName("")) {
     state_name = SbName("defaultFont");
-    state_size = 12.0;
-  }
+    state_size = 10.0;
+  } 
+  
+  // FIXME: If the name 'defaultFont' is sent to the font wrapper, the
+  // space in between each letter will be to large. I haven't manage to
+  // track down the cause yet, but preventing the default font name to
+  // be 'defaultFont' solves the problem... This only affects 3D
+  // chars. (29Aug2003 handegar)
+  if (state_name == SbName("defaultFont"))
+     state_name = SbName("");
+  
+
   SbVec2s fontsize((short)state_size, (short)state_size);
   if (size != SbVec2s(0,0)) { fontsize = size; }
   
@@ -506,16 +592,19 @@ SoGlyph::getGlyph(SoState * state,
     CC_MUTEX_UNLOCK(SoGlyph_mutex);
     return glyph;
   }
-
+  
   // FIXME: use font style in addition to font name. preng 2003-03-03
   SbString fontname = state_name.getString();
-  const int font =
-    cc_flw_get_font(fontname.getString(), fontsize[0], fontsize[1]);
+
+  const int font = cc_flw_get_font(fontname.getString(), fontsize[0], fontsize[1]);
   // Should _always_ be able to get hold of a font.
   assert(font >= 0);
 
-  cc_flw_set_font_rotation(font, angle);
+  if (angle != 0)
+    cc_flw_set_font_rotation(font, angle);
+
   const int glyphidx = cc_flw_get_glyph(font, character);
+
   // Should _always_ be able to get hold of a glyph -- if no glyph is
   // available for a specific character, a default empty rectangle
   // should be used.  -mortene.
@@ -527,7 +616,7 @@ SoGlyph::getGlyph(SoState * state,
   PRIVATE(g)->size = fontsize;
   PRIVATE(g)->angle = angle;
   PRIVATE(g)->character = character;
-  coin_glyph_info info(character, fontsize[0], state_name, g, angle);
+  coin_glyph_info info(character, -1, state_name, g, angle);
   PRIVATE(g)->refcount++;
   activeGlyphs->append(info);
 
@@ -570,22 +659,85 @@ SoGlyph::getKerning(const SoGlyph & rightglyph) const
 unsigned char *
 SoGlyph::getBitmap(SbVec2s & size, SbVec2s & pos, const SbBool antialiased) const
 {
-  struct cc_flw_bitmap * bm =
-    cc_flw_get_bitmap(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx);
+  struct cc_flw_bitmap * bm = cc_flw_get_bitmap(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx);
   assert(bm);
+
+  PRIVATE(this)->bitmapwidth = bm->width;
+  PRIVATE(this)->bitmapheight = bm->rows;
 
   size[0] = bm->pitch * 8;
   size[1] = bm->rows;
   pos[0] = bm->bearingX;
-  pos[1] = bm->bearingY;
+  pos[1] = bm->bearingY; 
+
   return bm->buffer;
 }
 
+
+void
+SoGlyphP::setup3DFontData()
+{
+
+  master->setFontType(SoGlyph::FONT3D);
+  
+#if defined(COIN_NO_DEFAULT_3DFONT)
+  // just create a square to render something
+  static float dummycoords[] = {0.0f, 0.0f, 0.7f, 0.0f, 0.7f, 0.7f, 0.0f, 0.7f};
+  static int dummyfaceidx[] = {0,1,2,0,2,3,-1};
+  static int dummyedgeidx[] = {0,1,1,2,2,3,3,0,-1};
+  this->setCoords((SbVec2f*)dummycoords);
+  this->setFaceIndices(dummyfaceidx);
+  this->setEdgeIndices(dummyedgeidx);
+#else // ! COIN_NO_DEFAULT_3DFONT
+  
+  if (character <= 32 || character >= 127) {
+    // treat all these characters as spaces
+    static int spaceidx[] = { -1 };
+    this->master->setCoords(NULL);
+    this->master->setFaceIndices(spaceidx);
+    this->master->setEdgeIndices(spaceidx);
+    this->bbox.setBounds(SbVec2f(0.0f, 0.0f), SbVec2f(0.2f, 0.0f));
+    this->flags.didcalcbbox = 1;
+  }
+  else {
+    
+    cc_flw_vector_glyph * vector_glyph = cc_flw_get_vector_glyph(this->fontidx, this->character);
+    
+    if (vector_glyph == NULL) {
+      // Default hardcoded 3d font. Size = 1.0
+      const int idx = this->character-33;
+      this->master->setCoords((SbVec2f*)coin_default3dfont_get_coords()[idx]);
+      this->master->setFaceIndices((int*)coin_default3dfont_get_faceidx()[idx]);
+      this->master->setEdgeIndices((int*)coin_default3dfont_get_edgeidx()[idx]);
+    } 
+    else {
+      // Install truetype font
+      this->master->setCoords((SbVec2f *) cc_flw_get_vector_glyph_coords(vector_glyph));
+      this->master->setFaceIndices(cc_flw_get_vector_glyph_faceidx(vector_glyph));
+      this->master->setEdgeIndices(cc_flw_get_vector_glyph_edgeidx(vector_glyph));        
+    }
+    
+  }
+#endif // COIN_NO_DEFAULT_3DFONT
+  
+
+}
+
+
+
+
+
 // should handle platform-specific font loading
+SoGlyph *
+SoGlyphP::createSystemGlyph(const char character, int fontid)
+{ 
+  return NULL;
+}
+
+
 SoGlyph *
 SoGlyphP::createSystemGlyph(const char character, const SbName & font)
 {
-  // FIXME: implement me somebody, please
   return NULL;
 }
 
