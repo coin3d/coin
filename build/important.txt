@@ -1,0 +1,14 @@
+////////////////////////////////////////////////////
+
+                   IMPORTANT!
+
+To use the Coin SDK you have to set some environment
+variables. Add the following to your AUTOEXEC.BAT:
+
+   SET INCLUDE = C:\<INSTALLDIR>\include;%INCLUDE%
+   SET LIB = C:\<INSTALLDIR>\lib;%LIB%
+
+If you use Windows NT, you have to set the above
+variables in your system user variables.
+
+////////////////////////////////////////////////////

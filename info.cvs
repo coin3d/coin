@@ -13,21 +13,3 @@ edition" license.
 Some of the files in the distribution is covered by the GNU GPL, but
 this does not include any of the files which are compiled to the final
 binary products.
-
-
-STATUS
-mid-development
-
-DEVELOPERS
-Morten Eriksen <mortene@sim.no>
-Peder Blekken <pederb@sim.no>
-Marius Kintel <kintel@sim.no>
-Lars J. Aas <larsa@sim.no>
-
-NOTES
-<blockquote>
-Development status can be found <a href=../coin/>here</a>.<br>
-Files can be inspected <a href=Coin-files.html>here</a>.<br>
-
-</blockquote>
-

@@ -362,6 +362,10 @@ AC_SUBST(coin_build_dir)
 SIM_AC_DOBACKSLASH(coin_src_dir,$srcdir)
 AC_SUBST(coin_src_dir)
 
+# Set coin_include_dir so we can change CoinSDK.iwz
+SIM_AC_DOBACKSLASH(coin_include_dir,$includedir)
+AC_SUBST(coin_include_dir)
+
 AC_OUTPUT([
         coin-config
         Makefile
@@ -403,15 +407,17 @@ AC_OUTPUT([
         build/coin.mak
         build/coin_dll.dsp
         build/coin_dll.mak
+        build/CoinSdk.iwz
         ],
         [chmod a+x coin-config])
 
 if test x"$sim_ac_linking_style" = xmswin; then
-  for sim_ac_winfile in build/coin.dsp build/coin.mak build/coin_dll.dsp build/coin_dll.mak; do
+  for sim_ac_winfile in build/coin.dsp build/coin.mak build/coin_dll.dsp build/coin_dll.mak build/CoinSDK.iwz; do
     mv $sim_ac_winfile $sim_ac_winfile.bak
     echo "(Win)DOS-ifying $sim_ac_winfile"
     sed -e 's/$/
 /' < $sim_ac_winfile.bak > $sim_ac_winfile
+    rm $sim_ac_winfile.bak
   done
 fi
 
@@ -488,6 +494,14 @@ esac
 # FIXME: should detect MSVC properly, not just rely on mswin==MSVC.
 # (The same test is used at a lot of other places aswell.) 20000609 mortene.
 if test x"$sim_ac_linking_style" = xmswin; then
+    # Stuff done to please the Installshield script we use to package up
+    # the SDK.
+    cat ${srcdir}/info.cvs | sed -e 's/$/
+/' > info.txt
+    cat ${srcdir}/LICENSE.QPL | sed -e 's/$/
+/' > qpl.txt
+    
+    # Info to the developer brave enough to download the sourcecode.
     echo ""
     echo " Detected MSVC++. There are some hints regarding this compiler"
     echo " in the file "

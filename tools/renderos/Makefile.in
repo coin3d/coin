@@ -93,6 +93,7 @@ PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 VERSION = @VERSION@
 coin_build_dir = @coin_build_dir@
+coin_include_dir = @coin_include_dir@
 coin_src_dir = @coin_src_dir@
 install_sh = @install_sh@
 sim_ac_simage_conf_cmd = @sim_ac_simage_conf_cmd@
