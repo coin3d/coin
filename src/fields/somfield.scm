@@ -15,11 +15,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; Test SoM*::setNum() ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (set-mfield-values! (-> colorindex 'index) 0 '(0 1 2 3 5 7 11))
-(-> (-> colorindex 'index) 'setnum 3)
-(-> (-> colorindex 'index) 'set1value 0 42)
+;; Make smaller
+(-> (-> colorindex 'index) 'setnum 5)
+;; Make larger
+(-> (-> colorindex 'index) 'setnum 9)
 
 ;; text->string.getNum() should equal booloperation->a.getNum() at all
-;; times.
+;; times. (Note that SGI/TGS Open Inventor doesn't propagate
+;; "shrinkage", i.e. setNum() calls where the new value is less than
+;; the old won't influence number of values on slave fields -- which
+;; is probably a bug.)
 (-> (-> colorindex 'index) 'getnum)
 (-> (-> text 'string) 'getnum)
 

@@ -428,9 +428,7 @@ _class_::allocValues(int newnum) \
     } \
   } \
  \
-  SbBool valchanged = newnum < this->num ? TRUE : FALSE; \
   this->num = newnum; \
-  if (valchanged) this->valueChanged(); \
 }
 
 

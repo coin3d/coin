@@ -415,7 +415,10 @@ SoMField::getNum(void) const
 void
 SoMField::setNum(const int num)
 {
-  this->allocValues(num);
+  if (num != this->num) {
+    this->allocValues(num);
+    this->valueChanged();
+  }
 }
 
 /*!
@@ -450,10 +453,13 @@ SoMField::deleteValues(int start, int num)
     char * move_from = ((char *)this->valuesPtr()) + end * fsize;
     int elements = this->getNum() - end;
 
+    // FIXME: this seems rather unsafe, should probably use copy
+    // operator instead. 20000915 mortene.
     (void)memmove(move_to, move_from, fsize * elements);
   }
 
-  // Truncate.
+  // Truncate (setNum() also calls valueChanged() (which triggers
+  // notification)).
   this->setNum(this->getNum() - num);
 }
 
@@ -477,15 +483,19 @@ SoMField::insertSpace(int start, int num)
 #endif // COIN_DEBUG
 
   // Expand array.
-  this->setNum(this->getNum() + num);
+  this->allocValues(this->getNum() + num);
 
   // Copy values upward.
   if (start < this->getNum()) {
     int fsize = this->fieldSizeof();
     char * move_from = ((char *)this->valuesPtr()) + start * fsize;
     char * move_to = ((char *)this->valuesPtr()) + (start + num) * fsize;
+    // FIXME: this seems rather unsafe, should probably use copy
+    // operator instead. 20000915 mortene.
     (void)memcpy(move_to, move_from, fsize * num);
   }
+
+  this->valueChanged();
 }
 
 #ifndef DOXYGEN_SKIP_THIS // Internal method.
@@ -541,18 +551,7 @@ SoMField::allocValues(int newnum)
     }
   }
 
-  SbBool valchanged = newnum < this->num ? TRUE : FALSE;
   this->num = newnum;
-  // FIXME: it seems bogus to 1) call valueChanged() from this method
-  // (I think it would be better to do that from the callers), 2) not
-  // call valueChanged() when setNum() expands the number of
-  // values.
-  //
-  // If/when this is fixed, remember to also fix the allocValues()
-  // macro in SoSubField.h.
-  //
-  // 20000915 mortene.
-  if (valchanged) this->valueChanged();
 }
 #endif // DOXYGEN_SKIP_THIS
 
@@ -572,8 +571,8 @@ SoMField::evaluateConnection(void) const
       // master field, as it should otherwise be handled by the
       // converter engine between the fields.
       master->getTypeId() == this->getTypeId()) {
-    // cast away const for setNum()
-    ((SoMField *)this)->setNum(((SoMField *)master)->getNum());
+    // cast away const for allocValues()
+    ((SoMField *)this)->allocValues(((SoMField *)master)->getNum());
   }
 
   inherited::evaluateConnection();
