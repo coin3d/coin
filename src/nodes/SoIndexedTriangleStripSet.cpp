@@ -49,7 +49,6 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
