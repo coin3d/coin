@@ -48,8 +48,8 @@
 #define FLAG_ABORTCB               0x0200
 #define FLAG_SCREENDOOR            0x0400
 #define FLAG_OVERRIDE              0x0800
+#define FLAG_TEX3ENABLED           0x1000
 
-#define FLAG_TEXMASK (FLAG_TEXENABLED|FLAG_TEXFUNC)
 #define FLAG_DELAYMASK (FLAG_BBOXCMPLX|FLAG_INVISIBLE|FLAG_ABORTCB)
 
 SO_ELEMENT_SOURCE(SoShapeStyleElement);
@@ -186,6 +186,24 @@ SoShapeStyleElement::setTextureEnabled(SoState * const state,
   }
 }
 
+/*!
+  FIXME: write doc.
+
+  \since 2001-11-26
+*/
+void
+SoShapeStyleElement::setTexture3Enabled(SoState * const state,
+                                       const SbBool value)
+{
+  SoShapeStyleElement * elem = getElement(state);
+  if (value) {
+    elem->flags |= FLAG_TEX3ENABLED;
+  }
+  else {
+    elem->flags &= ~FLAG_TEX3ENABLED;
+  }
+}
+
 //! FIXME: write doc.
 
 void
@@ -285,7 +303,7 @@ SoShapeStyleElement::needNormals() const
 SbBool
 SoShapeStyleElement::needTexCoords() const
 {
-  return (this->flags & FLAG_TEXMASK) == FLAG_TEXENABLED;
+  return (this->flags&(FLAG_TEXENABLED|FLAG_TEX3ENABLED));
 }
 
 /*!
@@ -325,5 +343,6 @@ SoShapeStyleElement::getConstElement(SoState * const state)
 #undef FLAG_ABORTCB
 #undef FLAG_SCREENDOOR
 #undef FLAG_OVERRIDE
+#undef FLAG_TEX3ENABLED
 #undef FLAG_TEXMASK
 #undef FLAG_DELAYMASK

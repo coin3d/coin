@@ -57,6 +57,7 @@ public:
   static void setTransparencyType(SoState * const state,
                                   const int32_t value);
   static void setTextureEnabled(SoState * const state, const SbBool value);
+  static void setTexture3Enabled(SoState * const state, const SbBool value);
   static void setTextureFunction(SoState * const state,
                                  const SbBool value);
   static void setLightModel(SoState * const state, const int32_t value);
