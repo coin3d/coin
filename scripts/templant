@@ -41,6 +41,7 @@
 #      //$ END EXPORT INLINE
 #
 #  //$ DEFINE varname substitution
+#  //$ UNDEFINE varname
 #
 #  /*$ EVAL( perl-expr ) */
 #
@@ -50,6 +51,10 @@
 #  //$ ENDIF
 #
 #  ... //$ IF perl-expr
+#
+#  //$ APPEND string                    [append line to previous line]
+#  //$ APPEND:string                    [append line to previous line]
+#                                       [- no space stripping]
 #
 #  //$ WARNING message
 #  //$ ERROR message
@@ -61,9 +66,24 @@
 #
 ############################################################################
 #
+#  TODO:
+#  - avoid substitution on first argument of DEFINE and UNDEFINE
+#  - IFDEF/IFNDEF
+#  - CASE varname
+#    match: 
+#    match: 
+#    match: 
+#    match: 
+#    ESAC
+#
+############################################################################
+#
 #  $Id$
 #
 #  $Log$
+#  Revision 1.10  2002/06/10 15:29:54  larsa
+#  new CASE/ESAC directive, DEFINE/UNDEF fix, and some cosmetics
+#
 #  Revision 1.9  2002/03/20 18:03:38  larsa
 #  a new shorthand notation for single-line conditionals, new macros ERROR and WARNING
 #
@@ -160,8 +180,8 @@ $prefix = '(\#\#\$|//\$|/\*\$)';
 $postfix = '( *| +\*/)';
 
 @incpath = ();
-push( @incpath, "" );    # $incpath[0] is set to the current file's directory
-push( @incpath, "." );   # $incpath[1] is current directory
+push(@incpath, "");    # $incpath[0] is set to the current file's directory
+push(@incpath, ".");   # $incpath[1] is current directory
 
 ############################################################################
 # parse environment variables
@@ -184,12 +204,12 @@ foreach $opt ( @options ) {
     if ( defined $OPTIONS{$opt} ) {
         eval $OPTIONS{$opt};
     } elsif ( $opt =~ /^-I/o ) {
-        $dir = substr( $opt, 2 );
+        $dir = substr($opt, 2);
         if ( ! -d $dir ) {
             print STDERR "WARNING:  No directory '", $dir,
                          "' (from command line option).\n";
         } else {
-            push( @incpath, $dir );
+            push(@incpath, $dir);
         }
     } else {
         print STDERR "ERROR: No option or file named '", $opt, "'\n";
@@ -213,7 +233,7 @@ foreach $file ( @files ) {
         next file;
     } else {
         @origlines = <FILE>;
-        close( FILE );
+        close(FILE);
         @lines = @origlines;
     }
 
@@ -254,12 +274,12 @@ foreach $file ( @files ) {
     # save if changed
     if ( &FileChanged() ) {
         printf "\r%-60s%-18s\n", $file . ":", "updating...";
-        system( "mv $file $file.bak" );
-        open( FILE, "> $file" ) || die $file, ": ", $!, "\n";
+        system("mv $file $file.bak");
+        open(FILE, "> $file") || die $file, ": ", $!, "\n";
         foreach $line ( @lines ) {
             print FILE $line;
         }
-        close( FILE );
+        close(FILE);
     } else {
         printf "\r%-60s%-18s\n", $file . ":", "no change...";
     }
@@ -270,18 +290,18 @@ foreach $file ( @files ) {
 
 # folds all templates
 sub FoldTemplates { ########################################################
-    local( $line, $i, $proto, $name, $temp );
+    local($line, $i, $proto, $name, $temp);
 
 template:
-    for ( $line = scalar( @lines ) - 1; $line >= 0; $line-- ) {
+    for ( $line = scalar(@lines) - 1; $line >= 0; $line-- ) {
         if ( $lines[$line] =~ m|^$prefix +BEGIN +TEMPLATE +|o ) {
-            chop( $proto = $lines[$line] );
+            chop($proto = $lines[$line]);
             $proto =~ s|^$prefix +BEGIN +TEMPLATE +||o;
             $proto =~ s|$postfix$||o;
             $name = $proto;
             $name =~ s/^([a-zA-Z0-9_-]+)\(.*/$1/og;
             $i = $line + 1;
-            while ( $i < scalar( @lines ) ) {
+            while ( $i < scalar(@lines) ) {
                 if ( $lines[$i] =~ m|^$prefix +END +TEMPLATE +|o ) {
                     chop( $temp = $lines[$i] );
                     $temp =~ s|^$prefix +END +TEMPLATE +||o;
@@ -289,12 +309,12 @@ template:
                     $temp =~ s|$postfix$||o;
                     $localpostfixstr = $1;
                     if ( $temp eq $name ) {
-                        splice( @lines, $line, ($i - $line + 1), 
-                             ( "$localprefixstr INSERT TEMPLATE " . $proto . "$localpostfixstr\n" ) );
+                        splice(@lines, $line, ($i - $line + 1), 
+                             ("$localprefixstr INSERT TEMPLATE " . $proto . "$localpostfixstr\n"));
                         next template;
                     } else {
                         print STDERR "ERROR: TEMPLATE BEGIN ($name) / END mismatch.\n";
-                        exit( -1 );
+                        exit(-1);
                     }
                 }
                 $i++;
@@ -309,23 +329,44 @@ template:
 
 # unfolds all templates
 sub UnfoldTemplates { ######################################################
-    local( $level ) = ( 0 );
-    local( $line, $proto, $name, $filename, $arguments, $templatevariables );
-    local( $i, $prototype, $prototypename );
-    local( @template, @arguments, @templatevariables );
-    local( $templates ); # for template, not file
-    local( $arg );
-    local( @conditionals ) = ();
+    local($level) = (0);
+    local($line, $proto, $name, $filename, $arguments, $templatevariables);
+    local($i, $prototype, $prototypename);
+    local(@template, @arguments, @templatevariables);
+    local($templates); # for template, not file
+    local($arg);
+    local(@conditionals) = ();
 
     $level = $_[0] if ( @_ > 0 );
 
     $templates = 0;
     for ( $line = 0; $line < @lines; $line++ ) {
-        $lines[$line] =~ s|/\*\$ *EVAL\((.*)\) *\*/|eval "$1"|eg;
-        foreach $definename (keys %defines) {
-          $lines[$line] =~ s|$definename|$defines{$definename}|g;
-        }
         $directive = 0;
+        if ( defined $casestring ) {
+            $length = length($casestring);
+            if ( $casestring eq substr($lines[$line], 0, $length) ) {
+                $lines[$line] = substr($lines[$line], $length);
+            } else {
+                $directive = 1;
+            }
+        }
+        # need to pick up define-name before it is substituted...
+        $definename = "";
+        if ( $lines[$line] =~ m|^$prefix +DEFINE +([^ ]+) +(.*)$|o ) {
+            $definename = $2;
+            # ensure define name isn't split up on redefinition...
+            $lines[$line] =~ s| (DEFINE +)([^ ]+) | \1# |o;
+        } elsif ( $lines[$line] =~ m|^$prefix +UNDEFINE +([^ ]+)$|o ) {
+            $definename = $2;
+            chomp($definename);
+            delete $defines{$definename};
+            # print STDERR "undefining \"$definename\"\n";
+        }
+        foreach $key (keys %defines) {
+          # print STDERR "substing \"$key\" with \"$defines{$key}\"\n";
+          $lines[$line] =~ s|$key|$defines{$key}|g;
+        }
+        $lines[$line] =~ s|/\*\$ *EVAL\((.*)\) *\*/|eval "$1"|eg;
 
         ## we try to handle IF, ELSIF, ELSE, and ENDIF here
         if ( $lines[$line] =~ m|^$prefix +IF +|o ) {
@@ -365,6 +406,17 @@ sub UnfoldTemplates { ######################################################
             # print STDERR "closing conditional ".scalar(@conditionals)."\n";
             $oldconditional = pop(@conditionals);
             $directive = 1;
+        } elsif ( $lines[$line] =~ m|^$prefix +CASE +(.+)$|o ) {
+            if ( defined $casestring ) {
+                print STDERR "error: multiple CASE/ESAC conditions simultaneously\n";
+                exit(-1);
+            } else {
+                $casestring = $2;
+                $directive = 1;
+            }
+        } elsif ( $lines[$line] =~ m|^$prefix +ESAC *$|o ) {
+            $directive = 1;
+            undef $casestring;
         }
 
         if ( $directive == 1 ) {
@@ -399,6 +451,21 @@ sub UnfoldTemplates { ######################################################
             }
         }
 
+        if ( $lines[$line] =~ m|^$prefix +APPEND +|o ) {
+            $appendstring = $lines[$line];
+            $appendstring =~ s|^$prefix +APPEND +||o;
+            chomp($lines[$line-1]);
+            $lines[$line-1] .= $appendstring;
+            $directive = 1;
+        } elsif ( $lines[$line] =~ m|^$prefix +APPEND:|o ) {
+            $appendstring = $lines[$line];
+            $appendstring =~ s|^$prefix +APPEND:||o;
+            chomp($lines[$line-1]);
+            $lines[$line-1] .= $appendstring;
+            $directive = 1;
+        }
+
+
         if ( $lines[$line] =~ m|^$prefix +ERROR +|o ) {
             $errorstring = $lines[$line];
             $errorstring =~ s|^$prefix +ERROR +||o;
@@ -413,16 +480,19 @@ sub UnfoldTemplates { ######################################################
 
         if ( $lines[$line] =~ m|^$prefix +DEFINE +|o ) {
           $lines[$line] =~ m|^$prefix +DEFINE +([^ ]+) +(.*)$|o;
-          $definename = $2;
+          # picked up above
+          # $definename = $2;
           $value = $3;
           # print STDERR "defining \"$definename\" to \"$value\"\n";
           $defines{$definename} = $value;
           $directive = 1;
         } elsif ( $lines[$line] =~ m|^$prefix +UNDEFINE +|o ) {
-          $lines[$line] =~ m|^$prefix +DEFINE +([^ ]+)$|o;
-          $definename = $2;
+          # everything is handled before the keyword substitution phase
+          # $lines[$line] =~ m|^$prefix +UNDEFINE +([^ ]+)$|o;
+          # picked up above
+          # $definename = $2;
           # print STDERR "undefining \"$definename\"\n";
-          undef $defines{$definename};
+          # delete $defines{$definename};
           $directive = 1;
         }
 
