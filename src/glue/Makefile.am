@@ -13,6 +13,7 @@ RegularSources = \
 	win32api.c \
 	zlib.c \
 	bzip2.c \
+	freetype.c \
 	glue-dummy.cpp
 
 LinkHackSources = \
@@ -34,7 +35,8 @@ PrivateHeaders = \
         ../../include/Inventor/C/glue/fontlib_wrapper.h \
         ../../include/Inventor/C/glue/win32api.h \
         ../../include/Inventor/C/glue/zlib.h \
-        ../../include/Inventor/C/glue/bzip2.h
+        ../../include/Inventor/C/glue/bzip2.h \
+        ../../include/Inventor/C/glue/freetype.h
 
 ##$ BEGIN TEMPLATE Make-Common(glue, glue)
 # **************************************************************************
