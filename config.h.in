@@ -75,6 +75,9 @@
 /* define if vsnprintf() is available */
 #undef HAVE_VSNPRINTF
 
+/* define if you have WGL */
+#undef HAVE_WGL
+
 /* Define if you have the <windows.h> header file. */
 #undef HAVE_WINDOWS_H
 

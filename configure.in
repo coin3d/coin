@@ -528,7 +528,7 @@ SIM_AC_CHECK_OPENGL([AC_DEFINE([HAVE_OPENGL],, [define if you have OpenGL])
 if test x"$sim_ac_gl_avail" = xyes; then
 
   # *******************************************************************
-  # ** Check if GLX is available.
+  # ** Check what OpenGL->windowsystem bindings are available.
   # *******************************************************************
 
   AC_CACHE_CHECK([whether GLX is available],
@@ -540,6 +540,17 @@ if test x"$sim_ac_gl_avail" = xyes; then
 
   if test x"$sim_cv_func_glx_avail" = xyes; then
     AC_DEFINE([HAVE_GLX],, [define if you have GLX])
+  fi
+
+  AC_CACHE_CHECK([whether WGL is available],
+    sim_cv_func_wgl_avail,
+    [AC_TRY_LINK([#include <windows.h>],
+                 [(void)wglCreateContext(0L);],
+                 sim_cv_func_wgl_avail=yes,
+                 sim_cv_func_wgl_avail=no)])
+
+  if test x"$sim_cv_func_wgl_avail" = xyes; then
+    AC_DEFINE([HAVE_WGL],, [define if you have WGL])
   fi
 
 
