@@ -714,9 +714,9 @@ SoGlyphP::setup3DFontData()
     if (vector_glyph == NULL) {
       // Default hardcoded 3d font. Size = 1.0
       const int idx = this->character-33;
-      this->master->setCoords((SbVec2f*)coin_default3dfont_get_coords()[idx]);
-      this->master->setFaceIndices((int*)coin_default3dfont_get_faceidx()[idx]);
-      this->master->setEdgeIndices((int*)coin_default3dfont_get_edgeidx()[idx]);
+      this->master->setCoords((const SbVec2f*)&(coin_default3dfont_get_coords()[idx]));
+      this->master->setFaceIndices(&(coin_default3dfont_get_faceidx()[idx]));
+      this->master->setEdgeIndices(&(coin_default3dfont_get_edgeidx()[idx]));
     } 
     else {
       // Install truetype font
