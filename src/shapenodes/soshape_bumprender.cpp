@@ -64,20 +64,20 @@ static const char * bumpspecfpprogram =
 "PARAM c0 = {2, 0.5, 0, 0};\n"
 "TEMP R0;\n"
 "TEMP R1;\n"
-"TEX R0.xyz, fragment.texcoord[0], texture[0], 2D;\n"
-"ADD R0.xyz, R0, -c0.y;\n"
-"MUL R0.xyz, R0, c0.x;\n"
-"MOV R1.xyz, fragment.texcoord[2];\n"
-"ADD R1.xyz, fragment.texcoord[1], R1;\n"
-"DP3 R0.w, R1, R1;\n"
-"RSQ R0.w, R0.w;\n"
-"MUL R1.xyz, R0.w, R1;\n"
-"TEX R1.xyz, R1, texture[1], CUBE;\n"
-"ADD R1.xyz, R1, -c0.y;\n"
-"MUL R1.xyz, R1, c0.x;\n"
-"DP3_SAT R0.x, R0, R1;\n"
-"POW R0.x, R0.x, u1.x;\n"
-"MUL result.color, u0, R0.x;\n"
+" TEX R0.xyz, fragment.texcoord[0], texture[0], 2D;\n"
+" ADD R0.xyz, R0, -c0.y;\n"
+" MUL R0.xyz, R0, c0.x;\n"
+" MOV R1.xyz, fragment.texcoord[2];\n"
+" ADD R1.xyz, fragment.texcoord[1], R1;\n"
+" DP3 R0.w, R1, R1;\n"
+" RSQ R0.w, R0.w;\n"
+" MUL R1.xyz, R0.w, R1;\n"
+" TEX R1.xyz, R1, texture[1], CUBE;\n"
+" ADD R1.xyz, R1, -c0.y;\n"
+" MUL R1.xyz, R1, c0.x;\n"
+" DP3_SAT R0.x, R0, R1;\n"
+" POW R0.x, R0.x, u1.x;\n"
+" MUL result.color, u0, R0.x;\n"
 "END\n";
 
 // Vertex program for directional lights
@@ -155,6 +155,7 @@ static const char * pointlightvpprogram =
 // texture unit 1)
 static const char * diffusebumpdirlightvpprogram =
 "!!ARBvp1.0\n"
+"TEMP R0;\n"
 "PARAM c5 = { 1, 0, 2, 0 };\n"
 "PARAM color = { 1, 1, 1, 1 };\n"
 "ATTRIB v19 = vertex.color;\n"
@@ -183,32 +184,63 @@ static const char * diffusebumpdirlightvpprogram =
 // z-buffer value for each vertex
 static const char * normalrenderingvpprogram =
 "!!ARBvp1.0\n"
+"TEMP R0;\n"
 "ATTRIB v19 = vertex.color;\n"
 "ATTRIB v16 = vertex.position;\n"
 "ATTRIB v25 = vertex.texcoord[1];\n"
 "ATTRIB v24 = vertex.texcoord[0];\n"
+"PARAM c6[4] = { state.matrix.texture[0] };\n"
+"PARAM c7[4] = { state.matrix.texture[1] };\n"
 "PARAM c1[4] = { state.matrix.mvp };\n"
 " DPH result.position.x, v16.xyzz, c1[0];\n"
 " DPH result.position.y, v16.xyzz, c1[1];\n"
 " DPH result.position.z, v16.xyzz, c1[2];\n"
 " DPH result.position.w, v16.xyzz, c1[3];\n"
-" MOV result.texcoord[0].xy, v24;\n"
-" MOV result.texcoord[1].xy, v25;\n"
+" MUL R0.xy, c6[0].xyxx, v24.xyxx;\n"
+" ADD result.texcoord[0].x, R0.x, R0.y;\n"
+" MUL R0.xy, c6[1].xyxx, v24.xyxx;\n"
+" ADD result.texcoord[0].y, R0.x, R0.y;\n"
+" MUL R0.xy, c7[0].xyxx, v25.xyxx;\n"
+" ADD result.texcoord[1].x, R0.x, R0.y;\n"
+" MUL R0.xy, c7[1].xyxx, v25.xyxx;\n"
+" ADD result.texcoord[1].y, R0.x, R0.y;\n"
 " MOV result.color, v19;\n"
 "END\n";
 
 
 struct soshape_bumprender_spec_programidx {
+  const cc_glglue * glue;
   GLuint dirlight;
   GLuint pointlight;
   GLuint fragment;
 };
 
 struct soshape_bumprender_diffuse_programidx {
-  GLuint pointlight;
+  const cc_glglue * glue;
+  GLuint pointlight; // Pointlight diffuse rendering not implemented as a program yet.
   GLuint dirlight;
   GLuint normalrendering;
 };
+
+static void
+soshape_bumprender_diffuseprogramdeletion(unsigned long key, void * value)
+{
+  soshape_bumprender_diffuse_programidx * pidx = (soshape_bumprender_diffuse_programidx *) value;
+  /* FIXME: There are no pointlight program initialized for diffuse
+     rendering yet. Enable when implemented. (20040209 handegar) */
+  //pidx->glue->glDeleteProgramsARB(1, &pidx->pointlight);
+  pidx->glue->glDeleteProgramsARB(1, &pidx->dirlight);
+  pidx->glue->glDeleteProgramsARB(1, &pidx->normalrendering); 
+}
+
+static void
+soshape_bumprender_specularprogramdeletion(unsigned long key, void * value)
+{
+  soshape_bumprender_spec_programidx * pidx = (soshape_bumprender_spec_programidx *) value;
+  pidx->glue->glDeleteProgramsARB(1, &pidx->pointlight);
+  pidx->glue->glDeleteProgramsARB(1, &pidx->dirlight);
+  pidx->glue->glDeleteProgramsARB(1, &pidx->fragment);
+}
 
 soshape_bumprender::soshape_bumprender(void)
 {
@@ -220,8 +252,8 @@ soshape_bumprender::soshape_bumprender(void)
 
 soshape_bumprender::~soshape_bumprender()
 {
-  // FIXME: One should do a proper deletion of all fragment and vertex
-  // programs from the AGP memory when finished. (20040206 handegar)
+  this->diffuseprogramdict->applyToAll(soshape_bumprender_diffuseprogramdeletion);
+  this->specularprogramdict->applyToAll(soshape_bumprender_specularprogramdeletion);  
   this->diffuseprogramdict->clear();
   this->specularprogramdict->clear();
   delete this->diffuseprogramdict;  
@@ -282,9 +314,10 @@ soshape_bumprender::initDiffusePrograms(const cc_glglue * glue, SoState * state)
       
     }
 
-
     soshape_bumprender_diffuse_programidx * newstruct = new soshape_bumprender_diffuse_programidx;
+    newstruct->glue = glue; // Store the cc_glglue for later when class is to be destructed.
     newstruct->dirlight = this->diffusebumpdirlightvertexprogramid;
+    newstruct->pointlight = 0; // Pointlight vertex program not implemented yet.
     newstruct->normalrendering = this->normalrenderingvertexprogramid;
 
     (void) this->diffuseprogramdict->enter(contextid, (void *) newstruct);
@@ -297,10 +330,6 @@ soshape_bumprender::initDiffusePrograms(const cc_glglue * glue, SoState * state)
 void
 soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
 {
-
-  // FIXME: Should we make the programs static for this class so that
-  // every bump map node would share the same program? (20040129
-  // handegar)
 
   unsigned long contextid = SoGLCacheContextElement::get(state);
   void * programstruct = NULL;
@@ -360,6 +389,7 @@ soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
     }
     
     soshape_bumprender_spec_programidx * newstruct = new soshape_bumprender_spec_programidx;
+    newstruct->glue = glue; // Store the cc_glglue for later when class is to be destructed.
     newstruct->fragment = this->fragmentprogramid;
     newstruct->dirlight = this->dirlightvertexprogramid;
     newstruct->pointlight = this->pointlightvertexprogramid;

@@ -39,6 +39,11 @@ private:
   SbVec3f getLightVec(const SbVec3f & v) const;
   void initPrograms(const cc_glglue * glue, SoState * state);
   void initDiffusePrograms(const cc_glglue * glue, SoState * state);
+
+  void soshape_diffuseprogramdeletion(unsigned long key, void * value);
+  void soshape_specularprogramdeletion(unsigned long key, void * value);
+
+
   SbList <SbVec3f> cubemaplist;
   SbList <SbVec3f> tangentlist;
 
