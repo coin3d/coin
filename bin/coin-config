@@ -34,6 +34,8 @@ Options:
   --compile <sourcefile> [<sourcefile>]...
   --link <program> <object> [<object>]...
   --build <program> <sourcefile> [<sourcefile>]...
+  --setup | --setup-front
+  --header <class>
   --version
   --usage | --help"
 
@@ -60,83 +62,105 @@ fi
 while test $# -gt 0
 do
   case $1 in
-    --usage | --help)  echo "$usage"       ;;
-    --version)         echo "$version"     ;;
-    --cppflags)        echo "$cppflags"    ;;
-    --cflags)          echo "$cflags"      ;;
-    --cxxflags)        echo "$cxxflags"    ;;
-    --ldflags)         echo "$ldflags"     ;;
-    --libs)            echo "$libs"        ;;
-    --datadir)         echo "$datadir"     ;;
-    --includedir)      echo "$includedir"  ;;
-    --msvcrt)          echo "$msvcrt"      ;;
-    --have-feature)
-      exitcode=1
-      eval "test x\${have_$2} = x1 && exitcode=0"
-      exit $exitcode
-      ;;
-    --compile)
-      shift
-      if test $# -eq 1; then
-        basename=`echo "$1" | sed -e 's/\.[^\.]*$//'`  # strip off extension
-        echo $compiler $CPPFLAGS $cppflags $CXXFLAGS $cxxflags -c $1 -o $basename.$objext \
-          | fmt -t -w76 | sed -e '$q; 1,$ s/$/ \\/'
-        $compiler \
-          $CPPFLAGS $cppflags \
-          $CXXFLAGS $cxxflags \
-          -c $1 -o $basename.$objext || exit $?
-      else
-        for arg in $@; do
-          $program --alternate="$alternate" --compile $arg || exit $?
-        done
-      fi
-      exit 0
-      ;;
-    --link)
-      shift
-      progname=$1
-      shift
-      echo $compiler $LDFLAGS $ldflags -o $progname $@ $libs $LIBS \
-        | fmt -t -w76 | sed -e '$q; 1,$ s/$/ \\/'
-      $compiler \
-        $LDFLAGS $ldflags \
-        -o $progname $@ \
-        $libs $LIBS || exit $?
-      exit 0
-      ;;
-    --build)
-      shift
-      progname=$1
-      objs=
-      extraldflags=
-      extralibs=
-      shift
-      for arg in $@; do
-        case $arg in
-          *.c | *.cpp | *.cxx | *.cc | *.c++)
-            basename=`echo "$arg" | sed -e 's/\.[^\.]*$//'`  # strip off extension
-            $program --alternate="$alternate" --compile $arg || exit $?
-            objs="$objs $basename.$objext"
-            ;;
-          -L*)
-            extraldflags="$extraldflags $arg"
-            ;;
-          -l*)
-            extralibs="$extralibs $arg"
-            ;;
-        esac
-      done
-      echo $compiler $LDFLAGS $ldflags $extraldflags \
-        -o $progname $objs $extralibs $libs $LIBS \
+  --usage | --help)  echo "$usage"       ;;
+  --version)         echo "$version"     ;;
+  --cppflags)        echo "$cppflags"    ;;
+  --cflags)          echo "$cflags"      ;;
+  --cxxflags)        echo "$cxxflags"    ;;
+  --ldflags)         echo "$ldflags"     ;;
+  --libs)            echo "$libs"        ;;
+  --datadir)         echo "$datadir"     ;;
+  --msvcrt)          echo "$msvcrt"      ;;
+  --have-feature)
+    exitcode=1
+    eval "test x\${have_$2} = x1 && exitcode=0"
+    exit $exitcode
+    ;;
+  --compile)
+    shift
+    if test $# -eq 1; then
+      basename=`echo "$1" | sed -e 's/\.[^\.]*$//'`  # strip off extension
+      echo $compiler $CPPFLAGS $cppflags $CXXFLAGS $cxxflags -c $1 -o $basename.$objext \
         | fmt -t -w76 | sed -e '$q; 1,$ s/$/ \\/'
       $compiler \
         $CPPFLAGS $cppflags \
         $CXXFLAGS $cxxflags \
-        $LDFLAGS $ldflags $extraldflags \
-        -o $progname $objs \
-        $extralibs $libs $LIBS || exit $?
-      exit 0
-      ;;
+        -c $1 -o $basename.$objext || exit $?
+    else
+      for arg in $@; do
+        $program --alternate="$alternate" --compile $arg || exit $?
+      done
+    fi
+    exit 0
+    ;;
+  --link)
+    shift
+    progname=$1
+    shift
+    echo $compiler $LDFLAGS $ldflags -o $progname $@ $libs $LIBS \
+      | fmt -t -w76 | sed -e '$q; 1,$ s/$/ \\/'
+    $compiler \
+      $LDFLAGS $ldflags \
+      -o $progname $@ \
+      $libs $LIBS || exit $?
+    exit 0
+    ;;
+  --build)
+    shift
+    progname=$1
+    objs=
+    extraldflags=
+    extralibs=
+    shift
+    for arg in $@; do
+      case $arg in
+      *.c | *.cpp | *.cxx | *.cc | *.c++)
+        basename=`echo "$arg" | sed -e 's/\.[^\.]*$//'`  # strip off extension
+        $program --alternate="$alternate" --compile $arg || exit $?
+        objs="$objs $basename.$objext"
+        ;;
+      -L*)
+        extraldflags="$extraldflags $arg"
+        ;;
+      -l*)
+        extralibs="$extralibs $arg"
+        ;;
+      esac
+    done
+    echo $compiler $LDFLAGS $ldflags $extraldflags \
+      -o $progname $objs $extralibs $libs $LIBS \
+      | fmt -t -w76 | sed -e '$q; 1,$ s/$/ \\/'
+    $compiler \
+      $CPPFLAGS $cppflags \
+      $CXXFLAGS $cxxflags \
+      $LDFLAGS $ldflags $extraldflags \
+      -o $progname $objs \
+      $extralibs $libs $LIBS || exit $?
+    exit 0
+    ;;
+  --setup)
+    # FIXME: scan variables and only modify variables that need modification
+    echo "PATH=\$PATH:$prefix/bin"
+    echo "LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:$prefix/lib"
+    echo "export PATH LD_LIBRARY_PATH"
+    exit 0
+    ;;
+  --setup-front)
+    # FIXME: scan variables and only modify variables that need modification
+    echo "PATH=$prefix/bin:\$PATH"
+    echo "LD_LIBRARY_PATH=$prefix/lib:\$LD_LIBRARY_PATH"
+    echo "export PATH LD_LIBRARY_PATH"
+    exit 0
+    ;;
+  --header)
+    shift
+    classname=$1
+    for header in `find ${prefix}/include/Inventor -type f | xargs grep -n "^class COIN_DLL_API ${classname}" | cut -d: -f1`; do
+      echo ${header}
+      cat ${header}
+    done
+    exit 0
+    ;;
   # ignore some options
   --alternate=*) ;;
   --debug) ;;
