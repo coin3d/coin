@@ -145,9 +145,9 @@ SoRotor::setRotation(void)
   SbTime difftime = SbTime::getTimeOfDay() - this->starttime;
 
   float diffangle = (float)
-    (difftime.getValue() +
+    (difftime.getValue() *
      ((double)this->speed.getValue()) * M_PI * 2.0);
-
+  
   float angle = this->startangle + diffangle;
 
   if (angle > M_PI * 2.0f) {
