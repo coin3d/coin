@@ -47,9 +47,6 @@ protected:
   virtual void setElt(float size);
 
 private:
-  // FIXME: use native types, in this case an SbVec2f. Can't be fixed
-  // without breaking ABI compatibility, though, so wait until Coin
-  // version 2.  20010823 mortene.
   static float sizerange[2];
   void updategl();
 };
