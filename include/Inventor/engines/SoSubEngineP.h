@@ -71,4 +71,18 @@ _class_::initClass(void) \
 }
 
 
+#define SO_INTERPOLATE_INTERNAL_SOURCE(_class_, _type_, _valtype_, _default0_, _default1_, _interpexp_) \
+ \
+SO_ENGINE_SOURCE(_class_); \
+ \
+_class_::_class_(void) \
+{ \
+  PRIVATE_SO_INTERPOLATE_CONSTRUCTOR(_class_, _type_, _valtype_, _default0_, _default1_); \
+  this->isBuiltIn = TRUE; \
+} \
+ \
+PRIVATE_SO_INTERPOLATE_DESTRUCTOR(_class_) \
+PRIVATE_SO_INTERPOLATE_EVALUATE(_class_, _type_, _valtype_, _interpexp_)
+
+
 #endif // !COIN_SOSUBENGINEP_H

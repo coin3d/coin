@@ -29,9 +29,11 @@
 #include <Inventor/engines/SoSubEngineP.h>
 #include <Inventor/SbVec3f.h>
 
-SO_INTERPOLATE_SOURCE(SoInterpolateRotation, SoMFRotation, SbRotation,
-                      (SbVec3f(0.0f,0.0f,1.0f),0.0f),
-                      (SbVec3f(0.0f,0.0f,1.0f),0.0f),
-                      SbRotation::slerp(v0,v1,a));
-
 SO_INTERPOLATE_INTERNAL_INIT_CLASS(SoInterpolateRotation);
+
+SO_INTERPOLATE_INTERNAL_SOURCE(SoInterpolateRotation,
+                               SoMFRotation,
+                               SbRotation,
+                               (SbVec3f(0.0f,0.0f,1.0f),0.0f),
+                               (SbVec3f(0.0f,0.0f,1.0f),0.0f),
+                               SbRotation::slerp(v0,v1,a));

@@ -43,7 +43,7 @@ protected:
 
 
 
-//// End macros //////////////////////////////////////////////////////////
+//// Start macros ////////////////////////////////////////////////////////
 
 
 #define SO_INTERPOLATE_HEADER(_class_) \
@@ -57,35 +57,19 @@ protected:
     virtual void evaluate()
 
 
-//
-// Could this macro _be_ any uglier ((c) Chandler, Friends)
-//
-// Considering the number of lines of code needed to implement
-// the evaluate() method in each class, I'm amazed it is defined in
-// a macro and not simply implemented for each class. But, I guess
-// we'll have to supply this macro to keep the OIV compatibility,
-// so here it is. Check the interpolator classes for examples on
-// how to use it.
-//                                               pederb, 20000309
-//
-#define SO_INTERPOLATE_SOURCE(_class_, _type_, _valtype_, _default0_, _default1_, _interpexp_) \
- \
-SO_ENGINE_SOURCE(_class_); \
- \
-_class_::_class_(void) \
-{ \
+#define PRIVATE_SO_INTERPOLATE_CONSTRUCTOR(_class_, _type_, _valtype_, _default0_, _default1_) \
   SO_ENGINE_CONSTRUCTOR(_class_); \
   SO_ENGINE_ADD_INPUT(alpha, (0.0f)); \
   SO_ENGINE_ADD_INPUT(input0, _default0_); \
   SO_ENGINE_ADD_INPUT(input1, _default1_); \
-  SO_ENGINE_ADD_OUTPUT(output, _type_); \
-  this->isBuiltIn = TRUE; \
-} \
- \
+  SO_ENGINE_ADD_OUTPUT(output, _type_)
+
+#define PRIVATE_SO_INTERPOLATE_DESTRUCTOR(_class_) \
 _class_::~_class_() \
 { \
-} \
- \
+}
+
+#define PRIVATE_SO_INTERPOLATE_EVALUATE(_class_, _type_, _valtype_, _interpexp_) \
 void \
 _class_::evaluate(void) \
 { \
@@ -98,6 +82,35 @@ _class_::evaluate(void) \
     SO_ENGINE_OUTPUT(output, _type_, set1Value(i, _interpexp_)); \
   } \
 }
+
+
+// Considering the number of lines of code needed to implement
+// the evaluate() method in each class, I'm amazed it is defined in
+// a macro and not simply implemented for each class. But, I guess
+// we'll have to supply this macro to keep the OIV compatibility,
+// so here it is. Check the interpolator classes for examples on
+// how to use it.
+//                                               pederb, 20000309
+//
+// There's another version of this macro for internal use in the
+// SoSubEngineP.h file, so match any changes you do here with that
+// macro also -- if applicable.
+//
+//                                               mortene, 20000505
+
+#define SO_INTERPOLATE_SOURCE(_class_, _type_, _valtype_, _default0_, _default1_, _interpexp_) \
+ \
+SO_ENGINE_SOURCE(_class_); \
+ \
+_class_::_class_(void) \
+{ \
+  PRIVATE_SO_INTERPOLATE_CONSTRUCTOR(_class_, _type_, _valtype_, _default0_, _default1_); \
+  this->isBuiltIn = FALSE; \
+} \
+ \
+PRIVATE_SO_INTERPOLATE_DESTRUCTOR(_class_) \
+PRIVATE_SO_INTERPOLATE_EVALUATE(_class_, _type_, _valtype_, _interpexp_)
+
 
 #define SO_INTERPOLATE_INITCLASS(_class_, _classname_) \
  \
