@@ -395,7 +395,7 @@ _class_::allocValues(int newnum) \
   assert(newnum >= 0); \
  \
   if (newnum == 0) { \
-    delete[] this->valuesPtr(); \
+    delete[] this->values; /* don't fetch pointer through valuesPtr() (avoids void* cast) */ \
     this->setValuesPtr(NULL); \
     this->maxNum = 0; \
   } \
@@ -417,7 +417,7 @@ _class_::allocValues(int newnum) \
       for (int i=0; i < SbMin(this->num, newnum); i++) \
         newblock[i] = this->values[i]; \
  \
-      delete[] this->valuesPtr(); \
+      delete[] this->values; /* don't fetch pointer through valuesPtr() (avoids void* cast) */ \
       this->setValuesPtr(newblock); \
     } \
     else { \
