@@ -35,70 +35,120 @@ and SGI IRIX) and so the build process have been tuned for these
 platforms.
 
 A typical set-up session for me for doing Coin development on a virgin
-machine looks like this (I'm using SoQt as the GUI library for
+machine looks like this (I'm using SoXt as the GUI library for
 demonstration purposes):
 
   $ cd $HOME
   $ mkdir code compile install
   $ cd code
-  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot co -P simage
+  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot checkout -P simage
   [cvs doing its thing]
-  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot co -P Coin
+  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot checkout -P Coin
   [cvs doing its thing]
-  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot co -P SoQt
+  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot checkout -P SoXt
   [cvs doing its thing]
 
-[Note: you probably want to work with a particular branch from the
-CVS, so make sure you use the "-r" option to the "cvs checkout"s
-above.]
+        Note: you might want to work with a particular branch from the
+        CVS, if so use the "-r" option to the "cvs checkout"s above.
+
+        Note2: if you have already checked out the sources at an
+        earlier point in time, you just ``cd'' to the sourcecode
+        directories and do
+
+                $ cvs -z3 -q update -dP
+
+        instead of the full checkout.
+
 
   $ cd $HOME/compile
-  $ mkdir simage Coin SoQt
-  $ cd simage
+  $ mkdir simage Coin SoXt
+
+  $ cd $HOME/compile/simage
   $ $HOME/code/simage/configure --prefix=$HOME/install
   [configure running]
   $ make install
   [build should complete quickly]
-  $ cd ../Coin
+
+  $ cd $HOME/compile/Coin
   $ $HOME/code/Coin/configure --prefix=$HOME/install --enable-hacking
   [configure running]
 
-[Note the "--enable-hacking" option to configure. This is the
-brilliant part. What happens with this option is that instead of
-making one monolithic libCoin.so file, the Coin library will be linked
-into many shared libraries, one for each subdirectory under
-$HOME/code/Coin/src/. The brilliance of this little trick will be
-explained later in the walk-through.]
+        Note the "--enable-hacking" option to configure. This is the
+        brilliant part. What happens with this option is that instead
+        of making one monolithic libCoin.so file, the Coin library
+        will be linked into many shared libraries, one for each
+        subdirectory under $HOME/compile/Coin/src/. The brilliance of
+        this little trick will be explained later in the walk-through.
 
   $ make install
   [building will take quite some time, go for a coffee]
 
-  $ cd ../SoQt
-  $ $HOME/code/SoQt/configure --prefix=$HOME/install
+  $ cd $HOME/compile/SoXt
+  $ $HOME/code/SoXt/configure --prefix=$HOME/install
   [configure running]
   $ make install
   [build shouldn't take long]
 
-Ok, that's it. You should now have libsimage, libCoin and libSoQt
+Ok, that's it. You should now have libsimage, libCoin and libSoXt
 built and installed under $HOME/install/lib/.
 
+If you go look in the $HOME/install/lib/ directory, you will see a
+bunch of files named lib**something**LINKHACK.so. For each of the
+"submodules" in Coin where you will be working, you should now remove
+the relevant .so-files and instead symlink them directly from the
+build directory. I.e., if you are going to work with the node classes,
+execute the following:
 
+  $ cd $HOME/install/lib
+  $ ls -c1 *nodesLINKHACK*
+  libnodesLINKHACK.la*
+  libnodesLINKHACK.so@
+  libnodesLINKHACK.so.0@
+  libnodesLINKHACK.so.0.0.0*
+  $ rm libnodesLINKHACK.so.0.0.0
+  $ ln -s $HOME/compile/Coin/src/nodes/.libs/libnodesLINKHACK.so.0.0.0 libnodesLINKHACK.so.0.0.0
+
+(The other two .so-files are just symlinks to the .so.0.0.0 file, so
+we don't need to do anything about those.)
+
+You should now be able to do development with very short compile &
+link turn-around cycles on the classes in the $HOME/code/Coin/nodes/
+directory. Each time you have made a change to the sourcecode, just
+
+  $ cd $HOME/compile/Coin/src/nodes
+  $ make
+
+Only the relevant .cpp will now be re-compiled and only the
+libnodesLINKHACK.so sub-library will be re-linked. And the
+libnodesLINKHACK.so in the install directory which client applications
+are using is a symlink pointing to the one in your build directory, so
+no re-installation need to happen.
+
+
+One caveat emptor: if any of the class-definitions change in a non-ABI
+compatible way[*] in any of the corresponding .h files, you need to
+recompile and relink _all_ sourcecode depending on this class, not
+just the class itself. Or core dumps will happen.
+
+[*] There are many, many ways to break ABI compatiblity in C++:
+
+  - variables being added or removed from / to a class, making it's
+    sizeof() change
+  - functions added or removed
+  - functions made virtual or "un-made" from virtual
+  - function signatures changed in general
+
+  ... etc. But as long as you're only changing the .cpp files, you
+  should be home free.
+
+
+=======================================================================
 XXX FIXME: complete doc. XXX
 
 * Building Coin for development (UNIX)
-	- discuss common C++ large project problems
 	- solutions applied in Coin
-		o using multiply configure'd build directories
-			- slim
-			- full debug
-                        - with profiling
-                        - different platforms
-		o --enable-hacking (gives quick turn-around time)
-		o symlinks from install directory to avoid ``make install''
                 o make install-data
                 o make *-am
-		o explain mechanisms for overloading methods in
-                  dynamic libraries
 
 * Differences, MSWin
 
@@ -110,9 +160,5 @@ XXX FIXME: complete doc. XXX
 * Submitting patches
 	- technical walk-through
 	- legal aspects
-
-* come work for us
-        - interest in 3D visualization
-        - C++ expertise a definitive plus
 
 ==============================================================================
