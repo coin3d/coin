@@ -524,7 +524,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
     shapedata->is_doing_bigtexture_rendering = TRUE;
 
-    shapedata->bigtexture->beginShape(state, big, SoTextureQualityElement::get(state));
+    shapedata->bigtexture->beginShape(big, SoTextureQualityElement::get(state));
     this->generatePrimitives(action);
     // endShape() returns whether more/less detailed textures need to be
     // fetched. We force a redraw if this is needed.

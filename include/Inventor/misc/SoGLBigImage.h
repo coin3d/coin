@@ -62,7 +62,7 @@ public:
                        const int border = 0,
                        SoState * createinstate = NULL);
 
-  int initSubImages(SoState * state, const SbVec2s & subimagesize) const;
+  int initSubImages(const SbVec2s & subimagesize) const;
   void handleSubImage(const int idx, SbVec2f & start, SbVec2f & end,
                       SbVec2f & tcmul);
   void applySubImage(SoState * state, const int idx, const float quality,

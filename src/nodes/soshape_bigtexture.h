@@ -45,8 +45,7 @@ public:
   soshape_bigtexture(void);
   ~soshape_bigtexture();
 
-  void beginShape(SoState * state,
-                  SoGLBigImage * image,
+  void beginShape(SoGLBigImage * image,
                   const float quality);
   void triangle(SoState * state,
                 const SoPrimitiveVertex * v1,

@@ -63,15 +63,14 @@ soshape_bigtexture::~soshape_bigtexture()
 }
 
 void
-soshape_bigtexture::beginShape(SoState * state,
-                               SoGLBigImage * image,
+soshape_bigtexture::beginShape(SoGLBigImage * image,
                                const float quality)
 {
   this->image = image;
   this->quality = quality;
   this->pvlistcnt = 0;
 
-  int num = image->initSubImages(state, SbVec2s(256, 256));
+  int num = image->initSubImages(SbVec2s(256, 256));
   this->numregions = num;
 
   if (this->clipper == NULL) {

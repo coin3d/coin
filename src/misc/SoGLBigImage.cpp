@@ -302,8 +302,7 @@ bi_next_power_of_two(short val)
 }
 
 int
-SoGLBigImage::initSubImages(SoState * state,
-                            const SbVec2s & subimagesize) const
+SoGLBigImage::initSubImages(const SbVec2s & subimagesize) const
 {
   SoGLBigImageTls * tls = THIS->getTls();
 
