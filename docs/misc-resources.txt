@@ -215,6 +215,12 @@ THE LINKS
         http://lager.dyndns.org/GnuMICR/download/latest/
                 (GPL'd, see README)
 
+  An organized "free fonts" project (they are released under the GPL):
+  http://www.nongnu.org/freefont/
+
+  A Free Software TrueType/PostScript/... font editor:
+  http://pfaedit.sourceforge.net/
+
 * Volume rendering resources:
 
   - ACM publications / papers: <URL:http://www.sigchi.acm.org/pubs/>
