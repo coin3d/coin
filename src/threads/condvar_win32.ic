@@ -113,7 +113,7 @@ internal_condvar_struct_clean(cc_condvar * condvar_struct)
 static int
 internal_condvar_wait_common(cc_condvar * condvar, cc_mutex * mutex, DWORD period)
 {
-  int result;
+  DWORD result;
   int last_waiter;
 
   EnterCriticalSection(&condvar->w32thread.waiters_count_lock);
