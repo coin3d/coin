@@ -35,6 +35,23 @@
 
 static void sched_worker_entry_point(void * userdata);
 
+typedef struct {
+  void (*workfunc)(void *);
+  void * closure;
+  unsigned int priority;
+} sched_item;
+
+static int
+sched_item_compare(void * o1, void * o2)
+{
+  sched_item * i1, * i2;
+  
+  i1 = (sched_item*) o1;
+  i2 = (sched_item*) o2;
+  
+  return ((int) i1->priority) - ((int) i2->priority);
+}
+
 /* assumes mutex is locked */
 static void
 sched_try_trigger(cc_sched * sched)
@@ -45,23 +62,23 @@ sched_try_trigger(cc_sched * sched)
   }
 }
 
-void 
+void
 sched_worker_entry_point(void * userdata)
 {
   void (*func)(void *);
   void * closure;
 
   cc_sched * sched = (cc_sched*) userdata;
-  
+
   func = NULL;
   closure = NULL;
   cc_mutex_lock(sched->mutex);
-  while (cc_list_get_length(sched->funclist)) {
-    func = (void (*)(void*)) cc_list_pop(sched->funclist);
-    closure = cc_list_pop(sched->closurelist);
+  while (!cc_heap_empty(sched->itemheap)) {
+    sched_item * item = (sched_item*) cc_heap_extract_top(sched->itemheap);
 
     cc_mutex_unlock(sched->mutex);
-    func(closure);
+    item->workfunc(item->closure);
+    cc_memalloc_deallocate(sched->itemalloc, (void*) item);
     cc_mutex_lock(sched->mutex);
   }
   cc_mutex_unlock(sched->mutex);
@@ -77,7 +94,7 @@ sched_worker_entry_point(void * userdata)
 /*!
   Construct a scheduler that uses \a numthreads threads.
 */
-cc_sched * 
+cc_sched *
 cc_sched_construct(int numthreads)
 {
   cc_sched * sched = (cc_sched*) malloc(sizeof(cc_sched));
@@ -85,10 +102,9 @@ cc_sched_construct(int numthreads)
   sched->pool = cc_wpool_construct(numthreads);
   sched->mutex = cc_mutex_construct();
   sched->cond = cc_condvar_construct();
-  
-  sched->funclist = cc_list_construct();
-  sched->closurelist = cc_list_construct();
-  sched->prilist = cc_list_construct();
+ 
+  sched->itemheap = cc_heap_construct(64, sched_item_compare, FALSE);
+  sched->itemalloc = cc_memalloc_construct(sizeof(sched_item));
 
   return sched;
 }
@@ -96,13 +112,13 @@ cc_sched_construct(int numthreads)
 /*!
   Destruct the scheduler.
 */
-void 
+void
 cc_sched_destruct(cc_sched * sched)
 {
   cc_sched_wait_all(sched);
-  cc_list_destruct(sched->prilist);
-  cc_list_destruct(sched->closurelist);
-  cc_list_destruct(sched->funclist);
+
+  cc_heap_destruct(sched->itemheap);
+  cc_memalloc_destruct(sched->itemalloc);
 
   cc_condvar_destruct(sched->cond);
   cc_mutex_destruct(sched->mutex);
@@ -113,7 +129,7 @@ cc_sched_destruct(cc_sched * sched)
 /*!
   Set/change the number of threads used by the scheduler.
 */
-void 
+void
 cc_sched_set_num_threads(cc_sched * sched, int num)
 {
   cc_sched_wait_all(sched);
@@ -123,7 +139,7 @@ cc_sched_set_num_threads(cc_sched * sched, int num)
 /*!
   Returns the number of threads used by the scheduler.
 */
-int 
+int
 cc_sched_get_num_threads(cc_sched * sched)
 {
   return cc_wpool_get_num_workers(sched->pool);
@@ -133,15 +149,19 @@ cc_sched_get_num_threads(cc_sched * sched)
   Schedule a not job. \a priority is currently ignored, but
   in the future this will be supported.
 */
-void 
-cc_sched_schedule(cc_sched * sched, 
+void
+cc_sched_schedule(cc_sched * sched,
                   void (*workfunc)(void *), void * closure,
                   unsigned int priority)
 {
-  cc_mutex_lock(sched->mutex);
-  cc_list_append(sched->funclist, (void*) workfunc);
-  cc_list_append(sched->closurelist, closure);
+  sched_item * item = (sched_item*) cc_memalloc_allocate(sched->itemalloc);
+  
+  item->workfunc = workfunc;
+  item->closure = closure;
+  item->priority = priority;
 
+  cc_mutex_lock(sched->mutex);
+  cc_heap_add(sched->itemheap, (void*) item);
   sched_try_trigger(sched);
 
   cc_mutex_unlock(sched->mutex);
@@ -150,11 +170,11 @@ cc_sched_schedule(cc_sched * sched,
 /*!
   Wait for all jobs to finish.
 */
-void 
+void
 cc_sched_wait_all(cc_sched * sched)
 {
   cc_mutex_lock(sched->mutex);
-  while (cc_list_get_length(sched->funclist)) {
+  while (!cc_heap_empty(sched->itemheap)) {
     cc_condvar_wait(sched->cond, sched->mutex);
   }
   cc_mutex_unlock(sched->mutex);
@@ -162,4 +182,3 @@ cc_sched_wait_all(cc_sched * sched)
 }
 
 /* ********************************************************************** */
-

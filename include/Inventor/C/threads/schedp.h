@@ -27,7 +27,8 @@
 #endif /* ! COIN_INTERNAL */
 
 #include <Inventor/C/threads/common.h>
-#include <Inventor/C/base/list.h>
+#include <Inventor/C/base/heap.h>
+#include <Inventor/C/base/memalloc.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -42,9 +43,8 @@ struct cc_sched {
   cc_mutex * mutex;
   cc_condvar * cond;
   
-  cc_list * funclist;
-  cc_list * closurelist;
-  cc_list * prilist;
+  cc_heap * itemheap;
+  cc_memalloc * itemalloc;
 };
 
 /* ********************************************************************** */
