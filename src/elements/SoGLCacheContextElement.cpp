@@ -74,40 +74,6 @@ static void soglcachecontext_cleanup(void)
   CC_MUTEX_DESTRUCT(glcache_mutex);
 }
 
-//
-// check if OpenGL extension is supported.
-//
-static SbBool
-extension_supported(const char * extension)
-{
-  static const GLubyte *extensions = NULL;
-  const GLubyte *start;
-  GLubyte *where, *terminator;
-
-  /* Extension names should not have spaces. */
-  where = (GLubyte *) strchr(extension, ' ');
-  if (where || *extension == '\0')
-    return FALSE;
-
-  if (!extensions)
-    extensions = glGetString(GL_EXTENSIONS);
-  start = extensions;
-  for (;;) {
-    where = (GLubyte *) strstr((const char *)start, extension);
-    if (!where)
-      break;
-    terminator = where + strlen(extension);
-    if (where == start || *(where - 1) == ' ') {
-      if (*terminator == ' ' || *terminator == '\0') {
-        return TRUE;
-      }
-    }
-    start = terminator;
-  }
-  return FALSE;
-}
-
-
 // doc from parent
 void
 SoGLCacheContextElement::initClass(void)
@@ -255,7 +221,8 @@ SoGLCacheContextElement::extSupported(SoState * state, int extid)
   for (int i = 0; i < n; i++) {
     if (info->context[i] == currcontext) return info->supported[i];
   }
-  SbBool supported = extension_supported(info->extname.getString());
+  const cc_glglue * w = sogl_glue_instance(state);
+  SbBool supported = cc_glglue_glext_supported(w, info->extname.getString());
   info->context.append(currcontext);
   info->supported.append(supported);
 
