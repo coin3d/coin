@@ -21,7 +21,7 @@
  *
 \**************************************************************************/
 
-/*!
+/*!  
   \class SoFont SoFont.h Inventor/nodes/SoFont.h
   \brief The SoFont class is an appearance node for setting fonts.
   \ingroup nodes
@@ -30,8 +30,84 @@
   etc) will use the font specified from an SoFont node when
   visualizing text.
 
+  The font name is recognized with the form "family:style". The range of
+  supported font families depends on which fonts are installed on the
+  system. A typical font family might be "Arial" or "Times New
+  Roman". 
+
+  Style is either "Bold", "Italic" or "Bold Italic".
+
+  Spaces before or after the ":" will be ignored.
+
+  If the chosen font cannot be found, the default font will be loaded
+  instead. The default 2D font is a builtin 8x12 points font. The 3D
+  font is a serif font ala Times New Roman. It is not possible to
+  apply styles to any of the builtin fonts. It is not possible to
+  specify a size for the default 2D font. 
+  
+  One can explicitly select the default font by setting "defaultFont"
+  as the font name. The default fonts are always accessible by Coin
+  as they are compiled into the library. If one needs to guarantee that
+  the text will have the same appearance under all circumstances, the
+  default font will be a safe choice. Another solution might be to use
+  the \e FreeType font engine and explicitly name a font-file (This is
+  closer described below).
+
+  Here is a simple example on how to print a string using using a bold
+  & Italic Arial font:
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Separator {
+     Font {
+       name "Arial:Bold Italic"
+       size 14
+     }
+     Text2 {
+       string ["This is a", "Coin font test"]
+       justification CENTER
+     }    
+  }
+  \endverbatim
+
+  Coin has support for two different font APIs. On non-Windows
+  platforms, the \e FreeType library is used. On Windows the Win32
+  GDI library is used. \e FreeType is dynamically loaded by Coin at
+  startup if accessible. It is possible to use the \e FreeType library
+  on Windows also if one wishes.
+
+  If Coin cannot load the \e FreeType library, only the default fonts
+  will be accessible.
+
+  It is possible to specify the TrueType font file directly if
+  \e FreeType is used as the font engine. This is done by including the
+  ".ttf" in the filename, i.e. "Comic_Sans_MS.ttf". Coin will then
+  search the default font path and then the path specified by the
+  "COIN_FONT_PATH" environment variable.
+
+  It is not possible to directly specify a TrueType font file if
+  Windows is handling the fonts. This is due to the way Windows is
+  accessing the fonts through the system registry. All fonts must
+  therefore be properly installed and given a system name. Open the
+  "Control Panel" and double click on the "Fonts" icon for an overview
+  of installed fonts and their names.
+
+  Beware that some non-English versions of Windows are using different
+  name for the styles (i.e. "Italique" instead of "Italic"). These
+  names are supported in Coin, but it is recommended for portability
+  purposes to only use the English terms.
+
+  If the "COIN_DEBUG_FONTSUPPORT" environment variable is set to 1,
+  debug messages will be sent to the console when initializing the
+  requested fonts. Issues like missing fonts and errors binding the
+  font engine will be reported here.
+
   \sa SoFontStyle, SoGlyph, SoText2, SoText3, SoAsciiText
+
 */
+
+
 
 // FIXME: add correct and elaborate info on this to the class docs
 // above;
