@@ -54,10 +54,6 @@
   #define OPENALWRAPPER_APIENTRY
 #endif /* _WIN32 */
 
-//#ifndef APIENTRY
-//#define APIENTRY
-//#endif /* !APIENTRY */
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -107,9 +103,6 @@ extern "C" {
 
   typedef void * (OPENALWRAPPER_APIENTRY *alcOpenDevice_t)(unsigned char *deviceName);
   typedef void (OPENALWRAPPER_APIENTRY *alcCloseDevice_t)(void *device);
-  /* Fixme: investigate if it's OK to have a different pointertype
-     from the one defined in the openal headers. 2002-01-27
-     thammer. */
 
 #if !OPENALWRAPPER_ASSUME_OPENAL
   enum {
