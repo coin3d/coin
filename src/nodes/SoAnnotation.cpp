@@ -87,6 +87,9 @@ SoAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
   if (action->isRenderingDelayedPaths()) {
     inherited::GLRenderBelowPath(action);
   }
+  else {
+    action->addDelayedPath((SoPath*)action->getCurPath());
+  }
 }
 
 /*!
