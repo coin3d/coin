@@ -251,6 +251,7 @@ darwin8.* )
   ;;
 darwin* )
   sim_ac_macosx=true
+  sim_ac_macosx_10_2ff=false
   ;;
 * )
   sim_ac_macosx=false
@@ -262,6 +263,7 @@ esac
 AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_framework])
 AM_CONDITIONAL([MACOSX_10_2FF], [$sim_ac_macosx_10_2ff])
 AM_CONDITIONAL([MACOSX], [$sim_ac_macosx])
+AC_SUBST([MACOSX_10_2FF], [$sim_ac_macosx_10_2ff])
 AC_SUBST([MACOSX_NAME], [$sim_ac_macosx_name])
 
 if test x"$sim_ac_macosx_10_2ff" = x"true"; then
@@ -1820,8 +1822,6 @@ COIN_COMPILER="$CXX"
     COIN_EXTRA_LIBS="$sim_ac_simage_libs $COIN_EXTRA_LIBS"
     # adjust for OpenAL usage
     COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_openal_libs"
-    # adjust for the Think Different factor
-    COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS -lobjc"
   fi
 
   case "$sim_ac_framework:$sim_ac_make_dsp" in
