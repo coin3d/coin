@@ -453,7 +453,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     // light model
     float lgt[4] = {0.2f, 0.2f, 0.2f, 1.0f};
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lgt);
-    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_FALSE); // GL_TRUE for higher quality
 
     // no texturing unless textures in model
     glDisable(GL_TEXTURE_2D);
@@ -465,7 +465,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     glEnable(GL_NORMALIZE);
 
     glDisable(GL_CULL_FACE);
-    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
     glFrontFace(GL_CCW);
     glShadeModel(GL_SMOOTH);
 
