@@ -45,11 +45,11 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/SbRotation.h>
 #include <assert.h>
 
 #include <data/draggerDefaults/tabPlaneDragger.h>
-
 
 #define WHATKIND_NONE      0
 #define WHATKIND_SCALE     1
@@ -252,8 +252,15 @@ SoTabPlaneDragger::GLRender(SoGLRenderAction * action)
   // (after zooming, for instance).
   //
   if (1 || this->adjustTabs) {
+    // disable notification do avoid multiple redraws, but
+    // remember to invalidate open caches.
+    SbBool oldnotify = this->enableNotify(FALSE);
+    SoCacheElement::invalidate(action->getState());
+    
     this->reallyAdjustScaleTabSize(action);
     this->adjustTabs = FALSE;
+    
+    (void) this->enableNotify(oldnotify);
   }
   inherited::GLRender(action);
 }
@@ -285,7 +292,8 @@ SoTabPlaneDragger::reallyAdjustScaleTabSize(SoGLRenderAction *action)
   float sizey = 0.08f;
   if (action != NULL) {
     SoState *state = action->getState();
-    const SbMatrix &toworld = SoModelMatrixElement::get(state);
+    SbMatrix toworld = SoModelMatrixElement::get(state);
+    toworld.multLeft(this->getMotionMatrix());
     const SbViewVolume &vv = SoViewVolumeElement::get(state);
     const SbViewportRegion &vp = SoViewportRegionElement::get(state);
     SbVec3f center(0.0f, 0.0f, 0.0f);
@@ -304,8 +312,10 @@ SoTabPlaneDragger::reallyAdjustScaleTabSize(SoGLRenderAction *action)
   }
 
   if (sizex == this->prevsizex && this->prevsizey == sizey) return;
+ 
   this->prevsizex = sizex;
   this->prevsizey = sizey;
+
   float halfx = sizex * 0.5f;
   float halfy = sizey * 0.5f;
 
