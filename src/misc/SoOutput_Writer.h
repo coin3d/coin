@@ -27,6 +27,18 @@
 #include <Inventor/SoOutput.h>
 #include <stdio.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_ZLIB
+#include <zlib.h>
+#endif // HAVE_ZLIB
+
+#ifdef HAVE_BZIP2
+#include <bzlib.h>
+#endif // HAVE_BZIP2
+
 class SoOutput_Writer {
 public:
   SoOutput_Writer(void);
@@ -36,7 +48,8 @@ public:
   enum WriterType {
     REGULAR_FILE,
     MEMBUFFER,
-    GZFILE
+    GZFILE,
+    BZ2FILE
   };
 
   // default method returns NULL. Should return the FILE pointer if
@@ -45,7 +58,7 @@ public:
 
   // must be overloaded to return the number of bites written so far
   virtual size_t bytesInBuf(void) = 0;
-  
+
   // must be overloaded to return the writer type
   virtual WriterType getType(void) const = 0 ;
 
@@ -82,7 +95,7 @@ public:
   virtual size_t bytesInBuf(void);
   virtual WriterType getType(void) const;
   virtual size_t write(const char * buf, size_t numbytes, const SbBool binary);
-  
+
 public:
 
   SbBool makeRoomInBuf(size_t bytes);
@@ -93,5 +106,24 @@ public:
   int32_t offset;
   int32_t startoffset;
 };
+
+#ifdef HAVE_ZLIB
+// class for zlib writing
+class SoOutput_GZFileWriter : public SoOutput_Writer {
+public:
+  SoOutput_GZFileWriter(FILE * fp, const SbBool shouldclose);
+  virtual ~SoOutput_GZFileWriter();
+
+  virtual size_t bytesInBuf(void);
+  virtual WriterType getType(void) const;
+  virtual size_t write(const char * buf, size_t numbytes, const SbBool binary);
+
+public:
+  gzFile gzfp;
+};
+#endif // HAVE_ZLIB
+
+
+
 
 #endif // COIN_SOOUTPUT_WRITER_H

@@ -22,8 +22,18 @@
 \**************************************************************************/
 
 #include "SoOutput_Writer.h"
+#include <Inventor/errors/SoDebugError.h>
 #include <string.h>
 #include <assert.h>
+
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h> // dup()
+#endif // HAVE_UNISTD_H
 
 //
 // abstract interface class
@@ -150,3 +160,62 @@ SoOutput_MemBufferWriter::makeRoomInBuf(size_t bytes)
   }
   return TRUE;
 }
+
+
+//
+// zlib writer
+//
+
+SoOutput_GZFileWriter::SoOutput_GZFileWriter(FILE * fp, const SbBool shouldclose)
+{
+  this->gzfp = NULL;
+
+  int fd = fileno(fp);
+  if (fd >= 0 && !shouldclose) fd = dup(fd);
+
+  if (fd >= 0) {
+    this->gzfp = gzdopen(fd, "wb");
+    if (!this->gzfp) {
+      SoDebugError::postWarning("SoOutput_GZFileWriter::SoOutput_GZFileWriter", 
+                                "Unable to open file for writing.");    
+    }
+  }
+  else {
+    SoDebugError::postWarning("SoOutput_GZFileWriter::SoOutput_GZFileWriter", 
+                              "Unable to create file descriptor from stream.");
+    
+  }
+}
+
+SoOutput_GZFileWriter::~SoOutput_GZFileWriter()
+{
+  if (this->gzfp) {
+    gzclose(this->gzfp);
+  }
+}
+
+
+SoOutput_Writer::WriterType
+SoOutput_GZFileWriter::getType(void) const
+{
+  return GZFILE;
+}
+
+size_t
+SoOutput_GZFileWriter::write(const char * buf, size_t numbytes, const SbBool binary)
+{
+  if (this->gzfp) {
+    return gzwrite(this->gzfp, (void*)buf, numbytes);
+  }
+  return 0;
+}
+
+size_t 
+SoOutput_GZFileWriter::bytesInBuf(void)
+{
+  if (this->gzfp) {
+    return gztell(this->gzfp);
+  }
+  return 0;
+}
+
