@@ -1023,7 +1023,7 @@ glglue_resolve_symbols(cc_glglue * w)
 
   w->glBindBuffer = NULL; /* so that cc_glglue_has_vertex_buffer_objects() works  */
 #if defined(GL_VERSION_1_5)
-  if (cc_glglue_glversion_matches_at_least(w, 1, 5, 0)) {
+  if (cc_glglue_glversion_matches_at_least(w, 1, 5, 0)) {   
     w->glBindBuffer = (COIN_PFNGLBINDBUFFERPROC) PROC(glBindBuffer);
     w->glDeleteBuffers = (COIN_PFNGLDELETEBUFFERSPROC) PROC(glDeleteBuffers);
     w->glGenBuffers = (COIN_PFNGLGENBUFFERSPROC) PROC(glGenBuffers);
@@ -1052,6 +1052,17 @@ glglue_resolve_symbols(cc_glglue * w)
     w->glGetBufferParameteriv = (COIN_PFNGLGETBUFFERPARAMETERIVPROC) PROC(glGetBufferParameterivARB);
     w->glGetBufferPointerv = (COIN_PFNGLGETBUFFERPOINTERVPROC) PROC(glGetBufferPointervARB);
   }
+
+#if defined(HAVE_GLX)  
+  /* ARB_vertex_buffer_object does not work properly on Linux when
+     using the Nvidia 44.96 driver (version 1.4.0). The VBO extension
+     is therefore disabled for this driver. The issue was solved for
+     the 53.28 driver (version 1.4.1). */
+  if(!strcmp(w->vendorstr, "NVIDIA Corporation") && 
+     !cc_glglue_glversion_matches_at_least(w, 1, 4, 1)) 
+    w->glBindBuffer = NULL;  
+#endif
+
 #endif /* GL_ARB_vertex_buffer_object */
 
   if (w->glBindBuffer) {
