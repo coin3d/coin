@@ -613,6 +613,8 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
 SoSeparator *
 SoDB::readAll(SoInput * in)
 {
+  assert(SoDB::isInitialized() && "you forgot to initialize the Coin library");
+
   if (!in->isValidFile()) {
     SoReadError::post(in, "Not a valid Inventor file.");
     return NULL;
@@ -998,7 +1000,7 @@ SoDB::getSensorManager(void)
 
 /*!
   This is a wrapper around the POSIX \c select() call. It is provided
-  so you can do synchronous I/O while Coin continous to handle sensor
+  so you can do synchronous I/O while Coin continues to handle sensor
   events, rendering, etc. The parameters are the same as for \c
   select(), so check your system documentation on how to use them.
 
