@@ -211,7 +211,7 @@ SbPlane::isInHalfSpace(const SbVec3f& point) const
   if(dotWithNormal >= 0.0f) return TRUE;
   return FALSE;
 #else // this code uses distance to plane instead
-  return (point.dot(this->normal) - this->distance) >= 0.0f;
+  return this->getDistance(point) >= 0.0f;
 #endif // new code
 }
 
