@@ -95,6 +95,7 @@ Separator {
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoPickAction.h>
 
 /*!
   \var SoMFVec2f SoTextureCoordinate2::point
@@ -138,8 +139,8 @@ SoTextureCoordinate2::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinate2, SO_FROM_INVENTOR_1|SoNode::VRML1);
 
   SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
-
   SO_ENABLE(SoCallbackAction, SoTextureCoordinateElement);
+  SO_ENABLE(SoPickAction, SoTextureCoordinateElement);
 }
 
 // Documented in superclass.
