@@ -42,6 +42,7 @@
 
 #include <assert.h>
 #include <stdlib.h> // NULL
+#include <string.h> // strcmp()
 
 struct SoTypeData {
   SoTypeData(const SbName theName,
