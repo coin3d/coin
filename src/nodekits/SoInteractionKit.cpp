@@ -142,9 +142,10 @@ SoInteractionKit::initClass(void)
 }
 
 /*!
-  Sets a part in the kit as a surrogate path. The \a partname part is set
-  to NULL, and the surrogate path is remembered. Following picks on the
-  surrogate path will be regarded as a pick on \a partname.
+  Sets a part in the kit as a surrogate path. The \a partname part is
+  set to \c NULL, and the surrogate path is remembered. Following
+  picks on the surrogate path will be regarded as a pick on \a
+  partname.
 */
 SbBool
 SoInteractionKit::setPartAsPath(const SbName & partname,
@@ -155,9 +156,14 @@ SoInteractionKit::setPartAsPath(const SbName & partname,
 
 /*!
   Sets the value of \a partname to \a node, and sets the part's field
-  to default (i.e. node will not be written on scene graph export). If
-  \a onlyifdefault is \c TRUE, \a partname is only set if it is
+  to default (i.e. node will not be written on scene graph export).
+
+  If \a onlyifdefault is \c TRUE, \a partname is only set if it is
   already in the default state.
+
+  The reason for this method is to make it possible for dragger
+  subclasses to avoid having their default parts written out on
+  export.
 */
 SbBool
 SoInteractionKit::setPartAsDefault(const SbName & partname,
@@ -387,7 +393,7 @@ SoInteractionKit::setAnyPartAsDefault(const SbName & partname,
   int listIdx;
   if (SoBaseKit::findPart(SbString(partname.getString()), kit, partNum,
                           isList, listIdx, TRUE)) {
-    SoSFNode * field = kit->getCatalogNodes()[partNum];
+    SoSFNode * field = kit->getCatalogInstances()[partNum];
     // FIXME: default check not working properly. pederb, 2000-01-21
     if (1 || (!onlyifdefault || field->isDefault())) {
       kit->setPart(partNum, node);
@@ -475,9 +481,9 @@ SoInteractionKit::setAnySurrogatePath(const SbName & partname,
       return FALSE;
     }
     int parentIdx = catalog->getParentPartNumber(partNum);
-    SoNode * parent = this->getCatalogNodes()[parentIdx]->getValue();
+    SoNode * parent = this->getCatalogInstances()[parentIdx]->getValue();
     if (parent->isOfType(SoSwitch::getClassTypeId())) {
-      SoNode * node = this->getCatalogNodes()[partNum]->getValue();
+      SoNode * node = this->getCatalogInstances()[partNum]->getValue();
       SoType type = node->getTypeId();
       if (type == SoGroup::getClassTypeId() ||
           type == SoSeparator::getClassTypeId()) {
@@ -572,11 +578,11 @@ SoInteractionKit::setDefaultOnNonWritingFields(void)
 
   const SoNodekitCatalog * catalog = this->getNodekitCatalog();
 
-  for (int i = 0; i < this->numCatalogEntries; i++) {
+  for (int i = 0; i < this->getCatalogInstances().getLength(); i++) {
     if (!catalog->isLeaf(i)) {
-      SoNode * node = this->getCatalogNodes()[i]->getValue();
+      SoNode * node = this->getCatalogInstances()[i]->getValue();
       if (node && node->getTypeId() == SoSwitch::getClassTypeId()) {
-        this->getCatalogNodes()[i]->setDefault(TRUE);
+        this->getCatalogInstances()[i]->setDefault(TRUE);
       }
     }
   }

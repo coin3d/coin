@@ -123,7 +123,7 @@ protected:
   void createFieldList(void); // replaces above method
   virtual void createDefaultParts(void);
   const SoNodekitParts * getNodekitPartsList(void) const; // not part of Coin
-  SoSFNode ** getCatalogNodes(void) const; // replaces above method
+  const SbList<SoSFNode*> & getCatalogInstances(void) const; // replaces above method
 
   void catalogError(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
@@ -151,8 +151,7 @@ private:
   static const SoNodekitCatalog ** parentcatalogptr;
   static SbBool searchchildren;
 
-  int numCatalogEntries;
-  SoSFNode ** fieldList;
+  SbList<SoSFNode*> instancelist;
 };
 
 #endif // !COIN_SOBASEKIT_H
