@@ -664,14 +664,14 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoLinePatternElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoLineWidthElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoLineWidthElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoListenerDopplerElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoListenerDopplerElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoListenerGainElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoListenerGainElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoListenerOrientationElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoListenerOrientationElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoListenerPositionElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoListenerPositionElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoListenerDopplerElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoListenerDopplerElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoLocalBBoxMatrixElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoLocalBBoxMatrixElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoMaterialBindingElement.Plo \
@@ -899,14 +899,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLinePatternElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLineWidthElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLineWidthElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerDopplerElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerDopplerElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerGainElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerGainElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerOrientationElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerOrientationElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerPositionElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerPositionElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerDopplerElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerDopplerElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLocalBBoxMatrixElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLocalBBoxMatrixElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoMaterialBindingElement.Plo@am__quote@
