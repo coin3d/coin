@@ -12,6 +12,8 @@
 #undef HAVE_VSNPRINTF
 #undef HAVE__SNPRINTF
 #undef HAVE__VSNPRINTF
+#undef HAVE_HASH_QUOTING
+#undef HAVE_APOSTROPHES_QUOTING
 
 /* Define if you have the <io.h> header file. */
 #undef HAVE_IO_H

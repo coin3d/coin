@@ -139,6 +139,24 @@ inline Type SbSqr(const Type val) {
 
 // *************************************************************************
 
+// SO__QUOTE(str)        - use the preprocessor to quote a string.
+// SO__CONCAT(str1,str2) - use the preprocessor to concatenate two strings.
+
+#undef HAVE_HASH_QUOTING
+#undef HAVE_APOSTROPHES_QUOTING
+
+#if HAVE_HASH_QUOTING
+#define SO__QUOTE(str)           #str
+#define SO__CONCAT(str1, str2)   str1##str2
+#elif HAVE_APOSTROPHES_QUOTING
+#define SO__QUOTE(str)           "str"
+#define SO__CONCAT(str1, str2)   str1/**/str2
+#else
+#error No valid way to do macro quoting!
+#endif
+
+// *************************************************************************
+
 // A unique identifier to recognize whether or not we're running under
 // Systems in Motion's Coin library.
 #define __COIN__
