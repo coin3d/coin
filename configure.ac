@@ -372,7 +372,7 @@ AM_CONDITIONAL(BUILD_WITH_SUPERGLU, $enable_superglu)
 # *******************************************************************
 
 AC_ARG_ENABLE([threads],
-  [AC_HELP_STRING([--enable-threads], [enable platform-independent multithreading abstraction classes])],
+  [AC_HELP_STRING([--disable-threads], [disable platform-independent multithreading abstraction classes])],
   [case $enableval in
   yes | true ) sim_ac_enable_threads=true ;;
   no | false ) sim_ac_enable_threads=false ;;
