@@ -94,7 +94,7 @@ public:
   SoAsciiText * master;
 
   float getWidth(const int idx, const float fontsize);
-  void setUpGlyphs(SoState * state, SoAsciiText * textnode);
+  void setUpGlyphs(SoState * state, const cc_font_specification * fontspec, SoAsciiText * textnode);
 
   SbList <float> glyphwidths;
   SbList <float> stringwidths;
@@ -164,7 +164,13 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
   if (!this->shouldGLRender(action)) return;
 
   SoState * state = action->getState();
-  PRIVATE(this)->setUpGlyphs(state, this);
+
+  cc_font_specification fontspec;
+  cc_fontspec_construct(&fontspec, SoFontNameElement::get(state).getString(),
+                        SoFontSizeElement::get(state),
+                        this->getComplexityValue(state->getAction()));
+
+  PRIVATE(this)->setUpGlyphs(state, &fontspec, this);
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
@@ -191,7 +197,7 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
   for (i = 0;i<PRIVATE(this)->stringwidths.getLength();++i)
     longeststring = SbMax(longeststring, PRIVATE(this)->stringwidths[i]);
 
-  // FIXME: Must add support for stretching/compressing text
+  // FIXME: Must add support for stretched/compressed text
   // according to the 'width' field. (20030910 handegar)
 
   glBegin(GL_TRIANGLES);
@@ -212,10 +218,15 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
       break;
     }
 
-    const char * str = this->string[i].getString();
-    while (*str++) {
+    const unsigned int length = this->string[i].getLength();
+    for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
 
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(*(str-1), PRIVATE(this)->fontspec);
+      // Note that the "unsigned char" cast is needed to avoid 8-bit
+      // chars using the highest bit (i.e. characters above the ASCII
+      // set up to 127) be expanded to huge int numbers that turn
+      // negative when casted to integer size.
+      const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
+      const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, &fontspec);
 
       float width = cc_glyph3d_getwidth(glyph);
       if (width == 0) 
@@ -257,19 +268,28 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
 void
 SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  PRIVATE(this)->setUpGlyphs(action->getState(), this);
+  //PRIVATE(this)->setUpGlyphs(action->getState(), this);
 
   if (action->is3DTextCountedAsTriangles()) {        
-    int lines = this->string.getNum();
+    const int lines = this->string.getNum();
     int numtris = 0;      
     for (int i = 0;i < lines; ++i) {
-      int n = this->string[i].getLength();
-      const char * str = this->string[i].getString();
-      for (int j = 0; j < n; j++) {
-        cc_glyph3d * glyph = cc_glyph3d_getglyph(*str++, PRIVATE(this)->fontspec);
+
+      const int length = this->string[i].getLength();
+      for (int strcharidx = 0;strcharidx < length; strcharidx++) {
+        
+        // Note that the "unsigned char" cast is needed to avoid 8-bit
+        // chars using the highest bit (i.e. characters above the ASCII
+        // set up to 127) be expanded to huge int numbers that turn
+        // negative when casted to integer size.        
+        const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
+        const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, PRIVATE(this)->fontspec);
+
         int cnt = 0;
         const int * ptr = cc_glyph3d_getfaceindices(glyph);
-        while (*ptr++ >= 0) cnt++;
+        while (*ptr++ >= 0) 
+          cnt++;
+
         numtris += cnt / 3;
       }
     }
@@ -285,7 +305,13 @@ SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 void
 SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
-  PRIVATE(this)->setUpGlyphs(action->getState(), this);
+
+  SoState * state = action->getState();
+  cc_font_specification fontspec;
+  cc_fontspec_construct(&fontspec, SoFontNameElement::get(state).getString(),
+                        SoFontSizeElement::get(state),
+                        this->getComplexityValue(action));
+  PRIVATE(this)->setUpGlyphs(state, &fontspec, this);
 
   int i;
   const int n = this->string.getNum();
@@ -296,16 +322,20 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   float maxw = FLT_MIN;
   for (i = 0;i<PRIVATE(this)->stringwidths.getLength();++i) {
     maxw = SbMax(maxw, PRIVATE(this)->stringwidths[i]);
-    // FIXME: Must add support for stretching/compressing text
+    // FIXME: Must add support for stretched/compressed text
     // according to the 'width' field here. (20030910 handegar)
     /*if((this->width[i] * PRIVATE(this)->textsize) < maxw)
       maxw = this->width[i] * PRIVATE(this)->textsize;*/
   }
+  
+  
+  if(maxw == FLT_MIN) { // There is no text to bound. Returning.
+    box.setBounds(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 0.0f, 0.0f));
+    center = SbVec3f(0,0,0);
+    return; 
+  }
 
 
-  // FIXME: Glyphs which have parts below the writing line (ie. 'q',
-  // 'g' etc.) are not completely inside the boundingbox. Must
-  // fix. (20030910 handegar)
 
   float maxy, miny;
   float minx, maxx;
@@ -330,13 +360,11 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     minx = maxx = 0.0f;
     break;
   }
-  
-  
+
   box.setBounds(SbVec3f(minx, miny, 0.0f), SbVec3f(maxx, maxy, 0.0f));
 
   // Expanding bbox so that glyphs like 'j's and 'q's are completely inside.
-  box.extendBy(SbVec3f(0,PRIVATE(this)->maxglyphbbox.getMin()[1] - (n-1)*PRIVATE(this)->textsize, 0));
-  
+  box.extendBy(SbVec3f(0,PRIVATE(this)->maxglyphbbox.getMin()[1] - (n-1)*PRIVATE(this)->textsize, 0));  
   box.extendBy(PRIVATE(this)->maxglyphbbox);
   center = box.getCenter();
 
@@ -346,7 +374,14 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 void
 SoAsciiText::generatePrimitives(SoAction * action)
 {
-  PRIVATE(this)->setUpGlyphs(action->getState(), this);
+
+  SoState * state = action->getState();
+  cc_font_specification fontspec;
+  cc_fontspec_construct(&fontspec, SoFontNameElement::get(state).getString(),
+                        SoFontSizeElement::get(state),
+                        this->getComplexityValue(action));
+  PRIVATE(this)->setUpGlyphs(state, &fontspec, this);
+
 
   float size = SoFontSizeElement::get(action->getState());
 
@@ -369,7 +404,7 @@ SoAsciiText::generatePrimitives(SoAction * action)
   float ypos = 0.0f;
 
   for (i = 0; i < n; i++) {
-    float currwidth = PRIVATE(this)->stringwidths[i];
+    const float currwidth = PRIVATE(this)->stringwidths[i];
     detail.setStringIndex(i);
     float xpos = 0.0f;
     switch (this->justification.getValue()) {
@@ -381,13 +416,17 @@ SoAsciiText::generatePrimitives(SoAction * action)
       break;
     }
 
-    const char * str = this->string[i].getString();
-    int charidx = 0;
+    const unsigned int length = this->string[i].getLength();
+    for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
+      
+      // Note that the "unsigned char" cast is needed to avoid 8-bit
+      // chars using the highest bit (i.e. characters above the ASCII
+      // set up to 127) be expanded to huge int numbers that turn
+      // negative when casted to integer size.
+      const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
+      const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, &fontspec);
 
-    while (*str++) {
-      detail.setCharacterIndex(charidx++);
-
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(*(str-1), PRIVATE(this)->fontspec);
+      detail.setCharacterIndex(strcharidx);
 
       float width = cc_glyph3d_getwidth(glyph);
       if (width == 0) 
@@ -456,26 +495,15 @@ SoAsciiText::getWidth(const int idx, const float fontsize)
 
 // recalculate glyphs
 void
-SoAsciiTextP::setUpGlyphs(SoState * state, SoAsciiText * textnode)
+SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspec, SoAsciiText * textnode)
 {
+
   // Note that this code is duplicated in SoText3::setUpGlyphs(), so
   // migrate bugfixes and other improvements.
-
+  
   if (!this->needsetup) return;
+
   this->needsetup = FALSE;
-
-  // Build up font-spesification struct
-  if (this->fontspec != NULL) {
-    cc_fontspec_clean(this->fontspec);
-    delete this->fontspec;
-  }
-
-  this->fontspec = new cc_font_specification;
-  cc_fontspec_construct(this->fontspec,
-                        SoFontNameElement::get(state).getString(),
-                        SoFontSizeElement::get(state),
-                        this->master->getComplexityValue(state->getAction()));
-
   this->textsize = SoFontSizeElement::get(state); 
   this->glyphwidths.truncate(0);
 
@@ -485,37 +513,34 @@ SoAsciiTextP::setUpGlyphs(SoState * state, SoAsciiText * textnode)
   float advancey = 0;
   cc_glyph3d * prevglyph = NULL;
 
-
   for (int i = 0; i < textnode->string.getNum(); i++) {
-    const SbString & s = textnode->string[i];
-    int strlen = s.getLength();
-    // Note that the "unsigned char" cast is needed to avoid 8-bit
-    // chars using the highest bit (i.e. characters above the ASCII
-    // set up to 127) be expanded to huge int numbers that turn
-    // negative when casted to integer size.
-    const unsigned char * ptr = (const unsigned char *)s.getString();
+    const unsigned int length = textnode->string[i].getLength();
     float stringwidth = 0.0f;
     float glyphwidth = 0.0f;
     const float * maxbbox;
     this->maxglyphbbox.makeEmpty();
 
-    for (int j = 0; j < strlen; j++) {
+    for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
 
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(ptr[j], this->fontspec);
+      // Note that the "unsigned char" cast is needed to avoid 8-bit
+      // chars using the highest bit (i.e. characters above the ASCII
+      // set up to 127) be expanded to huge int numbers that turn
+      // negative when casted to integer size.
+      const uint32_t glyphidx = (const unsigned char) textnode->string[i][strcharidx];
+      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, fontspec);
       assert(glyph);
 
       maxbbox = cc_glyph3d_getboundingbox(glyph); // Get max height
-      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[0] * this->fontspec->size, 0));
-      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[1] * this->fontspec->size, 0));
+      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[0] * fontspec->size, 0));
+      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[1] * fontspec->size, 0));
 
       glyphwidth = cc_glyph3d_getwidth(glyph);
       if (glyphwidth == 0)
         glyphwidth = 1.0f / 3.0f;
 
       stringwidth += glyphwidth * this->textsize;
-     
-      
-      if (j > 0) 
+           
+      if (strcharidx > 0) 
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);          
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
       this->glyphwidths.append(advancex + kerningx);

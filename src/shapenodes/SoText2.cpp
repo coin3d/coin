@@ -311,11 +311,12 @@ SoText2::GLRender(SoGLRenderAction * action)
         xpos = nilpoint[0] - PRIVATE(this)->stringwidth[i]/2.0f;
         break;
       }
-      charcnt = PRIVATE(this)->laststring[i].getLength();
 
-      for (int i2 = 0; i2 < charcnt; i2++) {
+      const unsigned int length = PRIVATE(this)->laststring[i].getLength();
+      for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
         
-        const cc_glyph2d * glyph = cc_glyph2d_getglyph((int) PRIVATE(this)->laststring[i][i2], PRIVATE(this)->fontspec, 0.0f);
+        const uint32_t glyphidx = (const unsigned char) PRIVATE(this)->laststring[i][strcharidx];
+        const cc_glyph2d * glyph = cc_glyph2d_getglyph(glyphidx, PRIVATE(this)->fontspec, 0.0f);
         
         buffer = cc_glyph2d_getbitmap(glyph, thissize, thispos);
         
@@ -338,7 +339,7 @@ SoText2::GLRender(SoGLRenderAction * action)
         cc_glyph2d_getadvance(glyph, &advancex, &advancey);
 
         int kerningx, kerningy;
-        if (i2 > 0) {
+        if (strcharidx > 0) {
           cc_glyph2d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
         } else {
           kerningx = 0;
@@ -397,6 +398,7 @@ SoText2::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   box.extendBy(v1);
   box.extendBy(v2);
   box.extendBy(v3);
+
   center = box.getCenter();
 }
 
@@ -676,7 +678,7 @@ SoText2P::buildGlyphCache(SoState * state)
 
   for (int i=0; i < nrlines; i++) {
 
-    const int strlength = PUBLIC(this)->string[i].getLength();
+    const unsigned int length = PUBLIC(this)->string[i].getLength();
     this->laststring.append(SbString(PUBLIC(this)->string[i]));
     this->positions.append(SbList<SbVec2s>());
 
@@ -690,16 +692,15 @@ SoText2P::buildGlyphCache(SoState * state)
     int bitmappos[2];
     const cc_glyph2d * prevglyph= NULL;
 
-    int j;
     // fetch all glyphs first
-    for (j = 0; j < strlength; j++) {
+    for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
+
       // Note that the "unsigned char" cast is needed to avoid 8-bit
       // chars using the highest bit (i.e. characters above the ASCII
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
-      const unsigned int idx = (unsigned char)this->laststring[i][j];
-
-      cc_glyph2d * glyph = cc_glyph2d_getglyph(idx, this->fontspec, 0.0f);
+      const uint32_t glyphidx = (const unsigned char) this->laststring[i][strcharidx];
+      cc_glyph2d * glyph = cc_glyph2d_getglyph(glyphidx, this->fontspec, 0.0f);
 
       // Should _always_ be able to get hold of a glyph -- if no
       // glyph is available for a specific character, a default
@@ -709,7 +710,6 @@ SoText2P::buildGlyphCache(SoState * state)
       glyphwidth = (int) cc_glyph2d_getwidth(glyph);
       if (glyphwidth == 0) // SPACE width is always returned 0, set to standardwidth/3.
         glyphwidth = (int) SoFontSizeElement::get(state) / 3;
-
         
       // Must fetch special modifiers so that heights for chars like
       // 'q' and 'g' will be taken into account when creating a
@@ -717,7 +717,8 @@ SoText2P::buildGlyphCache(SoState * state)
       (void) cc_glyph2d_getbitmap(glyph, bitmapsize, bitmappos);
 
       // Advance & Kerning
-      if (j > 0) cc_glyph2d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
+      if (strcharidx > 0) 
+        cc_glyph2d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
       cc_glyph2d_getadvance(glyph, &advancex, &advancey);           
       SbVec2s kerning((short) kerningx, (short) kerningy);
       SbVec2s advance((short) advancex, (short) advancey);
