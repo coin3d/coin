@@ -40,7 +40,7 @@
 #include <Inventor/SbString.h>
 #include <string.h>
 #include <stdlib.h>
-#include <../misc/simage_wrapper.h>
+#include <../glue/simage_wrapper.h>
 #include <Inventor/SoInput.h> // for SoInput::searchForFile()
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/errors/SoDebugError.h>

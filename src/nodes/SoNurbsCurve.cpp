@@ -60,7 +60,7 @@
 #endif // HAVE_CONFIG_H
 #include <coindefs.h> // COIN_OBSOLETED()
 #include <Inventor/system/gl.h>
-#include <../misc/GLUWrapper.h>
+#include <../glue/GLUWrapper.h>
 
 /*!
   \var SoSFInt32 SoNurbsCurve::numControlPoints

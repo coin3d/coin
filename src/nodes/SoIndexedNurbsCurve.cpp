@@ -59,7 +59,7 @@
 
 #include <coindefs.h> // COIN_OBSOLETED()
 #include <Inventor/system/gl.h>
-#include <../misc/GLUWrapper.h>
+#include <../glue/GLUWrapper.h>
 
 
 /*!

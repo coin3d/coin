@@ -36,13 +36,6 @@
 #include <Inventor/elements/SoListenerVelocityElement.h>
 #include <Inventor/elements/SoListenerGainElement.h>
 
-#include "../misc/AudioTools.h"
-
-#ifdef HAVE_SOUND
-#include <AL/al.h>
-#include <AL/altypes.h>
-#endif // HAVE_SOUND
-
 SO_NODE_SOURCE(SoListener);
 
 void SoListener::initClass()

@@ -134,14 +134,14 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
-#include <../misc/simage_wrapper.h>
+#include <../glue/simage_wrapper.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
-#include <../misc/GLUWrapper.h>
+#include <../glue/GLUWrapper.h>
 
 /*!
   \enum SoImage::VertAlignment
