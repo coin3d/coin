@@ -96,7 +96,7 @@ coin@COIN_MAJOR_VERSION@.dll: $(libCoin_la_OBJECTS) $(libCoin_la_DEPENDENCIES)
 	@rm -f coin@COIN_MAJOR_VERSION@.dll && \
 	if @BUILD_WITH_MSVC@; then \
 	  echo "Linking DLL..."; \
-	  $(CC) /dll /out:coin@COIN_MAJOR_VERSION@.dll $(LDFLAGS) \
+	  $(CC) @DLLFLAGS@ /out:coin@COIN_MAJOR_VERSION@.dll $(LDFLAGS) \
 	        `echo $(libCoin_la_OBJECTS) | sed 's%\.lo%.obj%g'` \
 	        $(libCoin_la_LIBADD) $(LIBS); \
 	else \
@@ -111,7 +111,20 @@ coin@COIN_MAJOR_VERSION@.dll: $(libCoin_la_OBJECTS) $(libCoin_la_DEPENDENCIES)
 install-exec-hook: coin@COIN_MAJOR_VERSION@.dll
 	@if test -s coin@COIN_MAJOR_VERSION@.dll; then \
 	  echo "Installing coin@COIN_MAJOR_VERSION@.dll"; \
-	  for i in coin@COIN_MAJOR_VERSION@.dll coin@COIN_MAJOR_VERSION@.lib; do \
-	    $(INSTALL_DATA) $$i $(DESTDIR)$(libdir)/$$i; \
+	  for e in dll lib pdb; do \
+	    file="coin@COIN_MAJOR_VERSION@.$$e"; \
+	    if test -f "$$file"; then \
+	      $(INSTALL_DATA) $$file $(DESTDIR)$(libdir)/$$file; \
+	    fi \
 	  done \
 	fi
+
+uninstall: uninstall-am
+	for e in dll lib pdb; do \
+	  file="$(DESTDIR)$(libdir)/coin@COIN_MAJOR_VERSION@.$$e"; \
+	  if test -f "$$file"; then \
+	    echo rm -f "$$file"; \
+	    rm -f "$$file"; \
+	  fi \
+	done
+
