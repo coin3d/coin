@@ -39,7 +39,7 @@
 */
 
 // Metadon doc
-/*!
+/*¡
   FIXME: the implementation for continueApply() on paths is
   missing. 20000306 mortene.
  */

@@ -34,7 +34,7 @@
 */
 
 // Metadon doc:
-/*!
+/*¡
   FIXME: doesn't handle pathlist traversal yet. 20000305 mortene.
  */
 
