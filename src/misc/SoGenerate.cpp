@@ -310,7 +310,7 @@ public:
       vertex.setNormal(nptr[i]);
       if (flags & SOGEN_MATERIAL_PER_PART) vertex.setMaterialIndex(i);
       for (int j = 0; j < 4; j++) {
-        vertex.setTextureCoords(tptr[j<<1]);
+        vertex.setTextureCoords(tptr[j]);
         vertex.setPoint(varray[*iptr++]);
         shape->shapeVertex(&vertex);
       }
