@@ -206,6 +206,17 @@ SoGLTextureImageElement::evaluate(const SbBool enabled, const SbBool transparenc
   // cast away constness
   SoGLTextureImageElement *elem = (SoGLTextureImageElement*) this;
 
+#ifdef HAVE_THREADS
+  // if threads is enabled, the image is loaded on demand, and we
+  // should trigger a image load by just attempting to fetch the data
+  // from the image.
+  if (!enabled && elem->image && elem->image->getImage()) {
+    SbVec2s size;
+    int nc;
+    (void) elem->image->getImage()->getValue(size, nc);
+  }
+#endif // HAVE_THREADS
+
   if (enabled && elem->image) SoGLImage::tagImage(elem->state, elem->image);
   if (enabled && elem->dlist) {
     // notify the texture resource handler that this image/dl has been
