@@ -40,6 +40,8 @@
 #      //$ BEGIN EXPORT INLINE
 #      //$ END EXPORT INLINE
 #
+#  //$ DEFINE varname substitution
+#
 #  /*$ EVAL( perl-expr ) */
 #
 #  //$ IF perl-expr
@@ -57,6 +59,9 @@
 #  $Id$
 #
 #  $Log$
+#  Revision 1.7  2002/03/20 08:50:07  larsa
+#  additional macros DEFINE and UNDEFINE
+#
 #  Revision 1.6  2002/03/19 14:00:19  larsa
 #  support conditionals in templates, much like a C preprocessor
 #
@@ -186,6 +191,7 @@ foreach $opt ( @options ) {
 
 file:
 foreach $file ( @files ) {
+    %defines = ();
     print $file, ":";
 
     if ( $file =~ /\.tpl$/ ) {
@@ -214,10 +220,10 @@ foreach $file ( @files ) {
     $define = $file;
     $define =~ s/^.*\///og; # only filename
     $define =~ s/\..*//og;
-    $define =~ s/([a-z])([A-Z])/$1_$2/og;
-    $define =~ s/([^0-9]*)([0-9]+)([^0-9]*)/$1_$2_$3/og;
+    # $define =~ s/([a-z])([A-Z])/$1_$2/og;
+    # $define =~ s/([^0-9]*)([0-9]+)([^0-9]*)/$1_$2_$3/og;
     $define =~ tr/a-z/A-Z/;
-    $define = "_" . $define . "_H_INLINED_";
+    $define = "COIN_" . $define . "_H_INLINED";
 
     # update templates
     &FoldTemplates();
@@ -288,6 +294,8 @@ template:
     }
 }
 
+%defines = ();
+
 # unfolds all templates
 sub UnfoldTemplates { ######################################################
     local( $level ) = ( 0 );
@@ -303,7 +311,10 @@ sub UnfoldTemplates { ######################################################
     $templates = 0;
     for ( $line = 0; $line < @lines; $line++ ) {
         $lines[$line] =~ s|/\*\$ *EVAL\((.*)\) *\*/|eval "$1"|eg;
-        $ifdirective = 0;
+        foreach $definename (keys %defines) {
+          $lines[$line] =~ s|$definename|$defines{$definename}|g;
+        }
+        $directive = 0;
 
         ## we try to handle IF, ELSIF, ELSE, and ENDIF here
         if ( $lines[$line] =~ m|^$prefix +IF +|o ) {
@@ -313,7 +324,7 @@ sub UnfoldTemplates { ######################################################
             push(@conditionals, $conditional);
             # print STDERR "opening conditional ".scalar(@conditionals)."\n";
             # print STDERR "  => $conditional ($condstring)\n";
-            $ifdirective = 1;
+            $directive = 1;
         } elsif ( $lines[$line] =~ m|^$prefix +ELSIF +|o ) {
             $condstring = $lines[$line];
             $condstring =~ s|^$prefix +ELSIF +||o;
@@ -327,7 +338,7 @@ sub UnfoldTemplates { ######################################################
                 # print STDERR "  => $conditional\n";
             }
             push(@conditionals, $conditional);
-            $ifdirective = 1;
+            $directive = 1;
         } elsif ( $lines[$line] =~ m|^$prefix +ELSE *$|o ) {
             # print STDERR "toggling conditional ".scalar(@conditionals)."\n";
             $oldconditional = pop(@conditionals);
@@ -338,18 +349,19 @@ sub UnfoldTemplates { ######################################################
             }
             push(@conditionals, $conditional);
             # print STDERR "  => $conditional\n";
-            $ifdirective = 1;
+            $directive = 1;
         } elsif ( $lines[$line] =~ m|^$prefix +ENDIF *$|o ) {
             # print STDERR "closing conditional ".scalar(@conditionals)."\n";
             $oldconditional = pop(@conditionals);
-            $ifdirective = 1;
+            $directive = 1;
         }
 
-        if ( $ifdirective == 1 ) {
+        if ( $directive == 1 ) {
             splice(@lines, $line, 1);
             $line--;
             next;
         }
+
         if ( scalar(@conditionals) > 0 ) {
             $skip = 0;
             for ( $c = 0; $c < scalar(@conditionals) && !$skip; $c++ ) {
@@ -360,6 +372,27 @@ sub UnfoldTemplates { ######################################################
                 $line--;
                 next;
             }
+        }
+
+        if ( $lines[$line] =~ m|^$prefix +DEFINE +|o ) {
+          $lines[$line] =~ m|^$prefix +DEFINE +([^ ]+) +(.*)$|o;
+          $definename = $2;
+          $value = $3;
+          # print STDERR "defining \"$definename\" to \"$value\"\n";
+          $defines{$definename} = $value;
+          $directive = 1;
+        } elsif ( $lines[$line] =~ m|^$prefix +UNDEFINE +|o ) {
+          $lines[$line] =~ m|^$prefix +DEFINE +([^ ]+)$|o;
+          $definename = $2;
+          # print STDERR "undefining \"$definename\"\n";
+          undef $defines{$definename};
+          $directive = 1;
+        }
+
+        if ( $directive == 1 ) {
+            splice(@lines, $line, 1);
+            $line--;
+            next;
         }
 
         if ( $lines[$line] =~ m|^$prefix +INSERT +TEMPLATE +|o ) {
