@@ -1174,10 +1174,13 @@ AC_SUBST(HAVE_SOUND)
 
 AM_CONDITIONAL([BUILD_WITH_SOUND], [$sim_ac_enable_sound])
 
-# *******************************************************************
-# * Set us up for using the FreeType font library (if wanted, and if
-# * available).
-# *******************************************************************
+# **************************************************************************
+# Set us up for using TrueType fonts. Through the FreeType library (if
+# wanted, and if available), and / or the Win32 API.
+
+if $sim_ac_have_win32_api; then
+  SIM_AC_CONFIGURATION_SETTING([Win32 TrueType fonts], [Yes])
+fi
 
 AC_ARG_ENABLE([dl-freetype],
   AC_HELP_STRING([--disable-dl-freetype],
@@ -1190,32 +1193,27 @@ AC_ARG_ENABLE([dl-freetype],
   [enable_dl_freetype=true])
 
 sim_ac_have_freetype=false
-if test x"$sim_ac_have_win32_api" = x"false"; then
-  if $enable_dl_freetype && $coin_can_do_runtime_linking; then
-    AC_DEFINE_UNQUOTED([FREETYPE_RUNTIME_LINKING], 1,
-      [define for runtime linking with freetype])
-    SIM_AC_CONFIGURATION_SETTING([FreeType support], [Yes, run-time binding])
-  else
-    SIM_AC_HAVE_FREETYPE_IFELSE([
-      AC_DEFINE(HAVE_FREETYPE, 1,
-        [define if you have the freetype library])
-      CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"
-      LDFLAGS="$LDFLAGS $sim_ac_freetype_ldflags"
-      LIBS="$sim_ac_freetype_libs $LIBS"
-      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_freetype_cppflags"
-      COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_freetype_ldflags"
-      COIN_EXTRA_LIBS="$sim_ac_freetype_libs $COIN_EXTRA_LIBS"
-      SIM_AC_CONFIGURATION_SETTING([FreeType support], [Yes, link-time binding])
-    ], [
-      if $sim_ac_freetype_desired; then
-        SIM_AC_CONFIGURATION_SETTING([FreeType support], [No])
-      fi
-    ])
-  fi
+
+if $enable_dl_freetype && $coin_can_do_runtime_linking; then
+  AC_DEFINE_UNQUOTED([FREETYPE_RUNTIME_LINKING], 1,
+    [define for runtime linking with freetype])
+  SIM_AC_CONFIGURATION_SETTING([FreeType library], [If available, run-time linking])
 else
-  # It should be made possible to enable freetype on cygwin/mks too if
-  # needed, but for now we override use of freetype with the win32 api.
-  SIM_AC_CONFIGURATION_SETTING([FreeType support], [No, using Win32 API instead])
+  SIM_AC_HAVE_FREETYPE_IFELSE([
+    AC_DEFINE(HAVE_FREETYPE, 1,
+      [define if you have the freetype library])
+    CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"
+    LDFLAGS="$LDFLAGS $sim_ac_freetype_ldflags"
+    LIBS="$sim_ac_freetype_libs $LIBS"
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_freetype_cppflags"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_freetype_ldflags"
+    COIN_EXTRA_LIBS="$sim_ac_freetype_libs $COIN_EXTRA_LIBS"
+    SIM_AC_CONFIGURATION_SETTING([FreeType library], [Yes, link-time binding])
+  ], [
+    if $sim_ac_freetype_desired; then
+      SIM_AC_CONFIGURATION_SETTING([FreeType library], [No])
+    fi
+  ])
 fi
 
 AM_CONDITIONAL(HAVE_FREETYPE, $sim_ac_have_freetype)
