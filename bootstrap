@@ -10,7 +10,7 @@
 directory=`echo "$0" | sed 's/[^\/]*$//g'`;
 me=`echo "$0" | sed 's/^.*\///g'`;
 cd $directory
-if ! test -f ./"$me"; then
+if test ! -f ./"$me"; then
   echo "unexpected problem with your shell - bailing out"
   exit 1
 fi
