@@ -55,26 +55,26 @@
     // Row 5
     {-11, 0, 1}, {0, 11, 1}, {11, 0, 1}, {0, -11, 1}, {-11, 0, 1}
   };
-  
+
   // This function generate an object by using the SoQuadMesh node
   // Return:
   //  SoSeparator *
   static SoSeparator *
-  quadMesh(void) 
+  quadMesh(void)
   {
     SoSeparator * qm = new SoSeparator;
-    
+
     // Define coordinates
     SoCoordinate3 * coords = new SoCoordinate3;
     coords->point.setValues(0, 30, vertices);
     qm->addChild(coords);
-    
+
     // QuadMesh
     SoQuadMesh * mesh = new SoQuadMesh;
     mesh->verticesPerRow = 5;
     mesh->verticesPerColumn = 5;
     qm->addChild(mesh);
-  
+
     return qm;
   }
   \endcode
@@ -90,36 +90,55 @@
   row), PER_FACE, PER_VERTEX and OVERALL. The default material binding
   is OVERALL. The default normal binding is PER_VERTEX.
 
+
+  A note about SoQuadMesh shading: the quads in the mesh are just
+  passed on to OpenGL's GL_QUAD primitive rendering. Under certain
+  circumstances, this can lead to artifacts in how your meshes are
+  shaded. This is an inherent problem with drawing quads in meshes.
+
+  There is a work-around solution for the above mentioned problem that
+  can be applied with Coin: by setting the global environment variable
+  \c COIN_QUADMESH_PRECISE_LIGHTING to "1", the quads will be broken
+  up in triangles before rendered, and shading will likely look much
+  better. Be aware that this technique causes rendering of the
+  SoQuadMesh to slow down by an approximate factor of 6.
+
+  The "precise lighting" technique is currently limited to work only
+  when SoQuadMesh rendering is parameterized with 3D coordinates, a
+  materialbinding that is \e not per vertex, and if texture mapping is
+  done is must be without using any of the SoTextureCoordinateFunction
+  subclass nodes.
+
+
   \sa SoTriangleStripSet SoIndexedTriangleStripSet
 */
 
 #include <Inventor/nodes/SoQuadMesh.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/elements/SoGLLazyElement.h>
 
-#include <Inventor/actions/SoGLRenderAction.h>
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
+
+#include <Inventor/C/tidbits.h>
+#include <Inventor/SbPlane.h>
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/bundles/SoTextureCoordinateBundle.h>
+#include <Inventor/caches/SoNormalCache.h>
+#include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/elements/SoGLCoordinateElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoNormalBindingElement.h>
+#include <Inventor/elements/SoShapeHintsElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/system/gl.h>
 
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/elements/SoNormalBindingElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoShapeHintsElement.h>
-#include <Inventor/caches/SoNormalCache.h>
-#include <Inventor/bundles/SoTextureCoordinateBundle.h>
-#include <Inventor/misc/SoGL.h>
-
-#include <Inventor/details/SoFaceDetail.h>
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif
 
 /*!
   \var SoSFInt32 SoQuadMesh::verticesPerColumn
@@ -235,6 +254,40 @@ SoQuadMesh::findNormalBinding(SoState * const state) const
   return binding;
 }
 
+
+#define QUADMESH_WEIGHTS_NR 32
+static float precompWeights[QUADMESH_WEIGHTS_NR];
+static float precalculateWeight(int i)
+{
+  int exponent = i - (QUADMESH_WEIGHTS_NR / 2);
+  double p2 = ldexp(0.75, exponent);
+  double p = sqrt(p2);
+  return float(p / (1.0 + p));
+}
+static float qmeshGetWeight(float value)
+{
+  int exponent = ilogb(value) + (QUADMESH_WEIGHTS_NR / 2);
+  if (exponent < 0) return 0.f;
+  if (exponent >= QUADMESH_WEIGHTS_NR) return 1.f;
+  return precompWeights[exponent];
+}
+
+// qmeshNormalize
+// v.length() must be in 0..sqrt(toLength2)/4 range
+static SbBool qmeshNormalize(SbVec3f & v, float toLength2)
+{
+  // FIXME: this function should be optimized by look-up table
+  // (sqrt and divisions are expensive operations)
+  float vl2 = v.sqrLength();
+  if (vl2 > 0.f) {
+    double d = sqrt(toLength2 / (vl2 * 4.0));
+    v *= d;
+    return TRUE;
+  }
+  return FALSE;
+}
+
+
 typedef void sogl_render_qmesh_func( const SoGLCoordinateElement * coords,
     const SbVec3f *normals,
     SoMaterialBundle * mb,
@@ -244,7 +297,7 @@ typedef void sogl_render_qmesh_func( const SoGLCoordinateElement * coords,
     int colsize,
     int start );
 
-static sogl_render_qmesh_func *soquadmesh_ni_render_funcs[ 32 ];
+static sogl_render_qmesh_func *soquadmesh_ni_render_funcs[ 64 ];
 
 #define OVERALL       0
 #define PER_ROW       1
@@ -577,6 +630,336 @@ static void sogl_qmesh_m3_n3_t1
 
 // -----
 
+// once again for rendering with more precise lighting by placing an
+// extra vertice in the middle of the quad, and thereby splitting it
+// to 2 triangles
+
+// n0, t0, precise lighting
+
+#define COORDS D3
+
+#define MBINDING OVERALL
+#define NBINDING OVERALL
+#define TEXTURES FALSE
+static void sogl_qmesh_m0_n0_t0_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_ROW
+#define NBINDING OVERALL
+#define TEXTURES FALSE
+static void sogl_qmesh_m1_n0_t0_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING OVERALL
+#define TEXTURES FALSE
+static void sogl_qmesh_m2_n0_t0_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING OVERALL
+#define TEXTURES FALSE
+static void sogl_qmesh_m3_n0_t0_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+// -----
+
+// n1, t0, precise lighting
+
+#define MBINDING OVERALL
+#define NBINDING PER_ROW
+#define TEXTURES FALSE
+static void sogl_qmesh_m0_n1_t0_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_ROW
+#define NBINDING PER_ROW
+#define TEXTURES FALSE
+static void sogl_qmesh_m1_n1_t0_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING PER_ROW
+#define TEXTURES FALSE
+static void sogl_qmesh_m2_n1_t0_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING PER_ROW
+#define TEXTURES FALSE
+static void sogl_qmesh_m3_n1_t0_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+// -----
+
+// n2, t0, precise lighting
+
+#define MBINDING OVERALL
+#define NBINDING PER_FACE
+#define TEXTURES FALSE
+static void sogl_qmesh_m0_n2_t0_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_ROW
+#define NBINDING PER_FACE
+#define TEXTURES FALSE
+static void sogl_qmesh_m1_n2_t0_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING PER_FACE
+#define TEXTURES FALSE
+static void sogl_qmesh_m2_n2_t0_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING PER_FACE
+#define TEXTURES FALSE
+static void sogl_qmesh_m3_n2_t0_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+// -----
+
+// n3, t0, precise lighting
+
+#define MBINDING OVERALL
+#define NBINDING PER_VERTEX
+#define TEXTURES FALSE
+static void sogl_qmesh_m0_n3_t0_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_ROW
+#define NBINDING PER_VERTEX
+#define TEXTURES FALSE
+static void sogl_qmesh_m1_n3_t0_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING PER_VERTEX
+#define TEXTURES FALSE
+static void sogl_qmesh_m2_n3_t0_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING PER_VERTEX
+#define TEXTURES FALSE
+static void sogl_qmesh_m3_n3_t0_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+// og de samme, med tekstur
+
+// -----
+
+// n0, t1, precise lighting
+
+#define MBINDING OVERALL
+#define NBINDING OVERALL
+#define TEXTURES TRUE
+static void sogl_qmesh_m0_n0_t1_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_ROW
+#define NBINDING OVERALL
+#define TEXTURES TRUE
+static void sogl_qmesh_m1_n0_t1_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING OVERALL
+#define TEXTURES TRUE
+static void sogl_qmesh_m2_n0_t1_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING OVERALL
+#define TEXTURES TRUE
+static void sogl_qmesh_m3_n0_t1_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+// -----
+
+// n1, t1, precise lighting
+
+#define MBINDING OVERALL
+#define NBINDING PER_ROW
+#define TEXTURES TRUE
+static void sogl_qmesh_m0_n1_t1_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_ROW
+#define NBINDING PER_ROW
+#define TEXTURES TRUE
+static void sogl_qmesh_m1_n1_t1_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING PER_ROW
+#define TEXTURES TRUE
+static void sogl_qmesh_m2_n1_t1_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING PER_ROW
+#define TEXTURES TRUE
+static void sogl_qmesh_m3_n1_t1_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+// -----
+
+// n2, t1, precise lighting
+
+#define MBINDING OVERALL
+#define NBINDING PER_FACE
+#define TEXTURES TRUE
+static void sogl_qmesh_m0_n2_t1_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_ROW
+#define NBINDING PER_FACE
+#define TEXTURES TRUE
+static void sogl_qmesh_m1_n2_t1_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING PER_FACE
+#define TEXTURES TRUE
+static void sogl_qmesh_m2_n2_t1_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING PER_FACE
+#define TEXTURES TRUE
+static void sogl_qmesh_m3_n2_t1_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+// -----
+
+// n3, t1, precise lighting
+
+#define MBINDING OVERALL
+#define NBINDING PER_VERTEX
+#define TEXTURES TRUE
+static void sogl_qmesh_m0_n3_t1_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_ROW
+#define NBINDING PER_VERTEX
+#define TEXTURES TRUE
+static void sogl_qmesh_m1_n3_t1_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING PER_VERTEX
+#define TEXTURES TRUE
+static void sogl_qmesh_m2_n3_t1_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING PER_VERTEX
+#define TEXTURES TRUE
+static void sogl_qmesh_m3_n3_t1_pl
+#include "../misc/SoGLqmeshpreciselightingTemplate.icc"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+// -----
+
+#undef COORDS
+
 #undef IDX
 
 #undef OVERALL
@@ -608,7 +991,7 @@ SoQuadMesh::initClass(void)
   soquadmesh_ni_render_funcs[13] = sogl_qmesh_m1_n2_t1;
   soquadmesh_ni_render_funcs[14] = sogl_qmesh_m1_n3_t0;
   soquadmesh_ni_render_funcs[15] = sogl_qmesh_m1_n3_t1;
-  
+
   soquadmesh_ni_render_funcs[16] = sogl_qmesh_m2_n0_t0;
   soquadmesh_ni_render_funcs[17] = sogl_qmesh_m2_n0_t1;
   soquadmesh_ni_render_funcs[18] = sogl_qmesh_m2_n1_t0;
@@ -626,6 +1009,45 @@ SoQuadMesh::initClass(void)
   soquadmesh_ni_render_funcs[29] = sogl_qmesh_m3_n2_t1;
   soquadmesh_ni_render_funcs[30] = sogl_qmesh_m3_n3_t0;
   soquadmesh_ni_render_funcs[31] = sogl_qmesh_m3_n3_t1;
+
+  soquadmesh_ni_render_funcs[32] = sogl_qmesh_m0_n0_t0_pl;
+  soquadmesh_ni_render_funcs[33] = sogl_qmesh_m0_n0_t1_pl;
+  soquadmesh_ni_render_funcs[34] = sogl_qmesh_m0_n1_t0_pl;
+  soquadmesh_ni_render_funcs[35] = sogl_qmesh_m0_n1_t1_pl;
+  soquadmesh_ni_render_funcs[36] = sogl_qmesh_m0_n2_t0_pl;
+  soquadmesh_ni_render_funcs[37] = sogl_qmesh_m0_n2_t1_pl;
+  soquadmesh_ni_render_funcs[38] = sogl_qmesh_m0_n3_t0_pl;
+  soquadmesh_ni_render_funcs[39] = sogl_qmesh_m0_n3_t1_pl;
+
+  soquadmesh_ni_render_funcs[40] = sogl_qmesh_m1_n0_t0_pl;
+  soquadmesh_ni_render_funcs[41] = sogl_qmesh_m1_n0_t1_pl;
+  soquadmesh_ni_render_funcs[42] = sogl_qmesh_m1_n1_t0_pl;
+  soquadmesh_ni_render_funcs[43] = sogl_qmesh_m1_n1_t1_pl;
+  soquadmesh_ni_render_funcs[44] = sogl_qmesh_m1_n2_t0_pl;
+  soquadmesh_ni_render_funcs[45] = sogl_qmesh_m1_n2_t1_pl;
+  soquadmesh_ni_render_funcs[46] = sogl_qmesh_m1_n3_t0_pl;
+  soquadmesh_ni_render_funcs[47] = sogl_qmesh_m1_n3_t1_pl;
+
+  soquadmesh_ni_render_funcs[48] = sogl_qmesh_m2_n0_t0_pl;
+  soquadmesh_ni_render_funcs[49] = sogl_qmesh_m2_n0_t1_pl;
+  soquadmesh_ni_render_funcs[50] = sogl_qmesh_m2_n1_t0_pl;
+  soquadmesh_ni_render_funcs[51] = sogl_qmesh_m2_n1_t1_pl;
+  soquadmesh_ni_render_funcs[52] = sogl_qmesh_m2_n2_t0_pl;
+  soquadmesh_ni_render_funcs[53] = sogl_qmesh_m2_n2_t1_pl;
+  soquadmesh_ni_render_funcs[54] = sogl_qmesh_m2_n3_t0_pl;
+  soquadmesh_ni_render_funcs[55] = sogl_qmesh_m2_n3_t1_pl;
+
+  soquadmesh_ni_render_funcs[56] = sogl_qmesh_m3_n0_t0_pl;
+  soquadmesh_ni_render_funcs[57] = sogl_qmesh_m3_n0_t1_pl;
+  soquadmesh_ni_render_funcs[58] = sogl_qmesh_m3_n1_t0_pl;
+  soquadmesh_ni_render_funcs[59] = sogl_qmesh_m3_n1_t1_pl;
+  soquadmesh_ni_render_funcs[60] = sogl_qmesh_m3_n2_t0_pl;
+  soquadmesh_ni_render_funcs[61] = sogl_qmesh_m3_n2_t1_pl;
+  soquadmesh_ni_render_funcs[62] = sogl_qmesh_m3_n3_t0_pl;
+  soquadmesh_ni_render_funcs[63] = sogl_qmesh_m3_n3_t1_pl;
+
+  for (int pc = 0; pc < QUADMESH_WEIGHTS_NR; pc++)
+    precompWeights[pc] = precalculateWeight(pc);
 }
 
 // -----
@@ -643,7 +1065,7 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
     didpush = TRUE;
     this->vertexProperty.getValue()->GLRender(action);
   }
-  
+
   if (!this->shouldGLRender(action)) {
     if (didpush) state->pop();
     return;
@@ -693,7 +1115,20 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
 
   mb.sendFirst(); // make sure we have the correct material
 
-  soquadmesh_ni_render_funcs[ (mbind << 3) | (nbind << 1) | doTextures ]
+  // Check if precise lighting rendering is requested.
+  static int preciselighting = -1;
+  if (preciselighting == -1) {
+    const char * env = coin_getenv("COIN_QUADMESH_PRECISE_LIGHTING");
+    if (env) preciselighting = atoi(env) > 0 ? 1 : 0;
+  }
+
+  // Even if precise lighting rendering is requested, we need to check
+  // that the rendering path is supported.
+  SbBool pl = preciselighting &&
+    coords->is3D() && (mbind != PER_VERTEX) && !tb.isFunction();
+
+  soquadmesh_ni_render_funcs[ (mbind << 3) | (nbind << 1) | doTextures +
+                              (pl ? 32 : 0)]
     (coords,
      normals,
      &mb,
@@ -702,7 +1137,7 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
      rowsize,
      colsize,
      start);
-  
+
   if (nc) {
     this->readUnlockNormalCache();
   }
@@ -918,3 +1353,5 @@ SoQuadMesh::generatePrimitives(SoAction *action)
     state->pop();
 
 }
+
+#undef QUADMESH_WEIGHTS_NR

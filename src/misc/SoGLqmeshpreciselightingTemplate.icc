@@ -1,0 +1,296 @@
+// SoQuadMesh rendering with more precise lighting than when just
+// using OpenGL's GL_QUAD primitives.
+//
+// The performance is 6 times slower than ordinary SoQuadMesh
+// rendering on GeForce 2 MX and P4 1.5GHz. The performance is divided
+// by 3 probably because we're sending three times more vertices. And
+// the rest is spent on computations of the center vertices.
+// 
+// Developed and contributed by PC John (Jan Peciva).
+
+
+( const SoGLCoordinateElement * coordEl,
+    const SbVec3f *normals,
+    SoMaterialBundle * mb,
+    const SoTextureCoordinateBundle * tb,
+    SbBool needNormals,
+    int rowsize,
+    int colsize,
+    int start )
+{
+#if COORDS==D3
+  const SbVec3f *coords = coordEl->getArrayPtr3();
+#else
+  const SbVec4f *coords = coordEl->getArrayPtr4();
+#endif
+
+#if MBINDING==PER_ROW
+  int midx = 0;
+#endif
+  SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
+  const SbVec3f * currnormal = &dummynormal;
+  if (normals) currnormal = normals;
+
+#if NBINDING==OVERALL
+  if (needNormals) {
+    glNormal3fv((const GLfloat *)currnormal);
+  }
+#endif
+
+  int curridx1,curridx2;
+#if COORDS==D3
+  const SbVec3f *c1,*c2,*c3,*c4;
+  SbVec3f cc;
+#else
+  const SbVec4f *c1,*c2,*c3,*c4;
+  SbVec4f cc;
+  SbVec4f sum234,sum134,sum124,sum123;
+  SbVec4f vec1,vec2,vec3,vec4;
+#endif
+#if NBINDING==PER_VERTEX || MBINDING==PER_VERTEX || TEXTURES==TRUE
+  float s1,s2,s3,s4;
+  float w1,w2,w3,w4;
+#endif
+#if NBINDING==PER_VERTEX
+  const SbVec3f *n1,*n2,*n3,*n4;
+  SbVec3f nc;
+#endif
+#if TEXTURES==TRUE
+  const SbVec4f *t1,*t2, * t3 = NULL, * t4 = NULL;
+  SbVec4f tc;
+#endif
+
+  curridx1 = 0;
+  curridx2 = rowsize;
+  for (int i = 0; i < colsize-1; i++) {
+    int j = 0;
+#if NBINDING==PER_ROW
+    currnormal = normals++;
+    glNormal3fv((const GLfloat *)currnormal);
+#endif
+#if MBINDING==PER_ROW
+    mb->send(midx++, TRUE);
+#endif
+
+    c3 = &coords[start+curridx1];
+    c4 = &coords[start+curridx2];
+#if NBINDING==PER_VERTEX
+    n3 = &normals[curridx1];
+    n4 = &normals[curridx2];
+#endif
+    curridx1++;
+    curridx2++;
+
+    for (j = 1; j < rowsize; j++) {
+
+      c1 = c3;
+      c2 = c4;
+      c3 = &coords[start+curridx1];
+      c4 = &coords[start+curridx2];
+#if COORDS==D3
+      cc = ((*c1)+(*c2)+(*c3)+(*c4)) * 0.25f;
+#else
+      assert(FALSE && "4d coordinates handling unimplemented yet");
+#endif
+#if NBINDING==PER_VERTEX || MBINDING==PER_VERTEX || TEXTURES==TRUE
+#if COORDS==D3
+      s1 = ((*c1) - cc).sqrLength();
+      s2 = ((*c2) - cc).sqrLength();
+      s3 = ((*c3) - cc).sqrLength();
+      s4 = ((*c4) - cc).sqrLength();
+#else
+      // FIXME: 4D coordinates are not currently implemented
+      // for HQ rendering - following code is never used
+      sum234 = qmeshAddVec4f(c2, sum34);
+      vec1 = qmeshAddSpec4f(c1, sum234);
+      sum134 = qmeshAddVec4f(c1, sum34);
+      vec2 = qmeshAddSpec4f(c2, sum134);
+      sum124 = qmeshAddVec4f(c4, sum12);
+      vec3 = qmeshAddSpec4f(c3, sum124);
+      sum123 = qmeshAddVec4f(c3, sum12);
+      vec4 = qmeshAddSpec4f(c4, sum123);
+      s1 = qmeshSqrLen(vec1);
+      s2 = qmeshSqrLen(vec2);
+      s3 = qmeshSqrLen(vec3);
+      s4 = qmeshSqrLen(vec4);
+#endif
+      w1 = qmeshGetWeight(s1/s4) * 0.5f;
+      w4 = 0.5f - w1;
+      w2 = qmeshGetWeight(s2/s3) * 0.5f;
+      w3 = 0.5f - w2;
+#endif
+
+#if NBINDING==PER_VERTEX
+      n1 = n3;
+      n2 = n4;
+      n3 = &normals[curridx1];
+      n4 = &normals[curridx2];
+      nc = ((*n1)*w1 + (*n2)*w2 + (*n3)*w3 + (*n4)*w4);
+      if (!qmeshNormalize(nc, n1->sqrLength() + n2->sqrLength() +
+                          n3->sqrLength() + n4->sqrLength())) {
+        SbPlane p1(*c1,*c2,*c4);
+        SbPlane p2(*c1,*c4,*c3);
+        SbVec3f n = p1.getNormal() + p2.getNormal();
+        if (qmeshNormalize(n, n1->sqrLength() + n2->sqrLength() +
+                           n3->sqrLength() + n4->sqrLength()));
+#if COIN_DEBUG
+        else
+          SoDebugError::postWarning("SoQuadMesh::GLRender",
+                                    "Can not compute normal because of "
+                                    "wrong quad coordinates.");
+#endif // COIN_DEBUG
+      }
+#endif
+
+#if MBINDING==PER_VERTEX
+      assert(FALSE && "yet unimplemented");
+#endif
+
+#if TEXTURES==TRUE
+      t1 = t3;
+      t2 = t4;
+      if (!tb->isFunction()) {
+        t3 = &((SoTextureCoordinateBundle*)tb)->get(curridx1);
+        t4 = &((SoTextureCoordinateBundle*)tb)->get(curridx2);
+      } else {
+        assert(FALSE && "unimplemented");
+      }
+      tc = ((*t1)*w1 + (*t2)*w2 + (*t3)*w3 + (*t4)*w4);
+#endif
+
+
+      glBegin(GL_TRIANGLE_FAN);
+
+#if NBINDING==PER_FACE
+      currnormal = normals++;
+      glNormal3fv((const GLfloat *)currnormal);
+#endif
+#if MBINDING==PER_FACE
+      mb->send(curridx1, TRUE);
+#endif
+
+      // CENTER vertex
+#if NBINDING==PER_VERTEX
+      glNormal3fv(nc.getValue());
+#endif
+#if MBINDING==PER_VERTEX
+      assert(FALSE && "unimplemented");
+#endif
+#if TEXTURES==TRUE
+      // tb->send(?curridx?, cc, nc) was replaced by
+      // glTexCoord for center vertex
+      glTexCoord4fv((const GLfloat*)&tc);
+#endif
+#if COORDS==D3
+      glVertex3fv((const GLfloat*)&cc);
+#else
+      glVertex4fv((const GLfloat*)&cc);
+#endif
+
+      // FIRST vertex
+#if NBINDING==PER_VERTEX
+      glNormal3fv(n1->getValue());
+#endif
+#if MBINDING==PER_VERTEX
+      assert(FALSE && "unimplemented");
+#endif
+#if TEXTURES==TRUE
+#if NBINDING==PER_VERTEX
+      tb->send(curridx1-1, *c1, *n1);
+#else
+      tb->send(curridx1-1, *c1, *currnormal);
+#endif
+#endif
+#if COORDS==D3
+      glVertex3fv((const GLfloat*)c1);
+#else
+      glVertex4fv((const GLfloat*)c1);
+#endif
+
+      // SECOND vertex
+#if NBINDING==PER_VERTEX
+      glNormal3fv(n2->getValue());
+#endif
+#if MBINDING==PER_VERTEX
+      assert(FALSE && "unimplemented");
+#endif
+#if TEXTURES==TRUE
+#if NBINDING==PER_VERTEX
+      tb->send(curridx2-1, *c2, *n2);
+#else
+      tb->send(curridx2-1, *c2, *currnormal);
+#endif
+#endif
+#if COORDS==D3
+      glVertex3fv((const GLfloat*)c2);
+#else
+      glVertex4fv((const GLfloat*)c2);
+#endif
+
+      // FOURTH vertex
+#if NBINDING==PER_VERTEX
+      glNormal3fv(n4->getValue());
+#endif
+#if MBINDING==PER_VERTEX
+      assert(FALSE && "unimplemented");
+#endif
+#if TEXTURES==TRUE
+#if NBINDING==PER_VERTEX
+      tb->send(curridx2, *c4, *n4);
+#else
+      tb->send(curridx2, *c4, *currnormal);
+#endif
+#endif
+#if COORDS==D3
+      glVertex3fv((const GLfloat*)c4);
+#else
+      glVertex4fv((const GLfloat*)c4);
+#endif
+
+      // THIRD vertex
+#if NBINDING==PER_VERTEX
+      glNormal3fv(n3->getValue());
+#endif
+#if MBINDING==PER_VERTEX
+      assert(FALSE && "unimplemented");
+#endif
+#if TEXTURES==TRUE
+#if NBINDING==PER_VERTEX
+      tb->send(curridx1, *c3, *n3);
+#else
+      tb->send(curridx1, *c3, *currnormal);
+#endif
+#endif
+#if COORDS==D3
+      glVertex3fv((const GLfloat*)c3);
+#else
+      glVertex4fv((const GLfloat*)c3);
+#endif
+
+      // again FIRST vertex
+#if NBINDING==PER_VERTEX
+      glNormal3fv(n1->getValue());
+#endif
+#if MBINDING==PER_VERTEX
+      assert(FALSE && "unimplemented");
+#endif
+#if TEXTURES==TRUE
+#if NBINDING==PER_VERTEX
+      tb->send(curridx1-1, *c1, *n1);
+#else
+      tb->send(curridx1-1, *c1, *currnormal);
+#endif
+#endif
+#if COORDS==D3
+      glVertex3fv((const GLfloat*)c1);
+#else
+      glVertex4fv((const GLfloat*)c1);
+#endif
+
+      glEnd();
+
+      curridx1++;
+      curridx2++;
+    }
+  }
+}
