@@ -25,8 +25,7 @@
 */
 
 #include <Inventor/elements/SoGLModelMatrixElement.h>
-
-#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoGLViewingMatrixElement.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
 
@@ -35,6 +34,10 @@
 #endif // !_WIN32
 
 #include <GL/gl.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 SO_ELEMENT_SOURCE(SoGLModelMatrixElement);
 
@@ -75,9 +78,6 @@ SoGLModelMatrixElement::~SoGLModelMatrixElement(void)
 void
 SoGLModelMatrixElement::init(SoState * state)
 {
-#if 0 // too much debug output.. 981021 mortene.
-  SoDebugError::postInfo("SoGLModelMatrixElement::init", "");
-#endif // 0
   this->state = state;
   inherited::init(state);
 }
@@ -100,9 +100,6 @@ void
 SoGLModelMatrixElement::pop(SoState * state,
                             const SoElement * prevTopElement)
 {
-#if 0 // too much debug output.. 981021 mortene.
-  SoDebugError::postInfo("SoGLModelMatrixElement::pop", "");
-#endif // 0
   inherited::pop(state, prevTopElement);
   glPopMatrix();
 }
@@ -133,47 +130,8 @@ SoGLModelMatrixElement::setElt(const SbMatrix &matrix)
 void
 SoGLModelMatrixElement::multElt(const SbMatrix &matrix)
 {
-#if 0 // debug
-  SbMatrix m = this->modelMatrix;
-  SoDebugError::post("SoGLModelMatrixElement::multElt",
-                     "\n\tmodelmatrix before:"
-                     "\n\t\t[ %f %f %f %f"
-                     "\n\t\t  %f %f %f %f"
-                     "\n\t\t  %f %f %f %f"
-                     "\n\t\t  %f %f %f %f ]",
-                     m[0][0], m[0][1], m[0][2], m[0][3],
-                     m[1][0], m[1][1], m[1][2], m[1][3],
-                     m[2][0], m[2][1], m[2][2], m[2][3],
-                     m[3][0], m[3][1], m[3][2], m[3][3]);
-
-  SoDebugError::post("SoGLModelMatrixElement::multElt",
-                     "\n\tmultiply with:"
-                     "\n\t\t[ %f %f %f %f"
-                     "\n\t\t  %f %f %f %f"
-                     "\n\t\t  %f %f %f %f"
-                     "\n\t\t  %f %f %f %f ]",
-                     matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3],
-                     matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3],
-                     matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3],
-                     matrix[3][0], matrix[3][1], matrix[3][2], matrix[3][3]);
-#endif // debug
-
   glMultMatrixf(matrix[0]);
   inherited::multElt(matrix);
-
-#if 0 // debug
-  m = this->modelMatrix;
-  SoDebugError::post("SoGLModelMatrixElement::multElt",
-                     "\n\tmodelmatrix after:"
-                     "\n\t\t[ %f %f %f %f"
-                     "\n\t\t  %f %f %f %f"
-                     "\n\t\t  %f %f %f %f"
-                     "\n\t\t  %f %f %f %f ]",
-                     m[0][0], m[0][1], m[0][2], m[0][3],
-                     m[1][0], m[1][1], m[1][2], m[1][3],
-                     m[2][0], m[2][1], m[2][2], m[2][3],
-                     m[3][0], m[3][1], m[3][2], m[3][3]);
-#endif // debug
 }
 
 //! FIXME: write doc.
@@ -211,9 +169,9 @@ SoGLModelMatrixElement::scaleEltBy(const SbVec3f &scaleFactor)
 SbMatrix
 SoGLModelMatrixElement::pushMatrixElt()
 {
-  SbMatrix matrix;
-  glGetFloatv(GL_MODELVIEW_MATRIX, matrix[0]);
-  return matrix;
+  this->viewEltNodeId = SoGLViewingMatrixElement::getNodeId(this->state);
+  glPushMatrix();
+  return inherited::pushMatrixElt();
 }
 
 //! FIXME: write doc.
@@ -221,5 +179,9 @@ SoGLModelMatrixElement::pushMatrixElt()
 void
 SoGLModelMatrixElement::popMatrixElt(const SbMatrix &matrix)
 {
-  glLoadMatrixf(matrix[0]);
+  glPopMatrix();
+  if (this->viewEltNodeId != SoGLViewingMatrixElement::getNodeId(this->state)) {
+    this->setElt(matrix);
+  }
 }
+
