@@ -13,7 +13,7 @@ larsa
 @@ -0,0 +1,225 @@
 +/**************************************************************************\
 + *
-+ *  Copyright (C) 1998-2000 by Systems in Motion. All rights reserved.
++ *  Copyright (C) 1998-2005 by Systems in Motion. All rights reserved.
 + *
 + *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
 + *  http://www.sim.no support@sim.no Voice: +47 22114160 Fax: +47 22207097
@@ -241,7 +241,7 @@ larsa
 @@ -0,0 +1,119 @@
 +/**************************************************************************\
 + *
-+ *  Copyright (C) 1998-2000 by Systems in Motion. All rights reserved.
++ *  Copyright (C) 1998-2005 by Systems in Motion. All rights reserved.
 + *
 + *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
 + *  http://www.sim.no support@sim.no Voice: +47 22114160 Fax: +47 22207097

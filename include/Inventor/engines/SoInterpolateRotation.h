@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2004 by Systems in Motion.  All rights reserved.
+ *  Copyright (C) 1998-2005 by Systems in Motion.  All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -16,7 +16,7 @@
  *
  *  See <URL:http://www.coin3d.org/> for more information.
  *
- *  Systems in Motion, Teknobyen, Abels Gate 5, 7030 Trondheim, NORWAY.
+ *  Systems in Motion, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
  *  <URL:http://www.sim.no/>.
  *
 \**************************************************************************/
