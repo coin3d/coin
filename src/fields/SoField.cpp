@@ -136,6 +136,7 @@
 
 #endif // !COIN_THREADSAFE
 
+static const int SOFIELD_GET_STACKBUFFER_SIZE = 1024;
 
 // flags for this->statusbits
 
@@ -347,8 +348,16 @@ SoFieldP::hashRealloc(void * bufptr, size_t size)
 
   // If *bufptrptr contains a NULL pointer, this is the first
   // invocation and the initial memory buffer was on the stack.
-  char * newbuf = (char *)realloc(*bufptrptr ? bufptr : NULL, size);
-
+  char * newbuf;
+  if (*bufptrptr == NULL) {
+    // if initial buffer was on the stack, we need to manually copy
+    // the data into the new buffer.
+    newbuf = (char*) malloc(size);
+    memcpy(newbuf, bufptr, SOFIELD_GET_STACKBUFFER_SIZE);
+  }
+  else {
+    newbuf = (char *)realloc(bufptr, size);
+  }
   if (newbuf != bufptr) {
     ok = SoFieldP::ptrhash->remove((char *)bufptr);
     assert(ok);
@@ -1218,7 +1227,7 @@ SoField::get(SbString & valuestring)
 
   // Initial buffer setup.
   SoOutput out;
-  char initbuffer[1024];
+  char initbuffer[SOFIELD_GET_STACKBUFFER_SIZE];
   char * bufferptr = NULL; // indicates that initial buffer is on the stack
 
   int ok = SoFieldP::getReallocHash()->put(initbuffer, &bufferptr);
