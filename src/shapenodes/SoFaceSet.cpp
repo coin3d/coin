@@ -38,6 +38,11 @@
   and normals. The default material binding is OVERALL. The default
   normal binding is PER_VERTEX.
 
+  For more elaborate documentation about face sets, see the class
+  documentation of the SoIndexedFaceSet node, which contains examples
+  and more detailed information about various issues also relevant for
+  this node.
+
   \sa SoIndexedFaceSet, SoIndexedTriangleStripSet
 */
 

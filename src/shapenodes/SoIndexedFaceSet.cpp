@@ -56,9 +56,9 @@
   empty, the coordIndex field will be used to index material, normal
   or texture coordinate. If you do specify indices for material,
   normals or texture coordinates for PER_VERTEX_INDEXED binding, make
-  sure your index array matches the coordIndex array (there should be
-  -1 wherever there is a -1 in the coordIndex field. This is done to
-  make this node more human readable.)
+  sure your index array matches the coordIndex array: there should be
+  a -1 wherever there is a -1 in the coordIndex field. This is done to
+  make this node more easily readable for humans.
 
 
   A fairly common request when rendering facesets is how to display a
@@ -88,6 +88,39 @@
         materialIndex [ 0, 1 ]
      }
   }
+  \endverbatim
+
+
+  Another rather rare issue that might be interesting to know about is
+  that to render polygons with concave borders, you should set up an
+  SoShapeHints node with SoShapeHints::faceType set to
+  SoShapeHints::UNKNOWN_FACE_TYPE in the scene graph before the
+  SoIndexedFaceSet (or SoFaceSet) node. This needs to be done to force
+  the rendering code to tessellate the polygon properly to triangles
+  before sending it off to OpenGL. Without it, the polygon will be
+  sent as-is to OpenGL, and the OpenGL implementation's tessellator is
+  often not able to tessellate properly. Here is an example which
+  usually fails without the SoShapeHints node (try commenting it out,
+  and see what happens):
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  ShapeHints { faceType UNKNOWN_FACE_TYPE }
+  
+  Coordinate3
+  {
+          point [ 2 0 0,
+                  1 0 0,
+                  1 1 0,
+                  0 1 0,
+                  0 2 0,
+                  1 2 0,
+                  2 2 0,
+                  2 1 0 ]
+  }
+  
+  FaceSet {}
   \endverbatim
 
   \sa SoFaceSet, SoIndexedTriangleStripSet
