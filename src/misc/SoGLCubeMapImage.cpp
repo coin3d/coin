@@ -93,9 +93,6 @@ static GLenum get_gltarget(SoGLCubeMapImage::Target target)
 class SoGLCubeMapImageP {
 public:
   SoGLCubeMapImageP(void) { 
-    for (int i = 0; i < 6; i++) {
-      this->image[i] = NULL;
-    }
   }
   ~SoGLCubeMapImageP() { }
 
@@ -125,9 +122,10 @@ public:
   }
 
   SbList <dldata> dlists;
+  SbImage fakeimage;
 
   static SoType classTypeId;
-  const SbImage * image[6];
+  SbImage image[6];
 
 #ifdef COIN_THREADSAFE
   static SbMutex * mutex;
@@ -205,6 +203,9 @@ SoGLCubeMapImage::initClass(void)
   assert(SoGLCubeMapImageP::classTypeId.isBad());
   SoGLCubeMapImageP::classTypeId =
     SoType::createType(SoGLImage::getClassTypeId(), SbName("GLCubeMapImage"));
+#ifdef COIN_THREADSAFE
+  SoGLCubeMapImageP::mutex = new SbMutex;
+#endif // COIN_THREADSAFE
   cc_coin_atexit((coin_atexit_f*)SoGLCubeMapImage::cleanupClass);
 }
 
@@ -214,6 +215,10 @@ SoGLCubeMapImage::initClass(void)
 void
 SoGLCubeMapImage::cleanupClass(void)
 {
+#ifdef COIN_THREADSAFE
+  delete SoGLCubeMapImageP::mutex;
+  SoGLCubeMapImageP::mutex = NULL;
+#endif // COIN_THREADSAFE
   SoGLCubeMapImageP::classTypeId STATIC_SOTYPE_INIT;
 }
 
@@ -235,10 +240,12 @@ SoGLCubeMapImage::getTypeId(void) const
 
 void 
 SoGLCubeMapImage::setCubeMapImage(const Target target,
-                                  const SbImage * image)
+                                  const unsigned char * bytes,
+                                  const SbVec2s & size,
+                                  const int numcomponents)
 {
   int idx = (int) target;
-  PRIVATE(this)->image[idx] = image;
+  PRIVATE(this)->image[idx].setValuePtr(size, numcomponents, bytes);
   
   PRIVATE(this)->lock();
   for (int i = 0; i < PRIVATE(this)->dlists.getLength(); i++) {
@@ -249,9 +256,10 @@ SoGLCubeMapImage::setCubeMapImage(const Target target,
 
   // FIXME: this is a hack. Just set one of the images in
   // SoGLImage. Needed for rendering to work correctly.
-  if (image) {
-    this->SoGLImage::setData(image, CLAMP_TO_EDGE, CLAMP_TO_EDGE,
-                             0.5f, 0, NULL);
+  if (bytes) {
+    this->SoGLImage::setData(bytes, size, numcomponents,
+                             CLAMP_TO_EDGE, CLAMP_TO_EDGE,
+                             0.9f, 0, NULL);
   }
 }
 
@@ -264,7 +272,8 @@ SoGLCubeMapImage::setData(const SbImage * image,
                           const int border,
                           SoState * createinstate)
 {
-  assert(0 && "Use setCubeMapImage to set data in SoGLCubeMapImage");
+  inherited::setData(image, wraps, wrapt, quality, border, createinstate);
+  //  assert(0 && "Use setCubeMapImage to set data in SoGLCubeMapImage");
 }
 
 void
@@ -276,7 +285,7 @@ SoGLCubeMapImage::setData(const SbImage * image,
                           const int border,
                           SoState * createinstate)
 {
-  assert(0 && "Use setCubeMapImage to set data in SoGLCubeMapImage");
+  inherited::setData(image, wraps, wrapt, wrapr, quality, border, createinstate);
 }
 
 SoGLDisplayList *
@@ -294,7 +303,7 @@ SoGLCubeMapImage::getGLDisplayList(SoState * state)
       dl->open(state);
 
       for (int i = 0; i < 6; i++) {
-        const SbImage * img = PRIVATE(this)->image[i];
+        const SbImage * img = &PRIVATE(this)->image[i];
         if (img && img->hasData()) {
           SbVec2s size;
           int numcomponents;
@@ -312,14 +321,13 @@ SoGLCubeMapImage::getGLDisplayList(SoState * state)
           glTexImage2D(get_gltarget((Target) i),
                        0, numcomponents, size[0], size[1], 0, 
                        format, GL_UNSIGNED_BYTE, bytes);
-
+          
         }
       }
 
       // FIXME: make it possible to configure filter and mipmap on/off
       glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
       glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-      
       // FIXME: make it possible to configure wrap modes
       glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
       glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
