@@ -99,6 +99,8 @@ typedef enum {
 
 typedef enum {
   CG_UNKNOWN_TYPE = 0,
+  CG_STRUCT = 1,
+  CG_ARRAY = 2,
 
   CG_FLOAT = 1045,
   CG_FLOAT1 = 1091,
@@ -157,6 +159,18 @@ void glue_cgGLSetParameter2f(CGparameter, float, float);
 void glue_cgGLSetParameter3f(CGparameter, float, float, float);
 void glue_cgGLSetParameter4f(CGparameter, float, float, float, float);
 void glue_cgGLSetStateMatrixParameter(CGparameter, CGGLenum, CGGLenum);
+
+void glue_cgGLSetParameterArray1f(CGparameter, long, long, const float *);
+void glue_cgGLSetParameterArray2f(CGparameter, long, long, const float *);
+void glue_cgGLSetParameterArray3f(CGparameter, long, long, const float *);
+void glue_cgGLSetParameterArray4f(CGparameter, long, long, const float *);
+
+void glue_cgGLSetMatrixParameterfc(CGparameter, const float *);
+void glue_cgGLSetMatrixParameterArrayfc(CGparameter, long, long, const float *);
+
+int glue_cgGetArrayDimension(CGparameter);
+int glue_cgGetArraySize(CGparameter, int);
+
 
 
 #ifdef __cplusplus

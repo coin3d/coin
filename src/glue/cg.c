@@ -63,6 +63,15 @@ typedef void (*glue_cgGLSetParameter2f_t)(CGparameter, float, float);
 typedef void (*glue_cgGLSetParameter3f_t)(CGparameter, float, float, float);
 typedef void (*glue_cgGLSetParameter4f_t)(CGparameter, float, float, float, float);
 typedef void (*glue_cgGLSetStateMatrixParameter_t)(CGparameter, CGGLenum, CGGLenum);
+typedef void (*glue_cgGLSetParameterArray1f_t)(CGparameter, long, long, const float *);
+typedef void (*glue_cgGLSetParameterArray2f_t)(CGparameter, long, long, const float *);
+typedef void (*glue_cgGLSetParameterArray3f_t)(CGparameter, long, long, const float *);
+typedef void (*glue_cgGLSetParameterArray4f_t)(CGparameter, long, long, const float *);
+typedef void (*glue_cgGLSetMatrixParameterfc_t)(CGparameter, const float *);
+typedef void (*glue_cgGLSetMatrixParameterArrayfc_t)(CGparameter, long, long, const float *);
+typedef int (*glue_cgGetArrayDimension_t)(CGparameter);
+typedef int (*glue_cgGetArraySize_t)(CGparameter, int);
+
 
 typedef struct {
   int available;
@@ -93,6 +102,14 @@ typedef struct {
   glue_cgGLSetParameter3f_t cgGLSetParameter3f;
   glue_cgGLSetParameter4f_t cgGLSetParameter4f;
   glue_cgGLSetStateMatrixParameter_t cgGLSetStateMatrixParameter;
+  glue_cgGLSetParameterArray1f_t cgGLSetParameterArray1f;
+  glue_cgGLSetParameterArray2f_t cgGLSetParameterArray2f;
+  glue_cgGLSetParameterArray3f_t cgGLSetParameterArray3f;      
+  glue_cgGLSetParameterArray4f_t cgGLSetParameterArray4f;
+  glue_cgGLSetMatrixParameterfc_t cgGLSetMatrixParameterfc;
+  glue_cgGLSetMatrixParameterArrayfc_t cgGLSetMatrixParameterArrayfc;
+  glue_cgGetArrayDimension_t cgGetArrayDimension;
+  glue_cgGetArraySize_t cgGetArraySize;
 } cc_cgglue_t;
 
 /* ********************************************************************** */
@@ -212,6 +229,14 @@ cgglue_init(void)
       CGGLUE_REGISTER_FUNC(glue_cgGLSetParameter3f_t, cgGLSetParameter3f);
       CGGLUE_REGISTER_FUNC(glue_cgGLSetParameter4f_t, cgGLSetParameter4f);
       CGGLUE_REGISTER_FUNC(glue_cgGLSetStateMatrixParameter_t, cgGLSetStateMatrixParameter);
+      CGGLUE_REGISTER_FUNC(glue_cgGLSetParameterArray1f_t, cgGLSetParameterArray1f);
+      CGGLUE_REGISTER_FUNC(glue_cgGLSetParameterArray2f_t, cgGLSetParameterArray2f);
+      CGGLUE_REGISTER_FUNC(glue_cgGLSetParameterArray3f_t, cgGLSetParameterArray3f);      
+      CGGLUE_REGISTER_FUNC(glue_cgGLSetParameterArray4f_t, cgGLSetParameterArray4f);
+      CGGLUE_REGISTER_FUNC(glue_cgGLSetMatrixParameterfc_t, cgGLSetMatrixParameterfc);
+      CGGLUE_REGISTER_FUNC(glue_cgGLSetMatrixParameterArrayfc_t, cgGLSetMatrixParameterArrayfc);
+      CGGLUE_REGISTER_FUNC(glue_cgGetArrayDimension_t, cgGetArrayDimension);
+      CGGLUE_REGISTER_FUNC(glue_cgGetArraySize_t, cgGetArraySize);
     }
     /* Do this late, so we can detect recursive calls to this function. */
     cg_instance = zi;
@@ -387,6 +412,54 @@ void
 glue_cgGLSetStateMatrixParameter(CGparameter p, CGGLenum e0, CGGLenum e1)
 {
   cg_instance->cgGLSetStateMatrixParameter(p, e0, e1);
+}
+
+void
+glue_cgGLSetParameterArray1f(CGparameter p, long o, long n, const float *v)
+{
+  cg_instance->cgGLSetParameterArray1f(p, o, n, v);
+}
+
+void
+glue_cgGLSetParameterArray2f(CGparameter p, long o, long n, const float *v)
+{
+  cg_instance->cgGLSetParameterArray2f(p, o, n, v);
+}
+
+void
+glue_cgGLSetParameterArray3f(CGparameter p, long o, long n, const float *v)
+{
+  cg_instance->cgGLSetParameterArray3f(p, o, n, v);
+}
+
+void
+glue_cgGLSetParameterArray4f(CGparameter p, long o, long n, const float *v)
+{
+  cg_instance->cgGLSetParameterArray4f(p, o, n, v);
+}
+
+void
+glue_cgGLSetMatrixParameterfc(CGparameter p, const float *v)
+{
+  cg_instance->cgGLSetMatrixParameterfc(p, v);
+}
+
+void
+glue_cgGLSetMatrixParameterArrayfc(CGparameter p, long o, long n, const float *v)
+{
+  cg_instance->cgGLSetMatrixParameterArrayfc(p, o, n, v);
+}
+
+int
+glue_cgGetArrayDimension(CGparameter p)
+{
+  return cg_instance->cgGetArrayDimension(p);
+}
+
+int
+glue_cgGetArraySize(CGparameter p, int dim)
+{
+  return cg_instance->cgGetArraySize(p, dim);
 }
 
 /* ********************************************************************** */

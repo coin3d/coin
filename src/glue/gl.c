@@ -1469,6 +1469,10 @@ glglue_resolve_symbols(cc_glglue * w)
   w->glUseProgramObjectARB = NULL;
   w->glCreateProgramObjectARB = NULL;
   w->has_arb_shader_objects = FALSE;
+  w->glUniform1fvARB = NULL;
+  w->glUniform2fvARB = NULL;
+  w->glUniform3fvARB = NULL;
+  w->glUniform4fvARB = NULL;
 
 #ifdef GL_ARB_shader_objects
 
@@ -1509,6 +1513,10 @@ glglue_resolve_symbols(cc_glglue * w)
     BIND_FUNCTION_WITH_WARN(glLinkProgramARB, COIN_PFNGLLINKPROGRAMARBPROC);
     BIND_FUNCTION_WITH_WARN(glUseProgramObjectARB, COIN_PFNGLUSEPROGRAMOBJECTARBPROC);
     BIND_FUNCTION_WITH_WARN(glCreateProgramObjectARB, COIN_PFNGLCREATEPROGRAMOBJECTARBPROC);
+    BIND_FUNCTION_WITH_WARN(glUniform1fvARB, COIN_PFNGLUNIFORM1FVARBPROC);
+    BIND_FUNCTION_WITH_WARN(glUniform2fvARB, COIN_PFNGLUNIFORM2FVARBPROC);
+    BIND_FUNCTION_WITH_WARN(glUniform3fvARB, COIN_PFNGLUNIFORM3FVARBPROC);
+    BIND_FUNCTION_WITH_WARN(glUniform4fvARB, COIN_PFNGLUNIFORM4FVARBPROC);
 
 #undef BIND_FUNCTION_WITH_WARN
   } 
