@@ -402,7 +402,7 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
     createcache->open(action);
   }
 
-  if (1 || createcache || !this->cullTest(state)) {
+  if (createcache || !this->cullTest(state)) {
     int n = this->children->getLength();
     SoAction::PathCode pathcode = action->getCurPathCode();
     SoNode ** childarray = (SoNode**) this->children->getArrayPtr();
