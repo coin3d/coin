@@ -80,6 +80,7 @@ do
     shift
     if test $# -eq 1; then
       basename=`echo "$1" | sed -e 's/\.[^\.]*$//'`  # strip off extension
+      # FIXME: SGI IRIX "fmt" doesn't support neither of the two options we use. 20021021 mortene.
       echo $compiler $CPPFLAGS $cppflags $CXXFLAGS $cxxflags -c $1 -o $basename.$objext \
         | fmt -t -w76 | sed -e '$q; 1,$ s/$/ \\/'
       $compiler \
@@ -97,6 +98,7 @@ do
     shift
     progname=$1
     shift
+    # FIXME: SGI IRIX "fmt" doesn't support neither of the two options we use. 20021021 mortene.
     echo $compiler $LDFLAGS $ldflags -o $progname $@ $libs $LIBS \
       | fmt -t -w76 | sed -e '$q; 1,$ s/$/ \\/'
     $compiler \
