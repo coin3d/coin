@@ -311,8 +311,6 @@ cc_flww32_done_font(void * font)
 
   found = cc_hash_remove(cc_flww32_globals.font2glyphhash,
                          (unsigned long)font);
-  /* FIXME: needs mt-safeness for this assert() to guarantee it'll
-     never hit.. 20030610 mortene. */
   assert(found && "huh?");
 
   /* FIXME: the hash should really be checked to see if it's empty or
