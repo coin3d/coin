@@ -97,7 +97,7 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <GLUWrapper.h>
+#include <../glue/GLUWrapper.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
@@ -111,7 +111,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoGL.h>
 #include <assert.h>
-#include <simage_wrapper.h>
+#include <../glue/simage_wrapper.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

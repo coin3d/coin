@@ -510,8 +510,8 @@ SoDBP::clean(void)
 {
 #ifdef HAVE_SOUND
 #if 0
-  // FIXME: For some reasen, this crashes in the OpenAL32.dll on Windows. Investigate.
-  // 20021104 thammer.
+  // FIXME: For some reasen, this crashes in the OpenAL32.dll on
+  // Windows. Investigate.  20021104 thammer.
   SoAudioDevice::instance()->cleanup();
 #endif
 #endif // HAVE_SOUND

@@ -146,7 +146,7 @@
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
-#include <simage_wrapper.h>
+#include <../glue/simage_wrapper.h>
 #include <math.h> // for ceil()
 
 #include <Inventor/nodes/SoCamera.h> 

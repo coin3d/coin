@@ -32,9 +32,9 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#ifdef HAVE_OPENAL
-#include <AL/altypes.h>
-#endif // HAVE_OPENAL
+#ifdef HAVE_SOUND
+#include <../glue/openal_wrapper.h>
+#endif // HAVE_SOUND
 
 
 // There are some differences in error defines between different
@@ -62,17 +62,17 @@ coin_get_openal_error(int errcode)
 
 #else // HAVE_SOUND
 
-  switch ((ALint)errcode) {
+  switch (errcode) {
     case AL_INVALID_NAME:
       return "AL_INVALID_NAME - Illegal name passed as an argument to an AL call";
 
-    case AL_ILLEGAL_ENUM:
+    case AL_INVALID_ENUM:
       return "AL_INVALID_ENUM - Illegal enum passed as an argument to an AL call";
 
     case AL_INVALID_VALUE:
       return "AL_INVALID_VALUE - Illegal value passed as an argument to an AL call";
 
-    case AL_ILLEGAL_COMMAND:
+    case AL_INVALID_OPERATION:
       return "AL_INVALID_OPERATION - A function was called at an inappropriate time or in an inappropriate way, causing an illegal state. This can be an incompatible ALenum, object ID, and/or function";
 
     case AL_OUT_OF_MEMORY:
