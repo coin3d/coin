@@ -66,6 +66,9 @@ THE LINKS
   so we can't port it to Coin unless the author changes the licensing
   terms. larsa@sim.no is currently investigating.
 
+  Maintainer is no longer Arno Schaefer <schaefer@jobpilot.com>, but
+  Volker Luckas <luckas@igd.fhg.de>.
+
 * Java language binding
   2001-08-02  Morten Eriksen  <mortene@sim.no>
 
@@ -73,3 +76,4 @@ THE LINKS
   interfacing to alien code through the Java Native Interface:
 
   <URL:http://java.sun.com/docs/books/tutorial/native1.1/index.html>
+
