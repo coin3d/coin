@@ -63,25 +63,59 @@ SoListener::~SoListener()
 }
 
 
+/*!  
+  Sets the doppler velocity relative to the global coordinate
+  system. Not implemented yet.  
+*/
+
 void 
 SoListener::setDopplerVelocity(float velocity)
 {
+  // FIXME: as of yet unimplemented. 2003-02-26 thammer.
+  SoDebugError::postWarning("SoListener::setDopplerVelocity",
+                            "Not yet implemented for Coin. "
+                            "Get in touch if you need this functionality.");
 }
+
+/*!  
+  Returns the doppler velocity relative to the global coordinate
+  system. Not implemented yet.  
+*/
 
 float 
 SoListener::getDopplerVelocity()
 {
+  // FIXME: as of yet unimplemented. 2003-02-26 thammer.
+  SoDebugError::postWarning("SoListener::getDopplerVelocity",
+                            "Not yet implemented for Coin. "
+                            "Get in touch if you need this functionality.");
   return 0.0f;
 }
+
+/*!  
+  Sets the doppler factor. Not implemented yet.  
+*/
 
 void 
 SoListener::setDopplerFactor(float factor)
 {
+  // FIXME: as of yet unimplemented. 2003-02-26 thammer.
+  SoDebugError::postWarning("SoListener::setDopplerFactor",
+                            "Not yet implemented for Coin. "
+                            "Get in touch if you need this functionality.");
 }
+
+/*!  
+  Returns the doppler factor. Not implemented yet.  
+*/
 
 float 
 SoListener::getDopplerFactor()
 {
+  // FIXME: as of yet unimplemented. 2003-02-26 thammer.
+  SoDebugError::postWarning("SoListener::getDopplerFactor",
+                            "Not yet implemented for Coin. "
+                            "Get in touch if you need this functionality.");
   return 0.0f;
 }
 

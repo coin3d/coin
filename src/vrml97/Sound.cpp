@@ -404,36 +404,86 @@ SoVRMLSound::~SoVRMLSound(void)
   delete PRIVATE(this);
 }
 
+/*!  
+  Sets the doppler velocity relative to the global coordinate
+  system. Not implemented yet.  
+*/
+
 void 
 SoVRMLSound::setDopplerVelocity(float velocity)
 {
+  // FIXME: as of yet unimplemented. 2003-02-26 thammer.
+  SoDebugError::postWarning("SoVRMLSound::setDopplerVelocity",
+                            "Not yet implemented for Coin. "
+                            "Get in touch if you need this functionality.");
 }
+
+/*!  
+  Returns the doppler velocity relative to the global coordinate
+  system. Not implemented yet.  
+*/
 
 float 
 SoVRMLSound::getDopplerVelocity()
 {
+  // FIXME: as of yet unimplemented. 2003-02-26 thammer.
+  SoDebugError::postWarning("SoVRMLSound::getDopplerVelocity",
+                            "Not yet implemented for Coin. "
+                            "Get in touch if you need this functionality.");
   return 0.0f;
 }
+
+/*!  
+  Sets the doppler factor. Not implemented yet.  
+*/
 
 void 
 SoVRMLSound::setDopplerFactor(float factor)
 {
+  // FIXME: as of yet unimplemented. 2003-02-26 thammer.
+  SoDebugError::postWarning("SoVRMLSound::setDopplerFactor",
+                            "Not yet implemented for Coin. "
+                            "Get in touch if you need this functionality.");
 }
+
+/*!  
+  Returns the doppler factor. Not implemented yet.  
+*/
 
 float 
 SoVRMLSound::getDopplerFactor()
 {
+  // FIXME: as of yet unimplemented. 2003-02-26 thammer.
+  SoDebugError::postWarning("SoVRMLSound::getDopplerFactor",
+                            "Not yet implemented for Coin. "
+                            "Get in touch if you need this functionality.");
   return 0.0f;
 }
+
+/*!  
+  Starts playing the sound. Not implemented yet.
+  Please use the fields of SoVRMLAudioClip to start and stop sounds.
+*/
 
 void 
 SoVRMLSound::startPlaying(SoPath *path, void *userdataptr)
 {
+  // FIXME: as of yet unimplemented. 2003-02-26 thammer.
+  SoDebugError::postWarning("SoVRMLSound::startPlaying",
+                            "Not yet implemented for Coin.");
 }
+
+/*!  
+  Stops playing the sound. Not implemented yet.
+  Please use the fields of SoVRMLAudioClip to start and stop sounds.
+*/
 
 void 
 SoVRMLSound::stopPlaying(SoPath *path, void *userdataptr)
 {
+  // FIXME: as of yet unimplemented. 2003-02-26 thammer.
+  SoDebugError::postWarning("SoVRMLSound::stopPlaying",
+                            "Not yet implemented for Coin.");
 }
 
 /*
