@@ -370,8 +370,15 @@ SoDirectionalLightManip::fieldSensorCB(void * m, SoSensor *)
     dragger->setMotionMatrix(matrix);
 
     SoMaterial * material = (SoMaterial *)dragger->getPart("material", TRUE);
-    material->diffuseColor = SbColor(0.0f, 0.0f, 0.0f);
-    material->emissiveColor = thisp->color.getValue();
+    if (material->emissiveColor.getNum() != 1 ||
+        material->emissiveColor[0].getValue() != thisp->color.getValue()) {
+      // replace with new material since the material is reused between
+      // all draggers.
+      material = new SoMaterial;
+      material->diffuseColor = SbColor(0.0f, 0.0f, 0.0f);
+      material->emissiveColor = thisp->color.getValue();
+      dragger->setPart("material", material);
+    }
   }
 }
 
