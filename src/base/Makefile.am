@@ -20,6 +20,9 @@ RegularSources = \
 	SbColor4f.cpp \
 	SbCylinder.cpp \
 	SbDict.cpp \
+	SbDPLine.cpp \
+	SbDPMatrix.cpp \
+	SbDPRotation.cpp \
 	SbHeap.cpp \
 	SbImage.cpp \
 	SbLine.cpp \
@@ -32,12 +35,14 @@ RegularSources = \
 	SbString.cpp \
 	SbTesselator.cpp \
 	SbTime.cpp \
-	SbVec2f.cpp \
 	SbVec2s.cpp \
+	SbVec2f.cpp \
+	SbVec2d.cpp \
 	SbVec3s.cpp \
 	SbVec3f.cpp \
 	SbVec3d.cpp \
 	SbVec4f.cpp \
+	SbVec4d.cpp \
 	SbViewVolume.cpp \
 	SbViewportRegion.cpp \
 	SbXfBox3f.cpp \
@@ -55,9 +60,14 @@ PrivateHeaders = \
 	../../include/Inventor/SbColor4f.h \
 	../../include/Inventor/SbCylinder.h \
 	../../include/Inventor/SbDict.h \
+	../../include/Inventor/SbPLine.h \
+	../../include/Inventor/SbPLinear.h \
+	../../include/Inventor/SbPMatrix.h \
+	../../include/Inventor/SbPRotation.h \
 	../../include/Inventor/SbHeap.h \
 	../../include/Inventor/SbImage.h \
 	../../include/Inventor/SbLine.h \
+	../../include/Inventor/SbLinear.h \
 	../../include/Inventor/SbMatrix.h \
 	../../include/Inventor/SbName.h \
 	../../include/Inventor/SbOctTree.h \
@@ -67,12 +77,14 @@ PrivateHeaders = \
 	../../include/Inventor/SbString.h \
 	../../include/Inventor/SbTesselator.h \
 	../../include/Inventor/SbTime.h \
-	../../include/Inventor/SbVec2f.h \
 	../../include/Inventor/SbVec2s.h \
+	../../include/Inventor/SbVec2f.h \
+	../../include/Inventor/SbVec2d.h \
 	../../include/Inventor/SbVec3s.h \
-	../../include/Inventor/SbVec3d.h \
 	../../include/Inventor/SbVec3f.h \
+	../../include/Inventor/SbVec3d.h \
 	../../include/Inventor/SbVec4f.h \
+	../../include/Inventor/SbVec4d.h \
 	../../include/Inventor/SbViewVolume.h \
 	../../include/Inventor/SbViewportRegion.h \
 	../../include/Inventor/SbXfBox3f.h

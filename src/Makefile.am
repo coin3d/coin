@@ -107,6 +107,7 @@ libCoininc_HEADERS = \
 	../include/Inventor/SbBox.h \
 	../include/Inventor/SbBSPTree.h \
 	../include/Inventor/SbLinear.h \
+	../include/Inventor/SbDPLinear.h \
 	../include/Inventor/SoLists.h \
 	../include/Inventor/SbBox2f.h \
 	../include/Inventor/SbBox2s.h \
@@ -116,6 +117,10 @@ libCoininc_HEADERS = \
 	../include/Inventor/SbColor4f.h \
 	../include/Inventor/SbCylinder.h \
 	../include/Inventor/SbDict.h \
+	../include/Inventor/SbDPLine.h \
+	../include/Inventor/SbDPLinear.h \
+	../include/Inventor/SbDPMatrix.h \
+	../include/Inventor/SbDPRotation.h \
 	../include/Inventor/SbHeap.h \
 	../include/Inventor/SbImage.h \
 	../include/Inventor/SbLine.h \
@@ -128,12 +133,14 @@ libCoininc_HEADERS = \
 	../include/Inventor/SbString.h \
 	../include/Inventor/SbTesselator.h \
 	../include/Inventor/SbTime.h \
-	../include/Inventor/SbVec2f.h \
 	../include/Inventor/SbVec2s.h \
-	../include/Inventor/SbVec3d.h \
-	../include/Inventor/SbVec3f.h \
+	../include/Inventor/SbVec2f.h \
+	../include/Inventor/SbVec2d.h \
 	../include/Inventor/SbVec3s.h \
+	../include/Inventor/SbVec3f.h \
+	../include/Inventor/SbVec3d.h \
 	../include/Inventor/SbVec4f.h \
+	../include/Inventor/SbVec4d.h \
 	../include/Inventor/SbViewVolume.h \
 	../include/Inventor/SbViewportRegion.h \
 	../include/Inventor/SbXfBox3f.h
