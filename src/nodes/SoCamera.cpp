@@ -164,6 +164,14 @@
   Camera orientation specified as a rotation value from the default
   orientation where the camera is pointing along the negative z-axis,
   with "up" along the positive y-axis.
+
+  E.g. to get the "up" vector of the camera, you can do:
+
+  \code
+  SbVec3f up(0, 1, 0); // up-vector on no rotation
+  SbRotation camrot = camera->orientation.getValue();
+  camrot.multVec(up, up);
+  \endcode
 */
 /*!
   \var SoSFFloat SoCamera::aspectRatio
@@ -285,12 +293,12 @@
 */
 
 /*!
-  \var SoCamera::MONOSCOPIC,
+  \var SoCamera::MONOSCOPIC
   No stereo.
 */
 
 /*!
-  \var SoCamera::LEFT_VIEW,
+  \var SoCamera::LEFT_VIEW
   Left view.
 */
 
@@ -395,10 +403,10 @@ SoCamera::pointAt(const SbVec3f & targetpoint)
 }
 
 /*!
-  Reorients the camera so that it points towards \a targetpoint,
-  using \a upvector as the camera up vector.
+  Reorients the camera so that it points towards \a targetpoint, using
+  \a upvector as the camera up vector.
 
-  This method is an extension versus the Open Inventor API.
+  \COIN_FUNCTION_EXTENSION
 */
 void
 SoCamera::pointAt(const SbVec3f & targetpoint, const SbVec3f & upvector)

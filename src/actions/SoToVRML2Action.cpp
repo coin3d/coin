@@ -39,8 +39,59 @@
   IndexedFaceSet. If the DrawStyle is POINTS, all geometry will be
   built using PointSet; if it is LINES IndexedLineSet is used.
 
+  Here's a basic usage example of this action, in the form of a
+  complete, stand-alone program:
+
+  \code
+  #include <Inventor/SoDB.h>
+  #include <Inventor/SoInteraction.h>
+  #include <Inventor/SoInput.h>
+  #include <Inventor/SoOutput.h>
+  #include <Inventor/actions/SoWriteAction.h>
+  #include <Inventor/actions/SoToVRML2Action.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/VRMLnodes/SoVRMLGroup.h>
+  
+  int
+  main(int argc, char *argv[])
+  {
+    SoDB::init();
+    SoInteraction::init();
+    SoInput in;
+    in.openFile(argv[1]);
+    printf("Reading...\n");
+    SoSeparator *root = SoDB::readAll(&in);
+    
+    if (root) {
+      root->ref();
+      SbString hdr = in.getHeader();
+      in.closeFile();
+  
+      printf("Converting...\n");
+      SoToVRML2Action tovrml2;
+      tovrml2.apply(root);
+      SoVRMLGroup *newroot = tovrml2.getVRML2SceneGraph();
+      newroot->ref();
+      root->unref();
+  
+      printf("Writing...\n");
+  
+      SoOutput out;
+      out.openFile("out.wrl");
+      out.setHeaderString("#VRML V2.0 utf8");
+      SoWriteAction wra(&out);
+      wra.apply(newroot);
+      out.closeFile();
+  
+      newroot->unref();
+    }
+
+    return 0;
+  }
+  \endcode
+
   Note: if VRML97 support is not present in the Coin library, this
-  action does nothing and getVRML2SceneGraph always returns NULL.
+  action does nothing and getVRML2SceneGraph always returns \c NULL.
 
   \sa SoToVRMLAction
 
