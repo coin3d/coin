@@ -1395,23 +1395,28 @@ SoExtSelectionP::triangleCB(void * userData,
                             const SoPrimitiveVertex * v3)
 {
   SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
-  
+
   thisp->drawcallbackcounter++;
 
   thisp->addTriangleToOffscreenBuffer(action, v1, v2, v3, TRUE);
   
   // Shall we skip a certain amount of triangles before we start processing?
-  if(thisp->offscreenskipcounter < (thisp->maximumcolorcounter*thisp->offscreencolorcounterpasses-1)){
-    ++thisp->offscreenskipcounter;
-    return;
+  if(!thisp->primcbdata.allshapes){
+    if(thisp->offscreenskipcounter < (thisp->maximumcolorcounter*thisp->offscreencolorcounterpasses-1)){
+      ++thisp->offscreenskipcounter;
+      return;
+    }
   }
 
   // Increase draw counter. Used below.
   thisp->drawcounter++;
 
 
-  if(thisp->primcbdata.abort) return;
+  if(thisp->primcbdata.abort){
+    return;
+  }
 
+  
   if(!thisp->triangleFilterCB && thisp->primcbdata.fulltest &&
      !thisp->primcbdata.allhit) {
     thisp->primcbdata.abort = TRUE;
@@ -1431,7 +1436,6 @@ SoExtSelectionP::triangleCB(void * userData,
   SbVec2s p2 = project_pt(thisp->primcbdata.projmatrix, v3->getPoint(),
                           thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
 
-
  
   if(thisp->primcbdata.fulltest) { // entire triangle must be inside lasso
     
@@ -1450,15 +1454,15 @@ SoExtSelectionP::triangleCB(void * userData,
       }      
     }
     
-    if(poly_line_intersect(thisp->coords, p0, p1, FALSE)) {
+    if(poly_line_intersect(thisp->coords, p0, p1, FALSE) || !point_in_poly(thisp->coords, p0)) {
       thisp->primcbdata.allhit = FALSE;
       return;
     }
-    if(poly_line_intersect(thisp->coords, p1, p2, FALSE)) {
+    if(poly_line_intersect(thisp->coords, p1, p2, FALSE) || !point_in_poly(thisp->coords, p1)) {
       thisp->primcbdata.allhit = FALSE;
       return;
     }
-    if(poly_line_intersect(thisp->coords, p2, p0, FALSE)) {
+    if(poly_line_intersect(thisp->coords, p2, p0, FALSE) || !point_in_poly(thisp->coords, p2)) {
       thisp->primcbdata.allhit = FALSE;
       return;
     }
@@ -1476,7 +1480,6 @@ SoExtSelectionP::triangleCB(void * userData,
   if(!thisp->applyonlyonselectedtriangles){ // --- First pass
     
     if(!thisp->primcbdata.allshapes){ // LassoMode==VISIBLE_SHAPES
-      
       if(thisp->drawcounter > thisp->maximumcolorcounter)
         thisp->offscreencolorcounteroverflow = TRUE;
       
@@ -1485,7 +1488,7 @@ SoExtSelectionP::triangleCB(void * userData,
     } else if (thisp->triangleFilterCB && thisp->primcbdata.allshapes) {
       
       // Present accepted triangle to 'user' through a callback. 
-      if (thisp->triangleFilterCB(thisp->triangleFilterCBData,
+      if(thisp->triangleFilterCB(thisp->triangleFilterCBData,
 				  action, v1, v2, v3)) {
 	// Select shape.
 	thisp->primcbdata.hit = TRUE;
@@ -1519,9 +1522,8 @@ SoExtSelectionP::triangleCB(void * userData,
     }
 
     ++thisp->offscreencolorcounter;
-    
   }
-  
+ 
 }
 
 
@@ -1602,11 +1604,11 @@ SoExtSelectionP::lineSegmentCB(void *userData,
   thisp->addLineToOffscreenBuffer(action, v1, v2, TRUE);
 
   // Shall we skip a certain amount of lines before we start processing?
-  if(thisp->offscreenskipcounter < (thisp->maximumcolorcounter*thisp->offscreencolorcounterpasses-1)){
-    ++thisp->offscreenskipcounter;
-    //thisp->addLineToOffscreenBuffer(action, v1, v2, TRUE);
- 
-    return;
+  if(!thisp->primcbdata.allshapes){
+    if(thisp->offscreenskipcounter < (thisp->maximumcolorcounter*thisp->offscreencolorcounterpasses-1)){
+      ++thisp->offscreenskipcounter;
+      return;
+    }
   }
 
   // Increase draw counter. Used below.
@@ -1637,18 +1639,18 @@ SoExtSelectionP::lineSegmentCB(void *userData,
 
 
     if(thisp->master->lassoType.getValue() == SoExtSelection::RECTANGLE){ // Rectangle check only  
-      if (!thisp->primcbdata.lassorect.intersect(p0) || (onlyrect || !point_in_poly(thisp->coords, p0))) {
+      if (!thisp->primcbdata.lassorect.intersect(p0) || (!point_in_poly(thisp->coords, p0))) {
         thisp->primcbdata.allhit = FALSE;
         return;
       }
       
-      if (!thisp->primcbdata.lassorect.intersect(p1) || (onlyrect || !point_in_poly(thisp->coords, p1))) {
+      if (!thisp->primcbdata.lassorect.intersect(p1) || (!point_in_poly(thisp->coords, p1))) {
         thisp->primcbdata.allhit = FALSE;
         return;
       }
     }
     
-    if (poly_line_intersect(thisp->coords, p0, p1, FALSE)) {
+    if (poly_line_intersect(thisp->coords, p0, p1, FALSE) || !point_in_poly(thisp->coords, p0)) {
       thisp->primcbdata.allhit = FALSE;
       return;
     }
@@ -1704,7 +1706,6 @@ SoExtSelectionP::lineSegmentCB(void *userData,
     ++thisp->offscreencolorcounter;
     
   }
-
 
 }
 
@@ -1766,9 +1767,11 @@ SoExtSelectionP::pointCB(void *userData,
   thisp->addPointToOffscreenBuffer(action, v, TRUE);
   
   // Shall we skip a certain amount of lines before we start processing?
-  if(thisp->offscreenskipcounter < (thisp->maximumcolorcounter*thisp->offscreencolorcounterpasses-1)){
-    ++thisp->offscreenskipcounter;
-    return;
+  if(!thisp->primcbdata.allshapes){
+    if(thisp->offscreenskipcounter < (thisp->maximumcolorcounter*thisp->offscreencolorcounterpasses-1)){
+      ++thisp->offscreenskipcounter;
+      return;
+    }
   }
 
   // Increase draw counter. (Used below).
@@ -1960,32 +1963,6 @@ SoExtSelectionP::offscreenRenderLassoCallback(void * userdata, SoAction * action
   pimpl->offscreenviewvolume = SoViewVolumeElement::get(eventAction->getState());
   const SbViewportRegion & vp = SoViewportRegionElement::get(eventAction->getState());
   
-  
-  //
-  // FIXME: This commented code is suppose to 'zoom' in the lasso-polygon like we 'zoom' in
-  // on the selected tris in 'offscreenRenderCallback'. But alas, it doesn't work yet... (handegar)
-  //
-  /*
-  SbBox2s rectbbox;
-  for(int i = 0; i < pimpl->coords.getLength(); i++)
-    rectbbox.extendBy(pimpl->coords[i]);
-  
-  SbVec2s org = vp.getViewportOriginPixels();
-  SbVec2s siz = vp.getViewportSizePixels();
-  float left = float(rectbbox.getMin()[0] - org[0]) / float(siz[0]);
-  float bottom = float(rectbbox.getMin()[1] - org[1]) / float(siz[1]);
-  
-  float right = float(rectbbox.getMax()[0] - org[0]) / float(siz[0]);
-  float top = float(rectbbox.getMax()[1] - org[1]) / float(siz[1]);
-  
-  // increment to avoid empty view volume
-  if (left == right) right += 0.001f;
-  if (top == bottom) top += 0.001f;
-  
-  // Reshape view volume
-  pimpl->offscreenviewvolume = pimpl->offscreenviewvolume.narrow(left, bottom, right, top);
-  */
-  
   SbVec2s vpo = vp.getViewportOriginPixels();
   SbVec2s vps = vp.getViewportSizePixels();
   
@@ -2035,36 +2012,14 @@ SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
  
   SoExtSelectionP * pimpl = (SoExtSelectionP *) userdata;
   
-  //
-  // FIXME: This commented code is used to zoom in the selection. Dont work yet when combined
-  // with lasso-stencil test, since the lasso-stencil is not 'zoomed'.
-  //
   /*
-  // --- Setup optimal screen-aspect according to lasso-size
-  SoHandleEventAction * eventAction = pimpl->offscreenaction;
-  pimpl->offscreenviewvolume = SoViewVolumeElement::get(eventAction->getState());
-  const SbViewportRegion & vp = SoViewportRegionElement::get(eventAction->getState());
-  SbBox2s rectbbox;
 
-  for (int i = 0; i < pimpl->coords.getLength(); i++)
-    rectbbox.extendBy(pimpl->coords[i]);
-  
-  SbVec2s org = vp.getViewportOriginPixels();
-  SbVec2s siz = vp.getViewportSizePixels();
-  float left = float(rectbbox.getMin()[0] - org[0]) / float(siz[0]);
-  float bottom = float(rectbbox.getMin()[1] - org[1]) / float(siz[1]);
+    FIXME: A nice feature could be an option to 'zoom' in on the selected
+    area to increase pixel detail in the offscreen buffer. This could increase the hitrate
+    to the offscreen-scanner when searching for realy small visible entities. Note that you must also
+    deform the stencil polygon accordingly (which can be abit tricky i believe). (handegar)
 
-  float right = float(rectbbox.getMax()[0] - org[0]) / float(siz[0]);
-  float top = float(rectbbox.getMax()[1] - org[1]) / float(siz[1]);
-  
-  // increment to avoid empty view volume
-  if (left == right) right += 0.001f;
-  if (top == bottom) top += 0.001f;
-
-  // Reshape view volume
-  pimpl->offscreenviewvolume = pimpl->offscreenviewvolume.narrow(left, bottom, right, top);
   */
-
 
   GLint depthFunc;
   glGetIntegerv(GL_DEPTH_FUNC,&depthFunc);
@@ -2233,7 +2188,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
   default:
     break;
   }
-  
+
 
   if(PUBLIC(this)->lassoMode.getValue() == SoExtSelection::ALL_SHAPES) {
 
@@ -2250,12 +2205,13 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
     this->cbaction->apply(action->getCurPath()->getHead());
     PUBLIC(this)->finishCBList->invokeCallbacks(PUBLIC(this));
     PUBLIC(this)->touch();
-
+  
   } else {
 
     //
     // -- Search for visible triangles inside lasso
     //
+    primcbdata.allshapes = FALSE;
 
     // Send signalt to client that tris are comming up
     PUBLIC(this)->startCBList->invokeCallbacks(PUBLIC(this));
@@ -2280,8 +2236,6 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
  
     do { // --- Render and processing loop.
 
-      primcbdata.allshapes = FALSE;
- 
       this->offscreencolorcounter = 1;
       this->offscreenskipcounter = 0;
       this->applyonlyonselectedtriangles = FALSE;
