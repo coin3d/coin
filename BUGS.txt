@@ -3993,10 +3993,10 @@ incremented during the copy, but never decremented :(
     Trying to compile the following causes error messages from the
     compiler:
 
- ----8<----- [snip] --------------------8<----- [snip] ----------------
+----8<----- [snip] --------------------8<----- [snip] ----------------
 #include <Inventor/C/basic.h>
 #include <complex>
- ----8<----- [snip] --------------------8<----- [snip] ----------------
+----8<----- [snip] --------------------8<----- [snip] ----------------
 
     ..because our hacks to provide single precision math functions on
     platforms that are missing them fails with some code in the
@@ -4018,5 +4018,85 @@ static _Ty __cdecl cos(_Ty _Left)
     this. Ideas would be welcome.
 
     20041015 mortene.
+
+=====================================================================
+
+152 Memory leak with SoSelection.
+
+    To reproduce, use a recent version of Coin from CVS, set the
+    envvar COIN_DEBUG_TRACK_SOBASE_INSTANCES=1, then run the following
+    example. Click on the "A" to select it, then while it is still
+    selected, quit the application. The debug dump at the end shows
+    that there is most likely an SoPath that has not been freed,
+    causing all the nodes in the path to also stick around after exit.
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+#include <Inventor/Qt/SoQt.h>
+#include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoSelection.h>
+#include <Inventor/actions/SoBoxHighlightRenderAction.h>
+#include <Inventor/SoPickedPoint.h>
+
+// *************************************************************************
+
+static SoPath *
+myPickFilterCB(void* userData, const SoPickedPoint* pick) 
+{
+  return pick->getPath();
+}
+
+
+// *************************************************************************
+
+static const char ivfile[] = "#Inventor V2.1 ascii\n\n"
+"DEF SELECTION Selection {\n"
+"   PickStyle { style BOUNDING_BOX }\n"
+"   Text3 { string \"A\" }\n"
+"}";
+
+// *************************************************************************
+
+int
+main(int argc, char ** argv)
+{
+  QWidget * window = SoQt::init(argv[0]);
+
+  SoInput * in = new SoInput;
+  in->setBuffer((void *)ivfile, strlen(ivfile));
+  
+  SoNode * root = SoDB::readAll(in);
+  assert(root);
+  root->ref();
+
+  SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
+
+  SoBoxHighlightRenderAction * a = new SoBoxHighlightRenderAction;
+  viewer->setGLRenderAction(a);
+  SoSelection * s = (SoSelection *)SoNode::getByName("SELECTION");
+  assert(s);
+  viewer->redrawOnSelectionChange(s);
+
+  s->setPickFilterCallback(myPickFilterCB);
+
+  viewer->setSceneGraph(root);
+  viewer->show();
+  viewer->setFeedbackVisibility(TRUE);
+  SoQt::show(window);
+
+  SoQt::mainLoop();
+
+  delete viewer;
+  delete a;
+  root->unref();
+
+  SoDB::cleanup();
+
+  return 0;
+}
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    20041018 mortene.
 
 =====================================================================
