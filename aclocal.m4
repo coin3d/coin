@@ -200,6 +200,8 @@ AC_DEFUN([SIM_AC_DATE_ISO8601], [
 
 AC_DEFUN([SIM_AC_DATE_RFC822], [
   eval "$1=\"`date '+%a, %d %b %Y %X %z'`\""
+  eval "$1_DAYSTRING=\"`date '+%a'`\""
+  eval "$1_NODAYSTRING=\"`date '+%d %b %Y %X %z'`\""
 ])
 
 # old alias
@@ -2993,7 +2995,7 @@ if test -f "$ltmain" && test -n "$tagnames"; then
 
   # Extract list of available tagged configurations in $ofile.
   # Note that this assumes the entire list is on one line.
-  available_tags=`grep "^available_tags=" "${ofile}" | $SED -e 's/available_tags=\(.*$\)/\1/' -e 's/\"//g'`
+  available_tags=`grep "^available_tags=" "${ofile}" | $SED -e 's/\"//g' -e 's/^available_tags= *//'`
 
   lt_save_ifs="$IFS"; IFS="${IFS}$PATH_SEPARATOR,"
   for tagname in $tagnames; do
@@ -9564,8 +9566,7 @@ case $host_os in
 ;;
 esac 
 
-  SIM_AC_CHECK_HEADER_FREETYPE([CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"],
-                         [AC_MSG_WARN([could not find ft2build.h])])
+  SIM_AC_CHECK_HEADER_FREETYPE([CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"])
 
   AC_MSG_CHECKING([for FreeType])
   LIBS="$sim_ac_freetype_libs $LIBS"

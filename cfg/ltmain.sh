@@ -56,7 +56,7 @@ modename="$progname"
 PROGRAM=ltmain.sh
 PACKAGE=libtool
 VERSION=1.5
-TIMESTAMP=" (1.1220 2003/04/05 19:32:58)"
+TIMESTAMP=" (1.1220.2.1 2003/04/14 22:48:00)"
 
 default_mode=
 help="Try \`$progname --help' for more information."
@@ -212,6 +212,7 @@ do
   fi
 
   # Have we seen a non-optional argument yet?
+  true # MKS weirdness
   case $arg in
   --help)
     show_help=yes
@@ -389,6 +390,7 @@ if test -z "$show_help"; then
 	;;
 
       normal )
+	true # MKS weirdness
 	# Accept any command-line options.
 	case $arg in
 	-o)

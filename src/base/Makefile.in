@@ -408,9 +408,9 @@ LIBRARIES = $(noinst_LIBRARIES)
 base_lst_AR = $(AR) cru
 base_lst_LIBADD =
 am__base_lst_SOURCES_DIST = hash.c heap.c list.c memalloc.c rbptree.c \
-	time.c string.c dynarray.cpp namemap.c SbBSPTree.cpp SbBox2s.cpp \
-	SbBox3s.cpp SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp SbClip.cpp \
-	SbColor.cpp SbColor4f.cpp SbCylinder.cpp SbDict.cpp \
+	time.c string.c dynarray.cpp namemap.c SbBSPTree.cpp \
+	SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp \
+	SbClip.cpp SbColor.cpp SbColor4f.cpp SbCylinder.cpp SbDict.cpp \
 	SbDPLine.cpp SbDPMatrix.cpp SbDPPlane.cpp SbDPRotation.cpp \
 	SbHeap.cpp SbImage.cpp SbLine.cpp SbMatrix.cpp SbName.cpp \
 	SbOctTree.cpp SbPlane.cpp SbRotation.cpp SbSphere.cpp \
@@ -486,16 +486,16 @@ am__EXTRA_base_lst_SOURCES_DIST = \
 	../../include/Inventor/C/base/hashp.h \
 	../../include/Inventor/C/base/heapp.h \
 	../../include/Inventor/C/base/dynarray.h \
-	../../include/Inventor/C/base/namemap.h all-c.c all-cpp.cpp hash.c \
-	heap.c list.c memalloc.c rbptree.c time.c string.c dynarray.cpp \
-	namemap.c SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp \
-	SbBox2d.cpp SbBox3f.cpp SbClip.cpp SbColor.cpp SbColor4f.cpp \
-	SbCylinder.cpp SbDict.cpp SbDPLine.cpp SbDPMatrix.cpp \
-	SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp SbImage.cpp \
-	SbLine.cpp SbMatrix.cpp SbName.cpp SbOctTree.cpp SbPlane.cpp \
-	SbRotation.cpp SbSphere.cpp SbString.cpp SbTesselator.cpp \
-	SbTime.cpp SbVec2s.cpp SbVec2f.cpp SbVec2d.cpp SbVec3s.cpp \
-	SbVec3f.cpp SbVec3d.cpp SbVec4f.cpp SbVec4d.cpp \
+	../../include/Inventor/C/base/namemap.h all-c.c all-cpp.cpp \
+	hash.c heap.c list.c memalloc.c rbptree.c time.c string.c \
+	dynarray.cpp namemap.c SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp \
+	SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp SbClip.cpp SbColor.cpp \
+	SbColor4f.cpp SbCylinder.cpp SbDict.cpp SbDPLine.cpp \
+	SbDPMatrix.cpp SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp \
+	SbImage.cpp SbLine.cpp SbMatrix.cpp SbName.cpp SbOctTree.cpp \
+	SbPlane.cpp SbRotation.cpp SbSphere.cpp SbString.cpp \
+	SbTesselator.cpp SbTime.cpp SbVec2s.cpp SbVec2f.cpp SbVec2d.cpp \
+	SbVec3s.cpp SbVec3f.cpp SbVec3d.cpp SbVec4f.cpp SbVec4d.cpp \
 	SbViewVolume.cpp SbDPViewVolume.cpp SbViewportRegion.cpp \
 	SbXfBox3f.cpp
 base_lst_OBJECTS = $(am_base_lst_OBJECTS)
@@ -504,9 +504,9 @@ LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libbase_la_LDFLAGS =
 libbase_la_LIBADD =
 am__libbase_la_SOURCES_DIST = hash.c heap.c list.c memalloc.c rbptree.c \
-	time.c string.c dynarray.cpp namemap.c SbBSPTree.cpp SbBox2s.cpp \
-	SbBox3s.cpp SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp SbClip.cpp \
-	SbColor.cpp SbColor4f.cpp SbCylinder.cpp SbDict.cpp \
+	time.c string.c dynarray.cpp namemap.c SbBSPTree.cpp \
+	SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp \
+	SbClip.cpp SbColor.cpp SbColor4f.cpp SbCylinder.cpp SbDict.cpp \
 	SbDPLine.cpp SbDPMatrix.cpp SbDPPlane.cpp SbDPRotation.cpp \
 	SbHeap.cpp SbImage.cpp SbLine.cpp SbMatrix.cpp SbName.cpp \
 	SbOctTree.cpp SbPlane.cpp SbRotation.cpp SbSphere.cpp \
@@ -574,16 +574,16 @@ am__EXTRA_libbase_la_SOURCES_DIST = \
 	../../include/Inventor/C/base/hashp.h \
 	../../include/Inventor/C/base/heapp.h \
 	../../include/Inventor/C/base/dynarray.h \
-	../../include/Inventor/C/base/namemap.h all-c.c all-cpp.cpp hash.c \
-	heap.c list.c memalloc.c rbptree.c time.c string.c dynarray.cpp \
-	namemap.c SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp \
-	SbBox2d.cpp SbBox3f.cpp SbClip.cpp SbColor.cpp SbColor4f.cpp \
-	SbCylinder.cpp SbDict.cpp SbDPLine.cpp SbDPMatrix.cpp \
-	SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp SbImage.cpp \
-	SbLine.cpp SbMatrix.cpp SbName.cpp SbOctTree.cpp SbPlane.cpp \
-	SbRotation.cpp SbSphere.cpp SbString.cpp SbTesselator.cpp \
-	SbTime.cpp SbVec2s.cpp SbVec2f.cpp SbVec2d.cpp SbVec3s.cpp \
-	SbVec3f.cpp SbVec3d.cpp SbVec4f.cpp SbVec4d.cpp \
+	../../include/Inventor/C/base/namemap.h all-c.c all-cpp.cpp \
+	hash.c heap.c list.c memalloc.c rbptree.c time.c string.c \
+	dynarray.cpp namemap.c SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp \
+	SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp SbClip.cpp SbColor.cpp \
+	SbColor4f.cpp SbCylinder.cpp SbDict.cpp SbDPLine.cpp \
+	SbDPMatrix.cpp SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp \
+	SbImage.cpp SbLine.cpp SbMatrix.cpp SbName.cpp SbOctTree.cpp \
+	SbPlane.cpp SbRotation.cpp SbSphere.cpp SbString.cpp \
+	SbTesselator.cpp SbTime.cpp SbVec2s.cpp SbVec2f.cpp SbVec2d.cpp \
+	SbVec3s.cpp SbVec3f.cpp SbVec3d.cpp SbVec4f.cpp SbVec4d.cpp \
 	SbViewVolume.cpp SbDPViewVolume.cpp SbViewportRegion.cpp \
 	SbXfBox3f.cpp
 libbase_la_OBJECTS = $(am_libbase_la_OBJECTS)
@@ -647,16 +647,16 @@ am__EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/C/base/hashp.h \
 	../../include/Inventor/C/base/heapp.h \
 	../../include/Inventor/C/base/dynarray.h \
-	../../include/Inventor/C/base/namemap.h all-c.c all-cpp.cpp hash.c \
-	heap.c list.c memalloc.c rbptree.c time.c string.c dynarray.cpp \
-	namemap.c SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp \
-	SbBox2d.cpp SbBox3f.cpp SbClip.cpp SbColor.cpp SbColor4f.cpp \
-	SbCylinder.cpp SbDict.cpp SbDPLine.cpp SbDPMatrix.cpp \
-	SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp SbImage.cpp \
-	SbLine.cpp SbMatrix.cpp SbName.cpp SbOctTree.cpp SbPlane.cpp \
-	SbRotation.cpp SbSphere.cpp SbString.cpp SbTesselator.cpp \
-	SbTime.cpp SbVec2s.cpp SbVec2f.cpp SbVec2d.cpp SbVec3s.cpp \
-	SbVec3f.cpp SbVec3d.cpp SbVec4f.cpp SbVec4d.cpp \
+	../../include/Inventor/C/base/namemap.h all-c.c all-cpp.cpp \
+	hash.c heap.c list.c memalloc.c rbptree.c time.c string.c \
+	dynarray.cpp namemap.c SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp \
+	SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp SbClip.cpp SbColor.cpp \
+	SbColor4f.cpp SbCylinder.cpp SbDict.cpp SbDPLine.cpp \
+	SbDPMatrix.cpp SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp \
+	SbImage.cpp SbLine.cpp SbMatrix.cpp SbName.cpp SbOctTree.cpp \
+	SbPlane.cpp SbRotation.cpp SbSphere.cpp SbString.cpp \
+	SbTesselator.cpp SbTime.cpp SbVec2s.cpp SbVec2f.cpp SbVec2d.cpp \
+	SbVec3s.cpp SbVec3f.cpp SbVec3d.cpp SbVec4f.cpp SbVec4d.cpp \
 	SbViewVolume.cpp SbDPViewVolume.cpp SbViewportRegion.cpp \
 	SbXfBox3f.cpp
 libbase@SUFFIX@LINKHACK_la_OBJECTS = \

@@ -263,7 +263,6 @@ if test x"$sourcefile" = x""; then :; else
   sourcefiledir=`dirname "$sourcefileunixname"`
   sourcefiledirdir=`dirname "$sourcefiledir"`
   targetdir=`echo $sourcefiledir | sed "s%^$sourcefiledirdir%%" | sed s%/%%g`
-  targetdir=`CYGWIN= cygpath -w "$targetdir"`
   echo '!IF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 Release"' >>"$studiofile"
   echo "# PROP Intermediate_Dir \"Release\\$targetdir\"" >>"$studiofile"
   echo '!ELSEIF  "$(CFG)" == "'${library}@${LIBRARY}_MAJOR_VERSION@' - Win32 Debug"' >>"$studiofile"
