@@ -22,9 +22,16 @@
   \brief The SbTesselator class is used to tesselate polygons into triangles.
   \ingroup base
 
-  FIXME: write doc (what kind of polygons can we handle, code example, ...)
+  SbTesselator is used within Coin to split polygons into
+  triangles. It handles concave polygons, does Delaunay triangulation
+  and avoids generating self-intersecting triangles.
 
-  Note: SbTesselator is an extension versus the Open Inventor API.
+  (Note that the tesselator of the GLU library have some other
+  features not part of SbTesselator (like handling hulls), but the GLU
+  library is known to have bugs in various implementations and doesn't
+  do Delaunay triangluation.)
+
+  This class is not part of the original Open Inventor API.
 */
 
 
@@ -56,7 +63,7 @@ SbTesselator::heap_evaluate(void *v)
     if (vertex->thisp->area(vertex) > FLT_EPSILON &&
         vertex->thisp->isTriangle(vertex) &&
         vertex->thisp->clippable(vertex)) {
-#if 1 // testing code to avoid empty triangles
+#if 0 // testing code to avoid empty triangles
       vertex->weight = vertex->thisp->circleSize(vertex);
       SbTVertex *v2 = vertex->next;
       if (vertex->weight != FLT_MAX &&
@@ -92,11 +99,11 @@ heap_set_index(void *v, int idx)
 enum {OXY,OXZ,OYZ};
 
 /*!
-  Initializes a tesselator. The \a callback argument specifies
-  a function which will be called for each triangle returned
-  by the tesselator. The callback function will get three pointers
-  to each vertex and the \a userdata pointer. The vertex pointers
-  are specified in the SbTesselator::addVertex() method.
+  Initializes a tesselator. The \a callback argument specifies a
+  function which will be called for each triangle returned by the
+  tesselator. The callback function will get three pointers to each
+  vertex and the \a userdata pointer. The vertex pointers are
+  specified in the SbTesselator::addVertex() method.
 */
 SbTesselator::SbTesselator(void (*callback)(void * v0, void * v1, void * v2,
                                             void * data),
@@ -131,7 +138,7 @@ SbTesselator::~SbTesselator()
   You can explicitly set the polygon normal if you know what it
   is. Otherwise it will be calculated internally.
 
-  If \a keepVerts is \e TRUE, all vertices will be included in the
+  If \a keepVerts is \c TRUE, all vertices will be included in the
   returned triangles, even though this might lead to triangles without
   area.
 */
@@ -152,8 +159,8 @@ SbTesselator::beginPolygon(SbBool keepVerts, const SbVec3f &normal)
 }
 
 /*!
-  Adds a new vertex to the polygon. \a data will be returned
-  as a vertex in the callback-function.
+  Adds a new vertex to the polygon. \a data will be returned as a
+  vertex in the callback-function.
 */
 void
 SbTesselator::addVertex(const SbVec3f &v,void *data)
@@ -175,8 +182,9 @@ SbTesselator::addVertex(const SbVec3f &v,void *data)
 
 /*!
   Signals the tesselator to begin tesselating. The callback function
-  specified in the constructor (or set using the SbTesselator::setCallback()
-  method) will be called for each triangle before returning.
+  specified in the constructor (or set using the
+  SbTesselator::setCallback() method) will be called for each triangle
+  before returning.
 */
 void
 SbTesselator::endPolygon()

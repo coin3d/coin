@@ -247,6 +247,8 @@ WARN_FORMAT            = "$file:$line: $text"
 INPUT                  = @coin_build_dir@/include/Inventor/SbBasic.h \
                          @coin_src_dir@/src/base/SbBSPTree.cpp \
                          @coin_src_dir@/include/Inventor/SbBSPTree.h \
+                         @coin_src_dir@/src/base/SbTesselator.cpp \
+                         @coin_src_dir@/include/Inventor/SbTesselator.h \
                          @coin_src_dir@/include/Inventor/SbBox.h \
                          @coin_src_dir@/src/base/SbBox2f.cpp \
                          @coin_src_dir@/include/Inventor/SbBox2f.h \
@@ -831,6 +833,12 @@ INPUT                  = @coin_build_dir@/include/Inventor/SbBasic.h \
                          @coin_src_dir@/include/Inventor/engines/SoTriggerAny.h \
                          @coin_src_dir@/src/nodekits/SoNodeKit.cpp \
                          @coin_src_dir@/include/Inventor/nodekits/SoNodeKit.h \
+                         @coin_src_dir@/src/nodekits/SoNodeKitPath.cpp \
+                         @coin_src_dir@/include/Inventor/nodekits/SoNodeKitPath.h \
+                         @coin_src_dir@/src/nodekits/SoNodeKitListPart.cpp \
+                         @coin_src_dir@/include/Inventor/nodekits/SoNodeKitListPart.h \
+                         @coin_src_dir@/src/nodekits/SoNodekitCatalog.cpp \
+                         @coin_src_dir@/include/Inventor/nodekits/SoNodekitCatalog.h \
                          @coin_src_dir@/src/draggers/SoDragger.cpp \
                          @coin_src_dir@/include/Inventor/draggers/SoDragger.h \
                          @coin_src_dir@/src/manips/commoncode.cpp \
