@@ -323,7 +323,9 @@ SoKeyboardEvent::getPrintableCharacter(void) const
     this->wasShiftDown() ? converttoprintable_shift : converttoprintable;
   void * value;
   if (dict->find((unsigned long) this->getKey(), value)) {
-    int tmp = (int) value; // needed for IRIX CC
+    // the intermediate casting to long needed for 64-bits IRIX CC,
+    // the intermediate casting to int needed for 32-bits IRIX CC..
+    int tmp = (int)((long)value);
     return (char) tmp;
   }
   return '.';

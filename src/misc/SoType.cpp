@@ -341,7 +341,8 @@ SoType::fromName(const SbName name)
   void * temp = NULL;
   if (SoType::typedict->find((unsigned long)name.getString(), temp) ||
       SoType::typedict->find((unsigned long)noprefixname.getString(), temp)) {
-    const int index = (int)temp;
+    // the intermediate casting to long needed for 64-bits IRIX CC
+    const int index = (int)((long)temp);
     assert(index >= 0 && index < SoType::typelist->getLength());
     assert(((*SoType::typedatalist)[index]->name == name) ||
            ((*SoType::typedatalist)[index]->name == noprefixname));

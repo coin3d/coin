@@ -1057,7 +1057,8 @@ SoDB::getConverter(SoType from, SoType to)
   // FIXME: ugly, need a better dict/hash class. 20000216 mortene.
   void * key;
   if (!SoDB::converters->find(val, key)) return SoType::badType();
-  return SoType::fromKey((uint16_t)((uint32_t)key));
+  // the extra intermediate "long" cast is needed by 64-bits IRIX CC
+  return SoType::fromKey((uint16_t)((uint32_t)((long)key)));
 }
 
 /*!

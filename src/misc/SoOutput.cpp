@@ -997,7 +997,8 @@ SoOutput::findReference(const SoBase * base) const
   // SbDict-alike class.
   void * id;
   SbBool ok = THIS->sobase2id && THIS->sobase2id->find((unsigned long)base, id);
-  return ok ? (int)id : -1;
+  // the extra intermediate "long" cast is needed by 64-bits IRIX CC
+  return ok ? (int)((long)id) : -1;
 }
 
 /*!

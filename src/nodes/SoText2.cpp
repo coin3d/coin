@@ -140,6 +140,13 @@ public:
   SbVec2f getFontSize(SoState * state);
 };
 
+#ifdef HAVE_X11_AVAILABLE
+struct FontStructMapping {
+  XFontStruct * fontstruct;
+  unsigned int glbase;
+};
+#endif // HAVE_X11_AVAILABLE
+
 #endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
@@ -275,7 +282,7 @@ setFont(SbName fontname, int fontsize)
 static unsigned int
 getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
 {
-  // (Don't use a static constructor.)
+  // (Don't use a static constructor, as that is not portable.)
   static SbDict * fontdict = new SbDict; // FIXME: should deallocate on exit. 20000406 mortene.
 
   SoState * state = action->getState();
@@ -291,9 +298,9 @@ getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
 
   void * fontptrs;
   if (fontdict->find(fontkey, fontptrs)) {
-    void ** ptrs = (void **)fontptrs;
-    fontstruct = (XFontStruct *)(ptrs[1]);
-    return (unsigned int)(ptrs[0]);
+    struct FontStructMapping * fsm = (struct FontStructMapping *)fontptrs;
+    fontstruct = fsm->fontstruct;
+    return fsm->glbase;
   }
   else {
     unsigned int base = NOT_AVAILABLE;
@@ -308,10 +315,11 @@ getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
 #endif // HAVE_GLX
     }
 
-    void ** ptrs = new void*[2];
-    ptrs[0] = (void *)base;
-    ptrs[1] = (void *)fontstruct;
-    fontdict->enter(fontkey, (void *)ptrs);
+    struct FontStructMapping * fsm = new struct FontStructMapping;
+    fsm->glbase = base;
+    fsm->fontstruct = fontstruct;
+
+    fontdict->enter(fontkey, (void *)fsm);
 
     return base;
   }
