@@ -134,11 +134,11 @@ SoSelection::init(void)
   this->startCBList = new SoCallbackList;
   this->finishCBList = new SoCallbackList;
   this->changeCBList = new SoCallbackList;
-  
+
   this->pickCBFunc = NULL;
   this->pickCBData = NULL;
   this->callPickCBOnlyIfSelectable = FALSE;
-  
+
   this->mouseDownPickPath = NULL;
   this->pickMatching = TRUE;
 }
@@ -438,8 +438,8 @@ SoSelection::invokeSelectionPolicy(SoPath * path,
 {
   SbBool toggle = this->policy.getValue() == SoSelection::TOGGLE ||
     (this->policy.getValue() == SoSelection::SHIFT && shiftdown);
-  
-  if (toggle) 
+
+  if (toggle)
     this->performToggleSelection(path);
   else
     this->performSingleSelection(path);
@@ -450,10 +450,10 @@ SoSelection::invokeSelectionPolicy(SoPath * path,
  */
 void
 SoSelection::performSingleSelection(SoPath *path)
-{  
+{
   while (this->getNumSelected()) {
     this->removePath(this->getNumSelected()-1);
-  }  
+  }
   if (path) this->select(path);
 }
 
@@ -508,8 +508,10 @@ void
 SoSelection::removePath(const int which)
 {
   SoPath *path = this->selectionList[which];
+  path->ref();
   this->selectionList.remove(which);
   this->deselCBList->invokeCallbacks(path);
+  path->unref();
   this->touch();
 }
 
@@ -522,7 +524,7 @@ SoSelection::findPath(const SoPath *path) const
   int idx = -1;
 
   // make copy only if necessary
-  if (path->getHead() != (SoNode*)this) {   
+  if (path->getHead() != (SoNode*)this) {
     SoPath *newpath = this->copyFromThis(path);
     if (newpath) {
       newpath->ref();
@@ -542,9 +544,9 @@ void
 SoSelection::handleEvent(SoHandleEventAction *action)
 {
   const SoEvent *event = action->getEvent();
-  
+
   SbBool haltaction = FALSE;
-  if (SO_MOUSE_PRESS_EVENT(event, BUTTON1)) {    
+  if (SO_MOUSE_PRESS_EVENT(event, BUTTON1)) {
     SbBool ignorepick = FALSE;
     SoPath *selpath = this->getSelectionPath(action, ignorepick, haltaction);
     if (!ignorepick) {
@@ -579,7 +581,7 @@ SoSelection::searchNode(SoNode * node) const
 }
 
 SoPath *
-SoSelection::getSelectionPath(SoHandleEventAction *action, SbBool &ignorepick, 
+SoSelection::getSelectionPath(SoHandleEventAction *action, SbBool &ignorepick,
                               SbBool &haltaction)
 {
   //
@@ -592,11 +594,11 @@ SoSelection::getSelectionPath(SoHandleEventAction *action, SbBool &ignorepick,
   SoPath *selectionpath = NULL;
   if (pp) {
     selectionpath = pp->getPath();
-    if (this->pickCBFunc && (!this->callPickCBOnlyIfSelectable || 
+    if (this->pickCBFunc && (!this->callPickCBOnlyIfSelectable ||
                              selectionpath->findNode(this) >= 0)) {
       selectionpath = this->pickCBFunc(this->pickCBData, pp);
-      if (selectionpath) {        
-        if (selectionpath->getLength() == 1 && 
+      if (selectionpath) {
+        if (selectionpath->getLength() == 1 &&
             selectionpath->getNode(0) == this) {
           selectionpath = NULL;
         }
@@ -614,6 +616,6 @@ SoSelection::getSelectionPath(SoHandleEventAction *action, SbBool &ignorepick,
     else { // no pickCBFunc or not valid path
       haltaction = TRUE;
     }
-  }  
+  }
   return selectionpath;
 }
