@@ -191,6 +191,12 @@ SoOffscreenGLXData::buildGLAttrs(int * attrs, int trynum)
   attrs[pos++] = GLX_RGBA;
   attrs[pos++] = GLX_DEPTH_SIZE;
   attrs[pos++] = 1;
+
+  // FIXME: An accumulator buffer should be added if numpasses >
+  // 1. Mesa returns a GL_INVALID_OPERATION error if the accumulator
+  // buffer is missing, while NVIDIA automatically creates
+  // one. 20021127 handegar.
+
   if (! (trynum & 0x04)) {
     attrs[pos++] = GLX_STENCIL_SIZE;
     attrs[pos++] = 1;

@@ -160,6 +160,7 @@
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/C/tidbits.h>
 
 /*!
   \enum SoOffscreenRenderer::Components
@@ -1620,6 +1621,17 @@ SoOffscreenRendererP::setSubscreenCameraPosition(int renderpass, SoCamera * cam)
 
   SbMatrix proj, affine;  
   vv.getMatrices(affine, proj);
+  
+  // Support antialiasing if renderpasses > 1
+  if(renderaction->getNumPasses() > 1){
+    SbVec3f jittervec;
+    SbMatrix m;
+    const int vpsize[2] = { maxres[0], maxres[1] };
+    coin_viewvolume_jitter(renderaction->getNumPasses(), renderaction->getCurPass(), 
+                           vpsize, (float *)jittervec.getValue());
+    m.setTranslate(jittervec);
+    proj.multRight(m);
+  }
   
   SoCullElement::setViewVolume(state, vv);
   SoViewVolumeElement::set(state, cam, vv);
