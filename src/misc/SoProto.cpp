@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -52,7 +52,7 @@ public:
   SoFieldData * fielddata;
   SoGroup * defroot;
   SbName name;
-  SbList <SoNode*> isnodelist; // FIXME: consider using SoNodeList 
+  SbList <SoNode*> isnodelist; // FIXME: consider using SoNodeList
   SbList <SbName> isfieldlist;
   SbList <SbName> isnamelist;
   SbDict refdict;
@@ -180,17 +180,12 @@ SoProto::writeInstance(SoOutput * out)
 {
 }
 
-void 
-SoProto::addISReference(SoNode * container, 
-                        const SbName & fieldname, 
+void
+SoProto::addISReference(SoNode * container,
+                        const SbName & fieldname,
                         const SbName & interfacename)
 {
   assert(container->isOfType(SoNode::getClassTypeId()));
-
-  fprintf(stderr,"Add IS Ref: %s %s %s\n",
-          container->getTypeId().getName().getString(),
-          fieldname.getString(), interfacename.getString());
-
   THIS->isnodelist.append(container);
   THIS->isfieldlist.append(fieldname);
   THIS->isnamelist.append(interfacename);
@@ -327,11 +322,11 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
   SoSearchAction sa;
   for (int i = 0; i < n; i++) {
     SoNode * node = THIS->isnodelist[i];
-    
+
     SbName fieldname = THIS->isfieldlist[i];
     SoField * dstfield = node->getField(fieldname);
     SoEngineOutput * eventout = NULL;
-    
+
     if (!dstfield) {
       if (node->isOfType(SoNodeEngine::getClassTypeId())) {
         eventout = ((SoNodeEngine*)node)->getOutput(fieldname);
@@ -348,11 +343,6 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
     }
 
     SbName iname = THIS->isnamelist[i];
-#if 0
-    fprintf(stderr,"Resolve IS Ref: %s %s %s\n",
-            node->getTypeId().getName().getString(),
-            fieldname.getString(), iname.getString());
-#endif
     sa.setNode(node);
     sa.setInterest(SoSearchAction::FIRST);
     sa.setSearchingAll(TRUE);
@@ -360,7 +350,7 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
     SoFullPath * path = (SoFullPath*) sa.getPath();
     assert(path);
     node = dst;
-    
+
     // browse path to find the correct (copied) node.
     for (int k = 1; k < path->getLength(); k++) {
       int idx = path->getIndex(k);
