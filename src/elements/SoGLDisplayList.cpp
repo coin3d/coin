@@ -45,6 +45,7 @@
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
 
+#include <string.h>
 #include <assert.h>
 
 /*!
