@@ -57,6 +57,7 @@ PublicHeaders = \
 	../../include/Inventor/misc/SoGlyph.h \
 	../../include/Inventor/misc/SoAudioDevice.h
 PrivateHeaders = \
+	../../include/Inventor/misc/SbHash.h \
 	../../include/Inventor/misc/SoGL.h \
 	../../include/Inventor/misc/SoGenerate.h \
 	../../include/Inventor/misc/SoPick.h \

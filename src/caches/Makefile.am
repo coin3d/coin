@@ -22,7 +22,6 @@ PublicHeaders = \
 	../../include/Inventor/caches/SoTextureCoordinateCache.h
 
 PrivateHeaders = \
-	../../include/Inventor/caches/SbHash.h \
 	../../include/Inventor/caches/SoPrimitiveVertexCache.h
 
 ##$ BEGIN TEMPLATE Make-Common(caches, caches)
