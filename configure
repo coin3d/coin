@@ -3669,6 +3669,8 @@ trap 'rm -fr `echo "
 	src/system/Makefile
 	src/details/Makefile
 	examples/Makefile
+	examples/advanced/Makefile
+	examples/advanced/elements/Makefile
 	tools/Makefile
 	tools/ivcat/Makefile
 	tools/ivhierarchy/Makefile
@@ -3819,6 +3821,8 @@ CONFIG_FILES=\${CONFIG_FILES-"Makefile
 	src/system/Makefile
 	src/details/Makefile
 	examples/Makefile
+	examples/advanced/Makefile
+	examples/advanced/elements/Makefile
 	tools/Makefile
 	tools/ivcat/Makefile
 	tools/ivhierarchy/Makefile
