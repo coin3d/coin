@@ -262,13 +262,12 @@ SoChildList::traverseInPath(SoAction * const action,
   // affects state.
   int childidx = 0;
   SoNode * node;
-  SoNode ** childarray = (SoNode **) this->getArrayPtr();
 
   for (int i = 0; i < numindices && !action->hasTerminated(); i++) {
     int stop = indices[i];
     for (; childidx < stop && !action->hasTerminated(); childidx++) {
       // we are off path. Check if node affects state before traversing
-      node = childarray[childidx];
+      node = (*this)[childidx];
       if (node->affectsState()) {
         action->pushCurPath(childidx, node);
         action->traverse(node);
@@ -278,7 +277,7 @@ SoChildList::traverseInPath(SoAction * const action,
     
     if (!action->hasTerminated()) {
       // here we are in path. Always traverse
-      node = childarray[childidx];
+      node = (*this)[childidx];
       action->pushCurPath(childidx, node);
       action->traverse(node);
       action->popCurPath(SoAction::IN_PATH);
@@ -302,9 +301,6 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
   assert((last >= 0) && (last < this->getLength()) && "index out of bounds");
   assert((last >= first) && "erroneous indices");
 
-  // use a local array pointer for speed
-  SoNode ** childarray = (SoNode **) this->getArrayPtr();
-
 #if COIN_DEBUG
   // Calculate a checksum over the children node pointers, to later
   // catch attempts at changing the scene graph layout mid-traversal
@@ -320,7 +316,7 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
   //
   // mortene.
   unsigned long chksum = 0xdeadbeef;
-  for (i = first; i <= last; i++) { chksum ^= (unsigned long)childarray[i]; }
+  for (i = first; i <= last; i++) { chksum ^= (unsigned long)(*this)[i]; }
 #endif // COIN_DEBUG
 
   SoAction::PathCode pathcode = action->getCurPathCode();
@@ -332,7 +328,7 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
     action->pushCurPath();
     for (i = first; (i <= last) && !action->hasTerminated(); i++) {
       assert((i < this->getLength()) && "do not change scene graph layout during traversal!");
-      node = childarray[i];
+      node = (*this)[i];
       action->popPushCurPath(i, node);
       action->traverse(node);
     }
@@ -341,7 +337,7 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
   case SoAction::OFF_PATH:
     for (i = first; (i <= last) && !action->hasTerminated(); i++) {      
       assert((i < this->getLength()) && "do not change scene graph layout during traversal!");
-      node = childarray[i];
+      node = (*this)[i];
       // only traverse nodes that affects state
       if (node->affectsState()) {
         action->pushCurPath(i, node);
@@ -353,7 +349,7 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
   case SoAction::IN_PATH:
     for (i = first; (i <= last) && !action->hasTerminated(); i++) {
       assert((i < this->getLength()) && "do not change scene graph layout during traversal!");
-      node = childarray[i];
+      node = (*this)[i];
       action->pushCurPath(i, node);
       // if we're OFF_PATH after pushing, we only traverse if the node
       // affects the state.
@@ -370,7 +366,7 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
   }
 
 #if COIN_DEBUG
-  for (i = last; i >= first; i--) { chksum ^= (unsigned long)childarray[i]; }
+  for (i = last; i >= first; i--) { chksum ^= (unsigned long)(*this)[i]; }
   assert((chksum == 0xdeadbeef) && "do not change scene graph layout during traversal!");
 #endif // COIN_DEBUG
 }
