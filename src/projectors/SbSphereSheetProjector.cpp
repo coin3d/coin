@@ -100,84 +100,59 @@ SbSphereSheetProjector::project(const SbVec2f & point)
 {
   if (this->needSetup) this->setupPlane();
 
-  //
-  // FIXME: need to intersect with a hyperbolic sheet if intersection
-  // hits a point on the sphere with an angle bigger than 45 or something
-  // degrees from the planeDir (or if line doesn't intersect at all).
-  // mortene suggest a formula like this: z = a*x^2 + b*y^2 + c, where sign
-  // of a differs from sign of b. Will investigate later.
-  //
-  // pederb, 19991210
-  //
-
-  // UPDATE mortene 20020822: here's a complete, stand-alone example
-  // that can be used while taking care of the FIXME above. It
-  // projects a grid on top of the SbSphereSheetProjector and spits
-  // out an iv-file with an SoPointSet that shows off how the sheet
-  // will look:
-  //
-  //
-  // -----8<--- [snip] -----8<--- [snip] -----8<--- [snip] ---
-  // #include <stdio.h>
-  // #include <Inventor/SbLinear.h>
-  // #include <Inventor/projectors/SbSphereSheetProjector.h>
-  // #include <Inventor/SoDB.h>
-  //
-  // int
-  // main(void)
-  // {
-  //   SoDB::init();
-  //
-  //   const float START = 0.0f;
-  //   const float END = 1.0f;
-  //   const float STEPS = 50.0f;
-  //   const float STEPSIZE = ((END - START) / STEPS);
-  //
-  //   SbSphere s(SbVec3f(0, 0, 0), 0.8);
-  //   SbSphereSheetProjector ssp(s, /* orientToEye: */ TRUE);
-  //
-  //   SbViewVolume volume;
-  //   volume.ortho(-1, 1, -1, 1, -1, 1);
-  //   ssp.setViewVolume(volume);
-  //
-  //   (void)fprintf(stdout, "#Inventor V2.1 ascii\n\n"
-  //                 "Separator {\n"
-  //                 "  Coordinate3 {\n"
-  //                 "    point [\n");
-  //
-  //   for (float i=START; i <= END; i += STEPSIZE) {
-  //     for (float j=START; j <= END; j += STEPSIZE) {
-  //       SbVec3f v = ssp.project(SbVec2f(j, i));
-  //       (void)fprintf(stdout, "\t%f %f %f,\n", v[0], v[1], v[2]);
-  //     }
-  //   }
-  //
-  //   (void)fprintf(stdout, "      ]\n"
-  //                 "    }\n"
-  //                 "  DrawStyle { pointSize 2 }\n"
-  //                 "  PointSet { }\n"
-  //                 "}\n");
-  //
-  //   return 0;
-  // }
-  // -----8<--- [snip] -----8<--- [snip] -----8<--- [snip] ---
-
-
   SbLine projline = this->getWorkingLine(point);
+
+  SbVec3f spherehit;
+  SbBool atsphere = this->intersectSphereFront(projline, spherehit);
+
+  if (atsphere) { projline.setValue(spherehit, spherehit + -(this->planeDir)); }
+
+  SbVec3f planehit;
+  SbBool atplane = this->tolPlane.intersect(projline, planehit);
+
   SbVec3f projpt;
 
-  SbBool tst = this->intersectSphereFront(projline, projpt);
-  if (!tst) {
-    if (!this->tolPlane.intersect(projline, projpt)) {
+  float planardist, meetdist;
+
+  if (!atsphere && !atplane) {
 #if COIN_DEBUG
-      SoDebugError::postWarning("SbSphereSectionProjector::project",
-                                "working line is perpendicular to plane direction.");
+    SoDebugError::postWarning("SbSphereSectionProjector::project",
+                              "line is perpendicular to plane direction.");
 #endif // COIN_DEBUG
-      // set to 0, 0, 0 to avoid crazy rotations. lastPoint will then
-      // never change, and there will be no rotation in getRotation()
-      projpt = SbVec3f(0.0f, 0.0f, 0.0f);
-    }
+    // set to <0, 0, 0> to avoid crazy rotations. lastPoint will then
+    // never change, and there will be no rotation from getRotation()
+    projpt = SbVec3f(0.0f, 0.0f, 0.0f);
+    goto done;
   }
+
+  // distance from plane hit point to plane center in the projector
+  planardist = (planehit - this->planePoint).length();
+  // let sphere and hyperbolic sheet meet at 45°
+  meetdist =  this->sphere.getRadius() * cos(M_PI / 4.0f);
+
+  if (planardist < meetdist) {
+    assert(atsphere && "intersection ray missed sphere!?");
+    projpt = spherehit;
+  }
+  else {
+    // By Pythagoras' we know that the value of the sphere at 45°
+    // angle from the groundplane will be (radius^2 * 0.5).
+    float v = (this->sphere.getRadius() * this->sphere.getRadius()) * 0.5f;
+
+    // A hyperbolic function is given by y = 1 / x, where x in our
+    // case is the "radial" distance from the plane centerpoint to the
+    // plane intersection point.
+    float hyperbval = (1.0f / planardist) * v;
+	    
+    // Now, find the direction of the hyperbolic value vector.
+    SbVec3f adddir(0.0f, 0.0f, 1.0f); // if orient-to-eye is FALSE
+    if (this->isOrientToEye()) { adddir = -projline.getDirection(); }
+    if (!this->intersectFront) { adddir.negate(); }
+	    
+    projpt = planehit + (adddir * hyperbval);
+  }
+
+ done:
   this->lastPoint = projpt;
   this->workingProjPoint = projpt; // FIXME: investigate (pederb)
   return projpt;
