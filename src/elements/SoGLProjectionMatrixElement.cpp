@@ -65,7 +65,7 @@ SoGLProjectionMatrixElement::pop(SoState * state,
                                  const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
-  ((SoGLProjectionMatrixElement*)prevTopElement)->updategl();
+  this->updategl();
 }
 
 //! FIXME: write doc.
