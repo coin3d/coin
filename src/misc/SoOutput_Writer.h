@@ -31,46 +31,67 @@ class SoOutput_Writer {
 public:
   SoOutput_Writer(void);
   virtual ~SoOutput_Writer();
-  
+
+  // add more enums as more writers are added
   enum WriterType {
     REGULAR_FILE,
     MEMBUFFER,
     GZFILE
   };
 
+  // default method returns NULL. Should return the FILE pointer if
+  // the Writer uses stdio to write.
+  virtual FILE * getFilePointer(void);
+
+  // must be overloaded to return the number of bites written so far
+  virtual size_t bytesInBuf(void) = 0;
+  
+  // must be overloaded to return the writer type
   virtual WriterType getType(void) const = 0 ;
-  virtual int write(char * buf, int numbytes) = 0;
+
+  // must be overloaded to write numbytes bytes to buf. Should
+  // return the number of bytes actually written.
+  virtual size_t write(const char * buf, size_t numbytes, const SbBool binary) = 0;
 };
 
+// class for stdio writing
 class SoOutput_FileWriter : public SoOutput_Writer {
 public:
   SoOutput_FileWriter(FILE * fp, const SbBool shouldclose);
   virtual ~SoOutput_FileWriter();
 
+  virtual size_t bytesInBuf(void);
   virtual WriterType getType(void) const;
-  virtual int write(char * buf, int numbytes);
+  virtual size_t write(const char * buf, size_t numbytes, const SbBool binary);
+  virtual FILE * getFilePointer(void);
 
 public:
   FILE * fp;
   SbBool shouldclose;
 };
 
+// class for membuffer writing
 class SoOutput_MemBufferWriter : public SoOutput_Writer {
 public:
-  SoOutput_MemBufferWriter(void * buffer, 
+  SoOutput_MemBufferWriter(void * buffer,
                            const size_t len,
-                           SoOutputReallocCB * reallocFunc, 
+                           SoOutputReallocCB * reallocFunc,
                            int32_t offset);
   virtual ~SoOutput_MemBufferWriter();
 
+  virtual size_t bytesInBuf(void);
   virtual WriterType getType(void) const;
-  virtual int write(char * buf, int numbytes);
-
+  virtual size_t write(const char * buf, size_t numbytes, const SbBool binary);
+  
 public:
+
+  SbBool makeRoomInBuf(size_t bytes);
+
   char * buf;
-  size_t buflen;
-  SoOutputReallocCB * bufrealloc;
+  size_t bufsize;
+  SoOutputReallocCB * reallocfunc;
   int32_t offset;
+  int32_t startoffset;
 };
 
 #endif // COIN_SOOUTPUT_WRITER_H

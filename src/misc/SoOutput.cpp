@@ -48,6 +48,7 @@
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/fields/SoField.h>
+#include "SoOutput_Writer.h"
 
 #include <assert.h>
 #include <string.h>
@@ -107,31 +108,35 @@ public:
   SoOutputROUTEList(void) : SbList<SoOutputROUTE>() { }
   SoOutputROUTEList(const int sizehint) : SbList<SoOutputROUTE>(sizehint) { }
   SoOutputROUTEList(const SoOutputROUTEList & l) : SbList<SoOutputROUTE>(l) { }
-  
+
   void set(const int index, SoOutputROUTE item) { (*this)[index] = item; }
 };
 
 class SoOutputP {
 public:
+  SoOutputP(void) {
+    this->writer = NULL;
+  }
+  ~SoOutputP() {
+    delete this->writer;
+  }
+
+  SbBool binarystream;
+  SbBool usercalledopenfile;
   SbString fltprecision;
   SbString dblprecision;
   int indentlevel;
-  SbBool usersetfp, binarystream, writecompact;
-  SbBool disabledwriting, memorybuffer;
-  FILE * filep;
+  SbBool writecompact;
+  SbBool disabledwriting;
   SbString * headerstring;
-  void * buffer;
-  size_t buffersize;
-  SoOutputReallocCB * reallocfunc;
-  int32_t bufferoffset, startoffset;
   SoOutput::Stage stage;
   SbDict * sobase2id;
   int nextreferenceid;
   uint32_t annotationbits;
   SbList <SoProto*> protostack;
   SbList <SbDict*> defstack;
-  SbList <SoOutputROUTEList *> routestack; 
-  
+  SbList <SoOutputROUTEList *> routestack;
+
   void pushRoutes(const SbBool copyprev) {
     const int oldidx = this->routestack.getLength() - 1;
     assert(oldidx >= 0);
@@ -160,7 +165,7 @@ public:
     delete this->routestack[idx];
     this->routestack.remove(idx);
   }
-  
+
   void pushDefNames(const SbBool copyprev) {
     const int n = this->defstack.getLength();
     assert(n);
@@ -185,6 +190,20 @@ public:
     }
     return dict;
   }
+
+  SoOutput_Writer * getWriter(void) {
+    if (this->writer == NULL) {
+      this->writer = new SoOutput_FileWriter(coin_get_stdout(), FALSE);
+    }
+    return this->writer;
+  }
+  void setWriter(SoOutput_Writer * writer) {
+    if (this->writer) delete this->writer;
+    this->writer = writer;
+  }
+private:
+  SoOutput_Writer * writer;
+
 };
 
 #define PRIVATE(obj) (obj->pimpl)
@@ -210,8 +229,8 @@ SoOutput::SoOutput(SoOutput * dictOut)
 {
   assert(dictOut != NULL);
   this->constructorCommon();
-  PRIVATE(this)->sobase2id = new SbDict(*(dictOut->pimpl->sobase2id));  
-  
+  PRIVATE(this)->sobase2id = new SbDict(*(dictOut->pimpl->sobase2id));
+
   SbDict * olddef = dictOut->pimpl->getCurrentDefNames(FALSE);
   PRIVATE(this)->defstack.append(olddef ? new SbDict(*olddef) : NULL);
 }
@@ -225,16 +244,13 @@ SoOutput::constructorCommon(void)
 {
   PRIVATE(this) = new SoOutputP;
 
+  PRIVATE(this)->usercalledopenfile = FALSE;
+  PRIVATE(this)->binarystream = FALSE;
   PRIVATE(this)->fltprecision = "%.8g";
   PRIVATE(this)->dblprecision = "%.16lg";
-  PRIVATE(this)->usersetfp = FALSE;
-  PRIVATE(this)->binarystream = FALSE;
   PRIVATE(this)->disabledwriting = FALSE;
   this->wroteHeader = FALSE;
-  PRIVATE(this)->memorybuffer = FALSE;
   PRIVATE(this)->writecompact = FALSE;
-  PRIVATE(this)->filep = coin_get_stdout();
-  PRIVATE(this)->buffer = NULL;
   PRIVATE(this)->headerstring = NULL;
   PRIVATE(this)->indentlevel = 0;
   PRIVATE(this)->nextreferenceid = 0;
@@ -266,7 +282,7 @@ void
 SoOutput::setFilePointer(FILE * newFP)
 {
   this->reset();
-  PRIVATE(this)->filep = newFP;
+  PRIVATE(this)->setWriter(new SoOutput_FileWriter(newFP, FALSE));
 }
 
 /*!
@@ -283,8 +299,7 @@ SoOutput::setFilePointer(FILE * newFP)
 FILE *
 SoOutput::getFilePointer(void) const
 {
-  if (this->isToBuffer()) return NULL;
-  else return PRIVATE(this)->filep;
+  return PRIVATE(this)->getWriter()->getFilePointer();
 }
 
 /*!
@@ -300,18 +315,19 @@ SoOutput::getFilePointer(void) const
 SbBool
 SoOutput::openFile(const char * const fileName)
 {
+  this->reset();
+
   FILE * newfile = fopen(fileName, "wb");
   if (newfile) {
-    this->setFilePointer(newfile);
-    PRIVATE(this)->usersetfp = TRUE;
+    PRIVATE(this)->setWriter(new SoOutput_FileWriter(newfile, TRUE));
+    PRIVATE(this)->usercalledopenfile = TRUE;
   }
   else {
     SoDebugError::postWarning("SoOutput::openFile",
                               "Couldn't open file '%s' for writing.",
                               fileName);
   }
-
-  return PRIVATE(this)->usersetfp;
+  return newfile != NULL;
 }
 
 /*!
@@ -323,9 +339,10 @@ SoOutput::openFile(const char * const fileName)
 void
 SoOutput::closeFile(void)
 {
-  if (PRIVATE(this)->usersetfp) fclose(PRIVATE(this)->filep);
-  PRIVATE(this)->filep = NULL;
-  PRIVATE(this)->usersetfp = FALSE;
+  if (PRIVATE(this)->usercalledopenfile) {
+    PRIVATE(this)->setWriter(NULL);
+    PRIVATE(this)->usercalledopenfile = FALSE;
+  }
 }
 
 /*!
@@ -349,13 +366,9 @@ SoOutput::setBuffer(void * bufPointer, size_t initSize,
                     SoOutputReallocCB * reallocFunc, int32_t offset)
 {
   this->reset();
-
-  PRIVATE(this)->memorybuffer = TRUE;
-  PRIVATE(this)->buffer = bufPointer;
   assert(initSize > 0 && "invalid argument");
-  PRIVATE(this)->buffersize = initSize;
-  PRIVATE(this)->reallocfunc = reallocFunc;
-  PRIVATE(this)->startoffset = PRIVATE(this)->bufferoffset = offset;
+  PRIVATE(this)->setWriter(new SoOutput_MemBufferWriter(bufPointer, initSize,
+                                                        reallocFunc, offset));
 }
 
 /*!
@@ -369,12 +382,12 @@ SoOutput::setBuffer(void * bufPointer, size_t initSize,
 SbBool
 SoOutput::getBuffer(void *& bufPointer, size_t & nBytes) const
 {
-  if (this->isToBuffer()) {
-    bufPointer = PRIVATE(this)->buffer;
-    nBytes = PRIVATE(this)->bufferoffset;
+  if (PRIVATE(this)->getWriter()->getType() == SoOutput_Writer::MEMBUFFER) {
+    SoOutput_MemBufferWriter * w = (SoOutput_MemBufferWriter*) PRIVATE(this)->getWriter();
+    bufPointer = w->buf;
+    nBytes = (size_t) w->offset;
     return TRUE;
   }
-
   return FALSE;
 }
 
@@ -386,7 +399,11 @@ SoOutput::getBuffer(void *& bufPointer, size_t & nBytes) const
 size_t
 SoOutput::getBufferSize(void) const
 {
-  return PRIVATE(this)->buffersize;
+  if (PRIVATE(this)->getWriter()->getType() == SoOutput_Writer::MEMBUFFER) {
+    SoOutput_MemBufferWriter * w = (SoOutput_MemBufferWriter*) PRIVATE(this)->getWriter();
+    return w->bufsize;
+  }
+  return 0;
 }
 
 /*!
@@ -397,7 +414,10 @@ void
 SoOutput::resetBuffer(void)
 {
   assert(this->isToBuffer());
-  PRIVATE(this)->bufferoffset = PRIVATE(this)->startoffset;
+  if (PRIVATE(this)->getWriter()->getType() == SoOutput_Writer::MEMBUFFER) {
+    SoOutput_MemBufferWriter * w = (SoOutput_MemBufferWriter*) PRIVATE(this)->getWriter();
+    w->offset = w->startoffset;
+  }
 }
 
 /*!
@@ -481,7 +501,7 @@ SoOutput::setFloatPrecision(const int precision)
 {
   const int fltnum = SbClamp(precision, 0, 8);
   const int dblnum = precision * 2;
-  
+
   PRIVATE(this)->fltprecision.sprintf("%%.%dg", fltnum);
   PRIVATE(this)->dblprecision.sprintf("%%.%dlg", dblnum);
 }
@@ -742,31 +762,13 @@ SoOutput::writeBinaryArray(const unsigned char * constc, const int length)
 
   this->checkHeader();
 
-  if (this->isToBuffer()) {
-    // Needs a \0 at the end if we're writing in ASCII.
-    int writelen = this->isBinary() ? length : length + 1;
-
-    if (this->makeRoomInBuf(writelen)) {
-      char * writeptr = &(((char *)(PRIVATE(this)->buffer))[PRIVATE(this)->bufferoffset]);
-      (void)memcpy(writeptr, constc, length);
-      writeptr += length;
-      PRIVATE(this)->bufferoffset += length;
-      if (!this->isBinary()) *writeptr = '\0'; // Terminate.
-    }
-    else {
-      SoDebugError::postWarning("SoOutput::writeBinaryArray",
-                                "Couldn't write any more bytes to the memory "
-                                "buffer.");
-      PRIVATE(this)->disabledwriting = TRUE;
-    }
-  }
-  else {
-    size_t wrote = fwrite(constc, 1, length, PRIVATE(this)->filep);
-    if (wrote != (size_t)length) {
-      SoDebugError::postWarning("SoOutput::writeBinaryArray",
-                                "Couldn't write to file.");
-      PRIVATE(this)->disabledwriting = TRUE;
-    }
+  size_t wrote = PRIVATE(this)->getWriter()->write((const char*) constc, 
+                                                   (size_t) length, 
+                                                   PRIVATE(this)->binarystream);
+  if (wrote != (size_t)length) {
+    SoDebugError::postWarning("SoOutput::writeBinaryArray",
+                              "Couldn't write to file/memory buffer");
+    PRIVATE(this)->disabledwriting = TRUE;
   }
 }
 
@@ -879,7 +881,7 @@ SoOutput::reset(void)
 {
   this->closeFile();
   delete PRIVATE(this)->sobase2id; PRIVATE(this)->sobase2id = NULL;
-  
+
   while (PRIVATE(this)->routestack.getLength()) {
     delete PRIVATE(this)->routestack[0];
     PRIVATE(this)->routestack.removeFast(0);
@@ -893,12 +895,8 @@ SoOutput::reset(void)
   }
   PRIVATE(this)->defstack.append(NULL);
 
-  PRIVATE(this)->usersetfp = FALSE;
   PRIVATE(this)->disabledwriting = FALSE;
   this->wroteHeader = FALSE;
-  PRIVATE(this)->memorybuffer = FALSE;
-  PRIVATE(this)->filep = coin_get_stdout();
-  PRIVATE(this)->buffer = NULL;
   PRIVATE(this)->indentlevel = 0;
 }
 
@@ -975,15 +973,12 @@ SoOutput::getAnnotation(void)
 SbBool
 SoOutput::makeRoomInBuf(size_t bytes)
 {
-  if ((PRIVATE(this)->bufferoffset + bytes) > PRIVATE(this)->buffersize) {
-    if (PRIVATE(this)->reallocfunc) {
-      PRIVATE(this)->buffersize = SbMax(PRIVATE(this)->bufferoffset + bytes, 2 * PRIVATE(this)->buffersize);
-      PRIVATE(this)->buffer = PRIVATE(this)->reallocfunc(PRIVATE(this)->buffer, PRIVATE(this)->buffersize);
-      if (PRIVATE(this)->buffer) return TRUE;
-    }
-    return FALSE;
-  }
-  return TRUE;
+  assert(PRIVATE(this)->getWriter()->getType() == SoOutput_Writer::MEMBUFFER);
+
+  SoOutput_MemBufferWriter * w =
+    (SoOutput_MemBufferWriter*) PRIVATE(this)->getWriter();
+
+  return w->makeRoomInBuf(bytes);
 }
 
 /*!
@@ -1004,7 +999,10 @@ SoOutput::writeBytesWithPadding(const char * const p, const size_t nr)
     if (padbytes[0] == 'X')
       for (int i=0; i < HOSTWORDSIZE; i++) padbytes[i] = '\0';
 
-    const int writeposition = this->bytesInBuf() - PRIVATE(this)->startoffset;
+    int writeposition = this->bytesInBuf();
+    if (PRIVATE(this)->getWriter()->getType() == SoOutput_Writer::MEMBUFFER) {
+      writeposition -= ((SoOutput_MemBufferWriter*)PRIVATE(this)->getWriter())->startoffset;
+    }
     int padsize = HOSTWORDSIZE - (writeposition % HOSTWORDSIZE);
     if (padsize == HOSTWORDSIZE) padsize = 0;
     this->writeBinaryArray(padbytes, padsize);
@@ -1047,7 +1045,7 @@ SoOutput::checkHeader(void)
 SbBool
 SoOutput::isToBuffer(void) const
 {
-  return PRIVATE(this)->memorybuffer;
+  return PRIVATE(this)->getWriter()->getType() == SoOutput_Writer::MEMBUFFER;
 }
 
 /*!
@@ -1059,8 +1057,10 @@ SoOutput::isToBuffer(void) const
 size_t
 SoOutput::bytesInBuf(void) const
 {
-  if (this->isToBuffer()) { return PRIVATE(this)->bufferoffset; }
-  else { return ftell(PRIVATE(this)->filep); }
+  return PRIVATE(this)->getWriter()->bytesInBuf();
+
+//   if (this->isToBuffer()) { return PRIVATE(this)->bufferoffset; }
+//   else { return ftell(PRIVATE(this)->filep); }
 }
 
 /*!
@@ -1102,10 +1102,10 @@ SoOutput::setReference(const SoBase * base, int refid)
 }
 
 /*!
-  Adds \a name to the set of currently DEF'ed node names so far in the output 
+  Adds \a name to the set of currently DEF'ed node names so far in the output
   process.
 */
-void 
+void
 SoOutput::addDEFNode(SbName name)
 {
   void * value = NULL;
@@ -1117,7 +1117,7 @@ SoOutput::addDEFNode(SbName name)
   Checks whether \a name is already DEF'ed at this point in the output process.
   Returns TRUE if \a name is DEF'ed.
 */
-SbBool 
+SbBool
 SoOutput::lookupDEFNode(SbName name)
 {
   void * value;
@@ -1130,7 +1130,7 @@ SoOutput::lookupDEFNode(SbName name)
   reference to a DEF'ed node if we want to reuse the DEF at a later point
   in the file.
 */
-void 
+void
 SoOutput::removeDEFNode(SbName name)
 {
   SbDict * defnames = PRIVATE(this)->getCurrentDefNames(FALSE);
@@ -1150,7 +1150,7 @@ SoOutput::removeDEFNode(SbName name)
 
   \since Coin 2.0
 */
-void 
+void
 SoOutput::pushProto(SoProto * proto)
 {
   // FIXME: try to find a better/nicer way to handle PROTO export without
@@ -1169,7 +1169,7 @@ SoOutput::pushProto(SoProto * proto)
 
   \since Coin 2.0
 */
-SoProto * 
+SoProto *
 SoOutput::getCurrentProto(void) const
 {
   // FIXME: try to find a better/nicer way to handle PROTO export without
@@ -1189,7 +1189,7 @@ SoOutput::getCurrentProto(void) const
 
   \since Coin 2.0
 */
-void 
+void
 SoOutput::popProto(void)
 {
   // FIXME: try to find a better/nicer way to handle PROTO export without
@@ -1210,7 +1210,7 @@ SoOutput::popProto(void)
   \since Coin 2.0
 */
 
-void 
+void
 SoOutput::addRoute(SoFieldContainer * from, const SbName & fromfield,
                    SoFieldContainer * to, const SbName & tofield)
 {
@@ -1235,7 +1235,7 @@ SoOutput::addRoute(SoFieldContainer * from, const SbName & fromfield,
 
   \since Coin 2.0
 */
-void 
+void
 SoOutput::resolveRoutes(void)
 {
   // FIXME: try to find a better/nicer way to handle ROUTE export without
@@ -1413,7 +1413,7 @@ SoOutput::padHeader(const SbString & inString)
 //
 // Used only by SoBase::writeHeader().
 //
-void 
+void
 SoOutput::removeSoBase2IdRef(const SoBase * base)
 {
   PRIVATE(this)->sobase2id->remove((unsigned long)base);
@@ -1430,5 +1430,3 @@ SoOutput_getHeaderString(const SoOutputP * pout)
 }
 
 #undef PRIVATE
-
-

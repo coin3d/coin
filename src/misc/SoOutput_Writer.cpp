@@ -22,7 +22,12 @@
 \**************************************************************************/
 
 #include "SoOutput_Writer.h"
+#include <string.h>
 #include <assert.h>
+
+//
+// abstract interface class
+//
 
 SoOutput_Writer::SoOutput_Writer(void)
 {
@@ -32,9 +37,16 @@ SoOutput_Writer::~SoOutput_Writer()
 {
 }
 
+FILE * 
+SoOutput_Writer::getFilePointer(void)
+{
+  return NULL;
+}
 
 
-
+//
+// standard stdio FILE writer
+//
 
 SoOutput_FileWriter::SoOutput_FileWriter(FILE * fp, const SbBool shouldclose)
 {
@@ -51,43 +63,90 @@ SoOutput_FileWriter::~SoOutput_FileWriter()
 }
 
 
-SoOutput_Writer::WriterType 
+SoOutput_Writer::WriterType
 SoOutput_FileWriter::getType(void) const
 {
   return REGULAR_FILE;
 }
 
-int 
-SoOutput_FileWriter::write(char * buf, int numbytes)
+size_t
+SoOutput_FileWriter::write(const char * buf, size_t numbytes, const SbBool binary)
 {
   assert(this->fp);
   return fwrite(buf, 1, numbytes, this->fp);
 }
 
-SoOutput_MemBufferWriter::SoOutput_MemBufferWriter(void * buffer, 
+FILE * 
+SoOutput_FileWriter::getFilePointer(void)
+{
+  return this->fp;
+}
+
+size_t 
+SoOutput_FileWriter::bytesInBuf(void)
+{
+  return ftell(this->fp);
+}
+
+
+//
+// membuffer writer
+//
+
+SoOutput_MemBufferWriter::SoOutput_MemBufferWriter(void * buffer,
                                                    const size_t len,
-                                                   SoOutputReallocCB * reallocFunc, 
+                                                   SoOutputReallocCB * reallocFunc,
                                                    int32_t offset)
 {
   this->buf = (char*) buffer;
-  this->buflen = len;
-  this->bufrealloc = reallocFunc;
-  this->offset = offset;
+  this->bufsize = len;
+  this->reallocfunc = reallocFunc;
+  this->startoffset = this->offset = offset;
 }
 
 SoOutput_MemBufferWriter::~SoOutput_MemBufferWriter()
 {
 }
 
-SoOutput_Writer::WriterType 
+SoOutput_Writer::WriterType
 SoOutput_MemBufferWriter::getType(void) const
 {
   return MEMBUFFER;
 }
 
-int 
-SoOutput_MemBufferWriter::write(char * buf, int numbytes)
+size_t
+SoOutput_MemBufferWriter::write(const char * constc, size_t length, const SbBool binary)
 {
+  // Needs a \0 at the end if we're writing in ASCII.
+  int writelen = binary ? length : length + 1;
+
+  if (this->makeRoomInBuf(writelen)) {
+    char * writeptr = this->buf + this->offset;
+    (void)memcpy(writeptr, constc, length);
+    writeptr += length;
+    this->offset += length;
+    if (!binary) *writeptr = '\0'; // Terminate.
+    return length;
+  }
   return 0;
 }
 
+size_t 
+SoOutput_MemBufferWriter::bytesInBuf(void)
+{
+  return this->offset;
+}
+
+SbBool
+SoOutput_MemBufferWriter::makeRoomInBuf(size_t bytes)
+{
+  if ((this->offset + bytes) > this->bufsize) {
+    if (this->reallocfunc) {
+      this->bufsize = SbMax(this->offset + bytes, 2 * this->bufsize);
+      this->buf = (char*) this->reallocfunc(this->buf, this->bufsize);
+      if (this->buf) return TRUE;
+    }
+    return FALSE;
+  }
+  return TRUE;
+}
