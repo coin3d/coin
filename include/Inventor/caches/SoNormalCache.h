@@ -44,27 +44,23 @@ public:
                          const float crease_angle,
                          const SbVec3f *facenormals = NULL,
                          const SbBool ccw = TRUE,
-                         const int numFaces = -1,
                          const SbBool tristrip = FALSE);
 
 
   void generatePerFace(const SbVec3f * const coords,
                        const int32_t *coordindices,
                        const int numcoorindices,
-                       const SbBool ccw,
-                       const int numFaces = -1);
+                       const SbBool ccw);
 
   void generatePerFaceStrip(const SbVec3f * const coords,
                             const int32_t *coordindices,
                             const int numcoorindices,
-                            const SbBool ccw,
-                            const int numFaces = -1);
+                            const SbBool ccw);
 
   void generatePerStrip(const SbVec3f * const coords,
                         const int32_t *coordindices,
                         const int numcoorindices,
-                        const SbBool ccw,
-                        const int numStrips = -1);
+                        const SbBool ccw);
 
   void generatePerVertexQuad(const SbVec3f * const coords,
                              const int vPerRow,

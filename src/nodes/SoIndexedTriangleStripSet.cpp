@@ -338,7 +338,6 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
                           SoCreaseAngleElement::get(state),
                           NULL,
                           ccw,
-                          -1,
                           TRUE);
     break;
   case SoNormalBindingElement::PER_FACE:
@@ -346,8 +345,7 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
     nc->generatePerFaceStrip(coords,
                              coordIndex.getValues(0),
                              coordIndex.getNum(),
-                             ccw,
-                             getNumTriangles());
+                             ccw);
     break;
 
   case SoNormalBindingElement::PER_PART:
@@ -355,8 +353,7 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
     nc->generatePerStrip(coords,
                          coordIndex.getValues(0),
                          coordIndex.getNum(),
-                         ccw,
-                         getNumStrips());
+                         ccw);
     break;
   default:
     break;

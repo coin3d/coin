@@ -132,47 +132,6 @@ SoNormalCache::getIndices() const
   return NULL;
 }
 
-static int
-count_faces(const int32_t *ptr,
-            const int numindices)
-{
-  const int32_t *endptr = ptr + numindices;
-  int cnt = 0;
-  while (ptr < endptr) {
-    if (*ptr++ < 0) cnt++;
-  }
-  return cnt;
-}
-
-static int
-count_strip_faces(const int32_t *ptr,
-                  const int numindices)
-{
-  const int32_t *endptr = ptr + numindices;
-  int cnt = 0;
-  while (ptr < endptr) {
-    ptr+=3; // skip first triangle
-    cnt++;
-    while (*ptr++ >= 0) cnt++;
-  }
-  return cnt;
-
-}
-
-static int
-count_strips(const int32_t *ptr,
-             const int numindices)
-{
-  const int32_t *endptr = ptr + numindices;
-  int cnt = 0;
-  while (ptr < endptr) {
-    ptr+=3; // skip first triangle
-    while (*ptr++ >= 0);
-    cnt++;
-  }
-  return cnt;
-}
-
 //
 // calculates the normal vector for a vertex, based on the
 // normal vectors of all incident faces
@@ -215,7 +174,6 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
                                  const float crease_angle,
                                  const SbVec3f *facenormals,
                                  const SbBool ccw,
-                                 const int numFaces,
                                  const SbBool tristrip)
 {
   this->clearGenerator();
@@ -227,18 +185,10 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
   if (facenorm == NULL) {
     // use a SoNormalCache to store temporary data
     if (tristrip) {
-      tempcache.generatePerFaceStrip(coords,
-                                     vindex,
-                                     numvi,
-                                     ccw,
-                                     numFaces);
+      tempcache.generatePerFaceStrip(coords, vindex, numvi, ccw);
     }
     else {
-      tempcache.generatePerFace(coords,
-                                vindex,
-                                numvi,
-                                ccw,
-                                numFaces);
+      tempcache.generatePerFace(coords, vindex, numvi, ccw);
     }
     facenorm = tempcache.getNormals();
   }
@@ -368,15 +318,13 @@ void
 SoNormalCache::generatePerFace(const SbVec3f * const coords,
                                const int32_t *cind,
                                const int nv,
-                               const SbBool ccw,
-                               const int numFaces)
+                               const SbBool ccw)
 {
   this->clearGenerator();
   // FIXME: make this code robust. 19990405 mortene.
   this->indices.truncate(0);
   this->normalArray.truncate(0, TRUE);
 
-  const int numalloc = numFaces > 0 ? numFaces : count_faces(cind, nv);
   const int32_t *endptr = cind + nv;
 
   SbVec3f tmpvec;
@@ -476,14 +424,12 @@ void
 SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
                                     const int32_t *cind,
                                     const int nv,
-                                    const SbBool ccw,
-                                    const int numFaces)
+                                    const SbBool ccw)
 {
   this->clearGenerator();
   this->indices.truncate(0);
   this->normalArray.truncate(0, TRUE);
 
-  const int numalloc = numFaces > 0 ? numFaces : count_strip_faces(cind, nv);
   const int32_t *endptr = cind + nv;
 
   const SbVec3f *c0, *c1, *c2;
@@ -540,14 +486,12 @@ void
 SoNormalCache::generatePerStrip(const SbVec3f * const coords,
                                 const int32_t *cind,
                                 const int nv,
-                                const SbBool ccw,
-                                const int numStrips)
+                                const SbBool ccw)
 {
   this->clearGenerator();
   this->indices.truncate(0);
   this->normalArray.truncate(0, TRUE);
 
-  const int numalloc = numStrips > 0 ? numStrips : count_strips(cind, nv);
   const int32_t *endptr = cind + nv;
 
   const SbVec3f *c0, *c1, *c2;
