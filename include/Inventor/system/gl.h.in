@@ -29,48 +29,10 @@
  * for use while building the Coin library, and should not be installed
  * with the rest of the header files (at least not yet).  20010913 larsa */
 
-#ifndef COIN_CONFIGURE_BUILD
-#error "you must include config.h before including Inventor/system/gl.h"
-#endif /* !COIN_CONFIGURE_BUILD */
-
-#ifdef HAVE_WINDOWS_H
-/* on windows, headers do not include their dependencies */
-#include <windows.h>
-#endif /* HAVE_WINDOWS_H */
-
-#ifdef HAVE_GL_GL_H
-/* the preferred gl.h path */
-#include <GL/gl.h>
-#else
-#ifdef HAVE_OPENGL_GL_H
-/* how Mac OS X organizes things - should we now stuff Coin header in
-   OpenInventor/?  (that *was* irony) */
-#include <OpenGL/gl.h>
-#else
-#error "don't know how to include gl.h header"
-#endif /* !HAVE_GL_GL_H */
-#endif /* !HAVE_OPENGL_GL_H */
-
-#ifdef HAVE_SUPERGLU
-#include <superglu/include/superglu.h>
-#else
-#ifdef HAVE_GL_GLU_H
-#include <GL/glu.h>
-#else
-#ifdef HAVE_OPENGL_GLU_H
-#include <OpenGL/glu.h>
-#endif
-#endif
-#endif
-
-/* At least necessary to include this header explicitly on Mac OS X. */
-#ifdef HAVE_GL_GLEXT_H
-#include <GL/glext.h>
-#else
-#ifdef HAVE_OPENGL_GLEXT_H
-#include <OpenGL/glext.h>
-#endif /* HAVE_OPENGL_GLEXT_H */
-#endif /* !HAVE_GL_GLEXT_H */
+@SIM_INCLUDE_WINDOWS_H@
+@SIM_INCLUDE_GL_H@
+@SIM_INCLUDE_GLU_H@
+@SIM_INCLUDE_GLEXT_H@
 
 /**********************************************************************/
 
