@@ -42,14 +42,20 @@ protected:
 
 public:
   enum Model {
-    MODULATE,
-    DECAL,
-    BLEND
+    // These should match GL_BLEND, GL_MODULATE and GL_DECAL for SGI
+    // Inventor compatibility (these are also used by SoTexture2 and
+    // SoTexture3).
+    BLEND = 0x0be2,
+    MODULATE = 0x2100,
+    DECAL = 0x2101
   };
 
   enum Wrap {
-    REPEAT,
-    CLAMP
+    // These should match GL_CLAMP and GL_REPEAT for SGI Inventor
+    // compatibility (these are also used by SoTexture2 and
+    // SoTexture3).
+    CLAMP = 0x2900,
+    REPEAT = 0x2901
   };
 
   virtual void init(SoState * state);
