@@ -605,7 +605,7 @@ glxglue_contextdata_cleanup(struct glxglue_contextdata * c)
 {
   if (c->glxcontext) glXDestroyContext(glxglue_get_display(), c->glxcontext);
   if (c->glxpixmap) {
-    if (c->pbuffer) { glXDestroyPbuffer(glxglue_get_display(), c->glxpixmap); }
+    if (c->pbuffer) { glxglue_glXDestroyPbuffer(glxglue_get_display(), c->glxpixmap); }
     else { glXDestroyGLXPixmap(glxglue_get_display(), c->glxpixmap); }
   }
   if (c->pixmap) XFreePixmap(glxglue_get_display(), c->pixmap);
