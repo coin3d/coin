@@ -987,6 +987,7 @@ SbTime::print(FILE * fp) const
   this->getValue(&tm);
   SbString str = this->formatDate();
   (void)fprintf(fp, "%s", str.getString());
-  (void)fprintf(fp, ", secs: %ld, msecs: %ld\n", tm.tv_sec, tm.tv_usec);
+  (void)fprintf(fp, ", secs: %ld, msecs: %ld\n", (long int)tm.tv_sec, 
+               (long int)tm.tv_usec);
 #endif // COIN_DEBUG
 }
