@@ -209,55 +209,34 @@ soshape_bigtexture::clip_triangles(SoState * state)
                                     wrap[0], wrap[1], 
                                     dummymod, dummycol);
   SbVec4f tmp;
-  SbVec2f mintex;  
   int i, j;
-  for (i = 0; i < n; i++) {
-    tmp = this->vertexlist[i]->getTextureCoords();
-    texturematrix.multVecMatrix(tmp, tmp);
-    SbVec3f tmp3;
-    tmp.getReal(tmp3);
-
-    for (j = 0; j < 2; j++) {
-      if (wrap[j] == SoTextureImageElement::CLAMP) {
-        tmp3[j] = SbClamp(tmp3[j], 0.0f, 1.0f);
-      }
-    }
-    this->vertexlist[i]->setTextureCoords(tmp3);
-    if (i == 0) {
-      mintex[0] = tmp3[0];
-      mintex[1] = tmp3[1];
-    }
-    else {
-      if (tmp3[0] < mintex[0]) mintex[0] = tmp3[0];
-      if (tmp3[1] < mintex[1]) mintex[1] = tmp3[1];
-    }
-  }
-
   // adjust the texture coordinates to account for REPEAT mode.
   if ((wrap[0] == SoTextureImageElement::REPEAT) ||
       (wrap[1] == SoTextureImageElement::REPEAT)) {
-    
-    for (j = 0; j < 2; j++) {
-      // in REPEAT mode, we need to ignore the integer part of the
-      // texture coordinate. Our clipper needs the texture coordinates
-      // to be between 0 and 1.
-      if (wrap[j] == SoTextureImageElement::REPEAT) {
-        int val = (int) mintex[j];
-        if (mintex[j] < 0.0f) {
-          // only adjust if the integer is rounded up
-          if (float(val) > mintex[j]) {
-            val -= 1;
-          }
-        }
-        mintex[j] = (float) val;
-      }
-    }
-    
+
     for (i = 0; i < n; i++) {
       tmp = this->vertexlist[i]->getTextureCoords();
       for (j = 0; j < 2; j++) {
         if (wrap[j] == SoTextureImageElement::REPEAT) {
-          tmp[j] -= mintex[j];
+          // If TEXTURE_WRAP_S or TEXTURE_WRAP_T is set to REPEAT,
+          // then the GL ignores the integer part of s or t
+          // coordinates, respectively, using only the fractional
+          // part. (For a number r, the fractional part is r -
+          // floor(r), regardless of the sign of r; recall that the
+          // floor function truncates towards -infinity.)
+          int val = (int) tmp[j];
+          if (tmp[j] < 0.0f) {
+            if (float(val) > tmp[j]) {
+              val -= 1;
+            }
+          }
+          tmp[j] -= (float) val;
+          // The code above could be replaced just with a single
+          // line of code:
+          // 
+          // tmp[j] = tmp[j] - floorf(tmp[j]);
+          //
+          // But this way should be somwhat faster?
         }
       }
       this->vertexlist[i]->setTextureCoords(tmp);
