@@ -20,6 +20,11 @@
 #ifndef COIN_SOSUBACTION_H
 #define COIN_SOSUBACTION_H
 
+#ifndef COIN_INTERNAL
+// Added to be Inventor compliant.
+#include <Inventor/SbString.h>
+#include <Inventor/actions/SoAction.h>
+#endif // !COIN_INTERNAL
 
 
 #define SO_ACTION_ADD_METHOD(nodeclass, method) \
