@@ -20,7 +20,17 @@
 #include <Inventor/draggers/SoRotateSphericalDragger.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbVec2f.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/projectors/SbSpherePlaneProjector.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 
+
+//
+// FIXME: investigate what to do with prevMotionMatrix and
+// prevWorldHitPoint, pederb 2000-01-27
 
 SO_KIT_SOURCE(SoRotateSphericalDragger);
 
@@ -42,87 +52,185 @@ SoRotateSphericalDragger::SoRotateSphericalDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(feedback, SoSeparator, TRUE, feedbackSwitch, feedbackActive, TRUE);
   SO_KIT_ADD_CATALOG_ENTRY(feedbackActive, SoSeparator, TRUE, feedbackSwitch, "", TRUE);
 
-  SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  if (SO_KIT_IS_FIRST_INSTANCE()) {
+    SoInteractionKit::readDefaultParts("rotateSphericalDragger.iv", NULL, 0);
+  }
 
+  SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
   SO_KIT_INIT_INSTANCE();
+
+  // initialize default parts
+  this->setPartAsDefault("rotator", "rotateSphericalRotator");
+  this->setPartAsDefault("rotatorActive", "rotateSphericalRotatorActive");
+  this->setPartAsDefault("feedback", "rotateSphericalFeedback");
+  this->setPartAsDefault("feedbackActive", "rotateSphericalFeedbackActive");
+
+  // initialize swich values
+  SoSwitch *sw;
+  sw = SO_GET_ANY_PART(this, "rotatorSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 0);
+  sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 0);
+
+  // setup projector
+  this->sphereProj = new SbSpherePlaneProjector();
+  this->userProj = FALSE;
+  this->addStartCallback(SoRotateSphericalDragger::startCB);
+  this->addMotionCallback(SoRotateSphericalDragger::motionCB);
+  this->addFinishCallback(SoRotateSphericalDragger::doneCB);
+
+  this->addValueChangedCallback(SoRotateSphericalDragger::valueChangedCB);
+
+  this->fieldSensor = new SoFieldSensor(SoRotateSphericalDragger::fieldSensorCB, this);
+  this->fieldSensor->setPriority(0);
+
+  this->setUpConnections(TRUE, TRUE);
 }
 
 
 SoRotateSphericalDragger::~SoRotateSphericalDragger()
 {
-  COIN_STUB();
+  delete this->fieldSensor;
+  if (!this->userProj) delete this->sphereProj;
 }
 
 SbBool
 SoRotateSphericalDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
-  COIN_STUB();
-  return FALSE;
+  if (!doitalways && this->connectionsSetUp == onoff) return onoff;
+
+  SbBool oldval = this->connectionsSetUp;
+
+  if (onoff) {
+    inherited::setUpConnections(onoff, doitalways);
+
+    SoRotateSphericalDragger::fieldSensorCB(this, NULL);
+
+    if (this->fieldSensor->getAttachedField() != &this->rotation) {
+      this->fieldSensor->attach(&this->rotation);
+    }
+  }
+  else {
+    if (this->fieldSensor->getAttachedField() != NULL) {
+      this->fieldSensor->detach();
+    }
+    inherited::setUpConnections(onoff, doitalways);
+  }
+  this->connectionsSetUp = onoff;
+  return oldval;
 }
 
 void
-SoRotateSphericalDragger::fieldSensorCB(void * f, SoSensor * s)
+SoRotateSphericalDragger::fieldSensorCB(void *d, SoSensor *)
 {
-  COIN_STUB();
+  assert(d);
+  SoRotateSphericalDragger *thisp = (SoRotateSphericalDragger*)d;
+  SbMatrix matrix = thisp->getMotionMatrix();
+  SbVec3f trans, scale;
+  SbRotation rot, scaleOrient;
+  matrix.getTransform(trans, rot, scale, scaleOrient);
+  matrix.setTransform(trans, thisp->rotation.getValue(), scale, scaleOrient);
+  thisp->setMotionMatrix(matrix);
 }
 
 void
-SoRotateSphericalDragger::valueChangedCB(void * f, SoDragger * d)
+SoRotateSphericalDragger::valueChangedCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoRotateSphericalDragger *thisp = (SoRotateSphericalDragger*)d;
+  SbMatrix matrix = thisp->getMotionMatrix();
+
+  SbVec3f trans, scale;
+  SbRotation rot, scaleOrient;
+  matrix.getTransform(trans, rot, scale, scaleOrient);
+  thisp->fieldSensor->detach();
+  if (thisp->rotation.getValue() != rot)
+    thisp->rotation = rot;
+  thisp->fieldSensor->attach(&thisp->rotation);
 }
 
 void
 SoRotateSphericalDragger::setProjector(SbSphereProjector * p)
 {
-  COIN_STUB();
+  if (!this->userProj) delete this->sphereProj;
+  this->userProj = TRUE;
+  this->sphereProj = p;
 }
 
 const SbSphereProjector *
 SoRotateSphericalDragger::getProjector(void) const
 {
-  COIN_STUB();
-  return NULL;
+  return this->sphereProj;
 }
 
 void
 SoRotateSphericalDragger::copyContents(const SoFieldContainer * fromfc, SbBool copyconnections)
 {
-  COIN_STUB();
+  assert(fromfc->isOfType(SoRotateSphericalDragger::getClassTypeId()));
+  SoRotateSphericalDragger *from = (SoRotateSphericalDragger*) fromfc;
+
+  this->sphereProj = (SbSphereProjector*)from->sphereProj->copy();
+  this->userProj = FALSE;
+
+  if (copyconnections) {
+    COIN_STUB();
+  }
 }
 
 void
-SoRotateSphericalDragger::startCB(void * f, SoDragger * d)
+SoRotateSphericalDragger::startCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoRotateSphericalDragger *thisp = (SoRotateSphericalDragger*)d;
+  thisp->dragStart();
 }
 
 void
-SoRotateSphericalDragger::motionCB(void * f, SoDragger * d)
+SoRotateSphericalDragger::motionCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoRotateSphericalDragger *thisp = (SoRotateSphericalDragger*)d;
+  thisp->drag();
 }
 
 void
 SoRotateSphericalDragger::doneCB(void * f, SoDragger * d)
 {
-  COIN_STUB();
+  SoRotateSphericalDragger *thisp = (SoRotateSphericalDragger*)d;
+  thisp->dragFinish();
 }
 
 void
 SoRotateSphericalDragger::dragStart(void)
 {
-  COIN_STUB();
+  SoSwitch *sw;
+  sw = SO_GET_ANY_PART(this, "rotatorSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 1);
+  sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 1);
+
+  SbVec3f hitPt = this->getLocalStartingPoint();
+  float radius = hitPt.length();
+  this->sphereProj->setSphere(SbSphere(SbVec3f(0.0f, 0.0f, 0.0f), radius));
 }
 
 void
 SoRotateSphericalDragger::drag(void)
 {
-  COIN_STUB();
+  this->sphereProj->setViewVolume(this->getViewVolume());
+  this->sphereProj->setWorkingSpace(this->getLocalToWorldMatrix());
+
+  SbVec3f startPt = this->getLocalStartingPoint();
+  SbVec3f projPt = this->sphereProj->project(this->getNormalizedLocaterPosition());
+
+  SbRotation rot = this->sphereProj->getRotation(startPt, projPt);
+  this->setMotionMatrix(this->appendRotation(this->getStartMotionMatrix(),
+                                             rot, SbVec3f(0.0f, 0.0f, 0.0f)));
 }
 
 void
 SoRotateSphericalDragger::dragFinish(void)
 {
-  COIN_STUB();
+  SoSwitch *sw;
+  sw = SO_GET_ANY_PART(this, "rotatorSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 0);
+  sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 0);
 }

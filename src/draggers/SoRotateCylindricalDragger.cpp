@@ -21,7 +21,12 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
-
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbVec2f.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/projectors/SbCylinderPlaneProjector.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 
 SO_KIT_SOURCE(SoRotateCylindricalDragger);
 
@@ -43,87 +48,187 @@ SoRotateCylindricalDragger::SoRotateCylindricalDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(feedback, SoSeparator, TRUE, feedbackSwitch, feedbackActive, TRUE);
   SO_KIT_ADD_CATALOG_ENTRY(feedbackActive, SoSeparator, TRUE, feedbackSwitch, "", TRUE);
 
-  SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  if (SO_KIT_IS_FIRST_INSTANCE()) {
+    SoInteractionKit::readDefaultParts("rotateCylindricalDragger.iv", NULL, 0);
+  }
 
+  SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
   SO_KIT_INIT_INSTANCE();
+
+  // initialize default parts
+  this->setPartAsDefault("rotator", "rotateCylindricalRotator");
+  this->setPartAsDefault("rotatorActive", "rotateCylindricalRotatorActive");
+  this->setPartAsDefault("feedback", "rotateCylindricalFeedback");
+  this->setPartAsDefault("feedbackActive", "rotateCylindricalFeedbackActive");
+
+  // initialize swich values
+  SoSwitch *sw;
+  sw = SO_GET_ANY_PART(this, "rotatorSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 0);
+  sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 0);
+
+  // setup projector
+  this->cylinderProj = new SbCylinderPlaneProjector();
+  this->userProj = FALSE;
+  this->addStartCallback(SoRotateCylindricalDragger::startCB);
+  this->addMotionCallback(SoRotateCylindricalDragger::motionCB);
+  this->addFinishCallback(SoRotateCylindricalDragger::doneCB);
+
+  this->addValueChangedCallback(SoRotateCylindricalDragger::valueChangedCB);
+
+  this->fieldSensor = new SoFieldSensor(SoRotateCylindricalDragger::fieldSensorCB, this);
+  this->fieldSensor->setPriority(0);
+
+  this->setUpConnections(TRUE, TRUE);
 }
 
 
 SoRotateCylindricalDragger::~SoRotateCylindricalDragger()
 {
-  COIN_STUB();
+  delete this->fieldSensor;
+  if (!this->userProj) delete this->cylinderProj;
 }
 
 SbBool
 SoRotateCylindricalDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
-  COIN_STUB();
-  return FALSE;
+  if (!doitalways && this->connectionsSetUp == onoff) return onoff;
+
+  SbBool oldval = this->connectionsSetUp;
+
+  if (onoff) {
+    inherited::setUpConnections(onoff, doitalways);
+
+    SoRotateCylindricalDragger::fieldSensorCB(this, NULL);
+
+    if (this->fieldSensor->getAttachedField() != &this->rotation) {
+      this->fieldSensor->attach(&this->rotation);
+    }
+  }
+  else {
+    if (this->fieldSensor->getAttachedField() != NULL) {
+      this->fieldSensor->detach();
+    }
+    inherited::setUpConnections(onoff, doitalways);
+  }
+  this->connectionsSetUp = onoff;
+  return oldval;
 }
 
 void
-SoRotateCylindricalDragger::fieldSensorCB(void * f, SoSensor * s)
+SoRotateCylindricalDragger::fieldSensorCB(void * d, SoSensor *)
 {
-  COIN_STUB();
+  assert(d);
+  SoRotateCylindricalDragger *thisp = (SoRotateCylindricalDragger*)d;
+  SbMatrix matrix = thisp->getMotionMatrix();
+
+  SbVec3f t, s;
+  SbRotation r, so;
+
+  matrix.getTransform(t, r, s, so);
+  r = thisp->rotation.getValue();
+  matrix.setTransform(t, r, s, so);
+  thisp->setMotionMatrix(matrix);
 }
 
 void
-SoRotateCylindricalDragger::valueChangedCB(void * f, SoDragger * d)
+SoRotateCylindricalDragger::valueChangedCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoRotateCylindricalDragger *thisp = (SoRotateCylindricalDragger*)d;
+  SbMatrix matrix = thisp->getMotionMatrix();
+
+  SbVec3f trans, scale;
+  SbRotation rot, scaleOrient;
+  matrix.getTransform(trans, rot, scale, scaleOrient);
+  thisp->fieldSensor->detach();
+  if (thisp->rotation.getValue() != rot)
+    thisp->rotation = rot;
+  thisp->fieldSensor->attach(&thisp->rotation);
 }
 
 void
 SoRotateCylindricalDragger::setProjector(SbCylinderProjector * p)
 {
-  COIN_STUB();
+  if (!this->userProj) delete this->cylinderProj;
+  this->cylinderProj = p;
 }
 
 const SbCylinderProjector *
 SoRotateCylindricalDragger::getProjector(void) const
 {
-  COIN_STUB();
-  return NULL;
+  return this->cylinderProj;
 }
 
 void
 SoRotateCylindricalDragger::copyContents(const SoFieldContainer * fromfc, SbBool copyconnections)
 {
-  COIN_STUB();
+  assert(fromfc->isOfType(SoRotateCylindricalDragger::getClassTypeId()));
+  SoRotateCylindricalDragger *from = (SoRotateCylindricalDragger *)fromfc;
+  this->cylinderProj = (SbCylinderProjector*)from->cylinderProj->copy();
+  this->userProj = FALSE;
+  if (copyconnections) {
+    COIN_STUB();
+  }
 }
 
 void
 SoRotateCylindricalDragger::startCB(void * f, SoDragger * d)
 {
-  COIN_STUB();
+  SoRotateCylindricalDragger *thisp = (SoRotateCylindricalDragger*)d;
+  thisp->dragStart();
 }
 
 void
 SoRotateCylindricalDragger::motionCB(void * f, SoDragger * d)
 {
-  COIN_STUB();
+  SoRotateCylindricalDragger *thisp = (SoRotateCylindricalDragger*)d;
+  thisp->drag();
 }
 
 void
 SoRotateCylindricalDragger::doneCB(void * f, SoDragger * d)
 {
-  COIN_STUB();
+  SoRotateCylindricalDragger *thisp = (SoRotateCylindricalDragger*)d;
+  thisp->dragFinish();
 }
 
 void
 SoRotateCylindricalDragger::dragStart(void)
 {
-  COIN_STUB();
+  SoSwitch *sw;
+  sw = SO_GET_ANY_PART(this, "rotatorSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 1);
+  sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 1);
+
+  SbVec3f hitPt = this->getLocalStartingPoint();
+  SbLine line(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 1.0f, 0.0f));
+  SbVec3f ptOnLine = line.getClosestPoint(hitPt);
+  this->cylinderProj->setCylinder(SbCylinder(line, (ptOnLine-hitPt).length()));
 }
 
 void
 SoRotateCylindricalDragger::drag(void)
 {
-  COIN_STUB();
+  this->cylinderProj->setViewVolume(this->getViewVolume());
+  this->cylinderProj->setWorkingSpace(this->getLocalToWorldMatrix());
+
+  SbVec3f projPt = cylinderProj->project(this->getNormalizedLocaterPosition());
+  SbVec3f startPt = this->getLocalStartingPoint();
+
+  SbRotation rot = this->cylinderProj->getRotation(startPt, projPt);
+
+  this->setMotionMatrix(this->appendRotation(this->getStartMotionMatrix(),
+                                             rot, SbVec3f(0.0f, 0.0f, 0.0f)));
 }
 
 void
 SoRotateCylindricalDragger::dragFinish(void)
 {
-  COIN_STUB();
+  SoSwitch *sw;
+  sw = SO_GET_ANY_PART(this, "rotatorSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 0);
+  sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 0);
 }
