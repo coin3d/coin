@@ -37,3 +37,7 @@
 #include "fontlib_wrapper.c"
 #include "flwwin32.c"
 #include "flwfreetype.c"
+
+#include "bzip2.c"
+#include "freetype.c"
+#include "zlib.c"
