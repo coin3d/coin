@@ -125,7 +125,8 @@ cc_internal_ftime(cc_time * t)
 #elif defined(HAVE_FTIME)
   struct timeb timebuffer;
   /* FIXME: should use timezone field of struct _timeb aswell. 20011023 mortene. */
-  *t = (double)timebuffer.time + (double)timebuffer.millitm / 1000.0;  
+  ftime(&timebuffer);
+  *t = (double)timebuffer.time + (double)timebuffer.millitm / 1000.0;
   return TRUE;
 #else /* HAVE_FTIME */
   return FALSE;
