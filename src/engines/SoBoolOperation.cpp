@@ -38,7 +38,7 @@ SO_ENGINE_SOURCE(SoBoolOperation);
 /*!
   Defalt constructor.
 */
-SoBoolOperation::SoBoolOperation()
+SoBoolOperation::SoBoolOperation(void)
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoBoolOperation);
 
@@ -71,7 +71,7 @@ SoBoolOperation::SoBoolOperation()
 
 // doc from parent
 void
-SoBoolOperation::initClass()
+SoBoolOperation::initClass(void)
 {
   SO_ENGINE_INTERNAL_INIT_CLASS(SoBoolOperation);
 }
@@ -85,9 +85,8 @@ SoBoolOperation::~SoBoolOperation()
 
 // doc from parent
 void
-SoBoolOperation::evaluate()
+SoBoolOperation::evaluate(void)
 {
-  SbBool _a, _b, _op, val;
   int numA = this->a.getNum();
   int numB = this->b.getNum();
   int numOp = this->operation.getNum();
@@ -98,11 +97,13 @@ SoBoolOperation::evaluate()
   SO_ENGINE_OUTPUT(inverse,SoMFBool,setNum(numOut));
 
   for (int i = 0; i < numOut; i++) {
-    _a = i < numA ? this->a[i] : this->a[numA-1];
-    _b = i < numB ? this->b[i] : this->b[numB-1];
-    _op = i < numOp ? this->operation[i] : this->operation[numOp-1];
+    SbBool tmp_a = i < numA ? this->a[i] : this->a[numA-1];
+    SbBool tmp_b = i < numB ? this->b[i] : this->b[numB-1];
+    int tmp_op = i < numOp ? this->operation[i] : this->operation[numOp-1];
 
-    switch (_op) {
+    SbBool val;
+
+    switch (tmp_op) {
     case CLEAR:
       val = FALSE;
       break;
@@ -110,52 +111,52 @@ SoBoolOperation::evaluate()
       val = TRUE;
       break;
     case A:
-      val = _a;
+      val = tmp_a;
       break;
     case NOT_A:
-      val = !_a;
+      val = !tmp_a;
       break;
     case B:
-      val = _b;
+      val = tmp_b;
       break;
     case NOT_B:
-      val = !_b;
+      val = !tmp_b;
       break;
     case A_OR_B:
-      val = _a || _b;
+      val = tmp_a || tmp_b;
       break;
     case NOT_A_OR_B:
-      val = !_a || _b;
+      val = !tmp_a || tmp_b;
       break;
     case A_OR_NOT_B:
-      val = _a || !_b;
+      val = tmp_a || !tmp_b;
       break;
     case NOT_A_OR_NOT_B:
-      val = !_a || !_b;
+      val = !tmp_a || !tmp_b;
       break;
     case A_AND_B:
-      val = _a && _b;
+      val = tmp_a && tmp_b;
       break;
     case NOT_A_AND_B:
-      val = !_a && _b;
+      val = !tmp_a && tmp_b;
       break;
     case A_AND_NOT_B:
-      val = _a && !_b;
+      val = tmp_a && !tmp_b;
       break;
     case NOT_A_AND_NOT_B:
-      val = !_a && !_b;
+      val = !tmp_a && !tmp_b;
       break;
     case A_EQUALS_B:
-      val = (a==b);
+      val = (tmp_a==tmp_b);
       break;
     case A_NOT_EQUALS_B:
-      val = (a != b);
+      val = (tmp_a != tmp_b);
       break;
     default:
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
       SoDebugError::postInfo("SoBoolOperation::evaluate",
                              "unknown bool operation");
-#endif // debug
+#endif // COIN_DEBUG
       val = TRUE; // avoid compiler warning
       break;
     }
