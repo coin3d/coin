@@ -1728,3 +1728,110 @@
     20030514 mortene, reported by Gerhard Bendels and Sheena Ritchie.
 
 =====================================================================
+
+068 VRML97 textures not displayed until after first re-draw.
+
+    If I load the VRML97 model below into the SoGuiExamples
+    examinerviewer example, the texture won't be loaded until I force
+    a redraw. I assume this is wrong, and that the texture should be
+    shown even on the very first rendering?:
+
+    --------------8<----------- [snip] ------------------8<--------
+    #VRML V2.0 utf8
+    
+    Group {
+       children [
+          Shape {
+             appearance Appearance {
+                material Material {
+                   diffuseColor 1 1 1
+                }
+                texture ImageTexture {
+                   repeatS TRUE
+                   repeatT TRUE
+                   url "/home/sigma/mortene/pix/champadam.jpg"
+                }
+             }
+             geometry IndexedFaceSet {
+                coord Coordinate {
+                   point [
+                    0 0 0, 1 0 0, 1 1 0, 0 1 0
+                   ]
+                }
+                coordIndex [
+                 0, 1, 2, 3, -1
+                ]
+                texCoord TextureCoordinate {
+                   point [
+                    0 0, 1 0, 1 1, 0 1
+                   ]
+                }
+                texCoordIndex [
+                 0, 1, 2, 3, -1
+                ]
+             }
+          }
+       ]
+    }
+    --------------8<----------- [snip] ------------------8<--------
+
+    Perhaps this has something to do with us loading textures in a
+    parallel thread? Do we forget to somehow "touch" the texture node
+    when the image has fully loaded?
+
+    20030516 mortene.
+
+=====================================================================
+
+069 VRML97 Material::diffuseColor influences texture when it
+    shouldn't.
+
+    I'm not entirely sure about this, but as far as I can tell, the
+    fact that the diffuseColor in the example below influences the
+    texture is bogus. See this table from the VRML97 spec:
+    <URL:http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#Table4.6>.
+
+    --------------8<----------- [snip] ------------------8<--------
+    #VRML V2.0 utf8
+    
+    Group {
+       children [
+          Shape {
+             appearance Appearance {
+                material Material {
+    # Setting diffuseColor to black causes the face to turn black.
+    #               diffuseColor 1 1 1
+                   diffuseColor 0 0 0
+                }
+                texture ImageTexture {
+                   repeatS FALSE
+                   repeatT FALSE
+                   url "/home/sigma/mortene/pix/champadam.jpg"
+                }
+             }
+             geometry IndexedFaceSet {
+                coord Coordinate {
+                   point [
+                    0 0 0, 1 0 0, 1 1 0, 0 1 0
+                   ]
+                }
+                coordIndex [
+                 0, 1, 2, 3, -1
+                ]
+                texCoord TextureCoordinate {
+                   point [
+                    0 0, 1 0, 1 1, 0 1
+                   ]
+                }
+                texCoordIndex [
+                 0, 1, 2, 3, -1
+                ]
+             }
+          }
+       ]
+    }
+    --------------8<----------- [snip] ------------------8<--------
+
+    20030516 mortene.
+
+=====================================================================
