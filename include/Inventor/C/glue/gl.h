@@ -413,6 +413,110 @@ COIN_DLL_API void cc_glglue_glGetBufferPointerv(const cc_glglue * glue,
                                                 GLenum pname, 
                                                 GLvoid ** params);
 
+/* GL_ARB_fragment_program */
+COIN_DLL_API SbBool cc_glglue_has_arb_fragment_program(const cc_glglue * glue);
+COIN_DLL_API void cc_glglue_glProgramString(const cc_glglue * glue, GLenum target, GLenum format, 
+                                            GLsizei len, const GLvoid *string);
+COIN_DLL_API void cc_glglue_glBindProgram(const cc_glglue * glue, GLenum target, 
+                                          GLuint program);
+COIN_DLL_API void cc_glglue_glDeletePrograms(const cc_glglue * glue, GLsizei n, 
+                                             const GLuint *programs);
+COIN_DLL_API void cc_glglue_glGenPrograms(const cc_glglue * glue, GLsizei n, GLuint *programs);
+COIN_DLL_API void cc_glglue_glProgramEnvParameter4d(const cc_glglue * glue, GLenum target,
+                                                    GLuint index, GLdouble x, GLdouble y, 
+                                                    GLdouble z, GLdouble w);
+COIN_DLL_API void cc_glglue_glProgramEnvParameter4dv(const cc_glglue * glue, GLenum target,
+                                                     GLuint index, const GLdouble *params);
+COIN_DLL_API void cc_glglue_glProgramEnvParameter4f(const cc_glglue * glue, GLenum target, 
+                                                    GLuint index, GLfloat x, 
+                                                    GLfloat y, GLfloat z, 
+                                                    GLfloat w);
+COIN_DLL_API void cc_glglue_glProgramEnvParameter4fv(const cc_glglue * glue, GLenum target, 
+                                                     GLuint index, const GLfloat *params);
+COIN_DLL_API void cc_glglue_glProgramLocalParameter4d(const cc_glglue * glue, GLenum target, 
+                                                      GLuint index, GLdouble x, 
+                                                      GLdouble y, GLdouble z, 
+                                                      GLdouble w);
+COIN_DLL_API void cc_glglue_glProgramLocalParameter4dv(const cc_glglue * glue, GLenum target, 
+                                                       GLuint index, const GLdouble *params);
+COIN_DLL_API void cc_glglue_glProgramLocalParameter4f(const cc_glglue * glue, GLenum target, 
+                                                      GLuint index, GLfloat x, GLfloat y, 
+                                                      GLfloat z, GLfloat w);
+COIN_DLL_API void cc_glglue_glProgramLocalParameter4fv(const cc_glglue * glue, GLenum target, 
+                                                       GLuint index, const GLfloat *params);
+COIN_DLL_API void cc_glglue_glGetProgramEnvParameterdv(const cc_glglue * glue, GLenum target, 
+                                                       GLuint index, GLdouble *params);
+COIN_DLL_API void cc_glglue_glGetProgramEnvParameterfv(const cc_glglue * glue, GLenum target, 
+                                                       GLuint index, GLfloat *params);
+COIN_DLL_API void cc_glglue_glGetProgramLocalParameterdv(const cc_glglue * glue, GLenum target, 
+                                                         GLuint index, GLdouble *params);
+COIN_DLL_API void cc_glglue_glGetProgramLocalParameterfv(const cc_glglue * glue, GLenum target, 
+                                                         GLuint index, GLfloat *params);
+COIN_DLL_API void cc_glglue_glGetProgramiv(const cc_glglue * glue, GLenum target, 
+                                           GLenum pname, GLint *params);
+COIN_DLL_API void cc_glglue_glGetProgramString(const cc_glglue * glue, GLenum target, 
+                                               GLenum pname, GLvoid *string);
+COIN_DLL_API SbBool cc_glglue_glIsProgram(const cc_glglue * glue, GLuint program);
+
+/* ARB_vertex_program */
+COIN_DLL_API SbBool cc_glglue_has_arb_vertex_program(const cc_glglue * glue);
+COIN_DLL_API void cc_glglue_glVertexAttrib1s(const cc_glglue * glue, GLuint index, GLshort x);
+COIN_DLL_API void cc_glglue_glVertexAttrib1f(const cc_glglue * glue, GLuint index, GLfloat x);
+COIN_DLL_API void cc_glglue_glVertexAttrib1d(const cc_glglue * glue, GLuint index, GLdouble x);
+COIN_DLL_API void cc_glglue_glVertexAttrib2s(const cc_glglue * glue, GLuint index, GLshort x, GLshort y);
+COIN_DLL_API void cc_glglue_glVertexAttrib2f(const cc_glglue * glue, GLuint index, GLfloat x, GLfloat y);
+COIN_DLL_API void cc_glglue_glVertexAttrib2d(const cc_glglue * glue, GLuint index, GLdouble x, GLdouble y);
+COIN_DLL_API void cc_glglue_glVertexAttrib3s(const cc_glglue * glue, GLuint index, 
+                                             GLshort x, GLshort y, GLshort z);
+COIN_DLL_API void cc_glglue_glVertexAttrib3f(const cc_glglue * glue, GLuint index, 
+                                             GLfloat x, GLfloat y, GLfloat z);
+COIN_DLL_API void cc_glglue_glVertexAttrib3d(const cc_glglue * glue, GLuint index, 
+                                             GLdouble x, GLdouble y, GLdouble z);
+COIN_DLL_API void cc_glglue_glVertexAttrib4s(const cc_glglue * glue, GLuint index, GLshort x, 
+                                             GLshort y, GLshort z, GLshort w);
+COIN_DLL_API void cc_glglue_glVertexAttrib4f(const cc_glglue * glue, GLuint index, GLfloat x, 
+                                             GLfloat y, GLfloat z, GLfloat w);
+COIN_DLL_API void cc_glglue_glVertexAttrib4d(const cc_glglue * glue, GLuint index, GLdouble x, 
+                                             GLdouble y, GLdouble z, GLdouble w);
+COIN_DLL_API void cc_glglue_glVertexAttrib4Nub(const cc_glglue * glue, GLuint index, GLubyte x, 
+                                               GLubyte y, GLubyte z, GLubyte w);
+COIN_DLL_API void cc_glglue_glVertexAttrib1sv(const cc_glglue * glue, GLuint index, const GLshort *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib1fv(const cc_glglue * glue, GLuint index, const GLfloat *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib1dv(const cc_glglue * glue, GLuint index, const GLdouble *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib2sv(const cc_glglue * glue, GLuint index, const GLshort *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib2fv(const cc_glglue * glue, GLuint index, const GLfloat *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib2dv(const cc_glglue * glue, GLuint index, const GLdouble *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib3sv(const cc_glglue * glue, GLuint index, const GLshort *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib3fv(const cc_glglue * glue, GLuint index, const GLfloat *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib3dv(const cc_glglue * glue, GLuint index, const GLdouble *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib4bv(const cc_glglue * glue, GLuint index, const GLbyte *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib4sv(const cc_glglue * glue, GLuint index, const GLshort *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib4iv(const cc_glglue * glue, GLuint index, const GLint *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib4ubv(const cc_glglue * glue, GLuint index, const GLubyte *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib4usv(const cc_glglue * glue, GLuint index, const GLushort *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib4uiv(const cc_glglue * glue, GLuint index, const GLuint *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib4fv(const cc_glglue * glue, GLuint index, const GLfloat *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib4dv(const cc_glglue * glue, GLuint index, const GLdouble *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib4Nbv(const cc_glglue * glue, GLuint index, const GLbyte *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib4Nsv(const cc_glglue * glue, GLuint index, const GLshort *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib4Niv(const cc_glglue * glue, GLuint index, const GLint *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib4Nubv(const cc_glglue * glue, GLuint index, const GLubyte *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib4Nusv(const cc_glglue * glue, GLuint index, const GLushort *v);
+COIN_DLL_API void cc_glglue_glVertexAttrib4Nuiv(const cc_glglue * glue, GLuint index, const GLuint *v);
+COIN_DLL_API void cc_glglue_glVertexAttribPointer(const cc_glglue * glue, GLuint index, GLint size, 
+                                                  GLenum type, GLboolean normalized, GLsizei stride, 
+                                                  const GLvoid *pointer);
+COIN_DLL_API void cc_glglue_glEnableVertexAttribArray(const cc_glglue * glue, GLuint index);
+COIN_DLL_API void cc_glglue_glDisableVertexAttribArray(const cc_glglue * glue, GLuint index);
+COIN_DLL_API void cc_glglue_glGetVertexAttribdv(const cc_glglue * glue, GLuint index, GLenum pname, 
+                                                GLdouble *params);
+COIN_DLL_API void cc_glglue_glGetVertexAttribfv(const cc_glglue * glue, GLuint index, GLenum pname, 
+                                                GLfloat *params);
+COIN_DLL_API void cc_glglue_glGetVertexAttribiv(const cc_glglue * glue, GLuint index, GLenum pname, 
+                                                GLint *params);
+COIN_DLL_API void cc_glglue_glGetVertexAttribPointerv(const cc_glglue * glue, GLuint index, GLenum pname, 
+                                                      GLvoid **pointer);
+
 
 /* GL feature queries */
 COIN_DLL_API SbBool cc_glglue_can_do_bumpmapping(const cc_glglue * glue);

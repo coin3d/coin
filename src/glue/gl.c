@@ -3025,6 +3025,519 @@ cc_glglue_glGetFinalCombinerInputParameterivNV(const cc_glglue * glue,
 }
 
 
+/* ARB_fragment_program functions */
+SbBool
+cc_glglue_has_arb_fragment_program(const cc_glglue * glue)
+{
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
+  return glue->has_arb_fragment_program;
+}
+
+void
+cc_glglue_glProgramString(const cc_glglue * glue,
+                          GLenum target, 
+                          GLenum format, 
+                          GLsizei len, 
+                          const GLvoid *string)
+{
+  glue->glProgramStringARB(target, format, len, string);
+}
+
+void
+cc_glglue_glBindProgram(const cc_glglue * glue, 
+                        GLenum target, 
+                        GLuint program)
+{
+  glue->glBindProgramARB(target, program);
+}
+
+void
+cc_glglue_glDeletePrograms(const cc_glglue * glue, 
+                           GLsizei n, 
+                           const GLuint *programs)
+{
+  glue->glDeleteProgramsARB(n, programs);
+}
+
+void
+cc_glglue_glGenPrograms(const cc_glglue * glue,
+                        GLsizei n, 
+                        GLuint *programs)
+{
+  glue->glGenProgramsARB(n, programs);
+}
+
+void
+cc_glglue_glProgramEnvParameter4d(const cc_glglue * glue,
+                                  GLenum target,
+                                  GLuint index,
+                                  GLdouble x, 
+                                  GLdouble y, 
+                                  GLdouble z, 
+                                  GLdouble w)
+{
+  glue->glProgramEnvParameter4dARB(target, index, x, y, z, w);
+}
+
+void
+cc_glglue_glProgramEnvParameter4dv(const cc_glglue * glue,
+                                   GLenum target,
+                                   GLuint index,
+                                   const GLdouble *params)
+{
+  glue->glProgramEnvParameter4dvARB(target, index, params);
+}
+
+void
+cc_glglue_glProgramEnvParameter4f(const cc_glglue * glue, 
+                                  GLenum target, 
+                                  GLuint index,
+                                  GLfloat x, 
+                                  GLfloat y, 
+                                  GLfloat z, 
+                                  GLfloat w)
+{
+  glue->glProgramEnvParameter4fARB(target, index, x, y, z, w);
+}
+
+void
+cc_glglue_glProgramEnvParameter4fv(const cc_glglue * glue, 
+                                   GLenum target, 
+                                   GLuint index,
+                                   const GLfloat *params)
+{
+  glue->glProgramEnvParameter4fvARB(target, index, params);
+}
+
+void
+cc_glglue_glProgramLocalParameter4d(const cc_glglue * glue, 
+                                    GLenum target, 
+                                    GLuint index,
+                                    GLdouble x, 
+                                    GLdouble y, 
+                                    GLdouble z, 
+                                    GLdouble w)
+{
+  glue->glProgramLocalParameter4dARB(target, index, x, y, z, w);
+}
+
+void
+cc_glglue_glProgramLocalParameter4dv(const cc_glglue * glue, 
+                                     GLenum target, 
+                                     GLuint index,
+                                     const GLdouble *params)
+{
+  glue->glProgramLocalParameter4dvARB(target, index, params);
+}
+
+void
+cc_glglue_glProgramLocalParameter4f(const cc_glglue * glue, 
+                                    GLenum target, 
+                                    GLuint index,
+                                    GLfloat x, 
+                                    GLfloat y, 
+                                    GLfloat z, 
+                                    GLfloat w)
+{
+  glue->glProgramLocalParameter4fARB(target, index, x, y, z, w);
+}
+
+void
+cc_glglue_glProgramLocalParameter4fv(const cc_glglue * glue, 
+                                     GLenum target, 
+                                     GLuint index,
+                                     const GLfloat *params)
+{
+  glue->glProgramLocalParameter4fvARB(target, index, params);
+}
+
+void
+cc_glglue_glGetProgramEnvParameterdv(const cc_glglue * glue, 
+                                     GLenum target, 
+                                     GLuint index,
+                                     GLdouble *params)
+{
+  glue->glGetProgramEnvParameterdvARB(target, index, params);
+}
+
+void
+cc_glglue_glGetProgramEnvParameterfv(const cc_glglue * glue,
+                                     GLenum target, 
+                                     GLuint index, 
+                                     GLfloat *params)
+{
+  glue->glGetProgramEnvParameterfvARB(target, index, params);
+}
+
+void
+cc_glglue_glGetProgramLocalParameterdv(const cc_glglue * glue,
+                                       GLenum target, 
+                                       GLuint index,
+                                       GLdouble *params)
+{
+  glue->glGetProgramLocalParameterdvARB(target, index, params);
+}
+
+void
+cc_glglue_glGetProgramLocalParameterfv(const cc_glglue * glue,
+                                       GLenum target, 
+                                       GLuint index, 
+                                       GLfloat *params)
+{
+  glue->glGetProgramLocalParameterfvARB(target, index, params);
+}
+
+void
+cc_glglue_glGetProgramiv(const cc_glglue * glue, 
+                         GLenum target, 
+                         GLenum pname, 
+                         GLint *params)
+{
+  glue->glGetProgramivARB(target, pname, params);
+}
+
+void
+cc_glglue_glGetProgramString(const cc_glglue * glue,
+                             GLenum target, 
+                             GLenum pname, 
+                             GLvoid *string)
+{
+  glue->glGetProgramStringARB(target, pname, string);
+}
+
+SbBool
+cc_glglue_glIsProgram(const cc_glglue * glue, 
+                      GLuint program)
+{
+  return glue->glIsProgramARB(program);
+}
+
+
+/* ARB_vertex_program functions */
+SbBool
+cc_glglue_has_arb_vertex_program(const cc_glglue * glue)
+{
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
+  return glue->has_arb_vertex_program;
+}
+
+void 
+cc_glglue_glVertexAttrib1s(const cc_glglue * glue,
+                           GLuint index, GLshort x)
+{
+  glue->glVertexAttrib1sARB(index, x);
+}
+
+void 
+cc_glglue_glVertexAttrib1f(const cc_glglue * glue,
+                           GLuint index, GLfloat x)
+{
+  glue->glVertexAttrib1fARB(index, x);
+}
+
+void 
+cc_glglue_glVertexAttrib1d(const cc_glglue * glue,
+                           GLuint index, GLdouble x)
+{
+  glue->glVertexAttrib1dARB(index, x);
+}
+
+void 
+cc_glglue_glVertexAttrib2s(const cc_glglue * glue,
+                           GLuint index, GLshort x, GLshort y)
+{
+  glue->glVertexAttrib2sARB(index, x, y);
+}
+
+void 
+cc_glglue_glVertexAttrib2f(const cc_glglue * glue,
+                           GLuint index, GLfloat x, GLfloat y)
+{
+  glue->glVertexAttrib2fARB(index, x, y);
+}
+
+void 
+cc_glglue_glVertexAttrib2d(const cc_glglue * glue,
+                           GLuint index, GLdouble x, GLdouble y)
+{
+  glue->glVertexAttrib2dARB(index, x, y);
+}
+
+void
+cc_glglue_glVertexAttrib3s(const cc_glglue * glue,
+                           GLuint index, GLshort x, 
+                           GLshort y, GLshort z)
+{
+  glue->glVertexAttrib3sARB(index, x, y, z);
+}
+
+void
+cc_glglue_glVertexAttrib3f(const cc_glglue * glue,
+                           GLuint index, GLfloat x, 
+                           GLfloat y, GLfloat z)
+{
+  glue->glVertexAttrib3fARB(index, x, y, z);
+}
+
+void
+cc_glglue_glVertexAttrib3d(const cc_glglue * glue,
+                           GLuint index, GLdouble x, 
+                           GLdouble y, GLdouble z)
+{
+  glue->glVertexAttrib3dARB(index, x, y, z);
+}
+
+void
+cc_glglue_glVertexAttrib4s(const cc_glglue * glue,
+                           GLuint index, GLshort x, 
+                           GLshort y, GLshort z, GLshort w)
+{
+  glue->glVertexAttrib4sARB(index, x, y, z, w);
+}
+
+void
+cc_glglue_glVertexAttrib4f(const cc_glglue * glue,
+                           GLuint index, GLfloat x, 
+                           GLfloat y, GLfloat z, GLfloat w)
+{
+  glue->glVertexAttrib4fARB(index, x, y, z, w);
+}
+
+void
+cc_glglue_glVertexAttrib4d(const cc_glglue * glue,
+                           GLuint index, GLdouble x, 
+                           GLdouble y, GLdouble z, GLdouble w)
+{
+  glue->glVertexAttrib4dARB(index, x, y, z, w);
+}
+
+void
+cc_glglue_glVertexAttrib4Nub(const cc_glglue * glue,
+                             GLuint index, GLubyte x, 
+                             GLubyte y, GLubyte z, GLubyte w)
+{
+  glue->glVertexAttrib4NubARB(index, x, y, z, w);
+}
+
+void
+cc_glglue_glVertexAttrib1sv(const cc_glglue * glue,
+                            GLuint index, const GLshort *v)
+{
+  glue->glVertexAttrib1svARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib1fv(const cc_glglue * glue,
+                            GLuint index, const GLfloat *v)
+{
+  glue->glVertexAttrib1fvARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib1dv(const cc_glglue * glue,
+                            GLuint index, const GLdouble *v)
+{
+  glue->glVertexAttrib1dvARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib2sv(const cc_glglue * glue,
+                            GLuint index, const GLshort *v)
+{
+  glue->glVertexAttrib2svARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib2fv(const cc_glglue * glue,
+                            GLuint index, const GLfloat *v)
+{
+  glue->glVertexAttrib2fvARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib2dv(const cc_glglue * glue,
+                            GLuint index, const GLdouble *v)
+{
+  glue->glVertexAttrib2dvARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib3sv(const cc_glglue * glue,
+                            GLuint index, const GLshort *v)
+{
+  glue->glVertexAttrib3svARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib3fv(const cc_glglue * glue,
+                            GLuint index, const GLfloat *v)
+{
+  glue->glVertexAttrib3fvARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib3dv(const cc_glglue * glue,
+                            GLuint index, const GLdouble *v)
+{
+  glue->glVertexAttrib3dvARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib4bv(const cc_glglue * glue,
+                            GLuint index, const GLbyte *v)
+{
+  glue->glVertexAttrib4bvARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib4sv(const cc_glglue * glue,
+                            GLuint index, const GLshort *v)
+{
+  glue->glVertexAttrib4svARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib4iv(const cc_glglue * glue,
+                            GLuint index, const GLint *v)
+{
+  glue->glVertexAttrib4ivARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib4ubv(const cc_glglue * glue,
+                             GLuint index, const GLubyte *v)
+{
+  glue->glVertexAttrib4ubvARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib4usv(const cc_glglue * glue,
+                             GLuint index, const GLushort *v)
+{
+  glue->glVertexAttrib4usvARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib4uiv(const cc_glglue * glue,
+                             GLuint index, const GLuint *v)
+{
+  glue->glVertexAttrib4uivARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib4fv(const cc_glglue * glue,
+                            GLuint index, const GLfloat *v)
+{
+  glue->glVertexAttrib4fvARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib4dv(const cc_glglue * glue,
+                            GLuint index, const GLdouble *v)
+{
+  glue->glVertexAttrib4dvARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib4Nbv(const cc_glglue * glue,
+                             GLuint index, const GLbyte *v)
+{
+  glue->glVertexAttrib4NbvARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib4Nsv(const cc_glglue * glue,
+                             GLuint index, const GLshort *v)
+{
+  glue->glVertexAttrib4NsvARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib4Niv(const cc_glglue * glue,
+                             GLuint index, const GLint *v)
+{
+  glue->glVertexAttrib4NivARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib4Nubv(const cc_glglue * glue,
+                              GLuint index, const GLubyte *v)
+{
+  glue->glVertexAttrib4NubvARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib4Nusv(const cc_glglue * glue,
+                              GLuint index, const GLushort *v)
+{
+  glue->glVertexAttrib4NusvARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttrib4Nuiv(const cc_glglue * glue,
+                              GLuint index, const GLuint *v)
+{
+  glue->glVertexAttrib4NuivARB(index, v);
+}
+
+void
+cc_glglue_glVertexAttribPointer(const cc_glglue * glue,
+                                GLuint index, GLint size, 
+                                GLenum type, GLboolean normalized,
+                                GLsizei stride, 
+                                const GLvoid *pointer)
+{
+  glue->glVertexAttribPointerARB(index, size, type, normalized, stride, pointer);
+}
+
+void
+cc_glglue_glEnableVertexAttribArray(const cc_glglue * glue,
+                                    GLuint index)
+{
+  glue->glEnableVertexAttribArrayARB(index);
+}
+
+void
+cc_glglue_glDisableVertexAttribArray(const cc_glglue * glue,
+                                     GLuint index)
+{
+  glue->glDisableVertexAttribArrayARB(index);
+}
+
+void
+cc_glglue_glGetVertexAttribdv(const cc_glglue * glue,
+                              GLuint index, GLenum pname, 
+                              GLdouble *params)
+{
+  glue->glGetVertexAttribdvARB(index, pname, params);
+}
+
+void
+cc_glglue_glGetVertexAttribfv(const cc_glglue * glue,
+                              GLuint index, GLenum pname, 
+                              GLfloat *params)
+{
+  glue->glGetVertexAttribfvARB(index, pname, params);
+}
+
+void
+cc_glglue_glGetVertexAttribiv(const cc_glglue * glue,
+                              GLuint index, GLenum pname, 
+                              GLint *params)
+{
+  glue->glGetVertexAttribivARB(index, pname, params);
+}
+
+void
+cc_glglue_glGetVertexAttribPointerv(const cc_glglue * glue,
+                                    GLuint index, GLenum pname, 
+                                    GLvoid **pointer)
+{
+  glue->glGetVertexAttribPointervARB(index, pname, pointer);
+}
+
+
+
 /* GL_NV_texture_rectangle (identical to GL_EXT_texture_rectangle) */
 SbBool 
 cc_glglue_has_nv_texture_rectangle(const cc_glglue * glue)
@@ -3063,22 +3576,6 @@ cc_glglue_has_arb_depth_texture(const cc_glglue * glue)
 {
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
   return glue->has_depth_texture;
-}
-
-/* GL_ARB_fragment_program */
-SbBool
-cc_glglue_has_arb_fragment_program(const cc_glglue * glue)
-{
-  if (!glglue_allow_newer_opengl(glue)) return FALSE;
-  return glue->has_arb_fragment_program;
-}
-
-/* GL_ARB_vertex_program */
-SbBool
-cc_glglue_has_arb_vertex_program(const cc_glglue * glue)
-{
-  if (!glglue_allow_newer_opengl(glue)) return FALSE;
-  return glue->has_arb_vertex_program;
 }
 
 /* GL_EXT_texture_env_combine || GL_ARB_texture_env_combine || OGL 1.4 */
