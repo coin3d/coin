@@ -35,6 +35,11 @@
   \sa SbDPMatrix
 */
 
+// FIXME: we should _really_ have double-precision classes compatible
+// with those in TGS' API, for several good reasons. So either rename
+// this, make a typedef (if that is sufficient), or write a "wrapper
+// class" around this with inline functions, using with TGS' name for
+// it. 20020225 mortene.
 
 #include <Inventor/SbDPRotation.h>
 
