@@ -325,7 +325,7 @@ SoSwitch::write(SoWriteAction * action)
   }
   else if (out->getStage() == SoOutput::WRITE) {
     if (this->writeHeader(out, TRUE, FALSE)) return;
-    this->writeInstance(out);
+    this->getFieldData()->write(out, this);
     if (out->isBinary()) out->write(this->getNumChildren());
     this->getChildren()->traverse(action);
     this->writeFooter(out);

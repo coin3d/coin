@@ -210,7 +210,7 @@ SoUnknownNode::write(SoWriteAction * action)
   else if (out->getStage() == SoOutput::WRITE) {
     if (this->writeHeader(out, this->privatechildren ? TRUE : FALSE, FALSE))
       return;
-    this->writeInstance(out);
+    this->getFieldData()->write(out, this);
     if (out->isBinary())
       if (this->privatechildren) out->write(this->privatechildren->getLength());
     if (this->privatechildren) this->privatechildren->traverse(action);
