@@ -240,3 +240,12 @@ THE WISH LIST
   Something like this should be implemented to make it easier to create
   gesture-based interfaces...
 
+* SoText2::verticalAlignment / verticalJustification
+  2001-30-04  Peder Blekken <pederb@sim.no>
+  [upwards compatible extension]
+
+  I wish for new field in this node, to be able to control the vertical 
+  alignment of the strings. Useful if you want to align strings at the 
+  bottom or centre of something. We could also consider adding this field 
+  in SoAsciiText and SoText3.
+
