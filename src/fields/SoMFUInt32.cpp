@@ -68,7 +68,10 @@ SbBool
 SoMFUInt32::read1Value(SoInput * in, int idx)
 {
   assert(idx < this->maxNum);
-  return in->read(this->values[idx]);
+  unsigned int tmp;
+  if (!in->read(tmp)) return FALSE;
+  this->values[idx] = tmp;
+  return TRUE;
 }
 
 void

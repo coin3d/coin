@@ -61,7 +61,10 @@ SoSFUInt32::initClass(void)
 SbBool
 SoSFUInt32::readValue(SoInput * in)
 {
-  return in->read(this->value);
+  unsigned int tmp;
+  if (!in->read(tmp)) return FALSE;
+  this->value = tmp;
+  return FALSE;
 }
 
 // Write integer value to output stream. Also used from SoMFUInt32
