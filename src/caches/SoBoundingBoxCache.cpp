@@ -116,6 +116,12 @@ SoBoundingBoxCache::getCenter() const
   renderer, so lines and points graphics is not accidently clipped by
   near and far clipping planes, for instance.
 
+  This method is a static method on the class. It will upon invocation
+  scan through the state stack and set the flag for all open
+  SoBoundingBoxCache elements. It has been made to work like this so
+  it can easily be invoked on all current bounding box cache instances
+  from the SoShape-type nodes using lines and / or point primitives.
+
   \sa hasLinesOrPoints()
 */
 void
