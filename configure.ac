@@ -268,7 +268,7 @@ AC_ARG_ENABLE([threads],
   no | false ) sim_ac_enable_threads=false ;;
   *) AC_MSG_ERROR([invalid arg "$enableval" for --enable-threads option]) ;;
   esac],
-  [sim_ac_enable_threads=true])
+  [sim_ac_enable_threads=false])
 
 sim_ac_threads_api="none"
 
