@@ -9,6 +9,8 @@ Changes:
 Remaining issues:
  - testing
  - usefulness-consideration
+ - figure out a heuristic for when *not* to use this technique
+   (since the GL-pipe stalls may cause more delay than they gain)
 
 20031124 larsa
 
