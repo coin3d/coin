@@ -455,7 +455,7 @@ SoGLImage::setData(const SbImage * image,
   THIS->usealphatest = FALSE;
   THIS->quality = quality;
 
-  // check for special case where glCopyTexImage can be used.
+  // check for special case where glTexSubImage can be used.
   // faster for most drivers.
   SoGLDisplayList * dl = NULL;
 
