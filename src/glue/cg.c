@@ -112,6 +112,11 @@ cgglue_cleanup(void)
 #endif /* CGLIB_RUNTIME_LINKING */
   assert(cg_instance);
   free(cg_instance);
+
+  /* restore variables to initial value */
+  cg_instance = NULL;
+  cg_libhandle = NULL;
+  cg_failed_to_load = 0;
 }
 
 /* ********************************************************************** */
