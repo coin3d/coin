@@ -15,10 +15,6 @@ that are set aside for now.
 Incompatibilities
 =================
 
-* SoType should be able to load user-extension types contained in
-  dynamic libraries if the type can not be found in libCoin (Bugzilla
-  #246)
-
 * SoByteStream class not implemented (Bugzilla #173)
 
 * SoTranSender and SoTranReceiver classes not implemented (Bugzilla

@@ -679,6 +679,7 @@ STUFF TO FIX IN COIN
 
     See also this article: <URL:http://codingstyle.com/articles/using-ms-vcpp-with-gnu-wine.html>.
 
+
 027 Build Coin / SoQt / SoWin on MSWin without relying on MSVC++.
     2003-01-10  Morten Eriksen  <mortene@sim.no>
 
@@ -806,36 +807,7 @@ STUFF TO FIX IN COIN
 
 030 Offscreen context support functions.
     2003-01-31  Morten Eriksen  <mortene@sim.no>
-
-    There's a hack in use which should be cleaned out: from several
-    places in the Coin source code, an SoOffscreenRenderer is set up
-    with a single SoCallback node scene graph -- just as a hack to get
-    a current offscreen GL context.
-
-    As of now, this trick is used by the SoExtSelection node and the
-    code which wraps the GLU nurbs tessellation functions (which needs
-    a current GL context for some weird reason).
-
-    This should be cleaned up by making available an internal set of
-    functions (perhaps on the gl wrapper interface?):
-
-        glcontextstruct * make_offscreen_context(...);
-        glcontextstruct * set_current_context(glcontextstruct *); /* returns previous context */
-        void free_offscreen_context(glcontextstruct *);
-
-    The code for these methods has basically been written already, and
-    is now contained within the Coin/src/misc/SoOffscreen* files. It
-    should be moved out of there, and SoOffscreenRenderer,
-    SoExtSelection and the GLU nurbs tessellation wrapping should all
-    use the new methods.
-
-    Note that setting up an offscreen GL context uses
-    platform-dependent code, and is implemented for 3 different
-    systems: GLX (X11), WGL (MSWin) and AGL (Mac OS X).
-
-    UPDATE 2003-08-15 mortene: SoOffscreenRenderer and the GLU nurbs
-    tessellation wrapping now uses the correct method, but
-    SoExtSelection still uses the SoOffscreenRenderer hack.
+    FIXED.
 
 
 031 Handle POSIX paths under MSWin.
@@ -1038,7 +1010,3 @@ for in upcoming projects:
    * Profit library made release-ready: ~ 2-3 days.
 
    * Dime library made release-ready: ~ 2-3 days.
-
-   * Use simacros for old projects (Coin-1, Coin, SoQt, SoWin, Profit,
-     Dime, etc etc) instead of conf-macros: ~ 1/2 day for each
-     project.
