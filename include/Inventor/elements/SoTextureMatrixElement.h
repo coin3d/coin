@@ -38,6 +38,8 @@ public:
   virtual void push(SoState * state);
   static void makeIdentity(SoState * const state, SoNode * const node);
 
+  static void set(SoState * const state, SoNode * const node,
+                  const SbMatrix & matrix);
   static void mult(SoState * const state, SoNode * const node,
                    const SbMatrix & matrix);
 
@@ -53,6 +55,7 @@ public:
 
 protected:
   virtual void makeEltIdentity(void);
+  virtual void setElt(const SbMatrix & matrix);
   virtual void multElt(const SbMatrix & matrix);
   virtual void translateEltBy(const SbVec3f & translation);
   virtual void rotateEltBy(const SbRotation & rotation);

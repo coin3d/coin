@@ -64,12 +64,28 @@ SoTextureMatrixElement::makeIdentity(SoState * const state,
 }
 
 /*!
+  Sets the current texture matrix to \a matrix. 
+
+  This method is an extension versus the Open Inventor API.
+*/
+void
+SoTextureMatrixElement::set(SoState * const state,
+                            SoNode * const node,
+                            const SbMatrix & matrix)
+{
+  SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
+    SoElement::getElement(state, classStackIndex);
+  elem->setElt(matrix);
+  if (node) elem->setNodeId(node);
+}
+
+/*!
   Multiplies \a matrix into the current texture matrix.
 */
 void
 SoTextureMatrixElement::mult(SoState * const state,
                            SoNode * const node,
-                           const SbMatrix &matrix)
+                           const SbMatrix & matrix)
 {
   SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
     SoElement::getElement(state, classStackIndex);
@@ -84,7 +100,7 @@ SoTextureMatrixElement::mult(SoState * const state,
 void
 SoTextureMatrixElement::translateBy(SoState * const state,
                                   SoNode * const node,
-                                  const SbVec3f &translation)
+                                  const SbVec3f & translation)
 {
   SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
     SoElement::getElement(state, classStackIndex);
@@ -142,6 +158,18 @@ void
 SoTextureMatrixElement::makeEltIdentity(void)
 {
   this->textureMatrix.makeIdentity();
+}
+
+/*!
+  virtual method which is called from set(). Sets the texture matrix
+  to \a matrix.
+
+  This method is an extension versus the Open Inventor API.
+*/
+void
+SoTextureMatrixElement::setElt(const SbMatrix & matrix)
+{
+  this->textureMatrix = matrix;
 }
 
 /*!

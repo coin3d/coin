@@ -19,9 +19,12 @@
 
 /*!
   \class SoGLTextureMatrixElement Inventor/elements/SoGLTextureMatrixElement.h
-  \brief The SoGLTextureMatrixElement class is yet to be documented.
+  \brief The SoGLTextureMatrixElement class is used to update the OpenGL texture matrix.
 
-  FIXME: write doc.
+  Since (for some weird reason) most OpenGL implementations have a very
+  small texture matrix stack, and since the matrix stack also is broken
+  on many OpenGL implementations, the texture matrix is always loaded
+  into OpenGL. We do not push() and pop() matrices.
 */
 
 #include <Inventor/elements/SoGLTextureMatrixElement.h>
@@ -35,11 +38,8 @@
 
 SO_ELEMENT_SOURCE(SoGLTextureMatrixElement);
 
-/*!
-  This static method initializes static data for the
-  SoGLTextureMatrixElement class.
-*/
 
+// doc from parent
 void
 SoGLTextureMatrixElement::initClass(void)
 {
@@ -54,24 +54,14 @@ SoGLTextureMatrixElement::~SoGLTextureMatrixElement(void)
 {
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 void
 SoGLTextureMatrixElement::init(SoState * state)
 {
   inherited::init(state);
 }
 
-//! FIXME: write doc.
-
-void
-SoGLTextureMatrixElement::push(SoState * state)
-{
-  inherited::push(state);
-}
-
-//! FIXME: write doc.
-
+// doc from parent
 void
 SoGLTextureMatrixElement::pop(SoState * state,
                               const SoElement * prevTopElement)
@@ -80,10 +70,9 @@ SoGLTextureMatrixElement::pop(SoState * state,
   ((SoGLTextureMatrixElement*)prevTopElement)->updategl();
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 void
-SoGLTextureMatrixElement::setEltIdentity()
+SoGLTextureMatrixElement::setEltIdentity(void)
 {
   assert(0); //seems like an OIV hack for VRML V2.0... pederb, 990503
 
@@ -94,10 +83,10 @@ SoGLTextureMatrixElement::setEltIdentity()
   glMatrixMode(GL_MODELVIEW);
 }
 
-//! FIXME: write doc.
 
+// doc from parent
 void
-SoGLTextureMatrixElement::makeEltIdentity()
+SoGLTextureMatrixElement::makeEltIdentity(void)
 {
   inherited::makeEltIdentity();
   glMatrixMode(GL_TEXTURE);
@@ -105,8 +94,16 @@ SoGLTextureMatrixElement::makeEltIdentity()
   glMatrixMode(GL_MODELVIEW);
 }
 
-//! FIXME: write doc.
+// doc from parent
+void
+SoGLTextureMatrixElement::setElt(const SbMatrix & matrix)
+{
+  inherited::setElt(matrix);
+  this->updategl();
+}
 
+
+// doc from parent
 void
 SoGLTextureMatrixElement::multElt(const SbMatrix & matrix)
 {
@@ -114,8 +111,7 @@ SoGLTextureMatrixElement::multElt(const SbMatrix & matrix)
   this->updategl();
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 void
 SoGLTextureMatrixElement::translateEltBy(const SbVec3f & translation)
 {
@@ -123,17 +119,16 @@ SoGLTextureMatrixElement::translateEltBy(const SbVec3f & translation)
   this->updategl();
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 void
-SoGLTextureMatrixElement::rotateEltBy(const SbRotation &rotation)
+SoGLTextureMatrixElement::rotateEltBy(const SbRotation & rotation)
 {
   inherited::rotateEltBy(rotation);
   this->updategl();
 }
 
-//! FIXME: write doc.
 
+// doc from parent
 void
 SoGLTextureMatrixElement::scaleEltBy(const SbVec3f & scaleFactor)
 {
@@ -141,8 +136,7 @@ SoGLTextureMatrixElement::scaleEltBy(const SbVec3f & scaleFactor)
   this->updategl();
 }
 
-//! FIXME: write doc.
-
+// updates GL state
 void
 SoGLTextureMatrixElement::updategl() const
 {

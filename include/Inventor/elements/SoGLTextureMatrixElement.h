@@ -34,12 +34,11 @@ protected:
 
 public:
   virtual void init(SoState * state);
-
-  virtual void push(SoState * state);
   virtual void pop(SoState * state,
-              const SoElement * prevTopElement);
+                   const SoElement * prevTopElement);
 
-  static  void setEltIdentity(void);
+  static void setEltIdentity(void);
+  virtual void setElt(const SbMatrix & matrix);
   virtual void makeEltIdentity(void);
 
   virtual void multElt(const SbMatrix & matrix);
@@ -49,7 +48,7 @@ public:
   virtual void scaleEltBy(const SbVec3f & scaleFactor);
 
 private:
-  void updategl() const;
+  void updategl(void) const;
 
 };
 
