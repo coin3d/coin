@@ -201,6 +201,12 @@ INPUT                = \
 	$(top_srcdir)/include/Inventor/fields/SoField.h \
 	$(top_srcdir)/src/fields/SoSField.cpp \
 	$(top_srcdir)/include/Inventor/fields/SoSField.h \
+	$(top_srcdir)/src/fields/SoMField.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMField.h \
+	$(top_srcdir)/src/fields/SoSFBool.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFBool.h \
+	$(top_srcdir)/src/fields/SoMFBool.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFBool.h \
 
 #	$(top_srcdir)/src/base/SbBSPTree.cpp \	
 #	$(top_srcdir)/include/Inventor/SbBSPTree.h \
@@ -633,8 +639,6 @@ INPUT                = \
 #	\
 #	$(top_srcdir)/src/fields/SoSFBitMask.cpp \
 #	$(top_srcdir)/include/Inventor/fields/SoSFBitMask.h \
-#	$(top_srcdir)/src/fields/SoSFBool.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoSFBool.h \
 #	$(top_srcdir)/src/fields/SoSFColor.cpp \
 #	$(top_srcdir)/include/Inventor/fields/SoSFColor.h \
 #	$(top_srcdir)/src/fields/SoSFEngine.cpp \
@@ -677,10 +681,6 @@ INPUT                = \
 #	$(top_srcdir)/include/Inventor/fields/SoSFVec3f.h \
 #	$(top_srcdir)/src/fields/SoSFVec4f.cpp \
 #	$(top_srcdir)/include/Inventor/fields/SoSFVec4f.h \
-#	$(top_srcdir)/src/fields/SoMField.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoMField.h \
-#	$(top_srcdir)/src/fields/SoMFBool.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoMFBool.h \
 #	$(top_srcdir)/src/fields/SoMFColor.cpp \
 #	$(top_srcdir)/include/Inventor/fields/SoMFColor.h \
 #	$(top_srcdir)/src/fields/SoMFEngine.cpp \
@@ -1127,7 +1127,7 @@ ENABLE_PREPROCESSING = YES
 # names in the source code. If set to NO (the default) only conditional 
 # compilation will be performed.
 
-MACRO_EXPANSION      = NO
+MACRO_EXPANSION      = YES
 
 # If the SEARCH_INCLUDES tag is set to YES (the default) the includes files
 # in the INCLUDE_PATH (see below) will be search if a #include is found.
@@ -1148,6 +1148,8 @@ INCLUDE_PATH         = \
 # omitted =1 is assumed.
 
 PREDEFINED           = DOXYGEN_SKIP_THIS
+
+
 
 # If the EXPAND_ONLY_PREDEF and MACRO_EXPANSION tags are both set to YES
 # then the macro expansion is limited to the macros specified with the

@@ -23,6 +23,7 @@
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoSubField.h>
 
+
 class SoSFBool : public SoSField {
   typedef SoSField inherited;
 

@@ -21,7 +21,6 @@
 #define __SOMFIELD_H__
 
 #include <Inventor/fields/SoField.h>
-#include <Inventor/fields/SoSField.h>
 
 class SoInput;
 class SoOutput;
@@ -41,18 +40,21 @@ public:
   virtual void deleteValues(int start, int num = -1);
   virtual void insertSpace(int start, int num);
 
-  SbBool set1(const int index, const char * const valueString);
-  void get1(const int index, SbString & valueString);
+  SbBool set1(const int index, const char * const valstr);
+  void get1(const int index, SbString & valstr);
 
   static void initClass(void);
 
 protected:
   SoMField(void);
-  virtual void makeRoom(int newNum);
-  virtual int fieldSizeof(void) const;
-  virtual void * valuesPtr(void);
-  virtual void setValuesPtr(void * ptr);
+  virtual void makeRoom(int newnum);
+
+#ifndef DOXYGEN_SKIP_THIS // Internal methods.
+  virtual int fieldSizeof(void) const = 0;
+  virtual void * valuesPtr(void) = 0;
+  virtual void setValuesPtr(void * ptr) = 0;
   virtual void allocValues(int num);
+#endif // DOXYGEN_SKIP_THIS
 
   int num;
   int maxNum;
@@ -64,7 +66,7 @@ private:
   virtual SbBool read1Value(SoInput * in, int idx) = 0;
   virtual void writeValue(SoOutput * out) const;
   virtual void write1Value(SoOutput * out, int idx) const = 0;
-  virtual SbBool readBinaryValues(SoInput * in, int numToRead);
+  virtual SbBool readBinaryValues(SoInput * in, int num);
   virtual void writeBinaryValues(SoOutput * out) const;
   virtual int getNumValuesPerLine(void) const;
   virtual void convertTo(SoField * dest) const;

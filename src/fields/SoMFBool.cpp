@@ -19,10 +19,14 @@
 
 /*!
   \class SoMFBool SoMFBool.h Inventor/fields/SoMFBool.h
-  \brief The SoMFBool class ...
+  \brief The SoMFBool class is a container for SbBool values.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store multiple boolean on/off or TRUE/FALSE values.
+
+
+  \sa SoSFBool
 */
 
 #include <Inventor/fields/SoMFBool.h>
@@ -38,46 +42,52 @@
 #include <malloc.h>
 #include <assert.h>
 
+
 SO_MFIELD_SOURCE_MALLOC(SoMFBool, SbBool, SbBool);
 
-
-/*!
-  Does initialization common for all objects of the
-  SoMFBool class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent.
 void
 SoMFBool::initClass(void)
 {
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFBool);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// These are implemented in the SoSFBool class.
+extern SbBool sosfbool_read_value(SoInput * in, SbBool & val);
+extern void sosfbool_write_value(SoOutput * out, const SbBool val);
+
 SbBool
 SoMFBool::read1Value(SoInput * in, int idx)
 {
-  SoSFBool sfbool;
-  SbBool result;
-  if ((result = sfbool.readValue(in))) this->set1Value(idx, sfbool.getValue());
-  return result;
+  SbBool val;
+  if (!sosfbool_read_value(in, val)) return FALSE; 
+  this->set1Value(idx, val);
+  return TRUE;
 }
 
 void
 SoMFBool::write1Value(SoOutput * out, int idx) const
 {
-  SoSFBool sfbool;
-  sfbool.setValue((*this)[idx]);
-  sfbool.writeValue(out);
+  sosfbool_write_value(out, (*this)[idx]);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+#endif // DOXYGEN_SKIP_THIS
+
+
+// Store 8 boolean values on each line for ASCII format export.
 int
 SoMFBool::getNumValuesPerLine(void) const
 {
   return 8;
 }
 
+// Convert from our data format to the value format of the destination
+// field type.
 void
 SoMFBool::convertTo(SoField * dest) const
 {

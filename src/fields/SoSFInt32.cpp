@@ -67,7 +67,7 @@ SoSFInt32::initClass(void)
 SbBool
 SoSFInt32::readValue(SoInput * in)
 {
-  return in->read(value);
+  return in->read(this->value);
 }
 
 void

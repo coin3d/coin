@@ -23,15 +23,17 @@
   \ingroup fields
 
   Fields is the mechanism used throughout Coin for encapsulating basic
-  data types to detect changes made to them, and to provide conversion,
-  import and export facilities. All public properties in nodes are stored in
-  fields, along with the inputs and outputs of engines.
+  data types to detect changes made to them, and to provide
+  conversion, import and export facilities. All public properties in
+  nodes are stored in fields, and so are the inputs and outputs of
+  engines.
 
-  Forcing data modification to go through a method interface makes it
-  possible to automatically detect and react upon changes in the
-  user-specified data structures. E.g. the default behavior when changing
-  the value of a field in a scene graph node is that there'll automatically
-  be a rendering update.
+  Forcing data modification to go through a public function interface
+  while hiding the data members makes it possible to automatically
+  detect and react upon changes in the user-specified data
+  structures. E.g. the default behavior when changing the value of a
+  field in a scene graph node is that there'll automatically be a
+  rendering update.
 
   Note: there are some field classes which has been obsoleted from the
   Open Inventor API. They are: SoSFLong, SoSFULong, SoMFLong and
@@ -39,8 +41,7 @@
   SoSFInt32, SoSFUInt32, SoMFInt32 and SoMFUInt32.
 
   
-  \sa SoFieldContainer, SoFieldData
-*/
+  \sa SoFieldContainer, SoFieldData */
 
 
 // Metadon doc:

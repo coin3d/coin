@@ -26,8 +26,45 @@
   All field types which should always contain only a single member
   value inherits this class. SoSField is an abstract class.
 
-  \sa SoMField
-*/
+  You use methods setValue() and getValue() to store or fetch the
+  value of single-value fields. Example:
+
+  \code
+    SoSpotLight * lightnode = new SoSpotLight;
+    lightnode->on.setValue(TRUE); // The "on" field of SoSpotLight is
+                                  // a single value field of type SoSFBool.
+    ...
+    ...
+    // Change lightswitch.
+    if (lightnode->on.getValue() == FALSE)
+      lightnode->on = TRUE; // We can use operator = instead of setValue().
+    else
+      lightnode->on = FALSE;
+    ...
+  \endcode
+
+  When nodes, engines or other types of field containers are written
+  to file, their single-value fields are written to file in this
+  format:
+
+  \code
+    containerclass {
+      fieldname value
+      fieldname value
+      ...
+    }
+  \endcode
+
+  ..like this, for instance, a SpotLight node from a scene
+  graph which will be default \e off when read back from file:
+
+  \code
+    SpotLight {
+      on FALSE
+    }
+  \endcode
+
+  \sa SoMField */
 
 
 // Metadon doc:
@@ -82,13 +119,13 @@ SoSField::initClass(void)
   PRIVATE_FIELD_INIT_CLASS(SoSField, "SField", inherited, NULL);
 }
 
-// If there's any single value fields without converter-functionality,
-// calls to convertTo() will end up here.
+// If there's any single value fields without conversion
+// functionality, calls to convertTo() will end up here.
 void
 SoSField::convertTo(SoField * dest) const
 {
 #if COIN_DEBUG
-  SoDebugError::postWarning("SoSFBool::convertTo",
+  SoDebugError::postWarning("SoSField::convertTo",
                             "Can't convert from %s to %s",
                             this->getTypeId().getName().getString(),
                             dest->getTypeId().getName().getString());

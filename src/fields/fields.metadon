@@ -1,8 +1,8 @@
 # CONFIG "The Field Data Classes"
 # factors: [work in progress / no work done]
-# FLAGS [0.8 0.6]
+# FLAGS [1]
 # I = implementation complete, or nearly so
-# D = fully documented for Doxygen generation of html/man
+# D = fully documented for Doxygen generation of html/man [0.5]
 #
 # VALUES
 # - = not applicable
@@ -14,7 +14,7 @@
 # HIERARCHY
 # ID SoField
 # ID     SoSField
-# i          SoSFBool
+# ID         SoSFBool
 # i          SoSFColor
 #            SoSFEngine
 # i          SoSFEnum
@@ -37,8 +37,8 @@
 # i          SoSFVec2f
 # i          SoSFVec3f
 # i          SoSFVec4f
-# i      SoMField
-# i          SoMFBool
+# ID     SoMField
+# ID         SoMFBool
 # i          SoMFColor
 #            SoMFEngine
 # i          SoMFEnum
