@@ -94,7 +94,11 @@ THE LINKS
 
 * OpenGL Multipipe SDK
 
-http://www.sgi.com/software/multipipe/sdk/
+  http://www.sgi.com/software/multipipe/sdk/
 
-SDK for programming multipipe applications on SGI hardware. Free download.
+  SDK for programming multipipe applications on SGI hardware. Free
+  download.
 
+* Recommended book for learning about threads programming:
+  "Programming With Threads", Kleiman / Shah / Smaalders, ISBN
+  0131723898
