@@ -127,7 +127,8 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 baseincdir = $(includedir)/Inventor/C/base
 baseinc_HEADERS = \
 	dict.h \
-	debug.h
+	debug.h \
+	time.h
 
 
 EXTRA_DIST = \
@@ -313,7 +314,6 @@ uninstall-am: uninstall-baseincHEADERS uninstall-info-am
 	uninstall uninstall-am uninstall-baseincHEADERS \
 	uninstall-info-am
 
-	time.h
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
