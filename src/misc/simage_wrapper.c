@@ -40,10 +40,6 @@
 #define SIMAGEWRAPPER_ASSUME_SIMAGE 1
 #endif /* HAVE_LIBSIMAGE */
 
-#if SIMAGEWRAPPER_ASSUME_SIMAGE
-#include <simage.h>
-#endif /* SIMAGEWRAPPER_ASSUME_SIMAGE */
-
 static simage_wrapper_t * simage_instance = NULL;
 static cc_libhandle simage_libhandle = NULL;
 static int simage_failed_to_load = 0;
