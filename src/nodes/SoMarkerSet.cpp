@@ -1641,40 +1641,31 @@ SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
                        const unsigned char * bytes, SbBool isLSBFirst,
                        SbBool isUpToDown)
 {
-//  SbBool appendnew = markerIndex >= markerlist->getLength() ? TRUE : FALSE; 
+  marker tempmarker;
+  marker *temp;
 
-  if (markerIndex >= markerlist->getLength()) {
-    marker temp;
-    temp.width  = 0;
-    temp.height = 0;
-    temp.align  = 0;
-    temp.data   = 0;
-    while (markerIndex > markerlist->getLength()) markerlist->append(temp);
-    temp.width = size[0];
-    temp.height = size[1];
-    int datasize = (int)ceil(size[0] / 8) * size[1];
-    temp.deletedata = true;
-    temp.data = new unsigned char[ datasize ];
-    memcpy(temp.data,bytes,datasize);
-    if (isLSBFirst) swap_leftright(temp.data,size[0],size[1]);
-    if (isUpToDown) swap_updown(temp.data,size[0],size[1]);
-    temp.align = 1;
-    markerlist->append(temp);
+  SbBool appendnew = markerIndex >= markerlist->getLength() ? TRUE : FALSE; 
+  temp = &tempmarker;
+  if (appendnew) {
+    tempmarker.width  = 0;
+    tempmarker.height = 0;
+    tempmarker.align  = 0;
+    tempmarker.data   = 0;
+    tempmarker.deletedata = FALSE;
+    while (markerIndex > markerlist->getLength()) markerlist->append(tempmarker);
   }
-  else {
-    marker * temp = &(*markerlist)[markerIndex];
-    temp->width = size[0];
-    temp->height = size[1];
-    temp->align = 1;
-    int datasize = (int)ceil(size[0] / 8) * size[1];
-    if (temp->deletedata) delete temp->data;
-    temp->deletedata = true;
-    temp->data = new unsigned char[ datasize ];
-    memcpy(temp->data,bytes,datasize);
-    if (isLSBFirst) swap_leftright(temp->data,size[0],size[1]);
-    if (isUpToDown) swap_updown(temp->data,size[0],size[1]);
-    // markerlist->append(temp);
-  }
+  else temp = &(*markerlist)[markerIndex];
+  temp->width = size[0];
+  temp->height = size[1];
+  temp->align = 1;
+  int datasize = (int)ceil(size[0] / 8) * size[1];
+  if (temp->deletedata) delete temp->data;
+  temp->deletedata = true;
+  temp->data = new unsigned char[ datasize ];
+  memcpy(temp->data,bytes,datasize);
+  if (isLSBFirst) swap_leftright(temp->data,size[0],size[1]);
+  if (isUpToDown) swap_updown(temp->data,size[0],size[1]);
+  if (appendnew) markerlist->append(tempmarker);
 }
 
 /*!
