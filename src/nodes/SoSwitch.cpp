@@ -56,6 +56,8 @@
   traversing like if we were an SoGroup node), \c SO_SWITCH_INHERIT
   (for traversing the same child as the last SoSwitch node to parent
   this in the graph), or an index value for a child.
+
+  Default value for the field is \c SO_SWITCH_NONE.
 */
 
 // *************************************************************************
@@ -65,7 +67,21 @@ SO_NODE_SOURCE(SoSwitch);
 /*!
   Default constructor.
 */
-SoSwitch::SoSwitch()
+SoSwitch::SoSwitch(void)
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoSwitch);
+
+  SO_NODE_ADD_FIELD(whichChild, (SO_SWITCH_NONE));
+}
+
+/*!
+  Constructor taking as an argument the approximate number of children
+  which will be inserted below this SoSwitch node instance. The number
+  need not be exact, as it is only used as a hint for better memory
+  allocation.
+*/
+SoSwitch::SoSwitch(int numchildren)
+  : inherited(numchildren)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoSwitch);
 

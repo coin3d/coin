@@ -38,6 +38,7 @@ class SoSwitch : public SoGroup {
 public:
   static void initClass(void);
   SoSwitch(void);
+  SoSwitch(int numchildren);
 
   SoSFInt32 whichChild;
 
