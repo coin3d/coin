@@ -60,8 +60,8 @@ sogenerate_generate_2d_circle(SbVec2f *coords, const int num, const float radius
 static int sogenerate_cube_vindices[] =
 {
   0, 1, 3, 2,
-  1, 5, 7, 3,
   5, 4, 6, 7,
+  1, 5, 7, 3,
   4, 0, 2, 6,
   4, 5, 1, 0,
   2, 3, 7, 6
@@ -81,8 +81,8 @@ static float sogenerate_cube_texcoords[] =
 static float sogenerate_cube_normals[] =
 {
   0.0f, 0.0f, 1.0f,
-  -1.0f, 0.0f, 0.0f,
   0.0f, 0.0f, -1.0f,
+  -1.0f, 0.0f, 0.0f,
   1.0f, 0.0f, 0.0f,
   0.0f, 1.0f, 0.0f,
   0.0f, -1.0f, 0.0f
@@ -240,6 +240,7 @@ public:
 
         vertex.setTextureCoords(SbVec2f(t, 0.0f));
         vertex.setPoint(c);
+        shape->shapeVertex(&vertex);
         i++;
         t += inc;
       }
@@ -252,20 +253,6 @@ public:
       texcoords[slices] = texcoords[0];
     }
 
-    if (flags & SOGEN_GENERATE_BOTTOM) {
-      vertex.setMaterialIndex(matnr);
-      vertex.setDetail(&bottomDetail);
-      shape->beginShape(action, SoShape::TRIANGLE_FAN);
-      vertex.setNormal(SbVec3f(0.0f, -1.0f, 0.0f));
-
-      for (i = slices-1; i >= 0; i--) {
-        vertex.setTextureCoords(texcoords[i] + SbVec2f(0.5f, 0.5f));
-        vertex.setPoint(coords[i]);
-        shape->shapeVertex(&vertex);
-      }
-      shape->endShape();
-      if (flags & SOGEN_MATERIAL_PER_PART) matnr++;
-    }
     if (flags & SOGEN_GENERATE_TOP) {
       vertex.setMaterialIndex(matnr);
       vertex.setDetail(&topDetail);
@@ -276,6 +263,21 @@ public:
         vertex.setTextureCoords(SbVec2f(texcoords[i][0] + 0.5f, 1.0f - texcoords[i][1] - 0.5f));
         const SbVec3f &c = coords[i];
         vertex.setPoint(SbVec3f(c[0], h2, c[2]));
+        shape->shapeVertex(&vertex);
+      }
+      shape->endShape();
+      if (flags & SOGEN_MATERIAL_PER_PART) matnr++;
+    }
+    if (flags & SOGEN_GENERATE_BOTTOM) {
+      vertex.setMaterialIndex(matnr);
+      vertex.setDetail(&bottomDetail);
+      shape->beginShape(action, SoShape::TRIANGLE_FAN);
+      vertex.setNormal(SbVec3f(0.0f, -1.0f, 0.0f));
+
+      for (i = slices-1; i >= 0; i--) {
+        vertex.setTextureCoords(texcoords[i] + SbVec2f(0.5f, 0.5f));
+        vertex.setPoint(coords[i]);
+        shape->shapeVertex(&vertex);
       }
       shape->endShape();
     }
