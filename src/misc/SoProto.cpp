@@ -21,6 +21,14 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoProto SoProto.h Inventor/misc/SoProto.h
+  \brief The SoProto class handles PROTO definitions.
+  
+  FIXME: This is work in progress. Document later.
+*/
+
+
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/SbName.h>
@@ -32,9 +40,11 @@
 #include <Inventor/fields/SoField.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/fields/SoMFString.h>
+#include <Inventor/SoOutput.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -63,20 +73,21 @@ public:
 
 #endif // DOXYGEN_SKIP_THIS
 
-// type system
-
+// doc in parent
 SoType
 SoProto::getTypeId(void) const
 {
   return soproto_type;
 }
 
+// doc in parent
 SoType
 SoProto::getClassTypeId(void)
 {
   return soproto_type;
 }
 
+// doc in parent
 void
 SoProto::initClass(void)
 {
@@ -88,6 +99,9 @@ SoProto::initClass(void)
 #undef THIS
 #define THIS this->pimpl
 
+/*!
+  Constructor.
+*/
 SoProto::SoProto(const SbBool externproto)
 {
   THIS = new SoProtoP;
@@ -102,17 +116,23 @@ SoProto::SoProto(const SbBool externproto)
   protolist->insert(this, 0);
 }
 
+/*!
+  Destructor.
+*/
 SoProto::~SoProto()
 {
   const int n = THIS->fielddata->getNumFields();
   for (int i = 0; i < n; i++) {
-    delete THIS->fielddata->getField(NULL, i);
+    delete THIS->fielddata->getField(this, i);
   }
   THIS->defroot->unref();
   delete THIS->externurl;
   delete THIS;
 }
 
+/*!
+  Returns the PROTO definition named \a name or NULL if not found.
+*/
 SoProto *
 SoProto::findProto(const SbName & name)
 {
@@ -126,12 +146,9 @@ SoProto::findProto(const SbName & name)
   return NULL;
 }
 
-SoProtoInstance *
-SoProto::findProtoInstance(SoNode * protoinstanceroot)
-{
-  return NULL;
-}
-
+/*!
+  Creates an instance of the PROTO.
+*/
 SoProtoInstance *
 SoProto::createProtoInstance(void)
 {
@@ -142,6 +159,9 @@ SoProto::createProtoInstance(void)
   return inst;
 }
 
+/*!
+  Returns the PROTO name.
+*/
 SbName
 SoProto::getProtoName(void) const
 {
@@ -176,6 +196,7 @@ SoProto::readInstance(SoInput * in, unsigned short flags)
   return ok;
 }
 
+// Doc in parent
 void
 SoProto::destroy(void)
 {
@@ -186,11 +207,97 @@ SoProto::destroy(void)
   // FIXME: remove from static list of PROTOs
 }
 
+// doc in parent
 void
-SoProto::writeInstance(SoOutput * out)
+SoProto::write(SoWriteAction * action)
 {
+  SoOutput * out = action->getOutput();
+  out->pushProto(this);
+
+  if (out->getStage() == SoOutput::COUNT_REFS) {
+    this->addWriteReference(out, FALSE);
+  }
+  else if (out->getStage() == SoOutput::WRITE) {
+    out->indent();
+    out->write("PROTO ");
+    out->write(THIS->name.getString());
+    out->write(" [\n");
+    out->incrementIndent();
+
+    this->writeInterface(out);
+
+    out->decrementIndent();
+    out->indent();
+    out->write("]\n");
+    out->indent();
+    out->write("{\n");
+    out->incrementIndent();
+
+    this->writeDefinition(out);
+
+    out->decrementIndent();
+    out->indent();
+    out->write("}\n");
+  }
+  else assert(0 && "unknown stage");
+
+  out->popProto();
 }
 
+//
+// Writes the PROTO interface
+//
+SbBool
+SoProto::writeInterface(SoOutput * out)
+{
+  const SoFieldData * fd = THIS->fielddata;
+
+  for (int i = 0; i < fd->getNumFields(); i++) {
+    out->indent();
+    const SoField * f = fd->getField(this, i);
+    SoType t = f->getTypeId();
+    switch (f->getFieldType()) {
+    case SoField::NORMAL_FIELD:
+      out->write("field ");
+      out->write(t.getName().getString());
+      f->write(out, fd->getFieldName(i));
+      break;
+    case SoField::EVENTIN_FIELD:
+      out->write("eventIn ");
+      out->write(t.getName().getString());
+      out->write(fd->getFieldName(i).getString());
+      break;
+    case SoField::EVENTOUT_FIELD:
+      out->write("eventOut ");
+      out->write(t.getName().getString());
+      out->write(fd->getFieldName(i).getString());
+      break;
+    case SoField::EXPOSED_FIELD:
+      out->write("exposedField ");
+      out->write(t.getName().getString());
+      f->write(out, fd->getFieldName(i));
+      break;
+    default:
+      assert(0 && "invalid field type");
+      break;
+    }
+    out->write("\n");
+  }
+  return TRUE;
+}
+
+//
+// Writes the PROTO definition
+//
+SbBool
+SoProto::writeDefinition(SoOutput * out)
+{
+  return TRUE;
+}
+
+/*!
+  Adds an IS reference for this PROTO definition.
+*/
 void
 SoProto::addISReference(SoNode * container,
                         const SbName & fieldname,
@@ -202,18 +309,27 @@ SoProto::addISReference(SoNode * container,
   THIS->isnamelist.append(interfacename);
 }
 
+/*!
+  Adds a reference for this PROTO definition.
+*/
 void
 SoProto::addReference(const SbName & name, SoBase * base)
 {
   THIS->refdict.enter((unsigned long)name.getString(), (void *) base);
 }
 
+/*!
+  Removes a reference for this PROTO definition.
+*/
 void
 SoProto::removeReference(const SbName & name)
 {
   THIS->refdict.remove((unsigned long)name.getString());
 }
 
+/*!
+  Finds a reference for this PROTO definition.
+*/
 SoBase *
 SoProto::findReference(const SbName & name) const
 {
@@ -224,6 +340,9 @@ SoProto::findReference(const SbName & name) const
   return NULL;
 }
 
+/*!
+  Adds a ROUTE for this PROTO definition.
+*/
 void
 SoProto::addRoute(const SbName & fromnode, const SbName & fromfield,
                   const SbName & tonode, const SbName & tofield)
@@ -234,11 +353,14 @@ SoProto::addRoute(const SbName & fromnode, const SbName & fromfield,
   THIS->routelist.append(tofield);
 }
 
+//
+// Reads the interface
+//
 SbBool
 SoProto::readInterface(SoInput * in)
 {
-  return THIS->fielddata->readFieldDescriptions(in, NULL, 4, THIS->externurl == NULL);
-  
+  return THIS->fielddata->readFieldDescriptions(in, this, 4, THIS->externurl == NULL);
+#if 0 // OBSOLETED
   const SbName EVENTIN("eventIn");
   const SbName EVENTOUT("eventOut");
   const SbName FIELD("field");
@@ -284,8 +406,12 @@ SoProto::readInterface(SoInput * in)
     if (ok) ok = in->read(itype, FALSE);
   }
   return ok;
+#endif // OBSOLETED
 }
 
+//
+// Reads the definition
+//
 SbBool
 SoProto::readDefinition(SoInput * in)
 {
@@ -313,6 +439,9 @@ SoProto::readDefinition(SoInput * in)
   return ok && in->read(c) && c == '}';
 }
 
+//
+// Create a root node for a PROTO instance
+//
 SoNode *
 SoProto::createInstanceRoot(SoProtoInstance * inst) const
 {
@@ -329,6 +458,9 @@ SoProto::createInstanceRoot(SoProtoInstance * inst) const
   return cpy;
 }
 
+//
+// Connects all IS references for the a new instance
+//
 void
 SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
 {
@@ -373,7 +505,7 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
       SoDebugError::postWarning("SoProto::connectISRefs",
                                 "Unable to resolve '%s' from '%s' in '%s' PROTO",
                                 fieldname.getString(), iname.getString(), THIS->name.getString());
-                                
+
       continue;
     }
     node = dst;

@@ -24,6 +24,10 @@
  *
 \**************************************************************************/
 
+// NB: This is work-in-progress, and the API might change from day to
+// day. Do not use this class unless you are prepared for this.
+// pederb, 2002-05-28
+
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 
@@ -42,8 +46,6 @@ protected:
 private:
   SoFieldData * classfielddata;
 
-  // Node definition starts "proper".
-
 public:
   static void initClass(void);
 
@@ -60,7 +62,6 @@ public:
 
 protected:
   virtual ~SoProtoInstance();
-
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
 
 private:
@@ -73,3 +74,4 @@ private:
 };
 
 #endif // !COIN_SOPROTOINSTANCE_H
+

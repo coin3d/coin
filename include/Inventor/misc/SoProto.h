@@ -24,6 +24,10 @@
  *
 \**************************************************************************/
 
+// NB: This is work-in-progress, and the API might change from day to
+// day. Do not use this class unless you are prepared for this.
+// pederb, 2002-05-28
+
 #include <Inventor/nodes/SoNode.h>
 
 class SoInput;
@@ -39,8 +43,6 @@ public:
   static SoType getClassTypeId(void);
 
   static SoProto * findProto(const SbName & name);
-  static SoProtoInstance * findProtoInstance(SoNode * protoinstanceroot);
-
   static void initClass(void);
 
   SoProtoInstance * createProtoInstance(void);
@@ -58,7 +60,7 @@ public:
   SbName getProtoName(void) const;
 
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
-  virtual void writeInstance(SoOutput * out);
+  virtual void write(SoWriteAction * action);
 
 protected:
 
@@ -66,6 +68,9 @@ protected:
   virtual void destroy(void);
 
 private:
+  SbBool writeInterface(SoOutput * out);
+  SbBool writeDefinition(SoOutput * out);
+
   SbBool readInterface(SoInput * in);
   SbBool readDefinition(SoInput * in);
 

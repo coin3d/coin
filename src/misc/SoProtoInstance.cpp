@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -21,6 +21,14 @@
  *
 \**************************************************************************/
 
+
+/*!
+  \class SoProtoInstance SoProtoInstance.h Inventor/misc/SoProtoInstance.h
+  \brief The SoProtoInstance class handles PROTO instances.
+  
+  FIXME: This is work in progress. Document later.
+*/
+
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/SoInput.h>
@@ -28,6 +36,7 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/SbDict.h>
+#include <stdlib.h>
 #include <assert.h>
 
 #if COIN_DEBUG
@@ -61,6 +70,7 @@ PRIVATE_NODE_TYPESYSTEM_SOURCE(SoProtoInstance);
 
 static SbDict * protoinstance_dict;
 
+// doc in parent
 void
 SoProtoInstance::initClass(void)
 {
@@ -77,17 +87,21 @@ SoProtoInstance::initClass(void)
                        SoNode::nextActionMethodIndex++);
 
   protoinstance_dict = new SbDict;
+  atexit(SoProtoInstance::cleanupClass);
 }
 
-void 
+void
 SoProtoInstance::cleanupClass(void)
 {
-  
+  delete protoinstance_dict;
 }
 
 #undef THIS
 #define THIS this->pimpl
 
+/*!
+  Constructor.
+*/
 SoProtoInstance::SoProtoInstance(SoProto * proto,
                                  const SoFieldData * deffielddata)
 {
@@ -100,6 +114,9 @@ SoProtoInstance::SoProtoInstance(SoProto * proto,
   this->copyFieldData(deffielddata);
 }
 
+/*!
+  Destructor.
+*/
 SoProtoInstance::~SoProtoInstance()
 {
   this->setRootNode(NULL);
@@ -112,18 +129,25 @@ SoProtoInstance::~SoProtoInstance()
   if (THIS->protodef) THIS->protodef->unref();
 }
 
+// doc in parent
 const SoFieldData *
 SoProtoInstance::getFieldData(void) const
 {
   return THIS->fielddata;
 }
 
+/*!
+  Returns the PROTO definition for this instance.
+*/
 SoProto *
 SoProtoInstance::getPROTODefinition(void) const
 {
   return THIS->protodef;
 }
 
+/*!
+  Returns the PROTO defintion name.
+*/
 SbName
 SoProtoInstance::getProtoName(void) const
 {
@@ -131,6 +155,7 @@ SoProtoInstance::getProtoName(void) const
   return SbName("");
 }
 
+// Doc in parent
 SbBool
 SoProtoInstance::readInstance(SoInput * in, unsigned short flags)
 {
@@ -138,6 +163,9 @@ SoProtoInstance::readInstance(SoInput * in, unsigned short flags)
   //  return FALSE;
 }
 
+/*!
+  Sets the root node for this instance.
+*/
 void
 SoProtoInstance::setRootNode(SoNode * root)
 {
@@ -152,22 +180,30 @@ SoProtoInstance::setRootNode(SoNode * root)
   }
 }
 
+/*!
+  Returns the instance root node.
+*/
 SoNode *
 SoProtoInstance::getRootNode(void)
 {
   return THIS->root;
 }
 
+// Doc in parent
 void
 SoProtoInstance::writeInstance(SoOutput * out)
 {
 #if COIN_DEBUG && 1 // debug
   SoDebugError::postInfo("SoProtoInstance::write",
                          "Not implemented");
-#endif // debug  
+#endif // debug
 }
 
-SoProtoInstance * 
+/*!
+  Given root node \a rootnode, return the PROTO instance, or NULL if
+  \a rootnode is not a PROTO instance root node.
+*/
+SoProtoInstance *
 SoProtoInstance::findProtoInstance(const SoNode * rootnode)
 {
   void * tmp;
@@ -177,6 +213,7 @@ SoProtoInstance::findProtoInstance(const SoNode * rootnode)
   return NULL;
 }
 
+// Doc in parent
 void
 SoProtoInstance::copyFieldData(const SoFieldData * src)
 {
@@ -196,6 +233,9 @@ SoProtoInstance::copyFieldData(const SoFieldData * src)
   SoFieldContainer::copyDone();
 }
 
+//
+// Used to detect when the PROTO instance root node is destructed
+//
 void
 SoProtoInstance::sensorCB(void * data, SoSensor *)
 {
@@ -204,3 +244,5 @@ SoProtoInstance::sensorCB(void * data, SoSensor *)
   thisp->pimpl->root = NULL;
   thisp->unref();
 }
+
+
