@@ -77,7 +77,7 @@
 #include <config.h>
 #endif
 
-#include <Inventor/system/gl.h>
+#include "../misc/GLWrapper.h"
 #include <float.h>
 
 

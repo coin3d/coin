@@ -67,7 +67,7 @@
 #include <config.h>
 #endif
 
-#include <Inventor/system/gl.h>
+#include "../misc/GLWrapper.h"
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
