@@ -69,9 +69,12 @@ SoGate::commonConstructor(void)
   this->trigger.setContainer(this);
   this->typeField.setValue(SbName(""));
   this->typeField.setContainer(this);
+
+  // The "type" field must be added first, so it comes out first when
+  // writing.
+  this->gateInputData->addField(this, "type", &this->typeField);
   this->gateInputData->addField(this, "enable", &this->enable);
   this->gateInputData->addField(this, "trigger", &this->trigger);
-  this->gateInputData->addField(this, "type", &this->typeField);
 
   this->output = new SoEngineOutput;
   this->output->enable(this->enable.getValue());
@@ -159,7 +162,7 @@ SoGate::readInstance(SoInput *in, unsigned short flags)
 void
 SoGate::writeInstance(SoOutput *out)
 {
-  this->typeField.setValue(this->input->getClassTypeId().getName());
+  this->typeField.setValue(this->input->getTypeId().getName());
   inherited::writeInstance(out);
 }
 
