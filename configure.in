@@ -639,69 +639,69 @@ AC_SUBST(LIBFLAGS)
 AM_CONDITIONAL(BUILD_WITH_MSVC, $BUILD_WITH_MSVC)
 
 if $sim_ac_build_library; then
-if $BUILD_WITH_MSVC; then
-  if $COIN_STATIC; then
-    # forgot to include this case in SbBasic.h.in :(
-    CPPFLAGS="-DCOIN_NOT_DLL $CPPFLAGS"
-    # COIN_EXTRA_CPPFLAGS is set up further down
-  else
-    CPPFLAGS="-DCOIN_MAKE_DLL $CPPFLAGS"
-    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_DLL"
-  fi
+  if $BUILD_WITH_MSVC; then
+    if $COIN_STATIC; then
+      # forgot to include this case in SbBasic.h.in :(
+      CPPFLAGS="-DCOIN_NOT_DLL $CPPFLAGS"
+      # COIN_EXTRA_CPPFLAGS is set up further down
+    else
+      CPPFLAGS="-DCOIN_MAKE_DLL $CPPFLAGS"
+      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_DLL"
+    fi
 
-  debugfile="`pwd`/src/coin${COIN_MAJOR_VERSION}${SUFFIX}.pdb"
-  debugfile=`cygpath -w "$debugfile" | sed 's,\\\\,\\\\\\\\,g'`
+    debugfile="`pwd`/src/coin${COIN_MAJOR_VERSION}${SUFFIX}.pdb"
+    debugfile=`cygpath -w "$debugfile" | sed 's,\\\\,\\\\\\\\,g'`
 
-  if $COIN_STATIC; then
-    SIM_AC_CONFIGURATION_SETTING([Coin build type], [static .lib])
-    LIBFLAGS="-LIB"
-    LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.lib"
-    COIN_EXTRA_CPPFLAGS="-I$includedir -DCOIN_NOT_DLL"
-    COIN_EXTRA_LDFLAGS="-L$libdir"
-    COIN_EXTRA_LIBS=
+    if $COIN_STATIC; then
+      SIM_AC_CONFIGURATION_SETTING([Coin build type], [static .lib])
+      LIBFLAGS="-LIB"
+      LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.lib"
+      COIN_EXTRA_CPPFLAGS="-I$includedir -DCOIN_NOT_DLL"
+      COIN_EXTRA_LDFLAGS="-L$libdir"
+      COIN_EXTRA_LIBS=
+    else
+      LIBFLAGS="-DLL /INCREMENTAL:NO"
+      case $enable_symbols in
+      no | false)
+        SIM_AC_CONFIGURATION_SETTING([Coin build type],
+                                     [dynamic .dll, no symbols])
+        LIBFLAGS="$LIBFLAGS /RELEASE"
+        ;;
+      *)
+        SIM_AC_CONFIGURATION_SETTING([Coin build type],
+                                     [dynamic .dll + .pdb])
+        CFLAGS="/Fd$debugfile $CFLAGS"
+        CXXFLAGS="/Fd$debugfile $CXXFLAGS"
+        LIBFLAGS="$LIBFLAGS /DEBUG /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
+        ;;
+      esac
+      LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.dll"
+    fi
+  
+    # We use a version suffix on the .dll-file, so several incompatible
+    # (major) versions can be installed on a system.
+    #
+    # BTW, when linking DLLs, the 3rd-party .lib files will be
+    # linked into the .dll file. I believe it is still advisable to
+    # list all libs used upon `coin-config --libs`, as we can then
+    # also use them from "parent" code (remember that their interfaces
+    # is not exposed from the DLL) without any fuss.
+    if test -n "$COIN_EXTRA_LIBS"; then
+      COIN_EXTRA_LIBS="-lcoin${COIN_MAJOR_VERSION}${SUFFIX} $COIN_EXTRA_LIBS"
+    else
+      COIN_EXTRA_LIBS="-lcoin${COIN_MAJOR_VERSION}${SUFFIX}"
+    fi
   else
-    LIBFLAGS="-DLL /INCREMENTAL:NO"
-    case $enable_symbols in
-    no | false)
-      SIM_AC_CONFIGURATION_SETTING([Coin build type],
-                                   [dynamic .dll, no symbols])
-      LIBFLAGS="$LIBFLAGS /RELEASE"
-      ;;
-    *)
-      SIM_AC_CONFIGURATION_SETTING([Coin build type],
-                                   [dynamic .dll + .pdb])
-      CFLAGS="/Fd$debugfile $CFLAGS"
-      CXXFLAGS="/Fd$debugfile $CXXFLAGS"
-      LIBFLAGS="$LIBFLAGS /DEBUG /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
-      ;;
-    esac
-    LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.dll"
-  fi
+    if test -n "$COIN_EXTRA_LIBS"; then
+      COIN_EXTRA_LIBS="-lCoin${SUFFIX} $COIN_EXTRA_LIBS"
+    else
+      COIN_EXTRA_LIBS="-lCoin${SUFFIX}"
+    fi
 
-  # We use a version suffix on the .dll-file, so several incompatible
-  # (major) versions can be installed on a system.
-  #
-  # BTW, when linking DLLs, the 3rd-party .lib files will be
-  # linked into the .dll file. I believe it is still advisable to
-  # list all libs used upon `coin-config --libs`, as we can then
-  # also use them from "parent" code (remember that their interfaces
-  # is not exposed from the DLL) without any fuss.
-  if test -n "$COIN_EXTRA_LIBS"; then
-    COIN_EXTRA_LIBS="-lcoin${COIN_MAJOR_VERSION}${SUFFIX} $COIN_EXTRA_LIBS"
-  else
-    COIN_EXTRA_LIBS="-lcoin${COIN_MAJOR_VERSION}${SUFFIX}"
+    # For the build/coin.spec RPM specification file.
+    SIM_AC_ISO8601_DATE(coin_configure_date)
+    AC_SUBST(coin_configure_date)
   fi
-else
-  if test -n "$COIN_EXTRA_LIBS"; then
-    COIN_EXTRA_LIBS="-lCoin${SUFFIX} $COIN_EXTRA_LIBS"
-  else
-    COIN_EXTRA_LIBS="-lCoin${SUFFIX}"
-  fi
-
-  # For the build/coin.spec RPM specification file.
-  SIM_AC_ISO8601_DATE(coin_configure_date)
-  AC_SUBST(coin_configure_date)
-fi
 else
   SIM_AC_CONFIGURATION_SETTING([Coin build type], [build disabled])
 fi
@@ -755,7 +755,6 @@ else
   ac_coin_unknown_platform=no
 fi
 
-
 case "$host_os" in
   irix6.2)
     if test "$CXX" = CC; then ac_coin_unknown_platform=no; fi
@@ -802,7 +801,7 @@ if test $ac_coin_unknown_platform = yes; then
 fi
 
 if $sim_ac_build_library; then
-case "$host_os" in
+  case "$host_os" in
   irix*)
     echo ""
     echo " Detected SGI IRIX. There are some hints regarding this platform"
@@ -811,8 +810,8 @@ case "$host_os" in
     echo "           ${srcdir}/README.IRIX"
     echo ""
     echo " Please take a look if this is your first time building on IRIX."
-    echo ;;
-
+    echo ""
+    ;;
   aix*)
     echo ""
     echo " Detected IBM AIX. There are some hints regarding this platform"
@@ -821,15 +820,16 @@ case "$host_os" in
     echo "           ${srcdir}/README.AIX"
     echo ""
     echo " Please take a look if this is your first time building on AIX."
-    echo ;;
-esac
+    echo ""
+    ;;
+  esac
 fi
 
 SIM_AC_CONFIGURATION_SUMMARY
 
 if $sim_ac_build_library; then
-echo ""
-echo "Now, run 'make install' to build and install Coin."
-echo ""
+  echo ""
+  echo "Now, run 'make install' to build and install Coin."
+  echo ""
 fi
 
