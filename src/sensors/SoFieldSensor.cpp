@@ -67,8 +67,10 @@ SoFieldSensor::~SoFieldSensor(void)
 void
 SoFieldSensor::attach(SoField * field)
 {
+  if (this->convict) this->detach();
   this->convict = field;
   field->addAuditor(this, SoNotRec::SENSOR);
+  field->evaluate();
 }
 
 /*!
@@ -80,8 +82,11 @@ SoFieldSensor::attach(SoField * field)
 void
 SoFieldSensor::detach(void)
 {
-  if (this->convict) this->convict->removeAuditor(this, SoNotRec::SENSOR);
-  this->convict = NULL;
+  if (this->convict) {
+    this->convict->removeAuditor(this, SoNotRec::SENSOR);
+    this->convict = NULL;
+    if (this->isScheduled()) this->unschedule();
+  }
 }
 
 /*!
@@ -103,16 +108,16 @@ SoFieldSensor::trigger(void)
   inherited::trigger();
 }
 
-// Doc from superclass.
+/*!
+  Overloaded to only propagate if the field that caused
+  the notification is the one this sensor is attached to.
+*/
 void
 SoFieldSensor::notify(SoNotList * l)
 {
-  inherited::notify(l);
-
-  // FIXME: I don't know what the heck we're supposed to do here, but
-  // I included the overloading in case we find out after 1.0 release,
-  // and need to fix the behavior without changing the class signature
-  // (which would break binary compatibility). 20000402 mortene.
+  if (l->getLastField() == this->convict) {
+    inherited::notify(l);
+  }
 }
 
 // Doc from superclass.
