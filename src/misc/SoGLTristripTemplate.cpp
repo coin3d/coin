@@ -160,10 +160,10 @@
     }
     glEnd(); // end of tristrip
 
-#if MBINDING==PER_VERTEX_INDEXED
+#if MBINDING==PER_VERTEX_INDEXED || MBINDING==PER_TRIANGLE_INDEXED
     matindices++;
 #endif
-#if NBINDING==PER_VERTEX_INDEXED
+#if NBINDING==PER_VERTEX_INDEXED || NBINDING==PER_TRIANGLE_INDEXED
     normalindices++;
 #endif
 #if TEXTURES==TRUE

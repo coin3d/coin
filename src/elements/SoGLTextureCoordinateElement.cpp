@@ -194,6 +194,7 @@ SoGLTextureCoordinateElement::setTexGen(SoState * const state,
 SoGLTextureCoordinateElement::CoordType
 SoGLTextureCoordinateElement::getType() const
 {
+  if (this->texgenCB) return NONE;
   return inherited::getType();
 }
 

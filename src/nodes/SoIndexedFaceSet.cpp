@@ -504,7 +504,7 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
 		nindices, tindices, mindices, numindices, 
 		sendNormals, normalCacheUsed);
 
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  SoTextureCoordinateBundle tb(action, FALSE, FALSE);
   doTextures = tb.needCoordinates();
 
   if (!sendNormals) nbind = OVERALL;
@@ -525,6 +525,13 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
     }
   }
 
+  if (nbind == PER_VERTEX_INDEXED && nindices == NULL) {
+    nindices = cindices;
+  }
+  if (mbind == PER_VERTEX_INDEXED && mindices == NULL) {
+    mindices = cindices;
+  }
+  
   if (this->numPolygons > 0 && 
       SoShapeHintsElement::getFaceType(state) != 
       SoShapeHintsElement::CONVEX) {
@@ -550,7 +557,6 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
 
     if (tbind != NONE) tbind = PER_VERTEX_INDEXED;
   }
-
 
   int texidx = 0;
   TriangleShape mode = POLYGON; 
@@ -639,7 +645,7 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
     }
     if (tindices) tindices++;
   }
-  if (mode == POLYGON) this->endShape();
+  if (mode != POLYGON) this->endShape();
   
   if (this->vertexProperty.getValue()) {
     state->pop();

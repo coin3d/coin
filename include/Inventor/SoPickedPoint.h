@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPICKEDPOINT_H__
-#define __SOPICKEDPOINT_H__
+#ifndef __SO_PICKED_POINT_H__
+#define __SO_PICKED_POINT_H__
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbMatrix.h>

@@ -34,6 +34,7 @@
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/SoPrimitiveVertex.h>
 
 #if !defined(COIN_EXCLUDE_SOMATERIALBUNDLE)
 #include <Inventor/bundles/SoMaterialBundle.h>
@@ -263,11 +264,6 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
   Binding mbind = this->findMaterialBinding(state);
   Binding nbind = this->findNormalBinding(state);
 
-  // FIXME: what the puck? 19990405 mortene.
-  if (this->numTriangles == -1) {
-    this->getNumTriangles();
-  }
-
   const SoCoordinateElement * coords;
   const SbVec3f * normals;
   const int32_t * cindices;
@@ -491,9 +487,211 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * /* state */,
   FIXME: write doc
 */
 void
-SoIndexedTriangleStripSet::generatePrimitives(SoAction * /* action */)
+SoIndexedTriangleStripSet::generatePrimitives(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoState * state = action->getState();
+
+  if (this->vertexProperty.getValue()) {
+    state->push();
+    this->vertexProperty.getValue()->doAction(action);
+  }
+  
+  Binding mbind = this->findMaterialBinding(state);
+  Binding nbind = this->findNormalBinding(state);
+
+  const SoCoordinateElement * coords;
+  const SbVec3f * normals;
+  const int32_t * cindices;
+  int32_t numindices;
+  const int32_t * nindices;
+  const int32_t * tindices;
+  const int32_t * mindices;
+  SbBool doTextures;
+  SbBool sendNormals = TRUE;
+  SbBool normalCacheUsed;
+  
+  getVertexData(state, coords, normals, cindices, 
+		nindices, tindices, mindices, numindices, 
+		sendNormals, normalCacheUsed);
+  
+  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  doTextures = tb.needCoordinates();
+  
+  Binding tbind = PER_VERTEX_INDEXED; // most common
+  if (doTextures) {
+    if (SoTextureCoordinateBindingElement::get(state) ==
+	SoTextureCoordinateBindingElement::PER_VERTEX) {
+      tbind = PER_VERTEX;
+      tindices = NULL;
+    }
+    else if (tindices == NULL) {
+      tindices = cindices;
+    }
+  }
+
+  if (nbind == PER_VERTEX_INDEXED && nindices == NULL) {
+    nindices = cindices;
+  }
+  if (mbind == PER_VERTEX_INDEXED && mindices == NULL) {
+    mindices = cindices;
+  }
+
+  SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
+  const SbVec3f *currnormal = &dummynormal;
+  if (!sendNormals) nbind = OVERALL;
+  else if (nbind == OVERALL) {
+    if (normals) currnormal = normals;
+  }
+  else if (normalCacheUsed && nbind == PER_VERTEX) {
+    nbind = PER_VERTEX_INDEXED;
+  }  
+ 
+  int texidx = 0;
+  int matnr = 0;
+
+  const int32_t *viptr = cindices;
+  const int32_t *viendptr = viptr + numindices;
+  int32_t v1, v2, v3;
+
+  SoPrimitiveVertex vertex;
+  vertex.setNormal(*currnormal);
+
+  while (viptr < viendptr) {
+    v1 = *viptr++;
+    v2 = *viptr++;
+    v3 = *viptr++;
+    assert(v1 >= 0 && v2 >= 0 && v3 >= 0);
+
+    this->beginShape(action, TRIANGLE_STRIP);
+    
+    // vertex 1
+    // FIXME: optimize bindings test below
+    if (mbind == PER_VERTEX || mbind == PER_TRIANGLE || mbind == PER_STRIP) {
+      vertex.setMaterialIndex(matnr++);
+    }
+    else if (mbind == PER_VERTEX_INDEXED || mbind == PER_STRIP_INDEXED ||
+	     mbind == PER_TRIANGLE_INDEXED) {
+      vertex.setMaterialIndex(*mindices++);
+    }
+    if (nbind == PER_VERTEX || nbind == PER_TRIANGLE || nbind == PER_STRIP) {
+      currnormal = normals++;
+      vertex.setNormal(*currnormal);
+    }
+    else if (nbind == PER_VERTEX || nbind == PER_TRIANGLE || nbind == PER_STRIP) {
+      currnormal = &normals[*nindices++];
+      vertex.setNormal(*currnormal);
+    }
+    if (doTextures) {
+      if (tb.isFunction()) {
+	vertex.setTextureCoords(tb.get(coords->get3(v1), *currnormal));
+      }
+      else {
+	vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++));
+      }
+    }
+    vertex.setPoint(coords->get3(v1));
+    this->shapeVertex(&vertex);
+    
+    /* vertex 2 *********************************************************/
+    if (mbind == PER_VERTEX) {
+      vertex.setMaterialIndex(matnr++);
+    }
+    else if (mbind == PER_VERTEX_INDEXED) {
+      vertex.setMaterialIndex(*mindices++);
+    }
+    if (nbind == PER_VERTEX) {
+      currnormal = normals++;
+      vertex.setNormal(*currnormal);
+    }
+    else if (nbind == PER_VERTEX_INDEXED) {
+      currnormal = &normals[*nindices++];
+      vertex.setNormal(*currnormal);
+    }
+
+    if (doTextures) {
+      if (tb.isFunction()) {
+	vertex.setTextureCoords(tb.get(coords->get3(v2), *currnormal));
+      }
+      else {
+	vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++));
+      }
+    }
+    vertex.setPoint(coords->get3(v2));
+    this->shapeVertex(&vertex);
+
+    // vertex 3
+    if (mbind == PER_VERTEX) {
+      vertex.setMaterialIndex(matnr++);
+    }
+    else if (mbind == PER_VERTEX_INDEXED) {
+      vertex.setMaterialIndex(*mindices++);
+    }
+    if (nbind == PER_VERTEX) {
+      currnormal = normals++;
+      vertex.setNormal(*currnormal);
+    }
+    else if (nbind == PER_VERTEX_INDEXED) {
+      currnormal = &normals[*nindices++];
+      vertex.setNormal(*currnormal);
+    }
+
+    if (doTextures) {
+      if (tb.isFunction()) {
+	vertex.setTextureCoords(tb.get(coords->get3(v3), *currnormal));
+      }
+      else {
+	vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++));
+      }
+    }
+    vertex.setPoint(coords->get3(v3));
+    this->shapeVertex(&vertex);
+    
+    v1 = *viptr++;
+    while (v1 >= 0) {
+      if (mbind == PER_VERTEX || mbind == PER_TRIANGLE) {
+	vertex.setMaterialIndex(matnr++);
+      }
+      else if (mbind == PER_VERTEX_INDEXED || mbind == PER_TRIANGLE_INDEXED) {
+	vertex.setMaterialIndex(*mindices++);
+      }
+      if (nbind == PER_VERTEX || nbind == PER_TRIANGLE) {
+	currnormal = normals++;
+	vertex.setNormal(*currnormal);
+      }
+      else if (nbind == PER_VERTEX_INDEXED || nbind == PER_TRIANGLE_INDEXED) {
+	currnormal = &normals[*nindices++];
+	vertex.setNormal(*currnormal);
+      }
+      
+      if (doTextures) {
+	if (tb.isFunction()) {
+	  vertex.setTextureCoords(tb.get(coords->get3(v1), *currnormal));
+	}
+	else {
+	  vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++));
+	}
+      }
+      vertex.setPoint(coords->get3(v1));
+      this->shapeVertex(&vertex);
+      
+      v1 = *viptr++;
+    }
+    this->endShape();
+
+    //
+    // PER_TRIANGLE binding for strips is really stupid, so I'm not quite
+    // sure what to do here. I guess nobody uses PER_TRIANGLE anyway.
+    //
+    
+    if (mbind == PER_VERTEX_INDEXED || mbind == PER_TRIANGLE_INDEXED)
+      mindices++;
+    if (nbind == PER_VERTEX_INDEXED || nbind == PER_TRIANGLE_INDEXED)
+      nindices++;
+    if (tindices) tindices++;    
+  }
+  if (this->vertexProperty.getValue()) {
+    state->pop();
+  }
 }
 #endif // !COIN_EXCLUDE_SOACTION
 

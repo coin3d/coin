@@ -44,8 +44,7 @@ class SoTextureCoordinateBundle : public SoBundle {
 public:
   SoTextureCoordinateBundle(SoAction * const action, 
 			    const SbBool forRendering,
-			    const SbBool setUpDefault = TRUE,
-			    SoTextureCoordinateCache *defaultCache = NULL);
+			    const SbBool setUpDefault = TRUE);
   ~SoTextureCoordinateBundle();
 
   SbBool needCoordinates() const;
@@ -67,7 +66,7 @@ public:
 private:
   const SoTextureCoordinateElement *coordElt;
   const SoGLTextureCoordinateElement *glElt;
-  SoTextureCoordinateCache *defaultCache;
+  unsigned int flags;
 };
 
 #endif // !__SOTEXTURECOORDINATEBUNDLE_H__

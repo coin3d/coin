@@ -59,10 +59,13 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
+
   enum CoordType {
-    DEFAULT = 0,
+    NONE = 0,
+    TEXGEN = 0,
     EXPLICIT = 1,
-    FUNCTION = 2
+    FUNCTION = 2,
+    DEFAULT = 3,
   };
 
   virtual void init(SoState * state);

@@ -26,7 +26,7 @@
 */
 
 #include <Inventor/nodes/SoQuadMesh.h>
-
+#include <Inventor/SoPrimitiveVertex.h>
 
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/misc/SoState.h>
@@ -246,8 +246,10 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   const int rowsize = this->verticesPerRow.getValue();
   const int colsize = this->verticesPerColumn.getValue();
 
-  if (rowsize < 2 || colsize < 2) return; // nothing to draw
-
+  if (rowsize < 2 || colsize < 2) {
+    if (this->vertexProperty.getValue()) state->pop();
+    return; // nothing to draw
+  }
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;
   SbBool doTextures;
@@ -423,9 +425,108 @@ SoQuadMesh::generateDefaultNormals(SoState * /* state */, SoNormalBundle * /* nb
   FIXME: write doc
  */
 void
-SoQuadMesh::generatePrimitives(SoAction * /* action */)
+SoQuadMesh::generatePrimitives(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoState * state = action->getState();
+
+  if (this->vertexProperty.getValue()) {
+    state->push();
+    this->vertexProperty.getValue()->doAction(action);
+  }
+
+  const int rowsize = this->verticesPerRow.getValue();
+  const int colsize = this->verticesPerColumn.getValue();
+
+  if (rowsize < 2 || colsize < 2) {
+    if (vertexProperty.getValue()) state->pop();
+    return;
+  }
+  const SoCoordinateElement *coords;
+  const SbVec3f * normals;
+  SbBool doTextures;
+  SbBool needNormals = TRUE;
+  
+  SoVertexShape::getVertexData(action->getState(), coords, normals,
+			       needNormals);
+    
+  SoTextureCoordinateBundle tb(action, FALSE, FALSE);
+  doTextures = tb.needCoordinates();
+    
+  int start = this->startIndex.getValue();
+  
+  Binding mbind = findMaterialBinding(action->getState());
+  Binding nbind = findNormalBinding(action->getState());
+  
+  if (needNormals && normals == NULL) {
+    normals = getNormalCache()->getNormals();
+  }
+
+  SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
+  const SbVec3f * currnormal = &dummynormal;
+  if (normals) currnormal = normals;
+
+  SoPrimitiveVertex vertex;
+
+  if (nbind == OVERALL && needNormals) {
+    vertex.setNormal(*currnormal);
+  }
+  
+  int curridx; // for optimization only
+  
+#define IDX(r,c) ((r)*rowsize+(c))
+
+  int midx = 0;
+  for (int i = 0; i < colsize-1; i++) {
+    int j = 0;
+    this->beginShape(action, QUAD_STRIP);
+    if (nbind == PER_ROW) {
+      currnormal = normals++;
+      vertex.setNormal(*currnormal);
+    }
+    if (mbind == PER_ROW) vertex.setMaterialIndex(midx++);
+    
+    for (j = 0; j < rowsize; j++) {
+      curridx = IDX(i,j);
+      if (nbind == PER_VERTEX) {
+	currnormal = &normals[curridx];
+	vertex.setNormal(*currnormal);
+      }
+      else if (nbind == PER_FACE) {
+	currnormal = normals++;
+	vertex.setNormal(*currnormal);
+      }
+      if (mbind == PER_VERTEX) vertex.setMaterialIndex(curridx);
+      else if (mbind == PER_FACE) vertex.setMaterialIndex(midx++);
+      
+      if (doTextures) {
+	if (tb.isFunction())
+	  vertex.setTextureCoords(tb.get(coords->get3(start+curridx), *currnormal));
+	else
+	  vertex.setTextureCoords(tb.get(curridx));
+      }
+      vertex.setPoint(coords->get3(start + curridx));
+      this->shapeVertex(&vertex);
+      curridx = IDX(i+1,j);
+      if (nbind == PER_VERTEX) {
+	currnormal = &normals[curridx];
+	vertex.setNormal(*currnormal);
+      }
+      if (mbind == PER_VERTEX) vertex.setMaterialIndex(curridx);
+      if (doTextures) {
+	if (tb.isFunction())
+	  vertex.setTextureCoords(tb.get(coords->get3(start+curridx), *currnormal));
+	else
+	  vertex.setTextureCoords(tb.get(curridx));
+      }
+      vertex.setPoint(coords->get3(start + curridx));
+    }
+    this->endShape();
+  }
+#undef IDX
+  
+  if (this->vertexProperty.getValue())
+    state->pop();
+  
 }
 #endif // !COIN_EXCLUDE_SOACTION
 

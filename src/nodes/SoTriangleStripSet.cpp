@@ -27,9 +27,9 @@
 
 #include <Inventor/nodes/SoTriangleStripSet.h>
 
-
-
 #include <Inventor/misc/SoState.h>
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/bundles/SoTextureCoordinateBundle.h>
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -428,9 +428,106 @@ SoTriangleStripSet::generateDefaultNormals(SoState * /* state */,
   FIXME: write doc
  */
 void
-SoTriangleStripSet::generatePrimitives(SoAction * /* action */)
+SoTriangleStripSet::generatePrimitives(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoState * state = action->getState();
+  
+  if (this->vertexProperty.getValue()) {
+    state->push();
+    this->vertexProperty.getValue()->doAction(action);
+  }
+  
+  const SoCoordinateElement * coords;
+  const SbVec3f * normals;
+  SbBool doTextures;
+  SbBool needNormals = TRUE;
+  
+  SoVertexShape::getVertexData(action->getState(), coords, normals,
+			       needNormals);
+    
+  SoTextureCoordinateBundle tb(action, FALSE, FALSE);
+  doTextures = tb.needCoordinates();
+  
+  Binding mbind = findMaterialBinding(action->getState());
+  Binding nbind = findNormalBinding(action->getState());
+  
+  if (needNormals && normals == NULL) {
+    normals = getNormalCache()->getNormals();
+    if (normals == NULL) {
+      // FIXME: temporary until normals can be generated per face
+      //        and per strip
+      nbind = OVERALL;
+    }
+  }
+
+  int32_t idx = startIndex.getValue();
+  const int32_t * ptr = numVertices.getValues(0);
+  const int32_t * end = ptr + numVertices.getNum();
+  
+  int matnr = 0;
+  int texnr = 0;
+  int n;
+
+  SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
+  const SbVec3f * currnormal = &dummynormal;
+  if (normals) currnormal = normals;
+
+  SoPrimitiveVertex vertex;
+  vertex.setNormal(*currnormal);
+  
+  while (ptr < end) {
+    n = *ptr++ - 2;
+    assert(n > 0);
+    
+    this->beginShape(action, TRIANGLE_STRIP);
+
+    if (nbind != OVERALL) {
+      currnormal = normals++;
+      vertex.setNormal(*currnormal);
+    }
+    if (mbind != OVERALL) vertex.setMaterialIndex(matnr++);
+    if (doTextures) {
+      if (tb.isFunction())
+	vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+      else
+	vertex.setTextureCoords(tb.get(texnr++));
+    }
+    vertex.setPoint(coords->get3(idx++));
+    this->shapeVertex(&vertex);
+
+    if (nbind == PER_VERTEX) {
+      currnormal = normals++;
+      vertex.setNormal(*currnormal);
+    }
+    if (mbind == PER_VERTEX) vertex.setMaterialIndex(matnr++);
+    if (doTextures) {
+      if (tb.isFunction())
+	vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+      else
+	vertex.setTextureCoords(tb.get(texnr++));
+    }
+    vertex.setPoint(coords->get3(idx++));
+    this->shapeVertex(&vertex);
+		    
+    while (n--) {
+      if (nbind >= PER_FACE) {
+	currnormal = normals++;
+	vertex.setNormal(*currnormal);
+      }
+      if (mbind >= PER_FACE) vertex.setMaterialIndex(matnr++);
+      if (doTextures) {
+	if (tb.isFunction())
+	  vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+	else
+	  vertex.setTextureCoords(tb.get(texnr++));
+      }
+      vertex.setPoint(coords->get3(idx));
+      this->shapeVertex(&vertex);
+    }
+    this->endShape();
+  }
+  if (this->vertexProperty.getValue())
+    state->pop();
 }
 #endif // !COIN_EXCLUDE_SOACTION
 

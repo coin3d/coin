@@ -56,6 +56,7 @@ public:
     TRIANGLES,
     POLYGON,
     QUADS,
+    QUAD_STRIP // not part of OIV-API
   };
 
   virtual SbBool affectsState(void) const;

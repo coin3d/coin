@@ -254,6 +254,22 @@ public:
 	this->counter = 0;
       }
       break;
+    case SoShape::QUAD_STRIP:
+      this->vertsArray[counter++] = *v;
+      if (counter == 4) {
+	this->shape->invokeTriangleCallbacks(this->action,
+					     &vertsArray[0],
+					     &vertsArray[1],
+					     &vertsArray[2]);
+	this->shape->invokeTriangleCallbacks(this->action,
+					     &vertsArray[0],
+					     &vertsArray[2],
+					     &vertsArray[3]);
+	this->vertsArray[0] = this->vertsArray[2];
+	this->vertsArray[1] = this->vertsArray[3];
+	this->counter = 2;
+      }
+      break;
     default:
       assert(0 && "Unknown shape type");
     }
