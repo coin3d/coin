@@ -371,8 +371,9 @@
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbStorage.h>
 #include <Inventor/threads/SbRWMutex.h>
+#include <Inventor/C/threads/recmutex.h>
 static SbRWMutex * sodb_globalmutex = NULL;
-static SbStorage * sodb_notificationcounter_storage = NULL;
+static cc_recmutex * sodb_notificationmutex = NULL;
 #endif // COIN_THREADSAFE
 
 #ifdef HAVE_3DS_IMPORT_CAPABILITIES
@@ -446,24 +447,6 @@ SbList<SoDBP::ProgressCallbackInfo> * SoDBP::progresscblist = NULL;
 
 // *************************************************************************
 
-#ifdef COIN_THREADSAFE
-#define SODB_NOTIFICATIONCOUNTER *(((int*) sodb_notificationcounter_storage->get()))
-#else // COIN_THREADSAFE
-#define SODB_NOTIFICATIONCOUNTER SoDBP::notificationcounter
-#endif // ! COIN_THREADSAFE
-
-#ifdef COIN_THREADSAFE
-// callback from SbStorage that initializes the counter to 0
-static void
-sodb_clear_counter(void * ptr)
-{
-  int * intptr = (int*) ptr;
-  *intptr = 0;
-}
-#endif // COIN_THREADSAFE
-
-// *************************************************************************
-
 /*!
   Initialize the Coin system. This needs to be done as the first
   thing before you start using the library, or you'll probably see an
@@ -485,7 +468,7 @@ SoDB::init(void)
   // initialize thread system first
   cc_thread_init();
 #ifdef COIN_THREADSAFE
-  sodb_notificationcounter_storage = new SbStorage(sizeof(int), sodb_clear_counter, NULL);
+  sodb_notificationmutex = cc_recmutex_construct();
   sodb_globalmutex = new SbRWMutex(SbRWMutex::READ_PRECEDENCE);
 #endif // COIN_THREADSAFE
 #endif // HAVE_THREADS
@@ -801,7 +784,7 @@ SoDBP::clean(void)
 #ifdef COIN_THREADSAFE
   // we can't delete this here since it might be needed by some atexit
   // functions
-  // delete sodb_notificationcounter_storage;
+  // cc_recmutex_destruct(sodb_notificationmutex);
   delete sodb_globalmutex;
 #endif // COIN_THREADSAFE
 #endif // COIN_DEBUG
@@ -825,8 +808,8 @@ SoDB::cleanup(void)
 {
   coin_atexit_cleanup();
 #ifdef COIN_THREADSAFE
-  delete sodb_notificationcounter_storage;
-  sodb_notificationcounter_storage = NULL;
+  cc_recmutex_destruct(sodb_notificationmutex);
+  sodb_notificationmutex = NULL;
 #endif // COIN_THREADSAFE
 }
 
@@ -1476,8 +1459,10 @@ SoDB::isInitialized(void)
 void
 SoDB::startNotify(void)
 {
-  int & counter = SODB_NOTIFICATIONCOUNTER;
-  counter++;
+#ifdef COIN_THREADSAFE
+  (void) cc_recmutex_lock(sodb_notificationmutex);
+#endif // COIN_THREADSAFE
+  SoDBP::notificationcounter++;
 }
 
 /*!
@@ -1486,8 +1471,7 @@ SoDB::startNotify(void)
 SbBool
 SoDB::isNotifying(void)
 {
-  int & counter = SODB_NOTIFICATIONCOUNTER;
-  return counter > 0;
+  return SoDBP::notificationcounter > 0;
 }
 
 /*!
@@ -1496,14 +1480,16 @@ SoDB::isNotifying(void)
 void
 SoDB::endNotify(void)
 {
-  int & counter = SODB_NOTIFICATIONCOUNTER;
-  counter--;
-  assert(counter >= 0);
-  if (counter == 0) {
+  SoDBP::notificationcounter--;
+  if (SoDBP::notificationcounter == 0) {
     // Process zero-priority sensors after notification has been done.
     SoSensorManager * sm = SoDB::getSensorManager();
     if (sm->isDelaySensorPending()) sm->processImmediateQueue();
   }
+#ifdef COIN_THREADSAFE
+  (void) cc_recmutex_unlock(sodb_notificationmutex);
+#endif // COIN_THREADSAFE
+
 }
 
 /*!
