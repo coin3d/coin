@@ -1039,27 +1039,34 @@ AC_ARG_ENABLE([dl-freetype],
   [enable_dl_freetype=true])
 
 sim_ac_have_freetype=false
-if $enable_dl_freetype && $coin_can_do_runtime_linking; then
-  AC_DEFINE_UNQUOTED([FREETYPE_RUNTIME_LINKING], 1,
-    [define for runtime linking with freetype])
-  SIM_AC_CONFIGURATION_SETTING([FreeType support], [Yes, run-time binding])
+if test x"$sim_ac_have_win32_api" = x"false"; then
+  if $enable_dl_freetype && $coin_can_do_runtime_linking; then
+    AC_DEFINE_UNQUOTED([FREETYPE_RUNTIME_LINKING], 1,
+      [define for runtime linking with freetype])
+    SIM_AC_CONFIGURATION_SETTING([FreeType support], [Yes, run-time binding])
+  else
+    SIM_AC_HAVE_FREETYPE_IFELSE([
+      AC_DEFINE(HAVE_FREETYPE, 1,
+        [define if you have the freetype library])
+      CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"
+      LDFLAGS="$LDFLAGS $sim_ac_freetype_ldflags"
+      LIBS="$sim_ac_freetype_libs $LIBS"
+      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_freetype_cppflags"
+      COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_freetype_ldflags"
+      COIN_EXTRA_LIBS="$sim_ac_freetype_libs $COIN_EXTRA_LIBS"
+      SIM_AC_CONFIGURATION_SETTING([FreeType support], [Yes, link-time binding])
+    ], [
+      if $sim_ac_freetype_desired; then
+        SIM_AC_CONFIGURATION_SETTING([FreeType support], [No])
+      fi
+    ])
+  fi
 else
-  SIM_AC_HAVE_FREETYPE_IFELSE([
-    AC_DEFINE(HAVE_FREETYPE, 1,
-      [define if you have the freetype library])
-    CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"
-    LDFLAGS="$LDFLAGS $sim_ac_freetype_ldflags"
-    LIBS="$sim_ac_freetype_libs $LIBS"
-    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_freetype_cppflags"
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_freetype_ldflags"
-    COIN_EXTRA_LIBS="$sim_ac_freetype_libs $COIN_EXTRA_LIBS"
-    SIM_AC_CONFIGURATION_SETTING([FreeType support], [Yes, link-time binding])
-  ], [
-    if $sim_ac_freetype_desired; then
-      SIM_AC_CONFIGURATION_SETTING([FreeType support], [No])
-    fi
-  ])
+  # It should be made possible to enable freetype on cygwin/mks too if
+  # needed, but for now we override use of freetype with the win32 api.
+  SIM_AC_CONFIGURATION_SETTING([FreeType support], [No, using Win32 API instead])
 fi
+
 AM_CONDITIONAL(HAVE_FREETYPE, $sim_ac_have_freetype)
 
 # *******************************************************************
