@@ -532,7 +532,8 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-cfgdataDATA install-dist_m4dataDATA
+install-data-am: install-cfgdataDATA install-data-local \
+	install-dist_m4dataDATA
 
 install-exec-am: install-exec-local
 
@@ -561,9 +562,10 @@ uninstall-info: uninstall-info-recursive
 	distclean-recursive distclean-tags distdir dvi dvi-am \
 	dvi-recursive info info-am info-recursive install install-am \
 	install-cfgdataDATA install-data install-data-am \
-	install-data-recursive install-dist_m4dataDATA install-exec \
-	install-exec-am install-exec-local install-exec-recursive \
-	install-info install-info-am install-info-recursive install-man \
+	install-data-local install-data-recursive \
+	install-dist_m4dataDATA install-exec install-exec-am \
+	install-exec-local install-exec-recursive install-info \
+	install-info-am install-info-recursive install-man \
 	install-recursive install-strip installcheck installcheck-am \
 	installdirs installdirs-am installdirs-recursive \
 	maintainer-clean maintainer-clean-generic \
@@ -621,14 +623,38 @@ doxygen-docs: built-sources
 	else :; fi
 	@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
 
-@BUILD_LIBRARY_TRUE@install-exec-local: $(srcdir)/cfg/m4/wrapmsvc.exe
-@BUILD_LIBRARY_TRUE@	@$(NORMAL_INSTALL)
-@BUILD_LIBRARY_TRUE@	$(mkinstalldirs) $(DESTDIR)$(bindir)
-@BUILD_LIBRARY_TRUE@	@if @BUILD_WITH_MSVC@; then \
-@BUILD_LIBRARY_TRUE@	  p=wrapmsvc.exe; \
-@BUILD_LIBRARY_TRUE@	  echo " $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p"; \
-@BUILD_LIBRARY_TRUE@	  $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p; \
-@BUILD_LIBRARY_TRUE@	fi
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@install-exec-local:
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@install-data-local:
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	@echo "Setting up Mac OS X Compiler Framework"
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	@if test -d "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)"; then :; else \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	  echo " $(mkinstalldirs) $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	  $(mkinstalldirs) "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	fi
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	@if test -e "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/Current"; then \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	  echo " rm -f $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/Current"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	  rm -f "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/Current"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	fi; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	echo " ln -s $(MAC_FRAMEWORK_VERSION) $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/Current"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	ln -s $(MAC_FRAMEWORK_VERSION) "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/Current";
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	@for symlink in Headers Resources Libraries; do \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	  if test -e "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$$symlink"; then \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	    echo " rm -f $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$$symlink"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	    rm -f "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$$symlink"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	  fi; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	  echo " ln -s Versions/Current/$$symlink $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$$symlink"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	  ln -s Versions/Current/$$symlink "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$$symlink" || exit 1; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	done
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@install-data-local:
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@install-exec-local: $(srcdir)/cfg/m4/wrapmsvc.exe
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	@if @BUILD_WITH_MSVC@; then \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  echo " $(mkinstalldirs) $(DESTDIR)$(bindir)"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  $(mkinstalldirs) $(DESTDIR)$(bindir); \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  p=wrapmsvc.exe; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  echo " $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	else :; fi
 
 cvs-update:
 	@cd $(top_srcdir) && cvs -z3 -q update -dP

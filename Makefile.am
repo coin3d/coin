@@ -135,14 +135,41 @@ doxygen-docs: built-sources
 	@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
 
 if BUILD_LIBRARY
+if MAC_FRAMEWORK
+install-exec-local:
+install-data-local:
+	@$(NORMAL_INSTALL)
+	@echo "Setting up Mac OS X Compiler Framework"
+	@if test -d "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)"; then :; else \
+	  echo " $(mkinstalldirs) $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)"; \
+	  $(mkinstalldirs) "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)"; \
+	fi
+	@if test -e "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/Current"; then \
+	  echo " rm -f $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/Current"; \
+	  rm -f "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/Current"; \
+	fi; \
+	echo " ln -s $(MAC_FRAMEWORK_VERSION) $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/Current"; \
+	ln -s $(MAC_FRAMEWORK_VERSION) "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/Current";
+	@for symlink in Headers Resources Libraries; do \
+	  if test -e "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$$symlink"; then \
+	    echo " rm -f $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$$symlink"; \
+	    rm -f "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$$symlink"; \
+	  fi; \
+	  echo " ln -s Versions/Current/$$symlink $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$$symlink"; \
+	  ln -s Versions/Current/$$symlink "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$$symlink" || exit 1; \
+	done
+else
+install-data-local:
 install-exec-local: $(srcdir)/cfg/m4/wrapmsvc.exe
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(bindir)
 	@if @BUILD_WITH_MSVC@; then \
+	  echo " $(mkinstalldirs) $(DESTDIR)$(bindir)"; \
+	  $(mkinstalldirs) $(DESTDIR)$(bindir); \
 	  p=wrapmsvc.exe; \
 	  echo " $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p"; \
 	  $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p; \
-	fi
+	else :; fi
+endif
 endif
 
 cvs-update:
