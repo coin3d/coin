@@ -298,14 +298,7 @@ and explains the principles applied fairly well.
 6 The Run-Time Environment
 ==========================
 
-  * To help debug the somewhat experimental support for display list
-    caching, set the environment variable
-    COIN_RANDOMIZE_RENDER_CACHING to "1" and the renderCaching field
-    of SoSeparator nodes will randomly be switched on and off upon
-    construction of new SoSeparator nodes.
-
-  * See So@Gui@/src/Inventor/@Gui@/common/HACKING for further
-    debugging hints.
+  * See So@Gui@/src/Inventor/@Gui@/common/HACKING for debugging hints.
 
 
 7 How To Add / Modify A Class In Coin
@@ -375,16 +368,17 @@ and explains the principles applied fairly well.
           bootstrapped, generated files.
 
 
-8 How To Backport Development-Branch Extensions to Coin-1
+8 How To Backport Development-Branch Extensions to Coin-2
 =========================================================
 
-You can not break forward ABI compatibility with earlier versions of
-Coin-1 when you backport extensions added to the Coin development branch.
-Virtual methods is one of the biggest problems with regards to this.
+You are not allowed to break forward ABI compatibility with versions
+of Coin-2 (or Coin-1, for that matter) when you backport extensions
+which have been added to the Coin development branch.  Virtual methods
+is one of the biggest problems with regards to this.
 
 * Backporting Virtualism
 
-  If you need to packport virtualism from Coin to Coin-1, one suggestion
+  If you need to packport virtualism from Coin to Coin-2, one suggestion
   is to add a non-virtual callback handler system on the lowest level in
   the class hierarchy that needs this virtual function, and then the
   deriving classes can register their overriding functions in the
@@ -495,9 +489,10 @@ When making releases, we follow these rules:
     COIN_MINOR_VERSION unchanged,
     COIN_MICRO_VERSION += 1.
 
+==
 
 The following text pertains to the versioning that is set up in
-configure.ac:
+configure.ac, with regard to Libtool library versioning:
 
 Note that our MAJOR.MINOR.MICRO versioning scheme differs somewhat from
 the idea of library versioning applied by Libtool. According to Libtool,
@@ -542,9 +537,13 @@ MAJOR.MINOR.MICRO scheme to Libtool's idea of versioning like this:
 CVS maintenance
 ===============
 
-New "Coin-MAJOR" repositories will be branched off the head "Coin" repository.
-When this happens, the Coin repository will be tagged with the symbolic name
-"coin-MAJOR_0_0".
+New "Coin-MAJOR" repositories will be branched off the head "Coin"
+repository. "Branching" in this context actually means setting up a
+completely *new* repository, that starts out as a copy of the
+development repository.
+
+When this happens, the Coin repository should be tagged with the
+symbolic name "coin-MAJOR_0_0".
 
 All releases will be made from the Coin-MAJOR repositories.  When a new
 release is made from one of those, the sources will be tagged with the
@@ -559,6 +558,9 @@ will be made.
 
 Making Releases
 ===============
+
+(FIXME: hasn't the following description been superseded by the
+Coin/RELEASE document? 20030901 mortene.)
 
 When a new release is to be made, configure.ac must be updated with new
 version information.  Make sure COIN_BETA is set to [] (empty), and the
@@ -737,20 +739,20 @@ First, the larger issues:
       don't want the extra overhead it introduces in memory usage and
       time to redirect all data request to the internal class. So the
       Sb* base classes are for instance not using the pattern, and
-      neither is SoBase or SoField -- which both permeates library
+      neither are SoBase and SoField -- which both permeates library
       usage at run-time, so we want to keep them as slim as possible.
 
       The preferred way to access the pimpl pointer, and to access the
       "real" class (in the public interface) back from the private
       class, is to set up a couple of macros:
 
-        #define PRIVATE(p) (p->pimpl)
-        #define PUBLIC(p) (p->master)
+        #define PRIVATE(p) ((p)->pimpl)
+        #define PUBLIC(p) ((p)->master)
 
 
       ..and then use it in statements like this:
 
-        PRIVATE(pimpl)->number2 = obj->doSomeThing(PRIVATE(pimpl)->number1);
+        PRIVATE(this)->number2 = obj->doSomeThing(PRIVATE(this)->number1);
 
       Specifically, don't use the "THIS" define which we used to do in
       earlier times:
