@@ -332,7 +332,7 @@ coin_host_is_bigendian(void)
   case 0x03020100:
     return 0;
   default:
-    assert("system has unknown endianness");
+    assert(0 && "system has unknown endianness");
     exit(1);
   }
   return 0;
