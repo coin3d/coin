@@ -235,7 +235,7 @@ libfieldsincdir = $(includedir)/Inventor/fields
 
 libfieldsinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/fields
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -305,7 +305,7 @@ LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDF
 DIST_SOURCES =  $(libfields_la_SOURCES) $(libfieldsLINKHACK_la_SOURCES)
 HEADERS =  $(libfieldsinc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoField.Plo \
 $(DEPDIR)/SoFieldContainer.Plo $(DEPDIR)/SoFieldData.Plo \
 $(DEPDIR)/SoGlobalField.Plo $(DEPDIR)/SoMFBitMask.Plo \

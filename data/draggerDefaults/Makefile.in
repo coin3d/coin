@@ -181,7 +181,7 @@ draggerdefdata_DATA = translate1Dragger.iv \
 			transformBoxDragger.iv
 
 subdir = data/draggerDefaults
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 DIST_SOURCES = 

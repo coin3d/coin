@@ -142,7 +142,7 @@ liberrorsincdir = $(includedir)/Inventor/errors
 
 liberrorsinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/errors
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -181,7 +181,7 @@ LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDF
 DIST_SOURCES =  $(liberrors_la_SOURCES) $(liberrorsLINKHACK_la_SOURCES)
 HEADERS =  $(liberrorsinc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoDebugError.Plo $(DEPDIR)/SoError.Plo \
 $(DEPDIR)/SoMemoryError.Plo $(DEPDIR)/SoReadError.Plo $(DEPDIR)/all.Plo
 DIST_COMMON =  $(liberrorsinc_HEADERS) Makefile.am Makefile.in

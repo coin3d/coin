@@ -217,7 +217,7 @@ libenginesincdir = $(includedir)/Inventor/engines
 
 libenginesinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/engines
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -296,7 +296,7 @@ DIST_SOURCES =  $(libengines_la_SOURCES) \
 $(libenginesLINKHACK_la_SOURCES)
 HEADERS =  $(libenginesinc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoBoolOperation.Plo \
 $(DEPDIR)/SoCalculator.Plo $(DEPDIR)/SoComposeMatrix.Plo \
 $(DEPDIR)/SoComposeRotation.Plo $(DEPDIR)/SoComposeRotationFromTo.Plo \

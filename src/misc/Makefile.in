@@ -172,7 +172,7 @@ libmiscincdir = $(includedir)/Inventor/misc
 
 libmiscinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/misc
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -232,7 +232,7 @@ LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDF
 DIST_SOURCES =  $(libmisc_la_SOURCES) $(libmiscLINKHACK_la_SOURCES)
 HEADERS =  $(libmiscinc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/GLUWrapper.Plo $(DEPDIR)/SoBase.Plo \
 $(DEPDIR)/SoByteStream.Plo $(DEPDIR)/SoChildList.Plo $(DEPDIR)/SoDB.Plo \
 $(DEPDIR)/SoFullPath.Plo $(DEPDIR)/SoGL.Plo $(DEPDIR)/SoGLImage.Plo \

@@ -158,7 +158,7 @@ libactionsincdir = $(includedir)/Inventor/actions
 
 libactionsinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/actions
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -213,7 +213,7 @@ DIST_SOURCES =  $(libactions_la_SOURCES) \
 $(libactionsLINKHACK_la_SOURCES)
 HEADERS =  $(libactionsinc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoAction.Plo \
 $(DEPDIR)/SoBoxHighlightRenderAction.Plo $(DEPDIR)/SoCallbackAction.Plo \
 $(DEPDIR)/SoGLRenderAction.Plo $(DEPDIR)/SoGetBoundingBoxAction.Plo \

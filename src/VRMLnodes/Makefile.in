@@ -135,7 +135,7 @@ libVRMLnodesincdir = $(includedir)/Inventor/VRMLnodes
 
 libVRMLnodesinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/VRMLnodes
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -176,7 +176,7 @@ DIST_SOURCES =  $(libVRMLnodes_la_SOURCES) \
 $(libVRMLnodesLINKHACK_la_SOURCES)
 HEADERS =  $(libVRMLnodesinc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoVRMLInterpOutput.Plo \
 $(DEPDIR)/SoVRMLInterpolator.Plo $(DEPDIR)/all.Plo
 DIST_COMMON =  $(libVRMLnodesinc_HEADERS) Makefile.am Makefile.in

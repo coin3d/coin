@@ -105,7 +105,7 @@ sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 subdir = build
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../config.h ../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES =  coin.spec
 DIST_SOURCES = 

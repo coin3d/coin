@@ -114,7 +114,7 @@ thisinc_HEADERS = \
 	$(top_srcdir)/include/SoWinLeaveScope.h
 
 subdir = include
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../config.h ../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 DIST_SOURCES = 

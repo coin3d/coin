@@ -328,7 +328,7 @@ libelementsincdir = $(includedir)/Inventor/elements
 
 libelementsinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/elements
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -537,7 +537,7 @@ DIST_SOURCES =  $(libelements_la_SOURCES) \
 $(libelementsLINKHACK_la_SOURCES)
 HEADERS =  $(libelementsinc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoAccumulatedElement.Plo \
 $(DEPDIR)/SoAmbientColorElement.Plo \
 $(DEPDIR)/SoAnnoText3CharOrientElement.Plo \

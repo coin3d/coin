@@ -155,7 +155,7 @@ libbaseincdir = $(includedir)/Inventor/base
 
 libbaseinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/base
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -209,7 +209,7 @@ LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDF
 DIST_SOURCES =  $(libbase_la_SOURCES) $(libbaseLINKHACK_la_SOURCES)
 HEADERS =  $(libbaseinc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SbBSPTree.Plo $(DEPDIR)/SbBox2f.Plo \
 $(DEPDIR)/SbBox2s.Plo $(DEPDIR)/SbBox3f.Plo $(DEPDIR)/SbColor.Plo \
 $(DEPDIR)/SbColor4f.Plo $(DEPDIR)/SbCylinder.Plo $(DEPDIR)/SbDict.Plo \

@@ -143,7 +143,7 @@ libcachesincdir = $(includedir)/Inventor/caches
 
 libcachesinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/caches
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -187,7 +187,7 @@ LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDF
 DIST_SOURCES =  $(libcaches_la_SOURCES) $(libcachesLINKHACK_la_SOURCES)
 HEADERS =  $(libcachesinc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoBoundingBoxCache.Plo \
 $(DEPDIR)/SoCache.Plo $(DEPDIR)/SoConvexDataCache.Plo \
 $(DEPDIR)/SoGLCacheList.Plo $(DEPDIR)/SoGLRenderCache.Plo \

@@ -107,7 +107,7 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 SUBDIRS = draggerDefaults
 subdir = data
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../config.h ../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 DIST_SOURCES = 

@@ -156,7 +156,7 @@ libnodekitsincdir = $(includedir)/Inventor/nodekits
 
 libnodekitsinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/nodekits
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -206,7 +206,7 @@ DIST_SOURCES =  $(libnodekits_la_SOURCES) \
 $(libnodekitsLINKHACK_la_SOURCES)
 HEADERS =  $(libnodekitsinc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoAppearanceKit.Plo \
 $(DEPDIR)/SoBaseKit.Plo $(DEPDIR)/SoCameraKit.Plo \
 $(DEPDIR)/SoInteractionKit.Plo $(DEPDIR)/SoLightKit.Plo \

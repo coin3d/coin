@@ -116,7 +116,7 @@ m4datadir = $(datadir)/aclocal
 m4data_DATA = conf-macros/coin.m4
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = config.h ./include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES =  coin-config
 SCRIPTS =  $(bin_SCRIPTS)
@@ -126,9 +126,9 @@ DATA =  $(m4data_DATA)
 
 DIST_COMMON =  README ./stamp-h1.in AUTHORS COPYING ChangeLog INSTALL \
 Makefile.am Makefile.in NEWS THANKS TODO acconfig.h aclocal.m4 \
-coin-config.in config.guess config.h.in config.sub configure \
-configure.in depcomp install-sh ltconfig ltmain.sh missing \
-mkinstalldirs
+cfg/config.guess cfg/config.sub cfg/install-sh cfg/ltmain.sh \
+cfg/missing cfg/mkinstalldirs coin-config.in config.h.in configure \
+configure.in
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -380,7 +380,7 @@ dist-all: distdir
 distdir: $(DISTFILES)
 	-chmod -R a+w $(distdir) > /dev/null 2>&1; rm -rf $(distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/conf-macros
+	$(mkinstalldirs) $(distdir)/cfg $(distdir)/conf-macros
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \

@@ -20,7 +20,7 @@ AUTOMAKE_VER=1.4c   # Automake from CVS
 LIBTOOL_VER=1.3.5
 
 PROJECT=Coin
-MACRODIR=conf-macros
+MACRODIR=cfg/m4
 AUTOMAKE_ADD=
 
 if test "$1" = "--clean"; then

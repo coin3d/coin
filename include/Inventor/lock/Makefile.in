@@ -111,7 +111,7 @@ lockinc_HEADERS = \
 	$(top_srcdir)/include/Inventor/lock/SoLockMgr.h
 
 subdir = include/Inventor/lock
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../../config.h ../../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 DIST_SOURCES = 

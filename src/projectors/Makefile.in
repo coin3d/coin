@@ -163,7 +163,7 @@ libprojectorsincdir = $(includedir)/Inventor/projectors
 
 libprojectorsinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/projectors
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -220,7 +220,7 @@ DIST_SOURCES =  $(libprojectors_la_SOURCES) \
 $(libprojectorsLINKHACK_la_SOURCES)
 HEADERS =  $(libprojectorsinc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SbCylinderPlaneProjector.Plo \
 $(DEPDIR)/SbCylinderProjector.Plo \
 $(DEPDIR)/SbCylinderSectionProjector.Plo \

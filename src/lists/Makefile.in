@@ -167,7 +167,7 @@ liblistsincdir = $(includedir)/Inventor/lists
 
 liblistsinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/lists
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -221,7 +221,7 @@ LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDF
 DIST_SOURCES =  $(liblists_la_SOURCES) $(liblistsLINKHACK_la_SOURCES)
 HEADERS =  $(liblistsinc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SbIntList.Plo $(DEPDIR)/SbList.Plo \
 $(DEPDIR)/SbPList.Plo $(DEPDIR)/SbStringList.Plo \
 $(DEPDIR)/SbVec3fList.Plo $(DEPDIR)/SoActionMethodList.Plo \

@@ -173,7 +173,7 @@ libdraggersincdir = $(includedir)/Inventor/draggers
 
 libdraggersinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/draggers
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -244,7 +244,7 @@ DIST_SOURCES =  $(libdraggers_la_SOURCES) \
 $(libdraggersLINKHACK_la_SOURCES)
 HEADERS =  $(libdraggersinc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoCenterballDragger.Plo \
 $(DEPDIR)/SoDirectionalLightDragger.Plo \
 $(DEPDIR)/SoDragPointDragger.Plo $(DEPDIR)/SoDragger.Plo \

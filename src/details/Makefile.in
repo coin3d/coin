@@ -160,7 +160,7 @@ libdetailsincdir = $(includedir)/Inventor/details
 
 libdetailsinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/details
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -206,7 +206,7 @@ DIST_SOURCES =  $(libdetails_la_SOURCES) \
 $(libdetailsLINKHACK_la_SOURCES)
 HEADERS =  $(libdetailsinc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoConeDetail.Plo \
 $(DEPDIR)/SoCubeDetail.Plo $(DEPDIR)/SoCylinderDetail.Plo \
 $(DEPDIR)/SoDetail.Plo $(DEPDIR)/SoFaceDetail.Plo \

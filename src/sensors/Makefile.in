@@ -154,7 +154,7 @@ libsensorsincdir = $(includedir)/Inventor/sensors
 
 libsensorsinc_HEADERS = $(ALLINSTHEADERS)
 subdir = src/sensors
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -203,7 +203,7 @@ DIST_SOURCES =  $(libsensors_la_SOURCES) \
 $(libsensorsLINKHACK_la_SOURCES)
 HEADERS =  $(libsensorsinc_HEADERS)
 
-depcomp = $(SHELL) $(top_srcdir)/depcomp
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoAlarmSensor.Plo \
 $(DEPDIR)/SoDataSensor.Plo $(DEPDIR)/SoDelayQueueSensor.Plo \
 $(DEPDIR)/SoFieldSensor.Plo $(DEPDIR)/SoIdleSensor.Plo \
