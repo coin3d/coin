@@ -1468,3 +1468,29 @@
     20030307 mortene.
 
 =====================================================================
+
+061 Handling of invalid bounding boxes
+
+    The following VRML97 file causes an assert:
+
+    #VRML V2.0 utf8
+    
+    Transform {
+      scale 1 1 1e40
+      children Shape {
+        geometry Sphere {}
+      }
+    }
+
+    Coin-2/src/base/SbBox3f.cpp:263: void SbBox3f::setBounds (const SbVec3f
+    &, const SbVec3f &): Assertion `0' failed.
+
+    FIX: The correct thing to do is to track downwards to the "uppermost"
+    place in the call-stack where whatever causes this error condition is 
+    still an _invalid_ condition. Then go one more step down and catch the 
+    problem there (by spitting out a warning and otherwise handle the 
+    condition gracefully (don't crash or assert)).
+
+    20030312 kintel.
+
+=====================================================================
