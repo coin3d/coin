@@ -295,6 +295,7 @@ public:
   int bufferLength; // bytesize = bufferLength*bitspersample/8*channels
   int numBuffers;
 
+  void *cliphandle;
 };
 
 #undef PRIVATE
@@ -376,6 +377,8 @@ SoVRMLSound::SoVRMLSound(void)
                                SoVRMLSoundP::defaultSleepTime);
 
   PRIVATE(this)->sourceId = 0;
+
+  PRIVATE(this)->cliphandle = NULL;
 }
 
 /*!
@@ -1011,6 +1014,7 @@ SbBool SoVRMLSoundP::startPlaying()
   this->playing = TRUE;
   this->endoffile = FALSE;
   this->waitingForAudioClipToFinish = FALSE;
+  this->cliphandle = NULL;
 
   // Start timer or thread
   if (this->useTimerCallback) {
@@ -1090,7 +1094,7 @@ void SoVRMLSoundP::fillBuffers()
 
   unsigned int bufferid = 0;
   int error;
-  void *ret;
+  size_t ret;
 
 #if 0
   // 20021021 thammer, kept for debugging purposes
@@ -1120,7 +1124,7 @@ void SoVRMLSoundP::fillBuffers()
       // inform currentAudioClip() that the last buffer has been played,
       // so it can decide if it would like to stop playing
       int channels;
-      ret = this->currentAudioClip->fillBuffer(0, NULL, 0, channels);
+      ret = this->currentAudioClip->read(this->cliphandle, NULL, 0, channels);
       assert (ret == NULL); // or else the AudioClip isn't performing as it should
     }
   } else {
@@ -1155,8 +1159,7 @@ void SoVRMLSoundP::fillBuffers()
       }
       // fill buffer
 
-      int frameoffset, channels;
-      frameoffset=0;
+      int channels;
       /* Notes (mainly kept for future debugging of deadlock issues):
          Unlocking syncmutex here might open up a can of worms. I have
          looked at the variables used in this thread, and it looks
@@ -1190,8 +1193,9 @@ void SoVRMLSoundP::fillBuffers()
          get away with not unlocking syncmutex here afterall.
 
          2002-11-18 thammer */
-      ret = this->currentAudioClip->fillBuffer(frameoffset, this->audioBuffer,
-                                               this->bufferLength, channels);
+      ret = this->currentAudioClip->read(this->cliphandle, 
+                                         this->audioBuffer,
+                                         this->bufferLength, channels);
 
       if ( (channels==1) && (this->channels==2) )
         mono2stereo(this->audioBuffer, this->bufferLength);

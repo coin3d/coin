@@ -40,10 +40,18 @@ class COIN_DLL_API SoVRMLAudioClip : public SoNode
   SO_NODE_HEADER(SoVRMLAudioClip);
 
 public:
-  typedef void *FillBufferCallback(int frameoffset, void *buffer, 
-                                   int numframes, int &channels, 
-                                   void * userdataptr);
-
+  typedef void *open_func(const SbStringList &url, 
+                            SoVRMLAudioClip *clip, void *userdataptr);
+  typedef size_t read_func(void *datasource, 
+                             void *buffer, int numframes, int &channels,
+                             SoVRMLAudioClip *clip, void *userdataptr);
+  typedef int seek_func(void *datasource, long offset, int whence,
+                          SoVRMLAudioClip *clip, void *userdataptr);
+  typedef long tell_func(void *datasource,
+                         SoVRMLAudioClip *clip, void *userdataptr);
+  typedef int close_func(void *datasource,
+                         SoVRMLAudioClip *clip, void *userdataptr);
+  
   static void initClass(void);
   SoVRMLAudioClip(void);
 
@@ -57,17 +65,24 @@ public:
   static void  setSubdirectories(const SbList<SbString> &subdirectories);
   static const SbStringList & getSubdirectories();
   static void setDefaultPauseBetweenTracks(SbTime pause);
+  static SbTime getDefaultPauseBetweenTracks();
   static void setDefaultIntroPause(SbTime pause);
+  static SbTime getDefaultIntroPause();
   static void setDefaultSampleRate(int samplerate);
+  static int getDefaultSampleRate();
   static void setDefaultTimerInterval(SbTime interval);
+  static SbTime getDefaultTimerInterval();
 
   int getSampleRate();
-  int getCurrentFrameOffset();
-  void *fillBuffer(int frameoffset, void *buffer, int numframes, 
-                   int &channels);
 
-  void setFillBufferCallback(FillBufferCallback *callback, 
-                             void *userdata=NULL);
+  void * open(const SbStringList &url);
+  size_t read(void *datasource, void *buffer, int numframes, int &channels);
+  int    seek(void *datasource, long offset, int whence);
+  long   tell(void *datasource);
+  int    close(void *datasource);
+
+  void setCallbacks(open_func *opencb, read_func *readcb, seek_func *seekcb,
+                    tell_func *tellcb, close_func *closecb, void *userdataptr);
 
 protected:
   virtual ~SoVRMLAudioClip();
