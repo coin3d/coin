@@ -68,10 +68,10 @@ SoMFName::read1Value(SoInput * in, int idx)
 {
   assert(idx < this->maxNum);
 
-  // Reading a string instead of a name, because the name field value
-  // is not necessarily a node name, node type or field name, and the
-  // name might be quoted. The read value is just the value of a name
-  // field.
+  // Reading as SbString instead of as SbName, because the semantics
+  // of SoInput::read(SbName&) is to read token identifiers, such as
+  // node or field names, and doesn't e.g. handle quotes as expected
+  // for a "free-form" string.
   SbString s;
   SbBool ok = in->read(s);
   if (!ok) return FALSE;
