@@ -34,6 +34,33 @@
   is changed.
 */
 
+/*!
+  \enum SoPathSensor::TriggerFilter
+  
+  Trigger filter, which decides if the sensor should trigger on 
+  path changes, changes on nodes in the path, or both.
+*/
+
+/*!
+  \var SoPathSensor::TriggerFilter PATH
+
+  Trigger on path changes only.
+*/
+
+/*!
+  \var SoPathSensor::TriggerFilter NODES
+
+  Trigger on node changes only. This can be nodes in the path, or
+  nodes affecting the nodes in the path (nodes that updates the state
+  and are left of the node in the path).
+*/
+
+/*!
+  \var SoPathSensor::TriggerFilter PATH_AND_NODES
+
+  Trigger on both path changes and node changes.
+*/
+
 #define PRIVATE(p) (p)->pimpl
 
 #include <Inventor/sensors/SoPathSensor.h>
@@ -141,7 +168,7 @@ SoPathSensor::getAttachedPath(void) const
 }
 
 /*!
-  Set the trigger filter for this sensor.
+  Set the TriggerFilter for this sensor.
 
   The default is PATH_AND_NODES.
 
@@ -154,7 +181,7 @@ SoPathSensor::setTriggerFilter(const TriggerFilter filter)
 }
 
 /*!
-  Return the trigger filter for this sensor.
+  Return the TriggerFilter for this sensor.
 
   \since 2003-02-25
 */
