@@ -768,7 +768,36 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GL_EXT_texture3D */
 
-  /* Appeared in OpenGL v1.3. */
+  /* Multi-texturing appeared in OpenGL v1.3, or with the
+     GL_ARB_multitexture extension before that.
+  */
+  /*
+     FIXME: we've found a bug prevalent in drivers for the "Intel
+     Solano" graphcis chipset / driver. It manifests itself in the way
+     that visual artifacts are seen when multi-textured polygons are
+     partly outside the canvas view.
+
+     The SoGuiExamples/nodes/textureunit example can be used to
+     reproduce the error. The driver info from one confirmed affected
+     system is as follows:
+
+     GL_VERSION == 1.1.2 - Build 4.13.01.3196
+     GL_VENDOR == Intel
+     GL_RENDERER == Intel Solano
+     GL_EXTENSIONS = GL_ARB_multitexture [...]
+
+     This problem is not yet handled in any way by Coin. What we
+     should do about this is to detect the above chipset / driver and
+     issue an on-screen warning to the end user (in very
+     "end-user-friendly" terms) when multi-texturing is first
+     attempted used, *plus* make a wgl- or glut-based example which
+     demonstrates the bug, for reporting to Intel.
+
+     The bug was tested and confirmed with the latest Intel Solano
+     driver as of today.
+
+     20041108 mortene, based on information provided by handegar.
+  */
   w->glActiveTexture = NULL;
   w->glClientActiveTexture = NULL;
   w->glMultiTexCoord2f = NULL;

@@ -54,16 +54,18 @@
   the event will never reach the SoEventCallback node(s) you insert.
 */
 
+// *************************************************************************
+
 #include <Inventor/nodes/SoEventCallback.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/events/SoEvent.h>
+
 #include <Inventor/SoPath.h>
 #include <Inventor/SoPickedPoint.h>
-
-#if COIN_DEBUG
+#include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include <Inventor/events/SoEvent.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+
+// *************************************************************************
 
 /*!
   \typedef void SoEventCallbackCB(void * userdata, SoEventCallback * node)
@@ -75,9 +77,11 @@
   of the callback.
 */
 
+// *************************************************************************
 
 SO_NODE_SOURCE(SoEventCallback);
 
+// *************************************************************************
 
 /*!
   Constructor.
@@ -104,6 +108,8 @@ SoEventCallback::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoEventCallback, SO_FROM_INVENTOR_1);
 }
+
+// *************************************************************************
 
 /*!
   Sets the path that must be picked before the registered callbacks
@@ -319,7 +325,7 @@ SoEventCallback::handleEvent(SoHandleEventAction * action)
 
   // Make it possible to access the action object from the callback
   // code.
-  this->heaction = action;
+  SoHandleEventAction * tmphandle = this->heaction = action;
 
   SoType eventtype = this->heaction->getEvent()->getTypeId();
 
@@ -332,5 +338,33 @@ SoEventCallback::handleEvent(SoHandleEventAction * action)
   }
 
   // Reset.
+  //
+  // FIXME: there is a fundamental flaw with this technique; if a new
+  // SoHandleEventAction is applied to the scene graph while the
+  // callbacks above are still processing, a new pointer will
+  // overwrite the previous one (which is a problem that may cause
+  // hard-to-find errors), and then it will be overwritten with a NULL
+  // pointer below, which causes getAction(), getEvent() etc to return
+  // NULL values.
+  //
+  // The fundamental design flaw here, as I see it, is that the
+  // callback invocations should pass on the SoHandleEventAction
+  // pointer, instead of temporarily storing it as a member of this
+  // node. We can't really change this without breaking backward API
+  // compatibility, though.
+  //
+  // I've added some detection code below to at least catch and warn
+  // about the problem.
+  //
+  // 20041114 mortene.
+
+  if (tmphandle != this->heaction) {
+    SoDebugError::postWarning("SoEventCallback::handleEvent",
+                              "detected additional SoHandleEventAction scene "
+                              "graph traversal while still handling a previous "
+                              "traversal -- this can cause hard-to-find bugs, "
+                              "and should be avoided");
+  }
+
   this->heaction = NULL;
 }

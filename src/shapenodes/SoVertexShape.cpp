@@ -26,10 +26,10 @@
   \brief The SoVertexShape class is the superclass for all vertex based shapes.
   \ingroup nodes
 
-  Basically, every polygon, line or point based shape will inherit
+  Basically, every polygon-, line- or point-based shape will inherit
   this class.  It contains methods for organizing the normal cache,
-  and also holds the vertexProperty field which can be used to set
-  vertex data inside the node.
+  and also holds the SoVertexShape::vertexProperty field which can be
+  used to set vertex data inside the node.
 */
 
 #include <Inventor/nodes/SoVertexShape.h>
@@ -55,10 +55,11 @@
 /*!
   \var SoSFNode SoVertexShape::vertexProperty
 
-  If you set the vertexProperty field, it should be with an SoVertexProperty
-  node. Otherwise it will simply be ignored. Nodetypes inheriting
-  SoVertexShape will then get their coordinate data from the
-  vertexProperty node instead of from the global traversal state.
+  If you set the vertexProperty field, it should be with an
+  SoVertexProperty node. Otherwise it will simply be
+  ignored. Nodetypes inheriting SoVertexShape will then get their
+  coordinate data from the vertexProperty node instead of from the
+  global traversal state.
 
   The vertexProperty field of SoVertexShape-derived nodes breaks
   somewhat with the basic design of Open Inventor, as its contents are
@@ -66,6 +67,9 @@
   path to highly optimized rendering of vertexbased shapes.
 
   \sa SoVertexProperty
+
+  \since Coin 1.0
+  \since SGI Inventor v2.1
 */
 
 

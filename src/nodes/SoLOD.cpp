@@ -61,6 +61,20 @@
   rendering when models get far enough away from the camera that we
   want to remove them completely).
 
+  Note that when using an SoOrthographicCamera in the examiner viewers
+  of the SoQt, SoWin and SoXt libraries, it will seem like the SoLOD
+  node is not working when using the "Zoom" functionality. What
+  happens is that an SoOrthographicCamera is not actually moved, the
+  "zoom" effect is accomplished simply by changing its height-of-view
+  setting (i.e. the value of the SoOrthographicCamera::height field),
+  but its position remains constant. So the distance to the camera
+  will not change, which means SoLOD will pick the same child, no
+  matter how much one "zooms".
+
+  (The SoLevelOfDetail node uses the screen space area of the object
+  to decide when to switch children, so that node will still work with
+  SoOrthographicCamera.)
+
   \since Inventor 2.1
   \sa SoLevelOfDetail
 */

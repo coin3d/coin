@@ -87,6 +87,13 @@ MIPSpro_CC_initClassMangling(const char * classname)
   return mangling;
 }
 
+/*
+  This function returns a string that corresponds to how HP-UX 11's
+  aCC mangles "static void <classname>::initClass(void)".
+
+  The version information reported by the aCC used to check the name
+  mangling: "HP ANSI C++ B3910B A.03.35".
+*/
 static
 SbString
 HPUX_aCC_initClassMangling(const char * classname)

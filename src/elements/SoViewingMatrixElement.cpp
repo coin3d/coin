@@ -23,10 +23,10 @@
 
 /*!
   \class SoViewingMatrixElement Inventor/elements/SoViewingMatrixElement.h
-  \brief The SoViewingMatrixElement class is yet to be documented.
+  \brief The SoViewingMatrixElement class stores the world-to-camera transformation.
   \ingroup elements
 
-  FIXME: write doc.
+  \sa SoModelMatrixElement
 */
 
 #include <Inventor/elements/SoViewingMatrixElement.h>

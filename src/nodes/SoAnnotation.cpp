@@ -27,7 +27,7 @@
   \ingroup nodes
 
   This group-type node uses delayed rendering in combination with
-  Z-buffer disabling to let it's children transparently render their
+  Z-buffer disabling to let its children transparently render their
   geometry on top of the other geometry in the scene.
 
   Since the Z-buffer needs to be disabled, the childrens' geometry

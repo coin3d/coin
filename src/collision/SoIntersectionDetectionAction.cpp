@@ -28,6 +28,11 @@
   \ingroup actions
   \ingroup collision
 
+  Note that only collisions between actual geometry in the scene is
+  detected, so the contents of some special nodes like e.g. SoText2
+  and SoImage (which projects to screen-plane bitmap graphics, and not
+  actual polygons) will not be considered for collision detection.
+
   Below is a simple usage example for this class. It was written as a
   stand-alone framework set up for profiling and optimization of the
   SoIntersectionDetectionAction. It tests intersection of all shapes

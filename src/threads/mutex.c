@@ -255,8 +255,14 @@ cc_mutex_global_unlock(void)
 /*!
   \fn SbBool SbMutex::lock(void)
 
-  This method locks the mutex. \c TRUE is returned on success.  This
-  is a blocking operation.
+  This method locks the mutex. \c TRUE is returned on success.
+
+  If the mutex was previously unlocked, the thread will lock the mutex
+  and continue running. If the mutex was already locked when this call
+  is made, the thread will be suspended until the other thread holding
+  the mutex releases it.
+
+  This is a blocking operation.
 */
 
 /*!

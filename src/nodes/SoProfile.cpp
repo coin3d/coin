@@ -75,6 +75,8 @@
 
   How the indices of this profile node should be combined with the
   current profile index set of the traversal state.
+
+  Default value is SoProfile::START_FIRST.
 */
 
 

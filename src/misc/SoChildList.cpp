@@ -386,10 +386,12 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
   }
   if (changedetected) {
     SoDebugError::postWarning("SoChildList::traverse",
-                              "Detected a scene graph change during traversal. This is considered "
-                              "to be extremely dangerous, and we strongly advice you to "
-                              "change your code and/or reorganize your scene graph so that this "
-                              "doesn't happen.");
+                              "Detected modification of scene graph layout "
+                              "during action traversal. This is considered to "
+                              "be hazardous and error prone, and we "
+                              "strongly advice you to change your code "
+                              "and/or reorganize your scene graph so that "
+                              "this is not necessary.");
   }
 #endif // COIN_DEBUG
 }

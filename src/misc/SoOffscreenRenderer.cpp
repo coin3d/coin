@@ -160,6 +160,11 @@
 //        scene pixel-by-pixel to convert it into an RGBA texture
 //
 // 20020604 mortene.
+//
+// UPDATE 20041111 mortene: TGS Inventor has a new set of classes,
+// e.g. "SoGLGraphicConfigTemplate", which makes it possible to set up
+// wanted attributes with GL contexts. Audit their interface and
+// implement, if well designed.
 
 // *************************************************************************
 

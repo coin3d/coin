@@ -18,7 +18,7 @@ Section 01 -- Basic build instructions.
         * Cygwin[1], latest release, with the packages needed to run a
           configure script[2]
 
-        * Microsoft Visual C++ v6.x[3]
+        * Microsoft Visual C++ v6 or v7 [3]
 
   First, make sure Microsoft Visual C++ is accessible from the Cygwin
   shell.  If you can run ``cl.exe'' from the bash command line on the

@@ -72,7 +72,8 @@ SbClip::addVertex(const SbVec3f &v, void * vdata)
 }
 
 /*!
-  Resets the clipper. This should be called before adding any vertices.
+  Resets the clipper. This should be called before adding any vertices
+  when reusing an SbClip instance.
 */
 void
 SbClip::reset(void)

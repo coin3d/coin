@@ -702,6 +702,60 @@ STUFF TO FIX IN COIN
         - Digital Mars C/C++ compiler (<URL:http://www.digitalmars.com>)
           (note: only "free", not "Free" -- not even with source code)
 
+    UPDATE 2004-10-22 mortene: Coin has now been built by at least
+    mingw and Cygwin gcc of the compilers mentioned above. As for
+    other MSWin compilers in general, and Borland C++ in particular,
+    here's some advice given on coin-discuss upon a query about what
+    needs to be done for Borland support:
+
+    ----8<----- [snip] --------------8<----- [snip] ----------
+
+        [...]
+
+        Support for MSVC++ is done by a wrapper executable,
+        Coin/cfg/wrapmsvc.exe, which is used as a compiler and
+        linker. This "pseudo-compiler" will convert the arguments it
+        gets invoked with to arguments compatible with MSVC++'s cl.exe
+        and link.exe, and then invoke those executables to actually
+        build the code.
+
+        So to the configure script, and the Makefiles it generates,
+        the MSVC++ tools looks more or less like any other
+        "UNIX-style" compiler -- e.g. it takes the same kind of
+        arguments ("-g" for building with symbols, "-O2" for basic
+        optimalization measures, "-o" to name output files, "-I" to
+        give include paths, etc etc).
+
+        We would expect Borland C++ support to be done in a similar
+        manner, as the Borland compiler is probably also different
+        enough from the common style used by typical UNIX-system
+        compilers that it won't work with the Autotools
+        (i.e. configure et al) out of the box.
+
+        You can find the code for our wrapmsvc.exe wrapper in the CVS
+        module called "simacros", from the same CVS server as e.g. the
+        Coin repository.
+
+
+        Actual compilation of the source code is likely to require
+        little work and few changes of Coin code, as we believe our
+        source code is extremely portable -- it has been built by
+        literally dozens of C++ compilers, on just about any system
+        possible.
+
+
+        BTW, isn't there some kind of "compatibility mode" between
+        Borland's C++ development system and Microsoft's Visual C++? I
+        seem to remember having heard both that Borland provide a
+        cl.exe wrapper, and that Borland can use libraries built with
+        MSVC++ (such intercompatibilities are uncommon between C++
+        compilers). I may be mistaken, though, as I haven't looked
+        closely at this issue.
+
+        Morten
+
+    ----8<----- [snip] --------------8<----- [snip] ----------
+
 
 028 Support for multiple viewports in render areas
     2003-01-22 Marius Kintel <kintel@sim.no>
@@ -1106,6 +1160,20 @@ STUFF TO FIX IN COIN
     and SoXt, though.
 
     Would be a good task for a summer intern.
+
+
+046 FILEFORMAT/DEFAULTS sections for the nodes.
+    2004-11-03  Morten Eriksen  <mortene@sim.no>
+
+    This is a useful feature of the original SGI Inventor man pages,
+    which we should also present in our Doxygen-generated doc. For an
+    online example, see e.g.:
+
+        http://techpubs.sgi.com/library/tpl/cgi-bin/getdoc.cgi?coll=0650&db=man&fname=/usr/share/catman/p_man/cat3/Inventor_c/SoCube.z&srch=socube
+
+    It would probably be fairly straightforward to write some code to
+    auto-generate these documentation blocks, by using the Coin
+    introspection features.
 
 
 // *************************************************************************

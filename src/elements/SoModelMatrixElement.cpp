@@ -26,7 +26,16 @@
   \brief The SoModelMatrixElement class is used to manage the current transformation.
   \ingroup elements
 
-  FIXME: write doc.
+  SoModelMatrixElement contains the object-to-world matrix.
+
+  The world-to-camera transformation is stored in the
+  SoViewingMatrixElement class.
+
+  Note that one thing that can be a little confusing with the API is
+  that SoModelMatrixElement does not contain the same matrix as the
+  OpenGL \c GL_MODELVIEW matrix.
+
+  \sa SoViewingMatrixElement
 */
 
 #include <Inventor/elements/SoModelMatrixElement.h>

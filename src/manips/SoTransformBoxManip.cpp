@@ -36,6 +36,29 @@
   geometry it influences and taking care of the book-keeping routines
   for it's interaction with the relevant fields of an SoTransformation
   node.
+
+  Here's a simple usage example, in the form of an Inventor format
+  file:
+
+  \verbatim
+#Inventor V2.1 ascii
+
+Separator {
+   TransformBoxManip { }
+   Group {
+      Cone { }
+   }
+}
+
+Translation { translation 2 4 0 }
+
+Separator {
+   TransformBoxManip { }
+   Group {
+      Sphere { }
+   }
+}
+  \endverbatim
 */
 
 #include <Inventor/manips/SoTransformBoxManip.h>

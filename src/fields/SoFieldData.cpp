@@ -554,10 +554,14 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
 
   foundname = FALSE;
 
-  // Should return TRUE. An example is that fieldname like material
-  // doesn't match name in ShapeKit, but is a part of appearance
-  // AppearanceKit in this ShapeKit. This will let BaseKit have a
-  // chance to read in the unknown fields.
+  // Should return TRUE, according to how this function is supposed to
+  // work: it should only return FALSE on actual /parse/ errors, and
+  // not "just" when the name of the read field is unknown.
+  //
+  // An example where this is necessary is where field names don't
+  // match up directly for nodekits, but the field is actually in a
+  // nested nodekit (i.e. a nodekit within another nodekit's catalog),
+  // or is a composite name for a field in a nested nodekit.
   return TRUE;
 }
 
@@ -653,8 +657,9 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
   called, the old data is removed first.
 
   Note that this only copies the field set template specification from
-  \a src, \e not any actual fields.
- */
+  \a src, \e not actual field contents. For copying field contents,
+  see the SoFieldData::overlay() method.
+*/
 void
 SoFieldData::copy(const SoFieldData * src)
 {

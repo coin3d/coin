@@ -29,6 +29,8 @@
   Use nodes of this class type to re-orient geometry data within the
   scene graph.
 
+  See SoTransformation class documentation for a short usage example.
+
   \sa SbRotation, SoRotationXYZ
 */
 
