@@ -119,7 +119,7 @@ static const char * pointlightvpprogram =
 "ATTRIB v16 = vertex.position;\n"
 "PARAM c1 = program.env[1];\n" // Light position
 "PARAM c0 = program.env[0];\n" // Eye position
-"PARAM c2[4] = { program.local[2..5] };\n"
+"PARAM c2[4] = { state.matrix.mvp };\n"
 " MOV result.texcoord[0].xy, v24;\n"
 " DPH result.position.x, v16.xyzz, c2[0];\n"
 " DPH result.position.y, v16.xyzz, c2[1];\n"
@@ -205,7 +205,7 @@ soshape_bumprender::initPrograms(const cc_glglue * glue)
   glue->glGenProgramsARB(1, &pointlightvertexprogramid); // -- Point light program
   glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, pointlightvertexprogramid);
   glue->glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                           strlen(directionallightvpprogram), directionallightvpprogram);
+                           strlen(pointlightvpprogram), pointlightvpprogram);
 
   err = glGetError();
   if (err) {
