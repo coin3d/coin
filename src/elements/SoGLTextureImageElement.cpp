@@ -146,6 +146,8 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
     elem->image = image;
     elem->didapply = FALSE;
     elem->quality = SoTextureQualityElement::get(state);
+    // FIXME: the next line causes a memory leak, according to
+    // Purify. 20001102 mortene.
     elem->dlist = image->getGLDisplayList(state, elem->quality);
     if (elem->dlist) elem->dlist->ref(); // ref to make sure dlist is not deleted too soon
     elem->alphatest = image->needAlphaTest();
