@@ -328,6 +328,8 @@
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/SbBox2f.h>
 #include <float.h>
 #include <math.h>
@@ -467,10 +469,11 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
 
+  SoState * state = action->getState();
+  state->push();
+
   PRIVATE(this)->readLock();
   this->updateCache();
-
-  SoState * state = action->getState();
 
   SbBool doTextures = SoGLTextureEnabledElement::get(state);
   const SbVec3f * normals = PRIVATE(this)->gen.getNormals();
@@ -481,6 +484,19 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
   if (doTextures) {
     SoTextureCoordinateElement::set2(state, this, PRIVATE(this)->tcoord.getLength(),
                                      PRIVATE(this)->tcoord.getArrayPtr());
+
+    int lastenabled = -1;
+    const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+    if (lastenabled >= 1) {
+      for (int i = 1; i <= lastenabled; i++) {
+        if (enabled[i]) {
+          SoMultiTextureCoordinateElement::set2(state, this, i,
+                                                PRIVATE(this)->tcoord.getLength(),
+                                                PRIVATE(this)->tcoord.getArrayPtr());
+          
+        }
+      }
+    }
   }
 
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
@@ -503,11 +519,13 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
                       3, /* SoIndexedFaceSet::PER_VERTEX */
                       0,
                       doTextures?1:0);
+
   PRIVATE(this)->readUnlock();
+
+  state->pop();
 
   // send approx number of triangles for autocache handling
   sogl_autocache_update(state, PRIVATE(this)->idx.getLength() / 4);
-
 }
 
 // Doc in parent
