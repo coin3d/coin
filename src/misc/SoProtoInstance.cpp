@@ -129,6 +129,8 @@ SoProtoInstance::~SoProtoInstance()
   }
   delete THIS->fielddata;
   if (THIS->protodef) THIS->protodef->unref();
+  delete THIS;
+  THIS = 0;
 }
 
 // doc in parent

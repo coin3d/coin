@@ -289,6 +289,8 @@ SoVRMLTimeSensor::SoVRMLTimeSensor(void)
 */
 SoVRMLTimeSensor::~SoVRMLTimeSensor()
 {
+    delete PRIVATE(this);
+    PRIVATE(this) = 0;
 }
 
 // Doc in parent

@@ -274,6 +274,7 @@ SoProto::~SoProto()
   if (PRIVATE(this)->extprotonode) {
     PRIVATE(this)->extprotonode->unref();
   }
+  delete PRIVATE(this)->fielddata;
   delete PRIVATE(this);
 }
 
