@@ -156,7 +156,10 @@
 
 /*!
   \var SoSFBool SoDragger::isActive
-  Is \c TRUE whenever the user is interacting with the dragger.
+  Is \c TRUE whenever the user is interacting with the dragger. For
+  compound draggers (draggers consisting of one or more subdraggers),
+  the isActive field is updated only for the active subdragger, not
+  for the compound dragger.
 */
 
 /*!
