@@ -53,6 +53,17 @@ SoNormalGenerator::~SoNormalGenerator()
 {
 }
 
+void
+SoNormalGenerator::reset(const SbBool ccw)
+{
+  this->ccw = ccw;
+  this->bsp.clear();
+  this->vertexList.truncate(0);
+  this->vertexFace.truncate(0);
+  this->faceNormals.truncate(0);
+  this->vertexNormals.truncate(0);
+}
+
 /*!
   Signals the start of a new polygon.
 

@@ -30,6 +30,8 @@ public:
   SoNormalGenerator(const SbBool ccw, const int approxVertices = 64);
   ~SoNormalGenerator();
 
+  void reset(const SbBool ccw);
+  
   void beginPolygon();
   void polygonVertex(const SbVec3f &v);
   void endPolygon();
@@ -55,7 +57,7 @@ public:
   int getNumNormals() const;
   void setNumNormals(const int num);
   const SbVec3f *getNormals() const;
-  const SbVec3f &getNormal(const int32_t i) const;
+  const SbVec3f & getNormal(const int32_t i) const;
   void setNormal(const int32_t index, const SbVec3f &normal);
 
 private:
