@@ -91,6 +91,10 @@ SoGLClipPlaneElement::getMaxGLPlanes(void)
     // initClass() method, as it won't work -- the GL variables may
     // not have been initialized yet when it's called. --mortene
     GLint val;
+
+    // FIXME: this needs a valid OpenGL context to work -- which we
+    // either should make sure we have, or post an error or warning if
+    // we don't. 20011011 mortene.
     glGetIntegerv(GL_MAX_CLIP_PLANES, &val);
     SoGLClipPlaneElement::maxGLPlanes = val;
   }
