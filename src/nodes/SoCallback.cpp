@@ -96,6 +96,7 @@ SoCallback::callback(SoCallbackAction * action)
 void
 SoCallback::GLRender(SoGLRenderAction * action)
 {
+  action->getState()->lazyEvaluate();
   SoCallback::doAction(action);
 }
 
