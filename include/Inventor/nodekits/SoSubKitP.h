@@ -53,13 +53,15 @@
 #define SO_KIT_INTERNAL_CONSTRUCTOR(_class_) \
   do { \
     SO_NODE_INTERNAL_CONSTRUCTOR(_class_); \
-    if (SO_KIT_IS_FIRST_INSTANCE()) { \
+    SoBase::staticDataLock(); \
+    if (_class_::classcatalog == NULL) { \
       SoType mytype = SoType::fromName(SO__QUOTE(_class_)); \
       if (_class_::parentcatalogptr) \
         _class_::classcatalog = (*_class_::parentcatalogptr)->clone(mytype); \
       else \
         _class_::classcatalog = new SoNodekitCatalog; \
     } \
+    SoBase::staticDataUnlock(); \
   } while (0)
 
 #endif // !COIN_SOSUBKITP_H

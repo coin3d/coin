@@ -34,35 +34,27 @@
   do { \
     this->_field_.setFieldType(SoField::EVENTIN_FIELD); \
     this->_field_.setContainer(this); \
-    if (SO_NODE_IS_FIRST_INSTANCE()) { \
-      fieldData->addField(this, SO__QUOTE(_field_), &this->_field_);\
-    } \
+    fieldData->addField(this, SO__QUOTE(_field_), &this->_field_);\
   } while (0)
 
 #define SO_VRMLNODE_ADD_EVENT_OUT(_field_) \
   do { \
     this->_field_.setFieldType(SoField::EVENTOUT_FIELD); \
     this->_field_.setContainer(this); \
-    if (SO_NODE_IS_FIRST_INSTANCE()) { \
-      fieldData->addField(this, SO__QUOTE(_field_), &this->_field_);\
-    } \
+    fieldData->addField(this, SO__QUOTE(_field_), &this->_field_);\
   } while (0)
 
 #define SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(_field_) \
   do { \
     this->_field_.setFieldType(SoField::EXPOSED_FIELD); \
     this->_field_.setContainer(this); \
-    if (SO_NODE_IS_FIRST_INSTANCE()) { \
-      fieldData->addField(this, SO__QUOTE(_field_), &this->_field_);\
-    } \
+    fieldData->addField(this, SO__QUOTE(_field_), &this->_field_);\
   } while (0)
 
 #define SO_VRMLNODE_ADD_EMPTY_MFIELD(_field_) \
   do { \
     this->_field_.setContainer(this); \
-    if (SO_NODE_IS_FIRST_INSTANCE()) { \
-      fieldData->addField(this, SO__QUOTE(_field_), &this->_field_);\
-    } \
+    fieldData->addField(this, SO__QUOTE(_field_), &this->_field_);\
   } while (0)
 
 

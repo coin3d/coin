@@ -113,10 +113,11 @@ _class_::createInstance(void) \
 }
 
 #define SO_ENGINE_IS_FIRST_INSTANCE() \
-  (classinstances == 1)
+   (classinstances == 1) 
 
 #define SO_ENGINE_CONSTRUCTOR(_class_) \
   do { \
+    SoBase::staticDataLock(); \
     _class_::classinstances++; \
     /* Catch attempts to use an engine class which has not been initialized. */ \
     assert(_class_::classTypeId != SoType::badType()); \
@@ -133,6 +134,7 @@ _class_::createInstance(void) \
     /* considered native. This is important to get the export code to do */ \
     /* the Right Thing. */ \
     this->isBuiltIn = FALSE; \
+    SoBase::staticDataUnlock(); \
   } while (0)
 
 
@@ -173,27 +175,22 @@ _class_::createInstance(void) \
   do { \
     this->_input_.setValue _defaultval_;\
     this->_input_.setContainer(this); \
-    if (SO_ENGINE_IS_FIRST_INSTANCE()) { \
-      inputdata->addField(this, SO__QUOTE(_input_), &this->_input_);\
-    } \
+    inputdata->addField(this, SO__QUOTE(_input_), &this->_input_);\
   } while (0)
 
 #define SO_ENGINE_ADD_OUTPUT(_output_, _type_) \
   do { \
-    if (SO_ENGINE_IS_FIRST_INSTANCE()) { \
-      outputdata->addOutput(this, SO__QUOTE(_output_), \
-                            &this->_output_, \
-                            _type_::getClassTypeId()); \
-    } \
+    outputdata->addOutput(this, SO__QUOTE(_output_), \
+                          &this->_output_, \
+                          _type_::getClassTypeId()); \
     this->_output_.setContainer(this); \
   } while(0)
 
 
 #define SO_ENGINE_DEFINE_ENUM_VALUE(_enumname_, _enumval_) \
   do { \
-    if (SO_ENGINE_IS_FIRST_INSTANCE()) \
-      inputdata->addEnumValue(SO__QUOTE(_enumname_), \
-                              SO__QUOTE(_enumval_), _enumval_); \
+    inputdata->addEnumValue(SO__QUOTE(_enumname_), \
+                            SO__QUOTE(_enumval_), _enumval_); \
   } while (0)
 
 #define SO_ENGINE_OUTPUT(_engineout_, _fieldtype_, _writeop_) \

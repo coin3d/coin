@@ -70,6 +70,7 @@ _class_::createInstance(void) \
 
 #define SO_NODEENGINE_CONSTRUCTOR(_class_) \
   do { \
+    SoBase::staticDataLock(); \
     _class_::classinstances++; \
     /* Catch attempts to use an engine class which has not been initialized. */ \
     assert(_class_::classTypeId != SoType::badType()); \
@@ -86,6 +87,7 @@ _class_::createInstance(void) \
     /* considered native. This is important to get the export code to do */ \
     /* the Right Thing. */ \
     this->isBuiltIn = FALSE; \
+    SoBase::staticDataUnlock(); \
   } while (0)
 
 #define PRIVATE_COMMON_NODEENGINE_INIT_CODE(_class_, _classname_, _createfunc_, _parentclass_) \
@@ -124,11 +126,9 @@ _class_::createInstance(void) \
 
 #define SO_NODEENGINE_ADD_OUTPUT(_output_, _type_) \
   do { \
-    if (SO_ENGINE_IS_FIRST_INSTANCE()) { \
-      outputdata->addOutput(this, SO__QUOTE(_output_), \
-                            &this->_output_, \
-                            _type_::getClassTypeId()); \
-    } \
+    outputdata->addOutput(this, SO__QUOTE(_output_), \
+                          &this->_output_, \
+                          _type_::getClassTypeId()); \
     this->_output_.setNodeContainer(this); \
   } while(0)
 

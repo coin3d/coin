@@ -128,12 +128,12 @@ _class_::createInstance(void) \
 
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_IS_FIRST_INSTANCE() \
-  (classinstances == 1)
-
+   (classinstances == 1)
 
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_CONSTRUCTOR(_class_) \
   do { \
+    SoBase::staticDataLock(); \
     _class_::classinstances++; \
     /* Catch attempts to use a node class which has not been initialized. */ \
     assert(_class_::classTypeId != SoType::badType() && "you forgot init()!"); \
@@ -148,6 +148,7 @@ _class_::createInstance(void) \
        considered native. This is important to get the export code to do \
        the Right Thing. */ \
     this->isBuiltIn = FALSE; \
+    SoBase::staticDataUnlock(); \
   } while (0)
 
 
@@ -202,18 +203,15 @@ _class_::createInstance(void) \
   do { \
     this->_field_.setValue _defaultval_;\
     this->_field_.setContainer(this); \
-    if (SO_NODE_IS_FIRST_INSTANCE()) { \
-      fieldData->addField(this, SO__QUOTE(_field_), &this->_field_);\
-    } \
+    fieldData->addField(this, SO__QUOTE(_field_), &this->_field_); \
   } while (0)
 
 
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_DEFINE_ENUM_VALUE(_enumname_, _enumval_) \
   do { \
-    if (SO_NODE_IS_FIRST_INSTANCE()) \
-      fieldData->addEnumValue(SO__QUOTE(_enumname_), \
-                              SO__QUOTE(_enumval_), _enumval_); \
+    fieldData->addEnumValue(SO__QUOTE(_enumname_), \
+                            SO__QUOTE(_enumval_), _enumval_); \
   } while (0)
 
 #endif // !COIN_SOSUBNODE_H
