@@ -1,0 +1,6 @@
+.libs
+.deps
+Makefile
+*.la
+*.lo
+ii_files
