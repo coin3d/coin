@@ -107,6 +107,8 @@ private:
   SbVec3f animAxis;
   float animAngle;
   SbBool hasDragged;
+  SbMatrix prevMotionMatrix;
+  SbVec3f prevWorldHitPt;
 
   SoTimerSensor *timerSensor;
   static void timerSensorCB(void *, SoSensor *);
