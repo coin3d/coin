@@ -2414,9 +2414,9 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
     
     if((unsigned int) requestedsize[0] > maxsize[0] || (unsigned int) requestedsize[1] > maxsize[1]){
       
-      float max = SbMax(requestedsize[0],requestedsize[1]);
-      float min = SbMin(maxsize[0],maxsize[1]);
-      float scale = min/max;
+      double maxv = (float) SbMax(requestedsize[0],requestedsize[1]);
+      double minv = (float) SbMin(maxsize[0],maxsize[1]);
+      double scale = minv/maxv;
       
       SbVec2s newsize;
       newsize[0] = (int) (requestedsize[0] * scale);
