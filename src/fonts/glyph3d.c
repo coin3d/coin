@@ -45,7 +45,7 @@ static SbBool glyph3d_initialized = FALSE;
 /* Mutex lock for the static ang global font hash */
 static void * glyph3d_fonthash_lock = NULL;
 
-/* See 'fontlib_wrapper' for a description */
+/* Set '#if 1' to enable debug info to console when tracking mutex locking. */
 #if 0
 #define GLYPH3D_MUTEX_LOCK(m) \
   do { \
@@ -197,13 +197,55 @@ cc_glyph3d_getedgeindices(const cc_glyph3d * g)
 int *
 cc_glyph3d_getnextcwedge(const cc_glyph3d * g, int edgeidx)
 {
+
+  int findidx;
+  int * ptr;
+  int * edgeptr;
+  int idx = edgeidx * 2;
+
+  edgeptr = cc_glyph3d_getedgeindices(g);
+
+  // test for common case
+  if (edgeidx > 0) {
+    if (edgeptr[idx] == edgeptr[idx-1])
+      return &edgeptr[idx-2];
+  }
+  // do a linear search
+  findidx = edgeptr[idx];
+  ptr = edgeptr;
+  while (*ptr >= 0) {
+    if (ptr[1] == findidx) return ptr;
+    ptr += 2;
+  }
+
   return NULL;
 }
 
 int *
 cc_glyph3d_getnextccwedge(const cc_glyph3d * g, int edgeidx)
 {
+  int findidx;
+  int * ptr;
+  int * edgeptr;  
+  int idx = edgeidx * 2;
+  
+  edgeptr = cc_glyph3d_getedgeindices(g);
+
+  // test for common case
+  if (edgeptr[idx+1] == edgeptr[idx+2])
+    return &edgeptr[idx+2];
+
+  // do a linear search
+  findidx = edgeptr[idx+1];
+  ptr = edgeptr;
+  while (*ptr >= 0) {
+    if (*ptr == findidx) 
+      return ptr;
+    ptr += 2;
+  }
+
   return NULL;
+
 }
 
 
@@ -225,7 +267,7 @@ glyph3d_calcboundingbox(cc_glyph3d * g)
   g->bbox[3] = 0;
 
   coordptr = cc_glyph3d_getcoords(g);
-  edgeptr = cc_glyph3d_getedgeindices(g);
+  edgeptr = cc_glyph3d_getfaceindices(g);
 
   while ((*edgeptr >= 0) && (*edgeptr != -1)) {
 
