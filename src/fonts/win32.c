@@ -152,6 +152,12 @@ struct cc_flww32_globals_s {
      glyph ids (i.e. which are the hash keys) which maps to struct
      cc_flw_bitmap instances. */
   cc_hash * font2glyphhash;
+
+  /* This is a hash of hashes. Unique keys are HFONT instances. This again
+     contains hashes for each glyph which contain a hash for its 
+     pairing glyphs. This again contains the kerning value for that pair. */
+  cc_hash * font2kerninghash;
+
 };
 
 static struct cc_flww32_globals_s cc_flww32_globals = {
@@ -162,6 +168,11 @@ static struct cc_flww32_globals_s cc_flww32_globals = {
 struct cc_flww32_glyph {
   struct cc_flw_bitmap * bitmap;
 };
+
+/* Callback functions for cleaning up kerninghash table */
+void cc_flww32_kerninghash_deleteCB1(unsigned long key, void * val, void * closure);
+void cc_flww32_kerninghash_deleteCB2(unsigned long key, void * val, void * closure);
+void cc_flww32_kerninghash_deleteCB3(unsigned long key, void * val, void * closure);
 
 /* ************************************************************************* */
 
@@ -250,6 +261,7 @@ cc_flww32_initialize(void)
   }
 
   cc_flww32_globals.font2glyphhash = cc_hash_construct(17, 0.75);
+  cc_flww32_globals.font2kerninghash = cc_hash_construct(17,0.75);
 
   /* Setup temporary glyph-struct used during for tessellation */
   flww32_tessellator.vertexlist = NULL;
@@ -267,13 +279,41 @@ cc_flww32_exit(void)
   /* FIXME: this hash should be empty at this point, or it means that
      one or more calls to cc_flww32_done_font() are missing. Should
      insert a check (plus dump) for that here. 20030610 mortene. */
+  /* UPDATE: Ditto for the kerning hash. (20030930 handegar) */
   cc_hash_destruct(cc_flww32_globals.font2glyphhash);
+  cc_hash_destruct(cc_flww32_globals.font2kerninghash);	
 
   ok = DeleteDC(cc_flww32_globals.devctx);
   if (!ok) {
     cc_win32_print_error("cc_flww32_exit", "DeleteDC()", GetLastError());
   }
 }
+
+/* Callbacks for kerninghash delete */
+void 
+cc_flww32_kerninghash_deleteCB1(unsigned long key, void * val, void * closure)
+{
+  cc_hash * khash;   
+  khash = (cc_hash *) val;
+  cc_hash_apply(khash, cc_flww32_kerninghash_deleteCB2, NULL);
+  cc_hash_destruct(khash);
+}
+void 
+cc_flww32_kerninghash_deleteCB2(unsigned long key, void * val, void * closure)
+{
+  cc_hash * khash;   
+  khash = (cc_hash *) val;
+  cc_hash_apply(khash, cc_flww32_kerninghash_deleteCB3, NULL);
+  cc_hash_destruct(khash);
+}
+void 
+cc_flww32_kerninghash_deleteCB3(unsigned long key, void * val, void * closure)
+{
+  float * kerning;   
+  kerning = (float *) val;
+  free(kerning);
+}
+
 
 /* ************************************************************************* */
 
@@ -283,6 +323,16 @@ cc_flww32_exit(void)
 void *
 cc_flww32_get_font(const char * fontname, int sizex, int sizey)
 {
+  
+  int i;
+  DWORD nrkpairs, ret;
+  KERNINGPAIR * kpairs;
+  cc_hash * khash;
+  cc_hash * fontkerninghash;
+  float * kerningvalue;
+  HFONT previousfont;
+
+
   /* FIXME: an idea about sizex / width specification for fonts: let
      sizex==0 indicate "don't care". Should update API and API doc
      upstream to that effect. 20030911 mortene.
@@ -334,6 +384,67 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey)
   glyphhash = cc_hash_construct(127, 0.75);
   cc_hash_put(cc_flww32_globals.font2glyphhash, (unsigned long)wfont, glyphhash);
 
+
+  /* 
+     Constructing a multilevel kerninghash for this font
+  */
+
+  previousfont = SelectObject(cc_flww32_globals.devctx, (HFONT)wfont);
+  if (previousfont == NULL) {
+    cc_win32_print_error("cc_flww32_get_font", "SelectObject()", GetLastError());
+    return NULL;
+  }
+
+  nrkpairs = GetKerningPairs(cc_flww32_globals.devctx, 0, NULL);
+  if (nrkpairs) {
+    
+    kpairs = (KERNINGPAIR *) malloc(nrkpairs * sizeof(KERNINGPAIR));
+
+    ret = GetKerningPairs(cc_flww32_globals.devctx, nrkpairs, kpairs);
+    if (ret == 0) {
+      cc_win32_print_error("cc_flww32_get_font", "GetKerningPairs()", GetLastError());
+      return NULL;
+    }
+
+    if (!cc_hash_get(cc_flww32_globals.font2kerninghash, (unsigned long) wfont, &fontkerninghash)) {
+      fontkerninghash = cc_hash_construct(5, 0.75);
+      cc_hash_put(cc_flww32_globals.font2kerninghash, (unsigned long) wfont, fontkerninghash);
+    }
+
+    for (i=0;i<(int) nrkpairs;++i) {
+      if (cc_hash_get(fontkerninghash, kpairs[i].wFirst, &khash)) {
+        
+        if (!cc_hash_get(khash, kpairs[i].wSecond, &khash)) {
+          kerningvalue = (float *) malloc(sizeof(float)); /* Ugly... (handegar)*/
+          kerningvalue[0] = (float) kpairs[i].iKernAmount;
+          cc_hash_put(khash, kpairs[i].wSecond, kerningvalue);
+        }
+
+      } else {
+        
+        khash = cc_hash_construct(127, 0.75);
+        kerningvalue = (float *) malloc(sizeof(float)); /* Ugly... (handegar)*/
+        kerningvalue[0] = (float) kpairs[i].iKernAmount;
+
+        /* FIXME: A standalone cc_floathash should have been made so that we dont have to 
+           allocate memory to store a single float. We could have used the pointer-value to 
+           store the float, but that might cause problems later when we go from 32 to 64 bits.
+           (20030929 handegar) */
+
+        cc_hash_put(khash, (unsigned long) kpairs[i].wSecond, kerningvalue);
+        cc_hash_put(fontkerninghash, (unsigned long) kpairs[i].wFirst, khash);
+        
+      }
+    }
+
+    free(kpairs);
+
+  } 
+  else {
+    cc_win32_print_error("cc_flww32_get_font", "GetKerningPairs()", GetLastError());
+    return NULL;
+  }
+
   return (void *)wfont;
 }
 
@@ -375,6 +486,7 @@ cc_flww32_done_font(void * font)
 {
   BOOL ok;
   SbBool found;
+  cc_hash * khash;	
 
   cc_hash * glyphs = get_glyph_hash(font);
   assert(glyphs && "called with non-existent font");
@@ -387,7 +499,10 @@ cc_flww32_done_font(void * font)
      not, but the cc_flww32_done_glyph() method hasn't been
      implemented yet. 20030610 mortene. */
   cc_hash_destruct(glyphs);
-  
+    
+  /* Delete kerninghash for this font using apply-callbacks */
+  if (cc_hash_get(cc_flww32_globals.font2kerninghash, (unsigned long) font, &khash))
+    cc_hash_apply(khash, cc_flww32_kerninghash_deleteCB2, NULL);
 
   ok = DeleteObject((HFONT)font);
   assert(ok && "DeleteObject() failed, investigate");
@@ -486,7 +601,7 @@ cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
   /* Connect device context to font. */
   previousfont = SelectObject(cc_flww32_globals.devctx, (HFONT)font);
   if (previousfont == NULL) {
-    cc_win32_print_error("cc_flww32_get_font", "SelectObject()", GetLastError());
+    cc_win32_print_error("cc_flww32_vector_advance", "SelectObject()", GetLastError());
     return;
   }
 
@@ -525,7 +640,7 @@ cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
  
   ret = GetObject((HFONT) font,sizeof(lfont), (LPVOID) &lfont);
   size = -lfont.lfHeight;
-  if(ret == 0) {
+  if (ret == 0) {
     cc_win32_print_error("cc_flww32_get_advance", "GetObject()", GetLastError());
     size = 1;
   }
@@ -540,9 +655,20 @@ cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
 void
 cc_flww32_get_bitmap_kerning(void * font, int glyph1, int glyph2, int * x, int * y)
 {
-  /* FIXME: unimplemented. (Note that setting these values to <0,0>
-     simply means that the kerning will have no effect (kerning is
-     specified as an offset)). 20030515 mortene. */
+
+  float * kerning = NULL;
+  cc_hash * khash;	
+
+  if (cc_hash_get(cc_flww32_globals.font2kerninghash, (unsigned long) font, &khash)) {	 
+    if (cc_hash_get(khash, (unsigned long) glyph1, &khash)) {
+      if (cc_hash_get((cc_hash *) khash, (unsigned long) glyph2, &kerning)) {
+        *x = (int) kerning[0];
+        *y = 0;
+        return;
+      }
+    }
+  }
+ 
   *x = 0;
   *y = 0;
 }
@@ -552,9 +678,30 @@ cc_flww32_get_bitmap_kerning(void * font, int glyph1, int glyph2, int * x, int *
 void
 cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float * x, float * y)
 {
-  /* FIXME: unimplemented. (Note that setting these values to <0,0>
-     simply means that the kerning will have no effect (kerning is
-     specified as an offset)). 20030515 mortene. */
+
+  float * kerning = NULL;
+  cc_hash * khash;	
+  DWORD ret;
+  DWORD size;
+  LOGFONT lfont;
+
+  ret = GetObject((HFONT) font,sizeof(lfont), (LPVOID) &lfont);
+  size = -lfont.lfHeight;
+  if (ret == 0) {
+    cc_win32_print_error("cc_flww32_get_advance", "GetObject()", GetLastError());
+    size = 1;
+  }
+
+  if (cc_hash_get(cc_flww32_globals.font2kerninghash, (unsigned long) font, &khash)) {	 
+    if (cc_hash_get(khash, (unsigned long) glyph1, &khash)) {
+      if (cc_hash_get((cc_hash *) khash, (unsigned long) glyph2, &kerning)) {
+        *x = kerning[0] / size;
+        *y = 0;
+        return;
+      }
+    }
+  }
+
   *x = 0.0f;
   *y = 0.0f;
 }
@@ -846,7 +993,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
     return NULL;
   }
 
-  if(SelectObject(memdc, membmp) == NULL) {
+  if (SelectObject(memdc, membmp) == NULL) {
     cc_win32_print_error("cc_flww32_get_vector_glyph","Error calling SelectObject(). "
                          "Cannot vectorize font.", GetLastError());
     return NULL;
