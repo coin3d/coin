@@ -27,10 +27,10 @@ NULL=nul
 
 !IF  "$(CFG)" == "coin - Win32 Release"
 
-OUTDIR=C:\@libdir@
+OUTDIR=C:@libdir@
 INTDIR=.\Release
 # Begin Custom Macros
-OutDir=C:\@libdir@
+OutDir=C:@libdir@
 # End Custom Macros
 
 ALL : "$(OUTDIR)\coin.lib"
@@ -526,7 +526,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /ML /W3 /GX /O1 /I "@coin_build_dir@" /I "@coin_src_dir@" /I "@coin_src_dir@\include" /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "COIN_INTERNAL" /Fp"$(INTDIR)\coin.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
+CPP_PROJ=/nologo /ML /W3 /GX /O1 /I "C:@coin_build_dir@" /I "C:@coin_build_dir@/include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@/include" /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "COIN_INTERNAL" /Fp"$(INTDIR)\coin.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -1053,10 +1053,10 @@ LIB32_OBJS= \
 
 !ELSEIF  "$(CFG)" == "coin - Win32 Debug"
 
-OUTDIR=C:\@libdir@
+OUTDIR=C:@libdir@
 INTDIR=.\Debug
 # Begin Custom Macros
-OutDir=C:\@libdir@
+OutDir=C:@libdir@
 # End Custom Macros
 
 ALL : "$(OUTDIR)\coin.lib"
@@ -1553,7 +1553,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MLd /W3 /Gm /GX /ZI /Od /I "@coin_build_dir@" /I "@coin_src_dir@" /I "@coin_src_dir@\include" /D "_DEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "COIN_INTERNAL" /D "COIN_DEBUG" /Fp"$(INTDIR)\coin.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ /c 
+CPP_PROJ=/nologo /MLd /W3 /Gm /GX /ZI /Od /I "C:@coin_build_dir@" /I "C:@coin_build_dir@/include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@/include" /D "_DEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "COIN_INTERNAL" /D "COIN_DEBUG" /Fp"$(INTDIR)\coin.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ /c 
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
