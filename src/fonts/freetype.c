@@ -483,67 +483,137 @@ cc_flwft_exit(void)
 static const char *
 find_font_file(const char * fontname)
 {
-  struct stat buf;
-  cc_string str;
-  unsigned int i, j, n;
-  cc_dynarray * possiblefilenames;
-  void * val;
   const char * foundfile = NULL;
-  SbBool found_in_hash;
-  unsigned long key;
 
-  key = (unsigned long)cc_namemap_get_address(fontname);
-  found_in_hash = cc_hash_get(cc_flwft_globals.fontname2filename, key, &val);
-  if (!found_in_hash) {
-    const char * c = NULL;
+  /* use fontconfig to locate fonts if available */
+  if (cc_fcglue_available()) {
+    unsigned char * filename = NULL;
+    FcPattern * font_pattern = NULL;
+    FcPattern * matched_pattern = NULL;
+    FcResult result;
+
+    /* parse the fontname string to create a fontconfig pattern instance */
+    if (!(font_pattern = cc_fcglue_FcNameParse(fontname))) {
+      cc_debugerror_postinfo("find_font_file",
+                             "fontname '%s' could not be parsed by fontconfig",
+                             fontname);
+      return NULL;
+    }
+    
+    /* next two steps mandatory for fontconfig's FcFontMatch call
+     * otherwise results will not be correct by either the pattern
+     * being underspecified or the pattern modification operations
+     * given by the user not taken out. */
+        
+    /* apply pattern modification operations for those tagged as such */
+    if (!cc_fcglue_FcConfigSubstitute(NULL, font_pattern, FcMatchPattern)) {
+      cc_debugerror_postinfo("find_font_file",
+                             "cc_fcglue_FcConfigSubstitute failed");
+      return NULL;
+    }
+
+    /* supply default values for underspecified font patterns */
+    cc_fcglue_FcDefaultSubstitute(font_pattern);
+    
+    /* FIXME: Should we check the result in the next call and rather
+     * bail out if our font has not been found or always keep going with
+     * the fallback provided by fontconfig? IMHO, everything is better
+     * than the builtin font. Possibly a big fat warning that there was
+     * no font found with the specified pattern would be helpful for the
+     * visually impaired (like me...). 20040410 tamer. */
+    
+    /* return the font most close matching the provided pattern */
+    if (!(matched_pattern = cc_fcglue_FcFontMatch(NULL, font_pattern, &result))) {
+      cc_debugerror_postinfo("cc_fcglue_find_font_file",
+                             "cc_fcglue_FcFontMatch failed");
+      return NULL;
+    }
+    
+    /* get the filename entry out of the pattern */
+    if (cc_fcglue_FcPatternGetString(matched_pattern, "file", 0, &filename) != FcResultMatch) {
+      cc_debugerror_postinfo("find_font_file",
+                             "cc_fcglue_FcPatternGetString failed to get the fontfile");
+      return NULL;
+    }
+    
+    if (cc_flw_debug()) {
+      cc_fcglue_FcPatternPrint(matched_pattern);
+    }
+    
+    foundfile = strdup(filename);
+  
+    cc_fcglue_FcPatternDestroy(font_pattern);
+    cc_fcglue_FcPatternDestroy(matched_pattern);
+    
     if (cc_flw_debug()) {
       cc_debugerror_postinfo("find_font_file",
-                             "fontname '%s' not found in name hash",
-                             fontname);
+                             "fontfile matching the pattern: '%s'",
+                             foundfile);
     }
-    /* If name ends in ".ttf", we interpret it as filename. */
-    c = strrchr(fontname, '.');
-    if (!(c && strlen(c) == 4 && strstr(c, ".ttf"))) return NULL;
   }
+  else {
+    struct stat buf;
+    cc_string str;
+    unsigned int i, j, n;
+    cc_dynarray * possiblefilenames;
+    void * val;
+    SbBool found_in_hash;
+    unsigned long key;
 
-  possiblefilenames = (cc_dynarray *)val;
-  n = found_in_hash ? cc_dynarray_length(possiblefilenames) : 1;
-
-  cc_string_construct(&str);
-  for (i = 0; i < n; i++) {
-    /* FIXME: the following code is generic code for finding a file in
-       a list of directories. Should move this to a new C ADT
-       "cc_file" (or "cc_dir"?). If done, should also wrap the SoInput
-       functions which does the same around it. 20030604 mortene. */
-    const unsigned int dirs = cc_dynarray_length(cc_flwft_globals.fontfiledirs);
-    for (j = 0; j < dirs; j++) {
-      SbBool found = FALSE;
-
-      cc_string_set_text(&str, (const char *)cc_dynarray_get(cc_flwft_globals.fontfiledirs, j));
-      cc_string_append_char(&str, '/');
-      if (found_in_hash) {
-        cc_string_append_text(&str, (const char *)cc_dynarray_get(possiblefilenames, i));
-      } else {
-        cc_string_append_text(&str, fontname);
-      }
-
-      found = (stat(cc_string_get_text(&str), &buf) == 0) && !S_ISDIR(buf.st_mode);
+    key = (unsigned long)cc_namemap_get_address(fontname);
+    found_in_hash = cc_hash_get(cc_flwft_globals.fontname2filename, key, &val);
+    if (!found_in_hash) {
+      const char * c = NULL;
       if (cc_flw_debug()) {
-        cc_debugerror_postinfo("find_font_file", "'%s' %s",
-                               cc_string_get_text(&str),
-                               found ? "found!" : "NOT found");
+        cc_debugerror_postinfo("find_font_file",
+                               "fontname '%s' not found in name hash",
+                               fontname);
       }
+      /* If name ends in ".ttf", we interpret it as filename. */
+      c = strrchr(fontname, '.');
+      if (!(c && strlen(c) == 4 && strstr(c, ".ttf"))) return NULL;
+    }
 
-      if (found) {
-        /* Store permanent in global name hash. */
-        foundfile = cc_namemap_get_address(cc_string_get_text(&str));
-        goto done;
+    possiblefilenames = (cc_dynarray *)val;
+    n = found_in_hash ? cc_dynarray_length(possiblefilenames) : 1;
+
+    cc_string_construct(&str);
+    for (i = 0; i < n; i++) {
+      /* FIXME: the following code is generic code for finding a file in
+         a list of directories. Should move this to a new C ADT
+         "cc_file" (or "cc_dir"?). If done, should also wrap the SoInput
+         functions which does the same around it. 20030604 mortene. */
+      const unsigned int dirs = cc_dynarray_length(cc_flwft_globals.fontfiledirs);
+      for (j = 0; j < dirs; j++) {
+        SbBool found = FALSE;
+
+        cc_string_set_text(&str, (const char *)cc_dynarray_get(cc_flwft_globals.fontfiledirs, j));
+        cc_string_append_char(&str, '/');
+        if (found_in_hash) {
+          cc_string_append_text(&str, (const char *)cc_dynarray_get(possiblefilenames, i));
+        } else {
+          cc_string_append_text(&str, fontname);
+        }
+
+        found = (stat(cc_string_get_text(&str), &buf) == 0) && !S_ISDIR(buf.st_mode);
+        if (cc_flw_debug()) {
+          cc_debugerror_postinfo("find_font_file", "'%s' %s",
+                                 cc_string_get_text(&str),
+                                 found ? "found!" : "NOT found");
+        }
+
+        if (found) {
+          /* Store permanent in global name hash. */
+          foundfile = cc_namemap_get_address(cc_string_get_text(&str));
+          goto done;
+        }
       }
     }
+
+  done:
+    cc_string_clean(&str);
   }
 
- done:
-  cc_string_clean(&str);
   return foundfile;
 }
 
@@ -616,7 +686,6 @@ cc_flwft_done_font(void * font)
   cc_hash_destruct(glyphs);
 }
 
-
 int
 cc_flwft_get_num_charmaps(void * font)
 {
@@ -672,7 +741,6 @@ cc_flwft_get_charmap_name(void * font, int charmap)
   return name;
 }
 
-
 void
 cc_flwft_set_charmap(void * font, int charmap)
 {
@@ -699,12 +767,19 @@ cc_flwft_set_char_size(void * font, int width, int height)
   assert(font);
   face = (FT_Face)font;
   /* FIXME: the input arguments for width and height looks
-     bogus. Check against the FreeType API doc. 20030515 mortene. */
+     bogus. Check against the FreeType API doc. 20030515 mortene.
+     
+     UPDATE 20040408 tamer: checked docs. they are not bogus. width
+     and height are specified in 1/64th of points. changed resolution
+     values from hardcoded (...,72,72) to (...,0,0) where 72dpi is the
+     current default of FreeType. just in case it has a different
+     default for other platforms such as win32 where 96dpi is the
+     modus operandi.
+  */
 
-  width <<= 6;
-  height <<= 6;
-  
-  error = cc_ftglue_FT_Set_Char_Size(face, width, height, 72, 72);
+  /* set the size for the face by using default values of FreeType for
+   * the resolution */
+  error = cc_ftglue_FT_Set_Char_Size(face, (width<<6), (height<<6), 0, 0);
   if (error) {
     cc_debugerror_post("cc_flwft_set_char_size",
                        "FT_Set_Char_Size(.., %d, %d, ..) returned error code %d",
@@ -734,8 +809,7 @@ cc_flwft_set_font_rotation(void * font, float angle)
 int
 cc_flwft_get_glyph(void * font, unsigned int charidx)
 {
-  FT_Face face;
-  face = (FT_Face)font;
+  FT_Face face = (FT_Face)font;
   
   /* FIXME: check code paths & reenable assert. Comments follow */
   
@@ -747,9 +821,7 @@ cc_flwft_get_glyph(void * font, unsigned int charidx)
      it's the caller(s) that should avoid trying to get a glyph out of
      a non-existent font. Reenable assert when code paths are fixed. */
   
-  if (face == NULL) { return 0; }
-  
-  return cc_ftglue_FT_Get_Char_Index(face, charidx);
+  return (face == NULL) ? 0 : cc_ftglue_FT_Get_Char_Index(face, charidx);
 }
 
 void
@@ -878,7 +950,7 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
 
   struct cc_flwft_glyph * gs;
   cc_hash * glyphhash;
-  SbBool unused;
+  SbBool mono, unused;
 
   assert(font);
   
@@ -905,13 +977,23 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
                                            error);
     return NULL;
   }
-  error = cc_ftglue_FT_Glyph_To_Bitmap(&g, ft_render_mode_mono, 0, 1);
-  if (error) {
-    if (cc_flw_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
-                                           "FT_Glyph_To_Bitmap() => error %d",
-                                           error);
-    return NULL;
+
+  /* render a glyph only if it's in outline format. this won't be the
+     case for any of the bitmap font types such as pcf. the variable
+     mono needs to be set before the conversion to a 256 gray level
+     bitmap in order to propagate the correct format value up the code
+     path through the later bm->mono assignment. */
+  mono = (g->format == FT_GLYPH_FORMAT_BITMAP);
+  if (!mono) {
+    error = cc_ftglue_FT_Glyph_To_Bitmap(&g, ft_render_mode_normal, 0, 1);
+    if (error) {
+      if (cc_flw_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
+                                             "FT_Glyph_To_Bitmap() => error %d",
+                                             error);
+      return NULL;
+    }
   }
+
   tfbmg = (FT_BitmapGlyph)g;
   tfbm = &tfbmg->bitmap;
 
@@ -922,6 +1004,7 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   bm->rows = tfbm->rows;
   bm->width = tfbm->width;
   bm->pitch = tfbm->pitch;
+  bm->mono = mono;
 
   memcpy(bm->buffer, tfbm->buffer, tfbm->rows * tfbm->pitch);
   cc_ftglue_FT_Done_Glyph(g);
@@ -973,7 +1056,7 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
 
   face = (FT_Face) font;
 
-  error = cc_ftglue_FT_Set_Char_Size(face, (flwft_3dfontsize<<6), (flwft_3dfontsize<<6), 72, 72);
+  error = cc_ftglue_FT_Set_Char_Size(face, (flwft_3dfontsize<<6), (flwft_3dfontsize<<6), 0, 0);
   if (error != 0) {  
     /* FIXME: No message is printed here because returning NULL will
        force glyph3d.c to use the builtin font. This happens whenever
@@ -985,7 +1068,7 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity
     return NULL;
   }
 
-  error = cc_ftglue_FT_Load_Glyph(face, glyphindex, FT_LOAD_DEFAULT );
+  error = cc_ftglue_FT_Load_Glyph(face, glyphindex, FT_LOAD_DEFAULT);
   if (error != 0) {
     if (cc_flw_debug())
       cc_debugerror_post("cc_flwft_get_vector_glyph",
