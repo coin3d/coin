@@ -30,6 +30,10 @@
 #endif // !COIN_INTERNAL
 
 
+// FIXME: document all the macros, as they are part of the public
+// API. 20011024 mortene.
+
+
 #define SO_KIT_HEADER(_kitclass_) \
   SO_NODE_HEADER(_kitclass_); \
 public: \
@@ -179,6 +183,25 @@ _class_::getClassNodekitCatalogPtr(void) \
 
 #define SO_KIT_SET_SF_ENUM_TYPE(_fieldname_, _enumtype_) \
   SO_NODE_SET_SF_ENUM_TYPE(_fieldname_, _enumtype_)
+
+
+#define SO_KIT_CHANGE_ENTRY_TYPE(_part_, _newpartclassname_, _newdefaultpartclassname_) \
+  do { \
+    if (SO_KIT_IS_FIRST_INSTANCE()) { \
+       classcatalog->narrowTypes(SO__QUOTE(_part_), \
+                                 SoType::fromName(SO__QUOTE(_newpartclassname_)), \
+                                 SoType::fromName(SO__QUOTE(_newdefaultpartclassname_))); \
+    } \
+  } while (0)
+
+
+#define SO_KIT_CHANGE_NULL_BY_DEFAULT(_part_, _newnullbydefault_) \
+  do { \
+   if (SO_KIT_IS_FIRST_INSTANCE()) { \
+     classcatalog->setNullByDefault(SO__QUOTE(_part_), _newnullbydefault_); \
+   } \
+  } while (0)
+
 
 
 #endif // !COIN_SOSUBKIT_H
