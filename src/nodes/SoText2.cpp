@@ -37,23 +37,11 @@
 
 // FIXME -- FIXME -- FIXME
 //
-// Stuff missing in the GLRender implementation:
-//  * doesn't heed the justification field
-//
-// Besides, we need to fix or look into these things:
-//  * the getBoundingBox() method is just a stub now -- it needs to be correct
-//  * must clean up the local font cache stuff and move it into
-//    a global scheme (because fonts are also used in other nodes
-//    (SoAsciiText, SoAnnoText3, others?)) in caches/SoFontCache or some such
-//  * the font acquisition is now dependent on X11 in the method
-//    interfaces -- we should abstract away from window system dependencies
-//    as much as possible
+//  * computeBoundingBox() is not implemented properly, rayPick() and
+//    generatePrimitives() are just stubs
 //  * allocations aren't cleaned out on exit (Display *, XFontStructs,
 //    SbDict, OpenGL display lists, ...)
-//  * should we make hooks into the component class libraries for font handling
-//    methods to meet the goal of making the Coin core 100% window system
-//    independent?
-//  * could we then perhaps favorably use Qt's fonthandling?
+//  * integrate with libfreetype to remove dependency on X11.
 //
 //         -- 19990418 mortene.
 
