@@ -64,7 +64,7 @@ SoSFUInt32::readValue(SoInput * in)
   unsigned int tmp;
   if (!in->read(tmp)) return FALSE;
   this->value = tmp;
-  return FALSE;
+  return TRUE;
 }
 
 // Write integer value to output stream. Also used from SoMFUInt32
