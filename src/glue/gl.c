@@ -1058,7 +1058,7 @@ glglue_resolve_symbols(cc_glglue * w)
      using the Nvidia 44.96 driver (version 1.4.0). The VBO extension
      is therefore disabled for this driver. The issue was solved for
      the 53.28 driver (version 1.4.1). */
-  if(strcmp(w->vendorstr, "NVIDIA Corporation") && 
+  if(!strcmp(w->vendorstr, "NVIDIA Corporation") && 
      !cc_glglue_glversion_matches_at_least(w, 1, 4, 1)) 
     w->glBindBuffer = NULL;  
 #endif
