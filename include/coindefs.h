@@ -121,6 +121,7 @@
 
 #define COIN_STUB()       do { } while (0)
 #define COIN_OBSOLETED()  do { } while (0)
+#define COIN_STUB_ONCE()       do { } while (0)
 
 #endif /* !COIN_DEBUG */
 
