@@ -1547,3 +1547,53 @@
     20021220 mortene.
 
 =====================================================================
+
+051 ExaminerViewer's automatic initial "view all" doesn't work on
+    a scene graph with SoImage.
+
+    Reproduce with the following source code snippet. The
+    "aass_logo.rgb" is an image of dimensions 80x68 (I haven't
+    investigated if this matters or not).
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    #include <Inventor/Qt/SoQt.h>
+    #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+    #include <Inventor/nodes/SoSeparator.h>
+    #include <Inventor/nodes/SoImage.h>
+    #include <Inventor/nodes/SoCone.h>
+        
+    int
+    main(int argc, char* argv[])
+    {
+      QWidget * mainwin = SoQt::init(argv[0]);
+    
+      SoSeparator * root = new SoSeparator;
+      root->ref();
+    
+      root->addChild(new SoCone);
+    
+      SoImage * img = new SoImage;
+      root->addChild(img);
+      img->filename = "aass_logo.rgb";
+    
+      SoQtExaminerViewer * viewer = new SoQtExaminerViewer(mainwin);
+      viewer->setSceneGraph(root);
+        
+      SoQt::show(mainwin);
+      SoQt::mainLoop();
+    
+      delete viewer;
+      root->unref();
+        
+      return 0;
+    }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+
+    Notice how the cone is a tiny dot in the lower left corner of the
+    image at first. Then click view all (the eye icon) and see how the
+    camera is then position where it should be. Correct behavior would
+    be for the camera to be position there from the start.
+
+    20030103 mortene.
+
+=====================================================================
