@@ -1,30 +1,184 @@
-Here is some information about common problems when building on Mac OS X /
-Darwin platforms:
+This file contains information about building Coin on Mac OS X.
 
 
- 1 config.status reports errors in sed expressions towards the end of the
-   configure script run.
+Mac OS 10.0.x compatibility
+==========================
 
-   | config.status: creating Makefile
-   | sed: 23: /tmp/cs21660-29327/subs-2.sed: unescaped newline inside substitute pattern
+First of all, please note that we do not support Mac OS X versions < 10.1 
+Things will probably work just fine on 10.0.x as well if you are building 
+Coin from the source yourself, but we do not make any guarantees. Our 
+precompiled binary packages of Coin/Mac will not work on 10.0.x. In any
+case, MacOS 10.1 was such a great step in performance and stability that
+I strongly encourage you to upgrade from 10.0.x anyway (which should be
+considered more like a "public beta", really). 
 
-   This problem comes with sourcedir builds, but not when building in a
-   separate builddir.  Follow the cookbook procedure outlined in INSTALL
-   to work around this problem.  The problem is an Autoconf bug, and is
-   believed to be fixed now.
+If you build Coin on a MacOS 10.1 system and want to use the library on
+10.0.x, you will have to use the -flat_namespace linker switch. (Modify
+the LDFLAGS environment variable to do that.) Do not do this unless you
+are sure you what you are doing and have read (and fully understood)
+Apple's Release Note concerning two-level namespace executables[0].
 
 
-The above is a complete list of the problems we are aware of on Mac OS X
-platforms when trying to configure and build Coin. If you bump into any
-other problems, please let us know.
+Mac OS 10.2
+===========
 
-Please also be aware that there has so far not been done any work
-towards implementing a "SoMac" library with bindings between the
-native Mac GUI API and the Coin library.  For using the Coin library
-on Mac platforms, your best option so far is to control your own
+If you are upgrading to Mac OS 10.2, you must recompile your Coin
+library. This is due to the fact that the developer tools for Mac OS
+10.2 are based on gcc.3.1, as opposed to gcc-2.95 in 10.1. These two
+compilers are not ABI compatible - meaning that you have to rebuild 
+_all_ your C++ libraries.
+
+If you decide to build Coin from the source code, please cvs update
+or download the latest snapshot (after 20020915). Note that there are 
+several bugs in the developer tools that came with the original Mac 
+OS 10.2 CDs, so you should install the update provided by Apple 
+("August2002DevToolsUpdate") first.
+
+A precompiled binary for the Coin framework on Mac OS 10.2 can be found
+on our ftp server[1].
+
+
+The Inventor framework
+======================
+
+By default, Coin will be set up as MacOS X framework. Frameworks are a
+central concept to Mac OS X, packing a dynamic shared library with the
+necessary resources for this library, like header files, images, and
+documentation. You can link against a framework by using the "-framework" 
+compiler option. Please refer to the Apple developer documentation [2] for 
+more information about frameworks.
+
+Since Coin is an OpenInventor implementation, the framework is named
+"Inventor", not Coin. Following Apple's recommendation for 3rd-party
+frameworks, the Inventor.framework is installed in /Library/Frameworks.
+
+What this means, basically, is that instead of
+"cc -I/path/to/Coin/include -L/path/to/Coin/lib -lCoin -lGL -lGLU -o foo 
+foo.cpp",
+your commandline would be something like
+"cc -framework Inventor -framework OpenGL -o foo foo.cpp"
+
+You can of course still use the coin-config script, which takes care of
+all this (see man coin-config(1) for more information).
+
+If you want to disable the creation of the framework and install Coin as
+standalone shared library, you can use the configure option
+
+--without-framework
+
+which will install libCoin.dylib into $prefix/lib and the headers into
+$prefix/include. 
+
+Note that the configure option "-with-framework" is intended for
+debugging purposes (to install as a framework on non-Macintosh systems)
+only. You do not need it when you build Coin/Mac as a framework (the
+default).
+
+
+Project Builder IDE support
+===========================
+
+You can use the Inventor.framework like any of Apple's frameworks in
+Project Builder by just drag+and+dropping it into your target settings.
+Please note that you will (of course) also need the OpenGL framework,
+and (if you are using GLUT) the GLUT framework. 
+
+(Mac OS 10.2 users: See also the problem note on  __Znwm below.)
+
+
+SoMac?
+=======
+
+We are planning to implement a "SoMac" library with bindings between
+Cocoa and the Coin library in the long run, but this is just in the
+planning phase.
+
+At the moment, your best option is probably to control your own
 OpenGL-canvas, like done in the glutiv.cpp example found on the
-<URL:http://www.coin3d.org> website.
+<URL:http://www.coin3d.org> website. A simple example on how to use 
+Coin from the Cocoa environment is provided here[3].
+
+You can also try and use SoQt (which depends on Qt/Mac, released
+recently by Trolltech), but please note that this is still under
+development, so you might stumble into some bugs every once in a 
+while.
+
+
+Common problems (and solutions)
+===============================
+
+o Directory names with spaces
+  ----------------------------
+
+There seem to be some problems with Automake when the path to the Coin
+configure directory contains spaces. A typical warning you would get in
+this case is "configure: WARNING: `missing' script is too old or
+missing." -- Things seem to work in spite of this, but I wouldn't rely
+on it.
+
+Until this has been fixed, I suggest the obvious workaround of not 
+having any spaces in the path leading to Coin.
+
+
+o "Undefined symbol: __Znwm"
+  --------------------------
+
+If you try to build a project using Coin in Project Builder, you might
+get an error message about __Znwm being undefined. Mac OS 10.2 comes 
+with two version of libstc++, so you must tell it which ones to use - 
+namely the same one used for building Coin. Adding the following to the
+linker commandline solves the problem: 
+
+    "-L/usr/lib/gcc/darwin/default/private/"
+
+For those who are unfamiliar with Project Builder's settings, a short
+instruction follows:
+
+  - Open the project in ProjectBuilder.
+  - Click on the "Targets" tab.
+  - Choose target "Coin-in-a-Cocoa-Nutshell". This brings up the
+    settings window in the project builder main window. 
+  - Click on "Settings" (in the menu in the main window), "simple view",
+    "Linker settings".
+  - There, in "Other Mach-O Linker Flags", enter 
+    "-L/usr/lib/gcc/darwin/default/private/" .
+  - Press Shift-Command-k, or choose "Build -> clean" from the project 
+    builder menubar.
+  - Rebuild.
+
+That should be it.
+
+If you have any problems when trying to configure and build Coin on
+MacOS X, please let us know. 
+
+
+o There is no uninstaller
+  -----------------------
+
+Mac OS X does not come with a native uninstaller utility (strange
+enough), but the OS X Gnu project has created a Cocoa appplication
+that you can get here[4]. We haven't tried it, though, so your milage
+may vary...
+
+The short and simple way is to just delete the installed files by
+typing the following into a Terminal window:
+
+  sudo rm -r /Library/Framework/Inventor.framework
+  [now you will be asked for your Administrator password]
+  sudo rm -r /Library/Receipts/Coin-1.0.3.pkg
+  sudo rm -r /usr/local/share/Coin
+  sudo rm /usr/local/bin/coin-config
+  sudo rm /usr/local/man/man1/coin-config.1
+
+
+========================================================================
+
+References:
+[0] http://developer.apple.com/techpubs/macosx/ReleaseNotes/TwoLevelNamespaces.html
+[1] ftp://ftp.coin3d.org/pub/coin/bin/macosx/Coin-1.0.2_Mac-OS-10.2.sit
+[2] http://developer.apple.com/techpubs/macosx/Essentials/SystemOverview/Frameworks 
+[3] ftp://ftp.sim.no/pub/coin/bin/macosx/coin-in-a-cocoa-nutshell.sit
+[4] http://www.osxgnu.org/info/pkgdelete.html
 
 --
-larsa@sim.no
-mortene@sim.no
+kyrah@sim.no
