@@ -659,29 +659,46 @@ glxglue_context_create_software(struct glxglue_contextdata * context)
   return TRUE;
 }
 
-// XXX
-#include <stdio.h>
-
 static COIN_GLXPbuffer
 glxglue_glXCreatePbuffer(Display * dpy, COIN_GLXFBConfig config, int width, int height)
 {
-  if (glxglue_glXCreatePbuffer_GLX_1_3) {
-    const int attrs[] = {
-      GLX_PBUFFER_WIDTH, width,
-      GLX_PBUFFER_HEIGHT, height,
-      None
-    };
+  const int glx13_attrs[] = {
+    GLX_PBUFFER_WIDTH, width,
+    GLX_PBUFFER_HEIGHT, height,
+    None
+  };
 
-    return glxglue_glXCreatePbuffer_GLX_1_3(dpy, config, attrs);
+  int sgix_attrs[] = {
+    None
+  };
+
+
+  if (glxglue_glXCreatePbuffer_GLX_1_3) {
+    return glxglue_glXCreatePbuffer_GLX_1_3(dpy, config, glx13_attrs);
   }
 
   assert(glxglue_glXCreateGLXPbufferSGIX);
-  return glxglue_glXCreateGLXPbufferSGIX(dpy, config, width, height, NULL);
+  /* The official SGIX pbuffer extensions documentation says the
+     following about the glXCreateGLXPbufferSGIX() function:
+
+         <attrib_list> can be either NULL, in which case all the
+         attributes assume their default values as described
+         below. [...]
+
+     ..but leaving attrib_list (i.e. the last argument) as NULL causes
+     a crash with NVidia's Linux driver, at least in version 41.91.
+  */
+  return glxglue_glXCreateGLXPbufferSGIX(dpy, config, width, height, sgix_attrs);
 }
 
 static SbBool
 glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
 {
+  /* FIXME: before we get here, we should have checked the requested
+     dimensions in the context struct versus GLX_MAX_PBUFFER_WIDTH,
+     GLX_MAX_PBUFFER_HEIGHT and GLX_MAX_PBUFFER_PIXELS
+     somewhere. 20030811 mortene. */
+
   COIN_GLXPbuffer pb;
   COIN_GLXFBConfig * fbc;
   Display * dpy;
