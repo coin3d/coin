@@ -259,3 +259,27 @@
     mortene 20020625.
 
 =====================================================================
+
+013 The "no texture" setting in the viewer menus doesn't work any
+    more. Note that this _could_ be a bug in the So* toolkits, but
+    since it doesn't work to turn off texture mapping for the
+    following file neither, it seems likely that it could be an actual
+    Coin bug:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #Inventor V2.1 ascii
+    
+    Separator {
+       Texture2 {
+          filename /home/sigma/mortene/pix/keown-2000-09-20.jpg
+       }
+    
+       Complexity { textureQuality 0.0 }   # set low to avoid smoothing
+       Coordinate3 { point [ 0 0 0, 1 0 0, 1 1 0, 0 1 0 ] }
+       FaceSet { }
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    mortene 20020701.
+
+=====================================================================
