@@ -21,6 +21,8 @@
 
 #include <Inventor/C/base/string.h>
 
+#include <Inventor/C/errors/debugerror.h>
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
@@ -39,7 +41,6 @@
 
    - get rid of strlen() invocations
    - use the cc_memalloc interface?
-   - use cc_error-style class instead of the fprintf()s
 
    20020513 mortene.
 */
@@ -67,12 +68,9 @@ cc_string_remove_substring(cc_string * me, int start, int end)
 
 #if COIN_DEBUG
   if ( start < 0 || start >= len || end < 0 || end >= len || start > end ) {
-    /* FIXME: convert to proper mechanism. 20020513 mortene. */
-    /*
-    SoDebugError::postWarning("cc_string_remove_substring",
+    cc_debugerror_postwarning("cc_string_remove_substring",
                               "invalid arguments [%d, %d] for string ``%s''",
-                              startidx, endidx, me->sstring);
-    */
+                              start, end, cc_string_get_text(me));
     return;
   }
 #endif /* COIN_DEBUG */
@@ -201,38 +199,33 @@ cc_string_set_subtext(cc_string * me, const char * text, int start, int end)
   len = strlen(text);
   if ( end == -1 ) end = len - 1;
 
-#if COIN_DEBUG && 0 /* FIXME */
+#if COIN_DEBUG
   if (start<0) {
-    // SoDebugError::postWarning("SbString::SbString",
-    fprintf(stderr, 
+    cc_debugerror_postwarning("cc_string_set_subtext",
                               "start index (%d) should be >= 0. Clamped to 0.",
                               start);
     start=0;
   }
   else if (start>len) {
-    // SoDebugError::postWarning("SbString::SbString",
-    fprintf(stderr, 
+    cc_debugerror_postwarning("cc_string_set_subtext",
                               "start index (%d) is out of bounds [0, %d>. "
                               "Clamped to %d.", start, len, len-1);
     start=len;
   }
   if (end<0) {
-    // SoDebugError::postWarning("SbString::SbString",
-    fprintf(stderr, 
+    cc_debugerror_postwarning("cc_string_set_subtext",
                               "end index (%d) should be >= 0. Clamped to 0.",
                               end);
     end=0;
   }
   else if (end>len) {
-    // SoDebugError::postWarning("SbString::SbString",
-    fprintf(stderr, 
+    cc_debugerror_postwarning("cc_string_set_subtext",
                               "end index (%d) is out of bounds [0, %d>. "
                               "Clamped to %d.", end, len, len-1);
     end=len;
   }
   if (start>end+1) {
-    // SoDebugError::postWarning("SbString::SbString",
-    fprintf(stderr, 
+    cc_debugerror_postwarning("cc_string_set_subtext",
                               "start index (%d) is greater than end index "
                               "(%d). Empty string created.", start, end);
     start=0;
