@@ -41,6 +41,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/system/gl.h>
 
 // *************************************************************************
@@ -71,6 +72,24 @@ public:
   SbBool needclose;
   SoElement * invalidelement;
   int numframesok;
+
+  //
+  // Callback from SoContextHandler
+  //
+  static void contextCleanup(uint32_t context, void * closure) {
+    SoGLCacheListP * thisp = (SoGLCacheListP*) closure;
+
+    int i = 0;
+    int n = thisp->itemlist.getLength();
+    while (i < n) {
+      if (thisp->itemlist[i]->getCacheContext() == (int) context) {
+        delete thisp->itemlist[i];
+        thisp->itemlist.remove(i);
+        n--;
+      }
+      else i++;
+    }
+  }
 };
 
 #undef THIS
@@ -106,6 +125,8 @@ SoGLCacheList::SoGLCacheList(int numcaches)
     else COIN_DEBUG_CACHING = 0;
   }
 #endif // debug
+  
+  SoContextHandler::addContextDestructionCallback(SoGLCacheListP::contextCleanup, THIS);
 }
 
 /*!
@@ -113,6 +134,7 @@ SoGLCacheList::SoGLCacheList(int numcaches)
 */
 SoGLCacheList::~SoGLCacheList()
 {
+  SoContextHandler::removeContextDestructionCallback(SoGLCacheListP::contextCleanup, THIS);
   const int n = THIS->itemlist.getLength();
   for (int i = 0; i < n; i++) {
     THIS->itemlist[i]->unref();
