@@ -85,4 +85,7 @@
 #define GL_TEXTURE_WRAP_R 0x8072
 #endif /* GL_TEXTURE_WRAP_R */
 
+#ifndef GL_TEXTURE_3D
+#define GL_TEXTURE_3D 0x806F
+#endif /* GL_TEXTURE_3D */
 #endif /* ! COIN_GL_H */
