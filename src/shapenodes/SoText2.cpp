@@ -250,7 +250,6 @@ SoText2::GLRender(SoGLRenderAction * action)
     // this->computeBBox(action, box, center);
     // if (!SoCullElement::cullTest(state, box, SbBool(FALSE))) {
     if (1) {
-      // __asm { int 3};
       SoMaterialBundle mb(action);
       mb.sendFirst();
       SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
@@ -286,9 +285,7 @@ SoText2::GLRender(SoGLRenderAction * action)
       SbVec2s position;
       SbVec2s thissize;
       unsigned char * buffer;
-      // fprintf(stderr,"SoText2::renderGL called.\n");
       for (int i = 0; i < THIS->linecnt; i++) {
-        // fprintf(stderr,"  render text line %d\n", i);
         switch (this->justification.getValue()) {
         case SoText2::LEFT:
           xpos = nilpoint[0];
@@ -308,7 +305,6 @@ SoText2::GLRender(SoGLRenderAction * action)
           position = THIS->positions[i][i2];
           fx = (float)position[0];
           fy = (float)position[1];
-          // THIS->dumpBuffer(buffer, thissize, thispos);  // DEBUG
           
           rasterx = xpos + fx;
           rpx = rasterx >= 0 ? rasterx : 0;
@@ -438,7 +434,6 @@ SoText2::rayPick(SoRayPickAction * action)
       }
     }
     
-    // fprintf(stderr, "rayPick: stringidx %d charidx %d\n", stringidx, charidx);  // DEBUG
     if (charidx >= 0 && charidx < strlength) { // we have a hit!
       SoPickedPoint * pp = action->addIntersection(isect);
       if (pp) {
@@ -480,11 +475,12 @@ SoText2P::flushGlyphCache(const SbBool unrefglyphs)
     free(this->stringwidth);
     for (int i=0; i<this->linecnt; i++) {
       if (validarraydims == 2) {
-        if (this->laststring[i] && unrefglyphs)
+        if (this->laststring[i] && unrefglyphs) {
           for (int j=0; j<this->laststring[i]->getLength(); j++) {
             if (this->glyphs[i][j])
               this->glyphs[i][j]->unref();
           }
+        }
         free(this->positions[i]);
       }
       delete this->laststring[i];
@@ -537,8 +533,6 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
   SbVec3f screenpoint;
   vv.projectToScreen(nilpoint, screenpoint);
   
-  // fprintf(stderr,"computeBBox: screenpoint %f %f %f\n", screenpoint[0], screenpoint[1], screenpoint[2]);
-  
   const SbViewportRegion & vp = SoViewportRegionElement::get(state);
   SbVec2s vpsize = vp.getViewportSizePixels();
   
@@ -555,7 +549,6 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
   n1 = SbVec2f(screenpoint[0] + maxx, screenpoint[1] + miny);
   n2 = SbVec2f(screenpoint[0] + maxx, screenpoint[1] + maxy);
   n3 = SbVec2f(screenpoint[0] + minx, screenpoint[1] + maxy);
-  // fprintf(stderr,"computeBBox: bbox = %f %f - %f %f\n", n0[0], n0[1], n2[0], n2[1]);
   
   float halfw = (maxx - minx) / (float)2.0;
   switch (this->textnode->justification.getValue()) {
@@ -606,9 +599,10 @@ SoText2P::dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos)
     int bytes = size[0] >> 3;
     fprintf(stderr,"bitmap dump %d * %d bytes at %d, %d:\n", rows, bytes, pos[0], pos[1]);
     for (int y=rows-1; y>=0; y--) {
-      for (int byte=0; byte<bytes; byte++) 
+      for (int byte=0; byte<bytes; byte++) {
         for (int bit=0; bit<8; bit++)
           fprintf(stderr,"%d", buffer[y*bytes + byte] & 0x80>>bit ? 1 : 0);
+      }
       fprintf(stderr,"\n");
     }
   }
@@ -630,9 +624,10 @@ SoText2P::shouldBuildGlyphCache(SoState * state)
   // FIXME: Use notify() mechanism to detect field changes. For Coin3. preng, 2003-03-10.
   if (this->linecnt != this->textnode->string.getNum())
     return SbBool(TRUE);
-  for (int i=0; i<this->linecnt; i++)
+  for (int i=0; i<this->linecnt; i++) {
     if (strcmp(laststring[i]->getString(), this->textnode->string[i].getString()) != 0)
       return SbBool(TRUE);
+  }
   return SbBool(FALSE);
 }
 
@@ -640,7 +635,6 @@ int
 SoText2P::buildGlyphCache(SoState * state)
 {
   if (this->shouldBuildGlyphCache(state)) {
-    // __asm { int 3};
     SoText2 * t = this->textnode;
     const char * s;
     int len;
@@ -691,7 +685,6 @@ SoText2P::buildGlyphCache(SoState * state)
         this->laststring[i] = new SbString(s);
         for (int j=0; j<len; j++) {
           idx = s[j];
-          // fprintf(stderr,"buildGlyphCache: char idx=%d\n", idx);
           this->glyphs[i][j] = (SoGlyph *)(SoGlyph::getGlyph(state, idx, SbVec2s(0,0), 0.0));
           if (!this->glyphs[i][j]) {
             this->flushGlyphCache(FALSE);
@@ -700,7 +693,6 @@ SoText2P::buildGlyphCache(SoState * state)
             return -1;
           }
           this->glyphs[i][j]->getBitmap(thissize, thispos, SbBool(FALSE));
-          // fprintf(stderr,"  thissize=(%d,%d) thispos=(%d,%d)\n", (int)thissize[0], (int)thissize[1], (int)thispos[0], (int)thispos[1]);
           if (j > 0) {
             kerning = this->glyphs[i][j-1]->getKerning((const SoGlyph &)*this->glyphs[i][j]);
             advance = this->glyphs[i][j-1]->getAdvance();
@@ -710,10 +702,8 @@ SoText2P::buildGlyphCache(SoState * state)
           }
           penpos = penpos + advance + kerning;
           this->positions[i][j] = penpos + thispos + SbVec2s(0, -thissize[1]);
-          // fprintf(stderr,"  position=(%d,%d)\n", (int)this->positions[i][j][0], (int)this->positions[i][j][1]);
           this->bbox.extendBy(this->positions[i][j]);
           this->bbox.extendBy(this->positions[i][j] + SbVec2s(thissize[0], -thissize[1]));
-          // fprintf(stderr,"  advance=(%d,%d) kerning=(%d,%d)\n", (int)advance[0], (int)advance[1], (int)kerning[0], (int)kerning[1]);
         }
         this->stringwidth[i] = this->positions[i][len-1][0] + thissize[0];
         penpos = SbVec2s(0, penpos[1] - (short)(this->prevfontsize * t->spacing.getValue()));
