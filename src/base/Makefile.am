@@ -14,6 +14,7 @@ ALLSOURCES = \
 	SbCylinder.cpp SbCylinder.h \
 	SbDict.cpp SbDict.h \
 	SbHeap.cpp SbHeap.h \
+	SbImage.cpp SbImage.h \
 	SbLine.cpp SbLine.h \
 	SbMatrix.cpp SbMatrix.h \
 	SbName.cpp SbName.h \

@@ -73,6 +73,7 @@ CLEAN :
 	-@erase "$(INTDIR)\SbSphereSectionProjector.obj"
 	-@erase "$(INTDIR)\SbSphereSheetProjector.obj"
 	-@erase "$(INTDIR)\SbString.obj"
+	-@erase "$(INTDIR)\SbImage.obj"
 	-@erase "$(INTDIR)\SbStringList.obj"
 	-@erase "$(INTDIR)\SbTesselator.obj"
 	-@erase "$(INTDIR)\SbTime.obj"
@@ -608,6 +609,7 @@ LIB32_OBJS= \
 	"$(INTDIR)\SbSphereSectionProjector.obj" \
 	"$(INTDIR)\SbSphereSheetProjector.obj" \
 	"$(INTDIR)\SbString.obj" \
+	"$(INTDIR)\SbImage.obj" \
 	"$(INTDIR)\SbStringList.obj" \
 	"$(INTDIR)\SbTesselator.obj" \
 	"$(INTDIR)\SbTime.obj" \
@@ -1105,6 +1107,7 @@ CLEAN :
 	-@erase "$(INTDIR)\SbSphereSectionProjector.obj"
 	-@erase "$(INTDIR)\SbSphereSheetProjector.obj"
 	-@erase "$(INTDIR)\SbString.obj"
+	-@erase "$(INTDIR)\SbImage.obj"
 	-@erase "$(INTDIR)\SbStringList.obj"
 	-@erase "$(INTDIR)\SbTesselator.obj"
 	-@erase "$(INTDIR)\SbTime.obj"
@@ -1641,6 +1644,7 @@ LIB32_OBJS= \
 	"$(INTDIR)\SbSphereSectionProjector.obj" \
 	"$(INTDIR)\SbSphereSheetProjector.obj" \
 	"$(INTDIR)\SbString.obj" \
+	"$(INTDIR)\SbImage.obj" \
 	"$(INTDIR)\SbStringList.obj" \
 	"$(INTDIR)\SbTesselator.obj" \
 	"$(INTDIR)\SbTime.obj" \
@@ -2316,6 +2320,12 @@ SOURCE="@coin_src_dir@\src\projectors\SbSphereSheetProjector.cpp"
 SOURCE="@coin_src_dir@\src\base\SbString.cpp"
 
 "$(INTDIR)\SbString.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\base\SbImage.cpp"
+
+"$(INTDIR)\SbImage.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

@@ -241,6 +241,10 @@ SOURCE="@coin_src_dir@\src\base\SbString.cpp"
 # End Source File
 # Begin Source File
 
+SOURCE="@coin_src_dir@\src\base\SbImage.cpp"
+# End Source File
+# Begin Source File
+
 SOURCE="@coin_src_dir@\src\lists\SbStringList.cpp"
 # End Source File
 # Begin Source File

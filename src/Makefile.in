@@ -169,6 +169,7 @@ libCoininc_HEADERS = \
 	$(top_srcdir)/include/Inventor/SbCylinder.h \
 	$(top_srcdir)/include/Inventor/SbDict.h \
 	$(top_srcdir)/include/Inventor/SbHeap.h \
+	$(top_srcdir)/include/Inventor/SbImage.h \
 	$(top_srcdir)/include/Inventor/SbLine.h \
 	$(top_srcdir)/include/Inventor/SbMatrix.h \
 	$(top_srcdir)/include/Inventor/SbName.h \
