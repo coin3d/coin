@@ -271,6 +271,15 @@ void
 SoNurbsCurve::generatePrimitives(SoAction * action)
 {
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
+    // HACK WARNING: pederb, 2002-01-30
+    //
+    // call doNurbsWrapper() instead of doNurbs(). doNurbsWrapper()
+    // will use sogl_offscreencontext_callback() to call
+    // doNurbs(). This is needed since it seems like the GLU NURBS
+    // renderer makes some OpenGL calls even when in tessellate
+    // mode. sogl_offscreencontext_callback() will set up an offscreen
+    // context so that we are guaranteed to have a valid GL context
+    // before making the GLU calls.
     PRIVATE(this)->doNurbsWrapper(action, FALSE);
   }
 }
