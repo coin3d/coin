@@ -18,7 +18,6 @@ AC_LANG_CPLUSPLUS
 SIM_COMPILER_INLINE_FOR(, AC_MSG_ERROR(the "$CXX" C++ compiler is not capable of compiling Coin))
 SIM_AC_CHECK_VAR_FUNCTIONNAME
 
-
 # *******************************************************************
 # * Library version control.
 
@@ -184,16 +183,8 @@ CPPFLAGS="$CPPFLAGS -DCOIN_INTERNAL"
 # false negatives when running under Cygwin, using the Microsoft
 # VisualC++ compiler (the configure script will pick the GCC
 # preprocessor, and AC_CHECK_HEADERS uses AC_TRY_CPP).
-#
-# FIXME: should make these into a separate macro, with result
-# caching. 20000629 mortene.
 
-AC_MSG_CHECKING(for unistd.h)
-AC_TRY_COMPILE([#include <unistd.h>], [], AC_DEFINE(HAVE_UNISTD_H) AC_MSG_RESULT(found), AC_MSG_RESULT(not found))
-AC_MSG_CHECKING(for io.h)
-AC_TRY_COMPILE([#include <io.h>], [], AC_DEFINE(HAVE_IO_H) AC_MSG_RESULT(found), AC_MSG_RESULT(not found))
-AC_MSG_CHECKING(for windows.h)
-AC_TRY_COMPILE([#include <windows.h>], [], AC_DEFINE(HAVE_WINDOWS_H) AC_MSG_RESULT(found), AC_MSG_RESULT(not found))
+SIM_AC_CHECK_HEADERS(unistd.h io.h windows.h)
 
 # Try to find snprintf() and vsnprintf() on the system.
 SIM_CHECK_NPRINTF

@@ -1006,7 +1006,7 @@ fi
 
 
 # Usage:
-#   SIM_DEBUGSYMBOLS
+#   SIM_AC_DEBUGSYMBOLS
 #
 # Description:
 #   Let the user decide if debug symbol information should be compiled
@@ -1018,16 +1018,12 @@ fi
 # 
 # Author: Morten Eriksen, <mortene@sim.no>.
 # 
-# TODO:
-#   * [mortene:19991114] make this work with compilers other than gcc/g++
-# 
 
-AC_DEFUN([SIM_DEBUGSYMBOLS], [
-AC_PREREQ([2.13])
+AC_DEFUN([SIM_AC_DEBUGSYMBOLS], [
 AC_ARG_ENABLE(
   [symbols],
   AC_HELP_STRING([--enable-symbols],
-                 [(GCC only) include symbol debug information [default=yes]]),
+                 [include symbol debug information [default=yes]]),
   [case "${enableval}" in
     yes) enable_symbols=yes ;;
     no)  enable_symbols=no ;;
@@ -1036,15 +1032,11 @@ AC_ARG_ENABLE(
   [enable_symbols=yes])
 
 if test x"$enable_symbols" = x"no"; then
-  if test x"$GXX" = x"yes" || x"$GCC" = x"yes"; then
-    CFLAGS="`echo $CFLAGS | sed 's/-g//'`"
-    CXXFLAGS="`echo $CXXFLAGS | sed 's/-g//'`"
-  else
-    AC_MSG_WARN([--disable-symbols only has effect when using GNU gcc or g++])
-  fi
+  CFLAGS="`echo $CFLAGS | sed 's/-g//'`"
+  CPPFLAGS="`echo $CPPFLAGS | sed 's/-g//'`"
+  CXXFLAGS="`echo $CXXFLAGS | sed 's/-g//'`"
 fi
 ])
-
 
 # Usage:
 #   SIM_AC_RTTI_SUPPORT
@@ -1316,6 +1308,38 @@ else
 fi
 ])
 
+
+# SIM_AC_CHECK_HEADER(HEADER-FILE, [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+# --------------------------------------------------------------------------
+# Modified AC_CHECK_HEADER to use AC_TRY_COMPILE instead of AC_TRY_CPP,
+# as we can get false positives and/or false negatives when running under
+# Cygwin, using the Microsoft Visual C++ compiler (the configure script will
+# pick the GCC preprocessor).
+AC_DEFUN([SIM_AC_CHECK_HEADER],
+[AC_VAR_PUSHDEF([ac_Header], [ac_cv_header_$1])dnl
+AC_ARG_VAR([CPPFLAGS], [C/C++ preprocessor flags, e.g. -I<include dir> if you ha
+ve headers in a nonstandard directory <include dir>])
+AC_CACHE_CHECK([for $1], ac_Header,
+[AC_TRY_COMPILE([#include <$1>
+], [],
+AC_VAR_SET(ac_Header, yes), AC_VAR_SET(ac_Header, no))])
+AC_SHELL_IFELSE([test AC_VAR_GET(ac_Header) = yes],
+                [$2], [$3])dnl
+AC_VAR_POPDEF([ac_Header])dnl
+])# SIM_AC_CHECK_HEADER
+
+
+# SIM_AC_CHECK_HEADERS(HEADER-FILE...
+#                  [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+# ----------------------------------------------------------
+AC_DEFUN([SIM_AC_CHECK_HEADERS],
+[for ac_header in $1
+do
+SIM_AC_CHECK_HEADER($ac_header,
+                    [AC_DEFINE_UNQUOTED(AC_TR_CPP(HAVE_$ac_header)) $2],
+                    [$3])dnl
+done
+])# SIM_AC_CHECK_HEADERS
 
 # Usage:
 #  SIM_CHECK_SNPRINTF
