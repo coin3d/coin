@@ -3838,6 +3838,13 @@ main(int argc, char* argv[])
     Should investigate, to find out what is really going on here, and
     whether or not this is a bug.
 
+    Note that to reproduce this bug, one currently needs to deactivate
+    the use of an SoBoxHighlightRenderAction in the extselection
+    example, or otherwise we get a crash due to bug #136. Done by
+    commenting out the following line of extselection.cpp.in:
+
+      ex1->setGLRenderAction(new SoBoxHighlightRenderAction(SbViewportRegion()));
+
     20040903 mortene.
 
 =====================================================================
