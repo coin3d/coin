@@ -1124,7 +1124,6 @@ SoDragger::childTransferMotionAndValueChangedCB(void *data, SoDragger *child)
   child->removeValueChangedCallback(SoDragger::childTransferMotionAndValueChangedCB, thisp);
   thisp->transferMotion(child);
   child->addValueChangedCallback(SoDragger::childTransferMotionAndValueChangedCB, thisp);
-  thisp->valueChangedCB.invokeCallbacks(thisp);
 }
 
 
@@ -1132,7 +1131,7 @@ void
 SoDragger::childValueChangedCB(void *data, SoDragger *child)
 {
   SoDragger *thisp = (SoDragger*)data;
-  thisp->valueChangedCB.invokeCallbacks(thisp);
+  thisp->valueChanged();
 }
 
 void
