@@ -437,13 +437,13 @@ SoAction::traverse(SoNode * const node)
   // FIXME: write code for PathList traversal.
 
   this->currentpath.append(node);
-  
+
   switch (this->currentpathcode) {
   case SoAction::IN_PATH:
     {
       int idx = this->currentpath.getFullLength();
       int nodeidx = this->currentpath.getIndexFromTail(0);
-      
+
       if (this->applieddata.path->getIndex(idx - 1) != nodeidx) {
         this->currentpathcode = SoAction::OFF_PATH;
       }
@@ -607,6 +607,30 @@ const SoEnabledElementsList &
 SoAction::getEnabledElements(void) const
 {
   return *(this->enabledElements);
+}
+
+/*!
+  \internal
+
+  This method not available in the original OIV API, see SoSubAction.h
+  for explanation.
+ */
+SoEnabledElementsList *
+SoAction::getClassEnabledElements(void)
+{
+  return SoAction::enabledElements;
+}
+
+/*!
+  \internal
+
+  This method not available in the original OIV API, see SoSubAction.h
+  for explanation.
+ */
+SoActionMethodList *
+SoAction::getClassActionMethods(void)
+{
+  return SoAction::methods;
 }
 
 /*!

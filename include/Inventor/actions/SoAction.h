@@ -124,11 +124,20 @@ protected:
 
   SoState * state;
   SoActionMethodList * traversalMethods;
-  static COIN_DLL_IMPORT SoEnabledElementsList * enabledElements;
-  static COIN_DLL_IMPORT SoActionMethodList * methods;
+
+  /* These two methods are not available in the original OIV API.  The
+     reason they have been added is explained in SoSubAction.h for the
+     SO_ACTION_HEADER macro. */
+  static SoEnabledElementsList * getClassEnabledElements(void);
+  static SoActionMethodList * getClassActionMethods(void);
 
 private:
   static SoType classTypeId;
+  /* The enabledElements and methods variables are protected in the
+     original OIV API. This is not such a good idea, see the comments
+     in SoSubAction.h for SO_ACTION_HEADER. */
+  static SoEnabledElementsList * enabledElements;
+  static SoActionMethodList * methods;
 
   AppliedCode appliedcode;
 
