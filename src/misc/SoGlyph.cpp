@@ -32,6 +32,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbName.h>
+#include <Inventor/C/threads/threadsutilp.h>
 #include <../tidbits.h> // coin_atexit()
 #include <string.h>
 #include <stdlib.h>
@@ -170,7 +171,6 @@ SoGlyph::getBoundingBox(void) const
   // this method needs to be const, so cast away constness
   SoGlyph * thisp = (SoGlyph*) this;
   if (!this->flags.didcalcbbox) {
-    thisp->flags.didcalcbbox = 1;
     thisp->bbox.makeEmpty();
     int *ptr = this->edgeidx;
     int idx = *ptr++;
@@ -178,6 +178,7 @@ SoGlyph::getBoundingBox(void) const
       thisp->bbox.extendBy(this->coords[idx]);
       idx = *ptr++;
     }
+    thisp->flags.didcalcbbox = 1;
   }
   return this->bbox;
 }
@@ -280,10 +281,12 @@ public:
 };
 
 static SbList <coin_glyph_info> *activeGlyphs = NULL;
+static void * SoGlyph_mutex = NULL;
 
 void SoGlyph_cleanup(void)
 {
   delete activeGlyphs;
+  CC_MUTEX_DESTRUCT(SoGlyph_mutex);
 }
 
 /*!
@@ -292,16 +295,23 @@ void SoGlyph_cleanup(void)
 const SoGlyph *
 SoGlyph::getGlyph(const char character, const SbName &font)
 {
+  if (SoGlyph_mutex == NULL) {
+    CC_MUTEX_CONSTRUCT(SoGlyph_mutex);
+  }
+
   // FIXME: it would probably be a good idea to have a small LRU-type
   // glyph cache to avoid freeing glyphs too early. If for instance the user
   // creates a single SoText3 node which is used several times in a
   // graph with differnet fonts, glyphs will be freed and recreated
   // all the time. pederb, 20000324
 
+  CC_MUTEX_LOCK(SoGlyph_mutex);
+
   if (activeGlyphs == NULL) {
     activeGlyphs = new SbList <coin_glyph_info>;
     coin_atexit((coin_atexit_f *)SoGlyph_cleanup);
   }
+
   int i, n = activeGlyphs->getLength();
   for (i = 0; i < n; i++) {
     if ((*activeGlyphs)[i].matches(character, font)) break;
@@ -309,6 +319,7 @@ SoGlyph::getGlyph(const char character, const SbName &font)
   if (i < n) {
     SoGlyph *glyph = (*activeGlyphs)[i].glyph;
     glyph->refcount++;
+    CC_MUTEX_UNLOCK(SoGlyph_mutex);
     return glyph;
   }
 
@@ -344,6 +355,7 @@ SoGlyph::getGlyph(const char character, const SbName &font)
   coin_glyph_info info(character, font, glyph);
   glyph->refcount++;
   activeGlyphs->append(info);
+  CC_MUTEX_UNLOCK(SoGlyph_mutex);
   return glyph;
 }
 
@@ -359,6 +371,7 @@ SoGlyph::createSystemGlyph(const char character, const SbName &font)
 void
 SoGlyph::unrefGlyph(SoGlyph *glyph)
 {
+  CC_MUTEX_LOCK(SoGlyph_mutex);
   assert(activeGlyphs);
   assert(glyph->refcount > 0);
   glyph->refcount--;
@@ -371,4 +384,5 @@ SoGlyph::unrefGlyph(SoGlyph *glyph)
     activeGlyphs->removeFast(i);
     delete glyph;
   }
+  CC_MUTEX_UNLOCK(SoGlyph_mutex);
 }
