@@ -605,7 +605,7 @@ doxygen-docs: built-sources
 @BUILD_LIBRARY_TRUE@	fi
 
 cvs-update:
-	@cd $(top_srcdir) && cvs update -dP
+	@cd $(top_srcdir) && cvs -z3 -q update -dP
 
 # **************************************************************************
 # misc rules for automatic debian packaging.  main: `debian-packages'
