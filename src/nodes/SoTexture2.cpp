@@ -19,10 +19,9 @@
 
 /*!
   \class SoTexture2 SoTexture2.h Inventor/nodes/SoTexture2.h
-  \brief The SoTexture2 class ...
+  \brief The SoTexture2 class is used to map a 2D texture onto geometry. 
   \ingroup nodes
 
-  FIXME: write class doc
 */
 
 #include <coindefs.h> // COIN_STUB()
@@ -40,60 +39,64 @@
 
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   \enum SoTexture2::Model
-  FIXME: write documentation for enum
+  Texture mapping model.
 */
 /*!
   \var SoTexture2::Model SoTexture2::MODULATE
-  FIXME: write documentation for enum definition
+  Texture image is modulated with polygon. 
 */
 /*!
   \var SoTexture2::Model SoTexture2::DECAL
-  FIXME: write documentation for enum definition
+  Texture image overwrites polygon color.
 */
 /*!
   \var SoTexture2::Model SoTexture2::BLEND
-  FIXME: write documentation for enum definition
+  Blend image using blendColor.
 */
 
 /*!
   \enum SoTexture2::Wrap
-  FIXME: write documentation for enum
+  Enum used to specify wrapping strategy.
 */
 /*!
   \var SoTexture2::Wrap SoTexture2::REPEAT
-  FIXME: write documentation for enum definition
+  Repeat texture when coordinate is not between 0 and 1.
 */
 /*!
   \var SoTexture2::Wrap SoTexture2::CLAMP
-  FIXME: write documentation for enum definition
+  Clamp coordinate between 0 and 1.
 */
 
 
 /*!
   \var SoSFString SoTexture2::filename
-  FIXME: write documentation for field
+  Texture filename. Specify either this or use image, not both.
 */
 /*!
   \var SoSFImage SoTexture2::image
-  FIXME: write documentation for field
+  Inline image data.
 */
 /*!
   \var SoSFEnum SoTexture2::wrapS
-  FIXME: write documentation for field
+  Wrapping strategy for the S coordinate.
 */
 /*!
   \var SoSFEnum SoTexture2::wrapT
-  FIXME: write documentation for field
+  Wrapping strategy for the T coordinate.
 */
 /*!
   \var SoSFEnum SoTexture2::model
-  FIXME: write documentation for field
+  Texture model.
 */
 /*!
   \var SoSFColor SoTexture2::blendColor
-  FIXME: write documentation for field
+  Blend color. Used when model is BLEND.
 */
 
 // *************************************************************************
@@ -127,6 +130,9 @@ SoTexture2::SoTexture2()
 
   this->imagedata = NULL;
   this->glimage = NULL;
+  this->imagedatavalid = FALSE;
+  this->glimagevalid = FALSE;
+  this->readstatus = 1;
 }
 
 /*!
@@ -138,11 +144,7 @@ SoTexture2::~SoTexture2()
   if (this->glimage) this->glimage->unref();
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoTexture2 class. This includes setting up the
-  type system, among other things.
-*/
+// doc from parent
 void
 SoTexture2::initClass(void)
 {
@@ -156,7 +158,8 @@ SoTexture2::initClass(void)
 
 
 /*!
-  FIXME: write function documentation
+  Overloaded to check if texture file (if any) can be found 
+  and loaded.
 */
 SbBool
 SoTexture2::readInstance(SoInput * in, unsigned short flags)
@@ -169,46 +172,38 @@ SoTexture2::readInstance(SoInput * in, unsigned short flags)
                         filename.getValue().getString());
     }
   }
-
   return readOK;
 }
 
-/*!
-  FIXME: write function documentation
-*/
-SbBool
-SoTexture2::readImage(void)
-{
-  this->getImage();
-  if (this->imagedata) return this->imagedata->load();
-  return FALSE;
-}
-
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoTexture2::GLRender(SoGLRenderAction * action)
 {
-  // FIXME: consider context, pederb
+  // FIXME: consider sharing textures among contexts, pederb
   SoState * state = action->getState();
 
-  if (!this->getImage()) return;
+  if (SoTextureOverrideElement::getImageOverride(state))
+    return;
 
+  if (!this->getImage()) return;
+  
   float quality = SoTextureQualityElement::get(state);
-  if (this->imagedata) {
+  
+  if (this->imagedata && this->imagedata->load()) {
     SbBool clamps = this->wrapS.getValue() == SoTexture2::CLAMP;
     SbBool clampt = this->wrapT.getValue() == SoTexture2::CLAMP;
-
-    if (this->glimage && !this->glimage->matches(clamps, clampt)) {
+    
+    if (this->glimage && (!this->glimagevalid || 
+                          !this->glimage->matches(clamps, clampt))) {
       this->glimage->unref();
       this->glimage = NULL;
     }
-
+    
     if (this->glimage == NULL) {
       this->glimage =
         SoGLImage::findOrCreateGLImage(this->imagedata,
                                        clamps, clampt, quality, NULL);
+      this->glimagevalid = TRUE;
     }
   }
   SoGLTextureImageElement::set(state, this,
@@ -217,15 +212,13 @@ SoTexture2::GLRender(SoGLRenderAction * action)
                                this->blendColor.getValue());
   SoGLTextureEnabledElement::set(state,
                                  this, this->glimage != NULL && quality > 0.0f);
-
+  
   if (this->isOverride()) {
     SoTextureOverrideElement::setImageOverride(state, TRUE);
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
 SoTexture2::doAction(SoAction * action)
 {
@@ -249,11 +242,12 @@ SoTexture2::doAction(SoAction * action)
   else {
     SoTextureImageElement::setDefault(state, this);
   }
+  if (this->isOverride()) {
+    SoTextureOverrideElement::setImageOverride(state, TRUE);
+  }
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
 SoTexture2::callback(SoCallbackAction * action)
 {
@@ -261,34 +255,35 @@ SoTexture2::callback(SoCallbackAction * action)
 }
 
 /*!
-  FIXME: write doc
- */
+  Not implemented. We have a different strategy for loading images,
+  using SoImageInterface. Let us know if anybody needs this function.
+*/
 SbBool
 SoTexture2::readImage(const SbString & /* fname */,
                       int & /* w */, int & /* h */, int & /* nc */,
                       unsigned char *& /* bytes */)
 {
   COIN_STUB();
-  return TRUE;
+  return FALSE;
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns read status. 1 for success, 0 for failure.
+*/
 int
 SoTexture2::getReadStatus(void)
 {
-  COIN_STUB();
-  return 0;
+  return this->readstatus;
 }
 
 /*!
-  FIXME: write doc
+  Sets read status.
+  \sa getReadStatus()
  */
 void
-SoTexture2::setReadStatus(int /* s */)
+SoTexture2::setReadStatus(int s)
 {
-  COIN_STUB();
+  this->readstatus = s;
 }
 
 //
@@ -304,6 +299,8 @@ SoTexture2::getImage(void)
 {
   if (this->filename.isIgnored() && this->image.isIgnored())
     return FALSE;
+  
+  if (this->imagedatavalid) return TRUE; // common case
 
   SbVec2s size;
   int nc;
@@ -315,22 +312,55 @@ SoTexture2::getImage(void)
     (size[1] > 0) &&
     (nc > 0 && nc <= 4);
 
-  // FIXME: investigate when to return TRUE or FALSE
   if (this->filename.isIgnored() && !validinline) return FALSE;
-
-  // FIXME: set up field sensors to detect when texture change
-  if (this->imagedata) return TRUE;
+  
+  if (this->imagedata) {
+    // if we get here, we'll have to "reload" image
+    this->imagedata->unref();
+    this->imagedata = NULL;
+  }
 
   if (validinline) {
     this->imagedata = new SoImageInterface(size, nc, bytes);
     this->imagedata->ref();
   }
   else {
-    if (!this->filename.isIgnored() && this->filename.getValue().getLength()) {
+    if (this->filename.getValue().getLength()) {
       const SbStringList & dirlist = SoInput::getDirectories();
       const char * texname = this->filename.getValue().getString();
       this->imagedata = SoImageInterface::findOrCreateImage(texname, dirlist);
+#if COIN_DEBUG && 1 // debug
+      SoDebugError::postInfo("SoTexture2::getImage",
+                             "image not found: %s", texname);
+#endif // debug
     }
   }
+  this->imagedatavalid = TRUE; // imagedata should be valid (or NULL) now
   return TRUE;
 }
+
+//
+// read image
+//
+SbBool
+SoTexture2::readImage(void)
+{
+  this->getImage();
+  this->readstatus = this->imagedata && this->imagedata->load();
+  return this->readstatus;
+}
+
+/*!
+  Overloaded to detect when filename or image changes.
+*/
+void 
+SoTexture2::notify(SoNotList *list)
+{
+  SoField *f = list->getLastField();
+  if (f == &this->image || f == &this->filename) {
+    this->imagedatavalid = FALSE;
+    this->glimagevalid = FALSE;
+  }
+  SoNode::notify(list);
+}
+

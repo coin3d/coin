@@ -38,9 +38,6 @@ public:
   static void initClass(void);
   SoTexture2(void);
 
-
-  SbBool readImage(void);
-
   enum Model {
     MODULATE = SoTextureImageElement::MODULATE,
     DECAL = SoTextureImageElement::DECAL,
@@ -70,11 +67,16 @@ protected:
   virtual ~SoTexture2();
 
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  virtual void notify(SoNotList *list);
   int getReadStatus(void);
   void setReadStatus(int s);
 
 private:
+  int readstatus;
+  SbBool imagedatavalid;
+  SbBool glimagevalid;
   SbBool getImage(void);
+  SbBool readImage(void);
   class SoImageInterface * imagedata;
   class SoGLImage * glimage;
 };
