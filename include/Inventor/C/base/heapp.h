@@ -28,11 +28,11 @@
 #error this is a private header file
 #endif /* !COIN_INTERNAL */
 
+#include "hash.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-
-#include "hash.h"
 
   struct cc_heap {
     unsigned int size;

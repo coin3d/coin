@@ -34,10 +34,6 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 #define NO_IMPLEMENTATION
 
 #ifdef USE_PTHREAD
@@ -52,6 +48,12 @@ extern "C" {
 #include <windows.h>
 #undef NO_IMPLEMENTATION
 #endif /* USE_W32THREAD */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+/* ********************************************************************** */
 
 struct cc_thread {
   void * (*func)(void *);

@@ -24,13 +24,13 @@
  *
 \**************************************************************************/
 
+#include <stdlib.h>
+
 #include <Inventor/C/basic.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-
-#include <stdlib.h>
 
   typedef struct cc_hash cc_hash;
   typedef unsigned long cc_hash_func(const unsigned long key);

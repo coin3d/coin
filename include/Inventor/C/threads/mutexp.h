@@ -32,12 +32,6 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
-/* ********************************************************************** */
-
 #define NO_IMPLEMENTATION
 #ifdef USE_PTHREAD
 #include <pthread.h>
@@ -48,6 +42,12 @@ extern "C" {
 #include <windows.h>
 #undef NO_IMPLEMENTATION
 #endif /* USE_W32THREAD */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+/* ********************************************************************** */
 
 struct cc_mutex {
 #ifdef USE_PTHREAD

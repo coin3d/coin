@@ -40,6 +40,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/* ********************************************************************** */
+
 struct cc_sched {
   cc_wpool * pool;
   cc_mutex * mutex;

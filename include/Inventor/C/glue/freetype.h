@@ -28,16 +28,6 @@
 #error this is a private header file
 #endif
 
-#include <Inventor/C/basic.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
-#if 0 /* to get proper auto-indentation in emacs */
-}
-#endif /* emacs indentation */
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
@@ -47,6 +37,16 @@ extern "C" {
 #include <freetype/freetype.h>
 #include <freetype/ftglyph.h>
 #else /* HAVE_FREETYPE */
+
+#include <Inventor/C/basic.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+#if 0 /* to get proper auto-indentation in emacs */
+}
+#endif /* emacs indentation */
 
 /* 
    We need some freetype structs, so define them here for runtime
