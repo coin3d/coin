@@ -22,20 +22,11 @@
 
 #include <Inventor/elements/SoSubElement.h>
 
-// FIXME: ugly -- this pucks up system-independence within the base
-// Coin library. What is this element used for anyway? 19990808 mortene.
-#if defined(_WIN32) || defined(__BEOS__)
-typedef void * Window;
-typedef void * GLXContext;
-typedef void Display;
-#else // ! _WIN32 && ! __BEOS__
-#include <X11/Xlib.h>
-#include <GL/gl.h>
-#include <GL/glx.h>
-#endif // _WIN32 || __BEOS__
+// Note:
+// We want to avoid platform specific stuff in this header file, 
+// so we changed all the X-specific types into generic void pointers.
 
 class SoGLRenderAction;
-
 
 class COIN_DLL_API SoWindowElement : public SoElement {
   typedef SoElement inherited;
@@ -55,19 +46,18 @@ public:
   virtual SbBool matches(const SoElement * element) const;
   virtual SoElement * copyMatchInfo(void) const;
 
-  static  void set(SoState * const state, const Window & window,
-                   const GLXContext & context, Display * const display,
-                   SoGLRenderAction * const action);
-  static  void get(SoState * const state, Window & window,
-                   GLXContext & context, Display * & display,
+  static  void set(SoState * state, void * window,
+                   void * context, void * display,
+                   SoGLRenderAction * action);
+  static  void get(SoState * state, void *& window,
+                   void *& context, void * & display,
                    SoGLRenderAction * & action);
-
+  
 protected:
-  Window window;
-  GLXContext context;
-  Display * display;
+  void * window;   // was Window
+  void * context;  // was GLXContext
+  void * display;  // was Display *
   SoGLRenderAction * glRenderAction;
-
 };
 
 #endif // !COIN_SOWINDOWELEMENT_H

@@ -19,47 +19,45 @@
 
 /*!
   \class SoWindowElement Inventor/elements/SoWindowElement.h
-  \brief The SoWindowElement class is yet to be documented.
+  \brief The SoWindowElement class is used to store current window attributes.
 
-  FIXME: write doc.
+  In Coin, this element is not API-compatible with SGI Inventor, since 
+  it contains platform specific stuff, which we want to avoid.
+  
+  Instead of the platform specific types we use void pointers. We're
+  sorry for any inconvenience this might cause people using this element.
 */
 
 #include <Inventor/elements/SoWindowElement.h>
-
-#include <coindefs.h> // COIN_STUB()
-
 #include <assert.h>
 
 /*!
   \fn SoWindowElement::window
 
-  FIXME: write doc.
+  The window id.
 */
 
 /*!
   \fn SoWindowElement::context
 
-  FIXME: write doc.
+  The current context.
 */
 
 /*!
   \fn SoWindowElement::display
 
-  FIXME: write doc.
+  The current display.
 */
 
 /*!
   \fn SoWindowElement::glRenderAction
 
-  FIXME: write doc.
+  The current render action.
 */
 
 SO_ELEMENT_SOURCE(SoWindowElement);
 
-/*!
-  This static method initializes static data for the SoWindowElement class.
-*/
-
+// doc in parent
 void
 SoWindowElement::initClass(void)
 {
@@ -69,74 +67,86 @@ SoWindowElement::initClass(void)
 /*!
   The destructor.
 */
-
 SoWindowElement::~SoWindowElement(void)
 {
 }
 
-//! FIXME: write doc.
-
+// doc in parent
 void
 SoWindowElement::init(SoState * state)
 {
-    inherited::init(state);
+  inherited::init(state);
+  this->window = 0;
+  this->context = NULL;
+  this->display = NULL;
+  this->glRenderAction = NULL;
 }
 
-//! FIXME: write doc.
-
+// doc in parent
 void
 SoWindowElement::push(SoState * state)
 {
-    inherited::push(state);
+  inherited::push(state);
 }
 
-//! FIXME: write doc.
-
+// doc in parent
 void
 SoWindowElement::pop(SoState * state,
                      const SoElement * prevTopElement)
 {
-    inherited::pop(state, prevTopElement);
+  inherited::pop(state, prevTopElement);
 }
 
-//! FIXME: write doc.
-
+// doc in parent
 SbBool
 SoWindowElement::matches(const SoElement * /* element */) const
 {
-  COIN_STUB();
-  return FALSE;
+  assert(0 && "should never be called.");
+  return TRUE;
 }
 
-//! FIXME: write doc.
-
+// doc in parent
 SoElement *
 SoWindowElement::copyMatchInfo(void) const
 {
-  COIN_STUB();
+  assert(0 && "should never be called.");
   return NULL;
 }
 
-//! FIXME: write doc.
-
+/*!
+  Sets data for this element.
+*/
 void
-SoWindowElement::set(SoState * const /* state */,
-                     const Window & /* window */,
-                     const GLXContext & /* context */,
-                     Display * const /* display */,
-                     SoGLRenderAction * const /* action */)
+SoWindowElement::set(SoState * state,
+                     void * window,
+                     void * context,
+                     void * display,
+                     SoGLRenderAction * action)
 {
-  COIN_STUB();
+  SoWindowElement * elem = (SoWindowElement*)
+    SoElement::getElement(state, classStackIndex);
+  elem->window = window;
+  elem->context = context;
+  elem->display = display;
+  elem->glRenderAction = action;
 }
 
-//! FIXME: write doc.
 
+/*!
+  Returns data for this element.
+*/
 void
-SoWindowElement::get(SoState * const /* state */,
-                     Window & /* window */,
-                     GLXContext & /* context */,
-                     Display * & /* display */,
-                     SoGLRenderAction * & /* action */)
+SoWindowElement::get(SoState * state,
+                     void * & window,
+                     void * & context,
+                     void * & display,
+                     SoGLRenderAction * & action)
 {
-  COIN_STUB();
+  const SoWindowElement * elem = (const SoWindowElement*)
+    SoElement::getConstElement(state, classStackIndex);
+  
+  window = elem->window;
+  context = elem->context;
+  display = elem->display;
+  action = elem->glRenderAction;
 }
