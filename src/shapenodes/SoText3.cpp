@@ -71,6 +71,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "../fonts/glyph3d.h"
 
 /*!
   \enum SoText3::Part
@@ -137,15 +138,20 @@
 #ifndef DOXYGEN_SKIP_THIS
 class SoText3P {
 public:
-  SbList <const SoGlyph *> glyphs;
+
+  SoText3P(SoText3 * master) : master(master) { }
+  SoText3 * master;
+
   SbList <float> widths;
   void setUpGlyphs(SoState * state, SoText3 * textnode);
   SbBool needsetup;
+  cc_font_specification * fontspec;
+  SbBox3f maxglyphbbox;
+
 };
 #endif // DOXYGEN_SKIP_THIS
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) (obj->pimpl)
 
 SO_NODE_SOURCE(SoText3);
 
@@ -172,8 +178,10 @@ SoText3::SoText3(void)
   SO_NODE_DEFINE_ENUM_VALUE(Part, ALL);
   SO_NODE_SET_SF_ENUM_TYPE(parts, Part);
 
-  THIS = new SoText3P;
-  THIS->needsetup = TRUE;
+  PRIVATE(this) = new SoText3P(this);
+  PRIVATE(this)->needsetup = TRUE;
+  PRIVATE(this)->fontspec = NULL;
+
 }
 
 /*!
@@ -181,9 +189,16 @@ SoText3::SoText3(void)
 */
 SoText3::~SoText3()
 {
-  // unref() glyphs before the list get destructed.
-  for (int j = 0; j < THIS->glyphs.getLength(); j++) THIS->glyphs[j]->unref();
-  delete THIS;
+  if (PRIVATE(this)->fontspec != NULL) {
+    cc_string_destruct(PRIVATE(this)->fontspec->name);
+    if (PRIVATE(this)->fontspec->family != NULL)
+      cc_string_destruct(PRIVATE(this)->fontspec->family);
+    if (PRIVATE(this)->fontspec->style != NULL)
+      cc_string_destruct(PRIVATE(this)->fontspec->style);
+    delete PRIVATE(this)->fontspec;
+  }
+
+  delete PRIVATE(this);
 }
 
 // doc in parent
@@ -197,12 +212,10 @@ SoText3::initClass(void)
 void
 SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
-  THIS->setUpGlyphs(action->getState(), this);
-  int numglyphs = THIS->glyphs.getLength();
-  if (numglyphs == 0) return;
+  PRIVATE(this)->setUpGlyphs(action->getState(), this);
 
-  float size = SoFontSizeElement::get(action->getState());
-  int i, n = THIS->widths.getLength();
+  float size = PRIVATE(this)->fontspec->size;
+  int i, n = PRIVATE(this)->widths.getLength();
   if (n == 0) {
     center = SbVec3f(0.0f, 0.0f, 0.0f);
     box.setBounds(center, center);
@@ -210,29 +223,26 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   }
 
   float maxw = FLT_MIN;
-  for (i = 0; i < n; i++) { maxw = SbMax(maxw, THIS->widths[i]); }
+  for (i = 0; i < n; i++) { maxw = SbMax(maxw, PRIVATE(this)->widths[i]); }
 
   SbBox2f maxbox;
-  for (i = 0; i < numglyphs; i++) {
-    maxbox.extendBy(THIS->glyphs[i]->getBoundingBox());
-  }
-  float maxglyphsize = maxbox.getMax()[1] - maxbox.getMin()[1];
-
-  float maxy = size * maxbox.getMax()[1];
-  float miny = maxy - (maxglyphsize*size + (n-1) * size * this->spacing.getValue());
+  float maxglyphsize = 1;
+  
+  float maxy = size;
+  float miny = this->spacing.getValue() * size * (n-1);
 
   float minx, maxx;
   switch (this->justification.getValue()) {
   case SoText3::LEFT:
     minx = 0.0f;
-    maxx = maxw * size;
+    maxx = maxw;
     break;
   case SoText3::RIGHT:
-    minx = -maxw * size;
+    minx = -maxw;
     maxx = 0.0f;
     break;
   case SoText3::CENTER:
-    maxx = maxw * size * 0.5f;
+    maxx = maxw * 0.5f;
     minx = -maxx;
     break;
   default:
@@ -295,11 +305,18 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
       minz = 0.0f;
     }
   }
+  
   minx -= profsize;
   maxx += profsize;
   miny -= profsize;
   maxy += profsize;
+  
   box.setBounds(SbVec3f(minx, miny, minz), SbVec3f(maxx, maxy, maxz));
+
+  // Expanding bbox so that glyphs like 'j's and 'q's are completely inside.
+  box.extendBy(SbVec3f(0,PRIVATE(this)->maxglyphbbox.getMin()[1] - (n-1)*size, 0));
+  box.extendBy(PRIVATE(this)->maxglyphbbox);
+
   center = box.getCenter();
 }
 
@@ -322,7 +339,7 @@ SoText3::GLRender(SoGLRenderAction * action)
   if (!this->shouldGLRender(action)) return;
 
   SoState * state = action->getState();
-  THIS->setUpGlyphs(state, this);
+  PRIVATE(this)->setUpGlyphs(state, this);
 
   SoMaterialBindingElement::Binding binding =
     SoMaterialBindingElement::get(state);
@@ -365,7 +382,7 @@ SoText3::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 void
 SoText3::generatePrimitives(SoAction * action)
 {
-  THIS->setUpGlyphs(action->getState(), this);
+  PRIVATE(this)->setUpGlyphs(action->getState(), this);
 
   unsigned int prts = this->parts.getValue();
 
@@ -397,11 +414,13 @@ SoText3::createTriangleDetail(SoRayPickAction * action,
 void
 SoText3::render(SoState * state, unsigned int part)
 {
-  float size = SoFontSizeElement::get(state);
+
+  float size = PRIVATE(this)->fontspec->size;
+  int i, n = PRIVATE(this)->widths.getLength();
+
   // FIXME: not in use (yet?). 20000525 mortene.
-  // SbBool doTextures = SoGLTextureEnabledElement::get(state);
-  // SbBool do3DTextures = SoGLTexture3EnabledElement::get(state);
-  int i, n = THIS->widths.getLength();
+  //  SbBool doTextures = SoGLTextureEnabledElement::get(state);
+  //  SbBool do3DTextures = SoGLTexture3EnabledElement::get(state);
 
   int firstprofile = -1;
   int32_t profnum;
@@ -411,12 +430,15 @@ SoText3::render(SoState * state, unsigned int part)
 
   const SoNodeList profilenodes = SoProfileElement::get(state);
   int numprofiles = profilenodes.getLength();
-  if ( numprofiles > 0) {
+
+  if (numprofiles > 0) {
     assert(profilenodes[0]->getTypeId().isDerivedFrom(SoProfile::getClassTypeId()));
     // Find near/far z (for modifying position of front/back)
+
     for (int l=numprofiles-1; l>=0; l--) {
       SoProfile *pn = (SoProfile *)profilenodes[l];
       pn->getVertices(state, profnum, profcoords);
+
       if (profnum > 0) {
         if (profcoords[profnum-1][0] > farz) farz = profcoords[profnum-1][0];
         if (profcoords[0][0] < nearz) nearz = profcoords[0][0];
@@ -426,6 +448,7 @@ SoText3::render(SoState * state, unsigned int part)
         }
       }
     }
+
     nearz = -nearz;
     farz = -farz;
   }
@@ -433,6 +456,7 @@ SoText3::render(SoState * state, unsigned int part)
     nearz = 0.0;
     farz = -1.0;
   }
+
   if (part != SoText3::SIDES) {
     glBegin(GL_TRIANGLES);
     if (part == SoText3::FRONT)
@@ -440,6 +464,7 @@ SoText3::render(SoState * state, unsigned int part)
     else
       glNormal3f(0.0f, 0.0f, -1.0f);
   }
+
   int glyphidx = 0;
   float ypos = 0.0f;
 
@@ -447,20 +472,27 @@ SoText3::render(SoState * state, unsigned int part)
     float xpos = 0.0f;
     switch (this->justification.getValue()) {
     case SoText3::RIGHT:
-      xpos = -THIS->widths[i] * size;
+      xpos = -PRIVATE(this)->widths[i];
       break;
     case SoText3::CENTER:
-      xpos = - THIS->widths[i] * size * 0.5f;
+      xpos = - PRIVATE(this)->widths[i] * 0.5f;
       break;
     }
 
     const char * str = this->string[i].getString();
+
     while (*str++) {
-      assert((glyphidx < THIS->glyphs.getLength()) && "glyph-list not in sync");
-      const SoGlyph * glyph = THIS->glyphs[glyphidx++];
-      const SbVec2f * coords = glyph->getCoords();
+      cc_glyph3d * glyph = cc_glyph3d_getglyph(*(str-1), PRIVATE(this)->fontspec);
+
+      float glyphwidth = cc_glyph3d_getwidth(glyph);
+      if (glyphwidth == 0) 
+        glyphwidth = 1.0f/3.0f; // SPACE width is set to 'font size'/3
+      
+      const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
+
       if (part != SoText3::SIDES) {  // FRONT & BACK
-        const int * ptr = glyph->getFaceIndices();
+        const int * ptr = cc_glyph3d_getfaceindices(glyph);
+
         while (*ptr >= 0) {
           SbVec2f v0, v1, v2;
           float zval;
@@ -483,13 +515,16 @@ SoText3::render(SoState * state, unsigned int part)
       }
       else { // SIDES
         if (profilenodes.getLength() == 0) {  // no profile - extrude
-          const int * ptr = glyph->getEdgeIndices();
+          const int * ptr = cc_glyph3d_getedgeindices(glyph);
           SbVec2f v0, v1;
+          int counter = 0;
           glBegin(GL_QUADS);
-          while (*ptr >= 0) {
+
+          while (*ptr >= 0) {            
             v0 = coords[*ptr++];
             v1 = coords[*ptr++];
-            SbVec3f tmp(v1[0]-v0[0], v1[1] - v0[1], 0.0f);
+
+            SbVec3f tmp(v0[0]-v1[0], v0[1] - v1[1], 0.0f);
             SbVec3f normal = tmp.cross(SbVec3f(0.0f, 0.0f, 1.0f));
             normal.normalize();
             v0[0] = v0[0] * size + xpos;
@@ -505,15 +540,16 @@ SoText3::render(SoState * state, unsigned int part)
           glEnd();
         }
         else {  // profile
-          const int *indices = glyph->getEdgeIndices();
+          const int *indices = cc_glyph3d_getedgeindices(glyph);
           int ind = 0;
+
           while (*indices >= 0) {
             int i0 = *indices++;
             int i1 = *indices++;
             SbVec3f va(coords[i0][0], coords[i0][1], nearz);
             SbVec3f vb(coords[i1][0], coords[i1][1], nearz);
-            int *ccw = (int *)glyph->getNextCCWEdge(ind);
-            int *cw  = (int *)glyph->getNextCWEdge(ind);
+            int *ccw = (int *) cc_glyph3d_getnextccwedge(glyph, ind);
+            int *cw  = (int *) cc_glyph3d_getnextcwedge(glyph, ind);
             SbVec3f vc(coords[*(ccw+1)][0], coords[*(ccw+1)][1], nearz);
             SbVec3f vd(coords[*cw][0], coords[*cw][1], nearz);
             ind++;
@@ -527,14 +563,18 @@ SoText3::render(SoState * state, unsigned int part)
             vd[0] = vd[0] * size + xpos;
             vd[1] = vd[1] * size + ypos;
 
-            // create two 'normal' vectors pointing out from the edges, for aligning the profile
-            SbVec3f tmp1(va[0]-vc[0], va[1]-vc[1], 0.0f);
+            // create two 'normal' vectors pointing out from the
+            // edges, for aligning the profile
+            SbVec3f tmp1(vc[0]-va[0], vc[1]-va[1], 0.0f);
             tmp1 = tmp1.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
-            tmp1.normalize();
+            if (tmp1.length() > 0) 
+              tmp1.normalize(); // Generates a warning on Win32, not on Linux... (handegar)
 
-            SbVec3f tmp2(vd[0]-vb[0], vd[1]-vb[1], 0.0f);
+            SbVec3f tmp2(vb[0]-vd[0], vb[1]-vd[1], 0.0f);
             tmp2 = tmp2.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
-            tmp2.normalize();
+            if (tmp2.length() > 0)
+              tmp2.normalize();
+
 
             SoProfile *pn = (SoProfile *)profilenodes[firstprofile];
             pn->getVertices(state, profnum, profcoords);
@@ -544,11 +584,13 @@ SoText3::render(SoState * state, unsigned int part)
             float edgez = -profcoords[0][0];  // -----
             // look through all profiles.
             int twisted = 0;
+
             for (int j=firstprofile; j<numprofiles; j++) {
               SoProfile *pn = (SoProfile *)profilenodes[j];
               pn->getVertices(state, profnum, profcoords);
               // iterate through all profile coords, drawing quads (and calculating normals)
               glBegin(GL_QUADS);
+
               for (int k=0; k<profnum; k++) {
                 if (profcoords[k][0] != 0) {
 
@@ -559,9 +601,10 @@ SoText3::render(SoState * state, unsigned int part)
                   vc[1] = vb[1] + ((profcoords[k][1] * tmp1[1]));
                   vc[2] = -profcoords[k][0];
                   // normal
-                  SbVec3f normal( vd[0]-edgea[0], vd[1]-edgea[1], -profcoords[k][0] - edgez );
+                  SbVec3f normal(edgea[0] - vd[0], edgea[1]-vd[1],  edgez + profcoords[k][0]);
                   normal = normal.cross( SbVec3f( edgeb[0]-edgea[0], edgeb[1]-edgea[1], 0 ) );
                   // FIXME: check if 'valid' normals (resulting triangle instead if quad, etc), 20000926 skei.
+
                   if (normal.length() > 0) {
                     normal.normalize();
                     //check if resulting quad-edges will cross
@@ -569,11 +612,13 @@ SoText3::render(SoState * state, unsigned int part)
                     SbVec3f edge2 = vc-vd;
                     //leftedge.normalize();          // ok not to normalize those? skei
                     //rightedge.normalize();
+
                     if (edge1.dot(edge2) < 0) {
                       SbLine leftline(edgeb,vc);
                       SbLine rightline(edgea,vd);
                       SbVec3f inter1,inter2;
                       leftline.getClosestPoints(rightline,inter1,inter2);
+
                       if (twisted == 0) {
                         glNormal3f( normal[0], normal[1], normal[2] );
                         glVertex3f(edgeb[0], edgeb[1], edgez);
@@ -610,7 +655,7 @@ SoText3::render(SoState * state, unsigned int part)
           }
         }
       }
-      xpos += glyph->getWidth() * size;
+      xpos += glyphwidth * size;
     }
     ypos -= size * this->spacing.getValue();
   }
@@ -637,7 +682,7 @@ SoText3::generate(SoAction * action, unsigned int part)
   vertex.setMaterialIndex(matidx);
 
   float size = SoFontSizeElement::get(state);
-  int i, n = THIS->widths.getLength();
+  int i, n = PRIVATE(this)->widths.getLength();
 
   int firstprofile = -1;
   int32_t profnum;
@@ -647,12 +692,15 @@ SoText3::generate(SoAction * action, unsigned int part)
 
   const SoNodeList profilenodes = SoProfileElement::get(state);
   int numprofiles = profilenodes.getLength();
-  if ( numprofiles > 0) {
+
+  if (numprofiles > 0) {
     assert(profilenodes[0]->getTypeId().isDerivedFrom(SoProfile::getClassTypeId()));
     // Find near/far z (for modifying position of front/back)
+
     for (int l = numprofiles-1; l >= 0; l--) {
       SoProfile * pn = (SoProfile *)profilenodes[l];
       pn->getVertices(state, profnum, profcoords);
+
       if (profnum > 0) {
         if (profcoords[profnum-1][0] > farz) farz = profcoords[profnum-1][0];
         if (profcoords[0][0] < nearz) nearz = profcoords[0][0];
@@ -662,6 +710,7 @@ SoText3::generate(SoAction * action, unsigned int part)
         }
       }
     }
+
     nearz = -nearz;
     farz = -farz;
   }
@@ -669,6 +718,7 @@ SoText3::generate(SoAction * action, unsigned int part)
     nearz = 0.0;
     farz = -1.0;
   }
+
   if (part != SoText3::SIDES) {
     this->beginShape(action, SoShape::TRIANGLES, NULL);
     if (part == SoText3::FRONT)
@@ -676,6 +726,7 @@ SoText3::generate(SoAction * action, unsigned int part)
     else
       vertex.setNormal(SbVec3f(0.0f, 0.0f, -1.0f));
   }
+
   int glyphidx = 0;
   float ypos = 0.0f;
 
@@ -684,10 +735,10 @@ SoText3::generate(SoAction * action, unsigned int part)
     float xpos = 0.0f;
     switch (this->justification.getValue()) {
     case SoText3::RIGHT:
-      xpos = -THIS->widths[i] * size;
+      xpos = -PRIVATE(this)->widths[i] * size;
       break;
     case SoText3::CENTER:
-      xpos = - THIS->widths[i] * size * 0.5f;
+      xpos = - PRIVATE(this)->widths[i] * size * 0.5f;
       break;
     }
 
@@ -696,11 +747,18 @@ SoText3::generate(SoAction * action, unsigned int part)
     int charidx = 0;
 
     while (*str++) {
+      cc_glyph3d * glyph = cc_glyph3d_getglyph(*(str-1), PRIVATE(this)->fontspec);
+
+      float glyphwidth = cc_glyph3d_getwidth(glyph);
+      if (glyphwidth == 0) 
+        glyphwidth = 1.0f/3.0f; // SPACE width is set to 'font size'/3
+    
+      const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
       detail.setCharacterIndex(charidx++);
-      const SoGlyph * glyph = THIS->glyphs[glyphidx++];
-      const SbVec2f * coords = glyph->getCoords();
+
       if (part != SoText3::SIDES) {  // FRONT & BACK
-        const int * ptr = glyph->getFaceIndices();
+        const int * ptr = cc_glyph3d_getfaceindices(glyph);
+
         while (*ptr >= 0) {
           SbVec2f v0, v1, v2;
           float zval;
@@ -726,13 +784,15 @@ SoText3::generate(SoAction * action, unsigned int part)
       }
       else { // SIDES
         if (profilenodes.getLength() == 0) {  // no profile - extrude
-          const int * ptr = glyph->getEdgeIndices();
+          const int * ptr = cc_glyph3d_getedgeindices(glyph);
           SbVec2f v0, v1;
           this->beginShape(action, SoShape::QUADS, NULL);
+
           while (*ptr >= 0) {
             v0 = coords[*ptr++];
             v1 = coords[*ptr++];
-            SbVec3f tmp(v1[0]-v0[0], v1[1] - v0[1], 0.0f);
+
+            SbVec3f tmp(v0[0]-v1[0], v0[1] - v1[1], 0.0f);
             SbVec3f normal = tmp.cross(SbVec3f(0.0f, 0.0f, 1.0f));
             normal.normalize();
             v0[0] = v0[0] * size + xpos;
@@ -752,15 +812,16 @@ SoText3::generate(SoAction * action, unsigned int part)
           this->endShape();
         }
         else {  // profile
-          const int *indices = glyph->getEdgeIndices();
+          const int *indices = cc_glyph3d_getedgeindices(glyph);
           int ind = 0;
+
           while (*indices >= 0) {
             int i0 = *indices++;
             int i1 = *indices++;
             SbVec3f va(coords[i0][0], coords[i0][1], nearz);
             SbVec3f vb(coords[i1][0], coords[i1][1], nearz);
-            int *ccw = (int *)glyph->getNextCCWEdge(ind);
-            int *cw  = (int *)glyph->getNextCWEdge(ind);
+            int *ccw = (int *) cc_glyph3d_getnextccwedge(glyph, ind);
+            int *cw  = (int *) cc_glyph3d_getnextcwedge(glyph, ind);
             SbVec3f vc(coords[*(ccw+1)][0], coords[*(ccw+1)][1], nearz);
             SbVec3f vd(coords[*cw][0], coords[*cw][1], nearz);
             ind++;
@@ -774,12 +835,13 @@ SoText3::generate(SoAction * action, unsigned int part)
             vd[0] = vd[0] * size + xpos;
             vd[1] = vd[1] * size + ypos;
 
-            // create two 'normal' vectors pointing out from the edges, for aligning the profile
-            SbVec3f tmp1(va[0]-vc[0], va[1]-vc[1], 0.0f);
+            // create two 'normal' vectors pointing out from the
+            // edges, for aligning the profile
+            SbVec3f tmp1(vc[0]-va[0], vc[1]-va[1], 0.0f);
             tmp1 = tmp1.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
             tmp1.normalize();
 
-            SbVec3f tmp2(vd[0]-vb[0], vd[1]-vb[1], 0.0f);
+            SbVec3f tmp2(vb[0]-vd[0], vb[1]-vd[1], 0.0f);
             tmp2 = tmp2.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
             tmp2.normalize();
 
@@ -791,11 +853,14 @@ SoText3::generate(SoAction * action, unsigned int part)
             float edgez = -profcoords[0][0];  // -----
             // look through all profiles.
             int twisted = 0;
+
             for (int j=firstprofile; j<numprofiles; j++) {
               SoProfile *pn = (SoProfile *)profilenodes[j];
               pn->getVertices(state, profnum, profcoords);
-              // iterate through all profile coords, drawing quads (and calculating normals)
+              // iterate through all profile coords, drawing quads
+              // (and calculating normals)
               this->beginShape(action, SoShape::QUADS, NULL);
+
               for (int k=0; k<profnum; k++) {
                 if (profcoords[k][0] != 0) {
                   vd[0] = va[0] + ((profcoords[k][1] * tmp2[0]));
@@ -807,19 +872,23 @@ SoText3::generate(SoAction * action, unsigned int part)
                   // normal
                   SbVec3f normal( vd[0]-edgea[0], vd[1]-edgea[1], -profcoords[k][0] - edgez );
                   normal = normal.cross( SbVec3f( edgeb[0]-edgea[0], edgeb[1]-edgea[1], 0 ) );
-                  // FIXME: check if 'valid' normals (resulting triangle instead if quad, etc), 20000926 skei.
+                  // FIXME: check if 'valid' normals (resulting
+                  // triangle instead if quad, etc), 20000926 skei.
+
                   if (normal.length() > 0) {
                     normal.normalize();
                     //check if resulting quad-edges will cross
                     SbVec3f edge1 = edgeb-edgea;
                     SbVec3f edge2 = vc-vd;
-                    //leftedge.normalize();          // ok not to normalize those? skei
+                    //leftedge.normalize(); // ok not to normalize those? skei
                     //rightedge.normalize();
+
                     if (edge1.dot(edge2) < 0) {
                       SbLine leftline(edgeb,vc);
                       SbLine rightline(edgea,vd);
                       SbVec3f inter1,inter2;
                       leftline.getClosestPoints(rightline,inter1,inter2);
+
                       if (twisted == 0) {
                         vertex.setNormal(normal);
                         vertex.setPoint(SbVec3f(edgeb[0], edgeb[1], edgez));
@@ -867,10 +936,11 @@ SoText3::generate(SoAction * action, unsigned int part)
           }
         }
       }
-      xpos += glyph->getWidth() * size;
+      xpos += glyphwidth * size;
     }
     ypos -= size * this->spacing.getValue();
   }
+
   if (part != SoText3::SIDES) this->endShape();
 
 }
@@ -882,14 +952,9 @@ SoText3::notify(SoNotList * list)
   // Overridden to detect when the string field changes.
 
   SoField * f = list->getLastField();
-  if (f == &this->string) THIS->needsetup = TRUE;
+  if (f == &this->string) PRIVATE(this)->needsetup = TRUE;
   inherited::notify(list);
 }
-
-#undef THIS
-
-// SoText3P methods are below
-#ifndef DOXYGEN_SKIP_THIS
 
 // recalculate glyphs
 void
@@ -897,15 +962,19 @@ SoText3P::setUpGlyphs(SoState * state, SoText3 * textnode)
 {
   // Note that this code is duplicated in SoAsciiText::setUpGlyphs(),
   // so migrate bugfixes and other improvements.
-  const SbString & dummy = textnode->string[0];
 
   if (!this->needsetup) return;
   this->needsetup = FALSE;
 
+  // Build up font-spesification struct  
+  this->fontspec = new cc_font_specification;
+  this->fontspec->name = cc_string_construct_new();
+  cc_string_set_text(this->fontspec->name, SoFontNameElement::get(state).getString());
+  this->fontspec->family = NULL;
+  this->fontspec->style = NULL;
+  this->fontspec->size = SoFontSizeElement::get(state);
+
   // store old glyphs to avoid freeing glyphs too soon
-  SbList <const SoGlyph *> oldglyphs;
-  oldglyphs = this->glyphs;
-  this->glyphs.truncate(0);
   this->widths.truncate(0);
 
   for (int i = 0; i < textnode->string.getNum(); i++) {
@@ -917,17 +986,29 @@ SoText3P::setUpGlyphs(SoState * state, SoText3 * textnode)
     // set up to 127) be expanded to huge int numbers that turn
     // negative when casted to integer size.
     const unsigned char * ptr = (const unsigned char *)s.getString();
-    float width = 0.0f;
+    float stringwidth = 0.0f;
+    float glyphwidth;
+    float * maxbbox;
+    this->maxglyphbbox.makeEmpty();
+
     for (int j = 0; j < strlen; j++) {
-      const SoGlyph * glyph = SoGlyph::getGlyph(state, ptr[j], SbVec2s(0,0), 0);
-      this->glyphs.append(glyph);
-      width += glyph->getWidth();
+
+      cc_glyph3d * glyph = cc_glyph3d_getglyph(ptr[j], this->fontspec);
+      assert(glyph);
+
+      maxbbox = cc_glyph3d_getboundingbox(glyph); // Get max height
+      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[0] * this->fontspec->size, 0));
+      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[1] * this->fontspec->size, 0));
+
+      glyphwidth = cc_glyph3d_getwidth(glyph);
+      if (glyphwidth == 0)
+        glyphwidth = 1.0f/3.0f; // SPACE width is always == 0.
+
+      stringwidth += glyphwidth * this->fontspec->size;
     }
-    this->widths.append(width);
+    this->widths.append(stringwidth);
   }
 
-  // unref old glyphs
-  for (int j = 0; j < oldglyphs.getLength(); j++) oldglyphs[j]->unref();
 }
 
-#endif // DOXYGEN_SKIP_THIS
+//#endif // DOXYGEN_SKIP_PRIVATE(this)
