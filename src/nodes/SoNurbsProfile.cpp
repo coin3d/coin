@@ -185,19 +185,19 @@ SoNurbsProfile::getVertices(SoState * state, int32_t & numvertices,
 
     if (this->nurbsrenderer == NULL) {
       this->nurbsrenderer = GLUWrapper()->gluNewNurbsRenderer();
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_W_NURBS_VERTEX,
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_VERTEX,
                                      (gluNurbsCallback_cb_t)nurbsprofile_tess_vertex);
-      GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_W_NURBS_MODE, GLU_W_NURBS_TESSELLATOR);
-      GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_W_AUTO_LOAD_MATRIX, FALSE);
-      GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_W_DISPLAY_MODE, GLU_W_POINT);
-      GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_W_SAMPLING_METHOD, GLU_W_DOMAIN_DISTANCE);
+      GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_NURBS_MODE, GLU_NURBS_TESSELLATOR);
+      GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_AUTO_LOAD_MATRIX, FALSE);
+      GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_DISPLAY_MODE, GLU_POINT);
+      GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
     }
 
     // this looks pretty good
     float cmplx = SoComplexityElement::get(state);
     cmplx += 1.0f;
     cmplx = cmplx * cmplx * cmplx;
-    GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_W_U_STEP, float(numpoints)*cmplx);
+    GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_U_STEP, float(numpoints)*cmplx);
 
     // these values are not important as we're not using screen-space
     // complexity (yet)

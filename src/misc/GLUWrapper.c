@@ -180,7 +180,7 @@ static const GLubyte * APIENTRY
 GLUWrapper_gluGetString(GLenum name)
 {
   static const GLubyte versionstring[] = "1.0.0";
-  if (name == GLU_W_VERSION) return versionstring;
+  if (name == GLU_VERSION) return versionstring;
   return NULL;
 }
 
@@ -371,7 +371,7 @@ GLUWrapper(void)
 
     /* Parse the version string once and expose the version numbers
        through the GLUWrapper API. */
-    GLUWrapper_set_version(gi->gluGetString(GLU_W_VERSION));
+    GLUWrapper_set_version(gi->gluGetString(GLU_VERSION));
   }
 
   return GLU_instance;

@@ -63,6 +63,8 @@
 #endif
 #endif
 
+/**********************************************************************/
+
 /*
   Some systems have very old gl.h files, and other systems include
   extension enums which we want to use if we run-time detect the
@@ -113,5 +115,149 @@
 #ifndef GL_UNPACK_SKIP_IMAGES
 #define GL_UNPACK_SKIP_IMAGES             ((GLenum)0x806D)
 #endif /* !GL_UNPACK_SKIP_IMAGES */
+
+/*** GL enums, end ****************************************************/
+/**********************************************************************/
+
+/* GLU enums we use are duplicated, because we should be able to
+   compile without GLU and then pick it up and use it at run-time on
+   some systems. */
+
+/* gluGetString */
+#ifndef GLU_VERSION
+#define GLU_VERSION ((GLenum)100800)
+#endif /* ! GLU_VERSION */
+#ifndef GLU_EXTENSIONS
+#define GLU_EXTENSIONS ((GLenum)100801)
+#endif /* ! GLU_EXTENSIONS */
+
+/* NurbsDisplay */
+#ifndef GLU_OUTLINE_POLYGON
+#define GLU_OUTLINE_POLYGON ((GLenum)100240)
+#endif /* ! GLU_OUTLINE_POLYGON */
+#ifndef GLU_OUTLINE_PATCH
+#define GLU_OUTLINE_PATCH ((GLenum)100241)
+#endif /* ! GLU_OUTLINE_PATCH */
+
+/* NurbsCallback */
+#ifndef GLU_NURBS_ERROR
+#define GLU_NURBS_ERROR ((GLenum)100103)
+#endif /* ! GLU_NURBS_ERROR */
+#ifndef GLU_ERROR
+#define GLU_ERROR ((GLenum)100103)
+#endif /* ! GLU_ERROR */
+#ifndef GLU_NURBS_BEGIN
+#define GLU_NURBS_BEGIN ((GLenum)100164)
+#endif /* ! GLU_NURBS_BEGIN */
+#ifndef GLU_NURBS_VERTEX
+#define GLU_NURBS_VERTEX ((GLenum)100165)
+#endif /* ! GLU_NURBS_VERTEX */
+#ifndef GLU_NURBS_NORMAL
+#define GLU_NURBS_NORMAL ((GLenum)100166)
+#endif /* ! GLU_NURBS_NORMAL */
+#ifndef GLU_NURBS_COLOR
+#define GLU_NURBS_COLOR ((GLenum)100167)
+#endif /* ! GLU_NURBS_COLOR */
+#ifndef GLU_NURBS_TEXTURE_COORD
+#define GLU_NURBS_TEXTURE_COORD ((GLenum)100168)
+#endif /* ! GLU_NURBS_TEXTURE_COORD */
+#ifndef GLU_NURBS_END
+#define GLU_NURBS_END ((GLenum)100169)
+#endif /* ! GLU_NURBS_END */
+#ifndef GLU_NURBS_BEGIN_DATA
+#define GLU_NURBS_BEGIN_DATA ((GLenum)100170)
+#endif /* ! GLU_NURBS_BEGIN_DATA */
+#ifndef GLU_NURBS_VERTEX_DATA
+#define GLU_NURBS_VERTEX_DATA ((GLenum)100171)
+#endif /* ! GLU_NURBS_VERTEX_DATA */
+#ifndef GLU_NURBS_NORMAL_DATA
+#define GLU_NURBS_NORMAL_DATA ((GLenum)100172)
+#endif /* ! GLU_NURBS_NORMAL_DATA */
+#ifndef GLU_NURBS_COLOR_DATA
+#define GLU_NURBS_COLOR_DATA ((GLenum)100173)
+#endif /* ! GLU_NURBS_COLOR_DATA */
+#ifndef GLU_NURBS_TEXTURE_COORD_DATA
+#define GLU_NURBS_TEXTURE_COORD_DATA ((GLenum)100174)
+#endif /* ! GLU_NURBS_TEXTURE_COORD_DATA */
+#ifndef GLU_NURBS_END_DATA
+#define GLU_NURBS_END_DATA ((GLenum)100175)
+#endif /* ! GLU_NURBS_END_DATA */
+
+/* NurbsProperty */
+#ifndef GLU_AUTO_LOAD_MATRIX
+#define GLU_AUTO_LOAD_MATRIX ((GLenum)100200)
+#endif /* ! GLU_AUTO_LOAD_MATRIX */
+#ifndef GLU_CULLING
+#define GLU_CULLING ((GLenum)100201)
+#endif /* ! GLU_CULLING */
+#ifndef GLU_SAMPLING_TOLERANCE
+#define GLU_SAMPLING_TOLERANCE ((GLenum)100203)
+#endif /* ! GLU_SAMPLING_TOLERANCE */
+#ifndef GLU_DISPLAY_MODE
+#define GLU_DISPLAY_MODE ((GLenum)100204)
+#endif /* ! GLU_DISPLAY_MODE */
+#ifndef GLU_PARAMETRIC_TOLERANCE
+#define GLU_PARAMETRIC_TOLERANCE ((GLenum)100202)
+#endif /* ! GLU_PARAMETRIC_TOLERANCE */
+#ifndef GLU_SAMPLING_METHOD
+#define GLU_SAMPLING_METHOD ((GLenum)100205)
+#endif /* ! GLU_SAMPLING_METHOD */
+#ifndef GLU_U_STEP
+#define GLU_U_STEP ((GLenum)100206)
+#endif /* ! GLU_U_STEP */
+#ifndef GLU_V_STEP
+#define GLU_V_STEP ((GLenum)100207)
+#endif /* ! GLU_V_STEP */
+#ifndef GLU_NURBS_MODE
+#define GLU_NURBS_MODE ((GLenum)100160)
+#endif /* ! GLU_NURBS_MODE */
+#ifndef GLU_NURBS_TESSELLATOR
+#define GLU_NURBS_TESSELLATOR ((GLenum)100161)
+#endif /* ! GLU_NURBS_TESSELLATOR */
+#ifndef GLU_NURBS_RENDERER
+#define GLU_NURBS_RENDERER ((GLenum)100162)
+#endif /* ! GLU_NURBS_RENDERER */
+
+/* NurbsSampling */
+#ifndef GLU_OBJECT_PARAMETRIC_ERROR
+#define GLU_OBJECT_PARAMETRIC_ERROR ((GLenum)100208)
+#endif /* ! GLU_OBJECT_PARAMETRIC_ERROR */
+#ifndef GLU_OBJECT_PATH_LENGTH
+#define GLU_OBJECT_PATH_LENGTH ((GLenum)100209)
+#endif /* ! GLU_OBJECT_PATH_LENGTH */
+#ifndef GLU_PATH_LENGTH
+#define GLU_PATH_LENGTH ((GLenum)100215)
+#endif /* ! GLU_PATH_LENGTH */
+#ifndef GLU_PARAMETRIC_ERROR
+#define GLU_PARAMETRIC_ERROR ((GLenum)100216)
+#endif /* ! GLU_PARAMETRIC_ERROR */
+#ifndef GLU_DOMAIN_DISTANCE
+#define GLU_DOMAIN_DISTANCE ((GLenum)100217)
+#endif /* ! GLU_DOMAIN_DISTANCE */
+
+/* NurbsTrim */
+#ifndef GLU_MAP1_TRIM_2
+#define GLU_MAP1_TRIM_2 ((GLenum)100210)
+#endif /* ! GLU_MAP1_TRIM_2 */
+#ifndef GLU_MAP1_TRIM_3
+#define GLU_MAP1_TRIM_3 ((GLenum)100211)
+#endif /* ! GLU_MAP1_TRIM_3 */
+
+/* QuadricDrawStyle */
+#ifndef GLU_POINT
+#define GLU_POINT ((GLenum)100010)
+#endif /* ! GLU_POINT */
+#ifndef GLU_LINE
+#define GLU_LINE ((GLenum)100011)
+#endif /* ! GLU_LINE */
+#ifndef GLU_FILL
+#define GLU_FILL ((GLenum)100012)
+#endif /* ! GLU_FILL */
+#ifndef GLU_SILHOUETTE
+#define GLU_SILHOUETTE ((GLenum)10001)
+#endif /* ! GLU_SILHOUETTE */
+
+/*** GLU enums, end ***************************************************/
+/**********************************************************************/
 
 #endif /* ! COIN_GL_H */

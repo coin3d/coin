@@ -1683,11 +1683,11 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
     // Should not set mode if GLU version is < 1.3, as NURBS_RENDERER
     // was the only game in town back then in the old days.
-    GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_NURBS_MODE,
-                                   glrender ? GLU_W_NURBS_RENDERER : GLU_W_NURBS_TESSELLATOR);
+    GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_NURBS_MODE,
+                                   glrender ? GLU_NURBS_RENDERER : GLU_NURBS_TESSELLATOR);
   }
   // Need to load sampling matrices if glrender==FALSE.
-  GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_AUTO_LOAD_MATRIX, glrender);
+  GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_AUTO_LOAD_MATRIX, glrender);
 
   if (!glrender) { // supply the sampling matrices
     SbMatrix glmodelmatrix = SoViewingMatrixElement::get(state);
@@ -1763,9 +1763,9 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
       complexity *= maxpix;
       complexity = diag * 0.5f / complexity;
 
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_SAMPLING_METHOD,
-                                     GLU_W_OBJECT_PARAMETRIC_ERROR);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_PARAMETRIC_TOLERANCE, 
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_SAMPLING_METHOD,
+                                     GLU_OBJECT_PARAMETRIC_ERROR);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_PARAMETRIC_TOLERANCE, 
                                      complexity);
       break;
     }
@@ -1786,9 +1786,9 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
       if (complexity < 0.0001f) complexity = 0.0001f;
       complexity = diag * 0.01f / complexity;
 
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_SAMPLING_METHOD,
-                                     GLU_W_OBJECT_PARAMETRIC_ERROR);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_PARAMETRIC_TOLERANCE, 
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_SAMPLING_METHOD,
+                                     GLU_OBJECT_PARAMETRIC_ERROR);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_PARAMETRIC_TOLERANCE, 
                                      complexity);
       break;
     }
@@ -1911,14 +1911,14 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
       if (numknots) {
         GLUWrapper()->gluNurbsCurve(nurbsrenderer, numknots, knotvector, floatspervec,
                                     points, numknots-numpoints, floatspervec == 2 ?
-                                    (GLenum) GLU_W_MAP1_TRIM_2 : (GLenum) GLU_W_MAP1_TRIM_3);
+                                    (GLenum) GLU_MAP1_TRIM_2 : (GLenum) GLU_MAP1_TRIM_3);
 
       }
 
       else {
         GLUWrapper()->gluPwlCurve(nurbsrenderer, numpoints, points, floatspervec,
                                   floatspervec == 2 ?
-                                  (GLenum) GLU_W_MAP1_TRIM_2 : (GLenum) GLU_W_MAP1_TRIM_3 );
+                                  (GLenum) GLU_MAP1_TRIM_2 : (GLenum) GLU_MAP1_TRIM_3 );
       }
     }
     if (istrimming) GLUWrapper()->gluEndTrim(nurbsrenderer);
@@ -1965,15 +1965,15 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
   const SoCoordinateElement * coords =
     SoCoordinateElement::getInstance(state);
 
-  GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_DISPLAY_MODE, drawaspoints ? GLU_W_POINT : GLU_W_LINE);
+  GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_DISPLAY_MODE, drawaspoints ? GLU_POINT : GLU_LINE);
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
     // Should not set mode if GLU version is < 1.3, as NURBS_RENDERER
     // was the only game in town back then in the old days.
-    GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_NURBS_MODE,
-                                   glrender ? GLU_W_NURBS_RENDERER : GLU_W_NURBS_TESSELLATOR);
+    GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_NURBS_MODE,
+                                   glrender ? GLU_NURBS_RENDERER : GLU_NURBS_TESSELLATOR);
   }
   // Need to load sampling matrices if glrender==FALSE.
-  GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_AUTO_LOAD_MATRIX, glrender);
+  GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_AUTO_LOAD_MATRIX, glrender);
 
   if (!glrender) { // supply the sampling matrices
     SbMatrix glmodelmatrix = SoViewingMatrixElement::get(state);
@@ -2034,9 +2034,9 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
       complexity *= maxpix;
       complexity = diag * 0.5f / complexity;
 
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_SAMPLING_METHOD,
-                                     GLU_W_OBJECT_PARAMETRIC_ERROR);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_PARAMETRIC_TOLERANCE, 
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_SAMPLING_METHOD,
+                                     GLU_OBJECT_PARAMETRIC_ERROR);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_PARAMETRIC_TOLERANCE, 
                                      complexity);
       break;
     }
@@ -2057,9 +2057,9 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
       if (complexity < 0.0001f) complexity = 0.0001f;
       complexity = diag * 0.01f / complexity;
 
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_SAMPLING_METHOD,
-                                     GLU_W_OBJECT_PARAMETRIC_ERROR);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_W_PARAMETRIC_TOLERANCE, 
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_SAMPLING_METHOD,
+                                     GLU_OBJECT_PARAMETRIC_ERROR);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_PARAMETRIC_TOLERANCE, 
                                      complexity);
       break;
     }

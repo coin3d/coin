@@ -42,68 +42,6 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/* Duplicated enum names. */
-/* FIXME: move these to the Inventor/system/gl.h file and use
-   the proper names (and wrap all of them inside #ifndef GLU_*).
-   20011023 mortene.
-*/
-enum {
-  /* gluGetString */
-  GLU_W_VERSION = 100800,
-  GLU_W_EXTENSIONS = 100801,
-
-  /* NurbsDisplay */
-  GLU_W_OUTLINE_POLYGON = 100240,
-  GLU_W_OUTLINE_PATCH = 100241,
-
-  /* NurbsCallback */
-  GLU_W_NURBS_ERROR = 100103,
-  GLU_W_ERROR = 100103,
-  GLU_W_NURBS_BEGIN = 100164,
-  GLU_W_NURBS_VERTEX = 100165,
-  GLU_W_NURBS_NORMAL = 100166,
-  GLU_W_NURBS_COLOR = 100167,
-  GLU_W_NURBS_TEXTURE_COORD = 100168,
-  GLU_W_NURBS_END = 100169,
-  GLU_W_NURBS_BEGIN_DATA = 100170,
-  GLU_W_NURBS_VERTEX_DATA = 100171,
-  GLU_W_NURBS_NORMAL_DATA = 100172,
-  GLU_W_NURBS_COLOR_DATA = 100173,
-  GLU_W_NURBS_TEXTURE_COORD_DATA = 100174,
-  GLU_W_NURBS_END_DATA = 100175,
-
-  /* NurbsProperty */
-  GLU_W_AUTO_LOAD_MATRIX = 100200,
-  GLU_W_CULLING = 100201,
-  GLU_W_SAMPLING_TOLERANCE = 100203,
-  GLU_W_DISPLAY_MODE = 100204,
-  GLU_W_PARAMETRIC_TOLERANCE = 100202,
-  GLU_W_SAMPLING_METHOD = 100205,
-  GLU_W_U_STEP = 100206,
-  GLU_W_V_STEP = 100207,
-  GLU_W_NURBS_MODE = 100160,
-  GLU_W_NURBS_TESSELLATOR = 100161,
-  GLU_W_NURBS_RENDERER = 100162,
-
-  /* NurbsSampling */
-  GLU_W_OBJECT_PARAMETRIC_ERROR = 100208,
-  GLU_W_OBJECT_PATH_LENGTH = 100209,
-  GLU_W_PATH_LENGTH = 100215,
-  GLU_W_PARAMETRIC_ERROR = 100216,
-  GLU_W_DOMAIN_DISTANCE = 100217,
-
-  /* NurbsTrim */
-  GLU_W_MAP1_TRIM_2 = 100210,
-  GLU_W_MAP1_TRIM_3 = 100211,
-
-  /* QuadricDrawStyle */
-  GLU_W_POINT = 100010,
-  GLU_W_LINE = 100011,
-  GLU_W_FILL = 100012,
-  GLU_W_SILHOUETTE = 100013
-};
-
-
 /* Callback func type. */
 typedef void (*gluNurbsCallback_cb_t)(void *, ...);
 
