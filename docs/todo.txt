@@ -232,6 +232,13 @@ STUFF TO FIX IN COIN
     handle this. Ouch.
 
 
+    UPDATE 2003-06-23 mortene: yet another complication is that enum
+    values for SoSFEnum and SoMFEnum fields are also known to have
+    been added by TGS as their Inventor versions are released. They
+    have for instance added a "REPLACE" enum value to
+    SoTexture2::Model in v4.0.
+
+
 004 Re-design the public API for handling textures
     2001-11-28  Peder Blekken  <pederb@sim.no>, write-down by mortene@sim.no
 
