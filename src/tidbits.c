@@ -404,9 +404,9 @@ coin_isascii(int c)
 
 /**************************************************************************/
 
-// This little atexit() wrapper is used throughout the sourcecode to
-// make the OSF1/cxx compiler accept C++ functions as it's input
-// argument. Problem reported by Guy Barrand.
+/* This little atexit() wrapper is used throughout the sourcecode to
+   make the OSF1/cxx compiler accept C++ functions as it's input
+   argument. Problem reported by Guy Barrand. */
 
 typedef void(*atexit_func_type)(void);
 
