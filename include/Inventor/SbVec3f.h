@@ -61,7 +61,7 @@ public:
   SbVec3f & operator /=(const float d);
   SbVec3f & operator +=(const SbVec3f & u);
   SbVec3f & operator -=(const SbVec3f & u);
-  SbVec3f operator -(void) const;
+  SbVec3f operator-(void) const;
   friend COIN_DLL_API SbVec3f operator *(const SbVec3f & v, const float d);
   friend COIN_DLL_API SbVec3f operator *(const float d, const SbVec3f & v);
   friend COIN_DLL_API SbVec3f operator /(const SbVec3f & v, const float d);

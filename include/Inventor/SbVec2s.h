@@ -48,7 +48,7 @@ public:
   SbVec2s& operator /=(double d);
   SbVec2s& operator +=(const SbVec2s& u);
   SbVec2s& operator -=(const SbVec2s& u);
-  SbVec2s operator -(void) const;
+  SbVec2s operator-(void) const;
   friend COIN_DLL_API SbVec2s operator *(const SbVec2s& v, int d);
   friend COIN_DLL_API SbVec2s operator *(const SbVec2s& v, double d);
   friend COIN_DLL_API SbVec2s operator *(int d, const SbVec2s& v);

@@ -209,17 +209,52 @@
 
 /*!
   \var SoNode::NodeType SoNode::VRML1
-  Spcifies VRML V1.0 node type.
+  Node is VRML V1.0 compatible.
 */
 
 /*!
   \var SoNode::NodeType SoNode::VRML2
-  Spcifies VRML V2.0 node type.
+  Node is from the VRML V2.0 specification.
 */
 
 /*!
-  \var SoNode::NodeType SoNode::PROTO_INSTANCE_ROOT
-  Spcifies a Proto instance root node.
+  \var SoNode::NodeType SoNode::INVENTOR_1
+  Node was part of SGI Inventor version 1.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::INVENTOR_2_0
+  Node was part of SGI Inventor version 2.0.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::INVENTOR_2_1
+  Node was introduced with SGI / TGS Inventor version 2.1.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::INVENTOR_2_5
+  Node was introduced with TGS Inventor version 2.5.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::INVENTOR_2_6
+  Node was introduced with TGS Inventor version 2.6.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::COIN_1_0
+  Node was part of Coin version 1.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::COIN_2_0
+  Node was introduced with Coin 2.0.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::EXTENSION
+  Node is a client code extension.
 */
 
 uint32_t SoNode::nextUniqueId = 0;

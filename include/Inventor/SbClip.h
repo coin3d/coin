@@ -50,6 +50,11 @@ public:
   void * getVertexData(const int idx) const;
   
 private:
+  // FIXME: this is to avoid a complaint from Doxygen, which has a bug
+  // that makes it spit out a warning on undocumented *private*
+  // structs and classes. Bug has been reported to
+  // <doxygen-develop@lists.sourceforge.net> at 2002-07-30 by mortene.
+#ifndef DOXYGEN_SKIP_THIS
   class SbClipData {
   public:
     SbClipData(void) {}
@@ -65,6 +70,7 @@ private:
     SbVec3f vertex;
     void * data;
   };
+#endif // DOXYGEN_SKIP_THIS
 
   SbClipCallback * callback;
   void * cbdata;

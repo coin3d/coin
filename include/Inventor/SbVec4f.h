@@ -52,7 +52,7 @@ public:
   SbVec4f& operator /=(const float d);
   SbVec4f& operator +=(const SbVec4f& u);
   SbVec4f& operator -=(const SbVec4f& u);
-  SbVec4f operator -(void) const;
+  SbVec4f operator-(void) const;
   friend COIN_DLL_API SbVec4f operator *(const SbVec4f& v, const float d);
   friend COIN_DLL_API SbVec4f operator *(const float d, const SbVec4f& v);
   friend COIN_DLL_API SbVec4f operator /(const SbVec4f& v, const float d);

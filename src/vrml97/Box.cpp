@@ -61,7 +61,7 @@
 */
 
 /*!
-  \var SoSFVec3f size
+  \var SoVRMLBox::size
 
   Box size vector. Default value is (2,2,2).
 */

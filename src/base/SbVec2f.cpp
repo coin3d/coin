@@ -299,7 +299,7 @@ SbVec2f::operator -=(const SbVec2f& u)
  */
 
 SbVec2f
-SbVec2f::operator -(void) const
+SbVec2f::operator-(void) const
 {
   return SbVec2f(-this->vec[0], -this->vec[1]);
 }
@@ -368,7 +368,6 @@ operator +(const SbVec2f& v1, const SbVec2f& v2)
   vector \a v1.
  */
 
-//$ EXPORT INLINE
 SbVec2f
 operator -(const SbVec2f& v1, const SbVec2f& v2)
 {
@@ -382,8 +381,6 @@ operator -(const SbVec2f& v1, const SbVec2f& v2)
 
   \sa equals().
  */
-
-//$ EXPORT INLINE
 int
 operator ==(const SbVec2f& v1, const SbVec2f& v2)
 {
@@ -398,8 +395,6 @@ operator ==(const SbVec2f& v1, const SbVec2f& v2)
 
   \sa equals().
  */
-
-//$ EXPORT INLINE
 int
 operator !=(const SbVec2f& v1, const SbVec2f& v2)
 {

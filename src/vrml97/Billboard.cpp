@@ -25,7 +25,6 @@
   \WEB3DCOPYRIGHT
 
   \verbatim
-
   Billboard {
     eventIn      MFNode   addChildren
     eventIn      MFNode   removeChildren
@@ -34,6 +33,7 @@
     field        SFVec3f  bboxCenter     0 0 0     # (-inf, inf)
     field        SFVec3f  bboxSize       -1 -1 -1  # (0, inf) or -1,-1,-1
   }
+  \endverbatim
 
   The Billboard node is a grouping node which modifies its coordinate
   system so that the Billboard node's local Z-axis turns to point at

@@ -719,7 +719,7 @@ SbTime::operator -=(const SbTime & tm)
   Return the negated time.
  */
 SbTime
-SbTime::operator -(void) const
+SbTime::operator-(void) const
 {
   return SbTime(-this->getValue());
 }

@@ -56,6 +56,11 @@ private:
                                  const SbVec3f &n);
   static void handleTexgen(void *data);
 
+  // FIXME: this is to avoid a complaint from Doxygen, which has a bug
+  // that makes it spit out a warning on undocumented *private*
+  // structs and classes. Bug has been reported to
+  // <doxygen-develop@lists.sourceforge.net> at 2002-07-30 by mortene.
+#ifndef DOXYGEN_SKIP_THIS
   // Note: Microsoft Visual C++ 6.0 needs to have a type definition
   // and an explicit variable declaration, just using
   // "struct { ... } gencache;" won't do.
@@ -64,6 +69,8 @@ private:
     float mul_s, mul_t;
     SbVec4f ret;
   } gencache_t;
+#endif // !DOXYGEN_SKIP_THIS
+
   gencache_t gencache;
 };
 

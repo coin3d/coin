@@ -48,7 +48,7 @@ public:
   SbVec2f & operator /= (const float d);
   SbVec2f & operator += (const SbVec2f & u);
   SbVec2f & operator -= (const SbVec2f & u);
-  SbVec2f operator -(void) const;
+  SbVec2f operator-(void) const;
 
   friend COIN_DLL_API SbVec2f operator * (const SbVec2f & v, const float d);
   friend COIN_DLL_API SbVec2f operator * (const float d, const SbVec2f & v);
@@ -71,11 +71,6 @@ COIN_DLL_API SbVec2f operator + (const SbVec2f & v1, const SbVec2f & v2);
 COIN_DLL_API SbVec2f operator - (const SbVec2f & v1, const SbVec2f & v2);
 COIN_DLL_API int operator == (const SbVec2f & v1, const SbVec2f & v2);
 COIN_DLL_API int operator != (const SbVec2f & v1, const SbVec2f & v2);
-
-
-// *************************************************************************
-
-//$ IMPORT INLINE ../../src/SbVec2f.cpp
 
 // *************************************************************************
 

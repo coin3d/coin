@@ -256,7 +256,7 @@ SbVec3s::operator -=(const SbVec3s & u)
   \sa negate().
 */
 SbVec3s
-SbVec3s::operator -(void) const
+SbVec3s::operator-(void) const
 {
   return SbVec3s(-this->vec[0], -this->vec[1], -this->vec[2]);
 }

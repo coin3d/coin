@@ -482,7 +482,7 @@ SbVec3f::operator -=(const SbVec3f & u)
   \sa negate().
 */
 SbVec3f
-SbVec3f::operator -(void) const
+SbVec3f::operator-(void) const
 {
   return SbVec3f(-this->vec[0], -this->vec[1], -this->vec[2]);
 }

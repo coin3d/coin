@@ -18,8 +18,8 @@
 \**************************************************************************/
 
 /*!
-  \class SoVRMLCoordinate SoVRMLCoordinate.h Inventor/VRMLnodes/SoVRMLCoorinate.h
-  \brief The SoVRMLCoordinate class is used define 3D coordinate for shapes.
+  \class SoVRMLCoordinate SoVRMLCoordinate.h Inventor/VRMLnodes/SoVRMLCoordinate.h
+  \brief The SoVRMLCoordinate class is used to define 3D coordinates for shapes.
   \ingroup VRMLnodes
   
   \WEB3DCOPYRIGHT
@@ -28,7 +28,7 @@
   Coordinate { 
     exposedField MFVec3f point  []      # (-inf, inf) 
   }
-  \verbatim
+  \endverbatim
  
   This node defines a set of 3D coordinates to be used in the coord
   field of vertex-based geometry nodes including SoVRMLIndexedFaceSet,

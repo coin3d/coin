@@ -55,7 +55,7 @@
 */
 
 /*!
-  \var SoSFVec3f SoVRMLdirectionalLight::direction
+  \var SoSFVec3f SoVRMLDirectionalLight::direction
   The light direction.
 */
 

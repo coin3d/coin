@@ -71,7 +71,7 @@
   \var SoSFEnum SoPickStyle::style
 
   Which strategy to use for the picking actions for subsequent shapes
-  in the scene graph.
+  in the scene graph. Default value is SoPickStyle::SHAPE.
 */
 
 // *************************************************************************

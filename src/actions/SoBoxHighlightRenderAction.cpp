@@ -100,6 +100,79 @@ public:
   void drawNoShapeBox(const SoPath * path);
 };
 
+// used to render non-shape nodes (usually SoGroup or SoSeparator). 
+void 
+SoBoxHighlightRenderActionP::drawNoShapeBox(const SoPath * path)
+{
+  if (this->bboxseparator == NULL) {
+    this->bboxseparator = new SoSeparator;
+    this->bboxseparator->ref();
+    this->bboxseparator->renderCaching = SoSeparator::OFF;
+    this->bboxseparator->boundingBoxCaching = SoSeparator::OFF;
+    
+    this->bboxtransform = new SoMatrixTransform;
+    this->bboxtransform->ref();
+    
+    this->bboxcube = new SoCube;
+    this->bboxcube->ref();
+    
+    this->bboxseparator->addChild(this->bboxtransform);
+    this->bboxseparator->addChild(this->bboxcube);
+  }
+
+  if (this->camerasearch == NULL) {
+    this->camerasearch = new SoSearchAction;
+  }
+
+  // find camera used to render node
+  this->camerasearch->setFind(SoSearchAction::TYPE);
+  this->camerasearch->setInterest(SoSearchAction::LAST);
+  this->camerasearch->setType(SoCamera::getClassTypeId());
+  this->camerasearch->apply((SoPath*) path);
+  
+  if (!this->camerasearch->getPath()) {
+    // if there is no camera there is no point rendering the bbox
+    return;
+  }
+  this->bboxseparator->insertChild(this->camerasearch->getPath()->getTail(), 0);
+  this->camerasearch->reset();
+  
+  if (this->bboxaction == NULL) {
+    this->bboxaction = new SoGetBoundingBoxAction(SbViewportRegion(100, 100));
+  }
+  this->bboxaction->setViewportRegion(PUBLIC(this)->getViewportRegion());
+  this->bboxaction->apply((SoPath*) path);
+  
+  SbXfBox3f & box = this->bboxaction->getXfBoundingBox();
+  
+  if (box.isEmpty()) return;
+  
+  // set cube size
+  float x, y, z;
+  box.getSize(x, y, z);
+  this->bboxcube->width  = x;
+  this->bboxcube->height  = y;
+  this->bboxcube->depth = z;
+
+  SbMatrix transform = box.getTransform();
+
+  // get center (in the local bbox coordinate system)
+  SbVec3f center = box.SbBox3f::getCenter();
+
+  // if center != (0,0,0), move the cube
+  if (center != SbVec3f(0.0f, 0.0f, 0.0f)) {
+    SbMatrix t;
+    t.setTranslate(center);
+    transform.multLeft(t);
+  }
+  this->bboxtransform->matrix = transform; 
+  
+  PUBLIC(this)->SoGLRenderAction::apply(this->bboxseparator);
+
+  // remove camera
+  this->bboxseparator->removeChild(0);
+}
+
 #endif // DOXYGEN_SKIP_THIS
 
 SO_ACTION_SOURCE(SoBoxHighlightRenderAction);
@@ -368,79 +441,6 @@ SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
     PRIVATE(this)->postprocpath->truncate(thispos);
   }
   state->pop();
-}
-
-// used to render non-shape nodes (usually SoGroup or SoSeparator). 
-void 
-SoBoxHighlightRenderActionP::drawNoShapeBox(const SoPath * path)
-{
-  if (this->bboxseparator == NULL) {
-    this->bboxseparator = new SoSeparator;
-    this->bboxseparator->ref();
-    this->bboxseparator->renderCaching = SoSeparator::OFF;
-    this->bboxseparator->boundingBoxCaching = SoSeparator::OFF;
-    
-    this->bboxtransform = new SoMatrixTransform;
-    this->bboxtransform->ref();
-    
-    this->bboxcube = new SoCube;
-    this->bboxcube->ref();
-    
-    this->bboxseparator->addChild(this->bboxtransform);
-    this->bboxseparator->addChild(this->bboxcube);
-  }
-
-  if (this->camerasearch == NULL) {
-    this->camerasearch = new SoSearchAction;
-  }
-
-  // find camera used to render node
-  this->camerasearch->setFind(SoSearchAction::TYPE);
-  this->camerasearch->setInterest(SoSearchAction::LAST);
-  this->camerasearch->setType(SoCamera::getClassTypeId());
-  this->camerasearch->apply((SoPath*) path);
-  
-  if (!this->camerasearch->getPath()) {
-    // if there is no camera there is no point rendering the bbox
-    return;
-  }
-  this->bboxseparator->insertChild(this->camerasearch->getPath()->getTail(), 0);
-  this->camerasearch->reset();
-  
-  if (this->bboxaction == NULL) {
-    this->bboxaction = new SoGetBoundingBoxAction(SbViewportRegion(100, 100));
-  }
-  this->bboxaction->setViewportRegion(PUBLIC(this)->getViewportRegion());
-  this->bboxaction->apply((SoPath*) path);
-  
-  SbXfBox3f & box = this->bboxaction->getXfBoundingBox();
-  
-  if (box.isEmpty()) return;
-  
-  // set cube size
-  float x, y, z;
-  box.getSize(x, y, z);
-  this->bboxcube->width  = x;
-  this->bboxcube->height  = y;
-  this->bboxcube->depth = z;
-
-  SbMatrix transform = box.getTransform();
-
-  // get center (in the local bbox coordinate system)
-  SbVec3f center = box.SbBox3f::getCenter();
-
-  // if center != (0,0,0), move the cube
-  if (center != SbVec3f(0.0f, 0.0f, 0.0f)) {
-    SbMatrix t;
-    t.setTranslate(center);
-    transform.multLeft(t);
-  }
-  this->bboxtransform->matrix = transform; 
-  
-  PUBLIC(this)->SoGLRenderAction::apply(this->bboxseparator);
-
-  // remove camera
-  this->bboxseparator->removeChild(0);
 }
 
 

@@ -18,7 +18,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoVRMLVertexLine SovRMLVertexLine.h Inventor/VRMLnodes/SovRMLVertexLine.h
+  \class SoVRMLVertexLine SoVRMLVertexLine.h Inventor/VRMLnodes/SovRMLVertexLine.h
   \brief The SoVRMLVertexLine class is a superclass for line based VRML geometry.
 */
 

@@ -82,7 +82,7 @@ public:
   friend COIN_DLL_API SbTime operator -(const SbTime & t0, const SbTime & t1);
   SbTime & operator +=(const SbTime & tm);
   SbTime & operator -=(const SbTime & tm);
-  SbTime operator -(void) const;
+  SbTime operator-(void) const;
   friend COIN_DLL_API SbTime operator *(const double s, const SbTime & tm);
   friend COIN_DLL_API SbTime operator *(const SbTime & tm, const double s);
   friend COIN_DLL_API SbTime operator /(const SbTime & tm, const double s);
