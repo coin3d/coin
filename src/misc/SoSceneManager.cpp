@@ -268,6 +268,23 @@ SoSceneManager::render(SoGLRenderAction * action,
   PRIVATE(this)->unlock();
   // Apply the SoGLRenderAction to the scenegraph root.
   if (PRIVATE(this)->scene) action->apply(PRIVATE(this)->scene);
+
+
+  // Automatically re-triggers rendering if any animation stuff is
+  // connected to the realTime field.
+  if (SoSceneManagerP::touchtimer) {
+    // FIXME: it would be more elegant to use a private field class
+    // inheriting SoSFTime ("SFRealTime") which could just be
+    // touch()'ed, and which would do lazy reading of time-of-day on
+    // demand. 20000316 mortene.
+    SoField * realtime = SoDB::getGlobalField("realTime");
+    if (realtime && (realtime->getTypeId() == SoSFTime::getClassTypeId())) {
+      // Note that this should not get in the way of a
+      // app-programmer controlled realTime field, as
+      // enableRealTimeUpdate(FALSE) should then have been called.
+      ((SoSFTime *)realtime)->setValue(SbTime::getTimeOfDay());
+    }
+  }
 }
 
 /*!
@@ -338,23 +355,6 @@ SoSceneManager::redraw(void)
 {
   if (PRIVATE(this)->rendercb) {
     PRIVATE(this)->rendercb(PRIVATE(this)->rendercbdata, this);
-
-    // Automatically re-triggers rendering if any animation stuff is
-    // connected to the realTime field.
-    if (SoSceneManagerP::touchtimer) {
-      // FIXME: it would be more elegant to use a private field class
-      // inheriting SoSFTime ("SFRealTime") which could just be
-      // touch()'ed, and which would do lazy reading of time-of-day on
-      // demand. 20000316 mortene.
-      SoField * realtime = SoDB::getGlobalField("realTime");
-      if (realtime && (realtime->getTypeId() == SoSFTime::getClassTypeId())) {
-        // Note that this should not get in the way of a
-        // app-programmer controlled realTime field, as
-        // enableRealTimeUpdate(FALSE) should then have been called.
-        ((SoSFTime *)realtime)->setValue(SbTime::getTimeOfDay());
-      }
-    }
-  }
 }
 
 /*!
