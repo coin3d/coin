@@ -1317,6 +1317,20 @@ SoField::notify(SoNotList * nlist)
   }
 #endif // COIN_DEBUG
 
+  // don't process the notification if we're notified from a
+  // connection, and connection is disabled (through
+  // enableConnection())
+  if (!this->isConnectionEnabled()) {
+    // check NotRec type to find if the notification was from a
+    // connection. If someone changes the field directly we should
+    // just continue.
+    SoNotRec * rec = nlist->getLastRec();
+    if (rec) {
+      SoNotRec::Type t = nlist->getLastRec()->getType();
+      if (t == SoNotRec::ENGINE || t == SoNotRec::FIELD) return;
+    }
+  }
+
   // In Inventor it is legal to have circular field connections. This
   // test stops the notification from entering into an infinite
   // recursion because of such connections. The flag is set/cleared
@@ -1970,7 +1984,7 @@ SoField::evaluateField(void) const
   // but it is possible that two (or more) threads might enter
   // evaluateField() simultaneously, so this test is necessary.
   // pederb, 2002-10-04
-  if (this->getStatus(FLAG_NEEDEVALUATION)) {
+  if (this->getStatus(FLAG_NEEDEVALUATION) && this->getStatus(FLAG_ENABLECONNECTS)) {
     that->setStatusBits(FLAG_ISEVALUATING);
     this->evaluateConnection();
     that->clearStatusBits(FLAG_ISEVALUATING);
