@@ -85,12 +85,64 @@
   Various settings for how to do rendering of transparent objects in
   the scene. Some of the settings will provide faster rendering, while
   others gives you better quality rendering.
+
+  Note that doing correct rendering of \e multiple transparent objects
+  often fails, because to be 100% correct, all polygons needs to be
+  rendered in sorted order, and polygons can't intersect each
+  other. In a dynamic scene graph it is often impossible to guarantee
+  that no polygons intersect, and finding an algorithm that does
+  correct sorting of polygons for all possible cases is very hard and
+  time-consuming.
+
+  The highest quality transparency mode in the original SGI / TGS Open
+  Inventor is SoGLRenderAction::SORTED_OBJECT_BLEND, where all
+  transparent objects are rendered in sorted order in a rendering pass
+  after all opaque objects. However, this mode does not sort the
+  polygons, and if you have an object where some polygon A is behind
+  some other polygon B, the transparency will only be correct if A
+  happens to be rendered before B. For other camera angles, where B is
+  behind A, the transparency will not be correct.
+
+  In Coin we have a new transparency mode that solves some of these
+  problems: SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE blend. In
+  addition to sorting the objects, all polygons inside each object is
+  also sorted back-to-front when rendering. But, if you have
+  intersecting objects and/or intersecting polygons, even this
+  transparency mode will fail. Also, because of the polygon sorting,
+  this transparency mode is quite slow. It is possible to speed things
+  up using the SoTransparencyType node, though, which enables you to
+  set different transparency modes for different parts of the scene
+  graph. If you have only have a few objects where you need to sort
+  the polygons, you can use
+  SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND for those, and
+  for instance SoGLRenderAction::SORTED_OBJECT_BLEND for all other
+  transparent objects.
+
+  \sa SoTransparencyType
 */
+
+// NVIDIA has a paper that describes a new technique for
+// order-independent transparency rendering:
+//
+// http://developer.nvidia.com/docs/IO/1316/ATT/order_independent_transparency.pdf
+//
+// However, this method requires shadow mapping hardware through the
+// SGIX_shadow and SGIX_depth_texture. It also uses some
+// NVIDIA-specific OpenGL features so it will be difficult to make it
+// work on non-NVIDIA hardware.
+
+
 
 /*!
   \var SoGLRenderAction::TransparencyType SoGLRenderAction::SCREEN_DOOR
+
   Transparent triangles are rendered with a dither pattern. This is
   a fast (on most GFX cards) but not-so-high-quality transparency mode.
+
+  One particular feature of this mode is that you are guaranteed that
+  it always renders the transparent parts of the scene correct with
+  regard to internal depth ordering of objects / polygons, something
+  which is not the case for any other transparency mode.
 */
 
 /*!
@@ -117,10 +169,9 @@
 /*!
   \var SoGLRenderAction::TransparencyType SoGLRenderAction::SORTED_OBJECT_ADD
 
-  SoGLRenderAction::SORTED_OBJECT_ADD Transparent objects are rendered
-  using additive alpha blending.  Opaque objects are rendered first,
-  and transparent objects are rendered back to front with z-buffer
-  updates disabled.
+  Transparent objects are rendered using additive alpha blending.
+  Opaque objects are rendered first, and transparent objects are
+  rendered back to front with z-buffer updates disabled.
 
 */
 
@@ -178,10 +229,9 @@
 /*!
   \var SoGLRenderAction::TransparencyType SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD
 
-  This transparency type is a Coin extension versus the Open Inventor
-  API.
+  This transparency type is a Coin extension versus the original SGI
+  Open Inventor API.
 
-  Transparent objects are rendered using additive alpha blending,
   Transparent objects are rendered back to front, and triangles in
   each object are sorted back to front before rendering.
 
@@ -193,13 +243,11 @@
 /*!
   \var SoGLRenderAction::TransparencyType SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND
 
-  This transparency type is a Coin extension versus the Open Inventor
-  API.
+  This transparency type is a Coin extension versus the original SGI
+  Open Inventor API.
 
-  Transparent objects are rendered using multiplicative alpha
-  blending, Transparent objects are rendered back to front, and
-  triangles in each object are sorted back to front before
-  rendering.
+  Transparent objects are rendered back to front, and triangles in
+  each object are sorted back to front before rendering.
 
   Use this transparency type when you have one (or more) transparent
   object(s) where you know triangles might overlap inside the object.

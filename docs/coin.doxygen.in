@@ -583,6 +583,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTransformSeparator.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTransformation.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTranslation.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTransparencyType.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTriangleStripSet.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoUnits.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoVertexProperty.h \
@@ -943,6 +944,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoTransformSeparator.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTransformation.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTranslation.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoTransparencyType.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTriangleStripSet.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoUnits.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoVertexProperty.cpp \

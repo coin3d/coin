@@ -28,13 +28,14 @@
 
   In earlier versions of Coin/Open Inventor it was only possible to
   set the transparency mode globally for an entire scene graph, which
-  could be inconvienient if different transparency types was wanted
-  for different shapes.
+  could be inconvenient if different transparency types was wanted for
+  different shapes.
 
   This node was not part of the Open Inventor 2.1 API, and is an
   extension specific to Coin.
 
   \since 2001-11-05
+  \sa SoGLRenderAction::TransparencyType
 */
 
 #include <Inventor/nodes/SoTransparencyType.h>
