@@ -136,7 +136,7 @@ SbDict::clear(void)
   a unique number, and \a value is the generic user data.
 
   \e If \a key does not exist in the dictionary, a new entry
-  is created and TRUE is returned. Otherwise, the generic user
+  is created and \c TRUE is returned. Otherwise, the generic user
   data is changed to \a value, and \e FALSE is returned.
 */
 SbBool

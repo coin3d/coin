@@ -28,19 +28,11 @@
   efficient.
 */
 
-/*!
-  \class SbNameEntry SbName.h Inventor/SbName.h
-  \brief The SbNameEntry class is an internal class used by SbName.
-
-  FIXME: write doc.
-*/
-
 #include <Inventor/SbName.h>
-
 #include <Inventor/SbString.h>
-
 #include <stdio.h>
 #include <ctype.h>
+
 
 /*!
   This is the default constructor.
@@ -118,12 +110,11 @@ SbName::getLength(void) const
   \sa SbBool SbName::isIdentChar(const char c)
 
 */
-
 SbBool
 SbName::isIdentStartChar(const char c)
 {
-    if (isdigit(c) ) return FALSE;
-    return isIdentChar(c);
+  if (isdigit(c) ) return FALSE;
+  return SbName::isIdentChar(c);
 }
 
 /*!
@@ -132,28 +123,25 @@ SbName::isIdentStartChar(const char c)
 
   \sa SbBool SbName::isIdentStartChar(const char c)
 */
-
 SbBool
 SbName::isIdentChar(const char c)
 {
-    if (isalnum(c) || c == '_' ) return TRUE;
-    return FALSE;
+  return (isalnum(c) || c == '_');
 }
 
 /*!
-  Returns \a TRUE if the given character is valid for use as the first
+  Returns \c TRUE if the given character is valid for use as the first
   character of a name for an object derived from a class inheriting
   SoBase.
 
-  SoBase-derived objects needs to be named in a manner which will not
-  clash with the special characters reserved as special tokens in the
-  syntax rules of Open Inventor and VRML files.
+  SoBase derived objects needs to be named in a manner which will not
+  clash with the special characters reserved as tokens in the syntax
+  rules of Open Inventor and VRML files.
 
   This method is not part of the Open Inventor API.
 
-  \sa SbBool SbName::isBaseNameChar(const char c)
+  \sa isBaseNameChar()
 */
-
 SbBool
 SbName::isBaseNameStartChar(const char c)
 {
@@ -162,18 +150,17 @@ SbName::isBaseNameStartChar(const char c)
 }
 
 /*!
-  Returns \a TRUE if the given character is valid for use in naming
+  Returns \c TRUE if the given character is valid for use in naming
   object instances of classes derived from SoBase.
 
   SoBase derived objects needs to be named in a manner which will not
-  clash with the special characters reserved as special tokens in the
-  syntax rules of Open Inventor and VRML files.
+  clash with the special characters reserved as tokens in the syntax
+  rules of Open Inventor and VRML files.
 
   This method is not part of the Open Inventor API.
 
-  \sa SbBool SbName::isBaseNameStartChar(const char c)
+  \sa isBaseNameStartChar()
 */
-
 SbBool
 SbName::isBaseNameChar(const char c)
 {

@@ -573,10 +573,12 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
   const SoTransparencyElement * trans =
     SoTransparencyElement::getInstance(state);
-  SbBool t = trans->getNum() && trans->get(0) > 0.0f;
 
-  if (action->handleTransparency(t ||
-                                 SoTextureImageElement::containsTransparency(state)))
+  SbBool transparent =
+    (trans->getNum() && trans->get(0) > 0.0f) ||
+    SoTextureImageElement::containsTransparency(state);
+
+  if (action->handleTransparency(transparent))
     return FALSE;
 
   if (SoDrawStyleElement::get(state) == SoDrawStyleElement::INVISIBLE)

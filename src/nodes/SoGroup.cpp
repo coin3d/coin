@@ -150,6 +150,13 @@ SoGroup::readChildren(SoInput * in)
             return FALSE;
           }
 
+#if COIN_DEBUG && 0 // debug
+          char m;
+          if (in->read(m)) {
+            SoDebugError::postInfo("SoGroup::readChildren",
+                                   "next char: '%c'", m);
+          }
+#endif // debug
           // Completed reading of children for ASCII format import.
           return TRUE;
         }

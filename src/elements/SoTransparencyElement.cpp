@@ -147,4 +147,3 @@ SoTransparencyElement::setElt(const int numValues, const float * const values)
   this->numValues = numValues;
   this->values = values;
 }
-

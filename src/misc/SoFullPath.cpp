@@ -102,7 +102,3 @@ SoFullPath::getLength(void) const
 {
   return this->nodes.getLength();
 }
-
-
-
-

@@ -121,7 +121,7 @@ SoAuditorList::remove(const int index)
 {
   assert(index >= 0 && index < this->getLength());
 
-  // FIXME: isn't this functionality part of SbPList::remove()?
+  // FIXME: isn't this "copy functionality" part of SbPList::remove()?
   // 19990622 mortene.
   // Remove item.
   const int num = SbPList::getLength();

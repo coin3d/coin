@@ -460,10 +460,10 @@ SoInput::setFilePointer(FILE * newFP)
 
 /*!
   Open the given file, and make it the only one in the file stack. If
-  \a okIfNotFound is \a FALSE, show a warning message if the file could
+  \a okIfNotFound is \c FALSE, show a warning message if the file could
   not be opened.
 
-  Returns \a TRUE if file could be opened for reading, \a FALSE
+  Returns \c TRUE if file could be opened for reading, \c FALSE
   otherwise.
 
   Note: even if your attempt at opening a file is unsuccessful,
@@ -502,7 +502,7 @@ SoInput::openFile(const char * fileName, SbBool okIfNotFound)
   file will be popped of the stack and we'll continue with the next file
   in the stack.
 
-  Returns \a TRUE if the file could be opened for reading, \a FALSE
+  Returns \c TRUE if the file could be opened for reading, \c FALSE
   otherwise.
 
   \sa openFile()
@@ -561,7 +561,7 @@ SoInput::isValidFile(void)
 }
 
 /*!
-  Returns \a TRUE if the current file is a valid file which can be read by
+  Returns \c TRUE if the current file is a valid file which can be read by
   the Coin library.
  */
 SbBool
@@ -640,7 +640,7 @@ SoInput::getIVVersion(void)
 }
 
 /*!
-  Returns \a TRUE if the current file is in binary format.
+  Returns \c TRUE if the current file is in binary format.
  */
 SbBool
 SoInput::isBinary(void)
@@ -650,7 +650,7 @@ SoInput::isBinary(void)
 }
 
 /*!
-  Get next character in current stream. Returns \a FALSE on end of file.
+  Get next character in current stream. Returns \c FALSE on end of file.
 
   \sa read()
  */
@@ -690,7 +690,7 @@ SoInput::getASCIIFile(char & c)
 
   A number in hexadecimal format must have the "0x" prefix.
 
-  Returns \a FALSE if end of file is encountered.
+  Returns \c FALSE if end of file is encountered.
  */
 SbBool
 SoInput::readHex(uint32_t & l)
@@ -716,7 +716,7 @@ SoInput::readHex(uint32_t & l)
 
 /*!
   Skips whitespace and reads next character in input stream.
-  Returns \a FALSE if encountering end of file.
+  Returns \c FALSE if encountering end of file.
  */
 SbBool
 SoInput::read(char & c)
@@ -727,8 +727,8 @@ SoInput::read(char & c)
 }
 
 /*!
-  Reads next character in input stream, returns \a FALSE if encountering
-  end of file. If \a skip is \a TRUE, skips whitespace before reading a
+  Reads next character in input stream, returns \c FALSE if encountering
+  end of file. If \a skip is \c TRUE, skips whitespace before reading a
   character.
 */
 SbBool
@@ -753,7 +753,7 @@ SoInput::read(char & c, SbBool skip)
   A string not contained in quotes is terminated by the first following
   whitespace character or left or right bracket (i.e. ``['' or ``]'').
 
-  Returns \a FALSE upon encountering end of file before the string is
+  Returns \c FALSE upon encountering end of file before the string is
   fully parsed, or any other error.
 */
 SbBool
@@ -988,7 +988,7 @@ SoInput::read(int & i)
 
 /*!
   Read unsigned integer from current file or buffer position and place
-  it in \a i. Returns \a FALSE if we hit end of file prematurely.
+  it in \a i. Returns \c FALSE if we hit end of file prematurely.
  */
 SbBool
 SoInput::read(unsigned int & i)
@@ -1006,7 +1006,7 @@ SoInput::read(unsigned int & i)
 
 /*!
   Read short integer from current file or buffer position and place
-  it in \a s. Returns \a FALSE if we hit end of file prematurely.
+  it in \a s. Returns \c FALSE if we hit end of file prematurely.
  */
 SbBool
 SoInput::read(short & s)
@@ -1024,7 +1024,7 @@ SoInput::read(short & s)
 
 /*!
   Read unsigned short integer from current file or buffer position and place
-  it in \a s. Returns \a FALSE if we hit end of file prematurely.
+  it in \a s. Returns \c FALSE if we hit end of file prematurely.
  */
 SbBool
 SoInput::read(unsigned short & s)
@@ -1042,7 +1042,7 @@ SoInput::read(unsigned short & s)
 
 /*!
   Read float value from current file or buffer position and place
-  it in \a f. Returns \a FALSE if we hit end of file prematurely.
+  it in \a f. Returns \c FALSE if we hit end of file prematurely.
  */
 SbBool
 SoInput::read(float & f)
@@ -1060,7 +1060,7 @@ SoInput::read(float & f)
 
 /*!
   Read double value from current file or buffer position and place
-  it in \a d. Returns \a FALSE if we hit end of file prematurely.
+  it in \a d. Returns \c FALSE if we hit end of file prematurely.
  */
 SbBool
 SoInput::read(double & d)
@@ -1078,7 +1078,7 @@ SoInput::read(double & d)
 
 /*!
   Reads \a length characters from the current stream into \a c. Returns
-  \a FALSE if end of file is encountered before the given number of bytes
+  \c FALSE if end of file is encountered before the given number of bytes
   could be read.
  */
 SbBool
@@ -1090,7 +1090,7 @@ SoInput::readBinaryArray(unsigned char * c, int length)
 
 /*!
   Reads \a length 32-bit integers from the current stream into \a l. Returns
-  \a FALSE if end of file is encountered before the given number of integers
+  \c FALSE if end of file is encountered before the given number of integers
   could be read.
  */
 SbBool
@@ -1108,7 +1108,7 @@ SoInput::readBinaryArray(int32_t * l, int length)
 
 /*!
   Reads \a length floats from the current stream into \a f. Returns
-  \a FALSE if end of file is encountered before the given number of
+  \c FALSE if end of file is encountered before the given number of
   binary float values could be read.
  */
 SbBool
@@ -1126,7 +1126,7 @@ SoInput::readBinaryArray(float * f, int length)
 
 /*!
   Reads \a length double floats from the current stream into \a d.
-  Returns \a FALSE if end of file is encountered before the given number of
+  Returns \c FALSE if end of file is encountered before the given number of
   binary double float values could be read.
  */
 SbBool
@@ -1143,8 +1143,8 @@ SoInput::readBinaryArray(double * d, int length)
 }
 
 /*!
-  Returns \a TRUE if we are at the end of the current stream, otherwise
-  \a FALSE.
+  Returns \c TRUE if we are at the end of the current stream, otherwise
+  \c FALSE.
  */
 SbBool
 SoInput::eof(void) const
@@ -1561,12 +1561,12 @@ SoInput::initFile(FILE * /* newFP */, const char * /* fileName */,
 }
 
 /*!
-  Returns \a TRUE if the current stream has had it's header parsed.
+  Returns \c TRUE if the current stream has had it's header parsed.
   If it hasn't, this method will attempt to read the header and returns
-  \a TRUE if it could be done.
+  \c TRUE if it could be done.
 
-  If \a bValidateBufferHeader is \a TRUE, the returned flag will also
-  be \a FALSE if the file stream header was not of a supported file
+  If \a bValidateBufferHeader is \c TRUE, the returned flag will also
+  be \c FALSE if the file stream header was not of a supported file
   format type.
 */
 SbBool
@@ -1590,8 +1590,8 @@ SoInput::checkHeader(SbBool bValidateBufferHeader)
 }
 
 /*!
-  Returns \a TRUE if the current input stream is fetching data from a
-  memory buffer, or \a FALSE if the input is from a file.
+  Returns \c TRUE if the current input stream is fetching data from a
+  memory buffer, or \c FALSE if the input is from a file.
 */
 SbBool
 SoInput::fromBuffer(void) const
@@ -1603,7 +1603,7 @@ SoInput::fromBuffer(void) const
 
 /*!
   Move file pointer past whitespace in the current file or buffer.
-  Returns \a FALSE if end of file is encountered.
+  Returns \c FALSE if end of file is encountered.
  */
 SbBool
 SoInput::skipWhiteSpace(void)
@@ -1612,7 +1612,7 @@ SoInput::skipWhiteSpace(void)
 }
 
 /*!
-  Pop the topmost file off the stack. Returns \a FALSE if there was no
+  Pop the topmost file off the stack. Returns \c FALSE if there was no
   files on the stack to pop.
 
   \sa pushFile(), openFile(), closeFile()
@@ -1644,7 +1644,7 @@ SoInput::freeBytesInBuf(void) const
 
 /*!
   Reads 32-bit signed integer value from the current stream. Returns
-  \a FALSE if we hit end of file prematurely.
+  \c FALSE if we hit end of file prematurely.
  */
 SbBool
 SoInput::readInteger(int32_t & l)
@@ -1673,7 +1673,7 @@ SoInput::readInteger(int32_t & l)
 
 /*!
   Reads 32-bit unsigned integer value from the current stream. Returns
-  \a FALSE if we hit end of file prematurely.
+  \c FALSE if we hit end of file prematurely.
  */
 SbBool
 SoInput::readUnsignedInteger(uint32_t & l)
@@ -1697,7 +1697,7 @@ SoInput::readUnsignedInteger(uint32_t & l)
 
 /*!
   Reads a double-precision floating point value from the current stream.
-  Returns \a FALSE if we hit end of file prematurely or if no valid string
+  Returns \c FALSE if we hit end of file prematurely or if no valid string
   representing a value could be read.
  */
 SbBool
@@ -1764,7 +1764,7 @@ SoInput::readReal(double & d)
   Reads a set of bytes from the stream making up an unsigned integer and
   puts them at \a str.
 
-  Returns \a FALSE if no string representing an unsigned integer could be
+  Returns \c FALSE if no string representing an unsigned integer could be
   read.
  */
 SbBool
@@ -1849,7 +1849,7 @@ SoInput::readHexDigits(char * str)
 
 /*!
   Reads the next character in stream and compares it to \a charToRead.
-  Returns \a 1 on success, \a 0 on failure. Failure may come from either
+  Returns \c 1 on success, \c 0 on failure. Failure may come from either
   end of file, or from the next character in the stream being different
   than \a charToRead.
  */
@@ -2092,7 +2092,7 @@ SoInput::getTopOfStack(void) const
   the file and return the file pointer.
 
   If the file could either not be found or not opened for reading, return
-  \a NULL.
+  \c NULL.
  */
 FILE *
 SoInput::findFile(const char * basename, SbString & fullname)
