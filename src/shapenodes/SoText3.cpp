@@ -628,22 +628,26 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
           
             if (!flatshading) {
               if(do2Dtextures)
-                glTexCoord2f(v1[0], v1[1]);   
+                 glTexCoord2f(v1[0] + xpos/fontspec->size, 
+                              v1[1] + ypos/fontspec->size);
               glNormal3fv(normala.getValue());
               glVertex3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, 0.0f);     
 
               if(do2Dtextures)
-                glTexCoord2f(v0[0], v0[1]);   
+                glTexCoord2f(v0[0] + xpos/fontspec->size, 
+                             v0[1] + ypos/fontspec->size);
               glNormal3fv(normalb.getValue());
               glVertex3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, 0.0f);
 
               if(do2Dtextures)
-                 glTexCoord2f(v0[0], v0[1]);   
+                glTexCoord2f(v0[0] + xpos/fontspec->size, 
+                             v0[1] + ypos/fontspec->size);
               glNormal3fv(normalb.getValue());
               glVertex3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, -1.0f);
 
               if(do2Dtextures)
-                glTexCoord2f(v1[0], v1[1]);
+                glTexCoord2f(v1[0] + xpos/fontspec->size, 
+                             v1[1] + ypos/fontspec->size);
               glNormal3fv(normala.getValue());
               glVertex3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, -1.0f);
 
@@ -651,19 +655,23 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
             else {
               glNormal3fv(normala.getValue());
               if(do2Dtextures)
-                glTexCoord2f(v1[0], v1[1]);   
+                glTexCoord2f(v1[0] + xpos/fontspec->size, 
+                             v1[1] + ypos/fontspec->size);
               glVertex3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, 0.0f);          
-
+              
               if(do2Dtextures)
-                glTexCoord2f(v0[0], v0[1]); 
+                glTexCoord2f(v0[0] + xpos/fontspec->size, 
+                             v0[1] + ypos/fontspec->size);
               glVertex3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, 0.0f);
 
               if(do2Dtextures)
-                glTexCoord2f(v0[0], v0[1]);
+                glTexCoord2f(v0[0] + xpos/fontspec->size, 
+                             v0[1] + ypos/fontspec->size);
               glVertex3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, -1.0f);
 
               if(do2Dtextures)
-                glTexCoord2f(v1[0], v1[1]);   
+                glTexCoord2f(v1[0] + xpos/fontspec->size, 
+                             v1[1] + ypos/fontspec->size);
               glVertex3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, -1.0f);
             }
           }
@@ -1002,14 +1010,14 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
             SbVec3f vright(coords[*cw][0], coords[*cw][1], 0);
             counter++;
            
-            v0[0] = v0[0] * fontspec->size + xpos;
-            v0[1] = v0[1] * fontspec->size + ypos;
-            v1[0] = v1[0] * fontspec->size + xpos;
-            v1[1] = v1[1] * fontspec->size + ypos;
-            vleft[0] = vleft[0] * fontspec->size + xpos;
-            vleft[1] = vleft[1] * fontspec->size + ypos;
-            vright[0] = vright[0] * fontspec->size + xpos;
-            vright[1] = vright[1] * fontspec->size + ypos;
+            v0[0] = v0[0];
+            v0[1] = v0[1];
+            v1[0] = v1[0];
+            v1[1] = v1[1];
+            vleft[0] = vleft[0];
+            vleft[1] = vleft[1];
+            vright[0] = vright[0];
+            vright[1] = vright[1];
 
             // create two 'normal' vectors pointing out from the edges
             SbVec3f normala(vleft[0] - v0[0], vleft[1] - v0[1], 0.0f);
@@ -1033,29 +1041,69 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
             }
 
             if (!flatshading) {
+              if (do2Dtextures) {
+                vertex.setTextureCoords(SbVec2f(v1[0] + xpos/fontspec->size, 
+                                                v1[1] + ypos/fontspec->size));
+              }
               vertex.setNormal(normala);
-              vertex.setPoint(SbVec3f(v1[0], v1[1], 0.0f));  
-              PUBLIC(this)->shapeVertex(&vertex);              
+              vertex.setPoint(SbVec3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, 0.0f));  
+              PUBLIC(this)->shapeVertex(&vertex);
+
+              if (do2Dtextures) {
+                vertex.setTextureCoords(SbVec2f(v0[0] + xpos/fontspec->size, 
+                                                v0[1] + ypos/fontspec->size));
+              }
               vertex.setNormal(normalb);
-              vertex.setPoint(SbVec3f(v0[0], v0[1], 0.0f));  
+              vertex.setPoint(SbVec3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, 0.0f));  
               PUBLIC(this)->shapeVertex(&vertex);              
+
+              if (do2Dtextures) {
+                vertex.setTextureCoords(SbVec2f(v0[0] + xpos/fontspec->size, 
+                                                v0[1] + ypos/fontspec->size));
+              }
               vertex.setNormal(normalb);
-              vertex.setPoint(SbVec3f(v0[0], v0[1], -1.0f));  
+              vertex.setPoint(SbVec3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, -1.0f));  
               PUBLIC(this)->shapeVertex(&vertex);              
+
+              if (do2Dtextures) {
+                vertex.setTextureCoords(SbVec2f(v1[0] + xpos/fontspec->size, 
+                                                v1[1] + ypos/fontspec->size));
+              }
               vertex.setNormal(normala);
-              vertex.setPoint(SbVec3f(v1[0], v1[1], -1.0f));  
+              vertex.setPoint(SbVec3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, -1.0f));  
               PUBLIC(this)->shapeVertex(&vertex);
             }
             else {
               vertex.setNormal(normala);
-              vertex.setPoint(SbVec3f(v1[0], v1[1], 0.0f));  
+
+              if (do2Dtextures) {
+                vertex.setTextureCoords(SbVec2f(v1[0] + xpos/fontspec->size, 
+                                                v1[1] + ypos/fontspec->size));
+              }
+              vertex.setPoint(SbVec3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, 0.0f));  
               PUBLIC(this)->shapeVertex(&vertex);
-              vertex.setPoint(SbVec3f(v0[0], v0[1], 0.0f));  
-              PUBLIC(this)->shapeVertex(&vertex);              
-              vertex.setPoint(SbVec3f(v0[0], v0[1], -1.0f));  
-              PUBLIC(this)->shapeVertex(&vertex);              
-              vertex.setPoint(SbVec3f(v1[0], v1[1], -1.0f));  
+                
+              if (do2Dtextures) {
+                vertex.setTextureCoords(SbVec2f(v0[0] + xpos/fontspec->size, 
+                                                v0[1] + ypos/fontspec->size));
+              }
+              vertex.setPoint(SbVec3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, 0.0f));  
               PUBLIC(this)->shapeVertex(&vertex);
+
+              if (do2Dtextures) {
+                vertex.setTextureCoords(SbVec2f(v0[0] + xpos/fontspec->size, 
+                                                v0[1] + ypos/fontspec->size));
+              }
+              vertex.setPoint(SbVec3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, -1.0f));  
+              PUBLIC(this)->shapeVertex(&vertex);              
+
+              if (do2Dtextures) {
+                vertex.setTextureCoords(SbVec2f(v1[0] + xpos/fontspec->size, 
+                                                v1[1] + ypos/fontspec->size));
+              }              
+              vertex.setPoint(SbVec3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, -1.0f));  
+              PUBLIC(this)->shapeVertex(&vertex);
+
             }
           }
           
