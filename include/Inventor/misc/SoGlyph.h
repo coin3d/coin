@@ -35,6 +35,11 @@ class SoGlyphP;
 class COIN_DLL_API SoGlyph {
 public:
 
+  enum Fonttype {
+    FONT2D = 1,
+    FONT3D = 2
+  };
+  
   void unref(void) const;
   
   static const SoGlyph * getGlyph(const char character, const SbName & font);
@@ -55,7 +60,7 @@ public:
   SbVec2s getAdvance(void) const;
   SbVec2s getKerning(const SoGlyph & rightglyph) const;
   unsigned char * getBitmap(SbVec2s & size, SbVec2s & pos, const SbBool antialiased) const;
-  
+
 protected:
   SoGlyph(void);
   ~SoGlyph();
@@ -66,7 +71,10 @@ protected:
 
 private:
   static void unrefGlyph(SoGlyph * glyph);
-  
+  void setFontType(Fonttype type) const;
+
+
+  friend SoGlyphP;
   SoGlyphP * pimpl;
 };
 
