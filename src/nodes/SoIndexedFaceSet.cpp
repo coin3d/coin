@@ -265,6 +265,8 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
       tbind = NONE;
       tindices = NULL;
     }
+    // FIXME: just call inherited::areTexCoordsIndexed() instead of
+    // the if-check? 20020110 mortene.
     else if (SoTextureCoordinateBindingElement::get(state) ==
              SoTextureCoordinateBindingElement::PER_VERTEX) {
       tbind = PER_VERTEX;
@@ -398,8 +400,10 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
       tbind = NONE;
       tindices = NULL;
     }
+    // FIXME: just call inherited::areTexCoordsIndexed() instead of
+    // the if-check? 20020110 mortene.
     else if (SoTextureCoordinateBindingElement::get(state) ==
-        SoTextureCoordinateBindingElement::PER_VERTEX) {
+             SoTextureCoordinateBindingElement::PER_VERTEX) {
       tbind = PER_VERTEX;
       tindices = NULL;
     }
@@ -633,6 +637,8 @@ SoIndexedFaceSet::useConvexCache(SoAction * action)
   }
 
   Binding tbind = NONE;
+  // FIXME: just call inherited::areTexCoordsIndexed() instead of
+  // the if-check? 20020110 mortene.
   if (SoTextureCoordinateBindingElement::get(state) ==
       SoTextureCoordinateBindingElement::PER_VERTEX) {
     tbind = PER_VERTEX;

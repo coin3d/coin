@@ -21,6 +21,9 @@
  *
 \**************************************************************************/
 
+// This is an internal class with utility functions we use when
+// playing around with OpenGL.
+
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/actions/SoAction.h>

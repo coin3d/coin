@@ -38,7 +38,9 @@
 
 /*!
   \enum SoTextureCoordinateBinding::Binding
-  FIXME: write documentation for enum
+
+  The binding types available for the
+  SoTextureCoordinateBinding::value field.
 */
 /*!
   \var SoTextureCoordinateBinding::Binding SoTextureCoordinateBinding::PER_VERTEX
@@ -52,7 +54,10 @@
 
 /*!
   \var SoSFEnum SoTextureCoordinateBinding::value
-  FIXME: write documentation for field
+
+  Type of texturemap binding for subsequent shape nodes in the
+  scenegraph. Default field value is
+  SoTextureCoordinateBinding::PER_VERTEX_INDEXED.
 */
 
 
@@ -63,7 +68,7 @@ SO_NODE_SOURCE(SoTextureCoordinateBinding);
 /*!
   Constructor.
 */
-SoTextureCoordinateBinding::SoTextureCoordinateBinding()
+SoTextureCoordinateBinding::SoTextureCoordinateBinding(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCoordinateBinding);
 
@@ -81,7 +86,7 @@ SoTextureCoordinateBinding::~SoTextureCoordinateBinding()
 {
 }
 
-// doc in super
+// Documented in superclass.
 void
 SoTextureCoordinateBinding::initClass(void)
 {
@@ -92,18 +97,14 @@ SoTextureCoordinateBinding::initClass(void)
   SO_ENABLE(SoCallbackAction, SoTextureCoordinateBindingElement);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Documented in superclass.
 void
 SoTextureCoordinateBinding::GLRender(SoGLRenderAction * action)
 {
   SoTextureCoordinateBinding::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoTextureCoordinateBinding::doAction(SoAction *action)
 {
@@ -112,27 +113,21 @@ SoTextureCoordinateBinding::doAction(SoAction *action)
      (SoTextureCoordinateBindingElement::Binding)value.getValue());
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoTextureCoordinateBinding::callback(SoCallbackAction *action)
 {
   SoTextureCoordinateBinding::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoTextureCoordinateBinding::pick(SoPickAction *action)
 {
   SoTextureCoordinateBinding::doAction(action);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Documented in superclass.
 SbBool
 SoTextureCoordinateBinding::readInstance(SoInput * in, unsigned short flags)
 {

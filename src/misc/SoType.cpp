@@ -203,6 +203,9 @@ SoType::createType(const SoType parent, const SbName name,
   The new type should be a C++ subclass of the original class type, but
   this won't be checked though.
 
+  If \c NULL is passed as the second argument, the type will be
+  considered uninstantiable -- it does not revert the configuration to
+  the default setting as one might think.
 */
 
 const SoType

@@ -155,7 +155,10 @@ SoSeparatorKit::setUpConnections(SbBool onoff, SbBool doitalways)
 
 #undef THIS
 
-// methods for SoSeparatorKitP are below
+
+/****** methods for SoSeparatorKitP are below ************************/
+
+#ifndef DOXYGEN_SKIP_THIS
 
 //
 // connect fields in topSeparator to the fields in this node.
@@ -211,3 +214,5 @@ SoSeparatorKitP::sensorCB(void * data, SoSensor *)
     thisp->connectFields(TRUE);
   }
 }
+
+#endif // DOXYGEN_SKIP_THIS

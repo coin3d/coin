@@ -29,11 +29,9 @@
   All other nodes are hidden from the user.
 */
 
-/*¡
-  We now need a "friend class SoNodeKitPath;" in the SoPath
-  definition -- could we do without it? That would clean up
-  the implementation a bit.
- */
+// FIXME: We now need a "friend class SoNodeKitPath;" in the SoPath
+// definition -- could we do without it? That would clean up the
+// implementation a bit. 20020119 mortene.
 
 #include <Inventor/SoNodeKitPath.h>
 #include <Inventor/nodekits/SoBaseKit.h>

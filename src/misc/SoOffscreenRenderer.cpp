@@ -34,7 +34,19 @@
 
   Currently offscreen rendering can be done with GLX (i.e. OpenGL on
   X11) and WGL (i.e. OpenGL on Win32).
+
 */
+// FIXME: include the following in documentation about how to use the
+// SoOffscreenRenderer to write movies:
+// 
+//    You should write your application to control the global
+//    "realTime" field, then you will be able to "step" with
+//    appropriate time units for each render operation (eg first
+//    render with realTime=0.0, then add 1/60s to the realTime field,
+//    render again to a new frame, add another 1/60s to the realTime
+//    field, render, and so on).
+//
+// 20020110 mortene.
 
 #include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/SoPath.h>

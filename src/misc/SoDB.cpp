@@ -27,12 +27,12 @@
 /*!
   \mainpage
 
-  Coin is an OpenGL based, retained mode 3D graphics rendering
-  library. It is implemented in C++ and publicly released with the
-  source code open for your perusal. The application programmer's
-  interface (API) is fully compatible with SGI's Open Inventor, the \e
-  de \e facto standard 3D graphics API for complex visualization
-  applications.
+  <a href="http://www.coin3d.org">Coin</a> is an OpenGL based,
+  retained mode 3D graphics rendering library. It is implemented in
+  C++ and publicly released with the source code open for your
+  perusal. The application programmer's interface (API) is fully
+  compatible with SGI's Open Inventor, the \e de \e facto standard 3D
+  graphics API for complex visualization applications.
 
   For an excellently written, detailed, tutorial-style introduction to
   the Open Inventor API used by the Coin library, we highly recommend
@@ -64,11 +64,11 @@
 
   <b>IMPORTANT NOTE: the online documentation for the Coin library is
   still a work-in-progress.</b> Although most classes have been
-  documented properly, there are still "holes" in the documentation
-  for certain classes.  Complete documentation for the Inventor API
-  can be found on the web-pages of Template Graphics Systems at <a
-  href="http://www.tgs.com/">http://www.tgs.com/</a>, just follow the
-  links to the "Open Inventor C++" classes documentation.
+  documented properly, there are still a few "holes" in the
+  documentation for certain classes. If you happen upon an
+  undocumented or poorly documented class and / or class method which
+  you find hard to understand, please give us a notice so we can
+  rectify the situation.
 */
 
 /*! \defgroup actions Actions */

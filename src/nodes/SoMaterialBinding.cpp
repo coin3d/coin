@@ -145,7 +145,7 @@
   \var SoSFEnum SoMaterialBinding::value
 
   The material binding to use for subsequent shape nodes in the scene
-  graph.
+  graph. The default binding is SoMaterialBinding::OVERALL.
 */
 
 

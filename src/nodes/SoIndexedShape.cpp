@@ -26,9 +26,9 @@
   \brief The SoIndexedShape class is the superclass for all indexed vertex shapes.
   \ingroup nodes
 
-  It holds four field for storing indices to coordinates, normals,
-  materials and texture coordinates, and also has some convenience
-  methods which can be used by subclasses.  
+  This class contains four fields for storing indices to coordinates,
+  normals, materials and texture coordinates. It also has some
+  convenience methods which can be used by it's subclasses.
 */
 
 #include <Inventor/nodes/SoIndexedShape.h>
@@ -82,20 +82,17 @@ SoIndexedShape::~SoIndexedShape()
 {
 }
 
-// doc from parent
+// Documented in superclass.
 void
-SoIndexedShape::initClass()
+SoIndexedShape::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoIndexedShape);
 }
 
-/*!
-  Overloaded to calculate bounding box of all indexed coordinates, 
-  using the coordIndex field.
-*/
+// Documented in superclass. Overridden to calculate bounding box of
+// all indexed coordinates, using the coordIndex field.
 void
-SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box,
-                            SbVec3f & center)
+SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   SoState * state = action->getState();
 
@@ -145,6 +142,8 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box,
 
 /*!
   Returns whether texture coordinates should be indexed or not.
+
+  \sa SoTextureCoordinateBinding
 */
 SbBool
 SoIndexedShape::areTexCoordsIndexed(SoAction * action)
@@ -169,8 +168,11 @@ SoIndexedShape::getNumVerts(const int startCoord)
 }
 
 /*!
-  Not implemented. Probably only used internally in OIV.
-  Let us know if you need this method and we'll implement it.
+  Not implemented. Probably only used for internal purposes in SGI's
+  original Open Inventor, which means it should have been private.
+
+  Let us know if you need this method for any code you are porting and
+  we'll look into implement it properly.
 */
 void
 SoIndexedShape::setupIndices(const int /* numParts */,
@@ -182,8 +184,11 @@ SoIndexedShape::setupIndices(const int /* numParts */,
 }
 
 /*!
-  Not implemented. Probably only used internally in OIV.
-  Let us know if you need this method and we'll implement it.
+  Not implemented. Probably only used for internal purposes in SGI's
+  original Open Inventor, which means it should have been private.
+
+  Let us know if you need this method for any code you are porting and
+  we'll look into implement it properly.
 */
 const int32_t *
 SoIndexedShape::getNormalIndices()
@@ -193,8 +198,11 @@ SoIndexedShape::getNormalIndices()
 }
 
 /*!
-  Not implemented. Probably only used internally in OIV.
-  Let us know if you need this method and we'll implement it.
+  Not implemented. Probably only used for internal purposes in SGI's
+  original Open Inventor, which means it should have been private.
+
+  Let us know if you need this method for any code you are porting and
+  we'll look into implement it properly.
 */
 const int32_t *
 SoIndexedShape::getColorIndices()
@@ -204,8 +212,11 @@ SoIndexedShape::getColorIndices()
 }
 
 /*!
-  Not implemented. Probably only used internally in OIV.
-  Let us know if you need this method and we'll implement it.
+  Not implemented. Probably only used for internal purposes in SGI's
+  original Open Inventor, which means it should have been private.
+
+  Let us know if you need this method for any code you are porting and
+  we'll look into implement it properly.
 */
 const int32_t *
 SoIndexedShape::getTexCoordIndices()
@@ -216,8 +227,10 @@ SoIndexedShape::getTexCoordIndices()
 
 /*!
   Convenience method that will fetch data needed for rendering or
-  generating primitives. Takes care of normal cache. This method
-  is not part of the OIV API.
+  generating primitives. Takes care of normal cache.
+
+  This method was not part of the original SGI Open Inventor API, and
+  is an extension specific for Coin.
 */
 SbBool
 SoIndexedShape::getVertexData(SoState * state,

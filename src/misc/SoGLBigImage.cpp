@@ -25,8 +25,28 @@
   \class SoGLBigImage include/Inventor/misc/SoGLBigImage.h
   \brief The SoGLBigImage class is used to handle 2D OpenGL textures of any size.
 
-  This class is currently under heavy development, and is probably
-  very buggy.  Don't use it unless you really know what you're doing!
+  (This class is currently under heavy development, and is probably
+  somewhat buggy.  Don't use it unless you really know what you're
+  doing!)
+
+  The technique used is the following: split the texture into x*y
+  equal size blocks. All these subtextures are of size 2^n, and are
+  typically quite small (256x256 or smaller).  Each triangle is
+  clipped, based on the texture coordinates, into several smaller
+  triangles. The triangles will then be guaranteed to use only one
+  subtexture. Then I project the triangles onto the screen, and
+  calculate the maximum projected size for the
+  subtextures. Subtextures outside the viewport will be culled. Each
+  subtexture is then sampled down to a 2^n value close to the
+  projected size, and a GL texture is created with this size. This GL
+  texture is used when rendering triangles that are clipped into that
+  subtexture.
+
+  Mipmapping is disabled for SoGLBigImage. Aliasing problems shouldn't
+  occur because the projected size of the texture is calculated on the
+  fly.  When mipmapping is enabled, the amount of texture memory used
+  is doubled, and creating the texture object is much slower, so we
+  avoid this for SoGLBigImage.
 */
 
 #include <Inventor/misc/SoGLBigImage.h>
@@ -422,6 +442,14 @@ SoGLBigImage::unrefOldDL(SoState * state, const uint32_t maxage)
 
 #ifndef DOXYGEN_SKIP_THIS
 
+//  The method copySubImage() handles the downsampling, and it's very
+//  primitive. If the GL texture should be half the size of the
+//  original subtexture, every second pixel is simply used.
+// 
+//  FIXME: I guess this may cause "patterns" in the textures, which
+//  has been observed. For a better result, the downsampling method
+//  should be improved by setting each pixel to the average of the
+//  pixels being downscaled. 20011219 pederb.
 void
 SoGLBigImageP::copySubImage(const int idx,
                             const unsigned char * src,

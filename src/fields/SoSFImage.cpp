@@ -33,15 +33,72 @@
   class in Coin.
 
   The components of an SoSFImage is: its image dimensions (width and
-  height), the number of bytes used for describing each pixel and an
-  associated pixel buffer. The size of the pixel buffer will be
-  width * height * bytesperpixel.
+  height), the number of bytes used for describing each pixel (number
+  of components) and an associated pixel buffer. The size of the pixel
+  buffer will be width*height*components.
 
-  For texture maps, the bytes per pixel setting translates to: 1 byte
-  means a grayscale imagemap, 2 bytes is grayscale + opacity
-  (i.e. alpha value), 3 bytes is 8-bit red + 8-bit green + 8-bit blue
-  (aka RGB) and 4 bytes per pixel means 3 bytes for RGB + 1 byte
+  For texture maps, the components / bytes-per-pixel setting
+  translates as follows: use 1 for a grayscale imagemap, 2 for
+  grayscale + opacity (i.e. alpha value), 3 for RGB (1 byte each for
+  red, green and blue) and 4 components means 3 bytes for RGB + 1 byte
   opacity value (aka RGBA).
+
+  This field is serializable into the Inventor / Coin file format in
+  the following manner:
+
+  \code
+  FIELDNAME X Y C 0xRRGGBBAA 0xRRGGBBAA ...
+  \endcode
+
+  "X" and "Y" are the image dimensions along the given axes, "C" is
+  the number of components in the image. The number of 0xRRGGBBAA
+  pixel color specifications needs to equal X*Y. Each part of the
+  pixel color value is in the range 0x00 to 0xff (hexadecimal, 0 to
+  255 decimal).
+
+  For 3-component images, the pixel-format is 0xXXRRGGBB, where the
+  byte in the pixel color value marked as "XX" is simply ignored.
+
+  For 2-component images, the pixel-format is 0xXXXXGGAA, where the
+  bytes in the pixel color values marked as "XX" are ignored. "GG" is
+  the part which gives a grayscale value and "AA" is for opacity.
+  
+  For 1-component images, the pixel-format is 0xXXXXXXGG, where the
+  bytes in the pixel color values marked as "XX" are ignored.
+
+  (If you think this image format is wasteful with regard to filesize
+  issues, you are absolutely correct. But this is how it was designed
+  by the SGI engineers when they developed the original Inventor
+  library, so Coin also uses it to keep file format compatibility.)
+
+  The pixels are read as being ordered in rows along X (width) and
+  columns along Y (height, bottom to top).
+
+  Here's a simple example of the file format serialization, for a 2x2
+  RGB-image inside an SoTexture2 node, as mapped unto an SoCube:
+
+  \code
+  Texture2 {
+     image 2 2 3
+
+     0x00ffffff 0x0000ff00
+     0x00ff0000 0x00ffff00
+  }
+
+  Complexity { textureQuality 0.1 }
+  Cube { }
+  \endcode
+
+  The mini-scenegraph above results in the following mapping on the
+  cube:<br>
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/fields/sosfimage.png">
+  </center>
+
+  The cube has only been \e slightly rotated, so as you can see from
+  the snapshot, the Y-rows are mapped from bottom to top, while the
+  X-column pixels are mapped unto the cube from left to right.
 
   \sa SoTexture2, SoSFImage3
 */
