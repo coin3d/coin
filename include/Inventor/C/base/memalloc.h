@@ -40,7 +40,7 @@ extern "C" {
   COIN_DLL_API void * cc_memalloc_allocate(cc_memalloc * allocator);
   COIN_DLL_API void cc_memalloc_deallocate(cc_memalloc * allocator, void * ptr);
   COIN_DLL_API void cc_memalloc_clear(cc_memalloc * allocator);
-  COIN_DLL_API void cc_memalloc_set_strategy(cc_memalloc_strategy_cb * cb);
+  COIN_DLL_API void cc_memalloc_set_strategy(cc_memalloc * allocator, cc_memalloc_strategy_cb * cb);
 
 /* ********************************************************************** */
 

@@ -127,7 +127,7 @@ cc_memalloc_construct(const unsigned int unitsize)
   allocator->free = NULL;
   allocator->memnode = NULL;
 
-  cc_memalloc_set_strategy_cb(NULL); /* will insert default handler */
+  cc_memalloc_set_strategy(allocator, NULL); /* will insert default handler */
 
   return allocator;
 }
@@ -204,7 +204,7 @@ default_strategy(const int numunits_allocated)
   units allocated is less than 64, then 64 is returned.
 */
 void 
-cc_memalloc_set_strategy_cb(cc_memalloc * allocator, cc_memalloc_strategy_cb * cb)
+cc_memalloc_set_strategy(cc_memalloc * allocator, cc_memalloc_strategy_cb * cb)
 {
   if (cb == NULL) allocator->strategy = default_strategy;
   else allocator->strategy = cb;
