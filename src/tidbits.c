@@ -330,12 +330,15 @@ coin_strncasecmp(const char * s1, const char * s2, int len)
 int
 coin_host_is_bigendian(void)
 {
-  char buffer[4];
-  buffer[0] = 0x00;
-  buffer[1] = 0x01;
-  buffer[2] = 0x02;
-  buffer[3] = 0x03;
-  switch ( *((uint32_t *) buffer) ) {
+  union temptype {
+    uint32_t value;
+    char bytes[4];
+  } temp;
+  temp.bytes[0] = 0x00;
+  temp.bytes[1] = 0x01;
+  temp.bytes[2] = 0x02;
+  temp.bytes[3] = 0x03;
+  switch ( temp.value ) {
   case 0x00010203:
     return 1;
   case 0x03020100:
