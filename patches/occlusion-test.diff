@@ -126,6 +126,8 @@ diff -u -b -r1.93 SoSeparator.cpp
 +  const SbVec3f & bmin = bbox.getMin();
 +  const SbVec3f & bmax = bbox.getMax();
 +  // disable updates to color and depth buffer
++  glPushAttrib(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_ENABLE_BIT);
++  glDisable(GL_CULL_FACE);
 +  glDepthMask(GL_FALSE);
 +  glColorMask(GL_FALSE,GL_FALSE,GL_FALSE,GL_FALSE);
 +  // enable occlusion test
@@ -154,9 +156,7 @@ diff -u -b -r1.93 SoSeparator.cpp
 +  glEnd();
 +  // disable occlusion test
 +  glDisable(GL_OCCLUSION_TEST_HP);
-+  // enable updates to color and depth buffer
-+  glDepthMask(GL_TRUE);
-+  glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
++  glPopAttrib();
 +  // read occlusion test result
 +  GLboolean result;
 +  glGetBooleanv(GL_OCCLUSION_TEST_RESULT_HP, &result);
