@@ -91,6 +91,16 @@ Separator {
       Translation { translation +5 0 0 }
       NormalBinding { value PER_VERTEX_INDEXED }
       USE ps
+
+      # The next two use obsoleted values for Normalbinding::value.
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value DEFAULT }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value NONE }
+      USE ps
    }
 
    # (ROW 2) Test how IndexedFaceSet is affected by Complexity.
