@@ -189,8 +189,8 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
 			    const Binding texbind)
 {
 #if COIN_DEBUG
-  SoDebugError::post("SoConvexDataCache::generate", 
-		     "generating convex data\n"); 
+  SoDebugError::postInfo("SoConvexDataCache::generate", 
+			 "generating convex data"); 
 #endif
 
   // remove old data

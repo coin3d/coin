@@ -128,6 +128,7 @@ SoNode::copy(SbBool copyConnections) const
 void
 SoNode::notify(SoNotList * list)
 {
+  // FIXME: should put ourselves in the list. 19990701 mortene.
   inherited::notify(list);
 }
 
@@ -827,14 +828,10 @@ SoNode::isOverride(void) const
 // * ACTION STUFF
 // *************************************************************************
 
+#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   This function performs the typical operation of a node for any action.
   Default method does nothing.
-*/
-
-#if !defined(COIN_EXCLUDE_SOACTION)
-/*!
-  FIXME: write function documentation
 */
 void
 SoNode::doAction(SoAction *)
@@ -856,7 +853,7 @@ SoNode::affectsState() const
   Returns the last node that was give \a name in SoBase::setName()
 */
 SoNode *
-SoNode::getByName(const SbName & name) // static
+SoNode::getByName(const SbName & name)
 {
   // got to search through dictionary to find the last node with
   // 'name'
@@ -1212,13 +1209,13 @@ void
 SoNode::write(SoWriteAction * action)
 {
   SoOutput * out = action->getOutput();
-  if (this->writeHeader(out, FALSE, FALSE)) return;
-
-  const SoFieldData * fd = this->getFieldData();
-  for(int i=0; i < fd->getNumFields(); i++)
-    fd->getField(this, i)->write(out, fd->getFieldName(i));
-
-  this->writeFooter(out);
+  if (out->getStage() == SoOutput::COUNT_REFS) {
+    // FIXME: code missing here. 19990701 mortene.
+  }
+  else if (out->getStage() == SoOutput::WRITE) {
+    this->writeInstance(out);
+  }
+  else assert(0 && "unknown stage");
 }
 #endif // !COIN_EXCLUDE_SOWRITEACTION
 
@@ -1226,7 +1223,7 @@ SoNode::write(SoWriteAction * action)
   FIXME: write function documentation
 */
 SoChildList *
-SoNode::getChildren() const
+SoNode::getChildren(void) const
 {
   return NULL;
 }
@@ -1269,12 +1266,20 @@ SoNode::getNodeId(void) const
 }
 
 /*!
-  FIXME: write function documentation
+  This method is called from write() if we're in the actual writing pass
+  of the write action taking place. It dumps the node to the given output
+  stream.
 */
 void
 SoNode::writeInstance(SoOutput * out)
 {
-  assert(0 && "FIXME: not implemented");
+  if (this->writeHeader(out, FALSE, FALSE)) return;
+
+  const SoFieldData * fd = this->getFieldData();
+  for (int i=0; i < fd->getNumFields(); i++)
+    fd->getField(this, i)->write(out, fd->getFieldName(i));
+  
+  this->writeFooter(out);
 }
 
 /*!

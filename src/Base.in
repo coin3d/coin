@@ -33,7 +33,7 @@
 # CIRD  SbPlane
 # CIRD  SbRotation
 # CIRD  SbSphere
-# CIRD  SbString
+# CIRd  SbString
 # CIRD  SbTime
 # CIRD  SbVec2f
 # CIRD  SbVec2s

@@ -41,6 +41,10 @@
 #include <GL/gl.h>
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 //$ BEGIN TEMPLATE ElementSource( SoGLNormalizeElement )
 
 /*!
@@ -168,7 +172,10 @@ void
 SoGLNormalizeElement::push(SoState * state)
 {
   inherited::push(state);
-  ((SoGLNormalizeElement*)this->next)->glnormalize = this->glnormalize;
+  SoGLNormalizeElement *elem = (SoGLNormalizeElement*)this->next;
+  elem->glnormalize = this->glnormalize;
+  elem->unitNormals = this->unitNormals;
+  elem->okMatrix = this->okMatrix;
 }
 
 //! FIXME: write doc.
@@ -214,6 +221,12 @@ SoGLNormalizeElement::setMatrixState(SoState * const state,
   SoGLNormalizeElement * e = (SoGLNormalizeElement *)
     inherited::getElement(state, SoGLNormalizeElement::classStackIndex);
   e->okMatrix = valid;
+
+#if 0 // debug
+  SoDebugError::postInfo("SoGLNormalizeElement::setMatrixState",
+			 "%d", valid);
+#endif // debug
+
 }
 
 /*!
@@ -227,6 +240,12 @@ SoGLNormalizeElement::setUnitNormals(SoState * const state,
   SoGLNormalizeElement * e = (SoGLNormalizeElement *)
     inherited::getElement(state, SoGLNormalizeElement::classStackIndex);
   e->unitNormals = unitNormals;
+
+#if 0 // debug
+  SoDebugError::postInfo("SoGLNormalizeElement::setUnitNormals",
+			 "%d", unitNormals);
+#endif // debug
+
 }
 
 
@@ -237,6 +256,12 @@ void
 SoGLNormalizeElement::evaluate() const
 {
   SbBool normalize = !(this->unitNormals && this->okMatrix);
+
+#if 0 // debug
+  SoDebugError::postInfo("SoGLNormalizeElement::evaluate",
+			 "%d %d %d", unitNormals, okMatrix, normalize);
+#endif // debug
+
   ((SoGLNormalizeElement*)this)->updategl(normalize);
 }
 
@@ -250,7 +275,11 @@ SoGLNormalizeElement::evaluate() const
 void
 SoGLNormalizeElement::forceSend(const SbBool unit) const
 {
-  ((SoGLNormalizeElement*)this)->updategl(unit && this->okMatrix);
+#if 0 // debug
+  SoDebugError::postInfo("SoGLNormalizeElement::forceSend",
+			 "%d", unit);
+#endif // debug
+  ((SoGLNormalizeElement*)this)->updategl(!(unit && this->okMatrix));
 }
 
 //! FIXME: write doc.
@@ -258,11 +287,23 @@ SoGLNormalizeElement::forceSend(const SbBool unit) const
 void
 SoGLNormalizeElement::updategl(const SbBool normalize)
 {
+#if 0 // debug
+  SoDebugError::postInfo("SoGLNormalizeElement::updategl",
+			 "norm: %d %d", normalize, glnormalize);
+#endif // debug
+  
+#if 0 // to disable this optimizing feature 
+  if (!glnormalize) {
+    glnormalize = TRUE;
+    glEnable(GL_NORMALIZE);
+  }
+#else // optimized
   if (normalize != this->glnormalize) {
     this->glnormalize = normalize;
     if (normalize) glEnable(GL_NORMALIZE);
     else glDisable(GL_NORMALIZE); /* yeah, 10% speed increase :-) */
   }
+#endif // optimized
 }
 
 

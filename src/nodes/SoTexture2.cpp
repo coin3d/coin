@@ -28,6 +28,7 @@
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/SbName.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -254,6 +255,12 @@ SoTexture2::GLRender(SoGLRenderAction * action)
 
     if (bytes && size[0] > 0 && size[1] > 0 && nc > 0) {
       this->glImage = new SoGLImage(size, nc, bytes);
+#if 0 // debug
+      SoDebugError::postInfo("SoTexture2::GLRender",
+			     "create image from data: %d %d %d",
+			     size[0], size[1], nc);
+#endif // debug
+
     }
     else { // try to load file
       if (this->filename.getValue().getLength()) {
@@ -264,10 +271,16 @@ SoTexture2::GLRender(SoGLRenderAction * action)
     }
   }
   
-  if (this->glImage && !this->glImage->isInitialized())
+  if (this->glImage && !this->glImage->isInitialized()) {
     this->glImage->init(this->wrapS.getValue() == CLAMP,
 			this->wrapT.getValue() == CLAMP);
-  
+
+#if 0 // debug
+    SoDebugError::postInfo("SoTexture2::GLRender",
+			   "initTexture");
+#endif // debug
+
+  }
   if (this->glImage) {
     SoGLTextureImageElement::set(action->getState(), this,
 				 this->glImage, 

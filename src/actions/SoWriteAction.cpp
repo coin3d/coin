@@ -223,11 +223,16 @@ SoWriteAction::continueToApply(SoPath * path)
 }
 
 /*!
-  Starts traversing at \a node.
+  Starts traversal at \a node. The write action is actually done in two
+  passes, one to count the references of the objects in the scene graph,
+  and one to do the actual writing.
 */
 void
 SoWriteAction::beginTraversal(SoNode * node)
 {
+  this->outobj->setStage(SoOutput::COUNT_REFS);
+  this->traverse(node);
+  this->outobj->setStage(SoOutput::WRITE);
   this->traverse(node);
   if (!this->outobj->isBinary()) outobj->write('\n');
 }

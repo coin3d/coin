@@ -113,7 +113,7 @@ protected:
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual SbBool willSetShadeModel() const;
   virtual SbBool willSetShapeHints() const;
-  virtual SbBool willSendUnitLengthNormals(SoState *state) const;
+  virtual SbBool willUpdateNormalizeElement(SoState *state) const;
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 #if !defined(COIN_EXCLUDE_SORAYPICKACTION)

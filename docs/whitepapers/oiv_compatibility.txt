@@ -7,7 +7,6 @@ would be a feat.  Ultimately, we want Coin to be 100% compatible with
 Open Inventor, but for now we have chosen to be incompatible in certain
 areas.  Some of these incompatibilities will be purely internal and not
 noticeable for people who develops Open Inventor-based applications.
-Other fields will 
 
 There are certain notable "hacks" in the latest version of Open Inventor
 that are set aside for now.
@@ -40,7 +39,8 @@ Incompatibilities
       in a lot of them).
 
     In the future, we might implement some structured element bundling system,
-    which we might use to support the SoLazyElement element.
+    which we might use to support the SoLazyElement element.  For now we use
+    the atomic approach with each element separate.
 
 * SoGLLazyElement
     See SoLazyElement.

@@ -43,7 +43,7 @@ private:
   SbDictEntry * next;
   
   friend class SbDict;
-}; // class SbDictEntry
+};
 
 
 // *************************************************************************
@@ -282,7 +282,7 @@ SbDict::findEntry(const unsigned long key) const
 //       entry = entry->next;
 //       cnt++;
 //     }
-//     printf(" bucket: %d, cnt: %d\n",i, cnt);
+//     printf(" bucket: %d, cnt: %d\n", i, cnt);
 //   }
 //   printf("\n\n\n");
 // }

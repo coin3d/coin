@@ -43,7 +43,8 @@
 
 /*!
   \fn SoType SoBase::getTypeId(void) const
-  FIXME: write doc
+  Returns the actual type id of an object derived from a class inheriting
+  SoBase. Needs to be overloaded in \e all subclasses.
 */
 /*!
   \fn SbBool SoBase::readInstance(SoInput * in, unsigned short flags)
@@ -84,9 +85,13 @@ static const char REFERENCE_KEYWORD[] = "USE";
 // Only a small number of SoBase derived objects will under usual
 // conditions have designated names, so we use a couple of SbDict
 // objects to keep track of them. Since we avoid storing a pointer for
-// each and every object, we'll save a decent amount of RAM this way.
+// each and every object, we'll save a decent amount of RAM this way
+// (SoBase should be kept as slim as possible, as any dead weight is
+// brought along in a lot of objects).
 SbDict * SoBase::name2obj_dict; // maps from char * to SbPList(SoBase)
 SbDict * SoBase::obj2name_dict; // maps from SoBase * to char*
+
+SbString SoBase::refwriteprefix = "+";
 
 SoType SoBase::classTypeId = SoType::badType();
 
@@ -209,7 +214,11 @@ SoBase::unref(void) const
 			 this, this->getTypeId().getName().getString(),
 			 this->referencecount);
 #endif // debug
-  if (base->referencecount == 0) base->destroy();
+#if COIN_DEBUG
+  if (this->referencecount < 0)
+    SoDebugError::postWarning("SoBase::unref", "ref count less than zero");
+#endif // COIN_DEBUG
+  if (this->referencecount == 0) base->destroy();
 }
 
 /*!
@@ -399,6 +408,7 @@ SoBase::startNotify(void)
 void 
 SoBase::notify(SoNotList * list)
 {
+  // FIXME: What else should be put here? kintel.
   SoAuditorList al = this->getAuditors();
   al.notify(list);
 }
@@ -444,7 +454,8 @@ SoBase::getAuditors(void) const
 void
 SoBase::addWriteReference(SoOutput * out, SbBool isFromField)
 {
-  assert(0 && "FIXME: not implemented");
+  // XXX
+//    assert(0 && "FIXME: not implemented");
 }
 
 /*!
@@ -574,12 +585,21 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
 }
 
 /*!
-  FIXME: write doc
+  Referenced instances of SoBase are written as "DEF NamePrefixNumber" when
+  exported. "Name" is the name of the base instance from setName(), "Prefix"
+  is common for all objects and can be set by this method (default is "+"),
+  and "Number" is a unique id which is necessary if multiple objects have
+  the same name.
+
+  If you want the prefix to be something else than "+", use this method.
  */
 void
 SoBase::setInstancePrefix(const SbString & c)
 {
-  assert(0 && "FIXME: not implemented");
+#if COIN_DEBUG
+  // FIXME: scan c for invalid characters? 19990701 mortene.
+#endif // COIN_DEBUG
+  SoBase::refwriteprefix = c;
 }
 
 /*!

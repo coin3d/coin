@@ -313,6 +313,12 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
   SoState * state = action->getState();
 
+  SbBool needNormals = TRUE;
+#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
+  needNormals = 
+    SoLightModelElement::get(state) == SoLightModelElement::PHONG;
+#endif // ! COIN_EXCLUDE_SOLIGHTMODELELEMENT
+
 #if !defined(COIN_EXCLUDE_SOTRANSPARENCYELEMENT)
   const SoTransparencyElement * trans = 
     SoTransparencyElement::getInstance(state);
@@ -379,18 +385,22 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
     SoMaterialBundle mb(action);
     mb.sendFirst();
-
-    //
-    // TODO: call SoGLNormalizeElement::forceSend()
-    //
     
 #if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
     {
       const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
-	action->getState()->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
+	state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
       sh->forceSend(TRUE, FALSE, FALSE);
     }
-#endif
+#endif // ! COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT
+
+#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
+    if (needNormals) {
+      const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
+	state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
+      ne->forceSend(TRUE); // cube will provide unit normals
+    }
+#endif // !COIN_EXCLUDE_SOGLLIGHTMODELELEMENT
     
     glPushMatrix();
     glTranslatef(center[0], center[1], center[2]);
@@ -412,15 +422,12 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 #endif
 
 #if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
-  {
-    if (SoLightModelElement::get(state) == SoLightModelElement::PHONG) {
-      const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
-	state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
-      ne->forceSend(this->willSendUnitLengthNormals(state));
-    }
+  if (needNormals && !this->willUpdateNormalizeElement(state)) {
+    const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
+      state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
+    ne->evaluate();
   }
 #endif // !COIN_EXCLUDE_SOGLLIGHTMODELELEMENT
-
 
   return TRUE;
 }
@@ -642,17 +649,17 @@ SoShape::willSetShapeHints() const
 }
 
 /*!
-  Should be overloaded by subclasses which will send unit length
-  normals to GL when rendering. This will make it possible to
-  turn off the GL_NORMALIZE feature in OpenGL. Default method
-  return \e FALSE.
+  Should be overloaded by subclasses which handles normals in
+  a non-default way (not using the SoNormal node). The node is
+  then responsible of handling this element before rendering.
+  Default method returns FALSE.
 
   This method is not a part of the original OIV API. Don't
   overload it if you intend to make a shape node which will work 
   on both Coin and Open Inventor.
 */
 SbBool 
-SoShape::willSendUnitLengthNormals(SoState *state) const
+SoShape::willUpdateNormalizeElement(SoState *) const
 {
   return FALSE;
 }

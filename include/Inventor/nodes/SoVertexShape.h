@@ -66,7 +66,7 @@ public:
 
 protected:
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
-  virtual SbBool willSendUnitLengthNormals(SoState *state) const;
+  virtual SbBool willUpdateNormalizeElement(SoState *) const;
   virtual SbBool shouldGLRender(SoGLRenderAction * action);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 

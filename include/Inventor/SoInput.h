@@ -135,6 +135,7 @@ protected:
   static void setDirectories(SbStringList * dirs);
 
 private:
+  friend class SoDB;
   void constructorsCommon(void);
 
   static void addDirectoryIdx(const int idx, const char * dirName);

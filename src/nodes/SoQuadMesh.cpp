@@ -306,6 +306,13 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   
   SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
   doTextures = tb.needCoordinates();
+
+  //
+  // FIXME: should I test for texture coordinate binding other
+  // than PER_VERTEX_INDEXED. The normal an material bindings
+  // are equal for indexed and nonindex, this is probably the
+  // case for texture coordinate binding too... (pederb, 990701)
+  //
   
   int start = this->startIndex.getValue();
   
@@ -326,6 +333,8 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
     glNormal3fv((const GLfloat *)currnormal);
   }
 
+  int curridx; // for optimization only
+
   SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
 
@@ -342,34 +351,34 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
     if (mbind == PER_ROW) mb.send(midx++,TRUE);
     
     for (j = 0; j < rowsize; j++) {
+      curridx = IDX(i,j);
       if (nbind == PER_VERTEX) {
-	currnormal = &normals[IDX(i,j)];
+	currnormal = &normals[curridx];
 	glNormal3fv((const GLfloat *)currnormal);
       }
       else if (nbind == PER_FACE) {
 	currnormal = normals++;
 	glNormal3fv((const GLfloat *)currnormal);
       }
-      if (mbind == PER_VERTEX) mb.send(IDX(i,j), TRUE);
+      if (mbind == PER_VERTEX) mb.send(curridx, TRUE);
       else if (mbind == PER_FACE) mb.send(midx++, TRUE);
       
       if (doTextures) {
-	tb.send(IDX(i,j), coords->get3(start + IDX(i,j)),
+	tb.send(curridx, coords->get3(start + curridx),
 		*currnormal);
       }
-      //glVertex3f(0,0,0);
-      coords->send(start + IDX(i,j));
+      coords->send(start + curridx);
+      curridx = IDX(i+1,j);
       if (nbind == PER_VERTEX) {
-	currnormal = &normals[IDX(i+1,j)];
+	currnormal = &normals[curridx];
 	glNormal3fv((const GLfloat *)currnormal);
       }
-      if (mbind == PER_VERTEX) mb.send(IDX(i+1,j), TRUE);
+      if (mbind == PER_VERTEX) mb.send(curridx, TRUE);
       if (doTextures) {
-	tb.send(IDX(i+1,j), coords->get3(start + IDX(i+1,j)),
+	tb.send(curridx, coords->get3(start + curridx),
 		*currnormal);
       }
-      //glVertex3f(0,1,0);
-      coords->send(start + IDX(i+1,j));
+      coords->send(start + curridx);
     }
     glEnd(); // end of strip/row
   }

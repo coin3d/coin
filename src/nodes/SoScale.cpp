@@ -40,13 +40,13 @@
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
-#include <Inventor/elements/SoGLNormalizeElement.h>
-#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
 #endif // ! COIN_EXCLUDE_SOGLRENDERACTION
 #if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
 #include <Inventor/elements/SoModelMatrixElement.h>
 #endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
+#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
+#include <Inventor/elements/SoGLNormalizeElement.h>
+#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
 
 /*!
   \var SoSFVec3f SoScale::scaleFactor
@@ -155,13 +155,13 @@ SoScale::doAction(SoAction * action)
 void 
 SoScale::GLRender(SoGLRenderAction * action)
 {
-  SoScale::doAction((SoAction *)action);
-  
 #if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
   if (scaleFactor.getValue() != SbVec3f(1.0f, 1.0f, 1.0f)) {
     SoGLNormalizeElement::setMatrixState(action->getState(), FALSE);
   }
 #endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT  
+
+  SoScale::doAction((SoAction *)action);  
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 

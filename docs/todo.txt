@@ -15,6 +15,8 @@ these categories:
 * Module: add missing "modules" or missing features in modules to
   Coin.
 
+* Network: tasks in the vein of making Coin "network-friendly".
+
 * Generic: general improvements to the sourcecode.
 
 * Misc: other items which are hard to categorize.
@@ -90,5 +92,23 @@ these categories:
      flag. Necessary to get the mechanism in the viewers for using
      different rendering styles (hidden line, without textures, etc)
      work correctly.
+
+026. (Modules) Set up the macros which make it easy to extend Coin (in
+     SoSubNode, SoSubEngine, SoSubField, etc).
+
+027. (Network) Port urlget features to Curl.
+
+028. (Network) Interface relevant parts of Coin to Curl (SoWWWAnchor,
+     SoWWWInline, texture import, misc VRML support).
+
+029. (Rendering) Make a library with the necessary functionality for
+     doing nurbs curves and nurbs surfaces. Could perhaps start off
+     with the code in Brian Paul's MIT-relicensed Mesa (if MesaGLU is
+     part of that)?
+
+030. (Rendering) Support the SoRenderList node. Should at least
+     provide a dummy implementation.
+
+031. (Misc) Implement the various parts of Large Model Visualization.
 
 ******************************************************************************

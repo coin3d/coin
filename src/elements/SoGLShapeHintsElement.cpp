@@ -24,6 +24,29 @@
   FIXME: write doc.
 */
 
+//
+// handling of cases (from the original oiv man-pages):
+//
+// 1) ordered, solid   :   backface culling, ! twoside lighting
+// 2) ordered, ! solid : ! backface culling,   twoside lighting
+// 3) ! ordered        : ! backface culling, ! twoside lighting
+//
+
+//
+// I find this strategy quite odd. My gut-feeling says that
+// when vertexordering is unknown, two-side-lighting should be
+// enabled, since it will be difficult to know if a normal 
+// points in or out of a polygon...
+//
+ 
+// 
+// nodes with automatically generated normals should probably
+// force two-side lighting when vertexordering is unknown, since
+// it is impossible to know if normals are pointing in or out.
+//
+// use SoGLShapeHintsElement::forceSend(twoside) for this purpose  
+//
+
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 
 #include <Inventor/SbName.h>
@@ -31,7 +54,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-// for the "flags" variable
+// for the "glflags" variable
 #define SOSH_CCW      0x01
 #define SOSH_TWOSIDE  0x02
 #define SOSH_CULL     0x04
@@ -153,8 +176,10 @@ SoGLShapeHintsElement::init(SoState * state)
 {
   inherited::init(state);
   glCullFace(GL_BACK);
-  this->glflags = SOSH_CULL; // fake this to turn off culling
-  this->updategl(SOSH_CCW | SOSH_TWOSIDE);
+
+  // fake this to turn off culling and twoside
+  this->glflags = SOSH_CULL | SOSH_TWOSIDE;
+  this->updategl(SOSH_CCW); // set CCW, no culling, no twoside
 } // init()
 
 //! FIXME: write doc.
@@ -197,17 +222,15 @@ SoGLShapeHintsElement::setElt(VertexOrdering vertexOrdering,
 void
 SoGLShapeHintsElement::evaluate() const
 {
-  unsigned int flags = 0;
+  unsigned int flags = this->glflags & SOSH_CCW;
+  if (vertexOrdering == CLOCKWISE) flags = 0;
+  else if (vertexOrdering == COUNTERCLOCKWISE) flags = SOSH_CCW;
+
+  if (vertexOrdering != UNKNOWN_ORDERING) {
+    if (shapeType == SOLID) flags |= SOSH_CULL;
+    else flags |= SOSH_TWOSIDE;
+  }
   
-  if (vertexOrdering == UNKNOWN_ORDERING) {
-    flags |= (this->glflags & SOSH_CCW) | SOSH_TWOSIDE;
-  }
-  else {
-    if (vertexOrdering == COUNTERCLOCKWISE) flags |= SOSH_CCW;
-    if (shapeType == SOLID) {
-      flags |= SOSH_CULL;
-    }
-  }
   ((SoGLShapeHintsElement*)this)->updategl(flags);
 }
 
@@ -259,13 +282,6 @@ SoGLShapeHintsElement::forceSend(const SbBool ccw, const SbBool cull,
 void 
 SoGLShapeHintsElement::updategl(const unsigned int flags)
 {
-#if 0
-  glFrontFace(GL_CCW);
-  glDisable(GL_CULL_FACE);
-  glCullFace(GL_BACK);
-  glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-
-#else // ! 0
   unsigned int xor = flags ^ this->glflags;
   if (xor == 0) return; // quick return if equal
   
@@ -281,6 +297,5 @@ SoGLShapeHintsElement::updategl(const unsigned int flags)
   if (xor & SOSH_CULL) {
     flags & SOSH_CULL ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
   }
-#endif // ! 0
 }
 

@@ -34,6 +34,7 @@ typedef void * SoOutputReallocCB(void * ptr, size_t newSize);
 class SoOutput {
 public:
   enum Stage { COUNT_REFS, WRITE };
+  // Bitwise flags for the annotations.
   enum Annotations { ADDRESSES = 0x01, REF_COUNTS = 0x02 };
 
   SoOutput(void);
@@ -87,12 +88,13 @@ public:
   static SbString getDefaultASCIIHeader(void);
   static SbString getDefaultBinaryHeader(void);
 
+  int addReference(const SoBase * base);
+  int findReference(const SoBase * base) const;
+
 protected:
   SbBool isToBuffer(void) const;
   size_t bytesInBuf(void) const;
   SbBool makeRoomInBuf(size_t nBytes);
-  int addReference(const SoBase * base);
-  int findReference(const SoBase * base) const;
   void convertShort(short s, char * to);
   void convertInt32(int32_t l, char * to);
   void convertFloat(float f, char * to);

@@ -159,9 +159,9 @@ SoTextureCoordinate2::doAction(SoAction * action)
 void 
 SoTextureCoordinate2::GLRender(SoGLRenderAction * action)
 {
-  SoTextureCoordinate2::doAction((SoAction *)action);
   SoGLTextureCoordinateElement::setTexGen(action->getState(),
 					  this, NULL);
+  SoTextureCoordinate2::doAction((SoAction *)action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 

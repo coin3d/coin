@@ -58,6 +58,9 @@
 #if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
 #include <Inventor/elements/SoGLShadeModelElement.h>
 #endif // !COIN_EXCLUDE_SOGLSHADEMODELELEMENT
+#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
+#include <Inventor/elements/SoGLNormalizeElement.h>
+#endif // !COIN_EXCLUDE_SOGLNORMALIZEELEMENT
 
 #include <assert.h>
 
@@ -257,7 +260,15 @@ SoCube::GLRender(SoGLRenderAction * action)
     state->getConstElement(SoGLShadeModelElement::getClassStackIndex());
   sm->forceSend(TRUE);
 #endif
-  
+
+#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
+  if (sendNormals) {
+    const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
+      state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
+    ne->forceSend(TRUE);
+  }
+#endif // !COIN_EXCLUDE_SOGLNORMALIZEELEMENT
+
   unsigned int flags = 0;
   if (materialPerPart) flags |= SOGL_MATERIAL_PER_PART;
   if (doTextures) flags |= SOGL_NEED_TEXCOORDS;
@@ -351,9 +362,9 @@ SoCube::willSetShapeHints(void) const
   return TRUE;
 }
 
-//! FIXME: doc
+//!
 SbBool 
-SoCube::willSendUnitLengthNormals(SoState *) const
+SoCube::willUpdateNormalizeElement(SoState *) const
 {
   return TRUE;
 }

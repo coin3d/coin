@@ -97,15 +97,21 @@ private:
   static SoType classTypeId;
 
   int32_t referencecount;
+
   // Don't convert this to a pointer reference, as practically
   // speaking all SoBase derived objects have auditors -- so the list
   // will be allocated anyway, and we won't save any space (on the
   // contrary, we'll use a few extra bytes for the pointer on each
   // instance).
+  //
+  // But we should look into the possibility of slimming down
+  // SoAuditorList.
   SoAuditorList auditors;
   
   static SbDict * name2obj_dict;
-  static SbDict * obj2name_dict; 
+  static SbDict * obj2name_dict;
+
+  static SbString refwriteprefix;
 
   static SbBool readReference(SoInput * in, SoBase *& base);
   static SbBool readBase(SoInput * in, SbName & className, SoBase *& base);

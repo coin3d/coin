@@ -34,10 +34,19 @@
 #if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #endif // !COIN_EXCLUDE_SOGLSHAPEHINTSELEMENY
+#if !defined(COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT)
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#endif // !COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
 
 #if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
 #include <Inventor/elements/SoGLShadeModelElement.h>
 #endif // ! COIN_EXCLUDE_SOGLSHADEMODELELEMENT
+#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
+#include <Inventor/elements/SoGLNormalizeElement.h>
+#endif // !COIN_EXCLUDE_SOGLNORMALIZEELEMENT
+#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
+#include <Inventor/elements/SoLightModelElement.h>
+#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -154,6 +163,20 @@ SoSphere::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
+#if !defined(COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT)
+  SbBool doTextures = SoGLTextureEnabledElement::get(state);
+#else // COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
+  SbBool doTextures = FALSE;
+#endif // !COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
+
+#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
+  SbBool sendNormals =
+    (SoLightModelElement::get(state) !=
+     SoLightModelElement::BASE_COLOR);
+#else // COIN_EXCLUDE_SOLIGHTMODELELEMENT
+  SbBool sendNormals = FALSE;
+#endif // COIN_EXCLUDE_SOLIGHTMODELELEMENT
+
 #if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
   const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
     state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
@@ -180,16 +203,23 @@ SoSphere::GLRender(SoGLRenderAction * action)
   sm->forceSend(FALSE);
 #endif
 
+#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
+  if (sendNormals) {
+    const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
+      state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
+    ne->forceSend(TRUE);
+  }
+#endif // !COIN_EXCLUDE_SOGLNORMALIZEELEMENT
 
-  //
-  // FIXME: test if we need to generate normals and/or texcoords...
-  //
+  unsigned int flags = 0;
+  if (sendNormals) flags |= SOGL_NEED_NORMALS;
+  if (doTextures) flags |= SOGL_NEED_TEXCOORDS;
+
   sogl_render_sphere(this->radius.getValue(),
 		     (int)(30.0f * complexity),
 		     (int)(30.0f * complexity),
 		     &mb,
-		     SOGL_NEED_NORMALS | SOGL_NEED_TEXCOORDS);
-
+		     flags);
 }
 
 /*!
@@ -212,7 +242,7 @@ SoSphere::willSetShapeHints(void) const
 
 //! FIXME: doc
 SbBool 
-SoSphere::willSendUnitLengthNormals(SoState *) const
+SoSphere::willUpdateNormalizeElement(SoState *) const
 {
   return TRUE;
 }

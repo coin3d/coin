@@ -55,7 +55,7 @@ public:
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual SbBool willSetShapeHints() const;
   virtual SbBool willSetShadeModel() const;
-  virtual SbBool willSendUnitLengthNormals(SoState *) const;
+  virtual SbBool willUpdateNormalizeElement(SoState *) const;
   virtual void GLRender(SoGLRenderAction * action);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 #if !defined(COIN_EXCLUDE_SORAYPICKACTION)

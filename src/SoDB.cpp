@@ -318,11 +318,14 @@ SoDB::readAll(SoInput * in)
 
   // FIXME: read paths aswell. 19990403 mortene.
 
-  if (!in->isValidFile()) return NULL;
+  SoSeparator *root = NULL;
+  SbBool result = FALSE;
 
-  SoSeparator * root = new SoSeparator;
-  SbBool result = root->readChildren(in);
-
+  if (in->isValidFile()) {
+    root = new SoSeparator;
+    result = root->readChildren(in);
+  }
+  
   if (result && !in->eof()) {
     char c;
     in->read(c);
@@ -331,9 +334,11 @@ SoDB::readAll(SoInput * in)
   }
 
   if (!result) {
-    root->ref();
-    root->unref();
-    root = NULL;
+    if (root) {
+      root->ref();
+      root->unref();
+      root = NULL;
+    }
   }
   else {
     if (root->getNumChildren() == 1 &&
@@ -346,7 +351,7 @@ SoDB::readAll(SoInput * in)
       root = child;
     }
   }
-
+  in->popFile();
   return root;
 }
 #endif // !COIN_EXCLUDE_SOSEPARATOR

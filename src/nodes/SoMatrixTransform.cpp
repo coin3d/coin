@@ -159,12 +159,13 @@ SoMatrixTransform::doAction(SoAction * action)
 void 
 SoMatrixTransform::GLRender(SoGLRenderAction * action)
 {
-  SoMatrixTransform::doAction((SoAction *)action);
 #if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
   // TODO: code to test if matrix is legal. For now we'll
   // just invalidate the flag in the normalize element (pederb).
   SoGLNormalizeElement::setMatrixState(action->getState(), FALSE);
 #endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT  
+
+  SoMatrixTransform::doAction((SoAction *)action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 

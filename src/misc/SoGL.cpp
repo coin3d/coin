@@ -755,7 +755,7 @@ sogl_create_texture(const int wrapS, const int wrapT,
   if (dlist)
     glEndList();
 
-#ifdef COIN_DEBUG
+#if 0 && COIN_DEBUG
   fprintf(stderr,"Creating texture: %d\n", index);
 #endif
 

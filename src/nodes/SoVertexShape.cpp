@@ -29,6 +29,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/nodes/SoSubNode.h>
+#include <Inventor/misc/SoState.h>
 
 #if !defined(COIN_EXCLUDE_SOVERTEXPROPERTY)
 #include <Inventor/nodes/SoVertexProperty.h>
@@ -44,9 +45,15 @@
 #if !defined(COIN_EXCLUDE_SONORMALELEMENT)
 #include <Inventor/elements/SoNormalElement.h>
 #endif // !COIN_EXCLUDE_SONORMALELEMENT
+#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
+#include <Inventor/elements/SoGLNormalizeElement.h>
+#endif // !COIN_EXCLUDE_SOGLNORMALIZEELEMENT
 #if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
 #endif // !COIN_EXCLUDE_SOCOORDINATEELEMENT
+#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
+#include <Inventor/elements/SoGLShapeHintsElement.h>
+#endif // ! COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT
 
 /*!
   \var SoSFNode SoVertexShape::vertexProperty
@@ -195,24 +202,53 @@ SoVertexShape::shouldGLRender(SoGLRenderAction * action)
     if (elem->getNum() == 0 && 
 	(!vp || vp->normal.getNum() <= 0)) {
       if (this->normalCache == NULL ||  
-	  !this->normalCache->isValid(action->getState())) {
+	  !this->normalCache->isValid(state)) {
 	generateNormals(state);
       }
+#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)      
+      // if normals are automatically generated, and vertexordering
+      // is unknown, force tow-side lighting
+      if (SoShapeHintsElement::getVertexOrdering(state) ==
+	  SoShapeHintsElement::UNKNOWN_ORDERING) {
+	const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
+	  state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
+	sh->forceSend(TRUE);
+      }
+#endif // ! COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT
     }
 #endif // !COIN_EXCLUDE_SONORMALELEMENT
+
+#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
+    /* will supply unit normals when normal cache is used */
+    if (SoVertexShape::willUpdateNormalizeElement(state)) {
+      const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
+	state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
+      ne->forceSend(TRUE);
+    } 
+#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
+    
   }
   return TRUE;
 }
 
+/*!
+  Will return TRUE if normal cache is used (normals are then known
+  to be unit length).
+*/
 SbBool 
-SoVertexShape::willSendUnitLengthNormals(SoState *state) const
+SoVertexShape::willUpdateNormalizeElement(SoState *state) const
 {
   const SoNormalElement * elem = SoNormalElement::getInstance(state);
-
-  if (elem->getNum()) return elem->normalsAreUnitLength();
+  const SoVertexProperty * vp = 
+    (SoVertexProperty *) this->vertexProperty.getValue();
   
-  /* normals in normal cache should always be unit length */
-  if (this->normalCache) return TRUE;
+  // TODO:
+  // could perhaps add an areNormalsUnitLength() to the normal
+  // cache also...
+  //  
+
+  if (elem->getNum() <= 0 && (!vp || vp->normal.getNum() <= 0) && 
+      this->normalCache) return TRUE;
   return FALSE;
 }
 

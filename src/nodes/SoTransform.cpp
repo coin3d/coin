@@ -50,6 +50,10 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
 
+#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
+#include <Inventor/elements/SoGLNormalizeElement.h>
+#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
+
 /*!
   \var SoSFVec3f SoTransform::translation
   FIXME: write documentation for field
@@ -303,6 +307,11 @@ SoTransform::doAction(SoAction * action)
 void 
 SoTransform::GLRender(SoGLRenderAction * action)
 {
+#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
+  if (scaleFactor.getValue() != SbVec3f(1.0f, 1.0f, 1.0f)) {
+    SoGLNormalizeElement::setMatrixState(action->getState(), FALSE);
+  }
+#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
   SoTransform::doAction((SoAction *)action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION

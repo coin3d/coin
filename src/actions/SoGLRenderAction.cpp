@@ -327,7 +327,16 @@ SoGLRenderAction::setAbortCallback(SoGLRenderAbortCB * const func,
 void 
 SoGLRenderAction::setTransparencyType(const TransparencyType type)
 {
-  this->transType = type;
+  if (type != SCREEN_DOOR && type != DELAYED_BLEND) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoGLRenderAction::setTransType",
+			      "FIXME: Unsupported transparency type: %d\n", 
+			      type);
+#endif
+    this->transType = DELAYED_BLEND;
+  }
+  else
+    this->transType = type;
 }
 
 /*!
@@ -594,7 +603,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
 			       SbVec2f(0.0f, 0.0f), SbVec2f(1.0f, 1.0f));
 
     
-    glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     glDepthMask(GL_FALSE);
     

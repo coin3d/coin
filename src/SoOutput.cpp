@@ -46,13 +46,16 @@
 
 
 /*! \enum SoOutput::Stage
-  FIXME: write doc
+  Enumerates the possible stages of a write operation (writing needs to be
+  done in mutiple passes).
+
+  \sa setStage(), getStage()
 */
 /*! \enum SoOutput::Stage SoOutput::COUNT_REFS
-  FIXME: write doc
+  Not writing, just counting the internal references in the scene graph.
 */
 /*! \enum SoOutput::Stage SoOutput::WRITE
-  FIXME: write doc
+  Signifies that actual data export should take place during this pass.
 */
 
 /*! \enum SoOutput::Annotations
@@ -122,7 +125,7 @@ SoOutput::constructorCommon(void)
   this->headerstring = NULL;
   this->precision = 3;
   this->indentlevel = 0;
-  this->nextreferenceid = 1;
+  this->nextreferenceid = 0;
   this->annotationbits = 0x00;
 }
 
@@ -348,7 +351,13 @@ SoOutput::setFloatPrecision(const int precision)
 }
 
 /*!
-  FIXME: write doc
+  Sets an indicator on the current stage. This is necessary to do as writing
+  has to be done in multiple stages to account for the export of
+  references/connections within the scene graphs.
+
+  This method is basically just used from within SoWriteAction.
+
+  \sa getStage()
 */
 void
 SoOutput::setStage(Stage stage)
@@ -357,7 +366,14 @@ SoOutput::setStage(Stage stage)
 }
 
 /*!
-  FIXME: write doc
+  Returns an indicator on the current write stage. Writing is done in two
+  passes, one to count and check connections, one to do the actual ascii or
+  binary export of data.
+
+  You should not need to use this method, as it is meant for internal
+  purposes in Coin.
+
+  \sa setStage()
 */
 SoOutput::Stage
 SoOutput::getStage(void) const
@@ -892,8 +908,7 @@ SoOutput::findReference(const SoBase * base) const
   // SbDict-alike class.
   void * id;
   SbBool ok = this->sobase2id->find((unsigned long)base, id);
-  assert(ok);
-  return (int)id;
+  return ok ? (int)id : -1;
 }
 
 /*!

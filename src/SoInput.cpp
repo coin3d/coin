@@ -464,6 +464,7 @@ SoInput::pushFile(const char * filename)
   if (fp) {
     SoInput_FileInfo * newfile =
       new SoInput_FileInfo(fullname.getString(), fp);
+
     this->filestack.insert(newfile, 0);
 
     SoInput::addDirectoryFirst(SoInput::getPathname(fullname).getString());
@@ -1452,8 +1453,8 @@ SoInput::popFile(void)
     const char * filename = this->getTopOfStack()->filename.getString();
     SoInput::removeDirectory(SoInput::getPathname(filename).getString());
   }
-  this->filestack.remove(0);
   delete this->getTopOfStack();
+  this->filestack.remove(0);
   return TRUE;
 }
 

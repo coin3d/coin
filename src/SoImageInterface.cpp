@@ -19,6 +19,7 @@
 
 #include <Inventor/SoImageInterface.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <stdlib.h>
 #include <stddef.h>
 
 #if defined(HAVE_SIMAGELIB)
@@ -89,8 +90,7 @@ SoImageInterface::SoImageInterface(const SbVec2s size,
 */
 SoImageInterface::~SoImageInterface()
 {
-  if (this->didAlloc)
-    delete [] this->dataPtr;
+  if (this->didAlloc && this->dataPtr) free(this->dataPtr);
 }
 
 /*!
@@ -134,7 +134,8 @@ SoImageInterface::resize(const SbVec2s newsize)
 			   size[0], size[1], newsize[0], newsize[1]);
 #endif // COIN_DEBUG
     int num_comp = this->numComponents;
-    unsigned char *dest = new unsigned char[newsize[0]*newsize[1]*num_comp];
+    unsigned char *dest = 
+      (unsigned char *)malloc(newsize[0]*newsize[1]*num_comp);
     
     float sx, sy, dx, dy;
     dx = ((float)this->size[0])/((float)newsize[0]);
@@ -158,8 +159,7 @@ SoImageInterface::resize(const SbVec2s newsize)
     }
     
     this->size = newsize;
-    if (this->didAlloc)
-      delete [] this->dataPtr;
+    if (this->didAlloc && this->dataPtr) free(this->dataPtr);
     this->dataPtr = dest;
     this->didAlloc = 1; // we did alloc this data 
   }

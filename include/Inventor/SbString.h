@@ -31,35 +31,35 @@
 class SbString {
 public:
   SbString(void);
-  SbString(const char *str);
-  SbString(const char *str, int start, int end);
+  SbString(const char * str);
+  SbString(const char * str, int start, int end);
   SbString(const SbString & str);
   ~SbString(void);
   
-  uint32_t hash();
-  int getLength() const;
+  uint32_t hash(void);
+  int getLength(void) const;
   void makeEmpty(SbBool freeOld = TRUE);
-  const char * getString() const;
+  const char * getString(void) const;
   SbString getSubString(int startChar, int endChar = -1) const;
   void deleteSubString(int startChar, int endChar = -1);
   
   void intToString(const int digitString);
 
   char operator [](int index) const;
-  SbString & operator = ( const char * str );
-  SbString & operator = ( const SbString & str );
-  SbString & operator += ( const char * str );
-  SbString & operator += ( const SbString &str);
-  int operator ! ( void ) const;
-  friend int operator == ( const SbString & str, const char * s );
-  friend int operator == ( const char * s, const SbString & str );
-  friend int operator == ( const SbString & str1, const SbString & str2 );
-  friend int operator != ( const SbString & str, const char * s);
-  friend int operator != ( const char * s, const SbString &str );
-  friend int operator != ( const SbString & str1, const SbString & str2 );
-  static uint32_t hash( const char * s ); 
+  SbString & operator = (const char * str);
+  SbString & operator = (const SbString & str);
+  SbString & operator += (const char * str);
+  SbString & operator += (const SbString & str);
+  int operator ! (void) const;
+  friend int operator == (const SbString & str, const char * s);
+  friend int operator == (const char * s, const SbString & str);
+  friend int operator == (const SbString & str1, const SbString & str2);
+  friend int operator != (const SbString & str, const char * s);
+  friend int operator != (const char * s, const SbString & str);
+  friend int operator != (const SbString & str1, const SbString & str2);
+  static uint32_t hash(const char * s); 
 
-  SbString & operator += ( const char c);
+  SbString & operator += (const char c);
 
   void print(FILE * file = stdout) const;
 
@@ -67,7 +67,7 @@ private:
   char * sstring;
   int storageSize;
   char staticStorage[ SB_STRING_STATIC_STORAGE_SIZE ];
-  void expand( int bySize );
-}; // class SbString
+  void expand(int bySize);
+};
 
 #endif // !__SBSTRING_H__

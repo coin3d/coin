@@ -60,7 +60,7 @@ public:
   virtual void GLRender(SoGLRenderAction * action);
   virtual SbBool willSetShadeModel() const;
   virtual SbBool willSetShapeHints() const;
-  virtual SbBool willSendUnitLengthNormals(SoState *state) const;
+  virtual SbBool willUpdateNormalizeElement(SoState *) const;
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 #if !defined(COIN_EXCLUDE_SORAYPICKACTION)
   virtual void rayPick(SoRayPickAction * action);

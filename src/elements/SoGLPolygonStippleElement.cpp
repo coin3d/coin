@@ -259,7 +259,7 @@ SoGLPolygonStippleElement::setTransparency(SoState * const state,
   SoGLPolygonStippleElement *elem = (SoGLPolygonStippleElement*)
     SoElement::getElement(state, classStackIndex);
   
-  int stipplenum = (int)(64.0f*(1.0f-transparency)); //0-64
+  int stipplenum = (int)(64.0f*(transparency)); //0-64
   
   // FIXME: print a warning?
   if (stipplenum < 0) stipplenum = 0;
