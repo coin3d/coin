@@ -83,13 +83,6 @@ static struct cc_flww32_globals_s cc_flww32_globals = {
   NULL /* devctx */
 };
 
-static SbBool
-cc_debug(void)
-{
-  const char * env = coin_getenv("COIN_DEBUG_WIN32_FONTS");
-  return env && (atoi(env) > 0);
-}
-
 /* dumps debug information about one of the system fonts */
 static int CALLBACK
 font_enum_proc(ENUMLOGFONTEX * logicalfont, NEWTEXTMETRICEX * physicalfont,
@@ -125,7 +118,7 @@ cc_flww32_initialize(void)
 {
   HFONT wfont;
 
-  if (cc_debug()) { /* list all fonts on system */
+  if (cc_flw_debug()) { /* list all fonts on system */
     LOGFONT logfont; /* logical font information */
 
     /* Only these are inspected by the EnumFontFamiliesEx()
@@ -346,7 +339,8 @@ cc_flww32_get_bitmap(void * font, int glyph)
   static const MAT2 identitymatrix = { { 0, 1 }, { 0, 0 },
                                        { 0, 0 }, { 0, 1 } };
   DWORD ret;
-  uint8_t * w32bitmap;
+  DWORD size = 0;
+  uint8_t * w32bitmap = NULL;
 
   ret = GetGlyphOutline(cc_flww32_globals.devctx,
                         glyph, /* character to query */
@@ -358,11 +352,27 @@ cc_flww32_get_bitmap(void * font, int glyph)
                         );
 
   if (ret == GDI_ERROR) {
-    cc_win32_print_error("cc_flww32_get_bitmap", "GetGlyphOutline()", GetLastError());
+    cc_string str;
+    cc_string_construct(&str);
+    cc_string_sprintf(&str,
+                      "GetGlyphOutline(%p, 0x%x '%c', GGO_BITMAP, "
+                      "<metricsstruct>, 0, NULL, <idmatrix>)",
+                      cc_flww32_globals.devctx, glyph, (unsigned char)glyph);
+    cc_win32_print_error("cc_flww32_get_bitmap", cc_string_get_text(&str), GetLastError());
+    cc_string_clean(&str);
     return NULL;
   }
 
-  assert((ret > 0) && (ret < 1024*1024) && "bogus buffer size");
+  assert((ret >= 0) && (ret < 1024*1024) && "bogus buffer size");
+  size = ret;
+
+  if (size == 0) {
+    cc_debugerror_post("cc_flww32_get_bitmap",
+                       "something funny is going on, got zero-size buffer for "
+                       "glyph 0x%x ('%c')", glyph, (unsigned char)glyph);
+    return NULL;
+  }
+
   w32bitmap = (uint8_t *)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, ret);
   assert(w32bitmap != NULL); /* FIXME: be robust. 20030530 mortene. */
 
@@ -370,13 +380,21 @@ cc_flww32_get_bitmap(void * font, int glyph)
                         glyph, /* character to query */
                         GGO_BITMAP, /* format of data to return */
                         &gm, /* metrics */
-                        ret, /* size of buffer for data */
+                        size, /* size of buffer for data */
                         w32bitmap, /* buffer for data */
                         &identitymatrix /* transformation matrix */
                         );
 
   if (ret == GDI_ERROR) {
-    cc_win32_print_error("cc_flww32_get_bitmap", "GetGlyphOutline()", GetLastError());
+    cc_string str;
+    cc_string_construct(&str);
+    cc_string_sprintf(&str,
+                      "GetGlyphOutline(%p, 0x%x '%c', GGO_BITMAP, "
+                      "<metricsstruct>, %d, <buffer>, <idmatrix>)",
+                      cc_flww32_globals.devctx, glyph, (unsigned char)glyph, size);
+    cc_win32_print_error("cc_flww32_get_bitmap", cc_string_get_text(&str), GetLastError());
+    cc_string_clean(&str);
+
     /* FIXME: catch error return. 20030530 mortene. */
     (void)HeapFree(GetProcessHeap(), 0, w32bitmap);
     return NULL;
