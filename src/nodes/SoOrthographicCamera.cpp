@@ -83,11 +83,16 @@ SoOrthographicCamera::getViewVolume(float useaspectratio) const
 {
   SbViewVolume volume;
 
+  float height = this->height.getValue();
+  float width = height * useaspectratio;
   if (useaspectratio == 0.0f) useaspectratio = this->aspectRatio.getValue();
+  else if (useaspectratio < 1.0f) {
+    width = height;
+    height /= useaspectratio;
+  }
 
-  float width = this->height.getValue() * useaspectratio;
   volume.ortho(-width/2.0f, width/2.0f,
-               -this->height.getValue()/2.0f, this->height.getValue()/2.0f,
+               -height/2.0f, height/2.0f,
                this->nearDistance.getValue(), this->farDistance.getValue());
 
   volume.rotateCamera(this->orientation.getValue());
