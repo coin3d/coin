@@ -4072,35 +4072,33 @@ sogl_glerror_string(int err)
   return errorstring;
 }
 
-/*!  
-  When fewer than this amount of primitives in a shape, turn on
-  auto caching.  
-*/
-int 
-sogl_autocache_get_min_limit(SoState * state)
-{
-  // FIXME: make it possible to configure these numbers using
-  // environment variables (or a rendering performance test?).
-  // pederb, 2002-09-18
-  if (SoGLCacheContextElement::getIsRemoteRendering(state))
-    return 500;
-  return 100;
-}
+// FIXME: make it possible to configure these numbers using
+// environment variables (or a rendering performance test?).
+// pederb, 2002-09-18
+static int SOGL_AUTOCACHE_REMOTE_MIN = 500;
+static int SOGL_AUTOCACHE_REMOTE_MAX = 5000;
+static int SOGL_AUTOCACHE_LOCAL_MIN = 100;
+static int SOGL_AUTOCACHE_LOCAL_MAX = 1000;
 
-/*!  
-  When more than this number of triangles in a shape, turn off auto
-  caching.  
+/*!
+  Called by each shape during rendering. Will enable/disable autocaching
+  based on the number of primitives.
 */
-int 
-sogl_autocache_get_max_limit(SoState * state)
+void 
+sogl_autocache_update(SoState * state, const int numprimitives)
 {
-  // FIXME: make it possible to configure these numbers using
-  // environment variables (or a rendering performance test?).
-  // pederb, 2002-09-18
-  if (SoGLCacheContextElement::getIsRemoteRendering(state))
-    return 5000;
-  return 1000;
+  int minval = SOGL_AUTOCACHE_LOCAL_MIN;
+  int maxval = SOGL_AUTOCACHE_LOCAL_MAX;
+  if (SoGLCacheContextElement::getIsRemoteRendering(state)) {
+    minval = SOGL_AUTOCACHE_REMOTE_MIN;
+    maxval = SOGL_AUTOCACHE_REMOTE_MAX;
+  }
+  if (numprimitives <= minval) {
+    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
+  }
+  else if (numprimitives >= maxval) {
+    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
+  }
 }
-
 
 // **************************************************************************
