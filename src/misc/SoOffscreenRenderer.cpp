@@ -42,10 +42,7 @@
 #include <string.h> // memset(), memcpy()
 #include <config.h>
 #include <coindefs.h> // COIN_STUB()
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 
 #ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
