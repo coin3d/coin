@@ -239,6 +239,14 @@ STUFF TO FIX IN COIN
     SoTexture2::Model in v4.0.
 
 
+    UPDATE 2003-06-23 mortene: we can use the introspection features
+    of the API to list all nodes, fields and enums. We should do this
+    against SGI Inventor 2.1, and get some TGS license holders to do
+    this for various TGS versions, to find out exactly when stuff has
+    been introduced. I've written a small application which does this,
+    and placed it in this directory as 'dumpnodes.cpp'.
+
+
 004 Re-design the public API for handling textures
     2001-11-28  Peder Blekken  <pederb@sim.no>, write-down by mortene@sim.no
 
@@ -601,6 +609,21 @@ STUFF TO FIX IN COIN
           by QGLContext::chooseContext() -- Peder has a showstopper
           problem with this for Geo2k on Windows (chooseContext()
           picks a visual with 8-bit Z-buffer).
+
+          UPDATE 20030626 mortene: kintel also reports a problem which
+          seems to be related to this:
+
+                'glinfo' from examiner viewer tells me that I have 0
+                alpha bits, [...]. However, I _should_ get a GL context
+                with more alpha bits, so why isn't Coin/SoQt giving me
+                one?
+
+                My configuration is:
+                o Win2K
+                o NVidia GeForce4
+                o Color mode is 32 bit
+                o The drivers are new (4180)
+                o Coin-2, SoQt-1, qt-3.1.2
 
         * Improve overall design, throw out the stuff we have no use
           for.
