@@ -315,14 +315,24 @@ if test x"$sim_ac_gl_avail" = xyes; then
     AC_DEFINE(HAVE_GLX)
   fi
 
+  # *******************************************************************
+  # ** Check if GLU is available.
+  # *******************************************************************
+  SIM_AC_CHECK_GLU([AC_DEFINE(HAVE_GLU)
+                    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_glu_cppflags"
+                    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_glu_ldflags"
+                    COIN_EXTRA_LIBS="$sim_ac_glu_libs $COIN_EXTRA_LIBS"])
+
 
   # *******************************************************************
   # ** Find out if GLU uses GLUnurbs or GLUnurbsObj as the name
   # ** of the interface structure to the NURBS-related functions.
   # *******************************************************************
 
-  SIM_AC_GLU_NURBSOBJECT(AC_DEFINE_UNQUOTED(HAVE_GLU_NURBSOBJECT, $sim_ac_glu_nurbsobject),
-                         AC_MSG_WARN(no suitable GLU Nurbs interface found))
+  if test x"$sim_ac_glu_avail" = xyes; then
+    SIM_AC_GLU_NURBSOBJECT(AC_DEFINE_UNQUOTED(HAVE_GLU_NURBSOBJECT, $sim_ac_glu_nurbsobject),
+                           AC_MSG_WARN(no suitable GLU Nurbs interface found))
+  fi
 
 else # couldn't link with OpenGL
   # Don't stop the configure process if we seem to be configuring to build

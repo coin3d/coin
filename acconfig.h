@@ -6,6 +6,7 @@
 #undef HAVE_LIBSIMAGE
 #undef HAVE_OPENGL
 #undef HAVE_GLX
+#undef HAVE_GLU
 #undef HAVE_SNPRINTF
 #undef HAVE_VSNPRINTF
 #undef HAVE__SNPRINTF
