@@ -298,10 +298,10 @@ SbString::hash(const char * s)
 /*!
   This method returns the length of the string.
 */
-
 int
 SbString::getLength(void) const
 {
+  // FIXME: jeez.. shouldn't this be cached? 20011123 mortene.
   return strlen(this->sstring);
 }
 

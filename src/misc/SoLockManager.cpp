@@ -21,8 +21,21 @@
  *
 \**************************************************************************/
 
-// This is just a dummy implementation of the Open Inventor license
-// locking mechanism.
+/*!
+  \class SoLockManager SoLockMgr.h Inventor/lock/SoLockMgr.h
+  \brief The SoLockManager is a defunct software license lock mechanism.
+  \ingroup general
+
+  This is just a dummy implementation of the TGS Inventor class used
+  to provide a license locking mechanism. Since Coin can be used
+  without any royalty fees or client-site license locks, no such
+  mechanism is needed.
+
+  If you are looking for information about using Coin in proprietary
+  applications for commercial distribution, read about the Coin
+  Professional Edition License on the Coin web-pages <a
+  href="http://www.coin3d.org">here</a>.
+*/
 
 
 #include <Inventor/lock/SoLockMgr.h>
@@ -39,6 +52,13 @@ public:
 
 SoLockManager_pimpl * SoLockManager::pimpl = NULL;
 
+/*!
+  A void method provided just for sourcecode compatibility in client
+  applications with TGS Inventor.
+
+  It just stores the \a unlockstr argument internally to be able to
+  provide it upon calls to GetUnlockString().
+*/
 void
 SoLockManager::SetUnlockString(char * unlockstr)
 {
@@ -49,6 +69,12 @@ SoLockManager::SetUnlockString(char * unlockstr)
   (void)strcpy(SoLockManager::pimpl->unlockstr, unlockstr);
 }
 
+/*!
+  A void method provided just for sourcecode compatibility in client
+  applications with TGS Inventor.
+
+  Returns the string set through SetUnlockString().
+*/
 char *
 SoLockManager::GetUnlockString(void)
 {

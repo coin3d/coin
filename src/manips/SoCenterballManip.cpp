@@ -21,6 +21,19 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoCenterballManip SoCenterballManip.h Inventor/manips/SoCenterballManip.h
+  \brief The SoCenterballManip wraps an SoCenterballDragger for convenience.
+  \ingroup manips
+
+  The manipulator class takes care of wrapping up the
+  SoCenterballDragger in a simple and convenient API for the
+  application programmer, making it automatically surround the
+  geometry it influences and taking care of the book-keeping routines
+  for it's interaction with the relevant fields of an SoTransformation
+  node.
+*/
+
 #include <Inventor/manips/SoCenterballManip.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/draggers/SoCenterballDragger.h>

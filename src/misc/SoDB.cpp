@@ -46,12 +46,12 @@
   Systems in Motion is working on providing libraries for interfacing
   Coin with a wide range of windowing systems and GUI toolkits.
   <ol>
-  <li>SoXt is for interfacing with Xt/Motif on X Windows.</li>
-  <li>SoQt is for interfacing with Trolltech's cross-platform Qt toolkit
+  <li><a href="http://doc.coin3d.org/SoXt">SoXt</a> is for interfacing with Xt/Motif on X Windows.</li>
+  <li><a href="http://doc.coin3d.org/SoQt">SoQt</a> is for interfacing with Trolltech's cross-platform Qt toolkit
       (UNIX, Windows, Mac OS X).</li>
-  <li>SoWin is for interfacing with the Win32 API on Microsoft Windows
+  <li><a href="http://doc.coin3d.org/SoWin">SoWin</a> is for interfacing with the Win32 API on Microsoft Windows
       platforms.</li>
-  <li>SoGtk is for interfacing with GTK+.</li>
+  <li><a href="http://doc.coin3d.org/SoGtk">SoGtk</a> is for interfacing with GTK+.</li>
   </ol>
 
   See <http://www.coin3d.org/> for more information about Coin and the

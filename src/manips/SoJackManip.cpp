@@ -21,6 +21,18 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoJackManip SoJackManip.h Inventor/manips/SoJackManip.h
+  \brief The SoJackManip wraps an SoJackDragger for convenience.
+  \ingroup manips
+
+  The manipulator class takes care of wrapping up the SoJackDragger in
+  a simple and convenient API for the application programmer, making
+  it automatically surround the geometry it influences and taking care
+  of the book-keeping routines for it's interaction with the relevant
+  fields of an SoTransformation node.
+*/
+
 #include <Inventor/manips/SoJackManip.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoSurroundScale.h>

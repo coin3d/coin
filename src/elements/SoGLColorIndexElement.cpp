@@ -23,8 +23,20 @@
 
 /*!
   \class SoGLColorIndexElement Inventor/elements/SoGLColorIndexElement.h
-  \brief The SoGLColorIndexElement class is used when rendering in color index mode.
+  \brief The SoGLColorIndexElement class sets the current OpenGL color.
   \ingroup elements
+
+  This element is only used when the OpenGL canvas is in colorindex
+  mode, ie where colors for individual pixels are fetched from a color
+  lookup table ("CLUT"). The usual thing to do is to set up a canvas
+  in RGBA truecolor mode.
+
+  One common use for colorindex mode OpenGL canvases is to use one in
+  the overlay planes (which are usually limited to only 2 or 4
+  available colors), if supported by the OpenGL hardware and / or
+  driver.
+
+  \sa SoColorIndex
 */
 
 #include <Inventor/elements/SoGLColorIndexElement.h>
@@ -37,7 +49,7 @@
 
 #include <Inventor/system/gl.h>
 
-static int32_t defaultIndexArray[] = {1};
+static int32_t defaultIndexArray[] = { 1 };
 
 SO_ELEMENT_SOURCE(SoGLColorIndexElement);
 
@@ -80,7 +92,7 @@ SoGLColorIndexElement::~SoGLColorIndexElement()
 }
 
 /*!
-  Returns TRUE if the current GL context is in color index mode.
+  Returns \c TRUE if the current GL context is in color index mode.
 */
 SbBool
 SoGLColorIndexElement::isColorIndexMode(SoState * state)

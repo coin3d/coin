@@ -592,6 +592,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/projectors/SbSphereSectionProjector.h \
                          @path_tag@@coin_src_dir@/src/projectors/SbSpherePlaneProjector.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/projectors/SbSpherePlaneProjector.h \
+                         @path_tag@@coin_src_dir@/src/misc/SoLockManager.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/lock/SoLockMgr.h \
                          @path_tag@@coin_src_dir@/src/misc/SoOffscreenRenderer.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/SoOffscreenRenderer.h \
                          @path_tag@@coin_src_dir@/src/misc/SoNotification.cpp \
@@ -935,6 +937,10 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/details/SoTextDetail.h \
                          @path_tag@@coin_src_dir@/src/elements/SoElement.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/elements/SoElement.h \
+                         @path_tag@@coin_src_dir@/src/elements/SoReplacedElement.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoReplacedElement.h \
+                         @path_tag@@coin_src_dir@/src/elements/SoGLColorIndexElement.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoGLColorIndexElement.h \
                          @path_tag@@coin_src_dir@/src/elements/SoFloatElement.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/elements/SoFloatElement.h \
                          @path_tag@@coin_src_dir@/src/elements/SoPointSizeElement.cpp \
