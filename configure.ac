@@ -1623,8 +1623,6 @@ fi
 
 SIM_AC_CONFIGURATION_SUMMARY
 
-echo "sim_ac_framework: $sim_ac_framework"
-
 if $sim_ac_build_library; then
   cat <<EOF
 
