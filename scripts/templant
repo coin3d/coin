@@ -59,6 +59,9 @@
 #  $Id$
 #
 #  $Log$
+#  Revision 1.8  2002/03/20 12:03:50  larsa
+#  bugfix
+#
 #  Revision 1.7  2002/03/20 08:50:07  larsa
 #  additional macros DEFINE and UNDEFINE
 #
@@ -431,9 +434,9 @@ sub UnfoldTemplates { ######################################################
 
             chop( $prototype = shift( @template ) );
             $prototype =~ s|^$prefix +TEMPLATE +||o;
-            $prefixstr = $1;
+            # $prefixstr = $1;
             $prototype =~ s|$postfix$||o;
-            $postfixstr = $1;
+            # $postfixstr = $1;
             $prototypename = $prototype;
             $prototypename =~ s/\(.*//;
             if ( $prototypename ne $name ) {
