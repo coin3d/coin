@@ -56,6 +56,7 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+// For coin_apply_normalization_cube_map().
 #include <Inventor/C/glue/glp.h>
 
 // *************************************************************************
@@ -236,24 +237,24 @@ soshape_bumprender_diffuseprogramdeletion(unsigned long key, void * value)
   /* FIXME: There are no pointlight program initialized for diffuse
      rendering yet. Enable when implemented. (20040209 handegar) */
   //pidx->glue->glDeleteProgramsARB(1, &pidx->pointlight);
-  pidx->glue->glDeleteProgramsARB(1, &pidx->dirlight);
-  pidx->glue->glDeleteProgramsARB(1, &pidx->normalrendering); 
+  cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->dirlight);
+  cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->normalrendering);
 }
 
 static void
 soshape_bumprender_specularprogramdeletion(unsigned long key, void * value)
 {
   soshape_bumprender_spec_programidx * pidx = (soshape_bumprender_spec_programidx *) value;
-  pidx->glue->glDeleteProgramsARB(1, &pidx->pointlight);
-  pidx->glue->glDeleteProgramsARB(1, &pidx->dirlight);
-  pidx->glue->glDeleteProgramsARB(1, &pidx->fragment);
+  cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->pointlight);
+  cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->dirlight);
+  cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->fragment);
 }
 
 soshape_bumprender::soshape_bumprender(void)
 {
   this->diffuseprogramsinitialized = FALSE;
   this->programsinitialized = FALSE;
-  this->diffuseprogramdict = new SbDict(4);  
+  this->diffuseprogramdict = new SbDict(4);
   this->specularprogramdict = new SbDict(4);
 }
 
@@ -268,7 +269,7 @@ soshape_bumprender::~soshape_bumprender()
 
   this->diffuseprogramdict->clear();
   this->specularprogramdict->clear();
-  delete this->diffuseprogramdict;  
+  delete this->diffuseprogramdict;
   delete this->specularprogramdict;
 }
 
@@ -293,37 +294,37 @@ soshape_bumprender::initDiffusePrograms(const cc_glglue * glue, SoState * state)
   if (diffuseprogramdict->find(contextid, programstruct)) {
     soshape_bumprender_diffuse_programidx * old = (soshape_bumprender_diffuse_programidx *) programstruct;
     this->diffusebumpdirlightvertexprogramid = old->dirlight;
-    this->normalrenderingvertexprogramid = old->normalrendering;    
+    this->normalrenderingvertexprogramid = old->normalrendering;
   }
   else {
 
-    glue->glGenProgramsARB(1, &this->diffusebumpdirlightvertexprogramid);
-    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, this->diffusebumpdirlightvertexprogramid);
-    glue->glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                             strlen(diffusebumpdirlightvpprogram), diffusebumpdirlightvpprogram);
+    cc_glglue_glGenPrograms(glue, 1, &this->diffusebumpdirlightvertexprogramid);
+    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, this->diffusebumpdirlightvertexprogramid);
+    cc_glglue_glProgramString(glue, GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
+                              strlen(diffusebumpdirlightvpprogram), diffusebumpdirlightvpprogram);
     GLint errorPos;
     GLenum err = glGetError();
-    
+
     if (err) {
       glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
       SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
                                 "Error in diffuse dirlight vertex program! (byte pos: %d) '%s'.\n",
                                 errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-      
+
     }
-    
-    glue->glGenProgramsARB(1, &this->normalrenderingvertexprogramid);
-    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, this->normalrenderingvertexprogramid);
-    glue->glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                             strlen(normalrenderingvpprogram), normalrenderingvpprogram);
+
+    cc_glglue_glGenPrograms(glue, 1, &this->normalrenderingvertexprogramid);
+    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, this->normalrenderingvertexprogramid);
+    cc_glglue_glProgramString(glue, GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
+                              strlen(normalrenderingvpprogram), normalrenderingvpprogram);
     err = glGetError();
-    
+
     if (err) {
       glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
       SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
                                 "Error in normal rendering vertex program! (byte pos: %d) '%s'.\n",
                                 errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-      
+
     }
 
     soshape_bumprender_diffuse_programidx * newstruct = new soshape_bumprender_diffuse_programidx;
@@ -355,10 +356,10 @@ soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
   }
   else {
 
-    glue->glGenProgramsARB(1, &this->fragmentprogramid); // -- Fragment program
-    glue->glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, this->fragmentprogramid);
-    glue->glProgramStringARB(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                             strlen(bumpspecfpprogram), bumpspecfpprogram);
+    cc_glglue_glGenPrograms(glue, 1, &this->fragmentprogramid); // -- Fragment program
+    cc_glglue_glBindProgram(glue, GL_FRAGMENT_PROGRAM_ARB, this->fragmentprogramid);
+    cc_glglue_glProgramString(glue, GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
+                              strlen(bumpspecfpprogram), bumpspecfpprogram);
     // FIXME: Maybe a wrapper for catching fragment program errors
     // should be a part of GLUE... (20031204 handegar)
     GLint errorPos;
@@ -368,14 +369,14 @@ soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
       SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
                                 "Error in fragment program! (byte pos: %d) '%s'.\n",
                                 errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-      
+
     }
-    
-    glue->glGenProgramsARB(1, &this->dirlightvertexprogramid); // -- Directional light program
-    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, this->dirlightvertexprogramid);
-    glue->glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                             strlen(directionallightvpprogram), directionallightvpprogram);
-    
+
+    cc_glglue_glGenPrograms(glue, 1, &this->dirlightvertexprogramid); // -- Directional light program
+    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, this->dirlightvertexprogramid);
+    cc_glglue_glProgramString(glue, GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
+                              strlen(directionallightvpprogram), directionallightvpprogram);
+
     err = glGetError();
     if (err) {
       glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
@@ -383,23 +384,23 @@ soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
                                 "Error in directional light vertex program! "
                                 "(byte pos: %d) '%s'.\n",
                                 errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-      
+
     }
-    
-    glue->glGenProgramsARB(1, &this->pointlightvertexprogramid); // -- Point light program
-    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, this->pointlightvertexprogramid);
-    glue->glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                             strlen(pointlightvpprogram), pointlightvpprogram);
-    
+
+    cc_glglue_glGenPrograms(glue, 1, &this->pointlightvertexprogramid); // -- Point light program
+    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, this->pointlightvertexprogramid);
+    cc_glglue_glProgramString(glue, GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
+                              strlen(pointlightvpprogram), pointlightvpprogram);
+
     err = glGetError();
     if (err) {
       glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
       SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
                                 "Error in point light vertex program! (byte pos: %d) '%s'.\n",
                                 errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-      
+
     }
-    
+
     soshape_bumprender_spec_programidx * newstruct = new soshape_bumprender_spec_programidx;
     newstruct->glue = glue; // Store the cc_glglue for later when class is to be destructed.
     newstruct->fragment = this->fragmentprogramid;
@@ -467,12 +468,12 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
 
   // FRAGMENT: Setting up spec. colour and shininess for the fragment program
   glEnable(GL_FRAGMENT_PROGRAM_ARB);
-  glue->glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, fragmentprogramid);
-  glue->glProgramEnvParameter4fARB(GL_FRAGMENT_PROGRAM_ARB, 0,
-                                   spec[0], spec[1], spec[2], 1.0f);
+  cc_glglue_glBindProgram(glue, GL_FRAGMENT_PROGRAM_ARB, fragmentprogramid);
+  cc_glglue_glProgramEnvParameter4f(glue, GL_FRAGMENT_PROGRAM_ARB, 0,
+                                    spec[0], spec[1], spec[2], 1.0f);
 
-  glue->glProgramEnvParameter4fARB(GL_FRAGMENT_PROGRAM_ARB, 1,
-                                   shininess * 64, 0.0f, 0.0f, 1.0f);
+  cc_glglue_glProgramEnvParameter4f(glue, GL_FRAGMENT_PROGRAM_ARB, 1,
+                                    shininess * 64, 0.0f, 0.0f, 1.0f);
 
   const SbViewVolume & vv = SoViewVolumeElement::get(state);
   const SbMatrix & vm = SoViewingMatrixElement::get(state);
@@ -483,21 +484,21 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   // VERTEX: Setting up lightprograms
   glEnable(GL_VERTEX_PROGRAM_ARB);
   if (!this->ispointlight) {
-    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, dirlightvertexprogramid);
+    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, dirlightvertexprogramid);
   }
   else {
-    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, pointlightvertexprogramid);
+    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, pointlightvertexprogramid);
   }
 
-  glue->glProgramEnvParameter4fARB(GL_VERTEX_PROGRAM_ARB, 0,
-                                     this->lightvec[0],
-                                     this->lightvec[1],
-                                     this->lightvec[2], 1);
+  cc_glglue_glProgramEnvParameter4f(glue, GL_VERTEX_PROGRAM_ARB, 0,
+                                    this->lightvec[0],
+                                    this->lightvec[1],
+                                    this->lightvec[2], 1);
 
-  glue->glProgramEnvParameter4fARB(GL_VERTEX_PROGRAM_ARB, 1,
-                                     eyepos[0],
-                                     eyepos[1],
-                                     eyepos[2], 1);
+  cc_glglue_glProgramEnvParameter4f(glue, GL_VERTEX_PROGRAM_ARB, 1,
+                                    eyepos[0],
+                                    eyepos[1],
+                                    eyepos[2], 1);
 
   if (oldtexture2matrix != SbMatrix::identity()) {
     cc_glglue_glActiveTexture(glue, GL_TEXTURE2);
@@ -564,12 +565,12 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
       glEnable(GL_TEXTURE_2D);
     }
   }
-  
+
   if (lastenabled >= 1 && enabled[1]) {
     // restore blend mode for texture unit 1
     SoGLMultiTextureImageElement::restore(state, 1);
   }
- 
+
   if (oldtexture2matrix != SbMatrix::identity()) {
     cc_glglue_glActiveTexture(glue, GL_TEXTURE2);
     glMatrixMode(GL_TEXTURE);
@@ -623,7 +624,7 @@ soshape_bumprender::renderBump(SoState * state,
 
   // only use vertex program if two texture units (or less) are used
   // (only two units supported in the vertex program)
-  SbBool use_vertex_program = lastenabled <= 1 && glue->has_arb_vertex_program;
+  SbBool use_vertex_program = lastenabled <= 1 && cc_glglue_has_arb_vertex_program(glue);
   use_vertex_program = FALSE; // FIXME: disabled until vertex program
                               // for point lights is implemented
   if (use_vertex_program) {
@@ -699,15 +700,15 @@ soshape_bumprender::renderBump(SoState * state,
   if (use_vertex_program) {
     glEnable(GL_VERTEX_PROGRAM_ARB);
     if (!this->ispointlight) {
-      glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, diffusebumpdirlightvertexprogramid);
+      cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, diffusebumpdirlightvertexprogramid);
     }
     else {
       assert(0);
     }
-    glue->glProgramEnvParameter4fARB(GL_VERTEX_PROGRAM_ARB, 0,
-                                     this->lightvec[0],
-                                     this->lightvec[1],
-                                     this->lightvec[2], 1);
+    cc_glglue_glProgramEnvParameter4f(glue, GL_VERTEX_PROGRAM_ARB, 0,
+                                      this->lightvec[0],
+                                      this->lightvec[1],
+                                      this->lightvec[2], 1);
   }
 
   cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT,
@@ -765,7 +766,7 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
 
   // only use vertex program if two texture units (or less) are used
   // (only two units supported in the vertex program)
-  SbBool use_vertex_program = lastenabled <= 1 && glue->has_arb_vertex_program;
+  SbBool use_vertex_program = lastenabled <= 1 && cc_glglue_has_arb_vertex_program(glue);
   use_vertex_program = FALSE; // FIXME: disabled until vertex program
                               // for point lights is implemented
   if (use_vertex_program) {
@@ -773,14 +774,14 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
       this->initDiffusePrograms(glue, state);
     }
     glEnable(GL_VERTEX_PROGRAM_ARB);
-    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, normalrenderingvertexprogramid);   
+    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, normalrenderingvertexprogramid);
   }
 
-  int arrays = 
+  int arrays =
     SoPrimitiveVertexCache::TEXCOORD|
     SoPrimitiveVertexCache::COLOR;
   cache->renderTriangles(state, arrays);
-  
+
   if (use_vertex_program) {
     glDisable(GL_VERTEX_PROGRAM_ARB);
   }
@@ -822,7 +823,7 @@ soshape_bumprender::calcTangentSpace(const SoPrimitiveVertexCache * cache)
     float deltaT1 = bumpcoords[idx[2]][1] - bumpcoords[idx[0]][1];
     sTangent = deltaT1 * side0 - deltaT0 * side1;
     NORMALIZE(sTangent);
-    
+
     float deltaS0 = bumpcoords[idx[1]][0] - bumpcoords[idx[0]][0];
     float deltaS1 = bumpcoords[idx[2]][0] - bumpcoords[idx[0]][0];
     tTangent = deltaS1 * side0 - deltaS0 * side1;
