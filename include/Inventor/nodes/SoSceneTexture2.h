@@ -28,6 +28,7 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFNode.h>
+#include <Inventor/fields/SoSFVec4f.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/elements/SoTextureImageElement.h>
@@ -55,13 +56,21 @@ public:
     CLAMP = SoTextureImageElement::CLAMP
   };
 
+  enum TransparencyFunction {
+    NONE,
+    ALPHA_BLEND,
+    ALPHA_TEST
+  };
+
   SoSFEnum wrapS;
   SoSFEnum wrapT;
   SoSFEnum model;
   SoSFColor blendColor;
 
+  SoSFVec4f clearColor;
   SoSFVec2s size;
   SoSFNode scene;
+  SoSFEnum transparencyFunction;
 
   virtual void notify(SoNotList * list);
   virtual void write(SoWriteAction * action);

@@ -94,6 +94,31 @@
 */
 
 /*!
+  \enum SoSceneTexture2::TransparencyFunction
+
+  For deciding how the texture's alpha channel is handled. It's not
+  possible to automatically detect this, since the texture is stored
+  only on the graphics card's memory, and it'd be too slow to fetch
+  the image to test the alpha channel like Coin does for regular
+  textures.
+*/
+
+/*!
+  \var SoSceneTexture2::Transparency SoSceneTexture2::NONE
+  The alpha channel is ignored.
+*/
+
+/*!
+  \var SoSceneTexture2::Transparency SoSceneTexture2::ALPHA_TEST
+  An alpha test function is used.
+*/
+
+/*!
+  \var SoSceneTexture2::Transparency SoSceneTexture2::ALPHA_BLEND
+  Alpha blending is used.
+*/
+
+/*!
   \var SoSFEnum SoSceneTexture2::wrapS
 
   Wrapping strategy for the S coordinate when the texturemap is
@@ -137,6 +162,19 @@
   \var SoSFNode SoSceneTexture2::scene
 
   The scene graph that is rendered into the texture.
+*/
+
+/*!
+  \var SoSFVec4f SoSceneTexture2::clearColor
+  
+  The color the color buffer is cleared to before rendering the scene.
+  Default value is (0.0f, 0.0f, 0.0f, 0.0f).
+*/
+
+/*!
+  \var SoSFEnum SoSceneTexture2::transparencyFunction 
+  
+  The transparency function used. Default value is NONE.
 */
 
 #include <Inventor/nodes/SoSceneTexture2.h>
@@ -210,6 +248,7 @@ public:
 #ifdef COIN_THREADSAFE
   SbMutex mutex;
 #endif // COIN_THREADSAFE
+  SbBool canrendertotexture;
 };
 
 // *************************************************************************
@@ -261,20 +300,30 @@ SoSceneTexture2::SoSceneTexture2(void)
   SO_NODE_INTERNAL_CONSTRUCTOR(SoSceneTexture2);
   SO_NODE_ADD_FIELD(size, (256, 256));
   SO_NODE_ADD_FIELD(scene, (NULL));
+  SO_NODE_ADD_FIELD(clearColor, (0.0f, 0.0f, 0.0f, 0.0f));
+  SO_NODE_ADD_FIELD(transparencyFunction, (NONE));
 
-  SO_NODE_ADD_FIELD(wrapS, (SoSceneTexture2::REPEAT));
-  SO_NODE_ADD_FIELD(wrapT, (SoSceneTexture2::REPEAT));
+  SO_NODE_ADD_FIELD(wrapS, (REPEAT));
+  SO_NODE_ADD_FIELD(wrapT, (REPEAT));
   SO_NODE_ADD_FIELD(model, (MODULATE));
   SO_NODE_ADD_FIELD(blendColor, (0.0f, 0.0f, 0.0f));
 
-  SO_NODE_SET_SF_ENUM_TYPE(wrapS, SoSceneTexture2::Wrap);
-  SO_NODE_SET_SF_ENUM_TYPE(wrapT, SoSceneTexture2::Wrap);
+  SO_NODE_SET_SF_ENUM_TYPE(wrapS, Wrap);
+  SO_NODE_SET_SF_ENUM_TYPE(wrapT, Wrap);
+  SO_NODE_SET_SF_ENUM_TYPE(model, Model);
+  SO_NODE_SET_SF_ENUM_TYPE(transparencyFunction, TransparencyFunction);
 
   SO_NODE_DEFINE_ENUM_VALUE(Model, MODULATE);
   SO_NODE_DEFINE_ENUM_VALUE(Model, DECAL);
   SO_NODE_DEFINE_ENUM_VALUE(Model, BLEND);
   SO_NODE_DEFINE_ENUM_VALUE(Model, REPLACE);
-  SO_NODE_SET_SF_ENUM_TYPE(model, Model);
+  
+  SO_NODE_DEFINE_ENUM_VALUE(Wrap, REPEAT);
+  SO_NODE_DEFINE_ENUM_VALUE(Wrap, CLAMP);
+  
+  SO_NODE_DEFINE_ENUM_VALUE(TransparencyFunction, NONE);
+  SO_NODE_DEFINE_ENUM_VALUE(TransparencyFunction, ALPHA_BLEND);
+  SO_NODE_DEFINE_ENUM_VALUE(TransparencyFunction, ALPHA_TEST);
 }
 
 SoSceneTexture2::~SoSceneTexture2(void)
@@ -425,7 +474,8 @@ SoSceneTexture2::notify(SoNotList * list)
   }
   else if (f == &this->wrapS ||
            f == &this->wrapT ||
-           f == &this->model) {
+           f == &this->model ||
+           f == &this->transparencyFunction) {
     // no need to render scene again, but update the texture object
     PRIVATE(this)->glimagevalid = FALSE;
   }
@@ -457,6 +507,12 @@ SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * api)
   this->glaction = NULL;
   this->glcontextsize.setValue(-1,-1);
   this->glrectangle = FALSE;
+
+#if defined(HAVE_AGL) || defined(HAVE_WGL)
+  this->canrendertotexture = TRUE;
+#else // AGL || WGL
+  this->canrendertotexture = FALSE;
+#endif // ! AGL && WGL
 }
 
 SoSceneTexture2P::~SoSceneTexture2P()
@@ -562,9 +618,25 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
       this->glimage = NULL;
     }
     this->glimage = new SoGLImage;
+    uint32_t flags = this->glimage->getFlags();
     if (this->glrectangle) {
-      this->glimage->setFlags(this->glimage->getFlags() | SoGLImage::RECTANGLE);
+      flags |= SoGLImage::RECTANGLE;
     }
+    switch ((SoSceneTexture2::TransparencyFunction) (PUBLIC(this)->transparencyFunction.getValue())) {
+    case SoSceneTexture2::NONE:
+      flags |= SoGLImage::FORCE_TRANSPARENCY_FALSE;
+      break;
+    case SoSceneTexture2::ALPHA_BLEND:
+      flags |= SoGLImage::FORCE_TRANSPARENCY_TRUE|SoGLImage::FORCE_ALPHA_TEST_TRUE;
+      break;
+    case SoSceneTexture2::ALPHA_TEST:
+      flags |= SoGLImage::FORCE_TRANSPARENCY_TRUE;
+      break;
+    default:
+      assert(0 && "should not get here");
+      break;
+    }
+    this->glimage->setFlags(flags);
     // bind texture to pbuffer
     this->glimage->setPBuffer(state, this->glcontext,
                               translateWrap((SoSceneTexture2::Wrap)PUBLIC(this)->wrapS.getValue()),
@@ -578,6 +650,9 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
 void
 SoSceneTexture2P::prerendercb(void * userdata, SoGLRenderAction * action)
 {
+  SoSceneTexture2 * thisp = (SoSceneTexture2*) userdata;
+  SbVec4f col = thisp->clearColor.getValue();
+  glClearColor(col[0], col[1], col[2], col[3]);
   glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 }
 
