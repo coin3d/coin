@@ -129,6 +129,14 @@ SoVRMLParent::commonConstructor(void)
   PRIVATE(this)->removesensor = new SoFieldSensor(field_sensor_cb, this);
   PRIVATE(this)->addsensor->attach(&this->addChildren);
   PRIVATE(this)->removesensor->attach(&this->removeChildren);
+  
+  // HACK WARNING: All children of this node are stored in the
+  // children field. Avoid double notifications (because of
+  // notification through SoChildList) be reallocating the SoChildList
+  // with a NULL-parent here. SoGroup will have allocated an
+  // SoChildList in its constructor when we get here.
+  delete this->SoGroup::children;
+  this->SoGroup::children = new SoChildList(NULL);
 }
 
 /*!

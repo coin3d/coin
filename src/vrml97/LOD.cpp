@@ -187,6 +187,14 @@ SoVRMLLOD::commonConstructor(void)
   SO_VRMLNODE_ADD_FIELD(center, (0.0f, 0.0f, 0.0f));
   SO_VRMLNODE_ADD_EMPTY_MFIELD(range);
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(level);
+
+  // HACK WARNING: All children of this node are stored in the level
+  // field. Avoid double notifications (because of notification
+  // through SoChildList) be reallocating the SoChildList with a
+  // NULL-parent here. SoGroup will have allocated an SoChildList in
+  // its constructor when we get here.
+  delete this->SoGroup::children;
+  this->SoGroup::children = new SoChildList(NULL);
 }
 
 // Doc in parent

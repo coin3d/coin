@@ -161,6 +161,14 @@ SoVRMLSwitch::commonConstructor(void)
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(whichChoice, (SO_SWITCH_NONE));
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(choice);
+
+  // HACK WARNING: All children of this node are stored in the choice
+  // field. Avoid double notifications (because of notification
+  // through SoChildList) be reallocating the SoChildList with a
+  // NULL-parent here. SoGroup will have allocated an SoChildList in
+  // its constructor when we get here.
+  delete this->SoGroup::children;
+  this->SoGroup::children = new SoChildList(NULL);
 }
 
 /*!
