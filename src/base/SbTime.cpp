@@ -65,7 +65,7 @@ SbBool SbTime_QueryPerformanceCounter(SbTime & sbtime)
 #ifdef HAVE_QUERYPERFORMANCECOUNTER
   if (highperf_available == -1) {
     LARGE_INTEGER frequency;
-    highperf_available = (QueryPerformanceFrequency(&frequency) == 0);
+    highperf_available = (QueryPerformanceFrequency(&frequency) != 0);
     if (highperf_available) {
       highperf_tick = 1.0 / frequency.QuadPart;
 
