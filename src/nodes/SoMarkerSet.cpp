@@ -1633,12 +1633,18 @@ static void swap_updown(unsigned char *data, int width, int height)
   }
 }
 
-  // FIXME: implement the lsLSBFirst and isUpToDown. skei 20000905
+/*!
+  Replace the bitmap for the marker at \a markerIndex with the
+  representation given by \a size dimensions with the bitmap data at
+  \a bytes. \a isLSBFirst and \a isUpToDown indicates how the bitmap
+  data is ordered.
+ */
 void
 SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
                        const unsigned char * bytes, SbBool isLSBFirst,
                        SbBool isUpToDown)
 {
+  // FIXME: implement the lsLSBFirst and isUpToDown. skei 20000905
   marker tempmarker;
   marker *temp;
 

@@ -142,7 +142,9 @@ SoTimeCounter::initClass(void)
 }
 
 
-// private destructor
+/*!
+  Destructor.
+ */
 SoTimeCounter::~SoTimeCounter()
 {
 }
