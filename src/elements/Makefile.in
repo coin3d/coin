@@ -140,6 +140,8 @@ sim_ac_makensis_exe = @sim_ac_makensis_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
+SUBDIRS = GL
+
 RegularSources = \
 	SoAccumulatedElement.cpp \
 	SoAmbientColorElement.cpp \
@@ -165,31 +167,6 @@ RegularSources = \
 	SoFocalDistanceElement.cpp \
 	SoFontNameElement.cpp \
 	SoFontSizeElement.cpp \
-	SoGLCacheContextElement.cpp \
-	SoGLClipPlaneElement.cpp \
-	SoGLColorIndexElement.cpp \
-	SoGLCoordinateElement.cpp \
-	SoGLDrawStyleElement.cpp \
-	SoGLEnvironmentElement.cpp \
-	SoGLLazyElement.cpp \
-	SoGLLightIdElement.cpp \
-	SoGLLinePatternElement.cpp \
-	SoGLLineWidthElement.cpp \
-	SoGLModelMatrixElement.cpp \
-	SoGLNormalElement.cpp \
-	SoGLPointSizeElement.cpp \
-	SoGLPolygonOffsetElement.cpp \
-	SoGLProjectionMatrixElement.cpp \
-	SoGLRenderPassElement.cpp \
-	SoGLShapeHintsElement.cpp \
-	SoGLTextureCoordinateElement.cpp \
-	SoGLTextureEnabledElement.cpp \
-	SoGLTexture3EnabledElement.cpp \
-	SoGLTextureImageElement.cpp \
-	SoGLTextureMatrixElement.cpp \
-	SoGLUpdateAreaElement.cpp \
-	SoGLViewingMatrixElement.cpp \
-	SoGLViewportRegionElement.cpp \
 	SoInt32Element.cpp \
 	SoLazyElement.cpp \
 	SoLightAttenuationElement.cpp \
@@ -232,7 +209,6 @@ RegularSources = \
 	SoViewingMatrixElement.cpp \
 	SoViewportRegionElement.cpp \
 	SoWindowElement.cpp \
-	SoGLDisplayList.cpp \
 	SoListenerPositionElement.cpp \
 	SoListenerOrientationElement.cpp \
 	SoListenerGainElement.cpp \
@@ -269,33 +245,6 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoFocalDistanceElement.h \
 	../../include/Inventor/elements/SoFontNameElement.h \
 	../../include/Inventor/elements/SoFontSizeElement.h \
-	../../include/Inventor/elements/SoGLCacheContextElement.h \
-	../../include/Inventor/elements/SoGLClipPlaneElement.h \
-	../../include/Inventor/elements/SoGLColorIndexElement.h \
-	../../include/Inventor/elements/SoGLCoordinateElement.h \
-	../../include/Inventor/elements/SoGLDrawStyleElement.h \
-	../../include/Inventor/elements/SoGLEnvironmentElement.h \
-	../../include/Inventor/elements/SoGLLazyElement.h \
-	../../include/Inventor/elements/SoGLLightIdElement.h \
-	../../include/Inventor/elements/SoGLLinePatternElement.h \
-	../../include/Inventor/elements/SoGLLineWidthElement.h \
-	../../include/Inventor/elements/SoGLModelMatrixElement.h \
-	../../include/Inventor/elements/SoGLNormalElement.h \
-	../../include/Inventor/elements/SoGLNormalizeElement.h \
-	../../include/Inventor/elements/SoGLPointSizeElement.h \
-	../../include/Inventor/elements/SoGLPolygonOffsetElement.h \
-	../../include/Inventor/elements/SoGLProjectionMatrixElement.h \
-	../../include/Inventor/elements/SoGLRenderPassElement.h \
-	../../include/Inventor/elements/SoGLShapeHintsElement.h \
-	../../include/Inventor/elements/SoGLShadeModelElement.h \
-	../../include/Inventor/elements/SoGLTextureCoordinateElement.h \
-	../../include/Inventor/elements/SoGLTextureEnabledElement.h \
-	../../include/Inventor/elements/SoGLTexture3EnabledElement.h \
-	../../include/Inventor/elements/SoGLTextureImageElement.h \
-	../../include/Inventor/elements/SoGLTextureMatrixElement.h \
-	../../include/Inventor/elements/SoGLUpdateAreaElement.h \
-	../../include/Inventor/elements/SoGLViewingMatrixElement.h \
-	../../include/Inventor/elements/SoGLViewportRegionElement.h \
 	../../include/Inventor/elements/SoInt32Element.h \
 	../../include/Inventor/elements/SoLazyElement.h \
 	../../include/Inventor/elements/SoLightAttenuationElement.h \
@@ -427,31 +376,6 @@ elements_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoFocalDistanceElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoFontNameElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoFontSizeElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLCacheContextElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLClipPlaneElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLColorIndexElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLCoordinateElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLDrawStyleElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLEnvironmentElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLLazyElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLLightIdElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLLinePatternElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLLineWidthElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLModelMatrixElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLNormalElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLPointSizeElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLPolygonOffsetElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLProjectionMatrixElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLRenderPassElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLShapeHintsElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureCoordinateElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureEnabledElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLTexture3EnabledElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureImageElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureMatrixElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLUpdateAreaElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLViewingMatrixElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLViewportRegionElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoInt32Element.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoLazyElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoLightAttenuationElement.$(OBJEXT) \
@@ -494,7 +418,6 @@ elements_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoViewingMatrixElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoViewportRegionElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoWindowElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLDisplayList.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerPositionElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerOrientationElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerGainElement.$(OBJEXT) \
@@ -530,31 +453,6 @@ libelements_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoFocalDistanceElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoFontNameElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoFontSizeElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLCacheContextElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLClipPlaneElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLColorIndexElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLCoordinateElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLDrawStyleElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLEnvironmentElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLLazyElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLLightIdElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLLinePatternElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLLineWidthElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLModelMatrixElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLNormalElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLPointSizeElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLPolygonOffsetElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLProjectionMatrixElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLRenderPassElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLShapeHintsElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureCoordinateElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureEnabledElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLTexture3EnabledElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureImageElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureMatrixElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLUpdateAreaElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLViewingMatrixElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLViewportRegionElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoInt32Element.lo SoLazyElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoLightAttenuationElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoLightElement.lo \
@@ -596,7 +494,6 @@ libelements_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoViewingMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoViewportRegionElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoWindowElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLDisplayList.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerPositionElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerOrientationElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerGainElement.lo \
@@ -631,31 +528,6 @@ libelements@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoFocalDistanceElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoFontNameElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoFontSizeElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLCacheContextElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLClipPlaneElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLColorIndexElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLCoordinateElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLDrawStyleElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLEnvironmentElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLLazyElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLLightIdElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLLinePatternElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLLineWidthElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLModelMatrixElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLNormalElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLPointSizeElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLPolygonOffsetElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLProjectionMatrixElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLRenderPassElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLShapeHintsElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureCoordinateElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureEnabledElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLTexture3EnabledElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureImageElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureMatrixElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLUpdateAreaElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLViewingMatrixElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLViewportRegionElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoInt32Element.lo SoLazyElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoLightAttenuationElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoLightElement.lo \
@@ -697,7 +569,6 @@ libelements@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoViewingMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoViewportRegionElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoWindowElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLDisplayList.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerPositionElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerOrientationElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerGainElement.lo \
@@ -758,58 +629,6 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoFontNameElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoFontSizeElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoFontSizeElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLCacheContextElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLCacheContextElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLClipPlaneElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLClipPlaneElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLColorIndexElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLColorIndexElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLCoordinateElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLCoordinateElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLDisplayList.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLDisplayList.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLDrawStyleElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLDrawStyleElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLEnvironmentElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLEnvironmentElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLLazyElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLLazyElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLLightIdElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLLightIdElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLLinePatternElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLLinePatternElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLLineWidthElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLLineWidthElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLModelMatrixElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLModelMatrixElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLNormalElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLNormalElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLPointSizeElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLPointSizeElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLPolygonOffsetElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLPolygonOffsetElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLProjectionMatrixElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLProjectionMatrixElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLRenderPassElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLRenderPassElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLShapeHintsElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLShapeHintsElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLTexture3EnabledElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLTexture3EnabledElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLTextureCoordinateElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLTextureCoordinateElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLTextureEnabledElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLTextureEnabledElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLTextureImageElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLTextureImageElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLTextureMatrixElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLTextureMatrixElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLUpdateAreaElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLUpdateAreaElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLViewingMatrixElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLViewingMatrixElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLViewportRegionElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLViewportRegionElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoInt32Element.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoInt32Element.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoLazyElement.Plo \
@@ -928,10 +747,16 @@ DIST_SOURCES = $(elements_lst_SOURCES) $(EXTRA_elements_lst_SOURCES) \
 	$(EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES)
 HEADERS = $(libelementsinc_HEADERS)
 
+
+RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
+	uninstall-info-recursive all-recursive install-data-recursive \
+	install-exec-recursive installdirs-recursive install-recursive \
+	uninstall-recursive check-recursive installcheck-recursive
 DIST_COMMON = $(libelementsinc_HEADERS) Makefile.am Makefile.in
+DIST_SUBDIRS = $(SUBDIRS)
 SOURCES = $(elements_lst_SOURCES) $(EXTRA_elements_lst_SOURCES) $(libelements_la_SOURCES) $(EXTRA_libelements_la_SOURCES) $(libelements@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES)
 
-all: all-am
+all: all-recursive
 
 .SUFFIXES:
 .SUFFIXES: .cpp .lo .o .obj
@@ -1037,58 +862,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFontNameElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFontSizeElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFontSizeElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLCacheContextElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLCacheContextElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLClipPlaneElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLClipPlaneElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLColorIndexElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLColorIndexElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLCoordinateElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLCoordinateElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLDisplayList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLDisplayList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLDrawStyleElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLDrawStyleElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLEnvironmentElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLEnvironmentElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLazyElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLazyElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLightIdElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLightIdElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLinePatternElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLinePatternElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLineWidthElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLineWidthElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLModelMatrixElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLModelMatrixElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLNormalElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLNormalElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLPointSizeElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLPointSizeElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLPolygonOffsetElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLPolygonOffsetElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLProjectionMatrixElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLProjectionMatrixElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLRenderPassElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLRenderPassElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLShapeHintsElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLShapeHintsElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTexture3EnabledElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTexture3EnabledElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureCoordinateElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureCoordinateElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureEnabledElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureEnabledElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureImageElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureImageElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureMatrixElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureMatrixElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLUpdateAreaElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLUpdateAreaElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLViewingMatrixElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLViewingMatrixElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLViewportRegionElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLViewportRegionElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoInt32Element.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoInt32Element.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLazyElement.Plo@am__quote@
@@ -1217,6 +990,61 @@ uninstall-libelementsincHEADERS:
 	  rm -f $(DESTDIR)$(libelementsincdir)/$$f; \
 	done
 
+# This directory's subdirectories are mostly independent; you can cd
+# into them and run `make' without going through this Makefile.
+# To change the values of `make' variables: instead of editing Makefiles,
+# (1) if the variable is set in `config.status', edit `config.status'
+#     (which will cause the Makefiles to be regenerated when you run `make');
+# (2) otherwise, pass the desired values on the `make' command line.
+$(RECURSIVE_TARGETS):
+	@set fnord $(MAKEFLAGS); amf=$$2; \
+	dot_seen=no; \
+	target=`echo $@ | sed s/-recursive//`; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    dot_seen=yes; \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	   || case "$$amf" in *=*) exit 1;; *k*) fail=yes;; *) exit 1;; esac; \
+	done; \
+	if test "$$dot_seen" = "no"; then \
+	  $(MAKE) $(AM_MAKEFLAGS) "$$target-am" || exit 1; \
+	fi; test -z "$$fail"
+
+mostlyclean-recursive clean-recursive distclean-recursive \
+maintainer-clean-recursive:
+	@set fnord $(MAKEFLAGS); amf=$$2; \
+	dot_seen=no; \
+	case "$@" in \
+	  distclean-* | maintainer-clean-*) list='$(DIST_SUBDIRS)' ;; \
+	  *) list='$(SUBDIRS)' ;; \
+	esac; \
+	rev=''; for subdir in $$list; do \
+	  if test "$$subdir" = "."; then :; else \
+	    rev="$$subdir $$rev"; \
+	  fi; \
+	done; \
+	rev="$$rev ."; \
+	target=`echo $@ | sed s/-recursive//`; \
+	for subdir in $$rev; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	   || case "$$amf" in *=*) exit 1;; *k*) fail=yes;; *) exit 1;; esac; \
+	done && test -z "$$fail"
+tags-recursive:
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  test "$$subdir" = . || (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) tags); \
+	done
+
 tags: TAGS
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
@@ -1228,10 +1056,15 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	       END { for (i in files) print i; }'`; \
 	mkid -fID $$unique $(LISP)
 
-TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+TAGS: tags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	tags=; \
 	here=`pwd`; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    test -f $$subdir/TAGS && tags="$$tags -i $$here/$$subdir/TAGS"; \
+	  fi; \
+	done; \
 	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
 	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
@@ -1271,22 +1104,35 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
+	for subdir in $(SUBDIRS); do \
+	  if test "$$subdir" = .; then :; else \
+	    test -d $(distdir)/$$subdir \
+	    || mkdir $(distdir)/$$subdir \
+	    || exit 1; \
+	    (cd $$subdir && \
+	      $(MAKE) $(AM_MAKEFLAGS) \
+	        top_distdir="$(top_distdir)" \
+	        distdir=../$(distdir)/$$subdir \
+	        distdir) \
+	      || exit 1; \
+	  fi; \
+	done
 check-am: all-am
-check: check-am
+check: check-recursive
 all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
-
-installdirs:
+installdirs: installdirs-recursive
+installdirs-am:
 	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libelementsincdir)
 
-install: install-am
-install-exec: install-exec-am
-install-data: install-data-am
-uninstall: uninstall-am
+install: install-recursive
+install-exec: install-exec-recursive
+install-data: install-data-recursive
+uninstall: uninstall-recursive
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 
-installcheck: installcheck-am
+installcheck: installcheck-recursive
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
 	  `test -z '$(STRIP)' || \
@@ -1301,21 +1147,21 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-clean: clean-am
+clean: clean-recursive
 
 clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	clean-noinstLIBRARIES clean-noinstLTLIBRARIES mostlyclean-am
 
-distclean: distclean-am
+distclean: distclean-recursive
 
 distclean-am: clean-am distclean-compile distclean-depend \
 	distclean-generic distclean-libtool distclean-tags
 
-dvi: dvi-am
+dvi: dvi-recursive
 
 dvi-am:
 
-info: info-am
+info: info-recursive
 
 info-am:
 
@@ -1323,17 +1169,17 @@ install-data-am: install-libelementsincHEADERS
 
 install-exec-am: install-libLTLIBRARIES
 
-install-info: install-info-am
+install-info: install-info-recursive
 
 install-man:
 
 installcheck-am:
 
-maintainer-clean: maintainer-clean-am
+maintainer-clean: maintainer-clean-recursive
 
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
-mostlyclean: mostlyclean-am
+mostlyclean: mostlyclean-recursive
 
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
@@ -1341,20 +1187,26 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	uninstall-libelementsincHEADERS
 
-.PHONY: GTAGS all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
-	clean-noinstLTLIBRARIES distclean distclean-compile \
-	distclean-depend distclean-generic distclean-libtool \
-	distclean-tags distdir dvi dvi-am info info-am install \
-	install-am install-data install-data-am install-exec \
-	install-exec-am install-info install-info-am \
+uninstall-info: uninstall-info-recursive
+
+.PHONY: $(RECURSIVE_TARGETS) GTAGS all all-am check check-am clean \
+	clean-generic clean-libLTLIBRARIES clean-libtool \
+	clean-noinstLIBRARIES clean-noinstLTLIBRARIES clean-recursive \
+	distclean distclean-compile distclean-depend distclean-generic \
+	distclean-libtool distclean-recursive distclean-tags distdir \
+	dvi dvi-am dvi-recursive info info-am info-recursive install \
+	install-am install-data install-data-am install-data-recursive \
+	install-exec install-exec-am install-exec-recursive \
+	install-info install-info-am install-info-recursive \
 	install-libLTLIBRARIES install-libelementsincHEADERS \
-	install-man install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool tags uninstall uninstall-am \
-	uninstall-info-am uninstall-libLTLIBRARIES \
-	uninstall-libelementsincHEADERS
+	install-man install-recursive install-strip installcheck \
+	installcheck-am installdirs installdirs-am \
+	installdirs-recursive maintainer-clean maintainer-clean-generic \
+	maintainer-clean-recursive mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
+	tags tags-recursive uninstall uninstall-am uninstall-info-am \
+	uninstall-info-recursive uninstall-libLTLIBRARIES \
+	uninstall-libelementsincHEADERS uninstall-recursive
 
 
 # this rule causes a make warning, so we remove it when it is not in use

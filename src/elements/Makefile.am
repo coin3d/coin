@@ -1,6 +1,8 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+SUBDIRS = GL
+
 RegularSources = \
 	SoAccumulatedElement.cpp \
 	SoAmbientColorElement.cpp \
@@ -26,31 +28,6 @@ RegularSources = \
 	SoFocalDistanceElement.cpp \
 	SoFontNameElement.cpp \
 	SoFontSizeElement.cpp \
-	SoGLCacheContextElement.cpp \
-	SoGLClipPlaneElement.cpp \
-	SoGLColorIndexElement.cpp \
-	SoGLCoordinateElement.cpp \
-	SoGLDrawStyleElement.cpp \
-	SoGLEnvironmentElement.cpp \
-	SoGLLazyElement.cpp \
-	SoGLLightIdElement.cpp \
-	SoGLLinePatternElement.cpp \
-	SoGLLineWidthElement.cpp \
-	SoGLModelMatrixElement.cpp \
-	SoGLNormalElement.cpp \
-	SoGLPointSizeElement.cpp \
-	SoGLPolygonOffsetElement.cpp \
-	SoGLProjectionMatrixElement.cpp \
-	SoGLRenderPassElement.cpp \
-	SoGLShapeHintsElement.cpp \
-	SoGLTextureCoordinateElement.cpp \
-	SoGLTextureEnabledElement.cpp \
-	SoGLTexture3EnabledElement.cpp \
-	SoGLTextureImageElement.cpp \
-	SoGLTextureMatrixElement.cpp \
-	SoGLUpdateAreaElement.cpp \
-	SoGLViewingMatrixElement.cpp \
-	SoGLViewportRegionElement.cpp \
 	SoInt32Element.cpp \
 	SoLazyElement.cpp \
 	SoLightAttenuationElement.cpp \
@@ -93,7 +70,6 @@ RegularSources = \
 	SoViewingMatrixElement.cpp \
 	SoViewportRegionElement.cpp \
 	SoWindowElement.cpp \
-	SoGLDisplayList.cpp \
 	SoListenerPositionElement.cpp \
 	SoListenerOrientationElement.cpp \
 	SoListenerGainElement.cpp \
@@ -128,33 +104,6 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoFocalDistanceElement.h \
 	../../include/Inventor/elements/SoFontNameElement.h \
 	../../include/Inventor/elements/SoFontSizeElement.h \
-	../../include/Inventor/elements/SoGLCacheContextElement.h \
-	../../include/Inventor/elements/SoGLClipPlaneElement.h \
-	../../include/Inventor/elements/SoGLColorIndexElement.h \
-	../../include/Inventor/elements/SoGLCoordinateElement.h \
-	../../include/Inventor/elements/SoGLDrawStyleElement.h \
-	../../include/Inventor/elements/SoGLEnvironmentElement.h \
-	../../include/Inventor/elements/SoGLLazyElement.h \
-	../../include/Inventor/elements/SoGLLightIdElement.h \
-	../../include/Inventor/elements/SoGLLinePatternElement.h \
-	../../include/Inventor/elements/SoGLLineWidthElement.h \
-	../../include/Inventor/elements/SoGLModelMatrixElement.h \
-	../../include/Inventor/elements/SoGLNormalElement.h \
-	../../include/Inventor/elements/SoGLNormalizeElement.h \
-	../../include/Inventor/elements/SoGLPointSizeElement.h \
-	../../include/Inventor/elements/SoGLPolygonOffsetElement.h \
-	../../include/Inventor/elements/SoGLProjectionMatrixElement.h \
-	../../include/Inventor/elements/SoGLRenderPassElement.h \
-	../../include/Inventor/elements/SoGLShapeHintsElement.h \
-	../../include/Inventor/elements/SoGLShadeModelElement.h \
-	../../include/Inventor/elements/SoGLTextureCoordinateElement.h \
-	../../include/Inventor/elements/SoGLTextureEnabledElement.h \
-	../../include/Inventor/elements/SoGLTexture3EnabledElement.h \
-	../../include/Inventor/elements/SoGLTextureImageElement.h \
-	../../include/Inventor/elements/SoGLTextureMatrixElement.h \
-	../../include/Inventor/elements/SoGLUpdateAreaElement.h \
-	../../include/Inventor/elements/SoGLViewingMatrixElement.h \
-	../../include/Inventor/elements/SoGLViewportRegionElement.h \
 	../../include/Inventor/elements/SoInt32Element.h \
 	../../include/Inventor/elements/SoLazyElement.h \
 	../../include/Inventor/elements/SoLightAttenuationElement.h \
