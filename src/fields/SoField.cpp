@@ -1153,7 +1153,11 @@ SoField::get(SbString & valuestring)
   out.getBuffer(buffer, offset);
 
   // Write field..
+  out.setStage(SoOutput::COUNT_REFS);
   this->writeValue(&out);
+  out.setStage(SoOutput::WRITE);
+  this->writeValue(&out);
+
   // ..then read it back into the SbString.
   size_t size;
   out.getBuffer(buffer, size);

@@ -59,7 +59,7 @@
     // array container had less than 8 elements before the setValues()
     // call, the array will first be expanded.
     SbString s[3] = { "Eriksen", "Blekken", "Aas" };
-    textnode->string.setValues(5, sizeof(s), s);
+    textnode->string.setValues(5, sizeof(s) / sizeof(s[0]), s);
     // Full contents of the SoMFString is now:
     //     [ "Peder", <undefined>, "Lars", <undefined>, <undefined>,
     //       "Eriksen", "Blekken", "Aas" ]
@@ -67,7 +67,7 @@
     // Note also that the setValues() call will *not* truncate a field
     // container if you use it to change a subset at the start:
     SbString n[4] = { "Dixon", "Adams", "Bould", "Winterburn" };
-    textnode->string.setValues(0, sizeof(n), n);
+    textnode->string.setValues(0, sizeof(n) / sizeof(n[0]), n);
     // Full contents of the SoMFString is now:
     //     [ "Dixon", "Adams", "Bould", "Winterburn", <undefined>,
     //       "Eriksen", "Blekken", "Aas" ]
@@ -391,7 +391,11 @@ SoMField::get1(const int index, SbString & valuestring)
   out.getBuffer(buffer, offset);
 
   // Write field..
+  out.setStage(SoOutput::COUNT_REFS);
   this->write1Value(&out, index);
+  out.setStage(SoOutput::WRITE);
+  this->write1Value(&out, index);
+
   // ..then read it back into the SbString.
   size_t size;
   out.getBuffer(buffer, size);
