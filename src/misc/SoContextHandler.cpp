@@ -111,7 +111,19 @@ SoContextHandler::destructingContext(uint32_t contextid)
   // iterating over the list.
   SbList <socontexthandler_cbitem> listcopy = *socontexthandler_cblist;
 
-  for (int i = 0; i < listcopy.getLength(); i++) {
+  // process callbacks FILO-style so that callbacks registered first
+  // are called last. HACK WARNING: SoGLCacheContextElement will add a
+  // callback in initClass(). It's quite important that this callback
+  // is called after all other callbacks (since the other callbacks
+  // might schedule destruction of GL resources through the methods in
+  // SoGLCacheContextElement). This criteria is met as it is now,
+  // since it's the only callback added while initializing Coin
+  // (SoDB::init()). 
+
+  // FIXME: We should probably add a new method in
+  // SoGLCacheContextElement which this class can call after all the
+  // regular callbacks though. pederb, 2004-10-27
+  for (int i = listcopy.getLength()-1; i >= 0; i--) {
     const socontexthandler_cbitem & item = listcopy[i];
     item.func(contextid, item.closure);
   }
@@ -119,6 +131,17 @@ SoContextHandler::destructingContext(uint32_t contextid)
 
 // *************************************************************************
 
+/*!
+  Add a callback which will be called every time a GL context is
+  destructed. The callback should delete all GL resources tied to that
+  context.
+  
+  All nodes/classes that allocate GL resources should set up a callback
+  like this. Add the callback in the constructor of the node/class,
+  and remove it in the destructor.
+
+  \sa removeContextDestructionCallback()
+*/
 void
 SoContextHandler::addContextDestructionCallback(ContextDestructionCB * func,
                                                 void * closure)
@@ -134,6 +157,11 @@ SoContextHandler::addContextDestructionCallback(ContextDestructionCB * func,
   socontexthandler_cblist->append(item);
 }
 
+/*!
+  Remove a context destruction callback.
+  
+  \sa addContextDestructionCallback()
+*/
 void
 SoContextHandler::removeContextDestructionCallback(ContextDestructionCB * func, void * closure)
 {
@@ -142,7 +170,7 @@ SoContextHandler::removeContextDestructionCallback(ContextDestructionCB * func, 
   socontexthandler_cbitem item;
   item.func = func;
   item.closure = closure;
-
+  
   const int idx = socontexthandler_cblist->find(item);
   assert(idx >= 0);
   socontexthandler_cblist->removeFast(idx);
