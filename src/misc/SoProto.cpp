@@ -46,6 +46,8 @@
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/SoDB.h>
 
 static SoType soproto_type;
 
@@ -59,6 +61,73 @@ soproto_fetchextern_default_cb(SoInput * in,
                                const int numurls,
                                void * closure)
 {
+  if (numurls == 0) return NULL;
+  SbString filename(urls[0]);
+  SbString name("");
+
+  int nameidx = filename.find("#");
+  if (nameidx >= 1) {
+    SbString tmp(filename);
+    filename = tmp.getSubString(0, nameidx-1);
+    name = tmp.getSubString(nameidx+1);
+  }
+ 
+  if (!in->pushFile(filename.getString())) {
+    SoReadError::post(in, "Unable to find EXTERNPROTO file: ``%s''",
+                      filename.getString());
+    return NULL;
+  }
+
+  SoSeparator * root = SoDB::readAll(in);
+  if (!root) {
+    // Take care of popping the file off the stack. This is a bit
+    // "hack-ish", but its done this way instead of loosening the
+    // protection of SoInput::popFile().
+    if (in->getCurFileName() == filename) {
+      char dummy;
+      while (!in->eof()) in->get(dummy);
+    }
+    
+    SoReadError::post(in, "Unable to read EXTERNPROTO file: ``%s''",
+                      filename.getString());
+    return NULL;
+  }
+  else {
+    root->ref();
+    SoProto * foundproto = NULL;
+
+    SoSearchAction sa;
+    sa.setType(SoProto::getClassTypeId());
+    sa.setSearchingAll(TRUE);
+    sa.setInterest(SoSearchAction::ALL);
+    sa.apply(root);
+    
+    SoPathList & pl = sa.getPaths();
+
+    if (pl.getLength() == 1) {
+      foundproto = (SoProto*) pl[0]->getTail();
+      if (name.getLength() && name != foundproto->getProtoName().getString()) {
+        foundproto = NULL;
+      }
+    }
+    else if (name.getLength()) {
+      int i;
+      for (i = 0; i < pl.getLength(); i++) {
+        SoProto * proto = (SoProto*) pl[i]->getTail();
+        if (name == proto->getProtoName().getString()) break;
+      }
+      if (i < pl.getLength()) {
+        foundproto = (SoProto*) pl[i]->getTail();
+      }
+    }
+    sa.reset(); // clear paths in action.
+    if (foundproto) foundproto->ref();
+    root->unref();
+    if (foundproto) foundproto->unrefNoDelete();
+    return foundproto;
+  }
+
+  // just in case to fool stupid compilers
   return NULL;
 }
 
