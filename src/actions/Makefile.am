@@ -22,6 +22,9 @@ PublicHeaders = \
 	../../include/Inventor/actions/SoAudioRenderAction.h
 PrivateHeaders = \
 	../../include/Inventor/actions/SoSubActionP.h \
+	SoInterserctionDetectionAction.cpp \
+	../../include/Inventor/actions/SoInterserctionDetectionAction.h \
+	../../include/Inventor/collision/SoInterserctionDetectionAction.h \
 	SbTri3f.icc SbTri3f.ih
 LinkHackSources = \
 	all.cpp
@@ -41,34 +44,33 @@ RegularSources = \
 	SoToVRMLAction.cpp \
 	SoToVRML2Action.cpp \
 	SoWriteAction.cpp \
-	SoAudioRenderAction.cpp \
-	SoIntersectionDetectionAction.cpp
+	SoAudioRenderAction.cpp
 
 # The SoIntersectionDetectionAction header needs to be under
 # Inventor/collision/ for TGS compatibility.
 
-if BUILD_LIBRARY
-if MAC_FRAMEWORK
-libcollisionincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/collision
-else
-libcollisionincdir = $(includedir)/Inventor/collision
-endif
-libcollisioninc_HEADERS = \
-	../../include/Inventor/collision/SoIntersectionDetectionAction.h
-
-install-libcollisionincHEADERS: $(libcollisioninc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libcollisionincdir)
-	@list='$(libcollisioninc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(libcollisionincdir)/$$f"; \
-	  if cmp -s "$$src" "$$dst"; then :; else \
-	    echo " $(INSTALL_HEADER) $$src $$dst"; \
-	    $(INSTALL_HEADER) "$$src" "$$dst"; \
-	  fi \
-	done
-endif
+# if BUILD_LIBRARY
+# if MAC_FRAMEWORK
+# libcollisionincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/collision
+# else
+# libcollisionincdir = $(includedir)/Inventor/collision
+# endif
+# libcollisioninc_HEADERS = \
+# 	../../include/Inventor/collision/SoIntersectionDetectionAction.h
+# 
+# install-libcollisionincHEADERS: $(libcollisioninc_HEADERS)
+# 	@$(NORMAL_INSTALL)
+# 	$(mkinstalldirs) $(DESTDIR)$(libcollisionincdir)
+# 	@list='$(libcollisioninc_HEADERS)'; for p in $$list; do \
+# 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+# 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+# 	  src="$$d$$p"; dst="$(DESTDIR)$(libcollisionincdir)/$$f"; \
+# 	  if cmp -s "$$src" "$$dst"; then :; else \
+# 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+# 	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+# 	  fi \
+# 	done
+# endif
 
 ##$ BEGIN TEMPLATE Make-Common(actions, actions)
 # **************************************************************************

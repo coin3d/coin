@@ -10,7 +10,6 @@ New in Coin v2.0.0b (so far):
 * Audio support
 * support for dynamically loadable extension nodes on some platforms
   (Win32/MSVC++6, Linux/gcc)
-* SoIntersectionDetectionAction (API and most of the functionality)
 * SoExtSelection can now also select only the visible polygons in a model
 * SoOffscreenRenderer now handles generating arbitrarily huge images
 * optimized LazyElement traversal
