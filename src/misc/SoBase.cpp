@@ -166,6 +166,7 @@ static void * sobase_mutex = NULL;
 static void * sobase_name2obj_mutex = NULL;
 static void * sobase_obj2name_mutex = NULL;
 static void * sobase_auditor_mutex = NULL;
+static void * sobase_global_mutex = NULL;
 
 static void
 sobase_auditordict_cb(unsigned long key, void * value)
@@ -474,6 +475,7 @@ SoBase::initClass(void)
   CC_MUTEX_CONSTRUCT(sobase_obj2name_mutex);
   CC_MUTEX_CONSTRUCT(sobase_name2obj_mutex);
   CC_MUTEX_CONSTRUCT(sobase_auditor_mutex);
+  CC_MUTEX_CONSTRUCT(sobase_global_mutex);
 }
 
 // Clean up all commonly allocated resources before application
@@ -498,6 +500,7 @@ SoBase::cleanClass(void)
   CC_MUTEX_DESTRUCT(sobase_obj2name_mutex);
   CC_MUTEX_DESTRUCT(sobase_name2obj_mutex);
   CC_MUTEX_DESTRUCT(sobase_auditor_mutex);
+  CC_MUTEX_DESTRUCT(sobase_global_mutex);
 #endif // COIN_DEBUG
 }
 
@@ -2089,3 +2092,24 @@ SoBase::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type)
     assert(0 && "Unknown auditor type");
   }
 }
+
+/*!
+  \internal 
+  \since Coin 2.3
+*/
+void 
+SoBase::globalLock(void)
+{
+  CC_MUTEX_LOCK(sobase_global_mutex);
+}
+
+/*!
+  \internal 
+  \since Coin 2.3
+*/
+void 
+SoBase::globalUnlock(void)
+{
+  CC_MUTEX_UNLOCK(sobase_global_mutex);
+}
+

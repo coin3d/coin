@@ -94,11 +94,14 @@ sofieldcontainer_userdata_cleanup(void)
   }
 }
 
+#define FLAG_DONOTIFY      0x01
+#define FLAG_FIRSTINSTANCE 0x02
+
 /*!
   Constructor.
 */
 SoFieldContainer::SoFieldContainer(void)
-  : isBuiltIn(TRUE), donotify(TRUE)
+  : isBuiltIn(TRUE), donotify(FLAG_DONOTIFY) // HACK warning: donotify is used as a bitmask
 {
 }
 
@@ -448,8 +451,10 @@ SoFieldContainer::getFieldName(const SoField * const field,
 SbBool
 SoFieldContainer::enableNotify(const SbBool enable)
 {
-  const SbBool old = this->donotify;
-  this->donotify = enable;
+  int & flags = this->donotify;
+  const SbBool old = (flags & FLAG_DONOTIFY) != 0;
+  flags &= ~FLAG_DONOTIFY;
+  if (enable) flags |= FLAG_DONOTIFY;
   return old;
 }
 
@@ -462,7 +467,8 @@ SoFieldContainer::enableNotify(const SbBool enable)
 SbBool
 SoFieldContainer::isNotifyEnabled(void) const
 {
-  return this->donotify;
+  const int flags = this->donotify;
+  return (flags & FLAG_DONOTIFY) != 0;
 }
 
 
@@ -562,8 +568,9 @@ SoFieldContainer::notify(SoNotList * l)
   char c;
   SoDebugError::postInfo("SoFieldContainer::notify", "fc %p, list %p, stack %p", this, l, &c);
 #endif // debug
-
-  if (this->donotify) {
+  
+  const int flags = this->donotify; 
+  if (flags & FLAG_DONOTIFY) {
     if (l->getLastRec()->getType() == SoNotRec::PARENT) {
       // we were notified from a child node. Create a new SoNotRec.
       SoNotRec rec(this);
@@ -971,8 +978,34 @@ SoFieldContainer::getUserData(void) const
                   &tmp)) {
     return tmp;
   }
-  return NULL;
-  
+  return NULL;  
 }
+
+/*!
+  \internal
+  \since Coin 2.3
+*/
+void 
+SoFieldContainer::setFirstInstance(const SbBool val)
+{
+  int & flags = this->donotify;
+  flags &= ~FLAG_FIRSTINSTANCE;
+  if (val) flags |= FLAG_FIRSTINSTANCE;
+}
+
+/*!
+  \internal
+  \since Coin 2.3
+*/
+SbBool 
+SoFieldContainer::isFirstInstance(void) const
+{
+  const int flags = this->donotify;
+  return (flags & FLAG_FIRSTINSTANCE) != 0;
+}
+
+
+#undef FLAG_DONOTIFY
+#undef FLAG_FIRSTINSTANCE 
 
 

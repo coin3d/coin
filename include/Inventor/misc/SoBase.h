@@ -61,7 +61,7 @@ public:
   void addAuditor(void * const auditor, const SoNotRec::Type type);
   void removeAuditor(void * const auditor, const SoNotRec::Type type);
   const SoAuditorList & getAuditors(void) const;
-  
+
   virtual void addWriteReference(SoOutput * out, SbBool isfromfield = FALSE);
   SbBool shouldWrite(void);
 
@@ -81,7 +81,7 @@ public:
   static SbBool connectRoute(SoInput * in,
                              const SbName & fromnodename, const SbName & fromfieldname,
                              const SbName & tonodename, const SbName & tofieldname);
-  
+
   void assertAlive(void) const;
   static SbBool readRoute(SoInput * in);
 
@@ -102,7 +102,8 @@ protected:
   virtual SbBool readInstance(SoInput * in, unsigned short flags) = 0;
 
   static uint32_t getCurrentWriteCounter(void);
-
+  static void globalLock(void);
+  static void globalUnlock(void);
 
 private:
   static SbBool readReference(SoInput * in, SoBase *& base);
@@ -125,8 +126,8 @@ private:
     // The number of bits should sum up to 32, so we don't allocate
     // more than one machine word on a 32-bit platform.
   } objdata;
-  
-  void doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type);  
+
+  void doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type);
   static void rbptree_notify_cb(void * auditor, void * type, void * closure);
   cc_rbptree auditortree;
 
