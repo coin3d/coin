@@ -34,6 +34,10 @@
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/actions/SoPickAction.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #ifdef HAVE_WINDOWS_H
 #include <windows.h>
 #endif // HAVE_WINDOWS_H
