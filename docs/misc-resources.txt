@@ -30,6 +30,7 @@ THE LINKS
 
 * Interactive Order-Independent Transparency
   2001-05-18 Peder Blekken <pederb@sim.no>
+  http://www.nvidia.com/Marketing/Developer/DevRel.nsf/bookmark/EEFAD0772D0514D288256A4D00662526
 
   Uses shadow mapping hardware and alpha test. Can be implemented in
   OpenGL using Nvidia extensions for GeForce3.
