@@ -920,7 +920,11 @@ SoBase::readBaseInstance(SoInput * in, const SbName & className,
     // The "flags" argument to readInstance is only checked during
     // import from binary format files.
     unsigned short flags = 0;
-    if (in->isBinary()) retval = in->read(flags);
+    if (in->isBinary()) {
+      // FIXME: what about user extension nodes with children in
+      // versions < 2.1 of the file format? 20000106 mortene.
+      if (in->getIVVersion() > 2.0f) retval = in->read(flags);
+    }
 
     if (retval) retval = base->readInstance(in, flags);
 
