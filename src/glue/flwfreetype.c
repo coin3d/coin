@@ -81,10 +81,16 @@ flwftGetFont(const char * fontname)
   error = FT_New_Face(library, fontname, 0, &face);
   if (error) {
     if (cc_freetype_debug()) {
-      cc_debugerror_postwarning("flwftGetFont", "error %d for fontname '%s'\n",
+      cc_debugerror_postwarning("flwftGetFont", "error %d for fontname '%s'",
                                 error, fontname);
     }
     return NULL;
+  }
+
+  if (cc_freetype_debug()) {
+    cc_debugerror_postinfo("flwftGetFont",
+                           "FT_New_Face(..., \"%s\", ...) => family \"%s\" and style \"%s\"",
+                           fontname, face->family_name, face->style_name);
   }
   return face;
 }
