@@ -2744,6 +2744,12 @@ SoInput::getTopOfStack(void) const
 FILE *
 SoInput::findFile(const char * basename, SbString & fullname)
 {
+  // This function has an undocumented feature in Coin: upon error, an
+  // error message with the reason why it could not be opened will be
+  // placed in the \a fullname argument. Keep this undocumented, to
+  // avoid incompatibility problems with SGI/TGS Inventor for app
+  // programmers.  -mortene.
+
   fullname = "";
 
   if (strlen(basename) < 1) {
@@ -2797,9 +2803,12 @@ SoInput::findFile(const char * basename, SbString & fullname)
         return fp;
       }
       else {
-        fullname.sprintf("%s%sFound '%s' as '%s', but was unable to open it: '%s'",
-                         fullname.getString(), fullname.getLength() ? "\n" : "",
-                         basename, n.getString(), strerror(errno));
+        const SbBool same = strcmp(basename, n.getString()) == 0;
+        SbString s;
+        if (!same) { s.sprintf(" as '%s'", n.getString()); }
+
+        fullname.sprintf("Found '%s'%s, but was unable to open it: '%s'",
+                         basename, s.getString(), strerror(errno));
       }
     }
   }
