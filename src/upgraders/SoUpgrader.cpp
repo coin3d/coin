@@ -33,11 +33,62 @@
 
 #include "SoUpgrader.h"
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/SbDict.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
+#include <Inventor/C/tidbitsp.h>
 #include "SoPackedColorV20.h"
 #include "SoShapeHintsV10.h"
 #include <stddef.h> // for NULL
+#include <assert.h>
+
+// an upgrader lookup dict. FIXME: add a new method to SoType (other
+// than SoType::fromName), that checks if a type with a name is
+// registered _without_ attempting to load the type from a shared
+// object/dll.
+static SbDict * soupgrader_namedict = NULL;
+
+static void
+soupgrader_cleanup(void)
+{
+  delete soupgrader_namedict;
+  soupgrader_namedict = NULL;
+}
+
+// add a name to the upgrader lookup dict.
+static void 
+soupgrader_add_to_namedict(const SbString & name)
+{
+  assert(soupgrader_namedict);
+
+  void * ptr = (void*) SbName(name.getString()).getString();
+  soupgrader_namedict->enter((unsigned long)ptr, NULL);
+
+  // create lookup both with and without the "So" prefix
+  SbString tmp;
+  if (name.compareSubString("So") == 0) {
+    tmp = name.getSubString(2);
+  }
+  else {
+    tmp = "So";
+    tmp += name;
+  }
+  ptr = (void*) SbName(tmp.getString()).getString();
+  soupgrader_namedict->enter((unsigned long)ptr, NULL);
+}
+
+static SbBool 
+soupgrader_exists(const SbString & name) 
+{
+  assert(soupgrader_namedict);
+  void * ptr = (void*) SbName(name.getString()).getString();
+  void * dummy;
+  return soupgrader_namedict->find((unsigned long) ptr, dummy);
+}
+
+#define SOUPGRADER_ADD_TYPE(_class_) \
+  _class_::initClass(); \
+  soupgrader_add_to_namedict(SO__QUOTE(_class_))
 
 //
 // init all upgradable classes. Can be called multiple times.
@@ -48,8 +99,12 @@ soupgrader_init_classes(void)
   static int first = 1;
   if (first) {
     first = 0;
-    SoPackedColorV20::initClass();
-    SoShapeHintsV10::initClass();
+    soupgrader_namedict = new SbDict;
+    
+    coin_atexit((coin_atexit_f*) soupgrader_cleanup, 0); 
+    
+    SOUPGRADER_ADD_TYPE(SoPackedColorV20);
+    SOUPGRADER_ADD_TYPE(SoShapeHintsV10);
   }
 }
 
@@ -66,9 +121,12 @@ SoUpgrader::tryCreateNode(const SbName & name, const float ivversion)
     
     SbString s(name.getString());
     s += "V10";
-    SoType type = SoType::fromName(SbName(s.getString()));
-    if (type.canCreateInstance()) {
-      return (SoBase*) type.createInstance();
+
+    if (soupgrader_exists(s.getString())) {
+      SoType type = SoType::fromName(SbName(s.getString()));
+      if (type.canCreateInstance()) {
+        return (SoBase*) type.createInstance();
+      }
     }
   }
   else if (ivversion == 2.0f) {
@@ -76,9 +134,12 @@ SoUpgrader::tryCreateNode(const SbName & name, const float ivversion)
     
     SbString s(name.getString());
     s += "V20";
-    SoType type = SoType::fromName(SbName(s.getString()));
-    if (type.canCreateInstance()) {
-      return (SoBase*) type.createInstance();
+
+    if (soupgrader_exists(s.getString())) {
+      SoType type = SoType::fromName(SbName(s.getString()));
+      if (type.canCreateInstance()) {
+        return (SoBase*) type.createInstance();
+      }
     }
   }
   return NULL;
@@ -110,4 +171,6 @@ SoUpgrader::createUpgrade(const SoBase * base)
   }
   return NULL;
 }
+
+#undef SOUPGRADER_ADD_TYPE
 
