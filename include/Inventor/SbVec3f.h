@@ -44,7 +44,7 @@ public:
   float normalize(void);
   SbVec3f & setValue(const float v[3]);
   SbVec3f & setValue(const float x, const float y, const float z);
-  SbVec3f & setValue(const SbVec3f & barycentic,
+  SbVec3f & setValue(const SbVec3f & barycentric,
                      const SbVec3f & v0,
                      const SbVec3f & v1,
                      const SbVec3f & v2);

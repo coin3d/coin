@@ -335,17 +335,17 @@ SbVec3f::setValue(const float x, const float y, const float z)
 
 /*!
   Set this vector to be the average of \a v0, \a v1 and \a v2.
-  The vector components are weighted by the barycentic vector.
+  The vector components are weighted by the \a barycentric vector.
 
   \sa getValue().
 */
 SbVec3f &
-SbVec3f::setValue(const SbVec3f & barycentic,
+SbVec3f::setValue(const SbVec3f & barycentric,
                   const SbVec3f & v0, const SbVec3f & v1, const SbVec3f & v2)
 {
-  this->vec[0] = barycentic[0]*v0[0]+barycentic[1]*v1[0]+barycentic[2]*v2[0];
-  this->vec[1] = barycentic[0]*v0[1]+barycentic[1]*v1[1]+barycentic[2]*v2[1];
-  this->vec[2] = barycentic[0]*v0[2]+barycentic[1]*v1[2]+barycentic[2]*v2[2];
+  this->vec[0] = barycentric[0]*v0[0]+barycentric[1]*v1[0]+barycentric[2]*v2[0];
+  this->vec[1] = barycentric[0]*v0[1]+barycentric[1]*v1[1]+barycentric[2]*v2[1];
+  this->vec[2] = barycentric[0]*v0[2]+barycentric[1]*v1[2]+barycentric[2]*v2[2];
   return *this;
 }
 
