@@ -298,8 +298,8 @@ cc_build_search_list(const char * libname)
       size_t l = strlen(path_to_version_dir) + strlen("/Resources") + 1;
       res_path = malloc(l);
       snprintf(res_path, l, "%s%s", path_to_version_dir, "/Resources");
+      break;
     }
-    break;
   }
   
   /* FIXME: it'd be simpler, cleaner and safer to use the
