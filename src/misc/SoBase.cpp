@@ -247,7 +247,13 @@ set_current_writeref(const SoBase * base, const int rc)
 
 // This can be any "magic" bitpattern of 4 bits which seems unlikely
 // to be randomly assigned to a memory byte upon destruction. I chose
-// "1101".  <mortene@sim.no>
+// "1101".
+//
+// The 4 bits allocated for the "alive" bitpattern is used in
+// SoBase::ref() to try to detect when the instance has been
+// prematurely destructed.
+//
+// <mortene@sim.no>
 #define ALIVE_PATTERN 0xd
 
 
@@ -269,14 +275,9 @@ SoBase::SoBase(void)
     assert((sizeof(void *) >= sizeof(int)) && "SbDict overflow");
   }
 
-  // The 4 bits allocated for the "alive" bitpattern is used in
-  // SoBase::ref() to try to detect when the instance has been
-  // prematurely destructed. This is a very common mistake to make by
-  // application programmers (letting the refcount dip to zero before
-  // it should, that is), so the extra piece of assistance through the
-  // accompanying assert() in SoBase::ref() to detect memory
-  // corruption and help avoid mysterious crashes should be a Good
-  // Thing.
+  // For debugging -- we try to catch dangling references after
+  // premature destruction. See the SoBase::assertAlive() method for
+  // further doc.
   this->objdata.alive = ALIVE_PATTERN;
 }
 
@@ -292,6 +293,10 @@ SoBase::~SoBase()
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoBase::~SoBase", "%p", this);
 #endif // debug
+
+  // Set the 4 bits of bitpattern to anything but the "magic" pattern
+  // used to check that we are still alive.
+  this->objdata.alive = (~ALIVE_PATTERN) & 0xf;
 
   if (sobase_auditordict) {
     void * tmp;
@@ -375,10 +380,6 @@ SoBase::destroy(void)
   SoDebugError::postInfo("SoBase::destroy", "delete this %p", this);
 #endif // debug
 
-  // Set the 4 bits of bitpattern to anything but the "magic" pattern
-  // used to check that we are still alive.
-  this->objdata.alive = (~ALIVE_PATTERN) & 0xf;
-
   // Sjølmord.
   delete this;
 
@@ -428,6 +429,44 @@ SoBase::cleanClass(void)
 #endif // COIN_DEBUG
 }
 
+/*!
+  \COININTERNAL
+
+  There are 4 bits allocated for each SoBase-object for a bitpattern
+  that indicates the object is still "alive". The pattern is changed
+  when the object is destructed. If this method is then called after
+  destruction, an assert will hit.
+
+  This is used internally in Coin (in for instance SoBase::ref()) to
+  try to detect when the instance has been prematurely
+  destructed. This is a very common mistake to make by application
+  programmers (letting the refcount dip to zero before it should, that
+  is), so the extra piece of assistance through the accompanying
+  assert() in this method to detect dangling references to the object,
+  with subsequent memory corruption and mysterious crashes, should be
+  a Good Thing.
+
+  This is a method not part of the original SGI Inventor v2.1 API, and
+  is specific to the Coin library.
+
+  \since 2002-09-28
+*/
+void
+SoBase::assertAlive(void) const
+{
+  if (this->objdata.alive != ALIVE_PATTERN) {
+    SoDebugError::post("SoBase::assertAlive",
+                       "Detected an attempt to access an instance of an "
+                       "SoBase-derived class after it was destructed!  "
+                       "This is most likely to be the result of some grave "
+                       "programming error in the application / client "
+                       "code (or less likely: internal library code), "
+                       "causing premature destruction of a reference "
+                       "counted object instance. This check was called "
+                       "from a dangling reference to it.");
+    assert(FALSE && "SoBase-object no longer alive!");
+  }
+}
 
 /*!
   Increase the reference count of the object. This might be necessary
@@ -440,6 +479,8 @@ SoBase::cleanClass(void)
 void
 SoBase::ref(void) const
 {
+  if (COIN_DEBUG) this->assertAlive();
+
   // Cast away constness.
   SoBase * base = (SoBase *)this;
 
@@ -476,16 +517,6 @@ SoBase::ref(void) const
                            this->objdata.referencecount);
   }
 #endif // COIN_DEBUG
-
-  // For more information about this assert check, see the code
-  // comments on the objdata.alive initialization in the SoBase
-  // constructor.
-  assert(this->objdata.alive == ALIVE_PATTERN &&
-         "Detected an attempt to access an instance of an SoBase-derived "
-         "class after it was destructed!  This is very likely to be the "
-         "result of some grave programming error in the application / client "
-         "code -- causing premature destruction of a reference counted "
-         "object instance.");
 }
 
 /*!
@@ -500,6 +531,8 @@ SoBase::ref(void) const
 void
 SoBase::unref(void) const
 {
+  if (COIN_DEBUG) this->assertAlive();
+
   // Cast away constness.
   SoBase * base = (SoBase *)this;
   base->objdata.referencecount--;
@@ -531,6 +564,8 @@ SoBase::unref(void) const
 void
 SoBase::unrefNoDelete(void) const
 {
+  if (COIN_DEBUG) this->assertAlive();
+
   // Cast away constness.
   SoBase * base = (SoBase *)this;
   base->objdata.referencecount--;
@@ -756,6 +791,8 @@ SoBase::rbptree_notify_cb(void * auditor, void * type, void * closure)
 void
 SoBase::notify(SoNotList * l)
 {
+  if (COIN_DEBUG) this->assertAlive();
+
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoBase::notify", "base %p, list %p", this, l);
 #endif // debug

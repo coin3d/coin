@@ -81,6 +81,7 @@ public:
   static SbBool connectRoute(const SbName & fromnodename, const SbName & fromfieldname,
                              const SbName & tonodename, const SbName & tofieldname);
   
+  void assertAlive(void) const;
 
 protected:
   // Note: these are bitflags.
