@@ -345,7 +345,7 @@ fi
 
 COIN_THREADSAFE=0
 if $sim_ac_enable_threadsafe; then
-  COIN_THREADSAFE = 1
+  COIN_THREADSAFE=1
   AC_DEFINE([COIN_THREADSAFE],, [define to compile thread safe library])
   SIM_AC_CONFIGURATION_SETTING([Thread safe], [Yes])
 else
