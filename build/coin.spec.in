@@ -546,6 +546,7 @@ make doxygen-doc
 @includedir@/Inventor/nodes/SoText3.h
 @includedir@/Inventor/nodes/SoTexture2.h
 @includedir@/Inventor/nodes/SoTexture2Transform.h
+@includedir@/Inventor/nodes/SoTexture3Transform.h
 @includedir@/Inventor/nodes/SoTextureCoordinate2.h
 @includedir@/Inventor/nodes/SoTextureCoordinate3.h
 @includedir@/Inventor/nodes/SoTextureCoordinateBinding.h
@@ -833,6 +834,7 @@ make doxygen-doc
 @mandir@/man3/SoText3.3
 @mandir@/man3/SoTexture2.3
 @mandir@/man3/SoTexture2Transform.3
+@mandir@/man3/SoTexture3Transform.3
 @mandir@/man3/SoTextureCoordinate2.3
 @mandir@/man3/SoTextureCoordinate3.3
 @mandir@/man3/SoTextureCoordinateBinding.3
@@ -933,7 +935,7 @@ rm SoSFTrigger.3 SoSFUInt32.3 SoSFUShort.3 SoSFVec2f.3 SoSFVec3f.3 SoSFVec4f.3
 rm SoSField.3 SoScale.3 SoSceneManager.3 SoSearchAction.3 SoSelection.3
 rm SoSensor.3 SoSensorManager.3 SoSeparator.3 SoShape.3 SoShapeHints.3
 rm SoShuttle.3 SoSpaceballButtonEvent.3 SoSphere.3 SoSpotLight.3 SoState.3
-rm SoSurroundScale.3 SoSwitch.3 SoText2.3 SoText3.3 SoTexture2.3 SoTexture2Transform.3
+rm SoSurroundScale.3 SoSwitch.3 SoText2.3 SoText3.3 SoTexture2.3 SoTexture2Transform.3 SoTexture3Transform.3
 rm SoTextureCoordinate2.3 SoTextureCoordinate3.3 SoTextureCoordinateBinding.3 SoTextureCoordinateDefault.3
 rm SoTextureCoordinateEnvironment.3 SoTextureCoordinateFunction.3 SoTextureCoordinatePlane.3
 rm SoTimerQueueSensor.3 SoTimerSensor.3 SoTransform.3 SoTransformSeparator.3

@@ -211,6 +211,7 @@ RegularSources = \
 	SoText3.cpp \
 	SoTexture2.cpp \
 	SoTexture2Transform.cpp \
+	SoTexture3Transform.cpp \
 	SoTextureCoordinate2.cpp \
 	SoTextureCoordinate3.cpp \
 	SoTextureCoordinateBinding.cpp \
@@ -326,6 +327,7 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoText3.h \
 	../../include/Inventor/nodes/SoTexture2.h \
 	../../include/Inventor/nodes/SoTexture2Transform.h \
+	../../include/Inventor/nodes/SoTexture3Transform.h \
 	../../include/Inventor/nodes/SoTextureCoordinate2.h \
 	../../include/Inventor/nodes/SoTextureCoordinate3.h \
 	../../include/Inventor/nodes/SoTextureCoordinateBinding.h \
@@ -483,6 +485,7 @@ nodes_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoText3.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2Transform.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoTexture3Transform.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinate2.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinate3.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateBinding.$(OBJEXT) \
@@ -565,6 +568,7 @@ libnodes_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoSwitch.lo SoText2.lo SoText3.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2Transform.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoTexture3Transform.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinate2.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinate3.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateBinding.lo \
@@ -643,6 +647,7 @@ libnodes@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoSwitch.lo SoText2.lo SoText3.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2Transform.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoTexture3Transform.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinate2.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinate3.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateBinding.lo \
@@ -791,6 +796,8 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoTexture2.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTexture2Transform.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoTexture2Transform.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoTexture3Transform.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoTexture3Transform.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextureCoordinate2.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextureCoordinate2.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextureCoordinate3.Plo \
@@ -1088,6 +1095,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTexture2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTexture2Transform.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTexture2Transform.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTexture3Transform.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTexture3Transform.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureCoordinate2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureCoordinate2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureCoordinate3.Plo@am__quote@

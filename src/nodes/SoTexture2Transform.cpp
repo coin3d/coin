@@ -26,6 +26,8 @@
   \brief The SoTexture2Transform class is used to define 2D texture transformations.
   \ingroup nodes
 
+  \sa SoTexture2Transform
+
   FIXME: write class doc
 */
 

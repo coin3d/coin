@@ -376,6 +376,7 @@ SoNode::initClasses(void)
   SoShapeHints::initClass();
   SoTexture2::initClass();
   SoTexture2Transform::initClass();
+  SoTexture3Transform::initClass();
   SoTextureCoordinate2::initClass();
   SoTextureCoordinate3::initClass();
   SoTextureCoordinateBinding::initClass();
