@@ -24,12 +24,12 @@
  *
 \**************************************************************************/
 
+#include "fontspec.h"
+ 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "fontspec.h"
- 
   typedef struct cc_glyph2d cc_glyph2d;
 
   cc_glyph2d * cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, float angle);

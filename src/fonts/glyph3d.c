@@ -62,9 +62,6 @@ static int glyph3d_spaceglyphindices[] = { -1, -1 };
 static float glyph3d_spaceglyphvertices[] = { 0, 0 };
 static SbBool glyph3d_initialized = FALSE;
 
-#define MYMAX(x, y) (((x) > (y)) ? (x) : (y))
-#define MYMIN(x, y) (((x) < (y)) ? (x) : (y))
-
 /* Mutex lock for the static ang global font hash */
 static void * glyph3d_fonthash_lock = NULL;
 
@@ -154,19 +151,17 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
 
   newspec = (cc_font_specification *) malloc(sizeof(cc_font_specification));
   assert(newspec);
-  newspec->size = spec->size;
-  newspec->name = cc_string_construct_new();
-  newspec->style = cc_string_construct_new();
-  cc_string_set_text(newspec->name, cc_string_get_text(spec->name));
-  cc_string_set_text(newspec->style, cc_string_get_text(spec->style));
-  newspec->complexity = spec->complexity;
+  cc_fontspec_copy(spec, newspec);
+
   glyph->fontspec = newspec;
 
+  /* FIXME: fonttoload variable should be allocated on the
+     stack. 20030921 mortene. */
   fonttoload = cc_string_construct_new();
-  cc_string_set_text(fonttoload, cc_string_get_text(spec->name));
-  if (cc_string_length(spec->style) > 0) {
+  cc_string_set_text(fonttoload, cc_string_get_text(&spec->name));
+  if (cc_string_length(&spec->style) > 0) {
     cc_string_append_text(fonttoload, " ");
-    cc_string_append_string(fonttoload, spec->style);
+    cc_string_append_string(fonttoload, &spec->style);
   }
 
   fontidx = cc_flw_get_font(cc_string_get_text(fonttoload), (int)(newspec->size), (int)(newspec->size));
@@ -317,10 +312,10 @@ glyph3d_calcboundingbox(cc_glyph3d * g)
 
   while ((*edgeptr >= 0) && (*edgeptr != -1)) {
 
-    g->bbox[0] = MYMIN(coordptr[(*edgeptr)*2], g->bbox[0]);
-    g->bbox[1] = MYMIN(coordptr[(*edgeptr)*2 + 1], g->bbox[1]);
-    g->bbox[2] = MYMAX(coordptr[(*edgeptr)*2], g->bbox[2]);
-    g->bbox[3] = MYMAX(coordptr[(*edgeptr)*2 + 1], g->bbox[3]);
+    g->bbox[0] = cc_min(coordptr[(*edgeptr)*2], g->bbox[0]);
+    g->bbox[1] = cc_min(coordptr[(*edgeptr)*2 + 1], g->bbox[1]);
+    g->bbox[2] = cc_max(coordptr[(*edgeptr)*2], g->bbox[2]);
+    g->bbox[3] = cc_max(coordptr[(*edgeptr)*2 + 1], g->bbox[3]);
 
     *edgeptr++;
   }
@@ -362,8 +357,8 @@ glyph3d_specmatch(const cc_font_specification * spec1,
   assert(spec1);
   assert(spec2);
 
-  if ((!cc_string_compare(spec1->name, spec2->name)) &&
-      (!cc_string_compare(spec1->style, spec2->style)) &&
+  if ((!cc_string_compare(&spec1->name, &spec2->name)) &&
+      (!cc_string_compare(&spec1->style, &spec2->style)) &&
       (spec1->complexity == spec2->complexity)) {
     /* No need to compare size for 3D fonts */
     return TRUE;
@@ -371,7 +366,3 @@ glyph3d_specmatch(const cc_font_specification * spec1,
   else return FALSE;
 
 }
-
-#undef MYMAX
-#undef MYMIN
-

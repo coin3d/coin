@@ -147,18 +147,17 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
   
   newspec = (cc_font_specification *) malloc(sizeof(cc_font_specification)); 
   assert(newspec);
-  newspec->size = spec->size;
-  newspec->name = cc_string_construct_new();
-  newspec->style = cc_string_construct_new();
-  cc_string_set_text(newspec->name, cc_string_get_text(spec->name));
-  cc_string_set_text(newspec->style, cc_string_get_text(spec->style));
+  cc_fontspec_copy(spec, newspec);
+
   glyph->fontspec = newspec;
 
+  /* FIXME: fonttoload variable should be allocated on the
+     stack. 20030921 mortene. */
   fonttoload = cc_string_construct_new();
-  cc_string_set_text(fonttoload, cc_string_get_text(spec->name));
-  if (cc_string_length(spec->style) > 0) {
+  cc_string_set_text(fonttoload, cc_string_get_text(&spec->name));
+  if (cc_string_length(&spec->style) > 0) {
     cc_string_append_text(fonttoload, " ");
-    cc_string_append_string(fonttoload, spec->style);
+    cc_string_append_string(fonttoload, &spec->style);
   }
   fontidx = cc_flw_get_font(cc_string_get_text(fonttoload), (int)(newspec->size), (int)(newspec->size));
   cc_string_destruct(fonttoload);
@@ -205,8 +204,8 @@ glyph2d_specmatch(const cc_font_specification * spec1,
   assert(spec1);
   assert(spec2);
 
-  if ((!cc_string_compare(spec1->name, spec2->name)) &&
-      (!cc_string_compare(spec1->style, spec2->style)) &&
+  if ((!cc_string_compare(&spec1->name, &spec2->name)) &&
+      (!cc_string_compare(&spec1->style, &spec2->style)) &&
       (spec1->size == spec2->size)) {
     /* No need to compare complexity for 2D fonts */
     return TRUE;
