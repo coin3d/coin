@@ -476,10 +476,8 @@ SoBase::unrefNoDelete(void) const
 }
 
 /*!
-  Returns number of objects referring to this object. NB: this method
-  should not be called during ordinary use, it should only be necessary
-  to use for debugging purposes.
- */
+  Returns number of objects referring to this object.
+*/
 int32_t
 SoBase::getRefCount(void) const
 {
