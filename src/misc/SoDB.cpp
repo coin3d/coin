@@ -158,8 +158,7 @@
 #endif // HAVE_VRML97
 
 #ifdef HAVE_THREADS
-#include <Inventor/C/threads/syncp.h>
-#include <Inventor/C/threads/mutexp.h>
+#include <Inventor/C/threads/threadp.h>
 #endif // HAVE_THREADS
 
 #ifdef COIN_THREADSAFE
@@ -326,11 +325,8 @@ SoDB::init(void)
 #endif
 
 #ifdef HAVE_THREADS
-  // initialize mutex and synchronizer first in case some other init
-  // functions need them.
-  cc_mutex_init();
-  cc_sync_init();
-
+  // initialize thread system first
+  cc_thread_init();
 #ifdef COIN_THREADSAFE
   sodb_notificationcounter_storage = new SbStorage(sizeof(int), sodb_clear_counter, NULL);
 #endif // COIN_THREADSAFE

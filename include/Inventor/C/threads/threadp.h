@@ -77,6 +77,7 @@ struct cc_thread {
 
 /* ********************************************************************** */
 
+void cc_thread_init(void);
 void cc_thread_struct_init(cc_thread * thread_struct);
 void cc_thread_struct_clean(cc_thread * thread_struct);
 

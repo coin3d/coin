@@ -21,6 +21,8 @@
 
 #include <Inventor/C/threads/thread.h>
 #include <Inventor/C/threads/threadp.h>
+#include <Inventor/C/threads/mutexp.h>
+#include <Inventor/C/threads/syncp.h>
 #include <Inventor/C/base/basep.h>
 #include <Inventor/C/base/debug.h>
 
@@ -121,7 +123,6 @@ cc_sleep(float seconds)
 #endif
 };
 
-
 unsigned long 
 cc_thread_id(void)
 {
@@ -134,6 +135,12 @@ cc_thread_id(void)
 #endif /* USE_W32THREAD */
 }
 
+void
+cc_thread_init(void)
+{
+  cc_mutex_init();
+  cc_sync_init();
+}
 
 /* ********************************************************************** */
 
