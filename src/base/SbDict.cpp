@@ -50,11 +50,12 @@ private:
 
 /*!
   Constructor with \a entries specifying the number of buckets 
-  in the hash list. For best performance, \a entries should be 
-  a prime.
+  in the hash list -- so it need to be larger than 0. For best
+  performance during dictionary look-ups, \a entries should be a prime.
 */
 SbDict::SbDict(const int entries)
 {
+  assert(entries > 0);
   this->tablesize = entries;
   this->buckets = new SbDictEntry *[this->tablesize];
   for (int i = 0; i < this->tablesize; i++) this->buckets[i] = NULL;
@@ -110,7 +111,7 @@ SbDict::clear(void)
   int i;
   SbDictEntry * entry, * nextEntry;
 
-  for (i = 0; i < tablesize; i++) {
+  for (i = 0; i < this->tablesize; i++) {
     for (entry = buckets[i]; entry != NULL; entry = nextEntry) {
       nextEntry = entry->next;
       delete entry;
@@ -130,7 +131,7 @@ SbDict::clear(void)
 SbBool
 SbDict::enter(const unsigned long key, void * const value)
 {
-  SbDictEntry *& entry = findEntry(key);
+  SbDictEntry *& entry = this->findEntry(key);
   
   if (entry == NULL) {
     entry = new SbDictEntry(key, value);
@@ -151,7 +152,7 @@ SbDict::enter(const unsigned long key, void * const value)
 SbBool
 SbDict::find(const unsigned long key, void *& value) const
 {
-  SbDictEntry *& entry = findEntry(key);
+  SbDictEntry *& entry = this->findEntry(key);
 
   if (entry == NULL) {
     value = NULL;
@@ -170,7 +171,7 @@ SbDict::find(const unsigned long key, void *& value) const
 SbBool
 SbDict::remove(const unsigned long key)
 {
-  SbDictEntry *& entry = findEntry(key);
+  SbDictEntry *& entry = this->findEntry(key);
   SbDictEntry * tmp;
   
   if (entry == NULL)
@@ -242,7 +243,7 @@ SbDictEntry *&
 SbDict::findEntry(const unsigned long key) const
 {
   SbDictEntry **entry;
-  entry = &buckets[key % tablesize];
+  entry = &buckets[key % this->tablesize];
   while (*entry != NULL) {
     if ((*entry)->key == key) break;
     entry = &(*entry)->next;
@@ -260,7 +261,7 @@ SbDict::findEntry(const unsigned long key) const
 //   int i;
 //   SbDictEntry * entry, * nextEntry;
 
-//   for (i = 0; i < tablesize; i++) {
+//   for (i = 0; i < this->tablesize; i++) {
 //     for (entry = buckets[i]; entry != NULL; entry = nextEntry) {
 //       nextEntry = entry->next;
 //       printf("entry: '%s' %p\n", entry->key, entry->value);
@@ -275,7 +276,7 @@ SbDict::findEntry(const unsigned long key) const
 
 //   printf("---------- dict info ------------------\n");
 
-//   for (i = 0; i < tablesize; i++) {
+//   for (i = 0; i < this->tablesize; i++) {
 //     entry = buckets[i];
 //     cnt = 0;
 //     while (entry) {
