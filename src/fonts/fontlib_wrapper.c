@@ -870,9 +870,11 @@ cc_flw_get_vector_glyph(int font, unsigned int glyph, float complexity)
 
   if (freetypelib) {
     vector_glyph = cc_flwft_get_vector_glyph(fs->font, gs->glyph, complexity);
+    if (!vector_glyph) { gs->fromdefaultfont = TRUE; }
   }
   else if (win32api) {
-    vector_glyph = cc_flww32_get_vector_glyph(fs->font, gs->glyph, complexity);		
+    vector_glyph = cc_flww32_get_vector_glyph(fs->font, gs->glyph, complexity);
+    if (!vector_glyph) { gs->fromdefaultfont = TRUE; }
   }
   else {
     vector_glyph = NULL;
