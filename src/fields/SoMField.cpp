@@ -209,17 +209,27 @@ SoMField::get1(const int index, SbString & valuestring)
   // Note: this code has an almost verbatim copy in SoField::get(), so
   // remember to update both places if any fixes are done.
 
+  // Initial buffer setup.
   SoOutput out;
-  out.setHeaderString("");
   const size_t STARTSIZE = 32;
+  // FIXME: should start out with stackbuffer -- the current code
+  // leads to way too much malloc() & free() calls. 20000915 mortene.
   void * buffer = malloc(STARTSIZE);
-
   out.setBuffer(buffer, STARTSIZE, realloc);
-  this->write1Value(&out, index);
 
+  // Record offset to skip header.
+  out.write("");
+  size_t offset;
+  out.getBuffer(buffer, offset);
+
+  // Write field..
+  this->write1Value(&out, index);
+  // ..then read it back into the SbString.
   size_t size;
   out.getBuffer(buffer, size);
-  valuestring = (char *)buffer;
+  valuestring = ((char *)buffer) + offset;
+
+  // Clean up.
   free(buffer);
 }
 
