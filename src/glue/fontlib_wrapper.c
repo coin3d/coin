@@ -273,7 +273,7 @@ flw_initialize(void)
 {
   const char * env;
   static SbBool initialized = FALSE;
-  // CC_MUTEX_CONSTRUCT uses a global mutex to be thread safe
+  /* CC_MUTEX_CONSTRUCT uses a global mutex to be thread safe */
   CC_MUTEX_CONSTRUCT(flw_global_lock);
   FLW_MUTEX_LOCK(flw_global_lock);
 
