@@ -98,7 +98,7 @@
 
 #ifdef HAVE_AGL
 #include <AGL/AGL.h>
-#include <OpenGL/CGLCurrent.h>  // for CGLGetCurrentContext
+#include <OpenGL/CGLCurrent.h>  /* for CGLGetCurrentContext */
 #endif /* HAVE_AGL */
 
 #include <Inventor/C/glue/gl.h>
@@ -107,14 +107,6 @@
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/errors/debugerror.h>
-
-/*
-  FIXME: should make it possible to fetch a single common define from
-  include/Inventor/C/glue/dl.h (or dlp.h). 20020919 mortene.
-*/
-#if defined(HAVE_DL_LIB) || defined(HAVE_WINDLL_RUNTIME_BINDING) || defined(HAVE_DLD_LIB) || defined(HAVE_DYLD_RUNTIME_BINDING)
-#define COIN_OPENGL_DYNAMIC_BINDING
-#endif /* dynamic binding */
 
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/threads/threadsutilp.h>
@@ -126,6 +118,115 @@
 
 static cc_libhandle glglue_self_handle = NULL;
 static SbBool glglue_tried_open_self = FALSE;
+
+/* ********************************************************************** */
+
+/* Sanity checks for enum extension value assumed to be equal to the
+ * final / "proper" / standard OpenGL enum values. (If not, we could
+ * end up with hard-to-find bugs because of mismatches with the
+ * compiled values versus the run-time values.)
+ *
+ * This doesn't really _fix_ anything, it is just meant as an aid to
+ * smoke out platforms where we're getting unexpected enum values.
+ */
+
+#ifdef GL_CLAMP_TO_EDGE_EXT
+#if GL_CLAMP_TO_EDGE != GL_CLAMP_TO_EDGE_EXT
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GL_CLAMP_TO_EDGE_EXT */
+
+#ifdef GL_CLAMP_TO_EDGE_SGIS
+#if GL_CLAMP_TO_EDGE != GL_CLAMP_TO_EDGE_SGIS
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GL_CLAMP_TO_EDGE_SGIS */
+
+#ifdef GL_MAX_3D_TEXTURE_SIZE_EXT
+#if GL_MAX_3D_TEXTURE_SIZE != GL_MAX_3D_TEXTURE_SIZE_EXT
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GL_MAX_3D_TEXTURE_SIZE_EXT */
+
+#ifdef GL_PACK_IMAGE_HEIGHT_EXT
+#if GL_PACK_IMAGE_HEIGHT != GL_PACK_IMAGE_HEIGHT_EXT
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GL_PACK_IMAGE_HEIGHT_EXT */
+
+#ifdef GL_PACK_SKIP_IMAGES_EXT
+#if GL_PACK_SKIP_IMAGES != GL_PACK_SKIP_IMAGES_EXT
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GL_PACK_SKIP_IMAGES_EXT */
+
+#ifdef GL_PROXY_TEXTURE_2D_EXT
+#if GL_PROXY_TEXTURE_2D != GL_PROXY_TEXTURE_2D_EXT
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GL_PROXY_TEXTURE_2D_EXT */
+
+#ifdef GL_PROXY_TEXTURE_3D_EXT
+#if GL_PROXY_TEXTURE_3D != GL_PROXY_TEXTURE_3D_EXT
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GL_PROXY_TEXTURE_3D_EXT */
+
+#ifdef GL_TEXTURE_3D_EXT
+#if GL_TEXTURE_3D != GL_TEXTURE_3D_EXT
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GL_TEXTURE_3D_EXT */
+
+#ifdef GL_TEXTURE_DEPTH_EXT
+#if GL_TEXTURE_DEPTH != GL_TEXTURE_DEPTH_EXT
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GL_TEXTURE_DEPTH_EXT */
+
+#ifdef GL_TEXTURE_WRAP_R_EXT
+#if GL_TEXTURE_WRAP_R != GL_TEXTURE_WRAP_R_EXT
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GL_TEXTURE_WRAP_R_EXT */
+
+#ifdef GL_UNPACK_IMAGE_HEIGHT_EXT
+#if GL_UNPACK_IMAGE_HEIGHT != GL_UNPACK_IMAGE_HEIGHT_EXT
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GL_UNPACK_IMAGE_HEIGHT_EXT */
+
+#ifdef GL_UNPACK_SKIP_IMAGES_EXT
+#if GL_UNPACK_SKIP_IMAGES != GL_UNPACK_SKIP_IMAGES_EXT
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GL_UNPACK_SKIP_IMAGES_EXT */
+
+#ifdef GL_FUNC_ADD_EXT
+#if GL_FUNC_ADD != GL_FUNC_ADD_EXT
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GL_FUNC_ADD_EXT */
+
+#ifdef GL_MIN_EXT
+#if GL_MIN != GL_MIN_EXT
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GL_MIN_EXT */
+
+#ifdef GL_MAX_EXT
+#if GL_MAX != GL_MAX_EXT
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GL_MAX_EXT */
+
+#ifdef GL_COLOR_TABLE_WIDTH_EXT
+#if GL_COLOR_TABLE_WIDTH != GL_COLOR_TABLE_WIDTH_EXT
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GL_COLOR_TABLE_WIDTH_EXT */
+
+/* ********************************************************************** */
 
 /* Resolve and return the integer value of an environment variable. */
 static int
@@ -340,70 +441,6 @@ cc_glglue_glxversion_matches_at_least(const cc_glglue * w,
   return TRUE;
 }
 
-/* Sanity checks for enum _EXT value assumed to be equal to the final
- * / "proper" / standard OpenGL enum values. (If not, we could end up
- * with hard-to-find bugs because of mismatches with the compiled
- * values versus the run-time values.)
- *
- * This doesn't really _fix_ anything, it is just meant as an aid to
- * smoke out platforms where we're getting unexpected enum values. */
-static void
-glglue_sanity_check_enums(void)
-{
-  SbBool enumsok = TRUE;
-
-#ifdef GL_CLAMP_TO_EDGE_EXT
-  enumsok = enumsok && (GL_CLAMP_TO_EDGE == GL_CLAMP_TO_EDGE_EXT);
-#endif /* GL_CLAMP_TO_EDGE_EXT */
-#ifdef GL_CLAMP_TO_EDGE_SGIS /* Sanity check */
-  enumsok = enumsok && (GL_CLAMP_TO_EDGE == GL_CLAMP_TO_EDGE_SGIS);
-#endif /* GL_CLAMP_TO_EDGE_SGIS */
-#ifdef GL_MAX_3D_TEXTURE_SIZE_EXT
-  enumsok = enumsok && (GL_MAX_3D_TEXTURE_SIZE == GL_MAX_3D_TEXTURE_SIZE_EXT);
-#endif /* GL_MAX_3D_TEXTURE_SIZE_EXT */
-#ifdef GL_PACK_IMAGE_HEIGHT_EXT
-  enumsok = enumsok && (GL_PACK_IMAGE_HEIGHT == GL_PACK_IMAGE_HEIGHT_EXT);
-#endif /* GL_PACK_IMAGE_HEIGHT_EXT */
-#ifdef GL_PACK_SKIP_IMAGES_EXT
-  enumsok = enumsok && (GL_PACK_SKIP_IMAGES == GL_PACK_SKIP_IMAGES_EXT);
-#endif /* GL_PACK_SKIP_IMAGES_EXT */
-#ifdef GL_PROXY_TEXTURE_2D_EXT
-  enumsok = enumsok && (GL_PROXY_TEXTURE_2D == GL_PROXY_TEXTURE_2D_EXT);
-#endif /* GL_PROXY_TEXTURE_2D_EXT */
-#ifdef GL_PROXY_TEXTURE_3D_EXT
-  enumsok = enumsok && (GL_PROXY_TEXTURE_3D == GL_PROXY_TEXTURE_3D_EXT);
-#endif /* GL_PROXY_TEXTURE_3D_EXT */
-#ifdef GL_TEXTURE_3D_EXT
-  enumsok = enumsok && (GL_TEXTURE_3D == GL_TEXTURE_3D_EXT);
-#endif /* GL_TEXTURE_3D_EXT */
-#ifdef GL_TEXTURE_DEPTH_EXT
-  enumsok = enumsok && (GL_TEXTURE_DEPTH == GL_TEXTURE_DEPTH_EXT);
-#endif /* GL_TEXTURE_DEPTH_EXT */
-#ifdef GL_TEXTURE_WRAP_R_EXT
-  enumsok = enumsok && (GL_TEXTURE_WRAP_R == GL_TEXTURE_WRAP_R_EXT);
-#endif /* GL_TEXTURE_WRAP_R_EXT */
-#ifdef GL_UNPACK_IMAGE_HEIGHT_EXT
-  enumsok = enumsok && (GL_UNPACK_IMAGE_HEIGHT == GL_UNPACK_IMAGE_HEIGHT_EXT);
-#endif /* GL_UNPACK_IMAGE_HEIGHT_EXT */
-#ifdef GL_UNPACK_SKIP_IMAGES_EXT
-  enumsok = enumsok && (GL_UNPACK_SKIP_IMAGES == GL_UNPACK_SKIP_IMAGES_EXT);
-#endif /* GL_UNPACK_SKIP_IMAGES_EXT */
-#ifdef GL_FUNC_ADD_EXT
-  enumsok = enumsok && (GL_FUNC_ADD == GL_FUNC_ADD_EXT);
-#endif /* GL_FUNC_ADD_EXT */
-#ifdef GL_MIN_EXT
-  enumsok = enumsok && (GL_MIN == GL_MIN_EXT);
-#endif /* GL_MIN_EXT */
-#ifdef GL_MAX_EXT
-  enumsok = enumsok && (GL_MAX == GL_MAX_EXT);
-#endif /* GL_MAX_EXT */
-#ifdef GL_COLOR_TABLE_WIDTH_EXT
-  enumsok = enumsok && (GL_COLOR_TABLE_WIDTH == GL_COLOR_TABLE_WIDTH_EXT);
-#endif /* GL_COLOR_TABLE_WIDTH_EXT */
-
-  assert(enumsok && "OpenGL enum value assumption(s) failed!");
-}
-
 int
 coin_glglue_extension_available(const char * extensions, const char * ext)
 {
@@ -452,7 +489,7 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
   return coin_glglue_extension_available(wrapper->extensionsstr, extension);
 }
 
-#ifdef COIN_OPENGL_DYNAMIC_BINDING
+#ifdef HAVE_DYNAMIC_LINKING
 
 #define PROC(_func_) cc_glglue_getprocaddress(SO__QUOTE(_func_))
 
@@ -480,11 +517,6 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 #define GL_SGI_color_table 1
 #define GL_SGI_texture_color_table 1
 
-#define GLX_VERSION_1_1 1
-#define GLX_VERSION_1_2 1
-#define GLX_VERSION_1_3 1
-#define GLX_EXT_import_context 1
-
 #else /* static binding */
 
 #define PROC(_func_) (&_func_)
@@ -497,7 +529,8 @@ glglue_resolve_symbols(cc_glglue * w)
 {
   /* Note that there's a good reason why we use version checking
      *along* with dynamic resolving (if the platform allows it): the
-     *OpenGL library could include */
+     OpenGL library could (prematurely) include function symbols
+     without having an actual valid implementation behind them. */
 
   /* Appeared in OpenGL v1.1. We store both the "real" function
      pointer and the extension pointer, in case we need to work around
@@ -585,24 +618,6 @@ glglue_resolve_symbols(cc_glglue * w)
     w->glMultiTexCoord2f = (COIN_PFNGLMULTITEXCOORD2FPROC)PROC(glMultiTexCoord2fARB);
   }
 #endif /* GL_ARB_multitexture */
-
-  /* SGI's glx.h header file shipped with the NVidia Linux drivers
-     identifies glXGetCurrentDisplay() as a GLX 1.3 method, but Sun's
-     GL man pages lists it as a GLX 1.2 function, ditto for HP's GL
-     man pages, and ditto for AIX's man pages. (See top of this file
-     for URL). So we will assume the man pages are correct.
-  */
-  w->glXGetCurrentDisplay = NULL;
-#ifdef GLX_VERSION_1_2
-  if (cc_glglue_glxversion_matches_at_least(w, 1, 2)) {
-    w->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)PROC(glXGetCurrentDisplay);
-  }
-#endif /* GLX_VERSION_1_2 */
-#ifdef GLX_EXT_import_context
-  if (!w->glXGetCurrentDisplay && glxglue_ext_supported(w, "GLX_EXT_import_context")) {
-    w->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)PROC(glXGetCurrentDisplayEXT);
-  }
-#endif /* GLX_EXT_import_context */
 
   w->glCompressedTexImage1D = NULL;
   w->glCompressedTexImage2D = NULL;
@@ -976,11 +991,9 @@ cc_glglue_instance(int contextid)
 #ifdef HAVE_AGL
     assert (CGLGetCurrentContext() != NULL);
     /* Note: We cannot use aglGetCurrentContext() here, since that
-       only returns a value !- NULL if the context has been set using
+       only returns a value != NULL if the context has been set using
        aglSetCurrentContext(). */
 #endif /* HAVE_AGL */
-
-    glglue_sanity_check_enums();
 
     gi = (cc_glglue*)malloc(sizeof(cc_glglue));
     /* FIXME: handle out-of-memory on malloc(). 20000928 mortene. */
@@ -1744,7 +1757,7 @@ cc_glglue_glBlendEquation(const cc_glglue * glue, GLenum mode)
 void *
 cc_glglue_glXGetCurrentDisplay(const cc_glglue * w)
 {
-  return w->glXGetCurrentDisplay ? w->glXGetCurrentDisplay() : NULL;
+  return w->glx.glXGetCurrentDisplay ? w->glx.glXGetCurrentDisplay() : NULL;
 }
 
 /*** Offscreen buffer handling. *********************************************/
@@ -1846,4 +1859,3 @@ cc_glglue_context_destruct(void * ctx)
 }
 
 /*** </Offscreen buffer handling.> ******************************************/
-

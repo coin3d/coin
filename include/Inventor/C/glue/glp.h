@@ -207,8 +207,7 @@ typedef void *(APIENTRY * COIN_PFNGLBLENDEQUATIONPROC)(GLenum);
 /* Typedefs for GLX functions. */
 typedef void *(APIENTRY * COIN_PFNGLXGETCURRENTDISPLAYPROC)(void);
 
-
-/* Type specification for GLX info storage structure, embedded witin
+/* Type specification for GLX info storage structure, embedded within
    the main GL info structure below. */
 struct cc_glxglue {
   struct {
@@ -226,6 +225,8 @@ struct cc_glxglue {
   const char * clientextensions;
 
   const char * glxextensions;
+
+  COIN_PFNGLXGETCURRENTDISPLAYPROC glXGetCurrentDisplay;
 };
 
 /* GL info storage structure. An instance will be allocated and
@@ -271,8 +272,6 @@ struct cc_glglue {
   
   COIN_PFNGLBLENDEQUATIONPROC glBlendEquation;
   COIN_PFNGLBLENDEQUATIONPROC glBlendEquationEXT;
-
-  COIN_PFNGLXGETCURRENTDISPLAYPROC glXGetCurrentDisplay;
 
   const char * versionstr;
   const char * vendorstr;
