@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-############################################################################
+###########################################################################
 
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
@@ -139,6 +139,8 @@ LT_CURRENT = @LT_CURRENT@
 LT_REVISION = @LT_REVISION@
 MACOSX_10_2_FALSE = @MACOSX_10_2_FALSE@
 MACOSX_10_2_TRUE = @MACOSX_10_2_TRUE@
+MACOSX_PACKAGEABLE_FALSE = @MACOSX_PACKAGEABLE_FALSE@
+MACOSX_PACKAGEABLE_TRUE = @MACOSX_PACKAGEABLE_TRUE@
 MAC_FRAMEWORK = @MAC_FRAMEWORK@
 MAC_FRAMEWORK_FALSE = @MAC_FRAMEWORK_FALSE@
 MAC_FRAMEWORK_NAME = @MAC_FRAMEWORK_NAME@
@@ -314,6 +316,26 @@ EXTRA_DIST = \
 	packaging/debian/libcoin40-doc.README.Debian.in \
 	packaging/debian/libcoin40-runtime.files.in \
 	packaging/debian/libcoin40-runtime.README.Debian.in \
+	packaging/macosx/coin.info.template.in \
+	packaging/macosx/checklist.txt \
+	packaging/macosx/Coin_Description.plist.in \
+	packaging/macosx/Coin_Info.plist.in \
+	packaging/macosx/Coin_Welcome.rtfd/TXT.rtf \
+	packaging/macosx/CoinTools_Description.plist.in \
+	packaging/macosx/CoinTools_Info.plist.in \
+	packaging/macosx/CoinTools_Welcome.rtfd/TXT.rtf \
+	packaging/macosx/inst-dmg-files/.DS_Store \
+	packaging/macosx/inst-dmg-files/background.png \
+	packaging/macosx/License.rtfd/TXT.rtf \
+	packaging/macosx/makecoinpkg.sh.in \
+	packaging/macosx/makecointoolspkg.sh.in \
+	packaging/macosx/makedmg.sh.in \
+	packaging/macosx/Makefile.in \
+	packaging/macosx/makeinstdmg.sh.in \
+	packaging/macosx/makenoinstdmg.sh.in \
+	packaging/macosx/noinst-dmg-files/.DS_Store \
+	packaging/macosx/noinst-dmg-files/background.png \
+	packaging/macosx/README.txt.in \
 	packaging/macosx/uninstall-coin.pl \
 	packaging/redhat/coin.spec.in \
 	packaging/windows/Makefile.in \
@@ -552,7 +574,7 @@ distcleancheck_listfiles = find . -type f -print
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/cfg $(distdir)/docs $(distdir)/examples/bindings $(distdir)/packaging/debian $(distdir)/packaging/macosx $(distdir)/packaging/redhat $(distdir)/packaging/windows
+	$(mkinstalldirs) $(distdir)/cfg $(distdir)/docs $(distdir)/examples/bindings $(distdir)/packaging/debian $(distdir)/packaging/macosx $(distdir)/packaging/macosx/CoinTools_Welcome.rtfd $(distdir)/packaging/macosx/Coin_Welcome.rtfd $(distdir)/packaging/macosx/License.rtfd $(distdir)/packaging/macosx/inst-dmg-files $(distdir)/packaging/macosx/noinst-dmg-files $(distdir)/packaging/redhat $(distdir)/packaging/windows
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -769,6 +791,11 @@ uninstall-info: uninstall-info-recursive
 	uninstall-info-recursive uninstall-recursive
 
 
+#	packaging/macosx/inst-dmg-files/Desktop DB \
+#	packaging/macosx/inst-dmg-files/Desktop DF \
+#	packaging/macosx/noinst-dmg-files/Desktop DB \
+#	packaging/macosx/noinst-dmg-files/Desktop DF \
+
 coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
 	@$(SHELL) config.status --file=$@:coin.cfg.in
 
@@ -903,6 +930,23 @@ cvs-update:
 
 @WIN_PACKAGEABLE_TRUE@windows-packages: windows-files
 @WIN_PACKAGEABLE_TRUE@	@( cd windows; $(MAKE) VERSION=$(VERSION) )
+
+# **************************************************************************
+# misc rules for automatic Mac OS X packaging.
+# main: `macosx-packages'
+
+@MACOSX_PACKAGEABLE_TRUE@macosx-files:
+@MACOSX_PACKAGEABLE_TRUE@	@if test -d macosx; then :; else mkdir macosx; fi
+@MACOSX_PACKAGEABLE_TRUE@	@for file in $(top_srcdir)/packaging/macosx/*.in; do \
+@MACOSX_PACKAGEABLE_TRUE@	  basename=`basename $$file .in`; \
+@MACOSX_PACKAGEABLE_TRUE@          if ! test -f macosx/$$basename; then \
+@MACOSX_PACKAGEABLE_TRUE@	    ./config.status --file=macosx/$$basename:$$file; \
+@MACOSX_PACKAGEABLE_TRUE@          fi \
+@MACOSX_PACKAGEABLE_TRUE@	done
+
+@MACOSX_PACKAGEABLE_TRUE@macosx-packages: macosx-files
+@MACOSX_PACKAGEABLE_TRUE@macosx-packages:
+@MACOSX_PACKAGEABLE_TRUE@	@( cd macosx; $(MAKE) VERSION=$(VERSION) )
 
 # EOF ######################################################################
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
