@@ -1,3 +1,24 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License version 2 as
+ *  published by the Free Software Foundation.  See the file LICENSE.GPL
+ *  at the root directory of this source distribution for more details.
+ *
+ *  If you desire to use Coin with software that is incompatible
+ *  licensewise with the GPL, and / or you would like to take
+ *  advantage of the additional benefits with regard to our support
+ *  services, please contact Systems in Motion about acquiring a Coin
+ *  Professional Edition License.
+ *
+ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
+ *  www.sim.no, support@sim.no, Voice: +47 22114160, Fax: +47 22207097
+ *
+\**************************************************************************/
+
 #include <Inventor/C/errors/error.h>
 #include <stdio.h>
 #include <assert.h>
@@ -5,6 +26,8 @@
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
+
+#include <Inventor/C/threads/mutex.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h> // STDERR_FILENO
@@ -14,6 +37,9 @@
 // stderr should always be on file descriptor 2, according to POSIX.
 #define STDERR_FILENO 2
 #endif // STDERR_FILENO
+
+static cc_mutex * cc_error_mutex = NULL;
+
 
 
 /* FIXME: should be hidden from public API, and only visible to
@@ -74,9 +100,20 @@ void
 cc_error_handle(cc_error * me)
 {
   void * arg = NULL;
+
   cc_error_cb * function = cc_error_get_handler(&arg);
   assert(function != NULL);
+
+#ifdef HAVE_THREADS
+  if (!cc_error_mutex) { cc_error_mutex = cc_mutex_construct(); }
+  cc_mutex_lock(cc_error_mutex);
+#endif /* HAVE_THREADS */
+
   (*function)(me, arg);
+
+#ifdef HAVE_THREADS
+  cc_mutex_unlock(cc_error_mutex);
+#endif /* HAVE_THREADS */
 }
 
 void
