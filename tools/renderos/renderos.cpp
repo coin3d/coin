@@ -26,6 +26,7 @@
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <stdio.h>
+#include <assert.h>
 
 // FIXME: do a proper check for this through configure.
 // 19991206 mortene.
