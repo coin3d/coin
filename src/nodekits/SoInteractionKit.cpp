@@ -181,7 +181,9 @@ SoInteractionKit::setPartAsDefault(const SbName &partname,
 /*!
   Checks if \a path is contained within any of the surrogate paths
   in any interaction kits from this node down. Returns information
-  about the owner and the surrogate path if found, and \a fillargs is \e TRUE.
+  about the owner and the surrogate path if found, and \a fillargs is
+  \e TRUE. The returned path (\a pathToOwner) is not ref'ed, It's the
+  callers responsibility to ref and unref this path.
 */
 SbBool
 SoInteractionKit::isPathSurrogateInMySubgraph(const SoPath *path,
@@ -193,9 +195,7 @@ SoInteractionKit::isPathSurrogateInMySubgraph(const SoPath *path,
   int idx = this->findSurrogateInPath(path);
   if (idx >= 0) {
     if (fillargs) {
-      // FIXME: make sure this path is unref'ed in dragger, pederb 2000-01-13
       pathToOwner = new SoPath(this); // a very short path
-      pathToOwner->ref();
       surrogatename = this->surrogateNames[idx];
       surrogatepath = this->surrogatePaths[idx];
     }
@@ -215,7 +215,6 @@ SoInteractionKit::isPathSurrogateInMySubgraph(const SoPath *path,
       if (idx >= 0) {
         if (fillargs) {
           pathToOwner = list[i]->copy();
-          pathToOwner->ref();
           surrogatename = kit->surrogateNames[idx];
           surrogatepath = kit->surrogatePaths[idx];
         }
@@ -406,8 +405,9 @@ SoInteractionKit::setAnyPartAsDefault(const SbName &partname,
 }
 
 /*!
-  Protected version of setPartAsDefault(), to make it possible to set non-leaf
-  and private parts (if anypart is \e TRUE).
+  Protected version of setPartAsDefault(), to make it possible to set
+  non-leaf and private parts (if anypart is \c TRUE).
+
   \sa setPartAsDefault()
 */
 SbBool
@@ -419,7 +419,7 @@ SoInteractionKit::setAnyPartAsDefault(const SbName &partname,
   SoNode *node = (SoNode*)
     SoBase::getNamedBase(nodename, SoNode::getClassTypeId());
   if (node) {
-    return this->setAnyPartAsDefault(partname, node, anypart, onlyifdefault);
+    return this->setAnyPartAsDefault(partname, node->copy(), anypart, onlyifdefault);
   }
 #if COIN_DEBUG && 1 // debug
   else {
