@@ -23,7 +23,7 @@
 //$ IF -elements- == 3
 class SbPlane;
 //$ ELSIF -elements- == 4
-class SbVec3-letter-;
+#include <Inventor/SbVec3-letter-.h>
 //$ ENDIF
 //$ ENDIF
 
@@ -66,7 +66,9 @@ public:
       return tmp; }
 //$ IF -elements- == 4
   void getReal(SbVec3-letter- & v) const
-    { -cc-class-_get_real(&this->vec, &v.vec); }
+    { cc_vec3-letter- real;
+      -cc-class-_get_real(&this->vec, &real);
+      v[0] = real[0]; v[1] = real[1]; v[2] = real[2]; }
 //$ ENDIF
 //$ ELSE
   int32_t dot(const -class-name- & v) const
@@ -170,32 +172,45 @@ private:
 };
 
 //$ IF -integertype-
+inline
 COIN_DLL_API -class-name- operator * (const -class-name- & v, int d)
   { -class-name- tmp; -cc-class-_mult_vec_int(&v.vec, d, &tmp.vec); return tmp; }
+inline
 COIN_DLL_API -class-name- operator * (const -class-name- & v, double d)
   { -class-name- tmp; -cc-class-_mult_vec_dbl(&v.vec, d, &tmp.vec); return tmp; }
+inline
 COIN_DLL_API -class-name- operator * (int d, const -class-name- & v)
   { -class-name- tmp; -cc-class-_mult_int_vec(d, &v.vec, &tmp.vec); return tmp; }
+inline
 COIN_DLL_API -class-name- operator * (double d, const -class-name- & v)
   { -class-name- tmp; -cc-class-_mult_dbl_vec(d, &v.vec, &tmp.vec); return tmp; }
+inline
 COIN_DLL_API -class-name- operator / (const -class-name- & v, int d)
-  { -class-name- tmp; -cc-class-_div_vec_int(d, &v.vec, &tmp.vec); return tmp; }
+  { -class-name- tmp; -cc-class-_div_vec_int(&v.vec, d, &tmp.vec); return tmp; }
+inline
 COIN_DLL_API -class-name- operator / (const -class-name- & v, double d)
-  { -class-name- tmp; -cc-class-_div_vec_dbl(d, &v.vec, &tmp.vec); return tmp; }
+  { -class-name- tmp; -cc-class-_div_vec_dbl(&v.vec, d, &tmp.vec); return tmp; }
 //$ ELSE
+inline
 COIN_DLL_API -class-name- operator * (const -class-name- & v, const -type- d)
   { -class-name- tmp; -cc-class-_mult_vec_scalar(&v.vec, d, &tmp.vec); return tmp; }
+inline
 COIN_DLL_API -class-name- operator * (const -type- d, const -class-name- & v)
   { -class-name- tmp; -cc-class-_mult_scalar_vec(d, &v.vec, &tmp.vec); return tmp; }
+inline
 COIN_DLL_API -class-name- operator / (const -class-name- & v, const -type- d)
   { -class-name- tmp; -cc-class-_div_vec_scalar(&v.vec, d, &tmp.vec); return tmp; }
 //$ ENDIF
+inline
 COIN_DLL_API -class-name- operator + (const -class-name- & v1, const -class-name- & v2)
   { -class-name- tmp; -cc-class-_add(&v1.vec, &v2.vec, &tmp.vec); return tmp; }
+inline
 COIN_DLL_API -class-name- operator - (const -class-name- & v1, const -class-name- & v2)
   { -class-name- tmp; -cc-class-_sub(&v1.vec, &v2.vec, &tmp.vec); return tmp; }
+inline
 COIN_DLL_API int operator == (const -class-name- & v1, const -class-name- & v2)
   { return -cc-class-_cmp(&v1.vec, &v2.vec) == 0; }
+inline
 COIN_DLL_API int operator != (const -class-name- & v1, const -class-name- & v2)
   { return -cc-class-_cmp(&v1.vec, &v2.vec); }
 
