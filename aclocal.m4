@@ -7603,6 +7603,7 @@ fi
 # SIM_AC_COMPILER_BUILTIN_EXPECT
 
 AC_DEFUN([SIM_AC_COMPILER_BUILTIN_EXPECT], [
+AC_LANG_PUSH(C++)
 AC_MSG_CHECKING([for __builtin_expect()])
 sim_ac_builtin_expect=false
 AC_TRY_LINK([
@@ -7642,8 +7643,7 @@ else
   AC_MSG_RESULT([not found])
 fi
 
-
-
+AC_LANG_POP
 ]) # SIM_AC_COMPILER_BUILTIN_EXPECT
 
 
