@@ -1,17 +1,3 @@
-ChangeLog
-=========
-
-This is the ChangeLog file for the Coin module.  This file is automatically
-generated every night.  Entries are in reversed chronological order.  Check
-also out the following ChangeLog file:
-
-  ./conf-macros/ChangeLog
-
-See http://www.red-bean.com/~kfogel/cvs2cl.shtml for information about the
-cvs2cl script used to generate this file.
-
-============================================================================
-
 2000-12-20 20:30  mortene
 
 	* include/Inventor/elements/SoGLModelMatrixElement.h,
