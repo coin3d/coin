@@ -10,7 +10,7 @@
 #
 #  I might document this a bit better later...
 #
-#  Hacked in perl by Lars J. Aas <larsa@sim.no>, 1998-1999.
+#  Hacked in perl by Lars J. Aas <larsa@sim.no>, 1998-2000.
 #
 
 if (@ARGV != 2) { die "Usage: metadon <topsrcdir> <outputdir>\n" };
