@@ -19,10 +19,8 @@
 
 /*!
   \class SoComposeVec2f SoComposeVec2f.h Inventor/engines/SoComposeVec2f.h
-  \brief The SoComposeVec2f class is used to compose 2D coordinates from two floats.
+  \brief The SoComposeVec2f class is used to compose 2D vectors from two floats.
   \ingroup engines
-
-  FIXME: doc
 */
 
 #include <Inventor/engines/SoComposeVec2f.h>
@@ -34,7 +32,7 @@ SO_ENGINE_SOURCE(SoComposeVec2f);
 /*!
   Default constructor.
 */
-SoComposeVec2f::SoComposeVec2f()
+SoComposeVec2f::SoComposeVec2f(void)
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoComposeVec2f);
 
@@ -46,7 +44,7 @@ SoComposeVec2f::SoComposeVec2f()
 
 // overloaded from parent
 void
-SoComposeVec2f::initClass()
+SoComposeVec2f::initClass(void)
 {
   SO_ENGINE_INTERNAL_INIT_CLASS(SoComposeVec2f);
 }
@@ -60,7 +58,7 @@ SoComposeVec2f::~SoComposeVec2f()
 
 // overloaded from parent
 void
-SoComposeVec2f::evaluate()
+SoComposeVec2f::evaluate(void)
 {
   int numX=x.getNum();
   int numY=y.getNum();

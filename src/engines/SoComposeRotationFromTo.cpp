@@ -18,11 +18,9 @@
 \**************************************************************************/
 
 /*!
-  \class SoComposerotationFromTo SoComposerotationFromTo.h Inventor/engines/SoComposerotationFromTo.h
+  \class SoComposerotationFromTo SoComposeRotationFromTo.h Inventor/engines/SoComposerotationFromTo.h
   \brief The SoComposerotationFromTo class is used to compose rotations based on from and to vectors.
   \ingroup engines
-
-  FIXME: doc
 */
 
 #include <Inventor/engines/SoComposeRotationFromTo.h>
@@ -35,7 +33,7 @@ SO_ENGINE_SOURCE(SoComposeRotationFromTo);
 /*!
   Default constructor.
 */
-SoComposeRotationFromTo::SoComposeRotationFromTo()
+SoComposeRotationFromTo::SoComposeRotationFromTo(void)
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoComposeRotationFromTo);
 
@@ -47,7 +45,7 @@ SoComposeRotationFromTo::SoComposeRotationFromTo()
 
 // doc in parent
 void
-SoComposeRotationFromTo::initClass()
+SoComposeRotationFromTo::initClass(void)
 {
   SO_ENGINE_INTERNAL_INIT_CLASS(SoComposeRotationFromTo);
 }
@@ -59,7 +57,7 @@ SoComposeRotationFromTo::~SoComposeRotationFromTo()
 
 // doc in parent
 void
-SoComposeRotationFromTo::evaluate()
+SoComposeRotationFromTo::evaluate(void)
 {
   int numFrom = from.getNum();
   int numTo = to.getNum();

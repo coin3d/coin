@@ -754,6 +754,7 @@ INPUT                 = @coin_build_dir@/include/Inventor/SbBasic.h \
                         @coin_src_dir@/include/Inventor/events/SoMouseButtonEvent.h \
                         @coin_src_dir@/src/events/SoSpaceballButtonEvent.cpp \
                         @coin_src_dir@/include/Inventor/events/SoSpaceballButtonEvent.h \
+                        @coin_src_dir@/include/Inventor/engines/SoSubEngine.h \
                         @coin_src_dir@/src/engines/SoEngine.cpp \
                         @coin_src_dir@/include/Inventor/engines/SoEngine.h \
                         @coin_src_dir@/src/engines/SoEngineOutput.cpp \

@@ -46,7 +46,7 @@
 # ID      SoTimeCounter
 #         SoTransformVec3f
 # Id      SoTriggerAny
-# id  SoEngineOutput
+# ID  SoEngineOutput
 #     SoUnknownEngine
 #
 #############################################################################

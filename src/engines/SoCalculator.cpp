@@ -18,6 +18,17 @@
 \**************************************************************************/
 
 
+/*!
+  \class SoCalculator Inventor/engines/SoCalculator.h
+  \brief General purpose calculator for floats and 3D float vectors.
+  \ingroup engines
+
+  The SoCalculator uses the values from the input fields (which are
+  either single floating point values or vectors) as variables in the
+  free-form engine expressions and places the results on the output
+  fields.
+*/
+
 #include <Inventor/engines/SoCalculator.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include "evaluator.h"
@@ -29,12 +40,106 @@
 #endif // COIN_DEBUG
 
 /*!
-  \class SoCalculator Inventor/engines/SoCalculator.h
-  \brief General purpose calculator for floats and 3D float vectors.
-  \ingroup engines
-
-  FIXME: doc
+  \var SoMFFloat SoCalculator::a
+  Input floating point value for the expressions.
 */
+/*!
+  \var SoMFFloat SoCalculator::b
+  Input floating point value for the expressions.
+*/
+/*!
+  \var SoMFFloat SoCalculator::c
+  Input floating point value for the expressions.
+*/
+/*!
+  \var SoMFFloat SoCalculator::d
+  Input floating point value for the expressions.
+*/
+/*!
+  \var SoMFFloat SoCalculator::e
+  Input floating point value for the expressions.
+*/
+/*!
+  \var SoMFFloat SoCalculator::f
+  Input floating point value for the expressions.
+*/
+/*!
+  \var SoMFFloat SoCalculator::g
+  Input floating point value for the expressions.
+*/
+/*!
+  \var SoMFFloat SoCalculator::h
+  Input floating point value for the expressions.
+*/
+/*!
+  \var SoMFVec3f SoCalculator::A
+  Input vector with three floating point values for the expressions.
+*/
+/*!
+  \var SoMFVec3f SoCalculator::B
+  Input vector with three floating point values for the expressions.
+*/
+/*!
+  \var SoMFVec3f SoCalculator::C
+  Input vector with three floating point values for the expressions.
+*/
+/*!
+  \var SoMFVec3f SoCalculator::D
+  Input vector with three floating point values for the expressions.
+*/
+/*!
+  \var SoMFVec3f SoCalculator::E
+  Input vector with three floating point values for the expressions.
+*/
+/*!
+  \var SoMFVec3f SoCalculator::F
+  Input vector with three floating point values for the expressions.
+*/
+/*!
+  \var SoMFVec3f SoCalculator::G
+  Input vector with three floating point values for the expressions.
+*/
+/*!
+  \var SoMFVec3f SoCalculator::H
+  Input vector with three floating point values for the expressions.
+*/
+/*!
+  \var SoMFString SoCalculator::expression
+  Mathematical expressions for the calculator.
+*/
+/*!
+  \var SoEngineOutput SoCalculator::oa
+  (SoMFFloat) Output value with result from the calculations.
+*/
+/*!
+  \var SoEngineOutput SoCalculator::ob
+  (SoMFFloat) Output value with result from the calculations.
+*/
+/*!
+  \var SoEngineOutput SoCalculator::oc
+  (SoMFFloat) Output value with result from the calculations.
+*/
+/*!
+  \var SoEngineOutput SoCalculator::od
+  (SoMFFloat) Output value with result from the calculations.
+*/
+/*!
+  \var SoEngineOutput SoCalculator::oA
+  (SoMFVec3f) Output value with result from the calculations.
+*/
+/*!
+  \var SoEngineOutput SoCalculator::oB
+  (SoMFVec3f) Output value with result from the calculations.
+*/
+/*!
+  \var SoEngineOutput SoCalculator::oC
+  (SoMFVec3f) Output value with result from the calculations.
+*/
+/*!
+  \var SoEngineOutput SoCalculator::oD
+  (SoMFVec3f) Output value with result from the calculations.
+*/
+
 
 SO_ENGINE_SOURCE(SoCalculator);
 
@@ -111,12 +216,12 @@ SoCalculator::evaluate(void)
       const SbString &s = this->expression[i];
       if (s.getLength()) {
         this->evaluatorList.append(so_eval_parse(s.getString()));
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
         if (so_eval_error()) {
           SoDebugError::postWarning("SoCalculator::evaluateExpression",
                                     "%s", so_eval_error());
         }
-#endif // debug
+#endif // COIN_DEBUG
       }
       else this->evaluatorList.append(NULL);
     }
