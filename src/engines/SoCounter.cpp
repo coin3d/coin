@@ -138,6 +138,11 @@ SoCounter::inputChanged(SoField *which)
       this->numsteps = 0;
       this->syncOut.enable(TRUE);
     }
+    else if (this->value < this->min.getValue()) {
+      this->value = this->max.getValue();
+      this->numsteps = 0;
+      this->syncOut.enable(TRUE);
+    }
   }
   else if (which == &this->reset) {
     short minval = this->min.getValue();
