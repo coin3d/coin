@@ -216,7 +216,7 @@ THE WISH LIST
   inverse() and identity(). 
 
 * A better hash/dict class than SbDict.
-  2001-03-29 Morten Eriksen <mortene@sim.no>
+  2001-03-29  Morten Eriksen  <mortene@sim.no>
   [upwards compatible extension]
 
   Perhaps something like
@@ -241,7 +241,7 @@ THE WISH LIST
   gesture-based interfaces...
 
 * SoText2::verticalAlignment / verticalJustification
-  2001-04-30  Peder Blekken <pederb@sim.no>
+  2001-04-30  Peder Blekken  <pederb@sim.no>
   [upwards compatible extension]
 
   I wish for this new field in the node, to be able to control the
@@ -250,7 +250,7 @@ THE WISH LIST
   adding this field in SoAsciiText and SoText3.
 
 * 3D GUI Components
-  2001-05-01  Peder Blekken <pederb@sim.no>
+  2001-05-01  Peder Blekken  <pederb@sim.no>
 
   It would be very useful to have a set of classes to build simple 3D
   GUIs. A nice approach might be to do something similar to how
@@ -342,7 +342,7 @@ THE WISH LIST
 
 
 * SbString::apply(int (*func)(int))
-  2001-05-07  Peder Blekken <pederb@sim.no>
+  2001-05-07  Peder Blekken  <pederb@sim.no>
 
   It would be nice to be able to do operations on each character in 
   the string, for instance toupper(), tolower() or some other 
@@ -352,9 +352,14 @@ THE WISH LIST
 
 
 * SbString / SbName / Coin internationalization
-  2001-06-28  Morten Eriksen <mortene@sim.no>
+  2001-06-28  Morten Eriksen  <mortene@sim.no>
 
   Sooner or later, my guess is that we will have to make SbString and
   SbName capable of handling more than simple ASCII / iso-8859-*
   character sets. Other areas of Coin probably also need some
   rewriting for internationalization.
+
+  Update, larsa@sim.no 2001-06-28:
+
+    Are there any alternatives better than Unicode UTF-8 for this?
+
