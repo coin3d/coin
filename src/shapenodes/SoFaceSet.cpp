@@ -456,7 +456,15 @@ SoFaceSet::initClass(void)
 void
 SoFaceSet::GLRender(SoGLRenderAction * action)
 {
+  int32_t dummyarray[1];
+  const int32_t *ptr = this->numVertices.getValues(0);
+  const int32_t *end = ptr + this->numVertices.getNum();
+  if ((end-ptr == 1) && (ptr[0] == 0)) return; // nothing to render
+  
   SoState * state = action->getState();
+  this->fixNumVerticesPointers(state, ptr, end, dummyarray);
+
+
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
   state->push(); // for convex cache
 
@@ -528,11 +536,6 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
       // Goto end of this method to clean up resources
       goto glrender_done;
     }
-
-    int32_t dummyarray[1];
-    const int32_t *ptr = this->numVertices.getValues(0);
-    const int32_t *end = ptr + this->numVertices.getNum();
-    this->fixNumVerticesPointers(state, ptr, end, dummyarray);
 
     sofaceset_ni_render_funcs[ (mbind << 3) | (nbind << 1) | doTextures ]
       ( coords,
@@ -660,6 +663,9 @@ SoFaceSet::generateDefaultNormals(SoState * /* state */,
 void
 SoFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
+  if (this->numVertices.getNum() == 1 &&
+      this->numVertices[0] == 0) return;
+
   if (!this->shouldPrimitiveCount(action)) return;
 
   int32_t dummyarray[1];
@@ -683,6 +689,9 @@ SoFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 void
 SoFaceSet::generatePrimitives(SoAction *action)
 {
+  if (this->numVertices.getNum() == 1 &&
+      this->numVertices[0] == 0) return;
+
   SoState * state = action->getState();
 
   if (this->vertexProperty.getValue()) {

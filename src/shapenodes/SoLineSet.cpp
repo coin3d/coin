@@ -565,8 +565,16 @@ void
 SoLineSet::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
-  
+
+  int32_t idx = this->startIndex.getValue();
+  int32_t dummyarray[1];
+  const int32_t * ptr = this->numVertices.getValues(0);
+  const int32_t * end = ptr + this->numVertices.getNum();
+  if ((end - ptr == 1) && ptr[0] == 0) return; // nothing to render
+
   SoState * state = action->getState();
+  this->fixNumVerticesPointers(state, ptr, end, dummyarray);
+   
   SbBool didpush = FALSE;
   if (this->vertexProperty.getValue()) {
     state->push();
@@ -604,12 +612,6 @@ SoLineSet::GLRender(SoGLRenderAction * action)
   else nbind = findNormalBinding(action->getState());
 
   mb.sendFirst(); // make sure we have the correct material
-
-  int32_t idx = startIndex.getValue();
-  int32_t dummyarray[1];
-  const int32_t * ptr = numVertices.getValues(0);
-  const int32_t * end = ptr + numVertices.getNum();
-  this->fixNumVerticesPointers(state, ptr, end, dummyarray);
 
   SbBool drawPoints =
     SoDrawStyleElement::get(state) == SoDrawStyleElement::POINTS;
@@ -671,6 +673,9 @@ SoLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   int32_t dummyarray[1];
   const int32_t *ptr = this->numVertices.getValues(0);
   const int32_t *end = ptr + this->numVertices.getNum();
+  
+  if ((end-ptr == 1) && (*ptr == 0)) return;
+  
   this->fixNumVerticesPointers(action->getState(), ptr, end, dummyarray);
 
   if (action->canApproximateCount()) {
