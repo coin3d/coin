@@ -218,7 +218,7 @@ SoNodekitCatalog::isNullByDefault(int part) const
 // without the explicit \fn.
 
 /*!
-  \fn SbBool SoNodekitCatalog::isNullByDefault(const SbName & name)
+  \fn SbBool SoNodekitCatalog::isNullByDefault(const SbName & name) const
 
   Returns \c TRUE if part \a name is empty by default, otherwise \c
   FALSE.
