@@ -45,10 +45,13 @@
   </ol>
 
   Font files are searched for in SoInput::getDirectories(), and in
-  COIN_FONT_PATH if that environment variable is defined. On Win32
-  systems the c:/WINDOWS/Fonts directory will also be searched. FIXME:
-  update this doc when the Windows PATH has been corrected to use
-  WINDIR or some such. 20030316 mortene.
+  COIN_FONT_PATH if that environment variable is
+  defined. COIN_FONT_PATH can contain multiple directories, using the
+  ':' character as separator.
+
+  On Win32 systems the c:/WINDOWS/Fonts directory will also be
+  searched. FIXME: update this doc when the Windows PATH has been
+  corrected to use WINDIR or some such. 20030316 mortene.
 
   Currently, font files in the TrueType format (.ttf) are supported.
   
