@@ -158,6 +158,9 @@ GLWrapper_set_glVersion(GLWrapper_t * wrapper)
   char buffer[256];
   char * dotptr;
 
+  // NB: if you are getting a crash here, it's because an attempt at
+  // setting up a GLWrapper instance was made when there is no current
+  // OpenGL context.
   const char * versionstr = (const char *)glGetString(GL_VERSION);
 
   wrapper->glVersion.major = 0;
