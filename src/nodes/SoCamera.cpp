@@ -754,6 +754,8 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
   if (action->handleTransparency(FALSE))
     return;
 
+  const GLWrapper_t * glw = GLWrapper(action->getCacheContext());
+
   SoState *state = action->getState();
   state->push();
 
@@ -791,6 +793,7 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
   glLoadIdentity();
   glDisable(GL_LIGHTING);
   glDisable(GL_TEXTURE_2D);
+  if (glw->COIN_GL_TEXTURE_3D) glDisable(glw->COIN_GL_TEXTURE_3D);
   glDisable(GL_FOG);
   glDisable(GL_DEPTH_TEST);
   glColor3f(0.8f, 0.8f, 0.8f);

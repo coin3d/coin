@@ -826,6 +826,8 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
 void
 SoExtSelection::draw(SoGLRenderAction *action)
 {
+  const GLWrapper_t * glw = GLWrapper(action->getCacheContext());
+
   SbViewportRegion vp = SoViewportRegionElement::get(action->getState());
   SbVec2s vpo = vp.getViewportOriginPixels();
   SbVec2s vps = vp.getViewportSizePixels();
@@ -850,6 +852,7 @@ SoExtSelection::draw(SoGLRenderAction *action)
 	       GL_CURRENT_BIT);
   glDisable(GL_LIGHTING);
   glDisable(GL_TEXTURE_2D);
+  if (glw->COIN_GL_TEXTURE_3D) glDisable(glw->COIN_GL_TEXTURE_3D);
   glDisable(GL_FOG);
   glDisable(GL_DEPTH_TEST);
 
