@@ -130,7 +130,9 @@ SoVRMLAppearance::initClass(void)
 SoVRMLAppearance::SoVRMLAppearance(void)
 {
   PRIVATE(this) = new SoVRMLAppearanceP;
-  PRIVATE(this)->childlist = new SoChildList(this);
+  // supply a NULL-pointer as parent, since notifications will be 
+  // handled by the fields that actually contain the node(s)
+  PRIVATE(this)->childlist = new SoChildList(NULL);
   PRIVATE(this)->childlistvalid = FALSE;
 
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLAppearance);

@@ -203,7 +203,9 @@ SoVRMLShape::SoVRMLShape(void)
   SO_NODE_SET_SF_ENUM_TYPE(renderCaching, CacheEnabled);
   SO_NODE_SET_SF_ENUM_TYPE(boundingBoxCaching, CacheEnabled);
 
-  PRIVATE(this)->childlist = new SoChildList(this);
+  // supply a NULL-pointer as parent, since notifications will be 
+  // handled by the fields that actually contain the node(s)
+  PRIVATE(this)->childlist = new SoChildList(NULL);
   PRIVATE(this)->childlistvalid = FALSE;
   PRIVATE(this)->bboxcache = NULL;
   PRIVATE(this)->cachelist = NULL;
