@@ -145,7 +145,7 @@
   \COININTERNAL
 */
 
-
+// *************************************************************************
 
 // Strings and character tokens used in parsing.
 static const char OPEN_BRACE = '{';
@@ -196,6 +196,13 @@ sobase_cleanup_auditordict(void)
 // possible, as any dead weight is brought along in a lot of objects).
 SbDict * SoBase::name2obj; // maps from char * to SbPList(SoBase)
 SbDict * SoBase::obj2name; // maps from SoBase * to char *
+
+// This is used for debugging purposes: it stores a pointer to all
+// SoBase-derived objects that have been allocated and not
+// deallocated.
+static SbBool sobase_trackbaseobjects = FALSE;
+static void * sobase_allbaseobj_mutex = NULL;
+static SbDict * sobase_allbaseobj = NULL; // maps from SoBase * to NULL
 
 SbString * SoBase::refwriteprefix = NULL;
 
@@ -345,6 +352,15 @@ SoBase::SoBase(void)
   // premature destruction. See the SoBase::assertAlive() method for
   // further doc.
   this->objdata.alive = ALIVE_PATTERN;
+
+  // For debugging, store a pointer to all SoBase-instances.
+#if COIN_DEBUG
+  CC_MUTEX_LOCK(sobase_allbaseobj_mutex);
+  void * dummy;
+  assert(!sobase_allbaseobj->find((unsigned long)this, dummy));
+  sobase_allbaseobj->enter((unsigned long)this, NULL);
+  CC_MUTEX_UNLOCK(sobase_allbaseobj_mutex);
+#endif // COIN_DEBUG
 }
 
 /*!
@@ -372,6 +388,12 @@ SoBase::~SoBase()
     }
   }
   cc_rbptree_clean(&this->auditortree);
+
+#if COIN_DEBUG
+  CC_MUTEX_LOCK(sobase_allbaseobj_mutex);
+  const SbBool ok = sobase_allbaseobj->remove((unsigned long)this);
+  CC_MUTEX_UNLOCK(sobase_allbaseobj_mutex);
+#endif // COIN_DEBUG
 }
 
 //
@@ -473,12 +495,18 @@ SoBase::initClass(void)
   SoBase::name2obj = new SbDict;
   SoBase::obj2name = new SbDict;
   SoBase::refwriteprefix = new SbString("+");
+  sobase_allbaseobj = new SbDict;
 
   CC_MUTEX_CONSTRUCT(sobase_mutex);
   CC_MUTEX_CONSTRUCT(sobase_obj2name_mutex);
   CC_MUTEX_CONSTRUCT(sobase_name2obj_mutex);
+  CC_MUTEX_CONSTRUCT(sobase_allbaseobj_mutex);
   CC_MUTEX_CONSTRUCT(sobase_auditor_mutex);
   CC_MUTEX_CONSTRUCT(sobase_global_mutex);
+
+  // debug
+  const char * str = coin_getenv("COIN_DEBUG_TRACK_SOBASE_INSTANCES");
+  sobase_trackbaseobjects = str && atoi(str) > 0;
 }
 
 // Clean up all commonly allocated resources before application
@@ -487,11 +515,34 @@ void
 SoBase::cleanClass(void)
 {
 #if COIN_DEBUG
+  if (sobase_trackbaseobjects) {
+    SbPList keys, values;
+    sobase_allbaseobj->makePList(keys, values);
+    const unsigned int len = keys.getLength();
+    if (len > 0) {
+      // Use printf()s, in case SoDebugError has been made defunct by
+      // previous coin_atexit() work.
+      (void)printf("\nSoBase-derived instances not deallocated:\n");
+
+      for (unsigned int i=0; i < len; i++) {
+        SoBase * base = (SoBase *)keys[i];
+        const SbName name = base->getName();
+        (void)printf("\t%s (%s)\n",
+                     base->getTypeId().getName().getString(),
+                     name == "" ? "no name" : name.getString());
+      }
+      (void)printf("\n");
+    }
+  }
+#endif // COIN_DEBUG
+
   assert(SoBase::name2obj);
   assert(SoBase::obj2name);
 
   // Delete the SbPLists in the dictionaries.
   SoBase::name2obj->applyToAll(SoBase::freeLists);
+
+  delete sobase_allbaseobj; sobase_allbaseobj = NULL;
 
   delete SoBase::name2obj; SoBase::name2obj = NULL;
   delete SoBase::obj2name; SoBase::obj2name = NULL;
@@ -501,10 +552,10 @@ SoBase::cleanClass(void)
 
   CC_MUTEX_DESTRUCT(sobase_mutex);
   CC_MUTEX_DESTRUCT(sobase_obj2name_mutex);
+  CC_MUTEX_DESTRUCT(sobase_allbaseobj_mutex);
   CC_MUTEX_DESTRUCT(sobase_name2obj_mutex);
   CC_MUTEX_DESTRUCT(sobase_auditor_mutex);
   CC_MUTEX_DESTRUCT(sobase_global_mutex);
-#endif // COIN_DEBUG
 }
 
 /*!
@@ -672,11 +723,12 @@ SoBase::getRefCount(void) const
 
 /*!
   Force an update, in the sense that all objects connected to this
-  will have to re-check the values of their inter-dependent data.
+  object as an auditor will have to re-check the values of their
+  inter-dependent data.
 
   This is often used as an effective way of manually triggering a
   redraw by application programmers.
- */
+*/
 void
 SoBase::touch(void)
 {
