@@ -290,14 +290,23 @@
   above, except GeForce4 MX). These extensions are \c
   GL_NV_texture_shader, \c GL_NV_texture_rectangle, \c
   GL_NV_register_combiners, \c GL_ARB_shadow and \c
-  GL_ARB_depth_texture. A rendering context with >= 24 bits depth
-  buffer and 8 bits alpha channel must also be present.
+  GL_ARB_depth_texture. 
+
+  A second method is added which utilize the \c GL_ARB_fragment_program
+  extension. This extension is currently only supported by the
+  GeForceFX family and the Radeon 9500 and above. This technique is
+  faster than the pure NVIDIA method and will automatically be chosen
+  if possible.
+
+  A rendering context with >= 24 bits depth buffer and 8 bits alpha
+  channel must be the current rendering context for this blending mode
+  to be active.
 
   The detection of whether or not the SORTED_LAYERS_BLEND mode can be
-  used will be done automatically by the Coin internals, if this mode
-  has been requested. If one or more of the necessary conditions
-  listed above are unavailable, SoGLRenderAction::SORTED_OBJECT_BLEND
-  will be used as the transparency type instead.
+  used will be done automatically by the Coin internals. If one or
+  more of the necessary conditions listed above are unavailable,
+  SoGLRenderAction::SORTED_OBJECT_BLEND will be used as the
+  transparency type instead.
 
   To be able to render correct transparency independent of object
   order, one have to render in multiple passes. This technique is
@@ -327,14 +336,16 @@
 */
 
 // FIXME: 
-//  todo: - Add fragment_program support (thereby adding ATI support).
+//  todo: - Add debug printout info concerning choosen blend method. 
+//        - Add a mechanism for choosing method specifically using an envvar.
 //        - Add GL_[NV/HP]_occlusion_test support making the number of passes adaptive.
 //        - Maybe pbuffer support to eliminate the slow glCopyTexSubImage2D calls.
 //        - Support texturing in every pass (will probably need fragment programming).
-//        - Support EXT_texture_rectangle instead of NV_texture_rectangle if available.
 //        - Investigate whether the TGS method using only EXT_texture_env_combine is a 
 //          feasible method (especially when it comes to speed and number of required 
-//          texture units). 
+//          texture units). [If more than two units are needed, then
+//          a GeForce3++ card is required, which again is already
+//          supported using the NVIDIA method.]
 // (20031128 handegar)
 //
 
@@ -411,20 +422,27 @@ public:
   GLuint depthtextureid;
   GLuint hilotextureid;
   GLuint * rgbatextureids;
+  GLuint sortedlayersblendprogramid;
   unsigned short viewportheight;
   unsigned short viewportwidth;
   SbBool sortedlayersblendinitialized;
   SbMatrix sortedlayersblendprojectionmatrix;
   int sortedlayersblendcounter;
 
-  void doSortedLayersBlendRendering(SoState * state, SoNode * node);
-  void initSortedLayersBlendRendering(SoState * state);
-  void setupSortedLayersBlendTextures();
-  void setupNVRegisterCombiners();
-  void renderSortedLayers(SoState * state);
-  void renderOneBlendLayer(SoState * state, SbBool shadow, SbBool update_ztex, SoNode * node);
+  void setupSortedLayersBlendTextures(const SoState * state);
+  void doSortedLayersBlendRendering(const SoState * state, SoNode * node);
+  void initSortedLayersBlendRendering(const SoState * state);
+  void renderOneBlendLayer(const SoState * state, SbBool shadow, SbBool update_ztex, SoNode * node);
   void texgenEnable(SbBool enable);
   void eyeLinearTexgen();
+
+  // NVIDIA spesific methods for sorted layers blend
+  void setupRegisterCombinersNV();
+  void renderSortedLayersNV(const SoState * state);
+
+  // ARB_fragment_program spesific methods for sorted layers blend
+  void setupFragmentProgram();
+  void renderSortedLayersFP(const SoState * state);
 
 public:
   void setupBlending(SoState * state, const SoGLRenderAction::TransparencyType newtype);
@@ -458,6 +476,15 @@ SoGLRenderAction::initClass(void)
 }
 
 // *************************************************************************
+
+
+static const char * sortedlayersblendprogram = 
+"!!ARBfp1.0\n"
+"TEMP out;\n"
+"TEX out, fragment.position, texture[0], RECT;\n"
+"MOV result.color, fragment.color;\n"
+"MUL result.color.a, out.a, fragment.color.a;\n"
+"END\n";
 
 #undef THIS
 #define THIS this->pimpl
@@ -821,6 +848,7 @@ SbBool
 SoGLRenderAction::handleTransparency(SbBool istransparent)
 {
   SoState * state = this->getState();
+  const cc_glglue *glue = sogl_glue_instance(state);
 
   SoGLRenderAction::TransparencyType transptype = 
     (SoGLRenderAction::TransparencyType)
@@ -835,10 +863,14 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
     THIS->sortedlayersblendprojectionmatrix = SoProjectionMatrixElement::get(this->getState());
 
     if (!SoTextureEnabledElement::get(state)) {
-      // FIXME: Add other methods of order-independent-blending here
-      // (ie. fragment programming, ATI support etc.) (20031126
-      // handegar)
-      THIS->setupNVRegisterCombiners();     
+      if (glue->has_arb_fragment_program) {
+        THIS->setupFragmentProgram();
+      }
+      else {
+        THIS->setupRegisterCombinersNV();
+      }
+
+
     } 
 
     // Must always return FALSE as everything must be rendered to the
@@ -1359,16 +1391,21 @@ SoGLRenderActionP::setupBlending(SoState * state, const SoGLRenderAction::Transp
 }
 
 void 
-SoGLRenderActionP::doSortedLayersBlendRendering(SoState * state, SoNode * node)
+SoGLRenderActionP::doSortedLayersBlendRendering(const SoState * state, SoNode * node)
 {
 
+  const cc_glglue *glue = sogl_glue_instance(state);
   GLfloat clearcolor[4];
   glGetFloatv(GL_COLOR_CLEAR_VALUE, clearcolor);
-  clearcolor[3] = 1.0f;
-  glClearColor(clearcolor[0], clearcolor[1], clearcolor[2], clearcolor[3]);
-    
-  this->initSortedLayersBlendRendering(state);
-  this->setupSortedLayersBlendTextures();
+
+  if (glue->has_arb_fragment_program)
+    glClearColor(clearcolor[0], clearcolor[1], clearcolor[2], 0.0f);
+  else
+    glClearColor(clearcolor[0], clearcolor[1], clearcolor[2], 1.0f);
+
+
+  this->initSortedLayersBlendRendering(state);  
+  this->setupSortedLayersBlendTextures(state);
   this->sortedlayersblendinitialized = TRUE;
 
   glDisable(GL_BLEND);
@@ -1385,8 +1422,11 @@ SoGLRenderActionP::doSortedLayersBlendRendering(SoState * state, SoNode * node)
   }
 
   // Blend together the aquired RGBA layers
-  renderSortedLayers(state);
-
+  if (glue->has_arb_fragment_program)
+    renderSortedLayersFP(state);
+  else
+    renderSortedLayersNV(state);
+  
 }
 
 void 
@@ -1428,9 +1468,151 @@ SoGLRenderActionP::eyeLinearTexgen()
 
 }
 
+void
+SoGLRenderActionP::renderOneBlendLayer(const SoState * state,
+                                       SbBool peel, SbBool updatedepthtexture, SoNode * node)
+{
+
+  const cc_glglue * glue = sogl_glue_instance(state);  
+
+  // Setup clearcolor alpha value to 1.0f when blending using NVIDIA
+  // extensions. Must do this every time to make sure the alpha-value
+  // stays correct.
+  GLfloat clearcolor[4];
+  glGetFloatv(GL_COLOR_CLEAR_VALUE, clearcolor);
+
+ 
+  if (glue->has_arb_fragment_program)
+    glClearColor(clearcolor[0], clearcolor[1], clearcolor[2], 0.0f);
+  else
+    glClearColor(clearcolor[0], clearcolor[1], clearcolor[2], 1.0f);
+
+
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+  if (!glue->has_arb_fragment_program)
+    cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
+
+
+  // Do the rendering
+  this->action->beginTraversal(node);
+
+  if(peel) { 
+    if (glue->has_arb_fragment_program) { 
+      // Fragment program clean-up      
+      glDisable(GL_FRAGMENT_PROGRAM_ARB);    
+      glDisable(GL_TEXTURE_RECTANGLE_EXT);   
+      glDisable(GL_ALPHA_TEST);
+    } 
+    else {
+      // Regular NViDIA register combiner clean-up
+      cc_glglue_glActiveTexture(glue, GL_TEXTURE3);
+      glDisable(GL_TEXTURE_RECTANGLE_EXT);  
+      this->texgenEnable(FALSE);
+      
+      glMatrixMode(GL_TEXTURE);
+      glLoadIdentity();
+      glMatrixMode(GL_MODELVIEW);
+      cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
+      glDisable(GL_REGISTER_COMBINERS_NV);
+      glDisable(GL_ALPHA_TEST);
+
+    }
+
+  }
+
+  if (!glue->has_arb_fragment_program) 
+    glDisable(GL_TEXTURE_SHADER_NV);
+
+
+  // FIXME: Wouldn't it be a smart thing to use PBuffers for the RGBA
+  // layers instead of copying from the framebuffer? The copying seems
+  // to be a huge performance hit for large canvases. (20031127
+  // handegar)
+
+  // copy the RGBA of the layer to a texture
+  glEnable(GL_TEXTURE_RECTANGLE_EXT);
+  glBindTexture(GL_TEXTURE_RECTANGLE_EXT, this->rgbatextureids[this->sortedlayersblendcounter]);
+  glCopyTexSubImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, 0, 0, 0, 0, 
+                      this->viewportwidth, this->viewportheight);
+
+  if (updatedepthtexture) {
+    glBindTexture(GL_TEXTURE_RECTANGLE_EXT, this->depthtextureid);
+    glCopyTexSubImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, 0, 0, 0, 0, 
+                        this->viewportwidth, this->viewportheight);
+  }
+  
+}
+
+void 
+SoGLRenderActionP::initSortedLayersBlendRendering(const SoState * state)
+{
+
+  if (this->sortedlayersblendinitialized) // Do this only once
+    return;
+
+  // Supporting both the TGS envvar and the COIN envvar. If both are
+  // present, the COIN envvar will be used. 
+  const char * envtgs = coin_getenv("OIV_NUM_SORTED_LAYERS_PASSES");
+  if (envtgs && (atoi(envtgs) > 0))
+    this->sortedlayersblendpasses = atoi(envtgs);
+ 
+  const char * envcoin = coin_getenv("COIN_NUM_SORTED_LAYERS_PASSES");
+  if (envcoin && (atoi(envcoin) > 0))
+    this->sortedlayersblendpasses = atoi(envcoin);
+  
+  this->rgbatextureids = new GLuint[this->sortedlayersblendpasses];
+
+
+  const cc_glglue * glue = sogl_glue_instance(state);  
+  if (glue->has_arb_fragment_program) {
+  
+    // Initialize fragment program
+    glue->glGenProgramsARB(1, &sortedlayersblendprogramid);
+    glue->glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, sortedlayersblendprogramid);
+    glue->glProgramStringARB(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
+                             strlen(sortedlayersblendprogram), sortedlayersblendprogram);
+   
+    // FIXME: Maybe a wrapper for catching fragment program errors
+    // should be a part of GLUE... (20031204 handegar)
+    GLint errorPos;    
+    GLenum err = glGetError();
+    if (err) {
+      glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
+      SoDebugError::postWarning("initSortedLayersBlendRendering",
+                                "Error in fragment program! (byte pos: %d) '%s'.\n", 
+                                errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
+      
+    }
+
+    glDisable(GL_FRAGMENT_PROGRAM_ARB);
+
+  }
+
+}
 
 void
-SoGLRenderActionP::setupNVRegisterCombiners()
+SoGLRenderActionP::setupFragmentProgram()
+{ 
+
+  if (this->sortedlayersblendcounter == 0)  // Is this not the first pass?
+    return;
+
+  const cc_glglue * glue = sogl_glue_instance(this->action->getState()); 
+  glEnable(GL_FRAGMENT_PROGRAM_ARB);
+  glue->glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, this->sortedlayersblendprogramid);
+  
+  glBindTexture(GL_TEXTURE_RECTANGLE_EXT, this->depthtextureid);
+  glEnable(GL_TEXTURE_RECTANGLE_EXT);
+  
+  glAlphaFunc(GL_GREATER, 0);
+  glEnable(GL_ALPHA_TEST);
+
+}
+
+
+void
+SoGLRenderActionP::setupRegisterCombinersNV()
 { 
 
   //
@@ -1574,85 +1756,8 @@ SoGLRenderActionP::setupNVRegisterCombiners()
  
 }
 
-
 void
-SoGLRenderActionP::renderOneBlendLayer(SoState * state,
-                                       SbBool peel, SbBool updatedepthtexture, SoNode * node)
-{
-
-  // Setup clearcolor alpha value to 1.0f. Must do this every time to
-  // make sure the alpha-value stays correct.
-  GLfloat clearcolor[4];
-  glGetFloatv(GL_COLOR_CLEAR_VALUE, clearcolor);
-  clearcolor[3] = 1.0f;
-  glClearColor(clearcolor[0], clearcolor[1], clearcolor[2], clearcolor[3]);
-
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-  const cc_glglue * glue = sogl_glue_instance(state);  
-  cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
-
-  // Do the rendering
-  this->action->beginTraversal(node);
- 
-  if(peel) { // Clean up
-      cc_glglue_glActiveTexture(glue, GL_TEXTURE3);
-      glDisable(GL_TEXTURE_RECTANGLE_NV);  
-      this->texgenEnable(FALSE);
-      
-      glMatrixMode(GL_TEXTURE);
-      glLoadIdentity();
-      glMatrixMode(GL_MODELVIEW);
-      cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
-      glDisable(GL_REGISTER_COMBINERS_NV);
-      glDisable(GL_ALPHA_TEST);
-  }
-  
-  glDisable(GL_TEXTURE_SHADER_NV);
-
-
-  // FIXME: Wouldn't it be a smart thing to use PBuffers for the RGBA
-  // layers instead of copying from the framebuffer? The copying seems
-  // to be a huge performance hit for large canvases. (20031127
-  // handegar)
-
-  // copy the RGBA of the layer to a texture
-  glEnable(GL_TEXTURE_RECTANGLE_NV);
-  glBindTexture(GL_TEXTURE_RECTANGLE_NV, this->rgbatextureids[this->sortedlayersblendcounter]);
-  glCopyTexSubImage2D(GL_TEXTURE_RECTANGLE_NV, 0, 0, 0, 0, 0, 
-                      this->viewportwidth, this->viewportheight);
-
-  if (updatedepthtexture) {
-    glBindTexture(GL_TEXTURE_RECTANGLE_NV, this->depthtextureid);
-    glCopyTexSubImage2D(GL_TEXTURE_RECTANGLE_NV, 0, 0, 0, 0, 0, 
-                        this->viewportwidth, this->viewportheight);
-  }
-  
-}
-
-void 
-SoGLRenderActionP::initSortedLayersBlendRendering(SoState * state)
-{
-
-  if (this->sortedlayersblendinitialized) // Do this only once
-    return;
-
-  // Supporting both the TGS envvar and the COIN envvar. If both are
-  // present, the COIN envvar will be used. 
-  const char * envtgs = coin_getenv("OIV_NUM_SORTED_LAYERS_PASSES");
-  if (envtgs && (atoi(envtgs) > 0))
-    this->sortedlayersblendpasses = atoi(envtgs);
- 
-  const char * envcoin = coin_getenv("COIN_NUM_SORTED_LAYERS_PASSES");
-  if (envcoin && (atoi(envcoin) > 0))
-    this->sortedlayersblendpasses = atoi(envcoin);
-  
-  this->rgbatextureids = new GLuint[this->sortedlayersblendpasses];
-
-}
-
-void
-SoGLRenderActionP::setupSortedLayersBlendTextures()
+SoGLRenderActionP::setupSortedLayersBlendTextures(const SoState * state)
 {
 
   const SbViewportRegion & vpr = this->action->getViewportRegion();
@@ -1663,6 +1768,9 @@ SoGLRenderActionP::setupSortedLayersBlendTextures()
        (canvassize[0] != this->viewportwidth)) || 
       !this->sortedlayersblendinitialized) {
         
+    const cc_glglue *glue = sogl_glue_instance(state);
+
+
     if (this->sortedlayersblendinitialized) {      
       // Remove the old textures to make room for new ones if size has changed.
       glDeleteTextures(1, &this->depthtextureid);
@@ -1670,39 +1778,49 @@ SoGLRenderActionP::setupSortedLayersBlendTextures()
     }
     
     // Depth texture setup
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+  
     glGenTextures(1, &this->depthtextureid);
-    glBindTexture(GL_TEXTURE_RECTANGLE_NV, this->depthtextureid);  
-    glTexImage2D(GL_TEXTURE_RECTANGLE_NV, 0, GL_DEPTH_COMPONENT, canvassize[0], canvassize[1], 0, 
-                 GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, 0); 
-    glTexParameteri(GL_TEXTURE_RECTANGLE_NV, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_RECTANGLE_NV, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_RECTANGLE_NV, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_RECTANGLE_NV, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_RECTANGLE_NV, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
-    glTexParameteri(GL_TEXTURE_RECTANGLE_NV, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+    glBindTexture(GL_TEXTURE_RECTANGLE_EXT, this->depthtextureid);  
+    glCopyTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_DEPTH_COMPONENT, 0, 0, canvassize[0], canvassize[1], 0);
+    glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
+
+    if (glue->has_arb_fragment_program) {
+      glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_COMPARE_FUNC, GL_GREATER);
+      glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_DEPTH_TEXTURE_MODE, GL_ALPHA);
+    }
+    else {
+      glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+    }
     
-    // HILO texture setup
-    GLushort HILOtexture[] = {0, 0};
-    glGenTextures(1, &this->hilotextureid);
-    glBindTexture(GL_TEXTURE_2D, this->hilotextureid);  
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_HILO_NV, 1, 1, 0, GL_HILO_NV, 
-                 GL_UNSIGNED_SHORT, &HILOtexture); 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    
+    if (!glue->has_arb_fragment_program) { // Do it the "register combiner"-way if FP is unavailable.
+      // HILO texture setup
+      GLushort HILOtexture[] = {0, 0};
+      glGenTextures(1, &this->hilotextureid);
+      glBindTexture(GL_TEXTURE_2D, this->hilotextureid);  
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_HILO_NV, 1, 1, 0, GL_HILO_NV, 
+                   GL_UNSIGNED_SHORT, &HILOtexture); 
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    }    
+
+
     // RGBA layers setup 
     // FIXME: What if channels are > 8 bits? This must be examinened
     // closer... [Only highend ATI cards supports these resolutions if
     // I'm not mistaken.] (20031126 handegar)
     glGenTextures(this->sortedlayersblendpasses, this->rgbatextureids);
     for (int i=0;i<sortedlayersblendpasses;++i) {
-      glBindTexture(GL_TEXTURE_RECTANGLE_NV, this->rgbatextureids[i]);  
-      glTexImage2D(GL_TEXTURE_RECTANGLE_NV, 0, GL_RGBA8, canvassize[0], canvassize[1], 0, 
-                   GL_RGBA, GL_UNSIGNED_BYTE, 0);
-      glTexParameteri(GL_TEXTURE_RECTANGLE_NV, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-      glTexParameteri(GL_TEXTURE_RECTANGLE_NV, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glBindTexture(GL_TEXTURE_RECTANGLE_EXT, this->rgbatextureids[i]);  
+      glCopyTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA8, 0, 0, canvassize[0], canvassize[1], 0);
+      glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     }
 
     this->viewportwidth = canvassize[0];
@@ -1713,7 +1831,64 @@ SoGLRenderActionP::setupSortedLayersBlendTextures()
 }
 
 void
-SoGLRenderActionP::renderSortedLayers(SoState * state)
+SoGLRenderActionP::renderSortedLayersFP(const SoState * state)
+{
+
+
+  const cc_glglue * glue = sogl_glue_instance(state);  
+
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  glOrtho(0, this->viewportwidth, 0, this->viewportheight, -1, 1);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  
+  glDisable(GL_DEPTH_TEST);
+  glClear(GL_COLOR_BUFFER_BIT);
+  
+  SbBool cullface = glIsEnabled(GL_CULL_FACE);  
+  SbBool lighting = glIsEnabled(GL_LIGHTING);
+
+  glDisable(GL_CULL_FACE);
+  glDisable(GL_FRAGMENT_PROGRAM_ARB);  
+  glDisable(GL_ALPHA_TEST);
+
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  glEnable(GL_BLEND);  
+  glDisable(GL_LIGHTING);
+  glColor3f(1.0f,1.0f,1.0f);
+  glEnable(GL_TEXTURE_RECTANGLE_EXT);  
+
+  for(int i=this->sortedlayersblendpasses-1;i>=0;--i) {
+    glBindTexture(GL_TEXTURE_RECTANGLE_EXT, this->rgbatextureids[i]);    
+    glBegin(GL_QUADS);
+    glTexCoord2f(0, 0);
+    glVertex2f(0, 0);
+    glTexCoord2f(0, this->viewportheight);
+    glVertex2f(0, this->viewportheight);
+    glTexCoord2f(this->viewportwidth, this->viewportheight);
+    glVertex2f(this->viewportwidth, this->viewportheight);
+    glTexCoord2f(this->viewportwidth, 0);
+    glVertex2f(this->viewportwidth, 0);
+    glEnd();
+  }
+
+  glDisable(GL_TEXTURE_RECTANGLE_EXT);
+  
+  glDisable(GL_BLEND);
+  glEnable(GL_DEPTH_TEST);
+
+  if (cullface)
+    glEnable(GL_CULL_FACE);
+
+  if (lighting)
+    glEnable(GL_LIGHTING);
+
+}
+
+void
+SoGLRenderActionP::renderSortedLayersNV(const SoState * state)
 {
 
   const cc_glglue * glue = sogl_glue_instance(state);  
@@ -1783,10 +1958,10 @@ SoGLRenderActionP::renderSortedLayers(SoState * state)
                                GL_UNSIGNED_IDENTITY_NV, GL_ALPHA);
   
   glEnable(GL_REGISTER_COMBINERS_NV);  
-  glEnable(GL_TEXTURE_RECTANGLE_NV);  
+  glEnable(GL_TEXTURE_RECTANGLE_EXT);  
   
   for(int i=this->sortedlayersblendpasses-1;i>=0;--i) {
-    glBindTexture(GL_TEXTURE_RECTANGLE_NV, this->rgbatextureids[i]);    
+    glBindTexture(GL_TEXTURE_RECTANGLE_EXT, this->rgbatextureids[i]);    
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
     glVertex2f(0, 0);
@@ -1800,13 +1975,11 @@ SoGLRenderActionP::renderSortedLayers(SoState * state)
   }
 
   glDisable(GL_REGISTER_COMBINERS_NV);
-  glDisable(GL_TEXTURE_RECTANGLE_NV);
+  glDisable(GL_TEXTURE_RECTANGLE_EXT);
   
   glDisable(GL_BLEND);
   glEnable(GL_DEPTH_TEST);
-  glMatrixMode(GL_PROJECTION);
-  glMatrixMode(GL_MODELVIEW);
-  
+ 
   if (cullface)
     glEnable(GL_CULL_FACE);
   
