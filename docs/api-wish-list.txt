@@ -633,3 +633,22 @@ THE WISH LIST
   should be fixed.
 
 
+* SoSwitch::whichChild as an SoMFBool
+  2002-01-15  Morten Eriksen  <mortene@sim.no>
+  [compatibility-breaking change]
+
+  This field should really have been a set of boolean ON / OFF values
+  from the start if it was designed properly, IMNSHO. As it is now, it
+  is basically limited to show just a single of the children subgraphs
+  (with the added enum-define "design hacks" to also show all or none,
+  with SO_SWITCH_ALL and SO_SWITCH_NONE).
+
+  With a set of booleans, it would be completely flexible in the sense
+  that one would get full control over the visibility of each and
+  every child subgraph, plus we could get rid of the enum-define
+  hacks.
+
+  I guess we should consider implementing this scheme in a new
+  switch-type node instead of breaking compatibility in such a severe
+  way (which would be bad for file format compatibility, among other
+  reasons).
