@@ -21,6 +21,16 @@
  *
 \**************************************************************************/
 
+/*
+  Environment variable controls available:
+
+  - COIN_GLXGLUE_NO_PBUFFERS: set to 1 to force software rendering of
+    offscreen contexts.
+
+  - COIN_GLXGLUE_NO_GLX13_PBUFFERS: don't use GLX 1.3 pbuffers support
+    (will then attempt to use pbuffers through extensions).
+*/
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
@@ -28,14 +38,19 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+
 #include <Inventor/C/basic.h>
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/gl_glx.h>
+#include <Inventor/C/tidbits.h>
+
+/* ********************************************************************** */
 
 #ifndef HAVE_GLX
 
-void glxglue_init(cc_glglue * w) {
+void glxglue_init(cc_glglue * w)
+{
   w->glx.version.major = -1;
   w->glx.version.minor = 0;
   w->glx.isdirect = 1;
@@ -58,6 +73,8 @@ void glxglue_context_reinstate_previous(void * ctx) { assert(FALSE); }
 void glxglue_context_destruct(void * ctx) { assert(FALSE); }
 
 #else /* HAVE_GLX */
+
+/* ********************************************************************** */
 
 /*
  * GL/glx.h includes X11/Xmd.h which contains typedefs for BOOL and
@@ -92,11 +109,81 @@ void glxglue_context_destruct(void * ctx) { assert(FALSE); }
 #undef COIN_DEFINED_INT32
 #endif /* COIN_DEFINED_INT32 */
 
+/* ********************************************************************** */
 
 static int glxglue_screen = -1;
 typedef void *(APIENTRY * COIN_PFNGLXGETPROCADDRESS)(const GLubyte *);
 static COIN_PFNGLXGETPROCADDRESS glxglue_glXGetProcAddress = NULL;
 static SbBool tried_bind_glXGetProcAddress = FALSE;
+
+struct glxglue_contextdata;
+static SbBool (* glxglue_context_create)(struct glxglue_contextdata * context) = NULL;
+
+typedef void * COIN_GLXFBConfig;
+typedef COIN_GLXFBConfig * (APIENTRY * COIN_PFNGLXCHOOSEFBCONFIG)(Display * dpy, int screen, const int * attrib_list, int * nelements);
+typedef GLXContext (APIENTRY * COIN_PFNGLXCREATENEWCONTEXT)(Display * dpy, COIN_GLXFBConfig config, int render_type, GLXContext share_list, Bool direct);
+static COIN_PFNGLXCHOOSEFBCONFIG glxglue_glXChooseFBConfig;
+static COIN_PFNGLXCREATENEWCONTEXT glxglue_glXCreateNewContext;
+
+typedef XID COIN_GLXPbuffer;
+
+typedef COIN_GLXPbuffer (APIENTRY * COIN_PFNGLXCREATEGLXPBUFFERSGIX)(Display * dpy,
+                                                                     COIN_GLXFBConfig config,
+                                                                     unsigned int width,
+                                                                     unsigned int height,
+                                                                     int * attrib_list);
+typedef COIN_GLXPbuffer (APIENTRY * COIN_PFNGLXCREATEPBUFFER_GLX_1_3)(Display * dpy,
+                                                                      COIN_GLXFBConfig config,
+                                                                      const int * attrib_list);
+typedef void (APIENTRY * COIN_PFNGLXDESTROYPBUFFER)(Display * dpy, COIN_GLXPbuffer pbuf);
+
+static COIN_PFNGLXCREATEPBUFFER_GLX_1_3 glxglue_glXCreatePbuffer_GLX_1_3;
+static COIN_PFNGLXCREATEGLXPBUFFERSGIX glxglue_glXCreateGLXPbufferSGIX;
+static COIN_PFNGLXDESTROYPBUFFER glxglue_glXDestroyPbuffer;
+
+/* ********************************************************************** */
+
+/* Sanity checks for enum extension value assumed to be equal to the
+ * final / "proper" / standard OpenGL enum values. (If not, we could
+ * end up with hard-to-find bugs because of mismatches with the
+ * compiled values versus the run-time values.)
+ *
+ * This doesn't really _fix_ anything, it is just meant as an aid to
+ * smoke out platforms where we're getting unexpected enum values.
+ */
+
+#ifdef GLX_RENDER_TYPE_SGIX
+#if GLX_RENDER_TYPE != GLX_RENDER_TYPE_SGIX
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GLX_RENDER_TYPE_SGIX */
+
+#ifdef GLX_DRAWABLE_TYPE_SGIX
+#if GLX_DRAWABLE_TYPE != GLX_DRAWABLE_TYPE
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GLX_DRAWABLE_TYPE_SGIX */
+
+#ifdef GLX_RGBA_TYPE_SGIX
+#if GLX_RGBA_TYPE != GLX_RGBA_TYPE
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GLX_RGBA_TYPE_SGIX */
+
+#ifdef GLX_RGBA_BIT_SGIX
+#if GLX_RGBA_BIT != GLX_RGBA_BIT
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GLX_RGBA_BIT_SGIX */
+
+#ifdef GLX_PBUFFER_BIT_SGIX
+#if GLX_PBUFFER_BIT != GLX_PBUFFER_BIT
+#error dangerous enum mismatch
+#endif /* cmp */
+#endif /* GLX_PBUFFER_BIT_SGIX */
+
+/* ********************************************************************** */
+
 
 /* This function works in a "Singleton-like" manner. */
 static Display *
@@ -227,6 +314,113 @@ glxglue_ext_supported(const cc_glglue * w, const char * extension)
     coin_glglue_extension_available(w->glx.glxextensions, extension);
 }
 
+#ifdef HAVE_DYNAMIC_LINKING
+
+#define PROC(_func_) cc_glglue_getprocaddress(SO__QUOTE(_func_))
+
+/* The OpenGL library's GLX part which we dynamically pick up symbols
+   from /could/ have all these defined. For the code below which tries
+   to dynamically resolve the methods, we will assume that they are
+   all defined. By doing this little "trick", can we use the same code
+   below for resolving stuff dynamically as we need anyway to resolve
+   in a static manner. */
+
+#define GLX_VERSION_1_1 1
+#define GLX_VERSION_1_2 1
+#define GLX_VERSION_1_3 1
+
+#define GLX_EXT_import_context 1
+#define GLX_SGIX_fbconfig 1
+#define GLX_SGIX_pbuffer 1
+
+#else /* static binding */
+
+#define PROC(_func_) (&_func_)
+
+#endif /* static binding */
+
+static void
+glxglue_resolve_symbols(cc_glglue * w)
+{
+  SbBool glx13pbuffer;
+  const char * env;
+  struct cc_glxglue * g = &(w->glx);
+
+  /* SGI's glx.h header file shipped with the NVidia Linux drivers
+     identifies glXGetCurrentDisplay() as a GLX 1.3 method, but Sun's
+     GL man pages lists it as a GLX 1.2 function, ditto for HP's GL
+     man pages, and ditto for AIX's man pages. (See top of this file
+     for URL). So we will assume the man pages are correct.
+  */
+  g->glXGetCurrentDisplay = NULL;
+#ifdef GLX_VERSION_1_2
+  if (cc_glglue_glxversion_matches_at_least(w, 1, 2)) {
+    g->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)PROC(glXGetCurrentDisplay);
+  }
+#endif /* GLX_VERSION_1_2 */
+#ifdef GLX_EXT_import_context
+  if (!g->glXGetCurrentDisplay && glxglue_ext_supported(w, "GLX_EXT_import_context")) {
+    g->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)PROC(glXGetCurrentDisplayEXT);
+  }
+#endif /* GLX_EXT_import_context */
+
+  glxglue_glXChooseFBConfig = NULL;
+  glxglue_glXCreateNewContext = NULL;
+
+  env = coin_getenv("COIN_GLXGLUE_NO_GLX13_PBUFFERS");
+  glx13pbuffer = (env == NULL) || (atoi(env) < 1);
+
+#ifdef GLX_VERSION_1_3
+  if (glx13pbuffer && cc_glglue_glxversion_matches_at_least(w, 1, 3)) {
+    glxglue_glXChooseFBConfig = (COIN_PFNGLXCHOOSEFBCONFIG)PROC(glXChooseFBConfig);
+    glxglue_glXCreateNewContext = (COIN_PFNGLXCREATENEWCONTEXT)PROC(glXCreateNewContext);
+  }
+#endif /* GLX_VERSION_1_3 */
+#ifdef GLX_SGIX_fbconfig
+  if (!glxglue_glXChooseFBConfig && glxglue_ext_supported(w, "GLX_SGIX_fbconfig")) {
+    glxglue_glXChooseFBConfig = (COIN_PFNGLXCHOOSEFBCONFIG)PROC(glXChooseFBConfigSGIX);
+    glxglue_glXCreateNewContext = (COIN_PFNGLXCREATENEWCONTEXT)PROC(glXCreateContextWithConfigSGIX);
+  }
+#endif /* GLX_SGIX_fbconfig */
+
+  glxglue_glXCreatePbuffer_GLX_1_3 = NULL;
+  glxglue_glXCreateGLXPbufferSGIX = NULL;
+  glxglue_glXDestroyPbuffer = NULL;
+
+#ifdef GLX_VERSION_1_3
+  if (glx13pbuffer && cc_glglue_glxversion_matches_at_least(w, 1, 3)) {
+    glxglue_glXCreatePbuffer_GLX_1_3 = (COIN_PFNGLXCREATEPBUFFER_GLX_1_3)PROC(glXCreatePbuffer);
+    glxglue_glXDestroyPbuffer = (COIN_PFNGLXDESTROYPBUFFER)PROC(glXDestroyPbuffer);
+  }
+#endif /* GLX_VERSION_1_3 */
+
+#ifdef GLX_SGIX_pbuffer
+  if (!glxglue_glXCreatePbuffer_GLX_1_3 && glxglue_ext_supported(w, "GLX_SGIX_pbuffer")) {
+    glxglue_glXCreateGLXPbufferSGIX = (COIN_PFNGLXCREATEGLXPBUFFERSGIX)PROC(glXCreateGLXPbufferSGIX);
+    glxglue_glXDestroyPbuffer = (COIN_PFNGLXDESTROYPBUFFER)PROC(glXDestroyGLXPbufferSGIX);
+  }
+#endif /* GLX_SGIX_pbuffer */
+}
+
+static SbBool
+glxglue_has_pbuffer_support(void)
+{
+  /* Make it possible to turn off pbuffers support completely. Mostly
+     relevant for debugging purposes. */
+  const char * env = coin_getenv("COIN_GLXGLUE_NO_PBUFFERS");
+  if (env && atoi(env) > 0) { return FALSE; }
+
+  /* Dummy statement to invoke the glxglue_init() function (which
+     attempts to bind the below functions related to pbuffer
+     support). */
+  (void)cc_glglue_instance_from_context_ptr(glxglue_has_pbuffer_support);
+
+  return
+    glxglue_glXChooseFBConfig && glxglue_glXCreateNewContext &&
+    (glxglue_glXCreatePbuffer_GLX_1_3 || glxglue_glXCreateGLXPbufferSGIX) &&
+    glxglue_glXDestroyPbuffer;
+}
+
 void
 glxglue_init(cc_glglue * w)
 {
@@ -286,43 +480,8 @@ glxglue_init(cc_glglue * w)
                              w->glx.glxextensions);
     }
   }
-}
 
-
-/*** GLX offscreen contexts **************************************************/
-
-struct glxglue_contextdata {
-  XVisualInfo * visinfo;
-  GLXContext glxcontext;
-  unsigned int width, height;
-  Pixmap pixmap;
-  GLXPixmap glxpixmap;
-
-  Display * storeddisplay;
-  GLXDrawable storeddrawable;
-  GLXContext storedcontext;
-};
-
-static void
-glxglue_contextdata_init(struct glxglue_contextdata * c)
-{
-  c->visinfo = NULL;
-  c->glxcontext = NULL;
-  c->pixmap = 0;
-  c->glxpixmap = 0;
-
-  c->storeddisplay = NULL;
-  c->storeddrawable = 0;
-  c->storedcontext = NULL;
-}
-
-static void
-glxglue_contextdata_cleanup(struct glxglue_contextdata * c)
-{
-  if (c->glxcontext) glXDestroyContext(glxglue_get_display(), c->glxcontext);
-  if (c->glxpixmap) glXDestroyGLXPixmap(glxglue_get_display(), c->glxpixmap);
-  if (c->pixmap) XFreePixmap(glxglue_get_display(), c->pixmap);
-  if (c->visinfo) XFree(c->visinfo);
+  glxglue_resolve_symbols(w);
 }
 
 /* NOTE: the strategy applied here for iterating through OpenGL canvas
@@ -394,22 +553,64 @@ glxglue_find_gl_visual(void)
 #undef ARRAYSIZE
 }
 
-void *
-glxglue_context_create_offscreen(unsigned int width, unsigned int height)
+/*** GLX offscreen contexts **************************************************/
+
+struct glxglue_contextdata {
+  XVisualInfo * visinfo;
+  GLXContext glxcontext;
+  unsigned int width, height;
+  Pixmap pixmap;
+  GLXPixmap glxpixmap;
+
+  Display * storeddisplay;
+  GLXDrawable storeddrawable;
+  GLXContext storedcontext;
+  SbBool pbuffer;
+};
+
+static struct glxglue_contextdata *
+glxglue_contextdata_init(unsigned int width, unsigned int height)
 {
-  /* FIXME: on SGI boxes with p-buffer support, that should be used
-     instead of a standard offscreen GLX context, as it would render
-     much faster (due to hardware acceleration). 20020503 mortene. */
+  struct glxglue_contextdata * ctx;
 
-  struct glxglue_contextdata context, * retctx;
-  glxglue_contextdata_init(&context);
+  XVisualInfo * vi = glxglue_find_gl_visual();
+  if (vi == NULL) { return NULL; }
 
-  context.width = width;
-  context.height = height;
+  ctx = (struct glxglue_contextdata *)malloc(sizeof(struct glxglue_contextdata));
 
-  context.visinfo = glxglue_find_gl_visual();
-  if (context.visinfo == NULL) { return NULL; }
+  ctx->visinfo = vi;
+  ctx->glxcontext = NULL;
+  ctx->width = width;
+  ctx->height = height;
 
+  ctx->pixmap = 0;
+  ctx->glxpixmap = 0;
+
+  ctx->storeddisplay = NULL;
+  ctx->storeddrawable = 0;
+  ctx->storedcontext = NULL;
+  ctx->pbuffer = FALSE;
+
+  return ctx;
+}
+
+static void
+glxglue_contextdata_cleanup(struct glxglue_contextdata * c)
+{
+  if (c->glxcontext) glXDestroyContext(glxglue_get_display(), c->glxcontext);
+  if (c->glxpixmap) {
+    c->pbuffer ? glXDestroyPbuffer(glxglue_get_display(), c->glxpixmap) :
+                 glXDestroyGLXPixmap(glxglue_get_display(), c->glxpixmap);
+  }
+  if (c->pixmap) XFreePixmap(glxglue_get_display(), c->pixmap);
+  if (c->visinfo) XFree(c->visinfo);
+
+  free(c);
+}
+
+static SbBool
+glxglue_context_create_software(struct glxglue_contextdata * context)
+{
   /* Note that the value of the last argument (which indicates whether
      or not we're asking for a DRI-capable context) is "False" on
      purpose, as the man pages for glXCreateContext() says:
@@ -419,44 +620,211 @@ glxglue_context_create_offscreen(unsigned int width, unsigned int height)
     
      Rendering to a GLX pixmap is of course exactly what we want to be
      able to do. */
-  context.glxcontext = glXCreateContext(glxglue_get_display(), context.visinfo, 0,
-                                        False);
-  if (context.glxcontext == NULL) {
-    cc_debugerror_postwarning("glxglue_create_offscreen_context",
+  context->glxcontext = glXCreateContext(glxglue_get_display(), context->visinfo, 0,
+                                         False);
+
+  if (context->glxcontext == NULL) {
+    cc_debugerror_postwarning("glxglue_context_create_software",
                               "Couldn't create GLX context.");
-    glxglue_contextdata_cleanup(&context);
+    glxglue_contextdata_cleanup(context);
+    return FALSE;
+  }
+  
+  if (coin_glglue_debug()) {
+    cc_debugerror_postinfo("glxglue_context_create_software",
+                           "made new offscreen context == %p",
+                           context->glxcontext);
+  }
+
+  context->pixmap = XCreatePixmap(glxglue_get_display(),
+                                  DefaultRootWindow(glxglue_get_display()),
+                                  context->width, context->height, context->visinfo->depth);
+  if (context->pixmap == 0) {
+    cc_debugerror_postwarning("glxglue_context_create_software",
+                              "Couldn't create %dx%dx%d X11 Pixmap.",
+                              context->width, context->height, context->visinfo->depth);
+    glxglue_contextdata_cleanup(context);
+    return FALSE;
+  }
+  
+  context->glxpixmap = glXCreateGLXPixmap(glxglue_get_display(),
+                                          context->visinfo, context->pixmap);
+  if (context->glxpixmap == 0) {
+    cc_debugerror_postwarning("glxglue_context_create_software",
+                              "Couldn't create GLX Pixmap.");
+    glxglue_contextdata_cleanup(context);
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+// XXX
+#include <stdio.h>
+
+static COIN_GLXPbuffer
+glxglue_glXCreatePbuffer(Display * dpy, COIN_GLXFBConfig config, int width, int height)
+{
+  if (glxglue_glXCreatePbuffer_GLX_1_3) {
+    const int attrs[] = {
+      GLX_PBUFFER_WIDTH, width,
+      GLX_PBUFFER_HEIGHT, height,
+      None
+    };
+
+    return glxglue_glXCreatePbuffer_GLX_1_3(dpy, config, attrs);
+  }
+
+  assert(glxglue_glXCreateGLXPbufferSGIX);
+  return glxglue_glXCreateGLXPbufferSGIX(dpy, config, width, height, NULL);
+}
+
+static SbBool
+glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
+{
+  COIN_GLXPbuffer pb;
+  COIN_GLXFBConfig * fbc;
+  Display * dpy;
+
+  /* number of FBConfigs returned */
+  int fbc_cnt;
+
+  /* set frame buffer attributes */
+  const int attrs[] = {
+    /* FIXME: if I enable any of these attributes on my system, the
+       glXChooseFBConfig() call fails (i.e. produces no valid
+       configs). 20030808 mortene. */
+/*     GLX_RGBA_BIT, */
+/*     GLX_RED_SIZE,   8, */
+/*     GLX_GREEN_SIZE, 8, */
+/*     GLX_BLUE_SIZE,  8, */
+/*     GLX_ALPHA_SIZE, 8, */
+    GLX_DRAWABLE_TYPE, GLX_PBUFFER_BIT,
+/*     GLX_DEPTH_SIZE, 24, */
+    None
+  };
+
+  dpy = glxglue_get_display();
+  if (!dpy) { return FALSE; }
+
+  /* get frame buffer configuration */
+  fbc = glxglue_glXChooseFBConfig(dpy, DefaultScreen(dpy), attrs, &fbc_cnt);
+  assert(fbc_cnt >= 0);
+  if ((fbc_cnt == 0) || (fbc == NULL)) {
+    cc_debugerror_postwarning("glxglue_context_create_pbuffer",
+                              "glXChooseFBConfig() gave no valid configs");
+    return FALSE;
+  }
+
+  /* FIXME: always config[0]? Why? 20030808 mortene. */
+  pb = glxglue_glXCreatePbuffer(dpy, fbc[0], context->width, context->height);
+
+  if (pb == 0) {
+    cc_debugerror_postwarning("glxglue_context_create_pbuffer",
+                              "glXCreatePbuffer(..., ..., %d, %d) failed",
+                              context->width, context->height);
+    return FALSE;
+  }
+
+  /* FIXME: shouldn't we error check the return value of the next
+     call? Find function docs and investigate. 20030807 mortene. */
+
+  /* direct rendering graphic context creation == Hardware use */
+
+  context->glxcontext = glxglue_glXCreateNewContext(dpy, fbc[0],
+                                                    GLX_RGBA_TYPE, NULL, TRUE);
+  
+  if (coin_glglue_debug()) {
+    cc_debugerror_postinfo("glxglue_context_create_pbuffer",
+                           "made new pbuffer offscreen context == %p",
+                           context->glxcontext);
+  }
+
+  /* assign our pbuffer to glxpixmap */
+  context->glxpixmap = pb;
+  context->pbuffer = TRUE;
+
+  return TRUE;
+}
+
+/* Create and return a handle to an offscreen OpenGL buffer.
+
+   Where p-buffer support is available that will be used instead of a
+   standard offscreen GLX context, as it should render much faster
+   (due to hardware acceleration).
+
+   See: http://www.oss.sgi.com/projects/ogl-sample/registry/SGIX/pbuffer.txt
+
+   The initial pbuffer implementation was contributed by Tamer Fahmy
+   and Hannes Kaufmann.
+*/
+void *
+glxglue_context_create_offscreen(unsigned int width, unsigned int height)
+{
+  SbBool ok, pbuffer;
+  struct glxglue_contextdata * swctx, * pbctx;
+
+  swctx = glxglue_contextdata_init(width, height);
+  if (swctx == NULL) { return NULL; }
+
+  if (glxglue_context_create != NULL) {
+    ok = glxglue_context_create(swctx);
+    if (ok) { return swctx; }
+
+    glxglue_contextdata_cleanup(swctx);
     return NULL;
   }
+
+  /* As there could possibly be no valid glx context at this moment,
+     we have to first make a context and set it current to be able
+     to query pbuffer extension availability. */
+
+  ok = glxglue_context_create_software(swctx);
+  if (!ok || !glxglue_context_make_current(swctx)) {
+    glxglue_contextdata_cleanup(swctx);
+    return NULL;
+  }
+
+  /* ok, so we can at least use a non-pbuffer offscreen context */
+  glxglue_context_create = glxglue_context_create_software;
+
+  /* next, check if pbuffer support is available in the OpenGL
+     library image */
+
+  pbuffer = glxglue_has_pbuffer_support();
 
   if (coin_glglue_debug()) {
-    cc_debugerror_postinfo("glxglue_create_offscreen_context",
-                           "made new offscreen context == %p",
-                           context.glxcontext);
+    cc_debugerror_postinfo("glxglue_context_create_offscreen",
+                           "PBuffer offscreen rendering is %ssupported "
+                           "by the OpenGL driver", pbuffer ? "" : "NOT ");
   }
 
-  context.pixmap = XCreatePixmap(glxglue_get_display(),
-                                 DefaultRootWindow(glxglue_get_display()),
-                                 width, height, context.visinfo->depth);
-  if (context.pixmap == 0) {
-    cc_debugerror_postwarning("glxglue_create_offscreen_context",
-                              "Couldn't create %dx%dx%d X11 Pixmap.",
-                              width, height, context.visinfo->depth);
-    glxglue_contextdata_cleanup(&context);
-    return NULL;
+  glxglue_context_reinstate_previous(swctx);
+
+  if (!pbuffer) { return swctx; }
+
+  /* attempt to make a pbuffer, to make sure the system is actually
+     set up with that capability (just having the GLX methods
+     available doesn't really prove it) */
+
+  pbctx = glxglue_contextdata_init(width, height);
+  if (pbctx == NULL) { return swctx; }
+
+  ok = glxglue_context_create_pbuffer(pbctx);
+
+  if (!ok) {
+    glxglue_contextdata_cleanup(pbctx);
+    return swctx;
   }
 
-  context.glxpixmap = glXCreateGLXPixmap(glxglue_get_display(),
-                                         context.visinfo, context.pixmap);
-  if (context.glxpixmap == 0) {
-    cc_debugerror_postwarning("glxglue_create_offscreen_context",
-                              "Couldn't create GLX Pixmap.");
-    glxglue_contextdata_cleanup(&context);
-    return NULL;
-  }
+  /* pbuffers are really supported, kill the software offscreen
+     context and use the pbuffer-enabled one */
 
-  retctx = (struct glxglue_contextdata *)malloc(sizeof(struct glxglue_contextdata));
-  (void)memcpy(retctx, &context, sizeof(struct glxglue_contextdata));
-  return retctx;
+  glxglue_contextdata_cleanup(swctx);
+
+  glxglue_context_create = glxglue_context_create_pbuffer;
+
+  return pbctx;
 }
 
 SbBool
@@ -537,7 +905,7 @@ void
 glxglue_context_destruct(void * ctx)
 {
   /* FIXME: needs to call into the (as of yet unimplemented)
-     "destructing GL context" handler. 20030310 mortene. */
+     C wrapper around the SoContextHandler. 20030310 mortene. */
 
   struct glxglue_contextdata * context = (struct glxglue_contextdata *)ctx;
 
@@ -547,7 +915,6 @@ glxglue_context_destruct(void * ctx)
   }
 
   glxglue_contextdata_cleanup(context);
-  free(context);
 }
 
 #endif /* HAVE_GLX */
