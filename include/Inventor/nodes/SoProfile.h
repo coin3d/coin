@@ -23,6 +23,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/elements/SoProfileElement.h>
 
 class SbVec2f;
 class SoState;
@@ -37,7 +38,9 @@ public:
   static void initClass(void);
 
   enum Profile {
-    START_FIRST, START_NEW, ADD_TO_CURRENT
+    START_FIRST = SoProfileElement::START_FIRST,
+    START_NEW = SoProfileElement::START_NEW,
+    ADD_TO_CURRENT = SoProfileElement::ADD_TO_CURRENT
   };
 
   SoMFInt32 index;
