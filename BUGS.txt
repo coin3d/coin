@@ -234,22 +234,6 @@
 
 =====================================================================
 
-011 The SoTranslate2Dragger's behavior on
-
-       hold SHIFT -> LMB-drag -> release SHIFT -> continue drag
-
-    is both non-intuitive and wrong versus SGI Inventor: the dragger
-    should immediately stay and continue from the same position after
-    releasing SHIFT.
-
-    (Note: after attempting a fix for this bug, make sure the
-    SoTranslate2Dragger also works as expected when it's embedded into
-    other dragger classes.)
-
-    mortene 20020624.
-
-=====================================================================
-
 012 Buglet: the SoMaterial::shininess field is not clamped if it's >
     1.0. This causes OpenGL errors, at least with some drivers.
 
