@@ -277,6 +277,10 @@ SbPlane::getDistanceFromOrigin(void) const
   line. Returns \c TRUE if an intersection line can be found, and \c
   FALSE if the planes are parallel.
 
+  Please note that the resulting SbLine must be considered as a
+  \e line intersecting the SbLine's origin, extending infinitely in both
+  directions.
+
   \COIN_FUNCTION_EXTENSION
 
   \since Coin 2.0
