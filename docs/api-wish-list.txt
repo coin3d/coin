@@ -232,7 +232,7 @@ THE WISH LIST
     different compilers. 
 
 * SoGestureEvent
-  2001-29-04  Lars J. Aas  <larsa@sim.no>
+  2001-04-29  Lars J. Aas  <larsa@sim.no>
   [upwards compatible extension]
 
   Derived from SoEvent, this class would be a container for a gesture type
@@ -241,7 +241,7 @@ THE WISH LIST
   gesture-based interfaces...
 
 * SoText2::verticalAlignment / verticalJustification
-  2001-30-04  Peder Blekken <pederb@sim.no>
+  2001-04-30  Peder Blekken <pederb@sim.no>
   [upwards compatible extension]
 
   I wish for new field in this node, to be able to control the vertical 
@@ -250,7 +250,7 @@ THE WISH LIST
   in SoAsciiText and SoText3.
 
 * 3D GUI Components
-  2001-01-05  Peder Blekken <pederb@sim.no>
+  2001-05-01  Peder Blekken <pederb@sim.no>
 
   It would be very useful to have a set of classes to build simple 3D
   GUIs. A nice approach might be to do something similar to how
@@ -275,3 +275,4 @@ THE WISH LIST
 
     Many components are inherently 2D and would be hard to re-make in
     3D, though.
+
