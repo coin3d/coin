@@ -144,7 +144,8 @@ fast_mipmap_cleanup(void)
 // fast mipmap creation. no repeated memory allocations.
 static void
 fast_mipmap(int width, int height, const int nc,
-            const unsigned char * data, GLenum format)
+            const unsigned char * data, GLenum format,
+            const SbBool useglsubimage)
 {
   int levels = compute_log(width);
   int level = compute_log(height);
@@ -159,19 +160,31 @@ fast_mipmap(int width, int height, const int nc,
     mipmap_buffer = new unsigned char[memreq];
   }
 
-  glTexImage2D(GL_TEXTURE_2D, 0, nc, width, height, 0, format,
-               GL_UNSIGNED_BYTE, data);
-
+  if (useglsubimage) {
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
+                    width, height, format,
+                    GL_UNSIGNED_BYTE, data);
+  }
+  else {
+    glTexImage2D(GL_TEXTURE_2D, 0, nc, width, height, 0, format,
+                 GL_UNSIGNED_BYTE, data);
+  }
   unsigned char * src = (unsigned char *) data;
   for (level = 1; level <= levels; level++) {
     halve_image(width, height, nc, src, mipmap_buffer);
     if (width > 1) width >>= 1;
     if (height > 1) height >>= 1;
     src = mipmap_buffer;
-    glTexImage2D(GL_TEXTURE_2D, level, nc, width,
-                 height, 0, format, GL_UNSIGNED_BYTE,
-                 (void *) src);
-
+    if (useglsubimage) {
+      glTexSubImage2D(GL_TEXTURE_2D, level, 0, 0,
+                      width, height, format,
+                      GL_UNSIGNED_BYTE, (void*) src);
+    }
+    else {
+      glTexImage2D(GL_TEXTURE_2D, level, nc, width,
+                   height, 0, format, GL_UNSIGNED_BYTE,
+                   (void *) src);
+    }
   }
 }
 
@@ -191,6 +204,8 @@ public:
                            const SbBool dlist,
                            const SbBool mipmap,
                            const int border);
+  void resizeImage(const unsigned char * imageptr, int & xsize, int & ysize,
+                   const float quality);
   const unsigned char * bytes;
   SbVec2s size;
   int numcomponents;
@@ -199,15 +214,14 @@ public:
   SoGLImage::Wrap wrapt;
   int border;
   SbList <SoGLDisplayList*> dlists;
+
+  SoGLDisplayList * findDL(SoState * state);
+
 };
 
 #endif // DOXYGEN_SKIP_THIS
 
-#ifdef THIS
-#define COIN_THIS_DEFINE_SAVED THIS
 #undef THIS
-#endif // THIS
-
 // convenience define to access private data
 #define THIS this->pimpl
 
@@ -292,6 +306,12 @@ SoGLImage::SoGLImage(void)
   instance to create a texture object for another context).
   It will not be possible to create texture objects for other cache
   contexts when \a createinstate is != NULL.
+
+  Also if \a createinstate is supplied, and all the attributes are the
+  same as the current data in the image, glTexSubImage will be used
+  to insert the image data instead of creating a new texture object.
+  This is much faster on most OpenGL drivers, and is very useful,
+  for instance when doing animated textures.
 */
 void
 SoGLImage::setData(const unsigned char * bytes,
@@ -304,18 +324,54 @@ SoGLImage::setData(const unsigned char * bytes,
                    SoState * createinstate)
 
 {
-  THIS->bytes = bytes;
-  THIS->size = size;
-  THIS->numcomponents = nc;
-  THIS->flags = 0;
-  THIS->wraps = wraps;
-  THIS->wrapt = wrapt;
-  if (nc == 2 || nc == 4) THIS->flags |= FLAG_NEEDTRANSPARENCYTEST;
-  THIS->border = border;
-  THIS->unrefDLists(createinstate);
-  if (createinstate) {
-    THIS->dlists.append(THIS->createGLDisplayList(createinstate, quality));
-    THIS->bytes = NULL; // data is assumed to be temporary
+  // check for special case where glCopyTexImage can be used.
+  // faster for most drivers.
+  SoGLDisplayList * dl;
+  if (createinstate &&
+      size == THIS->size &&
+      nc == THIS->numcomponents &&
+      wraps == THIS->wraps &&
+      wrapt == THIS->wrapt &&
+      border == THIS->border &&
+      (dl = THIS->findDL(createinstate)) != NULL) {
+    dl->ref();
+    THIS->unrefDLists(createinstate);
+    THIS->dlists.append(dl);
+    THIS->bytes = NULL; // data is temporary, and only for current context
+    dl->call(createinstate); // make this the current texture
+    GLenum format;
+    switch (nc) {
+    default: // avoid compiler warnings
+    case 1: format = GL_LUMINANCE; break;
+    case 2: format = GL_LUMINANCE_ALPHA; break;
+    case 3: format = GL_RGB; break;
+    case 4: format = GL_RGBA; break;
+    }
+    if (dl->isMipMapTextureObject()) {
+      fast_mipmap(int(size[0]), int(size[1]), nc,
+                  bytes, format, TRUE);
+    }
+    else {
+      glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
+                      int(size[0]), int(size[1]),
+                      format, GL_UNSIGNED_BYTE,
+                      (void*) bytes);
+    }
+  }
+  else {
+    THIS->bytes = bytes;
+    THIS->size = size;
+    THIS->numcomponents = nc;
+    THIS->flags = 0;
+    THIS->wraps = wraps;
+    THIS->wrapt = wrapt;
+    if (nc == 2 || nc == 4) THIS->flags |= FLAG_NEEDTRANSPARENCYTEST;
+    THIS->border = border;
+    THIS->unrefDLists(createinstate);
+    if (createinstate) {
+      THIS->dlists.append(THIS->createGLDisplayList(createinstate, quality));
+      THIS->bytes = NULL; // data is assumed to be temporary
+    }
   }
 }
 
@@ -380,14 +436,9 @@ SoGLImage::getNumComponents(void) const
 SoGLDisplayList *
 SoGLImage::getGLDisplayList(SoState * state, const float quality)
 {
-  int currcontext = SoGLCacheContextElement::get(state);
-  int i, n = THIS->dlists.getLength();
-  SoGLDisplayList * dl = NULL;
-  for (i = 0; i < n; i++) {
-    dl = THIS->dlists[i];
-    if (dl->getContext() == currcontext) break;
-  }
-  if (i == n) {
+  SoGLDisplayList * dl = THIS->findDL(state);
+  
+  if (dl == NULL) {
     dl = THIS->createGLDisplayList(state, quality);
     if (dl) THIS->dlists.append(dl);
   }
@@ -505,20 +556,9 @@ void cleanup_tmpimage(void)
   delete [] glimage_tmpimagebuffer;
 }
 
-//
-// private method that tests the size of the image, and
-// performs an resize if the size is not a power of two.
-//
-SoGLDisplayList *
-SoGLImageP::createGLDisplayList(SoState * state, const float quality)
+void 
+SoGLImageP::resizeImage(const unsigned char * imageptr, int & xsize, int & ysize, const float quality)
 {
-  if (!this->bytes) return NULL;
-
-  int xsize = this->size[0];
-  int ysize = this->size[1];
-
-  // these might change if image is resized
-  const unsigned char * imageptr = this->bytes;
   unsigned int newx = (unsigned int)nearest_power_of_two(xsize-2*this->border);
   unsigned int newy = (unsigned int)nearest_power_of_two(ysize-2*this->border);
 
@@ -538,9 +578,8 @@ SoGLImageP::createGLDisplayList(SoState * state, const float quality)
   while (newx > maxsize) newx >>= 1;
   while (newy > maxsize) newy >>= 1;
 
-  newx += 2*this->border;
-  newy += 2*this->border;
-
+  newx += 2 * this->border;
+  newy += 2 * this->border;
 
   if ((newx != (unsigned long) xsize) || (newy != (unsigned long) ysize)) {
     int numbytes = newx * newy * this->numcomponents;
@@ -576,6 +615,25 @@ SoGLImageP::createGLDisplayList(SoState * state, const float quality)
     glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
     glPixelStorei(GL_PACK_ALIGNMENT, 4);
   }
+  xsize = newx;
+  ysize = newy;
+}
+
+//
+// private method that tests the size of the image, and
+// performs an resize if the size is not a power of two.
+//
+SoGLDisplayList *
+SoGLImageP::createGLDisplayList(SoState * state, const float quality)
+{
+  if (!this->bytes) return NULL;
+
+  int xsize = this->size[0];
+  int ysize = this->size[1];
+
+  // these might change if image is resized
+  const unsigned char * imageptr = this->bytes;
+  this->resizeImage(imageptr, xsize, ysize, quality);
 
   SoGLDisplayList * dl =
     new SoGLDisplayList(state,
@@ -584,7 +642,7 @@ SoGLImageP::createGLDisplayList(SoState * state, const float quality)
   dl->ref();
   dl->open(state);
   this->reallyCreateTexture(state, imageptr, this->numcomponents,
-                            newx, newy, dl->getType() == SoGLDisplayList::DISPLAY_LIST,
+                            xsize, ysize, dl->getType() == SoGLDisplayList::DISPLAY_LIST,
                             quality >= COIN_TEX2_MIPMAP_LIMIT,
                             this->border);
   dl->close(state);
@@ -702,7 +760,7 @@ SoGLImageP::reallyCreateTexture(SoState * state,
       // this should be very fast, but I guess it's possible
       // that some drivers might have hardware accelerated mipmap
       // creation.
-      fast_mipmap(w, h, numComponents, texture, glformat);
+      fast_mipmap(w, h, numComponents, texture, glformat, FALSE);
     }
     else {
       // FIXME: ignoring the error code. Silly. 20000929 mortene.
@@ -726,8 +784,18 @@ SoGLImageP::unrefDLists(SoState * state)
   this->dlists.truncate(0);
 }
 
+// find dl for a context, NULL if not found
+SoGLDisplayList *
+SoGLImageP::findDL(SoState * state)
+{
+  int currcontext = SoGLCacheContextElement::get(state);
+  int i, n = this->dlists.getLength();
+  SoGLDisplayList * dl;
+  for (i = 0; i < n; i++) {
+    dl = this->dlists[i];
+    if (dl->getContext() == currcontext) return dl;
+  }
+  return NULL;
+}
+
 #undef THIS
-#ifdef COIN_THIS_DEFINE_SAVED
-#define THIS COIN_THIS_DEFINE_SAVED
-#undef COIN_THIS_DEFINE_SAVED
-#endif // COIN_THIS_DEFINE_SAVED
