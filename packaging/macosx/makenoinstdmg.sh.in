@@ -58,7 +58,7 @@ mv noinst-dmg-root/Desktop_DB noinst-dmg-root/Desktop\ DB
 mv noinst-dmg-root/Desktop_DF noinst-dmg-root/Desktop\ DF
 
 # Copy dist files
-cp README.txt noinst-dmg-root
+cp noinst-README-@MACOSX_NAME@.txt noinst-dmg-root/README.txt
 ditto -rsrcFork $FRAMEWORK noinst-dmg-root/Inventor.framework
 
 # Build dmg file from dmgroot

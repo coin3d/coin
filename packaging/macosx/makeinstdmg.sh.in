@@ -51,6 +51,7 @@ mv inst-dmg-root/Desktop_DB inst-dmg-root/Desktop\ DB
 mv inst-dmg-root/Desktop_DF inst-dmg-root/Desktop\ DF
 
 # Copy dist files
+cp inst-README-@MACOSX_NAME@.txt inst-dmg-root/README.txt
 ditto -rsrcFork Coin.pkg inst-dmg-root/Coin.pkg
 ditto -rsrcFork @top_srcdir@/packaging/macosx/uninstall-coin.pl inst-dmg-root/tools/
 ditto -rsrcFork CoinTools.pkg inst-dmg-root/tools/CoinTools.pkg

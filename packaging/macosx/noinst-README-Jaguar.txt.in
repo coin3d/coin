@@ -1,0 +1,20 @@
+This is Coin-@VERSION@ by Systems in Motion. What you have
+downloaded is only the framework itself, provided as a 
+convienience for those who do not want to use binary 
+installers. To install, simply drag the Inventor.framework 
+to /Library/Frameworks.
+
+Note that this Coin framework has been built with gcc 3.1
+and will not work with gcc 3.3. It is primarily meant for
+use on Mac OS 10.2 "Jaguar" and will only work on Mac OS
+10.3 "Panther" if you manually select the 3.1 compiler.
+Please make sure to also read the relevant FAQ entry
+at http://www.coin3d.org/mac/faq.html#gcc_abi
+
+You can find a complete package including an installer and the
+Coin commandline tools at our ftp://ftp.sim.no/pub/coin/bin/macosx. 
+
+Enjoy!
+--
+kyrah@sim.no
+
