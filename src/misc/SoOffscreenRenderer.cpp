@@ -140,14 +140,26 @@ public:
       return;
     }
 
-    // FIXME: should fallback to less and less restrictive attribs
-    // settings if the glXChooseVisual() below fails. 20000622 mortene.
-    static int attribs[] = {
+    static int single_attribs[] = {
       GLX_RGBA,
+      // Need this to make sure we get a visual with a depth buffer.
       GLX_DEPTH_SIZE, 1,
       GLX_STENCIL_SIZE, 1,
       None
     };
+
+    static int double_attribs[] = {
+      GLX_RGBA,
+      // Need this to make sure we get a visual with a depth buffer.
+      GLX_DEPTH_SIZE, 1,
+      GLX_STENCIL_SIZE, 1,
+      // Yes, I've actually seen displays which lack singlebuffer
+      // visuals.
+      GLX_DOUBLEBUFFER,
+      None
+    };
+
+    static int * attribsettings[] = { single_attribs, double_attribs, NULL };
 
     // FIXME: using glXChooseVisual() like this picks a 8-bit
     // PseudoColor visual on SGI IRIX X11 servers with default
@@ -155,9 +167,17 @@ public:
     // XMatchVisualInfo() to find the best (i.e. deepest)
     // visual. This is Bugzilla #129. 20000622 mortene.
 
-    this->visinfo = glXChooseVisual(this->display,
-                                    DefaultScreen(this->display),
-                                    attribs);
+    int attribidx = 0;
+    do {
+      this->visinfo = glXChooseVisual(this->display,
+                                      DefaultScreen(this->display),
+                                      attribsettings[attribidx++]);
+    } while (this->visinfo == NULL && attribsettings[attribidx] != NULL);
+
+    // FIXME: should fallback to even less restrictive attribs
+    // settings if all glXChooseVisual() attempts fails.
+    // 20001003 mortene.
+
     if (!this->visinfo) {
       SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
                                 "Couldn't get RGBA X11 visual.");
