@@ -288,6 +288,8 @@ SoEngine::notify(SoNotList * nl)
   this->stateflags.dirty = 0;
 #endif // debug
 
+  // FIXME: we'll need to investigate whether this optimization is valid
+  // and if it is worth it.       pederb, 20000828
   if (this->stateflags.dirty) {
     if (!this->isNotifying()) {
       // "notify" engine about the changed field
@@ -298,7 +300,6 @@ SoEngine::notify(SoNotList * nl)
     // nothing more to do, output connections have been notified earlier
   }
   else {
-    this->stateflags.dirty = 1;
     if (!this->isNotifying() && this->isNotifyEnabled()) {
       this->stateflags.isnotifying = 1;
       this->inputChanged(nl->getLastField());
@@ -325,6 +326,7 @@ SoEngine::notify(SoNotList * nl)
                                    numconnections);
 #endif // debug
           for (int j = 0; j < numconnections; j++) {
+            this->stateflags.dirty = 1;
             field = (*output)[j];
 #if COIN_DEBUG && 0 // debug
             SoDebugError::postInfo("SoEngine::notify",
@@ -333,8 +335,13 @@ SoEngine::notify(SoNotList * nl)
                                    field->getContainer() ? field->getContainer()->getTypeId().getName().getString() : "*none*",
                                    field->getContainer() ? field->getContainer()->getName().getString() : "*none*",
                                    field->getDirty());
+            // Make sure notification happens _also_ when field is
+            // dirty (only valid within this debug code block).
             if (field->getDirty()) field->notify(nl);
 #endif // debug
+            // FIXME: we'll need to investigate whether this
+            // optimization is valid and if it is worth it.  pederb,
+            // 20000828
             if (!field->getDirty()) field->notify(nl);
           }
         }
