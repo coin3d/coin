@@ -21,8 +21,6 @@
   \class SoOneShot SoOneShot.h Inventor/engines/SoOneShot.h
   \brief The SoOneShot class is a timer that runs for a configurable time and then stops.
   \ingroup engines
-
-  FIXME: doc
 */
 
 #include <Inventor/engines/SoOneShot.h>
@@ -35,74 +33,73 @@
 
 SO_ENGINE_SOURCE(SoOneShot);
 
-/*!
-  Default constructor.
-*/
-SoOneShot::SoOneShot()
-{
-  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoOneShot);
-
-  SO_ENGINE_ADD_INPUT(timeIn,(SbTime::zero()));
-  SO_ENGINE_ADD_INPUT(duration,(SbTime(1.0)));
-  SO_ENGINE_ADD_INPUT(trigger,());
-  SO_ENGINE_ADD_INPUT(flags,(0));
-  SO_ENGINE_ADD_INPUT(disable,(FALSE));
-
-  SO_ENGINE_ADD_OUTPUT(timeOut,SoSFTime);
-  SO_ENGINE_ADD_OUTPUT(isActive,SoSFBool);
-  SO_ENGINE_ADD_OUTPUT(ramp,SoSFFloat);
-
-  SoField *realtime=SoDB::getGlobalField("realTime");
-  this->timeIn.connectFrom(realtime);
-
-  this->running=FALSE;
-}
-
 // overloaded from parent
 void
-SoOneShot::initClass()
+SoOneShot::initClass(void)
 {
   SO_ENGINE_INTERNAL_INIT_CLASS(SoOneShot);
 }
 
+/*!
+  Default constructor.
+*/
+SoOneShot::SoOneShot(void)
+{
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoOneShot);
 
-//
-// private members
-//
+  SO_ENGINE_ADD_INPUT(timeIn, (SbTime::zero()));
+  SO_ENGINE_ADD_INPUT(duration, (SbTime(1.0)));
+  SO_ENGINE_ADD_INPUT(trigger, ());
+  SO_ENGINE_ADD_INPUT(flags, (0));
+  SO_ENGINE_ADD_INPUT(disable, (FALSE));
+
+  SO_ENGINE_ADD_OUTPUT(timeOut, SoSFTime);
+  SO_ENGINE_ADD_OUTPUT(isActive, SoSFBool);
+  SO_ENGINE_ADD_OUTPUT(ramp, SoSFFloat);
+
+  SoField * realtime = SoDB::getGlobalField("realTime");
+  this->timeIn.connectFrom(realtime);
+
+  this->running = FALSE;
+}
+
+/*!
+  Destructor is protected to avoid explicit destruction.
+*/
 SoOneShot::~SoOneShot()
 {
 }
 
 // overloaded from parent
 void
-SoOneShot::evaluate()
+SoOneShot::evaluate(void)
 {
-  SbTime elapsed=this->timeIn.getValue()-this->startTime;
-  SbTime durationVal=this->duration.getValue();
+  SbTime elapsed = this->timeIn.getValue() - this->starttime;
+  SbTime durationVal = this->duration.getValue();
 
-  SO_ENGINE_OUTPUT(isActive,SoSFBool,setValue(this->running));
+  SO_ENGINE_OUTPUT(isActive, SoSFBool, setValue(this->running));
   if (this->running) {
-    if (elapsed<durationVal) {
-      SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(elapsed));
-      SO_ENGINE_OUTPUT(ramp,SoSFFloat,
+    if (elapsed < durationVal) {
+      SO_ENGINE_OUTPUT(timeOut, SoSFTime, setValue(elapsed));
+      SO_ENGINE_OUTPUT(ramp, SoSFFloat,
                        setValue(float(elapsed.getValue())/float(durationVal.getValue())));
     }
     else {
-      SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(durationVal));
-      SO_ENGINE_OUTPUT(ramp,SoSFFloat,setValue(1.0));
-      if (this->flags.getValue()&SoOneShot::HOLD_FINAL)
-        this->holdDuration=durationVal;
-      this->running=FALSE;
+      SO_ENGINE_OUTPUT(timeOut, SoSFTime, setValue(durationVal));
+      SO_ENGINE_OUTPUT(ramp, SoSFFloat, setValue(1.0));
+      if (this->flags.getValue() & SoOneShot::HOLD_FINAL)
+        this->holdduration = durationVal;
+      this->running = FALSE;
     }
   }
   else {
-    if (this->flags.getValue()&SoOneShot::HOLD_FINAL) {
-      SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(this->holdDuration));
-      SO_ENGINE_OUTPUT(ramp,SoSFFloat,setValue(1.0));
+    if (this->flags.getValue() & SoOneShot::HOLD_FINAL) {
+      SO_ENGINE_OUTPUT(timeOut, SoSFTime, setValue(this->holdduration));
+      SO_ENGINE_OUTPUT(ramp, SoSFFloat, setValue(1.0));
     }
     else {
-      SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(0.0));
-      SO_ENGINE_OUTPUT(ramp,SoSFFloat,setValue(0.0));
+      SO_ENGINE_OUTPUT(timeOut, SoSFTime, setValue(0.0));
+      SO_ENGINE_OUTPUT(ramp, SoSFFloat, setValue(0.0));
     }
   }
 }
@@ -111,27 +108,27 @@ SoOneShot::evaluate()
 
 // overloaded from parent
 void
-SoOneShot::inputChanged(SoField *which)
+SoOneShot::inputChanged(SoField * which)
 {
-  if (which==&this->trigger) {
+  if (which == &this->trigger) {
 #if 0 // FIXME: doesn't compile. 19990620 mortene.
-      fprintf( stdout, "(trigger): %x\n", this->flags.getValue() );
+      fprintf(stdout, "(trigger): %x\n", this->flags.getValue());
 #endif // disabled
     if ((!this->running ||
-         this->flags.getValue()&SoOneShot::RETRIGGERABLE) &&
+         this->flags.getValue() & SoOneShot::RETRIGGERABLE) &&
         !this->disable.getValue()) {
 #if 0 // FIXME: doesn't compile. 19990620 mortene.
-      fprintf( stdout, "XXX Retrigger XXX\n" );
+      fprintf(stdout, "XXX Retrigger XXX\n");
 #endif // disabled
-      this->startTime=this->timeIn.getValue();
-      this->running=TRUE;
-      SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(0.0));
-      SO_ENGINE_OUTPUT(ramp,SoSFFloat,setValue(0.0));
+      this->starttime = this->timeIn.getValue();
+      this->running = TRUE;
+      SO_ENGINE_OUTPUT(timeOut, SoSFTime, setValue(0.0));
+      SO_ENGINE_OUTPUT(ramp, SoSFFloat, setValue(0.0));
     }
   }
-  else if (which==&this->disable) {
+  else if (which == &this->disable) {
     if (this->disable.getValue())
-      this->running=FALSE;
+      this->running = FALSE;
     this->timeOut.enable(!this->disable.getValue());
     this->ramp.enable(!this->disable.getValue());
     this->isActive.enable(!this->disable.getValue());

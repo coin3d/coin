@@ -30,9 +30,13 @@
 
 class COIN_DLL_EXPORT SoOneShot : public SoEngine {
   typedef SoEngine inherited;
+
   SO_ENGINE_HEADER(SoOneShot);
 
 public:
+  static void initClass(void);
+  SoOneShot(void);
+
   enum Flags {RETRIGGERABLE=1, HOLD_FINAL=2};
 
   SoSFTime timeIn;
@@ -41,23 +45,19 @@ public:
   SoSFBitMask flags;
   SoSFBool disable;
 
-  SoEngineOutput timeOut;  //SoSFTime
-  SoEngineOutput isActive; //SoSFBool
-  SoEngineOutput ramp;     //SoSFFloat
-
-  SoOneShot();
-
-  static void initClass();
+  SoEngineOutput timeOut;  // SoSFTime
+  SoEngineOutput isActive; // SoSFBool
+  SoEngineOutput ramp;     // SoSFFloat
 
 protected:
   ~SoOneShot();
 
 private:
-  virtual void evaluate();
+  virtual void evaluate(void);
   virtual void inputChanged(SoField * which);
 
-  SbTime holdDuration;
-  SbTime startTime;
+  SbTime holdduration;
+  SbTime starttime;
   SbBool running;
 };
 
