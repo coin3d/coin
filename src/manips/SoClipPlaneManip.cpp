@@ -415,14 +415,11 @@ SoClipPlaneManip::valueChangedCB(void * m, SoDragger * dragger)
   SoClipPlaneManip * thisp = (SoClipPlaneManip*)m;
 
   SbMatrix matrix = dragger->getMotionMatrix();
-  SbVec3f t, s;
-  SbRotation r, so;
-  matrix.getTransform(t, r, s, so);
-
-  SbVec3f direction(0.0f, 1.0f, 0.0f);
-  r.multVec(direction, direction);
-  direction.normalize();
-  SbPlane plane(direction, t);
+  SbPlane plane(SbVec3f(0.0f, 1.0f, 0.0f), 0.0f);
+  // transform plane so that it matches the dragger geometry
+  plane.transform(matrix);
+  // extract the translation-part of the matrix
+  SbVec3f t = SbVec3f(matrix[3][0], matrix[3][2], matrix[3][3]);
 
   thisp->attachSensors(FALSE);
   if (thisp->plane.getValue() != plane) {
