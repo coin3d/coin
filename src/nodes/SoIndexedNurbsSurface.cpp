@@ -123,7 +123,7 @@ SoIndexedNurbsSurface::SoIndexedNurbsSurface()
 SoIndexedNurbsSurface::~SoIndexedNurbsSurface()
 {
   if (this->nurbsrenderer) {
-#if HAVE_GLU_NURBSOBJECT
+#ifdef HAVE_GLU_NURBSOBJECT
     gluDeleteNurbsRenderer((HAVE_GLU_NURBSOBJECT *)this->nurbsrenderer);
 #endif // HAVE_GLU_NURBSOBJECT
   }
@@ -263,7 +263,7 @@ SoIndexedNurbsSurface::createTriangleDetail(SoRayPickAction * /* action */,
 void
 SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
 {
-#if HAVE_GLU_NURBSOBJECT
+#ifdef HAVE_GLU_NURBSOBJECT
   if (!this->coordIndex.getNum()) return;
 
   if (this->nurbsrenderer == NULL) {

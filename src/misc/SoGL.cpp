@@ -1057,7 +1057,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   }
 #endif // !GLU_VERSION_1_3
 
-#if HAVE_GLU_NURBSOBJECT
+#ifdef HAVE_GLU_NURBSOBJECT
   HAVE_GLU_NURBSOBJECT * nurbsobj = (HAVE_GLU_NURBSOBJECT *) nurbsrenderer;
   SoState * state = action->getState();
 
