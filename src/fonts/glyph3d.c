@@ -299,6 +299,7 @@ cc_glyph3d_getnextccwedge(const cc_glyph3d * g, int edgeidx)
 float
 cc_glyph3d_getwidth(const cc_glyph3d * g)
 {
+  assert(g && "Parameter cc_glyph3d == NULL!");
   return g->width;
 }
 
