@@ -110,6 +110,10 @@ SoCylinder::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   float r = this->radius.getValue();
   float h = this->height.getValue();
 
+  // Allow negative values.
+  if (r < 0.0f) r = -r;
+  if (h < 0.0f) h = -h;
+
   // Either the SIDES are present, or we've at least got both the TOP
   // and BOTTOM caps -- so just find the middle point and enclose
   // everything.
