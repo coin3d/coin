@@ -42,6 +42,7 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/misc/SoContextHandler.h>
 
 // *************************************************************************
 
@@ -72,7 +73,7 @@ typedef struct {
 
 static SbList <so_glext_info *> * extsupportlist;
 static SbList <SoGLDisplayList*> * scheduledeletelist;
-static SbList <so_scheduledeletecb_info*> * scheduledeletecblist; 
+static SbList <so_scheduledeletecb_info*> * scheduledeletecblist;
 static void * glcache_mutex;
 
 static void soglcachecontext_cleanup(void)
@@ -93,6 +94,47 @@ static void soglcachecontext_cleanup(void)
   CC_MUTEX_DESTRUCT(glcache_mutex);
 }
 
+//
+// Used both as a callback from SoContextHandler and called directly
+// from inside this class every time ::set() is called.
+//
+void 
+SoGLCacheContextElement::cleanupContext(uint32_t contextid, void * userdata)
+{
+  int context = (int) contextid;
+
+  CC_MUTEX_LOCK(glcache_mutex);
+
+  int i = 0;
+  int n = scheduledeletelist->getLength();
+
+  while (i < n) {
+    SoGLDisplayList * dl = (*scheduledeletelist)[i];
+    if (dl->getContext() == context) {
+      scheduledeletelist->removeFast(i);
+      n--;
+      delete dl;
+    }
+    else i++;
+  }
+
+  i = 0;
+  n = scheduledeletecblist->getLength();
+  while (i < n) {
+    so_scheduledeletecb_info * info = (*scheduledeletecblist)[i];
+    if (info->contextid == contextid) {
+      info->cb(info->closure, info->contextid);
+      scheduledeletecblist->removeFast(i);
+      n--;
+      delete info;
+    }
+    else i++;
+  }
+
+  CC_MUTEX_UNLOCK(glcache_mutex);
+
+}
+
 // *************************************************************************
 
 // doc from parent
@@ -106,6 +148,9 @@ SoGLCacheContextElement::initClass(void)
   scheduledeletecblist = new SbList <so_scheduledeletecb_info*>;
   CC_MUTEX_CONSTRUCT(glcache_mutex);
   coin_atexit((coin_atexit_f *)soglcachecontext_cleanup, 0);
+
+  // add a callback which is called every time a GL-context is destructed
+  SoContextHandler::addContextDestructionCallback(cleanupContext, NULL);
 }
 
 /*!
@@ -169,36 +214,9 @@ SoGLCacheContextElement::set(SoState * state, int context,
   }
 
   if (remoterendering) elem->autocachebits = DO_AUTO_CACHE;
-
-  CC_MUTEX_LOCK(glcache_mutex);
-
-  int i = 0;
-  int n = scheduledeletelist->getLength();
-
-  while (i < n) {
-    SoGLDisplayList * dl = (*scheduledeletelist)[i];
-    if (dl->getContext() == context) {
-      scheduledeletelist->removeFast(i);
-      n--;
-      delete dl;
-    }
-    else i++;
-  }
-
-  i = 0;
-  n = scheduledeletecblist->getLength();
-  while (i < n) {
-    so_scheduledeletecb_info * info = (*scheduledeletecblist)[i];
-    if (info->contextid == (uint32_t)context) {
-      info->cb(info->closure, info->contextid);
-      scheduledeletecblist->removeFast(i);
-      n--;
-      delete info;
-    }
-    else i++;
-  }
-
-  CC_MUTEX_UNLOCK(glcache_mutex);
+  
+  // really delete GL resources scheduled for destruction
+  SoGLCacheContextElement::cleanupContext((uint32_t) context, NULL);  
 }
 
 /*!
@@ -276,7 +294,7 @@ SoGLCacheContextElement::extSupported(SoState * state, int extid)
 
 /*!
   Returns the OpenGL version for the current context. This method is
-  an extension versus the Open Inventor API.  
+  an extension versus the Open Inventor API.
 */
 void
 SoGLCacheContextElement::getOpenGLVersion(SoState * state,
@@ -387,10 +405,10 @@ SoGLCacheContextElement::scheduleDelete(SoState * state, class SoGLDisplayList *
   context (specified by \a contextid) is the current OpenGL context.
 
   This function can be used to free OpenGL resources for a context.
-  
+
   \since Coin 2.3
 */
-void 
+void
 SoGLCacheContextElement::scheduleDeleteCallback(const uint32_t contextid,
                                                 SoScheduleDeleteCB * cb,
                                                 void * closure)
@@ -423,6 +441,3 @@ SoGLCacheContextElement::getUniqueCacheContext(void)
   CC_MUTEX_UNLOCK(glcache_mutex);
   return id;
 }
-
-
-

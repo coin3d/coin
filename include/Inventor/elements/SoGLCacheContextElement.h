@@ -76,6 +76,7 @@ public:
 private:
   friend class SoGLDisplayList;
   static void scheduleDelete(SoState * state, SoGLDisplayList * dl);
+  static void cleanupContext(uint32_t contextid, void * closure);
 
 private:
   int context;
