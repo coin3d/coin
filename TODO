@@ -41,15 +41,6 @@ TODO:
   versions of Coin (--without-coin-engines etc). Or perhaps make a
   single --compile-basesystem option instead?
 
-* [mortene:19991226] search for the doxygen tool by using an autoconf
-  macro.
-
-* [mortene:19990913] integrate the doxygen man- and html-generation
-  into "make install".
-
-* [mortene:1999????] make Coin build under MSWindows with the Cygwin
-  tools.
-
 * [mortene:19991127] use the PETI_WITH_DMALLOC macro from the autoconf
   macro archives to optionally make with dmalloc
   (<http://www.dmalloc.com>).
@@ -78,6 +69,8 @@ TODO:
   STL definition? Look into this to see if it can be solved. (Reported
   by Jason Fritz on coin-devsupport.)
 
+* [larsa:20000712] Add build-options for linking with ElectricFence
+  and similar tools.
 
 *** SUPPORT ITEMS ***
 
@@ -88,9 +81,6 @@ TODO:
 * [mortene:19990807] make an overview list on the Coin WWW pages of
   what's implemented and what's not -- separate list into "vs OI 2.1"
   and "vs OI 2.5".
-
-* [mortene:19991009] autogenerate Doxygen html documentation and
-  publish on our Coin www pages.
 
 * [mortene:19991016] convert documentation of functions to Doxygen's
   \param + \return format (this is a _huge_ and boring job, but it can
