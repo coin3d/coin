@@ -336,7 +336,7 @@ public:
   primcbdata_t primcbdata;
 
   void doSelect(const SoPath * path);
-  void selectPaths();
+  void selectPaths(void);
   SoLassoSelectionFilterCB * filterCB;
   void * filterCBData;
 
@@ -1180,9 +1180,9 @@ SoExtSelection::setPointFilterCallback(SoExtSelectionPointCB * func,
 }
 
 /*!
-  Returns whether the SHIFT key was pressed during the latest
-  user interaction. This is useful if you want to respect the
-  shift policy while selecting primitives.
+  Returns whether the \c SHIFT key was pressed during the latest user
+  interaction. This is useful if you want to respect the shift policy
+  while selecting primitives.
 
   This method is specific to Coin, and is not part of TGS OIV.
 */
@@ -2018,13 +2018,18 @@ SoExtSelectionP::doSelect(const SoPath * path)
                          path->findNode(PUBLIC(this)) >= 0)) {
     newpath = this->filterCB(this->filterCBData, path);
   }
-  if (newpath == NULL) 
-    return;
-  if (newpath != path) 
-    newpath->ref();
+
+  if (newpath == NULL) { return; }
+
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoExtSelectionP::doSelect",
+                         "selected path with %s at tail",
+                         newpath->getTail()->getTypeId().getName().getString());
+#endif // debug
+
+  if (newpath != path) { newpath->ref(); }
   PUBLIC(this)->invokeSelectionPolicy(newpath, TRUE);
-  if (newpath != path) 
-    newpath->unref();
+  if (newpath != path) { newpath->unref(); }
 }
 
 
@@ -2043,13 +2048,13 @@ SoExtSelectionP::addVisitedPath(const SoPath *path)
 
 // Call a doSelect for all paths in pathlist
 void
-SoExtSelectionP::selectPaths()
+SoExtSelectionP::selectPaths(void)
 {
- 
   int length = this->visitedshapepaths->getLength();
  
-  for(int i=0;i<length;++i)
-    doSelect((*(this->visitedshapepaths))[i]);
+  for(int i=0;i<length;++i) {
+    this->doSelect((*(this->visitedshapepaths))[i]);
+  }
  
   this->visitedshapepaths->truncate(0);
 }
@@ -2326,7 +2331,6 @@ SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
 void
 SoExtSelectionP::performSelection(SoHandleEventAction * action)
 {
-
   if (PUBLIC(this)->lassoType.getValue() == SoExtSelection::RECTANGLE) {
     assert(this->coords.getLength() == 2);
     SbVec2s p0 = this->coords[0];
@@ -2509,6 +2513,6 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
   PUBLIC(this)->finishCBList->invokeCallbacks(PUBLIC(this));
   PUBLIC(this)->touch();
 
-  selectPaths(); // Execute a 'doSelect' on all stored paths.
+  this->selectPaths(); // Execute a 'doSelect' on all stored paths.
 }
 
