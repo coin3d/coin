@@ -198,6 +198,10 @@ SoAction::isOfType(SoType type) const
 void
 SoAction::apply(SoNode * root)
 {
+  // This is a pretty good indicator on whether or not we remembered
+  // to use the SO_ACTION_CONSTRUCTOR() macro in the constructor of
+  // the SoAction subclass.
+  assert(this->traversalMethods);
   this->traversalMethods->setUp();
   this->terminated = FALSE;
 
@@ -228,6 +232,10 @@ SoAction::apply(SoNode * root)
 void
 SoAction::apply(SoPath * path)
 {
+  // This is a pretty good indicator on whether or not we remembered
+  // to use the SO_ACTION_CONSTRUCTOR() macro in the constructor of
+  // the SoAction subclass.
+  assert(this->traversalMethods);
   this->traversalMethods->setUp();
   this->terminated = FALSE;
 
@@ -266,6 +274,10 @@ SoAction::apply(SoPath * path)
 void
 SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
 {
+  // This is a pretty good indicator on whether or not we remembered
+  // to use the SO_ACTION_CONSTRUCTOR() macro in the constructor of
+  // the SoAction subclass.
+  assert(this->traversalMethods);
   this->traversalMethods->setUp();
   if (pathlist.getLength() == 0) return;
 
@@ -420,22 +432,19 @@ void
 SoAction::traverse(SoNode * const node)
 {
   assert(node);
-
-  // FIXME: if no action method, try parents in inheritance tree up to
-  // SoNode.
-
   PathCode storedpathcode = this->currentpathcode;
 
   // FIXME: write code for PathList traversal.
 
   this->currentpath.append(node);
-
+  
   switch (this->currentpathcode) {
   case SoAction::IN_PATH:
     {
       int idx = this->currentpath.getFullLength();
-
-      if (this->applieddata.path->getNode(idx - 1) != node) {
+      int nodeidx = this->currentpath.getIndexFromTail(0);
+      
+      if (this->applieddata.path->getIndex(idx - 1) != nodeidx) {
         this->currentpathcode = SoAction::OFF_PATH;
       }
       else { // either in or below path
@@ -460,11 +469,6 @@ SoAction::traverse(SoNode * const node)
     assert(0 && "Unknown path code");
     break;
   }
-
-  // This is a pretty good indicator on whether or not we remembered
-  // to use the SO_ACTION_CONSTRUCTOR() macro in the constructor of
-  // the SoAction subclass.
-  assert(this->traversalMethods);
 
   (*this->traversalMethods)
     [SoNode::getActionMethodIndex(node->getTypeId())](this, node);
@@ -564,31 +568,33 @@ SoAction::usePathCode(int & numindices, const int * & indices)
 }
 
 /*!
-  \internal
+  Internal OIV method used to optimize GLRender traversal. Not
+  implemented (yet).
 */
 void
 SoAction::pushCurPath(void)
 {
-  COIN_STUB(); // FIXME
+  COIN_STUB();
 }
 
 /*!
-  \internal
+  Internal OIV method used to optimize GLRender traversal. Not
+  implemented (yet).
 */
 void
 SoAction::popPushCurPath(const int childindex)
 {
-  this->currentpath.pop();
-  this->currentpath.push(childindex);
+  COIN_STUB();
 }
 
 /*!
-  \internal
+  Internal OIV method used to optimize GLRender traversal. Not
+  implemented (yet).
 */
 void
 SoAction::popCurPath(void)
 {
-  this->currentpath.pop();
+  COIN_STUB();
 }
 
 // *************************************************************************
