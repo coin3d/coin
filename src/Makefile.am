@@ -101,7 +101,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
 
 ## Installation information.
 
-if MACOSX_10_2
+if MACOSX_10_2FF
 # we are dealing with the Mac OS X 10.2 gcc compiler toolset...
 LibtoolLinkArgs = -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000
 else

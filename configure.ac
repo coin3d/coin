@@ -229,17 +229,16 @@ if $BUILD_WITH_MSVC; then
   export RANLIB
 fi
 
-# Detect Mac OS 10.2 "Jaguar"
-
+# Detect Mac OS 10.2 "Jaguar" or 10.3 "Panther"
 case $host_os in
-darwin6.* ) sim_ac_macosx_10_2=true ;;
-* )         sim_ac_macosx_10_2=false ;;
+darwin[[67]].* ) sim_ac_macosx_10_2ff=true ;;
+* )         sim_ac_macosx_10_2ff=false ;;
 esac
 
 AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_framework])
-AM_CONDITIONAL([MACOSX_10_2], [$sim_ac_macosx_10_2])
+AM_CONDITIONAL([MACOSX_10_2FF], [$sim_ac_macosx_10_2ff])
 
-if test x"$sim_ac_macosx_10_2" = x"true"; then
+if test x"$sim_ac_macosx_10_2ff" = x"true"; then
   # In libtool.m4, undefined symbols are handled depending on 
   # this envvar. We are building as two-level namespace lib, so...
   LD_TWOLEVEL_NAMESPACE=1
