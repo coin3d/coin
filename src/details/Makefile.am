@@ -72,10 +72,8 @@ EXTRA_details_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 details.lst: Makefile $(details_lst_OBJECTS)
 	@echo "Linking details.lst..."; \
-	echo $(CC) /LST:details.lst \
-	  $(details_lst_OBJECTS); \
-	$(CC) /LST:details.lst \
-	  $(details_lst_OBJECTS);
+	rm -f $@; \
+	for i in $(details_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libdetailsincHEADERS: $(libdetailsinc_HEADERS)
 	@$(NORMAL_INSTALL)

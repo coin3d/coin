@@ -68,10 +68,8 @@ EXTRA_events_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 events.lst: Makefile $(events_lst_OBJECTS)
 	@echo "Linking events.lst..."; \
-	echo $(CC) /LST:events.lst \
-	  $(events_lst_OBJECTS); \
-	$(CC) /LST:events.lst \
-	  $(events_lst_OBJECTS);
+	rm -f $@; \
+	for i in $(events_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libeventsincHEADERS: $(libeventsinc_HEADERS)
 	@$(NORMAL_INSTALL)

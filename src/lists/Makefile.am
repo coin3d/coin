@@ -90,10 +90,8 @@ EXTRA_lists_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 lists.lst: Makefile $(lists_lst_OBJECTS)
 	@echo "Linking lists.lst..."; \
-	echo $(CC) /LST:lists.lst \
-	  $(lists_lst_OBJECTS); \
-	$(CC) /LST:lists.lst \
-	  $(lists_lst_OBJECTS);
+	rm -f $@; \
+	for i in $(lists_lst_OBJECTS); do echo $$i >>$@; done
 
 install-liblistsincHEADERS: $(liblistsinc_HEADERS)
 	@$(NORMAL_INSTALL)

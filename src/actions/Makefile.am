@@ -81,10 +81,8 @@ EXTRA_actions_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 actions.lst: Makefile $(actions_lst_OBJECTS)
 	@echo "Linking actions.lst..."; \
-	echo $(CC) /LST:actions.lst \
-	  $(actions_lst_OBJECTS); \
-	$(CC) /LST:actions.lst \
-	  $(actions_lst_OBJECTS);
+	rm -f $@; \
+	for i in $(actions_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libactionsincHEADERS: $(libactionsinc_HEADERS)
 	@$(NORMAL_INSTALL)

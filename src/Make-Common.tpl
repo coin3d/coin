@@ -43,10 +43,8 @@ EXTRA_-xxx-_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 -xxx-.lst: Makefile $(-xxx-_lst_OBJECTS)
 	@echo "Linking -xxx-.lst..."; \
-	echo $(CC) /LST:-xxx-.lst \
-	  $(-xxx-_lst_OBJECTS); \
-	$(CC) /LST:-xxx-.lst \
-	  $(-xxx-_lst_OBJECTS);
+	rm -f $@; \
+	for i in $(-xxx-_lst_OBJECTS); do echo $$i >>$@; done
 
 install-lib-xxx-incHEADERS: $(lib-xxx-inc_HEADERS)
 	@$(NORMAL_INSTALL)

@@ -58,10 +58,8 @@ EXTRA_VRMLnodes_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 VRMLnodes.lst: Makefile $(VRMLnodes_lst_OBJECTS)
 	@echo "Linking VRMLnodes.lst..."; \
-	echo $(CC) /LST:VRMLnodes.lst \
-	  $(VRMLnodes_lst_OBJECTS); \
-	$(CC) /LST:VRMLnodes.lst \
-	  $(VRMLnodes_lst_OBJECTS);
+	rm -f $@; \
+	for i in $(VRMLnodes_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libVRMLnodesincHEADERS: $(libVRMLnodesinc_HEADERS)
 	@$(NORMAL_INSTALL)

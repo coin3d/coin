@@ -66,10 +66,8 @@ EXTRA_caches_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 caches.lst: Makefile $(caches_lst_OBJECTS)
 	@echo "Linking caches.lst..."; \
-	echo $(CC) /LST:caches.lst \
-	  $(caches_lst_OBJECTS); \
-	$(CC) /LST:caches.lst \
-	  $(caches_lst_OBJECTS);
+	rm -f $@; \
+	for i in $(caches_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libcachesincHEADERS: $(libcachesinc_HEADERS)
 	@$(NORMAL_INSTALL)

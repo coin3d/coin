@@ -111,10 +111,8 @@ EXTRA_misc_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 misc.lst: Makefile $(misc_lst_OBJECTS)
 	@echo "Linking misc.lst..."; \
-	echo $(CC) /LST:misc.lst \
-	  $(misc_lst_OBJECTS); \
-	$(CC) /LST:misc.lst \
-	  $(misc_lst_OBJECTS);
+	rm -f $@; \
+	for i in $(misc_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libmiscincHEADERS: $(libmiscinc_HEADERS)
 	@$(NORMAL_INSTALL)

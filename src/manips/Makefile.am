@@ -77,10 +77,8 @@ EXTRA_manips_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 manips.lst: Makefile $(manips_lst_OBJECTS)
 	@echo "Linking manips.lst..."; \
-	echo $(CC) /LST:manips.lst \
-	  $(manips_lst_OBJECTS); \
-	$(CC) /LST:manips.lst \
-	  $(manips_lst_OBJECTS);
+	rm -f $@; \
+	for i in $(manips_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libmanipsincHEADERS: $(libmanipsinc_HEADERS)
 	@$(NORMAL_INSTALL)

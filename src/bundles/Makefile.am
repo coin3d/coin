@@ -58,10 +58,8 @@ EXTRA_bundles_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 bundles.lst: Makefile $(bundles_lst_OBJECTS)
 	@echo "Linking bundles.lst..."; \
-	echo $(CC) /LST:bundles.lst \
-	  $(bundles_lst_OBJECTS); \
-	$(CC) /LST:bundles.lst \
-	  $(bundles_lst_OBJECTS);
+	rm -f $@; \
+	for i in $(bundles_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libbundlesincHEADERS: $(libbundlesinc_HEADERS)
 	@$(NORMAL_INSTALL)

@@ -79,10 +79,8 @@ EXTRA_nodekits_lst_SOURCES = \
 # this rule causes a make warning, so we remove it when it is not in use
 nodekits.lst: Makefile $(nodekits_lst_OBJECTS)
 	@echo "Linking nodekits.lst..."; \
-	echo $(CC) /LST:nodekits.lst \
-	  $(nodekits_lst_OBJECTS); \
-	$(CC) /LST:nodekits.lst \
-	  $(nodekits_lst_OBJECTS);
+	rm -f $@; \
+	for i in $(nodekits_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libnodekitsincHEADERS: $(libnodekitsinc_HEADERS)
 	@$(NORMAL_INSTALL)
