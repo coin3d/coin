@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -229,6 +229,9 @@ SoBaseList::set(const int i, SoBase * const ptr)
   // object.
 
   if (this->referencing) {
+    // Note: it's important to ref() before we unref(), in case the
+    // value of ptr is equal to the old value (otherwise we could
+    // unref() it to zero, which causes premature destruction).
     if (ptr) ptr->ref();
     if (GET_BASEPTR(i)) GET_BASEPTR(i)->unref();
   }
