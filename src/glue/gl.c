@@ -198,7 +198,7 @@
 #include <limits.h> /* SHRT_MAX */
 
 #ifdef HAVE_AGL
-#include <AGL/AGL.h>
+#include <AGL/agl.h>
 #include <OpenGL/CGLCurrent.h>  /* for CGLGetCurrentContext */
 #endif /* HAVE_AGL */
 
