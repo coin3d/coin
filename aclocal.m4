@@ -984,7 +984,7 @@ fi
 ])
 
 # Usage:
-#   SIM_COMPILE_DEBUG( ACTION-IF-DEBUG, ACTION-IF-NOT-DEBUG )
+#   SIM_AC_COMPILE_DEBUG([ACTION-IF-DEBUG[, ACTION-IF-NOT-DEBUG]])
 #
 # Description:
 #   Let the user decide if compilation should be done in "debug mode".
@@ -997,9 +997,6 @@ fi
 #   macro arguments following the well-known ACTION-IF / ACTION-IF-NOT
 #   concept.
 #
-#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
-#   in the configure.in script.
-#
 # Authors:
 #   Morten Eriksen, <mortene@sim.no>
 #   Lars J. Aas, <larsa@sim.no>
@@ -1009,28 +1006,25 @@ fi
 #   default-value.
 #
 
-AC_DEFUN([SIM_COMPILE_DEBUG], [
-AC_PREREQ([2.13])
-
+AC_DEFUN([SIM_AC_COMPILE_DEBUG], [
 AC_ARG_ENABLE(
   [debug],
   AC_HELP_STRING([--enable-debug], [compile in debug mode [[default=yes]]]),
   [case "${enableval}" in
-    yes) enable_debug=yes ;;
-    no)  enable_debug=no ;;
+    yes) enable_debug=true ;;
+    no)  enable_debug=false ;;
+    true | false) enable_debug=${enableval} ;;
     *) AC_MSG_ERROR(bad value "${enableval}" for --enable-debug) ;;
   esac],
-  [enable_debug=yes])
+  [enable_debug=true])
 
-if test x"$enable_debug" = x"yes"; then
+if $enable_debug; then
   ifelse([$1], , :, [$1])
 else
-  CFLAGS="$CFLAGS -DNDEBUG"
-  CXXFLAGS="$CXXFLAGS -DNDEBUG"
+  CPPFLAGS="$CPPFLAGS -DNDEBUG"
   $2
 fi
 ])
-
 
 # Usage:
 #   SIM_AC_DEBUGSYMBOLS

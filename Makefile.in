@@ -107,7 +107,7 @@ sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 
-SUBDIRS = include data build src
+SUBDIRS = include data src
 
 bin_SCRIPTS = coin-config
 BUILT_SOURCES = coin-config
