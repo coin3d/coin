@@ -14222,9 +14222,11 @@ if $enable_debug; then
   DSUFFIX=d
 
   if test x"$GCC" = x"yes"; then
-    CPPFLAGS="$CPPFLAGS -fno-builtin";   # no auto string.h-functions
-    CPPFLAGS="$CPPFLAGS -Wreturn-type";  # warn on missing return-value
-    CXXFLAGS="$CXXFLAGS -fno-for-scope"; # disallow non-standard scoping of for()-variables
+    CPPFLAGS="$CPPFLAGS -fno-builtin";    # no auto string.h-functions
+    CXXFLAGS="$CXXFLAGS -fno-for-scope";  # disallow non-standard scoping of for()-variables
+    CPPFLAGS="$CPPFLAGS -Wreturn-type";   # warn on missing return-value
+    CPPFLAGS="$CPPFLAGS -Wuninitialized"; # use of uninitialized variables
+    CPPFLAGS="$CPPFLAGS -Werror";         # don't let the developer get away with warnings
   fi
   CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=1"
 
