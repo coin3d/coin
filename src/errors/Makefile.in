@@ -140,7 +140,8 @@ RegularSources = \
 	SoReadError.cpp
 
 LinkHackSources = \
-	all.cpp all-c.c
+	all-c.c \
+	all-cpp.cpp
 
 PublicHeaders = \
 	../../include/Inventor/errors/SoErrors.h \
@@ -192,8 +193,8 @@ LIBRARIES = $(noinst_LIBRARIES)
 
 errors_lst_AR = $(AR) cru
 errors_lst_LIBADD =
-@HACKING_COMPACT_BUILD_TRUE@am_errors_lst_OBJECTS = all.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_TRUE@	all-c.$(OBJEXT)
+@HACKING_COMPACT_BUILD_TRUE@am_errors_lst_OBJECTS = all-c.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_TRUE@	all-cpp.$(OBJEXT)
 @HACKING_COMPACT_BUILD_FALSE@am_errors_lst_OBJECTS = error.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	debugerror.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoDebugError.$(OBJEXT) \
@@ -205,7 +206,8 @@ LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 liberrors_la_LDFLAGS =
 liberrors_la_LIBADD =
-@HACKING_COMPACT_BUILD_TRUE@am_liberrors_la_OBJECTS = all.lo all-c.lo
+@HACKING_COMPACT_BUILD_TRUE@am_liberrors_la_OBJECTS = all-c.lo \
+@HACKING_COMPACT_BUILD_TRUE@	all-cpp.lo
 @HACKING_COMPACT_BUILD_FALSE@am_liberrors_la_OBJECTS = error.lo \
 @HACKING_COMPACT_BUILD_FALSE@	debugerror.lo SoDebugError.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoError.lo SoMemoryError.lo \
@@ -214,7 +216,7 @@ liberrors_la_OBJECTS = $(am_liberrors_la_OBJECTS)
 liberrors@SUFFIX@LINKHACK_la_LDFLAGS =
 liberrors@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_liberrors@SUFFIX@LINKHACK_la_OBJECTS = \
-@HACKING_COMPACT_BUILD_TRUE@	all.lo all-c.lo
+@HACKING_COMPACT_BUILD_TRUE@	all-c.lo all-cpp.lo
 @HACKING_COMPACT_BUILD_FALSE@am_liberrors@SUFFIX@LINKHACK_la_OBJECTS = \
 @HACKING_COMPACT_BUILD_FALSE@	error.lo debugerror.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoDebugError.lo SoError.lo \
@@ -233,7 +235,7 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoMemoryError.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoReadError.Plo $(DEPDIR)/SoReadError.Po \
 @AMDEP_TRUE@	$(DEPDIR)/all-c.Plo $(DEPDIR)/all-c.Po \
-@AMDEP_TRUE@	$(DEPDIR)/all.Plo $(DEPDIR)/all.Po \
+@AMDEP_TRUE@	$(DEPDIR)/all-cpp.Plo $(DEPDIR)/all-cpp.Po \
 @AMDEP_TRUE@	$(DEPDIR)/debugerror.Plo $(DEPDIR)/debugerror.Po \
 @AMDEP_TRUE@	$(DEPDIR)/error.Plo $(DEPDIR)/error.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -330,8 +332,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoReadError.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-c.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-c.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/debugerror.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/debugerror.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/error.Plo@am__quote@
