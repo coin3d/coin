@@ -352,13 +352,7 @@ SoInput_FileInfo::getReader(FILE * fp, const SbString & fullname)
     int bzerror = BZ_OK;
     BZFILE * bzfp = BZ2_bzReadOpen(&bzerror,  fp, 0, 0, NULL, 0);
     if ((bzerror == BZ_OK) && (bzfp != NULL)) {
-      fprintf(stderr,"bzreader\n");
       reader = new SoInput_BZFileReader(fullname.getString(), (void*) bzfp);
-    }
-    else {
-      fprintf(stderr,"failed to open: %s, %d\n", 
-              fullname.getString(),
-              (int) ftell(fp));
     }
   }
 #endif // HAVE_BZIP2
