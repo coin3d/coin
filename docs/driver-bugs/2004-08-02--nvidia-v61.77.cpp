@@ -1,8 +1,8 @@
 /*
   The simple example below causes a WinXP machine with NVIDIA 61.77 to
   crash within the driver. The example code just compiles a GL display
-  list with a few textures and a few triangles, then invokes this
-  list. This causes a crash.
+  list with a few triangles, then invokes this list. This causes a
+  crash.
 
   Not yet reported to NVIDIA, asking for confirmation from other
   systems, on the nvnews.net forums, aswell as from HitecO (who
@@ -17,10 +17,7 @@
 
   * Win XP Service Pack 1.
 
-  * Display settings: 1280x1024, 32 bit.  Notes: this specific example
-    does *not* crash when color quality is set to 16 bit, but an
-    extended example I have will still crash. Changing the display
-    resolution does not make any difference, it seems.
+  * Display settings: any resolution, any color depth.
 
   <mortene@sim.no>.
 */
@@ -69,23 +66,13 @@ expose_cb(void)
     glViewport(0,0,892,658);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glEnable(GL_LIGHT0);
-    glEnable(GL_TEXTURE_2D);
     glEnable(GL_LIGHTING);
-
-    GLuint textures[1];
-    glGenTextures(1,textures);
-
-    glBindTexture(GL_TEXTURE_2D,textures[0]);
-    GLubyte pixels[1] = { 0x55 };
-    glTexImage2D(GL_TEXTURE_2D,0,0x0003,1,1,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
 
     // *********************************************************************
 
     GLuint gllist = glGenLists(1);
+    // Change to GL_COMPILE, and the crashes go away:
     glNewList(gllist,GL_COMPILE_AND_EXECUTE);
-
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D,textures[0]);
 
     glColor4f(0, 1, 0, 1);
 
@@ -112,10 +99,9 @@ expose_cb(void)
     glutSwapBuffers();
 
 #if 0 // enable this, and the crashes go away
-    glDeleteTextures(2, textures);
     glDeleteLists(gllist, 1);
 #endif
-    printf("textures[0]==%d, gllist==%d\n", textures[0], gllist);
+    printf("gllist==%d\n", gllist);
   }
 }
 
