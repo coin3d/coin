@@ -1,6 +1,3 @@
-#ifndef COIN_NAME_H
-#define COIN_NAME_H
-
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -24,39 +21,61 @@
  *
 \**************************************************************************/
 
-/* This is the interface for a C ADT for unique string mappings. */
+// FIXME: this implements a C ADT for doing unique string
+// mappings. It's basically just a quick hack of wrapping the C ADT
+// around our SbName C++ class. We should really correct this to be
+// the other way around.
+//
+// Don't make this class public until the C rewrite happens.
+//
+// 20030606 mortene.
 
-/*************************************************************************/
-
-#ifndef COIN_INTERNAL
-#error Only for internal use.
-#endif /* COIN_INTERNAL */
-
-/*************************************************************************/
-
-#include <Inventor/C/basic.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+#include <Inventor/C/base/name.h>
+#include <Inventor/SbName.h>
 
 /* ********************************************************************** */
 
-  typedef struct cc_name cc_name;
+struct cc_name {
+  SbName * cppname;
+};
 
-  cc_name * cc_name_new(const char * str);
-  void cc_name_destruct(cc_name * name);
+cc_name *
+cc_name_new(const char * str)
+{
+  cc_name * n = new struct cc_name;
+  n->cppname = new SbName(str);
+  return n;
+}
 
-  const char * cc_name_get_string(const cc_name * name);
-  unsigned int cc_name_get_length(const cc_name * name);
+void
+cc_name_destruct(cc_name * name)
+{
+  delete name->cppname;
+  delete name;
+}
 
-  SbBool cc_name_equals(const cc_name * name1, const cc_name * name2);
-  SbBool cc_name_equals_string(const cc_name * name, const char * st);
+const char *
+cc_name_get_string(const cc_name * name)
+{
+  return name->cppname->getString();
+}
+
+unsigned int
+cc_name_get_length(const cc_name * name)
+{
+  return name->cppname->getLength();
+}
+
+SbBool
+cc_name_equals(const cc_name * name1, const cc_name * name2)
+{
+  return *(name1->cppname) == *(name2->cppname);
+}
+
+SbBool
+cc_name_equals_string(const cc_name * name, const char * str)
+{
+  return *(name->cppname) == str;
+}
 
 /* ********************************************************************** */
-
-#ifdef __cplusplus
-} /* extern "C" */
-#endif /* __cplusplus */
-
-#endif /* ! COIN_NAME_H */
