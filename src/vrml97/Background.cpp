@@ -310,7 +310,7 @@ public:
 
   SbBool geometrybuilt;
 
-  void buildGeometry();
+  void buildGeometry(void);
   void modifyCubeFace(SoMFString & urls, SoSeparator * facesep, const int32_t * vindices);
   SoSeparator * createCubeFace(SoMFString & urls, SoSeparator * sep, const int32_t * vindices);
   void buildIndexList(SoIndexedTriangleStripSet * sphere, int len, int slices, int matlength);
@@ -443,18 +443,18 @@ SoVRMLBackground::~SoVRMLBackground()
 void
 SoVRMLBackground::GLRender(SoGLRenderAction * action)
 {
+  if (!PRIVATE(this)->geometrybuilt) { PRIVATE(this)->buildGeometry(); }
+
   SoState * state = action->getState();
 
   // push state since we're going to modify the model matrix
   state->push();
 
-  if (PRIVATE(this)->geometrybuilt) {
-    const SbMatrix & tmp =
-      SoViewingMatrixElement::get(state);
-    SbRotation rot(tmp);
-    // rotate background camera so that it matches the current camera
-    PRIVATE(this)->camera->orientation = rot.inverse();
-  }
+  const SbMatrix & tmp = SoViewingMatrixElement::get(state);
+  SbRotation rot(tmp);
+  // rotate background camera so that it matches the current camera
+  PRIVATE(this)->camera->orientation = rot.inverse();
+
   // set to identity before rendering subgraph
   SoModelMatrixElement::makeIdentity(state, this);  
 
@@ -478,9 +478,8 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
 
 
 void
-SoVRMLBackgroundP::buildGeometry()
+SoVRMLBackgroundP::buildGeometry(void)
 {
-
   float sphereradius = 1.5;
   SbList <float> angles;
   const int slices = 30; // Number of slices, i.e. vertical resolution of the spheres.
@@ -512,15 +511,15 @@ SoVRMLBackgroundP::buildGeometry()
     if (PUBLIC(this)->skyAngle.getNum() > 0) {
       for (int k=0;k<PUBLIC(this)->skyAngle.getNum();++k) { 
         if (angle > PUBLIC(this)->skyAngle[k]) {
-          SoDebugError::postWarning("buildGeometry","skyAngle array values must be non-decreasing.");
+          SoDebugError::postWarning("SoVRMLBackgroundP::buildGeometry","skyAngle array values must be non-decreasing.");
           continue;
         }
         angle = PUBLIC(this)->skyAngle[k];
         if (angle > M_PI) {
-          SoDebugError::postWarning("buildGeometry","skyAngle=%f > PI not allowed.", angle);
+          SoDebugError::postWarning("SoVRMLBackgroundP::buildGeometry","skyAngle=%f > PI not allowed.", angle);
           angle = (float) M_PI;
         } else if (angle < 0) {
-          SoDebugError::postWarning("buildGeometry","skyAngle=%f < 0 not allowed.", angle);
+          SoDebugError::postWarning("SoVRMLBackgroundP::buildGeometry","skyAngle=%f < 0 not allowed.", angle);
           angle = 0.0f;
         } 
         angles.append(angle);
@@ -575,7 +574,7 @@ SoVRMLBackgroundP::buildGeometry()
         skyproperties->orderedRGBA.set1Value(i, PUBLIC(this)->skyColor[i].getPackedValue(0));
       skyproperties->materialBinding = SoMaterialBinding::PER_VERTEX_INDEXED;
     } else {
-      SoDebugError::postWarning("buildGeometry","No colors specified for the sky.");
+      SoDebugError::postWarning("SoVRMLBackgroundP::buildGeometry","No colors specified for the sky.");
       return;
     }
 
@@ -609,16 +608,16 @@ SoVRMLBackgroundP::buildGeometry()
 
       for (int k=0;k<PUBLIC(this)->groundAngle.getNum();++k) { 
         if (angle > PUBLIC(this)->groundAngle[k]) {
-          SoDebugError::postWarning("buildGeometry","groundAngle array values must be non-decreasing.");
+          SoDebugError::postWarning("SoVRMLBackgroundP::buildGeometry","groundAngle array values must be non-decreasing.");
           continue;
         }
         angle = PUBLIC(this)->groundAngle[k];
         if (angle > M_PI/2) {
-          SoDebugError::postWarning("buildGeometry","groundAngle=%f > PI/2 not allowed.", angle);
+          SoDebugError::postWarning("SoVRMLBackgroundP::buildGeometry","groundAngle=%f > PI/2 not allowed.", angle);
 
           angle = (float) (M_PI / 2.0);
         } else if (angle < 0) {
-          SoDebugError::postWarning("buildGeometry","groundAngle=%f < 0 not allowed.", angle);
+          SoDebugError::postWarning("SoVRMLBackgroundP::buildGeometry","groundAngle=%f < 0 not allowed.", angle);
           angle = 0;
         } 
         angles.append(angle);
@@ -670,7 +669,7 @@ SoVRMLBackgroundP::buildGeometry()
         groundproperties->orderedRGBA.set1Value(i, PUBLIC(this)->groundColor[i].getPackedValue(0));
       groundproperties->materialBinding = SoMaterialBinding::PER_VERTEX_INDEXED;
     } else {
-      SoDebugError::postWarning("buildGeometry","No colors specified for the ground.");
+      SoDebugError::postWarning("SoVRMLBackgroundP::buildGeometry","No colors specified for the ground.");
       return;
     }
 
@@ -927,11 +926,12 @@ background_geometrychangeCB(void * data, SoSensor * sensor)
 {
   SoVRMLBackgroundP * pimpl = (SoVRMLBackgroundP *) data;
 
-  if (!pimpl->geometrybuilt)
-    pimpl->buildGeometry();
+  if (pimpl->rootnode) {
+    pimpl->rootnode->removeAllChildren();
+    pimpl->rootnode->unref();
+    pimpl->rootnode = NULL;
+  }
 
-  pimpl->rootnode->removeAllChildren(); // Remove everything incase this was called earlier
-  pimpl->rootnode->unref();
   pimpl->buildGeometry();
 }
 
