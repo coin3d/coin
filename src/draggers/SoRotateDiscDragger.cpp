@@ -23,8 +23,10 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
+#include <math.h>
 
 #include <data/draggerDefaults/rotateDiscDragger.h>
+
 
 SO_KIT_SOURCE(SoRotateDiscDragger);
 
@@ -176,15 +178,9 @@ SoRotateDiscDragger::dragStart(void)
   sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 1);
 
+  SbVec3f hitPt = this->getLocalStartingPoint();
   this->planeProj->setPlane(SbPlane(SbVec3f(0.0f, 0.0f, 1.0f),
-                                    SbVec3f(0.0f, 0.0f, 0.0f)));
-  this->planeProj->setViewVolume(this->getViewVolume());
-  this->planeProj->setWorkingSpace(this->getLocalToWorldMatrix());
-
-  SbVec3f hitPt = this->planeProj->project(this->getNormalizedLocaterPosition());
-  SbVec3f worldPt;
-  this->getLocalToWorldMatrix().multVecMatrix(hitPt, worldPt);
-  this->setStartingPoint(worldPt);
+                                    hitPt));
 }
 
 void
@@ -195,11 +191,22 @@ SoRotateDiscDragger::drag(void)
 
   SbVec3f projPt = planeProj->project(this->getNormalizedLocaterPosition());
   SbVec3f startPt = this->getLocalStartingPoint();
-
-  SbRotation rot(startPt, projPt);
-
+  
+  SbPlane plane(SbVec3f(0.0f, 0.0f, 1.0f), startPt);
+  SbLine line(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 0.0f, 1.0f));
+  SbVec3f center;
+  plane.intersect(line, center);
+  startPt -= center;
+  projPt -= center;
+  startPt.normalize();
+  projPt.normalize();
+  SbVec3f dir = startPt.cross(projPt);
+  float angle = acos(SbClamp(startPt.dot(projPt), -1.0f, 1.0f));
+  if (dir[2] < 0.0f) angle = -angle;
+  
   this->setMotionMatrix(this->appendRotation(this->getStartMotionMatrix(),
-                                             rot, SbVec3f(0.0f, 0.0f, 0.0f)));
+                                             SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), angle), 
+                                             SbVec3f(0.0f, 0.0f, 0.0f)));
 }
 
 void
