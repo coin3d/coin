@@ -1091,20 +1091,18 @@ SoBaseKit::search(SoSearchAction * action)
 static SbBool
 is_default_node(SoNode * node)
 {
-  if (node->getChildren() && node->getChildren()->getLength()) return FALSE;
-
   SoNode * definstance = NULL;
   const SoFieldData * fielddata = node->getFieldData();
   int i, n = fielddata->getNumFields();
   for (i = 0; i < n; i++) {
     SoField * field = fielddata->getField(node, i);
-    if (!field->isDefault()) break;
     if (field->isConnectionEnabled() && field->isConnected()) break;
     if (definstance == NULL) {
       definstance = (SoNode *)node->getTypeId().createInstance();
       definstance->ref();
     }
-    if (!field->isSame(*fielddata->getField(definstance, i))) break;
+    if (!field->isDefault() &&
+        !field->isSame(*fielddata->getField(definstance, i))) break;
   }
   if (definstance) definstance->unref();
   // if all fields were tested, it is a default node.
@@ -1195,38 +1193,6 @@ SoBaseKit::countMyFields(SoOutput * out)
 
   const SoNodekitCatalog * catalog = this->getNodekitCatalog();
 
-  // test if some fields that are default should write anyway
-  int i, n = PRIVATE(this)->instancelist.getLength();
-  for (i = 1; i < n; i++) {
-    SoSFNode * field = PRIVATE(this)->instancelist[i];
-
-#if COIN_DEBUG && 0 // debug
-    SoNode * n = field->getValue();
-    SoDebugError::postInfo("SoBaseKit::countMyFields",
-                           "SoSFNode field %p isDefault==%d, getValue node==%p, node->shouldWrite()==%s, catalog->isNullByDefault(%d)==%d",
-                           field, field->isDefault(), n, n ? (n->shouldWrite() ? "TRUE" : "FALSE") : "<n/a>", i, catalog->isNullByDefault(i));
-#endif // debug
-
-    if (field->isDefault()) {
-      SoNode * node = field->getValue();
-      if ((node == NULL && !catalog->isNullByDefault(i)) ||
-          (node != NULL && catalog->isNullByDefault(i)) ||
-          // FIXME: SoBase::shouldWrite() _probably_ doesn't return
-          // the correct value because we're not through with the
-          // first write pass yet (see API doc on
-          // shouldWrite()). 20030528 mortene.
-          (node && SoWriterefCounter::instance(out)->shouldWrite(node))) {
-        
-#if COIN_DEBUG && 0 // debug
-        SoDebugError::postInfo("SoBaseKit::countMyFields",
-                               "set field %p non-default");
-#endif // debug
-
-        field->setDefault(FALSE);
-      }
-    }
-  }
-
   // PRIVATE(this)->writedata contains a sorted list of fields.
   //
   // FIXME: the pimpl->writedata scheme doesn't look multithread-safe
@@ -1240,7 +1206,7 @@ SoBaseKit::countMyFields(SoOutput * out)
   // we might count fields that won't be written here, but it
   // doesn't matter, since we're operating on a copy of the fields.
 
-  n = PRIVATE(this)->writedata->getNumFields();
+  int i, n = PRIVATE(this)->writedata->getNumFields();
   for (i = 0; i < n; i++) {
     const SbName name = PRIVATE(this)->writedata->getFieldName(i);
     SoField * field = PRIVATE(this)->writedata->getField(this, i);
