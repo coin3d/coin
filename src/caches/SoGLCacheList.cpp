@@ -47,6 +47,10 @@
 #endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
+
 // if we render once without any child nodes invalidating the cache,
 // this flag is set and we will try to create a cache.
 #define FLAG_SHOULD_TRY 0x1
@@ -62,12 +66,23 @@ public:
   SoGLRenderCache * opencache;
   SbBool savedinvalid;
   int autocachebits;
+#ifdef COIN_THREADSAFE
+  SbMutex mutex;
+#endif // COIN_THREADSAFE
 };
 
 #endif // DOXYGEN_SKIP_THIS
 
 #undef THIS
 #define THIS this->pimpl
+
+#ifdef COIN_THREADSAFE
+#define GLCACHE_LOCK(_thisp_) (_thisp_)->pimpl->mutex.lock()
+#define GLCACHE_UNLOCK(_thisp_) (_thisp_)->pimpl->mutex.unlock()
+#else // COIN_THREADSAFE
+#define GLCACHE_LOCK(_thisp_)
+#define GLCACHE_UNLOCK(_thisp_)
+#endif // ! COIN_THREADSAFE
 
 /*!
   Constructor.
@@ -110,25 +125,32 @@ SoGLCacheList::~SoGLCacheList()
 SbBool
 SoGLCacheList::call(SoGLRenderAction * action, uint32_t pushattribbits)
 {
+  int i;
   SoState * state = action->getState();
   int context = SoGLCacheContextElement::get(state);
 
+  GLCACHE_LOCK(this);
   int n = THIS->itemlist.getLength();
+
   for (int i = 0; i < n; i++) {
     SoGLRenderCache * cache = THIS->itemlist[i];
     if (cache->getCacheContext() == context) {
       if (cache->isValid(state)) {
         if (pushattribbits) glPushAttrib(pushattribbits);
+        cache->ref();
+        GLCACHE_UNLOCK(this); // allow other threads to access cache list
         cache->call(state);
+        cache->unref(state);
         if (pushattribbits) glPopAttrib();
         return TRUE;
       }
       // if we get here cache is invalid. Throw it away.
       cache->unref(state);
       THIS->itemlist.removeFast(i);
-      n--;
     }
   }
+
+  GLCACHE_UNLOCK(this);
   // none found
   return FALSE;
 }
@@ -142,6 +164,8 @@ SoGLCacheList::call(SoGLRenderAction * action, uint32_t pushattribbits)
 void
 SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
 {
+  GLCACHE_LOCK(this);
+
   assert(THIS->opencache == NULL);
   SoState * state = action->getState();
 
@@ -188,6 +212,8 @@ SoGLCacheList::close(SoGLRenderAction * action)
   int bits = SoGLCacheContextElement::resetAutoCacheBits(state);
   SoGLCacheContextElement::setAutoCacheBits(state, bits|THIS->autocachebits);
   THIS->autocachebits = bits;
+
+  GLCACHE_UNLOCK(this);
 }
 
 /*!
@@ -203,3 +229,8 @@ SoGLCacheList::invalidateAll(void)
   }
   THIS->flags &= ~FLAG_SHOULD_TRY;
 }
+
+#undef GLCACHE_READ_LOCK
+#undef GLCACHE_READ_UNLOCK
+#undef GLCACHE_WRITE_LOCK
+#undef GLCACHE_WRITE_UNLOCK
