@@ -501,7 +501,7 @@ SoVRMLSound::setDopplerVelocity(float velocity)
 */
 
 float
-SoVRMLSound::getDopplerVelocity()
+SoVRMLSound::getDopplerVelocity(void) const
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
   SoDebugError::postWarning("SoVRMLSound::getDopplerVelocity",
@@ -528,7 +528,7 @@ SoVRMLSound::setDopplerFactor(float factor)
 */
 
 float
-SoVRMLSound::getDopplerFactor()
+SoVRMLSound::getDopplerFactor(void) const
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
   SoDebugError::postWarning("SoVRMLSound::getDopplerFactor",

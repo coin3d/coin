@@ -50,6 +50,10 @@ public:
   SoSFTime duration_changed;
   SoSFBool isActive;
 
+#ifndef COIN_BETA_VERSION
+#error Consider adding fields "alpha", "model", "blendColor" and "scaleTexCoord" to be compatible with TGS OIV >= 4.0.
+#endif // COIN_BETA_VERSION
+
   virtual void GLRender( SoGLRenderAction * action );
 
 protected:

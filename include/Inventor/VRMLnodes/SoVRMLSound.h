@@ -54,10 +54,13 @@ public:
   SoSFFloat maxBack;
   SoSFBool spatialize;
 
+#ifndef COIN_BETA_VERSION
+#error Consider adding fields "dopplerFactor" and "dopplerVelocity" instead of the functions below, to be compatible with TGS OIV >= 4.0.
+#endif // COIN_BETA_VERSION
   void setDopplerVelocity(float velocity);
-  float getDopplerVelocity();
+  float getDopplerVelocity(void) const;
   void setDopplerFactor(float factor);
-  float getDopplerFactor();
+  float getDopplerFactor(void) const;
 
   void startPlaying(SoPath *path, void *userdataptr);
   void stopPlaying(SoPath *path, void *userdataptr);
