@@ -37,6 +37,7 @@
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -85,6 +86,7 @@ SoSwitch::initClass(void)
 
   SO_ENABLE(SoCallbackAction, SoSwitchElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoSwitchElement);
+  SO_ENABLE(SoHandleEventAction, SoSwitchElement);
 }
 
 /*!
@@ -259,9 +261,9 @@ SoSwitch::pick(SoPickAction *action)
   FIXME: write doc
  */
 void
-SoSwitch::handleEvent(SoHandleEventAction * /* action */)
+SoSwitch::handleEvent(SoHandleEventAction *action)
 {
-  COIN_STUB();
+  SoSwitch::doAction(action);
 }
 
 /*!
