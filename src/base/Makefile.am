@@ -31,7 +31,10 @@ RegularSources = \
 	SbVec4f.cpp \
 	SbViewVolume.cpp \
 	SbViewportRegion.cpp \
-	SbXfBox3f.cpp
+	SbXfBox3f.cpp \
+	base.c \
+	debug.c \
+	time.c
 LinkHackSources = \
 	all.cpp
 PublicHeaders =
