@@ -590,7 +590,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
     // (RGB or RGBA, I guess). pederb, 2003-11-27
     this->glcontext = cc_glglue_context_create_offscreen(this->glcontextsize[0],
                                                          this->glcontextsize[1]);
-    this->canrendertotexture - cc_glglue_context_can_render_to_texture(this->glcontext);
+    this->canrendertotexture = cc_glglue_context_can_render_to_texture(this->glcontext);
     if (this->glaction) delete this->glaction;
     this->glaction = new SoGLRenderAction(SbViewportRegion(this->glcontextsize));
     this->glaction->setCacheContext((int) SoGLCacheContextElement::getUniqueCacheContext());
