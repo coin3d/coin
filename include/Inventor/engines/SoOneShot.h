@@ -57,6 +57,7 @@ private:
   virtual void inputChanged(SoField * which);
 
   SbTime holdduration;
+  float holdramp;
   SbTime starttime;
   SbBool running;
 };

@@ -41,7 +41,7 @@
 # ID          SoInterpolateVec3f
 # ID          SoInterpolateVec4f
 # ID      SoOnOff
-# id      SoOneShot
+# ID      SoOneShot
 # ID      SoSelectOne
 # ID      SoTimeCounter
 #         SoTransformVec3f

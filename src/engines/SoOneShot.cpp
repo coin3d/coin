@@ -30,6 +30,10 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/engines/SoSubEngineP.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   \var SoSFTime SoOneShot::timeIn
 
@@ -51,7 +55,10 @@
 /*!
   \var SoSFBitMask SoOneShot::flags
 
-  Control flags.
+  Control flags. See SoOneShot::Flags.
+*/
+/*!
+  \enum SoOneShot::Flags
 
   There are two flags available: \c RETRIGGERABLE will cause the
   engine to restart at 0 if the SoOneShot::trigger field is activated
@@ -60,6 +67,7 @@
   \c HOLD_FINAL will make the engine outputs keep their values after a
   run, instead of resetting them.
 */
+
 /*!
   \var SoSFBool SoOneShot::disable
 
@@ -111,6 +119,9 @@ SoOneShot::SoOneShot(void)
   this->timeIn.connectFrom(realtime);
 
   this->running = FALSE;
+  this->starttime = SbTime::zero();
+  this->holdramp = 0.0f;
+  this->holdduration = SbTime::zero();
 }
 
 /*!
@@ -125,62 +136,81 @@ void
 SoOneShot::evaluate(void)
 {
   SbTime elapsed = this->timeIn.getValue() - this->starttime;
-  SbTime durationVal = this->duration.getValue();
+  SbTime durationval = this->duration.getValue();
+
+  SbTime timeoutval;
+  float rampval;
+
+  if (this->running) {
+    if (elapsed < durationval) {
+      timeoutval = elapsed;
+      rampval = float(elapsed.getValue()) / float(durationval.getValue());
+    }
+    else {
+      this->running = FALSE;
+
+      if (this->flags.getValue() & SoOneShot::HOLD_FINAL) {
+        this->holdduration = durationval;
+        this->holdramp = 1.0f;
+      }
+    }
+  }
+
+  // Don't use "else" here, as the value of this->running might change
+  // in the if-block above.
+  if (!this->running) {
+    if (this->flags.getValue() & SoOneShot::HOLD_FINAL) {
+      timeoutval = this->holdduration;
+      rampval = this->holdramp;
+    }
+    else {
+      timeoutval = 0.0;
+      rampval = 0.0f;
+    }
+  }
+
+  // Values should be distributed on evaluate() even though outputs
+  // are not initially enabled.
+  //
+  // enable-settings will be restored again on the next
+  // inputChanged().
+  this->timeOut.enable(TRUE);
+  this->ramp.enable(TRUE);
+  this->isActive.enable(TRUE);
 
   SO_ENGINE_OUTPUT(isActive, SoSFBool, setValue(this->running));
-  if (this->running) {
-    if (elapsed < durationVal) {
-      SO_ENGINE_OUTPUT(timeOut, SoSFTime, setValue(elapsed));
-      SO_ENGINE_OUTPUT(ramp, SoSFFloat,
-                       setValue(float(elapsed.getValue())/float(durationVal.getValue())));
-    }
-    else {
-      SO_ENGINE_OUTPUT(timeOut, SoSFTime, setValue(durationVal));
-      SO_ENGINE_OUTPUT(ramp, SoSFFloat, setValue(1.0));
-      if (this->flags.getValue() & SoOneShot::HOLD_FINAL)
-        this->holdduration = durationVal;
-      this->running = FALSE;
-    }
-  }
-  else {
-    if (this->flags.getValue() & SoOneShot::HOLD_FINAL) {
-      SO_ENGINE_OUTPUT(timeOut, SoSFTime, setValue(this->holdduration));
-      SO_ENGINE_OUTPUT(ramp, SoSFFloat, setValue(1.0));
-    }
-    else {
-      SO_ENGINE_OUTPUT(timeOut, SoSFTime, setValue(0.0));
-      SO_ENGINE_OUTPUT(ramp, SoSFFloat, setValue(0.0));
-    }
-  }
+  SO_ENGINE_OUTPUT(timeOut, SoSFTime, setValue(timeoutval));
+  SO_ENGINE_OUTPUT(ramp, SoSFFloat, setValue(rampval));
 }
-
-//FIXME: messages (kintel 19990611)
 
 // overloaded from parent
 void
 SoOneShot::inputChanged(SoField * which)
 {
+  SbBool do_evaluate = FALSE;
+
   if (which == &this->trigger) {
-#if 0 // FIXME: doesn't compile. 19990620 mortene.
-      fprintf(stdout, "(trigger): %x\n", this->flags.getValue());
-#endif // disabled
     if ((!this->running ||
          this->flags.getValue() & SoOneShot::RETRIGGERABLE) &&
         !this->disable.getValue()) {
-#if 0 // FIXME: doesn't compile. 19990620 mortene.
-      fprintf(stdout, "XXX Retrigger XXX\n");
-#endif // disabled
       this->starttime = this->timeIn.getValue();
       this->running = TRUE;
-      SO_ENGINE_OUTPUT(timeOut, SoSFTime, setValue(0.0));
-      SO_ENGINE_OUTPUT(ramp, SoSFFloat, setValue(0.0));
     }
   }
   else if (which == &this->disable) {
-    if (this->disable.getValue())
+    if (this->disable.getValue() && this->running) {
+      this->holdduration = this->timeIn.getValue() - this->starttime;
+      this->holdramp =
+        this->holdduration.getValue() / this->duration.getValue().getValue();
       this->running = FALSE;
-    this->timeOut.enable(!this->disable.getValue());
-    this->ramp.enable(!this->disable.getValue());
-    this->isActive.enable(!this->disable.getValue());
+      // We need one more evaluation to send correct outputs.
+      do_evaluate = TRUE;
+    }
   }
+
+  // Only enabled when running (as an optimization to avoid continous
+  // notification).
+  this->timeOut.enable(this->running || do_evaluate);
+  this->ramp.enable(this->running || do_evaluate);
+  this->isActive.enable(this->running || do_evaluate);
 }

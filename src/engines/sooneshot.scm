@@ -39,9 +39,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; Test input fields of SoOneShot engine, play around ;;;;;;;;;;;;;;;;;;;;;
 
-(-> (-> oneshot 'duration) 'setvalue (new-sbtime 13.0))
+(-> (-> oneshot 'duration) 'setvalue (new-sbtime 3.0))
 (-> (-> oneshot 'trigger) 'setvalue)
 (-> (-> oneshot 'disable) 'setvalue 0)
+(-> (-> oneshot 'flags) 'setvalue SoOneShot::HOLD_FINAL)
+(-> (-> oneshot 'flags) 'setvalue SoOneShot::RETRIGGERABLE)
 
 ;; Copy the scenegraph.
 (define viewer-copy (new-soxtexaminerviewer))
