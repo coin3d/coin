@@ -112,9 +112,6 @@ openal_wrapper(void)
       if (!openal_libhandle) {
         oal->available = 0;
         openal_failed_to_load = 1;
-        cc_debugerror_post("openal_wrapper",
-                           "Unable to load OpenAL");
-        
       }
       oal->runtime = 1;
     }
