@@ -70,7 +70,7 @@
 /* Define to 1 if you have the <AGL/agl.h> header file. */
 #undef HAVE_AGL_AGL_H
 
-/* define if the AL header should be included as AL/gl.h */
+/* define if the AL header should be included as AL/al.h */
 #undef HAVE_AL_AL_H
 
 /* define if preprocessor can quote arguments with apostophes */
