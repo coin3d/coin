@@ -77,6 +77,7 @@ DEF dragPointZFeedback Separator {
 
 
 DEF DRAGPOINT_FEEDBACK_PLANE Group {
+   ShapeHints { shapeType UNKNOWN_SHAPE_TYPE }
    Coordinate3 { point [ -10 0 -10, -10 0 10, 10 0 10, 10 0 -10, -10 0 -10 ] }
    FaceSet { }
    Scale { scaleFactor 1.05 1 1.05 }
