@@ -159,6 +159,7 @@
 
 #ifdef HAVE_VRML97
 #include <Inventor/VRMLnodes/SoVRML.h>
+#include <Inventor/VRMLnodes/SoVRMLGroup.h>
 
 #ifdef HAVE_SOUND
 #include <Inventor/misc/SoAudioDevice.h>
@@ -708,59 +709,28 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
 SoSeparator *
 SoDB::readAll(SoInput * in)
 {
-  assert(SoDB::isInitialized() && "you forgot to initialize the Coin library");
+  return (SoSeparator*) 
+    SoDB::readAllWrapper(in, SoSeparator::getClassTypeId());
+}
 
-#ifdef HAVE_3DS_IMPORT_CAPABILITIES
-  if (is3dsFile(in)) {
-    SoSeparator * base = NULL;
-    if (read3dsFile(in, base)) {
-      return base;
-    }
-    return NULL;
-  }
-#endif // HAVE_3DS_IMPORT_CAPABILITIES
+/*!
+  Same as SoDB::readAll(), except it return an SoVRMLGroup instead
+  of an SoSeparator.
 
-  if (!in->isValidFile()) {
-    SoReadError::post(in, "Not a valid Inventor file.");
-    return NULL;
-  }
+  
 
-#if COIN_DEBUG // See comments below in next COIN_DEBUG block.
-  int stackdepth = in->filestack.getLength();
-#endif // COIN_DEBUG
-
-  SoSeparator * root = new SoSeparator;
-  root->ref();
-
-  SoNode * topnode;
-  do {
-    if (!SoDB::read(in, topnode)) {
-      root->unref();
-      return NULL;
-    }
-    if (topnode) root->addChild(topnode);
-  } while (topnode && in->skipWhiteSpace());
-
-  SoSeparator * retnode;
-  if ((root->getNumChildren() == 1) &&
-      (root->getChild(0)->isOfType(SoSeparator::getClassTypeId()))) {
-    retnode = (SoSeparator *)root->getChild(0);
-    retnode->ref();
-    root->unref();
-  }
-  else {
-    retnode = root;
-  }
-
-#if COIN_DEBUG
-  // Detect problems with missing pops from the SoInput file stack.
-  assert(stackdepth == in->filestack.getLength());
-#endif // COIN_DEBUG
-  if (in->filestack.getLength() == 1) in->popFile(); // force a header post callback
-
-  assert(retnode->getRefCount() == 1);
-  retnode->unrefNoDelete(); // return with a zero refcount
-  return retnode;
+  \sa SoDB::readAll()
+  \since 2003-02-21
+*/
+SoVRMLGroup * 
+SoDB::readAllVRML(SoInput * in)
+{
+#ifdef HAVE_VRML97
+  return (SoVRMLGroup*) 
+    SoDB::readAllWrapper(in, SoVRMLGroup::getClassTypeId());
+#else // HAVE_VRML97
+  return NULL;
+#endif // ! HAVE_VRML97
 }
 
 /*!
@@ -1291,6 +1261,68 @@ SoDB::enableRealTimeSensor(SbBool on)
                                  "realtime sensor already %s",
                                  on ? "on" : "off");
 #endif // COIN_DEBUG
+}
+
+// private wrapper for readAll() and readAllVRML()
+SoGroup *
+SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
+{
+  assert(SoDB::isInitialized() && "you forgot to initialize the Coin library");
+
+#ifdef HAVE_3DS_IMPORT_CAPABILITIES
+  if (is3dsFile(in)) {
+    SoSeparator * base = NULL;
+    if (read3dsFile(in, base)) {
+      return base;
+    }
+    return NULL;
+  }
+#endif // HAVE_3DS_IMPORT_CAPABILITIES
+
+  if (!in->isValidFile()) {
+    SoReadError::post(in, "Not a valid Inventor file.");
+    return NULL;
+  }
+
+#if COIN_DEBUG // See comments below in next COIN_DEBUG block.
+  int stackdepth = in->filestack.getLength();
+#endif // COIN_DEBUG
+
+  assert(grouptype.canCreateInstance());
+  assert(grouptype.isDerivedFrom(SoGroup::getClassTypeId()));
+  SoGroup * root = (SoGroup*) grouptype.createInstance();
+
+  root->ref();
+
+  SoNode * topnode;
+  do {
+    if (!SoDB::read(in, topnode)) {
+      root->unref();
+      return NULL;
+    }
+    if (topnode) root->addChild(topnode);
+  } while (topnode && in->skipWhiteSpace());
+
+  SoGroup * retnode;
+  if ((root->getNumChildren() == 1) &&
+      (root->getChild(0)->isOfType(grouptype))) {
+    retnode = (SoGroup*)root->getChild(0);
+    retnode->ref();
+    root->unref();
+  }
+  else {
+    retnode = root;
+  }
+
+#if COIN_DEBUG
+  // Detect problems with missing pops from the SoInput file stack.
+  assert(stackdepth == in->filestack.getLength());
+#endif // COIN_DEBUG
+  if (in->filestack.getLength() == 1) in->popFile(); // force a header post callback
+
+  assert(retnode->getRefCount() == 1);
+  retnode->unrefNoDelete(); // return with a zero refcount
+  return retnode;
 }
 
 

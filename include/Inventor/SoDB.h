@@ -37,6 +37,8 @@ class SoInput;
 class SoNode;
 class SoPath;
 class SoSeparator;
+class SoVRMLGroup;
+class SoGroup;
 
 typedef void SoDBHeaderCB(void * data, SoInput * in);
 
@@ -50,6 +52,7 @@ public:
   static SbBool read(SoInput * in, SoBase *& base);
   static SbBool read(SoInput * in, SoNode *& rootnode);
   static SoSeparator * readAll(SoInput * in);
+  static SoVRMLGroup * readAllVRML(SoInput * in);
   static SbBool isValidHeader(const char * teststring);
   static SbBool registerHeader(const SbString & headerstring,
                                SbBool isbinary,
@@ -88,6 +91,9 @@ public:
   static void startNotify(void);
   static SbBool isNotifying(void);
   static void endNotify(void);
+
+private:
+  static SoGroup * readAllWrapper(SoInput * in, const SoType & grouptype);
 };
 
 #endif // !COIN_SODB_H
