@@ -114,9 +114,9 @@ worker_stop_thread(cc_worker * worker)
     worker->threadisrunning = 0;
     
     worker->shutdown = TRUE;  /* signal thread to exit loop */
-    cc_mutex_unlock(worker->mutex);
     /* in case thread is waiting for cond... */
     cc_condvar_wake_one(worker->cond);
+    cc_mutex_unlock(worker->mutex);
     /* wait for thread to finish */
     cc_thread_join(worker->thread, NULL);
     cc_thread_destruct(worker->thread);

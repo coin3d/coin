@@ -54,7 +54,6 @@ wpool_unlock(cc_wpool * pool)
 static void
 wpool_idle_cb(cc_worker * worker, void * data)
 {
-  SbBool iswaiting;
   int idx;
   cc_wpool * pool = (cc_wpool*) data;
 
@@ -67,12 +66,10 @@ wpool_idle_cb(cc_worker * worker, void * data)
     cc_list_append(pool->idlepool, worker);
   }
 
-  iswaiting = pool->iswaiting;
-  wpool_unlock(pool);
-
-  if (iswaiting) {
+  if (pool->iswaiting) {
     cc_condvar_wake_one(pool->waitcond);
   }
+  wpool_unlock(pool);
 }
 
 static void
