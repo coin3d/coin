@@ -1763,7 +1763,14 @@ SoField::read(SoInput * in, const SbName & name)
 
   if (readok) {
     if (didreadvalue) this->valueChanged(FALSE);
-    else this->startNotify();
+    else {
+      // we called setDirty(FALSE) in the beginning of the function.
+      // Since this field is read without a value (just connected to
+      // some other field/engine), we need to mark the field as dirty
+      // so that it's evaluated the next time the field is read
+      this->setDirty(TRUE);
+      this->startNotify();
+    }
   }
   return readok;
 }
