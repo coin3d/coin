@@ -45,16 +45,18 @@ public:
                   const SbBool enabled);
 
   static SbBool get(SoState * const state, const int unit);
-  
+
   virtual void setElt(const int unit, const SbBool enabled);
 
   virtual void push(SoState * state);
   virtual SbBool matches(const SoElement * elem) const;
   SoElement * copyMatchInfo(void) const;
 
+protected:
+  SbBool isEnabled(const int unit) const;
+
 private:
   SoMultiTextureEnabledElementP * pimpl;
 };
 
 #endif // !COIN_SOMULTITEXTUREENABLEDELEMENT_H
-

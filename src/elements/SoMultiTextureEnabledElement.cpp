@@ -28,8 +28,7 @@
 
   \COIN_CLASS_EXTENSION
 
-  \sa SoMultiTexture3EnabledElement
-  \since Coin 2.0
+  \since Coin 2.2
 */
 
 
@@ -83,7 +82,7 @@ SoMultiTextureEnabledElement::set(SoState * const state,
 {
   SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
     state->getElement(classStackIndex);
-  
+
   elem->setElt(unit, enabled);
 }
 
@@ -117,18 +116,25 @@ SoMultiTextureEnabledElement::setElt(const int unit, const SbBool enabled)
   PRIVATE(this)->enabled[unit] = enabled;
 }
 
+SbBool 
+SoMultiTextureEnabledElement::isEnabled(const int unit) const
+{
+  assert(unit >= 0 && unit < MAX_UNITS);
+  return PRIVATE(this)->enabled[unit];
+}
+
 void
 SoMultiTextureEnabledElement::push(SoState * state)
 {
   SoMultiTextureEnabledElement * prev = (SoMultiTextureEnabledElement *)
     this->getNextInStack();
-  
+
   for (int i = 0; i < MAX_UNITS; i++) {
     PRIVATE(this)->enabled[i] = PRIVATE(prev)->enabled[i];
   }
 }
 
-SbBool 
+SbBool
 SoMultiTextureEnabledElement::matches(const SoElement * elem) const
 {
   SoMultiTextureEnabledElement * e =
@@ -141,7 +147,7 @@ SoMultiTextureEnabledElement::matches(const SoElement * elem) const
   return TRUE;
 }
 
-SoElement * 
+SoElement *
 SoMultiTextureEnabledElement::copyMatchInfo(void) const
 {
   SoMultiTextureEnabledElement * elem =
@@ -155,4 +161,3 @@ SoMultiTextureEnabledElement::copyMatchInfo(void) const
 
 #undef MAX_UNITS
 #undef PRIVATE
-
