@@ -332,6 +332,7 @@ public:
   } applieddata;
   SbBool terminated;
   SbList <SbList<int> *> pathcodearray;
+  int prevenabledelementscounter;
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -352,7 +353,8 @@ SoAction::SoAction(void)
   THIS->appliedcode = NODE;
   THIS->applieddata.node = NULL;
   THIS->terminated = FALSE;
-
+  THIS->prevenabledelementscounter = 0;
+  
   this->currentpath.ref(); // to avoid having a zero refcount instance
 }
 
@@ -456,6 +458,13 @@ SoAction::apply(SoNode * root)
   // the SoAction subclass.
   assert(this->traversalMethods);
   this->traversalMethods->setUp();
+
+  // if a new element has been enabled, we need to recreate the state
+  if (this->state && 
+      (this->getEnabledElements().getCounter() != THIS->prevenabledelementscounter)) {
+    delete this->state;
+    this->state = NULL;
+  }
   THIS->terminated = FALSE;
 
   this->currentpathcode = SoAction::NO_PATH;
@@ -533,6 +542,14 @@ SoAction::apply(SoPath * path)
   // the SoAction subclass.
   assert(this->traversalMethods);
   this->traversalMethods->setUp();
+
+  // if a new element has been enabled, we need to recreate the state
+  if (this->state && 
+      (this->getEnabledElements().getCounter() != THIS->prevenabledelementscounter)) {
+    delete this->state;
+    this->state = NULL;
+  }
+
   THIS->terminated = FALSE;
 
 #if COIN_DEBUG
@@ -591,6 +608,13 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
   AppliedCode storedcode = THIS->appliedcode;
   SoActionP::AppliedData storeddata = THIS->applieddata;
   PathCode storedcurr = this->currentpathcode;
+
+  // if a new element has been enabled, we need to recreate the state
+  if (this->state && 
+      (this->getEnabledElements().getCounter() != THIS->prevenabledelementscounter)) {
+    delete this->state;
+    this->state = NULL;
+  }
 
   THIS->terminated = FALSE;
 
@@ -889,6 +913,7 @@ SoAction::getState(void) const
     // cast away constness to set state
     ((SoAction*)this)->state =
       new SoState((SoAction*)this, this->getEnabledElements().getElements());
+    THIS->prevenabledelementscounter = this->getEnabledElements().getCounter();
   }
   return this->state;
 }
