@@ -45,7 +45,7 @@ struct SbTVertex {
   SbTVertex *next;
 };
 
-
+ 
 float 
 SbTesselator::heap_evaluate(void *v)
 {
@@ -53,8 +53,8 @@ SbTesselator::heap_evaluate(void *v)
   if (vertex->dirtyweight) {
     vertex->dirtyweight = 0;
     if (vertex->thisp->area(vertex) > FLT_EPSILON && 
-	vertex->thisp->isTriangle(vertex) && 
-	vertex->thisp->clippable(vertex))
+  	vertex->thisp->isTriangle(vertex) && 
+  	vertex->thisp->clippable(vertex))
       vertex->weight = vertex->thisp->circleSize(vertex);
     else
       vertex->weight = FLT_MAX;
@@ -173,9 +173,8 @@ SbTesselator::addVertex(const SbVec3f &v,void *data)
 void
 SbTesselator::endPolygon()
 {
-  SbTVertex *v, *tmpv, *stv;
-  int count;
-
+  SbTVertex *v;
+  
   if (this->numVerts > 3) {
     calcPolygonNormal();
     
@@ -283,24 +282,25 @@ SbTesselator::pointInTriangle(SbTVertex *p, SbTVertex *t)
   x = p->v[X];
   y = p->v[Y];
 
-  SbVec3f &v1 = t->v;
-  SbVec3f &v2 = t->next->next->v;
+  const float *v1 = t->v.getValue();
+  const float *v2 = t->next->next->v.getValue();
   if ((((v1[Y]<=y) && (y<v2[Y])) || ((v2[Y]<=y)  && (y<v1[Y]))) &&
       (x < (v2[X] - v1[X]) * (y - v1[Y]) /  (v2[Y] - v1[Y]) + v1[X]))
     tst = (tst==FALSE ? TRUE : FALSE);
-  v2=v1;
-  v1=t->next->v;
+  v2 = v1;
+  v1 = t->next->v.getValue();
   if ((((v1[Y]<=y) && (y<v2[Y])) || ((v2[Y]<=y)  && (y<v1[Y]))) &&
       (x < (v2[X] - v1[X]) * (y - v1[Y]) /  (v2[Y] - v1[Y]) + v1[X]))
     tst = (tst==FALSE ? TRUE : FALSE);
-  v2=v1;
-  v1=t->next->next->v;
+  v2 = v1;
+  v1 = t->next->next->v.getValue();
   if ((((v1[Y]<=y) && (y<v2[Y])) || ((v2[Y]<=y)  && (y<v1[Y]))) &&
       (x < (v2[X] - v1[X]) * (y - v1[Y]) /  (v2[Y] - v1[Y]) + v1[X]))
     tst = (tst==FALSE ? TRUE : FALSE);
   
   return tst;
 }
+
 
 //
 // Check if v points to a legal triangle (normal is right way)
@@ -333,6 +333,8 @@ SbTesselator::clippable(SbTVertex *v)
   } while (vtx!=v);
   return TRUE;
 }
+
+
 
 //
 // Call the callback-function for the triangle starting with t

@@ -1094,6 +1094,25 @@ SbMatrix::multVecMatrix(const SbVec3f& src, SbVec3f& dst) const
 }
 
 /*!
+  \overload
+*/
+void 
+SbMatrix::multVecMatrix(const SbVec4f &src, SbVec4f &dst) const
+{
+  const float *t0 = (*this)[0];
+  const float *t1 = (*this)[1];
+  const float *t2 = (*this)[2];
+  const float *t3 = (*this)[3];
+  
+  SbVec4f s = src;
+  
+  dst[0] = (s[0]*t0[0] + s[1]*t0[1] + s[2]*t0[2] + t0[3]);
+  dst[1] = (s[0]*t1[0] + s[1]*t1[1] + s[2]*t1[2] + t1[3]);
+  dst[2] = (s[0]*t2[0] + s[1]*t2[1] + s[2]*t2[2] + t2[3]);
+  dst[3] = (s[0]*t3[0] + s[1]*t3[1] + s[2]*t3[2] + t3[3]);
+}
+
+/*!
   Multiplies \a src by the matrix. \a src is assumed to be a direction
   vector, and the translation components of the matrix are therefore
   ignored.

@@ -37,6 +37,7 @@ public:
   SbBool intersect(const SbLine& l, SbVec3f& intersection) const;
   void transform(const SbMatrix& matrix);
   SbBool isInHalfSpace(const SbVec3f& point) const;
+  float getDistance(const SbVec3f &point) const;
   const SbVec3f& getNormal(void) const;
   float getDistanceFromOrigin(void) const;
   friend int operator ==(const SbPlane& p1, const SbPlane& p2);

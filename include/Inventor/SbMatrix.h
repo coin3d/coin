@@ -26,6 +26,7 @@
 class SbLine;
 class SbRotation;
 class SbVec3f;
+class SbVec4f;
 class ostream;
 
 typedef float SbMat[4][4];
@@ -94,6 +95,7 @@ public:
   void multVecMatrix(const SbVec3f& src, SbVec3f& dst) const;
   void multDirMatrix(const SbVec3f& src, SbVec3f& dst) const;
   void multLineMatrix(const SbLine& src, SbLine& dst) const;
+  void multVecMatrix(const SbVec4f &src, SbVec4f &dst) const;
 
   void print(FILE * fp) const;
   void print(ostream & file) const;

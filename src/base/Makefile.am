@@ -41,6 +41,8 @@ ALLSOURCES = \
 	SbMatrix.h \
 	SbName.cpp \
 	SbName.h \
+	SbOctTree.cpp \
+	SbOctTree.h \
 	SbPlane.cpp \
 	SbPlane.h \
 	SbRotation.cpp \
@@ -79,6 +81,7 @@ libcoinbaseLINKHACKincdir = $(includedir)/Inventor
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/Sb.h \
 	$(top_srcdir)/include/Inventor/SbBox.h \
+	$(top_srcdir)/include/Inventor/SbBSPTree.h \
 	$(top_srcdir)/include/Inventor/SbLinear.h \
 	$(top_srcdir)/include/Inventor/SoLists.h \
 	$(top_srcdir)/include/Inventor/SbBox2f.h \
@@ -92,6 +95,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/SbLine.h \
 	$(top_srcdir)/include/Inventor/SbMatrix.h \
 	$(top_srcdir)/include/Inventor/SbName.h \
+	$(top_srcdir)/include/Inventor/SbOctTree.h \
 	$(top_srcdir)/include/Inventor/SbPlane.h \
 	$(top_srcdir)/include/Inventor/SbRotation.h \
 	$(top_srcdir)/include/Inventor/SbSphere.h \

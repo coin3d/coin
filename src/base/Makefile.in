@@ -92,7 +92,7 @@ LIBS =
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-ALLSOURCES =  	SbBSPTree.cpp 	SbBSPTree.h 	SbBox2f.cpp 	SbBox2f.h 	SbBox2s.cpp 	SbBox2s.h 	SbBox3f.cpp 	SbBox3f.h 	SbColor.cpp 	SbColor.h 	SbColor4f.cpp 	SbColor4f.h 	SbCylinder.cpp 	SbCylinder.h 	SbDict.cpp 	SbDict.h 	SbHeap.cpp 	SbHeap.h 	SbLine.cpp 	SbLine.h 	SbMatrix.cpp 	SbMatrix.h 	SbName.cpp 	SbName.h 	SbPlane.cpp 	SbPlane.h 	SbRotation.cpp 	SbRotation.h 	SbSphere.cpp 	SbSphere.h 	SbString.cpp 	SbString.h 	SbTesselator.cpp 	SbTesselator.h 	SbTime.cpp 	SbTime.h 	SbVec2f.cpp 	SbVec2f.h 	SbVec2s.cpp 	SbVec2s.h 	SbVec3f.cpp 	SbVec3f.h 	SbVec4f.cpp 	SbVec4f.h 	SbViewVolume.cpp 	SbViewVolume.h 	SbViewportRegion.cpp 	SbViewportRegion.h 	SbXfBox3f.cpp 	SbXfBox3f.h
+ALLSOURCES =  	SbBSPTree.cpp 	SbBSPTree.h 	SbBox2f.cpp 	SbBox2f.h 	SbBox2s.cpp 	SbBox2s.h 	SbBox3f.cpp 	SbBox3f.h 	SbColor.cpp 	SbColor.h 	SbColor4f.cpp 	SbColor4f.h 	SbCylinder.cpp 	SbCylinder.h 	SbDict.cpp 	SbDict.h 	SbHeap.cpp 	SbHeap.h 	SbLine.cpp 	SbLine.h 	SbMatrix.cpp 	SbMatrix.h 	SbName.cpp 	SbName.h 	SbOctTree.cpp 	SbOctTree.h 	SbPlane.cpp 	SbPlane.h 	SbRotation.cpp 	SbRotation.h 	SbSphere.cpp 	SbSphere.h 	SbString.cpp 	SbString.h 	SbTesselator.cpp 	SbTesselator.h 	SbTime.cpp 	SbTime.h 	SbVec2f.cpp 	SbVec2f.h 	SbVec2s.cpp 	SbVec2s.h 	SbVec3f.cpp 	SbVec3f.h 	SbVec4f.cpp 	SbVec4f.h 	SbViewVolume.cpp 	SbViewVolume.h 	SbViewportRegion.cpp 	SbViewportRegion.h 	SbXfBox3f.cpp 	SbXfBox3f.h
 
 
 libcoinbase_la_SOURCES = $(ALLSOURCES)
@@ -101,7 +101,7 @@ libcoinbaseLINKHACK_la_SOURCES = $(ALLSOURCES)
 libcoinbaseincdir = $(includedir)/Inventor
 libcoinbaseLINKHACKincdir = $(includedir)/Inventor
 
-ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/Sb.h 	$(top_srcdir)/include/Inventor/SbBox.h 	$(top_srcdir)/include/Inventor/SbLinear.h 	$(top_srcdir)/include/Inventor/SoLists.h 	$(top_srcdir)/include/Inventor/SbBox2f.h 	$(top_srcdir)/include/Inventor/SbBox2s.h 	$(top_srcdir)/include/Inventor/SbBox3f.h 	$(top_srcdir)/include/Inventor/SbColor.h 	$(top_srcdir)/include/Inventor/SbColor4f.h 	$(top_srcdir)/include/Inventor/SbCylinder.h 	$(top_srcdir)/include/Inventor/SbDict.h 	$(top_srcdir)/include/Inventor/SbHeap.h 	$(top_srcdir)/include/Inventor/SbLine.h 	$(top_srcdir)/include/Inventor/SbMatrix.h 	$(top_srcdir)/include/Inventor/SbName.h 	$(top_srcdir)/include/Inventor/SbPlane.h 	$(top_srcdir)/include/Inventor/SbRotation.h 	$(top_srcdir)/include/Inventor/SbSphere.h 	$(top_srcdir)/include/Inventor/SbString.h 	$(top_srcdir)/include/Inventor/SbTesselator.h 	$(top_srcdir)/include/Inventor/SbTime.h 	$(top_srcdir)/include/Inventor/SbVec2f.h 	$(top_srcdir)/include/Inventor/SbVec2s.h 	$(top_srcdir)/include/Inventor/SbVec3f.h 	$(top_srcdir)/include/Inventor/SbVec4f.h 	$(top_srcdir)/include/Inventor/SbViewVolume.h 	$(top_srcdir)/include/Inventor/SbViewportRegion.h 	$(top_srcdir)/include/Inventor/SbXfBox3f.h
+ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/Sb.h 	$(top_srcdir)/include/Inventor/SbBox.h 	$(top_srcdir)/include/Inventor/SbBSPTree.h 	$(top_srcdir)/include/Inventor/SbLinear.h 	$(top_srcdir)/include/Inventor/SoLists.h 	$(top_srcdir)/include/Inventor/SbBox2f.h 	$(top_srcdir)/include/Inventor/SbBox2s.h 	$(top_srcdir)/include/Inventor/SbBox3f.h 	$(top_srcdir)/include/Inventor/SbColor.h 	$(top_srcdir)/include/Inventor/SbColor4f.h 	$(top_srcdir)/include/Inventor/SbCylinder.h 	$(top_srcdir)/include/Inventor/SbDict.h 	$(top_srcdir)/include/Inventor/SbHeap.h 	$(top_srcdir)/include/Inventor/SbLine.h 	$(top_srcdir)/include/Inventor/SbMatrix.h 	$(top_srcdir)/include/Inventor/SbName.h 	$(top_srcdir)/include/Inventor/SbOctTree.h 	$(top_srcdir)/include/Inventor/SbPlane.h 	$(top_srcdir)/include/Inventor/SbRotation.h 	$(top_srcdir)/include/Inventor/SbSphere.h 	$(top_srcdir)/include/Inventor/SbString.h 	$(top_srcdir)/include/Inventor/SbTesselator.h 	$(top_srcdir)/include/Inventor/SbTime.h 	$(top_srcdir)/include/Inventor/SbVec2f.h 	$(top_srcdir)/include/Inventor/SbVec2s.h 	$(top_srcdir)/include/Inventor/SbVec3f.h 	$(top_srcdir)/include/Inventor/SbVec4f.h 	$(top_srcdir)/include/Inventor/SbViewVolume.h 	$(top_srcdir)/include/Inventor/SbViewportRegion.h 	$(top_srcdir)/include/Inventor/SbXfBox3f.h
 
 
 libcoinbaseinc_HEADERS = $(ALLINSTHEADERS)
@@ -119,16 +119,16 @@ libcoinbaseLINKHACK_la_LDFLAGS =
 libcoinbaseLINKHACK_la_LIBADD = 
 libcoinbaseLINKHACK_la_OBJECTS =  SbBSPTree.lo SbBox2f.lo SbBox2s.lo \
 SbBox3f.lo SbColor.lo SbColor4f.lo SbCylinder.lo SbDict.lo SbHeap.lo \
-SbLine.lo SbMatrix.lo SbName.lo SbPlane.lo SbRotation.lo SbSphere.lo \
-SbString.lo SbTesselator.lo SbTime.lo SbVec2f.lo SbVec2s.lo SbVec3f.lo \
-SbVec4f.lo SbViewVolume.lo SbViewportRegion.lo SbXfBox3f.lo
+SbLine.lo SbMatrix.lo SbName.lo SbOctTree.lo SbPlane.lo SbRotation.lo \
+SbSphere.lo SbString.lo SbTesselator.lo SbTime.lo SbVec2f.lo SbVec2s.lo \
+SbVec3f.lo SbVec4f.lo SbViewVolume.lo SbViewportRegion.lo SbXfBox3f.lo
 libcoinbase_la_LDFLAGS = 
 libcoinbase_la_LIBADD = 
 libcoinbase_la_OBJECTS =  SbBSPTree.lo SbBox2f.lo SbBox2s.lo SbBox3f.lo \
 SbColor.lo SbColor4f.lo SbCylinder.lo SbDict.lo SbHeap.lo SbLine.lo \
-SbMatrix.lo SbName.lo SbPlane.lo SbRotation.lo SbSphere.lo SbString.lo \
-SbTesselator.lo SbTime.lo SbVec2f.lo SbVec2s.lo SbVec3f.lo SbVec4f.lo \
-SbViewVolume.lo SbViewportRegion.lo SbXfBox3f.lo
+SbMatrix.lo SbName.lo SbOctTree.lo SbPlane.lo SbRotation.lo SbSphere.lo \
+SbString.lo SbTesselator.lo SbTime.lo SbVec2f.lo SbVec2s.lo SbVec3f.lo \
+SbVec4f.lo SbViewVolume.lo SbViewportRegion.lo SbXfBox3f.lo
 CXXFLAGS = @CXXFLAGS@
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -151,10 +151,10 @@ GZIP_ENV = --best
 DEP_FILES =  .deps/SbBSPTree.P .deps/SbBox2f.P .deps/SbBox2s.P \
 .deps/SbBox3f.P .deps/SbColor.P .deps/SbColor4f.P .deps/SbCylinder.P \
 .deps/SbDict.P .deps/SbHeap.P .deps/SbLine.P .deps/SbMatrix.P \
-.deps/SbName.P .deps/SbPlane.P .deps/SbRotation.P .deps/SbSphere.P \
-.deps/SbString.P .deps/SbTesselator.P .deps/SbTime.P .deps/SbVec2f.P \
-.deps/SbVec2s.P .deps/SbVec3f.P .deps/SbVec4f.P .deps/SbViewVolume.P \
-.deps/SbViewportRegion.P .deps/SbXfBox3f.P
+.deps/SbName.P .deps/SbOctTree.P .deps/SbPlane.P .deps/SbRotation.P \
+.deps/SbSphere.P .deps/SbString.P .deps/SbTesselator.P .deps/SbTime.P \
+.deps/SbVec2f.P .deps/SbVec2s.P .deps/SbVec3f.P .deps/SbVec4f.P \
+.deps/SbViewVolume.P .deps/SbViewportRegion.P .deps/SbXfBox3f.P
 SOURCES = $(libcoinbaseLINKHACK_la_SOURCES) $(libcoinbase_la_SOURCES)
 OBJECTS = $(libcoinbaseLINKHACK_la_OBJECTS) $(libcoinbase_la_OBJECTS)
 
