@@ -139,8 +139,8 @@ class SoInputP {
   }
   
   SoInput_FileInfo * getTopOfStackPopOnEOF(void);
-  SbBool isIdentStartChar(unsigned char c);
-  SbBool isIdentChar(unsigned char c);
+  SbBool isNameStartChar(unsigned char c, SbBool validIdent);
+  SbBool isNameChar(unsigned char c, SbBool validIdent);
 
   SoInput * owner;
   SbBool usingstdin;
@@ -232,13 +232,8 @@ SoInputP::getTopOfStackPopOnEOF(void)
 //  0x0-0x20, 0x22, 0x23, 0x27, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d,
 //  0x7b, 0x7d, 0x7f ;
 SbBool
-SoInputP::isIdentStartChar(unsigned char c)
+SoInputP::isNameStartChar(unsigned char c, SbBool validIdent)
 {
-  // FIXME: There may be problems in VRML 1.0 when reading fields
-  // because fields have different syntax than nodenames. There is no
-  // test here to see if a field is read or not. See
-  // method-comment. jornskaa 20040713
-
   // Cannot be unsigned when using strchr, but since all values are
   // below 128, it does not matter if they are signed or unsigned.
   const char invalid_vrml1[9] = { 0x22, 0x23, 0x27, 0x2b, 0x2e, 
@@ -251,20 +246,46 @@ SoInputP::isIdentStartChar(unsigned char c)
                                  // '"',  '#',  ''',  '+',  ',',  '-',  '.',
                                  // '[',  '\',  ']',  '{',  '}',   ''
 
-  // VRML1 and VRML2 are kept separate for ease of modification if
-  // more differences are found
+  // Differences from invalid_vrml1: '&' , '[', and ']' are now invalid
+  const char valid_ident_invalid_vrml1[12] = { 0x22, 0x23, 0x26, 0x27, 0x2b, 0x2e, 
+                                               0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
+                                             // '"',  '#',   '&', ''',  '+',  '.',
+                                             // '[',  '\',   ']',  '{',  '}'
+
+  const char * valid_ident_invalid_vrml2 = invalid_vrml2;
+
+
+  // VRML1, VRML2 and Inventor files are kept separate for ease of
+  // modification if more differences are found
   if (owner->isFileVRML1()) {
     if (c <= 0x20) return FALSE; // Control characters
     if (c >= 0x30 && c <= 0x39) return FALSE; // Digits
-    return (strchr(invalid_vrml1, (int)c) == NULL ? TRUE : FALSE);
+
+    if (validIdent) {
+      return (strchr(valid_ident_invalid_vrml1, (int)c) == NULL ? TRUE : FALSE);
+    }
+    else {
+      return (strchr(invalid_vrml1, (int)c) == NULL ? TRUE : FALSE);
+    }
   }
   else if (owner->isFileVRML2()) {
     if (c <= 0x20) return FALSE; // Control characters
     if (c >= 0x30 && c <= 0x39) return FALSE; // Digits
-    return (strchr(invalid_vrml2, (int)c) == NULL ? TRUE : FALSE);
+
+    if (validIdent) {
+      return (strchr(valid_ident_invalid_vrml2, (int)c) == NULL ? TRUE : FALSE);
+    }
+    else {
+      return (strchr(invalid_vrml2, (int)c) == NULL ? TRUE : FALSE);
+    }
   }
   else { // Inventor files
-    return SbName::isIdentStartChar(c);
+    if (validIdent) {
+      return SbName::isIdentStartChar(c);
+    }
+    else {
+      return (c > 0x20); // Not control characters
+    }
   }
 }
 
@@ -273,34 +294,59 @@ SoInputP::isIdentStartChar(unsigned char c)
 // 
 // See SoInputP::isIdentStartChar for more information
 SbBool
-SoInputP::isIdentChar(unsigned char c)
+SoInputP::isNameChar(unsigned char c, SbBool validIdent)
 {
   // Cannot be unsigned when using strchr, but since all values are
   // below 128, it does not matter if they are signed or unsigned.
-  const char invalid_vrml1[9] = { 0x22, 0x23, 0x27, 0x2b, 0x2e, 
-                                  0x5c, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
-                                 // '"',  '#',  ''',  '+',  '.',
-                                 // '\',  '{',  '}'
+  const char invalid_vrml1[12] = { 0x22, 0x23, 0x27, 0x2b, 0x2e, 
+                                   0x5c, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
+                                // '"',  '#',  ''',  '+',  '.',
+                                // '\',  '{',  '}'
 
   // Compared to isIdentStartChar, '+' and '-' have now become valid
-  // characters (compared to isIdentStartChar).
+  // characters.
   const char invalid_vrml2[12] = { 0x22, 0x23, 0x27, 0x2c, 0x2e, 0x5b, 
                                    0x5c, 0x5d, 0x7b, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
                                  // '"',  '#',  ''',  ',',  '.',  '[',
                                  // '\',  ']',  '{',  '}',   ''
 
-  // VRML1 and VRML2 are kept separate for ease of modification if
-  // more differences are found
+  // Differences from invalid_vrml1: '&' , '[', and ']' are now invalid
+  const char valid_ident_invalid_vrml1[12] = { 0x22, 0x23, 0x26, 0x27, 0x2b, 0x2e, 
+                                               0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
+                                             // '"',  '#',   '&', ''',  '+',  '.',
+                                             // '[',  '\',   ']',  '{',  '}'
+
+  const char * valid_ident_invalid_vrml2 = invalid_vrml2;
+
+  // VRML1, VRML2 and Inventor files are kept separate for ease of
+  // modification if more differences are found
   if (owner->isFileVRML1()) {
     if (c <= 0x20) return FALSE; // Control characters
-    return (strchr(invalid_vrml1, (int)c) == NULL ? TRUE : FALSE);
+
+    if (validIdent) {
+      return (strchr(valid_ident_invalid_vrml1, (int)c) == NULL ? TRUE : FALSE);
+    }
+    else {
+      return (strchr(invalid_vrml1, (int)c) == NULL ? TRUE : FALSE);
+    }
   }
   else if (owner->isFileVRML2()) {
     if (c <= 0x20) return FALSE; // Control characters
-    return (strchr(invalid_vrml2, (int)c) == NULL ? TRUE : FALSE);
+
+    if (validIdent) {
+      return (strchr(valid_ident_invalid_vrml2, (int)c) == NULL ? TRUE : FALSE);
+    }
+    else {
+      return (strchr(invalid_vrml2, (int)c) == NULL ? TRUE : FALSE);
+    }
   }
   else { // Inventor files
-    return SbName::isIdentChar(c);
+    if (validIdent) {
+      return SbName::isIdentChar(c);
+    }
+    else {
+      return (c > 0x20); // Not control characters
+    }
   }
 }
 
@@ -1143,23 +1189,6 @@ SoInput::read(SbString & s)
         break;
       }
 
-#if 0
-      // FIXME: This code was commented away because of incompatibility
-      // with Open Inventor. If further testing shows that this code
-      // is not needed, it can be removed.
-      //
-      // 20040618 jornskaa
-
-      else if (*buf == '[') {
-        fi->putBack(*buf);
-        break;
-      }
-      else if (*buf == ']') {
-        fi->putBack(*buf);
-        break;
-      }
-#endif
-
       buf++; totallen++;
       bytesLeft--;
     }
@@ -1201,9 +1230,9 @@ SoInput::read(SbName & n, SbBool validIdent)
     n = s;
 
     if (validIdent && s.getLength() > 0) {
-      if (!PRIVATE(this)->isIdentStartChar(s[0])) return FALSE;
+      if (!PRIVATE(this)->isNameStartChar(s[0], validIdent)) return FALSE;
       for (int i = 1; i < s.getLength(); i++)
-        if (!PRIVATE(this)->isIdentStartChar(s[i])) return FALSE;
+        if (!PRIVATE(this)->isNameChar(s[i], validIdent)) return FALSE;
     }
 
     return TRUE;
@@ -1212,92 +1241,40 @@ SoInput::read(SbName & n, SbBool validIdent)
   else {
     if (!fi->skipWhiteSpace()) return FALSE;
 
-    // FIXME: To test for VRML 1.0 or VRML 2.0 here is a little
-    // hackish. The testing should really happen higher in the
-    // callchain, so that validIdent will be true in those cases.
-    // jornskaa 20040713
-    // 
-    // In the VRML 1.0 and 2.0 standard, all nodestypes, nodenames and
-    // fields have to be valid identifiers. Though the meaning of what
-    // is a valid identifier differs slightly between the standards.
-    // Take a look at SoInputP::isIdentStartChar() and
-    // SoInputP::isIdentChar() for more information.
-    if (!validIdent && !fi->isFileVRML1() && !fi->isFileVRML2()) { 
-      SbString s;
-      if (!this->read(s)) return FALSE;
-
-#if 0
-      // FIXME: This code was commented away because of incompatibility
-      // with Open Inventor. If further testing shows that this code
-      // is not needed, it can be removed. To remove trailing brackets
-      // from the end of a name seems strange since it is a valid 
-      // character if validIdent==FALSE.
-      //
-      // 20040618 jornskaa
+    SbString s;
+    char buf[256];
+    char * b = buf;
+    char c;
+    SbBool gotchar;
+    
+    if ((gotchar = fi->get(c)) && PRIVATE(this)->isNameStartChar(c, validIdent)) {
+      *b++ = c;
       
-      // Strip off any "{" or "}" characters.
-      const char * cstr = s.getString();
-      int idx = s.getLength()-1;
-      if (idx >= 0) {
-        assert(cstr && strlen(cstr) == (size_t)s.getLength());
-        while (((cstr[idx] == '{') || (cstr[idx] == '}')) && (idx > 0)) idx--;
-      }
-      
-      if (idx == s.getLength()-1) {
-        // No trailing '{' or '}'.
-        n = s;
-      }
-      else {
-        // Trailing brackets; rip out correct part of string and put the
-        // rest back in again.
-        n = s.getSubString(0, idx);
-        fi->putBack(&cstr[idx+1]);
-      }
-#else
-      // FIXME: if the code above is reinserted, this block should be 
-      // removed/commented.
-      //
-      // 20040618 jornskaa
-      n = s;
-#endif
-
-    }
-    else {
-      SbString s;
-      char buf[256];
-      char * b = buf;
-      char c;
-      SbBool gotchar;
-
-      if ((gotchar = fi->get(c)) && PRIVATE(this)->isIdentStartChar(c)) {
+      while ((gotchar = fi->get(c)) && PRIVATE(this)->isNameChar(c, validIdent)) {
         *b++ = c;
-
-        while ((gotchar = fi->get(c)) && PRIVATE(this)->isIdentChar(c)) {
-          *b++ = c;
-          if (b - buf == 255) {
-            *b = '\0';
-            s += buf;
-            b = buf;
-          }
+        if (b - buf == 255) {
+          *b = '\0';
+          s += buf;
+          b = buf;
         }
       }
-      // This behavior is pretty silly, but this is how it is supposed
-      // to work, apparently -- _not_ returning FALSE upon end-of-file.
-      if (gotchar) fi->putBack(c);
-
-      *b = '\0';
-      s += buf;
-      n = SbName(s);
-
-#if 0 // debug
-      SoDebugError::postInfo("SoInput::read",
-                             "string read: ``%s''", s.getString());
-#endif // debug
-
-      if (s.getLength() == 0) return FALSE;
     }
+    // This behavior is pretty silly, but this is how it is supposed
+    // to work, apparently -- _not_ returning FALSE upon end-of-file.
+    if (gotchar) fi->putBack(c);
+    
+    *b = '\0';
+    s += buf;
+    n = SbName(s);
+    
+#if 0 // debug
+    SoDebugError::postInfo("SoInput::read",
+                           "string read: ``%s''", s.getString());
+#endif // debug
+    
+    if (s.getLength() == 0) return FALSE;
   }
-
+  
   return TRUE;
 }
 
