@@ -62,10 +62,10 @@ public:
   int getDepth(void) const;
 
   virtual void print(FILE * file = stdout) const;
+  virtual ~SoElement();
 
 protected:
   SoElement(void);
-  virtual ~SoElement();
   static int classStackIndex;
 
   static SoElement * getElement(SoState * const state, const int stackIndex);
