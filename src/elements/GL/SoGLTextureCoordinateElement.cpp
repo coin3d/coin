@@ -28,6 +28,8 @@
 */
 
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <assert.h>
@@ -41,6 +43,9 @@
 class SoGLTextureCoordinateElementP {
 public:
   void * texgenData;
+  const SoGLMultiTextureCoordinateElement * multielem;
+  const SbBool * multienabled;
+  int multimax;
 };
 
 // FIXME: before Coin 3.0, replace texgenData with a pimpl member.
@@ -87,6 +92,7 @@ SoGLTextureCoordinateElement::init(SoState * state)
   inherited::init(state);
   this->texgenCB = NULL;
   PRIVATE(this)->texgenData = NULL;
+  PRIVATE(this)->multielem = NULL;
 }
 
 //!  FIXME: write doc.
@@ -97,6 +103,7 @@ SoGLTextureCoordinateElement::push(SoState * state)
   SoGLTextureCoordinateElement * prev = (SoGLTextureCoordinateElement*)this->getNextInStack();
   this->texgenCB = prev->texgenCB;
   PRIVATE(this)->texgenData = PRIVATE(prev)->texgenData;
+  PRIVATE(this)->multielem = NULL;
   // capture previous element since we might or might not change the
   // GL state in set/pop
   prev->capture(state);
@@ -186,6 +193,18 @@ SoGLTextureCoordinateElement::send(const int index) const
     assert(0 && "should not happen");
     break;
   }
+
+  const SoGLMultiTextureCoordinateElement * multielem = 
+    PRIVATE(this)->multielem;
+  
+  if (multielem) {
+    // FIXME: make an optimized loop in SoGLMulteTextureCoordinateElement?
+    const int num = PRIVATE(this)->multimax;
+    const SbBool * enabled = PRIVATE(this)->multienabled;
+    for (int i = 1; i <= num; i++) {
+      if (enabled[i]) multielem->send(i, index);
+    }
+  }
 }
 
 //!  FIXME: write doc.
@@ -225,7 +244,35 @@ SoGLTextureCoordinateElement::send(const int index,
       break;
     }
   }
+
+  const SoGLMultiTextureCoordinateElement * multielem = 
+    PRIVATE(this)->multielem;
+  
+  if (multielem) {
+    // FIXME: make am optimized loop in SoGLMulteTextureCoordinateElement?
+    const int num = PRIVATE(this)->multimax;
+    for (int i = 1; i <= num; i++) {
+      multielem->send(i, index, c, n);
+    }
+  }
 }
+
+/*!
+  Called from SoTextureCoordinateBundle to initialize multi texturing.
+
+  \internal
+*/
+void 
+SoGLTextureCoordinateElement::initMulti(SoState * state) const
+{
+  PRIVATE(this)->multielem = NULL;
+  PRIVATE(this)->multienabled = SoMultiTextureEnabledElement::getEnabledUnits(state, 
+                                                                              PRIVATE(this)->multimax);
+  if (PRIVATE(this)->multimax >= 1) {
+    PRIVATE(this)->multielem = SoGLMultiTextureCoordinateElement::getInstance(state);
+  }
+}
+
 
 //!  FIXME: write doc.
 

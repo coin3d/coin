@@ -58,6 +58,8 @@ public:
   void send(const int index) const;
   void send(const int index, const SbVec3f &c, const SbVec3f &n) const;
 
+  void initMulti(SoState * state) const;
+
 protected:
   virtual void setElt(SoTexCoordTexgenCB *func,
                       void *data = NULL);
