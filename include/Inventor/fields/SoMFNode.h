@@ -39,6 +39,8 @@ public:
 
 private:
   virtual void countWriteRefs(SoOutput * out) const;
+  virtual void deleteValues(int start, int num = -1);
+  virtual void insertSpace(int start, int num);
 };
 
 #endif // !COIN_SOMFNODE_H

@@ -81,7 +81,13 @@ SoMFNode::valuesPtr(void)
 void
 SoMFNode::setValuesPtr(void * ptr)
 {
-  this->values = (SoNode * *)ptr;
+#if COIN_DEBUG
+  // We don't get any ref()'ing done here, or any notification
+  // mechanisms set up.
+  SoDebugError::postWarning("SoMFNode::setValuesPtr", "**dangerous code**");
+#endif // COIN_DEBUG
+
+  this->values = (SoNode **)ptr;
 }
 
 int
@@ -94,46 +100,63 @@ SoMFNode::find(SoNode * value, SbBool addifnotfound)
 }
 
 void
-SoMFNode::setValues(const int start, const int num, const SoNode * * newvals)
+SoMFNode::setValues(const int start, const int num, const SoNode ** newvals)
 {
+  // Disable temporarily, so we under any circumstances will not send
+  // more than one notification about the changes.
+  SbBool notificstate = this->enableNotify(FALSE);
+
   // ref() new nodes before unref()-ing old ones, in case there are
   // common nodes (we don't want any premature destruction to happen).
-  for (int k=0; k < num; k++) if (newvals[k]) newvals[k]->ref();
+  { for (int i=0; i < num; i++) if (newvals[i]) newvals[i]->ref(); }
 
-  for (int j=start; (j < start+num) && (j < this->num); j++) {
-    SoNode * n = (*this)[j];
-    if (n) n->unref();
-  }
+  // We favor simplicity of code over performance here.
+  { for (int i=0; i < num; i++)
+    this->set1Value(start+i, (SoNode *)newvals[i]); }
 
-  if (start+num > this->maxNum) this->allocValues(start+num);
-  else if (start+num > this->num) this->num = start+num;
+  // unref() to match the initial ref().
+  { for (int i=0; i < num; i++) if (newvals[i]) newvals[i]->unref(); }
 
-  for (int i=0; i < num; i++) this->values[i+start] = (SoNode *)newvals[i];
-
-  this->valueChanged();
+  // Finally, send notification.
+  (void)this->enableNotify(notificstate);
+  if (notificstate) this->valueChanged();
 }
 
 void
-SoMFNode::set1Value(const int idx, SoNode * value)
+SoMFNode::set1Value(const int idx, SoNode * newval)
 {
-  value->ref();
+  // Disable temporarily, so we under no circumstances will send more
+  // than one notification about the change.
+  SbBool notificstate = this->enableNotify(FALSE);
 
-  if ((idx < this->num) && (*this)[idx]) (*this)[idx]->unref();
+  // Expand array if necessary.
+  if (idx >= this->getNum()) this->setNum(idx + 1);
 
-  if (idx+1 > this->maxNum) this->allocValues(idx+1);
-  else if (idx+1 > this->num) this->num = idx+1;
-  this->values[idx] = value;
-  this->valueChanged();
+  SoNode * oldptr = (*this)[idx];
+  if (oldptr == newval) return;
+
+  if (oldptr) {
+    oldptr->removeAuditor(this, SoNotRec::FIELD);
+    oldptr->unref();
+  }
+
+  if (newval) {
+    newval->addAuditor(this, SoNotRec::FIELD);
+    newval->ref();
+  }
+
+  this->values[idx] = newval;
+
+  // Finally, send notification.
+  (void)this->enableNotify(notificstate);
+  if (notificstate) this->valueChanged();
 }
 
 void
 SoMFNode::setValue(SoNode * value)
 {
   this->deleteAllValues();
-
-  this->values[0] = value;
-  value->ref();
-  this->valueChanged();
+  this->set1Value(0, value);
 }
 
 SbBool
@@ -142,8 +165,8 @@ SoMFNode::operator==(const SoMFNode & field) const
   if (this == &field) return TRUE;
   if (this->getNum() != field.getNum()) return FALSE;
 
-  const SoNode * * const lhs = this->getValues(0);
-  const SoNode * * const rhs = field.getValues(0);
+  const SoNode ** const lhs = this->getValues(0);
+  const SoNode ** const rhs = field.getValues(0);
   for (int i = 0; i < num; i++) if (lhs[i] != rhs[i]) return FALSE;
   return TRUE;
 }
@@ -151,24 +174,46 @@ SoMFNode::operator==(const SoMFNode & field) const
 void
 SoMFNode::deleteAllValues(void)
 {
-  for (int i=0; i < this->getNum(); i++) {
-    SoNode * n = (*this)[i];
-    if (n) n->unref();
+  if (this->getNum()) this->deleteValues(0);
+}
+
+// Overloaded to handle unref() and removeAuditor().
+void
+SoMFNode::deleteValues(int start, int num)
+{
+  if (num == -1) num = this->getNum() - 1 - start;
+  for (int i=start; i < start+num; i++) {
+    SoNode * n = this->values[i];
+    if (n) {
+      n->removeAuditor(this, SoNotRec::FIELD);
+      n->unref();
+    }
   }
 
-  this->allocValues(0);
+  inherited::deleteValues(start, num);
+}
+
+// Overloaded to insert NULL pointers in new array slots.
+void
+SoMFNode::insertSpace(int start, int num)
+{
+  // Disable temporarily so we don't send notification prematurely
+  // from inherited::insertSpace().
+  SbBool notificstate = this->enableNotify(FALSE);
+
+  inherited::insertSpace(start, num);
+  for (int i=start; i < start+num; i++) this->values[i] = NULL;
+
+  // Initialization done, now send notification.
+  (void)this->enableNotify(notificstate);
+  if (notificstate) this->valueChanged();
 }
 
 void
 SoMFNode::copyValue(int to, int from)
 {
-  assert(this->values && SbMax(to, from) < num);
-
-  if ((*this)[to]) (*this)[to]->unref();
-  this->values[to] = this->values[from];
-  if ((*this)[to]) (*this)[to]->ref();
-
-  this->valueChanged();
+  if (to == from) return;
+  this->set1Value(to, this->values[from]);
 }
 
 //// From the SO_MFIELD_VALUE_SOURCE macro, end. /////////////////////////////
@@ -205,14 +250,16 @@ SoMFNode::countWriteRefs(SoOutput * out) const
 
   for (int i=0; i < this->getNum(); i++) {
     SoNode * n = (*this)[i];
-    // Set the "from field" flag as FALSE, is that flag is meant to be
+    // Set the "from field" flag as FALSE, as that flag is meant to be
     // used for references through field-to-field connections.
     if (n) n->addWriteReference(out, FALSE);
   }
 }
 
-// Override from parent to update our node pointer reference, if
-// necessary.
+// Override from parent to update our node pointer references. This is
+// necessary so 1) we're added as an auditor to the copied nodes (they
+// have so far only been copied as pointer bits), and 2) so we
+// increase the reference count.
 void
 SoMFNode::fixCopy(SbBool copyconnections)
 {
@@ -220,7 +267,8 @@ SoMFNode::fixCopy(SbBool copyconnections)
     SoNode * n = (*this)[i];
     if (n) {
       SoFieldContainer * fc = SoFieldContainer::findCopy(n, copyconnections);
-      this->setValue((SoNode *)fc);
+      this->set1Value(i, NULL); // Fool the set-as-same-value detection.
+      this->set1Value(i, (SoNode *)fc);
     }
   }
 }
