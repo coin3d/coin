@@ -256,9 +256,13 @@ public:
 
       // glXGetCurrenDisplay() is a GLX 1.2 feature
       //
+      /////////////////////////////////////
+      //
       // FIXME: we should probably dlopen() libGLX.so, to avoid
       // problems when compiling with GLX 1.2 and running on GLX <
       // 1.2.  pederb, 2001-05-25
+      //
+      /////////////////////////////////////
       //
       // UPDATE, mortene 2001-06-05: there is no "libGLX.so" on any
       // platforms known to me, the glX*() functions seem to always be
@@ -275,6 +279,20 @@ public:
       // investigated closer. Using a dynamic, run-time loading
       // wrapper around the OpenGL library would save us a few
       // headaches over a few hard-to-solve important problems.
+      //
+      /////////////////////////////////////
+      //
+      // UPDATE2, mortene 2001-06-05: there *is* a simple solution to
+      // this, I think. So simple, it's embarrassing I didn't think of
+      // it immediately: do _both_ compile-time and run-time linking
+      // against the OpenGL library. Use exclusively compile-time
+      // linking against features known to be part of OpenGL 1.0 (ie
+      // even the oldest, weakest OpenGL libraries around) to work
+      // around the possible performance hit problem, but use run-time
+      // binding against features from later versions. This is
+      // possible since one can dlopen() and then inspect an already
+      // loaded library.
+      //
 
       this->storedcontext = glXGetCurrentContext();
       if (this->storedcontext) {
