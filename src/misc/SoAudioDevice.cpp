@@ -85,15 +85,14 @@ SoAudioDevice::SoAudioDevice()
 {
   PRIVATE(this) = new SoAudioDeviceP(this);
   PRIVATE(this)->context = NULL;
-#ifdef HAVE_SOUND
-  PRIVATE(this)->device = NULL;
-#endif
   PRIVATE(this)->glRenderAction = NULL;
   PRIVATE(this)->audioRenderAction = NULL;
   PRIVATE(this)->enabled = FALSE;
   PRIVATE(this)->root = NULL;
   PRIVATE(this)->initOK = FALSE;
 
+#ifdef HAVE_SOUND
+  PRIVATE(this)->device = NULL;
   // This might seem like a weird thing to do, but there is a good
   // reason for it: these two methods have a different signature for
   // different versions of OpenAL. We could have fixed it by having
@@ -102,6 +101,7 @@ SoAudioDevice::SoAudioDevice()
   // function pointer of a safe "common" type.
   PRIVATE(this)->alcMakeContextCurrent = (COIN_ALCMAKECONTEXTCURRENT)alcMakeContextCurrent;
   PRIVATE(this)->alcDestroyContext = (COIN_ALCDESTROYCONTEXT)alcDestroyContext;
+#endif
 
   PRIVATE(this)->audioRenderAction = new SoAudioRenderAction();
 }
