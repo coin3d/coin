@@ -217,7 +217,18 @@ SoClipPlaneManip::setValue(const SbBox3f & box, const SbVec3f & planenormal, flo
   this->attachSensors(FALSE);
   SbPlane newplane(planenormal, box.getCenter());
   this->plane = newplane;
+
+  float dx, dy, dz;
+  box.getSize(dx, dy, dz);
+
   // FIXME: investigate how dragger should be scaled (pederb, 20000606)
+#if COIN_DEBUG
+  if ((dx != 1.0f) || (dy != 1.0f) || (dz != 1.0f)) {
+    SoDebugError::postWarning("SoClipPlaneManip::setValue",
+                              "scaling with the \"box\" argument is not supported yet");
+  }
+#endif // COIN_DEBUG
+
   this->attachSensors(TRUE);
   SoClipPlaneManip::fieldSensorCB(this, NULL);
 }
