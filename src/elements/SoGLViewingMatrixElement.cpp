@@ -64,6 +64,7 @@ SoGLViewingMatrixElement::init(SoState * state)
 {
   inherited::init(state);
   this->state = state;
+  this->mmidentity = TRUE;
 }
 
 // doc in parent
