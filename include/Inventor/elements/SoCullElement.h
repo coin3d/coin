@@ -24,6 +24,7 @@
 #include <Inventor/SbPlane.h>
 
 class SbBox3f;
+class SbViewVolume;
 
 class COIN_DLL_EXPORT SoCullElement : public SoElement {
   typedef SoElement inherited;
@@ -38,8 +39,9 @@ public:
 
   virtual void init(SoState * state);
   virtual void push(SoState * state);
-
-  static void addPlanes(SoState * state, const SbPlane * planes, const int numplanes);
+  
+  static void setViewVolume(SoState * state, const SbViewVolume & vv);
+  static void addPlane(SoState * state, const SbPlane & newplane);
   static SbBool cullBox(SoState * state, const SbBox3f & box, const SbBool transform = TRUE);
   static SbBool cullTest(SoState * state, const SbBox3f & box, const SbBool transform = TRUE);
   static SbBool completelyInside(SoState * state);
@@ -49,12 +51,15 @@ public:
 
 private:
 
+  enum { MAXPLANES = 32 };
+
   static SbBool docull(SoState * state, const SbBox3f & box, const SbBool transform,
                        const SbBool updateelem);
 
-  SbPlane plane[32];
+  SbPlane plane[MAXPLANES];
   int numplanes;
   unsigned int flags;
+  int vvindex;
 };
 
 #endif // !COIN_SOCULLELEMENT_H

@@ -42,7 +42,9 @@
 
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/misc/SoState.h>
 #include <Inventor/SbBox3f.h>
+#include <Inventor/SbViewVolume.h>
 #include <string.h>
 #include <assert.h>
 
@@ -72,6 +74,7 @@ SoCullElement::init(SoState * state)
 {
   this->numplanes = 0;
   this->flags = 0;
+  this->vvindex = -1;
 }
 
 // doc from parent
@@ -83,27 +86,66 @@ SoCullElement::push(SoState * state)
 
   elem->flags = this->flags;
   elem->numplanes = this->numplanes;
+  elem->vvindex = this->vvindex;
   for (int i = 0; i < this->numplanes; i++) elem->plane[i] = this->plane[i];
 }
 
-/*!
-  Add planes geometry must be inside. The planes must be in the world
-  coordinate system.
+/*!  
+  Sets the current view volume. In effect, this adds six planes to
+  the list of culling planes.  If a view volume has already been
+  set, the old view volume planes are overwritten by the new ones.
 */
-void
-SoCullElement::addPlanes(SoState * state, const SbPlane * planes, const int numplanes)
+void 
+SoCullElement::setViewVolume(SoState * state, const SbViewVolume & vv)
 {
   SoCullElement * elem = (SoCullElement *)
     SoElement::getElement(state, classStackIndex);
-  if (elem->numplanes + numplanes > 32) {  // _very_ unlikely
+  if (elem->numplanes + 6 > SoCullElement::MAXPLANES) { // _very_ unlikely
 #if COIN_DEBUG
-    SoDebugError::postWarning("SoCullElement::addPlanes",  "too many planes");
+    SoDebugError::postWarning("SoCullElement::setViewVolume",  "too many planes");
 #endif // COIN_DEBUG
     return;
   }
+  int i;
+  SbPlane vvplane[6];
+  SbBool identity;
+  const SbMatrix & mm = SoModelMatrixElement::get(state, identity);
+  if (!identity) {
+    SbViewVolume copyvv = vv;
+    copyvv.transform(mm);
+    copyvv.getViewVolumePlanes(vvplane);
+  }
+  else {
+    vv.getViewVolumePlanes(vvplane);
+  }
+  if (elem->vvindex >= 0) { // overwrite old view volume
+    for (i = 0; i < 6; i++) {
+      elem->plane[elem->vvindex+i] = vvplane[i];
+      elem->flags &= ~(1<<(elem->vvindex+i));
+    }
+  }
+  else {
+    elem->vvindex = elem->numplanes;
+    for (i = 0; i < 6; i++) elem->plane[elem->numplanes++] = vvplane[i];
+  }
+}
 
-  for (int i = 0; i < numplanes; i++) elem->plane[i+elem->numplanes] = planes[i];
-  elem->numplanes += numplanes;
+/*!
+  Add plane geometry must be inside. The plane must be in the world
+  coordinate system.
+*/
+void
+SoCullElement::addPlane(SoState * state, const SbPlane &newplane)
+{
+  SoCullElement * elem = (SoCullElement *)
+    SoElement::getElement(state, classStackIndex);
+  if (elem->numplanes >= SoCullElement::MAXPLANES) {  // _very_ unlikely
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoCullElement::addPlane",  "too many planes");
+#endif // COIN_DEBUG
+    return;
+  }
+  elem->plane[elem->numplanes++] = newplane;
 }
 
 /*!
@@ -140,7 +182,7 @@ SbBool
 SoCullElement::completelyInside(SoState * state)
 {
   const SoCullElement * elem = (const SoCullElement *)
-    SoElement::getConstElement(state, classStackIndex);
+    state->getConstElement(classStackIndex);
   unsigned int mask = 0x0001 << elem->numplanes;
   return elem->flags == (mask-1);
 }
@@ -174,24 +216,26 @@ SbBool
 SoCullElement::docull(SoState * state, const SbBox3f & box, const SbBool transform,
                       const SbBool updateelem)
 {
-  // try to avoid a push if possible, get const element first
+  // try to avoid a push if possible
   SoCullElement * elem = (SoCullElement *)
-    SoElement::getConstElement(state, classStackIndex);
-
+    state->getElementNoPush(classStackIndex);
+  
   int i, j;
+  SbBool identity;
   SbVec3f min, max;
   min = box.getMin();
   max = box.getMax();
   SbVec3f pts[8];
 
-  const SbMatrix & mm = SoModelMatrixElement::get(state);
+  const SbMatrix & mm = SoModelMatrixElement::get(state, identity);
+  if (!transform) identity = TRUE;
 
   // create the 8 box corner points
   for (i = 0; i < 8; i++) {
     pts[i][0] = i & 1 ? min[0] : max[0];
     pts[i][1] = i & 2 ? min[1] : max[1];
     pts[i][2] = i & 4 ? min[2] : max[2];
-    if (transform) mm.multVecMatrix(pts[i], pts[i]);
+    if (!identity) mm.multVecMatrix(pts[i], pts[i]);
   }
 
   const int n = elem->numplanes;

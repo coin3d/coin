@@ -306,9 +306,7 @@ SoCamera::GLRender(SoGLRenderAction * action)
   SoState * state = action->getState();
   const SbViewVolume & vv = SoViewVolumeElement::get(state);
   if (vv.getDepth() != 0.0f && vv.getWidth() != 0.0f && vv.getHeight() != 0.0f) {
-    SbPlane plane[6];
-    vv.getViewVolumePlanes(plane);
-    SoCullElement::addPlanes(state, plane, 6);
+    SoCullElement::setViewVolume(state, vv);
   }
 }
 
