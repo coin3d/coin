@@ -346,10 +346,3 @@ SbString::findAll(const SbString & str, SbIntList & found) const
   Note that this function is not part of the original Open Inventor
   API.
 */
-
-/*!
-  \fn void SbString::print(FILE * file) const
-
-  Dump the state of this object to the \a file stream.  Only works in
-  debug version of library, method does nothing in an optimized compile.
-*/
