@@ -25,9 +25,9 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#include <Inventor/C/glue/flwfreetype.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <Inventor/C/glue/flwfreetype.h>
 
 /* ************************************************************************* */
 

@@ -24,7 +24,6 @@
  *
 \**************************************************************************/
 
-#include <Inventor/C/glue/fontlib_wrapper.h>
 #include <Inventor/C/basic.h>
 #include <Inventor/C/base/string.h>
 
