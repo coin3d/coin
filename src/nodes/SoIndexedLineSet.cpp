@@ -475,6 +475,15 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
         }
         vertex.setNormal(*currnormal);
       }
+      if (doTextures) {
+        if (tb.isFunction()) {
+          vertex.setTextureCoords(tb.get(coords->get3(previ), *currnormal));
+        }
+        else {
+          pointDetail.setTextureCoordIndex(texindices?*texindices:texidx);
+          vertex.setTextureCoords(tb.get(texindices?*texindices++:texidx++));
+        }
+      }
 
       i = *cindices++;
       while (i >= 0) {
@@ -493,15 +502,6 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
             currnormal = &normals[normnr++];
           }
           vertex.setNormal(*currnormal);
-        }
-        if (doTextures) {
-          if (tb.isFunction()) {
-            vertex.setTextureCoords(tb.get(coords->get3(previ), *currnormal));
-          }
-          else {
-            pointDetail.setTextureCoordIndex(texindices?*texindices:texidx);
-            vertex.setTextureCoords(tb.get(texindices?*texindices++:texidx++));
-          }
         }
         pointDetail.setCoordinateIndex(previ);
         vertex.setPoint(coords->get3(previ));

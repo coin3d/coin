@@ -61,6 +61,9 @@
     currnormal = &normals[*normindices++];
     glNormal3fv((const GLfloat*) currnormal);
 #endif
+#if TEXTURES==TRUE
+    texcoords->send(texindices ? *texindices++ : texidx++,coords->get3(previ), *currnormal);
+#endif
     i = *indices++;
     while (i >= 0) {
 #if MBINDING==PER_SEGMENT
@@ -75,9 +78,6 @@
 #elif NBINDING==PER_SEGMENT_INDEXED
       currnormal = &normals[*normindices++];
       glNormal3fv((const GLfloat*)currnormal);
-#endif
-#if TEXTURES==TRUE
-      texcoords->send(texindices ? *texindices++ : texidx++,coords->get3(previ), *currnormal);
 #endif
       coords->send(previ);
 #if MBINDING==PER_VERTEX
