@@ -17,7 +17,7 @@ projects:
 
 * Implement fontloaders for various platforms and font format types to
   improve the SoText3 and SoText2 nodes.  FreeType library support would
-  be a great.
+  be great.
 
 * Write a NURBS-library covering all the necessary functionality we
   need within the nurbs-based node classes. A good starting point
@@ -37,4 +37,3 @@ projects:
 * Profiling and optimalization of rendering and other action
   traversals. Implement rendercaching and render- and pickculling, for
   instance.
-
