@@ -91,3 +91,10 @@ THE LINKS
   soon-to-come (?) VRMLView replacement:
 
   http://home.snafu.de/hg/
+
+* OpenGL Multipipe SDK
+
+http://www.sgi.com/software/multipipe/sdk/
+
+SDK for programming multipipe applications on SGI hardware. Free download.
+
