@@ -19,10 +19,12 @@
 
 /*!
   \class SoPointSet SoPointSet.h Inventor/nodes/SoPointSet.h
-  \brief The SoPointSet class ...
+  \brief The SoPointSet class is used to handle a set of points.
   \ingroup nodes
 
-  FIXME: write class doc
+  This node uses the coordinates currently on the state (or in the 
+  vertexProperty field) in order. The numPoints field specifies the
+  number of points in the set.
 */
 
 #include <Inventor/nodes/SoPointSet.h>
@@ -38,6 +40,7 @@
 #endif // !_WIN32
 #include <GL/gl.h>
 
+#include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
@@ -53,21 +56,26 @@
 
 /*!
   \enum SoPointSet::Binding
-  FIXME: write documentation for enum
+  Enum used internally to specify material and normal binding.
 */
 /*!
   \var SoPointSet::Binding SoPointSet::OVERALL
-  FIXME: write documentation for enum definition
+  Specifies overall binding.
 */
 /*!
   \var SoPointSet::Binding SoPointSet::PER_VERTEX
-  FIXME: write documentation for enum definition
+  Specifies binding per vertex. 
 */
-
 
 /*!
   \var SoSFInt32 SoPointSet::numPoints
-  FIXME: write documentation for field
+  Used to specify number of points in the point set. If this field is set
+  to -1 (the default value) all coordinates currently on the state will be
+  drawn/handled. Please note that PointSet inherits the field
+  SoNonIndexedShape::startIndex, which spedifies the start index for
+  points in this point set. This field is obsolete (do no use it!), but
+  is provided for compatibility. However, if startIndex != 0, the point
+  set will start handling coordinates from that index on.
 */
 
 // *************************************************************************
@@ -90,20 +98,14 @@ SoPointSet::~SoPointSet()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoPointSet class. This includes setting up the
-  type system, among other things.
-*/
+// doc from parent
 void
 SoPointSet::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoPointSet);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoPointSet::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
@@ -111,7 +113,12 @@ SoPointSet::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 }
 
 /*!
-  \internal
+  Internal method which translates the current material binding 
+  found on the state to a material binding for this node.
+  PER_PART, PER_FACE, PER_VERTEX and their indexed counterparts
+  are translated to PER_VERTEX binding. OVERALL means overall
+  binding for point set also, of course. The default material
+  binding is OVERALL.
 */
 SoPointSet::Binding
 SoPointSet::findMaterialBinding(SoState * const state) const
@@ -123,7 +130,12 @@ SoPointSet::findMaterialBinding(SoState * const state) const
 }
 
 /*!
-  \internal
+  Internal method which translates the current normal binding 
+  found on the state to a normal binding for this node.
+  PER_PART, PER_FACE, PER_VERTEX and their indexed counterparts
+  are translated to PER_VERTEX binding. OVERALL means overall
+  binding for point set also, of course. The default normal
+  binding is PER_VERTEX.
 */
 SoPointSet::Binding
 SoPointSet::findNormalBinding(SoState * const state) const
@@ -136,9 +148,7 @@ SoPointSet::findNormalBinding(SoState * const state) const
   return binding;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoPointSet::GLRender(SoGLRenderAction * action)
 {
@@ -169,11 +179,11 @@ SoPointSet::GLRender(SoGLRenderAction * action)
 
   const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
 
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
+  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
   doTextures = tb.needCoordinates();
 
-  Binding mbind = findMaterialBinding(action->getState());
-  Binding nbind = findNormalBinding(action->getState());
+  Binding mbind = this->findMaterialBinding(action->getState());
+  Binding nbind = this->findNormalBinding(action->getState());
 
   if (!needNormals) {
     nbind = OVERALL;
@@ -214,9 +224,7 @@ SoPointSet::GLRender(SoGLRenderAction * action)
     state->pop();
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 SbBool
 SoPointSet::generateDefaultNormals(SoState *, SoNormalCache * nc)
 {
@@ -225,29 +233,34 @@ SoPointSet::generateDefaultNormals(SoState *, SoNormalCache * nc)
   return TRUE;
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
 SoPointSet::getBoundingBox(SoGetBoundingBoxAction *action)
 {
   inherited::getBoundingBox(action);
 }
 
-/*!
-  FIXME: write doc
-*/
+// doc from parent
 void
 SoPointSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
-
-  action->addNumPoints(this->numPoints.getValue());
+  int num = this->numPoints.getValue();
+  if (num < 0) {
+    SoVertexProperty *vp = (SoVertexProperty*) this->vertexProperty.getValue();
+    if (vp && vp->vertex.getNum()) {
+      num = vp->vertex.getNum() - this->startIndex.getValue();
+    }
+    else {
+      const SoCoordinateElement *coordelem =
+        SoCoordinateElement::getInstance(action->getState());
+      num = coordelem->getNum() - this->startIndex.getValue();
+    }
+  }
+  action->addNumPoints(num);
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
 SoPointSet::generatePrimitives(SoAction *action)
 {
@@ -273,8 +286,8 @@ SoPointSet::generatePrimitives(SoAction *action)
   SoTextureCoordinateBundle tb(action, FALSE, FALSE);
   doTextures = tb.needCoordinates();
 
-  Binding mbind = findMaterialBinding(action->getState());
-  Binding nbind = findNormalBinding(action->getState());
+  Binding mbind = this->findMaterialBinding(action->getState());
+  Binding nbind = this->findNormalBinding(action->getState());
 
   if (!needNormals) nbind = OVERALL;
 
@@ -324,5 +337,4 @@ SoPointSet::generatePrimitives(SoAction *action)
 
   if (this->vertexProperty.getValue())
     state->pop();
-
 }
