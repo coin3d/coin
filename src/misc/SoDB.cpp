@@ -511,6 +511,17 @@ SoDB::init(void)
 void
 SoDBP::clean(void)
 {
+  // Here be dragons: If SoAudioDevice::instance()->cleanup() for some
+  // reason is called as part of Coin's atexit() queue, and
+  // SoAudioDevice::instance()->haveSound() == TRUE, and Coin is used
+  // as a DLL, and we're running on the Win32 platform, we will most
+  // likely get a crash. 
+  //
+  // See notes in SoAudioDevice::SoAudioDevice() and
+  // SoAudioDeviceP::clean() for more information.  
+  // 2003-02-27 thammer.
+  SoAudioDevice::instance()->cleanup();
+
 #if COIN_DEBUG
   // Avoid having the SoSensorManager instance trigging the callback
   // into the So@Gui@ class -- not only have it possible "died", but

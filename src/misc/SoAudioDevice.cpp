@@ -53,6 +53,7 @@
 #include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 
 #include <Inventor/SbBasic.h>
 #include "AudioTools.h"
@@ -83,6 +84,7 @@ public:
   float lastGain;
 
   static SbBool atexitcalled;
+  static SbBool cleancalled;
 };
 
 #undef PRIVATE
@@ -92,6 +94,7 @@ public:
 
 SoAudioDevice *SoAudioDeviceP::singleton = NULL;
 SbBool SoAudioDeviceP::atexitcalled= FALSE;
+SbBool SoAudioDeviceP::cleancalled= FALSE;
 
 /*!
   Returns a pointer to the SoAudioDevice class, which is a singleton.
@@ -118,8 +121,14 @@ SoAudioDevice::SoAudioDevice()
   PRIVATE(this)->enabled = FALSE;
   PRIVATE(this)->initOK = FALSE;
   PRIVATE(this)->lastGain = 1.0f;
-  if (!SoAudioDeviceP::atexitcalled)
+  if (!SoAudioDeviceP::atexitcalled) {
     atexit(SoAudioDeviceP::clean);
+    // Note: This object will be cleaned up as part of Coin's atexit()
+    // queue. If Coin is built as a dll, this queue might very well be
+    // different from the application's atexit() queue, which means
+    // that OpenAl32.dll might have been unloaded allready (by the
+    // application's atexit() queue).  2003-02-27 thammer.
+  }
   SoAudioDeviceP::atexitcalled = TRUE;
 }
 
@@ -418,11 +427,23 @@ SoAudioDevice::mute(SbBool mute)
 void
 SoAudioDeviceP::clean()
 {
+  if (SoAudioDeviceP::cleancalled)
+    return; // only cleanup once
+  SoAudioDeviceP::cleancalled = TRUE;
 #ifndef _WIN32
-  // Note: This crashes under Win32 if coin is used as a dll because
-  // OpenAL32.dll is unloaded before the coin dll, and this function
-  // is called as part of unloading the coin dll.
-  // 20021104 thammer.
+  // Note: This crashes under Win32 if Coin is used as a DLL (see note
+  // in SoAudioDevice::SoAudioDevice() and in SoDBP::clean()).
+  // cleanup() uses OpenAL32.dll, and if this DLL is allready unloaded
+  // when cleanup() is called, the crash is near. This is why we don't
+  // do a proper cleanup of OpenAL related stuff on the Win32
+  // platform. This doesn't matter at all, because when OpenAL32.dll
+  // is unloaded, it manages to clean up after itself. 
+  //
+  // On platforms other than Win32, the situation is allmost the
+  // opposite. There is only one atexit() queue shared by the
+  // application and all DLLs. And for some reason, OpenAL doesn't
+  // manage to clean up after itself when the DLL is unloaded.
+  // 2003-02-27 thammer.
   SoAudioDevice::instance()->cleanup();
 #else 
   if (SoAudioDeviceP::singleton)
