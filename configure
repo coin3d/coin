@@ -4700,6 +4700,60 @@ fi
 
 
 # *******************************************************************
+# ** Find out if GLU uses GLUnurbs or GLUnurbsObj as the name
+# ** of the interface structure to the NURBS-related functions.
+# *******************************************************************
+
+
+echo $ac_n "checking what structure to use in the GLU NURBS interface... $ac_c" 1>&6
+echo "configure:4710: checking what structure to use in the GLU NURBS interface" 1>&5
+if test "${sim_cv_func_glu_nurbsobject+set}" = set; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  sim_cv_func_glu_nurbsobject=NONE
+   for sim_ac_glu_structname in GLUnurbs GLUnurbsObj; do
+    if test "$sim_cv_func_glu_nurbsobject" = NONE; then
+      cat >conftest.$ac_ext <<EOF
+#line 4718 "configure"
+#include "confdefs.h"
+#ifdef _WIN32
+                  #include <windows.h>
+                  #endif
+                  #include <GL/gl.h>
+                  #include <GL/glu.h>
+int main() {
+$sim_ac_glu_structname * hepp = gluNewNurbsRenderer();
+                   gluDeleteNurbsRenderer(hepp)
+; return 0; }
+EOF
+if { (eval echo configure:4730: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+  rm -rf conftest*
+  sim_cv_func_glu_nurbsobject=$sim_ac_glu_structname
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+fi
+rm -f conftest*
+    fi
+  done
+
+fi
+echo "$ac_t""$sim_cv_func_glu_nurbsobject" 1>&6
+
+if test $sim_cv_func_glu_nurbsobject = NONE; then
+  sim_ac_glu_nurbsobject=
+  echo "configure: warning: no suitable GLU Nurbs interface found" 1>&2
+else
+  sim_ac_glu_nurbsobject=$sim_cv_func_glu_nurbsobject
+  cat >>confdefs.h <<EOF
+#define HAVE_GLU_NURBSOBJECT $sim_ac_glu_nurbsobject
+EOF
+
+fi
+
+
+
+# *******************************************************************
 # * Provide this nasty hack to help building Coin on platforms
 # * where one can bump into the "Arg list too long" problem
 # * (IBM AIX, SGI IRIX 6.2 and IRIX 6.5 with standard settings are

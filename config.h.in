@@ -21,6 +21,8 @@
 #undef HAVE_IO_H
 #undef HAVE_WINDOWS_H
 
+#undef HAVE_GLU_NURBSOBJECT
+
 /* Define if you have the `dnet' library (-ldnet). */
 #undef HAVE_LIBDNET
 

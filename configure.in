@@ -272,6 +272,15 @@ fi
 
 
 # *******************************************************************
+# ** Find out if GLU uses GLUnurbs or GLUnurbsObj as the name
+# ** of the interface structure to the NURBS-related functions.
+# *******************************************************************
+
+SIM_AC_GLU_NURBSOBJECT(AC_DEFINE_UNQUOTED(HAVE_GLU_NURBSOBJECT, $sim_ac_glu_nurbsobject),
+                       AC_MSG_WARN(no suitable GLU Nurbs interface found))
+
+
+# *******************************************************************
 # * Provide this nasty hack to help building Coin on platforms
 # * where one can bump into the "Arg list too long" problem
 # * (IBM AIX, SGI IRIX 6.2 and IRIX 6.5 with standard settings are

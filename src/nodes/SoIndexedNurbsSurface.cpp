@@ -23,7 +23,7 @@
   \ingroup nodes
 
   It is very similar to the SoNurbsSurface class, but control points
-  can be specified using indices.  
+  can be specified using indices.
 */
 
 #include <Inventor/nodes/SoIndexedNurbsSurface.h>
@@ -37,6 +37,10 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/errors/SoDebugError.h>
+
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 #ifdef _WIN32
 #include <windows.h>
@@ -119,7 +123,9 @@ SoIndexedNurbsSurface::SoIndexedNurbsSurface()
 SoIndexedNurbsSurface::~SoIndexedNurbsSurface()
 {
   if (this->nurbsrenderer) {
-    gluDeleteNurbsRenderer((GLUnurbs*)this->nurbsrenderer);
+#if HAVE_GLU_NURBSOBJECT
+    gluDeleteNurbsRenderer((HAVE_GLU_NURBSOBJECT *)this->nurbsrenderer);
+#endif // HAVE_GLU_NURBSOBJECT
   }
 }
 
@@ -139,9 +145,9 @@ SoIndexedNurbsSurface::computeBBox(SoAction * action,
   SoState * state = action->getState();
   const SoCoordinateElement *coordelem =
     SoCoordinateElement::getInstance(state);
-  
+
   int num = this->coordIndex.getNum();
-  
+
   if (coordelem->is3D()) {
     const SbVec3f * coords = coordelem->getArrayPtr3();
     assert(coords);
@@ -254,15 +260,16 @@ SoIndexedNurbsSurface::createTriangleDetail(SoRayPickAction * /* action */,
 }
 
 
-void 
+void
 SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
 {
+#if HAVE_GLU_NURBSOBJECT
   if (!this->coordIndex.getNum()) return;
 
   if (this->nurbsrenderer == NULL) {
-    GLUnurbs * nurbsobj = gluNewNurbsRenderer();
+    HAVE_GLU_NURBSOBJECT * nurbsobj = gluNewNurbsRenderer();
     this->nurbsrenderer = (void*) nurbsobj;
-    
+
 #if GLU_VERSION_1_3
     void * tmp = (void*) tessBegin;
     gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_BEGIN_DATA, (void (*)(...))tessBegin);
@@ -287,7 +294,7 @@ SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
   }
 #endif // GLU_VERSION_1_3
 
-  SbBool texindex = 
+  SbBool texindex =
     this->textureCoordIndex.getNum() &&
     this->textureCoordIndex[0] >= 0;
 
@@ -306,9 +313,20 @@ SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
                             this->tKnotVector.getNum(),
                             glrender,
                             this->coordIndex.getNum(),
-                            this->coordIndex.getValues(0), 
+                            this->coordIndex.getValues(0),
                             texindex ? this->textureCoordIndex.getNum() : 0,
                             texindex ? this->textureCoordIndex.getValues(0) : NULL);
+#else // !HAVE_GLU_NURBSOBJECT
+#if COIN_DEBUG
+  static int first = 1;
+  if (first) {
+    SoDebugError::postInfo("SoIndexedNurbsSurface::doNurbs",
+                           "Looks like your GLU library doesn't have NURBS "
+                           "functionality");
+    first = 0;
+  }
+#endif // COIN_DEBUG
+#endif // !HAVE_GLU_NURBSOBJECT
 }
 
 void
@@ -348,21 +366,21 @@ SoIndexedNurbsSurface::tessBegin(int type, void * data)
   }
 }
 
-void 
+void
 SoIndexedNurbsSurface::tessTexCoord(GLfloat * texcoord, void * data)
 {
   coin_ins_cbdata * cbdata = (coin_ins_cbdata*) data;
   cbdata->vertex.setTextureCoords(SbVec4f(texcoord[0], texcoord[1], texcoord[2], texcoord[3]));
 }
 
-void 
+void
 SoIndexedNurbsSurface::tessNormal(GLfloat * normal, void * data)
 {
   coin_ins_cbdata * cbdata = (coin_ins_cbdata*) data;
   cbdata->vertex.setNormal(SbVec3f(normal[0], normal[1], normal[2]));
 }
 
-void 
+void
 SoIndexedNurbsSurface::tessVertex(GLfloat * vertex, void * data)
 {
   coin_ins_cbdata * cbdata = (coin_ins_cbdata*) data;
@@ -370,10 +388,9 @@ SoIndexedNurbsSurface::tessVertex(GLfloat * vertex, void * data)
   cbdata->thisp->shapeVertex(&cbdata->vertex);
 }
 
-void 
+void
 SoIndexedNurbsSurface::tessEnd(void * data)
 {
   coin_ins_cbdata * cbdata = (coin_ins_cbdata*) data;
   cbdata->thisp->endShape();
 }
-

@@ -107,7 +107,7 @@ void sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                                const float * sknotvec, const float * tknotvec,
                                const int numsknot, const int numtknot,
                                const SbBool glrender,
-                               const int numcoordindex = 0, const int32_t * coordindex = NULL, 
+                               const int numcoordindex = 0, const int32_t * coordindex = NULL,
                                const int numtexcoordindex = 0, const int32_t * texcoordindex = NULL);
 
 //

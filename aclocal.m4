@@ -2226,6 +2226,48 @@ if test x"$with_opengl" != xno; then
 fi
 ])
 
+
+# Usage:
+#  SIM_AC_GLU_NURBSOBJECT([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find out whether the interface struct against the GLU
+#  library NURBS functions is called "GLUnurbs" or "GLUnurbsObj".
+#  (This seems to have changed somewhere between release 1.1 and
+#  release 1.3 of GLU).
+#
+#  The variable $sim_ac_glu_nurbsobject is set to the correct name
+#  if the nurbs structure is found.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN(SIM_AC_GLU_NURBSOBJECT, [
+AC_CACHE_CHECK(
+  [what structure to use in the GLU NURBS interface],
+  sim_cv_func_glu_nurbsobject,
+  [sim_cv_func_glu_nurbsobject=NONE
+   for sim_ac_glu_structname in GLUnurbs GLUnurbsObj; do
+    if test "$sim_cv_func_glu_nurbsobject" = NONE; then
+      AC_TRY_LINK([#ifdef _WIN32
+                  #include <windows.h>
+                  #endif
+                  #include <GL/gl.h>
+                  #include <GL/glu.h>],
+                  [$sim_ac_glu_structname * hepp = gluNewNurbsRenderer();
+                   gluDeleteNurbsRenderer(hepp)],
+                  [sim_cv_func_glu_nurbsobject=$sim_ac_glu_structname])
+    fi
+  done
+])
+
+if test $sim_cv_func_glu_nurbsobject = NONE; then
+  sim_ac_glu_nurbsobject=
+  $2
+else
+  sim_ac_glu_nurbsobject=$sim_cv_func_glu_nurbsobject
+  $1
+fi
+])
+
 # Usage:
 #  SIM_AC_CHECK_PTHREAD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #

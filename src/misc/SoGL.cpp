@@ -41,6 +41,10 @@
 #include <assert.h>
 #include <stdio.h>
 
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #ifdef _WIN32
 #include <windows.h>
 #endif // _WIN32
@@ -106,25 +110,16 @@ sogl_global_init()
 #if GL_VERSION_1_1
 #elif GL_EXT_polygon_offset
   polygonOffsetEXT = extension_supported("GL_EXT_polygon_offset");
-#if 0 // debug
-  fprintf(stderr,"polygon offset ext: %d\n", polygonOffsetEXT);
-#endif // debug
 #endif
 
 #if GL_VERSION_1_1
 #elif GL_EXT_texture_object
   textureObjectEXT = extension_supported("GL_EXT_texture_object");
-#if 0 // debug
-  fprintf(stderr,"texture object ext: %d\n", textureObjectEXT);
-#endif // debug
 #endif
 
 #if GL_VERSION_1_1
 #elif GL_EXT_vertex_array
   vertexArrayEXT = extension_supported("GL_EXT_vertex_array");
-#if 0 // debug
-  fprintf(stderr,"vertex arrayext: %d\n", vertexArrayEXT);
-#endif // debug
 #endif
 
 #if 0 // debug
@@ -150,12 +145,19 @@ sogl_global_init()
   glGetIntegerv(GL_MAX_TEXTURE_STACK_DEPTH, &tmp);
   maxTextureStackDepth = tmp;
 
-  fprintf(stderr,"max texure size: %d\n", maxTextureSize);
-  fprintf(stderr,"max modelview matrix depth: %d\n", maxModelviewStackDepth);
-  fprintf(stderr,"max lights: %d\n", maxLights);
-  fprintf(stderr,"max projection matrix depth: %d\n", maxProjectionStackDepth);
-  fprintf(stderr,"max texture stack depth: %d\n", maxTextureStackDepth);
-  fprintf(stderr,"max clip planes: %d\n", maxClipPlanes);
+  SoDebugError::postInfo("sogl_global_init", "\n"
+                         "max texure size: %d\n"
+                         "max modelview matrix depth: %d\n"
+                         "max lights: %d\n"
+                         "max projection matrix depth: %d\n"
+                         "max texture stack depth: %d\n"
+                         "max clip planes: %d\n",
+                         maxTextureSize,
+                         maxModelviewStackDepth,
+                         maxLights,
+                         maxProjectionStackDepth,
+                         maxTextureStackDepth,
+                         maxClipPlanes);
 #endif // debug
 
 }
@@ -782,9 +784,10 @@ sogl_create_texture(const int wrapS, const int wrapT,
   if (dlist)
     glEndList();
 
-#if 0 && COIN_DEBUG
-  fprintf(stderr,"Creating texture: %d\n", index);
-#endif
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("sogl_create_texture",
+                         "Creating texture: %d", index);
+#endif // debug
 
   return index;
 }
@@ -1037,24 +1040,25 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                           const float * sknotvec, const float * tknotvec,
                           const int numsknot, const int numtknot,
                           const SbBool glrender,
-                          const int numcoordindex, const int32_t * coordindex, 
+                          const int numcoordindex, const int32_t * coordindex,
                           const int numtexcoordindex, const int32_t * texcoordindex)
 {
 #if !GLU_VERSION_1_3
   if (!glrender) {
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
     static int first = 1;
     if (first) {
       SoDebugError::postInfo("sogl_render_nurbs_surface",
                              "NURBS tessellator requires GLU 1.3.");
       first = 0;
     }
-#endif // debug
+#endif // COIN_DEBUG
     return;
   }
 #endif // !GLU_VERSION_1_3
 
-  GLUnurbs * nurbsobj = (GLUnurbs*) nurbsrenderer;
+#if HAVE_GLU_NURBSOBJECT
+  HAVE_GLU_NURBSOBJECT * nurbsobj = (HAVE_GLU_NURBSOBJECT *) nurbsrenderer;
   SoState * state = action->getState();
 
   const SoCoordinateElement * coords =
@@ -1160,7 +1164,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
       GLfloat * texptr = tc->is2D() ?
         (GLfloat*) tc->getArrayPtr2() :
         (GLfloat*) tc->getArrayPtr4();
-      
+
       // copy indexed texcoords into temporary array
       if (numtexcoordindex && texcoordindex) {
         if (tmptexcoordlist == NULL) {
@@ -1173,16 +1177,16 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
             tmptexcoordlist->append(texptr[texcoordindex[i]*texdim+j]);
           }
         }
-        texptr = (float*) tmptexcoordlist->getArrayPtr();    
+        texptr = (float*) tmptexcoordlist->getArrayPtr();
       }
-      
+
       gluNurbsSurface(nurbsobj,
                       numsknot, (GLfloat*) sknotvec,
                       numtknot, (GLfloat*) tknotvec,
                       texdim, texdim * numsctrlpts,
                       texptr, numsknot - numsctrlpts, numtknot - numtctrlpts,
                       (texdim == 2) ? GL_MAP2_TEXTURE_COORD_2 : GL_MAP2_TEXTURE_COORD_4);
-      
+
     }
     else if ((tc->getType() == SoTextureCoordinateElement::DEFAULT) ||
              (tc->getType() == SoTextureCoordinateElement::EXPLICIT)) {
@@ -1224,7 +1228,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                             points, floatspervec,
                             numknots, knotvector);
 
-      // FIXME: for some reason, when trimming is done, our sampling 
+      // FIXME: for some reason, when trimming is done, our sampling
       // method provides far too many triangles. I do this to avoid
       // the problem, but we should figure out why this happens,
       // and fix it properly.                      pederb, 20000630
@@ -1249,6 +1253,11 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
     if (istrimming) gluEndTrim(nurbsobj);
   }
   gluEndSurface(nurbsobj);
+
+#else // !HAVE_GLU_NURBSOBJECT
+  // Should never get here if the NURBS functionality is missing.
+  assert(FALSE && "Function sogl_render_nurbs_surface() is de-funct.");
+#endif // !HAVE_GLU_NURBSOBJECT
 }
 
 
@@ -2856,9 +2865,6 @@ sogl_render_tristrip(const SoGLCoordinateElement * const vertexlist,
   }
 
   int idx = (nbind << 4) | (mbind << 1) | texture;
-
-  // fprintf(stderr,"rendering faceset: %d %d %d ==> %d\n",
-  //      nbind, mbind, texture, idx);
 
   // just in case someone forgot...
   if (matindices == NULL) matindices = vertexindices;

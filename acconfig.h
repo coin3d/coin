@@ -18,3 +18,5 @@
 #undef HAVE_UNISTD_H
 #undef HAVE_IO_H
 #undef HAVE_WINDOWS_H
+
+#undef HAVE_GLU_NURBSOBJECT
