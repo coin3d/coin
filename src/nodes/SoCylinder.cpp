@@ -339,57 +339,63 @@ SoCylinder::rayPick(SoRayPickAction *action)
 
   // FIXME: possible to simplify cylinder test, since this cylinder
   // is aligned with the y-axis. 19991110 pederb.
-  SbCylinder cyl(SbLine(SbVec3f(0,0,0), SbVec3f(0,1,0)), r);
+  int numPicked = 0; // will never be > 2
   SbVec3f enter, exit;
 
-  int numPicked = 0; // will never be > 2
-
-  if (cyl.intersect(line, enter, exit)) {
-    if ((fabs(enter[1]) <= h) && action->isBetweenPlanes(enter)) {
-      SoPickedPoint *pp = action->addIntersection(enter);
-      if (pp) {
-	SoCylinderDetail *detail = new SoCylinderDetail();
-	detail->setPart((int)SIDES);
-	pp->setDetail(detail, this);
-	numPicked++;
+  if (this->parts.getValue() & SoCylinder::SIDES) {
+    SbCylinder cyl(SbLine(SbVec3f(0,0,0), SbVec3f(0,1,0)), r);
+    
+    if (cyl.intersect(line, enter, exit)) {
+      if ((fabs(enter[1]) <= h) && action->isBetweenPlanes(enter)) {
+	SoPickedPoint *pp = action->addIntersection(enter);
+	if (pp) {
+	  SoCylinderDetail *detail = new SoCylinderDetail();
+	  detail->setPart((int)SoCylinder::SIDES);
+	  pp->setDetail(detail, this);
+	  numPicked++;
+	}
       }
-    }
-    if ((fabs(exit[1]) <= h) && action->isBetweenPlanes(exit)) {
-      SoPickedPoint *pp = action->addIntersection(exit);
-      if (pp) {
-	SoCylinderDetail *detail = new SoCylinderDetail();
-	detail->setPart((int)SIDES);      
-	pp->setDetail(detail, this);
-	numPicked++;
+      if ((fabs(exit[1]) <= h) && (enter != exit) && action->isBetweenPlanes(exit)) {
+	SoPickedPoint *pp = action->addIntersection(exit);
+	if (pp) {
+	  SoCylinderDetail *detail = new SoCylinderDetail();
+	  detail->setPart((int)SoCylinder::SIDES);      
+	  pp->setDetail(detail, this);
+	  numPicked++;
+	}
       }
     }
   }
   
   float r2 = r * r;
   
-  SbPlane top(SbVec3f(0,1,0), h);
-  if ((numPicked < 2) && top.intersect(line, enter)) {
-    if (((enter[0]*enter[0] + enter[2]*enter[2]) <= r2) &&
-	(action->isBetweenPlanes(enter))) {
-      SoPickedPoint *pp = action->addIntersection(enter);
-      if (pp) {
-	SoCylinderDetail *detail = new SoCylinderDetail();
-	detail->setPart((int)TOP);      
-	pp->setDetail(detail, this);
-	numPicked++;
+  if ((numPicked < 2) && (this->parts.getValue() & SoCylinder::TOP)) {
+    SbPlane top(SbVec3f(0,1,0), h);
+    if (top.intersect(line, enter)) {
+      if (((enter[0]*enter[0] + enter[2]*enter[2]) <= r2) &&
+	  (action->isBetweenPlanes(enter))) {
+	SoPickedPoint *pp = action->addIntersection(enter);
+	if (pp) {
+	  SoCylinderDetail *detail = new SoCylinderDetail();
+	  detail->setPart((int)SoCylinder::TOP);      
+	  pp->setDetail(detail, this);
+	  numPicked++;
+	}
       }
     }
   }
-  
-  SbPlane bottom(SbVec3f(0,1,0), -h);
-  if ((numPicked < 2) && bottom.intersect(line, enter)) {
-    if (((enter[0]*enter[0] + enter[2]*enter[2]) <= r2) &&
-	(action->isBetweenPlanes(enter))) {
-      SoPickedPoint *pp = action->addIntersection(enter);
-      if (pp) {
-	SoCylinderDetail *detail = new SoCylinderDetail();
-	detail->setPart((int)BOTTOM);      
-	pp->setDetail(detail, this);	
+
+  if ((numPicked < 2) && (this->parts.getValue() & SoCylinder::BOTTOM)) {
+    SbPlane bottom(SbVec3f(0,1,0), -h);
+    if (bottom.intersect(line, enter)) {
+      if (((enter[0]*enter[0] + enter[2]*enter[2]) <= r2) &&
+	  (action->isBetweenPlanes(enter))) {
+	SoPickedPoint *pp = action->addIntersection(enter);
+	if (pp) {
+	  SoCylinderDetail *detail = new SoCylinderDetail();
+	  detail->setPart((int)SoCylinder::BOTTOM);      
+	  pp->setDetail(detail, this);	
+	}
       }
     }
   }
