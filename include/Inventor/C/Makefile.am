@@ -5,5 +5,4 @@ else
 THREADSDIR =
 endif
 
-SUBDIRS = base $(THREADSDIR)
-
+SUBDIRS = base errors $(THREADSDIR)

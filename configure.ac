@@ -1074,6 +1074,7 @@ AC_CONFIG_FILES([
         include/Inventor/Makefile
 	include/Inventor/C/Makefile
 	include/Inventor/C/base/Makefile
+	include/Inventor/C/errors/Makefile
 	include/Inventor/C/threads/Makefile
         include/Inventor/lock/Makefile
         include/Inventor/system/Makefile
