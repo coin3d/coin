@@ -82,7 +82,7 @@ SoTimerQueueSensor::getTriggerTime(void) const
 }
 
 /*!
-  Set time at which to trigger sensor.
+  Set absolute time at which to trigger sensor.
 
   \sa getTriggerTime()
  */
@@ -109,6 +109,7 @@ SoTimerQueueSensor::schedule(void)
     return;
   }
 #endif // COIN_DEBUG
+
   SoDB::getSensorManager()->insertTimerSensor(this);
   this->scheduled = TRUE;
 }
