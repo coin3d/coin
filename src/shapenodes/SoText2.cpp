@@ -525,33 +525,34 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
   
   SbVec2f n0, n1, n2, n3, center;
   short xmin, ymin, xmax, ymax;
-  float minx, miny, maxx, maxy;
   this->bbox.getBounds(xmin, ymin, xmax, ymax);
-  center = SbVec2f( (float)(xmin+xmax)/2.0f, (float)(ymin+ymax)/2.0f);
-  minx = (xmin - center[0]) / vpsize[0];
-  miny = (ymin - center[1]) / vpsize[1];
-  maxx = (xmax - center[0]) / vpsize[0];
-  maxy = (ymax - center[1]) / vpsize[1];
-  n0 = SbVec2f(screenpoint[0] + minx, screenpoint[1] + miny);
-  n1 = SbVec2f(screenpoint[0] + maxx, screenpoint[1] + miny);
-  n2 = SbVec2f(screenpoint[0] + maxx, screenpoint[1] + maxy);
-  n3 = SbVec2f(screenpoint[0] + minx, screenpoint[1] + maxy);
+  SbVec2s sp((short) (screenpoint[0] * vpsize[0]), (short)(screenpoint[1]*vpsize[1]));
   
-  float halfw = (maxx - minx) / 2.0f;
+  n0 = SbVec2f(float(sp[0] + xmin)/float(vpsize[0]), 
+               float(sp[1] + ymax)/float(vpsize[1]));
+  n1 = SbVec2f(float(sp[0] + xmax)/float(vpsize[0]), 
+               float(sp[1] + ymax)/float(vpsize[1]));
+  n2 = SbVec2f(float(sp[0] + xmax)/float(vpsize[0]), 
+               float(sp[1] + ymin)/float(vpsize[1]));
+  n3 = SbVec2f(float(sp[0] + xmin)/float(vpsize[0]), 
+               float(sp[1] + ymin)/float(vpsize[1]));
+  
+  float w = n1[0]-n0[0];
+  float halfw = w*0.5f;
   switch (PUBLIC(this)->justification.getValue()) {
   case SoText2::LEFT:
-    n0[0] += halfw;
-    n1[0] += halfw;
-    n2[0] += halfw;
-    n3[0] += halfw;
     break;
   case SoText2::RIGHT:
+    n0[0] -= w;
+    n1[0] -= w;
+    n2[0] -= w;
+    n3[0] -= w;
+    break;
+  case SoText2::CENTER:
     n0[0] -= halfw;
     n1[0] -= halfw;
     n2[0] -= halfw;
     n3[0] -= halfw;
-    break;
-  case SoText2::CENTER:
     break;
   default:
     assert(0 && "unknown alignment");
@@ -650,7 +651,9 @@ SoText2P::buildGlyphCache(SoState * state)
     SbVec2s kerning(0, 0);
     SbVec2s advance(0, 0);
 
-    for (int j = 0; j < strlength; j++) {
+    int j;
+    // fetch all glyphs first
+    for (j = 0; j < strlength; j++) {
       // Note that the "unsigned char" cast is needed to avoid 8-bit
       // chars using the highest bit (i.e. characters above the ASCII
       // set up to 127) be expanded to huge int numbers that turn
@@ -661,19 +664,21 @@ SoText2P::buildGlyphCache(SoState * state)
       // glyph is available for a specific character, a default
       // empty rectangle should be used.  -mortene.
       assert(this->glyphs[i][j]);
-
+    }
+    // now calculate positions and bbox
+    for (j = 0; j < strlength; j++) {
       SbVec2s thispos;
       (void)this->glyphs[i][j]->getBitmap(thissize, thispos, FALSE);
 
-      if (j > 0) {
-        kerning = this->glyphs[i][j-1]->getKerning(*this->glyphs[i][j]);
-        advance = this->glyphs[i][j-1]->getAdvance();
-      }
-
-      penpos = penpos + advance + kerning;
-      this->positions[i].append(penpos + thispos + SbVec2s(0, -thissize[1]));
-      this->bbox.extendBy(this->positions[i][j]);
-      this->bbox.extendBy(this->positions[i][j] + SbVec2s(thissize[0], -thissize[1]));
+      kerning = (j < strlength-1) ? 
+        this->glyphs[i][j]->getKerning(*this->glyphs[i][j+1]) : SbVec2s(0, 0);
+      advance = this->glyphs[i][j]->getAdvance();
+            
+      SbVec2s pos = penpos + thispos + SbVec2s(0, -thissize[1]);
+      this->positions[i].append(pos);
+      this->bbox.extendBy(pos);
+      this->bbox.extendBy(pos + SbVec2s(advance[0]+kerning[0], thissize[1]));
+      penpos += advance + kerning;
     }
 
     this->stringwidth.append(this->positions[i][strlength - 1][0] + thissize[0]);
