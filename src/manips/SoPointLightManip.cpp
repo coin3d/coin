@@ -56,7 +56,7 @@ SoPointLightManip::initClass(void)
 }
 
 /*!
-  The constructor. Creates a default dragger. 
+  The constructor. Creates a default dragger.
 */
 SoPointLightManip::SoPointLightManip(void)
 {
@@ -83,7 +83,7 @@ SoPointLightManip::~SoPointLightManip()
 
   delete this->colorFieldSensor;
   delete this->locationFieldSensor;
-  
+
   delete this->children;
 }
 
@@ -93,7 +93,7 @@ SoPointLightManip::~SoPointLightManip()
 void
 SoPointLightManip::setDragger(SoDragger * newdragger)
 {
-  SoDragger *olddragger = this->getDragger();
+  SoDragger * olddragger = this->getDragger();
   if (olddragger) {
     olddragger->removeValueChangedCallback(SoPointLightManip::valueChangedCB, this);
     this->children->remove(0);
@@ -118,9 +118,9 @@ SoDragger *
 SoPointLightManip::getDragger(void)
 {
   if (this->children->getLength() > 0) {
-    SoNode *node = (*children)[0];
+    SoNode * node = (*children)[0];
     if (node->isOfType(SoDragger::getClassTypeId()))
-      return (SoDragger*)node;
+      return (SoDragger *)node;
     else {
 #if COIN_DEBUG
       SoDebugError::post("SoPointLightManip::getDragger",
@@ -132,15 +132,15 @@ SoPointLightManip::getDragger(void)
 }
 
 /*!
-  Replaces the node specified by \a path with this manipulator. 
+  Replaces the node specified by \a path with this manipulator.
   The manipulator will copy the field data from the node, to make
   it affect the state in the same way as the node.
 */
 SbBool
 SoPointLightManip::replaceNode(SoPath * path)
 {
-  SoFullPath *fullpath = (SoFullPath*)path;
-  SoNode *fulltail = fullpath->getTail();
+  SoFullPath * fullpath = (SoFullPath *)path;
+  SoNode * fulltail = fullpath->getTail();
   if (!fulltail->isOfType(SoPointLight::getClassTypeId())) {
 #if COIN_DEBUG
     SoDebugError::post("SoPointLightManip::replaceNode",
@@ -148,12 +148,12 @@ SoPointLightManip::replaceNode(SoPath * path)
 #endif // debug
     return FALSE;
   }
-  SoNode *tail = path->getTail();
+  SoNode * tail = path->getTail();
   if (tail->isOfType(SoBaseKit::getClassTypeId())) {
-    SoBaseKit *kit = (SoBaseKit*) ((SoNodeKitPath*)path)->getTail();
+    SoBaseKit * kit = (SoBaseKit *) ((SoNodeKitPath *)path)->getTail();
     SbString partname = kit->getPartString(path);
     if (partname != "") {
-      SoPointLight *oldpart = (SoPointLight*) kit->getPart(partname, TRUE);
+      SoPointLight * oldpart = (SoPointLight *) kit->getPart(partname, TRUE);
       if (oldpart != NULL) {
         this->attachSensors(FALSE);
         this->transferFieldValues(oldpart, this);
@@ -174,7 +174,7 @@ SoPointLightManip::replaceNode(SoPath * path)
 #endif // debug
     return FALSE;
   }
-  SoNode *parent = fullpath->getNodeFromTail(1);
+  SoNode * parent = fullpath->getNodeFromTail(1);
   if (!parent->isOfType(SoGroup::getClassTypeId())) {
 #if COIN_DEBUG
     SoDebugError::post("SoPointLightManip::replaceNode",
@@ -184,11 +184,11 @@ SoPointLightManip::replaceNode(SoPath * path)
   }
   this->ref();
   this->attachSensors(FALSE);
-  this->transferFieldValues((SoPointLight*)fulltail, this);
+  this->transferFieldValues((SoPointLight *)fulltail, this);
   this->attachSensors(TRUE);
   SoPointLightManip::fieldSensorCB(this, NULL);
-  
-  ((SoGroup*)parent)->replaceChild(fulltail, this);
+
+  ((SoGroup *)parent)->replaceChild(fulltail, this);
   this->unrefNoDelete();
   return TRUE;
 }
@@ -200,17 +200,17 @@ SoPointLightManip::replaceNode(SoPath * path)
 SbBool
 SoPointLightManip::replaceManip(SoPath * path, SoPointLight * newone) const
 {
-  SoFullPath *fullpath = (SoFullPath*) path;
-  SoNode *fulltail = fullpath->getTail();
-  if (fulltail != (SoNode*)this) {
+  SoFullPath * fullpath = (SoFullPath *) path;
+  SoNode * fulltail = fullpath->getTail();
+  if (fulltail != (SoNode *)this) {
 #if COIN_DEBUG
     SoDebugError::post("SoPointLightManip::replaceManip",
                        "Child to replace is not this manip");
 #endif // debug
   }
-  SoNode *tail = path->getTail();
+  SoNode * tail = path->getTail();
   if (tail->isOfType(SoBaseKit::getClassTypeId())) {
-    SoBaseKit *kit = (SoBaseKit*) ((SoNodeKitPath*)path)->getTail();
+    SoBaseKit * kit = (SoBaseKit *) ((SoNodeKitPath *)path)->getTail();
     SbString partname = kit->getPartString(path);
     if (partname != "") {
       if (newone != NULL) {
@@ -227,7 +227,7 @@ SoPointLightManip::replaceManip(SoPath * path, SoPointLight * newone) const
 #endif // debug
     return FALSE;
   }
-  SoNode *parent = fullpath->getNodeFromTail(1);
+  SoNode * parent = fullpath->getNodeFromTail(1);
   if (!parent->isOfType(SoGroup::getClassTypeId())) {
 #if COIN_DEBUG
     SoDebugError::post("SoPointLightManip::replaceManip",
@@ -238,7 +238,7 @@ SoPointLightManip::replaceManip(SoPath * path, SoPointLight * newone) const
   if (newone == NULL) newone = new SoPointLight;
   newone->ref();
   this->transferFieldValues(this, newone);
-  ((SoGroup*)parent)->replaceChild((SoNode*)this, newone);
+  ((SoGroup *)parent)->replaceChild((SoNode *)this, newone);
   newone->unrefNoDelete();
   return TRUE;
 }
@@ -249,7 +249,7 @@ void
 SoPointLightManip::doAction(SoAction * action)
 {
   int numindices;
-  const int *indices;
+  const int * indices;
   if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
     this->children->traverse(action, 0, indices[numindices-1]);
   }
@@ -273,7 +273,7 @@ void
 SoPointLightManip::GLRender(SoGLRenderAction * action)
 {
   SoPointLightManip::doAction(action);
-  SoPointLight::GLRender(action);  
+  SoPointLight::GLRender(action);
 }
 
 /*!
@@ -282,11 +282,11 @@ void
 SoPointLightManip::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   int numindices;
-  const int *indices;
+  const int * indices;
   int lastchild;
   SbVec3f center(0.0f, 0.0f, 0.0f);
   int numcenters = 0;
-  
+
   if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
     lastchild  = indices[numindices-1];
   }
@@ -318,7 +318,7 @@ void
 SoPointLightManip::getMatrix(SoGetMatrixAction * action)
 {
   int numindices;
-  const int *indices;
+  const int * indices;
   switch (action->getPathCode(numindices, indices)) {
   case SoAction::NO_PATH:
   case SoAction::BELOW_PATH:
@@ -341,7 +341,7 @@ void
 SoPointLightManip::handleEvent(SoHandleEventAction * action)
 {
   SoPointLightManip::doAction(action);
-  SoPointLight::handleEvent(action);  
+  SoPointLight::handleEvent(action);
 }
 
 /*!
@@ -350,7 +350,7 @@ void
 SoPointLightManip::pick(SoPickAction * action)
 {
   SoPointLightManip::doAction(action);
-  SoPointLight::pick(action);  
+  SoPointLight::pick(action);
 }
 
 /*!
@@ -364,9 +364,9 @@ SoPointLightManip::search(SoSearchAction * action)
 }
 
 /*!
-  Returns the children of this node. This node only has the dragger 
+  Returns the children of this node. This node only has the dragger
   as a child.
-*/ 
+*/
 SoChildList *
 SoPointLightManip::getChildren(void) const
 {
@@ -376,11 +376,11 @@ SoPointLightManip::getChildren(void) const
 void
 SoPointLightManip::valueChangedCB(void * m, SoDragger * dragger)
 {
-  SoPointLightManip * thisp = (SoPointLightManip*)m;
-  
+  SoPointLightManip * thisp = (SoPointLightManip *)m;
+
   SbMatrix matrix = dragger->getMotionMatrix();
   SbVec3f location = matrix[3];
-  
+
   thisp->attachSensors(FALSE);
   if (thisp->location.getValue() != location) {
     thisp->location = location;
@@ -391,8 +391,8 @@ SoPointLightManip::valueChangedCB(void * m, SoDragger * dragger)
 void
 SoPointLightManip::fieldSensorCB(void * m, SoSensor *)
 {
-  SoPointLightManip *thisp = (SoPointLightManip*)m;
-  SoDragger *dragger = thisp->getDragger();
+  SoPointLightManip * thisp = (SoPointLightManip *)m;
+  SoDragger * dragger = thisp->getDragger();
   if (dragger != NULL) {
     SbVec3f location = thisp->location.getValue();
     SbMatrix matrix = dragger->getMotionMatrix();
@@ -401,7 +401,7 @@ SoPointLightManip::fieldSensorCB(void * m, SoSensor *)
     matrix[3][2] = location[2];
     dragger->setMotionMatrix(matrix);
 
-    SoMaterial *material = (SoMaterial*)dragger->getPart("material", TRUE);
+    SoMaterial * material = (SoMaterial *)dragger->getPart("material", TRUE);
     material->diffuseColor = SbColor(0.0f, 0.0f, 0.0f);
     material->emissiveColor = thisp->color.getValue();
   }
@@ -414,7 +414,7 @@ void
 SoPointLightManip::copyContents(const SoFieldContainer * fromfc, SbBool copyconnections)
 {
   assert(fromfc->isOfType(SoPointLightManip::getClassTypeId()));
-  this->setDragger(((SoPointLightManip*)fromfc)->getDragger());
+  this->setDragger(((SoPointLightManip *)fromfc)->getDragger());
   inherited::copyContents(fromfc, copyconnections);
 }
 
@@ -438,5 +438,5 @@ SoPointLightManip::attachSensors(const SbBool onoff)
   else {
     this->locationFieldSensor->detach();
     this->colorFieldSensor->detach();
-  } 
+  }
 }
