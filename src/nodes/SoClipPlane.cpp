@@ -45,6 +45,8 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoGLClipPlaneElement.h>
+#include <Inventor/elements/SoCullElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
 
 /*!
   \var SoSFPlane SoClipPlane::plane
@@ -93,8 +95,7 @@ SoClipPlane::initClass(void)
 void
 SoClipPlane::doAction(SoAction * action)
 {
-  SbBool ison = on.isIgnored() ? TRUE : on.getValue();
-  if (ison && !plane.isIgnored()) {
+  if (this->on.isIgnored() || this->on.getValue()) {
     SoClipPlaneElement::add(action->getState(), this, plane.getValue());
   }
 }
@@ -104,6 +105,12 @@ void
 SoClipPlane::GLRender(SoGLRenderAction * action)
 {
   SoClipPlane::doAction(action);
+  if (this->on.isIgnored() || this->on.getValue()) {
+    SbPlane p(SbVec3f(1.0f, 0.0f, 0.0f), 0.0f);
+    if (!this->plane.isIgnored()) p = this->plane.getValue();
+    p.transform(SoModelMatrixElement::get(action->getState()));
+    SoCullElement::addPlane(action->getState(), p);
+  }
 }
 
 // Doc from superclass.
