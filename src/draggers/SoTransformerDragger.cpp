@@ -689,16 +689,13 @@ SoTransformerDragger::SoTransformerDragger(void)
 
   SO_KIT_INTERNAL_CONSTRUCTOR(SoTransformerDragger);
 
-  if (SO_KIT_IS_FIRST_INSTANCE()) {
-    // split-up to avoid one huge method
-    this->build_catalog1();
-    this->build_catalog2();
-    this->build_catalog3();
-    this->build_catalog4();
-    this->build_catalog5();
-    this->build_catalog6();
-  }
-
+  // split-up to avoid one huge method
+  this->build_catalog1();
+  this->build_catalog2();
+  this->build_catalog3();
+  this->build_catalog4();
+  this->build_catalog5();
+  this->build_catalog6();
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("transformerDragger.iv",
