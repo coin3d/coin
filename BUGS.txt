@@ -7,8 +7,6 @@ Coin satellite libraries, extensions and example programs at:
         SoWin/BUGS.txt
         SoXt/BUGS.txt
         SIMVoleon/BUGS.txt
-        SoGuiExamples/BUGS.txt
-        SmallChange/BUGS.txt
 
 ..and buglists less likely to contain important bugs:
 
