@@ -80,26 +80,56 @@ CXXFLAGS="$CXXFLAGS -D__SOLIB_INTERNAL__"
 
 dnl *******************************************************************
 dnl * Test for installation of Mesa or OpenGL development system.
-dnl *
-dnl * FIXME: wrap all of this inside a "--with-rendering" or somesuch.
-dnl * 19990915 mortene.
-dnl *
-dnl * FIXME: the MDL_HAVE_OPENGL test has _lots_ of room for improvement:
-dnl * it won't work under Win32, and it unconditionally includes the
-dnl * glu, glx and glut libraries if they are available. Besides, it
-dnl * doesn't seem to check for a _development_ system, only the libs.
-dnl * 19990915 mortene.
 dnl *******************************************************************
 
-MDL_HAVE_OPENGL
+dnl Code using the OpenGL/Mesa library needs X11 to link on UNIX systems.
+AC_PATH_XTRA
 
-if test "x$mdl_cv_have_OpenGL" = "xno"; then
-  AC_MSG_ERROR([
-*** Needs an OpenGL-compatible development installation to compile!])
+dnl *** DEBUG ***
+dnl Keep this around, as it can be handy when testing on new systems.
+dnl echo "X_CFLAGS: $X_CFLAGS"
+dnl echo "X_PRE_LIBS: $X_PRE_LIBS"
+dnl echo "X_LIBS: $X_LIBS"
+dnl echo "X_EXTRA_LIBS: $X_EXTRA_LIBS"
+
+AC_ARG_ENABLE(Mesa,
+  [  --enable-Mesa          prefer Mesa (if found) over native OpenGL [default=yes]],
+  [case "${enableval}" in
+    yes) enable_mesa=yes ;;
+    no)  enable_mesa=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-Mesa) ;;
+  esac],
+  enable_mesa=yes)
+
+if test "x$enable_mesa" = "xyes"; then
+  GL_search_list="MesaGL GL"
+  GLU_search_list="MesaGLU GLU"
+else
+  GL_search_list="GL MesaGL"
+  GLU_search_list="GLU MesaGLU"
 fi
 
-CXXFLAGS="$CXXFLAGS $GL_CFLAGS"
-LIBS="$LIBS $GL_LIBS"
+if ! test "x$no_x" = "xyes"; then
+  dnl FIXME: -lXext is needed by -lSM. -lSM is added by AC_PATH_XTRA to
+  dnl $X_PRE_LIBS, so -lXext _should_ be automatically added to $X_EXTRA_LIBS
+  dnl by the AC_PATH_XTRA macro. This is not the case on my RedHat Linux
+  dnl 5.2, at least. Autoconf bug, methinks. 19991030 mortene.
+  LIBS="$LIBS $X_LIBS $X_PRE_LIBS -lX11 -lXext $X_EXTRA_LIBS"
+  CPPFLAGS="$CPPFLAGS $X_CFLAGS"
+fi
+
+AC_LANG_SAVE
+AC_LANG_C
+
+AC_SEARCH_LIBS(glAccum, $GL_search_list, , AC_MSG_ERROR([
+*** Needs an OpenGL-compatible development installation to compile Coin!]),
+               -lm)
+AC_SEARCH_LIBS(gluBeginCurve, $GLU_search_list, , AC_MSG_ERROR([
+*** Needs the GLU library to compile Coin!]),
+               -lm)
+
+AC_LANG_RESTORE
+
 
 dnl *******************************************************************
 dnl * Enable/disable compilation with debug information.
@@ -293,8 +323,7 @@ if test "x$want_simage" = "xyes"; then
 fi
 
 dnl *******************************************************************
-dnl FIXME: quick hack until we do proper libm detection and proper
-dnl Mesa/OpenGL detection. 19991019 mortene.
+dnl FIXME: quick hack until we do proper libm detection. 19991019 mortene.
 dnl *******************************************************************
 
 LIBS="$LIBS -lm"

@@ -31,12 +31,14 @@
 
 
 /*!
-  \class SbBSPTree include/SbBSPTree.h
-  \brief The SbBSPTree class is a simple BSP-tree class.
+  \class SbBSPTree SbBSPTree.h Inventor/SbBSPTree.h
+  \brief The SbBSPTree class provides a binary space partitioning container.
   \ingroup base
   
-  It can be used to quickly (O(log(n)) search for 3D points 
-  or normals in a set of points/normals.
+  This class can be used to organize searches for 3D points or normals
+  in a set in O(log(n)) time.
+
+  Note: SbBSPTree is an extension to the original Open Inventor API.
 */
 
 
@@ -309,7 +311,7 @@ coin_bspnode::sort()
 }
 
 /*!
-  Constructor with \a maxnodepts specifying the maxinum number of
+  Constructor with \a maxnodepts specifying the maximum number of
   points in a node before it must be split, and \a initsize 
   is the number of initially allocated points in the growable
   points array. If you know approximately the number of points
@@ -333,7 +335,7 @@ SbBSPTree::~SbBSPTree()
 }
 
 /*!
-  Returns the number of points added to the BSP tree.
+  Returns the number of points in the BSP tree.
 */
 int 
 SbBSPTree::numPoints() const
@@ -348,7 +350,7 @@ SbBSPTree::numPoints() const
 SbVec3f 
 SbBSPTree::getPoint(const int idx)
 {
-  // FIXME: this function had no code..? why? 19990609 mortene.
+  assert(idx < this->pointsArray.getLength());
   return this->pointsArray[idx];
 }
 
@@ -459,7 +461,7 @@ SbBSPTree::findPoints(const SbSphere &sphere,
 */
 int 
 SbBSPTree::findClosest(const SbSphere &sphere,
-			SbList <int> &arr) const
+		       SbList <int> &arr) const
 {
   this->findPoints(sphere, arr);
   SbVec3f pos = sphere.getCenter();
@@ -548,7 +550,7 @@ SbBSPTree::findClosest(const SbVec3f &pos) const
 }
 
 /*!
-  Returns a point to the array of points inserted into the BPS tree.
+  Returns a pointer to the array of points inserted into the BPS tree.
 */
 const SbVec3f *
 SbBSPTree::getPointsArrayPtr() const

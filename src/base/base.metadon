@@ -5,7 +5,6 @@
 # FLAGS
 # C = made 100% API conform with Open Inventor [0.1]
 # I = implementation complete, or nearly so [1.0]
-# R = made robust [0.2]
 # D = fully documented for Doxygen generation of html/man [0.4]
 #
 # values:
@@ -14,34 +13,36 @@
 # 
 ############################################################################
 #
-# CIRD
-# ====
+# CID
+# ===
 # HIERARCHY
-# -I    SbArray
-# C--D  SbBool
-# CIRD  SbBox2f
-# CIRD  SbBox2s
-# CIRD  SbBox3f
-# CIRd      SbXfBox3f
-# -I    SbBSPTree
-# -IRD  SbColor4f
-# CIRD  SbCylinder
-# -I    SbIntArray
-# CIRD  SbLine
-# CirD  SbMatrix
-# Cird  SbName
-# CIRD  SbPlane
-# CIRD  SbRotation
-# CIRD  SbSphere
-# CIRd  SbString
-# CIRD  SbTime
-# CIRD  SbVec2f
-# CIRD  SbVec2s
-# CIRD  SbVec3f
-# CIRD      SbColor
-# CIRD  SbVec4f
-# Cird  SbViewVolume
-# CIRD  SbViewportRegion
+# C-D  SbBool
+# CID  SbBox2f
+# CID  SbBox2s
+# CID  SbBox3f
+# CId      SbXfBox3f
+# -ID  SbBSPTree
+# -ID  SbColor4f
+# CID  SbCylinder
+# CID  SbDict
+# -Id  SbHeap
+# CID  SbLine
+# CiD  SbMatrix
+# Cid  SbName
+# -id  SbOctTree
+# CID  SbPlane
+# CID  SbRotation
+# CID  SbSphere
+# CId  SbString
+# -Id  SbTesselator
+# CID  SbTime
+# CID  SbVec2f
+# CID  SbVec2s
+# CID  SbVec3f
+# CID      SbColor
+# CID  SbVec4f
+# Cid  SbViewVolume
+# CID  SbViewportRegion
 #
 ############################################################################
 #

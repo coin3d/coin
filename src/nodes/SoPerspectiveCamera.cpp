@@ -30,7 +30,6 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SbSphere.h>
 #include <assert.h>
-#include <math.h> // M_PI
 
 /*!
   \var SoSFFloat SoPerspectiveCamera::heightAngle
@@ -80,7 +79,7 @@ SoPerspectiveCamera::SoPerspectiveCamera()
   assert(SoPerspectiveCamera::classTypeId != SoType::badType());
 //$ END TEMPLATE NodeConstructor
 
-  SO_NODE_ADD_FIELD(heightAngle, (M_PI/4.0f));  // 45 degrees
+  SO_NODE_ADD_FIELD(heightAngle, (SB_PI/4.0f));  // 45 degrees
 }
 
 /*!

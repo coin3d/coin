@@ -23,22 +23,34 @@
   \ingroup base
   
   FIXME: write doc
+
+  Note: SbHeap is an extension versus the Open Inventor API.
 */
 
 /*!
   \struct SbHeapFuncs SbHeap.h Inventor/SbHeap.h
   \brief The SbHeapFuncs struct is used to specify functions on heap elements.
-  
-  The \e eval_func member is a pointer to a function that should return
-  a weight-value for a heap element. Smaller elements are extracted first
-  from the heap. The \e get_index_func is a pointer to a function which
-  should return the element's heap index. If you want to remove an element
-  from the heap (other than the first element), or change the weight for a 
-  heap element, you must supply the two index functions. Each element must 
-  then store its heap index in its own data structures. The \e 
-  set_index_func is used to set this index value, and will be called
-  whenever the element is moved in the heap.
 */
+
+/*!
+  \var SbHeapFuncs::eval_func
+
+  The \e eval_func member is a pointer to a function that should
+  return a weight-value for a heap element. Smaller elements are
+  extracted first from the heap.  */
+/*!
+  \var SbHeapFuncs::get_index_func
+
+  \e get_index_func is a pointer to a function which should return the
+  element's heap index. If you want to remove an element from the heap
+  (other than the first element), or change the weight for a heap
+  element, you must supply the two index functions. Each element must
+  then store its heap index in its own data structures.  */
+/*!
+  \var SbHeapFuncs::set_index_func
+  
+  \e set_index_func is used to set this index value, and will be
+  called whenever the element is moved in the heap.  */
 
 #include <Inventor/SbHeap.h>
 #include <string.h>
@@ -82,8 +94,7 @@ SbHeap::emptyHeap(void)
   Traverses each heap elements, and calls \a func for each element.
 */
 SbBool
-SbHeap::traverseHeap(SbBool (*func)(void *elem, void *userdata), 
-		     void *userdata) const
+SbHeap::traverseHeap(SbBool (*func)(void *, void *), void *userdata) const
 {
   SbBool ok = TRUE;
   int hsize = this->heap.getLength() - 1;
@@ -205,11 +216,11 @@ SbHeap::newWeight(void *obj, int hpos)
 }
 
 /*!
-  Builds heap out of random data-structure
+  Builds heap out of randomly ordered data-structure.
 */
 SbBool 
-SbHeap::buildHeap(SbBool (*progresscb)(float percentagedone, void *userdata),
-		  void *userdata)
+SbHeap::buildHeap(SbBool (*progresscb)(float percentage, void *data),
+		  void *data)
 {
   SbBool ok = TRUE;
   int hsize = this->heap.getLength()-1;
@@ -219,7 +230,7 @@ SbHeap::buildHeap(SbBool (*progresscb)(float percentagedone, void *userdata),
   for (int i = nrelems; (i >= 1) && ok; i--) {
     this->heapify(i);
     if(progresscb && ((i & 31) == 0))
-      ok = progresscb(((float)(nrelems - i))/((float)nrelems), userdata);
+      ok = progresscb(((float)(nrelems - i))/((float)nrelems), data);
   }
   return ok;
 }

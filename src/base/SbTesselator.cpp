@@ -22,7 +22,9 @@
   \brief The SbTesselator class is used to tesselate polygons into triangles. 
   \ingroup base
   
-  FIXME: write doc
+  FIXME: write doc (what kind of polygons can we handle, code example, ...)
+
+  Note: SbTesselator is an extension versus the Open Inventor API.
 */
 
 
@@ -97,11 +99,9 @@ enum {OXY,OXZ,OYZ};
   to each vertex and the \a userdata pointer. The vertex pointers
   are specified in the SbTesselator::addVertex() method.
 */
-SbTesselator::SbTesselator(void (*callback)(void *v0, 
-					    void *v1, 
-					    void *v2, 
-					    void *data),
-			   void *userdata)
+SbTesselator::SbTesselator(void (*callback)(void * v0, void * v1, void * v2, 
+					    void * data),
+			   void * userdata)
 {
   this->setCallback(callback, userdata);
   this->headV = this->tailV = NULL;
@@ -127,31 +127,27 @@ SbTesselator::~SbTesselator()
 }
 
 /*!
-  Initializes new polygon. This method can be used if you've 
-  already calculated the normal of the polygon. If \a keepVerts
-  is \e TRUE, all vertices will be included in the returned
-  triangles, even though this might lead to triangles without area.
-*/
-void
-SbTesselator::beginPolygon(const SbVec3f &normal, SbBool keepVerts)
-{
-  this->cleanUp();
-  this->keepVertices = keepVerts;
-  this->polyNormal = normal;
-  this->hasNormal = TRUE;
-  this->headV = this->tailV = NULL;
-  this->numVerts=0;
-}
+  Initializes new polygon.
 
-/*
-  \overload
+  You can explicitly set the polygon normal if you know what it
+  is. Otherwise it will be calculated internally.
+
+  If \a keepVerts is \e TRUE, all vertices will be included in the
+  returned triangles, even though this might lead to triangles without
+  area.
 */
 void
-SbTesselator::beginPolygon(SbBool keepVerts)
+SbTesselator::beginPolygon(SbBool keepVerts, const SbVec3f &normal)
 {
   this->cleanUp();
   this->keepVertices = keepVerts;
-  this->hasNormal = FALSE;
+  if (normal != SbVec3f(0.0f, 0.0f, 0.0f)) {
+    this->polyNormal = normal;
+    this->hasNormal = TRUE;
+  }
+  else {
+    this->hasNormal = FALSE;
+  }
   this->headV = this->tailV = NULL;
   this->numVerts=0;
 }

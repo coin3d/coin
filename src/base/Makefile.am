@@ -2,9 +2,9 @@
 ## 19990904 mortene.
 
 if HACKING_DYNAMIC_MODULES
-lib_LTLIBRARIES = libcoinbaseLINKHACK.la
+lib_LTLIBRARIES = libbaseLINKHACK.la
 else
-noinst_LTLIBRARIES = libcoinbase.la
+noinst_LTLIBRARIES = libbase.la
 endif
 
 ## Remove any linklibraries detected by configure, as they are not
@@ -70,13 +70,13 @@ ALLSOURCES = \
 	SbXfBox3f.cpp \
 	SbXfBox3f.h
 
-libcoinbase_la_SOURCES = $(ALLSOURCES)
-libcoinbaseLINKHACK_la_SOURCES = $(ALLSOURCES)
+libbase_la_SOURCES = $(ALLSOURCES)
+libbaseLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 ## Installation information.
 
-libcoinbaseincdir = $(includedir)/Inventor
-libcoinbaseLINKHACKincdir = $(includedir)/Inventor
+libbaseincdir = $(includedir)/Inventor
+libbaseLINKHACKincdir = $(includedir)/Inventor
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/Sb.h \
@@ -111,47 +111,47 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/SbXfBox3f.h
 
 
-libcoinbaseinc_HEADERS = $(ALLINSTHEADERS)
-libcoinbaseLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
+libbaseinc_HEADERS = $(ALLINSTHEADERS)
+libbaseLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 
 
 ## FIXME: this is a temporary workaround for a bug in Automake. The
 ## bug is fixed in the latest Automake CVS, but not in any "official"
 ## release (?). Last checked with Automake 1.4a. 19990912 mortene.
 
-install-libcoinbaseincHEADERS: $(libcoinbaseinc_HEADERS)
+install-libbaseincHEADERS: $(libbaseinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libcoinbaseincdir)
-	@list='$(libcoinbaseinc_HEADERS)'; for p in $$list; do \
+	$(mkinstalldirs) $(DESTDIR)$(libbaseincdir)
+	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcoinbaseincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcoinbaseincdir)/$$f; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; \
 	done
 
-uninstall-libcoinbaseincHEADERS:
+uninstall-libbaseincHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(libcoinbaseinc_HEADERS)'; for p in $$list; do \
+	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libcoinbaseincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libcoinbaseincdir)/$$f; \
+	  echo " rm -f $(DESTDIR)$(libbaseincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libbaseincdir)/$$f; \
 	done
 
 
-install-libcoinbaseLINKHACKincHEADERS: $(libcoinbaseLINKHACKinc_HEADERS)
+install-libbaseLINKHACKincHEADERS: $(libbaseLINKHACKinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libcoinbaseLINKHACKincdir)
-	@list='$(libcoinbaseLINKHACKinc_HEADERS)'; for p in $$list; do \
+	$(mkinstalldirs) $(DESTDIR)$(libbaseLINKHACKincdir)
+	@list='$(libbaseLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcoinbaseLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcoinbaseLINKHACKincdir)/$$f; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseLINKHACKincdir)/$$f; \
 	done
 
-uninstall-libcoinbaseLINKHACKincHEADERS:
+uninstall-libbaseLINKHACKincHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(libcoinbaseLINKHACKinc_HEADERS)'; for p in $$list; do \
+	@list='$(libbaseLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libcoinbaseLINKHACKincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libcoinbaseLINKHACKincdir)/$$f; \
+	  echo " rm -f $(DESTDIR)$(libbaseLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libbaseLINKHACKincdir)/$$f; \
 	done

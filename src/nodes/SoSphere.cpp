@@ -28,7 +28,6 @@
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/SbName.h>
-#include <math.h> // M_PI
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoState.h>
 #if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)

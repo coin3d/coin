@@ -85,8 +85,8 @@ RANLIB = @RANLIB@
 USE_SYMBOL_UNDERSCORE = @USE_SYMBOL_UNDERSCORE@
 VERSION = @VERSION@
 
-@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libcoinbaseLINKHACK.la
-@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libcoinbase.la
+@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libbaseLINKHACK.la
+@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libbase.la
 
 LIBS = 
 
@@ -95,17 +95,17 @@ INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 ALLSOURCES =  	SbBSPTree.cpp 	SbBSPTree.h 	SbBox2f.cpp 	SbBox2f.h 	SbBox2s.cpp 	SbBox2s.h 	SbBox3f.cpp 	SbBox3f.h 	SbColor.cpp 	SbColor.h 	SbColor4f.cpp 	SbColor4f.h 	SbCylinder.cpp 	SbCylinder.h 	SbDict.cpp 	SbDict.h 	SbHeap.cpp 	SbHeap.h 	SbLine.cpp 	SbLine.h 	SbMatrix.cpp 	SbMatrix.h 	SbName.cpp 	SbName.h 	SbOctTree.cpp 	SbOctTree.h 	SbPlane.cpp 	SbPlane.h 	SbRotation.cpp 	SbRotation.h 	SbSphere.cpp 	SbSphere.h 	SbString.cpp 	SbString.h 	SbTesselator.cpp 	SbTesselator.h 	SbTime.cpp 	SbTime.h 	SbVec2f.cpp 	SbVec2f.h 	SbVec2s.cpp 	SbVec2s.h 	SbVec3f.cpp 	SbVec3f.h 	SbVec4f.cpp 	SbVec4f.h 	SbViewVolume.cpp 	SbViewVolume.h 	SbViewportRegion.cpp 	SbViewportRegion.h 	SbXfBox3f.cpp 	SbXfBox3f.h
 
 
-libcoinbase_la_SOURCES = $(ALLSOURCES)
-libcoinbaseLINKHACK_la_SOURCES = $(ALLSOURCES)
+libbase_la_SOURCES = $(ALLSOURCES)
+libbaseLINKHACK_la_SOURCES = $(ALLSOURCES)
 
-libcoinbaseincdir = $(includedir)/Inventor
-libcoinbaseLINKHACKincdir = $(includedir)/Inventor
+libbaseincdir = $(includedir)/Inventor
+libbaseLINKHACKincdir = $(includedir)/Inventor
 
 ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/Sb.h 	$(top_srcdir)/include/Inventor/SbBox.h 	$(top_srcdir)/include/Inventor/SbBSPTree.h 	$(top_srcdir)/include/Inventor/SbLinear.h 	$(top_srcdir)/include/Inventor/SoLists.h 	$(top_srcdir)/include/Inventor/SbBox2f.h 	$(top_srcdir)/include/Inventor/SbBox2s.h 	$(top_srcdir)/include/Inventor/SbBox3f.h 	$(top_srcdir)/include/Inventor/SbColor.h 	$(top_srcdir)/include/Inventor/SbColor4f.h 	$(top_srcdir)/include/Inventor/SbCylinder.h 	$(top_srcdir)/include/Inventor/SbDict.h 	$(top_srcdir)/include/Inventor/SbHeap.h 	$(top_srcdir)/include/Inventor/SbLine.h 	$(top_srcdir)/include/Inventor/SbMatrix.h 	$(top_srcdir)/include/Inventor/SbName.h 	$(top_srcdir)/include/Inventor/SbOctTree.h 	$(top_srcdir)/include/Inventor/SbPlane.h 	$(top_srcdir)/include/Inventor/SbRotation.h 	$(top_srcdir)/include/Inventor/SbSphere.h 	$(top_srcdir)/include/Inventor/SbString.h 	$(top_srcdir)/include/Inventor/SbTesselator.h 	$(top_srcdir)/include/Inventor/SbTime.h 	$(top_srcdir)/include/Inventor/SbVec2f.h 	$(top_srcdir)/include/Inventor/SbVec2s.h 	$(top_srcdir)/include/Inventor/SbVec3f.h 	$(top_srcdir)/include/Inventor/SbVec4f.h 	$(top_srcdir)/include/Inventor/SbViewVolume.h 	$(top_srcdir)/include/Inventor/SbViewportRegion.h 	$(top_srcdir)/include/Inventor/SbXfBox3f.h
 
 
-libcoinbaseinc_HEADERS = $(ALLINSTHEADERS)
-libcoinbaseLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
+libbaseinc_HEADERS = $(ALLINSTHEADERS)
+libbaseLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
@@ -115,16 +115,20 @@ LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
-libcoinbaseLINKHACK_la_LDFLAGS = 
-libcoinbaseLINKHACK_la_LIBADD = 
-libcoinbaseLINKHACK_la_OBJECTS =  SbBSPTree.lo SbBox2f.lo SbBox2s.lo \
+X_CFLAGS = @X_CFLAGS@
+X_LIBS = @X_LIBS@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
+X_PRE_LIBS = @X_PRE_LIBS@
+libbaseLINKHACK_la_LDFLAGS = 
+libbaseLINKHACK_la_LIBADD = 
+libbaseLINKHACK_la_OBJECTS =  SbBSPTree.lo SbBox2f.lo SbBox2s.lo \
 SbBox3f.lo SbColor.lo SbColor4f.lo SbCylinder.lo SbDict.lo SbHeap.lo \
 SbLine.lo SbMatrix.lo SbName.lo SbOctTree.lo SbPlane.lo SbRotation.lo \
 SbSphere.lo SbString.lo SbTesselator.lo SbTime.lo SbVec2f.lo SbVec2s.lo \
 SbVec3f.lo SbVec4f.lo SbViewVolume.lo SbViewportRegion.lo SbXfBox3f.lo
-libcoinbase_la_LDFLAGS = 
-libcoinbase_la_LIBADD = 
-libcoinbase_la_OBJECTS =  SbBSPTree.lo SbBox2f.lo SbBox2s.lo SbBox3f.lo \
+libbase_la_LDFLAGS = 
+libbase_la_LIBADD = 
+libbase_la_OBJECTS =  SbBSPTree.lo SbBox2f.lo SbBox2s.lo SbBox3f.lo \
 SbColor.lo SbColor4f.lo SbCylinder.lo SbDict.lo SbHeap.lo SbLine.lo \
 SbMatrix.lo SbName.lo SbOctTree.lo SbPlane.lo SbRotation.lo SbSphere.lo \
 SbString.lo SbTesselator.lo SbTime.lo SbVec2f.lo SbVec2s.lo SbVec3f.lo \
@@ -139,7 +143,7 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
-HEADERS =  $(libcoinbaseLINKHACKinc_HEADERS) $(libcoinbaseinc_HEADERS)
+HEADERS =  $(libbaseLINKHACKinc_HEADERS) $(libbaseinc_HEADERS)
 
 DIST_COMMON =  Makefile.am Makefile.in
 
@@ -155,8 +159,8 @@ DEP_FILES =  .deps/SbBSPTree.P .deps/SbBox2f.P .deps/SbBox2s.P \
 .deps/SbSphere.P .deps/SbString.P .deps/SbTesselator.P .deps/SbTime.P \
 .deps/SbVec2f.P .deps/SbVec2s.P .deps/SbVec3f.P .deps/SbVec4f.P \
 .deps/SbViewVolume.P .deps/SbViewportRegion.P .deps/SbXfBox3f.P
-SOURCES = $(libcoinbaseLINKHACK_la_SOURCES) $(libcoinbase_la_SOURCES)
-OBJECTS = $(libcoinbaseLINKHACK_la_OBJECTS) $(libcoinbase_la_OBJECTS)
+SOURCES = $(libbaseLINKHACK_la_SOURCES) $(libbase_la_SOURCES)
+OBJECTS = $(libbaseLINKHACK_la_OBJECTS) $(libbase_la_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
@@ -235,11 +239,11 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
-libcoinbaseLINKHACK.la: $(libcoinbaseLINKHACK_la_OBJECTS) $(libcoinbaseLINKHACK_la_DEPENDENCIES)
-	$(CXXLINK) -rpath $(libdir) $(libcoinbaseLINKHACK_la_LDFLAGS) $(libcoinbaseLINKHACK_la_OBJECTS) $(libcoinbaseLINKHACK_la_LIBADD) $(LIBS)
+libbaseLINKHACK.la: $(libbaseLINKHACK_la_OBJECTS) $(libbaseLINKHACK_la_DEPENDENCIES)
+	$(CXXLINK) -rpath $(libdir) $(libbaseLINKHACK_la_LDFLAGS) $(libbaseLINKHACK_la_OBJECTS) $(libbaseLINKHACK_la_LIBADD) $(LIBS)
 
-libcoinbase.la: $(libcoinbase_la_OBJECTS) $(libcoinbase_la_DEPENDENCIES)
-	$(CXXLINK)  $(libcoinbase_la_LDFLAGS) $(libcoinbase_la_OBJECTS) $(libcoinbase_la_LIBADD) $(LIBS)
+libbase.la: $(libbase_la_OBJECTS) $(libbase_la_DEPENDENCIES)
+	$(CXXLINK)  $(libbase_la_LDFLAGS) $(libbase_la_OBJECTS) $(libbase_la_LIBADD) $(LIBS)
 .cpp.o:
 	$(CXXCOMPILE) -c $<
 .cpp.lo:
@@ -356,16 +360,16 @@ installcheck: installcheck-am
 install-exec-am: install-libLTLIBRARIES
 install-exec: install-exec-am
 
-install-data-am: install-libcoinbaseLINKHACKincHEADERS \
-		install-libcoinbaseincHEADERS
+install-data-am: install-libbaseLINKHACKincHEADERS \
+		install-libbaseincHEADERS
 install-data: install-data-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-am
 uninstall-am: uninstall-libLTLIBRARIES \
-		uninstall-libcoinbaseLINKHACKincHEADERS \
-		uninstall-libcoinbaseincHEADERS
+		uninstall-libbaseLINKHACKincHEADERS \
+		uninstall-libbaseincHEADERS
 uninstall: uninstall-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 all-redirect: all-am
@@ -373,8 +377,8 @@ install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
 installdirs:
 	$(mkinstalldirs)  $(DESTDIR)$(libdir) \
-		$(DESTDIR)$(libcoinbaseLINKHACKincdir) \
-		$(DESTDIR)$(libcoinbaseincdir)
+		$(DESTDIR)$(libbaseLINKHACKincdir) \
+		$(DESTDIR)$(libbaseincdir)
 
 
 mostlyclean-generic:
@@ -424,52 +428,52 @@ clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
 mostlyclean-compile distclean-compile clean-compile \
 maintainer-clean-compile mostlyclean-libtool distclean-libtool \
 clean-libtool maintainer-clean-libtool \
-uninstall-libcoinbaseLINKHACKincHEADERS \
-install-libcoinbaseLINKHACKincHEADERS uninstall-libcoinbaseincHEADERS \
-install-libcoinbaseincHEADERS tags mostlyclean-tags distclean-tags \
-clean-tags maintainer-clean-tags distdir mostlyclean-depend \
-distclean-depend clean-depend maintainer-clean-depend info-am info \
-dvi-am dvi check check-am installcheck-am installcheck install-exec-am \
-install-exec install-data-am install-data install-am install \
-uninstall-am uninstall all-redirect all-am all installdirs \
-mostlyclean-generic distclean-generic clean-generic \
-maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+uninstall-libbaseLINKHACKincHEADERS install-libbaseLINKHACKincHEADERS \
+uninstall-libbaseincHEADERS install-libbaseincHEADERS tags \
+mostlyclean-tags distclean-tags clean-tags maintainer-clean-tags \
+distdir mostlyclean-depend distclean-depend clean-depend \
+maintainer-clean-depend info-am info dvi-am dvi check check-am \
+installcheck-am installcheck install-exec-am install-exec \
+install-data-am install-data install-am install uninstall-am uninstall \
+all-redirect all-am all installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
 
 
-install-libcoinbaseincHEADERS: $(libcoinbaseinc_HEADERS)
+install-libbaseincHEADERS: $(libbaseinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libcoinbaseincdir)
-	@list='$(libcoinbaseinc_HEADERS)'; for p in $$list; do \
+	$(mkinstalldirs) $(DESTDIR)$(libbaseincdir)
+	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcoinbaseincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcoinbaseincdir)/$$f; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; \
 	done
 
-uninstall-libcoinbaseincHEADERS:
+uninstall-libbaseincHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(libcoinbaseinc_HEADERS)'; for p in $$list; do \
+	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libcoinbaseincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libcoinbaseincdir)/$$f; \
+	  echo " rm -f $(DESTDIR)$(libbaseincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libbaseincdir)/$$f; \
 	done
 
-install-libcoinbaseLINKHACKincHEADERS: $(libcoinbaseLINKHACKinc_HEADERS)
+install-libbaseLINKHACKincHEADERS: $(libbaseLINKHACKinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libcoinbaseLINKHACKincdir)
-	@list='$(libcoinbaseLINKHACKinc_HEADERS)'; for p in $$list; do \
+	$(mkinstalldirs) $(DESTDIR)$(libbaseLINKHACKincdir)
+	@list='$(libbaseLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcoinbaseLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcoinbaseLINKHACKincdir)/$$f; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseLINKHACKincdir)/$$f; \
 	done
 
-uninstall-libcoinbaseLINKHACKincHEADERS:
+uninstall-libbaseLINKHACKincHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(libcoinbaseLINKHACKinc_HEADERS)'; for p in $$list; do \
+	@list='$(libbaseLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libcoinbaseLINKHACKincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libcoinbaseLINKHACKincdir)/$$f; \
+	  echo " rm -f $(DESTDIR)$(libbaseLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libbaseLINKHACKincdir)/$$f; \
 	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

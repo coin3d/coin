@@ -21,7 +21,7 @@
 #include <Inventor/lists/SbPList.h>
 
 /*!
-  \class SbDict include/Inventor/SbDict.h
+  \class SbDict SbDict.h Inventor/SbDict.h
   \brief The SbDict class organizes a dictionary of keys and values.
 
   It uses hashing to quickly insert and find entries in the dictionary.
@@ -286,6 +286,4 @@ SbDict::findEntry(const unsigned long key) const
 //   }
 //   printf("\n\n\n");
 // }
-
-/* END OF FILE ************************************************************/
 

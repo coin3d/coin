@@ -32,12 +32,12 @@ class SbVec3f;
 class SbTesselator
 {
 public:
-  SbTesselator(void (*callback)(void*, void*, void*, void*) = NULL, 
-	       void *userdata = NULL);
+  SbTesselator(void (*callback)(void * v0, void * v1, void * v2,
+				void * data) = NULL, void * userdata = NULL);
   ~SbTesselator(void);
   
-  void beginPolygon(SbBool keepVertices = FALSE);
-  void beginPolygon(const SbVec3f &normal, SbBool keepVertices = FALSE);
+  void beginPolygon(SbBool keepVertices = FALSE,
+		    const SbVec3f & normal = SbVec3f(0.0f, 0.0f, 0.0f));
   void addVertex(const SbVec3f &v, void *data);
   void endPolygon(void);
   void setCallback(void (*callback)(void *v0, void *v1, void *v2, void *data),

@@ -68,27 +68,28 @@
   \brief SbBool is a compiler portable boolean type.
   \ingroup base
 
-  SbBool is meant to be a compiler portable way of defining a boolean
-  type, since there's older compilers out there that doesn't
-  support the \c bool keyword.
+  SbBool is meant to be a "compiler portable" way of defining a
+  boolean type, since there are older compilers out there which don't
+  support the ISO-standard C++ \c bool keyword.
 
   SbBool is not really a class, just a \c typedef.
- */
+*/
 
 typedef int SbBool;
 
-// FIXME: this should be a HAVE_M_PI_DEFINITION check.
-// 19990808 mortene.
-#ifdef _WIN32
-#define M_PI 3.14159265358979323846
-#endif // _WIN32
-
 #ifndef FALSE
 #define FALSE 0
-#define TRUE  1
 #endif // ! FALSE
+#ifndef TRUE
+#define TRUE  1
+#endif // ! TRUE
 
-// Some useful inline template (instead of macro) functions:
+// Define the value for pi. UNIX systems typically have this defined
+// somewhere in math.h (as M_PI), but MSWindows systems don't. So we
+// define it here once and for all.
+#define SB_PI 3.14159265358979323846
+
+// Some useful inline template functions (instead of macros):
 //   SbAbs(Val)              - returns absolute value
 //   SbMin(Val1, Val2)       - returns minimum value
 //   SbMax(Val1, Val2)       - returns maximum value

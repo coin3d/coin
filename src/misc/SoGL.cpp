@@ -159,7 +159,7 @@ sogl_global_init()
 static void 
 generate_3d_circle(SbVec3f *coords, const int num, const float radius, const float y)
 {
-  float delta = 2*M_PI/num;
+  float delta = 2*SB_PI/num;
   float angle = 0.0f;
   for (int i = 0; i < num; i++) {
     coords[i][0] = -sin(angle) * radius;
@@ -173,7 +173,7 @@ generate_3d_circle(SbVec3f *coords, const int num, const float radius, const flo
 static void 
 generate_2d_circle(SbVec2f *coords, const int num, const float radius)
 {
-  float delta = 2*M_PI/num;
+  float delta = 2*SB_PI/num;
   float angle = 0.0f;
   for (int i = 0; i < num; i++) {
     coords[i][0] = -sin(angle) * radius;
@@ -440,8 +440,8 @@ sogl_render_sphere(const float radius,
   float ts, tc;
   SbVec3f tmp;
   
-  drho = M_PI / (float) (stacks-1);
-  dtheta = 2.0f * M_PI / (float) slices;
+  drho = SB_PI / (float) (stacks-1);
+  dtheta = 2.0f * SB_PI / (float) slices;
   
   i = 0;
   for (j = 0; j <= slices; j++) {

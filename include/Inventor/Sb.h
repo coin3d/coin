@@ -26,7 +26,6 @@
 
 // Include all header files for the basic classes.
 
-#include <Inventor/SbArrays.h>
 #include <Inventor/SbBSPTree.h>
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbBox2f.h>

@@ -27,7 +27,7 @@ ac_help="$ac_help
 ac_help="$ac_help
   --with-x                use the X Window System"
 ac_help="$ac_help
-  --with-Mesa             prefer Mesa (if found) over native OpenGL [default=yes]"
+  --enable-Mesa          prefer Mesa (if found) over native OpenGL [default=yes]"
 ac_help="$ac_help
   --enable-debug          turn on Coin debugging [default=yes]"
 ac_help="$ac_help
@@ -2981,31 +2981,35 @@ fi
 fi
 
 
-  
-  
-  
 
-    # Check whether --enable-Mesa or --disable-Mesa was given.
+# Check whether --enable-Mesa or --disable-Mesa was given.
 if test "${enable_Mesa+set}" = set; then
   enableval="$enable_Mesa"
-  use_Mesa=$enableval
+  case "${enableval}" in
+    yes) enable_mesa=yes ;;
+    no)  enable_mesa=no ;;
+    *) { echo "configure: error: bad value \"${enableval}\" for --enable-Mesa" 1>&2; exit 1; } ;;
+  esac
 else
-  use_Mesa=yes
+  enable_mesa=yes
 fi
 
 
-    if test x"$use_Mesa" = xyes; then
-       GL_search_list="MesaGL   GL"
-      GLU_search_list="MesaGLU GLU"
-      GLX_search_list="MesaGLX GLX"
-    else
-       GL_search_list="GL  MesaGL"
-      GLU_search_list="GLU MesaGLU"
-      GLX_search_list="GLX MesaGLX"
-    fi
+if test "x$enable_mesa" = "xyes"; then
+  GL_search_list="MesaGL GL"
+  GLU_search_list="MesaGLU GLU"
+else
+  GL_search_list="GL MesaGL"
+  GLU_search_list="GLU MesaGLU"
+fi
 
-    
-    ac_ext=c
+if ! test "x$no_x" = "xyes"; then
+          LIBS="$LIBS $X_LIBS $X_PRE_LIBS -lX11 -lXext $X_EXTRA_LIBS"
+  CPPFLAGS="$CPPFLAGS $X_CFLAGS"
+fi
+
+
+ac_ext=c
 # CFLAGS is not in ac_cpp because -g, -O, etc. are not valid cpp options.
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='${CC-cc} -c $CFLAGS $CPPFLAGS conftest.$ac_ext 1>&5'
@@ -3013,34 +3017,16 @@ ac_link='${CC-cc} -o conftest${ac_exeext} $CFLAGS $CPPFLAGS $LDFLAGS conftest.$a
 cross_compiling=$ac_cv_prog_cc_cross
 
 
-if ! test x"$no_x" = xyes; then
-  GL_CFLAGS="$X_CFLAGS"
-  GL_X_LIBS="$X_PRE_LIBS $X_LIBS -lX11 -lXext -lXmu -lXt -lXi $X_EXTRA_LIBS"
-fi
-    GL_save_CPPFLAGS="$CPPFLAGS"
-    CPPFLAGS="$GL_CFLAGS"
 
-    GL_save_LIBS="$LIBS"
-    LIBS="$GL_X_LIBS"
-
-
-    # Save the "AC_MSG_RESULT file descriptor" to FD 8.
-    exec 8>&6
-
-    # Temporarily turn off AC_MSG_RESULT so that the user gets pretty
-    # messages.
-    exec 6>/dev/null
-
-    
 echo $ac_n "checking for library containing glAccum""... $ac_c" 1>&6
-echo "configure:3037: checking for library containing glAccum" >&5
+echo "configure:3023: checking for library containing glAccum" >&5
 if eval "test \"`echo '$''{'ac_cv_search_glAccum'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   ac_func_search_save_LIBS="$LIBS"
 ac_cv_search_glAccum="no"
 cat > conftest.$ac_ext <<EOF
-#line 3044 "configure"
+#line 3030 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -3051,7 +3037,7 @@ int main() {
 glAccum()
 ; return 0; }
 EOF
-if { (eval echo configure:3055: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3041: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   ac_cv_search_glAccum="none required"
 else
@@ -3062,7 +3048,7 @@ rm -f conftest*
 test "$ac_cv_search_glAccum" = "no" && for i in $GL_search_list; do
 LIBS="-l$i -lm $ac_func_search_save_LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 3066 "configure"
+#line 3052 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -3073,7 +3059,7 @@ int main() {
 glAccum()
 ; return 0; }
 EOF
-if { (eval echo configure:3077: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3063: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   ac_cv_search_glAccum="-l$i"
 break
@@ -3089,20 +3075,21 @@ fi
 echo "$ac_t""$ac_cv_search_glAccum" 1>&6
 if test "$ac_cv_search_glAccum" != "no"; then
   test "$ac_cv_search_glAccum" = "none required" || LIBS="$ac_cv_search_glAccum $LIBS"
-  have_GL=yes
+  
 else :
-  have_GL=no
+  { echo "configure: error: 
+*** Needs an OpenGL-compatible development installation to compile Coin!" 1>&2; exit 1; }
 fi
-    
+
 echo $ac_n "checking for library containing gluBeginCurve""... $ac_c" 1>&6
-echo "configure:3099: checking for library containing gluBeginCurve" >&5
+echo "configure:3086: checking for library containing gluBeginCurve" >&5
 if eval "test \"`echo '$''{'ac_cv_search_gluBeginCurve'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   ac_func_search_save_LIBS="$LIBS"
 ac_cv_search_gluBeginCurve="no"
 cat > conftest.$ac_ext <<EOF
-#line 3106 "configure"
+#line 3093 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -3113,7 +3100,7 @@ int main() {
 gluBeginCurve()
 ; return 0; }
 EOF
-if { (eval echo configure:3117: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3104: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   ac_cv_search_gluBeginCurve="none required"
 else
@@ -3124,7 +3111,7 @@ rm -f conftest*
 test "$ac_cv_search_gluBeginCurve" = "no" && for i in $GLU_search_list; do
 LIBS="-l$i -lm $ac_func_search_save_LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 3128 "configure"
+#line 3115 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -3135,7 +3122,7 @@ int main() {
 gluBeginCurve()
 ; return 0; }
 EOF
-if { (eval echo configure:3139: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3126: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   ac_cv_search_gluBeginCurve="-l$i"
 break
@@ -3151,156 +3138,13 @@ fi
 echo "$ac_t""$ac_cv_search_gluBeginCurve" 1>&6
 if test "$ac_cv_search_gluBeginCurve" != "no"; then
   test "$ac_cv_search_gluBeginCurve" = "none required" || LIBS="$ac_cv_search_gluBeginCurve $LIBS"
-  have_GLU=yes
+  
 else :
-  have_GLU=no
-fi
-    
-echo $ac_n "checking for library containing glXChooseVisual""... $ac_c" 1>&6
-echo "configure:3161: checking for library containing glXChooseVisual" >&5
-if eval "test \"`echo '$''{'ac_cv_search_glXChooseVisual'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  ac_func_search_save_LIBS="$LIBS"
-ac_cv_search_glXChooseVisual="no"
-cat > conftest.$ac_ext <<EOF
-#line 3168 "configure"
-#include "confdefs.h"
-/* Override any gcc2 internal prototype to avoid an error.  */
-/* We use char because int might match the return type of a gcc2
-    builtin and then its argument prototype would still apply.  */
-char glXChooseVisual();
-
-int main() {
-glXChooseVisual()
-; return 0; }
-EOF
-if { (eval echo configure:3179: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
-  rm -rf conftest*
-  ac_cv_search_glXChooseVisual="none required"
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-fi
-rm -f conftest*
-test "$ac_cv_search_glXChooseVisual" = "no" && for i in $GLX_search_list; do
-LIBS="-l$i -lm $ac_func_search_save_LIBS"
-cat > conftest.$ac_ext <<EOF
-#line 3190 "configure"
-#include "confdefs.h"
-/* Override any gcc2 internal prototype to avoid an error.  */
-/* We use char because int might match the return type of a gcc2
-    builtin and then its argument prototype would still apply.  */
-char glXChooseVisual();
-
-int main() {
-glXChooseVisual()
-; return 0; }
-EOF
-if { (eval echo configure:3201: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
-  rm -rf conftest*
-  ac_cv_search_glXChooseVisual="-l$i"
-break
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-fi
-rm -f conftest*
-done
-LIBS="$ac_func_search_save_LIBS"
+  { echo "configure: error: 
+*** Needs the GLU library to compile Coin!" 1>&2; exit 1; }
 fi
 
-echo "$ac_t""$ac_cv_search_glXChooseVisual" 1>&6
-if test "$ac_cv_search_glXChooseVisual" != "no"; then
-  test "$ac_cv_search_glXChooseVisual" = "none required" || LIBS="$ac_cv_search_glXChooseVisual $LIBS"
-  have_GLX=yes
-else :
-  have_GLX=no
-fi
-    
-echo $ac_n "checking for library containing glutInit""... $ac_c" 1>&6
-echo "configure:3223: checking for library containing glutInit" >&5
-if eval "test \"`echo '$''{'ac_cv_search_glutInit'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  ac_func_search_save_LIBS="$LIBS"
-ac_cv_search_glutInit="no"
-cat > conftest.$ac_ext <<EOF
-#line 3230 "configure"
-#include "confdefs.h"
-/* Override any gcc2 internal prototype to avoid an error.  */
-/* We use char because int might match the return type of a gcc2
-    builtin and then its argument prototype would still apply.  */
-char glutInit();
-
-int main() {
-glutInit()
-; return 0; }
-EOF
-if { (eval echo configure:3241: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
-  rm -rf conftest*
-  ac_cv_search_glutInit="none required"
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-fi
-rm -f conftest*
-test "$ac_cv_search_glutInit" = "no" && for i in glut; do
-LIBS="-l$i -lm $ac_func_search_save_LIBS"
-cat > conftest.$ac_ext <<EOF
-#line 3252 "configure"
-#include "confdefs.h"
-/* Override any gcc2 internal prototype to avoid an error.  */
-/* We use char because int might match the return type of a gcc2
-    builtin and then its argument prototype would still apply.  */
-char glutInit();
-
-int main() {
-glutInit()
-; return 0; }
-EOF
-if { (eval echo configure:3263: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
-  rm -rf conftest*
-  ac_cv_search_glutInit="-l$i"
-break
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-fi
-rm -f conftest*
-done
-LIBS="$ac_func_search_save_LIBS"
-fi
-
-echo "$ac_t""$ac_cv_search_glutInit" 1>&6
-if test "$ac_cv_search_glutInit" != "no"; then
-  test "$ac_cv_search_glutInit" = "none required" || LIBS="$ac_cv_search_glutInit $LIBS"
-  have_glut=yes
-else :
-  have_glut=no
-fi
-
-
-
-    # Restore pretty messages.
-    exec 6>&8
-
-    if test -n "$LIBS"; then
-      mdl_cv_have_OpenGL=yes
-      GL_LIBS="$LIBS"
-      
-      
-    else
-      mdl_cv_have_OpenGL=no
-      GL_CFLAGS=
-    fi
-
-    GL_X_LIBS=
-
-    LIBS="$GL_save_LIBS"
-    CPPFLAGS="$GL_save_CPPFLAGS"
-
-    ac_ext=C
+ac_ext=C
 # CXXFLAGS is not in ac_cpp because -g, -O, etc. are not valid cpp options.
 ac_cpp='$CXXCPP $CPPFLAGS'
 ac_compile='${CXX-g++} -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext 1>&5'
@@ -3308,14 +3152,6 @@ ac_link='${CXX-g++} -o conftest${ac_exeext} $CXXFLAGS $CPPFLAGS $LDFLAGS conftes
 cross_compiling=$ac_cv_prog_cxx_cross
 
 
-
-if test "x$mdl_cv_have_OpenGL" = "xno"; then
-  { echo "configure: error: 
-*** Needs an OpenGL-compatible development installation to compile!" 1>&2; exit 1; }
-fi
-
-CXXFLAGS="$CXXFLAGS $GL_CFLAGS"
-LIBS="$LIBS $GL_LIBS"
 
 
 # Check whether --enable-debug or --disable-debug was given.
@@ -3486,15 +3322,15 @@ fi
 
 if test "x$want_simage" = "xyes"; then
   echo $ac_n "checking for simage header file""... $ac_c" 1>&6
-echo "configure:3490: checking for simage header file" >&5
+echo "configure:3326: checking for simage header file" >&5
 
     cat > conftest.$ac_ext <<EOF
-#line 3493 "configure"
+#line 3329 "configure"
 #include "confdefs.h"
 #include <simage.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:3498: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:3334: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -3516,12 +3352,12 @@ rm -f conftest*
     _SAVECPPFLAGS=$CPPFLAGS
     CPPFLAGS="-I$_COINPREFIX/include $CPPFLAGS"
     cat > conftest.$ac_ext <<EOF
-#line 3520 "configure"
+#line 3356 "configure"
 #include "confdefs.h"
 #include <simage.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:3525: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:3361: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -3545,7 +3381,7 @@ rm -f conftest*
 
   if test "x$simage_dev" = "xyes"; then
     echo $ac_n "checking for simage_read_image in -lsimage""... $ac_c" 1>&6
-echo "configure:3549: checking for simage_read_image in -lsimage" >&5
+echo "configure:3385: checking for simage_read_image in -lsimage" >&5
 ac_lib_var=`echo simage'_'simage_read_image | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -3553,7 +3389,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lsimage -lz -lm $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 3557 "configure"
+#line 3393 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 #ifdef __cplusplus
@@ -3567,7 +3403,7 @@ int main() {
 simage_read_image()
 ; return 0; }
 EOF
-if { (eval echo configure:3571: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3407: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -3797,8 +3633,6 @@ s%@X_CFLAGS@%$X_CFLAGS%g
 s%@X_PRE_LIBS@%$X_PRE_LIBS%g
 s%@X_LIBS@%$X_LIBS%g
 s%@X_EXTRA_LIBS@%$X_EXTRA_LIBS%g
-s%@GL_CFLAGS@%$GL_CFLAGS%g
-s%@GL_LIBS@%$GL_LIBS%g
 s%@HACKING_DYNAMIC_MODULES_TRUE@%$HACKING_DYNAMIC_MODULES_TRUE%g
 s%@HACKING_DYNAMIC_MODULES_FALSE@%$HACKING_DYNAMIC_MODULES_FALSE%g
 

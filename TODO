@@ -4,6 +4,20 @@ TODO:
 
 (format is: "* [author:conceived-date] item", listed in no particular order)
 
+*** RENDERING ITEMS ***
+
+* [mortene:1999????] add support for rendering 3D text, as used by
+  SoText3 and other node types.
+
+* [mortene:1999????] make a library with the necessary functionality
+  for doing nurbs curves and nurbs surfaces. Could perhaps start off
+  with the code in Brian Paul's MIT-relicensed Mesa (if MesaGLU is
+  part of that)?
+
+* [mortene:1999????] support the SoRenderList and SoOctTreeOrdering
+  stuff. Should at least provide a dummy implementation.
+
+
 *** BUILD ITEMS ***
 
 * [mortene:19990926] add configure option to enable crash (and
@@ -27,32 +41,21 @@ TODO:
   versions of Coin (--without-coin-engines etc). Or perhaps make a
   single --compile-basesystem option instead?
 
-* [mortene:19990913] move tasklist from docs/todo.txt into this file.
-
-* [mortene:19990913] write non-generic instructions in the INSTALL
-  file.
-
-* [mortene:19990913] write a file ``HACKING'' with tips & tricks for
-  faster turn-around when doing development.
-
 * [mortene:19990913] integrate the doxygen man- and html-generation
   into "make install".
-
-* [mortene:19990916] improve the autoconf macro which checks for
-  Mesa/OpenGL (read the FIXME's in configure.in just above where it's
-  in use). NB: this macro is _completely_ and _utterly_ foobar! We're
-  probably better off writing our own macro(s).
 
 * [mortene:19990916] make ``install'' avoid re-installing header files
   which has not been modified (and other untouched files, for that
   matter).
 
-* [mortene:19990917] clean up the .h-files before installation. Remove
+* [mortene:19990917] clean up the .h-files before installation: remove
   "//$ BEGIN TEMPLATE" and "//$ END TEMPLATE". Remove
   "#if.*(COIN_EXCLUDE_.*)" blocks?
 
 * [mortene:19990926] remove compiler warnings when configuring with
   --disable-debug.
+
+* [mortene:1999????] make Coin build under MSWindows.
 
 
 *** GENERIC ITEMS ***
@@ -81,6 +84,18 @@ TODO:
 * [mortene:19991009] autogenerate Doxygen html documentation and
   publish on our Coin www pages.
 
+* [mortene:19991016] convert documentation of functions to Doxygen's
+  \param + \return format (this is a _huge_ and boring job, but it can
+  be done gradually, of course).
+
+* [mortene:19990913] move tasklist from docs/todo.txt into this file.
+
+* [mortene:19990913] write non-generic instructions in the INSTALL
+  file.
+
+* [mortene:19990913] write a file ``HACKING'' with tips & tricks for
+  faster turn-around when doing development.
+
 
 ===============================================================================
 DONE:
@@ -88,7 +103,19 @@ DONE:
 
 (format is: "* [author:conceived-date][implementer:finished-date] item")
 
+*** RENDERING ITEMS ***
+
+
+
 *** BUILD ITEMS ***
+
+* [mortene:19990916][mortene:19991030] improve the autoconf macro
+  which checks for Mesa/OpenGL (read the FIXME's in configure.in just
+  above where it's in use). NB: this macro is _completely_ and
+  _utterly_ foobar! We're probably better off writing our own
+  macro(s). ==> Didn't bother to make a new macro, as the OpenGL/Mesa
+  checks aren't too complex (not much different from searching for any
+  other link library).
 
 * [mortene:19990926][mortene:19990926] add "testlib" idea from DDJ to
   increase turnaround time when doing compile & link.

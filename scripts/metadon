@@ -110,7 +110,7 @@ for ( $mod = 0; $mod < @configfiles; $mod++ ) {
     print HTML "<hr>\n";
     $columns = @flags + 1;
     print HTML "<table width=100% columns=$columns cellspacing=0 border=0>\n";
-    print HTML "<tr><td colspan=$columns width=100% align=center><font face=arial>(incomplete) <strong>";
+    print HTML "<tr><td colspan=$columns width=100% align=center><font face=arial>LEGEND: (incomplete) <strong>";
     for ( $i = 0.0; $i <= 1.0; $i += 0.05 ) {
         ($rval, $gval, $bval) = &FactorToColor( $i );
         $color = sprintf( "#%02x%02x%02x", $rval*255, $gval*255, $bval*255 );

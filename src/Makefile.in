@@ -88,8 +88,8 @@ VERSION = @VERSION@
 lib_LTLIBRARIES = libCoin.la
 @HACKING_DYNAMIC_MODULES_TRUE@TESTLIBDIR = coindev
 @HACKING_DYNAMIC_MODULES_FALSE@TESTLIBDIR = 
-@HACKING_DYNAMIC_MODULES_TRUE@libCoin_la_LIBADD = -lcoindevLINKHACK 	-lVRMLnodesLINKHACK -lactionsLINKHACK -lcoinbaseLINKHACK 	-lbundlesLINKHACK -lcachesLINKHACK -lelementsLINKHACK 	-lenginesLINKHACK -lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK 	-lmiscLINKHACK -llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK 	-lprojectorsLINKHACK -lsensorsLINKHACK -ldetailsLINKHACK
-@HACKING_DYNAMIC_MODULES_FALSE@libCoin_la_LIBADD = 	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libcoinbase.la 	bundles/libbundles.la caches/libcaches.la elements/libelements.la 	engines/libengines.la errors/liberrors.la events/libevents.la 	fields/libfields.la misc/libmisc.la lists/liblists.la 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la 	sensors/libsensors.la details/libdetails.la
+@HACKING_DYNAMIC_MODULES_TRUE@libCoin_la_LIBADD = -lcoindevLINKHACK 	-lVRMLnodesLINKHACK -lactionsLINKHACK -lbaseLINKHACK 	-lbundlesLINKHACK -lcachesLINKHACK -lelementsLINKHACK 	-lenginesLINKHACK -lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK 	-lmiscLINKHACK -llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK 	-lprojectorsLINKHACK -lsensorsLINKHACK -ldetailsLINKHACK
+@HACKING_DYNAMIC_MODULES_FALSE@libCoin_la_LIBADD = 	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libbase.la 	bundles/libbundles.la caches/libcaches.la elements/libelements.la 	engines/libengines.la errors/liberrors.la events/libevents.la 	fields/libfields.la misc/libmisc.la lists/liblists.la 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la 	sensors/libsensors.la details/libdetails.la
 
 SUBDIRS = $(TESTLIBDIR) 	VRMLnodes actions base bundles caches details elements engines errors 	events fields misc lists nodekits nodes projectors sensors system .
 
@@ -116,11 +116,14 @@ DEFS = @DEFS@ -I. -I$(srcdir) -I.. -I../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
+X_CFLAGS = @X_CFLAGS@
+X_LIBS = @X_LIBS@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
+X_PRE_LIBS = @X_PRE_LIBS@
 @HACKING_DYNAMIC_MODULES_TRUE@libCoin_la_DEPENDENCIES = 
 @HACKING_DYNAMIC_MODULES_FALSE@libCoin_la_DEPENDENCIES =  \
 @HACKING_DYNAMIC_MODULES_FALSE@VRMLnodes/libVRMLnodes.la \
-@HACKING_DYNAMIC_MODULES_FALSE@actions/libactions.la \
-@HACKING_DYNAMIC_MODULES_FALSE@base/libcoinbase.la \
+@HACKING_DYNAMIC_MODULES_FALSE@actions/libactions.la base/libbase.la \
 @HACKING_DYNAMIC_MODULES_FALSE@bundles/libbundles.la \
 @HACKING_DYNAMIC_MODULES_FALSE@caches/libcaches.la \
 @HACKING_DYNAMIC_MODULES_FALSE@elements/libelements.la \

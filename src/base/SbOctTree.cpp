@@ -7,19 +7,43 @@
 
 /*!
   \class SbOctTree SbOctTree.h Inventor/SbOctTree.h
-  The SbOctTree class defines a generic oct tree for fast geometry searches.
+  \brief The SbOctTree class defines a generic oct tree for fast geometry searches.
+  \ingroup base
 
   FIXME: doc
+
+  Note: SbOctTree is an extension versus the Open Inventor API.
 */
 
 /*!
   \struct SbOctTreeFuncs SbOctTree.h Inventor/SbOctTree.h
-  The SbOctTreeFuncs struct is used to specify callback functions for items SbOcTree.
+  The SbOctTreeFuncs struct is used to specify callback functions for
+  items SbOcTree.
   
   The only function that must be set is the \e bboxfunc. The other functions
   must be set if you intend to use the corresponding find methods in
-  SbOctTree.
-*/
+  SbOctTree.  */
+
+/*!
+  \var SbOctTreeFuncs::bboxfunc
+  FIXME: write doc
+ */
+/*!
+  \var SbOctTreeFuncs::ptinsidefunc
+  FIXME: write doc
+ */
+/*!
+  \var SbOctTreeFuncs::insideboxfunc
+  FIXME: write doc
+ */
+/*!
+  \var SbOctTreeFuncs::insidespherefunc
+  FIXME: write doc
+ */
+/*!
+  \var SbOctTreeFuncs::insideplanesfunc
+  FIXME: write doc
+ */
   
 //
 // got to have unique intersection funcs, therefore the standard
@@ -459,3 +483,13 @@ SbOctTree::findItems(const SbPlane * const planes,
 			   this->itemfuncs, this->boundingBox);
 }
 
+/*!
+  Returns a bounding box enclosing all the elements in the tree.
+ */
+const SbBox3f &
+SbOctTree::getBoundingBox() const
+{
+  assert(0 && "FIXME: not implemented yet");
+  static SbBox3f b;
+  return b;
+}

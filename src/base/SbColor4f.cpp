@@ -29,11 +29,10 @@
 
   The red, green and blue values should be between 0.0 and 1.0, where
   0.0 is interpreted as minimum intensity, and 1.0 is maximum intensity.
-  The transparency value is also between 0.0 and 1.0, where 
+  The transparency value is also between 0.0 and 1.0.
 
-  SbColor4f also contains methods for convenient handling of
-  setting and getting color values as 32 bit packed values or as HSV
-  values.
+  SbColor4f contains methods for convenient handling of setting and
+  getting color values as 32 bit packed values or as HSV values.
 
   Note: this class is not part of Open Inventor, but is an extension to
   the API. Don't use it if you want your code to be compatible with

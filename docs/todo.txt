@@ -1,11 +1,6 @@
 This file contains a list of semi-large tasks which needs to be done
 with Coin. The items are roughly categorized in these categories:
 
-* Build: tasks for improving the build process of the components in
-  the Coin project.
-
-* Rendering: making improvements to or adding rendering functionality.
-
 * VRML: tasks related to implementing the support necessary for
   handling VRML1 and VRML2/VRML97 files and structures.
 
@@ -18,9 +13,6 @@ with Coin. The items are roughly categorized in these categories:
 
 
 ******************************************************************************
-
-000. (Rendering) [1999????] Add support for rendering 3D text, as used
-     by SoText3 and other node types.
 
 001. (Rendering) [1999????] Implement caching.
 
@@ -40,8 +32,6 @@ with Coin. The items are roughly categorized in these categories:
 
 007. (Modules) [1999????] Complete the implementation of sensors. Its
      nearly there.
-
-013. (Build) [1999????] Make Coin build under MSWindows.
 
 016. (VRML) [1999????] Add VRML2 classes.
 
@@ -63,14 +53,6 @@ with Coin. The items are roughly categorized in these categories:
 
 028. (Network) [1999????] Interface relevant parts of Coin to Curl
      (SoWWWAnchor, SoWWWInline, texture import, misc VRML support).
-
-029. (Rendering) [1999????] Make a library with the necessary
-     functionality for doing nurbs curves and nurbs surfaces. Could
-     perhaps start off with the code in Brian Paul's MIT-relicensed
-     Mesa (if MesaGLU is part of that)?
-
-030. (Rendering) [1999????] Support the SoRenderList node. Should at
-     least provide a dummy implementation.
 
 031. (Misc) [1999????] Implement the various parts of Large Model
      Visualization.
