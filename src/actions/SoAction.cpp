@@ -201,6 +201,7 @@
 #include <Inventor/actions/SoActions.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/lists/SbList.h>
 
 #include <assert.h>
 #include <stdlib.h>
@@ -318,19 +319,47 @@ SoType SoAction::classTypeId;
 
 // *************************************************************************
 
+
+#ifndef DOXYGEN_SKIP_THIS
+
+// Not all private class members are stored in this pimpl. This is
+// done because we need to have some of the access function inlined to
+// achieve better traversal speed. pederb, 2002-07-02
+class SoActionP {
+public:
+  SoAction::AppliedCode appliedcode;
+  union AppliedData {
+    SoNode * node;
+    SoPath * path;
+    struct {
+      const SoPathList * pathlist;
+      const SoPathList * origpathlist;
+    } pathlistdata;
+  } applieddata;
+  SbBool terminated;
+  SbList <SbList<int> *> pathcodearray;
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
+
 /*!
   Default constructor, does all necessary toplevel initialization.
 */
 SoAction::SoAction(void)
   : state(NULL),
     traversalMethods(NULL),
-    appliedcode(NODE),
     currentpath(8),
-    terminated(FALSE),
     currentpathcode(NO_PATH)
 {
+  THIS = new SoActionP;
+  THIS->appliedcode = NODE;
+  THIS->applieddata.node = NULL;
+  THIS->terminated = FALSE;
+
   this->currentpath.ref(); // to avoid having a zero refcount instance
-  this->applieddata.node = NULL;
 }
 
 /*!
@@ -338,9 +367,11 @@ SoAction::SoAction(void)
 */
 SoAction::~SoAction(void)
 {
-  int n = this->pathcodearray.getLength();
-  for (int i = 0; i < n; i++) delete this->pathcodearray[i];
+  int n = THIS->pathcodearray.getLength();
+  for (int i = 0; i < n; i++) delete THIS->pathcodearray[i];
   delete this->state;
+  
+  delete THIS;
 }
 
 // *************************************************************************
@@ -418,20 +449,20 @@ void
 SoAction::apply(SoNode * root)
 {
   // need to store these in case action in reapplied
-  AppliedCode storedcode = this->appliedcode;
+  AppliedCode storedcode = THIS->appliedcode;
+  SoActionP::AppliedData storeddata = THIS->applieddata;
   PathCode storedcurr = this->currentpathcode;
-  AppliedData storeddata = this->applieddata;
 
   // This is a pretty good indicator on whether or not we remembered
   // to use the SO_ACTION_CONSTRUCTOR() macro in the constructor of
   // the SoAction subclass.
   assert(this->traversalMethods);
   this->traversalMethods->setUp();
-  this->terminated = FALSE;
+  THIS->terminated = FALSE;
 
   this->currentpathcode = SoAction::NO_PATH;
-  this->applieddata.node = root;
-  this->appliedcode = SoAction::NODE;
+  THIS->applieddata.node = root;
+  THIS->appliedcode = SoAction::NODE;
 
   if (root) {
 #if COIN_DEBUG
@@ -477,12 +508,12 @@ SoAction::apply(SoNode * root)
     (void) this->getState();
     this->beginTraversal(root);
     this->endTraversal(root);
-    this->applieddata.node = NULL;
+    THIS->applieddata.node = NULL;
     root->unrefNoDelete();
   }
-  this->appliedcode = storedcode;
+  THIS->appliedcode = storedcode;
+  THIS->applieddata = storeddata;
   this->currentpathcode = storedcurr;
-  this->applieddata = storeddata;
 }
 
 /*!
@@ -495,16 +526,16 @@ void
 SoAction::apply(SoPath * path)
 {
   // need to store these in case action in reapplied
-  AppliedCode storedcode = this->appliedcode;
+  AppliedCode storedcode = THIS->appliedcode;
+  SoActionP::AppliedData storeddata = THIS->applieddata;
   PathCode storedcurr = this->currentpathcode;
-  AppliedData storeddata = this->applieddata;
 
   // This is a pretty good indicator on whether or not we remembered
   // to use the SO_ACTION_CONSTRUCTOR() macro in the constructor of
   // the SoAction subclass.
   assert(this->traversalMethods);
   this->traversalMethods->setUp();
-  this->terminated = FALSE;
+  THIS->terminated = FALSE;
 
 #if COIN_DEBUG
   if (path->getRefCount() == 0) {
@@ -518,8 +549,8 @@ SoAction::apply(SoPath * path)
 
   this->currentpathcode =
     path->getFullLength() > 1 ? SoAction::IN_PATH : SoAction::BELOW_PATH;
-  this->applieddata.path = path;
-  this->appliedcode = SoAction::PATH;
+  THIS->applieddata.path = path;
+  THIS->appliedcode = SoAction::PATH;
 
   // make sure state is created before traversing
   (void) this->getState();
@@ -532,9 +563,9 @@ SoAction::apply(SoPath * path)
   }
 
   path->unrefNoDelete();
-  this->appliedcode = storedcode;
+  THIS->appliedcode = storedcode;
+  THIS->applieddata = storeddata;
   this->currentpathcode = storedcurr;
-  this->applieddata = storeddata;
 }
 
 /*!
@@ -559,18 +590,18 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
   if (pathlist.getLength() == 0) return;
 
   // need to store these in case action in reapplied
-  AppliedCode storedcode = this->appliedcode;
+  AppliedCode storedcode = THIS->appliedcode;
+  SoActionP::AppliedData storeddata = THIS->applieddata;
   PathCode storedcurr = this->currentpathcode;
-  AppliedData storeddata = this->applieddata;
 
-  this->terminated = FALSE;
+  THIS->terminated = FALSE;
 
   // make sure state is created before traversing
   (void) this->getState();
 
-  this->applieddata.pathlistdata.origpathlist = &pathlist;
-  this->applieddata.pathlistdata.pathlist = &pathlist;
-  this->appliedcode = PATH_LIST;
+  THIS->applieddata.pathlistdata.origpathlist = &pathlist;
+  THIS->applieddata.pathlistdata.pathlist = &pathlist;
+  THIS->appliedcode = PATH_LIST;
   this->currentpathcode = pathlist[0]->getFullLength() > 1 ?
     SoAction::IN_PATH : SoAction::BELOW_PATH;
 
@@ -592,7 +623,7 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
     // if all head nodes are the same we can traverse in one go
     if (sortedlist[0]->getHead() == sortedlist[num-1]->getHead()) {
       this->currentpath.setHead(sortedlist[0]->getHead());
-      this->applieddata.pathlistdata.pathlist = &sortedlist;
+      THIS->applieddata.pathlistdata.pathlist = &sortedlist;
       this->beginTraversal(sortedlist[0]->getHead());
       this->endTraversal(sortedlist[0]->getHead());
     }
@@ -610,8 +641,8 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
           templist.append(sortedlist[i]);
           i++;
         }
-        this->applieddata.pathlistdata.pathlist = &templist;
-        this->appliedcode = PATH_LIST;
+        THIS->applieddata.pathlistdata.pathlist = &templist;
+        THIS->appliedcode = PATH_LIST;
         this->currentpathcode = templist[0]->getFullLength() > 1 ?
           SoAction::IN_PATH : SoAction::BELOW_PATH;
         this->currentpath.setHead(templist[0]->getHead());
@@ -620,9 +651,9 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
       }
     }
   }
-  this->appliedcode = storedcode;
+  THIS->appliedcode = storedcode;
+  THIS->applieddata = storeddata;
   this->currentpathcode = storedcurr;
-  this->applieddata = storeddata;
 }
 
 /*!
@@ -654,7 +685,7 @@ SoAction::nullAction(SoAction *, SoNode *)
 SoAction::AppliedCode
 SoAction::getWhatAppliedTo(void) const
 {
-  return this->appliedcode;
+  return THIS->appliedcode;
 }
 
 /*!
@@ -666,7 +697,7 @@ SoAction::getWhatAppliedTo(void) const
 SoNode *
 SoAction::getNodeAppliedTo(void) const
 {
-  return this->appliedcode == SoAction::NODE ? this->applieddata.node : NULL;
+  return THIS->appliedcode == SoAction::NODE ? THIS->applieddata.node : NULL;
 }
 
 /*!
@@ -680,7 +711,7 @@ SoAction::getNodeAppliedTo(void) const
 SoPath *
 SoAction::getPathAppliedTo(void) const
 {
-  return this->appliedcode == SoAction::PATH ? this->applieddata.path : NULL;
+  return THIS->appliedcode == SoAction::PATH ? THIS->applieddata.path : NULL;
 }
 
 /*!
@@ -700,8 +731,8 @@ SoAction::getPathAppliedTo(void) const
 const SoPathList *
 SoAction::getPathListAppliedTo(void) const
 {
-  return this->appliedcode == SoAction::PATH_LIST ?
-    this->applieddata.pathlistdata.pathlist : NULL;
+  return THIS->appliedcode == SoAction::PATH_LIST ?
+    THIS->applieddata.pathlistdata.pathlist : NULL;
 }
 
 /*!
@@ -715,8 +746,8 @@ SoAction::getPathListAppliedTo(void) const
 const SoPathList *
 SoAction::getOriginalPathListAppliedTo(void) const
 {
-  return this->appliedcode == SoAction::PATH_LIST ?
-    this->applieddata.pathlistdata.origpathlist : NULL;
+  return THIS->appliedcode == SoAction::PATH_LIST ?
+    THIS->applieddata.pathlistdata.origpathlist : NULL;
 }
 
 /*!
@@ -772,16 +803,16 @@ SoAction::pushCurPath(const int childindex, SoNode * node)
 
   if (this->currentpathcode == IN_PATH) {
     if (this->getWhatAppliedTo() == PATH) {
-      assert(curlen <= this->applieddata.path->getFullLength());
+      assert(curlen <= THIS->applieddata.path->getFullLength());
       if (this->currentpath.getIndex(curlen-1) !=
-          this->applieddata.path->getIndex(curlen-1)) {
+          THIS->applieddata.path->getIndex(curlen-1)) {
 #ifdef DEBUG_PATH_TRAVERSAL
         fprintf(stderr,"off path at: %d (%s), depth: %d\n",
                 childindex, node->getName().getString(), curlen);
 #endif // DEBUG_PATH_TRAVERSAL
         this->currentpathcode = OFF_PATH;
       }
-      else if (curlen == this->applieddata.path->getFullLength()) {
+      else if (curlen == THIS->applieddata.path->getFullLength()) {
         this->currentpathcode = BELOW_PATH;
 #ifdef DEBUG_PATH_TRAVERSAL
         fprintf(stderr,"below path at: %d (%s), depth: %d\n",
@@ -799,7 +830,7 @@ SoAction::pushCurPath(const int childindex, SoNode * node)
       // have to optimize this, for instance by implementing
       // the SGI's SoCompactPathList class.
       //                                       pederb, 2001-03-28
-      const SoPathList * pl = this->applieddata.pathlistdata.pathlist;
+      const SoPathList * pl = THIS->applieddata.pathlistdata.pathlist;
       int i, n = pl->getLength();
       int len = -1;
 
@@ -842,7 +873,7 @@ SoAction::pushCurPath(const int childindex, SoNode * node)
 SbBool
 SoAction::hasTerminated(void) const
 {
-  return this->terminated;
+  return THIS->terminated;
 }
 
 /*!
@@ -887,17 +918,17 @@ SoAction::usePathCode(int & numindices, const int * & indices)
 {
   int curlen = this->currentpath.getFullLength();
 
-  while (this->pathcodearray.getLength() < curlen) {
-    this->pathcodearray.append(new SbList<int>);
+  while (THIS->pathcodearray.getLength() < curlen) {
+    THIS->pathcodearray.append(new SbList<int>);
   }
 
-  SbList <int> * myarray = this->pathcodearray[curlen-1];
+  SbList <int> * myarray = THIS->pathcodearray[curlen-1];
   myarray->truncate(0);
 
   if (this->getWhatAppliedTo() == PATH_LIST) {
     // this might be very slow if the list contains a lot of
     // paths. See comment in pushCurPath(int, SoNode*) about this.
-    const SoPathList * pl = this->applieddata.pathlistdata.pathlist;
+    const SoPathList * pl = THIS->applieddata.pathlistdata.pathlist;
     int n = pl->getLength();
     int previdx = -1;
     myarray->truncate(0);
@@ -917,7 +948,7 @@ SoAction::usePathCode(int & numindices, const int * & indices)
   }
   else {
     numindices = 1;
-    myarray->append(this->applieddata.path->getIndex(curlen));
+    myarray->append(THIS->applieddata.path->getIndex(curlen));
     indices = myarray->getArrayPtr();
   }
 }
@@ -1047,7 +1078,7 @@ SoAction::endTraversal(SoNode * node)
 void
 SoAction::setTerminated(const SbBool flag)
 {
-  this->terminated = flag;
+  THIS->terminated = flag;
 }
 
 /*!
@@ -1067,23 +1098,23 @@ void
 SoAction::switchToPathTraversal(SoPath * path)
 {
   // Store current state.
-  AppliedData storeddata = this->applieddata;
-  AppliedCode storedcode = this->appliedcode;
+  SoActionP::AppliedData storeddata = THIS->applieddata;
+  AppliedCode storedcode = THIS->appliedcode;
   PathCode storedpathcode = this->currentpathcode;
   SoTempPath storedpath = this->currentpath;
 
   // Start path traversal. Don't use beginTraversal() (the user might
   // have overridden it).
-  this->appliedcode = SoAction::PATH;
-  this->applieddata.path = path;
+  THIS->appliedcode = SoAction::PATH;
+  THIS->applieddata.path = path;
   this->currentpathcode = SoAction::IN_PATH;
   this->traverse(path->getNode(0));
 
   // Restore previous state.
   this->currentpath = storedpath;
   this->currentpathcode = storedpathcode;
-  this->applieddata = storeddata;
-  this->appliedcode = storedcode;
+  THIS->applieddata = storeddata;
+  THIS->appliedcode = storedcode;
 }
 
 /*!
@@ -1094,13 +1125,13 @@ void
 SoAction::switchToNodeTraversal(SoNode * node)
 {
   // Store current state.
-  AppliedData storeddata = this->applieddata;
-  AppliedCode storedcode = this->appliedcode;
+  SoActionP::AppliedData storeddata = THIS->applieddata;
+  AppliedCode storedcode = THIS->appliedcode;
   PathCode storedpathcode = this->currentpathcode;
   SoTempPath storedpath = this->currentpath;
 
-  this->appliedcode = SoAction::NODE;
-  this->applieddata.node = node;
+  THIS->appliedcode = SoAction::NODE;
+  THIS->applieddata.node = node;
   this->currentpathcode = SoAction::NO_PATH;
   this->currentpath.truncate(0);
 
@@ -1109,6 +1140,6 @@ SoAction::switchToNodeTraversal(SoNode * node)
   // Restore previous state.
   this->currentpath = storedpath;
   this->currentpathcode = storedpathcode;
-  this->applieddata = storeddata;
-  this->appliedcode = storedcode;
+  THIS->applieddata = storeddata;
+  THIS->appliedcode = storedcode;
 }

@@ -27,7 +27,6 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SoType.h>
 #include <Inventor/misc/SoTempPath.h>
-#include <Inventor/lists/SbList.h>
 
 // Include instead of using forward declarations to be compatible with
 // Open Inventor (and besides, all the other action class definitions
@@ -63,7 +62,7 @@ class SoNode;
 class SoPath;
 class SoPathList;
 class SoState;
-
+class SoActionP;
 
 class COIN_DLL_API SoAction {
 public:
@@ -146,21 +145,10 @@ private:
   static SoEnabledElementsList * enabledElements;
   static SoActionMethodList * methods;
 
-  AppliedCode appliedcode;
-
-  union AppliedData {
-    SoNode * node;
-    SoPath * path;
-    struct {
-      const SoPathList * pathlist;
-      const SoPathList * origpathlist;
-    } pathlistdata;
-  } applieddata;
-
   SoTempPath currentpath;
-  SbBool terminated;
   PathCode currentpathcode;
-  SbList <SbList<int> *> pathcodearray;
+
+  SoActionP * pimpl;
 };
 
 // inline methods
