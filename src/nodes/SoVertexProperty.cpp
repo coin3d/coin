@@ -297,9 +297,9 @@ SoVertexProperty::doAction(SoAction *action)
     SoCoordinateElement::set3(state, this, this->vertex.getNum(),
                               this->vertex.getValues(0));
 
-  if (SoGLTexture3EnabledElement::get(state)) {
-    if (this->texCoord3.getNum() > 0) {
-      if (glrender) {
+  if (this->texCoord3.getNum() > 0) {
+    if (glrender) {
+      if (SoGLTexture3EnabledElement::get(state)) {
         SoGLTextureCoordinateElement::setTexGen(state,
                                                 this, NULL);
       }
