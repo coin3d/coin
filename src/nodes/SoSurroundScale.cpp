@@ -38,6 +38,25 @@
   calculations will be reset after traversing the node specified by
   the field SoSurroundScale::numNodesUpToReset.
 
+  A way of thinking of the container node is that there exists a path
+  from the root-node to the SoSurroundScale node.  This path has a
+  number of nodes in it.  numNodesUpToContainer is the number of nodes
+  in the path from the SoSurroundScale node towards the
+  root node. When having counted numNodesUpToContainer from the
+  SoSurroundScale node, you will have reached the container node. The
+  container node is the seed-node that the bounding box is calculated
+  from. All nodes lower than the seed-node will be a part of the
+  bounding box unless they are closer to the SoSurroundScale node than
+  numNodesUpToReset.
+
+  To make sure the node(s) that are to be scaled by the
+  SoSurroundScale node aren't a part of the bounding box, the
+  numNodesUpToReset is used. It is also the number of nodes up from
+  the SoSurroundScale node towards the root node.  The meaning of
+  numNodesUpToReset is that nodes that are closer to the
+  SoSurroundNode than the node at position numNodesUpToReset are not
+  to be used for bounding box calculations.
+
   Here's a complete, stand-alone example which sets up an
   SoTrackballDragger (connected to a cube), and uses an
   SoSurroundScale node to make it auto-scale to the size of the high
