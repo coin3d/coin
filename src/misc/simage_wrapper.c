@@ -101,16 +101,15 @@ simage_wrapper_cleanup(void)
    available */
 
 static int
-simage_wrapper_versionMatchesAtLeast(int major,
-                                     int minor,
-                                     int micro)
+simage_wrapper_versionMatchesAtLeast(int major, int minor, int micro)
 {
-  if (simage_wrapper()->available == 0) return 0;
-  if (simage_wrapper()->version.major < major) return 0;
-  else if (simage_wrapper()->version.major > major) return 1;
-  if (simage_wrapper()->version.minor < minor) return 0;
-  else if (simage_wrapper()->version.minor > minor) return 1;
-  if (simage_wrapper()->version.micro < micro) return 0;
+  assert(simage_instance);
+  if (simage_instance->available == 0) return 0;
+  if (simage_instance->version.major < major) return 0;
+  else if (simage_instance->version.major > major) return 1;
+  if (simage_instance->version.minor < minor) return 0;
+  else if (simage_instance->version.minor > minor) return 1;
+  if (simage_instance->version.micro < micro) return 0;
   return 1;
 }
 
@@ -165,14 +164,21 @@ simage_wrapper(void)
 {
   if (!simage_instance && !simage_failed_to_load) {
     /* First invocation, do initializations. */
-    simage_instance = (simage_wrapper_t *)malloc(sizeof(simage_wrapper_t));
+    simage_wrapper_t * si = (simage_wrapper_t *)malloc(sizeof(simage_wrapper_t));
     (void)atexit(simage_wrapper_cleanup);
 
-    simage_instance->versionMatchesAtLeast = simage_wrapper_versionMatchesAtLeast;
+    /* Detect recursive calls. */
+    {
+      static int is_initializing = 0;
+      assert(is_initializing == 0);
+      is_initializing = 1;
+    }
+
+    si->versionMatchesAtLeast = simage_wrapper_versionMatchesAtLeast;
 
     /* The common case is that simage is either available from the
        linking process or we're successfully going to link it in. */
-    simage_instance->available = 1;
+    si->available = 1;
 
 #ifdef SIMAGE_RUNTIME_LINKING
     {
@@ -200,7 +206,7 @@ simage_wrapper(void)
       }
 
       if (!simage_libhandle) {
-        simage_instance->available = 0;
+        si->available = 0;
         simage_failed_to_load = 1;
       }
     }
@@ -208,10 +214,10 @@ simage_wrapper(void)
        necessary for this file to be compatible with C++ compilers. */
 #ifdef HAVE_HASH_QUOTING
 #define SIMAGEWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-    simage_instance->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(simage_libhandle, #_funcname_)
+    si->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(simage_libhandle, #_funcname_)
 #elif defined(HAVE_APOSTROPHES_QUOTING)
 #define SIMAGEWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-    simage_instance->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(simage_libhandle, "_funcname_")
+    si->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(simage_libhandle, "_funcname_")
 #else
 #error Unknown quoting.
 #endif
@@ -220,30 +226,32 @@ simage_wrapper(void)
 
     /* Define SIMAGEWRAPPER_REGISTER_FUNC macro. */
 #define SIMAGEWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-    simage_instance->_funcname_ = (_funcsig_)_funcname_
+    si->_funcname_ = (_funcsig_)_funcname_
 
 #else /* !SIMAGEWRAPPER_ASSUME_SIMAGE */
-    simage_instance->available = 0;
+    si->available = 0;
     /* Define SIMAGEWRAPPER_REGISTER_FUNC macro. */
 #define SIMAGEWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-    simage_instance->_funcname_ = NULL
+    si->_funcname_ = NULL
 
 #endif /* !SIMAGEWRAPPER_ASSUME_SIMAGE */
 
     SIMAGEWRAPPER_REGISTER_FUNC(simage_version, simage_version_t);
 
-    if (simage_instance->available && !simage_instance->simage_version) {
+    if (si->available && !si->simage_version) {
       /* something is seriously wrong */
-      simage_instance->available = 0;
+      si->available = 0;
       simage_failed_to_load = 1;
+
+      simage_instance = si;
       return simage_instance;
     }
 
     /* get version */
-    if (simage_instance->available) {
-      simage_instance->simage_version(&simage_instance->version.major,
-                                      &simage_instance->version.minor,
-                                      &simage_instance->version.micro);
+    if (si->available) {
+      si->simage_version(&si->version.major,
+                         &si->version.minor,
+                         &si->version.micro);
     }
 
     SIMAGEWRAPPER_REGISTER_FUNC(simage_check_supported, simage_check_supported_t);
@@ -253,7 +261,10 @@ simage_wrapper(void)
     SIMAGEWRAPPER_REGISTER_FUNC(simage_free_image, simage_free_image_t);
     SIMAGEWRAPPER_REGISTER_FUNC(simage_next_power_of_two, simage_next_power_of_two_t);
 
-    if (simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
+    /* Do this late, so we can detect recursive calls to this function. */
+    simage_instance = si;
+
+    if (simage_wrapper_versionMatchesAtLeast(1,1,0)) {
 #if !defined(HAVE_LIBSIMAGE) || defined(SIMAGE_VERSION_1_1)
       SIMAGEWRAPPER_REGISTER_FUNC(simage_get_num_savers, simage_get_num_savers_t);
       SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_handle, simage_get_saver_handle_t);
@@ -265,13 +276,13 @@ simage_wrapper(void)
 #endif /* !HAVE_LIBSIMAGE || SIMAGE_VERSION_1_1 */
     }
     else {
-      simage_instance->simage_get_saver_handle = simage_wrapper_get_saver_handle;
-      simage_instance->simage_get_num_savers = simage_wrapper_get_num_savers;
-      simage_instance->simage_check_save_supported = simage_wrapper_check_save_supported;
-      simage_instance->simage_save_image = simage_wrapper_save_image;
-      simage_instance->simage_get_saver_extensions = simage_wrapper_get_saver_extensions;
-      simage_instance->simage_get_saver_fullname = simage_wrapper_get_saver_fullname;
-      simage_instance->simage_get_saver_description = simage_wrapper_get_saver_description;
+      si->simage_get_saver_handle = simage_wrapper_get_saver_handle;
+      si->simage_get_num_savers = simage_wrapper_get_num_savers;
+      si->simage_check_save_supported = simage_wrapper_check_save_supported;
+      si->simage_save_image = simage_wrapper_save_image;
+      si->simage_get_saver_extensions = simage_wrapper_get_saver_extensions;
+      si->simage_get_saver_fullname = simage_wrapper_get_saver_fullname;
+      si->simage_get_saver_description = simage_wrapper_get_saver_description;
     }
   }
   return simage_instance;

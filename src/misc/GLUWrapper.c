@@ -161,12 +161,13 @@ GLUWrapper_versionMatchesAtLeast(unsigned int major,
                                  unsigned int minor,
                                  unsigned int release)
 {
-  if (GLUWrapper()->available == 0) return 0;
-  if (GLUWrapper()->version.major < major) return 0;
-  else if (GLUWrapper()->version.major > major) return 1;
-  if (GLUWrapper()->version.minor < minor) return 0;
-  else if (GLUWrapper()->version.minor > minor) return 1;
-  if (GLUWrapper()->version.release < release) return 0;
+  assert(GLU_instance);
+  if (GLU_instance->available == 0) return 0;
+  if (GLU_instance->version.major < major) return 0;
+  else if (GLU_instance->version.major > major) return 1;
+  if (GLU_instance->version.minor < minor) return 0;
+  else if (GLU_instance->version.minor > minor) return 1;
+  if (GLU_instance->version.release < release) return 0;
   return 1;
 }
 
@@ -207,15 +208,23 @@ GLUWrapper(void)
 {
   if (!GLU_instance && !GLU_failed_to_load) {
     /* First invocation, do initializations. */
-    GLU_instance = (GLUWrapper_t *)malloc(sizeof(GLUWrapper_t));
+    GLUWrapper_t * gi = (GLUWrapper_t *)malloc(sizeof(GLUWrapper_t));
     /* FIXME: handle out-of-memory on malloc(). 20000928 mortene. */
     (void)atexit(GLUWrapper_cleanup);
 
-    GLU_instance->versionMatchesAtLeast = GLUWrapper_versionMatchesAtLeast;
+    /* Detect recursive calls. */
+    {
+      static int is_initializing = 0;
+      assert(is_initializing == 0);
+      is_initializing = 1;
+    }
+
+
+    gi->versionMatchesAtLeast = GLUWrapper_versionMatchesAtLeast;
 
     /* The common case is that GLU is either available from the
        linking process or we're successfully going to link it in. */
-    GLU_instance->available = 1;
+    gi->available = 1;
 
 #ifdef GLU_RUNTIME_LINKING
     {
@@ -243,8 +252,11 @@ GLUWrapper(void)
       }
 
       if (!GLU_libhandle) {
-        GLU_instance->available = 0;
+        gi->available = 0;
         GLU_failed_to_load = 1;
+
+        GLU_instance = gi;
+        return GLU_instance;
       }
     }
 
@@ -252,10 +264,10 @@ GLUWrapper(void)
        necessary for this file to be compatible with C++ compilers. */
 #ifdef HAVE_HASH_QUOTING
 #define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-    GLU_instance->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(GLU_libhandle, #_funcname_)
+    gi->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(GLU_libhandle, #_funcname_)
 #elif defined(HAVE_APOSTROPHES_QUOTING)
 #define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-    GLU_instance->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(GLU_libhandle, "_funcname_")
+    gi->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(GLU_libhandle, "_funcname_")
 #else
 #error Unknown quoting.
 #endif
@@ -264,13 +276,13 @@ GLUWrapper(void)
 
     /* Define GLUWRAPPER_REGISTER_FUNC macro. */
 #define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-    GLU_instance->_funcname_ = (_funcsig_)_funcname_
+    gi->_funcname_ = (_funcsig_)_funcname_
 
 #else /* !GLUWRAPPER_ASSUME_GLU */
-    GLU_instance->available = 0;
+    gi->available = 0;
     /* Define GLUWRAPPER_REGISTER_FUNC macro. */
 #define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-    GLU_instance->_funcname_ = NULL
+    gi->_funcname_ = NULL
 
 #endif /* !GLUWRAPPER_ASSUME_GLU */
 
@@ -294,51 +306,54 @@ GLUWrapper(void)
 #if defined(GLU_VERSION_1_3) || defined(GLU_RUNTIME_LINKING)
     GLUWRAPPER_REGISTER_FUNC(gluNurbsCallbackData, gluNurbsCallbackData_t);
 #else /* !gluNurbsCallbackData */
-    GLU_instance->gluNurbsCallbackData = NULL;
+    gi->gluNurbsCallbackData = NULL;
 #endif /* !gluNurbsCallbackData */
 
     /* "Backup" functions, makes it easier to be robust even when no
        GLU library can be loaded. */
-    if (GLU_instance->gluScaleImage == NULL)
-      GLU_instance->gluScaleImage = GLUWrapper_gluScaleImage;
-    if (GLU_instance->gluBuild2DMipmaps == NULL)
-      GLU_instance->gluBuild2DMipmaps = GLUWrapper_gluBuild2DMipmaps;
-    if (GLU_instance->gluGetString == NULL) /* Was missing in GLU v1.0. */
-      GLU_instance->gluGetString = GLUWrapper_gluGetString;
+    if (gi->gluScaleImage == NULL)
+      gi->gluScaleImage = GLUWrapper_gluScaleImage;
+    if (gi->gluBuild2DMipmaps == NULL)
+      gi->gluBuild2DMipmaps = GLUWrapper_gluBuild2DMipmaps;
+    if (gi->gluGetString == NULL) /* Was missing in GLU v1.0. */
+      gi->gluGetString = GLUWrapper_gluGetString;
 
 #if 0 /* debug */
     /* Test code for the GLUWrapper_set_version() parsing. */
     GLUWrapper_set_version("1.2");
     (void)fprintf(stdout, "%d.%d.%d\n",
-                  GLU_instance->version.major,
-                  GLU_instance->version.minor,
-                  GLU_instance->version.release);
+                  gi->version.major,
+                  gi->version.minor,
+                  gi->version.release);
     GLUWrapper_set_version("1.2 ");
     (void)fprintf(stdout, "%d.%d.%d\n",
-                  GLU_instance->version.major,
-                  GLU_instance->version.minor,
-                  GLU_instance->version.release);
+                  gi->version.major,
+                  gi->version.minor,
+                  gi->version.release);
     GLUWrapper_set_version("1.2.3");
     (void)fprintf(stdout, "%d.%d.%d\n",
-                  GLU_instance->version.major,
-                  GLU_instance->version.minor,
-                  GLU_instance->version.release);
+                  gi->version.major,
+                  gi->version.minor,
+                  gi->version.release);
     GLUWrapper_set_version("1.2.3 ");
     (void)fprintf(stdout, "%d.%d.%d\n",
-                  GLU_instance->version.major,
-                  GLU_instance->version.minor,
-                  GLU_instance->version.release);
+                  gi->version.major,
+                  gi->version.minor,
+                  gi->version.release);
     GLUWrapper_set_version("1.2.3 hepp");
     (void)fprintf(stdout, "%d.%d.%d\n",
-                  GLU_instance->version.major,
-                  GLU_instance->version.minor,
-                  GLU_instance->version.release);
+                  gi->version.major,
+                  gi->version.minor,
+                  gi->version.release);
     (void)fflush(stdout);
 #endif /* debug */
 
+    /* Do this late, so we can detect recursive calls to this function. */
+    GLU_instance = gi;
+
     /* Parse the version string once and expose the version numbers
        through the GLUWrapper API. */
-    GLUWrapper_set_version(GLU_instance->gluGetString(GLU_W_VERSION));
+    GLUWrapper_set_version(gi->gluGetString(GLU_W_VERSION));
   }
 
   return GLU_instance;
