@@ -1538,8 +1538,8 @@ SoField::evaluate(void) const
   //
   // This is an error which is not too hard to bump into, and the
   // _immediate_ repercussions are non-fatal, so we just spit out this
-  // error message and carry on -- for less application programmer
-  // frustrations.
+  // error message and carry on -- to not cause any more application
+  // programmer frustrations than necessary.
   if (this->getStatus(FLAG_ISEVALUATING)) {
 #if COIN_DEBUG
     SoDebugError::post("SoField::evaluate",
