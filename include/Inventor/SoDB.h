@@ -65,7 +65,7 @@ public:
                                float ivversion,
                                SoDBHeaderCB * precallback,
                                SoDBHeaderCB * postcallback,
-                               void * userdata);
+                               void * userdata = NULL);
   static SbBool getHeaderData(const SbString & headerstring,
                               SbBool & isbinary,
                               float & ivversion,
