@@ -409,6 +409,8 @@ SoToVRML2Action::SoToVRML2Action(void)
   ADD_PRE_CB(_node_, sotoifs_cb); ADD_TRIANGLE_CB(_node_); ADD_POST_CB(_node_, post_primitives_cb);
 
   // Shape nodes
+  ADD_SO_TO_IFS(SoShape); // General geometry fallback in case we don't have more specific handling
+
   ADD_SHAPE_CB(SoAsciiText, soasciitext_cb);
   ADD_SHAPE_CB(SoCone, socone_cb);
   ADD_SHAPE_CB(SoCube, socube_cb);
