@@ -31,21 +31,24 @@
   of the traversal state set up from nodes of this type.
 
   Note that values from a material node will \e replace the previous
-  values from in the traversal state, \e not accumulate.
+  values from the traversal state, they will \e not accumulate.
 
   FIXME: usage example here. 20020118 mortene.
 
   FIXME: describe what happens if the number of values in the fields
   is not consistent. 20020119 mortene.
 
-  FIXME: refere to the OpenGL color model. 20020119 mortene.
+  FIXME: refer to the OpenGL color model. 20020119 mortene.
 
-  Note that nodes tagged as VRML V1.0 has a special case, where the
-  fields SoMaterial::ambientColor, SoMaterial::diffuseColor and
-  SoMaterial::specularColor contains zero values, and
-  SoMaterial::emissiveColor contains one or more values. The values in
-  SoMaterial::emissiveColor should then be treated as precalculated
-  lighting, and the other fields should be ignored.
+
+
+  Note that nodes imported as part of a VRML V1.0 file has a special
+  case, where the fields SoMaterial::ambientColor,
+  SoMaterial::diffuseColor and SoMaterial::specularColor contains zero
+  values, and SoMaterial::emissiveColor contains one or more
+  values. The values in SoMaterial::emissiveColor should then be
+  treated as precalculated lighting, and the other fields should be
+  ignored.
 
   You can detect this case by checking the values of the material
   elements when the scene graph is traversed using an

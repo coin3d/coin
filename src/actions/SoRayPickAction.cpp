@@ -232,7 +232,9 @@ SoRayPickAction::initClass(void)
   Constructor.
 
   Some node types need a \a viewportregion to know exactly how they
-  are positioned within the scene.
+  are positioned within the scene. For an in-depth explanation of why
+  the \a viewportregion argument is needed, see the documentation of
+  SoGetBoundingBox::SoGetBoundingBox(const SbViewportRegion &).
 */
 SoRayPickAction::SoRayPickAction(const SbViewportRegion & viewportregion)
   : inherited(viewportregion)

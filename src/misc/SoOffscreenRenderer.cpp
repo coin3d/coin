@@ -43,11 +43,65 @@
 
 
   Offscreen rendering is internally done with either GLX (i.e. OpenGL
-  on X11) or WGL (i.e. OpenGL on Win32). The pixeldata is fetched from
-  the OpenGL buffer with glReadPixels(), with the format and type
-  arguments set to GL_RGBA and GL_UNSIGNED_BYTE, respectively. This
-  means that the maximum resolution is 32 bits, 8 bits for each of the
-  R/G/B/A components.
+  on X11) or WGL (i.e. OpenGL on Win32) or AGL (i.e. OpenGL on the Mac
+  OS). The pixeldata is fetched from the OpenGL buffer with
+  glReadPixels(), with the format and type arguments set to GL_RGBA
+  and GL_UNSIGNED_BYTE, respectively. This means that the maximum
+  resolution is 32 bits, 8 bits for each of the R/G/B/A components.
+
+
+  One particular usage of the SoOffscreenRenderer is to make it render
+  frames to be used for the construction of movies. The general
+  technique for doing this is to iterate over the following actions:
+
+  <ul>
+  <li>move camera to correct position for frame</li>
+  <li>update the realTime global field (see explanation below)</li>
+  <li>invoke the SoOffscreenRenderer</li>
+  <li>dump rendered scene to file</li>
+  </ul>
+
+  ..then you use some external tool or library to construct the movie
+  file, for instance in MPEG format, from the set of files dumped to
+  disk from the iterative process above.
+
+  The code would go something like this (pseudo-code style):
+
+  \code
+   // Control realTime field ourselves, so animations within the scene
+   // follows "move-time" and not "wallclock-time".
+   SoSFTime * realtime = SoDB::getGlobalField("realTime");
+   SoDB::enableRealTimeSensor(FALSE);
+   realtime->setValue(0.0);
+
+   for (int i=0; i < NRFRAMES; i++) {
+     // [...reposition camera here, if necessary...]
+
+     // render
+     offscreenrend->render(root);
+
+     // dump to file
+     SbString framefile;
+     framefile.sprintf("frame%06d.rgb", i);
+     offscreenrend->writeToRGB(framefile);
+
+     // advance "current time" by the FPS value
+     realtime->setValue(realtime.getValue() + 1/24.0);
+   }
+  \encode
+
+  When making movies you need to write your application control code
+  to take care of moving the camera along the correct trajectory
+  yourself, and to explicitly control the global "realTime" field.
+  The latter is so you're able to "step" with appropriate time units
+  for each render operation (e.g. if you want a movie that has a 24
+  FPS refresh rate first render with realTime=0.0, then add 1/24s to
+  the realTime field, render again to a new frame, add another 1/24s
+  to the realTime field, render, and so on).
+
+  For further information about how to control the realTime field, see
+  documentation of SoDB::getGlobalField() and
+  SoDB::enableRealTimeSensor().
 */
 
 // As first mentioned to me by Kyrah, the functionality of this class
@@ -58,36 +112,9 @@
 // mortene.
 
 
-// FIXME: include the following in documentation about how to use the
-// SoOffscreenRenderer to write movies:
-//
-//    You should write your application to control the global
-//    "realTime" field, then you will be able to "step" with
-//    appropriate time units for each render operation (eg first
-//    render with realTime=0.0, then add 1/60s to the realTime field,
-//    render again to a new frame, add another 1/60s to the realTime
-//    field, render, and so on).
-//
-// 20020110 mortene.
-
-// FIXME: expand this code and integrate properly into doc as a usage
-// example on how to write animations with proper system-time control:
-//
-// [snip]
-//
-//  SoSFTime * realtime = SoDB::getGlobalField("realTime");
-//  SoDB::enableRealTimeSensor(FALSE);
-//  realtime = 0.0;
-//  for (int i=0; i < NRFRAMES; i++) {
-//    offscreenrend->render(root);
-//    SbString framefile;
-//    framefile.sprintf("frame%06d.rgb", i);
-//    offscreenrend->writeToRGB(framefile);
-//    realtime = realtime.getValue() + 1/60.0;
-//  }
-// [snip]
-//
-// 20020224 mortene.
+// FIXME: we don't set up and render to RGBA-capable OpenGL-contexts,
+// even when the requested format from the app-programmer is
+// RGBA. 20020604 mortene.
 
 #include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/SoPath.h>

@@ -83,13 +83,44 @@ SoGetBoundingBoxAction::initClass(void)
 /*!
   Constructor.
 
-  Some node types need to know the viewport region to calculate their
-  3D bounding box. There are several different cases where this is
-  applicable, for instance for complex shapes (like
-  e.g. SoNurbsSurface, SoSphere) that are influenced by
-  SoComplexity::SCREEN_SPACE, or for "flat" geometry that is
-  continuously projected from 2D into the 3D scene (like SoText2, for
-  instance).
+  It might seem unnecessary to have to pass in a viewport region
+  argument to calculate bounding boxes, but there is a good reason for
+  this: a few shape nodes needs to know the viewport region to
+  calculate their bounding box -- these include SoText2 and SoImage,
+  among others.
+
+  What is particular about these shapes is that they are fundamentally
+  2D shapes, but they are being rendered on the screen "surface" as if
+  they were in a 3D scene. (This is possible because we can match each
+  pixel's depth value against the 3D shapes in the scene.)
+
+  To compute an accurate 3D bounding box of a shape rendered in 2D on
+  the screen "surface", you need to "de-project" the screen-space area
+  it occupies to a 2D rectangle placed at some depth in the
+  scene. This "de-projecting" operation needs to know about the
+  dimensions of the viewport.
+
+  Also, some 3D shapes like for instance SoNurbsSurface, get slightly
+  distorted if there's an SoComplexity node in the scenegraph with the
+  SoComplexity::value field set to SCREEN_SPACE. Then it is also
+  necessary to know the viewport region to find out how to accurately
+  calculate the bounding box of those shapes.
+
+  You would usually want to pass in a viewport region equal to the
+  layout of the current renderarea canvas. If you have a viewer or
+  So@Gui@RenderArea available, you can get hold of the viewport region
+  data simply by doing
+
+  \code
+     const SbViewportRegion & vpreg = viewer->getViewportRegion();
+  \endcode
+
+  (If you don't have a viewer or renderarea available in your
+  application at the point where you want to get the bounding box, it
+  probably doesn't matter much what you set it to. The accuracy of the
+  bounding box calculation might be slightly wrong versus the actual
+  rendered appearance of the scene, but this is usually not
+  noticable.)
 */
 SoGetBoundingBoxAction::SoGetBoundingBoxAction(const SbViewportRegion & vp)
   : center(0, 0, 0),

@@ -59,6 +59,35 @@ public:
 
 #endif // DOXYGEN_SKIP_THIS
 
+/*!
+  \enum SoSeparatorKit::CacheEnabled
+
+  Contains the same values with the same semantics as in the enum with
+  the same name in SoSeparator. See documentation of
+  SoSeparator::CacheEnabled.
+*/
+
+/*!
+  \var SoSFEnum SoSeparatorKit::renderCaching
+
+  See documentation for SoSeparator::renderCaching.
+*/
+/*!
+  \var SoSFEnum SoSeparatorKit::boundingBoxCaching
+
+  See documentation for SoSeparator::boundingBoxCaching.
+*/
+/*!
+  \var SoSFEnum SoSeparatorKit::renderCulling
+
+  See documentation for SoSeparator::renderCulling.
+*/
+/*!
+  \var SoSFEnum SoSeparatorKit::pickCulling
+
+  See documentation for SoSeparator::pickCulling.
+*/
+
 
 SO_KIT_SOURCE(SoSeparatorKit);
 

@@ -64,6 +64,9 @@
   SoInteractionKit::renderCaching,
   SoInteractionKit::boundingBoxCaching,
   SoInteractionKit::renderCulling and SoInteractionKit::pickCulling.
+
+  The same values with the same semantics are present in this enum as
+  for SoSeparator::CacheEnabled, so see that documentation.
 */
 
 /*!
@@ -71,24 +74,32 @@
 
   Controls the value of the SoSeparator::renderCaching field in the
   SoInteractionKit catalog's topSeparator instance.
+
+  See documentation of SoSeparator::renderCaching.
 */
 /*!
   \var SoSFEnum SoInteractionKit::boundingBoxCaching
 
   Controls the value of the SoSeparator::boundingBoxCaching field in
   the SoInteractionKit catalog's topSeparator instance.
+
+  See documentation of SoSeparator::boundingBoxCaching.
 */
 /*!
   \var SoSFEnum SoInteractionKit::renderCulling
 
   Controls the value of the SoSeparator::renderCulling field in the
   SoInteractionKit catalog's topSeparator instance.
+
+  See documentation of SoSeparator::renderCulling.
 */
 /*!
   \var SoSFEnum SoInteractionKit::pickCulling
 
   Controls the value of the SoSeparator::pickCulling field in the
   SoInteractionKit catalog's topSeparator instance.
+
+  See documentation of SoSeparator::pickCulling.
 */
 
 /*!

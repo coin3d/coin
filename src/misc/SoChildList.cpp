@@ -161,11 +161,14 @@ SoChildList::truncate(const int length)
   }
 }
 
-// Documented in superclass. Copy contents of \a cl into this
-// list. Overridden from superclass to handle notification.
+/*!
+  Copy contents of \a cl into this list.
+*/
 void
 SoChildList::copy(const SoChildList & cl)
 {
+  // Overridden from superclass to handle notification.
+
   if (this == &cl) return;
 
   // Call truncate() explicitly here to get the path notification.
@@ -178,11 +181,15 @@ SoChildList::copy(const SoChildList & cl)
   this->parent->startNotify();
 }
 
-// Documented in superclass. Overridden from superclass to handle
-// notification.
+/*!
+  Index operator to set element at \a index. Does \e not expand array
+  bounds if \a index is outside the list.
+*/
 void
 SoChildList::set(const int index, SoNode * const node)
 {
+  // Overridden from superclass to handle notification.
+
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoChildList::set",
                          "(%p) index=%d, node=%p, oldnode=%p",

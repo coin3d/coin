@@ -218,11 +218,16 @@ SoBaseList::addReferences(const SbBool flag)
   this->referencing = flag;
 }
 
-// Documented in superclass. Overridden from parent class to provide
-// referencing on the SoBase object.
+/*!
+  Index operator to set element at \a i. Does \e not expand array
+  bounds if \a i is outside the list.
+*/
 void
 SoBaseList::set(const int i, SoBase * const ptr)
 {
+  // Overridden from parent class to provide referencing on the SoBase
+  // object.
+
   if (this->referencing) {
     ptr->ref();
     if (GET_BASEPTR(i)) GET_BASEPTR(i)->unref();

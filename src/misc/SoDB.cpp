@@ -818,6 +818,15 @@ SoDB::createGlobalField(const SbName & name, SoType type)
   If there exist a global field with the given \a name, return a
   pointer to it. If there is no field with this name, return \c NULL.
 
+  Of particular interest is the \e realTime global field set up by the
+  library on initialization. This field is used as a source field to
+  all the autonomous animation objects within the library, like for
+  instance the SoTimeCounter engine or the SoRotor node. So if you
+  want to control the speed of "action" within a (partly) animating
+  scene, grab the global field named "realTime", call
+  SoDB::enableRealTimeSensor(FALSE), and control the realTime field
+  yourself.
+
   \sa createGlobalField(), renameGlobalField()
 */
 SoField *
@@ -1101,9 +1110,10 @@ SoDB::endNotify(void)
   The most common use for turning the realtime sensor off is to
   control the realTime global field from the user application. This is
   for instance handy when you want to take screen snapshots at fixed
-  intervals.
+  intervals. See the class documentation of SoOffscreenRenderer for
+  further information.
 
-  \sa setRealTimeInterval()
+  \sa setRealTimeInterval(), getGlobalField()
 */
 void
 SoDB::enableRealTimeSensor(SbBool on)
