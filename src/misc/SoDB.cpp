@@ -62,6 +62,8 @@
   See <http://www.coin3d.org/> for more information about Coin and the
   GUI toolkit libraries.
 
+  FIXME: kill the following block?
+
   <b>IMPORTANT NOTE: the online documentation for the Coin library is
   still a work-in-progress.</b> Although most classes have been
   documented properly, there are still a few "holes" in the
@@ -69,6 +71,12 @@
   undocumented or poorly documented class and / or class method which
   you find hard to understand, please give us a notice so we can
   rectify the situation.
+
+  FIXME: list, explain and link to detail-doc on major features
+    - big-image
+    - mp-rendering
+    - VRML97
+    - 3D sound
 */
 
 /*! \defgroup actions Actions */
@@ -281,17 +289,41 @@ SoDB::init(void)
 #endif // HAVE_INT64_T
 
 
+#ifdef HAVE_THREADS
+  // initialize thread system first
+  cc_thread_init();
+#ifdef COIN_THREADSAFE
+  sodb_notificationcounter_storage = new SbStorage(sizeof(int), sodb_clear_counter, NULL);
+#endif // COIN_THREADSAFE
+#endif // HAVE_THREADS
+
+  // Allocate our static members.
+  SoDBP::headerlist = new SbList<SoDB_HeaderInfo *>;
+  SoDBP::sensormanager = new SoSensorManager;
+  SoDBP::converters = new SbDict;
+
+  // NB! There are dependencies in the order of initialization of
+  // components below.
+
+  // This obviously needs to be done first.
+  SoType::init();
+
+  // Error classes must be initialized before we do the type size
+  // checking below, as we spit out warning messages if
+  // inconsistencies are found.
+  SoError::initClasses();
+
   // Sanity check: if the int type is not equal to 32 bits everything
   // probably goes to hell. FIXME: remove this check when we are no
   // longer dependent on using native C types where we need to have a
   // particular bitwidth.
 
 #if 0
-  // TMP OBSOLETED assert for 1.0 release. We should be 99% ok, I can
+  // OBSOLETED assert for 1.0 release. We should be ok. FIXME: I can
   // only think of possibilities for problems in the binary .iv import
   // and export code. 20010308 mortene.
   assert(sizeof(int) == 4);
-#else
+
   if (sizeof(int) != 4) {
     SoDebugError::postWarning("SoDB::init",
                               "sizeof(int) != 4 "
@@ -312,11 +344,11 @@ SoDB::init(void)
   // to use the int16_t type, then we can remove this stoopid check.
 
 #if 0
-  // TMP OBSOLETED assert for 1.0 release. We should be 99% ok, I can
+  // OBSOLETED assert for 1.0 release. We should be ok. FIXME: I can
   // only think of possibilities for problems in the binary .iv import
   // and export code. 20010308 mortene.
   assert(sizeof(short) == 2);
-#else
+
   if (sizeof(short) != 2) {
     SoDebugError::postWarning("SoDB::init",
                               "sizeof(short) != 2 "
@@ -326,17 +358,15 @@ SoDB::init(void)
 
 
   // Sanity check: if the int type is unequal to the long type, things
-  // will probably break. FIXME: this is really terrible and _must_ be
-  // fixed. Remove this check when we are no longer dependent on using
-  // native C types where we need to have a particular bitwidth.
+  // could break -- but probably not.
 
-  // TMP OBSOLETED assert for 1.0 release. We should be 99% ok, I can
+  // OBSOLETED assert for 1.0 release. We should be ok. FIXME: I can
   // only think of possibilities for problems in the binary .iv import
   // and export code. 20010308 mortene.
 
 #if 0
   assert(sizeof(int) == sizeof(long));
-#else
+
   if (sizeof(int) != sizeof(long)) {
     SoDebugError::postWarning("SoDB::init",
                               "sizeof(int) != sizeof(long) "
@@ -344,26 +374,6 @@ SoDB::init(void)
   }
 #endif
 
-#ifdef HAVE_THREADS
-  // initialize thread system first
-  cc_thread_init();
-#ifdef COIN_THREADSAFE
-  sodb_notificationcounter_storage = new SbStorage(sizeof(int), sodb_clear_counter, NULL);
-#endif // COIN_THREADSAFE
-#endif // HAVE_THREADS
-
-  // Allocate our static members.
-  SoDBP::headerlist = new SbList<SoDB_HeaderInfo *>;
-  SoDBP::sensormanager = new SoSensorManager;
-  SoDBP::converters = new SbDict;
-
-  // NB! There are dependencies in the order of initialization of
-  // components below.
-
-  // This obviously needs to be done first.
-  SoType::init();
-
-  SoError::initClasses();
   SoInput::init();
   SoBase::initClass();
   SoDetail::initClass();
