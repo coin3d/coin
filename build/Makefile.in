@@ -106,7 +106,7 @@ sim_ac_simage_conf_cmd = @sim_ac_simage_conf_cmd@
 
 EXTRA_DIST = SoCoinSDK.iwz.in
 
-builddatadir = $(datadir)/build
+builddatadir = $(datadir)/Coin/build
 
 builddata_DATA = SoCoinSDK.iwz.in
 subdir = build

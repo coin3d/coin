@@ -5,6 +5,6 @@
 # without doing any nasty hacks.
 EXTRA_DIST = SoCoinSDK.iwz.in
 
-builddatadir = $(datadir)/build
+builddatadir = $(datadir)/Coin/build
 
 builddata_DATA = SoCoinSDK.iwz.in
