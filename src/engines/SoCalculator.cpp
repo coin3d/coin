@@ -51,7 +51,7 @@
 
   \endcode
  
-  Will multiple the value in \e a with the value in \e b plus 0.5,
+  Will multiply the value in \e a with the value in \e b plus 0.5,
   divide that result with \e c, and place the result in \e oa. Since
   this is an engine, the expression will only be evaluated when
   someone attempts to read the value in \e oa, not every time an input
