@@ -100,6 +100,7 @@ int cc_flwft_get_outline(void * font, int glyph) { assert(FALSE); return 0; }
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/base/dynarray.h>
 #include <Inventor/C/base/namemap.h>
+#include <Inventor/C/glue/fontlib_wrapper.h>
 
 /* ************************************************************************* */
 
