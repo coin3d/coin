@@ -46,6 +46,15 @@ still can't get the configure script to detect the presence of QGL,
 please mail the config.log file to <coin-support@coin3d.org> and ask
 for help.
 
+!qt-install
+The configure script picked out Qt's "install" program when trying to
+find the system-wide "install" program.  This probably happened because
+you have QTDIR/bin too early in the path.  During installation, you
+would run into serious problems because of this.
+
+Fix your PATH variable so the system-wide install program is found
+instead of the Qt installer and re-run configure.
+
 !no-msvc++
 You need to have the Microsoft Visual C++ compiler suite accessible in the
 Cygwin environment.  Read the file <srcdir>/README.WIN32.
