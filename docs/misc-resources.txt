@@ -180,3 +180,12 @@ THE LINKS
 
   http://www.nigels.com/research/
 
+* FLTK binding against SGI Inventor:
+  <URL:http://fl-inventor.sourceforge.net/>, make sure it can also
+  work with Coin. Note: they are using some of our pixmap graphics on
+  the viewer buttons, with no copyright information about this as far
+  as I can see. Get in touch with them.  (mortene)
+
+* Check out "Valgrind", a Purify-like (?) memory debugger tool:
+  <URL:http://devel-home.kde.org/~sewardj/> (or
+  <URL:http://developer.kde.org/~sewardj>).
