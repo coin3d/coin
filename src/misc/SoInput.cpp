@@ -850,22 +850,23 @@ SoInput::read(SbString & s)
 
   If \a validIdent is \a TRUE the name needs to be a valid identifier
   (no reserved characters etc), while \a validIdent equal to \a FALSE
-  means we'll just read the next word (until we hit whitespace or the
-  "{"/"}" delimiters.
+  means we'll just read characters for the next word until we hit
+  whitespace or one of the "{"/"}" delimiters.
 
   Returns \a FALSE on encountering end of file before a full name has
   been read -- if \a validIdent is also \a FALSE. If \a validIdent is
   passed as \a TRUE, the return value will be \a FALSE if no valid name
   was found, but \e not necessarily on end of file.
+
 */
 SbBool
 SoInput::read(SbName & n, SbBool validIdent)
 {
+  if (!this->checkHeader()) return FALSE;
   SoInput_FileInfo * fi = this->getTopOfStack();
   assert(fi);
 
-  if (!this->checkHeader()) return FALSE;
-
+  // Binary format.
   if (this->isBinary()) {
     SbString s;
     SbBool result = this->read(s);
@@ -880,6 +881,7 @@ SoInput::read(SbName & n, SbBool validIdent)
     if (!result) return FALSE;
     else n = s;
   }
+  // ASCII format.
   else {
     if (!fi->skipWhiteSpace()) return FALSE;
 
