@@ -65,19 +65,21 @@ public:
 
 // *************************************************************************
 
-static SbList <socontexthandler_cbitem> * socontexthandler_cblist;
+static SbList <socontexthandler_cbitem> * socontexthandler_cblist = NULL;
 
 // *************************************************************************
 
 static void
 socontexthandler_cleanup(void)
 {
-#if COIN_DEBUG  
-  const int len = socontexthandler_cblist->getLength();
+#if COIN_DEBUG
+  const int len = socontexthandler_cblist ?
+    socontexthandler_cblist->getLength() : 0;
   if (len > 0) {
-    SoDebugError::postWarning("socontexthandler_cleanup",
-                              "%d context-bound resources not free'd "
-                              "before exit.", len);
+    // Can't use SoDebugError here, as SoError et al might have been
+    // "cleaned up" already.
+    (void)printf("Coin debug: socontexthandler_cleanup(): %d context-bound "
+                 "resources not free'd before exit.", len);
   }
 #endif // COIN_DEBUG  
   delete socontexthandler_cblist;
