@@ -687,8 +687,8 @@ really_create_texture(const int wrapS, const int wrapT,
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
                   wrapT ? GL_CLAMP : GL_REPEAT);
 
-  if (0 && !dlist) {
-    // FIXME: test if these lines need to be here, pederb, 20000217
+  // set filtering to legal values for non mipmapped texture
+  if (!dlist && !mipmap) { 
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   }
