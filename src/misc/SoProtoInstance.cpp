@@ -70,7 +70,7 @@ SoProtoInstance::initClass(void)
 #undef THIS
 #define THIS this->pimpl
 
-SoProtoInstance::SoProtoInstance(SoProto * proto, 
+SoProtoInstance::SoProtoInstance(SoProto * proto,
                                  const SoFieldData * deffielddata)
 {
   THIS = new SoProtoInstanceP;
@@ -79,7 +79,6 @@ SoProtoInstance::SoProtoInstance(SoProto * proto,
   THIS->rootsensor = new SoNodeSensor;
   THIS->rootsensor->setDeleteCallback(sensorCB, this);
   if (proto) proto->ref();
-  
   this->copyFieldData(deffielddata);
 }
 
@@ -89,7 +88,7 @@ SoProtoInstance::~SoProtoInstance()
   delete THIS->rootsensor;
   const int n = THIS->fielddata->getNumFields();
   for (int i = 0; i < n; i++) {
-    delete THIS->fielddata->getField(this, 0);
+    delete THIS->fielddata->getField(this, i);
   }
   delete THIS->fielddata;
   if (THIS->protodef) THIS->protodef->unref();
@@ -121,7 +120,7 @@ SoProtoInstance::readInstance(SoInput * in, unsigned short flags)
   //  return FALSE;
 }
 
-void 
+void
 SoProtoInstance::setRootNode(SoNode * root)
 {
   if (THIS->root) THIS->rootsensor->detach();
@@ -129,7 +128,7 @@ SoProtoInstance::setRootNode(SoNode * root)
   if (root) THIS->rootsensor->attach(root);
 }
 
-SoNode * 
+SoNode *
 SoProtoInstance::getRootNode(void)
 {
   return THIS->root;
@@ -140,7 +139,7 @@ SoProtoInstance::writeInstance(SoOutput * out)
 {
 }
 
-void 
+void
 SoProtoInstance::copyFieldData(const SoFieldData * src)
 {
   const int n = src->getNumFields();
@@ -159,7 +158,7 @@ SoProtoInstance::copyFieldData(const SoFieldData * src)
   SoFieldContainer::copyDone();
 }
 
-void 
+void
 SoProtoInstance::sensorCB(void * data, SoSensor *)
 {
   SoProtoInstance * thisp = (SoProtoInstance*) data;

@@ -81,15 +81,15 @@ SoProto::SoProto(void)
   THIS->fielddata = new SoFieldData;
   THIS->defroot = new SoGroup;
   THIS->defroot->ref();
-
-  protolist->append(this);
+  
+  protolist->insert(this, 0);
 }
 
 SoProto::~SoProto()
 {
   const int n = THIS->fielddata->getNumFields();
   for (int i = 0; i < n; i++) {
-    delete THIS->fielddata->getField(NULL, 0);
+    delete THIS->fielddata->getField(NULL, i);
   }
   THIS->defroot->unref();
   delete THIS;
@@ -157,6 +157,9 @@ SoProto::readInstance(SoInput * in, unsigned short flags)
 void
 SoProto::destroy(void)
 {
+  int idx = protolist->find(this);
+  assert(idx >= 0);
+  protolist->remove(idx);
   SoBase::destroy();
   // FIXME: remove from static list of PROTOs
 }
