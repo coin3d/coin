@@ -590,32 +590,39 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
     alSourcef(PRIVATE(this)->sourceId, AL_ROLLOFF_FACTOR, 0.0f); // no distance attenuation
     if ((error = alGetError()) != AL_NO_ERROR) {
       SoDebugError::postWarning("SoVRMLSound::audioRender",
-                                "alSourcef(,AL_ROLLOF_FACTOR,) failed. %s",
+                                "alSourcef(,AL_ROLLOFF_FACTOR,) failed. %s",
                                 coin_get_openal_error(error));
       return;
     }
+
     alSourcef(PRIVATE(this)->sourceId, AL_MIN_GAIN, gain); // no distance attenuation
     if ((error = alGetError()) != AL_NO_ERROR) {
       SoDebugError::postWarning("SoVRMLSound::audioRender",
-                                "alSourcef(,AL_ROLLOF_FACTOR,) failed. %s",
+                                "alSourcef(,AL_MIN_GAIN,) failed. %s",
                                 coin_get_openal_error(error));
       return;
     }
-  } else {
+ } 
+   else {
     alSourcef(PRIVATE(this)->sourceId, AL_ROLLOFF_FACTOR, 1.0f); // default
     if ((error = alGetError()) != AL_NO_ERROR) {
       SoDebugError::postWarning("SoVRMLSound::audioRender",
-                                "alSourcef(,AL_ROLLOF_FACTOR,) failed. %s",
+                                "alSourcef(,AL_ROLLOFF_FACTOR,) failed. %s",
                                 coin_get_openal_error(error));
       return;
     }
+#ifndef __APPLE__
+    // FIXME: For some reason, this fails on Mac OS 10.2. Not only
+    // do I get a warning, but sound does not work. Might be related
+    // to thammer's fixme above? 20030110 kyrah
     alSourcef(PRIVATE(this)->sourceId, AL_MIN_GAIN, 0.0f); // default
     if ((error = alGetError()) != AL_NO_ERROR) {
       SoDebugError::postWarning("SoVRMLSound::audioRender",
-                                "alSourcef(,AL_ROLLOF_FACTOR,) failed. %s",
+                                "alSourcef(,AL_MIN_GAIN,) failed. %s",
                                 coin_get_openal_error(error));
       return;
     }
+#endif // ! __APPLE__
   }
 
   // Spatialization
