@@ -30,6 +30,7 @@
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoAudioDevice.h>
 
 #include "../misc/AudioTools.h"
 
@@ -70,6 +71,8 @@ SbVec3f2ALfloat3(ALfloat *dest, const SbVec3f &source)
 void SoListener::audioRender(SoAudioRenderAction *action)
 {
 #ifdef HAVE_SOUND
+  if (!SoAudioDevice::instance()->haveSound())
+    return;
   ALint error;
   SbVec3f pos, worldpos;
   SbVec3f viewdir;

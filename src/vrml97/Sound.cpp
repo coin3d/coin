@@ -208,6 +208,7 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/threads/SbMutex.h>
+#include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/C/threads/thread.h>
 #include <Inventor/SbTime.h>
 #include <stddef.h>
@@ -423,6 +424,9 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 {
 #ifdef HAVE_SOUND
   SbMutexAutoLock autoLock(SoVRMLSoundP::syncmutex);
+
+  if (!SoAudioDevice::instance()->haveSound())
+    return;
 
   if (PRIVATE(this)->currentAudioClip == NULL)
     return;
