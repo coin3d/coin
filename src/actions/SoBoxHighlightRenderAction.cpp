@@ -43,6 +43,7 @@
 
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoSubAction.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoDiffuseColorElement.h>
@@ -56,7 +57,19 @@
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoSelection.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoCube.h>
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoMatrixTransform.h>
 #include <assert.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+#include <Inventor/VRMLnodes/SoVRMLShape.h>
+#endif // HAVE_VRML97
 
 /*!
   \var SoBoxHighlightRenderAction::hlVisible
@@ -69,11 +82,22 @@
 
 class SoBoxHighlightRenderActionP {
 public:
+  SoBoxHighlightRenderActionP(SoBoxHighlightRenderAction * master) 
+    : master(master) { }
+
+  SoBoxHighlightRenderAction * master;
   SoSearchAction * searchaction;
+  SoSearchAction * camerasearch;
+  SoGetBoundingBoxAction * bboxaction;
   SbColor color;
   unsigned short linepattern;
   float linewidth;
   SoTempPath * postprocpath;
+  SoSeparator * bboxseparator;
+  SoMatrixTransform * bboxtransform;
+  SoCube * bboxcube;
+
+  void drawNoShapeBox(const SoPath * path);
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -82,6 +106,8 @@ SO_ACTION_SOURCE(SoBoxHighlightRenderAction);
 
 #undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
+#undef PUBLIC
+#define PUBLIC(p) ((p)->master)
 
 // Overridden from parent class.
 void
@@ -118,17 +144,23 @@ SoBoxHighlightRenderAction::init(void)
 {
   SO_ACTION_CONSTRUCTOR(SoBoxHighlightRenderAction);
 
-  PRIVATE(this) = new SoBoxHighlightRenderActionP;
+  PRIVATE(this) = new SoBoxHighlightRenderActionP(this);
 
   this->hlVisible = TRUE;
   PRIVATE(this)->color = SbColor(1.0f, 0.0f, 0.0f);
   PRIVATE(this)->linepattern = 0xffff;
   PRIVATE(this)->linewidth = 3.0f;
   PRIVATE(this)->searchaction = NULL;
+  PRIVATE(this)->camerasearch = NULL;
+  PRIVATE(this)->bboxaction = NULL;
 
   // SoBase-derived objects should be dynamically allocated.
   PRIVATE(this)->postprocpath = new SoTempPath(32);
   PRIVATE(this)->postprocpath->ref();
+
+  PRIVATE(this)->bboxseparator = NULL;
+  PRIVATE(this)->bboxtransform = NULL;
+  PRIVATE(this)->bboxcube = NULL;
 }
 
 
@@ -138,7 +170,18 @@ SoBoxHighlightRenderAction::init(void)
 SoBoxHighlightRenderAction::~SoBoxHighlightRenderAction(void)
 {
   PRIVATE(this)->postprocpath->unref();
+  if (PRIVATE(this)->bboxcube) {
+    PRIVATE(this)->bboxcube->unref();
+  }
+  if (PRIVATE(this)->bboxtransform) {
+    PRIVATE(this)->bboxtransform->unref();
+  }
+  if (PRIVATE(this)->bboxseparator) {
+    PRIVATE(this)->bboxseparator->unref();
+  }
   delete PRIVATE(this)->searchaction;
+  delete PRIVATE(this)->camerasearch;
+  delete PRIVATE(this)->bboxaction;
   delete PRIVATE(this);
 }
 
@@ -151,11 +194,11 @@ SoBoxHighlightRenderAction::apply(SoNode * node)
   if (this->hlVisible) {
     if (PRIVATE(this)->searchaction == NULL) {
       PRIVATE(this)->searchaction = new SoSearchAction;
-      PRIVATE(this)->searchaction->setType(SoSelection::getClassTypeId());
-      PRIVATE(this)->searchaction->setInterest(SoSearchAction::FIRST);
     }
+    PRIVATE(this)->searchaction->setType(SoSelection::getClassTypeId());
+    PRIVATE(this)->searchaction->setInterest(SoSearchAction::FIRST);
     PRIVATE(this)->searchaction->apply(node);
-    if (PRIVATE(this)->searchaction->isFound()) {
+    if (PRIVATE(this)->searchaction->getPath()) {
       SoSelection * selection =
         (SoSelection *)PRIVATE(this)->searchaction->getPath()->getTail();
       assert(selection->getTypeId().isDerivedFrom(SoSelection::getClassTypeId()));
@@ -164,6 +207,7 @@ SoBoxHighlightRenderAction::apply(SoNode * node)
         this->drawBoxes(PRIVATE(this)->searchaction->getPath(), selection->getList());
       }
     }
+    PRIVATE(this)->searchaction->reset();
   }
 }
 
@@ -268,6 +312,17 @@ SoBoxHighlightRenderAction::getLineWidth(void) const
   return PRIVATE(this)->linewidth;
 }
 
+static SbBool
+is_tail_shape(const SoPath * path)
+{
+  SoNode * tail = ((SoFullPath*)path)->getTail();
+#ifdef HAVE_VRML97
+  if (tail->isOfType(SoVRMLShape::getClassTypeId())) return TRUE;
+#endif // HAVE_VRML97
+  if (tail->isOfType(SoShape::getClassTypeId())) return TRUE;
+  return FALSE;
+}
+
 void
 SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pathlist)
 {
@@ -304,11 +359,90 @@ SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
       PRIVATE(this)->postprocpath->append(path->getNode(j));
     }
 
-    SoGLRenderAction::apply(PRIVATE(this)->postprocpath);
+    if (is_tail_shape(PRIVATE(this)->postprocpath)) {
+      SoGLRenderAction::apply(PRIVATE(this)->postprocpath);
+    }
+    else {
+      PRIVATE(this)->drawNoShapeBox(PRIVATE(this)->postprocpath);
+    }
     PRIVATE(this)->postprocpath->truncate(thispos);
   }
   state->pop();
 }
 
-#undef PRIVATE
+// used to render non-shape nodes (usually SoGroup or SoSeparator). 
+void 
+SoBoxHighlightRenderActionP::drawNoShapeBox(const SoPath * path)
+{
+  if (this->bboxseparator == NULL) {
+    this->bboxseparator = new SoSeparator;
+    this->bboxseparator->ref();
+    this->bboxseparator->renderCaching = SoSeparator::OFF;
+    this->bboxseparator->boundingBoxCaching = SoSeparator::OFF;
+    
+    this->bboxtransform = new SoMatrixTransform;
+    this->bboxtransform->ref();
+    
+    this->bboxcube = new SoCube;
+    this->bboxcube->ref();
+    
+    this->bboxseparator->addChild(this->bboxtransform);
+    this->bboxseparator->addChild(this->bboxcube);
+  }
 
+  if (this->camerasearch == NULL) {
+    this->camerasearch = new SoSearchAction;
+  }
+
+  // find camera used to render node
+  this->camerasearch->setFind(SoSearchAction::TYPE);
+  this->camerasearch->setInterest(SoSearchAction::LAST);
+  this->camerasearch->setType(SoCamera::getClassTypeId());
+  this->camerasearch->apply((SoPath*) path);
+  
+  if (!this->camerasearch->getPath()) {
+    // if there is no camera there is no point rendering the bbox
+    return;
+  }
+  this->bboxseparator->insertChild(this->camerasearch->getPath()->getTail(), 0);
+  this->camerasearch->reset();
+  
+  if (this->bboxaction == NULL) {
+    this->bboxaction = new SoGetBoundingBoxAction(SbViewportRegion(100, 100));
+  }
+  this->bboxaction->setViewportRegion(PUBLIC(this)->getViewportRegion());
+  this->bboxaction->apply((SoPath*) path);
+  
+  SbXfBox3f & box = this->bboxaction->getXfBoundingBox();
+  
+  if (box.isEmpty()) return;
+  
+  // set cube size
+  float x, y, z;
+  box.getSize(x, y, z);
+  this->bboxcube->width  = x;
+  this->bboxcube->height  = y;
+  this->bboxcube->depth = z;
+
+  SbMatrix transform = box.getTransform();
+
+  // get center (in the local bbox coordinate system)
+  SbVec3f center = box.SbBox3f::getCenter();
+
+  // if center != (0,0,0), move the cube
+  if (center != SbVec3f(0.0f, 0.0f, 0.0f)) {
+    SbMatrix t;
+    t.setTranslate(center);
+    transform.multLeft(t);
+  }
+  this->bboxtransform->matrix = transform; 
+  
+  PUBLIC(this)->::SoGLRenderAction::apply(this->bboxseparator);
+
+  // remove camera
+  this->bboxseparator->removeChild(0);
+}
+
+
+#undef PRIVATE
+#undef PUBLIC
