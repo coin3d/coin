@@ -156,7 +156,11 @@ SoFile::readInstance(SoInput * in, unsigned short flags)
   return result && this->readNamedFile(in);
 }
 
-// Private method. Read the file named in the SoFile::name field.
+/*!
+  Read the file named in the SoFile::name field. This method was
+  private until 2001-12-05, when it was moved into protected space to
+  enable subclasses to detect when the file is (re)read.
+*/
 SbBool
 SoFile::readNamedFile(SoInput * in)
 {
