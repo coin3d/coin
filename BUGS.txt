@@ -1301,3 +1301,74 @@
     20030226 mortene.
 
 =====================================================================
+
+057 SoClipPlaneManip's reported dragger position is buggy.
+
+    This problem was reported by Wouter Bosma, and can be reproduced
+    with the example below: notice how the dragger position is first
+    reported at <0, 0, 0>, then for any miniscule drag along the X
+    axis, the position will be reported as <x, 0, 1.0>. That z=1.0 is
+    obviously wrong.
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    #include <Inventor/Qt/SoQt.h>
+    #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+    
+    #include <Inventor/nodes/SoEventCallback.h>
+    #include <Inventor/nodes/SoSeparator.h>
+    #include <Inventor/nodes/SoText3.h>
+    #include <Inventor/nodes/SoTransformSeparator.h>
+    #include <Inventor/manips/SoClipPlaneManip.h>
+    #include <Inventor/events/SoMouseButtonEvent.h>
+    #include <Inventor/errors/SoDebugError.h>
+    
+    SoClipPlaneManip * clipplane;
+    
+    // *************************************************************************
+    
+    void mySelectionC(void *ud, SoEventCallback *n)
+    {
+      const SoMouseButtonEvent * mbe = (SoMouseButtonEvent*) n->getEvent();
+    
+      if ((mbe->getButton() == SoMouseButtonEvent::BUTTON1) &&
+          (mbe->getState() == SoButtonEvent::DOWN)) {
+        SbVec3f v = clipplane->draggerPosition.getValue();
+        SoDebugError::postInfo("mySelectionC", "draggerPosition=<%f, %f, %f>",
+                               v[0], v[1], v[2]);
+      }
+    }
+    
+    int
+    main(int argc, char ** argv)
+    {
+      QWidget * window = SoQt::init(argv[0]);
+    
+      SoSeparator * root = new SoSeparator;
+      root->ref();
+    
+      SoEventCallback * ecb = new SoEventCallback; 
+      ecb->addEventCallback(SoMouseButtonEvent::getClassTypeId(), mySelectionC, 0);
+      root->addChild(ecb);
+    
+      SoTransformSeparator * transsep = new SoTransformSeparator;
+    
+      clipplane = new SoClipPlaneManip;
+      transsep->addChild(clipplane);
+      root->addChild(transsep);
+    
+      SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
+      viewer->setSceneGraph(root);
+      viewer->show();
+      SoQt::show(window);
+      SoQt::mainLoop();
+    
+      root->unref();
+    
+      delete viewer;
+      return 0;
+    }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+
+    20030226 mortene.
+
+=====================================================================
