@@ -319,6 +319,9 @@ SoGroup::doAction(SoAction * action)
 void
 SoGroup::getBoundingBox(SoGetBoundingBoxAction * action)
 {
+  // Sanity check. This has caught bugs.
+  assert(this->getNumChildren() == this->getChildren()->getLength());
+
   int numindices;
   const int * indices;
   int lastchildindex;
@@ -327,6 +330,8 @@ SoGroup::getBoundingBox(SoGetBoundingBoxAction * action)
     lastchildindex = indices[numindices-1];
   else
     lastchildindex = this->getNumChildren() - 1;
+
+  assert((lastchildindex >= 0) && (lastchildindex < this->getNumChildren()));
 
   // Initialize accumulation variables.
   SbVec3f acccenter(0.0f, 0.0f, 0.0f);
