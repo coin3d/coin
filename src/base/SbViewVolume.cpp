@@ -236,11 +236,12 @@ SbViewVolume::projectPointToLine(const SbVec2f& pt,
   if (this->type == PERSPECTIVE) {
     dir = line0 - projectionpt;
     dir.normalize();
+    line1 = line0 + dir * this->getDepth() / dir.dot(this->projectiondir);
   }
   else {
     dir = this->projectiondir;
+    line1 = line0 + dir*this->getDepth();
   }
-  line1 = line0 + dir*this->getDepth();
 #endif // faster version
 }
 
