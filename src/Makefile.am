@@ -28,9 +28,9 @@ endif
 # **************************************************************************
 
 SUBDIRS = \
-	actions base bundles caches details draggers elements \
+	extensions actions base bundles caches details draggers elements \
 	engines errors events fields manips misc lists nodekits nodes \
-	projectors sensors $(VRML97DIR) $(SUPERGLUDIR) .
+	projectors sensors .
 
 INCLUDES = -I$(top_srcdir)/include
 

@@ -979,6 +979,7 @@ AC_CONFIG_FILES([
         src/nodes/Makefile
         src/projectors/Makefile
         src/sensors/Makefile
+        src/extensions/Makefile
         docs/coin.doxygen
 ])
 
