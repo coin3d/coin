@@ -655,54 +655,84 @@ SoGLLazyElement::reset(SoState * state,  uint32_t mask) const
 void 
 SoGLLazyElement::sendPackedDiffuse(SoState * state, const uint32_t diffuse)
 {
+  SbBool cacheopen = state->isCacheOpen();
   SoGLLazyElement * elem = getInstance(state);
   if (elem->glstate.diffuse != diffuse) {
     elem->sendPackedDiffuse(diffuse);
+    if (cacheopen) elem->lazyDidSet(DIFFUSE_MASK|TRANSPARENCY_MASK);
+  }
+  else if (cacheopen) {
+    elem->lazyDidntSet(DIFFUSE_MASK|TRANSPARENCY_MASK);
   }
 }
 
 void 
 SoGLLazyElement::sendLightModel(SoState * state, const int32_t model)
 {
+  SbBool cacheopen = state->isCacheOpen();
   SoGLLazyElement * elem = getInstance(state);
   if (elem->glstate.lightmodel != model) {
     elem->sendLightModel(model);
+    if (cacheopen) elem->lazyDidSet(LIGHT_MODEL_MASK);
+  }
+  else if (cacheopen) {
+    elem->lazyDidntSet(LIGHT_MODEL_MASK);
   }
 }
 
 void 
 SoGLLazyElement::sendFlatshading(SoState * state, SbBool onoff)
 {
+  SbBool cacheopen = state->isCacheOpen();
   SoGLLazyElement * elem = getInstance(state);
   if (elem->glstate.flatshading != onoff) {
     elem->sendFlatshading(onoff);
+    if (cacheopen) elem->lazyDidSet(SHADE_MODEL_MASK);
+  }
+  else if (cacheopen) {
+    elem->lazyDidntSet(SHADE_MODEL_MASK);
   }
 }
 
 void 
 SoGLLazyElement::sendVertexOrdering(SoState * state, const VertexOrdering ordering)
 {
+  SbBool cacheopen = state->isCacheOpen();
   SoGLLazyElement * elem = getInstance(state);
   if (elem->glstate.vertexordering != (int32_t) ordering) {
     elem->sendVertexOrdering(ordering);
+    if (cacheopen) elem->lazyDidSet(VERTEXORDERING_MASK);
+  }
+  else if (cacheopen) {
+    elem->lazyDidntSet(VERTEXORDERING_MASK);
   }
 }
 
 void 
 SoGLLazyElement::sendTwosideLighting(SoState * state, const SbBool onoff)
 {
+  SbBool cacheopen = state->isCacheOpen();
   SoGLLazyElement * elem = getInstance(state);
   if (elem->glstate.twoside != (int32_t) onoff) {
     elem->sendTwosideLighting(onoff);
+    if (cacheopen) elem->lazyDidSet(TWOSIDE_MASK);
+  }
+  else if (cacheopen) {
+    elem->lazyDidntSet(TWOSIDE_MASK);
   }
 }
 
 void 
 SoGLLazyElement::sendBackfaceCulling(SoState * state, const SbBool onoff)
 {
+  SbBool cacheopen = state->isCacheOpen();
   SoGLLazyElement * elem = getInstance(state);
   if (elem->glstate.culling != (int32_t) onoff) {
     elem->sendBackfaceCulling(onoff);
+    if (cacheopen) elem->lazyDidSet(CULLING_MASK);
+  }
+  else if (cacheopen) {
+    elem->lazyDidntSet(CULLING_MASK);
   }
 }
 
