@@ -625,6 +625,7 @@ SoField::disconnect(SoField * master)
     converteroutput->removeConnection(this);
 
     this->storage->removeConverter(master);
+    converter->unref();
   }
   else { // No converter, just a direct link.
     master->removeAuditor(this, SoNotRec::FIELD);
@@ -688,6 +689,7 @@ SoField::disconnect(SoEngineOutput * master)
     converteroutput->removeConnection(this);
 
     this->storage->removeConverter(master);
+    converter->unref();
   }
   else { // No converter, just a direct link.
     master->removeConnection(this);
@@ -1509,14 +1511,15 @@ SoField::createConverter(SoType from) const
     return NULL;
   }
 
-  // FIXME: doesn't we leak the SoFieldConverter instance? 20000409 mortene.
+  SoFieldConverter * fc;
 
-  // FIXME: is it really wise to treat the SoConvertAll field
-  // converters as a special case? 20000217 mortene.
   if (convtype == SoConvertAll::getClassTypeId())
-    return new SoConvertAll(from, this->getTypeId());
+    fc = new SoConvertAll(from, this->getTypeId());
+  else
+    fc = (SoFieldConverter *)convtype.createInstance();
 
-  return (SoFieldConverter *)convtype.createInstance();
+  fc->ref();
+  return fc;
 }
 
 
