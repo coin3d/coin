@@ -29,8 +29,9 @@
 #ifdef COIN_INTERNAL
 class SoNodeKitPath;
 #else // !COIN_INTERNAL
-// Include this header file for better Open Inventor compatibility.
+// Include these header files for better Open Inventor compatibility.
 #include <Inventor/SoNodeKitPath.h>
+#include <Inventor/misc/SoChildList.h>
 #endif // !COIN_INTERNAL
 
 class SoGroup;
