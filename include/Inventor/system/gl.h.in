@@ -510,6 +510,14 @@
 #define GL_DOT3_RGBA                      0x86AF
 #endif /* !GL_DOT3_RGBA */
 
+/* SGIS_generate_mipmap */
+#ifndef GL_GENERATE_MIPMAP_SGIS
+#define GL_GENERATE_MIPMAP_SGIS           0x8191
+#endif /* !GL_GENERATE_MIPMAP_SGIS */
+
+#ifndef GL_GENERATE_MIPMAP_HINT_SGIS
+#define GL_GENERATE_MIPMAP_HINT_SGIS      0x8192
+#endif /* !GL_GENERATE_MIPMAP_HINT_SGIS */
 
 /*** GL enums, end ****************************************************/
 /**********************************************************************/
