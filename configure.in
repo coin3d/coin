@@ -1,8 +1,20 @@
 # **************************************************************************
 
+# release version number info
 m4_define([COIN_MAJOR], [0])
 m4_define([COIN_MINOR], [9])
 m4_define([COIN_MICRO], [99])
+
+# FIXME: this setup is incorrect, and must be fixed before Coin 1.0
+# libtool ABI version info (see HACKING for setup information)
+m4_define([COIN_ABI_CURRENT], [COIN_MAJOR])
+m4_define([COIN_ABI_REVISION], [m4_eval((COIN_MINOR*100)+COIN_MICRO)])
+m4_define([COIN_ABI_AGE], [0])
+
+
+ifndef([AS_TR_CPP], [define([AS_TR_CPP], defn([AC_TR_CPP]))])
+
+# **************************************************************************
 
 AC_INIT([Coin], [COIN_MAJOR.COIN_MINOR.COIN_MICRO])
 AC_REVISION([$Revision$])
@@ -44,148 +56,6 @@ SIM_AC_SETUP_MSVC_IFELSE([
 ])
 
 # **************************************************************************
-# *******  MAKING RELEASES  ************************************************
-# **************************************************************************
-#
-# Library versioning
-# ==================
-#
-# When making releases, follow these rules:
-#
-#  * if there has been made any incompatible changes to the ABI¹:
-#    COIN_MAJOR_VERSION += 1, COIN_MINOR_VERSION = 0,
-#    COIN_MICRO_VERSION = 0.
-#
-#    (If you don't know if the changes that have been made since last
-#    release is binary incompatible with the last ABI, you shouldn't
-#    be making releases.)
-#
-#  * if there has been made additions to the API², but the ABI
-#    is still backwards compatible: COIN_MAJOR_VERSION unchanged,
-#    COIN_MINOR_VERSION += 1, COIN_MICRO_VERSION = 0.
-#
-#  * for bugfix releases and other changes which do not change the interface
-#    at all, keep COIN_MAJOR_VERSION and COIN_MINOR_VERSION unchanged
-#    and COIN_MICRO_VERSION += 1.
-#
-# Note that our MAJOR.MINOR.MICRO versioning scheme differs somewhat from
-# the idea of library versioning applied by Libtool. According to Libtool,
-# libraries should be versioned according to a CURRENT.AGE.REVISION scheme.
-# Here CURRENT is supposed to be increased by 1 each time the API changes,
-# and AGE increased by 1 along with CURRENT each time the API changes in a
-# way which keeps the ABI backwards compatible. If compatibility is broken,
-# AGE is set to 0 (while CURRENT is still increased by 1). The REVISION
-# number has the same semantics as our MICRO number.
-#
-# To cooperate in a painless way with Libtool, we choose to "convert" our
-# MAJOR.MINOR.MICRO scheme to Libtool's idea of versioning like this:
-#
-#    * Libtool's CURRENT number is increased when our MAJOR number is
-#      increased.
-#
-#    * Libtool's AGE number is always kept at 0 (i.e. we will never make
-#      ABI compatible releases where we increase the MAJOR number).
-#
-#    * Libtool's REVISION number will be a combination of our MINOR and
-#      MICRO number, like this: REVISION = MINOR * 100 + MICRO, so we get
-#      a REVISION number monotonically increasing in the way we want.
-#
-#      Note that this little "simplification" has two important
-#      ramifications: 1) we can't make more than 99 bugfix-releases of
-#      the library unless a MINOR or MAJOR version increase has happened,
-#      2) we need to keep a release history log to map from Libtool numbers
-#      back to our "native" MACRO.MINOR.MICRO versioning, as Libtool encodes
-#      the filename of the library with it's own CURRENT.AGE.REVISION scheme.
-#      This way it'll still be easy for us to find out which version a
-#      bugreport belongs to: we must tell the user to check out the full
-#      filename of the library, then we can just look up the MAJOR.MINOR.MICRO
-#      number from the release history log below.
-#
-#
-# **************************************************************************
-# CVS maintenance
-# ===============
-#
-# When making a release from the HEAD branch, increase the MAJOR number
-# and make a new branch as follows (from the HEAD):
-#
-#   $ cd [coin_srcdir_HEADbranch]
-#   $ cvs tag -b coin-MAJOR-0
-#
-# (The explicit mention of "coin" in the branch name is necessary
-# because we also tag this name onto all included CVS modules.)
-#
-# Note that new releases from the HEAD branch should only happen when
-# there has been incompatible interface changes.
-#
-#
-# When adding new functionality while keeping backward ABI compatibility,
-# increase the MINOR number and make a new branch as follows:
-#
-#   $ cd [coin_srcdir_MAJORbranch]
-#   $ cvs tag -b coin-MAJOR-MINOR
-#
-# (Where MINOR>0 always).
-#
-#
-# Bugfix releases should be handled by setting a tag on the
-# coin-MAJOR-MINOR with the latest MAJOR.MINOR.x release,
-# like this:
-#
-#   $ cd [coin_srcdir_MAJORMINORbranch]
-#   $ cvs tag coin-MAJOR-MINOR-MICRO
-#
-# (Where MICRO>0 always).
-#
-# **************************************************************************
-# Distribution binaries
-# =====================
-#
-#  * MSWindows SDK: this is constructed as a self-extracting InstallShield
-#    package. Run ``configure'' and ``make install'' on an MSWin-box with
-#    the correct setup (latest Cygwin, MSVC++ v6.0 and InstallShield Express
-#    v2.12), then execute
-#
-#         $ cd [coin_builddir]/build
-#         $ make ispkg
-#
-#    (Installshield's IsxBuild.exe need to be in your path.)
-#
-#    A self-extracting executable SETUPEX.EXE with the InstallShield install
-#    should then be available under [coin_builddir]/build/coin/. Move
-#    to <ftp://ftp.sim.no/pub/coin/bin/win32/coin-@COIN_VERSION@.exe>.
-#
-#  * RPM packages: follow the instructions at the top of the
-#    build/coin.spec.in file, make one package for each major platform
-#    version we have access to (RedHat v5, v6, v7, Mandrake?, SuSE, etc)
-#    for the architectures we want (i386, ...). Place packages under
-#    <ftp://ftp.sim.no/pub/coin/bin/[platform]/[arch]/>.
-#
-# **************************************************************************
-# Release history
-# ===============
-#
-# Release version     | Libtool version   |                 |
-# (MAJOR.MINOR.MICRO) | (CURRENT.AGE.REV) | CVS Branch name | Tag name
-# --------------------+-------------------+-----------------+-----------------
-#     0.9.99          |     0.0.999       |      HEAD       | coin-0-9-99
-#
-#
-# **************************************************************************
-# Footnotes
-# =========
-#
-# ¹ Application Binary Interface. This covers any publicly exposed
-#   functions, function signatures, structures (and classes for C++
-#   code). If any functions has been removed or changed, or if any
-#   structures/classes has been modified in any way, the ABI has
-#   most likely been made incompatible with earlier releases.
-#
-# ² Application Programmer's Interface. This is the functions and data
-#   structures/classes exposed to the application programmer for
-#   interaction with the library.
-#
-# **************************************************************************
 
 COIN_MAJOR_VERSION=COIN_MAJOR
 COIN_MINOR_VERSION=COIN_MINOR
@@ -199,9 +69,9 @@ AC_SUBST(COIN_MICRO_VERSION)
 AC_SUBST(COIN_VERSION)
 
 # Libtool versioning
-LT_CURRENT=$COIN_MAJOR_VERSION
-LT_AGE=0
-LT_REVISION=`expr $COIN_MINOR_VERSION \* 100 + $COIN_MICRO_VERSION`
+LT_CURRENT=COIN_ABI_CURRENT
+LT_REVISION=COIN_ABI_REVISION
+LT_AGE=COIN_ABI_AGE
 
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
