@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -131,7 +131,7 @@ private:
 
   void getBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
   void rayPickBoundingBox(SoRayPickAction * action);
-  friend class shapePrimitiveData;         // internal class
+  friend class soshape_primdata;           // internal class
   friend class so_generate_prim_private;   // a very private class
 };
 
