@@ -536,7 +536,7 @@ glglue_resolve_symbols(cc_glglue * w)
     w->glCompressedTexSubImage3DARB = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE3DARBPROC)PROC(glCompressedTexSubImage3DARB);
     w->glCompressedTexSubImage2DARB = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE2DARBPROC)PROC(glCompressedTexSubImage2DARB);
     w->glCompressedTexSubImage1DARB = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE1DARBPROC)PROC(glCompressedTexSubImage1DARB);
-    w->glGetCompressedTexImageARB = (COIN_PFNGLGETCOLORTABLEPARAMETERFVEXTPROC)PROC(glGetCompressedTexImageARB);
+    w->glGetCompressedTexImageARB = (COIN_PFNGLGETCOMPRESSEDTEXIMAGEARBPROC)PROC(glGetCompressedTexImageARB);
   }
 #endif /* GL_ARB_texture_compression */
 
