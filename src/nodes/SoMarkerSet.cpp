@@ -45,6 +45,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
+#include <math.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -1515,7 +1516,7 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
     vv.projectToScreen(point, point); // normalized screen coordinates
     point[0] = point[0] * float(vpsize[0]); // screen pixel position
     point[1] = point[1] * float(vpsize[1]);
-    
+
     int midx = SbMin(i, this->markerIndex.getNum()-1);
     if (this->markerIndex[midx] < markerlist->getLength()) {
       so_marker * tmp = &(*markerlist)[ this->markerIndex[midx] ];
@@ -1595,9 +1596,9 @@ swap_leftright(unsigned char *data, int width, int height)
   unsigned char t;
 
   int y;
-  int linewidth = (int)ceil(width / 8);
+  int linewidth = (int)ceil((double) (width / 8));
   for (y=0; y<height; y++) {
-    for (int x=0; x<floor(linewidth/2); x++) {
+    for (int x=0; x < (int) floor((double)(linewidth/2)); x++) {
       int tmp = data[y*linewidth+x];
       data[ y*linewidth + x ] = data[ (y*linewidth) + (linewidth-x-1) ];
       data[ (y*linewidth) + (linewidth-x-1) ] = tmp;
