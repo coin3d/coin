@@ -70,10 +70,14 @@
     v2 = *viptr++;
     v3 = *viptr++;
 
+    // Variable used for counting errors and make sure not a
+    // bunch of errormessages flood the screen.
+    static uint32_t current_errors = 0;
+
+    // This test is for robustness upon buggy data sets
     if (v1 < 0 || v2 < 0 || v3 < 0 ||
         v1 >= numverts || v2 >= numverts || v3 >= numverts) {
 
-      static uint32_t current_errors = 0;
       if (current_errors < 1) {
         SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
                                   "Ignoring (offset: %d, [%d %d %d]). Should be within "
@@ -81,15 +85,40 @@
                                   "more errors might be present",
                                   viptr - vistartptr - 3, v1, v2, v3, numverts - 1);
       }
-
       current_errors++;
       break;
     }
     v4 = viptr < viendptr ? *viptr++ : -1;
-    if (v4  < 0 || v4 >= numverts) newmode = GL_TRIANGLES;
+    if (v4  < 0) newmode = GL_TRIANGLES;
+    // This test for numverts is for robustness upon buggy data sets
+    else if (v4 >= numverts) {
+      newmode = GL_TRIANGLES;
+
+      if (current_errors < 1) {
+        SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
+                                  "(offset: %d, [%d %d %d %d]). Should be within "
+                                  " [0, %d] This message will only be shown once, but "
+                                  "more errors might be present",
+                                  viptr - vistartptr - 4, v1, v2, v3, v4, numverts - 1);
+      }
+      current_errors++;
+    }
     else {
       v5 = viptr < viendptr ? *viptr++ : -1;
-      if (v5 < 0 || v5 >= numverts) newmode = GL_QUADS;
+      if (v5 < 0) newmode = GL_QUADS;
+      // This test for numverts is for robustness upon buggy data sets
+      else if (v5 >= numverts) {
+        newmode = GL_QUADS;
+
+        if (current_errors < 1) {
+          SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
+                                    "(offset: %d, [%d %d %d %d %d]). Should be within "
+                                    " [0, %d] This message will only be shown once, but "
+                                    "more errors might be present",
+                                    viptr - vistartptr - 5, v1, v2, v3, v4, v5, numverts - 1);
+        }
+        current_errors++;
+      }
       else newmode = GL_POLYGON;
     }
     if (newmode != mode) {
@@ -200,7 +229,20 @@
 #endif
         SEND_VERTEX(v5);
         v1 = viptr < viendptr ? *viptr++ : -1;
-        while (v1 >= 0 && v1 < numverts) {
+        while (v1 >= 0) {
+          // For robustness upon buggy data sets
+          if (v1 >= numverts) {
+            if (current_errors < 1) {
+              SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
+                                        "(offset: %d, [... %d]). Should be within "
+                                        "[0, %d] This message will only be shown once, but "
+                                        "more errors might be present",
+                                        viptr - vistartptr - 1, v1, numverts - 1);
+            }
+            current_errors++;
+            break;
+          }
+
       /* vertex 6-n (polygon) *****************************************/
 #if MBINDING==PER_VERTEX
           materials->send(matnr++, TRUE);
