@@ -200,7 +200,7 @@
 /*!
   \var SoTexture2::Model SoTexture2::MODULATE
 
-  Texture color is multipled by the polygon color. The result will
+  Texture color is multiplied by the polygon color. The result will
   be Phong shaded (if light model is PHONG).
 */
 /*!
