@@ -81,6 +81,17 @@
 // ------8<------[snip]------8<------[snip]------8<------[snip]----
 //
 // 20030219 mortene.
+//
+// UPDATE 20030221 mortene: from the replies, it looks like this is
+// impossible to do in a "clean" way (i.e. through the Win32
+// API). Only suggestion that could be implemented so far is to check
+// the value of the stack pointer before and after calling a function
+// from the DLL.
+//
+// Additional suggestion from Lars: we could let the user control
+// calling convention from the client side by setting an environment
+// variable. That would be really helpful for remote debugging of
+// problems suspected to be caused by mismatches.
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
