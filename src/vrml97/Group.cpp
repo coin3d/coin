@@ -486,10 +486,7 @@ SoVRMLGroup::search(SoSearchAction * action)
   SoNode::search(action);
   if (action->isFound()) return;
 
-  SoState * state = action->getState();
-  state->push();
-  inherited::search(action);
-  state->pop();
+  SoVRMLGroup::doAction(action);
 }
 
 // Doc in parent
