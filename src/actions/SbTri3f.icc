@@ -444,7 +444,7 @@ SbTri3f::getDistance(const SbVec3f & p) const
     }
   }
   else {
-    assert(false);
+    assert(FALSE);
   }
   return dist;
 }

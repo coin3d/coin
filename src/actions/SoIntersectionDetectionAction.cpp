@@ -140,10 +140,10 @@ SO_ACTION_SOURCE(SoIntersectionDetectionAction);
   \ingroup collision
 
   HUGE WARNING SIGN:
-  Note that the implementation is somewhat incomplete. Only intersection 
-  testing between triangles is done, and the algorithm used is O(N^2) - 
+  Note that the implementation is somewhat incomplete. Only intersection
+  testing between triangles is done, and the algorithm used is O(N^2) -
   no significant optimizations is done at this time.
-  The algorithm used when specifying an epsilon value is even more 
+  The algorithm used when specifying an epsilon value is even more
   non-optimized and unusable for any real scenario.
 
   \since 20021022
@@ -272,7 +272,7 @@ SoIntersectionDetectionAction::isTypeEnabled(SoType type, SbBool checkgroups) co
 /*!
   Sets whether manipulators in the scene graph should be tested for intersection
   with other geometry or not.
-  
+
   Note that when draggers are disabled with setDraggersEnabled(), this setting
   has no effect - manipulators are disabled too.
 
@@ -386,7 +386,7 @@ SoIntersectionDetectionAction::addVisitationCallback(SoType type, SoIntersection
   The scene graph traversal can be controlled with callbacks which
   you remove with this method.  Use just like you would use
   SoCallbackAction::removePreCallback().
- 
+
   \sa SoCallbackAction::removePreCallback()
 */
 
@@ -554,7 +554,7 @@ SoIntersectionDetectionActionP::deletePrimitives(PrimitiveData * primitives)
 }
 
 SoCallbackAction::Response
-SoIntersectionDetectionActionP::shape(SoCallbackAction * action, 
+SoIntersectionDetectionActionP::shape(SoCallbackAction * action,
                                       SoShape * shape)
 {
   SbBox3f bbox;
@@ -650,14 +650,14 @@ SoIntersectionDetectionActionP::reset(void)
   }
   this->shapedata->truncate(0);
   this->traverser = new SoCallbackAction;
-  this->traverser->addPreCallback(SoDragger::getClassTypeId(), 
+  this->traverser->addPreCallback(SoDragger::getClassTypeId(),
                                   draggerCB, this);
-  this->traverser->addPreCallback(SoNode::getClassTypeId(), 
+  this->traverser->addPreCallback(SoNode::getClassTypeId(),
                                   traverseCB, this);
   for (i = 0; i < this->prunetypes->getLength(); i++)
-    this->traverser->addPreCallback((*(this->prunetypes))[i], 
+    this->traverser->addPreCallback((*(this->prunetypes))[i],
                                     pruneCB, NULL);
-  this->traverser->addPreCallback(SoShape::getClassTypeId(), 
+  this->traverser->addPreCallback(SoShape::getClassTypeId(),
                                   shapeCB, this);
 }
 
@@ -673,9 +673,9 @@ SoIntersectionDetectionActionP::doIntersectionTesting(void)
     ShapeData * shape1 = (ShapeData *)(*(this->shapedata))[i];
     PrimitiveData * primitives1 = NULL;
     if (this->internalsenabled) {
-      primitives1 = 
+      primitives1 =
         SoIntersectionDetectionActionP::generatePrimitives(shape1);
-      SbBool cont = 
+      SbBool cont =
         this->doInternalPrimitiveIntersectionTesting(primitives1);
       if (!cont) {
         SoIntersectionDetectionActionP::deletePrimitives(primitives1);
@@ -683,7 +683,7 @@ SoIntersectionDetectionActionP::doIntersectionTesting(void)
       }
     }
     for (j = i + 1; j < this->shapedata->getLength(); j++) {
-      bool bboxhit = FALSE;
+      SbBool bboxhit = FALSE;
       ShapeData * shape2 = (ShapeData *)(*(this->shapedata))[j];
       // support for negative epsilons can be added here
       // note that if support is added for this, negative bounding box volumes must be filtered
@@ -693,9 +693,9 @@ SoIntersectionDetectionActionP::doIntersectionTesting(void)
         // move epsilon to object space
         shape2->bbox.getTransform().multDirMatrix(epsilonvec, epsilonvec);
         float localepsilon = epsilonvec.length(); // yes, it's a bit large...
-        shape2box.getMin() -= 
+        shape2box.getMin() -=
           SbVec3f(localepsilon, localepsilon, localepsilon);
-        shape2box.getMax() += 
+        shape2box.getMax() +=
           SbVec3f(localepsilon, localepsilon, localepsilon);
         SbXfBox3f shape2xfbbox(shape2box);
         shape2xfbbox.setTransform(shape2->bbox.getTransform());
@@ -705,15 +705,15 @@ SoIntersectionDetectionActionP::doIntersectionTesting(void)
         if (shape1->bbox.intersect(shape2->bbox)) bboxhit = TRUE;
       }
       if (bboxhit) {
-        if (!this->filtercb || this->filtercb(this->filterclosure, 
-                                              shape1->path, 
+        if (!this->filtercb || this->filtercb(this->filterclosure,
+                                              shape1->path,
                                               shape2->path)) {
-          if (primitives1 == NULL) 
-            primitives1 = 
+          if (primitives1 == NULL)
+            primitives1 =
               SoIntersectionDetectionActionP::generatePrimitives(shape1);
-          PrimitiveData * primitives2 = 
+          PrimitiveData * primitives2 =
             SoIntersectionDetectionActionP::generatePrimitives(shape2);
-          SbBool cont = this->doPrimitiveIntersectionTesting(primitives1, 
+          SbBool cont = this->doPrimitiveIntersectionTesting(primitives1,
                                                              primitives2);
           SoIntersectionDetectionActionP::deletePrimitives(primitives2);
           if (!cont) {
@@ -815,4 +815,3 @@ SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting(Primitive
   }
   return TRUE;
 }
-
