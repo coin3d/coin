@@ -19,16 +19,24 @@
 
 /*!
   \class SoLineSet SoLineSet.h Inventor/nodes/SoLineSet.h
-  \brief The SoLineSet class ...
+  \brief The SoLineSet class is used to render and organize non-indexed polylines.
   \ingroup nodes
 
-  FIXME: write class doc
+  Polylines are specified using the numVertices field. Coordinates,
+  normals, materials and texture coordinates are fetched in order from
+  the current state or from the vertexProperty node if set. For
+  example, if numVertices is set to [3, 4, 2], this node would specify
+  a line through coordinates 0, 1 and 2, a line through coordinates 3, 4, 5
+  and 6, and finally a single line segment between coordinates 7 and 8.
+
+  Binding PER_VERTEX, PER_FACE or OVERALL can be set for material,
+  and normals. The default material binding is OVERALL. The default
+  normal binding is PER_VERTEX. If no normals are set, the line set
+  will be rendered with lighting disabled.
 */
 
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-
-
 #include <Inventor/misc/SoState.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/caches/SoNormalCache.h>
@@ -52,30 +60,10 @@
 #include <Inventor/details/SoLineDetail.h>
 
 /*!
-  \enum SoLineSet::Binding
-  FIXME: write documentation for enum
-*/
-/*!
-  \var SoLineSet::Binding SoLineSet::OVERALL
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoLineSet::Binding SoLineSet::PER_LINE
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoLineSet::Binding SoLineSet::PER_SEGMENT
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoLineSet::Binding SoLineSet::PER_VERTEX
-  FIXME: write documentation for enum definition
-*/
-
-
-/*!
   \var SoMFInt32 SoLineSet::numVertices
-  FIXME: write documentation for field
+  Used to specify polylines. Each entry specifies the number of coordinates
+  in a line. The coordinates are taken in order from the state or from
+  the vertexProperty node.
 */
 
 // *************************************************************************
@@ -99,20 +87,14 @@ SoLineSet::~SoLineSet()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoLineSet class. This includes setting up the
-  type system, among other things.
-*/
+// doc from parent
 void
 SoLineSet::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoLineSet);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoLineSet::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
@@ -122,9 +104,9 @@ SoLineSet::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   inherited::computeCoordBBox(action, numvertices, box, center);
 }
 
-/*!
-  \internal
-*/
+//
+// translates the current material binding to the internal Binding enum
+//
 SoLineSet::Binding
 SoLineSet::findMaterialBinding(SoState * const state) const
 {
@@ -159,9 +141,9 @@ SoLineSet::findMaterialBinding(SoState * const state) const
 }
 
 
-/*!
-  \internal
-*/
+//
+// translates the current normal binding to the internal Binding enum
+//
 SoLineSet::Binding
 SoLineSet::findNormalBinding(SoState * const state) const
 {
@@ -197,12 +179,12 @@ SoLineSet::findNormalBinding(SoState * const state) const
   return binding;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoLineSet::GLRender(SoGLRenderAction * action)
 {
+  // FIXME: optimize rendering, pederb 20000809
+
   SoState * state = action->getState();
 
   if (this->vertexProperty.getValue()) {
@@ -230,7 +212,7 @@ SoLineSet::GLRender(SoGLRenderAction * action)
 
   const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
 
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
+  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
   doTextures = tb.needCoordinates();
 
   Binding mbind = findMaterialBinding(action->getState());
@@ -304,7 +286,7 @@ SoLineSet::GLRender(SoGLRenderAction * action)
 }
 
 /*!
-  FIXME: write function documentation
+  Overloaded to clear normal cache.
 */
 SbBool
 SoLineSet::generateDefaultNormals(SoState * , SoNormalCache * nc)
@@ -314,9 +296,7 @@ SoLineSet::generateDefaultNormals(SoState * , SoNormalCache * nc)
   return TRUE;
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
 SoLineSet::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -324,9 +304,7 @@ SoLineSet::getBoundingBox(SoGetBoundingBoxAction * action)
   // FIXME: tell caches that geometry contains lines
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
 SoLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
@@ -349,9 +327,7 @@ SoLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
 SoLineSet::generatePrimitives(SoAction *action)
 {

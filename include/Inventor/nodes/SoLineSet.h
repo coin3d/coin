@@ -34,13 +34,6 @@ public:
   static void initClass(void);
   SoLineSet(void);
 
-  enum Binding {
-    OVERALL = 0,
-    PER_LINE,
-    PER_SEGMENT,
-    PER_VERTEX
-  };
-
 public:
   SoMFInt32 numVertices;
 
@@ -56,6 +49,13 @@ protected:
 
 private:
   SbBool generateDefaultNormals(SoState *, SoNormalCache * nc);
+
+  enum Binding {
+    OVERALL = 0,
+    PER_LINE,
+    PER_SEGMENT,
+    PER_VERTEX
+  };
 
   Binding findNormalBinding(SoState * const state) const;
   Binding findMaterialBinding(SoState * const state) const;
