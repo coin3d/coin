@@ -1680,8 +1680,7 @@ SoBase::readBase(SoInput * in, SbName & classname, SoBase *& base)
         SoReadError::post(in, "Premature end of file after %s", DEF_KEYWORD);
       }
       else {
-        SoReadError::post(in, "Unable to read %s. Is the reference syntax "
-                          "correct for the fileformat?", DEF_KEYWORD);
+        SoReadError::post(in, "Unable to read identifier after %s keyword", DEF_KEYWORD);
       }
       ret = FALSE;
     }
