@@ -116,7 +116,7 @@ public:
   void evaluate(void) const;
 
   // enums for setFieldType()/getFieldType()
-  enum {
+  enum FieldType {
     // FIXME: we might not need all these. Investigate before the next
     // Coin version.  pederb, 2001-10-12
     NORMAL_FIELD = 0,
