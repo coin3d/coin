@@ -186,11 +186,10 @@ SoCacheElement::invalidate(SoState * const state)
 
   SoCacheElement * elem = (SoCacheElement*)
     state->getElementNoPush(classStackIndex);
+
   while (elem) {
     if (elem->cache) {
       elem->cache->invalidate();
-      elem->cache->unref();
-      elem->cache = NULL;
     }
     elem = (SoCacheElement*) elem->getNextInStack();
   }
