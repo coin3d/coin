@@ -24,8 +24,10 @@
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSFPath.h>
+#include <Inventor/SbViewportRegion.h>
 
 class SoGetBoundingBoxAction;
+
 
 class COIN_DLL_EXPORT SoComputeBoundingBox : public SoEngine {
   typedef SoEngine inherited;
@@ -44,12 +46,15 @@ public:
   SoComputeBoundingBox(void);
   static void initClass(void);
 
+  void setViewportRegion(const SbViewportRegion & vpr);
+  const SbViewportRegion & getViewportRegion(void) const;
+
 protected:
   virtual ~SoComputeBoundingBox();
 
 private:
   virtual void evaluate(void);
-  SoGetBoundingBoxAction *bboxaction;
+  SoGetBoundingBoxAction * bboxaction;
 };
 
 #endif // !COIN_SOCOMPUTEBOUNDINGBOX_H

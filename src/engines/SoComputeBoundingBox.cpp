@@ -37,7 +37,7 @@ SO_ENGINE_SOURCE(SoComputeBoundingBox);
 /*!
   Default constructor.
 */
-SoComputeBoundingBox::SoComputeBoundingBox()
+SoComputeBoundingBox::SoComputeBoundingBox(void)
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoComputeBoundingBox);
 
@@ -49,13 +49,13 @@ SoComputeBoundingBox::SoComputeBoundingBox()
   SO_ENGINE_ADD_OUTPUT(boxCenter, SoSFVec3f);
   SO_ENGINE_ADD_OUTPUT(objectCenter, SoSFVec3f);
 
-  // just set some viewport
-  this->bboxaction = new SoGetBoundingBoxAction(SbViewportRegion(100,100));
+  // Start with a default viewportregion.
+  this->bboxaction = new SoGetBoundingBoxAction(SbViewportRegion());
 }
 
 // doc in parent
 void
-SoComputeBoundingBox::initClass()
+SoComputeBoundingBox::initClass(void)
 {
   SO_ENGINE_INTERNAL_INIT_CLASS(SoComputeBoundingBox);
 }
@@ -67,7 +67,7 @@ SoComputeBoundingBox::~SoComputeBoundingBox()
 
 // doc in parent
 void
-SoComputeBoundingBox::evaluate()
+SoComputeBoundingBox::evaluate(void)
 {
 
   SoPath *mypath = this->path.getValue();
@@ -86,4 +86,27 @@ SoComputeBoundingBox::evaluate()
   SO_ENGINE_OUTPUT(max, SoSFVec3f, setValue(box.getMax()));
   SO_ENGINE_OUTPUT(boxCenter, SoSFVec3f, setValue(box.getCenter()));
   SO_ENGINE_OUTPUT(objectCenter, SoSFVec3f, setValue(center));
+}
+
+/*!
+  Set viewport region for the SoGetBoundingBoxAction instance we're
+  using for calculating bounding boxes.
+
+  The default setting is to use an SbViewportRegion with only default
+  values.
+ */
+void
+SoComputeBoundingBox::setViewportRegion(const SbViewportRegion & vpr)
+{
+  this->bboxaction->setViewportRegion(vpr);
+}
+
+/*!
+  Returns viewport region used by the internal SoGetBoundingBoxAction
+  instance.
+ */
+const SbViewportRegion &
+SoComputeBoundingBox::getViewportRegion(void) const
+{
+  return this->bboxaction->getViewportRegion();
 }
