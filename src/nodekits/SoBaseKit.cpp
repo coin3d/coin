@@ -2684,6 +2684,9 @@ SoBaseKitP::readUnknownFields(SoInput *in, SoFieldData *&unknownfielddata)
     return fd->read(in, PUBLIC(this), TRUE, notbuiltin);
   }
 
+  SbBool firstfield = TRUE;
+  SbName fielddescriptionsmarker("fields");
+
   // ASCII format
   // keep reading fields until we hit close bracket
   while (TRUE) {
@@ -2701,17 +2704,32 @@ SoBaseKitP::readUnknownFields(SoInput *in, SoFieldData *&unknownfielddata)
     SbName fieldname;
     if (!in->read(fieldname, FALSE))
       return TRUE;
+    
+    // if this is the first field we try to read, it might be the
+    // field descriptions for extension node kits. Detect and read.
+    if (firstfield) {
+      firstfield = FALSE;
+      if (fieldname == fielddescriptionsmarker) {
+        if (!fd->readFieldDescriptions(in, PUBLIC(this), 0, FALSE)) {
+          return FALSE;
+        }
+        continue; // read next field
+      }
+    }
 
+    // try to read data into one of the fields in this nodekit first.
+    // SoFieldData::read() will return TRUE and set foundname to FALSE
+    // if the field isn't part of the node(kit)
     SbBool foundname;
     if (!fd->read(in, PUBLIC(this), fieldname, foundname))
       return FALSE;
-
+    
     if (!foundname) {
       // add a node pointer field with this name to the unknownFieldData,
       // and read it
       unknownfielddata->addField(PUBLIC(this), fieldname.getString(),
                                  new SoSFNode);
-      if ( !unknownfielddata->read(in, PUBLIC(this), fieldname, foundname))
+      if (!unknownfielddata->read(in, PUBLIC(this), fieldname, foundname))
         return FALSE;
     }
   }
