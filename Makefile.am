@@ -106,6 +106,7 @@ EXTRA_DIST = \
 	cfg/m4/doxygen_detection.m4 \
 	cfg/m4/errors.m4 \
 	cfg/m4/general.m4 \
+	cfg/m4/gendsp.m4 \
 	cfg/m4/macro_quoting.m4 \
 	cfg/m4/misc_compiler.m4 \
 	cfg/m4/network.m4 \
