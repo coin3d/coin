@@ -18,10 +18,13 @@
 \**************************************************************************/
 
 /*!
-  \class SoCallbackList Inventor/lists/SoCallbackList.h
-  \brief The SoCallbackList is a container class for arrays of callbacks.
+  \class SoCallbackList SoCallbackList.h Inventor/lists/SoCallbackList.h
+  \brief The SoCallbackList is a container for callback function pointers.
+  \ingroup general
 
-  FIXME: write doc.
+  This list stores callback function pointers (along with
+  user-specified extra data to pass to the callbacks) and provides a
+  method for triggering the callback functions.
 */
 
 #include <Inventor/lists/SoCallbackList.h>
@@ -31,44 +34,40 @@
 #endif // COIN_DEBUG
 
 /*!
-  A constructor (default)
+  Default constructor.
 */
-
 SoCallbackList::SoCallbackList(void)
 {
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
-
 SoCallbackList::~SoCallbackList(void)
 {
-  this->clearCallbacks();
 }
 
 /*!
-  FIXME: write doc.
+  Append the callback function \a f to the list. It will be passed the
+  \a userdata upon invocation.
 */
-
 void
-SoCallbackList::addCallback(SoCallbackListCB * f, void * userData)
+SoCallbackList::addCallback(SoCallbackListCB * f, void * userdata)
 {
   this->funclist.append(f);
-  this->datalist.append(userData);
+  this->datalist.append(userdata);
 }
 
 /*!
-  FIXME: write doc.
+  Remove callback \a f from the list.
 */
-
 void
-SoCallbackList::removeCallback(SoCallbackListCB * f, void * userData)
+SoCallbackList::removeCallback(SoCallbackListCB * f, void * userdata)
 {
   int idx = this->getNumCallbacks() - 1;
 
   while (idx != -1) {
-    if ((this->funclist[idx] == f) && (this->datalist[idx] == userData)) break;
+    if ((this->funclist[idx] == f) && (this->datalist[idx] == userdata)) break;
     idx--;
   }
 
@@ -85,9 +84,8 @@ SoCallbackList::removeCallback(SoCallbackListCB * f, void * userData)
 }
 
 /*!
-  FIXME: write doc.
+  Remove all callbacks in the list.
 */
-
 void
 SoCallbackList::clearCallbacks(void)
 {
@@ -96,9 +94,8 @@ SoCallbackList::clearCallbacks(void)
 }
 
 /*!
-  FIXME: write doc.
+  Returns number of callback functions.
 */
-
 int
 SoCallbackList::getNumCallbacks(void) const
 {
@@ -106,16 +103,14 @@ SoCallbackList::getNumCallbacks(void) const
 }
 
 /*!
-  FIXME: write doc.
+  Invoke all callback functions, passing the userdata and the \a
+  callbackdata as the first and second argument, respectively.
 */
-
 void
-SoCallbackList::invokeCallbacks(void * cbdata)
+SoCallbackList::invokeCallbacks(void * callbackdata)
 {
-  int idx = 0;
-  while (idx < this->getNumCallbacks()) {
+  for (int idx=0; idx < this->getNumCallbacks(); idx++) {
     SoCallbackListCB * func = (SoCallbackListCB *)(this->funclist[idx]);
-    func(this->datalist[idx], cbdata);
-    idx++;
+    func(this->datalist[idx], callbackdata);
   }
 }
