@@ -27,7 +27,7 @@
   * what are nodekits?
   * why nodekits?
   * how to use them
-  * how to make new ones
+  * how to define your own
   * ...
 
 */
@@ -120,7 +120,16 @@ SoBaseKit::initClass(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Returns a pointer to the node part with \a partname.
+
+  If the part is not in the nodekit's catalog, return NULL.
+
+  If the part is in the catalog, has not been made and \a makeifneeded
+  is TRUE, construct the part and all it's parents, and return the
+  node pointer. If the node part has not been made and \a makeifneeded
+  is FALSE, return NULL.
+
+  FIXME: describe syntax for specifiying "paths". 19991205 mortene.
 */
 SoNode *
 SoBaseKit::getPart(const SbName & partname, SbBool makeifneeded)
@@ -136,59 +145,114 @@ SoBaseKit::getPart(const SbName & partname, SbBool makeifneeded)
   // singlelistname is name of a part which is a list
   // idx is an integer value
 
-  if (partname == "this") return NULL; // toplevel "node" is private
+  if (partname == "this") return NULL; // toplevel entry is private
 
   SoNode * ptr = NULL;
 
   SbString s(partname.getString());
-  int start = 0, idx = 0;
+  int idx = 0;
   const SoNodekitCatalog * thiscat = this->getNodekitCatalog();
 
-  while (idx < s.getLength()) {
-    while ((idx < s.getLength()) && (s[idx] != '.') && (s[idx] != '[')) idx++;
+  // Get string token.
+  while ((idx < s.getLength()) && (s[idx] != '.') && (s[idx] != '[')) idx++;
+  SbName subpartname(s.getSubString(0, idx-1));
 
-    SbName n(s.getSubString(start, idx-1));
-    int nr = thiscat->getPartNumber(n);
-    if (nr == SO_CATALOG_NAME_NOT_FOUND) {
-      // Starts at index 1 to skip toplevel ``this'' part.
-      for (int i = 1; i < thiscat->getNumEntries(); i++) {
-        if (thiscat->getType(i).isDerivedFrom(SoBaseKit::getClassTypeId())) {
-          assert(0 && "search in nested nodekits missing");
+  int nr = thiscat->getPartNumber(subpartname);
+  if (nr == SO_CATALOG_NAME_NOT_FOUND) {
+    SoTypeList tl;
+    // Starts at index 1 to skip toplevel ``this'' part.
+    for (int i = 1; i < thiscat->getNumEntries(); i++) {
+      if (thiscat->getType(i).isDerivedFrom(SoBaseKit::getClassTypeId())) {
+        if (thiscat->recursiveSearch(i, subpartname, &tl)) {
+          subpartname = thiscat->getName(i);
+          idx = 0;
+          nr = i;
         }
       }
     }
-    else {
-      if (thiscat->isList(nr)) {
-        assert(0 && "list handling in nodekits missing");
-      }
-      else {
-#if 0 // debug
-        SoDebugError::postInfo("SoBaseKit::getPart",
-                               "hit: ``%s''", n.getString());
-#endif // debug
-
-        SoSFNode * nodefield = (SoSFNode *) this->getField(n);
-        assert(nodefield);
-        ptr = nodefield->getValue();
-
-        if (!ptr && makeifneeded) {
-          // Recursively allocate parents.
-          this->getPart(thiscat->getParentName(nr), TRUE);
-
-          SoType nodetype = thiscat->getDefaultType(nr);
-          assert(nodetype.canCreateInstance());
-          ptr = (SoNode *) nodetype.createInstance();
-          nodefield->setValue(ptr);
-        }
-      }
-    }
-
-    assert(idx == s.getLength() && "only simple partnames supported yet");
   }
 
-  // FIXME: return NULL on private parts. (hey, no pun intended..)
-  // 19991127 mortene.
-  return ptr;
+  if (nr == SO_CATALOG_NAME_NOT_FOUND) {
+#if COIN_DEBUG
+    SoDebugError::postInfo("SoBaseKit::getPart",
+                           "no such part: ``%s''", subpartname.getString());
+#endif // COIN_DEBUG
+    return NULL;
+  }
+
+#if COIN_DEBUG && 1 // debug
+  SoDebugError::postInfo("SoBaseKit::getPart",
+                         "hit: ``%s''", subpartname.getString());
+#endif // debug
+
+  SbBool privateentry = !thiscat->isPublic(nr);
+
+  SoSFNode * nodefield = (SoSFNode *) this->getField(subpartname);
+  assert(nodefield && "erroneous catalog specification?");
+  ptr = nodefield->getValue();
+
+  if (!ptr) {
+    if (!makeifneeded) return NULL;
+
+    // Recursively allocate parents, while ignoring return value
+    // (because we will hit private catalog entries).
+    this->getPart(thiscat->getParentName(nr), TRUE);
+
+    SoType nodetype = thiscat->getDefaultType(nr);
+    assert(nodetype.canCreateInstance());
+    ptr = (SoNode *) nodetype.createInstance();
+    nodefield->setValue(ptr);
+
+    // FIXME: should we addChild() ptr to parent? 19991205 mortene.
+  }
+
+  if (thiscat->isList(nr) && (idx < s.getLength()) && (s[idx] == '[')) {
+    idx++;
+    // Get index number token (if any).
+    const char * startptr = s.getString() + idx;
+    char * endptr;
+    long int listindex = strtol(startptr, &endptr, 10);
+    idx += endptr - startptr;
+    if ((startptr == endptr) || (s[idx] != ']')) {
+#if COIN_DEBUG
+      SoDebugError::postInfo("SoBaseKit::getPart",
+                             "list index not properly specified");
+#endif // COIN_DEBUG
+      return NULL;
+    }
+    idx++;
+
+    // FIXME: allocate and add list node if listindex > length of
+    // list?  19991205 mortene.
+
+    ptr = ((SoNodeKitListPart *)ptr)->getChild(listindex);
+  }
+
+
+  if (idx < s.getLength()) {
+    if (!ptr) {
+#if COIN_DEBUG
+      SoDebugError::postInfo("SoBaseKit::getPart",
+                             "part ``%s'' not found", subpartname.getString());
+#endif // COIN_DEBUG
+      return NULL;
+    }
+
+    if (!ptr->getTypeId().isDerivedFrom(SoBaseKit::getClassTypeId())) {
+#if COIN_DEBUG
+      SoDebugError::postInfo("SoBaseKit::getPart",
+                             "``%s'' is not derived from SoBaseKit",
+                             ptr->getTypeId().getName().getString());
+#endif // COIN_DEBUG
+      return NULL;
+    }
+
+    if (s[idx] == '.') idx++;
+    SbName rest(s.getSubString(idx, s.getLength()-1));
+    return ((SoBaseKit *)ptr)->getPart(rest, makeifneeded);
+  }
+
+  return privateentry ? NULL : ptr;
 }
 
 /*!
