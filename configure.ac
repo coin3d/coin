@@ -74,17 +74,7 @@ AC_SUBST([RFC822_DATE])
 SIM_AC_ISO8601_DATE([coin_configure_date])
 AC_SUBST([coin_configure_date])
 
-AC_ARG_ENABLE([msvcdsp],
-  [AC_HELP_STRING([--enable-msvcdsp], [build .dsp, not library])],
-  [case $enableval in
-  no | false) sim_ac_make_dsp=false ;;
-  *)          sim_ac_make_dsp=true ;;
-  esac],
-  [sim_ac_make_dsp=false])
-
-if $sim_ac_make_dsp; then
-  enable_dependency_tracking=no
-fi
+SIM_AC_MSVC_DSP_ENABLE_OPTION
 
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
 # compiling with it and to generate an MSWindows .dll file.
@@ -1454,83 +1444,8 @@ fi
 
 AC_SUBST([COIN_COMPILER])
 
-# **************************************************************************
-# Microsoft Developer Studio Project files
 
-COIN_DSP_LIBDIRS=
-COIN_DSP_LIBS=
-COIN_DSP_INCS=
-COIN_DSP_DEFS=
-
-if $sim_ac_make_dsp; then
-  SIM_AC_CONFIGURATION_SETTING([Coin build type], [msvc .dsp])
-
-  # -DHAVE_CONFIG_H is set up in $DEFS too late for use to use, and some
-  # include directives are set up in the Makefile.am files
-  for arg in -DHAVE_CONFIG_H -I$coin_build_dir -I$coin_build_dir/include -I$coin_src_dir/include $CPPFLAGS $LDFLAGS $LIBS; do
-    case $arg in
-    -L* )
-      # libdir=`echo $arg | cut -c3-`
-      # libdir=`cygpath -w "$libdir" 2>/dev/null || echo "$libdir"`
-      # COIN_DSP_LIBDIRS="$COIN_DSP_LIBDIRS /? \"$libdir\""
-      # FIXME: there is no /L-option to feed to the linker - $LIB is used
-      # at linktime, so the libs must be in such a location already...
-      ;;
-    -l* )
-      libname=`echo $arg | cut -c3-`
-      if test x"$COIN_DSP_LIBS" = x""; then
-        COIN_DSP_LIBS="$libname.lib"
-      else
-        COIN_DSP_LIBS="$COIN_DSP_LIBS $libname.lib"
-      fi
-      ;;
-    -I* )
-      incdir=`echo $arg | cut -c3-`
-      incdir=`cygpath -w "$incdir" 2>/dev/null || echo "$incdir"`
-      if test x"$COIN_DSP_INCS" = x""; then
-        COIN_DSP_INCS="/I \"$incdir\""
-      else
-        COIN_DSP_INCS="$COIN_DSP_INCS /I \"$incdir\""
-      fi
-      ;;
-    -DCOIN_DEBUG* | -DNDEBUG )
-      # Defines that vary between release/debug configurations can't be
-      # set up dynamically in COIN_DSP_DEFS - they must be static in the
-      # gendsp.sh script.  We therefore catche them here so we can ignore
-      # checking for them below.
-      ;;
-    -D*=* | -D* )
-      define=`echo $arg | cut -c3-`
-      if test x"$COIN_DSP_DEFS" = x""; then
-        COIN_DSP_DEFS="/D \"$define\""
-      else
-        COIN_DSP_DEFS="$COIN_DSP_DEFS /D \"$define\""
-      fi
-      ;;
-    esac
-  done
-
-  CC=$coin_src_dir/cfg/m4/gendsp.sh
-  CXX=$coin_src_dir/cfg/m4/gendsp.sh
-  CXXLD=$coin_src_dir/cfg/m4/gendsp.sh
-  # Yes, this is totally bogus stuff, but don't worry about it.  As long
-  # as gendsp.sh recognizes it...  20030219 larsa
-  CPPFLAGS="$CPPFLAGS -Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
-  LDFLAGS="$LDFLAGS -Wl,-Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
-  LIBFLAGS="$LIBFLAGS -o coin$COIN_MAJOR_VERSION.so.0"
-
-  # this can't be set up at the point the libtool script is generated
-  mv libtool libtool.bak
-  sed -e "s%^CC=\"gcc\"%CC=\"$coin_src_dir/cfg/m4/gendsp.sh\"%" \
-      -e "s%^CC=\".*/wrapmsvc.exe\"%CC=\"$coin_src_dir/cfg/m4/gendsp.sh\"%" \
-      <libtool.bak >libtool
-  rm -f libtool.bak
-  chmod 755 libtool
-fi
-
-AC_SUBST([COIN_DSP_LIBS])
-AC_SUBST([COIN_DSP_INCS])
-AC_SUBST([COIN_DSP_DEFS])
+SIM_AC_MSVC_DSP_SETUP([COIN], [Coin], [coin])
 
 # **************************************************************************
 
