@@ -56,15 +56,6 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#ifdef HAVE_UNISTD_H
-#include <unistd.h> // STDERR_FILENO
-#endif // HAVE_UNISTD_H
-
-#ifndef STDERR_FILENO
-// stderr should always be on file descriptor 2, according to POSIX.
-#define STDERR_FILENO 2
-#endif // STDERR_FILENO
-
 
 SoType SoError::classTypeId;
 SoErrorCB * SoError::callback = NULL; // make use of default cc_error handler
