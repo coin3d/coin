@@ -35,7 +35,7 @@
   subclasses within our scene graph.
 
   Note that the viewer components of the GUI glue libraries of Coin
-  (SoXt, SoQt, SoBe, etc) will automatically insert a camera into a
+  (SoXt, SoQt, SoWin, etc) will automatically insert a camera into a
   scene graph is none has been defined.
 */
 
@@ -67,7 +67,7 @@
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
+#endif // HAVE_CONFIG_H
 
 #include "../misc/GLWrapper.h"
 
@@ -75,14 +75,13 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-// FIXME: should document the enum values. 20000310 mortene.
+
 /*!
   \enum SoCamera::ViewportMapping
 
   Enumerates the available possibilities for how the render frame
   should map the viewport.
 */
-
 
 /*!
   \var SoSFEnum SoCamera::viewportMapping
@@ -110,20 +109,42 @@
 /*!
   \var SoSFFloat SoCamera::nearDistance
 
-  Distance from camera position to the near clipping plane. Defaults
-  to 1.0.
+  Distance from camera position to the near clipping plane in the
+  camera's view volume.
 
-  The default behavior of the GUI viewer components is to
-  automatically update this value for the scene camera according to
-  the scene bounding box. Ditto for the far clipping plane.
+  Default value is 1.0.  Value must be larger than 0.0, or it will not
+  be possible to construct a valid viewing volume (for perspective
+  rendering, at least).
+
+  If you use one of the viewer components from the So[Xt|Qt|Win|Gtk]
+  GUI libraries provided by Systems in Motion, they will automatically
+  update this value for the scene camera according to the scene
+  bounding box. Ditto for the far clipping plane.
+
+  \sa SoCamera::farDistance
 */
 /*!
   \var SoSFFloat SoCamera::farDistance
 
-  Distance from camera position to the far clipping plane. Defaults to
-  10.0.
+  Distance from camera position to the far clipping plane in the
+  camera's view volume.
 
-  See also documentation of SoCamera::nearDistance.
+  Default value is 10.0.  Must be larger than the
+  SoCamera::nearDistance value, or it will not be possible to
+  construct a valid viewing volume.
+
+  Note that the range [nearDistance, farDistance] decides the dynamic
+  range of the Z-buffer in the underlying polygon-rendering
+  rasterizer.  What this means is that if the near and far clipping
+  planes of the camera are wide apart, the possibility of visual
+  artifacts will increase. The artifacts will manifest themselves in
+  the form of flickering of primitives close in depth.
+
+  It is therefore a good idea to keep the near and far clipping planes
+  of your camera(s) as closely fitted around the geometry of the
+  scenegraph as possible.
+
+  \sa SoCamera::nearDistance, SoPolygonOffset
 */
 /*!
   \var SoSFFloat SoCamera::focalDistance
@@ -318,6 +339,9 @@ SoCamera::pointAt(const SbVec3f & targetpoint, const SbVec3f & upvector)
   this->lookAt(dir, upvector);
 }
 
+// FIXME: should collect common code from the two viewAll() methods
+// below. 20010824 mortene.
+
 /*!
   Position the camera so that all geometry of the scene from \a sceneroot
   is contained in the view volume of the camera, while keeping the
@@ -333,14 +357,19 @@ SoCamera::viewAll(SoNode * const sceneroot, const SbViewportRegion & vpregion,
   SoGetBoundingBoxAction action(vpregion);
   action.apply(sceneroot);
   SbBox3f box = action.getBoundingBox();
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoCamera::viewAll",
                          "bbox: <%f %f %f>, <%f %f %f>\n",
                          box.getMin()[0], box.getMin()[1], box.getMin()[2],
                          box.getMax()[0], box.getMax()[1], box.getMax()[2]);
 #endif // debug
-  this->viewBoundingBox(box.isEmpty() ? SbBox3f(.0f, .0f, .0f, .0f, .0f, .0f) : box,
-                        this->aspectRatio.getValue(), slack);
+
+  // Only check for "flagged" emptiness and don't use
+  // SbBox3f::hasVolume(), as we *can* handle flat boxes (in all
+  // dimensions).
+  if (box.isEmpty()) { return; }
+
+  this->viewBoundingBox(box, this->aspectRatio.getValue(), slack);
 }
 
 /*!
@@ -357,8 +386,13 @@ SoCamera::viewAll(SoPath * const path, const SbViewportRegion & vpregion,
   SoGetBoundingBoxAction action(vpregion);
   action.apply(path);
   SbBox3f box = action.getBoundingBox();
-  this->viewBoundingBox(box.isEmpty() ? SbBox3f(.0f, .0f, .0f, .0f, .0f, .0f) : box,
-                        this->aspectRatio.getValue(), slack);
+
+  // Only check for "flagged" emptiness and don't use
+  // SbBox3f::hasVolume(), as we *can* handle flat boxes (in all
+  // dimensions).
+  if (box.isEmpty()) { return; }
+
+  this->viewBoundingBox(box, this->aspectRatio.getValue(), slack);
 }
 
 /*!

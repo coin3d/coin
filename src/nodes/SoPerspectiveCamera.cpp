@@ -106,9 +106,11 @@ SoPerspectiveCamera::viewBoundingBox(const SbBox3f & box, float aspect,
                                      float slack)
 {
 #if COIN_DEBUG
+  // Only check for "flagged" emptiness, and don't use
+  // SbBox3f::hasVolume(), as we *can* handle flat boxes.
   if (box.isEmpty()) {
     SoDebugError::postWarning("SoPerspectiveCamera::viewBoundingBox",
-                              "bounding box empty");
+                              "bounding box is empty");
     return;
   }
 #endif // COIN_DEBUG
@@ -126,7 +128,6 @@ SoPerspectiveCamera::viewBoundingBox(const SbBox3f & box, float aspect,
   SbSphere bs;
   bs.circumscribe(box);
   float radius = bs.getRadius();
-
 
   // Make sure that everything will still be inside the viewing volume
   // even if the aspect ratio "favorizes" width over height.
