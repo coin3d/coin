@@ -1568,3 +1568,38 @@
 
 =====================================================================
 
+052 MSWin dependency walker gives surprising results.
+
+    We have a report that Coin and SoQt configure with
+    --with-msvcrt=multithread-dynamic-debug will still have a
+    dependency on *both* msvcrtd.dll and msvcrt.dll.
+
+    Should investigate closer whether this is to be expected or not,
+    and if yes, how this can happen.
+
+    20030122 mortene.
+
+=====================================================================
+
+053 SoTransformerManip problem with side faces.
+
+    To reproduce, load this simple model into a viewer:
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    #Inventor V2.1 ascii
+    
+    TransformerManip {
+    }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+
+    ..then click and drag on the sides -- this works as expected, the
+    manip translates. But when dragging and then holding down the
+    SHIFT key, instead of locking translation to one axis, it
+    completely bugs out.
+
+    The really weird thing is that this does _not_ happen with the
+    SoTransformerDragger.
+
+    20030123 mortene.
+
+=====================================================================
