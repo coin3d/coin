@@ -49,6 +49,8 @@
 
 #ifndef HAVE_GLX
 
+/* Dummy versions of the functions, when built without GLX: */
+
 void glxglue_init(cc_glglue * w)
 {
   w->glx.version.major = -1;
@@ -71,6 +73,8 @@ void * glxglue_context_create_offscreen(unsigned int width, unsigned int height)
 SbBool glxglue_context_make_current(void * ctx) { assert(FALSE); return FALSE; }
 void glxglue_context_reinstate_previous(void * ctx) { assert(FALSE); }
 void glxglue_context_destruct(void * ctx) { assert(FALSE); }
+
+SbBool glxglue_context_pbuffer_max(void * ctx, unsigned int * lims) { assert(FALSE); return FALSE; }
 
 #else /* HAVE_GLX */
 
@@ -122,8 +126,11 @@ static SbBool (* glxglue_context_create)(struct glxglue_contextdata * context) =
 typedef void * COIN_GLXFBConfig;
 typedef COIN_GLXFBConfig * (APIENTRY * COIN_PFNGLXCHOOSEFBCONFIG)(Display * dpy, int screen, const int * attrib_list, int * nelements);
 typedef GLXContext (APIENTRY * COIN_PFNGLXCREATENEWCONTEXT)(Display * dpy, COIN_GLXFBConfig config, int render_type, GLXContext share_list, Bool direct);
+typedef int (APIENTRY * COIN_PFNGLXGETFBCONFIGATTRIB)(Display * dpy, COIN_GLXFBConfig config, int attribute, int * value);
+					   
 static COIN_PFNGLXCHOOSEFBCONFIG glxglue_glXChooseFBConfig;
 static COIN_PFNGLXCREATENEWCONTEXT glxglue_glXCreateNewContext;
+static COIN_PFNGLXGETFBCONFIGATTRIB glxglue_glXGetFBConfigAttrib;
 
 typedef XID COIN_GLXPbuffer;
 
@@ -366,6 +373,7 @@ glxglue_resolve_symbols(cc_glglue * w)
 
   glxglue_glXChooseFBConfig = NULL;
   glxglue_glXCreateNewContext = NULL;
+  glxglue_glXGetFBConfigAttrib = NULL;
 
   env = coin_getenv("COIN_GLXGLUE_NO_GLX13_PBUFFERS");
   glx13pbuffer = (env == NULL) || (atoi(env) < 1);
@@ -374,12 +382,14 @@ glxglue_resolve_symbols(cc_glglue * w)
   if (glx13pbuffer && cc_glglue_glxversion_matches_at_least(w, 1, 3)) {
     glxglue_glXChooseFBConfig = (COIN_PFNGLXCHOOSEFBCONFIG)PROC(glXChooseFBConfig);
     glxglue_glXCreateNewContext = (COIN_PFNGLXCREATENEWCONTEXT)PROC(glXCreateNewContext);
+    glxglue_glXGetFBConfigAttrib = (COIN_PFNGLXGETFBCONFIGATTRIB)PROC(glXGetFBConfigAttrib);
   }
 #endif /* GLX_VERSION_1_3 */
 #ifdef GLX_SGIX_fbconfig
   if (!glxglue_glXChooseFBConfig && glxglue_ext_supported(w, "GLX_SGIX_fbconfig")) {
     glxglue_glXChooseFBConfig = (COIN_PFNGLXCHOOSEFBCONFIG)PROC(glXChooseFBConfigSGIX);
     glxglue_glXCreateNewContext = (COIN_PFNGLXCREATENEWCONTEXT)PROC(glXCreateContextWithConfigSGIX);
+    glxglue_glXGetFBConfigAttrib = (COIN_PFNGLXGETFBCONFIGATTRIB)PROC(glXGetFBConfigAttribSGIX);
   }
 #endif /* GLX_SGIX_fbconfig */
 
@@ -570,7 +580,12 @@ struct glxglue_contextdata {
   Display * storeddisplay;
   GLXDrawable storeddrawable;
   GLXContext storedcontext;
+
   SbBool pbuffer;
+  /* the next two are only valid if the offscreen context is a
+     pbuffer: */
+  Display * display;
+  COIN_GLXFBConfig fbconfig;
 };
 
 static struct glxglue_contextdata *
@@ -734,6 +749,10 @@ glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
   fbc = glxglue_glXChooseFBConfig(dpy, DefaultScreen(dpy), attrs, &fbc_cnt);
   assert(fbc_cnt >= 0);
   if ((fbc_cnt == 0) || (fbc == NULL)) {
+    /* FIXME: we have had reports of this hitting. Is it possible to
+       improve the selection technique so we can be absolutely sure no
+       usable fb-config is available, e.g. by iterating over all
+       available ones? 20040706 mortene. */
     cc_debugerror_postwarning("glxglue_context_create_pbuffer",
                               "glXChooseFBConfig() gave no valid configs");
     return FALSE;
@@ -753,6 +772,9 @@ glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
   context->glxcontext = glxglue_glXCreateNewContext(dpy, fbc[0],
                                                     GLX_RGBA_TYPE, NULL, TRUE);
 
+  /* must store this before freeing the array */
+  context->fbconfig = fbc[0];
+
   /* free the config list */
   XFree(fbc);
 
@@ -771,9 +793,12 @@ glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
   /* assign our pbuffer to glxpixmap */
   context->glxpixmap = pb;
   context->pbuffer = TRUE;
+  context->display = dpy;
 
   return TRUE;
 }
+
+/* ********************************************************************** */
 
 /* Create and return a handle to an offscreen OpenGL buffer.
 
@@ -944,5 +969,44 @@ glxglue_context_destruct(void * ctx)
 
   glxglue_contextdata_cleanup(context);
 }
+
+/* ********************************************************************** */
+
+/* If ctx does not point at a pbuffer context, but rather a "normal"
+   offscreen context, it will return FALSE.
+
+   Upon other error conditions, FALSE will also be returned.
+*/
+SbBool
+glxglue_context_pbuffer_max(void * ctx, unsigned int * lims)
+{
+  int returnval, attribval, i;
+  const int attribs[] = {
+    GLX_MAX_PBUFFER_WIDTH, GLX_MAX_PBUFFER_HEIGHT, GLX_MAX_PBUFFER_PIXELS 
+  };
+  struct glxglue_contextdata * context = (struct glxglue_contextdata *)ctx;
+
+  if (!context->pbuffer) { return FALSE; }
+  if (!glxglue_glXGetFBConfigAttrib) { return FALSE; }
+
+  for (i = 0; i < 3; i++) {
+    returnval = glxglue_glXGetFBConfigAttrib(context->display, 
+                                             context->fbconfig,
+                                             attribs[i],
+                                             &attribval);
+    if (returnval != Success) {
+      cc_debugerror_post("glxglue_context_pbuffer_max",
+                         "glXGetFBConfigAttrib() failed, "
+                         "returned error code %d", returnval);
+      return FALSE;
+    }
+    assert(attribval >= 0);
+    lims[i] = (unsigned int)attribval;
+  }
+
+  return TRUE;
+}
+
+/* ********************************************************************** */
 
 #endif /* HAVE_GLX */

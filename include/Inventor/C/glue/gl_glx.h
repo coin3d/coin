@@ -45,6 +45,8 @@ SbBool glxglue_context_make_current(void * ctx);
 void glxglue_context_reinstate_previous(void * ctx);
 void glxglue_context_destruct(void * ctx);
 
+SbBool glxglue_context_pbuffer_max(void * ctx, unsigned int * lims);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

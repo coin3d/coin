@@ -3780,10 +3780,11 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
 #if defined(HAVE_WGL)
     ok = wglglue_context_pbuffer_max(ctx, pbufmax);
 #elif defined(HAVE_GLX)
-    /* FIXME: implement check on GLX_MAX_PBUFFER_WIDTH,
-       GLX_MAX_PBUFFER_HEIGHT, and GLX_MAX_PBUFFER_PIXELS. 20030812 mortene. */
+    ok = glxglue_context_pbuffer_max(ctx, pbufmax);
 #elif defined(HAVE_AGL)
-    /* FIXME: similar limits probably exists for AGL. 20040713 mortene. */
+    /* FIXME: implement check on max pbuffer width, height and number
+       of pixels for AGL, if any such limits are imposed there.
+       20040713 mortene. */
 #endif
     if (ok) {
       int modulo = 0;
