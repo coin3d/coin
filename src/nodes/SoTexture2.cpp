@@ -337,8 +337,10 @@ void
 SoTexture2::filenameSensorCB(void * data, SoSensor *)
 {
   SoTexture2 * thisp = (SoTexture2*) data;
+
   thisp->setReadStatus(1);
-  if (!thisp->loadFilename()) {
+  if (thisp->filename.getValue().getLength() &&
+      !thisp->loadFilename()) {
     SoDebugError::postWarning("SoTexture2::filenameSensorCB",
                               "Image file could not be read: %s",
                               thisp->filename.getValue().getString());
