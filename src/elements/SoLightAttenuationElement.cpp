@@ -140,5 +140,6 @@ SoLightAttenuationElement::init(SoState * state)
 const SbVec3f &
 SoLightAttenuationElement::getDefault()
 {
-  return SbVec3f(0.0f, 0.0f, 1.0f);
+  static SbVec3f v(0.0f, 0.0f, 1.0f);
+  return v;
 }
