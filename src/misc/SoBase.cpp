@@ -1154,8 +1154,19 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
       // FIXME: temporary code to test VRML2 export.
       // pederb, 20020521
       SbString nodename(this->getFileFormatName());
-      SbString substring = nodename.getSubString(4);
-      out->write(substring.getString());
+      if (nodename.getLength() > 4) {
+        SbString vrml = nodename.getSubString(0, 3);
+        if (vrml == "VRML") {
+          SbString substring = nodename.getSubString(4);
+          out->write(substring.getString());
+        }
+        else {
+          out->write(nodename.getString());
+        }
+      }
+      else {
+        out->write(nodename.getString());
+      }
     }
     else {
       out->write(this->getFileFormatName());
