@@ -282,10 +282,7 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
   
   for (i = 0; i < n; i++) {
 
-    float xpos = 0.0f;
-
-    
-   
+    float xpos = 0.0f;   
     float stretchlength = 0.0f;
     if (i < this->length.getNum()) 
       stretchlength = this->length[i];
@@ -390,9 +387,9 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
       const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
       const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, PRIVATE(this)->fontspec);
 
-      float width = cc_glyph3d_getwidth(glyph);
-      if (width == 0) 
-        width = 1.0f / 3.0f; // SPACE width is set to fontsize/3
+      float advancex, advancey;
+      cc_glyph3d_getadvance(glyph, &advancex, &advancey);
+
 
       // Kerning adjustments
       if (lastglyph != NULL) {
@@ -410,7 +407,7 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
 
       if (PRIVATE(this)->horizontaltext) {
         if (!PRIVATE(this)->lefttorighttext) {// Right to left text.
-          xpos -= (width + stretchfactor) * compressfactor * PRIVATE(this)->textsize;
+          xpos -= (advancex + stretchfactor) * compressfactor * PRIVATE(this)->textsize;
 
           if (lastglyph != NULL) {
             float kerningx = 0.0f;
@@ -450,7 +447,7 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
           ypos += PRIVATE(this)->textsize;
         
       } else if (PRIVATE(this)->lefttorighttext) {
-        xpos += (width + stretchfactor) * compressfactor * PRIVATE(this)->textsize;
+        xpos += (advancex + stretchfactor) * compressfactor * PRIVATE(this)->textsize;
       }
     }
 
@@ -920,6 +917,11 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
     float stringwidth = 0.0f;
     float glyphwidth = 0.0f;
     const float * maxbbox;
+    float kerningx = 0;
+    float kerningy = 0;
+    float advancex = 0;
+    float advancey = 0;
+    cc_glyph3d * prevglyph = NULL;
     this->maxglyphbbox.makeEmpty();
 
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
@@ -935,12 +937,13 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
       this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[0] * this->fontspec->size, 0));
       this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[1] * this->fontspec->size, 0));
 
-      glyphwidth = cc_glyph3d_getwidth(glyph);
-      if (glyphwidth == 0)
-        glyphwidth = 1.0f / 3.0f; // SPACE width is always == 0.
-
-      stringwidth += glyphwidth;
-            
+      if (strcharidx > 0) 
+        cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);          
+      cc_glyph3d_getadvance(glyph, &advancex, &advancey);
+  
+      stringwidth += (advancex + kerningx);
+      prevglyph = glyph;
+          
     }
     this->glyphwidths.append(stringwidth);
   }

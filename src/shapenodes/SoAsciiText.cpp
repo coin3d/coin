@@ -96,7 +96,6 @@ public:
   SoAsciiTextP(SoAsciiText * master) : master(master) { }
   SoAsciiText * master;
 
-  float getWidth(const int idx, const float fontsize);
   void setUpGlyphs(SoState * state, const cc_font_specification * fontspec, SoAsciiText * textnode);
 
   SbList <float> glyphwidths;
@@ -235,9 +234,6 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
       const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
       const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, &fontspec);
 
-      float width = cc_glyph3d_getwidth(glyph);
-      if (width == 0) 
-        width = (1.0f / 3.0f); // setting spacesize to fontsize/3
       const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
       const int * ptr = cc_glyph3d_getfaceindices(glyph);
 
@@ -260,10 +256,10 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
         glVertex3f(v2[0] * fontspec.size + xpos, v2[1] * fontspec.size + ypos, 0.0f);
       }
 
-      // FIXME: next charpos should be based on 'advancement' and
-      // 'kerning' from the font, not just glyph-width. (20030916
-      // handegar)
-      xpos += width * fontspec.size;
+      // FIXME: Add proper support for kerning aswell. (20030923 handegar)
+      float advancex, advancey;
+      cc_glyph3d_getadvance(glyph, &advancex, &advancey);
+      xpos += advancex * fontspec.size;
 
     }
     ypos -= fontspec.size * this->spacing.getValue();
@@ -543,7 +539,6 @@ SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspe
   for (int i = 0; i < textnode->string.getNum(); i++) {
     const unsigned int length = textnode->string[i].getLength();
     float stringwidth = 0.0f;
-    float glyphwidth = 0.0f;
     const float * maxbbox;
     this->maxglyphbbox.makeEmpty();
 
@@ -561,17 +556,13 @@ SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspe
       this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[0] * fontspec->size, 0));
       this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[1] * fontspec->size, 0));
 
-      glyphwidth = cc_glyph3d_getwidth(glyph);
-      if (glyphwidth == 0)
-        glyphwidth = 1.0f / 3.0f;
-
-      stringwidth += glyphwidth * fontspec->size;
-           
+      this->glyphwidths.append(cc_glyph3d_getwidth(glyph));
+   
       if (strcharidx > 0) 
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);          
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
-      this->glyphwidths.append(advancex + kerningx);
-      
+
+      stringwidth += (advancex + kerningx) * fontspec->size;
       prevglyph = glyph;
     }
 

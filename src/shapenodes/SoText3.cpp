@@ -521,11 +521,6 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
       // negative when casted to integer size.
       const uint32_t glyphidx = (const unsigned char) PUBLIC(this)->string[i][strcharidx];
       const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, fontspec);
-      
-      float glyphwidth = cc_glyph3d_getwidth(glyph);
-      if (glyphwidth == 0) 
-        glyphwidth = 1.0f/3.0f; // SPACE width is set to 'font size'/3
-      
       const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
 
       if (part != SoText3::SIDES) {  // FRONT & BACK
@@ -692,7 +687,12 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
           }
         }
       }
-      xpos += glyphwidth * fontspec->size;
+
+      // FIXME: Add proper support for kerning aswell. (20030923 handegar)
+      float advancex, advancey;
+      cc_glyph3d_getadvance(glyph, &advancex, &advancey);
+      xpos += advancex * fontspec->size;
+
     }
     ypos -= fontspec->size * PUBLIC(this)->spacing.getValue();
   }
@@ -801,10 +801,6 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
       // negative when casted to integer size.      
       const uint32_t glyphidx = (const unsigned char) PUBLIC(this)->string[i][strcharidx];
       const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, fontspec);
-
-      float glyphwidth = cc_glyph3d_getwidth(glyph);
-      if (glyphwidth == 0) 
-        glyphwidth = 1.0f/3.0f; // SPACE width is set to 'font size'/3
     
       const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
       detail.setCharacterIndex(strcharidx);
@@ -991,7 +987,12 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
           }
         }
       }
-      xpos += glyphwidth * fontspec->size;
+
+      // FIXME: Add proper support for kerning aswell. (20030923 handegar)
+      float advancex, advancey;
+      cc_glyph3d_getadvance(glyph, &advancex, &advancey);
+      xpos += advancex * fontspec->size;
+
     }
     ypos -= fontspec->size * PUBLIC(this)->spacing.getValue();
   }
@@ -1040,7 +1041,12 @@ SoText3P::setUpGlyphs(SoState * state, const cc_font_specification * fontspec, S
 
     const unsigned int length = textnode->string[i].getLength(); 
     float stringwidth = 0.0f;
-    float glyphwidth;
+    float kerningx = 0;
+    float kerningy = 0;
+    float advancex = 0;
+    float advancey = 0;
+    cc_glyph3d * prevglyph = NULL;
+
     const float * maxbbox;
     this->maxglyphbbox.makeEmpty();
 
@@ -1051,18 +1057,20 @@ SoText3P::setUpGlyphs(SoState * state, const cc_font_specification * fontspec, S
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
       const uint32_t glyphidx = (const unsigned char) textnode->string[i][strcharidx];
-      const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, fontspec);
+      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, fontspec);
       assert(glyph);
 
       maxbbox = cc_glyph3d_getboundingbox(glyph); // Get max height
       this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[0] * fontspec->size, 0));
       this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[1] * fontspec->size, 0));
+      
+      if (strcharidx > 0) 
+        cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);          
+      cc_glyph3d_getadvance(glyph, &advancex, &advancey);
+      
+      stringwidth += (advancex + kerningx) * fontspec->size;
+      prevglyph = glyph;
 
-      glyphwidth = cc_glyph3d_getwidth(glyph);
-      if (glyphwidth == 0)
-        glyphwidth = 1.0f/3.0f; // SPACE width is always == 0.
-
-      stringwidth += glyphwidth * fontspec->size;
     }
     this->widths.append(stringwidth);
   }
