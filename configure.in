@@ -366,6 +366,10 @@ AC_SUBST(coin_src_dir)
 SIM_AC_DOBACKSLASH(coin_include_dir,$includedir)
 AC_SUBST(coin_include_dir)
 
+# Set coin_lib_dir so we can change CoinSDK.iwz
+SIM_AC_DOBACKSLASH(coin_lib_dir,$libdir)
+AC_SUBST(coin_lib_dir)
+
 AC_OUTPUT([
         coin-config
         Makefile

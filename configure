@@ -4826,6 +4826,12 @@ eval "coin_include_dir=\"`echo $includedir | sed -e 's%\\/%\\\\%g'`\""
 
 
 
+# Set coin_lib_dir so we can change CoinSDK.iwz
+
+eval "coin_lib_dir=\"`echo $libdir | sed -e 's%\\/%\\\\%g'`\""
+
+
+
 trap '' 1 2 15
 cat >confcache <<\EOF
 # This file is a shell script that caches the results of configure
@@ -5135,6 +5141,7 @@ s%@BUILD_EXAMPLES_FALSE@%$BUILD_EXAMPLES_FALSE%;t t
 s%@coin_build_dir@%$coin_build_dir%;t t
 s%@coin_src_dir@%$coin_src_dir%;t t
 s%@coin_include_dir@%$coin_include_dir%;t t
+s%@coin_lib_dir@%$coin_lib_dir%;t t
 CEOF
 
 EOF
