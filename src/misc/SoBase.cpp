@@ -1722,7 +1722,6 @@ SoBase::readBaseInstance(SoInput * in, const SbName & classname,
 {
   assert(classname != "");
 
-  SbBool retval = TRUE;
   SbBool needupgrade = FALSE;
 
   // first, try creating an upgradable node, based on the version of
@@ -1737,107 +1736,109 @@ SoBase::readBaseInstance(SoInput * in, const SbName & classname,
     base = SoBase::createInstance(in, classname);
   }
 
-  if (base) {
-    if (!(!refname)) {
-      // Set up new entry in reference hash -- with full name.
-      in->addReference(refname, base);
+  if (!base) { goto failed; }
 
-      // Remove reference counter suffix, if any (i.e. "goldsphere+2"
-      // becomes "goldsphere").
-      SbString instancename = refname.getString();
-      const char * strp = instancename.getString();
-      const char * occ = strstr(strp, SoBase::refwriteprefix->getString());
+  if (!(!refname)) {
+    // Set up new entry in reference hash -- with full name.
+    in->addReference(refname, base);
 
-      if (occ != strp) { // They will be equal if the name is only a refcount.
-        if (occ) instancename = instancename.getSubString(0, occ - strp - 1);
-        // Set name identifier for newly created SoBase instance.
-        base->setName(instancename);
-      }
+    // Remove reference counter suffix, if any (i.e. "goldsphere+2"
+    // becomes "goldsphere").
+    SbString instancename = refname.getString();
+    const char * strp = instancename.getString();
+    const char * occ = strstr(strp, SoBase::refwriteprefix->getString());
+
+    if (occ != strp) { // They will be equal if the name is only a refcount.
+      if (occ) instancename = instancename.getSubString(0, occ - strp - 1);
+      // Set name identifier for newly created SoBase instance.
+      base->setName(instancename);
     }
+  }
 
-    // The "flags" argument to readInstance is only checked during
-    // import from binary format files.
+  // The "flags" argument to readInstance is only checked during
+  // import from binary format files.
+  {
     unsigned short flags = 0;
-    if (in->isBinary()) {
-      if (in->getIVVersion() > 2.0f) retval = in->read(flags);
+    if (in->isBinary() && (in->getIVVersion() > 2.0f)) {
+      const SbBool ok = in->read(flags);
+      if (!ok) { goto failed; }
     }
 
-    if (retval) retval = base->readInstance(in, flags);
-
-    // Make sure global fields are unique
-    if (retval && base->isOfType(SoGlobalField::getClassTypeId())) {
-      SoGlobalField * globalfield = (SoGlobalField *)base;
-
-      int numfields = globalfield->getFieldData()->getNumFields();
-      if (numfields != 1) {
-        SoReadError::post(in, "Global fields can only contain one field, not %d", numfields);
-
-        retval = FALSE;
-        goto postprocess;
-      }
-
-
-      // The global field is removed from the global field list because we have to
-      // check if there is already a global field in the list with the same name.
-      // This is because SoGlobalField's constructor automatically adds itself
-      // to the list of global fields without checking if the field already exists.
-      SoGlobalField::removeGlobalFieldContainer(globalfield);
-      
-      // See if the global field is in the database already
-      SoField * f = SoDB::getGlobalField(globalfield->getName());
-      
-      if (f) {
-        SoField * basefield = globalfield->getFieldData()->getField(globalfield, 0);
-          
-        assert(basefield && "base (SoGlobalField) does not appear to have a field, this should be impossible");
-        
-        if (!f->isOfType(basefield->getClassTypeId())) {
-          SoReadError::post(in, "Types of equally named global fields do not match: existing: %s, new: %s", 
-                              f->getTypeId().getName().getString(), basefield->getTypeId().getName().getString());
-          
-          retval = FALSE;
-          goto postprocess;
-        }
-        
-        SoGlobalField * container = (SoGlobalField *)f->getContainer();
-        container->copyFieldValues(globalfield, TRUE); // Assign new global field values to old global field
-          
-        base->ref(); base->unref(); // remove newly made SoGlobalField, use the previously made one instead
-        base = container; // Assign the base global field to the already loaded global field
-      }
-      else {
-        // The global field was first removed to check the existence of an
-        // equal named item. If no such global field exists, the removed
-        // global field has to be added again, which is done by this code:
-        SoGlobalField::addGlobalFieldContainer(globalfield);
-      }
-    }
-
-postprocess:
-
-    if (!retval) {
-      if (!(!refname)) in->removeReference(refname);
-      base->ref();
-      base->unref();
-      base = NULL;
-    }
-    else if (needupgrade) {
-      SoBase * oldbase = base;
-      oldbase->ref();
-      base = SoUpgrader::createUpgrade(oldbase);
-      assert(base && "should never happen (since needupgrade == TRUE)");
-      oldbase->unref();
-    }
-  }
-  else {
-    retval = FALSE;
+    const SbBool ok = base->readInstance(in, flags);
+    if (!ok) { goto failed; }
   }
 
-  if (retval && base->isOfType(SoProtoInstance::getClassTypeId())) {
+  // Make sure global fields are unique
+  if (base->isOfType(SoGlobalField::getClassTypeId())) {
+    SoGlobalField * globalfield = (SoGlobalField *)base;
+
+    // The global field is removed from the global field list
+    // because we have to check if there is already a global field
+    // in the list with the same name.  This is because
+    // SoGlobalField's constructor automatically adds itself to the
+    // list of global fields without checking if the field already
+    // exists.
+    SoGlobalField::removeGlobalFieldContainer(globalfield);
+      
+    // ..but first, do a sanity check on the SoGlobalField node.
+    int numfields = globalfield->getFieldData()->getNumFields();
+    if (numfields != 1) {
+      SoReadError::post(in, "Global fields can only contain one field, not %d",
+                        numfields);
+      goto failed;
+    }
+
+    // Now, see if the global field is in the database already.
+    SoField * f = SoDB::getGlobalField(globalfield->getName());
+    if (f) {
+      SoField * basefield = globalfield->getFieldData()->getField(globalfield, 0);
+      assert(basefield && "base (SoGlobalField) does not appear to have a field, this should be impossible");
+        
+      if (!f->isOfType(basefield->getClassTypeId())) {
+        SoReadError::post(in, "Types of equally named global fields do not match: existing: %s, new: %s", 
+                          f->getTypeId().getName().getString(), basefield->getTypeId().getName().getString());
+        goto failed;
+      }
+        
+      SoGlobalField * container = (SoGlobalField *)f->getContainer();
+      container->copyFieldValues(globalfield, TRUE); // Assign new global field values to old global field
+          
+      base->ref(); base->unref(); // remove newly made SoGlobalField, use the existing one instead
+      base = container; // Assign the base global field to the already loaded global field
+    }
+    else {
+      // The global field was first removed to check the existence
+      // of an equal named item. If no such global field exists, the
+      // removed global field has to be added again, which is done
+      // by this code:
+      SoGlobalField::addGlobalFieldContainer(globalfield);
+    }
+  }
+
+  if (needupgrade) {
+    SoBase * oldbase = base;
+    oldbase->ref();
+    base = SoUpgrader::createUpgrade(oldbase);
+    assert(base && "should never happen (since needupgrade == TRUE)");
+    oldbase->unref();
+  }
+
+  if (base->isOfType(SoProtoInstance::getClassTypeId())) {
     base = ((SoProtoInstance*) base)->getRootNode();
   }
 
-  return retval;
+  return TRUE;
+
+failed:
+  if (base) {
+    if (!(!refname)) { in->removeReference(refname); }
+
+    base->ref();
+    base->unref();
+    base = NULL;
+  }
+
+  return FALSE;
 }
 
 // Create a new instance of the "classname" type.
