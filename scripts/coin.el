@@ -231,7 +231,9 @@ Keywords which should be sent to this method:
 	(progn
 					; Fully automatic
 	  (coin-remove-parentheses-space)
-	  (coin-add-space-after-comma)
+          ; This proved to not be such a great idea, as it converted
+          ; character constants ',' to ', ' in SbTime.cpp.
+	  ; (coin-add-space-after-comma)
 	  (coin-add-space-after-blockstart-keyword "if")
 	  (coin-add-space-after-blockstart-keyword "while")
 	  (coin-add-space-after-blockstart-keyword "for")
