@@ -54,10 +54,6 @@
 
 // FIXME: document these properly. 20000405 mortene.
 /*!
-  \fn void SoEngine::writeOutputTypes(SoOutput * out)
-  \internal
-*/
-/*!
   \fn const SoEngineOutputData * SoEngine::getOutputData(void) const
   \internal
 */
@@ -397,8 +393,18 @@ SoEngine::getOutputDataPtr(void)
 void
 SoEngine::writeInstance(SoOutput * out)
 {
-  COIN_STUB();
+  if (this->writeHeader(out, FALSE, TRUE)) return;
   inherited::writeInstance(out);
+  this->writeFooter(out);
+}
+
+/*!
+  FIXME: doc
+*/
+void
+SoEngine::writeOutputTypes(SoOutput * out)
+{
+  COIN_STUB();
 }
 
 /*!
