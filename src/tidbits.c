@@ -618,9 +618,16 @@ coin_viewvolume_jitter(int numpasses, int curpass, const int * vpsize, float * j
   if (numpasses > 16) numpasses = 16;
   if (curpass >= numpasses) curpass = numpasses - 1;
 
-  jitter[0] = jittab[curpass*2] * 2.0f / ((float)vpsize[0]);
-  jitter[1] = jittab[curpass*2+1] * 2.0f / ((float)vpsize[1]);
-  jitter[2] = 0.0f;
+  if (numpasses < 2) {
+    jitter[0] = 0.0f;
+    jitter[1] = 0.0f;
+    jitter[2] = 0.0f;
+  }
+  else {
+    jitter[0] = jittab[curpass*2] * 2.0f / ((float)vpsize[0]);
+    jitter[1] = jittab[curpass*2+1] * 2.0f / ((float)vpsize[1]);
+    jitter[2] = 0.0f;
+  }
 }
 
 
