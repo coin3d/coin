@@ -392,12 +392,13 @@ SoToVRML2ActionP::get_current_tail(void)
 SoVRMLCoordinate *
 SoToVRML2ActionP::get_or_create_coordinate(const SbVec4f * coord4, int32_t num)
 {
-  // Convert to SbVec3f
-  SbVec3f vec3f[num];
-  for (int i=num-1; i >= 0; i--) {
-    coord4[i].getReal(vec3f[i]);
+  SbList <SbVec3f> vec3f;
+  for (int i = 0; i < num; i++) {
+    SbVec3f tmp;
+    coord4[i].getReal(tmp);
+    vec3f.append(tmp);
   }
-  return this->get_or_create_coordinate(vec3f, num);
+  return this->get_or_create_coordinate(vec3f.getArrayPtr(), num);
 }
 
 SoVRMLCoordinate *
@@ -932,7 +933,7 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
     int n = oldils->coordIndex.getNum();
     const int32_t * src = oldils->coordIndex.getValues(0);
 
-    const SbVec3f * c = coordElem->getArrayPtr3();
+    SbVec3f * c = (SbVec3f*) coordElem->getArrayPtr3();
     if (c == NULL) {
       SbVec3f * vec3f = new SbVec3f[coordElem->getNum()];
       const SbVec4f * coord4 = coordElem->getArrayPtr4();
