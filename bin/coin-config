@@ -72,12 +72,13 @@ do
     --compile)
       shift
       if test $# -eq 1; then
-        echo $compiler $CPPFLAGS $cppflags $CXXFLAGS $cxxflags -c $1 \
+        basename=`echo "$1" | sed -e 's/\.[^\.]*$//'`  # strip off extension
+        echo $compiler $CPPFLAGS $cppflags $CXXFLAGS $cxxflags -c $1 -o $basename.obj \
           | fmt -t -w76 | sed -e '$q; 1,$ s/$/ \\/'
         $compiler \
           $CPPFLAGS $cppflags \
           $CXXFLAGS $cxxflags \
-          -c $1 || exit $?
+          -c $1 -o $basename.obj || exit $?
       else
         for arg in $@; do
           $program --alternate="$alternate" --compile $arg || exit $?
@@ -107,10 +108,9 @@ do
       for arg in $@; do
         case $arg in
           *.c | *.cpp | *.cxx | *.cc | *.c++)
-            basename=`echo "$arg" | sed -e 's/\.[^\.]*$//'`
+            basename=`echo "$arg" | sed -e 's/\.[^\.]*$//'`  # strip off extension
             $program --alternate="$alternate" --compile $arg || exit $?
-            objfile=`ls $basename.o $basename.obj 2>/dev/null`
-            objs="$objs $objfile"
+            objs="$objs $basename.obj"
             ;;
           -L*)
             extraldflags="$extraldflags $arg"
