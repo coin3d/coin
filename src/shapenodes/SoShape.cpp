@@ -93,6 +93,7 @@
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbStorage.h>
+#include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
 
 /*!
@@ -147,6 +148,20 @@ public:
   static double bboxcachetimelimit;
   SoBoundingBoxCache * bboxcache;
   SbBool shouldcache;
+#ifdef COIN_THREADSAFE
+  SbMutex mutex;
+#endif // COIN_THREADSAFE
+
+  void lock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.lock();
+#endif // COIN_THREADSAFE
+  }
+  void unlock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.unlock();
+#endif // COIN_THREADSAFE
+  }
 };
 
 double SoShapeP::bboxcachetimelimit;
@@ -1108,10 +1123,12 @@ void
 SoShape::notify(SoNotList * nl)
 {
   inherited::notify(nl);
+  PRIVATE(this)->lock();
   if (PRIVATE(this)->bboxcache) {
     PRIVATE(this)->bboxcache->invalidate();
   }
   PRIVATE(this)->shouldcache = FALSE;
+  PRIVATE(this)->unlock();
 }
 
 /*!
@@ -1148,8 +1165,10 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 
   // destroy the old cache if we have one
   if (PRIVATE(this)->bboxcache) {
+    PRIVATE(this)->lock();
     PRIVATE(this)->bboxcache->unref();
     PRIVATE(this)->bboxcache = NULL;
+    PRIVATE(this)->unlock();
   }
   
   SbBool shouldcache = PRIVATE(this)->shouldcache;
@@ -1159,8 +1178,10 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     state->push();
     storedinvalid = SoCacheElement::setInvalid(FALSE);
     assert(PRIVATE(this)->bboxcache == NULL);
+    PRIVATE(this)->lock();
     PRIVATE(this)->bboxcache = new SoBoundingBoxCache(state);
     PRIVATE(this)->bboxcache->ref();
+    PRIVATE(this)->unlock();
     SoCacheElement::set(state, PRIVATE(this)->bboxcache);
   }
   SbTime begin = SbTime::getTimeOfDay();
@@ -1181,8 +1202,10 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
       state->push();
       storedinvalid = SoCacheElement::setInvalid(FALSE);
       assert(PRIVATE(this)->bboxcache == NULL);
+      PRIVATE(this)->lock();
       PRIVATE(this)->bboxcache = new SoBoundingBoxCache(state);
       PRIVATE(this)->bboxcache->ref();
+      PRIVATE(this)->unlock();
       SoCacheElement::set(state, PRIVATE(this)->bboxcache);
       box.makeEmpty();
       this->computeBBox(action, box, center);
