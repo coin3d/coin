@@ -71,6 +71,14 @@
   will be created for you.
 */
 
+/*!
+  \fn SbBool SoClipPlaneManip::replaceManip(SoPath * path, SoClipPlane * newone) const
+
+  Replaces this manipulator from the position specified by \a path
+  with \a newnode. If \a newnode is \c NULL, an SoClipPlane
+  will be created for you.
+*/
+
 /***************************************************************************/
 
 

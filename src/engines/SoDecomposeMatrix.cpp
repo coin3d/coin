@@ -21,8 +21,6 @@
   \class SoDecomposeMatrix SoDecomposeMatrix.h Inventor/engines/SoDecomposeMatrix.h
   \brief The SoDecomposeMatrix class is used to decompose a matrix into simple transformations.
   \ingroup engines
-
-  FIXME: doc
 */
 
 #include <Inventor/engines/SoDecomposeMatrix.h>
@@ -33,9 +31,9 @@
 
 SO_ENGINE_SOURCE(SoDecomposeMatrix);
 
-/*!
-  Default constructor.
-*/
+#ifndef DOXYGEN_SKIP_THIS // No need to document these.
+
+// Default constructor.
 SoDecomposeMatrix::SoDecomposeMatrix()
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoDecomposeMatrix);
@@ -88,3 +86,5 @@ SoDecomposeMatrix::evaluate()
                      set1Value(i,scaleOrientationVal));
   }
 }
+
+#endif // !DOXYGEN_SKIP_THIS

@@ -21,8 +21,6 @@
   \class SoDecomposeRotation SoDecomposeRotation.h Inventor/engines/SoDecomposeRotation.h
   \brief The SoDecomposeRotation class is used to decompose a rotation into angle and axis.
   \ingroup engines
-
-  FIXME: doc
 */
 
 #include <Inventor/engines/SoDecomposeRotation.h>
@@ -33,9 +31,9 @@
 
 SO_ENGINE_SOURCE(SoDecomposeRotation);
 
-/*!
-  Default constructor.
-*/
+#ifndef DOXYGEN_SKIP_THIS // No need to document these.
+
+// Default constructor.
 SoDecomposeRotation::SoDecomposeRotation()
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoDecomposeRotation);
@@ -78,3 +76,5 @@ SoDecomposeRotation::evaluate()
     SO_ENGINE_OUTPUT(angle,SoMFFloat,set1Value(i,angleVal));
   }
 }
+
+#endif // !DOXYGEN_SKIP_THIS

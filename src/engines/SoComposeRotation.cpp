@@ -21,8 +21,6 @@
   \class SoComposeRotation SoComposeRotation.h Inventor/engines/SoComposeRotation.h
   \brief The SoComposeRotation class is used to compose rotations from angle and axis.
   \ingroup engines
-
-  FIXME: doc
 */
 
 #include <Inventor/engines/SoComposeRotation.h>
@@ -33,8 +31,23 @@
 SO_ENGINE_SOURCE(SoComposeRotation);
 
 /*!
-  Default constructor.
+  \var SoMFVec3f SoComposeRotation::axis
+  Set of axis vectors for the output rotations.
 */
+/*!
+  \var SoMFFloat SoComposeRotation::angle
+  Set of scalar rotation values for the output rotations.
+*/
+/*!
+  \var SoEngineOutput SoComposeRotation::rotation
+
+  (SoMFRotation) Rotations generated from the angle and axis input
+  fields.
+*/
+
+
+#ifndef DOXYGEN_SKIP_THIS // No need to document these.
+
 SoComposeRotation::SoComposeRotation()
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoComposeRotation);
@@ -80,3 +93,5 @@ SoComposeRotation::evaluate()
     SO_ENGINE_OUTPUT(rotation,SoMFRotation,set1Value(i,axisVal,angleVal));
   }
 }
+
+#endif // !DOXYGEN_SKIP_THIS

@@ -30,9 +30,9 @@
 
 SO_ENGINE_SOURCE(SoComposeRotationFromTo);
 
-/*!
-  Default constructor.
-*/
+#ifndef DOXYGEN_SKIP_THIS // No need to document these.
+
+// Default constructor.
 SoComposeRotationFromTo::SoComposeRotationFromTo(void)
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoComposeRotationFromTo);
@@ -71,3 +71,5 @@ SoComposeRotationFromTo::evaluate(void)
     SO_ENGINE_OUTPUT(rotation, SoMFRotation, set1Value(i, SbRotation(fromVec, toVec)));
   }
 }
+
+#endif // !DOXYGEN_SKIP_THIS

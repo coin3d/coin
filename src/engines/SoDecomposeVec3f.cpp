@@ -21,8 +21,6 @@
   \class SoDecomposeVec3f SoDecomposeVec3f.h Inventor/engines/SoDecomposeVec3f.h
   \brief The SoDecomposeVec3f class is used to decompose 3D vectors into three floats.
   \ingroup engines
-
-  FIXME: doc
 */
 
 #include <Inventor/engines/SoDecomposeVec3f.h>
@@ -31,9 +29,8 @@
 
 SO_ENGINE_SOURCE(SoDecomposeVec3f);
 
-/*!
-  Default constructor.
-*/
+#ifndef DOXYGEN_SKIP_THIS // No need to document these.
+
 SoDecomposeVec3f::SoDecomposeVec3f()
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoDecomposeVec3f);
@@ -76,3 +73,5 @@ SoDecomposeVec3f::evaluate()
     SO_ENGINE_OUTPUT(z,SoMFFloat,set1Value(i,vector[i][2]));
   }
 }
+
+#endif // !DOXYGEN_SKIP_THIS

@@ -19,10 +19,8 @@
 
 /*!
   \class SoComposeVec4f SoComposeVec4f.h Inventor/engines/SoComposeVec4f.h
-  \brief The SoComposeVec4f class is used to compose 4D coordinates from four floats.
+  \brief The SoComposeVec4f class is used to compose 4D vectors from four floats.
   \ingroup engines
-
-  FIXME: doc
 */
 
 #include <Inventor/engines/SoComposeVec4f.h>
@@ -32,8 +30,28 @@
 SO_ENGINE_SOURCE(SoComposeVec4f);
 
 /*!
-  Default constructor.
+  \var SoMFFloat SoComposeVec4f::x
+  First coordinates of the output vectors.
 */
+/*!
+  \var SoMFFloat SoComposeVec4f::y
+  Second coordinates of the output vectors.
+*/
+/*!
+  \var SoMFFloat SoComposeVec4f::z
+  Third coordinates of the output vectors.
+*/
+/*!
+  \var SoMFFloat SoComposeVec4f::w
+  Fourth coordinates of the output vectors.
+*/
+/*!
+  \var SoEngineOutput SoComposeVec4f::vector
+  (SoMFVec4f) 4D vectors.
+*/
+
+#ifndef DOXYGEN_SKIP_THIS // No need to document these.
+
 SoComposeVec4f::SoComposeVec4f()
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoComposeVec4f);
@@ -86,3 +104,5 @@ SoComposeVec4f::evaluate()
     SO_ENGINE_OUTPUT(vector,SoMFVec4f,set1Value(i,xVal,yVal,zVal,wVal));
   }
 }
+
+#endif // !DOXYGEN_SKIP_THIS

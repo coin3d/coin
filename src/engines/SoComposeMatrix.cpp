@@ -21,8 +21,6 @@
   \class SoComposeMatrix SoComposeMatrix.h Inventor/engines/SoComposeMatrix.h
   \brief The SoComposeMatrix class is used to compose a matrix from miscellaneous transformations.
   \ingroup engines
-
-  FIXME: doc
 */
 
 #include <Inventor/engines/SoComposeMatrix.h>
@@ -33,8 +31,35 @@
 SO_ENGINE_SOURCE(SoComposeMatrix);
 
 /*!
-  Default constructor.
+  \var SoMFVec3f SoComposeMatrix::translation
+  Input field with set of translation vectors for the output matrices.
 */
+/*!
+  \var SoMFRotation SoComposeMatrix::rotation
+  Input field with set of rotations for the output matrices.
+*/
+/*!
+  \var SoMFVec3f SoComposeMatrix::scaleFactor
+  Input field with set of scale vectors for the output matrices.
+*/
+/*!
+  \var SoMFRotation SoComposeMatrix::scaleOrientation
+  Input field with set of scale orientations for the output matrices.
+*/
+/*!
+  \var SoMFVec3f SoComposeMatrix::center
+  Input field with set of center positions for the output matrices.
+*/
+/*!
+  \var SoEngineOutput SoComposeMatrix::matrix
+
+  (SoMFMatrix) A set of matrices calculated from the input fields.
+  The matrices is calculated by the SbMatrix::setTransform() function.
+*/
+
+#ifndef DOXYGEN_SKIP_THIS // No need to document these.
+
+// Default constructor.
 SoComposeMatrix::SoComposeMatrix()
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoComposeMatrix);
@@ -100,3 +125,5 @@ SoComposeMatrix::evaluate()
     SO_ENGINE_OUTPUT(matrix,SoMFMatrix,set1Value(i,mat));
   }
 }
+
+#endif // !DOXYGEN_SKIP_THIS

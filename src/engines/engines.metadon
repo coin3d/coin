@@ -14,17 +14,17 @@
 # HIERARCHY
 # ID  SoEngine
 # ID      SoBoolOperation
-# Id      SoCalculator
-# Id      SoComposeVec2f
-# Id      SoComposeVec3f
-# Id      SoComposeVec4f
+# ID      SoCalculator
+# ID      SoComposeVec2f
+# ID      SoComposeVec3f
+# ID      SoComposeVec4f
 # Id      SoDecomposeVec2f
 # Id      SoDecomposeVec3f
 # Id      SoDecomposeVec4f
-# Id      SoComposeRotation
+# ID      SoComposeRotation
 #         SoComposeRotationFromTo
 # Id      SoDecomposeRotation
-# Id      SoComposeMatrix
+# ID      SoComposeMatrix
 # Id      SoDecomposeMatrix
 #         SoComputeBoundingBox
 # ID      SoConcatenate

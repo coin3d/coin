@@ -30,8 +30,21 @@
 SO_ENGINE_SOURCE(SoComposeVec2f);
 
 /*!
-  Default constructor.
+  \var SoMFFloat SoComposeVec2f::x
+  First coordinates of the output vectors.
 */
+/*!
+  \var SoMFFloat SoComposeVec2f::y
+  Second coordinates of the output vectors.
+*/
+/*!
+  \var SoEngineOutput SoComposeVec2f::vector
+  (SoMFVec2f) 2D vectors.
+*/
+
+
+#ifndef DOXYGEN_SKIP_THIS // No need to document these.
+
 SoComposeVec2f::SoComposeVec2f(void)
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoComposeVec2f);
@@ -76,3 +89,5 @@ SoComposeVec2f::evaluate(void)
     SO_ENGINE_OUTPUT(vector,SoMFVec2f,set1Value(i,xVal,yVal));
   }
 }
+
+#endif // !DOXYGEN_SKIP_THIS

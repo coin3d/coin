@@ -51,6 +51,29 @@
 
 SO_NODE_SOURCE(SoClipPlaneManip);
 
+/*!
+  \var SoSFVec3f * SoClipPlaneManip::draggerPosition
+  \internal
+*/
+
+/*!
+  \var SoFieldSensor * SoClipPlaneManip::planeFieldSensor
+  \internal
+*/
+/*!
+  \var SoFieldSensor * SoClipPlaneManip::onFieldSensor
+  \internal
+*/
+/*!
+  \var SoFieldSensor * SoClipPlaneManip::draggerPosFieldSensor
+  \internal
+*/
+/*!
+  \var SoChildList * SoClipPlaneManip::children
+  \internal
+*/
+
+
 // Documented in superclass
 void
 SoClipPlaneManip::initClass(void)
