@@ -40,5 +40,5 @@ DEF SCALE1_FEEDBACK Separator {
    IndexedLineSet { coordIndex [ 0, 1, -1, 2, 3, -1 ] }
 }
 
-DEF scale1Feedback Group { USE SCALE1_FEEDBACK }
-DEF scale1FeedbackActive Group { USE SCALE1_FEEDBACK }
+DEF scale1Feedback Separator { USE SCALE1_FEEDBACK }
+DEF scale1FeedbackActive Separator { USE SCALE1_FEEDBACK }

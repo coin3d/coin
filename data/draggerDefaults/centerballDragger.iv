@@ -88,7 +88,7 @@ DEF centerballCenterChanger Separator {
    Rotation { rotation 0 1 0  3.14 }
    USE CENTERBALL_AXIS_CROSS
 }
-DEF centerballCenterChangerActive Group { }
+DEF centerballCenterChangerActive Separator { }
 
 
 ### Geometry definitions for the translation feedback ########################

@@ -89,5 +89,5 @@ DEF TRACKBALL_CENTER Separator {
    Sphere { radius 1.02 }
 }
 
-DEF trackballRotator Group { USE TRACKBALL_CENTER }
-DEF trackballRotatorActive Group { USE TRACKBALL_CENTER }
+DEF trackballRotator Separator { USE TRACKBALL_CENTER }
+DEF trackballRotatorActive Separator { USE TRACKBALL_CENTER }

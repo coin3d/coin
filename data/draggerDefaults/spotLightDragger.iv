@@ -31,8 +31,8 @@ DEF spotLightRotatorRotatorActive Separator {
    USE SPOTLIGHT_ARROW
 }
 
-DEF spotLightRotatorFeedback Group { }
-DEF spotLightRotatorFeedbackActive Group { }
+DEF spotLightRotatorFeedback Separator { }
+DEF spotLightRotatorFeedbackActive Separator { }
 
 
 DEF SPOTLIGHT_TRANSLATE_AXIS Group {

@@ -30,8 +30,10 @@ DEF directionalLightRotatorRotatorActive Separator {
    USE DIRECTIONALLIGHT_ARROW
 }
 
-DEF directionalLightRotatorFeedback Group { }
-DEF directionalLightRotatorFeedbackActive Group { }
+DEF directionalLightRotatorFeedback Separator { }
+DEF directionalLightRotatorFeedbackActive Separator { }
+#DEF directionalLightRotatorFeedback Group { }
+#DEF directionalLightRotatorFeedbackActive Group { }
 
 
 DEF directionalLightTranslatorPlaneTranslator Separator {

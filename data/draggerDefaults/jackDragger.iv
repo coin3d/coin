@@ -103,8 +103,8 @@ DEF jackRotatorRotatorActive Separator {
    USE JACK_ROTATE_AXES
 }
 
-DEF jackRotatorFeedback Group { }
-DEF jackRotatorFeedbackActive Group { }
+DEF jackRotatorFeedback Separator { }
+DEF jackRotatorFeedbackActive Separator { }
 
 
 ### Geometry definitions for the scaling geometry controls ###################
@@ -133,5 +133,5 @@ DEF jackScalerScalerActive Separator {
    USE JACK_SCALER
 }
 
-DEF jackScalerFeedback Group { }
-DEF jackScalerFeedbackActive Group { }
+DEF jackScalerFeedback Separator { }
+DEF jackScalerFeedbackActive Separator { }

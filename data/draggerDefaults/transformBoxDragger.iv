@@ -62,8 +62,8 @@ DEF transformBoxScalerScalerActive Separator {
    USE TRANSFORMBOX_SCALEDRAGPOINTS
 }
 
-DEF transformBoxScalerFeedback Group { }
-DEF transformBoxScalerFeedbackActive Group { }
+DEF transformBoxScalerFeedback Separator { }
+DEF transformBoxScalerFeedbackActive Separator { }
 
 
 ### Geometry definitions for rotation operations #############################
@@ -98,7 +98,7 @@ DEF transformBoxRotatorRotatorActive Separator {
    USE TRANSFORMBOX_ROTATE_SIDE 
 }
 
-DEF transformBoxRotatorFeedback Group { }
+DEF transformBoxRotatorFeedback Separator { }
 
 DEF transformBoxRotatorFeedbackActive Separator {
    USE TRANSFORMBOX_FEEDBACK_MATERIAL
@@ -115,11 +115,11 @@ DEF TRANSFORMBOX_TRANSLATIONSIDE Separator {
    IndexedFaceSet { coordIndex [ 0, 1, 2, 3, -1 ] }
 }
 
-DEF transformBoxTranslatorTranslator Group {
+DEF transformBoxTranslatorTranslator Separator {
    USE TRANSFORMBOX_TRANSLATIONSIDE
 }
 
-DEF transformBoxTranslatorTranslatorActive Group {
+DEF transformBoxTranslatorTranslatorActive Separator {
    USE TRANSFORMBOX_TRANSLATIONSIDE
 }
 
