@@ -48,7 +48,7 @@
 /*!
   \class SoTextureCoordinateCylinder include/Inventor/nodes/SoTextureCoordinateCylinder.h
   \brief The SoTextureCoordinateCylinder class autogenerates cylinder mapped texture coordinated for shapes.
-  \ingroup bundles
+  \ingroup nodes
 */
 // FIXME: Add a better class description (20040123 handegar)
 

@@ -48,7 +48,7 @@
 /*!
   \class SoTextureCoordinateSphere include/Inventor/nodes/SoTextureCoordinateSphere.h
   \brief The SoTextureCoordinateSphere class autogenerates spheremapped texture coordinated for shapes.
-  \ingroup bundles
+  \ingroup nodes
 */
 // FIXME: Add a better class description (20040123 handegar)
 

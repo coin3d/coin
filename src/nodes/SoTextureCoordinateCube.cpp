@@ -48,7 +48,7 @@
 /*!
   \class SoTextureCoordinateCube include/Inventor/nodes/SoTextureCoordinateCube.h
   \brief The SoTextureCoordinateCube class autogenerates cubemapped texture coordinated for shapes.
-  \ingroup bundles
+  \ingroup nodes
 
   The cube used for reference when mapping is the boundingbox for the shape.
 */
@@ -74,7 +74,7 @@ so_texcoordcube_construct_data(void * closure)
 
 static void
 so_texcoordcube_destruct_data(void * closure)
-{ 
+{
 }
 
 SO_NODE_SOURCE(SoTextureCoordinateCube);
@@ -82,9 +82,9 @@ SO_NODE_SOURCE(SoTextureCoordinateCube);
 class SoTextureCoordinateCubeP {
 
 public:
-  SoTextureCoordinateCubeP(SoTextureCoordinateCube * texturenode) 
+  SoTextureCoordinateCubeP(SoTextureCoordinateCube * texturenode)
     : master(texturenode) { }
-  
+
   SbVec4f calculateTextureCoordinate(SbVec3f point, SbVec3f n);
 
   so_texcoordcube_data * so_texcoord_get_data() {
@@ -94,10 +94,10 @@ public:
     assert(data && "Error retrieving thread data.");
 #else // COIN_THREADSAFE
     data = this->so_texcoord_single_data;
-#endif // ! COIN_THREADSAFE    
+#endif // ! COIN_THREADSAFE
     return data;
   }
-    
+
 #ifdef COIN_THREADSAFE
   SbStorage * so_texcoord_storage;
 #else // COIN_THREADSAFE
@@ -128,7 +128,7 @@ SoTextureCoordinateCube::SoTextureCoordinateCube(void)
 
 #ifdef COIN_THREADSAFE
   pimpl->so_texcoord_storage = new SbStorage(sizeof(so_texcoordcube_data),
-                                             so_texcoordcube_construct_data, 
+                                             so_texcoordcube_construct_data,
                                              so_texcoordcube_destruct_data);
 #else // COIN_THREADSAFE
   pimpl->so_texcoord_single_data = new so_texcoordcube_data;
@@ -155,7 +155,7 @@ SoTextureCoordinateCube::initClass(void)
 {
   // FIXME: This should actually be COIN_2_2_3 (20040122 handegar)
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateCube, SO_FROM_COIN_2_2);
-  
+
   SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
   SO_ENABLE(SoCallbackAction, SoTextureCoordinateElement);
   SO_ENABLE(SoPickAction, SoTextureCoordinateElement);
@@ -163,14 +163,14 @@ SoTextureCoordinateCube::initClass(void)
 }
 
 const SbVec4f &
-textureCoordinateCubeCallback(void * userdata, 
-                          const SbVec3f & point, 
+textureCoordinateCubeCallback(void * userdata,
+                          const SbVec3f & point,
                           const SbVec3f & normal)
 {
-  
+
   SoTextureCoordinateCubeP * pimpl = (SoTextureCoordinateCubeP *) userdata;
   so_texcoordcube_data * data = pimpl->so_texcoord_get_data();
-  
+
   SoState * state = data->currentstate;
   SoFullPath * path = (SoFullPath *) state->getAction()->getCurPath();
   SoNode * node = path->getTail();
@@ -184,9 +184,9 @@ textureCoordinateCubeCallback(void * userdata,
   // Cast the node into a shape
   SoShape * shape = (SoShape *) node;
 
-  if (shape != data->currentshape) { 
+  if (shape != data->currentshape) {
     data->boundingbox.makeEmpty();
-    const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();    
+    const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();
     if (bboxcache && bboxcache->isValid(state)) {
       data->boundingbox = bboxcache->getProjectedBox();
       data->origo = data->boundingbox.getCenter();
@@ -212,7 +212,7 @@ textureCoordinateCubeCallback(void * userdata,
 
   data->texcoordreturn = ret;
   return data->texcoordreturn;
-  
+
 }
 
 SbVec4f
@@ -223,10 +223,10 @@ SoTextureCoordinateCubeP::calculateTextureCoordinate(SbVec3f point, SbVec3f n)
 
   double maxv = fabs(n[0]);
   int maxi = 0;
-      
+
   if (fabs(n[1]) > maxv) { maxi = 1; maxv = fabs(n[1]); }
-  if (fabs(n[2]) > maxv) { maxi = 2; }  
-  
+  if (fabs(n[2]) > maxv) { maxi = 2; }
+
   int i0 = (maxi + 1) % 3;
   int i1 = (maxi + 2) % 3;
 
@@ -238,18 +238,18 @@ SoTextureCoordinateCubeP::calculateTextureCoordinate(SbVec3f point, SbVec3f n)
   if (d0 == 0.0f) d0 = 1.0f;
   if (d1 == 0.0f) d1 = 1.0f;
 
-  float s = (point[i0] - bmin[i0]) / d0; 
+  float s = (point[i0] - bmin[i0]) / d0;
   float t = (point[i1] - bmin[i1]) / d1;
 
   SbVec4f tc(s, t, 0.0f, 1.0f);
   switch (maxi) { // Flip textures according to projected cube-side
   case 0:
     tc[0] = 1.0f - t;
-    tc[1] = s; 
+    tc[1] = s;
     break;
   case 1:
     tc[0] = t;
-    tc[1] = 1.0f - s; 
+    tc[1] = 1.0f - s;
     break;
   }
   if (n[maxi] < 0.0f) {
@@ -268,25 +268,25 @@ SoTextureCoordinateCubeP::calculateTextureCoordinate(SbVec3f point, SbVec3f n)
 // Documented in superclass.
 void
 SoTextureCoordinateCube::doAction(SoAction * action)
-{  
+{
 }
 
 // Documented in superclass.
 void
 SoTextureCoordinateCube::GLRender(SoGLRenderAction * action)
 {
-  
+
   so_texcoordcube_data * data = pimpl->so_texcoord_get_data();
 
-  data->currentstate = action->getState();    
-  data->currentshape = NULL;  
+  data->currentstate = action->getState();
+  data->currentshape = NULL;
 
   int unit = SoTextureUnitElement::get(data->currentstate);
   if (unit == 0) {
-    SoTextureCoordinateElement::setFunction(data->currentstate, 
-                                            this, textureCoordinateCubeCallback, 
+    SoTextureCoordinateElement::setFunction(data->currentstate,
+                                            this, textureCoordinateCubeCallback,
                                             PRIVATE(this));
-  } 
+  }
   else {
     SoMultiTextureCoordinateElement::setFunction(data->currentstate, this,
                                                  unit, textureCoordinateCubeCallback,
@@ -308,5 +308,3 @@ SoTextureCoordinateCube::pick(SoPickAction * action)
 {
   SoTextureCoordinateCube::doAction((SoAction *)action);
 }
-
-
