@@ -410,6 +410,7 @@ SoAction::initClasses(void)
   SoSearchAction::initClass();
   SoWriteAction::initClass();
   SoAudioRenderAction::initClass();
+  SoIntersectionDetectionAction::initClass();
 }
 
 /*!
