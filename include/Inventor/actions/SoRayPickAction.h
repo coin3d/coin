@@ -76,6 +76,7 @@ protected:
   virtual void beginTraversal(SoNode * node);
 
 private:
+  SbBool isBetweenPlanesWS(const SbVec3f & intersection) const;
   void cleanupPickedPoints(void);
   void setFlag(const unsigned int flag);
   void clearFlag(const unsigned int flag);

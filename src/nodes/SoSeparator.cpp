@@ -341,16 +341,27 @@ SoSeparator::handleEvent(SoHandleEventAction * action)
   SoSeparator::doAction(action);
 }
 
+// transform box to world space, and test for intersection
+// with world space ray.
+static SbBool
+ray_intersect(SoRayPickAction * action, const SbBox3f &box)
+{
+  SoState * state = action->getState();
+  SbBox3f worldbox = box;
+  worldbox.transform(SoModelMatrixElement::get(state));
+  return action->intersect(worldbox, TRUE);
+}
+
 // Doc from superclass.
 void
 SoSeparator::rayPick(SoRayPickAction * action)
 {
-#if 0 // debug
-  SoDebugError::postInfo("SoSeparator::rayPick",
-                         "");
-#endif // debug
-
-  SoSeparator::doAction(action);
+  if (this->pickCulling.getValue() == OFF ||
+      !this->bboxcache || !this->bboxcache->isValid(action->getState()) ||
+      !action->hasWorldSpaceRay() ||
+      ray_intersect(action, this->bboxcache->getProjectedBox())) {
+    SoSeparator::doAction(action);
+  }
 }
 
 // Doc from superclass.

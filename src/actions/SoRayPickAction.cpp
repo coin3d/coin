@@ -432,7 +432,29 @@ SoRayPickAction::intersect(const SbVec3f & point) const
 SbBool
 SoRayPickAction::intersect(const SbBox3f & box, const SbBool usefullviewvolume)
 {
-  COIN_STUB(); // FIXME
+  // FIXME: usefullviewvolume == TRUE is not supported.
+  // pederb, 20000519
+  const SbLine & line = this->wsline;
+  SbVec3f bounds[2];
+  bounds[0] = box.getMin();
+  bounds[1] = box.getMax();
+
+  for (int j = 0; j < 2; j++) {
+    for (int i = 0; i < 3; i++) { 
+      SbVec3f norm(0, 0, 0);
+      norm[i] = 1.0f;
+      SbVec3f isect;
+
+      SbPlane plane(norm, bounds[j][i]);
+      if (plane.intersect(line, isect)) {
+        int i1 = (i+1) % 3;
+        int i2 = (i+2) % 3;
+        if (isect[i1] >= bounds[0][i1] && isect[i1] <= bounds[1][i1] &&
+            isect[i2] >= bounds[0][i2] && isect[i2] <= bounds[1][i2] &&
+            this->isBetweenPlanesWS(isect)) return TRUE;
+      }
+    }
+  }
   return FALSE;
 }
 
@@ -455,15 +477,10 @@ SoRayPickAction::getLine(void)
   return this->osline;
 }
 
-/*!
-  \internal
- */
-SbBool
-SoRayPickAction::isBetweenPlanes(const SbVec3f & intersection) const
+SbBool 
+SoRayPickAction::isBetweenPlanesWS(const SbVec3f & intersection) const
 {
-  SbVec3f worldpoint;
-  this->obj2world.multVecMatrix(intersection, worldpoint);
-  float dist = this->nearplane.getDistance(worldpoint);
+  float dist = this->nearplane.getDistance(intersection);
   if (this->isFlagSet(SoRayPickAction::CLIP_NEAR)) {
     if (dist < 0) return FALSE;
   }
@@ -474,9 +491,20 @@ SoRayPickAction::isBetweenPlanes(const SbVec3f & intersection) const
     SoClipPlaneElement::getInstance(this->state);
   int n =  planes->getNum();
   for (int i = 0; i < n; i++) {
-    if (!planes->get(i).isInHalfSpace(worldpoint)) return FALSE;
+    if (!planes->get(i).isInHalfSpace(intersection)) return FALSE;
   }
   return TRUE;
+}
+
+/*!
+  \internal
+ */
+SbBool
+SoRayPickAction::isBetweenPlanes(const SbVec3f & intersection) const
+{
+  SbVec3f worldpoint;
+  this->obj2world.multVecMatrix(intersection, worldpoint);
+  return this->isBetweenPlanesWS(worldpoint);
 }
 
 /*!
