@@ -46,6 +46,7 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <math.h>
+#include <string.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

@@ -43,6 +43,7 @@
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/misc/SoGlyph.h>
 #include <Inventor/misc/SoState.h>
+#include <string.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>

@@ -86,6 +86,7 @@
 #include <Inventor/SbLine.h>
 
 #include <limits.h>
+#include <string.h>
 
 static const unsigned int NOT_AVAILABLE = UINT_MAX;
 
