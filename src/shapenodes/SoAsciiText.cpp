@@ -154,6 +154,7 @@ void
 SoAsciiText::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoAsciiText, SO_FROM_INVENTOR_2_1|SoNode::VRML1);
+  cc_glyph3d_initialize();
 }
 
 // Doc in parent.

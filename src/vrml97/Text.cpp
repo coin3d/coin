@@ -172,6 +172,7 @@ void
 SoVRMLText::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLText, SO_VRML97_NODE_TYPE);
+  cc_glyph3d_initialize();
 }
 
 /*!

@@ -241,6 +241,7 @@ void
 SoText2::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoText2, SO_FROM_INVENTOR_2_1);
+  cc_glyph2d_initialize();
 }
 
 
