@@ -116,12 +116,13 @@ AC_SUBST([MAC_FRAMEWORK_VERSION], [$sim_ac_framework_version])
 
 AC_SUBST([nop], [])
 
-ivincludedir=$includedir
 frameworkdir=
 if $sim_ac_framework; then
-  ivincludedir=
-  frameworkdir=${sim_ac_framework_prefix}/${sim_ac_framework_name}.framework
+  frameworkdir=${sim_ac_framework_prefix}/${sim_ac_framework_name}.framework 
+  includedir=$frameworkdir/Headers
 fi
+
+ivincludedir=$includedir
 
 AC_SUBST([ivincludedir])
 AC_SUBST([frameworkdir])
