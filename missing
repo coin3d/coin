@@ -1,6 +1,6 @@
 #! /bin/sh
 # Common stub for a few missing GNU programs while installing.
-# Copyright (C) 1996, 1997, 1999, 2000 Free Software Foundation, Inc.
+# Copyright 1996, 1997, 1999, 2000 Free Software Foundation, Inc.
 # Originally by Fran,cois Pinard <pinard@iro.umontreal.ca>, 1996.
 
 # This program is free software; you can redistribute it and/or modify
@@ -178,7 +178,7 @@ WARNING: \`$1' is missing on your system.  You should only need it if
   help2man)
     echo 1>&2 "\
 WARNING: \`$1' is missing on your system.  You should only need it if
-	 you modified a dependancy of a manual page.  You may need the
+	 you modified a dependency of a manual page.  You may need the
 	 \`Help2man' package in order for those modifications to take
 	 effect.  You can get \`Help2man' from any GNU archive site."
 

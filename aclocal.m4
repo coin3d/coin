@@ -11,101 +11,6 @@
 # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
 
-# Usage:
-#   SIM_COMPILER_INLINE_FOR( [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND ]])
-#
-# Description:
-#   See if the compiler supports for(;;){} loops inside inlined
-#   constructors.
-#
-#   This smokes out the useless HPUX 10.20 CC compiler.
-#
-
-AC_DEFUN([SIM_COMPILER_INLINE_FOR], [
-AC_PREREQ([2.14])
-
-AC_CACHE_CHECK(
-  [whether the C++ compiler handles inlined loops],
-  sim_cv_c_inlinefor,
-  [cat > sim_ac_test.h <<EOF
-class TestClass {
-public:
-  TestClass(int);
-};
-
-inline TestClass::TestClass(int) { for (int i=0; i<1; i++) i=0; }
-EOF
-  AC_TRY_COMPILE([#include "sim_ac_test.h"],
-                 [TestClass t(0);],
-                 [sim_cv_c_inlinefor=yes],
-                 [sim_cv_c_inlinefor=no])
-])
-
-rm -rf sim_ac_test.h
-
-if test x"$sim_cv_c_inlinefor" = x"yes"; then
-  ifelse([$1], , :, [$1])
-else
-  ifelse([$2], , :, [$2])
-fi
-])
-
-
-# Usage:
-#   SIM_AC_CHECK_VAR_FUNCTIONNAME
-#
-# Side-Effects:
-#   config.h:
-#     HAVE_VAR___PRETTY_FUNCTION__   (1 if exists)
-#     HAVE_VAR___FUNCTION__          (always 0 if __PRETTY_FUNCTION__ exists)
-#
-# Authors:
-#   Lars J. Aas <larsa@sim.no>
-#
-
-AC_DEFUN([SIM_AC_CHECK_VAR_FUNCTIONNAME], [
-AC_CACHE_CHECK([for function name variable],
-  sim_cv_var_functionname, [
-  # __func__ is the identifier used by compilers which are
-  # compliant with the C99 ISO/IEC 9899:1999 standard.
-  AC_TRY_COMPILE(
-    [#include <stdio.h>],
-    [(void)printf("%s\n",__func__)],
-    [sim_cv_var_functionname=__func__],
-    [sim_cv_var_functionname=none])
-  if test x"$sim_cv_var_functionname" = x"none"; then
-    # GCC uses __PRETTY_FUNCTION__
-    AC_TRY_COMPILE(
-      [#include <stdio.h>],
-      [(void)printf("%s\n",__PRETTY_FUNCTION__)],
-      [sim_cv_var_functionname=__PRETTY_FUNCTION__],
-      [sim_cv_var_functionname=none])
-  fi
-  if test x"$sim_cv_var_functionname" = x"none"; then
-    AC_TRY_COMPILE(
-      [#include <stdio.h>],
-      [(void)printf("%s\n",__FUNCTION__)],
-      [sim_cv_var_functionname=__FUNCTION__],
-      [sim_cv_var_functionname=none])
-  fi])
-
-if test x"$sim_cv_var_functionname" = x"__func__"; then
-  AC_DEFINE([HAVE_VAR___func__], 1,
-    [Define this to true if the __func__ variable contains the current function name])
-fi
-
-if test x"$sim_cv_var_functionname" = x"__PRETTY_FUNCTION__"; then
-  AC_DEFINE([HAVE_VAR___PRETTY_FUNCTION__], 1,
-    [Define this to true if the __PRETTY_FUNCTION__ variable contains the current function name])
-fi
-
-if test x"$sim_cv_var_functionname" = x"__FUNCTION__"; then
-  AC_DEFINE([HAVE_VAR___FUNCTION__], 1,
-    [Define this to true if the __FUNCTION__ variable contains the current function name])
-fi
-])
-
-
 # Do all the work for Automake.  This macro actually does too much --
 # some checks are only needed if your package does certain things.
 # But this isn't really a big deal.
@@ -302,7 +207,7 @@ if test -z "$AMDEP"; then
     if depmode="$depmode" \
        source=conftest.c object=conftest.o \
        depfile=conftest.Po tmpdepfile=conftest.TPo \
-       $SHELL $am_depcomp $depcc -c conftest.c -o conftest.o 2>/dev/null &&
+       $SHELL $am_depcomp $depcc -c conftest.c -o conftest.o >/dev/null 2>&1 &&
        grep conftest.h conftest.Po > /dev/null 2>&1; then
       am_cv_[$1]_dependencies_compiler_type="$depmode"
       break
@@ -862,8 +767,8 @@ AC_DEFUN([AM_MAINTAINER_MODE],
                           (and sometimes confusing) to the casual installer],
       USE_MAINTAINER_MODE=$enableval,
       USE_MAINTAINER_MODE=no)
-  AC_MSG_RESULT($USE_MAINTAINER_MODE)
-  AM_CONDITIONAL(MAINTAINER_MODE, test $USE_MAINTAINER_MODE = yes)
+  AC_MSG_RESULT([$USE_MAINTAINER_MODE])
+  AM_CONDITIONAL(MAINTAINER_MODE, [test $USE_MAINTAINER_MODE = yes])
   MAINT=$MAINTAINER_MODE_TRUE
   AC_SUBST(MAINT)dnl
 ]
@@ -881,6 +786,101 @@ else
   $1_TRUE='#'
   $1_FALSE=
 fi])
+
+# Usage:
+#   SIM_COMPILER_INLINE_FOR( [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND ]])
+#
+# Description:
+#   See if the compiler supports for(;;){} loops inside inlined
+#   constructors.
+#
+#   This smokes out the useless HPUX 10.20 CC compiler.
+#
+
+AC_DEFUN([SIM_COMPILER_INLINE_FOR], [
+AC_PREREQ([2.14])
+
+AC_CACHE_CHECK(
+  [whether the C++ compiler handles inlined loops],
+  sim_cv_c_inlinefor,
+  [cat > sim_ac_test.h <<EOF
+class TestClass {
+public:
+  TestClass(int);
+};
+
+inline TestClass::TestClass(int) { for (int i=0; i<1; i++) i=0; }
+EOF
+  AC_TRY_COMPILE([#include "sim_ac_test.h"],
+                 [TestClass t(0);],
+                 [sim_cv_c_inlinefor=yes],
+                 [sim_cv_c_inlinefor=no])
+])
+
+rm -rf sim_ac_test.h
+
+if test x"$sim_cv_c_inlinefor" = x"yes"; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+])
+
+
+# Usage:
+#   SIM_AC_CHECK_VAR_FUNCTIONNAME
+#
+# Side-Effects:
+#   config.h:
+#     HAVE_VAR___PRETTY_FUNCTION__   (1 if exists)
+#     HAVE_VAR___FUNCTION__          (always 0 if __PRETTY_FUNCTION__ exists)
+#
+# Authors:
+#   Lars J. Aas <larsa@sim.no>
+#
+
+AC_DEFUN([SIM_AC_CHECK_VAR_FUNCTIONNAME], [
+AC_CACHE_CHECK([for function name variable],
+  sim_cv_var_functionname, [
+  # __func__ is the identifier used by compilers which are
+  # compliant with the C99 ISO/IEC 9899:1999 standard.
+  AC_TRY_COMPILE(
+    [#include <stdio.h>],
+    [(void)printf("%s\n",__func__)],
+    [sim_cv_var_functionname=__func__],
+    [sim_cv_var_functionname=none])
+  if test x"$sim_cv_var_functionname" = x"none"; then
+    # GCC uses __PRETTY_FUNCTION__
+    AC_TRY_COMPILE(
+      [#include <stdio.h>],
+      [(void)printf("%s\n",__PRETTY_FUNCTION__)],
+      [sim_cv_var_functionname=__PRETTY_FUNCTION__],
+      [sim_cv_var_functionname=none])
+  fi
+  if test x"$sim_cv_var_functionname" = x"none"; then
+    AC_TRY_COMPILE(
+      [#include <stdio.h>],
+      [(void)printf("%s\n",__FUNCTION__)],
+      [sim_cv_var_functionname=__FUNCTION__],
+      [sim_cv_var_functionname=none])
+  fi])
+
+if test x"$sim_cv_var_functionname" = x"__func__"; then
+  AC_DEFINE([HAVE_VAR___func__], 1,
+    [Define this to true if the __func__ variable contains the current function name])
+fi
+
+if test x"$sim_cv_var_functionname" = x"__PRETTY_FUNCTION__"; then
+  AC_DEFINE([HAVE_VAR___PRETTY_FUNCTION__], 1,
+    [Define this to true if the __PRETTY_FUNCTION__ variable contains the current function name])
+fi
+
+if test x"$sim_cv_var_functionname" = x"__FUNCTION__"; then
+  AC_DEFINE([HAVE_VAR___FUNCTION__], 1,
+    [Define this to true if the __FUNCTION__ variable contains the current function name])
+fi
+])
+
 
 # Usage:
 #  SIM_AC_BYTEORDER_CONVERSION([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
@@ -2284,7 +2284,7 @@ glPointSize(1.0f);
     SIM_AC_CHECK_PTHREAD([
       sim_ac_gl_cppflags="$sim_ac_gl_cppflags $sim_ac_pthread_cppflags"
       sim_ac_gl_ldflags="$sim_ac_gl_ldflags $sim_ac_pthread_ldflags"],
-      AC_MSG_WARN(couldn't compile or link with pthread library))
+      [AC_MSG_WARN([couldn't compile or link with pthread library])])
 
     if test "x$sim_ac_pthread_avail" = "xyes"; then
       AC_CACHE_CHECK(

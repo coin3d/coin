@@ -20,16 +20,6 @@ AC_SUBST(BUILD_WITH_MSVC)
 
 
 # **************************************************************************
-#  Locate C++ compiler and set C++ as the default language to use
-#  in tests. The configure script will automatically terminate if
-#  it doesn't find a C++ compiler.
-AC_PROG_CXX
-AC_LANG_CPLUSPLUS
-
-SIM_COMPILER_INLINE_FOR(, AC_MSG_ERROR(the "$CXX" C++ compiler is not capable of compiling Coin))
-SIM_AC_CHECK_VAR_FUNCTIONNAME
-
-# **************************************************************************
 # *******  MAKING RELEASES  ************************************************
 # **************************************************************************
 #
@@ -229,6 +219,16 @@ COIN_EXTRA_LIBS=$LIBS
 AC_SUBST(COIN_EXTRA_CPPFLAGS)
 AC_SUBST(COIN_EXTRA_LDFLAGS)
 AC_SUBST(COIN_EXTRA_LIBS)
+
+# **************************************************************************
+#  Locate C++ compiler and set C++ as the default language to use
+#  in tests. The configure script will automatically terminate if
+#  it doesn't find a C++ compiler.
+AC_LANG_CPLUSPLUS
+AC_PROG_CXX
+
+SIM_COMPILER_INLINE_FOR(, AC_MSG_ERROR(the "$CXX" C++ compiler is not capable of compiling Coin))
+SIM_AC_CHECK_VAR_FUNCTIONNAME
 
 
 AC_CHECK_HEADERS([unistd.h sys/types.h sys/param.h io.h windows.h winsock2.h])

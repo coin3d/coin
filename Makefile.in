@@ -98,8 +98,6 @@ RANLIB = @RANLIB@
 VERSION = @VERSION@
 coin_build_dir = @coin_build_dir@
 coin_configure_date = @coin_configure_date@
-coin_include_dir = @coin_include_dir@
-coin_lib_dir = @coin_lib_dir@
 coin_src_dir = @coin_src_dir@
 install_sh = @install_sh@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
@@ -129,8 +127,7 @@ DATA =  $(m4data_DATA)
 DIST_COMMON =  README ./stamp-h1.in AUTHORS COPYING ChangeLog INSTALL \
 Makefile.am Makefile.in NEWS THANKS TODO acconfig.h aclocal.m4 \
 coin-config.in config.guess config.h.in config.sub configure \
-configure.in depcomp install-sh ltconfig ltmain.sh missing \
-mkinstalldirs
+configure.in install-sh ltconfig ltmain.sh missing mkinstalldirs
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
