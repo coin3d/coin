@@ -24,6 +24,11 @@
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/nodekits/SoNodekitCatalog.h>
 
+#ifndef COIN_INTERNAL
+// Include this header file for better Open Inventor compatibility.
+#include <Inventor/nodekits/SoNodeKitListPart.h>
+#endif // !COIN_INTERNAL
+
 
 #define SO_KIT_HEADER(_kitclass_) \
   SO_NODE_HEADER(_kitclass_); \
