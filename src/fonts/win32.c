@@ -814,8 +814,8 @@ cc_flww32_get_bitmap(void * font, int glyph)
   unused = cc_hash_put(glyphhash, (unsigned long)glyph, glyphstruct);
   assert(unused);
 
- done:  
-  free(w32bitmap);
+ done: 
+  if (w32bitmap) free(w32bitmap);
 
   /* Reconnect device context to default font. */
   if (SelectObject(cc_flww32_globals.devctx, previousfont) != (HFONT)font) {
