@@ -21,10 +21,6 @@
  *
 \**************************************************************************/
 
-#include <Inventor/system/gl.h>
-#include <Inventor/C/glue/gl.h>
-#include <Inventor/C/tidbitsp.h>
-#include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -32,9 +28,17 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+#include <Inventor/system/gl.h>
+#include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
+#include <Inventor/C/tidbitsp.h>
+#include <Inventor/C/tidbits.h>
+
+// *************************************************************************
 
 #define COIN_DEFAULT_CUBEMAP_SIZE 64
+
+// *************************************************************************
 
 /*
   Based on code from "Simple Bump Mapping Tutorial"

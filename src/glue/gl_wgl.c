@@ -29,7 +29,6 @@
 #include <assert.h>
 
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/gl_wgl.h>
 #include <Inventor/C/tidbits.h>

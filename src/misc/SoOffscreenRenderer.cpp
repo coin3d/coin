@@ -173,7 +173,6 @@
 #include <limits.h> // SHRT_MAX
 
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
 #include <Inventor/C/glue/simage_wrapper.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>

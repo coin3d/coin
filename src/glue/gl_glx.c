@@ -43,6 +43,7 @@
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/gl_glx.h>
+#include <Inventor/C/glue/glp.h>
 #include <Inventor/C/tidbits.h>
 
 /* ********************************************************************** */

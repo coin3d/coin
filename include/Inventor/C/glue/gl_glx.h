@@ -29,7 +29,6 @@
 #endif
 
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
 
 #ifdef __cplusplus
 extern "C" {

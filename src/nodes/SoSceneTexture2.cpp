@@ -227,7 +227,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/C/tidbits.h>
 

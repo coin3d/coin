@@ -90,7 +90,6 @@
 #include <Inventor/SbMatrix.h>
 #include <Inventor/nodes/SoVertexShape.h> 
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
 
 #include <Inventor/SoOffscreenRenderer.h> 
 #include <Inventor/SbTesselator.h> 

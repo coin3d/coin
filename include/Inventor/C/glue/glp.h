@@ -28,16 +28,16 @@
 #error this is a private header file
 #endif /* ! COIN_INTERNAL */
 
-/* NOTE: do *not* include this header file outside of the gl.c OpenGL
-   wrapper -- even if you're inside Coin library implementation
-   code. */
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+/* ********************************************************************** */
+
 #include <Inventor/system/gl.h>
 #include <Inventor/C/base/hash.h>
+
+/* ********************************************************************** */
 
 #ifdef __cplusplus
 extern "C" {
@@ -451,6 +451,8 @@ typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBPOINTERVARBPROC)(GLuint index,
 /* Typedefs for GLX functions. */
 typedef void *(APIENTRY * COIN_PFNGLXGETCURRENTDISPLAYPROC)(void);
 
+/* ********************************************************************** */
+
 /* Type specification for GLX info storage structure, embedded within
    the main GL info structure below. */
 struct cc_glxglue {
@@ -472,6 +474,8 @@ struct cc_glxglue {
 
   COIN_PFNGLXGETCURRENTDISPLAYPROC glXGetCurrentDisplay;
 };
+
+/* ********************************************************************** */
 
 /* GL info storage structure. An instance will be allocated and
    initialized for each new GL context id. */
@@ -668,15 +672,21 @@ struct cc_glglue {
   cc_hash * glextdict;
 };
 
+/* ********************************************************************** */
+
 /* Exported internally to gl_glx.c and gl_wgl.c. */
 int coin_glglue_debug(void);
 int coin_glglue_extension_available(const char * extensions, const char * ext);
 
+/* ********************************************************************** */
+
 /* needed for bumpmap rendering */
 void coin_apply_normalization_cube_map(const cc_glglue * glue);
+
+/* ********************************************************************** */
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
-#endif /* COIN_GLUE_GLP_H */
+#endif /* !COIN_GLUE_GLP_H */
