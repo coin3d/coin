@@ -117,6 +117,7 @@ public:
   }
   ~SoWriterefCounterP() {
     this->outputdata->unref();
+    delete this->sobase2id;
   }
   SoWriterefCounter * master;
   SoOutput * out;

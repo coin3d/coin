@@ -338,6 +338,7 @@ SoTrackballDragger::~SoTrackballDragger()
 {
   delete this->rotFieldSensor;
   delete this->scaleFieldSensor;
+  delete THIS->timerSensor;
   delete THIS->sphereProj;
   delete THIS->cylProj;
   delete THIS->lineProj;
