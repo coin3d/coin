@@ -27,7 +27,7 @@
 class COIN_DLL_EXPORT SoSFFloat : public SoSField {
   typedef SoSField inherited;
 
-  SO_SFIELD_HEADER(SoSFFloat, float, const float);
+  SO_SFIELD_HEADER(SoSFFloat, float, float);
 
 public:
   static void initClass(void);

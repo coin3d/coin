@@ -38,7 +38,7 @@
 #endif // COIN_DEBUG
 
 
-SO_SFIELD_SOURCE(SoSFUShort, unsigned short, const unsigned short);
+SO_SFIELD_SOURCE(SoSFUShort, unsigned short, unsigned short);
 
 
 // Override from parent class.
@@ -77,7 +77,7 @@ SoSFUShort::readValue(SoInput * in)
 // Write integer value to output stream. Also used from SoMFUShort
 // class.
 void
-sosfushort_write_value(SoOutput * out, const unsigned short val)
+sosfushort_write_value(SoOutput * out, unsigned short val)
 {
   out->write(val);
 }

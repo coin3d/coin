@@ -52,7 +52,7 @@ SoMFBool::initClass(void)
 
 // These are implemented in the SoSFBool class.
 extern SbBool sosfbool_read_value(SoInput * in, SbBool & val);
-extern void sosfbool_write_value(SoOutput * out, const SbBool val);
+extern void sosfbool_write_value(SoOutput * out, SbBool val);
 
 SbBool
 SoMFBool::read1Value(SoInput * in, int idx)

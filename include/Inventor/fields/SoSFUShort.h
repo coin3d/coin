@@ -27,7 +27,7 @@
 class COIN_DLL_EXPORT SoSFUShort : public SoSField {
   typedef SoSField inherited;
 
-  SO_SFIELD_HEADER(SoSFUShort, unsigned short, const unsigned short);
+  SO_SFIELD_HEADER(SoSFUShort, unsigned short, unsigned short);
 
 public:
   static void initClass(void);

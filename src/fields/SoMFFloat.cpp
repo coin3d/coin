@@ -52,7 +52,7 @@ SoMFFloat::initClass(void)
 
 // These are implemented in the SoSFFloat class.
 extern SbBool sosffloat_read_value(SoInput * in, float & val);
-extern void sosffloat_write_value(SoOutput * out, const float val);
+extern void sosffloat_write_value(SoOutput * out, float val);
 
 SbBool
 SoMFFloat::read1Value(SoInput * in, int idx)

@@ -49,7 +49,7 @@ SoMFUShort::initClass(void)
 
 // These are implemented in the SoSFUShort class.
 extern SbBool sosfushort_read_value(SoInput * in, unsigned short & val);
-extern void sosfushort_write_value(SoOutput * out, const unsigned short val);
+extern void sosfushort_write_value(SoOutput * out, unsigned short val);
 
 SbBool
 SoMFUShort::read1Value(SoInput * in, int idx)

@@ -53,7 +53,7 @@ SoMFInt32::initClass(void)
 
 // These are implemented in the SoSFInt32 class.
 extern SbBool sosfint32_read_value(SoInput * in, int32_t & val);
-extern void sosfint32_write_value(SoOutput * out, const int32_t val);
+extern void sosfint32_write_value(SoOutput * out, int32_t val);
 
 SbBool
 SoMFInt32::read1Value(SoInput * in, int idx)

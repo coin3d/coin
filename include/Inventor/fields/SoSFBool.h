@@ -27,7 +27,7 @@
 class COIN_DLL_EXPORT SoSFBool : public SoSField {
   typedef SoSField inherited;
 
-  SO_SFIELD_HEADER(SoSFBool, SbBool, const SbBool);
+  SO_SFIELD_HEADER(SoSFBool, SbBool, SbBool);
 
 public:
   static void initClass(void);

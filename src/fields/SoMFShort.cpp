@@ -54,7 +54,7 @@ SoMFShort::initClass(void)
 
 // These are implemented in the SoSFShort class.
 extern SbBool sosfshort_read_value(SoInput * in, short & val);
-extern void sosfshort_write_value(SoOutput * out, const short val);
+extern void sosfshort_write_value(SoOutput * out, short val);
 
 SbBool
 SoMFShort::read1Value(SoInput * in, int idx)

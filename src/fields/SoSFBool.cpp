@@ -41,7 +41,7 @@
 #endif // COIN_DEBUG
 
 
-SO_SFIELD_SOURCE(SoSFBool, SbBool, const SbBool);
+SO_SFIELD_SOURCE(SoSFBool, SbBool, SbBool);
 
 // Override from parent.
 void
@@ -112,7 +112,7 @@ SoSFBool::readValue(SoInput * in)
 // Write boolean value to output stream. Also used from SoMFBool
 // class.
 void
-sosfbool_write_value(SoOutput * out, const SbBool val)
+sosfbool_write_value(SoOutput * out, SbBool val)
 {
   if (out->isBinary()) out->write((unsigned int)(val ? 1 : 0));
   else out->write(val ? "TRUE" : "FALSE");

@@ -27,7 +27,7 @@
 class COIN_DLL_EXPORT SoSFUInt32 : public SoSField {
   typedef SoSField inherited;
 
-  SO_SFIELD_HEADER(SoSFUInt32, uint32_t, const uint32_t);
+  SO_SFIELD_HEADER(SoSFUInt32, uint32_t, uint32_t);
 
 public:
   static void initClass(void);

@@ -39,7 +39,7 @@
 #endif // COIN_DEBUG
 
 
-SO_SFIELD_SOURCE(SoSFUInt32, uint32_t, const uint32_t);
+SO_SFIELD_SOURCE(SoSFUInt32, uint32_t, uint32_t);
 
 
 // Override from parent class.
@@ -78,7 +78,7 @@ SoSFUInt32::readValue(SoInput * in)
 // Write integer value to output stream. Also used from SoMFUInt32
 // class.
 void
-sosfuint32_write_value(SoOutput * out, const uint32_t val)
+sosfuint32_write_value(SoOutput * out, uint32_t val)
 {
   out->write(val);
 }

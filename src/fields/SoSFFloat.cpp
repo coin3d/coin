@@ -39,7 +39,7 @@
 #endif // COIN_DEBUG
 
 
-SO_SFIELD_SOURCE(SoSFFloat, float, const float);
+SO_SFIELD_SOURCE(SoSFFloat, float, float);
 
 
 // Override from parent.
@@ -78,7 +78,7 @@ SoSFFloat::readValue(SoInput * in)
 // Write floating point value to output stream. Also used from
 // SoMFFloat class.
 void
-sosffloat_write_value(SoOutput * out, const float val)
+sosffloat_write_value(SoOutput * out, float val)
 {
   out->write(val);
 }

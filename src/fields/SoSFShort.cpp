@@ -38,7 +38,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-SO_SFIELD_SOURCE(SoSFShort, short, const short);
+SO_SFIELD_SOURCE(SoSFShort, short, short);
 
 
 // Override parent class.
@@ -77,7 +77,7 @@ SoSFShort::readValue(SoInput * in)
 // Write integer value to output stream. Also used from SoMFShort
 // class.
 void
-sosfshort_write_value(SoOutput * out, const short val)
+sosfshort_write_value(SoOutput * out, short val)
 {
   out->write(val);
 }
