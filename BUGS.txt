@@ -1,4 +1,27 @@
- =====================================================================
+NOTE:
+=====
+
+There are additional buglists which may contain important bugs for the
+Coin satellite libraries, extensions and example programs at:
+
+        simage/BUGS.txt
+        SoQt/BUGS.txt
+        SoQt/src/Inventor/Qt/common/BUGS.txt
+        SoWin/BUGS.txt
+        SoXt/BUGS.txt
+        SIMVoleon/BUGS.txt
+        SoGuiExamples/BUGS.txt
+        SmallChange/BUGS.txt
+
+..and buglists less likely to contain important bugs:
+
+        SoGuiExamples/BUGS.txt
+        SmallChange/BUGS.txt
+        SoGtk/BUGS.txt
+
+Now, for the list of known bugs in the core Coin library:
+
+=====================================================================
 
 003 There are seams in texturemaps on SGI Octane with "IMPACTSR"
     graphics hardware.
