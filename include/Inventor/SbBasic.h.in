@@ -95,6 +95,11 @@ typedef int SbBool;
 #define TRUE  1
 #endif /* !TRUE */
 
+/* Internal note for Coin developers: in other sourcefiles in Coin, we
+ * depend on math.h being included in SbBasic.h. It is done this way
+ * to always make sure we have the M_* symbols available under MSWin
+ * (see below). So don't remove the following line unless you know
+ * very well what you are doing. */
 #include <math.h>
 
 /* Define the value for M_PI if it is not available from math.h. UNIX
