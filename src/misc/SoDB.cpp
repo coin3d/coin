@@ -466,7 +466,9 @@ SoDB::clean(void)
   delete SoDB::headerlist;
   
 #ifdef COIN_THREADSAFE
-  delete sodb_notificationcounter_storage;
+  // we can't delete this here since it might be needed by some atexit
+  // functions 
+  // delete sodb_notificationcounter_storage;
 #endif // COIN_THREADSAFE
 #endif // COIN_DEBUG
 }
