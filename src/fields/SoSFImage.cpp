@@ -252,8 +252,13 @@ SoSFImage::getValue(SbVec2s & size, int & nc) const
 }
 
 /*!
-  Copy the image data from \a bytes with \a size and \a nc
-  number of components into this field.
+  Initialize this field to \a size and \a nc.
+
+  If \a bytes is not \c NULL, the image data is copied from \a bytes
+  into this field.  If \a bytes is \c NULL, the image data is cleared
+  by setting all bytes to 0 (note that the behavior on passing a \c
+  NULL pointer is specific for Coin, Open Inventor will crash if you
+  try it).
 */
 void
 SoSFImage::setValue(const SbVec2s & size, const int nc,
@@ -274,8 +279,14 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
 
     this->imgdim = size;
     this->bytedepth = nc;
-    (void)memcpy(this->pixblock, bytes,
-                 this->imgdim[0] * this->imgdim[1] * this->bytedepth);
+    if (bytes) {
+      (void)memcpy(this->pixblock, bytes,
+                   this->imgdim[0] * this->imgdim[1] * this->bytedepth);
+    }
+    else {
+      (void)memset(this->pixblock, 0,
+                   this->imgdim[0] * this->imgdim[1] * this->bytedepth);
+    }
   }
 
   this->valueChanged();
