@@ -45,7 +45,7 @@ static SbBool glyph3d_initialized = FALSE;
 /* Mutex lock for the static ang global font hash */
 static void * glyph3d_fonthash_lock = NULL;
 
-/* Set '#if 1' to enable debug info to console when tracking mutex locking. */
+/* Set '#if 1' to enable debug info to stderr when tracking mutex locking. */
 #if 0
 #define GLYPH3D_MUTEX_LOCK(m) \
   do { \
@@ -125,7 +125,6 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   fontidx = cc_flw_get_font(cc_string_get_text(newspec->name), (int)(newspec->size), (int)(newspec->size));
   assert(fontidx >= 0);
 
-
   /* Should _always_ be able to get hold of a glyph -- if no glyph is
      available for a specific character, a default empty rectangle
      should be used.  -mortene. */
@@ -136,7 +135,7 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   glyph->fontidx = fontidx;
   glyph->bbox = (float *) malloc(sizeof(float) * 4);
 
-  if(fontidx != 0)
+  if (fontidx != 0)
     glyph->vectorglyph = cc_flw_get_vector_glyph(fontidx, character);
   else
     glyph->vectorglyph = NULL;
@@ -149,8 +148,7 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
     if (character <= 32 || character >= 127) {
 
       /* FIXME: Charachers other than space, should be replaced with
-         squares. (20030910 handegar)
-      */
+         squares. (20030910 handegar) */
 
       /* treat all these characters as spaces*/
       glyph->vectorglyph->vertices = (float *) glyph3d_spaceglyphvertices;
@@ -158,7 +156,6 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
       glyph->vectorglyph->edgeindices = (int *) glyph3d_spaceglyphindices;
     }
     else {
-
       glyph->vectorglyph->vertices = (float *) coin_default3dfont_get_coords()[character-33];
       glyph->vectorglyph->faceindices = (int *) coin_default3dfont_get_faceidx()[character-33];
       glyph->vectorglyph->edgeindices = (int *) coin_default3dfont_get_edgeidx()[character-33];
@@ -266,7 +263,7 @@ glyph3d_calcboundingbox(cc_glyph3d * g)
   g->bbox[3] = 0;
 
   coordptr = cc_glyph3d_getcoords(g);
-  edgeptr = cc_glyph3d_getfaceindices(g);
+  edgeptr = cc_glyph3d_getedgeindices(g);
 
   while ((*edgeptr >= 0) && (*edgeptr != -1)) {
 
