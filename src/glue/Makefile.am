@@ -4,7 +4,7 @@
 RegularSources = \
 	dl.c \
 	gl.c \
-	gl_wgl.c gl_nsgl.c gl_glx.c \
+	gl_wgl.c gl_agl.c gl_glx.c \
 	GLUWrapper.c \
 	simage_wrapper.c \
 	openal_wrapper.c
@@ -18,7 +18,7 @@ PrivateHeaders = \
 	../../include/Inventor/C/glue/glp.h \
 	../../include/Inventor/C/glue/gl_wgl.h \
 	../../include/Inventor/C/glue/gl_glx.h \
-	../../include/Inventor/C/glue/gl_nsgl.h \
+	../../include/Inventor/C/glue/gl_agl.h \
 	../../include/Inventor/C/glue/GLUWrapper.h \
 	../../include/Inventor/C/glue/simage_wrapper.h \
 	../../include/Inventor/C/glue/openal_wrapper.h

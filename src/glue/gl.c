@@ -121,7 +121,7 @@
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/glue/gl_wgl.h>
 #include <Inventor/C/glue/gl_glx.h>
-#include <Inventor/C/glue/gl_nsgl.h>
+#include <Inventor/C/glue/gl_agl.h>
 
 static cc_libhandle glglue_self_handle = NULL;
 static SbBool glglue_tried_open_self = FALSE;
@@ -1764,7 +1764,9 @@ cc_glglue_context_create_offscreen(unsigned int width, unsigned int height)
 {
 #ifdef HAVE_GLX
   return glxglue_context_create_offscreen(width, height);
-#endif /* HAVE_GLX */
+#elif HAVE_AGL
+  return aglglue_context_create_offscreen(width, height);
+#endif /* HAVE_AGL */
   assert(FALSE && "unimplemented");
   return NULL;
 }
@@ -1774,7 +1776,9 @@ cc_glglue_context_make_current(void * ctx)
 {
 #ifdef HAVE_GLX
   return glxglue_context_make_current(ctx);
-#endif /* HAVE_GLX */
+#elif HAVE_AGL
+  return aglglue_context_make_current(ctx);
+#endif /* HAVE_AGL */
   assert(FALSE && "unimplemented");
   return FALSE;
 }
@@ -1784,9 +1788,11 @@ cc_glglue_context_reinstate_previous(void * ctx)
 {
 #ifdef HAVE_GLX
   glxglue_context_reinstate_previous(ctx);
-#else /* !HAVE_GLX */
+#elif HAVE_AGL
+  aglglue_context_reinstate_previous(ctx);
+#else
   assert(FALSE && "unimplemented");
-#endif /* !HAVE_GLX */
+#endif /* HAVE_AGL */
 }
 
 void
@@ -1794,9 +1800,12 @@ cc_glglue_context_destruct(void * ctx)
 {
 #ifdef HAVE_GLX
   glxglue_context_destruct(ctx);
-#else /* !HAVE_GLX */
+#elif HAVE_AGL
+ aglglue_context_destruct(ctx);
+#else 
   assert(FALSE && "unimplemented");
-#endif /* !HAVE_GLX */
+#endif /* HAVE_AGL */
 }
 
 /*** </Offscreen buffer handling.> ******************************************/
+

@@ -25,71 +25,36 @@
 // This file can only be included from inside SoOffscreenRenderer.
 //
 
-#include <AGL/agl.h>  
-#include <Carbon/Carbon.h>  // for quickdraw functions
+#include <Carbon/Carbon.h>
 
 class SoOffscreenAGLData : public SoOffscreenInternalData {
+
 public:
   SoOffscreenAGLData(void);
   virtual ~SoOffscreenAGLData();
-
-  static SbVec2f getResolution(void);
   virtual void setBufferSize(const SbVec2s & size);
   virtual SbBool makeContextCurrent(uint32_t contextid);
   virtual void unmakeContextCurrent(void);
   virtual unsigned char * getBuffer(void);
+  static SbVec2f getResolution(void);
 
 private:
+  void * context;
   unsigned char * buffer;
-  AGLDrawable drawable;
-  AGLContext context;
-  AGLContext storedcontext;
-  AGLDrawable storeddrawable;
-  AGLPixelFormat pixformat;
-  Rect bounds;
 };
 
 SoOffscreenAGLData::SoOffscreenAGLData(void)
-  : drawable(NULL), context(NULL), pixformat(NULL)
 {
   this->buffer = NULL;
-  
-  // FIXME: not 100% sure which attributes are best, got to check
-  // kyrah 20020223
-  
-  GLint attrib[] = {
-    AGL_OFFSCREEN,
-    AGL_RGBA,
-    AGL_NO_RECOVERY,
-    AGL_RED_SIZE, 8,
-    AGL_GREEN_SIZE, 8,
-    AGL_BLUE_SIZE, 8,
-    AGL_DEPTH_SIZE, 32,
-    AGL_STENCIL_SIZE, 1,
-    AGL_NONE
-  };
-  
-  this->pixformat = aglChoosePixelFormat( NULL, 0, attrib );
-  if (!this->pixformat) {
-    SoDebugError::postWarning("SoOffscreenAGLData::SoOffscreenAGLData",
-                              "Couldn't get RGBA AGL pixelformat.");
-    return;
-  }
-  
-  this->context = aglCreateContext( pixformat, NULL );
-  if (!this->context) {
-    SoDebugError::postWarning("SoOffscreenAGLData::SoOffscreenAGLData",
-                              "Couldn't create AGL context.");
-  }
+  this->context = NULL;
 }
 
 SoOffscreenAGLData::~SoOffscreenAGLData() 
 {
-  if (this->drawable) DisposeGWorld((GWorldPtr) drawable);
-  if (this->context) aglDestroyContext(context);
-  if (this->pixformat) aglDestroyPixelFormat(pixformat);
+  if (this->context) cc_glglue_context_destruct(this->context);
   delete[] this->buffer;
 }
+
 
 // Pixels-pr-mm.
 SbVec2f
@@ -106,50 +71,22 @@ SoOffscreenAGLData::setBufferSize(const SbVec2s & size)
   // Avoid costly operations below if not really necessary.
   if (this->buffersize == size) { return; }
 
-  CGrafPtr savedport;
-  GDHandle savedgdh;
-  
   SoOffscreenInternalData::setBufferSize(size);
-  
+
   delete[] this->buffer;
   this->buffer =
     new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
-  
-  SetRect(&bounds, 0, 0, size[0], size[1]);
 
-  // We have to save (and later restore) the old graphics port and 
-  // GHandle, since this function will probably called before the
-  // Mac OS X viewer is fully set up.
-  GetGWorld(&savedport, &savedgdh); 
-
-  QDErr e = NewGWorld(&drawable, 32, &bounds, NULL /* cTable */, 
-                      NULL /*aGDevice */, 0);
-  if(e != noErr) {
-      SoDebugError::postWarning("SoOffscreenAGLData::SoOffscreenAGLData",
-                                "Error creating GWorld: %d", e);
-  }
-  if (!this->drawable) {
-    SoDebugError::postWarning("SoOffscreenAGLData::SoOffscreenAGLData",
-                              "Couldn't create AGL drawable.");
-  }
-  SetGWorld(savedport, savedgdh);
+  if (this->context) cc_glglue_context_destruct(this->context);
+  this->context = cc_glglue_context_create_offscreen(size[0], size[1]);
 }
 
 SbBool 
 SoOffscreenAGLData::makeContextCurrent(uint32_t contextid) 
 {
   assert(this->buffer);
-  if (this->context && this->drawable) {
-    this->storedcontext = aglGetCurrentContext();
-    this->storeddrawable = aglGetDrawable(storedcontext);
-    PixMapHandle pixmap = GetGWorldPixMap((GWorldPtr)drawable);
-    aglSetOffScreen(context, bounds.right-bounds.left, 
-                    bounds.bottom-bounds.top,
-                    GetPixRowBytes(pixmap), GetPixBaseAddr(pixmap));     
-    aglSetCurrentContext(context);
-    return TRUE;
-  }
-  return FALSE;
+  assert(this->context);
+  return cc_glglue_context_make_current(this->context);
 }
 
 unsigned char * 
@@ -161,13 +98,5 @@ SoOffscreenAGLData::getBuffer(void)
 void
 SoOffscreenAGLData::unmakeContextCurrent(void)
 {   
-  // The previous context is stored and reset to make it possible
-  // to use an SoOffscreenRenderer from for instance an SoCallback
-  // node callback during SoGLRenderAction traversal, without the
-  // need for any extra book-keeping on the application side.
-  
-  if (this->storedcontext && this->storeddrawable) {
-    aglSetDrawable(storedcontext, storeddrawable);
-    aglSetCurrentContext(storedcontext);
-  }
+  cc_glglue_context_reinstate_previous(this->context);
 }
