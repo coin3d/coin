@@ -232,7 +232,9 @@ and explains the principles applied fairly well.
   COIN_DEBUG
 
     This define should be set to either 0 or 1.  It is therefore used
-    with the #if directive, not the #ifdef directive.
+    with the #if directive, not the #ifdef directive.  Actually, this define
+    is now preferrably used as an if-condition to avoid littering the source
+    code with too many preprocessing directives.
 
   COIN_EXTRA_DEBUG
 
@@ -521,6 +523,16 @@ versus the code "layout" (to make it more easily readable):
   at the top of the file before checking in the code.  See
   src/sensors/SoSensorManager.cpp for examples of how this should be
   done.
+
+  UPDATE 2001-11-21 larsa:
+  Actually, we now prefer that you use this define as an if-condition
+  instead, because of the cleaner look the source code gets when it is
+  not littered with preprocessing directives.  For permanent debugging
+  code, write therefore source code like this instead:
+
+    if ( COIN_DEBUG ) {
+      SoDebugError::postInfo("SoDB::funnyRabbit", "follow the white rabbit");
+    }
 
 * Do not under any circumstances use printf() / fprintf() / puts() or
   related functions for output.  It should not be necessary -- the
