@@ -376,12 +376,13 @@ _class_::deleteAllValues(void) \
   this->setNum(0); \
 } \
  \
+/* This method is used for moving values around internally within */ \
+/* a multivalue field. It needs to be overloaded in each field so it */ \
+/* automatically takes care of running copy contructors where necessary. */ \
 void \
 _class_::copyValue(int to, int from) \
 { \
-  assert(this->values && SbMax(to, from) < num); \
   this->values[to] = this->values[from]; \
-  this->valueChanged(); \
 }
 
 
