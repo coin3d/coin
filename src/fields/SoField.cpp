@@ -65,7 +65,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoFields.h>
-#include <Inventor/fields/SoGlobalField.h>
 #include <Inventor/lists/SoEngineList.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/lists/SoVRMLInterpOutputList.h>
@@ -1248,13 +1247,6 @@ SoField::referencesCopy(void) const
   for (int i=0; i < nr; i++) {
     SoFieldContainer * fc = masters[i]->getContainer();
     if (SoFieldContainer::checkCopy(fc)) return TRUE;
-    // We interpret global fields to be within the scene graph in
-    // this context.
-    //
-    // If we don't, we get problems when for instance copying scene
-    // graphs where there are engines connected to the realTime field
-    // as their sole input -- as the engine will then not be copied.
-    if (fc->getTypeId() == SoGlobalField::getClassTypeId()) return TRUE;
   }
 
   return FALSE;
