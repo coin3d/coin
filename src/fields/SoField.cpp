@@ -129,19 +129,19 @@ public:
   void addConverter(const void * item, SoFieldConverter * converter)
   {
     // "item" can be SoField* or SoEngineOutput*.
-    this->maptoconverter.enter((const unsigned long)item, converter);
+    this->maptoconverter.enter((unsigned long)item, converter);
   }
 
   void removeConverter(const void * item)
   {
-    SbBool ok = this->maptoconverter.remove((const unsigned long)item);
+    SbBool ok = this->maptoconverter.remove((unsigned long)item);
     assert(ok);
   }
 
   SoFieldConverter * findConverter(const void * item)
   {
     void * val;
-    if (!this->maptoconverter.find((const unsigned long)item, val))
+    if (!this->maptoconverter.find((unsigned long)item, val))
       return NULL;
     return (SoFieldConverter *)val;
   }
