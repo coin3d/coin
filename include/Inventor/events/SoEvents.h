@@ -20,7 +20,7 @@
 #ifndef COIN_SOEVENTS_H
 #define COIN_SOEVENTS_H
 
-// Includes th definitions of all event classes. This includefile is
+// Includes the definitions of all event classes. This includefile is
 // provided for convenience. Try to use it as little as possible,
 // though, as including it unnecessary slows down your compile
 // process.

@@ -20,20 +20,13 @@
 #ifndef COIN_SOBUTTONEVENT_H
 #define COIN_SOBUTTONEVENT_H
 
-#include <Inventor/events/SoEvent.h>
+#include <Inventor/events/SoSubEvent.h>
 
 
 class SoButtonEvent : public SoEvent {
   typedef SoEvent inherited;
 
-//$ BEGIN TEMPLATE EventHeader()
-protected:
-  static SoType classTypeId;
-
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-//$ END TEMPLATE EventHeader
+  SO_EVENT_HEADER();
 
 public:
   enum State {

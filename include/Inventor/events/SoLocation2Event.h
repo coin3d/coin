@@ -20,20 +20,13 @@
 #ifndef COIN_SOLOCATION2EVENT_H
 #define COIN_SOLOCATION2EVENT_H
 
-#include <Inventor/events/SoEvent.h>
+#include <Inventor/events/SoSubEvent.h>
 
 
 class SoLocation2Event : public SoEvent {
   typedef SoEvent inherited;
 
-//$ BEGIN TEMPLATE EventHeader()
-protected:
-  static SoType classTypeId;
-
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-//$ END TEMPLATE EventHeader
+  SO_EVENT_HEADER();
 
 public:
   virtual ~SoLocation2Event();

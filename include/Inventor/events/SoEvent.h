@@ -29,20 +29,14 @@ class SbVec2f;
 
 
 class SoEvent {
-//$ BEGIN TEMPLATE EventHeader()
-protected:
-  static SoType classTypeId;
-
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-//$ END TEMPLATE EventHeader
 
 public:
   SoEvent(void);
   virtual ~SoEvent();
 
   SbBool isOfType(SoType type) const;
+  static SoType getClassTypeId(void);
+  virtual SoType getTypeId(void) const;
 
   void setTime(const SbTime t);
   SbTime getTime(void) const;
@@ -62,6 +56,8 @@ public:
   static void initClass(void);
 
 private:
+  static SoType classTypeId;
+
   SbTime timeofevent;
   SbVec2s positionofevent;
 

@@ -32,14 +32,7 @@
 class SoMouseButtonEvent : public SoButtonEvent {
   typedef SoButtonEvent inherited;
 
-//$ BEGIN TEMPLATE EventHeader()
-protected:
-  static SoType classTypeId;
-
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-//$ END TEMPLATE EventHeader
+  SO_EVENT_HEADER();
 
 public:
   enum Button {

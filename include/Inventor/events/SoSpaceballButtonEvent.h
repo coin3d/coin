@@ -23,26 +23,16 @@
 #include <Inventor/events/SoButtonEvent.h>
 
 #define SO_SPACEBALL_PRESS_EVENT(EVENT, BUTTON) \
- (SoSpaceballButtonEvent::isButtonPressEvent(EVENT, \
-                                             SoSpaceballButtonEvent::BUTTON))
+ (SoSpaceballButtonEvent::isButtonPressEvent(EVENT, SoSpaceballButtonEvent::BUTTON))
 
 #define SO_SPACEBALL_RELEASE_EVENT(EVENT, BUTTON) \
- (SoSpaceballButtonEvent::isButtonReleaseEvent(EVENT, \
-                                               SoSpaceballButtonEvent::BUTTON))
-
+ (SoSpaceballButtonEvent::isButtonReleaseEvent(EVENT, SoSpaceballButtonEvent::BUTTON))
 
 
 class SoSpaceballButtonEvent : public SoButtonEvent {
   typedef SoButtonEvent inherited;
 
-//$ BEGIN TEMPLATE EventHeader()
-protected:
-  static SoType classTypeId;
-
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-//$ END TEMPLATE EventHeader
+  SO_EVENT_HEADER();
 
 public:
   enum Button {

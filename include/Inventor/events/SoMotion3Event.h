@@ -20,7 +20,7 @@
 #ifndef COIN_SOMOTION3EVENT_H
 #define COIN_SOMOTION3EVENT_H
 
-#include <Inventor/events/SoEvent.h>
+#include <Inventor/events/SoSubEvent.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbRotation.h>
 
@@ -28,14 +28,7 @@
 class SoMotion3Event : public SoEvent {
   typedef SoEvent inherited;
 
-//$ BEGIN TEMPLATE EventHeader()
-protected:
-  static SoType classTypeId;
-
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-//$ END TEMPLATE EventHeader
+  SO_EVENT_HEADER();
 
 public:
   SoMotion3Event(void);

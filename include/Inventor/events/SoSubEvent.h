@@ -20,6 +20,20 @@
 #ifndef COIN_SOSUBEVENT_H
 #define COIN_SOSUBEVENT_H
 
-#error "Macros for SoSubEvent.h has not been written yet."
+#include <Inventor/events/SoEvent.h>
+
+
+#define SO_EVENT_HEADER() \
+private: \
+  static SoType classTypeId; \
+public: \
+  static SoType getClassTypeId(void); \
+  virtual SoType getTypeId(void) const
+
+
+#define SO_EVENT_SOURCE(_class_)
+
+
+#define SO_EVENT_INIT_CLASS(_class_, _parentclass_)
 
 #endif // !COIN_SOSUBEVENT_H
