@@ -258,7 +258,11 @@
   \var int SoMField::maxNum
   Number of array "slots" allocated for this field.
 */
-
+/*!
+  \var SbBool SoMField::userDataIsUsed
+  Is \c TRUE if data has been set through a setValuesPointer() call
+  and set to \c FALSE through a enableDeleteValues() call. 
+*/
 
 // Don't set value explicitly to SoType::badType(), to avoid a bug in
 // Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
