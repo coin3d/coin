@@ -43,7 +43,7 @@
   This node has many fields, but usually it is sufficient to set only
   one or very few fields. FIXME: more doc, pederb, 2004-01-27
 
-  \since 2004-01-27
+  \since Coin 2.3
 */
 
 /*!

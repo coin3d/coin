@@ -30,7 +30,7 @@
 
   \COIN_CLASS_EXTENSION
 
-  \since 20034-01-27
+  \since Coin 2.3
 */
 
 #include <Inventor/elements/SoTextureCombineElement.h>
