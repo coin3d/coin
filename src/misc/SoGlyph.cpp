@@ -152,14 +152,13 @@ SoGlyph::getNextCCWEdge(const int edgeidx) const
 }
 
 /*!
-  Convenience method which returns the width of the glyph, and
-  adds a small value to get some space between letters.
+  Convenience method which returns the exact width of the glyph.
 */
 float
 SoGlyph::getWidth(void) const
 {
   const SbBox2f & box = this->getBoundingBox();
-  return box.getMax()[0] - box.getMin()[0] + 0.05; // some ext
+  return box.getMax()[0] - box.getMin()[0];
 }
 
 /*!
