@@ -1352,7 +1352,7 @@ static int
 flwft_calctessellatorsteps(float complexity)
 {
   /* Default is 5 steps. Minimum is zero step, maximum is 10. */
-  return (int)  (10 * complexity);
+  return (int)  (16 * complexity);
 }
 
 #endif /* HAVE_FREETYPE */
