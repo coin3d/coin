@@ -1025,6 +1025,7 @@ Optional Features:
   --disable-libtool-lock  avoid locking (might break parallel builds)
   --enable-optimization   allow compilers to make optimized code
                           [default=yes]
+  --enable-3ds-import     enable 3ds import capabilities
   --enable-vrml97         enable VRML97 support
   --enable-sound          enable sound support
   --enable-threads        enable platform-independent multithreading
@@ -5020,7 +5021,7 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5023 "configure"' > conftest.$ac_ext
+  echo '#line 5024 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5556,7 +5557,7 @@ chmod -w .
 save_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:5559: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+if { (eval echo configure:5560: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -7349,7 +7350,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7352 "configure"
+#line 7353 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -7447,7 +7448,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7450 "configure"
+#line 7451 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -8733,6 +8734,56 @@ esac
 
 # *******************************************************************
 # Enable/disable separate Coin modules
+
+# *******************************************************************
+# See if we should build with 3ds import capabilities.
+
+sim_ac_enable_3ds_import=false
+
+# Check whether --enable-3ds-import or --disable-3ds-import was given.
+if test "${enable_3ds_import+set}" = set; then
+  enableval="$enable_3ds_import"
+
+  case $enableval in
+    yes) sim_ac_enable_3ds_import=true ;;
+    *) ;;
+  esac
+fi;
+
+HAVE_3DS_IMPORT_CAPABILITIES=1
+
+if $sim_ac_enable_3ds_import ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_3DS_IMPORT_CAPABILITIES
+_ACEOF
+
+  if test x${sim_ac_configuration_settings+set} != xset; then
+  sim_ac_configuration_settings="3ds import capabilities:Yes (warning: experimental)"
+else
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|3ds import capabilities:Yes (warning: experimental)"
+fi
+
+else
+  HAVE_3DS_IMPORT_CAPABILITIES=0
+  if test x${sim_ac_configuration_settings+set} != xset; then
+  sim_ac_configuration_settings="3ds import capabilities:No  (enable with --enable-3ds-import)"
+else
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|3ds import capabilities:No  (enable with --enable-3ds-import)"
+fi
+
+fi
+
+
+
+
+if $sim_ac_enable_3ds_import; then
+  BUILD_3DS_CAPABILITIES_TRUE=
+  BUILD_3DS_CAPABILITIES_FALSE='#'
+else
+  BUILD_3DS_CAPABILITIES_TRUE='#'
+  BUILD_3DS_CAPABILITIES_FALSE=
+fi
 
 # *******************************************************************
 # Search for the vrml97 extension
@@ -14147,6 +14198,10 @@ fi;
 # * Check compiler features, bugs, etc.
 # *******************************************************************
 
+# FIXME: the extra strict warning settings for GCC below should be
+# placed in a macro, so they can be easily used from other src-code
+# modules aswell. 20021218 mortene.
+
 
 # Check whether --enable-debug or --disable-debug was given.
 if test "${enable_debug+set}" = set; then
@@ -14169,6 +14224,7 @@ if $enable_debug; then
   if test x"$GCC" = x"yes"; then
     CPPFLAGS="$CPPFLAGS -fno-builtin";   # no auto string.h-functions
     CPPFLAGS="$CPPFLAGS -Wreturn-type";  # warn on missing return-value
+    CXXFLAGS="$CXXFLAGS -fno-for-scope"; # disallow non-standard scoping of for()-variables
   fi
   CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=1"
 
@@ -19831,7 +19887,7 @@ if test x"$enable_hacking" = x"yes"; then
   for dir in \
     base actions bundles caches details draggers elements engines \
     errors events fields glue manips misc lists nodekits nodes projectors \
-    sensors upgraders; \
+    sensors upgraders 3ds; \
   do
     HACKING_LIBDIRS="$HACKING_LIBDIRS -L${coin_build_dir}/src/$dir/.libs"
     EXTRA_LIBS="$EXTRA_LIBS -l$dir${SUFFIX}LINKHACK"
@@ -20245,7 +20301,7 @@ fi
 
 # **************************************************************************
 
-ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/glue/Makefile include/Inventor/C/threads/Makefile include/Inventor/lock/Makefile include/Inventor/system/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/glue/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile src/upgraders/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile docs/coin.doxygen"
+ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/glue/Makefile include/Inventor/C/threads/Makefile include/Inventor/lock/Makefile include/Inventor/system/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/glue/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/3ds/Makefile src/sensors/Makefile src/upgraders/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile docs/coin.doxygen"
 
 
 cat >confcache <<\_ACEOF
@@ -20766,6 +20822,7 @@ do
   "src/nodekits/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/nodekits/Makefile" ;;
   "src/nodes/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/nodes/Makefile" ;;
   "src/projectors/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/projectors/Makefile" ;;
+  "src/3ds/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/3ds/Makefile" ;;
   "src/sensors/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/sensors/Makefile" ;;
   "src/upgraders/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/upgraders/Makefile" ;;
   "src/threads/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/threads/Makefile" ;;
@@ -20936,6 +20993,9 @@ s,@COIN_EXTRA_CFLAGS@,$COIN_EXTRA_CFLAGS,;t t
 s,@COIN_EXTRA_CXXFLAGS@,$COIN_EXTRA_CXXFLAGS,;t t
 s,@COIN_EXTRA_LDFLAGS@,$COIN_EXTRA_LDFLAGS,;t t
 s,@COIN_EXTRA_LIBS@,$COIN_EXTRA_LIBS,;t t
+s,@HAVE_3DS_IMPORT_CAPABILITIES@,$HAVE_3DS_IMPORT_CAPABILITIES,;t t
+s,@BUILD_3DS_CAPABILITIES_TRUE@,$BUILD_3DS_CAPABILITIES_TRUE,;t t
+s,@BUILD_3DS_CAPABILITIES_FALSE@,$BUILD_3DS_CAPABILITIES_FALSE,;t t
 s,@HAVE_VRML97@,$HAVE_VRML97,;t t
 s,@BUILD_VRML97_TRUE@,$BUILD_VRML97_TRUE,;t t
 s,@BUILD_VRML97_FALSE@,$BUILD_VRML97_FALSE,;t t
