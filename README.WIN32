@@ -1,5 +1,5 @@
-You should be able to build the simage library if you have these
-components installed on your system:
+You should be able to build the library if you have these components
+installed on your system:
 
         * Cygwin[1], latest release
         * Microsoft Visual C++ v6.x
