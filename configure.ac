@@ -1110,11 +1110,15 @@ SIM_AC_CHECK_OPENGL(
       [enable_dl_glu=true])
   
     if $coin_can_do_runtime_linking && $enable_dl_glu; then
-      # See if GLU is part of GL library (this is the case on BeOS, for
-      # instance) before setting us up for runtime linking.
+      # See if GLU is part of GL library (this is the case on Mac OS X 
+      # and BeOS, for instance) before setting us up for runtime linking.
       SIM_AC_GLU_READY_IFELSE([
-        AC_DEFINE([HAVE_GLU],1, [define if you have GLU])
-        SIM_AC_CONFIGURATION_SETTING([GLU linkage], [part of GL library])
+        AC_DEFINE([GLU_IS_PART_OF_GL],1, 
+                  [define if GLU is part of the GL library])
+        AC_DEFINE_UNQUOTED([GLU_RUNTIME_LINKING],1,
+          [define for runtime linking with GLU])
+        SIM_AC_CONFIGURATION_SETTING([GLU linkage], 
+                  [run-time binding, part of GL library])
       ], [
         AC_DEFINE_UNQUOTED([GLU_RUNTIME_LINKING],1,
           [define for runtime linking with GLU])
