@@ -50,6 +50,7 @@
 #include <ft2build.h>
 #include <freetype/freetype.h>
 #include <freetype/ftglyph.h>
+#include <freetype/ftoutln.h>
 #endif /* FREETYPEGLUE_ASSUME_FREETYPE */
 
 #include <Inventor/C/basic.h>
@@ -60,7 +61,7 @@
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/freetype.h>
 
-typedef FT_Error (*cc_ftglue_FT_Init_FreeType_t)(void ** library);
+typedef FT_Error (*cc_ftglue_FT_Init_FreeType_t)(FT_Library * library);
 typedef void (*cc_ftglue_FT_Library_Version_t)(void * library, int * major, int * minor, int * patch);
 typedef void (*cc_ftglue_FT_Done_FreeType_t)(void * library);
 typedef FT_Error (*cc_ftglue_FT_New_Face_t)(void * library, const char * filepathname, long faceindex, FT_Face * face);
@@ -213,7 +214,7 @@ ftglue_init(void)
 
 
 FT_Error 
-cc_ftglue_FT_Init_FreeType(void ** library)
+cc_ftglue_FT_Init_FreeType(FT_Library * library)
 {
   assert(freetype_instance && freetype_instance->available);
   return freetype_instance->FT_Init_FreeType(library);

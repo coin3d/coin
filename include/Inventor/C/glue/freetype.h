@@ -303,7 +303,7 @@ typedef struct FT_OutlineGlyphRec_* FT_OutlineGlyph;
 
 int cc_ftglue_available(void);
 
-FT_Error cc_ftglue_FT_Init_FreeType(void ** library);
+FT_Error cc_ftglue_FT_Init_FreeType(FT_Library * library);
 void cc_ftglue_FT_Library_Version(void * library, int * major, int * minor, int * patch);
 void cc_ftglue_FT_Done_FreeType(void * library);
 FT_Error cc_ftglue_FT_New_Face(void * library, const char * filepathname, long faceindex, FT_Face * face);
