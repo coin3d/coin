@@ -537,34 +537,51 @@ fi
 
 # **************************************************************************
 
-AC_DEFUN([SIM_AC_SETUP_MSVC_IFELSE],
-[# **************************************************************************
+AC_DEFUN([SIM_AC_MSVC_DISABLE_OPTION], [
+AC_ARG_ENABLE([msvc],
+  [AC_HELP_STRING([--disable-msvc], [don't require MS Visual C++ on Cygwin])],
+  [case $enableval in
+  no | false) sim_ac_try_msvc=false ;;
+  *)          sim_ac_try_msvc=true ;;
+  esac],
+  [sim_ac_try_msvc=true])
+])
+
+# **************************************************************************
+# Note: the SIM_AC_SETUP_MSVC_IFELSE macro has been OBSOLETED and
+# replaced by the one below.
+#
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
 # compiling with it and to generate an MSWindows .dll file.
 
-: ${BUILD_WITH_MSVC=false}
-sim_ac_wrapmsvc=`cd $srcdir; pwd`/cfg/m4/wrapmsvc.exe
-if test -z "$CC" -a -z "$CXX" && $sim_ac_wrapmsvc >/dev/null 2>&1; then
-  m4_ifdef([$0_VISITED],
-    [AC_FATAL([Macro $0 invoked multiple times])])
-  m4_define([$0_VISITED], 1)
-  CC=$sim_ac_wrapmsvc
-  CXX=$sim_ac_wrapmsvc
-  export CC CXX
-  BUILD_WITH_MSVC=true
+AC_DEFUN([SIM_AC_SETUP_MSVCPP_IFELSE],
+[
+AC_REQUIRE([SIM_AC_MSVC_DISABLE_OPTION])
+
+BUILD_WITH_MSVC=false
+if $sim_ac_try_msvc; then
+  sim_ac_wrapmsvc=`cd $srcdir; pwd`/cfg/m4/wrapmsvc.exe
+  if test -z "$CC" -a -z "$CXX" && $sim_ac_wrapmsvc >/dev/null 2>&1; then
+    m4_ifdef([$0_VISITED],
+      [AC_FATAL([Macro $0 invoked multiple times])])
+    m4_define([$0_VISITED], 1)
+    CC=$sim_ac_wrapmsvc
+    CXX=$sim_ac_wrapmsvc
+    export CC CXX
+    BUILD_WITH_MSVC=true
+  else
+    case $host in
+    *-cygwin) SIM_AC_ERROR([no-msvc++]) ;;
+    esac
+  fi
 fi
 AC_SUBST(BUILD_WITH_MSVC)
 
-case $CXX in
-*wrapmsvc.exe)
-  BUILD_WITH_MSVC=true
-  $1
-  ;;
-*)
-  BUILD_WITH_MSVC=false
-  $2
-  ;;
-esac
+if $BUILD_WITH_MSVC; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
 ]) # SIM_AC_SETUP_MSVC_IFELSE
 
 # **************************************************************************
@@ -5163,69 +5180,6 @@ fi
 ]) # SIM_AC_CHECK_PTHREAD
 
 # Usage:
-#  SIM_AC_BYTEORDER_CONVERSION([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-#
-# Description:
-#
-#   Set variable sim_ac_byteorder_conversion_libs to the lib(s) we
-#   need to link with to get at the network byteorder conversion
-#   functions htonl(), htons(), ntohl() and ntohs(). The libs are also
-#   added to the LIBS variable.
-#
-#   If the functions are found, sim_ac_byteorder_conversion is also
-#   set to ``true'', otherwise it is set to ``false''.
-#
-# Author: Morten Eriksen, <mortene@sim.no>.
-
-AC_DEFUN(SIM_AC_BYTEORDER_CONVERSION, [
-sim_ac_save_libs=$LIBS
-AC_CACHE_CHECK(
-  [network byteorder conversion],
-  sim_cv_byteorder_conversion_libs,
-  [sim_cv_byteorder_conversion_libs=UNRESOLVED
-  for sim_ac_byc_libcheck in "" -lws2_32 -lwsock32; do
-    if test "x$sim_cv_byteorder_conversion_libs" = "xUNRESOLVED"; then
-      LIBS="$sim_ac_byc_libcheck $sim_ac_save_libs"
-      AC_TRY_LINK([
-#ifdef HAVE_WINSOCK2_H
-#include <winsock2.h> /* MSWindows htonl() etc */
-#endif /* HAVE_WINSOCK2_H */
-#ifdef HAVE_SYS_PARAM_H
-#include <sys/param.h> /* FreeBSD htonl() etc */
-#endif /* HAVE_SYS_PARAM_H */
-#ifdef HAVE_SYS_TYPES_H
-/* According to Coin user Ralf Corsepius, at least SunOS4 needs
-   to include sys/types.h before netinet/in.h. There have also
-   been a problem report for FreeBSD which seems to indicate
-   the same dependency on that platform aswell. */
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-#ifdef HAVE_NETINET_IN_H
-#include <netinet/in.h> /* Linux htonl() etc */
-#endif /* HAVE_NETINET_IN_H */
-],
-                  [
-(void)htonl(0x42); (void)htons(0x42); (void)ntohl(0x42); (void)ntohs(0x42);
-],
-                  [sim_cv_byteorder_conversion_libs="$sim_ac_byc_libcheck"])
-    fi
-  done
-])
-
-LIBS=$sim_ac_save_libs
-
-if test "x$sim_cv_byteorder_conversion_libs" != "xUNRESOLVED"; then
-  sim_ac_byteorder_conversion_libs="$sim_cv_byteorder_conversion_libs"
-  LIBS="$sim_ac_byteorder_conversion_libs $LIBS"
-  sim_ac_byteorder_conversion=true
-  $1
-else
-  sim_ac_byteorder_conversion=false
-  $2
-fi
-])
-
-# Usage:
 #  SIM_AC_DOXYGEN_TOOL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 # Description:
@@ -5745,7 +5699,8 @@ if test x"$with_dl" != xno; then
 
   AC_MSG_CHECKING([for the dl library])
   # At least under FreeBSD, dlopen() et al is part of the C library.
-  for sim_ac_dl_libcheck in "" "-ldl"; do
+  # On HP-UX, dlopen() might reside in a library "svld" instead of "dl".
+  for sim_ac_dl_libcheck in "" "-ldl" "-lsvld"; do
     if ! $sim_ac_dl_avail; then
       LIBS="$sim_ac_dl_libcheck $sim_ac_save_libs"
       AC_TRY_LINK([
@@ -5821,6 +5776,39 @@ if $sim_ac_win32_loadlibrary; then
     ifelse([$2], , :, [$2])
   fi
 fi
+])
+
+# SIM_AC_CHECK_DLD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+# ----------------------------------------------------------
+#
+#  Try to find the dynamic link loader library available on HP-UX 10.
+#  If it is found, this shell variable is set:
+#
+#    $sim_ac_dld_libs     (link libraries the linker needs for dld lib)
+#
+#  The $LIBS var will also be modified accordingly.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_CHECK_DLD], [
+  sim_ac_dld_libs="-ldld"
+
+  sim_ac_save_libs=$LIBS
+  LIBS="$sim_ac_dld_libs $LIBS"
+
+  AC_CACHE_CHECK([whether the DLD shared library loader is available],
+    sim_cv_lib_dld_avail,
+    [AC_TRY_LINK([#include <dl.h>],
+                 [(void)shl_load("allyourbase", 0, 0L); (void)shl_findsym(0L, "arebelongtous", 0, 0L); (void)shl_unload((shl_t)0);],
+                 [sim_cv_lib_dld_avail=yes],
+                 [sim_cv_lib_dld_avail=no])])
+
+  if test x"$sim_cv_lib_dld_avail" = xyes; then
+    ifelse([$1], , :, [$1])
+  else
+    LIBS=$sim_ac_save_libs
+    ifelse([$2], , :, [$2])
+  fi
 ])
 
 

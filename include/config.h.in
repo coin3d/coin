@@ -73,6 +73,9 @@
 /* define if preprocessor can quote arguments with apostophes */
 #undef HAVE_APOSTROPHES_QUOTING
 
+/* define if the DLD shared library loader is available */
+#undef HAVE_DLD_LIB
+
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 

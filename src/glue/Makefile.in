@@ -70,9 +70,6 @@ COIN_BETA_VERSION = @COIN_BETA_VERSION@
 COIN_COMPILER = @COIN_COMPILER@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
-COIN_DSP_DEFS = @COIN_DSP_DEFS@
-COIN_DSP_INCS = @COIN_DSP_INCS@
-COIN_DSP_LIBS = @COIN_DSP_LIBS@
 COIN_EXTRA_CFLAGS = @COIN_EXTRA_CFLAGS@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
 COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
@@ -272,9 +269,9 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@DEP_FILES = $(DEPDIR)/GLUWrapper.Plo $(DEPDIR)/GLUWrapper.Po \
 @AMDEP_TRUE@	$(DEPDIR)/all-c.Plo $(DEPDIR)/all-c.Po \
 @AMDEP_TRUE@	$(DEPDIR)/dl.Plo $(DEPDIR)/dl.Po $(DEPDIR)/gl.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/gl.Po $(DEPDIR)/gl_glx.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/gl_glx.Po $(DEPDIR)/gl_agl.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/gl_agl.Po $(DEPDIR)/gl_wgl.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/gl.Po $(DEPDIR)/gl_agl.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/gl_agl.Po $(DEPDIR)/gl_glx.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/gl_glx.Po $(DEPDIR)/gl_wgl.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/gl_wgl.Po $(DEPDIR)/openal_wrapper.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/openal_wrapper.Po \
 @AMDEP_TRUE@	$(DEPDIR)/simage_wrapper.Plo \
@@ -362,10 +359,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/dl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl_glx.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl_glx.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl_agl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl_agl.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl_glx.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl_glx.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl_wgl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl_wgl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/openal_wrapper.Plo@am__quote@
