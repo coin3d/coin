@@ -58,6 +58,13 @@
   a bug in the Linux nVidia drivers. It just happens in some
   unreproducable cases.  It could be a bug in our glTexSubImage()
   code, of course. :)
+
+  \li COIN_ENABLE_CONFORMANT_GL_CLAMP: When set, GL_CLAMP will be used
+  when SoGLImage::CLAMP is specified as the texture wrap mode. By
+  default GL_CLAMP_TO_EDGE is used, since this is usually what people
+  want.  See
+  http://www.opengl.org/discussion_boards/ubb/Forum3/HTML/007306.html
+  for a discussion regarding GL_CLAMP and GL_CLAMP_TO_EDGE.  
 */
 
 /*!
@@ -65,7 +72,9 @@
 
   Used to specify how texture coordinates < 0.0 and > 1.0 should be handled.
   It can either be repeated (REPEAT), clamped (CLAMP) or clamped to edge
-  (CLAMP_TO_EDGE), which is useful when tiling textures.
+  (CLAMP_TO_EDGE), which is useful when tiling textures. Since 2002-11-18,
+  CLAMP will be treated as CLAMP_TO_EDGE. The environment variable
+  COIN_ENABLE_CONFORMANT_GL_CLAMP can be used to override this behaviour.
 */
 
 /*!
@@ -123,6 +132,7 @@ static float COIN_TEX2_MIPMAP_LIMIT = -1.0f;
 static float COIN_TEX2_LINEAR_MIPMAP_LIMIT = -1.0f;
 static float COIN_TEX2_SCALEUP_LIMIT = -1.0f;
 static int COIN_TEX2_USE_GLTEXSUBIMAGE = -1;
+static int COIN_ENABLE_CONFORMANT_GL_CLAMP = -1; 
 
 typedef struct {
   unsigned char * buffer;
@@ -638,6 +648,13 @@ SoGLImage::SoGLImage(void)
       COIN_TEX2_USE_GLTEXSUBIMAGE = 1;
     }
     else COIN_TEX2_USE_GLTEXSUBIMAGE = 0;
+  }
+  if (COIN_ENABLE_CONFORMANT_GL_CLAMP < 0) {
+    const char * env = coin_getenv("COIN_ENABLE_CONFORMANT_GL_CLAMP");
+    if (env && atoi(env) == 1) {
+      COIN_ENABLE_CONFORMANT_GL_CLAMP = 1;
+    }
+    else COIN_ENABLE_CONFORMANT_GL_CLAMP = 0;
   }
 }
 
@@ -1388,10 +1405,15 @@ static GLenum
 translate_wrap(SoState *state, const SoGLImage::Wrap wrap)
 {
   if (wrap == SoGLImage::REPEAT) return (GLenum) GL_REPEAT;
-  if (wrap == SoGLImage::CLAMP_TO_EDGE) {
-    const cc_glglue * glw = sogl_glue_instance(state);
-    if (cc_glglue_has_texture_edge_clamp(glw)) return GL_CLAMP_TO_EDGE;
+  if (COIN_ENABLE_CONFORMANT_GL_CLAMP) {
+    if (wrap == SoGLImage::CLAMP_TO_EDGE) {
+      const cc_glglue * glw = sogl_glue_instance(state);
+      if (cc_glglue_has_texture_edge_clamp(glw)) return (GLenum) GL_CLAMP_TO_EDGE;
+    }
+    return (GLenum) GL_CLAMP;
   }
+  const cc_glglue * glw = sogl_glue_instance(state);
+  if (cc_glglue_has_texture_edge_clamp(glw)) return (GLenum) GL_CLAMP_TO_EDGE;
   return (GLenum) GL_CLAMP;
 }
 

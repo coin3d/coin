@@ -20,3 +20,14 @@ Removed obsoleted methods in SoField:
 These methods were obsoleted in Coin-1, and we chose to remove them
 in Coin-2.
 
+Changed behaviour of CLAMP texture wrap mode
+
+  When CLAMP is specified as the texture wrap mode (for SoTexture2 or 
+  SoTexture3), the OpenGL feature GL_CLAMP_TO_EDGE will be used instead 
+  of GL_CLAMP. This is done since GL_CLAMP_TO_EDGE is usually what you 
+  want. Especially for Coin/Open Inventor where it's impossible to specify
+  the texture border color used by GL_CLAMP. The environment variable 
+  COIN_ENABLE_CONFORMANT_GL_CLAMP can be set to "1" to force Coin to use 
+  GL_CLAMP instead of GL_CLAMP_TO_EDGE.
+
+
