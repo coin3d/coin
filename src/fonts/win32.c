@@ -763,7 +763,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
 
   ret = GetGlyphOutline(cc_flww32_globals.devctx,
                         glyph, /* character to query */
-                        GGO_BITMAP, /* format of data to return */
+                        GGO_GRAY8_BITMAP, /* format of data to return */
                         &gm, /* metrics */
                         0, /* size of buffer for data */
                         NULL, /* buffer for data */
@@ -784,7 +784,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
     cc_string str;
     cc_string_construct(&str);
     cc_string_sprintf(&str,
-                      "GetGlyphOutline(HDC=%p, 0x%x '%c', GGO_BITMAP, "
+                      "GetGlyphOutline(HDC=%p, 0x%x '%c', GGO_GRAY8_BITMAP, "
                       "<metricsstruct>, 0, NULL, <idmatrix>)",
                       cc_flww32_globals.devctx, glyph, (unsigned char)glyph);
     cc_win32_print_error("cc_flww32_get_bitmap", cc_string_get_text(&str), GetLastError());
@@ -803,7 +803,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
 
     ret = GetGlyphOutline(cc_flww32_globals.devctx,
                           glyph, /* character to query */
-                          GGO_BITMAP, /* format of data to return */
+                          GGO_GRAY8_BITMAP, /* format of data to return */
                           &gm, /* metrics */
                           size, /* size of buffer for data */
                           w32bitmap, /* buffer for data */
@@ -814,7 +814,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
       cc_string str;
       cc_string_construct(&str);
       cc_string_sprintf(&str,
-                        "GetGlyphOutline(HDC=%p, 0x%x '%c', GGO_BITMAP, "
+                        "GetGlyphOutline(HDC=%p, 0x%x '%c', GGO_GRAY8_BITMAP, "
                         "<metricsstruct>, %d, <buffer>, <idmatrix>)",
                         cc_flww32_globals.devctx, glyph, (unsigned char)glyph, size);
       cc_win32_print_error("cc_flww32_get_bitmap", cc_string_get_text(&str), GetLastError());
@@ -831,20 +831,32 @@ cc_flww32_get_bitmap(void * font, int glyph)
   bm->advanceY = gm.gmCellIncY;
   bm->rows = gm.gmBlackBoxY;
   bm->width = gm.gmBlackBoxX;
-  bm->pitch = (bm->width + 7) / 8;
+  bm->pitch = bm->width;
   bm->buffer = NULL;
-  /* FIXME: hardcoded mono to true until i figured out the correct
-     pitch calculation and 64 gray level conversion for
-     GGO_GRAY8_BITMAP. 20040918 tamer. */
-  bm->mono = 1;
+  /* FIXME: mono hardcoded to false. what about bitmapped fonts? any
+     chance we could get one? if yes, we need to query and handle this
+     case appropriately. 20040929 tamer. */
+  bm->mono = 0;
   if (w32bitmap != NULL) { /* Could be NULL for at least space char glyph. */
-    unsigned int i;
-    bm->buffer = (unsigned char *)malloc(bm->rows * bm->pitch);
+    unsigned int i, j;
+    unsigned char *dst, * src, * next_row;
+
+    /* copy the values one by one from the win32 bitmap and scale them
+       up to 256 gray level values. */
+    bm->buffer = (unsigned char *)malloc(bm->rows * bm->width);
+    dst = bm->buffer;
+    src = next_row = (unsigned char *)w32bitmap;
     for (i = 0; i < bm->rows; i++) {
-      (void)memcpy(&(bm->buffer[i * bm->pitch]),
-                   /* the win32 bitmap is doubleword aligned pr row */
-                   w32bitmap + i * (((bm->pitch + 3) / 4) * 4),
-                   bm->pitch);
+      src = next_row;
+      for (j=0; j < bm->width; j++, dst++, src++) {
+	/* we get a value ranging from 0-64. adjust it to 256 gray
+	   level values by multiplying it by 4. handle the 0 and 64
+	   special cases by either returning 0 or always using the by
+	   one smaller value in order not to overflow the 64 case. */
+	*dst = *src ? (*src - 1) << 2 : 0;
+      }
+      /* go to the next DWORD aligned row oriented row */
+      next_row += ((bm->width + 3) >> 2) << 2;
     }
   }
 
