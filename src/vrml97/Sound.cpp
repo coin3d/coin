@@ -380,6 +380,7 @@ SoVRMLSound::SoVRMLSound(void)
 
   PRIVATE(this)->cliphandle = NULL;
 
+#ifdef HAVE_SOUND
   static SbBool warningprintedonce = FALSE;
   if ( (!openal_wrapper()->available) && (!warningprintedonce)) {
     SoDebugError::postWarning("SoVRMLSound::SoVRMLSound", 
@@ -404,6 +405,7 @@ SoVRMLSound::SoVRMLSound(void)
     }
     warningprintedonce = TRUE;
   }
+#endif // HAVE_SOUND
 
 }
 
