@@ -301,54 +301,40 @@ SoFaceSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   if (SoShapeHintsElement::getVertexOrdering(state) ==
       SoShapeHintsElement::CLOCKWISE) ccw = FALSE;
 
+  SoNormalGenerator * gen =
+    new SoNormalGenerator(ccw, this->numVertices.getNum() * 3);
+  
+  int32_t idx = startIndex.getValue();
+  int32_t dummyarray[1];
+  const int32_t *ptr = this->numVertices.getValues(0);
+  const int32_t *end = ptr + this->numVertices.getNum();
+  this->fixNumVerticesPointers(state, ptr, end, dummyarray);
+  
   const SoCoordinateElement * coords =
     SoCoordinateElement::getInstance(state);
-  assert(coords);
-
-  SbBool perVertex = TRUE;
-
-  SoNormalBindingElement::Binding normbind =
-    SoNormalBindingElement::get(state);
-
-  switch (normbind) {
-  case SoNormalBindingElement::PER_FACE:
-  case SoNormalBindingElement::PER_FACE_INDEXED:
-  case SoNormalBindingElement::PER_PART:
-  case SoNormalBindingElement::PER_PART_INDEXED:
-    perVertex = FALSE;
-    break;
-  default:
-    break;
-  }
-
-  if (perVertex) {
-    SoNormalGenerator * gen =
-      new SoNormalGenerator(ccw, this->numVertices.getNum() * 3);
-
-    int32_t idx = startIndex.getValue();
-    int32_t dummyarray[1];
-    const int32_t *ptr = this->numVertices.getValues(0);
-    const int32_t *end = ptr + this->numVertices.getNum();
-    this->fixNumVerticesPointers(state, ptr, end, dummyarray);
-
-    const SoCoordinateElement * coords =
-      SoCoordinateElement::getInstance(state);
-
-    while (ptr < end) {
-      int num = *ptr++;
-      assert(num >= 3);
-      gen->beginPolygon();
-      while (num--) {
-        gen->polygonVertex(coords->get3(idx++));
-      }
-      gen->endPolygon();
+  
+  while (ptr < end) {
+    int num = *ptr++;
+    assert(num >= 3);
+    gen->beginPolygon();
+    while (num--) {
+      gen->polygonVertex(coords->get3(idx++));
     }
+    gen->endPolygon();
+  }
+
+  switch (this->findNormalBinding(state)) {
+  case PER_VERTEX:
     gen->generate(SoCreaseAngleElement::get(state));
-    nc->set(gen);
+    break;
+  case PER_FACE:
+    gen->generatePerFace();
+    break;
+  case OVERALL:
+    gen->generateOverall();
+    break;
   }
-  else {
-    assert(0);
-  }
+  nc->set(gen);
   return TRUE;
 }
 
