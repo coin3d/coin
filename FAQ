@@ -183,9 +183,13 @@ Q1.4:   Can I do volume rendering with Coin?
 
 A:      There are no volume rendering extensions for Coin yet.  Support for
         3D textures, which is a prerequisite for proper volume rendering
-        support, is in the works.  When fullblown volume rendering is going
-        to be implemented is in the blue, but it is a topic we see a demand
-        for and are very interested in adding support for.
+        support, was just recently implemented in the Coin development branch
+        and will be available from release 2.0 of Coin.
+
+        Exactly when fullblown volume rendering is going to be implemented
+        is in the blue, but it is functionality we see a demand for, so we
+        are certainly interested in adding support for it, but there are
+        no concrete plans for putting resources on this currently.
 
 
 Q1.5:   Does Coin support VRML97?
