@@ -2315,7 +2315,7 @@ if test "${with_html+set}" = set; then
     *) { echo "configure: error: bad value \"${withval}\" for --with-html" 1>&2; exit 1; } ;;
   esac
 else
-  want_html=NO
+  want_html=no
 fi
 
 
@@ -5074,8 +5074,6 @@ mandir="`eval echo $mandir`"
 coin_src_dir=$srcdir
 coin_include_dir=$includedir
 coin_lib_dir=$libdir
-coin_data_dir=$datadir
-coin_man_dir=$mandir
 
 if test x"$sim_ac_linking_style" = xmswin; then
   # Slashes need to be '\' in project files and makefiles to humour
@@ -5093,8 +5091,6 @@ eval "coin_include_dir=\"`echo $includedir | sed -e 's%\\/%\\\\%g'`\""
 eval "coin_lib_dir=\"`echo $libdir | sed -e 's%\\/%\\\\%g'`\""
 
 fi
-
-
 
 
 
@@ -5420,8 +5416,6 @@ s%@coin_build_dir@%$coin_build_dir%;t t
 s%@coin_src_dir@%$coin_src_dir%;t t
 s%@coin_include_dir@%$coin_include_dir%;t t
 s%@coin_lib_dir@%$coin_lib_dir%;t t
-s%@coin_data_dir@%$coin_data_dir%;t t
-s%@coin_man_dir@%$coin_man_dir%;t t
 CEOF
 
 EOF

@@ -123,7 +123,7 @@ AC_ARG_WITH(html,
     no)  want_html=no ;;
     *) AC_MSG_ERROR(bad value \"${withval}\" for --with-html) ;;
   esac],
-  [want_html=NO])
+  [want_html=no])
 
 AC_ARG_WITH(man,
   AC_HELP_STRING([--with-man], [build and install Coin man pages]),
