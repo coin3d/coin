@@ -603,6 +603,37 @@ STUFF TO FIX IN COIN
         - MingW (URL?)
         - Borland's C++ compiler
 
+028 Support for multiple viewports in render areas
+    2003-01-22 Marius Kintel <kintel@sim.no>
+
+    To make it easy to create multiple viewports, we should have a high-level
+    API for this (in SoGuiRenderArea), smth. like this:
+    void addSceneGraph(SoNode*, SbViewportRegion)
+    void removeSceneGraph(SoNode*)
+    
+    Issues:
+    o We should be able to control a larger subset of the API of the
+      SoGuiRenderArea which can be cumbersome with this approach.
+    
+    Solution:
+    class SoViewportArea:
+    o set/get scene graph, bgcolor, overlays, transparency, aliasing,
+      clearing, rendering priority (render order), scene manager,
+      renderaction.
+    o Let the above add function return a default SoViewportArea for ease of
+      use.
+    o Let some or all of the existing functions affect all viewport areas
+      (global override).
+    
+    in SoGuiRenderAres:
+    o Add SoViewportArea instances
+    o Remap event coordinates for each viewport area (in reverse render
+      priority order) and send the event to each of their scene graphs (like
+      we do now for the overlay/normal scene managers.
+    
+    We also have to resolve the camera issue somehow; control cameras per
+    viewport area vs. sharing cameras between viewport areas, sync cameras
+    with the viewer, control view/pick mode per viewport area.
 
 
 OTHER COIN-RELATED STUFF TO FIX
