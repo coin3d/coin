@@ -78,6 +78,7 @@
 #include <Inventor/SbVec4f.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/lists/SoTypeList.h>
 
 
 // *************************************************************************
@@ -216,8 +217,8 @@ SoCallbackAction::~SoCallbackAction(void)
 // for setting node callbacks. makes sure NULLs are filled in where not set
 //
 static void
-set_callback_data(SbList <SoCallbackData> &list, const int idx,
-                  void *func, void *data)
+set_callback_data_idx(SbList <SoCallbackData> &list, const int idx,
+                      void *func, void *data)
 {
   int n = list.getLength();
   while (n <= idx) {
@@ -228,11 +229,23 @@ set_callback_data(SbList <SoCallbackData> &list, const int idx,
 }
 
 void
+set_callback_data(SbList <SoCallbackData> &list, const SoType type,
+                  void *func, void *data)
+{
+  SoTypeList derivedtypes;
+  int n = SoType::getAllDerivedFrom(type, derivedtypes);
+  for (int i = 0; i < n; i++) {
+    set_callback_data_idx(list, (int)derivedtypes[i].getData(),
+                          func, data);
+  }
+}
+
+void
 SoCallbackAction::addPreCallback(const SoType type,
                                  const SoCallbackActionCB *cb,
                                  void *userdata)
 {
-  set_callback_data(this->preCB, (int)type.getData(), (void*)cb, userdata);
+  set_callback_data(this->preCB, type, (void*)cb, userdata);
 }
 
 void
@@ -240,7 +253,7 @@ SoCallbackAction::addPostCallback(const SoType type,
                                   const SoCallbackActionCB *cb,
                                   void *userdata)
 {
-  set_callback_data(this->postCB, (int)type.getData(), (void*) cb, userdata);
+  set_callback_data(this->postCB, type, (void*) cb, userdata);
 }
 
 void
@@ -248,7 +261,7 @@ SoCallbackAction::addPreTailCallback(const SoType type,
                                      const SoCallbackActionCB *cb,
                                      void *userdata)
 {
-  set_callback_data(this->preTailCB, (int)type.getData(), (void*) cb, userdata);
+  set_callback_data(this->preTailCB, type, (void*) cb, userdata);
 }
 
 void
@@ -256,7 +269,7 @@ SoCallbackAction::addPostTailCallback(const SoType type,
                                       const SoCallbackActionCB *cb,
                                       void *userdata)
 {
-  set_callback_data(this->postTailCB, (int)type.getData(), (void*) cb, userdata);
+  set_callback_data(this->postTailCB, type, (void*) cb, userdata);
 }
 
 void
@@ -264,7 +277,7 @@ SoCallbackAction::addTriangleCallback(const SoType type,
                                       const SoTriangleCB *cb,
                                       void *userdata)
 {
-  set_callback_data(this->triangleCB, (int)type.getData(), (void*) cb, userdata);
+  set_callback_data(this->triangleCB, type, (void*) cb, userdata);
 }
 
 void
@@ -272,7 +285,7 @@ SoCallbackAction::addLineSegmentCallback(const SoType type,
                                          const SoLineSegmentCB *cb,
                                          void *userdata)
 {
-  set_callback_data(this->lineSegmentCB, (int)type.getData(), (void*) cb, userdata);
+  set_callback_data(this->lineSegmentCB, type, (void*) cb, userdata);
 }
 
 void
@@ -280,7 +293,7 @@ SoCallbackAction::addPointCallback(const SoType type,
                                    const SoPointCB *cb,
                                    void *userdata)
 {
-  set_callback_data(this->pointCB, (int)type.getData(), (void*) cb, userdata);
+  set_callback_data(this->pointCB, type, (void*) cb, userdata);
 }
 
 /************************************************************************************/
