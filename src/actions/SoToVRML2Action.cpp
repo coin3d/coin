@@ -464,14 +464,13 @@ SoToVRML2Action::doReuseAppearanceNodes(void) const
 void
 SoToVRML2Action::reusePropertyNodes(SbBool property)
 {
-  // FIXME: not implemented yet. 20020808 mortene.
+  PRIVATE(this)->reusePropertyNodes = property;
 }
 
 SbBool
 SoToVRML2Action::doReusePropertyNodes(void) const
 {
-  // FIXME: not implemented yet. 20020808 mortene.
-  return FALSE;
+  return PRIVATE(this)->reusePropertyNodes;
 }
 
 void
