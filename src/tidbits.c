@@ -420,6 +420,8 @@ coin_strncasecmp(const char * s1, const char * s2, int len)
 
 /**************************************************************************/
 
+static int coin_endianness = COIN_HOST_IS_UNKNOWNENDIAN;
+
 int
 coin_host_get_endianness(void)
 {
@@ -427,6 +429,10 @@ coin_host_get_endianness(void)
     uint32_t value;
     uint8_t  bytes[4];
   } temp;
+
+  if (coin_endianness != COIN_HOST_IS_UNKNOWNENDIAN)
+    return coin_endianness;
+
   temp.bytes[0] = 0x00;
   temp.bytes[1] = 0x01;
   temp.bytes[2] = 0x02;
@@ -439,8 +445,6 @@ coin_host_get_endianness(void)
   assert(0 && "system has unknown endianness");
   return COIN_HOST_IS_UNKNOWNENDIAN; /* maybe just as well exit()? */
 }
-
-static int coin_endianness = COIN_HOST_IS_UNKNOWNENDIAN;
 
 static void
 coin_swap_16bit_word(uint8_t * block)
