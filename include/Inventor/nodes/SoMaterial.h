@@ -48,6 +48,12 @@ public:
 
 protected:
   virtual ~SoMaterial();
+
+  virtual void notify(SoNotList * list);
+  
+private:
+  int getMaterialType(void);
+  int materialtype;
 };
 
 #endif // !COIN_SOMATERIAL_H
