@@ -159,6 +159,7 @@
 
 #ifdef HAVE_THREADS
 #include <Inventor/C/threads/syncp.h>
+#include <Inventor/C/threads/mutexp.h>
 #endif // HAVE_THREADS
 
 static SbString * coin_versionstring = NULL;
@@ -303,17 +304,18 @@ SoDB::init(void)
   }
 #endif
 
+#ifdef HAVE_THREADS
+  // initialize mutex and synchronizer first in case some other init
+  // functions need them.
+  cc_mutex_init();
+  cc_sync_init();
+#endif // HAVE_THREADS
+
   // Allocate our static members.
   SoDB::headerlist = new SbList<SoDB_HeaderInfo *>;
   SoDB::sensormanager = new SoSensorManager;
   SoDB::realtimeinterval = new SbTime;
   SoDB::converters = new SbDict;
-
-#ifdef HAVE_THREADS
-  // initialize synchronizer first in case some other init function
-  // use it.
-  cc_sync_init();
-#endif // HAVE_THREADS
 
   // NB! There are dependencies in the order of initialization of
   // components below.
