@@ -91,6 +91,9 @@ SoState::~SoState(void)
       elem = next;
     }
   }
+
+  delete[] this->initial;
+  delete[] this->stack;
 }
 
 /*!
