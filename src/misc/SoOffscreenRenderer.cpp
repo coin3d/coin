@@ -253,10 +253,29 @@ public:
     assert(this->buffer);
     if (this->context && this->glxpixmap) {
 #if GLX_VERSION_1_2
-      // glXGetCurrenDisplay() is a GLX 1.2 feature 
+
+      // glXGetCurrenDisplay() is a GLX 1.2 feature
+      //
       // FIXME: we should probably dlopen() libGLX.so, to avoid
-      // problems when compiling with GLX 1.2 and running on 
-      // GLX < 1.2.  pederb, 2001-05-25
+      // problems when compiling with GLX 1.2 and running on GLX <
+      // 1.2.  pederb, 2001-05-25
+      //
+      // UPDATE, mortene 2001-06-05: there is no "libGLX.so" on any
+      // platforms known to me, the glX*() functions seem to always be
+      // part of the main OpenGL library for X11 platforms. So this is
+      // hard to handle at run-time, unless we set up a wrapper around
+      // the dynamic OpenGL library -- which is likely[*] to have
+      // performance implications.
+      //
+      // Note also that we have a lot of other cases spread around in
+      // the Coin source which are basically the same problem: we bind
+      // against OpenGL 1.1 or 1.2 features at compile-time.
+      //
+      // [*] This might not be the case, though, and should be
+      // investigated closer. Using a dynamic, run-time loading
+      // wrapper around the OpenGL library would save us a few
+      // headaches over a few hard-to-solve important problems.
+
       this->storedcontext = glXGetCurrentContext();
       if (this->storedcontext) {
         this->storeddrawable = glXGetCurrentDrawable();
