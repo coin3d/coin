@@ -40,35 +40,21 @@
 */
 
 #include <Inventor/actions/SoBoxHighlightRenderAction.h>
-
-#include <Inventor/SbName.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoSubAction.h>
-#include <Inventor/elements/SoComplexityTypeElement.h>
-#include <Inventor/elements/SoDrawStyleElement.h>
-#include <Inventor/elements/SoLinePatternElement.h>
-#include <Inventor/elements/SoLineWidthElement.h>
-#include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoTextureOverrideElement.h>
-#include <Inventor/elements/SoTextureQualityElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/lists/SoEnabledElementsList.h>
-#include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoSelection.h>
-#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoMatrixTransform.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoComplexity.h>
+#include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/nodes/SoBaseColor.h>
 #include <assert.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
-
-#ifdef HAVE_VRML97
-#include <Inventor/VRMLnodes/SoVRMLShape.h>
-#endif // HAVE_VRML97
 
 /*!
   \var SoBoxHighlightRenderAction::hlVisible
@@ -88,16 +74,16 @@ public:
   SoSearchAction * searchaction;
   SoSearchAction * camerasearch;
   SoGetBoundingBoxAction * bboxaction;
-  SbColor color;
-  unsigned short linepattern;
-  float linewidth;
+  SoBaseColor * basecolor;
   SoTempPath * postprocpath;
   SoSeparator * bboxseparator;
   SoMatrixTransform * bboxtransform;
   SoCube * bboxcube;
+  SoDrawStyle * drawstyle;
   SoColorPacker colorpacker;
 
-  void drawNoShapeBox(const SoPath * path);
+  void initBoxGraph();
+  void drawHighlightBox(const SoPath * path);
 };
 
 #undef PRIVATE
@@ -105,27 +91,44 @@ public:
 #undef PUBLIC
 #define PUBLIC(p) ((p)->master)
 
-
-// used to render non-shape nodes (usually SoGroup or SoSeparator). 
-void 
-SoBoxHighlightRenderActionP::drawNoShapeBox(const SoPath * path)
+// used to initialize the internal storage class with variables
+void
+SoBoxHighlightRenderActionP::initBoxGraph() 
 {
-  if (this->bboxseparator == NULL) {
-    this->bboxseparator = new SoSeparator;
-    this->bboxseparator->ref();
-    this->bboxseparator->renderCaching = SoSeparator::OFF;
-    this->bboxseparator->boundingBoxCaching = SoSeparator::OFF;
-    
-    this->bboxtransform = new SoMatrixTransform;
-    this->bboxtransform->ref();
-    
-    this->bboxcube = new SoCube;
-    this->bboxcube->ref();
-    
-    this->bboxseparator->addChild(this->bboxtransform);
-    this->bboxseparator->addChild(this->bboxcube);
-  }
+  this->bboxseparator = new SoSeparator;
+  this->bboxseparator->ref();
+  this->bboxseparator->renderCaching = SoSeparator::OFF;
+  this->bboxseparator->boundingBoxCaching = SoSeparator::OFF;
 
+  this->bboxtransform = new SoMatrixTransform;
+  this->bboxcube = new SoCube;
+
+  this->drawstyle = new SoDrawStyle;
+  this->drawstyle->style = SoDrawStyleElement::LINES;
+  this->basecolor = new SoBaseColor;
+
+  SoLightModel * lightmodel = new SoLightModel;
+  lightmodel->model = SoLazyElement::BASE_COLOR;
+
+  SoComplexity * complexity = new SoComplexity;
+  complexity->textureQuality = 0.0f;
+  complexity->type = SoComplexityTypeElement::BOUNDING_BOX;
+
+  this->bboxseparator->addChild(this->drawstyle);
+  this->bboxseparator->addChild(this->basecolor);
+
+  this->bboxseparator->addChild(lightmodel);
+  this->bboxseparator->addChild(complexity);
+    
+  this->bboxseparator->addChild(this->bboxtransform);
+  this->bboxseparator->addChild(new SoCube);
+}
+
+
+// used to render shape and non-shape nodes (usually SoGroup or SoSeparator). 
+void 
+SoBoxHighlightRenderActionP::drawHighlightBox(const SoPath * path)
+{
   if (this->camerasearch == NULL) {
     this->camerasearch = new SoSearchAction;
   }
@@ -219,10 +222,14 @@ SoBoxHighlightRenderAction::init(void)
 
   PRIVATE(this) = new SoBoxHighlightRenderActionP(this);
 
+  // Initialize local variables
+  PRIVATE(this)->initBoxGraph();
+
   this->hlVisible = TRUE;
-  PRIVATE(this)->color = SbColor(1.0f, 0.0f, 0.0f);
-  PRIVATE(this)->linepattern = 0xffff;
-  PRIVATE(this)->linewidth = 3.0f;
+
+  PRIVATE(this)->basecolor->rgb.setValue(1.0f, 0.0f, 0.0f);
+  PRIVATE(this)->drawstyle->linePattern = 0xffff;
+  PRIVATE(this)->drawstyle->lineWidth = 3.0f;
   PRIVATE(this)->searchaction = NULL;
   PRIVATE(this)->camerasearch = NULL;
   PRIVATE(this)->bboxaction = NULL;
@@ -230,10 +237,6 @@ SoBoxHighlightRenderAction::init(void)
   // SoBase-derived objects should be dynamically allocated.
   PRIVATE(this)->postprocpath = new SoTempPath(32);
   PRIVATE(this)->postprocpath->ref();
-
-  PRIVATE(this)->bboxseparator = NULL;
-  PRIVATE(this)->bboxtransform = NULL;
-  PRIVATE(this)->bboxcube = NULL;
 }
 
 
@@ -243,15 +246,8 @@ SoBoxHighlightRenderAction::init(void)
 SoBoxHighlightRenderAction::~SoBoxHighlightRenderAction(void)
 {
   PRIVATE(this)->postprocpath->unref();
-  if (PRIVATE(this)->bboxcube) {
-    PRIVATE(this)->bboxcube->unref();
-  }
-  if (PRIVATE(this)->bboxtransform) {
-    PRIVATE(this)->bboxtransform->unref();
-  }
-  if (PRIVATE(this)->bboxseparator) {
-    PRIVATE(this)->bboxseparator->unref();
-  }
+  PRIVATE(this)->bboxseparator->unref();
+
   delete PRIVATE(this)->searchaction;
   delete PRIVATE(this)->camerasearch;
   delete PRIVATE(this)->bboxaction;
@@ -338,7 +334,7 @@ SoBoxHighlightRenderAction::isVisible(void) const
 void
 SoBoxHighlightRenderAction::setColor(const SbColor & color)
 {
-  PRIVATE(this)->color = color;
+  PRIVATE(this)->basecolor->rgb = color;
 }
 
 /*!
@@ -347,7 +343,7 @@ SoBoxHighlightRenderAction::setColor(const SbColor & color)
 const SbColor &
 SoBoxHighlightRenderAction::getColor(void)
 {
-  return PRIVATE(this)->color;
+  return PRIVATE(this)->basecolor->rgb[0];
 }
 
 /*!
@@ -357,7 +353,7 @@ SoBoxHighlightRenderAction::getColor(void)
 void
 SoBoxHighlightRenderAction::setLinePattern(unsigned short pattern)
 {
-  PRIVATE(this)->linepattern = pattern;
+  PRIVATE(this)->drawstyle->linePattern = pattern;
 }
 
 /*!
@@ -366,7 +362,7 @@ SoBoxHighlightRenderAction::setLinePattern(unsigned short pattern)
 unsigned short
 SoBoxHighlightRenderAction::getLinePattern(void) const
 {
-  return PRIVATE(this)->linepattern;
+  return PRIVATE(this)->drawstyle->linePattern.getValue();
 }
 
 /*!
@@ -376,7 +372,7 @@ SoBoxHighlightRenderAction::getLinePattern(void) const
 void
 SoBoxHighlightRenderAction::setLineWidth(const float width)
 {
-  PRIVATE(this)->linewidth = width;
+  PRIVATE(this)->drawstyle->lineWidth = width;
 }
 
 /*!
@@ -385,18 +381,7 @@ SoBoxHighlightRenderAction::setLineWidth(const float width)
 float
 SoBoxHighlightRenderAction::getLineWidth(void) const
 {
-  return PRIVATE(this)->linewidth;
-}
-
-static SbBool
-is_tail_shape(const SoPath * path)
-{
-  SoNode * tail = ((SoFullPath*)path)->getTail();
-#ifdef HAVE_VRML97
-  if (tail->isOfType(SoVRMLShape::getClassTypeId())) return TRUE;
-#endif // HAVE_VRML97
-  if (tail->isOfType(SoShape::getClassTypeId())) return TRUE;
-  return FALSE;
+  return PRIVATE(this)->drawstyle->lineWidth.getValue();
 }
 
 void
@@ -418,23 +403,6 @@ SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
   SoState * thestate = this->getState();
   thestate->push();
 
-  SoLazyElement::setLightModel(thestate, SoLazyElement::BASE_COLOR);
-  SoLazyElement::setDiffuse(thestate, pathtothis->getHead(), 1, &PRIVATE(this)->color, 
-                            &PRIVATE(this)->colorpacker);
-
-  SoLineWidthElement::set(thestate, PRIVATE(this)->linewidth);
-  SoLinePatternElement::set(thestate, PRIVATE(this)->linepattern);
-  SoTextureQualityElement::set(thestate, 0.0f);
-  SoComplexityTypeElement::set(thestate, SoComplexityTypeElement::BOUNDING_BOX);
-  SoDrawStyleElement::set(thestate, SoDrawStyleElement::LINES);
-  SoOverrideElement::setLightModelOverride(thestate, NULL, TRUE);
-  SoOverrideElement::setDiffuseColorOverride(thestate, NULL, TRUE);
-  SoOverrideElement::setLineWidthOverride(thestate, NULL, TRUE);
-  SoOverrideElement::setLinePatternOverride(thestate, NULL, TRUE);
-  SoOverrideElement::setComplexityTypeOverride(thestate, NULL, TRUE);
-  SoOverrideElement::setDrawStyleOverride(thestate, NULL, TRUE);
-  SoTextureOverrideElement::setQualityOverride(thestate, TRUE);
-
   for (i = 0; i < pathlist->getLength(); i++) {
     SoFullPath * path = (SoFullPath *)(*pathlist)[i];
 
@@ -442,14 +410,26 @@ SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
       PRIVATE(this)->postprocpath->append(path->getNode(j));
     }
 
-    if (is_tail_shape(PRIVATE(this)->postprocpath)) {
-      SoGLRenderAction::apply(PRIVATE(this)->postprocpath);
-    }
-    else {
-      PRIVATE(this)->drawNoShapeBox(PRIVATE(this)->postprocpath);
-    }
+    // Previously SoGLRenderAction was used to draw the bounding boxes
+    // of shapes in selection paths, by overriding renderstyle state
+    // elements to lines drawstyle and simply doing:
+    //
+    //   SoGLRenderAction::apply(PRIVATE(this)->postprocpath); // Bug
+    //
+    // This could have the unwanted side effect of rendering
+    // non-selected shapes, as they could be part of the path (due to
+    // being placed below SoGroup nodes (instead of SoSeparator
+    // nodes)) up to the selected shape.
+    //
+    //
+    // A better approach turned out to be to soup up and draw only the
+    // bounding boxes of the selected shapes:
+    PRIVATE(this)->drawHighlightBox(PRIVATE(this)->postprocpath);
+
+    // Remove temporary path from path buffer
     PRIVATE(this)->postprocpath->truncate(thispos);
   }
+
   this->setNumPasses(oldnumpasses);
   thestate->pop();
 }
