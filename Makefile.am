@@ -54,6 +54,8 @@ cfgdata_DATA = coin-@CONFIG@.cfg
 endif
 
 EXTRA_DIST = \
+	FAQ \
+	FAQ.legal \
 	LICENSE.GPL \
 	README.AIX \
 	README.SUN \
