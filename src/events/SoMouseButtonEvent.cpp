@@ -176,9 +176,13 @@ SbBool
 SoMouseButtonEvent::isButtonPressEvent(const SoEvent * e,
                                        SoMouseButtonEvent::Button whichButton)
 {
-  return (e->isOfType(SoMouseButtonEvent::getClassTypeId()) &&
-          ((SoMouseButtonEvent *)e)->getButton() == whichButton &&
-          ((SoButtonEvent *)e)->getState() == SoButtonEvent::DOWN);
+  if (e->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+    const SoMouseButtonEvent * me = (const SoMouseButtonEvent *)e;
+    if ((me->getState() == SoButtonEvent::DOWN) &&
+        ((whichButton == SoMouseButtonEvent::ANY) ||
+         whichButton == me->getButton())) return TRUE;
+  }
+  return FALSE;
 }
 
 /*!
@@ -192,7 +196,11 @@ SoMouseButtonEvent::isButtonReleaseEvent(const SoEvent * e,
                                          SoMouseButtonEvent::Button
                                          whichButton)
 {
-  return (e->isOfType(SoMouseButtonEvent::getClassTypeId()) &&
-          ((SoMouseButtonEvent *)e)->getButton() == whichButton &&
-          ((SoButtonEvent *)e)->getState() == SoButtonEvent::UP);
+  if (e->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+    const SoMouseButtonEvent * me = (const SoMouseButtonEvent *)e;
+    if ((me->getState() == SoButtonEvent::UP) &&
+        ((whichButton == SoMouseButtonEvent::ANY) ||
+         whichButton == me->getButton())) return TRUE;
+  }
+  return FALSE;
 }
