@@ -184,9 +184,16 @@ SoTranslate2Dragger::finishCB(void *, SoDragger * d)
 }
 
 void
-SoTranslate2Dragger::metaKeyChangeCB(void *, SoDragger * )
+SoTranslate2Dragger::metaKeyChangeCB(void *, SoDragger *d)
 {
-  COIN_STUB();
+  SoTranslate2Dragger *thisp = (SoTranslate2Dragger*)d;
+  if (!thisp->isActive.getValue()) return;
+
+  const SoEvent *event = thisp->getEvent();
+  if (SO_KEY_RELEASE_EVENT(event, LEFT_SHIFT) ||
+      SO_KEY_RELEASE_EVENT(event, RIGHT_SHIFT)) {
+    if (thisp->constraintState != CONSTRAINT_OFF) thisp->drag();
+  }
 }
 
 void
@@ -219,8 +226,6 @@ SoTranslate2Dragger::drag(void)
     this->constraintState = CONSTRAINT_WAIT;
     this->setStartLocaterPosition(event->getPosition());
     this->getLocalToWorldMatrix().multVecMatrix(projPt, this->worldRestartPt);
-    this->saveStartParameters();
-    this->setStartingPoint(this->worldRestartPt);
   }
   else if (!event->wasShiftDown() && this->constraintState != CONSTRAINT_OFF) {
     SoSwitch *sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
@@ -229,22 +234,31 @@ SoTranslate2Dragger::drag(void)
   }
 
   SbVec3f startPt = this->getLocalStartingPoint();
-  SbVec3f motion = projPt - startPt;
+  SbVec3f motion;
+  SbVec3f localrestartpt;
 
+  if (this->constraintState != CONSTRAINT_OFF) {
+    this->getWorldToLocalMatrix().multVecMatrix(this->worldRestartPt, 
+                                                localrestartpt);
+    motion = localrestartpt - startPt;
+  }
+  else motion = projPt - startPt;
+  
   switch(this->constraintState) {
   case CONSTRAINT_OFF:
     break;
   case CONSTRAINT_WAIT:
     if (this->isAdequateConstraintMotion()) {
-      if (fabs(motion[0]) >= fabs(motion[1])) {
+      SbVec3f newmotion = projPt - localrestartpt;
+      if (fabs(newmotion[0]) >= fabs(newmotion[1])) {
         this->constraintState = CONSTRAINT_X;
-        motion[1] = 0.0f;
+        motion[0] += newmotion[0];
         SoSwitch *sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
         SoInteractionKit::setSwitchValue(sw, 0);
       }
       else {
         this->constraintState = CONSTRAINT_Y;
-        motion[0] = 0.0f;
+        motion[1] += newmotion[1];
         SoSwitch *sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
         SoInteractionKit::setSwitchValue(sw, 1);
       }
@@ -254,10 +268,10 @@ SoTranslate2Dragger::drag(void)
     }
     break;
   case CONSTRAINT_X:
-    motion[1] = 0.0f;
+    motion[0] += projPt[0] - localrestartpt[0];
     break;
   case CONSTRAINT_Y:
-    motion[0] = 0.0f;
+    motion[1] += projPt[1] - localrestartpt[1];
     break;
   }
   this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(), motion));
