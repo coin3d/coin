@@ -17,6 +17,7 @@ if (@ARGV != 2) { die "Usage: metadon <topsrcdir> <outputdir>\n" };
 
 $coindir = @ARGV[0];
 $docdir = @ARGV[1];
+$docdir =~ s/\/$//; # strip trailing slash, if any
 
 $indentsize = 4;
 
