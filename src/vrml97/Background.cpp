@@ -240,6 +240,13 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoProjectionMatrixElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/SbRotation.h>
 
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->master)
@@ -307,12 +314,22 @@ public:
 
 };
 
+// dummy callback for SoGetBoundingBoxAction. A background node has no
+// boundingbox, so we just invalidate the bbox cache so stop the node
+// from being culled.
+static void 
+background_bbfix(SoAction * action, SoNode * node)
+{
+  SoCacheElement::invalidate(action->getState());
+}
 
 // Doc in parent
 void
 SoVRMLBackground::initClass(void) // static
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLBackground, SO_VRML97_NODE_TYPE);
+  SoGetBoundingBoxAction::addMethod(SoVRMLBackground::getClassTypeId(), 
+                                    background_bbfix);
 }
 
 /*!
@@ -425,22 +442,44 @@ SoVRMLBackground::~SoVRMLBackground()
 void
 SoVRMLBackground::GLRender(SoGLRenderAction * action)
 {
-  
   SoState * state = action->getState();
 
+  // push state since we're going to modify the view volume and the
+  // model matrix
   state->push();
 
   SbViewVolume vv = SoViewVolumeElement::get(state);
-  SbVec3f trans  = vv.getProjectionPoint();
 
-  // FIXME: When trans[z] > 10000000, things start to act strange
-  // (geometry starts to bounce uncontrolled). This can be observed by
-  // zooming out in an examinerviewer. At first the background is
-  // still (as it should), then suddenly it starts to move as
-  // described. This might be caused by a variabel overflow/wrap
-  // somewhere (7Aug2003 handegar)
-  SoModelMatrixElement::translateBy(state, (SoNode *) this, trans);
- 
+  // create a new view volume to render the Background into. Just use
+  // orientation from the old view volume.
+  SbMatrix m = SbMatrix::identity();
+  SbVec3f Z = -vv.getProjectionDirection();
+  SbVec3f Y = vv.getViewUp();
+  SbVec3f X = Y.cross(Z);
+  
+  m[0][0] = X[0];
+  m[0][1] = X[1];
+  m[0][2] = X[2];
+  m[1][0] = Y[0];
+  m[1][1] = Y[1];
+  m[1][2] = Y[2];
+  m[2][0] = Z[0];
+  m[2][1] = Z[1];
+  m[2][2] = Z[2];
+  
+  SoModelMatrixElement::makeIdentity(state, this);
+  
+  float aspect = SoViewportRegionElement::get(state).getViewportAspectRatio();
+  vv.perspective(0.785398f, aspect, 0.5f, 10.0f);
+  if (aspect < 1.0f) vv.scale(1.0f / aspect);
+    
+  vv.rotateCamera(SbRotation(m));
+  SbMatrix affine, proj;
+  SoViewVolumeElement::set(state, this, vv);
+  vv.getMatrices(affine, proj);
+  SoProjectionMatrixElement::set(state, this, proj);
+  SoViewingMatrixElement::set(state, this, affine);
+
   SbBool depthtest = glIsEnabled(GL_DEPTH_TEST);
   glDisable(GL_DEPTH_TEST);
 
@@ -452,12 +491,10 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
   else {
     PRIVATE(this)->children->traverse((SoAction *) action);
   }
-
   if (depthtest)
     glEnable(GL_DEPTH_TEST);
-
+  // pop back to the old view volume and model matrix
   state->pop();
-
 }
 
 
