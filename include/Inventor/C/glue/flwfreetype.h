@@ -26,6 +26,7 @@
 
 #include <Inventor/C/glue/fontlib_wrapper.h>
 #include <Inventor/C/basic.h>
+#include <Inventor/C/base/string.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,29 +39,29 @@ extern "C" {
     the FreeType font library.
   */
   
-  SbBool cc_flwftInitialize(void);
-  void cc_flwftExit(void);
+  SbBool cc_flwft_initialize(void);
+  void cc_flwft_exit(void);
 
-  FLWfont cc_flwftGetFont(const char * fontname);
-  int cc_flwftGetFontName(FLWfont font, char * buffer, int bufsize);
-  int cc_flwftGetFontStyle(FLWfont font, char * buffer, int bufsize);
-  void cc_flwftDoneFont(FLWfont font);
+  void * cc_flwft_get_font(const char * fontname);
+  cc_string * cc_flwft_get_font_name(void * font);
+  cc_string * cc_flwft_get_font_style(void * font);
+  void cc_flwft_done_font(void * font);
 
-  int cc_flwftGetNumCharmaps(FLWfont font);
-  int cc_flwftGetCharmapName(FLWfont font, int charmap, char * buffer, int bufsize);
-  int cc_flwftSetCharmap(FLWfont font, int charmap);
+  int cc_flwft_get_num_charmaps(void * font);
+  cc_string * cc_flwft_get_charmap_name(void * font, int charmap);
+  int cc_flwft_set_charmap(void * font, int charmap);
 
-  int cc_flwftSetCharSize(FLWfont font, int width, int height);
-  int cc_flwftSetFontRotation(FLWfont font, float angle);
-
-  FLWglyph cc_flwftGetGlyph(FLWfont font, unsigned int charidx);
-  int cc_flwftGetAdvance(FLWfont font, FLWglyph glyph, float *x, float *y);
-  int cc_flwftGetKerning(FLWfont font, FLWglyph glyph1, FLWglyph glyph2, float *x, float *y);
-  void cc_flwftDoneGlyph(FLWfont font, FLWglyph glyph);
-
-  FLWbitmap * cc_flwftGetBitmap(FLWfont font, FLWglyph glyph);
-  int cc_flwftGetOutline(FLWfont font, FLWglyph glyph);
-
+  int cc_flwft_set_char_size(void * font, int width, int height);
+  int cc_flwft_set_font_rotation(void * font, float angle);
+  
+  cc_FLWglyph cc_flwft_get_glyph(void * font, unsigned int charidx);
+  int cc_flwft_get_advance(void * font, cc_FLWglyph glyph, float *x, float *y);
+  int cc_flwft_get_kerning(void * font, cc_FLWglyph glyph1, cc_FLWglyph glyph2, float *x, float *y);
+  void cc_flwft_done_glyph(void * font, cc_FLWglyph glyph);
+  
+  cc_FLWbitmap * cc_flwft_get_bitmap(void * font, cc_FLWglyph glyph);
+  int cc_flwft_get_outline(void * font, cc_FLWglyph glyph);
+  
 #ifdef __cplusplus
 }
 #endif

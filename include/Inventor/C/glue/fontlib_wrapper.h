@@ -28,6 +28,9 @@
 extern "C" {
 #endif
   
+#include <Inventor/C/tidbits.h>
+#include <Inventor/C/base/string.h>
+  
   /*
     FLW is a Font Library Wrapper designed to allow any number of
     underlying font libraries to be used through the same
@@ -41,12 +44,11 @@ extern "C" {
     See http://www.freetype.org for more information about the
     FreeType font library.
   */
-
   
-  typedef void * FLWfont;
-  typedef int FLWglyph;
   
-  typedef struct FLWbitmap {
+  typedef int cc_FLWglyph;
+  
+  typedef struct cc_FLWbitmap {
     int bearingX; /* left side of bitmap relative to pen */
     int bearingY; /* top of bitmap relative to pen */
     unsigned int rows; /* height of bitmap */
@@ -55,32 +57,34 @@ extern "C" {
     int advanceX; /* where to position pen for next glyph */
     int advanceY;
     unsigned char * buffer; /* bitmap data */
-  } FLWbitmap;
+  } cc_FLWbitmap;
+  
+  SbBool cc_fontlib_debug(void);
+  
+  void cc_flw_initialize(void);
+  void cc_flw_exit(void);
+  
+  int cc_flw_create_font(const char * fontname, const int sizex, const int sizey);
+  int cc_flw_get_font(const char * fontname, const int sizex, const int ysizey);
+  void cc_flw_done_font(int font);
 
-  void cc_flwInitialize(void);
-  void cc_flwExit(void);
+  int cc_flw_get_num_charmaps(int font);
+  cc_string * cc_flw_get_charmap_name(int font, int charmap);
+  int cc_flw_set_charmap(int font, int charmap);
 
-  int cc_flwCreateFont(const char * fontname, char * outname, const int outnamelen, const int sizex, const int sizey);
-  int cc_flwGetFont(const char * fontname, const int sizex, const int ysizey);
-  void cc_flwDoneFont(int font);
+  int cc_flw_set_char_size(int font, int width, int height);
+  cc_string * cc_flw_get_font_name(int font);
+  int cc_flw_set_font_rotation(int font, float angle);
 
-  int cc_flwGetNumCharmaps(int font);
-  int cc_flwGetCharmapName(int font, int charmap, char * buffer, int bufsize);
-  int cc_flwSetCharmap(int font, int charmap);
+  int cc_flw_get_glyph(int font, int charidx);
+  int cc_flw_get_advance(int font, int glyph, float *x, float *y);
+  int cc_flw_get_kerning(int font, int glyph1, int glyph2, float *x, float *y);
+  void cc_flw_done_glyph(int font, int glyph);
 
-  int cc_flwSetCharSize(int font, int width, int height);
-  int cc_flwGetFontName(int font, char * buffer, int bufsize);
-  int cc_flwSetFontRotation(int font, float angle);
+  cc_FLWbitmap * cc_flw_get_bitmap(int font, int glyph);
+  void cc_flw_done_bitmap(cc_FLWbitmap * bitmap);
 
-  int cc_flwGetGlyph(int font, int charidx);
-  int cc_flwGetAdvance(int font, int glyph, float *x, float *y);
-  int cc_flwGetKerning(int font, int glyph1, int glyph2, float *x, float *y);
-  void cc_flwDoneGlyph(int font, int glyph);
-
-  FLWbitmap * cc_flwGetBitmap(int font, int glyph);
-  void cc_flwDoneBitmap(FLWbitmap * bitmap);
-
-  int cc_flwGetOutline(int font, int glyph);
+  int cc_flw_get_outline(int font, int glyph);
 
 #ifdef __cplusplus
 }
