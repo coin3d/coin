@@ -77,8 +77,9 @@
   if font support are requested by a node. When fontsupport is loaded
   on Windows, FreeType will have precedence over Win32 if
   located. This can be prevented by setting the
-  "COIN_FORCE_FREETYPE_OFF" environment variable to 1. When using
-  FreeType, you need FreeType version 2.1 or later.
+  "COIN_FORCE_FREETYPE_OFF" environment variable to 1. When using 
+  FreeType, you need FreeType version 2.1 or later. On Mac OS X, 
+  version 2.1.7 or later is required.
 
   If Coin cannot load the \e FreeType library, and is not running on
   Microsoft Windows, only the default fonts will be accessible.
