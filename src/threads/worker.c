@@ -72,19 +72,17 @@ worker_thread_entry(void * data)
 }
 
 /*
- * called to start thread.
+ * called to start thread. Assumes worker->mutex is locked by caller
  */
 static void 
 worker_start_thread(cc_worker * worker)
 {
   if (!worker->threadisrunning) {
-    cc_mutex_lock(worker->mutex);
     worker->thread = cc_thread_construct(worker_thread_entry, worker);
     
     /* wait for thread to get to the main loop */
     cc_condvar_wait(worker->begincond, worker->mutex);
     worker->threadisrunning = 1;
-    cc_mutex_unlock(worker->mutex);
   }
 }
 
@@ -106,6 +104,7 @@ worker_stop_thread(cc_worker * worker)
     cc_thread_join(worker->thread, NULL);
     cc_thread_destruct(worker->thread);
     worker->thread = NULL;
+    worker->shutdown = FALSE; /* reset signal */
   }
 }
   
@@ -147,6 +146,8 @@ SbBool
 cc_worker_start(cc_worker * worker, void (*workfunc)(void *), void * closure)
 {
   assert(workfunc);
+
+  cc_mutex_lock(worker->mutex);
   
   /* no need to lock, thread is idle or not running */
   worker->workfunc = workfunc;
@@ -157,7 +158,6 @@ cc_worker_start(cc_worker * worker, void (*workfunc)(void *), void * closure)
   }
   
   /* We now know that thread is waiting for a signal */
-  cc_mutex_lock(worker->mutex);
   cc_condvar_wake_one(worker->cond);
   cc_mutex_unlock(worker->mutex);
   return TRUE;
@@ -193,3 +193,4 @@ cc_worker_set_idle_callback(cc_worker * worker,
   worker->idleclosure = closure;
   cc_mutex_unlock(worker->mutex);
 }
+
