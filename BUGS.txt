@@ -4224,6 +4224,8 @@ TransformBoxManip { }
     SoScale1Dragger and SoScale2Dragger, at least, so this is probably
     a general dragger problem.
 
+    UPDATE 20041220 mortene: see also item #183.
+
 =====================================================================
 
 
@@ -4703,5 +4705,26 @@ Separator {
     High priority item.
 
     20041217 mortene.
+
+=====================================================================
+
+183 Resource leak with SoSpotLightDragger.
+
+    To reproduce, set the envvar COIN_DEBUG_TRACK_SOBASE_INSTANCES=1,
+    then run the examinerviewer example of SoGuiExamples on the
+    following iv-file:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+#Inventor V2.1 ascii
+
+SpotLightDragger
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    Then exit without interacting with the dragger at all. An
+    SoRotation node will be reported "dangling" upon exit.
+
+    Note that this is most likely a different bug than item #160.
+
+    20041220 mortene.
 
 =====================================================================
