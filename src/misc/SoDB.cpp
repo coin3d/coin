@@ -634,6 +634,9 @@ SoDB::init(void)
 
   SoDBP::globaltimersensor = new SoTimerSensor;
   SoDBP::globaltimersensor->setFunction(SoDBP::updateRealTimeFieldCB);
+  // FIXME: An interval of 1/12 is pretty low for today's standards,
+  // resulting in rather jerky animations of SoRotor & Co. Should
+  // maybe increase default to, say, 1/60. 20031222 kyrah.
   SoDBP::globaltimersensor->setInterval(SbTime(1.0/12.0));
   // FIXME: it would be better to not schedule unless something
   // actually attaches itself to the realtime field, or does this muck
