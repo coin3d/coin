@@ -54,6 +54,16 @@
   \var SoMouseButtonEvent::Button SoMouseButtonEvent::BUTTON3
   Third mouse button (usually the rightmost button).
 */
+/*!
+  \var SoMouseButtonEvent::Button SoMouseButtonEvent::BUTTON4
+  Fourth mouse button (typically from a wheelmouse). This is
+  \e not part of the original Open Inventor API.
+*/
+/*!
+  \var SoMouseButtonEvent::Button SoMouseButtonEvent::BUTTON5
+  Fifth mouse button (typically from a wheelmouse). This is
+  \e not part of the original Open Inventor API.
+*/
 
 /*!
   \def SO_MOUSE_PRESS_EVENT(EVENT, BUTTON)

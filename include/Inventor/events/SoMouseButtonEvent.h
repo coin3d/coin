@@ -43,7 +43,7 @@ public:
 
 public:
   enum Button {
-    ANY, BUTTON1, BUTTON2, BUTTON3
+    ANY, BUTTON1, BUTTON2, BUTTON3, BUTTON4, BUTTON5
   };
 
 
