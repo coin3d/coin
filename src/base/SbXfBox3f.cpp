@@ -649,9 +649,56 @@ float
 SbXfBox3f::getVolume(void) const
 {
   if (!this->hasVolume()) return 0.0f;
-
-  SbVec3f scaledspan = SbXfBox3f_get_scaled_span_vec(*this);
-  return (float)fabs(scaledspan[0] * scaledspan[1] * scaledspan[2]);
+  
+  // The determinant of the upper-left 3x3 matrix can be used to
+  // calculate the volume of the transformed box.
+  //
+  // By Doctor Tom at the Math Forum:
+  // ----------------------------------------------------------------
+  // <URL:http://mathforum.org/dr.math/problems/carlino11.16.97.html>
+  //
+  // Date: 11/17/97 at 19:57:10 
+  // From: Doctor Tom 
+  // Subject: Re:Explaining the determinant 
+  // 
+  // Hello Jeremy, 
+  //
+  // I always think of it geometrically. Let's look in
+  // two dimensions, at the determinant of the following: 
+  //
+  //    | x0 y0 | = x0*y1 - x1*y0 
+  //    | x1 y1 | 
+  //
+  // Now imagine the two vectors (x0, y0) and (x1, y1) drawn in the
+  // x-y plane from the origin. If you consider them to be two sides
+  // of a parallelogram, then the determinant is the area of the
+  // parallelogram.  Well, not exactly the area, the "signed" area,
+  // in the sense that if you sweep the area clockwise, you get one
+  // sign, and the opposite sign if you sweep it in the other
+  // direction. It's just as useful a concept as considering area
+  // below the x-axis as negative in your calculus course. Swapping
+  // the vectors swaps the sign, in the same way that swapping the
+  // rows of the determinant swaps the sign. In one dimension, the
+  // determinant is just the number, but if you "plot" that number on
+  // a number line, it's the (signed) length of the line. If it goes
+  // in the positive direction from the origin, it's positive, and
+  // negative otherwise. In three dimensions, consider three vectors
+  // (x0,y0,z0), (x1,y1,z1), and (x2,y2,z2). If you draw them from
+  // the origin, they form the principle edges of a parallelepiped,
+  // and the determinant of: 
+  //
+  //    | x0 y0 z0 | 
+  //    | x1 y1 z1 | 
+  //    | x2 y2 z2 |
+  //
+  //  is the volume of that parallelepiped.
+  // --------------------------------------------------------------
+  //
+  // this means that the determinant is the volume of a unit size cube
+  // in the coordinate system specified by a 3x3 matrix, and that we
+  // can find the volume of our box by multiplying the volume of the
+  // orthogonal box with the determinant of the upper-left 3x3 matrix.
+  return SbBox3f::getVolume() * this->matrix.det3();
 }
 
 /*!
