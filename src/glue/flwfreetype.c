@@ -55,7 +55,7 @@ cc_flwft_initialize(void)
 {
   FT_Error error = FT_Init_FreeType(&library);
   if (error) {
-    if (cc_fontlib_debug()) cc_debugerror_post("cc_flwft_initialize", "error %d", error);
+    if (cc_freetype_debug()) cc_debugerror_post("cc_flwft_initialize", "error %d", error);
     library = NULL;
   }
   else if (cc_freetype_debug()) {
@@ -130,7 +130,7 @@ cc_flwft_done_font(void * font)
   face = (FT_Face)font;
   error = FT_Done_Face(face);
   if ( error ) {
-    if (cc_fontlib_debug()) cc_debugerror_postinfo("cc_flwft_done_font", "Error %d\n", error);
+    if (cc_freetype_debug()) cc_debugerror_postinfo("cc_flwft_done_font", "Error %d\n", error);
   }
 }
 
@@ -152,39 +152,29 @@ cc_flwft_get_charmap_name(void * font, int charmap)
   charmapname = cc_string_construct_new();
   if (charmap < face->num_charmaps) {
     switch (face->charmaps[charmap]->encoding) {
-    case ft_encoding_symbol:
-      name = "symbol"; break;
-    case ft_encoding_unicode:	
+    case FT_ENCODING_UNICODE:	
       name = "unicode"; break;
-      /* FIXME: disabled 2003-03-13 pederb. Not defined on my system */
-      
-      /*       case ft_encoding_latin_1:	 */
-      /*         name = "latin_1"; break; */
-      
-      /* FIXME: disabled, as "ft_encoding_latin_2" not defined on my
-         Freetype dev system (FreeType v2.1.3 that comes as
-         libfreetype6-dev on Debian Linux). 20030316 mortene.*/
-      
-      /*       case ft_encoding_latin_2: */
-      /*         name = "latin_2"; break; */
-      
-    case ft_encoding_sjis:	
+    case FT_ENCODING_MS_SYMBOL:
+      name = "symbol"; break;
+    case FT_ENCODING_MS_SJIS:	
       name = "sjis"; break;
-    case ft_encoding_gb2312:
+    case FT_ENCODING_MS_GB2312:
       name = "gb2312"; break;
-    case ft_encoding_big5:	
+    case FT_ENCODING_MS_BIG5:	
       name = "big5"; break;
-    case ft_encoding_wansung:	
+    case FT_ENCODING_MS_WANSUNG:	
       name = "wansung"; break;
-    case ft_encoding_johab:	
+    case FT_ENCODING_MS_JOHAB:	
       name = "johab"; break;
-    case ft_encoding_adobe_standard:
+    case FT_ENCODING_ADOBE_STANDARD:
       name = "adobe_standard"; break;
-    case ft_encoding_adobe_expert:
+    case FT_ENCODING_ADOBE_EXPERT:
       name = "adobe_expert"; break;
-    case ft_encoding_adobe_custom:
+    case FT_ENCODING_ADOBE_CUSTOM:
       name = "adobe_custom"; break;
-    case ft_encoding_apple_roman:
+    case FT_ENCODING_ADOBE_LATIN_1:	 
+      name = "latin_1"; break; 
+    case FT_ENCODING_APPLE_ROMAN:
       name = "apple_roman"; break;
     default:
       if (cc_freetype_debug()) {
@@ -195,9 +185,9 @@ cc_flwft_get_charmap_name(void * font, int charmap)
       /* name will be set to unknown */
       break;
     }
-    cc_string_set_text(charmapname, name);
   }
-  return NULL;
+  cc_string_set_text(charmapname, name);
+  return charmapname;
 }
 
 int
@@ -210,7 +200,7 @@ cc_flwft_set_charmap(void * font, int charmap)
   if ( charmap < face->num_charmaps) {
     error = FT_Select_Charmap(face, face->charmaps[charmap]->encoding);
     if (error)
-      if (cc_fontlib_debug()) cc_debugerror_postwarning("cc_flwft_set_charmap", "ERROR: set charmap %d returned error %d\n", charmap, error);
+      if (cc_freetype_debug()) cc_debugerror_postwarning("cc_flwft_set_charmap", "ERROR: set charmap %d returned error %d\n", charmap, error);
     return error;
   }
   return -1;
@@ -225,7 +215,7 @@ cc_flwft_set_char_size(void * font, int width, int height)
   face = (FT_Face)font;
   error = FT_Set_Char_Size(face, width << 6, height << 6, 72, 72);
   if (error) {
-    if (cc_fontlib_debug()) cc_debugerror_postwarning("cc_flwft_set_char_size" ,"ERROR %d\n", error);
+    if (cc_freetype_debug()) cc_debugerror_postwarning("cc_flwft_set_char_size" ,"ERROR %d\n", error);
     return error;
   }
   return 0;
@@ -282,7 +272,7 @@ cc_flwft_get_advance(void * font, cc_FLWglyph glyph, float *x, float *y)
   face = (FT_Face)font;
   error = FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
   if (error) {
-    if (cc_fontlib_debug()) cc_debugerror_postwarning("cc_flwft_get_advance", "ERROR %d\n", error);
+    if (cc_freetype_debug()) cc_debugerror_postwarning("cc_flwft_get_advance", "ERROR %d\n", error);
     return error;
   }
   tmp = face->glyph->advance.x;
@@ -303,7 +293,7 @@ cc_flwft_get_kerning(void * font, cc_FLWglyph glyph1, cc_FLWglyph glyph2, float 
   if ( FT_HAS_KERNING(face) ) {
     error = FT_Get_Kerning(face, glyph1, glyph2, ft_kerning_default, &kerning);
     if (error) {
-      if (cc_fontlib_debug()) cc_debugerror_postwarning("cc_flwft_get_kerning", "ERROR %d\n", error);
+      if (cc_freetype_debug()) cc_debugerror_postwarning("cc_flwft_get_kerning", "ERROR %d\n", error);
       return error;
     }
     *x = kerning.x / (float)64.0;
@@ -340,17 +330,17 @@ cc_flwft_get_bitmap(void * font, cc_FLWglyph glyph)
   face = (FT_Face)font;
   error = FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
   if (error) {
-    if (cc_fontlib_debug()) cc_debugerror_postwarning("cc_flwft_get_bitmap", "ERROR in FT_Load_Glyph %d\n", error);
+    if (cc_freetype_debug()) cc_debugerror_postwarning("cc_flwft_get_bitmap", "ERROR in FT_Load_Glyph %d\n", error);
     return NULL;
   }
   error = FT_Get_Glyph(face->glyph, &g);
   if (error) {
-    if (cc_fontlib_debug()) cc_debugerror_postwarning("cc_flwft_get_bitmap", "ERROR in FT_Get_Glyph %d\n", error);
+    if (cc_freetype_debug()) cc_debugerror_postwarning("cc_flwft_get_bitmap", "ERROR in FT_Get_Glyph %d\n", error);
     return NULL;
   }
   error = FT_Glyph_To_Bitmap(&g, ft_render_mode_mono, 0, 1);
   if (error) {
-    if (cc_fontlib_debug()) cc_debugerror_postwarning("cc_flwft_get_bitmap", "ERROR in FT_Glyph_To_Bitmap %d\n", error);
+    if (cc_freetype_debug()) cc_debugerror_postwarning("cc_flwft_get_bitmap", "ERROR in FT_Glyph_To_Bitmap %d\n", error);
     return NULL;
   }
   tfbmg = (FT_BitmapGlyph)g;
@@ -371,6 +361,6 @@ int
 cc_flwft_get_outline(void * font, cc_FLWglyph glyph)
 {
   /* FIXME: implement. */
-  if (cc_fontlib_debug()) cc_debugerror_postinfo("cc_flwft_get_outline", "Function has not been implemented yet.\n");
+  if (cc_freetype_debug()) cc_debugerror_postinfo("cc_flwft_get_outline", "Function has not been implemented yet.\n");
   return 0;
 }
