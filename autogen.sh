@@ -78,8 +78,10 @@ autoheader
 echo "Running automake (generating the Makefile.in files)..."
 automake
 
-echo "Running autoconf (generating ./configure and the Makefile files)..."
+echo "Running autoconf (generating the configure script)..."
 autoconf
 
 echo
 echo "Done. Now run './configure' and 'make install' to build $PROJECT."
+echo
+

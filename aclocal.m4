@@ -1141,6 +1141,47 @@ fi
 ])
 
 
+
+dnl Usage:
+dnl  SIM_CHECK_X_INTRINSIC([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+dnl
+dnl  Try to find the Xt intrinsic library. Sets this shell variable:
+dnl
+dnl    $sim_ac_xt_libs   (link library the linker needs for X Intrinsic)
+dnl
+dnl  The LIBS flag will also be modified accordingly. In addition, the
+dnl  variable $sim_ac_xt_avail is set to "yes" if the X11 Intrinsic
+dnl  library is found.
+dnl
+dnl
+dnl Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+
+AC_DEFUN(SIM_CHECK_X_INTRINSIC,[
+dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_PREREQ([2.14.1])
+
+sim_ac_xt_avail=no
+sim_ac_xt_libs="-lXt"
+sim_ac_save_libs=$LIBS
+LIBS="$sim_ac_xt_libs $LIBS"
+
+AC_CACHE_CHECK([whether the X11 Intrinsic library is available],
+  sim_cv_lib_xt_avail,
+  [AC_TRY_LINK([#include <X11/Intrinsic.h>],
+               [(void)XtVaCreateWidget("", 0L, 0L);],
+               sim_cv_lib_xt_avail=yes,
+               sim_cv_lib_xt_avail=no)])
+
+if test x"$sim_cv_lib_xt_avail" = xyes; then
+  sim_ac_xt_avail=yes
+  ifelse($1, , :, $1)
+else
+  LIBS=$sim_ac_save_libs
+  ifelse($2, , :, $2)
+fi
+])
+
 dnl Usage:
 dnl  SIM_CHECK_OPENGL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 dnl

@@ -310,16 +310,24 @@ ac_coin_unknown_platform=yes
 
 case "$host_os" in
   irix6.2)
-    if test "$CXX" = CC; then ac_coin_unknown_platform=no; fi ;;
-
+    if test "$CXX" = CC; then ac_coin_unknown_platform=no; fi
+    ;;
   hpux10.20)
-    if test "$CXX" = aCC; then ac_coin_unknown_platform=no; fi ;;
-
+    if test "$CXX" = aCC; then ac_coin_unknown_platform=no; fi
+    ;;
   linux-gnu)
     case "$host_cpu" in
       i?86)
-        ac_coin_unknown_platform=no;;
-    esac ;;
+        ac_coin_unknown_platform=no ;;
+    esac
+    ;;
+  beos)
+    case "$host_cpu" in
+      i?86)
+        if test "$CXX" = c++; then ac_coin_unknown_platform=no; fi
+        ;;
+    esac
+    ;;
 esac
 
 if test $ac_coin_unknown_platform = yes; then

@@ -37,6 +37,7 @@ libCoin_la_SOURCES = snprintf.c snprintf.h
 libCoinincdir = $(includedir)/Inventor
 
 libCoin_la_LDFLAGS = \
+	-no-undefined \
         -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
         -release $(LT_RELEASE)
 
