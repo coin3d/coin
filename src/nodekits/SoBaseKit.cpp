@@ -68,6 +68,11 @@ public:
 public:
   void createWriteData(void);
   void testParentWrite(void);
+
+  void copyParts(const SoBaseKit * srckit, SbList <SoNode*> & partlist,
+                 const SbBool copyconnections);
+
+  void setParts(SbList <SoNode*> partlist, const SbBool leafparts);
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -563,7 +568,7 @@ SoBaseKit::write(SoWriteAction * action)
     // fields need to be written.
     if (THIS->writedata) {
       const SoNodekitCatalog * catalog = this->getNodekitCatalog();
-      
+
       // loop through parts and see if we need to call setDefault(FALSE)
       // on some of the fields.
       int n = THIS->instancelist.getLength();
@@ -651,11 +656,11 @@ SoBaseKit::countMyFields(SoOutput * out)
     else {
       if (field->isDefault()) { // do a couple of tests to see if we should write anyway
         SoNode * node = ((SoSFNode*)field)->getValue();
-        if (node == NULL && ! catalog->isNullByDefault(partnum)) 
+        if (node == NULL && ! catalog->isNullByDefault(partnum))
           field->setDefault(FALSE);
-        if (node && !is_default_node(node, catalog->getDefaultType(partnum))) 
+        if (node && !is_default_node(node, catalog->getDefaultType(partnum)))
           field->setDefault(FALSE);
-      }      
+      }
       if (!field->isDefault()) field->write(out, name);
       else {
         SoSFNode * part = (SoSFNode*) field;
@@ -927,22 +932,94 @@ SoBaseKit::typeCheck(const SbName & /*partname*/, const SoType & parttype, SoNod
 }
 
 /*!
-  FIXME: write function documentation
+  Overloaded to also recurse on non-null part nodes.
 */
 SoNode *
 SoBaseKit::addToCopyDict(void) const
 {
-  COIN_STUB();
-  return NULL;
+  SoNode * cp = (SoNode*) SoFieldContainer::checkCopy(this);
+  if (cp == NULL) { // not copied?
+    cp = (SoNode*) this->getTypeId().createInstance();
+    assert(cp);
+    cp->ref();
+    SoFieldContainer::addCopy(this, cp);
+    cp->unrefNoDelete();
+
+    int n = THIS->instancelist.getLength();
+    for (int i = 1; i < n; i++) {
+      SoNode * node = THIS->instancelist[i]->getValue();
+      if (node != NULL) node->addToCopyDict();
+    }
+  }
+  return cp;
 }
 
 /*!
-  FIXME: write function documentation
+  Overloaded to copy parts correctly.
 */
 void
-SoBaseKit::copyContents(const SoFieldContainer * /*fromfc*/, SbBool /*copyconnections*/)
+SoBaseKit::copyContents(const SoFieldContainer * fromfc, SbBool copyconnections)
 {
-  COIN_STUB();
+  int i;
+
+  // disable connections while copying
+  SbBool oldsetup = this->setUpConnections(FALSE);
+
+  // do normal node copy
+  inherited::copyContents(fromfc, copyconnections);
+
+  const SoBaseKit * srckit = (const SoBaseKit*) fromfc;
+
+  // convenient reference
+  const SbList <SoSFNode*> & srcfields = srckit->getCatalogInstances();
+
+  const int n = THIS->instancelist.getLength();
+
+  // use temporary lists to store part node pointers and field
+  // default flag, as we will modify the originals.
+  SbList <SoNode *> partlist;
+  SbList <SbBool> flaglist;
+
+  // part 0 is this
+  partlist.append(NULL);
+  flaglist.append(FALSE);
+
+  // initialize temporary lists
+  for (i = 1; i < n; i++) {
+    partlist.append(NULL);
+    flaglist.append(THIS->instancelist[i]->isDefault());
+  }
+
+  // copy parts, taking care of scene graph
+  THIS->copyParts(srckit, partlist, copyconnections);
+
+  // remove all old children before setting parts again
+  this->getChildren()->truncate(0);
+
+  // reset part fields
+  for (i = 1; i < n; i++) {
+    THIS->instancelist[i]->setValue(NULL);
+    THIS->instancelist[i]->setDefault(TRUE);
+  }
+
+  // set non-leaf nodes first
+  THIS->setParts(partlist, FALSE);
+
+  // then leaf nodes
+  THIS->setParts(partlist, TRUE);
+
+  // do final pass
+  for (i = 1; i < n; i++) {
+    // restore default flag for fields
+    THIS->instancelist[i]->setDefault(flaglist[i]);
+
+    // unref nodes in temporary list as they were ref'ed
+    // when inserted
+    if (partlist[i]) partlist[i]->unref();
+  }
+
+  // enable connections
+  if (oldsetup) this->setUpConnections(TRUE);
 }
 
 /*!
@@ -1632,7 +1709,7 @@ SoBaseKitP::createWriteData(void)
     }
   }
 }
-  
+
 //
 // test if parent part of a part is going to write, and if so
 // write part even if isDefault()
@@ -1657,5 +1734,81 @@ SoBaseKitP::testParentWrite(void)
     }
   }
 }
+
+void
+SoBaseKitP::copyParts(const SoBaseKit * srckit, SbList <SoNode*> & partlist,
+                      const SbBool copyconnections)
+{
+  int i;
+  const int n = this->instancelist.getLength();
+  const SoNodekitCatalog * catalog = this->kit->getNodekitCatalog();
+
+  // convenient reference
+  const SbList <SoSFNode*> & srcfields = srckit->getCatalogInstances();
+
+  // copy parts that do not have a parent as a part
+  for (i = 1; i < n; i++) {
+    SoNode * dstnode = this->instancelist[i]->getValue();
+    if (dstnode && catalog->getParentPartNumber(i) == 0) {
+      SoNode * srcnode = srcfields[i]->getValue();
+      assert(dstnode != srcnode);
+      dstnode->copyContents(srcnode, copyconnections);
+      dstnode->ref(); // ref before inserting into list
+      if (partlist[i]) partlist[i]->unref();
+      partlist[i] = dstnode;
+    }
+  }
+  // copy parts where parent is a part. These parts will already
+  // have been copied, but we need to figure out the parent part node,
+  // and use the correct child node as the part node instead of the
+  // already copied part node.
+  for (i = 1; i < n; i++) {
+    int parent = catalog->getParentPartNumber(i);
+    if (parent > 0 && this->instancelist[i]->getValue()) {
+      SoNode * srcgroup = srcfields[parent]->getValue();
+      assert(srcgroup);
+      SoNode * dstgroup = partlist[parent];
+      assert(dstgroup);
+      assert(dstgroup->getChildren());
+      assert(srcgroup->getChildren());
+      
+      // find child index in src kit
+      int childidx = srcgroup->getChildren()->find(srcfields[i]->getValue());
+      assert(childidx >= 0);
+      
+      // use the already copied child as part node
+      assert(childidx < dstgroup->getChildren()->getLength());
+      SoNode * child = (*(dstgroup->getChildren()))[childidx];
+      child->ref(); // ref before inserting
+      if (partlist[i]) partlist[i]->unref(); // unref old node in list
+      partlist[i] = child;
+    }
+  }
+}
+
+void
+SoBaseKitP::setParts(SbList <SoNode*> partlist, const SbBool leafparts)
+{
+  const int n = this->instancelist.getLength();
+  const SoNodekitCatalog * catalog = this->kit->getNodekitCatalog();
+
+  for (int i = 1; i < n; i++) {
+    SoNode * node = partlist[i];
+    if (node) {
+      node->ref();
+      SbBool leaftst = catalog->isLeaf(i);
+      if (leaftst == leafparts) { // correct pass ?
+        if (!leaftst) {
+          // if it's not a leaf, remove children as the correct children
+          // will be added  when children parts are set.
+          assert(node->getChildren());
+          node->getChildren()->truncate(0);
+        }
+        this->kit->setPart(i, node);
+      }
+    }
+  }
+}
+
 
 #undef THIS

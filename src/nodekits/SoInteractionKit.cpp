@@ -431,7 +431,7 @@ SoInteractionKit::setAnyPartAsDefault(const SbName & partname,
   SoNode * node = (SoNode *)
     SoBase::getNamedBase(nodename, SoNode::getClassTypeId());
   if (node) {
-    return this->setAnyPartAsDefault(partname, node->copy(), anypart, onlyifdefault);
+    return this->setAnyPartAsDefault(partname, node, anypart, onlyifdefault);
   }
 #if COIN_DEBUG && 1 // debug
   else {
