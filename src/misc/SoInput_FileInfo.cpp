@@ -65,10 +65,9 @@ SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * reader)
 SoInput_FileInfo::~SoInput_FileInfo()
 {
   delete[] this->readbuf;
-  if (this->deletebuffer) {
-    delete[] this->deletebuffer;
-  }
   delete this->reader;
+  // to be safe, delete this after deleting the reader 
+  delete[] this->deletebuffer;
 }
 
 SbBool
