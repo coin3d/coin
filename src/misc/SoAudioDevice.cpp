@@ -29,6 +29,7 @@
 #include <Inventor/errors/SoDebugError.h>
 
 #include <Inventor/SbBasic.h>
+#include <../tidbits.h>
 
 #ifdef HAVE_SOUND
 #include <AL/al.h>
@@ -97,6 +98,19 @@ SoAudioDevice::~SoAudioDevice()
   delete PRIVATE(this);
 }
 
+/* Return value of COIN_DEBUG_AUDIO environment variable. */
+static int
+coin_debug_audio(void)
+{
+  static int d = -1;
+  if (d == -1) {
+    const char * val = coin_getenv("COIN_DEBUG_AUDIO");
+    d = val ? atoi(val) : 0;
+  }
+  return (d > 0) ? 1 : 0;
+}
+
+
 SbBool SoAudioDevice::init(const SbString &devicetype, 
                            const SbString &devicename)
 {
@@ -115,6 +129,17 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
     SoDebugError::postWarning("SoAudioDevice::init",
                               "Failed to initialize OpenAL");
     return FALSE;
+  }
+
+  if (coin_debug_audio()) {
+    const ALubyte * str = alGetString(AL_VENDOR);
+    SoDebugError::postInfo("SoAudioDevice::init", "AL_VENDOR=='%s'", str);
+    str = alGetString(AL_VERSION);
+    SoDebugError::postInfo("SoAudioDevice::init", "AL_VERSION=='%s'", str);
+    str = alGetString(AL_RENDERER);
+    SoDebugError::postInfo("SoAudioDevice::init", "AL_RENDERER=='%s'", str);
+    str = alGetString(AL_EXTENSIONS);
+    SoDebugError::postInfo("SoAudioDevice::init", "AL_EXTENSIONS=='%s'", str);
   }
 
   PRIVATE(this)->context = alcCreateContext(PRIVATE(this)->device,NULL);
