@@ -563,6 +563,68 @@ SoRayPickAction::intersect(const SbVec3f & point) const
   return (radius >= distance);
 }
 
+// calculates the square distance (smallest possible) from a 2D point
+// to a 2D rectangle
+static float 
+dist_to_quad(const float xmin, const float ymin, 
+             const float xmax, const float ymax,
+             const float x, const float y,
+             float & cx, float & cy)
+{
+  if (x < xmin) {
+    if (y < ymin) {
+      cx = xmin;
+      cy = ymin;
+      return (x-xmin)*(x-xmin) + (y-ymin)*(y-ymin);
+    }
+    else if (y > ymax) {
+      cx = xmin;
+      cy = xmax;
+      return (x-xmin)*(x-xmin) + (y-ymax)*(y-ymax);
+    }
+    else {
+      cx = xmin;
+      cy = y;
+      return (x-xmin)*(x-xmin);
+    }
+  }
+  else if (x > xmax) {
+    if (y < ymin) {
+      cx = xmax;
+      cy = ymin;
+      return (x-xmax)*(x-xmax) + (y-ymin) * (y-ymin);
+    }
+    else if (y > ymax) {
+      cx = xmax;
+      cy = ymax;
+      return (x-xmax)*(x-xmax) + (y-ymax)*(y-ymax);
+    }
+    else {
+      cx = xmax;
+      cy = y;
+      return (x-xmax)*(x-xmax);
+    }
+  }
+  else {
+    if (y < ymin) {
+      cx = x;
+      cy = ymin;
+      return (y-ymin)*(y-ymin);
+    }
+    else if (y > ymax) {
+      cx = x;
+      cy = ymax;
+      return (y-ymax)*(y-ymax);
+    }
+    else {
+      // inside rectangle
+      cx = x;
+      cy = y;
+      return -1.0f;
+    }
+  }
+}
+
 /*!
   \internal
 */
@@ -576,13 +638,13 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
   bounds[1] = box.getMax();
 
   SbVec3f ptonray, ptonbox;
-  float mindist = FLT_MAX;
+  float sqrmindist = FLT_MAX;
 
   SbBool conepick = usefullviewvolume && !THIS->isFlagSet(SoRayPickActionP::WS_RAY_SET);
 
   for (int j = 0; j < 2; j++) {
     for (int i = 0; i < 3; i++) {
-      SbVec3f norm(0, 0, 0);
+      SbVec3f norm(0.0f, 0.0f, 0.0f);
       norm[i] = 1.0f;
       SbVec3f isect;
 
@@ -590,63 +652,39 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
       if (plane.intersect(line, isect)) {
         int i1 = (i+1) % 3;
         int i2 = (i+2) % 3;
-
-        float d = bounds[0][i1] - isect[i1];
-        if (d > 0.0f) {
-          if (conepick && d < mindist) {
-            mindist = d;
-            ptonray = ptonbox = isect;
-            ptonbox[i1] = bounds[0][i1];
-          }
-          continue;
+        float x, y;
+        
+        float d = dist_to_quad(bounds[0][i1], bounds[0][i2],
+                               bounds[1][i1], bounds[1][i2],
+                               isect[i1], isect[i2],
+                               x, y);
+        if (d <= 0.0f) {
+          // center of ray hit box directly
+          intersection = isect;
+          return TRUE;
+        } 
+        else if (d < sqrmindist) {
+          sqrmindist = d;
+          ptonray = ptonbox = isect;
+          ptonbox[i1] = x;
+          ptonbox[i2] = y;
         }
-        d = isect[i1] - bounds[1][i1];
-        if (d > 0.0f) {
-          if (conepick && d < mindist) {
-            mindist = d;
-            ptonray = ptonbox = isect;
-            ptonbox[i1] = bounds[1][i1];
-          }
-          continue;
-        }
-        d = bounds[0][i2] - isect[i2];
-        if (d > 0.0f) {
-          if (conepick && d < mindist) {
-            mindist = d;
-            ptonray = ptonbox = isect;
-            ptonbox[i2] = bounds[0][i2];
-          }
-          continue;
-        }
-        d = isect[i2] - bounds[1][i2];
-        if (d > 0.0f) {
-          if (conepick && d < mindist) {
-            mindist = d;
-            ptonray = ptonbox = isect;
-            ptonbox[i2] = bounds[1][i2];
-          }
-          continue;
-        }
-        // if we get here, we know center of ray hit box directly
-        intersection = isect;
-        return TRUE;
       }
     }
   }
-  if (mindist != FLT_MAX && conepick) {
-
+  if (sqrmindist != FLT_MAX && conepick) {
     // transform ptonray and ptonbox to world space to test on ray cone
     SbVec3f wptonray, wptonbox;
     THIS->obj2world.multVecMatrix(ptonbox, wptonbox);
     THIS->obj2world.multVecMatrix(ptonray, wptonray);
-
+    
     float raypos = THIS->nearplane.getDistance(wptonray);
     float distance = (wptonray-wptonbox).length();
 
     // find ray radius at wptonray
     float radius = THIS->rayradiusstart +
       THIS->rayradiusdelta * raypos;
-
+    
     // test for cone intersection
     if (radius >= distance) {
       intersection = ptonbox; // set intersection to the point on box closest to ray
