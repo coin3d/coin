@@ -331,9 +331,6 @@ static SbBool is_doing_bigtexture_rendering;
 SbBool
 SoShape::shouldGLRender(SoGLRenderAction * action)
 {
-  if (action->getCurPathCode() == SoAction::OFF_PATH &&
-      !this->affectsState()) return FALSE;
-
   SoState * state = action->getState();
 
   // if we have a valid bbox cache, do a view volume cull test here.
@@ -342,9 +339,6 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       THIS->bboxcache->isValid(state)) {
     if (SoCullElement::cullTest(state, THIS->bboxcache->getProjectedBox())) return FALSE;
   }
-
-  SbBool needNormals =
-    SoLightModelElement::get(state) == SoLightModelElement::PHONG;
 
   SbBool transparent = SoTextureImageElement::containsTransparency(state);
   if (!transparent) {
