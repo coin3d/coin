@@ -408,7 +408,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     // we are always using GL_COLOR_MATERIAL in Coin
     glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
-    
+
     // force blending to off in case GL state is invalid
     this->disableBlend(TRUE);
 
@@ -500,11 +500,8 @@ SoGLRenderAction::beginTraversal(SoNode * node)
 
   if (this->delayedpaths.getLength()) {
     if (!this->delayedrender) {
-      SbBool usedepthbuffer = glIsEnabled(GL_DEPTH_TEST);
-      if (usedepthbuffer) glDisable(GL_DEPTH_TEST);
       this->delayedrender = TRUE;
       this->apply(this->delayedpaths, TRUE);
-      if (usedepthbuffer) glEnable(GL_DEPTH_TEST);
     }
   }
   this->getState()->pop();

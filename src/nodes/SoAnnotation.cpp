@@ -25,8 +25,11 @@
   FIXME: write class doc
 */
 
+// FIXME: consider adding a lazy GL depth buffer element.
+
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/elements/SoCacheElement.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #if HAVE_CONFIG_H
@@ -73,11 +76,17 @@ SoAnnotation::initClass(void)
 void
 SoAnnotation::GLRender(SoGLRenderAction * action)
 {
-  if (action->isRenderingDelayedPaths()) {
-    inherited::GLRender(action);
-  }
-  else {
-    action->addDelayedPath((SoPath*)action->getCurPath());
+  switch (action->getCurPathCode()) {
+  case SoAction::NO_PATH:
+  case SoAction::BELOW_PATH:
+    this->GLRenderBelowPath(action);
+    break;
+  case SoAction::OFF_PATH:
+    // do nothing. Separator will reset state.
+    break;
+  case SoAction::IN_PATH:
+    this->GLRenderInPath(action);
+    break;
   }
 }
 
@@ -88,9 +97,13 @@ void
 SoAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
 {
   if (action->isRenderingDelayedPaths()) {
+    SbBool zbenabled = glIsEnabled(GL_DEPTH_TEST);
+    if (zbenabled) glDisable(GL_DEPTH_TEST);
     inherited::GLRenderBelowPath(action);
+    if (zbenabled) glEnable(GL_DEPTH_TEST);
   }
   else {
+    SoCacheElement::invalidate(action->getState());
     action->addDelayedPath((SoPath*)action->getCurPath());
   }
 }
@@ -102,7 +115,14 @@ void
 SoAnnotation::GLRenderInPath(SoGLRenderAction * action)
 {
   if (action->isRenderingDelayedPaths()) {
+    SbBool zbenabled = glIsEnabled(GL_DEPTH_TEST);
+    if (zbenabled) glDisable(GL_DEPTH_TEST);
     inherited::GLRenderInPath(action);
+    if (zbenabled) glEnable(GL_DEPTH_TEST);
+  }
+  else {
+    SoCacheElement::invalidate(action->getState());
+    action->addDelayedPath((SoPath*)action->getCurPath());
   }
 }
 
@@ -112,5 +132,5 @@ SoAnnotation::GLRenderInPath(SoGLRenderAction * action)
 void
 SoAnnotation::GLRenderOffPath(SoGLRenderAction *)
 {
-  // should never render
+  // should never render, this is a separator node
 }
