@@ -2,10 +2,11 @@
 typedef SbString mangleFunc(const char *);
 
 /*
-  This function mangles the classname::initClass() signature
-  a certain way.
+  This function returns a string that corresponds to how gcc
+  mangles "static void <classname>::initClass(void)".
 */
 
+static
 SbString
 gcc_initClassMangling(const char * classname)
 {
@@ -13,6 +14,23 @@ gcc_initClassMangling(const char * classname)
   int len = strlen(classname);
   SbString mangling;
   mangling.sprintf("initClass__%d%s", len, classname);
+  return mangling;
+}
+
+/*
+  This function returns a string that corresponds to how gcc
+  mangles "static void <classname>::initClass(void)" in a
+  __declspec(dllexport) context.
+*/
+
+static
+SbString
+msvc6_initClassMangling(const char * classname)
+{
+  assert(classname != NULL);
+  int len = strlen(classname);
+  SbString mangling;
+  mangling.sprintf("?initClass@%s@@SAXXZ", classname);
   return mangling;
 }
 
@@ -25,10 +43,14 @@ mangleFunc *
 getManglingFunction(void)
 {
   static mangleFunc * manglefunc = NULL;
-  if ( !manglefunc ) {
-    // FIXME: successful lookup of "initClass__6SoBase" => gcc mangling
-    manglefunc = gcc_initClassMangling;
-  }
+#ifdef _MSC_VER
+  manglefunc = msvc6_initClassMangling;
+#else
+  manglefunc = gcc_initClassMangling;
+#endif
   return manglefunc;
 }
+
+
+
 
