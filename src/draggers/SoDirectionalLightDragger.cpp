@@ -19,11 +19,26 @@
 
 /*!
   \class SoDirectionalLightDragger SoDirectionalLightDragger.h Inventor/draggers/SoDirectionalLightDragger.h
-  \brief The SoDirectionalLightDragger class is (FIXME: doc)
+  \brief The SoDirectionalLightDragger class provides interactive geometry for manipulating a directional light source.
   \ingroup draggers
 
-  FIXME: document class
+  This dragger is well suited to use for setting up the fields of a
+  SoDirectionLight node, as it provides geometry for the end-user to
+  interact with a directional vector.
+
+  For convenience, this dragger also by default contains interaction
+  geometry for placing the dragger itself. (SoDirectionalLight nodes
+  don't have a position field, so this was strictly not needed.)
+
+  The Coin library also includes a manipulator class,
+  SoDirectionalLightManip, which wraps the functionality provided by
+  this class inside the necessary mechanisms for connecting it to
+  SoDirectionalLight node instances in a scenegraph.
+
+  \sa SoDirectionalLightManip
 */
+// FIXME: a bitmap snapshot of the default dragger appearance would be
+// nice. 20011023 mortene.
 
 #include <Inventor/draggers/SoDirectionalLightDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
@@ -36,16 +51,58 @@
 
 #include <data/draggerDefaults/directionalLightDragger.h>
 
+/*!
+  \var SoSFRotation SoDirectionalLightDragger::rotation
+
+  This field is continuously updated to contain the rotation of the
+  current direction vector. The application programmer will typically
+  connect this to the rotation field of a SoDirectionalLight node
+  (unless using the SoDirectionalLightManip class, where this is taken
+  care of automatically).
+
+  It may also of course be connected to any other rotation field
+  controlling the direction of scenegraph geometry, it does not have
+  to part of a SoDirectionalLight node specifically.
+*/
+/*!
+  \var SoSFVec3f SoDirectionalLightDragger::translation
+
+  Continuously updated to contain the current translation from the
+  dragger's local origo position.
+
+  This field is not used by the SoDirectionalLightManip, but may be of
+  interest for the application programmer wanting to use the
+  SoDirectionalLightDragger outside the context of controlling a
+  directional light node.
+*/
+
+/*!
+  \var
+  SoFieldSensor * SoDirectionalLightDragger::rotFieldSensor
+  \internal
+*/
+/*!
+  \var
+  SoFieldSensor * SoDirectionalLightDragger::translFieldSensor
+  \internal
+*/
 
 SO_KIT_SOURCE(SoDirectionalLightDragger);
 
 
+// Doc in superclass.
 void
 SoDirectionalLightDragger::initClass(void)
 {
   SO_KIT_INTERNAL_INIT_CLASS(SoDirectionalLightDragger);
 }
 
+// FIXME: document which parts need to be present in the geometry
+// scenegraph, and what role they play in the dragger. 20010913 mortene.
+/*!
+  Default constructor, sets up the dragger nodekit catalog with the
+  interaction and feedback geometry.
+ */
 SoDirectionalLightDragger::SoDirectionalLightDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoDirectionalLightDragger);
@@ -96,6 +153,7 @@ SoDirectionalLightDragger::~SoDirectionalLightDragger()
   delete this->rotFieldSensor;
 }
 
+// doc in superclass
 SbBool
 SoDirectionalLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -162,6 +220,7 @@ SoDirectionalLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return !(this->connectionsSetUp = onoff);
 }
 
+// doc in superclass
 void
 SoDirectionalLightDragger::setDefaultOnNonWritingFields(void)
 {
@@ -172,6 +231,9 @@ SoDirectionalLightDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
+/*!
+  \internal
+*/
 void
 SoDirectionalLightDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -181,8 +243,11 @@ SoDirectionalLightDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
+/*!
+  \internal
+*/
 void
-SoDirectionalLightDragger::valueChangedCB(void *, SoDragger *d)
+SoDirectionalLightDragger::valueChangedCB(void *, SoDragger * d)
 {
   SoDirectionalLightDragger *thisp = (SoDirectionalLightDragger*)d;
   SbMatrix matrix = thisp->getMotionMatrix();

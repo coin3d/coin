@@ -38,12 +38,19 @@
 SO_KIT_SOURCE(SoScale2Dragger);
 
 
+// doc in superclass
 void
 SoScale2Dragger::initClass(void)
 {
   SO_KIT_INTERNAL_INIT_CLASS(SoScale2Dragger);
 }
 
+// FIXME: document which parts need to be present in the geometry
+// scenegraph, and what role they play in the dragger. 20010913 mortene.
+/*!
+  Default constructor, sets up the dragger nodekit catalog with the
+  interaction and feedback geometry.
+ */
 SoScale2Dragger::SoScale2Dragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoScale2Dragger);

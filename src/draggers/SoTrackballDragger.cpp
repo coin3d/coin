@@ -78,6 +78,7 @@ public:
 
 SO_KIT_SOURCE(SoTrackballDragger);
 
+// doc in superclass
 void
 SoTrackballDragger::initClass(void)
 {
@@ -89,6 +90,12 @@ SoTrackballDragger::initClass(void)
 #undef THISP
 #define THISP thisp->pimpl
 
+// FIXME: document which parts need to be present in the geometry
+// scenegraph, and what role they play in the dragger. 20010913 mortene.
+/*!
+  Default constructor, sets up the dragger nodekit catalog with the
+  interaction and feedback geometry.
+ */
 SoTrackballDragger::SoTrackballDragger(void)
 {
   THIS = new SoTrackballDraggerP;

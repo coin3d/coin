@@ -106,6 +106,7 @@ int SoTransformerDraggerP::colinearThreshold = 3; // FIXME: find default value f
 
 SO_KIT_SOURCE(SoTransformerDragger);
 
+// doc in superclass
 void
 SoTransformerDragger::initClass(void)
 {
@@ -282,6 +283,12 @@ SoTransformerDragger::build_catalog6(void)
 #undef THISP
 #define THISP thisp->pimpl
 
+// FIXME: document which parts need to be present in the geometry
+// scenegraph, and what role they play in the dragger. 20010913 mortene.
+/*!
+  Default constructor, sets up the dragger nodekit catalog with the
+  interaction and feedback geometry.
+ */
 SoTransformerDragger::SoTransformerDragger(void)
 {
   THIS = new SoTransformerDraggerP;

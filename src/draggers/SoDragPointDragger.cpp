@@ -70,8 +70,8 @@ SoDragPointDragger::initClass(void)
 // FIXME: document which parts need to be present in the geometry
 // scenegraph, and what role they play in the dragger. 20010913 mortene.
 /*!
-  Constructor.  Sets up the dragger nodekit catalog from the default
-  geometry file.
+  Default constructor, sets up the dragger nodekit catalog with the
+  interaction and feedback geometry.
  */
 SoDragPointDragger::SoDragPointDragger(void)
 {

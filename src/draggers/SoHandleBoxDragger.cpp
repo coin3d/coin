@@ -65,12 +65,19 @@ static int uniform_ctrl_lookup[8][6] = {
 SO_KIT_SOURCE(SoHandleBoxDragger);
 
 
+// doc in superclass
 void
 SoHandleBoxDragger::initClass(void)
 {
   SO_KIT_INTERNAL_INIT_CLASS(SoHandleBoxDragger);
 }
 
+// FIXME: document which parts need to be present in the geometry
+// scenegraph, and what role they play in the dragger. 20010913 mortene.
+/*!
+  Default constructor, sets up the dragger nodekit catalog with the
+  interaction and feedback geometry.
+ */
 SoHandleBoxDragger::SoHandleBoxDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoHandleBoxDragger);

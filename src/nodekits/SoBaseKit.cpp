@@ -1412,7 +1412,7 @@ SoBaseKit::catalogError(void)
 
   (This method will usually not be of interest to the application
   programmer, unless you want to extend the library with new custom
-  nodekits or dragger classes.  If so, see SoBaseKit class
+  nodekits or dragger classes.  If so, see the SoBaseKit class
   documentation.)
 */
 SbBool

@@ -335,11 +335,21 @@ SoInteractionKit::readInstance(SoInput * in, unsigned short flags)
 }
 
 /*!
-  Reads default parts for a dragger. \a fileName is the user-changeable
-  resource file (most often an ascii iv file), while \a defaultBuffer and
-  \a defBufSize can point to the statically compiled default parts.
+  Reads default parts for a dragger.
 
-  This method is called from dragger constructors.
+  This method is called from dragger constructors to set up a
+  dragger's nodekit catalog of interaction and feedback geometry.
+
+  \a fileName is the user-changeable resource file (most often an
+  ascii iv file), while \a defaultBuffer and \a defBufSize can point
+  to the statically compiled default parts.
+
+  If both a \a fileName and a \a defaultBuffer is provided, the file
+  will be attempted found and loaded first, if that fails, the
+  geometry will attempted read from the buffer.
+
+  If the environment variable SO_DRAGGER_DIR has been set up, it's
+  value will be used as the path prefix for the \a fileName.
 */
 void
 SoInteractionKit::readDefaultParts(const char * fileName,
@@ -385,6 +395,8 @@ SoInteractionKit::readDefaultParts(const char * fileName,
                        fileName,
                        draggerdir ? "" :
                        " (SO_DRAGGER_DIR environment variable is not set.)");
+    // FIXME: don't just exit! We should be robust on this and fall
+    // back on the default geometry. 20011023 mortene.
     exit(1);
 #endif // COIN_DEBUG
     return;
@@ -394,6 +406,8 @@ SoInteractionKit::readDefaultParts(const char * fileName,
   if (node == NULL) {
 #if COIN_DEBUG
     SoReadError::post(&input, "error reading dragger defaults");
+    // FIXME: don't just exit! We should be robust on this and fall
+    // back on the default geometry. 20011023 mortene.
     exit(1);
 #endif // COIN_DEBUG
   }

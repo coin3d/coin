@@ -28,7 +28,7 @@
  */
 
 /*!
-  \var int SoConeDetail::part
+  \var int SoCubeDetail::part
   \internal
 */
 
