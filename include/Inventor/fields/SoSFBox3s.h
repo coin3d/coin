@@ -29,7 +29,7 @@
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbBox3s.h>
 
-class SoSFBox3s : public SoSField {
+class COIN_DLL_API SoSFBox3s : public SoSField {
   typedef SoSField inherited;
 
   SO_SFIELD_HEADER(SoSFBox3s, SbBox3s, SbBox3s);
@@ -48,5 +48,3 @@ public:
 };
 
 #endif // !COIN_SOSFBOX3S_H
-
-
