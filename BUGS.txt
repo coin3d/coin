@@ -4689,3 +4689,19 @@ Separator {
     20041217 mortene.
 
 =====================================================================
+
+182 SoExtSelection with lassoMode==VISIBLE_SHAPES crashes with
+    selection outside of the canvas.
+
+    To reproduce, load any model into the
+    SoGuiExamples/nodes/extselection example, hit 'v' to switch to
+    VISIBLE_SHAPES lassoMode, and 'r' to set lassoType to
+    RECTANGLE. Start a selection anywhere within the window, then drag
+    the rectangle way outside the window and release the mouse
+    button. This will usually cause a crash.
+
+    High priority item.
+
+    20041217 mortene.
+
+=====================================================================
