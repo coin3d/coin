@@ -359,9 +359,8 @@ THE WISH LIST
   character sets. Other areas of Coin probably also need some
   rewriting for internationalization.
 
-  Update, larsa@sim.no 2001-06-28:
-
-    Are there any alternatives better than Unicode UTF-8 for this?
+  Update 2001-06-28 larsa:  Are there any alternatives better than
+  Unicode UTF-8 for this?
 
 * SbBool SbMatrix::inversePossible(void) const
   2001-07-02  Peder Blekken <pederb@sim.no>
@@ -544,4 +543,19 @@ THE WISH LIST
   behaviour (like I/O throught network connections and compression libraries).
   A simpler, cleaner, more flexible/extendible alternative should be created
   and allowed to be used as an alternative to these classes.
+
+* SoAction::apply(SoAction * beingApplied)
+  2001-09-20  Lars J. Aas  <larsa@sim.no>
+  [upwards compatible extension]
+
+  If you need to apply an action as a result of an event during an action
+  traversal, it is very inconvenient to have to figure out what that action
+  was applied to and then apply the other action to the same thing.
+
+  This method should be a shortcut for calling beingApplied->getWhatAppliedTo()
+  and then switch/case the correct this->apply(beingApplied->get*AppliedTo())
+  method.
+
+  Method does not need to be virtual (no ABI problems) since it only forwards
+  to three other virtual methods.
 
