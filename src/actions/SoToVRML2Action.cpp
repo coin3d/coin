@@ -946,7 +946,11 @@ SoToVRML2ActionP::soasciitext_cb(void * closure, SoCallbackAction * action, cons
 
   text->string = oldtext->string;
   text->length = oldtext->width;
-  // FIXME: FontStyle. 20020805 kristian.
+
+  SoVRMLFontStyle *style = new SoVRMLFontStyle;
+  style->size.setValue(action->getFontSize());
+  text->fontStyle.setValue(style);
+  // FIXME: Better FontStyle handling (20030414 kintel)
   
   THISP(closure)->insert_shape(action, text);
   return SoCallbackAction::PRUNE;
