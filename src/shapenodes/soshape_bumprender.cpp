@@ -46,6 +46,7 @@
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/errors/SoDebugError.h>
 
 #ifdef HAVE_CONFIG_H
@@ -196,15 +197,35 @@ static const char * normalrenderingvpprogram =
 " MOV result.color, v19;\n"
 "END\n";
 
+
+struct soshape_bumprender_spec_programidx {
+  GLuint dirlight;
+  GLuint pointlight;
+  GLuint fragment;
+};
+
+struct soshape_bumprender_diffuse_programidx {
+  GLuint pointlight;
+  GLuint dirlight;
+  GLuint normalrendering;
+};
+
 soshape_bumprender::soshape_bumprender(void)
 {
   this->diffuseprogramsinitialized = FALSE;
   this->programsinitialized = FALSE;
+  this->diffuseprogramdict = new SbDict(4);  
+  this->specularprogramdict = new SbDict(4);
 }
 
 soshape_bumprender::~soshape_bumprender()
 {
-  // FIXME: deallocate vertex/fragment programs
+  // FIXME: One should do a proper deletion of all fragment and vertex
+  // programs from the AGP memory when finished. (20040206 handegar)
+  this->diffuseprogramdict->clear();
+  this->specularprogramdict->clear();
+  delete this->diffuseprogramdict;  
+  delete this->specularprogramdict;
 }
 
 // to avoid warnings from SbVec3f::normalize()
@@ -220,34 +241,53 @@ inline void NORMALIZE(SbVec3f &v)
 }
 
 void
-soshape_bumprender::initDiffusePrograms(const cc_glglue * glue)
+soshape_bumprender::initDiffusePrograms(const cc_glglue * glue, SoState * state)
 {
-  glue->glGenProgramsARB(1, &diffusebumpdirlightvertexprogramid);
-  glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, diffusebumpdirlightvertexprogramid);
-  glue->glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                           strlen(diffusebumpdirlightvpprogram), diffusebumpdirlightvpprogram);
-  GLint errorPos;
-  GLenum err = glGetError();
 
-  if (err) {
-    glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-    SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                              "Error in diffuse dirlight vertex program! (byte pos: %d) '%s'.\n",
-                              errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-
+  unsigned long contextid = SoGLCacheContextElement::get(state);
+  void * programstruct = NULL;
+  if (diffuseprogramdict->find(contextid, programstruct)) {
+    soshape_bumprender_diffuse_programidx * old = (soshape_bumprender_diffuse_programidx *) programstruct;
+    this->diffusebumpdirlightvertexprogramid = old->dirlight;
+    this->normalrenderingvertexprogramid = old->normalrendering;    
   }
+  else {
 
-  glue->glGenProgramsARB(1, &normalrenderingvertexprogramid);
-  glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, normalrenderingvertexprogramid);
-  glue->glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                           strlen(normalrenderingvpprogram), normalrenderingvpprogram);
-  err = glGetError();
+    glue->glGenProgramsARB(1, &this->diffusebumpdirlightvertexprogramid);
+    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, this->diffusebumpdirlightvertexprogramid);
+    glue->glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
+                             strlen(diffusebumpdirlightvpprogram), diffusebumpdirlightvpprogram);
+    GLint errorPos;
+    GLenum err = glGetError();
+    
+    if (err) {
+      glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
+      SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
+                                "Error in diffuse dirlight vertex program! (byte pos: %d) '%s'.\n",
+                                errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
+      
+    }
+    
+    glue->glGenProgramsARB(1, &this->normalrenderingvertexprogramid);
+    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, this->normalrenderingvertexprogramid);
+    glue->glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
+                             strlen(normalrenderingvpprogram), normalrenderingvpprogram);
+    err = glGetError();
+    
+    if (err) {
+      glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
+      SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
+                                "Error in normal rendering vertex program! (byte pos: %d) '%s'.\n",
+                                errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
+      
+    }
 
-  if (err) {
-    glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-    SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                              "Error in normal rendering vertex program! (byte pos: %d) '%s'.\n",
-                              errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
+
+    soshape_bumprender_diffuse_programidx * newstruct = new soshape_bumprender_diffuse_programidx;
+    newstruct->dirlight = this->diffusebumpdirlightvertexprogramid;
+    newstruct->normalrendering = this->normalrenderingvertexprogramid;
+
+    (void) this->diffuseprogramdict->enter(contextid, (void *) newstruct);
 
   }
 
@@ -255,57 +295,79 @@ soshape_bumprender::initDiffusePrograms(const cc_glglue * glue)
 }
 
 void
-soshape_bumprender::initPrograms(const cc_glglue * glue)
+soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
 {
 
   // FIXME: Should we make the programs static for this class so that
   // every bump map node would share the same program? (20040129
   // handegar)
 
-  glue->glGenProgramsARB(1, &fragmentprogramid); // -- Fragment program
-  glue->glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, fragmentprogramid);
-  glue->glProgramStringARB(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                           strlen(bumpspecfpprogram), bumpspecfpprogram);
-  // FIXME: Maybe a wrapper for catching fragment program errors
+  unsigned long contextid = SoGLCacheContextElement::get(state);
+  void * programstruct = NULL;
+  if (specularprogramdict->find(contextid, programstruct)) {
+    soshape_bumprender_spec_programidx * old = (soshape_bumprender_spec_programidx *) programstruct;
+
+    this->fragmentprogramid = old->fragment;
+    this->dirlightvertexprogramid = old->dirlight;
+    this->pointlightvertexprogramid = old->pointlight;
+
+  }
+  else {
+
+    glue->glGenProgramsARB(1, &this->fragmentprogramid); // -- Fragment program
+    glue->glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, this->fragmentprogramid);
+    glue->glProgramStringARB(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
+                             strlen(bumpspecfpprogram), bumpspecfpprogram);
+    // FIXME: Maybe a wrapper for catching fragment program errors
     // should be a part of GLUE... (20031204 handegar)
-  GLint errorPos;
-  GLenum err = glGetError();
-  if (err) {
-    glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-    SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                              "Error in fragment program! (byte pos: %d) '%s'.\n",
-                              errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
+    GLint errorPos;
+    GLenum err = glGetError();
+    if (err) {
+      glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
+      SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
+                                "Error in fragment program! (byte pos: %d) '%s'.\n",
+                                errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
+      
+    }
+    
+    glue->glGenProgramsARB(1, &this->dirlightvertexprogramid); // -- Directional light program
+    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, this->dirlightvertexprogramid);
+    glue->glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
+                             strlen(directionallightvpprogram), directionallightvpprogram);
+    
+    err = glGetError();
+    if (err) {
+      glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
+      SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
+                                "Error in directional light vertex program! "
+                                "(byte pos: %d) '%s'.\n",
+                                errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
+      
+    }
+    
+    glue->glGenProgramsARB(1, &this->pointlightvertexprogramid); // -- Point light program
+    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, this->pointlightvertexprogramid);
+    glue->glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
+                             strlen(pointlightvpprogram), pointlightvpprogram);
+    
+    err = glGetError();
+    if (err) {
+      glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
+      SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
+                                "Error in point light vertex program! (byte pos: %d) '%s'.\n",
+                                errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
+      
+    }
+    
+    soshape_bumprender_spec_programidx * newstruct = new soshape_bumprender_spec_programidx;
+    newstruct->fragment = this->fragmentprogramid;
+    newstruct->dirlight = this->dirlightvertexprogramid;
+    newstruct->pointlight = this->pointlightvertexprogramid;
+
+    (void) this->diffuseprogramdict->enter(contextid, (void *) newstruct);
 
   }
 
-  glue->glGenProgramsARB(1, &dirlightvertexprogramid); // -- Directional light program
-  glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, dirlightvertexprogramid);
-  glue->glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                           strlen(directionallightvpprogram), directionallightvpprogram);
-
-  err = glGetError();
-  if (err) {
-    glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-    SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                              "Error in directional light vertex program! "
-                              "(byte pos: %d) '%s'.\n",
-                              errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-
-  }
-
-  glue->glGenProgramsARB(1, &pointlightvertexprogramid); // -- Point light program
-  glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, pointlightvertexprogramid);
-  glue->glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                           strlen(pointlightvpprogram), pointlightvpprogram);
-
-  err = glGetError();
-  if (err) {
-    glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-    SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                              "Error in point light vertex program! (byte pos: %d) '%s'.\n",
-                              errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-
-  }
 
   this->programsinitialized = TRUE;
 }
@@ -326,7 +388,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   float shininess = SoLazyElement::getShininess(state);
 
   if (!this->programsinitialized)
-    this->initPrograms(glue);
+    this->initPrograms(glue, state);
 
   this->initLight(light, toobjectspace);
 
@@ -525,7 +587,7 @@ soshape_bumprender::renderBump(SoState * state,
                               // for point lights is implemented
   if (use_vertex_program) {
     if (!this->diffuseprogramsinitialized) {
-      this->initDiffusePrograms(glue);
+      this->initDiffusePrograms(glue, state);
     }
   }
   else {
@@ -675,7 +737,7 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
                               // for point lights is implemented
   if (use_vertex_program) {
     if (!this->diffuseprogramsinitialized) {
-      this->initDiffusePrograms(glue);
+      this->initDiffusePrograms(glue, state);
     }
     glEnable(GL_VERTEX_PROGRAM_ARB);
     glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, normalrenderingvertexprogramid);   
