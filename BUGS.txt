@@ -1457,3 +1457,60 @@
     20021217 mortene.
 
 =====================================================================
+
+047 SoAntiSquish seems to trigger a bug in our matrix factoring code.
+
+    From a coin-discuss posting by Philippe Debanné:
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    
+    I am planning to design my own Dragger class and have been looking
+    at the Toolmaker Ch. 8 examples: TranslateRadialDragger and
+    RotTransDragger.  I found an unexpected behaviour of
+    RotTransDragger (top-left of scene): When dragging one of the
+    SoRotateCylindricalDraggers, the dragger will switch from rotation
+    to scaling up as the mouse position approaches and goes beyond the
+    bounding cylinder of the (spherical) dragger.  In fact, the
+    dragger should not do any scaling up/down!! This happens
+    systematically when dragging the horizontal band left or right
+    (Y-axis rotation).
+
+    When I comment out the SoAntiSquish part of RotTransDragger, this
+    unexpected behaviour dissapears (But obviously you want the
+    AntiSquish's anti-squishing behaviour!).  Alternately, if I set
+    its 'recalcAlways' field to FALSE, I get a different strange
+    behaviour: manipulation of the RotTransDragger affects the
+    rendering of the RotTransManip to the right of it: its
+    antisquishing scaling factor and fluctuations of its wire-mesh
+    sphere.  All this seems to be independant of the AntiSquish
+    'sizing' field, e.g.  BIGGEST_DIMENSION or LONGEST_DIAGONAL.
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+
+    pederb has investigated, and found that this seems likely to be a
+    problem with our SbMatrix code that factors the translation,
+    scaling and rotation out of a matrix.
+
+    20021218 mortene.
+
+=====================================================================
+
+048 Building SGI InventorXt on top of Coin reveals compile-time
+    incompabilities.
+
+    A Coin user reported two problems on coin-discuss:
+
+        - InventorXt uses an Inventor-internal include file:
+          Inventor/SoDebug.h. This contains a set of static debugging
+          helper methods. They seem easy enough to implement, so
+          perhaps we should do that.
+
+        - Some explicit inclusion of SbTime.h is needed with Coin,
+          that is not necessary with SGI Inventor. This is an
+          incompatibility that we would like to get rid of, to make
+          porting _other_ code from SGI Inventor to Coin a literal
+          no-brainer.
+
+    20021218 mortene.
+
+=====================================================================
