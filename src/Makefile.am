@@ -234,6 +234,7 @@ uninstall-local:
 	  "$$baseincdir/sensors" \
 	  "$$baseincdir/system" \
 	  "$$baseincdir/threads" \
+	  "$$baseincdir/VRMLnodes" \
 	  "$$baseincdir"; do \
 	  if test -d "$$dir"; then \
 	    echo " rmdir" "$$dir"; \
