@@ -59,6 +59,11 @@
   (for traversing the same child as the last SoSwitch node to parent
   this in the graph), or an index value for a child.
 
+  When constructing ascii Inventor files, the integer values for the
+  keywords must be used instead of their names.  They are -1 for
+  \c SO_SWITCH_NONE, -2 for \c SO_SWITCH_INHERIT, and -3 for
+  \c SO_SWITCH_ALL.
+
   Default value for the field is \c SO_SWITCH_NONE.
 */
 
