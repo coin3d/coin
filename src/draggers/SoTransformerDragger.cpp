@@ -1622,6 +1622,8 @@ SoTransformerDragger::dragRotate(void)
     worldprojpt -= worldcenter;
     prevworldprojpt -= worldcenter;
 
+    // Normalize the vectors before finding the dotproduct angle
+    // between them.
     worldprojpt.normalize();
     prevworldprojpt.normalize();
 
@@ -1694,6 +1696,18 @@ SoTransformerDragger::dragRotate(void)
     // space.
     projpt = this->planeProj->project(this->getNormalizedLocaterPosition());
     this->getWorkingToWorldMatrix().multVecMatrix(projpt, worldprojpt);
+
+    // Project the vectors onto the projection plane in world space.
+    // This is needed to make the rotation vectors more numerically
+    // stable especially when the dragger has been scaled to be very
+    // small before rotation is attempted.
+    SbPlane plane = this->planeProj->getPlane();
+    plane.transform(this->getWorkingToWorldMatrix());
+    prevworldprojpt -= plane.getNormal() * plane.getDistance(prevworldprojpt);
+    worldprojpt -= plane.getNormal() * plane.getDistance(worldprojpt);
+
+    // Save the values for the new projection points before they are
+    // altered.
     SbVec3f wppt = worldprojpt;
     SbVec3f ppt = projpt;
 
@@ -1712,6 +1726,8 @@ SoTransformerDragger::dragRotate(void)
     if (prevprojpt.sqrLength() > 0.1f && 
         projpt.sqrLength() > 0.1f) {
 
+      // Normalize the vectors before finding the dotproduct angle
+      // between them.
       prevworldprojpt.normalize();
       worldprojpt.normalize();
 
