@@ -23,7 +23,9 @@
   \ingroup sensors
 
   Use sensors of this class when you want a job repeated at a certain
-  interval.
+  interval, without explicitly needing to reschedule the sensor
+  (i.e. SoTimerSensor automatically re-schedules itself after it has
+  been triggered).
 
   SoTimerSensor instances is commonly used to trigger animation
   updates at a constant framerate.
