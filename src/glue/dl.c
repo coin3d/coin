@@ -367,7 +367,7 @@ cc_find_file(const char * file, const char ** fullpath)
   return 0;
 }
 
-//#endif /* HAVE_DYLD_RUNTIME_BINDING */
+#endif /* HAVE_DYLD_RUNTIME_BINDING */
 
 
 cc_libhandle
