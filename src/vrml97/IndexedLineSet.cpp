@@ -105,6 +105,7 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoGL.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -257,6 +258,8 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
                       (int)mbind,
                       0,
                       drawPoints ? 1 : 0);
+  // send approx number of triangles for autocache handling
+  sogl_autocache_update(state, this->coordIndex.getNum() / 2);
 }
 
 void

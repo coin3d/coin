@@ -216,6 +216,7 @@
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/misc/SoGL.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -460,6 +461,8 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
   if (normalCacheUsed) {
     this->readUnlockNormalCache();
   }
+  // send approx number of triangles for autocache handling
+  sogl_autocache_update(state, this->coordIndex.getNum() / 4);
 }
 
 // Doc in parent

@@ -153,6 +153,9 @@ SoVRMLPointSet::GLRender(SoGLRenderAction * action)
                        NULL,
                        coords->getNum(), 0);
 
+
+  // send approx number of points for autocache handling
+  sogl_autocache_update(state, coords->getNum()); 
 }
 
 // Doc in parent
