@@ -130,5 +130,6 @@
 #include <Inventor/nodes/SoWWWInline.h>
 #include <Inventor/nodes/SoTransparencyType.h>
 #include <Inventor/nodes/SoListener.h>
+#include <Inventor/nodes/SoTextureCoordinateCube.h>
 
 #endif // !COIN_SONODES_H
