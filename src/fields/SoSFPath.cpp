@@ -113,3 +113,12 @@ SoSFPath::convertTo(SoField * dest) const
   }
 #endif // COIN_DEBUG
 }
+
+// Overridden from parent to propagate write reference counting to
+// value member.
+void
+SoSFPath::countWriteRefs(SoOutput * out) const
+{
+  inherited::countWriteRefs(out);
+  COIN_STUB();
+}

@@ -40,6 +40,7 @@ public:
   virtual SbBool referencesCopy(void) const;
 
 private:
+  virtual void countWriteRefs(SoOutput * out) const;
   virtual void convertTo(SoField * dest) const;
 };
 
