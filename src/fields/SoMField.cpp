@@ -174,7 +174,7 @@ void
 SoMField::makeRoom(int newnum)
 {
   assert(newnum >= 0);
-  if (newnum != num) this->allocValues(newnum);
+  if (newnum != this->num) this->allocValues(newnum);
 }
 
 /*!
@@ -477,6 +477,11 @@ SoMField::insertSpace(int start, int num)
 void
 SoMField::allocValues(int newnum)
 {
+  // Important notice: the "malloc-version" of this method is found in
+  // SoMField.cpp. If you make modifications here, do check whether or
+  // not they should be matched with modifications in that method
+  // aswell.
+
   assert(newnum >= 0);
 
   if (newnum == 0) {
@@ -488,12 +493,17 @@ SoMField::allocValues(int newnum)
     int fsize = this->fieldSizeof();
     if (this->valuesPtr()) {
 
-      // I think this will handle both cases quite gracefully
-      // 1) newnum > this->maxNum, 2) newnum < num
-      while (newnum > this->maxNum) this->maxNum<<=1;
+      // Allocation strategy is to repeatedly double the size of the
+      // allocated block until it will at least match the requested
+      // size.  (Unless the requested size is less than what we've
+      // got, then we'll repeatedly halve the allocation size.)
+      //
+      // I think this will handle both cases quite gracefully: 1)
+      // newnum > this->maxNum, 2) newnum < num
+      while (newnum > this->maxNum) this->maxNum <<= 1;
       while ((this->maxNum >> 1) >= newnum) this->maxNum >>= 1;
 
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
       SoDebugError::postInfo("SoMField::allocValues",
                              "%d --> %d, name: '%s', ptr: %p",
                              newnum, this->maxNum,
