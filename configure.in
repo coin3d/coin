@@ -15,6 +15,8 @@ m4_define([COIN_ABI_AGE], [COIN_MINOR])
 
 # **************************************************************************
 
+AC_PREREQ(2.50)
+
 AC_INIT([Coin], [COIN_MAJOR.COIN_MINOR.COIN_MICRO[]COIN_BETA],
   [coin-support@coin3d.org])
 
@@ -65,15 +67,17 @@ if $sim_ac_try_msvc; then
     *-cygwin) SIM_AC_ERROR([no-msvc++]) ;;
     esac
   ])
-  SIM_AC_SETUP_MSVCRT([
-    CPPFLAGS="$CFLAGS $sim_ac_msvcrt_CPPFLAGS"
-    CFLAGS="$CFLAGS $sim_ac_msvcrt_CFLAGS"
-    CXXFLAGS="$CXXFLAGS $sim_ac_msvcrt_CXXFLAGS"
-    LDFLAGS="$LDFLAGS $sim_ac_msvcrt_LDFLAGS"
-    LIBS="$LIBS $sim_ac_msvcrt_LIBS"
-    # sim_ac_msvcrt_LIBLIBS is set up at the end
-    # sim_ac_msvcrt_LIBLDFLAGS is set up at the end
-  ])
+  if $BUILD_WITH_MSVC; then
+    SIM_AC_SETUP_MSVCRT([
+      CPPFLAGS="$CPPFLAGS $sim_ac_msvcrt_CPPFLAGS"
+      CFLAGS="$CFLAGS $sim_ac_msvcrt_CFLAGS"
+      CXXFLAGS="$CXXFLAGS $sim_ac_msvcrt_CXXFLAGS"
+      LDFLAGS="$LDFLAGS $sim_ac_msvcrt_LDFLAGS"
+      LIBS="$LIBS $sim_ac_msvcrt_LIBS"
+      # sim_ac_msvcrt_LIBLIBS is set up at the end
+      # sim_ac_msvcrt_LIBLDFLAGS is set up at the end
+    ])
+  fi
 fi
 
 
@@ -828,6 +832,7 @@ AM_CONDITIONAL(BUILD_WITH_MSVC, $BUILD_WITH_MSVC)
 
 if $sim_ac_build_library; then
   if $BUILD_WITH_MSVC; then
+    rm -f vc60.pdb
     LIBFLAGS="$LIBFLAGS $sim_ac_msvcrt_LIBLDFLAGS"
     LIBS="$LIBS $sim_ac_msvcrt_LIBLIBS"
 
