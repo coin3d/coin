@@ -20,6 +20,53 @@
 /*!
   \class SoVRMLInline SoVRMLInline.h Inventor/VRMLnodes/SoVRMLInline.h
   \brief The SoVRMLInline class is used to insert VRML files into a scene.
+  \ingroup VRMLnodes
+
+  \WEB3DCOPYRIGHT
+  
+  \verbatim
+  Inline {
+    exposedField MFString url        []
+    field        SFVec3f  bboxCenter 0 0 0     # (-,)
+    field        SFVec3f  bboxSize   -1 -1 -1  # (0,) or -1,-1,-1
+  }
+  \endverbatim
+
+  The Inline node is a grouping node that reads its children data from
+  a location in the World Wide Web. Exactly when its children are read
+  and displayed is not defined (e.g. reading the children may be
+  delayed until the Inline node's bounding box is visible to the
+  viewer). The url field specifies the URL containing the children. An
+  Inline node with an empty URL does nothing.  
+
+  Each specified URL shall refer to a valid VRML file that contains a
+  list of children nodes, prototypes, and routes at the top level as
+  described in 4.6.5, Grouping and children nodes.  
+
+  The results are undefined if the URL refers to a file that is not
+  VRML or if the VRML file contains non-children nodes at the top
+  level.  
+
+  If multiple URLs are specified, the browser may display a URL of a
+  lower preference VRML file while it is obtaining, or if it is unable
+  to obtain, the higher preference VRML file. Details on the url field
+  and preference order can be found in 4.5, VRML and the World Wide
+  Web
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.5).  
+
+  The results are undefined if the contents of the URL change after it
+  has been loaded.  
+
+  The bboxCenter and bboxSize fields specify a bounding box that
+  encloses the Inline node's children. This is a hint that may be used
+  for optimization purposes. The results are undefined if the
+  specified bounding box is smaller than the actual bounding box of
+  the children at any time. A default bboxSize value, (-1, -1, -1),
+  implies that the bounding box is not specified and if needed shall
+  be calculated by the browser. A description of the bboxCenter and
+  bboxSize fields is in 4.6.4, Bounding boxes
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.4).  
+
 */
 
 /*!
@@ -141,7 +188,6 @@ SoVRMLInline::SoVRMLInline(void)
   THIS->urlsensor = new SoFieldSensor(SoVRMLInline::urlFieldModified, this);
   THIS->urlsensor->setPriority(0); // immediate sensor
   THIS->urlsensor->attach(& this->url);
-
 }
 
 /*!
@@ -410,7 +456,10 @@ void
 SoVRMLInline::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SbVec3f size = this->bboxSize.getValue();
-  if (size[0] >= 0 && size[1] >= 0 && size[2] >= 0) {
+  if (size[0] > 0.0f || size[1] > 0.0f || size[2] > 0) {
+    size[0] = SbMax(size[0], 0.0f);
+    size[1] = SbMax(size[1], 0.0f);
+    size[2] = SbMax(size[2], 0.0f);
     SbVec3f center = this->bboxCenter.getValue();
     size *= 0.5f;
     SbBox3f box(center[0]-size[0],
