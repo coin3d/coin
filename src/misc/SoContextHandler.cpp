@@ -39,6 +39,13 @@
 //
 // 20040723 mortene.
 
+//
+// UPDATE: No, scheduleDeleteCallback() will not do the same thing.
+// It's only used for deleting SoGLDisplayLists.
+//
+// 20050209 pederb
+//
+
 // *************************************************************************
 
 #include <Inventor/misc/SoContextHandler.h>
@@ -46,12 +53,15 @@
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/misc/SbHash.h>
+#include <Inventor/C/threads/threadsutilp.h>
+#include <stdlib.h>
 
 // *************************************************************************
 
 class socontexthandler_cbitem {
 public:
-  socontexthandler_cbitem(void) { }
+  socontexthandler_cbitem(void) : func(NULL), closure(NULL), idx(0) { }
   
   int operator==(const socontexthandler_cbitem & theother) {
     return 
@@ -59,13 +69,58 @@ public:
       this->closure == theother.closure;
   }
   
+  operator unsigned long(void) const {
+    unsigned long key = 0;
+    // create an xor key
+    const unsigned char * ptr = (const unsigned char *) this;
+    
+    // a bit hackish. Stop xor'ing at idx
+    const unsigned char * stop = (const unsigned char*) &this->idx;
+    
+    int size = stop-ptr;
+    
+    for (int i = 0; i < size; i++) {
+      int shift = (i%4) * 8;
+      key ^= (ptr[i]<<shift);
+    }
+    return key;
+  }
+  
   SoContextHandler::ContextDestructionCB * func;
   void * closure;
+  
+  // this must be last!!
+  int idx;
 };
+
+static void 
+socontexthandler_sbhashcb(const socontexthandler_cbitem & key, 
+                          const uint32_t & obj, void * closure)
+{
+  SbList <socontexthandler_cbitem> * list = 
+    (SbList <socontexthandler_cbitem> *) closure;
+  
+  list->append(key);
+}
+
+// "extern C" wrapper is needed with the OSF1/cxx compiler (probably a
+// bug in the compiler, but it doesn't seem to hurt to do this
+// anyway).
+extern "C" { static int 
+socontexthandler_qsortcb(const void * p0, const void * p1)
+{
+  socontexthandler_cbitem * i0 = (socontexthandler_cbitem *) p0; 
+  socontexthandler_cbitem * i1 = (socontexthandler_cbitem *) p1; 
+
+  return int(i0->idx) - int(i1->idx);
+}
+}
 
 // *************************************************************************
 
-static SbList <socontexthandler_cbitem> * socontexthandler_cblist = NULL;
+static SbHash <uint32_t, socontexthandler_cbitem> * socontexthandler_hashlist;
+static uint32_t socontexthandler_idx = 0;
+static void * socontexthandler_mutex;
 
 // *************************************************************************
 
@@ -73,8 +128,8 @@ static void
 socontexthandler_cleanup(void)
 {
 #if COIN_DEBUG
-  const int len = socontexthandler_cblist ?
-    socontexthandler_cblist->getLength() : 0;
+  const int len = socontexthandler_hashlist ?
+    socontexthandler_hashlist->getNumElements() : 0;
   if (len > 0) {
     // Can't use SoDebugError here, as SoError et al might have been
     // "cleaned up" already.
@@ -82,8 +137,11 @@ socontexthandler_cleanup(void)
                  "resources not free'd before exit.", len);
   }
 #endif // COIN_DEBUG  
-  delete socontexthandler_cblist;
-  socontexthandler_cblist = NULL;
+  delete socontexthandler_hashlist;
+  socontexthandler_hashlist = NULL;
+  socontexthandler_idx = 0;
+  CC_MUTEX_DESTRUCT(socontexthandler_mutex);
+  socontexthandler_mutex = NULL;
 }
 
 // *************************************************************************
@@ -105,12 +163,21 @@ socontexthandler_cleanup(void)
 void
 SoContextHandler::destructingContext(uint32_t contextid)
 {
-  if (socontexthandler_cblist == NULL) { return; }
+  CC_MUTEX_CONSTRUCT(socontexthandler_mutex);
+  CC_MUTEX_LOCK(socontexthandler_mutex);
+  if (socontexthandler_hashlist == NULL) { 
+    CC_MUTEX_UNLOCK(socontexthandler_mutex);
+    return; 
+  }
 
-  // Work on a copy of the list, to allow
-  // removeContextDestructionCallback() to be safely invoked while
-  // iterating over the list.
-  SbList <socontexthandler_cbitem> listcopy = *socontexthandler_cblist;
+  SbList <socontexthandler_cbitem> listcopy;
+  socontexthandler_hashlist->apply(socontexthandler_sbhashcb, &listcopy);
+  CC_MUTEX_UNLOCK(socontexthandler_mutex);
+
+  qsort((void*) listcopy.getArrayPtr(), 
+        socontexthandler_hashlist->getNumElements(),
+        sizeof(socontexthandler_cbitem), 
+        socontexthandler_qsortcb);
 
   // process callbacks FILO-style so that callbacks registered first
   // are called last. HACK WARNING: SoGLCacheContextElement will add a
@@ -147,17 +214,20 @@ void
 SoContextHandler::addContextDestructionCallback(ContextDestructionCB * func,
                                                 void * closure)
 {
-  if (socontexthandler_cblist == NULL) {
-    socontexthandler_cblist = new SbList <socontexthandler_cbitem>;
+  CC_MUTEX_CONSTRUCT(socontexthandler_mutex);
+  CC_MUTEX_LOCK(socontexthandler_mutex);
+  if (socontexthandler_hashlist == NULL) {
+    socontexthandler_hashlist = new SbHash <uint32_t, socontexthandler_cbitem> (64);
     // make this callback trigger after the SoGLCacheContext cleanup function
     // by setting priority to -1
     coin_atexit((coin_atexit_f *)socontexthandler_cleanup, -1);
   }
-
   socontexthandler_cbitem item;
   item.func = func;
   item.closure = closure;
-  socontexthandler_cblist->append(item);
+  item.idx = socontexthandler_idx++;
+  socontexthandler_hashlist->put(item, item.idx);
+  CC_MUTEX_UNLOCK(socontexthandler_mutex);
 }
 
 /*!
@@ -168,15 +238,16 @@ SoContextHandler::addContextDestructionCallback(ContextDestructionCB * func,
 void
 SoContextHandler::removeContextDestructionCallback(ContextDestructionCB * func, void * closure)
 {
-  assert(socontexthandler_cblist);
+  assert(socontexthandler_hashlist);
 
   socontexthandler_cbitem item;
   item.func = func;
   item.closure = closure;
   
-  const int idx = socontexthandler_cblist->find(item);
-  assert(idx >= 0);
-  socontexthandler_cblist->removeFast(idx);
+  CC_MUTEX_LOCK(socontexthandler_mutex);
+  int didremove = socontexthandler_hashlist->remove(item);
+  assert(didremove);
+  CC_MUTEX_UNLOCK(socontexthandler_mutex);
 }
 
 // *************************************************************************
