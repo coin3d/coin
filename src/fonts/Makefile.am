@@ -1,6 +1,7 @@
 RegularSources = \
 	fontlib_wrapper.c win32.c freetype.c \
-	fontspec.c glyph2d.c glyph3d.c
+	fontspec.c glyph2d.c glyph3d.c \
+	default3dfont.c default2dfont.c
 
 LinkHackSources = \
 	all-fonts-c.c
@@ -9,7 +10,9 @@ PublicHeaders =
 
 PrivateHeaders = \
 	fontlib_wrapper.h win32.h freetype.h \
-	fontspec.h glyph2d.h glyph3d.h
+	fontspec.h glyph2d.h glyph3d.h \
+	defaultfonts.h
+
 
 ##$ BEGIN TEMPLATE Make-Common(fonts, fonts)
 # **************************************************************************

@@ -43,7 +43,7 @@
 #include "fontlib_wrapper.h"
 #include "freetype.h"
 #include "glyph3d.h"
-#include "../misc/defaultfonts.h"
+#include "defaultfonts.h"
 
 static SbBool glyph3d_specmatch(const cc_font_specification * spec1, 
                                 const cc_font_specification * spec2);

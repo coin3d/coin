@@ -70,7 +70,7 @@
 
 
 #include "../fonts/fontlib_wrapper.h"
-#include "../misc/defaultfonts.h"
+#include "../fonts/defaultfonts.h"
 
 class SoGlyphP {
 public:

@@ -239,7 +239,6 @@ target_alias = @target_alias@
 target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
-
 RegularSources = \
 	SoBase.cpp \
 	SoChildList.cpp \
@@ -279,8 +278,6 @@ RegularSources = \
 	SoByteStream.cpp \
 	SoTranSender.cpp \
 	SoTranReceiver.cpp \
-	default3dfont.cpp \
-	default2dfont.cpp \
 	SoAudioDevice.cpp \
 	AudioTools.cpp \
 	gzmemio.c
@@ -334,7 +331,6 @@ PrivateHeaders = \
 	SoOffscreenWGLData.h \
 	SoOutput_Writer.h \
 	cppmangle.icc \
-	defaultfonts.h \
 	gzmemio.h
 
 
@@ -409,8 +405,8 @@ am__misc_lst_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
 	SoOffscreenWGLData.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
-	default3dfont.cpp default2dfont.cpp SoAudioDevice.cpp \
-	AudioTools.cpp gzmemio.c all-misc-cpp.cpp all-misc-c.c
+	SoAudioDevice.cpp AudioTools.cpp gzmemio.c all-misc-cpp.cpp \
+	all-misc-c.c
 am__objects_1 = all-misc-cpp.$(OBJEXT) all-misc-c.$(OBJEXT)
 am__objects_2 = SoBase.$(OBJEXT) SoChildList.$(OBJEXT) \
 	SoContextHandler.$(OBJEXT) SoGL.$(OBJEXT) SoGLImage.$(OBJEXT) \
@@ -429,7 +425,6 @@ am__objects_2 = SoBase.$(OBJEXT) SoChildList.$(OBJEXT) \
 	SoOffscreenWGLData.$(OBJEXT) SoGenerate.$(OBJEXT) \
 	SoLockManager.$(OBJEXT) SoByteStream.$(OBJEXT) \
 	SoTranSender.$(OBJEXT) SoTranReceiver.$(OBJEXT) \
-	default3dfont.$(OBJEXT) default2dfont.$(OBJEXT) \
 	SoAudioDevice.$(OBJEXT) AudioTools.$(OBJEXT) gzmemio.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
@@ -467,9 +462,9 @@ am__EXTRA_misc_lst_SOURCES_DIST = \
 	SoGLqmeshpreciselightingTemplate.icc SoInput_FileInfo.h \
 	SoInput_Reader.h SoOffscreenInternalData.h SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h SoOffscreenWGLData.h SoOutput_Writer.h \
-	cppmangle.icc defaultfonts.h gzmemio.h all-misc-cpp.cpp \
-	all-misc-c.c SoBase.cpp SoChildList.cpp SoContextHandler.cpp \
-	SoGL.cpp SoGLImage.cpp SoGLBigImage.cpp SoGlyph.cpp \
+	cppmangle.icc gzmemio.h all-misc-cpp.cpp all-misc-c.c \
+	SoBase.cpp SoChildList.cpp SoContextHandler.cpp SoGL.cpp \
+	SoGLImage.cpp SoGLBigImage.cpp SoGlyph.cpp \
 	SoNormalGenerator.cpp SoNotification.cpp SoNotRec.cpp \
 	SoState.cpp SoDB.cpp SoFullPath.cpp SoTempPath.cpp \
 	SoLightPath.cpp SoInput.cpp SoInput_FileInfo.cpp \
@@ -480,8 +475,7 @@ am__EXTRA_misc_lst_SOURCES_DIST = \
 	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
 	SoOffscreenWGLData.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
-	default3dfont.cpp default2dfont.cpp SoAudioDevice.cpp \
-	AudioTools.cpp gzmemio.c
+	SoAudioDevice.cpp AudioTools.cpp gzmemio.c
 misc_lst_OBJECTS = $(am_misc_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -499,8 +493,8 @@ am__libmisc_la_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
 	SoOffscreenWGLData.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
-	default3dfont.cpp default2dfont.cpp SoAudioDevice.cpp \
-	AudioTools.cpp gzmemio.c all-misc-cpp.cpp all-misc-c.c
+	SoAudioDevice.cpp AudioTools.cpp gzmemio.c all-misc-cpp.cpp \
+	all-misc-c.c
 am__objects_6 = all-misc-cpp.lo all-misc-c.lo
 am__objects_7 = SoBase.lo SoChildList.lo SoContextHandler.lo SoGL.lo \
 	SoGLImage.lo SoGLBigImage.lo SoGlyph.lo SoNormalGenerator.lo \
@@ -513,8 +507,7 @@ am__objects_7 = SoBase.lo SoChildList.lo SoContextHandler.lo SoGL.lo \
 	SoOffscreenAGLData.lo SoOffscreenGLXData.lo \
 	SoOffscreenWGLData.lo SoGenerate.lo SoLockManager.lo \
 	SoByteStream.lo SoTranSender.lo SoTranReceiver.lo \
-	default3dfont.lo default2dfont.lo SoAudioDevice.lo \
-	AudioTools.lo gzmemio.lo
+	SoAudioDevice.lo AudioTools.lo gzmemio.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libmisc_la_OBJECTS = $(am__objects_8)
@@ -551,9 +544,9 @@ am__EXTRA_libmisc_la_SOURCES_DIST = \
 	SoGLqmeshpreciselightingTemplate.icc SoInput_FileInfo.h \
 	SoInput_Reader.h SoOffscreenInternalData.h SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h SoOffscreenWGLData.h SoOutput_Writer.h \
-	cppmangle.icc defaultfonts.h gzmemio.h all-misc-cpp.cpp \
-	all-misc-c.c SoBase.cpp SoChildList.cpp SoContextHandler.cpp \
-	SoGL.cpp SoGLImage.cpp SoGLBigImage.cpp SoGlyph.cpp \
+	cppmangle.icc gzmemio.h all-misc-cpp.cpp all-misc-c.c \
+	SoBase.cpp SoChildList.cpp SoContextHandler.cpp SoGL.cpp \
+	SoGLImage.cpp SoGLBigImage.cpp SoGlyph.cpp \
 	SoNormalGenerator.cpp SoNotification.cpp SoNotRec.cpp \
 	SoState.cpp SoDB.cpp SoFullPath.cpp SoTempPath.cpp \
 	SoLightPath.cpp SoInput.cpp SoInput_FileInfo.cpp \
@@ -564,8 +557,7 @@ am__EXTRA_libmisc_la_SOURCES_DIST = \
 	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
 	SoOffscreenWGLData.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
-	default3dfont.cpp default2dfont.cpp SoAudioDevice.cpp \
-	AudioTools.cpp gzmemio.c
+	SoAudioDevice.cpp AudioTools.cpp gzmemio.c
 libmisc_la_OBJECTS = $(am_libmisc_la_OBJECTS)
 libmisc@SUFFIX@LINKHACK_la_LDFLAGS =
 libmisc@SUFFIX@LINKHACK_la_LIBADD =
@@ -581,8 +573,8 @@ am__libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
 	SoOffscreenWGLData.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
-	default3dfont.cpp default2dfont.cpp SoAudioDevice.cpp \
-	AudioTools.cpp gzmemio.c all-misc-cpp.cpp all-misc-c.c
+	SoAudioDevice.cpp AudioTools.cpp gzmemio.c all-misc-cpp.cpp \
+	all-misc-c.c
 am_libmisc@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/misc/SoAuditorList.h \
@@ -617,9 +609,9 @@ am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoGLqmeshpreciselightingTemplate.icc SoInput_FileInfo.h \
 	SoInput_Reader.h SoOffscreenInternalData.h SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h SoOffscreenWGLData.h SoOutput_Writer.h \
-	cppmangle.icc defaultfonts.h gzmemio.h all-misc-cpp.cpp \
-	all-misc-c.c SoBase.cpp SoChildList.cpp SoContextHandler.cpp \
-	SoGL.cpp SoGLImage.cpp SoGLBigImage.cpp SoGlyph.cpp \
+	cppmangle.icc gzmemio.h all-misc-cpp.cpp all-misc-c.c \
+	SoBase.cpp SoChildList.cpp SoContextHandler.cpp SoGL.cpp \
+	SoGLImage.cpp SoGLBigImage.cpp SoGlyph.cpp \
 	SoNormalGenerator.cpp SoNotification.cpp SoNotRec.cpp \
 	SoState.cpp SoDB.cpp SoFullPath.cpp SoTempPath.cpp \
 	SoLightPath.cpp SoInput.cpp SoInput_FileInfo.cpp \
@@ -630,8 +622,7 @@ am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoOffscreenAGLData.cpp SoOffscreenGLXData.cpp \
 	SoOffscreenWGLData.cpp SoGenerate.cpp SoLockManager.cpp \
 	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
-	default3dfont.cpp default2dfont.cpp SoAudioDevice.cpp \
-	AudioTools.cpp gzmemio.c
+	SoAudioDevice.cpp AudioTools.cpp gzmemio.c
 libmisc@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libmisc@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -703,12 +694,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoType.Po ./$(DEPDIR)/all-misc-c.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-misc-c.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-misc-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-misc-cpp.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/default2dfont.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/default2dfont.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/default3dfont.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/default3dfont.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/gzmemio.Plo ./$(DEPDIR)/gzmemio.Po
+@AMDEP_TRUE@	./$(DEPDIR)/all-misc-cpp.Po ./$(DEPDIR)/gzmemio.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/gzmemio.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
@@ -879,10 +866,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-misc-c.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-misc-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-misc-cpp.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/default2dfont.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/default2dfont.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/default3dfont.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/default3dfont.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gzmemio.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gzmemio.Po@am__quote@
 

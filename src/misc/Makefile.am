@@ -1,6 +1,3 @@
-## Process this file with automake to generate Makefile.in.
-## 19990904 mortene.
-
 RegularSources = \
 	SoBase.cpp \
 	SoChildList.cpp \
@@ -40,8 +37,6 @@ RegularSources = \
 	SoByteStream.cpp \
 	SoTranSender.cpp \
 	SoTranReceiver.cpp \
-	default3dfont.cpp \
-	default2dfont.cpp \
 	SoAudioDevice.cpp \
 	AudioTools.cpp \
 	gzmemio.c
@@ -92,7 +87,6 @@ PrivateHeaders = \
 	SoOffscreenWGLData.h \
 	SoOutput_Writer.h \
 	cppmangle.icc \
-	defaultfonts.h \
 	gzmemio.h
 
 ##$ BEGIN TEMPLATE Make-Common(misc, misc)

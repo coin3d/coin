@@ -44,7 +44,7 @@
 #include "fontlib_wrapper.h"
 #include "freetype.h"
 #include "win32.h"
-#include "../misc/defaultfonts.h"
+#include "defaultfonts.h"
 
 /* ********************************************************************** */
 
