@@ -28,6 +28,10 @@ class SoState;
 class SoPrimitiveVertex;
 class SoMaterialBundle;
 
+// FIXME: these functions will also be part of the global namespace of
+// the compiled Coin library (at least when compiled to a UNIX-style
+// library). That should be avoided. 20020220 mortene.
+
 void trisort_begin_shape(SoState * state);
 void trisort_triangle(SoState * state,
                       const SoPrimitiveVertex * v1, 
@@ -35,4 +39,4 @@ void trisort_triangle(SoState * state,
                       const SoPrimitiveVertex * v3);
 void trisort_end_shape(SoState * state, SoMaterialBundle & mb);
 
-#endif // COIN_SOSHAPE_TRIANGLESORT_H
+#endif // !COIN_SOSHAPE_TRIANGLESORT_H

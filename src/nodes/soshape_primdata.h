@@ -37,6 +37,10 @@ class SoFaceDetail;
 class SoLineDetail;
 class SbTesselator;
 
+// FIXME: this class will also be part of the global namespace of the
+// compiled Coin library (at least when compiled to a UNIX-style
+// library). Use a less "generic" name. 20020220 mortene.
+
 class shapePrimitiveData {
 public:
   shapePrimitiveData(void);
@@ -75,4 +79,4 @@ private:
 };
 
 
-#endif // COIN_SOSHAPE_PRIMDATA_H
+#endif // !COIN_SOSHAPE_PRIMDATA_H

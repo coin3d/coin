@@ -30,6 +30,10 @@ class SoPrimitiveVertex;
 class SoMaterialBundle;
 class SoShape;
 
+// FIXME: these functions will also be part of the global namespace of
+// the compiled Coin library (at least when compiled to a UNIX-style
+// library). That should be avoided. 20020220 mortene.
+
 void bigtexture_begin_shape(SoState * state,
                             SoGLBigImage * image,
                             const float quality);
@@ -40,4 +44,4 @@ void bigtexture_triangle(SoState * state,
 void bigtexture_end_shape(SoState * state, SoShape * shape,
                           SoMaterialBundle & mb);
 
-#endif // COIN_SOSHAPE_BIGTEXTURE_H
+#endif // !COIN_SOSHAPE_BIGTEXTURE_H
