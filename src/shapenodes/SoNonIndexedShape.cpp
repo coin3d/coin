@@ -123,13 +123,13 @@ SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
     }
   }
   else { // 4D
+    SbVec3f tmp;
     const SbVec4f * coords = coordelem->getArrayPtr4();
     for (int i = startidx; i <= lastidx; i++) {
       SbVec4f h = coords[i];
-      float mul = 1.0f / h[3];
-      SbVec3f c(h[0]*mul, h[1]*mul, h[2]*mul);
-      box.extendBy(c);
-      center += c;
+      h.getReal(tmp);
+      box.extendBy(tmp);
+      center += tmp;
     }
   }
   if (lastidx+1 - startidx) {
