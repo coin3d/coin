@@ -2242,6 +2242,7 @@ SoExtSelectionP::checkOffscreenRendererCapabilities()
   return TRUE;
 }
 
+
 SbBool
 SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
 {
@@ -2262,24 +2263,16 @@ SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
   for(int i=0;i<((this->maximumcolorcounter >> 3)+1);i++)
     this->visibletrianglesbitarray[i] = 0;
   
+  SbBox2s rectbbox;
+  for (int k = 0; k < this->coords.getLength(); k++)
+    rectbbox.extendBy(this->coords[k]);
 
-  // Find maximum and minimum lasso coord.
-  int minx = offscreenSizeX;;
-  int maxx = 0;
-  int miny = offscreenSizeY;;
-  int maxy = 0;
-  for(int i=0;i<this->coords.getLength();++i){
-    if(this->coords[i][0] < minx)
-      minx = this->coords[i][0];
-    if(this->coords[i][0] > maxx)
-      maxx = this->coords[i][0];
-    if(this->coords[i][1] < miny)
-      miny = this->coords[i][1];
-    if(this->coords[i][1] > maxy)
-      maxy = this->coords[i][1];
-  }
+  const int minx = rectbbox.getMin()[0];
+  const int maxx = rectbbox.getMax()[0];
+  const int miny = rectbbox.getMin()[1];
+  const int maxy = rectbbox.getMax()[1];
 
-
+  
   for(int j=miny; j < maxy; ++j){
     for(int i=minx*3; i < maxx*3; i+=3){
 
@@ -2469,7 +2462,6 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
   }
 
-  SoDebugError::postInfo("*","select");
   selectPaths(); // Execute a 'doSelect' on all stored paths.
 }
 
