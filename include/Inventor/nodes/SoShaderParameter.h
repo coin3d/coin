@@ -503,9 +503,6 @@ protected:
  * *** SoShaderStateMatrixParameter ***
  * **************************************************************************/
 
-// FIXME: get rid of this. 20050124 mortene.
-#if defined(SO_CG_SHADER_SUPPORT)
-#include <Cg/cgGL.h>
 class COIN_DLL_API SoShaderStateMatrixParameter : public SoUniformShaderParameter {
 
   SO_NODE_HEADER(SoShaderStateMatrixParameter);
@@ -532,15 +529,9 @@ public:
   SoShaderStateMatrixParameter();
   virtual ~SoShaderStateMatrixParameter();
 
-  SoINTERNAL public:
-  static void initClass();
+  static void initClass(void);
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-
-protected:
-  CGGLenum getType(MatrixType type);
-  CGGLenum getTransform(MatrixTransform tform);
 };
-#endif /* SO_CG_SHADER_SUPPORT */
 
 /* **************************************************************************
  * *** SoShaderParameterSampler2D ***

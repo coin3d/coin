@@ -35,7 +35,7 @@
 #include <Inventor/sensors/SoNodeSensor.h>
 
 #include "SoGLARBShaderObject.h"
-#include "SoGLCgShader.h"
+#include "SoGLCgShaderObject.h"
 #include "SoGLSLShaderObject.h"
 #include "SoGLShaderProgram.h"
 
@@ -265,11 +265,9 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
       case SoShaderObject::ARB_PROGRAM:
         this->glShaderObject = (SoGLShaderObject *)new SoGLARBShaderObject(glue);
         break;
-#if defined(SO_CG_SHADER_SUPPORT)
       case SoShaderObject::CG_PROGRAM:
-        this->glShaderObject = (SoGLShaderObject*) new SoGLCgShaderObject;
+        this->glShaderObject = (SoGLShaderObject*) new SoGLCgShaderObject(glue);
         break;
-#endif
       case SoShaderObject::GLSL_PROGRAM:
         this->glShaderObject = (SoGLShaderObject*) new SoGLSLShaderObject(glue);
         break;
@@ -443,9 +441,9 @@ SoShaderObjectP::updateAllParameters(void)
 }
 
 // Update state matrix paramaters
-void SoShaderObjectP::updateStateMatrixParameters()
+void
+SoShaderObjectP::updateStateMatrixParameters()
 {
-#if defined(SO_CG_SHADER_SUPPORT)
 #define STATE_PARAM SoShaderStateMatrixParameter
   if (this->glShaderObject==NULL || !this->glShaderObject->isActive()) return;
 
@@ -462,12 +460,11 @@ void SoShaderObjectP::updateStateMatrixParameters()
       param->updateParameter(this->glShaderObject);
   }
 #undef STATE_PARAM
-#endif
 }
 
-SbBool SoShaderObjectP::containStateMatrixParameters() const
+SbBool
+SoShaderObjectP::containStateMatrixParameters() const
 {
-#if defined(SO_CG_SHADER_SUPPORT)
 #define STATE_PARAM SoShaderStateMatrixParameter
   int i, cnt = this->owner->parameter.getNum();
   for (i=0; i<cnt; i++) {
@@ -480,11 +477,11 @@ SbBool SoShaderObjectP::containStateMatrixParameters() const
       return TRUE;
   }
 #undef STATE_PARAM
-#endif
   return FALSE;
 }
 
-void SoShaderObjectP::removeGLShaderFromGLProgram(SoGLShaderProgram *glProgram)
+void
+SoShaderObjectP::removeGLShaderFromGLProgram(SoGLShaderProgram *glProgram)
 {
   if (glProgram == NULL) return;
 
@@ -497,7 +494,8 @@ void SoShaderObjectP::removeGLShaderFromGLProgram(SoGLShaderProgram *glProgram)
 }
 
 #if defined(SOURCE_HINT)
-SbString SoShaderObjectP::getSourceHint() const
+SbString
+SoShaderObjectP::getSourceHint(void) const
 {
   SoShaderObject::SourceType srcType =
     (SoShaderObject::SourceType)this->owner->sourceType.getValue();
@@ -509,7 +507,8 @@ SbString SoShaderObjectP::getSourceHint() const
 }
 #endif
 
-void SoShaderObjectP::sensorCB(void *data, SoSensor *)
+void
+SoShaderObjectP::sensorCB(void *data, SoSensor *)
 {
   ((SoShaderObjectP *)data)->glShaderShouldLoad = TRUE;
 }

@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLCGSHADEROBJECT_H
+#define COIN_SOGLCGSHADEROBJECT_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,45 +24,43 @@
  *
 \**************************************************************************/
 
-#include <Inventor/nodes/SoVertexShader.h>
+#include "SoGLShaderObject.h"
+
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/cg.h>
 
 // *************************************************************************
 
-SO_NODE_SOURCE(SoVertexShader);
-
-// *************************************************************************
-
-void
-SoVertexShader::initClass(void)
+class SoGLCgShaderObject : public SoGLShaderObject
 {
-  SO_NODE_INIT_CLASS(SoVertexShader, SoShaderObject, "SoShaderObject");
-}
+public:
+  SoGLCgShaderObject(const cc_glglue * g);
+  virtual ~SoGLCgShaderObject();
 
-SoVertexShader::SoVertexShader(void)
-{
-  SO_NODE_CONSTRUCTOR(SoVertexShader);
-}
+  virtual SbBool isLoaded(void) const;
+  virtual void load(const char * sourceString);
+  virtual void unload(void);
+  virtual SoGLShader::ShaderType shaderType(void) const;
+  virtual SoGLShaderParameter * getParameter(int index, const char* name, SoGLShader::ValueType type);
+ 
+private:
+  CGprofile getProfile(void) const;
 
-SoVertexShader::~SoVertexShader()
-{
-}
+  virtual void enable(void);
+  virtual void disable(void);
 
-SbBool
-SoVertexShader::isVertexShader(void) const
-{
-  return TRUE;
-}
+  CGprogram cgProgram;
+  CGprofile cgProfile;
 
-SbBool
-SoVertexShader::isSupported(SourceType sourceType)
-{
-  // FIXME: return a correct value, based on the capabilities of the
-  // GL driver. (But first check whether this is part of the TGS
-  // Inventor API -- it's not very well designed, as we really need a
-  // guaranteed GL context for this.) 20050120 mortene.
-  if (sourceType == ARB_PROGRAM) return TRUE;
-  if (sourceType == GLSL_PROGRAM) return TRUE;
-  if (sourceType == CG_PROGRAM) return TRUE;
+  static CGcontext cgContext;
+  static int instanceCount;
+  static void ensureCgContext(void);
+  static void destroyCgContext(void);
+  static void cgErrorCallback(void);
+  static void printError(CGerror error, CGcontext context);
 
-  return FALSE;
-}
+  friend class SoGLCgShaderParameter;
+  friend class SoGLCgShaderProgram;
+};
+
+#endif /* ! COIN_SOGLCGSHADEROBJECT_H */

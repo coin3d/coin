@@ -24,6 +24,7 @@
 #include "SoGLSLShaderObject.h"
 
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoGL.h>
 #include "SoGLSLShaderParameter.h"
 
 // *************************************************************************
@@ -167,8 +168,9 @@ SoGLSLShaderObject::didOpenGLErrorOccur(int objType)
     default: ;// do nothing 
     }
     SoDebugError::post("SoGLSLShaderObject::didOpenGLErrorOccur",
-                       "%s error code: 0x%x",
-                       s.getString(), glErr);
+                       "%s error: '%s'",
+                       s.getString(),
+                       sogl_glerror_string(glErr).getString());
     retCode = TRUE;
     glErr = glGetError(); // FIXME: what is this for? 20050124 mortene.
   }

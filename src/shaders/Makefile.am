@@ -3,7 +3,9 @@ Regular = \
 	SoGLARBShaderParameter.cpp \
 	SoGLARBShaderObject.cpp \
 	SoGLARBShaderProgram.cpp \
-	SoGLCgShader.cpp \
+	SoGLCgShaderObject.cpp \
+	SoGLCgShaderParameter.cpp \
+	SoGLCgShaderProgram.cpp \
 	SoGLSLShaderParameter.cpp \
 	SoGLSLShaderObject.cpp \
 	SoGLSLShaderProgram.cpp \
@@ -21,7 +23,9 @@ Private = \
 	SoGLARBShaderParameter.h \
 	SoGLARBShaderObject.h \
 	SoGLARBShaderProgram.h \
-	SoGLCgShader.h \
+	SoGLCgShaderObject.h \
+	SoGLCgShaderParameter.h \
+	SoGLCgShaderProgram.h \
 	SoGLSLShaderParameter.h \
 	SoGLSLShaderObject.h \
 	SoGLSLShaderProgram.h \

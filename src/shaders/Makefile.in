@@ -258,7 +258,9 @@ Regular = \
 	SoGLARBShaderParameter.cpp \
 	SoGLARBShaderObject.cpp \
 	SoGLARBShaderProgram.cpp \
-	SoGLCgShader.cpp \
+	SoGLCgShaderObject.cpp \
+	SoGLCgShaderParameter.cpp \
+	SoGLCgShaderProgram.cpp \
 	SoGLSLShaderParameter.cpp \
 	SoGLSLShaderObject.cpp \
 	SoGLSLShaderProgram.cpp \
@@ -277,7 +279,9 @@ Private = \
 	SoGLARBShaderParameter.h \
 	SoGLARBShaderObject.h \
 	SoGLARBShaderProgram.h \
-	SoGLCgShader.h \
+	SoGLCgShaderObject.h \
+	SoGLCgShaderParameter.h \
+	SoGLCgShaderProgram.h \
 	SoGLSLShaderParameter.h \
 	SoGLSLShaderObject.h \
 	SoGLSLShaderProgram.h \
@@ -359,7 +363,8 @@ shaders_lst_AR = $(AR) cru
 shaders_lst_LIBADD =
 am__shaders_lst_SOURCES_DIST = shaders-dummy.cpp SoFragmentShader.cpp \
 	SoGLARBShaderParameter.cpp SoGLARBShaderObject.cpp \
-	SoGLARBShaderProgram.cpp SoGLCgShader.cpp \
+	SoGLARBShaderProgram.cpp SoGLCgShaderObject.cpp \
+	SoGLCgShaderParameter.cpp SoGLCgShaderProgram.cpp \
 	SoGLSLShaderParameter.cpp SoGLSLShaderObject.cpp \
 	SoGLSLShaderProgram.cpp SoGLShaderObject.cpp \
 	SoGLShaderParameter.cpp SoGLShaderProgram.cpp \
@@ -368,7 +373,8 @@ am__shaders_lst_SOURCES_DIST = shaders-dummy.cpp SoFragmentShader.cpp \
 	SoVertexShader.cpp
 am__objects_1 = SoFragmentShader.$(OBJEXT) \
 	SoGLARBShaderParameter.$(OBJEXT) SoGLARBShaderObject.$(OBJEXT) \
-	SoGLARBShaderProgram.$(OBJEXT) SoGLCgShader.$(OBJEXT) \
+	SoGLARBShaderProgram.$(OBJEXT) SoGLCgShaderObject.$(OBJEXT) \
+	SoGLCgShaderParameter.$(OBJEXT) SoGLCgShaderProgram.$(OBJEXT) \
 	SoGLSLShaderParameter.$(OBJEXT) SoGLSLShaderObject.$(OBJEXT) \
 	SoGLSLShaderProgram.$(OBJEXT) SoGLShaderObject.$(OBJEXT) \
 	SoGLShaderParameter.$(OBJEXT) SoGLShaderProgram.$(OBJEXT) \
@@ -382,17 +388,20 @@ am__objects_1 = SoFragmentShader.$(OBJEXT) \
 am_shaders_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_shaders_lst_SOURCES_DIST = SoFragmentShader.cpp \
 	SoGLARBShaderParameter.cpp SoGLARBShaderObject.cpp \
-	SoGLARBShaderProgram.cpp SoGLCgShader.cpp \
+	SoGLARBShaderProgram.cpp SoGLCgShaderObject.cpp \
+	SoGLCgShaderParameter.cpp SoGLCgShaderProgram.cpp \
 	SoGLSLShaderParameter.cpp SoGLSLShaderObject.cpp \
 	SoGLSLShaderProgram.cpp SoGLShaderObject.cpp \
 	SoGLShaderParameter.cpp SoGLShaderProgram.cpp \
 	SoGLShaderProgramElement.cpp SoShaderObject.cpp \
 	SoShaderParameter.cpp SoShaderProgram.cpp SoShaders.cpp \
 	SoVertexShader.cpp SoGLARBShaderParameter.h \
-	SoGLARBShaderObject.h SoGLARBShaderProgram.h SoGLCgShader.h \
-	SoGLSLShaderParameter.h SoGLSLShaderObject.h \
-	SoGLSLShaderProgram.h SoGLShaderParameter.h SoGLShaderObject.h \
-	SoGLShaderProgram.h SoGLShaderTypes.h shaders-dummy.cpp
+	SoGLARBShaderObject.h SoGLARBShaderProgram.h \
+	SoGLCgShaderObject.h SoGLCgShaderParameter.h \
+	SoGLCgShaderProgram.h SoGLSLShaderParameter.h \
+	SoGLSLShaderObject.h SoGLSLShaderProgram.h \
+	SoGLShaderParameter.h SoGLShaderObject.h SoGLShaderProgram.h \
+	SoGLShaderTypes.h shaders-dummy.cpp
 shaders_lst_OBJECTS = $(am_shaders_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -400,7 +409,8 @@ libshaders_la_LDFLAGS =
 libshaders_la_LIBADD =
 am__libshaders_la_SOURCES_DIST = shaders-dummy.cpp SoFragmentShader.cpp \
 	SoGLARBShaderParameter.cpp SoGLARBShaderObject.cpp \
-	SoGLARBShaderProgram.cpp SoGLCgShader.cpp \
+	SoGLARBShaderProgram.cpp SoGLCgShaderObject.cpp \
+	SoGLCgShaderParameter.cpp SoGLCgShaderProgram.cpp \
 	SoGLSLShaderParameter.cpp SoGLSLShaderObject.cpp \
 	SoGLSLShaderProgram.cpp SoGLShaderObject.cpp \
 	SoGLShaderParameter.cpp SoGLShaderProgram.cpp \
@@ -408,10 +418,11 @@ am__libshaders_la_SOURCES_DIST = shaders-dummy.cpp SoFragmentShader.cpp \
 	SoShaderParameter.cpp SoShaderProgram.cpp SoShaders.cpp \
 	SoVertexShader.cpp
 am__objects_6 = SoFragmentShader.lo SoGLARBShaderParameter.lo \
-	SoGLARBShaderObject.lo SoGLARBShaderProgram.lo SoGLCgShader.lo \
-	SoGLSLShaderParameter.lo SoGLSLShaderObject.lo \
-	SoGLSLShaderProgram.lo SoGLShaderObject.lo \
-	SoGLShaderParameter.lo SoGLShaderProgram.lo \
+	SoGLARBShaderObject.lo SoGLARBShaderProgram.lo \
+	SoGLCgShaderObject.lo SoGLCgShaderParameter.lo \
+	SoGLCgShaderProgram.lo SoGLSLShaderParameter.lo \
+	SoGLSLShaderObject.lo SoGLSLShaderProgram.lo \
+	SoGLShaderObject.lo SoGLShaderParameter.lo SoGLShaderProgram.lo \
 	SoGLShaderProgramElement.lo SoShaderObject.lo \
 	SoShaderParameter.lo SoShaderProgram.lo SoShaders.lo \
 	SoVertexShader.lo
@@ -422,24 +433,28 @@ am__objects_6 = SoFragmentShader.lo SoGLARBShaderParameter.lo \
 am_libshaders_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libshaders_la_SOURCES_DIST = SoFragmentShader.cpp \
 	SoGLARBShaderParameter.cpp SoGLARBShaderObject.cpp \
-	SoGLARBShaderProgram.cpp SoGLCgShader.cpp \
+	SoGLARBShaderProgram.cpp SoGLCgShaderObject.cpp \
+	SoGLCgShaderParameter.cpp SoGLCgShaderProgram.cpp \
 	SoGLSLShaderParameter.cpp SoGLSLShaderObject.cpp \
 	SoGLSLShaderProgram.cpp SoGLShaderObject.cpp \
 	SoGLShaderParameter.cpp SoGLShaderProgram.cpp \
 	SoGLShaderProgramElement.cpp SoShaderObject.cpp \
 	SoShaderParameter.cpp SoShaderProgram.cpp SoShaders.cpp \
 	SoVertexShader.cpp SoGLARBShaderParameter.h \
-	SoGLARBShaderObject.h SoGLARBShaderProgram.h SoGLCgShader.h \
-	SoGLSLShaderParameter.h SoGLSLShaderObject.h \
-	SoGLSLShaderProgram.h SoGLShaderParameter.h SoGLShaderObject.h \
-	SoGLShaderProgram.h SoGLShaderTypes.h shaders-dummy.cpp
+	SoGLARBShaderObject.h SoGLARBShaderProgram.h \
+	SoGLCgShaderObject.h SoGLCgShaderParameter.h \
+	SoGLCgShaderProgram.h SoGLSLShaderParameter.h \
+	SoGLSLShaderObject.h SoGLSLShaderProgram.h \
+	SoGLShaderParameter.h SoGLShaderObject.h SoGLShaderProgram.h \
+	SoGLShaderTypes.h shaders-dummy.cpp
 libshaders_la_OBJECTS = $(am_libshaders_la_OBJECTS)
 libshaders@SUFFIX@LINKHACK_la_LDFLAGS =
 libshaders@SUFFIX@LINKHACK_la_LIBADD =
 am__libshaders@SUFFIX@LINKHACK_la_SOURCES_DIST = shaders-dummy.cpp \
 	SoFragmentShader.cpp SoGLARBShaderParameter.cpp \
 	SoGLARBShaderObject.cpp SoGLARBShaderProgram.cpp \
-	SoGLCgShader.cpp SoGLSLShaderParameter.cpp \
+	SoGLCgShaderObject.cpp SoGLCgShaderParameter.cpp \
+	SoGLCgShaderProgram.cpp SoGLSLShaderParameter.cpp \
 	SoGLSLShaderObject.cpp SoGLSLShaderProgram.cpp \
 	SoGLShaderObject.cpp SoGLShaderParameter.cpp \
 	SoGLShaderProgram.cpp SoGLShaderProgramElement.cpp \
@@ -449,16 +464,19 @@ am_libshaders@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libshaders@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoFragmentShader.cpp SoGLARBShaderParameter.cpp \
 	SoGLARBShaderObject.cpp SoGLARBShaderProgram.cpp \
-	SoGLCgShader.cpp SoGLSLShaderParameter.cpp \
+	SoGLCgShaderObject.cpp SoGLCgShaderParameter.cpp \
+	SoGLCgShaderProgram.cpp SoGLSLShaderParameter.cpp \
 	SoGLSLShaderObject.cpp SoGLSLShaderProgram.cpp \
 	SoGLShaderObject.cpp SoGLShaderParameter.cpp \
 	SoGLShaderProgram.cpp SoGLShaderProgramElement.cpp \
 	SoShaderObject.cpp SoShaderParameter.cpp SoShaderProgram.cpp \
 	SoShaders.cpp SoVertexShader.cpp SoGLARBShaderParameter.h \
-	SoGLARBShaderObject.h SoGLARBShaderProgram.h SoGLCgShader.h \
-	SoGLSLShaderParameter.h SoGLSLShaderObject.h \
-	SoGLSLShaderProgram.h SoGLShaderParameter.h SoGLShaderObject.h \
-	SoGLShaderProgram.h SoGLShaderTypes.h shaders-dummy.cpp
+	SoGLARBShaderObject.h SoGLARBShaderProgram.h \
+	SoGLCgShaderObject.h SoGLCgShaderParameter.h \
+	SoGLCgShaderProgram.h SoGLSLShaderParameter.h \
+	SoGLSLShaderObject.h SoGLSLShaderProgram.h \
+	SoGLShaderParameter.h SoGLShaderObject.h SoGLShaderProgram.h \
+	SoGLShaderTypes.h shaders-dummy.cpp
 libshaders@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libshaders@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -471,8 +489,12 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLARBShaderParameter.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLARBShaderProgram.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLARBShaderProgram.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoGLCgShader.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoGLCgShader.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLCgShaderObject.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLCgShaderObject.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLCgShaderParameter.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLCgShaderParameter.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLCgShaderProgram.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLCgShaderProgram.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLSLShaderObject.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLSLShaderObject.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLSLShaderParameter.Plo \
@@ -592,8 +614,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLARBShaderParameter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLARBShaderProgram.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLARBShaderProgram.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLCgShader.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLCgShader.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLCgShaderObject.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLCgShaderObject.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLCgShaderParameter.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLCgShaderParameter.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLCgShaderProgram.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLCgShaderProgram.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLSLShaderObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLSLShaderObject.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLSLShaderParameter.Plo@am__quote@

@@ -25,9 +25,10 @@
 
 #include <assert.h>
 
+#include <Inventor/C/glue/cg.h>
 #include "SoGLShaderObject.h"
-#include "SoGLCgShader.h"
 #include "SoGLShaderParameter.h"
+#include "SoGLCgShaderParameter.h"
 
 /* **************************************************************************
  * *** SoShaderParameter ***
@@ -229,8 +230,6 @@ void SoShaderParameter4f::updateParameter(SoGLShaderObject *shader)
  * *** SoShaderStateMatrixParameter ***
  * **************************************************************************/
 
-#if defined(SO_CG_SHADER_SUPPORT)
-
 SO_NODE_SOURCE(SoShaderStateMatrixParameter);
 
 void SoShaderStateMatrixParameter::initClass()
@@ -267,43 +266,36 @@ SoShaderStateMatrixParameter::~SoShaderStateMatrixParameter()
 }
 
 // State matrices only work with CG!!! 
-void SoShaderStateMatrixParameter::updateParameter(SoGLShaderObject *shader)
+// FIXME: check up why. 20050125 mortene.
+void
+SoShaderStateMatrixParameter::updateParameter(SoGLShaderObject *shader)
 {
   if (shader->shaderType() != SoGLShader::CG_SHADER) return;
   if (this->name.isDefault()) return;
 
   if (!ensureParameter(shader, SoGLShader::FLOAT_MATRIX4)) return;
 
-  CGGLenum type = getType((MatrixType)matrixType.getValue());
-  CGGLenum tform = getTransform((MatrixTransform)matrixTransform.getValue());
+  CGGLenum type;
+  switch (matrixType.getValue()) {
+  case MODELVIEW: type = CG_GL_MODELVIEW_MATRIX; break;
+  case PROJECTION: type = CG_GL_PROJECTION_MATRIX; break;
+  case TEXTURE: type = CG_GL_TEXTURE_MATRIX; break;
+  case MODELVIEW_PROJECTION: type = CG_GL_MODELVIEW_PROJECTION_MATRIX; break;
+  default: assert(FALSE); break;
+  }
+
+  CGGLenum tform;
+  switch (matrixTransform.getValue()) {
+  case IDENTITY: tform = CG_GL_MATRIX_IDENTITY; break;
+  case TRANSPOSE: tform = CG_GL_MATRIX_TRANSPOSE; break;
+  case INVERSE: tform = CG_GL_MATRIX_INVERSE; break;
+  case INVERSE_TRANSPOSE: tform = CG_GL_MATRIX_INVERSE_TRANSPOSE; break;
+  default: assert(FALSE); break;
+  }
 
   SoGLCgShaderParameter *param = (SoGLCgShaderParameter *)this->parameter;
   param->setState(type, tform, this->name.getValue().getString());
 }
-
-CGGLenum SoShaderStateMatrixParameter::getType(MatrixType type)
-{
-  switch (type) {
-  case MODELVIEW: return CG_GL_MODELVIEW_MATRIX;
-  case PROJECTION: return CG_GL_PROJECTION_MATRIX;
-  case TEXTURE: return CG_GL_TEXTURE_MATRIX;
-  case MODELVIEW_PROJECTION: return CG_GL_MODELVIEW_PROJECTION_MATRIX;
-  default: assert(FALSE); return CG_GL_MODELVIEW_MATRIX;
-  }
-}
-
-CGGLenum SoShaderStateMatrixParameter::getTransform(MatrixTransform tform)
-{
-  switch (tform) {
-  case IDENTITY: return CG_GL_MATRIX_IDENTITY;
-  case TRANSPOSE: return CG_GL_MATRIX_TRANSPOSE;
-  case INVERSE: return CG_GL_MATRIX_INVERSE;
-  case INVERSE_TRANSPOSE: return CG_GL_MATRIX_INVERSE_TRANSPOSE;
-  default: assert(FALSE); return CG_GL_MATRIX_IDENTITY;
-  }
-}
-
-#endif /* SO_CG_SHADER_SUPPORT */
 
 /* **************************************************************************
  * *** SoShaderParameterSampler2D ***

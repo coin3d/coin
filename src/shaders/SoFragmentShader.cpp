@@ -60,13 +60,9 @@ SoFragmentShader::isSupported(SourceType sourceType)
   // for this.)  20050120 mortene.
   if (sourceType == ARB_PROGRAM) return TRUE;
   if (sourceType == GLSL_PROGRAM) return TRUE;
+  if (sourceType == CG_PROGRAM) return TRUE;
 
-  // FIXME: 20041001 martin
-#if !defined(SO_CG_SHADER_SUPPORT)
-  if (sourceType == CG_PROGRAM) return FALSE;
-#endif
-
-  return TRUE;
+  return FALSE;
 }
 
 // *************************************************************************

@@ -27,7 +27,7 @@
 
 #include "SoGLShaderObject.h"
 #include "SoGLARBShaderProgram.h"
-#include "SoGLCgShader.h"
+#include "SoGLCgShaderProgram.h"
 #include "SoGLSLShaderProgram.h"
 
 // *************************************************************************
@@ -35,18 +35,14 @@
 SoGLShaderProgram::SoGLShaderProgram(void)
 {
   this->arbShaderProgram = new SoGLARBShaderProgram;
-#if defined(SO_CG_SHADER_SUPPORT)
   this->cgShaderProgram = new SoGLCgShaderProgram;
-#endif
   this->glslShaderProgram = new SoGLSLShaderProgram;
 }
 
 SoGLShaderProgram::~SoGLShaderProgram()
 {
   delete this->arbShaderProgram;
-#if defined(SO_CG_SHADER_SUPPORT)
   delete this->cgShaderProgram;
-#endif
   delete this->glslShaderProgram;
 }
 
@@ -57,11 +53,9 @@ SoGLShaderProgram::addShaderObject(SoGLShaderObject *shader)
   case SoGLShader::ARB_SHADER:
     this->arbShaderProgram->addShaderObject((SoGLARBShaderObject*)shader);
     break;
-#if defined(SO_CG_SHADER_SUPPORT)
   case SoGLShader::CG_SHADER:
     this->cgShaderProgram->addShaderObject((SoGLCgShaderObject*)shader);
     break;
-#endif
   case SoGLShader::GLSL_SHADER:
     this->glslShaderProgram->addShaderObject((SoGLSLShaderObject*)shader);
     break;
@@ -77,11 +71,9 @@ SoGLShaderProgram::removeShaderObject(SoGLShaderObject *shader)
   case SoGLShader::ARB_SHADER:
     this->arbShaderProgram->removeShaderObject((SoGLARBShaderObject*)shader);
     break;
-#if defined(SO_CG_SHADER_SUPPORT)
   case SoGLShader::CG_SHADER:
     this->cgShaderProgram->removeShaderObject((SoGLCgShaderObject*)shader);
     break;
-#endif
   case SoGLShader::GLSL_SHADER:
     this->glslShaderProgram->removeShaderObject((SoGLSLShaderObject*)shader);
     break;
@@ -94,9 +86,7 @@ void
 SoGLShaderProgram::enable(const cc_glglue * g)
 {
   this->arbShaderProgram->enable();
-#if defined(SO_CG_SHADER_SUPPORT)
   this->cgShaderProgram->enable();
-#endif
   this->glslShaderProgram->enable(g);
 }
 
@@ -104,9 +94,7 @@ void
 SoGLShaderProgram::disable(const cc_glglue * g)
 {
   this->arbShaderProgram->disable();
-#if defined(SO_CG_SHADER_SUPPORT)
   this->cgShaderProgram->disable();
-#endif
   this->glslShaderProgram->disable(g);
 }
 
@@ -124,11 +112,8 @@ SoGLShaderProgram::getSourceHint(void)
   SbString result;
 
   result += this->arbShaderProgram->getSourceHint();
-#if defined(SO_CG_SHADER_SUPPORT)
   result += this->cgShaderProgram->getSourceHint();
-#endif
   result += this->glslShaderProgram->getSourceHint();
   return result;
 }
-
 #endif

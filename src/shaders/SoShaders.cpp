@@ -22,15 +22,26 @@
 \**************************************************************************/
 
 #include <Inventor/nodes/SoShaders.h>
+
 #include <Inventor/nodes/SoShaderProgram.h>
 #include <Inventor/nodes/SoShaderObject.h>
 #include <Inventor/nodes/SoFragmentShader.h>
 #include <Inventor/nodes/SoVertexShader.h>
 #include <Inventor/nodes/SoShaderParameter.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
+#include <Inventor/C/glue/cg.h>
 
-void SoShaders::init()
+// *************************************************************************
+
+void
+SoShaders::init(void)
 {
+  // Trigger loading and init of Cg library glue.
+  //
+  // FIXME: this function should rather be used from the relevant
+  // class(es), so it is loaded only on demand. 20050125 mortene.
+  (void)cc_cgglue_available();
+
   // --- initialization of elements (must be done first) ---------------
   if (SoGLShaderProgramElement::getClassTypeId() == SoType::badType())
     SoGLShaderProgramElement::initClass();
@@ -59,10 +70,8 @@ void SoShaders::init()
   if (SoShaderParameter4f::getClassTypeId() == SoType::badType())
     SoShaderParameter4f::initClass();
 
-#if defined(SO_CG_SHADER_SUPPORT)
   if (SoShaderStateMatrixParameter::getClassTypeId() == SoType::badType())
     SoShaderStateMatrixParameter::initClass();
-#endif
 
   // FIXME: array parameters are not implemented yet 20040924 martin
 #if 0 // --- array parameter support ------------------------------------

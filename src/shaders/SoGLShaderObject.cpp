@@ -26,7 +26,7 @@
 #include <assert.h>
 
 #include "SoGLARBShaderObject.h"
-#include "SoGLCgShader.h"
+#include "SoGLCgShaderObject.h"
 #include "SoGLSLShaderObject.h"
 
 // *************************************************************************
@@ -50,9 +50,7 @@ SoGLShaderObject::operator delete(void * obj)
   switch (((SoGLShaderObject *)obj)->shaderType()) {
   case SoGLShader::ARB_SHADER: ::delete (SoGLARBShaderObject *)obj; break;
   case SoGLShader::GLSL_SHADER: ::delete (SoGLSLShaderObject*)obj; break;
-#if defined(SO_CG_SHADER_SUPPORT)
   case SoGLShader::CG_SHADER: ::delete (SoGLCgShaderObject *)obj; break;
-#endif
   default: assert(FALSE && "shaderType unknown!");
   }
 }
@@ -63,9 +61,7 @@ SoGLShaderObject::operator delete[](void * obj)
   switch (((SoGLShaderObject *)obj)->shaderType()) {
   case SoGLShader::ARB_SHADER: ::delete [](SoGLARBShaderObject *)obj; break;
   case SoGLShader::GLSL_SHADER: ::delete [](SoGLSLShaderObject*)obj; break;
-#if defined(SO_CG_SHADER_SUPPORT)
   case SoGLShader::CG_SHADER: ::delete [](SoGLCgShaderObject *)obj; break;
-#endif
   default: assert(FALSE && "shaderType unknown!");
   }
 }

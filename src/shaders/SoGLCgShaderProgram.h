@@ -1,3 +1,6 @@
+#ifndef COIN_SOGLCGSHADERPROGRAM_H
+#define COIN_SOGLCGSHADERPROGRAM_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,45 +24,29 @@
  *
 \**************************************************************************/
 
-#include <Inventor/nodes/SoVertexShader.h>
+class SoGLCgShaderObject;
 
 // *************************************************************************
 
-SO_NODE_SOURCE(SoVertexShader);
-
-// *************************************************************************
-
-void
-SoVertexShader::initClass(void)
+class SoGLCgShaderProgram
 {
-  SO_NODE_INIT_CLASS(SoVertexShader, SoShaderObject, "SoShaderObject");
-}
+public:
+  SoGLCgShaderProgram(void);
+  ~SoGLCgShaderProgram();
 
-SoVertexShader::SoVertexShader(void)
-{
-  SO_NODE_CONSTRUCTOR(SoVertexShader);
-}
+  void addShaderObject(SoGLCgShaderObject * shaderObject);
+  void removeShaderObject(SoGLCgShaderObject * shaderObject);
 
-SoVertexShader::~SoVertexShader()
-{
-}
+  void enable(void);
+  void disable(void);
 
-SbBool
-SoVertexShader::isVertexShader(void) const
-{
-  return TRUE;
-}
+#if defined(SOURCEPROGRAM_HINT)
+  SbString getSourceHint(void) const;
+#endif
 
-SbBool
-SoVertexShader::isSupported(SourceType sourceType)
-{
-  // FIXME: return a correct value, based on the capabilities of the
-  // GL driver. (But first check whether this is part of the TGS
-  // Inventor API -- it's not very well designed, as we really need a
-  // guaranteed GL context for this.) 20050120 mortene.
-  if (sourceType == ARB_PROGRAM) return TRUE;
-  if (sourceType == GLSL_PROGRAM) return TRUE;
-  if (sourceType == CG_PROGRAM) return TRUE;
+private:
+  SoGLCgShaderObject * fragmentShader;
+  SoGLCgShaderObject * vertexShader;
+};
 
-  return FALSE;
-}
+#endif /* ! COIN_SOGLCGSHADERPROGRAM_H */
