@@ -137,11 +137,12 @@ SoGlobalField::clean(void)
   // the sensors wants to unschedule themselves).
   for (int i=0; i < SoGlobalField::allcontainers->getLength(); i++) {
     SoGlobalField * gf = (SoGlobalField *)((*SoGlobalField::allcontainers)[i]);
-    SoDebugError::postWarning("SoGlobalField::clean",
-                              "Global field '%s' not deallocated -- use "
-                              "SoDB::renameGlobalField() on exit to "
-                              "accomplish this.",
-                              gf->getName().getString());
+    // Can't use SoDebugError here, as SoError et al might have been
+    // "cleaned up" already.
+    printf("Global field '%s' not deallocated -- use "
+           "SoDB::renameGlobalField() on exit to "
+           "accomplish this.",
+           gf->getName().getString());
   }
 
 #endif // COIN_DEBUG
