@@ -45,6 +45,7 @@
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/caches/SoGLCacheList.h>
 #include <Inventor/elements/SoCacheElement.h>
@@ -206,6 +207,8 @@ public:
   SoGLCacheList * glcachelist;
 #endif // !COIN_THREADSAFE
 
+  enum { YES, NO, MAYBE } hassoundchild;
+
 public:
   SoGLCacheList * getGLCacheList(SbBool createifnull);
 };
@@ -322,6 +325,8 @@ SoSeparator::commonConstructor(void)
   if (COIN_RANDOMIZE_RENDER_CACHING > 0) {
     if (rand() > (RAND_MAX/2)) { this->renderCaching = SoSeparator::ON; }
   }
+
+  THIS->hassoundchild = SoSeparatorP::MAYBE;
 }
 
 /*!
@@ -646,7 +651,14 @@ SoSeparator::handleEvent(SoHandleEventAction * action)
 void
 SoSeparator::audioRender(SoAudioRenderAction * action)
 {
-  SoSeparator::doAction((SoAction*)action);
+  if (THIS->hassoundchild != SoSeparatorP::NO) {
+    SbBool old = action->setSceneGraphHasSoundNode(FALSE);
+    SoSeparator::doAction((SoAction*)action);
+    SbBool soundnodefound = action->sceneGraphHasSoundNode();
+    action->setSceneGraphHasSoundNode(old || soundnodefound);
+    THIS->hassoundchild = soundnodefound ? SoSeparatorP::YES : 
+      SoSeparatorP::NO;
+  }
 }
 
 // compute object space ray and test for intersection
@@ -761,6 +773,7 @@ SoSeparator::notify(SoNotList * nl)
 #endif // debug
     glcachelist->invalidateAll();
   }
+  THIS->hassoundchild = SoSeparatorP::MAYBE;
 }
 
 /*!

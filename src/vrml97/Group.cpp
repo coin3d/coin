@@ -170,6 +170,8 @@ private:
   SoGLCacheList * glcachelist;
 #endif // !COIN_THREADSAFE
 
+  enum { YES, NO, MAYBE } hassoundchild;
+
 public:
   SoGLCacheList * getGLCacheList(const SbBool createifnull);
 };
@@ -264,6 +266,8 @@ SoVRMLGroup::commonConstructor(void)
   SO_NODE_SET_SF_ENUM_TYPE(boundingBoxCaching, CacheEnabled);
   SO_NODE_SET_SF_ENUM_TYPE(renderCulling, CacheEnabled);
   SO_NODE_SET_SF_ENUM_TYPE(pickCulling, CacheEnabled);
+
+  THIS->hassoundchild = SoVRMLGroupP::MAYBE;
 }
 
 /*!
@@ -491,7 +495,14 @@ SoVRMLGroup::write(SoWriteAction * action)
 void
 SoVRMLGroup::audioRender(SoAudioRenderAction * action)
 {
-  SoVRMLGroup::doAction((SoAudioRenderAction*)action);
+  if (THIS->hassoundchild != SoVRMLGroupP::NO) {
+    SbBool old = action->setSceneGraphHasSoundNode(FALSE);
+    SoVRMLGroup::doAction((SoAction *)action);
+    SbBool soundnodefound = action->sceneGraphHasSoundNode();
+    action->setSceneGraphHasSoundNode(old || soundnodefound);
+    THIS->hassoundchild = soundnodefound ? SoVRMLGroupP::YES : 
+      SoVRMLGroupP::NO;
+  }
 }
 
 // Doc in parent
@@ -653,6 +664,7 @@ SoVRMLGroup::notify(SoNotList * list)
 #endif // debug
     glcachelist->invalidateAll();
   }
+  THIS->hassoundchild = SoVRMLGroupP::MAYBE;
 }
 
 /*!

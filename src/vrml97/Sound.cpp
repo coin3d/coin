@@ -469,6 +469,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 #ifdef HAVE_THREADS
   SbThreadAutoLock autoLock(&PRIVATE(this)->syncmutex);
 #endif
+  action->setSceneGraphHasSoundNode(TRUE);
   if (!SoAudioDevice::instance()->haveSound())
     return;
 

@@ -58,6 +58,20 @@
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
 #endif // HAVE_VRML97
 
+class SoAudioRenderActionP
+{
+public:
+  SoAudioRenderActionP(SoAudioRenderAction * master) : master(master) {};
+  SoAudioRenderAction *master;
+  
+  SbBool sceneGraphHasSoundNode;
+};
+
+#undef PRIVATE
+#define PRIVATE(p) ((p)->pimpl)
+#undef PUBLIC
+#define PUBLIC(p) ((p)->master)
+
 SO_ACTION_SOURCE(SoAudioRenderAction);
 
 void SoAudioRenderAction::initClass()
@@ -77,10 +91,14 @@ void SoAudioRenderAction::initClass()
 SoAudioRenderAction::SoAudioRenderAction()
 {
   SO_ACTION_CONSTRUCTOR(SoAudioRenderAction);
+
+  PRIVATE(this) = new SoAudioRenderActionP(this);
+  PRIVATE(this)->sceneGraphHasSoundNode = FALSE;
 }
 
 SoAudioRenderAction::~SoAudioRenderAction()
 {
+  delete PRIVATE(this);
 }
 
 void SoAudioRenderAction::beginTraversal(SoNode *node)
@@ -115,6 +133,21 @@ void SoAudioRenderAction::callAudioRender(SoAction *action, SoNode *node)
   }
 #endif // HAVE_VRML97
 }
+
+SbBool 
+SoAudioRenderAction::setSceneGraphHasSoundNode(SbBool flag)
+{
+  SbBool old = PRIVATE(this)->sceneGraphHasSoundNode;
+  PRIVATE(this)->sceneGraphHasSoundNode = flag;
+  return old;
+}
+
+SbBool 
+SoAudioRenderAction::sceneGraphHasSoundNode()
+{
+  return PRIVATE(this)->sceneGraphHasSoundNode;
+}
+
 
 /*
 FIXME 20021101 thammer: remember to override invalidateState if we
