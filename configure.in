@@ -608,6 +608,10 @@ if $BUILD_WITH_MSVC; then
   COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_DLL"
   COIN_EXTRA_LIBS="-lcoin$COIN_MAJOR_VERSION $COIN_EXTRA_LIBS"
 
+  # For the SuperPIMP file build/coin.nsi.
+  win_srcdir=`cygpath -w "$srcdir"`
+  AC_SUBST(win_srcdir)
+
 else
   COIN_EXTRA_LIBS="-lCoin $COIN_EXTRA_LIBS"
 
@@ -649,6 +653,7 @@ AC_OUTPUT([
         src/system/Makefile
         build/Makefile
         build/coin.spec
+        build/coin.nsi
         docs/coin.doxygen
 ], [
 	chmod a+x coin-config

@@ -14,3 +14,9 @@ m4data_DATA = cfg/m4/coin.m4
 doxygen-doc:
 	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
 
+coin-installer.exe: build/coin.nsi
+	@sed 's,$$,
+,' <$(srcdir)/COPYING >COPYING.DOS; \
+	makensis build\\coin.nsi; \
+	rm COPYING.DOS
+
