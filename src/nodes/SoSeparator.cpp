@@ -123,6 +123,52 @@ int SoSeparator::numrendercaches = 2;
   scene will change a lot (like for every redraw), it will be
   beneficial to set this field to SoSeparator::OFF for the top-level
   separator node of this (sub)graph.
+
+  Usually the default setting of \c AUTO will handle any scene very
+  well. The advantages that \e can be had from setting
+  SoSeparator::renderCaching to \c ON are:
+
+  <ol>
+   <li> If you positively know that the geometry under the SoSeparator is
+     static, you get the cache set up right away.
+
+     Otherwise, the code in Coin will do a bit of testing and decide
+     by some heuristics whether or not to enable it. That will make
+     the rendering be a tiny bit slower right after start-up than with
+     renderCaching set to \c ON.
+
+     (The slow-down should hardly be noticable, though, so we don't
+     advice application programmers to do this.)
+   </li>
+
+   <li> For many of the shape nodes that can contain many basic
+     primitives, like e.g. SoFaceSet, SoIndexedFaceSet, SoLineSet, etc
+     etc, there is an internal threshold for how many primitives a
+     node can contain before we don't do caching when
+     SoSeparator::renderCaching is set to \c AUTO.
+
+     The reason we do this is because OpenGL renderlists can
+     potentially suck up a lot of memory resources on the graphics
+     card.
+
+     But if you know that it will be advantageous on your particular
+     platform, you can override this by setting
+     SoSeparator::renderCaching equal to \c ON.
+
+     (We don't advice application programmers to do this either. A
+     better solution in these cases would simply be to get in touch
+     with SIM and describe the platform and the problem, and we could
+     integrate a proper fix into Coin.)
+   </li>
+  </ol>
+
+  There are good reasons for setting renderCaching to \c OFF, like
+  when you know the geometry will be changing a lot. Still, Coin
+  should work fairly well without even this optimization.  (If
+  renderCaching is \c AUTO over a sub-graph with changing geometry or
+  other cache smashing nodes, the caching heuristics will stop the
+  SoSeparator node from trying to make caches -- at least after a few
+  tries has been made and failed.)
 */
 
 /*!
