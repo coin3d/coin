@@ -75,6 +75,21 @@ SoCallback::initClass(void)
   Set up the \a function to call at traversal of this node. \a
   userdata will be passed back as the first argument of the callback
   \a function.
+
+  If you want a callback only for a specific action, you must (in your
+  callback function) remember to check which action invoked the
+  callback, for instance like this:
+
+  \code
+  
+  void mycallback(void * userdata, SoAction * action)
+  {
+    if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
+      // do stuff specific for GL rendering here.
+    }
+  }
+
+  \endcode
 */
 void
 SoCallback::setCallback(SoCallbackCB * function, void * userdata)
