@@ -371,13 +371,18 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
       tmpvec.setValue(0.0f, 0.0f, 0.0f);
       vert2 = coords + v0;
       cind++; // v0 is already read
-      while (*cind >= 0) {
+
+      // The cind < endptr check makes us robust with regard to a
+      // missing "-1" termination of the coordIndex field of the
+      // IndexedShape nodetype.
+      while (cind < endptr && *cind >= 0) {
         vert1 = vert2;
         vert2 = coords + *cind++;
         tmpvec[0] += ((*vert1)[1] - (*vert2)[1]) * ((*vert1)[2] + (*vert2)[2]);
         tmpvec[1] += ((*vert1)[2] - (*vert2)[2]) * ((*vert1)[0] + (*vert2)[0]);
         tmpvec[2] += ((*vert1)[0] - (*vert2)[0]) * ((*vert1)[1] + (*vert2)[1]);
       }
+
       vert1 = vert2;  // last edge (back to v0)
       vert2 = coords + v0;
       tmpvec[0] += ((*vert1)[1] - (*vert2)[1]) * ((*vert1)[2] + (*vert2)[2]);
