@@ -365,6 +365,9 @@ LIBS="<string>"
   This would cause compilation of both C and C++ files to be done with
   the "-ansi" and "-pedantic" options.
 
+  You can also override other things like which compiler is used by
+  setting $CC, $CXX, $LD, $AR and $RANLIB amongst other variables.
+
 
 Build Options
 =============
