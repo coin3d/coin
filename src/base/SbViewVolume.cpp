@@ -1107,14 +1107,14 @@ SbViewVolume::transform(const SbMatrix &matrix)
   }
   // SbViewVolume::PERSPECTIVE
   else {
-    matrix.multVecMatrix(this->lowerleftfrust - this->projectionpt,
+    matrix.multDirMatrix(this->lowerleftfrust - this->projectionpt,
                          this->lowerleftfrust);
-    matrix.multVecMatrix(this->lowerrightfrust - this->projectionpt,
+    matrix.multDirMatrix(this->lowerrightfrust - this->projectionpt,
                          this->lowerrightfrust);
-    matrix.multVecMatrix(this->upperleftfrust - this->projectionpt,
+    matrix.multDirMatrix(this->upperleftfrust - this->projectionpt,
                          this->upperleftfrust);
     matrix.multVecMatrix(this->projectionpt, this->projectionpt);
-
+    
     this->lowerleftfrust += this->projectionpt;
     this->lowerrightfrust += this->projectionpt;
     this->upperleftfrust += this->projectionpt;
