@@ -280,12 +280,11 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
   }
 }
 
-/*!
-  Overloaded to return FALSE. Normals are generated directly in normal cache.
-*/
+// Documented in superclass.
 SbBool
 SoIndexedTriangleStripSet::generateDefaultNormals(SoState *, SoNormalBundle *)
 {
+  // Normals are generated directly in normal cache.
   return FALSE;
 }
 
@@ -400,16 +399,6 @@ SoIndexedTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
     this->countPrimitives(strips, tris);
     action->addNumTriangles(tris);
   }
-}
-
-/*!
-  Overloaded to return TRUE, since shade model must be set to flat
-  if normal or material binding is PER_FACE or PER_FACE_INDEXED.
-*/
-SbBool
-SoIndexedTriangleStripSet::willSetShadeModel(void) const
-{
-  return TRUE;
 }
 
 // Documented in superclass.

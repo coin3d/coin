@@ -49,7 +49,6 @@ public:
 protected:
   virtual ~SoIndexedTriangleStripSet();
 
-  virtual SbBool willSetShadeModel() const;
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalCache * nc);
   virtual void generatePrimitives(SoAction * action);
 
