@@ -3027,19 +3027,20 @@ cross_compiling=$ac_cv_prog_cc_cross
 
 
 
+
 save=$LIBS
 LIBS=
 echo $ac_n "checking whether we must explicitly link with the math library""... $ac_c" 1>&6
-echo "configure:3034: checking whether we must explicitly link with the math library" >&5
+echo "configure:3035: checking whether we must explicitly link with the math library" >&5
 cat > conftest.$ac_ext <<EOF
-#line 3036 "configure"
+#line 3037 "configure"
 #include "confdefs.h"
 #include <math.h>
 int main() {
 fmod(1.0f, 1.0f)
 ; return 0; }
 EOF
-if { (eval echo configure:3043: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3044: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   mathlib=no
 else
@@ -3059,15 +3060,16 @@ fi
 
 
 
+
 echo $ac_n "checking for library containing glAccum""... $ac_c" 1>&6
-echo "configure:3064: checking for library containing glAccum" >&5
+echo "configure:3066: checking for library containing glAccum" >&5
 if eval "test \"`echo '$''{'ac_cv_search_glAccum'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   ac_func_search_save_LIBS="$LIBS"
 ac_cv_search_glAccum="no"
 cat > conftest.$ac_ext <<EOF
-#line 3071 "configure"
+#line 3073 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -3078,7 +3080,7 @@ int main() {
 glAccum()
 ; return 0; }
 EOF
-if { (eval echo configure:3082: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3084: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   ac_cv_search_glAccum="none required"
 else
@@ -3089,7 +3091,7 @@ rm -f conftest*
 test "$ac_cv_search_glAccum" = "no" && for i in $GL_search_list; do
 LIBS="-l$i $MATHLIB $ac_func_search_save_LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 3093 "configure"
+#line 3095 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -3100,7 +3102,7 @@ int main() {
 glAccum()
 ; return 0; }
 EOF
-if { (eval echo configure:3104: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3106: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   ac_cv_search_glAccum="-l$i"
 break
@@ -3123,14 +3125,14 @@ else :
 fi
 
 echo $ac_n "checking for library containing gluBeginCurve""... $ac_c" 1>&6
-echo "configure:3127: checking for library containing gluBeginCurve" >&5
+echo "configure:3129: checking for library containing gluBeginCurve" >&5
 if eval "test \"`echo '$''{'ac_cv_search_gluBeginCurve'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   ac_func_search_save_LIBS="$LIBS"
 ac_cv_search_gluBeginCurve="no"
 cat > conftest.$ac_ext <<EOF
-#line 3134 "configure"
+#line 3136 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -3141,7 +3143,7 @@ int main() {
 gluBeginCurve()
 ; return 0; }
 EOF
-if { (eval echo configure:3145: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3147: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   ac_cv_search_gluBeginCurve="none required"
 else
@@ -3152,7 +3154,7 @@ rm -f conftest*
 test "$ac_cv_search_gluBeginCurve" = "no" && for i in $GLU_search_list; do
 LIBS="-l$i $MATHLIB $ac_func_search_save_LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 3156 "configure"
+#line 3158 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -3163,7 +3165,7 @@ int main() {
 gluBeginCurve()
 ; return 0; }
 EOF
-if { (eval echo configure:3167: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3169: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   ac_cv_search_gluBeginCurve="-l$i"
 break
@@ -3379,15 +3381,15 @@ fi
 
 if test "x$want_simage" = "xyes"; then
   echo $ac_n "checking for simage header file""... $ac_c" 1>&6
-echo "configure:3383: checking for simage header file" >&5
+echo "configure:3385: checking for simage header file" >&5
 
     cat > conftest.$ac_ext <<EOF
-#line 3386 "configure"
+#line 3388 "configure"
 #include "confdefs.h"
 #include <simage.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:3391: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:3393: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -3409,12 +3411,12 @@ rm -f conftest*
     _SAVECPPFLAGS=$CPPFLAGS
     CPPFLAGS="-I$_COINPREFIX/include $CPPFLAGS"
     cat > conftest.$ac_ext <<EOF
-#line 3413 "configure"
+#line 3415 "configure"
 #include "confdefs.h"
 #include <simage.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:3418: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:3420: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -3438,7 +3440,7 @@ rm -f conftest*
 
   if test "x$simage_dev" = "xyes"; then
     echo $ac_n "checking for simage_read_image in -lsimage""... $ac_c" 1>&6
-echo "configure:3442: checking for simage_read_image in -lsimage" >&5
+echo "configure:3444: checking for simage_read_image in -lsimage" >&5
 ac_lib_var=`echo simage'_'simage_read_image | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -3446,7 +3448,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lsimage -lz $MATHLIB $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 3450 "configure"
+#line 3452 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 #ifdef __cplusplus
@@ -3460,7 +3462,7 @@ int main() {
 simage_read_image()
 ; return 0; }
 EOF
-if { (eval echo configure:3464: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3466: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else

@@ -769,3 +769,30 @@ else
   $1_FALSE=
 fi])
 
+dnl  Check if linker needs -lm for math functions. Sets environment
+dnl  variable $MATHLIB to the necessary linker flags and libraries.
+dnl
+dnl  Author: Lars Jørgen Aas, <larsa@sim.no>.
+dnl
+dnl  TODO:
+dnl    * [mortene:19991114] cache result for subsequent runs
+dnl    * [mortene:19991114] make this work on MSWin (with Cygwin installation)
+dnl
+
+AC_DEFUN(SIM_CHECK_MATHLIB,
+[
+dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_PREREQ([2.13])
+save=$LIBS
+LIBS=
+AC_MSG_CHECKING(whether we must explicitly link with the math library)
+AC_TRY_LINK([#include <math.h>], [fmod(1.0f, 1.0f)], mathlib=no, mathlib=yes )
+AC_MSG_RESULT($mathlib)
+LIBS=$save
+
+MATHLIB=""
+if test $mathlib = yes; then
+  MATHLIB="-lm"
+fi
+])
+

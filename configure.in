@@ -127,21 +127,7 @@ fi
 AC_LANG_SAVE
 AC_LANG_C
 
-dnl ************************************************************************
-dnl * Check if linker needs -lm for math functions.
-dnl ************************************************************************
-
-save=$LIBS
-LIBS=
-AC_MSG_CHECKING(whether we must explicitly link with the math library)
-AC_TRY_LINK([#include <math.h>], [fmod(1.0f, 1.0f)], mathlib=no, mathlib=yes )
-AC_MSG_RESULT($mathlib)
-LIBS=$save
-
-MATHLIB=""
-if test $mathlib = yes; then
-  MATHLIB="-lm"
-fi
+SIM_CHECK_MATHLIB
 
 dnl ************************************************************************
 

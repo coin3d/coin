@@ -42,8 +42,21 @@ if test "$DIE" -eq 1; then
         exit 1
 fi
 
+# The separate conf-macros module was added late in the project, and
+# since we need to do a cvs checkout to obtain it (cvs update won't do
+# with modules), we run this check.
+if ! test -d conf-macros
+then
+    cvs -z3 checkout conf-macros
+    if ! test -d conf-macros
+    then
+	echo "Couldn't fetch conf-macros module!"
+	exit 1
+    fi
+fi
+
 echo "Running aclocal (generating aclocal.m4)..."
-aclocal
+aclocal -I conf-macros
 
 echo "Running autoheader (generating config.h.in)..."
 autoheader
