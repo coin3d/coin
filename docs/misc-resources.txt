@@ -157,3 +157,5 @@ THE LINKS
   NB: Coin is not an FSF-project, this link is here only for
   reference/comparison
 
+  "Why the FSF gets copyright assignments from contributors":
+    <URL:http://www.gnu.org/licenses/why-assign.html>
