@@ -351,7 +351,7 @@ SbMatrix::det4(void) const
 SbMatrix
 SbMatrix::inverse(void) const
 {
-#if 1 // new optimized version
+#if 0 // new optimized version
 
   SbMatrix result;
 
