@@ -9,17 +9,11 @@
 
 * 1 Introduction *
 
-1.1 Coin is a 3d retained-mode library, compatible with Open Inventor 1.2.
+1.1 Coin is a 3d retained-mode library, compatible with Open Inventor 2.1.
 
-1.2 Simage is a library for loading different image formats.
+1.2 CygWin is a Linux/Unix-like environment for Windows made by Cygnus Solutions.
 
-1.3 SoQt is a GUI-binding library for Coin.
-
-1.4 Qt is a is a GUI class-library made by Trolltech.
-
-1.5 CygWin is a Linux/Unix-like environment for Windows made by Cygnus Solutions.
-
-1.6 Microsoft Visual C++ (MSVC++) is the C/C++ compiler in Microsoft DeveloperStudio.
+1.3 Microsoft Visual C++ (MSVC++) is the C/C++ compiler in Microsoft DeveloperStudio.
 
 
 * 2 Environment *
@@ -35,60 +29,20 @@
     lib path.
 
 
-* 3 Simage support libs (optional) *
+* 3 Compiling Coin *
 
-3.1 Simage can use one or more of the following libs:
+3.1 Coin does not contain any platform-spesific code.
 
-    jpeg.lib (libJpeg)
-    ungif.lib (libUngif)
-    tiff.lib (libTiff)
-    png.lib (libPng)
-
-3.2 LibPng needs 'zlib.lib' (libZ).
-
-3.3 Download and install the libs you need.
-
-
-* 4 Compiling Simage (optional) *
-
-4.1 Simage does not contain any platform-spesific code.
-
-4.2 Write the following into the command line
-
-      CC=cl CXX=cl /your_path_here/configure --prefix=your_install_path
-      cd build
-      nmake simage.mak CFG="simage - Win32 Debug"
-      cd ..
-      make install-data
-
-
-* 5 Compiling Coin *
-
-5.1 Coin does not contain any platform-spesific code.
-
-5.2 Write the following in the command line:
+3.2 Write the following in the command line:
 
       CC=cl CCFLAGS=/Tp CXXFLAGS=/Tp CXX=cl /your_path_here/configure --prefix=your_install_path
+      cd data
+      make
+      cd ..
       cd build
       nmake coin.mak CFG="coin - Win32 Debug"
       cd ..
       make install-data
-
-
-* 6 Compiling SoQt *
-
-6.1 In addition to Coin, SoQt needs the Qt GUI-lib from Trolltech
-    <URL:http://www.trolltech.com/products/qt/qt.html>
-
-6.2 Compile and install Qt.
-
-6.3 Write the following in the command line:
-
-      CC=cl CCFLAGS=/Tp CXXFLAGS=/Tp CXX=cl /your_path_here/configure --prefix=your_install_path
-      make built-sources
-      cd build
-      nmake soqt.mak CFG="soqt - Win32 Debug"
-      cd ..
-      make install-data
+      make install-exec-am
 
 Done!
