@@ -339,7 +339,7 @@ SoInput::addProto(SoProto * proto)
   This method was not part of the Inventor v2.1 API, and is an
   extension specific to Coin.
 
-  \since 2001-10-23 
+  \since 2001-10-23
 
   \sa popProto()
 */
@@ -405,33 +405,62 @@ SoInput::getCurrentProto(void) const
 
   \since 2001-10-23
 */
-SbBool 
+SbBool
 SoInput::checkISReference(SoFieldContainer * container, const SbName & fieldname, SbBool & readok)
 {
   readok = TRUE;
   SoProto * proto = this->getCurrentProto();
   SbBool foundis = FALSE;
   if (proto) {
-    char I;
-    readok = this->read(I);
-    if (readok) {
-      this->putBack(I);
-      if (I == 'I') {
-        SbName is;
-        readok = this->read(is, TRUE);
-        if (readok) {
-          if (is == SbName(IS_KEYWORD)) {
-            foundis = TRUE;
-            SbName iname;
-            readok = this->read(iname, TRUE);
-            if (readok) {
-              assert(container->isOfType(SoNode::getClassTypeId()));
-              proto->addISReference((SoNode*) container, fieldname, iname);
-            }
-          }
-          else this->putBack(is.getString());
+    // The reason for this specific parsing code is that we need
+    // to put back whitespace when the IS keyword isn't found.
+    // SoInput::read(SbName) skips whitespace automatically...
+    // pederb, 2001-10-26
+    SbString putback;
+    const int STATE_WAIT_I = 0;
+    const int STATE_EXPECT_S = 1;
+    const int STATE_EXPECT_SPACE = 2;
+    const int STATE_FOUND = 3;
+    const int STATE_NOTFOUND = 4;
+    int state = STATE_WAIT_I; 
+    do {
+      char c;
+      readok = this->read(c, FALSE);
+      putback += c;
+      if (readok) {
+        switch (state) {
+        case STATE_WAIT_I:
+          if (c == 'I') state = STATE_EXPECT_S;
+          else if (!isspace(c)) state = STATE_NOTFOUND;
+          break;
+        case STATE_EXPECT_S:
+          if (c == 'S') state = STATE_EXPECT_SPACE;
+          else state = STATE_NOTFOUND;
+          break;
+        case STATE_EXPECT_SPACE:
+          if (isspace(c)) state = STATE_FOUND;
+          else state = STATE_NOTFOUND;
+          break;
+        default:
+          assert(0 && "should not happend");
+          break;
         }
       }
+    } while (readok && state != STATE_FOUND && state != STATE_NOTFOUND);
+    
+    if (state == STATE_FOUND) {
+      foundis = TRUE;
+      SbName iname;
+      readok = this->read(iname, TRUE);
+      if (readok) {
+        assert(container->isOfType(SoNode::getClassTypeId()));
+        proto->addISReference((SoNode*) container, fieldname, iname);
+      }
+    }
+    else {
+      assert(state == STATE_NOTFOUND);
+      this->putBack(putback.getString());
+      foundis = FALSE;
     }
   }
   return foundis;
@@ -2552,8 +2581,15 @@ SoInput_FileInfo::putBack(const char * const str)
 
   this->lastchar = -1;
 
-  if (n <= this->readbufidx && this->backbuffer.getLength() == 0)
+  if (n <= this->readbufidx && this->backbuffer.getLength() == 0) {
     this->readbufidx -= n;
+#if COIN_DEBUG
+    for (int i = 0; i < n; i++) {
+      assert(this->readbuf[this->readbufidx+i] == str[i]);
+    }
+#endif // COIN_DEBUG
+
+  }
   else
     for (int i = n - 1; i >= 0; i--) this->backbuffer.push(str[i]);
 
@@ -2571,7 +2607,7 @@ SoInput_FileInfo::skipWhiteSpace(void)
     while ((gotchar = this->get(c)) && this->isSpace(c));
 
     if (!gotchar) return FALSE;
-    
+
     if (c == COMMENT_CHAR) {
       while ((gotchar = this->get(c)) && (c != '\n') && (c != '\r'));
       if (!gotchar) return FALSE;
