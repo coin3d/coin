@@ -46,13 +46,15 @@ sync_cleanup(void)
 /*
   Initialize synchronizer. Should only be called once, from SoDB::init()
 */
-void 
+void
 cc_sync_init(void)
 {
-  sync_global_mutex = cc_mutex_construct();
-  sync_hash_table = cc_hash_construct(256, 0.75f);
+  if (sync_global_mutex == NULL) {
+    coin_atexit((coin_atexit_f*) sync_cleanup);
 
-  coin_atexit((coin_atexit_f*) sync_cleanup);
+    sync_hash_table = cc_hash_construct(256, 0.75f);    
+    sync_global_mutex = cc_mutex_construct();
+  }
 }
 
 /*!
@@ -67,13 +69,19 @@ cc_sync_begin(void * id)
 {
   void * mutex;
 
+  /* check sync_global_mutex in case somebody needs to synchronize
+     before SoDB::init() is called. */
+  if (sync_global_mutex == NULL) {
+    cc_sync_init();
+  }
+
   cc_mutex_lock(sync_global_mutex);
 
   if (!cc_hash_get(sync_hash_table, (unsigned long) id, &mutex)) {
     mutex = (void*) cc_mutex_construct();
     (void) cc_hash_put(sync_hash_table, (unsigned long) id, mutex);
   }
-  
+
   cc_mutex_unlock(sync_global_mutex);
   cc_mutex_lock((cc_mutex*) mutex);
 
@@ -88,5 +96,3 @@ cc_sync_end(void * key)
 {
   cc_mutex_unlock((cc_mutex*) key);
 }
-
-
