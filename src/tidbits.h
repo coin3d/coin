@@ -30,7 +30,7 @@ extern "C" {
 
 /* ********************************************************************** */
 
-#include <Inventor/system/inttypes.h>
+#include <Inventor/SbBasic.h>
 #include <stdarg.h>
 
 int coin_snprintf(char * dst, unsigned int n, const char * fmtstr, ...);
@@ -46,7 +46,8 @@ uint16_t coin_ntoh_uint16(uint16_t value);
 uint32_t coin_hton_uint32(uint32_t value);
 uint32_t coin_ntoh_uint32(uint32_t value);
 
-int coin_isascii(int c);
+SbBool coin_isascii(const int c);
+SbBool coin_isspace(const char c);
 
 typedef void coin_atexit_f(void);
 void coin_atexit(coin_atexit_f *);

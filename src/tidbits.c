@@ -461,10 +461,23 @@ coin_ntoh_uint32(uint32_t value)
   isascii() is neither ANSI C nor POSIX, but a BSD extension and SVID
   extension.
  */
-int
-coin_isascii(int c)
+SbBool
+coin_isascii(const int c)
 {
   return (c >= 0x00) && (c < 0x80);
+}
+
+/* We provide our own version of the isspace() method, as we don't
+   really want it to be locale-dependent (which is known to have
+   caused trouble for us with some specific German characters under
+   MSWindows, at least). */
+SbBool
+coin_isspace(const char c)
+{
+  /* This is what isspace() does under the POSIX and C locales,
+     according to the GNU libc man page. */
+  return (c==' ') || (c=='\n') || (c=='\r') ||
+         (c=='\f') || (c=='\t') || (c=='\v');
 }
 
 /**************************************************************************/
