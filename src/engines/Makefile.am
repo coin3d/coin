@@ -90,11 +90,14 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoTriggerAny.h
 
 
-$(top_srcdir)/src/engines/lex.so_eval.c: $(top_srcdir)/src/engines/evaluator.l
-	flex -o$(top_srcdir)/src/engines/lex.so_eval.c -L $(top_srcdir)/src/engines/evaluator.l
+# Don't use the explicit rules, they will just confuse users on
+# systems without flex and/or bison. 20000606 mortene.
 
-$(top_srcdir)/src/engines/evaluator.tab.c: $(top_srcdir)/src/engines/lex.so_eval.c $(top_srcdir)/src/engines/evaluator.y
-	bison -p so_eval -o $(top_srcdir)/src/engines/evaluator.tab.c -l $(top_srcdir)/src/engines/evaluator.y
+#$(top_srcdir)/src/engines/lex.so_eval.c: $(top_srcdir)/src/engines/evaluator.l
+#	flex -o$(top_srcdir)/src/engines/lex.so_eval.c -L $(top_srcdir)/src/engines/evaluator.l
+
+#$(top_srcdir)/src/engines/evaluator.tab.c: $(top_srcdir)/src/engines/lex.so_eval.c $(top_srcdir)/src/engines/evaluator.y
+#	bison -p so_eval -o $(top_srcdir)/src/engines/evaluator.tab.c -l $(top_srcdir)/src/engines/evaluator.y
 
 
 
