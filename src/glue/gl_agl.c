@@ -21,6 +21,13 @@
  *
 \**************************************************************************/
 
+/*
+ *  Environment variable controls available:
+ * 
+ *   - COIN_AGLGLUE_NO_PBUFFERS: set to 1 to force software rendering of
+ *     offscreen contexts.
+ */
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
@@ -36,23 +43,14 @@
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/glue/gl_agl.h>
 
-#ifdef HAVE_AGL
-#include <AGL/agl.h>  
-#include <Carbon/Carbon.h> 
-#endif
-
-#ifdef HAVE_MACH_O_DYLD_H
-#include <mach-o/dyld.h>
-#endif /* HAVE_MACH_O_DYLD_H */
-
-void *
-coin_agl_getprocaddress(const char * fname)
-{
-  cc_libhandle h = cc_dl_open(NULL);
-  return cc_dl_sym(h, fname);
-}
+/* ********************************************************************** */
 
 #ifndef HAVE_AGL
+
+void * aglglue_getprocaddress(const char * fname)
+{
+  return NULL;
+}
 
 void * aglglue_context_create_offscreen(unsigned int width, 
                                         unsigned int height) { 
@@ -76,9 +74,15 @@ void aglglue_context_destruct(void * ctx)
 
 #else /* HAVE_AGL */
 
+/* ********************************************************************** */
+
+#include <AGL/agl.h>  
+#include <Carbon/Carbon.h> 
+
 #ifndef HAVE_AGL_PBUFFER 
 
-/* pBuffer functions are picked up at runtime, so the only thing
+/* 
+ * pBuffer functions are picked up at runtime, so the only thing
  * we need from the AGL headers is the AGLPBuffer type, which is
  * void* anyways...  
  */
@@ -103,6 +107,54 @@ static COIN_AGLCREATEPBUFFER aglglue_aglCreatePBuffer = NULL;
 static COIN_AGLDESTROYPBUFFER aglglue_aglDestroyPBuffer = NULL;
 static COIN_AGLSETPBUFFER aglglue_aglSetPBuffer = NULL;
 
+
+struct aglglue_contextdata;
+static SbBool (* aglglue_context_create)(struct aglglue_contextdata * ctx) = NULL;
+
+
+/* 
+ * Since AGL does not have an aglGetProcAddress() as such, this is
+ * simply a wrapper around cc_dl_*. Prsent here for consistency with
+ * WGL and GLX implementations.
+ */
+void *
+aglglue_getprocaddress(const char * fname)
+{
+  cc_libhandle h = cc_dl_open(NULL);
+  return cc_dl_sym(h, fname);
+}
+
+static void
+aglglue_resolve_symbols()
+{
+  /* FIXME: Support static binding? I don't think anybody would ever
+     want to do that though... kyrah 20031114 */
+
+  /* Resolve symbols only once... */
+  if (aglglue_aglCreatePBuffer && aglglue_aglDestroyPBuffer &&
+      aglglue_aglSetPBuffer) return; 
+
+  aglglue_aglCreatePBuffer = (COIN_AGLCREATEPBUFFER)aglglue_getprocaddress("aglCreatePBuffer");
+  aglglue_aglDestroyPBuffer = (COIN_AGLDESTROYPBUFFER)aglglue_getprocaddress("aglDestroyPBuffer");
+  aglglue_aglSetPBuffer = (COIN_AGLSETPBUFFER)aglglue_getprocaddress("aglSetPBuffer");
+}
+
+
+static SbBool
+aglglue_has_pbuffer_support(void)
+{
+  /* Make it possible to turn off pBuffer support completely.
+     Mostly relevant for debugging purposes. */
+  const char * env = coin_getenv("COIN_AGLGLUE_NO_PBUFFERS");
+  if (env && atoi(env) > 0) { 
+    return FALSE; 
+  } else { 
+    aglglue_resolve_symbols();
+    return (aglglue_aglCreatePBuffer && aglglue_aglDestroyPBuffer && aglglue_aglSetPBuffer);
+  }
+}
+
+
 struct aglglue_contextdata {
   AGLDrawable drawable;
   AGLContext aglcontext;
@@ -112,182 +164,206 @@ struct aglglue_contextdata {
   Rect bounds;
   CGrafPtr savedport;
   GDHandle savedgdh;
-  AGLPbuffer aglpbuffer; 
+  AGLPbuffer aglpbuffer;
+  unsigned int width, height; 
 };
 
-static SbBool
-aglglue_use_pbuffer(void)
+
+static struct aglglue_contextdata *
+aglglue_contextdata_init(unsigned int width, unsigned int height)
 {
-  /* Make it possible to turn off pBuffer support completely.
-  Mostly relevant for debugging purposes. */
-  const char * env = coin_getenv("COIN_AGLGLUE_NO_PBUFFERS");
-  if (env && atoi(env) > 0) { return FALSE; }
-  else { return (int)coin_agl_getprocaddress("aglDescribePBuffer"); }
+  struct aglglue_contextdata * ctx;
+  ctx = (struct aglglue_contextdata *)malloc(sizeof(struct aglglue_contextdata));
+
+  ctx->drawable = NULL;
+  ctx->aglcontext = NULL;
+  ctx->storedcontext = NULL;
+  ctx->storeddrawable = NULL;
+  ctx->pixformat = NULL;
+  ctx->savedport = NULL;
+  ctx->savedgdh = NULL;
+  ctx->aglpbuffer = NULL; 
+  ctx->width = width;
+  ctx->height = height;
+
+  return ctx;
 }
 
 static void
-aglglue_contextdata_init(struct aglglue_contextdata * c)
+aglglue_contextdata_cleanup(struct aglglue_contextdata * ctx)
 {
-  c->drawable = NULL;
-  c->aglcontext = NULL;
-  c->storedcontext = NULL;
-  c->storeddrawable = NULL;
-  c->pixformat = NULL;
-  c->savedport = NULL;
-  c->savedgdh = NULL;
-  c->aglpbuffer = NULL; 
-}
-
-static void
-aglglue_contextdata_cleanup(struct aglglue_contextdata * c)
-{
-  if (c->drawable) DisposeGWorld((GWorldPtr) c->drawable);
-  if (c->aglcontext) aglDestroyContext(c->aglcontext);
-  if (c->pixformat) aglDestroyPixelFormat(c->pixformat);
+  if (ctx->drawable) DisposeGWorld((GWorldPtr)ctx->drawable);
+  if (ctx->aglcontext) aglDestroyContext(ctx->aglcontext);
+  if (ctx->pixformat) aglDestroyPixelFormat(ctx->pixformat);
+  if (ctx->aglpbuffer) aglglue_aglDestroyPBuffer(ctx->aglpbuffer); 
+  free(ctx);
 }
 
 static SbBool
-aglglue_resolve_symbols()
+aglglue_context_create_software(struct aglglue_contextdata * ctx)
 {
-  // Resolve symbols only once...
-  if (aglglue_aglCreatePBuffer && aglglue_aglDestroyPBuffer &&
-      aglglue_aglSetPBuffer) return TRUE; 
+  GLint attrib[] = {
+    AGL_OFFSCREEN,
+    AGL_RGBA,
+    AGL_NO_RECOVERY,
+    AGL_RED_SIZE, 8,
+    AGL_GREEN_SIZE, 8,
+    AGL_BLUE_SIZE, 8,
+    AGL_DEPTH_SIZE, 24,
+    AGL_STENCIL_SIZE, 1,
+    AGL_NONE
+  };
 
-  aglglue_aglCreatePBuffer = (COIN_AGLCREATEPBUFFER)coin_agl_getprocaddress("aglCreatePBuffer");
-  aglglue_aglDestroyPBuffer = (COIN_AGLDESTROYPBUFFER)coin_agl_getprocaddress("aglDestroyPBuffer");
-  aglglue_aglSetPBuffer = (COIN_AGLSETPBUFFER)coin_agl_getprocaddress("aglSetPBuffer");
-  return (aglglue_aglCreatePBuffer && aglglue_aglDestroyPBuffer && aglglue_aglSetPBuffer);
-}
-
-void *
-aglglue_context_create_offscreen(unsigned int width, unsigned int height) 
-{
-  QDErr e;
-  struct aglglue_contextdata * context = 
-    (struct aglglue_contextdata *)malloc(sizeof(struct aglglue_contextdata));
-  aglglue_contextdata_init(context);
-
-  if (!aglglue_use_pbuffer()) {
-
-    if (coin_glglue_debug()) {
-      cc_debugerror_postinfo("aglglue_context_create_offscreen",
-                             "Not using pBuffer.");
-    }
-
-    GLint attrib[] = {
-      AGL_OFFSCREEN,
-      AGL_RGBA,
-      AGL_NO_RECOVERY,
-      AGL_RED_SIZE, 8,
-      AGL_GREEN_SIZE, 8,
-      AGL_BLUE_SIZE, 8,
-      AGL_DEPTH_SIZE, 24,
-      AGL_STENCIL_SIZE, 1,
-      AGL_NONE
-    };
-
-    context->pixformat = aglChoosePixelFormat( NULL, 0, attrib );
-    if (!context->pixformat) {
-      cc_debugerror_postwarning("aglglue_context_create_offscreen",
-                                "Couldn't get RGBA AGL pixelformat.");
-      return NULL;
-    }
-
-    context->aglcontext = aglCreateContext(context->pixformat, NULL );
-    if (!context->aglcontext) {
-      cc_debugerror_postwarning("aglglue_context_create_offscreen",
-                                "Couldn't create AGL context.");
-      aglglue_contextdata_cleanup(context);
-      return NULL;
-    } 
-
-    if (coin_glglue_debug()) {
-      cc_debugerror_postinfo("aglglue_create_offscreen_context",
-                             "created new offscreen context == %p",
-                             context->aglcontext);
-    } 
-
-    SetRect(&context->bounds, 0, 0, width, height);
-
-    /* We have to save (and later restore) the old graphics port and 
-       GHandle, since this function will probably called before the
-       Mac OS X viewer is fully set up. */
-    GetGWorld(&context->savedport, &context->savedgdh); 
-
-    e = NewGWorld(&context->drawable, 32, &context->bounds, 
-                        NULL /* cTable */,  NULL /*aGDevice */, 0);
-    if(e != noErr) {
+  if (coin_glglue_debug()) {
+    cc_debugerror_postinfo("aglglue_context_create_offscreen",
+                           "Not using pBuffer.");
+  }
+    
+  ctx->pixformat = aglChoosePixelFormat( NULL, 0, attrib );
+  if (!ctx->pixformat) {
+    cc_debugerror_postwarning("aglglue_context_create_offscreen",
+                              "Couldn't get RGBA AGL pixelformat.");
+    return FALSE;
+  }
+  
+  ctx->aglcontext = aglCreateContext(ctx->pixformat, NULL );
+  if (!ctx->aglcontext) {
+    cc_debugerror_postwarning("aglglue_context_create_offscreen",
+                              "Couldn't create AGL context.");
+    aglglue_contextdata_cleanup(ctx);
+    return FALSE;
+  } 
+  
+  if (coin_glglue_debug()) {
+    cc_debugerror_postinfo("aglglue_create_offscreen_context",
+                           "created new offscreen context == %p",
+                           ctx->aglcontext);
+  } 
+  
+  SetRect(&ctx->bounds, 0, 0, ctx->width, ctx->height);
+  
+  /* We have to save (and later restore) the old graphics port and 
+     GHandle, since this function will probably called before the
+     Mac OS X viewer is fully set up. */
+  GetGWorld(&ctx->savedport, &ctx->savedgdh); 
+  
+  {
+    QDErr e = NewGWorld(&ctx->drawable, 32, &ctx->bounds, NULL, NULL, 0);
+    if (e != noErr) {
       cc_debugerror_postwarning("aglglue_create_offscreen_context",
                                 "Error creating GWorld: %d", e);
-    }
-
-    if (!context->drawable) {
-      cc_debugerror_postwarning("aglglue_create_offscreen_context",
-                                "Couldn't create AGL drawable.");
-    }
-
-    SetGWorld(context->savedport, context->savedgdh);
- 
-  } else { /* pBuffer support available */
-
-    SbBool pbuffer = aglglue_resolve_symbols();
-    if (coin_glglue_debug()) {
-       cc_debugerror_postinfo("aglglue_context_create_offscreen",
-                              "PBuffer offscreen rendering is %ssupported "
-                              "by the OpenGL driver", pbuffer ? "" : "NOT ");
-    }
-    if (!pbuffer) {
-      aglglue_contextdata_cleanup(context);
       return FALSE;
     }
+  }
+  
+  if (!ctx->drawable) {
+    cc_debugerror_postwarning("aglglue_create_offscreen_context",
+                              "Couldn't create AGL drawable.");
+    return FALSE;
+  }
+  
+  SetGWorld(ctx->savedport, ctx->savedgdh);
+  return TRUE;
+} 
 
-    GLint attribs[] = { 
-      AGL_RGBA, 
-      AGL_RED_SIZE, 8, 
-      AGL_ALPHA_SIZE, 8, 
-      AGL_DEPTH_SIZE, 24, 
-      AGL_CLOSEST_POLICY, 
-      AGL_ACCELERATED, 
-      AGL_NO_RECOVERY, 
-      AGL_NONE 
-    };
-    context->pixformat = aglChoosePixelFormat (NULL, 0, attribs);
+
+static SbBool
+aglglue_context_create_pbuffer(struct aglglue_contextdata * ctx)
+{
+  /* FIXME: before we get here, we should have checked the requested
+     dimensions in the context struct versus GLX_MAX_PBUFFER_WIDTH,
+     GLX_MAX_PBUFFER_HEIGHT and GLX_MAX_PBUFFER_PIXELS
+     somewhere. Copied from gl_glx.c by kyrah 20031114, originally 
+     mentioned by mortene 20030811. */
+
+  GLint attribs[] = { 
+    AGL_RGBA, 
+    AGL_RED_SIZE, 8, 
+    AGL_ALPHA_SIZE, 8, 
+    AGL_DEPTH_SIZE, 24, 
+    AGL_CLOSEST_POLICY, 
+    AGL_ACCELERATED, 
+    AGL_NO_RECOVERY, 
+    AGL_NONE 
+  };
+
+  ctx->pixformat = aglChoosePixelFormat (NULL, 0, attribs);
+  GLenum error = aglGetError();
+  if (error != AGL_NO_ERROR) {
+    cc_debugerror_post("aglglue_create_offscreen_context",
+                       "Couldn't create AGL Pixelformat: %s", 
+                       (char *)aglErrorString(error));
+    return FALSE;
+  }
+  
+  if (ctx->pixformat) {
+    ctx->aglcontext = aglCreateContext (ctx->pixformat, NULL);
     GLenum error = aglGetError();
     if (error != AGL_NO_ERROR) {
-      cc_debugerror_post("aglglue_create_offscreen_context",
-                         "Couldn't create AGL Pixelformat: %s", 
+      cc_debugerror_post("aglglue_context_create_offscreen",
+                         "Couldn't create AGL context: %s", 
                          (char *)aglErrorString(error));
-      return NULL;
+      aglglue_contextdata_cleanup(ctx);
+      return FALSE;
     }
-
-    if (context->pixformat) {
-      context->aglcontext = aglCreateContext (context->pixformat, NULL);
+  }
+  
+  if (ctx->aglcontext) {
+    if (!aglglue_aglCreatePBuffer (ctx->width, ctx->height, GL_TEXTURE_2D, 
+                                   GL_RGBA, 0, &ctx->aglpbuffer)) {
       GLenum error = aglGetError();
       if (error != AGL_NO_ERROR) {
         cc_debugerror_post("aglglue_context_create_offscreen",
                            "Couldn't create AGL context: %s", 
                            (char *)aglErrorString(error));
-        aglglue_contextdata_cleanup(context);
-        return NULL;
+        return FALSE;
       }
-    }
-
-    if (context->aglcontext) {
-      if (!aglglue_aglCreatePBuffer (width, height, GL_TEXTURE_2D, 
-        GL_RGBA, 0, &context->aglpbuffer)) {
-          GLenum error = aglGetError();
-        if (error != AGL_NO_ERROR) {
-          cc_debugerror_post("aglglue_context_create_offscreen",
-                             "Couldn't create AGL context: %s", 
-                             (char *)aglErrorString(error));
-          return NULL;
-        }
-      } 
     } 
+  } 
+  return TRUE;
+}
+
+
+void *
+aglglue_context_create_offscreen(unsigned int width, unsigned int height)
+{
+  struct aglglue_contextdata * ctx;
+  SbBool ok, pbuffer = FALSE;
+
+  ctx = aglglue_contextdata_init(width, height);
+  if (!ctx) return NULL;
+
+  /* Use cached function pointer for pBuffer vs SW context creation... */
+  if (aglglue_context_create != NULL) {
+    if (aglglue_context_create(ctx)) {
+      return ctx;
+    } else {
+      aglglue_contextdata_cleanup(ctx);
+      return NULL;
+    }
   }
 
-  return context;
+  /* ... but the first time around, we have to figure out. */
+  pbuffer = aglglue_has_pbuffer_support();
+
+  if (coin_glglue_debug()) {
+    cc_debugerror_postinfo("aglglue_context_create_offscreen",
+                           "PBuffer offscreen rendering is %ssupported "
+                           "by the OpenGL driver", pbuffer ? "" : "NOT ");
+  }
+  
+  if (pbuffer && aglglue_context_create_pbuffer(ctx)) {
+    aglglue_context_create = aglglue_context_create_pbuffer;
+    return ctx;
+  } else if (aglglue_context_create_software(ctx)) {
+    aglglue_context_create = aglglue_context_create_software;
+    return ctx;
+  } else {
+    aglglue_contextdata_cleanup(ctx);
+    return NULL;
+  }
 }
+
 
 SbBool
 aglglue_context_make_current(void * ctx)
@@ -383,25 +459,28 @@ aglglue_context_reinstate_previous(void * ctx)
       aglSetDrawable(context->storedcontext, context->storeddrawable);
       aglSetCurrentContext(context->storedcontext);
     }
+
   } else { /* pBuffer support available */
+
     if (context->storedcontext) aglSetCurrentContext(context->storedcontext);
     else aglSetCurrentContext(NULL);
+
   } 
 }
 
 void
 aglglue_context_destruct(void * ctx) 
 {
+  /* FIXME: needs to call into the (as of yet unimplemented)
+     C wrapper around the SoContextHandler. 20030310 mortene. */
+
   struct aglglue_contextdata * context = (struct aglglue_contextdata *)ctx;
+
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("aglglue_context_destruct",
                            "Destroying context %p", context->aglcontext);
   }
-  if (context->aglpbuffer) {
-    aglglue_aglDestroyPBuffer(context->aglpbuffer);
-  }
   aglglue_contextdata_cleanup(context);
-  free(context);
 }
 
 #endif /* HAVE_AGL */
