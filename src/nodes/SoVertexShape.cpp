@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -62,18 +62,29 @@
 */
 
 
+#ifndef DOXYGEN_SKIP_THIS
+class SoVertexShapeP {
+public:
+  SoNormalCache * normalcache;
+};
+#endif // DOXYGEN_SKIP_THIS
+
 SO_NODE_ABSTRACT_SOURCE(SoVertexShape);
+
+#undef THIS
+#define THIS this->pimpl
 
 /*!
   Constructor.
 */
 SoVertexShape::SoVertexShape(void)
 {
+  THIS = new SoVertexShapeP;
+  THIS->normalcache = NULL;
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVertexShape);
 
   SO_NODE_ADD_FIELD(vertexProperty, (NULL));
-
-  this->normalcache = NULL;
 }
 
 /*!
@@ -81,7 +92,8 @@ SoVertexShape::SoVertexShape(void)
 */
 SoVertexShape::~SoVertexShape()
 {
-  if (this->normalcache) this->normalcache->unref();
+  if (THIS->normalcache) THIS->normalcache->unref();
+  delete THIS;
 }
 
 // doc from superclass
@@ -95,7 +107,7 @@ SoVertexShape::initClass(void)
 void
 SoVertexShape::notify(SoNotList * nl)
 {
-  if (this->normalcache) this->normalcache->invalidate();
+  if (THIS->normalcache) THIS->normalcache->invalidate();
   inherited::notify(nl);
 }
 
@@ -145,8 +157,8 @@ SoVertexShape::shouldGLRender(SoGLRenderAction * action)
       (SoVertexProperty *) this->vertexProperty.getValue();
     if (elem->getNum() == 0 &&
         (!vp || vp->normal.getNum() <= 0)) {
-      if (this->normalcache == NULL ||
-          !this->normalcache->isValid(state)) {
+      if (THIS->normalcache == NULL ||
+          !THIS->normalcache->isValid(state)) {
         generateNormals(state);
       }
 #if 0 // OIV doesn't do this, so it's disabled in Coin also.
@@ -175,12 +187,12 @@ SoVertexShape::setNormalCache(SoState * const state,
                               const int num,
                               const SbVec3f * normals)
 {
-  if (this->normalcache) this->normalcache->unref();
+  if (THIS->normalcache) THIS->normalcache->unref();
   // create new normal cache with no dependencies
   state->push();
-  this->normalcache = new SoNormalCache(state);
-  this->normalcache->ref();
-  this->normalcache->set(num, normals);
+  THIS->normalcache = new SoNormalCache(state);
+  THIS->normalcache->ref();
+  THIS->normalcache->set(num, normals);
   // force element dependencies
   (void) SoCoordinateElement::getInstance(state);
   (void) SoShapeHintsElement::getVertexOrdering(state);
@@ -194,7 +206,7 @@ SoVertexShape::setNormalCache(SoState * const state,
 SoNormalCache *
 SoVertexShape::getNormalCache(void) const
 {
-  return this->normalcache;
+  return THIS->normalcache;
 }
 
 /*!
@@ -208,15 +220,15 @@ SoVertexShape::generateNormals(SoState * const state)
 {
   SbBool storeinvalid = SoCacheElement::setInvalid(FALSE);
 
-  if (this->normalcache) this->normalcache->unref();
+  if (THIS->normalcache) THIS->normalcache->unref();
   state->push(); // need to push for cache dependencies
-  this->normalcache = new SoNormalCache(state);
-  this->normalcache->ref();
-  SoCacheElement::set(state, this->normalcache);
+  THIS->normalcache = new SoNormalCache(state);
+  THIS->normalcache->ref();
+  SoCacheElement::set(state, THIS->normalcache);
   //
   // See if the node supports the Coin-way of generating normals
   //
-  if (!generateDefaultNormals(state, this->normalcache)) {
+  if (!generateDefaultNormals(state, THIS->normalcache)) {
     // FIXME: implement SoNormalBundle
     if (generateDefaultNormals(state, (SoNormalBundle *)NULL)) {
       // FIXME: set generator in normal cache

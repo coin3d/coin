@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -28,15 +28,16 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFNode.h>
 #ifndef COIN_INTERNAL
- // For Open Inventor compatibility.
- #include <Inventor/nodes/SoVertexProperty.h>
+// For Open Inventor compatibility.
+#include <Inventor/nodes/SoVertexProperty.h>
 #endif // !COIN_INTERNAL
 
-class SoNormalCache;
 class SoNormalBundle;
+class SoNormalCache;
 class SbVec3f;
 class SoTextureCoordinateElement;
 class SoCoordinateElement;
+class SoVertexShapeP;
 
 class COIN_DLL_API SoVertexShape : public SoShape {
   typedef SoShape inherited;
@@ -72,7 +73,7 @@ protected:
                      const SbBool neednormals);
 
 private:
-  SoNormalCache * normalcache;
+  SoVertexShapeP * pimpl;
 };
 
 #endif // !COIN_SOVERTEXSHAPE_H
