@@ -20,6 +20,125 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
+
+
+/*!
+  \class SoSceneTexture2 SoSceneTexture2.h Inventor/nodes/SoSceneTexture2.h
+  \brief The SoSceneTexture2 class is used to create a 2D texture from a Coin scene graph.
+  \ingroup nodes
+
+  This node behaves exactly like SoTexture2 when it comes mapping the
+  actual texture onto subsequent geometry. Please read the SoTexture2 documentation
+  for more information about how textures are mapped onto shapes.
+
+  \since Coin 2.2
+*/
+
+/*!
+  \enum SoSceneTexture2::Model
+
+  Texture mapping model, for deciding how to "merge" the texturemap
+  with the object it is mapped unto.
+*/
+/*!
+  \var SoSceneTexture2::Model SoSceneTexture2::MODULATE
+
+  Texture color is multiplied by the polygon color. The result will
+  be Phong shaded (if light model is PHONG).
+*/
+/*!
+  \var SoSceneTexture2::Model SoSceneTexture2::DECAL
+
+  Texture image overwrites polygon shading. Textured pixels will
+  not be Phong shaded. Has undefined behaviour for grayscale and
+  grayscale-alpha textures.
+*/
+/*!
+  \var SoSceneTexture2::Model SoSceneTexture2::BLEND
+
+  This model is normally used with monochrome textures (i.e. textures
+  with one or two components). The first component, the intensity, is
+  then used to blend between the shaded color of the polygon and the
+  SoSceneTexture2::blendColor.
+*/
+/*!
+  \var SoSceneTexture2::Model SoSceneTexture2::REPLACE
+
+  Texture image overwrites polygon shading. Textured pixels will not
+  be Phong shaded. Supports grayscale and grayscale alpha
+  textures. This feature requires OpenGL 1.1. MODULATE will be used if
+  OpenGL version < 1.1 is detected.
+
+  Please note that using this texture model will make your Inventor
+  files incompatible with older versions of Coin and Inventor. You
+  need Coin >= 2.2 or TGS Inventor 4.0 to load Inventor files that
+  uses the REPLACE texture model.
+
+  \since Coin 2.2
+  \since TGS Inventor 4.0
+*/ 
+
+/*!
+  \enum SoSceneTexture2::Wrap
+
+  Enumeration of wrapping strategies which can be used when the
+  texturemap doesn't cover the full extent of the geometry.
+*/
+/*!
+  \var SoSceneTexture2::Wrap SoSceneTexture2::REPEAT
+  Repeat texture when coordinate is not between 0 and 1.
+*/
+/*!
+  \var SoSceneTexture2::Wrap SoSceneTexture2::CLAMP
+  Clamp coordinate between 0 and 1.
+*/
+
+/*!
+  \var SoSFEnum SoSceneTexture2::wrapS
+
+  Wrapping strategy for the S coordinate when the texturemap is
+  narrower than the object to map unto.
+
+  Default value is SoSceneTexture2::REPEAT.
+*/
+/*!
+  \var SoSFEnum SoSceneTexture2::wrapT
+
+  Wrapping strategy for the T coordinate when the texturemap is
+  shorter than the object to map unto.
+
+  Default value is SoSceneTexture2::REPEAT.
+*/
+/*!
+  \var SoSFEnum SoSceneTexture2::model
+
+  Texturemapping model for how the texturemap is "merged" with the
+  polygon primitives it is applied to. Default value is
+  SoSceneTexture2::MODULATE.
+*/
+/*!
+  \var SoSFColor SoSceneTexture2::blendColor
+
+  Blend color. Used when SoSceneTexture2::model is SoSceneTexture2::BLEND.
+
+  Default color value is [0, 0, 0], black, which means no contribution
+  to the blending is made.
+*/
+
+/*!
+  \var SoSFVec2s SoSceneTexture2::size
+  
+  The size of the texture. This node currently only supports power of
+  two textures.  If the size is not a power of two, the value will be
+  rounded upwards to the next power of two.
+*/
+
+/*!
+  \var SoSFNode SoSceneTexture2::scene
+  
+  The scene graph that is rendered into the texture.
+*/
+
 #include <Inventor/nodes/SoSceneTexture2.h>
 
 #include <assert.h>
@@ -32,8 +151,6 @@
 #include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/misc/SoNotification.h>
 
-
-// SoTexture2 includes
 #include <Inventor/SoInput.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoCallbackAction.h>
@@ -111,6 +228,7 @@ public:
 
 SO_NODE_SOURCE(SoSceneTexture2);
 
+// Documented in superclass.
 void
 SoSceneTexture2::initClass(void)
 {
@@ -281,20 +399,21 @@ SoSceneTexture2::doAction(SoAction * action)
 #endif // disabled
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoSceneTexture2::callback(SoCallbackAction * action)
 {
   SoSceneTexture2::doAction(action);
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoSceneTexture2::rayPick(SoRayPickAction * action)
 {
   SoSceneTexture2::doAction(action);
 }
 
+// Documented in superclass.
 void
 SoSceneTexture2::notify(SoNotList * list)
 {
@@ -313,7 +432,7 @@ SoSceneTexture2::notify(SoNotList * list)
   inherited::notify(list);
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoSceneTexture2::write(SoWriteAction * action)
 {
@@ -407,7 +526,8 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
 
     // FIXME: make it possible to specify what kind of context you want
     // (RGB or RGBA, I guess). pederb, 2003-11-27
-    this->glcontext = cc_glglue_context_create_offscreen(size[0], size[1]);
+    this->glcontext = cc_glglue_context_create_offscreen(this->glcontextsize[0], 
+                                                         this->glcontextsize[1]);
     // FIXME: test if we actually got a pbuffer. pederb, 2003-11-27
     
     if (this->glaction) delete this->glaction;
