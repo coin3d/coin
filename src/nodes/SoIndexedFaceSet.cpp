@@ -622,12 +622,12 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
       pointDetail.setMaterialIndex(*mindices);
       vertex.setMaterialIndex(*mindices++);
     }
-    if (nbind == PER_VERTEX || nbind == PER_VERTEX_INDEXED) {
+    if (nbind == PER_VERTEX || nbind == PER_FACE) {
       pointDetail.setNormalIndex(normnr);
       currnormal = &normals[normnr++];
       vertex.setNormal(*currnormal);
     }
-    else if (nbind == PER_VERTEX_INDEXED || nbind == PER_FACE_INDEXED) {
+    else if (nbind == PER_VERTEX || nbind == PER_VERTEX_INDEXED) {
       pointDetail.setNormalIndex(*nindices);
       currnormal = &normals[*nindices++];
       vertex.setNormal(*currnormal);
