@@ -19,6 +19,9 @@
  *
 \**************************************************************************/
 
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif
 #include <Inventor/C/base/debug.h>
 #include <Inventor/C/threads/mutex.h>
 #include <stdarg.h>
@@ -36,16 +39,24 @@ cc_fprintf(
 {
   int retval;
   va_list args;
+#ifdef HAVE_THREADS
   if ( ! mutex ) mutex = cc_mutex_construct();
+#endif
   va_start(args, format);
+#ifdef HAVE_THREADS
   cc_mutex_lock(mutex);
+#endif
   retval = vfprintf(stream, format, args);
+#ifdef HAVE_THREADS
   cc_mutex_unlock(mutex);
+#endif
   va_end(args);
   return retval;
 } /* cc_fprintf() */
 
 /* ********************************************************************** */
+
+#ifdef HAVE_THREADS
 
 void
 cc_fprintf_lock(void)
@@ -60,6 +71,20 @@ cc_fprintf_unlock(void)
   assert(mutex != NULL);
   cc_mutex_unlock(mutex);
 } /* cc_fprintf_unlock() */
+
+#else /* HAVE_THREADS */
+
+void
+cc_fprintf_lock(void)
+{
+}
+
+void
+cc_fprintf_unlock(void)
+{
+}
+
+#endif /* !HAVE_THREADS */
 
 int
 cc_fprintf_locked(
