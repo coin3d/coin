@@ -227,6 +227,10 @@ THE LINKS
 * A Free Software TrueType/PostScript/... font editor:
   http://pfaedit.sourceforge.net/
 
+* "Shareware Typefaces" - loads of TrueType fonts:
+  http://www.masterstech-home.com/The_Library/Font_Samples/
+  Viewable samples before downloading.
+
 * In 2003-01, Bitstream and the Gnome project announced that Bitstream
   will soon give away 10 fonts that can be used for just about any
   purpose (licensing certainly seems liberal enough for us to include
