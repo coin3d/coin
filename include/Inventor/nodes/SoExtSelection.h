@@ -23,8 +23,25 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/fields/SoSFEnum.h>
+#include <stddef.h> // NULL
 
 class SbColor;
+class SoPrimitiveVertex;
+
+typedef SbBool SoExtSelectionTriangleCB(void * userdata, 
+                                        SoCallbackAction * action, 
+                                        const SoPrimitiveVertex * v1, 
+                                        const SoPrimitiveVertex * v2, 
+                                        const SoPrimitiveVertex * v3);
+
+typedef SbBool SoExtSelectionLineSegmentCB(void * userdata, 
+                                           SoCallbackAction * action, 
+                                           const SoPrimitiveVertex * v1, 
+                                           const SoPrimitiveVertex * v2);
+
+typedef SbBool SoExtSelectionPointCB(void * userdata, 
+                                     SoCallbackAction * action, 
+                                     const SoPrimitiveVertex * v1);
 
 typedef SoPath * SoLassoSelectionFilterCB(void * userdata, const SoPath * path);
 
@@ -64,10 +81,16 @@ public:
 
   virtual void handleEvent(SoHandleEventAction * action);
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
-  
+
   void setLassoFilterCallback(SoLassoSelectionFilterCB * f, void * userdata = NULL,
                               const SbBool callonlyifselectable = TRUE);
 
+  void setTriangleFilterCallback(SoExtSelectionTriangleCB * func, 
+                                 void * userdata = NULL); 
+  void setLineSegmentFilterCallback(SoExtSelectionLineSegmentCB * func, 
+                                    void * userdata = NULL);
+  void setPointFilterCallback(SoExtSelectionPointCB * func, 
+                              void * userdata = NULL); 
 protected:
   virtual ~SoExtSelection();
 
