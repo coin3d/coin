@@ -917,12 +917,12 @@ SoVRMLExtrusionP::generateNormals(void)
 {
   this->gen.reset(this->master->ccw.getValue());
   const SbVec3f * c = this->coord.getArrayPtr();
-  const int * iptr = this->idx.getArrayPtr();
-  const int * endptr = iptr + this->idx.getLength();
+  const int32_t * iptr = this->idx.getArrayPtr();
+  const int32_t * endptr = iptr + this->idx.getLength();
 
   while (iptr < endptr) {
     this->gen.beginPolygon();
-    int idx = *iptr++;
+    int32_t idx = *iptr++;
     while (idx >= 0) {
       this->gen.polygonVertex(c[idx]);
       idx = *iptr++;
