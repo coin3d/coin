@@ -34,6 +34,25 @@
 
 */
 
+/*!
+  \var SoSFFloat SoCacheHint::memValue
+
+  Sets the value for main memory usage. Should be a number between 0
+  and 1. A higher value will use more memory for caching.  Default
+  value is 0.5
+
+*/
+
+/*!
+  \var SoSFFloat SoCacheHint::gfxValue
+
+  Sets the value for gfx memory usage. Should be a number between 0
+  and 1. A higher value will use more memory for caching.  Default
+  value is 0.5
+
+*/
+
+
 #include <Inventor/nodes/SoCacheHint.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -53,7 +72,8 @@ SO_NODE_SOURCE(SoCacheHint);
 SoCacheHint::SoCacheHint(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoCacheHint);
-  SO_NODE_ADD_FIELD(value, (0.5f));
+  SO_NODE_ADD_FIELD(memValue, (0.5f));
+  SO_NODE_ADD_FIELD(gfxValue, (0.5f));
 }
 
 /*!
@@ -67,8 +87,7 @@ SoCacheHint::~SoCacheHint()
 void
 SoCacheHint::initClass(void)
 {
-  //  SO_NODE_INTERNAL_INIT_CLASS(SoCacheHint, SO_FROM_COIN_2_4);
-  SO_NODE_INTERNAL_INIT_CLASS(SoCacheHint, SO_FROM_COIN_2_3);
+  SO_NODE_INTERNAL_INIT_CLASS(SoCacheHint, SO_FROM_COIN_2_4);
   
   SO_ENABLE(SoGLRenderAction, SoCacheHintElement);
 }
@@ -77,7 +96,9 @@ void
 SoCacheHint::doAction(SoAction * action)
 {
   SoState * state = action->getState();
-  SoCacheHintElement::set(state, this, this->value.getValue());
+  SoCacheHintElement::set(state, this, 
+                          this->memValue.getValue(),
+                          this->gfxValue.getValue());
 }
 
 void

@@ -45,6 +45,7 @@
 #include <Inventor/elements/SoBumpMapCoordinateElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoCacheHintElement.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/lists/SbList.h>
@@ -57,6 +58,9 @@
 
 #define MAX_UNITS 16
 
+// FIXME: make it possible to control this constant. pederb, 2004-01-10
+#define CACHE_HINT_LIMIT 0.51f
+
 typedef struct  {
   GLuint triangleindex;
   GLuint vertex;
@@ -68,7 +72,7 @@ typedef struct  {
 
 static unsigned long total_vbo_memory = 0;
 static unsigned long COIN_MAX_VBO_MEMORY = 0;
-static int COIN_ENABLE_VBO = -1;
+static int COIN_ENABLE_VBO = -2;
 
 class SoPrimitiveVertexCacheP {
 public:
@@ -220,8 +224,8 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
       COIN_MAX_VBO_MEMORY = (unsigned long) atol(env);
     }
   }
-  if (COIN_ENABLE_VBO < 0) {
-    COIN_ENABLE_VBO = 0;
+  if (COIN_ENABLE_VBO == -2) {
+    COIN_ENABLE_VBO = -1;
     const char * env = coin_getenv("COIN_ENABLE_VBO");
     if (env) {
       COIN_ENABLE_VBO = atoi(env);
@@ -261,8 +265,17 @@ SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
 
   unsigned long contextid = (unsigned long) SoGLCacheContextElement::get(state);
   const cc_glglue * glue = cc_glglue_instance((int) contextid);
-  SbBool renderasvbo = COIN_ENABLE_VBO && cc_glglue_has_vertex_buffer_object(glue);
+  
+  float memcaching;
+  float gfxcaching;
+  
+  SoCacheHintElement::get(state, memcaching, gfxcaching);
 
+  SbBool renderasvbo = 
+    ((COIN_ENABLE_VBO == 1) ||
+     (COIN_ENABLE_VBO != 0 && gfxcaching >= CACHE_HINT_LIMIT)) &&
+    cc_glglue_has_vertex_buffer_object(glue);
+  
   if (renderasvbo) {
     unsigned long size = PRIVATE(this)->countVBOSize(glue, contextid, color,
                                                      normal, texture, enabled, lastenabled);
@@ -1094,3 +1107,4 @@ SoPrimitiveVertexCacheP::contextCleanup(uint32_t context, void * closure)
 
 
 #undef MAX_UNITS
+#undef CACHE_HINT_LIMIT

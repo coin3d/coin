@@ -50,9 +50,10 @@ public:
   virtual SoElement * copyMatchInfo(void) const;
 
   static void set(SoState * state, SoNode * node,
-                  const float value);
-  static void get(SoState * state, float & value);
-
+                  const float memvalue,
+                  const float gfxvalue);
+  static void get(SoState * state, float & memvalue, float & gfxvalue);
+  
 protected:
 
   SoCacheHintElementP * pimpl;

@@ -732,7 +732,8 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   // wait some frames before trying to create the vertex array
   // cache. This will give Coin a chance to create display list caches
   // for parts of the scene graph.
-  if (soshape_use_gl_vertex_arrays && 
+  if (((shapestyleflags & SoShapeStyleElement::VERTEXARRAY) ||
+       soshape_use_gl_vertex_arrays) && 
       ((PRIVATE(this)->flags & SoShapeP::DISABLE_VERTEX_ARRAY_CACHE) == 0) &&
       cc_glglue_has_vertex_array(glue) &&
       (PRIVATE(this)->rendercnt >= SoShapeP::VERTEXARRAY_WAITCNT) &&

@@ -42,8 +42,8 @@ public:
   static void initClass(void);
   SoCacheHint(void);
 
-  // just a dummy floating point value for now
-  SoSFFloat value;
+  SoSFFloat memValue;
+  SoSFFloat gfxValue;
 
   virtual void doAction(SoAction * action);
   virtual void GLRender(SoGLRenderAction * action);

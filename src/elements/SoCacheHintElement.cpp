@@ -31,13 +31,17 @@
 */
 
 #include <Inventor/elements/SoCacheHintElement.h>
-#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 
 #include <assert.h>
 
+// FIXME: make it possible to control this constant. pederb, 2005-01-10
+#define VERTEX_ARRAY_LIMIT 0.51f
+
 class SoCacheHintElementP {
 public:
-  float value;
+  float memvalue;
+  float gfxvalue;
 };
 
 #undef PRIVATE
@@ -79,9 +83,8 @@ void
 SoCacheHintElement::init(SoState * state)
 {
   inherited::init(state);
-//   this->vertexOrdering = getDefaultVertexOrdering();
-//   this->shapeType = getDefaultShapeType();
-//   this->faceType = getDefaultFaceType();
+  PRIVATE(this)->memvalue = 0.5f;
+  PRIVATE(this)->gfxvalue = 0.5f;
 }
 
 //! FIXME: write doc.
@@ -91,13 +94,14 @@ SoCacheHintElement::push(SoState * state)
 {
   inherited::push(state);
   SoCacheHintElement * prev = (SoCacheHintElement*) this->getNextInStack();
-  PRIVATE(this)->value = PRIVATE(prev)->value;
+  PRIVATE(this)->memvalue = PRIVATE(prev)->memvalue;
+  PRIVATE(this)->gfxvalue = PRIVATE(prev)->gfxvalue;
 }
 
 void
 SoCacheHintElement::pop(SoState * state, const SoElement * prevtopelement)
 {
-  // nothing to do?
+  inherited::pop(state, prevtopelement);
 }
 
 //! FIXME: write doc.
@@ -106,7 +110,9 @@ SbBool
 SoCacheHintElement::matches(const SoElement * element) const
 {
   SoCacheHintElement *elem = (SoCacheHintElement*)element;
-  return PRIVATE(this)->value == PRIVATE(elem)->value;
+  return 
+    (PRIVATE(this)->memvalue == PRIVATE(elem)->memvalue) &&
+    (PRIVATE(this)->gfxvalue == PRIVATE(elem)->gfxvalue);
 }
 
 //! FIXME: write doc.
@@ -116,7 +122,8 @@ SoCacheHintElement::copyMatchInfo() const
 {
   SoCacheHintElement *elem = (SoCacheHintElement*)
     getTypeId().createInstance();
-  PRIVATE(elem)->value = PRIVATE(this)->value;
+  PRIVATE(elem)->memvalue = PRIVATE(this)->memvalue;
+  PRIVATE(elem)->gfxvalue = PRIVATE(this)->gfxvalue;
   return elem;
 }
 
@@ -125,24 +132,28 @@ SoCacheHintElement::copyMatchInfo() const
 void
 SoCacheHintElement::set(SoState * state,
                         SoNode * node,
-                        const float value)
+                        const float memvalue,
+                        const float gfxvalue)
 {
   SoCacheHintElement *elem = (SoCacheHintElement*)
     SoElement::getElement(state, classStackIndex);
 
-  PRIVATE(elem)->value = value;
+  PRIVATE(elem)->memvalue = memvalue;
+  PRIVATE(elem)->gfxvalue = gfxvalue;
+
+  SoShapeStyleElement::setVertexArrayRendering(state, memvalue >= VERTEX_ARRAY_LIMIT);
 }
 
 //! FIXME: write doc.
 
 void
-SoCacheHintElement::get(SoState * const state,
-                        float & value)
+SoCacheHintElement::get(SoState * const state, float & memvalue, float & gfxvalue)
 {
   SoCacheHintElement *elem = (SoCacheHintElement*)
     SoElement::getConstElement(state, classStackIndex);
-
-  value = PRIVATE(elem)->value;
+  
+  memvalue = PRIVATE(elem)->memvalue;
+  gfxvalue = PRIVATE(elem)->gfxvalue;
 }
 
 #undef PRIVATE
