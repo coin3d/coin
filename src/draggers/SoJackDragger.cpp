@@ -221,7 +221,7 @@ SoJackDragger::valueChangedCB(void *, SoDragger * d)
 void
 SoJackDragger::invalidateSurroundScaleCB(void * f, SoDragger * d)
 {
-  SoJackDragger *thisp = (SoJackDragger*) d;
+  SoJackDragger *thisp = (SoJackDragger*) f;
   SoSurroundScale *surround = SO_CHECK_PART(thisp, "surroundScale", SoSurroundScale);
   if (surround) {
     surround->invalidate();
