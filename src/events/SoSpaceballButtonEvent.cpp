@@ -113,7 +113,8 @@ SoSpaceballButtonEvent::isButtonPressEvent(const SoEvent * e,
                                            whichButton)
 {
   return (e->isOfType(SoSpaceballButtonEvent::getClassTypeId()) &&
-          ((SoSpaceballButtonEvent *)e)->getButton() == whichButton &&
+          (whichButton == SoSpaceballButtonEvent::ANY ||
+           ((SoSpaceballButtonEvent *)e)->getButton() == whichButton) &&
           ((SoButtonEvent *)e)->getState() == SoButtonEvent::DOWN);
 }
 
@@ -129,6 +130,7 @@ SoSpaceballButtonEvent::isButtonReleaseEvent(const SoEvent * e,
                                              whichButton)
 {
   return (e->isOfType(SoSpaceballButtonEvent::getClassTypeId()) &&
-          ((SoSpaceballButtonEvent *)e)->getButton() == whichButton &&
+          (whichButton == SoSpaceballButtonEvent::ANY ||
+           ((SoSpaceballButtonEvent *)e)->getButton() == whichButton) &&
           ((SoButtonEvent *)e)->getState() == SoButtonEvent::UP);
 }

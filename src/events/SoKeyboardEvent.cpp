@@ -183,7 +183,8 @@ SoKeyboardEvent::isKeyPressEvent(const SoEvent * e,
                                  SoKeyboardEvent::Key whichKey)
 {
   return (e->isOfType(SoKeyboardEvent::getClassTypeId()) &&
-          ((SoKeyboardEvent *)e)->getKey() == whichKey &&
+          (whichKey == SoKeyboardEvent::ANY ||
+           ((SoKeyboardEvent *)e)->getKey() == whichKey) &&
           ((SoButtonEvent *)e)->getState() == SoButtonEvent::DOWN);
 }
 
@@ -198,7 +199,8 @@ SoKeyboardEvent::isKeyReleaseEvent(const SoEvent * e,
                                    SoKeyboardEvent::Key whichKey)
 {
   return (e->isOfType(SoKeyboardEvent::getClassTypeId()) &&
-          ((SoKeyboardEvent *)e)->getKey() == whichKey &&
+          (whichKey == SoKeyboardEvent::ANY ||
+           ((SoKeyboardEvent *)e)->getKey() == whichKey) &&
           ((SoButtonEvent *)e)->getState() == SoButtonEvent::UP);
 }
 
