@@ -1,9 +1,9 @@
 
-                         Install Instructions
+                          Install Instructions
 
-               Copyright 2001-2003   Systems in Motion
+                 Copyright 2001-2003  Systems in Motion
 
-                        http://www.coin3d.org/
+                         http://www.coin3d.org/
 
 
 Introduction
@@ -145,11 +145,27 @@ Configuration Options
   ground, and we expect you to be able to get through this without
   technical support if you decide to go for it.
 
---enable-msvdsp
+--enable-msvcdsp
 
   This option changes the make process from compiling the library to
   building an MS DevStudio project and workspace file that you can later
   use from the MSVC++ ID to build Coin with.
+
+--without-framework
+
+  On Mac OS X, the default behaviour is to install Coin as a framework
+  so you can compile/link with it by using the compiler option
+  "-framework Inventor".  If you want to make a plain installation
+  into $prefix/{lib,include} instead, use this option.
+
+--with-framework
+
+  To test the framework layout on non-Macs.
+
+--with-framework-prefix=PATH
+
+  To install the framework into another directory than /Library/Frameworks,
+  use this option.  Note also the DESTDIR make variable.
 
 --enable-shared --disable-shared
 --disable-static --enable-static
@@ -270,6 +286,12 @@ Configuration Options
   option should not be used for anyone that do not do development on the
   Coin library itself.
 
+--disable-optimization
+
+  It is default to enable optimization when compiling Coin.  Most compiler
+  bugs are related to optimization, so this option can be used to disable
+  compiler optimization for Coin.
+
 --with-msvcrt=<crt>
 
   This option sets which C library to link with for MS Visual C++ builds.
@@ -370,6 +392,9 @@ LIBS="<string>"
 
   This would cause compilation of both C and C++ files to be done with
   the "-ansi" and "-pedantic" options.
+
+  You can also use this technique to add MSVC++ command line compiler
+  options, like e.g. CXXFLAGS="/WX" for treating warnings as errors.
 
   You can also override other things like which compiler is used by
   setting $CC, $CXX, $LD, $AR and $RANLIB amongst other variables.
