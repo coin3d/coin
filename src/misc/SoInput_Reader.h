@@ -108,7 +108,7 @@ public:
 
 class SoInput_GZFileReader : public SoInput_Reader {
 public:
-  SoInput_GZFileReader(const char * const filename, void * fp);
+  SoInput_GZFileReader(const char * const filename, gzFile fp);
   virtual ~SoInput_GZFileReader();
 
   virtual ReaderType getType(void) const;
@@ -126,10 +126,10 @@ public:
 
 #ifdef HAVE_BZIP2
 
-class SoInput_BZFileReader : public SoInput_Reader {
+class SoInput_BZ2FileReader : public SoInput_Reader {
 public:
-  SoInput_BZFileReader(const char * const filename, void * fp);
-  virtual ~SoInput_BZFileReader();
+  SoInput_BZ2FileReader(const char * const filename, BZFILE * fp);
+  virtual ~SoInput_BZ2FileReader();
 
   virtual ReaderType getType(void) const;
   virtual int readBuffer(char * buf, const size_t readlen);

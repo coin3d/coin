@@ -69,7 +69,7 @@ SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
     int bzerror = BZ_OK;
     BZFILE * bzfp = BZ2_bzReadOpen(&bzerror,  fp, 0, 0, NULL, 0);
     if ((bzerror == BZ_OK) && (bzfp != NULL)) {
-      reader = new SoInput_BZFileReader(fullname.getString(), (void*) bzfp);
+      reader = new SoInput_BZ2FileReader(fullname.getString(), bzfp);
     }
   }
 #endif // HAVE_BZIP2
@@ -78,7 +78,7 @@ SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
     gzFile gzfp = gzopen(fullname.getString(), "rb");
     if (gzfp) {
       fclose(fp); // close original file handle
-      reader = new SoInput_GZFileReader(fullname.getString(), (void*)gzfp);
+      reader = new SoInput_GZFileReader(fullname.getString(), gzfp);
     }
   }
 #endif // HAVE_ZLIB
@@ -175,7 +175,7 @@ SoInput_MemBufferReader::readBuffer(char * buf, const size_t readlen)
 //
 #ifdef HAVE_ZLIB
 
-SoInput_GZFileReader::SoInput_GZFileReader(const char * const filename, void * fp)
+SoInput_GZFileReader::SoInput_GZFileReader(const char * const filename, gzFile fp)
 {
   this->gzfp = fp;
   this->filename = filename;
@@ -183,7 +183,7 @@ SoInput_GZFileReader::SoInput_GZFileReader(const char * const filename, void * f
 
 SoInput_GZFileReader::~SoInput_GZFileReader()
 {
-  assert((gzFile) this->gzfp);
+  assert(this->gzfp);
   gzclose(this->gzfp);
 }
 
@@ -196,7 +196,7 @@ SoInput_GZFileReader::getType(void) const
 int
 SoInput_GZFileReader::readBuffer(char * buf, const size_t readlen)
 {
-  return gzread((gzFile)this->gzfp, (void*) buf, readlen);
+  return gzread(this->gzfp, (void*) buf, readlen);
 }
 
 const SbString &
@@ -213,13 +213,13 @@ SoInput_GZFileReader::getFilename(void)
 //
 #ifdef HAVE_BZIP2
 
-SoInput_BZFileReader::SoInput_BZFileReader(const char * const filename, void * fp)
+SoInput_BZ2FileReader::SoInput_BZ2FileReader(const char * const filename, BZFILE * fp)
 {
   this->bzfp = fp;
   this->filename = filename;
 }
 
-SoInput_BZFileReader::~SoInput_BZFileReader()
+SoInput_BZ2FileReader::~SoInput_BZ2FileReader()
 {
   if (this->bzfp) {
     int bzerror = BZ_OK;
@@ -228,13 +228,13 @@ SoInput_BZFileReader::~SoInput_BZFileReader()
 }
 
 SoInput_Reader::ReaderType
-SoInput_BZFileReader::getType(void) const
+SoInput_BZ2FileReader::getType(void) const
 {
   return BZ2FILE;
 }
 
 int
-SoInput_BZFileReader::readBuffer(char * buf, const size_t readlen)
+SoInput_BZ2FileReader::readBuffer(char * buf, const size_t readlen)
 {
   if (this->bzfp == NULL) return -1;
 
@@ -250,7 +250,7 @@ SoInput_BZFileReader::readBuffer(char * buf, const size_t readlen)
 }
 
 const SbString &
-SoInput_BZFileReader::getFilename(void)
+SoInput_BZ2FileReader::getFilename(void)
 {
   return this->filename;
 }
