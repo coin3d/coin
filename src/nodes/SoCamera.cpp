@@ -343,17 +343,34 @@ SoCamera::jitter(int numpasses, int curpass, const SbViewportRegion & vpreg,
 void
 SoCamera::doAction(SoAction * action)
 {
-  // FIXME: viewportMapping field is not accounted for. 19990315
-  // mortene.
   SoState * state = action->getState();
 
-  // FIXME: there's a bug here which phucks up the rendering to
-  // viewports where height > width (I'll promise to buy the person
-  // who fixes this bug a beer of his choice). 20000310 mortene.
   float aspectratio =
     SoViewportRegionElement::get(state).getViewportAspectRatio();
 
-  SbViewVolume vv = this->getViewVolume(aspectratio);
+  int vpm = this->viewportMapping.getValue();
+  
+  SbViewVolume vv = 
+    this->getViewVolume(vpm == ADJUST_CAMERA ? aspectratio : 0.0f);
+
+  switch (vpm) {
+  case CROP_VIEWPORT_FILL_FRAME:
+    // FIXME: adjust viewport, pederb, 20000402
+    break;
+  case CROP_VIEWPORT_LINE_FRAME:
+    // FIXME: adjust viewport, pederb, 20000402
+    break;
+  case CROP_VIEWPORT_NO_FRAME:
+    // FIXME: adjust viewport, pederb, 20000402
+    break;
+  case ADJUST_CAMERA:
+  case LEAVE_ALONE:
+    break;
+  default:
+    assert(0 && "unknown viewport mapping");
+    break;
+  }
+
   SoViewVolumeElement::set(state, this, vv);
 
   SbMatrix affine, proj;
