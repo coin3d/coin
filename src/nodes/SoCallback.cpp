@@ -132,6 +132,7 @@ void
 SoCallback::search(SoSearchAction * action)
 {
   SoCallback::doAction(action);
+  SoNode::search(action);
 }
 
 // Doc from superclass.
@@ -139,6 +140,7 @@ void
 SoCallback::write(SoWriteAction * action)
 {
   SoCallback::doAction(action);
+  SoNode::write(action);
 }
 
 // Doc from superclass.
