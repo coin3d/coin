@@ -200,10 +200,7 @@ public:
     if (this->glxpixmap) glXDestroyGLXPixmap(this->display, this->glxpixmap);
     if (this->pixmap) XFreePixmap(this->display, this->pixmap);
     if (this->visinfo) XFree(this->visinfo);
-    // FIXME: there's a memory leak here, but leaving this in causes a
-    // crash when running remotely from Mesa on RH Linux 6.2 to OpenGL
-    // on IRIX6.5. Investigate further. 20000705 mortene.
-//      if (this->display) XCloseDisplay(this->display);
+    if (this->display) XCloseDisplay(this->display);
 
     delete[] this->buffer;
   }
@@ -245,6 +242,7 @@ public:
       this->storedcontext = glXGetCurrentContext();
       if (this->storedcontext) {
         this->storeddrawable = glXGetCurrentDrawable();
+        this->storeddisplay = glXGetCurrentDisplay();
       }
       glXMakeCurrent(this->display, this->glxpixmap, this->context);
       return TRUE;
@@ -264,13 +262,11 @@ public:
       glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
                    this->buffer);
       glPixelStorei(GL_PACK_ALIGNMENT, 4);
+      (void) glXMakeCurrent(this->display, 0, 0);
       
-      if (this->storedcontext && this->storeddrawable) {
-        (void) glXMakeCurrent(this->display, this->storeddrawable, 
+      if (this->storedcontext && this->storeddrawable && this->storeddisplay) {
+        (void) glXMakeCurrent(this->storeddisplay, this->storeddrawable,
                               this->storedcontext);
-      }
-      else {
-        (void) glXMakeCurrent(this->display, 0, 0);
       }
     }
   }
@@ -355,7 +351,7 @@ public:
       glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
                    this->buffer);
       glPixelStorei(GL_PACK_ALIGNMENT, 4);
-      
+
       if (this->storedcontext && this->storeddc) {
         wglMakeCurrent(this->storeddc, this->storedcontext);
         this->storedcontext = NULL;
@@ -702,7 +698,7 @@ SoOffscreenRenderer::getGLRenderAction(void) const
   return this->renderaction;
 }
 
-static void 
+static void
 pre_render_cb(void * userdata, SoGLRenderAction * action)
 {
   glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
@@ -722,7 +718,7 @@ SoOffscreenRenderer::renderFromBase(SoBase * base)
 
     // needed to clear viewport after glViewport is called
     this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
-    
+
     if (base->isOfType(SoNode::getClassTypeId()))
       this->renderaction->apply((SoNode *)base);
     else if (base->isOfType(SoPath::getClassTypeId()))
