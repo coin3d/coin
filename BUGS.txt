@@ -2817,6 +2817,11 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
     of each window-specific (GLX / WGL / AGL) context struct format
     might be challenging.
 
+    UPDATE 20040922 mortene: there have been several more requests for
+    this feature. Lacking control over the GL context capabilities can
+    be a serious show-stopper for programmers wanting to use e.g. the
+    stencil buffer, so I consider this a medium-to-high priority item.
+
 =====================================================================
 
 103 Need more 'ivinfo' information
@@ -3855,5 +3860,15 @@ incremented during the copy, but never decremented :(
         just that you wouldn't be able to translate makeCurrent() into
         Lock() calls without pairing every Lock() up with Unlock() of
         the previous context...
+
+=====================================================================
+
+142 SoTabPlaneDragger tabs does not follow mouse pointer.
+
+    When dragging a tab of an SoTabPlaneDragger, it should follow
+    exactly under the mouse pointer. Coin is however buggy in this
+    respect (while SGI Inventor works fine).
+
+    20040922 mortene.
 
 =====================================================================
