@@ -482,19 +482,10 @@ SoSceneManager::getBackgroundIndex(void) const
 /*!
   Turn RGB truecolor mode on or off. If you turn truecolor mode off,
   colorindex mode will be used instead.
-
-  Note: colorindex mode is not supported yet in Coin, so calls to this
-  method will be ignored.
- */
+*/
 void
 SoSceneManager::setRGBMode(const SbBool flag)
 {
-  if (flag == TRUE) {
-    SoDebugError::postWarning("SoSceneManager::setRGBMode",
-                              "Colorindex mode rendering not supported "
-                              "in Coin, ignoring attempt at turning off "
-                              "truecolor mode.");
-  }
   this->rgbmode = flag;
 }
 
