@@ -612,48 +612,6 @@ coin_geq_power_of_two(uint32_t x)
   return coin_next_power_of_two(x);
 }
 
-static const char logtable256[] = {
-  0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3,
-  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-  5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-  5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-  6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-  6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-  6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-  6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-  7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-  7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-  7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-  7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-  7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-  7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-  7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-  7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7
-};
-
-/*!
-  Caluclate the log2 value of x. For negative values, the log2 of the
-  absolute value of x will be returned.
-*/
-int32_t 
-coin_ilogb(int32_t x)
-{
-  /* from http://graphics.stanford.edu/~seander/bithacks.html */
-  int t, tt; 
-  int c = 0;
-  
-  if (x < 0) x = -x;
-
-  if ((tt = x >> 16)) {
-    c = (t = x >> 24) ? 24 + logtable256[t] : 16 + logtable256[tt & 0xFF];
-  }
-  else {
-    c = (t = x & 0xFF00) ? 8 + logtable256[t >> 8] : logtable256[x & 0xFF];
-  }
-  return c;
-}
-
-
 /*
   Calculate the view volume jitter vector when doing multipass
   antialiasing rendering.
