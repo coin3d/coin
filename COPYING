@@ -1,14 +1,13 @@
 Coin is an open-source clone library of SGI's Open Inventor.  It is
-released publicly under the GNU Lesser General Public License ("LGPL"
-for short).
-
-Some of the files in the distribution is covered by the GNU GPL, but
-this does not include any of the files which are compiled to the final
-binary products.
+released publicly under the GNU General Public License ("GPL" for
+short).
 
 As Systems in Motion have full re-licensing rights for 100% of the
 library code, we also make it available for any proprietary use under
-a Professional Edition license upon request. Contact us at
+a Professional Edition License upon request. See
+<URL:http://www.coin3d.org> for additional information.
+
+Contact us at
 
         support@sim.no
 

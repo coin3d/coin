@@ -4,10 +4,10 @@ on @RFC822_DATE@.
 
 This software is copyright 1998-2001 by Systems in Motion AS.
 You are free to distribute this software under the terms of the
-GNU Lesser General Public License v2.1.
+GNU General Public License v2.
 
 On Debian systems, the full text of the license can be found in
-the file /usr/share/common-licenses/LGPL-2.1.
+the file /usr/share/common-licenses/GPL.
 
 The debianized source archive for Coin is built from the standard
 source distribution of Coin by running "make debian-packages" in
