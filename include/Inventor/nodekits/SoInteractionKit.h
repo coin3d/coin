@@ -22,7 +22,13 @@
 
 #include <Inventor/nodekits/SoSubKit.h>
 #include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/lists/SoPathList.h>
+#include <Inventor/fields/SoSFEnum.h>
 
+class SoFieldSensor;
+class SoSensor;
+class SoSeparator;
 
 class SoInteractionKit : public SoBaseKit
 {
@@ -33,15 +39,82 @@ class SoInteractionKit : public SoBaseKit
   SO_KIT_CATALOG_ENTRY_HEADER(geomSeparator);
   SO_KIT_CATALOG_ENTRY_HEADER(topSeparator);
 
-  // FIXME: lots of stuff missing from the API. 19991107 mortene.
+public:
+  SoSFEnum renderCaching;
+  SoSFEnum boundingBoxCaching;
+  SoSFEnum renderCulling;
+  SoSFEnum pickCulling;
 
 public:
   SoInteractionKit(void);
-
   static void initClass(void);
+
+  enum CacheEnabled { OFF, ON, AUTO };
+
+  virtual SbBool setPartAsPath(const SbName &partname,
+                               SoPath *path);
+  virtual SbBool setPartAsDefault(const SbName &partname,
+                                  SoNode *node,
+                                  SbBool onlyifdefault = TRUE);
+  virtual SbBool setPartAsDefault(const SbName &partname,
+                                  const SbName &nodename,
+                                  SbBool onlyifdefault = TRUE);
+  SbBool isPathSurrogateInMySubgraph(const SoPath *path,
+                                     SoPath *&pathToOwner,
+                                     SbName  &surrogatename,
+                                     SoPath *&surrogatepath,
+                                     SbBool fillargs = TRUE);
+  SbBool isPathSurrogateInMySubgraph(const SoPath *path);
+  static void setSwitchValue(SoNode *node, const int newVal);
 
 protected:
   virtual ~SoInteractionKit();
+  virtual void copyContents(const SoFieldContainer *fromFC,
+                            SbBool copyConnections);
+
+  virtual SbBool setPart(const int partNum, SoNode *node);
+  virtual SbBool readInstance(SoInput *in, unsigned short flags);
+  static void readDefaultParts(const char *fileName,
+                               const char defaultBuffer[],
+                               int defBufSize);
+  virtual SbBool setAnyPartAsDefault(const SbName &partname,
+                                     SoNode *node,
+                                     SbBool anypart = TRUE,
+                                     SbBool onlyifdefault = TRUE);
+  virtual SbBool setAnyPartAsDefault(const SbName &partname,
+                                     const SbName &nodename,
+                                     SbBool anypart = TRUE,
+                                     SbBool onlyifdefault = TRUE);
+  SbBool setAnySurrogatePath(const SbName &name,
+                             SoPath *path,
+                             SbBool leafcheck = FALSE,
+                             SbBool publiccheck = FALSE);
+  virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
+  virtual void setDefaultOnNonWritingFields();
+
+  SoFieldSensor *fieldSensor;
+  static void fieldSensorCB(void *, SoSensor *);
+  SoSeparator *oldTopSep;
+
+  void connectSeparatorFields( SoSeparator *dest, SbBool onOff );
+
+private:
+  SoPathList surrogatePaths;
+  SbList <SbName> surrogateNames;
+
+  void addSurrogatePath(SoPath *path, const SbName &name);
+  void removeSurrogatePath(const SbName &partname);
+  void removeSurrogatePath(const int idx);
+  int findSurrogateIndex(const SbName &partname) const;
+  int findSurrogateInPath(const SoPath *path);
+
+  static SbList <SoNode*> defaultDraggerParts;
+  static void clean(void);
+
+  SoFieldSensor *topSeparatorSensor;
+  static void sensorCB(void *, SoSensor*);
+  SoSeparator *oldTopSeparator;
+  void connectSeparator(SoSeparator *sep, const SbBool onOff);
 };
 
 #endif // !__SOINTERACTIONKIT_H__
