@@ -493,14 +493,14 @@ static int cube_vindices[] =
   2, 3, 7, 6
 };
 
-static int cube_tindices[] = // FIXME: vet ikke om dette er riktig!
+static int cube_tindices[] =
 {
-  0, 1, 2, 3,
-  0, 1, 2, 3,
-  0, 1, 2, 3,
-  0, 1, 2, 3,
-  0, 1, 2, 3,
-  0, 1, 2, 3
+  3, 2, 1, 0,
+  3, 2, 1, 0,
+  3, 2, 1, 0,
+  3, 2, 1, 0,
+  3, 2, 1, 0,
+  3, 2, 1, 0,
 };
 
 static float cube_texcoords[] =
