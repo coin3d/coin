@@ -208,7 +208,7 @@ enum Coin_FT_Encoding {
   FT_ENC_TAG(FT_ENCODING_APPLE_ROMAN, 'a', 'r', 'm', 'n')
   
 };
-#endif // FREETYPE_RUNTIME_LINKING
+#endif /* FREETYPE_RUNTIME_LINKING */
 
 /* ************************************************************************* */
 
@@ -1021,7 +1021,8 @@ flwft_moveToCallback(FT_Vector * to, void * user)
 static int
 flwft_lineToCallback(FT_Vector * to, void * user)
 {
-  double * vertex = (double*) malloc(sizeof(double)*3);
+
+  double vertex[3];
 
   flwft_tessellator.last_vertex.x = to->x;
   flwft_tessellator.last_vertex.y = to->y;
@@ -1032,7 +1033,6 @@ flwft_lineToCallback(FT_Vector * to, void * user)
 
   flwft_addTessVertex(vertex);
 
-  free(vertex);
   return 0;
 }
 
@@ -1041,7 +1041,7 @@ flwft_conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
 {
 
   int i;
-  double * vertex;
+  double vertex[3];
   double b[2], c[2], d[2], f[2], df[2], df2[2];
   double spline_delta, spline_delta2;
 
@@ -1070,24 +1070,20 @@ flwft_conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
     f[0] += df[0];
     f[1] += df[1];
     
-    vertex = (double*) malloc(sizeof(double)*3);
     vertex[0] = f[0];
     vertex[1] = f[1];
     vertex[2] = 0;    
     flwft_addTessVertex(vertex);
-    free(vertex);
 
     df[0] += df2[0];
     df[1] += df2[1];
 
   }
     
-  vertex = (double*) malloc(sizeof(double)*3);
   vertex[0] = to->x;
   vertex[1] = to->y;
   vertex[2] = 0;
   flwft_addTessVertex(vertex);
-  free(vertex);
   
   flwft_tessellator.last_vertex.x = to->x;
   flwft_tessellator.last_vertex.y = to->y;
@@ -1106,7 +1102,7 @@ flwft_cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to
   */
 
   int i;
-  double * vertex;
+  double vertex[3];
   double a[2], b[2], c[2], d[2], f[2], df[2], df2[2], df3[2];
   double spline_delta, spline_delta2, spline_delta3;
 
@@ -1145,7 +1141,6 @@ flwft_cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to
     f[0] += df[0];
     f[1] += df[1];
     
-    vertex = (double*) malloc(sizeof(double)*3);
     vertex[0] = f[0];
     vertex[1] = f[1];
     vertex[2] = 0;
@@ -1158,12 +1153,10 @@ flwft_cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to
     df2[1] += df3[1];
   }
 
-  vertex = (double*) malloc(sizeof(double)*3);
   vertex[0] = to->x;
   vertex[1] = to->y;
   vertex[2] = 0;
   flwft_addTessVertex(vertex);
-  free(vertex);
   
   flwft_tessellator.last_vertex.x = to->x;
   flwft_tessellator.last_vertex.y = to->y;
