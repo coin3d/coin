@@ -540,7 +540,7 @@ flwGetGlyph(int font, int charidx)
   glyph = 0;
 
 #ifdef HAVE_FREETYPE
-  glyph = flwftGetGlyph(fonts[font]->font, charidx);
+  if (font != 0) { glyph = flwftGetGlyph(fonts[font]->font, charidx); }
 #endif
 
   if (glyph) {
