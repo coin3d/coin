@@ -124,19 +124,6 @@ inline void SbSwap( Type & A, Type & B ) {
 
 // *************************************************************************
 
-// Make sure we don't compile in the assert() code in the release
-// version. Note: no direct testing on the NDEBUG flag should be made
-// in the Coin library, use the COIN_DEBUG flag instead.
-
-// FIXME: move this into the configure scheme, as it it only used
-// during compilation and should not be visible from any header
-// file. 19990913 mortene.
-#ifndef COIN_DEBUG
-#define NDEBUG 1
-#endif // !COIN_DEBUG
-
-// *************************************************************************
-
 // A unique identifier to recognize whether or not we're running under
 // Systems in Motion's Coin library.
 #define __COIN__
