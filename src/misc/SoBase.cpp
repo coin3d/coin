@@ -52,6 +52,8 @@
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/engines/SoNodeEngine.h>
+#include <Inventor/C/threads/threadsutilp.h>
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -151,6 +153,7 @@ static const int REFID_FIRSTWRITE = -1;
 static const int REFID_NOSUFFIX = -2;
 
 static SbDict * sobase_auditordict = NULL;
+static void * sobase_mutex = NULL;
 
 static void
 sobase_auditordict_cb(unsigned long key, void * value)
@@ -166,6 +169,8 @@ sobase_cleanup_auditordict(void)
     sobase_auditordict->applyToAll(sobase_auditordict_cb);
     delete sobase_auditordict;
     sobase_auditordict = NULL;
+
+    CC_MUTEX_DESTRUCT(sobase_mutex);
   }
 }
 
@@ -786,7 +791,12 @@ sobase_audlist_add(void * pointer, void * type, void * closure)
 const SoAuditorList &
 SoBase::getAuditors(void) const
 {
-  // FIXME: make threadsafe
+  if (sobase_mutex == NULL) {
+    CC_MUTEX_CONSTRUCT(sobase_mutex);
+  }
+
+  CC_MUTEX_LOCK(sobase_mutex);
+
   if (sobase_auditordict == NULL) {
     sobase_auditordict = new SbDict();
     coin_atexit((coin_atexit_f*)sobase_cleanup_auditordict);
@@ -806,6 +816,8 @@ SoBase::getAuditors(void) const
     sobase_auditordict->enter((unsigned long) this, (void*) list);
   }
   cc_rbptree_traverse(&this->auditortree, sobase_audlist_add, (void*) list);
+
+  CC_MUTEX_UNLOCK(sobase_mutex);
 
   return *list;
 }

@@ -506,8 +506,6 @@ SoLineSet::GLRender(SoGLRenderAction * action)
 {
   static int first = 1;
   if (first) {
-    first = 0;
-
     lineset_render_funcs[ 0] = sogl_ls_m0_n0_t0;
     lineset_render_funcs[ 1] = sogl_ls_m0_n0_t1;
     lineset_render_funcs[ 2] = sogl_ls_m0_n1_t0;
@@ -543,6 +541,7 @@ SoLineSet::GLRender(SoGLRenderAction * action)
     lineset_render_funcs[29] = sogl_ls_m3_n2_t1;
     lineset_render_funcs[30] = sogl_ls_m3_n3_t0;
     lineset_render_funcs[31] = sogl_ls_m3_n3_t1;
+    first = 0;
   }
 
   SoState * state = action->getState();
