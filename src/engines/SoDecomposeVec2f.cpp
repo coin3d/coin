@@ -29,6 +29,21 @@
 
 SO_ENGINE_SOURCE(SoDecomposeVec2f);
 
+/*!
+  \var SoMFVec2f SoDecomposeVec2f::vector
+  Set of input vectors to be decomposed into their coordinate
+  elements.
+*/
+/*!
+  \var SoEngineOutput SoDecomposeVec2f::x
+  (SoMFFloat) First coordinates of the input vectors.
+*/
+/*!
+  \var SoEngineOutput SoDecomposeVec2f::y
+  (SoMFFloat) Second coordinates of the input vectors.
+*/
+
+
 #ifndef DOXYGEN_SKIP_THIS // No need to document these.
 
 SoDecomposeVec2f::SoDecomposeVec2f()

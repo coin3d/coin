@@ -180,8 +180,8 @@ SoCalculator::SoCalculator(void)
   // initialize temporary registers (ta-th, tA-tH)
   int i;
   for (i = 0; i < 8; i++) {
-    ta_th[i] = 0.0f;
-    tA_tH[i].setValue(0.0f, 0.0f, 0.0f);
+    this->ta_th[i] = 0.0f;
+    this->tA_tH[i].setValue(0.0f, 0.0f, 0.0f);
   }
 }
 

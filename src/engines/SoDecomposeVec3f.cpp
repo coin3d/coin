@@ -29,6 +29,25 @@
 
 SO_ENGINE_SOURCE(SoDecomposeVec3f);
 
+/*!
+  \var SoMFVec3f SoDecomposeVec3f::vector
+  Set of input vectors to be decomposed into their coordinate
+  elements.
+*/
+/*!
+  \var SoEngineOutput SoDecomposeVec3f::x
+  (SoMFFloat) First coordinates of the input vectors.
+*/
+/*!
+  \var SoEngineOutput SoDecomposeVec3f::y
+  (SoMFFloat) Second coordinates of the input vectors.
+*/
+/*!
+  \var SoEngineOutput SoDecomposeVec3f::z
+  (SoMFFloat) Third coordinates of the input vectors.
+*/
+
+
 #ifndef DOXYGEN_SKIP_THIS // No need to document these.
 
 SoDecomposeVec3f::SoDecomposeVec3f()
