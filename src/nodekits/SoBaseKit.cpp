@@ -1033,13 +1033,21 @@ SoBaseKit::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoBaseKit::getMatrix(SoGetMatrixAction * action)
 {
+  // SoBaseKit should be travesed like a normal SoGroup node, and the
+  // children should only be traversed if we're IN_PATH or OFF_PATH
+  // (SoGetMatrixAction is only applied on a path or on a single node,
+  // and we must not calculate when BELOW_PATH or NO_PATH).
   int numindices;
   const int * indices;
-  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+  switch (action->getPathCode(numindices, indices)) {
+  case SoAction::IN_PATH:
     this->children->traverseInPath(action, numindices, indices);
-  }
-  else {
+    break;
+  case SoAction::OFF_PATH:
     this->children->traverse(action);
+    break;
+  default:
+    break;
   }
 }
 
