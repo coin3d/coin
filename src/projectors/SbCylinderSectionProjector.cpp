@@ -28,6 +28,10 @@
 #include <Inventor/projectors/SbCylinderSectionProjector.h>
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*! \var SbCylinderSectionProjector::tolerance
   FIXME: write doc
 */
@@ -51,22 +55,24 @@
 /*!
   FIXME: write doc
 */
-SbCylinderSectionProjector::SbCylinderSectionProjector(float /* edgeTol */,
-                                                       SbBool orientToEye)
-  : inherited(orientToEye)
+SbCylinderSectionProjector::SbCylinderSectionProjector(const float edgeTol,
+                                                       const SbBool orientToEye)
+  : SbCylinderProjector(orientToEye),
+    tolerance(edgeTol)
 {
-  assert(0 && "FIXME: implementation missing");
+  this->needSetup = TRUE;
 }
 
 /*!
   FIXME: write doc
 */
 SbCylinderSectionProjector::SbCylinderSectionProjector(const SbCylinder & cyl,
-                                                       float /* edgeTol */,
+                                                       const float edgeTol,
                                                        SbBool orientToEye)
-  : inherited(cyl, orientToEye)
+  : inherited(cyl, orientToEye),
+    tolerance(edgeTol)
 {
-  assert(0 && "FIXME: implementation missing");
+  this->needSetup = TRUE;
 }
 
 /*!
@@ -75,38 +81,54 @@ SbCylinderSectionProjector::SbCylinderSectionProjector(const SbCylinder & cyl,
 SbProjector *
 SbCylinderSectionProjector::copy(void) const
 {
-  assert(0 && "FIXME: implementation missing");
-  return NULL;
+  return new SbCylinderSectionProjector(*this);
 }
 
 /*!
   FIXME: write doc
 */
 SbVec3f
-SbCylinderSectionProjector::project(const SbVec2f & /* point */)
+SbCylinderSectionProjector::project(const SbVec2f &point)
 {
-  assert(0 && "FIXME: implementation missing");
-  return SbVec3f();
+  if (this->needSetup) this->setupTolerance();
+
+  SbLine projline = this->getWorkingLine(point);
+  SbVec3f projpt;
+  if (!this->intersectCylinderFront(projline, projpt)) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SbCylinderSectionProjector::project",
+                              "working line is parallel to cylinder axis.");
+#endif // COIN_DEBUG
+  }
+  else {
+    this->lastPoint = projpt;
+  }
+  return projpt;
 }
 
 /*!
-  FIXME: write doc
+  Find a rotation that rotates from \a point1 on cylinder to
+  \a point2, also on cylinder. The rotation will be about the
+  cylinder axis.
 */
 SbRotation
-SbCylinderSectionProjector::getRotation(const SbVec3f & /* point1 */,
-                                        const SbVec3f & /* point2 */)
+SbCylinderSectionProjector::getRotation(const SbVec3f &point1,
+                                        const SbVec3f &point2)
 {
-  assert(0 && "FIXME: implementation missing");
-  return SbRotation::identity();
+  const SbLine &axis = this->cylinder.getAxis(); 
+  SbVec3f v1 = point1 - axis.getClosestPoint(point1);
+  SbVec3f v2 = point2 - axis.getClosestPoint(point2);
+  return SbRotation(v1, v2); // rotate vector v1 into vector v2
 }
 
 /*!
   FIXME: write doc
 */
 void
-SbCylinderSectionProjector::setTolerance(float /* edgeTol */)
+SbCylinderSectionProjector::setTolerance(const float edgeTol)
 {
-  assert(0 && "FIXME: implementation missing");
+  this->tolerance = edgeTol;
+  this->needSetup = TRUE;
 }
 
 /*!
@@ -115,18 +137,17 @@ SbCylinderSectionProjector::setTolerance(float /* edgeTol */)
 float
 SbCylinderSectionProjector::getTolerance(void) const
 {
-  assert(0 && "FIXME: implementation missing");
-  return 0.0f;
+  return this->tolerance;
 }
 
 /*!
   FIXME: write doc
 */
 SbBool
-SbCylinderSectionProjector::isWithinTolerance(const SbVec3f & /* point */)
+SbCylinderSectionProjector::isWithinTolerance(const SbVec3f &point)
 {
-  assert(0 && "FIXME: implementation missing");
-  return FALSE;
+  if (this->needSetup) this->setupTolerance();
+  return this->tolPlane.isInHalfSpace(point);
 }
 
 /*!
@@ -135,5 +156,36 @@ SbCylinderSectionProjector::isWithinTolerance(const SbVec3f & /* point */)
 void
 SbCylinderSectionProjector::setupTolerance(void)
 {
-  assert(0 && "FIXME: implementation missing");
+  SbVec3f refDir;
+  if (this->orientToEye) {
+    refDir = -this->viewVol.getProjectionDirection();
+    this->worldToWorking.multDirMatrix(refDir, refDir);    
+  }
+  else {
+    refDir = SbVec3f(0.0f, 0.0f, 1.0f);
+  }
+  float radius = this->cylinder.getRadius();
+  this->tolDist = this->tolerance * radius;
+  
+  const SbLine &axis = this->cylinder.getAxis();
+  SbVec3f somePt = axis.getPosition() + refDir;
+  SbVec3f ptOnAxis = axis.getClosestPoint(somePt);
+  
+  // find plane direction perpendicular to line
+  this->planeDir = somePt - ptOnAxis;
+  this->planeDir.normalize();
+  if (!this->intersectFront) {
+    this->planeDir = -this->planeDir;
+  }
+
+  // distance from plane to cylinder axis
+  this->planeDist = (float)sqrt(radius*radius-this->tolDist*this->tolDist);
+  
+  this->tolPlane = SbPlane(this->planeDir, this->planeDist);
+  
+  // create line parallel to axis, but in plane
+  SbVec3f linePt = axis.getPosition()+this->planeDir*this->planeDist;
+  this->planeLine = SbLine(linePt, linePt+axis.getDirection());
+  
+  this->needSetup = FALSE;
 }

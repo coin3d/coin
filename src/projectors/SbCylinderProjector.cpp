@@ -54,56 +54,50 @@
 /*!
   FIXME: write doc
 */
-SbCylinderProjector::SbCylinderProjector(SbBool /* orientToEye */)
+SbCylinderProjector::SbCylinderProjector(const SbBool orientToEye)
+  : intersectFront(TRUE),
+    cylinder(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 1.0f, 0.0f)), 1.0f),
+    orientToEye(orientToEye),
+    needSetup(TRUE)
 {
-  // FIXME: not implemented.
-  assert(0);
 }
 
 /*!
   FIXME: write doc
 */
-SbCylinderProjector::SbCylinderProjector(const SbCylinder & /* cyl */,
-                                         SbBool /* orientToEye */)
+SbCylinderProjector::SbCylinderProjector(const SbCylinder &cyl,
+                                         const SbBool orientToEye)
+  : intersectFront(TRUE),
+    cylinder(cyl),
+    orientToEye(orientToEye),
+    needSetup(TRUE)
 {
-  // FIXME: not implemented.
-  assert(0);
 }
 
 /*!
-  FIXME: write doc
+  Project the point, but also find the rotation from previous 
+  projection to this one.
+  
+  \sa SbCylinderProjector::project()
 */
 SbVec3f
-SbCylinderProjector::projectAndGetRotation(const SbVec2f &/* point */,
-                                           SbRotation &/* rot */)
+SbCylinderProjector::projectAndGetRotation(const SbVec2f &point,
+                                           SbRotation &rot)
 {
-  // FIXME: not implemented.
-  assert(0);
-  static SbVec3f v;
+  SbVec3f v = this->project(point);
+  rot = this->getRotation(this->lastPoint, v);
+  this->lastPoint = v;
   return v;
 }
 
 /*!
   FIXME: write doc
 */
-SbRotation
-SbCylinderProjector::getRotation(const SbVec3f &/* point1 */,
-                                 const SbVec3f &/* point2 */)
-{
-  // FIXME: not implemented.
-  assert(0);
-  static SbRotation r;
-  return r;
-}
-
-/*!
-  FIXME: write doc
-*/
 void
-SbCylinderProjector::setCylinder(const SbCylinder &/* cyl */)
+SbCylinderProjector::setCylinder(const SbCylinder &cyl)
 {
-  // FIXME: not implemented.
-  assert(0);
+  this->cylinder = cyl;
+  this->needSetup = TRUE;
 }
 
 /*!
@@ -112,20 +106,19 @@ SbCylinderProjector::setCylinder(const SbCylinder &/* cyl */)
 const SbCylinder &
 SbCylinderProjector::getCylinder(void) const
 {
-  // FIXME: not implemented.
-  assert(0);
-  static SbCylinder c;
-  return c;
+  return this->cylinder;
 }
 
 /*!
   FIXME: write doc
 */
 void
-SbCylinderProjector::setOrientToEye(SbBool /* orientToEye */)
+SbCylinderProjector::setOrientToEye(const SbBool orientToEye)
 {
-  // FIXME: not implemented.
-  assert(0);
+  if (this->orientToEye != orientToEye) {
+    this->orientToEye = orientToEye;
+    this->needSetup = TRUE;
+  }
 }
 
 /*!
@@ -134,19 +127,19 @@ SbCylinderProjector::setOrientToEye(SbBool /* orientToEye */)
 SbBool
 SbCylinderProjector::isOrientToEye(void) const
 {
-  // FIXME: not implemented.
-  assert(0);
-  return FALSE;
+  return this->orientToEye;
 }
 
 /*!
   FIXME: write doc
 */
 void
-SbCylinderProjector::setFront(SbBool /* isFront */)
+SbCylinderProjector::setFront(const SbBool isFront)
 {
-  // FIXME: not implemented.
-  assert(0);
+  if (this->intersectFront != isFront) {
+    this->intersectFront = isFront;
+    this->needSetup = TRUE;
+  }
 }
 
 /*!
@@ -155,40 +148,64 @@ SbCylinderProjector::setFront(SbBool /* isFront */)
 SbBool
 SbCylinderProjector::isFront(void) const
 {
-  // FIXME: not implemented.
-  assert(0);
-  return FALSE;
+  return this->intersectFront;
 }
 
 /*!
   FIXME: write doc
 */
 SbBool
-SbCylinderProjector::isPointInFront(const SbVec3f &/* point */) const
+SbCylinderProjector::isPointInFront(const SbVec3f &point) const
 {
-  // FIXME: not implemented.
-  assert(0);
-  return FALSE;
+  // FIXME: not quite sure about this one.
+  // 19991207, pederb
+
+  SbVec3f refDir;
+  if (this->orientToEye) {
+    refDir = -this->viewVol.getProjectionDirection();
+    this->worldToWorking.multDirMatrix(refDir, refDir);    
+  }
+  else {
+    refDir = SbVec3f(0.0f, 0.0f, 1.0f);
+  }
+  const SbLine &axis = this->cylinder.getAxis();
+  SbVec3f somePt = axis.getPosition() + refDir;
+  SbVec3f ptOnAxis = axis.getClosestPoint(somePt);
+  
+  // find plane direction perpendicular to line
+  SbVec3f planeDir = somePt - ptOnAxis;
+  planeDir.normalize();
+
+  ptOnAxis = axis.getClosestPoint(point);
+  SbVec3f ptDir = point - ptOnAxis;
+  ptDir.normalize();
+
+  float dot = ptDir.dot(planeDir);
+  if (intersectFront) return dot >= 0.0f;
+  else return dot < 0.0f;
 }
 
 /*!
   FIXME: write doc
 */
 SbBool
-SbCylinderProjector::intersectCylinderFront(const SbLine & /* line */,
-                                            SbVec3f & /* result */)
+SbCylinderProjector::intersectCylinderFront(const SbLine &line,
+                                            SbVec3f &result)
 {
-  // FIXME: not implemented.
-  assert(0);
-  return FALSE;
+  SbVec3f i0, i1;
+  SbBool isect = this->cylinder.intersect(line, i0, i1);
+  // should probably use isPointInFront instead?
+  // this seems to work though, 19991207, pederb
+  if (isect) result = this->intersectFront ? i0 : i1;
+  return isect;
 }
 
 /*!
-  FIXME: write doc
+  Overloaded just to set \e needSetup to \a TRUE.
 */
 void
-SbCylinderProjector::setWorkingSpace(const SbMatrix & /* space */)
+SbCylinderProjector::setWorkingSpace(const SbMatrix &space)
 {
-  // FIXME: not implemented.
-  assert(0);
+  this->needSetup = TRUE;
+  inherited::setWorkingSpace(space);
 }

@@ -27,21 +27,22 @@ class SbCylinderProjector : public SbProjector {
   typedef SbProjector inherited;
 
 public:
+  virtual SbVec3f project(const SbVec2f &point) = 0;
   SbVec3f projectAndGetRotation(const SbVec2f & point, SbRotation & rot);
   virtual SbRotation getRotation(const SbVec3f & point1,
-                                 const SbVec3f & point2);
+                                 const SbVec3f & point2) = 0;
   void setCylinder(const SbCylinder & cyl);
   const SbCylinder & getCylinder(void) const;
-  void setOrientToEye(SbBool orientToEye);
+  void setOrientToEye(const SbBool orientToEye);
   SbBool isOrientToEye(void) const;
-  void setFront(SbBool isFront);
+  void setFront(const SbBool isFront);
   SbBool isFront(void) const;
   SbBool isPointInFront(const SbVec3f & point) const;
   virtual void setWorkingSpace(const SbMatrix & space);
 
 protected:
-  SbCylinderProjector(SbBool orientToEye);
-  SbCylinderProjector(const SbCylinder & cyl, SbBool orientToEye);
+  SbCylinderProjector(const SbBool orientToEye);
+  SbCylinderProjector(const SbCylinder & cyl, const SbBool orientToEye);
 
   SbBool intersectCylinderFront(const SbLine &line, SbVec3f &result);
 
