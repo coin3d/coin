@@ -25,6 +25,9 @@
   This node should only be used in OpenGL color-index mode, and 
   only when light model is BASE_COLOR.
 */
+// FIXME: couldn't we check for the above mentioned pre-conditions and
+// assert() or SoDebugError::post() if any of the two is not met?
+// 20010809 mortene.
 
 #include <Inventor/nodes/SoColorIndex.h>
 #include <Inventor/elements/SoOverrideElement.h>
