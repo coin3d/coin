@@ -52,6 +52,9 @@
 #include <GL/glx.h>
 #endif /* HAVE_GLX */
 
+#define GLWRAPPER_FROM_STATE(state) \
+  GLWrapper(((SoGLRenderAction *)state->getAction())->getCacheContext())
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
