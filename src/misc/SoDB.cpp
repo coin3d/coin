@@ -89,6 +89,7 @@
 /*! \defgroup nodes Nodes */
 /*! \defgroup projectors Projector classes (mostly for internal use) */
 /*! \defgroup sensors Sensor classes */
+/*! \defgroup sound 3D sound support */
 /*! \defgroup VRMLnodes VRML97 classes */
 
 /*!
