@@ -111,7 +111,7 @@
   FIXME: should make it possible to fetch a single common define from
   include/Inventor/C/glue/dl.h (or dlp.h). 20020919 mortene.
 */
-#if defined(HAVE_DL_LIB) || defined(HAVE_WINDLL_RUNTIME_BINDING) || defined(HAVE_DYLD_RUNTIME_BINDING)
+#if defined(HAVE_DL_LIB) || defined(HAVE_WINDLL_RUNTIME_BINDING) || defined(HAVE_DLD_LIB) || defined(HAVE_DYLD_RUNTIME_BINDING)
 #define COIN_OPENGL_DYNAMIC_BINDING
 #endif /* dynamic binding */
 
@@ -1749,6 +1749,8 @@ cc_glglue_glXGetCurrentDisplay(const cc_glglue * w)
     assert(glGetError() == GL_NO_ERROR && "GL error when calling glGetString() -- no current GL context?");
   
     (void)fprintf(stdout, "glGetString(GL_VERSION)=='%s'\n", str);
+    (void)fprintf(stdout, "glGetString(GL_VENDOR)=='%s'\n", glGetString(GL_VENDOR));
+    (void)fprintf(stdout, "glGetString(GL_RENDERER)=='%s'\n", glGetString(GL_RENDERER));
  
     (void)fprintf(stdout, "glGenTextures=='%p'\n",
                   cc_glglue_getprocaddress("glGenTextures"));
@@ -1767,11 +1769,14 @@ cc_glglue_context_create_offscreen(unsigned int width, unsigned int height)
 {
 #ifdef HAVE_GLX
   return glxglue_context_create_offscreen(width, height);
-#elif HAVE_AGL
+#elif defined(HAVE_AGL)
   return aglglue_context_create_offscreen(width, height);
-#endif /* HAVE_AGL */
+#elif defined(HAVE_WGL)
+  return wglglue_context_create_offscreen(width, height);
+#else
   assert(FALSE && "unimplemented");
   return NULL;
+#endif
 }
 
 SbBool
@@ -1779,11 +1784,14 @@ cc_glglue_context_make_current(void * ctx)
 {
 #ifdef HAVE_GLX
   return glxglue_context_make_current(ctx);
-#elif HAVE_AGL
+#elif defined(HAVE_AGL)
   return aglglue_context_make_current(ctx);
-#endif /* HAVE_AGL */
+#elif defined(HAVE_WGL)
+  return wglglue_context_make_current(ctx);
+#else
   assert(FALSE && "unimplemented");
   return FALSE;
+#endif
 }
 
 void
@@ -1791,11 +1799,13 @@ cc_glglue_context_reinstate_previous(void * ctx)
 {
 #ifdef HAVE_GLX
   glxglue_context_reinstate_previous(ctx);
-#elif HAVE_AGL
+#elif defined(HAVE_AGL)
   aglglue_context_reinstate_previous(ctx);
+#elif defined(HAVE_WGL)
+  wglglue_context_reinstate_previous(ctx);
 #else
   assert(FALSE && "unimplemented");
-#endif /* HAVE_AGL */
+#endif
 }
 
 void
@@ -1803,11 +1813,13 @@ cc_glglue_context_destruct(void * ctx)
 {
 #ifdef HAVE_GLX
   glxglue_context_destruct(ctx);
-#elif HAVE_AGL
- aglglue_context_destruct(ctx);
+#elif defined(HAVE_AGL)
+  aglglue_context_destruct(ctx);
+#elif defined(HAVE_WGL)
+  wglglue_context_destruct(ctx);
 #else 
   assert(FALSE && "unimplemented");
-#endif /* HAVE_AGL */
+#endif
 }
 
 /*** </Offscreen buffer handling.> ******************************************/
