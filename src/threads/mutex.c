@@ -31,7 +31,6 @@
 #include <assert.h>
 #include <stddef.h>
 #include <errno.h>
-#include <Inventor/C/base/basep.h> /* needed for cc_internal_w32_getlasterrorstring */
 
 #ifdef USE_PTHREAD
 #include "mutex_pthread.ic"

@@ -23,6 +23,7 @@
 
 /* this file should only be included from thread.c */
 
+#include <Inventor/C/glue/win32api.h>
 
 /* FIXME: could this be static? pederb, 2001-12-10 */
 DWORD WINAPI cc_w32thread_thread_proc(LPVOID lpParameter)
@@ -51,13 +52,7 @@ internal_init(cc_thread * thread)
 
   if (thread->w32thread.threadhandle == NULL) {
     if (COIN_DEBUG) {
-      DWORD err;
-      char *errstr;
-      err = GetLastError();
-      errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_debugerror_post("internal_init", "CreateThread() error: %d, \"%s\"\n",
-                         err, errstr);
-      cc_internal_w32_freelasterrorstring(errstr);
+      cc_win32_print_error("internal_init", "CreateThread()", GetLastError());
     }
     return CC_ERROR;
   }
@@ -82,14 +77,8 @@ internal_join(cc_thread * thread,
   status = WaitForSingleObject(thread->w32thread.threadhandle, INFINITE);
   if (status == WAIT_FAILED) {
     if (COIN_DEBUG) {
-      DWORD err;
-      char *errstr;
-      err = GetLastError();
-      errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_debugerror_post("internal_join",
-                         "WaitForSingleObject() error: %d, \"%s\"\n",
-                         err, errstr);
-      cc_internal_w32_freelasterrorstring(errstr);
+      cc_win32_print_error("internal_join", "WaitForSingleObject()",
+			   GetLastError());
     }
     return CC_ERROR;
   }
@@ -104,14 +93,8 @@ internal_join(cc_thread * thread,
   bstatus = GetExitCodeThread(thread->w32thread.threadhandle, &exitcode);
   if (bstatus == FALSE) {
     if (COIN_DEBUG) {
-      DWORD err;
-      char *errstr;
-      err = GetLastError();
-      errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_debugerror_post("internal_join",
-                         "GetExitCodeThread() error: %d, \"%s\"\n",
-                         err, errstr);
-      cc_internal_w32_freelasterrorstring(errstr);
+      cc_win32_print_error("internal_join", "GetExitCodeThread()",
+			   GetLastError());
     }
   }
   else if (retvalptr) {

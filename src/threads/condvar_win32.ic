@@ -23,10 +23,10 @@
 
 /* This file should only be included from condvar.c */
 
+#include <Inventor/C/glue/win32api.h>
+
 #define EVENT_SIGNAL 0
 #define EVENT_BROADCAST 1
-
-#include <Inventor/C/base/basep.h>
 
 /*
  * This implementation is based on the SetEvent (3.2) solution decribed at
@@ -41,14 +41,9 @@ internal_condvar_struct_init(cc_condvar * condvar_struct)
     CreateEvent(NULL, FALSE, FALSE, NULL);
   if (condvar_struct->w32thread.eventhandle[EVENT_SIGNAL] == NULL) {
     if (COIN_DEBUG) {
-      DWORD err;
-      char *errstr;
-      err = GetLastError();
-      errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_debugerror_post("internal_condvar_struct_init",
-			 "CreateEvent() error: %d, \"%s\"\n",
-			 err, errstr);
-      cc_internal_w32_freelasterrorstring(errstr);
+      cc_win32_print_error("internal_condvar_struct_init",
+			   "CreateEvent(NULL,FALSE,FALSE,NULL)",
+			   GetLastError());
     }
     return CC_ERROR;
   }
@@ -57,14 +52,9 @@ internal_condvar_struct_init(cc_condvar * condvar_struct)
     CreateEvent(NULL, TRUE, FALSE, NULL);
   if (condvar_struct->w32thread.eventhandle[EVENT_BROADCAST] == NULL) {
     if (COIN_DEBUG) {
-      DWORD err;
-      char *errstr;
-      err = GetLastError();
-      errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_debugerror_post("internal_condvar_struct_init",
-			 "CreateEvent() error: %d, \"%s\"\n",
-			 err, errstr);
-      cc_internal_w32_freelasterrorstring(errstr);
+      cc_win32_print_error("internal_condvar_struct_init",
+			   "CreateEvent(NULL,TRUE,FALSE,NULL)",
+			   GetLastError());
     }
     return CC_ERROR;
   }
@@ -81,28 +71,16 @@ internal_condvar_struct_clean(cc_condvar * condvar_struct)
   status = CloseHandle(condvar_struct->w32thread.eventhandle[EVENT_SIGNAL]);
   if (status == FALSE) {
     if (COIN_DEBUG) {
-      DWORD err;
-      char *errstr;
-      err = GetLastError();
-      errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_debugerror_post("internal_condvar_struct_clean",
-			 "CloseHandle() error: %d, \"%s\"\n",
-			 err, errstr);
-      cc_internal_w32_freelasterrorstring(errstr);
+      cc_win32_print_error("internal_condvar_struct_clean",
+			   "CloseHandle()", GetLastError());
     }
     ret = CC_ERROR;
   }
   status = CloseHandle(condvar_struct->w32thread.eventhandle[EVENT_BROADCAST]);
   if (status == FALSE) {
     if (COIN_DEBUG) {
-      DWORD err;
-      char *errstr;
-      err = GetLastError();
-      errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_debugerror_post("internal_condvar_struct_clean",
-			 "CloseHandle() error: %d, \"%s\"\n",
-			 err, errstr);
-      cc_internal_w32_freelasterrorstring(errstr);
+      cc_win32_print_error("internal_condvar_struct_clean",
+			   "CloseHandle()", GetLastError());
     }
     ret = CC_ERROR;
   }
@@ -145,14 +123,8 @@ internal_condvar_wait_common(cc_condvar * condvar, cc_mutex * mutex, DWORD perio
 
   if (result == WAIT_FAILED) {
     if (COIN_DEBUG) {
-      DWORD err;
-      char *errstr;
-      err = GetLastError();
-      errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_debugerror_post("internal_condvar_wait_common",
-			 "WaitForMultipleObjects() error: %d, \"%s\"\n",
-			 err, errstr);
-      cc_internal_w32_freelasterrorstring(errstr);
+      cc_win32_print_error("internal_condvar_wait_common",
+			   "WaitForMultipleObjects()", GetLastError());
     }
     return CC_ERROR;
   }
