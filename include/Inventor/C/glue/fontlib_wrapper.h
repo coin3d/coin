@@ -59,8 +59,8 @@ extern "C" {
   void cc_flw_initialize(void);
   void cc_flw_exit(void);
   
-  int cc_flw_get_font(const char * fontname, const int sizex, const int sizey);
-  int cc_flw_find_font(const char * fontname, const int sizex, const int ysizey);
+  int cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned int sizey);
+  int cc_flw_find_font(const char * fontname, const unsigned int sizex, const unsigned int ysizey);
   void cc_flw_done_font(unsigned int font);
 
   unsigned int cc_flw_get_num_charmaps(unsigned int font);
