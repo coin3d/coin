@@ -48,6 +48,11 @@
 (-> (-> timecounter 'reset) 'setValue 50)
 
 
+;; Reproduce Bugzilla #195: negative step values doesn't reverse the
+;; counting order.
+(-> (-> timecounter 'step) 'setValue -1)
+
+
 ;; FIXME: setting the min and max values in the "wrong" order (so
 ;; min>max) is not handled properly. Should this work? 20000907 mortene.
 (begin
@@ -57,18 +62,16 @@
   (-> (-> timecounter 'max) 'setValue 0))
 
 
-;; FIXME: the counter doesn't restart at the modulo value of the step,
-;; but at 0. Does this match the behavior of Inventor? 20000907 mortene.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; False alarms (ex-possible bugs) ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; The counter doesn't restart at the modulo value of the step, but at
+;; 0. This is confirmed to match the behavior of SGI Open Inventor.
 (begin
   (-> (-> timecounter 'min) 'setValue 0)
   (-> (-> timecounter 'max) 'setValue 7)
   (-> (-> timecounter 'frequency) 'setValue 0.4)
   (-> (-> timecounter 'step) 'setValue 2))
-
-
-;; FIXME: negative step values doesn't reverse the counting order. Is
-;; this correct according to the Inventor API? 20000907 mortene.
-(-> (-> timecounter 'step) 'setValue -1)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
