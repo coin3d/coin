@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include <Inventor/C/glue/fontlib_wrapper.h>
 #include <Inventor/C/tidbits.h>
@@ -59,6 +60,7 @@ struct fontstruct {
 static struct fontstruct **fonts;
 static int fontcnt;
 static int fontmax = 0;
+static SbBool wrapper_initialized = FALSE;
   
   /* The default bitmap font, as a fallback. */
 #include "../misc/default2dfont.ic"
@@ -325,28 +327,32 @@ fontstruct_insert_glyph(int font, FLWglyph glyph, int defaultglyph)
 */
 
 
-int
-flwInitialize()
+
+void
+flwInitialize(void)
 {
-  int i, result;
+  int i;
   char dummy[80];
-  if (fontmax > 0)
-    return -1;
+
+  assert(wrapper_initialized == FALSE && "init only once");
+  wrapper_initialized = TRUE;
+
   fontcnt = 0;
   fontmax = 0;
   fonts = (struct fontstruct**)malloc(10*sizeof(struct fontstruct *));
-  if (!fonts)
-    return -1;
   fontmax = 10;
   for (i=0; i<fontmax; i++)
     fonts[i] = (struct fontstruct *)0;
+
 #ifdef HAVE_FREETYPE
-  result = flwftInitialize();
-#else
-  result = 0;
+  if (cc_fontlib_debug()) { cc_debugerror_postinfo("flwInitialize", "using FreeType library"); }
+
+  /* FIXME: return value just ignored. Should be handled (by disabling
+     all use of FreeType library if init fails). 20030316 mortene. */
+  (void)flwftInitialize();
 #endif
+
   flwCreateFont("defaultFont", dummy, 80, 12, 12);
-  return result;
 }
 
 void

@@ -29,17 +29,17 @@ extern "C" {
 #endif
   
   /*
-    FLW is a Font Library Wrapper designed to allow any
-    number of underlying font libraries to be used through
-    the same API. Functions and datatypes are modelled on the
-    FreeType font library, which is also the only library
-    supported in this first version of FLW. 
+    FLW is a Font Library Wrapper designed to allow any number of
+    underlying font libraries to be used through the same
+    API. Functions and datatypes are modelled on the FreeType font
+    library, which is also the only library supported in this first
+    version of FLW.
 
-    Which underlying font library to use is determined at
-    compile time.
+    Which underlying font library to use is determined at compile
+    time.
 
-    See http://www.freetype.org for more information about
-    the FreeType font library.
+    See http://www.freetype.org for more information about the
+    FreeType font library.
   */
 
   
@@ -57,10 +57,10 @@ extern "C" {
     unsigned char * buffer; /* bitmap data */
   } FLWbitmap;
 
-int flwInitialize(void);
-void flwExit(void);
+  void flwInitialize(void);
+  void flwExit(void);
 
-int flwCreateFont(const char * fontname, char * outname, const int outnamelen, const int sizex, const int sizey);
+  int flwCreateFont(const char * fontname, char * outname, const int outnamelen, const int sizex, const int sizey);
   int flwGetFont(const char * fontname, const int sizex, const int ysizey);
   void flwDoneFont(int font);
 
