@@ -204,14 +204,38 @@ SoFieldData::addField(SoFieldContainer * base, const char * name,
 }
 
 /*!
-  FIXME: write doc
+  Copy fields from container \a from to container \a to. If
+  \a copyconnections is \c TRUE, we'll also copy the connections
+  field \a from has made.
+
+  If you think the method signature is a bit strange, you're correct.
+  This should really have been a static method (the owner \c this
+  instance of the method isn't used at all, due to how the internal
+  representation of field template list are stored), but for unknown
+  reasons this is a dynamic method in Open Inventor. So also in Coin,
+  to keep compatibility.
  */
 void
-SoFieldData::overlay(SoFieldContainer * /* to */,
-                     const SoFieldContainer * /* from */,
-                     SbBool /* copyConnections */) const
+SoFieldData::overlay(SoFieldContainer * to, const SoFieldContainer * from,
+                     SbBool copyconnections) const
 {
-  COIN_STUB();
+  if (to == from) return;
+
+  if (copyconnections) {
+    // FIXME: support copying of connections. 20000111 mortene.
+    COIN_STUB();
+  }
+
+  const SoFieldData * fd0 = to->getFieldData();
+  const SoFieldData * fd1 = from->getFieldData();
+  if (!fd0 && !fd1) return;
+
+  // The field containers should have equal SoFieldData sets.
+  assert(fd0 && fd1 && *fd0==*fd1);
+
+  int num = fd0->getNumFields();
+  for (int i=0; i < num; i++)
+    fd0->getField(to, i)->copyFrom(*fd1->getField(from, i));
 }
 
 /*!

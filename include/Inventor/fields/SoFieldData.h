@@ -44,7 +44,7 @@ public:
                 const SoField * field);
 
   void overlay(SoFieldContainer * to, const SoFieldContainer * from,
-               SbBool copyConnections) const;
+               SbBool copyconnections) const;
 
   int getNumFields(void) const;
   const SbName & getFieldName(int index) const;
