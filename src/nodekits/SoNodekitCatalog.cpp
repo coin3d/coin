@@ -446,7 +446,7 @@ SoNodekitCatalog::clone(SoType type) const
   return newcat;
 }
 
-static void SoNodekitCatalog__propagateDefaultInit( SoNodekitCatalog * _pthis )
+static void SoNodekitCatalog__propagateDefaultInit( SoNodekitCatalog * pthis )
 {
 
 #if COIN_DEBUG && 0
@@ -454,11 +454,11 @@ static void SoNodekitCatalog__propagateDefaultInit( SoNodekitCatalog * _pthis )
                          "sanitizing catalog" );
 #endif
 
-  for( int i = _pthis->getNumEntries()-1; i > 0; --i ){
-    if( !_pthis->isNullByDefault( i ) ){
-      SbName parent = _pthis->getParentName( i );
-      if( _pthis->isNullByDefault( parent ) )
-        _pthis->setNullByDefault( parent, FALSE );
+  for( int i = pthis->getNumEntries()-1; i > 0; --i ){
+    if( !pthis->isNullByDefault( i ) ){
+      SbName parent = pthis->getParentName( i );
+      if( pthis->isNullByDefault( parent ) )
+        pthis->setNullByDefault( parent, FALSE );
     }
   }
 }
