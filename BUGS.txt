@@ -2189,6 +2189,13 @@
         Bugzilla entry (patches to gcc at the very end):
         http://gcc.gnu.org/bugzilla/show_bug.cgi?id=13239
 
+
+    UPDATE 20040621 mortene: the best fix is probably to attempt to
+        detect the erroneous compiler (in combination with the
+        specific assert.h, perhaps?), then break off configuration and
+        print a decent explanation of the error and how to fix it on
+        the client system (upgrade compiler or hack assert.h-file).
+
 =====================================================================
 
 085 SoGLBigImage out-of-bounds array read.
