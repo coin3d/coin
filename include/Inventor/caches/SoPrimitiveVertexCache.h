@@ -72,4 +72,4 @@ private:
   SoPrimitiveVertexCacheP * pimpl;
 };
 
-#endif COIN_SOPRIMITIVEVERTEXCACHE_H
+#endif // COIN_SOPRIMITIVEVERTEXCACHE_H
