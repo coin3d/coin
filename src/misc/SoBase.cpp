@@ -1149,7 +1149,17 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
       if (!out->isBinary()) out->write(' ');
     }
 
-    out->write(this->getFileFormatName());
+    if (this->isOfType(SoNode::getClassTypeId()) &&
+        ((SoNode*)this)->getNodeType() == SoNode::VRML2) {
+      // FIXME: temporary code to test VRML2 export.
+      // pederb, 20020521
+      SbString nodename(this->getFileFormatName());
+      SbString substring = nodename.getSubString(4);
+      out->write(substring.getString());
+    }
+    else {
+      out->write(this->getFileFormatName());
+    }
     if (out->isBinary()) {
       uint32_t flags = 0x0;
       if (isgroup) flags |= SoBase::IS_GROUP;
