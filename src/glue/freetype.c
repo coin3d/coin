@@ -303,7 +303,7 @@ int
 cc_fcglue_available(void)
 {
   fcglue_init();
-  return freetype_instance && freetype_instance->available;
+  return fontconfig_instance && fontconfig_instance->available;
 }
 
 
