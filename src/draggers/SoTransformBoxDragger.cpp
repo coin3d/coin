@@ -163,41 +163,41 @@ SoTransformBoxDragger::initClass(void)
 
   \verbatim
   CLASS SoTransformBoxDragger
-  PVT   "this",  SoTransformBoxDragger  --- 
-        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
-  PVT   "topSeparator",  SoSeparator  --- 
-  PVT   "motionMatrix",  SoMatrixTransform  --- 
-        "surroundScale",  SoSurroundScale  --- 
-        "antiSquish",  SoAntiSquish  --- 
-        "scaler",  SoScaleUniformDragger  --- 
-  PVT   "rotator1Sep",  SoSeparator  --- 
-  PVT   "rotator1Rot",  SoRotation  --- 
-        "rotator1",  SoRotateCylindricalDragger  --- 
-  PVT   "rotator2Sep",  SoSeparator  --- 
-  PVT   "rotator2Rot",  SoRotation  --- 
-        "rotator2",  SoRotateCylindricalDragger  --- 
-  PVT   "rotator3Sep",  SoSeparator  --- 
-  PVT   "rotator3Rot",  SoRotation  --- 
-        "rotator3",  SoRotateCylindricalDragger  --- 
-  PVT   "translator1Sep",  SoSeparator  --- 
-  PVT   "translator1Rot",  SoRotation  --- 
-        "translator1",  SoTranslate2Dragger  --- 
-  PVT   "translator2Sep",  SoSeparator  --- 
-  PVT   "translator2Rot",  SoRotation  --- 
-        "translator2",  SoTranslate2Dragger  --- 
-  PVT   "translator3Sep",  SoSeparator  --- 
-  PVT   "translator3Rot",  SoRotation  --- 
-        "translator3",  SoTranslate2Dragger  --- 
-  PVT   "translator4Sep",  SoSeparator  --- 
-  PVT   "translator4Rot",  SoRotation  --- 
-        "translator4",  SoTranslate2Dragger  --- 
-  PVT   "translator5Sep",  SoSeparator  --- 
-  PVT   "translator5Rot",  SoRotation  --- 
-        "translator5",  SoTranslate2Dragger  --- 
-  PVT   "translator6Sep",  SoSeparator  --- 
-  PVT   "translator6Rot",  SoRotation  --- 
-        "translator6",  SoTranslate2Dragger  --- 
-  PVT   "geomSeparator",  SoSeparator  --- 
+  PVT   "this",  SoTransformBoxDragger  ---
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ]
+  PVT   "topSeparator",  SoSeparator  ---
+  PVT   "motionMatrix",  SoMatrixTransform  ---
+        "surroundScale",  SoSurroundScale  ---
+        "antiSquish",  SoAntiSquish  ---
+        "scaler",  SoScaleUniformDragger  ---
+  PVT   "rotator1Sep",  SoSeparator  ---
+  PVT   "rotator1Rot",  SoRotation  ---
+        "rotator1",  SoRotateCylindricalDragger  ---
+  PVT   "rotator2Sep",  SoSeparator  ---
+  PVT   "rotator2Rot",  SoRotation  ---
+        "rotator2",  SoRotateCylindricalDragger  ---
+  PVT   "rotator3Sep",  SoSeparator  ---
+  PVT   "rotator3Rot",  SoRotation  ---
+        "rotator3",  SoRotateCylindricalDragger  ---
+  PVT   "translator1Sep",  SoSeparator  ---
+  PVT   "translator1Rot",  SoRotation  ---
+        "translator1",  SoTranslate2Dragger  ---
+  PVT   "translator2Sep",  SoSeparator  ---
+  PVT   "translator2Rot",  SoRotation  ---
+        "translator2",  SoTranslate2Dragger  ---
+  PVT   "translator3Sep",  SoSeparator  ---
+  PVT   "translator3Rot",  SoRotation  ---
+        "translator3",  SoTranslate2Dragger  ---
+  PVT   "translator4Sep",  SoSeparator  ---
+  PVT   "translator4Rot",  SoRotation  ---
+        "translator4",  SoTranslate2Dragger  ---
+  PVT   "translator5Sep",  SoSeparator  ---
+  PVT   "translator5Rot",  SoRotation  ---
+        "translator5",  SoTranslate2Dragger  ---
+  PVT   "translator6Sep",  SoSeparator  ---
+  PVT   "translator6Rot",  SoRotation  ---
+        "translator6",  SoTranslate2Dragger  ---
+  PVT   "geomSeparator",  SoSeparator  ---
   \endverbatim
 
   \NODEKIT_POST_TABLE
@@ -295,7 +295,9 @@ SoTransformBoxDragger::SoTransformBoxDragger(void)
 
   SoAntiSquish *squish = SO_GET_ANY_PART(this, "antiSquish", SoAntiSquish);
   squish->sizing = SoAntiSquish::BIGGEST_DIMENSION;
+  squish->sizing.setDefault(TRUE);
   squish->recalcAlways = FALSE;
+  squish->recalcAlways.setDefault(TRUE);
 
   this->addValueChangedCallback(SoTransformBoxDragger::valueChangedCB);
   this->rotFieldSensor = new SoFieldSensor(SoTransformBoxDragger::fieldSensorCB, this);
@@ -402,7 +404,7 @@ SoTransformBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 //
 // FIXME: should collect these methods in a common method visible to
 // all draggers implementing the exact same functionality. 20010826 mortene.
-static void 
+static void
 SoTransformBoxDragger_set_default(SoDragger * dragger, const char * fmt,
                                   int minval, int maxval)
 {
@@ -420,7 +422,7 @@ void
 SoTransformBoxDragger::setDefaultOnNonWritingFields(void)
 {
   this->surroundScale.setDefault(TRUE);
-  
+
   SoTransformBoxDragger_set_default(this, "rotator%d", 1, 3);
   SoTransformBoxDragger_set_default(this, "translator%d", 1, 6);
 
@@ -465,7 +467,7 @@ SoTransformBoxDragger::valueChangedCB(void *, SoDragger * d)
 }
 
 // private
-void 
+void
 SoTransformBoxDragger::addChildDragger(SoDragger * child)
 {
   child->addStartCallback(invalidateSurroundScaleCB, this);
@@ -474,7 +476,7 @@ SoTransformBoxDragger::addChildDragger(SoDragger * child)
 }
 
 // private
-void 
+void
 SoTransformBoxDragger::removeChildDragger(SoDragger * child)
 {
   child->removeStartCallback(invalidateSurroundScaleCB, this);
