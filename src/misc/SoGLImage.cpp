@@ -1100,7 +1100,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
   // downscale to legal GL size (implementation dependant)
   SoGLTextureImageElement * elem = (SoGLTextureImageElement *)
     state->getConstElement(SoGLTextureImageElement::getClassStackIndex());
-  SbBool sizeok = false;
+  SbBool sizeok = FALSE;
 #if COIN_DEBUG
   SbVec3s orgsize(newx, newy, newz);
 #endif
@@ -1117,7 +1117,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
   if ((unsigned int) orgsize[0] != newx ||
       (unsigned int) orgsize[1] != newy ||
       (unsigned int) orgsize[2] != newz) {
-    if (newz != 0) {
+    if (orgsize[2] != 0) {
       SoDebugError::postWarning("SoGLImageP::resizeImage",
                                 "Original 3D texture too large for "
                                 "your graphics hardware and / or OpenGL "
