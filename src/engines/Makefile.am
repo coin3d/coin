@@ -85,6 +85,11 @@ PrivateHeaders = \
 	evaluator.h \
 	lex.so_eval.c
 
+EXTRA_DIST = \
+	evaluator.l \
+	evaluator.y \
+	evaluator_tab.diff
+
 # Don't use the explicit rules, they will just confuse users on
 # systems without flex and/or bison. 20000606 mortene.
 
