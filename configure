@@ -20611,7 +20611,7 @@ if test x"$GCC" = x"yes"; then
   }'
   EOF`
   result=
-  for inc_path in $SIMAGE_EXTRA_CPPFLAGS; do
+  for inc_path in $COIN_EXTRA_CPPFLAGS; do
     additem=true
     for sys_dir in $cpp_sys_dirs; do
       if test x$inc_path = x$sys_dir; then
@@ -20621,7 +20621,7 @@ if test x"$GCC" = x"yes"; then
     done
     $additem && result="$result $inc_path"
   done
-  SIMAGE_EXTRA_CPPFLAGS=$result
+  COIN_EXTRA_CPPFLAGS=$result
   CPP=$sim_ac_save_cpp
 fi
 
@@ -20856,7 +20856,9 @@ fi
   fi
 
   case "$sim_ac_framework:$sim_ac_make_dsp" in
-  false:false )
+  true:* | *:true )
+    ;;
+  * )
     if test x${sim_ac_configuration_settings+set} != xset; then
   sim_ac_configuration_settings="Install prefix:$prefix"
 else
@@ -20892,7 +20894,7 @@ else
 fi
 
 
-  for arg in $CPPFLAGS $LDFLAGS $LIBS; do
+  for arg in $CPPFLAGS $DEFS $LDFLAGS $LIBS; do
     case $arg in
     -L* )
       # libdir=`echo $arg | cut -c3-`

@@ -1437,7 +1437,7 @@ COIN_DSP_DEFS=
 if $sim_ac_make_dsp; then
   SIM_AC_CONFIGURATION_SETTING([Coin build type], [msvc .dsp])
 
-  for arg in $CPPFLAGS $LDFLAGS $LIBS; do
+  for arg in $CPPFLAGS $DEFS $LDFLAGS $LIBS; do
     case $arg in
     -L* )
       # libdir=`echo $arg | cut -c3-`
