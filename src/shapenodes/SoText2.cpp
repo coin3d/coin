@@ -293,7 +293,7 @@ SoText2::GLRender(SoGLRenderAction * action)
     float ypos = nilpoint[1];
     float rasterx, rastery, rpx, rpy, offsetx, offsety;
     int ix=0, iy=0;
-    int charcnt, offvp;
+    int offvp;
     int thispos[2];
     int thissize[2];
     const unsigned char * buffer = NULL;
