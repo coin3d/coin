@@ -34,6 +34,43 @@
   not traverse children of the node it is applied to -- just the node
   itself. When applied to paths, it stops at the last node and does
   not continue further with the children of the tail node.
+
+  Typical usage when querying for world space position, orientation
+  and/or scaling would be as follows:
+
+  \code
+
+  // First get hold of an SoPath through the scenegraph down to the
+  // node ("mynode") you want to query about it's current world space
+  // transformation(s).
+
+  SoSearchAction * searchaction = new SoSearchAction;
+  searchaction->setNode(mynode);
+  searchaction->apply(myscenegraphroot);
+
+  SoPath * path = searchaction->getPath();
+  assert(path != NULL);
+
+  // Then apply the SoGetMatrixAction to get the full transformation
+  // matrix from world space.
+
+  const SbViewportRegion vpr = myviewer->getViewportRegion();
+  SoGetMatrixAction * getmatrixaction = new SoGetMatrixAction(vpr);
+  getmatrixaction->apply(path);
+
+  SbMatrix transformation = getmatrixaction->getMatrix();
+
+  // And if you want to access the individual transformation
+  // components of the matrix:
+
+  SbVec3f translation;
+  SbRotation rotation;
+  SbVec3f scalevector;
+  SbRotation scaleorientation;
+
+  transformation.getTransform(translation, rotation, scalevector, scaleorientation);
+  
+  \endcode
 */
 
 
