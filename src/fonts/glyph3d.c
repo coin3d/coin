@@ -172,7 +172,8 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
 
   fontidx = cc_flw_get_font(cc_string_get_text(fonttoload), 
                             glyph3d_standardfontsize,
-                            glyph3d_standardfontsize);
+                            glyph3d_standardfontsize,
+                            0.0f);
 
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);

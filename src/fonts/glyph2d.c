@@ -159,12 +159,11 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
     cc_string_append_text(fonttoload, " ");
     cc_string_append_string(fonttoload, &spec->style);
   }
-  fontidx = cc_flw_get_font(cc_string_get_text(fonttoload), (int)(newspec->size), (int)(newspec->size));
+
+  fontidx = cc_flw_get_font(cc_string_get_text(fonttoload), (int)(newspec->size), (int)(newspec->size), angle);
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);
 
-
-  
 
   /* Should _always_ be able to get hold of a glyph -- if no glyph is
      available for a specific character, a default empty rectangle
@@ -172,9 +171,6 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
   glyphidx = cc_flw_get_glyph(fontidx, character);
   assert(glyphidx >= 0);
 
-  if(angle != 0)
-    cc_flw_set_font_rotation(fontidx, angle);
-  
   glyph->glyphidx = glyphidx;
   glyph->fontidx = fontidx;
   glyph->angle = angle;
