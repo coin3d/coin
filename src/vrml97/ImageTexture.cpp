@@ -78,6 +78,80 @@
   [0.0, 1.0] range. The repeatT field is analogous to the repeatS
   field.
 
+  One common flaw with many programs that has support for exporting
+  VRML or Inventor files, is that the same texture file is exported
+  several times, but as different nodes. This can cause excessive
+  texture memory usage and slow rendering. Below is an example program
+  that fixes this by replacing all instances of the same texture with
+  a pointer to the first node:
+
+  \code
+
+  #include <Inventor/actions/SoSearchAction.h>
+  #include <Inventor/actions/SoWriteAction.h>
+  #include <Inventor/VRMLnodes/SoVRMLGroup.h>
+  #include <Inventor/VRMLnodes/SoVRMLImageTexture.h>
+  #include <Inventor/VRMLnodes/SoVRMLAppearance.h>
+  #include <Inventor/SoDB.h>
+  #include <Inventor/SoInput.h>
+  #include <Inventor/SoOutput.h>
+  #include <assert.h>
+
+  int main(int argc, char ** argv)
+  {
+    if (argc < 2) return -1;
+    SoDB::init();
+  
+    SoInput in;
+    if (!in.openFile(argv[1])) return -1;
+
+    if (!in.isFileVRML2()) return -1; // file is not a vrml2 file 
+
+    SoVRMLGroup * root = SoDB::readAllVRML(&in);
+
+    if (!root) return -1;
+    root->ref();
+
+    SoSearchAction sa;
+    sa.setType(SoVRMLImageTexture::getClassTypeId());
+    sa.setInterest(SoSearchAction::ALL);
+    sa.setSearchingAll(TRUE);
+    sa.apply(root);
+    SoPathList & pl = sa.getPaths();
+    SbDict namedict;
+
+    for (int i = 0; i < pl.getLength(); i++) {
+      SoFullPath * p = (SoFullPath*) pl[i];
+      if (p->getTail()->isOfType(SoVRMLImageTexture::getClassTypeId())) {
+        SoVRMLImageTexture * tex = (SoVRMLImageTexture*) p->getTail();
+        if (tex->url.getNum()) {
+          // FIXME: we only check the first name here. Should really check all of them
+          SbName name = tex->url[0].getString();
+          unsigned long key = (unsigned long) ((void*) name.getString());
+          void * tmp;
+          if (!namedict.find(key, tmp)) {
+            (void) namedict.enter(key, tex);
+          }
+          else if (tmp != (void*) tex) {
+            SoNode * parent = p->getNodeFromTail(1);
+            if (parent->isOfType(SoVRMLAppearance::getClassTypeId())) {
+              ((SoVRMLAppearance*)parent)->texture = (SoNode*) tmp;
+            }
+            else {
+              // not a valid VRML2 file. Print a warning or something.
+            }
+          }
+        }
+      }
+    }   
+    sa.reset();
+    SoOutput out;
+    out.setHeaderString("#VRML V2.0 utf8");
+    SoWriteAction wa(&out);
+    wa.apply(root);
+    root->unref();
+  }
+  \endcode
 */
 
 /*!
