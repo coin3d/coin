@@ -48,9 +48,9 @@ protected:
   virtual ~SoPendulum();
 
 private:
-  SoInterpolateRotation *interpolator;
-  SoCalculator *calculator;
-  SoElapsedTime *timer;
+  SoInterpolateRotation * interpolator;
+  SoCalculator * calculator;
+  SoElapsedTime * timer;
 };
 
 #endif // !COIN_SOPENDULUM_H

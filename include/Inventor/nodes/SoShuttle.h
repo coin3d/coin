@@ -48,9 +48,9 @@ protected:
   virtual ~SoShuttle();
 
 private:
-  SoInterpolateVec3f *interpolator;
-  SoCalculator *calculator;
-  SoElapsedTime *timer;
+  SoInterpolateVec3f * interpolator;
+  SoCalculator * calculator;
+  SoElapsedTime * timer;
 };
 
 #endif // !COIN_SOSHUTTLE_H

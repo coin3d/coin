@@ -23,7 +23,7 @@
   \ingroup nodes
 
   A smooth transition between rotation0 and rotation1 is created using
-  a cosine function. In the beginning of the cycle, rotation0 is 
+  a cosine function. In the beginning of the cycle, rotation0 is
   used. Halfway through the cycle, the resulting rotation equals
   rotation1, and at the end of the cycle, we're at rotation0 again.
 */
@@ -36,19 +36,19 @@
 
 /*!
   \var SoSFRotation SoPendulum::rotation0
-  The first rotation that is interpolated.
+  The first rotation limit of the interpolation.
 */
 /*!
   \var SoSFRotation SoPendulum::rotation1
-  The other rotation that is interpolated.
+  The other rotation limit of the interpolation.
 */
 /*!
   \var SoSFFloat SoPendulum::speed
-  Speed in cycles per second.
+  Speed in cycles per second. Defaults to 1.
 */
 /*!
   \var SoSFBool SoPendulum::on
-  Toggles animation on or off.
+  Toggles animation on or off. Defaults to being \c on.
 */
 
 // *************************************************************************
@@ -58,7 +58,7 @@ SO_NODE_SOURCE(SoPendulum);
 /*!
   Constructor.
 */
-SoPendulum::SoPendulum()
+SoPendulum::SoPendulum(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoPendulum);
 
@@ -66,14 +66,14 @@ SoPendulum::SoPendulum()
   SO_NODE_ADD_FIELD(rotation1, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
   SO_NODE_ADD_FIELD(speed, (1.0f));
   SO_NODE_ADD_FIELD(on, (TRUE));
-  
+
   this->interpolator = new SoInterpolateRotation;
   this->interpolator->ref();
   this->calculator = new SoCalculator;
   this->calculator->ref();
   this->timer = new SoElapsedTime;
   this->timer->ref();
-  
+
   this->calculator->expression = "oa = (1.0 - cos(fmod(a*b*M_PI*2, M_PI*2))) * 0.5";
   this->calculator->a.connectFrom(&this->timer->timeOut);
   this->timer->on.connectFrom(&this->on);
@@ -94,17 +94,9 @@ SoPendulum::~SoPendulum()
   this->timer->unref();
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoPendulum class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoPendulum::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoPendulum);
 }
-
-
-
-

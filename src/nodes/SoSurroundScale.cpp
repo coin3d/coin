@@ -51,11 +51,36 @@
 
 /*!
   \var SoSFInt32 SoSurroundScale::numNodesUpToContainer
-  FIXME: write documentation for field
+
+  Number of nodes in the path counting from this and "upwards" to the
+  container node.
 */
 /*!
   \var SoSFInt32 SoSurroundScale::numNodesUpToReset
-  FIXME: write documentation for field
+
+  Number of nodes in the path counting from this and "upwards" to the
+  node where we will reset the bounding box value.
+*/
+
+/*!
+  \var SoSurroundScale::cachedScale
+  \internal
+*/
+/*!
+  \var SoSurroundScale::cachedInvScale
+  \internal
+*/
+/*!
+  \var SoSurroundScale::cachedTranslation
+  \internal
+*/
+/*!
+  \var SoSurroundScale::cacheOK
+  \internal
+*/
+/*!
+  \var SoSurroundScale::doTranslations
+  \internal
 */
 
 
@@ -66,7 +91,7 @@ SO_NODE_SOURCE(SoSurroundScale);
 /*!
   Constructor.
 */
-SoSurroundScale::SoSurroundScale()
+SoSurroundScale::SoSurroundScale(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoSurroundScale);
 
@@ -74,7 +99,7 @@ SoSurroundScale::SoSurroundScale()
   SO_NODE_ADD_FIELD(numNodesUpToReset, (0));
 
   this->cacheOK = FALSE;
-  this->ignoreInBBox = FALSE;
+  this->ignoreinbbox = FALSE;
   this->doTranslations = TRUE;
 }
 
@@ -85,11 +110,7 @@ SoSurroundScale::~SoSurroundScale()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoSurroundScale class. This includes setting up the
-  type system, among other things.
-*/
+// Doc in superclass.
 void
 SoSurroundScale::initClass(void)
 {
@@ -98,8 +119,8 @@ SoSurroundScale::initClass(void)
 
 
 /*!
-  Invalidates the cached transformation, forcing a recalculation
-  to be done the next time this node is traversed.
+  Invalidates the cached transformation, forcing a recalculation to be
+  done the next time this node is traversed.
 */
 void
 SoSurroundScale::invalidate(void)
@@ -107,13 +128,11 @@ SoSurroundScale::invalidate(void)
   this->cacheOK = FALSE;
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 void
-SoSurroundScale::doAction(SoAction *action)
+SoSurroundScale::doAction(SoAction * action)
 {
-  SoState *state = action->getState();
+  SoState * state = action->getState();
   if (!this->cacheOK) {
     SbMatrix dummy;
     this->updateMySurroundParams(action, dummy);
@@ -127,8 +146,8 @@ SoSurroundScale::doAction(SoAction *action)
 }
 
 /*!
-  Sets whether the translation part of the transformation should
-  be ignored or not.
+  Sets whether the translation part of the transformation should be
+  ignored or not.
 */
 void
 SoSurroundScale::setDoingTranslations(const SbBool val)
@@ -137,8 +156,8 @@ SoSurroundScale::setDoingTranslations(const SbBool val)
 }
 
 /*!
-  Returns whether the translation part of the transformation
-  should be ignored or not.
+  Returns whether the translation part of the transformation should be
+  ignored or not.
 */
 SbBool
 SoSurroundScale::isDoingTranslations(void)
@@ -146,39 +165,31 @@ SoSurroundScale::isDoingTranslations(void)
   return this->doTranslations;
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 void
-SoSurroundScale::callback(SoCallbackAction *action)
+SoSurroundScale::callback(SoCallbackAction * action)
 {
-  SoSurroundScale::doAction((SoAction*)action);
+  SoSurroundScale::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 void
-SoSurroundScale::GLRender(SoGLRenderAction *action)
+SoSurroundScale::GLRender(SoGLRenderAction * action)
 {
-  SoSurroundScale::doAction((SoAction*)action);
+  SoSurroundScale::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 void
-SoSurroundScale::getBoundingBox(SoGetBoundingBoxAction *action)
+SoSurroundScale::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   if (!this->isIgnoreInBbox())
-    SoSurroundScale::doAction((SoAction*)action);
+    SoSurroundScale::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 void
-SoSurroundScale::getMatrix(SoGetMatrixAction *action)
+SoSurroundScale::getMatrix(SoGetMatrixAction * action)
 {
   if (!this->cacheOK) {
     this->updateMySurroundParams(action, action->getInverse());
@@ -197,29 +208,26 @@ SoSurroundScale::getMatrix(SoGetMatrixAction *action)
     SbMatrix m;
     m.setScale(this->cachedScale);
     action->getMatrix().multLeft(m);
-    m.setScale(SbVec3f(1.0f / this->cachedScale[0], 
+    m.setScale(SbVec3f(1.0f / this->cachedScale[0],
                        1.0f / this->cachedScale[1],
                        1.0f / this->cachedScale[2]));
     action->getInverse().multRight(m);
   }
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 void
-SoSurroundScale::pick(SoPickAction *action)
+SoSurroundScale::pick(SoPickAction * action)
 {
-  SoSurroundScale::doAction((SoAction*)action);
+  SoSurroundScale::doAction((SoAction *)action);
 }
 
 /*!
-  Calculates the translation and scale needed to make a
-  default cube surround geometry to the right of the
-  branch this node is on.
+  Calculates the translation and scale needed to make a default cube
+  surround geometry to the right of the branch this node is on.
 */
 void
-SoSurroundScale::updateMySurroundParams(SoAction *action,
+SoSurroundScale::updateMySurroundParams(SoAction * action,
                                         const SbMatrix & /*inv*/)
 {
   // I haven't found any use for the inv argument. The function
@@ -245,9 +253,9 @@ SoSurroundScale::updateMySurroundParams(SoAction *action,
   SbBool storedignore = this->isIgnoreInBbox();
   this->setIgnoreInBbox(TRUE);
 
-  const SoFullPath *curpath = (const SoFullPath*) action->getCurPath();
+  const SoFullPath * curpath = (const SoFullPath *) action->getCurPath();
 
-  SoNode *applynode = curpath->getNodeFromTail(numtocontainer);
+  SoNode * applynode = curpath->getNodeFromTail(numtocontainer);
 
   int start = curpath->getLength() - 1 - numtocontainer;
   int end = curpath->getLength() - 1 - numtoreset;
@@ -288,7 +296,7 @@ SoSurroundScale::updateMySurroundParams(SoAction *action,
 void
 SoSurroundScale::setIgnoreInBbox(const SbBool val)
 {
-  this->ignoreInBBox = val;
+  this->ignoreinbbox = val;
 }
 
 /*!
@@ -298,5 +306,5 @@ SoSurroundScale::setIgnoreInBbox(const SbBool val)
 SbBool
 SoSurroundScale::isIgnoreInBbox(void)
 {
-  return this->ignoreInBBox;
+  return this->ignoreinbbox;
 }

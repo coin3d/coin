@@ -21,12 +21,12 @@
   \class SoShuttle SoShuttle.h Inventor/nodes/SoShuttle.h
   \brief The SoShuttle class is used to oscillate between two translations.
   \ingroup nodes
-  
-  A smooth transition between translation0 and translation1 is created using
-  a cosine function. In the beginning of the cycle, translation0 is 
-  used. Halfway through the cycle, the resulting translation equals
-  translation1, and at the end of the cycle, we're at translation0 again.
 
+  A smooth transition between translation0 and translation1 is created
+  using a cosine function. In the beginning of the cycle, translation0
+  is used. Halfway through the cycle, the resulting translation equals
+  translation1, and at the end of the cycle, we're at translation0
+  again.
 */
 
 #include <Inventor/nodes/SoShuttle.h>
@@ -37,19 +37,19 @@
 
 /*!
   \var SoSFVec3f SoShuttle::translation0
-  The first translation.
+  Translation at the start and end of the cycle.
 */
 /*!
   \var SoSFVec3f SoShuttle::translation1
-  The second translation.
+  Translation at the middle of the cycle.
 */
 /*!
   \var SoSFFloat SoShuttle::speed
-  Number of cycles per second.
+  Number of cycles per second. Default value is 1.
 */
 /*!
   \var SoSFBool SoShuttle::on
-  Toggles animation on or off.  
+  Toggles animation on or off. Defauls to \c TRUE.
 */
 
 SO_NODE_SOURCE(SoShuttle);
@@ -57,7 +57,7 @@ SO_NODE_SOURCE(SoShuttle);
 /*!
   Constructor.
 */
-SoShuttle::SoShuttle()
+SoShuttle::SoShuttle(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoShuttle);
 
@@ -72,7 +72,7 @@ SoShuttle::SoShuttle()
   this->calculator->ref();
   this->timer = new SoElapsedTime;
   this->timer->ref();
-  
+
   this->calculator->expression = "oa = (1.0 - cos(fmod(a*b*M_PI*2, M_PI*2))) * 0.5";
   this->calculator->a.connectFrom(&this->timer->timeOut);
   this->timer->on.connectFrom(&this->on);

@@ -162,4 +162,3 @@ SoPolygonOffset::GLRender(SoGLRenderAction * action)
 {
   SoPolygonOffset::doAction((SoAction*)action);
 }
-
