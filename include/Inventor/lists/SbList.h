@@ -81,15 +81,14 @@ private:
 template <class Type> inline void
 SbList<Type>::growList()
 {
-  const int newsize = this->itemBufferSize << 1;
-  Type * newBuffer = new Type[newsize];
+  this->itemBufferSize <<= 1;
+  Type * newBuffer = new Type[this->itemBufferSize];
   const int n = this->numItems;
   for (int i = 0; i < n; i++) {
     newBuffer[i] = this->itemBuffer[i];
   }
   delete [] this->itemBuffer;
   this->itemBuffer = newBuffer;
-  this->itemBufferSize = newsize;
 }
 
 template <class Type> inline 
@@ -139,17 +138,10 @@ SbList<Type>::append(const Type item)
 template <class Type> inline void
 SbList<Type>::append(const SbList<Type> & list)
 {
-  if (this == &list) {
-    SbList<Type> copy(list);
-    const int items = copy.getLength();
-    for (int i = 0; i < items; i++)
-      append(copy.itemBuffer[i]);
-  } 
-  else {
-    const int items = list.getLength();
-    for (int i = 0; i < items; i++)
-      append(list.itemBuffer[i]);
-  }
+  assert(this != &list);
+  const int items = list.getLength();
+  for (int i = 0; i < items; i++)
+    append(list.itemBuffer[i]);
 }
 
 template <class Type> inline int
@@ -188,8 +180,7 @@ template <class Type> inline void
 SbList<Type>::removeFast(const int index)
 {
   assert(index >= 0 && index < this->numItems); // range [0,N-1]
-  this->numItems--;
-  this->itemBuffer[index] = this->itemBuffer[this->numItems - 1];
+  this->itemBuffer[index] = this->itemBuffer[--this->numItems];
 }
 
 template <class Type> inline int
@@ -224,8 +215,7 @@ template <class Type> inline Type
 SbList<Type>::pop()
 {
   assert(this->numItems > 0);
-  this->numItems--;
-  return this->itemBuffer[this->numItems];
+  return this->itemBuffer[--this->numItems];
 }
 
 template <class Type> inline
