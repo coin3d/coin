@@ -215,17 +215,21 @@ SoEngineOutputData::writeDescriptions(SoOutput *out, SoEngine *engine) const
 /*!
   \overload
 */
-void 
+void
 SoEngineOutputData::addOutput(const SoNodeEngine * base, const char *name,
                               const SoEngineOutput * output, SoType type)
 {
-  this->addOutputInternal((const SoFieldContainer*) base, name, output, type);
+  CC_GLOBAL_LOCK;
+  if (!this->hasOutput(name)) {
+    this->addOutputInternal((const SoFieldContainer*) base, name, output, type);
+  }
+  CC_GLOBAL_UNLOCK;
 }
 
 /*!
   \overload
 */
-SoEngineOutput * 
+SoEngineOutput *
 SoEngineOutputData::getOutput(const SoNodeEngine * engine, int index) const
 {
   return this->getOutputInternal((const SoFieldContainer*) engine, index);
@@ -234,14 +238,14 @@ SoEngineOutputData::getOutput(const SoNodeEngine * engine, int index) const
 /*!
   \overload
 */
-int 
+int
 SoEngineOutputData::getIndex(const SoNodeEngine * engine, const SoEngineOutput * output) const
 {
   return this->getIndexInternal((const SoFieldContainer*) engine, output);
 }
 
 // does the actual job of adding an engine output
-void 
+void
 SoEngineOutputData::addOutputInternal(const SoFieldContainer * base, const char *name,
                                       const SoEngineOutput * output, SoType type)
 {
@@ -270,7 +274,7 @@ SoEngineOutputData::addOutputInternal(const SoFieldContainer * base, const char 
 }
 
 // does the actual job of returning an engine output
-SoEngineOutput * 
+SoEngineOutput *
 SoEngineOutputData::getOutputInternal(const SoFieldContainer * base, int index) const
 {
   assert(index >= 0 && index < this->outputlist.getLength());
@@ -280,7 +284,7 @@ SoEngineOutputData::getOutputInternal(const SoFieldContainer * base, int index) 
 }
 
 // does the actual job of returning an engine output index
-int 
+int
 SoEngineOutputData::getIndexInternal(const SoFieldContainer * base, const SoEngineOutput * output) const
 {
   char * vbase = (char *)base;
@@ -297,7 +301,7 @@ SoEngineOutputData::getIndexInternal(const SoFieldContainer * base, const SoEngi
   \internal
   \since Coin 2.3
 */
-SbBool 
+SbBool
 SoEngineOutputData::hasOutput(const char * name) const
 {
   for (int i = 0; i < this->outputlist.getLength(); i++) {
