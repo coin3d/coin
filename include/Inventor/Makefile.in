@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4e from Makefile.am
+# Makefile.in generated automatically by automake 1.4e from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
@@ -47,7 +47,6 @@ INSTALL = @INSTALL@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
-INSTALL_STRIP_FLAG =
 INSTALL_HEADER = $(INSTALL_DATA)
 transform = @program_transform_name@
 
@@ -58,13 +57,14 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 
-@SET_MAKE@
 build_alias = @build_alias@
 build_triplet = @build@
 host_alias = @host_alias@
 host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
+
+@SET_MAKE@
 AMDEP = @AMDEP@
 AMTAR = @AMTAR@
 AS = @AS@
@@ -87,7 +87,6 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
-INSTALL_HEADER = @INSTALL_HEADER@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBFLAGS = @LIBFLAGS@
@@ -115,27 +114,29 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 
 SUBDIRS = lock
+EXEEXT =
+OBJEXT = o
 subdir = include/Inventor
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = ../../config.h SbBasic.h
-CONFIG_CLEAN_FILES = 
-DIST_SOURCES = 
-DIST_COMMON =  ./stamp-h2.in Makefile.am Makefile.in SbBasic.h.in
+CONFIG_HEADER = $(top_builddir)/config.h SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
+CONFIG_CLEAN_FILES =
+DIST_SOURCES =
+DIST_COMMON = ./stamp-h2.in Makefile.am Makefile.in SbBasic.h.in
 
+DIST_SUBDIRS = $(SUBDIRS)
+all: SbBasic.h
+	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
-DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-
-GZIP_ENV = --best
-DIST_SUBDIRS =  $(SUBDIRS)
-all: all-redirect
 .SUFFIXES:
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --gnu include/Inventor/Makefile
 
-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
-	cd $(top_builddir) \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+	cd $(top_srcdir) && \
+	  $(AUTOMAKE) --gnu  include/Inventor/Makefile
 
+Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) && \
+	  CONFIG_HEADERS= CONFIG_LINKS= \
+	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
 
 SbBasic.h: stamp-h2
 	@if test ! -f $@; then \
@@ -149,12 +150,12 @@ stamp-h2: $(srcdir)/SbBasic.h.in $(top_builddir)/config.status
 	  && CONFIG_FILES= CONFIG_HEADERS=include/Inventor/SbBasic.h \
 	     $(SHELL) ./config.status
 	@mv stamp-h2T stamp-h2
-$(srcdir)/SbBasic.h.in: @MAINTAINER_MODE_TRUE@$(srcdir)/./stamp-h2.in
+$(srcdir)/SbBasic.h.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/./stamp-h2.in
 	@if test ! -f $@; then \
 		rm -f $(srcdir)/./stamp-h2.in; \
 		$(MAKE) $(srcdir)/./stamp-h2.in; \
 	else :; fi
-$(srcdir)/./stamp-h2.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) $(top_srcdir)/acconfig.h
+$(srcdir)/./stamp-h2.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	@rm -f $(srcdir)/./stamp-h2.in $(srcdir)/./stamp-h2.inT
 	@echo timestamp > $(srcdir)/./stamp-h2.inT 2> /dev/null
 	cd $(top_srcdir) && $(AUTOHEADER)
@@ -170,7 +171,8 @@ distclean-hdr:
 #     (which will cause the Makefiles to be regenerated when you run `make');
 # (2) otherwise, pass the desired values on the `make' command line.
 all-recursive install-data-recursive install-exec-recursive \
-installdirs-recursive install-recursive uninstall-recursive  \
+installdirs-recursive install-recursive uninstall-recursive \
+install-info-recursive uninstall-info-recursive \
 check-recursive installcheck-recursive info-recursive dvi-recursive:
 	@set fnord $(MAKEFLAGS); amf=$$2; \
 	dot_seen=no; \
@@ -231,7 +233,7 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	       END { for (i in files) print i; }'`; \
 	mkid -fID $$unique $(LISP)
 
-TAGS: tags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+TAGS: tags-recursive $(HEADERS) $(SOURCES) SbBasic.h.in $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	tags=; \
 	here=`pwd`; \
@@ -246,8 +248,8 @@ TAGS: tags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 	  done | \
 	  $(AWK) '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
-	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
-	  || etags $(ETAGS_ARGS) $$tags  $$unique $(LISP)
+	test -z "$(ETAGS_ARGS)SbBasic.h.in$$unique$(LISP)$$tags" \
+	  || etags $(ETAGS_ARGS) $$tags SbBasic.h.in $$unique $(LISP)
 
 GTAGS:
 	here=`CDPATH=: && cd $(top_builddir) && pwd` \
@@ -257,8 +259,10 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
+top_distdir = ../..
+distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
 	@for file in $(DISTFILES); do \
@@ -278,39 +282,33 @@ distdir: $(DISTFILES)
 	    || mkdir $(distdir)/$$subdir \
 	    || exit 1; \
 	    (cd $$subdir && \
-	      $(MAKE) $(AM_MAKEFLAGS) top_distdir=../$(top_distdir) distdir=../$(distdir)/$$subdir distdir) \
+	      $(MAKE) $(AM_MAKEFLAGS) \
+	        top_distdir="$(top_distdir)" \
+	        distdir=../$(distdir)/$$subdir \
+	        distdir) \
 	      || exit 1; \
 	  fi; \
 	done
-info-am:
-info: info-recursive
-dvi-am:
-dvi: dvi-recursive
 check-am: all-am
 check: check-recursive
-installcheck-am:
-installcheck: installcheck-recursive
-all-redirect: SbBasic.h
-	$(MAKE) $(AM_MAKEFLAGS) all-recursive
-
-install-exec-am:
-install-exec: install-exec-recursive
-
-install-data-am:
-install-data: install-data-recursive
-
-install-am: all-am
-	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
-install: install-recursive
-uninstall-am:
-uninstall: uninstall-recursive
 all-am: Makefile SbBasic.h
-install-strip:
-	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
-	  INSTALL_PROGRAM_ENV='$(INSTALL_STRIP_PROGRAM_ENV)' install
+
 installdirs: installdirs-recursive
 installdirs-am:
 
+install: install-recursive
+install-exec: install-exec-recursive
+install-data: install-data-recursive
+uninstall: uninstall-recursive
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+
+installcheck: installcheck-recursive
+
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
+	  INSTALL_PROGRAM_ENV='$(INSTALL_STRIP_PROGRAM_ENV)' install
 
 mostlyclean-generic:
 
@@ -332,6 +330,24 @@ distclean: distclean-recursive
 
 distclean-am: clean-am distclean-generic distclean-hdr distclean-tags
 
+dvi:
+
+dvi-am:
+
+info:
+
+info-am:
+
+install-data-am:
+
+install-exec-am:
+
+install-info:
+
+install-man:
+
+installcheck-am:
+
 maintainer-clean: maintainer-clean-recursive
 
 maintainer-clean-am: distclean-am maintainer-clean-generic
@@ -340,18 +356,19 @@ mostlyclean: mostlyclean-recursive
 
 mostlyclean-am: mostlyclean-generic
 
-.PHONY: all all-am all-recursive all-redirect check check-am \
-	check-recursive clean clean-generic clean-recursive distclean \
-	distclean-generic distclean-hdr distclean-recursive \
-	distclean-tags distdir dvi dvi-am dvi-recursive info info-am \
-	info-recursive install install-am install-data install-data-am \
-	install-data-recursive install-exec install-exec-am \
-	install-exec-recursive install-recursive install-strip \
-	installcheck installcheck-am installcheck-recursive installdirs \
-	installdirs-am installdirs-recursive maintainer-clean \
-	maintainer-clean-generic maintainer-clean-recursive mostlyclean \
-	mostlyclean-generic mostlyclean-recursive tags tags-recursive \
-	uninstall uninstall-am uninstall-recursive
+.PHONY: all all-am all-recursive check check-am check-recursive clean \
+	clean-generic clean-recursive distclean distclean-generic \
+	distclean-hdr distclean-recursive distclean-tags distdir dvi \
+	dvi-am dvi-recursive info info-am info-recursive install \
+	install-am install-data install-data-am install-data-recursive \
+	install-exec install-exec-am install-exec-recursive \
+	install-info install-info-recursive install-man \
+	install-recursive install-strip installcheck installcheck-am \
+	installcheck-recursive installdirs installdirs-am \
+	installdirs-recursive maintainer-clean maintainer-clean-generic \
+	maintainer-clean-recursive mostlyclean mostlyclean-generic \
+	mostlyclean-recursive tags tags-recursive uninstall \
+	uninstall-am uninstall-info-recursive uninstall-recursive
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

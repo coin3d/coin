@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4e from Makefile.am
+# Makefile.in generated automatically by automake 1.4e from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
@@ -47,7 +47,6 @@ INSTALL = @INSTALL@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
-INSTALL_STRIP_FLAG =
 INSTALL_HEADER = $(INSTALL_DATA)
 transform = @program_transform_name@
 
@@ -58,13 +57,14 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 
-@SET_MAKE@
 build_alias = @build_alias@
 build_triplet = @build@
 host_alias = @host_alias@
 host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
+
+@SET_MAKE@
 AMDEP = @AMDEP@
 AMTAR = @AMTAR@
 AS = @AS@
@@ -87,7 +87,6 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
-INSTALL_HEADER = @INSTALL_HEADER@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBFLAGS = @LIBFLAGS@
@@ -113,48 +112,50 @@ sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
-@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
-@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
-@HACKING_COMPACT_BUILD_FALSE@	SoBoolOperation.cpp SoBoolOperation.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoCalculator.cpp SoCalculator.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoComposeMatrix.cpp SoComposeMatrix.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoComposeRotation.cpp SoComposeRotation.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoComposeRotationFromTo.cpp SoComposeRotationFromTo.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoComposeVec2f.cpp SoComposeVec2f.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoComposeVec3f.cpp SoComposeVec3f.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoComposeVec4f.cpp SoComposeVec4f.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoComputeBoundingBox.cpp SoComputeBoundingBox.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoConcatenate.cpp SoConcatenate.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoConvertAll.cpp SoConvertAll.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoCounter.cpp SoCounter.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoDecomposeMatrix.cpp SoDecomposeMatrix.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoDecomposeRotation.cpp SoDecomposeRotation.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoDecomposeVec2f.cpp SoDecomposeVec2f.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoDecomposeVec3f.cpp SoDecomposeVec3f.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoDecomposeVec4f.cpp SoDecomposeVec4f.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoElapsedTime.cpp SoElapsedTime.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoEngine.cpp SoEngine.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoEngineOutput.cpp SoEngineOutput.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoFieldConverter.cpp SoFieldConverter.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoGate.cpp SoGate.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoInterpolate.cpp SoInterpolate.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoInterpolateFloat.cpp SoInterpolateFloat.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoInterpolateRotation.cpp SoInterpolateRotation.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoInterpolateVec2f.cpp SoInterpolateVec2f.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoInterpolateVec3f.cpp SoInterpolateVec3f.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoInterpolateVec4f.cpp SoInterpolateVec4f.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoOnOff.cpp SoOnOff.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoOneShot.cpp SoOneShot.h \
-@HACKING_COMPACT_BUILD_FALSE@        SoOutputData.cpp SoOutputData.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoSelectOne.cpp SoSelectOne.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoTimeCounter.cpp SoTimeCounter.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoTransformVec3f.cpp SoTransformVec3f.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoTriggerAny.cpp SoTriggerAny.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoSubEngine.h SoSubEngineP.h \
-@HACKING_COMPACT_BUILD_FALSE@	evaluator.c evaluator.h \
-@HACKING_COMPACT_BUILD_FALSE@	evaluator_tab.c
 
-ALLINSTHEADERS = \
+RegularSources = \
+	SoBoolOperation.cpp \
+	SoCalculator.cpp \
+	SoComposeMatrix.cpp \
+	SoComposeRotation.cpp \
+	SoComposeRotationFromTo.cpp \
+	SoComposeVec2f.cpp \
+	SoComposeVec3f.cpp \
+	SoComposeVec4f.cpp \
+	SoComputeBoundingBox.cpp \
+	SoConcatenate.cpp \
+	SoConvertAll.cpp \
+	SoCounter.cpp \
+	SoDecomposeMatrix.cpp \
+	SoDecomposeRotation.cpp \
+	SoDecomposeVec2f.cpp \
+	SoDecomposeVec3f.cpp \
+	SoDecomposeVec4f.cpp \
+	SoElapsedTime.cpp \
+	SoEngine.cpp \
+	SoEngineOutput.cpp \
+	SoFieldConverter.cpp \
+	SoGate.cpp \
+	SoInterpolate.cpp \
+	SoInterpolateFloat.cpp \
+	SoInterpolateRotation.cpp \
+	SoInterpolateVec2f.cpp \
+	SoInterpolateVec3f.cpp \
+	SoInterpolateVec4f.cpp \
+	SoOnOff.cpp \
+	SoOneShot.cpp \
+        SoOutputData.cpp \
+	SoSelectOne.cpp \
+	SoTimeCounter.cpp \
+	SoTransformVec3f.cpp \
+	SoTriggerAny.cpp \
+	evaluator.c \
+	evaluator_tab.c
+
+LinkHackSources = \
+	all.cpp
+
+PublicHeaders = \
 	$(top_srcdir)/include/Inventor/engines/SoSubEngine.h \
 	$(top_srcdir)/include/Inventor/engines/SoEngines.h \
 	$(top_srcdir)/include/Inventor/engines/SoBoolOperation.h \
@@ -193,25 +194,17 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoTransformVec3f.h \
 	$(top_srcdir)/include/Inventor/engines/SoTriggerAny.h
 
+PrivateHeaders = \
+	$(top_srcdir)/include/Inventor/engines/SoSubEngineP.h \
+	$(top_srcdir)/include/Inventor/engines/SoConvertAll.h \
+	evaluator.h \
+	lex.so_eval.c
 
-# Don't use the explicit rules, they will just confuse users on
-# systems without flex and/or bison. 20000606 mortene.
+@HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
-#BUILT_SOURCES = \
-#	$(top_srcdir)/src/engines/lex.so_eval.c \
-#	$(top_srcdir)/src/engines/evaluator.tab.c
-
-#$(top_srcdir)/src/engines/lex.so_eval.c: $(top_srcdir)/src/engines/evaluator.l
-#	flex -o$(top_srcdir)/src/engines/lex.so_eval.c -L $(top_srcdir)/src/engines/evaluator.l
-
-#$(top_srcdir)/src/engines/evaluator_tab.c: $(top_srcdir)/src/engines/lex.so_eval.c $(top_srcdir)/src/engines/evaluator.y
-#	bison -p so_eval -o $(top_srcdir)/src/engines/evaluator_tab.c -l $(top_srcdir)/src/engines/evaluator.y
-
-# Everything below is autogenerated from a macro, so don't modify
-# within the Makefile.am itself. 19991201 mortene.
-
-@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_TRUE@libengines@SUFFIX@LINKHACK.la
-@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_FALSE@libengines.la
+@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libengines@SUFFIX@LINKHACK.la
+@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libengines.la
 
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
@@ -219,19 +212,28 @@ LIBS =
 
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
-libengines_la_SOURCES = $(ALLSOURCES)
-libengines@SUFFIX@LINKHACK_la_SOURCES = $(ALLSOURCES)
+libengines_la_SOURCES = $(BuildSources)
+EXTRA_libengines_la_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+
+libengines@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
+EXTRA_libengines@SUFFIX@LINKHACK_la_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 
 libenginesincdir = $(includedir)/Inventor/engines
-libenginesinc_HEADERS = $(ALLINSTHEADERS)
+libenginesinc_HEADERS = $(PublicHeaders)
+EXEEXT =
+OBJEXT = o
 subdir = src/engines
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
-CONFIG_CLEAN_FILES = 
-LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
+CONFIG_CLEAN_FILES =
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 
-DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
+DEFS = @DEFS@ -I. -I$(srcdir) -I$(top_builddir) -I$(top_builddir)/include/Inventor -I$(top_builddir)/include/Inventor/system
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 X_CFLAGS = @X_CFLAGS@
@@ -240,57 +242,57 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libengines_la_LDFLAGS = 
 libengines_la_LIBADD = 
-@HACKING_COMPACT_BUILD_FALSE@am_libengines_la_OBJECTS =  \
-@HACKING_COMPACT_BUILD_FALSE@SoBoolOperation.lo SoCalculator.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoComposeMatrix.lo SoComposeRotation.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoComposeRotationFromTo.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoComposeVec2f.lo SoComposeVec3f.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoComposeVec4f.lo SoComputeBoundingBox.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoConcatenate.lo SoConvertAll.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoCounter.lo SoDecomposeMatrix.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoDecomposeRotation.lo SoDecomposeVec2f.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoDecomposeVec3f.lo SoDecomposeVec4f.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoElapsedTime.lo SoEngine.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoEngineOutput.lo SoFieldConverter.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoGate.lo SoInterpolate.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoInterpolateFloat.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoInterpolateRotation.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoInterpolateVec2f.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoInterpolateVec3f.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoInterpolateVec4f.lo SoOnOff.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoOneShot.lo SoOutputData.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoSelectOne.lo SoTimeCounter.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTransformVec3f.lo SoTriggerAny.lo \
-@HACKING_COMPACT_BUILD_FALSE@evaluator.lo evaluator_tab.lo
-@HACKING_COMPACT_BUILD_TRUE@am_libengines_la_OBJECTS =  all.lo
-libengines_la_OBJECTS =  $(am_libengines_la_OBJECTS)
+@HACKING_COMPACT_BUILD_TRUE@am_libengines_la_OBJECTS = all.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libengines_la_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@ SoBoolOperation.lo SoCalculator.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoComposeMatrix.lo SoComposeRotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoComposeRotationFromTo.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoComposeVec2f.lo SoComposeVec3f.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoComposeVec4f.lo SoComputeBoundingBox.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoConcatenate.lo SoConvertAll.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoCounter.lo SoDecomposeMatrix.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoDecomposeRotation.lo SoDecomposeVec2f.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoDecomposeVec3f.lo SoDecomposeVec4f.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoElapsedTime.lo SoEngine.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoEngineOutput.lo SoFieldConverter.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoGate.lo SoInterpolate.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoInterpolateFloat.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoInterpolateRotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoInterpolateVec2f.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoInterpolateVec3f.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoInterpolateVec4f.lo SoOnOff.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoOneShot.lo SoOutputData.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoSelectOne.lo SoTimeCounter.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTransformVec3f.lo SoTriggerAny.lo \
+@HACKING_COMPACT_BUILD_FALSE@ evaluator.lo evaluator_tab.lo
+libengines_la_OBJECTS = $(am_libengines_la_OBJECTS)
 libengines@SUFFIX@LINKHACK_la_LDFLAGS = 
 libengines@SUFFIX@LINKHACK_la_LIBADD = 
-@HACKING_COMPACT_BUILD_FALSE@am_libengines@SUFFIX@LINKHACK_la_OBJECTS =  \
-@HACKING_COMPACT_BUILD_FALSE@SoBoolOperation.lo SoCalculator.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoComposeMatrix.lo SoComposeRotation.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoComposeRotationFromTo.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoComposeVec2f.lo SoComposeVec3f.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoComposeVec4f.lo SoComputeBoundingBox.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoConcatenate.lo SoConvertAll.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoCounter.lo SoDecomposeMatrix.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoDecomposeRotation.lo SoDecomposeVec2f.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoDecomposeVec3f.lo SoDecomposeVec4f.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoElapsedTime.lo SoEngine.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoEngineOutput.lo SoFieldConverter.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoGate.lo SoInterpolate.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoInterpolateFloat.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoInterpolateRotation.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoInterpolateVec2f.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoInterpolateVec3f.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoInterpolateVec4f.lo SoOnOff.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoOneShot.lo SoOutputData.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoSelectOne.lo SoTimeCounter.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTransformVec3f.lo SoTriggerAny.lo \
-@HACKING_COMPACT_BUILD_FALSE@evaluator.lo evaluator_tab.lo
-@HACKING_COMPACT_BUILD_TRUE@am_libengines@SUFFIX@LINKHACK_la_OBJECTS =  \
-@HACKING_COMPACT_BUILD_TRUE@all.lo
-libengines@SUFFIX@LINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_TRUE@am_libengines@SUFFIX@LINKHACK_la_OBJECTS = \
+@HACKING_COMPACT_BUILD_TRUE@ all.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libengines@SUFFIX@LINKHACK_la_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@ SoBoolOperation.lo SoCalculator.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoComposeMatrix.lo SoComposeRotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoComposeRotationFromTo.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoComposeVec2f.lo SoComposeVec3f.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoComposeVec4f.lo SoComputeBoundingBox.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoConcatenate.lo SoConvertAll.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoCounter.lo SoDecomposeMatrix.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoDecomposeRotation.lo SoDecomposeVec2f.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoDecomposeVec3f.lo SoDecomposeVec4f.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoElapsedTime.lo SoEngine.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoEngineOutput.lo SoFieldConverter.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoGate.lo SoInterpolate.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoInterpolateFloat.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoInterpolateRotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoInterpolateVec2f.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoInterpolateVec3f.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoInterpolateVec4f.lo SoOnOff.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoOneShot.lo SoOutputData.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoSelectOne.lo SoTimeCounter.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTransformVec3f.lo SoTriggerAny.lo \
+@HACKING_COMPACT_BUILD_FALSE@ evaluator.lo evaluator_tab.lo
+libengines@SUFFIX@LINKHACK_la_OBJECTS = \
 $(am_libengines@SUFFIX@LINKHACK_la_OBJECTS)
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -302,91 +304,78 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES =  $(libengines_la_SOURCES) \
-$(libengines@SUFFIX@LINKHACK_la_SOURCES)
-HEADERS =  $(libenginesinc_HEADERS)
+DIST_SOURCES = $(libengines_la_SOURCES) $(EXTRA_libengines_la_SOURCES) \
+$(libengines@SUFFIX@LINKHACK_la_SOURCES) \
+$(EXTRA_libengines@SUFFIX@LINKHACK_la_SOURCES)
+HEADERS = $(libenginesinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP@DEP_FILES =  $(DEPDIR)/SoBoolOperation.Plo \
-@AMDEP@$(DEPDIR)/SoCalculator.Plo $(DEPDIR)/SoComposeMatrix.Plo \
-@AMDEP@$(DEPDIR)/SoComposeRotation.Plo \
-@AMDEP@$(DEPDIR)/SoComposeRotationFromTo.Plo \
-@AMDEP@$(DEPDIR)/SoComposeVec2f.Plo $(DEPDIR)/SoComposeVec3f.Plo \
-@AMDEP@$(DEPDIR)/SoComposeVec4f.Plo $(DEPDIR)/SoComputeBoundingBox.Plo \
-@AMDEP@$(DEPDIR)/SoConcatenate.Plo $(DEPDIR)/SoConvertAll.Plo \
-@AMDEP@$(DEPDIR)/SoCounter.Plo $(DEPDIR)/SoDecomposeMatrix.Plo \
-@AMDEP@$(DEPDIR)/SoDecomposeRotation.Plo $(DEPDIR)/SoDecomposeVec2f.Plo \
-@AMDEP@$(DEPDIR)/SoDecomposeVec3f.Plo $(DEPDIR)/SoDecomposeVec4f.Plo \
-@AMDEP@$(DEPDIR)/SoElapsedTime.Plo $(DEPDIR)/SoEngine.Plo \
-@AMDEP@$(DEPDIR)/SoEngineOutput.Plo $(DEPDIR)/SoFieldConverter.Plo \
-@AMDEP@$(DEPDIR)/SoGate.Plo $(DEPDIR)/SoInterpolate.Plo \
-@AMDEP@$(DEPDIR)/SoInterpolateFloat.Plo \
-@AMDEP@$(DEPDIR)/SoInterpolateRotation.Plo \
-@AMDEP@$(DEPDIR)/SoInterpolateVec2f.Plo \
-@AMDEP@$(DEPDIR)/SoInterpolateVec3f.Plo \
-@AMDEP@$(DEPDIR)/SoInterpolateVec4f.Plo $(DEPDIR)/SoOnOff.Plo \
-@AMDEP@$(DEPDIR)/SoOneShot.Plo $(DEPDIR)/SoOutputData.Plo \
-@AMDEP@$(DEPDIR)/SoSelectOne.Plo $(DEPDIR)/SoTimeCounter.Plo \
-@AMDEP@$(DEPDIR)/SoTransformVec3f.Plo $(DEPDIR)/SoTriggerAny.Plo \
-@AMDEP@$(DEPDIR)/all.Plo $(DEPDIR)/evaluator.Plo \
-@AMDEP@$(DEPDIR)/evaluator_tab.Plo
-DIST_COMMON =  $(libenginesinc_HEADERS) Makefile.am Makefile.in
+@AMDEP@DEP_FILES = $(DEPDIR)/SoBoolOperation.Plo \
+@AMDEP@ $(DEPDIR)/SoCalculator.Plo $(DEPDIR)/SoComposeMatrix.Plo \
+@AMDEP@ $(DEPDIR)/SoComposeRotation.Plo \
+@AMDEP@ $(DEPDIR)/SoComposeRotationFromTo.Plo \
+@AMDEP@ $(DEPDIR)/SoComposeVec2f.Plo $(DEPDIR)/SoComposeVec3f.Plo \
+@AMDEP@ $(DEPDIR)/SoComposeVec4f.Plo $(DEPDIR)/SoComputeBoundingBox.Plo \
+@AMDEP@ $(DEPDIR)/SoConcatenate.Plo $(DEPDIR)/SoConvertAll.Plo \
+@AMDEP@ $(DEPDIR)/SoCounter.Plo $(DEPDIR)/SoDecomposeMatrix.Plo \
+@AMDEP@ $(DEPDIR)/SoDecomposeRotation.Plo $(DEPDIR)/SoDecomposeVec2f.Plo \
+@AMDEP@ $(DEPDIR)/SoDecomposeVec3f.Plo $(DEPDIR)/SoDecomposeVec4f.Plo \
+@AMDEP@ $(DEPDIR)/SoElapsedTime.Plo $(DEPDIR)/SoEngine.Plo \
+@AMDEP@ $(DEPDIR)/SoEngineOutput.Plo $(DEPDIR)/SoFieldConverter.Plo \
+@AMDEP@ $(DEPDIR)/SoGate.Plo $(DEPDIR)/SoInterpolate.Plo \
+@AMDEP@ $(DEPDIR)/SoInterpolateFloat.Plo \
+@AMDEP@ $(DEPDIR)/SoInterpolateRotation.Plo \
+@AMDEP@ $(DEPDIR)/SoInterpolateVec2f.Plo \
+@AMDEP@ $(DEPDIR)/SoInterpolateVec3f.Plo \
+@AMDEP@ $(DEPDIR)/SoInterpolateVec4f.Plo $(DEPDIR)/SoOnOff.Plo \
+@AMDEP@ $(DEPDIR)/SoOneShot.Plo $(DEPDIR)/SoOutputData.Plo \
+@AMDEP@ $(DEPDIR)/SoSelectOne.Plo $(DEPDIR)/SoTimeCounter.Plo \
+@AMDEP@ $(DEPDIR)/SoTransformVec3f.Plo $(DEPDIR)/SoTriggerAny.Plo \
+@AMDEP@ $(DEPDIR)/all.Plo $(DEPDIR)/evaluator.Plo \
+@AMDEP@ $(DEPDIR)/evaluator_tab.Plo $(DEPDIR)/lex.so_eval.Plo
+DIST_COMMON = $(libenginesinc_HEADERS) Makefile.am Makefile.in
 
-
-DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-
-GZIP_ENV = --best
-SOURCES = $(libengines_la_SOURCES) $(libengines@SUFFIX@LINKHACK_la_SOURCES)
+SOURCES = $(libengines_la_SOURCES) $(EXTRA_libengines_la_SOURCES) $(libengines@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libengines@SUFFIX@LINKHACK_la_SOURCES)
 OBJECTS = $(am_libengines_la_OBJECTS) $(am_libengines@SUFFIX@LINKHACK_la_OBJECTS)
 
 all: all-am
+
 .SUFFIXES:
-.SUFFIXES: .c .cpp .h .lo .o
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --gnu src/engines/Makefile
+.SUFFIXES: .c .cpp .h .lo .o .obj
 
-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
-	cd $(top_builddir) \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+	cd $(top_srcdir) && \
+	  $(AUTOMAKE) --gnu  src/engines/Makefile
 
-
-mostlyclean-libLTLIBRARIES:
-
-clean-libLTLIBRARIES:
-	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
-
-distclean-libLTLIBRARIES:
-
-maintainer-clean-libLTLIBRARIES:
-
+Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) && \
+	  CONFIG_HEADERS= CONFIG_LINKS= \
+	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
 	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
 	  if test -f $$p; then \
-	    echo " $(LIBTOOL)  --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p"; \
-	    $(LIBTOOL)  --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p; \
+	    echo " $(LIBTOOL) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p; \
 	  else :; fi; \
 	done
 
 uninstall-libLTLIBRARIES:
 	@$(NORMAL_UNINSTALL)
 	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
-	  echo " $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p"; \
-	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
+	  echo " $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p"; \
+	  $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
 	done
 
-mostlyclean-noinstLTLIBRARIES:
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
 
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
 
-distclean-noinstLTLIBRARIES:
-
-maintainer-clean-noinstLTLIBRARIES:
-
 mostlyclean-compile:
-	-rm -f *.o core *.core
+	-rm -f *.$(OBJEXT) core *.core
 
 distclean-compile:
 	-rm -f *.tab.c
@@ -405,7 +394,6 @@ libengines.la: $(libengines_la_OBJECTS) $(libengines_la_DEPENDENCIES)
 
 libengines@SUFFIX@LINKHACK.la: $(libengines@SUFFIX@LINKHACK_la_OBJECTS) $(libengines@SUFFIX@LINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libengines@SUFFIX@LINKHACK_la_LDFLAGS) $(libengines@SUFFIX@LINKHACK_la_OBJECTS) $(libengines@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
-
 install-libenginesincHEADERS: $(libenginesinc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libenginesincdir)
@@ -435,7 +423,7 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	       END { for (i in files) print i; }'`; \
 	mkid -fID $$unique $(LISP)
 
-TAGS: $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	tags=; \
 	here=`pwd`; \
@@ -494,6 +482,7 @@ distclean-tags:
 @AMDEP@@_am_include@ $(DEPDIR)/all.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/evaluator.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/evaluator_tab.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/lex.so_eval.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -512,6 +501,12 @@ distclean-depend:
 @AMDEP@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(LTCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
 
+.c.obj:
+@AMDEP@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(COMPILE) -c -o $@ `cygpath -w $<`
+
 
 @AMDEP@CXXDEPMODE = @CXXDEPMODE@
 
@@ -527,12 +522,20 @@ distclean-depend:
 @AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(LTCXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
 
+.cpp.obj:
+@AMDEP@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXXCOMPILE) -c -o $@ `cygpath -w $<`
 
-distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
+DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+
+top_distdir = ../..
+distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include/Inventor/engines $(top_srcdir)/include/Inventor/engines
+	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include/Inventor/engines
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -544,32 +547,26 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
-info-am:
-info: info-am
-dvi-am:
-dvi: dvi-am
 check-am: all-am
 check: check-am
-installcheck-am:
-installcheck: installcheck-am
-install-exec-am: install-libLTLIBRARIES
-install-exec: install-exec-am
+all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 
-install-data-am: install-libenginesincHEADERS
+installdirs:
+	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libenginesincdir)
+
+install: install-am
+install-exec: install-exec-am
 install-data: install-data-am
+uninstall: uninstall-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
-install: install-am
-uninstall-am: uninstall-libLTLIBRARIES uninstall-libenginesincHEADERS
-uninstall: uninstall-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+
+installcheck: installcheck-am
+
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
 	  INSTALL_PROGRAM_ENV='$(INSTALL_STRIP_PROGRAM_ENV)' install
-installdirs:
-	$(mkinstalldirs)  $(DESTDIR)$(libdir) $(DESTDIR)$(libenginesincdir)
-
 
 mostlyclean-generic:
 
@@ -591,36 +588,49 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 distclean: distclean-am
 
 distclean-am: clean-am distclean-compile distclean-depend \
-	distclean-generic distclean-libLTLIBRARIES distclean-libtool \
-	distclean-noinstLTLIBRARIES distclean-tags
+	distclean-generic distclean-libtool distclean-tags
+
+dvi:
+
+dvi-am:
+
+info:
+
+info-am:
+
+install-data-am: install-libenginesincHEADERS
+
+install-exec-am: install-libLTLIBRARIES
+
+install-info:
+
+install-man:
+
+installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 
-maintainer-clean-am: distclean-am maintainer-clean-generic \
-	maintainer-clean-libLTLIBRARIES \
-	maintainer-clean-noinstLTLIBRARIES
+maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-am
 
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libLTLIBRARIES mostlyclean-libtool \
-	mostlyclean-noinstLTLIBRARIES
+	mostlyclean-libtool
+
+uninstall-am: uninstall-libLTLIBRARIES uninstall-libenginesincHEADERS
 
 .PHONY: all all-am check check-am clean clean-generic \
 	clean-libLTLIBRARIES clean-libtool clean-noinstLTLIBRARIES \
 	distclean distclean-compile distclean-depend distclean-generic \
-	distclean-libLTLIBRARIES distclean-libtool \
-	distclean-noinstLTLIBRARIES distclean-tags distdir dvi dvi-am \
-	info info-am install install-am install-data install-data-am \
-	install-exec install-exec-am install-libLTLIBRARIES \
-	install-libenginesincHEADERS install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic maintainer-clean-libLTLIBRARIES \
-	maintainer-clean-noinstLTLIBRARIES mostlyclean \
-	mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libLTLIBRARIES mostlyclean-libtool \
-	mostlyclean-noinstLTLIBRARIES tags uninstall uninstall-am \
-	uninstall-libLTLIBRARIES uninstall-libenginesincHEADERS
+	distclean-libtool distclean-tags distdir dvi dvi-am info \
+	info-am install install-am install-data install-data-am \
+	install-exec install-exec-am install-info \
+	install-libLTLIBRARIES install-libenginesincHEADERS install-man \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	tags uninstall uninstall-am uninstall-libLTLIBRARIES \
+	uninstall-libenginesincHEADERS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

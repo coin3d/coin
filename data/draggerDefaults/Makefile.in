@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4e from Makefile.am
+# Makefile.in generated automatically by automake 1.4e from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
@@ -47,7 +47,6 @@ INSTALL = @INSTALL@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
-INSTALL_STRIP_FLAG =
 INSTALL_HEADER = $(INSTALL_DATA)
 transform = @program_transform_name@
 
@@ -58,13 +57,14 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 
-@SET_MAKE@
 build_alias = @build_alias@
 build_triplet = @build@
 host_alias = @host_alias@
 host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
+
+@SET_MAKE@
 AMDEP = @AMDEP@
 AMTAR = @AMTAR@
 AS = @AS@
@@ -87,7 +87,6 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
-INSTALL_HEADER = @INSTALL_HEADER@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBFLAGS = @LIBFLAGS@
@@ -138,137 +137,83 @@ BUILT_SOURCES = \
 	transformBoxDragger.h
 
 
-# This is necessary to include so the headers are actually built.
-noinst_HEADERS = $(BUILT_SOURCES)
-
-EXTRA_DIST = \
-             data/draggerDefaults/translate1Dragger.iv \
-             data/draggerDefaults/translate2Dragger.iv \
-             data/draggerDefaults/centerballDragger.iv \
-             data/draggerDefaults/tabPlaneDragger.iv \
-             data/draggerDefaults/tabBoxDragger.iv \
-             data/draggerDefaults/dragPointDragger.iv \
-             data/draggerDefaults/pointLightDragger.iv \
-             data/draggerDefaults/directionalLightDragger.iv \
-             data/draggerDefaults/spotLightDragger.iv \
-             data/draggerDefaults/handleBoxDragger.iv \
-             data/draggerDefaults/jackDragger.iv \
-             data/draggerDefaults/trackballDragger.iv \
-             data/draggerDefaults/scaleUniformDragger.iv \
-             data/draggerDefaults/scale2UniformDragger.iv \
-             data/draggerDefaults/scale1Dragger.iv \
-             data/draggerDefaults/scale2Dragger.iv \
-             data/draggerDefaults/rotateCylindricalDragger.iv \
-             data/draggerDefaults/rotateSphericalDragger.iv \
-             data/draggerDefaults/rotateDiscDragger.iv \
-             data/draggerDefaults/transformerDragger.iv \
-             data/draggerDefaults/transformBoxDragger.iv
-
-
 draggerdefdatadir = $(datadir)/Coin/draggerDefaults
+dist_draggerdefdata_DATA = \
+	translate1Dragger.iv \
+	translate2Dragger.iv \
+	centerballDragger.iv \
+	tabPlaneDragger.iv \
+	tabBoxDragger.iv \
+	dragPointDragger.iv \
+	pointLightDragger.iv \
+	directionalLightDragger.iv \
+	spotLightDragger.iv \
+	handleBoxDragger.iv \
+	jackDragger.iv \
+	trackballDragger.iv \
+	scaleUniformDragger.iv \
+	scale2UniformDragger.iv \
+	scale1Dragger.iv \
+	scale2Dragger.iv \
+	rotateCylindricalDragger.iv \
+	rotateSphericalDragger.iv \
+	rotateDiscDragger.iv \
+	transformerDragger.iv \
+	transformBoxDragger.iv
 
-draggerdefdata_DATA = translate1Dragger.iv \
-			translate2Dragger.iv \
-			centerballDragger.iv \
-			tabPlaneDragger.iv \
-			tabBoxDragger.iv \
-			dragPointDragger.iv \
-			pointLightDragger.iv \
-			directionalLightDragger.iv \
-			spotLightDragger.iv \
-			handleBoxDragger.iv \
-			jackDragger.iv \
-			trackballDragger.iv \
-			scaleUniformDragger.iv \
-			scale2UniformDragger.iv \
-			scale1Dragger.iv \
-			scale2Dragger.iv \
-			rotateCylindricalDragger.iv \
-			rotateSphericalDragger.iv \
-			rotateDiscDragger.iv \
-			transformerDragger.iv \
-			transformBoxDragger.iv
 
+# FIXME: use dist_noinst_SCRIPTS when it works
+noinst_SCRIPTS = \
+	$(srcdir)/iv2h.sh
+
+EXEEXT =
+OBJEXT = o
 subdir = data/draggerDefaults
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
-CONFIG_CLEAN_FILES = 
-DIST_SOURCES = 
-DATA =  $(draggerdefdata_DATA)
+CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
+CONFIG_CLEAN_FILES =
+SCRIPTS = $(noinst_SCRIPTS)
 
-HEADERS =  $(noinst_HEADERS)
+DIST_SOURCES =
+DATA = $(dist_draggerdefdata_DATA)
 
-DIST_COMMON =  README $(noinst_HEADERS) Makefile.am Makefile.in
+DIST_COMMON = README $(dist_draggerdefdata_DATA) Makefile.am Makefile.in
 
+all: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) all-am
 
-DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-
-GZIP_ENV = --best
-all: all-redirect
 .SUFFIXES:
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --gnu data/draggerDefaults/Makefile
 
-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
-	cd $(top_builddir) \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
-
-
-install-draggerdefdataDATA: $(draggerdefdata_DATA)
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+	cd $(top_srcdir) && \
+	  $(AUTOMAKE) --gnu  data/draggerDefaults/Makefile
+install-dist_draggerdefdataDATA: $(dist_draggerdefdata_DATA)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(draggerdefdatadir)
-	@list='$(draggerdefdata_DATA)'; for p in $$list; do \
+	@list='$(dist_draggerdefdata_DATA)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(draggerdefdatadir)/$$f"; \
 	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(draggerdefdatadir)/$$f; \
 	done
 
-uninstall-draggerdefdataDATA:
+uninstall-dist_draggerdefdataDATA:
 	@$(NORMAL_UNINSTALL)
-	@list='$(draggerdefdata_DATA)'; for p in $$list; do \
+	@list='$(dist_draggerdefdata_DATA)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(draggerdefdatadir)/$$f"; \
 	  rm -f $(DESTDIR)$(draggerdefdatadir)/$$f; \
 	done
-
 tags: TAGS
+TAGS:
 
-ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
-	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
-	unique=`for i in $$list; do \
-	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
-	  done | \
-	  $(AWK) '    { files[$$0] = 1; } \
-	       END { for (i in files) print i; }'`; \
-	mkid -fID $$unique $(LISP)
 
-TAGS: $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
-		$(TAGS_FILES) $(LISP)
-	tags=; \
-	here=`pwd`; \
-	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
-	unique=`for i in $$list; do \
-	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
-	  done | \
-	  $(AWK) '    { files[$$0] = 1; } \
-	       END { for (i in files) print i; }'`; \
-	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
-	  || etags $(ETAGS_ARGS) $$tags  $$unique $(LISP)
+DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
-GTAGS:
-	here=`CDPATH=: && cd $(top_builddir) && pwd` \
-	  && cd $(top_srcdir) \
-	  && gtags -i $$here
-
-distclean-tags:
-	-rm -f TAGS ID
-
-distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
-
+top_distdir = ../..
+distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/data/draggerDefaults data/draggerDefaults
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -280,35 +225,26 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
-info-am:
-info: info-am
-dvi-am:
-dvi: dvi-am
 check-am: all-am
 check: check-am
-installcheck-am:
-installcheck: installcheck-am
-all-redirect: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) all-am
+all-am: Makefile $(SCRIPTS) $(DATA)
 
-install-exec-am:
+installdirs:
+	$(mkinstalldirs) $(DESTDIR)$(draggerdefdatadir)
+
+install: install-am
 install-exec: install-exec-am
-
-install-data-am: install-draggerdefdataDATA
 install-data: install-data-am
+uninstall: uninstall-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
-install: install-am
-uninstall-am: uninstall-draggerdefdataDATA
-uninstall: uninstall-am
-all-am: Makefile $(DATA) $(HEADERS)
+
+installcheck: installcheck-am
+
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
 	  INSTALL_PROGRAM_ENV='$(INSTALL_STRIP_PROGRAM_ENV)' install
-installdirs:
-	$(mkinstalldirs)  $(DESTDIR)$(draggerdefdatadir)
-
 
 mostlyclean-generic:
 
@@ -329,7 +265,25 @@ clean-am: clean-generic mostlyclean-am
 
 distclean: distclean-am
 
-distclean-am: clean-am distclean-generic distclean-tags
+distclean-am: clean-am distclean-generic
+
+dvi:
+
+dvi-am:
+
+info:
+
+info-am:
+
+install-data-am: install-dist_draggerdefdataDATA
+
+install-exec-am:
+
+install-info:
+
+install-man:
+
+installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 
@@ -339,78 +293,85 @@ mostlyclean: mostlyclean-am
 
 mostlyclean-am: mostlyclean-generic
 
-.PHONY: all all-am all-redirect check check-am clean clean-generic \
-	distclean distclean-generic distclean-tags distdir dvi dvi-am \
-	info info-am install install-am install-data install-data-am \
-	install-draggerdefdataDATA install-exec install-exec-am \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic tags uninstall uninstall-am \
-	uninstall-draggerdefdataDATA
+uninstall-am: uninstall-dist_draggerdefdataDATA
+
+.PHONY: all all-am check check-am clean clean-generic distclean \
+	distclean-generic distdir dvi dvi-am info info-am install \
+	install-am install-data install-data-am \
+	install-dist_draggerdefdataDATA install-exec install-exec-am \
+	install-info install-man install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic \
+	uninstall uninstall-am uninstall-dist_draggerdefdataDATA
 
 
-translate1Dragger.h: $(top_srcdir)/data/draggerDefaults/translate1Dragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/translate1Dragger.iv > translate1Dragger.h
+# This is necessary to include so the headers are actually built.
+Makefile: $(BUILT_SOURCES)
 
-translate2Dragger.h: $(top_srcdir)/data/draggerDefaults/translate2Dragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/translate2Dragger.iv > translate2Dragger.h
+# **************************************************************************
 
-centerballDragger.h: $(top_srcdir)/data/draggerDefaults/centerballDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/centerballDragger.iv > centerballDragger.h
+translate1Dragger.h: $(srcdir)/translate1Dragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/translate1Dragger.iv > translate1Dragger.h
 
-tabPlaneDragger.h: $(top_srcdir)/data/draggerDefaults/tabPlaneDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/tabPlaneDragger.iv > tabPlaneDragger.h
+translate2Dragger.h: $(srcdir)/translate2Dragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/translate2Dragger.iv > translate2Dragger.h
 
-tabBoxDragger.h: $(top_srcdir)/data/draggerDefaults/tabBoxDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/tabBoxDragger.iv > tabBoxDragger.h
+centerballDragger.h: $(srcdir)/centerballDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/centerballDragger.iv > centerballDragger.h
 
-dragPointDragger.h: $(top_srcdir)/data/draggerDefaults/dragPointDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/dragPointDragger.iv > dragPointDragger.h
+tabPlaneDragger.h: $(srcdir)/tabPlaneDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/tabPlaneDragger.iv > tabPlaneDragger.h
 
-pointLightDragger.h: $(top_srcdir)/data/draggerDefaults/pointLightDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/pointLightDragger.iv > pointLightDragger.h
+tabBoxDragger.h: $(srcdir)/tabBoxDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/tabBoxDragger.iv > tabBoxDragger.h
 
-directionalLightDragger.h: $(top_srcdir)/data/draggerDefaults/directionalLightDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/directionalLightDragger.iv > directionalLightDragger.h
+dragPointDragger.h: $(srcdir)/dragPointDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/dragPointDragger.iv > dragPointDragger.h
 
-spotLightDragger.h: $(top_srcdir)/data/draggerDefaults/spotLightDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/spotLightDragger.iv > spotLightDragger.h
+pointLightDragger.h: $(srcdir)/pointLightDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/pointLightDragger.iv > pointLightDragger.h
 
-handleBoxDragger.h: $(top_srcdir)/data/draggerDefaults/handleBoxDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/handleBoxDragger.iv > handleBoxDragger.h
+directionalLightDragger.h: $(srcdir)/directionalLightDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/directionalLightDragger.iv > directionalLightDragger.h
 
-jackDragger.h: $(top_srcdir)/data/draggerDefaults/jackDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/jackDragger.iv > jackDragger.h
+spotLightDragger.h: $(srcdir)/spotLightDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/spotLightDragger.iv > spotLightDragger.h
 
-trackballDragger.h: $(top_srcdir)/data/draggerDefaults/trackballDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/trackballDragger.iv > trackballDragger.h
+handleBoxDragger.h: $(srcdir)/handleBoxDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/handleBoxDragger.iv > handleBoxDragger.h
 
-scaleUniformDragger.h: $(top_srcdir)/data/draggerDefaults/scaleUniformDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/scaleUniformDragger.iv > scaleUniformDragger.h
+jackDragger.h: $(srcdir)/jackDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/jackDragger.iv > jackDragger.h
 
-scale2UniformDragger.h: $(top_srcdir)/data/draggerDefaults/scale2UniformDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/scale2UniformDragger.iv > scale2UniformDragger.h
+trackballDragger.h: $(srcdir)/trackballDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/trackballDragger.iv > trackballDragger.h
 
-scale1Dragger.h: $(top_srcdir)/data/draggerDefaults/scale1Dragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/scale1Dragger.iv > scale1Dragger.h
+scaleUniformDragger.h: $(srcdir)/scaleUniformDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/scaleUniformDragger.iv > scaleUniformDragger.h
 
-scale2Dragger.h: $(top_srcdir)/data/draggerDefaults/scale2Dragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/scale2Dragger.iv > scale2Dragger.h
+scale2UniformDragger.h: $(srcdir)/scale2UniformDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/scale2UniformDragger.iv > scale2UniformDragger.h
 
-rotateCylindricalDragger.h: $(top_srcdir)/data/draggerDefaults/rotateCylindricalDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/rotateCylindricalDragger.iv > rotateCylindricalDragger.h
+scale1Dragger.h: $(srcdir)/scale1Dragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/scale1Dragger.iv > scale1Dragger.h
 
-rotateSphericalDragger.h: $(top_srcdir)/data/draggerDefaults/rotateSphericalDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/rotateSphericalDragger.iv > rotateSphericalDragger.h
+scale2Dragger.h: $(srcdir)/scale2Dragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/scale2Dragger.iv > scale2Dragger.h
 
-rotateDiscDragger.h: $(top_srcdir)/data/draggerDefaults/rotateDiscDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/rotateDiscDragger.iv > rotateDiscDragger.h
+rotateCylindricalDragger.h: $(srcdir)/rotateCylindricalDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/rotateCylindricalDragger.iv > rotateCylindricalDragger.h
 
-transformerDragger.h: $(top_srcdir)/data/draggerDefaults/transformerDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/transformerDragger.iv > transformerDragger.h
+rotateSphericalDragger.h: $(srcdir)/rotateSphericalDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/rotateSphericalDragger.iv > rotateSphericalDragger.h
 
-transformBoxDragger.h: $(top_srcdir)/data/draggerDefaults/transformBoxDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
-	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/transformBoxDragger.iv > transformBoxDragger.h
+rotateDiscDragger.h: $(srcdir)/rotateDiscDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/rotateDiscDragger.iv > rotateDiscDragger.h
+
+transformerDragger.h: $(srcdir)/transformerDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/transformerDragger.iv > transformerDragger.h
+
+transformBoxDragger.h: $(srcdir)/transformBoxDragger.iv $(srcdir)/iv2h.sh
+	$(srcdir)/iv2h.sh $(srcdir)/transformBoxDragger.iv > transformBoxDragger.h
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

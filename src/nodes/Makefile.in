@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4e from Makefile.am
+# Makefile.in generated automatically by automake 1.4e from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
@@ -47,7 +47,6 @@ INSTALL = @INSTALL@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
-INSTALL_STRIP_FLAG =
 INSTALL_HEADER = $(INSTALL_DATA)
 transform = @program_transform_name@
 
@@ -58,13 +57,14 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 
-@SET_MAKE@
 build_alias = @build_alias@
 build_triplet = @build@
 host_alias = @host_alias@
 host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
+
+@SET_MAKE@
 AMDEP = @AMDEP@
 AMTAR = @AMTAR@
 AS = @AS@
@@ -87,7 +87,6 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
-INSTALL_HEADER = @INSTALL_HEADER@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBFLAGS = @LIBFLAGS@
@@ -113,113 +112,115 @@ sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
-@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
-@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
-@HACKING_COMPACT_BUILD_FALSE@	SoAnnotation.cpp SoAnnotation.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoAntiSquish.cpp SoAntiSquish.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoArray.cpp SoArray.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoAsciiText.cpp SoAsciiText.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoBaseColor.cpp SoBaseColor.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoBlinker.cpp SoBlinker.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoCallback.cpp SoCallback.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoCamera.cpp SoCamera.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoClipPlane.cpp SoClipPlane.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoColorIndex.cpp SoColorIndex.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoComplexity.cpp SoComplexity.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoCone.cpp SoCone.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoCoordinate3.cpp SoCoordinate3.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoCoordinate4.cpp SoCoordinate4.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoCube.cpp SoCube.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoCylinder.cpp SoCylinder.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoDirectionalLight.cpp SoDirectionalLight.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoDrawStyle.cpp SoDrawStyle.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoEnvironment.cpp SoEnvironment.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoEventCallback.cpp SoEventCallback.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoExtSelection.cpp SoExtSelection.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoFaceSet.cpp SoFaceSet.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoFile.cpp SoFile.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoFont.cpp SoFont.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoFontStyle.cpp SoFontStyle.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoGroup.cpp SoGroup.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoImage.cpp SoImage.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedFaceSet.cpp SoIndexedFaceSet.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedLineSet.cpp SoIndexedLineSet.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedNurbsCurve.cpp SoIndexedNurbsCurve.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedNurbsSurface.cpp SoIndexedNurbsSurface.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedShape.cpp SoIndexedShape.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedTriangleStripSet.cpp SoIndexedTriangleStripSet.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoInfo.cpp SoInfo.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoLOD.cpp SoLOD.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoLabel.cpp SoLabel.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoLevelOfDetail.cpp SoLevelOfDetail.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoLight.cpp SoLight.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoLightModel.cpp SoLightModel.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoLineSet.cpp SoLineSet.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoLinearProfile.cpp SoLinearProfile.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoLocateHighlight.cpp SoLocateHighlight.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoMarkerSet.cpp SoMarkerSet.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoMaterial.cpp SoMaterial.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoMaterialBinding.cpp SoMaterialBinding.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoMatrixTransform.cpp SoMatrixTransform.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoMultipleCopy.cpp SoMultipleCopy.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoNode.cpp SoNode.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoNonIndexedShape.cpp SoNonIndexedShape.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoNormal.cpp SoNormal.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoNormalBinding.cpp SoNormalBinding.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoNurbsCurve.cpp SoNurbsCurve.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoNurbsProfile.cpp SoNurbsProfile.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoNurbsSurface.cpp SoNurbsSurface.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoOrthographicCamera.cpp SoOrthographicCamera.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoPackedColor.cpp SoPackedColor.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoPathSwitch.cpp SoPathSwitch.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoPendulum.cpp SoPendulum.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoPerspectiveCamera.cpp SoPerspectiveCamera.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoPickStyle.cpp SoPickStyle.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoPointLight.cpp SoPointLight.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoPointSet.cpp SoPointSet.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoPolygonOffset.cpp SoPolygonOffset.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoProfile.cpp SoProfile.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoProfileCoordinate2.cpp SoProfileCoordinate2.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoProfileCoordinate3.cpp SoProfileCoordinate3.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoQuadMesh.cpp SoQuadMesh.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoResetTransform.cpp SoResetTransform.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoRotation.cpp SoRotation.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoRotationXYZ.cpp SoRotationXYZ.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoRotor.cpp SoRotor.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoScale.cpp SoScale.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoSelection.cpp SoSelection.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoSeparator.cpp SoSeparator.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoShape.cpp SoShape.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoShapeHints.cpp SoShapeHints.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoShuttle.cpp SoShuttle.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoSphere.cpp SoSphere.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoSpotLight.cpp SoSpotLight.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoSurroundScale.cpp SoSurroundScale.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoSwitch.cpp SoSwitch.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoText2.cpp SoText2.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoText3.cpp SoText3.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoTexture2.cpp SoTexture2.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoTexture2Transform.cpp SoTexture2Transform.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinate2.cpp SoTextureCoordinate2.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateBinding.cpp SoTextureCoordinateBinding.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateDefault.cpp SoTextureCoordinateDefault.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateEnvironment.cpp SoTextureCoordinateEnvironment.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateFunction.cpp SoTextureCoordinateFunction.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinatePlane.cpp SoTextureCoordinatePlane.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoTransform.cpp SoTransform.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoTransformSeparator.cpp SoTransformSeparator.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoTransformation.cpp SoTransformation.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoTranslation.cpp SoTranslation.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoTriangleStripSet.cpp SoTriangleStripSet.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoUnits.cpp SoUnits.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoUnknownNode.cpp SoUnknownNode.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoVertexProperty.cpp SoVertexProperty.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoVertexShape.cpp SoVertexShape.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoWWWAnchor.cpp SoWWWAnchor.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoWWWInline.cpp SoWWWInline.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoSubNode.h SoSubNodeP.h
 
-ALLINSTHEADERS = \
+RegularSources = \
+	SoAnnotation.cpp \
+	SoAntiSquish.cpp \
+	SoArray.cpp \
+	SoAsciiText.cpp \
+	SoBaseColor.cpp \
+	SoBlinker.cpp \
+	SoCallback.cpp \
+	SoCamera.cpp \
+	SoClipPlane.cpp \
+	SoColorIndex.cpp \
+	SoComplexity.cpp \
+	SoCone.cpp \
+	SoCoordinate3.cpp \
+	SoCoordinate4.cpp \
+	SoCube.cpp \
+	SoCylinder.cpp \
+	SoDirectionalLight.cpp \
+	SoDrawStyle.cpp \
+	SoEnvironment.cpp \
+	SoEventCallback.cpp \
+	SoExtSelection.cpp \
+	SoFaceSet.cpp \
+	SoFile.cpp \
+	SoFont.cpp \
+	SoFontStyle.cpp \
+	SoGroup.cpp \
+	SoImage.cpp \
+	SoIndexedFaceSet.cpp \
+	SoIndexedLineSet.cpp \
+	SoIndexedNurbsCurve.cpp \
+	SoIndexedNurbsSurface.cpp \
+	SoIndexedShape.cpp \
+	SoIndexedTriangleStripSet.cpp \
+	SoInfo.cpp \
+	SoLOD.cpp \
+	SoLabel.cpp \
+	SoLevelOfDetail.cpp \
+	SoLight.cpp \
+	SoLightModel.cpp \
+	SoLineSet.cpp \
+	SoLinearProfile.cpp \
+	SoLocateHighlight.cpp \
+	SoMarkerSet.cpp \
+	SoMaterial.cpp \
+	SoMaterialBinding.cpp \
+	SoMatrixTransform.cpp \
+	SoMultipleCopy.cpp \
+	SoNode.cpp \
+	SoNonIndexedShape.cpp \
+	SoNormal.cpp \
+	SoNormalBinding.cpp \
+	SoNurbsCurve.cpp \
+	SoNurbsProfile.cpp \
+	SoNurbsSurface.cpp \
+	SoOrthographicCamera.cpp \
+	SoPackedColor.cpp \
+	SoPathSwitch.cpp \
+	SoPendulum.cpp \
+	SoPerspectiveCamera.cpp \
+	SoPickStyle.cpp \
+	SoPointLight.cpp \
+	SoPointSet.cpp \
+	SoPolygonOffset.cpp \
+	SoProfile.cpp \
+	SoProfileCoordinate2.cpp \
+	SoProfileCoordinate3.cpp \
+	SoQuadMesh.cpp \
+	SoResetTransform.cpp \
+	SoRotation.cpp \
+	SoRotationXYZ.cpp \
+	SoRotor.cpp \
+	SoScale.cpp \
+	SoSelection.cpp \
+	SoSeparator.cpp \
+	SoShape.cpp \
+	SoShapeHints.cpp \
+	SoShuttle.cpp \
+	SoSphere.cpp \
+	SoSpotLight.cpp \
+	SoSurroundScale.cpp \
+	SoSwitch.cpp \
+	SoText2.cpp \
+	SoText3.cpp \
+	SoTexture2.cpp \
+	SoTexture2Transform.cpp \
+	SoTextureCoordinate2.cpp \
+	SoTextureCoordinateBinding.cpp \
+	SoTextureCoordinateDefault.cpp \
+	SoTextureCoordinateEnvironment.cpp \
+	SoTextureCoordinateFunction.cpp \
+	SoTextureCoordinatePlane.cpp \
+	SoTransform.cpp \
+	SoTransformSeparator.cpp \
+	SoTransformation.cpp \
+	SoTranslation.cpp \
+	SoTriangleStripSet.cpp \
+	SoUnits.cpp \
+	SoUnknownNode.cpp \
+	SoVertexProperty.cpp \
+	SoVertexShape.cpp \
+	SoWWWAnchor.cpp \
+	SoWWWInline.cpp
+
+LinkHackSources = \
+	all.cpp
+
+PublicHeaders = \
 	$(top_srcdir)/include/Inventor/nodes/SoSubNode.h \
 	$(top_srcdir)/include/Inventor/nodes/SoNodes.h \
 	$(top_srcdir)/include/Inventor/nodes/SoAnnotation.h \
@@ -324,12 +325,15 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/nodes/SoWWWAnchor.h \
 	$(top_srcdir)/include/Inventor/nodes/SoWWWInline.h
 
+PrivateHeaders = \
+	$(top_srcdir)/include/Inventor/nodes/SoSubNodeP.h \
+	$(top_srcdir)/include/Inventor/nodes/SoUnknownNode.h
 
-# Everything below is autogenerated from a macro, so don't modify
-# within the Makefile.am itself. 19991201 mortene.
+@HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
-@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_TRUE@libnodes@SUFFIX@LINKHACK.la
-@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_FALSE@libnodes.la
+@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libnodes@SUFFIX@LINKHACK.la
+@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libnodes.la
 
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
@@ -337,19 +341,28 @@ LIBS =
 
 INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
-libnodes_la_SOURCES = $(ALLSOURCES)
-libnodes@SUFFIX@LINKHACK_la_SOURCES = $(ALLSOURCES)
+libnodes_la_SOURCES = $(BuildSources)
+EXTRA_libnodes_la_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+
+libnodes@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
+EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 
 libnodesincdir = $(includedir)/Inventor/nodes
-libnodesinc_HEADERS = $(ALLINSTHEADERS)
+libnodesinc_HEADERS = $(PublicHeaders)
+EXEEXT =
+OBJEXT = o
 subdir = src/nodes
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
-CONFIG_CLEAN_FILES = 
-LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
+CONFIG_CLEAN_FILES =
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 
-DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
+DEFS = @DEFS@ -I. -I$(srcdir) -I$(top_builddir) -I$(top_builddir)/include/Inventor -I$(top_builddir)/include/Inventor/system
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 X_CFLAGS = @X_CFLAGS@
@@ -358,112 +371,112 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libnodes_la_LDFLAGS = 
 libnodes_la_LIBADD = 
-@HACKING_COMPACT_BUILD_FALSE@am_libnodes_la_OBJECTS =  SoAnnotation.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoAntiSquish.lo SoArray.lo SoAsciiText.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoBaseColor.lo SoBlinker.lo SoCallback.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoCamera.lo SoClipPlane.lo SoColorIndex.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoComplexity.lo SoCone.lo SoCoordinate3.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoCoordinate4.lo SoCube.lo SoCylinder.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoDirectionalLight.lo SoDrawStyle.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoEnvironment.lo SoEventCallback.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoExtSelection.lo SoFaceSet.lo SoFile.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoFont.lo SoFontStyle.lo SoGroup.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoImage.lo SoIndexedFaceSet.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoIndexedLineSet.lo SoIndexedNurbsCurve.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoIndexedNurbsSurface.lo SoIndexedShape.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoIndexedTriangleStripSet.lo SoInfo.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoLOD.lo SoLabel.lo SoLevelOfDetail.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoLight.lo SoLightModel.lo SoLineSet.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoLinearProfile.lo SoLocateHighlight.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoMarkerSet.lo SoMaterial.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoMaterialBinding.lo SoMatrixTransform.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoMultipleCopy.lo SoNode.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoNonIndexedShape.lo SoNormal.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoNormalBinding.lo SoNurbsCurve.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoNurbsProfile.lo SoNurbsSurface.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoOrthographicCamera.lo SoPackedColor.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoPathSwitch.lo SoPendulum.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoPerspectiveCamera.lo SoPickStyle.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoPointLight.lo SoPointSet.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoPolygonOffset.lo SoProfile.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoProfileCoordinate2.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoProfileCoordinate3.lo SoQuadMesh.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoResetTransform.lo SoRotation.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoRotationXYZ.lo SoRotor.lo SoScale.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoSelection.lo SoSeparator.lo SoShape.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoShapeHints.lo SoShuttle.lo SoSphere.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoSpotLight.lo SoSurroundScale.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoSwitch.lo SoText2.lo SoText3.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTexture2.lo SoTexture2Transform.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinate2.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateBinding.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateDefault.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateEnvironment.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateFunction.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinatePlane.lo SoTransform.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTransformSeparator.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTransformation.lo SoTranslation.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTriangleStripSet.lo SoUnits.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoUnknownNode.lo SoVertexProperty.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoVertexShape.lo SoWWWAnchor.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoWWWInline.lo
-@HACKING_COMPACT_BUILD_TRUE@am_libnodes_la_OBJECTS =  all.lo
-libnodes_la_OBJECTS =  $(am_libnodes_la_OBJECTS)
+@HACKING_COMPACT_BUILD_TRUE@am_libnodes_la_OBJECTS = all.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libnodes_la_OBJECTS = SoAnnotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoAntiSquish.lo SoArray.lo SoAsciiText.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoBaseColor.lo SoBlinker.lo SoCallback.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoCamera.lo SoClipPlane.lo SoColorIndex.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoComplexity.lo SoCone.lo SoCoordinate3.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoCoordinate4.lo SoCube.lo SoCylinder.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoDirectionalLight.lo SoDrawStyle.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoEnvironment.lo SoEventCallback.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoExtSelection.lo SoFaceSet.lo SoFile.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoFont.lo SoFontStyle.lo SoGroup.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoImage.lo SoIndexedFaceSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoIndexedLineSet.lo SoIndexedNurbsCurve.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoIndexedNurbsSurface.lo SoIndexedShape.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoIndexedTriangleStripSet.lo SoInfo.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoLOD.lo SoLabel.lo SoLevelOfDetail.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoLight.lo SoLightModel.lo SoLineSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoLinearProfile.lo SoLocateHighlight.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoMarkerSet.lo SoMaterial.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoMaterialBinding.lo SoMatrixTransform.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoMultipleCopy.lo SoNode.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoNonIndexedShape.lo SoNormal.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoNormalBinding.lo SoNurbsCurve.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoNurbsProfile.lo SoNurbsSurface.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoOrthographicCamera.lo SoPackedColor.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoPathSwitch.lo SoPendulum.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoPerspectiveCamera.lo SoPickStyle.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoPointLight.lo SoPointSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoPolygonOffset.lo SoProfile.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoProfileCoordinate2.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoProfileCoordinate3.lo SoQuadMesh.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoResetTransform.lo SoRotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoRotationXYZ.lo SoRotor.lo SoScale.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoSelection.lo SoSeparator.lo SoShape.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoShapeHints.lo SoShuttle.lo SoSphere.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoSpotLight.lo SoSurroundScale.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoSwitch.lo SoText2.lo SoText3.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTexture2.lo SoTexture2Transform.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinate2.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateBinding.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateDefault.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateEnvironment.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateFunction.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinatePlane.lo SoTransform.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTransformSeparator.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTransformation.lo SoTranslation.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTriangleStripSet.lo SoUnits.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoUnknownNode.lo SoVertexProperty.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoVertexShape.lo SoWWWAnchor.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoWWWInline.lo
+libnodes_la_OBJECTS = $(am_libnodes_la_OBJECTS)
 libnodes@SUFFIX@LINKHACK_la_LDFLAGS = 
 libnodes@SUFFIX@LINKHACK_la_LIBADD = 
-@HACKING_COMPACT_BUILD_FALSE@am_libnodes@SUFFIX@LINKHACK_la_OBJECTS =  \
-@HACKING_COMPACT_BUILD_FALSE@SoAnnotation.lo SoAntiSquish.lo SoArray.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoAsciiText.lo SoBaseColor.lo SoBlinker.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoCallback.lo SoCamera.lo SoClipPlane.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoColorIndex.lo SoComplexity.lo SoCone.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoCoordinate3.lo SoCoordinate4.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoCube.lo SoCylinder.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoDirectionalLight.lo SoDrawStyle.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoEnvironment.lo SoEventCallback.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoExtSelection.lo SoFaceSet.lo SoFile.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoFont.lo SoFontStyle.lo SoGroup.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoImage.lo SoIndexedFaceSet.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoIndexedLineSet.lo SoIndexedNurbsCurve.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoIndexedNurbsSurface.lo SoIndexedShape.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoIndexedTriangleStripSet.lo SoInfo.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoLOD.lo SoLabel.lo SoLevelOfDetail.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoLight.lo SoLightModel.lo SoLineSet.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoLinearProfile.lo SoLocateHighlight.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoMarkerSet.lo SoMaterial.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoMaterialBinding.lo SoMatrixTransform.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoMultipleCopy.lo SoNode.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoNonIndexedShape.lo SoNormal.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoNormalBinding.lo SoNurbsCurve.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoNurbsProfile.lo SoNurbsSurface.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoOrthographicCamera.lo SoPackedColor.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoPathSwitch.lo SoPendulum.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoPerspectiveCamera.lo SoPickStyle.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoPointLight.lo SoPointSet.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoPolygonOffset.lo SoProfile.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoProfileCoordinate2.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoProfileCoordinate3.lo SoQuadMesh.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoResetTransform.lo SoRotation.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoRotationXYZ.lo SoRotor.lo SoScale.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoSelection.lo SoSeparator.lo SoShape.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoShapeHints.lo SoShuttle.lo SoSphere.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoSpotLight.lo SoSurroundScale.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoSwitch.lo SoText2.lo SoText3.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTexture2.lo SoTexture2Transform.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinate2.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateBinding.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateDefault.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateEnvironment.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateFunction.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinatePlane.lo SoTransform.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTransformSeparator.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTransformation.lo SoTranslation.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTriangleStripSet.lo SoUnits.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoUnknownNode.lo SoVertexProperty.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoVertexShape.lo SoWWWAnchor.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoWWWInline.lo
-@HACKING_COMPACT_BUILD_TRUE@am_libnodes@SUFFIX@LINKHACK_la_OBJECTS =  \
-@HACKING_COMPACT_BUILD_TRUE@all.lo
-libnodes@SUFFIX@LINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_TRUE@am_libnodes@SUFFIX@LINKHACK_la_OBJECTS = \
+@HACKING_COMPACT_BUILD_TRUE@ all.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libnodes@SUFFIX@LINKHACK_la_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@ SoAnnotation.lo SoAntiSquish.lo SoArray.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoAsciiText.lo SoBaseColor.lo SoBlinker.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoCallback.lo SoCamera.lo SoClipPlane.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoColorIndex.lo SoComplexity.lo SoCone.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoCoordinate3.lo SoCoordinate4.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoCube.lo SoCylinder.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoDirectionalLight.lo SoDrawStyle.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoEnvironment.lo SoEventCallback.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoExtSelection.lo SoFaceSet.lo SoFile.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoFont.lo SoFontStyle.lo SoGroup.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoImage.lo SoIndexedFaceSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoIndexedLineSet.lo SoIndexedNurbsCurve.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoIndexedNurbsSurface.lo SoIndexedShape.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoIndexedTriangleStripSet.lo SoInfo.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoLOD.lo SoLabel.lo SoLevelOfDetail.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoLight.lo SoLightModel.lo SoLineSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoLinearProfile.lo SoLocateHighlight.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoMarkerSet.lo SoMaterial.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoMaterialBinding.lo SoMatrixTransform.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoMultipleCopy.lo SoNode.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoNonIndexedShape.lo SoNormal.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoNormalBinding.lo SoNurbsCurve.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoNurbsProfile.lo SoNurbsSurface.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoOrthographicCamera.lo SoPackedColor.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoPathSwitch.lo SoPendulum.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoPerspectiveCamera.lo SoPickStyle.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoPointLight.lo SoPointSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoPolygonOffset.lo SoProfile.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoProfileCoordinate2.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoProfileCoordinate3.lo SoQuadMesh.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoResetTransform.lo SoRotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoRotationXYZ.lo SoRotor.lo SoScale.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoSelection.lo SoSeparator.lo SoShape.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoShapeHints.lo SoShuttle.lo SoSphere.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoSpotLight.lo SoSurroundScale.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoSwitch.lo SoText2.lo SoText3.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTexture2.lo SoTexture2Transform.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinate2.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateBinding.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateDefault.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateEnvironment.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateFunction.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinatePlane.lo SoTransform.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTransformSeparator.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTransformation.lo SoTranslation.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTriangleStripSet.lo SoUnits.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoUnknownNode.lo SoVertexProperty.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoVertexShape.lo SoWWWAnchor.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoWWWInline.lo
+libnodes@SUFFIX@LINKHACK_la_OBJECTS = \
 $(am_libnodes@SUFFIX@LINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -475,124 +488,110 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES =  $(libnodes_la_SOURCES) \
-$(libnodes@SUFFIX@LINKHACK_la_SOURCES)
-HEADERS =  $(libnodesinc_HEADERS)
+DIST_SOURCES = $(libnodes_la_SOURCES) $(EXTRA_libnodes_la_SOURCES) \
+$(libnodes@SUFFIX@LINKHACK_la_SOURCES) \
+$(EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES)
+HEADERS = $(libnodesinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP@DEP_FILES =  $(DEPDIR)/SoAnnotation.Plo \
-@AMDEP@$(DEPDIR)/SoAntiSquish.Plo $(DEPDIR)/SoArray.Plo \
-@AMDEP@$(DEPDIR)/SoAsciiText.Plo $(DEPDIR)/SoBaseColor.Plo \
-@AMDEP@$(DEPDIR)/SoBlinker.Plo $(DEPDIR)/SoCallback.Plo \
-@AMDEP@$(DEPDIR)/SoCamera.Plo $(DEPDIR)/SoClipPlane.Plo \
-@AMDEP@$(DEPDIR)/SoColorIndex.Plo $(DEPDIR)/SoComplexity.Plo \
-@AMDEP@$(DEPDIR)/SoCone.Plo $(DEPDIR)/SoCoordinate3.Plo \
-@AMDEP@$(DEPDIR)/SoCoordinate4.Plo $(DEPDIR)/SoCube.Plo \
-@AMDEP@$(DEPDIR)/SoCylinder.Plo $(DEPDIR)/SoDirectionalLight.Plo \
-@AMDEP@$(DEPDIR)/SoDrawStyle.Plo $(DEPDIR)/SoEnvironment.Plo \
-@AMDEP@$(DEPDIR)/SoEventCallback.Plo $(DEPDIR)/SoExtSelection.Plo \
-@AMDEP@$(DEPDIR)/SoFaceSet.Plo $(DEPDIR)/SoFile.Plo \
-@AMDEP@$(DEPDIR)/SoFont.Plo $(DEPDIR)/SoFontStyle.Plo \
-@AMDEP@$(DEPDIR)/SoGroup.Plo $(DEPDIR)/SoImage.Plo \
-@AMDEP@$(DEPDIR)/SoIndexedFaceSet.Plo $(DEPDIR)/SoIndexedLineSet.Plo \
-@AMDEP@$(DEPDIR)/SoIndexedNurbsCurve.Plo \
-@AMDEP@$(DEPDIR)/SoIndexedNurbsSurface.Plo $(DEPDIR)/SoIndexedShape.Plo \
-@AMDEP@$(DEPDIR)/SoIndexedTriangleStripSet.Plo $(DEPDIR)/SoInfo.Plo \
-@AMDEP@$(DEPDIR)/SoLOD.Plo $(DEPDIR)/SoLabel.Plo \
-@AMDEP@$(DEPDIR)/SoLevelOfDetail.Plo $(DEPDIR)/SoLight.Plo \
-@AMDEP@$(DEPDIR)/SoLightModel.Plo $(DEPDIR)/SoLineSet.Plo \
-@AMDEP@$(DEPDIR)/SoLinearProfile.Plo $(DEPDIR)/SoLocateHighlight.Plo \
-@AMDEP@$(DEPDIR)/SoMarkerSet.Plo $(DEPDIR)/SoMaterial.Plo \
-@AMDEP@$(DEPDIR)/SoMaterialBinding.Plo $(DEPDIR)/SoMatrixTransform.Plo \
-@AMDEP@$(DEPDIR)/SoMultipleCopy.Plo $(DEPDIR)/SoNode.Plo \
-@AMDEP@$(DEPDIR)/SoNonIndexedShape.Plo $(DEPDIR)/SoNormal.Plo \
-@AMDEP@$(DEPDIR)/SoNormalBinding.Plo $(DEPDIR)/SoNurbsCurve.Plo \
-@AMDEP@$(DEPDIR)/SoNurbsProfile.Plo $(DEPDIR)/SoNurbsSurface.Plo \
-@AMDEP@$(DEPDIR)/SoOrthographicCamera.Plo $(DEPDIR)/SoPackedColor.Plo \
-@AMDEP@$(DEPDIR)/SoPathSwitch.Plo $(DEPDIR)/SoPendulum.Plo \
-@AMDEP@$(DEPDIR)/SoPerspectiveCamera.Plo $(DEPDIR)/SoPickStyle.Plo \
-@AMDEP@$(DEPDIR)/SoPointLight.Plo $(DEPDIR)/SoPointSet.Plo \
-@AMDEP@$(DEPDIR)/SoPolygonOffset.Plo $(DEPDIR)/SoProfile.Plo \
-@AMDEP@$(DEPDIR)/SoProfileCoordinate2.Plo \
-@AMDEP@$(DEPDIR)/SoProfileCoordinate3.Plo $(DEPDIR)/SoQuadMesh.Plo \
-@AMDEP@$(DEPDIR)/SoResetTransform.Plo $(DEPDIR)/SoRotation.Plo \
-@AMDEP@$(DEPDIR)/SoRotationXYZ.Plo $(DEPDIR)/SoRotor.Plo \
-@AMDEP@$(DEPDIR)/SoScale.Plo $(DEPDIR)/SoSelection.Plo \
-@AMDEP@$(DEPDIR)/SoSeparator.Plo $(DEPDIR)/SoShape.Plo \
-@AMDEP@$(DEPDIR)/SoShapeHints.Plo $(DEPDIR)/SoShuttle.Plo \
-@AMDEP@$(DEPDIR)/SoSphere.Plo $(DEPDIR)/SoSpotLight.Plo \
-@AMDEP@$(DEPDIR)/SoSurroundScale.Plo $(DEPDIR)/SoSwitch.Plo \
-@AMDEP@$(DEPDIR)/SoText2.Plo $(DEPDIR)/SoText3.Plo \
-@AMDEP@$(DEPDIR)/SoTexture2.Plo $(DEPDIR)/SoTexture2Transform.Plo \
-@AMDEP@$(DEPDIR)/SoTextureCoordinate2.Plo \
-@AMDEP@$(DEPDIR)/SoTextureCoordinateBinding.Plo \
-@AMDEP@$(DEPDIR)/SoTextureCoordinateDefault.Plo \
-@AMDEP@$(DEPDIR)/SoTextureCoordinateEnvironment.Plo \
-@AMDEP@$(DEPDIR)/SoTextureCoordinateFunction.Plo \
-@AMDEP@$(DEPDIR)/SoTextureCoordinatePlane.Plo $(DEPDIR)/SoTransform.Plo \
-@AMDEP@$(DEPDIR)/SoTransformSeparator.Plo \
-@AMDEP@$(DEPDIR)/SoTransformation.Plo $(DEPDIR)/SoTranslation.Plo \
-@AMDEP@$(DEPDIR)/SoTriangleStripSet.Plo $(DEPDIR)/SoUnits.Plo \
-@AMDEP@$(DEPDIR)/SoUnknownNode.Plo $(DEPDIR)/SoVertexProperty.Plo \
-@AMDEP@$(DEPDIR)/SoVertexShape.Plo $(DEPDIR)/SoWWWAnchor.Plo \
-@AMDEP@$(DEPDIR)/SoWWWInline.Plo $(DEPDIR)/all.Plo
-DIST_COMMON =  $(libnodesinc_HEADERS) Makefile.am Makefile.in
+@AMDEP@DEP_FILES = $(DEPDIR)/SoAnnotation.Plo $(DEPDIR)/SoAntiSquish.Plo \
+@AMDEP@ $(DEPDIR)/SoArray.Plo $(DEPDIR)/SoAsciiText.Plo \
+@AMDEP@ $(DEPDIR)/SoBaseColor.Plo $(DEPDIR)/SoBlinker.Plo \
+@AMDEP@ $(DEPDIR)/SoCallback.Plo $(DEPDIR)/SoCamera.Plo \
+@AMDEP@ $(DEPDIR)/SoClipPlane.Plo $(DEPDIR)/SoColorIndex.Plo \
+@AMDEP@ $(DEPDIR)/SoComplexity.Plo $(DEPDIR)/SoCone.Plo \
+@AMDEP@ $(DEPDIR)/SoCoordinate3.Plo $(DEPDIR)/SoCoordinate4.Plo \
+@AMDEP@ $(DEPDIR)/SoCube.Plo $(DEPDIR)/SoCylinder.Plo \
+@AMDEP@ $(DEPDIR)/SoDirectionalLight.Plo $(DEPDIR)/SoDrawStyle.Plo \
+@AMDEP@ $(DEPDIR)/SoEnvironment.Plo $(DEPDIR)/SoEventCallback.Plo \
+@AMDEP@ $(DEPDIR)/SoExtSelection.Plo $(DEPDIR)/SoFaceSet.Plo \
+@AMDEP@ $(DEPDIR)/SoFile.Plo $(DEPDIR)/SoFont.Plo \
+@AMDEP@ $(DEPDIR)/SoFontStyle.Plo $(DEPDIR)/SoGroup.Plo \
+@AMDEP@ $(DEPDIR)/SoImage.Plo $(DEPDIR)/SoIndexedFaceSet.Plo \
+@AMDEP@ $(DEPDIR)/SoIndexedLineSet.Plo $(DEPDIR)/SoIndexedNurbsCurve.Plo \
+@AMDEP@ $(DEPDIR)/SoIndexedNurbsSurface.Plo $(DEPDIR)/SoIndexedShape.Plo \
+@AMDEP@ $(DEPDIR)/SoIndexedTriangleStripSet.Plo $(DEPDIR)/SoInfo.Plo \
+@AMDEP@ $(DEPDIR)/SoLOD.Plo $(DEPDIR)/SoLabel.Plo \
+@AMDEP@ $(DEPDIR)/SoLevelOfDetail.Plo $(DEPDIR)/SoLight.Plo \
+@AMDEP@ $(DEPDIR)/SoLightModel.Plo $(DEPDIR)/SoLineSet.Plo \
+@AMDEP@ $(DEPDIR)/SoLinearProfile.Plo $(DEPDIR)/SoLocateHighlight.Plo \
+@AMDEP@ $(DEPDIR)/SoMarkerSet.Plo $(DEPDIR)/SoMaterial.Plo \
+@AMDEP@ $(DEPDIR)/SoMaterialBinding.Plo $(DEPDIR)/SoMatrixTransform.Plo \
+@AMDEP@ $(DEPDIR)/SoMultipleCopy.Plo $(DEPDIR)/SoNode.Plo \
+@AMDEP@ $(DEPDIR)/SoNonIndexedShape.Plo $(DEPDIR)/SoNormal.Plo \
+@AMDEP@ $(DEPDIR)/SoNormalBinding.Plo $(DEPDIR)/SoNurbsCurve.Plo \
+@AMDEP@ $(DEPDIR)/SoNurbsProfile.Plo $(DEPDIR)/SoNurbsSurface.Plo \
+@AMDEP@ $(DEPDIR)/SoOrthographicCamera.Plo $(DEPDIR)/SoPackedColor.Plo \
+@AMDEP@ $(DEPDIR)/SoPathSwitch.Plo $(DEPDIR)/SoPendulum.Plo \
+@AMDEP@ $(DEPDIR)/SoPerspectiveCamera.Plo $(DEPDIR)/SoPickStyle.Plo \
+@AMDEP@ $(DEPDIR)/SoPointLight.Plo $(DEPDIR)/SoPointSet.Plo \
+@AMDEP@ $(DEPDIR)/SoPolygonOffset.Plo $(DEPDIR)/SoProfile.Plo \
+@AMDEP@ $(DEPDIR)/SoProfileCoordinate2.Plo \
+@AMDEP@ $(DEPDIR)/SoProfileCoordinate3.Plo $(DEPDIR)/SoQuadMesh.Plo \
+@AMDEP@ $(DEPDIR)/SoResetTransform.Plo $(DEPDIR)/SoRotation.Plo \
+@AMDEP@ $(DEPDIR)/SoRotationXYZ.Plo $(DEPDIR)/SoRotor.Plo \
+@AMDEP@ $(DEPDIR)/SoScale.Plo $(DEPDIR)/SoSelection.Plo \
+@AMDEP@ $(DEPDIR)/SoSeparator.Plo $(DEPDIR)/SoShape.Plo \
+@AMDEP@ $(DEPDIR)/SoShapeHints.Plo $(DEPDIR)/SoShuttle.Plo \
+@AMDEP@ $(DEPDIR)/SoSphere.Plo $(DEPDIR)/SoSpotLight.Plo \
+@AMDEP@ $(DEPDIR)/SoSurroundScale.Plo $(DEPDIR)/SoSwitch.Plo \
+@AMDEP@ $(DEPDIR)/SoText2.Plo $(DEPDIR)/SoText3.Plo \
+@AMDEP@ $(DEPDIR)/SoTexture2.Plo $(DEPDIR)/SoTexture2Transform.Plo \
+@AMDEP@ $(DEPDIR)/SoTextureCoordinate2.Plo \
+@AMDEP@ $(DEPDIR)/SoTextureCoordinateBinding.Plo \
+@AMDEP@ $(DEPDIR)/SoTextureCoordinateDefault.Plo \
+@AMDEP@ $(DEPDIR)/SoTextureCoordinateEnvironment.Plo \
+@AMDEP@ $(DEPDIR)/SoTextureCoordinateFunction.Plo \
+@AMDEP@ $(DEPDIR)/SoTextureCoordinatePlane.Plo $(DEPDIR)/SoTransform.Plo \
+@AMDEP@ $(DEPDIR)/SoTransformSeparator.Plo \
+@AMDEP@ $(DEPDIR)/SoTransformation.Plo $(DEPDIR)/SoTranslation.Plo \
+@AMDEP@ $(DEPDIR)/SoTriangleStripSet.Plo $(DEPDIR)/SoUnits.Plo \
+@AMDEP@ $(DEPDIR)/SoUnknownNode.Plo $(DEPDIR)/SoVertexProperty.Plo \
+@AMDEP@ $(DEPDIR)/SoVertexShape.Plo $(DEPDIR)/SoWWWAnchor.Plo \
+@AMDEP@ $(DEPDIR)/SoWWWInline.Plo $(DEPDIR)/all.Plo
+DIST_COMMON = $(libnodesinc_HEADERS) Makefile.am Makefile.in
 
-
-DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-
-GZIP_ENV = --best
-SOURCES = $(libnodes_la_SOURCES) $(libnodes@SUFFIX@LINKHACK_la_SOURCES)
+SOURCES = $(libnodes_la_SOURCES) $(EXTRA_libnodes_la_SOURCES) $(libnodes@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES)
 OBJECTS = $(am_libnodes_la_OBJECTS) $(am_libnodes@SUFFIX@LINKHACK_la_OBJECTS)
 
 all: all-am
+
 .SUFFIXES:
-.SUFFIXES: .c .cpp .h .lo .o
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --gnu src/nodes/Makefile
+.SUFFIXES: .c .cpp .h .lo .o .obj
 
-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
-	cd $(top_builddir) \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+	cd $(top_srcdir) && \
+	  $(AUTOMAKE) --gnu  src/nodes/Makefile
 
-
-mostlyclean-libLTLIBRARIES:
-
-clean-libLTLIBRARIES:
-	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
-
-distclean-libLTLIBRARIES:
-
-maintainer-clean-libLTLIBRARIES:
-
+Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) && \
+	  CONFIG_HEADERS= CONFIG_LINKS= \
+	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
 	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
 	  if test -f $$p; then \
-	    echo " $(LIBTOOL)  --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p"; \
-	    $(LIBTOOL)  --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p; \
+	    echo " $(LIBTOOL) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p; \
 	  else :; fi; \
 	done
 
 uninstall-libLTLIBRARIES:
 	@$(NORMAL_UNINSTALL)
 	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
-	  echo " $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p"; \
-	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
+	  echo " $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p"; \
+	  $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
 	done
 
-mostlyclean-noinstLTLIBRARIES:
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
 
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
 
-distclean-noinstLTLIBRARIES:
-
-maintainer-clean-noinstLTLIBRARIES:
-
 mostlyclean-compile:
-	-rm -f *.o core *.core
+	-rm -f *.$(OBJEXT) core *.core
 
 distclean-compile:
 	-rm -f *.tab.c
@@ -611,7 +610,6 @@ libnodes.la: $(libnodes_la_OBJECTS) $(libnodes_la_DEPENDENCIES)
 
 libnodes@SUFFIX@LINKHACK.la: $(libnodes@SUFFIX@LINKHACK_la_OBJECTS) $(libnodes@SUFFIX@LINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libnodes@SUFFIX@LINKHACK_la_LDFLAGS) $(libnodes@SUFFIX@LINKHACK_la_OBJECTS) $(libnodes@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
-
 install-libnodesincHEADERS: $(libnodesinc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libnodesincdir)
@@ -641,7 +639,7 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	       END { for (i in files) print i; }'`; \
 	mkid -fID $$unique $(LISP)
 
-TAGS: $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	tags=; \
 	here=`pwd`; \
@@ -783,12 +781,20 @@ distclean-depend:
 @AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(LTCXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
 
+.cpp.obj:
+@AMDEP@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXXCOMPILE) -c -o $@ `cygpath -w $<`
 
-distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
+DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+
+top_distdir = ../..
+distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include/Inventor/nodes $(top_srcdir)/include/Inventor/nodes
+	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include/Inventor/nodes
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -800,32 +806,26 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
-info-am:
-info: info-am
-dvi-am:
-dvi: dvi-am
 check-am: all-am
 check: check-am
-installcheck-am:
-installcheck: installcheck-am
-install-exec-am: install-libLTLIBRARIES
-install-exec: install-exec-am
+all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 
-install-data-am: install-libnodesincHEADERS
+installdirs:
+	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libnodesincdir)
+
+install: install-am
+install-exec: install-exec-am
 install-data: install-data-am
+uninstall: uninstall-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
-install: install-am
-uninstall-am: uninstall-libLTLIBRARIES uninstall-libnodesincHEADERS
-uninstall: uninstall-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+
+installcheck: installcheck-am
+
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
 	  INSTALL_PROGRAM_ENV='$(INSTALL_STRIP_PROGRAM_ENV)' install
-installdirs:
-	$(mkinstalldirs)  $(DESTDIR)$(libdir) $(DESTDIR)$(libnodesincdir)
-
 
 mostlyclean-generic:
 
@@ -847,36 +847,49 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 distclean: distclean-am
 
 distclean-am: clean-am distclean-compile distclean-depend \
-	distclean-generic distclean-libLTLIBRARIES distclean-libtool \
-	distclean-noinstLTLIBRARIES distclean-tags
+	distclean-generic distclean-libtool distclean-tags
+
+dvi:
+
+dvi-am:
+
+info:
+
+info-am:
+
+install-data-am: install-libnodesincHEADERS
+
+install-exec-am: install-libLTLIBRARIES
+
+install-info:
+
+install-man:
+
+installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 
-maintainer-clean-am: distclean-am maintainer-clean-generic \
-	maintainer-clean-libLTLIBRARIES \
-	maintainer-clean-noinstLTLIBRARIES
+maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-am
 
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libLTLIBRARIES mostlyclean-libtool \
-	mostlyclean-noinstLTLIBRARIES
+	mostlyclean-libtool
+
+uninstall-am: uninstall-libLTLIBRARIES uninstall-libnodesincHEADERS
 
 .PHONY: all all-am check check-am clean clean-generic \
 	clean-libLTLIBRARIES clean-libtool clean-noinstLTLIBRARIES \
 	distclean distclean-compile distclean-depend distclean-generic \
-	distclean-libLTLIBRARIES distclean-libtool \
-	distclean-noinstLTLIBRARIES distclean-tags distdir dvi dvi-am \
-	info info-am install install-am install-data install-data-am \
-	install-exec install-exec-am install-libLTLIBRARIES \
-	install-libnodesincHEADERS install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic maintainer-clean-libLTLIBRARIES \
-	maintainer-clean-noinstLTLIBRARIES mostlyclean \
-	mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libLTLIBRARIES mostlyclean-libtool \
-	mostlyclean-noinstLTLIBRARIES tags uninstall uninstall-am \
-	uninstall-libLTLIBRARIES uninstall-libnodesincHEADERS
+	distclean-libtool distclean-tags distdir dvi dvi-am info \
+	info-am install install-am install-data install-data-am \
+	install-exec install-exec-am install-info \
+	install-libLTLIBRARIES install-libnodesincHEADERS install-man \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	tags uninstall uninstall-am uninstall-libLTLIBRARIES \
+	uninstall-libnodesincHEADERS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

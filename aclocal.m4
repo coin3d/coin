@@ -1114,13 +1114,24 @@ AC_DEFUN([AM_MAINTAINER_MODE],
 ]
 )
 
-# serial 2
+# serial 3
 
 # AM_CONDITIONAL(NAME, SHELL-CONDITION)
 # -------------------------------------
 # Define a conditional.
+#
+# FIXME: Once using 2.50, use this:
+# m4_match([$1], [^TRUE\|FALSE$], [AC_FATAL([$0: invalid condition: $1])])dnl
 AC_DEFUN([AM_CONDITIONAL],
-[AC_SUBST([$1_TRUE])
+[ifelse([$1], [TRUE],
+        [errprint(__file__:__line__: [$0: invalid condition: $1
+])dnl
+m4exit(1)])dnl
+ifelse([$1], [FALSE],
+       [errprint(__file__:__line__: [$0: invalid condition: $1
+])dnl
+m4exit(1)])dnl
+AC_SUBST([$1_TRUE])
 AC_SUBST([$1_FALSE])
 if $2; then
   $1_TRUE=
@@ -1780,21 +1791,28 @@ if test x"$enable_warnings" = x"yes"; then
 
         ### Turn off specific (bogus) warnings ########################
 
-        ## SGI MipsPro v?.?? (our compiler on IRIX 6.2) ##############
-        # 3115: ``type qualifiers are meaningless in this declaration''.
-        # 3262: unused variables.
-        ## SGI MipsPro v7.30 #########################################
-	# 1174: "The function was declared but never referenced."
-        # 1209: "The controlling expression is constant." (kill warning on
-        #       if (0), assert(FALSE), etc).
-        # 1355: Kill warnings on extra semicolons (which happens with some
-        #       of the Coin macros).
-        # 1375: Non-virtual destructors in base classes.
-        # 3201: Unused argument to a function.
-        # 1110: "Statement is not reachable" (the Lex/Flex generated code in
-        #       Coin/src/engines has lots of shitty code which needs this).
+        ### SGI MipsPro v?.?? (our compiler on IRIX 6.2) ##############
+        ##
+        ## 3115: ``type qualifiers are meaningless in this declaration''.
+        ## 3262: unused variables.
+        ##
+        ### SGI MipsPro v7.30 #########################################
+        ##
+	## 1174: "The function was declared but never referenced."
+        ## 1209: "The controlling expression is constant." (kill warning on
+        ##       if (0), assert(FALSE), etc).
+        ## 1355: Kill warnings on extra semicolons (which happens with some
+        ##       of the Coin macros).
+        ## 1375: Non-virtual destructors in base classes.
+        ## 3201: Unused argument to a function.
+        ## 1110: "Statement is not reachable" (the Lex/Flex generated code in
+        ##       Coin/src/engines has lots of shitty code which needs this).
+        ## 1506: Implicit conversion from "unsigned long" to "long".
+        ##       SbTime.h in SGI/TGS Inventor does this, so we need to kill
+        ##       this warning to avoid all the output clutter when compiling
+        ##       the SoQt, SoGtk or SoXt libraries on IRIX with SGI MIPSPro CC.
 
-        sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1355,1375,3201,1110"
+        sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1355,1375,3201,1110,1506"
         SIM_AC_CC_COMPILER_OPTION($sim_ac_bogus_warnings,
                                   CPPFLAGS="$CPPFLAGS $sim_ac_bogus_warnings")
       fi

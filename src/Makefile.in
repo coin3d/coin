@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4e from Makefile.am
+# Makefile.in generated automatically by automake 1.4e from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
@@ -47,7 +47,6 @@ INSTALL = @INSTALL@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
-INSTALL_STRIP_FLAG =
 INSTALL_HEADER = $(INSTALL_DATA)
 transform = @program_transform_name@
 
@@ -58,13 +57,14 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 
-@SET_MAKE@
 build_alias = @build_alias@
 build_triplet = @build@
 host_alias = @host_alias@
 host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
+
+@SET_MAKE@
 AMDEP = @AMDEP@
 AMTAR = @AMTAR@
 AS = @AS@
@@ -87,7 +87,6 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
-INSTALL_HEADER = @INSTALL_HEADER@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBFLAGS = @LIBFLAGS@
@@ -118,7 +117,7 @@ COINLIB = libCoin@SUFFIX@.la
 
 lib_LTLIBRARIES = $(COINLIB)
 @HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_LIBADD = 
-@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_LIBADD = @HACKING_DYNAMIC_MODULES_FALSE@\
+@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_LIBADD = \
 @HACKING_DYNAMIC_MODULES_FALSE@	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libbase.la \
 @HACKING_DYNAMIC_MODULES_FALSE@	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
 @HACKING_DYNAMIC_MODULES_FALSE@	engines/libengines.la errors/liberrors.la events/libevents.la \
@@ -126,6 +125,7 @@ lib_LTLIBRARIES = $(COINLIB)
 @HACKING_DYNAMIC_MODULES_FALSE@	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la \
 @HACKING_DYNAMIC_MODULES_FALSE@	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
 @HACKING_DYNAMIC_MODULES_FALSE@	manips/libmanips.la
+
 
 SUBDIRS = \
 	VRMLnodes actions base bundles caches details draggers elements \
@@ -191,14 +191,16 @@ libCoin@SUFFIX@inc_HEADERS = \
 	$(top_srcdir)/include/Inventor/SbViewportRegion.h \
 	$(top_srcdir)/include/Inventor/SbXfBox3f.h
 
+EXEEXT =
+OBJEXT = o
 subdir = src
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = ../config.h ../include/Inventor/SbBasic.h
-CONFIG_CLEAN_FILES = 
-LTLIBRARIES =  $(lib_LTLIBRARIES)
+CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
+CONFIG_CLEAN_FILES =
+LTLIBRARIES = $(lib_LTLIBRARIES)
 
 
-DEFS = @DEFS@ -I. -I$(srcdir) -I.. -I../include/Inventor
+DEFS = @DEFS@ -I. -I$(srcdir) -I$(top_builddir) -I$(top_builddir)/include/Inventor -I$(top_builddir)/include/Inventor/system
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
@@ -206,85 +208,77 @@ X_CFLAGS = @X_CFLAGS@
 X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
-@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES =  \
-@HACKING_DYNAMIC_MODULES_FALSE@VRMLnodes/libVRMLnodes.la \
-@HACKING_DYNAMIC_MODULES_FALSE@actions/libactions.la base/libbase.la \
-@HACKING_DYNAMIC_MODULES_FALSE@bundles/libbundles.la \
-@HACKING_DYNAMIC_MODULES_FALSE@caches/libcaches.la \
-@HACKING_DYNAMIC_MODULES_FALSE@elements/libelements.la \
-@HACKING_DYNAMIC_MODULES_FALSE@engines/libengines.la \
-@HACKING_DYNAMIC_MODULES_FALSE@errors/liberrors.la events/libevents.la \
-@HACKING_DYNAMIC_MODULES_FALSE@fields/libfields.la misc/libmisc.la \
-@HACKING_DYNAMIC_MODULES_FALSE@lists/liblists.la \
-@HACKING_DYNAMIC_MODULES_FALSE@nodekits/libnodekits.la \
-@HACKING_DYNAMIC_MODULES_FALSE@nodes/libnodes.la \
-@HACKING_DYNAMIC_MODULES_FALSE@projectors/libprojectors.la \
-@HACKING_DYNAMIC_MODULES_FALSE@sensors/libsensors.la \
-@HACKING_DYNAMIC_MODULES_FALSE@details/libdetails.la \
-@HACKING_DYNAMIC_MODULES_FALSE@draggers/libdraggers.la \
-@HACKING_DYNAMIC_MODULES_FALSE@manips/libmanips.la
-@HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES = 
-am_libCoin@SUFFIX@_la_OBJECTS =  snprintf.lo
-libCoin@SUFFIX@_la_OBJECTS =  $(am_libCoin@SUFFIX@_la_OBJECTS)
+@HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
+@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES = \
+@HACKING_DYNAMIC_MODULES_FALSE@ VRMLnodes/libVRMLnodes.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ actions/libactions.la base/libbase.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ bundles/libbundles.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ caches/libcaches.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ elements/libelements.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ engines/libengines.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ errors/liberrors.la events/libevents.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ fields/libfields.la misc/libmisc.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ lists/liblists.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ nodekits/libnodekits.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ nodes/libnodes.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ projectors/libprojectors.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ sensors/libsensors.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ details/libdetails.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ draggers/libdraggers.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ manips/libmanips.la
+am_libCoin@SUFFIX@_la_OBJECTS = snprintf.lo
+libCoin@SUFFIX@_la_OBJECTS = $(am_libCoin@SUFFIX@_la_OBJECTS)
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CFLAGS = @CFLAGS@
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES =  $(libCoin@SUFFIX@_la_SOURCES)
-HEADERS =  $(libCoin@SUFFIX@inc_HEADERS)
+DIST_SOURCES = $(libCoin@SUFFIX@_la_SOURCES)
+HEADERS = $(libCoin@SUFFIX@inc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP@DEP_FILES =  $(DEPDIR)/snprintf.Plo
-DIST_COMMON =  $(libCoin@SUFFIX@inc_HEADERS) Makefile.am Makefile.in
+@AMDEP@DEP_FILES = $(DEPDIR)/snprintf.Plo
+DIST_COMMON = $(libCoin@SUFFIX@inc_HEADERS) Makefile.am Makefile.in
 
-
-DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-
-GZIP_ENV = --best
-DIST_SUBDIRS =  $(SUBDIRS)
+DIST_SUBDIRS = $(SUBDIRS)
 SOURCES = $(libCoin@SUFFIX@_la_SOURCES)
 OBJECTS = $(am_libCoin@SUFFIX@_la_OBJECTS)
 
 all: all-recursive
+
 .SUFFIXES:
-.SUFFIXES: .c .h .lo .o
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --gnu src/Makefile
+.SUFFIXES: .c .h .lo .o .obj
 
-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
-	cd $(top_builddir) \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+	cd $(top_srcdir) && \
+	  $(AUTOMAKE) --gnu  src/Makefile
 
-
-mostlyclean-libLTLIBRARIES:
-
-clean-libLTLIBRARIES:
-	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
-
-distclean-libLTLIBRARIES:
-
-maintainer-clean-libLTLIBRARIES:
-
+Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) && \
+	  CONFIG_HEADERS= CONFIG_LINKS= \
+	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
 	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
 	  if test -f $$p; then \
-	    echo " $(LIBTOOL)  --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p"; \
-	    $(LIBTOOL)  --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p; \
+	    echo " $(LIBTOOL) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p; \
 	  else :; fi; \
 	done
 
 uninstall-libLTLIBRARIES:
 	@$(NORMAL_UNINSTALL)
 	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
-	  echo " $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p"; \
-	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
+	  echo " $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p"; \
+	  $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
 	done
 
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
+
 mostlyclean-compile:
-	-rm -f *.o core *.core
+	-rm -f *.$(OBJEXT) core *.core
 
 distclean-compile:
 	-rm -f *.tab.c
@@ -300,7 +294,6 @@ distclean-libtool:
 
 libCoin@SUFFIX@.la: $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_DEPENDENCIES)
 	$(LINK) -rpath $(libdir) $(libCoin@SUFFIX@_la_LDFLAGS) $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_LIBADD) $(LIBS)
-
 install-libCoin@SUFFIX@incHEADERS: $(libCoin@SUFFIX@inc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libCoin@SUFFIX@incdir)
@@ -326,7 +319,8 @@ uninstall-libCoin@SUFFIX@incHEADERS:
 #     (which will cause the Makefiles to be regenerated when you run `make');
 # (2) otherwise, pass the desired values on the `make' command line.
 all-recursive install-data-recursive install-exec-recursive \
-installdirs-recursive install-recursive uninstall-recursive  \
+installdirs-recursive install-recursive uninstall-recursive \
+install-info-recursive uninstall-info-recursive \
 check-recursive installcheck-recursive info-recursive dvi-recursive:
 	@set fnord $(MAKEFLAGS); amf=$$2; \
 	dot_seen=no; \
@@ -432,9 +426,17 @@ distclean-depend:
 @AMDEP@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(LTCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
 
+.c.obj:
+@AMDEP@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(COMPILE) -c -o $@ `cygpath -w $<`
 
-distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
+DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+
+top_distdir = ..
+distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
 	@for file in $(DISTFILES); do \
@@ -454,39 +456,34 @@ distdir: $(DISTFILES)
 	    || mkdir $(distdir)/$$subdir \
 	    || exit 1; \
 	    (cd $$subdir && \
-	      $(MAKE) $(AM_MAKEFLAGS) top_distdir=../$(top_distdir) distdir=../$(distdir)/$$subdir distdir) \
+	      $(MAKE) $(AM_MAKEFLAGS) \
+	        top_distdir="$(top_distdir)" \
+	        distdir=../$(distdir)/$$subdir \
+	        distdir) \
 	      || exit 1; \
 	  fi; \
 	done
-info-am:
-info: info-recursive
-dvi-am:
-dvi: dvi-recursive
 check-am: all-am
 check: check-recursive
-installcheck-am:
-installcheck: installcheck-recursive
-install-exec-am: install-libLTLIBRARIES install-exec-local
-install-exec: install-exec-recursive
+all-am: Makefile $(LTLIBRARIES) $(HEADERS) all-local
 
-install-data-am: install-libCoin@SUFFIX@incHEADERS install-data-local
+installdirs: installdirs-recursive
+installdirs-am:
+	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libCoin@SUFFIX@incdir)
+
+install: install-recursive
+install-exec: install-exec-recursive
 install-data: install-data-recursive
+uninstall: uninstall-recursive
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
-install: install-recursive
-uninstall-am: uninstall-libLTLIBRARIES \
-		uninstall-libCoin@SUFFIX@incHEADERS uninstall-local
-uninstall: uninstall-recursive
-all-am: Makefile $(LTLIBRARIES) $(HEADERS) all-local
+
+installcheck: installcheck-recursive
+
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
 	  INSTALL_PROGRAM_ENV='$(INSTALL_STRIP_PROGRAM_ENV)' install
-installdirs: installdirs-recursive
-installdirs-am:
-	$(mkinstalldirs)  $(DESTDIR)$(libdir) \
-		$(DESTDIR)$(libCoin@SUFFIX@incdir)
-
 
 mostlyclean-generic:
 
@@ -508,37 +505,56 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 distclean: distclean-recursive
 
 distclean-am: clean-am distclean-compile distclean-depend \
-	distclean-generic distclean-libLTLIBRARIES distclean-libtool \
-	distclean-tags
+	distclean-generic distclean-libtool distclean-tags
+
+dvi:
+
+dvi-am:
+
+info:
+
+info-am:
+
+install-data-am: install-data-local install-libCoin@SUFFIX@incHEADERS
+
+install-exec-am: install-exec-local install-libLTLIBRARIES
+
+install-info:
+
+install-man:
+
+installcheck-am:
 
 maintainer-clean: maintainer-clean-recursive
 
-maintainer-clean-am: distclean-am maintainer-clean-generic \
-	maintainer-clean-libLTLIBRARIES
+maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-recursive
 
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libLTLIBRARIES mostlyclean-libtool
+	mostlyclean-libtool
+
+uninstall-am: uninstall-libCoin@SUFFIX@incHEADERS \
+	uninstall-libLTLIBRARIES uninstall-local
 
 .PHONY: all all-am all-local all-recursive check check-am \
 	check-recursive clean clean-generic clean-libLTLIBRARIES \
 	clean-libtool clean-recursive distclean distclean-compile \
-	distclean-depend distclean-generic distclean-libLTLIBRARIES \
-	distclean-libtool distclean-recursive distclean-tags distdir \
-	dvi dvi-am dvi-recursive info info-am info-recursive install \
-	install-am install-data install-data-am install-data-local \
+	distclean-depend distclean-generic distclean-libtool \
+	distclean-recursive distclean-tags distdir dvi dvi-am \
+	dvi-recursive info info-am info-recursive install install-am \
+	install-data install-data-am install-data-local \
 	install-data-recursive install-exec install-exec-am \
-	install-exec-local install-exec-recursive \
-	install-libCoin@SUFFIX@incHEADERS install-libLTLIBRARIES \
-	install-recursive install-strip installcheck installcheck-am \
+	install-exec-local install-exec-recursive install-info \
+	install-info-recursive install-libCoin@SUFFIX@incHEADERS \
+	install-libLTLIBRARIES install-man install-recursive \
+	install-strip installcheck installcheck-am \
 	installcheck-recursive installdirs installdirs-am \
 	installdirs-recursive maintainer-clean maintainer-clean-generic \
-	maintainer-clean-libLTLIBRARIES maintainer-clean-recursive \
-	mostlyclean mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libLTLIBRARIES mostlyclean-libtool \
-	mostlyclean-recursive tags tags-recursive uninstall \
-	uninstall-am uninstall-libCoin@SUFFIX@incHEADERS \
+	maintainer-clean-recursive mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
+	tags tags-recursive uninstall uninstall-am \
+	uninstall-info-recursive uninstall-libCoin@SUFFIX@incHEADERS \
 	uninstall-libLTLIBRARIES uninstall-local uninstall-recursive
 
 

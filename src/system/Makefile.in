@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4e from Makefile.am
+# Makefile.in generated automatically by automake 1.4e from Makefile.am.
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
@@ -47,7 +47,6 @@ INSTALL = @INSTALL@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
-INSTALL_STRIP_FLAG =
 INSTALL_HEADER = $(INSTALL_DATA)
 transform = @program_transform_name@
 
@@ -58,13 +57,14 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 
-@SET_MAKE@
 build_alias = @build_alias@
 build_triplet = @build@
 host_alias = @host_alias@
 host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
+
+@SET_MAKE@
 AMDEP = @AMDEP@
 AMTAR = @AMTAR@
 AS = @AS@
@@ -87,7 +87,6 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
-INSTALL_HEADER = @INSTALL_HEADER@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBFLAGS = @LIBFLAGS@
@@ -119,29 +118,29 @@ systemincdir = $(includedir)/Inventor/system
 systeminc_HEADERS = \
 	$(top_builddir)/include/Inventor/system/inttypes.h
 
+EXEEXT =
+OBJEXT = o
 subdir = src/system
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
-CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
-CONFIG_CLEAN_FILES = 
-DIST_SOURCES = 
-HEADERS =  $(systeminc_HEADERS)
+CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
+CONFIG_CLEAN_FILES =
+DIST_SOURCES =
+HEADERS = $(systeminc_HEADERS)
 
-DIST_COMMON =  $(systeminc_HEADERS) Makefile.am Makefile.in
+DIST_COMMON = $(systeminc_HEADERS) Makefile.am Makefile.in
 
-
-DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-
-GZIP_ENV = --best
 all: all-am
+
 .SUFFIXES:
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --gnu src/system/Makefile
 
-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
-	cd $(top_builddir) \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+	cd $(top_srcdir) && \
+	  $(AUTOMAKE) --gnu  src/system/Makefile
 
-
+Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) && \
+	  CONFIG_HEADERS= CONFIG_LINKS= \
+	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
 install-systemincHEADERS: $(systeminc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(systemincdir)
@@ -171,7 +170,7 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	       END { for (i in files) print i; }'`; \
 	mkid -fID $$unique $(LISP)
 
-TAGS: $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	tags=; \
 	here=`pwd`; \
@@ -192,11 +191,13 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
+top_distdir = ../..
+distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include/Inventor/system $(top_srcdir)/include/Inventor/system
+	$(mkinstalldirs) $(distdir)/$(top_builddir)/include/Inventor/system
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -208,32 +209,26 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
-info-am:
-info: info-am
-dvi-am:
-dvi: dvi-am
 check-am: all-am
 check: check-am
-installcheck-am:
-installcheck: installcheck-am
-install-exec-am:
-install-exec: install-exec-am
+all-am: Makefile $(HEADERS)
 
-install-data-am: install-systemincHEADERS
+installdirs:
+	$(mkinstalldirs) $(DESTDIR)$(systemincdir)
+
+install: install-am
+install-exec: install-exec-am
 install-data: install-data-am
+uninstall: uninstall-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
-install: install-am
-uninstall-am: uninstall-systemincHEADERS
-uninstall: uninstall-am
-all-am: Makefile $(HEADERS)
+
+installcheck: installcheck-am
+
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
 	  INSTALL_PROGRAM_ENV='$(INSTALL_STRIP_PROGRAM_ENV)' install
-installdirs:
-	$(mkinstalldirs)  $(DESTDIR)$(systemincdir)
-
 
 mostlyclean-generic:
 
@@ -255,6 +250,24 @@ distclean: distclean-am
 
 distclean-am: clean-am distclean-generic distclean-tags
 
+dvi:
+
+dvi-am:
+
+info:
+
+info-am:
+
+install-data-am: install-systemincHEADERS
+
+install-exec-am:
+
+install-info:
+
+install-man:
+
+installcheck-am:
+
 maintainer-clean: maintainer-clean-am
 
 maintainer-clean-am: distclean-am maintainer-clean-generic
@@ -263,14 +276,16 @@ mostlyclean: mostlyclean-am
 
 mostlyclean-am: mostlyclean-generic
 
+uninstall-am: uninstall-systemincHEADERS
+
 .PHONY: all all-am check check-am clean clean-generic distclean \
 	distclean-generic distclean-tags distdir dvi dvi-am info \
 	info-am install install-am install-data install-data-am \
-	install-exec install-exec-am install-strip \
-	install-systemincHEADERS installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-generic tags uninstall uninstall-am \
-	uninstall-systemincHEADERS
+	install-exec install-exec-am install-info install-man \
+	install-strip install-systemincHEADERS installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic tags \
+	uninstall uninstall-am uninstall-systemincHEADERS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
