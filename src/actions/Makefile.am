@@ -12,6 +12,7 @@ PublicHeaders = \
 	../../include/Inventor/actions/SoGetMatrixAction.h \
 	../../include/Inventor/actions/SoGetPrimitiveCountAction.h \
 	../../include/Inventor/actions/SoHandleEventAction.h \
+	../../include/Inventor/collision/SoIntersectionDetectionAction.h \
 	../../include/Inventor/actions/SoLineHighlightRenderAction.h \
 	../../include/Inventor/actions/SoPickAction.h \
 	../../include/Inventor/actions/SoRayPickAction.h \
@@ -22,8 +23,6 @@ PublicHeaders = \
 	../../include/Inventor/actions/SoAudioRenderAction.h
 PrivateHeaders = \
 	../../include/Inventor/actions/SoSubActionP.h \
-	SoIntersectionDetectionAction.cpp \
-	../../include/Inventor/collision/SoIntersectionDetectionAction.h \
 	SbTri3f.icc SbTri3f.ih
 LinkHackSources = \
 	all.cpp
@@ -36,6 +35,7 @@ RegularSources = \
 	SoGetMatrixAction.cpp \
 	SoGetPrimitiveCountAction.cpp \
 	SoHandleEventAction.cpp \
+	SoIntersectionDetectionAction.cpp \
 	SoLineHighlightRenderAction.cpp \
 	SoPickAction.cpp \
 	SoRayPickAction.cpp \
@@ -51,28 +51,28 @@ RegularSources = \
 # FIXME: it'd be easier to place a Makefile.am under include/Inventor/collision
 # and let that install the file. 20030324 mortene.
 
-# if BUILD_LIBRARY
-# if MAC_FRAMEWORK
-# libcollisionincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/collision
-# else
-# libcollisionincdir = $(includedir)/Inventor/collision
-# endif
-# libcollisioninc_HEADERS = \
-# 	../../include/Inventor/collision/SoIntersectionDetectionAction.h
-# 
-# install-libcollisionincHEADERS: $(libcollisioninc_HEADERS)
-# 	@$(NORMAL_INSTALL)
-# 	$(mkinstalldirs) $(DESTDIR)$(libcollisionincdir)
-# 	@list='$(libcollisioninc_HEADERS)'; for p in $$list; do \
-# 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-# 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-# 	  src="$$d$$p"; dst="$(DESTDIR)$(libcollisionincdir)/$$f"; \
-# 	  if cmp -s "$$src" "$$dst"; then :; else \
-# 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
-# 	    $(INSTALL_HEADER) "$$src" "$$dst"; \
-# 	  fi \
-# 	done
-# endif
+if BUILD_LIBRARY
+if MAC_FRAMEWORK
+libcollisionincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/collision
+else
+libcollisionincdir = $(includedir)/Inventor/collision
+endif
+libcollisioninc_HEADERS = \
+	../../include/Inventor/collision/SoIntersectionDetectionAction.h
+
+install-libcollisionincHEADERS: $(libcollisioninc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libcollisionincdir)
+	@list='$(libcollisioninc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libcollisionincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
+endif
 
 ##$ BEGIN TEMPLATE Make-Common(actions, actions)
 # **************************************************************************
