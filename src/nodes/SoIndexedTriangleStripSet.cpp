@@ -179,6 +179,10 @@ SoIndexedTriangleStripSet::findNormalBinding(SoState * const state) const
 void
 SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
 {
+  // Note: default coordIndex field setting is [ 0 ] so this check is
+  // absolutely necessary.
+  if (this->coordIndex.getNum() < 3) return;
+
   SoState * state = action->getState();
 
   if (this->vertexProperty.getValue()) {
@@ -265,6 +269,10 @@ SbBool
 SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
                                                   SoNormalCache * nc)
 {
+  // Note: default coordIndex field setting is [ 0 ] so this check is
+  // absolutely necessary.
+  if (this->coordIndex.getNum() < 3) return;
+
   SbBool ccw = TRUE;
   const SoCoordinateElement * coordelem =
     SoCoordinateElement::getInstance(state);
@@ -292,8 +300,8 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
   case SoNormalBindingElement::PER_VERTEX:
   case SoNormalBindingElement::PER_VERTEX_INDEXED:
     nc->generatePerVertex(coords,
-                          coordIndex.getValues(0),
-                          coordIndex.getNum(),
+                          this->coordIndex.getValues(0),
+                          this->coordIndex.getNum(),
                           SoCreaseAngleElement::get(state),
                           NULL,
                           ccw,
@@ -302,16 +310,16 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
   case SoNormalBindingElement::PER_FACE:
   case SoNormalBindingElement::PER_FACE_INDEXED:
     nc->generatePerFaceStrip(coords,
-                             coordIndex.getValues(0),
-                             coordIndex.getNum(),
+                             this->coordIndex.getValues(0),
+                             this->coordIndex.getNum(),
                              ccw);
     break;
 
   case SoNormalBindingElement::PER_PART:
   case SoNormalBindingElement::PER_PART_INDEXED:
     nc->generatePerStrip(coords,
-                         coordIndex.getValues(0),
-                         coordIndex.getNum(),
+                         this->coordIndex.getValues(0),
+                         this->coordIndex.getNum(),
                          ccw);
     break;
   default:
@@ -350,7 +358,7 @@ SoIndexedTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
 
-  // Note: default coordIndex setting is [ 0 ] so this check is
+  // Note: default coordIndex field setting is [ 0 ] so this check is
   // absolutely necessary.
   int n = this->coordIndex.getNum();
   if (n < 3) return;
@@ -382,6 +390,10 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
 void
 SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
 {
+  // Note: default coordIndex field setting is [ 0 ] so this check is
+  // absolutely necessary.
+  if (this->coordIndex.getNum() < 3) return;
+
   SoState * state = action->getState();
 
   if (this->vertexProperty.getValue()) {
