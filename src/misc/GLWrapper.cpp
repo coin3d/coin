@@ -35,9 +35,7 @@
 #ifndef COIN_INTERNAL
 #include <stdio.h>
 #endif
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 
 #ifdef HAVE_DLFCN_H
