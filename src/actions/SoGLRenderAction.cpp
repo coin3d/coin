@@ -262,12 +262,10 @@ public:
   void * abortcallbackdata;
   uint32_t cachecontext;
   int currentpass;
-  SbBool didhavetransparent;
   SbBool isblendenabled;
   SoPathList delayedpaths;
-  SbBool delayedrender;
   SbBool delayedpathrender;
-  SbBool sortrender;
+  SbBool transparencyrender;
   SoPathList transpobjpaths;
   SbList<float> transpobjdistances;
   SoGetBoundingBoxAction * bboxaction;
@@ -311,11 +309,7 @@ SoGLRenderAction::initClass(void)
 
 // *************************************************************************
 
-#ifdef THIS
-#define COIN_THIS_DEFINE_COPY THIS
 #undef THIS
-#endif // THIS
-
 #define THIS this->pimpl
 
 /*!
@@ -338,10 +332,9 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   THIS->smoothing = FALSE;
   THIS->numpasses = 1;
   THIS->transparencytype = SoGLRenderAction::SCREEN_DOOR;
-  THIS->delayedrender = FALSE;
   THIS->delayedpathrender = FALSE;
+  THIS->transparencyrender = FALSE;
   THIS->isrendering = FALSE;
-  THIS->sortrender = FALSE;
   THIS->isblendenabled = FALSE;
   THIS->passupdate = FALSE;
   THIS->bboxaction = NULL;
@@ -617,39 +610,42 @@ SoGLRenderAction::endTraversal(SoNode * node)
 SbBool
 SoGLRenderAction::handleTransparency(SbBool istransparent)
 {
-  if (THIS->delayedpathrender) { // special case when rendering delayed paths
-    if (!istransparent) {
-      THIS->disableBlend();
-    }
-    else {
-      if (THIS->transparencytype != SCREEN_DOOR) THIS->enableBlend();
-      else THIS->disableBlend();
-    }
+  // check common case first
+  if (!istransparent) {
+    THIS->disableBlend();
+    return FALSE;
+  }
+  // for the transparency render pass(es) we should always render when
+  // we get here. blending will be enabled.
+  if (THIS->transparencyrender) return FALSE;
+
+  // check for special case when rendering delayed paths.  we don't
+  // want to add these objects to the list of transparent objects, but
+  // render right away.
+  if (THIS->delayedpathrender) {
+    if (THIS->transparencytype != SCREEN_DOOR) THIS->enableBlend();
+    else THIS->disableBlend();
     return FALSE; // always render
   }
-
-  // normal case
-  if (istransparent) THIS->didhavetransparent = TRUE;
-  if (THIS->transparencytype == DELAYED_ADD ||
-      THIS->transparencytype == DELAYED_BLEND) {
-    if (THIS->delayedrender) return !istransparent;
-    return istransparent;
-  }
-  else if (THIS->transparencytype == SORTED_OBJECT_ADD ||
-           THIS->transparencytype == SORTED_OBJECT_BLEND ||
-           THIS->transparencytype == SORTED_OBJECT_SORTED_TRIANGLE_ADD ||
-           THIS->transparencytype == SORTED_OBJECT_SORTED_TRIANGLE_BLEND) {
-    if (THIS->sortrender || !istransparent) return FALSE;
+  switch (THIS->transparencytype) {
+  case SCREEN_DOOR:
+    return FALSE; // render now
+  case ADD:
+  case BLEND:
+    THIS->enableBlend();
+    return FALSE; // render now
+  case DELAYED_ADD:
+  case DELAYED_BLEND:
+  case SORTED_OBJECT_ADD:
+  case SORTED_OBJECT_BLEND:
+  case SORTED_OBJECT_SORTED_TRIANGLE_ADD:
+  case SORTED_OBJECT_SORTED_TRIANGLE_BLEND:
     this->addTransPath(this->getCurPath()->copy());
-    return TRUE;
+    return TRUE; // delay render
+  default:
+    assert(0 && "unknown transparency mode.");
+    return FALSE; // just render
   }
-  else if (THIS->transparencytype == ADD || THIS->transparencytype == BLEND) {
-    if (istransparent) THIS->enableBlend();
-    else THIS->disableBlend();
-    return FALSE; // node should always render
-  }
-  else
-    return FALSE; // polygon stipple used to render
 }
 
 /*!
@@ -749,10 +745,13 @@ SoGLRenderAction::isRenderingDelayedPaths(void) const
 void
 SoGLRenderAction::addTransPath(SoPath * path)
 {
-  // Do this first to increase the reference count (we want to avoid a
-  // zero refcount for the bboxaction apply()).
   THIS->transpobjpaths.append(path);
-
+  
+  // if we're not going to sort the paths we don't need to calculate
+  // distance
+  if (THIS->transparencytype == BLEND ||
+      THIS->transparencytype == ADD) return;
+  
   SoNode * tail = ((SoFullPath*)path)->getTail();
   float dist;
 
@@ -823,11 +822,6 @@ SoGLRenderAction::doPathSort(void)
 }
 
 #undef THIS
-
-#ifdef COIN_THIS_DEFINE_COPY
-#define THIS COIN_THIS_DEFINE_COPY
-#endif // COIN_THIS_DEFINE_COPY
-
 
 // methods in SoGLRenderActionP
 #ifndef DOXYGEN_SKIP_THIS
@@ -950,53 +944,53 @@ SoGLRenderActionP::renderSingle(SoNode * node)
   SoGLCacheContextElement::set(state, this->cachecontext,
                                FALSE, this->renderingremote);
 
-  assert(this->sortrender == FALSE);
-  assert(this->delayedrender == FALSE);
   assert(this->delayedpathrender == FALSE);
+  assert(this->transparencyrender == FALSE);
 
-  this->didhavetransparent = FALSE;
+  // truncate just in case
+  this->transpobjpaths.truncate(0);
+  this->transpobjdistances.truncate(0);
+  this->delayedpaths.truncate(0);
+
   this->action->beginTraversal(node);
 
-  if (this->didhavetransparent) {
-    assert(!this->sortrender);
-    if (this->transparencytype == SoGLRenderAction::DELAYED_BLEND ||
-        this->transparencytype == SoGLRenderAction::DELAYED_ADD) {
-      SoGLCacheContextElement::set(state, this->cachecontext,
-                                   TRUE, this->renderingremote);
-      this->enableBlend();
-      this->delayedrender = TRUE;
-      this->action->beginTraversal(node);
-      this->delayedrender = FALSE;
-      this->disableBlend();
-    }
-    else if (this->transparencytype == SoGLRenderAction::SORTED_OBJECT_BLEND ||
-             this->transparencytype == SoGLRenderAction::SORTED_OBJECT_ADD ||
-             this->transparencytype == SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND ||
-             this->transparencytype == SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND) {
-      SoGLCacheContextElement::set(state, this->cachecontext,
-                                   TRUE, this->renderingremote);
-      this->sortrender = TRUE;
+  if (this->transpobjpaths.getLength() && !this->action->hasTerminated()) {
+    this->transparencyrender = TRUE;
+    SoGLCacheContextElement::set(state, this->cachecontext,
+                                 TRUE, this->renderingremote);
+    this->enableBlend();
+
+    // test if paths should rendered back-to-front
+    if (this->transparencytype == SoGLRenderAction::SORTED_OBJECT_BLEND ||
+        this->transparencytype == SoGLRenderAction::SORTED_OBJECT_ADD ||
+        this->transparencytype == SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND ||
+        this->transparencytype == SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND) {
       this->action->doPathSort();
-      this->enableBlend();
       int n = this->transpobjpaths.getLength();
       for (int i  = 0; i < n; i++) {
         this->action->apply(this->transpobjpaths[i]);
       }
-      this->disableBlend();
-      this->sortrender = FALSE;
-      this->transpobjpaths.truncate(0);
-      this->transpobjdistances.truncate(0);
     }
+    else {
+      // just render all paths in one go
+      this->action->apply(this->transpobjpaths, TRUE);
+    }
+    this->disableBlend();
+    this->transparencyrender = FALSE;
   }
 
   this->disableBlend();
 
-  if (this->delayedpaths.getLength()) {
+  if (this->delayedpaths.getLength() && !this->action->hasTerminated()) {
     this->delayedpathrender = TRUE;
     this->action->apply(this->delayedpaths, TRUE);
     this->delayedpathrender = FALSE;
-    this->delayedpaths.truncate(0);
   }
+
+  // truncate lists to unref paths.
+  this->transpobjpaths.truncate(0);
+  this->transpobjdistances.truncate(0);
+  this->delayedpaths.truncate(0);
 }
 
 #endif // DOXYGEN_SKIP_THIS
