@@ -637,6 +637,11 @@ THE WISH LIST
 
   A node that will render the commonly used tea pot shape.
 
+  Update, mortene 2004-07-10: should be an easter egg, i.e. not
+  disclosed in API-doc on doc.coin3d.org, don't install header file,
+  etc.  Would be a cool and good learning introduction task for a new
+  developer, e.g. a summer intern.
+  
 
 * SoSearchPathAction (which is part of the TGS Inventor API)
   2002-04-19  Morten Eriksen  <mortene@sim.no>
