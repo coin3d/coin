@@ -22,6 +22,10 @@
 // install'', and the class is not documented for application
 // programmers.
 
+// FIXME: copy operations doesn't work as expected on this node. I
+// think both the copyContents() and addToCopyDict() methods needs to
+// be overloaded.  20000404 mortene.
+
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
