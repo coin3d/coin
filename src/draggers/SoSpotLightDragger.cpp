@@ -345,14 +345,21 @@ void
 SoSpotLightDragger::fieldSensorCB(void * d, SoSensor * s)
 {
   SoSpotLightDragger *thisp = (SoSpotLightDragger*)d;
-
+ 
   if (s == (SoSensor*) thisp->angleFieldSensor) {
-    thisp->setBeamScaleFromAngle(thisp->angle.getValue());
+    // need to update the beamScale geometry
+    SoScale * scale = SO_GET_ANY_PART(thisp, "beamScale", SoScale);
+    SbVec3f scaleFactor;
+    scaleFactor[0] = scaleFactor[1] = (float)tan(thisp->angle.getValue());
+    scaleFactor[2] = 1.0f;
+    scale->scaleFactor = scaleFactor;
+    thisp->valueChanged();
   }
-
-  SbMatrix matrix = thisp->getMotionMatrix();
-  thisp->workFieldsIntoTransform(matrix);
-  thisp->setMotionMatrix(matrix);
+  else {
+    SbMatrix matrix = thisp->getMotionMatrix();
+    thisp->workFieldsIntoTransform(matrix);
+    thisp->setMotionMatrix(matrix);
+  }
 }
 
 /*! \COININTERNAL */

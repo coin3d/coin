@@ -387,7 +387,10 @@ SoSpotLightManip::valueChangedCB(void * m, SoDragger * dragger)
   }
   if (dragger->isOfType(SoSpotLightDragger::getClassTypeId())) {
     if (thisp->cutOffAngle.getValue() != ((SoSpotLightDragger*)dragger)->angle.getValue()) {
-      thisp->cutOffAngle = ((SoSpotLightDragger*)dragger)->angle.getValue();
+      float angle = ((SoSpotLightDragger*)dragger)->angle.getValue();
+      if (thisp->cutOffAngle.getValue() != angle) {
+        thisp->cutOffAngle = angle;
+      }
     }
   }
   thisp->attachSensors(TRUE);
@@ -403,6 +406,7 @@ SoSpotLightManip::fieldSensorCB(void * m, SoSensor *)
   SoSpotLightManip *thisp = (SoSpotLightManip*)m;
   SoDragger *dragger = thisp->getDragger();
   if (dragger != NULL) {
+    float cutoffangle = thisp->cutOffAngle.getValue();
     SbVec3f direction = thisp->direction.getValue();
     SbMatrix matrix = dragger->getMotionMatrix();
     SbVec3f t, s;
@@ -425,6 +429,12 @@ SoSpotLightManip::fieldSensorCB(void * m, SoSensor *)
       material->diffuseColor = SbColor(0.0f, 0.0f, 0.0f);
       material->emissiveColor = thisp->color.getValue();
       dragger->setPart("material", material);
+    }
+    if (dragger->isOfType(SoSpotLightDragger::getClassTypeId())) {
+      SoSpotLightDragger * sldragger = (SoSpotLightDragger*) dragger;
+      if (sldragger->angle.getValue() != cutoffangle) {
+        sldragger->angle = cutoffangle;
+      }
     }
   }
 }
