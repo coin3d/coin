@@ -61,6 +61,20 @@
   (CLAMP_TO_EDGE), which is useful when tiling textures.
 */
 
+/*!
+  \enum SoGLImage::Flags
+
+  Can be used to tune/optimize the GL texture handling. Normally the
+  texture quality will be used to decide scaling and filtering, and
+  the image data will be scanned to decide if the image is (partly)
+  transparent, and if the texture can be rendered using the cheaper
+  alpha test instead of blending if it does contain transparency. If
+  you know the contents of your texture image, or if you have special
+  requirements on how the texture should be rendered, you can set the
+  flags using the SoGLImage::setFlags() method.
+
+*/
+
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
@@ -95,10 +109,6 @@ static float COIN_TEX2_LINEAR_MIPMAP_LIMIT = -1.0f;
 static float COIN_TEX2_SCALEUP_LIMIT = -1.0f;
 static int COIN_TEX2_USE_GLTEXSUBIMAGE = -1;
 static int COIN_TEX2_BUILD_MIPMAP_FAST = -1;
-
-#define FLAG_TRANSPARENCY         0x01
-#define FLAG_ALPHATEST            0x02
-#define FLAG_NEEDTRANSPARENCYTEST 0x04
 
 static int
 compute_log(int value)
@@ -208,7 +218,7 @@ fast_mipmap(int width, int height, const int nc,
 class SoGLImageP {
 public:
 
-  SoGLDisplayList * createGLDisplayList(SoState * state, const float quality);
+  SoGLDisplayList * createGLDisplayList(SoState * state);
   void checkTransparency(void);
   void unrefDLists(SoState * state);
   void reallyCreateTexture(SoState * state,
@@ -218,12 +228,19 @@ public:
                            const SbBool dlist,
                            const SbBool mipmap,
                            const int border);
-  void resizeImage(unsigned char *& imageptr, int & xsize, int & ysize,
-                   const float quality);
+  void resizeImage(unsigned char *& imageptr, int & xsize, int & ysize);
+  SbBool shouldCreateMipmap(void);
+  void applyFilter(SbBool ismipmap);
+
   const unsigned char * bytes;
   SbVec2s size;
   int numcomponents;
-  unsigned int flags;
+  SbBool needtransparencytest;
+  SbBool hastransparency;
+  SbBool usealphatest;
+  uint32_t flags;
+  float quality;
+
   SoGLImage::Wrap wraps;
   SoGLImage::Wrap wrapt;
   int border;
@@ -248,10 +265,16 @@ SoGLImage::SoGLImage(void)
   THIS->bytes = NULL;
   THIS->size.setValue(0,0);
   THIS->numcomponents = 0;
-  THIS->flags = 0;
   THIS->wraps = SoGLImage::CLAMP;
   THIS->wrapt = SoGLImage::CLAMP;
   THIS->border = 0;
+  THIS->flags = USE_QUALITY_VALUE;
+  THIS->needtransparencytest = TRUE;
+  THIS->hastransparency = FALSE;
+  THIS->usealphatest = FALSE;
+  THIS->quality = 0.4f;
+
+  //   THIS->flags = USE_QUALITY_VALUE;
 
   // check environment variables
   if (COIN_TEX2_LINEAR_LIMIT < 0.0f) {
@@ -300,6 +323,40 @@ SoGLImage::SoGLImage(void)
   }
 }
 
+static SoType classTypeId;
+
+/*!
+  Returns the type id for this class.
+*/
+SoType
+SoGLImage::getClassTypeId(void)
+{
+  if (classTypeId.isBad()) {
+    classTypeId = SoType::createType(SoType::badType(),
+                                     SbName("GLImage"));
+  }
+  return classTypeId;
+}
+
+/*!
+  Returns the type id for an SoGLImage instance.
+*/
+SoType
+SoGLImage::getTypeId(void) const
+{
+  return SoGLImage::getClassTypeId();
+}
+
+/*!
+  Returns whether an SoGLImage instance.inherits (or is of) type \a
+  type.
+*/
+SbBool
+SoGLImage::isOfType(SoType type) const
+{
+  return this->getTypeId().isDerivedFrom(type);
+}
+
 /*!
   Sets the data for this GL image. Should only be called when one
   of the parameters have changed, since this will cause the GL texture
@@ -345,10 +402,17 @@ SoGLImage::setData(const unsigned char * bytes,
                    SoState * createinstate)
 
 {
+  THIS->needtransparencytest = FALSE;
+  THIS->hastransparency = FALSE;
+  THIS->usealphatest = FALSE;
+  THIS->quality = quality;
+
+  if (nc == 2 || nc == 4) THIS->needtransparencytest = TRUE;
+
   // check for special case where glCopyTexImage can be used.
   // faster for most drivers.
   SoGLDisplayList * dl;
-  if (COIN_TEX2_USE_GLTEXSUBIMAGE && 
+  if (COIN_TEX2_USE_GLTEXSUBIMAGE &&
       createinstate &&
       size == THIS->size &&
       nc == THIS->numcomponents &&
@@ -361,7 +425,7 @@ SoGLImage::setData(const unsigned char * bytes,
     THIS->unrefDLists(createinstate);
     THIS->dlists.append(dl);
     THIS->bytes = NULL; // data is temporary, and only for current context
-    SoGLImage::apply(createinstate, dl, quality);
+    dl->call(createinstate);
     GLenum format;
     switch (nc) {
     default: // avoid compiler warnings
@@ -375,7 +439,7 @@ SoGLImage::setData(const unsigned char * bytes,
     int xsize = size[0];
     int ysize = size[1];
     unsigned char * imageptr = (unsigned char*) bytes;
-    THIS->resizeImage(imageptr, xsize, ysize, quality);
+    THIS->resizeImage(imageptr, xsize, ysize);
 
     if (dl->isMipMapTextureObject()) {
       fast_mipmap(xsize, ysize, nc,
@@ -392,14 +456,12 @@ SoGLImage::setData(const unsigned char * bytes,
     THIS->bytes = bytes;
     THIS->size = size;
     THIS->numcomponents = nc;
-    THIS->flags = 0;
     THIS->wraps = wraps;
     THIS->wrapt = wrapt;
-    if (nc == 2 || nc == 4) THIS->flags |= FLAG_NEEDTRANSPARENCYTEST;
     THIS->border = border;
     THIS->unrefDLists(createinstate);
     if (createinstate) {
-      THIS->dlists.append(THIS->createGLDisplayList(createinstate, quality));
+      THIS->dlists.append(THIS->createGLDisplayList(createinstate));
       THIS->bytes = NULL; // data is assumed to be temporary
     }
   }
@@ -429,6 +491,25 @@ SoGLImage::unref(SoState * state)
   delete this;
 }
 
+/*!
+  Sets flags to control how the texture is handled/initialized.
+*/
+void
+SoGLImage::setFlags(const uint32_t flags)
+{
+  THIS->flags = flags;
+}
+
+/*!
+  Returns the flags.
+
+  \sa setFlags()
+*/
+uint32_t
+SoGLImage::getFlags(void) const
+{
+  return THIS->flags;
+}
 
 /*!
   Returns a pointer to the image data.
@@ -459,52 +540,20 @@ SoGLImage::getNumComponents(void) const
 
 /*!
   Returns or creates a SoGLDisplayList to be used for rendering.
-  \a quality should contain the desired quality of the texture,
-  as found in the SoComplexity::textureQuality. Returns
-  NULL if no SoDLDisplayList could be created.
+  Returns NULL if no SoDLDisplayList could be created.
 */
 SoGLDisplayList *
-SoGLImage::getGLDisplayList(SoState * state, const float quality)
+SoGLImage::getGLDisplayList(SoState * state)
 {
   SoGLDisplayList * dl = THIS->findDL(state);
 
   if (dl == NULL) {
-    dl = THIS->createGLDisplayList(state, quality);
+    dl = THIS->createGLDisplayList(state);
     if (dl) THIS->dlists.append(dl);
   }
   return dl;
 }
 
-/*!
-  Convenience method which makes \a dl the current texture for the
-  current context, and sets the filtering values based on \a
-  quality. It will not enable mipmap filtering unless the the texture
-  object contains mipmap data.
-
-  \sa setData()
-*/
-void
-SoGLImage::apply(SoState * state, SoGLDisplayList * dl, const float quality)
-{
-  SbBool ismipmap = dl->isMipMapTextureObject();
-  dl->call(state);
-  if (quality < COIN_TEX2_LINEAR_LIMIT) {
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  }
-  else if ((quality < COIN_TEX2_MIPMAP_LIMIT) || !ismipmap) {
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  }
-  else if (quality < COIN_TEX2_LINEAR_MIPMAP_LIMIT) {
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-  }
-  else { // max quality
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-  }
-}
 
 /*!
   Returns \e TRUE if this texture has some pixels with alpha != 255
@@ -512,10 +561,13 @@ SoGLImage::apply(SoState * state, SoGLDisplayList * dl, const float quality)
 SbBool
 SoGLImage::hasTransparency(void) const
 {
-  if (THIS->flags & FLAG_NEEDTRANSPARENCYTEST) {
+  if (THIS->flags & FORCE_TRANSPARENCY_TRUE) return TRUE;
+  if (THIS->flags & FORCE_TRANSPARENCY_FALSE) return FALSE;
+
+  if (THIS->needtransparencytest) {
     ((SoGLImage*)this)->pimpl->checkTransparency();
   }
-  return (THIS->flags & FLAG_TRANSPARENCY) != 0;
+  return THIS->hastransparency;
 }
 
 /*!
@@ -525,12 +577,15 @@ SoGLImage::hasTransparency(void) const
   is usually slower and might yield z-buffer artifacts.
 */
 SbBool
-SoGLImage::needAlphaTest(void) const
+SoGLImage::useAlphaTest(void) const
 {
-  if (THIS->flags & FLAG_NEEDTRANSPARENCYTEST) {
+  if (THIS->flags & FORCE_ALPHA_TEST_TRUE) return TRUE;
+  if (THIS->flags & FORCE_ALPHA_TEST_FALSE) return FALSE;
+
+  if (THIS->needtransparencytest) {
     ((SoGLImage*)this)->pimpl->checkTransparency();
   }
-  return (THIS->flags & FLAG_ALPHATEST) != 0;
+  return THIS->usealphatest;
 }
 
 /*!
@@ -550,6 +605,10 @@ SoGLImage::getWrapT(void) const
 {
   return THIS->wrapt;
 }
+
+#undef THIS
+
+#ifndef DOXYGEN_SKIP_THIS
 
 // returns the number of bits set, and ets highbit to
 // the highest bit set.
@@ -587,25 +646,31 @@ void cleanup_tmpimage(void)
 }
 
 //
-// resize image if necessary. Returns pointer to temporary 
+// resize image if necessary. Returns pointer to temporary
 // buffer if that happens, and the new size in xsize, ysize.
 //
 void
-SoGLImageP::resizeImage(unsigned char *& imageptr, int & xsize, int & ysize, 
-                        const float quality)
+SoGLImageP::resizeImage(unsigned char *& imageptr, int & xsize, int & ysize)
 {
   unsigned int newx = (unsigned int)nearest_power_of_two(xsize-2*this->border);
   unsigned int newy = (unsigned int)nearest_power_of_two(ysize-2*this->border);
 
   // if >= 256 and low quality, don't scale up unless size is
   // close to an above power of two. This saves a lot of texture memory
-  if (quality < COIN_TEX2_SCALEUP_LIMIT) {
-    if (newx >= 256) {
-      if ((newx - (xsize-2*this->border)) > (newx>>3)) newx >>= 1;
+  if (this->flags & SoGLImage::USE_QUALITY_VALUE) {
+    if (this->quality < COIN_TEX2_SCALEUP_LIMIT) {
+      if (newx >= 256) {
+        if ((newx - (xsize-2*this->border)) > (newx>>3)) newx >>= 1;
+      }
+      if (newy >= 256) {
+        if ((newy - (ysize-2*this->border)) > (newy>>3)) newy >>= 1;
+      }
     }
-    if (newy >= 256) {
-      if ((newy - (ysize-2*this->border)) > (newy>>3)) newy >>= 1;
-    }
+  }
+  else if (this->flags & SoGLImage::SCALE_DOWN) {
+    // no use scaling down for very small images
+    if (newx > (unsigned int)xsize && newx > 16) newx >>= 1;
+    if (newy > (unsigned int)ysize && newy > 16) newy >>= 1;
   }
 
   // downscale to legal GL size (implementation dependant)
@@ -630,8 +695,8 @@ SoGLImageP::resizeImage(unsigned char *& imageptr, int & xsize, int & ysize,
     if (simage_wrapper()->available &&
         simage_wrapper()->versionMatchesAtLeast(1,1,1) &&
         simage_wrapper()->simage_resize) {
-      unsigned char * result = 
-        simage_wrapper()->simage_resize((unsigned char*) this->bytes, 
+      unsigned char * result =
+        simage_wrapper()->simage_resize((unsigned char*) this->bytes,
                                         xsize, ysize, this->numcomponents,
                                         newx, newy);
       memcpy(glimage_tmpimagebuffer, result, numbytes);
@@ -647,7 +712,7 @@ SoGLImageP::resizeImage(unsigned char *& imageptr, int & xsize, int & ysize,
       case 3: format = GL_RGB; break;
       case 4: format = GL_RGBA; break;
       }
-      
+
       glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
       glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
       glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
@@ -656,7 +721,7 @@ SoGLImageP::resizeImage(unsigned char *& imageptr, int & xsize, int & ysize,
       glPixelStorei(GL_PACK_SKIP_ROWS, 0);
       glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
       glPixelStorei(GL_PACK_ALIGNMENT, 1);
-      
+
       // FIXME: ignoring the error code. Silly. 20000929 mortene.
       (void)GLUWrapper()->gluScaleImage(format, xsize, ysize,
                                         GL_UNSIGNED_BYTE, (void*) this->bytes,
@@ -682,7 +747,7 @@ SoGLImageP::resizeImage(unsigned char *& imageptr, int & xsize, int & ysize,
 // performs an resize if the size is not a power of two.
 //
 SoGLDisplayList *
-SoGLImageP::createGLDisplayList(SoState * state, const float quality)
+SoGLImageP::createGLDisplayList(SoState * state)
 {
   if (!this->bytes) return NULL;
 
@@ -691,17 +756,20 @@ SoGLImageP::createGLDisplayList(SoState * state, const float quality)
 
   // these might change if image is resized
   unsigned char * imageptr = (unsigned char *)this->bytes;
-  this->resizeImage(imageptr, xsize, ysize, quality);
+  this->resizeImage(imageptr, xsize, ysize);
+
+  SbBool mipmap = this->shouldCreateMipmap();
 
   SoGLDisplayList * dl =
     new SoGLDisplayList(state,
                         SoGLDisplayList::TEXTURE_OBJECT,
-                        1, quality >= COIN_TEX2_MIPMAP_LIMIT);
+                        1, mipmap);
   dl->ref();
   dl->open(state);
   this->reallyCreateTexture(state, imageptr, this->numcomponents,
-                            xsize, ysize, dl->getType() == SoGLDisplayList::DISPLAY_LIST,
-                            quality >= COIN_TEX2_MIPMAP_LIMIT,
+                            xsize, ysize,
+                            dl->getType() == SoGLDisplayList::DISPLAY_LIST,
+                            mipmap,
                             this->border);
   dl->close(state);
   return dl;
@@ -711,12 +779,15 @@ SoGLImageP::createGLDisplayList(SoState * state, const float quality)
 void
 SoGLImageP::checkTransparency(void)
 {
+  this->needtransparencytest = FALSE;
+  this->usealphatest = FALSE;
+  this->hastransparency = FALSE;
+
   if (this->bytes == NULL) {
     if (this->numcomponents == 2 || this->numcomponents == 4) {
-      this->flags = FLAG_TRANSPARENCY;
-    }
-    else {
-      this->flags = 0;
+      // we must assume it has transparency, and that we
+      // can't use alpha testing
+      this->hastransparency = TRUE;
     }
   }
   else {
@@ -727,20 +798,18 @@ SoGLImageP::checkTransparency(void)
 
       while (n) {
         if (*ptr != 255 && *ptr != 0) break;
-        if (*ptr == 0) this->flags |= FLAG_ALPHATEST;
+        if (*ptr == 0) this->usealphatest = TRUE;
         ptr += nc;
         n--;
       }
       if (n > 0) {
-        this->flags |= FLAG_TRANSPARENCY;
-        this->flags &= ~FLAG_ALPHATEST;
+        this->hastransparency = TRUE;
+        this->usealphatest = FALSE;
       }
-      else this->flags &= ~FLAG_TRANSPARENCY;
+      else {
+        this->hastransparency = this->usealphatest;
+      }
     }
-    else this->flags &= ~(FLAG_TRANSPARENCY|FLAG_ALPHATEST);
-
-    // clear test flag before returning
-    this->flags &= ~FLAG_NEEDTRANSPARENCYTEST;
   }
 }
 
@@ -789,11 +858,8 @@ SoGLImageP::reallyCreateTexture(SoState * state,
                   translate_wrap(state, this->wraps));
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
                   translate_wrap(state, this->wrapt));
-  // set filtering to legal values for non mipmapped texture
-  if (!dlist && !mipmap) {
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  }
+
+  this->applyFilter(mipmap);
 
   GLenum glformat;
   switch (numComponents) {
@@ -861,4 +927,64 @@ SoGLImageP::findDL(SoState * state)
   return NULL;
 }
 
-#undef THIS
+SbBool
+SoGLImageP::shouldCreateMipmap(void)
+{
+  if (this->flags & SoGLImage::USE_QUALITY_VALUE) {
+    return this->quality >= COIN_TEX2_MIPMAP_LIMIT;
+  }
+  else {
+    return (this->flags & SoGLImage::NO_MIPMAP) == 0;
+  }
+}
+
+void
+SoGLImageP::applyFilter(const SbBool ismipmap)
+{
+  if (this->flags & SoGLImage::USE_QUALITY_VALUE) {
+    if (quality < COIN_TEX2_LINEAR_LIMIT) {
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    }
+    else if ((quality < COIN_TEX2_MIPMAP_LIMIT) || !ismipmap) {
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    }
+    else if (quality < COIN_TEX2_LINEAR_MIPMAP_LIMIT) {
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+    }
+    else { // max quality
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    }
+  }
+  else {
+    if (this->flags & SoGLImage::NO_MIPMAP || !ismipmap) {
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+                      (this->flags & SoGLImage::LINEAR_MAG_FILTER) ? GL_LINEAR : GL_NEAREST);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                      (this->flags & SoGLImage::LINEAR_MIN_FILTER) ? GL_LINEAR : GL_NEAREST);
+    }
+    else {
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+                      (this->flags & SoGLImage::LINEAR_MAG_FILTER) ? GL_LINEAR : GL_NEAREST);
+      GLenum minfilter = GL_NEAREST_MIPMAP_NEAREST;
+      if (this->flags & SoGLImage::LINEAR_MIPMAP_FILTER) {
+        if (this->flags & SoGLImage::LINEAR_MIN_FILTER) {
+          minfilter = GL_LINEAR_MIPMAP_LINEAR;
+        }
+        else {
+          minfilter = GL_LINEAR_MIPMAP_NEAREST;
+        }
+      }
+      else if (this->flags & SoGLImage::LINEAR_MIN_FILTER) {
+        minfilter = GL_NEAREST_MIPMAP_LINEAR;
+      }
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                     minfilter);
+    }
+  }
+}
+
+#endif // DOXYGEN_SKIP_THIS

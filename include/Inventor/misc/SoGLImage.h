@@ -22,6 +22,7 @@
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec2s.h>
+#include <Inventor/SoType.h>
 
 class SoGLDisplayList;
 class SoState;
@@ -30,7 +31,11 @@ class COIN_DLL_API SoGLImage {
 public:
 
   SoGLImage();
-  void unref(SoState * state = NULL);
+  virtual void unref(SoState * state = NULL);
+
+  static SoType getClassTypeId(void);
+  virtual SoType getTypeId(void) const ;
+  virtual SbBool isOfType(SoType type) const;
 
   enum Wrap {
     REPEAT = 0,
@@ -38,28 +43,54 @@ public:
     CLAMP_TO_EDGE
   };
 
-  void setData(const unsigned char * bytes,
-               const SbVec2s size,
-               const int nc,
-               const Wrap wraps,
-               const Wrap wrapt,
-               const float quality = 0.5f,
-               const int border = 0,
-               SoState * createinstate = NULL);
+  virtual void setData(const unsigned char * bytes,
+                       const SbVec2s size,
+                       const int nc,
+                       const Wrap wraps,
+                       const Wrap wrapt,
+                       const float quality = 0.5f,
+                       const int border = 0,
+                       SoState * createinstate = NULL);
 
+  // these flags can be used to override using textureQuality to
+  // decide some texture properties.
+  enum Flags {
+    // mipmap, scaling and filtering settings
+    SCALE_DOWN =                0x0001,
+    NO_MIPMAP =                 0x0002,
+    LINEAR_MAG_FILTER =         0x0004,
+    LINEAR_MIN_FILTER =         0x0008,
+    LINEAR_MIPMAP_FILTER =      0x0010,
+
+    // use if you know your image properties.
+    FORCE_TRANSPARENCY_TRUE   = 0x0020,
+    FORCE_TRANSPARENCY_FALSE  = 0x0040,
+    FORCE_ALPHA_TEST_TRUE     = 0x0080,
+    FORCE_ALPHA_TEST_FALSE    = 0x0100,
+
+    // use quality value to decide mipmap, filtering and scaling. This
+    // is the default.
+    USE_QUALITY_VALUE         = 0X8000
+  };
+
+  void setFlags(const uint32_t flags);
+  uint32_t getFlags(void) const;
+  
   const unsigned char * getDataPtr(void) const;
   SbVec2s getSize(void) const;
   int getNumComponents(void) const;
-
-  static void apply(SoState * state, SoGLDisplayList * dl, const float quality);
-  SoGLDisplayList * getGLDisplayList(SoState * state, const float quality);
+  
+  virtual SoGLDisplayList * getGLDisplayList(SoState * state);
   SbBool hasTransparency(void) const;
-  SbBool needAlphaTest(void) const;
+  SbBool useAlphaTest(void) const;
   Wrap getWrapS(void) const;
   Wrap getWrapT(void) const;
 
+protected:
+
+  virtual ~SoGLImage();
+  
 private:
-  ~SoGLImage();
 
   class SoGLImageP * pimpl;
   friend class SoGLImageP;
