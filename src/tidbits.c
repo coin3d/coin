@@ -241,7 +241,7 @@ const char *
 coin_getenv(const char * envname)
 {
   /* Important note: this code is identical to the getenv() code in
-     So*/.../common/SoAny.cpp.in. If you do bugfixes or whatever,
+     So@Gui@/.../common/SoAny.cpp.in. If you do bugfixes or whatever,
      keep them in sync! */
 
 #ifdef HAVE_GETENVIRONMENTVARIABLE
@@ -388,6 +388,18 @@ coin_ntoh_uint32(uint32_t value)
   if ( coin_bigendian ) return value;
   value = ((value >> 16) & 0x0000ffff) | ((value << 16) & 0xffff0000);
   return  ((value >>  8) & 0x00ff00ff) | ((value <<  8) & 0xff00ff00);
+}
+
+/**************************************************************************/
+
+/*
+  isascii() is neither ANSI C nor POSIX, but a BSD extension and SVID
+  extension.
+ */
+int
+coin_isascii(int c)
+{
+  return (c >= 0x00) && (c < 0x80);
 }
 
 /**************************************************************************/

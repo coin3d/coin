@@ -68,6 +68,8 @@ uint16_t coin_ntoh_uint16(uint16_t value);
 uint32_t coin_hton_uint32(uint32_t value);
 uint32_t coin_ntoh_uint32(uint32_t value);
 
+int coin_isascii(int c);
+
 /* ********************************************************************** */
 
 #ifdef __cplusplus

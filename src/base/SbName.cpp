@@ -35,6 +35,7 @@
 
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
+#include "../tidbits.h" // coin_isascii()
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -273,7 +274,7 @@ SbName::isIdentChar(const char c)
 SbBool
 SbName::isBaseNameStartChar(const char c)
 {
-  if (c == '_' || (isascii(c) && isalpha(c))) return TRUE;
+  if (c == '_' || (coin_isascii(c) && isalpha(c))) return TRUE;
   return FALSE;
 }
 
