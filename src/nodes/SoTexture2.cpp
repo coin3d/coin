@@ -300,8 +300,8 @@ SoTexture2::setReadStatus(int /* s */)
 
 //
 // Private method that creates an SoImageInterface object. This
-// provides a common interface, whether the file is loaded from a file
-// or the image data is supplied inside the node.
+// provides a common interface, whether the texture is loaded from a
+// file or the image data is supplied inside the node.
 //
 void
 SoTexture2::getImage(void)
