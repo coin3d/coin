@@ -10,10 +10,10 @@ SIM_AC_CVS_CHANGES([
   ], [test -d cfg/m4/CVS], [test ! -d conf-macros])
 ])
 
-if test -f coin-config; then
-  echo "removing old coin-config script";
-  rm -f coin-config;
-fi
+# if test -f coin-config; then
+#   echo "removing old coin-config script";
+#   rm -f coin-config;
+# fi
 
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
 # compiling with it and to generate an MSWindows .dll file.

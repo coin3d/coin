@@ -1120,10 +1120,10 @@ CVS_CHANGES_EOF
 fi
 $sim_ac_cvs_problem && echo "" && echo "Aborting..." && exit 1
 
-if test -f coin-config; then
-  echo "removing old coin-config script";
-  rm -f coin-config;
-fi
+# if test -f coin-config; then
+#   echo "removing old coin-config script";
+#   rm -f coin-config;
+# fi
 
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
 # compiling with it and to generate an MSWindows .dll file.
