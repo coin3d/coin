@@ -12,10 +12,8 @@ Visual C++.
    with gnu make.  To build a Microsoft compatible library (.lib),
    enter the 'build' directory and run nmake on 'coin.mak'.
 
-3. Because we process the project-file with the configure-script,
-   DevStudio complains that the project file was not made with
-   DevStudio. There are no fixes for this bug at this time. Use the
-   makefile to build 'Coin.lib'.
+3. For a step-by-step guide to building Coin with MSVC++, 
+   see 'README.WIN32'.
 
 --
 mariusbu@sim.no
