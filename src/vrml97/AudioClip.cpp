@@ -149,6 +149,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/C/tidbitsp.h>
 
 #include <string.h>
 #include <stdio.h> // for EOF
@@ -301,6 +302,7 @@ SoVRMLAudioClip::initClass(void) // static
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLAudioClip, SO_VRML97_NODE_TYPE);
   SoVRMLAudioClipP::staticdata = new SoVRMLAudioClipP::StaticData;
+  coin_atexit((coin_atexit_f*) cleanup_audioclip, 0);
 }
 
 /*!
