@@ -367,6 +367,28 @@ SoOverrideElement::getPolygonOffsetOverride(SoState * const state)
 }
 
 /*!
+  Returns normal vector override value.
+
+  \since 2002-05-07
+*/
+SbBool 
+SoOverrideElement::getNormalVectorOverride(SoState * const state)
+{
+  SO_GET_OVERRIDE(NORMAL_VECTOR);
+}
+
+/*!
+  Returns normal binding override value.
+
+  \since 2002-05-07
+*/
+SbBool 
+SoOverrideElement::getNormalBindingOverride(SoState * const state)
+{
+  SO_GET_OVERRIDE(NORMAL_BINDING);
+}
+
+/*!
   FIXME: write doc.
 */
 
@@ -641,3 +663,30 @@ SoOverrideElement::setTransparencyTypeOverride(SoState * const state,
 {
   SO_SET_OVERRIDE(TRANSPARENCY_TYPE);
 }
+
+/*!
+  Can be used to set normal vector override.
+
+  \since 2002-05-07
+*/
+void 
+SoOverrideElement::setNormalVectorOverride(SoState * const state,
+                                           SoNode * const /* node */,
+                                           const SbBool override)
+{
+  SO_SET_OVERRIDE(NORMAL_VECTOR);
+}
+
+/*!
+  Can be used to set normal binding override.
+
+  \since 2002-05-07
+*/
+void 
+SoOverrideElement::setNormalBindingOverride(SoState * const state,
+                                            SoNode * const /* node */,
+                                            const SbBool override)
+{
+  SO_SET_OVERRIDE(NORMAL_BINDING);
+}
+

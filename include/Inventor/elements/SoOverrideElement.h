@@ -61,7 +61,9 @@ public:
     SPECULAR_COLOR    = 0x00040000,
     POLYGON_OFFSET    = 0x00080000,
     TRANSPARENCY      = 0x00100000,
-    TRANSPARENCY_TYPE = 0x00200000 
+    TRANSPARENCY_TYPE = 0x00200000, 
+    NORMAL_VECTOR     = 0x00400000,
+    NORMAL_BINDING    = 0x00800000
   };
   
   virtual void init(SoState * state);
@@ -97,6 +99,8 @@ public:
   static SbBool getSpecularColorOverride(SoState * const state);
   static SbBool getTransparencyOverride(SoState * const state);
   static SbBool getTransparencyTypeOverride(SoState * const state);
+  static SbBool getNormalVectorOverride(SoState * const state);
+  static SbBool getNormalBindingOverride(SoState * const state);
 
   static void setAmbientColorOverride(SoState * const state,
                                       SoNode * const node,
@@ -164,6 +168,12 @@ public:
   static void setTransparencyTypeOverride(SoState * const state,
                                           SoNode * const node,
                                           const SbBool override);
+  static void setNormalVectorOverride(SoState * const state,
+                                      SoNode * const node,
+                                      const SbBool override);
+  static void setNormalBindingOverride(SoState * const state,
+                                       SoNode * const node,
+                                       const SbBool override);
 
   virtual void print(FILE * file) const;
 
