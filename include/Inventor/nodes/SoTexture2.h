@@ -47,7 +47,8 @@ public:
   enum Model {
     MODULATE = SoTextureImageElement::MODULATE,
     DECAL = SoTextureImageElement::DECAL,
-    BLEND = SoTextureImageElement::BLEND
+    BLEND = SoTextureImageElement::BLEND,
+    REPLACE = SoTextureImageElement::REPLACE
   };
 
   enum Wrap {
