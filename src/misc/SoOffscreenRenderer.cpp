@@ -198,7 +198,6 @@ public:
   unsigned char * buffer;
 
   int numsubscreens[2];
-  SbVec2s subscreensize;
   SbVec2s requestedsize;
   unsigned char * subscreen;
   int currentsubscreen;
@@ -206,8 +205,9 @@ public:
   SbBool lastnodewasacamera;
   SoCamera * visitedcamera;
 
-  SbBool mustaddonepixel;
-  SbBool mustaddoneline;
+  SbVec2s lastsubscreensize;
+  SbVec2s maxres;
+
 };
 
 
@@ -323,9 +323,6 @@ SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion
   PRIVATE(this)->internaldata = new SoOffscreenAGLData();
 #endif // HAVE_AGL
 
-  PRIVATE(this)->mustaddonepixel = FALSE;
-  PRIVATE(this)->mustaddoneline = FALSE;
-  
   PRIVATE(this)->internaldata->master = PRIVATE(this);
   PRIVATE(this)->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
   this->setViewportRegion(viewportregion);
@@ -424,7 +421,7 @@ static void getMaxCB(void *ptr, SoAction *action)
     // FIXME: Due to a possible NVIDIA bug, max render size is limited
     // by desktop resolution, not the texturesize returned by
     // OpenGL. This is fixed temporarily by limiting max size to the
-    // lowend desktop monitors. (20021023 handegar)
+    // lowend resolution for desktop monitors. (20021023 handegar)
 
     size[0] = 800;
     size[1] = 600;
@@ -518,10 +515,10 @@ SoOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
   // As the current context is destructed and a new one is set up
   // below, it can be a major optimization to just return when there
   // is no real change.
-  if (PRIVATE(this)->viewport == region) { return; }
-  
+  if(PRIVATE(this)->viewport == region) { return; }  
   PRIVATE(this)->viewport = region;
   
+
   // Adjust rendering canvas size if needed.
   SbVec2s size = PRIVATE(this)->viewport.getViewportSizePixels();
   SbVec2s maxsize = this->getMaximumResolution();
@@ -532,20 +529,8 @@ SoOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
   if (PRIVATE(this)->mustusesubscreens) {
     PRIVATE(this)->setupSubscreens(size);
 
-    // Correcting totalsize due to floating point loss.
-    if(size[0] > PRIVATE(this)->numsubscreens[0]*PRIVATE(this)->subscreensize[0]){
-      size[0] = PRIVATE(this)->numsubscreens[0]*PRIVATE(this)->subscreensize[0];
-      // Due to rounding error we have to add one pixel for each horizontal line
-      PRIVATE(this)->mustaddonepixel = TRUE;
-    }
-    if(size[1] > PRIVATE(this)->numsubscreens[1]*PRIVATE(this)->subscreensize[1]){
-      size[1] = PRIVATE(this)->numsubscreens[1]*PRIVATE(this)->subscreensize[1];
-      // Due to rounding error we have to add one line to buffer
-      PRIVATE(this)->mustaddoneline = TRUE;
-    }
-
     PRIVATE(this)->currentsubscreen = 0;
-    PRIVATE(this)->subviewport = SbViewportRegion(PRIVATE(this)->subscreensize);
+    PRIVATE(this)->subviewport = SbViewportRegion(maxsize);
   }
     
 
@@ -559,12 +544,14 @@ SoOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
     
     if(PRIVATE(this)->renderaction) 
       PRIVATE(this)->renderaction->setViewportRegion(PRIVATE(this)->subviewport);
-    PRIVATE(this)->internaldata->setBufferSize(PRIVATE(this)->subscreensize);
+    PRIVATE(this)->internaldata->setBufferSize(maxsize);
 
   }
 
+
   if(!PRIVATE(this)->buffer)
     delete [] PRIVATE(this)->buffer;
+
 }
 
 
@@ -716,13 +703,12 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   // Allocate target buffer
   this->buffer = new unsigned char[this->requestedsize[0] * this->requestedsize[1] * master->getComponents()];
 
-
   // Shall we use subscreen rendering or regular one-screen renderer?
   if(this->mustusesubscreens){
 
     //Allocate memory for subscreen
-    subscreen = new unsigned char [(subscreensize[0]*subscreensize[1]*this->master->getComponents())];
-    
+    subscreen = new unsigned char [(maxres[0]*maxres[1]*this->master->getComponents())];
+
     // We have to grab cameras using this callback during rendering
     this->renderaction->setAbortCallback(&subscreenAbortCallback,this);    
     this->currentsubscreen = 0;
@@ -784,7 +770,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 void
 SoOffscreenRendererP::convertSubscreenBuffer(void)
 {
-  int pixels = subscreensize[0]*subscreensize[1];
+  int pixels = maxres[0]*maxres[1];
   int depth = PUBLIC(this)->getComponents();
 
   unsigned char * local = this->subscreen;
@@ -988,8 +974,8 @@ SoOffscreenRenderer::writeToRGB(FILE * fp) const
     
     SbVec2s size = PRIVATE(this)->internaldata->getSize();
     if(PRIVATE(this)->mustusesubscreens){
-      size[0] = PRIVATE(this)->numsubscreens[0] * PRIVATE(this)->subscreensize[0];
-      size[1] = PRIVATE(this)->numsubscreens[1] * PRIVATE(this)->subscreensize[1];
+      size[0] = PRIVATE(this)->requestedsize[0];
+      size[1] = PRIVATE(this)->requestedsize[1];
     }
 
     write_short(fp, 0x01da); // imagic
@@ -1536,45 +1522,44 @@ void
 SoOffscreenRendererP::setupSubscreens(SbVec2s totalsize)
 {
 
-  SbVec2s maxres = this->master->getMaximumResolution();
+  this->maxres = this->master->getMaximumResolution();
 
-   
+  numsubscreens[0] = 0;
+  numsubscreens[1] = 0;
+ 
   // Was this really called for?
   if((maxres[0] > totalsize[0]) &&
      (maxres[1] > totalsize[1])){
-    numsubscreens[0] = 0;
-    numsubscreens[1] = 0;
     this->mustusesubscreens = FALSE;  // False alarm, DONT use subscreens...
     return;
   }
   
-  int tmpint;
-  float tmpfloat;
-  
-  // Number of subscreens along x
-  tmpfloat = ((float) totalsize[0])/maxres[0];
-  tmpint = (int) tmpfloat;
-  if((tmpfloat-tmpint) > 0)
-    ++tmpint;
-  numsubscreens[0] = (short) tmpint;
-  
-  // Number of subscreens along y
-  tmpfloat = ((float) totalsize[1])/maxres[1];
-  tmpint = (int) tmpfloat;
-  if((tmpfloat-tmpint) > 0)
-    ++tmpint;
-  numsubscreens[1] = (short) tmpint;
-   
-  // Subscreen dimensions.
-  if(numsubscreens[0] != 0)
-    subscreensize[0] = totalsize[0]/numsubscreens[0];
-  else
-    subscreensize[0] = totalsize[0];
- 
-  if(numsubscreens[1] != 0)
-    subscreensize[1] = totalsize[1]/numsubscreens[1];
-  else
-    subscreensize[1] = totalsize[1];
+  // Find number of horizontal subscreens
+  short size = totalsize[0];
+  while(size > 0){
+    size -= maxres[0];
+    ++numsubscreens[0];
+  }
+
+  // Find number of vertical subscreens
+  size = totalsize[1];
+  while(size > 0){
+    size -= maxres[1];
+    ++numsubscreens[1];
+  }
+
+  lastsubscreensize[0] = 0;
+  lastsubscreensize[1] = 0;
+  if(maxres[0] < totalsize[0])
+    lastsubscreensize[0] = maxres[0] - ((maxres[0]*numsubscreens[0]) - totalsize[0]);
+  if(maxres[1] < totalsize[1])
+    lastsubscreensize[1] = maxres[1] - ((maxres[1]*numsubscreens[1]) - totalsize[1]);
+
+  // Last check... 
+  if(lastsubscreensize[0] == maxres[0])
+    lastsubscreensize[0] = 0;
+  if(lastsubscreensize[1] == maxres[1])
+    lastsubscreensize[1] = 0;
 
   return;
 }
@@ -1583,7 +1568,7 @@ SoOffscreenRendererP::setupSubscreens(SbVec2s totalsize)
 void 
 SoOffscreenRendererP::setSubscreenCameraPosition(int renderpass, SoCamera * cam)
 {
-
+ 
   int subscreenposx = 0;
   int subscreenposy = 0;
 
@@ -1598,17 +1583,15 @@ SoOffscreenRendererP::setSubscreenCameraPosition(int renderpass, SoCamera * cam)
     subscreenposx = renderpass - subscreenposy*this->numsubscreens[0];
   }
 
-
   SoState * state = (this->master->getGLRenderAction())->getState();
   const SbViewportRegion & vp = SoViewportRegionElement::get(state);
-
 
   // A small trick to change the aspect ratio without changing the scenegraph camera
   SbViewVolume vv;
   int vpm = cam->viewportMapping.getValue();
   float aspectratio = this->viewport.getViewportAspectRatio();
 
-  switch (vpm) {
+  switch(vpm) {
   case SoCamera::CROP_VIEWPORT_FILL_FRAME:
   case SoCamera::CROP_VIEWPORT_LINE_FRAME:
   case SoCamera::CROP_VIEWPORT_NO_FRAME:
@@ -1626,21 +1609,15 @@ SoOffscreenRendererP::setSubscreenCameraPosition(int renderpass, SoCamera * cam)
     break;
   }
 
-  SbVec2s siz = vp.getViewportSizePixels();
-
-  siz[0] = numsubscreens[0]*subscreensize[0];
-  siz[1] = numsubscreens[1]*subscreensize[1];
-    
-  float left =   ((float) (subscreenposx*this->subscreensize[0])) / (float)siz[0];
-  float bottom = ((float) ((numsubscreens[1]-subscreenposy-1)*this->subscreensize[1])) / (float)siz[1];
-  float right =  ((float) ((subscreenposx + 1)*this->subscreensize[0])) / (float)siz[0];
-  float top =    ((float) ((numsubscreens[1] - subscreenposy)*this->subscreensize[1])) / (float)siz[1];
-  
+  float left =   ((float) (subscreenposx*this->maxres[0])) / (float)requestedsize[0];
+  float bottom = ((float) ((numsubscreens[1]-subscreenposy-1)*this->maxres[1])) / (float)requestedsize[1];
+  float right =  ((float) ((subscreenposx + 1)*this->maxres[0])) / (float)requestedsize[0];
+  float top =    ((float) ((numsubscreens[1] - subscreenposy)*this->maxres[1])) / (float)requestedsize[1];
 
   // Reshape view volume
   vv = vv.narrow(left, bottom, right, top);
-  SbMatrix proj, affine;
-  
+
+  SbMatrix proj, affine;  
   vv.getMatrices(affine, proj);
   
   SoCullElement::setViewVolume(state, vv);
@@ -1656,97 +1633,35 @@ SoOffscreenRendererP::pasteSubscreen(int renderpass)
 {
   
   int depth = this->master->getComponents();
-  
   int subscreenposy = renderpass / this->numsubscreens[0]; // Exploiting integer division loss
   int subscreenposx = renderpass - subscreenposy*this->numsubscreens[0];
 
-  int endpixel = 0;
-  if(mustaddonepixel)
-    endpixel = 1;
-  
   int suboffset = 0;
-  int offset = (subscreenposx*subscreensize[0] + (numsubscreens[1]-subscreenposy-1)*(subscreensize[1]*(subscreensize[0]*numsubscreens[0] + endpixel))) * depth;
-   
-  const int linelen = this->subscreensize[0]*depth;
-  const int offsetinc = (this->numsubscreens[0]*this->subscreensize[0] + endpixel)*depth;
-  const int suboffsetinc = this->subscreensize[0]*depth;
-
-  switch (depth) {
-  case SoOffscreenRenderer::RGB_TRANSPARENCY:
-    {
-      for(int j=0;j<this->subscreensize[1];++j){ //For each line in a subscreen
-        
-        memcpy((unsigned char *) this->buffer+offset,(unsigned char *) this->subscreen + suboffset, linelen);
-        
-        if(mustaddonepixel)
-          memset((unsigned char *) this->buffer + offset + linelen, 0, depth);
-        
-        offset += offsetinc;
-        suboffset += suboffsetinc;
-      }
-      
-      if(mustaddoneline && (subscreenposy == 0))
-        memset((unsigned char *) this->buffer + offset ,0, linelen + endpixel*depth);
-
-    }
-    break;
-    
-  case SoOffscreenRenderer::RGB:
-    {
-      for(int j=0;j<this->subscreensize[1];++j){ //For each line in a subscreen
-
-        memcpy((unsigned char *) this->buffer+offset,(unsigned char *) this->subscreen + suboffset, linelen);
-
-        if(mustaddonepixel)
-          memset((unsigned char *) this->buffer + offset + linelen, 0, depth);
-
-        offset += offsetinc;
-        suboffset += suboffsetinc;
-      }
-
-      if(mustaddoneline && (subscreenposy == 0))
-        memset((unsigned char *) this->buffer + offset ,0, linelen + endpixel*depth);
+  int suboffsetinc = this->maxres[0]*depth;
   
-    }
-    break;
+  int offset = ((this->numsubscreens[1] - subscreenposy - 1)*this->requestedsize[0]*maxres[1] + subscreenposx*maxres[0])*depth;
+  int offsetinc = this->requestedsize[0]*depth;
 
-  case SoOffscreenRenderer::LUMINANCE_TRANSPARENCY:
-    {
-      for(int j=0;j<this->subscreensize[1];++j){ //For each line in a subscreen
-
-        memcpy((unsigned char *) this->buffer+offset,(unsigned char *) this->subscreen + suboffset, linelen);
-
-        if(mustaddonepixel)
-          memset((unsigned char *) this->buffer + offset + linelen, 0, depth);
-
-        offset += offsetinc;
-        suboffset += suboffsetinc;
-      }
-  
-      if(mustaddoneline && (subscreenposy == 0))
-        memset((unsigned char *) this->buffer + offset ,0, linelen + endpixel*depth);
-
-    }
-    break;
-
-  case SoOffscreenRenderer::LUMINANCE:
-    {
-      for(int j=0;j<this->subscreensize[1];++j){ //For each line in a subscreen
-
-        memcpy((unsigned char *) this->buffer+offset,(unsigned char *) this->subscreen + suboffset, linelen);
-        
-        if(mustaddonepixel)
-          memset((unsigned char *) this->buffer + offset + linelen, 0, depth);
-        
-        offset += offsetinc;
-        suboffset += suboffsetinc;
-      }
-  
-      if(mustaddoneline && (subscreenposy == 0))
-        memset((unsigned char *) this->buffer + offset ,0, linelen + endpixel*depth);
-
-    }
-    break;
+  int linelen = this->maxres[0]*depth;
+  if(subscreenposx == numsubscreens[0]-1){
+    if(this->lastsubscreensize[0] != 0)
+      linelen = this->lastsubscreensize[0]*depth;
   }
+
+  int lines = this->maxres[1];
+  if(subscreenposy == 0){
+    if(this->lastsubscreensize[1] != 0){
+      lines = this->lastsubscreensize[1];
+      offset = (this->requestedsize[0]*(this->requestedsize[1] - lines) + subscreenposx*maxres[0])*depth;
+      suboffset = (this->maxres[1] - this->lastsubscreensize[1])*this->maxres[0]*depth;
+    }
+  }
+
+  // Do the pasting
+  for(int j=0;j<lines;++j){ 
+    memcpy((unsigned char *) this->buffer+offset,(unsigned char *) this->subscreen + suboffset, linelen);        
+    offset += offsetinc;
+    suboffset += suboffsetinc;
+  }     
  
 }
