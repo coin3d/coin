@@ -123,10 +123,13 @@ private:
   // appears. 20000124 mortene.
 #ifndef DOXYGEN_SKIP_THIS
   struct {
-    int16_t referencecount  : 15;
-    uint16_t writerefcount  : 15;
+    int16_t referencecount  : 13;
+    uint16_t writerefcount  : 13;
     unsigned int multirefs  :  1;
     unsigned int ingraph    :  1;
+    unsigned int alive      :  4;
+    // The number of bits should sum up to 32, so we don't allocate
+    // more than one machine word on a 32-bit platform.
   } objdata;
 #endif // DOXYGEN_SKIP_THIS
 

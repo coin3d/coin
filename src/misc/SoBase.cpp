@@ -30,7 +30,6 @@
   SoBase provides the basic interfaces and methods for doing reference
   counting, type identification and import/export. All classes in Coin
   which uses these mechanisms are descendent from this class.
-
 */
 
 // FIXME: There's a lot of methods in SoBase used to implement VRML
@@ -161,6 +160,12 @@ SoType SoBase::classTypeId;
 SbBool SoBase::tracerefs = FALSE;
 uint32_t SoBase::writecounter = 0;
 
+// This can be any "magic" bitpattern of 4 bits which seems unlikely
+// to be randomly assigned to a memory byte upon destruction. I chose
+// "1101".  <mortene@sim.no>
+#define ALIVE_PATTERN 0xd
+
+
 /*!
   Constructor. The initial reference count will be set to zero.
  */
@@ -170,6 +175,16 @@ SoBase::SoBase(void)
   this->objdata.writerefcount = 0;
   this->objdata.multirefs = FALSE;
   this->objdata.ingraph = FALSE;
+
+  // The 4 bits allocated for the "alive" bitpattern is used in
+  // SoBase::ref() to try to detect when the instance has been
+  // prematurely destructed. This is a very common mistake to make by
+  // application programmers (letting the refcount dip to zero before
+  // it should, that is), so the extra piece of assistance through the
+  // accompanying assert() in SoBase::ref() to detect memory
+  // corruption and help avoid mysterious crashes should be a Good
+  // Thing.
+  this->objdata.alive = ALIVE_PATTERN;
 }
 
 /*!
@@ -248,6 +263,10 @@ SoBase::destroy(void)
   SoDebugError::postInfo("SoBase::destroy", "delete this %p", this);
 #endif // debug
 
+  // Set the 4 bits of bitpattern to anything but the "magic" pattern
+  // used to check that we are still alive.
+  this->objdata.alive = (~ALIVE_PATTERN) & 0xf;
+
   // Sjølmord.
   delete this;
 
@@ -323,6 +342,16 @@ SoBase::ref(void) const
                            this->objdata.referencecount);
   }
 #endif // COIN_DEBUG
+
+  // For more information about this assert check, see the code
+  // comments on the objdata.alive initialization in the SoBase
+  // constructor.
+  assert(this->objdata.alive == ALIVE_PATTERN &&
+         "Detected an attempt to access an instance of an SoBase-derived "
+         "class after it was destructed!  This is very likely to be the "
+         "result of some grave programming error in the application / client "
+         "code -- causing premature destruction of a reference counted "
+         "object instance.");
 }
 
 /*!
