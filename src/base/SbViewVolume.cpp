@@ -477,7 +477,7 @@ SbViewVolume
 SbViewVolume::narrow(float left, float bottom,
                      float right, float top) const
 {
-#if COIN_DEBUG
+#if COIN_DEBUG && 0 // debug test disabled, 2001-02-16, pederb 
   if (left<0.0f) {
     SoDebugError::postWarning("SbViewVolume::narrow",
                               "left coordinate (%f) should be >=0.0f. "
