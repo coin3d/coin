@@ -32,6 +32,10 @@
 #include <string.h>
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   Constructor with \a state being the current state.
 */
@@ -142,7 +146,14 @@ SoCache::getInvalidElement(const SoState * const state) const
   const SoElement * elem;
   for (int i = 0; i < n; i++) {
     elem = ptr[i];
-    if (!elem->matches(state->getConstElement(elem->getStackIndex()))) return elem;
+    if (!elem->matches(state->getConstElement(elem->getStackIndex()))) {
+#if COIN_DEBUG && 0 // debug
+      SoDebugError::postInfo("SoCache::getInvalidElement",
+                             "invalid element: %s",
+                             elem->getTypeId().getName().getString());
+#endif // debug
+      return elem;
+    }
   }
   return NULL;
 }
