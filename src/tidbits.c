@@ -58,7 +58,7 @@
    Here is handegar's list of possible candidates (note that many of
    these can probably be ruled out due to the license restrictions --
    we need to be able to find code with a liberal enough license that
-   we can re-license it under the Coin PEL and the LGPL, which
+   we can re-license it under the Coin PEL and the GPL, which
    probably effectively limits us to code in the PD, or possibly under
    BSD- or MIT-style licenses:
 
