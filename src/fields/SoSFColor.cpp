@@ -76,6 +76,7 @@ SoSFColor::readValue(SoInput * in)
 {
   SbColor val;
   if (!sosfcolor_read_value(in, val)) return FALSE;
+  this->value = val;
   this->valueChanged();
   return TRUE;
 }
