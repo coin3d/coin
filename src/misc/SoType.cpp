@@ -324,7 +324,8 @@ SoType::isDerivedFrom(const SoType parent) const
   if (parent.isBad()) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoType::isDerivedFrom",
-                              "can't compare against an invalid type");
+                              "can't compare type '%s' against an invalid type",
+                              this->getName().getString());
 #endif // COIN_DEBUG
     return FALSE;
   }
