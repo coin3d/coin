@@ -23,7 +23,7 @@ if test x"$@" = x"" -a ! -f cfg/mkinstalldirs; then
 fi
 
 AUTOCONF_VER=2.5[023456789]
-AUTOMAKE_VER=1.5
+AUTOMAKE_VER=1.6
 LIBTOOL_VER=1.4.2
 
 PROJECT=Coin

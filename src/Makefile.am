@@ -40,7 +40,7 @@ endif
 SUBDIRS = \
 	extensions actions base bundles caches details draggers elements \
 	engines errors events fields manips misc lists nodekits nodes \
-	projectors sensors $(THREADSDIR) $(VRML97DIR) .
+	projectors sensors upgraders $(THREADSDIR) $(VRML97DIR) .
 
 INCLUDES = -I$(top_srcdir)/include
 

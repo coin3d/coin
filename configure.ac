@@ -890,7 +890,8 @@ AM_CONDITIONAL(HACKING_DYNAMIC_MODULES, test x"$enable_hacking" = x"yes")
 if test x"$enable_hacking" = x"yes"; then
   for dir in \
     base actions bundles caches details draggers elements engines \
-    errors events fields manips misc lists nodekits nodes projectors sensors; \
+    errors events fields manips misc lists nodekits nodes projectors \
+    sensors upgraders; \
   do
     HACKING_LIBDIRS="$HACKING_LIBDIRS -L${coin_build_dir}/src/$dir/.libs"
     EXTRA_LIBS="$EXTRA_LIBS -l$dir${SUFFIX}LINKHACK"                  
@@ -1080,6 +1081,7 @@ AC_CONFIG_FILES([
         src/nodes/Makefile
         src/projectors/Makefile
         src/sensors/Makefile
+        src/upgraders/Makefile
         src/threads/Makefile
         src/extensions/Makefile
         src/extensions/vrml97/src/Makefile
