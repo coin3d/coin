@@ -94,6 +94,8 @@
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
+#include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
@@ -166,7 +168,7 @@ public:
 
   void getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
                SbVec3f & v2, SbVec3f & v3);
-  void flushGlyphCache(const SbBool unrefglyphs);
+  void flushGlyphCache();
   void buildGlyphCache(SoState * state);
   SbBool shouldBuildGlyphCache(SoState * state);
   void dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos);
@@ -227,7 +229,7 @@ SoText2::~SoText2()
     cc_fontspec_clean(PRIVATE(this)->fontspec);
   }
 
-  PRIVATE(this)->flushGlyphCache(TRUE);
+  PRIVATE(this)->flushGlyphCache();
   delete PRIVATE(this);
 }
 
@@ -516,7 +518,7 @@ SoText2::generatePrimitives(SoAction * action)
 // SoText2P methods below
 
 void
-SoText2P::flushGlyphCache(const SbBool unrefglyphs)
+SoText2P::flushGlyphCache()
 {
   this->stringwidth.truncate(0);
   this->positions.truncate(0);
@@ -660,7 +662,7 @@ SoText2P::buildGlyphCache(SoState * state)
 
   this->prevfontname = SoFontNameElement::get(state);
   this->prevfontsize = SoFontSizeElement::get(state);
-  this->flushGlyphCache(FALSE);
+  this->flushGlyphCache();
   const int nrlines = PUBLIC(this)->string.getNum();
   this->numberoflines = nrlines;
   SbVec2s penpos(0, 0);
@@ -670,11 +672,12 @@ SoText2P::buildGlyphCache(SoState * state)
     cc_fontspec_clean(this->fontspec);
     delete this->fontspec;
   }
+
   this->fontspec = new cc_font_specification;
   cc_fontspec_construct(this->fontspec,
                         SoFontNameElement::get(state).getString(),
                         SoFontSizeElement::get(state),
-                        this->master->getComplexityValue(state->getAction()));
+                        SoComplexityElement::get(state));
 
   for (int i=0; i < nrlines; i++) {
 

@@ -52,6 +52,9 @@
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
+#include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/misc/SoGlyph.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoProfile.h>
@@ -213,7 +216,7 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   cc_font_specification fontspec;
   cc_fontspec_construct(&fontspec, SoFontNameElement::get(state).getString(),
                         SoFontSizeElement::get(state),
-                        this->getComplexityValue(state->getAction()));
+                        SoComplexityElement::get(state));
 
   PRIVATE(this)->setUpGlyphs(state, &fontspec, this);
   int i, n = PRIVATE(this)->widths.getLength();
@@ -379,7 +382,10 @@ SoText3::GLRender(SoGLRenderAction * action)
     if (matperpart) mb.send(2, FALSE);
     PRIVATE(this)->render(state, &fontspec, SoText3::BACK);
   }
-
+  
+  if (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::OBJECT_SPACE) 
+    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
+    
   cc_fontspec_clean(&fontspec);
 }
 
@@ -1028,7 +1034,6 @@ SoText3P::setUpGlyphs(SoState * state, const cc_font_specification * fontspec, S
   if (!this->needsetup) return;
   this->needsetup = FALSE;
 
-  // store old glyphs to avoid freeing glyphs too soon
   this->widths.truncate(0);
 
   for (int i = 0; i < textnode->string.getNum(); i++) {
@@ -1065,6 +1070,5 @@ SoText3P::setUpGlyphs(SoState * state, const cc_font_specification * fontspec, S
   // Make sure boundingbox is updated if this method was called due to
   // a fontspec change.
   this->master->touch();
-
 
 }

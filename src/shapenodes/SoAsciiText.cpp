@@ -47,6 +47,9 @@
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
+#include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGlyph.h> /* SbBox2f */
 #include <Inventor/misc/SoState.h>
@@ -266,6 +269,12 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
     ypos -= fontspec.size * this->spacing.getValue();
   }
   glEnd();
+
+  
+  if (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::OBJECT_SPACE) 
+    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
+  
+  
 }
 
 // Doc in parent.
@@ -311,10 +320,12 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
 
   SoState * state = action->getState();
+
   cc_font_specification fontspec;
   cc_fontspec_construct(&fontspec, SoFontNameElement::get(state).getString(),
                         SoFontSizeElement::get(state),
-                        this->getComplexityValue(action));
+                        SoComplexityElement::get(state));
+
   PRIVATE(this)->setUpGlyphs(state, &fontspec, this);
 
   int i;
