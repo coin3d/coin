@@ -26,8 +26,6 @@
 
 #include <Inventor/actions/SoToVRMLAction.h>
 
-// FIXME: the API does not match the one in TGS Inventor, which it
-// should. 20020705 mortene.
 
 class COIN_DLL_API SoToVRML2Action : public SoToVRMLAction {
   typedef SoToVRMLAction inherited;
@@ -45,6 +43,15 @@ public:
   virtual void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE);
   
   SoNode * getVRML2SceneGraph(void) const;
+
+  void reuseAppearanceNodes(SbBool appearance);
+  SbBool doReuseAppearanceNodes(void) const;
+
+  void reusePropertyNodes(SbBool property);
+  SbBool doReusePropertyNodes(void) const;
+
+  void reuseGeometryNodes(SbBool geometry);
+  SbBool doReuseGeometryNodes(void) const;
 
 protected:
   virtual void beginTraversal(SoNode * node);

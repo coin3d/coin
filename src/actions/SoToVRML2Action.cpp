@@ -42,16 +42,16 @@
   Note: if VRML97 support is not present in the Coin library, this
   action does nothing and getVRML2SceneGraph always returns NULL.
 
-  FIXME: more class doc, describe the basics of how the conversion is
-  done. (And what happens when VRML97 support is not present in the
-  library..) 20020730 mortene.
+  \sa SoToVRMLAction
 
-  FIXME: SoComplexity::BOUNDING_BOX are not supported. For
-  DrawStyle::LINES quads are not handled correctly (will always draw
-  triangles). SoArray and SoMultipleCopy are not supported.
-  20020805 kristian.
+  \since Coin 2.0
+  \since TGS Inventor 2.5
+*/
 
-  \sa SoToVRMLAction */
+// FIXME: SoComplexity::BOUNDING_BOX are not supported. For
+// DrawStyle::LINES quads are not handled correctly (will always draw
+// triangles). SoArray and SoMultipleCopy are not supported.
+// 20020805 kristian.
 
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoToVRML2Action.h>
@@ -130,7 +130,12 @@ void SoToVRML2Action::apply(SoPath * path) { }
 void SoToVRML2Action::apply(const SoPathList & pathlist, SbBool obeysrules) { }
 SoNode * SoToVRML2Action::getVRML2SceneGraph(void) const { return NULL; }
 void SoToVRML2Action::beginTraversal(SoNode * node) { }
-
+void SoToVRML2Action::reuseAppearanceNodes(SbBool appearance) { }
+SbBool SoToVRML2Action::doReuseAppearanceNodes(void) const { return FALSE; }
+void SoToVRML2Action::reusePropertyNodes(SbBool property) { }
+SbBool SoToVRML2Action::doReusePropertyNodes(void) const { return FALSE; }
+void SoToVRML2Action::reuseGeometryNodes(SbBool geometry) { }
+SbBool SoToVRML2Action::doReuseGeometryNodes(void) const { return FALSE; }
 #else // HAVE_VRML97
 
 #include <Inventor/VRMLnodes/SoVRMLNodes.h>
@@ -390,6 +395,46 @@ SoToVRML2Action::getVRML2SceneGraph(void) const
 {
   return PRIVATE(this)->vrml2root;
 }
+
+void
+SoToVRML2Action::reuseAppearanceNodes(SbBool appearance)
+{
+  // FIXME: not implemented yet. 20020808 mortene.
+}
+
+SbBool
+SoToVRML2Action::doReuseAppearanceNodes(void) const
+{
+  // FIXME: not implemented yet. 20020808 mortene.
+  return FALSE;
+}
+
+void
+SoToVRML2Action::reusePropertyNodes(SbBool property)
+{
+  // FIXME: not implemented yet. 20020808 mortene.
+}
+
+SbBool
+SoToVRML2Action::doReusePropertyNodes(void) const
+{
+  // FIXME: not implemented yet. 20020808 mortene.
+  return FALSE;
+}
+
+void
+SoToVRML2Action::reuseGeometryNodes(SbBool geometry)
+{
+  // FIXME: not implemented yet. 20020808 mortene.
+}
+
+SbBool
+SoToVRML2Action::doReuseGeometryNodes(void) const
+{
+  // FIXME: not implemented yet. 20020808 mortene.
+  return FALSE;
+}
+
 
 SoNode * 
 SoToVRML2ActionP::search_for_recent_node(SoAction * action, const SoType & type)
@@ -1615,4 +1660,3 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
 }
 
 #endif // HAVE_VRML97
-
