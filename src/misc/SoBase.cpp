@@ -1387,7 +1387,14 @@ SoBase::readBase(SoInput * in, SbName & classname, SoBase *& base)
     }
   }
 
-  if (!ret && flush) SoBase::flushInput(in);
+  // FIXME: this action seems completely bogus, as if something fails,
+  // all bets are off and we should simply terminate the import
+  // operation. (flushInput() continues to read and scans for a
+  // closing brace). Run with this code disabled for a while and axe
+  // it if nothing bad seems to come frome it. 20020531 mortene.
+
+  // if (!ret && flush) SoBase::flushInput(in);
+
   return ret;
 }
 
@@ -1515,6 +1522,9 @@ SoBase::createInstance(SoInput * in, const SbName & classname)
 void
 SoBase::flushInput(SoInput * in)
 {
+#if 0 // FIXME: obsoleted, see comment at the end of SoBase::readBase(). 20020531 mortene.
+  assert(FALSE);
+#else // obsoleted
   assert(!in->isBinary());
 
   int nestlevel = 1;
@@ -1524,6 +1534,7 @@ SoBase::flushInput(SoInput * in)
     if (c == CLOSE_BRACE) nestlevel--;
     else if (c == OPEN_BRACE) nestlevel++;
   }
+#endif // obsoleted
 }
 
 //
