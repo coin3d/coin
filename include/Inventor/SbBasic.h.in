@@ -29,6 +29,9 @@
 /* *********************************************************************** */
 
 /* For the Doxygen tool. */
+/* FIXME: these Doxygen "tags" should be moved to an internal
+   headerfile. 20010810 mortene. */
+
 /*! \defgroup base Base classes */
 /*! \defgroup general General classes */
 /*! \defgroup events Event classes */
@@ -43,7 +46,7 @@
 /*! \defgroup manips Manipulators */
 /*! \defgroup engines Engine classes */
 
-
+/* *********************************************************************** */
 
 /*!
   \class SbBool SbBasic.h Inventor/SbBasic.h
@@ -58,6 +61,11 @@
 */
 
 typedef int SbBool;
+/* FIXME: should use "bool" instead of "int" if the "bool" keyword is
+   supported by the compiler. Breaks ABI-compatibility, though, so
+   wait until Coin v2. (Should then also use "false" and "true"
+   instead of "0" and "1" for the FALSE and TRUE defines below.)
+   20010810 mortene. */
 
 #ifndef FALSE
 #define FALSE 0
@@ -65,6 +73,8 @@ typedef int SbBool;
 #ifndef TRUE
 #define TRUE  1
 #endif /* !TRUE */
+
+/* *********************************************************************** */
 
 /* Include these for Open Inventor compatibility reasons (they are not
  * actually used in Coin.)
@@ -285,27 +295,24 @@ inline Type SbSqr(const Type val) {
 
 /* Precaution to avoid an error easily made by the application programmer. */
 #ifdef COIN_DLL_API
-# error Leave the Coin-internal COIN_DLL_API define alone.
+# error Leave the internal COIN_DLL_API define alone.
 #endif /* COIN_DLL_API */
 
 /*
-  On MSWindows platforms, one of these defines must always be set:
+  On MSWindows platforms, one of these defines must always be set when
+  building application programs:
 
-   - "COIN_MAKE_DLL", only when building the library itself. Taken
-     care of automatically by the configure / build process.
+   - "COIN_DLL", when the application programmer is using the library
+     in the form of a dynamic link library (DLL)
 
-   - "COIN_DLL", when application programmers are using the Coin
-     library in the form of a dynamic link library (DLL)
-
-   - "COIN_NOT_DLL", when application programmers are using the Coin
+   - "COIN_NOT_DLL", when the application programmer is using the
      library in the form of a static object library (LIB)
 
   Note that either COIN_DLL or COIN_NOT_DLL _must_ be defined by the
   application programmer on MSWindows platforms, or else the #error
   statement will hit. Set up one or the other of these two defines in
-  your compiler environment according to how the Coin library was
-  built -- as a DLL (use "COIN_DLL") or as a LIB (use
-  "COIN_NOT_DLL").
+  your compiler environment according to how the library was built --
+  as a DLL (use "COIN_DLL") or as a LIB (use "COIN_NOT_DLL").
 
   (Setting up defines for the compiler is typically done by either
   adding something like "/DCOIN_DLL" to the compiler's argument line
@@ -317,22 +324,22 @@ inline Type SbSqr(const Type val) {
 
   It is extremely important that the application programmer uses the
   correct define, as using "COIN_NOT_DLL" when "COIN_DLL" is correct
-  will cause mysterious crashes for certain Coin functions.
+  will cause mysterious crashes.
  */
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-/* Enable to generate COIN.DLL (under Win32). */
-# ifdef COIN_MAKE_DLL
-#  define COIN_DLL_API __declspec(dllexport)
-# else /* !COIN_MAKE_DLL */
-/* Enable to build against COIN.DLL (under Win32). */
+# ifdef COIN_INTERNAL
+#  ifdef COIN_MAKE_DLL
+#   define COIN_DLL_API __declspec(dllexport)
+#  endif /* COIN_MAKE_DLL */
+# else /* !COIN_INTERNAL */
 #  ifdef COIN_DLL
 #   define COIN_DLL_API __declspec(dllimport)
 #  else /* !COIN_DLL */
 #   ifndef COIN_NOT_DLL
-#    error Define either COIN_DLL or COIN_NOT_DLL as appropriate for your Coin linkage! See Inventor/SbBasic.h for further instructions.
+#    error Define either COIN_DLL or COIN_NOT_DLL as appropriate for your linkage! See Inventor/SbBasic.h for further instructions.
 #   endif /* COIN_NOT_DLL */
 #  endif /* !COIN_DLL */
-# endif /* !COIN_MAKE_DLL */
+# endif /* !COIN_INTERNAL */
 #endif /* Microsoft Windows */
 
 /* Empty define to avoid errors when _not_ compiling an MSWindows DLL. */
