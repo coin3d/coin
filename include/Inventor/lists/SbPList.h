@@ -30,6 +30,11 @@ public:
 
   void * get(const int index) const { return (*this)[index]; }
   void set(const int index, void * const item) { (*this)[index] = item; }
+  void * operator[](const int index) const;
+  void * & operator[](const int index);
+
+private:
+  void expandlist(const int size);
 };
 
 // For compatibility with Open Inventor.

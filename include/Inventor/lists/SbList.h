@@ -27,8 +27,10 @@
 
 template <class Type>
 class SbList {
+  const int DEFAULTSIZE = 4;
+
 public:
-  SbList(const int sizehint = 4);
+  SbList(const int sizehint = DEFAULTSIZE);
   SbList(const SbList<Type> & l);
   ~SbList();
 
@@ -58,12 +60,17 @@ public:
 
   void fit(void);
 
-private:
-  void growList(void);
+protected:
+  void expand(const int size);
+  int getArraySize(void) const;
 
-  Type * itembuffer;
+private:
+  void grow(const int size = -1);
+
   int itembuffersize;
   int numitems;
+  Type * itembuffer;
+  Type builtinbuffer[DEFAULTSIZE];
 };
 
 
@@ -71,40 +78,52 @@ private:
 
 template <class Type> inline
 SbList<Type>::SbList(const int sizehint)
-  : numitems(0)
+  : itembuffersize(DEFAULTSIZE), numitems(0), itembuffer(builtinbuffer)
 {
-  this->itembuffersize = SbMax(4, sizehint);
-  this->itembuffer = new Type[this->itembuffersize];
+  if (sizehint > DEFAULTSIZE) this->grow(sizehint);
 }
 
 template <class Type> inline
 SbList<Type>::SbList(const SbList<Type> & l)
-  : numitems(0)
+  : itembuffersize(DEFAULTSIZE), numitems(0), itembuffer(builtinbuffer)
 {
-  // Make sure the delete within copy() will have no effect.
-  this->itembuffer = NULL;
-
   this->copy(l);
 }
 
 template <class Type> inline
 SbList<Type>::~SbList()
 {
-  delete [] this->itembuffer;
+  if (this->itembuffer != builtinbuffer) delete [] this->itembuffer;
 }
 
-// Doubles array size.
+// Increase array size without modifying the number of items in the
+// array.
 template <class Type> inline void
-SbList<Type>::growList(void)
+SbList<Type>::grow(const int size)
 {
-  this->itembuffersize <<= 1;
-  Type * newBuffer = new Type[this->itembuffersize];
+  // Default behavior is to double array size.
+  if (size == -1) this->itembuffersize <<= 1;
+  else if (size <= this->itembuffersize) return;
+  else { this->itembuffersize = size; }
+
+  Type * newbuffer = new Type[this->itembuffersize];
   const int n = this->numitems;
-  for (int i = 0; i < n; i++) {
-    newBuffer[i] = this->itembuffer[i];
-  }
-  delete [] this->itembuffer;
-  this->itembuffer = newBuffer;
+  for (int i = 0; i < n; i++) newbuffer[i] = this->itembuffer[i];
+  if (this->itembuffer != this->builtinbuffer) delete [] this->itembuffer;
+  this->itembuffer = newbuffer;
+}
+
+template <class Type> inline void
+SbList<Type>::expand(const int size)
+{
+  this->grow(size);
+  this->numitems = size - 1;
+}
+
+template <class Type> inline int
+SbList<Type>::getArraySize(void) const
+{
+  return this->itembuffersize;
 }
 
 template <class Type> inline void
@@ -112,11 +131,8 @@ SbList<Type>::copy(const SbList<Type> & l)
 {
   if (this == &l) return;
 
-  delete [] this->itembuffer;
   const int n = l.numitems;
-  this->itembuffersize = SbMax(4, n);
-  this->numitems = n;
-  this->itembuffer = new Type[this->itembuffersize];
+  this->expand(n);
   for (int i = 0; i < n; i++) this->itembuffer[i] = l.itembuffer[i];
 }
 
@@ -130,12 +146,17 @@ SbList<Type>::operator=(const SbList<Type> & l)
 template <class Type> inline void
 SbList<Type>::fit(void)
 {
-  const int items = SbMax(this->numitems, 4);
+  const int items = this->numitems;
+
   if (items < this->itembuffersize) {
-    Type * newitembuffer = new Type[items];
-    for (int i = 0; i < this->numitems; i++)
-      newitembuffer[i] = this->itembuffer[i];
-    delete [] this->itembuffer;
+    Type * newitembuffer = this->builtinbuffer;
+    if (items > DEFAULTSIZE) newitembuffer = new Type[items];
+
+    if (newitembuffer != this->itembuffer) {
+      for (int i = 0; i < items; i++) newitembuffer[i] = this->itembuffer[i];
+    }
+
+    if (this->itembuffer != this->builtinbuffer) delete [] this->itembuffer;
     this->itembuffer = newitembuffer;
     this->itembuffersize = items;
   }
@@ -144,7 +165,7 @@ SbList<Type>::fit(void)
 template <class Type> inline void
 SbList<Type>::append(const Type item)
 {
-  if (this->numitems == this->itembuffersize) this->growList();
+  if (this->numitems == this->itembuffersize) this->grow();
   this->itembuffer[this->numitems++] = item;
 }
 
@@ -160,7 +181,7 @@ template <class Type> inline void
 SbList<Type>::insert(const Type item, const int insertbefore)
 {
   assert(insertbefore >= 0 && insertbefore <= this->numitems);
-  if (this->numitems == this->itembuffersize) this->growList();
+  if (this->numitems == this->itembuffersize) this->grow();
 
   for (int i = this->numitems; i > insertbefore; i--)
     this->itembuffer[i] = this->itembuffer[i-1];

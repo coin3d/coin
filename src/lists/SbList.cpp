@@ -46,6 +46,19 @@
   \sa SbPList
 */
 
+
+// Metadon doc:
+/*¡
+  FIXME: all methods on this class is now inlined. This probably adds
+  quite a few (hundred) kBytes to the total size of the
+  library. Several methods on this class should therefore be
+  "de-inlined". The problem with this is that compilers seems to
+  differ on whether or not subclasses or template instances then need
+  to explicitly "declare themselves".  This is not too hard to fix,
+  but it involves _some_ pain as it needs to be tested with different
+  C++ compilers. 20000227 mortene.
+ */
+
 #include <Inventor/lists/SbList.h>
 
 /*!
@@ -152,7 +165,7 @@
 
 /*!
   \fn int SbList<Type>::getLength(void) const
-  
+
   Returns number of items in the list.
 */
 
@@ -217,4 +230,19 @@
 
   Inequality operator. Returns \c TRUE if this list and \a l are not
   equal.
+*/
+
+/*!
+  \fn void SbList<Type>::expand(const int size)
+
+  Expand the list to contain \a size items. The new items added at the
+  end have undefined value.
+*/
+
+/*!
+  \fn int SbList<Type>::getArraySize(void) const
+
+  Return number of items there's allocated space for in the array.
+
+  \sa getLength()
 */

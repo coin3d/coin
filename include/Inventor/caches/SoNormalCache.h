@@ -20,12 +20,13 @@
 #ifndef COIN_SONORMALCACHE_H
 #define COIN_SONORMALCACHE_H
 
+#include <Inventor/SbVec3f.h>
 #include <Inventor/caches/SoCache.h>
-#include <Inventor/system/inttypes.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/system/inttypes.h>
 
-class SbVec3f;
 class SoNormalGenerator;
+
 
 class SoNormalCache : public SoCache {
   typedef SoCache inherited;

@@ -42,28 +42,66 @@
   list to \a sizehint. Note that the list will still initially contain
   zero items.
 
-  \sa SbList<Type>::SbList(const int sizehint)
+  \sa SbList::SbList(const int sizehint)
 */
 
 /*!
   \fn SbPList::SbPList(const SbPList & l)
   Copy constructor.
 
-  \sa SbList<Type>::SbList(const SbList<Type> & l)
+  \sa SbList::SbList(const SbList<Type> & l)
 */
 
 /*!
   \fn void * SbPList::get(const int index) const
 
-  This method returns the element at \a index. Does the same thing as
-  SbList::operator[](). This method is only present for compatibility
-  with the original Inventor API.
+  Returns element at \a index. Does \e not expand array bounds if \a
+  index is outside the list.
 */
+
+ /*!
+   \fn void SbPList::set(const int index, void * const item)
+
+   Index operator to set element at \a index. Does \e not expand array
+   bounds if \a index is outside the list.
+ */
 
 /*!
-  \fn void SbPList::set(const int index, void * const item)
+  Returns element at \a index.
 
-  This method sets the element at \a index to \a item. Does the same
-  thing as SbList::operator[](). This method is only present for
-  compatibility with the original Inventor API.
-*/
+  Overloaded from parent class to automatically expand the size of the
+  internal array if \a index is outside the current bounds of the
+  list. The values of any additional pointers are then set to \c NULL.
+ */
+void *
+SbPList::operator[](const int index) const
+{
+  assert(index >= 0);
+  if (index >= this->getArraySize()) ((SbPList *)this)->expandlist(index + 1);
+  return SbList<void *>::operator[](index);
+}
+
+/*!
+  Index operator to set element at \a index.
+
+  Overloaded from parent class to automatically expand the size of the
+  internal array if \a index is outside the current bounds of the
+  list. The values of any additional pointers are then set to \c NULL.
+ */
+void * &
+SbPList::operator[](const int index)
+{
+  assert(index >= 0);
+  if (index >= this->getArraySize()) this->expandlist(index + 1);
+  return SbList<void *>::operator[](index);
+}
+
+// Expand list to the given size, filling in with NULL pointers.
+void
+SbPList::expandlist(const int size)
+{
+  const int oldsize = this->getLength();
+  this->expand(size);
+  SbList<void *> * thisp = (SbList<void *> *)this;
+  for (int i = oldsize; i < size; i++) *thisp[i] = NULL;
+}
