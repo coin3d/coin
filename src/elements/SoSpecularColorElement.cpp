@@ -118,7 +118,7 @@ SoSpecularColorElement::initClass()
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoSpecularColorElement
@@ -130,7 +130,7 @@ SoSpecularColorElement::cleanClass()
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoSpecularColorElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.

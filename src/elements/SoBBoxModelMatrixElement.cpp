@@ -103,7 +103,7 @@ SoBBoxModelMatrixElement::initClass(
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -116,7 +116,7 @@ SoBBoxModelMatrixElement::cleanClass(
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoBBoxModelMatrixElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -129,7 +129,7 @@ SoBBoxModelMatrixElement::SoBBoxModelMatrixElement()
 {
   setTypeId( SoBBoxModelMatrixElement::classTypeId );
   setStackIndex( SoBBoxModelMatrixElement::classStackIndex );
-} // SoBBoxModelMatrixElement()
+}
 
 /*!
   The destructor.
@@ -137,7 +137,7 @@ SoBBoxModelMatrixElement::SoBBoxModelMatrixElement()
 
 SoBBoxModelMatrixElement::~SoBBoxModelMatrixElement()
 {
-} // ~SoBBoxModelMatrixElement()
+}
 
 //! FIXME: write doc.
 
@@ -146,7 +146,7 @@ SoBBoxModelMatrixElement::init(SoState * state)
 {
   inherited::init(state);
   this->state = state;
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -158,7 +158,7 @@ SoBBoxModelMatrixElement::push(SoState * state)
   SoBBoxModelMatrixElement * const element =
     (SoBBoxModelMatrixElement *)( this->next );
   element->state = this->state;
-} // push()
+}
 
 /*!
   This method is for the SoGetBoundingBoxAction class so it can reset the
@@ -170,7 +170,7 @@ SoBBoxModelMatrixElement::reset(SoState * const state,
 				SoNode * const node)
 {
   assert(0 && "FIXME: not implemented");
-} // reset()
+}
 
 /*!
   This method keeps two matrices up-to-date as opposed to the method it
@@ -184,7 +184,7 @@ SoBBoxModelMatrixElement::pushMatrix(SoState * const state,
 {
   matrix = SoModelMatrixElement::get(state);
   localmatrix = SoLocalBBoxMatrixElement::get(state);
-} // pushMatrix()
+}
 
 /*!
   This method keeps two matrices up-to-date as opposed to the method it
@@ -198,7 +198,7 @@ SoBBoxModelMatrixElement::popMatrix(SoState * const state,
 {
   SoModelMatrixElement::set(state, NULL, matrix);
   SoLocalBBoxMatrixElement::set(state, localmatrix);
-} // popMatrix()
+}
  
 //! FIXME: write doc.
 
@@ -207,7 +207,7 @@ SoBBoxModelMatrixElement::makeEltIdentity()
 {
   inherited::makeEltIdentity();
   SoLocalBBoxMatrixElement::makeIdentity(state);
-} // makeEltIdentity()
+}
 
 //! FIXME: write doc.
 
@@ -216,7 +216,7 @@ SoBBoxModelMatrixElement::setElt(const SbMatrix &matrix)
 {
   inherited::setElt(matrix);
   SoLocalBBoxMatrixElement::set(state, matrix);
-} // setElt()
+}
 
 //! FIXME: write doc.
 
@@ -225,7 +225,7 @@ SoBBoxModelMatrixElement::multElt(const SbMatrix & matrix)
 {
   inherited::multElt(matrix);
   SoLocalBBoxMatrixElement::mult(this->state, matrix);
-} // multElt()
+}
 
 //! FIXME: write doc.
 
@@ -234,7 +234,7 @@ SoBBoxModelMatrixElement::translateEltBy(const SbVec3f & translation)
 {
   inherited::translateEltBy(translation);
   SoLocalBBoxMatrixElement::translateBy(this->state, translation);
-} // translateByElt()
+}
 
 //! FIXME: write doc.
 
@@ -243,7 +243,7 @@ SoBBoxModelMatrixElement::rotateEltBy(const SbRotation &rotation)
 {
   inherited::rotateEltBy(rotation);
   SoLocalBBoxMatrixElement::rotateBy(this->state, rotation);
-} // rotateByElt()
+}
 
 //! FIXME: write doc.
 
@@ -252,7 +252,7 @@ SoBBoxModelMatrixElement::scaleEltBy(const SbVec3f &scaleFactor)
 {
   inherited::scaleEltBy(scaleFactor);
   SoLocalBBoxMatrixElement::scaleBy(this->state, scaleFactor);
-} // scaleByElt()
+}
  
 /*!
   This method is for debug use only.
@@ -263,7 +263,7 @@ SoBBoxModelMatrixElement::pushMatrixElt()
 {
   assert(0 && "Should never be called!");
   return SbMatrix::identity();
-} // pushMatrixElt()
+}
 
 /*!
   This method is for debug use only.
@@ -273,5 +273,5 @@ void
 SoBBoxModelMatrixElement::popMatrixElt(const SbMatrix &)
 {
   assert(0 && "Should never be called!");
-} // popMatrixElt()
+}
 

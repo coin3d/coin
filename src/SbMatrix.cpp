@@ -892,7 +892,7 @@ SbMatrix::LUDecomposition(
         }
     }
     return TRUE;
-} // LUDecomposition()
+}
 
 /*!
   This function does a solve on the "Ax = b" system, given that the matrix
@@ -951,7 +951,7 @@ SbMatrix::LUBackSubstitution(
 
     // copy x[] into b[] for "return to sender"
     for ( i = 0; i < 4; i++ ) b[i] = x[i];
-} // LUBackSubstitution()
+}
 
 /*!
   Returns the transpose of this matrix.

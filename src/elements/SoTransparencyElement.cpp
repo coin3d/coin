@@ -117,7 +117,7 @@ SoTransparencyElement::initClass()
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -129,7 +129,7 @@ SoTransparencyElement::cleanClass()
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoTransparencyElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.

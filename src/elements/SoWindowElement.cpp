@@ -127,7 +127,7 @@ SoWindowElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoWindowElement class.
@@ -139,7 +139,7 @@ SoWindowElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoWindowElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -154,7 +154,7 @@ SoWindowElement::SoWindowElement(
 {
     setTypeId( SoWindowElement::classTypeId );
     setStackIndex( SoWindowElement::classStackIndex );
-} // SoWindowElement()
+}
 
 /*!
   The destructor.
@@ -163,7 +163,7 @@ SoWindowElement::SoWindowElement(
 SoWindowElement::~SoWindowElement( // virtual
     void )
 {
-} // ~SoWindowElement()
+}
 
 //! FIXME: write doc.
 
@@ -172,7 +172,7 @@ SoWindowElement::init( // virtual
     SoState * state )
 {
     inherited::init( state );
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -181,7 +181,7 @@ SoWindowElement::push( // virtual
     SoState * state )
 {
     inherited::push( state );
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -191,7 +191,7 @@ SoWindowElement::pop( // virtual
     const SoElement * prevTopElement )
 {
     inherited::pop( state, prevTopElement );
-} // pop()
+}
 
 //! FIXME: write doc.
 
@@ -201,7 +201,7 @@ SoWindowElement::matches( // virtual
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
-} // matches()
+}
 
 //! FIXME: write doc.
 
@@ -211,7 +211,7 @@ SoWindowElement::copyMatchInfo( // virtual
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
-} // copyMatchInfo()
+}
 
 //! FIXME: write doc.
 
@@ -224,7 +224,7 @@ SoWindowElement::set( // static
     SoGLRenderAction * const action )
 {
     assert(0 && "FIXME: not implemented");
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -237,5 +237,5 @@ SoWindowElement::get( // static
     SoGLRenderAction * & action )
 {
     assert(0 && "FIXME: not implemented");
-} // get()
+}
 

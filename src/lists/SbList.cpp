@@ -261,6 +261,6 @@ void main( void ) {
     else                   printf( "! list1 == list2\n" );
     if ( list1 != list2 )  printf( "  list1 != list2\n" );
     else                   printf( "! list1 != list2\n" );
-} // main
+}
 #endif
 

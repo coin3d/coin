@@ -18,4 +18,4 @@ className::getClassTypeId( // static
   void )
 {
   return className::classTypeId;
-} // getClassTypeId()
+}

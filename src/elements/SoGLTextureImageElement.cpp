@@ -111,7 +111,7 @@ SoGLTextureImageElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -124,7 +124,7 @@ SoGLTextureImageElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLTextureImageElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -136,7 +136,7 @@ SoGLTextureImageElement::SoGLTextureImageElement()
 {
   setTypeId( SoGLTextureImageElement::classTypeId );
   setStackIndex( SoGLTextureImageElement::classStackIndex );
-} // SoGLTextureImageElement()
+}
 
 /*!
   The destructor.
@@ -145,7 +145,7 @@ SoGLTextureImageElement::SoGLTextureImageElement()
 SoGLTextureImageElement::~SoGLTextureImageElement( // virtual
     void )
 {
-} // ~SoGLTextureImageElement()
+}
 
 //! FIXME: write doc.
 
@@ -154,7 +154,7 @@ SoGLTextureImageElement::init(SoState * state)
 {
   inherited::init(state);
   this->glimage = NULL;
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -168,7 +168,7 @@ SoGLTextureImageElement::pop(SoState * state,
 
   if (prev->glimage != NULL)
     prev->glimage->apply();
-} // pop()
+}
 
 //! FIXME: write doc.
 

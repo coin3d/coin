@@ -109,7 +109,7 @@ SoGLEmissiveColorElement::initClass()
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoGLEmissiveColorElement
@@ -121,7 +121,7 @@ SoGLEmissiveColorElement::cleanClass()
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLEmissiveColorElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.

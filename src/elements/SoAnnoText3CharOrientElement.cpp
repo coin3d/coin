@@ -104,7 +104,7 @@ SoAnnoText3CharOrientElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -117,7 +117,7 @@ SoAnnoText3CharOrientElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoAnnoText3CharOrientElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -130,7 +130,7 @@ SoAnnoText3CharOrientElement::SoAnnoText3CharOrientElement( // protected
 {
     setTypeId( SoAnnoText3CharOrientElement::classTypeId );
     setStackIndex( SoAnnoText3CharOrientElement::classStackIndex );
-} // SoAnnoText3CharOrientElement()
+}
 
 /*!
   The destructor.
@@ -139,7 +139,7 @@ SoAnnoText3CharOrientElement::SoAnnoText3CharOrientElement( // protected
 SoAnnoText3CharOrientElement::~SoAnnoText3CharOrientElement( // virtual protected
     void )
 {
-} // ~SoAnnoText3CharOrientElement()
+}
 
 //! FIXME: write doc.
 
@@ -148,7 +148,7 @@ SoAnnoText3CharOrientElement::init( // virtual
     SoState * state )
 {
   inherited::init( state );
-} // init()
+}
 
 //! FIXME: write doc.
 

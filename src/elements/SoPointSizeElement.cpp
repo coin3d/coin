@@ -103,7 +103,7 @@ SoPointSizeElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoPointSizeElement class.
@@ -115,7 +115,7 @@ SoPointSizeElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoPointSizeElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -129,7 +129,7 @@ SoPointSizeElement::SoPointSizeElement( // protected
     setTypeId( SoPointSizeElement::classTypeId );
     setStackIndex( SoPointSizeElement::classStackIndex );
     this->data = getDefault();
-} // SoPointSizeElement()
+}
 
 /*!
   The destructor.
@@ -138,7 +138,7 @@ SoPointSizeElement::SoPointSizeElement( // protected
 SoPointSizeElement::~SoPointSizeElement( // virtual protected
     void )
 {
-} // ~SoPointSizeElement()
+}
 
 //! FIXME: write doc.
 
@@ -148,7 +148,7 @@ SoPointSizeElement::init( // virtual
 {
   inherited::init( state );
   this->data = getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 

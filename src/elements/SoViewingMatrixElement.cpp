@@ -113,7 +113,7 @@ SoViewingMatrixElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoViewingMatrixElement
@@ -126,7 +126,7 @@ SoViewingMatrixElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoViewingMatrixElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   The constructor.  Can't be used directly.
@@ -140,7 +140,7 @@ SoViewingMatrixElement::SoViewingMatrixElement(
 {
     setTypeId( SoViewingMatrixElement::classTypeId );
     setStackIndex( SoViewingMatrixElement::classStackIndex );
-} // SoViewingMatrixElement()
+}
 
 /*!
   The destructor.
@@ -149,7 +149,7 @@ SoViewingMatrixElement::SoViewingMatrixElement(
 SoViewingMatrixElement::~SoViewingMatrixElement(
     void )
 {
-} // ~SoViewingMatrixElement()
+}
 
 //! FIXME: write doc.
 
@@ -161,7 +161,7 @@ SoViewingMatrixElement::set(SoState * const state,
   SoViewingMatrixElement * element = (SoViewingMatrixElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
   element->setElt(viewingMatrix);
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -171,7 +171,7 @@ SoViewingMatrixElement::get(SoState * const state)
   SoViewingMatrixElement * element = (SoViewingMatrixElement *)
     SoElement::getConstElement( state, classStackIndex);
   return element->viewingMatrix;
-} // get()
+}
 
 //! FIXME: write doc.
 
@@ -184,7 +184,7 @@ SoViewingMatrixElement::init(SoState * state)
   SoDebugError::postInfo("SoViewingMatrixElement::init",
 			 "matrix set to identity");
 #endif // debug
-} // init()
+}
 
 //! FIXME: write doc.
 

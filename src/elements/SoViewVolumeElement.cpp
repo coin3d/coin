@@ -109,7 +109,7 @@ SoViewVolumeElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoViewVolimeElement class.
@@ -121,7 +121,7 @@ SoViewVolumeElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoViewVolumeElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -138,7 +138,7 @@ SoViewVolumeElement::SoViewVolumeElement(
   SbViewVolume v;
   v.ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
   this->viewVolume = v;
-} // SoViewVolumeElement()
+}
 
 /*!
   The destructor.
@@ -147,7 +147,7 @@ SoViewVolumeElement::SoViewVolumeElement(
 SoViewVolumeElement::~SoViewVolumeElement(
     void )
 {
-} // ~SoViewVolumeElement()
+}
 
 //! FIXME: write doc.
 
@@ -159,7 +159,7 @@ SoViewVolumeElement::set(SoState * const state,
   SoViewVolumeElement * element = (SoViewVolumeElement *)
     SoReplacedElement::getElement( state, classStackIndex, node);
   element->viewVolume = viewVolume;
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -169,7 +169,7 @@ SoViewVolumeElement::get(SoState * const state)
   SoViewVolumeElement * element = (SoViewVolumeElement *)
     SoElement::getConstElement(state, classStackIndex);
   return element->viewVolume;
-} // get()
+}
 
 //! FIXME: write doc.
 
@@ -181,5 +181,5 @@ SoViewVolumeElement::init(SoState * state)
   SbViewVolume v;
   v.ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
   this->viewVolume = v;
-} // init()
+}
 

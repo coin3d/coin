@@ -103,7 +103,7 @@ SoComplexityElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoComplexityElement class.
@@ -115,7 +115,7 @@ SoComplexityElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoComplexityElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -129,7 +129,7 @@ SoComplexityElement::SoComplexityElement( // protected
     setTypeId( SoComplexityElement::classTypeId );
     setStackIndex( SoComplexityElement::classStackIndex );
     this->data = getDefault();
-} // SoComplexityElement()
+}
 
 /*!
   The destructor.
@@ -138,7 +138,7 @@ SoComplexityElement::SoComplexityElement( // protected
 SoComplexityElement::~SoComplexityElement( // virtual protected
     void )
 {
-} // ~SoComplexityElement()
+}
 
 //! FIXME: write doc.
 
@@ -147,7 +147,7 @@ SoComplexityElement::init(SoState * state)
 {
   inherited::init(state);
   this->data = getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 

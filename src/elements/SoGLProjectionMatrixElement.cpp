@@ -112,7 +112,7 @@ SoGLProjectionMatrixElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -125,7 +125,7 @@ SoGLProjectionMatrixElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLProjectionMatrixElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -138,7 +138,7 @@ SoGLProjectionMatrixElement::SoGLProjectionMatrixElement( // protected
 {
     setTypeId( SoGLProjectionMatrixElement::classTypeId );
     setStackIndex( SoGLProjectionMatrixElement::classStackIndex );
-} // SoGLProjectionMatrixElement()
+}
 
 /*!
   The destructor.
@@ -147,7 +147,7 @@ SoGLProjectionMatrixElement::SoGLProjectionMatrixElement( // protected
 SoGLProjectionMatrixElement::~SoGLProjectionMatrixElement( // virtual
     void )
 {
-} // ~SoGLProjectionMatrixElement()
+}
 
 //! FIXME: write doc.
 
@@ -157,7 +157,7 @@ SoGLProjectionMatrixElement::pop(SoState * state,
 {
   inherited::pop(state, prevTopElement);
   ((SoGLProjectionMatrixElement*)prevTopElement)->updategl();
-} // pop()
+}
 
 //! FIXME: write doc.
 
@@ -166,7 +166,7 @@ SoGLProjectionMatrixElement::setElt(const SbMatrix & matrix)
 {
   inherited::setElt(matrix);
   this->updategl();
-} // setElt()
+}
 
 //! FIXME: write doc.
 
@@ -179,5 +179,5 @@ SoGLProjectionMatrixElement::updategl(void)
   glMatrixMode(GL_PROJECTION);
   glLoadMatrixf((float*)this->projectionMatrix);
   glMatrixMode(GL_MODELVIEW);
-} // updategl()
+}
 

@@ -110,7 +110,7 @@ SoTextureCoordinateBindingElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -123,7 +123,7 @@ SoTextureCoordinateBindingElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoTextureCoordinateBindingElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -137,7 +137,7 @@ SoTextureCoordinateBindingElement::SoTextureCoordinateBindingElement(
     setTypeId( SoTextureCoordinateBindingElement::classTypeId );
     setStackIndex( SoTextureCoordinateBindingElement::classStackIndex );
     this->data = getDefault();
-} // SoTextureCoordinateBindingElement()
+}
 
 /*!
   The destructor.
@@ -146,7 +146,7 @@ SoTextureCoordinateBindingElement::SoTextureCoordinateBindingElement(
 SoTextureCoordinateBindingElement::~SoTextureCoordinateBindingElement(
     void )
 {
-} // ~SoTextureCoordinateBindingElement()
+}
 
 //! FIXME: write doc.
 
@@ -157,7 +157,7 @@ SoTextureCoordinateBindingElement::set(SoState * const state,
 {
   assert(binding == PER_VERTEX || binding == PER_VERTEX_INDEXED);
   SoInt32Element::set(classStackIndex, state, node, binding);
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -166,7 +166,7 @@ SoTextureCoordinateBindingElement::init(SoState * state )
 {
   inherited::init(state);
   this->data = SoTextureCoordinateBindingElement::getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 

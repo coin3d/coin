@@ -113,7 +113,7 @@ SoGLEnvironmentElement::initClass()
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -125,7 +125,7 @@ SoGLEnvironmentElement::cleanClass()
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLEnvironmentElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -137,7 +137,7 @@ SoGLEnvironmentElement::SoGLEnvironmentElement()
 {
   setTypeId( SoGLEnvironmentElement::classTypeId );
   setStackIndex( SoGLEnvironmentElement::classStackIndex );
-} // SoGLEnvironmentElement()
+}
 
 /*!
   The destructor.

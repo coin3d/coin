@@ -79,7 +79,7 @@ SoNode *
 SoFullPath::getNodeFromTail( const int index ) const
 {
   return nodes[ getFullLength() - 1 - index ];
-} // getNodeFromTail()
+}
 
 /*!
   This method overrides SoPath::getIndexFromTail() to allow clients to get
@@ -91,7 +91,7 @@ int
 SoFullPath::getIndexFromTail( const int index ) const
 {
   return indices[ getFullLength() - 1 - index ];
-} // getIndexFromTail()
+}
 
 /*!
   This method returns the length of the path, counting hidden nodes also.
@@ -101,5 +101,5 @@ int
 SoFullPath::getLength( void ) const
 {
   return getFullLength();
-} // getLength()
+}
 

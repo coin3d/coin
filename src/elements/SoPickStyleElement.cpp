@@ -109,7 +109,7 @@ SoPickStyleElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoPickStyleElement class.
@@ -121,7 +121,7 @@ SoPickStyleElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoPickStyleElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -135,7 +135,7 @@ SoPickStyleElement::SoPickStyleElement(
     setTypeId( SoPickStyleElement::classTypeId );
     setStackIndex( SoPickStyleElement::classStackIndex );
     this->data = getDefault();
-} // SoPickStyleElement()
+}
 
 /*!
   The destructor.
@@ -144,7 +144,7 @@ SoPickStyleElement::SoPickStyleElement(
 SoPickStyleElement::~SoPickStyleElement(
     void )
 {
-} // ~SoPickStyleElement()
+}
 
 //! FIXME: write doc.
 
@@ -155,7 +155,7 @@ SoPickStyleElement::set(SoState * const state,
 {
   assert(style >= SHAPE && style <= UNPICKABLE);
   SoInt32Element::set(classStackIndex, state, node, style);
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -165,7 +165,7 @@ SoPickStyleElement::init( // virtual
 {
   inherited::init( state );
   this->data = getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 

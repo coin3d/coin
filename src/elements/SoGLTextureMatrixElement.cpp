@@ -108,7 +108,7 @@ SoGLTextureMatrixElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -121,7 +121,7 @@ SoGLTextureMatrixElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLTextureMatrixElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -134,7 +134,7 @@ SoGLTextureMatrixElement::SoGLTextureMatrixElement( // protected
 {
     setTypeId( SoGLTextureMatrixElement::classTypeId );
     setStackIndex( SoGLTextureMatrixElement::classStackIndex );
-} // SoGLTextureMatrixElement()
+}
 
 /*!
   The destructor.
@@ -143,7 +143,7 @@ SoGLTextureMatrixElement::SoGLTextureMatrixElement( // protected
 SoGLTextureMatrixElement::~SoGLTextureMatrixElement( // virtual
     void )
 {
-} // ~SoGLTextureMatrixElement()
+}
 
 //! FIXME: write doc.
 
@@ -151,7 +151,7 @@ void
 SoGLTextureMatrixElement::init(SoState * state)
 {
   inherited::init( state );
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -159,7 +159,7 @@ void
 SoGLTextureMatrixElement::push(SoState * state)
 {
   inherited::push(state);
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -169,7 +169,7 @@ SoGLTextureMatrixElement::pop(SoState * state,
 {
   inherited::pop(state, prevTopElement);
   ((SoGLTextureMatrixElement*)prevTopElement)->updategl();
-} // pop()
+}
 
 //! FIXME: write doc.
 
@@ -183,7 +183,7 @@ SoGLTextureMatrixElement::setEltIdentity()
   glMatrixMode(GL_TEXTURE);
   glLoadIdentity();
   glMatrixMode(GL_MODELVIEW);
-} // setEltIdentity()
+}
 
 //! FIXME: write doc.
 

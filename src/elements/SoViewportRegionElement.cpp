@@ -113,7 +113,7 @@ SoViewportRegionElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoViewportRegionElement
@@ -126,7 +126,7 @@ SoViewportRegionElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoViewportRegionElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -140,7 +140,7 @@ SoViewportRegionElement::SoViewportRegionElement(
 {
     setTypeId( SoViewportRegionElement::classTypeId );
     setStackIndex( SoViewportRegionElement::classStackIndex );
-} // SoViewportRegionElement()
+}
 
 /*!
   The destructor.
@@ -149,7 +149,7 @@ SoViewportRegionElement::SoViewportRegionElement(
 SoViewportRegionElement::~SoViewportRegionElement( // virtual
     void )
 {
-} // ~SoViewportRegionElement()
+}
 
 //! FIXME: write doc.
 
@@ -157,7 +157,7 @@ void
 SoViewportRegionElement::init(SoState * state)
 {
   inherited::init(state);
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -166,7 +166,7 @@ SoViewportRegionElement::matches(const SoElement * element) const
 {
   return this->viewportRegion == 
     ((SoViewportRegionElement*) element)->viewportRegion;
-} // matches()
+}
 
 //! FIXME: write doc.
 
@@ -177,7 +177,7 @@ SoViewportRegionElement::copyMatchInfo() const
     getTypeId().createInstance();
   elem->viewportRegion = this->viewportRegion;
   return elem;
-} // copyMatchInfo()
+}
  
 //! FIXME: write doc.
 
@@ -188,7 +188,7 @@ SoViewportRegionElement::set(SoState * const state,
   SoViewportRegionElement *elem = (SoViewportRegionElement*)
     SoElement::getElement(state, classStackIndex);
   elem->setElt(viewportRegion);
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -198,7 +198,7 @@ SoViewportRegionElement::get(SoState * const state)
   SoViewportRegionElement *elem = (SoViewportRegionElement*)
     SoElement::getConstElement(state, classStackIndex);
   return elem->viewportRegion;
-} // get()
+}
  
 //! FIXME: write doc.
 
@@ -206,7 +206,7 @@ void
 SoViewportRegionElement::setElt(const SbViewportRegion & viewportRegion)
 {
   this->viewportRegion = viewportRegion;
-} // setElt()
+}
 
 //! FIXME: write doc.
 
@@ -215,5 +215,5 @@ SoViewportRegionElement::print( // virtual
     FILE * file ) const
 {
   fprintf( file, "SoViewportRegionElement[%p]\n", this );
-} // print()
+}
 

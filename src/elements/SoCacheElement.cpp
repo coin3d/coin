@@ -105,7 +105,7 @@ SoCacheElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoCacheElement class.
@@ -117,7 +117,7 @@ SoCacheElement::cleanClass(
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoCacheElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -131,7 +131,7 @@ SoCacheElement::SoCacheElement(
 {
     setTypeId( SoCacheElement::classTypeId );
     setStackIndex( SoCacheElement::classStackIndex );
-} // SoCacheElement()
+}
 
 /*!
   The destructor.
@@ -140,7 +140,7 @@ SoCacheElement::SoCacheElement(
 SoCacheElement::~SoCacheElement( // virtual
     void )
 {
-} // ~SoCacheElement()
+}
 
 /*!
   Initializes element in state stack.
@@ -151,7 +151,7 @@ SoCacheElement::init( // virtual
     SoState * state )
 {
     inherited::init( state );
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -160,7 +160,7 @@ SoCacheElement::push(
     SoState * state )
 {
     inherited::push( state );
-} // push()
+}
 
 /*!
   Unrefs the cache.
@@ -173,7 +173,7 @@ SoCacheElement::pop(
 {
     inherited::pop( state, prevTopElement );
     assert(0 && "FIXME: not implemented");
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -183,7 +183,7 @@ SoCacheElement::set( // static
     SoCache * const cache )
 {
     assert(0 && "FIXME: not implemented");
-} // set()
+}
 
 /*!
   This method returns the cache, or NULL if there is no cache.
@@ -194,7 +194,7 @@ SoCacheElement::getCache(
     void ) const
 {
     return this->cache;
-} // getCache()
+}
 
 /*!
   This method returns TRUE if a cache is currently open.
@@ -206,7 +206,7 @@ SoCacheElement::anyOpen( // static
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
-} // anyOpen()
+}
 
 /*!
   This method invalidate open caches.  It should be called by uncacheable nodes.
@@ -217,7 +217,7 @@ SoCacheElement::invalidate( // static
     SoState * const state )
 {
     assert(0 && "FIXME: not implemented");
-} // invalidate()
+}
 
 /*!
   SoCacheElement objects should not be compared because you obviously don't
@@ -230,7 +230,7 @@ SoCacheElement::matches( // virtual
 {
     assert(0 && "FIXME: not implemented"); // print error message
     return FALSE;
-} // matches()
+}
 
 /*!
   SoCacheElement objects should not be "copied" because you obviously don't
@@ -245,7 +245,7 @@ SoCacheElement::copyMatchInfo( // virtual
 {
     assert(0 && "FIXME: not implemented"); // print error message
     return NULL;
-} // copyMatchInfo()
+}
 
 /*!
   This method returns the next cache element.
@@ -256,7 +256,7 @@ SoCacheElement::getNextCacheElement(
     void ) const
 {
     return (SoCacheElement *) this->next;
-} // getNextCacheElement()
+}
 
 /*!
   This method adds \a element to the elements used lists of all the open
@@ -269,7 +269,7 @@ SoCacheElement::addElement( // static
     const SoElement * const element )
 {
     assert(0 && "FIXME: not implemented");
-} // addElement()
+}
 
 /*!
   This method creates dependencies on \a cache for all the open caches
@@ -282,7 +282,7 @@ SoCacheElement::addCacheDependency( // static
     SoCache * const cache )
 {
     assert(0 && "FIXME: not implemented");
-} // addCacheDependency()
+}
 
 /*!
   This method returns the old invalidated bit value, and sets it to
@@ -295,7 +295,7 @@ SoCacheElement::setInvalid( // static
 {
     assert(0 && "FIXME: not implemented");
     return FALSE;
-} // setInvalid()
+}
 
 /*!
   This method returns the current cache.  No cache dependencies are honored.
@@ -305,5 +305,5 @@ SoCache *
 SoCacheElement::getCurrentCache( SoState * const state )
 {
   return ((SoCacheElement *)(state->getElementNoPush(classStackIndex)))->cache;
-} // getCurrentCache()
+}
 

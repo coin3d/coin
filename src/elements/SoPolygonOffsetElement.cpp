@@ -134,7 +134,7 @@ SoPolygonOffsetElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoPolygonOffsetElement class.
@@ -146,7 +146,7 @@ SoPolygonOffsetElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoPolygonOffsetElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -159,7 +159,7 @@ SoPolygonOffsetElement::SoPolygonOffsetElement( // protected
 {
     setTypeId( SoPolygonOffsetElement::classTypeId );
     setStackIndex( SoPolygonOffsetElement::classStackIndex );
-} // SoPolygonOffsetElement()
+}
 
 /*!
   The destructor.
@@ -168,7 +168,7 @@ SoPolygonOffsetElement::SoPolygonOffsetElement( // protected
 SoPolygonOffsetElement::~SoPolygonOffsetElement( // virtual
     void )
 {
-} // ~SoPolygonOffsetElement()
+}
 
 //! FIXME: write doc.
 
@@ -182,7 +182,7 @@ SoPolygonOffsetElement::init( // virtual
 				     this->offsetunits,
 				     this->style,
 				     this->active);
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -191,7 +191,7 @@ SoPolygonOffsetElement::push( // virtual
     SoState * state )
 {
     inherited::push( state );
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -201,7 +201,7 @@ SoPolygonOffsetElement::matches( // virtual
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
-} // matches()
+}
 
 //! FIXME: write doc.
 
@@ -211,7 +211,7 @@ SoPolygonOffsetElement::copyMatchInfo( // virtual
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
-} // copyMatchInfo()
+}
 
 //! FIXME: write doc.
 

@@ -109,7 +109,7 @@ SoUnitsElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoUnitsElement class.
@@ -121,7 +121,7 @@ SoUnitsElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoUnitsElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -135,7 +135,7 @@ SoUnitsElement::SoUnitsElement(
     setTypeId( SoUnitsElement::classTypeId );
     setStackIndex( SoUnitsElement::classStackIndex );
     this->data = getDefault();
-} // SoUnitsElement()
+}
 
 /*!
   The destructor.
@@ -144,7 +144,7 @@ SoUnitsElement::SoUnitsElement(
 SoUnitsElement::~SoUnitsElement(
     void )
 {
-} // ~SoUnitsElement()
+}
 
 //! FIXME: write doc.
 
@@ -156,7 +156,7 @@ SoUnitsElement::set( // static
 {
   assert((int)unit >= (int)METERS && (int)unit <= (int)NAUTICAL_MILES);
   SoInt32Element::set(classStackIndex, state, node, unit);
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -165,7 +165,7 @@ SoUnitsElement::init( // virtual
     SoState * state )
 {
     inherited::init( state );
-} // init()
+}
 
 //! FIXME: write doc.
 

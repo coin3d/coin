@@ -137,7 +137,7 @@ SoProfileCoordinateElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoProfileCoordinateElement
@@ -150,7 +150,7 @@ SoProfileCoordinateElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoProfileCoordinateElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -167,7 +167,7 @@ SoProfileCoordinateElement::SoProfileCoordinateElement(
 {
     setTypeId( SoProfileCoordinateElement::classTypeId );
     setStackIndex( SoProfileCoordinateElement::classStackIndex );
-} // SoProfileCoordinateElement()
+}
 
 /*!
   The destructor.
@@ -176,7 +176,7 @@ SoProfileCoordinateElement::SoProfileCoordinateElement(
 SoProfileCoordinateElement::~SoProfileCoordinateElement(
     void )
 {
-} // ~SoProfileCoordinateElement()
+}
 
 //! FIXME: write doc.
 
@@ -190,7 +190,7 @@ SoProfileCoordinateElement::init( // virtual
     this->coords2 = & SoProfileCoordinateElement::initdefaultcoords;
     this->coords3 = NULL;
     this->coordsAre2D = TRUE;
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -211,7 +211,7 @@ SoProfileCoordinateElement::set2( // static
   element->coordsAre2D = TRUE;
 
   element->nodeId = node->getNodeId();
-} // set2()
+}
 
 //! FIXME: write doc.
 
@@ -232,7 +232,7 @@ SoProfileCoordinateElement::set3( // static
   element->coordsAre2D = FALSE;
 
   element->nodeId = node->getNodeId();
-} // set3()
+}
 
 //! FIXME: write doc.
 
@@ -243,7 +243,7 @@ SoProfileCoordinateElement::print( // virtual
     fprintf( file, "SoProfileCoordinateElement[%p]: %d coords at %p.\n", this,
         this->numCoords,
         this->coordsAre2D ? (void *) this->coords2 : (void *) this->coords3 );
-} // print()
+}
 
 //! FIXME: write doc.
 
@@ -252,7 +252,7 @@ SoProfileCoordinateElement::push( // virtual
     SoState * state )
 {
     inherited::push( state );
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -262,7 +262,7 @@ SoProfileCoordinateElement::pop( // virtual
     const SoElement * prevTopElement )
 {
     inherited::pop( state, prevTopElement );
-} // pop()
+}
 
 /*!
   FIXME: write doc.

@@ -108,7 +108,7 @@ SoLocalBBoxMatrixElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -121,7 +121,7 @@ SoLocalBBoxMatrixElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoLocalBBoxMatrixElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -134,7 +134,7 @@ SoLocalBBoxMatrixElement::SoLocalBBoxMatrixElement()
 {
   setTypeId( SoLocalBBoxMatrixElement::classTypeId );
   setStackIndex( SoLocalBBoxMatrixElement:: classStackIndex );
-} // SoLocalBBoxMatrixElement()
+}
 
 /*!
   The destructor.
@@ -143,7 +143,7 @@ SoLocalBBoxMatrixElement::SoLocalBBoxMatrixElement()
 SoLocalBBoxMatrixElement::~SoLocalBBoxMatrixElement( // virtual
     void )
 {
-} // ~SoLocalBBoxMatrixElement()
+}
 
 //! FIXME: write doc.
 
@@ -154,7 +154,7 @@ SoLocalBBoxMatrixElement::init( // virtual
   inherited::init( state );
   this->localMatrix.makeIdentity();
   this->modelInverseMatrix.makeIdentity();
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -166,7 +166,7 @@ SoLocalBBoxMatrixElement::push(SoState * state)
     (SoLocalBBoxMatrixElement*) this->next;
   elem->localMatrix = this->localMatrix;
   elem->modelInverseMatrix = this->modelInverseMatrix;
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -176,7 +176,7 @@ SoLocalBBoxMatrixElement::matches( // virtual
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
-} // matches()
+}
 
 //! FIXME: write doc.
 
@@ -186,7 +186,7 @@ SoLocalBBoxMatrixElement::copyMatchInfo( // virtual
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
-} // copyMatchInfo()
+}
 
 //! FIXME: write doc.
 
@@ -200,7 +200,7 @@ SoLocalBBoxMatrixElement::makeIdentity(SoState * const state)
     element->localMatrix.makeIdentity();
     element->modelInverseMatrix = SoModelMatrixElement::get(state).inverse();
   }
-} // makeIdentity()
+}
 
 //! FIXME: write doc.
 
@@ -217,7 +217,7 @@ SoLocalBBoxMatrixElement::set(SoState * const state,
     // FIXME2: what the puck is this supposed to be good for?? 990404 mortene.
     element->localMatrix.multRight(element->modelInverseMatrix);
   }
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -229,7 +229,7 @@ SoLocalBBoxMatrixElement::mult(SoState * const state,
     getElement(state, getClassStackIndex());
 
   if (element) element->localMatrix.multLeft(matrix);
-} // mult()
+}
 
 //! FIXME: write doc.
 
@@ -246,7 +246,7 @@ SoLocalBBoxMatrixElement::translateBy( // static
     matrix.setTranslate(translation);
     element->localMatrix.multLeft(matrix);
   }
-} // translateBy()
+}
 
 //! FIXME: write doc.
 
@@ -263,7 +263,7 @@ SoLocalBBoxMatrixElement::rotateBy( // static
     matrix.setRotate(rotation);
     element->localMatrix.multLeft(matrix);
   }
-} // rotateBy()
+}
 
 //! FIXME: write doc.
 
@@ -280,7 +280,7 @@ SoLocalBBoxMatrixElement::scaleBy( // static
     matrix.setScale(scaleFactor);
     element->localMatrix.multLeft(matrix);
   }
-} // scaleBy()
+}
 
 //! FIXME: write doc.
 
@@ -290,7 +290,7 @@ SoLocalBBoxMatrixElement::pushMatrix(SoState * const state)
   SoLocalBBoxMatrixElement *elem = (SoLocalBBoxMatrixElement*)
     SoElement::getConstElement(state, classStackIndex);
   return elem->localMatrix;
-} // pushMatrix()
+}
 
 //! FIXME: write doc.
 
@@ -302,7 +302,7 @@ SoLocalBBoxMatrixElement::popMatrix(SoState * const state,
   SoLocalBBoxMatrixElement *elem = (SoLocalBBoxMatrixElement*)
     SoElement::getConstElement(state, classStackIndex);
   elem->localMatrix = matrix;
-} // popMatrix()
+}
 
 //! FIXME: write doc.
 
@@ -311,7 +311,7 @@ SoLocalBBoxMatrixElement::resetAll( // static
     SoState * const state )
 {
   assert(0 && "FIXME: not implemented");
-} // resetAll()
+}
 
 //! FIXME: write doc.
 
@@ -330,5 +330,5 @@ void
 SoLocalBBoxMatrixElement::print(FILE * file) const
 {
   assert(0 && "FIXME: not implemented");
-} // print()
+}
 

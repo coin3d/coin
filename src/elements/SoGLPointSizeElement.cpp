@@ -111,7 +111,7 @@ SoGLPointSizeElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -124,7 +124,7 @@ SoGLPointSizeElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLPointSizeElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -136,7 +136,7 @@ SoGLPointSizeElement::SoGLPointSizeElement()
 {
   setTypeId( SoGLPointSizeElement::classTypeId );
   setStackIndex( SoGLPointSizeElement::classStackIndex );
-} // SoGLPointSizeElement()
+}
 
 /*!
   The destructor.
@@ -145,7 +145,7 @@ SoGLPointSizeElement::SoGLPointSizeElement()
 SoGLPointSizeElement::~SoGLPointSizeElement( // virtual
     void )
 {
-} // ~SoGLPointSizeElement()
+}
 
 //! FIXME: write doc.
 
@@ -154,7 +154,7 @@ SoGLPointSizeElement::init(SoState * state)
 {
   inherited::init( state );
   this->current = -1.0f;
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -164,7 +164,7 @@ SoGLPointSizeElement::push(SoState * state)
   inherited::push(state);
   SoGLPointSizeElement *top = (SoGLPointSizeElement*)this->next;
   top->current = this->current;  
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -175,7 +175,7 @@ SoGLPointSizeElement::pop(SoState * state,
   SoGLPointSizeElement *prev = (SoGLPointSizeElement*)prevTopElement;
   prev->current = this->current;
   inherited::pop(state, prevTopElement);
-} // pop()
+}
 
 //! FIXME: write doc.
 
@@ -184,7 +184,7 @@ SoGLPointSizeElement::setElt(float val)
 {
   inherited::setElt(val);
   // this is a lazy element, do nothing
-} // setElt()
+}
 
 //! FIXME: write doc.
 
@@ -219,5 +219,5 @@ SoGLPointSizeElement::updategl()
     useval = SoGLPointSizeElement::sizerange[1];
   
   glPointSize(useval);
-} // perform()
+}
 

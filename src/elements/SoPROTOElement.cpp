@@ -111,7 +111,7 @@ SoPROTOElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoPROTOElement class.
@@ -123,7 +123,7 @@ SoPROTOElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoPROTOElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -136,7 +136,7 @@ SoPROTOElement::SoPROTOElement(
 {
     setTypeId( SoPROTOElement::classTypeId );
     setStackIndex( SoPROTOElement::classStackIndex );
-} // SoPROTOElement()
+}
 
 /*!
   The destructor.
@@ -145,7 +145,7 @@ SoPROTOElement::SoPROTOElement(
 SoPROTOElement::~SoPROTOElement(
     void )
 {
-} // ~SoPROTOElement()
+}
 
 //! FIXME: write doc.
 
@@ -154,7 +154,7 @@ SoPROTOElement::init( // virtual
     SoState * state )
 {
     inherited::init( state );
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -163,7 +163,7 @@ SoPROTOElement::push( // virtual
     SoState * state )
 {
     inherited::push( state );
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -173,7 +173,7 @@ SoPROTOElement::pop( // virtual
     const SoElement * prevTopElement )
 {
     inherited::pop( state, prevTopElement );
-} // pop()
+}
 
 //! FIXME: write doc.
 

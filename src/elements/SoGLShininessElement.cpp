@@ -109,7 +109,7 @@ SoGLShininessElement::initClass()
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -121,7 +121,7 @@ SoGLShininessElement::cleanClass()
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLShininessElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.

@@ -116,7 +116,7 @@ SoProfileElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoProofileElement class.
@@ -128,7 +128,7 @@ SoProfileElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoProfileElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -142,7 +142,7 @@ SoProfileElement::SoProfileElement(
 {
     setTypeId( SoProfileElement::classTypeId );
     setStackIndex( SoProfileElement::classStackIndex );
-} // SoProfileElement()
+}
 
 /*!
   The destructor.
@@ -151,7 +151,7 @@ SoProfileElement::SoProfileElement(
 SoProfileElement::~SoProfileElement(
     void )
 {
-} // ~SoProfileElement()
+}
 
 //! FIXME: write doc.
 
@@ -163,7 +163,7 @@ SoProfileElement::add( // static
   SoProfileElement * element = (SoProfileElement *)
     getElement(state, classStackIndex);
   element->profiles.append(profile);
-} // add()
+}
 
 //! FIXME: write doc.
 
@@ -184,7 +184,7 @@ SoProfileElement::print( // virtual
 {
     fprintf( file, "SoProfileElement[%p]: num = %d\n", this,
         this->profiles.getLength() );
-} // print()
+}
 
 //! FIXME: write doc.
 
@@ -194,7 +194,7 @@ SoProfileElement::init(
 {
   inherited::init( state );
   this->profiles.truncate(0);
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -210,7 +210,7 @@ SoProfileElement::push(
     const int numProfiles = this->profiles.getLength();
     for ( int i = 0; i < numProfiles; i++ )
         element->profiles.append( this->profiles[ i ] );
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -220,5 +220,5 @@ SoProfileElement::pop(
     const SoElement * prevTopElement )
 {
     inherited::pop( state, prevTopElement );
-} // pop()
+}
 

@@ -110,7 +110,7 @@ SoTextureMatrixElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -123,7 +123,7 @@ SoTextureMatrixElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoTextureMatrixElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -137,7 +137,7 @@ SoTextureMatrixElement::SoTextureMatrixElement(
 {
     setTypeId( SoTextureMatrixElement::classTypeId );
     setStackIndex( SoTextureMatrixElement::classStackIndex );
-} // SoTextureMatrixElement()
+}
 
 /*!
   The destructor.
@@ -146,7 +146,7 @@ SoTextureMatrixElement::SoTextureMatrixElement(
 SoTextureMatrixElement::~SoTextureMatrixElement(
     void )
 {
-} // ~SoTextureMatrixElement()
+}
 
 //! FIXME: write doc.
 
@@ -159,7 +159,7 @@ SoTextureMatrixElement::makeIdentity( // static
     SoElement::getElement(state, classStackIndex);
   elem->makeEltIdentity();
   if (node) elem->setNodeId(node);
-} // makeIdentity()
+}
 
 //! FIXME: write doc.
 
@@ -224,7 +224,7 @@ SoTextureMatrixElement::get( // static
   SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
     SoElement::getConstElement(state, classStackIndex);
   return elem->getElt();
-} // get()
+}
 
 //! FIXME: write doc.
 
@@ -233,7 +233,7 @@ SoTextureMatrixElement::print( // virtual
     FILE * file ) const
 {
     fprintf( file, "SoTextureMatrixElement[%p]\n", this );
-} // print()
+}
 
 //! FIXME: write doc.
 
@@ -288,7 +288,7 @@ SoTextureMatrixElement::getElt(
     void ) const
 {
   return this->textureMatrix;
-} // getElt()
+}
 
 //! FIXME: write doc.
 
@@ -298,7 +298,7 @@ SoTextureMatrixElement::init(
 {
     inherited::init( state );
     this->textureMatrix.makeIdentity();
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -311,7 +311,7 @@ SoTextureMatrixElement::push(
     SoTextureMatrixElement * const element =
         (SoTextureMatrixElement *)( this->next );
     element->textureMatrix = this->textureMatrix;
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -321,7 +321,7 @@ SoTextureMatrixElement::pop(
     const SoElement * prevTopElement )
 {
     inherited::pop( state, prevTopElement );
-} // pop()
+}
 
 /*!
   FIXME: write doc.

@@ -163,7 +163,7 @@ SoTextureCoordinateElement::initClass()
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -175,7 +175,7 @@ SoTextureCoordinateElement::cleanClass()
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoTextureCoordinateElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -196,7 +196,7 @@ SoTextureCoordinateElement::SoTextureCoordinateElement()
 
 SoTextureCoordinateElement::~SoTextureCoordinateElement()
 {
-} // ~SoTextureCoordinateElement()
+}
 
 //! FIXME: write doc.
 

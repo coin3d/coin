@@ -116,7 +116,7 @@ SoGLTextureCoordinateElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -129,7 +129,7 @@ SoGLTextureCoordinateElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLTextureCoordinateElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -141,7 +141,7 @@ SoGLTextureCoordinateElement::SoGLTextureCoordinateElement()
 {
     setTypeId( SoGLTextureCoordinateElement::classTypeId );
     setStackIndex( SoGLTextureCoordinateElement::classStackIndex );
-} // SoGLTextureCoordinateElement()
+}
 
 /*!
   The destructor.
@@ -149,7 +149,7 @@ SoGLTextureCoordinateElement::SoGLTextureCoordinateElement()
 
 SoGLTextureCoordinateElement::~SoGLTextureCoordinateElement()
 {
-} // ~SoGLTextureCoordinateElement()
+}
 
 //!  FIXME: write doc.
 
@@ -159,7 +159,7 @@ SoGLTextureCoordinateElement::init(SoState * state)
   inherited::init(state);
   this->texgenCB = NULL;
   this->texgenData = NULL;
-} // init()
+}
 
 //!  FIXME: write doc.
 
@@ -169,7 +169,7 @@ SoGLTextureCoordinateElement::push(SoState * state)
   inherited::push(state);
 //   SoGLTextureCoordinateElement *elem = (SoGLTextureCoordinateElement*)
 //     this->next;
-} // push()
+}
 
 //!  FIXME: write doc.
 
@@ -179,7 +179,7 @@ SoGLTextureCoordinateElement::pop(SoState * state,
 {
   inherited::pop(state, prevTopElement);
   ((SoGLTextureCoordinateElement*)prevTopElement)->doCallback();
-} // pop()
+}
 
 //!  FIXME: write doc.
 
@@ -201,7 +201,7 @@ SoGLTextureCoordinateElement::setTexGen(SoState * const state,
     SoReplacedElement::getElement(state, classStackIndex, node);
   element->setElt(texgenFunc, texgenData);
   element->doCallback();
-} // setTexGen()
+}
 
 //!  FIXME: write doc.
 
@@ -218,7 +218,7 @@ SoGLTextureCoordinateElement::getInstance(SoState * const state)
 {
   return (SoGLTextureCoordinateElement*)
     SoElement::getConstElement(state, classStackIndex);
-} // getInstance()
+}
 
 //!  FIXME: write doc.
 
@@ -231,7 +231,7 @@ SoGLTextureCoordinateElement::send(const int index) const
     glTexCoord2fv(coords2[index].getValue());
   else 
     glTexCoord4fv(coords4[index].getValue());
-} // send()
+}
 
 //!  FIXME: write doc.
 
@@ -259,7 +259,7 @@ SoGLTextureCoordinateElement::setElt(SoTexCoordTexgenCB * func,
 {  
   this->texgenCB = func;
   this->texgenData = data;
-} // setElt()
+}
 
 void
 SoGLTextureCoordinateElement::doCallback() const

@@ -104,7 +104,7 @@ SoTextureQualityElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -117,7 +117,7 @@ SoTextureQualityElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoTextureQualityElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -131,7 +131,7 @@ SoTextureQualityElement::SoTextureQualityElement( // protected
     setTypeId( SoTextureQualityElement::classTypeId );
     setStackIndex( SoTextureQualityElement::classStackIndex );
     this->data = getDefault();
-} // SoTextureQualityElement()
+}
 
 /*!
   The destructor.
@@ -140,7 +140,7 @@ SoTextureQualityElement::SoTextureQualityElement( // protected
 SoTextureQualityElement::~SoTextureQualityElement( // virtual protected
     void )
 {
-} // ~SoTextureQualityElement()
+}
 
 //! FIXME: write doc.
 
@@ -151,7 +151,7 @@ SoTextureQualityElement::init( // virtual
   inherited::init( state );
 
   this->data = SoTextureQualityElement::getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -160,7 +160,7 @@ SoTextureQualityElement::push( // virtual
     SoState * state )
 {
     inherited::push( state );
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -170,7 +170,7 @@ SoTextureQualityElement::pop( // virtual
     const SoElement * prevTopElement )
 {
     inherited::pop( state, prevTopElement );
-} // pop()
+}
 
 /*!
   FIXME: write doc.

@@ -110,7 +110,7 @@ SoGLRenderPassElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -123,7 +123,7 @@ SoGLRenderPassElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLRenderPassElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -137,7 +137,7 @@ SoGLRenderPassElement::SoGLRenderPassElement( // protected
 {
   setTypeId( SoGLRenderPassElement::classTypeId );
   setStackIndex( SoGLRenderPassElement::classStackIndex );
-} // SoGLRenderPassElement()
+}
 
 /*!
   The destructor.
@@ -146,7 +146,7 @@ SoGLRenderPassElement::SoGLRenderPassElement( // protected
 SoGLRenderPassElement::~SoGLRenderPassElement( // virtual
 					      void )
 {
-} // ~SoGLRenderPassElement()
+}
 
 //! FIXME: write doc.
 
@@ -156,7 +156,7 @@ SoGLRenderPassElement::init( // virtual
 {
   inherited::init( state );
   this->passnr = 0;
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -165,7 +165,7 @@ SoGLRenderPassElement::push( // virtual
 			    SoState * state )
 {
   inherited::push( state );
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -175,7 +175,7 @@ SoGLRenderPassElement::pop( // virtual
 			   const SoElement * prevTopElement )
 {
   inherited::pop( state, prevTopElement );
-} // pop()
+}
 
 //! FIXME: write doc.
 
@@ -185,7 +185,7 @@ SoGLRenderPassElement::matches( // virtual
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
-} // matches()
+}
 
 //! FIXME: write doc.
 
@@ -195,7 +195,7 @@ SoGLRenderPassElement::copyMatchInfo( // virtual
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
-} // copyMatchInfo()
+}
 
 //! FIXME: write doc.
 
@@ -207,7 +207,7 @@ SoGLRenderPassElement::set( // static
   SoGLRenderPassElement * element = (SoGLRenderPassElement *)
     getElement(state, classStackIndex);
   element->passnr = pass;
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -218,7 +218,7 @@ SoGLRenderPassElement::get( // static
   const SoGLRenderPassElement * element = (const SoGLRenderPassElement *)
     getConstElement(state, classStackIndex);
   return element->passnr;
-} // get()
+}
 
 //! FIXME: write doc.
 
@@ -227,5 +227,5 @@ SoGLRenderPassElement::print( // virtual
 			     FILE * file ) const
 {
   assert(0 && "FIXME: not implemented");
-} // print()
+}
 

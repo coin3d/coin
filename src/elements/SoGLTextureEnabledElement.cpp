@@ -117,7 +117,7 @@ SoGLTextureEnabledElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -130,7 +130,7 @@ SoGLTextureEnabledElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLTextureEnabledElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -144,7 +144,7 @@ SoGLTextureEnabledElement::SoGLTextureEnabledElement(
     setTypeId( SoGLTextureEnabledElement::classTypeId );
     setStackIndex( SoGLTextureEnabledElement::classStackIndex );
     this->data = getDefault();
-} // SoGLTextureEnabledElement()
+}
 
 /*!
   The destructor.
@@ -153,7 +153,7 @@ SoGLTextureEnabledElement::SoGLTextureEnabledElement(
 SoGLTextureEnabledElement::~SoGLTextureEnabledElement(
     void )
 {
-} // ~SoGLTextureEnabledElement()
+}
 
 //! FIXME: write doc.
 
@@ -166,7 +166,7 @@ SoGLTextureEnabledElement::set(SoState * const state,
 #if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
   SoShapeStyleElement::setTextureEnabled(state, enabled);
 #endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -176,7 +176,7 @@ SoGLTextureEnabledElement::init(SoState * state)
   inherited::init(state);
   this->data = getDefault();
   updategl();
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -185,7 +185,7 @@ SoGLTextureEnabledElement::push(SoState * state)
 {
   inherited::push(state);
   ((SoGLTextureEnabledElement*)this->next)->data = this->data;
-} // push()
+}
 
 //! FIXME: write doc.
 

@@ -110,7 +110,7 @@ SoAnnoText3FontSizeHintElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -123,7 +123,7 @@ SoAnnoText3FontSizeHintElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoAnnoText3FontSizeHintElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -137,7 +137,7 @@ SoAnnoText3FontSizeHintElement::SoAnnoText3FontSizeHintElement( // protected
     setTypeId( SoAnnoText3FontSizeHintElement::classTypeId );
     setStackIndex( SoAnnoText3FontSizeHintElement::classStackIndex );
     this->data = getDefault();
-} // SoAnnoText3FontSizeHintElement()
+}
 
 /*!
   The destructor.
@@ -146,7 +146,7 @@ SoAnnoText3FontSizeHintElement::SoAnnoText3FontSizeHintElement( // protected
 SoAnnoText3FontSizeHintElement::~SoAnnoText3FontSizeHintElement( // virtual protected
     void )
 {
-} // ~SoAnnoText3FontSizeHintElement()
+}
 
 //! FIXME: write doc.
 
@@ -156,7 +156,7 @@ SoAnnoText3FontSizeHintElement::init( // virtual
 {
   inherited::init( state );
   this->data = getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 

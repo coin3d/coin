@@ -113,7 +113,7 @@ SoGLModelMatrixElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -126,7 +126,7 @@ SoGLModelMatrixElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLModelMatrixElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -140,7 +140,7 @@ SoGLModelMatrixElement::SoGLModelMatrixElement( // protected
 {
     setTypeId( SoGLModelMatrixElement::classTypeId );
     setStackIndex( SoGLModelMatrixElement::classStackIndex );
-} // SoGLModelMatrixElement()
+}
 
 /*!
   The destructor.
@@ -149,7 +149,7 @@ SoGLModelMatrixElement::SoGLModelMatrixElement( // protected
 SoGLModelMatrixElement::~SoGLModelMatrixElement( // virtual
     void )
 {
-} // ~SoGLModelMatrixElement()
+}
 
 //! FIXME: write doc.
 
@@ -161,7 +161,7 @@ SoGLModelMatrixElement::init(SoState * state)
 #endif // 0
   this->state = state;
   inherited::init(state);
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -176,7 +176,7 @@ SoGLModelMatrixElement::push(SoState * state)
   SoGLModelMatrixElement *elem = (SoGLModelMatrixElement*)
     this->next;
   elem->state = state;
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -189,7 +189,7 @@ SoGLModelMatrixElement::pop(SoState * state,
 #endif // 0
   inherited::pop(state, prevTopElement);
   glPopMatrix();
-} // pop()
+}
 
 //! FIXME: write doc.
 
@@ -199,7 +199,7 @@ SoGLModelMatrixElement::makeEltIdentity()
   const SbMatrix &mat = SoViewingMatrixElement::get(this->state); 
   glLoadMatrixf(mat[0]);
   inherited::makeEltIdentity();
-} // makeEltIdentity()
+}
 
 //! FIXME: write doc.
 
@@ -210,7 +210,7 @@ SoGLModelMatrixElement::setElt(const SbMatrix &matrix)
   SbMatrix mat = SoViewingMatrixElement::get(this->state);
   mat.multRight(matrix);
   glLoadMatrixf(mat[0]);
-} // setElt()
+}
 
 //! FIXME: write doc.
 
@@ -258,7 +258,7 @@ SoGLModelMatrixElement::multElt(const SbMatrix &matrix)
 		     m[2][0], m[2][1], m[2][2], m[2][3],
 		     m[3][0], m[3][1], m[3][2], m[3][3]);
 #endif // debug
-} // multElt()
+}
 
 //! FIXME: write doc.
 
@@ -267,7 +267,7 @@ SoGLModelMatrixElement::translateEltBy(const SbVec3f &translation)
 {
   glTranslatef(translation[0], translation[1], translation[2]);
   inherited::translateEltBy(translation);
-} // translateEltBy()
+}
 
 //! FIXME: write doc.
 
@@ -279,7 +279,7 @@ SoGLModelMatrixElement::rotateEltBy(const SbRotation &rotation)
   rotation.getValue(axis, angle);
   glRotatef(angle*180.0f/M_PI, axis[0], axis[1], axis[2]);
   inherited::rotateEltBy(rotation);
-} // rotateEltBy()
+}
 
 //! FIXME: write doc.
 
@@ -288,7 +288,7 @@ SoGLModelMatrixElement::scaleEltBy(const SbVec3f &scaleFactor)
 {
   glScalef(scaleFactor[0], scaleFactor[1], scaleFactor[2]);
   inherited::scaleEltBy(scaleFactor);
-} // scaleEltBy()
+}
 
 //! FIXME: write doc.
 
@@ -298,7 +298,7 @@ SoGLModelMatrixElement::pushMatrixElt()
   SbMatrix matrix;
   glGetFloatv(GL_MODELVIEW_MATRIX, matrix[0]);
   return matrix;
-} // pushMatrixElt()
+}
 
 //! FIXME: write doc.
 
@@ -306,5 +306,5 @@ void
 SoGLModelMatrixElement::popMatrixElt(const SbMatrix &matrix)
 {
   glLoadMatrixf(matrix[0]);
-} // popMatrixElt()
+}
 

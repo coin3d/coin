@@ -104,7 +104,7 @@ SoFontSizeElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoFontSizeElement class.
@@ -116,7 +116,7 @@ SoFontSizeElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoFontSizeElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -130,7 +130,7 @@ SoFontSizeElement::SoFontSizeElement( // protected
     setTypeId( SoFontSizeElement::classTypeId );
     setStackIndex( SoFontSizeElement::classStackIndex );
     this->data = getDefault();
-} // SoFontSizeElement()
+}
 
 /*!
   The destructor.
@@ -139,7 +139,7 @@ SoFontSizeElement::SoFontSizeElement( // protected
 SoFontSizeElement::~SoFontSizeElement( // virtual protected
     void )
 {
-} // ~SoFontSizeElement()
+}
 
 //! FIXME: write doc.
 
@@ -149,7 +149,7 @@ SoFontSizeElement::init( // virtual
 {
   inherited::init( state );
   this->data = getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 

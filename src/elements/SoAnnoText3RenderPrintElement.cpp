@@ -110,7 +110,7 @@ SoAnnoText3RenderPrintElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -123,7 +123,7 @@ SoAnnoText3RenderPrintElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoAnnoText3RenderPrintElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -137,7 +137,7 @@ SoAnnoText3RenderPrintElement::SoAnnoText3RenderPrintElement( // protected
     setTypeId( SoAnnoText3RenderPrintElement::classTypeId );
     setStackIndex( SoAnnoText3RenderPrintElement::classStackIndex );
     this->data = getDefault();
-} // SoAnnoText3RenderPrintElement()
+}
 
 /*!
   The destructor.
@@ -146,7 +146,7 @@ SoAnnoText3RenderPrintElement::SoAnnoText3RenderPrintElement( // protected
 SoAnnoText3RenderPrintElement::~SoAnnoText3RenderPrintElement( // virtual protected
     void )
 {
-} // ~SoAnnoText3RenderPrintElement()
+}
 
 //! FIXME: write doc.
 
@@ -156,7 +156,7 @@ SoAnnoText3RenderPrintElement::init( // virtual
 {
   inherited::init( state );
   this->data = getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 

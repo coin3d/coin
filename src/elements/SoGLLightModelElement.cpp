@@ -109,7 +109,7 @@ SoGLLightModelElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -122,7 +122,7 @@ SoGLLightModelElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLLightModelElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.

@@ -116,7 +116,7 @@ SoGLUpdateAreaElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -129,7 +129,7 @@ SoGLUpdateAreaElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLUpdateAreaElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -142,7 +142,7 @@ SoGLUpdateAreaElement::SoGLUpdateAreaElement( // protected
 {
     setTypeId( SoGLUpdateAreaElement::classTypeId );
     setStackIndex( SoGLUpdateAreaElement::classStackIndex );
-} // SoGLUpdateAreaElement()
+}
 
 /*!
   The destructor.
@@ -150,7 +150,7 @@ SoGLUpdateAreaElement::SoGLUpdateAreaElement( // protected
 
 SoGLUpdateAreaElement::~SoGLUpdateAreaElement()
 {
-} // ~SoGLUpdateAreaElement()
+}
 
 //! FIXME: write doc.
 
@@ -160,7 +160,7 @@ SoGLUpdateAreaElement::init(SoState * state)
   inherited::init( state );
   origin = getDefaultOrigin();
   size = getDefaultSize();
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -168,7 +168,7 @@ void
 SoGLUpdateAreaElement::push(SoState * state)
 {
     inherited::push( state );
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -177,7 +177,7 @@ SoGLUpdateAreaElement::pop(SoState * state,
 			   const SoElement * prevTopElement)
 {
     inherited::pop( state, prevTopElement );
-} // pop()
+}
 
 //! FIXME: write doc.
 
@@ -186,7 +186,7 @@ SoGLUpdateAreaElement::matches(const SoElement * element) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
-} // matches()
+}
 
 //! FIXME: write doc.
 
@@ -195,7 +195,7 @@ SoGLUpdateAreaElement::copyMatchInfo() const
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
-} // copyMatchInfo()
+}
 
 //! FIXME: write doc.
 
@@ -208,7 +208,7 @@ SoGLUpdateAreaElement::set(SoState * const state,
     inherited::getElement(state, SoGLUpdateAreaElement::classStackIndex);
   e->origin = origin;
   e->size = size;
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -227,7 +227,7 @@ SoGLUpdateAreaElement::get(SoState * const state,
     return TRUE;
   else
     return FALSE;
-} // get()
+}
 
 //! FIXME: write doc.
 

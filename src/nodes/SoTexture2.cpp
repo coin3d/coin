@@ -176,7 +176,7 @@ SoTexture2::~SoTexture2()
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   if (this->glImage) this->glImage->unref();
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-} // ~SoTexture2()
+}
 
 /*!
   Does initialization common for all objects of the

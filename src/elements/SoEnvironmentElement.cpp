@@ -146,7 +146,7 @@ SoEnvironmentElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -159,7 +159,7 @@ SoEnvironmentElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoEnvironmentElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -172,7 +172,7 @@ SoEnvironmentElement::SoEnvironmentElement(
 {
   setTypeId( SoEnvironmentElement::classTypeId );
   setStackIndex( SoEnvironmentElement::classStackIndex );
-} // SoEnvironmentElement()
+}
 
 /*!
   The destructor.
@@ -181,7 +181,7 @@ SoEnvironmentElement::SoEnvironmentElement(
 SoEnvironmentElement::~SoEnvironmentElement(
     void )
 {
-} // ~SoEnvironmentElement()
+}
 
 //! FIXME: write doc.
 

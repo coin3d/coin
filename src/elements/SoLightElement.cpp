@@ -121,7 +121,7 @@ SoLightElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoLightElement class.
@@ -133,7 +133,7 @@ SoLightElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoLightElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -147,7 +147,7 @@ SoLightElement::SoLightElement(
 {
     setTypeId( SoLightElement::classTypeId );
     setStackIndex( SoLightElement::classStackIndex );
-} // SoLightElement()
+}
 
 /*!
   The destructor.
@@ -156,7 +156,7 @@ SoLightElement::SoLightElement(
 SoLightElement::~SoLightElement(
     void )
 {
-} // ~SoLightElement()
+}
 
 //! FIXME: write doc.
 
@@ -166,7 +166,7 @@ SoLightElement::add( // static
     SoLight * const light,
     const SbMatrix & WCToVRCMatrix )
 {
-} // add()
+}
 
 //! FIXME: write doc.
 
@@ -177,7 +177,7 @@ SoLightElement::getLights( // static
   assert(0 && "FIXME: not implemented");
   static SoNodeList nl;
   return nl;
-} // getLights()
+}
 
 //! FIXME: write doc.
 
@@ -189,7 +189,7 @@ SoLightElement::getMatrix( // static
   assert(0 && "FIXME: not implemented");
   static SbMatrix m = SbMatrix::identity();
   return m;
-} // getMatrix()
+}
 
 //! FIXME: write doc.
 
@@ -199,7 +199,7 @@ SoLightElement::print( // virtual
 {
     fprintf( file, "SoLightElement[%p]: lights = %sdn", this,
         this->lights.getLength() );
-} // print()
+}
 
 //! FIXME: write doc.
 
@@ -208,7 +208,7 @@ SoLightElement::init(
     SoState * state )
 {
     inherited::init( state );
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -230,7 +230,7 @@ SoLightElement::push(
     for ( i = 0; i < numMatrices; i++ )
         element->WCToVRCMatrices.append( this->WCToVRCMatrices[ i ] );
     element->startIndex = this->startIndex;
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -240,5 +240,5 @@ SoLightElement::pop(
     const SoElement * prevTopElement )
 {
     inherited::pop( state, prevTopElement );
-} // pop()
+}
 

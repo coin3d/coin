@@ -124,7 +124,7 @@ SoDiffuseColorElement::initClass()
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -136,7 +136,7 @@ SoDiffuseColorElement::cleanClass()
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoDiffuseColorElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 //! FIXME: write doc.
 

@@ -103,7 +103,7 @@ SoCreaseAngleElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -116,7 +116,7 @@ SoCreaseAngleElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoCreaseAngleElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -130,7 +130,7 @@ SoCreaseAngleElement::SoCreaseAngleElement( // protected
     setTypeId( SoCreaseAngleElement::classTypeId );
     setStackIndex( SoCreaseAngleElement::classStackIndex );
     this->data = getDefault();
-} // SoCreaseAngleElement()
+}
 
 /*!
   The destructor.
@@ -139,7 +139,7 @@ SoCreaseAngleElement::SoCreaseAngleElement( // protected
 SoCreaseAngleElement::~SoCreaseAngleElement( // virtual protected
     void )
 {
-} // ~SoCreaseAngleElement()
+}
 
 //! FIXME: write doc.
 
@@ -149,7 +149,7 @@ SoCreaseAngleElement::init( // virtual
 {
   inherited::init( state );
   this->data = getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 

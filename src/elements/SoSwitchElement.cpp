@@ -103,7 +103,7 @@ SoSwitchElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoSwitchElement class.
@@ -115,7 +115,7 @@ SoSwitchElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoSwitchElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -129,7 +129,7 @@ SoSwitchElement::SoSwitchElement(
     setTypeId( SoSwitchElement::classTypeId );
     setStackIndex( SoSwitchElement::classStackIndex );
     this->data = getDefault();
-} // SoSwitchElement()
+}
 
 /*!
   The destructor.
@@ -138,7 +138,7 @@ SoSwitchElement::SoSwitchElement(
 SoSwitchElement::~SoSwitchElement(
     void )
 {
-} // ~SoSwitchElement()
+}
 
 //! FIXME: write doc.
 
@@ -148,7 +148,7 @@ SoSwitchElement::set(SoState * const state,
 		     const int32_t index)
 {
   SoInt32Element::set(classStackIndex, state, node, index);
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -158,7 +158,7 @@ SoSwitchElement::init( // virtual
 {
   inherited::init( state );
   this->data = getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 

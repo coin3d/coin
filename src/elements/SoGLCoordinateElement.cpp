@@ -109,7 +109,7 @@ SoGLCoordinateElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -122,7 +122,7 @@ SoGLCoordinateElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLCoordinateElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -135,7 +135,7 @@ SoGLCoordinateElement::SoGLCoordinateElement( // protected
 {
     setTypeId( SoGLCoordinateElement::classTypeId );
     setStackIndex( SoGLCoordinateElement::classStackIndex );
-} // SoGLCoordinateElement()
+}
 
 /*!
   The destructor.
@@ -144,7 +144,7 @@ SoGLCoordinateElement::SoGLCoordinateElement( // protected
 SoGLCoordinateElement::~SoGLCoordinateElement( // virtual
     void )
 {
-} // ~SoGLCoordinateElement()
+}
 
 //! FIXME: write doc.
 
@@ -155,7 +155,7 @@ SoGLCoordinateElement::send(const int index) const
   assert(index < this->numCoords);
   if (is3D()) glVertex3fv((const GLfloat*)(this->getPtr3() + index));
   else glVertex4fv((const GLfloat*)(this->getPtr4() + index));
-} // send()
+}
 
 //! FIXME: write doc.
 

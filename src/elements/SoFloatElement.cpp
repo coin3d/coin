@@ -55,7 +55,7 @@ SoFloatElement::getClassTypeId( // static
   void )
 {
   return SoFloatElement::classTypeId;
-} // getClassTypeId()
+}
 
 /*!
   \var SoFloatElement::classStackIndex
@@ -75,7 +75,7 @@ SoFloatElement::getClassStackIndex( // static
   void )
 {
   return SoFloatElement::classStackIndex;
-} // getClassStackIndex()
+}
 //$ END TEMPLATE AbstractElementSource
 
 /*!
@@ -102,7 +102,7 @@ SoFloatElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitAbstractElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoFloatElement class.
@@ -114,7 +114,7 @@ SoFloatElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanAbstractElementSource( SoFloatElement )
 //$ END TEMPLATE CleanAbstractElementSource
-} // cleanClass()
+}
 
 /*!
   The constructor initialized the float to 0.0, and sets the class type
@@ -127,7 +127,7 @@ SoFloatElement::SoFloatElement( // protected
 {
     setTypeId( SoFloatElement::classTypeId );
     setStackIndex( SoFloatElement::classStackIndex );
-} // SoFloatElement()
+}
 
 /*!
   The destructor.
@@ -136,7 +136,7 @@ SoFloatElement::SoFloatElement( // protected
 SoFloatElement::~SoFloatElement( // protected
     void )
 {
-} // ~SoFloatElement()
+}
 
 //! FIXME: write doc.
 
@@ -150,7 +150,7 @@ SoFloatElement::matches(
     if ( this->data != ((SoFloatElement *)element)->data )
         return FALSE;
     return TRUE;
-} // matches()
+}
 
 //! FIXME: write doc.
 
@@ -166,7 +166,7 @@ SoFloatElement::copyMatchInfo(
     // information needed in matches(). An exact copy is not needed.
     //    element->dataNode = this->dataNode;
     return element;
-} // copyMatchInfo()
+}
 
 //! FIXME: write doc.
 
@@ -176,7 +176,7 @@ SoFloatElement::print(
 {
     fprintf( file, "%s[%p]: data = %f\n",
         getTypeId().getName().getString(), this, this->data );
-} // print()
+}
 
 //! FIXME: write doc.
 
@@ -192,7 +192,7 @@ SoFloatElement::set(const int index,
   if (element) {
     element->setElt( value );
   }
-} // set()
+}
 
 /*!
   FIXME: write doc.
@@ -216,7 +216,7 @@ SoFloatElement::get(const int index,
   if (element)
     return element->data;
   return 0.0f;
-} // get()
+}
 
 //! FIXME: write doc.
 
@@ -224,7 +224,7 @@ void
 SoFloatElement::setElt(float value)
 {
   this->data = value;
-} // setElt()
+}
 
 //! FIXME: write doc.
 
@@ -233,5 +233,5 @@ SoFloatElement::init(SoState * state)
 {
   inherited::init(state);
   this->data = 0.0f;
-} // init()
+}
 

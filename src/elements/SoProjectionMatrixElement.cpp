@@ -104,7 +104,7 @@ SoProjectionMatrixElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoProjectionMatrixElement
@@ -117,7 +117,7 @@ SoProjectionMatrixElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoProjectionMatrixElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -131,7 +131,7 @@ SoProjectionMatrixElement::SoProjectionMatrixElement(
 {
     setTypeId( SoProjectionMatrixElement::classTypeId );
     setStackIndex( SoProjectionMatrixElement::classStackIndex );
-} // SoProjectionMatrixElement()
+}
 
 /*!
   The destructor.
@@ -140,7 +140,7 @@ SoProjectionMatrixElement::SoProjectionMatrixElement(
 SoProjectionMatrixElement::~SoProjectionMatrixElement(
     void )
 {
-} // ~SoProjectionMatrixElement()
+}
 
 //! FIXME: write doc.
 
@@ -152,7 +152,7 @@ SoProjectionMatrixElement::set(SoState * const state,
   SoProjectionMatrixElement * element = (SoProjectionMatrixElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
   element->setElt(projectionMatrix);
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -162,7 +162,7 @@ SoProjectionMatrixElement::get(SoState * const state)
   SoProjectionMatrixElement * element = (SoProjectionMatrixElement *)
     SoElement::getConstElement(state, classStackIndex);
   return element->projectionMatrix;
-} // get()
+}
 
 //! FIXME: write doc.
 
@@ -174,7 +174,7 @@ SoProjectionMatrixElement::setElt(SbMatrix const & matrix)
   // DEBUG
   this->projectionMatrix.print(stdout);
 #endif // 0
-} // setElt()
+}
 
 //! FIXME: write doc.
 
@@ -183,5 +183,5 @@ SoProjectionMatrixElement::init(SoState * state)
 {
   inherited::init(state);
   this->projectionMatrix.makeIdentity();
-} // init()
+}
 

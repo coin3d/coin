@@ -114,7 +114,7 @@ SoGLViewingMatrixElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -127,7 +127,7 @@ SoGLViewingMatrixElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLViewingMatrixElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -141,7 +141,7 @@ SoGLViewingMatrixElement::SoGLViewingMatrixElement( // protected
 {
     setTypeId( SoGLViewingMatrixElement::classTypeId );
     setStackIndex( SoGLViewingMatrixElement::classStackIndex );
-} // SoGLViewingMatrixElement()
+}
 
 /*!
   The destructor.
@@ -150,7 +150,7 @@ SoGLViewingMatrixElement::SoGLViewingMatrixElement( // protected
 SoGLViewingMatrixElement::~SoGLViewingMatrixElement( // virtual
     void )
 {
-} // ~SoGLViewingMatrixElement()
+}
 
 //! FIXME: write doc.
 
@@ -164,7 +164,7 @@ SoGLViewingMatrixElement::init(SoState * state)
   inherited::init( state );
   this->state = state;
   glLoadIdentity(); // maybe not strictly necessary?
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -179,7 +179,7 @@ SoGLViewingMatrixElement::push(SoState * state)
     this->next;
   elem->state = state;
   //glPushMatrix();
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -192,7 +192,7 @@ SoGLViewingMatrixElement::pop(SoState * state,
 #endif // 0
   //glPopMatrix();
   inherited::pop(state, prevTopElement);
-} // pop()
+}
 
 //! FIXME: write doc.
 
@@ -202,7 +202,7 @@ SoGLViewingMatrixElement::getNodeId(SoState * const state)
   SoGLViewingMatrixElement *elem = (SoGLViewingMatrixElement*)
     SoElement::getConstElement(state, classStackIndex);
   return elem->getNodeId(state);
-} // getNodeId()
+}
 
 //! FIXME: write doc.
 
@@ -220,7 +220,7 @@ SoGLViewingMatrixElement::setElt(const SbMatrix & matrix)
   if (!isIdentity) this->viewingMatrix.multRight(mat);
 #endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
   this->updategl();
-} // setElt()
+}
 
 //! FIXME: write doc.
 
@@ -231,5 +231,5 @@ SoGLViewingMatrixElement::updategl()
   SoDebugError::postInfo("SoGLViewingMatrixElement::updategl", "");
 #endif // debug
   glLoadMatrixf((float*)this->viewingMatrix);
-} // updategl()
+}
 

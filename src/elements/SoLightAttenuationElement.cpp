@@ -118,7 +118,7 @@ SoLightAttenuationElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -131,7 +131,7 @@ SoLightAttenuationElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoLightAttenuationElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -145,7 +145,7 @@ SoLightAttenuationElement::SoLightAttenuationElement(
 {
   setTypeId( SoLightAttenuationElement::classTypeId );
   setStackIndex( SoLightAttenuationElement::classStackIndex );
-} // SoLightAttenuationElement()
+}
 
 /*!
   The destructor.
@@ -154,7 +154,7 @@ SoLightAttenuationElement::SoLightAttenuationElement(
 SoLightAttenuationElement::~SoLightAttenuationElement(
     void )
 {
-} // ~SoLightAttenuationElement()
+}
 
 //! FIXME: write doc.
 
@@ -167,7 +167,7 @@ SoLightAttenuationElement::set( // static
   SoLightAttenuationElement * element = (SoLightAttenuationElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
   element->lightAttenuation = lightAttenuation;
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -177,7 +177,7 @@ SoLightAttenuationElement::get(SoState * const state)
   SoLightAttenuationElement * element = (SoLightAttenuationElement *)
     SoElement::getConstElement(state, classStackIndex);
   return element->lightAttenuation;
-} // get()
+}
 
 //! FIXME: write doc.
 
@@ -189,7 +189,7 @@ SoLightAttenuationElement::matches( // virtual
       ((SoLightAttenuationElement *)element)->lightAttenuation)
     return FALSE;
   return TRUE;
-} // matches()
+}
 
 //! FIXME: write doc.
 
@@ -200,7 +200,7 @@ SoLightAttenuationElement::copyMatchInfo() const
     (SoLightAttenuationElement::getClassTypeId().createInstance());
   element->lightAttenuation = this->lightAttenuation;
   return element;
-} // copyMatchInfo()
+}
 
 //! FIXME: write doc.
 
@@ -212,7 +212,7 @@ SoLightAttenuationElement::print(FILE * file) const
 	   this->lightAttenuation[0],
 	   this->lightAttenuation[1],
 	   this->lightAttenuation[2] );
-} // print()
+}
 
 //! FIXME: write doc.
 
@@ -221,7 +221,7 @@ SoLightAttenuationElement::init(SoState * state)
 {
   inherited::init(state);
   this->lightAttenuation = defaultAttenuation;
-} // init()
+}
 
 //! FIXME: write doc.
 

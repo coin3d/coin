@@ -111,7 +111,7 @@ SoGLClipPlaneElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -124,7 +124,7 @@ SoGLClipPlaneElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLClipPlaneElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -136,7 +136,7 @@ SoGLClipPlaneElement::SoGLClipPlaneElement()
 {
     setTypeId( SoGLClipPlaneElement::classTypeId );
     setStackIndex( SoGLClipPlaneElement::classStackIndex );
-} // SoGLClipPlaneElement()
+}
 
 /*!
   The destructor.
@@ -145,7 +145,7 @@ SoGLClipPlaneElement::SoGLClipPlaneElement()
 SoGLClipPlaneElement::~SoGLClipPlaneElement( // virtual
     void )
 {
-} // ~SoGLClipPlaneElement()
+}
 
 //! FIXME: write doc.
 
@@ -153,7 +153,7 @@ void
 SoGLClipPlaneElement::init(SoState * state)
 {
   inherited::init( state );
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -167,7 +167,7 @@ SoGLClipPlaneElement::pop(SoState * state,
   
   // pop plane data
   inherited::pop(state, prevTopElement);
-} // pop()
+}
 
 //! FIXME: write doc.
 

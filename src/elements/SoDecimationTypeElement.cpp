@@ -110,7 +110,7 @@ SoDecimationTypeElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -123,7 +123,7 @@ SoDecimationTypeElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoDecimationTypeElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -137,7 +137,7 @@ SoDecimationTypeElement::SoDecimationTypeElement(
     setTypeId( SoDecimationTypeElement::classTypeId );
     setStackIndex( SoDecimationTypeElement::classStackIndex );
     this->data = getDefault();
-} // SoDecimationTypeElement()
+}
 
 /*!
   The destructor.
@@ -146,7 +146,7 @@ SoDecimationTypeElement::SoDecimationTypeElement(
 SoDecimationTypeElement::~SoDecimationTypeElement(
     void )
 {
-} // ~SoDecimationTypeElement()
+}
 
 //! FIXME: write doc.
 
@@ -158,7 +158,7 @@ SoDecimationTypeElement::set( // static
 {
   assert((int)type >= (int)AUTOMATIC && (int)type <= (int)PERCENTAGE);
   SoInt32Element::set(classStackIndex, state, node, type);
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -167,7 +167,7 @@ SoDecimationTypeElement::init( // virtual
     SoState * state )
 {
     inherited::init( state );
-} // init()
+}
 
 //! FIXME: write doc.
 

@@ -77,12 +77,12 @@ SoExpressionParser::SoExpressionParser(
     SoCalculator * valueContainer )
   : values( valueContainer )
 {
-} // SoExpressionParser()
+}
 
 SoExpressionParser::~SoExpressionParser(
     void )
 {
-} // ~SoExpressionParser()
+}
 
 /**************************************************************************/
 
@@ -90,7 +90,7 @@ void
 SoExpressionParser::parse(
     void )
 {
-} // parse()
+}
 
 /**************************************************************************/
 
@@ -98,7 +98,7 @@ void
 SoExpressionParser::evaluate(
     void )
 {
-} // evaluate()
+}
 
 /**************************************************************************/
 

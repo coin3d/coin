@@ -109,7 +109,7 @@ SoGLAmbientColorElement::initClass()
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initclass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -121,7 +121,7 @@ SoGLAmbientColorElement::cleanClass()
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLAmbientColorElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.

@@ -78,7 +78,7 @@ SoDebugError::initClass( void ) // static
   SoDebugError::callbackData = NULL;
   SoDebugError::classTypeId =
     SoType::createType( SoError::getClassTypeId(), "SoDebugError" );
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoDebugError class.
@@ -87,7 +87,7 @@ SoDebugError::initClass( void ) // static
 void
 SoDebugError::cleanClass( void ) // static
 {
-} // cleanClass()
+}
 
 /*!
   FIXME: write doc.
@@ -100,7 +100,7 @@ SoDebugError::setHandlerCallback( // static
 {
   SoDebugError::callback = function;
   SoDebugError::callbackData = data;
-} // setHandlerCallback()
+}
 
 /*!
   FIXME: write doc.
@@ -110,7 +110,7 @@ SoErrorCB *
 SoDebugError::getHandlerCallback( void ) // static
 {
   return SoDebugError::callback;
-} // getHandlerCallback()
+}
 
 /*!
   FIXME: write doc.
@@ -120,7 +120,7 @@ void *
 SoDebugError::getHandlerData( void ) // static
 {
   return SoDebugError::callbackData;
-} // getHandlerData()
+}
 
 /*!
   FIXME: write doc.
@@ -130,7 +130,7 @@ SoType
 SoDebugError::getClassTypeId( void ) // static
 {
   return SoDebugError::classTypeId;
-} // getClassTypeId()
+}
 
 /*!
   FIXME: write doc.
@@ -140,7 +140,7 @@ SoType
 SoDebugError::getTypeId( void ) const // virtual
 {
   return SoDebugError::classTypeId;
-} // getTypeId()
+}
 
 /*!
   FIXME: write doc.
@@ -150,7 +150,7 @@ SoDebugError::Severity
 SoDebugError::getSeverity( void ) const
 {
   return this->severity;
-} // getSeverity()
+}
 
 /*!
   This method posts a message with severity level "ERROR".
@@ -173,7 +173,7 @@ SoDebugError::post( // static
   error.severity = ERROR;
   error.setDebugString( string );
   error.handleError();
-} // post()
+}
 
 /*!
   FIXME: write doc.
@@ -196,7 +196,7 @@ SoDebugError::postWarning( // static
   error.severity = WARNING;
   error.setDebugString( string );
   error.handleError();
-} // postWarning()
+}
 
 /*!
   FIXME: write doc.
@@ -219,7 +219,7 @@ SoDebugError::postInfo( // static
   error.severity = INFO;
   error.setDebugString( string );
   error.handleError();
-} // post()
+}
 
 /*!
   FIXME: write doc.
@@ -231,5 +231,5 @@ SoDebugError::getHandler( // virtual
 {
   data = SoDebugError::callbackData;
   return SoDebugError::callback;
-} // getHandler()
+}
 

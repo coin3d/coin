@@ -134,7 +134,7 @@ SoModelMatrixElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -147,7 +147,7 @@ SoModelMatrixElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoModelMatrixElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -161,7 +161,7 @@ SoModelMatrixElement::SoModelMatrixElement(
 {
   setTypeId( SoModelMatrixElement::classTypeId );
   setStackIndex( SoModelMatrixElement::classStackIndex );
-} // SoModelMatrixElement()
+}
 
 /*!
   The destructor.
@@ -170,7 +170,7 @@ SoModelMatrixElement::SoModelMatrixElement(
 SoModelMatrixElement::~SoModelMatrixElement(
     void )
 {
-} // ~SoModelMatrixElement()
+}
 
 //! FIXME: write doc.
 
@@ -184,7 +184,7 @@ SoModelMatrixElement::matches(const SoElement * element) const
   if (this->flags & FLG_CULLMATRIX &&
       this->cullMatrix != elem->cullMatrix) return FALSE;
   return SoAccumulatedElement::matches(element);
-} // matches()
+}
 
 //! FIXME: write doc.
 
@@ -196,7 +196,7 @@ SoModelMatrixElement::makeIdentity(SoState * const state,
     SoElement::getElement(state, classStackIndex);
   elem->makeEltIdentity();
   if (node) elem->setNodeId(node);
-} // makeIdentity()
+}
 
 //! FIXME: write doc.
 
@@ -209,7 +209,7 @@ SoModelMatrixElement::set(SoState * const state,
     SoElement::getElement(state, classStackIndex);
   elem->setElt(matrix);
   if (node) elem->setNodeId(node);
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -245,7 +245,7 @@ SoModelMatrixElement::mult(SoState * const state,
 #endif // 0
   elem->multElt(matrix);
   if (node) elem->addNodeId(node);
-} // mult()
+}
 
 //! FIXME: write doc.
 
@@ -259,7 +259,7 @@ SoModelMatrixElement::translateBy(SoState * const state,
   elem->translateEltBy(translation);
   if (node) elem->addNodeId(node);
   
-} // translateBy()
+}
 
 //! FIXME: write doc.
 
@@ -273,7 +273,7 @@ SoModelMatrixElement::rotateBy(SoState * const state,
   elem->rotateEltBy(rotation);
   if (node) elem->addNodeId(node);
 
-} // rotateBy()
+}
 
 //! FIXME: write doc.
 
@@ -286,7 +286,7 @@ SoModelMatrixElement::scaleBy(SoState * const state,
     SoElement::getElement(state, classStackIndex);
   elem->scaleEltBy(scaleFactor);
   if (node) elem->addNodeId(node);
-} // scaleBy()
+}
 
 //! FIXME: write doc.
 
@@ -296,7 +296,7 @@ SoModelMatrixElement::pushMatrix(SoState * const state)
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getConstElement(state, classStackIndex);
   return elem->pushMatrixElt();
-} // pushMatrix()
+}
 
 //! FIXME: write doc.
 
@@ -308,7 +308,7 @@ SoModelMatrixElement::popMatrix(SoState * const state,
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getConstElement(state, classStackIndex);
   elem->popMatrixElt(matrix);
-} // popMatrix()
+}
 
 //! FIXME: write doc.
 
@@ -328,7 +328,7 @@ SoModelMatrixElement::getCombinedCullMatrix(SoState * const state)
     e->flags |= FLG_COMBINED;
   } 
   return elem->combinedMatrix;
-} // getCombinedCullMatrix()
+}
 
 //! FIXME: write doc.
 
@@ -338,7 +338,7 @@ SoModelMatrixElement::get(SoState * const state)
   const SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getConstElement(state, classStackIndex);
   return elem->modelMatrix;
-} // get()
+}
 
 //! FIXME: write doc.
 
@@ -351,7 +351,7 @@ SoModelMatrixElement::get(SoState * const state,
   if (elem->flags & FLG_IDENTITY) isIdentity = TRUE;
   else isIdentity = FALSE;
   return elem->modelMatrix;
-} // get()
+}
 
 //! FIXME: write doc.
 
@@ -359,7 +359,7 @@ void
 SoModelMatrixElement::print(FILE * file) const
 {
   fprintf( file, "SoModelMatrixElement[%p]\n", this );
-} // print()
+}
 
 //! FIXME: write doc.
 
@@ -369,7 +369,7 @@ SoModelMatrixElement::makeEltIdentity( // virtual, protected
 {
   this->modelMatrix.makeIdentity();
   this->flags = FLG_IDENTITY;
-} // makeEltIdentity()
+}
 
 //! FIXME: write doc.
 
@@ -379,7 +379,7 @@ SoModelMatrixElement::setElt( // virtual, protected
 {
   this->modelMatrix = matrix;
   this->flags &= ~(FLG_IDENTITY|FLG_COMBINED);
-} // setElt()
+}
 
 //! FIXME: write doc.
 
@@ -389,7 +389,7 @@ SoModelMatrixElement::multElt( // virtual, protected
 {
   this->modelMatrix.multLeft(matrix);
   this->flags &= ~(FLG_IDENTITY|FLG_COMBINED);
-} // multElt()
+}
 
 //! FIXME: write doc.
 
@@ -401,7 +401,7 @@ SoModelMatrixElement::translateEltBy( // virtual, protected
   matrix.setTranslate(translation);
   this->modelMatrix.multLeft(matrix);
   this->flags &= ~(FLG_IDENTITY|FLG_COMBINED);
-} // translateEltBy()
+}
 
 //! FIXME: write doc.
 
@@ -413,7 +413,7 @@ SoModelMatrixElement::rotateEltBy( // virtual, protected
   matrix.setRotate(rotation);
   this->modelMatrix.multLeft(matrix);
   this->flags &= ~(FLG_IDENTITY|FLG_COMBINED);
-} // rotateByElt()
+}
 
 //! FIXME: write doc.
 
@@ -425,7 +425,7 @@ SoModelMatrixElement::scaleEltBy( // virtual, protected
   matrix.setScale(scaleFactor);
   this->modelMatrix.multLeft(matrix);
   this->flags &= ~(FLG_IDENTITY|FLG_COMBINED);
-} // scaleByElt()
+}
 
 //! FIXME: write doc.
 
@@ -433,7 +433,7 @@ SbMatrix
 SoModelMatrixElement::pushMatrixElt()
 {
   return this->modelMatrix;
-} // pushMatrixElt()
+}
 
 //! FIXME: write doc.
 
@@ -441,7 +441,7 @@ void
 SoModelMatrixElement::popMatrixElt(const SbMatrix & matrix)
 {
   this->modelMatrix = matrix;
-} // popMatrixElt()
+}
 
 //! FIXME: write doc.
 
@@ -451,7 +451,7 @@ SoModelMatrixElement::init(SoState * state)
   inherited::init(state);
   this->modelMatrix.makeIdentity();
   this->flags = FLG_IDENTITY;
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -468,5 +468,5 @@ SoModelMatrixElement::push(SoState * state)
     element->cullMatrix = this->cullMatrix;
   if (this->flags & FLG_COMBINED)
     element->combinedMatrix = this->combinedMatrix;
-} // push()
+}
 

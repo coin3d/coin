@@ -70,7 +70,7 @@ SoMemoryError::initClass( void ) // static
   SoMemoryError::callbackData = NULL;
   SoMemoryError::classTypeId =
     SoType::createType( SoError::getClassTypeId(), "SoMemoryError" );
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoMemoryError class.
@@ -79,7 +79,7 @@ SoMemoryError::initClass( void ) // static
 void
 SoMemoryError::cleanClass( void ) // static
 {
-} // cleanClass()
+}
 
 /*!
   FIXME: write doc.
@@ -89,7 +89,7 @@ SoType
 SoMemoryError::getClassTypeId( void )  // static
 {
   return SoMemoryError::classTypeId;
-} // getClassTypeId()
+}
 
 /*!
   FIXME: write doc.
@@ -99,7 +99,7 @@ SoType
 SoMemoryError::getTypeId( void ) const // virtual
 {
   return SoMemoryError::classTypeId;
-} // getTypeId()
+}
 
 /*!
   FIXME: write doc.
@@ -112,7 +112,7 @@ SoMemoryError::setHandlerCallback( // static
 {
   SoMemoryError::callback = function;
   SoMemoryError::callbackData = data;
-} // setHandlerCallback()
+}
 
 /*!
   FIXME: write doc.
@@ -122,7 +122,7 @@ SoErrorCB *
 SoMemoryError::getHandlerCallback( void ) // static
 {
   return SoMemoryError::callback;
-} // getHandlerCallback()
+}
 
 /*!
   FIXME: write doc.
@@ -132,7 +132,7 @@ void *
 SoMemoryError::getHandlerData( void ) // static
 {
   return SoMemoryError::callbackData;
-} // getHandlerData()
+}
 
 /*!
   FIXME: write doc.
@@ -147,7 +147,7 @@ SoMemoryError::post( // static
   SoMemoryError error;
   error.setDebugString( buffer );
   error.handleError();
-} // post()
+}
 
 /*!
   FIXME: write doc.
@@ -159,5 +159,5 @@ SoMemoryError::getHandler( // virtual
 {
   data = SoMemoryError::callbackData;
   return SoMemoryError::callback;
-} // getHandler()
+}
 

@@ -104,7 +104,7 @@ SoLinePatternElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -117,7 +117,7 @@ SoLinePatternElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoLinePatternElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Canæt be used directly.
@@ -131,7 +131,7 @@ SoLinePatternElement::SoLinePatternElement(
     setTypeId( SoLinePatternElement::classTypeId );
     setStackIndex( SoLinePatternElement::classStackIndex );
     this->data = getDefault();
-} // SoLinePatternElement()
+}
 
 /*!
   The destructor.
@@ -140,7 +140,7 @@ SoLinePatternElement::SoLinePatternElement(
 SoLinePatternElement::~SoLinePatternElement(
     void )
 {
-} // ~SoLinePatternElement()
+}
 
 //! FIXME: write doc.
 
@@ -151,7 +151,7 @@ SoLinePatternElement::set( // static
     const int32_t pattern )
 {
     SoInt32Element::set( classStackIndex, state, node, pattern );
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -162,7 +162,7 @@ SoLinePatternElement::init( // virtual
   inherited::init( state );
 
   this->data = SoLinePatternElement::getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 

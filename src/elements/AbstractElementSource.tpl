@@ -19,4 +19,4 @@ className::getClassStackIndex( // static
   void )
 {
   return className::classStackIndex;
-} // getClassStackIndex()
+}

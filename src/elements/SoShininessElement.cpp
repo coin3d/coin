@@ -119,7 +119,7 @@ SoShininessElement::initClass()
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoShininessElement class.
@@ -130,7 +130,7 @@ SoShininessElement::cleanClass()
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoShininessElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.

@@ -113,7 +113,7 @@ SoNormalBindingElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -126,7 +126,7 @@ SoNormalBindingElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoNormalBindingElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -140,7 +140,7 @@ SoNormalBindingElement::SoNormalBindingElement(
     setTypeId( SoNormalBindingElement::classTypeId );
     setStackIndex( SoNormalBindingElement::classStackIndex );
     this->data = getDefault();
-} // SoNormalBindingElement()
+}
 
 /*!
   The destructor.
@@ -149,7 +149,7 @@ SoNormalBindingElement::SoNormalBindingElement(
 SoNormalBindingElement::~SoNormalBindingElement(
     void )
 {
-} // ~SoNormalBindingElement()
+}
 
 //! FIXME: write doc.
 
@@ -166,7 +166,7 @@ SoNormalBindingElement::set(SoState * const state,
 				   binding == PER_VERTEX ||
 				   binding == PER_VERTEX_INDEXED);
 #endif
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -176,7 +176,7 @@ SoNormalBindingElement::init( // virtual
 {
   inherited::init( state );
   this->data = getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 

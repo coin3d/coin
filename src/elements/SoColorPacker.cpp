@@ -40,7 +40,7 @@ SoColorPacker::SoColorPacker()
   : transpNodeId( 0 ), diffuseNodeId( 0 ), packedColors( NULL ),
     packedArraySize( 0 )
 {
-} // SoColorPacker()
+}
 
 /*!
   The destructor frees the packedColors array.
@@ -49,7 +49,7 @@ SoColorPacker::SoColorPacker()
 SoColorPacker::~SoColorPacker()
 {
   delete [] packedColors;
-} // ~SoColorPacker()
+}
 
 /*!
   This method returns the array of packed colors (modifyable).
@@ -139,5 +139,5 @@ SoColorPacker::reallocate(const int32_t size)
   if (this->packedColors)
     delete [] this->packedColors;
   this->packedColors = newArray;
-} // reallocate()
+}
 

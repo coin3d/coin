@@ -145,7 +145,7 @@ SoSearchAction::initClass(
   SO_ACTION_ADD_METHOD(SoNode, (SoActionMethodFunc*)SoNode::searchS);
 
   methods->setDefault((void *)SoNode::searchS);
-} // initClass()
+}
 
 /*!
   This static method is for cleaning up static data for the
@@ -156,7 +156,7 @@ void
 SoSearchAction::cleanClass(
     void )
 {
-} // cleanClass()
+}
 
 // *************************************************************************
 
@@ -171,7 +171,7 @@ SoSearchAction::SoSearchAction(
     path( NULL ) // paths(0)
 {
   SO_ACTION_CONSTRUCTOR( SoSearchAction );
-} // SoSearchAction()
+}
 
 /*!
   The destructor.
@@ -181,7 +181,7 @@ SoSearchAction::~SoSearchAction( // virtual
     void )
 {
   reset(); // clears everything
-} // ~SoSearchAction()
+}
 
 // *************************************************************************
 
@@ -206,7 +206,7 @@ SoSearchAction::setNode(
     this->node->unref();
   this->node = node;
   this->lookFor |= NODE;
-} // setNode()
+}
 
 /*!
   This method returns the node the SoSearchAction instance is configured
@@ -218,7 +218,7 @@ SoSearchAction::getNode(
   void ) const
 {
   return this->node;
-} // getNode()
+}
 
 /*!
   This method configures the SoSearchAction instance to search for nodes of
@@ -234,7 +234,7 @@ SoSearchAction::setType(
   this->type = type;
   this->includeDerived = includeDerived;
   this->lookFor |= TYPE;
-} // setType()
+}
 
 /*!
   This method returns the node type which is searched for, and wether derived
@@ -247,7 +247,7 @@ SoSearchAction::getType(
 {
   includeDerived = this->includeDerived;
   return this->type;
-} // getType()
+}
 
 /*!
   This method configures the SoSearchAction instance to search for nodes with
@@ -261,7 +261,7 @@ SoSearchAction::setName(
 {
   this->name = name;
   this->lookFor |= NAME;
-} // setName()
+}
 
 /*!
   This method returns the name the SoSearchAction instance is configured to
@@ -273,7 +273,7 @@ SoSearchAction::getName(
   void ) const
 {
   return this->name;
-} // getName()
+}
 
 /*!
   This method configures what to search for in the scene graph.  what is
@@ -289,7 +289,7 @@ SoSearchAction::setFind(
 {
   // any sanity checking?
   this->lookFor = what;
-} // setFind()
+}
 
 /*!
   This method returns the search configuration of the SoSearchAction instance.
@@ -300,7 +300,7 @@ SoSearchAction::getFind(
   void ) const
 {
   return this->lookFor;
-} // getFind()
+}
 
 /*!
   This method configures wether only the first, the last, or all the searching
@@ -313,7 +313,7 @@ SoSearchAction::setInterest(
 {
   // any sanity checking?
   this->interest = interest;
-} //  setInterest()
+}
 
 /*!
   This method returns wether only the first, the last, or all the searching
@@ -325,7 +325,7 @@ SoSearchAction::getInterest(
   void ) const
 {
   return this->interest;
-} // getInterest()
+}
 
 /*!
   This method specifies wether normal graph traversal should be done
@@ -338,7 +338,7 @@ SoSearchAction::setSearchingAll(
   const SbBool searchAll )
 {
   this->searchAll = searchAll;
-} // setSearchingAll()
+}
 
 /*!
   This method returns the traversal method configuration of the action.
@@ -351,7 +351,7 @@ SoSearchAction::isSearchingAll(
   void ) const
 {
   return this->searchAll;
-} // isSearchingAll()
+}
 
 /*!
   This method returns the path to the node of interest that matched the
@@ -365,7 +365,7 @@ SoSearchAction::getPath(
   void ) const
 {
   return this->path;
-} // getPath()
+}
 
 /*!
   This method returns a path list for all nodes that matched the search
@@ -378,7 +378,7 @@ SoSearchAction::getPaths(
   void )
 {
   return this->paths;
-} // getPaths()
+}
 
 /*!
   This method sets all the SoSearchAction internals back to their default
@@ -404,7 +404,7 @@ SoSearchAction::reset(
     this->path = NULL;
   }
   this->paths.truncate( 0 );
-} // reset()
+}
 
 // *************************************************************************
 // extender methods
@@ -419,7 +419,7 @@ SoSearchAction::setFound(
   void )
 {
   setTerminated( TRUE );
-} // setFound()
+}
 
 /*!
   This extender method returns wether the SoSearchAction instance has found
@@ -431,7 +431,7 @@ SoSearchAction::isFound(
   void ) const
 {
   return hasTerminated();
-} // isFound()
+}
 
 /*!
   This extender method sets the path, or adds the path to the path list,
@@ -469,7 +469,7 @@ SoSearchAction::addPath(
       "this->interest is invalid (%d)", this->interest );
     break;
   }
-} // addPath()
+}
 
 // *************************************************************************
 
@@ -489,5 +489,5 @@ SoSearchAction::beginTraversal( // virtual
 
   // begin traversal at root node
   this->traverse( node );
-} // beginTraversal()
+}
 

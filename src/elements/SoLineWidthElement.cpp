@@ -104,7 +104,7 @@ SoLineWidthElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoLineWidthElement class.
@@ -116,7 +116,7 @@ SoLineWidthElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoLineWidthElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -130,7 +130,7 @@ SoLineWidthElement::SoLineWidthElement( // protected
     setTypeId( SoLineWidthElement::classTypeId );
     setStackIndex( SoLineWidthElement::classStackIndex );
     this->data = getDefault();
-} // SoLineWidthElement()
+}
 
 /*!
   The destructor.
@@ -139,7 +139,7 @@ SoLineWidthElement::SoLineWidthElement( // protected
 SoLineWidthElement::~SoLineWidthElement( // virtual protected
     void )
 {
-} // ~SoLineWidthElement()
+}
 
 //! FIXME: write doc.
 
@@ -149,7 +149,7 @@ SoLineWidthElement::init( // virtual
 {
   inherited::init( state );
   this->data = SoLineWidthElement::getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 

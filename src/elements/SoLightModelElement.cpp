@@ -113,7 +113,7 @@ SoLightModelElement::initClass()
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoLightModelElement
@@ -125,7 +125,7 @@ SoLightModelElement::cleanClass()
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoLightModelElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.

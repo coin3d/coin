@@ -127,7 +127,7 @@ SoGLLightIdElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoGLLightIdElement class.
@@ -139,7 +139,7 @@ SoGLLightIdElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLLightIdElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -152,7 +152,7 @@ SoGLLightIdElement::SoGLLightIdElement()
     setTypeId( SoGLLightIdElement::classTypeId );
     setStackIndex( SoGLLightIdElement::classStackIndex );
     this->data = getDefault();
-} // SoGLLightIdElement()
+}
 
 /*!
   The destructor.
@@ -161,7 +161,7 @@ SoGLLightIdElement::SoGLLightIdElement()
 SoGLLightIdElement::~SoGLLightIdElement(
     void )
 {
-} // ~SoGLLightIdElement()
+}
 
 //! FIXME: write doc.
 
@@ -170,7 +170,7 @@ SoGLLightIdElement::init(SoState * state)
 {
   inherited::init(state);
   this->data = getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -179,7 +179,7 @@ SoGLLightIdElement::push(SoState * state)
 {
   inherited::push(state);
   ((SoGLLightIdElement*)this->next)->data = this->data;
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -194,7 +194,7 @@ SoGLLightIdElement::pop(SoState * state,
     idx++;
   }
   inherited::pop(state, prevTopElement);
-} // pop()
+}
 
 //! FIXME: write doc.
 
@@ -218,7 +218,7 @@ SoGLLightIdElement::increment(SoState * const state,
   glEnable((GLenum)((int32_t)GL_LIGHT0 + element->data));
   
   return element->data;
-} // increment()
+}
 
 //! FIXME: write doc.
 

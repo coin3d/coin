@@ -118,7 +118,7 @@ SoFontNameElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoFontNameElement class.
@@ -130,7 +130,7 @@ SoFontNameElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoFontNameElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -144,7 +144,7 @@ SoFontNameElement::SoFontNameElement(
 {
   setTypeId( SoFontNameElement::classTypeId );
   setStackIndex( SoFontNameElement::classStackIndex );
-} // SoFontNameElement()
+}
 
 /*!
   The destructor.
@@ -152,7 +152,7 @@ SoFontNameElement::SoFontNameElement(
 
 SoFontNameElement::~SoFontNameElement()
 {
-} // ~SoFontNameElement()
+}
 
 //! FIXME: write doc.
 
@@ -164,7 +164,7 @@ SoFontNameElement::set(SoState * const state,
   SoFontNameElement * element = (SoFontNameElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
   element->fontName = fontName;
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -175,7 +175,7 @@ SoFontNameElement::get( // static
   SoFontNameElement * element = (SoFontNameElement *)
     SoElement::getConstElement( state, classStackIndex);
   return element->fontName;
-} // get()
+}
 
 //! FIXME: write doc.
 
@@ -190,7 +190,7 @@ SoFontNameElement::matches( // virtual
   if (this->fontName != ((SoFontNameElement *)element)->fontName)
     return FALSE;
   return TRUE;
-} // matches()
+}
 
 //! FIXME: write doc.
 
@@ -203,7 +203,7 @@ SoFontNameElement::copyMatchInfo( // virtual
   element->fontName = this->fontName;
   element->nodeId = this->nodeId;
   return element;
-} // copyMatchInfo()
+}
 
 //! FIXME: write doc.
 
@@ -212,7 +212,7 @@ SoFontNameElement::print(FILE * file) const
 {
   fprintf( file, "SoFontNameElement[%p]: font = %s\n", this,
 	   this->fontName.getString() );
-} // print()
+}
 
 //! FIXME: write doc.
 
@@ -222,7 +222,7 @@ SoFontNameElement::init( // virtual
 {
   inherited::init(state);
   fontName = defaultFontName;
-} // init()
+}
 
 //! FIXME: write doc.
 

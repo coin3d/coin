@@ -107,7 +107,7 @@ SoGLDrawStyleElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -120,7 +120,7 @@ SoGLDrawStyleElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLDrawStyleElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -133,7 +133,7 @@ SoGLDrawStyleElement::SoGLDrawStyleElement( // protected
 {
     setTypeId( SoGLDrawStyleElement::classTypeId );
     setStackIndex( SoGLDrawStyleElement::classStackIndex );
-} // SoGLDrawStyleElement()
+}
 
 /*!
   The destructor.
@@ -142,7 +142,7 @@ SoGLDrawStyleElement::SoGLDrawStyleElement( // protected
 SoGLDrawStyleElement::~SoGLDrawStyleElement( // virtual
     void )
 {
-} // ~SoGLDrawStyleElement()
+}
 
 //! FIXME: write doc.
 
@@ -152,7 +152,7 @@ SoGLDrawStyleElement::init( // virtual
 {
   inherited::init(state);
   this->updategl();
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -163,7 +163,7 @@ SoGLDrawStyleElement::push( // virtual
   inherited::push(state);
   // copy data to avoid unessesary GL calls
   ((SoGLDrawStyleElement*)this->next)->data = this->data;
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -174,7 +174,7 @@ SoGLDrawStyleElement::pop(SoState * state,
   SoGLDrawStyleElement *prev = (SoGLDrawStyleElement*) prevTopElement;
   if (prev->data != this->data) prev->updategl();
   inherited::pop(state, prevTopElement);
-} // pop()
+}
 
 //! FIXME: write doc.
 
@@ -185,7 +185,7 @@ SoGLDrawStyleElement::setElt(int32_t style)
     this->data = (int32_t)style;
     this->updategl();
   }
-} // setElt()
+}
 
 //! FIXME: write doc.
 
@@ -209,5 +209,5 @@ SoGLDrawStyleElement::updategl()
     assert(0 && "FIXME: handle unsupported switch case");
     break;
   }
-} // send()
+}
 

@@ -110,7 +110,7 @@ SoGLPolygonOffsetElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -123,7 +123,7 @@ SoGLPolygonOffsetElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLPolygonOffsetElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -136,7 +136,7 @@ SoGLPolygonOffsetElement::SoGLPolygonOffsetElement(
 {
   setTypeId( SoGLPolygonOffsetElement::classTypeId );
   setStackIndex( SoGLPolygonOffsetElement::classStackIndex );
-} // SoGLPolygonOffsetElement()
+}
 
 /*!
   The destructor.
@@ -145,7 +145,7 @@ SoGLPolygonOffsetElement::SoGLPolygonOffsetElement(
 SoGLPolygonOffsetElement::~SoGLPolygonOffsetElement(
     void )
 {
-} // ~SoGLPolygonOffsetElement()
+}
 
 //! FIXME: write doc.
 
@@ -159,7 +159,7 @@ SoGLPolygonOffsetElement::init( // virtual
   this->currentOffsetfactor = 1.0f;
   this->currentOffsetunits = 1.0f;
   this->updategl();
-} // init()
+}
 
 //! FIXME: write doc.
 

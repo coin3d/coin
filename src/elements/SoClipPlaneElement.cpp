@@ -133,7 +133,7 @@ SoClipPlaneElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -146,7 +146,7 @@ SoClipPlaneElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoClipPlaneElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -160,7 +160,7 @@ SoClipPlaneElement::SoClipPlaneElement()
   this->num = 0;
   setTypeId( SoClipPlaneElement::classTypeId );
   setStackIndex( SoClipPlaneElement::classStackIndex );
-} // SoClipPlaneElement()
+}
 
 /*!
   The destructor.
@@ -168,7 +168,7 @@ SoClipPlaneElement::SoClipPlaneElement()
 
 SoClipPlaneElement::~SoClipPlaneElement()
 {
-} // ~SoClipPlaneElement()
+}
 
 //! FIXME: write doc.
 
@@ -181,7 +181,7 @@ SoClipPlaneElement::add(SoState * const state,
     (SoClipPlaneElement*) SoElement::getElement(state, classStackIndex);
   
   element->addToElt(plane, SoModelMatrixElement::get(state));
-} // add()
+}
 
 //! FIXME: write doc.
 
@@ -190,7 +190,7 @@ SoClipPlaneElement::getInstance(SoState * const state)
 {
   return (const SoClipPlaneElement*)
     SoElement::getConstElement(state, classStackIndex);
-} // getInstance()
+}
 
 //! FIXME: write doc.
 
@@ -200,7 +200,7 @@ SoClipPlaneElement::getNum() const
 {
   //  return this->planes.getLength();
   return this->num;
-} // getNum()
+}
 
 //! FIXME: write doc.
 
@@ -216,7 +216,7 @@ SoClipPlaneElement::get(const int index,
 //    else return data->wcPlane;
 
   return dummy;
-} // get()
+}
 
 //! FIXME: write doc.
 
@@ -225,7 +225,7 @@ SoClipPlaneElement::print(FILE * file) const
 {
 //    fprintf(file, "SoClipPlaneElement[%p]: num = %d, start = %d\n", this,
 //  	  this->planes.getLength(), this->startIndex );
-} // print()
+}
 
 /*!
   This method adds the clipping plane, \a plane, to an instance.
@@ -239,7 +239,7 @@ SoClipPlaneElement::addToElt(const SbPlane &plane,
   plane_data *data = new plane_data(plane, modelMatrix);
   //  this->planes.append((void*)data);
   planes[num++] = data;
-} // addToElt()
+}
 
 //! FIXME: write doc.
 
@@ -249,7 +249,7 @@ SoClipPlaneElement::init(SoState * state)
   inherited::init(state);
   this->startIndex = 0;
   this->num = 0;
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -268,7 +268,7 @@ SoClipPlaneElement::push(SoState * state)
   } 
   element->num = num;
   element->startIndex = num;
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -286,5 +286,5 @@ SoClipPlaneElement::pop(SoState * state,
     //    this->planes.remove(i);
   }
   inherited::pop(state, prevTopElement);
-} // pop()
+}
 

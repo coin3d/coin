@@ -80,7 +80,7 @@ SoError::initClass( void ) // static
     SoError::callbackData = NULL;
     SoError::classTypeId =
         SoType::createType( SoType::badType(), SbName( "SoError" ) );
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoError class.
@@ -89,7 +89,7 @@ SoError::initClass( void ) // static
 void
 SoError::cleanClass( void ) // static
 {
-} // cleanClass()
+}
 
 /*!
   This static method initializes all the SoError classes.
@@ -102,7 +102,7 @@ SoError::initErrors( void ) // static
     SoDebugError::initClass();
     SoMemoryError::initClass();
     SoReadError::initClass();
-} // initErrors()
+}
 
 /*!
   This static method cleans up after all the SoError classes.
@@ -115,7 +115,7 @@ SoError::cleanErrors( void ) // static
   SoMemoryError::cleanClass();
   SoDebugError::cleanClass();
   SoError::cleanClass();
-} // cleanErrors()
+}
 
 /*!
   This static method returns the SoType for the SoError class.
@@ -125,7 +125,7 @@ SoType
 SoError::getClassTypeId( void ) // static
 {
   return SoError::classTypeId;
-} // getClassTypeId()
+}
 
 /*!
   This method returns the type of the SoError (or SoError-derived) class
@@ -136,7 +136,7 @@ SoType
 SoError::getTypeId( void ) const // virtual
 {
   return SoError::classTypeId;
-} // getTypeId()
+}
 
 /*!
   This method returns TRUE if the error instance is of - or derived from -
@@ -149,7 +149,7 @@ SoError::isOfType(
 {
   const SoType myType = getTypeId();
   return ( myType == type ) ? TRUE : myType.isDerivedFrom( type );
-} // isOfType()
+}
 
 /*!
   This method sets the error handler callback for the SoError class type.
@@ -162,7 +162,7 @@ SoError::setHandlerCallback( // static
 {
     SoError::callback = function;
     SoError::callbackData = data;
-} // setHandlerCallback()
+}
 
 /*!
   This method returns the error handler callback for the SoError class type.
@@ -173,7 +173,7 @@ SoErrorCB *
 SoError::getHandlerCallback( void ) // static
 {
     return SoError::callback;
-} // getHandlerCallback()
+}
 
 /*!
   This method returns the handler callback data for the SoError class type.
@@ -184,7 +184,7 @@ void *
 SoError::getHandlerData( void ) // static
 {
     return SoError::callbackData;
-} // getHandlerData()
+}
 
 /*!
   This method returns an SbString containing error info from the given
@@ -196,7 +196,7 @@ const SbString &
 SoError::getDebugString( void ) const
 {
   return debugString;
-} // getDebugString()
+}
 
 /*!
   This method posts an error message.  The \a format argument and all the
@@ -216,7 +216,7 @@ SoError::post( // static
   error.setDebugString( buffer );
   error.handleError();
   va_end( args );
-} // post()
+}
 
 /*!
   FIXME: write doc.
@@ -229,7 +229,7 @@ SoError::getString( // static
   SbString string;
   generateBaseString( string, node, "node" );
   return string;
-} // getString()
+}
 
 /*!
   FIXME: write doc.
@@ -243,7 +243,7 @@ SoError::getString( // static
   SbString string;
   generateBaseString( string, path, "path" );
   return string;
-} // getString()
+}
 #endif // !COIN_EXCLUDE_SOPATH
 
 /*!
@@ -258,7 +258,7 @@ SoError::getString( // static
   SbString string;
   generateBaseString( string, engine, "engine" );
   return string;
-} // getString()
+}
 #endif // !COIN_EXCLUDE_SOENGINE
 
 /*!
@@ -271,7 +271,7 @@ SoError::defaultHandlerCB( // static, protected
   void * data)
 {
   fprintf( stderr, "%s\n", error->getDebugString().getString() );
-} // defaultHandlerCB()
+}
 
 /*!
   FIXME: write doc.
@@ -283,7 +283,7 @@ SoError::getHandler( // virtual
 {
   data = SoError::callbackData;
   return SoError::callback;
-} // getHandler()
+}
 
 /*!
   FIXME: write doc.
@@ -295,7 +295,7 @@ SoError::setDebugString(
   const char * const string )
 {
   debugString = string;
-} // setDebugString()
+}
 
 /*!
   FIXME: write doc.
@@ -307,7 +307,7 @@ SoError::appendToDebugString(
     const char * const string )
 {
     debugString += string;
-} // appendToDebugString()
+}
 
 /*!
   This method calls the appropriate handler for an error instance.  All
@@ -323,7 +323,7 @@ SoError::handleError(
   SoErrorCB * function = getHandler( arg );
   assert(function);
   (*function)( this, arg );
-} // handleError()
+}
 
 /*!
   This method is used by the getString methods.  It just generates a
@@ -340,7 +340,7 @@ SoError::generateBaseString( // static
   sprintf( buffer, "%s named \"%s\" at address %p",
       what, base->getName().getString(), base );
   string = buffer;
-} // getBaseString()
+}
 
 /*!
   This static method is just a wraparound for the SoError::initErrors()
@@ -355,5 +355,5 @@ void
 SoError::initClasses( void )
 {
   initErrors();
-} // initClasses()
+}
 

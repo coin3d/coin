@@ -123,7 +123,7 @@ void
 SoGraphVerifyAction::~SoGraphVerifyAction(
     void )
 {
-} // ~SoGraphVerifyAction()
+}
 
 // *************************************************************************
 

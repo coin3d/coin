@@ -304,7 +304,7 @@ SbNameEntry::initClass( void )
     for ( int i = 0; i < nameTableSize; i++ )
         nameTable[i] = NULL;
     chunk = NULL;
-} // initClass()
+}
 
 /*!
   FIXME: write doc
@@ -323,7 +323,7 @@ SbNameEntry::print_info(
         }
         printf("name entry: %d, cnt: %d\n", i, cnt);
     }
-} // print_info()
+}
 
 /*!
   FIXME: write doc.
@@ -356,7 +356,7 @@ SbNameEntry::findStringAddress(
     chunk->bytesLeft -= len;
 
     return s;
-} // findStringAddress()
+}
 
 /*!
   FIXME: write doc.

@@ -109,7 +109,7 @@ SoGLViewportRegionElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -122,7 +122,7 @@ SoGLViewportRegionElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLViewportRegionElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -142,7 +142,7 @@ SoGLViewportRegionElement::SoGLViewportRegionElement()
 
 SoGLViewportRegionElement::~SoGLViewportRegionElement()
 {
-} // ~SoGLViewportRegionElement()
+}
 
 //! FIXME: write doc.
 

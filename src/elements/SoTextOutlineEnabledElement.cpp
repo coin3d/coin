@@ -104,7 +104,7 @@ SoTextOutlineEnabledElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -117,7 +117,7 @@ SoTextOutlineEnabledElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoTextOutlineEnabledElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -131,7 +131,7 @@ SoTextOutlineEnabledElement::SoTextOutlineEnabledElement(
     setTypeId( SoTextOutlineEnabledElement::classTypeId );
     setStackIndex( SoTextOutlineEnabledElement::classStackIndex );
     this->data = getDefault();
-} // SoTextOutlineEnabledElement()
+}
 
 /*!
   The destructor.
@@ -140,7 +140,7 @@ SoTextOutlineEnabledElement::SoTextOutlineEnabledElement(
 SoTextOutlineEnabledElement::~SoTextOutlineEnabledElement(
     void )
 {
-} // ~SoTextOutlineEnabledElement()
+}
 
 //! FIXME: write doc.
 
@@ -151,7 +151,7 @@ SoTextOutlineEnabledElement::set( // static
     const SbBool enabled )
 {
     SoInt32Element::set( classStackIndex, state, node, enabled );
-} // set()
+}
 
 /*!
   FIXME: write doc.
@@ -191,7 +191,7 @@ SoTextOutlineEnabledElement::init( // virtual
     SoState * state )
 {
     inherited::init( state );
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -200,7 +200,7 @@ SoTextOutlineEnabledElement::push( // virtual
     SoState * state )
 {
     inherited::push( state );
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -210,5 +210,5 @@ SoTextOutlineEnabledElement::pop( // virtual
     const SoElement * prevTopElement )
 {
     inherited::pop( state, prevTopElement );
-} // pop()
+}
 

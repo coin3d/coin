@@ -111,7 +111,7 @@ SoGLLineWidthElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoGLLineWidthElement
@@ -124,7 +124,7 @@ SoGLLineWidthElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLLineWidthElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -136,7 +136,7 @@ SoGLLineWidthElement::SoGLLineWidthElement()
 {
   setTypeId( SoGLLineWidthElement::classTypeId );
   setStackIndex( SoGLLineWidthElement::classStackIndex );
-} // SoGLLineWidthElement()
+}
 
 /*!
   The destructor.
@@ -145,7 +145,7 @@ SoGLLineWidthElement::SoGLLineWidthElement()
 SoGLLineWidthElement::~SoGLLineWidthElement( // virtual
     void )
 {
-} // ~SoGLLineWidthElement()
+}
 
 //! FIXME: write doc.
 
@@ -155,7 +155,7 @@ SoGLLineWidthElement::init( // virtual
 {
   inherited::init(state);
   this->current = -1.0f;
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -166,7 +166,7 @@ SoGLLineWidthElement::push(SoState * state)
 
   SoGLLineWidthElement *top = (SoGLLineWidthElement*)this->next;
   top->current = this->current;
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -177,7 +177,7 @@ SoGLLineWidthElement::pop(SoState * state,
   SoGLLineWidthElement *prev = (SoGLLineWidthElement*)prevTopElement;
   prev->current = this->current;
   inherited::pop(state, prevTopElement);
-} // pop()
+}
 
 //! FIXME: write doc.
 
@@ -186,7 +186,7 @@ SoGLLineWidthElement::setElt(float width)
 {
   inherited::setElt(width);
   // this is a lazy element. Do nothing
-} // setElt()
+}
 
 //! FIXME: write doc.
 
@@ -221,5 +221,5 @@ SoGLLineWidthElement::updategl()
     useval = SoGLLineWidthElement::sizerange[1];
 
   glLineWidth(useval);
-} // perform()
+}
 

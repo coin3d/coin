@@ -113,7 +113,7 @@ SoMaterialBindingElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -126,7 +126,7 @@ SoMaterialBindingElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoMaterialBindingElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -140,7 +140,7 @@ SoMaterialBindingElement::SoMaterialBindingElement(
     setTypeId( SoMaterialBindingElement::classTypeId );
     setStackIndex( SoMaterialBindingElement::classStackIndex );
     this->data = getDefault();
-} // SoMaterialBindingElement()
+}
 
 /*!
   The destructor.
@@ -149,7 +149,7 @@ SoMaterialBindingElement::SoMaterialBindingElement(
 SoMaterialBindingElement::~SoMaterialBindingElement(
     void )
 {
-} // ~SoMaterialBindingElement()
+}
 
 //! FIXME: write doc.
 
@@ -167,7 +167,7 @@ SoMaterialBindingElement::set(SoState * const state,
 				     binding == PER_VERTEX ||
 				     binding == PER_VERTEX_INDEXED);
 #endif
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -177,7 +177,7 @@ SoMaterialBindingElement::init( // virtual
 {
   inherited::init(state);
   this->data = getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 

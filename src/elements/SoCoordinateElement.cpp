@@ -132,7 +132,7 @@ SoCoordinateElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -145,7 +145,7 @@ SoCoordinateElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoCoordinateElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -162,7 +162,7 @@ SoCoordinateElement::SoCoordinateElement( // protected
 {
   setTypeId( SoCoordinateElement::classTypeId );
   setStackIndex( SoCoordinateElement::classStackIndex );
-} // SoCoordinateElement()
+}
 
 /*!
   The destructor.
@@ -171,7 +171,7 @@ SoCoordinateElement::SoCoordinateElement( // protected
 SoCoordinateElement::~SoCoordinateElement( // virtual
     void )
 {
-} // ~SoCoordinateElement()
+}
 
 //! FIXME: write doc.
 
@@ -183,7 +183,7 @@ SoCoordinateElement::init(SoState * state)
   this->coords3D = & SoCoordinateElement::initialdefaultcoords;
   this->coords4D = NULL;
   this->areCoords3D = TRUE;
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -199,7 +199,7 @@ SoCoordinateElement::set3(SoState * const state,
   elem->coords3D = coords;
   elem->numCoords = numCoords;
   elem->nodeId = node->getNodeId();
-} // set3()
+}
 
 //! FIXME: write doc.
 
@@ -216,7 +216,7 @@ SoCoordinateElement::set4(SoState * const state,
   elem->numCoords = numCoords;
 
   elem->nodeId = node->getNodeId();
-} // set4()
+}
 
 //! FIXME: write doc.
 
@@ -255,7 +255,7 @@ SoCoordinateElement::get3(const int index) const
     elem->dummy3D[2] = vec[2];
     return this->dummy3D; 
   }
-} // get3()
+}
 
 //! FIXME: write doc.
 
@@ -275,7 +275,7 @@ SoCoordinateElement::get4(const int index) const
     elem->dummy4D[3] = 1.0f;
     return this->dummy4D; 
   }
-} // get4()
+}
 
 //! FIXME: write doc.
 
@@ -327,5 +327,5 @@ SoCoordinateElement::getDefault4()
 void
 SoCoordinateElement::print(FILE * file) const
 {
-} // print()
+}
 

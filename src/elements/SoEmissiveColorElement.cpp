@@ -118,7 +118,7 @@ SoEmissiveColorElement::initClass()
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoEmissiveColorElement
@@ -130,7 +130,7 @@ SoEmissiveColorElement::cleanClass()
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoEmissiveColorElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.

@@ -83,7 +83,7 @@ SoElement::getClassTypeId( // static
   void )
 {
   return SoElement::classTypeId;
-} // getClassTypeId()
+}
 
 /*!
   \var SoElement::classStackIndex
@@ -103,7 +103,7 @@ SoElement::getClassStackIndex( // static
   void )
 {
   return SoElement::classStackIndex;
-} // getClassStackIndex()
+}
 //$ END TEMPLATE AbstractElementSource
 
 /*!
@@ -384,7 +384,7 @@ SoElement::initElements( // static
   SoGLNormalizeElement::initClass();
 #endif
 
-} // initElements()
+}
 
 /*!
   This function cleans up all the standard Inventor element classes.
@@ -664,7 +664,7 @@ SoElement::cleanElements( // static
   SoGLNormalizeElement::cleanClass();
 #endif
 
-} // cleanElements()
+}
 
 /*!
   This function initializes the SoElement class.
@@ -683,7 +683,7 @@ SoElement::initClass( // static
   
   SoElement::classStackIndex = -1;
   SoElement::initElements();
-} // initClass()
+}
 
 /*!
   This function cleans up after the SoElement class.
@@ -695,7 +695,7 @@ SoElement::cleanClass( // static
 {
   SoElement::cleanElements();
   delete SoElement::stackToType;
-} // cleanClass()
+}
 
 /*!
   The constructor.  To create element instances, use SoType::createInstance()
@@ -707,7 +707,7 @@ SoElement::SoElement( // protected
 {
   this->next = NULL;
   this->prev = NULL;
-} // SoElement()
+}
 
 /*!
   The destructor.
@@ -715,7 +715,7 @@ SoElement::SoElement( // protected
 
 SoElement::~SoElement()
 {
-} // ~SoElement()
+}
 
 /*!
   This function initializes the element type in the given SoState.  It is
@@ -726,7 +726,7 @@ SoElement::~SoElement()
 void
 SoElement::init(SoState *)
 {
-} // init()
+}
 
 /*!
   This method pushes the element. 
@@ -753,7 +753,7 @@ void
 SoElement::pop(SoState * state,
 	       const SoElement *prevTopElement)
 {
-} // pop()
+}
 
 /*!
   This function is for printing element information, mostly for debugging
@@ -764,7 +764,7 @@ void
 SoElement::print(FILE * file) const
 {
     fprintf( file, "%s[%p]\n", getTypeId().getName().getString(), this );
-} // print()
+}
 
 /*!
   This function returns TRUE is the element matches another element (of the
@@ -777,7 +777,7 @@ SoElement::matches(const SoElement * element) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
-} // matches()
+}
 
 /*!
   \fn virtual SoElement * SoElement::copyMatchInfo( void ) const = 0
@@ -794,7 +794,7 @@ int
 SoElement::getNumStackIndices()
 {
   return nextStackIndex;
-} // getNumStackIndices()
+}
 
 /*!
   This function returns the SoType identifier for the element class with
@@ -806,7 +806,7 @@ SoElement::getIdFromStackIndex(const int stackIndex)
 {
   assert( SoElement::stackToType->getLength() >= stackIndex );
   return (*SoElement::stackToType)[ stackIndex ];
-} // getIdFromStackIndex()
+}
 
 /*!
   This method sets the depth value of the element instance.
@@ -816,7 +816,7 @@ void
 SoElement::setDepth(const int depth)
 {
   this->depth = depth;
-} // setDepth()
+}
 
 /*!
   This method returns the depth value of the element instance.
@@ -826,7 +826,7 @@ int
 SoElement::getDepth() const
 {
   return this->depth;
-} // getDepth()
+}
 
 /*!
   This method returns the top instance (in the state stack) of the element
@@ -843,7 +843,7 @@ SoElement::getElement(SoState * const state,
 		      const int stackIndex)
 {
   return state->getElement(stackIndex);
-} // getElement()
+}
 
 /*!
   This method returns a const pointer to the top element of the class with
@@ -861,7 +861,7 @@ SoElement::getConstElement(SoState * const state,
   const SoElement * element = state->getConstElement( stackIndex );
   //    element->captureThis( state );
   return element;
-} // getConstElement()
+}
 
 /*!
   This function does whatever is necessary in the state for caching purposes.
@@ -874,7 +874,7 @@ SoElement::capture(SoState * const state ) const
 {
   if (state->isCacheOpen())
     captureThis(state);
-} // capture()
+}
 
 /*!
   FIXME: write doc.
@@ -884,7 +884,7 @@ void
 SoElement::captureThis(SoState * state) const
 {
   assert(0 && "FIXME: not implemented");
-} // captureThis()
+}
 
 /*!
   This method sets the type identifier of an instance.
@@ -895,7 +895,7 @@ void
 SoElement::setTypeId(const SoType typeId)
 {
   this->typeId = typeId;
-} // setTypeId()
+}
 
 /*!
   This method returns the type identifier for the element instance.
@@ -905,7 +905,7 @@ const SoType
 SoElement::getTypeId() const
 {
   return this->typeId;
-} // getTypeId()
+}
 
 /*!
   This method returns the stack index for an element instance.
@@ -926,7 +926,7 @@ void
 SoElement::setStackIndex(const int stackIndex)
 {
   this->stackIndex = stackIndex;
-} // setStackIndex()
+}
 
 /*!
   \fn SoElement::nextStackIndex
@@ -956,5 +956,5 @@ SoElement::createStackIndex(const SoType typeId)
     return SoElement::nextStackIndex++;
   }
   return -1;
-} // createStackIndex()
+}
 

@@ -122,7 +122,7 @@ SoGLNormalizeElement::initClass()
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -134,7 +134,7 @@ SoGLNormalizeElement::cleanClass()
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLNormalizeElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -146,7 +146,7 @@ SoGLNormalizeElement::SoGLNormalizeElement()
 {
   setTypeId( SoGLNormalizeElement::classTypeId );
   setStackIndex( SoGLNormalizeElement::classStackIndex );
-} // SoGLNormalizeElement()
+}
 
 /*!
   The destructor.

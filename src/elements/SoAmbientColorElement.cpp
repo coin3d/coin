@@ -116,7 +116,7 @@ SoAmbientColorElement::initClass()
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -128,7 +128,7 @@ SoAmbientColorElement::cleanClass()
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoAmbientColorElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 //! FIXME: write doc.
 

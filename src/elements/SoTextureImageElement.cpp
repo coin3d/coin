@@ -158,7 +158,7 @@ SoTextureImageElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -171,7 +171,7 @@ SoTextureImageElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoTextureImageElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -183,7 +183,7 @@ SoTextureImageElement::SoTextureImageElement()
 {
   setTypeId( SoTextureImageElement::classTypeId );
   setStackIndex( SoTextureImageElement::classStackIndex );
-} // SoTextureImageElement()
+}
 
 /*!
   The destructor.
@@ -191,7 +191,7 @@ SoTextureImageElement::SoTextureImageElement()
 
 SoTextureImageElement::~SoTextureImageElement()
 {
-} // ~SoTextureImageElement()
+}
 
 //! FIXME: write doc.
 
@@ -204,7 +204,7 @@ SoTextureImageElement::init(SoState * state )
   this->wrapT = REPEAT;
   this->model = MODULATE;
   this->blendColor.setValue(0.0f, 0.0f, 0.0f);
-} // init()
+}
 
 //! FIXME: write doc.
 

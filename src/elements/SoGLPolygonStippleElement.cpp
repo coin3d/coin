@@ -200,7 +200,7 @@ SoGLPolygonStippleElement::initClass()
     create_matrix_bitmap(((32*32)*i)/64, 
                          (uint32_t*)&patterns[i][0], matrix, 32);
   }
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -212,7 +212,7 @@ SoGLPolygonStippleElement::cleanClass()
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLPolygonStippleElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.

@@ -137,7 +137,7 @@ SoGLShapeHintsElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoGLShapeHintsElement
@@ -150,7 +150,7 @@ SoGLShapeHintsElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLShapeHintsElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -162,7 +162,7 @@ SoGLShapeHintsElement::SoGLShapeHintsElement()
 {
     setTypeId( SoGLShapeHintsElement::classTypeId );
     setStackIndex( SoGLShapeHintsElement::classStackIndex );
-} // SoGLShapeHintsElement()
+}
 
 /*!
   The destructor.
@@ -171,7 +171,7 @@ SoGLShapeHintsElement::SoGLShapeHintsElement()
 SoGLShapeHintsElement::~SoGLShapeHintsElement( // virtual
     void )
 {
-} // ~SoGLShapeHintsElement()
+}
 
 //! FIXME: write doc.
 
@@ -184,7 +184,7 @@ SoGLShapeHintsElement::init(SoState * state)
   // fake this to turn off culling and twoside
   this->glflags = SOSH_CULL | SOSH_TWOSIDE;
   this->updategl(SOSH_CCW); // set CCW, no culling, no twoside
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -196,7 +196,7 @@ SoGLShapeHintsElement::push(SoState * state)
     (SoGLShapeHintsElement *)this->next;
 
   elem->glflags = this->glflags;
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -208,7 +208,7 @@ SoGLShapeHintsElement::pop(SoState * state,
 
   SoGLShapeHintsElement *prev = (SoGLShapeHintsElement*) prevTopElement;
   prev->glflags = this->glflags;
-} // pop()
+}
 
 //! FIXME: write doc.
 
@@ -219,7 +219,7 @@ SoGLShapeHintsElement::setElt(VertexOrdering vertexOrdering,
 {
   inherited::setElt(vertexOrdering, shapeType, faceType);
   // do nothing since this is a lazy element
-} // setElt()
+}
 
 //! FIXME: write doc.
 

@@ -111,7 +111,7 @@ SoGLShadeModelElement::initClass()
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -123,7 +123,7 @@ SoGLShadeModelElement::cleanClass()
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLShadeModelElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -135,7 +135,7 @@ SoGLShadeModelElement::SoGLShadeModelElement()
 {
   setTypeId( SoGLShadeModelElement::classTypeId );
   setStackIndex( SoGLShadeModelElement::classStackIndex );
-} // SoGLShadeModelElement()
+}
 
 /*!
   The destructor.

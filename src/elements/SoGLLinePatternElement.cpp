@@ -109,7 +109,7 @@ SoGLLinePatternElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -122,7 +122,7 @@ SoGLLinePatternElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLLinePatternElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -135,7 +135,7 @@ SoGLLinePatternElement::SoGLLinePatternElement( // protected
 {
     setTypeId( SoGLLinePatternElement::classTypeId );
     setStackIndex( SoGLLinePatternElement::classStackIndex );
-} // SoGLLinePatternElement()
+}
 
 /*!
   The destructor.
@@ -144,7 +144,7 @@ SoGLLinePatternElement::SoGLLinePatternElement( // protected
 SoGLLinePatternElement::~SoGLLinePatternElement( // virtual
     void )
 {
-} // ~SoGLLinePatternElement()
+}
 
 //! FIXME: write doc.
 
@@ -154,7 +154,7 @@ SoGLLinePatternElement::init( // virtual
 {
   inherited::init( state );
   updategl();
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -163,7 +163,7 @@ SoGLLinePatternElement::push(SoState * state)
 {
   inherited::push(state);
   ((SoGLLinePatternElement*)this->next)->data = this->data;
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -175,7 +175,7 @@ SoGLLinePatternElement::pop( // virtual
   SoGLLinePatternElement *prev = (SoGLLinePatternElement*) prevTopElement;
   if (prev->data != this->data) prev->updategl();
   inherited::pop(state, prevTopElement);
-} // pop()
+}
 
 //! FIXME: write doc.
 
@@ -186,7 +186,7 @@ SoGLLinePatternElement::setElt(int32_t pattern)
     this->data = pattern;
     updategl();
   }
-} // setElt()
+}
 
 //! FIXME: write doc.
 
@@ -203,5 +203,5 @@ SoGLLinePatternElement::updategl()
     glLineStipple(1, (GLushort) this->data);
     glEnable(GL_LINE_STIPPLE);
   }
-} // updategl()
+}
 

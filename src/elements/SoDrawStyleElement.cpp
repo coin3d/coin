@@ -114,7 +114,7 @@ SoDrawStyleElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -127,7 +127,7 @@ SoDrawStyleElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoDrawStyleElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -140,7 +140,7 @@ SoDrawStyleElement::SoDrawStyleElement( // protected
 {
   setTypeId( SoDrawStyleElement::classTypeId );
   setStackIndex( SoDrawStyleElement::classStackIndex );
-} // SoDrawStyleElement()
+}
 
 /*!
   The destructor.
@@ -149,7 +149,7 @@ SoDrawStyleElement::SoDrawStyleElement( // protected
 SoDrawStyleElement::~SoDrawStyleElement( // virtual
     void )
 {
-} // ~SoDrawStyleElement()
+}
 
 //! FIXME: write doc.
 
@@ -159,7 +159,7 @@ SoDrawStyleElement::init( // virtual
 {
   inherited::init( state );
   this->data = getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -173,7 +173,7 @@ SoDrawStyleElement::set( // static
 #if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
   SoShapeStyleElement::setDrawStyle(state, (int32_t)style);
 #endif // !COIN_EXCLUDE_SOSHAPESTYLEELEMENT
-} // set()
+}
 
 //! FIXME: write doc.
 

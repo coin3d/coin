@@ -116,7 +116,7 @@ SoNormalElement::initClass()
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoNormalElement class.
@@ -127,7 +127,7 @@ SoNormalElement::cleanClass()
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoNormalElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -181,7 +181,7 @@ void
 SoNormalElement::print(FILE * file) const
 {
   assert(0 && "FIXME: not implemented");
-} // print()
+}
 
 //! FIXME: write doc.
 
@@ -192,7 +192,7 @@ SoNormalElement::init(SoState *state)
   this->normals = NULL;
   this->numNormals = 0;
   this->unitLength = FALSE;
-} // init()
+}
 
 //! FIXME: write doc.
 

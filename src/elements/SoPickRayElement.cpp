@@ -109,7 +109,7 @@ SoPickRayElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoPickRayElement class.
@@ -121,7 +121,7 @@ SoPickRayElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoPickRayElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -135,7 +135,7 @@ SoPickRayElement::SoPickRayElement(
 {
     setTypeId( SoPickRayElement::classTypeId );
     setStackIndex( SoPickRayElement::classStackIndex );
-} // SoPickRayElement()
+}
 
 /*!
   The destructor.
@@ -144,7 +144,7 @@ SoPickRayElement::SoPickRayElement(
 SoPickRayElement::~SoPickRayElement( // virtual
     void )
 {
-} // ~SoPickRayElement()
+}
 
 //! FIXME: write doc.
 
@@ -153,7 +153,7 @@ SoPickRayElement::init( // virtual
     SoState * state )
 {
     inherited::init( state );
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -163,7 +163,7 @@ SoPickRayElement::matches( // virtual
 {
   // should always return false; not part of cache consideration 
   return FALSE;
-} // matches()
+}
 
 //! FIXME: write doc.
 
@@ -175,7 +175,7 @@ SoPickRayElement::copyMatchInfo() const
     (SoPickRayElement *)(getTypeId().createInstance());
   // no use copying any data. matches() will always return false.
   return (SoElement*)element;
-} // copyMatchInfo()
+}
 
 //! FIXME: write doc.
 
@@ -186,7 +186,7 @@ SoPickRayElement::set(SoState * const state,
   SoPickRayElement *elem = (SoPickRayElement*)
     SoElement::getElement(state, classStackIndex);
   elem->volume = volume;
-} // set()
+}
 
 //! FIXME: write doc.
 
@@ -196,7 +196,7 @@ SoPickRayElement::get(SoState * const state)
   SoPickRayElement *elem = (SoPickRayElement*)
     SoElement::getConstElement(state, classStackIndex);
   return elem->volume;
-} // get()
+}
 
 //! FIXME: write doc.
 
@@ -204,5 +204,5 @@ void
 SoPickRayElement::print(FILE * file) const
 {
   assert(0 && "FIXME: not imlemented");
-} // print()
+}
 

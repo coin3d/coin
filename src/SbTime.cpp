@@ -622,7 +622,7 @@ SbTime::parsedate(const char * const date)
 
   this->dtime = (double)(mktime(&time));
   return TRUE;
-} // parse_date()
+}
 
 /*!
   \relates SbTime

@@ -104,7 +104,7 @@ SoFocalDistanceElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -117,7 +117,7 @@ SoFocalDistanceElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoFocalDistanceElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -131,7 +131,7 @@ SoFocalDistanceElement::SoFocalDistanceElement( // protected
     setTypeId( SoFocalDistanceElement::classTypeId );
     setStackIndex( SoFocalDistanceElement::classStackIndex );
     this->data = getDefault();
-} // SoFocalDistanceElement()
+}
 
 /*!
   The destructor.
@@ -140,7 +140,7 @@ SoFocalDistanceElement::SoFocalDistanceElement( // protected
 SoFocalDistanceElement::~SoFocalDistanceElement( // virtual protected
     void )
 {
-} // ~SoFocalDistanceElement()
+}
 
 //! FIXME: write doc.
 
@@ -150,7 +150,7 @@ SoFocalDistanceElement::init( // virtual
 {
     inherited::init( state );
     this->data = getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 

@@ -104,7 +104,7 @@ SoShapeHintsElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoShapeHintsElement class.
@@ -116,7 +116,7 @@ SoShapeHintsElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoShapeHintsElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -131,7 +131,7 @@ SoShapeHintsElement::SoShapeHintsElement(
 {
     setTypeId( SoShapeHintsElement::classTypeId );
     setStackIndex( SoShapeHintsElement::classStackIndex );
-} // SoShapeHintsElement()
+}
 
 /*!
   The destructor.
@@ -140,7 +140,7 @@ SoShapeHintsElement::SoShapeHintsElement(
 SoShapeHintsElement::~SoShapeHintsElement(
     void )
 {
-} // ~SoShapeHintsElement()
+}
 
 //! FIXME: write doc.
 
@@ -151,7 +151,7 @@ SoShapeHintsElement::init( SoState * state ) // virtual
   this->vertexOrdering = getDefaultVertexOrdering();
   this->shapeType = getDefaultShapeType();
   this->faceType = getDefaultFaceType();
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -175,7 +175,7 @@ SoShapeHintsElement::matches(const SoElement * element) const
 	  this->shapeType == elem->shapeType &&
 	  this->faceType == elem->faceType);
   
-} // matches()
+}
 
 //! FIXME: write doc.
 
@@ -188,7 +188,7 @@ SoShapeHintsElement::copyMatchInfo() const
   elem->shapeType = this->shapeType;
   elem->faceType = this->faceType;
   return elem;
-} // copyMatchInfo()
+}
 
 //! FIXME: write doc.
 
@@ -203,7 +203,7 @@ SoShapeHintsElement::set(SoState * const state,
     SoElement::getElement(state, classStackIndex);
 
   elem->setElt(vertexOrdering, shapeType, faceType);
-} // set()
+}
  
 //! FIXME: write doc.
 
@@ -218,7 +218,7 @@ SoShapeHintsElement::get(SoState * const state,
   vertexOrdering = elem->vertexOrdering;
   shapeType = elem->shapeType;
   faceType = elem->faceType;
-} // get()
+}
 
 //! FIXME: write doc.
 
@@ -255,7 +255,7 @@ SoShapeHintsElement::getFaceType(SoState * const state)
 void
 SoShapeHintsElement::print(FILE * file) const
 {
-} // print()
+}
  
 //! FIXME: write doc.
 
@@ -273,7 +273,7 @@ SoShapeHintsElement::setElt(VertexOrdering vertexOrdering,
   if (faceType != FACE_TYPE_AS_IS) {
     this->faceType = faceType;
   }
-} // setElt()
+}
 
 //! FIXME: write doc.
 

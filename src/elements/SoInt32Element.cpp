@@ -55,7 +55,7 @@ SoInt32Element::getClassTypeId( // static
   void )
 {
   return SoInt32Element::classTypeId;
-} // getClassTypeId()
+}
 
 /*!
   \var SoInt32Element::classStackIndex
@@ -75,7 +75,7 @@ SoInt32Element::getClassStackIndex( // static
   void )
 {
   return SoInt32Element::classStackIndex;
-} // getClassStackIndex()
+}
 //$ END TEMPLATE AbstractElementSource
 
 /*!
@@ -102,7 +102,7 @@ SoInt32Element::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitAbstractElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoInt32Element class.
@@ -114,7 +114,7 @@ SoInt32Element::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanAbstractElementSource( SoInt32Element )
 //$ END TEMPLATE CleanAbstractElementSource
-} // cleanClass()
+}
 
 /*!
   The constructor initialized the int32_t to 0, and sets the class type
@@ -127,7 +127,7 @@ SoInt32Element::SoInt32Element(
 {
   setTypeId( SoInt32Element::classTypeId );
   setStackIndex( SoInt32Element::classStackIndex );
-} // SoInt32Element()
+}
 
 /*!
   The destructor.
@@ -136,7 +136,7 @@ SoInt32Element::SoInt32Element(
 SoInt32Element::~SoInt32Element(
     void )
 {
-} // ~SoInt32Element()
+}
 
 //! FIXME: write doc.
 
@@ -150,7 +150,7 @@ SoInt32Element::matches( // virtual
     if ( ((const SoInt32Element *)element)->data != this->data )
         return FALSE;
     return TRUE;
-} // matches()
+}
 
 //! FIXME: write doc.
 
@@ -167,7 +167,7 @@ SoInt32Element::copyMatchInfo( // virtual
     // information needed in matches(). An exact copy is not needed.
     //    element->dataNode = this->dataNode;
     return (SoElement *)element;
-} // copyMatchInfo()
+}
 
 //! FIXME: write doc.
 
@@ -177,7 +177,7 @@ SoInt32Element::print( // virtual
 {
     fprintf( file, "%s[%p]: data = %d\n", 
         getTypeId().getName().getString(), this, this->data );
-} // print()
+}
 
 //! FIXME: write doc.
 
@@ -191,7 +191,7 @@ SoInt32Element::set(const int index,
   element = (SoInt32Element *) getElement( state, index );
   if (element)
     element->setElt(value);
-} // set()
+}
 
 /*!
   FIXME: write doc.
@@ -215,7 +215,7 @@ SoInt32Element::get(const int index,
   if (element)
     return element->data;
   return 0;
-} // get()
+}
 
 //! FIXME: write doc.
 
@@ -223,7 +223,7 @@ void
 SoInt32Element::setElt(int32_t value)
 {
   this->data = value;
-} // setElt()
+}
 
 //! FIXME: write doc.
 
@@ -233,5 +233,5 @@ SoInt32Element::init( // virtual
 {
   inherited::init( state );
   this->data = 0;
-} // init()
+}
 

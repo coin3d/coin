@@ -178,7 +178,7 @@ SoGetBoundingBoxAction::cleanClass( void )
   delete SoGetBoundingBoxAction::enabledElements;
   methods = NULL;
   SoGetBoundingBoxAction::enabledElements = NULL;  
-} // cleanClass()
+}
 
 // *************************************************************************
 

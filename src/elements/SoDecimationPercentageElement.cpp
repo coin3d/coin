@@ -104,7 +104,7 @@ SoDecimationPercentageElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -117,7 +117,7 @@ SoDecimationPercentageElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoDecimationPercentageElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -131,7 +131,7 @@ SoDecimationPercentageElement::SoDecimationPercentageElement( // protected
     setTypeId( SoDecimationPercentageElement::classTypeId );
     setStackIndex( SoDecimationPercentageElement::classStackIndex );
     this->data = getDefault();
-} // SoDecimationPercentageElement()
+}
 
 /*!
   The destructor.
@@ -140,7 +140,7 @@ SoDecimationPercentageElement::SoDecimationPercentageElement( // protected
 SoDecimationPercentageElement::~SoDecimationPercentageElement( // virtual protected
     void )
 {
-} // ~SoDecimationPercentageElement()
+}
 
 //! FIXME: write doc.
 
@@ -150,7 +150,7 @@ SoDecimationPercentageElement::init( // virtual
 {
   inherited::init( state );
   this->data = getDefault();
-} // init()
+}
 
 //! FIXME: write doc.
 

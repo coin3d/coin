@@ -108,7 +108,7 @@ SoGLNormalElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoGLNormalElement class.
@@ -120,7 +120,7 @@ SoGLNormalElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLNormalElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -133,7 +133,7 @@ SoGLNormalElement::SoGLNormalElement( // protected
 {
     setTypeId( SoGLNormalElement::classTypeId );
     setStackIndex( SoGLNormalElement::classStackIndex );
-} // SoGLNormalElement()
+}
 
 /*!
   The destructor.
@@ -142,7 +142,7 @@ SoGLNormalElement::SoGLNormalElement( // protected
 SoGLNormalElement::~SoGLNormalElement( // virtual
     void )
 {
-} // ~SoGLNormalElement()
+}
 
 //! FIXME: write doc.
 
@@ -150,7 +150,7 @@ void
 SoGLNormalElement::init(SoState * state)
 {
   inherited::init(state);
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -159,5 +159,5 @@ SoGLNormalElement::send(const int index) const
 {
   assert(index >= 0 && index < this->numNormals);
   glNormal3fv(this->normals[index].getValue());
-} // send()
+}
 

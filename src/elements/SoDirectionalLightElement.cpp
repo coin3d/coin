@@ -104,7 +104,7 @@ SoDirectionalLightElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the
@@ -117,7 +117,7 @@ SoDirectionalLightElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoDirectionalLightElement )
 //$ END TEMPLATE CleanElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.
@@ -130,7 +130,7 @@ SoDirectionalLightElement::SoDirectionalLightElement(
 {
     setTypeId( SoDirectionalLightElement::classTypeId );
     setStackIndex( SoDirectionalLightElement::classStackIndex );
-} // SoDirectionalLightElement()
+}
 
 /*!
   The destructor.
@@ -139,7 +139,7 @@ SoDirectionalLightElement::SoDirectionalLightElement(
 SoDirectionalLightElement::~SoDirectionalLightElement(
     void )
 {
-} // ~SoDirectionalLightElement()
+}
 
 //! FIXME: write doc.
 
@@ -148,7 +148,7 @@ SoDirectionalLightElement::init( // virtual
     SoState * state )
 {
     inherited::init( state );
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -157,7 +157,7 @@ SoDirectionalLightElement::push( // virtual
     SoState * state )
 {
     inherited::push( state );
-} // push()
+}
 
 //! FIXME: write doc.
 
@@ -167,7 +167,7 @@ SoDirectionalLightElement::pop( // virtual
     const SoElement * prevTopElement )
 {
     inherited::pop( state, prevTopElement );
-} // pop()
+}
 
 //! FIXME: write doc.
 

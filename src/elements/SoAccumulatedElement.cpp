@@ -58,7 +58,7 @@ SoAccumulatedElement::getClassTypeId( // static
   void )
 {
   return SoAccumulatedElement::classTypeId;
-} // getClassTypeId()
+}
 
 /*!
   \var SoAccumulatedElement::classStackIndex
@@ -78,7 +78,7 @@ SoAccumulatedElement::getClassStackIndex( // static
   void )
 {
   return SoAccumulatedElement::classStackIndex;
-} // getClassStackIndex()
+}
 //$ END TEMPLATE AbstractElementSource
 
 /*!
@@ -106,7 +106,7 @@ SoAccumulatedElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitAbstractElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoAccumulatedElement
@@ -119,7 +119,7 @@ SoAccumulatedElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanAbstractElementSource( SoAccumulatedElement )
 //$ END TEMPLATE CleanAbstractElementSource
-} // cleanClass()
+}
 
 /*!
   A constructor.  Can't be used directly.  This is an abstract base class.
@@ -142,7 +142,7 @@ SoAccumulatedElement::SoAccumulatedElement()
 SoAccumulatedElement::~SoAccumulatedElement( // virtual
     void )
 {
-} // ~SoAccumulatedElement()
+}
 
 //! FIXME: write doc.
 
@@ -151,7 +151,7 @@ SoAccumulatedElement::matches(const SoElement * element) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
-} // matches()
+}
 
 //! FIXME: write doc.
 
@@ -160,7 +160,7 @@ SoAccumulatedElement::print(
     FILE * file ) const
 {
   fprintf( file, "SoAccumulatedElement(%p)\n", this );
-} // print()
+}
 
 //! FIXME: write doc.
 

@@ -58,7 +58,7 @@ SoReplacedElement::getClassTypeId( // static
   void )
 {
   return SoReplacedElement::classTypeId;
-} // getClassTypeId()
+}
 
 /*!
   \var SoReplacedElement::classStackIndex
@@ -78,7 +78,7 @@ SoReplacedElement::getClassStackIndex( // static
   void )
 {
   return SoReplacedElement::classStackIndex;
-} // getClassStackIndex()
+}
 //$ END TEMPLATE AbstractElementSource
 
 /*!
@@ -105,7 +105,7 @@ SoReplacedElement::initClass( // static
       inherited::classStackIndex;
   }
 //$ END TEMPLATE InitAbstractElementSource
-} // initClass()
+}
 
 /*!
   This static method cleans up static data for the SoReplacedElement class.
@@ -117,7 +117,7 @@ SoReplacedElement::cleanClass( // static
 {
 //$ BEGIN TEMPLATE CleanAbstractElementSource( SoReplacedElement )
 //$ END TEMPLATE CleanAbstractElementSource
-} // cleanClass()
+}
 
 /*!
   The constructor.  Can't be used directly.  This is an abstract base class.
@@ -129,7 +129,7 @@ SoReplacedElement::SoReplacedElement(
 {
   setTypeId( SoReplacedElement::classTypeId );
   setStackIndex( SoReplacedElement::classStackIndex );
-} // SoReplacedElement()
+}
 
 /*!
   The destructor.
@@ -138,7 +138,7 @@ SoReplacedElement::SoReplacedElement(
 SoReplacedElement::~SoReplacedElement( // virtual
     void )
 {
-} // ~SoReplacedElement()
+}
 
 //! FIXME: write doc.
 
@@ -147,7 +147,7 @@ SoReplacedElement::init( // virtual
     SoState * state )
 {
   inherited::init( state );
-} // init()
+}
 
 //! FIXME: write doc.
 
@@ -159,7 +159,7 @@ SoReplacedElement::matches( // virtual
       this->nodeId)
     return TRUE;
   return FALSE;
-} // matches()
+}
 
 //! FIXME: write doc.
 
@@ -172,7 +172,7 @@ SoReplacedElement::copyMatchInfo( // virtual
     (SoReplacedElement *)(getTypeId().createInstance());
   element->nodeId = this->nodeId;
   return element;
-} // copyMatchInfo()
+}
 
 //! FIXME: write doc.
 
@@ -181,7 +181,7 @@ SoReplacedElement::print(FILE * file) const
 {
   fprintf(file, "%s[%p]\n", getTypeId().getName().getString(),
 	  this );
-} // print()
+}
 
 /*!
   This function returns the top element on the stack.
@@ -202,7 +202,7 @@ SoReplacedElement::getElement(SoState * const state,
     elem->nodeId = node->getNodeId();
   else elem->nodeId = 0;
   return elem;
-} // getElement()
+}
 
 /*!
   \fn uint32_t SoReplacedElement::getNodeId( void ) const

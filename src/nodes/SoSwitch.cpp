@@ -141,7 +141,7 @@ SoSwitch::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoSwitchElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-} // initClass()
+}
 
 /*!
   Clean out all statically allocated resources.
