@@ -255,10 +255,9 @@ cc_flwft_initialize(void)
                            "FreeType library version is %d.%d.%d",
                            major, minor, patch);
   }
-  if (major < 2) {
-    /* FIXME: should we test minor version also? peder, 2003-07-09 */
+  if (major < 2 || (major == 2 && minor < 1)) {
     cc_debugerror_post("cc_flwft_initialize", 
-                       "Version of Freetype 2 library is < 2. "
+                       "Version of Freetype 2 library is < 2.1 "
                        "Font rendering is disabled.");
     cc_ftglue_FT_Done_FreeType(library);
     library = NULL;
