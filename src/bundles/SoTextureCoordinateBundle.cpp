@@ -83,25 +83,12 @@ SoTextureCoordinateBundle(SoAction * const action,
     }
   }
 
-  assert(action->getCurPathTail()->isOfType(SoVertexShape::getClassTypeId()));
-  this->shapenode = (SoVertexShape*)action->getCurPathTail();
-
-  SoVertexProperty *vp = (SoVertexProperty*)
-    this->shapenode->vertexProperty.getValue();
-
-  if (vp && vp->texCoord.getNum() > 0) {
-    this->state->push();
-    this->flags |= FLAG_DIDPUSH;
-    // this call is needed to clear GL texgen when explicit
-    // coordinates are set.
-    if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
-      SoGLTextureCoordinateElement::setTexGen(this->state,
-                                              vp, NULL);
-    }
-    SoTextureCoordinateElement::set2(this->state, vp,
-                                     vp->texCoord.getNum(),
-                                     vp->texCoord.getValues(0));
-  }
+  // FIXME: shapenode is not guaranteed to be a SoVertexShape, since
+  // the VRML nodes have a different node hierarchy. It is safe to
+  // assume that shapenode is of type SoShape though, so remember to
+  // cast to SoShape before doing any operations on the node. For Coin
+  // V2.0 we'll change the shapenode member to be of type SoShape
+  this->shapenode = (SoVertexShape*) action->getCurPathTail();
 
   this->coordElt = SoTextureCoordinateElement::getInstance(this->state);
   switch (coordElt->getType()) {
@@ -247,7 +234,11 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
   // this could be very slow, but if you're looking for speed, default
   // texture coordinate mapping shouldn't be used. We might optimize this
   // by using a SoTextureCoordinateCache soon though. pederb, 20000218
-  this->shapenode->computeBBox(action, box, center);
+
+
+  // just in case, cast to SoShape since it's not guaranteed that
+  // shapenode is of type SoVertexShape.
+  ((SoShape*)this->shapenode)->computeBBox(action, box, center);
 
   SbVec3f size;
   box.getSize(size[0], size[1], size[2]);
@@ -262,7 +253,7 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
   if (size[2] < smallval) {
     smallest = 2;
   }
-  
+
   this->defaultdim0 = (smallest + 1) % 3;
   this->defaultdim1 = (smallest + 2) % 3;
 
@@ -301,7 +292,7 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
 
   this->dummyInstance[2] = 0.0f;
   this->dummyInstance[3] = 1.0f;
-  
+
   assert(this->defaultsize[0] > 0.0f);
   assert(this->defaultsize[1] > 0.0f);
 }
