@@ -231,7 +231,7 @@ aglglue_context_create_software(struct aglglue_contextdata * ctx)
 
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("aglglue_context_create_offscreen",
-                           "Not using pBuffer.");
+                           "Creating software buffer.");
   }
     
   ctx->pixformat = aglChoosePixelFormat( NULL, 0, attrib );
@@ -302,6 +302,11 @@ aglglue_context_create_pbuffer(struct aglglue_contextdata * ctx)
     AGL_NONE 
   };
 
+  if (coin_glglue_debug()) {
+    cc_debugerror_postinfo("aglglue_context_create_pbuffer",
+                           "Creating pBuffer.");
+  }
+
   ctx->pixformat = aglChoosePixelFormat (NULL, 0, attribs);
   GLenum error = aglGetError();
   if (error != AGL_NO_ERROR) {
@@ -343,19 +348,31 @@ void *
 aglglue_context_create_offscreen(unsigned int width, unsigned int height)
 {
   struct aglglue_contextdata * ctx;
-  SbBool ok, pbuffer = FALSE;
+  SbBool ok, pbuffer = FALSE, ispbuffer = FALSE;
 
   ctx = aglglue_contextdata_init(width, height);
   if (!ctx) return NULL;
 
   /* Use cached function pointer for pBuffer vs SW context creation... */
   if (aglglue_context_create != NULL) {
-    if (aglglue_context_create(ctx)) {
-      return ctx;
-    } else {
+
+    ispbuffer = (aglglue_context_create == aglglue_context_create_pbuffer);
+
+    /* Try to open a pBuffer context. If that fails, fall back to software. */
+    if (aglglue_context_create(ctx)) { return ctx; }
+    aglglue_contextdata_cleanup(ctx);
+
+    if (ispbuffer) { 
+      if (coin_glglue_debug()) {     
+        cc_debugerror_postinfo("wglglue_context_create_offscreen",     
+                              "pBuffer failed. Trying software ");
+      }
+      ctx = aglglue_contextdata_init(width, height);
+      assert(ctx);
+      if (aglglue_context_create_software(ctx)) { return ctx; } 
       aglglue_contextdata_cleanup(ctx);
-      return NULL;
     }
+    return NULL;
   }
 
   /* ... but the first time around, we have to figure out. */
