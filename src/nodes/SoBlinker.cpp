@@ -24,8 +24,8 @@
 
   This switch node cycles its children SoBlinker::speed number of
   times per second. If the node has only one child, it will be cycled
-  on and off. Cycling can be turned off using the SoBlinker::on
-  field, and the node then behaves like a normal SoSwitch node.
+  on and off. Cycling can be turned off using the SoBlinker::on field,
+  and the node then behaves like a normal SoSwitch node.
 */
 
 #include <Inventor/nodes/SoBlinker.h>
@@ -54,7 +54,7 @@ SO_NODE_SOURCE(SoBlinker);
 /*!
   Constructor.
 */
-SoBlinker::SoBlinker()
+SoBlinker::SoBlinker(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoBlinker);
 
@@ -71,7 +71,6 @@ SoBlinker::SoBlinker()
   this->counter->frequency.connectFrom(&this->speed);
   this->counter->on.connectFrom(&this->on);
   this->whichChild.connectFrom(&this->counter->output);
-  this->whichChild.setDirty(TRUE);
 }
 
 /*!
@@ -95,7 +94,7 @@ SoBlinker::initClass(void)
   Overloaded to calculate bbox of all children.
 */
 void
-SoBlinker::getBoundingBox(SoGetBoundingBoxAction *action)
+SoBlinker::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   this->whichChild.getValue();
   SoGroup::getBoundingBox(action);
@@ -105,24 +104,39 @@ SoBlinker::getBoundingBox(SoGetBoundingBoxAction *action)
   Overloaded not to write internal engine connections.
 */
 void
-SoBlinker::write(SoWriteAction *action)
+SoBlinker::write(SoWriteAction * action)
 {
-  COIN_STUB();
+  // Decouple connections to/from internal engine to avoid it being
+  // written.
+  this->whichChild.disconnect(&this->counter->output);
+  this->counter->on.disconnect(&this->on);
+  this->counter->on = FALSE;
+  this->counter->frequency.disconnect(&this->speed);
+
   inherited::write(action);
+
+  // Reenable all connections to/from internal engine.
+  this->counter->frequency.connectFrom(&this->speed);
+  this->counter->on.connectFrom(&this->on);
+  this->whichChild.connectFrom(&this->counter->output);
+
+  // Make sure "on" field of engine get synchronized with the "on"
+  // field of the blinker.
+  this->on.touch();
 }
 
 /*!
   Overloaded to detect field/children changes.
 */
 void
-SoBlinker::notify(SoNotList *list)
+SoBlinker::notify(SoNotList * nl)
 {
-  SoField *f = list->getLastField();
+  SoField * f = nl->getLastField();
   if (f == &this->whichChild) {
-    if (list->getFirstRec()->getBase() == this) this->whichSensor->schedule();
+    if (nl->getFirstRec()->getBase() == this) this->whichSensor->schedule();
   }
   else this->childrenSensor->schedule();
-  SoNode::notify(list);
+  SoNode::notify(nl);
 }
 
 // sets the counter min/max values
@@ -136,17 +150,15 @@ SoBlinker::setCounterLimits(void)
 
 // OneShot callback when children change
 void
-SoBlinker::childrenCB(void *d, SoSensor *s)
+SoBlinker::childrenCB(void * d, SoSensor * s)
 {
-  ((SoBlinker*)d)->setCounterLimits();
+  ((SoBlinker *)d)->setCounterLimits();
 }
 
 // OneShot callback when whichChild is manually set
 void
-SoBlinker::whichCB(void *d, SoSensor *s)
+SoBlinker::whichCB(void * d, SoSensor * s)
 {
-  SoBlinker *thisp = (SoBlinker*)d;
+  SoBlinker * thisp = (SoBlinker *)d;
   thisp->counter->reset.setValue(thisp->whichChild.getValue());
-  thisp->whichChild.touch(); // notify scene graph
-  thisp->whichChild.setDirty(TRUE); // force engine to evaluate
 }
