@@ -231,7 +231,7 @@ SoFile::readNamedFile(SoInput * in)
   
   // The file should not be removed from the stack before it is done
   // deliberately at the end of this method.
-  assert(in->getCurFileName() == this->fullname.getValue());
+  assert(in->getCurFileName() == this->fullname);
 
   if (readok) {
     this->children->copy(cl); // (copy() implicitly truncates before copying)
