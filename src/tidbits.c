@@ -424,7 +424,7 @@ coin_getenv(const char * envname)
        * => free previous value buffer and bookkeep the new one instead */
       free(envptr->val);
       envptr->val = valbuf;
-    } 
+    }
     else {
       /* We aren't bookkeeping a buffer for this one yet. */
       envptr = (struct envvar_data *) malloc(sizeof(struct envvar_data));
@@ -519,7 +519,7 @@ coin_setenv(const char * name, const char * value, int overwrite)
 
     if (envptr) {
       oldbuf = envptr->string;
-    } 
+    }
     else {
       oldbuf = NULL;
       envptr = (struct envvar_data *) malloc(sizeof(struct envvar_data));
@@ -538,13 +538,13 @@ coin_setenv(const char * name, const char * value, int overwrite)
 	free(envptr->string);
 	envptr->string = oldbuf;
 	return FALSE;
-      } 
+      }
       else {
 	free(envptr->string);
 	free(envptr);
       }
       return FALSE;
-    } 
+    }
     else {
       if (oldbuf) free(oldbuf);
       else envlist_append(envptr);
@@ -978,7 +978,7 @@ static int
 atexit_qsort_cb(const void * q0, const void * q1)
 {
   tb_atexit_data * p0, * p1;
-  
+
   p0 = *((tb_atexit_data**) q0);
   p1 = *((tb_atexit_data**) q1);
 
@@ -986,13 +986,13 @@ atexit_qsort_cb(const void * q0, const void * q1)
      callbacks are called first  */
   if (p0->priority < p1->priority) return -1;
   if (p0->priority > p1->priority) return 1;
-  
+
   /* when priority is equal, use LIFO */
   if (p0->cnt < p1->cnt) return -1;
   return 1;
 }
 
-/* 
+/*
    Calls all atexit functions. Invoked from SoDB::cleanup().
 */
 void
@@ -1065,7 +1065,7 @@ coin_atexit(coin_atexit_f * f, uint32_t priority)
   data->func = f;
   data->priority = priority;
   data->cnt = cc_list_get_length(atexit_list);
-  
+
   cc_list_append(atexit_list, data);
 }
 
@@ -1186,7 +1186,7 @@ coin_encode_ascii85(const unsigned char * in, unsigned char * out)
     ((uint32_t)(in[1])<<16) |
     ((uint32_t)(in[2])<< 8) |
     ((uint32_t)(in[3]));
-  
+
   if (data == 0) {
     out[0] = 'z';
     return 1;
@@ -1431,7 +1431,7 @@ coin_finite(double value)
 #elif defined(HAVE__FINITE)
   return _finite(value);
 #else
-  return !coin_isinf() && !coin_isnan();
+  return !coin_isinf(value) && !coin_isnan(value);
 #endif
 }
 
