@@ -69,6 +69,7 @@ protected:
 
 private:
   SoVRMLTextP * pimpl;
+  friend class SoVRMLTextP;
 
 };
 

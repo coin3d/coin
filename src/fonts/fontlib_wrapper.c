@@ -798,7 +798,7 @@ cc_flw_get_bitmap(unsigned int font, unsigned int glyph)
 }
 
 struct cc_flw_vector_glyph *
-cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph)
+cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph, float complexity)
 {
 
   struct cc_flw_vector_glyph * vector_glyph = NULL;
@@ -809,10 +809,10 @@ cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph)
   fs = flw_fontidx2fontptr(font);
 
   if (freetypelib) {
-    vector_glyph = cc_flwft_get_vector_glyph(fs->font, glyph);
+    vector_glyph = cc_flwft_get_vector_glyph(fs->font, glyph, complexity);
   }
   else if (win32api) {
-    vector_glyph = cc_flww32_get_vector_glyph(fs->font, glyph);		
+    vector_glyph = cc_flww32_get_vector_glyph(fs->font, glyph, complexity);		
   }
   else {
     vector_glyph = NULL;

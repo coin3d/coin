@@ -195,7 +195,6 @@ glyph2d_specmatch(const cc_font_specification * spec1,
   assert(spec1);
   assert(spec2);
 
-  /* FIXME: Add compare for family and style (20030902 handegar) */
   if ((!cc_string_compare(spec1->name, spec2->name)) &&
       (!cc_string_compare(spec1->style, spec2->style)) &&
       (spec1->size == spec2->size)) {

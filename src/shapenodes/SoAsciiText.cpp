@@ -89,6 +89,10 @@
 
 class SoAsciiTextP {
 public:
+
+  SoAsciiTextP(SoAsciiText * master) : master(master) { }
+  SoAsciiText * master;
+
   float getWidth(const int idx, const float fontsize);
   void setUpGlyphs(SoState * state, SoAsciiText * textnode);
 
@@ -126,7 +130,7 @@ SoAsciiText::SoAsciiText(void)
   SO_NODE_DEFINE_ENUM_VALUE(Justification, CENTER);
   SO_NODE_SET_SF_ENUM_TYPE(justification, Justification);
 
-  PRIVATE(this) = new SoAsciiTextP;
+  PRIVATE(this) = new SoAsciiTextP(this);
   PRIVATE(this)->needsetup = TRUE;
   PRIVATE(this)->textsize = 1.0f;
   PRIVATE(this)->fontspec = NULL;
@@ -474,8 +478,9 @@ SoAsciiTextP::setUpGlyphs(SoState * state, SoAsciiText * textnode)
   this->fontspec->name = cc_string_construct_new();
   cc_string_set_text(this->fontspec->name, SoFontNameElement::get(state).getString());   
   this->fontspec->size = SoFontSizeElement::get(state);
+  this->fontspec->complexity = this->master->getComplexityValue(state->getAction());
 
-  // Check if style is baked into the fontname using the "family:style" syntax.
+  // Check if style is included in the fontname using the "family:style" syntax.
   this->fontspec->style = cc_string_construct_new();
   const char * tmpstr = cc_string_get_text(this->fontspec->name);
   const char * tmpptr = strchr(tmpstr, ':');

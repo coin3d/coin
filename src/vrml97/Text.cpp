@@ -888,6 +888,8 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
   else cc_string_set_text(this->fontspec->style, "");
 
   this->fontspec->size = this->textsize;
+  this->fontspec->complexity = this->master->getComplexityValue(state->getAction());
+
 
   this->glyphwidths.truncate(0);
 

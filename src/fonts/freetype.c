@@ -70,7 +70,7 @@ void cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *
 void cc_flwft_done_glyph(void * font, int glyph) { assert(FALSE); }
 
 struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, unsigned int glyph) { assert(FALSE); return NULL; }
-struct cc_flw_vector_glyph * cc_flwft_get_vector_glyph(void * font, unsigned int glyph) { assert(FALSE); return NULL; }
+struct cc_flw_vector_glyph * cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity) { assert(FALSE); return NULL; }
 
 const float * cc_flwft_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
 const int * cc_flwft_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
@@ -97,6 +97,7 @@ static void flwft_buildVertexList(struct cc_flw_vector_glyph * newglyph);
 static void flwft_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph);
 static void flwft_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph);
 
+static int flwft_calctessellatorsteps(float complexity);
 
 #include <string.h>
 #include <math.h>
@@ -123,14 +124,7 @@ static void flwft_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph);
 #include <Inventor/C/base/namemap.h>
 #include "fontlib_wrapper.h"
 
-
-/* Which size the 3D fonts will be in when tesselated. Higher number
-   => more details and tris. */
-/* FIXME: This variable should be connected to a SoComplexity node so
-   that one could control the level of details for the
-   glyphs. (Reported by mortene) (20030915 handegar) */
 static const int flwft_3dfontsize = 40;
-
 
 typedef struct flwft_tessellator_t {  
   coin_GLUtessellator * tessellator_object;
@@ -154,6 +148,7 @@ typedef struct flwft_tessellator_t {
 } flwft_tessellator_t;
 
 static flwft_tessellator_t flwft_tessellator;
+
 
 
 /* ************************************************************************* */
@@ -787,7 +782,7 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
 }
 
 struct cc_flw_vector_glyph * 
-cc_flwft_get_vector_glyph(void * font, unsigned int glyph)
+cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity)
 { 
 
   struct cc_flw_vector_glyph * new_vector_glyph;
@@ -874,13 +869,7 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyph)
   flwft_tessellator.tessellator_object = GLUWrapper()->gluNewTess(); /* static object pointer */
   flwft_tessellator.contour_open = FALSE;
   flwft_tessellator.vertex_scale = 1.0f;
-  flwft_tessellator.tessellation_steps = 5; /* Higher number -> more
-                                               tris. This variable
-                                               should be connected to
-                                               an SoComplexity node
-                                               somehow (if
-                                               present). (20030915
-                                               handegar) */
+  flwft_tessellator.tessellation_steps = flwft_calctessellatorsteps(complexity);
   flwft_tessellator.triangle_mode = 0;
   flwft_tessellator.triangle_index_counter = 0;
   flwft_tessellator.triangle_strip_flipflop = FALSE;
@@ -1324,5 +1313,20 @@ cc_flwft_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
   assert(vecglyph->faceindices && "Face indices not initialized properly");
   return vecglyph->faceindices;
 } 
+
+static int
+flwft_calctessellatorsteps(float complexity)
+{
+
+  /* Clamp value to [0..1] just in case. */
+  if (complexity > 1.0f)
+    complexity = 1.0f;
+  else if (complexity < 0)
+    complexity = 0;
+
+  /* Default is 5 steps. Minimum is zero step, maximum is 10. */
+  return (int)  (10 * complexity);
+
+}
 
 #endif /* HAVE_FREETYPE */

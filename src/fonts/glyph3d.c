@@ -136,7 +136,6 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   /* build a new glyph struct */
   glyph = (cc_glyph3d *) malloc(sizeof(cc_glyph3d));
 
-  /* FIXME: Must add family and style support (2Sep2003 handegar) */
   newspec = (cc_font_specification *) malloc(sizeof(cc_font_specification));
   assert(newspec);
   newspec->size = spec->size;
@@ -144,6 +143,7 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   newspec->style = cc_string_construct_new();
   cc_string_set_text(newspec->name, cc_string_get_text(spec->name));
   cc_string_set_text(newspec->style, cc_string_get_text(spec->style));
+  newspec->complexity = spec->complexity;
   glyph->fontspec = newspec;
 
   fonttoload = cc_string_construct_new();
@@ -152,6 +152,7 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
     cc_string_append_text(fonttoload, " ");
     cc_string_append_string(fonttoload, spec->style);
   }
+
   fontidx = cc_flw_get_font(cc_string_get_text(fonttoload), (int)(newspec->size), (int)(newspec->size));
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);
@@ -168,7 +169,7 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   glyph->bbox = (float *) malloc(sizeof(float) * 4);
 
   if (fontidx != 0)
-    glyph->vectorglyph = cc_flw_get_vector_glyph(fontidx, character);
+    glyph->vectorglyph = cc_flw_get_vector_glyph(fontidx, character, newspec->complexity);
   else
     glyph->vectorglyph = NULL;
 
@@ -344,9 +345,9 @@ glyph3d_specmatch(const cc_font_specification * spec1,
   assert(spec1);
   assert(spec2);
 
-  /* FIXME: Add compare for family and style (20030902 handegar) */
   if ((!cc_string_compare(spec1->name, spec2->name)) &&
       (!cc_string_compare(spec1->style, spec2->style)) &&
+      (spec1->complexity == spec2->complexity) &&
       (spec1->size == spec2->size)) {
     return TRUE;
   }

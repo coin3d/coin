@@ -6,8 +6,9 @@
 
 typedef struct cc_font_specification {
   float size;
-  cc_string * name;
-  cc_string * style;
+  cc_string * name;  
+  cc_string * style; /* 'Bold', 'Italic' or 'Bold Italic' */
+  float complexity;  /* detail level for vector glyphs */
 } cc_font_specification;
 
 

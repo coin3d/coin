@@ -972,8 +972,9 @@ SoText3P::setUpGlyphs(SoState * state, SoText3 * textnode)
   this->fontspec->name = cc_string_construct_new();
   cc_string_set_text(this->fontspec->name, SoFontNameElement::get(state).getString());   
   this->fontspec->size = SoFontSizeElement::get(state);
+  this->fontspec->complexity = this->master->getComplexityValue(state->getAction());
 
-  // Check if style is baked into the fontname using the "family:style" syntax.
+  // Check if style is included in the fontname using the "family:style" syntax.
   this->fontspec->style = cc_string_construct_new();
   const char * tmpstr = cc_string_get_text(this->fontspec->name);
   const char * tmpptr = strchr(tmpstr, ':');

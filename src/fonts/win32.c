@@ -75,7 +75,7 @@ void cc_flww32_get_kerning(void * font, int glyph1, int glyph2, float *x, float 
 void cc_flww32_done_glyph(void * font, int glyph) { assert(FALSE); }
   
 struct cc_flw_bitmap * cc_flww32_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
-struct cc_flw_vector_glyph * cc_flww32_get_vector_glyph(void * font, unsigned int glyph){ assert(FALSE); return NULL; }
+struct cc_flw_vector_glyph * cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity){ assert(FALSE); return NULL; }
 
 const float * cc_flww32_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
 const int * cc_flww32_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
@@ -96,6 +96,7 @@ static void flww32_buildVertexList(struct cc_flw_vector_glyph * newglyph);
 static void flww32_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph);
 static void flww32_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph);
 
+static int flww32_calcfontsize(float complexity);
 
 
 /* ************************************************************************* */
@@ -138,14 +139,7 @@ typedef struct flww32_tessellator_t {
 } flww32_tessellator_t;
 
 static flww32_tessellator_t flww32_tessellator;
-
-/* Which size the 3D fonts will be in when tesselated. Higher number
-   => more details and tris. */
-/* FIXME: This variable should be connected to a SoComplexity node so
-   that one could control the level of details for the
-   glyphs. (Reported by mortene) (20030915 handegar) */
 static int flww32_font3dsize = 200;
-
 
 struct cc_flww32_globals_s {
   /* Offscreen device context for connecting to fonts. */
@@ -695,7 +689,7 @@ flww32_getVerticesFromPath(HDC hdc)
 }
 
 cc_flw_vector_glyph *
-cc_flww32_get_vector_glyph(void * font, unsigned int glyph)
+cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
 {
 
   HDC memdc;
@@ -734,6 +728,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph)
      (20030912 handegar) */
   fontname = cc_string_construct_new();
   cc_flww32_get_font_name(font, fontname);
+  flww32_font3dsize = flww32_calcfontsize(complexity);
   font = cc_flww32_get_font(cc_string_get_text(fontname), flww32_font3dsize, flww32_font3dsize);
   cc_string_destruct(fontname);
 
@@ -1062,5 +1057,21 @@ cc_flww32_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
   assert(vecglyph->faceindices && "Face indices not initialized properly");
   return vecglyph->faceindices;
 } 
+
+
+static int
+flww32_calcfontsize(float complexity)
+{
+
+  /* Clamp value to [0..1] just in case. */
+  if (complexity > 1.0f)
+    complexity = 1.0f;
+  else if (complexity < 0)
+    complexity = 0;
+
+  /* Minimum 10, maximum 1210. Default 610 */
+  return 10 + ((int) (1200 * complexity));
+
+}
 
 #endif /* HAVE_WIN32_API */
