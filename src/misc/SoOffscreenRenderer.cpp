@@ -149,7 +149,7 @@ public:
     return FALSE;
   }
 
-  virtual SbVec2s getMaxDimensions(void) {
+  static SbVec2s getMaxDimensions(void) {
     // Create and set up a dummy context to be able to use
     // glGetIntegerv() below.
     OSMesaContext tmpctx = OSMesaCreateContext(OSMESA_RGBA, NULL);
@@ -294,7 +294,7 @@ public:
     }
   }
 
-  virtual SbVec2s getMaxDimensions(void) {
+  static SbVec2s getMaxDimensions(void) {
     // FIXME: where can we get hold of the _real_ max values for
     // Pixmap and/or GLXPixmap? 20000417 mortene.
     return SbVec2s(32767, 32767);
