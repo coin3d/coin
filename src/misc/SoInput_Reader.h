@@ -42,7 +42,8 @@ public:
   // must be overloaded to return type
   virtual ReaderType getType(void) const = 0;
 
-  // must be overloaded to read data
+  // must be overloaded to read data. Should return number of bytes
+  // read or 0 if eof
   virtual int readBuffer(char * buf, const size_t readlen) = 0;
 
   // should be overloaded to return filename. Default method returns
