@@ -397,27 +397,24 @@ SoShaderObjectP::readSource(void)
       delete subdirs[1];
       
       FILE * f = fopen(fileName.getString(), "rb");
+      SbBool readok = FALSE;
       if (f) {
-        int ret = fseek(f, 0L, SEEK_END);
-        assert(ret == 0); // FIXME: be more robust. 20050120 mortene.
-        const long length = ftell(f);
-        assert(length != -1); // FIXME: be more robust. 20050120 mortene.
-        assert(length != 0); // FIXME: be more robust. 20050120 mortene.
-
-        ret = fseek(f, 0L, SEEK_SET);
-        assert(ret == 0); // FIXME: be more robust. 20050120 mortene.
-
-        char * srcstr = new char[length+1];
-        size_t readlen = fread(srcstr, 1, length, f);
-        assert(readlen == (size_t)length); // FIXME: be more robust. 20050120 mortene.
-
-        srcstr[length] = '\0';
-        this->cachedSourceProgram = srcstr;
-        delete[] srcstr;
+        if (fseek(f, 0L, SEEK_END) == 0) {
+          const long length = ftell(f);
+          if ((length > 0) && (fseek(f, 0L, SEEK_SET) == 0)) {
+            char * srcstr = new char[length+1];
+            size_t readlen = fread(srcstr, 1, length, f);
+            if (readlen == (size_t) length) {
+              srcstr[length] = '\0';
+              this->cachedSourceProgram = srcstr;
+              readok = TRUE;
+            }
+            delete[] srcstr;
+          }
+        }
       }
-      else {
+      if (!readok) {
         this->cachedSourceType = SoShaderObject::FILENAME;
-
         SoDebugError::postWarning("SoShaderObjectP::readSource",
                                   "Could not read shader file '%s'",
                                   fileName.getString());
