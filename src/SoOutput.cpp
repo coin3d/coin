@@ -509,9 +509,7 @@ SoOutput::write(const short s)
     this->writeBytesWithPadding(buffer, strlen(buffer));
   }
   else {
-    char buff[sizeof(s)];
-    this->convertShort(s, buff);
-    this->writeBytesWithPadding(buff, sizeof(s));
+    this->write((const int)s);
   }
 }
 
@@ -529,10 +527,7 @@ SoOutput::write(const unsigned short s)
     this->writeBytesWithPadding(buffer, strlen(buffer));
   }
   else {
-    assert(sizeof(s) == sizeof(short));
-    char buff[sizeof(s)];
-    this->convertShort((short)s, buff);
-    this->writeBytesWithPadding(buff, sizeof(s));
+    this->write((const unsigned int)s);
   }
 }
 

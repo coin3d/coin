@@ -135,15 +135,32 @@ SbBool SoDB::isinitialized = FALSE;
 void
 SoDB::init(void)
 {
+  // Sanity check: if anything here breaks,
+  // include/Inventor/system/inttypes.h needs fixing. Keep these
+  // asserts around.
+
+  assert(sizeof(uint16_t) == 2);
+  assert(sizeof(int16_t) == 2);
+  assert(sizeof(uint32_t) == 4);
+  assert(sizeof(int32_t) == 4);
+
   // Sanity check: if the int type is less than 32 bits everything
-  // probably goes to hell, if it's larger than 32 bits the inttypes.h
-  // file need a bit of fixing.
+  // probably goes to hell. Remove this check when we are no longer
+  // dependent on using native C types where we need to have a
+  // particular bitwidth.
 
   assert(sizeof(int) == 4);
 
-  // Sanity check: if the int type is unequal to the long type, lots
-  // of things will probably break. NB! This is really terrible and
-  // _must_ be fixed.
+  // Sanity check: if this breaks, the binary format import and export
+  // routines will not work correctly. The code should be fixed to use
+  // the int16_t type, then we can remove this stoopid check.
+
+  assert(sizeof(short) == 2);
+
+  // Sanity check: if the int type is unequal to the long type, things
+  // will probably break. NB! This is really terrible and _must_ be
+  // fixed. Remove this check when we are no longer dependent on using
+  // native C types where we need to have a particular bitwidth.
 
   assert(sizeof(int) == sizeof(long));
 

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _COIN_INTTYPES_H_
-#define _COIN_INTTYPES_H_
+#ifndef __COIN_INTTYPES_H__
+#define __COIN_INTTYPES_H__
 
 #include <sys/types.h>
 
@@ -28,17 +28,20 @@
     int32_t, uint32_t
 */
 
-#ifndef __GLIBC__
-// FIXME: this doesn't look very portable - 990610 larsa
+#ifdef __GLIBC__
+  typedef u_int32_t uint32_t;
+  typedef u_int16_t uint16_t;
+#else // ! __GLIBC__
+
+  // FIXME: this doesn't look very portable - 990610 larsa
   typedef unsigned short uint16_t;
   typedef unsigned int uint32_t;
 #if ! defined(linux) || ! defined(__BIT_TYPES_DEFINED__)
-    typedef short int16_t;
-    typedef int int32_t;
+  typedef short int16_t;
+  typedef int int32_t;
 #endif // ! defined(linux) || ! defined(__BIT_TYPES_DEFINED__)
-#else // __GLIBC__
-  typedef u_int32_t uint32_t;
-  typedef u_int16_t uint16_t;
-#endif // __GLIBC__
 
-#endif // ! _COIN_INTTYPES_H_
+#endif // ! __GLIBC__
+
+
+#endif // ! __COIN_INTTYPES_H__

@@ -26,9 +26,8 @@
 */
 
 #include <Inventor/fields/SoMFPlane.h>
-#if !defined(COIN_EXCLUDE_SOSFPLANE)
 #include <Inventor/fields/SoSFPlane.h>
-#endif // !COIN_EXCLUDE_SOSFPLANE
+
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
@@ -286,39 +285,21 @@ SoMFPlane::cleanClass(void)
 
 // *************************************************************************
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoMFPlane::read1Value(SoInput * in, int idx)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
-
-  float n[3];
-  float d;
-
-  SbBool result =
-    in->read(n[0]) && in->read(n[1]) && in->read(n[2]) && in->read(d);
-
-  if(result) this->values[idx] = SbPlane(SbVec3f(n), d);
+  SoSFPlane sfplane;
+  SbBool result;
+  if (result = sfplane.readValue(in)) this->set1Value(idx, sfplane.getValue());
   return result;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoMFPlane::write1Value(SoOutput * out, int idx) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
-
-  out->write(this->values[idx].getNormal()[0]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(this->values[idx].getNormal()[1]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(this->values[idx].getNormal()[2]);
-  if(!out->isBinary()) out->write("  ");
-  out->write(this->values[idx].getDistanceFromOrigin());
+  SoSFPlane sfplane;
+  sfplane.setValue((*this)[idx]);
+  sfplane.writeValue(out);
 }
 
 /*!
@@ -333,13 +314,10 @@ SoMFPlane::getNumValuesPerLine(void) const
 void
 SoMFPlane::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFPLANE)
-  else if (dest->getTypeId()==SoSFPlane::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFPlane::getClassTypeId()) {
     if (this->getNum()>0)
       ((SoSFPlane *)dest)->setValue((*this)[0]);
   }
-#endif // !COIN_EXCLUDE_SOSFPLANE
 #if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;

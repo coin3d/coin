@@ -26,9 +26,8 @@
 */
 
 #include <Inventor/fields/SoMFRotation.h>
-#if !defined(COIN_EXCLUDE_SOSFROTATION)
 #include <Inventor/fields/SoSFRotation.h>
-#endif // !COIN_EXCLUDE_SOSFROTATION
+
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
@@ -288,44 +287,22 @@ SoMFRotation::cleanClass(void)
 
 // *************************************************************************
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoMFRotation::read1Value(SoInput * in, int idx)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
-
-  float a[3];
-  float r;
-
-  SbBool result =
-    in->read(a[0]) && in->read(a[1]) && in->read(a[2]) && in->read(r);
-
-  if(result) this->values[idx].setValue(SbVec3f(a), r);
+  SoSFRotation sfrotation;
+  SbBool result;
+  if (result = sfrotation.readValue(in))
+    this->set1Value(idx, sfrotation.getValue());
   return result;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoMFRotation::write1Value(SoOutput * out, int idx) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
-
-  SbVec3f axis;
-  float rotation;
-
-  this->values[idx].getValue(axis, rotation);
-
-  out->write(axis[0]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(axis[1]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(axis[2]);
-  if(!out->isBinary()) out->write("  ");
-  out->write(rotation);
+  SoSFRotation sfrotation;
+  sfrotation.setValue((*this)[idx]);
+  sfrotation.writeValue(out);
 }
 
 /*!
@@ -399,13 +376,10 @@ SoMFRotation::setValue(const SbVec3f & axis, const float angle)
 void
 SoMFRotation::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFROTATION)
-  else if (dest->getTypeId()==SoSFRotation::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFRotation::getClassTypeId()) {
     if (this->getNum()>0)
       ((SoSFRotation *)dest)->setValue((*this)[0]);
   }
-#endif // !COIN_EXCLUDE_SOSFROTATION
 #if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;

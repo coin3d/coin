@@ -44,7 +44,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE SField( SoSFPlane, const SbPlane & )
+//$ BEGIN TEMPLATE SField(SoSFPlane, const SbPlane &)
 
 SoType SoSFPlane::classTypeId = SoType::badType();
 
@@ -169,7 +169,7 @@ SoSFPlane::operator == (const SoSFPlane & field) const
 void
 SoSFPlane::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFPlane )
+//$ BEGIN TEMPLATE FieldInitClass(SFPlane)
   // Make sure we only initialize once.
   assert(SoSFPlane::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -193,11 +193,10 @@ SoSFPlane::cleanClass(void)
 SbBool
 SoSFPlane::readValue(SoInput * in)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
-
   SbVec3f normal;
   float offset;
-  SbBool result = (in->read(normal[0]) && in->read(normal[1]) &&
+  SbBool result = (in->read(normal[0]) &&
+		   in->read(normal[1]) &&
 		   in->read(normal[2]) &&
 		   in->read(offset));
   this->setValue(SbPlane(normal, offset));
@@ -207,15 +206,15 @@ SoSFPlane::readValue(SoInput * in)
 void
 SoSFPlane::writeValue(SoOutput * out) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
+  SbPlane p = this->getValue(); // implicit evaluate() call
 
-  out->write(this->value.getNormal()[0]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(this->value.getNormal()[1]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(this->value.getNormal()[2]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(this->value.getDistanceFromOrigin());
+  out->write(p.getNormal()[0]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(p.getNormal()[1]);
+  if (!out->isBinary()) out->write(' ');
+  out->write(p.getNormal()[2]);
+  if (!out->isBinary()) out->write("  ");
+  out->write(p.getDistanceFromOrigin());
 }
 
 void

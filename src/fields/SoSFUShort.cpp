@@ -212,14 +212,12 @@ SoSFUShort::cleanClass(void)
 SbBool
 SoSFUShort::readValue(SoInput * in)
 {
-  assert(!in->isBinary() && "FIXME: need to fix SoInput to read 16-bit values");
   return in->read(value);
 }
 
 void
 SoSFUShort::writeValue(SoOutput * out) const
 {
-  assert(!out->isBinary() && "FIXME: need to fix SoOutput to write 16-bit values");
   out->write(this->getValue()); // using getValue() to evaluate
 }
 

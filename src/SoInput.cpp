@@ -946,9 +946,15 @@ SoInput::read(unsigned int & i)
 SbBool
 SoInput::read(short & s)
 {
-  // FIXME: binary read version not implemented yet. 19990626 mortene.
-  assert(!this->isBinary());
-  READ_INTEGER(s, short);
+  if (this->isBinary()) {
+    int32_t tmp;
+    if (!this->readBinaryArray(&tmp, 1)) return FALSE;
+    s = tmp;
+    return TRUE;
+  }
+  else {
+    READ_INTEGER(s, short);
+  }
 }
 
 /*!
@@ -994,9 +1000,15 @@ SoInput::read(float & f)
 SbBool
 SoInput::read(double & d)
 {
-  // FIXME: binary read version not implemented yet. 19990626 mortene.
-  assert(!this->isBinary());
-  READ_REAL(d, double);
+  if (this->isBinary()) {
+    double tmp;
+    if (!this->readBinaryArray(&tmp, 1)) return FALSE;
+    d = tmp;
+    return TRUE;
+  }
+  else {
+    READ_REAL(d, double);
+  }
 }
 
 /*!

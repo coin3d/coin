@@ -282,29 +282,21 @@ SoMFTime::cleanClass(void)
 
 // *************************************************************************
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoMFTime::read1Value(SoInput * in, int idx)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
-
-  double t;
-  SbBool result = in->read(t);
-
-  if(result) this->values[idx].setValue(t);
+  SoSFTime sftime;
+  SbBool result;
+  if (result = sftime.readValue(in)) this->set1Value(idx, sftime.getValue());
   return result;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoMFTime::write1Value(SoOutput * out, int idx) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
-  out->write(this->values[idx].getValue());
+  SoSFTime sftime;
+  sftime.setValue((*this)[idx]);
+  sftime.writeValue(out);
 }
 
 void

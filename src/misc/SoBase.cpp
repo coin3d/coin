@@ -686,28 +686,39 @@ SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
   if (multiref && firstwrite) refid = out->addReference(this);
 
   if (!firstwrite) {
-    // FIXME: doesn't handle binary mode writes. 19990610 mortene.
-    assert(!out->isBinary());
-
     out->write(REFERENCE_KEYWORD);
-    out->write(' ');
+    if (!out->isBinary()) out->write(' ');
+#if 1 // New code
+    SbString s = name.getString();
+    s += SoBase::refwriteprefix.getString();
+    s += refid;
+    out->write(s.getString());
+#else // OBSOLETED: doesn't work with binary writes. 19990713 mortene.
     out->write(name.getString());
     out->write(SoBase::refwriteprefix.getString());
     out->write(refid);
+#endif
   }
   else {
     if (name.getLength() || multiref) {
-      // FIXME: doesn't handle binary mode writes. 19990610 mortene.
-      assert(!out->isBinary());
-
       out->write(DEFINITION_KEYWORD);
-      out->write(' ');
+      if (!out->isBinary()) out->write(' ');
+
+#if 1 // New code
+      SbString s = name.getString();
+      if (multiref) {
+	s += SoBase::refwriteprefix.getString();
+	s += refid;
+      }
+      out->write(s.getString());
+#else // OBSOLETED: doesn't work with binary writes. 19990713 mortene.
       out->write(name.getString());
       if (multiref) {
 	out->write(SoBase::refwriteprefix.getString());
 	out->write(refid);
       }
-      out->write(' ');
+#endif
+      if (!out->isBinary()) out->write(' ');
     }
 
     out->write(this->getFileFormatName());
@@ -789,8 +800,6 @@ SoBase::freeLists(unsigned long, void * value)
 SbBool
 SoBase::readReference(SoInput * in, SoBase *& base)
 {
-  assert(!in->isBinary() && "FIXME: can't handle binary input");
-
   SoBase * baseptr = NULL;
 
   SbName refName;

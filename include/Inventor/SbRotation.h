@@ -29,32 +29,32 @@ class ostream;
 class SbRotation {
 public:
   SbRotation(void);
-  SbRotation(const SbVec3f& axis, const float radians);
+  SbRotation(const SbVec3f & axis, const float radians);
   SbRotation(const float q[4]);
   SbRotation(const float q0, const float q1, const float q2, const float q3);
-  SbRotation(const SbMatrix& m);
-  SbRotation(const SbVec3f& rotateFrom, const SbVec3f& rotateTo);
-  const float* getValue(void) const;
-  void getValue(float& q0, float& q1, float& q2, float& q3) const;
-  SbRotation& setValue(const float q0, const float q1,
-		       const float q2, const float q3);
-  void getValue(SbVec3f& axis, float& radians) const;
-  void getValue(SbMatrix& matrix) const;
-  SbRotation& invert(void);
+  SbRotation(const SbMatrix & m);
+  SbRotation(const SbVec3f & rotateFrom, const SbVec3f & rotateTo);
+  const float * getValue(void) const;
+  void getValue(float & q0, float & q1, float & q2, float & q3) const;
+  SbRotation & setValue(const float q0, const float q1,
+			const float q2, const float q3);
+  void getValue(SbVec3f & axis, float & radians) const;
+  void getValue(SbMatrix & matrix) const;
+  SbRotation & invert(void);
   SbRotation inverse(void) const;
-  SbRotation& setValue(const float q[4]);
-  SbRotation& setValue(const SbMatrix& m);
-  SbRotation& setValue(const SbVec3f& axis, const float radians);
-  SbRotation& setValue(const SbVec3f& rotateFrom, const SbVec3f& rotateTo);
-  SbRotation& operator *=(const SbRotation& q);
-  friend int operator ==(const SbRotation& q1, const SbRotation& q2);
-  friend int operator !=(const SbRotation& q1, const SbRotation& q2);
-  SbBool equals(const SbRotation& r, const float tolerance) const;
-  friend SbRotation operator *(const SbRotation& q1, const SbRotation& q2);
-  void multVec(const SbVec3f& src, SbVec3f& dst) const;
+  SbRotation & setValue(const float q[4]);
+  SbRotation & setValue(const SbMatrix & m);
+  SbRotation & setValue(const SbVec3f & axis, const float radians);
+  SbRotation & setValue(const SbVec3f & rotateFrom, const SbVec3f & rotateTo);
+  SbRotation & operator *=(const SbRotation & q);
+  friend int operator ==(const SbRotation & q1, const SbRotation & q2);
+  friend int operator !=(const SbRotation & q1, const SbRotation & q2);
+  SbBool equals(const SbRotation & r, const float tolerance) const;
+  friend SbRotation operator *(const SbRotation & q1, const SbRotation & q2);
+  void multVec(const SbVec3f & src, SbVec3f & dst) const;
 
   void scaleAngle(const float scaleFactor);
-  static SbRotation slerp(const SbRotation& rot0, const SbRotation& rot1,
+  static SbRotation slerp(const SbRotation & rot0, const SbRotation & rot1,
 			  float t);
   static SbRotation identity(void);
 
