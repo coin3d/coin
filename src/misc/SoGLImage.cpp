@@ -1645,35 +1645,35 @@ SoGLImageP::applyFilter(const SbBool ismipmap)
 
   if (this->flags & SoGLImage::USE_QUALITY_VALUE) {
     if (this->quality < COIN_TEX2_LINEAR_LIMIT) {
-      glTexParameterf(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      glTexParameterf(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     }
     else if ((this->quality < COIN_TEX2_MIPMAP_LIMIT) || !ismipmap) {
-      glTexParameterf(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      glTexParameterf(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+      glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     }
     else if (this->quality < COIN_TEX2_LINEAR_MIPMAP_LIMIT) {
-      glTexParameterf(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      glTexParameterf(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+      glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
     }
     else { // max quality
-      glTexParameterf(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      glTexParameterf(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+      glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     }
   }
   else {
-    if (this->flags & SoGLImage::NO_MIPMAP || !ismipmap) {
-      glTexParameterf(target, GL_TEXTURE_MAG_FILTER,
-                      (GLfloat) ((this->flags & SoGLImage::LINEAR_MAG_FILTER) ?
-                      GL_LINEAR : GL_NEAREST));
-      glTexParameterf(target, GL_TEXTURE_MIN_FILTER,
-                      (GLfloat) ((this->flags & SoGLImage::LINEAR_MIN_FILTER) ?
-                      GL_LINEAR : GL_NEAREST));
+    if ((this->flags & SoGLImage::NO_MIPMAP) || !ismipmap) {
+      glTexParameteri(target, GL_TEXTURE_MAG_FILTER,
+                      (this->flags & SoGLImage::LINEAR_MAG_FILTER) ?
+                      GL_LINEAR : GL_NEAREST);
+      glTexParameteri(target, GL_TEXTURE_MIN_FILTER,
+                      (this->flags & SoGLImage::LINEAR_MIN_FILTER) ?
+                      GL_LINEAR : GL_NEAREST);
     }
     else {
-      glTexParameterf(target, GL_TEXTURE_MAG_FILTER,
-                      (GLfloat) ((this->flags & SoGLImage::LINEAR_MAG_FILTER) ?
-                      GL_LINEAR : GL_NEAREST));
+      glTexParameteri(target, GL_TEXTURE_MAG_FILTER,
+                      (this->flags & SoGLImage::LINEAR_MAG_FILTER) ?
+                      GL_LINEAR : GL_NEAREST);
       GLenum minfilter = GL_NEAREST_MIPMAP_NEAREST;
       if (this->flags & SoGLImage::LINEAR_MIPMAP_FILTER) {
         if (this->flags & SoGLImage::LINEAR_MIN_FILTER)
@@ -1683,9 +1683,9 @@ SoGLImageP::applyFilter(const SbBool ismipmap)
       }
       else if (this->flags & SoGLImage::LINEAR_MIN_FILTER)
         minfilter = GL_NEAREST_MIPMAP_LINEAR;
-
-      glTexParameterf(target, GL_TEXTURE_MIN_FILTER,
-                      (GLfloat) minfilter);
+      
+      glTexParameteri(target, GL_TEXTURE_MIN_FILTER,
+                      minfilter);
     }
   }
 }
