@@ -3629,8 +3629,8 @@ Separator {
     to the argument to setPart(). This is inefficient and should be
     unnecessary.
 
-    Priority fairly low on this problem, as it shouldn't cause any
-    serious harm.
+    Priority low on this problem, as it shouldn't cause any serious
+    harm.
 
     20040607 mortene, bug reported on coin-discuss by Nikolai Ruhe.
 
@@ -3669,6 +3669,8 @@ Separator {
     installation), then see if it is possible to solve or avoid this
     problem. It could e.g. be that it fails due to the PFD_TYPE_RGBA
     flag in the pixelformat descriptor struct.
+
+    This is a low priority issue.
 
     20040616 mortene.
 
@@ -3713,6 +3715,8 @@ Separator {
     documentation that TGS has implemented this for their Inventor
     implementation.
 
+    This is a low-to-medium priority issue.
+
     20040624 mortene.
 
 =====================================================================
@@ -3730,9 +3734,60 @@ Separator {
     make the necessary changes (to the SbBool doc block in SoDB.cpp,
     probably).
 
-    This is low priority.
+    This is a low priority issue.
 
     20040625 mortene.
 
 =====================================================================
 
+120 @exec_prefix@ expansion in Coin/coin.cfg.in makes installed
+    package not movable.
+
+    Note that simply replacing with
+
+      exec_prefix="${prefix}"
+
+    is not the correct fix either, as an "exec_prefix" different from
+    "prefix" can be set by a configure option.
+
+    The correct solution may be to replace @exec_prefix@ with a new
+    variable name (e.g. "@cfg_exec_prefix@"), then expand this to
+    either "$prefix" or an absolute path, depending on how configure
+    was invoked. If the latter (absolute path), warn the user at the
+    end of the configure run that the installation is not movable (and
+    explain why this is so)
+
+    That's the best I can think of.
+
+    This is a low priority issue.
+
+    20040705 mortene.
+
+=====================================================================
+
+121 SoOffscreenRenderer tiled rendering causes problems with
+    subsequent viewport changes.
+
+    The SmallChange ViewportRegion node sets up a sub-viewport
+    according to the SoGLRenderAction's viewport settings, and does
+    not know about whether or not the current rendering is part of a
+    tiled rendering. This causes artifacts for the commonly used
+    "sub-viewport + orthocam + scene graph" trick for rendering
+    overlay graphics.
+
+    This needs to be fixed partly in Coin (there is now no mechanism
+    for passing on information about whether or not we're doing tiled
+    rendering), and partly in SmallChange (ViewportRegion must set up
+    the sub-viewport according to the current tile).
+
+    As for the Coin part, this could perhaps best be solved by using a
+    new element "SoViewportTileElement", or some such, which should
+    contain information about tilesize (absolute and
+    relative). SoOffscreenRenderer should then add such an element
+    to the state stack before invoking the SoGLRenderAction.
+
+    This is a tricky issue, of fairly low priority.
+
+    20040705 mortene.
+
+=====================================================================
