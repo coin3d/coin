@@ -392,7 +392,7 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
 
       float width = cc_glyph3d_getwidth(glyph);
       if (width == 0) 
-        width = PRIVATE(this)->textsize / 3; // SPACE width is set to fontsize/3
+        width = 1.0f / 3.0f; // SPACE width is set to fontsize/3
 
       // Kerning adjustments
       if (lastglyph != NULL) {
@@ -916,8 +916,6 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
                         this->textsize,
                         this->master->getComplexityValue(state->getAction()));
 
-
-
   this->glyphwidths.truncate(0);
 
   for (int i = 0; i < textnode->string.getNum(); i++) {
@@ -943,7 +941,7 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
 
       glyphwidth = cc_glyph3d_getwidth(glyph);
       if (glyphwidth == 0)
-        glyphwidth = this->textsize/3; // SPACE width is always == 0.
+        glyphwidth = 1.0f / 3.0f; // SPACE width is always == 0.
 
       stringwidth += glyphwidth;
             
