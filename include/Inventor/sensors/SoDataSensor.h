@@ -23,11 +23,11 @@
 #include <Inventor/sensors/SoDelayQueueSensor.h>
 #include <stdlib.h> // for NULL definition
 
-
 class SoNode;
 class SoField;
 class SoPath;
 class SoNotList;
+
 
 class SoDataSensor : public SoDelayQueueSensor {
   typedef SoDelayQueueSensor inherited;
@@ -44,7 +44,8 @@ public:
   void setTriggerPathFlag(SbBool flag);
   SbBool getTriggerPathFlag(void) const;
 
-  virtual void notify(SoNotList * list);
+  virtual void trigger(void);
+  virtual void notify(SoNotList * l);
   virtual void dyingReference(void) = 0;
 
 protected:
@@ -56,6 +57,7 @@ private:
   SbBool findpath;
   SoField * triggerfield;
   SoNode * triggernode;
+  SoPath * triggerpath;
 };
 
 #endif // !COIN_SODATASENSOR_H

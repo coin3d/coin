@@ -17,7 +17,7 @@
 # ID          SoAlarmSensor
 # ID          SoTimerSensor
 # ID      SoDelayQueueSensor
-# id          SoDataSensor
+# ID          SoDataSensor
 # Id              SoFieldSensor
 # Id              SoNodeSensor
 # Id              SoPathSensor
