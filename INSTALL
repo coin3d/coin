@@ -261,6 +261,26 @@ Configuration Options
   If you don't want Coin to load the GLU library at run-time, but want a
   link-time binding to GLU instead, use this option.
   
+--disable-dl-libbzip2
+
+  If you don't want Coin to try to load the bzip2 compression library at
+  run-time, but want link-time binding instead, use this option.
+
+--disable-dl-gzip
+
+  If you don't want Coin to try to load the gzip compression library at
+  run-time, but want link-time binding instead, use this option.
+
+--disable-dl-freetype
+
+  If you don't want Coin to try to load the FreeType font library at
+  run-time, but want link-time binding instead, use this option.
+
+--disable-dl-openal
+
+  If you don't want Coin to try to load the OpenAL library at
+  run-time, but want link-time binding instead, use this option.
+
 --enable-compact
 
   On some architectures, the final library linkage is done by specifying
