@@ -761,6 +761,7 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
   case SoGLRenderAction::DELAYED_ADD:
   case SoGLRenderAction::DELAYED_BLEND:
     this->addTransPath(this->getCurPath()->copy());
+    SoCacheElement::setInvalid(TRUE);
     if (this->getState()->isCacheOpen()) {
       SoCacheElement::invalidate(this->getState());
     }
@@ -770,6 +771,7 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
   case SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD:
   case SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND:
     this->addTransPath(this->getCurPath()->copy());
+    SoCacheElement::setInvalid(TRUE);
     if (this->getState()->isCacheOpen()) {
       SoCacheElement::invalidate(this->getState());
     }
