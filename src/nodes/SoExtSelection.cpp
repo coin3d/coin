@@ -143,6 +143,19 @@
   Some primitive must intersect the lasso/rectangle.
 */
 
+/*!
+  \enum SoExtSelection::LassoMode
+  Enum for specifying selection mode
+*/
+/*!
+  \var SoExtSelection::LassoMode SoExtSelection::ALL_SHAPES
+  All primitives inside the lasso/rectangle will be selected.
+*/
+/*!
+  \var SoExtSelection::LassoMode SoExtSelection::VISIBLE_SHAPES
+  All <i>visible</i> primitives inside the lasso/rectangle will be selected.
+*/
+
 
 /*!
   \var SoSFEnum SoExtSelection::lassoType
@@ -2052,6 +2065,11 @@ SoExtSelectionP::offscreenRenderLassoCallback(void * userdata, SoAction * action
           vpo[1], vpo[0]+vps[1]-1,
           -1, 1);
   
+  // Because Mesa 3.4.2 cant properly push & pop GL_CURRENT_BIT, we have to
+  // save the current color for later. 
+  GLfloat currentColor[4];
+  glGetFloatv(GL_CURRENT_COLOR,currentColor);
+
   glPushAttrib(GL_LIGHTING_BIT|
                GL_FOG_BIT|
                GL_DEPTH_BUFFER_BIT|
@@ -2085,6 +2103,8 @@ SoExtSelectionP::offscreenRenderLassoCallback(void * userdata, SoAction * action
     tesselator.addVertex(tmparray[i],(void*)&tmparray[i]);
   tesselator.endPolygon();
  
+  // Due to a Mesa 3.4.2 bug
+  glColor3fv(currentColor);
  
   glPopAttrib();
 }
