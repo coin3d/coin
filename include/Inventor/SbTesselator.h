@@ -23,6 +23,7 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbVec3f.h>
+#include <stddef.h>
 
 struct SbTVertex;
 class SbHeap;
@@ -31,7 +32,8 @@ class SbVec3f;
 class SbTesselator
 {
 public:
-  SbTesselator(void (*callback)(void*, void*, void*, void*), void *userdata);
+  SbTesselator(void (*callback)(void*, void*, void*, void*) = NULL, 
+	       void *userdata = NULL);
   ~SbTesselator(void);
   
   void beginPolygon(SbBool keepVertices = FALSE);

@@ -54,8 +54,21 @@ SbTesselator::heap_evaluate(void *v)
     vertex->dirtyweight = 0;
     if (vertex->thisp->area(vertex) > FLT_EPSILON && 
   	vertex->thisp->isTriangle(vertex) && 
-  	vertex->thisp->clippable(vertex))
+  	vertex->thisp->clippable(vertex)) {
+#if 1 // testing code to avoid empty triangles
       vertex->weight = vertex->thisp->circleSize(vertex);
+      SbTVertex *v2 = vertex->next;
+      if (vertex->weight != FLT_MAX && 
+	  v2->thisp->keepVertices &&
+	  v2->thisp->numVerts > 4 &&
+	  fabs(v2->thisp->area(v2)) < FLT_EPSILON) {
+	vertex->weight = 0.0f; // cut immediately!
+      }
+      
+#else
+      vertex->weight = vertex->thisp->circleSize(vertex);
+#endif
+    }
     else
       vertex->weight = FLT_MAX;
   }
@@ -220,7 +233,8 @@ SbTesselator::endPolygon()
     }
     this->heap->buildHeap();
 
-    while (this->numVerts >= 3) {
+    while (this->numVerts > 4) { 
+
       v = (SbTVertex*) this->heap->getMin();
       if (heap_evaluate(v) == FLT_MAX) break;
       this->heap->remove(v->next->heapidx);
@@ -236,6 +250,28 @@ SbTesselator::endPolygon()
     }
     
     // remember that headV and tailV are not valid anymore!
+    
+    //
+    // must handle special case when only four vertices remain
+    //
+    if (this->numVerts == 4) {
+      float v0 = SbMax(heap_evaluate(v), heap_evaluate(v->next->next));
+      float v1 = SbMax(heap_evaluate(v->next), heap_evaluate(v->prev));
+
+      // abort if vertices should not be kept
+      if (v0 == v1 && v0 == FLT_MAX && !this->keepVertices) return;
+
+      if (v0 < v1) {
+	this->emitTriangle(v);
+	this->emitTriangle(v);
+      }
+      else {
+	v = v->next;
+	this->emitTriangle(v);
+	this->emitTriangle(v);
+      }
+      this->numVerts -= 2;
+    }
     
     // Emit the empty triangles that might lay around
     if (this->keepVertices) { 
@@ -264,6 +300,30 @@ SbTesselator::setCallback(void (*callback)(void *v0,
   this->callbackData = data;
 }
 
+
+static SbBool
+point_on_edge(const float x, const float y,
+	      const float * const v0, const float * const v1,
+	      const int X, const int Y)
+{
+  if (x < v0[X] && x < v1[X]) return FALSE;
+  if (x > v0[X] && x > v1[X]) return FALSE;
+  if (y < v0[Y] && y < v1[Y]) return FALSE;
+  if (y > v0[Y] && y > v1[Y]) return FALSE;
+
+  if (v0[X] == v1[X]) {
+    if (fabs(x-v0[X]) <= FLT_EPSILON) return TRUE;
+    return FALSE;
+  }
+  
+  float ny = v0[Y] + (x-v0[X])*(v1[Y]-v0[Y])/(v1[X]-v0[X]);
+
+  if (fabs(y-ny)<= FLT_EPSILON) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
 //
 // PRIVATE FUNCTIONS:
 //
@@ -284,6 +344,7 @@ SbTesselator::pointInTriangle(SbTVertex *p, SbTVertex *t)
 
   const float *v1 = t->v.getValue();
   const float *v2 = t->next->next->v.getValue();
+
   if ((((v1[Y]<=y) && (y<v2[Y])) || ((v2[Y]<=y)  && (y<v1[Y]))) &&
       (x < (v2[X] - v1[X]) * (y - v1[Y]) /  (v2[Y] - v1[Y]) + v1[X]))
     tst = (tst==FALSE ? TRUE : FALSE);
@@ -297,6 +358,20 @@ SbTesselator::pointInTriangle(SbTVertex *p, SbTVertex *t)
   if ((((v1[Y]<=y) && (y<v2[Y])) || ((v2[Y]<=y)  && (y<v1[Y]))) &&
       (x < (v2[X] - v1[X]) * (y - v1[Y]) /  (v2[Y] - v1[Y]) + v1[X]))
     tst = (tst==FALSE ? TRUE : FALSE);
+  
+#if 1
+  if (this->keepVertices && tst == FALSE) {
+    if (point_on_edge(x,y,t->v.getValue(), 
+		      t->next->v.getValue(),X,Y))
+      return TRUE;
+    if (point_on_edge(x,y,t->next->v.getValue(), 
+		      t->next->next->v.getValue(),X,Y))
+      return TRUE;
+    if (point_on_edge(x,y,t->next->next->v.getValue(), 
+		      t->v.getValue(),X,Y))
+      return TRUE;
+  }
+#endif
   
   return tst;
 }
@@ -414,7 +489,7 @@ SbTesselator::circleCenter(const SbVec3f &a, const SbVec3f &b,
   tmp4 += tmp2;
 
   float div = 2*(c1+c2+c3);
-  if (div != 0.0f) {
+  if (fabs(div) > FLT_EPSILON) {
     float val = 1.0f / div;
     cx = tmp4[this->X] * val;
     cy = tmp4[this->Y] * val;
