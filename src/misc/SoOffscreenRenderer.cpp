@@ -168,8 +168,6 @@
   \sa setComponents()
 */
 
-#ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
-
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->master)
 
@@ -295,7 +293,6 @@ protected:
 #include "SoOffscreenWGLData.icc"
 #endif // HAVE_WGL
 
-#endif // DOXYGEN_SKIP_THIS
 
 /*!
   Constructor. Argument is the \a viewportregion we should use when
