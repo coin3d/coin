@@ -119,18 +119,30 @@ Concrete tasks:
 
           (This is a _huge_ task.)
 
+        * Make use of OpenGL 1.1 and 1.2 features which have the
+          potential to speed up rendering (vertexarrays, for instance
+          (but note: vertexarrays are "incompatible" with GL display
+          lists)).
+
+        * Write code to find information about the graphics
+          accelerator card on run-time, and choose rendering methods
+          with optimized paths. This is very low-priority yet, though.
+
 ============================================================================
+
+Priorities:
+===========
 
 General areas where performance is important for the application
 programmer. "More critical" is closer to the top of the list:
 
-
         0 Rendering
         1 File import
-        2 Intersection testing
-        3 General traversal operations
-        4 Scene graph modifications
-        5 Basic math/geometry classes
-        6 File export
+        2 Response time with draggers / manipulators
+        3 Intersection testing
+        4 General traversal operations
+        5 Scene graph modifications
+        6 Basic math/geometry classes
+        7 File export
 
 ============================================================================
