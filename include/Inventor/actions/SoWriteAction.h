@@ -74,6 +74,8 @@ protected:
   virtual SbBool shouldCompactPathLists(void) const;
 
 private:
+  void commonConstructor(SoOutput * out);
+
   SoOutput * outobj;
   SbBool localoutputalloc;
 };

@@ -135,22 +135,12 @@ SoWriteAction::initClass(void)
 
 // *************************************************************************
 
-static int first = 1;
-
 /*!
   Default constructor. Output will be written to stdout in ASCII format.
 */
 SoWriteAction::SoWriteAction(void)
 {
-  SO_ACTION_CONSTRUCTOR(SoWriteAction);
-
-  if (first) {
-    first = 0;
-    SO_ACTION_ADD_METHOD(SoNode, SoNode::writeS);
-  }
-  methods->setUp(); // FIXME: not sure if this should be called here...
-
-  this->outobj = new SoOutput;
+  this->commonConstructor(new SoOutput);
   this->localoutputalloc = TRUE;
 }
 
@@ -159,16 +149,23 @@ SoWriteAction::SoWriteAction(void)
 */
 SoWriteAction::SoWriteAction(SoOutput * out)
 {
+  this->commonConstructor(out);
+  this->localoutputalloc = FALSE;
+}
+
+void
+SoWriteAction::commonConstructor(SoOutput * out)
+{
   SO_ACTION_CONSTRUCTOR(SoWriteAction);
 
+  static SbBool first = TRUE;
   if (first) {
-    first = 0;
+    first = FALSE;
     SO_ACTION_ADD_METHOD(SoNode, SoNode::writeS);
   }
   methods->setUp(); // FIXME: not sure if this should be called here...
 
   this->outobj = out;
-  this->localoutputalloc = FALSE;
 }
 
 /*!
