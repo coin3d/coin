@@ -47,7 +47,7 @@ elif test -f $prefix/share/Coin/conf/coin-default.cfg; then
   configfile="$prefix/share/Coin/conf/coin-default.cfg"
   . $configfile
 else
-  echo >&2 "$me: no default Coin config available"
+  echo >&2 "$me: no default Coin config available in $prefix/share/Coin/conf/"
   exit 1
 fi
 
