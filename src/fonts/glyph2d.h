@@ -10,8 +10,6 @@ extern "C" {
  
   typedef struct cc_glyph2d cc_glyph2d;
 
-  void cc_glyph2d_initialize();
-
   cc_glyph2d * cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, float angle);
   
   void cc_glyph2d_getadvance(const cc_glyph2d * g, int * x, int * y);

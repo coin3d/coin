@@ -33,26 +33,14 @@ struct cc_glyph2d {
 };
 
 static cc_hash * glyph2d_fonthash = NULL;
-static SbBool glyph2d_initialized = FALSE;
 
 /*
   Mutex lock for the static ang global font hash
 */
 static void * glyph2d_fonthash_lock = NULL;
 
-/* Debug: enable this in case code hangs waiting for a lock.  A hang
-   will typically happen for one out of two reasons:
 
-   1) The mutex is locked but not released. To check whether or not
-      this is the cause, look for multiple exit points (return
-      statements) in a function.
-
-   2) A cc_flw_*() function locks the global mutex, then calls another
-      cc_flw_*() function, which when attempting to lock the same
-      mutex will simply hang.
-
-  -- mortene.
-*/
+/* See 'fontlib_wrapper' for a description */
 #if 0
 #define GLYPH2D_MUTEX_LOCK(m) \
   do { \
@@ -69,19 +57,24 @@ static void * glyph2d_fonthash_lock = NULL;
 #define GLYPH2D_MUTEX_UNLOCK(m) CC_MUTEX_UNLOCK(m)
 #endif
 
-void
+static void
 cc_glyph2d_initialize()
 {
-  if (!glyph2d_initialized) {
-    CC_MUTEX_CONSTRUCT(glyph2d_fonthash_lock);
-    GLYPH2D_MUTEX_LOCK(glyph2d_fonthash_lock);
-    glyph2d_fonthash = cc_hash_construct(15, 0.75);
+
+  static SbBool initialized = FALSE;
+  CC_MUTEX_CONSTRUCT(glyph2d_fonthash_lock);
+  GLYPH2D_MUTEX_LOCK(glyph2d_fonthash_lock);
+  
+  if (initialized) {
     GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
-    glyph2d_initialized = TRUE;
+    return;
   }
+  initialized = TRUE;
+  
+  glyph2d_fonthash = cc_hash_construct(15, 0.75);
+
+  GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);  
 }
-
-
 
 
 cc_glyph2d * 
@@ -95,9 +88,13 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
   struct cc_flw_bitmap * bm;
   struct cc_font_specification * newspec;
   int namelen = 0;
-
-  assert(spec);
  
+  /* Beacuse this function is the entry point for glyph2d, the mutex
+     is initialized here. */
+  if (glyph2d_fonthash_lock == NULL) 
+    cc_glyph2d_initialize();
+  
+  assert(spec);
 
   GLYPH2D_MUTEX_LOCK(glyph2d_fonthash_lock);
 

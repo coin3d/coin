@@ -12,8 +12,6 @@ extern "C" {
   
   typedef struct cc_glyph3d cc_glyph3d;
   
-  void cc_glyph3d_initialize();
-
   cc_glyph3d * cc_glyph3d_getglyph(uint32_t character, 
                                    const cc_font_specification * spec);
   

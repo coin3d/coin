@@ -42,24 +42,10 @@ static SbBool glyph3d_initialized = FALSE;
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
-/*
-  Mutex lock for the static ang global font hash
-*/
+/* Mutex lock for the static ang global font hash */
 static void * glyph3d_fonthash_lock = NULL;
 
-/* Debug: enable this in case code hangs waiting for a lock.  A hang
-   will typically happen for one out of two reasons:
-
-   1) The mutex is locked but not released. To check whether or not
-      this is the cause, look for multiple exit points (return
-      statements) in a function.
-
-   2) A cc_flw_*() function locks the global mutex, then calls another
-      cc_flw_*() function, which when attempting to lock the same
-      mutex will simply hang.
-
-  -- mortene.
-*/
+/* See 'fontlib_wrapper' for a description */
 #if 0
 #define GLYPH3D_MUTEX_LOCK(m) \
   do { \
@@ -76,17 +62,25 @@ static void * glyph3d_fonthash_lock = NULL;
 #define GLYPH3D_MUTEX_UNLOCK(m) CC_MUTEX_UNLOCK(m)
 #endif
 
-void
+static void
 cc_glyph3d_initialize()
 {
-  if (!glyph3d_initialized) {
-    CC_MUTEX_CONSTRUCT(glyph3d_fonthash_lock);
-    GLYPH3D_MUTEX_LOCK(glyph3d_fonthash_lock);
-    glyph3d_fonthash = cc_hash_construct(15, 0.75);
+
+  static SbBool initialized = FALSE;
+  CC_MUTEX_CONSTRUCT(glyph3d_fonthash_lock);
+  GLYPH3D_MUTEX_LOCK(glyph3d_fonthash_lock);
+  
+  if (initialized) {
     GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
-    glyph3d_initialized = TRUE;
+    return;
   }
+  initialized = TRUE;
+  
+  glyph3d_fonthash = cc_hash_construct(15, 0.75);
+
+  GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);  
 }
+
 
 cc_glyph3d *
 cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
@@ -99,8 +93,13 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   cc_font_specification * newspec;
   int namelen = 0;
 
-  assert(spec);
 
+  /* Beacuse this function is the entry point for glyph3d, the mutex
+     is initialized here. */
+  if (glyph3d_fonthash_lock == NULL) 
+    cc_glyph3d_initialize();
+  
+  assert(spec);
 
   /* Has the glyph been created before? */
   GLYPH3D_MUTEX_LOCK(glyph3d_fonthash_lock);
