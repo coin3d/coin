@@ -84,6 +84,13 @@ A:    Yes, given that the rules of the GNU LGPL is followed, of course.
       company also implicitly takes on the responsibility of making
       the full Coin sourcecode available for any user who requests it.
 
+      Yet another restriction is that when you add extension code or
+      make changes to Coin or one of our other LGPL'ed libraries, like
+      SoQt, the GNU LGPL will usually force you to release those
+      extensions publicly -- no matter what size they are and effort
+      they represent on your's or your company's behalf.
+
+
       For these reasons, the distribution and availability of the Coin
       library under the GNU LGPL is primarily meant to be a service
       for those who write other Free Software libraries or
