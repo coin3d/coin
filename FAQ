@@ -54,6 +54,8 @@ Index
 
   Q5: Where does the SoGuiExamples module install the programs?
 
+  Q6: Why can't any of the transparency modes be perfect?
+
 3: More Whys
   Q1: Why is the .so-version 20 for Coin 1.0?
 
@@ -317,6 +319,56 @@ Q2.5:   Where does the SoGuiExamples module install the programs?
 A:      They are not installed.  The programs are just examples, and do not
         belong with the installed executables on a system.  They are built
         in the build dir, and are intended to be run from there.
+
+
+Q2.6:   Why can't any of the transparency modes be perfect?
+
+A:      (First of all, read the documentation on
+        SoGLRenderAction::TransparencyMode.)
+
+        Doing correct rendering of multiple transparent objects often
+        fails because, to be 100% correct, all polygons needs to be
+        rendered in sorted order, and none of the polygons can
+        intersect with other polygons.
+
+        Now, how expensive would it be to check for intersecting
+        polygons and just split those into non-intersecting ones?  Why
+        is that so hard that it's not done?
+
+        It's not really that hard, but it's very difficult to do it
+        fast.  It's basically a O(n^2) problem (n = number of
+        triangles in the scene), since you for every triangle have to
+        test if it intersects any of the other triangles.
+
+        Of course it's possible to optimize this by using an oct tree
+        structure or something, but in a dynamic scene graph you have
+        to build/change this oct tree structure every frame, which can
+        be quite expensive.  Also, rendering will be much slower,
+        since you can no longer use the tight rendering loops we now
+        use. The steps needed to do correct transparency rendering is:
+
+          1. Generate and store all triangles, using SoCallbackAction.
+
+          2. Clip all intersecting triangles, producing any number of
+             new triangles.
+
+          3. Sort all triangles on distance to projection plane.
+
+          4. For each triangle
+            4.1. set correct OpenGL rendering state (material, texture, etc)
+            4.2. render triangle
+
+        You also risk lots of expensive OpenGL state changes, since
+        you might have to change texture/material for every triangle
+        in 4.1. This is a very slow operation in OpenGL.
+
+        All of the above steps can be done from application code, so
+        it's not absolutely necessary to have this as a Coin feature.
+
+        It /might/ be added as a feature of the library sometime in
+        the future, as having the option of choosing correct but
+        (possibly very) slow rendering over flawed transparency
+        rendering would probably be worthwhile for many users.
 
 
 Section 3. Other Whys
