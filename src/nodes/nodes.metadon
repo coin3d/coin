@@ -70,12 +70,12 @@
 #   Tbg p-c               SoMultipleCopy
 #        -                SoPathSwitch
 #   TBGMP-C               SoTransformSeparator
-#   -B-----!      SoTransformation
+# ID-B-----!      SoTransformation
 #   TBGMP- !              SoAntiSquish
 #   TBGMP-C!              SoMatrixTransform
-#   TBGMP-C!              SoRotation
+# IDTBGMP-C!              SoRotation
 #   T!!!!-!!                      SoPendulum
-#   T!!!!-!!                      SoRotor
+# IDT!!!!-!!                      SoRotor
 #   TbGMP-C!              SoResetTransform
 #   TBGMP-C!              SoRotationXYZ
 #   TBGMP-C!              SoScale

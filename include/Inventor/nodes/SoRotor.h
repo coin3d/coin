@@ -24,7 +24,12 @@
 #include <Inventor/nodes/SoRotation.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/SbTime.h>
 
+class SoSensor;
+class SoOneShotSensor;
+class SoFieldSensor;
 
 class SoRotor : public SoRotation {
   typedef SoRotation inherited;
@@ -40,6 +45,19 @@ public:
 
 protected:
   virtual ~SoRotor();
+
+private:
+  SbTime starttime;
+  SbVec3f startaxis;
+  float startangle;
+  SoOneShotSensor * oneshotsensor;
+  SoFieldSensor * onfieldsensor;
+  SoFieldSensor * rotfieldsensor;
+  SoFieldSensor * speedfieldsensor;
+  static void oneshotSensorCB(void * d, SoSensor * s);
+  static void fieldSensorCB(void * d, SoSensor * s);
+
+  void setRotation(void);
 };
 
 #endif // !COIN_SOROTOR_H

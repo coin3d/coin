@@ -193,6 +193,9 @@ INPUT                = \
 	$(top_srcdir)/src/nodes/SoCone.cpp $(top_srcdir)/include/Inventor/nodes/SoCone.h \
 	$(top_srcdir)/src/nodes/SoCube.cpp $(top_srcdir)/include/Inventor/nodes/SoCube.h \
 	$(top_srcdir)/src/nodes/SoCylinder.cpp $(top_srcdir)/include/Inventor/nodes/SoCylinder.h \
+	$(top_srcdir)/src/nodes/SoTransformation.cpp $(top_srcdir)/include/Inventor/nodes/SoTransformation.h \
+	$(top_srcdir)/src/nodes/SoRotation.cpp $(top_srcdir)/include/Inventor/nodes/SoRotation.h \
+	$(top_srcdir)/src/nodes/SoRotor.cpp $(top_srcdir)/include/Inventor/nodes/SoRotor.h \
 
 #	$(top_srcdir)/src/nodes/SoAnnoText3.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnoText3.h \
 #	$(top_srcdir)/src/nodes/SoAnnoText3Property.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnoText3Property.h \
@@ -257,9 +260,7 @@ INPUT                = \
 #	$(top_srcdir)/src/nodes/SoProfileCoordinate3.cpp $(top_srcdir)/include/Inventor/nodes/SoProfileCoordinate3.h \
 #	$(top_srcdir)/src/nodes/SoQuadMesh.cpp $(top_srcdir)/include/Inventor/nodes/SoQuadMesh.h \
 #	$(top_srcdir)/src/nodes/SoResetTransform.cpp $(top_srcdir)/include/Inventor/nodes/SoResetTransform.h \
-#	$(top_srcdir)/src/nodes/SoRotation.cpp $(top_srcdir)/include/Inventor/nodes/SoRotation.h \
 #	$(top_srcdir)/src/nodes/SoRotationXYZ.cpp $(top_srcdir)/include/Inventor/nodes/SoRotationXYZ.h \
-#	$(top_srcdir)/src/nodes/SoRotor.cpp $(top_srcdir)/include/Inventor/nodes/SoRotor.h \
 #	$(top_srcdir)/src/nodes/SoScale.cpp $(top_srcdir)/include/Inventor/nodes/SoScale.h \
 #	$(top_srcdir)/src/nodes/SoSelection.cpp $(top_srcdir)/include/Inventor/nodes/SoSelection.h \
 #	$(top_srcdir)/src/nodes/SoSeparator.cpp $(top_srcdir)/include/Inventor/nodes/SoSeparator.h \
@@ -281,7 +282,6 @@ INPUT                = \
 #	$(top_srcdir)/src/nodes/SoTextureCoordinatePlane.cpp $(top_srcdir)/include/Inventor/nodes/SoTextureCoordinatePlane.h \
 #	$(top_srcdir)/src/nodes/SoTransform.cpp $(top_srcdir)/include/Inventor/nodes/SoTransform.h \
 #	$(top_srcdir)/src/nodes/SoTransformSeparator.cpp $(top_srcdir)/include/Inventor/nodes/SoTransformSeparator.h \
-#	$(top_srcdir)/src/nodes/SoTransformation.cpp $(top_srcdir)/include/Inventor/nodes/SoTransformation.h \
 #	$(top_srcdir)/src/nodes/SoTranslation.cpp $(top_srcdir)/include/Inventor/nodes/SoTranslation.h \
 #	$(top_srcdir)/src/nodes/SoTriangleStripSet.cpp $(top_srcdir)/include/Inventor/nodes/SoTriangleStripSet.h \
 #	$(top_srcdir)/src/nodes/SoUnits.cpp $(top_srcdir)/include/Inventor/nodes/SoUnits.h \
