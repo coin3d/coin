@@ -24,30 +24,45 @@
 //
 //  3DS File Loader for Open Inventor
 //
-//  developed originally by PC John (peciva@fit.vutbr.cz)
+//  developed by PC John (peciva@fit.vutbr.cz)
 //
 //
-//  Comments about 3ds files: Structure of the 3ds files is now well known
+//  Comments about 3ds files: Structure of the 3ds files is well known
 //  (http://www.cyberloonies.com/3dsftk.html). However, it is often hard to
 //  understand what is the informations in 3ds file about and how to
 //  interpret them. For example, texture coordinates are not always
-//  represented by OpenGL texture coordinates, and some unimplemented magic
-//  should be done with them.
+//  represented by OpenGL texture coordinates, and I can't find out
+//  what is their meaning.
 //
 //
-//  All loaded models are centered and normalized to size 10 by
-//  default.
+//  All loaded models are centered around [0,0,0] and normalized to
+//  size 10 by default.
 //
 //  If loading fails during reading 3ds file, file pointer position is
 //  undefined.
+//
+//  By default only error messages are generated. COIN_DEBUG_3DS environment
+//  variable can be used to specify amount of debug messages:
+//  0 .. only error messages (default)
+//  1 .. warnings that usually concerns data parsed from the 3ds file
+//  2 .. print basic 3ds file structure info
+//  3 .. print everything
+//
 //
 //  TODO list:
 //
 //  - incomplete texture implementation - in 3ds files there is possible to
 //    make materials with about 20 textures (diffuse color texture, specular
-//    texture, bump-map texture,... Also texture coordinates are not always
-//    loaded right, because 3ds uses many strange mapping modes. Probably,
-//    we should parse more chunks to get this working right.
+//    texture, bump-map texture,...) There is not a support for them in the
+//    Inventor yet.
+//
+//  - Texture coordinates are not always loaded right, because 3ds uses
+//    many strange mapping modes. Deeper understanding of 3ds will be needed
+//    to fix this.
+//
+//  - Backface culling functionality is disabled because it does not work
+//    right on some models. It looks like some models are CLOCKWISE and other
+//    COUNTERCLOCKWISE.
 //
 //  - unimplemented lights
 //
@@ -57,9 +72,9 @@
 //
 //  - ?environment? (ambient light, fog,...)
 //
-//  - ?emissiveColor? (I am really confused how to get this from 3ds.)
+//  - ?emissiveColor? (maybe MAT_SELF_ILLUM and MAT_SELF_ILPCT chunks)
 //
-//  - maybe some animations?
+//  - some animations?
 //
 //  - public API to control the loading
 //
@@ -87,6 +102,10 @@
 #include <Inventor/C/tidbits.h>
 #include <string.h>
 #include "SoStream.h"
+
+
+
+#define DISABLE_BACKFACE_CULLING
 
 
 
@@ -365,7 +384,7 @@ typedef struct tagMaterial {
   SbBool hasTexture2Transform(tagContext *con);
   SoTexture2Transform* getSoTexture2Transform(tagContext *con);
 
-  tagMaterial() : twoSided(FALSE), matCache(NULL), texture2Cache(NULL),
+  tagMaterial() : matCache(NULL), texture2Cache(NULL),
                   texture2TransformCache(NULL)  {}
   ~tagMaterial()  {
     if (matCache) matCache->unref();
@@ -421,7 +440,7 @@ typedef struct tagContext {
   SoTexture2 *genCurrentTexture;
   SoMaterial *genCurrentMaterial;
   SoTexture2Transform *genCurrentTexTransform;
-  SbBool genIsTwoSided;
+  int genTwoSided;
   // multiple-time used nodes
   SoTexture2 *genEmptyTexture;
   SoTexture2Transform *genEmptyTexTransform;
@@ -439,8 +458,7 @@ typedef struct tagContext {
 
   tagContext(SoStream &stream) : s(stream), root(NULL), cObj(NULL),
       totalVertices(0), totalFaces(0),
-      vertexList(NULL), faceList(NULL), genCurrentTexture(NULL),
-      genCurrentMaterial(NULL), genCurrentTexTransform(NULL),
+      vertexList(NULL), faceList(NULL),
       genEmptyTexture(NULL), genEmptyTexTransform(NULL),
       genOneSidedHints(NULL), genTwoSidedHints(NULL)  {}
   ~tagContext() {
@@ -549,9 +567,8 @@ SbBool read3dsFile(SoStream *in, SoSeparator *&root,
   uint16_t header;
   *in >> header;
   if (header != M3DMAGIC) {
-    if (coin_debug_3ds())
-      SoDebugError::postInfo("read3dsFile",
-                             "Bad 3ds stream: invalid header.");
+    SoDebugError::post("read3dsFile",
+                       "Bad 3ds stream: invalid header.");
     return FALSE;
   }
 
@@ -588,8 +605,8 @@ SbBool read3dsFile(SoStream *in, SoSeparator *&root,
 
   // build base scene graph
 
-#if 0 // OBSOLETE: single x double sided information is now read from the
-      // 3ds file, and we need no longer to set double facing globally
+#ifdef DISABLE_BACKFACE_CULLING // put default shape hints into the scene;
+          // Backface culling is set to off and two sided lighting is enabled.
   SoShapeHints *sh = new SoShapeHints;
   sh->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
   sh->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
@@ -638,9 +655,8 @@ SbBool read3dsFile(SoStream *in, SoSeparator *&root,
     con.root->unref();
     con.root = NULL;
 
-    if (coin_debug_3ds())
-      SoDebugError::postInfo("read3dsFile",
-                             "3ds loading failed.");
+    SoDebugError::post("read3dsFile",
+                       "3ds loading failed.");
     return FALSE;
   }
 
@@ -671,7 +687,7 @@ SbBool read3dsFile(SoStream *in, SoSeparator *&root,
   con.root = NULL;
 
   // debug info
-  if (coin_debug_3ds())
+  if (coin_debug_3ds() >= 2)
     SoDebugError::postInfo("read3dsFile",
                            "File loading ok. Loaded %i vertices and %i faces.",
                            con.totalVertices, con.totalFaces);
@@ -727,7 +743,7 @@ CHUNK(LoadM3DMagic)
   HEADER;
   con->stopPos = con->s.getPos() + size - 6;
 
-  if (coin_debug_3ds())
+  if (coin_debug_3ds() >= 2)
     SoDebugError::postInfo("LoadM3DMagic",
                            "Loading 3ds stream (stream size: %i).", size);
 
@@ -746,6 +762,10 @@ CHUNK(LoadM3DVersion)
 
   int32_t version;
   con->s >> version;
+
+  if (version != 3 && coin_debug_3ds() >= 1)
+    SoDebugError::postWarning("LoadM3DVersion",
+                              "Non-standard 3ds format version: %i.", version);
 }
 
 
@@ -770,7 +790,7 @@ CHUNK(LoadMeshVersion)
   int32_t version;
   con->s >> version;
 
-  if (coin_debug_3ds())
+  if (coin_debug_3ds() >= 3)
     SoDebugError::postInfo("LoadMeshVersion",
                            "The 3ds file version: %i.", version);
 }
@@ -845,6 +865,11 @@ CHUNK(LoadNTriObject)
   con->cObj = new SoSeparator;
   con->cObj->ref();
 
+  con->genCurrentTexture = NULL;
+  con->genCurrentTexTransform = NULL;
+  con->genCurrentMaterial = NULL;
+  con->genTwoSided = -1;
+
   // create coordinates (in indexed mode)
   if (con->useIndexedTriSet) {
     // coordinates
@@ -894,13 +919,16 @@ CHUNK(LoadNTriObject)
     if (con->appendNormals)
       con->cObj->addChild(DefaultFaceGroup::createSoNormal(con));
 
+#ifndef DISABLE_BACKFACE_CULLING
     // single x double faces
-    if (DefaultFaceGroup::getMaterial(con)->twoSided != con->genIsTwoSided ||
-       (!con->genOneSidedHints && !con->genTwoSidedHints)) {
-      con->genIsTwoSided = DefaultFaceGroup::getMaterial(con)->twoSided;
-      con->cObj->addChild((con->genIsTwoSided) ?
+    SbBool matTwoSided = DefaultFaceGroup::getMaterial(con)->twoSided;
+    if (con->genTwoSided == -1 || (matTwoSided && (con->genTwoSided == 0)) ||
+       (!matTwoSided && (con->genTwoSided == 1))) {
+      con->genTwoSided = (DefaultFaceGroup::getMaterial(con)->twoSided ? 1 : 0);
+      con->cObj->addChild((con->genTwoSided == 1) ?
           con->genGetTwoSidedHints() : con->genGetOneSidedHints());
     }
+#endif
 
     // load default material geometry
     if (con->useIndexedTriSet) {
@@ -967,13 +995,15 @@ CHUNK(LoadNTriObject)
       }
     }
 
+#ifndef DISABLE_BACKFACE_CULLING
     // single x double faces
-    if (fg->mat->twoSided != con->genIsTwoSided ||
-       (!con->genOneSidedHints && !con->genTwoSidedHints)) {
-      con->genIsTwoSided = fg->mat->twoSided;
-      con->cObj->addChild((con->genIsTwoSided) ?
+    if (con->genTwoSided == -1 || (fg->mat->twoSided && (con->genTwoSided == 0)) ||
+       (!fg->mat->twoSided && (con->genTwoSided == 1))) {
+      con->genTwoSided = (fg->mat->twoSided ? 1 : 0);
+      con->cObj->addChild((con->genTwoSided == 1) ?
           con->genGetTwoSidedHints() : con->genGetOneSidedHints());
     }
+#endif
 
     if (con->useIndexedTriSet) {
       // indexed triStripSet
@@ -1065,7 +1095,12 @@ CHUNK(LoadFaceArray)
     con->s >> c;
     con->s >> flags; // STUB: decode flags (edge visibility and texture
                      // wrapping, but first get idea what's the flags meaning)
-    con->faceList[i].init(con, a,b,c,flags);
+    if (flags != 7 && coin_debug_3ds() >= 2)
+      SoDebugError::postWarning("LoadFaceArray",
+                                "Non-standard face flags: %x, investigate it.\n", flags);
+    con->faceList[i].init(con, a,c,b,flags); // we have to swap two
+                     // indices (b<=>c); It looks like 3ds uses clockwise
+                     // vertex ordering and we need it to be counter-clockwise.
 
     if (!con->minMaxValid) {
       con->minMaxValid = TRUE;
@@ -1093,7 +1128,7 @@ CHUNK(LoadFaceArray)
   }
 
   // report degenerated faces
-  if (con->numDefaultDegFaces > 0 && coin_debug_3ds() >= 2)
+  if (con->numDefaultDegFaces > 0 && coin_debug_3ds() >= 1)
     SoDebugError::postWarning("LoadFaceArray",
                               "There are %i degenerated faces in the object named \"%s\" - removing them.",
                               con->numDefaultDegFaces, &con->objectName);
@@ -1225,6 +1260,7 @@ CHUNK(LoadMatEntry)
   con->cMat->specular = SbColor(0.f, 0.f, 0.f);
   con->cMat->shininess = 0.f;
   con->cMat->transparency = 0.f;
+  con->cMat->twoSided = FALSE;
 
   READ_SUBCHUNKS(
     case MAT_NAME:     LoadMatName(con); break;
