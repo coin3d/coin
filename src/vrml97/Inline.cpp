@@ -550,6 +550,7 @@ SoVRMLInline::readInstance(SoInput * in,
   }
   else {
     ret = inherited::readInstance(in, flags);
+    if (ret) this->requestURLData();
   }
   THIS->urlsensor->attach(&this->url);
 
@@ -633,5 +634,8 @@ SoVRMLInline::urlFieldModified(void * userdata, SoSensor * sensor)
   thisp->pimpl->fullurlname.makeEmpty();
   if (sovrmlinline_readassofile) {
     (void)thisp->readLocalFile(&in);
+  }
+  else {
+    thisp->requestURLData();
   }
 }
