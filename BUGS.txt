@@ -331,3 +331,52 @@
     mortene 20020806.
 
 =====================================================================
+
+015 SoExtSelection doesn't always work properly with SoMultipleCopy.
+
+    Reproduce with the following scenegraph in the
+    SoGuiExamples/nodes/extselection example:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    #Inventor V2.5 ascii
+
+    Group {
+       MultipleCopy {
+          matrix [
+           1 0 0 0
+           0 1 0 0
+           0 0 1 0
+           0 0 0 1,
+
+           1 0 0 0
+           0 1 0 0
+           0 0 1 0
+           4 0 0 1,
+
+           1 0 0 0
+           0 1 0 0
+           0 0 1 0
+           -4 0 0 1,
+          ]
+
+          Cube {
+          }
+       }
+    }
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    With ALL_SHAPES selection, you need to select either the middle
+    cube by itself, or all three cubes at the same time to get the
+    correct result. Selecting any two cubes, or the side cubes by
+    themselves, will _not_ make the SoMultipleCopy get selected.
+
+    With VISIBLE_SHAPES, the behavior is slightly different: select
+    any two cubes, or the middle cube by itself, or all three cubes --
+    and it works. Select any of the side cubes by themselves, and
+    selection fails to work.
+
+    mortene 20020806.
+
+=====================================================================
