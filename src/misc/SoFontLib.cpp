@@ -157,7 +157,7 @@ SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbV
     path = SoInput::searchForFile(fontname.getString(), SoInput::getDirectories(), emptylist);
   }
   // fprintf(stderr,"createFont: path %s\n", path.getString());  // DEBUG
-  int font = flwCreateFont( path.getString(), name, 300 );
+  int font = flwCreateFont( path.getString(), name, 300, 12, 12 );
   if (font >= 0) 
     flwSetCharSize(font, (int)size[0], (int)size[1]);
   CC_MUTEX_UNLOCK(SoFontLib_mutex);
