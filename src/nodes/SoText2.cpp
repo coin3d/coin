@@ -56,10 +56,10 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#if !defined(X_DISPLAY_MISSING)
+#if HAVE_X11_AVAILABLE
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
-#endif // !X_DISPLAY_MISSING
+#endif // HAVE_X11_AVAILABLE
 
 #ifdef HAVE_GLX
 #include <GL/glx.h>
@@ -181,7 +181,7 @@ SoText2::initClass(void)
 
 // **************************************************************************
 
-#if !defined(X_DISPLAY_MISSING)
+#if HAVE_X11_AVAILABLE
 
 static Display * d = NULL;
 
@@ -308,13 +308,13 @@ getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
   }
 }
 
-#endif // !X_DISPLAY_MISSING
+#endif // HAVE_X11_AVAILABLE
 
 static void
 string_dimensions(void * fontdata, const char * s,
                   float & strwidth, float & strheight)
 {
-#if !defined(X_DISPLAY_MISSING)
+#if HAVE_X11_AVAILABLE
   int direction, ascent, descent;
   XCharStruct cs;
   XTextExtents((XFontStruct *)fontdata, s, strlen(s),
@@ -322,7 +322,7 @@ string_dimensions(void * fontdata, const char * s,
   strwidth = cs.width;
   strheight = ascent + descent;
   return;
-#endif // !X_DISPLAY_MISSING
+#endif // HAVE_X11_AVAILABLE
 
   strwidth = strheight = 0.0f;
 }
@@ -341,10 +341,10 @@ SoText2::GLRender(SoGLRenderAction * action)
   unsigned int fontlistbase = NOT_AVAILABLE;
   void * fontdata = NULL;
 
-#if !defined(X_DISPLAY_MISSING)
+#if HAVE_X11_AVAILABLE
   // FIXME: crashes on freya.sim.no? 20000905 mortene.
 // fontlistbase = getGLList(action, (XFontStruct *)fontdata);
-#endif // !X_DISPLAY_MISSING
+#endif // HAVE_X11_AVAILABLE
 
   if (fontlistbase != NOT_AVAILABLE) {
     SoMaterialBundle mb(action);
