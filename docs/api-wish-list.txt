@@ -231,3 +231,12 @@ THE WISH LIST
     header file. Otherwise we will run into tons of problems on
     different compilers. 
 
+* SoGestureEvent
+  2001-29-04  Lars J. Aas  <larsa@sim.no>
+  [upwards compatible extension]
+
+  Derived from SoEvent, this class would be a container for a gesture type
+  indicator (SbName) and a variable set of parameters (name + value).
+  Something like this should be implemented to make it easier to create
+  gesture-based interfaces...
+
