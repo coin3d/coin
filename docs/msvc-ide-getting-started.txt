@@ -1,0 +1,120 @@
+FIXME: this document will eventually evolve into a full "Getting
+Started" walkthrough guide for starting Coin development on MSWindows
+in the MSVC++ IDE.  It is so far a quick "this is how I did it" from a
+SIM intern. 20011021 mortene.
+
+==================================================================
+
+Getting started on Windows2000
+(Coin-1,simage-1,SoWin, SoQt)
+Barbara Langmueller, 2001-10-16
+
+
+______________________________________________________________
+If you want to use SoQt you have to install Qt first.
+get QT at http://www.troll.no and install it
+
+Create a directory where you want to save the downloded modules
+(for example D:\src) and command prompt there.
+______________________________________________________________
+Get the cygwin tools and install them.
+______________________________________________________________
+Get the libraries over the cvs repository:
+
+cvs –d :pserver:cvs@cvs.coin3d.org:/export/cvsroot login
+pwd: cvs
+
+cvs –d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co Coin-1
+cvs –d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co simage-1
+cvs –d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co SoWin
+cvs –d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co SoQt
+
+Get the SoGuiExamples:
+
+cvs –d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co SoGuiExamples
+
+structure after (successful) check out:
+src
+ |__ Coin-1
+ |__ simage-1
+ |__ SoWin
+ |__ SoQt
+ |__ SoGuiExamples
+______________________________________________________________
+run bash in the command prompt (current directory: src)
+
+enter simage-1 directory
+./configure --prefix=/cygdrive/d/Coin
+make install
+
+enter Coin-1 directory
+./configure --prefix=/cygdrive/d/Coin
+make install
+
+enter SoQt directory
+./configure --prefix=/cygdrive/d/Coin
+make install
+
+enter SoWin directory
+./configure --prefix=/cygdrive/d/Coin
+make install
+______________________________________________________________
+make sure that following system environment variables are set:
+path	D:\Coin\bin;D:\Qt\bin
+______________________________________________________________
+
+note that if you want to test the SoGuiExamples using
+SoWin first and then SoQt you have to do the following
+(because otherwise it would try to build it in the same directory
+and important files would not be overwritten)
+- create a directory where you want the example files using SoWin
+  to be saved
+- command prompt there
+- run bash
+- <path to src directory>SoGuiExamples/configure --with-toolkit=sowin
+- make
+do the same for SoQt using an own directory and toolkit=soqt
+
+______________________________________________________________
+
+Visual C++  Settings
+
+tools – options – Directories
+Include files
+	d:\Coin\include
+	d:\Qt\include
+Library files
+	d:\Coin\lib
+	d:\Qt\lib
+--------------------------
+--> Project using SoQt <--
+--------------------------
+project – settings – C/C++
+at Preprocessor Definitions add:
+	COIN_DLL
+	SIMAGE_DLL
+	QT_DLL
+	SOQT_DLL
+
+project – settings – Link
+at Object/library modules add:
+	coin1.lib
+	simage1.lib
+	qt-mt230nc.lib
+	soqt0.lib
+
+---------------------------
+--> Project using SoWin <--
+---------------------------
+project – settings – C/C++
+at Preprocessor Definitions add:
+	COIN_DLL
+	SIMAGE_DLL
+	SOWIN_DLL
+
+project – settings – Link
+at Object/library modules add:
+	coin1.lib
+	simage1.lib
+	sowin0.lib
+______________________________________________________________
