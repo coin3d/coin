@@ -17,7 +17,7 @@ RegularSources = \
 	time.c \
 	string.c \
 	dynarray.cpp \
-	name.cpp \
+	namemap.c \
 	SbBSPTree.cpp \
 	SbBox2s.cpp \
 	SbBox3s.cpp \
@@ -107,7 +107,7 @@ PrivateHeaders = \
 	../../include/Inventor/C/base/hashp.h \
 	../../include/Inventor/C/base/heapp.h \
 	../../include/Inventor/C/base/dynarray.h \
-	../../include/Inventor/C/base/name.h
+	../../include/Inventor/C/base/namemap.h
 
 ##$ BEGIN TEMPLATE Make-Common(base, base)
 # **************************************************************************

@@ -253,7 +253,7 @@ RegularSources = \
 	time.c \
 	string.c \
 	dynarray.cpp \
-	name.cpp \
+	namemap.c \
 	SbBSPTree.cpp \
 	SbBox2s.cpp \
 	SbBox3s.cpp \
@@ -345,7 +345,7 @@ PrivateHeaders = \
 	../../include/Inventor/C/base/hashp.h \
 	../../include/Inventor/C/base/heapp.h \
 	../../include/Inventor/C/base/dynarray.h \
-	../../include/Inventor/C/base/name.h
+	../../include/Inventor/C/base/namemap.h
 
 
 
@@ -408,7 +408,7 @@ LIBRARIES = $(noinst_LIBRARIES)
 base_lst_AR = $(AR) cru
 base_lst_LIBADD =
 am__base_lst_SOURCES_DIST = hash.c heap.c list.c memalloc.c rbptree.c \
-	time.c string.c dynarray.cpp name.cpp SbBSPTree.cpp SbBox2s.cpp \
+	time.c string.c dynarray.cpp namemap.c SbBSPTree.cpp SbBox2s.cpp \
 	SbBox3s.cpp SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp SbClip.cpp \
 	SbColor.cpp SbColor4f.cpp SbCylinder.cpp SbDict.cpp \
 	SbDPLine.cpp SbDPMatrix.cpp SbDPPlane.cpp SbDPRotation.cpp \
@@ -423,7 +423,7 @@ am__objects_1 = all-c.$(OBJEXT) all-cpp.$(OBJEXT)
 @BUILD_WITH_THREADS_FALSE@am__objects_2 =
 am__objects_3 = hash.$(OBJEXT) heap.$(OBJEXT) list.$(OBJEXT) \
 	memalloc.$(OBJEXT) rbptree.$(OBJEXT) time.$(OBJEXT) \
-	string.$(OBJEXT) dynarray.$(OBJEXT) name.$(OBJEXT) \
+	string.$(OBJEXT) dynarray.$(OBJEXT) namemap.$(OBJEXT) \
 	SbBSPTree.$(OBJEXT) SbBox2s.$(OBJEXT) SbBox3s.$(OBJEXT) \
 	SbBox2f.$(OBJEXT) SbBox2d.$(OBJEXT) SbBox3f.$(OBJEXT) \
 	SbClip.$(OBJEXT) SbColor.$(OBJEXT) SbColor4f.$(OBJEXT) \
@@ -486,9 +486,9 @@ am__EXTRA_base_lst_SOURCES_DIST = \
 	../../include/Inventor/C/base/hashp.h \
 	../../include/Inventor/C/base/heapp.h \
 	../../include/Inventor/C/base/dynarray.h \
-	../../include/Inventor/C/base/name.h all-c.c all-cpp.cpp hash.c \
+	../../include/Inventor/C/base/namemap.h all-c.c all-cpp.cpp hash.c \
 	heap.c list.c memalloc.c rbptree.c time.c string.c dynarray.cpp \
-	name.cpp SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp \
+	namemap.c SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp \
 	SbBox2d.cpp SbBox3f.cpp SbClip.cpp SbColor.cpp SbColor4f.cpp \
 	SbCylinder.cpp SbDict.cpp SbDPLine.cpp SbDPMatrix.cpp \
 	SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp SbImage.cpp \
@@ -504,7 +504,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libbase_la_LDFLAGS =
 libbase_la_LIBADD =
 am__libbase_la_SOURCES_DIST = hash.c heap.c list.c memalloc.c rbptree.c \
-	time.c string.c dynarray.cpp name.cpp SbBSPTree.cpp SbBox2s.cpp \
+	time.c string.c dynarray.cpp namemap.c SbBSPTree.cpp SbBox2s.cpp \
 	SbBox3s.cpp SbBox2f.cpp SbBox2d.cpp SbBox3f.cpp SbClip.cpp \
 	SbColor.cpp SbColor4f.cpp SbCylinder.cpp SbDict.cpp \
 	SbDPLine.cpp SbDPMatrix.cpp SbDPPlane.cpp SbDPRotation.cpp \
@@ -516,7 +516,7 @@ am__libbase_la_SOURCES_DIST = hash.c heap.c list.c memalloc.c rbptree.c \
 	SbViewportRegion.cpp SbXfBox3f.cpp all-c.c all-cpp.cpp
 am__objects_7 = all-c.lo all-cpp.lo
 am__objects_8 = hash.lo heap.lo list.lo memalloc.lo rbptree.lo time.lo \
-	string.lo dynarray.lo name.lo SbBSPTree.lo SbBox2s.lo \
+	string.lo dynarray.lo namemap.lo SbBSPTree.lo SbBox2s.lo \
 	SbBox3s.lo SbBox2f.lo SbBox2d.lo SbBox3f.lo SbClip.lo \
 	SbColor.lo SbColor4f.lo SbCylinder.lo SbDict.lo SbDPLine.lo \
 	SbDPMatrix.lo SbDPPlane.lo SbDPRotation.lo SbHeap.lo SbImage.lo \
@@ -574,9 +574,9 @@ am__EXTRA_libbase_la_SOURCES_DIST = \
 	../../include/Inventor/C/base/hashp.h \
 	../../include/Inventor/C/base/heapp.h \
 	../../include/Inventor/C/base/dynarray.h \
-	../../include/Inventor/C/base/name.h all-c.c all-cpp.cpp hash.c \
+	../../include/Inventor/C/base/namemap.h all-c.c all-cpp.cpp hash.c \
 	heap.c list.c memalloc.c rbptree.c time.c string.c dynarray.cpp \
-	name.cpp SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp \
+	namemap.c SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp \
 	SbBox2d.cpp SbBox3f.cpp SbClip.cpp SbColor.cpp SbColor4f.cpp \
 	SbCylinder.cpp SbDict.cpp SbDPLine.cpp SbDPMatrix.cpp \
 	SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp SbImage.cpp \
@@ -590,7 +590,7 @@ libbase_la_OBJECTS = $(am_libbase_la_OBJECTS)
 libbase@SUFFIX@LINKHACK_la_LDFLAGS =
 libbase@SUFFIX@LINKHACK_la_LIBADD =
 am__libbase@SUFFIX@LINKHACK_la_SOURCES_DIST = hash.c heap.c list.c \
-	memalloc.c rbptree.c time.c string.c dynarray.cpp name.cpp \
+	memalloc.c rbptree.c time.c string.c dynarray.cpp namemap.c \
 	SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp SbBox2d.cpp \
 	SbBox3f.cpp SbClip.cpp SbColor.cpp SbColor4f.cpp SbCylinder.cpp \
 	SbDict.cpp SbDPLine.cpp SbDPMatrix.cpp SbDPPlane.cpp \
@@ -647,9 +647,9 @@ am__EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/C/base/hashp.h \
 	../../include/Inventor/C/base/heapp.h \
 	../../include/Inventor/C/base/dynarray.h \
-	../../include/Inventor/C/base/name.h all-c.c all-cpp.cpp hash.c \
+	../../include/Inventor/C/base/namemap.h all-c.c all-cpp.cpp hash.c \
 	heap.c list.c memalloc.c rbptree.c time.c string.c dynarray.cpp \
-	name.cpp SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp \
+	namemap.c SbBSPTree.cpp SbBox2s.cpp SbBox3s.cpp SbBox2f.cpp \
 	SbBox2d.cpp SbBox3f.cpp SbClip.cpp SbColor.cpp SbColor4f.cpp \
 	SbCylinder.cpp SbDict.cpp SbDPLine.cpp SbDPMatrix.cpp \
 	SbDPPlane.cpp SbDPRotation.cpp SbHeap.cpp SbImage.cpp \
@@ -715,7 +715,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/heap.Plo ./$(DEPDIR)/heap.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/list.Plo ./$(DEPDIR)/list.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/memalloc.Plo ./$(DEPDIR)/memalloc.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/name.Plo ./$(DEPDIR)/name.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/namemap.Plo ./$(DEPDIR)/namemap.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/rbptree.Plo ./$(DEPDIR)/rbptree.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/string.Plo ./$(DEPDIR)/string.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/time.Plo ./$(DEPDIR)/time.Po
@@ -897,8 +897,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/list.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memalloc.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memalloc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/name.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/name.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/namemap.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/namemap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rbptree.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rbptree.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/string.Plo@am__quote@
