@@ -1725,6 +1725,36 @@ cc_glglue_glXGetCurrentDisplay(const cc_glglue * w)
 
 /*** Offscreen buffer handling. *********************************************/
 
+/*
+  Below is a stand-alone example that can be compiled and linked with
+  the Coin library for testing that the context handling interface
+  works:
+ */
+/*
+  #include <Inventor/C/glue/gl.h>
+  #include <assert.h>
+  #include <stdio.h>
+  
+  int
+  main(void)
+  {
+    void * ctx = cc_glglue_context_create_offscreen(128, 128);
+    assert(ctx);
+    SbBool ok = cc_glglue_context_make_current(ctx);
+    assert(ok);
+  
+    const GLubyte * str = glGetString(GL_VERSION);
+    assert(str && "could not call glGetString() -- no current GL context?");
+    assert(glGetError() == GL_NO_ERROR && "GL error when calling glGetString() -- no current GL context?");
+  
+    (void)fprintf(stdout, "glGetString(GL_VERSION)=='%s'\n", str);
+  
+    cc_glglue_context_reinstate_previous(ctx);
+    cc_glglue_context_destruct(ctx);
+    return 0;
+  }
+*/
+
 void *
 cc_glglue_context_create_offscreen(unsigned int width, unsigned int height)
 {
