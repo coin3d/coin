@@ -676,12 +676,14 @@ flww32_getVerticesFromPath(HDC hdc)
         vertex [1] = p_points[lastmoveto].y;
         vertex [2] = 0;
         flww32_addTessVertex(vertex);
+        free(vertex);
       } else {
         vertex = (double *) malloc(3*sizeof(double));
         vertex [0] = p_points[i].x;
         vertex [1] = p_points[i].y;
         vertex [2] = 0;
         flww32_addTessVertex(vertex);		
+        free(vertex);
       }
     }       
     if (p_points != NULL) free(p_points);

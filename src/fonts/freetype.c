@@ -678,7 +678,6 @@ cc_flwft_get_advance(void * font, int glyph, float *x, float *y)
   FT_Error error;
   FT_Face face;
   int tmp;
-  float fontscalingx, fontscalingy;
 
   assert(font);
   face = (FT_Face)font;
@@ -686,9 +685,9 @@ cc_flwft_get_advance(void * font, int glyph, float *x, float *y)
   assert(error == 0 && "FT_Load_Glyph() unexpected failure, investigate");
 
   tmp = face->glyph->advance.x * flwft_tessellator.vertex_scale;
-  x[0] = (tmp / 64.0f);
+  x[0] = (tmp / 64.0f) / flwft_3dfontsize;
   tmp = face->glyph->advance.y * flwft_tessellator.vertex_scale;
-  y[0] = (tmp / 64.0f);
+  y[0] = (tmp / 64.0f) / flwft_3dfontsize;
 
   /* FIXME: This will always return 0 when handling bitmap
      glyphs... Currently, the advancement in SoText2 is based on
@@ -703,8 +702,6 @@ cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y)
   FT_Vector kerning;
   FT_Face face;
 
-  float fontscalingx, fontscalingy;
-
   assert(font);
   face = (FT_Face)font;
   if (FT_HAS_KERNING(face)) {
@@ -712,8 +709,8 @@ cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y)
     if (error) {
       cc_debugerror_post("cc_flwft_get_kerning", "FT_Get_Kerning() => %d", error);
     }
-    *x = (kerning.x / 64.0f);
-    *y = (kerning.y / 64.0f);
+    *x = (kerning.x / 64.0f) / flwft_3dfontsize;
+    *y = (kerning.y / 64.0f) / flwft_3dfontsize;
   }
   else {
     *x = 0.0;
