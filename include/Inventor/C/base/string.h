@@ -70,7 +70,6 @@ COIN_DLL_API uint32_t cc_string_hash(const cc_string * str);
 COIN_DLL_API uint32_t cc_string_hash_text(const char * text);
 
 COIN_DLL_API const char * cc_string_get_text(const cc_string * str);
-COIN_DLL_API void cc_string_get_substring(cc_string * str, int start, int end, cc_string * dst);
 COIN_DLL_API void cc_string_remove_substring(cc_string * str, int start, int end);
 
 COIN_DLL_API int cc_string_compare(const cc_string * lhs, const cc_string * rhs);
