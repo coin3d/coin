@@ -1985,7 +1985,8 @@ SoInput::readReal(double & d)
 
   // FIXME: fixed size buffer for input of unknown
   // length. Ouch. 19990530 mortene.
-  char str[32];
+  const int BUFSIZE = 2048;
+  char str[BUFSIZE];
   int n;
   char * s = str;
   SbBool gotNum = FALSE;
