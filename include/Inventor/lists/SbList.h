@@ -26,6 +26,7 @@
 
 #include <assert.h>
 #include <stddef.h> // NULL definition
+#include <Inventor/SbBasic.h> // TRUE/FALSE
 
 // We usually implement inline functions below the class definition,
 // since we think that makes the file more readable. However, this is
