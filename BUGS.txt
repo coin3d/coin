@@ -4360,7 +4360,95 @@ TransformBoxManip { }
 
 =====================================================================
 
-161 Bug in RotateDiscDragger when SoWriteAction is applied
+161 Error in VRML97-export of ROUTE connections.
+
+    This example demonstrates a bug where the names of the entities
+    that are connected are not included in the "ROUTE ..." output:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInteraction.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/VRMLnodes/SoVRMLGroup.h>
+#include <Inventor/VRMLnodes/SoVRMLText.h>
+#include <Inventor/VRMLnodes/SoVRMLFontStyle.h>
+#include <Inventor/VRMLnodes/SoVRMLSwitch.h>
+#include <Inventor/VRMLnodes/SoVRMLBillboard.h>
+#include <Inventor/VRMLnodes/SoVRMLShape.h>
+#include <Inventor/VRMLnodes/SoVRMLText.h>
+
+int main(int argc, char *argv[])
+{
+  SoDB::init();
+  SoInteraction::init();
+  SoBase::setInstancePrefix("_");
+
+  SoVRMLGroup *root = new SoVRMLGroup;
+  root->ref();
+
+  SoVRMLSwitch *sw = new SoVRMLSwitch;
+  sw->whichChoice = -1;
+  root->addChild(sw);
+  SoVRMLText *text = new SoVRMLText;
+  SoVRMLFontStyle *fontstyle = new SoVRMLFontStyle;
+  text->fontStyle = fontstyle;
+  fontstyle->family = "SANS";
+  fontstyle->size = 100;
+  sw->choice = text;
+
+  SoVRMLGroup *sub = new SoVRMLGroup;
+  root->addChild(sub);
+  SoVRMLBillboard *bb = new SoVRMLBillboard;
+  sub->addChild(bb);
+  SoVRMLShape *sh = new SoVRMLShape;
+  bb->addChild(sh);
+  SoVRMLText *txt = new SoVRMLText;
+  sh->geometry = txt;
+  SoVRMLFontStyle *fstyle = new SoVRMLFontStyle;
+  txt->fontStyle = fstyle;
+  fstyle->family = "SERIF";
+  fstyle->size = 50;
+  
+  txt->fontStyle.connectFrom(&text->fontStyle);
+
+  SoOutput out;
+  out.openFile("out.wrl");
+  out.setHeaderString("#VRML V2.0 utf8");
+  SoWriteAction wra(&out);
+  wra.apply(root);
+  out.closeFile();
+  
+  root->unref();
+}
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    Bug reported by kintel.
+
+    20041104 mortene.
+
+=====================================================================
+
+162 Inconsistent traversal behavior upon traversal of VRML97-nodes
+    with SoSFNode and/or SoMFNode fields.
+
+    According to pederb, only some VRML97-nodes forwards scene graph
+    traversal to the sub-graphs in their SoSFNode- or SoMFNode-fields.
+
+    E.g. SoVRMLText does not traverse its fontStyle field, but
+    SoVRMLShape and SoVRMLAppearance traverses their SoSFNode-fields.
+
+    Is there any good reason why we should /not/ let all nodes
+    continue traversing down into SoSFNode and SoMFNode fields? If
+    not, this should be fixed.
+
+    20041104 mortene, reported by kintel.
+
+=====================================================================
+
+163 Bug in RotateDiscDragger when SoWriteAction is applied
     Coin read error: Premature end of file
     Coin/src/nodes/SoGroup.cpp:374: void SoGroup::addChild(SoNode *):
     Assertion `node != __null' failed.
@@ -4373,3 +4461,99 @@ RotateDiscDragger { }
 ----8<----- [snip] --------------------8<----- [snip] ----------------  
 
     20041104 sit.
+
+=====================================================================
+
+164 Write reference counter bugs upon export.
+
+    This example reproduces a problem caught by set_current_writeref()
+    in SoBase, where the write reference counter of an SoBase instance
+    comes out wrong during export:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInteraction.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/VRMLnodes/SoVRMLGroup.h>
+#include <Inventor/VRMLnodes/SoVRMLText.h>
+#include <Inventor/VRMLnodes/SoVRMLFontStyle.h>
+#include <Inventor/VRMLnodes/SoVRMLSwitch.h>
+#include <Inventor/VRMLnodes/SoVRMLBillboard.h>
+#include <Inventor/VRMLnodes/SoVRMLShape.h>
+#include <Inventor/VRMLnodes/SoVRMLText.h>
+
+int main(int argc, char *argv[])
+{
+  SoDB::init();
+  SoInteraction::init();
+  SoBase::setInstancePrefix("_");
+
+  SoVRMLGroup *root = new SoVRMLGroup;
+  root->ref();
+
+  SoVRMLSwitch *sw = new SoVRMLSwitch;
+  sw->whichChoice = -1;
+  root->addChild(sw);
+  SoVRMLText *text = new SoVRMLText;
+  SoVRMLFontStyle *fontstyle = new SoVRMLFontStyle;
+  text->fontStyle = fontstyle;
+  fontstyle->family = "SANS";
+  fontstyle->size = 100;
+  sw->choice = text;
+
+  SoVRMLGroup *sub;
+  SoVRMLBillboard *bb;
+  SoVRMLShape *sh;
+  SoVRMLText *txt;
+  SoVRMLFontStyle *fstyle;
+
+  sub = new SoVRMLGroup;
+  root->addChild(sub);
+  bb = new SoVRMLBillboard;
+  sub->addChild(bb);
+  sh = new SoVRMLShape;
+  bb->addChild(sh);
+  txt = new SoVRMLText;
+  sh->geometry = txt;
+  fstyle = new SoVRMLFontStyle;
+  txt->fontStyle = fstyle;
+  fstyle->family = "SERIF";
+  fstyle->size = 50;
+  txt->fontStyle.connectFrom(&text->fontStyle);
+
+  sub = new SoVRMLGroup;
+  root->addChild(sub);
+  bb = new SoVRMLBillboard;
+  sub->addChild(bb);
+  sh = new SoVRMLShape;
+  bb->addChild(sh);
+  txt = new SoVRMLText;
+  sh->geometry = txt;
+  fstyle = new SoVRMLFontStyle;
+  txt->fontStyle = fstyle;
+  fstyle->family = "SERIF";
+  fstyle->size = 50;
+  txt->fontStyle.connectFrom(&text->fontStyle);
+
+  SoOutput out;
+  out.openFile("out.iv");
+  out.setHeaderString("#Inventor V2.1 ascii");
+  SoWriteAction wra(&out);
+  wra.apply(root);
+  out.closeFile();
+
+  out.openFile("out2.iv");
+  out.setHeaderString("#Inventor V2.1 ascii");
+  wra.apply(root);
+  out.closeFile();
+
+  root->unref();
+}
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    20041105 mortene, reported by kintel.
+
+=====================================================================
