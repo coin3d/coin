@@ -29,6 +29,7 @@ Options:
   --ldflags
   --libs
   --msvcrt
+  --includedir
   --datadir
   --have-feature <featurename>
   --compile <sourcefile> [<sourcefile>]...
@@ -70,6 +71,7 @@ do
   --ldflags)         echo "$ldflags"     ;;
   --libs)            echo "$libs"        ;;
   --datadir)         echo "$datadir"     ;;
+  --includedir)      echo "$includedir"  ;;
   --msvcrt)          echo "$msvcrt"      ;;
   --have-feature)
     exitcode=1
