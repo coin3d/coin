@@ -1588,16 +1588,32 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
     // is at the end.  All non-whitespace characters from now on are
     // erroneous.
     static uint32_t readallerrors_termination = 0;
-    SbString dummy;
-    while (!in->eof() && in->read(dummy)) { 
+    char dummy = -1; // Set to -1 to make sure the variable has been
+                     // read before an error is output
+    char buf[2];
+    buf[1] = '\0';  
+    while (!in->eof() && in->read(dummy)) {
       if (readallerrors_termination < 1) {
+        buf[0] = dummy;
         SoReadError::post(in, "Erroneous character(s) after end of scenegraph: \"%s\". "
                           "This message will only be shown once for this file, "
-                          "but more errors might be present", dummy.getString());
+                          "but more errors might be present", dummy != '\0' ? buf : "\\0");
       }
+      
       readallerrors_termination++;
     }
     assert(in->eof());
+
+    if (dummy == '\0' && !in->isBinary()) {
+      SoReadError::post(in, "It appears that your iv-file ends with a null-character ('\\0') "
+                        "This could happen if you use the SoInput::setBuffer method "
+                        "with a character-string argument and the size of the string "
+                        "was one character too long.  A typical reason for the problem "
+                        "is if you use sizeof to measure the string length; not taking into "
+                        "account that strings end with '\\0', which should not be "
+                        "input to the setBuffer-method. To correct this, use strlen "
+                        "instead of sizeof.");
+    }
   }
 
   // Make sure the current file (which is EOF) is popped off the stack.
