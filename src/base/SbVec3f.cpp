@@ -29,6 +29,26 @@
   \sa SbVec2f, SbVec2s, SbVec4f.
 */
 
+
+//
+// documentation of inlined methods
+//
+
+/*!
+  \fn float & SbVec3f::operator[](const int i)
+
+  Index operator. Returns modifiable x, y or z coordinate of vector.
+
+  \sa getValue() and setValue().
+*/
+
+/*!
+  \fn float SbVec3f::operator[](const int i) const
+  Index operator. Returns x, y or z coordinate of vector.
+
+  \sa getValue() and setValue().
+*/
+
 #include <assert.h>
 #include <Inventor/SbPlane.h>
 #if COIN_DEBUG
@@ -347,40 +367,6 @@ SbVec3f::setValue(const SbVec3f & barycentric,
   this->vec[1] = barycentric[0]*v0[1]+barycentric[1]*v1[1]+barycentric[2]*v2[1];
   this->vec[2] = barycentric[0]*v0[2]+barycentric[1]*v1[2]+barycentric[2]*v2[2];
   return *this;
-}
-
-/*!
-  Index operator. Returns modifiable x, y or z coordinate of vector.
-
-  \sa getValue() and setValue().
-*/
-float&
-SbVec3f::operator [](const int i)
-{
-#if COIN_DEBUG
-  if (!(i>=0 && i<=2))
-    SoDebugError::postWarning("SbVec3f::operator[]",
-                              "Index out of bounds [0..2].");
-#endif // COIN_DEBUG
-
-  return this->vec[i];
-}
-
-/*!
-  Index operator. Returns x, y or z coordinate of vector.
-
-  \sa getValue() and setValue().
-*/
-const float&
-SbVec3f::operator [](const int i) const
-{
-#if COIN_DEBUG
-  if (!(i>=0 && i<=2))
-    SoDebugError::postWarning("SbVec3f::operator[]",
-                              "Index out of bounds [0..2].");
-#endif // COIN_DEBUG
-
-  return this->vec[i];
 }
 
 /*!

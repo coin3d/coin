@@ -77,4 +77,20 @@ COIN_DLL_API SbVec3f operator -(const SbVec3f & v1, const SbVec3f & v2);
 COIN_DLL_API int operator ==(const SbVec3f & v1, const SbVec3f & v2);
 COIN_DLL_API int operator !=(const SbVec3f & v1, const SbVec3f & v2);
 
+
+/* inlined methods ********************************************************/
+
+inline float &
+SbVec3f::operator [](const int i)
+{
+  return this->vec[i];
+}
+
+inline const float &
+SbVec3f::operator [](const int i) const
+{
+  return this->vec[i];
+}
+
+
 #endif // !COIN_SBVEC3F_H
