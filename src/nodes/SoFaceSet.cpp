@@ -69,6 +69,10 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbRWMutex.h>
+#endif // COIN_THREADSAFE
+
 /*!
   \var SoMFInt32 SoFaceSet::numVertices
   Used to specify faces. Each entry specifies the number of coordinates
@@ -81,6 +85,45 @@
 #define STATUS_CONVEX  1
 #define STATUS_CONCAVE 2
 
+#ifndef DOXYGEN_SKIP_THIS
+class SoFaceSetP {
+public:
+  SoFaceSetP(void) 
+#ifdef COIN_THREADSAFE
+    : convexmutex(SbRWMutex::READ_PRECEDENCE)
+#endif // COIN_THREADSAFE 
+  { }
+  SoConvexDataCache * convexCache;
+  int concavestatus;
+#ifdef COIN_THREADSAFE
+  SbRWMutex convexmutex;
+#endif // COIN_THREADSAFE
+
+  void readLockConvexCache(void) {
+#ifdef COIN_THREADSAFE
+    this->convexmutex.readLock();
+#endif // COIN_THREADSAFE
+  }
+  void readUnlockConvexCache(void) {
+#ifdef COIN_THREADSAFE
+    this->convexmutex.readUnlock();
+#endif // COIN_THREADSAFE
+  }
+  void writeLockConvexCache(void) {
+#ifdef COIN_THREADSAFE
+    this->convexmutex.writeLock();
+#endif // COIN_THREADSAFE
+  }
+  void writeUnlockConvexCache(void) {
+#ifdef COIN_THREADSAFE
+    this->convexmutex.writeUnlock();
+#endif // COIN_THREADSAFE
+  }
+};
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
 
 SO_NODE_SOURCE(SoFaceSet);
 
@@ -89,11 +132,13 @@ SO_NODE_SOURCE(SoFaceSet);
 */
 SoFaceSet::SoFaceSet()
 {
+  THIS = new SoFaceSetP;
+  THIS->convexCache = NULL;
+  THIS->concavestatus = STATUS_UNKNOWN;
+  
   SO_NODE_INTERNAL_CONSTRUCTOR(SoFaceSet);
 
   SO_NODE_ADD_FIELD(numVertices, (-1));
-  this->convexCache = NULL;
-  this->concavestatus = STATUS_UNKNOWN;
 }
 
 /*!
@@ -101,7 +146,8 @@ SoFaceSet::SoFaceSet()
 */
 SoFaceSet::~SoFaceSet()
 {
-  if (this->convexCache) this->convexCache->unref();
+  if (THIS->convexCache) THIS->convexCache->unref();
+  delete THIS;
 }
 
 // doc from parent
@@ -696,10 +742,9 @@ void
 SoFaceSet::notify(SoNotList * l)
 {
   // Overridden to invalidate convex cache.
-
-  if (this->convexCache) this->convexCache->invalidate();
+  if (THIS->convexCache) THIS->convexCache->invalidate();
   SoField *f = l->getLastField();
-  if (f == &this->numVertices) this->concavestatus = STATUS_UNKNOWN;
+  if (f == &this->numVertices) THIS->concavestatus = STATUS_UNKNOWN;
   SoNode::notify(l);
 }
 
@@ -720,23 +765,29 @@ SoFaceSet::useConvexCache(SoAction * action)
   int32_t dummyarray[1];
   this->fixNumVerticesPointers(state, ptr, end, dummyarray);
 
-  if (this->concavestatus == STATUS_UNKNOWN) {
+  if (THIS->concavestatus == STATUS_UNKNOWN) {
     const int32_t * tst = ptr;
     while (tst < end) {
       if (*tst > 3) break;
       tst++;
     }
-    if (tst < end) this->concavestatus = STATUS_CONCAVE;
-    else this->concavestatus = STATUS_CONVEX;
+    if (tst < end) THIS->concavestatus = STATUS_CONCAVE;
+    else THIS->concavestatus = STATUS_CONVEX;
   }
-  if (this->concavestatus == STATUS_CONVEX) {
+  if (THIS->concavestatus == STATUS_CONVEX) {
     return FALSE;
   }
 
-  SbBool isvalid = this->convexCache && this->convexCache->isValid(state);
+  THIS->readLockConvexCache();
+  
+  SbBool isvalid = THIS->convexCache && THIS->convexCache->isValid(state);
 
   SbMatrix modelmatrix;
   if (!isvalid) {
+    THIS->readUnlockConvexCache();
+    THIS->writeLockConvexCache();
+    if (THIS->convexCache) THIS->convexCache->unref();
+
     // use nopush to avoid cache dependencies.
     SoModelMatrixElement * nopushelem = (SoModelMatrixElement*)
       state->getElementNoPush(SoModelMatrixElement::getClassStackIndex());
@@ -748,9 +799,9 @@ SoFaceSet::useConvexCache(SoAction * action)
         modelmatrix[3][2] == 0.0f &&
         modelmatrix[3][3] == 1.0f) modelmatrix = SbMatrix::identity();
 
-    this->convexCache = new SoConvexDataCache(state);
-    this->convexCache->ref();
-    SoCacheElement::set(state, this->convexCache);
+    THIS->convexCache = new SoConvexDataCache(state);
+    THIS->convexCache->ref();
+    SoCacheElement::set(state, THIS->convexCache);
   }
 
   const SoCoordinateElement * tmp;
@@ -830,12 +881,15 @@ SoFaceSet::useConvexCache(SoAction * action)
       }
       dummyidx.append(-1);
     }
-    this->convexCache->generate(coords, modelmatrix,
+    THIS->convexCache->generate(coords, modelmatrix,
                                 dummyidx.getArrayPtr(), dummyidx.getLength(),
                                 NULL, NULL, NULL,
                                 mbind,
                                 nbind,
                                 tbind);
+
+    THIS->writeUnlockConvexCache();
+    THIS->readLockConvexCache();
   }
 
   SoMaterialBundle mb(action);
@@ -856,14 +910,14 @@ SoFaceSet::useConvexCache(SoAction * action)
 
   // use the IndededFaceSet rendering method.
   sogl_render_faceset(coords,
-                      this->convexCache->getCoordIndices(),
-                      this->convexCache->getNumCoordIndices(),
+                      THIS->convexCache->getCoordIndices(),
+                      THIS->convexCache->getNumCoordIndices(),
                       normals,
-                      this->convexCache->getNormalIndices(),
+                      THIS->convexCache->getNormalIndices(),
                       &mb,
-                      this->convexCache->getMaterialIndices(),
+                      THIS->convexCache->getMaterialIndices(),
                       &tb,
-                      this->convexCache->getTexIndices(),
+                      THIS->convexCache->getTexIndices(),
                       realnbind,
                       realmbind,
                       doTextures?1:0);
@@ -872,5 +926,12 @@ SoFaceSet::useConvexCache(SoAction * action)
     this->readUnlockNormalCache();
   }
 
+  THIS->readUnlockConvexCache();
+
   return TRUE;
 }
+
+#undef THIS
+#undef STATUS_UNKNOWN
+#undef STATUS_CONVEX
+#undef STATUS_CONCAVE

@@ -28,6 +28,8 @@
 #include <Inventor/nodes/SoNonIndexedShape.h>
 #include <Inventor/fields/SoMFInt32.h>
 
+class SoFaceSetP;
+
 class COIN_DLL_API SoFaceSet : public SoNonIndexedShape {
   typedef SoNonIndexedShape inherited;
 
@@ -61,8 +63,8 @@ private:
   Binding findNormalBinding(SoState * const state) const;
   SbBool useConvexCache(SoAction * action);
   virtual void notify(SoNotList * list);
-  class SoConvexDataCache * convexCache;
-  int concavestatus;
+
+  SoFaceSetP * pimpl;
 };
 
 #endif // !COIN_SOFACESET_H
