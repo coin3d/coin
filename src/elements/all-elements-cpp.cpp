@@ -28,6 +28,7 @@
 #include "SoAnnoText3RenderPrintElement.cpp"
 #include "SoBBoxModelMatrixElement.cpp"
 #include "SoBumpMapElement.cpp"
+#include "SoBumpMapCoordinateElement.cpp"
 #include "SoBumpMappingPropertyElement.cpp"
 #include "SoCacheElement.cpp"
 #include "SoClipPlaneElement.cpp"

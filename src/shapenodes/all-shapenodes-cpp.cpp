@@ -49,3 +49,5 @@
 #include "soshape_bigtexture.cpp"
 #include "soshape_primdata.cpp"
 #include "soshape_trianglesort.cpp"
+#include "soshape_bumprender.cpp"
+

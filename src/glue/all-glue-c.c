@@ -37,3 +37,6 @@
 #include "bzip2.c"
 #include "freetype.c"
 #include "zlib.c"
+
+#include "normalization_cubemap.c"
+
