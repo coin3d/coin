@@ -51,10 +51,17 @@
 
   The matching manipulator class for any dragger class has basically
   two convenient additions to the functionality of the stand-alone
-  dragger: 1) it makes "correct" scenegraph insertion very
-  straightforward, 2) it wraps up the dragger with SoSurroundScale and
-  SoAntiSquish nodes where applicable, so the dragger geometry
-  automatically scales up or down to match the geometry it influences.
+  dragger: 1) it makes swapping the dragger in and out of the
+  scenegraph very straightforward (something which is often done for
+  draggers in 3D user interfaces), 2) it wraps up the dragger with
+  SoSurroundScale and SoAntiSquish nodes where applicable, so the
+  dragger geometry automatically scales up or down to match the
+  geometry it influences.
+
+  This last functionality can also be duplicated in a rather
+  straightforward manner outside of the context of a manipulator, as
+  can be seen from the usage example in the SoSurroundScale class
+  documentation.
 
   FIXME: more class doc! The general concept of draggers should be
   explained in more detail here -- just refering to the Inventor
@@ -796,8 +803,10 @@ SoDragger::transformMatrixToLocalSpace(const SbMatrix & frommatrix, SbMatrix & t
 }
 
 /*!
-  Sets the motion matrix. Triggers value changes callbacks if
-  \a matrix != oldmatrix.
+  Sets a new current motion matrix for the dragger geometry.
+
+  Triggers value changed callbacks if \a matrix is unequal to the
+  previous motion matrix.
 */
 void
 SoDragger::setMotionMatrix(const SbMatrix & matrix)

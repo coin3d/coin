@@ -23,14 +23,19 @@
 
 /*!
   \class SoAntiSquish SoAntiSquish.h Inventor/nodes/SoAntiSquish.h
-  \brief The SoAntiSquish class is used to make scaling uniform.
+  \brief The SoAntiSquish class is used to reset to uniform scaling.
   \ingroup nodes
 
-  This is used by draggers and manipulators to retain the shape of
-  their geometry, even if the current transformation matrix contains a
-  nonuniform scale. When traversed, this node replaces the scale
-  vector of the matrix with uniform values, bases on one of the Sizing
+  When traversed, this node replaces the scale vector of the matrix
+  with uniform values, based on one of the SoAntiSquish::Sizing
   strategies.
+
+  This node is for instance used by manipulators to retain the shape
+  of their dragger geometries when set up within the influence of an
+  SoSurroundScale node (which can yield nonuniform scale-vectors in
+  the current state transformation matrix).
+
+  \sa SoSurroundScale for a usage example.
 */
 
 #include <Inventor/nodes/SoAntiSquish.h>
@@ -40,7 +45,9 @@
 
 /*!
   \enum SoAntiSquish::Sizing
-  Different strategies for "unsquishing" a scale.
+
+  Different strategies for "unsquishing" a scale. Values are used by
+  the SoAntiSquish::sizing field.
 */
 
 
@@ -53,9 +60,12 @@
 /*!
   \var SoSFBool SoAntiSquish::recalcAlways
 
-  Whether to recalculate the unsquishing parameters for every
-  traversal. Set this to \c FALSE and use SoAntiSquish::recalc() if
-  you need to optimize.
+  Whether to automatically have the unsquishing parameters
+  recalculated for every traversal. Default value is \c TRUE.
+
+  You can set this to \c FALSE and manually invoke
+  SoAntiSquish::recalc() if you need closer control of the geometry
+  influenced by this node.
 */
 
 

@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -23,7 +23,7 @@
 
 /*!
   \class SoSurroundScale SoSurroundScale.h Inventor/nodes/SoSurroundScale.h
-  \brief The SoSurroundScale class is used to make a default cube surround geometry.
+  \brief The SoSurroundScale class is used to automatically scale geometry to surround other geometry.
   \ingroup nodes
 
   This node calculates a transformation (a translation and a scale)
@@ -31,27 +31,128 @@
   model matrix, making a default cube placed directly to the right of
   this node in the graph surround geometry to the right of the
   container branch this node is on. The container is specified by the
-  field \e numNodesUpToContainer. When calculating the bounding box to
-  be surrounded, the bounding box action will be applied to the
-  container node, and the bounding box calculations will be reset
-  after traversing the node specified by the field \e
-  numNodesUpToReset.
+  field SoSurroundScale::numNodesUpToContainer.
 
-  FIXME: insert a scenegraph diagram here which shows how a
-  SoSurroundScale can be set up to work. 20010823 mortene.
+  When calculating the bounding box to be surrounded, the bounding box
+  action will be applied to the container node, and the bounding box
+  calculations will be reset after traversing the node specified by
+  the field SoSurroundScale::numNodesUpToReset.
 
-  This node is internally used by draggers to make it possible for
-  manipulators to have the dragger surround the geometry it is
-  modifying, but it is also useful for application programmers who
-  want a particular piece of geometry (like a unit sized sphere or
-  cube) surround other geometry of unknown extent.
+  Here's a complete, stand-alone example which sets up am
+  SoTrackballDragger (connected to a cube), uses an SoSurroundScale
+  node to make it auto-scale to the size of the high cube and
+  translates it an offset to one side of the cube:
+
+  \code
+  #include <Inventor/Qt/SoQt.h>
+  #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+  #include <Inventor/draggers/SoTrackballDragger.h>
+  #include <Inventor/nodes/SoAntiSquish.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/nodes/SoCube.h>
+  #include <Inventor/nodes/SoSurroundScale.h>
+  #include <Inventor/nodes/SoRotation.h>
+  #include <Inventor/nodes/SoTranslation.h>
+
+
+  int
+  main(int argc, char **argv)
+  {
+    QWidget * window = SoQt::init(argv[0]);
+    if (window == NULL) exit(1);
+
+    SoSeparator * root = new SoSeparator;
+    root->ref();
+
+    SoSeparator * surroundsep = new SoSeparator;
+    root->addChild(surroundsep);
+
+    SoTranslation * translation = new SoTranslation;
+    translation->translation = SbVec3f(12, 0, 0);
+    surroundsep->addChild(translation);
+
+    SoSurroundScale * ss = new SoSurroundScale;
+    ss->numNodesUpToReset = 1;
+    ss->numNodesUpToContainer = 2;
+    surroundsep->addChild(ss);
+
+    SoAntiSquish * antisquish = new SoAntiSquish;
+    antisquish->sizing = SoAntiSquish::BIGGEST_DIMENSION;
+    surroundsep->addChild(antisquish);
+
+    SoTrackballDragger * dragger = new SoTrackballDragger;
+    surroundsep->addChild(dragger);
+
+    SoRotation * rotation = new SoRotation;
+    rotation->rotation.connectFrom(& dragger->rotation);
+    root->addChild(rotation);
+
+    SoCube * cube = new SoCube;
+    cube->height = 10.0f;
+    root->addChild(cube);
+
+    SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
+    viewer->setSceneGraph(root);
+    viewer->setViewing(FALSE);
+    viewer->setDecoration(FALSE);
+    viewer->show();
+
+    SoQt::show(window);
+    SoQt::mainLoop();
+
+    delete viewer;
+    root->unref();
+
+    return 0;
+  }
+  \endcode
+
+  It might be easier to see how the SoSurroundScale node works in the
+  above example by looking at the actual scenegraph:
+
+  \code
+  #Inventor V2.1 ascii
+
+  Separator {
+     Separator {
+        Translation {
+           translation 12 0 0
+        }
+        SurroundScale {
+           numNodesUpToContainer 2
+           numNodesUpToReset 1
+        }
+        AntiSquish {
+           sizing BIGGEST_DIMENSION
+        }
+        DEF +0 TrackballDragger {
+        }
+     }
+     Rotation {
+        rotation 0 0 1  0 =
+        USE +0		. rotation
+     }
+     Cube {
+        height 10
+     }
+  }
+  \endcode
+
+  This node is internally used by manipulators to make it possible for
+  them to scale their dragger's geometry to match the scenegraph
+  geometry it is modifying, as is demonstrated above (but outside of
+  the context of a manipulator).
+
+  It is also generally useful for application programmers who want any
+  particular piece of geometry surround other geometry of unknown or
+  changing extent.
 
   SoSurroundScale nodes in the scenegraph is often paired up with
   SoAntiSquish nodes to get uniform scaling along all three principal
   axes.
+
+  \sa SoAntiSquish
 */
-// FIXME: link to a simple example. The "plasmaball" Coin competition
-// entry can be simplified and used for this purpose. 20010823 mortene.
 
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -163,7 +264,7 @@ SoSurroundScale::doAction(SoAction * action)
 
 /*!
   Sets whether the translation part of the transformation should be
-  ignored or not.
+  ignored or not. Default behavior is to translate.
 */
 void
 SoSurroundScale::setDoingTranslations(const SbBool val)
@@ -174,6 +275,8 @@ SoSurroundScale::setDoingTranslations(const SbBool val)
 /*!
   Returns whether the translation part of the transformation should be
   ignored or not.
+
+  \sa setDoingTranslations()
 */
 SbBool
 SoSurroundScale::isDoingTranslations(void)
@@ -256,7 +359,10 @@ SoSurroundScale::updateMySurroundParams(SoAction * action,
   if (numtoreset >= numtocontainer) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoSurroundScale::updateMySurroundParams",
-                              "illegal field values");
+                              "illegal field values, numNodesUpToReset (==%d)"
+                              "should always be less than "
+                              "numNodesUpToContainer (==%d)",
+                              numtoreset, numtocontainer);
 #endif // debug
     this->cachedScale.setValue(1.0f, 1.0f, 1.0f);
     this->cachedInvScale.setValue(1.0f, 1.0f, 1.0f);
@@ -343,6 +449,8 @@ SoSurroundScale::updateMySurroundParams(SoAction * action,
 /*!
   Sets whether bounding box calculations in SoGetBoundingBoxAction
   should be affected by this node.
+
+  Default is to ignore our bounding box calculations.
 */
 void
 SoSurroundScale::setIgnoreInBbox(const SbBool val)
@@ -351,8 +459,11 @@ SoSurroundScale::setIgnoreInBbox(const SbBool val)
 }
 
 /*!
-  Returns whether bounding box calculations in SoGetBoundingBoxAction
-  should be affected by this node.
+  Returns the value of the flag that decides whether bounding box
+  calculations in SoGetBoundingBoxAction should be affected by this
+  node.
+
+  \sa setIgnoreInBbox()
 */
 SbBool
 SoSurroundScale::isIgnoreInBbox(void)
