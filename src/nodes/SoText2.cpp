@@ -338,6 +338,7 @@ string_dimensions(void * fontdata, const char * s,
 
 
 extern unsigned char coin_default2dfont[][12];
+extern int coin_default2dfont_isolatin1_mapping[];
 
 // doc in super
 void
@@ -479,8 +480,9 @@ SoText2::GLRender(SoGLRenderAction * action)
     xpos = (int)nilpoint[0];      // to get rid of compiler warning..
     ypos = (int)nilpoint[1];
     for (int i = 0; i < this->string.getNum(); i++) {
-      const char *s = this->string[i].getString();
-      width = strlen(s);
+      const unsigned char *s = 
+        (const unsigned char *) this->string[i].getString();
+      width = strlen((const char *)s);
       //xpos = nilpoint[0];
       switch (this->justification.getValue()) {
       case SoText2::LEFT:
@@ -493,10 +495,11 @@ SoText2::GLRender(SoGLRenderAction * action)
         xpos = (int)nilpoint[0] - (width*8)/2;
         break;
       }
-      for (int i2=0;i2<width;i2++) {
-        if ( (s[i2] >= 32) /*&& (s[i2] <= 127)*/ ) { // just in case?
+      for (int i2 = 0; i2 < width; i2++) {
+        if (s[i2] >= 32) { // just in case?
           glRasterPos3f(float(xpos), float(ypos), -nilpoint[2]);
-          glBitmap(8,12,0,0,0,0,(const GLubyte *)coin_default2dfont + 12 * (s[i2]-32) );
+          glBitmap(8,12,0,0,0,0,(const GLubyte *)coin_default2dfont 
+                   + 12 * coin_default2dfont_isolatin1_mapping[s[i2]]);
         }
         xpos += 8;
       }
