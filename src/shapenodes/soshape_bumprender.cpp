@@ -345,7 +345,7 @@ soshape_bumprender::initLight(SoLight * light, const SbMatrix & m)
   }
   else if (light->isOfType(SoDirectionalLight::getClassTypeId())) {
     SoDirectionalLight * dir = (SoDirectionalLight*)light;
-    m.multVecMatrix(-(dir->direction.getValue()), this->lightvec);
+    m.multDirMatrix(-(dir->direction.getValue()), this->lightvec);
     this->ispointlight = FALSE;
     NORMALIZE(this->lightvec);
   }
