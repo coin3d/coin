@@ -167,8 +167,14 @@ AC_SUBST(COIN_EXTRA_CXXFLAGS)
 AC_SUBST(COIN_EXTRA_LDFLAGS)
 AC_SUBST(COIN_EXTRA_LIBS)
 
-## Smoke out some known defunct compilers. ###############################
+# *******************************************************************
+# Compiler checking.
 
+## Make it possible for the user to turn off optimization flags for
+## the compiler before running the fatal error checks below.
+SIM_AC_COMPILER_OPTIMIZATION
+
+## Smoke out some known defunct compilers.
 SIM_AC_COMPILER_CPLUSPLUS_FATAL_ERRORS
 
 ## See which way the compiler knows the name of the current function. ####
