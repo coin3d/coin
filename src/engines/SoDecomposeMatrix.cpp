@@ -17,6 +17,14 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoDecomposeMatrix SoDecomposeMatrix.h Inventor/engines/SoDecomposeMatrix.h
+  \brief The SoDecomposeMatrix class is used to decompose a matrix into simple transformations.
+  \ingroup engines
+
+  FIXME: doc
+*/
+
 #include <Inventor/engines/SoDecomposeMatrix.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/fields/SoMFVec3f.h>
@@ -24,6 +32,9 @@
 
 SO_ENGINE_SOURCE(SoDecomposeMatrix);
 
+/*!
+  Default constructor.
+*/
 SoDecomposeMatrix::SoDecomposeMatrix()
 {
   SO_ENGINE_CONSTRUCTOR(SoDecomposeMatrix);
@@ -37,6 +48,7 @@ SoDecomposeMatrix::SoDecomposeMatrix()
   SO_ENGINE_ADD_OUTPUT(center,SoMFVec3f);
 }
 
+// overloaded from parent
 void
 SoDecomposeMatrix::initClass()
 {
@@ -50,10 +62,11 @@ SoDecomposeMatrix::~SoDecomposeMatrix()
 {
 }
 
+// overloaded from parent
 void
 SoDecomposeMatrix::evaluate()
 {
-  int num=matrix.getNum();
+  int num = this->matrix.getNum();
 
   SO_ENGINE_OUTPUT(translation,SoMFVec3f,setNum(num));
   SO_ENGINE_OUTPUT(rotation,SoMFRotation,setNum(num));
@@ -64,9 +77,9 @@ SoDecomposeMatrix::evaluate()
   int i;
   SbVec3f translationVal,scaleFactorVal,centerVal;
   SbRotation rotationVal,scaleOrientationVal;
-  for (i=0;i<num;i++) {
-    matrix[i].getTransform(translationVal,rotationVal,scaleFactorVal,
-                           scaleOrientationVal,centerVal);
+  for (i = 0; i < num; i++) {
+    this->matrix[i].getTransform(translationVal,rotationVal,scaleFactorVal,
+                                 scaleOrientationVal,centerVal);
     SO_ENGINE_OUTPUT(translation,SoMFVec3f,set1Value(i,translationVal));
     SO_ENGINE_OUTPUT(rotation,SoMFRotation,set1Value(i,rotationVal));
     SO_ENGINE_OUTPUT(scaleFactor,SoMFVec3f,set1Value(i,scaleFactorVal));

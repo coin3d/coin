@@ -20,17 +20,16 @@
 #ifndef COIN_SOINTERPOLATEVEC3F_H
 #define COIN_SOINTERPOLATEVEC3F_H
 
-//$ BEGIN TEMPLATE InterpolateHeader(SoInterpolateVec3f, SoMFVec3f)
 #include <Inventor/engines/SoInterpolateAbs.h>
 #include <Inventor/fields/SoMFVec3f.h>
 
 class SoInterpolateVec3f : public SoInterpolate {
+  typedef SoInterpolate inherited;
   SO_INTERPOLATE_HEADER(SoInterpolateVec3f);
 
 public:
   SoMFVec3f input0;
   SoMFVec3f input1;
 };
-//$ END TEMPLATE InterpolateHeader
 
 #endif // !COIN_SOINTERPOLATEVEC3F_H

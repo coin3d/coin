@@ -17,11 +17,22 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoCounter SoCounter.h Inventor/engines/SoCounter.h
+  \brief The SoCounter class is an integer counter engine.
+  \ingroup engines
+
+  FIXME: doc
+*/
+
 #include <Inventor/engines/SoCounter.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 
 SO_ENGINE_SOURCE(SoCounter);
 
+/*!
+  Default constructor.
+*/
 SoCounter::SoCounter()
 {
   SO_ENGINE_CONSTRUCTOR(SoCounter);
@@ -38,6 +49,7 @@ SoCounter::SoCounter()
   this->syncOut.enable(FALSE);  //Disable notification
 }
 
+// overloaded from parent
 void
 SoCounter::initClass()
 {
@@ -51,12 +63,14 @@ SoCounter::~SoCounter()
 {
 }
 
+// overloaded from parent
 void
 SoCounter::evaluate()
 {
   SO_ENGINE_OUTPUT(output,SoSFShort,setValue(this->value));
 }
 
+// overloaded from parent
 void
 SoCounter::inputChanged(SoField *which)
 {

@@ -21,8 +21,7 @@
 #define COIN_SOENGINES_H
 
 #include <Inventor/engines/SoBoolOperation.h>
-// FIXME: not made yet. 19990406 mortene.
-//  #include <Inventor/engines/SoCalculator.h>
+#include <Inventor/engines/SoCalculator.h>
 #include <Inventor/engines/SoComposeVec2f.h>
 #include <Inventor/engines/SoComposeVec3f.h>
 #include <Inventor/engines/SoComposeVec4f.h>

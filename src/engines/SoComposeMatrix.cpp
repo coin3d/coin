@@ -17,12 +17,23 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoComposeMatrix SoComposeMatrix.h Inventor/engines/SoComposeMatrix.h
+  \brief The SoComposeMatrix class is used to compose a matrix from miscellaneous transformations.
+  \ingroup engines
+
+  FIXME: doc
+*/
+
 #include <Inventor/engines/SoComposeMatrix.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/fields/SoMFMatrix.h>
 
 SO_ENGINE_SOURCE(SoComposeMatrix);
 
+/*!
+  Default constructor.
+*/
 SoComposeMatrix::SoComposeMatrix()
 {
   SO_ENGINE_CONSTRUCTOR(SoComposeMatrix);
@@ -36,6 +47,7 @@ SoComposeMatrix::SoComposeMatrix()
   SO_ENGINE_ADD_OUTPUT(matrix,SoMFMatrix);
 }
 
+// overloaded from parent
 void
 SoComposeMatrix::initClass()
 {
@@ -49,20 +61,21 @@ SoComposeMatrix::~SoComposeMatrix()
 {
 }
 
+// overloaded from parent
 void
 SoComposeMatrix::evaluate()
 {
-  int numTranslation=translation.getNum();
-  int numRotation=rotation.getNum();
-  int numScaleFactor=scaleFactor.getNum();
-  int numScaleOrientation=scaleOrientation.getNum();
-  int numCenter=center.getNum();
+  int numTranslation = this->translation.getNum();
+  int numRotation = this->rotation.getNum();
+  int numScaleFactor = this->scaleFactor.getNum();
+  int numScaleOrientation = this->scaleOrientation.getNum();
+  int numCenter = this->center.getNum();
 
-  int numOut=numTranslation>numRotation?numTranslation:numRotation;
-  int numOut2=
+  int numOut = numTranslation > numRotation? numTranslation:numRotation;
+  int numOut2 =
     numScaleFactor>numScaleOrientation?numScaleFactor:numScaleOrientation;
-  numOut2=numOut2>numCenter?numOut2:numCenter;
-  numOut=numOut>numOut2?numOut:numOut2;
+  numOut2 = numOut2>numCenter?numOut2:numCenter;
+  numOut = numOut>numOut2?numOut:numOut2;
 
   SO_ENGINE_OUTPUT(matrix,SoMFMatrix,setNum(numOut));
 
@@ -70,15 +83,15 @@ SoComposeMatrix::evaluate()
 
   for (i=0;i<numOut;i++) {
     const SbVec3f translationVal=
-      i<numTranslation?translation[i]:translation[numTranslation-1];
+      i<numTranslation?this->translation[i]:this->translation[numTranslation-1];
     const SbVec3f scaleFactorVal=
-      i<numScaleFactor?scaleFactor[i]:scaleFactor[numScaleFactor-1];
-    const SbVec3f centerVal=i<numCenter?center[i]:center[numCenter-1];
+      i<numScaleFactor?this->scaleFactor[i]:this->scaleFactor[numScaleFactor-1];
+    const SbVec3f centerVal=i<numCenter?this->center[i]:this->center[numCenter-1];
     const SbRotation rotationVal=
-      i<numRotation?rotation[i]:rotation[numRotation-1];
+      i<numRotation?this->rotation[i]:this->rotation[numRotation-1];
     const SbRotation scaleOrientationVal=
       i<numScaleOrientation?
-      scaleOrientation[i]:scaleOrientation[numScaleOrientation-1];
+      this->scaleOrientation[i]:this->scaleOrientation[numScaleOrientation-1];
 
     SbMatrix mat;
     mat.setTransform(translationVal,rotationVal,scaleFactorVal,

@@ -17,11 +17,22 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoTriggerAny SoTriggerAny.h Inventor/engines/SoTriggerAny.h
+  \brief The SoTriggerAny class is a fan-in engine for triggers.
+  \ingroup engines
+
+  FIXME: doc
+*/
+
 #include <Inventor/engines/SoTriggerAny.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 
 SO_ENGINE_SOURCE(SoTriggerAny);
 
+/*!
+  Default constructor.
+*/
 SoTriggerAny::SoTriggerAny()
 {
   SO_ENGINE_CONSTRUCTOR(SoTriggerAny);
@@ -40,6 +51,7 @@ SoTriggerAny::SoTriggerAny()
   SO_ENGINE_ADD_OUTPUT(output,SoSFTrigger);
 }
 
+// overloaded from parent
 void
 SoTriggerAny::initClass()
 {
@@ -53,7 +65,9 @@ SoTriggerAny::~SoTriggerAny()
 {
 }
 
+// overloaded from parent
 void
 SoTriggerAny::evaluate()
 {
+  // FIXME: there should probably be some code here :) pederb, 20000309
 }

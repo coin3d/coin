@@ -17,6 +17,14 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoSelectOne SoSelectOne.h Inventor/engines/SoSelectOne.h
+  \brief The SoSelectOne class is used to select one value from a set of values.
+  \ingroup engines
+
+  FIXME: doc
+*/
+
 #include <Inventor/engines/SoSelectOne.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/engines/SoEngineOutput.h>
@@ -24,6 +32,9 @@
 
 SO_ENGINE_ABSTRACT_SOURCE(SoSelectOne);
 
+/*!
+  Constructor. Sets the type of values to be selected.
+*/
 SoSelectOne::SoSelectOne(SoType inputType)
 {
   SO_ENGINE_CONSTRUCTOR(SoSelectOne);
@@ -70,9 +81,12 @@ SoSelectOne::SoSelectOne(SoType inputType)
   this->output=new SoEngineOutput;
   this->output->setType(outputType);
   this->output->setContainer(this);
-  this->outputList->append(this->output);
+
+  // FIXME: ivestigate whether output should be added to outputdata somehow
+  // pederb, 20000309
 }
 
+// overloaded from parent
 void
 SoSelectOne::initClass()
 {
@@ -88,6 +102,7 @@ SoSelectOne::~SoSelectOne()
   delete this->output;
 }
 
+// overloaded from parent
 void
 SoSelectOne::evaluate()
 {

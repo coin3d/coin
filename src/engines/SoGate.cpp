@@ -17,6 +17,14 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoGate SoGate.h Inventor/engines/SoGate.h
+  \brief The SoGate class is used to selectively copy values from input to output.
+  \ingroup engines
+
+  FIXME: doc
+*/
+
 #include <Inventor/engines/SoGate.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/engines/SoEngineOutput.h>
@@ -25,7 +33,9 @@
 
 SO_ENGINE_ABSTRACT_SOURCE(SoGate);
 
-
+/*!
+  Default constructor.
+*/
 SoGate::SoGate(SoType inputType)
 {
   SO_ENGINE_CONSTRUCTOR(SoGate);
@@ -38,9 +48,12 @@ SoGate::SoGate(SoType inputType)
   this->output=new SoEngineOutput;
   this->output->setType(inputType);
   this->output->setContainer(this);
+#if 0 // FIXME: old kintel code. reimplement. pederb, 20000309
   this->outputList->append(this->output);
+#endif
 }
 
+// overloaded from parent
 void
 SoGate::initClass()
 {
@@ -56,6 +69,7 @@ SoGate::~SoGate()
   delete this->output;
 }
 
+// overloaded from parent
 void
 SoGate::evaluate()
 {
@@ -65,6 +79,7 @@ SoGate::evaluate()
   SO_ENGINE_OUTPUT((*output),SoField,set(valueString.getString()));
 }
 
+// overloaded from parent
 void
 SoGate::inputChanged(SoField *which)
 {

@@ -17,11 +17,22 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoDecomposeVec3f SoDecomposeVec3f.h Inventor/engines/SoDecomposeVec3f.h
+  \brief The SoDecomposeVec3f class is used to decompose 3D vectors into three floats.
+  \ingroup engines
+
+  FIXME: doc
+*/
+
 #include <Inventor/engines/SoDecomposeVec3f.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 
 SO_ENGINE_SOURCE(SoDecomposeVec3f);
 
+/*!
+  Default constructor.
+*/
 SoDecomposeVec3f::SoDecomposeVec3f()
 {
   SO_ENGINE_CONSTRUCTOR(SoDecomposeVec3f);
@@ -33,6 +44,7 @@ SoDecomposeVec3f::SoDecomposeVec3f()
   SO_ENGINE_ADD_OUTPUT(z,SoMFFloat);
 }
 
+// overloaded from parent
 void
 SoDecomposeVec3f::initClass()
 {
@@ -46,17 +58,18 @@ SoDecomposeVec3f::~SoDecomposeVec3f()
 {
 }
 
+// overloaded from parent
 void
 SoDecomposeVec3f::evaluate()
 {
-  int num=vector.getNum();
+  int num = this->vector.getNum();
 
   SO_ENGINE_OUTPUT(x,SoMFFloat,setNum(num));
   SO_ENGINE_OUTPUT(y,SoMFFloat,setNum(num));
   SO_ENGINE_OUTPUT(z,SoMFFloat,setNum(num));
 
   int i;
-  for (i=0;i<num;i++) {
+  for (i = 0; i < num; i++) {
     SO_ENGINE_OUTPUT(x,SoMFFloat,set1Value(i,vector[i][0]));
     SO_ENGINE_OUTPUT(y,SoMFFloat,set1Value(i,vector[i][1]));
     SO_ENGINE_OUTPUT(z,SoMFFloat,set1Value(i,vector[i][2]));

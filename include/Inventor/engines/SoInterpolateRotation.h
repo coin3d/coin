@@ -20,17 +20,16 @@
 #ifndef COIN_SOINTERPOLATEROTATION_H
 #define COIN_SOINTERPOLATEROTATION_H
 
-//$ BEGIN TEMPLATE InterpolateHeader(SoInterpolateRotation, SoMFRotation)
 #include <Inventor/engines/SoInterpolateAbs.h>
 #include <Inventor/fields/SoMFRotation.h>
 
 class SoInterpolateRotation : public SoInterpolate {
+  typedef SoInterpolate inherited;
   SO_INTERPOLATE_HEADER(SoInterpolateRotation);
 
 public:
   SoMFRotation input0;
   SoMFRotation input1;
 };
-//$ END TEMPLATE InterpolateHeader
 
 #endif // !COIN_SOINTERPOLATEROTATION_H

@@ -17,22 +17,34 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoComposeVec3f SoComposeVec3f.h Inventor/engines/SoComposeVec3f.h
+  \brief The SoComposeVec3f class is used to compose 3D coordinates from three floats.
+  \ingroup engines
+
+  FIXME: doc
+*/
+
 #include <Inventor/engines/SoComposeVec3f.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 
 SO_ENGINE_SOURCE(SoComposeVec3f);
 
+/*!
+  Default constructor.
+*/
 SoComposeVec3f::SoComposeVec3f()
 {
   SO_ENGINE_CONSTRUCTOR(SoComposeVec3f);
 
-  SO_ENGINE_ADD_INPUT(x,(0.0));
-  SO_ENGINE_ADD_INPUT(y,(0.0));
-  SO_ENGINE_ADD_INPUT(z,(0.0));
+  SO_ENGINE_ADD_INPUT(x,(0.0f));
+  SO_ENGINE_ADD_INPUT(y,(0.0f));
+  SO_ENGINE_ADD_INPUT(z,(0.0f));
 
   SO_ENGINE_ADD_OUTPUT(vector,SoMFVec3f);
 }
 
+// overloaded from parent
 void
 SoComposeVec3f::initClass()
 {
@@ -46,6 +58,7 @@ SoComposeVec3f::~SoComposeVec3f()
 {
 }
 
+// overloaded from parent
 void
 SoComposeVec3f::evaluate()
 {

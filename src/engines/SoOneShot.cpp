@@ -17,6 +17,14 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoOneShot SoOneShot.h Inventor/engines/SoOneShot.h
+  \brief The SoOneShot class is a timer that runs for a configurable time and then stops.
+  \ingroup engines
+
+  FIXME: doc
+*/
+
 #include <Inventor/engines/SoOneShot.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/SoDB.h>
@@ -26,6 +34,9 @@
 
 SO_ENGINE_SOURCE(SoOneShot);
 
+/*!
+  Default constructor.
+*/
 SoOneShot::SoOneShot()
 {
   SO_ENGINE_CONSTRUCTOR(SoOneShot);
@@ -46,6 +57,7 @@ SoOneShot::SoOneShot()
   this->running=FALSE;
 }
 
+// overloaded from parent
 void
 SoOneShot::initClass()
 {
@@ -60,6 +72,7 @@ SoOneShot::~SoOneShot()
 {
 }
 
+// overloaded from parent
 void
 SoOneShot::evaluate()
 {
@@ -94,6 +107,8 @@ SoOneShot::evaluate()
 }
 
 //FIXME: messages (kintel 19990611)
+
+// overloaded from parent
 void
 SoOneShot::inputChanged(SoField *which)
 {

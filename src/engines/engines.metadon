@@ -13,39 +13,40 @@
 # ==
 # HIERARCHY
 # i   SoEngine
-# I       SoBoolOperation
-#         SoCalculator
-# I       SoComposeVec2f
-# I       SoComposeVec3f
-# I       SoComposeVec4f
-# I       SoDecomposeVec2f
-# I       SoDecomposeVec3f
-# I       SoDecomposeVec4f
-# I       SoComposeRotation
+# Id      SoBoolOperation
+# Id      SoCalculator
+# Id      SoComposeVec2f
+# Id      SoComposeVec3f
+# Id      SoComposeVec4f
+# Id      SoDecomposeVec2f
+# Id      SoDecomposeVec3f
+# Id      SoDecomposeVec4f
+# Id      SoComposeRotation
 #         SoComposeRotationFromTo
-# I       SoDecomposeRotation
-# I       SoComposeMatrix
-# I       SoDecomposeMatrix
+# Id      SoDecomposeRotation
+# Id      SoComposeMatrix
+# Id      SoDecomposeMatrix
 #         SoComputeBoundingBox
-# I       SoConcatenate
-# I       SoCounter
-# I       SoElapsedTime
-# i       SoFieldConverter
+# Id      SoConcatenate
+# Id      SoCounter
+# Id      SoElapsedTime
+# ID      SoEngineOutputData
+# id      SoFieldConverter
 # i           SoConvertAll
-# I       SoGate
-# I       SoInterpolate
-# I           SoInterpolateFloat
-# I           SoInterpolateRotation
-# I           SoInterpolateVec2f
-# I           SoInterpolateVec3f
-# I           SoInterpolateVec4f
-# I       SoOnOff
-# i       SoOneShot
-# I       SoSelectOne
-#         SoTimeCounter
+# Id      SoGate
+# ID      SoInterpolate
+# ID          SoInterpolateFloat
+# ID          SoInterpolateRotation
+# ID          SoInterpolateVec2f
+# ID          SoInterpolateVec3f
+# ID          SoInterpolateVec4f
+# Id      SoOnOff
+# id      SoOneShot
+# Id      SoSelectOne
+#  d      SoTimeCounter
 #         SoTransformVec3f
-# I       SoTriggerAny
-# i   SoEngineOutput
+# Id      SoTriggerAny
+# id  SoEngineOutput
 #     SoUnknownEngine
 #
 #############################################################################

@@ -244,12 +244,15 @@ SoConvertAll::SoConvertAll(const SoType fType,const SoType tType)
   SO_ENGINE_CONSTRUCTOR(SoConvertAll);
 
   this->input=(SoField *)fType.createInstance();
+
   //FIXME: ?
   //  this->input->setValue defaultValue;
   this->input->setContainer(this);
   this->output.setType(tType);
   this->output.setContainer(this);
-  this->outputList->append(&this->output);
+
+  // FIXME: investigate if output should be added to the SoEngineOutputData list.
+  // pederb, 20000309
 
   this->fromType=fType;
   this->toType=tType;

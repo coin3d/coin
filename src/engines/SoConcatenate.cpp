@@ -17,14 +17,23 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoConcatenate SoConcatenate.h Inventor/engines/SoConcatenate.h
+  \brief The SoConcatenate class is used to concatenate several inputs into one output.
+  \ingroup engines
+
+  FIXME: doc
+*/
+
 #include <Inventor/engines/SoConcatenate.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/SbString.h>
 
-
 SO_ENGINE_ABSTRACT_SOURCE(SoConcatenate);
 
-
+/*!
+  Default constructor.
+*/
 SoConcatenate::SoConcatenate(SoType inputType)
 {
   SO_ENGINE_CONSTRUCTOR(SoConcatenate);
@@ -33,13 +42,17 @@ SoConcatenate::SoConcatenate(SoType inputType)
     this->input[i]=(SoMField *)inputType.createInstance();
 
 
-  this->output=new SoEngineOutput;
+  this->output = new SoEngineOutput;
   //FIXME: Use ADD_OUTPUT instead? (SoMField) kintel.
   this->output->setType(inputType);
   this->output->setContainer(this);
+
+#if 0 // old kintel code. will not work any more FIXME: reimplement
   this->outputList->append(this->output);
+#endif // 0
 }
 
+// overloaded from parent
 void
 SoConcatenate::initClass()
 {
@@ -51,22 +64,27 @@ SoConcatenate::initClass()
 //
 SoConcatenate::~SoConcatenate()
 {
+  delete this->output;
 }
 
+// overloaded from parent
 void
 SoConcatenate::evaluate()
 {
-  int n=0,i,j;
+  int n = 0, i, j;
   SbString value;
 
-  for (i=0;i<10;i++)
-    n+=this->input[i]->getNum();
+  for (i = 0; i < 10; i++)
+    n += this->input[i]->getNum();
+
   SO_ENGINE_OUTPUT((*output),SoMField,setNum(n));
 
-  n=0;
-  for (i=0;i<10;i++)
-    for (j=0;j<this->input[i]->getNum();j++) {
-      this->input[i]->get1(j,value);
-      SO_ENGINE_OUTPUT((*output),SoMField,set1(n++,value.getString()));
+  n = 0;
+  for (i = 0; i < 10; i++) {
+    for (j = 0; j < this->input[i]->getNum(); j++) {
+      this->input[i]->get1(j, value);
+      SO_ENGINE_OUTPUT((*output), SoMField, set1(n, value.getString()));
+      n++;
     }
+  }
 }

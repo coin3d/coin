@@ -17,12 +17,24 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoBoolOperation SoBoolOperation.h Inventor/engines/SoBoolOperation.h
+  \brief The SoBoolOperation class performs boolean operations.
+  \ingroup engines
+
+  FIXME: doc
+*/
+
+
 #include <Inventor/engines/SoBoolOperation.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <assert.h>
 
 SO_ENGINE_SOURCE(SoBoolOperation);
 
+/*!
+  Defalt constructor.
+*/
 SoBoolOperation::SoBoolOperation()
 {
   SO_ENGINE_CONSTRUCTOR(SoBoolOperation);
@@ -35,16 +47,21 @@ SoBoolOperation::SoBoolOperation()
   SO_ENGINE_ADD_OUTPUT(inverse,SoMFBool);
 }
 
+// overloaded from parent
 void
 SoBoolOperation::initClass()
 {
   SO_ENGINE_INTERNAL_INIT_CLASS(SoBoolOperation);
 }
 
+/*!
+  Destructor.
+*/
 SoBoolOperation::~SoBoolOperation()
 {
 }
 
+// overloaded from parent
 void
 SoBoolOperation::evaluate()
 {

@@ -17,6 +17,19 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoInterpolate SoInterpolateAbs.h Inventor/engines/SoInterpolateAbs.h
+  \brief The SoInterpolate class is the base class for all interpolator engines.
+  \ingroup engines
+
+  Interpolators are used to linearly interpolate between two values.
+
+  In Coin, we've chosen to implement all interpolators in separate files. The
+  SoInterpolate.h include file is provided for OIV compatibility only. If
+  you want to be OIV compatible when programming, you should include the
+  SoInterpolate.h, and not the interpolator file(s) you need.
+*/
+
 // FIXME: there is something strange here.. what do we need this file
 // for, isn't SoInterpolate.cpp good enough? 19990406 mortene.
 // SoInterpolate.cpp is not used. This file is names *Abs.cpp as
@@ -27,22 +40,26 @@
 
 SO_ENGINE_ABSTRACT_SOURCE(SoInterpolate);
 
+/*!
+  Default constructor.
+*/
 SoInterpolate::SoInterpolate()
 {
   SO_ENGINE_CONSTRUCTOR(SoInterpolate);
 
-  SO_ENGINE_ADD_INPUT(alpha,(0));
+  SO_ENGINE_ADD_INPUT(alpha,(0.0f));
 }
 
+// overloaded from parent
 void
 SoInterpolate::initClass()
 {
   SO_ENGINE_INTERNAL_INIT_ABSTRACT_CLASS(SoInterpolate);
 }
 
-//
-// private members
-//
+/*!
+  Destructor.
+*/
 SoInterpolate::~SoInterpolate()
 {
 }

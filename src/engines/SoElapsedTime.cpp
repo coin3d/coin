@@ -17,12 +17,23 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoElapsedTime SoElapsedTime.h Inventor/engines/SoElapsedTime.h
+  \brief The SoElapsedTime class is a controllable time source engine.
+  \ingroup engines
+
+  FIXME: doc
+*/
+
 #include <Inventor/engines/SoElapsedTime.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/SoDB.h>
 
 SO_ENGINE_SOURCE(SoElapsedTime);
 
+/*!
+  Default constructor.
+*/
 SoElapsedTime::SoElapsedTime()
 {
   SO_ENGINE_CONSTRUCTOR(SoElapsedTime);
@@ -44,6 +55,7 @@ SoElapsedTime::SoElapsedTime()
   this->firstTime=TRUE;
 }
 
+// overloaded from parent
 void
 SoElapsedTime::initClass()
 {
@@ -58,6 +70,7 @@ SoElapsedTime::~SoElapsedTime()
 {
 }
 
+// overloaded from parent
 void
 SoElapsedTime::evaluate()
 {
@@ -78,6 +91,7 @@ SoElapsedTime::evaluate()
   }
 }
 
+// overloaded from parent
 void
 SoElapsedTime::inputChanged(SoField *which)
 {

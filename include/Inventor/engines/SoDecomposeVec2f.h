@@ -27,6 +27,7 @@
 
 
 class SoDecomposeVec2f : public SoEngine {
+  typedef SoEngine inherited;
   SO_COMPOSE__HEADER(SoDecomposeVec2f);
 
 public:

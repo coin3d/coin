@@ -27,6 +27,8 @@
 
 
 class SoComposeRotation : public SoEngine {
+  typedef SoEngine inherited;
+
   SO_COMPOSE__HEADER(SoComposeRotation);
 
 public:

@@ -28,6 +28,8 @@
 
 
 class SoComposeMatrix : public SoEngine {
+  typedef SoEngine inherited;
+
   SO_COMPOSE__HEADER(SoComposeMatrix);
 
 public:

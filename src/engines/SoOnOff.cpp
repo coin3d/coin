@@ -17,12 +17,23 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoOnOff SoOnOff.h Inventor/engines/SoOnOff.h
+  \brief The SoOnOff class is an on/off switch engine.
+  \ingroup engines
+
+  FIXME: doc
+*/
+
 #include <Inventor/engines/SoOnOff.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/fields/SoSFBool.h>
 
 SO_ENGINE_SOURCE(SoOnOff);
 
+/*!
+  Default constructor.
+*/
 SoOnOff::SoOnOff()
 {
   SO_ENGINE_CONSTRUCTOR(SoOnOff);
@@ -37,6 +48,7 @@ SoOnOff::SoOnOff()
   state=FALSE;
 }
 
+// overloaded from parent.
 void
 SoOnOff::initClass()
 {
@@ -50,6 +62,7 @@ SoOnOff::~SoOnOff()
 {
 }
 
+// overloaded from parent.
 void
 SoOnOff::evaluate()
 {
@@ -57,6 +70,7 @@ SoOnOff::evaluate()
   SO_ENGINE_OUTPUT(isOff,SoSFBool,setValue(!this->state));
 }
 
+// overloaded from parent
 void
 SoOnOff::inputChanged(SoField *which)
 {

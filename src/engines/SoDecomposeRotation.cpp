@@ -17,6 +17,14 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoDecomposeRotation SoDecomposeRotation.h Inventor/engines/SoDecomposeRotation.h
+  \brief The SoDecomposeRotation class is used to decompose a rotation into angle and axis.
+  \ingroup engines
+
+  FIXME: doc
+*/
+
 #include <Inventor/engines/SoDecomposeRotation.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/fields/SoMFVec3f.h>
@@ -24,6 +32,9 @@
 
 SO_ENGINE_SOURCE(SoDecomposeRotation);
 
+/*!
+  Default constructor.
+*/
 SoDecomposeRotation::SoDecomposeRotation()
 {
   SO_ENGINE_CONSTRUCTOR(SoDecomposeRotation);
@@ -34,6 +45,7 @@ SoDecomposeRotation::SoDecomposeRotation()
   SO_ENGINE_ADD_OUTPUT(angle,SoMFFloat);
 }
 
+// overloaded from parent
 void
 SoDecomposeRotation::initClass()
 {
@@ -47,10 +59,11 @@ SoDecomposeRotation::~SoDecomposeRotation()
 {
 }
 
+// overloaded from parent
 void
 SoDecomposeRotation::evaluate()
 {
-  int num=rotation.getNum();
+  int num = this->rotation.getNum();
 
   SO_ENGINE_OUTPUT(axis,SoMFVec3f,setNum(num));
   SO_ENGINE_OUTPUT(angle,SoMFFloat,setNum(num));
@@ -58,8 +71,8 @@ SoDecomposeRotation::evaluate()
   int i;
   float angleVal;
   SbVec3f axisVal;
-  for (i=0;i<num;i++) {
-    rotation[i].getValue(axisVal,angleVal);
+  for (i = 0; i < num; i++) {
+    this->rotation[i].getValue(axisVal,angleVal);
     SO_ENGINE_OUTPUT(axis,SoMFVec3f,set1Value(i,axisVal));
     SO_ENGINE_OUTPUT(angle,SoMFFloat,set1Value(i,angleVal));
   }

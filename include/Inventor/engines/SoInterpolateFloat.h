@@ -20,17 +20,16 @@
 #ifndef COIN_SOINTERPOLATEFLOAT_H
 #define COIN_SOINTERPOLATEFLOAT_H
 
-//$ BEGIN TEMPLATE InterpolateHeader(SoInterpolateFloat, SoMFFloat)
 #include <Inventor/engines/SoInterpolateAbs.h>
 #include <Inventor/fields/SoMFFloat.h>
 
 class SoInterpolateFloat : public SoInterpolate {
+  typedef SoInterpolate inherited;
   SO_INTERPOLATE_HEADER(SoInterpolateFloat);
 
 public:
   SoMFFloat input0;
   SoMFFloat input1;
 };
-//$ END TEMPLATE InterpolateHeader
 
 #endif // !COIN_SOINTERPOLATEFLOAT_H

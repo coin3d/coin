@@ -26,6 +26,7 @@
 
 
 class SoDecomposeMatrix : public SoEngine {
+  typedef SoEngine inherited;
   SO_COMPOSE__HEADER(SoDecomposeMatrix);
 
 public:
