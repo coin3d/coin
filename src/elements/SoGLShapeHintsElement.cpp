@@ -271,19 +271,19 @@ SoGLShapeHintsElement::forceSend(const SbBool ccw, const SbBool cull,
 void 
 SoGLShapeHintsElement::updategl(const unsigned int flags)
 {
-  unsigned int xor = flags ^ this->glflags;
-  if (xor == 0) return; // quick return if equal
+  unsigned int changed = flags ^ this->glflags;
+  if (changed == 0) return; // quick return if equal
   
   this->glflags = flags;
 
-  if (xor & SOSH_CCW) {
+  if (changed & SOSH_CCW) {
     flags & SOSH_CCW ? glFrontFace(GL_CCW) : glFrontFace(GL_CW);
   }
-  if (xor & SOSH_TWOSIDE) {
+  if (changed & SOSH_TWOSIDE) {
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, 
 		  flags & SOSH_TWOSIDE ? GL_TRUE : GL_FALSE); 
   }
-  if (xor & SOSH_CULL) {
+  if (changed & SOSH_CULL) {
     flags & SOSH_CULL ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
   }
 }

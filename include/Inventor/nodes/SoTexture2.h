@@ -49,13 +49,13 @@ public:
   enum Model {
     MODULATE,
     DECAL,
-    BLEND,
+    BLEND
   };
 
   // Definition must match 100% with the enum in SoTextureImageElement.
   enum Wrap {
     REPEAT,
-    CLAMP,
+    CLAMP
   };
   
   SoSFString filename; 

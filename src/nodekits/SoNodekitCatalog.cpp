@@ -36,6 +36,7 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+#include <stdio.h> // fprintf()
 
 
 // Private container class.

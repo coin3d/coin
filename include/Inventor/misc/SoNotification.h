@@ -34,7 +34,7 @@ public:
     SENSOR,
     FIELD,
     ENGINE,
-    INTERP,
+    INTERP
   };
 
   SoNotRec(SoBase * const base);

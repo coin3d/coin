@@ -110,14 +110,16 @@ SbTime::getTimeOfDay(void)
   tmp.tv_sec = timebuffer.time;
   tmp.tv_usec = timebuffer.millitm * 1000; // FIXME: low accuracy */
 #else // ! _WIN32
-  int result = gettimeofday(&tmp, NULL);
 
 #if COIN_DEBUG
+  int result = gettimeofday(&tmp, NULL);
   if (result < 0)
     SoDebugError::postWarning("SbTime::getTimeOfDay",
 			      "Something went wrong (invalid timezone "
 			      "setting?). Result is undefined.");
-#endif // COIN_DEBUG
+#else // ! COIN_DEBUG
+  gettimeofday(&tmp, NULL);
+#endif // ! COIN_DEBUG
 #endif // ! _WIN32  
   return SbTime(&tmp);
 }

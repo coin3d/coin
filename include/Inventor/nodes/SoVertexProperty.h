@@ -49,7 +49,7 @@ public:
     PER_FACE,
     PER_FACE_INDEXED,
     PER_VERTEX,
-    PER_VERTEX_INDEXED,
+    PER_VERTEX_INDEXED
   };
 
   SoMFVec3f vertex;

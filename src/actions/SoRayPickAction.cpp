@@ -387,13 +387,13 @@ SoRayPickAction::computeWorldSpaceRay()
     this->wsLine = SbLine(this->rayStart, 
 			  this->rayStart + this->rayDirection);
     
-#if 1 // debug
+#if COIN_DEBUG
     SoDebugError::postInfo("SoRayPickAction::computeWorldSpaceRay",
 			   "%f %f %f",
 			   radiusInPixels,
 			   rayRadiusStart,
 			   rayRadiusDelta);
-#endif // debug
+#endif // COIN_DEBUG
     
     
     // shortest distance from origin to plane

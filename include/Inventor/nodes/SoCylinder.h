@@ -44,7 +44,7 @@ public:
     SIDES = 1,
     TOP = 2,
     BOTTOM = 4,
-    ALL = 7,
+    ALL = 7
   };
   
   SoSFFloat radius;

@@ -65,7 +65,7 @@ public:
     TEXGEN = 0,
     EXPLICIT = 1,
     FUNCTION = 2,
-    DEFAULT = 3,
+    DEFAULT = 3
   };
 
   virtual void init(SoState * state);

@@ -46,13 +46,13 @@ public:
     FRONT = 1,
     SIDES = 2,
     BACK = 4,
-    ALL = 7,
+    ALL = 7
   };
 
   enum Justification {
     LEFT = 1,
     RIGHT,
-    CENTER,
+    CENTER
   };
   
   SoMFString string;

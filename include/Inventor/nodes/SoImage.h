@@ -45,13 +45,13 @@ public:
   enum VertAlignment {
     BOTTOM,
     HALF,
-    TOP,
+    TOP
   };
   
   enum HorAlignment {
     LEFT,
     CENTER,
-    RIGHT,
+    RIGHT
   };
   
   SoSFInt32 width;

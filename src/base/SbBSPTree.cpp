@@ -63,7 +63,7 @@ private:
     DIM_YZ = 0,
     DIM_XZ = 1,
     DIM_XY = 2,
-    DIM_NONE,
+    DIM_NONE
   };
   
   coin_bspnode *left;

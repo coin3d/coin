@@ -42,7 +42,7 @@ public:
   // These must be bit flags.
   enum ResetType {
     TRANSFORM = 0x01,
-    BBOX = 0x02,
+    BBOX = 0x02
   };
 
   SoSFBitMask whatToReset;

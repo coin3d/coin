@@ -45,7 +45,7 @@ public:
   enum Justification {
     LEFT = 1,
     RIGHT,
-    CENTER,
+    CENTER
   };
   
   SoMFString string;

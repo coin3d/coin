@@ -55,7 +55,7 @@ public:
     POINTS,
     YARDS,
     MILES,
-    NAUTICAL_MILES,
+    NAUTICAL_MILES
   };
 
   SoSFEnum units;

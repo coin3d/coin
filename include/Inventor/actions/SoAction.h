@@ -103,14 +103,14 @@ public:
   
   enum AppliedCode { NODE       = 0,
 		     PATH       = 1,
-		     PATH_LIST  = 2,
+		     PATH_LIST  = 2
   };
   
   enum PathCode {
     NO_PATH       = 0,
     IN_PATH       = 1,
     BELOW_PATH    = 2,
-    OFF_PATH      = 3,
+    OFF_PATH      = 3
   };
 
   static void nullAction(SoAction * action, SoNode * node);

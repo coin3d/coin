@@ -44,19 +44,19 @@ public:
   enum VertexOrdering {
     UNKNOWN_ORDERING,
     CLOCKWISE,
-    COUNTERCLOCKWISE,
+    COUNTERCLOCKWISE
   };
 
   // These must match 100% with the enum in SoShapeHintsElement.
   enum ShapeType {
     UNKNOWN_SHAPE_TYPE,
-    SOLID,
+    SOLID
   };
   
   // These must match 100% with the enum in SoShapeHintsElement.
   enum FaceType {
     UNKNOWN_FACE_TYPE,
-    CONVEX,
+    CONVEX
   };
 
   SoSFEnum vertexOrdering;

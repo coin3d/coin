@@ -70,7 +70,7 @@ public:
     SORTED_OBJECT_ADD,
     BLEND,            
     DELAYED_BLEND,    
-    SORTED_OBJECT_BLEND,
+    SORTED_OBJECT_BLEND
   };
   
   enum AbortCode {
