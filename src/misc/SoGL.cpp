@@ -1738,26 +1738,15 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                           const int numcoordindex, const int32_t * coordindex,
                           const int numtexcoordindex, const int32_t * texcoordindex)
 {
-  if (GLUWrapper()->available == 0) {
-    // Should never get here if the NURBS functionality is missing.
-    assert(FALSE && "Function sogl_render_nurbs_surface() is de-funct.");
-  }
+  // Should never get this far if the NURBS functionality is missing.
+  assert(GLUWrapper()->available && "NURBS functionality is missing");
 
-  if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0) == 0 &&
-      // We use GLU_NURBS_TESSELLATOR further down in the function if
-      // glrender==FALSE (i.e. on callback actions were we want to get
-      // the polygons), and this is not supported before GLU v1.3.
-      !glrender) {
-#if COIN_DEBUG
-    static int first = 1;
-    if (first) {
-      SoDebugError::postInfo("sogl_render_nurbs_surface",
-                             "NURBS tessellator requires GLU 1.3.");
-      first = 0;
-    }
-#endif // COIN_DEBUG
-    return;
-  }
+  // We use GLU_NURBS_TESSELLATOR further down in the function if
+  // glrender==FALSE (i.e. on callback actions were we want to get the
+  // polygons), and this is not supported before GLU v1.3.
+  assert((glrender ||
+          (!glrender && GLUWrapper()->versionMatchesAtLeast(1, 3, 0))) &&
+         "NURBS tessellator requires GLU 1.3.");
 
   SoState * state = action->getState();
 
@@ -2018,26 +2007,15 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
                         const SbBool drawaspoints,
                         const int numcoordindex, const int32_t * coordindex)
 {
-  if (GLUWrapper()->available == 0) {
-    // Should never get here if the NURBS functionality is missing.
-    assert(FALSE && "Function sogl_render_nurbs_curve() is de-funct.");
-  }
+  // Should never get this far if the NURBS functionality is missing.
+  assert(GLUWrapper()->available && "NURBS functionality is missing");
 
-  if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0) == 0 &&
-      // We use GLU_NURBS_TESSELLATOR further down in the function if
-      // glrender==FALSE (i.e. on callback actions were we want to get
-      // the polygons), and this is not supported before GLU v1.3.
-      !glrender) {
-#if COIN_DEBUG
-    static int first = 1;
-    if (first) {
-      SoDebugError::postInfo("sogl_render_nurbs_curve",
-                             "NURBS tessellator requires GLU 1.3.");
-      first = 0;
-    }
-#endif // COIN_DEBUG
-    return;
-  }
+  // We use GLU_NURBS_TESSELLATOR further down in the function if
+  // glrender==FALSE (i.e. on callback actions were we want to get the
+  // polygons), and this is not supported before GLU v1.3.
+  assert((glrender ||
+          (!glrender && GLUWrapper()->versionMatchesAtLeast(1, 3, 0))) &&
+         "NURBS tessellator requires GLU 1.3.");
 
   SoState * state = action->getState();
 
