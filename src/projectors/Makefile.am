@@ -80,4 +80,17 @@ projectors.lst: Makefile $(projectors_lst_OBJECTS)
 	$(CC) /LST:projectors.lst \
 	  $(projectors_lst_OBJECTS);
 
+install-libprojectorsincHEADERS: $(libprojectorsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libprojectorsincdir)
+	@list='$(libprojectorsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libprojectorsincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
+
 ##$ END TEMPLATE Make-Common

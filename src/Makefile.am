@@ -1,4 +1,10 @@
-## Process this file with automake to generate Makefile.in.
+# **************************************************************************
+# Process this file with automake to generate Makefile.in.
+
+SUBDIRS = \
+	VRMLnodes actions base bundles caches details draggers elements \
+	engines errors events fields manips misc lists nodekits nodes \
+	projectors sensors .
 
 if BUILD_WITH_MSVC
 lib_LIBRARIES = coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
@@ -8,17 +14,6 @@ endif
 
 if HACKING_DYNAMIC_MODULES
 libCoin@SUFFIX@_la_LIBADD = 
-coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = 
-else
-if BUILD_WITH_MSVC
-coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
-	VRMLnodes/VRMLnodes.lst actions/actions.lst base/base.lst \
-	bundles/bundles.lst caches/caches.lst elements/elements.lst \
-	engines/engines.lst errors/errors.lst events/events.lst \
-	fields/fields.lst misc/misc.lst lists/lists.lst \
-	nodekits/nodekits.lst nodes/nodes.lst projectors/projectors.lst \
-	sensors/sensors.lst details/details.lst draggers/draggers.lst \
-	manips/manips.lst
 else
 libCoin@SUFFIX@_la_LIBADD = \
 	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libbase.la \
@@ -29,20 +24,21 @@ libCoin@SUFFIX@_la_LIBADD = \
 	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
 	manips/libmanips.la
 endif
-endif
 
-SUBDIRS = \
-	VRMLnodes actions base bundles caches details draggers elements \
-	engines errors events fields manips misc lists nodekits nodes \
-	projectors sensors .
-
-if BUILD_WITH_MSVC
-coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
-	snprintf.c snprintf.h
-else
 libCoin@SUFFIX@_la_SOURCES = \
 	snprintf.c snprintf.h
-endif
+
+coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
+	VRMLnodes/VRMLnodes.lst actions/actions.lst base/base.lst \
+	bundles/bundles.lst caches/caches.lst elements/elements.lst \
+	engines/engines.lst errors/errors.lst events/events.lst \
+	fields/fields.lst misc/misc.lst lists/lists.lst \
+	nodekits/nodekits.lst nodes/nodes.lst projectors/projectors.lst \
+	sensors/sensors.lst details/details.lst draggers/draggers.lst \
+	manips/manips.lst
+
+coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
+	snprintf.c snprintf.h
 
 ## Installation information.
 
@@ -50,10 +46,9 @@ libCoin@SUFFIX@_la_LDFLAGS = \
 	-no-undefined \
         -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 
-# coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LDFLAGS =
-
-libCoin@SUFFIX@incdir = $(includedir)/Inventor
-libCoin@SUFFIX@inc_HEADERS = \
+# header installation
+libCoinincdir = $(includedir)/Inventor
+libCoininc_HEADERS = \
 	$(top_srcdir)/include/Inventor/SbPList.h \
 	$(top_srcdir)/include/Inventor/So.h \
 	$(top_srcdir)/include/Inventor/SoDB.h \
@@ -100,13 +95,10 @@ libCoin@SUFFIX@inc_HEADERS = \
 	$(top_srcdir)/include/Inventor/SbViewportRegion.h \
 	$(top_srcdir)/include/Inventor/SbXfBox3f.h
 
-#### Additional "native" Make rules #########################################
+# **************************************************************************
 
-## Rule for creating a Windows library.
+# Custom rule for linking a Visual C++ (MS Windows) library.
 
-if BUILD_WITH_MSVC
-# this rule causes an "override" warning, so we remove the rule when it is
-# not needed
 coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile \
   $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
   $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES)
@@ -119,9 +111,21 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile \
 	$(CC) $(LDFLAGS) $(LIBFLAGS) \
 	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
 	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS);
-endif
 
 # **************************************************************************
+
+install-libCoinincHEADERS: $(libCoininc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
+	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libCoinincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 install-exec-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \

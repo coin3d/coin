@@ -71,4 +71,17 @@ caches.lst: Makefile $(caches_lst_OBJECTS)
 	$(CC) /LST:caches.lst \
 	  $(caches_lst_OBJECTS);
 
+install-libcachesincHEADERS: $(libcachesinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libcachesincdir)
+	@list='$(libcachesinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libcachesincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
+
 ##$ END TEMPLATE Make-Common

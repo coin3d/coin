@@ -146,4 +146,17 @@ engines.lst: Makefile $(engines_lst_OBJECTS)
 	$(CC) /LST:engines.lst \
 	  $(engines_lst_OBJECTS);
 
+install-libenginesincHEADERS: $(libenginesinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libenginesincdir)
+	@list='$(libenginesinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libenginesincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
+
 ##$ END TEMPLATE Make-Common

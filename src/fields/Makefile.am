@@ -164,4 +164,17 @@ fields.lst: Makefile $(fields_lst_OBJECTS)
 	$(CC) /LST:fields.lst \
 	  $(fields_lst_OBJECTS);
 
+install-libfieldsincHEADERS: $(libfieldsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libfieldsincdir)
+	@list='$(libfieldsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libfieldsincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
+
 ##$ END TEMPLATE Make-Common

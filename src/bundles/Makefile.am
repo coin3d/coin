@@ -63,4 +63,17 @@ bundles.lst: Makefile $(bundles_lst_OBJECTS)
 	$(CC) /LST:bundles.lst \
 	  $(bundles_lst_OBJECTS);
 
+install-libbundlesincHEADERS: $(libbundlesinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libbundlesincdir)
+	@list='$(libbundlesinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libbundlesincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
+
 ##$ END TEMPLATE Make-Common

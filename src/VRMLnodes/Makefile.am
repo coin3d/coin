@@ -63,4 +63,17 @@ VRMLnodes.lst: Makefile $(VRMLnodes_lst_OBJECTS)
 	$(CC) /LST:VRMLnodes.lst \
 	  $(VRMLnodes_lst_OBJECTS);
 
+install-libVRMLnodesincHEADERS: $(libVRMLnodesinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libVRMLnodesincdir)
+	@list='$(libVRMLnodesinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libVRMLnodesincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
+
 ##$ END TEMPLATE Make-Common

@@ -48,3 +48,16 @@ EXTRA_-xxx-_lst_SOURCES = \
 	$(CC) /LST:-xxx-.lst \
 	  $(-xxx-_lst_OBJECTS);
 
+install-lib-xxx-incHEADERS: $(lib-xxx-inc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(lib-xxx-incdir)
+	@list='$(lib-xxx-inc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(lib-xxx-incdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
+
