@@ -31,7 +31,7 @@
 */
 
 #ifndef COIN_INTERNAL
-#error Only for internal use during library build.
+#error this is a private header file
 #endif /* !COIN_INTERNAL */
 
 #ifdef HAVE_CONFIG_H

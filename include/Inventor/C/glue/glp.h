@@ -25,7 +25,7 @@
 \**************************************************************************/
 
 #ifndef COIN_INTERNAL
-#error You have tried to use one of the private Coin header files
+#error this is a private header file
 #endif /* ! COIN_INTERNAL */
 
 /* NOTE: do *not* include this header file outside of the gl.c OpenGL
