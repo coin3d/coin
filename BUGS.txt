@@ -1433,3 +1433,27 @@
     ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
 
     20021209 rolvs
+
+=====================================================================
+
+046 Should interrupt attempts at 3D-texturing early when OpenGL can't
+    do it.
+
+    Kristofer Tingdahl reported on coin-discuss that attempts to use
+    3D-texturing on a non-3D-texture capable platform (for instance on
+    remote/indirect rendering -- see code comments near top of
+    Coin/src/glue/gl.c) causes weird errors, like 3D-textures being
+    rescaled to 0x0x1.
+
+    The rescaling happens from within SoGLImage.cpp, but attempts at
+    3D-texturing should be checked versus driver capabilities much
+    earlier (in SoTexture3, perhaps?) so that the rescaling code never
+    gets executed.
+
+    If 3D-textures are attempted used but are not available, there
+    should be an *elaborate* SoDebugError::postWarning() that explains
+    why.
+
+    20021217 mortene.
+
+=====================================================================
