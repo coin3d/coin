@@ -54,7 +54,7 @@
   \defgroup nodekits Node Kits
 */
 /*!
-  \defgroup lists List classes
+  \defgroup lists List containers
 */
 /*!
   \defgroup vrml2 VRML 2.0
@@ -67,6 +67,9 @@
 */
 /*!
   \defgroup manips Manipulators
+*/
+/*!
+  \defgroup engines Engine classes
 */
 
 

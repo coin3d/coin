@@ -12,27 +12,27 @@
 # ==
 # HIERARCHY
 # ID  SbList
-# ID  SbPList
-#         SbVec3fList 
-#         SoAuditorList 
-#         SbIntList
-# I       SbStringList
-#         SoActionMethodList
-# I       SoBaseList
-# I           SoEngineList
-# I           SoNodeList
-#                 SoChildList
-#             SoPathList
-#             SoVRMLInterpList
-# I       SoDetailList
-# ID      SoEngineOutputList
-# ID      SoVRMLInterpOutputList
-# I       SoFieldList
-# I       SoPickedPointList
-#         SoRenderObjectList
+# ID      SbPList
+#             SbVec3fList 
+#             SoAuditorList 
+#             SbIntList
+# I           SbStringList
+#             SoActionMethodList
+# I           SoBaseList
+# I               SoEngineList
+# I               SoNodeList
+#                     SoChildList
+#                 SoPathList
+#                 SoVRMLInterpList
+# I           SoDetailList
+# ID          SoEngineOutputList
+# ID          SoVRMLInterpOutputList
+# I           SoFieldList
+# I           SoPickedPointList
+#             SoRenderObjectList
+#             SoVRMLEXTERNPROTOFieldList 
+#             SoVRMLPROTOFieldList 
 # I       SoTypeList
-#         SoVRMLEXTERNPROTOFieldList 
-#         SoVRMLPROTOFieldList 
 # I   SoCallbackList
 #     SoEnabledElementsList
 #     SoCompactPathList

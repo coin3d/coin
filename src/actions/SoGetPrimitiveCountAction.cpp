@@ -123,8 +123,6 @@ SoGetPrimitiveCountAction::initClass(void)
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
   methods = new SoActionMethodList(inherited::methods);
 //$ END TEMPLATE InitActionSource
-
-  methods->setDefault((void *)SoNode::getPrimitiveCountS);
 }
 
 // *************************************************************************

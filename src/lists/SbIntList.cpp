@@ -24,14 +24,15 @@
   See class SbPList, from which SbIntList is derived.
 */
 
+#include <stddef.h> // NULL
 #include <Inventor/lists/SbIntList.h>
 
 /*!
   A constructor.
 */
 
-SbIntList::SbIntList(const int initSize):
-  SbPList(initSize)
+SbIntList::SbIntList(const int initSize)
+  : SbPList(initSize)
 {
 }
 
@@ -39,8 +40,8 @@ SbIntList::SbIntList(const int initSize):
   A constructor.
 */
 
-SbIntList::SbIntList(const SbIntList & list):
-  SbPList((SbPList &)list)
+SbIntList::SbIntList(const SbIntList & list)
+  : SbPList((SbPList &)list)
 {
 }
 
@@ -145,7 +146,8 @@ SbIntList::set(const int index, int integer)
 
 SbIntList::operator int * (void)
 {
-  return (int *)this->itemBuffer;
+  void * ptr = (*this);
+  return (int *)ptr;
 }
 
 /*!
@@ -157,5 +159,6 @@ SbIntList::operator int * (void)
 
 SbIntList::operator const int * (void) const
 {
-  return (const int *) this->itemBuffer;
+  const void * ptr = (*this);
+  return (const int *)ptr;
 }

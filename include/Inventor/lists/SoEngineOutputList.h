@@ -32,10 +32,10 @@ public:
   SoEngineOutputList(void);
   SoEngineOutputList(const int size);
   SoEngineOutputList(const SoEngineOutputList & l);
-  ~SoEngineOutputList(void);
+  ~SoEngineOutputList();
 
   void append(SoEngineOutput * const ptr);
-  void insert(SoEngineOutput * const ptr, const int addBefore);
+  void insert(SoEngineOutput * const ptr, const int addbefore);
   void set(const int i, SoEngineOutput * const ptr);
   SoEngineOutput * operator [](const int i) const;
 };

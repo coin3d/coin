@@ -30,10 +30,18 @@
 
   Care has been taken to make sure the list classes which are part of
   the Open Inventor API to still be compatible with their original
-  interfaces derived from the SbPList base class. If you still bump
-  into any problems when porting your Open Inventor applications, let
-  us know and we'll do our best to sort them out.
+  interfaces, as derived from the SbPList base class. But if you still
+  bump into any problems when porting your Open Inventor applications,
+  let us know and we'll do our best to sort them out.
 
+  A feature with this class is that the list object arrays grow
+  dynamically as you append() more items to the list.  The actual
+  growing technique used is to double the list size when it becomes
+  too small.
+
+  There are also other array-related convenience methods; e.g. finding
+  item indices, inserting items at any position, removing items (and
+  shrink the array), copying of arrays, etc.
 
   \sa SbPList
 */
@@ -41,17 +49,18 @@
 #include <Inventor/lists/SbList.h>
 
 /*!
-  \fn SbList<Type>::SbList(const int initsize)
+  \fn SbList<Type>::SbList(const int sizehint)
 
   Default constructor.
 
-  The \a initsize argument hints about how many elements the list will
+  The \a sizehint argument hints about how many elements the list will
   contain, so memory allocation can be done efficiently.
 
-  Important note: explicitly specifying an \a initsize value does \c
-  not mean that the list will initially contain this number of
-  values. Here's a good example on how to give yourself hard to find
-  bugs:
+  Important note: explicitly specifying an \a sizehint value does \e
+  not mean that the list will initially contain this number of values.
+  After construction, the list will contain zero items, just as for
+  the default constructor. Here's a good example on how to give
+  yourself hard to find bugs:
 
   \code
   SbList<SbBool> flags(2); // Assume we need only 2 elements. Note
@@ -60,15 +69,18 @@
   \endcode
 
   Since this conceptual misunderstanding is so easy to make, you're
-  probably better (or at least safer) off leaving the \a initsize
+  probably better (or at least safer) off leaving the \a sizehint
   argument to its default value by not explicitly specifying it.
 
+  It improves performance if you know the approximate total size of
+  the list in advance before adding list elements, as the number of
+  reallocations will be minimized.
  */
 
 /*!
   \fn SbList<Type>::SbList(const SbList<Type> & l)
 
-  Copy constructor.
+  Copy constructor. Creates a complete copy of the given list.
  */
 
 /*!
@@ -92,24 +104,27 @@
 /*!
   \fn void SbList<Type>::fit(void)
 
-  Fit the allocated array exactly around the length of the list.
+  Fit the allocated array exactly around the length of the list,
+  descarding memory spent on unused pre-allocated array cells.
 
-  You should normally not need to call this method, and it is only
-  available for the sake of having the option to optimize memory usage
-  for the unlikely event that you should use a huge SbList list.
+  You should normally not need or want to call this method, and it is
+  only available for the sake of having the option to optimize memory
+  usage for the unlikely event that you should throw around huge
+  SbList objects within your application.
  */
 
 /*!
   \fn void SbList<Type>::append(const Type item)
 
-  Append the \a item at the end of list.
+  Append the \a item at the end of list, expanding the list array by
+  one.
  */
 
 /*!
   \fn int SbList<Type>::find(const Type item) const
 
-  Return index of \a item in the list, or -1 if \a item is not
-  present.
+  Return index of first occurrence of \a item in the list, or -1 if \a
+  item is not present.
 */
 
 /*!
@@ -193,12 +208,13 @@
 /*!
   \fn SbBool SbList<Type>::operator==(const SbList<Type> & l) const
 
-  Returns \c TRUE if this list and \a l are identical, containing
-  the exact same set of elements.
+  Equality operator. Returns \c TRUE if this list and \a l are
+  identical, containing the exact same set of elements.
 */
 
 /*!
   \fn SbBool SbList<Type>::operator!=(const SbList<Type> & l) const
 
-  Returns \c TRUE if this list and \a l are not equal.
+  Inequality operator. Returns \c TRUE if this list and \a l are not
+  equal.
 */

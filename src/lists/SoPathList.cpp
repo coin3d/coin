@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-2000 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -81,7 +81,7 @@ SoPathList::get(const int index) const
   FIXME: write doc.
 */
 
-inline void 
+inline void
 SoPathList::set(const int index, SoPath * const path)
 {
   SoBaseList::set(index, path);
@@ -92,7 +92,7 @@ SoPathList::set(const int index, SoPath * const path)
 */
 
 //$ EXPORT INLINE
-void 
+void
 SoPathList::append(SoPath * const path)
 {
   SoBaseList::append((SoBase *)path);
@@ -124,7 +124,7 @@ SoPathList::operator =(const SoPathList & l)
   FIXME: write doc.
 */
 
-int 
+int
 SoPathList::findPath(const SoPath & path) const
 {
   int i, n = this->getLength();
@@ -135,12 +135,12 @@ SoPathList::findPath(const SoPath & path) const
 
 }
 
-static int 
+static int
 compare_paths(SoPath *p0, SoPath *p1)
-{  
+{
   int diff = (char*)p0->getHead() - (char*)p1->getHead();
   if (diff != 0) return diff;
-  
+
   int n = SbMin(p0->getLength(), p1->getLength());
   int i;
   for (i = 1; i < n; i++) {
@@ -155,13 +155,14 @@ compare_paths(SoPath *p0, SoPath *p1)
   FIXME: write doc.
 */
 
-void 
+void
 SoPathList::sort()
 {
   int i, j, distance, n = this->getLength();
   SoPath *tmp;
-  SoPath **array = (SoPath**) this->itemBuffer;
-  
+  void ** ptr = (void **)(*this);
+  SoPath ** array = (SoPath **)ptr;
+
   // shell sort algorithm (O(nlog(n))
   for (distance = 1; distance <= n/9; distance = 3*distance + 1);
   for (; distance > 0; distance /= 3) {
@@ -181,7 +182,7 @@ SoPathList::sort()
   List should be sorted first. Removes identical paths and
   paths that go through the tail of another path.
 */
-void 
+void
 SoPathList::uniquify()
 {
   int i, n = this->getLength();
@@ -190,11 +191,11 @@ SoPathList::uniquify()
   for (i = 0; i < n-1; i++) {
     int j = i+1;
     while (compare_paths(this->get(i), this->get(j)) == 0 && j < n) {
-      this->remove(j); 
+      this->remove(j);
       n--;
     }
   }
-  
+
   // remove paths that go through the tail of another path
   for (i = 0; i < n; i++) {
     // got to store path to make sure the path itself is not checked

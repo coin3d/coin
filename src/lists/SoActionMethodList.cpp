@@ -45,7 +45,6 @@
 SoActionMethodList::SoActionMethodList(SoActionMethodList * const parentList)
   : SbPList(0), parent(parentList)
 {
-  this->setDefault(NULL);
 }
 
 /*!
@@ -57,11 +56,11 @@ SoActionMethodList::SoActionMethodList(SoActionMethodList * const parentList)
 SoActionMethod &
 SoActionMethodList::operator [] (const int index)
 {
-#if 0 // OBSOLETED 19991109 pederb,  unreadable code
-  return ((SoActionMethod &)((*(SbPList *)this)[index]));
-#else // new code
+  // Automatically expand list with NULL pointers if index is out of
+  // bounds.
+  while (index >= this->getLength()) this->append(NULL);
+
   return (SoActionMethod&)SbPList::operator[](index);
-#endif // new code
 }
 
 /*!
@@ -71,11 +70,7 @@ SoActionMethodList::operator [] (const int index)
 const SoActionMethod
 SoActionMethodList::operator [] (const int index) const
 {
-#if 0 // OBSOLETED 19991109 pederb,  unreadable code
-  return ((const SoActionMethod)((*(const SbPList *)this)[index]));
-#else // new code
   return (const SoActionMethod) SbPList::operator[](index);
-#endif // new code
 }
 
 /*!

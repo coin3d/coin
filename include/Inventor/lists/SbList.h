@@ -22,12 +22,13 @@
 
 #include <Inventor/SbBasic.h>
 #include <assert.h>
+#include <stddef.h> // NULL definition
 
 
 template <class Type>
 class SbList {
 public:
-  SbList(const int initsize = 4);
+  SbList(const int sizehint = 4);
   SbList(const SbList<Type> & l);
   ~SbList();
 
@@ -69,10 +70,10 @@ private:
 /*** Inlined functions **********************************************/
 
 template <class Type> inline
-SbList<Type>::SbList(const int initsize)
+SbList<Type>::SbList(const int sizehint)
   : numitems(0)
 {
-  this->itembuffersize = SbMax(4, initsize);
+  this->itembuffersize = SbMax(4, sizehint);
   this->itembuffer = new Type[this->itembuffersize];
 }
 
