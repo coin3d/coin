@@ -367,7 +367,7 @@ line_line_intersect(const SbVec2s &p00, const SbVec2s & p01,
   /* operation will work on sign bits.  This works for twos-complement,*/
   /* and most other machine arithmetic.                                */
 #define SAME_SIGNS( a, b ) \
-	(((int) ((unsigned int) a ^ (unsigned int) b)) >= 0 )
+        (((int) ((unsigned int) a ^ (unsigned int) b)) >= 0 )
 
 #define DONT_INTERSECT FALSE
 #define COLINEAR TRUE
@@ -389,7 +389,7 @@ line_line_intersect(const SbVec2s &p00, const SbVec2s & p01,
   Ax = x2-x1;
   Bx = x3-x4;
 
-  if(Ax < 0) {						/* X bound box test*/
+  if(Ax < 0) {                                          /* X bound box test*/
     x1lo = x2; x1hi = x1;
   }
   else {
@@ -405,7 +405,7 @@ line_line_intersect(const SbVec2s &p00, const SbVec2s & p01,
   Ay = y2-y1;
   By = y3-y4;
 
-  if (Ay < 0) {						/* Y bound box test*/
+  if (Ay < 0) {                                         /* Y bound box test*/
     y1lo = y2; y1hi = y1;
   }
   else {
@@ -420,18 +420,18 @@ line_line_intersect(const SbVec2s &p00, const SbVec2s & p01,
 
   Cx = x1-x3;
   Cy = y1-y3;
-  d = By*Cx - Bx*Cy;					/* alpha numerator*/
-  f = Ay*Bx - Ax*By;					/* both denominator*/
+  d = By*Cx - Bx*Cy;                                    /* alpha numerator*/
+  f = Ay*Bx - Ax*By;                                    /* both denominator*/
 
-  if (f > 0) {						/* alpha tests*/
+  if (f > 0) {                                          /* alpha tests*/
     if (d < 0 || d > f) return DONT_INTERSECT;
   }
   else {
     if (d > 0 || d < f) return DONT_INTERSECT;
   }
 
-  e = Ax*Cy - Ay*Cx;					/* beta numerator*/
-  if (f > 0) {						/* beta tests*/
+  e = Ax*Cy - Ay*Cx;                                    /* beta numerator*/
+  if (f > 0) {                                          /* beta tests*/
     if (e < 0 || e > f) return DONT_INTERSECT;
   }
   else {
@@ -443,13 +443,13 @@ line_line_intersect(const SbVec2s &p00, const SbVec2s & p01,
 #if 0 // we don't need the intersection point, disabled
   int num, offset;
   int x, y;
-  num = d*Ax;						/* numerator */
-  offset = SAME_SIGNS(num,f) ? f/2 : -f/2;		/* round direction*/
-  x = x1 + (num+offset) / f;				/* intersection x */
+  num = d*Ax;                                           /* numerator */
+  offset = SAME_SIGNS(num,f) ? f/2 : -f/2;              /* round direction*/
+  x = x1 + (num+offset) / f;                            /* intersection x */
 
   num = d*Ay;
   offset = SAME_SIGNS(num,f) ? f/2 : -f/2;
-  y = y1 + (num+offset) / f;				/* intersection y */
+  y = y1 + (num+offset) / f;                            /* intersection y */
 #endif // disabled code
 
   return DO_INTERSECT;
@@ -481,8 +481,8 @@ point_in_poly(const SbList <SbVec2s> & coords, const SbVec2s & point)
     pj[1] = (float) coords[j][1];
 
     if ((((pi[1] <= y) && (y < pj[1])) ||
-	 ((pj[1] <= y) && (y < pi[1]))) &&
-	(x < (pj[0] - pi[0]) * (y - pi[1]) / (pj[1] - pi[1]) + pi[0]))
+         ((pj[1] <= y) && (y < pi[1]))) &&
+        (x < (pj[0] - pi[0]) * (y - pi[1]) / (pj[1] - pi[1]) + pi[0]))
       c = !c;
   }
   return c;
@@ -639,7 +639,7 @@ SoExtSelection::SoExtSelection(void)
 
   // setup timer
   PRIVATE(this)->timersensor = new SoTimerSensor(&SoExtSelectionP::timercallback,
-                                        (void *)this);
+                                                 (void *)this);
   PRIVATE(this)->timersensor->setBaseTime(SbTime(0.0));
   PRIVATE(this)->timersensor->setInterval(SbTime(0.3));
 
@@ -648,24 +648,24 @@ SoExtSelection::SoExtSelection(void)
   PRIVATE(this)->cbaction = new SoCallbackAction();
   
   PRIVATE(this)->cbaction->addPreCallback(SoShape::getClassTypeId(), 
-				 SoExtSelectionP::preShapeCallback,
-				 (void *) this);
+                                          SoExtSelectionP::preShapeCallback,
+                                          (void *) this);
 
   PRIVATE(this)->cbaction->addPostCallback(SoShape::getClassTypeId(), 
-				  SoExtSelectionP::postShapeCallback,
-                                  (void *) this);
+                                           SoExtSelectionP::postShapeCallback,
+                                           (void *) this);
 
   PRIVATE(this)->cbaction->addTriangleCallback(SoShape::getClassTypeId(), 
-				      SoExtSelectionP::triangleCB,
-                                      (void*) this);
+                                               SoExtSelectionP::triangleCB,
+                                               (void*) this);
 
   PRIVATE(this)->cbaction->addLineSegmentCallback(SoShape::getClassTypeId(), 
-					 SoExtSelectionP::lineSegmentCB,
-                                         (void*) this);
+                                                  SoExtSelectionP::lineSegmentCB,
+                                                  (void*) this);
 
   PRIVATE(this)->cbaction->addPointCallback(SoShape::getClassTypeId(), 
-				   SoExtSelectionP::pointCB,
-                                   (void*) this);
+                                            SoExtSelectionP::pointCB,
+                                            (void*) this);
   
   PRIVATE(this)->cbaction->addPostCallback(SoCamera::getClassTypeId(), 
                                            SoExtSelectionP::cameraCB,
@@ -904,9 +904,9 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
     // mouse move
     else if ((event->isOfType( SoLocation2Event::getClassTypeId()))) {
       if (PRIVATE(this)->isDragging == TRUE) {
-	assert(PRIVATE(this)->coords.getLength() >= 2);
-	PRIVATE(this)->coords[1] = mousecoords;
-	this->touch();
+        assert(PRIVATE(this)->coords.getLength() >= 2);
+        PRIVATE(this)->coords[1] = mousecoords;
+        this->touch();
       }
     }
 
@@ -919,35 +919,35 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
     if (SO_MOUSE_PRESS_EVENT(event,BUTTON1)) {
       if ((SbAbs(mousecoords[0] - PRIVATE(this)->previousmousecoords[0]) > 2) ||
           (SbAbs(mousecoords[1] - PRIVATE(this)->previousmousecoords[1]) > 2)) {
-	if (PRIVATE(this)->selectionstate == SoExtSelectionP::NONE) {
-	  PRIVATE(this)->coords.truncate(0);
-	  PRIVATE(this)->coords.append(mousecoords);
-	  PRIVATE(this)->selectionstate = SoExtSelectionP::LASSO;
-	}
+        if (PRIVATE(this)->selectionstate == SoExtSelectionP::NONE) {
+          PRIVATE(this)->coords.truncate(0);
+          PRIVATE(this)->coords.append(mousecoords);
+          PRIVATE(this)->selectionstate = SoExtSelectionP::LASSO;
+        }
         PRIVATE(this)->previousmousecoords = mousecoords;
-	PRIVATE(this)->isDragging = TRUE;
-	PRIVATE(this)->coords.append(mousecoords);
+        PRIVATE(this)->isDragging = TRUE;
+        PRIVATE(this)->coords.append(mousecoords);
         if (!PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->schedule();
-	this->touch();
+        this->touch();
       }
       else { // clicked twice on same coord (double click) -> end selection
-	if (PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->unschedule();
+        if (PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->unschedule();
         PRIVATE(this)->previousmousecoords = SbVec2s(32767, 32767);
-	if (PRIVATE(this)->selectionstate == SoExtSelectionP::LASSO) {
+        if (PRIVATE(this)->selectionstate == SoExtSelectionP::LASSO) {
           PRIVATE(this)->coords.append(mousecoords);
           PRIVATE(this)->performSelection(action);
-	}
-	PRIVATE(this)->isDragging = FALSE;
-	PRIVATE(this)->selectionstate = SoExtSelectionP::NONE;
-	PRIVATE(this)->coords.truncate(0);
+        }
+        PRIVATE(this)->isDragging = FALSE;
+        PRIVATE(this)->selectionstate = SoExtSelectionP::NONE;
+        PRIVATE(this)->coords.truncate(0);
       }
     }
     // mouse move
     else if ( ( event->isOfType( SoLocation2Event::getClassTypeId() ) ) ) {
       if (PRIVATE(this)->isDragging == TRUE) {
-	assert(PRIVATE(this)->coords.getLength());
-	PRIVATE(this)->coords[PRIVATE(this)->coords.getLength()-1] = mousecoords;
-	this->touch();
+        assert(PRIVATE(this)->coords.getLength());
+        PRIVATE(this)->coords[PRIVATE(this)->coords.getLength()-1] = mousecoords;
+        this->touch();
       }
     }
     // end selection with right-click
@@ -987,8 +987,8 @@ SoExtSelection::draw(SoGLRenderAction *action)
   glPushMatrix();
   glLoadIdentity();
   glOrtho(vpo[0], vpo[0]+vps[0]-1,
-	  vpo[1], vpo[0]+vps[1]-1,
-	  -1, 1);
+          vpo[1], vpo[0]+vps[1]-1,
+          -1, 1);
 
 
   // Because Mesa 3.4.2 cant properly push & pop GL_CURRENT_BIT, we have to
@@ -998,11 +998,11 @@ SoExtSelection::draw(SoGLRenderAction *action)
 
   // attributes
   glPushAttrib(GL_LIGHTING_BIT|
-	       GL_FOG_BIT|
-	       GL_DEPTH_BUFFER_BIT|
-	       GL_TEXTURE_BIT|
-	       GL_LINE_BIT|
-	       GL_CURRENT_BIT);
+               GL_FOG_BIT|
+               GL_DEPTH_BUFFER_BIT|
+               GL_TEXTURE_BIT|
+               GL_LINE_BIT|
+               GL_CURRENT_BIT);
   glDisable(GL_LIGHTING);
   glDisable(GL_TEXTURE_2D);
 
@@ -1223,8 +1223,9 @@ SoExtSelectionP::postShapeCallback(void *data, SoCallbackAction *action, const S
          (!PRIVATE(ext)->somefacesvisible))
         return SoCallbackAction::CONTINUE;
 
-      // FIXME: This is a linear search. Storing paths should have be done using
-      // something more sophisticated for better performance. (handegar)
+      // FIXME: This is a linear search. Storing paths should have be
+      // done using something more sophisticated for better
+      // performance. (handegar)
       const SoPath * curpath = action->getCurPath();
       if(PRIVATE(ext)->visitedshapepaths->findPath(*curpath) < 0)
         PRIVATE(ext)->visitedshapepaths->append(curpath->copy());
@@ -1414,6 +1415,7 @@ SoExtSelectionP::testPrimitives(SoCallbackAction * action,
   // FIXME: consider quick reject based on bounding box for now we
   // just initialize some variables, and trust that the user has a
   // sensible scene graph so that shapes are culled in the separators.
+  // ????-??-?? pederb.
 
   this->primcbdata.fulltest = full;
   this->primcbdata.projmatrix = projmatrix;
@@ -1536,11 +1538,11 @@ SoExtSelectionP::triangleCB(void * userData,
       
       // Present accepted triangle to 'user' through a callback. 
       if(thisp->triangleFilterCB(thisp->triangleFilterCBData,
-				  action, v1, v2, v3)) {
-	// Select shape.
-	thisp->primcbdata.hit = TRUE;
-	thisp->primcbdata.allhit = TRUE;
-	thisp->primcbdata.abort = TRUE;
+                                  action, v1, v2, v3)) {
+        // Select shape.
+        thisp->primcbdata.hit = TRUE;
+        thisp->primcbdata.allhit = TRUE;
+        thisp->primcbdata.abort = TRUE;
       }
       
     } else {
@@ -1562,8 +1564,8 @@ SoExtSelectionP::triangleCB(void * userData,
 
       thisp->somefacesvisible = TRUE;
       if(thisp->triangleFilterCB(thisp->triangleFilterCBData, action, v1, v2, v3)){
-	thisp->primcbdata.hit = TRUE;
-	thisp->primcbdata.allhit = TRUE;
+        thisp->primcbdata.hit = TRUE;
+        thisp->primcbdata.allhit = TRUE;
       }
 
     }
@@ -1577,10 +1579,10 @@ SoExtSelectionP::triangleCB(void * userData,
 
 void
 SoExtSelectionP::addTriangleToOffscreenBuffer(SoCallbackAction * action,
-					      const SoPrimitiveVertex * v1,
-					      const SoPrimitiveVertex * v2,
-					      const SoPrimitiveVertex * v3,
-					      SbBool renderAsBlack)
+                                              const SoPrimitiveVertex * v1,
+                                              const SoPrimitiveVertex * v2,
+                                              const SoPrimitiveVertex * v3,
+                                              SbBool renderAsBlack)
 {
   assert(!this->applyonlyonselectedtriangles);
 
@@ -1627,8 +1629,8 @@ SoExtSelectionP::addTriangleToOffscreenBuffer(SoCallbackAction * action,
 
   if(!renderAsBlack){
     glColor3ub((unsigned char) (this->offscreencolorcounter>>(8+8)),
-	       (unsigned char) (this->offscreencolorcounter>>(8)),
-	       (unsigned char) (this->offscreencolorcounter));
+               (unsigned char) (this->offscreencolorcounter>>(8)),
+               (unsigned char) (this->offscreencolorcounter));
     ++offscreencolorcounter;
   } else {
     glColor3f(0,0,0);
@@ -1751,8 +1753,8 @@ SoExtSelectionP::lineSegmentCB(void *userData,
     if(thisp->visibletrianglesbitarray[index] & flag){
       
       if(thisp->lineFilterCB(thisp->lineFilterCBData, action, v1, v2)){
-	thisp->primcbdata.hit = TRUE;
-	thisp->primcbdata.allhit = TRUE;
+        thisp->primcbdata.hit = TRUE;
+        thisp->primcbdata.allhit = TRUE;
       }
     }
     
@@ -1793,8 +1795,8 @@ SoExtSelectionP::addLineToOffscreenBuffer(SoCallbackAction * action,
 
   if(!renderAsBlack){
     glColor3ub((unsigned char) (this->offscreencolorcounter>>(8+8)),
-	       (unsigned char) (this->offscreencolorcounter>>(8)),
-	       (unsigned char) (this->offscreencolorcounter));
+               (unsigned char) (this->offscreencolorcounter>>(8)),
+               (unsigned char) (this->offscreencolorcounter));
     ++offscreencolorcounter;
   } else {
     glColor3f(0,0,0);
@@ -1900,8 +1902,8 @@ SoExtSelectionP::pointCB(void *userData,
     if(thisp->visibletrianglesbitarray[index] & flag){
         
       if(thisp->pointFilterCB(thisp->pointFilterCBData, action, v)){
-	thisp->primcbdata.hit = TRUE;
-	thisp->primcbdata.allhit = TRUE;
+        thisp->primcbdata.hit = TRUE;
+        thisp->primcbdata.allhit = TRUE;
       }
     }
     ++thisp->offscreencolorcounter;
@@ -1939,8 +1941,8 @@ SoExtSelectionP::addPointToOffscreenBuffer(SoCallbackAction * action,
 
   if(!renderAsBlack){
     glColor3ub((unsigned char) (this->offscreencolorcounter>>(8+8)),
-	       (unsigned char) (this->offscreencolorcounter>>(8)),
-	       (unsigned char) (this->offscreencolorcounter));
+               (unsigned char) (this->offscreencolorcounter>>(8)),
+               (unsigned char) (this->offscreencolorcounter));
     ++offscreencolorcounter;
   } else {
     glColor3f(0,0,0);
@@ -2023,15 +2025,15 @@ SoExtSelectionP::offscreenRenderLassoCallback(void * userdata, SoAction * action
   
   glMatrixMode(GL_PROJECTION);
   glOrtho(vpo[0], vpo[0]+vps[0]-1,
-	  vpo[1], vpo[0]+vps[1]-1,
-	  -1, 1);
+          vpo[1], vpo[0]+vps[1]-1,
+          -1, 1);
   
   glPushAttrib(GL_LIGHTING_BIT|
-	       GL_FOG_BIT|
-	       GL_DEPTH_BUFFER_BIT|
-	       GL_TEXTURE_BIT|
-	       GL_LINE_BIT|
-	       GL_CURRENT_BIT);
+               GL_FOG_BIT|
+               GL_DEPTH_BUFFER_BIT|
+               GL_TEXTURE_BIT|
+               GL_LINE_BIT|
+               GL_CURRENT_BIT);
 
   glDisable(GL_LIGHTING);
   glDisable(GL_TEXTURE_2D);
@@ -2070,12 +2072,26 @@ SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
   SoExtSelectionP * pimpl = (SoExtSelectionP *) userdata;
   
   /*
+    FIXME: A nice feature could be an option to 'zoom' in on the
+    selected area to increase pixel detail in the offscreen
+    buffer. This could increase the hitrate to the offscreen-scanner
+    when searching for realy small visible entities. Note that you
+    must also deform the stencil polygon accordingly (which can be
+    abit tricky i believe). (handegar)
+  */
 
-    FIXME: A nice feature could be an option to 'zoom' in on the selected
-    area to increase pixel detail in the offscreen buffer. This could increase the hitrate
-    to the offscreen-scanner when searching for realy small visible entities. Note that you must also
-    deform the stencil polygon accordingly (which can be abit tricky i believe). (handegar)
+  /*
+    UPDATE: another idea here would be to allocate a larger offscreen
+    buffer than the onscreen buffer to increase the precision.
 
+    The scale-value could be controlled by an environment variable
+    COIN_EXTSELECTION_SCALE_PRECISION, or something like that.
+
+    The downside of this is that the buffer scanning takes quite a lot
+    of time already. We would also need to fix SoOffscreenRenderer so
+    that it can handle arbitrary size buffers.
+
+    20020802 mortene.
   */
 
   // Because Mesa 3.4.2 cant properly push & pop GL_CURRENT_BIT, we have to
@@ -2083,13 +2099,12 @@ SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
   GLfloat currentColor[4];
   glGetFloatv(GL_CURRENT_COLOR,currentColor);
 
-
   glPushAttrib(GL_LIGHTING_BIT|
-	       GL_FOG_BIT|
-	       GL_DEPTH_BUFFER_BIT|
-	       GL_TEXTURE_BIT|
-	       GL_LINE_BIT|
-	       GL_CURRENT_BIT);
+               GL_FOG_BIT|
+               GL_DEPTH_BUFFER_BIT|
+               GL_TEXTURE_BIT|
+               GL_LINE_BIT|
+               GL_CURRENT_BIT);
 
   // Setup GL-state for offscreen context
   glDisable(GL_LIGHTING);
@@ -2105,12 +2120,11 @@ SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
   pimpl->master->touch();
 
 
-  // Due to a Mesa 3.4.2 bug
-  glColor3fv(currentColor);
-
   // Restore all OpenGL States
   glPopAttrib();
 
+  // Due to a Mesa 3.4.2 bug
+  glColor3fv(currentColor);
 }
 
 SbBool
@@ -2197,13 +2211,15 @@ SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
     this->visibletrianglesbitarray[i] = 0;
   
 
+  // FIXME: optimalization possibility here -- should only need to
+  // scan within the rectangle bounding area of the lasso. 20020805 mortene.
   for(int j=0; j < offscreenSizeY; ++j){
     for(int i=0; i < offscreenSizeX*3; i+=3){
       
       // If needed, we consult the stencil buffer before fetching pixelvalue
       if(this->lassostencilisdrawed){
-	if(stencilBuffer[j*offscreenSizeX*3 + i] == 0)
-	  continue;
+        if(stencilBuffer[j*offscreenSizeX*3 + i] == 0)
+          continue;
       }
       
       pixelValue = (rgbBuffer[j*offscreenSizeX*3 + i]<< (8+8));
@@ -2213,11 +2229,11 @@ SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
       
       if(pixelValue != 0){
         
-	flag = 0x1 << (pixelValue & 0x07);
-	index = pixelValue >> 3;
+        flag = 0x1 << (pixelValue & 0x07);
+        index = pixelValue >> 3;
         
-	visibletrianglesbitarray[index] |= flag;
-  	hitflag = TRUE;
+        visibletrianglesbitarray[index] |= flag;
+        hitflag = TRUE;
       }
 
     }
@@ -2331,14 +2347,14 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
       // Render a offscreen stencil buffer of lasso-shape if needed
       if(PUBLIC(this)->lassoType.getValue() != SoExtSelection::NOLASSO){
-	// Only draw stencil buffer on the first pass
-	if(this->offscreencolorcounterpasses == 0){
-	  SoCallback * cbnode2 = new SoCallback;
-	  cbnode2->ref();
-	  cbnode2->setCallback(offscreenRenderLassoCallback, this);
-	  this->lassorenderer->render(cbnode2);
-	  cbnode2->unref();
-	}
+        // Only draw stencil buffer on the first pass
+        if(this->offscreencolorcounterpasses == 0){
+          SoCallback * cbnode2 = new SoCallback;
+          cbnode2->ref();
+          cbnode2->setCallback(offscreenRenderLassoCallback, this);
+          this->lassorenderer->render(cbnode2);
+          cbnode2->unref();
+        }
       }
 
 
@@ -2355,24 +2371,24 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
       // Scan buffer marking visible colors in the 'visibletrianglesbitarray' array.
       if(scanOffscreenBuffer(action->getCurPath()->getHead()) != 0){
         
-	// Render once more, but only selected triangles which are forwarded
-	// to client code through 'triangleFilterCB'.
+        // Render once more, but only selected triangles which are forwarded
+        // to client code through 'triangleFilterCB'.
 
-	this->offscreencolorcounteroverflow = FALSE;
-	this->offscreencolorcounter = 1;
-	this->offscreenskipcounter = 0;
+        this->offscreencolorcounteroverflow = FALSE;
+        this->offscreencolorcounter = 1;
+        this->offscreenskipcounter = 0;
         this->drawcallbackcounter = 0;
         this->drawcounter = 0;
  
-	this->applyonlyonselectedtriangles = TRUE;
-	this->cbaction->apply(action->getCurPath()->getHead());
-	PUBLIC(this)->touch();
+        this->applyonlyonselectedtriangles = TRUE;
+        this->cbaction->apply(action->getCurPath()->getHead());
+        PUBLIC(this)->touch();
 
       } else {
 
-	this->offscreencolorcounteroverflow = FALSE;
-	this->offscreencolorcounter = 1;
-	this->offscreenskipcounter = 0;
+        this->offscreencolorcounteroverflow = FALSE;
+        this->offscreencolorcounter = 1;
+        this->offscreenskipcounter = 0;
       }
       ++this->offscreencolorcounterpasses;
 
