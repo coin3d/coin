@@ -226,14 +226,21 @@ THE WISH LIST
   Perhaps something like
 
         SbDictT (templatized key type, void* value type)
-          +- SbDict32 (key type == uint16_t)
-          +- SbDict64 (key type == uint32_t)
+          +- SbDict32 (key type == uint32_t)
+          +- SbDict64 (key type == uint64_t)
           +- SbDict (key type == unsigned long, for backwards API compatibility)
 
   Comment by pederb:
     Remember that all template code should be inline, in the SbDict.h
     header file. Otherwise we will run into tons of problems on
     different compilers. 
+
+  Update, mortene:
+    Perhaps it would be better in the long run to use a "code
+    generating" set of #define macros in pure C as the basis for
+    SbDict (ie "templatize" our hash-classes the "C-way").  I believe
+    they do something like this for hashes in the Linux kernel
+    sources.
 
 * SoGestureEvent
   2001-04-29  Lars J. Aas  <larsa@sim.no>
