@@ -448,12 +448,13 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
   // push state since we're going to modify the model matrix
   state->push();
 
-  const SbMatrix & tmp =
-    SoViewingMatrixElement::get(state);
-  assert(PRIVATE(this)->camera);
-  // rotate background camera so that it matches the current camera
-  PRIVATE(this)->camera->orientation = SbRotation(tmp.inverse());
-
+  if (PRIVATE(this)->geometrybuilt) {
+    const SbMatrix & tmp =
+      SoViewingMatrixElement::get(state);
+    SbRotation rot(tmp);
+    // rotate background camera so that it matches the current camera
+    PRIVATE(this)->camera->orientation = rot.inverse();
+  }
   // set to identity before rendering subgraph
   SoModelMatrixElement::makeIdentity(state, this);  
 
@@ -490,6 +491,7 @@ SoVRMLBackgroundP::buildGeometry()
   // just insert a default perspective camera that is used when
   // rendering the background
   SoPerspectiveCamera * cam = new SoPerspectiveCamera;
+  cam->nearDistance = 0.1f;
   this->rootnode->addChild(cam);
   // just set camera pointer for easy lookup in GLRender()
   this->camera = cam;
