@@ -1,0 +1,40 @@
+========================================================================
+Java
+====
+
+  * Here's the tutorial starting point at Sun's Java pages for
+    interfacing to alien code through the Java Native Interface:
+
+    <URL:http://java.sun.com/docs/books/tutorial/native1.1/index.html>
+
+  * Kahlua: <URL:http://www.igd.fhg.de/CP/kahlua/>
+
+    A Java wrapper for the Open Inventor library. Sadly not open
+    source, so we can't port it to Coin unless the author changes the
+    licensing terms. larsa@sim.no has been investigating.
+
+    Maintainer is no longer Arno Schaefer <schaefer@jobpilot.com>, but
+    Volker Luckas <luckas@igd.fhg.de>.
+
+========================================================================
+
+Python
+======
+
+  * Unfinished attempt at wrapping SGI Open Inventor with SWIG:
+    <URL:http://www.cs.uit.no/~olemb/software/pyinventor/>.
+
+  * SIP is a SWIG-like thing specially tuned for Python bindings, more
+    information here: <URL:http://www.thekompany.com/projects/pykde/>.
+
+
+========================================================================
+
+Scheme
+======
+
+  * Ivy is a fully working port of a Scheme engine with an Inventor
+    API (with SoXt) binding, see <URL:http://www.coin3d.org> for more
+    information.
+
+========================================================================
