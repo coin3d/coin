@@ -66,7 +66,7 @@ private:
 };
 
 
-const SbVec4f & textureCoordinateCubeCallback(void * userdata, const SbVec3f & point, const SbVec3f & normal);
+static const SbVec4f & textureCoordinateCubeCallback(void * userdata, const SbVec3f & point, const SbVec3f & normal);
 
 #undef PRIVATE
 #undef PUBLIC
@@ -165,8 +165,8 @@ SoTextureCoordinateCubeP::calculateTextureCoordinate(SbVec3f point, SbVec3f n)
   int i0 = (maxi + 1) % 3;
   int i1 = (maxi + 2) % 3;
 
-  SbVec3f bmax = this->boundingbox.getMax();
-  SbVec3f bmin = this->boundingbox.getMin();
+  const SbVec3f bmax = this->boundingbox.getMax();
+  const SbVec3f bmin = this->boundingbox.getMin();
   float d0 = bmax[i0] - bmin[i0];
   float d1 = bmax[i1] - bmin[i1];
 
