@@ -80,12 +80,11 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
-
+  
   static void getScreenSize(SoState * const state, 
 			    const SbBox3f & boundingBox,
 			    SbVec2s & rectSize);
   static float getDecimatedComplexity(SoState * state, float complexity);
-
 
 protected:
   friend class shapePrimitiveData; // internal class
@@ -93,6 +92,7 @@ protected:
   virtual ~SoShape();
 
 #if !defined(COIN_EXCLUDE_SOACTION)
+  float getComplexityValue(SoAction *action);
   virtual void generatePrimitives(SoAction * action) =  0;
 #endif // !COIN_EXCLUDE_SOACTION
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

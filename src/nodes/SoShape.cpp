@@ -59,9 +59,12 @@
 #if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
 #include <Inventor/elements/SoModelMatrixElement.h>
 #endif // ! COIN_EXCLUDE_SOMODELMATRIXELEMENT
-#if !defined(COIN_EXCLUDE_SOVIEWCOLUMEELEMENT)
+#if !defined(COIN_EXCLUDE_SOVIEWVOLUMEELEMENT)
 #include <Inventor/elements/SoViewVolumeElement.h>
-#endif // !COIN_EXCLUDE_SOMODELMATRIXELEMEN 
+#endif // !COIN_EXCLUDE_SOVIEWVOLUMEELEMENT 
+#if !defined(COIN_EXCLUDE_SOVIEWCOLUMEELEMENT)
+#include <Inventor/elements/SoViewportRegionElement.h>
+#endif // !COIN_EXCLUDE_SOVIEWPORTREGIONELEMENT
 #if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
 #include <Inventor/elements/SoLightModelElement.h>
 #endif // ! COIN_EXCLUDE_SOLIGHTMODELELEMENT
@@ -102,8 +105,10 @@
 
 #if !defined(COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT)
 #include <Inventor/elements/SoComplexityTypeElement.h>
-#endif
-
+#endif // !COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT
+#if !defined(COIN_EXCLUDE_SOCOMPLEXITYELEMENT)
+#include <Inventor/elements/SoComplexityElement.h>
+#endif // !COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT
 
 /*!
   \enum SoShape::TriangleShape
@@ -371,28 +376,55 @@ SoShape::getScreenSize(SoState * const state,
 		       const SbBox3f &boundingBox,
 		       SbVec2s &rectSize)
 {
-  const SbMatrix &mat = SoModelMatrixElement::get(state);    
   const SbViewVolume &vv = SoViewVolumeElement::get(state);
+  SbBox3f worldBox(boundingBox);
+  worldBox.transform(SoModelMatrixElement::get(state));
+  SbVec2f normSize = vv.projectBox(worldBox);
+  const SbViewportRegion &vr = SoViewportRegionElement::get(state);
+  SbVec2s pixelSize = vr.getViewportSizePixels();
   
-  SbVec3f tmp;
-  SbBox2f bbox2;
-  
-  const SbVec3f &v0 = boundingBox.getMin();
-  const SbVec3f &v1 = boundingBox.getMax();
-  
-  int i;
-  for (i = 0; i < 8; i++) { 
-    tmp = SbVec3f(i&4 ? v0[0] : v1[0],
-		  i&2 ? v0[1] : v1[1],
-		  i&1 ? v0[2] : v1[2]);
-    mat.multVecMatrix(tmp, tmp); // to world coordinates
-    vv.projectToScreen(tmp, tmp); // to screen coordinates
-    bbox2.extendBy(SbVec2f(tmp[0], tmp[1]));
-  }
+  // make sure short doesn't overflow
+  rectSize[0] = (short) SbMin(32767.0f, (float(pixelSize[0])*normSize[0]));
+  rectSize[1] = (short) SbMin(32767.0f, (float(pixelSize[1])*normSize[1]));
+}
 
-  SbVec2f size = bbox2.getMax() - bbox2.getMin();
-  rectSize[0] = (short)size[0];
-  rectSize[1] = (short)size[1];
+/*!
+  Returns the complexity value to be used by subclasses. Considers
+  complexity type. For OBJECT_SPACE complexity this will be a number
+  between 0 and 1. For SCREEN_SPACE complexity it is a number from 0 
+  and up.
+*/
+float 
+SoShape::getComplexityValue(SoAction *action)
+{
+  SoState *state = action->getState();
+  switch (SoComplexityTypeElement::get(state)) {
+  case SoComplexityTypeElement::SCREEN_SPACE:
+    {
+      SbBox3f box;
+      SbVec3f center;
+      this->computeBBox(action, box, center);
+      SbVec2s size;
+      SoShape::getScreenSize(state, box, size);
+      // FIXME: needs calibration. 
+
+#if 1 // testing new complexity code
+      return sqrt(SbMax(size[0], size[1])) * 0.4f * 
+	SoComplexityElement::get(state);
+#else // first version
+      float numPixels = float(size[0])*float(size[1]);
+      return numPixels * 0.0001f * SoComplexityElement::get(state);
+#endif
+    }
+  case SoComplexityTypeElement::OBJECT_SPACE:
+    return SoComplexityElement::get(state);
+  case SoComplexityTypeElement::BOUNDING_BOX:
+    assert(0 && "should never get here");
+    return 0.5f;
+  default:
+    assert(0 && "unknown complexity type");
+    return 0.5f;
+  }
 }
 
 

@@ -224,19 +224,7 @@ SoCylinder::GLRender(SoGLRenderAction * action)
 #endif
 
 
-  float complexity = 1.0f;
-
-#if !defined(COIN_EXCLUDE_SOCOMPLEXITYELEMENT)
-#if !defined(COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT)
-
-  // FIXME: check for OBJECT_SPACE or SCREEN_SPACE
-  if (SoComplexityTypeElement::get(state) !=
-      SoComplexityTypeElement::BOUNDING_BOX) {
-    complexity = SoComplexityElement::get(state);
-  }
-
-#endif
-#endif
+  float complexity = this->getComplexityValue(action);
 
 #if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
   const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
