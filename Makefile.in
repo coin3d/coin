@@ -85,15 +85,16 @@ RANLIB = @RANLIB@
 USE_SYMBOL_UNDERSCORE = @USE_SYMBOL_UNDERSCORE@
 VERSION = @VERSION@
 
-SUBDIRS = include src examples
+SUBDIRS = src examples
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = config.h ./include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
 DIST_COMMON =  README ./stamp-h1.in AUTHORS COPYING ChangeLog INSTALL \
 Makefile.am Makefile.in NEWS TODO acconfig.h aclocal.m4 config.guess \
-config.h.in config.sub configure configure.in install-sh ltconfig \
-ltmain.sh missing mkinstalldirs
+config.h.in config.sub configure configure.in \
+include/Inventor/SbBasic.h.in include/Inventor/stamp-h2.in install-sh \
+ltconfig ltmain.sh missing mkinstalldirs
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
@@ -136,12 +137,31 @@ $(srcdir)/stamp-h1.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) acconfig.h
 	cd $(top_srcdir) && $(AUTOHEADER)
 	@echo timestamp > $(srcdir)/stamp-h1.in 2> /dev/null
 
+include/Inventor/SbBasic.h: include/Inventor/stamp-h2
+	@if test ! -f $@; then \
+		rm -f include/Inventor/stamp-h2; \
+		$(MAKE) include/Inventor/stamp-h2; \
+	else :; fi
+include/Inventor/stamp-h2: $(srcdir)/include/Inventor/SbBasic.h.in $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES= CONFIG_HEADERS=include/Inventor/SbBasic.h \
+	     $(SHELL) ./config.status
+	@echo timestamp > include/Inventor/stamp-h2 2> /dev/null
+$(srcdir)/include/Inventor/SbBasic.h.in: @MAINTAINER_MODE_TRUE@$(srcdir)/include/Inventor/stamp-h2.in
+	@if test ! -f $@; then \
+		rm -f $(srcdir)/include/Inventor/stamp-h2.in; \
+		$(MAKE) $(srcdir)/include/Inventor/stamp-h2.in; \
+	else :; fi
+$(srcdir)/include/Inventor/stamp-h2.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) acconfig.h
+	cd $(top_srcdir) && $(AUTOHEADER)
+	@echo timestamp > $(srcdir)/include/Inventor/stamp-h2.in 2> /dev/null
+
 mostlyclean-hdr:
 
 clean-hdr:
 
 distclean-hdr:
-	-rm -f config.h
+	-rm -f config.h include/Inventor/SbBasic.h
 
 maintainer-clean-hdr:
 

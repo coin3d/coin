@@ -1,3 +1,3 @@
 ## Process this file with automake to generate Makefile.in.
 
-SUBDIRS = include src examples
+SUBDIRS = src examples

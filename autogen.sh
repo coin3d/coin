@@ -7,6 +7,8 @@ DIE=0
 
 PROJECT=Coin
 
+echo "Checking the installed configuration tools..."
+
 # FIXME: check for minimum version number? 19990822 mortene.
 (autoconf --version) < /dev/null > /dev/null 2>&1 || {
         echo
@@ -40,20 +42,20 @@ if test "$DIE" -eq 1; then
         exit 1
 fi
 
-echo "Running aclocal"
+echo "Running aclocal (generating aclocal.m4)..."
 aclocal
 
-echo "Running autoheader"
+echo "Running autoheader (generating config.h.in)..."
 autoheader
 
-echo
-echo "Running automake..."
+echo "Running automake (generating the Makefile.in files)..."
 echo "(NB: if you're compiling without g++, you probably need to"
-echo "run automake with the --include-deps argument to avoid setting"
-echo "up dependency tracking. 19991006 mortene.)"
+echo "manually run automake with the --include-deps argument to"
+echo "avoid setting up dependency tracking. 19991006 mortene.)"
 automake
 
-echo "Running autoconf"
+echo "Running autoconf (generating ./configure and the Makefile files)..."
 autoconf
 
-echo "Now type './configure' and 'make' to compile $PROJECT."
+echo "Done: Now run './configure' and 'make install' to build $PROJECT."
+

@@ -3497,6 +3497,9 @@ fi
 LIBS="$LIBS $MATHLIB"
 
 
+test -d include           || mkdir include
+test -d include/Inventor  || mkdir include/Inventor
+
 trap '' 1 2 15
 cat > confcache <<\EOF
 # This file is a shell script that caches the results of configure
@@ -3598,17 +3601,32 @@ done
 ac_given_srcdir=$srcdir
 ac_given_INSTALL="$INSTALL"
 
-trap 'rm -fr `echo "include/Makefile include/Inventor/Makefile \
-	Makefile src/Makefile \
-	src/coindev/Makefile src/base/Makefile \
-	src/VRMLnodes/Makefile src/actions/Makefile src/bundles/Makefile \
-	src/caches/Makefile src/elements/Makefile src/engines/Makefile \
-	src/errors/Makefile src/events/Makefile src/fields/Makefile \
-	src/misc/Makefile src/lists/Makefile src/nodekits/Makefile \
-	src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile \
-	src/system/Makefile src/details/Makefile \
-	examples/Makefile examples/ivcat/Makefile \
-	examples/ivhierarchy/Makefile config.h include/Inventor/SbBasic.h" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
+trap 'rm -fr `echo "
+	Makefile
+	src/Makefile
+	src/coindev/Makefile
+	src/base/Makefile
+	src/VRMLnodes/Makefile
+	src/actions/Makefile
+	src/bundles/Makefile
+	src/caches/Makefile
+	src/elements/Makefile
+	src/engines/Makefile
+	src/errors/Makefile
+	src/events/Makefile
+	src/fields/Makefile
+	src/misc/Makefile
+	src/lists/Makefile
+	src/nodekits/Makefile
+	src/nodes/Makefile
+	src/projectors/Makefile
+	src/sensors/Makefile
+	src/system/Makefile
+	src/details/Makefile
+	examples/Makefile
+	examples/ivcat/Makefile
+	examples/ivhierarchy/Makefile
+ config.h include/Inventor/SbBasic.h" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
 EOF
 cat >> $CONFIG_STATUS <<EOF
 
@@ -3732,17 +3750,31 @@ EOF
 
 cat >> $CONFIG_STATUS <<EOF
 
-CONFIG_FILES=\${CONFIG_FILES-"include/Makefile include/Inventor/Makefile \
-	Makefile src/Makefile \
-	src/coindev/Makefile src/base/Makefile \
-	src/VRMLnodes/Makefile src/actions/Makefile src/bundles/Makefile \
-	src/caches/Makefile src/elements/Makefile src/engines/Makefile \
-	src/errors/Makefile src/events/Makefile src/fields/Makefile \
-	src/misc/Makefile src/lists/Makefile src/nodekits/Makefile \
-	src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile \
-	src/system/Makefile src/details/Makefile \
-	examples/Makefile examples/ivcat/Makefile \
-	examples/ivhierarchy/Makefile"}
+CONFIG_FILES=\${CONFIG_FILES-"Makefile
+	src/Makefile
+	src/coindev/Makefile
+	src/base/Makefile
+	src/VRMLnodes/Makefile
+	src/actions/Makefile
+	src/bundles/Makefile
+	src/caches/Makefile
+	src/elements/Makefile
+	src/engines/Makefile
+	src/errors/Makefile
+	src/events/Makefile
+	src/fields/Makefile
+	src/misc/Makefile
+	src/lists/Makefile
+	src/nodekits/Makefile
+	src/nodes/Makefile
+	src/projectors/Makefile
+	src/sensors/Makefile
+	src/system/Makefile
+	src/details/Makefile
+	examples/Makefile
+	examples/ivcat/Makefile
+	examples/ivhierarchy/Makefile
+"}
 EOF
 cat >> $CONFIG_STATUS <<\EOF
 for ac_file in .. $CONFIG_FILES; do if test "x$ac_file" != x..; then
@@ -3929,4 +3961,7 @@ EOF
 chmod +x $CONFIG_STATUS
 rm -fr confdefs* $ac_clean_files
 test "$no_create" = yes || ${CONFIG_SHELL-/bin/sh} $CONFIG_STATUS || exit 1
+
+
+echo "Now, run 'make install' to build and install Coin."
 
