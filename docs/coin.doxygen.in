@@ -1023,6 +1023,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/fields/SoSFVec3f.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSFVec4f.cpp \
                          @path_tag@@coin_src_dir@/src/fields/SoSField.cpp \
+                         @path_tag@@coin_src_dir@/src/io/SoInput.cpp \
+                         @path_tag@@coin_src_dir@/src/io/SoOutput.cpp \
                          @path_tag@@coin_src_dir@/src/lists/SbIntList.cpp \
                          @path_tag@@coin_src_dir@/src/lists/SbList.cpp \
                          @path_tag@@coin_src_dir@/src/lists/SbPList.cpp \
@@ -1061,13 +1063,11 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/misc/SoChildList.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoDB.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoFullPath.cpp \
-                         @path_tag@@coin_src_dir@/src/misc/SoInput.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoInteraction.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoLockManager.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoNotification.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoNotRec.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoOffscreenRenderer.cpp \
-                         @path_tag@@coin_src_dir@/src/misc/SoOutput.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoPath.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoPickedPoint.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoPrimitiveVertex.cpp \
@@ -1183,6 +1183,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinateFunction.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinatePlane.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureScalePolicy.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoTextureUnit.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTransform.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTransformSeparator.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoTransformation.cpp \
