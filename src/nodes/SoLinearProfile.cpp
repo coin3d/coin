@@ -136,7 +136,7 @@ SoLinearProfile::getTrimCurve(SoState * state, int32_t & numpoints,
   // Get the number of profile coordinate indices
   int n = this->index.getNum();
 
-  if (numpoints) {
+  if (numcoords) {
     // Both 2D or 3D profile coordinates might have been specified, so
     // get the appropriate coordinates and save the number of floats
     // per vector for later usage.
@@ -150,33 +150,33 @@ SoLinearProfile::getTrimCurve(SoState * state, int32_t & numpoints,
     }
 
     assert(points);
+  }
 
-    // Append the coordinates to a list over the profile coordinates.
-    for (int i = 0; i < n; i++) {
-      int idx = this->index[i];
-
-      // If valid profile coordinates have been specified
-      if (idx >= 0 && idx < numcoords) {
-        for (int j = 0; j < floatspervec; j++) {
-          coordListLinearProfile->append(points[idx * floatspervec + j]);
-        }
+  // Append the coordinates to a list over the profile coordinates.
+  for (int i = 0; i < n; i++) {
+    int idx = this->index[i];
+    
+    // If valid profile coordinates have been specified
+    if (idx >= 0 && idx < numcoords) {
+      for (int j = 0; j < floatspervec; j++) {
+        coordListLinearProfile->append(points[idx * floatspervec + j]);
       }
-      // If invalid profile coordinates have been specified
-      else {
-        // Add dummy coordinate for robustness
-        for (int j = 0; j < floatspervec; j++) {
-          coordListLinearProfile->append(0.0f);
-        }
-        
-        // Print errormessage
-        static uint32_t current_errors = 0;
-        if (current_errors < 1) {
-          SoDebugError::postWarning("SoLinearProfile::getVertices", "Illegal profile "
-                                    "coordinate index specified: %d. Should be within "
-                                    "[0, %d]", idx, numcoords - 1);
-        }
-        current_errors++;
+    }
+    // If invalid profile coordinates have been specified
+    else {
+      // Add dummy coordinate for robustness
+      for (int j = 0; j < floatspervec; j++) {
+        coordListLinearProfile->append(0.0f);
       }
+      
+      // Print errormessage
+      static uint32_t current_errors = 0;
+      if (current_errors < 1) {
+        SoDebugError::postWarning("SoLinearProfile::getVertices", "Illegal profile "
+                                  "coordinate index specified: %d. Should be within "
+                                  "[0, %d]", idx, numcoords - 1);
+      }
+      current_errors++;
     }
   }
 
