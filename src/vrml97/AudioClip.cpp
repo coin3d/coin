@@ -94,7 +94,7 @@
 
 /*!
   \var SoSFString SoVRMLAudioClip::description
-  Description of the audio clip.
+  Description of the audio clip. Default value is an empty string.
 */
 
 /*!
