@@ -45,6 +45,25 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+
+#if COIN_DEBUG // Convenience function for dumping the SoPath during debugging.
+#include <Inventor/SoFullPath.h>
+
+static void
+sopath_dump(SoPath * p)
+{
+  SoFullPath * path = (SoFullPath *)p;
+
+  for (int i=0; i < path->getLength(); i++) {
+    SoNode * n = path->getNodeFromTail(i);
+    (void)fprintf(stderr, "%p (%s), ",
+                  n, n->getTypeId().getName().getString());
+  }
+  (void)fprintf(stderr, "\n");
+}
+#endif // COIN_DEBUG
+
+
 SoType SoPath::classTypeId = SoType::badType();
 
 
@@ -647,12 +666,12 @@ SoPath::removeIndex(SoNode * const parent, const int oldindex)
 }
 
 /*!
-  This method is called when a node in the path chain replaces a
-  child. \a index is the position of the replaced child.
+  This method is called when a node \a newchild replaces a node in the
+  path. \a index is the position of the child which has been replaced.
 */
 void
 SoPath::replaceIndex(SoNode * const parent, const int index,
-                     SoNode * const /*newchild*/)
+                     SoNode * const newchild)
 {
   if (parent == this->getTail()) return;
 
@@ -660,13 +679,27 @@ SoPath::replaceIndex(SoNode * const parent, const int index,
   assert(pos != -1); // shouldn't be notified if parent is not in path
   pos++;
 
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoPath::replaceIndex",
+                         "(%p)  parent: %p (%s), pos: %d",
+                         this,
+                         parent, parent->getTypeId().getName().getString(),
+                         pos,
+                         newchild, newchild->getTypeId().getName().getString());
+
+#endif // debug
+
   if (index == this->indices[pos]) {
-    // FIXME: not sure about this one. I don't think we should
-    // use newchild in the path, since the path beyond newchild will
-    // not be correct. I think it is best to truncate the path after
-    // the parent node. pederb 2000-01-10
-    this->truncate(pos);
+    this->nodes.set(pos, newchild);
+    // If the newchild node is a group node _not_ at the tail, the
+    // remaining set of indices will not be correct -- so let's
+    // truncate the path here.
+    if (pos < (this->nodes.getLength() - 1)) this->truncate(pos);
   }
+
+#if COIN_DEBUG && 0 // debug
+  sopath_dump(this);
+#endif // debug
 }
 
 // *************************************************************************
