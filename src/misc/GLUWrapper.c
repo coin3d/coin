@@ -23,6 +23,7 @@
 
 #include <GLUWrapper.h>
 #include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/C/glue/dl.h>
 
 #include <assert.h>
 #include <../tidbits.h>
@@ -34,9 +35,6 @@
 #else /* No config.h? Hmm. Assume the GLU library is available for linking. */
 #define GLUWRAPPER_ASSUME_GLU 1
 #endif /* !HAVE_CONFIG_H */
-#if HAVE_DLFCN_H
-#include <dlfcn.h>
-#endif /* HAVE_DLFCN_H */
 
 #ifdef HAVE_GLU /* In case we're _not_ doing runtime linking. */
 #define GLUWRAPPER_ASSUME_GLU 1
@@ -46,38 +44,8 @@
 #define GLUWRAPPER_ASSUME_GLU 1
 #endif /* HAVE_GLU */
 
-
-#ifdef HAVE_DL_LIB
-
-  /* This should work on Linux and IRIX platforms, at least. Probably
-     some other UNIX-based systems aswell. */
-
-  #define LIBHANDLE_T void*
-  #define OPEN_RUNTIME_BINDING(LIBNAME) dlopen(LIBNAME, RTLD_LAZY)
-  #define CLOSE_RUNTIME_BINDING(RBHANDLE)  (void)dlclose(RBHANDLE)
-  #define GET_RUNTIME_SYMBOL(RBHANDLE, FUNCNAME) dlsym(RBHANDLE, FUNCNAME)
-
-#elif defined (HAVE_WINDLL_RUNTIME_BINDING)
-
-  /* This should work on all MSWindows systems. */
-
-  #define LIBHANDLE_T HINSTANCE
-  #define OPEN_RUNTIME_BINDING(LIBNAME) LoadLibrary(LIBNAME)
-  #define CLOSE_RUNTIME_BINDING(RBHANDLE)  (void)FreeLibrary(RBHANDLE)
-  #define GET_RUNTIME_SYMBOL(RBHANDLE, FUNCNAME) GetProcAddress(RBHANDLE, FUNCNAME)
-
-#else /* static binding */
-
-  /* To avoid compiler error on the LIBHANDLE_T type. */
-  #define LIBHANDLE_T void*
-
-#endif  /* static binding */
-
-/* FIXME: support HP-UX? (Doesn't have dlopen().) 20010626 mortene. */
-
-
 static GLUWrapper_t * GLU_instance = NULL;
-static LIBHANDLE_T GLU_libhandle = NULL;
+static cc_libhandle GLU_libhandle = NULL;
 static int GLU_failed_to_load = 0;
 
 
@@ -86,7 +54,7 @@ static void
 GLUWrapper_cleanup(void)
 {
 #ifdef GLU_RUNTIME_LINKING
-  if (GLU_libhandle) CLOSE_RUNTIME_BINDING(GLU_libhandle);
+  if (GLU_libhandle) cc_dl_close(GLU_libhandle);
 #endif /* GLU_RUNTIME_LINKING */
 
   assert(GLU_instance);
@@ -105,6 +73,7 @@ GLUWrapper_set_version(const GLubyte * versionstr)
   GLU_instance->version.minor = 0;
   GLU_instance->version.release = 0;
 
+  /* FIXME: convert to cc_debugerror(). 20021015 mortene. */
 #if 0 /* debug */
 #if _WIN32
 #error fprintf() in an MSWindows DLL is bad.
@@ -254,11 +223,7 @@ GLUWrapper(void)
 
     int idx = 0;
     while (!GLU_libhandle && possiblelibnames[idx]) {
-      /*
-       * FIXME: Purify complains about Bad Function Parameter here.
-       * Everything seems to work ok though?  pederb, 2001-02-07
-       */
-      GLU_libhandle = OPEN_RUNTIME_BINDING(possiblelibnames[idx]);
+      GLU_libhandle = cc_dl_open(possiblelibnames[idx]);
       idx++;
     }
 
@@ -272,7 +237,7 @@ GLUWrapper(void)
   /* Define GLUWRAPPER_REGISTER_FUNC macro. Casting the type is
      necessary for this file to be compatible with C++ compilers. */
 #define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-      gi->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(GLU_libhandle, SO__QUOTE(_funcname_))
+      gi->_funcname_ = (_funcsig_)cc_dl_sym(GLU_libhandle, SO__QUOTE(_funcname_))
       
 #elif defined(GLUWRAPPER_ASSUME_GLU) /* !GLU_RUNTIME_LINKING */
       
