@@ -190,6 +190,7 @@ SoTransformBoxDragger::SoTransformBoxDragger(void)
 
   SoAntiSquish *squish = SO_GET_ANY_PART(this, "antiSquish", SoAntiSquish);
   squish->sizing = SoAntiSquish::BIGGEST_DIMENSION;
+  squish->recalcAlways = FALSE;
 
   this->addValueChangedCallback(SoTransformBoxDragger::valueChangedCB);
   this->rotFieldSensor = new SoFieldSensor(SoTransformBoxDragger::fieldSensorCB, this);
@@ -381,4 +382,7 @@ SoTransformBoxDragger::invalidateSurroundScaleCB(void *, SoDragger * d)
   SoTransformBoxDragger * thisp = (SoTransformBoxDragger*) d;
   SoSurroundScale * surround = SO_CHECK_PART(thisp, "surroundScale", SoSurroundScale);
   if (surround) surround->invalidate();
+
+  SoAntiSquish * squish = SO_CHECK_ANY_PART(thisp, "antiSquish", SoAntiSquish);
+  if (squish) squish->recalc();
 }
