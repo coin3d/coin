@@ -1673,7 +1673,7 @@ SoField::read(SoInput * in, const SbName & name)
 #if COIN_DEBUG
     if (flags & ~SoField::ALLFILEFLAGS) {
       SoDebugError::postWarning("SoField::read",
-                                "unknown field flags (0x%x) -- ",
+                                "unknown field flags (0x%x) -- "
                                 "please report to <coin-support@coin3d.org>",
                                 flags);
     }
