@@ -93,17 +93,17 @@
 */
 
 /*!
-  \var SoVRMLAudioClip::description
-  FIXME: doc
+  \var SoSFString SoVRMLAudioClip::description
+  Description of the audio clip.
 */
 
 /*!
-  \var SoVRMLAudioClip::loop
+  \var SoSFBool SoVRMLAudioClip::loop
   Specifies whether sound should be looped. Is FALSE by default.
 */
 
 /*!
-  \var SoVRMLAudioClip::pitch
+  \var SoSFFloat SoVRMLAudioClip::pitch
   Specifies the pitch. The default value is 1.0.
 
   Alters the sampling rate at which the sound is played. A pitch of
@@ -112,16 +112,16 @@
 */
 
 /*!
-  \var SoVRMLAudioClip::startTime
+  \var SoSFTime SoVRMLAudioClip::startTime
   Specifies the start time. Default value is 0.
 */
 /*!
-  \var SoVRMLAudioClip::stopTime
+  \var SoSFTime SoVRMLAudioClip::stopTime
   Specifies the stop time. Default value is 0.
 */
 
 /*!
-  \var SoVRMLAudioClip::url
+  \var SoMFString SoVRMLAudioClip::url
   The audio data URL.
 */
 
