@@ -243,7 +243,7 @@ simage_wrapper(void)
          Autoconf check? 20000930 mortene. */
       const char * possiblelibnames[] = {
         "simage", "libsimage", "libsimage.so",
-
+        "libsimage.dylib", 
         /* MSWindows DLL names for the simage library */
         /* FIXME: a bit of a hack this, but it looks difficult to find
            a better strategy. Perhaps it'd be a good idea to use an
