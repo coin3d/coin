@@ -278,6 +278,7 @@ typedef struct tagFace {
   uint16_t flags;
   tagFaceGroup *faceGroup;
   uint32_t e12,e23,e31;
+  // FIXME mortene: don't use "bool"
   bool isDegenerated;
 
   SbVec3f getNormal(tagContext *con) const;
@@ -306,6 +307,7 @@ typedef struct tagFaceGroup {
   SoIndexedTriangleStripSet* createSoIndexedTriStripSet_i(tagContext *con);
 } FaceGroup;
 
+// FIXME mortene: don't use "namespace"
 namespace DefaultFaceGroup {
   static tagMaterial* getMaterial(tagContext *con);
   static bool isEmpty(tagContext *con);
@@ -817,10 +819,12 @@ CHUNK(LoadNTriObject)
       // texture transform
       if (fg->hasTexture2Transform(con)) {
         con->cObj->addChild(fg->getSoTexture2Transform(con));
+        // FIXME mortene: don't use "true"
         textureTransformActive = true;
       } else
         if (textureTransformActive) {
           con->cObj->addChild(new SoTexture2Transform);
+          // FIXME mortene: don't use "false"
           textureTransformActive = false;
         }
     }
