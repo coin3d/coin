@@ -166,9 +166,9 @@ PrivateHeaders = \
 	wrappers.cpp # for checking validity of inline C++ wrapper headers
 
 
-noinst_PROGRAMS = wrappers
-wrappers_SOURCES = wrappers.cpp
-@BUILD_WITH_MSVC_TRUE@wrappers_LDADD = threads.lst
+# win32 isn't able to link wrappers without including all dependencies
+@BUILD_WITH_MSVC_FALSE@noinst_PROGRAMS = wrappers
+@BUILD_WITH_MSVC_FALSE@wrappers_SOURCES = wrappers.cpp
 @BUILD_WITH_MSVC_FALSE@wrappers_LDADD = libthreads.la
 
 
@@ -242,12 +242,14 @@ libthreads@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	sync.lo fifo.lo
 libthreads@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libthreads@SUFFIX@LINKHACK_la_OBJECTS)
-noinst_PROGRAMS = wrappers$(EXEEXT)
+@BUILD_WITH_MSVC_TRUE@noinst_PROGRAMS =
+@BUILD_WITH_MSVC_FALSE@noinst_PROGRAMS = wrappers$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
 
-am_wrappers_OBJECTS = wrappers.$(OBJEXT)
+@BUILD_WITH_MSVC_TRUE@am_wrappers_OBJECTS =
+@BUILD_WITH_MSVC_FALSE@am_wrappers_OBJECTS = wrappers.$(OBJEXT)
 wrappers_OBJECTS = $(am_wrappers_OBJECTS)
-@BUILD_WITH_MSVC_TRUE@wrappers_DEPENDENCIES = threads.lst
+@BUILD_WITH_MSVC_TRUE@wrappers_DEPENDENCIES =
 @BUILD_WITH_MSVC_FALSE@wrappers_DEPENDENCIES = libthreads.la
 wrappers_LDFLAGS =
 

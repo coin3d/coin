@@ -26,11 +26,11 @@ PublicHeaders = \
 PrivateHeaders = \
 	wrappers.cpp # for checking validity of inline C++ wrapper headers
 
+if BUILD_WITH_MSVC
+# win32 isn't able to link wrappers without including all dependencies
+else
 noinst_PROGRAMS = wrappers
 wrappers_SOURCES = wrappers.cpp
-if BUILD_WITH_MSVC
-wrappers_LDADD = threads.lst
-else
 wrappers_LDADD = libthreads.la
 endif
 
