@@ -3513,4 +3513,12 @@ end
 
     20040728 mortene, bug reported by Eivind Rovik.
 
+    UPDATE 20040802 mortene: wrote a minimal example, using only GL
+    and GLUT, see
+
+      Coin/docs/driver-bugs/2004-08-02--nvidia-v61.77.cpp
+
+    Not yet sent to NVIDIA, awaiting confirmation from more systems
+    than just our own niord.trh.sim.no
+
 =====================================================================
