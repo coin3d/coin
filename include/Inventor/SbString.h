@@ -22,7 +22,6 @@
 
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbBasic.h>
-#include <Inventor/SbName.h>
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -81,5 +80,10 @@ COIN_DLL_API int operator == (const SbString & str1, const SbString & str2);
 COIN_DLL_API int operator != (const SbString & str, const char * s);
 COIN_DLL_API int operator != (const char * s, const SbString & str);
 COIN_DLL_API int operator != (const SbString & str1, const SbString & str2);
+
+#ifndef COIN_INTERNAL
+// For Open Inventor compatibility.
+#include <Inventor/SbName.h>
+#endif // !COIN_INTERNAL
 
 #endif // !COIN_SBSTRING_H
