@@ -2098,7 +2098,7 @@ SoBase::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type)
   \since Coin 2.3
 */
 void 
-SoBase::globalLock(void)
+SoBase::staticDataLock(void)
 {
   CC_MUTEX_LOCK(sobase_global_mutex);
 }
@@ -2108,7 +2108,7 @@ SoBase::globalLock(void)
   \since Coin 2.3
 */
 void 
-SoBase::globalUnlock(void)
+SoBase::staticDataUnlock(void)
 {
   CC_MUTEX_UNLOCK(sobase_global_mutex);
 }

@@ -102,8 +102,8 @@ protected:
   virtual SbBool readInstance(SoInput * in, unsigned short flags) = 0;
 
   static uint32_t getCurrentWriteCounter(void);
-  static void globalLock(void);
-  static void globalUnlock(void);
+  static void staticDataLock(void);
+  static void staticDataUnlock(void);
 
 private:
   static SbBool readReference(SoInput * in, SoBase *& base);
