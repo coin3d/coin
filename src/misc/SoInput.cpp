@@ -2697,10 +2697,15 @@ SoInput_FileInfo::readHeader(SoInput * soinput)
     this->ivversion = 0.0f;
   }
   else {
-    if (this->header == SbString("#VRML V1.0 ascii")) {
+    SbString vrml1string("#VRML V1.0 ascii");
+    SbString vrml2string("#VRML V2.0 utf8");
+
+    if (strncmp(vrml1string.getString(), this->header.getString(),
+                vrml1string.getLength()) == 0) {
       this->vrml1file = TRUE;
     }
-    else if (this->header == SbString("#VRML V2.0 utf8")) {
+    else if (strncmp(vrml2string.getString(), this->header.getString(),
+                     vrml2string.getLength()) == 0) {
       this->vrml2file = TRUE;
     }
     if (this->prefunc) this->prefunc(this->userdata, soinput);
