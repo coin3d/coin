@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -48,7 +48,7 @@ static SoGetMatrixAction *matrixAction = NULL;
   Will be called at the end of your program to free static memory
   used by this class.
 */
-void 
+void
 SoPickedPoint::cleanClass()
 {
   delete matrixAction;
@@ -80,7 +80,7 @@ SoPickedPoint::SoPickedPoint(const SoPickedPoint &pp)
   FIXME: write doc
 */
 SoPickedPoint::SoPickedPoint(const SoPath * const path, SoState * const state,
-			     const SbVec3f &objSpacePoint)
+                             const SbVec3f &objSpacePoint)
 {
   this->path = path->copy();
   this->path->ref();
@@ -92,7 +92,7 @@ SoPickedPoint::SoPickedPoint(const SoPath * const path, SoState * const state,
   this->materialIndex = 0;
   this->onGeometry = TRUE;
   this->viewport = SoViewportRegionElement::get(state);
-  
+
   int pathlen = this->path->getLength();
   for (int i = 0; i < pathlen; i++) {
     this->detailList.append(NULL);
@@ -106,7 +106,7 @@ SoPickedPoint::~SoPickedPoint()
 {
   assert(this->path);
   this->path->unref();
-  
+
   int n = this->detailList.getLength();
   for (int i = 0; i < n; i++) {
     delete this->detailList[i];
@@ -171,7 +171,7 @@ SoPickedPoint::getPath() const
 /*!
   FIXME: write doc
  */
-SbBool 
+SbBool
 SoPickedPoint::isOnGeometry() const
 {
   return this->onGeometry;
@@ -308,12 +308,12 @@ SoPickedPoint::setDetail(SoDetail *detail, SoNode *node)
   }
 }
 
-void 
+void
 SoPickedPoint::applyMatrixAction(const SoNode * const node) const
 {
   if (node) {
-    // FIXME: it should be possible to optimize this by 
-    // avoiding to create 
+    // FIXME: it should be possible to optimize this by
+    // avoiding to create
     int idx = this->path->findNode(node);
     assert(idx >= 0);
     SoPath *subpath = this->path->copy(idx+1);
@@ -341,4 +341,3 @@ SoPickedPoint::getMatrixAction() const
   }
   return matrixAction;
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -43,7 +43,7 @@
   The default SbViewportRegion constructor initializes the viewport to a
   (100, 100) window with 72 pixels per inch resolution.
  */
-SbViewportRegion::SbViewportRegion(void) 
+SbViewportRegion::SbViewportRegion(void)
   : winsize(100, 100),
     vporigin(0.0f, 0.0f),
     vpsize(1.0f, 1.0f)
@@ -53,7 +53,7 @@ SbViewportRegion::SbViewportRegion(void)
 
 /*!
   Construct and initialize an SbViewportRegion instance with the
-  given pixel value window dimensions. 
+  given pixel value window dimensions.
  */
 SbViewportRegion::SbViewportRegion(short width, short height)
   : winsize(width, height),
@@ -63,14 +63,14 @@ SbViewportRegion::SbViewportRegion(short width, short height)
 #if COIN_DEBUG
   if (width<0) {
     SoDebugError::postWarning("SbViewportRegion::SbViewportRegion",
-			      "width (%d) should be >=0. Clamped to 0.",
-			      width);
+                              "width (%d) should be >=0. Clamped to 0.",
+                              width);
     winsize[0]=0;
   }
   if (height<0) {
     SoDebugError::postWarning("SbViewportRegion::SbViewportRegion",
-			      "height (%d) should be >=0. Clamped to 0.",
-			      height);
+                              "height (%d) should be >=0. Clamped to 0.",
+                              height);
     winsize[1]=0;
   }
 #endif // COIN_DEBUG
@@ -80,7 +80,7 @@ SbViewportRegion::SbViewportRegion(short width, short height)
 
 /*!
   Construct and initialize an SbViewportRegion instance with the
-  given pixel value window dimensions. 
+  given pixel value window dimensions.
  */
 SbViewportRegion::SbViewportRegion(SbVec2s winsize)
   : winsize(winsize),
@@ -90,14 +90,14 @@ SbViewportRegion::SbViewportRegion(SbVec2s winsize)
 #if COIN_DEBUG
   if (winsize[0]<0) {
     SoDebugError::postWarning("SbViewportRegion::SbViewportRegion",
-			      "winsize[0] (%d) should be >=0. Clamped to 0.",
-			      winsize[0]);
+                              "winsize[0] (%d) should be >=0. Clamped to 0.",
+                              winsize[0]);
     this->winsize[0]=0;
   }
   if (winsize[1]<0) {
     SoDebugError::postWarning("SbViewportRegion::SbViewportRegion",
-			      "winsize[1] (%d) should be >=0. Clamped to 0.",
-			      winsize[1]);
+                              "winsize[1] (%d) should be >=0. Clamped to 0.",
+                              winsize[1]);
     this->winsize[1]=0;
   }
 #endif // COIN_DEBUG
@@ -118,19 +118,19 @@ SbViewportRegion::SbViewportRegion(const SbViewportRegion& vpReg)
 
   \sa getWindowSize().
  */
-void 
+void
 SbViewportRegion::setWindowSize(short width, short height)
 {
 #if COIN_DEBUG
   if (width<0) {
     SoDebugError::postWarning("SbViewportRegion::setWindowSize",
-			      "width (%d) should be >=0. Clamped to 0.",width);
+                              "width (%d) should be >=0. Clamped to 0.",width);
     width=0;
   }
   if (height<0) {
     SoDebugError::postWarning("SbViewportRegion::setWindowSize",
-			      "height (%d) should be >=0. Clamped to 0.",
-			      height);
+                              "height (%d) should be >=0. Clamped to 0.",
+                              height);
     height=0;
   }
 #endif // COIN_DEBUG
@@ -143,20 +143,20 @@ SbViewportRegion::setWindowSize(short width, short height)
 
   \sa getWindowSize().
  */
-void 
+void
 SbViewportRegion::setWindowSize(SbVec2s winsize)
 {
 #if COIN_DEBUG
   if (winsize[0]<0) {
     SoDebugError::postWarning("SbViewportRegion::setWindowSize",
-			      "winsize[0] (%d) should be >=0. Clamped to 0.",
-			      winsize[0]);
+                              "winsize[0] (%d) should be >=0. Clamped to 0.",
+                              winsize[0]);
     winsize[0]=0;
   }
   if (winsize[1]<0) {
     SoDebugError::postWarning("SbViewportRegion::setWindowSize",
-			      "winsize[1] (%d) should be >=0. Clamped to 0.",
-			      winsize[1]);
+                              "winsize[1] (%d) should be >=0. Clamped to 0.",
+                              winsize[1]);
     winsize[1]=0;
   }
 #endif // COIN_DEBUG
@@ -170,20 +170,20 @@ SbViewportRegion::setWindowSize(SbVec2s winsize)
 
   \sa getViewportOrigin(), getViewportSize(), setViewportPixels().
  */
-void 
-SbViewportRegion::setViewport(float left, float bottom, 
-			      float width, float height)
+void
+SbViewportRegion::setViewport(float left, float bottom,
+                              float width, float height)
 {
 #if COIN_DEBUG
   if (width<0) {
     SoDebugError::postWarning("SbViewportRegion::setViewport",
-			      "width (%d) should be >=0. Clamped to 0.",width);
+                              "width (%d) should be >=0. Clamped to 0.",width);
     width=0;
   }
   if (height<0) {
     SoDebugError::postWarning("SbViewportRegion::setViewport",
-			      "height (%d) should be >=0. Clamped to 0.",
-			      height);
+                              "height (%d) should be >=0. Clamped to 0.",
+                              height);
     height=0;
   }
 #endif // COIN_DEBUG
@@ -198,20 +198,20 @@ SbViewportRegion::setViewport(float left, float bottom,
 
   \sa getViewportOrigin(), getViewportSize(), setViewportPixels().
  */
-void 
+void
 SbViewportRegion::setViewport(SbVec2f origin, SbVec2f size)
 {
 #if COIN_DEBUG
   if (size[0]<0) {
     SoDebugError::postWarning("SbViewportRegion::setViewport",
-			      "size[0] (%d) should be >=0. Clamped to 0.",
-			      size[0]);
+                              "size[0] (%d) should be >=0. Clamped to 0.",
+                              size[0]);
     size[0]=0;
   }
   if (size[1]<0) {
     SoDebugError::postWarning("SbViewportRegion::setViewport",
-			      "size[1] (%d) should be >=0. Clamped to 0.",
-			      size[1]);
+                              "size[1] (%d) should be >=0. Clamped to 0.",
+                              size[1]);
     size[1]=0;
   }
 #endif // COIN_DEBUG
@@ -225,28 +225,28 @@ SbViewportRegion::setViewport(SbVec2f origin, SbVec2f size)
 
   \sa getViewportOriginPixels(), getViewportSizePixels(), setViewport().
  */
-void 
-SbViewportRegion::setViewportPixels(short left, short bottom, 
-				    short width, short height)
+void
+SbViewportRegion::setViewportPixels(short left, short bottom,
+                                    short width, short height)
 {
 #if COIN_DEBUG
   if (width<0) {
     SoDebugError::postWarning("SbViewportRegion::setViewportPixels",
-			      "width (%d) should be >=0. Clamped to 0.",width);
+                              "width (%d) should be >=0. Clamped to 0.",width);
     width=0;
   }
   if (height<0) {
     SoDebugError::postWarning("SbViewportRegion::setViewportPixels",
-			      "height (%d) should be >=0. Clamped to 0.",
-			      height);
+                              "height (%d) should be >=0. Clamped to 0.",
+                              height);
     height=0;
   }
 #endif // COIN_DEBUG
 
   this->vporigin.setValue(((float)left)/((float)this->winsize[0]),
-			  ((float)bottom)/((float)this->winsize[1]));
+                          ((float)bottom)/((float)this->winsize[1]));
   this->vpsize.setValue(((float)width)/((float)this->winsize[0]),
-			((float)height)/((float)this->winsize[1]));
+                        ((float)height)/((float)this->winsize[1]));
 }
 
 /*!
@@ -255,20 +255,20 @@ SbViewportRegion::setViewportPixels(short left, short bottom,
 
   \sa getViewportOriginPixels(), getViewportSizePixels(), setViewport().
  */
-void 
+void
 SbViewportRegion::setViewportPixels(SbVec2s origin, SbVec2s size)
 {
 #if COIN_DEBUG
   if (size[0]<0) {
     SoDebugError::postWarning("SbViewportRegion::setViewportPixels",
-			      "size[0] (%d) should be >=0. Clamped to 0.",
-			      size[0]);
+                              "size[0] (%d) should be >=0. Clamped to 0.",
+                              size[0]);
     size[0]=0;
   }
   if (size[1]<0) {
     SoDebugError::postWarning("SbViewportRegion::setViewportPixels",
-			      "size[1] (%d) should be >=0. Clamped to 0.",
-			      size[1]);
+                              "size[1] (%d) should be >=0. Clamped to 0.",
+                              size[1]);
     size[1]=0;
   }
 #endif // COIN_DEBUG
@@ -281,7 +281,7 @@ SbViewportRegion::setViewportPixels(SbVec2s origin, SbVec2s size)
 
   \sa setWindowSize().
  */
-const SbVec2s& 
+const SbVec2s&
 SbViewportRegion::getWindowSize(void) const
 {
   return this->winsize;
@@ -309,7 +309,7 @@ SbViewportRegion::getViewportOriginPixels(void) const
   // Cast away constness. Ugly.
   SbViewportRegion * thisp = (SbViewportRegion *)this;
   thisp->vporigin_s.setValue((short)(this->winsize[0] * this->vporigin[0]),
-			     (short)(this->winsize[1] * this->vporigin[1]));
+                             (short)(this->winsize[1] * this->vporigin[1]));
   return this->vporigin_s;
 }
 
@@ -335,7 +335,7 @@ SbViewportRegion::getViewportSizePixels(void) const
   // Cast away constness. Ugly.
   SbViewportRegion * thisp = (SbViewportRegion *)this;
   thisp->vpsize_s = SbVec2s((short)(this->winsize[0] * this->vpsize[0]),
-			    (short)(this->winsize[1] * this->vpsize[1]));
+                            (short)(this->winsize[1] * this->vpsize[1]));
   return this->vpsize_s;
 }
 
@@ -343,7 +343,7 @@ SbViewportRegion::getViewportSizePixels(void) const
   Returns the aspect ratio of the viewport region. The aspect ratio is
   calculated as pixelwidth divided on pixelheight.
  */
-float 
+float
 SbViewportRegion::getViewportAspectRatio(void) const
 {
   // FIXME: what if height == 0? 19981021 mortene.
@@ -364,14 +364,14 @@ SbViewportRegion::getViewportAspectRatio(void) const
   origin coordinates will be clamped.
 
   \sa scaleHeight().  */
-void 
+void
 SbViewportRegion::scaleWidth(float ratio)
 {
 #if COIN_DEBUG
   if (ratio<0.0f) {
     SoDebugError::postWarning("SbViewportRegion::scaleWidth",
-			      "ratio (%f) should be >=0.0f. Clamped to 0.0f.",
-			      ratio);
+                              "ratio (%f) should be >=0.0f. Clamped to 0.0f.",
+                              ratio);
     ratio=0.0f;
   }
 #endif // COIN_DEBUG
@@ -380,7 +380,7 @@ SbViewportRegion::scaleWidth(float ratio)
   // pretty lousy, but this is the way SGI OI2.1 behaves.
   //FIXME: Check this. 19980910 kintel.
 
-  float oldw = this->vpsize[0]; 
+  float oldw = this->vpsize[0];
   this->vpsize[0] *= ratio;
   this->vporigin[0] -= (this->vpsize[0] - oldw) / 2.0f;
 
@@ -399,14 +399,14 @@ SbViewportRegion::scaleWidth(float ratio)
   origin coordinates will be clamped.
 
   \sa scaleWidth().  */
-void 
+void
 SbViewportRegion::scaleHeight(float ratio)
 {
 #if COIN_DEBUG
   if (ratio<0.0f) {
     SoDebugError::postWarning("SbViewportRegion::scaleheight",
-			      "ratio (%f) should be >=0.0f. Clamped to 0.0f.",
-			      ratio);
+                              "ratio (%f) should be >=0.0f. Clamped to 0.0f.",
+                              ratio);
     ratio=0.0f;
   }
 #endif // COIN_DEBUG
@@ -415,7 +415,7 @@ SbViewportRegion::scaleHeight(float ratio)
   // pretty lousy, but this is the way SGI OI2.1 behaves.
   //FIXME: Check this. 19980910 kintel.
 
-  float oldh = this->vpsize[1]; 
+  float oldh = this->vpsize[1];
   this->vpsize[1] *= ratio;
   this->vporigin[1] -= (this->vpsize[1] - oldh) / 2.0f;
 
@@ -428,14 +428,14 @@ SbViewportRegion::scaleHeight(float ratio)
 
   \sa getPixelsPerInch().
  */
-void 
+void
 SbViewportRegion::setPixelsPerInch(float ppi)
 {
 #if COIN_DEBUG
   if (ppi<0.0f) {
     SoDebugError::postWarning("SbViewportRegion::setPixelsPerInch",
-			      "ppi value (%f) should be >=0.0f. "
-			      "Clamped to 0.0f.",ppi);
+                              "ppi value (%f) should be >=0.0f. "
+                              "Clamped to 0.0f.",ppi);
     ppi=0.0f;
   }
 #endif // COIN_DEBUG
@@ -448,7 +448,7 @@ SbViewportRegion::setPixelsPerInch(float ppi)
 
   \sa setPixelsPerInch().
  */
-float 
+float
 SbViewportRegion::getPixelsPerInch(void) const
 {
   return this->pixperinch;
@@ -460,7 +460,7 @@ SbViewportRegion::getPixelsPerInch(void) const
 
   \sa setPixelsPerInch(), getPixelsPerInch().
  */
-float 
+float
 SbViewportRegion::getPixelsPerPoint(void) const
 {
   return this->pixperinch / 72.0f;
@@ -474,7 +474,7 @@ SbViewportRegion::getPixelsPerPoint(void) const
 int
 operator ==(const SbViewportRegion& reg1, const SbViewportRegion& reg2)
 {
-  return 
+  return
     reg1.winsize == reg2.winsize &&
     reg1.getViewportOriginPixels() == reg2.getViewportOriginPixels() &&
     reg1.getViewportSizePixels() == reg2.getViewportSizePixels() &&

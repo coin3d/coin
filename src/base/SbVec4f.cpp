@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -120,8 +120,8 @@ SbVec4f::getReal(SbVec3f & v) const
 #if COIN_DEBUG
   if(!(this->vec[3] != 0.0f))
     SoDebugError::postWarning("SbVec4f::getReal",
-			      "The 4th vector component is zero => "
-			      "division by zero");
+                              "The 4th vector component is zero => "
+                              "division by zero");
 #endif // COIN_DEBUG
 
   v[0] = this->vec[0]/this->vec[3];
@@ -162,7 +162,7 @@ float
 SbVec4f::length(void) const
 {
   return (float)sqrt(vec[0]*vec[0] + vec[1]*vec[1] +
-		     vec[2]*vec[2] + vec[3]*vec[3]);
+                     vec[2]*vec[2] + vec[3]*vec[3]);
 }
 
 /*!
@@ -188,8 +188,8 @@ SbVec4f::normalize(void)
 #if COIN_DEBUG
   if(!(len > 0.0f))
     SoDebugError::postWarning("SbVec4f::normalize",
-			      "The length of the vector should be > 0.0f "
-			      "to be able to normalize.");
+                              "The length of the vector should be > 0.0f "
+                              "to be able to normalize.");
 #endif // COIN_DEBUG
 
   operator/=(len);
@@ -202,7 +202,7 @@ SbVec4f::normalize(void)
 
   \sa getValue().
  */
-SbVec4f& 
+SbVec4f&
 SbVec4f::setValue(const float v[4])
 {
   this->vec[0] = v[0];
@@ -217,7 +217,7 @@ SbVec4f::setValue(const float v[4])
 
   \sa getValue().
  */
-SbVec4f&  
+SbVec4f&
 SbVec4f::setValue(const float x, const float y, const float z, const float w)
 {
   this->vec[0] = x;
@@ -232,13 +232,13 @@ SbVec4f::setValue(const float x, const float y, const float z, const float w)
 
   \sa getValue() and setValue().
  */
-float&  
+float&
 SbVec4f::operator [](const int i)
 {
 #if COIN_DEBUG
   if(!(i>=0 && i<=3))
     SoDebugError::postWarning("SbVec4f::operator[]",
-			      "Index out of bounds [0..3].");
+                              "Index out of bounds [0..3].");
 #endif // COIN_DEBUG
 
   return this->vec[i];
@@ -249,13 +249,13 @@ SbVec4f::operator [](const int i)
 
   \sa getValue() and setValue().
  */
-const float&  
+const float&
 SbVec4f::operator [](const int i) const
 {
 #if COIN_DEBUG
   if(!(i>=0 && i<=3))
     SoDebugError::postWarning("SbVec4f::operator[]",
-			      "Index out of bounds [0..3].");
+                              "Index out of bounds [0..3].");
 #endif // COIN_DEBUG
 
   return this->vec[i];
@@ -264,7 +264,7 @@ SbVec4f::operator [](const int i) const
 /*!
   Multiply components of vector with value \a d. Returns reference to self.
  */
-SbVec4f&  
+SbVec4f&
 SbVec4f::operator *=(const float d)
 {
   this->vec[0] *= d;
@@ -277,13 +277,13 @@ SbVec4f::operator *=(const float d)
 /*!
   Divides components of vector with value \a d. Returns reference to self.
  */
-SbVec4f&  
+SbVec4f&
 SbVec4f::operator /=(const float d)
 {
 #if COIN_DEBUG
   if(!(d != 0.0f))
     SoDebugError::postWarning("SbVec4f::operator/=",
-			      "Division by zero.");
+                              "Division by zero.");
 #endif // COIN_DEBUG
 
   // Assumes 1 div and 4 muls is quicker than 4 divs.
@@ -298,7 +298,7 @@ SbVec4f::operator /=(const float d)
 /*!
   Adds this vector and vector \a u. Returns reference to self.
  */
-SbVec4f&  
+SbVec4f&
 SbVec4f::operator +=(const SbVec4f& u)
 {
   this->vec[0] += u.vec[0];
@@ -311,7 +311,7 @@ SbVec4f::operator +=(const SbVec4f& u)
 /*!
   Subtracts vector \a u from this vector. Returns reference to self.
  */
-SbVec4f&  
+SbVec4f&
 SbVec4f::operator -=(const SbVec4f& u)
 {
   this->vec[0] -= u.vec[0];
@@ -327,7 +327,7 @@ SbVec4f::operator -=(const SbVec4f& u)
 
   \sa negate().
  */
-SbVec4f 
+SbVec4f
 SbVec4f::operator -(void) const
 {
   return SbVec4f(-this->vec[0], -this->vec[1], -this->vec[2], -this->vec[3]);
@@ -351,7 +351,7 @@ operator *(const SbVec4f& v, const float d)
   Returns an SbVec4f instance which is the components of vector \a v
   multiplied with \a d.
  */
-SbVec4f 
+SbVec4f
 operator *(const float d, const SbVec4f& v)
 {
   return v*d;
@@ -363,13 +363,13 @@ operator *(const float d, const SbVec4f& v)
   Returns an SbVec4f instance which is the components of vector \a v
   divided on the scalar factor \a d.
  */
-SbVec4f 
+SbVec4f
 operator /(const SbVec4f& v, const float d)
 {
 #if COIN_DEBUG
   if(!(d != 0.0f))
     SoDebugError::postWarning("SbVec4f::operator/",
-			      "Division by zero.");
+                              "Division by zero.");
 #endif // COIN_DEBUG
 
   return SbVec4f(v.vec[0] / d, v.vec[1] / d, v.vec[2] / d, v.vec[3] / d);
@@ -380,13 +380,13 @@ operator /(const SbVec4f& v, const float d)
 
   Returns an SbVec4f instance which is the sum of vectors \a v1 and \a v2.
  */
-SbVec4f 
+SbVec4f
 operator +(const SbVec4f& v1, const SbVec4f& v2)
 {
   return SbVec4f(v1.vec[0] + v2.vec[0],
-		 v1.vec[1] + v2.vec[1],
-		 v1.vec[2] + v2.vec[2],
-		 v1.vec[3] + v2.vec[3]);
+                 v1.vec[1] + v2.vec[1],
+                 v1.vec[2] + v2.vec[2],
+                 v1.vec[3] + v2.vec[3]);
 }
 
 /*!
@@ -395,13 +395,13 @@ operator +(const SbVec4f& v1, const SbVec4f& v2)
   Returns an SbVec4f instance which is vector \a v2 subtracted from
   vector \a v1.
  */
-SbVec4f 
+SbVec4f
 operator -(const SbVec4f& v1, const SbVec4f& v2)
 {
   return SbVec4f(v1.vec[0] - v2.vec[0],
-		 v1.vec[1] - v2.vec[1],
-		 v1.vec[2] - v2.vec[2],
-		 v1.vec[3] - v2.vec[3]);
+                 v1.vec[1] - v2.vec[1],
+                 v1.vec[2] - v2.vec[2],
+                 v1.vec[3] - v2.vec[3]);
 }
 
 /*!
@@ -411,12 +411,12 @@ operator -(const SbVec4f& v1, const SbVec4f& v2)
 
   \sa equals().
  */
-int 
+int
 operator ==(const SbVec4f& v1, const SbVec4f& v2)
 {
   if(v1.vec[0] == v2.vec[0] &&
      v1.vec[1] == v2.vec[1] &&
-     v1.vec[2] == v2.vec[2] && 
+     v1.vec[2] == v2.vec[2] &&
      v1.vec[3] == v2.vec[3]) return TRUE;
   return FALSE;
 }

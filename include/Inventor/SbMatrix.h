@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -36,9 +36,9 @@ class SbMatrix {
 public:
   SbMatrix(void);
   SbMatrix(const float a11, const float a12, const float a13, const float a14,
-	   const float a21, const float a22, const float a23, const float a24,
-	   const float a31, const float a32, const float a33, const float a34,
-	   const float a41, const float a42, const float a43, const float a44);
+           const float a21, const float a22, const float a23, const float a24,
+           const float a31, const float a32, const float a33, const float a34,
+           const float a41, const float a42, const float a43, const float a44);
   SbMatrix(const SbMat& matrix);
   ~SbMatrix(void);
 
@@ -53,7 +53,7 @@ public:
   void setRotate(const SbRotation& q);
   SbMatrix inverse(void) const;
   float det3(int r1, int r2, int r3,
-	     int c1, int c2, int c3) const;
+             int c1, int c2, int c3) const;
   float det3(void) const;
   float det4(void) const;
 
@@ -75,17 +75,17 @@ public:
   void setTranslate(const SbVec3f& t);
   void setTransform(const SbVec3f& t, const SbRotation& r, const SbVec3f& s);
   void setTransform(const SbVec3f& t, const SbRotation& r, const SbVec3f& s,
-		    const SbRotation& so);
+                    const SbRotation& so);
   void setTransform(const SbVec3f& translation,
-		    const SbRotation& rotation, const SbVec3f& scaleFactor,
-		    const SbRotation& scaleOrientation, const SbVec3f& center);
+                    const SbRotation& rotation, const SbVec3f& scaleFactor,
+                    const SbRotation& scaleOrientation, const SbVec3f& center);
   void getTransform(SbVec3f& t, SbRotation& r,
-		    SbVec3f& s, SbRotation& so) const;
+                    SbVec3f& s, SbRotation& so) const;
   void getTransform(SbVec3f& translation, SbRotation& rotation,
-		    SbVec3f& scaleFactor, SbRotation& scaleOrientation,
-		    const SbVec3f& center) const;
+                    SbVec3f& scaleFactor, SbRotation& scaleOrientation,
+                    const SbVec3f& center) const;
   SbBool factor(SbMatrix& r, SbVec3f& s, SbMatrix& u, SbVec3f& t,
-		SbMatrix& proj);
+                SbMatrix& proj);
   const SbBool LUDecomposition(int index[4], float& d);
   void LUBackSubstitution(int index[4], float b[4]) const;
   SbMatrix transpose(void) const;

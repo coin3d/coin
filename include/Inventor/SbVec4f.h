@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -41,7 +41,7 @@ public:
   float normalize(void);
   SbVec4f& setValue(const float v[4]);
   SbVec4f& setValue(const float x, const float y, const float z,
-		    const float w);
+                    const float w);
   float& operator [](const int i);
   const float& operator [](const int i) const;
   SbVec4f& operator *=(const float d);

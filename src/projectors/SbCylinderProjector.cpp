@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -64,7 +64,7 @@ SbCylinderProjector::SbCylinderProjector(SbBool /* orientToEye */)
   FIXME: write doc
 */
 SbCylinderProjector::SbCylinderProjector(const SbCylinder & /* cyl */,
-					 SbBool /* orientToEye */)
+                                         SbBool /* orientToEye */)
 {
   // FIXME: not implemented.
   assert(0);
@@ -75,7 +75,7 @@ SbCylinderProjector::SbCylinderProjector(const SbCylinder & /* cyl */,
 */
 SbVec3f
 SbCylinderProjector::projectAndGetRotation(const SbVec2f &/* point */,
-					   SbRotation &/* rot */)
+                                           SbRotation &/* rot */)
 {
   // FIXME: not implemented.
   assert(0);
@@ -88,7 +88,7 @@ SbCylinderProjector::projectAndGetRotation(const SbVec2f &/* point */,
 */
 SbRotation
 SbCylinderProjector::getRotation(const SbVec3f &/* point1 */,
-				 const SbVec3f &/* point2 */)
+                                 const SbVec3f &/* point2 */)
 {
   // FIXME: not implemented.
   assert(0);
@@ -176,7 +176,7 @@ SbCylinderProjector::isPointInFront(const SbVec3f &/* point */) const
 */
 SbBool
 SbCylinderProjector::intersectCylinderFront(const SbLine & /* line */,
-					    SbVec3f & /* result */)
+                                            SbVec3f & /* result */)
 {
   // FIXME: not implemented.
   assert(0);

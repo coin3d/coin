@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -57,8 +57,8 @@
 SoType SoFieldContainer::classTypeId = SoType::badType();
 
 
-/*! 
-  The constructor. 
+/*!
+  The constructor.
 */
 
 SoFieldContainer::SoFieldContainer(void)
@@ -66,17 +66,17 @@ SoFieldContainer::SoFieldContainer(void)
 {
 }
 
-/*! 
-  The destructor. 
+/*!
+  The destructor.
 */
 
 SoFieldContainer::~SoFieldContainer(void)
 {
 }
 
-/*! 
+/*!
   This static method initializes stuff so the SoFieldContainer class can
-  function properly. 
+  function properly.
 */
 void
 SoFieldContainer::initClass(void)
@@ -90,9 +90,9 @@ SoFieldContainer::initClass(void)
     SoType::createType(inherited::getClassTypeId(), "FieldContainer", NULL);
 }
 
-/*! 
+/*!
   This static method returns the SoType object associated with
-  SoFieldContainer objects. 
+  SoFieldContainer objects.
 */
 SoType
 SoFieldContainer::getClassTypeId(void)
@@ -100,9 +100,9 @@ SoFieldContainer::getClassTypeId(void)
   return SoFieldContainer::classTypeId;
 }
 
-/*! 
+/*!
   This method sets all fields which we are parenting to their respective
-  default values. 
+  default values.
 */
 void
 SoFieldContainer::setToDefaults(void)
@@ -112,9 +112,9 @@ SoFieldContainer::setToDefaults(void)
   assert(0 && "FIXME: not implemented");
 }
 
-/*! 
+/*!
   This method checks to see if the fields have their default values, and
-  returns \a TRUE if that is the case. 
+  returns \a TRUE if that is the case.
 */
 SbBool
 SoFieldContainer::hasDefaultValues(void) const
@@ -125,9 +125,9 @@ SoFieldContainer::hasDefaultValues(void) const
   return FALSE;
 }
 
-/*! 
+/*!
   This method returns TRUE if the values of the fields of this and container
-  are equal. Fields are assumed to be of the same type. 
+  are equal. Fields are assumed to be of the same type.
 */
 SbBool
 SoFieldContainer::fieldsAreEqual(const SoFieldContainer * const container) const
@@ -143,14 +143,14 @@ SoFieldContainer::fieldsAreEqual(const SoFieldContainer * const container) const
 }
 
 
-/*! 
+/*!
   This method copies the field values from container into this. The fields
   are assumed to be of the same type. The copyConnections flag decides
   whether the field connections are to be copied aswell.
 */
 void
 SoFieldContainer::copyFieldValues(const SoFieldContainer * const container,
-				  SbBool copyConnections)
+                                  SbBool copyConnections)
 {
   // FIXME: handle copyConnections flag. 19990403 mortene.
   assert(!copyConnections);
@@ -163,19 +163,19 @@ SoFieldContainer::copyFieldValues(const SoFieldContainer * const container,
 
   const int numFields = myfielddata->getNumFields();
 
-  assert(numFields == otherfielddata->getNumFields()); // or just return? 
+  assert(numFields == otherfielddata->getNumFields()); // or just return?
 
   for (int i = 0; i < numFields; i++)
     myfielddata->getField(this, i)->copyFrom(*(otherfielddata->getField(container, i)));
 }
 
 
-/*! 
+/*!
   This method parses the values of one or more fields from the
-  \a fieldDataString argument. 
+  \a fieldDataString argument.
 
   The fields must be in the same format as inside Inventor files.
-  \a TRUE is returned upon success, and \a FALSE otherwise. 
+  \a TRUE is returned upon success, and \a FALSE otherwise.
 
   \sa get()
 */
@@ -185,9 +185,9 @@ SoFieldContainer::set(const char * const fieldDataString)
   return set(fieldDataString, NULL);
 }
 
-/*! 
-  This methods stores the field data in the given fieldDataString argument. 
-  The format is the same as SoFieldContainer::set() expects. 
+/*!
+  This methods stores the field data in the given fieldDataString argument.
+  The format is the same as SoFieldContainer::set() expects.
 
   \sa set()
 */
@@ -198,12 +198,12 @@ SoFieldContainer::get(SbString & fieldDataString)
 }
 
 
-/*! 
+/*!
   This method adds the fields in this field container to the list argument,
-  and returns the number of fields added. 
-  
+  and returns the number of fields added.
+
   The virtual nature of this function means that it can be overridden to
-  e.g. hide private fields. 
+  e.g. hide private fields.
 */
 int
 SoFieldContainer::getFields(SoFieldList & /* list */) const
@@ -222,9 +222,9 @@ SoFieldContainer::getAllFields(SoFieldList & /* list */) const
   return 0;
 }
 
-/*! 
+/*!
   This method returns a pointer to the field with name \a fieldName, or
-  \a NULL if no such field exists. 
+  \a NULL if no such field exists.
 */
 SoField *
 SoFieldContainer::getField(const SbName & fieldName) const
@@ -238,9 +238,9 @@ SoFieldContainer::getField(const SbName & fieldName) const
   return (SoField *) NULL;
 }
 
-/*! 
+/*!
   This method returns a pointer to the eventIn with name \a fieldName,
-  or \a NULL if no such eventIn exists. 
+  or \a NULL if no such eventIn exists.
 */
 SoField *
 SoFieldContainer::getEventIn(const SbName & /* fieldName */) const
@@ -249,9 +249,9 @@ SoFieldContainer::getEventIn(const SbName & /* fieldName */) const
   return NULL;
 }
 
-/*! 
+/*!
   This method returns a pointer to the eventOut with name \a fieldName,
-  or \a NULL if no such eventOut exists. 
+  or \a NULL if no such eventOut exists.
 */
 SoField *
 SoFieldContainer::getEventOut(const SbName & /* fieldName */) const
@@ -261,16 +261,16 @@ SoFieldContainer::getEventOut(const SbName & /* fieldName */) const
 }
 
 
-/*! 
+/*!
   Finds the name of the given \a field and returns the value in the
-  \a fieldName argument. 
+  \a fieldName argument.
 
   \a TRUE is returned if the field is contained within this instance,
-  and \a FALSE otherwise. 
+  and \a FALSE otherwise.
 */
 SbBool
 SoFieldContainer::getFieldName(const SoField * const field,
-			       SbName & fieldName) const
+                               SbName & fieldName) const
 {
   const SoFieldData * const fields = this->getFieldData();
   assert(fields);
@@ -285,9 +285,9 @@ SoFieldContainer::getFieldName(const SoField * const field,
 }
 
 
-/*! 
+/*!
   This method sets whether notification will be propagated on changing the
-  values of the contained fields.  The old value of the setting is returned. 
+  values of the contained fields.  The old value of the setting is returned.
 
   \sa isNotifyEnabled()
 */
@@ -299,7 +299,7 @@ SoFieldContainer::enableNotify(const SbBool enable)
   return old;
 }
 
-/*! 
+/*!
   This method returns whether notification of changes to the field values
   in the container is propagated to its auditors.
 
@@ -312,12 +312,12 @@ SoFieldContainer::isNotifyEnabled(void) const
 }
 
 
-/*! 
+/*!
   FIXME: write doc
  */
 SbBool
 SoFieldContainer::set(const char * const /* fieldDataString */,
-		      SoInput * const /* dictIn */)
+                      SoInput * const /* dictIn */)
 {
   const SoFieldData * const fields = this->getFieldData();
   assert(fields);
@@ -326,12 +326,12 @@ SoFieldContainer::set(const char * const /* fieldDataString */,
   return FALSE;
 }
 
-/*! 
+/*!
   FIXME: write doc
  */
 void
 SoFieldContainer::get(SbString & /* fieldDataString */,
-		      SoOutput * const /* dictOut */)
+                      SoOutput * const /* dictOut */)
 {
   const SoFieldData * const fields = this->getFieldData();
   assert(fields);
@@ -340,7 +340,7 @@ SoFieldContainer::get(SbString & /* fieldDataString */,
 }
 
 
-/*! 
+/*!
   FIXME: write doc
  */
 void
@@ -354,13 +354,13 @@ SoFieldContainer::notify(SoNotList * list)
  */
 SbBool
 SoFieldContainer::validateNewFieldValue(SoField * /* pField */,
-					void * /* newValue */)
+                                        void * /* newValue */)
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
 }
 
-/*! 
+/*!
   Overloaded from SoBase to make sure field connections into other
   field containers are also accounted for.
  */
@@ -388,7 +388,7 @@ SoFieldContainer::addWriteReference(SoOutput * out, SbBool isFromField)
 }
 
 
-/*! 
+/*!
   FIXME: write doc
  */
 void
@@ -401,7 +401,7 @@ SoFieldContainer::writeInstance(SoOutput * out)
     fd->getField(this, i)->write(out, fd->getFieldName(i));
 }
 
-/*! 
+/*!
   Returns \a TRUE if this object is instantiated from one of the native
   Coin classes, \a FALSE if the object's class is outside the standard
   Coin library.
@@ -413,7 +413,7 @@ SoFieldContainer::getIsBuiltIn(void) const
 }
 
 
-/*! 
+/*!
   Must be overloaded in subclasses which actually contains fields. The
   default method returns \a NULL.
 
@@ -436,13 +436,13 @@ SoFieldContainer::getFieldData(void) const
  */
 void
 SoFieldContainer::copyContents(const SoFieldContainer * /* fromFC */,
-			       SbBool /* copyConnections */)
+                               SbBool /* copyConnections */)
 {
   assert(0 && "FIXME: not implemented");
 }
 
 
-/*! 
+/*!
   FIXME: write doc
  */
 SoFieldContainer *
@@ -453,7 +453,7 @@ SoFieldContainer::copyThroughConnection(void) const
 }
 
 
-/*! 
+/*!
   FIXME: write doc
  */
 void
@@ -463,18 +463,18 @@ SoFieldContainer::initCopyDict(void)
 }
 
 
-/*! 
+/*!
   FIXME: write doc
  */
 void
 SoFieldContainer::addCopy(const SoFieldContainer * const /* orig */,
-			  const SoFieldContainer * const /* copy */)
+                          const SoFieldContainer * const /* copy */)
 {
   assert(0 && "FIXME: not implemented");
 }
 
 
-/*! 
+/*!
   FIXME: write doc
  */
 SoFieldContainer *
@@ -485,19 +485,19 @@ SoFieldContainer::checkCopy(const SoFieldContainer * const /* orig */)
 }
 
 
-/*! 
+/*!
   FIXME: write doc
  */
 SoFieldContainer *
 SoFieldContainer::findCopy(const SoFieldContainer * const /* orig */,
-			   const SbBool /* copyConnections */)
+                           const SbBool /* copyConnections */)
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
 }
 
 
-/*! 
+/*!
   FIXME: write doc
  */
 void
@@ -507,7 +507,7 @@ SoFieldContainer::copyDone(void)
 }
 
 
-/*! 
+/*!
   FIXME: write doc
  */
 SbBool
@@ -523,8 +523,8 @@ SoFieldContainer::readInstance(SoInput * in, unsigned short /* flags */)
   if (in->read(typeString, TRUE)) {
     if (typeString == "fields") {
       if (!this->fieldData.readFieldTypes(in, this)) {
-	SoReadError::post(in, "Bad field specifications for node");
-	return FALSE;
+        SoReadError::post(in, "Bad field specifications for node");
+        return FALSE;
       }
     }
     else {

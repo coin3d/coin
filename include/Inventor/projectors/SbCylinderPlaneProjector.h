@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -29,16 +29,16 @@ class SbCylinderPlaneProjector : public SbCylinderSectionProjector
 public:
   SbCylinderPlaneProjector(float edgeTol = 0.9f, SbBool orientToEye = TRUE);
   SbCylinderPlaneProjector(const SbCylinder & cyl, float edgeTol = 0.9f,
-			   SbBool orientToEye = TRUE);
+                           SbBool orientToEye = TRUE);
 
   virtual SbProjector * copy(void) const;
   virtual SbVec3f project(const SbVec2f & point);
   virtual SbRotation getRotation(const SbVec3f & point1,
-				 const SbVec3f & point2);
+                                 const SbVec3f & point2);
 
 protected:
   SbRotation getRotation(const SbVec3f & point1, SbBool tol1,
-			 const SbVec3f & point2, SbBool tol2);
+                         const SbVec3f & point2, SbBool tol2);
 };
 
 #endif // !__SBCYLINDERPLANEPROJECTOR_H__

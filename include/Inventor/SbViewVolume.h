@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -45,24 +45,24 @@ public:
   SbMatrix getCameraSpaceMatrix(void) const;
   void projectPointToLine(const SbVec2f& pt, SbLine& line) const;
   void projectPointToLine(const SbVec2f& pt,
-			  SbVec3f& line0, SbVec3f& line1) const;
+                          SbVec3f& line0, SbVec3f& line1) const;
   void projectToScreen(const SbVec3f& src, SbVec3f& dst) const;
   SbPlane getPlane(const float distFromEye) const;
   SbVec3f getSightPoint(const float distFromEye) const;
   SbVec3f getPlanePoint(const float distFromEye,
-			const SbVec2f& normPoint) const;
+                        const SbVec2f& normPoint) const;
   SbRotation getAlignRotation(SbBool rightAngleOnly = FALSE) const;
   float getWorldToScreenScale(const SbVec3f& worldCenter,
-			      float normRadius) const;
+                              float normRadius) const;
   SbVec2f projectBox(const SbBox3f& box) const;
   SbViewVolume narrow(float left, float bottom,
-		      float right, float top) const;
+                      float right, float top) const;
   SbViewVolume narrow(const SbBox3f& box) const;
   void ortho(float left, float right,
-	     float bottom, float top,
-	     float nearval, float farval);
+             float bottom, float top,
+             float nearval, float farval);
   void perspective(float fovy, float aspect,
-		   float nearval, float farval);
+                   float nearval, float farval);
   void rotateCamera(const SbRotation& q);
   void translateCamera(const SbVec3f& v);
   SbVec3f zVector(void) const;
@@ -79,8 +79,8 @@ public:
   float getDepth(void) const;
 
   void getNearFarRay(const SbVec2f &normPoint,
-		     SbVec3f &start,
-		     SbVec3f &dir) const;
+                     SbVec3f &start,
+                     SbVec3f &dir) const;
 
   void print(ostream & file) const;
 
@@ -95,11 +95,11 @@ private:
   SbVec3f upperleftfrust;
 
   static SbMatrix getOrthoProjection(const float left, const float right,
-				     const float bottom, const float top,
-				     const float nearval, const float farval);
+                                     const float bottom, const float top,
+                                     const float nearval, const float farval);
   static SbMatrix getPerspectiveProjection(const float left, const float right,
-					   const float bottom, const float top,
-					   const float nearval, const float farval);
+                                           const float bottom, const float top,
+                                           const float nearval, const float farval);
 };
 
 #endif // !__SBVIEWVOLUME_H__

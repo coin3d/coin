@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -34,7 +34,7 @@ public:
   SbPList(const int initSize = 4);
   SbPList(const SbPList & list);
   ~SbPList();
-  
+
   void append(void * const item);
   int find(void * const item) const;
   void insert(void * const item, int addBefore);
@@ -49,7 +49,7 @@ public:
 
   void * get(const int index) const;
   void set(const int index, void * const item);
-  
+
 //  void * operator [](const int index) const;
   void setDefault(const void * const defaultItem);
   const void * getDefault() const;

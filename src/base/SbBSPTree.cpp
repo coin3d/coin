@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -34,7 +34,7 @@
   \class SbBSPTree SbBSPTree.h Inventor/SbBSPTree.h
   \brief The SbBSPTree class provides a binary space partitioning container.
   \ingroup base
-  
+
   This class can be used to organize searches for 3D points or normals
   in a set in O(log(n)) time.
 
@@ -65,7 +65,7 @@ private:
     DIM_XY = 2,
     DIM_NONE
   };
-  
+
   coin_bspnode *left;
   coin_bspnode *right;
   int dimension;   // which dimension?
@@ -88,13 +88,13 @@ coin_bspnode::~coin_bspnode()
   delete right;
 }
 
-inline int 
+inline int
 coin_bspnode::leftOf(const SbVec3f &pt) const
 {
-  return pt[this->dimension] < this->position; 
+  return pt[this->dimension] < this->position;
 }
 
-int 
+int
 coin_bspnode::addPoint(const SbVec3f &pt, const int maxpts)
 {
   if (this->left) { // node has been split
@@ -114,7 +114,7 @@ coin_bspnode::addPoint(const SbVec3f &pt, const int maxpts)
       if (pt == tmp) break;
     }
     if (i == n) {
-      int idx = this->pointsArray->getLength();      
+      int idx = this->pointsArray->getLength();
       this->pointsArray->append(pt);
       this->indices.append(idx);
       return idx;
@@ -122,8 +122,8 @@ coin_bspnode::addPoint(const SbVec3f &pt, const int maxpts)
     return this->indices[i];
   }
 }
- 
-int 
+
+int
 coin_bspnode::findPoint(const SbVec3f &pt) const
 {
   if (this->left) {
@@ -140,7 +140,7 @@ coin_bspnode::findPoint(const SbVec3f &pt) const
   return -1;
 }
 
-void 
+void
 coin_bspnode::findPoints(const SbSphere &sphere, SbList <int> &array)
 {
   if (this->left) {
@@ -148,7 +148,7 @@ coin_bspnode::findPoints(const SbSphere &sphere, SbList <int> &array)
     min = max = sphere.getCenter();
     min[this->dimension] -= sphere.getRadius();
     max[this->dimension] += sphere.getRadius();
-    
+
     if (this->leftOf(min)) this->left->findPoints(sphere, array);
     if (!this->leftOf(max)) this->right->findPoints(sphere, array);
   }
@@ -161,7 +161,7 @@ coin_bspnode::findPoints(const SbSphere &sphere, SbList <int> &array)
   }
 }
 
-int 
+int
 coin_bspnode::removePoint(const SbVec3f &pt)
 {
   if (this->left) {
@@ -173,9 +173,9 @@ coin_bspnode::removePoint(const SbVec3f &pt)
     for (i = 0; i < n; i++) {
       SbVec3f arrpt = (*pointsArray)[this->indices[i]];
       if (pt == arrpt) {
-	int idx = this->indices[i];
-	this->indices.removeFast(i);
-	return idx;
+        int idx = this->indices[i];
+        this->indices.removeFast(i);
+        return idx;
       }
     }
   }
@@ -183,12 +183,12 @@ coin_bspnode::removePoint(const SbVec3f &pt)
 
 }
 
-void 
+void
 coin_bspnode::split()
 {
   assert(this->left == NULL && this->right == NULL);
   this->left = new coin_bspnode(this->pointsArray);
-  this->right = new coin_bspnode(this->pointsArray); 
+  this->right = new coin_bspnode(this->pointsArray);
 
   SbBox3f box;
   int i, n = this->indices.getLength();
@@ -211,24 +211,24 @@ coin_bspnode::split()
   this->dimension = dim; // set the dimension
 
   float mid = (box.getMin()[dim] + box.getMax()[dim]) / 2.0f;
-#ifdef BSP_SORTED_SPLIT  
+#ifdef BSP_SORTED_SPLIT
   this->sort(); // sort vertices on ascending dimension values
-  
+
   int splitidx = n / 2;
   pos = ((*pointsArray)[this->indices[splitidx-1]][dim]+
     (*pointsArray)[this->indices[splitidx]][dim]) / 2.0f;
-  
+
   // got to check and adjust for special cases
-  if (pos == box.getMin()[dim] || pos == box.getMax()[dim]) { 
+  if (pos == box.getMin()[dim] || pos == box.getMax()[dim]) {
     pos = (pos + mid) / 2.0f;
   }
 
 #else
   pos = (box.getMin()[this->dimension]+box.getMax()[this->dimension]) / 2.0f;
 #endif // BSP_SORTED_SPLIT
-  
+
   this->position = pos;
-  
+
   for (i = 0; i < n; i++) {
     int idx = this->indices[i];
     if (this->leftOf((*pointsArray)[idx]))
@@ -238,19 +238,19 @@ coin_bspnode::split()
   }
 
 //   fprintf(stderr,"bsp split: %.3f %.3f %.3f, %.3f %.3f %.3f "
-// 	  "==> (%d %d) %d %.3f\n",
-// 	  box.min[0], box.min[1], box.min[2],
-// 	  box.max[0], box.max[1], box.max[2],
-// 	  this->left->indices.getLength(), this->right->indices.getLength(), 
-// 	  this->dimension, this->position);
-  
+//        "==> (%d %d) %d %.3f\n",
+//        box.min[0], box.min[1], box.min[2],
+//        box.max[0], box.max[1], box.max[2],
+//        this->left->indices.getLength(), this->right->indices.getLength(),
+//        this->dimension, this->position);
+
 //   for (i = 0; i < n; i++) {
 //     SbVec3f p;
 //     this->pointsArray->getElem(this->indices[i], p);
 //     fprintf(stderr, "pt %d: %.3f %.3f %.3f\n", i, p[0], p[1], p[2]);
 //   }
 
-  
+
 #ifdef COIN_DEBUG
   if (!this->left->indices.getLength() ||
       !this->right->indices.getLength()) {
@@ -260,25 +260,25 @@ coin_bspnode::split()
     for (i = 0; i < n; i++) {
       SbVec3f vec = pts[this->indices[i]];
       fprintf(stderr,"pt: %f %f %f\n",
-	      vec[0], vec[1], vec[2]);
+              vec[0], vec[1], vec[2]);
     }
     fprintf(stderr,"pos: %f\n",
-	    pos);
+            pos);
     fprintf(stderr,"mid: %f\n",
-	    mid);
+            mid);
     fprintf(stderr,"dim: %d\n", dim);
     fprintf(stderr,"diag: %f %f %f\n",
-	    diag[0], diag[1], diag[2]);
+            diag[0], diag[1], diag[2]);
 
-#ifdef BSP_SORTED_SPLIT  
+#ifdef BSP_SORTED_SPLIT
     fprintf(stderr,"splitidx: %d\n", splitidx);
 #endif
   }
 
 #endif
   assert(this->left->indices.getLength() && this->right->indices.getLength());
- 
- 
+
+
   // will never be used anymore
   this->indices.clear(1);
 }
@@ -286,7 +286,7 @@ coin_bspnode::split()
 //
 // an implementation of the shellsort algorithm
 //
-void 
+void
 coin_bspnode::sort()
 {
   int *idxarray = this->indices.arrayPointer();
@@ -300,8 +300,8 @@ coin_bspnode::sort()
     for (i = distance; i < num; i++) {
       idx = idxarray[i];
       j = i;
-      while (j >= distance && 
-	     points[idxarray[j-distance]][dim] > points[idx][dim]) {
+      while (j >= distance &&
+             points[idxarray[j-distance]][dim] > points[idx][dim]) {
         idxarray[j] = idxarray[j-distance];
         j -= distance;
       }
@@ -312,10 +312,10 @@ coin_bspnode::sort()
 
 /*!
   Constructor with \a maxnodepts specifying the maximum number of
-  points in a node before it must be split, and \a initsize 
+  points in a node before it must be split, and \a initsize
   is the number of initially allocated points in the growable
   points array. If you know approximately the number of points
-  which will be added to the tree, it will help the performance 
+  which will be added to the tree, it will help the performance
   if you supply this in \a initsize.
  */
 SbBSPTree::SbBSPTree(const int maxnodepts, const int initsize)
@@ -337,7 +337,7 @@ SbBSPTree::~SbBSPTree()
 /*!
   Returns the number of points in the BSP tree.
 */
-int 
+int
 SbBSPTree::numPoints() const
 {
   return this->pointsArray.getLength();
@@ -347,7 +347,7 @@ SbBSPTree::numPoints() const
   Returns the point at index \a idx.
   \sa SbBSPTree::numPoints()
 */
-SbVec3f 
+SbVec3f
 SbBSPTree::getPoint(const int idx)
 {
   assert(idx < this->pointsArray.getLength());
@@ -357,7 +357,7 @@ SbBSPTree::getPoint(const int idx)
 /*!
   \overload
 */
-void 
+void
 SbBSPTree::getPoint(const int idx, SbVec3f &pt)
 {
   assert(idx < this->pointsArray.getLength());
@@ -381,7 +381,7 @@ SbBSPTree::getUserData(const int idx) const
   \sa SbBSPTree::addPoint()
   \sa SbBSPTree::numPoints()
 */
-void 
+void
 SbBSPTree::setUserData(const int idx, void * const data)
 {
   assert(idx < this->userdataArray.getLength());
@@ -398,7 +398,7 @@ SbBSPTree::setUserData(const int idx, void * const data)
 
   \sa SbBSPTree::findPoint()
 */
-int 
+int
 SbBSPTree::addPoint(const SbVec3f &pt, void * const data)
 {
   this->boundingBox.extendBy(pt);
@@ -414,7 +414,7 @@ SbBSPTree::addPoint(const SbVec3f &pt, void * const data)
   to the removed point. -1 is returned if no point with those
   coordinates could be found.
 */
-int 
+int
 SbBSPTree::removePoint(const SbVec3f &pt)
 {
   return this->topnode->removePoint(pt);
@@ -424,7 +424,7 @@ SbBSPTree::removePoint(const SbVec3f &pt)
   Removes the point at index \a idx.
   \sa SbBSPTree::numPoints()
 */
-void 
+void
 SbBSPTree::removePoint(const int idx)
 {
   assert(idx < this->pointsArray.getLength());
@@ -436,7 +436,7 @@ SbBSPTree::removePoint(const int idx)
   with coordinates matching \a pos. If no such point can be
   found, -1 is returned.
 */
-int 
+int
 SbBSPTree::findPoint(const SbVec3f &pos) const
 {
   return topnode->findPoint(pos);
@@ -446,22 +446,22 @@ SbBSPTree::findPoint(const SbVec3f &pos) const
   Will return indices to all points inside \a sphere.
 */
 void
-SbBSPTree::findPoints(const SbSphere &sphere, 
-		      SbList <int> &array) const
+SbBSPTree::findPoints(const SbSphere &sphere,
+                      SbList <int> &array) const
 {
   assert(array.getLength() == 0);
   this->topnode->findPoints(sphere, array);
 }
 
 /*!
-  Will return the index to the point closest to the center of \a 
+  Will return the index to the point closest to the center of \a
   sphere. Indices to all points inside the sphere is returned in
   \a arr. If no points can be found inside the sphere, -1 is
   returned.
 */
-int 
+int
 SbBSPTree::findClosest(const SbSphere &sphere,
-		       SbList <int> &arr) const
+                       SbList <int> &arr) const
 {
   this->findPoints(sphere, arr);
   SbVec3f pos = sphere.getCenter();
@@ -482,7 +482,7 @@ SbBSPTree::findClosest(const SbSphere &sphere,
 /*!
   Will empty all points from the BSP tree.
 */
-void 
+void
 SbBSPTree::clear(const int initsize)
 {
   delete this->topnode;
@@ -505,7 +505,7 @@ SbBSPTree::getBBox() const
 /*!
   \overload
 */
-int 
+int
 SbBSPTree::findClosest(const SbVec3f &pos) const
 {
   int n = this->pointsArray.getLength();
@@ -517,27 +517,27 @@ SbBSPTree::findClosest(const SbVec3f &pos) const
       tmp = this->pointsArray[i];
       float dist = (tmp-pos).sqrLength();
       if (dist < smalldist) {
-	smalldist = dist;
-	smallidx = i;
+        smalldist = dist;
+        smallidx = i;
       }
     }
     return smallidx;
   }
-  SbVec3f center = 
-    (this->boundingBox.getMin() + 
+  SbVec3f center =
+    (this->boundingBox.getMin() +
      this->boundingBox.getMax()) * 0.5f;
   center -= pos;
-  
-  float siz = center.length() * 2 + 
+
+  float siz = center.length() * 2 +
     (this->boundingBox.getMax()-this->boundingBox.getMin()).length();
-  
+
   float currsize = siz / 65536.0f;  // max 16 iterations (too much?).
-  
+
   SbSphere sphere(pos, currsize);
   SbList <int> tmparray; // use only one array to avoid reallocs
   int idx = -1;
 
-  // double size of sphere until a vertex is found 
+  // double size of sphere until a vertex is found
   while (currsize < siz) {
     sphere.setRadius(currsize);
     tmparray.truncate(0);
@@ -557,4 +557,3 @@ SbBSPTree::getPointsArrayPtr() const
 {
   return pointsArray.constArrayPointer();
 }
-

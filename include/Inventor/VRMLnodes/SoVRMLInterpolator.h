@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -33,7 +33,7 @@ public:
   static void initClass(void);
 
   SbBool getOutputName(const SoVRMLInterpOutput * output,
-		       SbName & outputName) const;
+                       SbName & outputName) const;
 
 protected:
   SoVRMLInterpolator(void);

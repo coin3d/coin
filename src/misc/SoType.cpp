@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -46,13 +46,13 @@
 
 struct SoTypeData {
   SoTypeData(const SbName theName,
-	     const SbBool ispublic = FALSE,
-	     const uint16_t theData = 0,
-	     const SoType theParent = SoType::badType(),
-	     const SoType::instantiationMethod createMethod = NULL)
+             const SbBool ispublic = FALSE,
+             const uint16_t theData = 0,
+             const SoType theParent = SoType::badType(),
+             const SoType::instantiationMethod createMethod = NULL)
     : name(theName), isPublic(ispublic), data(theData),
       parent(theParent), method(createMethod) { };
-  
+
   SbName name;
   SbBool isPublic;
   uint16_t data;
@@ -72,7 +72,7 @@ SoTypeList SoType::typeList;
 SbList<SoTypeData *> SoType::typeDataList;
 SbDict SoType::typeDict(512); //increase if necessary
 
-/*! 
+/*!
   \typedef SoType::instantiationMethod
 
   FIXME: write doc.
@@ -90,8 +90,8 @@ SoType::init(void)
   // been called for a second time. --mortene
   assert(SoType::typeList.getLength() == 0);
   assert(SoType::typeDataList.getLength() == 0);
-  
-  SoType::typeList.append(SoType::badType()); // bad type at index 0  
+
+  SoType::typeList.append(SoType::badType()); // bad type at index 0
   SoType::typeDataList.append(new SoTypeData(SbName("BadType")));
   SoType::typeDict.enter((unsigned long)SbName("BadType").getString(), 0);
 }
@@ -115,7 +115,7 @@ SoType::clean(void)
   }
   SoType::typeDataList.truncate(0);
   SoType::typeDataList.fit();
-  
+
   SoType::typeDict.clear();
 }
 #endif // re-code
@@ -130,17 +130,17 @@ SoType::clean(void)
 
 const SoType
 SoType::createType(const SoType parent, const SbName name,
-		   const instantiationMethod method,
-		   const uint16_t data)
+                   const instantiationMethod method,
+                   const uint16_t data)
 {
 #ifdef COIN_DEBUG
   if (SoType::fromName(name.getString()) != SoType::badType()) {
     SoDebugError::post("SoType::createType",
-		       "a type with name ``%s'' already created",
-		       name.getString());
+                       "a type with name ``%s'' already created",
+                       name.getString());
     return SoType::fromName(name.getString());
   }
-#endif // COIN_DEBUG  
+#endif // COIN_DEBUG
 
   SoTypeData * typeData = new SoTypeData(name, TRUE, data, parent, method);
   SoType newType;
@@ -148,8 +148,8 @@ SoType::createType(const SoType parent, const SbName name,
   SoType::typeList.append(newType);
   SoType::typeDataList.append(typeData);
   // add to dictionary for fast lookup
-  SoType::typeDict.enter((unsigned long)name.getString(), 
-			 (void *)newType.index);
+  SoType::typeDict.enter((unsigned long)name.getString(),
+                         (void *)newType.index);
   return newType;
 }
 
@@ -163,7 +163,7 @@ SoType::createType(const SoType parent, const SbName name,
 
 const SoType
 SoType::overrideType(const SoType originalType,
-		     const instantiationMethod method)
+                     const instantiationMethod method)
 {
   SoType::typeDataList[(int)originalType.getKey()]->method = method;
   return originalType;
@@ -191,7 +191,7 @@ SoType::fromName(const SbName name)
     const int index = (int)temp;
     assert(index >= 0 && index < SoType::typeList.getLength());
     assert((SoType::typeDataList[index]->name == name) ||
-	   (SoType::typeDataList[index]->name == noprefixname));
+           (SoType::typeDataList[index]->name == noprefixname));
     return SoType::typeList[index];
   }
   return SoType::badType();
@@ -226,7 +226,7 @@ SoType::getName(void) const
 
 */
 
-uint16_t 
+uint16_t
 SoType::getData(void) const
 {
   return SoType::typeDataList[(int)this->getKey()]->data;
@@ -264,7 +264,7 @@ SoType::badType(void)
   type.
 */
 
-/*! 
+/*!
   This method returns TRUE if the given type is derived from (or \e is) the
   \a parent type, and FALSE otherwise.
 */
@@ -277,7 +277,7 @@ SoType::isDerivedFrom(const SoType parent) const
   if (parent.isBad()) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoType::isDerivedFrom",
-			      "can't compare against an invalid type");
+                              "can't compare against an invalid type");
 #endif // COIN_DEBUG
     return FALSE;
   }
@@ -286,9 +286,9 @@ SoType::isDerivedFrom(const SoType parent) const
   do {
 #if 0 // debug
     SoDebugError::postInfo("SoType::isDerivedFrom",
-			   "this: '%s' parent: '%s'",
-			   type.getName().getString(),
-			   parent.getName().getString());
+                           "this: '%s' parent: '%s'",
+                           type.getName().getString(),
+                           parent.getName().getString());
 #endif // debug
     if (type == parent) return TRUE;
     type = SoType::typeDataList[(int)type.getKey()]->parent;
@@ -308,9 +308,9 @@ SoType::isDerivedFrom(const SoType parent) const
   NB: do not write code which depends in any way on the order of the
   elements returned in \a list.
 */
-int 
+int
 SoType::getAllDerivedFrom(const SoType type, SoTypeList & list)
-{ 
+{
   int counter = 0;
   int n = SoType::typeList.getLength();
   for (int i = 0; i < n; i++) {
@@ -349,9 +349,9 @@ SoType::createInstance(void) const
   else {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoType::createInstance",
-			      "can't create instance of class type '%s', "
-			      " use SoType::canCreateInstance()",
-			      this->getName().getString());
+                              "can't create instance of class type '%s', "
+                              " use SoType::canCreateInstance()",
+                              this->getName().getString());
 #endif // COIN_DEBUG
     return NULL;
   }
@@ -359,7 +359,7 @@ SoType::createInstance(void) const
 
 /*!
   This function returns the number of types registered in the run-time type
-  system.  
+  system.
 */
 
 int
@@ -370,7 +370,7 @@ SoType::getNumTypes(void)
 
 /*!
   \fn int16_t SoType::getKey(void) const
- 
+
   This method returns the type's index in the internal typeList.
 
 */
@@ -430,4 +430,3 @@ SoType::isInternal(void) const
 
   FIXME: write doc.
 */
-

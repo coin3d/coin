@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -205,7 +205,7 @@ SoSFBool::readValue(SoInput * in)
   if (in->read(this->value)) {
     if (this->value != 0 && this->value != 1) {
       SoReadError::post(in, "Illegal value for SoSFBool: %d "
-			"(must be 0 or 1)", this->value);
+                        "(must be 0 or 1)", this->value);
       return FALSE;
     }
     return TRUE;
@@ -219,7 +219,7 @@ SoSFBool::readValue(SoInput * in)
   // read TRUE/FALSE keyword
   SbName n;
   if (!in->read(n, TRUE)) return FALSE;
-    
+
   if (n == "TRUE") {
     this->value = TRUE;
     return TRUE;
@@ -231,7 +231,7 @@ SoSFBool::readValue(SoInput * in)
   }
 
   SoReadError::post(in, "Unknown value (\"%s\") for SoSFBool (must be TRUE or "
-		    "FALSE)", n.getString());
+                    "FALSE)", n.getString());
   return FALSE;
 }
 
@@ -284,9 +284,9 @@ SoSFBool::convertTo(SoField * dest) const
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFBool::convertTo",
-		       "Can't convert from %s to %s",
-		       this->getTypeId().getName().getString(),
-		       dest->getTypeId().getName().getString());
+                       "Can't convert from %s to %s",
+                       this->getTypeId().getName().getString(),
+                       dest->getTypeId().getName().getString());
   }
 #endif // COIN_DEBUG
 }

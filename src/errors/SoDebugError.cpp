@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -86,7 +86,7 @@ SoDebugError::initClass(void)
 
 void
 SoDebugError::setHandlerCallback(SoErrorCB * const function,
-				 void * const data)
+                                 void * const data)
 {
   SoDebugError::callback = function;
   SoDebugError::callbackData = data;
@@ -148,8 +148,8 @@ SoDebugError::getSeverity(void) const
 
 void
 SoDebugError::post(const char * const methodName,
-		   const char * const formatString,
-		   ...)
+                   const char * const formatString,
+                   ...)
 {
   va_list args;
   va_start(args, formatString);
@@ -170,8 +170,8 @@ SoDebugError::post(const char * const methodName,
 
 void
 SoDebugError::postWarning(const char * const methodName,
-			  const char * const formatString,
-			  ...)
+                          const char * const formatString,
+                          ...)
 {
   va_list args;
   va_start(args, formatString);
@@ -192,8 +192,8 @@ SoDebugError::postWarning(const char * const methodName,
 
 void
 SoDebugError::postInfo(const char * const methodName,
-		       const char * const formatString,
-		       ...)
+                       const char * const formatString,
+                       ...)
 {
   va_list args;
   va_start(args, formatString);
@@ -218,4 +218,3 @@ SoDebugError::getHandler(void * & data) const
   data = SoDebugError::callbackData;
   return SoDebugError::callback;
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -165,11 +165,11 @@ SoMouseButtonEvent::getButton(void) const
  */
 SbBool
 SoMouseButtonEvent::isButtonPressEvent(const SoEvent * e,
-				       SoMouseButtonEvent::Button whichButton)
+                                       SoMouseButtonEvent::Button whichButton)
 {
   return (e->isOfType(SoMouseButtonEvent::getClassTypeId()) &&
-	  ((SoMouseButtonEvent *)e)->getButton() == whichButton &&
-	  ((SoButtonEvent *)e)->getState() == SoButtonEvent::DOWN);
+          ((SoMouseButtonEvent *)e)->getButton() == whichButton &&
+          ((SoButtonEvent *)e)->getState() == SoButtonEvent::DOWN);
 }
 
 /*!
@@ -180,10 +180,10 @@ SoMouseButtonEvent::isButtonPressEvent(const SoEvent * e,
  */
 SbBool
 SoMouseButtonEvent::isButtonReleaseEvent(const SoEvent * e,
-					 SoMouseButtonEvent::Button
-					 whichButton)
+                                         SoMouseButtonEvent::Button
+                                         whichButton)
 {
   return (e->isOfType(SoMouseButtonEvent::getClassTypeId()) &&
-	  ((SoMouseButtonEvent *)e)->getButton() == whichButton &&
-	  ((SoButtonEvent *)e)->getState() == SoButtonEvent::UP);
+          ((SoMouseButtonEvent *)e)->getButton() == whichButton &&
+          ((SoButtonEvent *)e)->getState() == SoButtonEvent::UP);
 }

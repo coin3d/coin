@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -60,7 +60,7 @@ SbPlane::SbPlane(const SbVec3f& normal, const float D)
 #if COIN_DEBUG
   if(!(normal.length() != 0.0f))
     SoDebugError::postWarning("SbPlane::SbPlane",
-			      "Plane normal vector is a null vector.");
+                              "Plane normal vector is a null vector.");
 #endif // COIN_DEBUG
 
   this->normal = normal;
@@ -78,8 +78,8 @@ SbPlane::SbPlane(const SbVec3f& p0, const SbVec3f& p1, const SbVec3f& p2)
 #if COIN_DEBUG
   if(!(p0 != p1 && p1 != p2 && p0 != p2))
     SoDebugError::postWarning("SbPlane::SbPlane",
-			      "The three points defining the plane cannot "
-			      "be coincident.");
+                              "The three points defining the plane cannot "
+                              "be coincident.");
 #endif // COIN_DEBUG
 
   this->normal = (p1 - p0).cross(p2 - p0);
@@ -102,7 +102,7 @@ SbPlane::SbPlane(const SbVec3f& normal, const SbVec3f& point)
 #if COIN_DEBUG
   if(!(normal.length() != 0.0f))
     SoDebugError::postWarning("SbPlane::SbPlane",
-			      "Plane normal vector is a null vector.");
+                              "Plane normal vector is a null vector.");
 #endif // COIN_DEBUG
 
   this->normal = normal;
@@ -129,7 +129,7 @@ SbPlane::offset(const float d)
   Find the point on given line \a l intersecting the plane and return
   it in \a intersection. If the line is parallel to the plane,
   we return \a FALSE, otherwise \a TRUE.
-  
+
   Do not pass an invalid line for the \a l parameter (i.e. with a
   null direction vector).
  */
@@ -139,7 +139,7 @@ SbPlane::intersect(const SbLine& l, SbVec3f& intersection) const
 #if COIN_DEBUG
   if(!(normal.length() != 0.0f))
     SoDebugError::postWarning("SbPlane::intersect",
-			      "Intersecting line doesn't have a direction.");
+                              "Intersecting line doesn't have a direction.");
 #endif // COIN_DEBUG
 
   // Check if the line is parallel to the plane.

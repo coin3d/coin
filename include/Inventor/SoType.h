@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -44,7 +44,7 @@ public:
 
   SbBool canCreateInstance(void) const;
   void * createInstance(void) const;
-  
+
   uint16_t getData(void) const;
   int16_t getKey(void) const;
 
@@ -57,12 +57,12 @@ public:
   SbBool operator >  (const SoType type) const;
 
   static const SoType createType(const SoType parent, const SbName name,
-				 const instantiationMethod method = NULL,
-				 const uint16_t data = 0);
+                                 const instantiationMethod method = NULL,
+                                 const uint16_t data = 0);
 
   static const SoType overrideType(const SoType originalType,
-				   const instantiationMethod method = NULL);
-  
+                                   const instantiationMethod method = NULL);
+
   static void init(void);
 
   static SoType fromKey(uint16_t key);
@@ -71,10 +71,10 @@ public:
 
   void makeInternal(void);
   SbBool isInternal(void) const;
-  
+
   static int getNumTypes(void);
-  
-private:    
+
+private:
   int16_t index;
 
   static SoTypeList typeList;
@@ -84,52 +84,52 @@ private:
 
 /* inline methods ************************************************/
 
-inline int16_t 
+inline int16_t
 SoType::getKey(void) const
 {
   return this->index;
 }
 
-inline SbBool 
+inline SbBool
 SoType::operator != (const SoType type) const
-{ 
-  return (this->getKey() != type.getKey()); 
+{
+  return (this->getKey() != type.getKey());
 }
 
-inline SbBool 
+inline SbBool
 SoType::operator == (const SoType type) const
-{ 
-  return (this->getKey() == type.getKey()); 
+{
+  return (this->getKey() == type.getKey());
 }
 
-inline SbBool 
+inline SbBool
 SoType::operator <  (const SoType type) const
-{ 
-  return (this->getKey() < type.getKey()); 
+{
+  return (this->getKey() < type.getKey());
 }
 
-inline SbBool 
+inline SbBool
 SoType::operator <= (const SoType type) const
-{ 
-  return (this->getKey() <= type.getKey()); 
+{
+  return (this->getKey() <= type.getKey());
 }
 
-inline SbBool 
+inline SbBool
 SoType::operator >= (const SoType type) const
-{ 
-  return (this->getKey() >= type.getKey()); 
+{
+  return (this->getKey() >= type.getKey());
 }
 
-inline SbBool 
+inline SbBool
 SoType::operator >  (const SoType type) const
-{ 
-  return (this->getKey() > type.getKey()); 
+{
+  return (this->getKey() > type.getKey());
 }
 
-inline SbBool 
+inline SbBool
 SoType::isBad(void) const
-{ 
-  return (this->index == 0); 
+{
+  return (this->index == 0);
 }
 
 #endif // !__SOTYPE_H__

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -45,7 +45,7 @@ SoChildList::SoChildList(SoNode * const parent)
 */
 
 SoChildList::SoChildList(SoNode * const parent,
-			 const int size)
+                         const int size)
   : SoNodeList(size)
 {
   this->parent = parent;
@@ -56,7 +56,7 @@ SoChildList::SoChildList(SoNode * const parent,
 */
 
 SoChildList::SoChildList(SoNode * const parent,
-			 const SoChildList & list)
+                         const SoChildList & list)
   : SoNodeList(0)
 {
   this->parent = parent;
@@ -90,7 +90,7 @@ SoChildList::append(SoNode * const node)
 
 void
 SoChildList::insert(SoNode * const node,
-		    const int addBefore)
+                    const int addBefore)
 {
   SoNodeList::insert(node, addBefore);
   parent->startNotify();
@@ -147,7 +147,7 @@ SoChildList::copy(const SoChildList & list)
 
 void
 SoChildList::set(const int index,
-		 SoNode * const node)
+                 SoNode * const node)
 {
   SoBaseList::set(index, (SoBase *)node);
   parent->startNotify();
@@ -161,8 +161,8 @@ SoChildList::set(const int index,
 
 void
 SoChildList::traverse(SoAction * const action,
-		      const int first,
-		      const int last)
+                      const int first,
+                      const int last)
 {
   for (int i = first; i <= last && !action->hasTerminated(); i++) {
     action->traverse((SoNode *)this->get(i));
@@ -185,7 +185,7 @@ SoChildList::traverse(SoAction * const action)
 
 void
 SoChildList::traverse(SoAction * const action,
-		      const int index)
+                      const int index)
 {
     traverse(action, index, index);
 }

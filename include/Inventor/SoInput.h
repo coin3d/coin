@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -78,16 +78,16 @@ public:
   virtual void putBack(const char c);
   virtual void putBack(const char * str);
   virtual void addReference(const SbName & name, SoBase * base,
-			    SbBool addToGlobalDict = TRUE);
+                            SbBool addToGlobalDict = TRUE);
   virtual void removeReference(const SbName & name);
   virtual SoBase * findReference(const SbName & name) const;
 
   static void addDirectoryFirst(const char * dirName);
   static void addDirectoryLast(const char * dirName);
   static void addEnvDirectoriesFirst(const char * envVarName,
-				     const char * separator = ":\t ");
+                                     const char * separator = ":\t ");
   static void addEnvDirectoriesLast(const char * envVarName,
-				    const char * separator = ":\t ");
+                                    const char * separator = ":\t ");
   static void removeDirectory(const char * dirName);
   static void clearDirectories(void);
   static const SbStringList & getDirectories(void);
@@ -105,7 +105,7 @@ protected:
   void setIVVersion(float version);
   FILE * findFile(const char * fileName, SbString & fullName);
   void initFile(FILE * newFP, const char * fileName, SbString * fullName,
-		SbBool openedHere, SbDict * refDict = NULL);
+                SbBool openedHere, SbDict * refDict = NULL);
   SbBool checkHeader(SbBool bValidateBufferHeader = FALSE);
   SbBool fromBuffer(void) const;
   SbBool skipWhiteSpace(void);
@@ -139,7 +139,7 @@ private:
 
   static void addDirectoryIdx(const int idx, const char * dirName);
   static void addEnvDirectoriesIdx(int startidx, const char * envVarName,
-				   const char * separator);
+                                   const char * separator);
   static SbStringList dirsearchlist;
 
   SbPList filestack;

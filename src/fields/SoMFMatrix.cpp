@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -308,18 +308,18 @@ SoMFMatrix::write1Value(SoOutput * out, int idx) const
 */
 void
 SoMFMatrix::setValue(const float a11, const float a12,
-		     const float a13, const float a14,
-		     const float a21, const float a22,
-		     const float a23, const float a24,
-		     const float a31, const float a32,
-		     const float a33, const float a34,
-		     const float a41, const float a42,
-		     const float a43, const float a44)
+                     const float a13, const float a14,
+                     const float a21, const float a22,
+                     const float a23, const float a24,
+                     const float a31, const float a32,
+                     const float a33, const float a34,
+                     const float a41, const float a42,
+                     const float a43, const float a44)
 {
   this->setValue(SbMatrix(a11,a12,a13,a14,
-			  a21,a22,a23,a24,
-			  a31,a32,a33,a34,
-			  a41,a42,a43,a44));
+                          a21,a22,a23,a24,
+                          a31,a32,a33,a34,
+                          a41,a42,a43,a44));
 }
 
 void
@@ -336,26 +336,26 @@ SoMFMatrix::convertTo(SoField * dest) const
     if (num>1) ostr << "[ ";
     for (int i=0;i<num;i++) {
       ostr << this->values[i][0][0] << " " <<
-	this->values[i][0][1] << " " <<
-	this->values[i][0][2] << " " <<
-	this->values[i][0][3] << "\n\t";
+        this->values[i][0][1] << " " <<
+        this->values[i][0][2] << " " <<
+        this->values[i][0][3] << "\n\t";
       if (num>1) ostr << "  ";
       ostr << this->values[i][1][0] << " " <<
-	this->values[i][1][1] << " " <<
-	this->values[i][1][2] << " " <<
-	this->values[i][1][3] << "\n\t";
+        this->values[i][1][1] << " " <<
+        this->values[i][1][2] << " " <<
+        this->values[i][1][3] << "\n\t";
       if (num>1) ostr << "  ";
       ostr << this->values[i][2][0] << " " <<
-	this->values[i][2][1] << " " <<
-	this->values[i][2][2] << " " <<
-	this->values[i][2][3] << "\n\t";
+        this->values[i][2][1] << " " <<
+        this->values[i][2][2] << " " <<
+        this->values[i][2][3] << "\n\t";
       if (num>1) ostr << "  ";
       ostr << this->values[i][3][0] << " " <<
-	this->values[i][3][1] << " " <<
-	this->values[i][3][2] << " " <<
-	this->values[i][3][3];
+        this->values[i][3][1] << " " <<
+        this->values[i][3][2] << " " <<
+        this->values[i][3][3];
       if (i<num-1)
-	ostr << ", ";
+        ostr << ", ";
     }
     if (num>1) ostr << " ]";
     ostr << ends;
@@ -365,9 +365,9 @@ SoMFMatrix::convertTo(SoField * dest) const
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFMatrix::convertTo",
-		       "Can't convert from %s to %s",
-		       this->getTypeId().getName().getString(),
-		       dest->getTypeId().getName().getString());
+                       "Can't convert from %s to %s",
+                       this->getTypeId().getName().getString(),
+                       dest->getTypeId().getName().getString());
   }
 #endif // COIN_DEBUG
 }

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -85,7 +85,7 @@ SbSphereProjector::SbSphereProjector(const SbSphere & s, SbBool orientToEye)
 */
 SbVec3f
 SbSphereProjector::projectAndGetRotation(const SbVec2f & point,
-					 SbRotation & rot)
+                                         SbRotation & rot)
 {
   SbVec3f lastpt = this->lastPoint;
   SbVec3f newpt = this->project(point);
@@ -166,7 +166,7 @@ SbSphereProjector::isPointInFront(const SbVec3f & /* point */) const
 */
 SbBool
 SbSphereProjector::intersectSphereFront(const SbLine & /* l */,
-					SbVec3f & /* result */)
+                                        SbVec3f & /* result */)
 {
   // FIXME: implement.
   assert(0);

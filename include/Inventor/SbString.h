@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -35,14 +35,14 @@ public:
   SbString(const char * str, int start, int end);
   SbString(const SbString & str);
   ~SbString(void);
-  
+
   uint32_t hash(void);
   int getLength(void) const;
   void makeEmpty(SbBool freeOld = TRUE);
   const char * getString(void) const;
   SbString getSubString(int startChar, int endChar = -1) const;
   void deleteSubString(int startChar, int endChar = -1);
-  
+
   void intToString(const int digitString);
 
   char operator [](int index) const;
@@ -57,7 +57,7 @@ public:
   friend int operator != (const SbString & str, const char * s);
   friend int operator != (const char * s, const SbString & str);
   friend int operator != (const SbString & str1, const SbString & str2);
-  static uint32_t hash(const char * s); 
+  static uint32_t hash(const char * s);
 
   SbString & operator += (const char c);
 

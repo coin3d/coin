@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -34,7 +34,7 @@ public:
   SbColor4f(const float r, const float g, const float b, const float a = 1.0f);
 
   void setValue(const float r, const float g, const float b,
-		const float a = 1.0f);
+                const float a = 1.0f);
   void setValue(const float col[4]);
   const float *getValue() const;
   void getValue(float &r, float &g, float &b, float &a);
@@ -57,7 +57,7 @@ public:
   SbColor4f &operator+=(const SbColor4f &c);
   SbColor4f &operator-=(const SbColor4f &c);
 
-  friend SbColor4f operator *(const SbColor4f &c, const float d);  
+  friend SbColor4f operator *(const SbColor4f &c, const float d);
   friend SbColor4f operator *(const float d, const SbColor4f &c);
   friend SbColor4f operator /(const SbColor4f &c, const float d);
   friend SbColor4f operator +(const SbColor4f &v1, const SbColor4f &v2);

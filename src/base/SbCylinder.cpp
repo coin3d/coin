@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -44,7 +44,7 @@
 SbCylinder::SbCylinder(void)
 {
   this->setValue(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 1.0f, 0.0f)),
-		 1.0f);
+                 1.0f);
 }
 
 /*!
@@ -79,7 +79,7 @@ SbCylinder::setAxis(const SbLine& a)
 #if COIN_DEBUG
   if (!(a.getDirection().length() > 0.0f))
     SoDebugError::postWarning("SbCylinder::setAxis",
-			      "Axis has zero length => undefined");
+                              "Axis has zero length => undefined");
 #endif // COIN_DEBUG
 
   this->axis = a;
@@ -96,7 +96,7 @@ SbCylinder::setRadius(const float r)
 #if COIN_DEBUG
   if (!(r>=0.0f))
     SoDebugError::postWarning("SbCylinder::setRadius",
-			      "Radius (%f) should be positive.",r);
+                              "Radius (%f) should be positive.",r);
 #endif // COIN_DEBUG
 
   this->radius = r;
@@ -107,7 +107,7 @@ SbCylinder::setRadius(const float r)
 
   \sa setAxis(), getRadius().
  */
-const SbLine& 
+const SbLine&
 SbCylinder::getAxis(void) const
 {
   return this->axis;
@@ -152,7 +152,7 @@ SbCylinder::intersect(const SbLine& l, SbVec3f& enter, SbVec3f& exit) const
 #if COIN_DEBUG
   if (!(l.getDirection().length()>0.0f))
     SoDebugError::postWarning("SbCylinder::intersect",
-			      "The ray 'l' has zero length => undefined", l);
+                              "The ray 'l' has zero length => undefined", l);
 #endif // COIN_DEBUG
   //
   // What seems to be the immediately most simple, gung-ho method of
@@ -205,16 +205,16 @@ SbCylinder::intersect(const SbLine& l, SbVec3f& enter, SbVec3f& exit) const
     dist = (cv - dist*this->axis.getDirection()).length();
 #endif
     if((this->axis.getClosestPoint(l.getPosition()) -
-	l.getPosition()).length() <= radius) {
+        l.getPosition()).length() <= radius) {
       // We're inside the cylinder, set enter and exit points to be
       // very large values (the cylinder is conceptually of infinite
-      // length).      
+      // length).
       float offset = 14530000; // TODO: find out what define OI uses
       enter = l.getPosition() + -offset*l.getDirection();
       exit = l.getPosition() + offset*l.getDirection();
       return TRUE;
     }
-    
+
     return FALSE;
   }
 
@@ -233,7 +233,7 @@ SbCylinder::intersect(const SbLine& l, SbVec3f& enter, SbVec3f& exit) const
   tmp.normalize();
 
   float s = fabs(sqrt(this->radius*this->radius - d*d) /
-		 l.getDirection().dot(tmp));
+                 l.getDirection().dot(tmp));
 
   float enterparam = t - s;
   float exitparam = t + s;

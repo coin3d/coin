@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -39,7 +39,7 @@ public:
 
   SbBool fieldsAreEqual(const SoFieldContainer * const container) const;
   void copyFieldValues(const SoFieldContainer * const container,
-		       SbBool copyConnections = FALSE);
+                       SbBool copyConnections = FALSE);
 
   SbBool set(const char * const fieldDataString);
   void get(SbString & fieldDataString);
@@ -68,15 +68,15 @@ public:
   virtual const SoFieldData * getFieldData(void) const;
 
   virtual void copyContents(const SoFieldContainer * fromFC,
-			    SbBool copyConnections);
+                            SbBool copyConnections);
   virtual SoFieldContainer * copyThroughConnection(void) const;
 
   static void initCopyDict(void);
   static void addCopy(const SoFieldContainer * const orig,
-		      const SoFieldContainer * const copy);
+                      const SoFieldContainer * const copy);
   static SoFieldContainer * checkCopy(const SoFieldContainer * const orig);
   static SoFieldContainer * findCopy(const SoFieldContainer * const orig,
-				     const SbBool copyConnections);
+                                     const SbBool copyConnections);
   static void copyDone(void);
 
   // FIXME: hide this. 19990610 mortene.

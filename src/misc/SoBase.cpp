@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -130,13 +130,13 @@ SoBase::~SoBase()
 /*!
   Commits suicide. Called when the reference count goes to zero.
  */
-void 
+void
 SoBase::destroy(void)
 {
 #if DEBUG_REF_SYSTEM // debug
   SoDebugError::postInfo("SoBase::destroy",
-			 "%p ('%s')",
-			 this, this->getTypeId().getName().getString());
+                         "%p ('%s')",
+                         this, this->getTypeId().getName().getString());
 #endif // debug
   delete this;
 }
@@ -167,7 +167,7 @@ SoBase::cleanClass(void)
 {
   assert(name2obj_dict);
   assert(obj2name_dict);
- 
+
   // got to delete the SbPLists
   name2obj_dict->applyToAll(SoBase::freeLists);
   delete name2obj_dict;
@@ -192,9 +192,9 @@ SoBase::ref(void) const
 
 #if DEBUG_REF_SYSTEM // debug
   SoDebugError::postInfo("SoBase::ref",
-			 "%p ('%s') - referencecount: %d",
-			 this, this->getTypeId().getName().getString(),
-			 this->objdata.referencecount);
+                         "%p ('%s') - referencecount: %d",
+                         this, this->getTypeId().getName().getString(),
+                         this->objdata.referencecount);
 #endif // debug
 }
 
@@ -215,9 +215,9 @@ SoBase::unref(void) const
   base->objdata.referencecount--;
 #if DEBUG_REF_SYSTEM // debug
   SoDebugError::postInfo("SoBase::unref",
-			 "%p ('%s') - referencecount: %d",
-			 this, this->getTypeId().getName().getString(),
-			 this->objdata.referencecount);
+                         "%p ('%s') - referencecount: %d",
+                         this, this->getTypeId().getName().getString(),
+                         this->objdata.referencecount);
 #endif // debug
 #if COIN_DEBUG
   if (this->objdata.referencecount < 0)
@@ -240,9 +240,9 @@ SoBase::unrefNoDelete(void) const
   base->objdata.referencecount--;
 #if DEBUG_REF_SYSTEM // debug
   SoDebugError::postInfo("SoBase::unrefNoDelete",
-			 "%p ('%s') - referencecount: %d",
-			 this, this->getTypeId().getName().getString(),
-			 this->objdata.referencecount);
+                         "%p ('%s') - referencecount: %d",
+                         this, this->getTypeId().getName().getString(),
+                         this->objdata.referencecount);
 #endif // debug
 }
 
@@ -342,12 +342,12 @@ SoBase::setName(const SbName & newname)
 
 #if COIN_DEBUG
     SoDebugError::postWarning("SoBase::setName", "Bad characters in "
-			      "name '%s'. Replacing with name '%s'",
-			      str, goodstring.getString());
+                              "name '%s'. Replacing with name '%s'",
+                              str, goodstring.getString());
 #endif // COIN_DEBUG
 
     this->addName(this, SbName(goodstring.getString()));
-  } 
+  }
   else {
     this->addName(this, newname.getString());
   }
@@ -372,7 +372,7 @@ SoBase::addName(SoBase * const b, const char * const name)
   }
   // append this to the list
   l->append(b);
-  
+
   // set name of object. SbDict::enter() will overwrite old name
   SoBase::obj2name_dict->enter((unsigned long)b, (void *)name);
 }
@@ -398,7 +398,7 @@ SoBase::removeName(SoBase * const b, const char * const name)
 /*!
   FIXME: write doc
  */
-void 
+void
 SoBase::startNotify(void)
 {
   // FIXME: What else should be put here? kintel.
@@ -410,7 +410,7 @@ SoBase::startNotify(void)
 /*!
   FIXME: write doc
  */
-void 
+void
 SoBase::notify(SoNotList * list)
 {
   // FIXME: What else should be put here? kintel.
@@ -441,7 +441,7 @@ SoBase::removeAuditor(void * const auditor, const SoNotRec::Type type)
 {
   this->auditors.remove(auditor, type);
 }
-  
+
 /*!
   Returns list of objects auditing this object.
 
@@ -544,8 +544,8 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
     for (int i=0; i < l->getLength(); i++) {
       SoBase * b = (SoBase *)((*l)[i]);
       if (b->isOfType(type)) {
-	baselist.append(b);
-	matches++;
+        baselist.append(b);
+        matches++;
       }
     }
   }
@@ -572,7 +572,7 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
   SbName name;
 #if 0 // debug
   SoDebugError::postInfo("SoBase::read",
-			 "find base name");
+                         "find base name");
 #endif // debug
   SbBool result = in->read(name, TRUE);
   if (!result) {
@@ -585,7 +585,7 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
 
 #if COIN_DEBUG && 1 // debug
   SoDebugError::postInfo("SoBase::read", "name: '%s'",
-			 name.getString());
+                         name.getString());
 #endif // debug
 
   if (name == "NULL") return TRUE; // happens with So[S|M]FNode field values
@@ -603,9 +603,9 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
     if (!type.isDerivedFrom(expectedType)) {
 #if COIN_DEBUG
       SoDebugError::postInfo("SoBase::read",
-			     "type '%s' is not derived from '%s'",
-			     type.getName().getString(),
-			     expectedType.getName().getString());
+                             "type '%s' is not derived from '%s'",
+                             type.getName().getString(),
+                             expectedType.getName().getString());
 #endif // COIN_DEBUG
       result = FALSE;
     }
@@ -718,10 +718,10 @@ SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
 
       SbString s = name.getString();
       if (multiref) {
-	s += SoBase::refwriteprefix.getString();
-	SbString refidstr;
-	refidstr.intToString(refid);
-	s += refidstr;
+        s += SoBase::refwriteprefix.getString();
+        SbString refidstr;
+        refidstr.intToString(refid);
+        s += refidstr;
       }
       out->write(s.getString());
       if (!out->isBinary()) out->write(' ');
@@ -809,12 +809,12 @@ SoBase::readReference(SoInput * in, SoBase *& base)
   SbName refName;
   if (!in->read(refName, FALSE)) {
     SoReadError::post(in, "Premature end of file after \"%s\"",
-		      REFERENCE_KEYWORD);
+                      REFERENCE_KEYWORD);
     return FALSE;
   }
   else if ((base = in->findReference(refName)) == NULL) {
     SoReadError::post(in, "Unknown reference \"%s\"",
-		      refName.getString());
+                      refName.getString());
     return FALSE;
   }
 
@@ -829,7 +829,7 @@ SoBase::readBase(SoInput * in, SbName & className, SoBase *& base)
 {
 #if 0 // debug
   SoDebugError::postInfo("SoBase::readBase", "className: '%s'",
-			 className.getString());
+                         className.getString());
 #endif // debug
 
   SbBool ret = TRUE, flush = FALSE;
@@ -841,7 +841,7 @@ SoBase::readBase(SoInput * in, SbName & className, SoBase *& base)
   if (className == DEFINITION_KEYWORD) {
     if (!in->read(refName, FALSE) || !in->read(className, TRUE)) {
       SoReadError::post(in, "Premature end of file after %s",
-			DEFINITION_KEYWORD);
+                        DEFINITION_KEYWORD);
       ret = FALSE;
     }
 
@@ -852,7 +852,7 @@ SoBase::readBase(SoInput * in, SbName & className, SoBase *& base)
 
     if (!className) {
       SoReadError::post(in, "Invalid definition of %s",
-			refName.getString());
+                        refName.getString());
       ret = FALSE;
     }
   }
@@ -862,25 +862,25 @@ SoBase::readBase(SoInput * in, SbName & className, SoBase *& base)
     char c;
     if (!in->isBinary() && (!(gotChar = in->read(c)) || c != OPEN_BRACE)) {
       if (gotChar)
-	SoReadError::post(in, "Expected '%c'; got '%c'", OPEN_BRACE, c);
+        SoReadError::post(in, "Expected '%c'; got '%c'", OPEN_BRACE, c);
       else
-	SoReadError::post(in, "Expected '%c'; got EOF", OPEN_BRACE);
+        SoReadError::post(in, "Expected '%c'; got EOF", OPEN_BRACE);
       ret = FALSE;
     }
     else {
       ret = SoBase::readBaseInstance(in, className, refName, base);
-      
+
       if (!in->isBinary()) {
-	if (!ret) {
-	  flush = TRUE;
-	}
-	else if (!(gotChar = in->read(c)) || c != CLOSE_BRACE) {
-	  if (gotChar)
-	    SoReadError::post(in, "Expected '%c'; got '%c'", CLOSE_BRACE, c);
-	  else
-	    SoReadError::post(in, "Expected '%c'; got EOF", CLOSE_BRACE);
-	  ret = FALSE;
-	}
+        if (!ret) {
+          flush = TRUE;
+        }
+        else if (!(gotChar = in->read(c)) || c != CLOSE_BRACE) {
+          if (gotChar)
+            SoReadError::post(in, "Expected '%c'; got '%c'", CLOSE_BRACE, c);
+          else
+            SoReadError::post(in, "Expected '%c'; got EOF", CLOSE_BRACE);
+          ret = FALSE;
+        }
       }
     }
   }
@@ -894,7 +894,7 @@ SoBase::readBase(SoInput * in, SbName & className, SoBase *& base)
  */
 SbBool
 SoBase::readBaseInstance(SoInput * in, const SbName & className,
-			 const SbName & refName, SoBase *& base)
+                         const SbName & refName, SoBase *& base)
 {
   SbBool retval = TRUE;
 
@@ -907,8 +907,8 @@ SoBase::readBaseInstance(SoInput * in, const SbName & className,
 #if 0 // I believe the flags parameter is not interesting during ASCII read.
     else
       flags =
-	(base->isOfType(SoGroup::getClassTypeId()) ? IS_GROUP : 0x0) |
-	(base->isOfType(SoEngine::getClassTypeId()) ? IS_ENGINE : 0x0);
+        (base->isOfType(SoGroup::getClassTypeId()) ? IS_GROUP : 0x0) |
+        (base->isOfType(SoEngine::getClassTypeId()) ? IS_ENGINE : 0x0);
 #endif // unused
 
     if (retval) retval = base->readInstance(in, flags);
@@ -934,7 +934,7 @@ SoBase *
 SoBase::createInstance(SoInput * in, const SbName & className)
 {
   SoType insttype = SoType::fromName(className);
-  SoBase * instance = (SoBase *)insttype.createInstance(); 
+  SoBase * instance = (SoBase *)insttype.createInstance();
 
   if (!instance) {
     assert(0 && "FIXME: not implemented");
@@ -944,7 +944,7 @@ SoBase::createInstance(SoInput * in, const SbName & className)
     SbString unknownString;
     if (!in->read(unknownString) || unknownString != "fields") {
       SoReadError::post(in, "Unknown class \"%s\"",
-			className.getString());
+                        className.getString());
       return NULL;
     }
   }
@@ -962,7 +962,7 @@ SoBase::flushInput(SoInput * in)
 
   int nestLevel = 1;
   char c;
-  
+
   while (nestLevel > 0 && in->read(c)) {
     if (c == CLOSE_BRACE) nestLevel--;
     else if (c == OPEN_BRACE) nestLevel++;

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -364,7 +364,7 @@
 //# !SoAction: !SoCallbackAction, !SoGLRenderAction, !SoGetBoundingBoxAction,
 //#   !SoGetMatrixAction, !SoGetPrimitiveCountAction, !SoHandleEventAction,
 //#   !SoPickAction, !SoSearchAction, !SoSimplifyAction, !SoToVRMLAction,
-//#   !SoWriteAction, 
+//#   !SoWriteAction,
 #if defined(COIN_EXCLUDE_SOACTION) // (AUTOGEN)
 #define COIN_EXCLUDE_SOCALLBACKACTION 1
 #define COIN_EXCLUDE_SOGLRENDERACTION 1
@@ -393,7 +393,7 @@
 #endif // COIN_EXCLUDE_SOPICKACTION  (AUTOGEN)
 
 //# !SoSimplifyAction: !SoGlobalSimplifyAction, !SoReorganizeAction,
-//#   !SoShapeSimplifyAction, 
+//#   !SoShapeSimplifyAction,
 #if defined(COIN_EXCLUDE_SOSIMPLIFYACTION) // (AUTOGEN)
 #define COIN_EXCLUDE_SOGLOBALSIMPLIFYACTION 1
 #define COIN_EXCLUDE_SOREORGANIZEACTION 1
@@ -424,7 +424,7 @@
 // based on the presence of normal, material and texture element
 // settings. 19990408 mortene.
 //# !SoGLRenderAction: !SoNormalbundle, !SoMaterialbundle,
-//#   !SoTexturecoordinatebundle, 
+//#   !SoTexturecoordinatebundle,
 #if defined(COIN_EXCLUDE_SOGLRENDERACTION) // (AUTOGEN)
 #define COIN_EXCLUDE_SONORMALBUNDLE 1
 #define COIN_EXCLUDE_SOMATERIALBUNDLE 1
@@ -586,7 +586,7 @@
 
 #if !defined(COIN_EXCLUDE_SOCAMERA)
 //# SoGLRenderAction: SoFocalDistanceElement, SoGLProjectionMatrixElement,
-//#   SoViewVolumeElement, SoGLViewingMatrixElement, 
+//#   SoViewVolumeElement, SoGLViewingMatrixElement,
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOFOCALDISTANCEELEMENT
 #undef COIN_EXCLUDE_SOGLPROJECTIONMATRIXELEMENT
@@ -595,7 +595,7 @@
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION  (AUTOGEN)
 
 //# SoGetBoundingBoxAction: SoFocalDistanceElement, SoProjectionMatrixElement,
-//#   SoViewVolumeElement, SoViewingMatrixElement, 
+//#   SoViewVolumeElement, SoViewingMatrixElement,
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOFOCALDISTANCEELEMENT
 #undef COIN_EXCLUDE_SOPROJECTIONMATRIXELEMENT
@@ -647,14 +647,14 @@
 
 #if !defined(COIN_EXCLUDE_SOANNOTEXT3PROPERTY)
 //# SoGLRenderAction: SoAnnoText3FontSizeHintElement,
-//#   SoAnnoText3RenderPrintElement, 
+//#   SoAnnoText3RenderPrintElement,
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOANNOTEXT3FONTSIZEHINTELEMENT
 #undef COIN_EXCLUDE_SOANNOTEXT3RENDERPRINTELEMENT
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION  (AUTOGEN)
 
 //# SoGetBoundingBoxAction: SoAnnoText3FontSizeHintElement,
-//#   SoAnnoText3RenderPrintElement, 
+//#   SoAnnoText3RenderPrintElement,
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOANNOTEXT3FONTSIZEHINTELEMENT
 #undef COIN_EXCLUDE_SOANNOTEXT3RENDERPRINTELEMENT
@@ -667,7 +667,7 @@
 #undef COIN_EXCLUDE_SOCACHEELEMENT
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION  (AUTOGEN)
 
-//# SoGLRenderAction: SoCacheElement, SoGLCacheContextElement, 
+//# SoGLRenderAction: SoCacheElement, SoGLCacheContextElement,
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOCACHEELEMENT
 #undef COIN_EXCLUDE_SOGLCACHECONTEXTELEMENT
@@ -709,7 +709,7 @@
 
 #if !defined(COIN_EXCLUDE_SOCOMPLEXITY)
 //# SoGetBoundingBoxAction: SoComplexityElement, SoComplexityTypeElement,
-//#   SoShapeStyleElement, 
+//#   SoShapeStyleElement,
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOCOMPLEXITYELEMENT
 #undef COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT
@@ -717,7 +717,7 @@
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION  (AUTOGEN)
 
 //# SoGLRenderAction: SoComplexityElement, SoComplexityTypeElement,
-//#   SoShapeStyleElement, SoTextureQualityElement, SoTextureOverrideElement, 
+//#   SoShapeStyleElement, SoTextureQualityElement, SoTextureOverrideElement,
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOCOMPLEXITYELEMENT
 #undef COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT
@@ -738,7 +738,7 @@
 #if !defined(COIN_EXCLUDE_SODRAWSTYLE)
 //# SoGLRenderAction: SoGLDrawStyleElement, SoShapeStyleElement,
 //#   SoGLLinePatternElement, SoGLLineWidthElement, SoGLPointSizeElement,
-//#   SoGLPolygonStippleElement, 
+//#   SoGLPolygonStippleElement,
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOGLDRAWSTYLEELEMENT
 #undef COIN_EXCLUDE_SOSHAPESTYLEELEMENT
@@ -750,13 +750,13 @@
 #endif // !COIN_EXCLUDE_SODRAWSTYLE
 
 #if !defined(COIN_EXCLUDE_SOFONT)
-//# SoGetBoundingBoxAction: SoFontNameElement, SoFontSizeElement, 
+//# SoGetBoundingBoxAction: SoFontNameElement, SoFontSizeElement,
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOFONTNAMEELEMENT
 #undef COIN_EXCLUDE_SOFONTSIZEELEMENT
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION  (AUTOGEN)
 
-//# SoGLRenderAction: SoFontNameElement, SoFontSizeElement, 
+//# SoGLRenderAction: SoFontNameElement, SoFontSizeElement,
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOFONTNAMEELEMENT
 #undef COIN_EXCLUDE_SOFONTSIZEELEMENT
@@ -778,13 +778,13 @@
 #endif // !COIN_EXCLUDE_SOENVIRONMENT
 
 #if !defined(COIN_EXCLUDE_SOPROFILE)
-//# SoGetBoundingBoxAction: SoProfileElement, SoProfileCoordinateElement, 
+//# SoGetBoundingBoxAction: SoProfileElement, SoProfileCoordinateElement,
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOPROFILEELEMENT
 #undef COIN_EXCLUDE_SOPROFILECOORDINATEELEMENT
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION  (AUTOGEN)
 
-//# SoGLRenderAction: SoProfileElement, SoProfileCoordinateElement, 
+//# SoGLRenderAction: SoProfileElement, SoProfileCoordinateElement,
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOPROFILEELEMENT
 #undef COIN_EXCLUDE_SOPROFILECOORDINATEELEMENT
@@ -794,7 +794,7 @@
 #if !defined(COIN_EXCLUDE_SOMATERIAL)
 //# SoGLRenderAction: SoGLAmbientColorElement, SoGLDiffuseColorElement,
 //#   SoGLEmissiveColorElement, SoGLSpecularColorElement, SoGLShininessElement,
-//#   SoTransparencyElement, 
+//#   SoTransparencyElement,
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOGLAMBIENTCOLORELEMENT
 #undef COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT
@@ -847,7 +847,7 @@
 #undef COIN_EXCLUDE_SOCREASEANGLEELEMENT
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION  (AUTOGEN)
 
-//# SoGLRenderAction: SoGLShapeHintsElement, SoCreaseAngleElement, 
+//# SoGLRenderAction: SoGLShapeHintsElement, SoCreaseAngleElement,
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT
 #undef COIN_EXCLUDE_SOCREASEANGLEELEMENT
@@ -856,7 +856,7 @@
 
 #if !defined(COIN_EXCLUDE_SOTEXTURE2)
 //# SoGLRenderAction: SoGLTextureImageElement, SoTextureOverrideElement,
-//#   SoGLTextureEnabledElement, 
+//#   SoGLTextureEnabledElement,
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOGLTEXTUREIMAGEELEMENT
 #undef COIN_EXCLUDE_SOTEXTUREOVERRIDEELEMENT
@@ -1236,7 +1236,7 @@
 // Node class dependencies on fields.                     //
 ////////////////////////////////////////////////////////////
 
-//# SoAnnotext3: SoMFString, SoSFFloat, SoSFEnum, SoSFNode, 
+//# SoAnnotext3: SoMFString, SoSFFloat, SoSFEnum, SoSFNode,
 #if !defined(COIN_EXCLUDE_SOANNOTEXT3) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFSTRING
 #undef COIN_EXCLUDE_SOSFFLOAT
@@ -1244,26 +1244,26 @@
 #undef COIN_EXCLUDE_SOSFNODE
 #endif // !COIN_EXCLUDE_SOANNOTEXT3  (AUTOGEN)
 
-//# SoAnnotext3property: SoSFEnum, SoSFBool, 
+//# SoAnnotext3property: SoSFEnum, SoSFBool,
 #if !defined(COIN_EXCLUDE_SOANNOTEXT3PROPERTY) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFENUM
 #undef COIN_EXCLUDE_SOSFBOOL
 #endif // !COIN_EXCLUDE_SOANNOTEXT3PROPERTY  (AUTOGEN)
 
-//# SoAntisquish: SoSFEnum, SoSFBool, 
+//# SoAntisquish: SoSFEnum, SoSFBool,
 #if !defined(COIN_EXCLUDE_SOANTISQUISH) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFENUM
 #undef COIN_EXCLUDE_SOSFBOOL
 #endif // !COIN_EXCLUDE_SOANTISQUISH  (AUTOGEN)
 
-//# SoArray: SoSFEnum, SoSFShort, SoSFVec3f, 
+//# SoArray: SoSFEnum, SoSFShort, SoSFVec3f,
 #if !defined(COIN_EXCLUDE_SOARRAY) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFENUM
 #undef COIN_EXCLUDE_SOSFSHORT
 #undef COIN_EXCLUDE_SOSFVEC3F
 #endif // !COIN_EXCLUDE_SOARRAY  (AUTOGEN)
 
-//# SoAsciitext: SoMFString, SoSFFloat, SoSFEnum, SoMFFloat, 
+//# SoAsciitext: SoMFString, SoSFFloat, SoSFEnum, SoMFFloat,
 #if !defined(COIN_EXCLUDE_SOASCIITEXT) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFSTRING
 #undef COIN_EXCLUDE_SOSFFLOAT
@@ -1271,18 +1271,18 @@
 #undef COIN_EXCLUDE_SOMFFLOAT
 #endif // !COIN_EXCLUDE_SOASCIITEXT  (AUTOGEN)
 
-//# SoBasecolor: SoMFColor, 
+//# SoBasecolor: SoMFColor,
 #if !defined(COIN_EXCLUDE_SOBASECOLOR) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFCOLOR
 #endif // !COIN_EXCLUDE_SOBASECOLOR  (AUTOGEN)
 
-//# SoBlinker: SoSFFloat, SoSFBool, 
+//# SoBlinker: SoSFFloat, SoSFBool,
 #if !defined(COIN_EXCLUDE_SOBLINKER) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFFLOAT
 #undef COIN_EXCLUDE_SOSFBOOL
 #endif // !COIN_EXCLUDE_SOBLINKER  (AUTOGEN)
 
-//# SoCamera: SoSFEnum, SoSFVec3f, SoSFRotation, SoSFFloat, 
+//# SoCamera: SoSFEnum, SoSFVec3f, SoSFRotation, SoSFFloat,
 #if !defined(COIN_EXCLUDE_SOCAMERA) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFENUM
 #undef COIN_EXCLUDE_SOSFVEC3F
@@ -1290,24 +1290,24 @@
 #undef COIN_EXCLUDE_SOSFFLOAT
 #endif // !COIN_EXCLUDE_SOCAMERA  (AUTOGEN)
 
-//# SoClipplane: SoSFPlane, SoSFBool, 
+//# SoClipplane: SoSFPlane, SoSFBool,
 #if !defined(COIN_EXCLUDE_SOCLIPPLANE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFPLANE
 #undef COIN_EXCLUDE_SOSFBOOL
 #endif // !COIN_EXCLUDE_SOCLIPPLANE  (AUTOGEN)
 
-//# SoColorindex: SoMFInt32, 
+//# SoColorindex: SoMFInt32,
 #if !defined(COIN_EXCLUDE_SOCOLORINDEX) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFINT32
 #endif // !COIN_EXCLUDE_SOCOLORINDEX  (AUTOGEN)
 
-//# SoComplexity: SoSFEnum, SoSFFloat, 
+//# SoComplexity: SoSFEnum, SoSFFloat,
 #if !defined(COIN_EXCLUDE_SOCOMPLEXITY) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFENUM
 #undef COIN_EXCLUDE_SOSFFLOAT
 #endif // !COIN_EXCLUDE_SOCOMPLEXITY  (AUTOGEN)
 
-//# SoCone: SoSFBitmask, SoSFFloat, 
+//# SoCone: SoSFBitmask, SoSFFloat,
 #if !defined(COIN_EXCLUDE_SOCONE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFBITMASK
 #undef COIN_EXCLUDE_SOSFFLOAT
@@ -1328,25 +1328,25 @@
 #undef COIN_EXCLUDE_SOSFFLOAT
 #endif // !COIN_EXCLUDE_SOCUBE  (AUTOGEN)
 
-//# SoCylinder: SoSFFloat, SoSFBitmask, 
+//# SoCylinder: SoSFFloat, SoSFBitmask,
 #if !defined(COIN_EXCLUDE_SOCYLINDER) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFFLOAT
 #undef COIN_EXCLUDE_SOSFBITMASK
 #endif // !COIN_EXCLUDE_SOCYLINDER  (AUTOGEN)
 
-//# SoDirectionallight: SoSFVec3f, 
+//# SoDirectionallight: SoSFVec3f,
 #if !defined(COIN_EXCLUDE_SODIRECTIONALLIGHT) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFVEC3F
 #endif // !COIN_EXCLUDE_SODIRECTIONALLIGHT  (AUTOGEN)
 
-//# SoDrawstyle: SoSFEnum, SoSFFloat, SoSFUshort, 
+//# SoDrawstyle: SoSFEnum, SoSFFloat, SoSFUshort,
 #if !defined(COIN_EXCLUDE_SODRAWSTYLE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFENUM
 #undef COIN_EXCLUDE_SOSFFLOAT
 #undef COIN_EXCLUDE_SOSFUSHORT
 #endif // !COIN_EXCLUDE_SODRAWSTYLE  (AUTOGEN)
 
-//# SoEnvironment: SoSFFloat, SoSFColor, SoSFVec3f, SoSFEnum, 
+//# SoEnvironment: SoSFFloat, SoSFColor, SoSFVec3f, SoSFEnum,
 #if !defined(COIN_EXCLUDE_SOENVIRONMENT) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFFLOAT
 #undef COIN_EXCLUDE_SOSFCOLOR
@@ -1359,29 +1359,29 @@
 #undef COIN_EXCLUDE_SOSFENUM
 #endif // !COIN_EXCLUDE_SOEXTSELECTION  (AUTOGEN)
 
-//# SoFaceset: SoMFInt32, 
+//# SoFaceset: SoMFInt32,
 #if !defined(COIN_EXCLUDE_SOFACESET) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFINT32
 #endif // !COIN_EXCLUDE_SOFACESET  (AUTOGEN)
 
-//# SoFile: SoSFString, 
+//# SoFile: SoSFString,
 #if !defined(COIN_EXCLUDE_SOFILE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFSTRING
 #endif // !COIN_EXCLUDE_SOFILE  (AUTOGEN)
 
-//# SoFont: SoSFName, SoSFFloat, 
+//# SoFont: SoSFName, SoSFFloat,
 #if !defined(COIN_EXCLUDE_SOFONT) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFNAME
 #undef COIN_EXCLUDE_SOSFFLOAT
 #endif // !COIN_EXCLUDE_SOFONT  (AUTOGEN)
 
-//# SoFontstyle: SoSFEnum, SoSFBitmask, 
+//# SoFontstyle: SoSFEnum, SoSFBitmask,
 #if !defined(COIN_EXCLUDE_SOFONTSTYLE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFENUM
 #undef COIN_EXCLUDE_SOSFBITMASK
 #endif // !COIN_EXCLUDE_SOFONTSTYLE  (AUTOGEN)
 
-//# SoImage: SoSFInt32, SoSFEnum, SoSFImage, SoSFString, 
+//# SoImage: SoSFInt32, SoSFEnum, SoSFImage, SoSFString,
 #if !defined(COIN_EXCLUDE_SOIMAGE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFINT32
 #undef COIN_EXCLUDE_SOSFENUM
@@ -1389,14 +1389,14 @@
 #undef COIN_EXCLUDE_SOSFSTRING
 #endif // !COIN_EXCLUDE_SOIMAGE  (AUTOGEN)
 
-//# SoIndexednurbscurve: SoSFInt32, SoMFInt32, SoMFFloat, 
+//# SoIndexednurbscurve: SoSFInt32, SoMFInt32, SoMFFloat,
 #if !defined(COIN_EXCLUDE_SOINDEXEDNURBSCURVE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFINT32
 #undef COIN_EXCLUDE_SOMFINT32
 #undef COIN_EXCLUDE_SOMFFLOAT
 #endif // !COIN_EXCLUDE_SOINDEXEDNURBSCURVE  (AUTOGEN)
 
-//# SoIndexednurbssurface: SoSFInt32, SoMFInt32, SoMFFloat, 
+//# SoIndexednurbssurface: SoSFInt32, SoMFInt32, SoMFFloat,
 #if !defined(COIN_EXCLUDE_SOINDEXEDNURBSSURFACE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFINT32
 #undef COIN_EXCLUDE_SOMFINT32
@@ -1413,46 +1413,46 @@
 #undef COIN_EXCLUDE_SOSFSTRING
 #endif // !COIN_EXCLUDE_SOINFO  (AUTOGEN)
 
-//# SoLOD: SoMFFloat, SoSFVec3f, 
+//# SoLOD: SoMFFloat, SoSFVec3f,
 #if !defined(COIN_EXCLUDE_SOLOD) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFFLOAT
 #undef COIN_EXCLUDE_SOSFVEC3F
 #endif // !COIN_EXCLUDE_SOLOD  (AUTOGEN)
 
-//# SoLabel: SoSFName, 
+//# SoLabel: SoSFName,
 #if !defined(COIN_EXCLUDE_SOLABEL) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFNAME
 #endif // !COIN_EXCLUDE_SOLABEL  (AUTOGEN)
 
-//# SoLevelOfDetail: SoMFFloat, 
+//# SoLevelOfDetail: SoMFFloat,
 #if !defined(COIN_EXCLUDE_SOLEVELOFDETAIL) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFFLOAT
 #endif // !COIN_EXCLUDE_SOLEVELOFDETAIL  (AUTOGEN)
 
-//# SoLevelofsimplification: SoMFFloat, SoSFInt32, 
+//# SoLevelofsimplification: SoMFFloat, SoSFInt32,
 #if !defined(COIN_EXCLUDE_SOLEVELOFSIMPLIFICATION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFFLOAT
 #undef COIN_EXCLUDE_SOSFINT32
 #endif // !COIN_EXCLUDE_SOLEVELOFSIMPLIFICATION  (AUTOGEN)
 
-//# SoLight: SoSFBool, SoSFFloat, SoSFColor, 
+//# SoLight: SoSFBool, SoSFFloat, SoSFColor,
 #if !defined(COIN_EXCLUDE_SOLIGHT) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFBOOL
 #undef COIN_EXCLUDE_SOSFFLOAT
 #undef COIN_EXCLUDE_SOSFCOLOR
 #endif // !COIN_EXCLUDE_SOLIGHT  (AUTOGEN)
 
-//# SoLightmodel: SoSFEnum, 
+//# SoLightmodel: SoSFEnum,
 #if !defined(COIN_EXCLUDE_SOLIGHTMODEL) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFENUM
 #endif // !COIN_EXCLUDE_SOLIGHTMODEL  (AUTOGEN)
 
-//# SoLineset: SoMFInt32, 
+//# SoLineset: SoMFInt32,
 #if !defined(COIN_EXCLUDE_SOLINESET) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFINT32
 #endif // !COIN_EXCLUDE_SOLINESET  (AUTOGEN)
 
-//# SoLocatehighlight: SoSFColor, SoSFEnum, 
+//# SoLocatehighlight: SoSFColor, SoSFEnum,
 #if !defined(COIN_EXCLUDE_SOLOCATEHIGHLIGHT) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFCOLOR
 #undef COIN_EXCLUDE_SOSFENUM
@@ -1463,143 +1463,143 @@
 #undef COIN_EXCLUDE_SOMFINT32
 #endif // !COIN_EXCLUDE_SOMARKERSET  (AUTOGEN)
 
-//# SoMaterial: SoMFColor, SoMFFloat, SoSFFloat, 
+//# SoMaterial: SoMFColor, SoMFFloat, SoSFFloat,
 #if !defined(COIN_EXCLUDE_SOMATERIAL) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFCOLOR
 #undef COIN_EXCLUDE_SOMFFLOAT
 #undef COIN_EXCLUDE_SOSFFLOAT
 #endif // !COIN_EXCLUDE_SOMATERIAL  (AUTOGEN)
 
-//# SoMaterialbinding: SoSFEnum, 
+//# SoMaterialbinding: SoSFEnum,
 #if !defined(COIN_EXCLUDE_SOMATERIALBINDING) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFENUM
 #endif // !COIN_EXCLUDE_SOMATERIALBINDING  (AUTOGEN)
 
-//# SoMatrixtransform: SoSFMatrix, 
+//# SoMatrixtransform: SoSFMatrix,
 #if !defined(COIN_EXCLUDE_SOMATRIXTRANSFORM) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFMATRIX
 #endif // !COIN_EXCLUDE_SOMATRIXTRANSFORM  (AUTOGEN)
 
-//# SoMultiplecopy: SoMFMatrix, 
+//# SoMultiplecopy: SoMFMatrix,
 #if !defined(COIN_EXCLUDE_SOMULTIPLECOPY) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFMATRIX
 #endif // !COIN_EXCLUDE_SOMULTIPLECOPY  (AUTOGEN)
 
-//# SoNonindexedshape: SoSFInt32, 
+//# SoNonindexedshape: SoSFInt32,
 #if !defined(COIN_EXCLUDE_SONONINDEXEDSHAPE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFINT32
 #endif // !COIN_EXCLUDE_SONONINDEXEDSHAPE  (AUTOGEN)
 
-//# SoNormal: SoMFVec3f, 
+//# SoNormal: SoMFVec3f,
 #if !defined(COIN_EXCLUDE_SONORMAL) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFVEC3F
 #endif // !COIN_EXCLUDE_SONORMAL  (AUTOGEN)
 
-//# SoNormalbinding: SoSFEnum, 
+//# SoNormalbinding: SoSFEnum,
 #if !defined(COIN_EXCLUDE_SONORMALBINDING) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFENUM
 #endif // !COIN_EXCLUDE_SONORMALBINDING  (AUTOGEN)
 
-//# SoNurbscurve: SoSFInt32, SoMFFloat, 
+//# SoNurbscurve: SoSFInt32, SoMFFloat,
 #if !defined(COIN_EXCLUDE_SONURBSCURVE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFINT32
 #undef COIN_EXCLUDE_SOMFFLOAT
 #endif // !COIN_EXCLUDE_SONURBSCURVE  (AUTOGEN)
 
-//# SoNurbsprofile: SoMFFloat, 
+//# SoNurbsprofile: SoMFFloat,
 #if !defined(COIN_EXCLUDE_SONURBSPROFILE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFFLOAT
 #endif // !COIN_EXCLUDE_SONURBSPROFILE  (AUTOGEN)
 
-//# SoNurbssurface: SoSFInt32, SoMFFloat, 
+//# SoNurbssurface: SoSFInt32, SoMFFloat,
 #if !defined(COIN_EXCLUDE_SONURBSSURFACE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFINT32
 #undef COIN_EXCLUDE_SOMFFLOAT
 #endif // !COIN_EXCLUDE_SONURBSSURFACE  (AUTOGEN)
 
-//# SoPackedcolor: SoMFUint32, 
+//# SoPackedcolor: SoMFUint32,
 #if !defined(COIN_EXCLUDE_SOPACKEDCOLOR) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFUINT32
 #endif // !COIN_EXCLUDE_SOPACKEDCOLOR  (AUTOGEN)
 
-//# SoPathswitch: SoSFPath, 
+//# SoPathswitch: SoSFPath,
 #if !defined(COIN_EXCLUDE_SOPATHSWITCH) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFPATH
 #endif // !COIN_EXCLUDE_SOPATHSWITCH  (AUTOGEN)
 
-//# SoPendulum: SoSFRotation, SoSFFloat, SoSFBool, 
+//# SoPendulum: SoSFRotation, SoSFFloat, SoSFBool,
 #if !defined(COIN_EXCLUDE_SOPENDULUM) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFROTATION
 #undef COIN_EXCLUDE_SOSFFLOAT
 #undef COIN_EXCLUDE_SOSFBOOL
 #endif // !COIN_EXCLUDE_SOPENDULUM  (AUTOGEN)
 
-//# SoPickstyle: SoSFEnum, 
+//# SoPickstyle: SoSFEnum,
 #if !defined(COIN_EXCLUDE_SOPICKSTYLE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFENUM
 #endif // !COIN_EXCLUDE_SOPICKSTYLE  (AUTOGEN)
 
-//# SoPointlight: SoSFVec3f, 
+//# SoPointlight: SoSFVec3f,
 #if !defined(COIN_EXCLUDE_SOPOINTLIGHT) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFVEC3F
 #endif // !COIN_EXCLUDE_SOPOINTLIGHT  (AUTOGEN)
 
-//# SoPointset: SoSFInt32, 
+//# SoPointset: SoSFInt32,
 #if !defined(COIN_EXCLUDE_SOPOINTSET) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFINT32
 #endif // !COIN_EXCLUDE_SOPOINTSET  (AUTOGEN)
 
-//# SoPolygonoffset: SoSFFloat, SoSFBitmask, SoSFBool, 
+//# SoPolygonoffset: SoSFFloat, SoSFBitmask, SoSFBool,
 #if !defined(COIN_EXCLUDE_SOPOLYGONOFFSET) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFFLOAT
 #undef COIN_EXCLUDE_SOSFBITMASK
 #undef COIN_EXCLUDE_SOSFBOOL
 #endif // !COIN_EXCLUDE_SOPOLYGONOFFSET  (AUTOGEN)
 
-//# SoProfile: SoMFInt32, SoSFEnum, 
+//# SoProfile: SoMFInt32, SoSFEnum,
 #if !defined(COIN_EXCLUDE_SOPROFILE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFINT32
 #undef COIN_EXCLUDE_SOSFENUM
 #endif // !COIN_EXCLUDE_SOPROFILE  (AUTOGEN)
 
-//# SoProfilecoordinate2: SoMFVec2f, 
+//# SoProfilecoordinate2: SoMFVec2f,
 #if !defined(COIN_EXCLUDE_SOPROFILECOORDINATE2) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFVEC2F
 #endif // !COIN_EXCLUDE_SOPROFILECOORDINATE2  (AUTOGEN)
 
-//# SoProfilecoordinate3: SoMFVec3f, 
+//# SoProfilecoordinate3: SoMFVec3f,
 #if !defined(COIN_EXCLUDE_SOPROFILECOORDINATE3) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFVEC3F
 #endif // !COIN_EXCLUDE_SOPROFILECOORDINATE3  (AUTOGEN)
 
-//# SoQuadmesh: SoSFInt32, 
+//# SoQuadmesh: SoSFInt32,
 #if !defined(COIN_EXCLUDE_SOQUADMESH) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFINT32
 #endif // !COIN_EXCLUDE_SOQUADMESH  (AUTOGEN)
 
-//# SoResettransform: SoSFBitmask, 
+//# SoResettransform: SoSFBitmask,
 #if !defined(COIN_EXCLUDE_SORESETTRANSFORM) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFBITMASK
 #endif // !COIN_EXCLUDE_SORESETTRANSFORM  (AUTOGEN)
 
-//# SoRotation: SoSFRotation, 
+//# SoRotation: SoSFRotation,
 #if !defined(COIN_EXCLUDE_SOROTATION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFROTATION
 #endif // !COIN_EXCLUDE_SOROTATION  (AUTOGEN)
 
-//# SoRotationXYZ: SoSFEnum, SoSFFloat, 
+//# SoRotationXYZ: SoSFEnum, SoSFFloat,
 #if !defined(COIN_EXCLUDE_SOROTATIONXYZ) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFENUM
 #undef COIN_EXCLUDE_SOSFFLOAT
 #endif // !COIN_EXCLUDE_SOROTATIONXYZ  (AUTOGEN)
 
-//# SoRotor: SoSFFloat, SoSFBool, 
+//# SoRotor: SoSFFloat, SoSFBool,
 #if !defined(COIN_EXCLUDE_SOROTOR) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFFLOAT
 #undef COIN_EXCLUDE_SOSFBOOL
 #endif // !COIN_EXCLUDE_SOROTOR  (AUTOGEN)
 
-//# SoScale: SoSFVec3f, 
+//# SoScale: SoSFVec3f,
 #if !defined(COIN_EXCLUDE_SOSCALE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFVEC3F
 #endif // !COIN_EXCLUDE_SOSCALE  (AUTOGEN)
@@ -1609,53 +1609,53 @@
 #undef COIN_EXCLUDE_SOSFENUM
 #endif // !COIN_EXCLUDE_SOSELECTION  (AUTOGEN)
 
-//# SoSeparator: SoSFEnum, 
+//# SoSeparator: SoSFEnum,
 #if !defined(COIN_EXCLUDE_SOSEPARATOR) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFENUM
 #endif // !COIN_EXCLUDE_SOSEPARATOR  (AUTOGEN)
 
-//# SoShapehints: SoSFEnum, SoSFFloat, 
+//# SoShapehints: SoSFEnum, SoSFFloat,
 #if !defined(COIN_EXCLUDE_SOSHAPEHINTS) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFENUM
 #undef COIN_EXCLUDE_SOSFFLOAT
 #endif // !COIN_EXCLUDE_SOSHAPEHINTS  (AUTOGEN)
 
-//# SoShuttle: SoSFVec3f, SoSFFloat, SoSFBool, 
+//# SoShuttle: SoSFVec3f, SoSFFloat, SoSFBool,
 #if !defined(COIN_EXCLUDE_SOSHUTTLE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFVEC3F
 #undef COIN_EXCLUDE_SOSFFLOAT
 #undef COIN_EXCLUDE_SOSFBOOL
 #endif // !COIN_EXCLUDE_SOSHUTTLE  (AUTOGEN)
 
-//# SoSphere: SoSFFloat, 
+//# SoSphere: SoSFFloat,
 #if !defined(COIN_EXCLUDE_SOSPHERE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFFLOAT
 #endif // !COIN_EXCLUDE_SOSPHERE  (AUTOGEN)
 
-//# SoSpotlight: SoSFVec3f, SoSFFloat, 
+//# SoSpotlight: SoSFVec3f, SoSFFloat,
 #if !defined(COIN_EXCLUDE_SOSPOTLIGHT) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFVEC3F
 #undef COIN_EXCLUDE_SOSFFLOAT
 #endif // !COIN_EXCLUDE_SOSPOTLIGHT  (AUTOGEN)
 
-//# SoSurroundscale: SoSFInt32, 
+//# SoSurroundscale: SoSFInt32,
 #if !defined(COIN_EXCLUDE_SOSURROUNDSCALE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFINT32
 #endif // !COIN_EXCLUDE_SOSURROUNDSCALE  (AUTOGEN)
 
-//# SoSwitch: SoSFInt32, 
+//# SoSwitch: SoSFInt32,
 #if !defined(COIN_EXCLUDE_SOSWITCH) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFINT32
 #endif // !COIN_EXCLUDE_SOSWITCH  (AUTOGEN)
 
-//# SoText2: SoMFString, SoSFFloat, SoSFEnum, 
+//# SoText2: SoMFString, SoSFFloat, SoSFEnum,
 #if !defined(COIN_EXCLUDE_SOTEXT2) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFSTRING
 #undef COIN_EXCLUDE_SOSFFLOAT
 #undef COIN_EXCLUDE_SOSFENUM
 #endif // !COIN_EXCLUDE_SOTEXT2  (AUTOGEN)
 
-//# SoText3: SoMFString, SoSFFloat, SoSFEnum, SoSFBitmask, 
+//# SoText3: SoMFString, SoSFFloat, SoSFEnum, SoSFBitmask,
 #if !defined(COIN_EXCLUDE_SOTEXT3) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFSTRING
 #undef COIN_EXCLUDE_SOSFFLOAT
@@ -1663,7 +1663,7 @@
 #undef COIN_EXCLUDE_SOSFBITMASK
 #endif // !COIN_EXCLUDE_SOTEXT3  (AUTOGEN)
 
-//# SoTexture2: SoSFString, SoSFImage, SoSFEnum, SoSFColor, 
+//# SoTexture2: SoSFString, SoSFImage, SoSFEnum, SoSFColor,
 #if !defined(COIN_EXCLUDE_SOTEXTURE2) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFSTRING
 #undef COIN_EXCLUDE_SOSFIMAGE
@@ -1671,49 +1671,49 @@
 #undef COIN_EXCLUDE_SOSFCOLOR
 #endif // !COIN_EXCLUDE_SOTEXTURE2  (AUTOGEN)
 
-//# SoTexture2transform: SoSFVec2f, SoSFFloat, 
+//# SoTexture2transform: SoSFVec2f, SoSFFloat,
 #if !defined(COIN_EXCLUDE_SOTEXTURE2TRANSFORM) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFVEC2F
 #undef COIN_EXCLUDE_SOSFFLOAT
 #endif // !COIN_EXCLUDE_SOTEXTURE2TRANSFORM  (AUTOGEN)
 
-//# SoTexturecoordinate2: SoMFVec2f, 
+//# SoTexturecoordinate2: SoMFVec2f,
 #if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATE2) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFVEC2F
 #endif // !COIN_EXCLUDE_SOTEXTURECOORDINATE2  (AUTOGEN)
 
-//# SoTexturecoordinatebinding: SoSFEnum, 
+//# SoTexturecoordinatebinding: SoSFEnum,
 #if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEBINDING) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFENUM
 #endif // !COIN_EXCLUDE_SOTEXTURECOORDINATEBINDING  (AUTOGEN)
 
-//# SoTexturecoordinateplane: SoSFVec3f, 
+//# SoTexturecoordinateplane: SoSFVec3f,
 #if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEPLANE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFVEC3F
 #endif // !COIN_EXCLUDE_SOTEXTURECOORDINATEPLANE  (AUTOGEN)
 
-//# SoTransform: SoSFVec3f, SoSFRotation, 
+//# SoTransform: SoSFVec3f, SoSFRotation,
 #if !defined(COIN_EXCLUDE_SOTRANSFORM) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFVEC3F
 #undef COIN_EXCLUDE_SOSFROTATION
 #endif // !COIN_EXCLUDE_SOTRANSFORM  (AUTOGEN)
 
-//# SoTranslation: SoSFVec3f, 
+//# SoTranslation: SoSFVec3f,
 #if !defined(COIN_EXCLUDE_SOTRANSLATION) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFVEC3F
 #endif // !COIN_EXCLUDE_SOTRANSLATION  (AUTOGEN)
 
-//# SoTrianglestripset: SoMFInt32, 
+//# SoTrianglestripset: SoMFInt32,
 #if !defined(COIN_EXCLUDE_SOTRIANGLESTRIPSET) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFINT32
 #endif // !COIN_EXCLUDE_SOTRIANGLESTRIPSET  (AUTOGEN)
 
-//# SoUnits: SoSFEnum, 
+//# SoUnits: SoSFEnum,
 #if !defined(COIN_EXCLUDE_SOUNITS) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFENUM
 #endif // !COIN_EXCLUDE_SOUNITS  (AUTOGEN)
 
-//# SoVertexproperty: SoMFVec3f, SoMFVec2f, SoSFEnum, SoMFUint32, 
+//# SoVertexproperty: SoMFVec3f, SoMFVec2f, SoSFEnum, SoMFUint32,
 #if !defined(COIN_EXCLUDE_SOVERTEXPROPERTY) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOMFVEC3F
 #undef COIN_EXCLUDE_SOMFVEC2F
@@ -1721,18 +1721,18 @@
 #undef COIN_EXCLUDE_SOMFUINT32
 #endif // !COIN_EXCLUDE_SOVERTEXPROPERTY  (AUTOGEN)
 
-//# SoVertexshape: SoSFNode, 
+//# SoVertexshape: SoSFNode,
 #if !defined(COIN_EXCLUDE_SOVERTEXSHAPE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFNODE
 #endif // !COIN_EXCLUDE_SOVERTEXSHAPE  (AUTOGEN)
 
-//# SoWwwanchor: SoSFString, SoSFEnum, 
+//# SoWwwanchor: SoSFString, SoSFEnum,
 #if !defined(COIN_EXCLUDE_SOWWWANCHOR) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFSTRING
 #undef COIN_EXCLUDE_SOSFENUM
 #endif // !COIN_EXCLUDE_SOWWWANCHOR  (AUTOGEN)
 
-//# SoWwwinline: SoSFString, SoSFVec3f, SoSFNode, 
+//# SoWwwinline: SoSFString, SoSFVec3f, SoSFNode,
 #if !defined(COIN_EXCLUDE_SOWWWINLINE) // (AUTOGEN)
 #undef COIN_EXCLUDE_SOSFSTRING
 #undef COIN_EXCLUDE_SOSFVEC3F

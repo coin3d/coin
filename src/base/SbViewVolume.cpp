@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -108,7 +108,7 @@ SbViewVolume::getMatrices(SbMatrix& affine, SbMatrix& proj) const
   tmp.setRotate(zrot);
   affine.multRight(tmp);
 
-  
+
   // Transform frustum corner vectors back to original position.
   SbVec3f ll, lr, ul;
   affine.multVecMatrix(this->lowerleftfrust, ll);
@@ -188,7 +188,7 @@ SbViewVolume::projectPointToLine(const SbVec2f& pt, SbLine& line) const
  */
 void
 SbViewVolume::projectPointToLine(const SbVec2f& pt,
-				 SbVec3f& line0, SbVec3f& line1) const
+                                 SbVec3f& line0, SbVec3f& line1) const
 {
   SbVec3f scr_n(pt[0], pt[1], -1.0f);
   SbVec3f scr_f(pt[0], pt[1], 1.0f);
@@ -245,7 +245,7 @@ SbPlane
 SbViewVolume::getPlane(const float distFromEye) const
 {
   return SbPlane(-this->projectiondir,
-		 this->projectionpt + distFromEye * this->projectiondir);
+                 this->projectionpt + distFromEye * this->projectiondir);
 }
 
 /*!
@@ -267,7 +267,7 @@ SbViewVolume::getSightPoint(const float distFromEye) const
  */
 SbVec3f
 SbViewVolume::getPlanePoint(const float distFromEye,
-			    const SbVec2f& normPoint) const
+                            const SbVec2f& normPoint) const
 {
   SbVec3f volpt;
 
@@ -321,12 +321,12 @@ SbViewVolume::getAlignRotation(SbBool /* rightAngleOnly */) const
  */
 float
 SbViewVolume::getWorldToScreenScale(const SbVec3f& worldCenter,
-				    float normRadius) const
+                                    float normRadius) const
 {
 #if COIN_DEBUG
   if (normRadius<0.0f)
     SoDebugError::postWarning("SbViewVolume::getWorldToScreenScale",
-			      "normRadius (%f) should be >=0.0f.", normRadius);
+                              "normRadius (%f) should be >=0.0f.", normRadius);
 #endif // COIN_DEBUG
 
   if(this->getProjectionType() == SbViewVolume::ORTHOGRAPHIC) {
@@ -376,7 +376,7 @@ SbViewVolume::projectBox(const SbBox3f& box) const
 #if COIN_DEBUG
   if (box.isEmpty()) {
     SoDebugError::postWarning("SbViewVolume::projectBox",
-			      "Box is empty.");
+                              "Box is empty.");
   }
 #endif // COIN_DEBUG
 
@@ -387,17 +387,17 @@ SbViewVolume::projectBox(const SbBox3f& box) const
   for(int i=0; i < 2; i++) {
     for(int j=0; j < 2; j++) {
       for(int k=0; k < 2; k++) {
-	SbVec3f corner(i ? mincorner[0] : maxcorner[0],
-		       j ? mincorner[1] : maxcorner[1],
-		       k ? mincorner[2] : maxcorner[2]);
-	this->projectToScreen(corner, corner);
-	span.extendBy(SbVec2f(corner[0], corner[1]));
+        SbVec3f corner(i ? mincorner[0] : maxcorner[0],
+                       j ? mincorner[1] : maxcorner[1],
+                       k ? mincorner[2] : maxcorner[2]);
+        this->projectToScreen(corner, corner);
+        span.extendBy(SbVec2f(corner[0], corner[1]));
       }
     }
   }
 
   return SbVec2f(span.getMax()[0] - span.getMin()[0],
-		 span.getMax()[1] - span.getMin()[1]);
+                 span.getMax()[1] - span.getMin()[1]);
 }
 
 /*!
@@ -418,47 +418,47 @@ SbViewVolume::projectBox(const SbBox3f& box) const
  */
 SbViewVolume
 SbViewVolume::narrow(float left, float bottom,
-		     float right, float top) const
+                     float right, float top) const
 {
 #if COIN_DEBUG
   if (left<0.0f) {
     SoDebugError::postWarning("SbViewVolume::narrow",
-			      "left coordinate (%f) should be >=0.0f. "
-			      "Clamping to 0.0f.",left);
+                              "left coordinate (%f) should be >=0.0f. "
+                              "Clamping to 0.0f.",left);
     left=0.0f;
   }
   if (right>1.0f) {
     SoDebugError::postWarning("SbViewVolume::narrow",
-			      "right coordinate (%f) should be <=1.0f. "
-			      "Clamping to 1.0f.",right);
+                              "right coordinate (%f) should be <=1.0f. "
+                              "Clamping to 1.0f.",right);
     right=1.0f;
   }
   if (bottom<0.0f) {
     SoDebugError::postWarning("SbViewVolume::narrow",
-			      "bottom coordinate (%f) should be >=0.0f. "
-			      "Clamping to 0.0f.",bottom);
+                              "bottom coordinate (%f) should be >=0.0f. "
+                              "Clamping to 0.0f.",bottom);
     bottom=0.0f;
   }
   if (top>1.0f) {
     SoDebugError::postWarning("SbViewVolume::narrow",
-			      "top coordinate (%f) should be <=1.0f. "
-			      "Clamping to 1.0f.",top);
+                              "top coordinate (%f) should be <=1.0f. "
+                              "Clamping to 1.0f.",top);
     top=1.0f;
   }
   if (left>right) {
     SoDebugError::postWarning("SbViewVolume::narrow",
-			      "right coordinate (%f) should be larger than "
-			      "left coordinate (%f). Swapping left/right.",
-			      right,left);
+                              "right coordinate (%f) should be larger than "
+                              "left coordinate (%f). Swapping left/right.",
+                              right,left);
     float tmp=right;
     right=left;
     left=tmp;
   }
   if (bottom>top) {
     SoDebugError::postWarning("SbViewVolume::narrow",
-			      "top coordinate (%f) should be larger than "
-			      "bottom coordinate (%f). Swapping top/bottom.",
-			      top,bottom);
+                              "top coordinate (%f) should be larger than "
+                              "bottom coordinate (%f). Swapping top/bottom.",
+                              top,bottom);
     float tmp=top;
     top=bottom;
     bottom=tmp;
@@ -507,32 +507,32 @@ SbViewVolume::narrow(const SbBox3f& /* box */) const
 */
 void
 SbViewVolume::ortho(float left, float right,
-		    float bottom, float top,
-		    float nearval, float farval)
+                    float bottom, float top,
+                    float nearval, float farval)
 {
 #if COIN_DEBUG
   if (left>right) {
     SoDebugError::postWarning("SbViewVolume::ortho",
-			      "right coordinate (%f) should be larger than "
-			      "left coordinate (%f). Swapping left/right.",
-			      right,left);
+                              "right coordinate (%f) should be larger than "
+                              "left coordinate (%f). Swapping left/right.",
+                              right,left);
     float tmp=right;
     right=left;
     left=tmp;
   }
   if (bottom>top) {
     SoDebugError::postWarning("SbViewVolume::ortho",
-			      "top coordinate (%f) should be larger than "
-			      "bottom coordinate (%f). Swapping bottom/top.",
-			      top,bottom);
+                              "top coordinate (%f) should be larger than "
+                              "bottom coordinate (%f). Swapping bottom/top.",
+                              top,bottom);
     float tmp=top;
     top=bottom;
     bottom=tmp;
   }
   if (nearval>farval) {
     SoDebugError::postWarning("SbViewVolume::ortho",
-			      "far coordinate (%f) should be larger than near "
-			      "coordinate (%f). Swapping near/far.",farval,nearval);
+                              "far coordinate (%f) should be larger than near "
+                              "coordinate (%f). Swapping near/far.",farval,nearval);
     float tmp=farval;
     farval=nearval;
     nearval=tmp;
@@ -560,29 +560,29 @@ SbViewVolume::ortho(float left, float right,
 */
 void
 SbViewVolume::perspective(float fovy, float aspect,
-			  float nearval, float farval)
+                          float nearval, float farval)
 {
 #if COIN_DEBUG
   if (fovy<0.0f || fovy > SB_PI) {
     SoDebugError::postWarning("SbViewVolume::perspective",
-			      "Field of View 'fovy' (%f) is out of bounds "
-			      "[0,PI]. Clamping to be within bounds.",fovy);
+                              "Field of View 'fovy' (%f) is out of bounds "
+                              "[0,PI]. Clamping to be within bounds.",fovy);
     if (fovy<0.0f) fovy=0.0f;
     else if (fovy>SB_PI) fovy=SB_PI;
   }
 
   if (aspect<0.0f) {
     SoDebugError::postWarning("SbViewVolume::perspective",
-			      "Aspect ratio 'aspect' (%d) should be >=0.0f. "
-			      "Clamping to 0.0f.",aspect);
+                              "Aspect ratio 'aspect' (%d) should be >=0.0f. "
+                              "Clamping to 0.0f.",aspect);
     aspect=0.0f;
   }
 
   if (nearval>farval) {
     SoDebugError::postWarning("SbViewVolume::perspective",
-			      "far coordinate (%f) should be larger than "
-			      "near coordinate (%f). Swapping near/far.",
-			      farval,nearval);
+                              "far coordinate (%f) should be larger than "
+                              "near coordinate (%f). Swapping near/far.",
+                              farval,nearval);
     float tmp=farval;
     farval=nearval;
     nearval=tmp;
@@ -626,13 +626,13 @@ SbViewVolume::rotateCamera(const SbRotation& q)
   // SbViewVolume::PERSPECTIVE
   else {
     mat.multVecMatrix(this->lowerleftfrust - this->projectionpt,
-		      this->lowerleftfrust);
+                      this->lowerleftfrust);
     this->lowerleftfrust += this->projectionpt;
     mat.multVecMatrix(this->lowerrightfrust - this->projectionpt,
-		      this->lowerrightfrust);
+                      this->lowerrightfrust);
     this->lowerrightfrust += this->projectionpt;
     mat.multVecMatrix(this->upperleftfrust - this->projectionpt,
-		      this->upperleftfrust);
+                      this->upperleftfrust);
     this->upperleftfrust += this->projectionpt;
   }
 }
@@ -654,7 +654,7 @@ SbViewVolume::translateCamera(const SbVec3f& v)
 /*!
   Return the vector pointing from the center of the view volume towards
   the camera. This is just the vector pointing in the opposite direction
-  of \a getProjectionDirection(). 
+  of \a getProjectionDirection().
 
   \sa getProjectionDirection().
  */
@@ -678,9 +678,9 @@ SbViewVolume::zNarrow(float nearval, float farval) const
 #if COIN_DEBUG
   if (nearval>farval) {
     SoDebugError::postWarning("SbViewVolume::zNarrow",
-			      "far coordinate (%f) should be larger than "
-			      "near coordinate (%f). Swapping near/far.",
-			      farval,nearval);
+                              "far coordinate (%f) should be larger than "
+                              "near coordinate (%f). Swapping near/far.",
+                              farval,nearval);
     float tmp=farval;
     farval=nearval;
     nearval=tmp;
@@ -734,8 +734,8 @@ SbViewVolume::scale(float factor)
 #if COIN_DEBUG
   if (factor<0.0f) {
     SoDebugError::postWarning("SbViewVolume::scale",
-			      "Scale factor (%f) should be >=0.0f. Clamping "
-			      "to 0.0f.",factor);
+                              "Scale factor (%f) should be >=0.0f. Clamping "
+                              "to 0.0f.",factor);
     factor=0.0f;
   }
 #endif // COIN_DEBUG
@@ -756,8 +756,8 @@ SbViewVolume::scaleWidth(float ratio)
 #if COIN_DEBUG
   if (ratio<0.0f) {
     SoDebugError::postWarning("SbViewVolume::scaleWidth",
-			      "Scale factor (%f) should be >=0.0f. "
-			      "Clamping to 0.0f.",ratio);
+                              "Scale factor (%f) should be >=0.0f. "
+                              "Clamping to 0.0f.",ratio);
     ratio=0.0f;
   }
 #endif // COIN_DEBUG
@@ -787,10 +787,10 @@ SbViewVolume::scaleHeight(float ratio)
 #if COIN_DEBUG
   if (ratio<0.0f) {
     SoDebugError::postWarning("SbViewVolume::scaleHeight",
-			      "Scale factor (%f) should be >=0.0f. "
-			      "Clamping to 0.0f.",ratio);
+                              "Scale factor (%f) should be >=0.0f. "
+                              "Clamping to 0.0f.",ratio);
     ratio=0.0f;
-  } 
+  }
 #endif // COIN_DEBUG
 
   float h = this->getHeight();
@@ -821,7 +821,7 @@ SbViewVolume::getProjectionType(void) const
 /*!
   Returns coordinates of center point in the projection plane.
  */
-const SbVec3f& 
+const SbVec3f&
 SbViewVolume::getProjectionPoint(void) const
 {
   return this->projectionpt;
@@ -833,7 +833,7 @@ SbViewVolume::getProjectionPoint(void) const
 
   \sa getNearDist().
  */
-const SbVec3f&  
+const SbVec3f&
 SbViewVolume::getProjectionDirection(void) const
 {
   return this->projectiondir;
@@ -869,7 +869,7 @@ SbViewVolume::getWidth(void) const
 float
 SbViewVolume::getHeight(void) const
 {
-  return (this->upperleftfrust - this->lowerleftfrust).length();  
+  return (this->upperleftfrust - this->lowerleftfrust).length();
 }
 
 /*!
@@ -884,17 +884,17 @@ SbViewVolume::getDepth(void) const
   return this->nearfardistance;
 }
 
-void 
+void
 SbViewVolume::getNearFarRay(const SbVec2f &normPoint,
-			    SbVec3f &start,
-			    SbVec3f &dir) const
+                            SbVec3f &start,
+                            SbVec3f &dir) const
 {
   SbVec3f dx = this->lowerrightfrust - this->lowerleftfrust;
   SbVec3f dy = this->upperleftfrust - this->lowerleftfrust;
 
-  
 
-  
+
+
   start = this->lowerleftfrust + dx*normPoint[0] + dy*normPoint[1];
   if (this->type == PERSPECTIVE) {
     dir = start - projectionpt;
@@ -910,8 +910,8 @@ SbViewVolume::getNearFarRay(const SbVec2f &normPoint,
  */
 SbMatrix
 SbViewVolume::getOrthoProjection(const float left, const float right,
-				 const float bottom, const float top,
-				 const float nearval, const float farval)
+                                 const float bottom, const float top,
+                                 const float nearval, const float farval)
 {
   SbMatrix proj;
 
@@ -944,8 +944,8 @@ SbViewVolume::getOrthoProjection(const float left, const float right,
  */
 SbMatrix
 SbViewVolume::getPerspectiveProjection(const float left, const float right,
-				       const float bottom, const float top,
-				       const float nearval, const float farval)
+                                       const float bottom, const float top,
+                                       const float nearval, const float farval)
 {
   SbMatrix proj;
 

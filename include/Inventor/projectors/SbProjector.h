@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -41,7 +41,7 @@ protected:
   SbProjector(void);
   virtual ~SbProjector() { }
 
-  SbLine getWorkingLine(const SbVec2f & point) const; 
+  SbLine getWorkingLine(const SbVec2f & point) const;
 
   SbViewVolume viewVol;
   SbMatrix worldToWorking, workingToWorld;

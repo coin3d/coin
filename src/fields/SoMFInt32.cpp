@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -322,16 +322,16 @@ SoMFInt32::convertTo(SoField * dest) const
       if (i<num-1) ostr << ", ";
     }
     if (num!=1) ostr << " ]";
-    ostr << ends; 
+    ostr << ends;
     ((SoSFString *)dest)->setValue(ostr.str());
   }
 #endif // !COIN_EXCLUDE_SOSFSTRING
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFInt32::convertTo",
-		       "Can't convert from %s to %s",
-		       this->getTypeId().getName().getString(),
-		       dest->getTypeId().getName().getString());
+                       "Can't convert from %s to %s",
+                       this->getTypeId().getName().getString(),
+                       dest->getTypeId().getName().getString());
   }
 #endif // COIN_DEBUG
 }

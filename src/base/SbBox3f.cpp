@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -27,7 +27,7 @@
   and storage. It provides representation of the defining corners of a
   box in 3D space.
 
-  \sa SbBox2f, SbBox2s, SbXfBox3f 
+  \sa SbBox2f, SbBox2s, SbXfBox3f
 */
 
 
@@ -52,14 +52,14 @@ SbBox3f::SbBox3f(void)
   Constructs a box with the given corners.
 
   \a minx should be less than \a maxx, \a miny should be less than
-  \a maxy and \a minz should be less than \a maxz if you want to make 
+  \a maxy and \a minz should be less than \a maxz if you want to make
   a valid box.
  */
-SbBox3f::SbBox3f(const float minx, const float miny, const float minz, 
-		 const float maxx, const float maxy, const float maxz)
+SbBox3f::SbBox3f(const float minx, const float miny, const float minz,
+                 const float maxx, const float maxy, const float maxz)
 {
   this->min.setValue(minx, miny, minz);
-  this->max.setValue(maxx, maxy, maxz);  
+  this->max.setValue(maxx, maxy, maxz);
 }
 
 /*!
@@ -87,7 +87,7 @@ SbBox3f::~SbBox3f(void)
 
   \sa getOrigin(), getMax().
 */
-const SbVec3f& 
+const SbVec3f&
 SbBox3f::getMin(void) const
 {
   return min;
@@ -99,7 +99,7 @@ SbBox3f::getMin(void) const
 
   \sa getMin().
 */
-const SbVec3f& 
+const SbVec3f&
 SbBox3f::getMax(void) const
 {
   return max;
@@ -108,24 +108,24 @@ SbBox3f::getMax(void) const
 /*!
   Returns the center point of the box.
  */
-SbVec3f 
+SbVec3f
 SbBox3f::getCenter(void) const
 {
 #if COIN_DEBUG
   if(this->isEmpty())
     SoDebugError::postWarning("SbBox3f::getCenter",
-			      "The box is empty.");
+                              "The box is empty.");
 #endif // COIN_DEBUG
   return SbVec3f((max[0] + min[0])*0.5f,
-		 (max[1] + min[1])*0.5f,
-		 (max[2] + min[2])*0.5f);
+                 (max[1] + min[1])*0.5f,
+                 (max[2] + min[2])*0.5f);
 }
 
 /*!
   Extend the boundaries of the box by the given point, i.e. make the
   point fit inside the box if it isn't already so.
  */
-void 
+void
 SbBox3f::extendBy(const SbVec3f& point)
 {
   if (this->isEmpty()) {
@@ -133,11 +133,11 @@ SbBox3f::extendBy(const SbVec3f& point)
   }
   else {
     this->min.setValue(SbMin(point[0], this->min[0]),
-		       SbMin(point[1], this->min[1]),
-		       SbMin(point[2], this->min[2]));
+                       SbMin(point[1], this->min[1]),
+                       SbMin(point[2], this->min[2]));
     this->max.setValue(SbMax(point[0], this->max[0]),
-		       SbMax(point[1], this->max[1]),
-		       SbMax(point[2], this->max[2]));
+                       SbMax(point[1], this->max[1]),
+                       SbMax(point[2], this->max[2]));
   }
 }
 
@@ -145,13 +145,13 @@ SbBox3f::extendBy(const SbVec3f& point)
   Extend the boundaries of the box by the given \a box parameter. This
   is equal to calling extendBy() twice with the corner points.
  */
-void 
+void
 SbBox3f::extendBy(const SbBox3f& box)
 {
 #if COIN_DEBUG
   if(box.isEmpty()) {
     SoDebugError::postWarning("SbBox3f::extendBy",
-			      "The box is not valid.");
+                              "The box is not valid.");
     return;
   }
 #endif // COIN_DEBUG
@@ -168,22 +168,22 @@ SbBox3f::extendBy(const SbBox3f& box)
 /*!
   Check if the given point lies within the boundaries of this box.
  */
-SbBool 
+SbBool
 SbBox3f::intersect(const SbVec3f& point) const
 {
   return !(point[0] < this->min[0] ||
-	   point[0] > this->max[0] ||
-	   point[1] < this->min[1] ||
-	   point[1] > this->max[1] ||
-	   point[2] < this->min[2] ||
-	   point[2] > this->max[2]);
+           point[0] > this->max[0] ||
+           point[1] < this->min[1] ||
+           point[1] > this->max[1] ||
+           point[2] < this->min[2] ||
+           point[2] > this->max[2]);
 }
 
 /*!
   Check if the given \a box lies wholly or partly within the boundaries
   of this box.
  */
-SbBool 
+SbBool
 SbBox3f::intersect(const SbBox3f& box) const
 {
   if((box.max[0] < this->min[0]) ||
@@ -199,19 +199,19 @@ SbBox3f::intersect(const SbBox3f& box) const
   Reset the boundaries of the box.
 
   \a minx should be less than \a maxx, \a miny should be less than
-  \a maxy and \a minz should be less than \a maxz if you want to make 
+  \a maxy and \a minz should be less than \a maxz if you want to make
   a valid box.
 
   \sa getBounds().
 */
-void 
-SbBox3f::setBounds(const float minx, const float miny, const float minz, 
-		   const float maxx, const float maxy, const float maxz) 
+void
+SbBox3f::setBounds(const float minx, const float miny, const float minz,
+                   const float maxx, const float maxy, const float maxz)
 {
 #if COIN_DEBUG
   if(!(minx<=maxx && miny<=maxy && minz<= maxz)) {
     SoDebugError::postWarning("SbBox3f::setBounds",
-			      "The box is not valid.");
+                              "The box is not valid.");
     assert(0);
   }
 #endif // COIN_DEBUG
@@ -233,7 +233,7 @@ SbBox3f::setBounds(const SbVec3f& min, const SbVec3f& max)
 #if COIN_DEBUG
   if(!(min[0]<=max[0] && min[1]<=max[1] && min[2]<=max[2])) {
     SoDebugError::postWarning("SbBox3f::setBounds",
-			      "The box is not valid.");
+                              "The box is not valid.");
     assert(0);
   }
 #endif // COIN_DEBUG
@@ -247,9 +247,9 @@ SbBox3f::setBounds(const SbVec3f& min, const SbVec3f& max)
 
   \sa setBounds().
 */
-void 
-SbBox3f::getBounds(float& minx, float& miny, float& minz, 
-			float& maxx, float& maxy, float& maxz) const
+void
+SbBox3f::getBounds(float& minx, float& miny, float& minz,
+                        float& maxx, float& maxy, float& maxz) const
 {
   this->min.getValue(minx, miny, minz);
   this->max.getValue(maxx, maxy, maxz);
@@ -281,12 +281,12 @@ SbBox3f::getOrigin(float& x0, float& y0, float& z0) const
 /*!
   Returns width, height and depth of box.
  */
-void 
+void
 SbBox3f::getSize(float& dx, float& dy, float& dz) const
 {
 #if COIN_DEBUG
   if(this->isEmpty()) SoDebugError::postWarning("SbBox3f::getSize",
-						"The box is not valid.");
+                                                "The box is not valid.");
 #endif // COIN_DEBUG
 
   dx = this->max[0] - this->min[0];
@@ -299,7 +299,7 @@ SbBox3f::getSize(float& dx, float& dy, float& dz) const
 
   \sa isEmpty().
  */
-void 
+void
 SbBox3f::makeEmpty(void)
 {
   this->min.setValue(FLT_MAX, FLT_MAX, FLT_MAX);
@@ -311,7 +311,7 @@ SbBox3f::makeEmpty(void)
 
   \sa makeEmpty().
  */
-SbBool 
+SbBool
 SbBox3f::isEmpty(void) const
 {
   return this->max[0] < this->min[0];
@@ -321,12 +321,12 @@ SbBox3f::isEmpty(void) const
   Check if the box has been correctly specified and by that virtue
   has volume.
  */
-SbBool 
+SbBool
 SbBox3f::hasVolume(void) const
 {
-  return (this->max[0] > this->min[0] && 
-	  this->max[1] > this->min[1] && 
-	  this->max[2] > this->min[2]);
+  return (this->max[0] > this->min[0] &&
+          this->max[1] > this->min[1] &&
+          this->max[2] > this->min[2]);
 }
 
 /*!
@@ -345,17 +345,17 @@ SbBox3f::getVolume(void) const
   // there. 19990316 mortene.
 
   if (this->hasVolume())
-    return ((this->max[0]-this->min[0]) * 
-	    (this->max[1]-this->min[1]) * 
-	    (this->max[2]-this->min[2]));
+    return ((this->max[0]-this->min[0]) *
+            (this->max[1]-this->min[1]) *
+            (this->max[2]-this->min[2]));
   else return 0.0f;
 }
 
 /*!
   Find the span of the box in the given direction (i.e. how much room in
   the given direction the box needs). The distance is returned as the minimum
-  and maximum distance from origo to the closest and furthest plane defined 
-  by the direction vector and each of the box' corners. The difference 
+  and maximum distance from origo to the closest and furthest plane defined
+  by the direction vector and each of the box' corners. The difference
   between these values gives the span.
 */
 void
@@ -366,7 +366,7 @@ SbBox3f::getSpan(const SbVec3f& dir, float& dMin, float& dMax) const
   SbVec3f corner;
   SbVec3f normdir(dir);
   normdir.normalize(); //To save a division
-  
+
   for (int i=0;i<8;i++) {
     //Find all corners the "binary" way :-)
     corner.setValue(points[(i&4)>>2][0],points[(i&2)>>1][1],points[i&1][2]);
@@ -404,7 +404,7 @@ SbBox3f::transform(const SbMatrix& matrix)
 #if COIN_DEBUG
   if(this->isEmpty()) {
     SoDebugError::postWarning("SbBox3f::transform",
-			      "The box is not valid!");
+                              "The box is not valid!");
     return;
   }
 #endif // COIN_DEBUG

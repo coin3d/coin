@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -26,7 +26,7 @@
 class ostream;
 
 
-class SbXfBox3f : public SbBox3f 
+class SbXfBox3f : public SbBox3f
 {
   typedef SbBox3f inherited;
 
@@ -62,10 +62,10 @@ private:
   // incorrect for SbXfBox3f. Hide them
   const SbVec3f & getMin(void) const {return SbBox3f::getMin(); }
   const SbVec3f & getMax(void) const { return SbBox3f::getMax(); }
-  
+
   void calcInverse(void) const;
   void makeInvInvalid(void);
-  
+
   SbMatrix matrix, invertedmatrix;
 };
 

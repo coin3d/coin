@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -157,4 +157,3 @@ SoReadError::getHandler(void * & data) const
   data = SoReadError::callbackData;
   return SoReadError::callback;
 }
-

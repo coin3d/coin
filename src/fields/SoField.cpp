@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -32,7 +32,7 @@
   user-specified data structures. E.g. the default behavior when changing
   the value of a field in a scene graph node is that there'll automatically
   be a rendering update.
-  
+
 
   \sa SoSField, SoMField, SoFieldContainer, SoFieldData
 */
@@ -138,7 +138,7 @@ public:
   void addConnection(SoEngineOutput * master)
     {
       if (!this->engineoutlist)
-	this->engineoutlist = new SoEngineOutputList(1);
+        this->engineoutlist = new SoEngineOutputList(1);
       this->engineoutlist->append(master);
     }
 
@@ -171,7 +171,7 @@ public:
   void addConnection(SoVRMLInterpOutput * master)
     {
       if (!this->interpoutlist)
-	this->interpoutlist = new SoVRMLInterpOutputList(1);
+        this->interpoutlist = new SoVRMLInterpOutputList(1);
       this->interpoutlist->append(master);
     }
 
@@ -290,7 +290,7 @@ private:
   \fn void SoField::convertTo(SoField * dest) const
   Converts our field's value(s) to value(s) acceptable for the \a dest field.
 */
- 
+
 
 // *************************************************************************
 
@@ -300,7 +300,7 @@ SoType SoField::classTypeId = SoType::badType();
 
 /*!
   This is the base constructor for field classes. It takes care of
-  doing the common parts of data initialization in fields. 
+  doing the common parts of data initialization in fields.
  */
 SoField::SoField(void)
   : donotify(TRUE), container(NULL)
@@ -334,25 +334,25 @@ SoField::~SoField()
 
       switch (type) {
       case SoNotRec::FIELD:
-	((SoField *)obj)->disconnect(this);
-	break;
-	
+        ((SoField *)obj)->disconnect(this);
+        break;
+
       case SoNotRec::CONTAINER:
-	this->storage->removeAuditor(0);
-	// FIXME: anything else to do here? 19990622 mortene.
-	break;
-	
+        this->storage->removeAuditor(0);
+        // FIXME: anything else to do here? 19990622 mortene.
+        break;
+
       case SoNotRec::ENGINE:
       case SoNotRec::SENSOR:
       case SoNotRec::INTERP:
-	assert(0 && "FIXME: not implemented yet");
-	break;
-	
+        assert(0 && "FIXME: not implemented yet");
+        break;
+
       case SoNotRec::PARENT:
       default:
-	// Not supposed to happen, of course.
-	assert(0);
-	break;
+        // Not supposed to happen, of course.
+        assert(0);
+        break;
       }
     }
 
@@ -454,7 +454,7 @@ SoField::isOfType(const SoType type) const
   This sets a flag which indicates whether or not the set up connection
   should be considered active. For as long as the "enable connection"
   flag is \a FALSE, no value propagation will be done from any
-  connected source field, engine or interpolator into this field. 
+  connected source field, engine or interpolator into this field.
 
   If the connection is first disabled and then enabled again, the
   field is marked as dirty, which means that it will again be in
@@ -546,7 +546,7 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
 */
 SbBool
 SoField::connectFrom(SoVRMLInterpOutput * master,
-		     SbBool notnotify, SbBool append)
+                     SbBool notnotify, SbBool append)
 {
   SoType mastertype = master->getConnectionType();
   SoType slavetype = this->getTypeId();
@@ -594,7 +594,7 @@ SoField::connectFrom(SoVRMLInterpOutput * master,
 #if !defined(COIN_EXCLUDE_SOENGINE)
 SbBool
 SoField::connectFrom(SoEngineOutput * master,
-		     SbBool notnotify, SbBool append)
+                     SbBool notnotify, SbBool append)
 {
   SoType mastertype = master->getConnectionType();
   SoType slavetype = this->getTypeId();
@@ -629,7 +629,7 @@ SoField::disconnect(SoField * master)
 {
 #if 0 // debug
   SoDebugError::postInfo("SoField::disconnect",
-			 "removing slave %p from master %p", this, master);
+                         "removing slave %p from master %p", this, master);
 #endif // debug
   this->evaluate();
   master->removeAuditor(this, SoNotRec::FIELD);
@@ -694,7 +694,7 @@ SoField::getConnections(SoFieldList & masterlist)
 void
 SoField::disconnect(void)
 {
-  //FIXME: Check for converters? 
+  //FIXME: Check for converters?
   //...Not necessary, I think (kintel 19981030)
 
   // Disconnect us from all master fields.
@@ -726,9 +726,9 @@ SoField::isConnected(void) const
 {
   return (this->isConnectedFromField() ||
 #if !defined(COIN_EXCLUDE_SOENGINE)
-	  this->isConnectedFromEngine() ||
+          this->isConnectedFromEngine() ||
 #endif // !COIN_EXCLUDE_SOENGINE
-	  this->isConnectedFromVRMLInterp());
+          this->isConnectedFromVRMLInterp());
 }
 
 /*!
@@ -741,7 +741,7 @@ SbBool
 SoField::isConnectedFromField(void) const
 {
   return (this->hasExtendedStorage() &&
-	  this->storage->getNumFieldConnections());
+          this->storage->getNumFieldConnections());
 }
 
 /*!
@@ -754,7 +754,7 @@ SbBool
 SoField::isConnectedFromVRMLInterp(void) const
 {
   return (this->hasExtendedStorage() &&
-	  this->storage->getNumVRMLInterpConnections());
+          this->storage->getNumVRMLInterpConnections());
 }
 
 /*!
@@ -768,7 +768,7 @@ SbBool
 SoField::isConnectedFromEngine(void) const
 {
   return (this->hasExtendedStorage() &&
-	  this->storage->getNumEngineConnections());
+          this->storage->getNumEngineConnections());
 }
 #endif // !COIN_EXCLUDE_SOENGINE
 
@@ -834,8 +834,8 @@ SoField::getForwardConnections(SoFieldList & slavelist) const
     const SoAuditorList & al = this->storage->getAuditors();
     for (int i=0; i < al.getLength(); i++) {
       if (al.getType(i) == SoNotRec::FIELD) {
-	slavelist.append((SoField *)al.getObject(i));
-	nr++;
+        slavelist.append((SoField *)al.getObject(i));
+        nr++;
       }
     }
   }
@@ -939,7 +939,7 @@ SoField::get(SbString & valueString)
 /*!
   Mark the field as changed. Touching a field which is part of any component
   (engine or node) in a scene graph will lead to a forced redraw. This is
-  useful if you have been doing several updates to the field wrapped in 
+  useful if you have been doing several updates to the field wrapped in
   a pair of enableNotify() calls to notify the field's auditors that its
   value has changed.
 
@@ -984,9 +984,9 @@ SoField::notify(SoNotList * nlist)
   }
 }
 
-/*! 
+/*!
   This method sets whether notification will be propagated on changing the
-  value of the field.  The old value of the setting is returned. 
+  value of the field.  The old value of the setting is returned.
 
   \sa isNotifyEnabled()
 */
@@ -998,7 +998,7 @@ SoField::enableNotify(SbBool on)
   return old;
 }
 
-/*! 
+/*!
   This method returns whether notification of changes to the field value
   are propagated to the auditors.
 
@@ -1034,7 +1034,7 @@ SoField::removeAuditor(void * f, SoNotRec::Type type)
 {
 #if 0 // debug
   SoDebugError::postInfo("SoField::removeAuditor",
-			 "%p removing %p", this, f);
+                         "%p removing %p", this, f);
 #endif // debug
 
   assert(this->hasExtendedStorage());
@@ -1087,12 +1087,12 @@ SoField::connectionStatusChanged(int /* numConnections */)
   // have unwanted side effects (premature destruction). 19990711
   // mortene.
 #if 0
-  while (numConnections > 0) { 
+  while (numConnections > 0) {
     this->ref();
     numConnections--;
   }
 
-  while (numConnections < 0) { 
+  while (numConnections < 0) {
     this->unref();
     numConnections++;
   }
@@ -1162,18 +1162,18 @@ SoField::read(SoInput * in, const SbName & name)
       in->putBack(c);
     }
   }
-  
+
   if (!this->readValue(in)) {
     SoReadError::post(in, "Couldn't read value for field \"%s\"",
-		      name.getString());
+                      name.getString());
     return FALSE;
   }
 
   if (in->isBinary()) {
     unsigned int flags;
     if (!in->read(flags)) {
-      SoReadError::post(in, "Couldn't read field flags for field \"%s\"", 
-			name.getString());
+      SoReadError::post(in, "Couldn't read field flags for field \"%s\"",
+                        name.getString());
       return FALSE;
     }
 
@@ -1183,18 +1183,18 @@ SoField::read(SoInput * in, const SbName & name)
     // FIXME: probably more flags to take care of. 19990711 mortene.
     if (flags & ~(0x01 | 0x04)) {
       SoDebugError::postInfo("SoField::read",
-			     "unknown field flags (flags: 0x%x)", flags);
+                             "unknown field flags (flags: 0x%x)", flags);
     }
 #endif // COIN_DEBUG
   }
   else {
-    // Check again for ignored flag. 
+    // Check again for ignored flag.
     char c;
     if (!in->read(c)) return FALSE;
     if (c == IGNOREDCHAR) this->setIgnored(TRUE);
     else in->putBack(c);
   }
-  
+
   // FIXME: call touch()? Probably not. 19990406 mortene.
   return TRUE;
 }
@@ -1225,7 +1225,7 @@ SoField::write(SoOutput * out, const SbName & name) const
       out->write(' ');
       out->write(IGNOREDCHAR);
     }
-    
+
     if (this->isConnected()) this->writeConnection(out);
 
     out->write(EOLSTR);
@@ -1243,7 +1243,7 @@ SoField::write(SoOutput * out, const SbName & name) const
     out->write(flags);
 
     assert(!this->isConnected() &&
-	   "FIXME: binary export of connections not implemented yet");
+           "FIXME: binary export of connections not implemented yet");
   }
 
 #else // COIN_EXCLUDE_SOWRITEACTION
@@ -1342,7 +1342,7 @@ SoField::appendConnection(SoVRMLInterpOutput * master, SbBool notnotify)
 */
 SbBool
 SoField::createConverter(SoType fromType, SoType toType,
-			 SoFieldConverter *& conv)
+                         SoFieldConverter *& conv)
 {
   if (fromType == toType) return TRUE;
 
@@ -1365,7 +1365,7 @@ SoField::doConnect(SoField * master, SbBool notify)
 
   this->storage->addConnection(master);
   master->addAuditor(this, SoNotRec::FIELD);
-  
+
   if (notify) {
     if (this->isConnectionEnabled()) {
       this->setDirty(TRUE);
@@ -1390,7 +1390,7 @@ SoField::doConnect(SoEngineOutput * master, SbBool notify)
   this->storage->addConnection(master);
   master->getContainer()->addAuditor(this, SoNotRec::ENGINE);
   master->addConnection(this);
-  
+
   if (notify) {
     if (this->isConnectionEnabled()) {
       this->setDirty(TRUE);
@@ -1415,7 +1415,7 @@ SoField::doConnect(SoVRMLInterpOutput * master, SbBool notify)
   this->storage->addConnection(master);
   master->getContainer()->addAuditor(this, SoNotRec::INTERP);
   master->addConnection(this);
-  
+
   if (notify) {
     if (this->isConnectionEnabled()) {
       this->setDirty(TRUE);
@@ -1489,7 +1489,7 @@ SoField::writeConnection(SoOutput * out) const
   else assert(0);
 
   out->write(" =");
-  
+
   if (fieldcont) {
     SoWriteAction wa(out);
     wa.continueToApply((SoNode *)fieldcont);
@@ -1754,11 +1754,11 @@ SoField::initClasses(void)
   // though? It'd be ugly as hell.  19991109 mortene.
 
   SoType::createType(SoSField::getClassTypeId(), "SFLong",
-		     &SoSFInt32::createInstance);
+                     &SoSFInt32::createInstance);
   SoType::createType(SoSField::getClassTypeId(), "SFULong",
-		     &SoSFUInt32::createInstance);
+                     &SoSFUInt32::createInstance);
   SoType::createType(SoMField::getClassTypeId(), "MFLong",
-		     &SoMFInt32::createInstance);
+                     &SoMFInt32::createInstance);
   SoType::createType(SoMField::getClassTypeId(), "MFULong",
-		     &SoMFUInt32::createInstance);
+                     &SoMFUInt32::createInstance);
 }

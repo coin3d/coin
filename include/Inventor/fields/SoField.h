@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -116,7 +116,7 @@ public:
   // Field<-Engine connection stuff.
 #if !defined(COIN_EXCLUDE_SOENGINE)
   SbBool connectFrom(SoEngineOutput * master,
-		     SbBool notnotify = FALSE, SbBool append = FALSE);
+                     SbBool notnotify = FALSE, SbBool append = FALSE);
   SbBool appendConnection(SoEngineOutput * master, SbBool notnotify = FALSE);
   void disconnect(SoEngineOutput * engineoutput);
   SbBool isConnectedFromEngine(void) const;
@@ -125,7 +125,7 @@ public:
 
   // Field<->Field connection stuff.
   SbBool connectFrom(SoField * master,
-		     SbBool notnotify = FALSE, SbBool append = FALSE);
+                     SbBool notnotify = FALSE, SbBool append = FALSE);
   SbBool appendConnection(SoField * master, SbBool notnotify = FALSE);
   void disconnect(SoField * field);
   SbBool isConnectedFromField(void) const;
@@ -136,9 +136,9 @@ public:
 
   // Field<-Interpolator connection stuff.
   SbBool connectFrom(SoVRMLInterpOutput * master,
-		     SbBool notnotify = FALSE, SbBool append = FALSE);
+                     SbBool notnotify = FALSE, SbBool append = FALSE);
   SbBool appendConnection(SoVRMLInterpOutput * master,
-			  SbBool notnotify = FALSE);
+                          SbBool notnotify = FALSE);
   void disconnect(SoVRMLInterpOutput * interpoutput);
   SbBool isConnectedFromVRMLInterp(void) const;
   SbBool getConnectedVRMLInterp(SoVRMLInterpOutput *& master) const;
@@ -210,7 +210,7 @@ private:
 #endif // !COIN_EXCLUDE_SOENGINE
 #if !defined(COIN_EXCLUDE_SOFIELDCONVERTER)
   SbBool createConverter(SoType fromType, SoType toType,
-			 SoFieldConverter *& conv);
+                         SoFieldConverter *& conv);
 #endif // !COIN_EXCLUDE_SOFIELDCONVERTER
 
 

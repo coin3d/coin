@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -28,9 +28,9 @@ public:
   const SoTypeList & getElements(void) const;
   void enable(const SoType elementType, const int stackIndex);
   void merge(const SoEnabledElementsList & list);
-  
+
   static int getCounter(void);
-  
+
 private:
   static int counter;
   int setUpCounter;

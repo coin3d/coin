@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -68,8 +68,8 @@ SoAuditorList::append(void * const auditor, const SoNotRec::Type type)
 
 void
 SoAuditorList::set(const int index,
-		   void * const auditor,
-		   const SoNotRec::Type type)
+                   void * const auditor,
+                   const SoNotRec::Type type)
 {
   assert(index >= 0 && index < this->getLength());
   SbPList::set(index * 2, auditor);
@@ -82,12 +82,12 @@ SoAuditorList::set(const int index,
 
 int
 SoAuditorList::find(void * const auditor,
-		    const SoNotRec::Type type) const
+                    const SoNotRec::Type type) const
 {
   const int num = SbPList::getLength();
   for (int i = 0; i < num; i += 2) {
     if (SbPList::get(i) == auditor &&
-	SbPList::get(i+1) == (void *) type) {
+        SbPList::get(i+1) == (void *) type) {
       return i / 2;
     }
   }
@@ -127,7 +127,7 @@ SoAuditorList::remove(const int index)
   // 19990622 mortene.
   // Remove item.
   const int num = SbPList::getLength();
-  for (int i = index * 2; i < num - 2; i++) 
+  for (int i = index * 2; i < num - 2; i++)
     SbPList::set(i, this->get(i + 2));
   this->truncate(num-2);
 }
@@ -136,10 +136,10 @@ SoAuditorList::remove(const int index)
   FIXME: write doc.
 */
 
-void 
+void
 SoAuditorList::remove(void * const auditor, const SoNotRec::Type type)
-{ 
-  this->remove(this->find(auditor, type)); 
+{
+  this->remove(this->find(auditor, type));
 }
 
 /*!
@@ -165,29 +165,29 @@ SoAuditorList::notify(SoNotList * list)
     switch (type) {
     case SoNotRec::CONTAINER:
       {
-	SoFieldContainer * obj = (SoFieldContainer *)this->getObject(i);
-	// FIXME: this leads to a failed assertion in SoNotification
-	// (because of a missing call to
-	// SoNotification::append()?). 19990205 mortene.
+        SoFieldContainer * obj = (SoFieldContainer *)this->getObject(i);
+        // FIXME: this leads to a failed assertion in SoNotification
+        // (because of a missing call to
+        // SoNotification::append()?). 19990205 mortene.
 //        list->setLastType(SoNotRec::CONTAINER);
-	obj->notify(list);
+        obj->notify(list);
       }
       break;
     case SoNotRec::PARENT:
       {
-	SoNode * obj = (SoNode *)this->getObject(i);
+        SoNode * obj = (SoNode *)this->getObject(i);
       // FIXME: this leads to a failed assertion in SoNotification
       // (because of a missing call to
       // SoNotification::append()?). 19990205 mortene.
 //        list->setLastType(SoNotRec::PARENT);
-	obj->notify(list);
+        obj->notify(list);
       }
       break;
 #if !defined(COIN_EXCLUDE_SODATASENSOR)
     case SoNotRec::SENSOR:
       {
-	SoDataSensor * obj = (SoDataSensor *)this->getObject(i);
-	obj->schedule();
+        SoDataSensor * obj = (SoDataSensor *)this->getObject(i);
+        obj->schedule();
       }
       break;
 #endif // !COIN_EXCLUDE_SODATASENSOR
@@ -195,12 +195,12 @@ SoAuditorList::notify(SoNotList * list)
     case SoNotRec::ENGINE:
     case SoNotRec::INTERP:
       {
-	// FIXME: this leads to a failed assertion in SoNotification
-	// (because of a missing call to
-	// SoNotification::append()?). 19990205 mortene.
+        // FIXME: this leads to a failed assertion in SoNotification
+        // (because of a missing call to
+        // SoNotification::append()?). 19990205 mortene.
 //        list->setLastType(type);
-	SoField * obj = (SoField *)this->getObject(i);
-	if (!obj->getDirty()) obj->notify(list);
+        SoField * obj = (SoField *)this->getObject(i);
+        if (!obj->getDirty()) obj->notify(list);
       }
       break;
     default:
@@ -208,4 +208,3 @@ SoAuditorList::notify(SoNotList * list)
     }
   }
 }
-

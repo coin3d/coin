@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -31,17 +31,17 @@
 //
 // internal class
 //
-class SbDictEntry 
+class SbDictEntry
 {
 private:
-  SbDictEntry(const unsigned long key, void * const value) { 
-    this->key = key; this->value = value; 
+  SbDictEntry(const unsigned long key, void * const value) {
+    this->key = key; this->value = value;
   }
 private:
   unsigned long key;
   void * value;
   SbDictEntry * next;
-  
+
   friend class SbDict;
 };
 
@@ -49,7 +49,7 @@ private:
 // *************************************************************************
 
 /*!
-  Constructor with \a entries specifying the number of buckets 
+  Constructor with \a entries specifying the number of buckets
   in the hash list -- so it need to be larger than 0. For best
   performance during dictionary look-ups, \a entries should be a prime.
 */
@@ -104,7 +104,7 @@ SbDict::copyval(unsigned long key, void * value, void * data)
 
 /*!
   Clear all entries in the dictionary.
-*/ 
+*/
 void
 SbDict::clear(void)
 {
@@ -202,7 +202,7 @@ SbDict::remove(const unsigned long key)
 #if 0 // OBSOLETED 19991026, pederb
   SbDictEntry *& entry = this->findEntry(key);
   SbDictEntry * tmp;
-  
+
   if (entry == NULL)
     return FALSE;
   else {
@@ -233,7 +233,7 @@ SbDict::remove(const unsigned long key)
 /*!
   Applies \a rtn to all entries in the dictionary.
 */
-void 
+void
 SbDict::applyToAll(void (* rtn)(unsigned long key, void * value)) const
 {
   SbDictEntry * entry;
@@ -244,15 +244,15 @@ SbDict::applyToAll(void (* rtn)(unsigned long key, void * value)) const
       rtn(entry->key, entry->value);
       entry = entry->next;
     }
-  } 
+  }
 }
 
 /*!
   \overload
 */
-void 
+void
 SbDict::applyToAll(void (* rtn)(unsigned long key, void * value, void * data),
-		   void * data) const
+                   void * data) const
 {
   SbDictEntry * entry;
   int n = this->tablesize;
@@ -262,13 +262,13 @@ SbDict::applyToAll(void (* rtn)(unsigned long key, void * value, void * data),
       rtn(entry->key, entry->value, data);
       entry = entry->next;
     }
-  } 
+  }
 }
 
 /*!
   Creates lists with all entries in the dictionary.
 */
-void 
+void
 SbDict::makePList(SbPList & keys, SbPList & values)
 {
   SbDictEntry * entry;
@@ -279,7 +279,7 @@ SbDict::makePList(SbPList & keys, SbPList & values)
       keys.append((void *)entry->key);
       values.append((void *)entry->value);
     }
-  } 
+  }
 }
 
 //
@@ -302,8 +302,8 @@ SbDict::findEntry(const unsigned long key) const
 
 SbDictEntry *
 SbDict::findEntry(const unsigned long key,
-		  const unsigned long bucketnum,
-		  SbDictEntry **prev) const
+                  const unsigned long bucketnum,
+                  SbDictEntry **prev) const
 {
   if (prev) *prev = NULL;
   SbDictEntry *entry = buckets[key % tablesize];
@@ -351,4 +351,3 @@ SbDict::findEntry(const unsigned long key,
 //   }
 //   printf("\n\n\n");
 // }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -56,7 +56,7 @@
 #endif
 
   int mode = GL_POLYGON; // ...to save a test
-  int newmode; 
+  int newmode;
   const int32_t *viptr = vertexindices;
   const int32_t *viendptr = viptr + numindices;
   int32_t v1, v2, v3, v4, v5;
@@ -77,7 +77,7 @@
 #if MBINDING==OVERALL
   if (materials);
 #endif
-  
+
   while (viptr < viendptr) {
     v1 = *viptr++;
     v2 = *viptr++;
@@ -100,7 +100,7 @@
       glBegin((GLenum) mode);
     }
     else if (mode == GL_POLYGON) glBegin(GL_POLYGON);
-    
+
     /* vertex 1 *********************************************************/
 #if MBINDING==PER_VERTEX || MBINDING==PER_FACE
     materials->send(matnr++, TRUE);
@@ -115,12 +115,12 @@
     glNormal3fv((const GLfloat*)currnormal);
 #endif
 #if TEXTURES==TRUE
-    texcoords->send(texindices ? *texindices++ : texidx++, 
-		    vertexlist->get3(v1), 
-		    *currnormal);
+    texcoords->send(texindices ? *texindices++ : texidx++,
+                    vertexlist->get3(v1),
+                    *currnormal);
 #endif
     vertexlist->send(v1);
-    
+
     /* vertex 2 *********************************************************/
 #if MBINDING==PER_VERTEX
     materials->send(matnr++, TRUE);
@@ -135,9 +135,9 @@
     glNormal3fv((const GLfloat*)currnormal);
 #endif
 #if TEXTURES==TRUE
-    texcoords->send(texindices ? *texindices++ : texidx++, 
-		    vertexlist->get3(v2), 
-		    *currnormal);
+    texcoords->send(texindices ? *texindices++ : texidx++,
+                    vertexlist->get3(v2),
+                    *currnormal);
 #endif
     vertexlist->send(v2);
 
@@ -155,9 +155,9 @@
     glNormal3fv((const GLfloat*)currnormal);
 #endif
 #if TEXTURES==TRUE
-    texcoords->send(texindices ? *texindices++ : texidx++, 
-		    vertexlist->get3(v3), 
-		    *currnormal);
+    texcoords->send(texindices ? *texindices++ : texidx++,
+                    vertexlist->get3(v3),
+                    *currnormal);
 #endif
     vertexlist->send(v3);
 
@@ -176,55 +176,55 @@
       glNormal3fv((const GLfloat*)currnormal);
 #endif
 #if TEXTURES==TRUE
-      texcoords->send(texindices ? *texindices++ : texidx++, 
-		      vertexlist->get3(v4), 
-		      *currnormal);
+      texcoords->send(texindices ? *texindices++ : texidx++,
+                      vertexlist->get3(v4),
+                      *currnormal);
 #endif
       vertexlist->send(v4);
       if (mode == GL_POLYGON) {
       /* vertex 5 (polygon) ********************************************/
 #if MBINDING==PER_VERTEX
-	materials->send(matnr++, TRUE);
+        materials->send(matnr++, TRUE);
 #elif MBINDING==PER_VERTEX_INDEXED
-	materials->send(*matindices++, TRUE);
+        materials->send(*matindices++, TRUE);
 #endif
 #if NBINDING==PER_VERTEX
-	currnormal = normals++;
-	glNormal3fv((const GLfloat*)currnormal);
+        currnormal = normals++;
+        glNormal3fv((const GLfloat*)currnormal);
 #elif NBINDING==PER_VERTEX_INDEXED
-	currnormal = &normals[*normalindices++];
-	glNormal3fv((const GLfloat*)currnormal);
+        currnormal = &normals[*normalindices++];
+        glNormal3fv((const GLfloat*)currnormal);
 #endif
 #if TEXTURES==TRUE
-	texcoords->send(texindices ? *texindices++ : texidx++, 
-			vertexlist->get3(v5), 
-			*currnormal);
+        texcoords->send(texindices ? *texindices++ : texidx++,
+                        vertexlist->get3(v5),
+                        *currnormal);
 #endif
-	vertexlist->send(v5);
-	v1 = *viptr++;
-	while (v1 >= 0) {
+        vertexlist->send(v5);
+        v1 = *viptr++;
+        while (v1 >= 0) {
       /* vertex 6-n (polygon) *****************************************/
 #if MBINDING==PER_VERTEX
-	  materials->send(matnr++, TRUE);
+          materials->send(matnr++, TRUE);
 #elif MBINDING==PER_VERTEX_INDEXED
-	  materials->send(*matindices++, TRUE);
+          materials->send(*matindices++, TRUE);
 #endif
 #if NBINDING==PER_VERTEX
-	  currnormal = normals++;
-	  glNormal3fv((const GLfloat*)currnormal);
+          currnormal = normals++;
+          glNormal3fv((const GLfloat*)currnormal);
 #elif NBINDING==PER_VERTEX_INDEXED
-	  currnormal = &normals[*normalindices++];
-	  glNormal3fv((const GLfloat*)currnormal);
+          currnormal = &normals[*normalindices++];
+          glNormal3fv((const GLfloat*)currnormal);
 #endif
 #if TEXTURES==TRUE
-	  texcoords->send(texindices ? *texindices++ : texidx++, 
-			  vertexlist->get3(v1), 
-			  *currnormal);
+          texcoords->send(texindices ? *texindices++ : texidx++,
+                          vertexlist->get3(v1),
+                          *currnormal);
 #endif
-	  vertexlist->send(v1);
-	  v1 = *viptr++;
-	}
-	glEnd(); /* draw polygon */
+          vertexlist->send(v1);
+          v1 = *viptr++;
+        }
+        glEnd(); /* draw polygon */
       }
     }
 #if MBINDING==PER_VERTEX_INDEXED
@@ -242,4 +242,3 @@
 }
 #undef MINDEX
 #undef NINDEX
-

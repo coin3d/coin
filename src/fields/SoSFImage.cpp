@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -175,7 +175,7 @@ SoSFImage::readValue(SoInput * in)
       ! in->read(this->imgdim[1]) ||
       ! in->read(this->bytedepth))
     return FALSE;
-    
+
   if (this->imgdim[0]<0 || this->imgdim[1]<0) return FALSE;
   if ((this->bytedepth<1 || this->bytedepth>4) &&
       (this->imgdim[0]>0 || this->imgdim[1]>0))
@@ -192,7 +192,7 @@ SoSFImage::readValue(SoInput * in)
       return FALSE;
     for (int j = 0; j < this->bytedepth; j++)
       this->pixblock[byte++] =
-	(unsigned char) ((l >> (8 * (this->bytedepth-j-1))) & 0xFF);
+        (unsigned char) ((l >> (8 * (this->bytedepth-j-1))) & 0xFF);
   }
   return TRUE;
 }
@@ -231,7 +231,7 @@ SoSFImage::getValue(SbVec2s & size, int & nc) const
 */
 void
 SoSFImage::setValue(const SbVec2s & size, const int nc,
-		    const unsigned char * const bytes)
+                    const unsigned char * const bytes)
 {
 
   unsigned char * newblock =
@@ -242,7 +242,7 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
   this->imgdim = size;
   this->bytedepth = nc;
   memcpy(this->pixblock, bytes,
-	 this->imgdim[0] * this->imgdim[1] * this->bytedepth);
+         this->imgdim[0] * this->imgdim[1] * this->bytedepth);
 
   this->valueChanged();
 }

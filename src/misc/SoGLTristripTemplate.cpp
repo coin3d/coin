@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -67,7 +67,7 @@
 #if MBINDING==OVERALL
   if (materials);
 #endif
-  
+
   while (viptr < viendptr) {
     v1 = *viptr++;
     v2 = *viptr++;
@@ -75,7 +75,7 @@
     assert(v1 >= 0 && v2 >= 0 && v3 >= 0);
 
     glBegin(GL_TRIANGLE_STRIP); // move to right before glArrayElement()?
-    
+
     /* vertex 1 *********************************************************/
 #if MBINDING==PER_VERTEX || MBINDING==PER_TRIANGLE || MBINDING==PER_STRIP
     materials->send(matnr++, TRUE);
@@ -90,9 +90,9 @@
     glNormal3fv((const GLfloat*)currnormal);
 #endif
 #if TEXTURES==TRUE
-    texcoords->send(texindices ? *texindices++ : texidx++, 
-		    vertexlist->get3(v1), 
-		    *currnormal);
+    texcoords->send(texindices ? *texindices++ : texidx++,
+                    vertexlist->get3(v1),
+                    *currnormal);
 #endif
     vertexlist->send(v1);
 
@@ -110,9 +110,9 @@
     glNormal3fv((const GLfloat*)currnormal);
 #endif
 #if TEXTURES==TRUE
-    texcoords->send(texindices ? *texindices++ : texidx++, 
-		    vertexlist->get3(v2), 
-		    *currnormal);
+    texcoords->send(texindices ? *texindices++ : texidx++,
+                    vertexlist->get3(v2),
+                    *currnormal);
 #endif
     vertexlist->send(v2);
 
@@ -130,12 +130,12 @@
     glNormal3fv((const GLfloat*)currnormal);
 #endif
 #if TEXTURES==TRUE
-    texcoords->send(texindices ? *texindices++ : texidx++, 
-		    vertexlist->get3(v3), 
-		    *currnormal);
+    texcoords->send(texindices ? *texindices++ : texidx++,
+                    vertexlist->get3(v3),
+                    *currnormal);
 #endif
     vertexlist->send(v3);
-    
+
     v1 = *viptr++;
     while (v1 >= 0) {
 #if MBINDING==PER_VERTEX || MBINDING==PER_TRIANGLE
@@ -151,9 +151,9 @@
       glNormal3fv((const GLfloat*)currnormal);
 #endif
 #if TEXTURES==TRUE
-      texcoords->send(texindices ? *texindices++ : texidx++, 
-		      vertexlist->get3(v1), 
-		      *currnormal);
+      texcoords->send(texindices ? *texindices++ : texidx++,
+                      vertexlist->get3(v1),
+                      *currnormal);
 #endif
       vertexlist->send(v1);
       v1 = *viptr++;
@@ -169,8 +169,8 @@
 #if TEXTURES==TRUE
     if (texindices) texindices++;
 #endif
-    
-  }    
+
+  }
 }
 
 #undef MINDEX

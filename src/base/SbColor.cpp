@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -92,8 +92,8 @@ SbColor&
 SbColor::setPackedValue(const uint32_t rgba, float& transparency)
 {
   this->setValue((rgba >> 24)/255.0f,
-		 ((rgba >> 16)&0xff)/255.0f,
-		 ((rgba >> 8)&0xff)/255.0f);
+                 ((rgba >> 16)&0xff)/255.0f,
+                 ((rgba >> 8)&0xff)/255.0f);
   transparency = 1.0f - (rgba&0xff)/255.0f;
   return *this;
 }
@@ -109,9 +109,9 @@ uint32_t
 SbColor::getPackedValue(const float transparency) const
 {
   return (((uint32_t)(red()*255.0f + 0.5f) << 24) |
-	  ((uint32_t)(green()*255.0f + 0.5f) << 16) |
-	  ((uint32_t)(blue()*255.0f + 0.5f) << 8) |
-	  (uint32_t)((1.0f - transparency)*255.0f + 0.5f));
+          ((uint32_t)(green()*255.0f + 0.5f) << 16) |
+          ((uint32_t)(blue()*255.0f + 0.5f) << 8) |
+          (uint32_t)((1.0f - transparency)*255.0f + 0.5f));
 }
 
 /*!
@@ -123,29 +123,29 @@ SbColor::getPackedValue(const float transparency) const
  */
 SbColor&
 SbColor::setHSVValue(float hue, float saturation,
-		     float value)
+                     float value)
 {
 #if COIN_DEBUG
   if (!(hue>=0.0f && hue<=1.0f)) {
     SoDebugError::postWarning("SbColor::setHSVValue",
-			      "'hue' (%f) not within [0.0,1.0]; clamping.",
-			      hue);
+                              "'hue' (%f) not within [0.0,1.0]; clamping.",
+                              hue);
     if (hue<0.0f) hue=0.0f;
     else if (hue>1.0f) hue=1.0f;
   }
 
   if (!(saturation>=0.0f && saturation<=1.0f)) {
     SoDebugError::postWarning("SbColor::setHSVValue",
-			      "'saturation' (%f) not within [0.0,1.0]; "
-			      "clamping.", saturation);
+                              "'saturation' (%f) not within [0.0,1.0]; "
+                              "clamping.", saturation);
     if (saturation<0.0f) saturation=0.0f;
     else if (saturation>1.0f) saturation=1.0f;
   }
 
   if (!(value>=0.0f && value<=1.0f)) {
     SoDebugError::postWarning("SbColor::setHSVValue",
-			      "'value' (%f) not within [0.0,1.0]; clamping.",
-			      value);
+                              "'value' (%f) not within [0.0,1.0]; clamping.",
+                              value);
     if (value<0.0f) value=0.0f;
     else if (value>1.0f) value=1.0f;
   }

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -136,8 +136,8 @@ SoDelayQueueSensor::unschedule(void)
   // it. 19990226 mortene.
   if (!this->isScheduled()) {
     SoDebugError::postWarning("SoDelayQueueSensor::unschedule",
-			      "tried to unschedule a sensor which is "
-			      "not scheduled");
+                              "tried to unschedule a sensor which is "
+                              "not scheduled");
     return;
   }
 #endif // COIN_DEBUG

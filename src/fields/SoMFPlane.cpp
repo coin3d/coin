@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -327,7 +327,7 @@ SoMFPlane::convertTo(SoField * dest) const
       plane=&(*this)[i];
       const SbVec3f * norm=&plane->getNormal();
       ostr << (*norm)[0] << " " << (*norm)[1] << " " << (*norm)[2] << "  " <<
-	plane->getDistanceFromOrigin();
+        plane->getDistanceFromOrigin();
       if (i<num-1) ostr << ", ";
     }
     if (num>1) ostr << " ]";
@@ -338,9 +338,9 @@ SoMFPlane::convertTo(SoField * dest) const
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFPlane::convertTo",
-		       "Can't convert from %s to %s",
-		       this->getTypeId().getName().getString(),
-		       dest->getTypeId().getName().getString());
+                       "Can't convert from %s to %s",
+                       this->getTypeId().getName().getString(),
+                       dest->getTypeId().getName().getString());
   }
 #endif // COIN_DEBUG
 }

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -43,7 +43,7 @@ class SoTextureCoordinateBundle;
 class SbVec3f;
 class SbVec2f;
 
-void sogl_global_init(); 
+void sogl_global_init();
 
 // limit functions
 int sogl_max_texture_size();
@@ -67,38 +67,38 @@ SbBool sogl_vertex_array_ext();
 #define SOGL_NEED_NORMALS      0x10
 #define SOGL_NEED_TEXCOORDS    0x20
 
-// render 
+// render
 void sogl_render_cone(const float bottomRadius,
-		      const float height,
-		      const int numslices,
-		      SoMaterialBundle * const material,
-		      const unsigned int flags);
+                      const float height,
+                      const int numslices,
+                      SoMaterialBundle * const material,
+                      const unsigned int flags);
 
 
 void sogl_render_cylinder(const float radius,
-			  const float height,
-			  const int numslices,
-			  SoMaterialBundle * const material,
-			  const unsigned int flags);
+                          const float height,
+                          const int numslices,
+                          SoMaterialBundle * const material,
+                          const unsigned int flags);
 
 void sogl_render_sphere(const float radius,
-			const int numstacks,
-			const int numslices,
-			SoMaterialBundle * const material,
-			const unsigned int flags);
+                        const int numstacks,
+                        const int numslices,
+                        SoMaterialBundle * const material,
+                        const unsigned int flags);
 
 void sogl_render_cube(const float width,
-		      const float height,
-		      const float depth,
-		      SoMaterialBundle * const material,
-		      const unsigned int flags);
+                      const float height,
+                      const float depth,
+                      SoMaterialBundle * const material,
+                      const unsigned int flags);
 
 // convenience functions
 void sogl_polygon_offset(const int onoff, const float numpixels = 1.0f);
 unsigned int sogl_create_texture(const int wrapS, const int wrapT,
-				 const unsigned char * const texture, 
-				 const int numComponents, 
-				 const int w, const int h);
+                                 const unsigned char * const texture,
+                                 const int numComponents,
+                                 const int w, const int h);
 void sogl_apply_texture(const unsigned int handle);
 void sogl_free_texture(unsigned int handle);
 
@@ -123,17 +123,17 @@ void sogl_free_texture(unsigned int handle);
 
 #if !defined(NO_FACESET_RENDER)
 void sogl_render_faceset(const SoGLCoordinateElement * const coords,
-			 const int32_t *vertexindices,
-			 int num_vertexindices,
-			 const SbVec3f *normals,
-			 const int32_t *normindices,
-			 SoMaterialBundle * const materials,
-			 const int32_t *matindices,
-			 SoTextureCoordinateBundle * const texcoords,
-			 const int32_t *texindices,
-			 const int nbind,
-			 const int mbind,
-			 const int texture);
+                         const int32_t *vertexindices,
+                         int num_vertexindices,
+                         const SbVec3f *normals,
+                         const int32_t *normindices,
+                         SoMaterialBundle * const materials,
+                         const int32_t *matindices,
+                         SoTextureCoordinateBundle * const texcoords,
+                         const int32_t *texindices,
+                         const int nbind,
+                         const int mbind,
+                         const int texture);
 #endif // !NO_FACESET_RENDER
 
 #define NO_TRISTRIPSET_RENDER 1
@@ -145,19 +145,19 @@ void sogl_render_faceset(const SoGLCoordinateElement * const coords,
 #endif // !COIN_EXCLUDE_SOTRIANGLESTRIPSET
 
 #if !defined(NO_TRISTRIPSET_RENDER)
-void 
+void
 sogl_render_tristrip(const SoGLCoordinateElement * const coords,
-		     const int32_t *vertexindices,
-		     int num_vertexindices,
-		     const SbVec3f *normals,
-		     const int32_t *normindices,
-		     SoMaterialBundle *const materials,
-		     const int32_t *matindices,
-		     const SoTextureCoordinateBundle * const texcoords,
-		     const int32_t *texindices,
-		     const int nbind,
-		     const int mbind,
-		     const int texture);
+                     const int32_t *vertexindices,
+                     int num_vertexindices,
+                     const SbVec3f *normals,
+                     const int32_t *normindices,
+                     SoMaterialBundle *const materials,
+                     const int32_t *matindices,
+                     const SoTextureCoordinateBundle * const texcoords,
+                     const int32_t *texindices,
+                     const int nbind,
+                     const int mbind,
+                     const int texture);
 #endif // !NO_TRISTRIPSET_RENDER
 
 
@@ -172,18 +172,18 @@ sogl_render_tristrip(const SoGLCoordinateElement * const coords,
 #if !defined(NO_LINESET_RENDER)
 void
 sogl_render_lineset(const SoGLCoordinateElement * const coords,
-		    const int32_t *vertexindices,
-		    int num_vertexindices,
-		    const SbVec3f *normals,
-		    const int32_t *normindices,
-		    SoMaterialBundle *const materials,
-		    const int32_t *matindices,
-		    const SoTextureCoordinateBundle * const texcoords,
-		    const int32_t *texindices,
-		    int nbind,
-		    int mbind,
-		    const int texture,
-		    const int drawAsPoints);
+                    const int32_t *vertexindices,
+                    int num_vertexindices,
+                    const SbVec3f *normals,
+                    const int32_t *normindices,
+                    SoMaterialBundle *const materials,
+                    const int32_t *matindices,
+                    const SoTextureCoordinateBundle * const texcoords,
+                    const int32_t *texindices,
+                    int nbind,
+                    int mbind,
+                    const int texture,
+                    const int drawAsPoints);
 #endif // !NO_LINESET_RENDER
 
 

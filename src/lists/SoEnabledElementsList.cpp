@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -54,7 +54,7 @@ SoEnabledElementsList::SoEnabledElementsList(SoEnabledElementsList * const paren
 const SoTypeList &
 SoEnabledElementsList::getElements(void) const
 {
-  if (! parent) // already merged. FIXME: can't do it like this 
+  if (! parent) // already merged. FIXME: can't do it like this
     return elements;
 
   // FIXME: use counter and setUpCounter to avoid unncessary merges
@@ -73,15 +73,15 @@ SoEnabledElementsList::getElements(void) const
 
 void
 SoEnabledElementsList::enable(const SoType elementType,
-			      const int stackIndex)
+                              const int stackIndex)
 {
 #if 0 // debug
   SoDebugError::postInfo("SoEnabledElementsList::enable",
-			 "this: %p, elements: %p, typelist length: %d\n",
-			 this, &(this->elements), elements.getLength());
+                         "this: %p, elements: %p, typelist length: %d\n",
+                         this, &(this->elements), elements.getLength());
 #endif // debug
 
-  while (stackIndex >= this->elements.getLength()) 
+  while (stackIndex >= this->elements.getLength())
     this->elements.append(SoType::badType());
 
   this->elements[stackIndex] = elementType;
@@ -108,9 +108,8 @@ SoEnabledElementsList::merge(const SoEnabledElementsList & list)
   element is added to a list.
 */
 
-int 
+int
 SoEnabledElementsList::getCounter()
-{ 
-  return counter; 
+{
+  return counter;
 }
-

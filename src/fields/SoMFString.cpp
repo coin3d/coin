@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -332,11 +332,11 @@ SoMFString::write1Value(SoOutput * out, int idx) const
 */
 void
 SoMFString::setValues(const int start, const int num,
-		     const char * const strings [])
+                     const char * const strings [])
 {
   if(start+num > this->maxNum) this->allocValues(start+num);
   else if(start+num > this->num) this->num = start+num;
-  
+
   for (int i=0;i<num;i++) this->set1Value(i+start,SbString(strings[i]));
   this->valueChanged();
 }
@@ -355,7 +355,7 @@ SoMFString::setValue(const char * const string)
 */
 void
 SoMFString::deleteText(const int /* fromLine */, const int /* fromChar */,
-			const int /* toLine */, const int /* toChar */)
+                        const int /* toLine */, const int /* toChar */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -370,9 +370,9 @@ SoMFString::convertTo(SoField * dest) const
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFString::convertTo",
-		       "Can't convert from %s to %s",
-		       this->getTypeId().getName().getString(),
-		       dest->getTypeId().getName().getString());
+                       "Can't convert from %s to %s",
+                       this->getTypeId().getName().getString(),
+                       dest->getTypeId().getName().getString());
   }
 #endif // COIN_DEBUG
 }

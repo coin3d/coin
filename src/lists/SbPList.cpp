@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -67,7 +67,7 @@
 
   It improves performance if you know the approximate total size of the list
   in advance before adding list elements.  A good idea is to use a high
-  estimate to avoid 
+  estimate to avoid
 */
 
 SbPList::SbPList(const int initSize)
@@ -132,7 +132,7 @@ SbPList::find(void * const item) const
 
   Negative indices are clamped to 0.
   If the index exceeds the length of the list, the list is expanded and
-  padded with NULL's if necessary. Note that in this case, the pointer 
+  padded with NULL's if necessary. Note that in this case, the pointer
   at index \a addBefore is assumed to be NULL and hence the list will
   end with a NULL pointer.
 */
@@ -142,10 +142,10 @@ SbPList::insert(void * const item, int insertBefore)
 {
 #if COIN_DEBUG
   if (insertBefore<0) {
-    insertBefore=0;  
+    insertBefore=0;
     SoDebugError::postWarning("SbPList::insert",
-			      "Negative index encountered and clamped "
-			      "to zero.");
+                              "Negative index encountered and clamped "
+                              "to zero.");
   }
 #endif // COIN_DEBUG
   //Pad with NULLs if necessary.
@@ -155,7 +155,7 @@ SbPList::insert(void * const item, int insertBefore)
     this->numItems = insertBefore+2;
   }
   else {
-    if (this->numItems >= this->itemBufferSize) 
+    if (this->numItems >= this->itemBufferSize)
       this->makeRoom(this->numItems+1);
     for (int i = this->numItems; i > insertBefore; i--)
       this->itemBuffer[ i ] = this->itemBuffer[ i - 1 ];
@@ -175,8 +175,8 @@ SbPList::remove(int index)
 #if COIN_DEBUG
   if (index<0 ||index>=this->numItems) {
     SoDebugError::postWarning("SbPList::remove",
-			      "index %d is out of bounds (0..%d)",
-			      index, SbMax(this->numItems-1, 0));
+                              "index %d is out of bounds (0..%d)",
+                              index, SbMax(this->numItems-1, 0));
     return;
   }
 #endif // COIN_DEBUG
@@ -190,10 +190,10 @@ SbPList::remove(int index)
 */
 
 //$ EXPORT INLINE
-int 
+int
 SbPList::getLength(void) const
-{ 
-  return this->numItems; 
+{
+  return this->numItems;
 }
 
 /*!
@@ -258,7 +258,7 @@ SbPList::operator [] (int index) const
 #if COIN_DEBUG
   if (index<0) {
     SoDebugError::postWarning("SbPList::operator[]",
-			      "index %d is less than zero", index);
+                              "index %d is less than zero", index);
     static void * p = NULL;
     return p;
   }
@@ -321,10 +321,10 @@ SbPList::set(const int index, void * const item)
 */
 
 //$ EXPORT INLINE
-void 
+void
 SbPList::setDefault(const void * const defaultItem)
-{ 
-  this->defaultItem = (void *)defaultItem; 
+{
+  this->defaultItem = (void *)defaultItem;
 }
 
 /*!
@@ -332,10 +332,10 @@ SbPList::setDefault(const void * const defaultItem)
 */
 
 //$ EXPORT INLINE
-const void * 
+const void *
 SbPList::getDefault() const
-{ 
-  return this->defaultItem; 
+{
+  return this->defaultItem;
 }
 
   // FIXME: I don't think this method is a very good idea -- it can
@@ -376,8 +376,8 @@ SbPList::removeFast(int index)
 #if COIN_DEBUG
   if (index<0 ||index>=this->numItems) {
     SoDebugError::postWarning("SbPList::removeFast",
-			      "index %d is out of bounds (0..%d)",
-			      index, SbMax(this->numItems-1, 0));
+                              "index %d is out of bounds (0..%d)",
+                              index, SbMax(this->numItems-1, 0));
     return;
   }
 #endif // COIN_DEBUG
@@ -422,7 +422,7 @@ SbPList::pop()
 #if COIN_DEBUG
   if (this->numItems<=0) {
     SoDebugError::postWarning("SbPList::pop",
-			      "List is empty. Returning default value.");
+                              "List is empty. Returning default value.");
     return this->defaultItem;
   }
 #endif // COIN_DEBUG
@@ -435,8 +435,8 @@ SbPList::pop()
 
 //$ EXPORT INLINE
 SbPList::operator void **()
-{ 
-  return this->itemBuffer; 
+{
+  return this->itemBuffer;
 }
 
 /*!
@@ -445,8 +445,8 @@ SbPList::operator void **()
 
 //$ EXPORT INLINE
 SbPList::operator const void **() const
-{ 
-  return (const void **) this->itemBuffer; 
+{
+  return (const void **) this->itemBuffer;
 }
 
 /*!
@@ -460,7 +460,7 @@ SbPList::getLastElement() const
 #if COIN_DEBUG
   if (this->numItems<=0) {
     SoDebugError::postWarning("SbPList::getLastElement",
-			      "List is empty. Returning default value.");
+                              "List is empty. Returning default value.");
     return this->defaultItem;
   }
 #endif // COIN_DEBUG
@@ -477,7 +477,7 @@ SbPList::setLastElement(void * const item)
 #if COIN_DEBUG
   if (this->numItems<=0) {
     SoDebugError::postWarning("SbPList::getLastElement",
-			      "List is empty. Doing nothing.");
+                              "List is empty. Doing nothing.");
     return;
   }
 #endif // COIN_DEBUG
@@ -512,8 +512,8 @@ void
 SbPList::print(FILE * const file) const
 {
   fprintf(file, "void * - %p: (%d/%d) - itemSize = %d\n",
-	   this->itemBuffer, this->numItems, this->itemBufferSize,
-	   sizeof(void *));
+           this->itemBuffer, this->numItems, this->itemBufferSize,
+           sizeof(void *));
 }
 
 //
@@ -566,4 +566,3 @@ SbPList::print(class ostream & file) const
   file << endl;
 #endif // COIN_DEBUG
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -45,19 +45,19 @@
 //
 // function used to check if an extension is supported
 // based on glut 3.3 function
-// 
-static int 
+//
+static int
 extensionSupported(char *extension)
 {
   static const GLubyte *extensions = NULL;
   const GLubyte *start;
   GLubyte *where, *terminator;
-  
+
   /* Extension names should not have spaces. */
   where = (GLubyte *) strchr(extension, ' ');
   if (where || *extension == '\0')
     return 0;
-  
+
   if (!extensions)
     extensions = glGetString(GL_EXTENSIONS);
   start = extensions;
@@ -98,7 +98,7 @@ static int textureObjectEXT;
 static int vertexArrayEXT;
 #endif
 
-void 
+void
 sogl_global_init()
 {
   if (isInitialized) return;
@@ -152,11 +152,11 @@ sogl_global_init()
   fprintf(stderr,"max clip planes: %d\n", maxClipPlanes);
 #endif // debug
 
-} 
+}
 
 
 // generate a 3d circle in the x-z plane
-static void 
+static void
 generate_3d_circle(SbVec3f *coords, const int num, const float radius, const float y)
 {
   float delta = 2*SB_PI/num;
@@ -170,7 +170,7 @@ generate_3d_circle(SbVec3f *coords, const int num, const float radius, const flo
 }
 
 // generate a 2d circle
-static void 
+static void
 generate_2d_circle(SbVec2f *coords, const int num, const float radius)
 {
   float delta = 2*SB_PI/num;
@@ -182,15 +182,15 @@ generate_2d_circle(SbVec2f *coords, const int num, const float radius)
   }
 }
 
-void 
+void
 sogl_render_cone(const float radius,
-		 const float height,
-		 const int numslices,
-		 SoMaterialBundle * const material,
-		 const unsigned int flags)
+                 const float height,
+                 const int numslices,
+                 SoMaterialBundle * const material,
+                 const unsigned int flags)
 {
   int i;
-  // use a limit of 128 to avoid allocating memory each time 
+  // use a limit of 128 to avoid allocating memory each time
   // a cone is drawn
   int slices = numslices;
   if (slices > 128) slices = 128;
@@ -205,7 +205,7 @@ sogl_render_cone(const float radius,
 
   generate_3d_circle(coords, slices, radius, -h2);
   coords[slices] = coords[0];
-  
+
   if (flags & SOGL_NEED_NORMALS) {
     double a = atan(height/radius);
     generate_3d_circle(normals, slices, sin(a), cos(a));
@@ -214,7 +214,7 @@ sogl_render_cone(const float radius,
   }
 
   int matnr = 0;
-  
+
 //   if (flags & SOGL_RENDER_SIDE) {
 //     glBegin(GL_QUAD_STRIP);
 //     i = 0;
@@ -224,28 +224,28 @@ sogl_render_cone(const float radius,
 
 //     while (i <= slices) {
 //       if (flags & SOGL_NEED_TEXCOORDS) {
-// 	glTexCoord2f(t, 1.0f);
+//      glTexCoord2f(t, 1.0f);
 //       }
 //       if (flags & SOGL_NEED_NORMALS) {
-// 	SbVec3f n = (normals[i] + normals[i+1])*0.5f;
-// 	glNormal3f(n[0], n[1], n[2]);
-// 	// FIXME: what is nicest here?
-// 	//	glNormal3fv((const GLfloat*)&normals[i]);
-// 	//	glNormal3f(0.0f, 1.0f, 0.0f);
+//      SbVec3f n = (normals[i] + normals[i+1])*0.5f;
+//      glNormal3f(n[0], n[1], n[2]);
+//      // FIXME: what is nicest here?
+//      //      glNormal3fv((const GLfloat*)&normals[i]);
+//      //      glNormal3f(0.0f, 1.0f, 0.0f);
 //       }
 //       glVertex3f(0.0f, h2, 0.0f);
 //       if (flags & SOGL_NEED_TEXCOORDS) {
-// 	glTexCoord2f(t, 0.0f);
+//      glTexCoord2f(t, 0.0f);
 //       }
 //       if (flags & SOGL_NEED_NORMALS) {
-// 	glNormal3fv((const GLfloat*)&normals[i]);
+//      glNormal3fv((const GLfloat*)&normals[i]);
 //       }
 
 //       glVertex3fv((const GLfloat*)&coords[i]);
 //       i++;
 //       t += inc;
 //     }
-    
+
 //     matnr++;
 //     glEnd();
 //   }
@@ -260,33 +260,33 @@ sogl_render_cone(const float radius,
 
     while (i < slices) {
       if (flags & SOGL_NEED_TEXCOORDS) {
-	glTexCoord2f(t + inc*0.5f, 1.0f);
+        glTexCoord2f(t + inc*0.5f, 1.0f);
       }
       if (flags & SOGL_NEED_NORMALS) {
-	SbVec3f n = (normals[i] + normals[i+1])*0.5f;
-	glNormal3f(n[0], n[1], n[2]);
+        SbVec3f n = (normals[i] + normals[i+1])*0.5f;
+        glNormal3f(n[0], n[1], n[2]);
       }
       glVertex3f(0.0f, h2, 0.0f);
       if (flags & SOGL_NEED_TEXCOORDS) {
-	glTexCoord2f(t, 0.0f);
+        glTexCoord2f(t, 0.0f);
       }
       if (flags & SOGL_NEED_NORMALS) {
-	glNormal3fv((const GLfloat*)&normals[i]);
+        glNormal3fv((const GLfloat*)&normals[i]);
       }
       glVertex3fv((const GLfloat*)&coords[i]);
 
       if (flags & SOGL_NEED_TEXCOORDS) {
-	glTexCoord2f(t+inc, 0.0f);
+        glTexCoord2f(t+inc, 0.0f);
       }
       if (flags & SOGL_NEED_NORMALS) {
-	glNormal3fv((const GLfloat*)&normals[i+1]);
+        glNormal3fv((const GLfloat*)&normals[i+1]);
       }
       glVertex3fv((const GLfloat*)&coords[i+1]);
 
       i++;
       t += inc;
     }
-    
+
     matnr++;
     glEnd();
   }
@@ -307,7 +307,7 @@ sogl_render_cone(const float radius,
     glNormal3f(0.0f, -1.0f, 0.0f);
     for (i = slices-1; i >= 0; i--) {
       if (flags & SOGL_NEED_TEXCOORDS) {
-	glTexCoord2f(texcoords[i][0]+0.5f, texcoords[i][1]+0.5f);
+        glTexCoord2f(texcoords[i][0]+0.5f, texcoords[i][1]+0.5f);
       }
       glVertex3fv((const GLfloat*)&coords[i]);
     }
@@ -315,12 +315,12 @@ sogl_render_cone(const float radius,
   }
 }
 
-void 
+void
 sogl_render_cylinder(const float radius,
-		     const float height,
-		     const int numslices,
-		     SoMaterialBundle * const material,
-		     const unsigned int flags)
+                     const float height,
+                     const int numslices,
+                     SoMaterialBundle * const material,
+                     const unsigned int flags)
 {
   int i;
   int slices = numslices;
@@ -335,7 +335,7 @@ sogl_render_cylinder(const float radius,
 
   generate_3d_circle(coords, slices, radius, -h2);
   coords[slices] = coords[0];
-  
+
   if (flags & SOGL_NEED_NORMALS) {
     generate_3d_circle(normals, slices, 1.0f, 0.0f);
     normals[slices] = normals[0];
@@ -343,7 +343,7 @@ sogl_render_cylinder(const float radius,
   }
 
   int matnr = 0;
-  
+
   if (flags & SOGL_RENDER_SIDE) {
     glBegin(GL_QUAD_STRIP);
     i = 0;
@@ -353,21 +353,21 @@ sogl_render_cylinder(const float radius,
 
     while (i <= slices) {
       if (flags & SOGL_NEED_TEXCOORDS) {
-	glTexCoord2f(t, 1.0f);
+        glTexCoord2f(t, 1.0f);
       }
       if (flags & SOGL_NEED_NORMALS) {
-	glNormal3fv((const GLfloat*)&normals[i]);
+        glNormal3fv((const GLfloat*)&normals[i]);
       }
       SbVec3f c = coords[i];
       glVertex3f(c[0], h2, c[2]);
       if (flags & SOGL_NEED_TEXCOORDS) {
-	glTexCoord2f(t, 0.0f);
+        glTexCoord2f(t, 0.0f);
       }
       glVertex3f(c[0], c[1], c[2]);
       i++;
       t += inc;
     }
-    
+
     matnr++;
     glEnd();
   }
@@ -387,7 +387,7 @@ sogl_render_cylinder(const float radius,
 
     for (i = slices-1; i >= 0; i--) {
       if (flags & SOGL_NEED_TEXCOORDS) {
-	glTexCoord2f(texcoords[i][0]+0.5f, texcoords[i][1]+0.5f);
+        glTexCoord2f(texcoords[i][0]+0.5f, texcoords[i][1]+0.5f);
       }
       glVertex3fv((const GLfloat*)&coords[i]);
     }
@@ -403,35 +403,35 @@ sogl_render_cylinder(const float radius,
 
     for (i = 0; i < slices; i++) {
       if (flags & SOGL_NEED_TEXCOORDS) {
-	glTexCoord2f(texcoords[i][0]+0.5f, texcoords[i][1]+0.5f);
+        glTexCoord2f(texcoords[i][0]+0.5f, texcoords[i][1]+0.5f);
       }
-      const SbVec3f &c = coords[i];  
+      const SbVec3f &c = coords[i];
       glVertex3f(c[0], h2, c[2]);
     }
     glEnd();
   }
 }
 
-void 
+void
 sogl_render_sphere(const float radius,
-		   const int numstacks,
-		   const int numslices,
-		   SoMaterialBundle * const /* material */,
-		   const unsigned int /* flags */)
+                   const int numstacks,
+                   const int numslices,
+                   SoMaterialBundle * const /* material */,
+                   const unsigned int /* flags */)
 {
   int stacks = numstacks;
   int slices = numslices;
-  
+
   if (stacks < 3) stacks = 3;
   if (slices < 4) slices = 4;
 
-  if (slices > 128) slices = 128; 
+  if (slices > 128) slices = 128;
 
   // used to cache last stack's data
   SbVec3f coords[129];
   SbVec3f normals[129];
   SbVec2f texcoords[129];
-  
+
   int i, j;
   float rho;
   float drho;
@@ -439,10 +439,10 @@ sogl_render_sphere(const float radius,
   float dtheta;
   float ts, tc;
   SbVec3f tmp;
-  
+
   drho = SB_PI / (float) (stacks-1);
   dtheta = 2.0f * SB_PI / (float) slices;
-  
+
   i = 0;
   for (j = 0; j <= slices; j++) {
     texcoords[j].setValue((float)j/slices, (float)(stacks-1-i)/(stacks-1));
@@ -463,10 +463,10 @@ sogl_render_sphere(const float radius,
 
       texcoords[j].setValue((float)j/slices, (float)(stacks-1-i)/(stacks-1));
       glTexCoord2f(texcoords[j][0], texcoords[j][1]);
-      
+
       tmp.setValue(cos(theta)*ts,
-		   tc,
-		   -sin(theta)*ts);
+                   tc,
+                   -sin(theta)*ts);
       normals[j] = tmp;
       glNormal3f(tmp[0], tmp[1], tmp[2]);
       tmp *= radius;
@@ -482,7 +482,7 @@ sogl_render_sphere(const float radius,
 //
 // the 12 triangles in the cube
 //
-static int cube_vindices[] = 
+static int cube_vindices[] =
 {
   0, 1, 3, 2,
   1, 5, 7, 3,
@@ -492,7 +492,7 @@ static int cube_vindices[] =
   2, 3, 7, 6
 };
 
-static int cube_tindices[] = // FIXME: vet ikke om dette er riktig! 
+static int cube_tindices[] = // FIXME: vet ikke om dette er riktig!
 {
   0, 1, 2, 3,
   0, 1, 2, 3,
@@ -502,7 +502,7 @@ static int cube_tindices[] = // FIXME: vet ikke om dette er riktig!
   0, 1, 2, 3
 };
 
-static float cube_texcoords[] = 
+static float cube_texcoords[] =
 {
   0.0f, 0.0f,
   1.0f, 0.0f,
@@ -513,7 +513,7 @@ static float cube_texcoords[] =
 //
 // a cube needs 6 normals
 //
-static SbVec3f cube_normals[] = 
+static SbVec3f cube_normals[] =
 {
   SbVec3f(0.0f, 0.0f, 1.0f),
   SbVec3f(-1.0f, 0.0f, 0.0f),
@@ -523,44 +523,44 @@ static SbVec3f cube_normals[] =
   SbVec3f(0.0f, -1.0f, 0.0f),
 };
 
-static void 
+static void
 generate_cube_vertices(SbVec3f *varray,
-		       const float w, 
-		       const float h, 
-		       const float d)
+                       const float w,
+                       const float h,
+                       const float d)
 {
   for (int i = 0; i < 8; i++) {
     varray[i].setValue((i&1) ? -w : w,
-		       (i&2) ? -h : h,
-		       (i&4) ? -d : d);
+                       (i&2) ? -h : h,
+                       (i&4) ? -d : d);
   }
 }
 
 
-void 
+void
 sogl_render_cube(const float width,
-		 const float height,
-		 const float depth,
-		 SoMaterialBundle * const material,
-		 const unsigned int flags)
+                 const float height,
+                 const float depth,
+                 SoMaterialBundle * const material,
+                 const unsigned int flags)
 {
   SbVec3f varray[8];
   generate_cube_vertices(varray,
-			 width * 0.5f, 
-			 height * 0.5f,
-			 depth * 0.5f); 
+                         width * 0.5f,
+                         height * 0.5f,
+                         depth * 0.5f);
   glBegin(GL_QUADS);
   int *iptr = cube_vindices;
   int *tptr = cube_tindices;
 
   for (int i = 0; i < 6; i++) { // 6 quads
-    if (flags & SOGL_NEED_NORMALS) 
+    if (flags & SOGL_NEED_NORMALS)
       glNormal3fv((const GLfloat*)&cube_normals[i]);
-    if (flags & SOGL_MATERIAL_PER_PART) 
+    if (flags & SOGL_MATERIAL_PER_PART)
       material->send(i, TRUE);
-    for (int j = 0; j < 4; j++) { 
+    for (int j = 0; j < 4; j++) {
       if (flags & SOGL_NEED_TEXCOORDS) {
-	glTexCoord2fv(&cube_texcoords[*tptr++ * 2]);
+        glTexCoord2fv(&cube_texcoords[*tptr++ * 2]);
       }
       glVertex3fv((const GLfloat*)&varray[*iptr++]);
     }
@@ -573,7 +573,7 @@ sogl_render_cube(const float width,
 
 // FIXME: avoid most of these by using corresponding methods in
 // SoGL*Element classes. 19990405 mortene.
-int 
+int
 sogl_max_texture_size()
 {
   assert(isInitialized);
@@ -586,7 +586,7 @@ sogl_max_texture_size()
   return value;
 }
 
-int 
+int
 sogl_max_lights()
 {
   // TODO: implement.
@@ -595,7 +595,7 @@ sogl_max_lights()
   return 0;
 }
 
-int 
+int
 sogl_max_clip_planes()
 {
   // TODO: implement.
@@ -604,7 +604,7 @@ sogl_max_clip_planes()
   return 0;
 }
 
-int 
+int
 sogl_max_modelview_stack_depth()
 {
   // TODO: implement.
@@ -613,7 +613,7 @@ sogl_max_modelview_stack_depth()
   return 0;
 }
 
-int 
+int
 sogl_max_projection_stack_depth()
 {
   // TODO: implement.
@@ -622,7 +622,7 @@ sogl_max_projection_stack_depth()
   return 0;
 }
 
-int 
+int
 sogl_max_texture_stack_depth()
 {
   // TODO: implement.
@@ -631,7 +631,7 @@ sogl_max_texture_stack_depth()
   return 0;
 }
 
-SbBool 
+SbBool
 sogl_texture_object_ext()
 {
 #ifdef GL_VERSION_1_1
@@ -641,7 +641,7 @@ sogl_texture_object_ext()
 #endif
 }
 
-SbBool 
+SbBool
 sogl_polygon_offset_ext()
 {
 #ifdef GL_VERSION_1_1
@@ -651,7 +651,7 @@ sogl_polygon_offset_ext()
 #endif
 }
 
-SbBool 
+SbBool
 sogl_vertex_array_ext()
 {
 #ifdef GL_VERSION_1_1
@@ -661,7 +661,7 @@ sogl_vertex_array_ext()
 #endif
 }
 
-void 
+void
 sogl_free_texture(unsigned int index)
 {
   SoDebugError::postInfo("sogl_free_texture", "Free texture: %d\n", index);
@@ -678,19 +678,19 @@ sogl_free_texture(unsigned int index)
 //
 // local convenience function that creates the texture object/dl
 //
-static void 
+static void
 really_create_texture(const int wrapS, const int wrapT,
-		      const unsigned char * const texture, 
-		      const int numComponents, 
-		      const int w, const int h, 
-		      const SbBool dlist)
+                      const unsigned char * const texture,
+                      const int numComponents,
+                      const int w, const int h,
+                      const SbBool dlist)
 {
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 
-		  wrapS ? GL_CLAMP : GL_REPEAT);
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 
-		  wrapT ? GL_CLAMP : GL_REPEAT);
-  
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
+                  wrapS ? GL_CLAMP : GL_REPEAT);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
+                  wrapT ? GL_CLAMP : GL_REPEAT);
+
   // these lines _must_ be here for some reason
   if (!dlist) {
     // FIXME, base LINEAR/NEAREST on some quality parameter
@@ -715,20 +715,20 @@ really_create_texture(const int wrapS, const int wrapT,
   default:
     assert(0);
   }
-  glTexImage2D(GL_TEXTURE_2D, 0, numComponents, w, h, 
+  glTexImage2D(GL_TEXTURE_2D, 0, numComponents, w, h,
                0, glformat, GL_UNSIGNED_BYTE, texture);
 }
 
 
-unsigned int 
+unsigned int
 sogl_create_texture(const int wrapS, const int wrapT,
-		    const unsigned char * const texture, 
-		    const int numComponents, 
-		    const int w, const int h)
+                    const unsigned char * const texture,
+                    const int numComponents,
+                    const int w, const int h)
 {
   GLuint index;
   SbBool dlist = FALSE;
-  
+
 #if GL_VERSION_1_1
   glGenTextures(1, &index);
 #elif GL_EXT_texture_object
@@ -745,7 +745,7 @@ sogl_create_texture(const int wrapS, const int wrapT,
 #endif
   if (!index) {
     SoDebugError::postInfo("sogl_create_texture",
-			   "sogl_create_texture: could not create display list/object\n");
+                           "sogl_create_texture: could not create display list/object\n");
     return 0;
   }
   if (dlist)
@@ -757,7 +757,7 @@ sogl_create_texture(const int wrapS, const int wrapT,
     glBindTextureEXT(GL_TEXTURE_2D, index);
 #endif
   }
-  
+
   really_create_texture(wrapS, wrapT, texture, numComponents, w, h, dlist);
 
   if (dlist)
@@ -770,7 +770,7 @@ sogl_create_texture(const int wrapS, const int wrapT,
   return index;
 }
 
-void 
+void
 sogl_apply_texture(const unsigned int handle)
 {
 #if GL_VERSION_1_1
@@ -778,14 +778,14 @@ sogl_apply_texture(const unsigned int handle)
 #elif GL_EXT_texture_object
   if (textureObjectEXT) {
     glBindTextureEXT(GL_TEXTURE_2D, handle);
-  } 
+  }
   else glCallList(handle);
 #else
   glCallList(handle);
 #endif
 }
 
-void 
+void
 sogl_polygon_offset(const int onoff, const float numpixels)
 {
   if (onoff) {
@@ -827,18 +827,18 @@ sogl_polygon_offset(const int onoff, const float numpixels)
 
 void
 sogl_render_lineset(const SoGLCoordinateElement * const coords,
-		    const int32_t *indices,
-		    int num_vertexindices,
-		    const SbVec3f *normals,
-		    const int32_t *normindices,
-		    SoMaterialBundle *const materials,
-		    const int32_t *matindices,
-		    const SoTextureCoordinateBundle * const texcoords,
-		    const int32_t *texindices,
-		    int nbind,
-		    int mbind,
-		    const int texture,
-		    const int drawAsPoints)
+                    const int32_t *indices,
+                    int num_vertexindices,
+                    const SbVec3f *normals,
+                    const int32_t *normindices,
+                    SoMaterialBundle *const materials,
+                    const int32_t *matindices,
+                    const SoTextureCoordinateBundle * const texcoords,
+                    const int32_t *texindices,
+                    int nbind,
+                    int mbind,
+                    const int texture,
+                    const int drawAsPoints)
 {
   // TODO: make several optimized rendering functions
   // I believe this is pretty fast though...
@@ -863,7 +863,7 @@ sogl_render_lineset(const SoGLCoordinateElement * const coords,
   int texidx = 0;
   int32_t i;
   const int32_t *end = indices + num_vertexindices;
-  
+
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
   const SbVec3f *currnormal = &dummynormal;
   if (normals) currnormal = normals;
@@ -873,52 +873,52 @@ sogl_render_lineset(const SoGLCoordinateElement * const coords,
     int previ;
     SbBool matPerPolyline = mbind == PER_LINE || mbind == PER_LINE_INDEXED;
     SbBool normPerPolyline = nbind == PER_LINE || nbind == PER_LINE_INDEXED;
-    
-    if (drawAsPoints) glBegin(GL_POINTS); 
+
+    if (drawAsPoints) glBegin(GL_POINTS);
     else glBegin(GL_LINES);
-    
+
     while (indices < end) {
       previ = *indices++;
 
       if (matPerPolyline) {
-	if (matindices) materials->send(*matindices++, TRUE);
-	else materials->send(matnr++, TRUE);
+        if (matindices) materials->send(*matindices++, TRUE);
+        else materials->send(matnr++, TRUE);
       }
       if (normPerPolyline) {
-	if (normindices) currnormal = &normals[*normindices++];
-	else currnormal = normals++;
+        if (normindices) currnormal = &normals[*normindices++];
+        else currnormal = normals++;
       }
-      
+
       i = *indices++;
       while (i >= 0) {
-	if (!matPerPolyline && mbind != OVERALL) {
-	  if (matindices) materials->send(*matindices++, TRUE);
-	  else materials->send(matnr++, TRUE);
-	}
-	if (!normPerPolyline && nbind != OVERALL) {
-	  if (normindices) currnormal = &normals[*normindices++];
-	  else currnormal = normals++;
-	}
-	glNormal3fv((const GLfloat*)currnormal);
-	if (texture) texcoords->send(texindices ? *texindices++ : texidx++, 
-				     coords->get3(previ), *currnormal);
-	coords->send(previ);
+        if (!matPerPolyline && mbind != OVERALL) {
+          if (matindices) materials->send(*matindices++, TRUE);
+          else materials->send(matnr++, TRUE);
+        }
+        if (!normPerPolyline && nbind != OVERALL) {
+          if (normindices) currnormal = &normals[*normindices++];
+          else currnormal = normals++;
+        }
+        glNormal3fv((const GLfloat*)currnormal);
+        if (texture) texcoords->send(texindices ? *texindices++ : texidx++,
+                                     coords->get3(previ), *currnormal);
+        coords->send(previ);
 
-	if (mbind >= PER_VERTEX) {
-	  if (matindices) materials->send(*matindices++, TRUE);
-	  else materials->send(matnr++, TRUE);
-	}
-	if (nbind >= PER_VERTEX) {
-	  if (normindices) currnormal = &normals[*normindices++];
-	  else currnormal = normals++;
-	}
-	glNormal3fv((const GLfloat*)currnormal);
-	if (texture) texcoords->send(texindices ? *texindices++ : texidx++, 
-				     coords->get3(i), *currnormal);
-	coords->send(i);
+        if (mbind >= PER_VERTEX) {
+          if (matindices) materials->send(*matindices++, TRUE);
+          else materials->send(matnr++, TRUE);
+        }
+        if (nbind >= PER_VERTEX) {
+          if (normindices) currnormal = &normals[*normindices++];
+          else currnormal = normals++;
+        }
+        glNormal3fv((const GLfloat*)currnormal);
+        if (texture) texcoords->send(texindices ? *texindices++ : texidx++,
+                                     coords->get3(i), *currnormal);
+        coords->send(i);
 
-	previ = i;
-	i = *indices++;
+        previ = i;
+        i = *indices++;
       }
       if (mbind == PER_VERTEX_INDEXED) matindices++;
       if (nbind == PER_VERTEX_INDEXED) normindices++;
@@ -939,8 +939,8 @@ sogl_render_lineset(const SoGLCoordinateElement * const coords,
     if (normindices) currnormal = &normals[*normindices++];
     else if (nbind != OVERALL) currnormal = normals++;
     glNormal3fv((const GLfloat*)currnormal);
-    if (texture) texcoords->send(texindices ? *texindices++ : texidx++, 
-				 coords->get3(i), *currnormal);
+    if (texture) texcoords->send(texindices ? *texindices++ : texidx++,
+                                 coords->get3(i), *currnormal);
     coords->send(i);
 
     i = *indices++;
@@ -954,24 +954,24 @@ sogl_render_lineset(const SoGLCoordinateElement * const coords,
       else currnormal = normals++;
     }
     glNormal3fv((const GLfloat*)currnormal);
-    if (texture) texcoords->send(texindices ? *texindices++ : texidx++, 
-				 coords->get3(i), *currnormal);
+    if (texture) texcoords->send(texindices ? *texindices++ : texidx++,
+                                 coords->get3(i), *currnormal);
     coords->send(i);
 
     i = *indices++;
     while (i >= 0) {
       assert(indices <= end);
       if (mbind >= PER_VERTEX) {
-	if (matindices) materials->send(*matindices++, TRUE);
-	else materials->send(matnr++, TRUE);
+        if (matindices) materials->send(*matindices++, TRUE);
+        else materials->send(matnr++, TRUE);
       }
       if (nbind >= PER_VERTEX) {
-	if (normindices) currnormal = &normals[*normindices++];
-	else currnormal = normals++;
+        if (normindices) currnormal = &normals[*normindices++];
+        else currnormal = normals++;
       }
       glNormal3fv((const GLfloat*)currnormal);
-      if (texture) texcoords->send(texindices ? *texindices++ : texidx++, 
-				   coords->get3(i), *currnormal);
+      if (texture) texcoords->send(texindices ? *texindices++ : texidx++,
+                                   coords->get3(i), *currnormal);
       coords->send(i);
       i = *indices++;
     }
@@ -1002,14 +1002,14 @@ sogl_render_lineset(const SoGLCoordinateElement * const coords,
 
 
 typedef void sogl_render_faceset_func(const SoGLCoordinateElement * const coords,
-				      const int32_t *vertexindices,
-				      int num_vertexindices,
-				      const SbVec3f *normals,
-				      const int32_t *normindices,
-				      SoMaterialBundle *materials,
-				      const int32_t *matindices,
-				      const SoTextureCoordinateBundle * const texcoords,
-				      const int32_t *texindices);
+                                      const int32_t *vertexindices,
+                                      int num_vertexindices,
+                                      const SbVec3f *normals,
+                                      const int32_t *normindices,
+                                      SoMaterialBundle *materials,
+                                      const int32_t *matindices,
+                                      const SoTextureCoordinateBundle * const texcoords,
+                                      const int32_t *texindices);
 
 static sogl_render_faceset_func *render_funcs[74];
 
@@ -1073,7 +1073,7 @@ static void sogl_fs_n0_m4
 
 
 
- 
+
 #define MBINDING OVERALL
 #define NBINDING PER_FACE
 #define TEXTURES FALSE
@@ -1512,19 +1512,19 @@ static void sogl_fs_n4_m4_tex
 #undef NBINDING
 #undef TEXTURES
 
-void 
+void
 sogl_render_faceset(const SoGLCoordinateElement * const vertexlist,
-		    const int32_t *vertexindices,
-		    int num_vertexindices,
-		    const SbVec3f *normals,
-		    const int32_t *normindices,
-		    SoMaterialBundle *const materials,
-		    const int32_t *matindices,
-		    SoTextureCoordinateBundle * const texcoords,
-		    const int32_t *texindices,
-		    const int nbind,
-		    const int mbind,
-		    const int texture)
+                    const int32_t *vertexindices,
+                    int num_vertexindices,
+                    const SbVec3f *normals,
+                    const int32_t *normindices,
+                    SoMaterialBundle *const materials,
+                    const int32_t *matindices,
+                    SoTextureCoordinateBundle * const texcoords,
+                    const int32_t *texindices,
+                    const int nbind,
+                    const int mbind,
+                    const int texture)
 {
   static int first = 1;
   if (first) {
@@ -1590,16 +1590,16 @@ sogl_render_faceset(const SoGLCoordinateElement * const vertexlist,
   // just in case someone forgot
   if (matindices == NULL) matindices = vertexindices;
   if (normindices == NULL) normindices = vertexindices;
-  
+
   render_funcs[idx](vertexlist,
                     vertexindices,
                     num_vertexindices,
                     normals,
-		    normindices,
-		    materials,
-		    matindices,
-		    texcoords,
-		    texindices);
+                    normindices,
+                    materials,
+                    matindices,
+                    texcoords,
+                    texindices);
 }
 
 #undef OVERALL
@@ -2476,19 +2476,19 @@ static void sogl_ts_n6_m6_tex
 static sogl_render_faceset_func *render_ts_funcs[110];
 
 
-void 
+void
 sogl_render_tristrip(const SoGLCoordinateElement * const vertexlist,
-		     const int32_t *vertexindices,
-		     int num_vertexindices,
-		     const SbVec3f *normals,
-		     const int32_t *normindices,
-		     SoMaterialBundle *const materials,
-		     const int32_t *matindices,
-		     const SoTextureCoordinateBundle * const texcoords,
-		     const int32_t *texindices,
-		     const int nbind,
-		     const int mbind,
-		     const int texture)
+                     const int32_t *vertexindices,
+                     int num_vertexindices,
+                     const SbVec3f *normals,
+                     const int32_t *normindices,
+                     SoMaterialBundle *const materials,
+                     const int32_t *matindices,
+                     const SoTextureCoordinateBundle * const texcoords,
+                     const int32_t *texindices,
+                     const int nbind,
+                     const int mbind,
+                     const int texture)
 {
   static int first = 1;
   if (first) {
@@ -2600,23 +2600,23 @@ sogl_render_tristrip(const SoGLCoordinateElement * const vertexlist,
   }
 
   int idx = (nbind << 4) | (mbind << 1) | texture;
-  
+
   // fprintf(stderr,"rendering faceset: %d %d %d ==> %d\n",
-  //	  nbind, mbind, texture, idx);
+  //      nbind, mbind, texture, idx);
 
   // just in case someone forgot...
   if (matindices == NULL) matindices = vertexindices;
   if (normindices == NULL) normindices = vertexindices;
 
   render_ts_funcs[idx](vertexlist,
-		       vertexindices,
-		       num_vertexindices,
-		       normals,
-		       normindices,
-		       materials,
-		       matindices,
-		       texcoords,
-		       texindices);
+                       vertexindices,
+                       num_vertexindices,
+                       normals,
+                       normindices,
+                       materials,
+                       matindices,
+                       texcoords,
+                       texindices);
 }
 
 #undef OVERALL

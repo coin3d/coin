@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -59,7 +59,7 @@ private:
 public:
   const unsigned char * getValue(SbVec2s & size, int & nc) const;
   void setValue(const SbVec2s & size, const int nc,
-		const unsigned char * const bytes);
+                const unsigned char * const bytes);
 
   int operator == (const SoSFImage & field) const;
   /*! Returns \a TRUE if this field is not equal to \a field. */

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -83,7 +83,7 @@ SbColor4f::SbColor4f(const float* const rgba)
 
 /*!
   Construct and initialize an SbColor4f with the red, green and blue
-  components from the SbColor \c rgb, and the alpha value from the  
+  components from the SbColor \c rgb, and the alpha value from the
   supplied \c alpha argument.
 */
 SbColor4f::SbColor4f(const SbColor &rgb, const float alpha)
@@ -99,7 +99,7 @@ SbColor4f::SbColor4f(const SbColor &rgb, const float alpha)
   and alpha values.
  */
 SbColor4f::SbColor4f(const float r, const float g, const float b,
-		   const float a)
+                   const float a)
 {
   this->vec[0] = r;
   this->vec[1] = g;
@@ -111,9 +111,9 @@ SbColor4f::SbColor4f(const float r, const float g, const float b,
 /*!
   Set a new color.
  */
-void 
+void
 SbColor4f::setValue(const float r, const float g, const float b,
-		   const float a)
+                   const float a)
 {
   this->vec[0] = r;
   this->vec[1] = g;
@@ -125,7 +125,7 @@ SbColor4f::setValue(const float r, const float g, const float b,
   Set a new color. The elements of the array will be read in turned
   as red, green, blue and transparency.
  */
-void 
+void
 SbColor4f::setValue(const float col[4])
 {
   this->vec[0] = col[0];
@@ -147,7 +147,7 @@ SbColor4f::getValue() const
 /*!
   Return components of the stored color.
  */
-void 
+void
 SbColor4f::getValue(float &r, float &g, float &b, float &a)
 {
   r = this->vec[0];
@@ -168,30 +168,30 @@ SbColor4f&
 SbColor4f::setPackedValue(const uint32_t rgba)
 {
   this->setValue((rgba >> 24)/255.0f,
-		 ((rgba >> 16)&0xff)/255.0f,
-		 ((rgba >> 8)&0xff)/255.0f,
-		 (rgba & 0xff)/255.0f);
+                 ((rgba >> 16)&0xff)/255.0f,
+                 ((rgba >> 8)&0xff)/255.0f,
+                 (rgba & 0xff)/255.0f);
   return *this;
 }
 
 /*!
-  Return color as a 32 bit packed integer in the form 0xRRGGBBAA. 
+  Return color as a 32 bit packed integer in the form 0xRRGGBBAA.
   \sa setPackedValue().
  */
 uint32_t
 SbColor4f::getPackedValue() const
 {
   return (((uint32_t)(red()*255.0f + 0.5f) << 24) |
-	  ((uint32_t)(green()*255.0f + 0.5f) << 16) |
-	  ((uint32_t)(blue()*255.0f + 0.5f) << 8) |
-	  (uint32_t)(alpha()*255.0f + 0.5f));
+          ((uint32_t)(green()*255.0f + 0.5f) << 16) |
+          ((uint32_t)(blue()*255.0f + 0.5f) << 8) |
+          (uint32_t)(alpha()*255.0f + 0.5f));
 }
 
 /*!
   Sets the RGB components of the color. The alpha component is
   left unchanged.
 */
-SbColor4f& 
+SbColor4f&
 SbColor4f::setRGB(const SbColor &col)
 {
   this->vec[0] = col[0];
@@ -203,7 +203,7 @@ SbColor4f::setRGB(const SbColor &col)
 /*!
   Returns the RGB components of this color.
 */
-void 
+void
 SbColor4f::getRGB(SbColor &color)
 {
   color[0] = this->red();
@@ -220,36 +220,36 @@ SbColor4f::getRGB(SbColor &color)
  */
 SbColor4f&
 SbColor4f::setHSVValue(float hue, float saturation,
-		      float value, float alpha)
+                      float value, float alpha)
 {
 #if COIN_DEBUG
   if (!(hue>=0.0f && hue<=1.0f)) {
     SoDebugError::postWarning("SbColor4f::setHSVValue",
-			      "'hue' (%f) not within [0.0,1.0]; clamping.",
-			      hue);
+                              "'hue' (%f) not within [0.0,1.0]; clamping.",
+                              hue);
     if (hue<0.0f) hue=0.0f;
     else if (hue>1.0f) hue=1.0f;
   }
 
   if (!(saturation>=0.0f && saturation<=1.0f)) {
     SoDebugError::postWarning("SbColor4f::setHSVValue",
-			      "'saturation' (%f) not within [0.0,1.0]; "
-			      "clamping.", saturation);
+                              "'saturation' (%f) not within [0.0,1.0]; "
+                              "clamping.", saturation);
     if (saturation<0.0f) saturation=0.0f;
     else if (saturation>1.0f) saturation=1.0f;
   }
 
   if (!(value>=0.0f && value<=1.0f)) {
     SoDebugError::postWarning("SbColor4f::setHSVValue",
-			      "'value' (%f) not within [0.0,1.0]; clamping.",
-			      value);
+                              "'value' (%f) not within [0.0,1.0]; clamping.",
+                              value);
     if (value<0.0f) value=0.0f;
     else if (value>1.0f) value=1.0f;
   }
   if (!(alpha >= 0.0f && alpha <= 1.0f)) {
     SoDebugError::postWarning("SbColor4f::setHSVValue",
-			      "'alpha' (%f) not within [0.0,1.0]; clamping.",
-			      alpha);
+                              "'alpha' (%f) not within [0.0,1.0]; clamping.",
+                              alpha);
     alpha = SbClamp(alpha, 0.0f, 1.0f);
   }
 
@@ -310,7 +310,7 @@ SbColor4f::getHSVValue(float hsv[3]) const
   0 is red, 1 is green, 2 is blue and 3 is the transparency value.
  */
 //$ EXPORT INLINE
-float 
+float
 SbColor4f::operator[](const int idx) const
 {
   return this->vec[idx];
@@ -328,7 +328,7 @@ SbColor4f::operator[](const int idx)
 }
 
 /*!
-  Multiplies the RGB components by \c d. The alpha component is left 
+  Multiplies the RGB components by \c d. The alpha component is left
   unchanged.
 */
 SbColor4f &
@@ -341,7 +341,7 @@ SbColor4f::operator*=(const float d)
 }
 
 /*!
-  Divides the RGB components by \c d. The alpha component is left 
+  Divides the RGB components by \c d. The alpha component is left
   unchanged.
 */
 SbColor4f &
@@ -359,7 +359,7 @@ SbColor4f::operator/=(const float d)
 SbColor4f &
 SbColor4f::operator+=(const SbColor4f &c)
 {
-  this->vec[0] += c[0]; 
+  this->vec[0] += c[0];
   this->vec[1] += c[1];
   this->vec[2] += c[2];
   return *this;
@@ -371,7 +371,7 @@ SbColor4f::operator+=(const SbColor4f &c)
 SbColor4f &
 SbColor4f::operator-=(const SbColor4f &c)
 {
-  this->vec[0] -= c[0]; 
+  this->vec[0] -= c[0];
   this->vec[1] -= c[1];
   this->vec[2] -= c[2];
   return *this;
@@ -380,7 +380,7 @@ SbColor4f::operator-=(const SbColor4f &c)
 /*!
   Multiplies the RGB components by \c d. Alpha is left unchanged.
 */
-SbColor4f 
+SbColor4f
 operator *(const SbColor4f &c, const float d)
 {
   return SbColor4f(c.vec[0]*d, c.vec[1]*d, c.vec[2]*d, c.vec[3]);
@@ -389,69 +389,69 @@ operator *(const SbColor4f &c, const float d)
 /*!
   Multiplies the RGB components by \c d. Alpha is left unchanged.
 */
-SbColor4f 
+SbColor4f
 operator *(const float d, const SbColor4f &c)
 {
-  return SbColor4f(c.vec[0]*d, c.vec[1]*d, c.vec[2]*d, c.vec[3]);  
+  return SbColor4f(c.vec[0]*d, c.vec[1]*d, c.vec[2]*d, c.vec[3]);
 }
 
 /*!
   Divides the RGB components by \c d. Alpha is left unchanged.
 */
-SbColor4f 
+SbColor4f
 operator /(const SbColor4f &c, const float d)
 {
   assert(d != 0.0f);
   float inv = 1.0f / d;
-  return SbColor4f(c.vec[0]*inv, 
-		  c.vec[1]*inv, 
-		  c.vec[2]*inv, 
-		  c.vec[3]);  
+  return SbColor4f(c.vec[0]*inv,
+                  c.vec[1]*inv,
+                  c.vec[2]*inv,
+                  c.vec[3]);
 }
 
 /*!
-  Adds the RGB components of the two colors. Alpha is taken from the 
+  Adds the RGB components of the two colors. Alpha is taken from the
   first color (\c v1).
 */
-SbColor4f 
+SbColor4f
 operator +(const SbColor4f &v1, const SbColor4f &v2)
 {
   return SbColor4f(v1.vec[0] + v2.vec[0],
-		  v1.vec[1] + v2.vec[1],
-		  v1.vec[2] + v2.vec[2],
-		  v1.vec[3]);
+                  v1.vec[1] + v2.vec[1],
+                  v1.vec[2] + v2.vec[2],
+                  v1.vec[3]);
 }
 
 /*!
-  Subtracts the RGB components of the two colors. Alpha is taken from the 
+  Subtracts the RGB components of the two colors. Alpha is taken from the
   first color (\c v1).
 */
-SbColor4f 
+SbColor4f
 operator -(const SbColor4f &v1, const SbColor4f &v2)
 {
   return SbColor4f(v1.vec[0] - v2.vec[0],
-		  v1.vec[1] - v2.vec[1],
-		  v1.vec[2] - v2.vec[2],
-		  v1.vec[3]);
+                  v1.vec[1] - v2.vec[1],
+                  v1.vec[2] - v2.vec[2],
+                  v1.vec[3]);
 }
 
 /*!
   Check if two colors are equal. Returns 1 if equal, 0 if unequal.
  */
-int 
+int
 operator ==(const SbColor4f &v1, const SbColor4f &v2)
 {
   return (v1.vec[0] == v2.vec[0] &&
-	  v1.vec[1] == v2.vec[1] &&
-	  v1.vec[2] == v2.vec[2] &&
-	  v1.vec[3] == v2.vec[3]);
+          v1.vec[1] == v2.vec[1] &&
+          v1.vec[2] == v2.vec[2] &&
+          v1.vec[3] == v2.vec[3]);
 }
 
 /*!
   Check if two colors are unequal. Returns 0 if equal, 1 if unequal.
  */
 //$ EXPORT INLINE
-int 
+int
 operator !=(const SbColor4f &v1, const SbColor4f &v2)
 {
   return !(v1 == v2);

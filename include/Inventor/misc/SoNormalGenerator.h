@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -25,30 +25,30 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/system/inttypes.h>
 
-class SoNormalGenerator 
+class SoNormalGenerator
 {
 public:
   SoNormalGenerator(const SbBool ccw,
-		    const int approxVertices = 64,
-		    const SbBool freeNormals = FALSE);
+                    const int approxVertices = 64,
+                    const SbBool freeNormals = FALSE);
   ~SoNormalGenerator();
 
   void beginPolygon();
   void polygonVertex(const SbVec3f &v);
   void endPolygon();
-  
-  void triangle(const SbVec3f &v0,
-		const SbVec3f &v1,
-		const SbVec3f &v2);
-  void quad(const SbVec3f &v0,
-	    const SbVec3f &v1,
-	    const SbVec3f &v2,
-	    const SbVec3f &v3);
 
-  void generate(const float creaseAngle, 
-		const int32_t * striplens = NULL,
-		const int numstrips = 0);
-  
+  void triangle(const SbVec3f &v0,
+                const SbVec3f &v1,
+                const SbVec3f &v2);
+  void quad(const SbVec3f &v0,
+            const SbVec3f &v1,
+            const SbVec3f &v2,
+            const SbVec3f &v3);
+
+  void generate(const float creaseAngle,
+                const int32_t * striplens = NULL,
+                const int numstrips = 0);
+
   // call these only after generate
   int getNumNormals() const;
   void setNumNormals(const int num);
@@ -66,7 +66,7 @@ private:
   SbBool ccw;
   int currFaceStart;
   SbBool freeNormals;
-  
+
   SbVec3f calcFaceNormal();
 };
 

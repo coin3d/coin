@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -148,12 +148,12 @@ SoSpaceballButtonEvent::getButton(void) const
  */
 SbBool
 SoSpaceballButtonEvent::isButtonPressEvent(const SoEvent * e,
-					   SoSpaceballButtonEvent::Button
-					   whichButton)
+                                           SoSpaceballButtonEvent::Button
+                                           whichButton)
 {
   return (e->isOfType(SoSpaceballButtonEvent::getClassTypeId()) &&
-	  ((SoSpaceballButtonEvent *)e)->getButton() == whichButton &&
-	  ((SoButtonEvent *)e)->getState() == SoButtonEvent::DOWN);
+          ((SoSpaceballButtonEvent *)e)->getButton() == whichButton &&
+          ((SoButtonEvent *)e)->getState() == SoButtonEvent::DOWN);
 }
 
 /*!
@@ -164,10 +164,10 @@ SoSpaceballButtonEvent::isButtonPressEvent(const SoEvent * e,
  */
 SbBool
 SoSpaceballButtonEvent::isButtonReleaseEvent(const SoEvent * e,
-					     SoSpaceballButtonEvent::Button
-					     whichButton)
+                                             SoSpaceballButtonEvent::Button
+                                             whichButton)
 {
   return (e->isOfType(SoSpaceballButtonEvent::getClassTypeId()) &&
-	  ((SoSpaceballButtonEvent *)e)->getButton() == whichButton &&
-	  ((SoButtonEvent *)e)->getState() == SoButtonEvent::UP);
+          ((SoSpaceballButtonEvent *)e)->getButton() == whichButton &&
+          ((SoButtonEvent *)e)->getState() == SoButtonEvent::UP);
 }

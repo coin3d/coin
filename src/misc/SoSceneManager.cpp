@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -104,9 +104,9 @@ SoSceneManager::~SoSceneManager()
 /*!
   Render the scene graph.
  */
-void 
-SoSceneManager::render(const SbBool clearWindow, 
-		       const SbBool clearZbuffer)
+void
+SoSceneManager::render(const SbBool clearWindow,
+                       const SbBool clearZbuffer)
 {
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   // FIXME: this probably only needs to be done at the first
@@ -115,7 +115,7 @@ SoSceneManager::render(const SbBool clearWindow,
   // SoSceneManager::render() and SoGLRenderAction::beginTraversal()
   // is a mess right now, and need to be sorted out. Should the init
   // code be moved to elements? 19990215 mortene.
-  
+
   SbViewportRegion vp = this->glAction->getViewportRegion();
   SbVec2s origin = vp.getViewportOriginPixels();
   SbVec2s size = vp.getViewportSizePixels();
@@ -125,11 +125,11 @@ SoSceneManager::render(const SbBool clearWindow,
   GLbitfield mask = 0;
   if (clearWindow) mask |= GL_COLOR_BUFFER_BIT;
   if (clearZbuffer) mask |= GL_DEPTH_BUFFER_BIT;
-  
+
   glClearColor(this->backgroundcolor[0],
-	       this->backgroundcolor[1],
- 	       this->backgroundcolor[2],
- 	       0.0f);
+               this->backgroundcolor[1],
+               this->backgroundcolor[2],
+               0.0f);
   glClear(mask);
 
   glMatrixMode(GL_PROJECTION);
@@ -147,15 +147,15 @@ SoSceneManager::render(const SbBool clearWindow,
   // will also help us avoid "double redraws" at expose events.
 #if 0 // debug
   SoDebugError::postInfo("SoSceneManager::render",
-			 "rootsensor %p isScheduled: %d",
-			 this->rootsensor,
-			 this->rootsensor ?
-			 this->rootsensor->isScheduled() : -1);
+                         "rootsensor %p isScheduled: %d",
+                         this->rootsensor,
+                         this->rootsensor ?
+                         this->rootsensor->isScheduled() : -1);
 #endif // debug
   if (this->rootsensor && this->rootsensor->isScheduled()) {
 #if 0 // debug
     SoDebugError::postInfo("SoSceneManager::render",
-			   "rootsensor unschedule");
+                           "rootsensor unschedule");
 #endif // debug
     this->rootsensor->unschedule();
   }
@@ -169,15 +169,15 @@ SoSceneManager::render(const SbBool clearWindow,
   if (this->redrawshot && this->redrawshot->isScheduled()) {
 #if 0 // debug
     SoDebugError::postInfo("SoSceneManager::render",
-			   "redrawshot unschedule");
+                           "redrawshot unschedule");
 #endif // debug
     this->redrawshot->unschedule();
   }
 
 #if 0 // debug
   SoDebugError::postInfo("SoSceneManager::render",
-			 "applying the GLRenderAction "
-			 "to the scenegraph _now_");
+                         "applying the GLRenderAction "
+                         "to the scenegraph _now_");
 #endif // debug
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -188,9 +188,9 @@ SoSceneManager::render(const SbBool clearWindow,
 
 /*!
   Process the given event by applying an SoHandleEventAction on the scene
-  graph. 
+  graph.
  */
-SbBool 
+SbBool
 SoSceneManager::processEvent(const SoEvent * const event)
 {
 #if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
@@ -204,7 +204,7 @@ SoSceneManager::processEvent(const SoEvent * const event)
 #else // COIN_EXCLUDE_SOHANDLEEVENTACTION
 #if COIN_DEBUG
   SoDebugError::postInfo("SoSceneManager::processEvent",
-			 "SoHandleEventAction support was not compiled in");
+                         "SoHandleEventAction support was not compiled in");
 #endif // COIN_DEBUG
   return FALSE;
 #endif // COIN_EXCLUDE_SOHANDLEEVENTACTION
@@ -213,7 +213,7 @@ SoSceneManager::processEvent(const SoEvent * const event)
 /*!
   FIXME: write doc
  */
-void 
+void
 SoSceneManager::reinitialize(void)
 {
   // FIXME: implement
@@ -223,20 +223,20 @@ SoSceneManager::reinitialize(void)
 /*!
   FIXME: write doc
  */
-void 
+void
 SoSceneManager::scheduleRedraw(void)
 {
   if (this->active && this->renderCB) {
     if (!this->redrawshot) {
       this->redrawshot =
-	new SoOneShotSensor(SoSceneManager::redrawshotTriggeredCB, this);
+        new SoOneShotSensor(SoSceneManager::redrawshotTriggeredCB, this);
       this->redrawshot->setPriority(this->getRedrawPriority());
     }
 
 #if 0 // debug
     SoDebugError::postInfo("SoSceneManager::scheduleRedraw",
-			   "scheduling redrawshot (oneshotsensor) %p",
-			   this->redrawshot);
+                           "scheduling redrawshot (oneshotsensor) %p",
+                           this->redrawshot);
 #endif // debug
     this->redrawshot->schedule();
   }
@@ -273,7 +273,7 @@ SoSceneManager::nodesensorCB(void * data, SoSensor * /* sensor */)
 {
 #if 0 // debug
   SoDebugError::postInfo("SoSceneManager::nodesensorCB",
-			 "detected change in scene graph");
+                         "detected change in scene graph");
 #endif // debug
   ((SoSceneManager *)data)->scheduleRedraw();
 }
@@ -286,7 +286,7 @@ SoSceneManager::nodesensorCB(void * data, SoSensor * /* sensor */)
 
   \sa getSceneGraph()
  */
-void 
+void
 SoSceneManager::setSceneGraph(SoNode * const newScene)
 {
   if (this->rootsensor) this->rootsensor->detach();
@@ -313,7 +313,7 @@ SoSceneManager::getSceneGraph(void) const
 /*!
   FIXME: write doc
  */
-void 
+void
 SoSceneManager::setWindowSize(const SbVec2s &newSize)
 {
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -347,7 +347,7 @@ SoSceneManager::getWindowSize(void) const
 /*!
   FIXME: write doc
  */
-void 
+void
 SoSceneManager::setSize(const SbVec2s &newSize)
 {
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -383,7 +383,7 @@ SoSceneManager::getSize(void) const
 /*!
   FIXME: write doc
  */
-void 
+void
 SoSceneManager::setOrigin(const SbVec2s &newOrigin)
 {
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -441,7 +441,7 @@ SoSceneManager::getViewportRegion(void) const
 /*!
   FIXME: write doc
  */
-void 
+void
 SoSceneManager::setBackgroundColor(const SbColor &color)
 {
   this->backgroundcolor = color;
@@ -459,7 +459,7 @@ SoSceneManager::getBackgroundColor(void) const
 /*!
   FIXME: write doc
  */
-void 
+void
 SoSceneManager::setBackgroundIndex(const int index)
 {
   this->backgroundIndex = index;
@@ -468,7 +468,7 @@ SoSceneManager::setBackgroundIndex(const int index)
 /*!
   FIXME: write doc
  */
-int 
+int
 SoSceneManager::getBackgroundIndex(void) const
 {
   return this->backgroundIndex;
@@ -477,7 +477,7 @@ SoSceneManager::getBackgroundIndex(void) const
 /*!
   FIXME: write doc
  */
-void 
+void
 SoSceneManager::setRGBMode(const SbBool onOrOff)
 {
   assert(onOrOff == TRUE);
@@ -487,7 +487,7 @@ SoSceneManager::setRGBMode(const SbBool onOrOff)
 /*!
   FIXME: write doc
  */
-SbBool 
+SbBool
 SoSceneManager::isRGBMode(void) const
 {
   return this->rgbMode;
@@ -496,7 +496,7 @@ SoSceneManager::isRGBMode(void) const
 /*!
   FIXME: write doc
  */
-void 
+void
 SoSceneManager::activate(void)
 {
   this->active = TRUE;
@@ -505,7 +505,7 @@ SoSceneManager::activate(void)
 /*!
   FIXME: write doc
  */
-void 
+void
 SoSceneManager::deactivate(void)
 {
   this->active = FALSE;
@@ -514,9 +514,9 @@ SoSceneManager::deactivate(void)
 /*!
   FIXME: write doc
  */
-void 
-SoSceneManager::setRenderCallback(SoSceneManagerRenderCB *f, 
-				  void * const userData)
+void
+SoSceneManager::setRenderCallback(SoSceneManagerRenderCB *f,
+                                  void * const userData)
 {
   this->renderCB = f;
   this->renderCBdata = userData;
@@ -525,7 +525,7 @@ SoSceneManager::setRenderCallback(SoSceneManagerRenderCB *f,
 /*!
   FIXME: write doc
  */
-SbBool 
+SbBool
 SoSceneManager::isAutoRedraw(void) const
 {
   return this->renderCB != NULL;
@@ -534,7 +534,7 @@ SoSceneManager::isAutoRedraw(void) const
 /*!
   FIXME: write doc
  */
-void 
+void
 SoSceneManager::setRedrawPriority(const uint32_t priority)
 {
   this->redrawPri = priority;
@@ -545,7 +545,7 @@ SoSceneManager::setRedrawPriority(const uint32_t priority)
 /*!
   FIXME: write doc
  */
-uint32_t 
+uint32_t
 SoSceneManager::getRedrawPriority(void) const
 {
   return this->redrawPri;
@@ -554,7 +554,7 @@ SoSceneManager::getRedrawPriority(void) const
 /*!
   FIXME: write doc
  */
-void 
+void
 SoSceneManager::setAntialiasing(const SbBool smoothing, const int numPasses)
 {
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -566,7 +566,7 @@ SoSceneManager::setAntialiasing(const SbBool smoothing, const int numPasses)
 /*!
   FIXME: write doc
  */
-void 
+void
 SoSceneManager::getAntialiasing(SbBool &smoothing, int &numPasses) const
 {
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -582,7 +582,7 @@ SoSceneManager::getAntialiasing(SbBool &smoothing, int &numPasses) const
 /*!
   FIXME: write doc
  */
-void 
+void
 SoSceneManager::setGLRenderAction(SoGLRenderAction * const action)
 {
   if (this->deleteGLAction) delete this->glAction;
@@ -604,7 +604,7 @@ SoSceneManager::getGLRenderAction(void) const
 /*!
   FIXME: write doc
  */
-void 
+void
 SoSceneManager::setHandleEventAction(SoHandleEventAction * hea)
 {
   if (this->deletehandleeventaction) delete this->handleeventaction;
@@ -625,7 +625,7 @@ SoSceneManager::getHandleEventAction(void) const
 /*!
   FIXME: write doc
  */
-uint32_t 
+uint32_t
 SoSceneManager::getDefaultRedrawPriority(void)
 {
   return 10000;
@@ -634,7 +634,7 @@ SoSceneManager::getDefaultRedrawPriority(void)
 /*!
   FIXME: write doc
  */
-void 
+void
 SoSceneManager::enableRealTimeUpdate(const SbBool /* flag */)
 {
   // FIXME: implement -- check SoDB::enableRealTimeUpdate()
@@ -644,7 +644,7 @@ SoSceneManager::enableRealTimeUpdate(const SbBool /* flag */)
 /*!
   FIXME: write doc
  */
-SbBool 
+SbBool
 SoSceneManager::isRealTimeUpdateEnabled(void)
 {
   // FIXME: implement

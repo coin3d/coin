@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -34,13 +34,13 @@ class SbBSPTree
 public:
   SbBSPTree(const int maxnodepts = 64, const int initsize = 4);
   ~SbBSPTree();
-  
+
   int numPoints() const;
   SbVec3f getPoint(const int idx);
   void getPoint(const int idx, SbVec3f & pt);
   void * getUserData(const int idx) const;
   void setUserData(const int idx, void * const data);
-  
+
   int addPoint(const SbVec3f & pt, void * const userdata = NULL);
   int removePoint(const SbVec3f & pt);
   void removePoint(const int idx);
@@ -49,10 +49,10 @@ public:
   int findClosest(const SbSphere & sphere, SbList <int> & array) const;
   int findClosest(const SbVec3f & pos) const;
   void clear(const int initsize = 4);
-  
+
   const SbBox3f & getBBox() const;
   const SbVec3f * getPointsArrayPtr() const;
-  
+
 private:
   friend class coin_bspnode;
   SbList <SbVec3f> pointsArray;

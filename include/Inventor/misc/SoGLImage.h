@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -39,15 +39,15 @@ public:
 
   // to create a SoGLImage from data already in memory
   SoGLImage(const SbVec2s size,
-	    const int numComponents,
-	    const unsigned char * bytes);
-  
+            const int numComponents,
+            const unsigned char * bytes);
+
   void unref();
 
-  
-  static SoGLImage *getGLImage(const char * const texname, 
-			       void * const context);
-  
+
+  static SoGLImage *getGLImage(const char * const texname,
+                               void * const context);
+
   SbBool init(const SbBool clamps, const SbBool clampt);
   SbBool isInitialized() const;
   void apply() const;
@@ -60,22 +60,22 @@ public:
 private:
   friend class SoTexHandler;
 
-  SoGLImage(SoImageInterface * const img, 
-	    const char * const filename, 
-	    const char * const org_name, 
-	    void * const context);
+  SoGLImage(SoImageInterface * const img,
+            const char * const filename,
+            const char * const org_name,
+            void * const context);
   ~SoGLImage();
 
-  void replaceImage(SoImageInterface * const newimage, 
-		    const char * const fname,
-		    const char * const oname);
-  
+  void replaceImage(SoImageInterface * const newimage,
+                    const char * const fname,
+                    const char * const oname);
+
   void checkResize();
 
   SoImageInterface *image;
   SbString orgname;
   SbString filename;
-  
+
   unsigned int alpha : 1;
   unsigned int clampS : 1;
   unsigned int clampT : 1;

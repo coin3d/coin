@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -56,8 +56,8 @@ SbName::SbName(void)
 */
 
 SbName::SbName(const char *nameString)
-{ 
-  this->entry = SbNameEntry::insert(nameString); 
+{
+  this->entry = SbNameEntry::insert(nameString);
 };
 
 /*!
@@ -74,8 +74,8 @@ SbName::SbName(const SbString & str)
 */
 
 SbName::SbName(const SbName & name)
-: entry(name.entry) 
-{ 
+: entry(name.entry)
+{
 }
 
 /*!
@@ -95,20 +95,20 @@ SbName::~SbName(void)
   This method returns pointer to character array for the name.
 */
 
-const char * 
+const char *
 SbName::getString(void) const
-{ 
-  return entry->str; 
+{
+  return entry->str;
 }
 
 /*!
   This method returns the number of characters in the name.
 */
 
-int 
+int
 SbName::getLength(void) const
-{ 
-  return strlen(entry->str); 
+{
+  return strlen(entry->str);
 }
 
 /*!
@@ -187,10 +187,10 @@ SbName::isBaseNameChar(const char c)
   TRUE if the SbName object is empty.  An empty name contains the "" string.
 */
 
-int 
+int
 SbName::operator ! (void) const
-{ 
-  return entry->isEmpty(); 
+{
+  return entry->isEmpty();
 }
 
 /*!
@@ -198,10 +198,10 @@ SbName::operator ! (void) const
   otherwise.
 */
 
-int 
+int
 operator == (const SbName & lhs, const char *rhs)
-{ 
-  return lhs.entry->isEqual(rhs); 
+{
+  return lhs.entry->isEqual(rhs);
 }
 
 /*!
@@ -209,10 +209,10 @@ operator == (const SbName & lhs, const char *rhs)
   otherwise.
 */
 
-int 
+int
 operator == (const char *lhs, const SbName & rhs)
-{ 
-  return rhs.entry->isEqual(lhs); 
+{
+  return rhs.entry->isEqual(lhs);
 }
 
 /*!
@@ -220,12 +220,12 @@ operator == (const char *lhs, const SbName & rhs)
   otherwise.
 */
 
-int 
+int
 operator == (const SbName & lhs, const SbName & rhs)
-{ 
-  return (lhs.entry == rhs.entry); 
+{
+  return (lhs.entry == rhs.entry);
 }
-  
+
 /*!
   This operator checks for inequality and returns TRUE if so, and FALSE
   if the names are equal.
@@ -233,8 +233,8 @@ operator == (const SbName & lhs, const SbName & rhs)
 
 int
 operator != (const SbName & lhs, const char *rhs)
-{ 
-  return ! lhs.entry->isEqual(rhs); 
+{
+  return ! lhs.entry->isEqual(rhs);
 }
 
 /*!
@@ -242,10 +242,10 @@ operator != (const SbName & lhs, const char *rhs)
   if the names are equal.
 */
 
-int 
+int
 operator != (const char *lhs, const SbName & rhs)
-{ 
-  return ! rhs.entry->isEqual(lhs); 
+{
+  return ! rhs.entry->isEqual(lhs);
 }
 
 /*!
@@ -253,10 +253,10 @@ operator != (const char *lhs, const SbName & rhs)
   if the names are equal.
 */
 
-int 
+int
 operator != (const SbName & lhs, const SbName & rhs)
-{ 
-  return lhs.entry != rhs.entry; 
+{
+  return lhs.entry != rhs.entry;
 }
 
 /*!
@@ -268,8 +268,8 @@ operator != (const SbName & lhs, const SbName & rhs)
 */
 
 SbName::operator const char * (void) const
-{ 
-  return entry->str; 
+{
+  return entry->str;
 }
 
 const int CHUNK_SIZE = 65536-32; // leave some room for other data
@@ -288,7 +288,7 @@ struct SbNameChunk {
 
 int SbNameEntry::nameTableSize;
 SbNameEntry * * SbNameEntry::nameTable;
-SbNameChunk * SbNameEntry::chunk; 
+SbNameChunk * SbNameEntry::chunk;
 
 // *************************************************************************
 
@@ -339,17 +339,17 @@ SbNameEntry::findStringAddress(const char * s)
 
     if (chunk == NULL || chunk->bytesLeft < len) {
       SbNameChunk * newChunk = new SbNameChunk;
-      
+
       newChunk->curByte = newChunk->mem;
       newChunk->bytesLeft = CHUNK_SIZE;
       newChunk->next = chunk;
-      
+
       chunk = newChunk;
     }
-    
+
     strncpy(chunk->curByte, s, len);
     s = chunk->curByte;
-    
+
     chunk->curByte += len;
     chunk->bytesLeft -= len;
 
@@ -365,7 +365,7 @@ SbNameEntry::insert(const char * const str)
 {
     if (nameTableSize == 0)
         initClass();
-  
+
     unsigned long h = SbString::hash(str);
     unsigned long i = h % nameTableSize;
     SbNameEntry * entry = nameTable[i];
@@ -376,7 +376,7 @@ SbNameEntry::insert(const char * const str)
             break;
         entry = entry->next;
     }
-  
+
     if (entry == NULL) {
         entry = new SbNameEntry(findStringAddress( str), h, head );
         nameTable[ i ] = entry;
@@ -396,4 +396,3 @@ SbNameEntry::insert(const char * const str)
 
   FIXME: write doc.
 */
-

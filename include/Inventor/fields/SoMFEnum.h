@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -91,7 +91,7 @@ public:
   void setValue(const SbName name);
   void set1Value(const int idx, const SbName name);
   void setEnums(const int num, const int * const values,
-		const SbName * const names);
+                const SbName * const names);
 
 protected:
   virtual SbBool findEnumValue(const SbName & name, int & value);

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -127,8 +127,8 @@ SoTimerSensor::reschedule(const SbTime & schedtime)
     this->setTriggerTime(this->base + this->interval);
 #if DEBUG_TIMERSENSOR_TRACE // debug
     SoDebugError::postInfo("SoTimerSensor::reschedule",
-			   "(notsetBaseTime) base: %lf, new trigger time: %lf",
-			   this->base.getValue(), this->getTriggerTime());
+                           "(notsetBaseTime) base: %lf, new trigger time: %lf",
+                           this->base.getValue(), this->getTriggerTime());
 #endif // debug
   }
   else {
@@ -136,8 +136,8 @@ SoTimerSensor::reschedule(const SbTime & schedtime)
     this->setTriggerTime(this->base + (intervals+1) * this->interval);
 #if DEBUG_TIMERSENSOR_TRACE // debug
     SoDebugError::postInfo("SoTimerSensor::reschedule",
-			   "base: %lf, new trigger time: %lf",
-			   this->base.getValue(), this->getTriggerTime());
+                           "base: %lf, new trigger time: %lf",
+                           this->base.getValue(), this->getTriggerTime());
 #endif // debug
   }
 }
@@ -160,7 +160,7 @@ SoTimerSensor::schedule(void)
 #if COIN_DEBUG
   if (this->isScheduled()) {
     SoDebugError::postWarning("SoTimerSensor::schedule",
-			      "was already scheduled!");
+                              "was already scheduled!");
     return;
   }
 #endif // COIN_DEBUG
@@ -184,7 +184,7 @@ SoTimerSensor::unschedule(void)
 #if COIN_DEBUG
   if (!this->isScheduled()) {
     SoDebugError::postWarning("SoTimerSensor::unschedule",
-			      "not scheduled!");
+                              "not scheduled!");
     return;
   }
 #endif // COIN_DEBUG
@@ -223,7 +223,7 @@ SoTimerSensor::trigger(void)
 
 /*!
   Need to overload this method in SoTimerSensor, otherwise we can't return
-  the correct schedule status during triggering. 
+  the correct schedule status during triggering.
  */
 SbBool
 SoTimerSensor::isScheduled(void)

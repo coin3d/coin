@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -30,9 +30,9 @@ class SbMatrix;
 class SbBox3f {
 public:
   SbBox3f(void);
-  SbBox3f(const float minx, const float miny, const float minz, 
-	  const float maxx, const float maxy, const float maxz);
-  SbBox3f(const SbVec3f& min, const SbVec3f& max); 
+  SbBox3f(const float minx, const float miny, const float minz,
+          const float maxx, const float maxy, const float maxz);
+  SbBox3f(const SbVec3f& min, const SbVec3f& max);
   ~SbBox3f();
 
   const SbVec3f& getMin(void) const;
@@ -44,17 +44,17 @@ public:
   void extendBy(const SbBox3f& box);
 
   SbBool intersect(const SbVec3f& point) const;
-  SbBool intersect(const SbBox3f& box) const; 
-  
-  void setBounds(const float minx, const float miny, const float minz, 
-		 const float maxx, const float maxy, const float maxz);
+  SbBool intersect(const SbBox3f& box) const;
+
+  void setBounds(const float minx, const float miny, const float minz,
+                 const float maxx, const float maxy, const float maxz);
   void setBounds(const SbVec3f& min, const SbVec3f& max);
-  void getBounds(float& minx, float& miny, float& minz, 
-		 float& maxx, float& maxy, float& maxz) const;
+  void getBounds(float& minx, float& miny, float& minz,
+                 float& maxx, float& maxy, float& maxz) const;
   void getBounds(SbVec3f& min, SbVec3f& max) const;
 
   void getOrigin(float& x0, float& y0, float& z0) const;
-  void getSize(float& dx, float& dy, float& dz) const; 
+  void getSize(float& dx, float& dy, float& dz) const;
 
   void makeEmpty(void);
   SbBool isEmpty(void) const;

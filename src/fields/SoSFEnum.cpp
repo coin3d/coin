@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -186,7 +186,7 @@ SoSFEnum::~SoSFEnum()
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoSFEnum::setEnums(const int num, const int * vals, const SbName * names)
 {
   int * newvals = new int[num];
@@ -255,7 +255,7 @@ SoSFEnum::readValue(SoInput * in)
   if (this->findEnumValue(n, this->value)) return TRUE;
 
   SoReadError::post(in, "Unknown SoSFEnum enumeration value \"%s\"",
-		    n.getString());
+                    n.getString());
   return FALSE;
 }
 
@@ -283,7 +283,7 @@ SoSFEnum::setValue(const SbName name)
   else {
 #if COIN_DEBUG
     SoDebugError::postInfo("SoSFEnum::setValue",
-			   "Unknown enum '%s'", name.getString());
+                           "Unknown enum '%s'", name.getString());
 #endif // COIN_DEBUG
   }
 }
@@ -317,7 +317,7 @@ SoSFEnum::writeValue(SoOutput * out) const
   // it can't be re-read. 19990713 mortene.
   if (!written)
     SoDebugError::post("SoSFEnum::writeValue", "Illegal value (%d) in field",
-		       this->value);
+                       this->value);
 #endif // COIN_DEBUG
 }
 
@@ -333,9 +333,9 @@ SoSFEnum::convertTo(SoField * dest) const
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFEnum::convertTo",
-		       "Can't convert from %s to %s",
-		       this->getTypeId().getName().getString(),
-		       dest->getTypeId().getName().getString());
+                       "Can't convert from %s to %s",
+                       this->getTypeId().getName().getString(),
+                       dest->getTypeId().getName().getString());
   }
 #endif // COIN_DEBUG
 }

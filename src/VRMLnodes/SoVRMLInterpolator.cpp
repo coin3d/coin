@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -61,7 +61,7 @@ SoVRMLInterpolator::initClass(void)
 */
 SbBool
 SoVRMLInterpolator::getOutputName(const SoVRMLInterpOutput * /* output */,
-				  SbName & /* outputName */) const
+                                  SbName & /* outputName */) const
 {
   assert(0 && "FIXME: not implemented yet");
   return FALSE;

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -37,7 +37,7 @@ public:
   const float * getValue(void) const;
   void getValue(float & q0, float & q1, float & q2, float & q3) const;
   SbRotation & setValue(const float q0, const float q1,
-			const float q2, const float q3);
+                        const float q2, const float q3);
   void getValue(SbVec3f & axis, float & radians) const;
   void getValue(SbMatrix & matrix) const;
   SbRotation & invert(void);
@@ -55,7 +55,7 @@ public:
 
   void scaleAngle(const float scaleFactor);
   static SbRotation slerp(const SbRotation & rot0, const SbRotation & rot1,
-			  float t);
+                          float t);
   static SbRotation identity(void);
 
   void print(ostream & file) const;

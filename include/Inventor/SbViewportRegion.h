@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -35,11 +35,11 @@ public:
 
   void setWindowSize(short width, short height);
   void setWindowSize(SbVec2s winSize);
-  void setViewport(float left, float bottom, 
-		   float width, float height);
+  void setViewport(float left, float bottom,
+                   float width, float height);
   void setViewport(SbVec2f origin, SbVec2f size);
-  void setViewportPixels(short left, short bottom, 
-			 short width, short height);
+  void setViewportPixels(short left, short bottom,
+                         short width, short height);
   void setViewportPixels(SbVec2s origin, SbVec2s size);
   const SbVec2s & getWindowSize(void) const;
   const SbVec2f & getViewportOrigin(void) const;
@@ -52,8 +52,8 @@ public:
   void setPixelsPerInch(float ppi);
   float getPixelsPerInch(void) const;
   float getPixelsPerPoint(void) const;
-  friend int operator ==(const SbViewportRegion & reg1, 
-			 const SbViewportRegion & reg2);
+  friend int operator ==(const SbViewportRegion & reg1,
+                         const SbViewportRegion & reg2);
 
   void print(ostream & file) const;
 

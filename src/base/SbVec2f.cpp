@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -93,7 +93,7 @@ SbVec2f::equals(const SbVec2f& v, const float tolerance) const
 #if COIN_DEBUG
   if(!(tolerance >= 0.0f))
     SoDebugError::postWarning("SbVec2f::equals",
-			      "Tolerance should be >= 0.0f");
+                              "Tolerance should be >= 0.0f");
 #endif // COIN_DEBUG
 
   float xdist = this->vec[0] - v[0];
@@ -162,8 +162,8 @@ SbVec2f::normalize(void)
 #if COIN_DEBUG
   if(!(len > 0.0f))
     SoDebugError::postWarning("SbVec3f::normalize",
-			      "The length of the vector should be > 0.0f "
-			      "to be able to normalize.");
+                              "The length of the vector should be > 0.0f "
+                              "to be able to normalize.");
 #endif // COIN_DEBUG
 
   if (len > 0.0f) operator/=(len);
@@ -177,7 +177,7 @@ SbVec2f::normalize(void)
   \sa getValue().
  */
 
-SbVec2f& 
+SbVec2f&
 SbVec2f::setValue(const float v[2])
 {
   this->vec[0] = v[0];
@@ -191,7 +191,7 @@ SbVec2f::setValue(const float v[2])
   \sa getValue().
  */
 
-SbVec2f& 
+SbVec2f&
 SbVec2f::setValue(const float x, const float y)
 {
   this->vec[0] = x;
@@ -211,7 +211,7 @@ SbVec2f::operator [](const int i)
 #if COIN_DEBUG
   if(!(i==0 || i==1))
     SoDebugError::postWarning("SbVec2f::operator[]",
-			      "Index out of bounds [0,1].");
+                              "Index out of bounds [0,1].");
 #endif // COIN_DEBUG
   return this->vec[i];
 }
@@ -222,13 +222,13 @@ SbVec2f::operator [](const int i)
   \sa getValue().
  */
 
-const float& 
+const float&
 SbVec2f::operator [](const int i) const
 {
 #if COIN_DEBUG
   if(!(i==0 || i==1))
     SoDebugError::postWarning("SbVec2f::operator[]",
-			      "Index out of bounds [0,1].");
+                              "Index out of bounds [0,1].");
 #endif // COIN_DEBUG
   return this->vec[i];
 }
@@ -237,7 +237,7 @@ SbVec2f::operator [](const int i) const
   Multiply components of vector with value \a d. Returns reference to self.
  */
 
-SbVec2f& 
+SbVec2f&
 SbVec2f::operator *=(const float d)
 {
   this->vec[0] *= d;
@@ -249,13 +249,13 @@ SbVec2f::operator *=(const float d)
   Divides components of vector with value \a d. Returns reference to self.
  */
 
-SbVec2f& 
+SbVec2f&
 SbVec2f::operator /=(const float d)
 {
 #if COIN_DEBUG
   if(!(d != 0.0f))
     SoDebugError::postWarning("SbVec2f::operator/=",
-			      "Division by zero.");
+                              "Division by zero.");
 #endif // COIN_DEBUG
 
   this->vec[0] /= d;
@@ -267,7 +267,7 @@ SbVec2f::operator /=(const float d)
   Adds this vector and vector \a u. Returns reference to self.
  */
 
-SbVec2f& 
+SbVec2f&
 SbVec2f::operator +=(const SbVec2f& u)
 {
   this->vec[0] += u[0];
@@ -278,7 +278,7 @@ SbVec2f::operator +=(const SbVec2f& u)
 /*!
   Subtracts vector \a u from this vector. Returns reference to self.
  */
-SbVec2f& 
+SbVec2f&
 SbVec2f::operator -=(const SbVec2f& u)
 {
   this->vec[0] -= u[0];
@@ -338,7 +338,7 @@ operator /(const SbVec2f& v, const float d)
 #if COIN_DEBUG
   if(!(d != 0.0f))
     SoDebugError::postWarning("SbVec2f::operator/",
-			      "Division by zero.");
+                              "Division by zero.");
 #endif // COIN_DEBUG
 
   return SbVec2f(v[0]/d, v[1]/d);

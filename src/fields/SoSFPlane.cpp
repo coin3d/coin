@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -192,9 +192,9 @@ SoSFPlane::readValue(SoInput * in)
   SbVec3f normal;
   float offset;
   SbBool result = (in->read(normal[0]) &&
-		   in->read(normal[1]) &&
-		   in->read(normal[2]) &&
-		   in->read(offset));
+                   in->read(normal[1]) &&
+                   in->read(normal[2]) &&
+                   in->read(offset));
   this->setValue(SbPlane(normal, offset));
   return result;
 }
@@ -227,7 +227,7 @@ SoSFPlane::convertTo(SoField * dest) const
     ostrstream ostr;
     const SbPlane plane=this->getValue();
     const SbVec3f norm=plane.getNormal();
-    
+
     ostr << norm[0] << " " << norm[1] << " " << norm[2] << "  " <<
       plane.getDistanceFromOrigin() << ends;
 
@@ -237,9 +237,9 @@ SoSFPlane::convertTo(SoField * dest) const
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFPlane::convertTo",
-		       "Can't convert from %s to %s",
-		       this->getTypeId().getName().getString(),
-		       dest->getTypeId().getName().getString());
+                       "Can't convert from %s to %s",
+                       this->getTypeId().getName().getString(),
+                       dest->getTypeId().getName().getString());
   }
 #endif // COIN_DEBUG
 }

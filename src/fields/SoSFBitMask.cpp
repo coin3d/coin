@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -169,19 +169,19 @@ SoSFBitMask::readValue(SoInput * in)
   if (in->isBinary()) {
     while (TRUE) {
       if (!in->read(n, TRUE)) {
-	SoReadError::post(in, "Couldn't read SoSFBitMask bitmask value");
-	return FALSE;
+        SoReadError::post(in, "Couldn't read SoSFBitMask bitmask value");
+        return FALSE;
       }
       if (n.getLength() == 0) break;
 
       int v;
       if (this->findEnumValue(n, v)) {
-	this->value |= v;
+        this->value |= v;
       }
       else {
-	SoReadError::post(in, "Unknown SoSFBitMask bit "
-			  "mask value \"%s\"", n.getString());
-	return FALSE;
+        SoReadError::post(in, "Unknown SoSFBitMask bit "
+                          "mask value \"%s\"", n.getString());
+        return FALSE;
       }
     }
 
@@ -199,30 +199,30 @@ SoSFBitMask::readValue(SoInput * in)
     while (TRUE) {
       if (in->read(n, TRUE) && !(!n)) {
 
-	int v;
-	if (this->findEnumValue(n, v)) {
-	  this->value |= v;
-	}
-	else {
-	  SoReadError::post(in, "Unknown SoSFBitMask bit "
-			    "mask value \"%s\"", n.getString());
-	  return FALSE;
-	}
+        int v;
+        if (this->findEnumValue(n, v)) {
+          this->value |= v;
+        }
+        else {
+          SoReadError::post(in, "Unknown SoSFBitMask bit "
+                            "mask value \"%s\"", n.getString());
+          return FALSE;
+        }
       }
 
       if (!in->read(c)) {
-	SoReadError::post(in, "EOF reached before '%c' "
-			  "in SoSFBitMask value", ')');
-	return FALSE;
+        SoReadError::post(in, "EOF reached before '%c' "
+                          "in SoSFBitMask value", ')');
+        return FALSE;
       }
 
       if (c == ')') break;
 
       else if (c != '|') {
-	SoReadError::post(in,
-			  "Expected '|' or ')', got '%c' in SoSFBitMask value",
-			  c);
-	return FALSE;
+        SoReadError::post(in,
+                          "Expected '|' or ')', got '%c' in SoSFBitMask value",
+                          c);
+        return FALSE;
       }
     }
   }
@@ -234,7 +234,7 @@ SoSFBitMask::readValue(SoInput * in)
 
     if (!this->findEnumValue(n, this->value)) {
       SoReadError::post(in, "Unknown SoSFBitMask bit "
-			"mask value \"%s\"", n.getString());
+                        "mask value \"%s\"", n.getString());
       return FALSE;
     }
   }
@@ -247,7 +247,7 @@ SoSFBitMask::writeValue(SoOutput * out) const
 {
   SbBool paran = FALSE;
   int out_vals_written = 0;
-  
+
   // FIXME: as enumValues for SoSFBitMasks can be OR'ed combinations
   // of other enumValues, we should try to write a minimal set of
   // flags by masking out flags with the highest number of bits
@@ -260,8 +260,8 @@ SoSFBitMask::writeValue(SoOutput * out) const
     if (this->enumValues[i] & restval) {
       restval &= ~this->enumValues[i];
       if (!out_vals_written && restval) {
-	if (!out->isBinary()) out->write('(');
-	paran = TRUE;
+        if (!out->isBinary()) out->write('(');
+        paran = TRUE;
       }
       if (out_vals_written++ && !out->isBinary()) out->write(" | ");
       out->write((const char *)this->enumNames[i].getString());
@@ -277,9 +277,9 @@ SoSFBitMask::writeValue(SoOutput * out) const
 #if COIN_DEBUG
   if (restval) {
     SoDebugError::post("SoSFBitMask::writeValue",
-		       "invalid bitmask -- some bits \"lost\" (0x%x) "
-		       "upon export",
-		       restval);
+                       "invalid bitmask -- some bits \"lost\" (0x%x) "
+                       "upon export",
+                       restval);
   }
 #endif // COIN_DEBUG
 }
@@ -296,9 +296,9 @@ SoSFBitMask::convertTo(SoField * dest) const
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFBitMask::convertTo",
-		       "Can't convert from %s to %s",
-		       this->getTypeId().getName().getString(),
-		       dest->getTypeId().getName().getString());
+                       "Can't convert from %s to %s",
+                       this->getTypeId().getName().getString(),
+                       dest->getTypeId().getName().getString());
   }
 #endif // COIN_DEBUG
 }

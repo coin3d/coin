@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -28,15 +28,15 @@ class SoImageInterface {
 public:
   SoImageInterface(const char * const filename);
   SoImageInterface(const SbVec2s size,
-		   const int numComponents,
-		   const unsigned char * data);
+                   const int numComponents,
+                   const unsigned char * data);
   ~SoImageInterface();
-  
+
   SbBool resize(const SbVec2s newsize);
   //void changeDepth(const int newDepth);
   SbBool load(const SbBool forceTry = FALSE);
   SbBool isLoaded() const;
-  const unsigned char *getDataPtr() const; 
+  const unsigned char *getDataPtr() const;
   int getNumComponents() const;
   SbVec2s getSize() const;
   const char *getFilename() const;

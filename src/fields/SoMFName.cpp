@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -301,12 +301,12 @@ SoMFName::write1Value(SoOutput * out, int idx) const
 */
 void
 SoMFName::setValues(const int start, const int num,
-		     const char * const strings [])
+                     const char * const strings [])
 {
   if(start+num > this->maxNum) this->allocValues(start+num);
   else if(start+num > this->num) this->num = start+num;
 
-  for(int i=0; i < num; i++) 
+  for(int i=0; i < num; i++)
     this->values[i+start] = SbName(strings[i]);
   this->valueChanged();
 }
@@ -344,9 +344,9 @@ SoMFName::convertTo(SoField * dest) const
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFName::convertTo",
-		       "Can't convert from %s to %s",
-		       this->getTypeId().getName().getString(),
-		       dest->getTypeId().getName().getString());
+                       "Can't convert from %s to %s",
+                       this->getTypeId().getName().getString(),
+                       dest->getTypeId().getName().getString());
   }
 #endif // COIN_DEBUG
 }

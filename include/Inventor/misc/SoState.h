@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -35,28 +35,28 @@ class SoElement;
 class SoState {
 public:
   SoState(SoAction * const action,
-	  const SoTypeList & enabledElements);
+          const SoTypeList & enabledElements);
   ~SoState(void);
-  
+
   SoAction * getAction(void) const;
-  
+
   SoElement * getElement(const int stackIndex);
   const SoElement * getConstElement(const int stackIndex) const;
-  
+
   void push(void);
   void pop(void);
-  
+
   void print(FILE * const file = stdout) const;
 
   SbBool isElementEnabled(const int stackIndex) const;
-  
+
   int getDepth() const;
-  
+
   void setCacheOpen(const SbBool flag);
   SbBool isCacheOpen(void) const;
-  
+
   SoElement * getElementNoPush(const int stackIndex) const;
-  
+
 private:
   SoAction * const action;
   SoElement ** stack;

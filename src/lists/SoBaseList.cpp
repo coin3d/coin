@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -79,7 +79,7 @@ SoBaseList::~SoBaseList(void)
   FIXME: write doc.
 */
 
-void 
+void
 SoBaseList::append(SoBase * const ptr)
 {
   if (this->doRef) ptr->ref();
@@ -90,7 +90,7 @@ SoBaseList::append(SoBase * const ptr)
   FIXME: write doc.
 */
 
-void 
+void
 SoBaseList::insert(SoBase * const ptr, const int addBefore)
 {
   if (this->doRef) ptr->ref();
@@ -101,7 +101,7 @@ SoBaseList::insert(SoBase * const ptr, const int addBefore)
   FIXME: write doc.
 */
 
-void 
+void
 SoBaseList::remove(const int which)
 {
   //Check if get(which) exists.
@@ -113,7 +113,7 @@ SoBaseList::remove(const int which)
   FIXME: write doc.
 */
 
-void 
+void
 SoBaseList::truncate(const int start)
 {
   const int n = this->getLength();
@@ -130,7 +130,7 @@ SoBaseList::truncate(const int start)
   FIXME: write doc.
 */
 
-void 
+void
 SoBaseList::copy(const SoBaseList &l)
 {
   SbPList::copy(l);
@@ -139,7 +139,7 @@ SoBaseList::copy(const SoBaseList &l)
 //   truncate(0);
 //   this->doRef = l.doRef;
 //   const int n = l.getLength();
-//   for (int i = 0; i < n; i++) 
+//   for (int i = 0; i < n; i++)
 //     this->append(l.get(i));
 }
 
@@ -169,7 +169,7 @@ SoBaseList::operator [](const int i) const
   FIXME: write doc.
 */
 
-void 
+void
 SoBaseList::addReferences(const SbBool flag)
 {
   this->doRef = flag;
@@ -179,7 +179,7 @@ SoBaseList::addReferences(const SbBool flag)
   FIXME: write doc.
 */
 
-void 
+void
 SoBaseList::set(const int i, SoBase * const ptr)
 {
   if (this->doRef) this->get(i)->unref();
@@ -196,4 +196,3 @@ SoBaseList::get(const int i) const
 {
   return (SoBase*)SbPList::get(i);
 }
-

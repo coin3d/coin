@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -56,7 +56,7 @@ SbIntList::~SbIntList()
   This method appends an integer to the end of the list.
 */
 
-void 
+void
 SbIntList::append(int integer)
 {
   SbPList::append((void *)integer);
@@ -66,7 +66,7 @@ SbIntList::append(int integer)
   This method finds the first index for an element with value \a integer.
 */
 
-int 
+int
 SbIntList::find(int integer)
 {
   return SbPList::find((void *)integer);
@@ -77,7 +77,7 @@ SbIntList::find(int integer)
   all the following values out.
 */
 
-void 
+void
 SbIntList::insert(int integer, int addBefore)
 {
   SbPList::insert((void *)integer, addBefore);
@@ -87,7 +87,7 @@ SbIntList::insert(int integer, int addBefore)
   This method copies the contents of \a list into the instance.
 */
 
-void 
+void
 SbIntList::copy(const SbIntList & list)
 {
   SbPList::copy((SbPList &)list);
@@ -129,7 +129,7 @@ SbIntList::get(const int index) const
   to the value \a integer.
 */
 
-void 
+void
 SbIntList::set(const int index, int integer)
 {
   SbPList::set(index, (void *)integer);
@@ -144,8 +144,8 @@ SbIntList::set(const int index, int integer)
 
 
 SbIntList::operator int * (void)
-{ 
-  return (int *)this->itemBuffer; 
+{
+  return (int *)this->itemBuffer;
 }
 
 /*!
@@ -156,7 +156,6 @@ SbIntList::operator int * (void)
 */
 
 SbIntList::operator const int * (void) const
-{ 
-  return (const int *) this->itemBuffer; 
+{
+  return (const int *) this->itemBuffer;
 }
-

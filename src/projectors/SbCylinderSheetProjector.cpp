@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -52,7 +52,7 @@ SbCylinderSheetProjector::SbCylinderSheetProjector(SbBool orientToEye)
   FIXME: write doc
 */
 SbCylinderSheetProjector::SbCylinderSheetProjector(const SbCylinder & cyl,
-						   SbBool orientToEye)
+                                                   SbBool orientToEye)
   : inherited(cyl, orientToEye)
 {
   assert(0 && "FIXME: implementation missing");
@@ -83,7 +83,7 @@ SbCylinderSheetProjector::project(const SbVec2f & /* point */)
 */
 SbRotation
 SbCylinderSheetProjector::getRotation(const SbVec3f & /* point1 */,
-				      const SbVec3f & /* point2 */)
+                                      const SbVec3f & /* point2 */)
 {
   assert(0 && "FIXME: implementation missing");
   return SbRotation::identity();

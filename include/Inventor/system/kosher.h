@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -23,7 +23,7 @@
 // *************************************************************************
 /*
   The intention for this file is to make all the various operating systems
-  and compilers "kosher" for compiling Coin.  
+  and compilers "kosher" for compiling Coin.
 
   The contents of this file has varied during Coin development and is now at
   one of its minimums.

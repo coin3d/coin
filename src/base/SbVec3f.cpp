@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -83,10 +83,10 @@ SbVec3f::SbVec3f(const SbPlane& p0, const SbPlane& p1, const SbPlane& p2)
 #if COIN_DEBUG
   if(!((fabs(n0.dot(n1)) != 1.0f) &&
        (fabs(n0.dot(n2)) != 1.0f) &&
-       (fabs(n1.dot(n2)) != 1.0f))) 
+       (fabs(n1.dot(n2)) != 1.0f)))
     SoDebugError::postWarning("SbVec3f::SbVec3f",
-			      "Two or more of the given planes are parallel"
-			      " => Can't create intersection point.");
+                              "Two or more of the given planes are parallel"
+                              " => Can't create intersection point.");
 #endif // COIN_DEBUG
 
   // The equation for a point in a plane can be:
@@ -148,7 +148,7 @@ SbVec3f::SbVec3f(const SbPlane& p0, const SbPlane& p1, const SbPlane& p2)
 
     for(j = k+1; j < n; j++) {
       m[j][k] = a[j][k]/a[k][k];
-      
+
       for(int p=k+1; p < n+1; p++) a[j][p] -= m[j][k]*a[k][p];
     }
   }
@@ -174,8 +174,8 @@ SbVec3f
 SbVec3f::cross(const SbVec3f& v) const
 {
   return SbVec3f(this->vec[1]*v.vec[2] - this->vec[2]*v.vec[1],
-		 this->vec[2]*v.vec[0] - this->vec[0]*v.vec[2],
-		 this->vec[0]*v.vec[1] - this->vec[1]*v.vec[0]);
+                 this->vec[2]*v.vec[0] - this->vec[0]*v.vec[2],
+                 this->vec[0]*v.vec[1] - this->vec[1]*v.vec[0]);
 }
 
 /*!
@@ -199,7 +199,7 @@ SbVec3f::equals(const SbVec3f& v, const float tolerance) const
 #if COIN_DEBUG
   if(!(tolerance >= 0.0f))
     SoDebugError::postWarning("SbVec3f::equals",
-			      "Tolerance should be >= 0.0f");
+                              "Tolerance should be >= 0.0f");
 #endif // COIN_DEBUG
 
   float xdist = this->vec[0] - v[0];
@@ -234,7 +234,7 @@ SbVec3f::getClosestAxis(void) const
 
   \sa setValue().
  */
-const float * 
+const float *
 SbVec3f::getValue(void) const
 {
   return this->vec;
@@ -260,8 +260,8 @@ float
 SbVec3f::length(void) const
 {
   return sqrt(this->vec[0]*this->vec[0] +
-	      this->vec[1]*this->vec[1] +
-	      this->vec[2]*this->vec[2]);
+              this->vec[1]*this->vec[1] +
+              this->vec[2]*this->vec[2]);
 }
 
 /*!
@@ -270,7 +270,7 @@ SbVec3f::length(void) const
 float
 SbVec3f::sqrLength() const
 {
-  return 
+  return
     this->vec[0]*this->vec[0] +
     this->vec[1]*this->vec[1] +
     this->vec[2]*this->vec[2];
@@ -301,8 +301,8 @@ SbVec3f::normalize(void)
 #if COIN_DEBUG
   if(!(len > 0.0f))
     SoDebugError::postWarning("SbVec3f::normalize",
-			      "The length of the vector should be > 0.0f "
-			      "to be able to normalize.");
+                              "The length of the vector should be > 0.0f "
+                              "to be able to normalize.");
 #endif // COIN_DEBUG
 
   if (len > 0.0f) operator/=(len);
@@ -315,7 +315,7 @@ SbVec3f::normalize(void)
 
   \sa getValue().
  */
-SbVec3f&  
+SbVec3f&
 SbVec3f::setValue(const float v[3])
 {
   this->vec[0] = v[0];
@@ -329,7 +329,7 @@ SbVec3f::setValue(const float v[3])
 
   \sa getValue().
  */
-SbVec3f&  
+SbVec3f&
 SbVec3f::setValue(const float x, const float y, const float z)
 {
   this->vec[0] = x;
@@ -344,9 +344,9 @@ SbVec3f::setValue(const float x, const float y, const float z)
 
   \sa getValue().
 */
-SbVec3f&  
+SbVec3f&
 SbVec3f::setValue(const SbVec3f& barycentic,
-		  const SbVec3f& v0, const SbVec3f& v1, const SbVec3f& v2)
+                  const SbVec3f& v0, const SbVec3f& v1, const SbVec3f& v2)
 {
   this->vec[0] = barycentic[0]*v0[0]+barycentic[1]*v1[0]+barycentic[2]*v2[0];
   this->vec[1] = barycentic[0]*v0[1]+barycentic[1]*v1[1]+barycentic[2]*v2[1];
@@ -359,13 +359,13 @@ SbVec3f::setValue(const SbVec3f& barycentic,
 
   \sa getValue() and setValue().
  */
-float&  
+float&
 SbVec3f::operator [](const int i)
 {
 #if COIN_DEBUG
   if(!(i>=0 && i<=2))
     SoDebugError::postWarning("SbVec3f::operator[]",
-			      "Index out of bounds [0..2].");
+                              "Index out of bounds [0..2].");
 #endif // COIN_DEBUG
 
   return this->vec[i];
@@ -376,13 +376,13 @@ SbVec3f::operator [](const int i)
 
   \sa getValue() and setValue().
  */
-const float&  
+const float&
 SbVec3f::operator [](const int i) const
 {
 #if COIN_DEBUG
   if(!(i>=0 && i<=2))
     SoDebugError::postWarning("SbVec3f::operator[]",
-			      "Index out of bounds [0..2].");
+                              "Index out of bounds [0..2].");
 #endif // COIN_DEBUG
 
   return this->vec[i];
@@ -391,7 +391,7 @@ SbVec3f::operator [](const int i) const
 /*!
   Multiply components of vector with value \a d. Returns reference to self.
  */
-SbVec3f&  
+SbVec3f&
 SbVec3f::operator *=(const float d)
 {
   this->vec[0] *= d;
@@ -403,13 +403,13 @@ SbVec3f::operator *=(const float d)
 /*!
   Divides components of vector with value \a d. Returns reference to self.
  */
-SbVec3f&  
+SbVec3f&
 SbVec3f::operator /=(const float d)
 {
 #if COIN_DEBUG
   if(!(d != 0.0f))
     SoDebugError::postWarning("SbVec3f::operator/=",
-			      "Division by zero.");
+                              "Division by zero.");
 #endif // COIN_DEBUG
 
   // Assumes 1 div and 3 muls is quicker than 3 divs.
@@ -423,7 +423,7 @@ SbVec3f::operator /=(const float d)
 /*!
   Adds this vector and vector \a u. Returns reference to self.
  */
-SbVec3f&  
+SbVec3f&
 SbVec3f::operator +=(const SbVec3f& u)
 {
   this->vec[0] += u.vec[0];
@@ -435,7 +435,7 @@ SbVec3f::operator +=(const SbVec3f& u)
 /*!
   Subtracts vector \a u from this vector. Returns reference to self.
  */
-SbVec3f&  
+SbVec3f&
 SbVec3f::operator -=(const SbVec3f& u)
 {
   this->vec[0] -= u.vec[0];
@@ -450,7 +450,7 @@ SbVec3f::operator -=(const SbVec3f& u)
 
   \sa negate().
  */
-SbVec3f 
+SbVec3f
 SbVec3f::operator -(void) const
 {
   return SbVec3f(-this->vec[0], -this->vec[1], -this->vec[2]);
@@ -492,7 +492,7 @@ operator /(const SbVec3f& v, const float d)
 #if COIN_DEBUG
   if(!(d != 0.0f))
     SoDebugError::postWarning("SbVec3f::operator/",
-			      "Division by zero.");
+                              "Division by zero.");
 #endif // COIN_DEBUG
 
   return SbVec3f(v.vec[0] / d, v.vec[1] / d, v.vec[2] / d);
@@ -507,8 +507,8 @@ SbVec3f
 operator +(const SbVec3f& v1, const SbVec3f& v2)
 {
   return SbVec3f(v1.vec[0] + v2.vec[0],
-		 v1.vec[1] + v2.vec[1],
-		 v1.vec[2] + v2.vec[2]);
+                 v1.vec[1] + v2.vec[1],
+                 v1.vec[2] + v2.vec[2]);
 }
 
 /*!
@@ -521,8 +521,8 @@ SbVec3f
 operator -(const SbVec3f& v1, const SbVec3f& v2)
 {
   return SbVec3f(v1.vec[0] - v2.vec[0],
-		 v1.vec[1] - v2.vec[1],
-		 v1.vec[2] - v2.vec[2]);
+                 v1.vec[1] - v2.vec[1],
+                 v1.vec[2] - v2.vec[2]);
 }
 
 /*!

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -53,7 +53,7 @@ SbSphere::SbSphere(const SbVec3f &center, const float radius)
 #if COIN_DEBUG
   if (radius<0.0f)
     SoDebugError::postWarning("SbSphere::SbSphere",
-			      "Radius should be >= 0.0f.");
+                              "Radius should be >= 0.0f.");
 #endif // COIN_DEBUG
 
   this->setValue(center, radius);
@@ -70,7 +70,7 @@ SbSphere::setValue(const SbVec3f &center, const float radius)
 #if COIN_DEBUG
   if (radius<0.0f)
     SoDebugError::postWarning("SbSphere::setValue",
-			      "Radius should be >= 0.0f.");
+                              "Radius should be >= 0.0f.");
 #endif // COIN_DEBUG
   this->setCenter(center);
   this->setRadius(radius);
@@ -98,7 +98,7 @@ SbSphere::setRadius(const float radius)
 #if COIN_DEBUG
   if (radius<0.0f)
     SoDebugError::postWarning("SbSphere::setRadius",
-			      "Radius should be >= 0.0f.");
+                              "Radius should be >= 0.0f.");
 #endif // COIN_DEBUG
   this->radius = radius;
 }
@@ -136,7 +136,7 @@ SbSphere::circumscribe(const SbBox3f &box)
 #if COIN_DEBUG
   if (box.isEmpty()) {
     SoDebugError::postWarning("SbSphere::circumscribe",
-			      "The box is empty.");
+                              "The box is empty.");
     return;
   }
 #endif // COIN_DEBUG
@@ -176,7 +176,7 @@ SbSphere::intersect(const SbLine &l, SbVec3f &enter, SbVec3f &exit) const
 #if COIN_DEBUG
   if (!(l.getDirection().length()>0.0f))
     SoDebugError::postWarning("SbSphere::intersect",
-			      "The line 'l' has no direction.");
+                              "The line 'l' has no direction.");
 #endif // COIN_DEBUG
 
   // We know the parameterized equation for a point on a line:
@@ -229,7 +229,7 @@ SbSphere::intersect(const SbLine &l, SbVec3f &enter, SbVec3f &exit) const
 /*!
   Returns \a TRUE of the given point \a p lies within the sphere.
  */
-SbBool 
+SbBool
 SbSphere::pointInside(const SbVec3f &p) const
 {
   return (p - center).length() < radius;

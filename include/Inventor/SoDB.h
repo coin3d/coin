@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -77,17 +77,17 @@ public:
   static SoSeparator * readAll(SoInput * in);
 #endif // !COIN_EXCLUDE_SOSEPARATOR
   static void createRoute(SoNode * fromnode, const char * eventout,
-			  SoNode * tonode, const char * eventin);
+                          SoNode * tonode, const char * eventin);
   static SoVRMLGroup * readAllVRML(SoInput * in);
   static SbBool isValidHeader(const char * testString);
   static SbBool registerHeader(const SbString & headerString,
-			       SbBool isBinary, float ivVersion,
-			       SoDBHeaderCB * preCB, SoDBHeaderCB * postCB,
-			       void * userData);
+                               SbBool isBinary, float ivVersion,
+                               SoDBHeaderCB * preCB, SoDBHeaderCB * postCB,
+                               void * userData);
   static SbBool getHeaderData(const SbString & headerString, SbBool & isBinary,
-			      float & ivVersion, SoDBHeaderCB *& preCB,
-			      SoDBHeaderCB *& postCB, void *& userData,
-			      SbBool substringOK = FALSE);
+                              float & ivVersion, SoDBHeaderCB *& preCB,
+                              SoDBHeaderCB *& postCB, void *& userData,
+                              SbBool substringOK = FALSE);
   static int getNumHeaders(void);
   static SbString getHeaderString(const int i);
   static SoField * createGlobalField(const SbName & name, SoType type);
@@ -104,10 +104,10 @@ public:
   static const SbTime & getDelaySensorTimeout(void);
 #endif // !COIN_EXCLUDE_SOSENSORMANAGER
   static int doSelect(int nfds, fd_set * readfds, fd_set * writefds,
-		      fd_set * exceptfds, struct timeval * userTimeOut);
+                      fd_set * exceptfds, struct timeval * userTimeOut);
 
   static void addConverter(SoType fromType, SoType toType,
-			   SoType converterType);
+                           SoType converterType);
 #if !defined(COIN_EXCLUDE_SOFIELDCONVERTER)
   static SoFieldConverter * createConverter(SoType fromType, SoType toType);
 #endif // !COIN_EXCLUDE_SOFIELDCONVERTER

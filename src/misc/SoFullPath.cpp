@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -25,7 +25,7 @@
   children, but not any further.
 
   Since the SoFullPath is derived from SoPath and contains no private data,
-  you can cast SoPath instances to the SoFullPath type.  This will allow you 
+  you can cast SoPath instances to the SoFullPath type.  This will allow you
   to examine hidden children.
 */
 
@@ -102,4 +102,3 @@ SoFullPath::getLength(void) const
 {
   return getFullLength();
 }
-

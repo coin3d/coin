@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -75,7 +75,7 @@ SoCallbackList::removeCallback(SoCallbackListCB * f, void * userData)
 #if COIN_DEBUG
   if (idx == -1) {
     SoDebugError::post("SoCallbackList::removeCallback",
-		       "Tried to remove non-existant callback function.");
+                       "Tried to remove non-existant callback function.");
     return;
   }
 #endif // COIN_DEBUG
@@ -119,4 +119,3 @@ SoCallbackList::invokeCallbacks(void * cbdata)
     idx++;
   }
 }
-

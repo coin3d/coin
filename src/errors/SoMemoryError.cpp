@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -98,7 +98,7 @@ SoMemoryError::getTypeId(void) const
 
 void
 SoMemoryError::setHandlerCallback(SoErrorCB * const function,
-				  void * const data)
+                                  void * const data)
 {
   SoMemoryError::callback = function;
   SoMemoryError::callbackData = data;
@@ -147,4 +147,3 @@ SoErrorCB * SoMemoryError::getHandler(void * & data) const
   data = SoMemoryError::callbackData;
   return SoMemoryError::callback;
 }
-

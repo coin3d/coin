@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -34,7 +34,7 @@ class SoAuditorList : private SbPList {
 public:
   SoAuditorList(void);
   ~SoAuditorList(void);
-  
+
   void append(void * const auditor, const SoNotRec::Type type);
   void set(const int index, void * const auditor, const SoNotRec::Type type);
   int find(void * const auditor, const SoNotRec::Type type) const;

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -91,7 +91,7 @@ protected:
 public:
   void setValues(const int start, const int num, const float xyzw[][4]);
   void set1Value(const int idx,
-		 const float x, const float y, const float z, const float w);
+                 const float x, const float y, const float z, const float w);
   void set1Value(const int idx, const float xyzw[4]);
   void setValue(const float x, const float y, const float z, const float w);
   void setValue(const float xyzw[4]);

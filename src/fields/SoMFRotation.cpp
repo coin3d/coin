@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -319,7 +319,7 @@ SoMFRotation::setValues(const int start, const int num, const float q[][4])
 */
 void
 SoMFRotation::set1Value(const int idx, const float q0, const float q1,
-			 const float q2, const float q3)
+                         const float q2, const float q3)
 {
   this->set1Value(idx,SbRotation(q0,q1,q2,q3));
 }
@@ -387,7 +387,7 @@ SoMFRotation::convertTo(SoField * dest) const
     for (int i=0;i<num;i++) {
       (*this)[i].getValue(vec,rad);
       ostr << vec[0] << " " << vec[1] << " " << vec[2] << "  " <<
-	rad;
+        rad;
       if (i<num-1) ostr << ", ";
     }
     if (num>1) ostr << " ]";
@@ -398,9 +398,9 @@ SoMFRotation::convertTo(SoField * dest) const
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFRotation::convertTo",
-		       "Can't convert from %s to %s",
-		       this->getTypeId().getName().getString(),
-		       dest->getTypeId().getName().getString());
+                       "Can't convert from %s to %s",
+                       this->getTypeId().getName().getString(),
+                       dest->getTypeId().getName().getString());
   }
 #endif // COIN_DEBUG
 }

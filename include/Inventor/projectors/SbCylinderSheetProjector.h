@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -36,7 +36,7 @@ public:
   virtual SbProjector * copy(void) const;
   virtual SbVec3f project(const SbVec2f & point);
   virtual SbRotation getRotation(const SbVec3f & point1,
-				 const SbVec3f & point2);
+                                 const SbVec3f & point2);
 
 protected:
   virtual void setupPlane(void);

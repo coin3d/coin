@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -65,7 +65,7 @@ static char converttoprintable[] = {
 //    ANY
   '.',
 //    LEFT_SHIFT RIGHT_SHIFT LEFT_CONTROL RIGHT_CONTROL LEFT_ALT RIGHT_ALT
-  '.', '.', '.', '.', '.', '.', 
+  '.', '.', '.', '.', '.', '.',
 //      NUMBER_0 NUMBER_1 NUMBER_2 NUMBER_3 NUMBER_4 NUMBER_5 NUMBER_6
 //      NUMBER_7 NUMBER_8 NUMBER_9
   '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -95,7 +95,7 @@ static char converttoprintable_shift[] = {
 //    ANY
   '.',
 //    LEFT_SHIFT RIGHT_SHIFT LEFT_CONTROL RIGHT_CONTROL LEFT_ALT RIGHT_ALT
-  '.', '.', '.', '.', '.', '.', 
+  '.', '.', '.', '.', '.', '.',
 //      NUMBER_0 NUMBER_1 NUMBER_2 NUMBER_3 NUMBER_4 NUMBER_5 NUMBER_6
 //      NUMBER_7 NUMBER_8 NUMBER_9
   ')', '!', '@', '#', '$', '%', '^', '&', '*', '(',
@@ -218,11 +218,11 @@ SoKeyboardEvent::getKey(void) const
  */
 SbBool
 SoKeyboardEvent::isKeyPressEvent(const SoEvent * e,
-				 SoKeyboardEvent::Key whichKey)
+                                 SoKeyboardEvent::Key whichKey)
 {
   return (e->isOfType(SoKeyboardEvent::getClassTypeId()) &&
-	  ((SoKeyboardEvent *)e)->getKey() == whichKey &&
-	  ((SoButtonEvent *)e)->getState() == SoButtonEvent::DOWN);
+          ((SoKeyboardEvent *)e)->getKey() == whichKey &&
+          ((SoButtonEvent *)e)->getState() == SoButtonEvent::DOWN);
 }
 
 /*!
@@ -233,11 +233,11 @@ SoKeyboardEvent::isKeyPressEvent(const SoEvent * e,
  */
 SbBool
 SoKeyboardEvent::isKeyReleaseEvent(const SoEvent * e,
-				   SoKeyboardEvent::Key whichKey)
+                                   SoKeyboardEvent::Key whichKey)
 {
   return (e->isOfType(SoKeyboardEvent::getClassTypeId()) &&
-	  ((SoKeyboardEvent *)e)->getKey() == whichKey &&
-	  ((SoButtonEvent *)e)->getState() == SoButtonEvent::UP);
+          ((SoKeyboardEvent *)e)->getKey() == whichKey &&
+          ((SoButtonEvent *)e)->getState() == SoButtonEvent::UP);
 }
 
 /*!

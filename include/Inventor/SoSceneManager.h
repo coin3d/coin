@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -41,11 +41,11 @@ public:
     FIXME: write doc
   */
   typedef void SoSceneManagerRenderCB(void * userData, SoSceneManager * mgr);
-  
+
   SoSceneManager(void);
   virtual ~SoSceneManager();
-  virtual void render(const SbBool clearWindow = TRUE, 
-		      const SbBool clearZbuffer = TRUE);
+  virtual void render(const SbBool clearWindow = TRUE,
+                      const SbBool clearZbuffer = TRUE);
   virtual SbBool processEvent(const SoEvent * const event);
   void reinitialize(void);
   void scheduleRedraw(void);
@@ -67,8 +67,8 @@ public:
   SbBool isRGBMode(void) const;
   virtual void activate(void);
   virtual void deactivate(void);
-  void setRenderCallback(SoSceneManagerRenderCB * f, 
-			 void * const userData = NULL);
+  void setRenderCallback(SoSceneManagerRenderCB * f,
+                         void * const userData = NULL);
   SbBool isAutoRedraw(void) const;
   void setRedrawPriority(const uint32_t priority);
   uint32_t getRedrawPriority(void) const;
@@ -86,7 +86,7 @@ public:
   static uint32_t getDefaultRedrawPriority(void);
   static void enableRealTimeUpdate(const SbBool flag);
   static SbBool isRealTimeUpdateEnabled(void);
- 
+
 protected:
   int isActive(void) const;
   void redraw(void);

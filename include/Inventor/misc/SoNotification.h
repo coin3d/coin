@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -44,7 +44,7 @@ public:
   const SoNotRec * getPrevious(void) const;
   void setPrevious(const SoNotRec * const prev);
   void print(FILE * const file) const;
-  
+
 private:
   Type type;
   SoBase * base;
@@ -59,7 +59,7 @@ class SoNotList {
 public:
   SoNotList(void);
   SoNotList(const SoNotList * const copyFrom);
-  
+
   void append(SoNotRec * const rec);
   void append(SoNotRec * const rec, SoField * const field);
   void append(SoNotRec * const rec, SoVRMLInterpOutput * const interpout);

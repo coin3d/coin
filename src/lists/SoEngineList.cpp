@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -65,7 +65,7 @@ SoEngineList::~SoEngineList(void)
   FIXME: write doc.
 */
 
-void 
+void
 SoEngineList::append(SoEngine * const ptr)
 {
   SoBaseList::append((SoBase *)ptr);
@@ -92,4 +92,3 @@ SoEngineList::operator =(const SoEngineList &l)
   this->copy(l);
   return *this;
 }
-

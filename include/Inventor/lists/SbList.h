@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -38,7 +38,7 @@ public:
   ~SbList();
 
   void copy(const SbList<Type> & list);
-  
+
   void append(const Type item);
 #if 0 // OBSOLETED: see comments by mortene in SbPList
   void append(const SbList<Type> & list);
@@ -53,7 +53,7 @@ public:
 
   void push(const Type item);
   Type pop(void);
-  
+
   SbList<Type> & operator = (const SbList<Type> & list);
 
   operator Type * (void);
@@ -67,9 +67,9 @@ public:
   int operator == (const SbList<Type> & list) const;
   int operator != (const SbList<Type> & list) const;
 
-  Type get(const int index) const; 
+  Type get(const int index) const;
   void set(const int index, const Type item);
-  
+
   void fit(void);
   Type * stealPointer(void);
 
@@ -93,7 +93,7 @@ SbList<Type>::growList()
   this->itemBuffer = newBuffer;
 }
 
-template <class Type> inline 
+template <class Type> inline
 SbList<Type>::SbList(const int initSize)
   : numItems(0)
 {
@@ -106,7 +106,7 @@ SbList<Type>::SbList(const SbList<Type> & list)
   : numItems(0)
 {
   const int n = list.numItems;
-  this->itemBufferSize = SbMax(4, n); 
+  this->itemBufferSize = SbMax(4, n);
   this->numItems = n;
   this->itemBuffer = new Type[this->itemBufferSize];
   for (int i = 0; i < n; i++) this->itemBuffer[i] = list.itemBuffer[i];
@@ -124,7 +124,7 @@ SbList<Type>::copy(const SbList<Type> & list)
   assert(this != &list); // can't do this - but can just return, though
   delete [] this->itemBuffer;
   const int n = list.numItems;
-  this->itemBufferSize = SbMax(4,n); 
+  this->itemBufferSize = SbMax(4,n);
   this->numItems = n;
   this->itemBuffer = new Type[this->itemBufferSize];
   for (int i = 0; i < n; i++) this->itemBuffer[i] = list.itemBuffer[i];
@@ -143,7 +143,7 @@ SbList<Type>::append(const Type item)
 template <class Type> inline void
 SbList<Type>::append(const SbList<Type> & list)
 {
-  
+
   assert(this != &list);
   const int items = list.getLength();
   for (int i = 0; i < items; i++)
@@ -162,7 +162,7 @@ SbList<Type>::find(const Type item) const
 
 template <class Type> inline void
 SbList<Type>::insert(const Type item,
-		     const int insertBefore)
+                     const int insertBefore)
 {
   assert(insertBefore >= 0 && insertBefore <= this->numItems); // [0,N]
   if (this->numItems == this->itemBufferSize) {
@@ -314,7 +314,7 @@ SbList<Type>::get(const int index) const
 
 template <class Type> inline void
 SbList<Type>::set(const int index,
-		  const Type item)
+                  const Type item)
 {
   assert(index >= 0 && index < this->numItems); // range[ 0,N-1]
   this->itemBuffer[index] = item;
@@ -344,7 +344,7 @@ SbList<Type>::stealPointer()
   return ptr;
 }
 
-template <class Type> inline void 
+template <class Type> inline void
 SbList<Type>::setBufferSize(const int newsize)
 {
   assert(newsize > 0);
@@ -352,7 +352,7 @@ SbList<Type>::setBufferSize(const int newsize)
 
   // just skip items beyond new buffer
   if (newsize < this->numItems) this->numItems = newsize;
-  
+
   for (int i = 0; i < this->numItems; i++) {
     newbuffer[i] = this->itemBuffer[i];
   }

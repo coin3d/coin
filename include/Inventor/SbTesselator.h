@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -33,20 +33,20 @@ class SbTesselator
 {
 public:
   SbTesselator(void (*callback)(void * v0, void * v1, void * v2,
-				void * data) = NULL, void * userdata = NULL);
+                                void * data) = NULL, void * userdata = NULL);
   ~SbTesselator(void);
-  
+
   void beginPolygon(SbBool keepVertices = FALSE,
-		    const SbVec3f & normal = SbVec3f(0.0f, 0.0f, 0.0f));
+                    const SbVec3f & normal = SbVec3f(0.0f, 0.0f, 0.0f));
   void addVertex(const SbVec3f &v, void *data);
   void endPolygon(void);
   void setCallback(void (*callback)(void *v0, void *v1, void *v2, void *data),
-		   void *data);
+                   void *data);
 
-private:  
+private:
   struct SbTVertex *newVertex(void);
   void cleanUp(void);
-  
+
   int currVertex;
   SbList <struct SbTVertex*> vertexStorage;
   SbHeap *heap;
@@ -64,9 +64,9 @@ private:
   void emitTriangle(SbTVertex *v);
   void cutTriangle(SbTVertex *t);
   void calcPolygonNormal(void);
-  
-  SbBool circleCenter(const SbVec3f &a, const SbVec3f &b, 
-		      const SbVec3f &c, float &cx, float &cy);
+
+  SbBool circleCenter(const SbVec3f &a, const SbVec3f &b,
+                      const SbVec3f &c, float &cx, float &cy);
   float circleSize(const SbVec3f &a, const SbVec3f &b, const SbVec3f &c);
   float circleSize(SbTVertex *v);
   float dot2D(const SbVec3f &v1, const SbVec3f &v2);
@@ -79,5 +79,3 @@ private:
 };
 
 #endif // __SBTESSELATOR_H_
-
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -102,7 +102,7 @@ SoOutput::SoOutput(void)
   this->sobase2id = NULL;
 }
 
-/*! 
+/*!
   Constructs an SoOutput which has a copy of the reference SbDict instance
   from \a dictOut.
 */
@@ -145,7 +145,7 @@ SoOutput::~SoOutput(void)
 
 /*!
   Set up a new file pointer which we will write to.
-  
+
   \sa openFile(), setBuffer(), getFilePointer()
  */
 void
@@ -188,8 +188,8 @@ SoOutput::openFile(const char * const fileName)
   }
   else {
     SoDebugError::postWarning("SoOutput::openFile",
-			      "Couldn't open file '%s' for writing.",
-			      fileName);
+                              "Couldn't open file '%s' for writing.",
+                              fileName);
   }
 
   return this->usersetfp;
@@ -221,7 +221,7 @@ SoOutput::closeFile(void)
  */
 void
 SoOutput::setBuffer(void * bufPointer, size_t initSize,
-		    SoOutputReallocCB * reallocFunc, int32_t offset)
+                    SoOutputReallocCB * reallocFunc, int32_t offset)
 {
   this->reset();
 
@@ -346,7 +346,7 @@ SoOutput::getDefaultBinaryHeader(void)
   return SbString("#Inventor V2.1 binary");
 }
 
-/*! 
+/*!
   Set the precision used when writing floating point numbers to
   ASCII files.
 */
@@ -599,8 +599,8 @@ SoOutput::writeBinaryArray(const unsigned char * constc, const int length)
     }
     else {
       SoDebugError::postWarning("SoOutput::writeBinaryArray",
-				"Couldn't write any more bytes to the memory "
-				"buffer.");
+                                "Couldn't write any more bytes to the memory "
+                                "buffer.");
       this->disabledwriting = TRUE;
     }
   }
@@ -608,7 +608,7 @@ SoOutput::writeBinaryArray(const unsigned char * constc, const int length)
     size_t wrote = fwrite(constc, 1, length, this->filep);
     if (wrote != (size_t)length) {
       SoDebugError::postWarning("SoOutput::writeBinaryArray",
-				"Couldn't write to file.");
+                                "Couldn't write to file.");
       this->disabledwriting = TRUE;
     }
   }
@@ -682,7 +682,7 @@ SoOutput::decrementIndent(const int levels)
 #if COIN_DEBUG
   if (this->indentlevel < 0) {
     SoDebugError::postInfo("SoOutput::decrementIndent",
-			   "indentation level < 0!");
+                           "indentation level < 0!");
     this->indentlevel = 0;
   }
 #endif // COIN_DEBUG
@@ -700,8 +700,8 @@ SoOutput::indent(void)
 #if COIN_DEBUG
   if (this->isBinary()) {
     SoDebugError::postWarning("SoOutput::indent",
-			      "Don't try to indent when you're doing binary "
-			      "format output.");
+                              "Don't try to indent when you're doing binary "
+                              "format output.");
     return;
   }
 #endif // COIN_DEBUG
@@ -723,7 +723,7 @@ SoOutput::reset(void)
 {
   this->closeFile();
   delete this->sobase2id; this->sobase2id = NULL;
-  
+
   this->usersetfp = FALSE;
   this->disabledwriting = FALSE;
   this->wroteHeader = FALSE;
@@ -744,7 +744,7 @@ SoOutput::setCompact(SbBool flag)
 #if COIN_DEBUG
   if (!this->writecompact && flag) {
     SoDebugError::postWarning("SoOutput::setCompact",
-			      "compact export is not implemented in Coin yet");
+                              "compact export is not implemented in Coin yet");
   }
 #endif // COIN_DEBUG
 
@@ -776,8 +776,8 @@ SoOutput::setAnnotation(uint32_t bits)
 #if COIN_DEBUG
   if (this->annotationbits != bits) {
     SoDebugError::postWarning("SoOutput::setAnnotation",
-			      "annotated export is not implemented in Coin "
-			      "yet");
+                              "annotated export is not implemented in Coin "
+                              "yet");
   }
 #endif // COIN_DEBUG
 
@@ -796,9 +796,9 @@ SoOutput::getAnnotation(void)
 /*!
   Check that the current memory buffer has enough space to contain the
   given number of bytes needed for the next write operation.
-  
+
   Returns \a FALSE if there's not enough space left, otherwise \a TRUE.
-  
+
   Note that there will automatically be made an attempt at allocating
   more memory if the realloction callback function argument of
   setBuffer() was not \a NULL.
@@ -819,7 +819,7 @@ SoOutput::makeRoomInBuf(size_t bytes)
 
 /*!
   \internal
-  
+
   Write the given number of bytes from the array, pad with zeroes to get
   on a 4-byte boundary if file format is binary.
 */
@@ -827,14 +827,14 @@ void
 SoOutput::writeBytesWithPadding(const char * const p, const size_t nr)
 {
   this->writeBinaryArray((const unsigned char *)p, nr);
-  
+
   // Pad binary writes to a 4-byte boundary if necessary.
   if (this->isBinary()) {
     // Static buffer filled with enough bytes of all-zero bits.
     static unsigned char padbytes[HOSTWORDSIZE] = "X";
     if (padbytes[0] == 'X')
       for (int i=0; i < HOSTWORDSIZE; i++) padbytes[i] = '\0';
-    
+
     int writeposition = this->bytesInBuf();
     int padsize = HOSTWORDSIZE - (writeposition % HOSTWORDSIZE);
     if (padsize == HOSTWORDSIZE) padsize = 0;
@@ -844,7 +844,7 @@ SoOutput::writeBytesWithPadding(const char * const p, const size_t nr)
 
 /*!
   \internal
-  
+
   If the file header hasn't been written yet, write it out now.
 */
 void
@@ -854,7 +854,7 @@ SoOutput::checkHeader(void)
     // NB: this flag _must_ be set before we do any writing, or we'll
     // end up in an eternal double-recursive loop.
     this->wroteHeader = TRUE;
-    
+
     SbString h;
     if (this->headerstring) h = *(this->headerstring);
     else if (this->isBinary()) h = SoOutput::getDefaultBinaryHeader();
@@ -866,7 +866,7 @@ SoOutput::checkHeader(void)
 
     // Write as char * to avoid the addition of any "s.
     this->writeBinaryArray((const unsigned char *)h.getString(),
-			   strlen(h.getString()));
+                           strlen(h.getString()));
   }
 }
 

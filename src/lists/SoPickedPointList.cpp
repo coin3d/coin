@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -66,7 +66,7 @@ SoPickedPointList::~SoPickedPointList()
   FIXME: write doc.
 */
 
-void 
+void
 SoPickedPointList::append(SoPickedPoint * const ptr)
 {
   SbPList::append((void*)ptr);
@@ -76,7 +76,7 @@ SoPickedPointList::append(SoPickedPoint * const ptr)
   FIXME: write doc.
 */
 
-void 
+void
 SoPickedPointList::insert(SoPickedPoint * const ptr, const int addBefore)
 {
   SbPList::insert((void*)ptr, addBefore);
@@ -86,7 +86,7 @@ SoPickedPointList::insert(SoPickedPoint * const ptr, const int addBefore)
   FIXME: write doc.
 */
 
-void 
+void
 SoPickedPointList::truncate(int start)
 {
   SbPList::truncate(start);
@@ -106,9 +106,8 @@ SoPickedPointList::operator [](const int i) const
   FIXME: write doc.
 */
 
-void 
+void
 SoPickedPointList::set(const int i, SoPickedPoint * const ptr)
 {
   SbPList::set(i, (void*)ptr);
 }
-

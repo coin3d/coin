@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -65,7 +65,7 @@ SoVRMLInterpOutputList::~SoVRMLInterpOutputList(void)
   Add \a ptr at the end of the list.
 */
 
-void 
+void
 SoVRMLInterpOutputList::append(SoVRMLInterpOutput * const ptr)
 {
   SbPList::append((SoVRMLInterpOutput *)ptr);
@@ -75,7 +75,7 @@ SoVRMLInterpOutputList::append(SoVRMLInterpOutput * const ptr)
   Insert \a ptr into the list at index \a addBefore.
 */
 
-void 
+void
 SoVRMLInterpOutputList::insert(SoVRMLInterpOutput * const ptr, const int addBefore)
 {
   SbPList::insert((SoVRMLInterpOutput *)ptr, addBefore);
@@ -95,7 +95,7 @@ SoVRMLInterpOutputList::operator [](const int i) const
 /*!
   Replace list element at index \a with \a ptr.
 */
-void 
+void
 SoVRMLInterpOutputList::set(const int i, SoVRMLInterpOutput * const ptr)
 {
   SbPList::set(i, (SoVRMLInterpOutput *)ptr);

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -19,9 +19,9 @@
 
 /*!
   \class SbTesselator SbTesselator.h Inventor/SbTesselator.h
-  \brief The SbTesselator class is used to tesselate polygons into triangles. 
+  \brief The SbTesselator class is used to tesselate polygons into triangles.
   \ingroup base
-  
+
   FIXME: write doc (what kind of polygons can we handle, code example, ...)
 
   Note: SbTesselator is an extension versus the Open Inventor API.
@@ -47,26 +47,26 @@ struct SbTVertex {
   SbTVertex *next;
 };
 
- 
-float 
+
+float
 SbTesselator::heap_evaluate(void *v)
 {
   SbTVertex *vertex = (SbTVertex*)v;
   if (vertex->dirtyweight) {
     vertex->dirtyweight = 0;
-    if (vertex->thisp->area(vertex) > FLT_EPSILON && 
-  	vertex->thisp->isTriangle(vertex) && 
-  	vertex->thisp->clippable(vertex)) {
+    if (vertex->thisp->area(vertex) > FLT_EPSILON &&
+        vertex->thisp->isTriangle(vertex) &&
+        vertex->thisp->clippable(vertex)) {
 #if 1 // testing code to avoid empty triangles
       vertex->weight = vertex->thisp->circleSize(vertex);
       SbTVertex *v2 = vertex->next;
-      if (vertex->weight != FLT_MAX && 
-	  v2->thisp->keepVertices &&
-	  v2->thisp->numVerts > 4 &&
-	  fabs(v2->thisp->area(v2)) < FLT_EPSILON) {
-	vertex->weight = 0.0f; // cut immediately!
+      if (vertex->weight != FLT_MAX &&
+          v2->thisp->keepVertices &&
+          v2->thisp->numVerts > 4 &&
+          fabs(v2->thisp->area(v2)) < FLT_EPSILON) {
+        vertex->weight = 0.0f; // cut immediately!
       }
-      
+
 #else
       vertex->weight = vertex->thisp->circleSize(vertex);
 #endif
@@ -77,13 +77,13 @@ SbTesselator::heap_evaluate(void *v)
   return vertex->weight;
 }
 
-static int 
+static int
 heap_get_index(void *v)
 {
   return ((SbTVertex*)v)->heapidx;
 }
 
-static void 
+static void
 heap_set_index(void *v, int idx)
 {
   ((SbTVertex*)v)->heapidx = idx;
@@ -94,24 +94,24 @@ enum {OXY,OXZ,OYZ};
 
 /*!
   Initializes a tesselator. The \a callback argument specifies
-  a function which will be called for each triangle returned 
+  a function which will be called for each triangle returned
   by the tesselator. The callback function will get three pointers
   to each vertex and the \a userdata pointer. The vertex pointers
   are specified in the SbTesselator::addVertex() method.
 */
-SbTesselator::SbTesselator(void (*callback)(void * v0, void * v1, void * v2, 
-					    void * data),
-			   void * userdata)
+SbTesselator::SbTesselator(void (*callback)(void * v0, void * v1, void * v2,
+                                            void * data),
+                           void * userdata)
 {
   this->setCallback(callback, userdata);
   this->headV = this->tailV = NULL;
   this->currVertex = 0;
-  
+
   SbHeapFuncs hf;
   hf.eval_func = heap_evaluate;
   hf.get_index_func = heap_get_index;
   hf.set_index_func = heap_set_index;
-  
+
   this->heap = new SbHeap(hf, 64);
 }
 
@@ -183,21 +183,21 @@ void
 SbTesselator::endPolygon()
 {
   SbTVertex *v;
-  
+
   if (this->numVerts > 3) {
     calcPolygonNormal();
-    
+
     // Find best projection plane
     int projection;
     if (fabs(polyNormal[0]) > fabs(polyNormal[1]))
       if (fabs(polyNormal[0]) > fabs(polyNormal[2]))
-	projection=OYZ;
+        projection=OYZ;
       else projection=OXY;
     else
       if (fabs(polyNormal[1]) > fabs(polyNormal[2]))
-	projection=OXZ;
+        projection=OXZ;
       else projection=OXY;
-    
+
     switch (projection) {
     case OYZ:
       this->X=1;
@@ -218,7 +218,7 @@ SbTesselator::endPolygon()
     //Make loop
     this->tailV->next = this->headV;
     this->headV->prev = this->tailV;
-    
+
     // add all vertices to heap.
     heap->emptyHeap();
     this->headV->heapidx = this->heap->add(this->headV);
@@ -229,7 +229,7 @@ SbTesselator::endPolygon()
     }
     this->heap->buildHeap();
 
-    while (this->numVerts > 4) { 
+    while (this->numVerts > 4) {
 
       v = (SbTVertex*) this->heap->getMin();
       if (heap_evaluate(v) == FLT_MAX) break;
@@ -237,16 +237,16 @@ SbTesselator::endPolygon()
 
       this->emitTriangle(v); // will remove v->next
       this->numVerts--;
-      
+
       // update heap
       v->prev->dirtyweight = 1;
       v->dirtyweight = 1;
       this->heap->newWeight(v->prev, v->prev->heapidx);
       this->heap->newWeight(v, v->heapidx);
     }
-    
+
     // remember that headV and tailV are not valid anymore!
-    
+
     //
     // must handle special case when only four vertices remain
     //
@@ -258,24 +258,24 @@ SbTesselator::endPolygon()
       if (v0 == v1 && v0 == FLT_MAX && !this->keepVertices) return;
 
       if (v0 < v1) {
-	this->emitTriangle(v);
-	this->emitTriangle(v);
+        this->emitTriangle(v);
+        this->emitTriangle(v);
       }
       else {
-	v = v->next;
-	this->emitTriangle(v);
-	this->emitTriangle(v);
+        v = v->next;
+        this->emitTriangle(v);
+        this->emitTriangle(v);
       }
       this->numVerts -= 2;
     }
-    
+
     // Emit the empty triangles that might lay around
-    if (this->keepVertices) { 
+    if (this->keepVertices) {
       while (numVerts>=3) {
-	this->emitTriangle(v);
-	this->numVerts--;
+        this->emitTriangle(v);
+        this->numVerts--;
       }
-    }    
+    }
   }
   else if (this->numVerts==3) {   //only one triangle
     this->emitTriangle(headV);
@@ -287,10 +287,10 @@ SbTesselator::endPolygon()
 */
 void
 SbTesselator::setCallback(void (*callback)(void *v0,
-					   void *v1,
-					   void *v2,
-					   void *data),
-			  void *data)
+                                           void *v1,
+                                           void *v2,
+                                           void *data),
+                          void *data)
 {
   this->callback = callback;
   this->callbackData = data;
@@ -299,8 +299,8 @@ SbTesselator::setCallback(void (*callback)(void *v0,
 
 static SbBool
 point_on_edge(const float x, const float y,
-	      const float * const v0, const float * const v1,
-	      const int X, const int Y)
+              const float * const v0, const float * const v1,
+              const int X, const int Y)
 {
   if (x < v0[X] && x < v1[X]) return FALSE;
   if (x > v0[X] && x > v1[X]) return FALSE;
@@ -311,7 +311,7 @@ point_on_edge(const float x, const float y,
     if (fabs(x-v0[X]) <= FLT_EPSILON) return TRUE;
     return FALSE;
   }
-  
+
   float ny = v0[Y] + (x-v0[X])*(v1[Y]-v0[Y])/(v1[X]-v0[X]);
 
   if (fabs(y-ny)<= FLT_EPSILON) {
@@ -334,7 +334,7 @@ SbTesselator::pointInTriangle(SbTVertex *p, SbTVertex *t)
 {
   float x,y;
   SbBool tst = FALSE;
-  
+
   x = p->v[X];
   y = p->v[Y];
 
@@ -354,21 +354,21 @@ SbTesselator::pointInTriangle(SbTVertex *p, SbTVertex *t)
   if ((((v1[Y]<=y) && (y<v2[Y])) || ((v2[Y]<=y)  && (y<v1[Y]))) &&
       (x < (v2[X] - v1[X]) * (y - v1[Y]) /  (v2[Y] - v1[Y]) + v1[X]))
     tst = (tst==FALSE ? TRUE : FALSE);
-  
+
 #if 1
   if (this->keepVertices && tst == FALSE) {
-    if (point_on_edge(x,y,t->v.getValue(), 
-		      t->next->v.getValue(),X,Y))
+    if (point_on_edge(x,y,t->v.getValue(),
+                      t->next->v.getValue(),X,Y))
       return TRUE;
-    if (point_on_edge(x,y,t->next->v.getValue(), 
-		      t->next->next->v.getValue(),X,Y))
+    if (point_on_edge(x,y,t->next->v.getValue(),
+                      t->next->next->v.getValue(),X,Y))
       return TRUE;
-    if (point_on_edge(x,y,t->next->next->v.getValue(), 
-		      t->v.getValue(),X,Y))
+    if (point_on_edge(x,y,t->next->next->v.getValue(),
+                      t->v.getValue(),X,Y))
       return TRUE;
   }
 #endif
-  
+
   return tst;
 }
 
@@ -394,12 +394,12 @@ SbBool
 SbTesselator::clippable(SbTVertex *v)
 {
   SbTVertex *vtx=v->next->next->next;
-  
+
   do {
     if (vtx!=v && vtx!=v->next && vtx!=v->next->next &&
-	vtx->v!=v->v && vtx->v!=v->next->v && vtx->v!=v->next->next->v)
+        vtx->v!=v->v && vtx->v!=v->next->v && vtx->v!=v->next->next->v)
       if (pointInTriangle(vtx,v))
-	return FALSE;
+        return FALSE;
     vtx=vtx->next;
   } while (vtx!=v);
   return TRUE;
@@ -414,14 +414,14 @@ void
 SbTesselator::emitTriangle(SbTVertex *t)
 {
   SbTVertex *tmp;
-  
+
   assert(t);
   assert(t->next);
   assert(t->next->next);
   assert(this->callback);
 
   this->callback(t->data, t->next->data, t->next->next->data,
-		 this->callbackData);
+                 this->callbackData);
   tmp = t->next;
   t->next = t->next->next;
   tmp->next->prev = t;
@@ -446,27 +446,27 @@ float
 SbTesselator::area(SbTVertex *v)
 {
   return fabs(((v->next->v[X]-v->v[X])*(v->next->next->v[Y]-v->v[Y])-
-	       (v->next->v[Y]-v->v[Y])*(v->next->next->v[X]-v->v[X])));
+               (v->next->v[Y]-v->v[Y])*(v->next->next->v[X]-v->v[X])));
 }
 
 //
 // Returns the center of the circle through points a, b, c.
 //
-SbBool 
-SbTesselator::circleCenter(const SbVec3f &a, const SbVec3f &b, 
-			   const SbVec3f &c, float &cx, float &cy)
+SbBool
+SbTesselator::circleCenter(const SbVec3f &a, const SbVec3f &b,
+                           const SbVec3f &c, float &cx, float &cy)
 {
   float d1, d2, d3, c1, c2, c3;
   SbVec3f tmp1, tmp2;
-  
+
   tmp1 = b - a;
   tmp2 = c - a;
   d1 = dot2D(tmp1, tmp2);
-  
+
   tmp1 = b - c;
   tmp2 = a - c;
   d2 = dot2D(tmp1, tmp2);
-  
+
   tmp1 = a - b;
   tmp2 = c - b;
   d3 = dot2D(tmp1, tmp2);
@@ -474,7 +474,7 @@ SbTesselator::circleCenter(const SbVec3f &a, const SbVec3f &b,
   c1 = d2 * d3;
   c2 = d3 * d1;
   c3 = d1 * d2;
-  
+
   SbVec3f tmp4(c);
   tmp1 = a;
   tmp2 = b;
@@ -497,41 +497,41 @@ SbTesselator::circleCenter(const SbVec3f &a, const SbVec3f &b,
 //
 // Returns the square of the radius of the circle through a, b, c
 //
-float 
+float
 SbTesselator::circleSize(const SbVec3f &a, const SbVec3f &b, const SbVec3f &c)
 {
   float cx, cy;
-  if (circleCenter(a, b, c, cx, cy)) {  
+  if (circleCenter(a, b, c, cx, cy)) {
     float t1, t2;
     t1 = a[this->X] - cx;
     t2 = a[this->Y] - cy;
     return t1*t1+t2*t2;
   }
   return FLT_MAX;
-}   
+}
 
-float 
+float
 SbTesselator::circleSize(SbTVertex *v)
 {
   return circleSize(v->v, v->next->v, v->next->next->v);
 }
 
-float 
+float
 SbTesselator::dot2D(const SbVec3f &v1, const SbVec3f &v2)
 {
-  return v1[this->X] * v2[this->X] + v1[this->Y] * v2[this->Y]; 
+  return v1[this->X] * v2[this->X] + v1[this->Y] * v2[this->Y];
 }
 
-void 
+void
 SbTesselator::calcPolygonNormal()
 {
   assert(this->numVerts > 3);
-  
+
   this->polyNormal.setValue(0.0f, 0.0f, 0.0f);
   SbVec3f vert1, vert2;
   SbTVertex *currvertex = this->headV;
   vert2 = currvertex->v;
-  
+
   while (currvertex->next != NULL && currvertex != tailV) {
     vert1 = vert2;
     vert2 = currvertex->next->v;
@@ -544,8 +544,8 @@ SbTesselator::calcPolygonNormal()
   vert2 = headV->v;
   polyNormal[0] += (vert1[1] - vert2[1]) * (vert1[2] + vert2[2]);
   polyNormal[1] += (vert1[2] - vert2[2]) * (vert1[0] + vert2[0]);
-  polyNormal[2] += (vert1[0] - vert2[0]) * (vert1[1] + vert2[1]);      
-  
+  polyNormal[2] += (vert1[0] - vert2[0]) * (vert1[1] + vert2[1]);
+
   polyNormal.normalize();
 }
 
@@ -566,7 +566,7 @@ SbTesselator::newVertex()
   return this->vertexStorage[currVertex++];
 }
 
-void 
+void
 SbTesselator::cleanUp()
 {
   this->headV = this->tailV = NULL;

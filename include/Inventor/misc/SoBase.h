@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -65,7 +65,7 @@ public:
 
   static SoBase * getNamedBase(const SbName & name, SoType type);
   static int getNamedBases(const SbName & name, SoBaseList & baselist,
-			   SoType type);
+                           SoType type);
 
   static SbBool read(SoInput * in, SoBase *& base, SoType expectedType);
   static void setInstancePrefix(const SbString & c);
@@ -112,7 +112,7 @@ private:
   // But we should look into the possibility of slimming down
   // SoAuditorList.
   SoAuditorList auditors;
-  
+
   static SbDict * name2obj_dict;
   static SbDict * obj2name_dict;
 
@@ -121,7 +121,7 @@ private:
   static SbBool readReference(SoInput * in, SoBase *& base);
   static SbBool readBase(SoInput * in, SbName & className, SoBase *& base);
   static SbBool readBaseInstance(SoInput * in, const SbName & className,
-				 const SbName & refName, SoBase *& base);
+                                 const SbName & refName, SoBase *& base);
 
   static SoBase * createInstance(SoInput * in, const SbName & className);
   static void flushInput(SoInput * in);

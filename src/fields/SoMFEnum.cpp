@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -350,18 +350,18 @@ SoMFEnum::set1Value(const int idx, const SbName name)
 */
 void
 SoMFEnum::setEnums(const int num, const int * const vals,
-		    const SbName * const names)
+                    const SbName * const names)
 {
   int * newvals = new int[num];
   SbName * newnames = new SbName[num];
 
   delete[] this->enumValues;
   delete[] this->enumNames;
-    
+
   this->enumValues = newvals;
   this->enumNames = newnames;
   this->numEnums = num;
-    
+
   for (int i = 0; i < this->numEnums; i++) {
     this->enumValues[i] = vals[i];
     this->enumNames[i] = names[i];
@@ -410,9 +410,9 @@ SoMFEnum::convertTo(SoField * dest) const
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFEnum::convertTo",
-		       "Can't convert from %s to %s",
-		       this->getTypeId().getName().getString(),
-		       dest->getTypeId().getName().getString());
+                       "Can't convert from %s to %s",
+                       this->getTypeId().getName().getString(),
+                       dest->getTypeId().getName().getString());
   }
 #endif // COIN_DEBUG
 }

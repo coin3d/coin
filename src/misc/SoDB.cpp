@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -95,11 +95,11 @@
 class SoDB_HeaderInfo {
 public:
   SoDB_HeaderInfo(const SbString & hs, const SbBool bin, const float ver,
-		  SoDBHeaderCB * pre, SoDBHeaderCB * post, void * ud)
+                  SoDBHeaderCB * pre, SoDBHeaderCB * post, void * ud)
     : headerstring(hs), isBinary(bin), ivVersion(ver),
-	preCB(pre), postCB(post), userdata(ud)
+        preCB(pre), postCB(post), userdata(ud)
     { }
-  
+
   SbString headerstring;
   SbBool isBinary;
   float ivVersion;
@@ -107,7 +107,7 @@ public:
   SoDBHeaderCB * postCB;
   void * userdata;
 };
-  
+
 // *************************************************************************
 
 
@@ -214,27 +214,27 @@ SoDB::init(void)
   SoDB::registerHeader(SbString("#Inventor V2.1 ascii   "), FALSE, 2.1f,
                        NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V2.1 binary  "), TRUE, 2.1f,
-		       NULL, NULL, NULL);
+                       NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#VRML V2.0 utf8"), FALSE, 2.1f,
-		       NULL, NULL, NULL);
+                       NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V2.4 ascii   "), FALSE, 2.0f,
-		       NULL, NULL, NULL);
+                       NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V2.4 binary  "), TRUE, 2.0f,
-		       NULL, NULL, NULL);
+                       NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V2.5 ascii   "), FALSE, 2.0f,
-		       NULL, NULL, NULL);
+                       NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V2.5 binary  "), TRUE, 2.0f,
-		       NULL, NULL, NULL);
+                       NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V2.0 ascii   "), FALSE, 2.0f,
-		       NULL, NULL, NULL);
+                       NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V2.0 binary  "), TRUE, 2.0f,
-		       NULL, NULL, NULL);
+                       NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V1.0 ascii   "), FALSE, 1.0f,
-		       NULL, NULL, NULL);
+                       NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V1.0 binary  "), TRUE, 1.0f,
-		       NULL, NULL, NULL);
+                       NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#VRML V1.0 ascii   "), FALSE, 2.1f,
-		       NULL, NULL, NULL);
+                       NULL, NULL, NULL);
 
   SoDB::realtimeinterval.setValue(1.0/12.0);
 
@@ -403,7 +403,7 @@ SoDB::readAll(SoInput * in)
     root = new SoSeparator;
     result = root->readChildren(in);
   }
-  
+
   if (result && !in->eof()) {
     if (in->isBinary()) {
       SoReadError::post(in, "Extra characters found in input");
@@ -426,7 +426,7 @@ SoDB::readAll(SoInput * in)
   }
   else {
     if (root->getNumChildren() == 1 &&
-	root->getChild(0)->isOfType(SoSeparator::getClassTypeId())) {
+        root->getChild(0)->isOfType(SoSeparator::getClassTypeId())) {
       SoSeparator * child = (SoSeparator *)(root->getChild(0));
       child->ref();
       root->ref();
@@ -460,13 +460,13 @@ SoDB::isValidHeader(const char * testString)
 #if COIN_DEBUG
   if (!testString) {
     SoDebugError::postWarning("SoDB::isValidHeader",
-			      "Passed a NULL string pointer.");
+                              "Passed a NULL string pointer.");
     return FALSE;
   }
 #endif // COIN_DEBUG
 
   return SoDB::getHeaderData(SbString(testString), isBinary, ivVersion,
-			     preCB, postCB, userdata, TRUE);
+                             preCB, postCB, userdata, TRUE);
 }
 
 /*!
@@ -489,16 +489,16 @@ SoDB::isValidHeader(const char * testString)
  */
 SbBool
 SoDB::registerHeader(const SbString & headerString,
-		     SbBool isBinary, float ivVersion,
-		     SoDBHeaderCB * preCB, SoDBHeaderCB * postCB,
-		     void * userdata)
+                     SbBool isBinary, float ivVersion,
+                     SoDBHeaderCB * preCB, SoDBHeaderCB * postCB,
+                     void * userdata)
 {
   // Must start with '#'.
   if ((headerString.getLength() == 0) || (headerString.getString()[0] != '#')) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoDB::registerHeader",
-			      "File header string must begin with '#', '%s'"
-			      " invalid.", headerString.getString());
+                              "File header string must begin with '#', '%s'"
+                              " invalid.", headerString.getString());
 #endif // COIN_DEBUG
     return FALSE;
   }
@@ -507,16 +507,16 @@ SoDB::registerHeader(const SbString & headerString,
   if (headerString.getLength() > 80) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoDB::registerHeader",
-			      "File header string must be 80 characters "
-			      "or less, so '%s' is invalid.",
-			      headerString.getString());
+                              "File header string must be 80 characters "
+                              "or less, so '%s' is invalid.",
+                              headerString.getString());
 #endif // COIN_DEBUG
     return FALSE;
   }
 
   SoDB_HeaderInfo * newheader = new SoDB_HeaderInfo(headerString, isBinary,
-						   ivVersion, preCB, postCB,
-						   userdata);
+                                                   ivVersion, preCB, postCB,
+                                                   userdata);
   SoDB::headerlist.append(newheader);
   return TRUE;
 }
@@ -536,9 +536,9 @@ SoDB::registerHeader(const SbString & headerString,
  */
 SbBool
 SoDB::getHeaderData(const SbString & headerString, SbBool & isBinary,
-		    float & ivVersion, SoDBHeaderCB *& preCB,
-		    SoDBHeaderCB *& postCB, void *& userdata,
-		    SbBool substringOK)
+                    float & ivVersion, SoDBHeaderCB *& preCB,
+                    SoDBHeaderCB *& postCB, void *& userdata,
+                    SbBool substringOK)
 {
   unsigned int hslen = headerString.getLength();
   if (hslen == 0) return FALSE;
@@ -566,8 +566,8 @@ SoDB::getHeaderData(const SbString & headerString, SbBool & isBinary,
     if (regheader == tryheader)
       hit = TRUE;
     else if (substringOK &&
-	     (hslen > reglen) &&
-	     (regheader == tryheader.getSubString(0, reglen - 1)))
+             (hslen > reglen) &&
+             (regheader == tryheader.getSubString(0, reglen - 1)))
       hit = TRUE;
 
     if (hit) {
@@ -632,7 +632,7 @@ SoDB::createGlobalField(const SbName & name, SoType type)
 #if COIN_DEBUG
     if (!type.canCreateInstance()) {
       SoDebugError::postWarning("SoDB::createGlobalField",
-				"Can't create instance of given type.");
+                                "Can't create instance of given type.");
       return NULL;
     }
 #endif // COIN_DEBUG
@@ -672,8 +672,8 @@ SoDB::renameGlobalField(const SbName & oldName, const SbName & newName)
 #if COIN_DEBUG
   if (idx == -1) {
     SoDebugError::postWarning("SoDB::renameGlobalField",
-			      "Couldn't find global field '%s' to rename.",
-			      oldName.getString());
+                              "Couldn't find global field '%s' to rename.",
+                              oldName.getString());
     return;
   }
 #endif // COIN_DEBUG
@@ -725,7 +725,7 @@ SoDB::setRealTimeInterval(const SbTime & deltaT)
 #if COIN_DEBUG
   if (deltaT < SbTime(0.0)) {
     SoDebugError::postWarning("SoDB::setRealTimeInterval",
-			      "Tried to set negative interval.");
+                              "Tried to set negative interval.");
     return;
   }
 #endif // COIN_DEBUG
@@ -799,7 +799,7 @@ SoDB::getSensorManager(void)
  */
 int
 SoDB::doSelect(int nfds, fd_set * readfds, fd_set * writefds,
-	       fd_set * exceptfds, struct timeval * userTimeOut)
+               fd_set * exceptfds, struct timeval * userTimeOut)
 {
   // TODO: need to do eventhandling for sensors etc. Check
   // SoSensorManager::doSelect(). Should we just call that method?
@@ -816,7 +816,7 @@ SoDB::doSelect(int nfds, fd_set * readfds, fd_set * writefds,
 /*!
   TODO: doc
  */
-void 
+void
 SoDB::addConverter(SoType fromType, SoType toType, SoType converterType)
 {
   unsigned long val=fromType.getKey() * 65536 + toType.getKey();
@@ -864,14 +864,14 @@ SoDB::readAllVRML(SoInput * /* in */)
  */
 void
 SoDB::createRoute(SoNode * /* fromnode */, const char * /* eventout */,
-		  SoNode * /* tonode */, const char * /* eventin */)
+                  SoNode * /* tonode */, const char * /* eventin */)
 {
   // FIXME: implement.
   assert(0);
 }
 
 /*!
-  Returns \a TRUE if init() has been called. 
+  Returns \a TRUE if init() has been called.
 
   \sa init()
  */
@@ -907,7 +907,7 @@ SoDB::endNotify(void)
 {
   SoDB::notificationcounter--;
   assert(SoDB::notificationcounter >= 0);
-  
+
   // FIXME: there's probably something which should be done here when
   // the counter goes down to 0..? 19990530 mortene.
 }
@@ -930,8 +930,8 @@ SoDB::enableRealTimeSensor(SbBool on)
   else if (!isscheduled && on) SoDB::globaltimersensor->schedule();
 #if COIN_DEBUG
   else SoDebugError::postWarning("SoDB::enableRealTimeSensor",
-				 "realtime sensor already %s",
-				 on ? "on" : "off");
-#endif // COIN_DEBUG  
+                                 "realtime sensor already %s",
+                                 on ? "on" : "off");
+#endif // COIN_DEBUG
 #endif // !COIN_EXCLUDE_SOTIMERSENSOR
 }

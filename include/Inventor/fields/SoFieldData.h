@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -41,10 +41,10 @@ public:
   ~SoFieldData();
 
   void addField(SoFieldContainer * defObject, const char * fieldName,
-		const SoField * field);
+                const SoField * field);
 
   void overlay(SoFieldContainer * to, const SoFieldContainer * from,
-	       SbBool copyConnections) const;
+               SbBool copyConnections) const;
 
   int getNumFields(void) const;
   const SbName & getFieldName(int index) const;
@@ -53,26 +53,26 @@ public:
 
   void addEnumValue(const char * typeName, const char * valName, int val);
   void getEnumData(const char * typeName, int & num,
-		   const int *& vals, const SbName *& names);
+                   const int *& vals, const SbName *& names);
 
   SbBool read(SoInput * in, SoFieldContainer * object,
-	      SbBool errorOnUnknownField, SbBool & notBuiltIn) const;
+              SbBool errorOnUnknownField, SbBool & notBuiltIn) const;
   SbBool read(SoInput * in, SoFieldContainer * object,
-	      const SbName & fieldName, SbBool & foundName) const;
+              const SbName & fieldName, SbBool & foundName) const;
   void write(SoOutput * out, const SoFieldContainer * object) const;
   void copy(const SoFieldData * src);
   SbBool isSame(const SoFieldContainer * c1,
-		const SoFieldContainer * c2) const;
+                const SoFieldContainer * c2) const;
 
   SbBool readFieldDescriptions(SoInput * in, SoFieldContainer * object,
-			       int numDescriptionsExpected) const;
+                               int numDescriptionsExpected) const;
   void writeFieldDescriptions(SoOutput * out,
-			      const SoFieldContainer * object) const;
+                              const SoFieldContainer * object) const;
 
   // -- FIXME: move to readFieldDescriptions()?
 
   SbBool readFieldTypes(SoInput * in, SoFieldContainer * object);
-  
+
 
 private:
   static SbName stripWhite(const char * name);

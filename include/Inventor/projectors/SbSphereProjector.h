@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -31,7 +31,7 @@ class SbSphereProjector : public SbProjector {
 public:
   SbVec3f projectAndGetRotation(const SbVec2f & point, SbRotation & rot);
   virtual SbRotation getRotation(const SbVec3f & point1,
-				 const SbVec3f & point2) = 0;
+                                 const SbVec3f & point2) = 0;
 
   void setSphere(const SbSphere & sph);
   const SbSphere & getSphere(void) const;

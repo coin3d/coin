@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -21,7 +21,7 @@
   \class SbHeap SbHeap.h Inventor/SbHeap.h
   \brief The SbHeap class is a generic heap class.
   \ingroup base
-  
+
   FIXME: write doc
 
   Note: SbHeap is an extension versus the Open Inventor API.
@@ -48,7 +48,7 @@
   then store its heap index in its own data structures.  */
 /*!
   \var SbHeapFuncs::set_index_func
-  
+
   \e set_index_func is used to set this index value, and will be
   called whenever the element is moved in the heap.  */
 
@@ -61,7 +61,7 @@
   Constructor. \a hFuncs specifies the functions for modifying
   and returning information about the heap object, \a initsize
   specifies the initial number of allocated elements. This array
-  will automatically grow when necessary, but if you know 
+  will automatically grow when necessary, but if you know
   approximately how many elements the heap will contain, you
   should supply this to avoid some reallocs.
 */
@@ -83,7 +83,7 @@ SbHeap::~SbHeap(void)
 /*!
   Removes all the elements from the heap.
 */
-void 
+void
 SbHeap::emptyHeap(void)
 {
   this->heap.truncate(0);
@@ -98,17 +98,17 @@ SbHeap::traverseHeap(SbBool (*func)(void *, void *), void *userdata) const
 {
   SbBool ok = TRUE;
   int hsize = this->heap.getLength() - 1;
-  
+
   for(int i = 1; (i <= hsize) && ok; i++)
     if (this->heap[i]) ok = func(this->heap[i], userdata);
-  
+
   return ok;
 }
 
 /*!
   Adds an element to the heap. Returns the element's heap position.
 */
-int 
+int
 SbHeap::add(void *obj)
 {
   return this->heapInsert(obj);
@@ -117,7 +117,7 @@ SbHeap::add(void *obj)
 /*!
   Removes an element from the heap.
 */
-void 
+void
 SbHeap::remove(const int idx)
 {
   int hsize = this->heap.getLength()-1;
@@ -126,24 +126,24 @@ SbHeap::remove(const int idx)
     return;
   }
   this->heap[idx] = this->heap[hsize];
-  if (this->funcs.set_index_func) 
+  if (this->funcs.set_index_func)
     this->funcs.set_index_func(this->heap[idx], idx);
   this->heap.truncate(hsize);
-  
+
   this->newWeight(this->heap[idx]);
 }
 
 /*!
   \overload
 */
-void 
+void
 SbHeap::remove(void *obj)
 {
   if (this->funcs.get_index_func) {
     this->remove(this->funcs.get_index_func(obj));
   }
   else { // slow!!!
-    this->remove(this->heap.find(obj)); 
+    this->remove(this->heap.find(obj));
   }
 }
 
@@ -152,7 +152,7 @@ SbHeap::remove(void *obj)
   if heap is empty.
 */
 void *
-SbHeap::extractMin(void) 
+SbHeap::extractMin(void)
 {
   return this->heapExtractMin();
 }
@@ -161,11 +161,11 @@ SbHeap::extractMin(void)
   Returns the first element in the heap, or \e NULL if heap is empty.
 */
 void *
-SbHeap::getMin(void) 
+SbHeap::getMin(void)
 {
-  if (this->heap.getLength() > 1) 
+  if (this->heap.getLength() > 1)
     return heap[1];
-  else 
+  else
     return NULL;
 }
 
@@ -173,7 +173,7 @@ SbHeap::getMin(void)
   Returns the heap element at index \a idx in the heap.
 */
 void *
-SbHeap::operator[](const int idx) 
+SbHeap::operator[](const int idx)
 {
   assert(idx > 0 && idx < heap.getLength());
   return heap[idx];
@@ -183,7 +183,7 @@ SbHeap::operator[](const int idx)
   Fixes heap if necessary when the element at \a hpos has changed weight.
   If you know the element's heap position you can supply it in \a hpos.
 */
-void 
+void
 SbHeap::newWeight(void *obj, int hpos)
 {
   int hsize = this->heap.getLength()-1;
@@ -194,10 +194,10 @@ SbHeap::newWeight(void *obj, int hpos)
       hpos = this->heap.find(obj);
   }
   int i = hpos;
-  
+
   float (*eval)(void*) = this->funcs.eval_func;
   void (*setindex)(void*,int) = this->funcs.set_index_func;
-  
+
   if (i > 1 && eval(obj) < eval(heap[i/2])) {
     while (i > 1 && eval(this->heap[i/2]) > eval(obj)) {
       this->heap[i] = this->heap[i/2];
@@ -218,15 +218,15 @@ SbHeap::newWeight(void *obj, int hpos)
 /*!
   Builds heap out of randomly ordered data-structure.
 */
-SbBool 
+SbBool
 SbHeap::buildHeap(SbBool (*progresscb)(float percentage, void *data),
-		  void *data)
+                  void *data)
 {
   SbBool ok = TRUE;
   int hsize = this->heap.getLength()-1;
-  
+
   int nrelems = hsize >> 1;
-  
+
   for (int i = nrelems; (i >= 1) && ok; i--) {
     this->heapify(i);
     if(progresscb && ((i & 31) == 0))
@@ -238,8 +238,8 @@ SbHeap::buildHeap(SbBool (*progresscb)(float percentage, void *data),
 /*!
   Returns the number of elements in the heap.
 */
-int 
-SbHeap::size(void) const 
+int
+SbHeap::size(void) const
 {
   return this->heap.getLength() - 1;
 }
@@ -251,16 +251,16 @@ SbHeap::size(void) const
 //
 // Maintain the heap-structure. Both children must be heaps
 //
-void 
+void
 SbHeap::heapify(const int idx)
 {
   int l, r, smallest;
   void *tmp;
   int hsize = this->heap.getLength()-1;
-  
+
   float (*eval)(void*) = this->funcs.eval_func;
   void (*setindex)(void*,int) = this->funcs.set_index_func;
-  
+
   l = 2*idx;
   r = l+1;
   if (l <= hsize && eval(heap[l]) < eval(heap[idx])) smallest = l;
@@ -287,15 +287,15 @@ SbHeap::heapExtractMin(void)
   if (hsize < 1) return NULL;
   min = this->heap[1];
   this->heap[1] = this->heap[hsize];
-  if (this->funcs.set_index_func) 
+  if (this->funcs.set_index_func)
     this->funcs.set_index_func(this->heap[1], 1);
   this->heap.truncate(hsize);
   this->heapify(1);
-  
+
   return min;
 }
 
-int 
+int
 SbHeap::heapInsert(void *obj)
 {
   int i;
@@ -305,7 +305,7 @@ SbHeap::heapInsert(void *obj)
   float (*eval)(void*) = this->funcs.eval_func;
 
   this->heap.append(NULL); // will be overwritten later
-  
+
   while (i > 1 && eval(this->heap[i>>1]) > eval(obj)) {
     this->heap[i] = this->heap[i>>1];
     if (setindex) setindex(this->heap[i], i);
@@ -315,14 +315,3 @@ SbHeap::heapInsert(void *obj)
   if (setindex) setindex(obj, i);
   return i;
 }
-
-
-
-
-
-
-
-
-
-
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -58,7 +58,7 @@ public:
   SoPath(const int approxLength = 0);
   SoPath(SoNode * const head);
   SoPath(const SoPath & rhs);
-  SoPath & operator = (const SoPath & rhs); 
+  SoPath & operator = (const SoPath & rhs);
 protected:
   virtual ~SoPath(void); // destructed by ref()
 

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -125,7 +125,7 @@ SbPlaneProjector::getPlane(void) const
  */
 SbVec3f
 SbPlaneProjector::getVector(const SbVec2f& mousePosition1,
-			    const SbVec2f& mousePosition2)
+                            const SbVec2f& mousePosition2)
 {
   // Must precalculate these, so lastPoint is finally set to the value
   // of the projected mousePosition2.

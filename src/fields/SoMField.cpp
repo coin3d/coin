@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -53,7 +53,7 @@ SoType SoMField::classTypeId = SoType::badType();
 /*!
   FIXME: write function documentation
 */
-int 
+int
 SoMField::fieldSizeof(void) const
 {
   assert(0);
@@ -189,30 +189,30 @@ SoMField::readValue(SoInput * in)
     if (in->read(c) && c == ']') {}
     else {
       in->putBack(c);
-      
-      while (TRUE) {
-	if (curIndex >= num) this->makeRoom(curIndex + 1);
-#if 0 // FIXME: temporary disabled, should move progress code to SoInput. 19980913 mortene.
-	if (curIndex && (curIndex%500 == 0)) {
-	  if (!SoDB::progress(in)) return FALSE;
-	}
-#endif
-	if (!this->read1Value(in, curIndex++) || !in->read(c)) {
-	  SoReadError::post(in, "Couldn't read value %d of field",
-			    curIndex);
-	  return FALSE;
-	}
 
-	if (c == ',') {
-	  if (in->read(c)) {
-	    if (c == ']') break;
-	    else in->putBack(c);
-	  }
-	}
-	else if (c == ']')
-	  break;
-	else
-	  in->putBack(c);
+      while (TRUE) {
+        if (curIndex >= num) this->makeRoom(curIndex + 1);
+#if 0 // FIXME: temporary disabled, should move progress code to SoInput. 19980913 mortene.
+        if (curIndex && (curIndex%500 == 0)) {
+          if (!SoDB::progress(in)) return FALSE;
+        }
+#endif
+        if (!this->read1Value(in, curIndex++) || !in->read(c)) {
+          SoReadError::post(in, "Couldn't read value %d of field",
+                            curIndex);
+          return FALSE;
+        }
+
+        if (c == ',') {
+          if (in->read(c)) {
+            if (c == ']') break;
+            else in->putBack(c);
+          }
+        }
+        else if (c == ']')
+          break;
+        else
+          in->putBack(c);
       }
     }
 
@@ -249,17 +249,17 @@ SoMField::writeValue(SoOutput * out) const
 
     if (i != num-1) {
       if (((i+1) % this->getNumValuesPerLine()) == 0) {
-	out->write(",\n");
-	if (!indented) {
-	  out->incrementIndent();
-	  indented = TRUE;
-	}
-	out->indent();
-	// for alignment
-	out->write("  ");
+        out->write(",\n");
+        if (!indented) {
+          out->incrementIndent();
+          indented = TRUE;
+        }
+        out->indent();
+        // for alignment
+        out->write("  ");
       }
       else {
-	out->write(", ");
+        out->write(", ");
       }
     }
   }
@@ -363,14 +363,14 @@ SoMField::allocValues(int number)
 
 #if 0 // debug
       SoDebugError::postInfo("SoMField::allocValues",
-			     "%d --> %d, name: '%s', ptr: %p",
-			     number, maxNum, getTypeId().getName().getString(),
-			     this);
+                             "%d --> %d, name: '%s', ptr: %p",
+                             number, maxNum, getTypeId().getName().getString(),
+                             this);
 #endif // debug
 
 
       unsigned char * newblock = new unsigned char[maxNum * fsize];
-      
+
       memcpy(newblock, this->valuesPtr(), fsize * SbMin(this->num, number));
 
       delete (unsigned char *) this->valuesPtr();

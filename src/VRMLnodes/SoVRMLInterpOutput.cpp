@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -78,7 +78,7 @@ SoVRMLInterpOutput::getForwardConnections(SoFieldList & list) const
 /*!
   Set the enabled flag.
   FIXME: doc on what the enabled flag does..
-  
+
   \sa isEnabled()
  */
 void
@@ -125,14 +125,14 @@ SoVRMLInterpOutput::setContainer(SoVRMLInterpolator * interp)
 
   \sa removeConnection(), getForwardConnections()
  */
-void 
+void
 SoVRMLInterpOutput::addConnection(SoField * f)
 {
 #if COIN_DEBUG
   int i=this->connectedfields.find(f);
   if (i < 0) {
     SoDebugError::postWarning("SoVRMLInterpOutput::addConnection",
-			      "field already in auditor list");
+                              "field already in auditor list");
     return;
   }
 #endif // COIN_DEBUG
@@ -144,14 +144,14 @@ SoVRMLInterpOutput::addConnection(SoField * f)
 
   \sa addConnection(), getForwardConnections()
  */
-void 
+void
 SoVRMLInterpOutput::removeConnection(SoField * f)
 {
   int i=this->connectedfields.find(f);
 #if COIN_DEBUG
   if (i < 0) {
     SoDebugError::postWarning("SoVRMLInterpOutput::removeConnection",
-			      "field not in auditor list");
+                              "field not in auditor list");
     return;
   }
 #endif // COIN_DEBUG
@@ -163,7 +163,7 @@ SoVRMLInterpOutput::removeConnection(SoField * f)
 
   \sa getForwardConnections()
  */
-int 
+int
 SoVRMLInterpOutput::getNumConnections(void) const
 {
   return this->connectedfields.getLength();
@@ -178,7 +178,7 @@ SoVRMLInterpOutput::operator[](int i) const
 #if COIN_DEBUG
   if (i < 0 || i >= this->connectedfields.getLength()) {
     SoDebugError::postWarning("SoVRMLInterpOutput::operator[]",
-			      "index out of bounds");
+                              "index out of bounds");
     return NULL;
   }
 #endif // COIN_DEBUG

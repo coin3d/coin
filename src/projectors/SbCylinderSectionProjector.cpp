@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -52,7 +52,7 @@
   FIXME: write doc
 */
 SbCylinderSectionProjector::SbCylinderSectionProjector(float /* edgeTol */,
-						       SbBool orientToEye)
+                                                       SbBool orientToEye)
   : inherited(orientToEye)
 {
   assert(0 && "FIXME: implementation missing");
@@ -62,8 +62,8 @@ SbCylinderSectionProjector::SbCylinderSectionProjector(float /* edgeTol */,
   FIXME: write doc
 */
 SbCylinderSectionProjector::SbCylinderSectionProjector(const SbCylinder & cyl,
-						       float /* edgeTol */,
-						       SbBool orientToEye)
+                                                       float /* edgeTol */,
+                                                       SbBool orientToEye)
   : inherited(cyl, orientToEye)
 {
   assert(0 && "FIXME: implementation missing");
@@ -94,7 +94,7 @@ SbCylinderSectionProjector::project(const SbVec2f & /* point */)
 */
 SbRotation
 SbCylinderSectionProjector::getRotation(const SbVec3f & /* point1 */,
-					const SbVec3f & /* point2 */)
+                                        const SbVec3f & /* point2 */)
 {
   assert(0 && "FIXME: implementation missing");
   return SbRotation::identity();

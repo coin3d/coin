@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -60,8 +60,8 @@ SbRotation::SbRotation(const SbVec3f& axis, const float radians)
 #if COIN_DEBUG
   if (axis.length()==0.0f)
     SoDebugError::postWarning("SbRotation::SbRotation",
-			      "axis parameter has zero length => "
-			      "undefined axis.");
+                              "axis parameter has zero length => "
+                              "undefined axis.");
 #endif // COIN_DEBUG
   this->setValue(axis, radians);
 }
@@ -85,7 +85,7 @@ SbRotation::SbRotation(const float q[4])
   components.
  */
 SbRotation::SbRotation(const float q0, const float q1,
-		       const float q2, const float q3)
+                       const float q2, const float q3)
 {
   this->setValue(q0, q1, q2, q3);
 }
@@ -138,12 +138,12 @@ SbRotation::getValue(float& q0, float& q1, float& q2, float& q3) const
 
 /*!
   Set the rotation.
-  
+
   \sa getValue().
 */
-SbRotation& 
+SbRotation&
 SbRotation::setValue(const float q0, const float q1,
-		     const float q2, const float q3)
+                     const float q2, const float q3)
 {
   this->quat[0] = q0;
   this->quat[1] = q1;
@@ -220,15 +220,15 @@ SbRotation::getValue(SbMatrix& matrix) const
 
   \sa inverse()
  */
-SbRotation& 
+SbRotation&
 SbRotation::invert(void)
 {
   float length = this->quat.length();
 #if COIN_DEBUG
   if (length==0.0f)
     SoDebugError::postWarning("SbRotation::invert",
-			      "Quarternion has zero length => "
-			      "undefined rotation.");
+                              "Quarternion has zero length => "
+                              "undefined rotation.");
 #endif // COIN_DEBUG
 
   // Optimize by doing 1 div and 4 muls instead of 4 divs.
@@ -253,8 +253,8 @@ SbRotation::inverse(void) const
 #if COIN_DEBUG
   if (length==0.0f)
     SoDebugError::postWarning("SbRotation::inverse",
-			      "Quarternion has zero length => "
-			      "undefined rotation.");
+                              "Quarternion has zero length => "
+                              "undefined rotation.");
 #endif // COIN_DEBUG
 
   // Optimize by doing 1 div and 4 muls instead of 4 divs.
@@ -274,7 +274,7 @@ SbRotation::inverse(void) const
 
   \sa getValue().
  */
-SbRotation& 
+SbRotation&
 SbRotation::setValue(const float q[4])
 {
   this->quat[0] = q[0];
@@ -291,11 +291,11 @@ SbRotation::setValue(const float q[4])
 
   \sa getValue().
  */
-SbRotation& 
+SbRotation&
 SbRotation::setValue(const SbMatrix& m)
 {
   float scalerow = m[0][0] + m[1][1] + m[2][2];
-   
+
   if (scalerow > 0.0f) {
     float s = sqrt(scalerow + 1.0f);
     this->quat[3] = s * 0.5f;
@@ -309,15 +309,15 @@ SbRotation::setValue(const SbMatrix& m)
     int i = 0;
     if (m[1][1] > m[0][0]) i = 1;
     if (m[2][2] > m[i][i]) i = 2;
-    
+
     int j = (i+1)%3;
     int k = (j+1)%3;
-    
+
     float s = sqrt((m[i][i] - (m[j][j] + m[k][k])) + 1.0f);
-    
+
     this->quat[i] = s * 0.5f;
     if(s != 0.0f) s = 0.5f / s;
-    
+
     this->quat[3] = (m[j][k] - m[k][j]) * s;
     this->quat[j] = (m[i][j] + m[j][i]) * s;
     this->quat[k] = (m[i][k] + m[k][i]) * s;
@@ -329,7 +329,7 @@ SbRotation::setValue(const SbMatrix& m)
 /*!
   Reset rotation with the given axis-of-rotation and rotation angle.
   Returns reference to self.
-  
+
   Make sure \a axis is not the null vector when calling this method.
 
   \sa getValue().
@@ -340,7 +340,7 @@ SbRotation::setValue(const SbVec3f& axis, const float radians)
 #if COIN_DEBUG
   if (axis.length()==0.0f)
     SoDebugError::postWarning("SbRotation::setValue",
-			      "axis parameter has zero length.");
+                              "axis parameter has zero length.");
 #endif // COIN_DEBUG
 
   // From <http://www.automation.hut.fi/~jaro/thesis/hyper/node9.html>.
@@ -364,18 +364,18 @@ SbRotation::setValue(const SbVec3f& axis, const float radians)
 
   \sa getValue().
  */
-SbRotation& 
+SbRotation&
 SbRotation::setValue(const SbVec3f& rotateFrom, const SbVec3f& rotateTo)
 {
 #if COIN_DEBUG
   // Check if the vectors are valid.
   if (rotateFrom.length()==0.0f) {
     SoDebugError::postWarning("SbRotation::setValue",
-			      "rotateFrom parameter has zero length.");
+                              "rotateFrom parameter has zero length.");
   }
   if (rotateTo.length()==0.0f)
     SoDebugError::postWarning("SbRotation::setValue",
-			      "rotateTo parameter has zero length.");
+                              "rotateTo parameter has zero length.");
 #endif // COIN_DEBUG
 
   SbVec3f from = rotateFrom;
@@ -387,7 +387,7 @@ SbRotation::setValue(const SbVec3f& rotateFrom, const SbVec3f& rotateTo)
 
 #if 0 // debug
   SoDebugError::post("SbRotation::setValue",
-		     "value of dot-product: %.20f", dot);
+                     "value of dot-product: %.20f", dot);
 #endif // debug
 
   // FIXME: this should perhaps be "centralized" somewhere. 19990401 mortene.
@@ -428,7 +428,7 @@ SbRotation::setValue(const SbVec3f& rotateFrom, const SbVec3f& rotateTo)
 /*!
   Multiplies the quaternions.
  */
-SbRotation& 
+SbRotation&
 SbRotation::operator *=(const SbRotation& q)
 {
   // Formula from <http://www.lboro.ac.uk/departments/ma/gallery/quat/>
@@ -438,9 +438,9 @@ SbRotation::operator *=(const SbRotation& q)
   this->getValue(y, z, w, x);
 
   this->setValue(a*y+b*x+c*w-d*z,
-		 a*z-b*w+c*x+d*y,
-		 a*w+b*z-c*y+d*x,
-		 a*x-b*y-c*z-d*w);
+                 a*z-b*w+c*x+d*y,
+                 a*w+b*z-c*y+d*x,
+                 a*x-b*y-c*z-d*w);
   return *this;
 }
 
@@ -495,9 +495,9 @@ operator *(const SbRotation& q1, const SbRotation& q2)
   q1.getValue(y, z, w, x);
 
   return SbRotation(a*y+b*x+c*w-d*z,
-		    a*z-b*w+c*x+d*y,
-		    a*w+b*z-c*y+d*x,
-		    a*x-b*y-c*z-d*w);
+                    a*z-b*w+c*x+d*y,
+                    a*w+b*z-c*y+d*x,
+                    a*x-b*y-c*z-d*w);
 }
 
 /*!
@@ -543,8 +543,8 @@ SbRotation::slerp(const SbRotation& rot0, const SbRotation& rot1, float t)
 #if COIN_DEBUG
   if (t<0.0f || t>1.0f) {
     SoDebugError::postWarning("SbRotation::slerp",
-			      "The t parameter (%f) is out of bounds [0,1]. "
-			      "Clamping to bounds.", t);
+                              "The t parameter (%f) is out of bounds [0,1]. "
+                              "Clamping to bounds.", t);
     if (t<0.0f) t=0.0f;
     else if (t>1.0f) t=1.0f;
   }
@@ -582,7 +582,7 @@ SbRotation::slerp(const SbRotation& rot0, const SbRotation& rot1, float t)
   else {
     result = SbRotation::identity();
   }
-  
+
   return result;
 }
 

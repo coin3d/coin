@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -67,7 +67,7 @@ SoDetailList::~SoDetailList(void)
   FIXME: write doc.
 */
 
-void 
+void
 SoDetailList::append(SoDetail * const ptr)
 {
   SbPList::append((void*)ptr);
@@ -77,7 +77,7 @@ SoDetailList::append(SoDetail * const ptr)
   FIXME: write doc.
 */
 
-void 
+void
 SoDetailList::insert(SoDetail * const ptr, const int addBefore)
 {
   SbPList::insert((void*)ptr, addBefore);
@@ -87,7 +87,7 @@ SoDetailList::insert(SoDetail * const ptr, const int addBefore)
   FIXME: write doc.
 */
 
-void 
+void
 SoDetailList::truncate(const int start)
 {
   SbPList::truncate(start);
@@ -97,7 +97,7 @@ SoDetailList::truncate(const int start)
   FIXME: write doc.
 */
 
-void 
+void
 SoDetailList::copy(const SoDetailList &l)
 {
   SbPList::copy(l);
@@ -129,9 +129,8 @@ SoDetailList::operator [](const int i) const
   FIXME: write doc.
 */
 
-void 
+void
 SoDetailList::set(const int i, SoDetail * const ptr)
 {
   SbPList::set(i, (void*)ptr);
 }
-

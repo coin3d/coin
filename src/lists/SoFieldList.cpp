@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -66,7 +66,7 @@ SoFieldList::~SoFieldList(void)
   FIXME: write doc.
 */
 
-void 
+void
 SoFieldList::append(SoField * const ptr)
 {
   SbPList::append((void *)ptr);
@@ -76,7 +76,7 @@ SoFieldList::append(SoField * const ptr)
   FIXME: write doc.
 */
 
-void 
+void
 SoFieldList::insert(SoField * const ptr, const int addBefore)
 {
   SbPList::insert((void *)ptr, addBefore);

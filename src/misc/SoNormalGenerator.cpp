@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -30,12 +30,12 @@
   Constructor with \a isccw indicating if polygons are specified
   in counter clockwise order. The \a approxVertices can be used
   to optimize normal generation. The \a free flag specifies
-  whether normals should be free when this instance is 
+  whether normals should be free when this instance is
   destructed.
 */
 SoNormalGenerator::SoNormalGenerator(const SbBool isccw,
-				     const int approxVertices,
-				     const SbBool free)
+                                     const int approxVertices,
+                                     const SbBool free)
   : bsp(approxVertices),
     vertexList(approxVertices),
     vertexFace(approxVertices),
@@ -58,11 +58,11 @@ SoNormalGenerator::~SoNormalGenerator()
 
 /*!
   Signals the start of a new polygon.
-  
+
   \sa SoNormalGenerator::polygonVertex()
   \sa SoNormalGenerator::endPolygon()
 */
-void 
+void
 SoNormalGenerator::beginPolygon()
 {
   currFaceStart = vertexList.getLength();
@@ -73,7 +73,7 @@ SoNormalGenerator::beginPolygon()
   \sa SoNormalGenerator::beginPolygon()
   \sa SoNormalGenerator::endPolygon()
 */
-void 
+void
 SoNormalGenerator::polygonVertex(const SbVec3f &v)
 {
   vertexList.append(bsp.addPoint(v));
@@ -85,7 +85,7 @@ SoNormalGenerator::polygonVertex(const SbVec3f &v)
   \sa SoNormalGenerator::beginPolygon()
   \sa SoNormalGenerator::polygonVertex()
 */
-void 
+void
 SoNormalGenerator::endPolygon()
 {
   SbVec3f n = calcFaceNormal();
@@ -95,10 +95,10 @@ SoNormalGenerator::endPolygon()
 /*!
   Convenience method for adding a triangle.
 */
-void 
+void
 SoNormalGenerator::triangle(const SbVec3f &v0,
-			    const SbVec3f &v1,
-			    const SbVec3f &v2)
+                            const SbVec3f &v1,
+                            const SbVec3f &v2)
 {
   beginPolygon();
   polygonVertex(v0);
@@ -110,11 +110,11 @@ SoNormalGenerator::triangle(const SbVec3f &v0,
 /*!
   Convenience method for adding a quad
 */
-void 
+void
 SoNormalGenerator::quad(const SbVec3f &v0,
-			const SbVec3f &v1,
-			const SbVec3f &v2,
-			const SbVec3f &v3)
+                        const SbVec3f &v1,
+                        const SbVec3f &v2,
+                        const SbVec3f &v3)
 {
   beginPolygon();
   polygonVertex(v0);
@@ -125,13 +125,13 @@ SoNormalGenerator::quad(const SbVec3f &v0,
 }
 
 //
-// calculates the normal vector for a vertex, based on the 
+// calculates the normal vector for a vertex, based on the
 // normal vectors of all incident faces
 //
-static void 
-calc_normal_vec(const SbVec3f *facenormals, const int facenum, 
-		SbList <int32_t> &faceArray, const float threshold,
-		SbVec3f &vertnormal)
+static void
+calc_normal_vec(const SbVec3f *facenormals, const int facenum,
+                SbList <int32_t> &faceArray, const float threshold,
+                SbVec3f &vertnormal)
 {
   // start with face normal vector
   const SbVec3f *facenormal = &facenormals[facenum];
@@ -145,7 +145,7 @@ calc_normal_vec(const SbVec3f *facenormals, const int facenum,
     if (currface != facenum) { // check all but this face
       const SbVec3f &normal = facenormals[currface];
       if ((normal.dot(*facenormal)) > threshold) {
-	// smooth towards this face
+        // smooth towards this face
         vertnormal += normal;
       }
     }
@@ -154,28 +154,28 @@ calc_normal_vec(const SbVec3f *facenormals, const int facenum,
 
 /*!
   Triggers the normal generation. Normals are generated using
-  \a creaseAngle to find which edges should be flat-shaded 
+  \a creaseAngle to find which edges should be flat-shaded
   and which should be smooth-shaded.
 
-  If normals are generated for triangle strips, the 
+  If normals are generated for triangle strips, the
   \a striplens and \a numstrips must be supplied.
-*/ 
-void 
+*/
+void
 SoNormalGenerator::generate(const float creaseAngle,
-			    const int32_t *striplens,
-			    const int numstrips)
+                            const int32_t *striplens,
+                            const int numstrips)
 {
   int i;
 
-  // for each vertex, store all faceindices the vertex is a part of 
+  // for each vertex, store all faceindices the vertex is a part of
   SbList <int32_t> *vertexFaceArray = new SbList<int32_t>[bsp.numPoints()];
-  
+
   int numvi = this->vertexList.getLength();
 
   for (i = 0; i < numvi; i++) {
     vertexFaceArray[vertexList[i]].append(vertexFace[i]);
   }
-  
+
   float threshold = cos(creaseAngle);
 
   if (striplens) {
@@ -184,30 +184,30 @@ SoNormalGenerator::generate(const float creaseAngle,
       assert(i+2 < numvi);
       SbVec3f tmpvec;
       calc_normal_vec(faceNormals.constArrayPointer(),
-		      vertexFace[i], 
-		      vertexFaceArray[vertexList[i]], 
-		      threshold, tmpvec);
+                      vertexFace[i],
+                      vertexFaceArray[vertexList[i]],
+                      threshold, tmpvec);
       tmpvec.normalize();
       vertexNormals.append(tmpvec);
       calc_normal_vec(faceNormals.constArrayPointer(),
-		      vertexFace[i+1], 
-		      vertexFaceArray[vertexList[i+1]], 
-		      threshold, tmpvec);
+                      vertexFace[i+1],
+                      vertexFaceArray[vertexList[i+1]],
+                      threshold, tmpvec);
       tmpvec.normalize();
       vertexNormals.append(tmpvec);
-      
+
       int num = striplens[j] - 2;
-      
+
       while (num--) {
-	i += 2;
-	assert(i < numvi);
-	calc_normal_vec(faceNormals.constArrayPointer(),
-			vertexFace[i], 
-			vertexFaceArray[vertexList[i]], 
-			threshold, tmpvec);
-	tmpvec.normalize();
-	vertexNormals.append(tmpvec);
-	i++;
+        i += 2;
+        assert(i < numvi);
+        calc_normal_vec(faceNormals.constArrayPointer(),
+                        vertexFace[i],
+                        vertexFaceArray[vertexList[i]],
+                        threshold, tmpvec);
+        tmpvec.normalize();
+        vertexNormals.append(tmpvec);
+        i++;
       }
     }
   }
@@ -215,9 +215,9 @@ SoNormalGenerator::generate(const float creaseAngle,
     for (i = 0; i < numvi; i++) {
       SbVec3f tmpvec;
       calc_normal_vec(faceNormals.constArrayPointer(),
-		      vertexFace[i], 
-		      vertexFaceArray[vertexList[i]], 
-		      threshold, tmpvec);
+                      vertexFace[i],
+                      vertexFaceArray[vertexList[i]],
+                      threshold, tmpvec);
       tmpvec.normalize();
       vertexNormals.append(tmpvec);
     }
@@ -233,7 +233,7 @@ SoNormalGenerator::generate(const float creaseAngle,
 /*!
   Returns the number of normals generated.
 */
-int 
+int
 SoNormalGenerator::getNumNormals() const
 {
   return this->vertexNormals.getLength();
@@ -242,7 +242,7 @@ SoNormalGenerator::getNumNormals() const
 /*!
   Sets the number of generated normals.
 */
-void 
+void
 SoNormalGenerator::setNumNormals(const int /* num */)
 {
   assert(0 && "FIXME: not implemented");
@@ -272,9 +272,9 @@ SoNormalGenerator::getNormal(const int32_t i) const
 /*!
   Sets the normal at index \a index to \a normal.
 */
-void 
+void
 SoNormalGenerator::setNormal(const int32_t /* index */,
-			     const SbVec3f & /* normal */)
+                             const SbVec3f & /* normal */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -293,27 +293,27 @@ SoNormalGenerator::calcFaceNormal()
 
   if (num == 3) { // triangle
     if (!ccw)
-      ret = 
-	(coords[cind[0]] - 
-	 coords[cind[1]]).cross(coords[cind[2]] - 
-				coords[cind[1]]);
+      ret =
+        (coords[cind[0]] -
+         coords[cind[1]]).cross(coords[cind[2]] -
+                                coords[cind[1]]);
     else
-      ret = 
-	(coords[cind[2]] - 
-	 coords[cind[1]]).cross(coords[cind[0]] - 
-				coords[cind[1]]);
+      ret =
+        (coords[cind[2]] -
+         coords[cind[1]]).cross(coords[cind[0]] -
+                                coords[cind[1]]);
   }
   else {
     const SbVec3f *vert1, *vert2;
-    ret.setValue(0.0f, 0.0f, 0.0f); 
+    ret.setValue(0.0f, 0.0f, 0.0f);
     vert2 = coords + cind[num-1];
-    for (int i = 0; i < num; i++) { 
+    for (int i = 0; i < num; i++) {
       vert1 = vert2;
       vert2 = coords + cind[i];
       ret[0] += ((*vert1)[1] - (*vert2)[1]) * ((*vert1)[2] + (*vert2)[2]);
       ret[1] += ((*vert1)[2] - (*vert2)[2]) * ((*vert1)[0] + (*vert2)[0]);
       ret[2] += ((*vert1)[0] - (*vert2)[0]) * ((*vert1)[1] + (*vert2)[1]);
-    } 
+    }
     if (!ccw) ret = -ret;
   }
   ret.normalize();

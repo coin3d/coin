@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -45,7 +45,7 @@ private:
 
   static void initClass(void);
   SbNameEntry(const char * const s, const unsigned long h,
-	       SbNameEntry * const n)
+               SbNameEntry * const n)
     { str = s; hashValue = h; next = n; };
   static const SbNameEntry * insert(const char * const s);
 

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -78,8 +78,8 @@ private:
   SbString debugString;
 
   static void generateBaseString(SbString & string,
-				 const SoBase * const base,
-				 const char * const what);
+                                 const SoBase * const base,
+                                 const char * const what);
 };
 
 //$ IMPORT INLINE ../../../src/errors/SoError.cpp

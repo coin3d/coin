@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -32,7 +32,7 @@
   FIXME: write doc
 */
 SbSpherePlaneProjector::SbSpherePlaneProjector(float /* edgeTol */,
-					       SbBool /* orientToEye */)
+                                               SbBool /* orientToEye */)
 {
   assert(0 && "FIXME: implementation missing");
 }
@@ -41,8 +41,8 @@ SbSpherePlaneProjector::SbSpherePlaneProjector(float /* edgeTol */,
   FIXME: write doc
 */
 SbSpherePlaneProjector::SbSpherePlaneProjector(const SbSphere & /* sph */,
-					       float /* edgeTol */,
-					       SbBool /* orientToEye */)
+                                               float /* edgeTol */,
+                                               SbBool /* orientToEye */)
 {
   assert(0 && "FIXME: implementation missing");
 }
@@ -72,7 +72,7 @@ SbSpherePlaneProjector::project(const SbVec2f & /* point */)
 */
 SbRotation
 SbSpherePlaneProjector::getRotation(const SbVec3f & /* point1 */,
-				    const SbVec3f & /* point2 */)
+                                    const SbVec3f & /* point2 */)
 {
   assert(0 && "FIXME: implementation missing");
   return SbRotation::identity();
@@ -83,7 +83,7 @@ SbSpherePlaneProjector::getRotation(const SbVec3f & /* point1 */,
 */
 SbRotation
 SbSpherePlaneProjector::getRotation(const SbVec3f & /* point1 */, SbBool /* tol1 */,
-				    const SbVec3f & /* point2 */, SbBool /* tol2 */)
+                                    const SbVec3f & /* point2 */, SbBool /* tol2 */)
 {
   assert(0 && "FIXME: implementation missing");
   return SbRotation::identity();

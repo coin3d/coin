@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -180,7 +180,7 @@ SoError::getDebugString(void) const
 
 void
 SoError::post(const char * const format, // printf format
-	      ...)
+              ...)
 {
   va_list args;
   va_start(args, format);
@@ -297,8 +297,8 @@ SoError::handleError(void)
 
 void
 SoError::generateBaseString(SbString & string,
-			    const SoBase * const base,
-			    const char * const what)
+                            const SoBase * const base,
+                            const char * const what)
 {
   char buffer[120]; // FIXME: buffer overflow?  990610 larsa
   sprintf(buffer, "%s named \"%s\" at address %p",
@@ -320,4 +320,3 @@ SoError::initClasses(void)
 {
   initErrors();
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -45,7 +45,7 @@ public:
   void insertTimerSensor(SoTimerQueueSensor * s);
   void removeDelaySensor(SoDelayQueueSensor * s);
   void removeTimerSensor(SoTimerQueueSensor * s);
-  
+
   void setChangedCallback(void (*func)(void *), void * data);
 
   void rescheduleTimer(SoTimerSensor * s);
@@ -54,16 +54,16 @@ public:
   void processDelayQueue(SbBool isIdle);
   void processImmediateQueue(void);
   void processTimerQueue(void);
-  
+
   SbBool isDelaySensorPending(void);
   SbBool isTimerSensorPending(SbTime & tm);
-  
+
   void setDelaySensorTimeout(const SbTime & t);
   const SbTime & getDelaySensorTimeout(void);
 
   int doSelect(int nfds, fd_set * readfds, fd_set * writefds,
-	       fd_set * exceptfds, struct timeval * userTimeOut);
-  
+               fd_set * exceptfds, struct timeval * userTimeOut);
+
 private:
   void notifyChanged(void);
 

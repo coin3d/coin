@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -115,12 +115,12 @@ SbTime::getTimeOfDay(void)
   int result = gettimeofday(&tmp, NULL);
   if (result < 0)
     SoDebugError::postWarning("SbTime::getTimeOfDay",
-			      "Something went wrong (invalid timezone "
-			      "setting?). Result is undefined.");
+                              "Something went wrong (invalid timezone "
+                              "setting?). Result is undefined.");
 #else // ! COIN_DEBUG
   gettimeofday(&tmp, NULL);
 #endif // ! COIN_DEBUG
-#endif // ! _WIN32  
+#endif // ! _WIN32
   return SbTime(&tmp);
 }
 
@@ -290,7 +290,7 @@ SbTime::format(const char * const fmt) const
 #if COIN_DEBUG
   if (fmt==NULL) {
     SoDebugError::postWarning("SbTime::format",
-			      "Format string is NULL.");
+                              "Format string is NULL.");
     return SbString("");
   }
 #endif // COIN_DEBUG
@@ -306,104 +306,104 @@ SbTime::format(const char * const fmt) const
       char m = fmt[++idx];
       switch(m) {
       case '%':
-	str += m;
-	break;
+        str += m;
+        break;
 
       case 'D':
-	this->addToString(str, this->dtime / 60.0 / 60.0 / 24.0);
-	break;
+        this->addToString(str, this->dtime / 60.0 / 60.0 / 24.0);
+        break;
 
       case 'H':
-	this->addToString(str, this->dtime / 60.0 / 60.0);
-	break;
+        this->addToString(str, this->dtime / 60.0 / 60.0);
+        break;
 
       case 'M':
-	this->addToString(str, this->dtime / 60.0);
-	break;
+        this->addToString(str, this->dtime / 60.0);
+        break;
 
       case 'S':
-	this->addToString(str, this->dtime);
-	break;
+        this->addToString(str, this->dtime);
+        break;
 
       case 'I':
-	this->addToString(str, this->dtime * 1000.0);
-	break;
+        this->addToString(str, this->dtime * 1000.0);
+        break;
 
       case 'U':
-	this->addToString(str, this->dtime * 1000000.0);
-	break;
+        this->addToString(str, this->dtime * 1000000.0);
+        break;
 
       case 'h':
-	dtmp = this->dtime / 60.0 / 60.0 / 24.0;
-	dtmp = this->dtime - floor(dtmp) * 60.0 * 60.0 * 24.0;
-	dtmp = dtmp / 60.0 / 60.0;
-	dtmp = floor(dtmp);
-	if (dtmp < 10.0) str += '0';
-	{
-	  SbString is;
-	  is.intToString(dtmp);
-	  str += is;
-	}
-	break;
+        dtmp = this->dtime / 60.0 / 60.0 / 24.0;
+        dtmp = this->dtime - floor(dtmp) * 60.0 * 60.0 * 24.0;
+        dtmp = dtmp / 60.0 / 60.0;
+        dtmp = floor(dtmp);
+        if (dtmp < 10.0) str += '0';
+        {
+          SbString is;
+          is.intToString(dtmp);
+          str += is;
+        }
+        break;
 
       case 'm':
-	dtmp = this->dtime / 60.0 / 60.0;
-	dtmp = this->dtime - floor(dtmp) * 60.0 * 60.0;
-	dtmp = dtmp / 60.0;
-	dtmp = floor(dtmp);
-	if (dtmp < 10.0) str += '0';
-	{
-	  SbString is;
-	  is.intToString(dtmp);
-	  str += is;
-	}
-	break;
+        dtmp = this->dtime / 60.0 / 60.0;
+        dtmp = this->dtime - floor(dtmp) * 60.0 * 60.0;
+        dtmp = dtmp / 60.0;
+        dtmp = floor(dtmp);
+        if (dtmp < 10.0) str += '0';
+        {
+          SbString is;
+          is.intToString(dtmp);
+          str += is;
+        }
+        break;
 
       case 's':
-	dtmp = this->dtime / 60.0;
-	dtmp = this->dtime - floor(dtmp) * 60.0;
-	dtmp = floor(dtmp);
-	if (dtmp < 10.0) str += '0';
-	{
-	  SbString is;
-	  is.intToString(dtmp);
-	  str += is;
-	}
-	break;
+        dtmp = this->dtime / 60.0;
+        dtmp = this->dtime - floor(dtmp) * 60.0;
+        dtmp = floor(dtmp);
+        if (dtmp < 10.0) str += '0';
+        {
+          SbString is;
+          is.intToString(dtmp);
+          str += is;
+        }
+        break;
 
       case 'i':
-	dtmp = fmod(this->dtime, 1.0);
-	dtmp *= 1000.0;
-	dtmp = floor(dtmp);
-	if (dtmp < 100.0) str += '0';
-	if (dtmp < 10.0) str += '0';
-	{
-	  SbString is;
-	  is.intToString(dtmp);
-	  str += is;
-	}
-	break;
+        dtmp = fmod(this->dtime, 1.0);
+        dtmp *= 1000.0;
+        dtmp = floor(dtmp);
+        if (dtmp < 100.0) str += '0';
+        if (dtmp < 10.0) str += '0';
+        {
+          SbString is;
+          is.intToString(dtmp);
+          str += is;
+        }
+        break;
 
       case 'u':
-	dtmp = fmod(this->dtime, 1.0);
-	dtmp *= 1000000.0;
-	dtmp = floor(dtmp);
-	if (dtmp < 100000.0) str += '0';
-	if (dtmp < 10000.0) str += '0';
-	if (dtmp < 1000.0) str += '0';
-	if (dtmp < 100.0) str += '0';
-	if (dtmp < 10.0) str += '0';
-	{
-	  SbString is;
-	  is.intToString(dtmp);
-	  str += is;
-	}
-	break;
+        dtmp = fmod(this->dtime, 1.0);
+        dtmp *= 1000000.0;
+        dtmp = floor(dtmp);
+        if (dtmp < 100000.0) str += '0';
+        if (dtmp < 10000.0) str += '0';
+        if (dtmp < 1000.0) str += '0';
+        if (dtmp < 100.0) str += '0';
+        if (dtmp < 10.0) str += '0';
+        {
+          SbString is;
+          is.intToString(dtmp);
+          str += is;
+        }
+        break;
 
       default:
-	// TODO: should output warning to library user here, but have to
-	// wait for larsa to implement OI-style postmsg stuff. 19980826 mortene.
-	break;
+        // TODO: should output warning to library user here, but have to
+        // wait for larsa to implement OI-style postmsg stuff. 19980826 mortene.
+        break;
       }
     }
 
@@ -422,7 +422,7 @@ SbTime::format(const char * const fmt) const
   The SbTime values will be interpreted as time since 00:00:00 Jan 1st
   1970.
 
-  \sa format(). 
+  \sa format().
 */
 SbString
 SbTime::formatDate(const char * const fmt) const
@@ -430,7 +430,7 @@ SbTime::formatDate(const char * const fmt) const
 #if COIN_DEBUG
   if (fmt==NULL) {
     SoDebugError::postWarning("SbTime::formatDate",
-			      "Format string is NULL.");
+                              "Format string is NULL.");
     return SbString("");
   }
 #endif // COIN_DEBUG
@@ -489,7 +489,7 @@ SbTime::parsedate(const char * const date)
 #if COIN_DEBUG
   if (!date) {
     SoDebugError::postWarning("SbTime::parsedate",
-			      "date string is NULL.");
+                              "date string is NULL.");
     return FALSE;
   }
 #endif // COIN_DEBUG
@@ -522,14 +522,14 @@ SbTime::parsedate(const char * const date)
     int i;
     for (i=0; i < 12; i++) {
       if (! strncasecmp(dateptr, months[i], 3)) {
-	time.tm_mon = i;
-	break;
+        time.tm_mon = i;
+        break;
       }
     }
     if (i==12) {
 #if COIN_DEBUG
       SoDebugError::post("SbTime::parsedate", "Can't grok month name '%s'.",
-			 SbString(dateptr).getSubString(0, 2).getString());
+                         SbString(dateptr).getSubString(0, 2).getString());
 #endif // COIN_DEBUG
       return FALSE;
     }
@@ -560,14 +560,14 @@ SbTime::parsedate(const char * const date)
     int i;
     for (i=0; i < 12; i++) {
       if (! strncasecmp(dateptr, months[i], 3)) {
-	time.tm_mon = i;
-	break;
+        time.tm_mon = i;
+        break;
       }
     }
     if (i==12) {
 #if COIN_DEBUG
       SoDebugError::post("SbTime::parsedate", "Can't grok month name '%s'.",
-			 SbString(dateptr).getSubString(0, 2).getString());
+                         SbString(dateptr).getSubString(0, 2).getString());
 #endif // COIN_DEBUG
       return FALSE;
     }
@@ -594,14 +594,14 @@ SbTime::parsedate(const char * const date)
     int i;
     for (i=0; i < 12; i++) {
       if (! strncasecmp(dateptr, months[i], 3)) {
-	time.tm_mon = i;
-	break;
+        time.tm_mon = i;
+        break;
       }
     }
     if (i==12) {
 #if COIN_DEBUG
       SoDebugError::post("SbTime::parsedate", "Can't grok month name '%s'.",
-			 SbString(dateptr).getSubString(0, 2).getString());
+                         SbString(dateptr).getSubString(0, 2).getString());
 #endif // COIN_DEBUG
       return FALSE;
     }
@@ -743,7 +743,7 @@ SbTime::operator /=(const double s)
 #if COIN_DEBUG
   if (s==0.0) {
     SoDebugError::postWarning("SbTime::operator/=",
-			      "Argument is zero => Division by zero.");
+                              "Argument is zero => Division by zero.");
     this->dtime /= s + SMALLEST_DOUBLE_TIMEUNIT;
     return *this;
   }
@@ -765,7 +765,7 @@ SbTime::operator /(const SbTime & tm) const
 #if COIN_DEBUG
   if (tm.getValue()==0.0) {
     SoDebugError::postWarning("SbTime::operator/",
-			      "Argument tm is zero => Division by zero.");
+                              "Argument tm is zero => Division by zero.");
     return 1.0/SMALLEST_DOUBLE_TIMEUNIT;
   }
 #endif // COIN_DEBUG
@@ -782,7 +782,7 @@ SbTime::operator %(const SbTime & tm) const
 #if COIN_DEBUG
   if (tm.getValue()==0.0) {
     SoDebugError::postWarning("SbTime::operator%",
-			      "Argument tm is zero => Division by zero.");
+                              "Argument tm is zero => Division by zero.");
     return SbTime(1.0/SMALLEST_DOUBLE_TIMEUNIT);
   }
 #endif // COIN_DEBUG
@@ -868,7 +868,7 @@ SbTime::addToString(SbString & str, const double v) const
     val = -val;
   }
 
-  // Code below depends on val != 0.0. 
+  // Code below depends on val != 0.0.
   if (val == 0.0) {
     str += '0';
     return;
@@ -883,13 +883,13 @@ SbTime::addToString(SbString & str, const double v) const
       val /= 10.0;
       steps++;
     }
-    
+
     // Add to string.
     val = floor(val);
     SbString is;
     is.intToString(val);
     str += is;
-    
+
     int scopy = steps;
 
     // Calculate remainder.
@@ -902,8 +902,8 @@ SbTime::addToString(SbString & str, const double v) const
     // Add any trailing zeros.
     if (val == 0.0) {
       while (scopy) {
-	str += '0';
-	scopy--;
+        str += '0';
+        scopy--;
       }
     }
   }

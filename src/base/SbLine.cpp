@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -70,8 +70,8 @@ SbLine::setValue(const SbVec3f& p0, const SbVec3f& p1)
 #if COIN_DEBUG
   if(!(p0 != p1))
     SoDebugError::postWarning("SbLine::setValue",
-			      "The two points defining the line is "
-			      "equal => undefined line.");
+                              "The two points defining the line is "
+                              "equal => undefined line.");
 #endif // COIN_DEBUG
 
   this->pos = p0;
@@ -89,15 +89,15 @@ SbLine::setValue(const SbVec3f& p0, const SbVec3f& p1)
 */
 SbBool
 SbLine::getClosestPoints(const SbLine& line2,
-			 SbVec3f& ptOnThis, SbVec3f& ptOnLine2) const
+                         SbVec3f& ptOnThis, SbVec3f& ptOnLine2) const
 {
 #if COIN_DEBUG
   if(!(this->getDirection().length() != 0.0))
     SoDebugError::postWarning("SbLine::getClosestPoints",
-			      "This line has no direction (zero vector).");
+                              "This line has no direction (zero vector).");
   if(!(line2.getDirection().length() != 0.0))
     SoDebugError::postWarning("SbLine::getClosestPoints",
-			      "argument line has no direction (zero vector).");
+                              "argument line has no direction (zero vector).");
 #endif // COIN_DEBUG
 
   // Check if the lines are parallel.
@@ -235,7 +235,7 @@ SbLine::getClosestPoint(const SbVec3f& point) const
 #if COIN_DEBUG
   if(denumerator == 0.0f)
     SoDebugError::postWarning("SbLine::getClosestPoint",
-			      "This line has no direction (zero length).");
+                              "This line has no direction (zero length).");
 #endif // COIN_DEBUG
 
   return (this->pos + this->dir * (numerator/denumerator));
@@ -244,7 +244,7 @@ SbLine::getClosestPoint(const SbVec3f& point) const
 /*!
   Return a vector representing a point on the line.
  */
-const SbVec3f& 
+const SbVec3f&
 SbLine::getPosition(void) const
 {
   return this->pos;
@@ -254,7 +254,7 @@ SbLine::getPosition(void) const
   Return a vector representing the direction of the line. The direction
   vector will always be normalized.
  */
-const SbVec3f& 
+const SbVec3f&
 SbLine::getDirection(void) const
 {
   return this->dir;

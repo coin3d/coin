@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -65,13 +65,13 @@ SbMatrix::SbMatrix(void)
   Constructs a matrix instance with the given initial elements.
  */
 SbMatrix::SbMatrix(const float a11, const float a12,
-		   const float a13, const float a14,
-		   const float a21, const float a22,
-		   const float a23, const float a24,
-		   const float a31, const float a32,
-		   const float a33, const float a34,
-		   const float a41, const float a42,
-		   const float a43, const float a44)
+                   const float a13, const float a14,
+                   const float a21, const float a22,
+                   const float a23, const float a24,
+                   const float a31, const float a32,
+                   const float a33, const float a34,
+                   const float a41, const float a42,
+                   const float a43, const float a44)
 {
   this->matrix[0][0] = a11;
   this->matrix[0][1] = a12;
@@ -216,7 +216,7 @@ SbMatrix::setRotate(const SbRotation& q)
     this->matrix[3][0]=this->matrix[3][1]=this->matrix[3][2]=
       this->matrix[0][3]=this->matrix[1][3]=this->matrix[2][3]=0.0f;
     this->matrix[3][3]=1.0f;
-    
+
     this->matrix[0][0] = u[0]*u[0]+cost*(1-u[0]*u[0]);
     this->matrix[1][0] = u[0]*u[1]*(1-cost)-u[2]*sint;
     this->matrix[2][0] = u[2]*u[0]*(1-cost)+u[1]*sint;
@@ -251,7 +251,7 @@ SbMatrix::operator /=(const float v)
 #if COIN_DEBUG
   if (v==0.0f)
     SoDebugError::postWarning("SbMatrix::operator/=",
-			      "Division by zero.");
+                              "Division by zero.");
 #endif // COIN_DEBUG
 
   operator*=(1.0f/v);
@@ -263,62 +263,62 @@ SbMatrix::operator /=(const float v)
  */
 float
 SbMatrix::det3(int r1, int r2, int r3,
-	       int c1, int c2, int c3) const
+               int c1, int c2, int c3) const
 {
 #if COIN_DEBUG
   if (r1<0 || r1>3) {
     SoDebugError::postWarning("SbMatrix::det3",
-			      "r1 parameter (%f) out of bounds [0,3]. "
-			      "Clamping to bounds.", r1);
+                              "r1 parameter (%f) out of bounds [0,3]. "
+                              "Clamping to bounds.", r1);
     if (r1<0) r1=0;
     else if (r1>3) r1=3;
   }
   if (r2<0 || r2>3) {
     SoDebugError::postWarning("SbMatrix::det3",
-			      "r2 parameter (%f) out of bounds [0,3]. "
-			      "Clamping to bounds.", r2);
+                              "r2 parameter (%f) out of bounds [0,3]. "
+                              "Clamping to bounds.", r2);
     if (r2<0) r2=0;
     else if (r2>3) r2=3;
   }
   if (r3<0 || r3>3) {
     SoDebugError::postWarning("SbMatrix::det3",
-			      "r3 parameter (%f) out of bounds [0,3]. "
-			      "Clamping to bounds.", r3);
+                              "r3 parameter (%f) out of bounds [0,3]. "
+                              "Clamping to bounds.", r3);
     if (r3<0) r3=0;
     else if (r3>3) r3=3;
   }
   if (c1<0 || c1>3) {
     SoDebugError::postWarning("SbMatrix::det3",
-			      "c1 parameter (%f) out of bounds [0,3]. "
-			      "Clamping to bounds.", c1);
+                              "c1 parameter (%f) out of bounds [0,3]. "
+                              "Clamping to bounds.", c1);
     if (c1<0) c1=0;
     else if (c1>3) c1=3;
   }
   if (c2<0 || c2>3) {
     SoDebugError::postWarning("SbMatrix::det3",
-			      "c2 parameter (%f) out of bounds [0,3]. "
-			      "Clamping to bounds.", c2);
+                              "c2 parameter (%f) out of bounds [0,3]. "
+                              "Clamping to bounds.", c2);
     if (c2<0) c2=0;
     else if (c2>3) c2=3;
   }
   if (c3<0 || c3>3) {
     SoDebugError::postWarning("SbMatrix::det3",
-			      "c3 parameter (%f) out of bounds [0,3]. "
-			      "Clamping to bounds.", c3);
+                              "c3 parameter (%f) out of bounds [0,3]. "
+                              "Clamping to bounds.", c3);
     if (c3<0) c3=0;
     else if (c3>3) c3=3;
   }
 #endif // COIN_DEBUG
 
 #if COIN_DEBUG
-  if (r1==r2 || r1==r3 || r2==r3) 
+  if (r1==r2 || r1==r3 || r2==r3)
     SoDebugError::postWarning("SbMatrix::det3",
-			      "Row indices (%d,%d,%d) should be distinct.",
-			      r1, r2, r3);
-  if (c1==c2 || c1==c3 || c2==c3) 
+                              "Row indices (%d,%d,%d) should be distinct.",
+                              r1, r2, r3);
+  if (c1==c2 || c1==c3 || c2==c3)
     SoDebugError::postWarning("SbMatrix::det3",
-			      "Column indices (%d,%d,%d) should be distinct.",
-			      c1, c2, c3);
+                              "Column indices (%d,%d,%d) should be distinct.",
+                              c1, c2, c3);
 #endif // COIN_DEBUG
 
   // More or less directly from "Advanced Engineering Mathematics"
@@ -382,7 +382,7 @@ SbMatrix::inverse(void) const
 #if COIN_DEBUG
   if (det == 0.0f) {
     SoDebugError::postWarning("SbMatrix::inverse",
-			      "Determinant of matrix is zero.");
+                              "Determinant of matrix is zero.");
     return *this;
   }
 #endif // COIN_DEBUG
@@ -421,7 +421,7 @@ SbMatrix::equals(const SbMatrix& m, float tolerance) const
 #if COIN_DEBUG
   if (tolerance<0.0f)
     SoDebugError::postWarning("SbMatrix::equals",
-			      "tolerance should be >=0.0f.");
+                              "tolerance should be >=0.0f.");
 #endif // COIN_DEBUG
 
   for(int i=0; i < 4; i++) {
@@ -463,8 +463,8 @@ SbMatrix::operator [](int i)
 #if COIN_DEBUG
   if (i<0 || i>3) {
     SoDebugError::postWarning("SbMatrix::operator[]",
-			      "Index (%d) is out of bounds. "
-			      "Clamping to bounds.");
+                              "Index (%d) is out of bounds. "
+                              "Clamping to bounds.");
     if (i<0) i=0;
     else if (i>3) i=3;
   }
@@ -485,8 +485,8 @@ SbMatrix::operator [](int i) const
 #if COIN_DEBUG
   if (i<0 || i>3) {
     SoDebugError::postWarning("SbMatrix::operator[]",
-			      "Index (%d) is out of bounds. "
-			      "Clamping to bounds.");
+                              "Index (%d) is out of bounds. "
+                              "Clamping to bounds.");
     if (i<0) i=0;
     else if (i>3) i=3;
   }
@@ -586,9 +586,9 @@ SbMatrix
 SbMatrix::identity(void)
 {
   return SbMatrix(1.0f, 0.0f, 0.0f, 0.0f,
-		  0.0f, 1.0f, 0.0f, 0.0f,
-		  0.0f, 0.0f, 1.0f, 0.0f,
-		  0.0f, 0.0f, 0.0f, 1.0f);
+                  0.0f, 1.0f, 0.0f, 0.0f,
+                  0.0f, 0.0f, 1.0f, 0.0f,
+                  0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 /*!
@@ -651,7 +651,7 @@ void
 SbMatrix::setTransform(const SbVec3f& t, const SbRotation& r, const SbVec3f& s)
 {
   SbMatrix tmp;
-  
+
   this->setScale(s);
 
   tmp.setRotate(r);
@@ -674,10 +674,10 @@ SbMatrix::setTransform(const SbVec3f& t, const SbRotation& r, const SbVec3f& s)
  */
 void
 SbMatrix::setTransform(const SbVec3f& t, const SbRotation& r, const SbVec3f& s,
-		       const SbRotation& so)
+                       const SbRotation& so)
 {
   SbMatrix tmp;
-  
+
   this->setRotate(so.inverse());
 
   tmp.setScale(s);
@@ -707,14 +707,14 @@ SbMatrix::setTransform(const SbVec3f& t, const SbRotation& r, const SbVec3f& s,
  */
 void
 SbMatrix::setTransform(const SbVec3f& translation,
-		       const SbRotation& rotation,
-		       const SbVec3f& scaleFactor,
-		       const SbRotation& scaleOrientation,
-		       const SbVec3f& center)
+                       const SbRotation& rotation,
+                       const SbVec3f& scaleFactor,
+                       const SbRotation& scaleOrientation,
+                       const SbVec3f& center)
 {
 #if 0 // replaced with optimized version, 19990423 pederb
   SbMatrix tmp;
-  
+
   this->setTranslate(-center);
 
   tmp.setRotate(scaleOrientation.inverse());
@@ -736,7 +736,7 @@ SbMatrix::setTransform(const SbVec3f& translation,
   this->multRight(tmp);
 
 #else // optimized version
-  // should be quite a lot faster. Matrix multiplication is 
+  // should be quite a lot faster. Matrix multiplication is
   // expensive, and it rarely happens that all arguments
   // are used in a Transform node. For VRML2Transform this
   // is very important, since the Transform node has replaced
@@ -753,7 +753,7 @@ SbMatrix::setTransform(const SbVec3f& translation,
   if (scaleFactor != SbVec3f(1.0f, 1.0f, 1.0f)) {
     tmp.setScale(scaleFactor);
     this->multRight(tmp);
-  } 
+  }
   if (doorient) {
     tmp.setRotate(scaleOrientation);
     this->multRight(tmp);
@@ -779,7 +779,7 @@ SbMatrix::setTransform(const SbVec3f& translation,
  */
 void
 SbMatrix::getTransform(SbVec3f& /* t */, SbRotation& /* r */, SbVec3f& /* s */,
-		       SbRotation& /* so */) const
+                       SbRotation& /* so */) const
 {
   // TODO: not implemented.
   assert(0);
@@ -796,10 +796,10 @@ SbMatrix::getTransform(SbVec3f& /* t */, SbRotation& /* r */, SbVec3f& /* s */,
  */
 void
 SbMatrix::getTransform(SbVec3f& /* translation */,
-		       SbRotation& /* rotation */,
-		       SbVec3f& /* scaleFactor */,
-		       SbRotation& /* scaleOrientation */,
-		       const SbVec3f& /* center */) const
+                       SbRotation& /* rotation */,
+                       SbVec3f& /* scaleFactor */,
+                       SbRotation& /* scaleOrientation */,
+                       const SbVec3f& /* center */) const
 {
   // TODO: not implemented.
   assert(0);
@@ -812,7 +812,7 @@ SbMatrix::getTransform(SbVec3f& /* translation */,
  */
 SbBool
 SbMatrix::factor(SbMatrix& /* r */, SbVec3f& /* s */, SbMatrix& /* u */, SbVec3f& /* t */,
-		 SbMatrix& /* proj */)
+                 SbMatrix& /* proj */)
 {
   // TODO: not implemented.
   assert(0);
@@ -862,7 +862,7 @@ SbMatrix::LUDecomposition(int index[4], float & d)
                 max_pivot = test_pivot;
             }
         }
-             
+
         // swap rows
         if (swap_row != row) {
             d = -d;
@@ -947,7 +947,7 @@ SbMatrix::LUBackSubstitution(int index[4], float b[4]) const
 
 /*!
   Returns the transpose of this matrix.
-*/ 
+*/
 
 SbMatrix
 SbMatrix::transpose(void) const
@@ -1047,7 +1047,7 @@ SbMatrix::multLeft(const SbMatrix& m)
   Multiply \a src vector with this matrix and return the result in \a dst.
   Multiplication is done with the vector on the right side of the
   expression, i.e. dst = M*src.
-  
+
   \sa multVecMatrix(), multDirMatrix() and multLineMatrix().
 */
 void
@@ -1073,7 +1073,7 @@ SbMatrix::multMatrixVec(const SbVec3f& src, SbVec3f& dst) const
   expression, i.e. dst = src*M.
 
   It is safe to let \a src and \dst be the same SbVec3f instance.
-  
+
   \sa multMatrixVec(), multDirMatrix() and multLineMatrix().
 */
 void
@@ -1096,16 +1096,16 @@ SbMatrix::multVecMatrix(const SbVec3f& src, SbVec3f& dst) const
 /*!
   \overload
 */
-void 
+void
 SbMatrix::multVecMatrix(const SbVec4f &src, SbVec4f &dst) const
 {
   const float *t0 = (*this)[0];
   const float *t1 = (*this)[1];
   const float *t2 = (*this)[2];
   const float *t3 = (*this)[3];
-  
+
   SbVec4f s = src;
-  
+
   dst[0] = (s[0]*t0[0] + s[1]*t0[1] + s[2]*t0[2] + t0[3]);
   dst[1] = (s[0]*t1[0] + s[1]*t1[1] + s[2]*t1[2] + t1[3]);
   dst[2] = (s[0]*t2[0] + s[1]*t2[1] + s[2]*t2[2] + t2[3]);
@@ -1160,8 +1160,8 @@ SbMatrix::print(FILE * fp) const
 {
   for (int i=0; i < 4; i++) {
     fprintf(fp, "%10.5g\t%10.5g\t%10.5g\t%10.5g\n",
-	    this->matrix[i][0], this->matrix[i][1],
-	    this->matrix[i][2], this->matrix[i][3]);
+            this->matrix[i][0], this->matrix[i][1],
+            this->matrix[i][2], this->matrix[i][3]);
   }
 }
 
@@ -1175,7 +1175,7 @@ SbMatrix::print(ostream & file) const
 #if COIN_DEBUG
   for (int i=0; i < 4; i++) {
     file << "\t" << this->matrix[i][0] << "\t" << this->matrix[i][1] << "\t"
-	 << this->matrix[i][2] << "\t" << this->matrix[i][3] << endl;
+         << this->matrix[i][2] << "\t" << this->matrix[i][3] << endl;
   }
 #endif // COIN_DEBUG
 }

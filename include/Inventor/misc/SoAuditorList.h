@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -25,7 +25,7 @@
 // SoAuditorList.h file in the include/Inventor/lists/ directory.
 
 // This include file is part of the Coin library solely for purposes
-// of being backwards compatible with Open Inventor. 
+// of being backwards compatible with Open Inventor.
 
 // The real class definition include file has been moved to the lists
 // directory.

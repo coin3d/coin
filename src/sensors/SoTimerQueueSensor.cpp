@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -105,7 +105,7 @@ SoTimerQueueSensor::schedule(void)
   assert(this->scheduled == TRUE || this->scheduled == FALSE);
   if (this->isScheduled()) {
     SoDebugError::postWarning("SoTimerQueueSensor::schedule",
-			      "already scheduled!");
+                              "already scheduled!");
     return;
   }
 #endif // COIN_DEBUG
@@ -125,7 +125,7 @@ SoTimerQueueSensor::unschedule(void)
   assert(this->scheduled == TRUE || this->scheduled == FALSE);
   if (!this->isScheduled()) {
     SoDebugError::postWarning("SoTimerQueueSensor::unschedule",
-			      "not scheduled!");
+                              "not scheduled!");
     return;
   }
 #endif // COIN_DEBUG

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -55,7 +55,7 @@
   FIXME: write doc
 */
 SbSphereSectionProjector::SbSphereSectionProjector(float /* edgeTol */,
-						   SbBool orientToEye)
+                                                   SbBool orientToEye)
   : inherited(orientToEye)
 {
   assert(0 && "FIXME: implementation missing");
@@ -65,8 +65,8 @@ SbSphereSectionProjector::SbSphereSectionProjector(float /* edgeTol */,
   FIXME: write doc
 */
 SbSphereSectionProjector::SbSphereSectionProjector(const SbSphere & sph,
-						   float /* edgeTol */,
-						   SbBool orientToEye)
+                                                   float /* edgeTol */,
+                                                   SbBool orientToEye)
   : inherited(sph, orientToEye)
 {
   assert(0 && "FIXME: implementation missing");
@@ -97,7 +97,7 @@ SbSphereSectionProjector::project(const SbVec2f & /* point */)
 */
 SbRotation
 SbSphereSectionProjector::getRotation(const SbVec3f & /* point1 */,
-				      const SbVec3f & /* point2 */)
+                                      const SbVec3f & /* point2 */)
 {
   assert(0 && "FIXME: implementation missing");
   return SbRotation::identity();
@@ -134,7 +134,7 @@ SbSphereSectionProjector::setRadialFactor(float /* rad */)
 /*!
   FIXME: write doc
 */
-float 
+float
 SbSphereSectionProjector::getRadialFactor(void) const
 {
   assert(0 && "FIXME: implementation missing");

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -65,7 +65,7 @@ SoNodeList::~SoNodeList(void)
   FIXME: write doc.
 */
 
-void 
+void
 SoNodeList::append(SoNode * const ptr)
 {
   SoBaseList::append((SoBase *)ptr);
@@ -97,7 +97,7 @@ SoNodeList::operator =(const SoNodeList & l)
   FIXME: write doc.
 */
 
-void 
+void
 SoNodeList::insert(SoNode * const ptr, const int addBefore)
 {
   //  if (this->doRef) ptr->ref();

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -43,8 +43,8 @@
       SoSeparator * root = SoDB::readAll(&in);
       if (root) {
         // Do stuff with the imported scene graph here
-	// ...
-	return 0;
+        // ...
+        return 0;
       }
     }
 
@@ -111,7 +111,7 @@ public:
       this->headerisread = FALSE;
       this->ivversion = 0.0f;
       this->linenr = 1;
-      this->backBufIndex = -1; 
+      this->backBufIndex = -1;
       this->readbufIndex = 0;
       this->totalread = 0;
       this->lastputback = -1;
@@ -123,7 +123,7 @@ public:
     {
       if (!this->memBuffer) delete [] this->readbuf;
       if ((this->filename != "<stdin>") && (this->filename.getLength()))
-	fclose(this->fp);
+        fclose(this->fp);
     }
 
   SbBool doBufferRead(void)
@@ -135,12 +135,12 @@ public:
       if (this->memBuffer) return FALSE;
       int len = fread(this->readbuf, 1, READBUFSIZE, this->fp);
       if (len <= 0) {
-	this->readbufIndex = 0;
-	this->readbufLen = 0;
+        this->readbufIndex = 0;
+        this->readbufLen = 0;
 #if 0 // debug
-	SoDebugError::postInfo("doBufferRead", "eof!");
+        SoDebugError::postInfo("doBufferRead", "eof!");
 #endif // debug
-	return FALSE;
+        return FALSE;
       }
 
       this->totalread += this->readbufIndex;
@@ -152,8 +152,8 @@ public:
   SbBool eof(void)
     {
       return ((this->backBufIndex == -1) &&
-	      (this->readbufIndex == this->readbufLen) &&
-	      !this->doBufferRead());
+              (this->readbufIndex == this->readbufLen) &&
+              !this->doBufferRead());
     }
 
   size_t getNumBytesParsedSoFar(void) const
@@ -165,20 +165,20 @@ public:
     {
       // Suck out any bytes from the backbuffer first.
       while ((this->backBufIndex >= 0) && (length > 0)) {
-	*ptr++ = this->backBuf[this->backBufIndex--];
-	length--;
+        *ptr++ = this->backBuf[this->backBufIndex--];
+        length--;
       }
 
       SbBool reachedeof = FALSE;
       do {
-	// Grab bytes from the buffer.
-	while ((this->readbufIndex < this->readbufLen) && (length > 0)) {
-	  *ptr++ = this->readbuf[this->readbufIndex++];
-	  length--;
-	}
+        // Grab bytes from the buffer.
+        while ((this->readbufIndex < this->readbufLen) && (length > 0)) {
+          *ptr++ = this->readbuf[this->readbufIndex++];
+          length--;
+        }
 
-	// Fetch more bytes if necessary.
-	if (length > 0) reachedeof = !this->doBufferRead();
+        // Fetch more bytes if necessary.
+        if (length > 0) reachedeof = !this->doBufferRead();
 
       } while (length && !reachedeof);
 
@@ -188,24 +188,24 @@ public:
   SbBool get(char & c)
     {
       if (this->backBufIndex >= 0) {
-	c = this->backBuf[this->backBufIndex--];
+        c = this->backBuf[this->backBufIndex--];
       }
       else if (this->readbufIndex >= this->readbufLen) {
-	if (!this->doBufferRead()) {
-	  c = (char) EOF;
-	  return FALSE;
-	}
+        if (!this->doBufferRead()) {
+          c = (char) EOF;
+          return FALSE;
+        }
 
-	c = this->readbuf[this->readbufIndex++];
+        c = this->readbuf[this->readbufIndex++];
       }
       else {
-	c = this->readbuf[this->readbufIndex++];
+        c = this->readbuf[this->readbufIndex++];
       }
 
       // NB: the line counting is not working 100% if we start putting
       // back and re-reading '\r\n' sequences.
       if ((c == '\r') || ((c == '\n') && (this->lastchar != '\r')))
-	this->linenr++;
+        this->linenr++;
       this->lastchar = c;
       this->lastputback = -1;
 
@@ -223,14 +223,14 @@ public:
 
       this->lastputback = c;
       this->lastchar = -1;
-      
+
       if (this->readbufIndex > 0 && this->backBufIndex < 0) {
-	this->readbufIndex--;
-	// Make sure we write back the same character which was read..
-	assert(c == this->readbuf[this->readbufIndex]);
+        this->readbufIndex--;
+        // Make sure we write back the same character which was read..
+        assert(c == this->readbuf[this->readbufIndex]);
       }
       else {
-	this->backBuf[++this->backBufIndex] = c;
+        this->backBuf[++this->backBufIndex] = c;
       }
     }
 
@@ -240,31 +240,31 @@ public:
       // Binary format.
 
       if (this->isbinary) {
-	unsigned int len = strlen(str);
-	char * valarray[sizeof(int)];
-	{ // This code from SoOutput::convertInt32().
-	  // Convert to "network format".
+        unsigned int len = strlen(str);
+        char * valarray[sizeof(int)];
+        { // This code from SoOutput::convertInt32().
+          // Convert to "network format".
 
-	  // FIXME: ugly hack, probably breaks on 64-bit architectures --
-	  // lame. 19990627 mortene.
-	  assert(sizeof(len) == sizeof(unsigned long int));
-	  *((unsigned long int *)valarray) = htonl(*((unsigned long int *)&len));
-	}
+          // FIXME: ugly hack, probably breaks on 64-bit architectures --
+          // lame. 19990627 mortene.
+          assert(sizeof(len) == sizeof(unsigned long int));
+          *((unsigned long int *)valarray) = htonl(*((unsigned long int *)&len));
+        }
 
-	for (unsigned int i=0; i < sizeof(len); i++)
-	  this->putBack(valarray[i]);
-	for (unsigned int i=0; i < len; i++) this->putBack(str[i]);
-	if (len % 4) {
-	  for (unsigned int i=0; i < (4 - (len%4)); i++) this->putBack('\0');
-	}
-	return;
+        for (unsigned int i=0; i < sizeof(len); i++)
+          this->putBack(valarray[i]);
+        for (unsigned int i=0; i < len; i++) this->putBack(str[i]);
+        if (len % 4) {
+          for (unsigned int i=0; i < (4 - (len%4)); i++) this->putBack('\0');
+        }
+        return;
       }
 #else
       if (this->isbinary) {
-	assert(0);
+        assert(0);
       }
 #endif
-      
+
       // ASCII format.
 
       int n = strlen(str);
@@ -274,19 +274,19 @@ public:
       // characters. This should take care of Unix-, MSDOS/MSWin- and
       // MacOS-style generated files. What a mess.
       for (int i=0; i < n; i++) {
-	if ((str[i] == '\r') || ((str[i] == '\n') &&
-				 (this->lastputback != '\r')))
-	  this->linenr--;
-	this->lastputback = str[i];
+        if ((str[i] == '\r') || ((str[i] == '\n') &&
+                                 (this->lastputback != '\r')))
+          this->linenr--;
+        this->lastputback = str[i];
       }
 
       this->lastchar = -1;
 
       if (n <= this->readbufIndex && this->backBufIndex < 0)
-	this->readbufIndex -= n;
+        this->readbufIndex -= n;
       else {
-	for (int i = n - 1; i >= 0; i--) 
-	  this->backBuf[++this->backBufIndex] = str[i];
+        for (int i = n - 1; i >= 0; i--)
+          this->backBuf[++this->backBufIndex] = str[i];
       }
     }
 
@@ -295,27 +295,27 @@ public:
       const char COMMENT_CHAR = '#';
 
       while (TRUE) {
-	char c;
-	SbBool gotchar;
-	while ((gotchar = this->get(c)) && isspace(c));
-    
-	if (!gotchar) return FALSE;
-    
-	if (c == COMMENT_CHAR) {
-	  while ((gotchar = this->get(c)) && (c != '\n') && (c != '\r'));
-	  if (!gotchar) return FALSE;
-	  if (c == '\r') {
-	    gotchar = this->get(c);
-	    if (!gotchar) return FALSE;
-	    if (c != '\n') this->putBack(c);
-	  }
-	}
-	else {
-	  this->putBack(c);
-	  break;
-	}
+        char c;
+        SbBool gotchar;
+        while ((gotchar = this->get(c)) && isspace(c));
+
+        if (!gotchar) return FALSE;
+
+        if (c == COMMENT_CHAR) {
+          while ((gotchar = this->get(c)) && (c != '\n') && (c != '\r'));
+          if (!gotchar) return FALSE;
+          if (c == '\r') {
+            gotchar = this->get(c);
+            if (!gotchar) return FALSE;
+            if (c != '\n') this->putBack(c);
+          }
+        }
+        else {
+          this->putBack(c);
+          break;
+        }
       }
-  
+
       return TRUE;
     }
 
@@ -332,27 +332,27 @@ public:
 
       char c;
       if (!this->get(c)) {
-	this->prematureeof = TRUE;
-	return FALSE;
+        this->prematureeof = TRUE;
+        return FALSE;
       }
 
       if (c != '#') {
-	this->putBack(c);
-	return TRUE;
+        this->putBack(c);
+        return TRUE;
       }
 
       this->header += c;
 
       while ((this->get(c)) && (c != '\n') && (c != '\r')) this->header += c;
       if ((c != '\n') && (c != '\r')) {
-	this->prematureeof = TRUE;
-	return FALSE;
+        this->prematureeof = TRUE;
+        return FALSE;
       }
 
       if (!SoDB::getHeaderData(this->header, this->isbinary, this->ivversion,
-			       this->prefunc, this->postfunc, this->userdata,
-			       TRUE))
-	this->ivversion = 0.0f;
+                               this->prefunc, this->postfunc, this->userdata,
+                               TRUE))
+        this->ivversion = 0.0f;
       return TRUE;
     }
 
@@ -373,7 +373,7 @@ public:
   int readbufLen;
   size_t totalread;
   SbList<char> backBuf;
-  int backBufIndex; 
+  int backBufIndex;
   char lastputback; // The last character put back into the stream.
   char lastchar; // Last read character.
   SbBool memBuffer;
@@ -431,7 +431,7 @@ void
 SoInput::setFilePointer(FILE * newFP)
 {
   this->closeFile();
-    
+
   const char * name = newFP == stdin ? "<stdin>" : "";
   SoInput_FileInfo * newfile =
     new SoInput_FileInfo(name, newFP);
@@ -468,7 +468,7 @@ SoInput::openFile(const char * fileName, SbBool okIfNotFound)
   else {
     if (!okIfNotFound)
       SoReadError::post(this, "Couldn't open file '%s' for reading.",
-			fileName);
+                        fileName);
   }
 
   return FALSE;
@@ -506,7 +506,7 @@ SoInput::pushFile(const char * filename)
   }
 
   SoDebugError::post("SoInput::pushFile",
-		     "Couldn't open file '%s' for reading.", filename);
+                     "Couldn't open file '%s' for reading.", filename);
   return FALSE;
 }
 
@@ -641,7 +641,7 @@ SbBool
 SoInput::get(char & c)
 {
   return (this->checkHeader() && // Strip off file header, if any.
-	  this->getTopOfStack()->get(c));
+          this->getTopOfStack()->get(c));
 }
 
 /*!
@@ -796,25 +796,25 @@ SoInput::read(SbString & s)
       if (!fi->get(*buf)) return FALSE;
 
       if (quoted) {
-	if (*buf == '\"') break;
+        if (*buf == '\"') break;
 
-	if (*buf == '\\') {
-	  if (!fi->get(c)) return FALSE;
-	  if (c == '\"') *buf = '\"';
-	  else fi->putBack(c);
-	}
+        if (*buf == '\\') {
+          if (!fi->get(c)) return FALSE;
+          if (c == '\"') *buf = '\"';
+          else fi->putBack(c);
+        }
       }
       else if (isspace(*buf)) {
-	fi->putBack(*buf);
-	break;
+        fi->putBack(*buf);
+        break;
       }
       else if (*buf == '[') {
-	fi->putBack(*buf);
-	break;
+        fi->putBack(*buf);
+        break;
       }
       else if (*buf == ']') {
-	fi->putBack(*buf);
-	break;
+        fi->putBack(*buf);
+        break;
       }
 
       buf++;
@@ -858,7 +858,7 @@ SoInput::read(SbName & n, SbBool validIdent)
     if (result && validIdent) {
       if (!SbName::isIdentStartChar(s[0])) result = FALSE;
       for (int i = 1; (i < s.getLength()) && result; i++)
-	if (!SbName::isIdentChar(s[i])) result = FALSE;
+        if (!SbName::isIdentChar(s[i])) result = FALSE;
     }
 
     if (!result) return FALSE;
@@ -877,16 +877,16 @@ SoInput::read(SbName & n, SbBool validIdent)
       const char * cstr = s.getString();
       assert(cstr && strlen(cstr) == (size_t)s.getLength());
       while (((cstr[idx] == '{') || (cstr[idx] == '}')) && (idx > 0)) idx--;
-    
+
       if (idx == s.getLength()-1) {
-	// No trailing '{' or '}'.
-	n = s;
+        // No trailing '{' or '}'.
+        n = s;
       }
       else {
-	// Trailing brackets; rip out correct part of string and put the
-	// rest back in again.
-	n = s.getSubString(0, idx);
-	fi->putBack(&cstr[idx+1]);
+        // Trailing brackets; rip out correct part of string and put the
+        // rest back in again.
+        n = s.getSubString(0, idx);
+        fi->putBack(&cstr[idx+1]);
       }
     }
     else {
@@ -897,16 +897,16 @@ SoInput::read(SbName & n, SbBool validIdent)
       SbBool gotchar;
 
       if ((gotchar = fi->get(c)) && SbName::isIdentStartChar(c)) {
-	*b++ = c;
+        *b++ = c;
 
-	while ((gotchar = fi->get(c)) && SbName::isIdentChar(c)) {
-	  *b++ = c;
-	  if (b - buf == 255) {
-	    *b = '\0';
-	    s += buf;
-	    b = buf;
-	  }
-	}
+        while ((gotchar = fi->get(c)) && SbName::isIdentChar(c)) {
+          *b++ = c;
+          if (b - buf == 255) {
+            *b = '\0';
+            s += buf;
+            b = buf;
+          }
+        }
       }
       // This behavior is pretty silly, but this is how it is supposed
       // to work, apparently -- _not_ returning FALSE upon end-of-file.
@@ -916,7 +916,7 @@ SoInput::read(SbName & n, SbBool validIdent)
       n = SbName(s);
 #if 0 // debug
       SoDebugError::postInfo("SoInput::read",
-			     "string read: ``%s''", s.getString());
+                             "string read: ``%s''", s.getString());
 #endif // debug
 
 #if 0 // OBSOLETED, 19991116 mortene.
@@ -1066,7 +1066,7 @@ SbBool
 SoInput::readBinaryArray(unsigned char * c, int length)
 {
   return (this->checkHeader() &&
-	  this->getTopOfStack()->getChunkOfBytes(c, length));
+          this->getTopOfStack()->getChunkOfBytes(c, length));
 }
 
 /*!
@@ -1080,7 +1080,7 @@ SoInput::readBinaryArray(int32_t * l, int length)
   assert(length > 0);
   if (!this->checkHeader() ||
       !this->getTopOfStack()->getChunkOfBytes((unsigned char *)l,
-					      length * sizeof(int32_t)))
+                                              length * sizeof(int32_t)))
     return FALSE;
 
   this->convertInt32Array((char *)l, l, length);
@@ -1098,7 +1098,7 @@ SoInput::readBinaryArray(float * f, int length)
   assert(length > 0);
   if (!this->checkHeader() ||
       !this->getTopOfStack()->getChunkOfBytes((unsigned char *)f,
-					      length * sizeof(float)))
+                                              length * sizeof(float)))
     return FALSE;
 
   this->convertFloatArray((char *)f, f, length);
@@ -1116,7 +1116,7 @@ SoInput::readBinaryArray(double * d, int length)
   assert(length > 0);
   if (!this->checkHeader() ||
       !this->getTopOfStack()->getChunkOfBytes((unsigned char *)d,
-					      length * sizeof(double)))
+                                              length * sizeof(double)))
     return FALSE;
 
   this->convertDoubleArray((char *)d, d, length);
@@ -1188,7 +1188,7 @@ SoInput::putBack(const char * str)
  */
 void
 SoInput::addReference(const SbName & name, SoBase * base,
-		      SbBool /* addToGlobalDict */)
+                      SbBool /* addToGlobalDict */)
 {
   this->refdict.enter((unsigned long)name.getString(), (void *) base);
   // FIXME: is this necessary? Looks suspicious. 19990626 mortene.
@@ -1284,7 +1284,7 @@ SoInput::addDirectoryIdx(const int idx, const char * dirName)
  */
 void
 SoInput::addEnvDirectoriesFirst(const char * envVarName,
-				const char * separator)
+                                const char * separator)
 {
   SoInput::addEnvDirectoriesIdx(0, envVarName, separator);
 }
@@ -1301,30 +1301,30 @@ SoInput::addEnvDirectoriesFirst(const char * envVarName,
  */
 void
 SoInput::addEnvDirectoriesLast(const char * envVarName,
-			       const char * separator)
+                               const char * separator)
 {
   SoInput::addEnvDirectoriesIdx(SoInput::dirsearchlist.getLength(),
-				envVarName,
-				separator);
+                                envVarName,
+                                separator);
 }
 
 /*!
   \internal
-  
+
   Add environment variable directory list, starting at index \a startidx.
  */
 void
 SoInput::addEnvDirectoriesIdx(int startidx,
-			      const char * envVarName,
-			      const char * separator)
+                              const char * envVarName,
+                              const char * separator)
 {
   const char * p = getenv(envVarName);
   if (!p) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoInput::addEnvDirectoriesFirst",
-			      "Tried to add directories from nonexistent "
-			      "environment variable '%s'.",
-			      envVarName);
+                              "Tried to add directories from nonexistent "
+                              "environment variable '%s'.",
+                              envVarName);
 #endif // COIN_DEBUG
     return;
   }
@@ -1375,8 +1375,8 @@ SoInput::removeDirectory(const char * dirName)
 #if COIN_DEBUG
   else {
     SoDebugError::postWarning("SoInput::removeDirectory",
-			      "Tried to remove nonexistent directory '%s'"
-			      " in directory search list.", dirName);
+                              "Tried to remove nonexistent directory '%s'"
+                              " in directory search list.", dirName);
   }
 #endif // COIN_DEBUG
 }
@@ -1425,7 +1425,7 @@ SoInput::init(void)
 #if 0 // FIXME: re-code to be run automatically upon exit. 19991106 mortene.
 /*!
   \internal
-  
+
   Clean out static variables in class (to aid in searching for memory
   leaks).
 */
@@ -1486,7 +1486,7 @@ SoInput::getBasename(const char * const filename)
 
   char fname[_MAX_FNAME];
   char ext[_MAX_EXT];
-  
+
   _splitpath(filename, NULL, NULL, fname, ext);
 
   SbString s(fname);
@@ -1531,8 +1531,8 @@ SoInput::setIVVersion(float version)
 */
 void
 SoInput::initFile(FILE * /* newFP */, const char * /* fileName */,
-		  SbString * /* fullName */,
-		  SbBool /* openedHere */, SbDict * /* refDict */)
+                  SbString * /* fullName */,
+                  SbBool /* openedHere */, SbDict * /* refDict */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -1645,7 +1645,7 @@ SoInput::readUnsignedInteger(uint32_t & l)
 
   // FIXME: fixed size buffer for input of unknown
   // length. Ouch. 19990530 mortene.
-  char str[32]; 
+  char str[32];
   if (! this->readUnsignedIntegerString(str))
     return FALSE;
 
@@ -2068,7 +2068,7 @@ SoInput::findFile(const char * basename, SbString & fullname)
     fullname = * sl[diridx++];
     fullname += "/";
     fullname += basename;
-    
+
     fp = fopen(fullname.getString(), "r");
   }
 

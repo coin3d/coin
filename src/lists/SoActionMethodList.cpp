@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -84,17 +84,17 @@ SoActionMethodList::operator [] (const int index) const
 
 void
 SoActionMethodList::addMethod(const SoType nodeType,
-			      const SoActionMethod method)
+                              const SoActionMethod method)
 {
   //
   // I'm a bit unsure about this one. Should I really find all
   // nodes derived from a node when adding methods, and should
   // perhaps the method for the children be overwritten even
-  // though method != NULL?  pederb 19991029 
+  // though method != NULL?  pederb 19991029
 
   const int index = nodeType.getData();
   (*this)[ index ] = method;
-  
+
   SoTypeList derivedtypes;
   int n = SoType::getAllDerivedFrom(nodeType, derivedtypes);
   for (int i = 0; i < n; i++) {
@@ -102,18 +102,18 @@ SoActionMethodList::addMethod(const SoType nodeType,
     if ((*this)[(int)type.getData()] == NULL) {
 #if 0 // debug
       {
-	char buffer[256];
-	const char * methodname = NULL;
-	if (method == SoNode::pickS) methodname = "pickS";
-	else if (method == SoNode::rayPickS) methodname = "rayPickS";
-	else {
-	  methodname = buffer;
-	  sprintf(buffer, "%p", method);
-	}
-	
-	SoDebugError::postInfo("SoActionMethodList::addMethod",
-			       "(listp %p) ``%s'' overloaded with %s",
-			       this, type.getName().getString(), methodname);
+        char buffer[256];
+        const char * methodname = NULL;
+        if (method == SoNode::pickS) methodname = "pickS";
+        else if (method == SoNode::rayPickS) methodname = "rayPickS";
+        else {
+          methodname = buffer;
+          sprintf(buffer, "%p", method);
+        }
+
+        SoDebugError::postInfo("SoActionMethodList::addMethod",
+                               "(listp %p) ``%s'' overloaded with %s",
+                               this, type.getName().getString(), methodname);
       }
 #endif // debug
       (*this)[(int)type.getData()] = method;
@@ -150,22 +150,22 @@ SoActionMethodList::dump_list(void)
     SoType t = SoType::fromKey(i);
     if (!t.isBad() && t.isDerivedFrom(SoNode::getClassTypeId())) {
 //      if (!t.isBad() && t.isDerivedFrom(SoType::fromName("Sphere"))) {
-      
+
       const int index = t.getData();
       SoActionMethod method = (*this)[index];
-      
+
       char buffer[256];
       const char * methodname = NULL;
       if (method == SoNode::pickS) methodname = "pickS";
       else if (method == SoNode::rayPickS) methodname = "rayPickS";
       else {
-	methodname = buffer;
-	sprintf(buffer, "%p", method);
+        methodname = buffer;
+        sprintf(buffer, "%p", method);
       }
 
       SoDebugError::postInfo("SoActionMethodList::dump_list",
-			     "(listp %p) type ``%s'', method %s",
-			     this, t.getName().getString(), methodname);
+                             "(listp %p) type ``%s'', method %s",
+                             this, t.getName().getString(), methodname);
     }
   }
 #endif // debug

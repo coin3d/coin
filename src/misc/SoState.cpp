@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -47,7 +47,7 @@
 #endif // COIN_DEBUG
 
 /*!
-  The constructor.  The \a theAction argument is the action object the state 
+  The constructor.  The \a theAction argument is the action object the state
   is part of, and the \a enabledElements argument is an SoTypeList of the
   elements that are enabled for this action.
 
@@ -57,7 +57,7 @@
 */
 
 SoState::SoState(SoAction * const theAction,
-		 const SoTypeList & enabledElements)
+                 const SoTypeList & enabledElements)
   : action(theAction), depth(0)
 {
   int i;
@@ -71,7 +71,7 @@ SoState::SoState(SoAction * const theAction,
     this->initial[i] = NULL;
     this->stack[i] = NULL;
   }
-  
+
   const int numElements = enabledElements.getLength();
   for (i = 0; i < numElements; i++) {
     SoType type = enabledElements[ i ];
@@ -133,16 +133,16 @@ SoState::getElement(const int stackIndex)
   // FIXME: should the assert() below be converted to a simple return
   // statement upon element == NULL? 19990304 mortene.
   assert(element);
-    
+
 #if 0 // debug
   SoDebugError::postInfo("SoState::getElement",
-			 "stackIndex: %d, element: %p ('%s'), "
-			 "stackdepth: %d, pushstack: %s",
-			 stackIndex, element,
-			 element->getTypeId().getName().getString(),
-			 element->getDepth(),
-			 (element->getDepth() < this->depth) ?
-			 "yes" : "no");
+                         "stackIndex: %d, element: %p ('%s'), "
+                         "stackdepth: %d, pushstack: %s",
+                         stackIndex, element,
+                         element->getTypeId().getName().getString(),
+                         element->getDepth(),
+                         (element->getDepth() < this->depth) ?
+                         "yes" : "no");
 #endif // debug
 
   if (element->getDepth() < this->depth) { // create elt of correct depth
@@ -203,10 +203,10 @@ SoState::pop(void)
     SoElement * element;
     if ((element = this->stack[ i ]) != NULL) {
       if (element->getDepth() > this->depth) { // rett test? tror det
-	SoElement * prev = element->prev;
-	assert(prev);
-	element->pop(this, prev);
-	this->stack[i] = prev;
+        SoElement * prev = element->prev;
+        assert(prev);
+        element->pop(this, prev);
+        this->stack[i] = prev;
       }
     }
   }
@@ -225,7 +225,7 @@ SoState::print(FILE * const file) const
     SoElement * element;
     if ((element = this->stack[i]) != NULL)
       fprintf(file, "    %s\n",
-	       element->getTypeId().getName().getString());
+               element->getTypeId().getName().getString());
   }
   fprintf(file, "  }\n");
 }
@@ -256,14 +256,14 @@ SoState::getDepth(void) const
 /*!
   This method is for caching, something that isn't implemented in Coin yet.
   Using it does nothing.
-  It is included for compatibility reasons (at the moment at least).  
+  It is included for compatibility reasons (at the moment at least).
 */
 
 void
 SoState::setCacheOpen(const SbBool)
 {
 //  assert(0 && "FIXME: not implemented");
-//  this->cacheOpen = FALSE /* flag */; 
+//  this->cacheOpen = FALSE /* flag */;
 }
 
 /*!
@@ -288,4 +288,3 @@ SoState::getElementNoPush(const int stackIndex) const
 {
   return this->stack[ stackIndex ];
 }
-

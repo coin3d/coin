@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -98,7 +98,7 @@ SoPrimitiveVertex::getTextureCoords(void) const
 /*!
   FIXME: write doc
  */
-int 
+int
 SoPrimitiveVertex::getMaterialIndex(void) const
 {
   return this->materialIndex;
@@ -116,7 +116,7 @@ SoPrimitiveVertex::getDetail(void) const
 /*!
   FIXME: write doc
  */
-void 
+void
 SoPrimitiveVertex::setPoint(const SbVec3f & point)
 {
   this->point = point;
@@ -125,7 +125,7 @@ SoPrimitiveVertex::setPoint(const SbVec3f & point)
 /*!
   FIXME: write doc
  */
-void 
+void
 SoPrimitiveVertex::setNormal(const SbVec3f & normal)
 {
   this->normal = normal;
@@ -134,7 +134,7 @@ SoPrimitiveVertex::setNormal(const SbVec3f & normal)
 /*!
   FIXME: write doc
  */
-void 
+void
 SoPrimitiveVertex::setTextureCoords(const SbVec4f & texcoords)
 {
   this->textureCoords = texcoords;
@@ -143,7 +143,7 @@ SoPrimitiveVertex::setTextureCoords(const SbVec4f & texcoords)
 /*!
   FIXME: write doc
  */
-void 
+void
 SoPrimitiveVertex::setMaterialIndex(const int index)
 {
   this->materialIndex = index;
@@ -152,7 +152,7 @@ SoPrimitiveVertex::setMaterialIndex(const int index)
 /*!
   FIXME: write doc
  */
-void 
+void
 SoPrimitiveVertex::setDetail(SoDetail * const detail)
 {
   this->detail = detail;

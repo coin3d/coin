@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -68,4 +68,3 @@ SbStringList::operator [] (const int i) const
 {
   return (SbString *&)(*(SbPList *)this)[i];
 }
-

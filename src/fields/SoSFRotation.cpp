@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -196,9 +196,9 @@ SoSFRotation::readValue(SoInput * in)
   SbVec3f axis;
   float angle;
   SbBool result = (in->read(axis[0]) &&
-		   in->read(axis[1]) &&
-		   in->read(axis[2]) &&
-		   in->read(angle));
+                   in->read(axis[1]) &&
+                   in->read(axis[2]) &&
+                   in->read(angle));
   this->setValue(axis, angle);
   return result;
 }
@@ -241,7 +241,7 @@ SoSFRotation::getValue(SbVec3f & axis, float & angle) const
 */
 void
 SoSFRotation::setValue(const float q0, const float q1,
-			const float q2, const float q3)
+                        const float q2, const float q3)
 {
   this->setValue(SbRotation(q0, q1, q2, q3));
 }
@@ -294,9 +294,9 @@ SoSFRotation::convertTo(SoField * dest) const
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFRotation::convertTo",
-		       "Can't convert from %s to %s",
-		       this->getTypeId().getName().getString(),
-		       dest->getTypeId().getName().getString());
+                       "Can't convert from %s to %s",
+                       this->getTypeId().getName().getString(),
+                       dest->getTypeId().getName().getString());
   }
 #endif // COIN_DEBUG
 }

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -37,7 +37,7 @@ class SoPickedPoint
 public:
   SoPickedPoint(const SoPickedPoint & pp);
   SoPickedPoint(const SoPath * const path, SoState * const state,
-		const SbVec3f & objSpacePoint);
+                const SbVec3f & objSpacePoint);
   ~SoPickedPoint();
   SoPickedPoint *copy() const;
   const SbVec3f &getPoint() const;
@@ -72,7 +72,7 @@ private:
   SoState *state;
   SbViewportRegion viewport;
 
-  class SoGetMatrixAction *getMatrixAction() const;  
+  class SoGetMatrixAction *getMatrixAction() const;
   void applyMatrixAction(const SoNode * const node) const;
 };
 

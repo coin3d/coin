@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -59,9 +59,9 @@ public:
   SoMouseButtonEvent::Button getButton(void) const;
 
   static SbBool isButtonPressEvent(const SoEvent * e,
-				   SoMouseButtonEvent::Button whichButton);
+                                   SoMouseButtonEvent::Button whichButton);
   static SbBool isButtonReleaseEvent(const SoEvent * e,
-				     SoMouseButtonEvent::Button whichButton);
+                                     SoMouseButtonEvent::Button whichButton);
 
   static void initClass(void);
 

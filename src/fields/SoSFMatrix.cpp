@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -204,7 +204,7 @@ SoSFMatrix::readValue(SoInput * in)
     in->read(mat[2][2]) && in->read(mat[2][3]) &&
     in->read(mat[3][0]) && in->read(mat[3][1]) &&
     in->read(mat[3][2]) && in->read(mat[3][3]);
-  
+
   if (result) this->value = mat;
   return result;
 }
@@ -215,7 +215,7 @@ SoSFMatrix::writeValue(SoOutput * out) const
   if (out->isBinary()) {
     for(int i = 0; i < 4; i++) {
       for(int j = 0; j < 4; j++) {
-	out->write(this->getValue()[i][j]);
+        out->write(this->getValue()[i][j]);
       }
     }
     return;
@@ -247,16 +247,16 @@ SoSFMatrix::writeValue(SoOutput * out) const
 */
 void
 SoSFMatrix::setValue(const float a11, const float a12,
-		     const float a13, const float a14,
-		     const float a21, const float a22,
-		     const float a23, const float a24,
-		     const float a31, const float a32,
-		     const float a33, const float a34,
-		     const float a41, const float a42,
-		     const float a43, const float a44)
+                     const float a13, const float a14,
+                     const float a21, const float a22,
+                     const float a23, const float a24,
+                     const float a31, const float a32,
+                     const float a33, const float a34,
+                     const float a41, const float a42,
+                     const float a43, const float a44)
 {
   this->setValue(SbMatrix(a11,a12,a13,a14,a21,a22,a23,a24,
-			  a31,a32,a33,a34,a41,a42,a43,a44));
+                          a31,a32,a33,a34,a41,a42,a43,a44));
 }
 
 void
@@ -300,9 +300,9 @@ SoSFMatrix::convertTo(SoField * dest) const
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFMatrix::convertTo",
-		       "Can't convert from %s to %s",
-		       this->getTypeId().getName().getString(),
-		       dest->getTypeId().getName().getString());
+                       "Can't convert from %s to %s",
+                       this->getTypeId().getName().getString(),
+                       dest->getTypeId().getName().getString());
   }
 #endif // COIN_DEBUG
 }

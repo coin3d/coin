@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -41,7 +41,7 @@ public:
   };
 
   static void setHandlerCallback(SoErrorCB * const function,
-				 void * const data);
+                                 void * const data);
   static SoErrorCB * getHandlerCallback(void);
   static void * getHandlerData(void);
 
@@ -51,11 +51,11 @@ public:
   SoDebugError::Severity getSeverity(void) const;
 
   static void post(const char * const methodName,
-		   const char * const formatString, ...);
+                   const char * const formatString, ...);
   static void postWarning(const char * const methodName,
-			  const char * const formatString, ...);
+                          const char * const formatString, ...);
   static void postInfo(const char * const methodName,
-		       const char * const formatString, ...);
+                       const char * const formatString, ...);
 
   static void initClass(void);
 

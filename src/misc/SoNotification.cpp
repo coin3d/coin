@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -51,7 +51,7 @@ SoNotRec::SoNotRec(SoBase * const theBase)
 {
 #if 0 // debug
   SoDebugError::postInfo("SoNotRec::SoNotRec", "rec %p, base %p",
-			 this, base);
+                         this, base);
 #endif // debug
 }
 
@@ -67,12 +67,12 @@ SoNotRec::setType(const SoNotRec::Type type)
 /*!
   Returns the SoBase pointer for this notification.
 */
-SoBase * 
+SoBase *
 SoNotRec::getBase(void) const
 {
 #if 0 // debug
   SoDebugError::postInfo("SoNotRec::getBase", "rec %p, base %p",
-			 this, this->base);
+                         this, this->base);
 #endif // debug
   return this->base;
 }
@@ -176,7 +176,7 @@ SoNotList::append(SoNotRec * const rec, SoField * const field)
 {
 #if 0 // debug
   SoDebugError::postInfo("SoNotList::append", "rec %p, base %p, field %p",
-			 rec, rec->getBase(), field);
+                         rec, rec->getBase(), field);
 #endif // debug
 
   assert(field);

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -65,7 +65,7 @@ SoEngineOutputList::~SoEngineOutputList(void)
   Add \a ptr at the end of the list.
 */
 
-void 
+void
 SoEngineOutputList::append(SoEngineOutput * const ptr)
 {
   SbPList::append((SoEngineOutput *)ptr);
@@ -75,7 +75,7 @@ SoEngineOutputList::append(SoEngineOutput * const ptr)
   Insert \a ptr into the list at index \a addBefore.
 */
 
-void 
+void
 SoEngineOutputList::insert(SoEngineOutput * const ptr, const int addBefore)
 {
   SbPList::insert((SoEngineOutput *)ptr, addBefore);
@@ -95,7 +95,7 @@ SoEngineOutputList::operator [](const int i) const
 /*!
   Replace list element at index \a with \a ptr.
 */
-void 
+void
 SoEngineOutputList::set(const int i, SoEngineOutput * const ptr)
 {
   SbPList::set(i, (SoEngineOutput *)ptr);

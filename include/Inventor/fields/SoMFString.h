@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -92,7 +92,7 @@ public:
   void setValues(const int start, const int num, const char * const strings[]);
   void setValue(const char * const string);
   void deleteText(const int fromLine, const int fromChar,
-		  const int toLine, const int toChar);
+                  const int toLine, const int toChar);
 
   // SbString values need to have their constructors called.
   virtual void allocValues(int num);

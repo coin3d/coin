@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -61,7 +61,7 @@ SbXfBox3f::SbXfBox3f(const SbVec3f &_min, const SbVec3f &_max):
   this->matrix.makeIdentity();
   this->invertedmatrix.makeIdentity();
 }
- 
+
 /*!
   Constructs a box from the given SbBox3f.
 
@@ -94,7 +94,7 @@ SbXfBox3f::transform(const SbMatrix & m)
 /*!
   Sets the transformation to the given SbMatrix.
 */
-void 
+void
 SbXfBox3f::setTransform(const SbMatrix &m)
 {
   //FIXME: Check for determinant => illegal matrix => SoDebugError ?
@@ -124,7 +124,7 @@ SbXfBox3f::getInverse() const
 /*!
   Return the transformed center point of the box.
  */
-SbVec3f 
+SbVec3f
 SbXfBox3f::getCenter() const
 {
   SbVec3f orgcenter = SbBox3f::getCenter();
@@ -139,26 +139,26 @@ SbXfBox3f::getCenter() const
 
   The point is assumed to be in transformed space.
 */
-void 
+void
 SbXfBox3f::extendBy(const SbVec3f &pt)
 {
   SbMatrix im = this->getInverse();
 #if 0 // debug
   SoDebugError::postInfo("SbXfBox3f::extendBy",
-			 "\n\t%.3f %.3f %.3f %.3f\n"
-			 "\t%.3f %.3f %.3f %.3f\n"
-			 "\t%.3f %.3f %.3f %.3f\n"
-			 "\t%.3f %.3f %.3f %.3f",
-			 im[0][0], im[0][1], im[0][2], im[0][3],
-			 im[1][0], im[1][1], im[1][2], im[1][3],
-			 im[2][0], im[2][1], im[2][2], im[2][3],
-			 im[3][0], im[3][1], im[3][2], im[3][3]);
+                         "\n\t%.3f %.3f %.3f %.3f\n"
+                         "\t%.3f %.3f %.3f %.3f\n"
+                         "\t%.3f %.3f %.3f %.3f\n"
+                         "\t%.3f %.3f %.3f %.3f",
+                         im[0][0], im[0][1], im[0][2], im[0][3],
+                         im[1][0], im[1][1], im[1][2], im[1][3],
+                         im[2][0], im[2][1], im[2][2], im[2][3],
+                         im[3][0], im[3][1], im[3][2], im[3][3]);
 #endif // debug
   SbVec3f trans;
   im.multVecMatrix(pt, trans);
 #if 0 // debug
   SoDebugError::postInfo("SbXfBox3f::extendBy", "trans pt: <%f, %f, %f>",
-			 trans[0], trans[1], trans[2]);
+                         trans[0], trans[1], trans[2]);
 #endif // debug
   SbBox3f::extendBy(trans);
 }
@@ -172,13 +172,13 @@ SbXfBox3f::extendBy(const SbVec3f &pt)
   the transformation on this SbXfBox3f will sometimes be flattened before
   it's combined with \a bb.
 */
-void 
+void
 SbXfBox3f::extendBy(const SbBox3f &bb)
 {
 #if COIN_DEBUG
   if (bb.isEmpty()) {
     SoDebugError::postWarning("SbXfBox3f::extendBy",
-			      "Extending box is empty.");
+                              "Extending box is empty.");
     return;
   }
 #endif // COIN_DEBUG
@@ -189,7 +189,7 @@ SbXfBox3f::extendBy(const SbBox3f &bb)
     this->invertedmatrix.makeIdentity();
     return;
   }
-  
+
   SbVec3f points[2] = { bb.getMin(), bb.getMax() };
 
   // Combine bboxes while keeping the transformation matrix.
@@ -201,16 +201,16 @@ SbXfBox3f::extendBy(const SbBox3f &bb)
       SbVec3f corner, dst;
       // Find all corners the "binary" way :-)
       corner.setValue(points[(i&4)>>2][0],
-		      points[(i&2)>>1][1],
-		      points[i&1][2]);
+                      points[(i&2)>>1][1],
+                      points[i&1][2]);
       // Don't try to optimize the transformation out of the loop,
       // it's not as easy as it seems.
       im.multVecMatrix(corner, dst);
 #if 0 // debug
       SoDebugError::postInfo("SbXfBox3f::extendBy",
-			     "point: <%f, %f, %f> -> <%f, %f, %f>",
-			     corner[0], corner[1], corner[2],
-			     dst[0], dst[1], dst[2]);
+                             "point: <%f, %f, %f> -> <%f, %f, %f>",
+                             corner[0], corner[1], corner[2],
+                             dst[0], dst[1], dst[2]);
 #endif // debug
       box1.extendBy(dst);
     }
@@ -223,8 +223,8 @@ SbXfBox3f::extendBy(const SbBox3f &bb)
     for (int j=0;j<8;j++) {
       SbVec3f corner;
       corner.setValue(points[(j&4)>>2][0],
-		      points[(j&2)>>1][1],
-		      points[j&1][2]);
+                      points[(j&2)>>1][1],
+                      points[j&1][2]);
       box2.extendBy(corner);
     }
   }
@@ -233,8 +233,8 @@ SbXfBox3f::extendBy(const SbBox3f &bb)
   xfbox.setTransform(this->matrix);
 #if 0 // debug
   SoDebugError::postInfo("SbXfBox3f::extendBy",
-			 "kintel-volume: %f, mortene-volume: %f",
-			 xfbox.getVolume(), box2.getVolume());
+                         "kintel-volume: %f, mortene-volume: %f",
+                         xfbox.getVolume(), box2.getVolume());
 #endif // debug
 
   // Choose result from one of the two techniques based on the volume
@@ -254,13 +254,13 @@ SbXfBox3f::extendBy(const SbBox3f &bb)
 
   The given box is assumed to be in transformed space.
 */
-void 
+void
 SbXfBox3f::extendBy(const SbXfBox3f & bb)
 {
 #if COIN_DEBUG
   if (bb.isEmpty()) {
     SoDebugError::postWarning("SbXfBox3f::extendBy",
-			      "Extending box is empty.");
+                              "Extending box is empty.");
     return;
   }
 #endif // COIN_DEBUG
@@ -272,13 +272,13 @@ SbXfBox3f::extendBy(const SbXfBox3f & bb)
 
 #if 0 // debug
   SoDebugError::postInfo("SbXfBox3f::extendBy",
-			 "bb: <%f, %f, %f>, <%f, %f, %f>",
-			 bb.getMin()[0],
-			 bb.getMin()[1],
-			 bb.getMin()[2],
-			 bb.getMax()[0],
-			 bb.getMax()[1],
-			 bb.getMax()[2]);
+                         "bb: <%f, %f, %f>, <%f, %f, %f>",
+                         bb.getMin()[0],
+                         bb.getMin()[1],
+                         bb.getMin()[2],
+                         bb.getMax()[0],
+                         bb.getMax()[1],
+                         bb.getMax()[2]);
 #endif // debug
 
   // Try extending while keeping the transform on "this" first.
@@ -290,29 +290,29 @@ SbXfBox3f::extendBy(const SbXfBox3f & bb)
       m.multRight(box1.getInverse());
 
       for (int i=0; i < 8; i++) {
-	SbVec3f corner, dst;
-	corner.setValue(points[(i&4)>>2][0],
-			points[(i&2)>>1][1],
-			points[i&1][2]);
-	m.multVecMatrix(corner, dst);
+        SbVec3f corner, dst;
+        corner.setValue(points[(i&4)>>2][0],
+                        points[(i&2)>>1][1],
+                        points[i&1][2]);
+        m.multVecMatrix(corner, dst);
 #if 0 // debug
-	SoDebugError::postInfo("SbXfBox3f::extendBy",
-			       "corner: <%f, %f, %f>, dst <%f, %f, %f>",
-			       corner[0], corner[1], corner[2],
-			       dst[0], dst[1], dst[2]);
+        SoDebugError::postInfo("SbXfBox3f::extendBy",
+                               "corner: <%f, %f, %f>, dst <%f, %f, %f>",
+                               corner[0], corner[1], corner[2],
+                               dst[0], dst[1], dst[2]);
 #endif // debug
-	((SbBox3f *)&box1)->extendBy(dst);
+        ((SbBox3f *)&box1)->extendBy(dst);
 #if 0 // debug
-	SoDebugError::postInfo("SbXfBox3f::extendBy",
-			       "dst: <%f, %f, %f>  ->   "
-			       "box1: <%f, %f, %f>, <%f, %f, %f>",
-			       dst[0], dst[1], dst[2],
-			       box1.getMin()[0],
-			       box1.getMin()[1],
-			       box1.getMin()[2],
-			       box1.getMax()[0],
-			       box1.getMax()[1],
-			       box1.getMax()[2]);
+        SoDebugError::postInfo("SbXfBox3f::extendBy",
+                               "dst: <%f, %f, %f>  ->   "
+                               "box1: <%f, %f, %f>, <%f, %f, %f>",
+                               dst[0], dst[1], dst[2],
+                               box1.getMin()[0],
+                               box1.getMin()[1],
+                               box1.getMin()[2],
+                               box1.getMax()[0],
+                               box1.getMax()[1],
+                               box1.getMax()[2]);
 #endif // debug
       }
     }
@@ -327,29 +327,29 @@ SbXfBox3f::extendBy(const SbXfBox3f & bb)
       m.multRight(box2.getInverse());
 
       for (int i=0; i < 8; i++) {
-	SbVec3f corner, dst;
-	corner.setValue(points[(i&4)>>2][0],
-			points[(i&2)>>1][1],
-			points[i&1][2]);
-	m.multVecMatrix(corner, dst);
+        SbVec3f corner, dst;
+        corner.setValue(points[(i&4)>>2][0],
+                        points[(i&2)>>1][1],
+                        points[i&1][2]);
+        m.multVecMatrix(corner, dst);
 #if 0 // debug
-	SoDebugError::postInfo("SbXfBox3f::extendBy",
-			       "corner: <%f, %f, %f>, dst <%f, %f, %f>",
-			       corner[0], corner[1], corner[2],
-			       dst[0], dst[1], dst[2]);
+        SoDebugError::postInfo("SbXfBox3f::extendBy",
+                               "corner: <%f, %f, %f>, dst <%f, %f, %f>",
+                               corner[0], corner[1], corner[2],
+                               dst[0], dst[1], dst[2]);
 #endif // debug
-	((SbBox3f *)&box2)->extendBy(dst);
+        ((SbBox3f *)&box2)->extendBy(dst);
 #if 0 // debug
-	SoDebugError::postInfo("SbXfBox3f::extendBy",
-			       "dst: <%f, %f, %f>  ->   "
-			       "box2: <%f, %f, %f>, <%f, %f, %f>",
-			       dst[0], dst[1], dst[2],
-			       box2.getMin()[0],
-			       box2.getMin()[1],
-			       box2.getMin()[2],
-			       box2.getMax()[0],
-			       box2.getMax()[1],
-			       box2.getMax()[2]);
+        SoDebugError::postInfo("SbXfBox3f::extendBy",
+                               "dst: <%f, %f, %f>  ->   "
+                               "box2: <%f, %f, %f>, <%f, %f, %f>",
+                               dst[0], dst[1], dst[2],
+                               box2.getMin()[0],
+                               box2.getMin()[1],
+                               box2.getMin()[2],
+                               box2.getMax()[0],
+                               box2.getMax()[1],
+                               box2.getMax()[2]);
 #endif // debug
       }
     }
@@ -357,8 +357,8 @@ SbXfBox3f::extendBy(const SbXfBox3f & bb)
 
 #if 0 // debug
   SoDebugError::postInfo("SbXfBox3f::extendBy",
-			 "box1-volume: %f, box2-volume: %f",
-			 box1.getVolume(), box2.getVolume());
+                         "box1-volume: %f, box2-volume: %f",
+                         box1.getVolume(), box2.getVolume());
 #endif // debug
 
   // Compare volumes and pick the smallest bounding box.
@@ -371,7 +371,7 @@ SbXfBox3f::extendBy(const SbXfBox3f & bb)
 
   The point is assumed to be in transformed space.
 */
-SbBool 
+SbBool
 SbXfBox3f::intersect(const SbVec3f &pt) const
 {
   this->calcInverse();
@@ -383,14 +383,14 @@ SbXfBox3f::intersect(const SbVec3f &pt) const
 //
 // tests for intersection between an axis aligned box and the
 // 12 edges defined by the 8 points in the 'points' array.
-// 
-static 
+//
+static
 SbBool intersect_box_edges(const SbVec3f &min,
-			   const SbVec3f &max,
-			   const SbVec3f * const points)
+                           const SbVec3f &max,
+                           const SbVec3f * const points)
 {
   // lookup table for edges in the cube.
-  static int lines[12*2] = 
+  static int lines[12*2] =
   {
     0,1,
     0,2,
@@ -419,76 +419,76 @@ SbBool intersect_box_edges(const SbVec3f &min,
     SbVec3f dir = l2 - l1;
     dir.normalize();
     SbVec3f lmin(SbMin(l1[0], l2[0]),
-		 SbMin(l1[1], l2[1]),
-		 SbMin(l1[2], l2[2]));
+                 SbMin(l1[1], l2[1]),
+                 SbMin(l1[2], l2[2]));
     SbVec3f lmax(SbMax(l1[0], l2[0]),
-		 SbMax(l1[1], l2[1]),
-		 SbMax(l1[2], l2[2]));
-   
+                 SbMax(l1[1], l2[1]),
+                 SbMax(l1[2], l2[2]));
+
     // the bbox to test against is axis-aligned, and this makes it
     // quite simple.
     for (int j = 0; j < 3; j++) { // test planes in all three dimensions
       for (int k = 0; k < 2; k++) { // test both min and max planes
-	// check if line crosses current plane
-	if (dir[j] != 0.0f && 
-	    lmin[j] <= boxpts[k][j] && lmax[j] >= boxpts[k][j]) {
-	  // find the two other coordinates
-	  int t1 = j+1;
-	  int t2 = j+2;
-	  // do this instead of modulo 3
-	  if (t1 >= 3) t1 -= 3;
-	  if (t2 >= 3) t2 -= 3;
+        // check if line crosses current plane
+        if (dir[j] != 0.0f &&
+            lmin[j] <= boxpts[k][j] && lmax[j] >= boxpts[k][j]) {
+          // find the two other coordinates
+          int t1 = j+1;
+          int t2 = j+2;
+          // do this instead of modulo 3
+          if (t1 >= 3) t1 -= 3;
+          if (t2 >= 3) t2 -= 3;
 
-	  // find what we need to multiply coordinate j by to
-	  // put it onto the current plane
-	  float delta = fabs((boxpts[k][j] - l1[j]) / dir[j]);
-	  // calculate the two other coordinates
-	  float v1 = l1[t1] + delta*dir[t1];
-	  float v2 = l1[t2] + delta*dir[t2];
-	  if (v1 > boxpts[0][t1] && v1 < boxpts[1][t1] &&
-	      v2 > boxpts[0][t2] && v2 < boxpts[1][t2]) {
-	    return TRUE;
-	  }
-	}
+          // find what we need to multiply coordinate j by to
+          // put it onto the current plane
+          float delta = fabs((boxpts[k][j] - l1[j]) / dir[j]);
+          // calculate the two other coordinates
+          float v1 = l1[t1] + delta*dir[t1];
+          float v2 = l1[t2] + delta*dir[t2];
+          if (v1 > boxpts[0][t1] && v1 < boxpts[1][t1] &&
+              v2 > boxpts[0][t2] && v2 < boxpts[1][t2]) {
+            return TRUE;
+          }
+        }
       }
     }
   }
   return FALSE;
-} 
+}
 
 //
 // weak box-box intersection test: min, max defines an axis-aligned
 // box, while boxmin, boxmax defines an box that should be transformed
-// by matrix. This function only tests whether any of the 8 
-// (transformed) points in (boxmin, boxmax) is inside (min, max), 
-// and if any of the 12 edges in (boxmin, boxmax) intersects any of the 
+// by matrix. This function only tests whether any of the 8
+// (transformed) points in (boxmin, boxmax) is inside (min, max),
+// and if any of the 12 edges in (boxmin, boxmax) intersects any of the
 // planes in the box defined by (min, max).
 //
 // Use this function twice to cover all intersection cases.
 //
-static SbBool 
+static SbBool
 intersect_box_box(const SbVec3f &min,
-		  const SbVec3f &max,
-		  const SbVec3f &boxmin,
-		  const SbVec3f &boxmax,
-		  const SbMatrix &matrix,
-		  SbBool &alignedIntersect)
+                  const SbVec3f &max,
+                  const SbVec3f &boxmin,
+                  const SbVec3f &boxmax,
+                  const SbMatrix &matrix,
+                  SbBool &alignedIntersect)
 {
   SbVec3f transpoints[8];
   SbBox3f alignedBox;
   for (int i = 0;  i < 8; i++) {
     SbVec3f tmp, tmp2;
     tmp.setValue((i&4) ? boxmin[0] : boxmax[0],
-		 (i&2) ? boxmin[1] : boxmax[1],
-		 (i&1) ? boxmin[2] : boxmax[2]);
+                 (i&2) ? boxmin[1] : boxmax[1],
+                 (i&1) ? boxmin[2] : boxmax[2]);
     matrix.multVecMatrix(tmp, tmp2);
     // is point inside
     if (tmp2[0] >= min[0] &&
-	tmp2[0] <= max[0] &&
-	tmp2[1] >= min[1] &&
-	tmp2[1] <= max[1] &&
-	tmp2[2] >= min[2] &&
-	tmp2[2] <= max[2]) {
+        tmp2[0] <= max[0] &&
+        tmp2[1] >= min[1] &&
+        tmp2[1] <= max[1] &&
+        tmp2[2] >= min[2] &&
+        tmp2[2] <= max[2]) {
       return TRUE;
     }
     alignedBox.extendBy(tmp2);
@@ -499,9 +499,9 @@ intersect_box_box(const SbVec3f &min,
   // is no chance for any intersection.
   SbBox3f thisbox(min, max);
   alignedIntersect = thisbox.intersect(alignedBox);
-  
+
   // only test edge intersection if aligned boxes intersect
-  if (alignedIntersect) 
+  if (alignedIntersect)
     return intersect_box_edges(min, max, transpoints);
   return FALSE;
 }
@@ -512,7 +512,7 @@ intersect_box_box(const SbVec3f &min,
 
   The given box is assumed to be in transformed space.
 */
-SbBool 
+SbBool
 SbXfBox3f::intersect(const SbBox3f &bb) const
 {
   if (this->matrix == SbMatrix::identity()) return SbBox3f::intersect(bb);
@@ -521,29 +521,29 @@ SbXfBox3f::intersect(const SbBox3f &bb) const
   // do double-test to get all intersection cases
   //
   SbBool alignedIntersect;
-  
+
   if (intersect_box_box(bb.getMin(), bb.getMax(),
-  			this->getMin(), this->getMax(),
-  			this->matrix, alignedIntersect)) return TRUE;
-  
+                        this->getMin(), this->getMax(),
+                        this->matrix, alignedIntersect)) return TRUE;
+
   if (!alignedIntersect) return FALSE;
 
   // will need the inverse matrix here
   this->calcInverse();
   return intersect_box_box(this->getMin(), this->getMax(),
-			   bb.getMin(), bb.getMax(),
-			   this->invertedmatrix,
-			   alignedIntersect);
+                           bb.getMin(), bb.getMax(),
+                           this->invertedmatrix,
+                           alignedIntersect);
 }
 
 /*!
   Find the span of the box in the given direction (i.e. how much room in
   the given direction the box needs). The distance is returned as the minimum
-  and maximum distance from Origo to the closest and furthest plane defined 
-  by the direction vector and each of the box' corners. The difference 
+  and maximum distance from Origo to the closest and furthest plane defined
+  by the direction vector and each of the box' corners. The difference
   between these values gives the span.
 */
-void 
+void
 SbXfBox3f::getSpan(const SbVec3f &direction, float &dMin, float &dMax) const
 {
   this->project().getSpan(direction, dMin, dMax);
@@ -555,7 +555,7 @@ SbXfBox3f::getSpan(const SbVec3f &direction, float &dMin, float &dMax) const
   This gives the same resulting SbBox3f as doing a SbBox3f::transform()
   with this transformation matrix as parameter.
 */
-SbBox3f 
+SbBox3f
 SbXfBox3f::project(void) const
 {
   SbBox3f box(this->getMin(), this->getMax());
@@ -571,7 +571,7 @@ SbXfBox3f::project(void) const
 int
 operator ==(const SbXfBox3f &b1, const SbXfBox3f &b2)
 {
-  return 
+  return
     (b1.getMin() == b2.getMin()) &&
     (b1.getMax() == b2.getMax()) &&
     (b1.matrix == b2.matrix);
@@ -581,10 +581,10 @@ operator ==(const SbXfBox3f &b1, const SbXfBox3f &b2)
   Check if \a b1 and \a b2 are unequal. Return 0 if they are equal,
   or 1 if they are unequal. See the note on operator==().
  */
-int 
+int
 operator !=(const SbXfBox3f &b1, const SbXfBox3f &b2)
 {
-  return !(b1 == b2); 
+  return !(b1 == b2);
 }
 
 /*!
@@ -597,21 +597,21 @@ SbXfBox3f::getVolume(void) const
   if (!this->hasVolume()) return 0.0f;
 
   float scalex = sqrt(this->matrix[0][0] * this->matrix[0][0] +
-		      this->matrix[1][0] * this->matrix[1][0] +
-		      this->matrix[2][0] * this->matrix[2][0]);
+                      this->matrix[1][0] * this->matrix[1][0] +
+                      this->matrix[2][0] * this->matrix[2][0]);
   float scaley = sqrt(this->matrix[0][1] * this->matrix[0][1] +
-		      this->matrix[1][1] * this->matrix[1][1] +
-		      this->matrix[2][1] * this->matrix[2][1]);
+                      this->matrix[1][1] * this->matrix[1][1] +
+                      this->matrix[2][1] * this->matrix[2][1]);
   float scalez = sqrt(this->matrix[0][2] * this->matrix[0][2] +
-		      this->matrix[1][2] * this->matrix[1][2] +
-		      this->matrix[2][2] * this->matrix[2][2]);
+                      this->matrix[1][2] * this->matrix[1][2] +
+                      this->matrix[2][2] * this->matrix[2][2]);
 
   SbVec3f min, max;
   this->getBounds(min, max);
 
-  return fabs(((max[0]-min[0]) * scalex * 
-	       (max[1]-min[1]) * scaley *
-	       (max[2]-min[2]) * scalez));
+  return fabs(((max[0]-min[0]) * scalex *
+               (max[1]-min[1]) * scaley *
+               (max[2]-min[2]) * scalez));
 }
 
 /*!
@@ -640,7 +640,7 @@ SbXfBox3f::print(ostream & file) const
 #endif // COIN_DEBUG
 }
 
-void 
+void
 SbXfBox3f::calcInverse(void) const
 {
   if (this->invertedmatrix[0][0] == FLT_MAX)

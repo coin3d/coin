@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -27,7 +27,7 @@ class ostream;
 
 
 class SbVec3f
-{ 
+{
 public:
   SbVec3f(void);
   SbVec3f(const float v[3]);
@@ -46,9 +46,9 @@ public:
   SbVec3f & setValue(const float v[3]);
   SbVec3f & setValue(const float x, const float y, const float z);
   SbVec3f & setValue(const SbVec3f & barycentic,
-		     const SbVec3f & v0,
-		     const SbVec3f & v1,
-		     const SbVec3f & v2);
+                     const SbVec3f & v0,
+                     const SbVec3f & v1,
+                     const SbVec3f & v2);
   float & operator [](const int i);
   const float & operator [](const int i) const;
   SbVec3f & operator *=(const float d);

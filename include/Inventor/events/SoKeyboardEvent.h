@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -85,9 +85,9 @@ public:
   char getPrintableCharacter(void) const;
 
   static SbBool isKeyPressEvent(const SoEvent * e,
-				SoKeyboardEvent::Key whichKey);
+                                SoKeyboardEvent::Key whichKey);
   static SbBool isKeyReleaseEvent(const SoEvent * e,
-				  SoKeyboardEvent::Key whichKey);
+                                  SoKeyboardEvent::Key whichKey);
 
   static void initClass(void);
 

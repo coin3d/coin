@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -66,11 +66,11 @@ SbSphereSheetProjector::SbSphereSheetProjector(SbBool orientToEye)
   FIXME: write doc
 */
 SbSphereSheetProjector::SbSphereSheetProjector(const SbSphere &sph,
-					       SbBool orientToEye)
+                                               SbBool orientToEye)
   : SbSphereProjector(sph, orientToEye)
 {
 }
-    
+
 /*!
   FIXME: write doc
 */
@@ -114,13 +114,13 @@ SbSphereSheetProjector::project(const SbVec2f &point)
 */
 SbRotation
 SbSphereSheetProjector::getRotation(const SbVec3f & point1,
-				    const SbVec3f & point2)
+                                    const SbVec3f & point2)
 {
 #if 0 // debug
   SoDebugError::post("SbSphereSheetProjector::getRotation",
-		     "point1: <%f, %f, %f>, point2: <%f, %f, %f>",
-		     point1[0], point1[1], point1[2],
-		     point2[0], point2[1], point2[2]);
+                     "point1: <%f, %f, %f>, point2: <%f, %f, %f>",
+                     point1[0], point1[1], point1[2],
+                     point2[0], point2[1], point2[2]);
 #endif // debug
   return SbRotation(point1, point2);
 }

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -35,9 +35,9 @@ class SbHeap
 {
 public:
   SbHeap(const SbHeapFuncs &SbHeapFuncs,
-	 const int initsize = 1024);
+         const int initsize = 1024);
   ~SbHeap();
-  
+
   void emptyHeap(void);
   int size(void) const;
   int add(void *obj);
@@ -46,16 +46,16 @@ public:
   void *extractMin();
   void *getMin();
   void *operator[](const int idx);
-  
+
   void newWeight(void *obj, int hpos = -1);
   SbBool buildHeap(SbBool (*progresscb)(float percentage, void *data) = NULL,
-		   void *data = NULL);
+                   void *data = NULL);
   SbBool traverseHeap(SbBool (*func)(void *, void *), void *userdata) const;
-  
+
 private:
   SbHeapFuncs funcs;
   SbList <void*> heap;
-  
+
   int heapInsert(void *obj);
   void *heapExtractMin(void);
   void heapReserve(const int newsize);

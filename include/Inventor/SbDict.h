@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -37,7 +37,7 @@ public:
 
   void applyToAll(void (* rtn)(unsigned long key, void * value)) const;
   void applyToAll(void (* rtn)(unsigned long key, void * value, void * data),
-		  void * data) const;
+                  void * data) const;
   void clear(void);
 
   SbBool enter(const unsigned long key, void * const value);
@@ -50,11 +50,11 @@ private:
   SbDictEntry ** buckets;
   SbDictEntry *& findEntry(const unsigned long key) const;
   SbDictEntry *findEntry(const unsigned long key,
-			 const unsigned long bucketnum,
-			 SbDictEntry **prev = NULL) const;
-  static void addEntryToPLists(const unsigned long key, 
-			       void * const value, 
-			       void * const data);
+                         const unsigned long bucketnum,
+                         SbDictEntry **prev = NULL) const;
+  static void addEntryToPLists(const unsigned long key,
+                               void * const value,
+                               void * const data);
   static void copyval(unsigned long key, void * value, void * data);
 
 };

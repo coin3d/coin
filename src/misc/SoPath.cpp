@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -21,7 +21,7 @@
   \class SoPath Inventor/SoPath.h
   \brief The SoPath class is a container class for Open Inventor traversal
   path descriptions.
-  
+
   SoPath objects contain a list of SoNode pointers and a list of child
   indices.  Indices are necessary to disambiguate situations where a
   node uses the same node as a child multiple times.
@@ -98,7 +98,7 @@ SoPath::getClassTypeId(void)
   This virtual method returns the run-time type identifier for (in this case)
   this SoPath-derived object.
 */
- 
+
 SoType
 SoPath::getTypeId(void) const
 {
@@ -125,11 +125,11 @@ void
 SoPath::initClass(void)
 {
   assert((SoPath::classTypeId == SoType::badType()) &&
-	 "call SoPath::initClass only once!");
+         "call SoPath::initClass only once!");
 
   SoPath::classTypeId = SoType::createType(SoBase::getClassTypeId(),
-					   SbName("Path"),
-					   &SoPath::createInstance);
+                                           SbName("Path"),
+                                           &SoPath::createInstance);
 }
 
 /*!
@@ -243,12 +243,12 @@ SoPath::append(const int childIndex)
 #if COIN_DEBUG
   if (!children) {
     SoDebugError::postWarning("SoPath::append()",
-			      "SoPath tail has no children ('%s').\n",
-			      parent->getTypeId().getName().getString());
+                              "SoPath tail has no children ('%s').\n",
+                              parent->getTypeId().getName().getString());
     assert(0);
   }
 #endif // COIN_DEBUG
-  
+
   SoNode * node = (*children)[childIndex];
   assert(node);
 
@@ -270,12 +270,12 @@ SoPath::append(SoNode * const node)
 
   const int last = this->nodes.getLength() - 1;
   SoNode * parent = this->nodes[last];
-  SoChildList * children = parent->getChildren(); 
+  SoChildList * children = parent->getChildren();
 #if COIN_DEBUG
   if (! children) {
     SoDebugError::postWarning("SoPath::append(SoNode *)",
-			       "SoPath tail has no children ('%s').",
-			       parent->getTypeId().getName().getString());
+                               "SoPath tail has no children ('%s').",
+                               parent->getTypeId().getName().getString());
     assert(0);
   }
 #endif // COIN_DEBUG
@@ -321,8 +321,8 @@ SoPath::append(const SoPath * const fromPath)
 #if COIN_DEBUG
   if (! tailchildren) {
     SoDebugError::postWarning("SoPath::append(SoPath)",
-			      "The tail of this SoPath has no children node ('%s').\n",
-			      tail->getTypeId().getName().getString());
+                              "The tail of this SoPath has no children node ('%s').\n",
+                              tail->getTypeId().getName().getString());
     assert(0 && "programming error");
   }
 #endif // COIN_DEBUG
@@ -498,7 +498,7 @@ SoPath::truncate(const int length)
 
 /*!
   This method truncates the path to the given length.
-  
+
   The doNotify flag is currently ignored.
 */
 
@@ -542,7 +542,7 @@ SoPath::findFork(const SoPath * const path) const
 /*!
   Returns the node index if found in path, -1 otherwise
 */
-int 
+int
 SoPath::findNode(const SoNode * const node) const
 {
   const int len = this->nodes.getLength();
@@ -747,7 +747,7 @@ SoPath::removeIndex(SoNode * const parent, const int oldIndex)
 
 void
 SoPath::replaceIndex(SoNode * const parent, const int index,
-		     SoNode * const newChild)
+                     SoNode * const newChild)
 {
   const int len = this->nodes.getLength();
   for (int i = 0; i < (len - 1); i++) {

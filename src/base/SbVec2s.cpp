@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -116,7 +116,7 @@ SbVec2s::negate(void)
 
   \sa getValue().
  */
-SbVec2s& 
+SbVec2s&
 SbVec2s::setValue(const short v[2])
 {
   this->vec[0] = v[0];
@@ -129,7 +129,7 @@ SbVec2s::setValue(const short v[2])
 
   \sa getValue().
  */
-SbVec2s& 
+SbVec2s&
 SbVec2s::setValue(short x, short y)
 {
   this->vec[0] = x;
@@ -142,13 +142,13 @@ SbVec2s::setValue(short x, short y)
 
   \sa getValue() and setValue().
  */
-short& 
+short&
 SbVec2s::operator [](const int i)
 {
 #if COIN_DEBUG
   if(!(i==0 || i==1)) {
     SoDebugError::postWarning("SbVec2s::operator[]",
-			      "Index out of bounds [0,1].");
+                              "Index out of bounds [0,1].");
     return this->vec[0];
   }
 #endif // COIN_DEBUG
@@ -161,13 +161,13 @@ SbVec2s::operator [](const int i)
 
   \sa getValue().
  */
-const short& 
+const short&
 SbVec2s::operator [](const int i) const
 {
 #if COIN_DEBUG
   if(!(i==0 || i==1)) {
     SoDebugError::postWarning("SbVec2s::operator[]",
-			      "Index out of bounds [0,1].");
+                              "Index out of bounds [0,1].");
     return this->vec[0];
   }
 #endif // COIN_DEBUG
@@ -177,7 +177,7 @@ SbVec2s::operator [](const int i) const
 /*!
   Multiply components of vector with value \a d. Returns reference to self.
  */
-SbVec2s& 
+SbVec2s&
 SbVec2s::operator *=(int d)
 {
   this->vec[0] *= d;
@@ -188,7 +188,7 @@ SbVec2s::operator *=(int d)
 /*!
   Multiply components of vector with value \a d. Returns reference to self.
  */
-SbVec2s& 
+SbVec2s&
 SbVec2s::operator *=(double d)
 {
   this->vec[0] = (short int)(this->vec[0] * d);
@@ -199,13 +199,13 @@ SbVec2s::operator *=(double d)
 /*!
   Divides components of vector with value \a d. Returns reference to self.
  */
-SbVec2s&  
+SbVec2s&
 SbVec2s::operator /=(int d)
 {
 #if COIN_DEBUG
   if(!(d != 0))
     SoDebugError::postWarning("SbVec2s::operator/=",
-			      "Division by zero.");
+                              "Division by zero.");
 #endif // COIN_DEBUG
 
   this->vec[0] /= d;
@@ -216,13 +216,13 @@ SbVec2s::operator /=(int d)
 /*!
   Divides components of vector with value \a d. Returns reference to self.
  */
-SbVec2s&  
+SbVec2s&
 SbVec2s::operator /=(double d)
 {
 #if COIN_DEBUG
   if(!(d != 0.0))
     SoDebugError::postWarning("SbVec2s::operator/=",
-			      "Division by zero.");
+                              "Division by zero.");
 #endif // COIN_DEBUG
 
   this->vec[0] = (short int)(this->vec[0] / d);
@@ -233,7 +233,7 @@ SbVec2s::operator /=(double d)
 /*!
   Adds this vector and vector \a u. Returns reference to self.
  */
-SbVec2s& 
+SbVec2s&
 SbVec2s::operator +=(const SbVec2s& u)
 {
   this->vec[0] += u[0];
@@ -244,7 +244,7 @@ SbVec2s::operator +=(const SbVec2s& u)
 /*!
   Subtracts vector \a u from this vector. Returns reference to self.
  */
-SbVec2s& 
+SbVec2s&
 SbVec2s::operator -=(const SbVec2s& u)
 {
   this->vec[0] += u[0];
@@ -324,7 +324,7 @@ operator /(const SbVec2s& v, int d)
 #if COIN_DEBUG
   if(!(d != 0))
     SoDebugError::postWarning("SbVec2s::operator/",
-			      "Division by zero.");
+                              "Division by zero.");
 #endif // COIN_DEBUG
 
   return SbVec2s(v[0]/d, v[1]/d);
@@ -342,7 +342,7 @@ operator /(const SbVec2s& v, double d)
 #if COIN_DEBUG
   if(!(d != 0.0))
     SoDebugError::postWarning("SbVec2s::operator/",
-			      "Division by zero.");
+                              "Division by zero.");
 #endif // COIN_DEBUG
 
   return SbVec2s((short)(v[0]/d), (short)(v[1]/d));

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -47,7 +47,7 @@ public:
   virtual void closeFile(void);
 
   virtual void setBuffer(void * bufPointer, size_t initSize,
-			 SoOutputReallocCB * reallocFunc, int32_t offset = 0);
+                         SoOutputReallocCB * reallocFunc, int32_t offset = 0);
   virtual SbBool getBuffer(void * & bufPointer, size_t & nBytes) const;
   virtual size_t getBufferSize(void) const;
   virtual void resetBuffer(void);

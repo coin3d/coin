@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -42,7 +42,7 @@
 
 SbString::SbString(void)
 {
-  this->sstring = this->staticStorage; 
+  this->sstring = this->staticStorage;
   this->sstring[0] = '\0';
 }
 
@@ -51,9 +51,9 @@ SbString::SbString(void)
 */
 
 SbString::SbString(const SbString & str)
-{ 
-  this->sstring = this->staticStorage; 
-  *this = str.sstring; 
+{
+  this->sstring = this->staticStorage;
+  *this = str.sstring;
 }
 
 /*!
@@ -62,13 +62,13 @@ SbString::SbString(const SbString & str)
 
 SbString::SbString(const char * str)
 {
-  this->sstring = this->staticStorage; 
+  this->sstring = this->staticStorage;
   *this = str;
 }
 
 /*!
-  This constructor constructs a string from the given substring from 
-  \a start to \a end indices inclusive. If \a end is -1, the substring 
+  This constructor constructs a string from the given substring from
+  \a start to \a end indices inclusive. If \a end is -1, the substring
   from \a start until the end of the string is used.
 */
 
@@ -78,46 +78,46 @@ SbString::SbString(const char * str, int start, int end)
   int len=strlen(str);
   if (start<0) {
     SoDebugError::postWarning("SbString::SbString",
-			      "start index (%d) should be >= 0. Clamped to 0.",
-			      start);
+                              "start index (%d) should be >= 0. Clamped to 0.",
+                              start);
     start=0;
   }
   else if (start>len) {
     SoDebugError::postWarning("SbString::SbString",
-			      "start index (%d) is out of bounds [0, %d>. "
-			      "Clamped to %d.", start, len, len-1);
+                              "start index (%d) is out of bounds [0, %d>. "
+                              "Clamped to %d.", start, len, len-1);
     start=len;
   }
   if (end<0) {
     SoDebugError::postWarning("SbString::SbString",
-			      "end index (%d) should be >= 0. Clamped to 0.",
-			      end);
+                              "end index (%d) should be >= 0. Clamped to 0.",
+                              end);
     end=0;
   }
   else if (end>len) {
     SoDebugError::postWarning("SbString::SbString",
-			      "end index (%d) is out of bounds [0, %d>. "
-			      "Clamped to %d.", end, len, len-1);
+                              "end index (%d) is out of bounds [0, %d>. "
+                              "Clamped to %d.", end, len, len-1);
     end=len;
   }
   if (start>end+1) {
     SoDebugError::postWarning("SbString::SbString",
-			      "start index (%d) is greater than end index "
-			      "(%d). Empty string created.", start, end);
+                              "start index (%d) is greater than end index "
+                              "(%d). Empty string created.", start, end);
     start=0;
     end=-1;
   }
 #endif // COIN_DEBUG
 
   int size=end-start+1;
-  
+
   if (size<SB_STRING_STATIC_STORAGE_SIZE)
     this->sstring=this->staticStorage;
   else {
     this->sstring=new char[size+1];
     this->storageSize=size+1;
   }
-  
+
   strncpy(this->sstring, str+start, size);
   this->sstring[size]='\0';
 }
@@ -179,20 +179,20 @@ SbString::getSubString(int startChar, int endChar) const
 #if COIN_DEBUG
   if (endChar < 0 || endChar >= this->getLength()) {
     SoDebugError::postWarning("SbString::getSubString",
-			      "endChar index %d out of bounds.",
-			      endChar);
+                              "endChar index %d out of bounds.",
+                              endChar);
     return SbString("");
   }
   if (startChar < 0 || startChar >= this->getLength()) {
     SoDebugError::postWarning("SbString::getSubString",
-			      "startChar index %d out of bounds.",
-			      startChar);
+                              "startChar index %d out of bounds.",
+                              startChar);
     return SbString("");
   }
   if (startChar > endChar) {
     SoDebugError::postWarning("SbString::getSubString",
-			      "startChar idx %d larger than endChar idx %d.",
-			      startChar, endChar);
+                              "startChar idx %d larger than endChar idx %d.",
+                              startChar, endChar);
     return SbString("");
   }
 #endif // COIN_DEBUG
@@ -212,31 +212,31 @@ SbString::deleteSubString(int startChar, int endChar)
   int len=this->getLength();
   if (startChar<0) {
     SoDebugError::postWarning("SbString::deleteSubString",
-			      "startChar index (%d) should be >= 0. "
-			      "Clamped to 0.", startChar);
+                              "startChar index (%d) should be >= 0. "
+                              "Clamped to 0.", startChar);
     startChar=0;
   }
   else if (startChar>=len) {
     SoDebugError::postWarning("SbString::deleteSubString",
-			      "startChar index (%d) is out of bounds [0, %d>. "
-			      "Clamped to %d.", startChar, len, len-1);
+                              "startChar index (%d) is out of bounds [0, %d>. "
+                              "Clamped to %d.", startChar, len, len-1);
     startChar=len-1;
   }
   if (endChar<-1) {
     SoDebugError::postWarning("SbString::deleteSubString",
-			      "endChar index should be >=-1. Clamping to -1.");
+                              "endChar index should be >=-1. Clamping to -1.");
     endChar=-1;
   }
   else if (endChar>=len) {
     SoDebugError::postWarning("SbString::deleteSubString",
-			      "endChar index (%d) is out of bounds [0, %d>. "
-			      "Clamped to %d.", endChar, len, len-1);
+                              "endChar index (%d) is out of bounds [0, %d>. "
+                              "Clamped to %d.", endChar, len, len-1);
     endChar=len-1;
   }
   if (startChar>endChar) {
     SoDebugError::postWarning("SbString::deleteSubString",
-			      "start index (%d) is greater than end index "
-			      "(%d). Nothing deleted.", startChar, endChar);
+                              "start index (%d) is greater than end index "
+                              "(%d). Nothing deleted.", startChar, endChar);
     return;
   }
 #endif // COIN_DEBUG
@@ -244,8 +244,8 @@ SbString::deleteSubString(int startChar, int endChar)
   if (endChar==-1) endChar=this->getLength();
 
   memmove(this->sstring+startChar,
-	  this->sstring+endChar+1,
-	  strlen(this->sstring)-endChar);
+          this->sstring+endChar+1,
+          strlen(this->sstring)-endChar);
 }
 
 /*!
@@ -264,10 +264,10 @@ SbString::~SbString()
   \sa uint32_t SbString::hash(const char * s)
 */
 
-uint32_t 
+uint32_t
 SbString::hash(void)
-{ 
-  return SbString::hash(this->sstring); 
+{
+  return SbString::hash(this->sstring);
 }
 
 /*!
@@ -293,20 +293,20 @@ SbString::hash(const char * s)
   This method returns the length of the string.
 */
 
-int 
+int
 SbString::getLength() const
-{ 
-  return strlen(this->sstring); 
+{
+  return strlen(this->sstring);
 }
 
 /*!
   This method returns the pointer to the string (character array).
 */
 
-const char * 
+const char *
 SbString::getString() const
-{ 
-  return this->sstring; 
+{
+  return this->sstring;
 }
 
 /*!
@@ -337,7 +337,7 @@ SbString::operator [](int index) const
 #if COIN_DEBUG
   if (index < 0 || index >= this->getLength()) {
     SoDebugError::postWarning("SbString::operator[]",
-			      "index %d out of bounds.", index);
+                              "index %d out of bounds.", index);
     return 0;
   }
 #endif // COIN_DEBUG
@@ -355,27 +355,27 @@ SbString::operator =(const char * str)
   if (str == NULL) str = dummystring; // handle NULL pointers
 
   int size = strlen(str) + 1;
-  if (str >= this->sstring && str < this->sstring + 
-      (this->sstring != this->staticStorage ? 
+  if (str >= this->sstring && str < this->sstring +
+      (this->sstring != this->staticStorage ?
        this->storageSize : SB_STRING_STATIC_STORAGE_SIZE)) {
-    
+
     this->deleteSubString(0, str-this->sstring);
     return *this;
   }
-  
+
   if (size < SB_STRING_STATIC_STORAGE_SIZE) {
     if (this->sstring != this->staticStorage)
       this->makeEmpty();
   }
-  
+
   else if (this->sstring == this->staticStorage)
     this->sstring = new char[size];
-  
+
   else if (size > this->storageSize) {
     delete[] this->sstring;
     this->sstring = new char[size];
   }
-  
+
   strcpy(this->sstring, str);
   this->storageSize = size;
   return *this;
@@ -385,10 +385,10 @@ SbString::operator =(const char * str)
   Assign from the given string.
 */
 
-SbString & 
+SbString &
 SbString::operator = (const SbString & str)
-{ 
-  return (*this = str.sstring); 
+{
+  return (*this = str.sstring);
 }
 
 /*!
@@ -437,10 +437,10 @@ SbString::operator +=(const char c)
   or \e FALSE otherwise.
 */
 
-int 
+int
 SbString::operator ! (void) const
-{ 
-  return (this->sstring[0] == '\0'); 
+{
+  return (this->sstring[0] == '\0');
 }
 
 /*!
@@ -457,19 +457,19 @@ operator ==(const SbString & str, const char * s)
   Equality operator. Check if the strings have the same contents.
 */
 
-int 
+int
 operator == (const char * s, const SbString & str)
-{ 
-  return (str == s); 
+{
+  return (str == s);
 }
 
 /*!
   Equality operator. Check if the strings have the same contents.
 */
 
-int 
+int
 operator == (const SbString & str1, const SbString & str2)
-{ 
+{
   return (str1 == str2.sstring);
 }
 
@@ -487,9 +487,9 @@ operator !=(const SbString & str, const char * s)
   Inequality operator.
 */
 
-int 
+int
 operator != (const char * s, const SbString & str)
-{ 
+{
   return (str != s);
 }
 
@@ -497,10 +497,10 @@ operator != (const char * s, const SbString & str)
   Inequality operator.
 */
 
-int 
+int
 operator != (const SbString & str1, const SbString & str2)
-{ 
-  return (str1 != str2.sstring); 
+{
+  return (str1 != str2.sstring);
 }
 
 /*!
@@ -511,17 +511,17 @@ void
 SbString::expand(int bySize)
 {
   int newSize = strlen(this->sstring) + bySize + 1;
-  
+
   if (newSize >= SB_STRING_STATIC_STORAGE_SIZE &&
       (this->sstring == this->staticStorage || newSize > this->storageSize)) {
-    
+
     char * newString = new char[newSize];
-    
+
     strcpy(newString, this->sstring);
-    
+
     if (this->sstring != this->staticStorage)
       delete[] this->sstring;
-    
+
     this->sstring = newString;
     this->storageSize = newSize;
   }
@@ -539,4 +539,3 @@ SbString::print(FILE * file) const
   fprintf(file, "'%s'\n", this->getString());
 #endif // COIN_DEBUG
 }
-

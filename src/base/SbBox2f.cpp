@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -139,7 +139,7 @@ SbVec2f
 SbBox2f::getCenter(void) const
 {
   return SbVec2f((this->maxpt[0] + this->minpt[0])/2.0f,
-		 (this->maxpt[1] + this->minpt[1])/2.0f);
+                 (this->maxpt[1] + this->minpt[1])/2.0f);
 }
 
 /*!
@@ -150,9 +150,9 @@ void
 SbBox2f::extendBy(const SbVec2f& point)
 {
   this->minpt.setValue(SbMin(point[0], this->minpt[0]),
-		       SbMin(point[1], this->minpt[1]));
+                       SbMin(point[1], this->minpt[1]));
   this->maxpt.setValue(SbMax(point[0], this->maxpt[0]),
-		       SbMax(point[1], this->maxpt[1]));
+                       SbMax(point[1], this->maxpt[1]));
 }
 
 /*!
@@ -165,7 +165,7 @@ SbBox2f::extendBy(const SbBox2f& box)
 #if COIN_DEBUG
   if (box.minpt[0] > box.maxpt[0] || box.minpt[1] > box.maxpt[1])
     SoDebugError::postWarning("SbBox2f::extendBy",
-			      "Extension box has negative area.");
+                              "Extension box has negative area.");
 #endif // COIN_DEBUG
   this->extendBy(box.getMin());
   this->extendBy(box.getMax());
@@ -210,7 +210,7 @@ SbBox2f::setBounds(float xmin, float ymin, float xmax, float ymax)
 #if COIN_DEBUG
   if(!(xmin<=xmax && ymin<=ymax))
     SoDebugError::postWarning("SbBox2f::setBounds",
-			      "The bounds will give the box negative area.");
+                              "The bounds will give the box negative area.");
 #endif // COIN_DEBUG
 
   this->minpt.setValue(xmin, ymin);
@@ -231,7 +231,7 @@ SbBox2f::setBounds(const SbVec2f& min, const SbVec2f& max)
 #if COIN_DEBUG
   if(!(min[0]<=max[0] && min[1]<=max[1]))
     SoDebugError::postWarning("SbBox2f::setBounds",
-			      "The bounds will give the box negative area.");
+                              "The bounds will give the box negative area.");
 #endif // COIN_DEBUG
 
   this->minpt = min;
@@ -283,7 +283,7 @@ SbBox2f::getSize(float& w, float& h) const
 #if COIN_DEBUG
   if(!(minpt[0]<=maxpt[0] && minpt[1]<=maxpt[1]))
     SoDebugError::postWarning("SbBox2f::getSize",
-			      "The box has negative area.");
+                              "The box has negative area.");
 #endif // COIN_DEBUG
 
   w = this->width();
@@ -300,10 +300,10 @@ SbBox2f::getAspectRatio(void) const
 #if COIN_DEBUG
   if(!(minpt[0]<=maxpt[0] && minpt[1]<=maxpt[1]))
     SoDebugError::postWarning("SbBox2f::getAspectRatio",
-			      "The box has negative area.");
+                              "The box has negative area.");
   if (this->height()==0.0f)
     SoDebugError::postWarning("SbBox2f::getAspectRatio",
-			      "The box has zero width=>infinite aspectRatio.");
+                              "The box has zero width=>infinite aspectRatio.");
 #endif // COIN_DEBUG
 
   return (this->width()/this->height());

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -308,7 +308,7 @@ SoMFColor::setValues(const int start, const int num, const float rgb[][3])
 */
 void
 SoMFColor::setHSVValues(const int /* start */, const int /* num */,
-			const float /* hsv */[][3])
+                        const float /* hsv */[][3])
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -390,7 +390,7 @@ SoMFColor::set1Value(const int idx, const float rgb[3])
 */
 void
 SoMFColor::set1HSVValue(const int /* idx */,
-			const float /* h */, const float /* s */, const float /* v */)
+                        const float /* h */, const float /* s */, const float /* v */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -414,9 +414,9 @@ SoMFColor::convertTo(SoField * dest) const
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFColor::convertTo",
-		       "Can't convert from %s to %s",
-		       this->getTypeId().getName().getString(),
-		       dest->getTypeId().getName().getString());
+                       "Can't convert from %s to %s",
+                       this->getTypeId().getName().getString(),
+                       dest->getTypeId().getName().getString());
   }
 #endif // COIN_DEBUG
 }
