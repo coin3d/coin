@@ -23,7 +23,7 @@ if test x"$@" = x"" -a ! -f cfg/mkinstalldirs; then
 fi
 
 AUTOCONF_VER=2.5[023456789]
-AUTOMAKE_VER=1.4[efghij]     # Automake from CVS
+AUTOMAKE_VER=1.4[efghijklmn]     # Automake from CVS
 LIBTOOL_VER=1.3.5
 
 PROJECT=Coin
@@ -110,7 +110,18 @@ ${DIE=false} && echo "" && echo "Aborted." && exit 1
 # **************************************************************************
 
 echo "Running aclocal (generating aclocal.m4)..."
+rm -f aclocal.m4.old
+test -f aclocal.m4 && mv aclocal.m4 aclocal.m4.old
 aclocal -I $MACRODIR
+if test -f aclocal.m4.old; then
+  if cmp -s aclocal.m4 aclocal.m4.old; then
+    echo "aclocal: aclocal.m4 is unchanged"
+    rm -f aclocal.m4
+    mv aclocal.m4.old aclocal.m4
+  else
+    rm -f aclocal.m4.old
+  fi
+fi
 
 if $libtoolize; then
   libtoolize --copy --force
