@@ -349,14 +349,14 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
       else
         tmpvec = (coords[v2] - coords[v1]).cross(coords[v0] - coords[v1]);
 
-      // Be robust when it comes to erraneously specified triangles.
+      // Be robust when it comes to erroneously specified triangles.
       float len = tmpvec.length();
 #if COIN_DEBUG
       if (len <= 0.0f) {
         static uint32_t normgenerrors_tri = 0;
         if (normgenerrors_tri < 1) {
           SoDebugError::postWarning("SoNormalCache::generatePerFace",
-                                    "Erraneous triangle specification in model "
+                                    "Erroneous triangle specification in model "
                                     "(indices= [%d, %d, %d], "
                                     "coords=<%f, %f, %f>, <%f, %f, %f>, <%f, %f, %f>) "
                                     "(this warning will be printed only once, "
@@ -398,14 +398,14 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
       tmpvec[1] += ((*vert1)[2] - (*vert2)[2]) * ((*vert1)[0] + (*vert2)[0]);
       tmpvec[2] += ((*vert1)[0] - (*vert2)[0]) * ((*vert1)[1] + (*vert2)[1]);
 
-      // Be robust when it comes to erraneously specified polygons.
+      // Be robust when it comes to erroneously specified polygons.
       float len = tmpvec.length();
 #if COIN_DEBUG
       if (len <= 0.0f) {
         static uint32_t normgenerrors_poly = 0;
         if (normgenerrors_poly < 1) {
           SoDebugError::postWarning("SoNormalCache::generatePerFace",
-                                    "Erraneous polygon specification in model "
+                                    "Erroneous polygon specification in model "
                                     "(this warning will be printed only once, "
                                     "but there might be more errors).");
         }

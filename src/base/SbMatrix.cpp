@@ -284,7 +284,7 @@ SbMatrix::det3(void) const
 float
 SbMatrix::det4(void) const
 {
-  // FIXME: erraneous? this code gives the same results in the regression
+  // FIXME: erroneous? this code gives the same results in the regression
   // test as described in Kreyszig, but OI returns other values (except
   // for 1 of the testmatrices!). 1998???? mortene.
 

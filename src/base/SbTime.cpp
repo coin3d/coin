@@ -479,7 +479,7 @@ SbTime::formatDate(const char * const fmt) const
 SbBool
 SbTime::parsedate(const char * const date)
 {
-  // FIXME: make method 100% robust for erraneous date strings.
+  // FIXME: make method 100% robust for erroneous date strings.
   // 19981001 mortene.
 
   // FIXME: accept datestrings conforming to ISO 8601. 20000331 mortene.
