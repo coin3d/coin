@@ -3757,3 +3757,28 @@ main(int argc, char* argv[])
     20040831 mortene.
 
 =====================================================================
+
+135 Elements used by <node>::doAction() functions not automatically
+    set up.
+
+    When writing extension actions, it is a major hassle that one
+    needs to explicitly enable all elements used by nodes' doAction()
+    functions for the new action. It is a hassle for many reasons, not
+    the least that one can not find out which elements are actually
+    used without reading the source code. In addition, these are
+    really implementation details that may change without notice,
+    rendering client code buggy without any warning.
+
+    So this needs to be fixed. Would probably best be done by changing
+    the internals somewhat so that extension actions automatically
+    inherits a list of enabled elements from SoAction aswell, and not
+    just from the other actions, where this works as it should
+    already.
+
+    Medium priority item, we've had support requests / problem reports
+    from at least two external developers about this. It is a
+    non-trivial issue to fix.
+
+    20040902 mortene.
+
+=====================================================================
