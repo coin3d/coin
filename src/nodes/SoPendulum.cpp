@@ -81,7 +81,7 @@ SoPendulum::SoPendulum(void)
   this->timer = new SoElapsedTime;
   this->timer->ref();
 
-  this->calculator->expression = "oa = (1.0 - cos(a*b)) * 0.5";
+  this->calculator->expression = "oa = (1.0 - cos(a*b)*2*M_PI) * 0.5";
   this->calculator->a.connectFrom(&this->timer->timeOut);
   this->timer->on.connectFrom(&this->on);
   this->calculator->b.connectFrom(&this->speed);
