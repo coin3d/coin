@@ -272,6 +272,11 @@ cc_build_search_list(const char * libname)
   default_path = getenv("DYLD_FALLBACK_LIBRARY_PATH");
   if (!default_path) default_path = "/lib:/usr/lib";
 
+  if (cc_dl_debugging()) {
+    cc_debugerror_postinfo("cc_build_search_list", 
+			   "Using library path \"%s\" (fallback: \"%s\")",
+			   dyld_path, default_path);
+  }
 
   /* If we cannot find the library on the system, we might have a
      fallback shipped with Coin / the Inventor.framework.  Get the
@@ -443,8 +448,7 @@ cc_dl_open(const char * filename)
         NSLinkEditError(&c, &e, &file, &errstr);
         cc_debugerror_post("cc_dlopen", "%s", errstr);
       }
-
-    }
+    } 
   }
 
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
