@@ -3273,6 +3273,13 @@ main(void)
     find a proper support address for general bugs or for Windows
     bugs.)
 
+    pederb has also suggested a work-around:
+
+        > A Coin-workaround could be to invalidate render caches when
+        > the gfx-card is nNVidia, and the material binding !=
+        > OVERALL.  This can be done in MaterialBinding::GLRender()
+        > and/or IndexedFaceSet::GLRender()....
+
 =====================================================================
 
 128 Worse performance in more recent Coin versions?
