@@ -632,12 +632,19 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
           if (this->renderaction) { this->renderaction->setViewportRegion(subviewport); }
         }
 
-        // FIXME: investigate what the point of this is. 20030318 mortene.
+#if 0   /* disabled next lines as they otherwise break usage of make_current() and
+	 * reinstate_previous() in the wgl implementation. 20031106 tamer.
+	 *
+	 * FIXME: investigate what the point of this is. 20030318 mortene.
+	 * UPDATE 2003-11-06 tamer: probably to keep me up for a whole night
+         * debugging! *grmbl*
+	 */
         if (!this->internaldata->makeContextCurrent(oldcontext)) {
           SoDebugError::postWarning("SoOffscreenRenderer::renderFromBase",
                                     "Could not set up a current OpenGL context.");
           return FALSE;
         }
+#endif
 
         this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
 
@@ -650,6 +657,12 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
         this->internaldata->postRender();
 
         SbVec2s idsize = this->internaldata->getBufferSize();
+	/* FIXME: in case of pbuffer we don't need the convertBuffer routine
+	 * as everything gets rendered the exact way as on the screen. 
+	 * this should do the trick and is slightly more efficient:
+	 * this->pasteSubscreen(SbVec2s(x, y), this->internaldata->getBuffer());
+	 * 20031106 tamer.
+	 */
         this->convertBuffer(this->internaldata->getBuffer(), idsize[0], idsize[1],
                             subscreen, this->subsize[0], this->subsize[1]);
         this->pasteSubscreen(SbVec2s(x, y), subscreen);
@@ -675,6 +688,13 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
     assert(dims[0] == this->internaldata->getBufferSize()[0]);
     assert(dims[1] == this->internaldata->getBufferSize()[1]);
+
+    /* FIXME: see FIXME above:
+     * memcpy(this->buffer, this->internaldata->getBuffer(), 
+     *        dims[0] * dims[1] * PUBLIC(this)->getComponents());
+     * or something more efficient. e.g. by using other opengl extensions
+     * like render-to-texture. 20031106 tamer.
+     */
     this->convertBuffer(this->internaldata->getBuffer(), dims[0], dims[1],
                         this->buffer, dims[0], dims[1]);
   }
