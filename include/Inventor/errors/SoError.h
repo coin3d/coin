@@ -35,6 +35,7 @@ class SoPath;
 class SoEngine;
 
 typedef void SoErrorCB(const class SoError * error, void * data);
+typedef SoErrorCB * SoErrorCBPtr;
 
 
 class COIN_DLL_API SoError {
@@ -63,7 +64,7 @@ public:
 
 protected:
   static void defaultHandlerCB(const SoError * error, void * userdata);
-  virtual SoErrorCB * getHandler(void * & data) const;
+  virtual SoErrorCBPtr getHandler(void * & data) const;
 
   void setDebugString(const char * const str);
   void appendToDebugString(const char * const str);

@@ -43,7 +43,7 @@ public:
   static void initClass(void);
 
 protected:
-  virtual SoErrorCB * getHandler(void * & data) const;
+  virtual SoErrorCBPtr getHandler(void * & data) const;
 
 private:
   static SoType classTypeId;

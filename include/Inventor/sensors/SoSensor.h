@@ -29,6 +29,7 @@
 class SoSensor;
 
 typedef void SoSensorCB(void * data, SoSensor * sensor);
+typedef SoSensorCB * SoSensorCBPtr;
 
 class COIN_DLL_API SoSensor {
 public:
@@ -37,7 +38,7 @@ public:
   virtual ~SoSensor(void);
 
   void setFunction(SoSensorCB * callbackfunction);
-  SoSensorCB * getFunction(void) const;
+  SoSensorCBPtr getFunction(void) const;
   void setData(void * callbackdata);
   void * getData(void) const;
 
