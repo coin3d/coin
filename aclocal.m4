@@ -857,6 +857,43 @@ else
 fi])
 
 # Usage:
+#   SIM_AC_CHECK_LINKSTYLE
+#
+# Description:
+#
+#   Detect how to link against external libraries; UNIX-style
+#   ("-llibname") or MSWin-style ("libname.lib"). As a side-effect of
+#   running this macro, the shell variable sim_ac_linking_style will be
+#   set to either "mswin" or "unix".
+#
+# Author:
+#   Marius B. Monsen <mariusbu@sim.no>
+
+AC_DEFUN([SIM_AC_CHECK_LINKSTYLE], [
+
+sim_ac_save_ldflags=$LDFLAGS
+LDFLAGS="$LDFLAGS version.lib"
+
+AC_CACHE_CHECK(
+  [if linking should be done "MSWin-style"],
+  sim_cv_mswin_linking,
+  AC_TRY_COMPILE([#include <windows.h>
+#include <version.h>],
+                 [(void)GetFileVersionInfoSize(0L, 0L);],
+                 [sim_cv_mswin_linking=yes],
+                 [sim_cv_mswin_linking=no])
+)
+
+LDFLAGS=$sim_ac_save_ldflags
+
+if test x"$sim_cv_mswin_linking" = x"yes"; then
+  sim_ac_linking_style=mswin
+else
+  sim_ac_linking_style=unix
+fi
+])
+
+# Usage:
 #   SIM_AC_CHECK_MACRO_QUOTE([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 # Description:
@@ -1186,14 +1223,8 @@ AC_DEFUN([SIM_PARSE_MODIFIER_LIST],
 #
 #
 # Author: Morten Eriksen, <mortene@sim.no>.
-#
-# TODO:
-#    * [mortene:20000122] make sure this work on MSWin (with
-#      Cygwin installation)
-#
 
 AC_DEFUN([SIM_CHECK_X11], [
-AC_PREREQ([2.14.1])
 
 sim_ac_x11_avail=no
 
@@ -1576,16 +1607,29 @@ AC_ARG_WITH(
   [],
   [with_mesa=yes])
 
-if test "x$with_mesa" = "xyes"; then
-  sim_ac_gl_first_gl=-lMesaGL
-  sim_ac_gl_first_glu=-lMesaGLU
-  sim_ac_gl_second_gl=-lGL
-  sim_ac_gl_second_glu=-lGLU
+if test x"$sim_ac_linking_style" = xmswin; then
+  sim_ac_gl_glname=opengl32.lib
+  sim_ac_gl_gluname=glu32.lib
+  # FIXME: are these two names correct? Probably not. 20000602 mortene.
+  sim_ac_gl_mesaglname=mesagl.lib
+  sim_ac_gl_mesagluname=mesaglu.lib
 else
-  sim_ac_gl_first_gl=-lGL
-  sim_ac_gl_first_glu=-lGLU
-  sim_ac_gl_second_gl=-lMesaGL
-  sim_ac_gl_second_glu=-lMesaGLU
+  sim_ac_gl_glname=-lGL
+  sim_ac_gl_gluname=-lGLU
+  sim_ac_gl_mesaglname=-lMesaGL
+  sim_ac_gl_mesagluname=-lMesaGLU
+fi
+
+if test "x$with_mesa" = "xyes"; then
+  sim_ac_gl_first_gl=$sim_ac_gl_mesaglname
+  sim_ac_gl_first_glu=$sim_ac_gl_mesagluname
+  sim_ac_gl_second_gl=$sim_ac_gl_glname
+  sim_ac_gl_second_glu=$sim_ac_gl_gluname
+else
+  sim_ac_gl_first_gl=$sim_ac_gl_glname
+  sim_ac_gl_first_glu=$sim_ac_gl_gluname
+  sim_ac_gl_second_gl=$sim_ac_gl_mesaglname
+  sim_ac_gl_second_glu=$sim_ac_gl_mesagluname
 fi
 
 AC_ARG_WITH(
@@ -1600,12 +1644,12 @@ if test x"$with_opengl" != xno; then
     sim_ac_gl_cppflags="-I${with_opengl}/include"
     sim_ac_gl_ldflags="-L${with_opengl}/lib"
   else
-    case "$host_os" in
-      hpux*)
-        # This is a common location for the OpenGL libraries on HPUX.
-        sim_ac_gl_cppflags="-I/opt/graphics/OpenGL/include"
-        sim_ac_gl_ldflags="-L/opt/graphics/OpenGL/lib" ;;
-    esac
+    # This is a common location for the OpenGL libraries on HPUX.
+    sim_ac_gl_hpux=/opt/graphics/OpenGL
+    if test -d $sim_ac_gl_hpux; then
+      sim_ac_gl_cppflags=-I$sim_ac_gl_hpux/include
+      sim_ac_gl_ldflags=-L$sim_ac_gl_hpux/lib
+    fi
   fi
 
   sim_ac_save_cppflags=$CPPFLAGS

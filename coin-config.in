@@ -35,7 +35,7 @@ while test $# -gt 0; do
       echo -L@libdir@ @COIN_EXTRA_LDFLAGS@
       ;;
     --libs)
-      echo -lCoin @COIN_EXTRA_LIBS@
+      echo @COIN_LIBNAME@ @COIN_EXTRA_LIBS@
       ;;
     *)
       echo "Unknown option: \"$1\""

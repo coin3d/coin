@@ -93,6 +93,18 @@ AC_SUBST(COIN_EXTRA_LDFLAGS)
 AC_SUBST(COIN_EXTRA_LIBS)
 
 
+# Check if linking should be done MSWin-style ("libname.lib") or
+# Unix-style ("-llibname").
+SIM_AC_CHECK_LINKSTYLE
+
+if test x"$sim_ac_linking_style" = xmswin; then
+  COIN_LIBNAME=coin.lib
+else
+  COIN_LIBNAME=-lCoin
+fi
+AC_SUBST(COIN_LIBNAME)
+
+
 dnl *******************************************************************
 dnl * Check compiler features, bugs, etc.
 dnl *******************************************************************
