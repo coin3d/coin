@@ -44,6 +44,8 @@
 #include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
@@ -59,6 +61,7 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
+#include <Inventor/SbPlane.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -69,6 +72,7 @@
 #endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
 #include <string.h>
+#include <stdlib.h>
 
 /*!
   \enum SoShape::TriangleShape
@@ -528,6 +532,36 @@ SoShape::getComplexityValue(SoAction * action)
   }
 }
 
+typedef struct {
+  int idx : 31;
+  int backface : 1;
+  float dist;
+} sorted_triangle;
+
+static SbList <SoPrimitiveVertex> * transparencybuffer = NULL;
+static SbList <sorted_triangle> * sorted_triangle_list = NULL;
+static SbBool is_doing_sorted_rendering; // need this in invokeTriangleCallbacks()
+
+// qsort callback
+static int
+compare_triangles(const void * ptr1, const void * ptr2)
+{
+  sorted_triangle * tri1 = (sorted_triangle*) ptr1;
+  sorted_triangle * tri2 = (sorted_triangle*) ptr2;
+
+  if (tri1->dist > tri2->dist) return -1;
+  if (tri1->dist == tri2->dist) return tri2->backface - tri1->backface;
+  return 1;
+}
+
+// atexit callback
+static void
+soshape_cleanup_transparencybuffer(void)
+{
+  delete transparencybuffer;
+  delete sorted_triangle_list;
+}
+
 /*!
   \internal
 */
@@ -536,7 +570,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 {
   if (action->getCurPathCode() == SoAction::OFF_PATH &&
       !this->affectsState()) return FALSE;
-  
+
   SoState * state = action->getState();
 
   SbBool needNormals =
@@ -597,6 +631,138 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     glPopMatrix();
     return FALSE;
   }
+
+  // test if we should sort triangles before rendering
+  if (transparent &&
+      ((action->getTransparencyType() ==
+        SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND) ||
+       (action->getTransparencyType() ==
+        SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD))) {
+
+    if (transparencybuffer == NULL) {
+      transparencybuffer = new SbList <SoPrimitiveVertex>;
+      sorted_triangle_list = new SbList <sorted_triangle>;
+      atexit(soshape_cleanup_transparencybuffer);
+    }
+
+    // do this before generating triangles to get correct
+    // material for lines and point (only triangles are sorted).
+    SoMaterialBundle mb(action);
+    mb.sendFirst();
+    currentBundle = &mb;
+
+    // this will render lines and points, and copy triangle vertices
+    // into transparencybuffer.
+    transparencybuffer->truncate(0);
+    is_doing_sorted_rendering = TRUE;
+    this->generatePrimitives(action);
+    is_doing_sorted_rendering = FALSE;
+    int i, n = transparencybuffer->getLength() / 3;
+    if (n == 0) return FALSE; // finished
+
+    const SoPrimitiveVertex * varray = transparencybuffer->getArrayPtr();
+
+    sorted_triangle_list->truncate(0);
+    sorted_triangle tri;
+
+    const SoPrimitiveVertex * v;
+    const SbMatrix & mm = SoModelMatrixElement::get(state);
+
+    SoShapeHintsElement::VertexOrdering vo;
+    SoShapeHintsElement::ShapeType st;
+    SoShapeHintsElement::FaceType ft;
+    SoShapeHintsElement::get(state, vo, st, ft);
+
+    SbBool bfcull = 
+      (vo != SoShapeHintsElement::UNKNOWN_ORDERING) &&
+      (st == SoShapeHintsElement::SOLID);
+
+    if (bfcull || vo == SoShapeHintsElement::UNKNOWN_ORDERING) {
+      SbPlane nearp = SoViewVolumeElement::get(state).getPlane(0.0f);
+      nearp = SbPlane(-nearp.getNormal(), -nearp.getDistanceFromOrigin());
+      // if back face culling is enabled, we can do less work
+      SbVec3f center;
+      for (i = 0; i < n; i++) {
+        int idx = i*3;
+        center.setValue(0.0f, 0.0f, 0.0f);
+        tri.idx = idx;
+        for (int j = 0; j < 3; j++) {
+          tri.backface = 0;
+          v = varray + idx + j;
+          center += v->getPoint();
+        }
+        center /= 3.0f;
+        mm.multVecMatrix(center, center);
+        tri.dist = nearp.getDistance(center);
+        sorted_triangle_list->append(tri);
+      }
+    }
+    else {
+      // project each point onto screen to find the vertex
+      // ordering of the triangle. Sort on vertex closest
+      // to the near plane.
+      SbMatrix obj2vp = 
+        mm * SoViewingMatrixElement::get(state) *
+        SoProjectionMatrixElement::get(state);
+      
+      int clockwise = (vo == SoShapeHintsElement::CLOCKWISE) ? 1 : 0;
+      SbVec3f c[3];
+      for (i = 0; i < n; i++) {
+        int idx = i*3;
+        tri.idx = idx;
+        // projected coordinates are between -1 and 1
+        float smalldist = 10.0f;
+        for (int j = 0; j < 3; j++) {
+          v = varray + idx + j;
+          c[j] = v->getPoint();
+          obj2vp.multVecMatrix(c[j], c[j]);
+          float dist = c[j][2];
+          if (dist < smalldist) smalldist = dist;
+        }
+        SbVec3f v0 = c[2]-c[0];
+        SbVec3f v1 = c[1]-c[0];
+        // we need only the z-component of the cross product
+        // to determine if triangle is cw or ccw
+        float cz = v0[0]*v1[1] - v0[1]*v1[0];
+        tri.backface = clockwise; 
+        if (cz < 0.0f) tri.backface = 1 - clockwise;
+        tri.dist = smalldist;
+        sorted_triangle_list->append(tri);
+      }
+    }
+
+    const sorted_triangle * tarray = sorted_triangle_list->getArrayPtr();
+    qsort((void*)tarray, n, sizeof(sorted_triangle), compare_triangles);
+
+    int idx;
+    
+    // this rendering loop can be optimized a lot, of course, but speed
+    // is not so important here, since it's slow to generate, copy and
+    // sort the triangles anyway.
+    glBegin(GL_TRIANGLES);
+    for (i = 0; i < n; i++) {
+      idx = tarray[i].idx;
+      v = varray + idx;
+      glTexCoord4fv(v->getTextureCoords().getValue());
+      glNormal3fv(v->getNormal().getValue());
+      currentBundle->send(v->getMaterialIndex(), TRUE);
+      glVertex3fv(v->getPoint().getValue());
+
+      v = varray + idx+1;
+      glTexCoord4fv(v->getTextureCoords().getValue());
+      glNormal3fv(v->getNormal().getValue());
+      currentBundle->send(v->getMaterialIndex(), TRUE);
+      glVertex3fv(v->getPoint().getValue());
+
+      v = varray + idx+2;
+      glTexCoord4fv(v->getTextureCoords().getValue());
+      glNormal3fv(v->getNormal().getValue());
+      currentBundle->send(v->getMaterialIndex(), TRUE);
+      glVertex3fv(v->getPoint().getValue());
+    }
+    glEnd();
+    return FALSE; // tell shape _not_ to render
+  }
   return TRUE;
 }
 
@@ -628,7 +794,7 @@ SoShape::beginSolidShape(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
   state->push();
-  
+
   SoShapeHintsElement::set(state,
                            SoShapeHintsElement::COUNTERCLOCKWISE,
                            SoShapeHintsElement::SOLID,
@@ -816,22 +982,29 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
     ga->incNumTriangles();
   }
   else if (action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId())) {
-    glBegin(GL_TRIANGLES);
-    glTexCoord4fv(v1->getTextureCoords().getValue());
-    glNormal3fv(v1->getNormal().getValue());
-    currentBundle->send(v1->getMaterialIndex(), TRUE);
-    glVertex3fv(v1->getPoint().getValue());
+    if (is_doing_sorted_rendering) {
+      transparencybuffer->append(*v1);
+      transparencybuffer->append(*v2);
+      transparencybuffer->append(*v3);
+    }
+    else {
+      glBegin(GL_TRIANGLES);
+      glTexCoord4fv(v1->getTextureCoords().getValue());
+      glNormal3fv(v1->getNormal().getValue());
+      currentBundle->send(v1->getMaterialIndex(), TRUE);
+      glVertex3fv(v1->getPoint().getValue());
 
-    glTexCoord4fv(v2->getTextureCoords().getValue());
-    glNormal3fv(v2->getNormal().getValue());
-    currentBundle->send(v2->getMaterialIndex(), TRUE);
-    glVertex3fv(v2->getPoint().getValue());
+      glTexCoord4fv(v2->getTextureCoords().getValue());
+      glNormal3fv(v2->getNormal().getValue());
+      currentBundle->send(v2->getMaterialIndex(), TRUE);
+      glVertex3fv(v2->getPoint().getValue());
 
-    glTexCoord4fv(v3->getTextureCoords().getValue());
-    glNormal3fv(v3->getNormal().getValue());
-    currentBundle->send(v3->getMaterialIndex(), TRUE);
-    glVertex3fv(v3->getPoint().getValue());
-    glEnd();
+      glTexCoord4fv(v3->getTextureCoords().getValue());
+      glNormal3fv(v3->getNormal().getValue());
+      currentBundle->send(v3->getMaterialIndex(), TRUE);
+      glVertex3fv(v3->getPoint().getValue());
+      glEnd();
+    }
   }
 }
 

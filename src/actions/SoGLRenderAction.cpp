@@ -86,6 +86,132 @@
 */
 
 /*!
+  \var SoGLRenderAction::TransparencyType SoGLRenderAction::SCREEN_DOOR
+  Transparent triangles are rendered with a dither pattern. This is
+  a fast (on most GFX cards) but not-so-high-quality transparency mode.
+*/
+
+/*!
+
+  \var SoGLRenderAction::TransparencyType SoGLRenderAction::ADD
+
+  Transparent objects are rendered using additive alpha blending.
+  Additive blending is probably mostly used to create special
+  transparency effects. The new pixel color is calculated as the
+  current pixel color plus the source pixel color multiplied with the
+  source pixel alpha value.
+
+*/
+
+/*!
+  \var SoGLRenderAction::TransparencyType
+
+  SoGLRenderAction::DELAYED_ADD Transparent objects are rendered using
+  additive alpha blending, in a second rendering pass with depth
+  buffer updates disabled.
+
+*/
+
+/*!
+  \var SoGLRenderAction::TransparencyType
+
+  SoGLRenderAction::SORTED_OBJECT_ADD Transparent objects are rendered
+  using additive alpha blending.  Opaque objects are rendered first,
+  and transparent objects are rendered back to front with z-buffer
+  updates disabled.
+
+*/
+
+/*!
+  \var SoGLRenderAction::TransparencyType SoGLRenderAction::BLEND
+
+  Transparent objects are rendered using multiplicative alpha blending.
+
+  Multiplicative alpha blending is the blending type that is most
+  often used to render transparent objects. The new pixel value is
+  calculated as the old pixel color multiplied with one minus the
+  source alpha value, plus the source pixel color multiplied with the
+  source alpha value.
+
+  We recommend that you use this transparency mode if you have only
+  one transparent object in your scene, and you know that it will be
+  rendered after the opaque objects.
+
+*/
+
+/*!
+  \var SoGLRenderAction::TransparencyType SoGLRenderAction::DELAYED_BLEND
+
+  Transparent objects are rendered using multiplicative alpha
+  blending, in a second rendering pass with depth buffer updates
+  disabled.
+
+  Use this transparency type when you have one transparent object, or
+  several transparent object that you know will never overlap (when
+  projected to screen). Since the transparent objects are rendered
+  after opaque ones, you'll not have to worry about putting the
+  transparent objects at the end of your scene graph. It will not be
+  as fast as the BLEND transparency type, of course, since the scene
+  graph is traversed twice.
+
+*/
+
+/*!
+  \var SoGLRenderAction::TransparencyType SoGLRenderAction::SORTED_OBJECT_BLEND
+
+  Transparent objects are rendered using multiplicative alpha
+  blending, Opaque objects are rendered first, and transparent objects
+  are rendered back to front with z-buffer updates disabled.
+
+  Use this transparency mode when you have several transparent object
+  that you know might overlap (when projected to screen). This method
+  will require 1 + num_transparent_objects rendering passes. Path
+  traversal is used when rendering transparent objects, of course, but
+  it might still be slow if you have lots of state changes before your
+  transparent object. When using this mode, we recommend placing the
+  transparent objects as early as possible in the scene graph to
+  minimize traversal overhead.
+*/
+
+/*!
+  \var SoGLRenderAction::TransparencyType SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD
+
+  Transparent objects are rendered using additive alpha blending,
+  Transparent objects are rendered back to front, and triangles in
+  each object are sorted back to front before rendering. This
+  transparency type is a Coin extension versus the Open Inventor API.
+
+  See description for SORTED_OBJECT_SORTED_TRIANGLE_BLEND for more
+  information about this transparency type.
+
+*/
+
+/*!
+  \var SoGLRenderAction::TransparencyType SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND
+
+  Transparent objects are rendered using multiplicative alpha
+  blending, Transparent objects are rendered back to front, and
+  triangles in each object are sorted back to front before
+  rendering. This transparency type is a Coin extension versus the
+  Open Inventor API.
+
+  Use this transparency type when you have one (or more) transparent
+  object where you know triangles might overlap inside the object.
+  This transparency type might be very slow if you have an object with
+  lots of triangles, since all triangles have to be sorted before
+  rendering, and an unoptimized rendering loop is used when rendering.
+  Lines and points are not sorted before rendering. They are rendered
+  as in the normal SORTED_OBJECT_BLEND transparency type.
+
+  Please note that this transparency mode does not guarantee
+  "correct" transparency rendering. It is almost impossible to find an
+  algorithm that will sort triangles correctly in all cases, and
+  intersecting triangles are not handled. Also, since each object
+  is handled separately, two intersecting object will lead to
+  incorrect transparency.
+*/
+
+/*!
   \enum SoGLRenderAction::AbortCode
 
   The return codes which an SoGLRenderAbortCB callback function should
@@ -447,11 +573,13 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     case BLEND:
     case DELAYED_BLEND:
     case SORTED_OBJECT_BLEND:
+    case SORTED_OBJECT_SORTED_TRIANGLE_BLEND:
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
       break;
     case ADD:
     case DELAYED_ADD:
     case SORTED_OBJECT_ADD:
+    case SORTED_OBJECT_SORTED_TRIANGLE_ADD:
       glBlendFunc(GL_SRC_ALPHA, GL_ONE);
       break;
     case SCREEN_DOOR:
@@ -508,7 +636,9 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
     return istransparent;
   }
   else if (THIS->transparencytype == SORTED_OBJECT_ADD ||
-           THIS->transparencytype == SORTED_OBJECT_BLEND) {
+           THIS->transparencytype == SORTED_OBJECT_BLEND ||
+           THIS->transparencytype == SORTED_OBJECT_SORTED_TRIANGLE_ADD ||
+           THIS->transparencytype == SORTED_OBJECT_SORTED_TRIANGLE_BLEND) {
     if (THIS->sortrender || !istransparent) return FALSE;
     this->addTransPath(this->getCurPath()->copy());
     return TRUE;
@@ -625,7 +755,7 @@ SoGLRenderAction::addTransPath(SoPath * path)
 
   SoNode * tail = ((SoFullPath*)path)->getTail();
   float dist;
-  
+
   // test if we can calculate bbox using SoShape::computeBBox. This is
   // the common case, and quite a lot faster than using an
   // SoGetBoundingBoxAction. We only do this if no cache is currently
@@ -637,7 +767,7 @@ SoGLRenderAction::addTransPath(SoPath * path)
     SbVec3f center;
     ((SoShape*)tail)->computeBBox(this, dummy, center);
     SoModelMatrixElement::get(this->state).multVecMatrix(center, center);
-    dist = SoViewVolumeElement::get(this->state).getPlane(0.0f).getDistance(center);    
+    dist = SoViewVolumeElement::get(this->state).getPlane(0.0f).getDistance(center);
   }
   else {
     if (THIS->bboxaction == NULL) {
@@ -840,7 +970,9 @@ SoGLRenderActionP::renderSingle(SoNode * node)
       this->disableBlend();
     }
     else if (this->transparencytype == SoGLRenderAction::SORTED_OBJECT_BLEND ||
-             this->transparencytype == SoGLRenderAction::SORTED_OBJECT_ADD) {
+             this->transparencytype == SoGLRenderAction::SORTED_OBJECT_ADD ||
+             this->transparencytype == SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND ||
+             this->transparencytype == SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND) {
       SoGLCacheContextElement::set(state, this->cachecontext,
                                    TRUE, this->renderingremote);
       this->sortrender = TRUE;

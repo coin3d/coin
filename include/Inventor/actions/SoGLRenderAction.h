@@ -45,7 +45,10 @@ public:
   enum TransparencyType {
     SCREEN_DOOR,
     ADD, DELAYED_ADD, SORTED_OBJECT_ADD,
-    BLEND, DELAYED_BLEND, SORTED_OBJECT_BLEND
+    BLEND, DELAYED_BLEND, SORTED_OBJECT_BLEND,
+    // The remaining are Coin extensions to the common Inventor API
+    SORTED_OBJECT_SORTED_TRIANGLE_ADD,
+    SORTED_OBJECT_SORTED_TRIANGLE_BLEND
   };
 
   enum AbortCode {
