@@ -19,7 +19,7 @@
     int start )
 {
 
-  assert (coordEl->getNum() - start <= rowsize * colsize);
+  assert (coordEl->getNum() - start >= rowsize * colsize);
 
 #if COORDS==D3
   const SbVec3f *coords = coordEl->getArrayPtr3();
