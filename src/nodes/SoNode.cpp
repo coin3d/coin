@@ -1213,9 +1213,12 @@ SoNode::addToCopyDict(void) const
       SoProto * proto = inst->getProtoDefinition();
       SoProtoInstance * newinst = proto->createProtoInstance();
       cp = newinst->getRootNode();
-      newinst->copyContents(inst, FALSE);
       assert(cp);      
+      // We have to call addCopy() before calling copyContents() since
+      // the proto instance might have a field that has a pointer to
+      // the root node. pederb, 2002-09-04
       SoFieldContainer::addCopy(this, cp);
+      newinst->copyContents(inst, FALSE);
     }
     else {
       cp = (SoNode *)this->getTypeId().createInstance();

@@ -724,8 +724,10 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
       SoProto * proto = protoinst->getProtoDefinition();
       SoProtoInstance * newinst = proto->createProtoInstance();
       cp = newinst->getRootNode();
+      // We have to call addCopy() before calling copyContents() since
+      // the proto instance might have a field that has a pointer to
+      // the root node. pederb, 2002-09-04
       newinst->copyContents(protoinst, FALSE);
-      SoFieldContainer::addCopy(orig, cp); 
     }
     else {
       cp = (SoFieldContainer *)orig->getTypeId().createInstance();
@@ -743,9 +745,18 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
     SbBool copied = tmp ? TRUE : FALSE;
     
     if (!copied) {
-      cp->copyContents(orig, copyconnections);
+      // we have to update the dictionary _before_ calling
+      // copyContents in case we have an SoSFNode field in the node
+      // that has a pointer to the node. Example scene graph:
+      //
+      // DEF mynode Script {
+      //   field SFNode self USE mynode
+      // }
+      //
+      // pederb, 2002-09-04
       chk = contentscopied->enter((unsigned long)orig, (void *)TRUE);
       assert(!chk && "the key already exists");
+      cp->copyContents(orig, copyconnections);
     }
   }
   return cp;
