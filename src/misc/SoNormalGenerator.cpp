@@ -302,12 +302,8 @@ SoNormalGenerator::getNormals(void) const
 const SbVec3f &
 SoNormalGenerator::getNormal(const int32_t i) const
 {
-  if (!this->perVertex) {
-    assert(i >= 0 && i < this->faceNormals.getLength());
-    return this->faceNormals[i];
-  }
-  assert(i >= 0 && i < this->vertexNormals.getLength());
-  return this->vertexNormals[i];
+  assert(i >= 0 && i < this->getNumNormals());
+  return this->getNormals()[i];
 }
 
 /*!
