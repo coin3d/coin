@@ -562,8 +562,10 @@ SoNodekitCatalog::clone(SoType type) const
   for (int i=0; i < this->items.getLength(); i++) {
     CatalogItem * olditem = this->items[i];
     CatalogItem * newitem = new CatalogItem(*olditem);
-    newitem->type = type;
-    newitem->defaulttype = type;
+    if (i == 0) {
+      newitem->type = type;
+      newitem->defaulttype = type;
+    }
     // This is the only element in CatalogItem which can't be bitwise
     // copied.
     newitem->itemtypeslist = olditem->itemtypeslist;
