@@ -32,56 +32,25 @@
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
 #include <Inventor/C/errors/debugerror.h>
+#include <Inventor/C/glue/dl.h>
 #include <Inventor/C/glue/gl_agl.h>
 
-/* FIXME: We probably should use a configure-time check for the
-   availability of the NSSymbol functions instead of a simple platform
-   check. Since these functions are part of the core Mac OS X system,
-   this should be okay for the time being, though. kyrah 20030115 */
-#ifdef __APPLE__
-
-
+#ifdef HAVE_AGL
 #include <AGL/agl.h>  
 #include <Carbon/Carbon.h> 
-#include <OpenGL/gl.h>
+#endif
+
+#ifdef HAVE_MACH_O_DYLD_H
 #include <mach-o/dyld.h>
+#endif // HAVE_MACH_O_DYLD_H
 
-/* There is no native aglGetProcAddress() or NSGLGetProcAddress(), but
- * you can use NSLookupAndBindSymbol() to get the address of an
- * OpenGL entry point. Note that the NSSymbol functions are part of
- * the System framework and *not* Cocoa (despite their misleading
- * names.
- */
-void * NSGLGetProcAddress(const char * name) 
-{
-  NSSymbol symbol;
-  char *symbolName;
-  symbolName = malloc(strlen(name) + 2);
-  strcpy(symbolName + 1, name);
-  symbolName[0] = '_';
-  symbol = NULL;
-  if (NSIsSymbolNameDefined(symbolName)) {
-    symbol = NSLookupAndBindSymbol(symbolName);
-  }
-  free (symbolName);
-  return symbol ? NSAddressOfSymbol(symbol) : NULL;
-}
-
-#endif /* __APPLE__ */
 
 void *
-coin_nsgl_getprocaddress(const char * fname)
+coin_agl_getprocaddress(const char * fname)
 {
-
-#ifdef __APPLE__
-  void * ptr = NSGLGetProcAddress(fname);
-  return ptr;
-#endif /* __APPLE__ */
-
-  return NULL;
+    cc_libhandle h = cc_dl_open(NULL);
+    return cc_dl_sym(h, fname);
 }
-
-
 
 #ifndef HAVE_AGL
 
