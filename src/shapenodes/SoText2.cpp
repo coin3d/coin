@@ -149,14 +149,13 @@ public:
   SoText2 * textnode;
   
   SbBool useglyphcache;
-  SoGlyph *** glyphs;
-  SbVec2s ** positions;
+  SbList< SbList<const SoGlyph*> * > glyphs;
+  SbList< SbList<SbVec2s> * > positions;
   // FIXME: use notify() to handle changes, not comparison with last value.
   SbString ** laststring;
   int * stringwidth;
   SbBox2s bbox;
   int linecnt;
-  int validarraydims;
   SbName prevfontname;
   float prevfontsize;
   SbBool hasbuiltglyphcache;
@@ -173,8 +172,9 @@ public:
 
 // *************************************************************************
 
+// FIXME: use PRIVATE() and PUBLIC() macros. 20030408 mortene.
 #undef THIS
-#define THIS this->pimpl
+#define THIS (this->pimpl)
 
 SO_NODE_SOURCE(SoText2);
 
@@ -184,11 +184,8 @@ SO_NODE_SOURCE(SoText2);
 SoText2::SoText2(void)
 {
   THIS = new SoText2P(this);
-  THIS->glyphs = NULL;
-  THIS->positions = NULL;
   THIS->laststring = NULL;
   THIS->linecnt = 0;
-  THIS->validarraydims = 0;
   THIS->stringwidth = NULL;
   THIS->bbox.makeEmpty();
   THIS->useglyphcache = TRUE;
@@ -294,10 +291,10 @@ SoText2::GLRender(SoGLRenderAction * action)
         }
         charcnt = THIS->laststring[i]->getLength();
         for (int i2 = 0; i2 < charcnt; i2++) {
-          buffer = THIS->glyphs[i][i2]->getBitmap(thissize, thispos, FALSE);
+          buffer = (*THIS->glyphs[i])[i2]->getBitmap(thissize, thispos, FALSE);
           ix = thissize[0];
           iy = thissize[1];
-          position = THIS->positions[i][i2];
+          position = (*THIS->positions[i])[i2];
           fx = (float)position[0];
           fy = (float)position[1];
           
@@ -421,8 +418,8 @@ SoText2::rayPick(SoRayPickAction * action)
     
     float charleft, charright;
     for (i=0; i<strlength; i++) {
-      charleft = strleft + (THIS->positions[stringidx][i][0] / bbwidth);
-      charright = (i==strlength-1 ? strright : strleft + (THIS->positions[stringidx][i+1][0] / bbwidth));
+      charleft = strleft + (*THIS->positions[stringidx])[i][0] / bbwidth;
+      charright = (i==strlength-1 ? strright : strleft + ((*THIS->positions[stringidx])[i+1][0] / bbwidth));
       if (hdist >= charleft && hdist <= charright) {
         charidx = i;
         i = strlength;
@@ -466,29 +463,26 @@ SoText2::generatePrimitives(SoAction * action)
 void
 SoText2P::flushGlyphCache(const SbBool unrefglyphs)
 {
-  if (this->glyphs && validarraydims > 0) {
-    free(this->stringwidth);
-    for (int i=0; i<this->linecnt; i++) {
-      if (validarraydims == 2) {
-        if (this->laststring[i] && unrefglyphs) {
-          for (int j=0; j<this->laststring[i]->getLength(); j++) {
-            if (this->glyphs[i][j])
-              this->glyphs[i][j]->unref();
-          }
+  if (this->stringwidth) { free(this->stringwidth); }
+
+  for (int i=0; i<this->linecnt; i++) {
+    if (this->laststring[i] && unrefglyphs) {
+      for (int j=0; j<this->laststring[i]->getLength(); j++) {
+        if ((*this->glyphs[i])[j]) {
+          (*this->glyphs[i])[j]->unref();
         }
-        free(this->positions[i]);
       }
-      delete this->laststring[i];
-      free(this->glyphs[i]);
     }
-    free(this->positions);
-    free(this->glyphs);
+
+    delete this->laststring[i];
+    delete this->glyphs[i];
+    delete this->positions[i];
   }
-  this->glyphs = NULL;
-  this->positions = NULL;
+
+  this->glyphs.truncate(0);
+  this->positions.truncate(0);
   this->laststring = NULL;
   this->linecnt = 0;
-  this->validarraydims = 0;
   this->stringwidth = NULL;
   this->bbox.makeEmpty();
 }
@@ -498,17 +492,13 @@ void
 SoText2P::dumpGlyphCache()
 {
   // FIXME: pure debug method, remove. preng 2003-03-18.
-  fprintf(stderr,"dumpGlyphCache: validarraydims=%d\n", validarraydims);
-  if (this->glyphs && validarraydims > 0) {
-    for (int i=0; i<this->linecnt; i++) {
-      fprintf(stderr,"  stringwidth[%d]=%d\n", i, this->stringwidth[i]);
-      fprintf(stderr,"  laststring[%d]=%s\n", i, this->laststring[i]->getString());
-      if (validarraydims == 2) {
-        for (int j = 0; j < (int) strlen(this->laststring[i]->getString()); j++) {
-          fprintf(stderr,"    glyph[%d][%d]=%p\n", i, j, this->glyphs[i][j]);
-          fprintf(stderr,"    position[%d][%d]=(%d, %d)\n", i, j, this->positions[i][j][0], this->positions[i][j][1]);
-        }
-      }
+  fprintf(stderr,"dumpGlyphCache\n");
+  for (int i=0; i<this->linecnt; i++) {
+    fprintf(stderr,"  stringwidth[%d]=%d\n", i, this->stringwidth[i]);
+    fprintf(stderr,"  laststring[%d]=%s\n", i, this->laststring[i]->getString());
+    for (int j = 0; j < (int) strlen(this->laststring[i]->getString()); j++) {
+      fprintf(stderr,"    glyph[%d][%d]=%p\n", i, j, (*this->glyphs[i])[j]);
+      fprintf(stderr,"    position[%d][%d]=(%d, %d)\n", i, j, (*this->positions[i])[j][0], (*this->positions[i])[j][1]);
     }
   }
 }
@@ -635,29 +625,19 @@ int
 SoText2P::buildGlyphCache(SoState * state)
 {
   if (this->shouldBuildGlyphCache(state)) {
+    // FIXME: use PUBLIC() macro. 20030408 mortene.
     SoText2 * t = this->textnode;
 
-    // FIXME: pre-declaring all variables at the top is C-code, no
-    // need for this when writing C++. 20030408 mortene.
-    const char * s;
-    int len;
-    SbVec2s penpos, advance, kerning, thissize, thispos;
-    unsigned int idx;
-    SbName curfontname;
-    float curfontsize;
-    
-    curfontname = SoFontNameElement::get(state);
-    curfontsize = SoFontSizeElement::get(state);
+    const SbName curfontname = SoFontNameElement::get(state);
+    const float curfontsize = SoFontSizeElement::get(state);
     this->prevfontname = curfontname;
     this->prevfontsize = curfontsize;
     this->flushGlyphCache(FALSE);
     this->hasbuiltglyphcache = TRUE;
     this->linecnt = t->string.getNum();
-    this->validarraydims = 0;
+
     // FIXME: this is buggy as hell -- linecnt can be 0. And another
     // thing: use new and delete, not malloc and free. 20030408 mortene.
-    this->glyphs = (SoGlyph ***)malloc(this->linecnt*sizeof(SoGlyph*));
-    this->positions = (SbVec2s **)malloc(this->linecnt*sizeof(SbVec2s*));
     this->laststring = (SbString **)malloc(this->linecnt*sizeof(SbString*));
     this->stringwidth = (int *)malloc(this->linecnt*sizeof(int));
 
@@ -665,62 +645,48 @@ SoText2P::buildGlyphCache(SoState * state)
     //
     // FIXME: this is ugly as fuck; it's bad portability to equate a
     // null bit pattern with NULL. 20030408 mortene.
-    memset(this->glyphs, 0, this->linecnt*sizeof(SoGlyph*));
-    memset(this->positions, 0, this->linecnt*sizeof(SbVec2s*));
     memset(this->laststring, 0, this->linecnt*sizeof(SbString*));
     memset(this->stringwidth, 0, this->linecnt*sizeof(int));
 
-    this->validarraydims = 1;
-    penpos[0] = 0;
-    penpos[1] = 0;
-    advance = penpos;
-    kerning = penpos;
+    SbVec2s penpos(0, 0);
+    SbVec2s advance = penpos;
+    SbVec2s kerning = penpos;
+
     for (int i=0; i<this->linecnt; i++) {
-      s = t->string[i].getString();
-      // FIXME: use the SbString interface instead of working directly
-      // on char*. 20030408 mortene.
-      //
-      // FIXME: also, this is buggy. Why check string length? Strings
-      // can be empty, while still present. 20030408 mortene.
-      if ((len = strlen(s)) > 0) {
-        // FIXME: don't malloc, see FIXME note above. 20030408 mortene.
-        this->glyphs[i] = (SoGlyph **)malloc(len*sizeof(SoGlyph*));
-        this->positions[i] = (SbVec2s *)malloc(len*sizeof(SbVec2s));
+      this->glyphs.append(new SbList<const SoGlyph *>);
+      this->positions.append(new SbList<SbVec2s>);
 
-        // Avoid confusing flushGlyphCache with halfway init'l'ed arrays
-        // FIXME: ugly, see FIXME note above. 20030408 mortene.
-        memset(this->glyphs[i], 0, len*sizeof(SoGlyph*));
-        memset(this->positions[i], 0, len*sizeof(SbVec2s));
+      const int strlength = t->string[i].getLength();
+      this->laststring[i] = new SbString(t->string[i]);
 
-        this->validarraydims = 2;
-        this->laststring[i] = new SbString(s);
-        for (int j=0; j<len; j++) {
-          idx = (unsigned char)s[j];
-          this->glyphs[i][j] = (SoGlyph *)(SoGlyph::getGlyph(state, idx, SbVec2s(0,0), 0.0));
-          if (!this->glyphs[i][j]) {
-            this->flushGlyphCache(FALSE);
-            this->useglyphcache = FALSE;
-#if COIN_DEBUG
-            SoDebugError::postWarning("SoText2::buildGlyphCache", "unable to build glyph cache for '%s'", s);
-#endif
-            return -1;
-          }
-          this->glyphs[i][j]->getBitmap(thissize, thispos, FALSE);
-          if (j > 0) {
-            kerning = this->glyphs[i][j-1]->getKerning((const SoGlyph &)*this->glyphs[i][j]);
-            advance = this->glyphs[i][j-1]->getAdvance();
-          } else {
-            kerning = SbVec2s(0,0);
-            advance = SbVec2s(0,0);
-          }
-          penpos = penpos + advance + kerning;
-          this->positions[i][j] = penpos + thispos + SbVec2s(0, -thissize[1]);
-          this->bbox.extendBy(this->positions[i][j]);
-          this->bbox.extendBy(this->positions[i][j] + SbVec2s(thissize[0], -thissize[1]));
+      SbVec2s thissize;
+
+      for (int j = 0; j < strlength; j++) {
+        const unsigned int idx = (*this->laststring[i])[j];
+        (*this->glyphs[i]).append(SoGlyph::getGlyph(state, idx, SbVec2s(0,0), 0.0));
+        // Should _always_ be able to get hold of a glyph -- if no
+        // glyph is available for a specific character, a default
+        // empty rectangle should be used.  -mortene.
+        assert((*this->glyphs[i])[j]);
+
+        SbVec2s thispos;
+        (*this->glyphs[i])[j]->getBitmap(thissize, thispos, FALSE);
+        if (j > 0) {
+          kerning = (*this->glyphs[i])[j-1]->getKerning(*(*this->glyphs[i])[j]);
+          advance = (*this->glyphs[i])[j-1]->getAdvance();
         }
-        this->stringwidth[i] = this->positions[i][len-1][0] + thissize[0];
-        penpos = SbVec2s(0, penpos[1] - (short)(this->prevfontsize * t->spacing.getValue()));
+        else {
+          kerning = SbVec2s(0,0);
+          advance = SbVec2s(0,0);
+        }
+        penpos = penpos + advance + kerning;
+        (*this->positions[i]).append(penpos + thispos + SbVec2s(0, -thissize[1]));
+        this->bbox.extendBy((*this->positions[i])[j]);
+        this->bbox.extendBy((*this->positions[i])[j] + SbVec2s(thissize[0], -thissize[1]));
       }
+
+      this->stringwidth[i] = (*this->positions[i])[strlength - 1][0] + thissize[0];
+      penpos = SbVec2s(0, penpos[1] - (short)(this->prevfontsize * t->spacing.getValue()));
     }
   }
   return 0;
