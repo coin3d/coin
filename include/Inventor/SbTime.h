@@ -47,9 +47,13 @@ public:
   static SbTime getTimeOfDay(void);
   void setToTimeOfDay(void);
   static SbTime zero(void);
+  // "max" is a #define somewhere in the Win32 include hierarchy mess.
+  // Believe it or not. Is there no end to the stupidity?
 #ifndef _WIN32
   static SbTime max(void);
-#endif
+#else // _WIN32
+  static SbTime maxTime(void);
+#endif // !_WIN32
   void setValue(const double sec);
   void setValue(const int32_t sec, const long usec);
   void setValue(const struct timeval * const tv);

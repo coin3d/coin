@@ -113,7 +113,7 @@ SbTime::getTimeOfDay(void)
   int result = gettimeofday(&tmp, NULL);
 
 #if COIN_DEBUG
-  if (result==EINVAL)
+  if (result < 0)
     SoDebugError::postWarning("SbTime::getTimeOfDay",
 			      "Something went wrong (invalid timezone "
 			      "setting?). Result is undefined.");
@@ -153,13 +153,15 @@ SbTime::zero(void)
   \sa zero().
  */
 
-#ifndef _WIN32 // FIXME: what's the problem? 19990808 mortene.
 SbTime
+#ifndef _WIN32
 SbTime::max(void)
+#else // _WIN32
+SbTime::maxTime(void)
+#endif // ! _WIN32
 {
   return SbTime(((double)INT_MAX) + 0.999999);
 }
-#endif // _WIN32
 
 /*!
   Reset an SbTime instance to \a sec number of seconds.
