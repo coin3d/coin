@@ -165,6 +165,10 @@ STUFF TO FIX IN COIN
     SoNode. Inventor2.0 import should be ok. Export "compability
     detection" has not been done yet, though.
 
+    Update 2002-10-29 mortene: one additional word of warning from
+    kintel is that '+' is not allowed to be used as the 1st character
+    of a node name identifier under VRML97.
+
 
 004 Re-design the public API for handling textures
     2001-11-28  Peder Blekken  <pederb@sim.no>, write-down by mortene@sim.no
