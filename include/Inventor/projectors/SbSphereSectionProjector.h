@@ -28,17 +28,19 @@ class SbSphereSectionProjector : public SbSphereProjector
   typedef SbSphereProjector inherited;
 
 public:
-  SbSphereSectionProjector(float edgeTol = 0.9f, SbBool orientToEye = TRUE);
-  SbSphereSectionProjector(const SbSphere & sph, float edgeTol = 0.9f,
-                           SbBool orientToEye = TRUE);
+  SbSphereSectionProjector(const float edgeTol = 0.9f,
+                           const SbBool orientToEye = TRUE);
+  SbSphereSectionProjector(const SbSphere & sph,
+                           const float edgeTol = 0.9f,
+                           const SbBool orientToEye = TRUE);
 
   virtual SbProjector * copy(void) const;
   virtual SbVec3f project(const SbVec2f & point);
   virtual SbRotation getRotation(const SbVec3f & point1,
                                  const SbVec3f & point2);
-  void setTolerance(float edgeTol);
+  void setTolerance(const float edgeTol);
   float getTolerance(void) const;
-  void setRadialFactor(float rad = 0.0f);
+  void setRadialFactor(const float rad = 0.0f);
   float getRadialFactor(void) const;
   SbBool isWithinTolerance(const SbVec3f & point);
 
@@ -52,6 +54,7 @@ protected:
   SbVec3f planeDir;
   float planeDist;
   SbPlane tolPlane;
+  float sqrTolDist;
 };
 
 #endif // !__SBSPHERESECTIONPROJECTOR_H__

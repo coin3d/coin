@@ -58,9 +58,9 @@ SbLineProjector::project(const SbVec2f& point)
   SbLine projline = this->getWorkingLine(point);
   SbVec3f thispt, projpt;
   SbBool nonparallel = this->line.getClosestPoints(projline, thispt, projpt);
-  // FIXME: handle parallel lines better (by using
-  // getClosestPoint()?). 19990327 mortene.
-  if (!nonparallel) thispt = this->lastPoint;
+  // if lines are parallel, we will never get an intersection, and
+  // we set projection point to (0,0,0) to avoid strange rotations
+  if (!nonparallel) thispt = SbVec3f(0.0f, 0.0f, 0.0f);
   this->lastPoint = thispt;
   return thispt;
 }
@@ -90,11 +90,9 @@ SbVec3f
 SbLineProjector::getVector(const SbVec2f& mousePosition1,
                            const SbVec2f& mousePosition2)
 {
-  // Must precalculate these, so lastPoint is finally set to the value
-  // of the projected mousePosition2.
   SbVec3f mp1 = this->project(mousePosition1);
   SbVec3f mp2 = this->project(mousePosition2);
-
+  this->lastPoint = mp2;
   return mp2 - mp1;
 }
 

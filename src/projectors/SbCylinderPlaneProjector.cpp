@@ -74,11 +74,6 @@ SbCylinderPlaneProjector::project(const SbVec2f &point)
 
   SbBool tst = this->intersectCylinderFront(projline, projpt);
   if (!tst || !this->isWithinTolerance(projpt)) {
-#if 1 // debug
-    SoDebugError::postInfo("SbCylinderPlaneProjector::project",
-                           "not on cyl");
-#endif // debug
-
     if (!this->tolPlane.intersect(projline, projpt)) {
 #if COIN_DEBUG
       SoDebugError::postWarning("SbCylinderSectionProjector::project",
@@ -107,8 +102,8 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f &point1,
   FIXME: write doc
 */
 SbRotation
-SbCylinderPlaneProjector::getRotation(const SbVec3f &point1, SbBool tol1,
-                                      const SbVec3f &point2, SbBool tol2)
+SbCylinderPlaneProjector::getRotation(const SbVec3f &point1, const SbBool tol1,
+                                      const SbVec3f &point2, const SbBool tol2)
 {
   if (tol1 && tol2) return inherited::getRotation(point1, point2);
   if (point1 == point2) {
@@ -166,8 +161,6 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f &point1, SbBool tol1,
   SbVec3f axis;
   float angle;
   rot.getValue(axis, angle);
-  axis = this->cylinder.getAxis().getDirection(); // in case angle==0
-
   SbBool positiveAngle = TRUE;
   if (float(fabs(angle)) < FLT_EPSILON) {
     // test if angle will be positive or negative
@@ -196,5 +189,8 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f &point1, SbBool tol1,
     }
   }
   angle += len / this->cylinder.getRadius();
-  return SbRotation(axis, angle);
+
+  if (axis.dot(this->cylinder.getAxis().getDirection()) > 0.0f)
+    return SbRotation(this->cylinder.getAxis().getDirection(), angle);
+  return SbRotation(this->cylinder.getAxis().getDirection(), angle);
 }

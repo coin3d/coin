@@ -27,6 +27,11 @@
 
 #include <Inventor/projectors/SbSphereSectionProjector.h>
 #include <assert.h>
+#include <math.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 /*! \var SbSphereSectionProjector::tolerance
   FIXME: write doc
@@ -54,22 +59,26 @@
 /*!
   FIXME: write doc
 */
-SbSphereSectionProjector::SbSphereSectionProjector(float /* edgeTol */,
-                                                   SbBool orientToEye)
-  : inherited(orientToEye)
+SbSphereSectionProjector::SbSphereSectionProjector(const float edgeTol,
+                                                   const SbBool orientToEye)
+  : inherited(orientToEye),
+    tolerance(edgeTol),
+    radialFactor(0.0f)
 {
-  assert(0 && "FIXME: implementation missing");
+  // needSetup will be TRUE, and other members will be initialized later
 }
 
 /*!
   FIXME: write doc
 */
 SbSphereSectionProjector::SbSphereSectionProjector(const SbSphere & sph,
-                                                   float /* edgeTol */,
-                                                   SbBool orientToEye)
-  : inherited(sph, orientToEye)
+                                                   const float edgeTol,
+                                                   const SbBool orientToEye)
+  : inherited(sph, orientToEye),
+    tolerance(edgeTol),
+    radialFactor(0.0f)
 {
-  assert(0 && "FIXME: implementation missing");
+  // needSetup will be TRUE, and other members will be initialized later
 }
 
 /*!
@@ -78,38 +87,64 @@ SbSphereSectionProjector::SbSphereSectionProjector(const SbSphere & sph,
 SbProjector *
 SbSphereSectionProjector::copy(void) const
 {
-  assert(0 && "FIXME: implementation missing");
-  return NULL;
+  return new SbSphereSectionProjector(*this);
 }
 
 /*!
   FIXME: write doc
 */
 SbVec3f
-SbSphereSectionProjector::project(const SbVec2f & /* point */)
+SbSphereSectionProjector::project(const SbVec2f &point)
 {
-  assert(0 && "FIXME: implementation missing");
-  return SbVec3f();
+  if (this->needSetup) this->setupTolerance();
+
+  SbLine projline = this->getWorkingLine(point);
+  SbVec3f projpt;
+
+  SbBool tst = this->intersectSphereFront(projline, projpt);
+  if (!tst || !this->isWithinTolerance(projpt)) {
+    if (!this->tolPlane.intersect(projline, projpt)) {
+#if COIN_DEBUG
+      SoDebugError::postWarning("SbSphereSectionProjector::project",
+                                "working line is perpendicular to plane direction.");
+#endif // COIN_DEBUG
+      // set to 0,0,0 to avoid crazy rotations. lastPoint will then
+      // never change, and there will be no rotation in getRotation()
+      projpt = SbVec3f(0.0f, 0.0f, 0.0f);
+    }
+    else {
+      SbLine myLine(projpt, this->sphere.getCenter());
+      if (!this->sphere.intersect(myLine, projpt)) {
+        assert(0 && "shouldn't happen");
+        projpt = SbVec3f(0.0f, 0.0f, 0.0f);
+      }
+    }
+  }
+  this->lastPoint = projpt;
+  return projpt;
 }
 
 /*!
   FIXME: write doc
 */
 SbRotation
-SbSphereSectionProjector::getRotation(const SbVec3f & /* point1 */,
-                                      const SbVec3f & /* point2 */)
+SbSphereSectionProjector::getRotation(const SbVec3f &point1,
+                                      const SbVec3f &point2)
 {
-  assert(0 && "FIXME: implementation missing");
-  return SbRotation::identity();
+  // FIXME: test how radialFactor affects rotations
+  // pederb, 19991209
+  const SbVec3f &c = this->sphere.getCenter();
+  return SbRotation(point1-c, point2-c);
 }
 
 /*!
   FIXME: write doc
 */
 void
-SbSphereSectionProjector::setTolerance(float /* edgeTol */)
+SbSphereSectionProjector::setTolerance(const float edgeTol)
 {
-  assert(0 && "FIXME: implementation missing");
+  this->needSetup = TRUE;
+  this->tolerance = edgeTol;
 }
 
 /*!
@@ -118,17 +153,16 @@ SbSphereSectionProjector::setTolerance(float /* edgeTol */)
 float
 SbSphereSectionProjector::getTolerance(void) const
 {
-  assert(0 && "FIXME: implementation missing");
-  return 0.0f;
+  return this->tolerance;
 }
 
 /*!
   FIXME: write doc
 */
 void
-SbSphereSectionProjector::setRadialFactor(float /* rad */)
+SbSphereSectionProjector::setRadialFactor(const float rad)
 {
-  assert(0 && "FIXME: implementation missing");
+  this->radialFactor = rad;
 }
 
 /*!
@@ -137,18 +171,17 @@ SbSphereSectionProjector::setRadialFactor(float /* rad */)
 float
 SbSphereSectionProjector::getRadialFactor(void) const
 {
-  assert(0 && "FIXME: implementation missing");
-  return 0.0f;
+  return this->radialFactor;
 }
 
 /*!
   FIXME: write doc
 */
 SbBool
-SbSphereSectionProjector::isWithinTolerance(const SbVec3f & /* point */)
+SbSphereSectionProjector::isWithinTolerance(const SbVec3f &point)
 {
-  assert(0 && "FIXME: implementation missing");
-  return FALSE;
+  if (this->needSetup) this->setupTolerance();
+  return (planePoint-point).sqrLength() <= sqrTolDist;
 }
 
 /*!
@@ -157,5 +190,22 @@ SbSphereSectionProjector::isWithinTolerance(const SbVec3f & /* point */)
 void
 SbSphereSectionProjector::setupTolerance(void)
 {
-  assert(0 && "FIXME: implementation missing");
+  if (this->orientToEye) {
+    this->planeDir = -this->viewVol.getProjectionDirection();
+    this->worldToWorking.multDirMatrix(this->planeDir, this->planeDir);
+    this->planeDir.normalize();
+  }
+  else {
+    this->planeDir.setValue(0.0f, 0.0f, 1.0f);
+  }
+  if (!this->intersectFront) this->planeDir = -this->planeDir;
+
+  float radius = this->sphere.getRadius();
+  this->tolDist = this->tolerance * radius;
+  this->sqrTolDist = this->tolDist * this->tolDist;
+  this->planeDist = sqrt(radius*radius - this->tolDist*this->tolDist);
+  this->planePoint = this->sphere.getCenter() +
+    this->planeDir * this->planeDist;
+  this->tolPlane = SbPlane(this->planeDir, this->planePoint);
+  this->needSetup = FALSE;
 }

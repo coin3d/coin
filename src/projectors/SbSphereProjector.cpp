@@ -59,25 +59,26 @@
 /*!
   FIXME: write doc
 */
-SbSphereProjector::SbSphereProjector(SbBool orientToEye)
+SbSphereProjector::SbSphereProjector(const SbBool orient)
+  : intersectFront(TRUE),
+    sphere(SbVec3f(0.0f, 0.0f, 0.0f), 1.0f),
+    orientToEye(orient),
+    needSetup(TRUE),
+    lastPoint(0.0f, 0.0f, 0.0f)
 {
-  this->intersectFront = TRUE;
-  this->sphere.setValue(SbVec3f(0.0f, 0.0f, 0.0f), 1.0f);
-  this->orientToEye = orientToEye;
-  this->needSetup = FALSE;
-  this->lastPoint.setValue(0.0f, 0.0f, 0.0f);
 }
 
 /*!
   FIXME: write doc
 */
-SbSphereProjector::SbSphereProjector(const SbSphere & s, SbBool orientToEye)
+SbSphereProjector::SbSphereProjector(const SbSphere &s,
+                                     const SbBool orient)
+  : intersectFront(TRUE),
+    sphere(s),
+    orientToEye(orient),
+    needSetup(TRUE),
+    lastPoint(0.0f, 0.0f, 0.0f)
 {
-  this->intersectFront = TRUE;
-  this->sphere = s;
-  this->orientToEye = orientToEye;
-  this->needSetup = FALSE;
-  this->lastPoint.setValue(0.0f, 0.0f, 0.0f);
 }
 
 /*!
@@ -89,6 +90,7 @@ SbSphereProjector::projectAndGetRotation(const SbVec2f & point,
 {
   SbVec3f lastpt = this->lastPoint;
   SbVec3f newpt = this->project(point);
+  this->lastPoint = newpt;
   rot = this->getRotation(lastpt, newpt);
   return newpt;
 }
@@ -116,7 +118,7 @@ SbSphereProjector::getSphere(void) const
   FIXME: write doc
 */
 void
-SbSphereProjector::setOrientToEye(SbBool orientToEye)
+SbSphereProjector::setOrientToEye(const SbBool orientToEye)
 {
   this->orientToEye = orientToEye;
   this->needSetup = TRUE;
@@ -135,7 +137,7 @@ SbSphereProjector::isOrientToEye(void) const
   FIXME: write doc
 */
 void
-SbSphereProjector::setFront(SbBool inFront)
+SbSphereProjector::setFront(const SbBool inFront)
 {
   this->intersectFront = inFront;
   this->needSetup = TRUE;
@@ -154,31 +156,44 @@ SbSphereProjector::isFront(void) const
   FIXME: write doc
 */
 SbBool
-SbSphereProjector::isPointInFront(const SbVec3f & /* point */) const
+SbSphereProjector::isPointInFront(const SbVec3f &point) const
 {
-  // FIXME: implement.
-  assert(0);
-  return FALSE;
+  SbVec3f dir;
+  if (this->orientToEye) {
+    dir = -this->viewVol.getProjectionDirection();
+    this->worldToWorking.multDirMatrix(dir, dir);
+  }
+  else dir = SbVec3f(0.0f, 0.0f, 1.0f);
+
+  SbVec3f vec = point - this->sphere.getCenter();;
+
+  float dot = vec.dot(dir);
+  if (this->intersectFront) return dot >= 0.0f;
+  else return dot < 0.0f;
 }
 
 /*!
   FIXME: write doc
 */
 SbBool
-SbSphereProjector::intersectSphereFront(const SbLine & /* l */,
-                                        SbVec3f & /* result */)
+SbSphereProjector::intersectSphereFront(const SbLine &l,
+                                        SbVec3f &result)
 {
-  // FIXME: implement.
-  assert(0);
+  SbVec3f i0, i1;
+  if (this->sphere.intersect(l, i0, i1)) {
+    if (this->isPointInFront(i0)) result = i0;
+    else result = i1;
+    return TRUE;
+  }
   return FALSE;
 }
 
 /*!
   FIXME: write doc
- */
+*/
 void
-SbSphereProjector::setWorkingSpace(const SbMatrix & /* space */)
+SbSphereProjector::setWorkingSpace(const SbMatrix &space)
 {
-  // FIXME: implement.
-  assert(0);
+  this->needSetup = TRUE;
+  inherited::setWorkingSpace(space);
 }

@@ -36,7 +36,7 @@ public:
   virtual SbVec3f project(const SbVec2f & point);
   void setPlane(const SbPlane & plane);
   const SbPlane & getPlane(void) const;
-  void setOrientToEye(SbBool orientToEye);
+  void setOrientToEye(const SbBool orientToEye);
   SbBool isOrientToEye(void) const;
   virtual SbVec3f getVector(const SbVec2f & mousePosition1,
                             const SbVec2f & mousePosition2);

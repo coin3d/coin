@@ -27,9 +27,11 @@ class SbSpherePlaneProjector : public SbSphereSectionProjector
   typedef SbSphereSectionProjector inherited;
 
 public:
-  SbSpherePlaneProjector(float edgeTol = 0.9f, SbBool orientToEye = TRUE);
-  SbSpherePlaneProjector(const SbSphere & sph, float edgeTol = 0.9f,
-                         SbBool orientToEye = TRUE);
+  SbSpherePlaneProjector(const float edgeTol = 0.9f,
+                         const SbBool orientToEye = TRUE);
+  SbSpherePlaneProjector(const SbSphere & sph,
+                         const float edgeTol = 0.9f,
+                         const SbBool orientToEye = TRUE);
 
   virtual SbProjector * copy(void) const;
   virtual SbVec3f project(const SbVec2f & point);
@@ -37,8 +39,8 @@ public:
                                  const SbVec3f & point2);
 
 protected:
-  SbRotation getRotation(const SbVec3f & point1, SbBool tol1,
-                         const SbVec3f & point2, SbBool tol2);
+  SbRotation getRotation(const SbVec3f & point1, const SbBool tol1,
+                         const SbVec3f & point2, const SbBool tol2);
 };
 
 #endif // !__SBSPHEREPLANEPROJECTOR_H__

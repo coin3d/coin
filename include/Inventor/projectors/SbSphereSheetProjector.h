@@ -27,8 +27,8 @@ class SbSphereSheetProjector : public SbSphereProjector {
   typedef SbSphereProjector inherited;
 
 public:
-  SbSphereSheetProjector(SbBool orientToEye = TRUE);
-  SbSphereSheetProjector(const SbSphere & sph, SbBool orientToEye = TRUE);
+  SbSphereSheetProjector(const SbBool orientToEye = TRUE);
+  SbSphereSheetProjector(const SbSphere & sph, const SbBool orientToEye = TRUE);
 
   virtual SbProjector * copy(void) const;
   virtual SbVec3f project(const SbVec2f & point);

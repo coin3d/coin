@@ -24,8 +24,9 @@
 
   FIXME: write doc
  */
- 
+
 #include <Inventor/projectors/SbCylinderSectionProjector.h>
+#include <Inventor/SbVec2f.h>
 #include <math.h>
 #include <assert.h>
 
@@ -69,7 +70,7 @@ SbCylinderSectionProjector::SbCylinderSectionProjector(const float edgeTol,
 */
 SbCylinderSectionProjector::SbCylinderSectionProjector(const SbCylinder & cyl,
                                                        const float edgeTol,
-                                                       SbBool orientToEye)
+                                                       const SbBool orientToEye)
   : inherited(cyl, orientToEye),
     tolerance(edgeTol)
 {
@@ -116,7 +117,7 @@ SbCylinderSectionProjector::project(const SbVec2f &point)
       }
     }
   }
-  
+
   this->lastPoint = projpt;
   return projpt;
 }
@@ -133,9 +134,18 @@ SbCylinderSectionProjector::getRotation(const SbVec3f &point1,
   const SbLine &axis = this->cylinder.getAxis();
   SbVec3f v1 = point1 - axis.getClosestPoint(point1);
   SbVec3f v2 = point2 - axis.getClosestPoint(point2);
-  // could probably optimize this, since we know the axis to rotate around
-  // pederb, 19991208
-  return SbRotation(v1, v2); // rotate vector v1 into vector v2
+
+  SbRotation rot(v1, v2); // rotate vector v1 into vector v2
+
+  // this is to make sure rotation only happens around cylinder axis
+  SbVec3f dummy;
+  float angle;
+  rot.getValue(dummy, angle);
+
+  if (dummy.dot(axis.getDirection()) > 0.0f)
+    return SbRotation(axis.getDirection(), angle);
+  else
+    return SbRotation(axis.getDirection(), -angle);
 }
 
 /*!
@@ -166,7 +176,7 @@ SbCylinderSectionProjector::isWithinTolerance(const SbVec3f &point)
   if (this->needSetup) this->setupTolerance();
   // check if behind tolerance plane
   if (!this->tolPlane.isInHalfSpace(point)) return FALSE;
-  
+
   SbVec3f ptOnLine = this->planeLine.getClosestPoint(point);
   if ((ptOnLine-point).sqrLength() > this->sqrTolDist) return FALSE;
   return TRUE;
@@ -199,14 +209,13 @@ SbCylinderSectionProjector::setupTolerance(void)
   if (!this->intersectFront) {
     this->planeDir = -this->planeDir;
   }
-
   // distance from plane to cylinder axis
-  this->planeDist = (float)sqrt(radius*radius-this->sqrTolDist);  
-  this->tolPlane = SbPlane(this->planeDir, this->planeDist);
+  this->planeDist = sqrt(radius*radius - this->tolDist*this->tolDist);
 
   // create line parallel to axis, but in plane
   SbVec3f linePt = axis.getPosition()+this->planeDir*this->planeDist;
   this->planeLine = SbLine(linePt, linePt+axis.getDirection());
+  this->tolPlane = SbPlane(this->planeDir, linePt);
 
   this->needSetup = FALSE;
 }

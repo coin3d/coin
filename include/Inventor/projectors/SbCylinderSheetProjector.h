@@ -30,8 +30,9 @@ class SbCylinderSheetProjector : public SbCylinderProjector
   typedef SbCylinderProjector inherited;
 
 public:
-  SbCylinderSheetProjector(SbBool orientToEye = TRUE);
-  SbCylinderSheetProjector(const SbCylinder & cyl, SbBool orientToEye = TRUE);
+  SbCylinderSheetProjector(const SbBool orientToEye = TRUE);
+  SbCylinderSheetProjector(const SbCylinder & cyl,
+                           const SbBool orientToEye = TRUE);
 
   virtual SbProjector * copy(void) const;
   virtual SbVec3f project(const SbVec2f & point);

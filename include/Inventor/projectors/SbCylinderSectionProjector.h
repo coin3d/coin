@@ -30,9 +30,9 @@ class SbCylinderSectionProjector : public SbCylinderProjector
   typedef SbCylinderProjector inherited;
 
 public:
-  SbCylinderSectionProjector(const float edgeTol = 0.9f, 
+  SbCylinderSectionProjector(const float edgeTol = 0.9f,
                              const SbBool orientToEye = TRUE);
-  SbCylinderSectionProjector(const SbCylinder &cyl, 
+  SbCylinderSectionProjector(const SbCylinder &cyl,
                              const float edgeTol = 0.9f,
                              const SbBool orientToEye = TRUE);
 
@@ -40,7 +40,7 @@ public:
   virtual SbVec3f project(const SbVec2f & point);
   virtual SbRotation getRotation(const SbVec3f & point1,
                                  const SbVec3f & point2);
-  void setTolerance(float edgeTol);
+  void setTolerance(const float edgeTol);
   float getTolerance(void) const;
   SbBool isWithinTolerance(const SbVec3f & point);
 

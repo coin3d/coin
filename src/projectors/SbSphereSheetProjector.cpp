@@ -31,6 +31,7 @@
 */
 
 #include <Inventor/projectors/SbSphereSheetProjector.h>
+#include <Inventor/SbVec2f.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -57,7 +58,7 @@
 /*!
   FIXME: write doc
 */
-SbSphereSheetProjector::SbSphereSheetProjector(SbBool orientToEye)
+SbSphereSheetProjector::SbSphereSheetProjector(const SbBool orientToEye)
   : SbSphereProjector(orientToEye)
 {
 }
@@ -66,7 +67,7 @@ SbSphereSheetProjector::SbSphereSheetProjector(SbBool orientToEye)
   FIXME: write doc
 */
 SbSphereSheetProjector::SbSphereSheetProjector(const SbSphere &sph,
-                                               SbBool orientToEye)
+                                               const SbBool orientToEye)
   : SbSphereProjector(sph, orientToEye)
 {
 }
@@ -77,9 +78,7 @@ SbSphereSheetProjector::SbSphereSheetProjector(const SbSphere &sph,
 SbProjector *
 SbSphereSheetProjector::copy(void) const
 {
-  // TODO: implement
-  assert(0);
-  return NULL;
+  return new SbSphereSheetProjector(*this);
 }
 
 /*!
@@ -88,24 +87,35 @@ SbSphereSheetProjector::copy(void) const
 SbVec3f
 SbSphereSheetProjector::project(const SbVec2f &point)
 {
-  // FIXME: orientToEye==TRUE not handled. 19990329 mortene.
-  // FIXME: setFront==FALSE not handled. 19990329 mortene.
+  if (this->needSetup) this->setupPlane();
+
+  //
+  // FIXME: need to intersect with a hyperbolic sheet if intersection
+  // hits a point on the sphere with an angle bigger than 45 or something
+  // degrees from the planeDir (or if line doesn't intersect at all).
+  // morten suggeste a formula like this: z = a*x^2 + b*y^2 + c, where sign
+  // of a differs from sign of b. Will investigate later.
+  //
+  // pederb, 19991210
+  //
 
   SbLine projline = this->getWorkingLine(point);
   SbVec3f projpt;
 
-  SbBool isect = this->sphere.intersect(projline, projpt);
-  if (!isect) {
-    // FIXME: make code for calculating off-sphere intersections
-    // against a hyperbolic sheet instead of a straight
-    // plane. Formula: z = a*x^2 + b*y^2 + c, where sign of a differs
-    // from sign of b (???). 19990401 mortene.
-    SbPlane plane(SbVec3f(0.0f, 0.0f, 1.0f), SbVec3f(0.0f, 0.0f, 0.0f));
-    isect = plane.intersect(projline, projpt);
-    if (!isect) projpt = this->lastPoint;
-    else this->lastPoint = projpt;
+  SbBool tst = this->intersectSphereFront(projline, projpt);
+  if (!tst) {
+    if (!this->tolPlane.intersect(projline, projpt)) {
+#if COIN_DEBUG
+      SoDebugError::postWarning("SbSphereSectionProjector::project",
+                                "working line is perpendicular to plane direction.");
+#endif // COIN_DEBUG
+      // set to 0,0,0 to avoid crazy rotations. lastPoint will then
+      // never change, and there will be no rotation in getRotation()
+      projpt = SbVec3f(0.0f, 0.0f, 0.0f);
+    }
   }
-  else this->lastPoint = projpt;
+  this->lastPoint = projpt;
+  this->workingProjPoint = projpt; // FIXME: investigate (pederb)
   return projpt;
 }
 
@@ -116,13 +126,8 @@ SbRotation
 SbSphereSheetProjector::getRotation(const SbVec3f & point1,
                                     const SbVec3f & point2)
 {
-#if 0 // debug
-  SoDebugError::post("SbSphereSheetProjector::getRotation",
-                     "point1: <%f, %f, %f>, point2: <%f, %f, %f>",
-                     point1[0], point1[1], point1[2],
-                     point2[0], point2[1], point2[2]);
-#endif // debug
-  return SbRotation(point1, point2);
+  if (this->needSetup) this->setupPlane();
+  return SbRotation(point1-this->planePoint, point2-this->planePoint);
 }
 
 /*!
@@ -131,6 +136,18 @@ SbSphereSheetProjector::getRotation(const SbVec3f & point1,
 void
 SbSphereSheetProjector::setupPlane(void)
 {
-  // FIXME: implement
-  assert(0);
+  if (this->orientToEye) {
+    this->planeDir = -this->viewVol.getProjectionDirection();
+    this->worldToWorking.multDirMatrix(this->planeDir, this->planeDir);
+    this->planeDir.normalize();
+  }
+  else {
+    this->planeDir.setValue(0.0f, 0.0f, 1.0f);
+  }
+  if (!this->intersectFront) this->planeDir = -this->planeDir;
+
+  this->planeDist = 0.0f;
+  this->planePoint = this->sphere.getCenter();
+  this->tolPlane = SbPlane(this->planeDir, this->planePoint);
+  this->needSetup = FALSE;
 }

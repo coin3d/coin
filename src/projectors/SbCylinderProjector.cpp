@@ -29,6 +29,10 @@
 #include <Inventor/SbRotation.h>
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   \var SbCylinderProjector::intersectFront
   FIXME: write doc
@@ -75,19 +79,20 @@ SbCylinderProjector::SbCylinderProjector(const SbCylinder &cyl,
 }
 
 /*!
-  Project the point, but also find the rotation from previous 
+  Project the point, but also find the rotation from previous
   projection to this one.
-  
+
   \sa SbCylinderProjector::project()
 */
 SbVec3f
 SbCylinderProjector::projectAndGetRotation(const SbVec2f &point,
                                            SbRotation &rot)
 {
-  SbVec3f v = this->project(point);
-  rot = this->getRotation(this->lastPoint, v);
-  this->lastPoint = v;
-  return v;
+  SbVec3f lastpt = this->lastPoint;
+  SbVec3f newpt = this->project(point);
+  this->lastPoint = newpt;
+  rot = this->getRotation(lastpt, newpt);
+  return newpt;
 }
 
 /*!
@@ -163,7 +168,7 @@ SbCylinderProjector::isPointInFront(const SbVec3f &point) const
   SbVec3f refDir;
   if (this->orientToEye) {
     refDir = -this->viewVol.getProjectionDirection();
-    this->worldToWorking.multDirMatrix(refDir, refDir);    
+    this->worldToWorking.multDirMatrix(refDir, refDir);
   }
   else {
     refDir = SbVec3f(0.0f, 0.0f, 1.0f);
@@ -171,7 +176,7 @@ SbCylinderProjector::isPointInFront(const SbVec3f &point) const
   const SbLine &axis = this->cylinder.getAxis();
   SbVec3f somePt = axis.getPosition() + refDir;
   SbVec3f ptOnAxis = axis.getClosestPoint(somePt);
-  
+
   // find plane direction perpendicular to line
   SbVec3f planeDir = somePt - ptOnAxis;
   planeDir.normalize();

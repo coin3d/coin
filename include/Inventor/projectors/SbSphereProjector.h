@@ -35,18 +35,18 @@ public:
 
   void setSphere(const SbSphere & sph);
   const SbSphere & getSphere(void) const;
-  void setOrientToEye(SbBool orientToEye);
+  void setOrientToEye(const SbBool orientToEye);
   SbBool isOrientToEye(void) const;
-  void setFront(SbBool inFront);
+  void setFront(const SbBool inFront);
   SbBool isFront(void) const;
   SbBool isPointInFront(const SbVec3f & point) const;
   virtual void setWorkingSpace(const SbMatrix & space);
 
 protected:
-  SbSphereProjector(SbBool orientToEye);
-  SbSphereProjector(const SbSphere & s, SbBool orientToEye);
+  SbSphereProjector(const SbBool orientToEye);
+  SbSphereProjector(const SbSphere &s, const SbBool orientToEye);
 
-  SbBool intersectSphereFront(const SbLine & l, SbVec3f & result);
+  SbBool intersectSphereFront(const SbLine & l, SbVec3f &result);
 
   SbBool intersectFront;
   SbSphere sphere;
