@@ -5925,7 +5925,8 @@ esac
      #include <OpenAL/al.h>
      #endif],
     [(void)alGetError();],
-    [sim_ac_have_openal=true])
+    [sim_ac_have_openal=true],
+    [sim_ac_openal_libs=])
 
   CPPFLAGS=$sim_ac_openal_save_CPPFLAGS
   LDFLAGS=$sim_ac_openal_save_LDFLAGS

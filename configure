@@ -16245,6 +16245,7 @@ fi
 # We currently don't support runtime linking on Mac OS X, so we
 # shouldn't try to do runtime linking, even if somebody happens to have
 # libdl installed.
+
 case $host_os in
   darwin* ) coin_can_do_runtime_linking=false ;;
 esac
@@ -16741,6 +16742,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
 else
   echo "$as_me: failed program was:" >&5
 cat conftest.$ac_ext >&5
+sim_ac_openal_libs=
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 
