@@ -18,7 +18,7 @@
 \**************************************************************************/
 
 #include "evaluator.h"
-#include <math.h>
+#include <Inventor/SbBasic.h>
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
