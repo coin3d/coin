@@ -53,7 +53,7 @@ SoScale2Dragger::SoScale2Dragger(void)
                                        sizeof(SCALE2DRAGGER_draggergeometry));
   }
 
-  SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
+  SO_KIT_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
   SO_KIT_INIT_INSTANCE();
 
   // initialize default parts

@@ -164,11 +164,21 @@ _class_::getClassNodekitCatalogPtr(void) \
   } while (0)
 
 
-
-
 #define SO_KIT_INIT_INSTANCE() \
-    createFieldList(); \
-    createDefaultParts()
+  this->createFieldList(); \
+  this->createDefaultParts()
+
+#define SO_KIT_ADD_FIELD(_fieldname_, _defvalue_) \
+  SO_NODE_ADD_FIELD(_fieldname_, _defvalue_)
+
+#define SO_KIT_DEFINE_ENUM_VALUE(_enumtype_, _enumvalue_) \
+  SO_NODE_DEFINE_ENUM_VALUE(_enumtype_, _enumvalue_)
+
+#define SO_KIT_SET_MF_ENUM_TYPE(_fieldname_, _enumtype_) \
+  SO_NODE_SET_MF_ENUM_TYPE(_fieldname_, _enumtype_)
+
+#define SO_KIT_SET_SF_ENUM_TYPE(_fieldname_, _enumtype_) \
+  SO_NODE_SET_SF_ENUM_TYPE(_fieldname_, _enumtype_)
 
 
 #endif // !COIN_SOSUBKIT_H

@@ -88,8 +88,8 @@ SoCenterballDragger::SoCenterballDragger(void)
                                        sizeof(CENTERBALLDRAGGER_draggergeometry));
   }
 
-  SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
-  SO_NODE_ADD_FIELD(center, (0.0f, 0.0f, 0.0f));
+  SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_KIT_ADD_FIELD(center, (0.0f, 0.0f, 0.0f));
 
   SO_KIT_INIT_INSTANCE();
 

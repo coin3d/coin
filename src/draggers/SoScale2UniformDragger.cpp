@@ -54,7 +54,7 @@ SoScale2UniformDragger::SoScale2UniformDragger(void)
                                        sizeof(SCALE2UNIFORMDRAGGER_draggergeometry));
   }
 
-  SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
+  SO_KIT_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
   SO_KIT_INIT_INSTANCE();
 
   // initialize default parts

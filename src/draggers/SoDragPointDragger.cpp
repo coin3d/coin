@@ -96,7 +96,7 @@ SoDragPointDragger::SoDragPointDragger(void)
                                        sizeof(DRAGPOINTDRAGGER_draggergeometry));
   }
 
-  SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
+  SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_KIT_INIT_INSTANCE();
 
   this->jumpLimit = 0.1f;

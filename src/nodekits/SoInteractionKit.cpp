@@ -85,19 +85,19 @@ SoInteractionKit::SoInteractionKit(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoInteractionKit);
 
-  SO_NODE_ADD_FIELD(renderCaching, (SoInteractionKit::AUTO));
-  SO_NODE_ADD_FIELD(boundingBoxCaching, (SoInteractionKit::AUTO));
-  SO_NODE_ADD_FIELD(renderCulling, (SoInteractionKit::AUTO));
-  SO_NODE_ADD_FIELD(pickCulling, (SoInteractionKit::AUTO));
+  SO_KIT_ADD_FIELD(renderCaching, (SoInteractionKit::AUTO));
+  SO_KIT_ADD_FIELD(boundingBoxCaching, (SoInteractionKit::AUTO));
+  SO_KIT_ADD_FIELD(renderCulling, (SoInteractionKit::AUTO));
+  SO_KIT_ADD_FIELD(pickCulling, (SoInteractionKit::AUTO));
 
-  SO_NODE_DEFINE_ENUM_VALUE(CacheEnabled, ON);
-  SO_NODE_DEFINE_ENUM_VALUE(CacheEnabled, OFF);
-  SO_NODE_DEFINE_ENUM_VALUE(CacheEnabled, AUTO);
+  SO_KIT_DEFINE_ENUM_VALUE(CacheEnabled, ON);
+  SO_KIT_DEFINE_ENUM_VALUE(CacheEnabled, OFF);
+  SO_KIT_DEFINE_ENUM_VALUE(CacheEnabled, AUTO);
 
-  SO_NODE_SET_SF_ENUM_TYPE(renderCaching, CacheEnabled);
-  SO_NODE_SET_SF_ENUM_TYPE(boundingBoxCaching, CacheEnabled);
-  SO_NODE_SET_SF_ENUM_TYPE(renderCulling, CacheEnabled);
-  SO_NODE_SET_SF_ENUM_TYPE(pickCulling, CacheEnabled);
+  SO_KIT_SET_SF_ENUM_TYPE(renderCaching, CacheEnabled);
+  SO_KIT_SET_SF_ENUM_TYPE(boundingBoxCaching, CacheEnabled);
+  SO_KIT_SET_SF_ENUM_TYPE(renderCulling, CacheEnabled);
+  SO_KIT_SET_SF_ENUM_TYPE(pickCulling, CacheEnabled);
 
 
   // Note: we must use "" instead of , , to humour MS VisualC++ 6.

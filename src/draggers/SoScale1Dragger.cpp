@@ -54,7 +54,7 @@ SoScale1Dragger::SoScale1Dragger(void)
                                        sizeof(SCALE1DRAGGER_draggergeometry));
   }
 
-  SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
+  SO_KIT_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
 
   SO_KIT_INIT_INSTANCE();
 
