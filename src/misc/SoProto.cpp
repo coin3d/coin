@@ -243,7 +243,7 @@ SoProto::write(SoWriteAction * action)
       if (THIS->defroot) {
         this->writeDefinition(action);
       }
-      out->resolveROUTEs();
+      out->resolveRoutes();
       out->decrementIndent();
       out->indent();
       out->write("}\n");

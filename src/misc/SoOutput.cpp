@@ -92,6 +92,23 @@ static const char EOLSTR[] = "\n";
 static const int HOSTWORDSIZE = 4;
 
 #ifndef DOXYGEN_SKIP_THIS
+
+// helper classes for storing ROUTEs
+class SoOutputROUTE {
+public:
+  SoFieldContainer * from, * to;
+  SbName fromfield, tofield;
+};
+
+class SoOutputROUTEList : public SbList<SoOutputROUTE> {
+public:
+  SoOutputROUTEList(void) : SbList<SoOutputROUTE>() { }
+  SoOutputROUTEList(const int sizehint) : SbList<SoOutputROUTE>(sizehint) { }
+  SoOutputROUTEList(const SoOutputROUTEList & l) : SbList<SoOutputROUTE>(l) { }
+  
+  void set(const int index, SoOutputROUTE item) { (*this)[index] = item; }
+};
+
 class SoOutputP {
 public:
   int precision;
@@ -110,25 +127,25 @@ public:
   uint32_t annotationbits;
   SbList <SoProto*> protostack;
   SbList <SbDict*> defstack;
-  SbList <SoFieldList *> routestack; 
+  SbList <SoOutputROUTEList *> routestack; 
 
   void pushRoutes(const SbBool copyprev) {
     const int oldidx = this->routestack.getLength() - 1;
     assert(oldidx >= 0);
-    SoFieldList * newlist;
-    SoFieldList * oldlist = this->routestack[oldidx];
+    SoOutputROUTEList * newlist;
+    SoOutputROUTEList * oldlist = this->routestack[oldidx];
     if (copyprev && oldlist && oldlist->getLength()) {
-      newlist = new SoFieldList(*oldlist);
+      newlist = new SoOutputROUTEList(*oldlist);
     }
-    else newlist = new SoFieldList;
+    else newlist = new SoOutputROUTEList;
     this->routestack.push(newlist);
   }
-  SoFieldList * getCurrentRoutes(const SbBool createifnull) {
+  SoOutputROUTEList * getCurrentRoutes(const SbBool createifnull) {
     const int n = this->routestack.getLength();
     assert(n);
-    SoFieldList * list = this->routestack[n-1];
+    SoOutputROUTEList * list = this->routestack[n-1];
     if (list == NULL && createifnull) {
-      list = new SoFieldList;
+      list = new SoOutputROUTEList;
       this->routestack[n-1] = list;
     }
     return list;
@@ -1143,7 +1160,6 @@ SoOutput::popProto(void)
   assert(THIS->protostack.getLength());
   THIS->protostack.pop();
   THIS->popDefNames();
-  this->resolveROUTEs();
   THIS->popRoutes();
 }
 
@@ -1156,13 +1172,19 @@ SoOutput::popProto(void)
 
   \since 2002-06-12
 */
+
 void 
-SoOutput::addROUTE(SoField * from, SoField * to)
+SoOutput::addRoute(SoFieldContainer * from, const SbName & fromfield,
+                   SoFieldContainer * to, const SbName & tofield)
 {
-  SoFieldList * list = THIS->getCurrentRoutes(TRUE);
+  SoOutputROUTEList * list = THIS->getCurrentRoutes(TRUE);
   assert(list);
-  list->append(from);
-  list->append(to);
+  SoOutputROUTE r;
+  r.from = from;
+  r.fromfield = fromfield;
+  r.to = to;
+  r.tofield = tofield;
+  list->append(r);
 }
 
 /*!
@@ -1175,22 +1197,19 @@ SoOutput::addROUTE(SoField * from, SoField * to)
   \since 2002-06-12 
 */
 void 
-SoOutput::resolveROUTEs(void)
+SoOutput::resolveRoutes(void)
 {
-  SoFieldList * list = THIS->getCurrentRoutes(FALSE);
+  SoOutputROUTEList * list = THIS->getCurrentRoutes(FALSE);
   if (list && list->getLength()) {
-    const int n = list->getLength() / 2;
+    const int n = list->getLength();
     for (int i = 0; i < n; i++) {
-      SoField * from = (*list)[i*2];
-      SoField * to = (*list)[i*2+1];
-      SoFieldContainer * fromc = from->getContainer();
-      SoFieldContainer * toc = to->getContainer();
+      SoOutputROUTE r = (*list)[i];
 
-      SbName fromname;
-      SbName toname;
+      SoFieldContainer * fromc = r.from;
+      SoFieldContainer * toc = r.to;
 
-      (void) fromc->getFieldName(from, fromname);
-      (void) toc->getFieldName(to, toname);
+      SbName fromname = r.fromfield;
+      SbName toname = r.tofield;
 
       this->indent();
       this->write("ROUTE ");
