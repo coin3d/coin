@@ -162,7 +162,7 @@ _class_::createInstance(void) \
 #define SO_ENGINE_INIT_CLASS(_class_, _parentclass_, _parentname_) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
-    PRIVATE_COMMON_INIT_CODE(_class_, classname, &_class_::createInstance, _parentclass_); \
+    PRIVATE_COMMON_ENGINE_INIT_CODE(_class_, classname, &_class_::createInstance, _parentclass_); \
   } while (0)
 
 
