@@ -451,7 +451,7 @@ Keywords which should be sent to this method:
 			"#endif // COIN_DEBUG\n\n")))
 					; Insert debug construct
     (beginning-of-defun)
-    (search-backward-regexp "(" nil t)
+    (search-backward-regexp "::.+(" nil t)
     (beginning-of-line)
     (search-forward-regexp "^[^(]+" nil t)
     (goto-char startpos)
