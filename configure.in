@@ -148,20 +148,6 @@ fi
 
 AC_PROG_LIBTOOL
 
-# case "$host_os" in
-#   irix*)
-#     if test x"${AR+set}" != x"set"; then
-#       if test x"$CXX" = xCC; then
-#         echo "modifying libtool"
-#         mv libtool libtool.orig
-#         sed -e 's/\\\$AR cru/CC -ar -o/' <libtool.orig >libtool
-#         chmod 755 libtool
-#         rm -f libtool.orig
-#       fi
-#     fi
-#     ;;
-# esac
-
 #  These are used for constructing the coin-config file.
 AC_SUBST([COIN_EXTRA_CPPFLAGS], [$CPPFLAGS])
 AC_SUBST([COIN_EXTRA_CXXFLAGS], [])
@@ -231,11 +217,13 @@ AM_CONDITIONAL(BUILD_WITH_SUPERGLU, $enable_superglu)
 
 sim_ac_enable_threads=false
 if test -f ${srcdir}/src/extensions/threads/configure; then
+  AC_CONFIG_SUBDIRS([src/extensions/threads])
   sim_ac_enable_threads=true
   AC_DEFINE([HAVE_THREADS],, [*EXPERIMENTAL* to use the threads extension])
   HAVE_THREADS=1
-  AC_CONFIG_SUBDIRS([src/extensions/threads])
   CPPFLAGS="$CPPFLAGS -I${srcdir}/src/extensions/threads"
+  # FIXME: get thread library setup from project...
+  LIBS="$LIBS -lpthread"
 else
   HAVE_THREADS=0
 fi
