@@ -27,7 +27,8 @@ class SoDragger;
 class SoFieldSensor;
 class SoPath;
 class SoSensor;
-
+class SbVec3f;
+class SbMatrix;
 
 class SoDirectionalLightManip : public SoDirectionalLight {
   typedef SoDirectionalLight inherited;
@@ -39,8 +40,8 @@ public:
   SoDirectionalLightManip(void);
 
   SoDragger * getDragger(void);
-  SbBool replaceNode(SoPath * p);
-  SbBool replaceManip(SoPath * p, SoDirectionalLight * newone) const;
+  SbBool replaceNode(SoPath * path);
+  SbBool replaceManip(SoPath * path, SoDirectionalLight * newone) const;
 
   virtual void doAction(SoAction * action);
   virtual void callback(SoCallbackAction * action);
@@ -67,6 +68,11 @@ protected:
   SoFieldSensor * directionFieldSensor;
   SoFieldSensor * colorFieldSensor;
   SoChildList * children;
+
+private:
+
+  void attachSensors(const SbBool onoff);
+
 };
 
 #endif // !COIN_SODIRECTIONALLIGHTMANIP_H
