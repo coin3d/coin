@@ -120,3 +120,7 @@
 #include "SoViewingMatrixElement.cpp"
 #include "SoViewportRegionElement.cpp"
 #include "SoWindowElement.cpp"
+#include "SoListenerPositionElement.cpp"
+#include "SoListenerOrientationElement.cpp"
+#include "SoListenerVelocityElement.cpp"
+#include "SoListenerGainElement.cpp"
