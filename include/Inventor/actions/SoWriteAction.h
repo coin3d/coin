@@ -27,8 +27,6 @@
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
 
-class SoVRMLPROTODef;
-class SoVRMLEXTERNPROTODef;
 
 class COIN_DLL_API SoWriteAction : public SoAction {
   typedef SoAction inherited;
