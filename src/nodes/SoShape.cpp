@@ -117,7 +117,7 @@ public:
     delete [] this->pointDetails;
     delete this->tess;
   }
-
+  
   void beginShape(SoShape * shape, SoAction * action,
                   SoShape::TriangleShape shapetype,
                   SoDetail * detail) {
@@ -437,18 +437,23 @@ SoShape::getBoundingBox(SoGetBoundingBoxAction * action)
   }
 }
 
+// used in generatePrimitives() callbacks to set correct material
+static SoMaterialBundle * currentBundle = NULL;
+
 // Doc in parent.
 void
 SoShape::GLRender(SoGLRenderAction * action)
 {
-#if COIN_DEBUG
-  SoDebugError::postWarning("SoShape::GLRender",
-                            "method has not been overloaded in subclass '%s'",
-                            this->getTypeId().getName().getString());
-#endif // COIN_DEBUG
-
-  // FIXME: should there be some fallback code here for rendering
-  // geometry primitives of subclasses? 20000311 mortene.
+  // if we get here, the shape do not have a render method and
+  // generatePrimitives should therefore be used to render the
+  // shape. This is probably painfully slow, so if you want speed,
+  // implement the GLRender() method.  pederb, 20000612
+  
+  if (!this->shouldGLRender(action)) return;
+  SoMaterialBundle mb(action);
+  mb.sendFirst();
+  currentBundle = &mb;  // needed in the primitive callbacks
+  this->generatePrimitives(action);
 }
 
 // Doc in parent.
@@ -841,8 +846,23 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
     SoGetPrimitiveCountAction * ga = (SoGetPrimitiveCountAction *) action;
     ga->incNumTriangles();
   }
-  else {
-    COIN_STUB(); // FIXME
+  else if (action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId())) {
+    glBegin(GL_TRIANGLES);
+    glTexCoord4fv(v1->getTextureCoords().getValue());
+    glNormal3fv(v1->getNormal().getValue());
+    currentBundle->send(v1->getMaterialIndex(), TRUE);
+    glVertex3fv(v1->getPoint().getValue());
+
+    glTexCoord4fv(v2->getTextureCoords().getValue());
+    glNormal3fv(v2->getNormal().getValue());
+    currentBundle->send(v2->getMaterialIndex(), TRUE);
+    glVertex3fv(v2->getPoint().getValue());
+
+    glTexCoord4fv(v3->getTextureCoords().getValue());
+    glNormal3fv(v3->getNormal().getValue());
+    currentBundle->send(v3->getMaterialIndex(), TRUE);
+    glVertex3fv(v3->getPoint().getValue());    
+    glEnd();
   }
 }
 
@@ -875,10 +895,19 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
     SoGetPrimitiveCountAction * ga = (SoGetPrimitiveCountAction *) action;
     ga->incNumLines();
   }
-  else {
-    COIN_STUB(); // FIXME
-  }
+  else if (action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId())) {
+    glBegin(GL_LINES);
+    glTexCoord4fv(v1->getTextureCoords().getValue());
+    glNormal3fv(v1->getNormal().getValue());
+    currentBundle->send(v1->getMaterialIndex(), TRUE);
+    glVertex3fv(v1->getPoint().getValue());
 
+    glTexCoord4fv(v2->getTextureCoords().getValue());
+    glNormal3fv(v2->getNormal().getValue());
+    currentBundle->send(v2->getMaterialIndex(), TRUE);
+    glVertex3fv(v2->getPoint().getValue());
+    glEnd();
+  }
 }
 
 /*!
@@ -909,8 +938,13 @@ SoShape::invokePointCallbacks(SoAction * const action,
     SoGetPrimitiveCountAction * ga = (SoGetPrimitiveCountAction *) action;
     ga->incNumPoints();
   }
-  else {
-    COIN_STUB(); // FIXME
+  else if (action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId())) {
+    glBegin(GL_POINTS);
+    glTexCoord4fv(v->getTextureCoords().getValue());
+    glNormal3fv(v->getNormal().getValue());
+    currentBundle->send(v->getMaterialIndex(), TRUE);
+    glVertex3fv(v->getPoint().getValue());
+    glEnd();
   }
 }
 
