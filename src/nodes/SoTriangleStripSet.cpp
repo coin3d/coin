@@ -423,8 +423,12 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
   Binding nbind = this->findNormalBinding(action->getState());
 
   if (needNormals && normals == NULL) {
-    normals = this->getNormalCache()->getNormals();
-    assert(normals);
+    SoNormalCache * nc = this->getNormalCache();
+    if (nc == NULL || !nc->isValid(state)) {
+      this->generateNormals(state);
+      nc = this->getNormalCache();
+    }
+    normals = nc->getNormals();
   }
 
   int32_t idx = startIndex.getValue();

@@ -408,7 +408,12 @@ SoQuadMesh::generatePrimitives(SoAction *action)
   Binding nbind = findNormalBinding(action->getState());
 
   if (needNormals && normals == NULL) {
-    normals = getNormalCache()->getNormals();
+    SoNormalCache * nc = this->getNormalCache();
+    if (nc == NULL || !nc->isValid(state)) {
+      this->generateNormals(state);
+      nc = this->getNormalCache();
+    }
+    normals = nc->getNormals();
   }
 
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);

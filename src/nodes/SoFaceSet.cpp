@@ -369,6 +369,10 @@ SoFaceSet::generatePrimitives(SoAction *action)
   const SoCoordinateElement *coords;
   const SbVec3f * normals;
   SbBool doTextures;
+  // FIXME: maybe SoLightModelElement should be enabled for
+  // SoPickAction. This would make it possible to test the
+  // element here, instead of always generating normals.        
+  // pederb, 20000927
   SbBool needNormals = TRUE;
 
   SoVertexShape::getVertexData(state, coords, normals,
@@ -381,9 +385,14 @@ SoFaceSet::generatePrimitives(SoAction *action)
   Binding nbind = this->findNormalBinding(state);
 
   if (needNormals && normals == NULL) {
-    normals = this->getNormalCache()->getNormals();
+    SoNormalCache * nc = this->getNormalCache();
+    if (nc == NULL || !nc->isValid(state)) {
+      this->generateNormals(state);
+      nc = this->getNormalCache();
+    }
+    normals = nc->getNormals();
   }
-
+  
   int32_t idx = startIndex.getValue();
   int32_t dummyarray[1];
   const int32_t * ptr = this->numVertices.getValues(0);
