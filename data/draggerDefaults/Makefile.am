@@ -5,6 +5,8 @@ EXTRA_DIST = \
              data/draggerDefaults/translate1Dragger.iv \
              data/draggerDefaults/translate2Dragger.iv \
              data/draggerDefaults/centerballDragger.iv \
+             data/draggerDefaults/tabPlaneDragger.iv \
+             data/draggerDefaults/tabBoxDragger.iv \
              data/draggerDefaults/dragPointDragger.iv \
              data/draggerDefaults/pointLightDragger.iv \
              data/draggerDefaults/handleBoxDragger.iv \
@@ -23,6 +25,8 @@ draggerdefdatadir = $(datadir)/Coin/draggerDefaults
 draggerdefdata_DATA =	translate1Dragger.iv \
 			translate2Dragger.iv \
 			centerballDragger.iv \
+			tabPlaneDragger.iv \
+			tabBoxDragger.iv \
 			dragPointDragger.iv \
 			pointLightDragger.iv \
 			handleBoxDragger.iv \
@@ -44,6 +48,8 @@ BUILT_SOURCES = \
 	translate1Dragger.h \
 	translate2Dragger.h \
 	centerballDragger.h \
+	tabPlaneDragger.h \
+	tabBoxDragger.h \
 	dragPointDragger.h \
 	pointLightDragger.h \
 	handleBoxDragger.h \
@@ -65,6 +71,12 @@ translate2Dragger.h: $(top_srcdir)/data/draggerDefaults/translate2Dragger.iv $(t
 
 centerballDragger.h: $(top_srcdir)/data/draggerDefaults/centerballDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/centerballDragger.iv > centerballDragger.h
+
+tabPlaneDragger.h: $(top_srcdir)/data/draggerDefaults/tabPlaneDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
+	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/tabPlaneDragger.iv > tabPlaneDragger.h
+
+tabBoxDragger.h: $(top_srcdir)/data/draggerDefaults/tabBoxDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
+	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/tabBoxDragger.iv > tabBoxDragger.h
 
 dragPointDragger.h: $(top_srcdir)/data/draggerDefaults/dragPointDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/dragPointDragger.iv > dragPointDragger.h
