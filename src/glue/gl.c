@@ -1072,6 +1072,15 @@ glglue_resolve_symbols(cc_glglue * w)
     }
   }
 #endif /* HAVE_GLX || HAVE_WGL */
+
+  w->can_do_bumpmapping = FALSE;
+  if (w->glActiveTexture && 
+      (cc_glglue_glversion_matches_at_least(w, 1, 3, 0) ||
+       (cc_glglue_glext_supported(w, "ARB_texture_cube_map") &&
+        cc_glglue_glext_supported(w, "ARB_texture_env_combine") &&
+        cc_glglue_glext_supported(w, "ARB_texture_env_dot3")))) {
+    w->can_do_bumpmapping = TRUE;
+  }
 }
 
 #undef PROC
@@ -1309,7 +1318,7 @@ cc_glglue_instance(int contextid)
 #endif /* HAVE_AGL */
 
     gi = (cc_glglue*)malloc(sizeof(cc_glglue));
-    /* clear to set all pointers to NULL */
+    /* clear to set all pointers and variables to NULL or 0 */
     memset(gi, 0, sizeof(cc_glglue));
     /* FIXME: handle out-of-memory on malloc(). 20000928 mortene. */
 
@@ -2373,6 +2382,13 @@ cc_glglue_glGetBufferPointerv(const cc_glglue * glue,
   assert(glue->glGetBufferPointerv);
   glue->glGetBufferPointerv(target, pname, params);
 }
+
+SbBool 
+cc_glglue_can_do_bumpmapping(const cc_glglue * glue)
+{
+  return glue->can_do_bumpmapping;
+}
+
 
 /*!
   Returns current X11 display the OpenGL context is in. If none, or if
