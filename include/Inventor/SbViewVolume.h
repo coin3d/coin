@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *
+ *  
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -105,18 +105,15 @@ public:
 
 private:
 
-    SbVec3f     llfO;                   // x = -w, y = -w, z = -w
-    SbVec3f     lrfO;                   // x =  w, y = -w, z = -w
-    SbVec3f     ulfO;                   // x = -w, y =  w, z = -w
-
   static SbMatrix getOrthoProjection(const float left, const float right,
                                      const float bottom, const float top,
                                      const float nearval, const float farval);
   static SbMatrix getPerspectiveProjection(const float left, const float right,
                                            const float bottom, const float top,
                                            const float nearval, const float farval);
-  void getPlaneRectangle(const float depth, SbVec3f & lowerleft,
-                         SbVec3f & lowerright, SbVec3f & upperleft,
+
+  void getPlaneRectangle(const float depth, SbVec3f & lowerleft, 
+                         SbVec3f & lowerright, SbVec3f & upperleft, 
                          SbVec3f & upperright) const;
 };
 
