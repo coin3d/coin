@@ -27,9 +27,11 @@
 */
 
 #include <Inventor/engines/SoSelectOne.h>
+#include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/engines/SoSubEngineP.h>
+#include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoFields.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 
@@ -91,12 +93,26 @@ SoSelectOne::createInstance(void)
 */
 SoSelectOne::SoSelectOne(SoType inputtype)
 {
-  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoSelectOne);
+  this->initialize(inputtype);
+}
 
+// Default constructor. Leaves engine in invalid state. Should only be
+// used from import code or copy code.
+SoSelectOne::SoSelectOne(void)
+{
+}
+
+// Set up the input and output fields of the engine. This is done from
+// either the non-default constructor or the readInstance() import
+// code.
+void
+SoSelectOne::initialize(const SoType inputfieldtype)
+{
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoSelectOne);
   SO_ENGINE_ADD_INPUT(index, (0));
 
   // Instead of SO_ENGINE_ADD_INPUT().
-  this->input = (SoMField *)inputtype.createInstance();
+  this->input = (SoMField *)inputfieldtype.createInstance();
   this->input->setNum(0);
   this->input->setContainer(this);
   this->dynamicinput = new SoFieldData(SoSelectOne::inputdata);
@@ -132,7 +148,7 @@ SoSelectOne::SoSelectOne(SoType inputtype)
   // FIXME: man, this is horrendous. Swap with a dict. 20000919 mortene.
   SoType outputtype;
   for (int i=0;i<42;i+=2) {
-    if (inputtype==types[i]) {
+    if (inputfieldtype==types[i]) {
       outputtype=types[i+1];
       break;
     }
@@ -150,13 +166,6 @@ void
 SoSelectOne::initClass(void)
 {
   SO_ENGINE_INTERNAL_INIT_CLASS(SoSelectOne);
-}
-
-// dummy default constructor
-SoSelectOne::SoSelectOne(void)
-{
-  assert(FALSE && "default constructor shouldn't be used");
-  // FIXME: ..or used when reading engine from file? 20000324 mortene.
 }
 
 SoSelectOne::~SoSelectOne()
@@ -190,6 +199,32 @@ SoSelectOne::evaluate(void)
     SoDebugError::post("SoSelectOne::evaluate", "invalid index %d", idx);
   }
 #endif // COIN_DEBUG
+}
+
+// overloaded from parent
+SbBool
+SoSelectOne::readInstance(SoInput * in, unsigned short flags)
+{
+  SbName tmp;
+  if (!in->read(tmp) || tmp != "type") {
+    SoReadError::post(in, "\"type\" keyword is missing.");
+    return FALSE;
+  }
+  SbName fieldname;
+  if (!in->read(fieldname)) {
+    SoReadError::post(in, "Couldn't read input type for engine.");
+    return FALSE;
+  }
+  SoType inputtype = SoType::fromName(fieldname);
+  if (inputtype == SoType::badType() ||
+      !inputtype.isDerivedFrom(SoMField::getClassTypeId())) {
+    SoReadError::post(in, "Type \"%s\" for input field is not valid.",
+                      fieldname.getString());
+    return FALSE;
+  }
+
+  this->initialize(inputtype);
+  return SoEngine::readInstance(in, flags);
 }
 
 // overloaded from parent
