@@ -1736,7 +1736,7 @@ fi
 
 
 # Usage:
-#   SIM_RTTI_SUPPORT
+#   SIM_AC_RTTI_SUPPORT
 #
 # Description:
 #   Let the user decide if RTTI should be compiled in. The compiled
@@ -1747,34 +1747,27 @@ fi
 #   configure.in script.
 # 
 # Author: Morten Eriksen, <mortene@sim.no>.
-# 
-# TODO:
-#   * [mortene:19991114] make this work with compilers other than gcc/g++
-# 
 
-AC_DEFUN([SIM_RTTI_SUPPORT], [
+AC_DEFUN([SIM_AC_RTTI_SUPPORT], [
 AC_PREREQ([2.13])
 AC_ARG_ENABLE(
   [rtti],
-  AC_HELP_STRING([--enable-rtti], [(g++ only) compile with RTTI [default=no]]),
+  AC_HELP_STRING([--enable-rtti], [(g++ only) compile with RTTI [default=yes]]),
   [case "${enableval}" in
     yes) enable_rtti=yes ;;
     no)  enable_rtti=no ;;
     *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-rtti) ;;
   esac],
-  [enable_rtti=no])
+  [enable_rtti=yes])
 
 if test x"$enable_rtti" = x"no"; then
   if test x"$GXX" = x"yes"; then
     CXXFLAGS="$CXXFLAGS -fno-rtti"
-  fi
-else
-  if test x"$GXX" != x"yes"; then
+  else
     AC_MSG_WARN([--enable-rtti only has effect when using GNU g++])
   fi
 fi
 ])
-
 
 # Usage:
 #   SIM_CHECK_EXCEPTION_HANDLING

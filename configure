@@ -46,7 +46,7 @@ ac_arg_enable_help="$ac_arg_enable_help
   --enable-symbols        (GCC only) include symbol debug information
                           [default=yes]"
 ac_arg_enable_help="$ac_arg_enable_help
-  --enable-rtti           (g++ only) compile with RTTI [default=no]"
+  --enable-rtti           (g++ only) compile with RTTI [default=yes]"
 ac_arg_enable_help="$ac_arg_enable_help
   --enable-exceptions     (g++ only) compile with exceptions [default=no]"
 ac_arg_enable_help="$ac_arg_enable_help
@@ -3904,16 +3904,14 @@ if test "${enable_rtti+set}" = set; then
     *) { echo "configure: error: bad value \"${enableval}\" for --enable-rtti" 1>&2; exit 1; } ;;
   esac
 else
-  enable_rtti=no
+  enable_rtti=yes
 fi
 
 
 if test x"$enable_rtti" = x"no"; then
   if test x"$GXX" = x"yes"; then
     CXXFLAGS="$CXXFLAGS -fno-rtti"
-  fi
-else
-  if test x"$GXX" != x"yes"; then
+  else
     echo "configure: warning: --enable-rtti only has effect when using GNU g++" 1>&2
   fi
 fi
@@ -3939,18 +3937,18 @@ if test x"$enable_exceptions" = x"no"; then
         
 
 echo $ac_n "checking whether $CXX accepts -fno-exceptions... $ac_c" 1>&6
-echo "configure:3943: checking whether $CXX accepts -fno-exceptions" 1>&5
+echo "configure:3941: checking whether $CXX accepts -fno-exceptions" 1>&5
 _save_cxxflags=$CXXFLAGS
 CXXFLAGS="$CXXFLAGS -fno-exceptions"
 cat >conftest.$ac_ext <<EOF
-#line 3947 "configure"
+#line 3945 "configure"
 #include "confdefs.h"
 
 int main() {
 
 ; return 0; }
 EOF
-if { (eval echo configure:3954: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+if { (eval echo configure:3952: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
   _accept_result=yes _exception_flag=-fno-exceptions
 else
@@ -3968,18 +3966,18 @@ unset _accept_result _save_cxxflags
             
 
 echo $ac_n "checking whether $CXX accepts -fno-handle-exceptions... $ac_c" 1>&6
-echo "configure:3972: checking whether $CXX accepts -fno-handle-exceptions" 1>&5
+echo "configure:3970: checking whether $CXX accepts -fno-handle-exceptions" 1>&5
 _save_cxxflags=$CXXFLAGS
 CXXFLAGS="$CXXFLAGS -fno-handle-exceptions"
 cat >conftest.$ac_ext <<EOF
-#line 3976 "configure"
+#line 3974 "configure"
 #include "confdefs.h"
 
 int main() {
 
 ; return 0; }
 EOF
-if { (eval echo configure:3983: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+if { (eval echo configure:3981: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
   _accept_result=yes _exception_flag=-fno-handle-exceptions
 else
@@ -4051,18 +4049,18 @@ if test x"$enable_warnings" = x"yes"; then
     
 
 echo $ac_n "checking whether $CXX accepts -Wno-multichar... $ac_c" 1>&6
-echo "configure:4055: checking whether $CXX accepts -Wno-multichar" 1>&5
+echo "configure:4053: checking whether $CXX accepts -Wno-multichar" 1>&5
 _save_cxxflags=$CXXFLAGS
 CXXFLAGS="$CXXFLAGS -Wno-multichar"
 cat >conftest.$ac_ext <<EOF
-#line 4059 "configure"
+#line 4057 "configure"
 #include "confdefs.h"
 
 int main() {
 
 ; return 0; }
 EOF
-if { (eval echo configure:4066: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+if { (eval echo configure:4064: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
   _accept_result=yes _warn_flags=-Wno-multichar
 else
@@ -4089,18 +4087,18 @@ unset _accept_result _save_cxxflags
         
 
 echo $ac_n "checking whether $CXX accepts -fullwarn... $ac_c" 1>&6
-echo "configure:4093: checking whether $CXX accepts -fullwarn" 1>&5
+echo "configure:4091: checking whether $CXX accepts -fullwarn" 1>&5
 _save_cxxflags=$CXXFLAGS
 CXXFLAGS="$CXXFLAGS -fullwarn"
 cat >conftest.$ac_ext <<EOF
-#line 4097 "configure"
+#line 4095 "configure"
 #include "confdefs.h"
 
 int main() {
 
 ; return 0; }
 EOF
-if { (eval echo configure:4104: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+if { (eval echo configure:4102: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
   _accept_result=yes _warn_flags="$_warn_flags -fullwarn"
 else
@@ -4119,18 +4117,18 @@ unset _accept_result _save_cxxflags
         
 
 echo $ac_n "checking whether $CXX accepts -woff 3115... $ac_c" 1>&6
-echo "configure:4123: checking whether $CXX accepts -woff 3115" 1>&5
+echo "configure:4121: checking whether $CXX accepts -woff 3115" 1>&5
 _save_cxxflags=$CXXFLAGS
 CXXFLAGS="$CXXFLAGS -woff 3115"
 cat >conftest.$ac_ext <<EOF
-#line 4127 "configure"
+#line 4125 "configure"
 #include "confdefs.h"
 
 int main() {
 
 ; return 0; }
 EOF
-if { (eval echo configure:4134: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+if { (eval echo configure:4132: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
   _accept_result=yes _warn_flags="$_warn_flags -woff 3115"
 else
@@ -4148,18 +4146,18 @@ unset _accept_result _save_cxxflags
         
 
 echo $ac_n "checking whether $CXX accepts -woff 3262... $ac_c" 1>&6
-echo "configure:4152: checking whether $CXX accepts -woff 3262" 1>&5
+echo "configure:4150: checking whether $CXX accepts -woff 3262" 1>&5
 _save_cxxflags=$CXXFLAGS
 CXXFLAGS="$CXXFLAGS -woff 3262"
 cat >conftest.$ac_ext <<EOF
-#line 4156 "configure"
+#line 4154 "configure"
 #include "confdefs.h"
 
 int main() {
 
 ; return 0; }
 EOF
-if { (eval echo configure:4163: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+if { (eval echo configure:4161: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
   _accept_result=yes _warn_flags="$_warn_flags -woff 3262"
 else
@@ -4194,17 +4192,17 @@ for ac_header in unistd.h io.h
 do
 ac_ac_Header=`echo "ac_cv_header_$ac_header" | $ac_tr_sh`
 echo $ac_n "checking for $ac_header... $ac_c" 1>&6
-echo "configure:4198: checking for $ac_header" 1>&5
+echo "configure:4196: checking for $ac_header" 1>&5
 if eval "test \"\${$ac_ac_Header+set}\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 4203 "configure"
+#line 4201 "configure"
 #include "confdefs.h"
 #include <$ac_header>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:4208: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:4206: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -4236,19 +4234,19 @@ sim_ac_vsnprintf_avail=no
 sim_ac__vsnprintf_avail=no
 
 echo $ac_n "checking whether snprintf() is available... $ac_c" 1>&6
-echo "configure:4240: checking whether snprintf() is available" 1>&5
+echo "configure:4238: checking whether snprintf() is available" 1>&5
 if test "${sim_cv_func_snprintf+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 4245 "configure"
+#line 4243 "configure"
 #include "confdefs.h"
 #include <stdio.h>
 int main() {
 (void)snprintf(0L, 0, 0L);
 ; return 0; }
 EOF
-if { (eval echo configure:4252: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:4250: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_func_snprintf=yes
 else
@@ -4265,19 +4263,19 @@ sim_ac_snprintf_avail=$sim_cv_func_snprintf
 
 
 echo $ac_n "checking whether vsnprintf() is available... $ac_c" 1>&6
-echo "configure:4269: checking whether vsnprintf() is available" 1>&5
+echo "configure:4267: checking whether vsnprintf() is available" 1>&5
 if test "${sim_cv_func_vsnprintf+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 4274 "configure"
+#line 4272 "configure"
 #include "confdefs.h"
 #include <stdio.h>
 int main() {
 (void)vsnprintf(0L, 0, 0L, 0L);
 ; return 0; }
 EOF
-if { (eval echo configure:4281: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:4279: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_func_vsnprintf=yes
 else
@@ -4295,19 +4293,19 @@ sim_ac_vsnprintf_avail=$sim_cv_func_vsnprintf
 # We're not interested in _snprintf() unless snprintf() is unavailable.
 if test x"$sim_ac_snprintf_avail" = x"no"; then
   echo $ac_n "checking whether _snprintf() is available... $ac_c" 1>&6
-echo "configure:4299: checking whether _snprintf() is available" 1>&5
+echo "configure:4297: checking whether _snprintf() is available" 1>&5
 if test "${sim_cv_func__snprintf+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 4304 "configure"
+#line 4302 "configure"
 #include "confdefs.h"
 #include <stdio.h>
 int main() {
 (void)_snprintf(0L, 0, 0L);
 ; return 0; }
 EOF
-if { (eval echo configure:4311: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:4309: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_func__snprintf=yes
 else
@@ -4325,19 +4323,19 @@ fi
 # We're not interested in _vsnprintf() unless vsnprintf() is unavailable.
 if test x"$sim_ac_vsnprintf_avail" = xno; then
   echo $ac_n "checking whether _vsnprintf() is available... $ac_c" 1>&6
-echo "configure:4329: checking whether _vsnprintf() is available" 1>&5
+echo "configure:4327: checking whether _vsnprintf() is available" 1>&5
 if test "${sim_cv_func__vsnprintf+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 4334 "configure"
+#line 4332 "configure"
 #include "confdefs.h"
 #include <stdio.h>
 int main() {
 (void)_vsnprintf(0L, 0, 0L);
 ; return 0; }
 EOF
-if { (eval echo configure:4341: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:4339: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_func__vsnprintf=yes
 else
