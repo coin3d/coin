@@ -530,6 +530,8 @@ SoGLRenderAction::setPassCallback(SoGLRenderPassCB * const func,
 /*!
   Sets the OpenGL cache context key, which is used for deciding when
   to share OpenGL display lists.
+
+  \sa SoGLCacheContextElement::getUniqueCacheContext()
 */
 void
 SoGLRenderAction::setCacheContext(const uint32_t context)
