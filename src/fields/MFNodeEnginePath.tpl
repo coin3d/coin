@@ -305,14 +305,23 @@ SoMF_Typename_::countWriteRefs(SoOutput * out) const
 {
   inherited::countWriteRefs(out);
 
-  for (int i=0; i < this->getNum(); i++) {
-    So_Typename_ * n = (*this)[i];
-    // Set the "from field" flag as FALSE, as that flag is meant to be
-    // used for references through field-to-field connections.
-    if (n) n->addWriteReference(out, FALSE);
-#ifdef COIN_INTERNAL_PATH
-    if (this->pathheads[i]) this->pathheads[i]->addWriteReference(out, FALSE);
-#endif // COIN_INTERNAL_PATH
+  for (int i = 0; i < this->getNum(); i++) {
+    SoBase * base = this->values[i];
+    if (base) {
+      // NB: This code is common for SoMFNode, SoMFPath and SoMFEngine.
+      // That's why we check the base type before writing/counting
+
+      if (base->isOfType(SoNode::getClassTypeId())) {
+        ((SoNode*)base)->writeInstance(out);
+      }
+      else if (base->isOfType(SoEngine::getClassTypeId())) {
+        ((SoEngine*)base)->addWriteReference(out);
+      }
+      else if (base->isOfType(SoPath::getClassTypeId())) {
+        SoWriteAction wa(out);
+        wa.continueToApply((SoPath*)base);
+      }
+    }
   }
 }
 
