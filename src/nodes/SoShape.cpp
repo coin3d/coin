@@ -333,6 +333,9 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
 
+  if (SoDrawStyleElement::get(state) == SoDrawStyleElement::INVISIBLE)
+    return FALSE;
+
   // if we have a valid bbox cache, do a view volume cull test here.
   if (THIS && 
       THIS->bboxcache && 
@@ -378,9 +381,6 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   }
 
   if (action->handleTransparency(transparent))
-    return FALSE;
-
-  if (SoDrawStyleElement::get(state) == SoDrawStyleElement::INVISIBLE)
     return FALSE;
 
   // make sure lazy elements are up to date
