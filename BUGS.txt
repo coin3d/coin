@@ -3497,3 +3497,42 @@ end
     than just our own niord.trh.sim.no
 
 =====================================================================
+
+128 Worse performance in more recent Coin versions?
+
+    Hannes Kaufmann reports that recent Coin versions seem to have
+    worse performance:
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+    I am using a Quadro4 900XGL and within our Studierstube framework
+    we currently still use Qt 3.0.3 under windows.
+
+    No matter which NVidia driver I use, I always get pretty much the
+    same result.  With a Coin version from early this year (February,
+    March) I get a 25% higher frame rate (sometimes even more) than
+    with versions from late June/July.  I am running exactly the same
+    application with exactly the same setup. I just rename folders to
+    enable one or another coin version. There can be no flaw in my
+    test setup, I always run exactly the same and only exchange coin
+    versions (plus simage plus soqt) and nothing else.
+
+    On my machine COIN_ENABLE_VBO is set to 1 as well as
+    COIN_USE_GL_VERTEX_ARRAYS (I think these features were already
+    implemented in February and are supported by both versions that
+    I'm testing)
+
+    This problem is not application specific. I see the same drop of
+    framerate with other applications and on other machines.
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+    I've suggested to try turning off those envvars (VBOs and vertex
+    arrays are known to cause worse performance with certain drivers /
+    cards), and upgrade his version of SoQt (pederb recently fixed a
+    problem with idle processing and Qt timers). Currently awaiting
+    reply.
+
+    20040805 mortene.
+
+=====================================================================
