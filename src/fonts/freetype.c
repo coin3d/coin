@@ -796,6 +796,14 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   assert(font);
   
   face = (FT_Face)font;
+  
+  /*
+    NOTE: Do not use the combination [FT_LOAD_RENDER |
+    FT_LOAD_MONOCHROME] for the 'load_flags' parameter to explicitly
+    make sure a monochrome bitmap is returned. This works fine on
+    Linux (tested on FreeType 2.1.4) but causes problems on MacOS X
+    (reported for FreeType 2.1.5). (20031110 handegar)
+  */
   error = cc_ftglue_FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
   if (error) {
     if (cc_flw_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
