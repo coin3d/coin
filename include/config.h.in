@@ -260,9 +260,6 @@
 /* Define to use Win32 QueryPerformanceCounter() */
 #undef HAVE_QUERYPERFORMANCECOUNTER
 
-/* define to enable shader support */
-#undef HAVE_SHADERS
-
 /* define if single-precision math functions are avialable */
 #undef HAVE_SINGLEPRECISION_MATH
 
