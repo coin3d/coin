@@ -106,7 +106,7 @@ SoBumpMapCoordinateElement::get(const int index) const
 //! FIXME: write doc.
 
 const SoBumpMapCoordinateElement *
-SoBumpMapCoordinateElement::getInstance(SoState * const state)
+SoBumpMapCoordinateElement::getInstance(SoState * state)
 {
   return (const SoBumpMapCoordinateElement *)
     (getConstElement(state, classStackIndex));

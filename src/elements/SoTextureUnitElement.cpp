@@ -76,7 +76,7 @@ SoTextureUnitElement::init(SoState * state)
 //! FIXME: write doc.
 
 int
-SoTextureUnitElement::get(SoState * const state)
+SoTextureUnitElement::get(SoState * state)
 {
   return (int) SoInt32Element::get(classStackIndex, state);
 }

@@ -328,7 +328,7 @@ public:
 
 #ifdef COIN_THREADSAFE
 SoGLCacheList *
-SoSeparatorP::getGLCacheList(const SbBool createifnull)
+SoSeparatorP::getGLCacheList(SbBool createifnull)
 {
   soseparator_storage * ptr =
     (soseparator_storage*) this->glcachestorage->get();
@@ -339,7 +339,7 @@ SoSeparatorP::getGLCacheList(const SbBool createifnull)
 }
 #else // COIN_THREADSAFE
 SoGLCacheList *
-SoSeparatorP::getGLCacheList(const SbBool createifnull)
+SoSeparatorP::getGLCacheList(SbBool createifnull)
 {
   if (createifnull && this->glcachelist == NULL) {
     this->glcachelist = new SoGLCacheList(SoSeparator::getNumRenderCaches());
