@@ -49,6 +49,11 @@
 #  //$ ELSE
 #  //$ ENDIF
 #
+#  ... //$ IF perl-expr
+#
+#  //$ WARNING message
+#  //$ ERROR message
+#
 #  Alternately, //$ ... can be replaced with
 #
 #  ##$ ...
@@ -59,6 +64,9 @@
 #  $Id$
 #
 #  $Log$
+#  Revision 1.9  2002/03/20 18:03:38  larsa
+#  a new shorthand notation for single-line conditionals, new macros ERROR and WARNING
+#
 #  Revision 1.8  2002/03/20 12:03:50  larsa
 #  bugfix
 #
@@ -184,7 +192,7 @@ foreach $opt ( @options ) {
             push( @incpath, $dir );
         }
     } else {
-        print "Error: No option or file named '", $opt, "'\n";
+        print STDERR "ERROR: No option or file named '", $opt, "'\n";
         exit( -1 );
     }
 }
@@ -375,6 +383,32 @@ sub UnfoldTemplates { ######################################################
                 $line--;
                 next;
             }
+        }
+
+        # one-line shorthand conditional line
+        if ( $lines[$line] =~ m|$prefix +IF +|o ) {
+            $condstring = $lines[$line];
+            $condstring =~ s|.*$prefix +IF +||o;
+            $conditional = eval("if ( $condstring ) { 1; } else { 0; }");
+            if ( $conditional == 0 ) {
+                splice(@lines, $line, 1);
+                $line--;
+                next;
+            } else {
+                $lines[$line] =~ s| *$prefix +IF +.*$||o;
+            }
+        }
+
+        if ( $lines[$line] =~ m|^$prefix +ERROR +|o ) {
+            $errorstring = $lines[$line];
+            $errorstring =~ s|^$prefix +ERROR +||o;
+            print STDERR "ERROR: $errorstring\n";
+            exit(-1);
+        } elsif ( $lines[$line] =~ m|^$prefix +WARNING +|o ) {
+            $errorstring = $lines[$line];
+            $errorstring =~ s|^$prefix +WARNING +||o;
+            print STDERR "WARNING: $errorstring\n";
+            $directive = 1;
         }
 
         if ( $lines[$line] =~ m|^$prefix +DEFINE +|o ) {
