@@ -145,7 +145,7 @@ SoGLPointSizeElement::updategl()
     //
     //                     mortene@coin3d.org
     //
-    if (vals[0] < 1.0f) { vals[0] = SbMin(1.0f, vals[1]); }
+    if (vals[0] <= 0.0f) { vals[0] = SbMin(1.0f, vals[1]); }
 
     SoGLPointSizeElement::sizerange[0] = vals[0];
     SoGLPointSizeElement::sizerange[1] = vals[1];
@@ -163,8 +163,10 @@ SoGLPointSizeElement::updategl()
   }
 
 #if COIN_DEBUG
-  // Detect invalid values and warn the application programmer.
-  if (useval != this->current) {
+  // Detect invalid values and warn the application programmer.  (0.0f
+  // is used as a "dummy" default value by our superclass and by
+  // SoDrawStyle::pointSize, so ignore that case.)
+  if ((useval != this->current) && (this->current != 0.0f)) {
     // Only warn once for each case.
     static SbBool warn_below = TRUE;
     static SbBool warn_above = TRUE;

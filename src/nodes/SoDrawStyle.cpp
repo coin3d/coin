@@ -181,19 +181,7 @@ SoDrawStyle::doAction(SoAction * action)
     }
   }
   if (!this->pointSize.isIgnored() && !TEST_OVERRIDE(POINT_SIZE)) {
-
-    float val = this->pointSize.getValue();
-    // FIXME: this is a fix to avoid sending an invalid 0.0 value
-    // (which is the pointSize field default value) to the
-    // SoGLPointSizeElement (which will result in a
-    // SoDebugError::postWarning()).  The "FIXME" part of this is that
-    // the default pointSize value is stupid -- but we can't really
-    // fix that without breaking the API 100% compatible goal with SGI
-    // Open Inventor v2.1, even though it would be a very minor
-    // incompatibility issue.  20010823 mortene.
-    if (val == 0.0f) { val = 1.0f; }
-
-    SoPointSizeElement::set(state, this, val);
+    SoPointSizeElement::set(state, this, this->pointSize.getValue());
     if (this->isOverride()) {
       SoOverrideElement::setPointSizeOverride(state, this, TRUE);
     }
