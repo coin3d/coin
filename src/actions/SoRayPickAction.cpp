@@ -25,6 +25,69 @@
   For interaction with the scene graph geometry, it is necessary to be
   able to do intersection testing for rays. This functionality is
   provided by the SoRayPickAction class.
+
+  Note that one common mistake when using a raypick action is that one
+  tries to apply it to a scenegraph that does not contain a camera \e
+  explicitly set up by the application programmer. Without a camera as
+  part of the traversal, the raypick action does not now which view
+  volume to send the ray through.
+
+  In this regard, be aware that the getSceneGraph() call in the
+  So*-libraries' viewer classes will return the root of the
+  user-supplied scenegraph, not the "real" internal scenegraph root
+  used by the viewer (which should always contain a camera node). So
+  raypicks done from the application code will fail when doing this:
+
+  \code
+  // initializing viewer scenegraph
+  SoSeparator * root = new SoSeparator;
+  root->ref();
+
+  SoEventCallback * ecb = new SoEventCallback;
+  ecb->addEventCallback(SoMouseButtonEvent::getClassTypeId(), event_cb, viewer);
+  root->addChild(ecb);
+
+  root->addChild(new SoCone);
+  
+  viewer->setSceneGraph( root );
+  // -- [snip] -------------------------
+
+  // attempting raypick in the event_cb() callback method
+  SoRayPickAction rp( viewer->getViewportRegion() );
+  rp.setPoint(mouseevent->getPosition());
+  rp.apply(viewer->getSceneGraph());
+  // BUG: results will not be what you expected, as no camera was
+  // part of the "user's" scenegraph
+  \endcode
+
+  While this is the correct way to do it:
+
+  \code
+  // initializing viewer scenegraph
+  SoSeparator * root = new SoSeparator;
+  root->ref();
+
+  // Need to set up our own camera in the "user" scenegraph, or else
+  // the raypick action will fail because the camera is "hidden" in
+  // the viewer-specific root of the scenegraph.
+  SoPerspectiveCamera * pcam = new SoPerspectiveCamera;
+  root->addChild(pcam);
+
+  SoEventCallback * ecb = new SoEventCallback;
+  ecb->addEventCallback(SoMouseButtonEvent::getClassTypeId(), event_cb, viewer);
+  root->addChild(ecb);
+
+  root->addChild(new SoCone);
+  
+  viewer->setSceneGraph( root );
+  pcam->viewAll( root, viewer->getViewportRegion() );
+  // -- [snip] -------------------------
+
+  // attempting raypick in the event_cb() callback method
+  SoRayPickAction rp( viewer->getViewportRegion() );
+  rp.setPoint(mouseevent->getPosition());
+  rp.apply(viewer->getSceneGraph());
+  \endcode
 */
 
 #include <Inventor/actions/SoRayPickAction.h>
