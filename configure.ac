@@ -1460,7 +1460,6 @@ SIM_AC_CHECK_OPENGL(
         SIM_AC_HAVE_AGL_IFELSE([
           AC_DEFINE([HAVE_AGL], 1, [define if you have AGL OpenGL bindings])
           LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
-          COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
           SIM_AC_HAVE_AGL_PBUFFER([
             AC_DEFINE_UNQUOTED([HAVE_AGL_PBUFFER],1,
                                [define if AGL pBuffers are available on the system])
@@ -1813,8 +1812,6 @@ COIN_COMPILER="$CXX"
     COIN_EXTRA_CXXFLAGS=
     COIN_EXTRA_LDFLAGS="-Wl,-framework,$MAC_FRAMEWORK_NAME"
     COIN_EXTRA_LIBS=
-    # adjust for AGL usage
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
     # adjust for OpenGL usage
     COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS -Wl,-framework,OpenGL"
     # adjust for simage usage
