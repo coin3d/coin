@@ -132,7 +132,7 @@ SoGLSLShaderObject::printInfoLog(const cc_glglue * g, COIN_GLhandle handle, int 
 
   if (length > 1) {
     COIN_GLchar *infoLog = new COIN_GLchar[length];
-    int charsWritten = 0;
+    GLsizei charsWritten = 0;
     g->glGetInfoLogARB(handle, length, &charsWritten, infoLog);
     SbString s("GLSL");
     switch (objType) {
