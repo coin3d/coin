@@ -73,6 +73,7 @@ private:
 
   SbList<SoDelayQueueSensor *> delayqueue, delaywaitqueue;
   SbList<SoTimerQueueSensor *> timerqueue, timerwaitqueue;
+  SbList<SoTimerSensor*> reschedulelist;
 
   void (*queueChangedCB)(void *);
   void * queueChangedCBData;

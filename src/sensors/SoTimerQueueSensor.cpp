@@ -100,6 +100,16 @@ SoTimerQueueSensor::setTriggerTime(const SbTime & time)
 }
 
 /*!
+  Overloaded to clear scheduled flag before triggering.
+*/
+void 
+SoTimerQueueSensor::trigger(void)
+{
+  this->scheduled = FALSE;
+  inherited::trigger();
+}
+
+/*!
   Put the sensor in the global timer queue.
 
   \sa unschedule(), isScheduled()

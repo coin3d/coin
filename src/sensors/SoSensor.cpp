@@ -176,7 +176,6 @@ SoSensor::getData(void) const
 void
 SoSensor::trigger(void)
 {
-  this->unschedule();
   if (this->func) this->func(this->funcData, this);
 }
 

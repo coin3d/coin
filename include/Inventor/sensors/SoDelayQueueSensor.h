@@ -41,6 +41,7 @@ public:
   virtual SbBool isScheduled(void) const;
 
   virtual SbBool isIdleOnly(void) const;
+  virtual void trigger(void);
 
 protected:
   SbBool scheduled;

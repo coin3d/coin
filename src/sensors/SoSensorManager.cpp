@@ -235,6 +235,7 @@ SoSensorManager::processTimerQueue(void)
                          "start: %d elements", this->timerqueue.getLength());
 #endif // debug
 
+  assert(this->reschedulelist.getLength() == 0);
   this->processingtimerqueue = TRUE;
 
   SbTime currenttime = SbTime::getTimeOfDay();
@@ -245,7 +246,9 @@ SoSensorManager::processTimerQueue(void)
                            "process element with triggertime %s",
                            this->timerqueue[0]->getTriggerTime().format().getString());
 #endif // debug
-    this->timerqueue[0]->trigger();
+    SoSensor * sensor = this->timerqueue[0];
+    this->timerqueue.remove(0);
+    sensor->trigger();
   }
 
   this->processingtimerqueue = FALSE;
@@ -257,6 +260,15 @@ SoSensorManager::processTimerQueue(void)
 #endif // debug
 
   this->mergeTimerQueues();
+
+  int n = this->reschedulelist.getLength();
+  if (n) {
+    SbTime time = SbTime::getTimeOfDay();
+    for (int i = 0; i < n; i++) {
+      this->reschedulelist[i]->reschedule(time);
+    }
+    this->reschedulelist.truncate(0);
+  }
 
 #if DEBUG_TIMER_SENSORHANDLING // debug
   SoDebugError::postInfo("SoSensorManager::processTimerQueue",
@@ -309,7 +321,9 @@ SoSensorManager::processDelayQueue(SbBool isidle)
       this->insertDelaySensor(tmpptr);
     }
     else {
-      this->delayqueue[0]->trigger();
+      SoSensor * sensor = this->delayqueue[0];
+      this->delayqueue.remove(0);
+      sensor->trigger();
     }
   }
 
@@ -358,7 +372,8 @@ SoSensorManager::processImmediateQueue(void)
       SoDebugError::postInfo("SoSensorManager::processImmediateQueue",
                              "trigger element");
 #endif // debug
-      this->delayqueue[this->delayqueue.getLength()-1]->trigger();
+      SoSensor * sensor = this->delayqueue.pop();
+      sensor->trigger();
     }
 
   this->processingdelayqueue = FALSE;
@@ -397,12 +412,11 @@ SoSensorManager::mergeTimerQueues(void)
     SoTimerQueueSensor * ts = this->timerwaitqueue[0];
     this->timerwaitqueue.remove(0);
     SbTime triggertime = ts->getTriggerTime();
-
+    
     while (i < this->timerqueue.getLength() &&
            this->timerqueue[i]->getTriggerTime() < triggertime) i++;
     this->timerqueue.insert(ts, i);
   }
-
   return merged;
 }
 
@@ -438,9 +452,7 @@ SoSensorManager::mergeDelayQueues(void)
 void
 SoSensorManager::rescheduleTimer(SoTimerSensor * s)
 {
-  this->removeTimerSensor(s);
-  s->reschedule(SbTime::getTimeOfDay());
-  this->insertTimerSensor(s);
+  this->reschedulelist.append(s);
 }
 
 /*!
@@ -449,7 +461,13 @@ SoSensorManager::rescheduleTimer(SoTimerSensor * s)
 void
 SoSensorManager::removeRescheduledTimer(SoTimerQueueSensor * s)
 {
-  this->removeTimerSensor(s);
+  int idx = this->reschedulelist.find((SoTimerSensor*)s);
+  if (idx >= 0) {
+    this->reschedulelist.remove(idx);
+  }
+  else {
+    this->removeTimerSensor(s);
+  }
 }
 
 /*!

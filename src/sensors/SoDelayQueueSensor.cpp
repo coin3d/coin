@@ -84,13 +84,12 @@ SoDelayQueueSensor::~SoDelayQueueSensor(void)
 void
 SoDelayQueueSensor::setPriority(uint32_t pri)
 {
-  this->priority = pri;
-
-  if (this->isScheduled()) {
-    // Immediately trigger if scheduled and priority is set to zero.
-    if (pri == 0) this->trigger();
-    // FIXME: reschedule if new priority is != old priority?
-    // 20000401 mortene.
+  if (this->priority != pri) {
+    this->priority = pri;
+    if (this->isScheduled()) {
+      this->unschedule();
+      this->schedule();
+    }
   }
 }
 
@@ -117,6 +116,17 @@ SoDelayQueueSensor::getDefaultPriority(void)
 }
 
 /*!
+  Overloaded to clear scheduled flag before triggering.
+*/
+void 
+SoDelayQueueSensor::trigger(void)
+{
+  this->scheduled = FALSE;
+  inherited::trigger();
+}
+
+
+/*!
   Put the sensor in the global delay queue. This means it will be
   triggered either when the CPU is idle, or when the specified delay
   queue time-out is reached.
@@ -126,12 +136,10 @@ SoDelayQueueSensor::getDefaultPriority(void)
 void
 SoDelayQueueSensor::schedule(void)
 {
-  // FIXME: is this correct, or should we perhaps re-schedule?
-  // 19990226 mortene.
-  if (this->isScheduled()) return;
-
-  SoDB::getSensorManager()->insertDelaySensor(this);
-  this->scheduled = TRUE;
+  if (!this->scheduled) {
+    SoDB::getSensorManager()->insertDelaySensor(this);
+    this->scheduled = TRUE;
+  }
 }
 
 /*!

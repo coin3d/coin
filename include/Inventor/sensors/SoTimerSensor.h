@@ -38,7 +38,6 @@ public:
 
   virtual void schedule(void);
   virtual void unschedule(void);
-  virtual SbBool isScheduled(void) const;
   void reschedule(const SbTime & schedtime);
 
 private:
@@ -46,7 +45,7 @@ private:
 
   SbTime base, interval;
   SbBool setbasetime;
-  SbBool istriggering, wasunscheduled;
+  SbBool istriggering;
 };
 
 #endif // !COIN_SOTIMERSENSOR_H

@@ -36,6 +36,7 @@ public:
   virtual void schedule(void);
   virtual void unschedule(void);
   virtual SbBool isScheduled(void) const;
+  virtual void trigger(void);
 
 protected:
   void setTriggerTime(const SbTime & time);

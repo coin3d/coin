@@ -49,7 +49,6 @@ SoTimerSensor::SoTimerSensor(void)
   this->interval.setValue(1.0f/30.0f);
   this->setbasetime = FALSE;
   this->istriggering = FALSE;
-  this->wasunscheduled = FALSE;
 }
 
 /*!
@@ -64,7 +63,6 @@ SoTimerSensor::SoTimerSensor(SoSensorCB * func, void * data)
   this->interval.setValue(1.0f/30.0f);
   this->setbasetime = FALSE;
   this->istriggering = FALSE;
-  this->wasunscheduled = FALSE;
 }
 
 /*!
@@ -72,6 +70,7 @@ SoTimerSensor::SoTimerSensor(SoSensorCB * func, void * data)
 */
 SoTimerSensor::~SoTimerSensor(void)
 {
+  if (this->isScheduled()) this->unschedule();
 }
 
 /*!
@@ -91,7 +90,6 @@ SoTimerSensor::setBaseTime(const SbTime & base)
 {
   this->base = base;
   this->setbasetime = TRUE;
-  // FIXME: reschedule? 19990425 mortene.
 }
 
 /*!
@@ -114,7 +112,6 @@ void
 SoTimerSensor::setInterval(const SbTime & interval)
 {
   this->interval = interval;
-  // FIXME: reschedule? 19990425 mortene.
 }
 
 /*!
@@ -129,11 +126,15 @@ SoTimerSensor::getInterval(void) const
 }
 
 /*!
-  Set new trigger time based on the given schedule time.
- */
+  Set new trigger time based on the given schedule time,
+  and schedules the sensor for triggering.
+*/
 void
 SoTimerSensor::reschedule(const SbTime & schedtime)
 {
+  this->scheduled = FALSE;
+  this->istriggering = FALSE;
+
   if (!this->setbasetime) {
     this->base = schedtime;
     this->setTriggerTime(this->base + this->interval);
@@ -152,6 +153,8 @@ SoTimerSensor::reschedule(const SbTime & schedtime)
                            this->base.getValue(), this->getTriggerTime());
 #endif // debug
   }
+  // don't call this node's schedule as it calls this method
+  inherited::schedule();
 }
 
 /*!
@@ -177,9 +180,19 @@ SoTimerSensor::schedule(void)
   }
 #endif // COIN_DEBUG
 
-  this->reschedule(SbTime::getTimeOfDay());
-  if (this->istriggering) this->wasunscheduled = FALSE;
-  else inherited::schedule();
+  // need to handle the case where the callback has unscheduled
+  // the timer, and then scheduled it again. Since we are
+  // triggering, we can't just reschedule, but need to add
+  // it to SoSensorManager's list of rescheduled timers.
+  if (this->istriggering) {
+    // shouldn't get here if we're scheduled, but test anyway
+    if (!this->scheduled) {
+      SoDB::getSensorManager()->rescheduleTimer(this);
+    }
+  }
+  else {
+    this->reschedule(SbTime::getTimeOfDay());
+  }
 }
 
 /*!
@@ -202,7 +215,11 @@ SoTimerSensor::unschedule(void)
   }
 #endif // COIN_DEBUG
 
-  if (this->istriggering) this->wasunscheduled = TRUE;
+  if (this->istriggering) {
+    SoDB::getSensorManager()->removeRescheduledTimer(this);
+    this->scheduled = FALSE;
+    this->istriggering = FALSE;
+  }
   else inherited::unschedule();
 
 #if DEBUG_TIMERSENSOR_TRACE // debug
@@ -222,33 +239,15 @@ SoTimerSensor::trigger(void)
 #endif // debug
 
   this->istriggering = TRUE;
-  this->wasunscheduled = FALSE;
+  // This will cause SoSceneManager to reschedule this timer after
+  // the current queue has been processed.
+  SoDB::getSensorManager()->rescheduleTimer(this);
 
-  if (this->getFunction()) this->getFunction()(this->getData(), this);
-
-  if (this->wasunscheduled) {
-    SoDB::getSensorManager()->removeRescheduledTimer(this);
-    this->scheduled = FALSE;
-  }
-  else {
-    SoDB::getSensorManager()->rescheduleTimer(this);
-  }
-
-  this->istriggering = FALSE;
-  this->wasunscheduled = FALSE;
-
+  // don't call SoTimerQueueSensor::trigger() as it will clear
+  // the scheduled flag.
+  SoSensor::trigger();
+  
 #if DEBUG_TIMERSENSOR_TRACE // debug
   SoDebugError::postInfo("SoTimerSensor::trigger", "%p done", this);
 #endif // debug
-}
-
-/*!
-  Need to overload this method in SoTimerSensor, otherwise we can't
-  return the correct schedule status during triggering.
- */
-SbBool
-SoTimerSensor::isScheduled(void) const
-{
-  if (this->istriggering) return this->wasunscheduled ? FALSE : TRUE;
-  return inherited::isScheduled();
 }
