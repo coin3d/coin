@@ -1,11 +1,14 @@
 
+if BUILD_LIBRARY
+if MAC_FRAMEWORK
+glueincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/C/glue
+else
 glueincdir = $(includedir)/Inventor/C/glue
+endif
 glueinc_HEADERS = \
-	gl.h dl.h
+	gl.h \
+	dl.h
 
-## These headers are not installed - they are internal to Coin...
-EXTRA_DIST = \
-	glp.h
 
 install-glueincHEADERS: $(glueinc_HEADERS)
 	@$(NORMAL_INSTALL)
@@ -19,4 +22,5 @@ install-glueincHEADERS: $(glueinc_HEADERS)
 	    $(INSTALL_HEADER) "$$src" "$$dst"; \
 	  fi \
 	done
+endif
 

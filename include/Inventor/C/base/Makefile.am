@@ -1,5 +1,10 @@
 
+if BUILD_LIBRARY
+if MAC_FRAMEWORK
+baseincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/C/base
+else
 baseincdir = $(includedir)/Inventor/C/base
+endif
 baseinc_HEADERS = \
 	hash.h \
 	heap.h \
@@ -8,13 +13,6 @@ baseinc_HEADERS = \
 	time.h \
 	string.h \
 	list.h
-
-EXTRA_DIST = \
-	basep.h \
-	hashp.h \
-	heapp.h \
-	name.h \
-	string.h
 
 install-baseincHEADERS: $(baseinc_HEADERS)
 	@$(NORMAL_INSTALL)
@@ -28,4 +26,5 @@ install-baseincHEADERS: $(baseinc_HEADERS)
 	    $(INSTALL_HEADER) "$$src" "$$dst"; \
 	  fi \
 	done
+endif
 

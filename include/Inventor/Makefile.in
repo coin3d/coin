@@ -159,9 +159,10 @@ EXTRA_DIST = \
 	SbBasic.h.in
 
 
-libCoinincdir = $(includedir)/Inventor
-nodist_libCoininc_HEADERS = \
-	SbBasic.h
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@libCoinincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@libCoinincdir = $(includedir)/Inventor
+@BUILD_LIBRARY_TRUE@nodist_libCoininc_HEADERS = \
+@BUILD_LIBRARY_TRUE@	SbBasic.h
 
 subdir = include/Inventor
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -198,6 +199,15 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
 uninstall-info-am:
+@BUILD_LIBRARY_FALSE@install-nodist_libCoinincHEADERS: $(nodist_libCoininc_HEADERS)
+@BUILD_LIBRARY_FALSE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_FALSE@	$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
+@BUILD_LIBRARY_FALSE@	@list='$(nodist_libCoininc_HEADERS)'; for p in $$list; do \
+@BUILD_LIBRARY_FALSE@	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+@BUILD_LIBRARY_FALSE@	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+@BUILD_LIBRARY_FALSE@	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f"; \
+@BUILD_LIBRARY_FALSE@	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; \
+@BUILD_LIBRARY_FALSE@	done
 
 uninstall-nodist_libCoinincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -422,23 +432,21 @@ uninstall-info: uninstall-info-recursive
 	uninstall-recursive
 
 
-SbBasic.h: $(srcdir)/SbBasic.h.in $(top_builddir)/config.status
-	@( cd $(top_builddir); $(MAKE) include/Inventor/SbBasic.h )
+SbBasic.h: $(srcdir)/SbBasic.h.in
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
-# Avoid installing the SbBasic.h header-file if it's equal to
-# the one already in place, by overriding this make target.
-install-nodist_libCoinincHEADERS: $(nodist_libCoininc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
-	@list='$(nodist_libCoininc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(libCoinincdir)/$$f"; \
-	  if cmp -s "$$src" "$$dst"; then :; else \
-	    echo " $(INSTALL_HEADER) $$src $$dst"; \
-	    $(INSTALL_HEADER) "$$src" "$$dst"; \
-	  fi \
-	done
+@BUILD_LIBRARY_TRUE@install-nodist_libCoinincHEADERS: $(nodist_libCoininc_HEADERS)
+@BUILD_LIBRARY_TRUE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_TRUE@	$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
+@BUILD_LIBRARY_TRUE@	@list='$(nodist_libCoininc_HEADERS)'; for p in $$list; do \
+@BUILD_LIBRARY_TRUE@	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+@BUILD_LIBRARY_TRUE@	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+@BUILD_LIBRARY_TRUE@	  src="$$d$$p"; dst="$(DESTDIR)$(libCoinincdir)/$$f"; \
+@BUILD_LIBRARY_TRUE@	  if cmp -s "$$src" "$$dst"; then :; else \
+@BUILD_LIBRARY_TRUE@	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+@BUILD_LIBRARY_TRUE@	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+@BUILD_LIBRARY_TRUE@	  fi \
+@BUILD_LIBRARY_TRUE@	done
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

@@ -1,5 +1,10 @@
 
+if BUILD_LIBRARY
+if MAC_FRAMEWORK
+threadsincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/C/threads
+else
 threadsincdir = $(includedir)/Inventor/C/threads
+endif
 threadsinc_HEADERS = \
 	common.h \
 	thread.h \
@@ -14,21 +19,6 @@ threadsinc_HEADERS = \
 	fifo.h \
 	barrier.h
 
-## These headers are not installed - they are internal to Coin...
-EXTRA_DIST = \
-	threadsutilp.h \
-	threadp.h \
-	mutexp.h \
-	condvarp.h \
-	rwmutexp.h \
-	storagep.h \
-	workerp.h \
-	wpoolp.h \
-	schedp.h \
-	syncp.h \
-	fifop.h \
-	barrierp.h
-
 install-threadsincHEADERS: $(threadsinc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(threadsincdir)
@@ -42,3 +32,4 @@ install-threadsincHEADERS: $(threadsinc_HEADERS)
 	  fi \
 	done
 
+endif

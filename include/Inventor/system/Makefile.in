@@ -162,10 +162,11 @@ EXTRA_DIST = \
 
 
 # header installation information
-systemincdir = $(includedir)/Inventor/system
-nodist_systeminc_HEADERS = \
-	gl.h \
-	inttypes.h
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@systemincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/system
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@systemincdir = $(includedir)/Inventor/system
+@BUILD_LIBRARY_TRUE@nodist_systeminc_HEADERS = \
+@BUILD_LIBRARY_TRUE@	gl.h \
+@BUILD_LIBRARY_TRUE@	inttypes.h
 
 subdir = include/Inventor/system
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -196,6 +197,15 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
 uninstall-info-am:
+@BUILD_LIBRARY_FALSE@install-nodist_systemincHEADERS: $(nodist_systeminc_HEADERS)
+@BUILD_LIBRARY_FALSE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_FALSE@	$(mkinstalldirs) $(DESTDIR)$(systemincdir)
+@BUILD_LIBRARY_FALSE@	@list='$(nodist_systeminc_HEADERS)'; for p in $$list; do \
+@BUILD_LIBRARY_FALSE@	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+@BUILD_LIBRARY_FALSE@	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+@BUILD_LIBRARY_FALSE@	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(systemincdir)/$$f"; \
+@BUILD_LIBRARY_FALSE@	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(systemincdir)/$$f; \
+@BUILD_LIBRARY_FALSE@	done
 
 uninstall-nodist_systemincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -345,18 +355,18 @@ gl.h: $(srcdir)/inttypes.h.in $(top_builddir)/config.status
 inttypes.h: $(srcdir)/gl.h.in $(top_builddir)/config.status
 	@( cd $(top_builddir); $(MAKE) include/Inventor/system/gl.h )
 
-install-nodist_systemincHEADERS: $(nodist_systeminc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(systemincdir)
-	@list='$(nodist_systeminc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(systemincdir)/$$f"; \
-	  if cmp -s "$$src" "$$dst"; then :; else \
-	    echo " $(INSTALL_HEADER) $$src $$dst"; \
-	    $(INSTALL_HEADER) "$$src" "$$dst"; \
-	  fi \
-	done
+@BUILD_LIBRARY_TRUE@install-nodist_systemincHEADERS: $(nodist_systeminc_HEADERS)
+@BUILD_LIBRARY_TRUE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_TRUE@	$(mkinstalldirs) $(DESTDIR)$(systemincdir)
+@BUILD_LIBRARY_TRUE@	@list='$(nodist_systeminc_HEADERS)'; for p in $$list; do \
+@BUILD_LIBRARY_TRUE@	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+@BUILD_LIBRARY_TRUE@	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+@BUILD_LIBRARY_TRUE@	  src="$$d$$p"; dst="$(DESTDIR)$(systemincdir)/$$f"; \
+@BUILD_LIBRARY_TRUE@	  if cmp -s "$$src" "$$dst"; then :; else \
+@BUILD_LIBRARY_TRUE@	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+@BUILD_LIBRARY_TRUE@	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+@BUILD_LIBRARY_TRUE@	  fi \
+@BUILD_LIBRARY_TRUE@	done
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

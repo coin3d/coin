@@ -11,15 +11,18 @@ DISTCLEANFILES = \
 EXTRA_DIST = \
 	SbBasic.h.in
 
-SbBasic.h: $(srcdir)/SbBasic.h.in $(top_builddir)/config.status
-	@( cd $(top_builddir); $(MAKE) include/Inventor/SbBasic.h )
+SbBasic.h: $(srcdir)/SbBasic.h.in
+	@( cd $(top_builddir); $(MAKE) built-sources )
 
+if BUILD_LIBRARY
+if MAC_FRAMEWORK
+libCoinincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers
+else
 libCoinincdir = $(includedir)/Inventor
+endif
 nodist_libCoininc_HEADERS = \
 	SbBasic.h
 
-# Avoid installing the SbBasic.h header-file if it's equal to
-# the one already in place, by overriding this make target.
 install-nodist_libCoinincHEADERS: $(nodist_libCoininc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
@@ -32,3 +35,6 @@ install-nodist_libCoinincHEADERS: $(nodist_libCoininc_HEADERS)
 	    $(INSTALL_HEADER) "$$src" "$$dst"; \
 	  fi \
 	done
+
+endif
+

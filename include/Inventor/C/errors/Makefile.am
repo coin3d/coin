@@ -1,4 +1,10 @@
+
+if BUILD_LIBRARY
+if MAC_FRAMEWORK
+errorsincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/C/errors
+else
 errorsincdir = $(includedir)/Inventor/C/errors
+endif
 errorsinc_HEADERS = \
 	error.h \
 	debugerror.h
@@ -15,3 +21,5 @@ install-errorsincHEADERS: $(errorsinc_HEADERS)
 	    $(INSTALL_HEADER) "$$src" "$$dst"; \
 	  fi \
 	done
+endif
+

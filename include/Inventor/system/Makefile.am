@@ -20,7 +20,12 @@ inttypes.h: $(srcdir)/gl.h.in $(top_builddir)/config.status
 
 # header installation information
 
+if BUILD_LIBRARY
+if MAC_FRAMEWORK
+systemincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/system
+else
 systemincdir = $(includedir)/Inventor/system
+endif
 nodist_systeminc_HEADERS = \
 	gl.h \
 	inttypes.h
@@ -37,4 +42,5 @@ install-nodist_systemincHEADERS: $(nodist_systeminc_HEADERS)
 	    $(INSTALL_HEADER) "$$src" "$$dst"; \
 	  fi \
 	done
+endif
 

@@ -1,9 +1,11 @@
 ## Process this file with automake to generate Makefile.in.
 
-## Installation information.
-
+if BUILD_LIBRARY
+if MAC_FRAMEWORK
+lockincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/lock
+else
 lockincdir = $(includedir)/Inventor/lock
-
+endif
 lockinc_HEADERS = \
 	SoLockMgr.h
 
@@ -19,4 +21,6 @@ install-lockincHEADERS: $(lockinc_HEADERS)
 	    $(INSTALL_HEADER) "$$src" "$$dst"; \
 	  fi \
 	done
+
+endif
 

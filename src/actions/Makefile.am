@@ -47,7 +47,12 @@ RegularSources = \
 # The SoIntersectionDetectionAction header needs to be under
 # Inventor/collision/ for TGS compatibility.
 
+if BUILD_LIBRARY
+if MAC_FRAMEWORK
+libcollisionincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/collision
+else
 libcollisionincdir = $(includedir)/Inventor/collision
+endif
 libcollisioninc_HEADERS = \
 	../../include/Inventor/collision/SoIntersectionDetectionAction.h
 
@@ -63,6 +68,7 @@ install-libcollisionincHEADERS: $(libcollisioninc_HEADERS)
 	    $(INSTALL_HEADER) "$$src" "$$dst"; \
 	  fi \
 	done
+endif
 
 ##$ BEGIN TEMPLATE Make-Common(actions, actions)
 # **************************************************************************

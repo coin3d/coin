@@ -145,23 +145,16 @@ sim_ac_makensis_exe = @sim_ac_makensis_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
-baseincdir = $(includedir)/Inventor/C/base
-baseinc_HEADERS = \
-	hash.h \
-	heap.h \
-	memalloc.h \
-	rbptree.h \
-	time.h \
-	string.h \
-	list.h
-
-
-EXTRA_DIST = \
-	basep.h \
-	hashp.h \
-	heapp.h \
-	name.h \
-	string.h
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@baseincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/C/base
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@baseincdir = $(includedir)/Inventor/C/base
+@BUILD_LIBRARY_TRUE@baseinc_HEADERS = \
+@BUILD_LIBRARY_TRUE@	hash.h \
+@BUILD_LIBRARY_TRUE@	heap.h \
+@BUILD_LIBRARY_TRUE@	memalloc.h \
+@BUILD_LIBRARY_TRUE@	rbptree.h \
+@BUILD_LIBRARY_TRUE@	time.h \
+@BUILD_LIBRARY_TRUE@	string.h \
+@BUILD_LIBRARY_TRUE@	list.h
 
 subdir = include/Inventor/C/base
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -191,6 +184,15 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
 uninstall-info-am:
+@BUILD_LIBRARY_FALSE@install-baseincHEADERS: $(baseinc_HEADERS)
+@BUILD_LIBRARY_FALSE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_FALSE@	$(mkinstalldirs) $(DESTDIR)$(baseincdir)
+@BUILD_LIBRARY_FALSE@	@list='$(baseinc_HEADERS)'; for p in $$list; do \
+@BUILD_LIBRARY_FALSE@	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+@BUILD_LIBRARY_FALSE@	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+@BUILD_LIBRARY_FALSE@	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(baseincdir)/$$f"; \
+@BUILD_LIBRARY_FALSE@	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(baseincdir)/$$f; \
+@BUILD_LIBRARY_FALSE@	done
 
 uninstall-baseincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -332,18 +334,18 @@ uninstall-am: uninstall-baseincHEADERS uninstall-info-am
 	uninstall-info-am
 
 
-install-baseincHEADERS: $(baseinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(baseincdir)
-	@list='$(baseinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(baseincdir)/$$f"; \
-	  if cmp -s "$$src" "$$dst"; then :; else \
-	    echo " $(INSTALL_HEADER) $$src $$dst"; \
-	    $(INSTALL_HEADER) "$$src" "$$dst"; \
-	  fi \
-	done
+@BUILD_LIBRARY_TRUE@install-baseincHEADERS: $(baseinc_HEADERS)
+@BUILD_LIBRARY_TRUE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_TRUE@	$(mkinstalldirs) $(DESTDIR)$(baseincdir)
+@BUILD_LIBRARY_TRUE@	@list='$(baseinc_HEADERS)'; for p in $$list; do \
+@BUILD_LIBRARY_TRUE@	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+@BUILD_LIBRARY_TRUE@	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+@BUILD_LIBRARY_TRUE@	  src="$$d$$p"; dst="$(DESTDIR)$(baseincdir)/$$f"; \
+@BUILD_LIBRARY_TRUE@	  if cmp -s "$$src" "$$dst"; then :; else \
+@BUILD_LIBRARY_TRUE@	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+@BUILD_LIBRARY_TRUE@	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+@BUILD_LIBRARY_TRUE@	  fi \
+@BUILD_LIBRARY_TRUE@	done
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

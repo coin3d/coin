@@ -152,10 +152,10 @@ noinst_HEADERS = \
 	unconfig.h
 
 
-thisincdir = $(includedir)
-thisinc_HEADERS = \
-	SoWinEnterScope.h \
-	SoWinLeaveScope.h
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@thisincdir = $(includedir)
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@thisinc_HEADERS = \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	SoWinEnterScope.h \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	SoWinLeaveScope.h
 
 subdir = include
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -218,15 +218,33 @@ $(srcdir)/./stamp-h.in: $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 distclean-hdr:
 	-rm -f config.h
 uninstall-info-am:
-install-thisincHEADERS: $(thisinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(thisincdir)
-	@list='$(thisinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(thisincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(thisincdir)/$$f; \
-	done
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_FALSE@install-thisincHEADERS: $(thisinc_HEADERS)
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_FALSE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_FALSE@	$(mkinstalldirs) $(DESTDIR)$(thisincdir)
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_FALSE@	@list='$(thisinc_HEADERS)'; for p in $$list; do \
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_FALSE@	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_FALSE@	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_FALSE@	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(thisincdir)/$$f"; \
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_FALSE@	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(thisincdir)/$$f; \
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_FALSE@	done
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@install-thisincHEADERS: $(thisinc_HEADERS)
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	$(mkinstalldirs) $(DESTDIR)$(thisincdir)
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	@list='$(thisinc_HEADERS)'; for p in $$list; do \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(thisincdir)/$$f"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(thisincdir)/$$f; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	done
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_TRUE@install-thisincHEADERS: $(thisinc_HEADERS)
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_TRUE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_TRUE@	$(mkinstalldirs) $(DESTDIR)$(thisincdir)
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_TRUE@	@list='$(thisinc_HEADERS)'; for p in $$list; do \
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_TRUE@	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_TRUE@	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_TRUE@	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(thisincdir)/$$f"; \
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_TRUE@	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(thisincdir)/$$f; \
+@BUILD_LIBRARY_FALSE@@MAC_FRAMEWORK_TRUE@	done
 
 uninstall-thisincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -448,6 +466,19 @@ uninstall-info: uninstall-info-recursive
 	uninstall-info-recursive uninstall-recursive \
 	uninstall-thisincHEADERS
 
+
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@install-thisincHEADERS: $(thisinc_HEADERS)
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	$(mkinstalldirs) $(DESTDIR)$(thisincdir)
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	@list='$(thisinc_HEADERS)'; for p in $$list; do \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  src="$$d$$p"; dst="$(DESTDIR)$(thisincdir)/$$f"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  if cmp -s "$$src" "$$dst"; then :; else \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  fi \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	done
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

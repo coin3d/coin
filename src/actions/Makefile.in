@@ -195,9 +195,10 @@ RegularSources = \
 
 # The SoIntersectionDetectionAction header needs to be under
 # Inventor/collision/ for TGS compatibility.
-libcollisionincdir = $(includedir)/Inventor/collision
-libcollisioninc_HEADERS = \
-	../../include/Inventor/collision/SoIntersectionDetectionAction.h
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@libcollisionincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/collision
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@libcollisionincdir = $(includedir)/Inventor/collision
+@BUILD_LIBRARY_TRUE@libcollisioninc_HEADERS = \
+@BUILD_LIBRARY_TRUE@	../../include/Inventor/collision/SoIntersectionDetectionAction.h
 
 
 
@@ -518,6 +519,15 @@ uninstall-libactionsincHEADERS:
 	  echo " rm -f $(DESTDIR)$(libactionsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libactionsincdir)/$$f; \
 	done
+@BUILD_LIBRARY_FALSE@install-libcollisionincHEADERS: $(libcollisioninc_HEADERS)
+@BUILD_LIBRARY_FALSE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_FALSE@	$(mkinstalldirs) $(DESTDIR)$(libcollisionincdir)
+@BUILD_LIBRARY_FALSE@	@list='$(libcollisioninc_HEADERS)'; for p in $$list; do \
+@BUILD_LIBRARY_FALSE@	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+@BUILD_LIBRARY_FALSE@	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+@BUILD_LIBRARY_FALSE@	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libcollisionincdir)/$$f"; \
+@BUILD_LIBRARY_FALSE@	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libcollisionincdir)/$$f; \
+@BUILD_LIBRARY_FALSE@	done
 
 uninstall-libcollisionincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -669,18 +679,18 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	uninstall-libactionsincHEADERS uninstall-libcollisionincHEADERS
 
 
-install-libcollisionincHEADERS: $(libcollisioninc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libcollisionincdir)
-	@list='$(libcollisioninc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(libcollisionincdir)/$$f"; \
-	  if cmp -s "$$src" "$$dst"; then :; else \
-	    echo " $(INSTALL_HEADER) $$src $$dst"; \
-	    $(INSTALL_HEADER) "$$src" "$$dst"; \
-	  fi \
-	done
+@BUILD_LIBRARY_TRUE@install-libcollisionincHEADERS: $(libcollisioninc_HEADERS)
+@BUILD_LIBRARY_TRUE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_TRUE@	$(mkinstalldirs) $(DESTDIR)$(libcollisionincdir)
+@BUILD_LIBRARY_TRUE@	@list='$(libcollisioninc_HEADERS)'; for p in $$list; do \
+@BUILD_LIBRARY_TRUE@	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+@BUILD_LIBRARY_TRUE@	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+@BUILD_LIBRARY_TRUE@	  src="$$d$$p"; dst="$(DESTDIR)$(libcollisionincdir)/$$f"; \
+@BUILD_LIBRARY_TRUE@	  if cmp -s "$$src" "$$dst"; then :; else \
+@BUILD_LIBRARY_TRUE@	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+@BUILD_LIBRARY_TRUE@	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+@BUILD_LIBRARY_TRUE@	  fi \
+@BUILD_LIBRARY_TRUE@	done
 
 # this rule causes a make warning, so we remove it when it is not in use
 actions.lst: Makefile $(actions_lst_OBJECTS)
